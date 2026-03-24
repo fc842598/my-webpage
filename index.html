@@ -3,87 +3,107 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>我的网页</title>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-
-    body {
-      font-family: "Microsoft YaHei", sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .card {
-      background: white;
-      border-radius: 16px;
-      padding: 48px 56px;
-      text-align: center;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.2);
-      max-width: 480px;
-      width: 90%;
-    }
-
-    h1 {
-      font-size: 2rem;
-      color: #333;
-      margin-bottom: 12px;
-    }
-
-    p {
-      color: #666;
-      font-size: 1rem;
-      line-height: 1.7;
-      margin-bottom: 28px;
-    }
-
-    button {
-      background: linear-gradient(135deg, #667eea, #764ba2);
-      color: white;
-      border: none;
-      padding: 12px 32px;
-      border-radius: 8px;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: transform 0.15s, box-shadow 0.15s;
-    }
-
-    button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 20px rgba(102,126,234,0.4);
-    }
-
-    #msg {
-      margin-top: 20px;
-      font-size: 0.95rem;
-      color: #764ba2;
-      min-height: 24px;
-    }
-  </style>
+  <title>紫微斗数 · 命盘推算</title>
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <div class="card">
-    <h1>你好，世界！</h1>
-    <p>这是一个简单的网页示例。<br>点击下面的按钮试试看。</p>
-    <button onclick="greet()">点击我</button>
-    <div id="msg"></div>
-  </div>
 
-  <script>
-    const messages = [
-      "Hello World!",
-      "欢迎来到我的网页 👋",
-      "今天也是美好的一天！",
-      "你好！",
-      "Keep going! 🚀"
-    ];
-    let i = 0;
-    function greet() {
-      document.getElementById("msg").textContent = messages[i % messages.length];
-      i++;
-    }
-  </script>
+  <!-- 导航栏 -->
+  <header class="navbar">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <span class="logo-star">☽</span> 紫微斗数
+      </a>
+      <nav class="nav-links">
+        <a href="index.html" class="active">首页</a>
+        <a href="pages/chart.html">排盘</a>
+        <a href="pages/guide.html">入门指南</a>
+        <a href="pages/about.html">关于</a>
+      </nav>
+      <button class="nav-cta" onclick="location.href='pages/chart.html'">立即排盘</button>
+    </div>
+  </header>
+
+  <!-- Hero 区域 -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+      <p class="hero-sub">中国传统命理 · 千年智慧</p>
+      <h1 class="hero-title">紫微斗数<br><span>命盘推算</span></h1>
+      <p class="hero-desc">输入出生年月日时，生成专属紫微命盘，解读星曜格局与人生运势。</p>
+      <div class="hero-actions">
+        <button class="btn-primary" onclick="location.href='pages/chart.html'">开始排盘</button>
+        <button class="btn-ghost" onclick="location.href='pages/guide.html'">了解紫微</button>
+      </div>
+    </div>
+    <div class="hero-deco">
+      <div class="deco-ring ring1"></div>
+      <div class="deco-ring ring2"></div>
+      <div class="deco-ring ring3"></div>
+      <div class="deco-center">紫<br>微</div>
+    </div>
+  </section>
+
+  <!-- 功能介绍 -->
+  <section class="features">
+    <div class="section-inner">
+      <h2 class="section-title">核心功能</h2>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">🌟</div>
+          <h3>一键排盘</h3>
+          <p>输入出生信息，自动生成十二宫位完整命盘，精准排布紫微星系。</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🔭</div>
+          <h3>星曜解读</h3>
+          <p>详解紫微、天机、太阳等主星含义，结合宫位分析命格特征。</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📅</div>
+          <h3>大限流年</h3>
+          <p>推算十年大限与年度流年运势，掌握人生各阶段的吉凶走向。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 入门说明 -->
+  <section class="intro">
+    <div class="section-inner intro-inner">
+      <div class="intro-text">
+        <h2>什么是紫微斗数？</h2>
+        <p>紫微斗数是中国古代命理学中最精密的术数体系之一，起源于宋代，以出生年、月、日、时为依据，将星曜分布于十二宫位，通过星曜组合、宫位互动来推断人的命运走向。</p>
+        <p>与其他命理体系相比，紫微斗数拥有超过 110 颗星曜，格局组合丰富，分析维度细腻，被誉为"命理之王"。</p>
+        <a href="pages/guide.html" class="link-arrow">查看入门指南 →</a>
+      </div>
+      <div class="intro-chart">
+        <div class="mini-chart">
+          <div class="chart-cell">夫妻<br><small>天机</small></div>
+          <div class="chart-cell">兄弟<br><small>紫微</small></div>
+          <div class="chart-cell">命宫<br><small>天府</small></div>
+          <div class="chart-cell">父母<br><small>太阳</small></div>
+          <div class="chart-cell">子女<br><small>太阴</small></div>
+          <div class="chart-cell chart-center" rowspan="2">十二<br>宫位</div>
+          <div class="chart-cell">财帛<br><small>贪狼</small></div>
+          <div class="chart-cell">福德<br><small>廉贞</small></div>
+          <div class="chart-cell">疾厄<br><small>天相</small></div>
+          <div class="chart-cell">迁移<br><small>天梁</small></div>
+          <div class="chart-cell">仆役<br><small>七杀</small></div>
+          <div class="chart-cell">官禄<br><small>破军</small></div>
+          <div class="chart-cell">田宅<br><small>武曲</small></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <span>© 2026 紫微斗数命盘推算</span>
+      <span>仅供参考，不构成任何建议</span>
+    </div>
+  </footer>
+
 </body>
 </html>
