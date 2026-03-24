@@ -3,46 +3,45 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>紫微斗数免费排盘 · 输入生辰八字，读懂你的命盘</title>
+  <title>紫微斗数 · 免费排盘 · 专业命盘解读服务</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-  <!-- 导航 -->
+  <!-- ══ 导航 ══════════════════════════════════════════ -->
   <header class="navbar">
     <div class="nav-inner">
-      <a href="index.html" class="nav-logo">
-        <span class="logo-star">☽</span> 紫微斗数
-      </a>
+      <a href="index.html" class="nav-logo"><span class="logo-star">☽</span> 紫微斗数</a>
       <nav class="nav-links">
-        <a href="index.html" class="active">首页</a>
-        <a href="pages/chart.html">免费排盘</a>
-        <a href="pages/guide.html">新手入门</a>
+        <a href="#chart-entry">免费排盘</a>
+        <a href="#pricing">解读服务</a>
+        <a href="#faq">常见问题</a>
       </nav>
-      <button class="nav-cta" onclick="location.href='pages/chart.html'">立即排盘</button>
+      <button class="nav-cta" id="nav-chart-btn">免费排我的盘</button>
     </div>
   </header>
 
-  <!-- ① Hero：网站定位 + 核心价值 + 主 CTA -->
+  <!-- ══ ① Hero：品牌定位 + 主 CTA ══════════════════════ -->
   <section class="hero">
     <div class="hero-bg"></div>
     <div class="hero-content">
-      <p class="hero-tag">紫微斗数 · 在线免费排盘</p>
-      <h1 class="hero-title">输入出生时间<br>免费看你的<span>紫微命盘</span></h1>
+      <p class="hero-tag">紫微斗数 · 传统命理 · 在线排盘与专业解读</p>
+      <h1 class="hero-title">输入出生时间<br>读懂你的<span>紫微命盘</span></h1>
       <p class="hero-desc">
-        不用懂命理，填入出生年月日时，系统自动排出你的十二宫命盘，
-        告诉你的性格特质、感情走势、事业财运和近年大运。
+        免费排出你的十二宫命盘，看懂性格、感情、事业、财运和大运走势。
+        想深入了解？我们提供专业人工解读服务。
       </p>
       <div class="hero-actions">
-        <button class="btn-primary btn-hero" onclick="location.href='pages/chart.html'">
-          免费排我的命盘
+        <button class="btn-primary btn-hero" id="hero-chart-btn">免费排我的命盘</button>
+        <button class="btn-ghost" onclick="document.getElementById('pricing').scrollIntoView({behavior:'smooth'})">
+          查看解读服务
         </button>
       </div>
       <ul class="hero-trust">
-        <li>✓ 完全免费</li>
-        <li>✓ 无需注册</li>
-        <li>✓ 结果即时呈现</li>
+        <li>✓ 排盘完全免费</li>
+        <li>✓ 无需注册账号</li>
         <li>✓ 不储存你的信息</li>
+        <li>✓ 支持人工深度解读</li>
       </ul>
     </div>
     <div class="hero-deco">
@@ -53,148 +52,281 @@
     </div>
   </section>
 
-  <!-- ② 你能看到什么：核心价值（用户语言） -->
+  <!-- ══ ② 命盘能告诉你什么（用户价值）══════════════════ -->
   <section class="value-section">
     <div class="section-inner">
       <h2 class="section-title">你的命盘能告诉你什么？</h2>
-      <p class="section-sub">以下是大多数人最想了解的四个方向，命盘都能给出参考</p>
+      <p class="section-sub">大多数人看命盘，关心这四件事</p>
       <div class="value-grid">
         <div class="value-card">
           <div class="value-icon">🧠</div>
           <h3>性格与天赋</h3>
-          <p>你为什么会这样想事情？你的天生优势在哪里？命宫主星告诉你。</p>
+          <p>你为什么是现在这样的人？天生优势在哪里？命宫主星直接告诉你。</p>
         </div>
         <div class="value-card">
           <div class="value-icon">💑</div>
           <h3>感情与婚姻</h3>
-          <p>你的感情模式是什么？什么时候容易遇到对的人？夫妻宫帮你看。</p>
+          <p>你的感情模式、缘分时机、适合什么样的伴侣——夫妻宫帮你看清楚。</p>
         </div>
         <div class="value-card">
           <div class="value-icon">💼</div>
           <h3>事业与财运</h3>
-          <p>你适合创业还是打工？财运什么时候来？官禄宫和财帛宫给出线索。</p>
+          <p>适合创业还是打工？什么时候财运最旺？官禄宫和财帛宫给出线索。</p>
         </div>
         <div class="value-card">
           <div class="value-icon">📆</div>
-          <h3>近年大运走势</h3>
-          <p>现在这个阶段是顺势期还是调整期？十年大限帮你读懂当下。</p>
+          <h3>大运走势</h3>
+          <p>你现在处于人生哪个阶段？是顺势期还是积蓄期？十年大限帮你判断。</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ③ 适合什么人 -->
+  <!-- ══ ③ 适合什么人 ══════════════════════════════════ -->
   <section class="audience-section">
     <div class="section-inner">
       <h2 class="section-title">你是不是这样的人？</h2>
       <div class="audience-grid">
-        <div class="audience-item">
-          <span class="aud-icon">🔍</span>
-          <p>好奇自己的性格从哪里来，想多了解自己一些</p>
-        </div>
-        <div class="audience-item">
-          <span class="aud-icon">🔀</span>
-          <p>正面临换工作、搬家、感情抉择等重要转折</p>
-        </div>
-        <div class="audience-item">
-          <span class="aud-icon">💔</span>
-          <p>感情不顺，想从命盘角度看看问题在哪</p>
-        </div>
-        <div class="audience-item">
-          <span class="aud-icon">📈</span>
-          <p>想知道近几年运势如何，什么时机适合行动</p>
-        </div>
-        <div class="audience-item">
-          <span class="aud-icon">🤷</span>
-          <p>从没接触过紫微斗数，只是好奇想试试</p>
-        </div>
-        <div class="audience-item">
-          <span class="aud-icon">👨‍👩‍👧</span>
-          <p>想替家人或伴侣排盘，了解彼此的性格与缘分</p>
-        </div>
-      </div>
-      <div class="audience-cta">
-        <p>不管哪种情况，<strong>填入生辰信息，2 分钟就能拿到结果。</strong></p>
-        <button class="btn-primary" onclick="location.href='pages/chart.html'">现在就试试</button>
+        <div class="audience-item"><span class="aud-icon">🔍</span><p>好奇自己，想从命理角度了解性格底色</p></div>
+        <div class="audience-item"><span class="aud-icon">🔀</span><p>正面临换工作、感情抉择、搬家等重要转折</p></div>
+        <div class="audience-item"><span class="aud-icon">💔</span><p>感情不顺，想看看命盘里有没有原因</p></div>
+        <div class="audience-item"><span class="aud-icon">📈</span><p>想知道近几年运势，什么时机适合行动</p></div>
+        <div class="audience-item"><span class="aud-icon">🤷</span><p>完全不懂紫微斗数，只是好奇想试一试</p></div>
+        <div class="audience-item"><span class="aud-icon">👨‍👩‍👧</span><p>想替家人或伴侣排盘，了解彼此缘分</p></div>
       </div>
     </div>
   </section>
 
-  <!-- ④ 怎么开始（消除操作门槛） -->
+  <!-- ══ ④ 免费排盘入口 ══════════════════════════════════ -->
+  <section class="chart-entry-section" id="chart-entry">
+    <div class="section-inner">
+      <div class="chart-entry-box">
+        <div class="chart-entry-text">
+          <h2>先排一张免费命盘</h2>
+          <p>输入你的出生年、月、日、时辰，马上生成十二宫位完整命盘。<br>完全免费，无需注册，结果即时呈现。</p>
+          <ul class="chart-entry-tips">
+            <li>🕐 不知道时辰？可以选"未知"，照样能生成基础命盘</li>
+            <li>📋 命盘生成后，可截图保存或参考下方解读服务</li>
+            <li>🔒 你的出生信息不会被上传或储存</li>
+          </ul>
+          <button class="btn-primary btn-large" id="chart-entry-btn">进入排盘 →</button>
+        </div>
+        <div class="chart-entry-deco">
+          <div class="mini-board">
+            <div class="mb-cell"><span>命宫</span><small>紫微</small></div>
+            <div class="mb-cell"><span>财帛</span><small>天机</small></div>
+            <div class="mb-cell"><span>疾厄</span><small>太阳</small></div>
+            <div class="mb-cell"><span>迁移</span><small>武曲</small></div>
+            <div class="mb-cell"><span>夫妻</span><small>天府</small></div>
+            <div class="mb-cell mb-center"><span>你的<br>命盘</span></div>
+            <div class="mb-cell"><span>仆役</span><small>天相</small></div>
+            <div class="mb-cell"><span>兄弟</span><small>太阴</small></div>
+            <div class="mb-cell"><span>官禄</span><small>贪狼</small></div>
+            <div class="mb-cell"><span>田宅</span><small>巨门</small></div>
+            <div class="mb-cell"><span>福德</span><small>天梁</small></div>
+            <div class="mb-cell"><span>父母</span><small>七杀</small></div>
+            <div class="mb-cell"><span>子女</span><small>廉贞</small></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ ⑤ 服务套餐（付费转化）══════════════════════════ -->
+  <section class="pricing-section" id="pricing">
+    <div class="section-inner">
+      <h2 class="section-title">想看得更深？选择解读服务</h2>
+      <p class="section-sub">排完免费命盘后，如果你想真正读懂它的含义，我们提供三档专业解读</p>
+      <div class="pricing-grid">
+
+        <!-- 基础版 -->
+        <div class="pricing-card">
+          <div class="pricing-badge">入门推荐</div>
+          <h3 class="pricing-name">基础命盘解读</h3>
+          <div class="pricing-price"><span class="price-num">¥29</span></div>
+          <p class="pricing-desc">适合第一次接触紫微斗数，想知道自己命宫主星和核心性格的人。</p>
+          <ul class="pricing-features">
+            <li>✓ 命宫主星详细解读</li>
+            <li>✓ 性格优势与短板分析</li>
+            <li>✓ 适合的职业方向参考</li>
+            <li>✓ 图文报告 PDF（可保存）</li>
+          </ul>
+          <button class="btn-pricing" id="btn-basic">立即购买 ¥29</button>
+        </div>
+
+        <!-- 进阶版 -->
+        <div class="pricing-card pricing-featured">
+          <div class="pricing-badge badge-hot">最多人选</div>
+          <h3 class="pricing-name">完整命盘解读</h3>
+          <div class="pricing-price"><span class="price-num">¥79</span></div>
+          <p class="pricing-desc">适合想全面了解自己命盘的人，涵盖感情、事业、财运和大运分析。</p>
+          <ul class="pricing-features">
+            <li>✓ 十二宫位完整解读</li>
+            <li>✓ 感情婚姻走势分析</li>
+            <li>✓ 事业财运详细判断</li>
+            <li>✓ 当前大限运势解析</li>
+            <li>✓ 图文报告 PDF（可保存）</li>
+          </ul>
+          <button class="btn-pricing btn-pricing-hot" id="btn-advanced">立即购买 ¥79</button>
+        </div>
+
+        <!-- 深度版 -->
+        <div class="pricing-card">
+          <div class="pricing-badge">深度定制</div>
+          <h3 class="pricing-name">一对一深度解读</h3>
+          <div class="pricing-price"><span class="price-num">¥198</span></div>
+          <p class="pricing-desc">适合有具体问题（感情、事业、择业、择时）需要专人逐一解答的人。</p>
+          <ul class="pricing-features">
+            <li>✓ 包含完整命盘解读全部内容</li>
+            <li>✓ 微信语音 30 分钟专人解读</li>
+            <li>✓ 流年 + 月份吉凶分析</li>
+            <li>✓ 可提前准备 3 个问题</li>
+            <li>✓ 解读录音可保存</li>
+          </ul>
+          <button class="btn-pricing" id="btn-premium">立即购买 ¥198</button>
+        </div>
+
+      </div>
+
+      <!-- 购买说明 -->
+      <div class="pay-notice">
+        <p>📌 购买后请加微信 <strong id="wechat-id-display"></strong>，发送订单截图，我们将在 24 小时内完成解读并发送报告。</p>
+        <p>💳 支持微信支付 / 支付宝，点击套餐按钮后扫码付款即可。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ ⑥ 使用流程 ══════════════════════════════════ -->
   <section class="howto-section">
     <div class="section-inner">
-      <h2 class="section-title">三步拿到你的命盘</h2>
+      <h2 class="section-title">从排盘到解读，四步走完</h2>
       <div class="steps">
         <div class="step">
           <div class="step-num">01</div>
-          <h3>填写出生信息</h3>
-          <p>输入出生年、月、日、时辰<br>（时辰不确定也可选"未知"）</p>
+          <h3>免费排盘</h3>
+          <p>填入出生年月日时，生成你的十二宫命盘</p>
         </div>
         <div class="step-arrow">→</div>
         <div class="step">
           <div class="step-num">02</div>
-          <h3>命盘即时生成</h3>
-          <p>系统自动排出十二宫位<br>以及各宫位对应的主星</p>
+          <h3>选择服务</h3>
+          <p>按需选择基础、完整或一对一深度解读套餐</p>
         </div>
         <div class="step-arrow">→</div>
         <div class="step">
           <div class="step-num">03</div>
-          <h3>查看解读内容</h3>
-          <p>每个宫位配有说明<br>对照自身经历，看懂自己的盘</p>
+          <h3>完成付款</h3>
+          <p>扫码支付，发送命盘截图和出生信息给客服</p>
         </div>
-      </div>
-      <div class="howto-cta">
-        <button class="btn-primary btn-large" onclick="location.href='pages/chart.html'">
-          开始排盘 →
-        </button>
+        <div class="step-arrow">→</div>
+        <div class="step">
+          <div class="step-num">04</div>
+          <h3>收到解读</h3>
+          <p>24 小时内收到完整图文报告或语音解读安排</p>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- ⑤ 信任区：方法来源 + 隐私承诺 -->
+  <!-- ══ ⑦ 信任区 ══════════════════════════════════════ -->
   <section class="trust-section">
     <div class="section-inner">
-      <h2 class="section-title">为什么可以信任这份结果？</h2>
+      <h2 class="section-title">为什么可以信任我们？</h2>
       <div class="trust-grid">
         <div class="trust-card">
           <div class="trust-icon">📜</div>
-          <h3>基于传统算法</h3>
-          <p>紫微斗数起源于宋代，流传千年，本网站排盘算法严格遵循传统命盘规则，星曜排布与宫位对应均有据可查。</p>
+          <h3>传统算法，有据可查</h3>
+          <p>排盘遵循紫微斗数传统规则，星曜安置与宫位对应均按古籍规范，非随意生成。</p>
         </div>
         <div class="trust-card">
           <div class="trust-icon">🔒</div>
-          <h3>不储存你的数据</h3>
-          <p>你输入的出生信息仅在本地浏览器中计算使用，不上传、不储存、不用于任何其他用途，关闭页面即清除。</p>
+          <h3>隐私优先，不留数据</h3>
+          <p>你的出生信息仅用于本次排盘计算，不上传服务器，不储存，不用于任何其他用途。</p>
         </div>
         <div class="trust-card">
           <div class="trust-icon">🎯</div>
-          <h3>结果客观呈现</h3>
-          <p>命盘解读基于星曜含义与宫位关系，不夸大吉凶，不制造焦虑，让你自己对照判断，而不是替你下结论。</p>
+          <h3>解读客观，不制造焦虑</h3>
+          <p>命盘只呈现规律与倾向，我们不夸大凶象、不贩卖焦虑，结论由你自己判断。</p>
+        </div>
+        <div class="trust-card">
+          <div class="trust-icon">💬</div>
+          <h3>付款后有保障</h3>
+          <p>付款后若 48 小时内未收到解读，可申请全额退款，不问原因。</p>
         </div>
       </div>
-      <p class="trust-disclaimer">紫微斗数属于传统文化参考，结果仅供个人思考，不构成任何决策建议。</p>
     </div>
   </section>
 
-  <!-- ⑥ 最终 CTA -->
+  <!-- ══ ⑧ FAQ ══════════════════════════════════════ -->
+  <section class="faq-section" id="faq">
+    <div class="section-inner">
+      <h2 class="section-title">常见问题</h2>
+      <div class="faq-list">
+        <details class="faq-item">
+          <summary>不知道出生时辰怎么办？</summary>
+          <p>时辰不确定时可以选"未知"，系统仍能生成基础命盘，但部分宫位（尤其是命宫）会有偏差。建议尽量询问父母或查看出生证明。</p>
+        </details>
+        <details class="faq-item">
+          <summary>排盘是完全免费的吗？</summary>
+          <p>是的，排盘功能完全免费，无需注册，不限次数。付费服务仅针对需要人工解读的用户。</p>
+        </details>
+        <details class="faq-item">
+          <summary>命盘解读需要多久收到？</summary>
+          <p>基础版和完整版图文报告一般在 24 小时内发送；一对一语音解读需要预约时间，通常在 1–3 个工作日内安排。</p>
+        </details>
+        <details class="faq-item">
+          <summary>支付后怎么联系你们？</summary>
+          <p>付款后请截图保存，然后加微信 <strong id="wechat-id-faq"></strong>，发送截图和你的出生信息（年月日时辰），我们会安排处理。</p>
+        </details>
+        <details class="faq-item">
+          <summary>紫微斗数准吗？我完全不相信命理。</summary>
+          <p>紫微斗数是中国传统文化体系的一部分，用于提供思考框架，而非预言。相不相信由你决定——很多用户反映即使半信半疑，命盘描述也有相当的参考价值。</p>
+        </details>
+        <details class="faq-item">
+          <summary>如果对解读不满意可以退款吗？</summary>
+          <p>可以。付款后 48 小时内未收到解读，或解读内容与你的信息明显不符，均可申请全额退款。</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ ⑨ 最终 CTA ══════════════════════════════════ -->
   <section class="final-cta">
     <div class="section-inner final-cta-inner">
-      <h2>准备好了吗？</h2>
-      <p>填入你的出生时间，免费拿到属于你的紫微命盘。</p>
-      <button class="btn-primary btn-large" onclick="location.href='pages/chart.html'">
-        免费排我的命盘
-      </button>
-      <p class="final-note">完全免费 · 无需注册 · 2 分钟出结果</p>
+      <h2>先排一张免费命盘</h2>
+      <p>输入出生时间，2 分钟看到你的十二宫命盘。感兴趣再选择深度解读。</p>
+      <div class="final-cta-btns">
+        <button class="btn-primary btn-large" id="final-chart-btn">免费排我的命盘</button>
+        <button class="btn-ghost" onclick="document.getElementById('pricing').scrollIntoView({behavior:'smooth'})">查看解读套餐</button>
+      </div>
+      <p class="final-note">完全免费 · 无需注册 · 不储存信息</p>
     </div>
   </section>
 
-  <!-- Footer -->
+  <!-- ══ Footer ══════════════════════════════════════ -->
   <footer class="footer">
     <div class="footer-inner">
-      <span>© 2026 紫微斗数在线排盘</span>
-      <span>仅供参考，不构成任何人生建议</span>
+      <span>© 2026 紫微斗数在线排盘与解读服务</span>
+      <span>命盘仅供参考，不构成任何决策建议</span>
     </div>
   </footer>
 
+  <script src="js/config.js"></script>
+  <script>
+    // 排盘按钮统一跳转到外部排盘工具
+    document.getElementById('nav-chart-btn').onclick   = () => window.open(SITE_CONFIG.chartEntryUrl, '_blank');
+    document.getElementById('hero-chart-btn').onclick  = () => window.open(SITE_CONFIG.chartEntryUrl, '_blank');
+    document.getElementById('chart-entry-btn').onclick = () => window.open(SITE_CONFIG.chartEntryUrl, '_blank');
+    document.getElementById('final-chart-btn').onclick = () => window.open(SITE_CONFIG.chartEntryUrl, '_blank');
+
+    // 套餐购买按钮
+    document.getElementById('btn-basic').onclick    = () => window.open(SITE_CONFIG.basicPackagePayUrl,    '_blank');
+    document.getElementById('btn-advanced').onclick = () => window.open(SITE_CONFIG.advancedPackagePayUrl, '_blank');
+    document.getElementById('btn-premium').onclick  = () => window.open(SITE_CONFIG.premiumPackagePayUrl,  '_blank');
+
+    // 微信号显示
+    document.getElementById('wechat-id-display').textContent = SITE_CONFIG.wechatId;
+    document.getElementById('wechat-id-faq').textContent     = SITE_CONFIG.wechatId;
+  </script>
 </body>
 </html>
