@@ -489,98 +489,188 @@ function highlightSanyao(branch, palaceName) {
   drawSanyaoLines(branch);
 }
 
+// ─── 宫位端口 + 走廊路由 ──────────────────────────────────
+// 每个宫位按外圈位置归类：角落宫(NW/NE/SW/SE)用内角, 边宫(N/S/W/E)用内边中点
+const BRANCH_SIDE = {
+  '巳':'NW','午':'N', '未':'N', '申':'NE',
+  '辰':'W', '卯':'W',
+  '酉':'E', '戌':'E',
+  '寅':'SW','丑':'S', '子':'S', '亥':'SE',
+};
+
+function getPort(branch, svgRect) {
+  const id = BRANCH_ID[branch];
+  if (!id) return null;
+  const cell = document.getElementById(id);
+  if (!cell) return null;
+  const r = cell.getBoundingClientRect();
+  const x0 = r.left - svgRect.left, y0 = r.top - svgRect.top;
+  const x1 = x0 + r.width, y1 = y0 + r.height;
+  const xm = (x0 + x1) / 2, ym = (y0 + y1) / 2;
+  switch (BRANCH_SIDE[branch]) {
+    case 'N':  return { x: xm, y: y1 };   // 底边中点 → 向中央格顶部
+    case 'S':  return { x: xm, y: y0 };   // 顶边中点 → 向中央格底部
+    case 'W':  return { x: x1, y: ym };   // 右边中点 → 向中央格左侧
+    case 'E':  return { x: x0, y: ym };   // 左边中点 → 向中央格右侧
+    case 'NW': return { x: x1, y: y1 };   // 右下内角（巳）
+    case 'NE': return { x: x0, y: y1 };   // 左下内角（申）
+    case 'SW': return { x: x1, y: y0 };   // 右上内角（寅）
+    case 'SE': return { x: x0, y: y0 };   // 左上内角（亥）
+    default:   return { x: xm, y: ym };
+  }
+}
+
+function getCorridor(svgRect) {
+  // 中央格的四边 = 走廊路由主干道
+  const r = document.getElementById('chart-center').getBoundingClientRect();
+  return {
+    top:    r.top    - svgRect.top,
+    bottom: r.bottom - svgRect.top,
+    left:   r.left   - svgRect.left,
+    right:  r.right  - svgRect.left,
+  };
+}
+
+function clamp01(v) { return v < 0 ? 0 : v > 1 ? 1 : v; }
+
+// 把端口投影到中央格周长上，返回 0~4 的参数值（顺时针 NW=0, NE=1, SE=2, SW=3）
+function perimParam(port, side, corr) {
+  const W = corr.right - corr.left, H = corr.bottom - corr.top;
+  switch (side) {
+    case 'NW': return 0;
+    case 'N':  return clamp01((port.x - corr.left) / W);
+    case 'NE': return 1;
+    case 'E':  return 1 + clamp01((port.y - corr.top) / H);
+    case 'SE': return 2;
+    case 'S':  return 2 + clamp01((corr.right - port.x) / W);
+    case 'SW': return 3;
+    case 'W':  return 3 + clamp01((corr.bottom - port.y) / H);
+    default:   return 0;
+  }
+}
+
+// 把周长参数还原为坐标点
+function perimPoint(param, corr) {
+  const W = corr.right - corr.left, H = corr.bottom - corr.top;
+  const p = ((param % 4) + 4) % 4;
+  if (p <= 1) return { x: corr.left + p * W,          y: corr.top             };
+  if (p <= 2) return { x: corr.right,                  y: corr.top + (p-1)*H   };
+  if (p <= 3) return { x: corr.right - (p-2)*W,        y: corr.bottom           };
+  return               { x: corr.left,                  y: corr.bottom - (p-3)*H };
+}
+
+// 沿走廊周长路由：返回折线点数组，所有转折点均在中央格边框 gutter 内
+function routePoints(portA, sideA, portB, sideB, corr) {
+  const pA = perimParam(portA, sideA, corr);
+  const pB = perimParam(portB, sideB, corr);
+  const cwD  = ((pB - pA) % 4 + 4) % 4;
+  const ccwD = ((pA - pB) % 4 + 4) % 4;
+
+  // 收集从 start 顺时针到 start+dist 之间经过的整数角点（NW/NE/SE/SW）
+  function cwCorners(start, dist) {
+    const corners = [];
+    const end = start + dist;
+    for (let c = Math.ceil(start + 1e-6); c <= end - 1e-6; c++) {
+      corners.push(perimPoint(c, corr));
+    }
+    return corners;
+  }
+
+  const snapA = perimPoint(pA, corr);
+  const snapB = perimPoint(pB, corr);
+  const via   = cwD <= ccwD
+    ? cwCorners(pA, cwD)
+    : cwCorners(pB, ccwD).reverse();
+
+  // 去除重复或极近点
+  const EPS = 2;
+  function near(a, b) { return Math.abs(a.x-b.x) < EPS && Math.abs(a.y-b.y) < EPS; }
+  const pts = [portA];
+  if (!near(snapA, portA))              pts.push(snapA);
+  via.forEach(w => { if (!near(w, pts[pts.length-1])) pts.push(w); });
+  if (!near(snapB, pts[pts.length-1])) pts.push(snapB);
+  if (!near(portB, pts[pts.length-1])) pts.push(portB);
+  return pts;
+}
+
 // ─── SVG 连线绘制 ─────────────────────────────────────────
 function drawSanyaoLines(branch) {
   const svgEl = document.getElementById('sanyao-svg');
   clearSanyaoLines();
   const svgRect = svgEl.getBoundingClientRect();
+  const corr    = getCorridor(svgRect);
 
-  function getCenter(br) {
-    const id = BRANCH_ID[br];
-    if (!id) return null;
-    const cell = document.getElementById(id);
-    if (!cell) return null;
-    const r = cell.getBoundingClientRect();
-    return { x: r.left - svgRect.left + r.width / 2,
-             y: r.top  - svgRect.top  + r.height / 2,
-             w: r.width, h: r.height };
-  }
-
-  function edgePoint(from, to) {
-    const dx = to.x - from.x, dy = to.y - from.y;
-    const len = Math.sqrt(dx*dx + dy*dy);
-    if (len < 1) return { x: from.x, y: from.y };
-    const nx = dx/len, ny = dy/len;
-    const tx = Math.abs(nx) > 0.01 ? (from.w/2) / Math.abs(nx) : 1e9;
-    const ty = Math.abs(ny) > 0.01 ? (from.h/2) / Math.abs(ny) : 1e9;
-    const t  = Math.min(tx, ty) * 0.90;
-    return { x: from.x + nx*t, y: from.y + ny*t };
-  }
-
-  const defs = document.createElementNS('http://www.w3.org/2000/svg','defs');
+  const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
   defs.innerHTML = `
-    <filter id="svg-glow-gold" x="-80%" y="-80%" width="260%" height="260%">
-      <feGaussianBlur in="SourceGraphic" stdDeviation="2.5" result="b"/>
+    <filter id="sg-gold" x="-80%" y="-80%" width="260%" height="260%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="2" result="b"/>
       <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
     </filter>
-    <filter id="svg-glow-teal" x="-80%" y="-80%" width="260%" height="260%">
-      <feGaussianBlur in="SourceGraphic" stdDeviation="2.5" result="b"/>
+    <filter id="sg-teal" x="-80%" y="-80%" width="260%" height="260%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="2" result="b"/>
       <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
     </filter>`;
   svgEl.appendChild(defs);
 
-  const selfC  = getCenter(branch);
-  const p      = SANHE_PARTNERS[branch] || [];
-  const duiBr  = DUIGONG[branch];
-  if (!selfC) return;
-  const sh1 = p[0] ? getCenter(p[0]) : null;
-  const sh2 = p[1] ? getCenter(p[1]) : null;
-  const duiC = duiBr ? getCenter(duiBr) : null;
-
-  function line(from, to, stroke, opacity, dash, filter) {
-    if (!from || !to) return;
-    const p1 = edgePoint(from, to), p2 = edgePoint(to, from);
-    const el = document.createElementNS('http://www.w3.org/2000/svg','line');
-    el.setAttribute('x1', p1.x.toFixed(1)); el.setAttribute('y1', p1.y.toFixed(1));
-    el.setAttribute('x2', p2.x.toFixed(1)); el.setAttribute('y2', p2.y.toFixed(1));
+  function mkPolyline(pts, stroke, opacity, dash, filter) {
+    if (!pts || pts.length < 2) return;
+    const el = document.createElementNS('http://www.w3.org/2000/svg', 'polyline');
+    el.setAttribute('points', pts.map(p => `${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(' '));
+    el.setAttribute('fill', 'none');
     el.setAttribute('stroke', stroke);
-    el.setAttribute('stroke-width', '1.8');
+    el.setAttribute('stroke-width', '1.6');
     el.setAttribute('stroke-opacity', opacity);
     el.setAttribute('stroke-linecap', 'round');
+    el.setAttribute('stroke-linejoin', 'round');
     if (dash)   el.setAttribute('stroke-dasharray', dash);
     if (filter) el.setAttribute('filter', `url(#${filter})`);
     svgEl.appendChild(el);
   }
 
-  function dot(c, fill, opacity) {
-    if (!c) return;
-    const el = document.createElementNS('http://www.w3.org/2000/svg','circle');
-    el.setAttribute('cx', c.x.toFixed(1)); el.setAttribute('cy', c.y.toFixed(1));
-    el.setAttribute('r', '3.5');
+  function mkDot(p, fill, opacity) {
+    if (!p) return;
+    const el = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    el.setAttribute('cx', p.x.toFixed(1));
+    el.setAttribute('cy', p.y.toFixed(1));
+    el.setAttribute('r', '2.5');
     el.setAttribute('fill', fill);
     el.setAttribute('fill-opacity', opacity);
-    el.setAttribute('filter', 'url(#svg-glow-gold)');
+    el.setAttribute('filter', 'url(#sg-gold)');
     svgEl.appendChild(el);
   }
 
-  // 本宫 ↔ 三合宫（金色实线）
-  line(selfC, sh1, '#d4a843', '0.65', null,    'svg-glow-gold');
-  line(selfC, sh2, '#d4a843', '0.65', null,    'svg-glow-gold');
-  // 两三合宫互连（浅紫虚线）
-  line(sh1,   sh2, '#9b6fd4', '0.35', '4 3',  'svg-glow-gold');
-  // 对宫（青色虚线）
-  line(selfC, duiC,'#50c8c8', '0.55', '6 3',  'svg-glow-teal');
+  const pSelf = getPort(branch, svgRect);
+  const sSelf = BRANCH_SIDE[branch];
+  const partners = SANHE_PARTNERS[branch] || [];
+  const duiBr = DUIGONG[branch];
+  if (!pSelf) return;
 
-  // 端点圆点
-  dot(selfC, '#d4a843', '0.9');
-  dot(sh1,   '#d4a843', '0.7');
-  dot(sh2,   '#d4a843', '0.7');
-  dot(duiC,  '#50c8c8', '0.7');
+  const pSh1 = partners[0] ? getPort(partners[0], svgRect) : null;
+  const pSh2 = partners[1] ? getPort(partners[1], svgRect) : null;
+  const pDui = duiBr ? getPort(duiBr, svgRect) : null;
+  const sSh1 = partners[0] ? BRANCH_SIDE[partners[0]] : null;
+  const sSh2 = partners[1] ? BRANCH_SIDE[partners[1]] : null;
+  const sDui = duiBr ? BRANCH_SIDE[duiBr] : null;
+
+  // 本宫 ↔ 三合宫（金色实线，走廊路由）
+  if (pSh1 && sSh1) mkPolyline(routePoints(pSelf, sSelf, pSh1, sSh1, corr), '#d4a843', '0.62', null,  'sg-gold');
+  if (pSh2 && sSh2) mkPolyline(routePoints(pSelf, sSelf, pSh2, sSh2, corr), '#d4a843', '0.62', null,  'sg-gold');
+  // 两三合宫互连（浅紫虚线）
+  if (pSh1 && pSh2 && sSh1 && sSh2)
+    mkPolyline(routePoints(pSh1, sSh1, pSh2, sSh2, corr), '#9b6fd4', '0.28', '5 4', 'sg-gold');
+  // 对宫（青色虚线）
+  if (pDui && sDui) mkPolyline(routePoints(pSelf, sSelf, pDui, sDui, corr), '#50c8c8', '0.48', '7 4', 'sg-teal');
+
+  // 端点落在 port 上（不在内容区中心）
+  mkDot(pSelf, '#d4a843', '0.9');
+  mkDot(pSh1,  '#d4a843', '0.65');
+  mkDot(pSh2,  '#d4a843', '0.65');
+  mkDot(pDui,  '#50c8c8', '0.65');
 }
 
 function clearSanyaoLines() {
-  const svgEl = document.getElementById('sanyao-svg');
-  if (svgEl) while (svgEl.firstChild) svgEl.removeChild(svgEl.firstChild);
+  const svg = document.getElementById('sanyao-svg');
+  if (svg) while (svg.firstChild) svg.removeChild(svg.firstChild);
 }
 
 // ─── AI 解盘引擎 ──────────────────────────────────────────
