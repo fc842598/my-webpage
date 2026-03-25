@@ -1036,3 +1036,72 @@
   transition: background .1s;
 }
 .nf-city-item:hover { background: #f7f4ef; }
+
+/* ══════════════════════════════════════════
+   宫位级四化 — 命盘格内
+══════════════════════════════════════════ */
+/* 格内四化行：置于主星上方，作为第一眼视觉 */
+.fc-cell-mutagen {
+  display: flex;
+  gap: 3px;
+  flex-wrap: wrap;
+  margin-bottom: 2px;
+}
+/* 宫位四化标签（彩色实色药丸） */
+.fc-pal-mutagen {
+  display: inline-block;
+  font-size: 9px;
+  font-weight: 700;
+  border-radius: 3px;
+  padding: 1px 4px;
+  letter-spacing: .5px;
+  line-height: 1.4;
+}
+.fc-pal-mutagen.fc-mutagen-lu   { background: #e6f4ea; color: #2d7a3a; border: 1px solid #b5d9bc; }
+.fc-pal-mutagen.fc-mutagen-quan { background: #f0e8f8; color: #6b3fa0; border: 1px solid #cdb8e8; }
+.fc-pal-mutagen.fc-mutagen-ke   { background: #e8eef7; color: #2d5fa0; border: 1px solid #b0c4e0; }
+.fc-pal-mutagen.fc-mutagen-ji   { background: #fcecea; color: #963d32; border: 1px solid #e8b8b4; }
+
+/* ══════════════════════════════════════════
+   本盘四化分布 — 中央面板
+══════════════════════════════════════════ */
+.fc-mutagen-dist {
+  margin: 6px 0 4px;
+  padding: 6px 8px;
+  background: rgba(203,165,135,.08);
+  border-radius: 6px;
+  border: 1px solid rgba(203,165,135,.2);
+}
+.fc-mut-title {
+  font-size: 8px;
+  color: #a0908a;
+  letter-spacing: 1px;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+}
+.fc-mut-list {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.fc-mut-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  line-height: 1;
+}
+.fc-mut-palace {
+  font-size: 9px;
+  font-weight: 600;
+  color: #4a3f35;
+}
+.fc-mut-star {
+  font-size: 8px;
+  color: #a0908a;
+}
+
+@media (max-width: 600px) {
+  .fc-pal-mutagen { font-size: 8px; padding: 1px 3px; }
+  .fc-mut-palace  { font-size: 8px; }
+  .fc-mut-star    { font-size: 7px; }
+}

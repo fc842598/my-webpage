@@ -191,6 +191,7 @@
               <div class="fc-sizhu" id="fc-c-sizhu"></div>
             </div>
           </div>
+          <div id="fc-c-mutagen-dist" class="fc-mutagen-dist"></div>
           <div class="fc-gua-rows">
             <div class="fc-gua-row"><span class="fc-center-lbl">先天卦</span><span class="fc-center-val" id="fc-c-xiantian">—</span></div>
             <div class="fc-gua-row"><span class="fc-center-lbl">后天卦</span><span class="fc-center-val" id="fc-c-houtian">—</span></div>
@@ -1024,24 +1025,24 @@ function fcBuildCell(p, activeBranch) {
   const isRel = !isBen && sanhe.includes(branch);
   cell.className = 'fc-cell' + (isBen ? ' fc-ben' : isRel ? ' fc-rel' : '');
 
-  const majorHtml = (p.majorStars || []).map(s => {
-    let modSpan = '';
-    if (s.mutagen) {
-      const cls = s.mutagen==='化禄'?'fc-mutagen-lu':s.mutagen==='化权'?'fc-mutagen-quan':s.mutagen==='化科'?'fc-mutagen-ke':'fc-mutagen-ji';
-      modSpan = `<span class="${cls}" style="font-size:8px">${s.mutagen}</span>`;
-    }
-    return `<div class="fc-major-star">${s.name}${s.brightness||''}${modSpan}</div>`;
-  }).join('');
+  const fcMutagenCls = m => m==='化禄'?'fc-mutagen-lu':m==='化权'?'fc-mutagen-quan':m==='化科'?'fc-mutagen-ke':'fc-mutagen-ji';
+
+  // 宫位级四化行（主视觉）
+  const palMutagenHtml = (p.majorStars||[]).filter(s=>s.mutagen).map(s =>
+    `<span class="fc-pal-mutagen ${fcMutagenCls(s.mutagen)}">${s.mutagen}</span>`
+  ).join('');
+
+  const majorHtml = (p.majorStars || []).map(s =>
+    `<div class="fc-major-star">${s.name}${s.brightness||''}</div>`
+  ).join('');
 
   const allMinor = [
     ...(p.minorStars || []),
     ...(p.adjectiveStars || p.adjStars || [])
   ];
-  const fcMutagenCls = m => m==='化禄'?'fc-mutagen-lu':m==='化权'?'fc-mutagen-quan':m==='化科'?'fc-mutagen-ke':'fc-mutagen-ji';
   const minorHtml = allMinor.map(s => {
     const name = s.name || s;
-    const m = s.mutagen ? `<span class="${fcMutagenCls(s.mutagen)}" style="font-size:7px">${s.mutagen}</span>` : '';
-    return `<div class="fc-minor-star">${name}${m}</div>`;
+    return `<div class="fc-minor-star">${name}</div>`;
   }).join('');
 
   const shenHtml = [p.changsheng12, p.boshi12].filter(Boolean)
@@ -1071,6 +1072,7 @@ function fcBuildCell(p, activeBranch) {
 
   cell.innerHTML = `
     <div class="fc-cell-top">
+      ${palMutagenHtml ? `<div class="fc-cell-mutagen">${palMutagenHtml}</div>` : ''}
       <div class="fc-major-list">${majorHtml}</div>
       <div class="fc-minor-list">${minorHtml}</div>
     </div>
@@ -1139,6 +1141,24 @@ function renderFigmaChart(chart, gender, dateStr, norm) {
     sizhuEl.innerHTML = '<span style="font-size:8px;color:#8c7e75">暂无四柱</span>';
   }
 
+  // 本盘四化分布（宫位级）
+  const mutDistEl = document.getElementById('fc-c-mutagen-dist');
+  if (mutDistEl) {
+    const MCLS = {'化禄':'fc-mutagen-lu','化权':'fc-mutagen-quan','化科':'fc-mutagen-ke','化忌':'fc-mutagen-ji'};
+    const mutItems = (chart.palaces||[]).flatMap(p =>
+      (p.majorStars||[]).filter(s=>s.mutagen).map(s =>
+        `<div class="fc-mut-item">` +
+          `<span class="fc-pal-mutagen ${MCLS[s.mutagen]||'fc-mutagen-ji'}">${s.mutagen}</span>` +
+          `<span class="fc-mut-palace">${p.name||''}</span>` +
+          `<span class="fc-mut-star">（${s.name}）</span>` +
+        `</div>`
+      )
+    );
+    mutDistEl.innerHTML = mutItems.length
+      ? `<div class="fc-mut-title">本盘四化</div><div class="fc-mut-list">${mutItems.join('')}</div>`
+      : '';
+  }
+
   fcBuildYearCards(_fcBirthYear);
   fcLoadYearly(_fcBirthYear + _fcActiveAge);
 
@@ -1186,8 +1206,9 @@ function buildAnalysis(chart, inputs) {
   const lifeMaj  = majorOf(life);
   const lifeData = STARS[lifeMaj[0]];
 
+  // 宫位级四化：格式 "宫位化XX（主星）"
   const allMutagen = palaces.flatMap(p =>
-    (p.majorStars||[]).filter(s=>s.mutagen).map(s=>`${p.name}${s.name}${s.mutagen}`)
+    (p.majorStars||[]).filter(s=>s.mutagen).map(s=>`${p.name}${s.mutagen}（${s.name}）`)
   );
 
   const gender = (inputs?.gender === 'male') ? '男命' : '女命';
@@ -1197,7 +1218,7 @@ function buildAnalysis(chart, inputs) {
   } else {
     overview += '命宫空宫，性格受三方星曜影响深，适应性强但需培养主见。';
   }
-  if (allMutagen.length) overview += `四化分布：${allMutagen.join('、')}。`;
+  if (allMutagen.length) overview += `本盘四化：${allMutagen.join('、')}。`;
 
   let personality = lifeData
     ? `命宫${lifeMaj[0]}：${lifeData.trait}。`
@@ -1205,36 +1226,36 @@ function buildAnalysis(chart, inputs) {
   if (hasMinor(life,'左辅') || hasMinor(life,'右弼')) personality += '命有辅弼，贵人缘强。';
   if (hasMinor(life,'文昌') || hasMinor(life,'文曲')) personality += '文昌/文曲入命，聪颖有文艺才华。';
   const lifeJi = (life?.majorStars||[]).find(s=>s.mutagen?.includes('忌'));
-  if (lifeJi && lifeData) personality += `命宫${lifeJi.name}化忌，注意：${lifeData.risk}。`;
+  if (lifeJi && lifeData) personality += `命宫化忌（${lifeJi.name}），注意：${lifeData.risk}。`;
 
   const careerMaj = majorOf(career);
   let careerText = careerMaj.length && STARS[careerMaj[0]]
     ? `官禄宫主星${careerMaj[0]}：${STARS[careerMaj[0]].career}。`
     : '官禄宫空宫，事业方向宜参考命宫与迁移宫综合判断。';
-  if (mutagenOf(career).some(m=>m.includes('化禄'))) careerText += '官禄化禄，事业运旺，宜主动推进。';
-  if (mutagenOf(career).some(m=>m.includes('化忌'))) careerText += '官禄化忌，事业有阻，宜稳健行事。';
+  if (mutagenOf(career).some(m=>m.includes('化禄'))) careerText += '官禄宫化禄，事业运旺，宜主动推进。';
+  if (mutagenOf(career).some(m=>m.includes('化忌'))) careerText += '官禄宫化忌，事业有阻，宜稳健行事。';
   if (lifeData) careerText += `结合命格：${lifeData.career}。`;
 
   const wealthMaj = majorOf(wealth);
   let wealthText = wealthMaj.length && STARS[wealthMaj[0]]
     ? `财帛宫主星${wealthMaj[0]}：${STARS[wealthMaj[0]].wealth}。`
     : '财帛宫空宫，财运宜看官禄宫与命宫综合判断。';
-  if (mutagenOf(wealth).some(m=>m.includes('化禄'))) wealthText += '财帛化禄，进财机会旺。';
-  if (mutagenOf(wealth).some(m=>m.includes('化忌'))) wealthText += '财帛化忌，注意防漏财或冲动消费。';
+  if (mutagenOf(wealth).some(m=>m.includes('化禄'))) wealthText += '财帛宫化禄，进财机会旺。';
+  if (mutagenOf(wealth).some(m=>m.includes('化忌'))) wealthText += '财帛宫化忌，注意防漏财或冲动消费。';
   if (hasMinor(wealth,'禄存')) wealthText += '禄存入财帛，财库稳固，善于守财。';
 
   const loveMaj = majorOf(love);
   let loveText = loveMaj.length && STARS[loveMaj[0]]
     ? `夫妻宫主星${loveMaj[0]}：${STARS[loveMaj[0]].love}。`
     : '夫妻宫空宫，感情缘分受对宫影响，需主动经营。';
-  if (mutagenOf(love).some(m=>m.includes('化禄'))) loveText += '夫妻化禄，感情缘分好，易遇良缘。';
-  if (mutagenOf(love).some(m=>m.includes('化忌'))) loveText += '夫妻化忌，感情需格外用心，防误解争执。';
+  if (mutagenOf(love).some(m=>m.includes('化禄'))) loveText += '夫妻宫化禄，感情缘分好，易遇良缘。';
+  if (mutagenOf(love).some(m=>m.includes('化忌'))) loveText += '夫妻宫化忌，感情需格外用心，防误解争执。';
 
   const jiAll = palaces.flatMap(p =>
-    (p.majorStars||[]).filter(s=>s.mutagen?.includes('忌')).map(s=>`${p.name}${s.name}化忌`)
+    (p.majorStars||[]).filter(s=>s.mutagen?.includes('忌')).map(s=>`${p.name}化忌（${s.name}）`)
   );
   let risks = jiAll.length
-    ? `本命化忌落在${jiAll.join('、')}，这些宫位领域容易遇阻，需特别谨慎。`
+    ? `本命化忌落在：${jiAll.join('、')}，这些宫位领域容易遇阻，需特别谨慎。`
     : '本命无明显化忌，整体命盘较顺，但仍需关注大限流年变化。';
   if (lifeData) risks += lifeData.risk ? `命格弱点：${lifeData.risk}。` : '';
 
