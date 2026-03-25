@@ -1035,21 +1035,13 @@ function fcLoadYearly(year) {
     const palaces = scope.palaces || scope.palace || [];
     palaces.forEach(yp => {
       const br = yp.earthlyBranch;
-      if (br) {
-        _fcYearlyMap[br] = yp;
-        // 检测 iztro 标注的流年命宫（isOriginalPalace 或宫名含小限/命）
-        if (!_fcXiaoLianBranch &&
-            (yp.isOriginalPalace ||
-             (yp.name && (yp.name.includes('小限') || yp.name.includes('流年命'))))) {
-          _fcXiaoLianBranch = br;
-        }
-      }
+      if (br) _fcYearlyMap[br] = yp;
     });
   } catch(e) {
     console.warn('horoscope() 调用失败:', e);
   }
-  // 若 iztro 未给出，用公式兜底
-  if (!_fcXiaoLianBranch) _fcComputeXiaoLian();
+  // 始终用公式计算小限宫（含虚岁-1 + 对宫校正）
+  _fcComputeXiaoLian();
 }
 
 function _fcComputeXiaoLian() {
@@ -1057,7 +1049,9 @@ function _fcComputeXiaoLian() {
   const rd = _chart.rawDates || _chart;
   const yearBranch = rd.yearBranch || rd.yearEarthlyBranch || '';
   const gender = _chartInputs?.gender || 'male';
-  _fcXiaoLianBranch = calcXiaoLianBranch(yearBranch, gender, _fcActiveAge);
+  const effectiveAge = Math.max(1, _fcActiveAge - 1); // 校正：虚岁-1
+  const rawBranch = calcXiaoLianBranch(yearBranch, gender, effectiveAge);
+  _fcXiaoLianBranch = DUIGONG[rawBranch] || rawBranch; // 校正：映射到对宫
 }
 
 function fcRenderHexagram() {
