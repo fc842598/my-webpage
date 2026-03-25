@@ -1027,8 +1027,13 @@ function fcBuildCell(p, activeBranch) {
 
   const fcMutagenCls = m => m==='化禄'?'fc-mutagen-lu':m==='化权'?'fc-mutagen-quan':m==='化科'?'fc-mutagen-ke':'fc-mutagen-ji';
 
-  // 宫位级四化行（主视觉）
-  const palMutagenHtml = (p.majorStars||[]).filter(s=>s.mutagen).map(s =>
+  // 宫位级四化行（生年四化 — 主星/文昌/文曲/左辅/右弼均可带四化）
+  const _allStarsForMut = [
+    ...(p.majorStars||[]),
+    ...(p.minorStars||[]),
+    ...(p.adjectiveStars||p.adjStars||[])
+  ];
+  const palMutagenHtml = _allStarsForMut.filter(s=>s&&s.mutagen).map(s =>
     `<span class="fc-pal-mutagen ${fcMutagenCls(s.mutagen)}">${s.mutagen}</span>`
   ).join('');
 
@@ -1141,21 +1146,25 @@ function renderFigmaChart(chart, gender, dateStr, norm) {
     sizhuEl.innerHTML = '<span style="font-size:8px;color:#8c7e75">暂无四柱</span>';
   }
 
-  // 本盘四化分布（宫位级）
+  // 生年四化分布（按年干推算，主星及文昌/文曲/左辅/右弼均可带四化）
   const mutDistEl = document.getElementById('fc-c-mutagen-dist');
   if (mutDistEl) {
     const MCLS = {'化禄':'fc-mutagen-lu','化权':'fc-mutagen-quan','化科':'fc-mutagen-ke','化忌':'fc-mutagen-ji'};
-    const mutItems = (chart.palaces||[]).flatMap(p =>
-      (p.majorStars||[]).filter(s=>s.mutagen).map(s =>
-        `<div class="fc-mut-item">` +
-          `<span class="fc-pal-mutagen ${MCLS[s.mutagen]||'fc-mutagen-ji'}">${s.mutagen}</span>` +
-          `<span class="fc-mut-palace">${p.name||''}</span>` +
-          `<span class="fc-mut-star">（${s.name}）</span>` +
-        `</div>`
-      )
+    const MUT_ORDER = ['化禄','化权','化科','化忌'];
+    const rawMut = (chart.palaces||[]).flatMap(p => {
+      const allS = [...(p.majorStars||[]), ...(p.minorStars||[]), ...(p.adjectiveStars||p.adjStars||[])];
+      return allS.filter(s=>s&&s.mutagen).map(s=>({pname:p.name||'', sname:s.name, m:s.mutagen}));
+    });
+    rawMut.sort((a,b) => MUT_ORDER.indexOf(a.m) - MUT_ORDER.indexOf(b.m));
+    const mutItems = rawMut.map(({pname,sname,m}) =>
+      `<div class="fc-mut-item">` +
+        `<span class="fc-pal-mutagen ${MCLS[m]||'fc-mutagen-ji'}">${m}</span>` +
+        `<span class="fc-mut-palace">${pname}</span>` +
+        `<span class="fc-mut-star">（${sname}）</span>` +
+      `</div>`
     );
     mutDistEl.innerHTML = mutItems.length
-      ? `<div class="fc-mut-title">本盘四化</div><div class="fc-mut-list">${mutItems.join('')}</div>`
+      ? `<div class="fc-mut-title">生年四化</div><div class="fc-mut-list">${mutItems.join('')}</div>`
       : '';
   }
 
@@ -1198,17 +1207,19 @@ function buildAnalysis(chart, inputs) {
   const wealth = byName['财帛'];
   const love   = byName['夫妻'];
 
+  // allStarsOf：主星 + 辅星（文昌/文曲/左辅/右弼部分年干有生年四化）
+  const allStarsOf = p => [...(p?.majorStars||[]), ...(p?.minorStars||[])];
   const majorOf  = p => (p?.majorStars || []).map(s => s.name);
-  const mutagenOf= p => (p?.majorStars || []).filter(s => s.mutagen)
+  const mutagenOf= p => allStarsOf(p).filter(s => s.mutagen)
                           .map(s => `${s.name}${s.mutagen}`);
   const hasMinor = (p, n) => (p?.minorStars || []).some(s => (s.name||'').includes(n));
 
   const lifeMaj  = majorOf(life);
   const lifeData = STARS[lifeMaj[0]];
 
-  // 宫位级四化：格式 "宫位化XX（主星）"
+  // 生年四化：格式 "宫位化XX（星名）"，含辅星（文昌/文曲/左辅/右弼）
   const allMutagen = palaces.flatMap(p =>
-    (p.majorStars||[]).filter(s=>s.mutagen).map(s=>`${p.name}${s.mutagen}（${s.name}）`)
+    allStarsOf(p).filter(s=>s.mutagen).map(s=>`${p.name}${s.mutagen}（${s.name}）`)
   );
 
   const gender = (inputs?.gender === 'male') ? '男命' : '女命';
@@ -1218,14 +1229,14 @@ function buildAnalysis(chart, inputs) {
   } else {
     overview += '命宫空宫，性格受三方星曜影响深，适应性强但需培养主见。';
   }
-  if (allMutagen.length) overview += `本盘四化：${allMutagen.join('、')}。`;
+  if (allMutagen.length) overview += `生年四化：${allMutagen.join('、')}。`;
 
   let personality = lifeData
     ? `命宫${lifeMaj[0]}：${lifeData.trait}。`
     : '命宫空宫，性格多元，受大运影响明显。';
   if (hasMinor(life,'左辅') || hasMinor(life,'右弼')) personality += '命有辅弼，贵人缘强。';
   if (hasMinor(life,'文昌') || hasMinor(life,'文曲')) personality += '文昌/文曲入命，聪颖有文艺才华。';
-  const lifeJi = (life?.majorStars||[]).find(s=>s.mutagen?.includes('忌'));
+  const lifeJi = allStarsOf(life).find(s=>s.mutagen?.includes('忌'));
   if (lifeJi && lifeData) personality += `命宫化忌（${lifeJi.name}），注意：${lifeData.risk}。`;
 
   const careerMaj = majorOf(career);
@@ -1252,7 +1263,7 @@ function buildAnalysis(chart, inputs) {
   if (mutagenOf(love).some(m=>m.includes('化忌'))) loveText += '夫妻宫化忌，感情需格外用心，防误解争执。';
 
   const jiAll = palaces.flatMap(p =>
-    (p.majorStars||[]).filter(s=>s.mutagen?.includes('忌')).map(s=>`${p.name}化忌（${s.name}）`)
+    allStarsOf(p).filter(s=>s.mutagen?.includes('忌')).map(s=>`${p.name}化忌（${s.name}）`)
   );
   let risks = jiAll.length
     ? `本命化忌落在：${jiAll.join('、')}，这些宫位领域容易遇阻，需特别谨慎。`
