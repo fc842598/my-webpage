@@ -187,7 +187,6 @@
               <div class="fc-sizhu" id="fc-c-sizhu"></div>
             </div>
           </div>
-          <div id="fc-c-mutagen-dist" class="fc-mutagen-dist"></div>
           <div class="fc-gua-rows">
             <div class="fc-gua-row"><span class="fc-center-lbl">先天卦</span><span class="fc-center-val" id="fc-c-xiantian">—</span></div>
             <div class="fc-gua-row"><span class="fc-center-lbl">后天卦</span><span class="fc-center-val" id="fc-c-houtian">—</span></div>
@@ -1067,10 +1066,7 @@ function fcSelectYear(age) {
   const year = _fcBirthYear + age - 1; // 虚岁N → 出生年+N-1
   fcLoadYearly(year);
   // 更新中间区：流年卦 + 小限宫
-  const palaceName = _fcXiaoLianBranch
-    ? (_chart?.palaces?.find(p => p.earthlyBranch === _fcXiaoLianBranch)?.name || '') : '';
-  document.getElementById('fc-c-liunian').textContent =
-    `${age}岁（${year}年）${palaceName ? ' · 小限' + palaceName : ''}`;
+  document.getElementById('fc-c-liunian').textContent = `${age}岁`;
   fcRenderLiunianScroll();
   renderFigmaHighlight(_fcActiveBranch || (_chart && _chart.earthlyBranchOfSoulPalace) || '卯');
 }
@@ -1234,11 +1230,13 @@ function renderFigmaChart(chart, gender, dateStr, norm) {
   const sizhuEl = document.getElementById('fc-c-sizhu');
   const STEM_COLORS = ['#886a4a','#4d7a5b','#9b4238','#476885'];
   const rd = chart.rawDates || chart;
+  // iztro v2 把干支放在 rawDates.heavenlyStemAndEarthlyBranchDate 下
+  const hseb = rd.heavenlyStemAndEarthlyBranchDate || {};
   const pillars = [
-    [rd.yearStem||rd.yearHeavenlyStem||'', rd.yearBranch||rd.yearEarthlyBranch||''],
-    [rd.monthStem||rd.monthHeavenlyStem||'', rd.monthBranch||rd.monthEarthlyBranch||''],
-    [rd.dayStem||rd.dayHeavenlyStem||'', rd.dayBranch||rd.dayEarthlyBranch||''],
-    [rd.timeStem||rd.timeHeavenlyStem||'', rd.timeBranch||rd.timeEarthlyBranch||''],
+    [rd.yearStem||rd.yearHeavenlyStem||hseb.year?.heavenlyStem||'',   rd.yearBranch||rd.yearEarthlyBranch||hseb.year?.earthlyBranch||''],
+    [rd.monthStem||rd.monthHeavenlyStem||hseb.month?.heavenlyStem||'', rd.monthBranch||rd.monthEarthlyBranch||hseb.month?.earthlyBranch||''],
+    [rd.dayStem||rd.dayHeavenlyStem||hseb.day?.heavenlyStem||'',      rd.dayBranch||rd.dayEarthlyBranch||hseb.day?.earthlyBranch||''],
+    [rd.timeStem||rd.timeHeavenlyStem||hseb.hour?.heavenlyStem||'',   rd.timeBranch||rd.timeEarthlyBranch||hseb.hour?.earthlyBranch||''],
   ];
   sizhuEl.innerHTML = '';
   pillars.forEach(([stem, branch], i) => {
@@ -1250,41 +1248,14 @@ function renderFigmaChart(chart, gender, dateStr, norm) {
       sizhuEl.appendChild(col);
     }
   });
-  if (!sizhuEl.children.length) {
-    sizhuEl.innerHTML = '<span style="font-size:8px;color:#8c7e75">暂无四柱</span>';
-  }
-
-  // 生年四化分布（按年干推算，主星及文昌/文曲/左辅/右弼均可带四化）
-  const mutDistEl = document.getElementById('fc-c-mutagen-dist');
-  if (mutDistEl) {
-    const MCLS = {'化禄':'fc-mutagen-lu','化权':'fc-mutagen-quan','化科':'fc-mutagen-ke','化忌':'fc-mutagen-ji'};
-    const MUT_ORDER = ['化禄','化权','化科','化忌'];
-    const rawMut = (chart.palaces||[]).flatMap(p => {
-      const allS = [...(p.majorStars||[]), ...(p.minorStars||[]), ...(p.adjectiveStars||p.adjStars||[])];
-      return allS.filter(s=>s&&s.mutagen).map(s=>({pname:p.name||'', sname:s.name, m:s.mutagen}));
-    });
-    rawMut.sort((a,b) => MUT_ORDER.indexOf(a.m) - MUT_ORDER.indexOf(b.m));
-    const mutItems = rawMut.map(({pname,sname,m}) =>
-      `<div class="fc-mut-item">` +
-        `<span class="fc-pal-mutagen ${MCLS[m]||'fc-mutagen-ji'}">${m}</span>` +
-        `<span class="fc-mut-palace">${pname}</span>` +
-        `<span class="fc-mut-star">（${sname}）</span>` +
-      `</div>`
-    );
-    mutDistEl.innerHTML = mutItems.length
-      ? `<div class="fc-mut-title">生年四化</div><div class="fc-mut-list">${mutItems.join('')}</div>`
-      : '';
-  }
+  // 无数据时留空，不显示占位文案
 
   fcBuildYearCards(_fcBirthYear);
   fcLoadYearly(_fcBirthYear + _fcActiveAge - 1); // 虚岁N → 出生年+N-1
 
-  document.getElementById('fc-c-xiantian').textContent = '风水涣';
-  document.getElementById('fc-c-houtian').textContent  = '水天需';
-  const _initPalaceName = _fcXiaoLianBranch
-    ? (_chart?.palaces?.find(p => p.earthlyBranch === _fcXiaoLianBranch)?.name || '') : '';
-  document.getElementById('fc-c-liunian').textContent  =
-    `${_fcActiveAge}岁（${_fcBirthYear + _fcActiveAge - 1}年）${_initPalaceName ? ' · 小限' + _initPalaceName : ''}`;
+  document.getElementById('fc-c-xiantian').textContent = '—';
+  document.getElementById('fc-c-houtian').textContent  = '—';
+  document.getElementById('fc-c-liunian').textContent  = `${_fcActiveAge}岁`;
 
   _fcActiveBranch = lifeBranch || '卯';
   renderFigmaHighlight(_fcActiveBranch);
