@@ -992,36 +992,72 @@ const FC_HEXAGRAMS = {
   '后天卦':{ name:'水天需', sub:'SHUI TIAN XU',    lines:['broken','solid','broken','gap','solid','solid','solid'] },
   '流年卦':{ name:'天风姤', sub:'LIU NIAN GUA',    lines:['solid','solid','solid','gap','solid','solid','broken'] },
 };
-let _fcActiveTab  = '先天卦';
-let _fcActiveAge  = 0;
-let _fcBirthYear  = 1991;
-let _fcYearCards  = [];
-let _fcYearlyMap  = {};
+let _fcActiveTab       = '先天卦';
+let _fcActiveAge       = 1;
+let _fcBirthYear       = 1991;
+let _fcYearCards       = [];
+let _fcYearlyMap       = {};
+let _fcXiaoLianBranch  = null; // 当前虚岁小限所在地支
+
+// ── 小限宫位计算 ──────────────────────────────────────────
+// 按传统紫微斗数：年支三合起点 + 男顺女逆
+function calcXiaoLianBranch(yearBranch, gender, xuAge) {
+  const BRANCHES = ['子','丑','寅','卯','辰','巳','午','未','申','酉','戌','亥'];
+  const MALE_START   = {'寅':2,'午':2,'戌':2, '申':8,'子':8,'辰':8, '亥':11,'卯':11,'未':11, '巳':5,'酉':5,'丑':5};
+  const FEMALE_START = {'寅':10,'午':10,'戌':10, '申':4,'子':4,'辰':4, '亥':7,'卯':7,'未':7, '巳':1,'酉':1,'丑':1};
+  const startMap = gender === 'male' ? MALE_START : FEMALE_START;
+  const dir      = gender === 'male' ? 1 : -1;
+  const startIdx = startMap[yearBranch] ?? 2; // 默认从寅起
+  return BRANCHES[((startIdx + dir * (xuAge - 1)) % 12 + 12) % 12];
+}
 
 function fcBuildYearCards(birthYear) {
   const curYear = new Date().getFullYear();
-  const curAge  = curYear - birthYear;
-  _fcActiveAge  = curAge;
+  const curAge  = curYear - birthYear + 1; // 虚岁
+  _fcActiveAge  = Math.max(1, Math.min(100, curAge));
   _fcYearCards  = [];
-  for (let age = Math.max(1, curAge - 3); age <= curAge + 8; age++) {
-    _fcYearCards.push({ age, year: birthYear + age });
+  for (let age = 1; age <= 100; age++) {
+    _fcYearCards.push({ age, year: birthYear + age - 1 }); // 虚岁N → 出生年+N-1
   }
 }
 
 function fcLoadYearly(year) {
   _fcYearlyMap = {};
-  if (!_chart || typeof _chart.horoscope !== 'function') return;
+  _fcXiaoLianBranch = null;
+  if (!_chart || typeof _chart.horoscope !== 'function') {
+    // 无 horoscope 时直接用公式计算小限宫
+    _fcComputeXiaoLian();
+    return;
+  }
   try {
     const h = _chart.horoscope(`${year}-06-01`, 0);
     const scope = h.yearly || h.decadal || h;
     const palaces = scope.palaces || scope.palace || [];
     palaces.forEach(yp => {
       const br = yp.earthlyBranch;
-      if (br) _fcYearlyMap[br] = yp;
+      if (br) {
+        _fcYearlyMap[br] = yp;
+        // 检测 iztro 标注的流年命宫（isOriginalPalace 或宫名含小限/命）
+        if (!_fcXiaoLianBranch &&
+            (yp.isOriginalPalace ||
+             (yp.name && (yp.name.includes('小限') || yp.name.includes('流年命'))))) {
+          _fcXiaoLianBranch = br;
+        }
+      }
     });
   } catch(e) {
     console.warn('horoscope() 调用失败:', e);
   }
+  // 若 iztro 未给出，用公式兜底
+  if (!_fcXiaoLianBranch) _fcComputeXiaoLian();
+}
+
+function _fcComputeXiaoLian() {
+  if (!_chart) return;
+  const rd = _chart.rawDates || _chart;
+  const yearBranch = rd.yearBranch || rd.yearEarthlyBranch || '';
+  const gender = _chartInputs?.gender || 'male';
+  _fcXiaoLianBranch = calcXiaoLianBranch(yearBranch, gender, _fcActiveAge);
 }
 
 function fcRenderHexagram() {
@@ -1055,9 +1091,13 @@ function fcRenderTabs() {
 
 function fcSelectYear(age) {
   _fcActiveAge = age;
-  const year = _fcBirthYear + age;
+  const year = _fcBirthYear + age - 1; // 虚岁N → 出生年+N-1
   fcLoadYearly(year);
-  document.getElementById('fc-c-liunian').textContent = `${age}岁（${year}年）`;
+  // 更新中间区：流年卦 + 小限宫
+  const palaceName = _fcXiaoLianBranch
+    ? (_chart?.palaces?.find(p => p.earthlyBranch === _fcXiaoLianBranch)?.name || '') : '';
+  document.getElementById('fc-c-liunian').textContent =
+    `${age}岁（${year}年）${palaceName ? ' · 小限' + palaceName : ''}`;
   fcRenderLiunianScroll();
   renderFigmaHighlight(_fcActiveBranch || (_chart && _chart.earthlyBranchOfSoulPalace) || '卯');
 }
@@ -1091,7 +1131,10 @@ function fcBuildCell(p, activeBranch) {
   const isBen = branch === activeBranch;
   const sanhe = [FC_ZHI[(aIdx+4)%12], FC_ZHI[(aIdx+8)%12], FC_ZHI[(aIdx+6)%12]];
   const isRel = !isBen && sanhe.includes(branch);
-  cell.className = 'fc-cell' + (isBen ? ' fc-ben' : isRel ? ' fc-rel' : '');
+  const isXiaoLian = _fcActiveTab === '流年卦' && branch === _fcXiaoLianBranch;
+  cell.className = 'fc-cell'
+    + (isBen ? ' fc-ben' : isRel ? ' fc-rel' : '')
+    + (isXiaoLian ? ' fc-xiaolian' : '');
 
   const fcMutagenCls = m => m==='化禄'?'fc-mutagen-lu':m==='化权'?'fc-mutagen-quan':m==='化科'?'fc-mutagen-ke':'fc-mutagen-ji';
 
@@ -1121,6 +1164,12 @@ function fcBuildCell(p, activeBranch) {
   const shenHtml = [p.changsheng12, p.boshi12].filter(Boolean)
     .map(s=>`<span>${s}</span>`).join('');
 
+  // 小流年宫位标识（优先于普通流年叠加行）
+  let xiaoLianHtml = '';
+  if (isXiaoLian) {
+    xiaoLianHtml = `<div class="fc-xiaolian-badge">${_fcActiveAge}岁·小限</div>`;
+  }
+
   let yearlyHtml = '';
   if (_fcActiveTab === '流年卦') {
     const yp = _fcYearlyMap[branch];
@@ -1131,9 +1180,8 @@ function fcBuildCell(p, activeBranch) {
       const yStars = (yp.stars || yp.majorStars || []).map(s =>
         `<span class="fc-minor-star" style="color:#476885">${s.name||s}</span>`
       ).join('');
-      const isYearLife = yp.isOriginalPalace || (yp.name && (yp.name.includes('命') || yp.name.includes('小限')));
-      if (yMutagen || yStars || isYearLife) {
-        yearlyHtml = `<div class="fc-yearly-row">${isYearLife?'<span class="fc-yearly-life">流年</span>':''}${yMutagen}${yStars}</div>`;
+      if (yMutagen || yStars) {
+        yearlyHtml = `<div class="fc-yearly-row">${yMutagen}${yStars}</div>`;
       }
     }
   }
@@ -1144,6 +1192,7 @@ function fcBuildCell(p, activeBranch) {
   const palaceName = (isBody ? '身宫\n' : '') + (p.name || '');
 
   cell.innerHTML = `
+    ${xiaoLianHtml}
     <div class="fc-cell-top">
       ${palMutagenHtml ? `<div class="fc-cell-mutagen">${palMutagenHtml}</div>` : ''}
       <div class="fc-major-list">${majorHtml}</div>
@@ -1242,11 +1291,14 @@ function renderFigmaChart(chart, gender, dateStr, norm) {
   }
 
   fcBuildYearCards(_fcBirthYear);
-  fcLoadYearly(_fcBirthYear + _fcActiveAge);
+  fcLoadYearly(_fcBirthYear + _fcActiveAge - 1); // 虚岁N → 出生年+N-1
 
   document.getElementById('fc-c-xiantian').textContent = '风水涣';
   document.getElementById('fc-c-houtian').textContent  = '水天需';
-  document.getElementById('fc-c-liunian').textContent  = `${_fcActiveAge}岁（${_fcBirthYear + _fcActiveAge}年）`;
+  const _initPalaceName = _fcXiaoLianBranch
+    ? (_chart?.palaces?.find(p => p.earthlyBranch === _fcXiaoLianBranch)?.name || '') : '';
+  document.getElementById('fc-c-liunian').textContent  =
+    `${_fcActiveAge}岁（${_fcBirthYear + _fcActiveAge - 1}年）${_initPalaceName ? ' · 小限' + _initPalaceName : ''}`;
 
   _fcActiveBranch = lifeBranch || '卯';
   renderFigmaHighlight(_fcActiveBranch);
