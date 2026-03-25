@@ -984,3 +984,55 @@
 .nf-reset-btn:hover {
   background: rgba(210,196,181,.2);
 }
+
+/* ── 公历/农历切换 ── */
+.nf-cal-toggle {
+  display: flex;
+  background: #f0ede6;
+  border-radius: 999px;
+  padding: 2px;
+  gap: 2px;
+}
+.nf-cal-btn {
+  padding: 4px 14px;
+  border-radius: 999px;
+  border: none;
+  background: transparent;
+  color: #8e857d;
+  font-size: .82rem;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all .15s;
+}
+.nf-cal-btn.active {
+  background: #cba587;
+  color: #fff;
+  box-shadow: 0 1px 4px rgba(0,0,0,.12);
+}
+/* ── 日期输入行 ── */
+.nf-date-inputs {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.nf-date-inputs .nf-select {
+  min-width: 0;
+}
+/* ── 城市搜索下拉 ── */
+.nf-city-dropdown {
+  background: #fff;
+  border: 1px solid #e8e4dc;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0,0,0,.08);
+  overflow: hidden;
+  max-height: 220px;
+  overflow-y: auto;
+}
+.nf-city-item {
+  padding: 10px 16px;
+  font-size: .88rem;
+  color: #4a3f35;
+  cursor: pointer;
+  transition: background .1s;
+}
+.nf-city-item:hover { background: #f7f4ef; }

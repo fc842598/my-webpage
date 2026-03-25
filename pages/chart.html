@@ -7,6 +7,9 @@
   <link rel="stylesheet" href="../css/style.css">
   <link rel="stylesheet" href="../css/chart.css">
   <style>body { background: #f7f6f2 !important; color: #4a3f35; }</style>
+  <script src="../js/cities.js"></script>
+  <script src="../js/lunarCalendar.js"></script>
+  <script src="../js/trueSolarTime.js"></script>
 </head>
 <body>
 
@@ -27,9 +30,11 @@
       <div class="nf-diamond"></div>
       <span>紫微排盘</span>
     </div>
-    <button class="nf-history-btn">🕐 排盘记录</button>
+    <button class="nf-history-btn" type="button">🕐 排盘记录</button>
   </header>
+
   <div class="nf-card">
+
     <!-- 姓名 & 性别 -->
     <div class="nf-row">
       <div class="nf-row-left">
@@ -42,80 +47,104 @@
         <input type="hidden" id="inp-gender" value="male">
       </div>
     </div>
-    <!-- 出生时间 -->
-    <div class="nf-row" id="nf-time-row" style="cursor:pointer">
-      <div class="nf-row-left">
-        <span class="nf-required">*</span>
-        <span class="nf-label">出生时间: <span style="font-size:.8rem">(必填)</span></span>
+
+    <!-- 公历/农历切换 + 出生日期 -->
+    <div class="nf-row" style="flex-direction:column;align-items:stretch;gap:10px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div style="display:flex;align-items:center;gap:4px">
+          <span class="nf-required">*</span>
+          <span class="nf-label">出生时间</span>
+        </div>
+        <div class="nf-cal-toggle">
+          <button type="button" class="nf-cal-btn active" data-cal="solar">公历</button>
+          <button type="button" class="nf-cal-btn" data-cal="lunar">农历</button>
+        </div>
       </div>
-      <div class="nf-row-right">
-        <span id="nf-time-val" class="nf-val-muted">请选择</span>
-        <span class="nf-chevron">›</span>
-      </div>
-    </div>
-    <!-- 展开的时间选择器 -->
-    <div id="nf-time-inputs" class="nf-inline-inputs" style="display:none">
-      <div class="form-group" style="flex:1;min-width:120px">
-        <label for="inp-year" style="display:block;font-size:.78rem;color:#8e857d;margin-bottom:6px">年份</label>
-        <input type="number" id="inp-year" min="1900" max="2030" placeholder="如：1990" autocomplete="off" class="nf-select">
-      </div>
-      <div class="form-group" style="flex:1;min-width:100px">
-        <label for="inp-month" style="display:block;font-size:.78rem;color:#8e857d;margin-bottom:6px">月份</label>
-        <select id="inp-month" class="nf-select">
-          <option value="">选择月份</option>
-          <option value="1">1 月</option><option value="2">2 月</option>
-          <option value="3">3 月</option><option value="4">4 月</option>
-          <option value="5">5 月</option><option value="6">6 月</option>
-          <option value="7">7 月</option><option value="8">8 月</option>
-          <option value="9">9 月</option><option value="10">10 月</option>
-          <option value="11">11 月</option><option value="12">12 月</option>
+
+      <!-- 公历输入 -->
+      <div id="solar-inputs" class="nf-date-inputs">
+        <input type="number" id="inp-year" min="1900" max="2030" placeholder="年 如1990" class="nf-select" autocomplete="off" style="flex:2">
+        <select id="inp-month" class="nf-select" style="flex:1.5">
+          <option value="">月</option>
+          <option value="1">1月</option><option value="2">2月</option><option value="3">3月</option>
+          <option value="4">4月</option><option value="5">5月</option><option value="6">6月</option>
+          <option value="7">7月</option><option value="8">8月</option><option value="9">9月</option>
+          <option value="10">10月</option><option value="11">11月</option><option value="12">12月</option>
+        </select>
+        <select id="inp-day" class="nf-select" style="flex:1.5"><option value="">日</option></select>
+        <select id="inp-time" class="nf-select" style="flex:2">
+          <option value="-1">不知时辰</option>
+          <option value="0">子时 23-01</option><option value="1">丑时 01-03</option>
+          <option value="2">寅时 03-05</option><option value="3">卯时 05-07</option>
+          <option value="4">辰时 07-09</option><option value="5">巳时 09-11</option>
+          <option value="6">午时 11-13</option><option value="7">未时 13-15</option>
+          <option value="8">申时 15-17</option><option value="9">酉时 17-19</option>
+          <option value="10">戌时 19-21</option><option value="11">亥时 21-23</option>
         </select>
       </div>
-      <div class="form-group" style="flex:1;min-width:90px">
-        <label for="inp-day" style="display:block;font-size:.78rem;color:#8e857d;margin-bottom:6px">日期</label>
-        <select id="inp-day" class="nf-select"><option value="">选择日期</option></select>
-      </div>
-      <div class="form-group" style="flex:1;min-width:140px">
-        <label for="inp-time" style="display:block;font-size:.78rem;color:#8e857d;margin-bottom:6px">时辰</label>
-        <select id="inp-time" class="nf-select">
-          <option value="-1">不知道时辰</option>
-          <option value="0">子时 23:00-01:00</option>
-          <option value="1">丑时 01:00-03:00</option>
-          <option value="2">寅时 03:00-05:00</option>
-          <option value="3">卯时 05:00-07:00</option>
-          <option value="4">辰时 07:00-09:00</option>
-          <option value="5">巳时 09:00-11:00</option>
-          <option value="6">午时 11:00-13:00</option>
-          <option value="7">未时 13:00-15:00</option>
-          <option value="8">申时 15:00-17:00</option>
-          <option value="9">酉时 17:00-19:00</option>
-          <option value="10">戌时 19:00-21:00</option>
-          <option value="11">亥时 21:00-23:00</option>
+
+      <!-- 农历输入 -->
+      <div id="lunar-inputs" class="nf-date-inputs" style="display:none">
+        <input type="number" id="inp-lunar-year" min="1900" max="2030" placeholder="农历年 如1990" class="nf-select" autocomplete="off" style="flex:2">
+        <select id="inp-lunar-month" class="nf-select" style="flex:1.5">
+          <option value="">月</option>
+          <option value="1">正月</option><option value="2">二月</option><option value="3">三月</option>
+          <option value="4">四月</option><option value="5">五月</option><option value="6">六月</option>
+          <option value="7">七月</option><option value="8">八月</option><option value="9">九月</option>
+          <option value="10">十月</option><option value="11">十一月</option><option value="12">十二月</option>
+        </select>
+        <select id="inp-lunar-day" class="nf-select" style="flex:1.5">
+          <option value="">日</option>
+        </select>
+        <div style="display:flex;gap:6px;flex:1.5;align-items:center">
+          <label style="font-size:.78rem;color:#8e857d;white-space:nowrap">
+            <input type="checkbox" id="inp-lunar-leap" style="margin-right:3px">闰月
+          </label>
+        </div>
+        <select id="inp-lunar-time" class="nf-select" style="flex:2">
+          <option value="-1">不知时辰</option>
+          <option value="0">子时 23-01</option><option value="1">丑时 01-03</option>
+          <option value="2">寅时 03-05</option><option value="3">卯时 05-07</option>
+          <option value="4">辰时 07-09</option><option value="5">巳时 09-11</option>
+          <option value="6">午时 11-13</option><option value="7">未时 13-15</option>
+          <option value="8">申时 15-17</option><option value="9">酉时 17-19</option>
+          <option value="10">戌时 19-21</option><option value="11">亥时 21-23</option>
         </select>
       </div>
+
+      <!-- 日期预览 -->
+      <div id="date-preview" style="font-size:.8rem;color:#8e857d;min-height:18px;padding-left:2px"></div>
     </div>
+
     <!-- 出生地点 -->
-    <div class="nf-row">
-      <span class="nf-label">出生地点:</span>
-      <div class="nf-row-right">
-        <span class="nf-val-muted">选填，暂未实现</span>
+    <div class="nf-row" style="flex-direction:column;align-items:stretch;gap:8px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span class="nf-label">出生地点</span>
+        <span style="font-size:.75rem;color:#b0a89f">（影响真太阳时）</span>
+      </div>
+      <div style="position:relative">
+        <input type="text" id="inp-city-search" placeholder="搜索城市，如：北京、深圳" class="nf-select" style="width:100%;padding-right:60px" autocomplete="off">
+        <button type="button" id="btn-clear-city" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);background:none;border:none;color:#b0a89f;cursor:pointer;font-size:.8rem;display:none">清除</button>
+      </div>
+      <div id="city-dropdown" class="nf-city-dropdown" style="display:none"></div>
+      <div id="city-selected" style="font-size:.82rem;color:#6b4e41;display:none">
+        已选: <span id="city-selected-name"></span>
+        <span style="color:#b0a89f;margin-left:6px">(<span id="city-selected-lon"></span>°E, <span id="city-selected-lat"></span>°N)</span>
       </div>
     </div>
-    <!-- 真太阳时 & 保存案例 -->
-    <div class="nf-row" style="border-bottom:none">
-      <div class="nf-row-left">
-        <span class="nf-label">真太阳时:</span>
-        <span class="nf-val-muted" id="nf-solar-val">--</span>
+
+    <!-- 真太阳时显示 -->
+    <div class="nf-row" style="flex-direction:column;align-items:stretch;gap:4px;border-bottom:none">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span class="nf-label">真太阳时</span>
+        <span id="tst-estimated-badge" style="font-size:.72rem;color:#c08060;background:#fff3ec;border:1px solid #f0d0b8;border-radius:4px;padding:1px 6px;display:none">默认估算</span>
       </div>
-      <div style="display:flex;align-items:center;gap:8px">
-        <span class="nf-label">保存案例</span>
-        <button type="button" class="nf-toggle" id="nf-save-toggle">
-          <div class="nf-toggle-knob"></div>
-        </button>
-      </div>
+      <div id="tst-display" style="font-size:.82rem;color:#8e857d">请先输入出生时间和地点</div>
     </div>
+
     <!-- 错误提示 -->
     <div id="form-error" class="nf-error" style="display:none"></div>
+
     <!-- 提交按钮 -->
     <div class="nf-submit-wrap">
       <button type="button" class="nf-submit" id="btn-submit">
@@ -123,7 +152,10 @@
         <span id="btn-loading" style="display:none">排盘中…</span>
       </button>
     </div>
-    <p style="text-align:center;margin-top:10px;margin-bottom:4px;color:#b0a89f;font-size:.72rem">数据仅在本地浏览器运算，不上传，不储存。<br>算法基于 <a href="https://github.com/SylarLong/iztro" target="_blank" style="color:#b59e8f">iztro</a>（MIT 许可）</p>
+    <p style="text-align:center;margin-top:10px;margin-bottom:4px;color:#b0a89f;font-size:.72rem">
+      数据仅在本地浏览器运算，不上传，不储存。<br>
+      算法基于 <a href="https://github.com/SylarLong/iztro" target="_blank" style="color:#b59e8f">iztro</a>（MIT 许可）
+    </p>
   </div>
 </section>
 
@@ -227,6 +259,300 @@
 // AI_HOOK: buildAnalysis() 可替换为真实 AI API 调用
 // ═══════════════════════════════════════════════════════════
 
+// ═══════════════════════════════════════════════════════════
+// 输入归一化层
+// ═══════════════════════════════════════════════════════════
+
+// State
+let _calMode = 'solar';      // 'solar' | 'lunar'
+let _selectedCity = null;    // { province, city, lon, lat }
+let _tstResult = null;       // result from calcTrueSolarTime()
+let _inputNormalized = null; // final normalized params for chart engine
+
+// ─── 公历/农历切换 ─────────────────────────────────────────
+document.querySelectorAll('.nf-cal-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    _calMode = btn.dataset.cal;
+    document.querySelectorAll('.nf-cal-btn').forEach(b => b.classList.toggle('active', b.dataset.cal === _calMode));
+    document.getElementById('solar-inputs').style.display = _calMode === 'solar' ? 'flex' : 'none';
+    document.getElementById('lunar-inputs').style.display = _calMode === 'lunar' ? 'flex' : 'none';
+    updateDatePreview();
+  });
+});
+
+// ─── 农历日期下拉 ───────────────────────────────────────────
+const lunarDayEl = document.getElementById('inp-lunar-day');
+for (let d = 1; d <= 30; d++) {
+  const o = document.createElement('option');
+  o.value = d;
+  o.textContent = (typeof DAYS_CN !== 'undefined' ? DAYS_CN[d-1] : d + '日');
+  lunarDayEl.appendChild(o);
+}
+
+// ─── 公历日期下拉 ───────────────────────────────────────────
+const dayEl = document.getElementById('inp-day');
+for (let d = 1; d <= 31; d++) {
+  const o = document.createElement('option');
+  o.value = d; o.textContent = d + '日';
+  dayEl.appendChild(o);
+}
+
+// ─── 性别按钮 ──────────────────────────────────────────────
+document.querySelectorAll('.nf-gender-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.nf-gender-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('inp-gender').value = btn.dataset.v;
+  });
+});
+
+// ─── 城市搜索 ─────────────────────────────────────────────
+const citySearchEl  = document.getElementById('inp-city-search');
+const cityDropdown  = document.getElementById('city-dropdown');
+const citySelectedEl= document.getElementById('city-selected');
+const btnClearCity  = document.getElementById('btn-clear-city');
+
+citySearchEl.addEventListener('input', () => {
+  const q = citySearchEl.value.trim();
+  if (!q || typeof CITIES === 'undefined') { cityDropdown.style.display = 'none'; return; }
+  const results = CITIES.filter(c => c[0].includes(q) || c[1].includes(q)).slice(0, 8);
+  if (!results.length) { cityDropdown.style.display = 'none'; return; }
+  cityDropdown.innerHTML = results.map(c =>
+    `<div class="nf-city-item" data-province="${c[0]}" data-city="${c[1]}" data-lon="${c[2]}" data-lat="${c[3]}">${c[0]} · ${c[1]}</div>`
+  ).join('');
+  cityDropdown.style.display = 'block';
+});
+
+cityDropdown.addEventListener('click', e => {
+  const item = e.target.closest('.nf-city-item');
+  if (!item) return;
+  _selectedCity = {
+    province: item.dataset.province,
+    city: item.dataset.city,
+    lon: parseFloat(item.dataset.lon),
+    lat: parseFloat(item.dataset.lat),
+  };
+  citySearchEl.value = `${_selectedCity.province} · ${_selectedCity.city}`;
+  btnClearCity.style.display = 'block';
+  cityDropdown.style.display = 'none';
+  document.getElementById('city-selected-name').textContent = `${_selectedCity.province} ${_selectedCity.city}`;
+  document.getElementById('city-selected-lon').textContent  = _selectedCity.lon.toFixed(2);
+  document.getElementById('city-selected-lat').textContent  = _selectedCity.lat.toFixed(2);
+  citySelectedEl.style.display = 'block';
+  updateTrueSolarTime();
+});
+
+btnClearCity.addEventListener('click', () => {
+  _selectedCity = null;
+  citySearchEl.value = '';
+  btnClearCity.style.display = 'none';
+  citySelectedEl.style.display = 'none';
+  updateTrueSolarTime();
+});
+
+document.addEventListener('click', e => {
+  if (!e.target.closest('#inp-city-search') && !e.target.closest('#city-dropdown')) {
+    cityDropdown.style.display = 'none';
+  }
+});
+
+// ─── 真太阳时计算 ─────────────────────────────────────────
+function updateTrueSolarTime() {
+  const year  = parseInt(document.getElementById('inp-year').value);
+  const month = parseInt(document.getElementById('inp-month').value);
+  const day   = parseInt(document.getElementById('inp-day').value);
+  const timeIdx = parseInt(document.getElementById('inp-time').value);
+
+  if (!year || !month || !day) {
+    document.getElementById('tst-display').textContent = '请先输入出生时间和地点';
+    document.getElementById('tst-estimated-badge').style.display = 'none';
+    _tstResult = null;
+    return;
+  }
+
+  // Map shichen index to hour (use midpoint of 2-hour period)
+  const SHICHEN_HOUR = [-1,23,1,3,5,7,9,11,13,15,17,19,21];
+  const hour = timeIdx >= 0 ? SHICHEN_HOUR[timeIdx + 1] ?? 12 : 12;
+
+  if (typeof calcTrueSolarTime === 'undefined') {
+    document.getElementById('tst-display').textContent = '真太阳时模块未加载';
+    return;
+  }
+
+  _tstResult = calcTrueSolarTime({
+    year, month, day, hour, minute: 0,
+    longitude: _selectedCity?.lon,
+    cityName: _selectedCity ? `${_selectedCity.province}${_selectedCity.city}` : null
+  });
+
+  const badge = document.getElementById('tst-estimated-badge');
+  badge.style.display = _tstResult.isEstimated ? 'inline' : 'none';
+
+  const pad = n => String(n).padStart(2,'0');
+  document.getElementById('tst-display').innerHTML =
+    `<span style="color:#4a3f35">北京时间: ${_tstResult.cstStr}</span><br>` +
+    `<span style="color:${_tstResult.isEstimated?'#c08060':'#6b4e41'}">真太阳时: ${_tstResult.tstStr}</span><br>` +
+    `<span style="color:#b0a89f">差值: ${_tstResult.diffStr}（经度修正 ${_tstResult.lonCorrection > 0 ? '+' : ''}${_tstResult.lonCorrection}分，均时差 ${_tstResult.eot > 0 ? '+' : ''}${_tstResult.eot}分）</span>`;
+}
+
+// ─── 日期预览 ─────────────────────────────────────────────
+function updateDatePreview() {
+  const preview = document.getElementById('date-preview');
+  if (_calMode === 'solar') {
+    const y = document.getElementById('inp-year').value;
+    const m = document.getElementById('inp-month').value;
+    const d = document.getElementById('inp-day').value;
+    if (y && m && d) {
+      const lunar = (typeof solarToLunar !== 'undefined') ? solarToLunar(+y, +m, +d) : null;
+      preview.textContent = lunar ? `农历: ${typeof formatLunarDate !== 'undefined' ? formatLunarDate(lunar) : ''}` : '';
+    } else { preview.textContent = ''; }
+  } else {
+    const y = document.getElementById('inp-lunar-year').value;
+    const m = document.getElementById('inp-lunar-month').value;
+    const d = document.getElementById('inp-lunar-day').value;
+    const isLeap = document.getElementById('inp-lunar-leap').checked;
+    if (y && m && d && typeof lunarToSolar !== 'undefined') {
+      const solar = lunarToSolar(+y, +m, +d, isLeap);
+      if (solar) {
+        const pad = n => String(n).padStart(2,'0');
+        preview.textContent = `公历: ${solar.getFullYear()}-${pad(solar.getMonth()+1)}-${pad(solar.getDate())}`;
+        preview.style.color = '#6b4e41';
+      } else {
+        preview.textContent = '农历日期无效';
+        preview.style.color = '#c04040';
+      }
+    } else { preview.textContent = ''; }
+  }
+  updateTrueSolarTime();
+}
+
+// Bind date change listeners
+['inp-year','inp-month','inp-day','inp-time'].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) el.addEventListener('change', updateDatePreview);
+  if (el && el.type === 'number') el.addEventListener('input', updateDatePreview);
+});
+['inp-lunar-year','inp-lunar-month','inp-lunar-day','inp-lunar-leap','inp-lunar-time'].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) el.addEventListener('change', updateDatePreview);
+  if (el && el.type === 'number') el.addEventListener('input', updateDatePreview);
+});
+
+// ─── 输入归一化 ────────────────────────────────────────────
+function normalizeInput() {
+  const gender  = document.getElementById('inp-gender').value;
+  const name    = document.getElementById('inp-name')?.value?.trim() || '';
+
+  let year, month, day, timeIdx, calModeLabel;
+
+  if (_calMode === 'lunar') {
+    const ly  = parseInt(document.getElementById('inp-lunar-year').value);
+    const lm  = parseInt(document.getElementById('inp-lunar-month').value);
+    const ld  = parseInt(document.getElementById('inp-lunar-day').value);
+    const ll  = document.getElementById('inp-lunar-leap').checked;
+    timeIdx   = parseInt(document.getElementById('inp-lunar-time').value);
+
+    if (!ly || !lm || !ld) return { error: '请填写完整的农历出生年、月、日' };
+
+    const solar = (typeof lunarToSolar !== 'undefined') ? lunarToSolar(ly, lm, ld, ll) : null;
+    if (!solar) return { error: '农历日期无效或超出支持范围（1990-2026）' };
+
+    year  = solar.getFullYear();
+    month = solar.getMonth() + 1;
+    day   = solar.getDate();
+
+    const lunarObj = { year: ly, month: lm, day: ld, isLeap: ll };
+    calModeLabel = `农历 ${typeof formatLunarDate !== 'undefined' ? formatLunarDate(lunarObj) : ly + '年'}（公历 ${year}-${String(month).padStart(2,'0')}-${String(day).padStart(2,'0')}）`;
+  } else {
+    year    = parseInt(document.getElementById('inp-year').value);
+    month   = parseInt(document.getElementById('inp-month').value);
+    day     = parseInt(document.getElementById('inp-day').value);
+    timeIdx = parseInt(document.getElementById('inp-time').value);
+
+    if (!year || !month || !day) return { error: '请填写完整的出生年、月、日' };
+    if (year < 1900 || year > 2030) return { error: '出生年份请填写 1900–2030' };
+    calModeLabel = `公历 ${year}-${String(month).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+  }
+
+  const unknownTime = timeIdx < 0;
+  if (unknownTime) timeIdx = 6; // default 午时
+
+  // True solar time → determine actual timeIdx to pass to engine
+  let finalTimeIdx = timeIdx;
+  if (_tstResult && !_tstResult.isEstimated) {
+    // Use TST shichen instead of CST shichen
+    if (typeof tstToShichen !== 'undefined') {
+      finalTimeIdx = tstToShichen(_tstResult.trueSolarHour, _tstResult.trueSolarMinute);
+    }
+  }
+
+  const dateStr = `${year}-${String(month).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+
+  return {
+    year, month, day, dateStr,
+    timeIdx: finalTimeIdx,
+    originalTimeIdx: timeIdx,
+    gender, name,
+    unknownTime,
+    calMode: _calMode,
+    calModeLabel,
+    city: _selectedCity,
+    tstResult: _tstResult,
+  };
+}
+
+// ─── 默认测试值 ────────────────────────────────────────────
+const DEFAULT_TEST = { year: 1991, month: 2, day: 16, time: 11, gender: 'male' };
+
+function applyDefaults() {
+  document.getElementById('inp-year').value  = DEFAULT_TEST.year;
+  document.getElementById('inp-month').value = DEFAULT_TEST.month;
+  document.getElementById('inp-day').value   = DEFAULT_TEST.day;
+  document.getElementById('inp-time').value  = DEFAULT_TEST.time;
+  document.querySelectorAll('.nf-gender-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.v === DEFAULT_TEST.gender);
+  });
+  document.getElementById('inp-gender').value = DEFAULT_TEST.gender;
+  updateDatePreview();
+}
+
+applyDefaults();
+
+// ─── 表单提交 ─────────────────────────────────────────────
+document.getElementById('btn-submit').addEventListener('click', async () => {
+  const norm = normalizeInput();
+  if (norm.error) { showError(norm.error); return; }
+
+  hideError();
+  setLoading(true);
+
+  try {
+    const mod = await import('https://esm.sh/iztro@2');
+    const lib = mod.astro || mod.default?.astro;
+    if (!lib) throw new Error('iztro 加载失败，请刷新重试');
+
+    const genderStr = norm.gender === 'male' ? '男' : '女';
+    _chart = typeof lib.bySolar === 'function'
+      ? lib.bySolar(norm.dateStr, norm.timeIdx, genderStr, true)
+      : lib.astrolabeBySolarDate(norm.dateStr, norm.timeIdx, genderStr, true);
+
+    _chartInputs = {
+      dateStr: norm.dateStr, timeIdx: norm.timeIdx,
+      gender: norm.gender, unknownTime: norm.unknownTime,
+      norm  // store full normalized info
+    };
+
+    renderFigmaChart(_chart, norm.gender, norm.dateStr, norm);
+    document.getElementById('fc-section').style.display = 'block';
+    document.getElementById('fc-section').scrollIntoView({ behavior: 'smooth' });
+  } catch (err) {
+    showError('排盘失败：' + (err.message || '请检查出生日期，或刷新重试'));
+    console.error(err);
+  } finally {
+    setLoading(false);
+  }
+});
+
 // ─── 地图常量 ─────────────────────────────────────────────
 const BRANCH_ID = {
   '子':'p-zi','丑':'p-chou','寅':'p-yin','卯':'p-mao',
@@ -271,124 +597,16 @@ const STARS = {
   '破军':{ trait:'改革创新，不守旧，充满破坏力与创造力，个性鲜明', career:'适合创业、新兴行业、独立经营；最忌守成行业', wealth:'财运起伏大，有开创性财运；破而后立', love:'感情多变化，不喜约束；伴侣关系需要充分自由空间', risk:'破坏力强，守业难；感情关系不稳，易分合' },
 };
 
-// ─── 默认测试值 ────────────────────────────────────────────
-const DEFAULT_TEST = { year: 1991, month: 2, day: 16, time: 11, gender: 'male' };
-
 // ─── 全局状态 ─────────────────────────────────────────────
 let _chart = null;   // 当前命盘对象
 let _chartInputs = null;
 let _currentSanyaoBranch = null;
 
-// ─── 初始化 ───────────────────────────────────────────────
-const dayEl = document.getElementById('inp-day');
-for (let d = 1; d <= 31; d++) {
-  const o = document.createElement('option');
-  o.value = d; o.textContent = d + ' 日';
-  dayEl.appendChild(o);
-}
-
-// 应用默认测试值
-applyDefaults();
-
-// 时间行点击展开/收起
-document.getElementById('nf-time-row').addEventListener('click', () => {
-  const inp = document.getElementById('nf-time-inputs');
-  inp.style.display = inp.style.display === 'none' ? 'flex' : 'none';
-});
-
-// 时间显示更新
-function updateTimeDisplay() {
-  const y = document.getElementById('inp-year').value;
-  const m = document.getElementById('inp-month').value;
-  const d = document.getElementById('inp-day').value;
-  const t = document.getElementById('inp-time');
-  const tLabel = t.options[t.selectedIndex]?.text?.split(' ')[0] || '';
-  if (y && m && d) {
-    document.getElementById('nf-time-val').textContent = `${y}-${String(m).padStart(2,'0')}-${String(d).padStart(2,'0')} ${tLabel}`;
-    document.getElementById('nf-time-val').style.color = '#4a3f35';
-    document.getElementById('nf-solar-val').textContent = `${y}-${String(m).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-  }
-}
-['inp-year','inp-month','inp-day','inp-time'].forEach(id => {
-  document.getElementById(id).addEventListener('change', updateTimeDisplay);
-});
-
-// 性别按钮
-document.querySelectorAll('.nf-gender-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.nf-gender-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    document.getElementById('inp-gender').value = btn.dataset.v;
-  });
-});
-
-// 保存案例 toggle
-document.getElementById('nf-save-toggle').addEventListener('click', function() {
-  this.classList.toggle('on');
-  const knob = this.querySelector('.nf-toggle-knob');
-  knob.style.transform = this.classList.contains('on') ? 'translateX(20px)' : 'translateX(0)';
-});
-
-// 重新排盘按钮
+// ─── 重新排盘按钮 ─────────────────────────────────────────
 document.getElementById('btn-reset').addEventListener('click', () => {
   document.getElementById('fc-section').style.display = 'none';
-  _currentSanyaoBranch = null;
-  applyDefaults();
   document.getElementById('form-section').scrollIntoView({ behavior: 'smooth' });
-});
-
-function applyDefaults() {
-  document.getElementById('inp-year').value  = DEFAULT_TEST.year;
-  document.getElementById('inp-month').value = DEFAULT_TEST.month;
-  document.getElementById('inp-day').value   = DEFAULT_TEST.day;
-  document.getElementById('inp-time').value  = DEFAULT_TEST.time;
-  document.querySelectorAll('.nf-gender-btn').forEach(btn => {
-    btn.classList.toggle('active', btn.dataset.v === DEFAULT_TEST.gender);
-  });
-  document.getElementById('inp-gender').value = DEFAULT_TEST.gender;
-  updateTimeDisplay();
-}
-
-// ─── 提交按钮 ─────────────────────────────────────────────
-document.getElementById('btn-submit').addEventListener('click', async () => {
-  const year   = document.getElementById('inp-year').value.trim();
-  const month  = document.getElementById('inp-month').value;
-  const day    = document.getElementById('inp-day').value;
-  let   timeIdx = parseInt(document.getElementById('inp-time').value);
-  const gender = document.getElementById('inp-gender').value;
-
-  if (!year || !month || !day) { showError('请填写完整的出生年、月、日'); return; }
-  if (+year < 1900 || +year > 2030) { showError('出生年份请填写 1900–2030'); return; }
-
-  const unknownTime = timeIdx < 0;
-  if (unknownTime) timeIdx = 6;
-
-  const dateStr = `${year}-${String(month).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
-  setLoading(true); hideError();
-
-  try {
-    const mod = await import('https://esm.sh/iztro@2');
-    const lib = mod.astro || mod.default?.astro;
-    if (!lib) throw new Error('iztro 加载失败，请刷新重试');
-
-    const genderStr = gender === 'male' ? '男' : '女';
-    _chart = typeof lib.bySolar === 'function'
-      ? lib.bySolar(dateStr, timeIdx, genderStr, true)
-      : lib.astrolabeBySolarDate(dateStr, timeIdx, genderStr, true);
-
-    _chartInputs = { dateStr, timeIdx, gender, unknownTime };
-
-    renderChart(_chart, unknownTime, gender, dateStr);
-    renderFigmaChart(_chart, gender, dateStr);
-    document.getElementById('fc-section').style.display = 'block';
-    document.getElementById('fc-section').scrollIntoView({ behavior: 'smooth' });
-
-  } catch (err) {
-    showError('排盘失败：' + (err.message || '请检查出生日期，或刷新重试'));
-    console.error(err);
-  } finally {
-    setLoading(false);
-  }
+  applyDefaults();
 });
 
 // ─── 渲染命盘（保留，供内部使用） ────────────────────────
@@ -875,7 +1093,7 @@ function renderFigmaHighlight(activeBranch) {
   (_chart.palaces || []).forEach(p => fcBuildCell(p, activeBranch));
 }
 
-function renderFigmaChart(chart, gender, dateStr) {
+function renderFigmaChart(chart, gender, dateStr, norm) {
   const lifeBranch = chart.earthlyBranchOfSoulPalace;
   _fcBirthYear = parseInt(dateStr.split('-')[0]) || 1991;
 
@@ -884,8 +1102,19 @@ function renderFigmaChart(chart, gender, dateStr) {
   const nameVal = document.getElementById('inp-name')?.value || genderLabel;
   document.getElementById('fc-c-name').textContent    = nameVal;
   document.getElementById('fc-c-meta').textContent    = chart.fiveElementsClass || '';
-  document.getElementById('fc-c-solar').textContent   = dateStr || '';
-  document.getElementById('fc-c-lunar').textContent   = chart.chineseDate || chart.lunarDate || '';
+
+  if (norm) {
+    document.getElementById('fc-c-solar').textContent = norm.calModeLabel || dateStr;
+    if (norm.tstResult) {
+      document.getElementById('fc-c-lunar').textContent =
+        `真太阳时: ${norm.tstResult.tstStr.split(' ')[1]}${norm.tstResult.isEstimated ? '（估算）' : ''}`;
+    } else {
+      document.getElementById('fc-c-lunar').textContent = chart.chineseDate || chart.lunarDate || '';
+    }
+  } else {
+    document.getElementById('fc-c-solar').textContent = dateStr || '';
+    document.getElementById('fc-c-lunar').textContent = chart.chineseDate || chart.lunarDate || '';
+  }
 
   const sizhuEl = document.getElementById('fc-c-sizhu');
   const STEM_COLORS = ['#886a4a','#4d7a5b','#9b4238','#476885'];
