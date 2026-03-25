@@ -738,3 +738,21 @@
   background: #362923;
   border-radius: 1px;
 }
+
+/* 流年卦叠加行 */
+.fc-yearly-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  margin: 1px 0;
+  padding: 1px 2px;
+  border-top: 1px dashed rgba(150,61,50,.3);
+}
+.fc-yearly-life {
+  font-size: 7px;
+  color: #fdfcf9;
+  background: #963d32;
+  border-radius: 2px;
+  padding: 0 2px;
+  line-height: 1.4;
+}

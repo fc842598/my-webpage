@@ -771,19 +771,44 @@ const FC_HEXAGRAMS = {
   '后天卦':{ name:'水天需', sub:'SHUI TIAN XU',    lines:['broken','solid','broken','gap','solid','solid','solid'] },
   '流年卦':{ name:'天风姤', sub:'LIU NIAN GUA',    lines:['solid','solid','solid','gap','solid','solid','broken'] },
 };
-const FC_LIUNIAN_YEARS = [
-  {age:28,name:'山风蛊'},{age:29,name:'火风鼎'},{age:30,name:'雷火丰'},
-  {age:31,name:'风地观'},{age:32,name:'山地剥'},{age:33,name:'山水蒙'},
-  {age:34,name:'风水涣'},{age:35,name:'水天需'},{age:36,name:'天风姤'},
-  {age:37,name:'泽风大过'},{age:38,name:'泽山咸'},{age:39,name:'水山蹇'},
-];
-let _fcActiveTab = '先天卦';
-let _fcActiveAge = 36;
+let _fcActiveTab  = '先天卦';
+let _fcActiveAge  = 0;
+let _fcBirthYear  = 1991;
+let _fcYearCards  = [];          // [{age, year, label}]
+let _fcYearlyMap  = {};          // earthlyBranch → yearly palace data
+
+// 生成当前命盘的流年年份卡片（从当前实岁前3年到后8年）
+function fcBuildYearCards(birthYear) {
+  const curYear = new Date().getFullYear();
+  const curAge  = curYear - birthYear;
+  _fcActiveAge  = curAge;
+  _fcYearCards  = [];
+  for (let age = Math.max(1, curAge - 3); age <= curAge + 8; age++) {
+    _fcYearCards.push({ age, year: birthYear + age });
+  }
+}
+
+// 用 iztro horoscope() 获取某年的流年宫位数据，存入 _fcYearlyMap
+function fcLoadYearly(year) {
+  _fcYearlyMap = {};
+  if (!_chart || typeof _chart.horoscope !== 'function') return;
+  try {
+    const h = _chart.horoscope(`${year}-06-01`, 0);
+    // iztro v2 返回结构：h.yearly 或 h.decadal 可能含 palaces
+    const scope = h.yearly || h.decadal || h;
+    const palaces = scope.palaces || scope.palace || [];
+    palaces.forEach(yp => {
+      const br = yp.earthlyBranch;
+      if (br) _fcYearlyMap[br] = yp;
+    });
+  } catch(e) {
+    console.warn('horoscope() 调用失败:', e);
+  }
+}
 
 function fcRenderHexagram() {
   const hexData = _fcActiveTab === '流年卦'
-    ? { name: (FC_LIUNIAN_YEARS.find(y=>y.age===_fcActiveAge)||FC_LIUNIAN_YEARS[6]).name,
-        sub: 'LIU NIAN GUA', lines: FC_HEXAGRAMS['流年卦'].lines }
+    ? { name:'天风姤', sub:'LIU NIAN GUA', lines: FC_HEXAGRAMS['流年卦'].lines }
     : FC_HEXAGRAMS[_fcActiveTab];
   document.getElementById('fc-hex-name').textContent = hexData.name;
   document.getElementById('fc-hex-sub').textContent  = hexData.sub;
@@ -810,23 +835,36 @@ function fcRenderTabs() {
   if (lnWrap) lnWrap.style.display = _fcActiveTab === '流年卦' ? 'flex' : 'none';
 }
 
+function fcSelectYear(age) {
+  _fcActiveAge = age;
+  const year = _fcBirthYear + age;
+  fcLoadYearly(year);
+  // 更新中央面板流年显示
+  document.getElementById('fc-c-liunian').textContent = `${age}岁（${year}年）`;
+  fcRenderLiunianScroll();
+  // 重新渲染宫格（含流年数据）
+  renderFigmaHighlight(_fcActiveBranch || (_chart && _chart.earthlyBranchOfSoulPalace) || '卯');
+}
+
 function fcRenderLiunianScroll() {
   const scroll = document.getElementById('fc-liunian-scroll');
   if (!scroll) return;
   scroll.innerHTML = '';
-  FC_LIUNIAN_YEARS.forEach(item => {
+  _fcYearCards.forEach(item => {
     const card = document.createElement('div');
     card.className = 'fc-year-card' + (item.age === _fcActiveAge ? ' active' : '');
-    card.innerHTML = `<span>${item.age}岁</span><span style="font-size:10px">${item.name}</span>`;
-    card.addEventListener('click', () => {
-      _fcActiveAge = item.age;
-      document.getElementById('fc-c-liunian').textContent = `${item.age}岁 ${item.name}`;
-      fcRenderLiunianScroll();
-      fcRenderHexagram();
-    });
+    card.innerHTML = `<span>${item.age}岁</span><span style="font-size:10px">${item.year}年</span>`;
+    card.addEventListener('click', () => fcSelectYear(item.age));
     scroll.appendChild(card);
   });
+  // 自动滚动到当前选中年
+  requestAnimationFrame(() => {
+    const active = scroll.querySelector('.fc-year-card.active');
+    if (active) active.scrollIntoView({ inline: 'center', behavior: 'smooth', block: 'nearest' });
+  });
 }
+
+let _fcActiveBranch = '';
 
 function fcBuildCell(p, activeBranch) {
   const branch = p.earthlyBranch;
@@ -840,6 +878,7 @@ function fcBuildCell(p, activeBranch) {
   const isRel = !isBen && sanhe.includes(branch);
   cell.className = 'fc-cell' + (isBen ? ' fc-ben' : isRel ? ' fc-rel' : '');
 
+  // 主星（含四化色）
   const majorHtml = (p.majorStars || []).map(s => {
     let modSpan = '';
     if (s.mutagen) {
@@ -849,12 +888,41 @@ function fcBuildCell(p, activeBranch) {
     return `<div class="fc-major-star">${s.name}${s.brightness||''}${modSpan}</div>`;
   }).join('');
 
-  const minorHtml = (p.minorStars || []).slice(0,4).map(s =>
-    `<div class="fc-minor-star">${s.name||s}</div>`
-  ).join('');
+  // 辅星 + 杂曜（合并显示，右侧）
+  const allMinor = [
+    ...(p.minorStars || []),
+    ...(p.adjectiveStars || p.adjStars || [])
+  ];
+  const minorHtml = allMinor.map(s => {
+    const name = s.name || s;
+    const m = s.mutagen ? `<span class="fc-mutagen-ji" style="font-size:7px">${s.mutagen.replace('化','')}</span>` : '';
+    return `<div class="fc-minor-star">${name}${m}</div>`;
+  }).join('');
 
+  // 长生/博士神煞
   const shenHtml = [p.changsheng12, p.boshi12].filter(Boolean)
     .map(s=>`<span>${s}</span>`).join('');
+
+  // 流年卦模式：叠加流年宫数据
+  let yearlyHtml = '';
+  if (_fcActiveTab === '流年卦') {
+    const yp = _fcYearlyMap[branch];
+    if (yp) {
+      // 流年四化
+      const yMutagen = (yp.mutagen || []).map(m =>
+        `<span class="fc-minor-star" style="color:#963d32">${m}</span>`
+      ).join('');
+      // 流年额外星曜
+      const yStars = (yp.stars || yp.majorStars || []).map(s =>
+        `<span class="fc-minor-star" style="color:#476885">${s.name||s}</span>`
+      ).join('');
+      // 流年命宫标记
+      const isYearLife = yp.isOriginalPalace || (yp.name && (yp.name.includes('命') || yp.name.includes('小限')));
+      if (yMutagen || yStars || isYearLife) {
+        yearlyHtml = `<div class="fc-yearly-row">${isYearLife?'<span class="fc-yearly-life">流年</span>':''}${yMutagen}${yStars}</div>`;
+      }
+    }
+  }
 
   const stemBranch = (p.heavenlyStem||'') + (p.earthlyBranch||'');
   const ageStr = p.decadal?.range ? `${p.decadal.range[0]}–${p.decadal.range[1]}` : '';
@@ -866,6 +934,7 @@ function fcBuildCell(p, activeBranch) {
       <div class="fc-major-list">${majorHtml}</div>
       <div class="fc-minor-list">${minorHtml}</div>
     </div>
+    ${yearlyHtml}
     <div class="fc-cell-bottom">
       <div class="fc-shen-list">${shenHtml}</div>
       <div class="fc-palace-info">
@@ -880,11 +949,13 @@ function fcBuildCell(p, activeBranch) {
 
 function renderFigmaHighlight(activeBranch) {
   if (!_chart) return;
+  _fcActiveBranch = activeBranch;
   (_chart.palaces || []).forEach(p => fcBuildCell(p, activeBranch));
 }
 
 function renderFigmaChart(chart, gender, dateStr) {
   const lifeBranch = chart.earthlyBranchOfSoulPalace;
+  _fcBirthYear = parseInt(dateStr.split('-')[0]) || 1991;
 
   // 中央面板
   const genderLabel = gender === 'male' ? '阳男' : '阴女';
@@ -917,14 +988,18 @@ function renderFigmaChart(chart, gender, dateStr) {
     sizhuEl.innerHTML = '<span style="font-size:8px;color:#8c7e75">暂无四柱</span>';
   }
 
-  // 卦名占位
+  // 流年年份卡片（动态，基于实际出生年）
+  fcBuildYearCards(_fcBirthYear);
+  fcLoadYearly(_fcBirthYear + _fcActiveAge);
+
+  // 更新中央面板流年
   document.getElementById('fc-c-xiantian').textContent = '风水涣';
   document.getElementById('fc-c-houtian').textContent  = '水天需';
-  _fcActiveAge = 36;
-  document.getElementById('fc-c-liunian').textContent  = '36岁 天风姤';
+  document.getElementById('fc-c-liunian').textContent  = `${_fcActiveAge}岁（${_fcBirthYear + _fcActiveAge}年）`;
 
   // 渲染宫格
-  renderFigmaHighlight(lifeBranch || '卯');
+  _fcActiveBranch = lifeBranch || '卯';
+  renderFigmaHighlight(_fcActiveBranch);
 
   // 渲染 Tab / 流年 / 卦象
   _fcActiveTab = '先天卦';
@@ -934,7 +1009,13 @@ function renderFigmaChart(chart, gender, dateStr) {
 
   // Tab 点击
   document.querySelectorAll('.fc-tab').forEach(btn => {
-    btn.onclick = () => { _fcActiveTab = btn.dataset.tab; fcRenderTabs(); fcRenderHexagram(); };
+    btn.onclick = () => {
+      _fcActiveTab = btn.dataset.tab;
+      fcRenderTabs();
+      fcRenderHexagram();
+      // 切到流年卦时重新渲染格子（叠加流年数据）
+      renderFigmaHighlight(_fcActiveBranch);
+    };
   });
   // 滚动按钮
   const scrollEl = document.getElementById('fc-liunian-scroll');
