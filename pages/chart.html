@@ -100,13 +100,13 @@
 
     <!-- 出生时刻 -->
     <div class="nf-row nf-time-row">
-      <div class="nf-time-label-group">
-        <span class="nf-label">出生时刻</span>
-        <label class="nf-unknown-time-label">
-          <input type="checkbox" id="inp-time-unknown"> 时刻未知
-        </label>
+      <span class="nf-label">出生时刻</span>
+      <div class="nf-time-selects">
+        <select id="inp-time-h" class="nf-select nf-time-sel"></select>
+        <span class="nf-time-sep">时</span>
+        <select id="inp-time-m" class="nf-select nf-time-sel"></select>
+        <span class="nf-time-sep">分</span>
       </div>
-      <input type="time" id="inp-time-val" class="nf-select nf-time-input" value="21:00">
     </div>
     <div id="tst-shichen-preview" class="nf-shichen-preview"></div>
 
@@ -180,6 +180,8 @@
           <div class="fc-center-rows">
             <div class="fc-center-row"><span class="fc-center-lbl">公历</span><span class="fc-center-val" id="fc-c-solar"></span></div>
             <div class="fc-center-row"><span class="fc-center-lbl">农历</span><span class="fc-center-val" id="fc-c-lunar"></span></div>
+            <div class="fc-center-row"><span class="fc-center-lbl">真太阳时</span><span class="fc-center-val" id="fc-c-tst"></span></div>
+            <div class="fc-center-row"><span class="fc-center-lbl">排盘时辰</span><span class="fc-center-val" id="fc-c-shichen"></span></div>
             <div class="fc-center-row" style="align-items:flex-start;margin-top:3px">
               <span class="fc-center-lbl" style="margin-top:1px">节气四柱</span>
               <div class="fc-sizhu" id="fc-c-sizhu"></div>
@@ -372,7 +374,6 @@ function updateTrueSolarTime() {
     day   = parseInt(document.getElementById('inp-day').value);
   }
 
-  const unknownTime   = document.getElementById('inp-time-unknown').checked;
   const shichenPreview = document.getElementById('tst-shichen-preview');
 
   if (!year || !month || !day) {
@@ -383,22 +384,9 @@ function updateTrueSolarTime() {
     return;
   }
 
-  if (unknownTime) {
-    document.getElementById('tst-display').textContent = '时刻未知，排盘默认采用午时（11:00–13:00）';
-    document.getElementById('tst-estimated-badge').style.display = 'inline';
-    if (shichenPreview) shichenPreview.textContent = '';
-    _tstResult = null;
-    return;
-  }
-
-  // 读取精确时刻
-  let hour = 12, minute = 0;
-  const tv = document.getElementById('inp-time-val').value;
-  if (tv) {
-    const parts = tv.split(':');
-    hour   = parseInt(parts[0]) || 0;
-    minute = parseInt(parts[1]) || 0;
-  }
+  // 读取精确时刻（从小时/分钟下拉）
+  const hour   = parseInt(document.getElementById('inp-time-h').value) || 0;
+  const minute = parseInt(document.getElementById('inp-time-m').value) || 0;
 
   if (typeof calcTrueSolarTime === 'undefined') {
     document.getElementById('tst-display').textContent = '真太阳时模块未加载';
@@ -422,7 +410,7 @@ function updateTrueSolarTime() {
   // 时辰预览行（明确告知最终采用哪个时辰）
   if (shichenPreview) {
     shichenPreview.innerHTML = crossed
-      ? `北京时间 ${pad(hour)}:${pad(minute)} → ${cstShichen}时，真太阳时后跨越时辰 → <strong style="color:#963d32">${tstShichen}时（排盘采用）</strong>`
+      ? `北京时间 ${pad(hour)}:${pad(minute)} → ${cstShichen}时，真太阳时修正后跨越时辰 → <strong style="color:#963d32">${tstShichen}时（排盘采用）</strong>`
       : `${pad(hour)}:${pad(minute)} 真太阳时修正后仍在 <strong>${cstShichen}时</strong>，排盘采用 <strong>${cstShichen}时</strong>`;
     shichenPreview.style.display = 'block';
   }
@@ -475,21 +463,27 @@ function updateDatePreview() {
   if (el) el.addEventListener('change', updateDatePreview);
   if (el && el.type === 'number') el.addEventListener('input', updateDatePreview);
 });
+// 填充小时/分钟下拉选项
+(function buildTimeSelects() {
+  const hEl = document.getElementById('inp-time-h');
+  const mEl = document.getElementById('inp-time-m');
+  if (!hEl || !mEl) return;
+  for (let h = 0; h < 24; h++) {
+    const o = document.createElement('option');
+    o.value = h;
+    o.textContent = String(h).padStart(2, '0');
+    hEl.appendChild(o);
+  }
+  for (let m = 0; m < 60; m++) {
+    const o = document.createElement('option');
+    o.value = m;
+    o.textContent = String(m).padStart(2, '0');
+    mEl.appendChild(o);
+  }
+})();
 // 时刻输入监听
-const _timeValEl = document.getElementById('inp-time-val');
-if (_timeValEl) {
-  _timeValEl.addEventListener('change', updateTrueSolarTime);
-  _timeValEl.addEventListener('input',  updateTrueSolarTime);
-}
-const _timeUnknownEl = document.getElementById('inp-time-unknown');
-if (_timeUnknownEl) {
-  _timeUnknownEl.addEventListener('change', () => {
-    const off = _timeUnknownEl.checked;
-    _timeValEl.disabled = off;
-    _timeValEl.style.opacity = off ? '0.35' : '1';
-    updateTrueSolarTime();
-  });
-}
+document.getElementById('inp-time-h')?.addEventListener('change', updateTrueSolarTime);
+document.getElementById('inp-time-m')?.addEventListener('change', updateTrueSolarTime);
 
 // ─── 输入归一化 ────────────────────────────────────────────
 function normalizeInput() {
@@ -526,35 +520,20 @@ function normalizeInput() {
   }
 
   // ── 统一时刻处理 ────────────────────────────────────────
-  const unknownTime = document.getElementById('inp-time-unknown').checked;
-  let cstHour = 12, cstMinute = 0;
-  if (!unknownTime) {
-    const tv = document.getElementById('inp-time-val').value;
-    if (tv) {
-      const parts = tv.split(':');
-      cstHour   = parseInt(parts[0]) || 0;
-      cstMinute = parseInt(parts[1]) || 0;
-    }
-  }
-  const pad2 = n => String(n).padStart(2,'0');
-  calModeLabel += unknownTime ? ' 时辰未知' : ` ${pad2(cstHour)}:${pad2(cstMinute)}`;
+  const cstHour   = parseInt(document.getElementById('inp-time-h').value);
+  const cstMinute = parseInt(document.getElementById('inp-time-m').value);
+  if (isNaN(cstHour) || isNaN(cstMinute)) return { error: '请选择出生时刻（小时和分钟）' };
 
   // 正确流程：具体时刻 → 真太阳时 → 时辰索引
-  let finalTimeIdx;
-  if (unknownTime) {
-    finalTimeIdx = 6; // 午时，明确标注估算
-  } else if (_tstResult && !_tstResult.isEstimated) {
-    // 有出生地：用真太阳时对应时辰
-    finalTimeIdx = typeof tstToShichen !== 'undefined'
-      ? tstToShichen(_tstResult.trueSolarHour, _tstResult.trueSolarMinute)
-      : tstToShichen(cstHour, cstMinute);
-  } else {
-    // 无出生地：直接用北京时间对应时辰（已含默认经度估算）
-    finalTimeIdx = typeof tstToShichen !== 'undefined'
-      ? tstToShichen(_tstResult?.trueSolarHour ?? cstHour, _tstResult?.trueSolarMinute ?? cstMinute)
-      : 6;
-  }
+  // 真太阳时决定最终时辰（有出生地用实际经度，无出生地用北京经度估算）
+  const finalTimeIdx = typeof tstToShichen !== 'undefined'
+    ? tstToShichen(
+        _tstResult?.trueSolarHour  ?? cstHour,
+        _tstResult?.trueSolarMinute ?? cstMinute
+      )
+    : 6;
 
+  const pad2 = n => String(n).padStart(2,'0');
   const dateStr = `${year}-${String(month).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
 
   return {
@@ -562,7 +541,6 @@ function normalizeInput() {
     timeIdx: finalTimeIdx,
     cstHour, cstMinute,
     gender, name,
-    unknownTime,
     calMode: _calMode,
     calModeLabel,
     city: _selectedCity,
@@ -577,7 +555,8 @@ function applyDefaults() {
   document.getElementById('inp-year').value     = DEFAULT_TEST.year;
   document.getElementById('inp-month').value    = DEFAULT_TEST.month;
   document.getElementById('inp-day').value      = DEFAULT_TEST.day;
-  document.getElementById('inp-time-val').value = DEFAULT_TEST.time;
+  document.getElementById('inp-time-h').value = 21;
+  document.getElementById('inp-time-m').value = 0;
   document.querySelectorAll('.nf-gender-btn').forEach(btn => {
     btn.classList.toggle('active', btn.dataset.v === DEFAULT_TEST.gender);
   });
@@ -607,7 +586,7 @@ document.getElementById('btn-submit').addEventListener('click', async () => {
 
     _chartInputs = {
       dateStr: norm.dateStr, timeIdx: norm.timeIdx,
-      gender: norm.gender, unknownTime: norm.unknownTime,
+      gender: norm.gender,
       norm  // store full normalized info
     };
 
@@ -1221,22 +1200,35 @@ function renderFigmaChart(chart, gender, dateStr, norm) {
   document.getElementById('fc-c-name').textContent    = nameVal;
   document.getElementById('fc-c-meta').textContent    = chart.fiveElementsClass || '';
 
+  // 中央面板时间信息
+  const _pad = n => String(n).padStart(2,'0');
+  // 公历：日期 + 输入的北京时间
   if (norm) {
-    document.getElementById('fc-c-solar').textContent = norm.calModeLabel || dateStr;
-    if (norm.tstResult) {
-      const pad = n => String(n).padStart(2,'0');
-      const tstSh = _SHICHEN_NAMES[tstToShichen(norm.tstResult.trueSolarHour, norm.tstResult.trueSolarMinute)];
-      document.getElementById('fc-c-lunar').textContent =
-        `真太阳时 ${pad(norm.tstResult.trueSolarHour)}:${pad(norm.tstResult.trueSolarMinute)} · ${tstSh}时` +
-        (norm.tstResult.isEstimated ? '（北京经度估算）' : '');
-    } else if (norm.unknownTime) {
-      document.getElementById('fc-c-lunar').textContent = '时刻未知（午时估算）';
-    } else {
-      document.getElementById('fc-c-lunar').textContent = chart.chineseDate || chart.lunarDate || '';
-    }
+    const cstStr = norm.cstHour !== undefined
+      ? `${norm.calModeLabel || dateStr} ${_pad(norm.cstHour)}:${_pad(norm.cstMinute)}`
+      : (norm.calModeLabel || dateStr);
+    document.getElementById('fc-c-solar').textContent = cstStr;
   } else {
     document.getElementById('fc-c-solar').textContent = dateStr || '';
-    document.getElementById('fc-c-lunar').textContent = chart.chineseDate || chart.lunarDate || '';
+  }
+  // 农历：始终显示农历日期
+  document.getElementById('fc-c-lunar').textContent = chart.chineseDate || chart.lunarDate || '—';
+  // 真太阳时
+  const tstEl = document.getElementById('fc-c-tst');
+  if (tstEl) {
+    if (norm?.tstResult) {
+      const tst = norm.tstResult;
+      tstEl.textContent = `${_pad(tst.trueSolarHour)}:${_pad(tst.trueSolarMinute)}` +
+        (tst.isEstimated ? '（北京经度估算）' : ` (${tst.diffStr})`);
+    } else {
+      tstEl.textContent = '—';
+    }
+  }
+  // 排盘时辰（来自真太阳时换算的 finalTimeIdx，即 timeIdx）
+  const shichenEl = document.getElementById('fc-c-shichen');
+  if (shichenEl) {
+    const usedIdx = norm ? norm.timeIdx : 6;
+    shichenEl.textContent = _SHICHEN_NAMES[usedIdx] + '时';
   }
 
   const sizhuEl = document.getElementById('fc-c-sizhu');

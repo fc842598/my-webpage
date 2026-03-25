@@ -1067,26 +1067,21 @@
 .nf-time-row {
   align-items: center;
 }
-.nf-time-label-group {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-.nf-unknown-time-label {
+.nf-time-selects {
   display: flex;
   align-items: center;
   gap: 4px;
-  font-size: .78rem;
-  color: #8e857d;
-  cursor: pointer;
-  white-space: nowrap;
 }
-.nf-time-input {
-  width: 130px;
-  flex-shrink: 0;
-  font-size: 1rem;
-  padding: 9px 12px;
+.nf-time-sel {
+  width: 72px;
   text-align: center;
+  padding: 9px 6px;
+  font-size: 1rem;
+}
+.nf-time-sep {
+  font-size: .88rem;
+  color: #8e857d;
+  padding: 0 2px;
 }
 /* 时辰预览 */
 .nf-shichen-preview {
@@ -1097,7 +1092,7 @@
   display: none;
 }
 @media (max-width: 540px) {
-  .nf-time-input { width: 110px; font-size: .92rem; }
+  .nf-time-sel { width: 64px; font-size: .92rem; }
 }
 
 /* ══════════════════════════════════════════
