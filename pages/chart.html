@@ -108,6 +108,7 @@
     <!-- 命盘网格 -->
     <div class="chart-board-wrap">
       <div class="palace-grid" id="palace-grid">
+        <svg id="sanyao-svg" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:5;overflow:visible;"></svg>
         <div class="palace-cell" id="p-si"></div>
         <div class="palace-cell" id="p-wu"></div>
         <div class="palace-cell" id="p-wei"></div>
@@ -269,9 +270,13 @@ const STARS = {
   '破军':{ trait:'改革创新，不守旧，充满破坏力与创造力，个性鲜明', career:'适合创业、新兴行业、独立经营；最忌守成行业', wealth:'财运起伏大，有开创性财运；破而后立', love:'感情多变化，不喜约束；伴侣关系需要充分自由空间', risk:'破坏力强，守业难；感情关系不稳，易分合' },
 };
 
+// ─── 默认测试值 ────────────────────────────────────────────
+const DEFAULT_TEST = { year: 1991, month: 2, day: 16, time: 11, gender: 'male' };
+
 // ─── 全局状态 ─────────────────────────────────────────────
 let _chart = null;   // 当前命盘对象
 let _chartInputs = null;
+let _currentSanyaoBranch = null;
 
 // ─── 初始化 ───────────────────────────────────────────────
 const dayEl = document.getElementById('inp-day');
@@ -280,6 +285,9 @@ for (let d = 1; d <= 31; d++) {
   o.value = d; o.textContent = d + ' 日';
   dayEl.appendChild(o);
 }
+
+// 应用默认测试值
+applyDefaults();
 
 document.querySelectorAll('.gender-btn').forEach(btn => {
   btn.addEventListener('click', () => {
@@ -292,8 +300,27 @@ document.querySelectorAll('.gender-btn').forEach(btn => {
 document.getElementById('btn-reset').addEventListener('click', () => {
   document.getElementById('chart-result').style.display = 'none';
   document.getElementById('analysis-panel').style.display = 'none';
+  clearSanyaoLines();
+  _currentSanyaoBranch = null;
+  applyDefaults();
   window.scrollTo({ top: 0, behavior: 'smooth' });
 });
+
+// resize 时重画连线
+window.addEventListener('resize', () => {
+  if (_currentSanyaoBranch) requestAnimationFrame(() => drawSanyaoLines(_currentSanyaoBranch));
+});
+
+function applyDefaults() {
+  document.getElementById('inp-year').value  = DEFAULT_TEST.year;
+  document.getElementById('inp-month').value = DEFAULT_TEST.month;
+  document.getElementById('inp-day').value   = DEFAULT_TEST.day;
+  document.getElementById('inp-time').value  = DEFAULT_TEST.time;
+  document.querySelectorAll('.gender-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.v === DEFAULT_TEST.gender);
+  });
+  document.getElementById('inp-gender').value = DEFAULT_TEST.gender;
+}
 
 // ─── 表单提交 ─────────────────────────────────────────────
 document.getElementById('chart-form').addEventListener('submit', async (e) => {
@@ -349,6 +376,8 @@ document.getElementById('btn-analyze').addEventListener('click', () => {
 
 // ─── 渲染命盘 ─────────────────────────────────────────────
 function renderChart(chart, unknownTime, gender, dateStr) {
+  clearSanyaoLines();
+  _currentSanyaoBranch = null;
   // 清空
   Object.values(BRANCH_ID).forEach(id => {
     const el = document.getElementById(id);
@@ -434,7 +463,7 @@ function renderChart(chart, unknownTime, gender, dateStr) {
   if (lifeBranch) highlightSanyao(lifeBranch, '命宫');
 }
 
-// ─── 三方四正高亮 ─────────────────────────────────────────
+// ─── 三方四正高亮 + 连线 ──────────────────────────────────
 function highlightSanyao(branch, palaceName) {
   document.querySelectorAll('.palace-cell').forEach(el =>
     el.classList.remove('sanyao-self','sanyao-sanhe','sanyao-dui')
@@ -455,6 +484,103 @@ function highlightSanyao(branch, palaceName) {
 
   document.getElementById('sanyao-label').textContent =
     `${palaceName || ''}（${branch}）的三方四正：${(SANHE_PARTNERS[branch]||[]).join('、')} + 对宫${duiBr}`;
+
+  _currentSanyaoBranch = branch;
+  drawSanyaoLines(branch);
+}
+
+// ─── SVG 连线绘制 ─────────────────────────────────────────
+function drawSanyaoLines(branch) {
+  const svgEl = document.getElementById('sanyao-svg');
+  clearSanyaoLines();
+  const svgRect = svgEl.getBoundingClientRect();
+
+  function getCenter(br) {
+    const id = BRANCH_ID[br];
+    if (!id) return null;
+    const cell = document.getElementById(id);
+    if (!cell) return null;
+    const r = cell.getBoundingClientRect();
+    return { x: r.left - svgRect.left + r.width / 2,
+             y: r.top  - svgRect.top  + r.height / 2,
+             w: r.width, h: r.height };
+  }
+
+  function edgePoint(from, to) {
+    const dx = to.x - from.x, dy = to.y - from.y;
+    const len = Math.sqrt(dx*dx + dy*dy);
+    if (len < 1) return { x: from.x, y: from.y };
+    const nx = dx/len, ny = dy/len;
+    const tx = Math.abs(nx) > 0.01 ? (from.w/2) / Math.abs(nx) : 1e9;
+    const ty = Math.abs(ny) > 0.01 ? (from.h/2) / Math.abs(ny) : 1e9;
+    const t  = Math.min(tx, ty) * 0.90;
+    return { x: from.x + nx*t, y: from.y + ny*t };
+  }
+
+  const defs = document.createElementNS('http://www.w3.org/2000/svg','defs');
+  defs.innerHTML = `
+    <filter id="svg-glow-gold" x="-80%" y="-80%" width="260%" height="260%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="2.5" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="svg-glow-teal" x="-80%" y="-80%" width="260%" height="260%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="2.5" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>`;
+  svgEl.appendChild(defs);
+
+  const selfC  = getCenter(branch);
+  const p      = SANHE_PARTNERS[branch] || [];
+  const duiBr  = DUIGONG[branch];
+  if (!selfC) return;
+  const sh1 = p[0] ? getCenter(p[0]) : null;
+  const sh2 = p[1] ? getCenter(p[1]) : null;
+  const duiC = duiBr ? getCenter(duiBr) : null;
+
+  function line(from, to, stroke, opacity, dash, filter) {
+    if (!from || !to) return;
+    const p1 = edgePoint(from, to), p2 = edgePoint(to, from);
+    const el = document.createElementNS('http://www.w3.org/2000/svg','line');
+    el.setAttribute('x1', p1.x.toFixed(1)); el.setAttribute('y1', p1.y.toFixed(1));
+    el.setAttribute('x2', p2.x.toFixed(1)); el.setAttribute('y2', p2.y.toFixed(1));
+    el.setAttribute('stroke', stroke);
+    el.setAttribute('stroke-width', '1.8');
+    el.setAttribute('stroke-opacity', opacity);
+    el.setAttribute('stroke-linecap', 'round');
+    if (dash)   el.setAttribute('stroke-dasharray', dash);
+    if (filter) el.setAttribute('filter', `url(#${filter})`);
+    svgEl.appendChild(el);
+  }
+
+  function dot(c, fill, opacity) {
+    if (!c) return;
+    const el = document.createElementNS('http://www.w3.org/2000/svg','circle');
+    el.setAttribute('cx', c.x.toFixed(1)); el.setAttribute('cy', c.y.toFixed(1));
+    el.setAttribute('r', '3.5');
+    el.setAttribute('fill', fill);
+    el.setAttribute('fill-opacity', opacity);
+    el.setAttribute('filter', 'url(#svg-glow-gold)');
+    svgEl.appendChild(el);
+  }
+
+  // 本宫 ↔ 三合宫（金色实线）
+  line(selfC, sh1, '#d4a843', '0.65', null,    'svg-glow-gold');
+  line(selfC, sh2, '#d4a843', '0.65', null,    'svg-glow-gold');
+  // 两三合宫互连（浅紫虚线）
+  line(sh1,   sh2, '#9b6fd4', '0.35', '4 3',  'svg-glow-gold');
+  // 对宫（青色虚线）
+  line(selfC, duiC,'#50c8c8', '0.55', '6 3',  'svg-glow-teal');
+
+  // 端点圆点
+  dot(selfC, '#d4a843', '0.9');
+  dot(sh1,   '#d4a843', '0.7');
+  dot(sh2,   '#d4a843', '0.7');
+  dot(duiC,  '#50c8c8', '0.7');
+}
+
+function clearSanyaoLines() {
+  const svgEl = document.getElementById('sanyao-svg');
+  if (svgEl) while (svgEl.firstChild) svgEl.removeChild(svgEl.firstChild);
 }
 
 // ─── AI 解盘引擎 ──────────────────────────────────────────
