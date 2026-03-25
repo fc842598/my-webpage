@@ -1038,6 +1038,102 @@
 .nf-city-item:hover { background: #f7f4ef; }
 
 /* ══════════════════════════════════════════
+   移动端命盘优化（≤ 540px）
+   目标：命盘尽量满屏、字尽量大、空白尽量少
+══════════════════════════════════════════ */
+@media (max-width: 540px) {
+
+  /* ── 输入表单页 ── */
+  .nf-page {
+    padding-top: 62px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 20px;
+  }
+  .nf-card {
+    max-width: 100%;
+    border-radius: 16px;
+    padding: 0 14px;
+  }
+  .nf-row { padding: 12px 0; }
+
+  /* ── 命盘区域整体 ── */
+  .fc-section {
+    padding: 12px 8px 16px;
+  }
+  .fc-card {
+    max-width: calc(100vw - 16px);
+    width: calc(100vw - 16px);
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0,0,0,.25);
+  }
+
+  /* ── 顶部标题行 ── */
+  .fc-header { padding: 8px 10px 5px; }
+  .fc-header-title { font-size: .85rem; letter-spacing: 3px; }
+
+  /* ── 格网外层缩边距 ── */
+  .fc-grid-wrap { padding: 0 3px 2px; }
+
+  /* ── 宫格内 — 主星、宫名字体放大 ── */
+  .fc-major-star { font-size: 12px; }
+  .fc-palace-name { font-size: 12px; }
+  .fc-branch { font-size: 10px; }
+  .fc-age    { font-size: 9px; }
+  .fc-minor-star { font-size: 9px; }
+  .fc-shen-list  { font-size: 8px; }
+
+  /* ── 宫位四化标签放大 ── */
+  .fc-pal-mutagen { font-size: 10px; padding: 1px 5px; }
+  .fc-cell-mutagen { gap: 2px; margin-bottom: 2px; }
+
+  /* ── 中央面板压缩 ── */
+  #fc-center-panel { padding: 5px 5px 4px; gap: 1px; }
+  .fc-center-title  { font-size: 10px; letter-spacing: 2px; margin-bottom: 1px; }
+  .fc-center-meta   { font-size: 8px; margin-bottom: 1px; }
+  .fc-center-name   { font-size: 9px; }
+  .fc-center-rows   { gap: 1px; }
+  .fc-center-row    { font-size: 7.5px; }
+  .fc-center-lbl    { width: 34px; }
+  .fc-center-val    { font-size: 7.5px; }
+  .fc-sizhu { gap: 4px; margin-top: 2px; }
+  .fc-sizhu-col { font-size: 8px; }
+  .fc-gua-rows { margin-top: 2px; gap: 1px; }
+  .fc-gua-row  { font-size: 7px; }
+  .fc-center-btns { gap: 1px; padding-top: 3px; }
+  .fc-center-btn  { font-size: 7px; padding: 2px 0; }
+
+  /* ── 四化分布（中央面板内） ── */
+  .fc-mutagen-dist { margin: 3px 0 2px; padding: 4px 6px; }
+  .fc-mut-title    { margin-bottom: 2px; }
+  .fc-mut-palace   { font-size: 8px; }
+  .fc-mut-star     { font-size: 7px; }
+
+  /* ── Tab 栏 ── */
+  .fc-tabs-wrap { padding: 8px 6px 0; }
+  .fc-tab { font-size: 11px; padding: 7px 4px; }
+
+  /* ── 流年年份滚动 ── */
+  .fc-liunian-wrap { padding: 8px 2px 0; }
+  .fc-year-card { width: 56px; height: 48px; font-size: 10px; border-radius: 6px; }
+
+  /* ── 卦象区 ── */
+  .fc-hexagram-area { padding: 10px 8px 12px; }
+  .fc-hex-name { font-size: .95rem; letter-spacing: 3px; }
+  .fc-hex-sub  { margin-bottom: 8px; }
+  .fc-hex-lines { width: 96px; }
+
+  /* ── 重新排盘按钮 ── */
+  .nf-reset-btn {
+    padding: 10px 24px;
+    font-size: .88rem;
+  }
+
+  /* ── 区块间距压缩 ── */
+  .fc-section-title { margin-bottom: 10px; font-size: .95rem; }
+}
+
+/* ══════════════════════════════════════════
    宫位级四化 — 命盘格内
 ══════════════════════════════════════════ */
 /* 格内四化行：置于主星上方，作为第一眼视觉 */
