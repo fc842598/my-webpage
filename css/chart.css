@@ -1037,6 +1037,43 @@
 }
 .nf-city-item:hover { background: #f7f4ef; }
 
+/* ── 出生时刻行 ── */
+.nf-time-row {
+  align-items: center;
+}
+.nf-time-label-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.nf-unknown-time-label {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: .78rem;
+  color: #8e857d;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.nf-time-input {
+  width: 130px;
+  flex-shrink: 0;
+  font-size: 1rem;
+  padding: 9px 12px;
+  text-align: center;
+}
+/* 时辰预览 */
+.nf-shichen-preview {
+  font-size: .78rem;
+  color: #6b4e41;
+  padding: 4px 0 2px 2px;
+  min-height: 0;
+  display: none;
+}
+@media (max-width: 540px) {
+  .nf-time-input { width: 110px; font-size: .92rem; }
+}
+
 /* ══════════════════════════════════════════
    移动端命盘优化（≤ 540px）
    目标：命盘尽量满屏、字尽量大、空白尽量少
