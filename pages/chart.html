@@ -883,7 +883,7 @@ function fcBuildCell(p, activeBranch) {
     let modSpan = '';
     if (s.mutagen) {
       const cls = s.mutagen==='化禄'?'fc-mutagen-lu':s.mutagen==='化权'?'fc-mutagen-quan':s.mutagen==='化科'?'fc-mutagen-ke':'fc-mutagen-ji';
-      modSpan = `<span class="${cls}">${s.mutagen.replace('化','')}</span>`;
+      modSpan = `<span class="${cls}" style="font-size:8px">${s.mutagen}</span>`;
     }
     return `<div class="fc-major-star">${s.name}${s.brightness||''}${modSpan}</div>`;
   }).join('');
@@ -893,9 +893,10 @@ function fcBuildCell(p, activeBranch) {
     ...(p.minorStars || []),
     ...(p.adjectiveStars || p.adjStars || [])
   ];
+  const fcMutagenCls = m => m==='化禄'?'fc-mutagen-lu':m==='化权'?'fc-mutagen-quan':m==='化科'?'fc-mutagen-ke':'fc-mutagen-ji';
   const minorHtml = allMinor.map(s => {
     const name = s.name || s;
-    const m = s.mutagen ? `<span class="fc-mutagen-ji" style="font-size:7px">${s.mutagen.replace('化','')}</span>` : '';
+    const m = s.mutagen ? `<span class="${fcMutagenCls(s.mutagen)}" style="font-size:7px">${s.mutagen}</span>` : '';
     return `<div class="fc-minor-star">${name}${m}</div>`;
   }).join('');
 
