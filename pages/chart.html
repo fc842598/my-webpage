@@ -6,6 +6,7 @@
   <title>紫微斗数 · 免费排盘与命盘解析</title>
   <link rel="stylesheet" href="../css/style.css">
   <link rel="stylesheet" href="../css/chart.css">
+  <style>body { background: #f7f6f2 !important; color: #4a3f35; }</style>
 </head>
 <body>
 
@@ -19,202 +20,115 @@
   </div>
 </header>
 
-<!-- ① 输入表单 -->
-<section class="form-section">
-  <div class="section-inner">
-    <div class="form-header">
-      <h1>免费紫微斗数排盘</h1>
-      <p>填入出生信息，生成十二宫完整命盘，并可一键获得命盘解析。</p>
+<!-- ① 输入表单（Figma 风格） -->
+<section id="form-section" class="nf-page">
+  <header class="nf-header">
+    <div class="nf-logo">
+      <div class="nf-diamond"></div>
+      <span>紫微排盘</span>
     </div>
-    <form id="chart-form" class="chart-form" novalidate>
-      <div class="form-grid">
-        <div class="form-group">
-          <label for="inp-year">出生年份</label>
-          <input type="number" id="inp-year" min="1900" max="2030" placeholder="如：1990" autocomplete="off">
-        </div>
-        <div class="form-group">
-          <label for="inp-month">出生月份</label>
-          <select id="inp-month">
-            <option value="">选择月份</option>
-            <option value="1">1 月</option><option value="2">2 月</option>
-            <option value="3">3 月</option><option value="4">4 月</option>
-            <option value="5">5 月</option><option value="6">6 月</option>
-            <option value="7">7 月</option><option value="8">8 月</option>
-            <option value="9">9 月</option><option value="10">10 月</option>
-            <option value="11">11 月</option><option value="12">12 月</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="inp-day">出生日</label>
-          <select id="inp-day"><option value="">选择日期</option></select>
-        </div>
-        <div class="form-group">
-          <label for="inp-time">出生时辰</label>
-          <select id="inp-time">
-            <option value="-1">不知道时辰（默认午时）</option>
-            <option value="0">子时　23:00 – 01:00</option>
-            <option value="1">丑时　01:00 – 03:00</option>
-            <option value="2">寅时　03:00 – 05:00</option>
-            <option value="3">卯时　05:00 – 07:00</option>
-            <option value="4">辰时　07:00 – 09:00</option>
-            <option value="5">巳时　09:00 – 11:00</option>
-            <option value="6">午时　11:00 – 13:00</option>
-            <option value="7">未时　13:00 – 15:00</option>
-            <option value="8">申时　15:00 – 17:00</option>
-            <option value="9">酉时　17:00 – 19:00</option>
-            <option value="10">戌时　19:00 – 21:00</option>
-            <option value="11">亥时　21:00 – 23:00</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>性别</label>
-          <div class="gender-row">
-            <button type="button" class="gender-btn active" data-v="male">男</button>
-            <button type="button" class="gender-btn" data-v="female">女</button>
-            <input type="hidden" id="inp-gender" value="male">
-          </div>
-        </div>
+    <button class="nf-history-btn">🕐 排盘记录</button>
+  </header>
+  <div class="nf-card">
+    <!-- 姓名 & 性别 -->
+    <div class="nf-row">
+      <div class="nf-row-left">
+        <span class="nf-label">姓名:</span>
+        <input type="text" id="inp-name" placeholder="请输入姓名（选填）" class="nf-name-input" autocomplete="off">
       </div>
-      <div id="form-error" class="form-error" style="display:none"></div>
-      <button type="submit" class="btn-submit" id="btn-submit">
+      <div class="nf-gender-pill">
+        <button type="button" class="nf-gender-btn active" data-v="male">男</button>
+        <button type="button" class="nf-gender-btn" data-v="female">女</button>
+        <input type="hidden" id="inp-gender" value="male">
+      </div>
+    </div>
+    <!-- 出生时间 -->
+    <div class="nf-row" id="nf-time-row" style="cursor:pointer">
+      <div class="nf-row-left">
+        <span class="nf-required">*</span>
+        <span class="nf-label">出生时间: <span style="font-size:.8rem">(必填)</span></span>
+      </div>
+      <div class="nf-row-right">
+        <span id="nf-time-val" class="nf-val-muted">请选择</span>
+        <span class="nf-chevron">›</span>
+      </div>
+    </div>
+    <!-- 展开的时间选择器 -->
+    <div id="nf-time-inputs" class="nf-inline-inputs" style="display:none">
+      <div class="form-group" style="flex:1;min-width:120px">
+        <label for="inp-year" style="display:block;font-size:.78rem;color:#8e857d;margin-bottom:6px">年份</label>
+        <input type="number" id="inp-year" min="1900" max="2030" placeholder="如：1990" autocomplete="off" class="nf-select">
+      </div>
+      <div class="form-group" style="flex:1;min-width:100px">
+        <label for="inp-month" style="display:block;font-size:.78rem;color:#8e857d;margin-bottom:6px">月份</label>
+        <select id="inp-month" class="nf-select">
+          <option value="">选择月份</option>
+          <option value="1">1 月</option><option value="2">2 月</option>
+          <option value="3">3 月</option><option value="4">4 月</option>
+          <option value="5">5 月</option><option value="6">6 月</option>
+          <option value="7">7 月</option><option value="8">8 月</option>
+          <option value="9">9 月</option><option value="10">10 月</option>
+          <option value="11">11 月</option><option value="12">12 月</option>
+        </select>
+      </div>
+      <div class="form-group" style="flex:1;min-width:90px">
+        <label for="inp-day" style="display:block;font-size:.78rem;color:#8e857d;margin-bottom:6px">日期</label>
+        <select id="inp-day" class="nf-select"><option value="">选择日期</option></select>
+      </div>
+      <div class="form-group" style="flex:1;min-width:140px">
+        <label for="inp-time" style="display:block;font-size:.78rem;color:#8e857d;margin-bottom:6px">时辰</label>
+        <select id="inp-time" class="nf-select">
+          <option value="-1">不知道时辰</option>
+          <option value="0">子时 23:00-01:00</option>
+          <option value="1">丑时 01:00-03:00</option>
+          <option value="2">寅时 03:00-05:00</option>
+          <option value="3">卯时 05:00-07:00</option>
+          <option value="4">辰时 07:00-09:00</option>
+          <option value="5">巳时 09:00-11:00</option>
+          <option value="6">午时 11:00-13:00</option>
+          <option value="7">未时 13:00-15:00</option>
+          <option value="8">申时 15:00-17:00</option>
+          <option value="9">酉时 17:00-19:00</option>
+          <option value="10">戌时 19:00-21:00</option>
+          <option value="11">亥时 21:00-23:00</option>
+        </select>
+      </div>
+    </div>
+    <!-- 出生地点 -->
+    <div class="nf-row">
+      <span class="nf-label">出生地点:</span>
+      <div class="nf-row-right">
+        <span class="nf-val-muted">选填，暂未实现</span>
+      </div>
+    </div>
+    <!-- 真太阳时 & 保存案例 -->
+    <div class="nf-row" style="border-bottom:none">
+      <div class="nf-row-left">
+        <span class="nf-label">真太阳时:</span>
+        <span class="nf-val-muted" id="nf-solar-val">--</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <span class="nf-label">保存案例</span>
+        <button type="button" class="nf-toggle" id="nf-save-toggle">
+          <div class="nf-toggle-knob"></div>
+        </button>
+      </div>
+    </div>
+    <!-- 错误提示 -->
+    <div id="form-error" class="nf-error" style="display:none"></div>
+    <!-- 提交按钮 -->
+    <div class="nf-submit-wrap">
+      <button type="button" class="nf-submit" id="btn-submit">
         <span id="btn-text">开 始 排 盘</span>
         <span id="btn-loading" style="display:none">排盘中…</span>
       </button>
-    </form>
-    <p class="form-note">数据仅在本地浏览器运算，不上传，不储存。<br>
-    排盘算法基于 <a href="https://github.com/SylarLong/iztro" target="_blank">iztro</a>（MIT 许可）开源项目。</p>
+    </div>
+    <p style="text-align:center;margin-top:10px;margin-bottom:4px;color:#b0a89f;font-size:.72rem">数据仅在本地浏览器运算，不上传，不储存。<br>算法基于 <a href="https://github.com/SylarLong/iztro" target="_blank" style="color:#b59e8f">iztro</a>（MIT 许可）</p>
   </div>
 </section>
 
-<!-- ② 命盘结果 -->
-<section id="chart-result" class="chart-result-section" style="display:none">
-  <div class="section-inner">
-
-    <div class="result-meta" id="result-meta"></div>
-    <div class="time-warn" id="time-warn" style="display:none">
-      ⚠ 时辰未知：命宫位置基于默认午时估算，实际命宫可能不同。
-    </div>
-
-    <!-- 三方四正说明 -->
-    <div class="sanyao-hint">
-      <span id="sanyao-label">点击任意宫位，高亮其三方四正关系</span>
-      <div class="sanyao-legend">
-        <span class="sl-item sl-self">本宫</span>
-        <span class="sl-item sl-sanhe">三合</span>
-        <span class="sl-item sl-dui">对宫</span>
-      </div>
-    </div>
-
-    <!-- 命盘网格 -->
-    <div class="chart-board-wrap">
-      <div class="palace-grid" id="palace-grid">
-        <svg id="sanyao-svg" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:5;overflow:visible;"></svg>
-        <div class="palace-cell" id="p-si"></div>
-        <div class="palace-cell" id="p-wu"></div>
-        <div class="palace-cell" id="p-wei"></div>
-        <div class="palace-cell" id="p-shen"></div>
-
-        <div class="palace-cell" id="p-chen"></div>
-        <div class="chart-center" id="chart-center">
-          <div class="cc-zodiac" id="cc-zodiac"></div>
-          <div class="cc-date"   id="cc-date"></div>
-          <div class="cc-divider"></div>
-          <div class="cc-row"><span class="cc-lbl">五行局</span><span class="cc-val" id="cc-five"></span></div>
-          <div class="cc-row"><span class="cc-lbl">命主</span>  <span class="cc-val" id="cc-soul"></span></div>
-          <div class="cc-row"><span class="cc-lbl">身主</span>  <span class="cc-val" id="cc-body"></span></div>
-          <div class="cc-row"><span class="cc-lbl">命宫支</span><span class="cc-val" id="cc-life-br"></span></div>
-          <div class="cc-row"><span class="cc-lbl">身宫支</span><span class="cc-val" id="cc-body-br"></span></div>
-        </div>
-        <div class="palace-cell" id="p-you"></div>
-
-        <div class="palace-cell" id="p-mao"></div>
-        <div class="palace-cell" id="p-xu"></div>
-
-        <div class="palace-cell" id="p-yin"></div>
-        <div class="palace-cell" id="p-chou"></div>
-        <div class="palace-cell" id="p-zi"></div>
-        <div class="palace-cell" id="p-hai"></div>
-      </div>
-    </div>
-
-    <!-- 图例 -->
-    <div class="chart-legend">
-      <span class="star star-major demo">紫微</span> 主星 &nbsp;
-      <span class="star star-minor demo">左辅</span> 辅星 &nbsp;
-      <span class="star star-adj demo">天才</span> 杂曜 &nbsp;
-      <span class="mutagen-badge">化禄</span> 四化 &nbsp;
-      <span class="brightness-tag">庙</span> 亮度 &nbsp;
-      <span class="badge-body">身</span> 身宫 &nbsp;
-      <span class="cs-tag">长生</span> 长生12神
-    </div>
-
-    <!-- 三合组色彩说明 -->
-    <div class="sanhe-legend">
-      <span class="sh申子辰">申子辰（水局）</span>
-      <span class="sh亥卯未">亥卯未（木局）</span>
-      <span class="sh寅午戌">寅午戌（火局）</span>
-      <span class="sh巳酉丑">巳酉丑（金局）</span>
-    </div>
-
-    <!-- 一键分析按钮 -->
-    <div class="analyze-cta">
-      <button class="btn-analyze" id="btn-analyze">
-        ✨ 一键解析命盘
-      </button>
-      <p>根据命盘星曜格局，自动生成结构化解读报告</p>
-    </div>
-
-    <!-- 分析面板 -->
-    <div id="analysis-panel" class="analysis-panel" style="display:none">
-      <div class="analysis-header">
-        <h2>✨ 命盘解析报告</h2>
-        <p class="analysis-sub" id="analysis-sub-title"></p>
-      </div>
-      <div class="analysis-grid">
-        <div class="analysis-section an-wide">
-          <h3><span>🌟</span> 总体命格</h3>
-          <p id="an-overview"></p>
-        </div>
-        <div class="analysis-section">
-          <h3><span>🧠</span> 性格特征</h3>
-          <p id="an-personality"></p>
-        </div>
-        <div class="analysis-section">
-          <h3><span>💼</span> 事业方向</h3>
-          <p id="an-career"></p>
-        </div>
-        <div class="analysis-section">
-          <h3><span>💰</span> 财运格局</h3>
-          <p id="an-wealth"></p>
-        </div>
-        <div class="analysis-section">
-          <h3><span>💑</span> 感情婚恋</h3>
-          <p id="an-love"></p>
-        </div>
-        <div class="analysis-section">
-          <h3><span>⚠️</span> 风险提示</h3>
-          <p id="an-risks"></p>
-        </div>
-        <div class="analysis-section an-wide">
-          <h3><span>💡</span> 实用建议</h3>
-          <p id="an-advice"></p>
-        </div>
-      </div>
-      <p class="analysis-disclaimer">
-        本解析基于命盘星曜格局自动生成，引用依据已标注宫位与星曜。
-        <!-- AI_HOOK: 未来可在此处接入 Claude / GPT API 进行深度解读，替换 buildAnalysis() 函数 -->
-      </p>
-    </div>
-
-    <div style="text-align:center;margin-top:36px">
-      <button class="btn-ghost" id="btn-reset">重新排盘</button>
-    </div>
-  </div>
-</section>
-
-<!-- ③ Figma 新版命盘样式（预览） -->
+<!-- ② Figma 新版命盘 -->
 <section id="fc-section" class="fc-section" style="display:none">
-  <p class="fc-section-title">— 新版命盘样式预览 —</p>
   <div class="fc-card">
 
     <!-- 顶栏 -->
@@ -289,6 +203,11 @@
       <div class="fc-hex-name" id="fc-hex-name">风水涣</div>
       <div class="fc-hex-sub" id="fc-hex-sub">FENG SHUI HUAN</div>
       <div class="fc-hex-lines" id="fc-hex-lines"></div>
+    </div>
+
+    <!-- 重新排盘按钮 -->
+    <div style="padding: 0 12px 20px; text-align:center">
+      <button class="nf-reset-btn" id="btn-reset">重新排盘</button>
     </div>
 
   </div>
@@ -371,27 +290,51 @@ for (let d = 1; d <= 31; d++) {
 // 应用默认测试值
 applyDefaults();
 
-document.querySelectorAll('.gender-btn').forEach(btn => {
+// 时间行点击展开/收起
+document.getElementById('nf-time-row').addEventListener('click', () => {
+  const inp = document.getElementById('nf-time-inputs');
+  inp.style.display = inp.style.display === 'none' ? 'flex' : 'none';
+});
+
+// 时间显示更新
+function updateTimeDisplay() {
+  const y = document.getElementById('inp-year').value;
+  const m = document.getElementById('inp-month').value;
+  const d = document.getElementById('inp-day').value;
+  const t = document.getElementById('inp-time');
+  const tLabel = t.options[t.selectedIndex]?.text?.split(' ')[0] || '';
+  if (y && m && d) {
+    document.getElementById('nf-time-val').textContent = `${y}-${String(m).padStart(2,'0')}-${String(d).padStart(2,'0')} ${tLabel}`;
+    document.getElementById('nf-time-val').style.color = '#4a3f35';
+    document.getElementById('nf-solar-val').textContent = `${y}-${String(m).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+  }
+}
+['inp-year','inp-month','inp-day','inp-time'].forEach(id => {
+  document.getElementById(id).addEventListener('change', updateTimeDisplay);
+});
+
+// 性别按钮
+document.querySelectorAll('.nf-gender-btn').forEach(btn => {
   btn.addEventListener('click', () => {
-    document.querySelectorAll('.gender-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.nf-gender-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     document.getElementById('inp-gender').value = btn.dataset.v;
   });
 });
 
-document.getElementById('btn-reset').addEventListener('click', () => {
-  document.getElementById('chart-result').style.display = 'none';
-  document.getElementById('fc-section').style.display   = 'none';
-  document.getElementById('analysis-panel').style.display = 'none';
-  clearSanyaoLines();
-  _currentSanyaoBranch = null;
-  applyDefaults();
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+// 保存案例 toggle
+document.getElementById('nf-save-toggle').addEventListener('click', function() {
+  this.classList.toggle('on');
+  const knob = this.querySelector('.nf-toggle-knob');
+  knob.style.transform = this.classList.contains('on') ? 'translateX(20px)' : 'translateX(0)';
 });
 
-// resize 时重画连线
-window.addEventListener('resize', () => {
-  if (_currentSanyaoBranch) requestAnimationFrame(() => drawSanyaoLines(_currentSanyaoBranch));
+// 重新排盘按钮
+document.getElementById('btn-reset').addEventListener('click', () => {
+  document.getElementById('fc-section').style.display = 'none';
+  _currentSanyaoBranch = null;
+  applyDefaults();
+  document.getElementById('form-section').scrollIntoView({ behavior: 'smooth' });
 });
 
 function applyDefaults() {
@@ -399,15 +342,15 @@ function applyDefaults() {
   document.getElementById('inp-month').value = DEFAULT_TEST.month;
   document.getElementById('inp-day').value   = DEFAULT_TEST.day;
   document.getElementById('inp-time').value  = DEFAULT_TEST.time;
-  document.querySelectorAll('.gender-btn').forEach(btn => {
+  document.querySelectorAll('.nf-gender-btn').forEach(btn => {
     btn.classList.toggle('active', btn.dataset.v === DEFAULT_TEST.gender);
   });
   document.getElementById('inp-gender').value = DEFAULT_TEST.gender;
+  updateTimeDisplay();
 }
 
-// ─── 表单提交 ─────────────────────────────────────────────
-document.getElementById('chart-form').addEventListener('submit', async (e) => {
-  e.preventDefault();
+// ─── 提交按钮 ─────────────────────────────────────────────
+document.getElementById('btn-submit').addEventListener('click', async () => {
   const year   = document.getElementById('inp-year').value.trim();
   const month  = document.getElementById('inp-month').value;
   const day    = document.getElementById('inp-day').value;
@@ -437,10 +380,8 @@ document.getElementById('chart-form').addEventListener('submit', async (e) => {
 
     renderChart(_chart, unknownTime, gender, dateStr);
     renderFigmaChart(_chart, gender, dateStr);
-    document.getElementById('chart-result').style.display = 'block';
     document.getElementById('fc-section').style.display = 'block';
-    document.getElementById('analysis-panel').style.display = 'none';
-    document.getElementById('chart-result').scrollIntoView({ behavior: 'smooth' });
+    document.getElementById('fc-section').scrollIntoView({ behavior: 'smooth' });
 
   } catch (err) {
     showError('排盘失败：' + (err.message || '请检查出生日期，或刷新重试'));
@@ -450,16 +391,7 @@ document.getElementById('chart-form').addEventListener('submit', async (e) => {
   }
 });
 
-// ─── 一键分析 ─────────────────────────────────────────────
-document.getElementById('btn-analyze').addEventListener('click', () => {
-  if (!_chart) return;
-  const result = buildAnalysis(_chart, _chartInputs);
-  renderAnalysis(result);
-  document.getElementById('analysis-panel').style.display = 'block';
-  document.getElementById('analysis-panel').scrollIntoView({ behavior: 'smooth' });
-});
-
-// ─── 渲染命盘 ─────────────────────────────────────────────
+// ─── 渲染命盘（保留，供内部使用） ────────────────────────
 function renderChart(chart, unknownTime, gender, dateStr) {
   clearSanyaoLines();
   _currentSanyaoBranch = null;
@@ -470,18 +402,27 @@ function renderChart(chart, unknownTime, gender, dateStr) {
   });
 
   // 中心
-  document.getElementById('cc-zodiac').textContent  = chart.zodiac || '';
-  document.getElementById('cc-date').textContent    = chart.chineseDate || chart.lunarDate || '';
-  document.getElementById('cc-five').textContent    = chart.fiveElementsClass || '—';
-  document.getElementById('cc-soul').textContent    = chart.soul || '—';
-  document.getElementById('cc-body').textContent    = chart.body || '—';
-  document.getElementById('cc-life-br').textContent = chart.earthlyBranchOfSoulPalace || '—';
-  document.getElementById('cc-body-br').textContent = chart.earthlyBranchOfBodyPalace || '—';
+  const ccZodiac = document.getElementById('cc-zodiac');
+  if (ccZodiac) ccZodiac.textContent  = chart.zodiac || '';
+  const ccDate = document.getElementById('cc-date');
+  if (ccDate) ccDate.textContent    = chart.chineseDate || chart.lunarDate || '';
+  const ccFive = document.getElementById('cc-five');
+  if (ccFive) ccFive.textContent    = chart.fiveElementsClass || '—';
+  const ccSoul = document.getElementById('cc-soul');
+  if (ccSoul) ccSoul.textContent    = chart.soul || '—';
+  const ccBody = document.getElementById('cc-body');
+  if (ccBody) ccBody.textContent    = chart.body || '—';
+  const ccLifeBr = document.getElementById('cc-life-br');
+  if (ccLifeBr) ccLifeBr.textContent = chart.earthlyBranchOfSoulPalace || '—';
+  const ccBodyBr = document.getElementById('cc-body-br');
+  if (ccBodyBr) ccBodyBr.textContent = chart.earthlyBranchOfBodyPalace || '—';
 
   const genderLabel = gender === 'male' ? '男命' : '女命';
-  document.getElementById('result-meta').textContent =
+  const resultMeta = document.getElementById('result-meta');
+  if (resultMeta) resultMeta.textContent =
     `公历 ${dateStr} · ${genderLabel} · ${chart.sign || ''}`;
-  document.getElementById('time-warn').style.display = unknownTime ? 'block' : 'none';
+  const timeWarn = document.getElementById('time-warn');
+  if (timeWarn) timeWarn.style.display = unknownTime ? 'block' : 'none';
 
   // 填宫
   const palaces = chart.palaces || [];
@@ -567,7 +508,8 @@ function highlightSanyao(branch, palaceName) {
     if (el) el.classList.add('sanyao-dui');
   }
 
-  document.getElementById('sanyao-label').textContent =
+  const sanyaoLabel = document.getElementById('sanyao-label');
+  if (sanyaoLabel) sanyaoLabel.textContent =
     `${palaceName || ''}（${branch}）的三方四正：${(SANHE_PARTNERS[branch]||[]).join('、')} + 对宫${duiBr}`;
 
   _currentSanyaoBranch = branch;
@@ -575,7 +517,6 @@ function highlightSanyao(branch, palaceName) {
 }
 
 // ─── 宫位端口 + 走廊路由 ──────────────────────────────────
-// 每个宫位按外圈位置归类：角落宫(NW/NE/SW/SE)用内角, 边宫(N/S/W/E)用内边中点
 const BRANCH_SIDE = {
   '巳':'NW','午':'N', '未':'N', '申':'NE',
   '辰':'W', '卯':'W',
@@ -593,21 +534,22 @@ function getPort(branch, svgRect) {
   const x1 = x0 + r.width, y1 = y0 + r.height;
   const xm = (x0 + x1) / 2, ym = (y0 + y1) / 2;
   switch (BRANCH_SIDE[branch]) {
-    case 'N':  return { x: xm, y: y1 };   // 底边中点 → 向中央格顶部
-    case 'S':  return { x: xm, y: y0 };   // 顶边中点 → 向中央格底部
-    case 'W':  return { x: x1, y: ym };   // 右边中点 → 向中央格左侧
-    case 'E':  return { x: x0, y: ym };   // 左边中点 → 向中央格右侧
-    case 'NW': return { x: x1, y: y1 };   // 右下内角（巳）
-    case 'NE': return { x: x0, y: y1 };   // 左下内角（申）
-    case 'SW': return { x: x1, y: y0 };   // 右上内角（寅）
-    case 'SE': return { x: x0, y: y0 };   // 左上内角（亥）
+    case 'N':  return { x: xm, y: y1 };
+    case 'S':  return { x: xm, y: y0 };
+    case 'W':  return { x: x1, y: ym };
+    case 'E':  return { x: x0, y: ym };
+    case 'NW': return { x: x1, y: y1 };
+    case 'NE': return { x: x0, y: y1 };
+    case 'SW': return { x: x1, y: y0 };
+    case 'SE': return { x: x0, y: y0 };
     default:   return { x: xm, y: ym };
   }
 }
 
 function getCorridor(svgRect) {
-  // 中央格的四边 = 走廊路由主干道
-  const r = document.getElementById('chart-center').getBoundingClientRect();
+  const centerEl = document.getElementById('chart-center');
+  if (!centerEl) return { top:0, bottom:0, left:0, right:0 };
+  const r = centerEl.getBoundingClientRect();
   return {
     top:    r.top    - svgRect.top,
     bottom: r.bottom - svgRect.top,
@@ -618,7 +560,6 @@ function getCorridor(svgRect) {
 
 function clamp01(v) { return v < 0 ? 0 : v > 1 ? 1 : v; }
 
-// 把端口投影到中央格周长上，返回 0~4 的参数值（顺时针 NW=0, NE=1, SE=2, SW=3）
 function perimParam(port, side, corr) {
   const W = corr.right - corr.left, H = corr.bottom - corr.top;
   switch (side) {
@@ -634,7 +575,6 @@ function perimParam(port, side, corr) {
   }
 }
 
-// 把周长参数还原为坐标点
 function perimPoint(param, corr) {
   const W = corr.right - corr.left, H = corr.bottom - corr.top;
   const p = ((param % 4) + 4) % 4;
@@ -644,14 +584,12 @@ function perimPoint(param, corr) {
   return               { x: corr.left,                  y: corr.bottom - (p-3)*H };
 }
 
-// 沿走廊周长路由：返回折线点数组，所有转折点均在中央格边框 gutter 内
 function routePoints(portA, sideA, portB, sideB, corr) {
   const pA = perimParam(portA, sideA, corr);
   const pB = perimParam(portB, sideB, corr);
   const cwD  = ((pB - pA) % 4 + 4) % 4;
   const ccwD = ((pA - pB) % 4 + 4) % 4;
 
-  // 收集从 start 顺时针到 start+dist 之间经过的整数角点（NW/NE/SE/SW）
   function cwCorners(start, dist) {
     const corners = [];
     const end = start + dist;
@@ -667,7 +605,6 @@ function routePoints(portA, sideA, portB, sideB, corr) {
     ? cwCorners(pA, cwD)
     : cwCorners(pB, ccwD).reverse();
 
-  // 去除重复或极近点
   const EPS = 2;
   function near(a, b) { return Math.abs(a.x-b.x) < EPS && Math.abs(a.y-b.y) < EPS; }
   const pts = [portA];
@@ -681,6 +618,7 @@ function routePoints(portA, sideA, portB, sideB, corr) {
 // ─── SVG 连线绘制 ─────────────────────────────────────────
 function drawSanyaoLines(branch) {
   const svgEl = document.getElementById('sanyao-svg');
+  if (!svgEl) return;
   clearSanyaoLines();
   const svgRect = svgEl.getBoundingClientRect();
   const corr    = getCorridor(svgRect);
@@ -737,16 +675,12 @@ function drawSanyaoLines(branch) {
   const sSh2 = partners[1] ? BRANCH_SIDE[partners[1]] : null;
   const sDui = duiBr ? BRANCH_SIDE[duiBr] : null;
 
-  // 本宫 ↔ 三合宫（金色实线，走廊路由）
   if (pSh1 && sSh1) mkPolyline(routePoints(pSelf, sSelf, pSh1, sSh1, corr), '#d4a843', '0.62', null,  'sg-gold');
   if (pSh2 && sSh2) mkPolyline(routePoints(pSelf, sSelf, pSh2, sSh2, corr), '#d4a843', '0.62', null,  'sg-gold');
-  // 两三合宫互连（浅紫虚线）
   if (pSh1 && pSh2 && sSh1 && sSh2)
     mkPolyline(routePoints(pSh1, sSh1, pSh2, sSh2, corr), '#9b6fd4', '0.28', '5 4', 'sg-gold');
-  // 对宫（青色虚线）
   if (pDui && sDui) mkPolyline(routePoints(pSelf, sSelf, pDui, sDui, corr), '#50c8c8', '0.48', '7 4', 'sg-teal');
 
-  // 端点落在 port 上（不在内容区中心）
   mkDot(pSelf, '#d4a843', '0.9');
   mkDot(pSh1,  '#d4a843', '0.65');
   mkDot(pSh2,  '#d4a843', '0.65');
@@ -774,10 +708,9 @@ const FC_HEXAGRAMS = {
 let _fcActiveTab  = '先天卦';
 let _fcActiveAge  = 0;
 let _fcBirthYear  = 1991;
-let _fcYearCards  = [];          // [{age, year, label}]
-let _fcYearlyMap  = {};          // earthlyBranch → yearly palace data
+let _fcYearCards  = [];
+let _fcYearlyMap  = {};
 
-// 生成当前命盘的流年年份卡片（从当前实岁前3年到后8年）
 function fcBuildYearCards(birthYear) {
   const curYear = new Date().getFullYear();
   const curAge  = curYear - birthYear;
@@ -788,13 +721,11 @@ function fcBuildYearCards(birthYear) {
   }
 }
 
-// 用 iztro horoscope() 获取某年的流年宫位数据，存入 _fcYearlyMap
 function fcLoadYearly(year) {
   _fcYearlyMap = {};
   if (!_chart || typeof _chart.horoscope !== 'function') return;
   try {
     const h = _chart.horoscope(`${year}-06-01`, 0);
-    // iztro v2 返回结构：h.yearly 或 h.decadal 可能含 palaces
     const scope = h.yearly || h.decadal || h;
     const palaces = scope.palaces || scope.palace || [];
     palaces.forEach(yp => {
@@ -839,10 +770,8 @@ function fcSelectYear(age) {
   _fcActiveAge = age;
   const year = _fcBirthYear + age;
   fcLoadYearly(year);
-  // 更新中央面板流年显示
   document.getElementById('fc-c-liunian').textContent = `${age}岁（${year}年）`;
   fcRenderLiunianScroll();
-  // 重新渲染宫格（含流年数据）
   renderFigmaHighlight(_fcActiveBranch || (_chart && _chart.earthlyBranchOfSoulPalace) || '卯');
 }
 
@@ -857,7 +786,6 @@ function fcRenderLiunianScroll() {
     card.addEventListener('click', () => fcSelectYear(item.age));
     scroll.appendChild(card);
   });
-  // 自动滚动到当前选中年
   requestAnimationFrame(() => {
     const active = scroll.querySelector('.fc-year-card.active');
     if (active) active.scrollIntoView({ inline: 'center', behavior: 'smooth', block: 'nearest' });
@@ -878,7 +806,6 @@ function fcBuildCell(p, activeBranch) {
   const isRel = !isBen && sanhe.includes(branch);
   cell.className = 'fc-cell' + (isBen ? ' fc-ben' : isRel ? ' fc-rel' : '');
 
-  // 主星（含四化色）
   const majorHtml = (p.majorStars || []).map(s => {
     let modSpan = '';
     if (s.mutagen) {
@@ -888,7 +815,6 @@ function fcBuildCell(p, activeBranch) {
     return `<div class="fc-major-star">${s.name}${s.brightness||''}${modSpan}</div>`;
   }).join('');
 
-  // 辅星 + 杂曜（合并显示，右侧）
   const allMinor = [
     ...(p.minorStars || []),
     ...(p.adjectiveStars || p.adjStars || [])
@@ -900,24 +826,19 @@ function fcBuildCell(p, activeBranch) {
     return `<div class="fc-minor-star">${name}${m}</div>`;
   }).join('');
 
-  // 长生/博士神煞
   const shenHtml = [p.changsheng12, p.boshi12].filter(Boolean)
     .map(s=>`<span>${s}</span>`).join('');
 
-  // 流年卦模式：叠加流年宫数据
   let yearlyHtml = '';
   if (_fcActiveTab === '流年卦') {
     const yp = _fcYearlyMap[branch];
     if (yp) {
-      // 流年四化
       const yMutagen = (yp.mutagen || []).map(m =>
         `<span class="fc-minor-star" style="color:#963d32">${m}</span>`
       ).join('');
-      // 流年额外星曜
       const yStars = (yp.stars || yp.majorStars || []).map(s =>
         `<span class="fc-minor-star" style="color:#476885">${s.name||s}</span>`
       ).join('');
-      // 流年命宫标记
       const isYearLife = yp.isOriginalPalace || (yp.name && (yp.name.includes('命') || yp.name.includes('小限')));
       if (yMutagen || yStars || isYearLife) {
         yearlyHtml = `<div class="fc-yearly-row">${isYearLife?'<span class="fc-yearly-life">流年</span>':''}${yMutagen}${yStars}</div>`;
@@ -960,12 +881,12 @@ function renderFigmaChart(chart, gender, dateStr) {
 
   // 中央面板
   const genderLabel = gender === 'male' ? '阳男' : '阴女';
-  document.getElementById('fc-c-name').textContent    = genderLabel;
+  const nameVal = document.getElementById('inp-name')?.value || genderLabel;
+  document.getElementById('fc-c-name').textContent    = nameVal;
   document.getElementById('fc-c-meta').textContent    = chart.fiveElementsClass || '';
   document.getElementById('fc-c-solar').textContent   = dateStr || '';
   document.getElementById('fc-c-lunar').textContent   = chart.chineseDate || chart.lunarDate || '';
 
-  // 四柱（尝试多种 iztro 属性名）
   const sizhuEl = document.getElementById('fc-c-sizhu');
   const STEM_COLORS = ['#886a4a','#4d7a5b','#9b4238','#476885'];
   const rd = chart.rawDates || chart;
@@ -989,43 +910,35 @@ function renderFigmaChart(chart, gender, dateStr) {
     sizhuEl.innerHTML = '<span style="font-size:8px;color:#8c7e75">暂无四柱</span>';
   }
 
-  // 流年年份卡片（动态，基于实际出生年）
   fcBuildYearCards(_fcBirthYear);
   fcLoadYearly(_fcBirthYear + _fcActiveAge);
 
-  // 更新中央面板流年
   document.getElementById('fc-c-xiantian').textContent = '风水涣';
   document.getElementById('fc-c-houtian').textContent  = '水天需';
   document.getElementById('fc-c-liunian').textContent  = `${_fcActiveAge}岁（${_fcBirthYear + _fcActiveAge}年）`;
 
-  // 渲染宫格
   _fcActiveBranch = lifeBranch || '卯';
   renderFigmaHighlight(_fcActiveBranch);
 
-  // 渲染 Tab / 流年 / 卦象
   _fcActiveTab = '先天卦';
   fcRenderTabs();
   fcRenderLiunianScroll();
   fcRenderHexagram();
 
-  // Tab 点击
   document.querySelectorAll('.fc-tab').forEach(btn => {
     btn.onclick = () => {
       _fcActiveTab = btn.dataset.tab;
       fcRenderTabs();
       fcRenderHexagram();
-      // 切到流年卦时重新渲染格子（叠加流年数据）
       renderFigmaHighlight(_fcActiveBranch);
     };
   });
-  // 滚动按钮
   const scrollEl = document.getElementById('fc-liunian-scroll');
   document.getElementById('fc-scroll-left').onclick  = () => scrollEl.scrollBy({left:-90,behavior:'smooth'});
   document.getElementById('fc-scroll-right').onclick = () => scrollEl.scrollBy({left: 90,behavior:'smooth'});
 }
 
 // ─── AI 解盘引擎 ──────────────────────────────────────────
-// AI_HOOK: 替换此函数体，改为调用 Claude/GPT API 即可升级为真实 AI 解盘
 function buildAnalysis(chart, inputs) {
   const palaces = chart.palaces || [];
   const byName  = {};
@@ -1044,12 +957,10 @@ function buildAnalysis(chart, inputs) {
   const lifeMaj  = majorOf(life);
   const lifeData = STARS[lifeMaj[0]];
 
-  // 全命盘四化
   const allMutagen = palaces.flatMap(p =>
     (p.majorStars||[]).filter(s=>s.mutagen).map(s=>`${p.name}${s.name}${s.mutagen}`)
   );
 
-  // 总体命格
   const gender = (inputs?.gender === 'male') ? '男命' : '女命';
   let overview = `${chart.zodiac || ''}年生，${chart.fiveElementsClass || ''}，${gender}。`;
   if (lifeMaj.length) {
@@ -1059,7 +970,6 @@ function buildAnalysis(chart, inputs) {
   }
   if (allMutagen.length) overview += `四化分布：${allMutagen.join('、')}。`;
 
-  // 性格
   let personality = lifeData
     ? `命宫${lifeMaj[0]}：${lifeData.trait}。`
     : '命宫空宫，性格多元，受大运影响明显。';
@@ -1068,7 +978,6 @@ function buildAnalysis(chart, inputs) {
   const lifeJi = (life?.majorStars||[]).find(s=>s.mutagen?.includes('忌'));
   if (lifeJi && lifeData) personality += `命宫${lifeJi.name}化忌，注意：${lifeData.risk}。`;
 
-  // 事业
   const careerMaj = majorOf(career);
   let careerText = careerMaj.length && STARS[careerMaj[0]]
     ? `官禄宫主星${careerMaj[0]}：${STARS[careerMaj[0]].career}。`
@@ -1077,7 +986,6 @@ function buildAnalysis(chart, inputs) {
   if (mutagenOf(career).some(m=>m.includes('化忌'))) careerText += '官禄化忌，事业有阻，宜稳健行事。';
   if (lifeData) careerText += `结合命格：${lifeData.career}。`;
 
-  // 财运
   const wealthMaj = majorOf(wealth);
   let wealthText = wealthMaj.length && STARS[wealthMaj[0]]
     ? `财帛宫主星${wealthMaj[0]}：${STARS[wealthMaj[0]].wealth}。`
@@ -1086,7 +994,6 @@ function buildAnalysis(chart, inputs) {
   if (mutagenOf(wealth).some(m=>m.includes('化忌'))) wealthText += '财帛化忌，注意防漏财或冲动消费。';
   if (hasMinor(wealth,'禄存')) wealthText += '禄存入财帛，财库稳固，善于守财。';
 
-  // 感情
   const loveMaj = majorOf(love);
   let loveText = loveMaj.length && STARS[loveMaj[0]]
     ? `夫妻宫主星${loveMaj[0]}：${STARS[loveMaj[0]].love}。`
@@ -1094,7 +1001,6 @@ function buildAnalysis(chart, inputs) {
   if (mutagenOf(love).some(m=>m.includes('化禄'))) loveText += '夫妻化禄，感情缘分好，易遇良缘。';
   if (mutagenOf(love).some(m=>m.includes('化忌'))) loveText += '夫妻化忌，感情需格外用心，防误解争执。';
 
-  // 风险
   const jiAll = palaces.flatMap(p =>
     (p.majorStars||[]).filter(s=>s.mutagen?.includes('忌')).map(s=>`${p.name}${s.name}化忌`)
   );
@@ -1103,7 +1009,6 @@ function buildAnalysis(chart, inputs) {
     : '本命无明显化忌，整体命盘较顺，但仍需关注大限流年变化。';
   if (lifeData) risks += lifeData.risk ? `命格弱点：${lifeData.risk}。` : '';
 
-  // 建议
   const star0 = lifeMaj[0] || '';
   let advice = '';
   if (['紫微','天府','天相'].includes(star0))
@@ -1126,15 +1031,23 @@ function renderAnalysis(r) {
   const lifeMaj = _chart ? (_chart.palaces||[])
     .find(p=>p.name==='命宫')?.majorStars?.map(s=>s.name)||[] : [];
 
-  document.getElementById('analysis-sub-title').textContent =
+  const subTitle = document.getElementById('analysis-sub-title');
+  if (subTitle) subTitle.textContent =
     `${_chart?.zodiac||''}年 · ${_chart?.fiveElementsClass||''} · 命宫${lifeMaj[0]||'空宫'}`;
-  document.getElementById('an-overview').textContent    = r.overview;
-  document.getElementById('an-personality').textContent = r.personality;
-  document.getElementById('an-career').textContent      = r.career;
-  document.getElementById('an-wealth').textContent      = r.wealth;
-  document.getElementById('an-love').textContent        = r.love;
-  document.getElementById('an-risks').textContent       = r.risks;
-  document.getElementById('an-advice').textContent      = r.advice;
+  const anOverview = document.getElementById('an-overview');
+  if (anOverview) anOverview.textContent    = r.overview;
+  const anPersonality = document.getElementById('an-personality');
+  if (anPersonality) anPersonality.textContent = r.personality;
+  const anCareer = document.getElementById('an-career');
+  if (anCareer) anCareer.textContent      = r.career;
+  const anWealth = document.getElementById('an-wealth');
+  if (anWealth) anWealth.textContent      = r.wealth;
+  const anLove = document.getElementById('an-love');
+  if (anLove) anLove.textContent        = r.love;
+  const anRisks = document.getElementById('an-risks');
+  if (anRisks) anRisks.textContent       = r.risks;
+  const anAdvice = document.getElementById('an-advice');
+  if (anAdvice) anAdvice.textContent      = r.advice;
 }
 
 // ─── 工具函数 ─────────────────────────────────────────────

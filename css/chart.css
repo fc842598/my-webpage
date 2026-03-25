@@ -756,3 +756,231 @@
   padding: 0 2px;
   line-height: 1.4;
 }
+
+/* ══════════════════════════════════════════
+   新版 Figma 风格表单（nf-* 前缀）
+══════════════════════════════════════════ */
+.nf-page {
+  padding-top: 70px;
+  padding-left: 16px;
+  padding-right: 16px;
+  padding-bottom: 80px;
+  min-height: 100vh;
+  background: #f7f6f2;
+}
+.nf-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 4px 20px;
+}
+.nf-logo {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #4a3f35;
+  letter-spacing: 3px;
+}
+.nf-diamond {
+  width: 8px;
+  height: 8px;
+  background: #b59e8f;
+  transform: rotate(45deg);
+  border-radius: 2px;
+}
+.nf-history-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: .82rem;
+  color: #7e726b;
+  background: #edebe4;
+  padding: 6px 14px;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+}
+.nf-card {
+  background: white;
+  border-radius: 24px;
+  padding: 0 20px;
+  box-shadow: 0 4px 20px rgba(0,0,0,.05);
+  max-width: 480px;
+  margin: 0 auto;
+}
+.nf-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 0;
+  border-bottom: 1px solid #f5f4f0;
+}
+.nf-row:last-child, .nf-row-last {
+  border-bottom: none;
+}
+.nf-row-left {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex: 1;
+}
+.nf-label {
+  color: #8e857d;
+  font-size: .92rem;
+}
+.nf-required {
+  color: red;
+  margin-right: 4px;
+}
+.nf-row-right {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #4a3f35;
+  font-weight: 500;
+  cursor: pointer;
+}
+.nf-chevron {
+  color: #c8c2bc;
+  font-size: 1.1rem;
+}
+.nf-name-input {
+  border: none;
+  outline: none;
+  background: transparent;
+  color: #4a3f35;
+  flex: 1;
+  font-size: .92rem;
+  font-family: inherit;
+}
+.nf-gender-pill {
+  display: flex;
+  background: #f5f4f0;
+  border-radius: 999px;
+  padding: 4px;
+  gap: 0;
+}
+.nf-gender-btn {
+  padding: 6px 16px;
+  border-radius: 999px;
+  border: none;
+  background: transparent;
+  color: #8e857d;
+  font-size: .88rem;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all .15s;
+}
+.nf-gender-btn.active {
+  background: #cba587;
+  color: white;
+  box-shadow: 0 2px 6px rgba(0,0,0,.15);
+}
+.nf-inline-inputs {
+  padding: 12px 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.nf-select {
+  width: 100%;
+  border-radius: 8px;
+  border: 1px solid #e8e4dc;
+  background: #faf9f5;
+  color: #4a3f35;
+  padding: 8px 10px;
+  font-size: .9rem;
+  font-family: inherit;
+  outline: none;
+  -webkit-appearance: none;
+}
+.nf-select:focus {
+  border-color: #cba587;
+}
+.nf-val-muted {
+  color: #a8a09a;
+  font-size: .85rem;
+}
+.nf-toggle-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.nf-toggle {
+  width: 44px;
+  height: 24px;
+  border-radius: 999px;
+  border: none;
+  background: #e0ddd8;
+  padding: 2px;
+  cursor: pointer;
+  transition: background .2s;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.nf-toggle.on {
+  background: #cba587;
+}
+.nf-toggle-knob {
+  width: 20px;
+  height: 20px;
+  background: white;
+  border-radius: 50%;
+  box-shadow: 0 1px 3px rgba(0,0,0,.2);
+  transition: transform .2s;
+  transform: translateX(0);
+}
+.nf-toggle.on .nf-toggle-knob {
+  transform: translateX(20px);
+}
+.nf-error {
+  background: rgba(200,60,60,.08);
+  border: 1px solid rgba(200,60,60,.3);
+  border-radius: 10px;
+  padding: 10px 14px;
+  color: #c04040;
+  font-size: .85rem;
+  margin-top: 8px;
+}
+.nf-submit-wrap {
+  padding: 20px 0 8px;
+}
+.nf-submit {
+  width: 100%;
+  padding: 16px;
+  background: #edece6;
+  color: #6b4e41;
+  border: none;
+  border-radius: 999px;
+  font-size: 1rem;
+  letter-spacing: 3px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background .15s;
+  font-weight: 500;
+}
+.nf-submit:hover {
+  background: #e0ddd6;
+}
+.nf-submit:disabled {
+  opacity: .6;
+  cursor: not-allowed;
+}
+.nf-reset-btn {
+  display: block;
+  margin: 20px auto 0;
+  padding: 12px 40px;
+  background: transparent;
+  color: #8e857d;
+  border: 1px solid #d2c4b5;
+  border-radius: 999px;
+  font-size: .9rem;
+  cursor: pointer;
+  font-family: inherit;
+}
+.nf-reset-btn:hover {
+  background: rgba(210,196,181,.2);
+}
