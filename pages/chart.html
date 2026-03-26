@@ -1494,7 +1494,10 @@ function hideError() {
 
 // ── 黄金样本自动校验（页面加载后执行，结果见浏览器控制台）──
 if (typeof ZipingRuntime !== 'undefined') {
-  ZipingRuntime.runValidation();
+  const qs = new URLSearchParams(location.search);
+  if (qs.get('zipingValidate') === '1') {
+    ZipingRuntime.runValidation();
+  }
 }
 </script>
 </body>

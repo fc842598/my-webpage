@@ -15,20 +15,23 @@
   }
 
   // ── 5寄宫 ───────────────────────────────────────────────────
-  function getJigong(birthYear, isYangPerson) {
+  function getJigong(birthYear, gender, isYangPerson) {
     const sy = getSanyuan(birthYear);
+    if (sy === '上元' || sy === '下元') {
+      return T().JIGONG[sy][gender];
+    }
     return isYangPerson ? T().JIGONG[sy].yang : T().JIGONG[sy].yin;
   }
 
   // ── 数字合 → 先天卦数（天数 mod25，地数 mod30） ─────────────
-  function numToTrigram(sum, isHeaven, birthYear, isYangPerson) {
+  function numToTrigram(sum, isHeaven, birthYear, gender, isYangPerson) {
     const mod = isHeaven ? 25 : 30;
     let r = sum % mod;
     if (r === 0) r = mod;
-    if (r === 5) return getJigong(birthYear, isYangPerson);
-    let g = r % 8;
-    if (g === 0) g = 8;
-    return g;
+    if (r === 5) return getJigong(birthYear, gender, isYangPerson);
+    // 《天机道》P48：超过十位时，只用个位；整十则用十位
+    const digit = r >= 10 ? (r % 10 === 0 ? Math.floor(r / 10) : r % 10) : r;
+    return T().LUOSHU_TO_TRIGRAM[digit] || null;
   }
 
   // ── 六爻数组（爻1底→爻6顶） ──────────────────────────────────
@@ -36,6 +39,17 @@
     const l = T().TRIGRAM_LINES[lower]; // display [顶, 中, 底]
     const u = T().TRIGRAM_LINES[upper];
     return [l[2], l[1], l[0], u[2], u[1], u[0]];
+  }
+
+  function swapOuterInner(gua) {
+    if (!gua) return null;
+    return buildGua(gua.lower, gua.upper, gua.isYangPerson);
+  }
+
+  function isYangPersonByYearBranch(yearBranch, gender) {
+    const yangBranches = new Set(['子', '寅', '辰', '午', '申', '戌']);
+    const isYangYearBranch = yangBranches.has(yearBranch);
+    return (gender === 'male' && isYangYearBranch) || (gender === 'female' && !isYangYearBranch);
   }
 
   // ── 翻转三爻卦中第 lineInTrigram 爻（1=底,2=中,3=顶） ────────
@@ -107,8 +121,10 @@
             dayStem, dayBranch, hourStem, hourBranch } = pillars;
     const SN = T().STEM_NUM, BN = T().BRANCH_NUM;
     const allNums = [
-      SN[yearStem], BN[yearBranch], SN[monthStem], BN[monthBranch],
-      SN[dayStem],  BN[dayBranch],  SN[hourStem],  BN[hourBranch],
+      SN[yearStem], ...(BN[yearBranch]  || []),
+      SN[monthStem], ...(BN[monthBranch] || []),
+      SN[dayStem], ...(BN[dayBranch]   || []),
+      SN[hourStem], ...(BN[hourBranch]  || []),
     ];
     if (allNums.some(n => typeof n !== 'number')) {
       return { error: `四柱干支含未知字符: ${JSON.stringify({yearStem,yearBranch,monthStem,monthBranch,dayStem,dayBranch,hourStem,hourBranch})}` };
@@ -119,10 +135,11 @@
     const di       = evenNums.reduce((a, b) => a + b, 0);
     const tianR    = (() => { const r = tian % 25; return r === 0 ? 25 : r; })();
     const diR      = (() => { const r = di   % 30; return r === 0 ? 30 : r; })();
-    const isYangYear   = (SN[yearStem] % 2) === 1;
-    const isYangPerson = (gender === 'male') === isYangYear;
-    const guaTian = numToTrigram(tian, true,  birthYear, isYangPerson);
-    const guaDi   = numToTrigram(di,   false, birthYear, isYangPerson);
+    const yangBranches = new Set(['子', '寅', '辰', '午', '申', '戌']);
+    const isYangYear   = yangBranches.has(yearBranch);
+    const isYangPerson = isYangPersonByYearBranch(yearBranch, gender);
+    const guaTian = numToTrigram(tian, true,  birthYear, gender, isYangPerson);
+    const guaDi   = numToTrigram(di,   false, birthYear, gender, isYangPerson);
     const upper   = isYangPerson ? guaTian : guaDi;
     const lower   = isYangPerson ? guaDi   : guaTian;
     const gua     = buildGua(upper, lower, isYangPerson);
@@ -167,7 +184,9 @@
       }
       // 阴令 → 正常翻转
     }
-    return flipHex(xianTian, yuanTangLine);
+    const changed = flipHex(xianTian, yuanTangLine);
+    // 《天机道》：元堂爻变后，外卦入内、内卦出外
+    return swapOuterInner(changed);
   }
 
   // ── 流年序列（逐爻游变）──────────────────────────────────────
@@ -183,6 +202,7 @@
     const map = {};
     let age = 1;
     const birthYearBranch = yearGanzhi(birthYear).branch;
+    const yangStems = new Set(['甲', '丙', '戊', '庚', '壬']);
 
     function fillPeriod(baseGua, period) {
       const h6 = hexLines6(baseGua.upper, baseGua.lower);
@@ -198,7 +218,7 @@
         for (let y = 0; y < numYears && age <= maxAge; y++, age++) {
           const curYear    = birthYear + age - 1;
           const gz         = yearGanzhi(curYear);
-          const isYangYear = (T().STEM_NUM[gz.stem] % 2) === 1;
+          const isYangYear = yangStems.has(gz.stem);
           const gua        = (isYang && isYangYear) ? baseGua : flipHex(baseGua, ln);
           const xiaoLian   = calcXiaoLian(birthYearBranch, gender, age);
           map[age] = {
