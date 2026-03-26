@@ -965,8 +965,95 @@ const FC_BRANCH_ID = {
   '寅':'fc-yin','丑':'fc-chou','子':'fc-zi','亥':'fc-hai'
 };
 const FC_ZHI = ['寅','卯','辰','巳','午','未','申','酉','戌','亥','子','丑'];
+// ─── 先天卦计算（海厦《天机道》规则） ─────────────────────
+const STEM_NUM   = {甲:1,乙:2,丙:3,丁:4,戊:5,己:6,庚:7,辛:8,壬:9,癸:10};
+const BRANCH_NUM = {子:1,丑:2,寅:3,卯:4,辰:5,巳:6,午:7,未:8,申:9,酉:10,戌:11,亥:12};
+// 八卦爻线（先天数 1-8，从上到下显示）
+const TRIGRAM_LINES_MAP = {
+  1:['solid','solid','solid'],   2:['broken','solid','solid'],
+  3:['solid','broken','solid'],  4:['broken','broken','solid'],
+  5:['solid','solid','broken'],  6:['broken','solid','broken'],
+  7:['solid','broken','broken'], 8:['broken','broken','broken'],
+};
+// 周文王序号 1-64 卦名（index 0 留空）
+const HEX_NAME = [
+  '',
+  '乾为天','坤为地','水雷屯','山水蒙','水天需','天水讼','地水师','水地比',
+  '风天小畜','天泽履','地天泰','天地否','天火同人','火天大有','地山谦','雷地豫',
+  '泽雷随','山风蛊','地泽临','风地观','火雷噬嗑','山火贲','山地剥','地雷复',
+  '天雷无妄','山天大畜','山雷颐','泽风大过','坎为水','离为火','泽山咸','雷风恒',
+  '天山遁','雷天大壮','火地晋','地火明夷','风火家人','火泽睽','水山蹇','雷水解',
+  '山泽损','风雷益','泽天夬','天风姤','泽地萃','地风升','泽水困','水风井',
+  '泽火革','火风鼎','震为雷','艮为山','风山渐','雷泽归妹','雷火丰','火山旅',
+  '巽为风','兑为泽','风水涣','水泽节','风泽中孚','雷山小过','水火既济','火水未济',
+];
+// [上卦先天数-1][下卦先天数-1] → 周文王卦序号  乾兑离震巽坎艮坤 各=1-8
+const GUA_TABLE = [
+//  乾  兑  离  震  巽  坎  艮  坤  ← 下卦
+  [ 1, 10, 13, 25, 44,  6, 33, 12], // 乾上
+  [43, 58, 49, 17, 28, 47, 31, 45], // 兑上
+  [14, 38, 30, 21, 50, 64, 56, 35], // 离上
+  [34, 54, 55, 51, 32, 40, 62, 16], // 震上
+  [ 9, 61, 37, 42, 57, 59, 53, 20], // 巽上
+  [ 5, 60, 63,  3, 48, 29, 39,  8], // 坎上
+  [26, 41, 22, 27, 18,  4, 52, 23], // 艮上
+  [11, 19, 36, 24, 46,  7, 15,  2], // 坤上
+];
+
+function numToTrigramGua(sum, isHeavenNum) {
+  const mod = isHeavenNum ? 25 : 30;
+  let r = sum % mod;
+  if (r === 0) r = mod;
+  if (r === 5) return isHeavenNum ? 1 : 8; // 天寄乾(1)，地寄坤(8)
+  let g = r % 8;
+  if (g === 0) g = 8;
+  return g;
+}
+
+function extractPillars(chart) {
+  const rd   = chart.rawDates || chart;
+  const hseb = rd.heavenlyStemAndEarthlyBranchDate || {};
+  return {
+    yearStem:    rd.yearStem    || rd.yearHeavenlyStem    || hseb.year?.heavenlyStem   || '',
+    yearBranch:  rd.yearBranch  || rd.yearEarthlyBranch   || hseb.year?.earthlyBranch  || '',
+    monthStem:   rd.monthStem   || rd.monthHeavenlyStem   || hseb.month?.heavenlyStem  || '',
+    monthBranch: rd.monthBranch || rd.monthEarthlyBranch  || hseb.month?.earthlyBranch || '',
+    dayStem:     rd.dayStem     || rd.dayHeavenlyStem     || hseb.day?.heavenlyStem    || '',
+    dayBranch:   rd.dayBranch   || rd.dayEarthlyBranch    || hseb.day?.earthlyBranch   || '',
+    hourStem:    rd.timeStem    || rd.timeHeavenlyStem    || hseb.hour?.heavenlyStem   || '',
+    hourBranch:  rd.timeBranch  || rd.timeEarthlyBranch   || hseb.hour?.earthlyBranch  || '',
+  };
+}
+
+function calcXianTianGua(pillars, gender) {
+  const { yearStem, yearBranch, monthStem, monthBranch, dayStem, dayBranch, hourStem, hourBranch } = pillars;
+  const nums = [
+    STEM_NUM[yearStem],   BRANCH_NUM[yearBranch],
+    STEM_NUM[monthStem],  BRANCH_NUM[monthBranch],
+    STEM_NUM[dayStem],    BRANCH_NUM[dayBranch],
+    STEM_NUM[hourStem],   BRANCH_NUM[hourBranch],
+  ].filter(n => typeof n === 'number');
+  if (nums.length < 8) return null;
+
+  let tian = 0, di = 0;
+  nums.forEach(n => { if (n % 2 === 1) tian += n; else di += n; });
+
+  const guaTian = numToTrigramGua(tian, true);
+  const guaDi   = numToTrigramGua(di,   false);
+
+  // 年干单数=阳干；阳男阴女→天上地下，阴男阳女→地上天下
+  const isYangYear   = (STEM_NUM[yearStem] || 0) % 2 === 1;
+  const isYangPerson = (gender === 'male') === isYangYear;
+  const upper = isYangPerson ? guaTian : guaDi;
+  const lower = isYangPerson ? guaDi   : guaTian;
+
+  const hexNum  = GUA_TABLE[upper - 1][lower - 1];
+  const hexName = HEX_NAME[hexNum] || '—';
+  const lines   = [...TRIGRAM_LINES_MAP[upper], 'gap', ...TRIGRAM_LINES_MAP[lower]];
+  return { name: hexName, num: hexNum, upper, lower, lines };
+}
+
 const FC_HEXAGRAMS = {
-  '先天卦':{ name:'风水涣', sub:'FENG SHUI HUAN',  lines:['solid','solid','broken','gap','broken','solid','broken'] },
   '后天卦':{ name:'水天需', sub:'SHUI TIAN XU',    lines:['broken','solid','broken','gap','solid','solid','solid'] },
   '流年卦':{ name:'天风姤', sub:'LIU NIAN GUA',    lines:['solid','solid','solid','gap','solid','solid','broken'] },
 };
@@ -976,6 +1063,7 @@ let _fcBirthYear       = 1991;
 let _fcYearCards       = [];
 let _fcYearlyMap       = {};
 let _fcXiaoLianBranch  = null; // 当前虚岁小限所在地支
+let _xianTianGuaResult = null;         // 计算所得先天卦
 
 // ── 小限宫位计算 ──────────────────────────────────────────
 // 按传统紫微斗数：年支三合起点 + 男顺女逆
@@ -1033,9 +1121,22 @@ function _fcComputeXiaoLian() {
 }
 
 function fcRenderHexagram() {
-  const hexData = _fcActiveTab === '流年卦'
-    ? { name:'天风姤', sub:'LIU NIAN GUA', lines: FC_HEXAGRAMS['流年卦'].lines }
-    : FC_HEXAGRAMS[_fcActiveTab];
+  let hexData;
+  if (_fcActiveTab === '先天卦') {
+    hexData = _xianTianGuaResult
+      ? { name: _xianTianGuaResult.name, sub: '', lines: _xianTianGuaResult.lines }
+      : null;
+  } else {
+    hexData = _fcActiveTab === '流年卦'
+      ? { name:'天风姤', sub:'LIU NIAN GUA', lines: FC_HEXAGRAMS['流年卦'].lines }
+      : FC_HEXAGRAMS[_fcActiveTab];
+  }
+  if (!hexData) {
+    document.getElementById('fc-hex-name').textContent = '—';
+    document.getElementById('fc-hex-sub').textContent  = '';
+    document.getElementById('fc-hex-lines').innerHTML  = '';
+    return;
+  }
   document.getElementById('fc-hex-name').textContent = hexData.name;
   document.getElementById('fc-hex-sub').textContent  = hexData.sub;
   const container = document.getElementById('fc-hex-lines');
@@ -1253,7 +1354,8 @@ function renderFigmaChart(chart, gender, dateStr, norm) {
   fcBuildYearCards(_fcBirthYear);
   fcLoadYearly(_fcBirthYear + _fcActiveAge - 1); // 虚岁N → 出生年+N-1
 
-  document.getElementById('fc-c-xiantian').textContent = '—';
+  _xianTianGuaResult = calcXianTianGua(extractPillars(chart), gender);
+  document.getElementById('fc-c-xiantian').textContent = _xianTianGuaResult?.name ?? '—';
   document.getElementById('fc-c-houtian').textContent  = '—';
   document.getElementById('fc-c-liunian').textContent  = `${_fcActiveAge}岁`;
 
