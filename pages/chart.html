@@ -1012,8 +1012,11 @@ function numToTrigramGua(sum, isHeavenNum) {
 
 function extractPillars(chart) {
   const rd   = chart.rawDates || chart;
-  const hseb = rd.heavenlyStemAndEarthlyBranchDate || {};
-  return {
+  // iztro v2：heavenlyStemAndEarthlyBranchDate 可能在 rawDates 下，也可能在 chart 顶层
+  const hseb = rd.heavenlyStemAndEarthlyBranchDate
+            || chart.heavenlyStemAndEarthlyBranchDate
+            || {};
+  const p = {
     yearStem:    rd.yearStem    || rd.yearHeavenlyStem    || hseb.year?.heavenlyStem   || '',
     yearBranch:  rd.yearBranch  || rd.yearEarthlyBranch   || hseb.year?.earthlyBranch  || '',
     monthStem:   rd.monthStem   || rd.monthHeavenlyStem   || hseb.month?.heavenlyStem  || '',
@@ -1023,6 +1026,8 @@ function extractPillars(chart) {
     hourStem:    rd.timeStem    || rd.timeHeavenlyStem    || hseb.hour?.heavenlyStem   || '',
     hourBranch:  rd.timeBranch  || rd.timeEarthlyBranch   || hseb.hour?.earthlyBranch  || '',
   };
+  console.log('[extractPillars]', p);
+  return p;
 }
 
 function calcXianTianGua(pillars, gender) {
@@ -1033,6 +1038,7 @@ function calcXianTianGua(pillars, gender) {
     STEM_NUM[dayStem],    BRANCH_NUM[dayBranch],
     STEM_NUM[hourStem],   BRANCH_NUM[hourBranch],
   ].filter(n => typeof n === 'number');
+  console.log('[calcXianTianGua] 有效数值:', nums, '(需8个)');
   if (nums.length < 8) return null;
 
   let tian = 0, di = 0;
@@ -1360,8 +1366,8 @@ function renderFigmaChart(chart, gender, dateStr, norm) {
   const sizhuEl = document.getElementById('fc-c-sizhu');
   const STEM_COLORS = ['#886a4a','#4d7a5b','#9b4238','#476885'];
   const rd = chart.rawDates || chart;
-  // iztro v2 把干支放在 rawDates.heavenlyStemAndEarthlyBranchDate 下
-  const hseb = rd.heavenlyStemAndEarthlyBranchDate || {};
+  // iztro v2：hseb 可能在 rawDates 下或 chart 顶层
+  const hseb = rd.heavenlyStemAndEarthlyBranchDate || chart.heavenlyStemAndEarthlyBranchDate || {};
   const pillars = [
     [rd.yearStem||rd.yearHeavenlyStem||hseb.year?.heavenlyStem||'',   rd.yearBranch||rd.yearEarthlyBranch||hseb.year?.earthlyBranch||''],
     [rd.monthStem||rd.monthHeavenlyStem||hseb.month?.heavenlyStem||'', rd.monthBranch||rd.monthEarthlyBranch||hseb.month?.earthlyBranch||''],
