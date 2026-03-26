@@ -313,7 +313,11 @@
       </div>
     </div>
 
-    <div class="aip-footer-note">当前为本地规则版 · 大模型增强版预留接口已就绪</div>
+    <div class="aip-ai-bar">
+      <button class="aip-ai-btn" id="aip-ai-btn">✦ AI 深度批命</button>
+      <span class="aip-ai-status" id="aip-ai-status"></span>
+    </div>
+    <div class="aip-footer-note" id="aip-footer-note">本地规则版 · 点击上方按钮获取 AI 深度解读</div>
   </div>
 </section>
 
@@ -1830,6 +1834,70 @@ function renderAIPimingLuck() {
     _aipSetCard('aip-gua', luck.gua);
   }
 }
+
+// ── AI 深度批命按钮 ───────────────────────────────────────
+const _API_BASE = 'http://localhost:3001';
+
+(function _bindAipAiBtn() {
+  const btn      = document.getElementById('aip-ai-btn');
+  const statusEl = document.getElementById('aip-ai-status');
+  const noteEl   = document.getElementById('aip-footer-note');
+  if (!btn) return;
+
+  btn.addEventListener('click', async function () {
+    if (!_chart || !_chartInputs) return;
+
+    // 当前激活面板决定 topic
+    const luckPanelVisible = document.getElementById('aip-panel-luck')?.style.display !== 'none';
+    const topic = luckPanelVisible ? 'luck' : 'base';
+
+    btn.disabled = true;
+    statusEl.textContent = '正在请求 AI 解读…';
+
+    const norm = _chartInputs.norm;
+    const chartSummary = `出生：${norm.year}年${norm.month}月${norm.day}日 ${_SHICHEN_NAMES[norm.timeIdx]}时 ${norm.gender === 'male' ? '男' : '女'}命`;
+
+    const activeGua = _liunianGuaResult || _houTianGuaResult || _xianTianGuaResult;
+    const payload = {
+      topic,
+      chartSummary,
+      palaces: (_chart.palaces || []).map(p => ({
+        name      : p.name,
+        majorStars: (p.majorStars || []).map(s => ({ name: s.name, mutagen: s.mutagen || null })),
+        minorStars: (p.minorStars || []).map(s => ({ name: s.name, mutagen: s.mutagen || null })),
+      })),
+      activeAge: _fcActiveAge,
+      gua: activeGua ? { name: activeGua.name, period: activeGua.period || '' } : null,
+    };
+
+    try {
+      const resp = await fetch(`${_API_BASE}/api/piming`, {
+        method : 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body   : JSON.stringify(payload),
+      });
+      if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+      const data = await resp.json();
+      if (!data.ok) throw new Error(data.error || '未知错误');
+
+      const r = data.result;
+      statusEl.textContent = `✓ ${data.model}`;
+      noteEl.textContent   = `AI 深度解读版 · ${data.model}`;
+
+      if (topic === 'base') {
+        _aipSetCard('aip-life', { title: 'AI 命格总览', body: r.overview + '\n' + r.minggong, tip: r.advice });
+        _aipSetCard('aip-sh',   { title: 'AI 风险提示', body: r.risks, tip: '' });
+      } else {
+        _aipSetCard('aip-dx',   { title: 'AI 大限解读', body: r.overview + '\n' + r.currentLuck, tip: r.advice });
+        _aipSetCard('aip-gua',  { title: 'AI 风险提示', body: r.risks, tip: '' });
+      }
+    } catch (err) {
+      statusEl.textContent = '✗ ' + err.message;
+    } finally {
+      btn.disabled = false;
+    }
+  });
+}());
 
 // Tab 切换
 (function _bindAipTabs() {

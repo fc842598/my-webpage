@@ -1301,6 +1301,15 @@
                   padding-left: 9px; border-left: 2px solid #e8c9b0; line-height: 1.6; }
 .aip-footer-note { text-align: center; font-size: 11px; color: #c0b4aa; padding: 14px 0 0; }
 
+.aip-ai-bar   { display: flex; align-items: center; gap: 12px; margin-top: 18px; justify-content: center; }
+.aip-ai-btn   { background: linear-gradient(135deg, #7a3b2e 0%, #b05a3a 100%);
+                color: #fff5ec; font-size: 13px; font-weight: bold;
+                border: none; border-radius: 22px; padding: 9px 28px;
+                cursor: pointer; letter-spacing: 0.05em; transition: opacity .15s; }
+.aip-ai-btn:hover   { opacity: .88; }
+.aip-ai-btn:disabled { opacity: .5; cursor: default; }
+.aip-ai-status { font-size: 12px; color: #7a5c4a; }
+
 @media (max-width: 540px) {
   .aip-wrap { padding: 0 10px; }
   .aip-tab  { font-size: 12px; padding: 7px 14px; }
