@@ -235,8 +235,11 @@
 
     <div class="fc-score-wrap" id="fc-score-wrap" style="display:none">
       <div class="fc-score-head">
-        <div class="fc-score-title">人生曲线</div>
-        <div class="fc-score-meta" id="fc-score-meta">按小流年落宫与宫内星曜估算近10年分值</div>
+        <div class="fc-score-head-main">
+          <div class="fc-score-title">人生曲线</div>
+          <div class="fc-score-meta" id="fc-score-meta">AI 结合小流年本宫、对宫与十年大运推演 1-100 岁分值</div>
+        </div>
+        <button class="fc-score-btn" id="fc-score-generate">AI生成100年评分</button>
       </div>
       <div class="fc-score-current" id="fc-score-current">—</div>
       <svg class="fc-score-svg" id="fc-score-svg" viewBox="0 0 360 168" preserveAspectRatio="none"></svg>
@@ -767,6 +770,7 @@ function stepRawBirthTime(hoursDelta) {
 // 时↑ = 上一个时辰 = 原始时间 -2小时；时↓ = 下一个时辰 = 原始时间 +2小时
 document.getElementById('fc-btn-time-up').addEventListener('click',   () => stepRawBirthTime(-2));
 document.getElementById('fc-btn-time-down').addEventListener('click', () => stepRawBirthTime(+2));
+document.getElementById('fc-score-generate')?.addEventListener('click', () => _fcGenerateLifeCurve(false));
 
 // ─── 地图常量 ─────────────────────────────────────────────
 const BRANCH_ID = {
@@ -1291,6 +1295,11 @@ function fcRenderTabs() {
   });
   const lnWrap = document.getElementById('fc-liunian-wrap');
   if (lnWrap) lnWrap.style.display = _fcActiveTab === '流年卦' ? 'flex' : 'none';
+  _fcRenderScoreCurve();
+  if (_fcActiveTab === '流年卦' && !_fcLifeCurveData && !_fcLifeCurveLoading && !_fcLifeCurveAutoTriggered) {
+    _fcLifeCurveAutoTriggered = true;
+    _fcGenerateLifeCurve(true);
+  }
 }
 
 function fcSelectYear(age) {
@@ -1301,6 +1310,7 @@ function fcSelectYear(age) {
   const lnName = _liunianGuaResult?.name ?? '—';
   document.getElementById('fc-c-liunian').textContent = `${age}岁 · ${lnName}`;
   fcRenderLiunianScroll();
+  _fcRenderScoreCurve();
   if (_fcActiveTab === '流年卦') fcRenderHexagram();
   renderFigmaHighlight(_fcActiveBranch || (_chart && _chart.earthlyBranchOfSoulPalace) || '卯');
   renderAIPimingLuck();  // 年龄切换时刷新大限流年面板
@@ -1321,6 +1331,289 @@ function fcRenderLiunianScroll() {
     const active = scroll.querySelector('.fc-year-card.active');
     if (active) active.scrollIntoView({ inline: 'center', behavior: 'smooth', block: 'nearest' });
   });
+}
+
+let _fcLifeCurveData = null;
+let _fcLifeCurveLoading = false;
+let _fcLifeCurveCacheKey = '';
+let _fcLifeCurveAutoTriggered = false;
+
+function _fcCurveKey() {
+  const p = _birthPillarsCache || (_chart ? extractPillars(_chart) : null);
+  if (!p) return '';
+  return [
+    p.yearStem, p.yearBranch, p.monthStem, p.monthBranch,
+    p.dayStem, p.dayBranch, p.hourStem, p.hourBranch,
+    _chartInputs?.gender || '',
+    _fcBirthYear || '',
+  ].join('|');
+}
+
+function _fcLifeCurveRangeText(range) {
+  return Array.isArray(range) && range.length === 2 ? `${range[0]}-${range[1]}岁` : '';
+}
+
+function _fcLifeCurveStarLine(palace) {
+  if (!palace) return '未取到宫位';
+  const major = (palace.majorStars || []).map(s => s.name + (s.brightness || '') + (s.mutagen || ''));
+  const minor = (palace.minorStars || []).map(s => s.name + (s.mutagen || ''));
+  const adj   = (palace.adjectiveStars || palace.adjStars || []).map(s => s.name || s).filter(Boolean);
+  const all   = [...major, ...minor, ...adj];
+  return all.length ? all.join('、') : '空宫';
+}
+
+function _fcFindDecadalPalace(age) {
+  return (_chart?.palaces || []).find(p => {
+    const range = p?.decadal?.range;
+    return Array.isArray(range) && age >= range[0] && age <= range[1];
+  }) || null;
+}
+
+function _fcBuildLifeCurveYear(age) {
+  const rd = _chart?.rawDates || _chart || {};
+  const yearBranch = rd.yearBranch || rd.yearEarthlyBranch || '';
+  const gender = _chartInputs?.gender || 'male';
+  const rawXiao = calcXiaoLianBranch(yearBranch, gender, Math.max(1, age - 1));
+  const xiaoBranch = DUIGONG[rawXiao] || rawXiao;
+  const xiaoPalace = (_chart?.palaces || []).find(p => p.earthlyBranch === xiaoBranch) || null;
+  const duiBranch  = xiaoBranch ? (DUIGONG[xiaoBranch] || '') : '';
+  const duiPalace  = (_chart?.palaces || []).find(p => p.earthlyBranch === duiBranch) || null;
+  const decadalPalace = _fcFindDecadalPalace(age);
+  const liunian = _liunianSeq?.[age] || null;
+  return {
+    age,
+    year: _fcBirthYear + age - 1,
+    liunianGua: liunian ? {
+      name: liunian.name || '',
+      lineType: liunian.lineType || '',
+      lineNum: liunian.lineNum || '',
+      period: liunian.period || '',
+    } : null,
+    xiaoLian: {
+      branch: xiaoBranch || '',
+      palace: xiaoPalace?.name || '',
+      stars: _fcLifeCurveStarLine(xiaoPalace),
+    },
+    opposite: {
+      branch: duiBranch || '',
+      palace: duiPalace?.name || '',
+      stars: _fcLifeCurveStarLine(duiPalace),
+    },
+    decadal: {
+      palace: decadalPalace?.name || '',
+      range: _fcLifeCurveRangeText(decadalPalace?.decadal?.range),
+      stars: _fcLifeCurveStarLine(decadalPalace),
+    },
+  };
+}
+
+function _fcBuildLifeCurvePayload() {
+  if (!_chart || !_chartInputs) return null;
+  const norm = _chartInputs.norm || {};
+  const years = [];
+  for (let age = 1; age <= 100; age++) years.push(_fcBuildLifeCurveYear(age));
+  return {
+    chartSummary: {
+      name: document.getElementById('fc-c-name')?.textContent || '',
+      gender: _chartInputs.gender || '',
+      solar: document.getElementById('fc-c-solar')?.textContent || '',
+      lunar: document.getElementById('fc-c-lunar')?.textContent || '',
+      sizhu: (_birthPillarsCache ? [
+        `${_birthPillarsCache.yearStem || ''}${_birthPillarsCache.yearBranch || ''}`,
+        `${_birthPillarsCache.monthStem || ''}${_birthPillarsCache.monthBranch || ''}`,
+        `${_birthPillarsCache.dayStem || ''}${_birthPillarsCache.dayBranch || ''}`,
+        `${_birthPillarsCache.hourStem || ''}${_birthPillarsCache.hourBranch || ''}`,
+      ].join(' ') : ''),
+      xianTian: _xianTianGuaResult?.name || '',
+      houTian: _houTianGuaResult?.name || '',
+      currentLiuNian: _liunianSeq?.[_fcActiveAge]?.name || '',
+      fiveElementsClass: _chart?.fiveElementsClass || '',
+      zodiac: _chart?.zodiac || '',
+      trueSolarTime: document.getElementById('fc-c-tst')?.textContent || '',
+    },
+    years,
+  };
+}
+
+function _fcScoreClass(score) {
+  if (score >= 75) return 'good';
+  if (score >= 50) return 'mid';
+  return 'low';
+}
+
+function _fcScoreCurrentItem() {
+  const items = _fcLifeCurveData?.scores || [];
+  return items.find(item => item.age === _fcActiveAge) || null;
+}
+
+function _fcRenderScoreCurve() {
+  const wrap = document.getElementById('fc-score-wrap');
+  const meta = document.getElementById('fc-score-meta');
+  const cur  = document.getElementById('fc-score-current');
+  const svg  = document.getElementById('fc-score-svg');
+  const list = document.getElementById('fc-score-list');
+  const btn  = document.getElementById('fc-score-generate');
+  if (!wrap || !meta || !cur || !svg || !list || !btn) return;
+
+  wrap.style.display = _fcActiveTab === '流年卦' ? 'block' : 'none';
+  if (_fcActiveTab !== '流年卦') return;
+
+  btn.disabled = _fcLifeCurveLoading;
+  svg.innerHTML = '';
+  list.innerHTML = '';
+
+  const width = 360;
+  const height = 168;
+  const padX = 18;
+  const padTop = 18;
+  const padBottom = 24;
+  const innerW = width - padX * 2;
+  const innerH = height - padTop - padBottom;
+
+  const axis = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+  axis.setAttribute('x1', String(padX));
+  axis.setAttribute('x2', String(width - padX));
+  axis.setAttribute('y1', String(height - padBottom));
+  axis.setAttribute('y2', String(height - padBottom));
+  axis.setAttribute('class', 'fc-score-axis-line');
+  svg.appendChild(axis);
+
+  if (!_fcLifeCurveData?.scores?.length) {
+    meta.textContent = _fcLifeCurveLoading
+      ? 'AI 正在结合小流年本宫、对宫与十年大运推演 1-100 岁分值'
+      : 'AI 结合小流年本宫、对宫与十年大运推演 1-100 岁分值';
+    cur.textContent = _fcLifeCurveLoading ? '正在生成 1-100 岁人生曲线…' : '点击“AI生成100年评分”生成全龄人生曲线';
+    return;
+  }
+
+  const items = [..._fcLifeCurveData.scores].sort((a, b) => a.age - b.age);
+  const points = items.map((item, idx) => {
+    const x = padX + (innerW * idx) / Math.max(1, items.length - 1);
+    const y = padTop + (100 - Math.max(0, Math.min(100, Number(item.score) || 0))) / 100 * innerH;
+    return { ...item, x, y };
+  });
+
+  const area = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+  const areaD = [
+    `M ${points[0].x} ${height - padBottom}`,
+    ...points.map((p, idx) => `${idx === 0 ? 'L' : 'L'} ${p.x} ${p.y}`),
+    `L ${points[points.length - 1].x} ${height - padBottom}`,
+    'Z',
+  ].join(' ');
+  area.setAttribute('d', areaD);
+  area.setAttribute('class', 'fc-score-area');
+  svg.appendChild(area);
+
+  const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+  path.setAttribute('d', points.map((p, idx) => `${idx === 0 ? 'M' : 'L'} ${p.x} ${p.y}`).join(' '));
+  path.setAttribute('class', 'fc-score-path');
+  svg.appendChild(path);
+
+  [1, 20, 40, 60, 80, 100].forEach(age => {
+    const p = points.find(item => item.age === age);
+    if (!p) return;
+    const label = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    label.setAttribute('x', String(p.x));
+    label.setAttribute('y', String(height - 8));
+    label.setAttribute('text-anchor', age === 1 ? 'start' : age === 100 ? 'end' : 'middle');
+    label.setAttribute('class', 'fc-score-label' + (age === _fcActiveAge ? ' active' : ''));
+    label.textContent = `${age}`;
+    svg.appendChild(label);
+  });
+
+  points.forEach(item => {
+    const point = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    point.setAttribute('cx', String(item.x));
+    point.setAttribute('cy', String(item.y));
+    point.setAttribute('r', item.age === _fcActiveAge ? '4.6' : '3.2');
+    point.setAttribute('class', `fc-score-point ${_fcScoreClass(item.score)}`);
+    svg.appendChild(point);
+  });
+
+  const current = _fcScoreCurrentItem() || items[0];
+  cur.textContent = `${current.age}岁：${current.score}分${current.summary ? ` · ${current.summary}` : ''}`;
+  meta.textContent = `AI 已完成 1-100 岁评分，综合小流年本宫、对宫与十年大运推演`;
+
+  const startAge = Math.floor((Math.max(1, _fcActiveAge) - 1) / 10) * 10 + 1;
+  const decadeItems = items.filter(item => item.age >= startAge && item.age <= Math.min(100, startAge + 9));
+  decadeItems.forEach(item => {
+    const chip = document.createElement('button');
+    chip.type = 'button';
+    chip.className = 'fc-score-chip' + (item.age === _fcActiveAge ? ' active' : '');
+    chip.innerHTML = `<span class="fc-score-chip-age">${item.age}岁</span><span class="fc-score-chip-score">${item.score}分</span>`;
+    chip.addEventListener('click', () => fcSelectYear(item.age));
+    list.appendChild(chip);
+  });
+}
+
+async function _fcGenerateLifeCurve(auto = false) {
+  if (_fcLifeCurveLoading || !_chart || !_chartInputs) return;
+  const payload = _fcBuildLifeCurvePayload();
+  if (!payload) return;
+
+  const btn = document.getElementById('fc-score-generate');
+  const meta = document.getElementById('fc-score-meta');
+  const cur = document.getElementById('fc-score-current');
+  _fcLifeCurveLoading = true;
+  _fcRenderScoreCurve();
+  if (meta) meta.textContent = 'AI 正在分批推演 1-100 岁分值…';
+  if (cur) cur.textContent = auto ? '正在自动生成全龄人生曲线…' : '正在生成 1-100 岁人生曲线…';
+  if (btn) btn.textContent = 'AI评分中…';
+
+  try {
+    const apiBase = await _resolvePimingApiBase();
+    const resp = await fetch(_joinApiUrl(apiBase, '/api/life-curve'), {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ...payload, stream: true }),
+    });
+    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+
+    const contentType = resp.headers.get('content-type') || '';
+    if (contentType.includes('application/json')) {
+      const data = await resp.json();
+      if (!data.ok) throw new Error(data.error || '生成失败');
+      _fcLifeCurveData = { scores: data.scores || [], model: data.model || '' };
+      _fcRenderScoreCurve();
+      return;
+    }
+
+    const reader = resp.body?.getReader();
+    if (!reader) throw new Error('AI 曲线接口不可读');
+    const decoder = new TextDecoder('utf-8');
+    let buffer = '';
+    while (true) {
+      const { value, done } = await reader.read();
+      if (done) break;
+      buffer += decoder.decode(value, { stream: true });
+      const lines = buffer.split('\n');
+      buffer = lines.pop() || '';
+      for (const line of lines) {
+        if (!line.trim()) continue;
+        const evt = JSON.parse(line);
+        if (evt.type === 'progress') {
+          if (meta) meta.textContent = `AI 正在推演 ${evt.done}/${evt.total} 岁分值…`;
+        } else if (evt.type === 'result') {
+          _fcLifeCurveData = { scores: evt.scores || [], model: evt.model || '' };
+        } else if (evt.type === 'error') {
+          throw new Error(evt.error || '生成失败');
+        }
+      }
+    }
+    if (buffer.trim()) {
+      const evt = JSON.parse(buffer);
+      if (evt.type === 'result') _fcLifeCurveData = { scores: evt.scores || [], model: evt.model || '' };
+      if (evt.type === 'error') throw new Error(evt.error || '生成失败');
+    }
+    _fcRenderScoreCurve();
+  } catch (err) {
+    if (meta) meta.textContent = err.message;
+    if (cur) cur.textContent = 'AI 年度评分生成失败';
+  } finally {
+    _fcLifeCurveLoading = false;
+    if (btn) btn.textContent = 'AI生成100年评分';
+    _fcRenderScoreCurve();
+  }
 }
 
 let _fcActiveBranch = '';
@@ -1495,6 +1788,12 @@ function renderFigmaChart(chart, gender, dateStr, norm) {
 
   _birthPillarsCache = extractPillars(chart);
   _birthGender       = gender;
+  const nextCurveKey = _fcCurveKey();
+  if (_fcLifeCurveCacheKey !== nextCurveKey) {
+    _fcLifeCurveCacheKey = nextCurveKey;
+    _fcLifeCurveData = null;
+    _fcLifeCurveAutoTriggered = false;
+  }
   // ── 子平法卦：统一由 ZipingRuntime 离线生成 ────────────────
   const _zipingResult  = ZipingRuntime.compute(_birthPillarsCache, gender, _fcBirthYear);
   _xianTianGuaResult   = _zipingResult?.xiantian    ?? null;
@@ -1514,6 +1813,7 @@ function renderFigmaChart(chart, gender, dateStr, norm) {
   fcRenderTabs();
   fcRenderLiunianScroll();
   fcRenderHexagram();
+  _fcRenderScoreCurve();
   renderAIPiming();   // AI批命区全量刷新
 
   document.querySelectorAll('.fc-tab').forEach(btn => {
@@ -1521,6 +1821,7 @@ function renderFigmaChart(chart, gender, dateStr, norm) {
       _fcActiveTab = btn.dataset.tab;
       fcRenderTabs();
       fcRenderHexagram();
+      _fcRenderScoreCurve();
       renderFigmaHighlight(_fcActiveBranch);
     };
   });

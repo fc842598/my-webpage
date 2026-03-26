@@ -696,6 +696,120 @@
 }
 .fc-scroll-btn:hover { color: #46352d; }
 
+/* 人生曲线（测试版） */
+.fc-score-wrap {
+  margin: 6px 12px 4px;
+  padding: 12px 14px 14px;
+  background: #fdfaf5;
+  border: 1px solid rgba(210,196,181,.72);
+  border-radius: 12px;
+}
+.fc-score-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 4px;
+}
+.fc-score-head-main {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.fc-score-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #3d302b;
+}
+.fc-score-meta {
+  font-size: 11px;
+  color: #9c8878;
+  text-align: right;
+}
+.fc-score-btn {
+  flex: 0 0 auto;
+  border: 0;
+  border-radius: 999px;
+  padding: 8px 14px;
+  background: #6f4433;
+  color: #fff9f1;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.fc-score-btn[disabled] {
+  opacity: .65;
+  cursor: wait;
+}
+.fc-score-current {
+  font-size: 12px;
+  color: #6b4e41;
+  margin-bottom: 8px;
+}
+.fc-score-svg {
+  width: 100%;
+  height: 168px;
+  display: block;
+  overflow: visible;
+}
+.fc-score-axis-line {
+  stroke: rgba(156,136,120,.3);
+  stroke-width: 1;
+}
+.fc-score-path {
+  fill: none;
+  stroke: #7a4a37;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.fc-score-area {
+  fill: rgba(122,74,55,.08);
+}
+.fc-score-point {
+  stroke: #fff;
+  stroke-width: 2;
+}
+.fc-score-point.good { fill: #4d7a5b; }
+.fc-score-point.mid { fill: #c88a2e; }
+.fc-score-point.low { fill: #b3574b; }
+.fc-score-label {
+  font-size: 10px;
+  fill: #8e857d;
+}
+.fc-score-label.active {
+  fill: #46352d;
+  font-weight: 700;
+}
+.fc-score-list {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 6px;
+  margin-top: 8px;
+}
+.fc-score-chip {
+  border: 1px solid rgba(210,196,181,.7);
+  border-radius: 8px;
+  background: #fff;
+  padding: 6px 4px;
+  text-align: center;
+  line-height: 1.45;
+  cursor: pointer;
+}
+.fc-score-chip.active {
+  background: #46352d;
+  color: #fffdf9;
+  border-color: #46352d;
+}
+.fc-score-chip-age {
+  display: block;
+  font-size: 11px;
+}
+.fc-score-chip-score {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+}
+
 /* 卦象展示区 */
 .fc-hexagram-area {
   padding: 16px 12px 24px;
@@ -1197,6 +1311,17 @@
   .fc-hex-name { font-size: .95rem; letter-spacing: 3px; }
   .fc-hex-sub  { margin-bottom: 8px; }
   .fc-hex-lines { width: 96px; }
+  .fc-score-wrap { margin: 6px 6px 2px; padding: 10px 10px 12px; }
+  .fc-score-head { gap: 8px; }
+  .fc-score-title { font-size: 12px; }
+  .fc-score-meta { font-size: 10px; }
+  .fc-score-btn { padding: 7px 10px; font-size: 11px; }
+  .fc-score-current { font-size: 11px; margin-bottom: 6px; }
+  .fc-score-svg { height: 148px; }
+  .fc-score-list { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 4px; }
+  .fc-score-chip { padding: 5px 2px; border-radius: 6px; }
+  .fc-score-chip-age { font-size: 10px; }
+  .fc-score-chip-score { font-size: 11px; }
 
   /* ── 重新排盘按钮 ── */
   .nf-reset-btn {
