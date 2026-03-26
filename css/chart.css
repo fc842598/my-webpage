@@ -1276,3 +1276,36 @@
   .fc-mut-palace  { font-size: 8px; }
   .fc-mut-star    { font-size: 7px; }
 }
+
+/* ─── AI批命区 ──────────────────────────────────────────── */
+#aip-section { background: #faf6f0; padding: 0 0 36px; border-top: 1px solid #ede6dc; }
+.aip-wrap    { max-width: 780px; margin: 0 auto; padding: 0 16px; }
+.aip-head    { display: flex; align-items: center; gap: 10px; padding: 20px 0 10px; }
+.aip-badge   { background: #963d32; color: #fff; font-size: 11px; font-weight: bold;
+               padding: 3px 10px; border-radius: 20px; letter-spacing: 1px; }
+.aip-desc    { font-size: 11px; color: #9c8878; }
+.aip-tabs    { display: flex; border-bottom: 1px solid #e4dcce; margin-bottom: 14px; }
+.aip-tab     { background: none; border: none; border-bottom: 2px solid transparent;
+               padding: 8px 20px; font-size: 13px; color: #9c8878; cursor: pointer;
+               font-family: inherit; margin-bottom: -1px; transition: color .15s; }
+.aip-tab.active  { color: #963d32; border-bottom-color: #963d32; font-weight: bold; }
+.aip-tab:hover   { color: #6b4e41; }
+.aip-panel   { display: flex; flex-direction: column; gap: 10px; }
+.aip-card    { background: #fff; border: 1px solid #ede6dc; border-radius: 8px; padding: 13px 15px; }
+.aip-card-head  { display: flex; align-items: center; gap: 9px; margin-bottom: 7px; }
+.aip-tag        { background: #f5ede0; color: #7a5c4a; font-size: 10px;
+                  padding: 2px 9px; border-radius: 10px; white-space: nowrap; flex-shrink: 0; }
+.aip-card-title { font-size: 13px; font-weight: bold; color: #3d302b; }
+.aip-card-body  { font-size: 12px; color: #5c4d45; line-height: 1.75; white-space: pre-line; }
+.aip-card-tip   { margin-top: 7px; font-size: 11px; color: #963d32;
+                  padding-left: 9px; border-left: 2px solid #e8c9b0; line-height: 1.6; }
+.aip-footer-note { text-align: center; font-size: 11px; color: #c0b4aa; padding: 14px 0 0; }
+
+@media (max-width: 540px) {
+  .aip-wrap { padding: 0 10px; }
+  .aip-tab  { font-size: 12px; padding: 7px 14px; }
+  .aip-card { padding: 10px 12px; }
+  .aip-card-title { font-size: 12px; }
+  .aip-card-body  { font-size: 11px; }
+  .aip-card-tip   { font-size: 10px; }
+}

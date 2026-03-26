@@ -253,6 +253,70 @@
   </div>
 </section>
 
+<!-- ══ AI 批命区 ══════════════════════════════════════════ -->
+<section id="aip-section" style="display:none">
+  <div class="aip-wrap">
+    <div class="aip-head">
+      <span class="aip-badge">AI 批命</span>
+      <span class="aip-desc" id="aip-desc"></span>
+    </div>
+    <div class="aip-tabs">
+      <button class="aip-tab active" data-panel="aip-panel-base">本命批命</button>
+      <button class="aip-tab"        data-panel="aip-panel-luck">大限流年</button>
+    </div>
+
+    <!-- 本命批命 -->
+    <div class="aip-panel" id="aip-panel-base">
+      <div class="aip-card">
+        <div class="aip-card-head"><span class="aip-tag">命宫格局</span><span class="aip-card-title" id="aip-life-ttl"></span></div>
+        <div class="aip-card-body" id="aip-life-body"></div>
+        <div class="aip-card-tip"  id="aip-life-tip"></div>
+      </div>
+      <div class="aip-card">
+        <div class="aip-card-head"><span class="aip-tag">三方四正</span><span class="aip-card-title" id="aip-sf-ttl"></span></div>
+        <div class="aip-card-body" id="aip-sf-body"></div>
+        <div class="aip-card-tip"  id="aip-sf-tip"></div>
+      </div>
+      <div class="aip-card">
+        <div class="aip-card-head"><span class="aip-tag">身宫辅助</span><span class="aip-card-title" id="aip-shen-ttl"></span></div>
+        <div class="aip-card-body" id="aip-shen-body"></div>
+        <div class="aip-card-tip"  id="aip-shen-tip"></div>
+      </div>
+      <div class="aip-card">
+        <div class="aip-card-head"><span class="aip-tag">生年四化</span><span class="aip-card-title" id="aip-sh-ttl"></span></div>
+        <div class="aip-card-body" id="aip-sh-body"></div>
+        <div class="aip-card-tip"  id="aip-sh-tip"></div>
+      </div>
+    </div>
+
+    <!-- 大限流年 -->
+    <div class="aip-panel" id="aip-panel-luck" style="display:none">
+      <div class="aip-card">
+        <div class="aip-card-head"><span class="aip-tag">大限</span><span class="aip-card-title" id="aip-dx-ttl"></span></div>
+        <div class="aip-card-body" id="aip-dx-body"></div>
+        <div class="aip-card-tip"  id="aip-dx-tip"></div>
+      </div>
+      <div class="aip-card">
+        <div class="aip-card-head"><span class="aip-tag">流年</span><span class="aip-card-title" id="aip-ln-ttl"></span></div>
+        <div class="aip-card-body" id="aip-ln-body"></div>
+        <div class="aip-card-tip"  id="aip-ln-tip"></div>
+      </div>
+      <div class="aip-card">
+        <div class="aip-card-head"><span class="aip-tag">小限落宫</span><span class="aip-card-title" id="aip-xl-ttl"></span></div>
+        <div class="aip-card-body" id="aip-xl-body"></div>
+        <div class="aip-card-tip"  id="aip-xl-tip"></div>
+      </div>
+      <div class="aip-card">
+        <div class="aip-card-head"><span class="aip-tag">子平法卦</span><span class="aip-card-title" id="aip-gua-ttl"></span></div>
+        <div class="aip-card-body" id="aip-gua-body"></div>
+        <div class="aip-card-tip"  id="aip-gua-tip"></div>
+      </div>
+    </div>
+
+    <div class="aip-footer-note">当前为本地规则版 · 大模型增强版预留接口已就绪</div>
+  </div>
+</section>
+
 <footer class="footer">
   <div class="footer-inner">
     <span>© 2026 紫微斗数在线排盘</span>
@@ -1214,6 +1278,7 @@ function fcSelectYear(age) {
   fcRenderLiunianScroll();
   if (_fcActiveTab === '流年卦') fcRenderHexagram();
   renderFigmaHighlight(_fcActiveBranch || (_chart && _chart.earthlyBranchOfSoulPalace) || '卯');
+  renderAIPimingLuck();  // 年龄切换时刷新大限流年面板
 }
 
 function fcRenderLiunianScroll() {
@@ -1420,6 +1485,7 @@ function renderFigmaChart(chart, gender, dateStr, norm) {
   fcRenderTabs();
   fcRenderLiunianScroll();
   fcRenderHexagram();
+  renderAIPiming();   // AI批命区全量刷新
 
   document.querySelectorAll('.fc-tab').forEach(btn => {
     btn.onclick = () => {
@@ -1562,6 +1628,221 @@ function showError(msg) {
 function hideError() {
   document.getElementById('form-error').style.display = 'none';
 }
+
+// ══════════════════════════════════════════════════════════
+// AI 批命区 — 本地规则版 v1
+// ── 接入大模型时只需替换 _pimingEngine.generate()：
+//    将 mode 设为 'api'，实现 async generate(section, ctx) → { title, body, tip }
+//    ctx 包含完整命盘数据（palaces, pillars, gua, activeAge 等）
+// ══════════════════════════════════════════════════════════
+const _pimingEngine = {
+  mode: 'local',
+  // async generate(section, ctx) { return await fetch('/api/piming', { method:'POST', body: JSON.stringify(ctx) }).then(r=>r.json()); }
+};
+
+const _PALACE_MEANING = {
+  '命宫':'整体人生格局与个性','兄弟宫':'兄弟同辈与朋友缘',
+  '夫妻宫':'感情与婚姻','子女宫':'子女与下属创意',
+  '财帛宫':'财运与收入','疾厄宫':'健康与逢难',
+  '迁移宫':'出行外缘与变动','奴仆宫':'朋友人际与团队',
+  '官禄宫':'事业地位与工作','田宅宫':'房产家庭',
+  '福德宫':'精神享受与福分','父母宫':'父母长辈与文书',
+};
+
+function _aipPalaceMap(chart) {
+  const m = {};
+  (chart?.palaces || []).forEach(p => { if (p.name) { m[p.name] = p; m[p.name.replace('宫','')] = p; } });
+  return m;
+}
+function _aipMajor(p)  { return (p?.majorStars || []).map(s => s.name); }
+function _aipMutagen(p){ return [...(p?.majorStars||[]), ...(p?.minorStars||[])]
+                           .filter(s => s.mutagen).map(s => `${s.name}${s.mutagen}`); }
+
+function buildBaseMingAnalysis(chart, inputs) {
+  if (!chart) return null;
+  const pm = _aipPalaceMap(chart);
+  const life   = pm['命宫'] || pm['命'];
+  const career = pm['官禄宫'] || pm['官禄'];
+  const wealth = pm['财帛宫'] || pm['财帛'];
+  const move   = pm['迁移宫'] || pm['迁移'];
+  const shenP  = (chart.palaces||[]).find(p => p.earthlyBranch === chart.earthlyBranchOfBodyPalace);
+
+  const lifeMaj = _aipMajor(life);
+  const ld = STARS[lifeMaj[0]];
+
+  // 命宫格局
+  const lifeTitle = lifeMaj.length ? lifeMaj.join('+') + ' 坐命' : '空宫坐命';
+  let lifeBody = ld ? ld.trait : '命宫空宫，个性受三方星曜影响，适应力强但需培养主见。';
+  const lifeMut = _aipMutagen(life);
+  if (lifeMut.length) lifeBody += '\n命宫四化：' + lifeMut.join('、') + '。';
+  const hasZuoBi = (life?.minorStars||[]).some(s => ['左辅','右弼'].includes(s.name||''));
+  const hasWen   = (life?.minorStars||[]).some(s => ['文昌','文曲'].includes(s.name||''));
+  let lifeTip = ld?.risk ? '注意：' + ld.risk : '';
+  if (hasZuoBi) lifeTip += (lifeTip ? '；' : '') + '命有辅弼，贵人缘佳';
+  if (hasWen)   lifeTip += (lifeTip ? '；' : '') + '文昌/文曲入命，聪颖有才华';
+  if (!lifeTip) lifeTip = '命格特质明显，发挥核心优势是关键';
+
+  // 三方四正
+  const sfParts = [
+    `官禄：${_aipMajor(career).join('+')||'空宫'}`,
+    `财帛：${_aipMajor(wealth).join('+')||'空宫'}`,
+    `迁移：${_aipMajor(move).join('+')||'空宫'}`,
+  ];
+  const sfMuts = [
+    ..._aipMutagen(career).map(m=>'官禄'+m),
+    ..._aipMutagen(wealth).map(m=>'财帛'+m),
+    ..._aipMutagen(move).map(m=>'迁移'+m),
+  ];
+  const sfTip = sfMuts.length ? '三方四化：' + sfMuts.join('、') : '三方四正无明显四化，格局平稳';
+
+  // 身宫
+  const shenMaj  = _aipMajor(shenP);
+  const shenName = shenP?.name || '—';
+  const shenStar = STARS[shenMaj[0]];
+  const shenBody = shenMaj.length
+    ? `身宫主星 ${shenMaj.join('+')}：${shenStar?.trait?.slice(0,40) || ''}`
+    : `身宫空宫（${shenName}），特质受对宫影响`;
+  const shenTip  = shenMaj[0] === lifeMaj[0]
+    ? '命身同宫，特质鲜明，人生方向高度聚焦'
+    : `身宫修正命宫，${shenStar?.career?.slice(0,28) || '参考身宫主星综合判断'}`;
+
+  // 生年四化
+  const allMut = (chart.palaces||[]).flatMap(p =>
+    [...(p?.majorStars||[]),...(p?.minorStars||[])]
+      .filter(s=>s.mutagen)
+      .map(s=>({ palace: p.name, star: s.name, type: s.mutagen }))
+  );
+  const countOf = t => allMut.filter(m=>m.type?.includes(t)).length;
+  const shTitle = `化禄×${countOf('禄')} 化权×${countOf('权')} 化科×${countOf('科')} 化忌×${countOf('忌')}`;
+  const shBody  = allMut.map(m=>`${m.palace}${m.type}（${m.star}）`).join('　') || '无明显生年四化';
+  const jiKey   = allMut.filter(m=>m.type?.includes('忌') && ['命宫','官禄宫','财帛宫','夫妻宫'].includes(m.palace));
+  const shTip   = jiKey.length
+    ? `重点关注：化忌落${jiKey.map(m=>m.palace).join('/')}，该领域易遇阻`
+    : '四化分布均衡，无明显凶险宫位';
+
+  return {
+    life:    { title: lifeTitle,          body: lifeBody,         tip: lifeTip },
+    sanfang: { title: '官禄 / 财帛 / 迁移', body: sfParts.join('　'), tip: sfTip },
+    shen:    { title: `${chart.earthlyBranchOfBodyPalace||''}宫 · ${shenName}`, body: shenBody, tip: shenTip },
+    sihua:   { title: shTitle,            body: shBody,           tip: shTip },
+  };
+}
+
+function buildCurrentLuckAnalysis(chart, inputs, activeAge) {
+  if (!chart || !activeAge) return null;
+
+  // 大限（近似：每10年一大限，精确起大限宫需命盘数据）
+  const dxIdx   = Math.ceil(activeAge / 10);
+  const dxStart = (dxIdx - 1) * 10 + 1;
+  const dxEnd   = dxIdx * 10;
+  const dxBody  = `当前虚岁 ${activeAge} 岁，处于第 ${dxIdx} 大限（${dxStart}～${dxEnd} 岁）。` +
+    (dxIdx <= 2 ? '早年奠基阶段，宜专注学业与自我塑造。'
+    : dxIdx <= 4 ? '中年黄金期，事业家庭并进，主动推进为宜。'
+    : '后期积累阶段，稳健守成、传承与健康更为关键。');
+  const dxTip = '精确大限星曜需参照命盘起大限宫位，后续版本将补充完整推算';
+
+  // 流年
+  const lnData  = _liunianSeq?.[activeAge];
+  const gz = lnData?.yearGanzhi ? lnData.yearGanzhi.stem + lnData.yearGanzhi.branch + '年' : '—';
+  const lnYear  = _fcBirthYear + activeAge - 1;
+  const lnGuaName = lnData?.name || '—';
+  const lnPeriod  = lnData?.period || '';
+  const lnLine    = lnData ? `第${lnData.lineNum}爻（${lnData.lineType==='yang'?'阳爻9年':'阴爻6年'}）` : '';
+  const lnBody  = `${lnYear} 年 · ${gz} · 虚岁 ${activeAge} 岁\n流年卦：${lnGuaName}（${lnPeriod}）　${lnLine}`;
+  const lnTip   = lnData?.lineType === 'yang'
+    ? '阳爻段：阳年走本卦，阴年走变卦，注意奇偶年节奏'
+    : '阴爻段：全年走变卦，变动较大，顺势而动勿强求';
+
+  // 小限
+  const xlBranch = _fcXiaoLianBranch || lnData?.xiaoLian;
+  const xlPalace = (chart.palaces||[]).find(p => p.earthlyBranch === xlBranch);
+  const xlName   = xlPalace?.name || (xlBranch ? xlBranch+'宫' : '计算中');
+  const xlMaj    = _aipMajor(xlPalace);
+  const xlBody   = xlBranch
+    ? `本年小限落在 ${xlName}，该宫主${_PALACE_MEANING[xlName] || '参考该宫综合判断'}。`
+    : '小限落宫数据计算中，请先完成排盘。';
+  const xlTip    = xlMaj.length
+    ? `小限宫主星：${xlMaj.join('+')}，${STARS[xlMaj[0]]?.trait?.slice(0,25)||''}……`
+    : '小限宫空宫，参考对宫及三方四正综合判断';
+
+  // 子平法卦象
+  const guaData  = _liunianGuaResult || lnData;
+  const guaName  = guaData?.name || _xianTianGuaResult?.name || '—';
+  const guaNum   = guaData?.num  || _xianTianGuaResult?.num  || '';
+  const guaPhase = guaData?.period || _fcActiveTab || '';
+  const guaBody  = `卦名：${guaName}${guaNum ? '（#'+guaNum+'）' : ''}　${guaPhase}\n` +
+    (guaData?.lineType === 'yang' ? '阳爻主刚健主动，宜积极进取' : guaData?.lineType === 'yin' ? '阴爻主柔顺变化，宜谦退观察' : '');
+  const guaTip   = guaPhase === '先天' ? '先天期：本命卦为主轴，命运基调稳定'
+    : guaPhase === '后天' ? '后天期：进入变局阶段，以后天卦为主轴'
+    : '流年卦随年龄游变，参考子平法逐爻游变规则';
+
+  return {
+    daxian:   { title: `第 ${dxIdx} 大限 · ${dxStart}～${dxEnd} 岁`, body: dxBody,  tip: dxTip },
+    liunian:  { title: `${lnYear} 年 · 虚岁 ${activeAge} 岁`,        body: lnBody,  tip: lnTip },
+    xiaolian: { title: `小限落 ${xlName}`,                            body: xlBody,  tip: xlTip },
+    gua:      { title: guaName + (guaNum ? `（#${guaNum}）` : ''),    body: guaBody, tip: guaTip },
+  };
+}
+
+function _aipSetCard(prefix, data) {
+  if (!data) return;
+  const t = document.getElementById(prefix + '-ttl');
+  const b = document.getElementById(prefix + '-body');
+  const p = document.getElementById(prefix + '-tip');
+  if (t) t.textContent = data.title || '';
+  if (b) b.textContent = data.body  || '';
+  if (p) p.textContent = data.tip   || '';
+}
+
+function renderAIPiming() {
+  if (!_chart || !_chartInputs) return;
+  const section = document.getElementById('aip-section');
+  if (!section) return;
+  const base = buildBaseMingAnalysis(_chart, _chartInputs);
+  const luck = buildCurrentLuckAnalysis(_chart, _chartInputs, _fcActiveAge);
+  if (base) {
+    _aipSetCard('aip-life', base.life);
+    _aipSetCard('aip-sf',   base.sanfang);
+    _aipSetCard('aip-shen', base.shen);
+    _aipSetCard('aip-sh',   base.sihua);
+  }
+  if (luck) {
+    _aipSetCard('aip-dx',  luck.daxian);
+    _aipSetCard('aip-ln',  luck.liunian);
+    _aipSetCard('aip-xl',  luck.xiaolian);
+    _aipSetCard('aip-gua', luck.gua);
+  }
+  const lifeMaj = _aipMajor((_aipPalaceMap(_chart))['命宫'] || (_aipPalaceMap(_chart))['命']);
+  const desc = document.getElementById('aip-desc');
+  if (desc) desc.textContent =
+    `${_chart.zodiac||''}年 · ${_chart.fiveElementsClass||''} · 命宫${lifeMaj[0]||'空宫'}`;
+  section.style.display = 'block';
+}
+
+// 大限流年 panel 轻量刷新（年龄切换时调用）
+function renderAIPimingLuck() {
+  if (!_chart || !_chartInputs) return;
+  const luck = buildCurrentLuckAnalysis(_chart, _chartInputs, _fcActiveAge);
+  if (luck) {
+    _aipSetCard('aip-dx',  luck.daxian);
+    _aipSetCard('aip-ln',  luck.liunian);
+    _aipSetCard('aip-xl',  luck.xiaolian);
+    _aipSetCard('aip-gua', luck.gua);
+  }
+}
+
+// Tab 切换
+(function _bindAipTabs() {
+  document.querySelectorAll('.aip-tab').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.aip-tab').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.aip-panel').forEach(p => { p.style.display = 'none'; });
+      btn.classList.add('active');
+      const panel = document.getElementById(btn.dataset.panel);
+      if (panel) panel.style.display = 'flex';
+    });
+  });
+}());
 
 // ── 黄金样本自动校验（页面加载后执行，结果见浏览器控制台）──
 if (typeof ZipingRuntime !== 'undefined') {
