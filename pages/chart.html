@@ -1030,7 +1030,6 @@ function extractPillars(chart) {
     hourStem:    cd.hourly?.[0]  || hseb.hour?.heavenlyStem  || rd.timeStem  || cdParts[3]?.[0] || '',
     hourBranch:  cd.hourly?.[1]  || hseb.hour?.earthlyBranch || rd.timeBranch|| cdParts[3]?.[1] || '',
   };
-  console.log('[extractPillars]', p, '| chineseDate:', chart.chineseDate);
   return p;
 }
 
@@ -1042,7 +1041,6 @@ function calcXianTianGua(pillars, gender) {
     STEM_NUM[dayStem],    BRANCH_NUM[dayBranch],
     STEM_NUM[hourStem],   BRANCH_NUM[hourBranch],
   ].filter(n => typeof n === 'number');
-  console.log('[calcXianTianGua] 有效数值:', nums, '(需8个)');
   if (nums.length < 8) return null;
 
   let tian = 0, di = 0;
@@ -1060,22 +1058,36 @@ function calcXianTianGua(pillars, gender) {
   const hexNum  = GUA_TABLE[upper - 1][lower - 1];
   const hexName = HEX_NAME[hexNum] || '—';
   const lines   = [...TRIGRAM_LINES_MAP[upper], 'gap', ...TRIGRAM_LINES_MAP[lower]];
-  console.log('[calcXianTianGua]', hexName, '| 天数:', tian, '地数:', di, '上卦:', upper, '下卦:', lower);
-  return { name: hexName, num: hexNum, upper, lower, lines };
+  return { name: hexName, num: hexNum, upper, lower, lines, isYangPerson };
 }
 
-const FC_HEXAGRAMS = {
-  '后天卦':{ name:'水天需', sub:'SHUI TIAN XU', lines:['broken','solid','broken','gap','solid','solid','solid'] },
-};
+// ─── 后天卦计算（元堂中爻翻转） ──────────────────────────────
+// 阳人(阳男/阴女)：天数在上，元堂=上卦中爻(爻5)
+// 阴人(阴男/阳女)：地数在上，元堂=下卦中爻(爻2)
+// 翻转中爻配对：乾↔离 兑↔震 巽↔艮 坎↔坤
+const MID_INVERT = {1:3, 2:4, 3:1, 4:2, 5:7, 6:8, 7:5, 8:6};
+
+function calcHouTianGua(xianTian) {
+  if (!xianTian) return null;
+  // 阳人翻上卦中爻；阴人翻下卦中爻
+  const newUpper = xianTian.isYangPerson ? MID_INVERT[xianTian.upper] : xianTian.upper;
+  const newLower = xianTian.isYangPerson ? xianTian.lower : MID_INVERT[xianTian.lower];
+  const hexNum  = GUA_TABLE[newUpper - 1][newLower - 1];
+  const hexName = HEX_NAME[hexNum] || '—';
+  const lines   = [...TRIGRAM_LINES_MAP[newUpper], 'gap', ...TRIGRAM_LINES_MAP[newLower]];
+  return { name: hexName, num: hexNum, upper: newUpper, lower: newLower, lines };
+}
+
 let _fcActiveTab       = '先天卦';
 let _fcActiveAge       = 1;
 let _fcBirthYear       = 1991;
 let _fcYearCards       = [];
 let _fcYearlyMap       = {};
 let _fcXiaoLianBranch  = null; // 当前虚岁小限所在地支
-let _xianTianGuaResult = null;         // 计算所得先天卦
-let _liunianGuaResult  = null;         // 当前选中年龄的流年卦
-let _birthPillarsCache = null;         // 出生四柱缓存（流年卦复用）
+let _xianTianGuaResult = null; // 先天卦
+let _houTianGuaResult  = null; // 后天卦
+let _liunianGuaResult  = null; // 当前选中年龄的流年卦
+let _birthPillarsCache = null; // 出生四柱缓存（流年卦复用）
 let _birthGender       = null;
 
 // ─── 流年年干支 & 流年卦计算 ──────────────────────────────
@@ -1164,10 +1176,14 @@ function fcRenderHexagram() {
     hexData = _xianTianGuaResult
       ? { name: _xianTianGuaResult.name, sub: '', lines: _xianTianGuaResult.lines }
       : null;
-  } else {
-    hexData = _fcActiveTab === '流年卦'
-      ? (_liunianGuaResult ? { name: _liunianGuaResult.name, sub: '', lines: _liunianGuaResult.lines } : null)
-      : FC_HEXAGRAMS[_fcActiveTab];
+  } else if (_fcActiveTab === '后天卦') {
+    hexData = _houTianGuaResult
+      ? { name: _houTianGuaResult.name, sub: '', lines: _houTianGuaResult.lines }
+      : null;
+  } else { // 流年卦
+    hexData = _liunianGuaResult
+      ? { name: _liunianGuaResult.name, sub: '', lines: _liunianGuaResult.lines }
+      : null;
   }
   if (!hexData) {
     document.getElementById('fc-hex-name').textContent = '—';
@@ -1396,9 +1412,10 @@ function renderFigmaChart(chart, gender, dateStr, norm) {
   _birthPillarsCache = extractPillars(chart);
   _birthGender = gender;
   _xianTianGuaResult = calcXianTianGua(_birthPillarsCache, gender);
+  _houTianGuaResult  = calcHouTianGua(_xianTianGuaResult);
   _liunianGuaResult  = calcLiunianGua(_fcActiveAge, _fcBirthYear, gender, _birthPillarsCache);
   document.getElementById('fc-c-xiantian').textContent = _xianTianGuaResult?.name ?? '—';
-  document.getElementById('fc-c-houtian').textContent  = '—';
+  document.getElementById('fc-c-houtian').textContent  = _houTianGuaResult?.name  ?? '—';
   document.getElementById('fc-c-liunian').textContent  = `${_fcActiveAge}岁 · ${_liunianGuaResult?.name ?? '—'}`;
 
   _fcActiveBranch = lifeBranch || '卯';
