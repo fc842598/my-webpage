@@ -1054,8 +1054,7 @@ function calcXianTianGua(pillars, gender) {
 }
 
 const FC_HEXAGRAMS = {
-  '后天卦':{ name:'水天需', sub:'SHUI TIAN XU',    lines:['broken','solid','broken','gap','solid','solid','solid'] },
-  '流年卦':{ name:'天风姤', sub:'LIU NIAN GUA',    lines:['solid','solid','solid','gap','solid','solid','broken'] },
+  '后天卦':{ name:'水天需', sub:'SHUI TIAN XU', lines:['broken','solid','broken','gap','solid','solid','solid'] },
 };
 let _fcActiveTab       = '先天卦';
 let _fcActiveAge       = 1;
@@ -1064,6 +1063,34 @@ let _fcYearCards       = [];
 let _fcYearlyMap       = {};
 let _fcXiaoLianBranch  = null; // 当前虚岁小限所在地支
 let _xianTianGuaResult = null;         // 计算所得先天卦
+let _liunianGuaResult  = null;         // 当前选中年龄的流年卦
+let _birthPillarsCache = null;         // 出生四柱缓存（流年卦复用）
+let _birthGender       = null;
+
+// ─── 流年年干支 & 流年卦计算 ──────────────────────────────
+const _LN_STEMS    = ['甲','乙','丙','丁','戊','己','庚','辛','壬','癸'];
+const _LN_BRANCHES = ['子','丑','寅','卯','辰','巳','午','未','申','酉','戌','亥'];
+function yearGanzhi(year) {
+  return {
+    stem:   _LN_STEMS[  ((year - 4) % 10 + 10) % 10],
+    branch: _LN_BRANCHES[((year - 4) % 12 + 12) % 12],
+  };
+}
+// 流年卦：用流年年干支替换出生年干支，月日时保持不变，再跑同一套天地数规则
+function calcLiunianGua(xuAge, birthYear, gender, birthPillars) {
+  if (!birthPillars) return null;
+  const gz = yearGanzhi(birthYear + xuAge - 1);
+  return calcXianTianGua({
+    yearStem:    gz.stem,
+    yearBranch:  gz.branch,
+    monthStem:   birthPillars.monthStem,
+    monthBranch: birthPillars.monthBranch,
+    dayStem:     birthPillars.dayStem,
+    dayBranch:   birthPillars.dayBranch,
+    hourStem:    birthPillars.hourStem,
+    hourBranch:  birthPillars.hourBranch,
+  }, gender);
+}
 
 // ── 小限宫位计算 ──────────────────────────────────────────
 // 按传统紫微斗数：年支三合起点 + 男顺女逆
@@ -1128,7 +1155,7 @@ function fcRenderHexagram() {
       : null;
   } else {
     hexData = _fcActiveTab === '流年卦'
-      ? { name:'天风姤', sub:'LIU NIAN GUA', lines: FC_HEXAGRAMS['流年卦'].lines }
+      ? (_liunianGuaResult ? { name: _liunianGuaResult.name, sub: '', lines: _liunianGuaResult.lines } : null)
       : FC_HEXAGRAMS[_fcActiveTab];
   }
   if (!hexData) {
@@ -1166,9 +1193,11 @@ function fcSelectYear(age) {
   _fcActiveAge = age;
   const year = _fcBirthYear + age - 1; // 虚岁N → 出生年+N-1
   fcLoadYearly(year);
-  // 更新中间区：流年卦 + 小限宫
-  document.getElementById('fc-c-liunian').textContent = `${age}岁`;
+  _liunianGuaResult = calcLiunianGua(age, _fcBirthYear, _birthGender, _birthPillarsCache);
+  const lnName = _liunianGuaResult?.name ?? '—';
+  document.getElementById('fc-c-liunian').textContent = `${age}岁 · ${lnName}`;
   fcRenderLiunianScroll();
+  if (_fcActiveTab === '流年卦') fcRenderHexagram();
   renderFigmaHighlight(_fcActiveBranch || (_chart && _chart.earthlyBranchOfSoulPalace) || '卯');
 }
 
@@ -1354,10 +1383,13 @@ function renderFigmaChart(chart, gender, dateStr, norm) {
   fcBuildYearCards(_fcBirthYear);
   fcLoadYearly(_fcBirthYear + _fcActiveAge - 1); // 虚岁N → 出生年+N-1
 
-  _xianTianGuaResult = calcXianTianGua(extractPillars(chart), gender);
+  _birthPillarsCache = extractPillars(chart);
+  _birthGender = gender;
+  _xianTianGuaResult = calcXianTianGua(_birthPillarsCache, gender);
+  _liunianGuaResult  = calcLiunianGua(_fcActiveAge, _fcBirthYear, gender, _birthPillarsCache);
   document.getElementById('fc-c-xiantian').textContent = _xianTianGuaResult?.name ?? '—';
   document.getElementById('fc-c-houtian').textContent  = '—';
-  document.getElementById('fc-c-liunian').textContent  = `${_fcActiveAge}岁`;
+  document.getElementById('fc-c-liunian').textContent  = `${_fcActiveAge}岁 · ${_liunianGuaResult?.name ?? '—'}`;
 
   _fcActiveBranch = lifeBranch || '卯';
   renderFigmaHighlight(_fcActiveBranch);
