@@ -321,6 +321,17 @@
   </div>
 </section>
 
+<!-- ══ AI 批命调试台 ══════════════════════════════════════════ -->
+<section id="aidbg-section" style="display:none">
+  <div class="aidbg-wrap">
+    <div class="aidbg-head">
+      <span class="aidbg-badge">AI 批命调试台</span>
+      <span class="aidbg-note">提示词可直接编辑 · 每模块独立调用 · 测试阶段</span>
+    </div>
+    <div id="aidbg-modules-wrap"><!-- 由 JS 动态生成 --></div>
+  </div>
+</section>
+
 <footer class="footer">
   <div class="footer-inner">
     <span>© 2026 紫微斗数在线排盘</span>
@@ -1821,6 +1832,7 @@ function renderAIPiming() {
   if (desc) desc.textContent =
     `${_chart.zodiac||''}年 · ${_chart.fiveElementsClass||''} · 命宫${lifeMaj[0]||'空宫'}`;
   section.style.display = 'block';
+  _aidbgShow();
 }
 
 // 大限流年 panel 轻量刷新（年龄切换时调用）
@@ -1833,6 +1845,7 @@ function renderAIPimingLuck() {
     _aipSetCard('aip-xl',  luck.xiaolian);
     _aipSetCard('aip-gua', luck.gua);
   }
+  _aidbgRefreshCtx();  // 年龄变更时刷新大限流年模块的数据预览
 }
 
 // ── AI 深度批命按钮 ───────────────────────────────────────
@@ -1911,6 +1924,227 @@ const _API_BASE = 'http://localhost:3001';
     });
   });
 }());
+
+// ══════════════════════════════════════════════════════════════
+// AI 批命调试台 — 模块化框架 v1
+// 新增模块：在 AIDBG_MODULES 数组末尾追加配置对象即可
+// ══════════════════════════════════════════════════════════════
+
+const _AIDBG_API_BASE = 'http://localhost:3001';
+
+// ── 模块配置表（可持续扩展）──────────────────────────────────
+const AIDBG_MODULES = [
+
+  // ── 模块 1：命宫批命 ────────────────────────────────────────
+  {
+    id   : 'minggong',
+    title: '命宫批命',
+    defaultPrompt:
+`请根据以下命宫相关数据，给出命宫格局的批命分析。
+
+分析要点：
+1. 命宫主星的核心特质与人生底色
+2. 三方四正（官禄、财帛、迁移）对命宫的助力或冲克
+3. 身宫对命格的修正与补充
+4. 生年四化中影响命格的关键化曜
+
+最后给出一段自然流畅的命格总评（100字以内）。
+语言简洁有据，不说空泛套话。`,
+
+    buildContext(chart, inputs) {
+      const pm = {};
+      (chart?.palaces || []).forEach(p => {
+        if (p.name) { pm[p.name] = p; pm[p.name.replace('宫', '')] = p; }
+      });
+      const starStr = p => {
+        if (!p) return '空宫';
+        return [...(p.majorStars||[]), ...(p.minorStars||[])]
+          .map(s => s.name + (s.mutagen || '')).join('、') || '空宫';
+      };
+      const shenP = (chart.palaces||[]).find(p =>
+        p.earthlyBranch === chart.earthlyBranchOfBodyPalace);
+      const allMut = (chart.palaces||[]).flatMap(p =>
+        [...(p?.majorStars||[]),...(p?.minorStars||[])]
+          .filter(s => s.mutagen)
+          .map(s => `${p.name}${s.mutagen}（${s.name}）`)
+      );
+      const norm = inputs.norm;
+      return {
+        基本信息  : `${norm.year}年${norm.month}月${norm.day}日 ${_SHICHEN_NAMES[norm.timeIdx]}时 ${norm.gender==='male'?'男':'女'}命`,
+        命盘格局  : chart.fiveElementsClass || '—',
+        命宫      : starStr(pm['命宫']),
+        身宫      : shenP ? `${shenP.name}（${starStr(shenP)}）` : '—',
+        官禄宫    : starStr(pm['官禄宫']),
+        财帛宫    : starStr(pm['财帛宫']),
+        迁移宫    : starStr(pm['迁移宫']),
+        生年四化  : allMut.join('　') || '无',
+      };
+    },
+  },
+
+  // ── 模块 2：大限流年批命 ──────────────────────────────────
+  {
+    id   : 'currentLuck',
+    title: '大限流年批命',
+    defaultPrompt:
+`请根据以下当前大限、流年、小限数据，给出这一阶段的综合批命分析。
+
+分析要点：
+1. 当前大限阶段的整体运势走向与主要象意
+2. 流年卦象的提示与本年重点事项
+3. 小限落宫的宫位含义与近期关注领域
+4. 大限 + 流年 + 小限三重时间叠合的综合行动建议
+
+最后给出一段自然流畅的阶段总评（100字以内）。
+语言简洁有据，不说空泛套话。`,
+
+    buildContext(chart, inputs, activeAge) {
+      if (!activeAge) return { 提示: '请先在命盘上点击年龄选择虚岁' };
+      const lnData  = _liunianSeq?.[activeAge];
+      const gz      = lnData?.yearGanzhi
+        ? lnData.yearGanzhi.stem + lnData.yearGanzhi.branch + '年' : '—';
+      const lnYear  = _fcBirthYear + activeAge - 1;
+      const dxIdx   = Math.ceil(activeAge / 10);
+      const xlBranch = _fcXiaoLianBranch || lnData?.xiaoLian;
+      const pm = {};
+      (chart?.palaces || []).forEach(p => { if (p.name) pm[p.name] = p; });
+      const xlPalace = (chart.palaces||[]).find(p => p.earthlyBranch === xlBranch);
+      const xlName   = xlPalace?.name || (xlBranch ? xlBranch : '—');
+      const starStr  = p => {
+        if (!p) return '空宫';
+        return [...(p.majorStars||[]), ...(p.minorStars||[])]
+          .map(s => s.name + (s.mutagen || '')).join('、') || '空宫';
+      };
+      const gua = _liunianGuaResult || lnData;
+      return {
+        当前虚岁  : `${activeAge} 岁`,
+        大限阶段  : `第 ${dxIdx} 大限（${(dxIdx-1)*10+1}～${dxIdx*10} 岁）`,
+        流年      : `${lnYear} 年 · ${gz}`,
+        流年卦    : gua ? `${gua.name}${gua.num?`（#${gua.num}）`:''}${gua.period?` · ${gua.period}`:''}` : '—',
+        流年爻位  : lnData ? `第${lnData.lineNum}爻（${lnData.lineType==='yang'?'阳爻9年':'阴爻6年'}）` : '—',
+        小限落宫  : xlName,
+        小限宫星曜: starStr(xlPalace),
+      };
+    },
+  },
+
+  // ── 预留模块（取消注释即可启用）────────────────────────────
+  // { id:'shengong',  title:'身宫批命',   defaultPrompt:'', buildContext(c,i,a){} },
+  // { id:'marriage',  title:'婚姻批命',   defaultPrompt:'', buildContext(c,i,a){} },
+  // { id:'wealth',    title:'财运批命',   defaultPrompt:'', buildContext(c,i,a){} },
+  // { id:'career',    title:'事业批命',   defaultPrompt:'', buildContext(c,i,a){} },
+  // { id:'liunian',   title:'流年批命',   defaultPrompt:'', buildContext(c,i,a){} },
+  // { id:'ziping',    title:'子平法批命', defaultPrompt:'', buildContext(c,i,a){} },
+];
+
+// ── DOM 生成 ─────────────────────────────────────────────────
+
+function _aidbgBuildHTML(mod) {
+  const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  return `
+<div class="aidbg-module" id="aidbg-mod-${mod.id}">
+  <div class="aidbg-mod-header">
+    <span class="aidbg-mod-title">${mod.title}</span>
+    <button class="aidbg-gen-btn" data-mod="${mod.id}">▶ 生成结果</button>
+    <span class="aidbg-mod-status" id="aidbg-status-${mod.id}"></span>
+  </div>
+  <div class="aidbg-cols">
+    <div class="aidbg-left">
+      <div class="aidbg-label">结构化数据（自动提取，随年龄同步更新）</div>
+      <pre class="aidbg-ctx-pre" id="aidbg-ctx-${mod.id}">（等待排盘）</pre>
+      <div class="aidbg-label">AI 返回结果</div>
+      <div class="aidbg-result empty" id="aidbg-result-${mod.id}">点击"生成结果"调用 AI</div>
+    </div>
+    <div class="aidbg-right">
+      <div class="aidbg-label">提示词（可直接编辑）</div>
+      <textarea class="aidbg-prompt-ta" id="aidbg-prompt-${mod.id}"
+        spellcheck="false">${esc(mod.defaultPrompt)}</textarea>
+    </div>
+  </div>
+</div>`;
+}
+
+// ── 初始化：渲染所有模块卡片 ──────────────────────────────────
+
+(function _initAiDbg() {
+  const wrap = document.getElementById('aidbg-modules-wrap');
+  if (!wrap) return;
+  wrap.innerHTML = AIDBG_MODULES.map(_aidbgBuildHTML).join('');
+  document.querySelectorAll('.aidbg-gen-btn').forEach(btn => {
+    btn.addEventListener('click', () => _aidbgGenerate(btn.dataset.mod));
+  });
+}());
+
+// ── 数据预览刷新（排盘或年龄变更后调用）──────────────────────
+
+function _aidbgRefreshCtx() {
+  if (!_chart || !_chartInputs) return;
+  AIDBG_MODULES.forEach(mod => {
+    const el = document.getElementById(`aidbg-ctx-${mod.id}`);
+    if (!el) return;
+    try {
+      const ctx = mod.buildContext(_chart, _chartInputs, _fcActiveAge);
+      el.textContent = JSON.stringify(ctx, null, 2);
+    } catch (e) {
+      el.textContent = '提取出错：' + e.message;
+    }
+  });
+}
+
+// ── 显示调试台 ────────────────────────────────────────────────
+
+function _aidbgShow() {
+  const sec = document.getElementById('aidbg-section');
+  if (sec) sec.style.display = 'block';
+  _aidbgRefreshCtx();
+}
+
+// ── 单模块 AI 生成 ────────────────────────────────────────────
+
+async function _aidbgGenerate(modId) {
+  const mod = AIDBG_MODULES.find(m => m.id === modId);
+  if (!mod || !_chart || !_chartInputs) return;
+
+  const statusEl = document.getElementById(`aidbg-status-${modId}`);
+  const resultEl = document.getElementById(`aidbg-result-${modId}`);
+  const promptEl = document.getElementById(`aidbg-prompt-${modId}`);
+  const btn      = document.querySelector(`.aidbg-gen-btn[data-mod="${modId}"]`);
+
+  if (btn) btn.disabled = true;
+  statusEl.textContent = '请求中…';
+  resultEl.classList.remove('empty');
+  resultEl.textContent = '…';
+
+  try {
+    const ctx     = mod.buildContext(_chart, _chartInputs, _fcActiveAge);
+    const ctxText = Object.entries(ctx).map(([k, v]) => `【${k}】${v}`).join('\n');
+    const prompt  = promptEl?.value?.trim() || mod.defaultPrompt;
+
+    const resp = await fetch(`${_AIDBG_API_BASE}/api/piming`, {
+      method : 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body   : JSON.stringify({
+        topic      : modId,
+        _rawPrompt : {
+          system: '你是一位精通紫微斗数的命理师，分析简洁有据，不说空泛套话。',
+          user  : prompt + '\n\n---\n命盘数据：\n' + ctxText,
+        },
+      }),
+    });
+    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+    const data = await resp.json();
+    if (!data.ok) throw new Error(data.error || '未知错误');
+
+    resultEl.textContent = data.text || '（无返回内容）';
+    statusEl.textContent = `✓ ${data.model}`;
+  } catch (err) {
+    resultEl.classList.add('empty');
+    resultEl.textContent = '错误：' + err.message;
+    statusEl.textContent = '✗ 失败';
+  } finally {
+    if (btn) btn.disabled = false;
+  }
+}
 
 // ── 黄金样本自动校验（页面加载后执行，结果见浏览器控制台）──
 if (typeof ZipingRuntime !== 'undefined') {

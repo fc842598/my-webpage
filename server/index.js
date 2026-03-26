@@ -111,6 +111,20 @@ async function callDeepSeek(system, user) {
   return JSON.parse(raw);
 }
 
+// 自由文本版（调试台模块使用，不强制 JSON schema）
+async function callDeepSeekRaw(system, user) {
+  const resp = await deepseek.chat.completions.create({
+    model      : MODEL,
+    messages   : [
+      { role: 'system', content: system },
+      { role: 'user',   content: user   },
+    ],
+    temperature: 0.7,
+    max_tokens : 1200,
+  });
+  return resp.choices[0]?.message?.content || '';
+}
+
 // ── 请求体格式化（把前端数据转成可读文本）───────────────────
 
 function formatBody(req) {
@@ -135,8 +149,19 @@ function formatBody(req) {
 // ── 主接口 ───────────────────────────────────────────────
 
 app.post('/api/piming', async (req, res) => {
-  const { topic } = req.body || {};
+  const { topic, _rawPrompt } = req.body || {};
   if (!topic) return res.status(400).json({ error: 'topic 字段不能为空' });
+
+  // 调试台透传模式：调用方自己组装 system+user，返回纯文本
+  if (_rawPrompt) {
+    try {
+      const text = await callDeepSeekRaw(_rawPrompt.system || '', _rawPrompt.user || '');
+      return res.json({ ok: true, topic, model: MODEL, text });
+    } catch (err) {
+      console.error('[piming-api] DeepSeek raw 调用失败:', err.message);
+      return res.status(502).json({ error: 'AI 调用失败：' + err.message });
+    }
+  }
 
   try {
     const body   = formatBody(req.body);

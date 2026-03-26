@@ -1318,3 +1318,50 @@
   .aip-card-body  { font-size: 11px; }
   .aip-card-tip   { font-size: 10px; }
 }
+
+/* ─────────────────────────────────────────────────────────────
+   AI 批命调试台
+   ───────────────────────────────────────────────────────────── */
+#aidbg-section  { background: #f4efe7; border-top: 2px solid #d4c4b0; }
+.aidbg-wrap     { max-width: 900px; margin: 0 auto; padding: 28px 20px 40px; }
+.aidbg-head     { display: flex; align-items: center; gap: 12px; margin-bottom: 22px; }
+.aidbg-badge    { background: #2e221a; color: #f5ede0; font-size: 11px; font-weight: bold;
+                  padding: 3px 12px; border-radius: 10px; letter-spacing: .1em; }
+.aidbg-note     { font-size: 12px; color: #8a7a6a; }
+
+.aidbg-module   { background: #fff; border: 1px solid #ddd0bc; border-radius: 10px;
+                  padding: 18px 20px 20px; margin-bottom: 22px; }
+.aidbg-mod-header { display: flex; align-items: center; gap: 10px; margin-bottom: 16px;
+                    padding-bottom: 12px; border-bottom: 1px solid #eee5d6; }
+.aidbg-mod-title  { font-size: 14px; font-weight: bold; color: #2e221a; flex: 1; }
+.aidbg-gen-btn    { background: #6a3225; color: #fff5ec; border: none; border-radius: 16px;
+                    padding: 6px 22px; font-size: 12px; font-weight: bold;
+                    cursor: pointer; letter-spacing: .04em; transition: opacity .15s; }
+.aidbg-gen-btn:hover    { opacity: .85; }
+.aidbg-gen-btn:disabled { opacity: .45; cursor: default; }
+.aidbg-mod-status { font-size: 11px; color: #7a5c4a; white-space: nowrap; min-width: 80px; text-align: right; }
+
+.aidbg-cols  { display: flex; gap: 18px; }
+.aidbg-left  { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 12px; }
+.aidbg-right { width: 340px; flex-shrink: 0; display: flex; flex-direction: column; gap: 8px; }
+.aidbg-label { font-size: 10px; font-weight: bold; color: #9a8878;
+               letter-spacing: .06em; text-transform: uppercase; }
+.aidbg-ctx-pre { background: #f8f3eb; border: 1px solid #ddd0bc; border-radius: 6px;
+                 padding: 10px 12px; font-size: 11px; font-family: 'Courier New', monospace;
+                 color: #4a3f35; white-space: pre-wrap; word-break: break-all;
+                 min-height: 60px; max-height: 180px; overflow-y: auto; }
+.aidbg-result  { background: #fdfaf5; border: 1px solid #ddd0bc; border-radius: 6px;
+                 padding: 14px 16px; font-size: 13px; color: #2e221a;
+                 line-height: 1.85; white-space: pre-wrap; min-height: 60px; }
+.aidbg-result.empty { color: #b0a090; font-style: italic; }
+.aidbg-prompt-ta { width: 100%; box-sizing: border-box; height: 100%;
+                   background: #fdfaf5; border: 1px solid #c8b89a; border-radius: 6px;
+                   padding: 10px 13px; font-size: 12px; font-family: inherit;
+                   color: #2e221a; line-height: 1.75; resize: vertical; min-height: 260px; }
+.aidbg-prompt-ta:focus { outline: none; border-color: #6a3225; box-shadow: 0 0 0 2px #6a322520; }
+
+@media (max-width: 660px) {
+  .aidbg-cols  { flex-direction: column; }
+  .aidbg-right { width: 100%; }
+  .aidbg-prompt-ta { min-height: 160px; }
+}
