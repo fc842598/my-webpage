@@ -1112,7 +1112,9 @@ function fcRenderHexagram() {
   });
 
   // 渲染卦辞文案
-  const entry = (typeof GUACI_DATA !== 'undefined') && GUACI_DATA[hexData.name];
+  const entry = typeof getGuaciEntryByName === 'function'
+    ? getGuaciEntryByName(hexData.name)
+    : ((typeof GUACI_DATA !== 'undefined') && GUACI_DATA[hexData.name]);
   if (entry) {
     const tabKey = _fcActiveTab === '先天卦' ? 'xian' : _fcActiveTab === '后天卦' ? 'hou' : 'liu';
     const text = entry[tabKey] || '暂无对应解读';

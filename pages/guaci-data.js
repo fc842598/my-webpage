@@ -322,3 +322,31 @@ const GUACI_DATA = {
     liu:  '未济之年，事多壅滞，慎处守成，吉。力争招是非。婚事不利。求财谨慎多防（小人）。虎人受困之时。',
   },
 };
+
+function normalizeGuaciHexName(name) {
+  return String(name || '')
+    .trim()
+    .replace(/[\s。．\.：:]/g, '')
+    .replace(/遯/g, '遁')
+    .replace(/蓄/g, '畜')
+    .replace(/伏/g, '复');
+}
+
+const GUACI_DATA_INDEX = {};
+Object.keys(GUACI_DATA).forEach(name => {
+  const normalized = normalizeGuaciHexName(name);
+  if (normalized && !GUACI_DATA_INDEX[normalized]) {
+    GUACI_DATA_INDEX[normalized] = GUACI_DATA[name];
+  }
+});
+
+function getGuaciEntryByName(name) {
+  if (!name) return null;
+  return GUACI_DATA[name] || GUACI_DATA_INDEX[normalizeGuaciHexName(name)] || null;
+}
+
+if (typeof window !== 'undefined') {
+  window.getGuaciEntryByName = getGuaciEntryByName;
+} else if (typeof global !== 'undefined') {
+  global.getGuaciEntryByName = getGuaciEntryByName;
+}
