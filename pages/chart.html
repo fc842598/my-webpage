@@ -200,11 +200,9 @@
             <div class="fc-gua-row"><span class="fc-center-lbl">后天卦</span><span class="fc-center-val" id="fc-c-houtian">—</span></div>
             <div class="fc-gua-row"><span class="fc-center-lbl">流年卦</span><span class="fc-center-val" id="fc-c-liunian">—</span></div>
           </div>
-          <div id="fc-adjust-banner" style="display:none;font-size:7.5px;color:#963d32;background:#fdf3ec;border:1px solid #e8c9b0;border-radius:4px;padding:2px 5px;margin-top:3px;text-align:center;"></div>
           <div class="fc-center-btns">
             <button class="fc-center-btn" id="fc-btn-time-up">时 ↑</button>
             <button class="fc-center-btn" id="fc-btn-time-down">时 ↓</button>
-            <button class="fc-center-btn" id="fc-btn-adjust">时辰校定</button>
           </div>
         </div>
         <div class="fc-cell" id="fc-you"></div>
@@ -615,39 +613,6 @@ document.getElementById('btn-submit').addEventListener('click', async () => {
   }
 });
 
-// ─── 时辰校定模式 ─────────────────────────────────────────
-let _fcAdjustMode = false;   // 是否处于校定模式
-let _fcBaseNorm   = null;    // 进入校定时记录的基准 norm（含原始时间、TST、timeIdx）
-
-function _updateAdjustBanner() {
-  const banner = document.getElementById('fc-adjust-banner');
-  const adjBtn = document.getElementById('fc-btn-adjust');
-  if (!banner || !adjBtn) return;
-  if (!_fcAdjustMode || !_chartInputs) {
-    banner.style.display    = 'none';
-    adjBtn.textContent      = '时辰校定';
-    adjBtn.style.background = '';
-    adjBtn.style.color      = '';
-    return;
-  }
-  const pad     = n => String(n).padStart(2, '0');
-  const curNorm = _chartInputs.norm;
-  const curRaw  = `${pad(curNorm.cstHour)}:${pad(curNorm.cstMinute)}`;
-  const curShi  = _SHICHEN_NAMES[_chartInputs.timeIdx];
-  const baseRaw = _fcBaseNorm ? `${pad(_fcBaseNorm.cstHour)}:${pad(_fcBaseNorm.cstMinute)}` : curRaw;
-  const baseShi = _fcBaseNorm ? _SHICHEN_NAMES[_fcBaseNorm.timeIdx] : curShi;
-  let diffStr = '';
-  if (_fcBaseNorm) {
-    const dm = (curNorm.cstHour * 60 + curNorm.cstMinute) - (_fcBaseNorm.cstHour * 60 + _fcBaseNorm.cstMinute);
-    diffStr = dm === 0 ? '（与进入时相同）' : dm > 0 ? `（+${dm}分钟）` : `（${dm}分钟）`;
-  }
-  banner.textContent      = `校定中 · 当前：${curRaw} ${curShi}时  基准：${baseRaw} ${baseShi}时 ${diffStr}`;
-  banner.style.display    = 'block';
-  adjBtn.textContent      = '退出校定';
-  adjBtn.style.background = '#fdf3ec';
-  adjBtn.style.color      = '#963d32';
-}
-
 // ─── 原始时间步进（±2小时，走完整 TST→timeIdx→排盘 链路） ───
 function stepRawBirthTime(hoursDelta) {
   if (!_iztroLib || !_chartInputs) return;
@@ -708,19 +673,11 @@ function stepRawBirthTime(hoursDelta) {
   _chartInputs = { dateStr: newDateStr, timeIdx: newTimeIdx, gender: newNorm.gender, norm: newNorm };
 
   renderFigmaChart(_chart, _chartInputs.gender, newDateStr, newNorm);
-  if (_fcAdjustMode) _updateAdjustBanner();
 }
 
 // 时↑ = 上一个时辰 = 原始时间 -2小时；时↓ = 下一个时辰 = 原始时间 +2小时
 document.getElementById('fc-btn-time-up').addEventListener('click',   () => stepRawBirthTime(-2));
 document.getElementById('fc-btn-time-down').addEventListener('click', () => stepRawBirthTime(+2));
-
-document.getElementById('fc-btn-adjust').addEventListener('click', () => {
-  if (!_chartInputs) return;
-  _fcAdjustMode = !_fcAdjustMode;
-  _fcBaseNorm   = _fcAdjustMode ? _chartInputs.norm : null;
-  _updateAdjustBanner();
-});
 
 // ─── 地图常量 ─────────────────────────────────────────────
 const BRANCH_ID = {
@@ -1386,34 +1343,36 @@ function renderFigmaChart(chart, gender, dateStr, norm) {
 
   // 中央面板时间信息
   const _pad = n => String(n).padStart(2,'0');
-  // 公历：日期 + 输入的北京时间
+  // 公历：日期 + 北京时间 + 最终排盘时辰
+  const usedIdx  = norm ? norm.timeIdx : 6;
+  const usedShi  = _SHICHEN_NAMES[usedIdx] + '时';
   if (norm) {
     const cstStr = norm.cstHour !== undefined
-      ? `${norm.calModeLabel || dateStr} ${_pad(norm.cstHour)}:${_pad(norm.cstMinute)}`
+      ? `${norm.calModeLabel || dateStr} ${_pad(norm.cstHour)}:${_pad(norm.cstMinute)} ${usedShi}`
       : (norm.calModeLabel || dateStr);
     document.getElementById('fc-c-solar').textContent = cstStr;
   } else {
     document.getElementById('fc-c-solar').textContent = dateStr || '';
   }
-  // 农历：始终显示农历日期
+  // 农历
   document.getElementById('fc-c-lunar').textContent = chart.chineseDate || chart.lunarDate || '—';
-  // 真太阳时
+  // 真太阳时：始终显示完整值，无出生地时明确标注估算
   const tstEl = document.getElementById('fc-c-tst');
   if (tstEl) {
     if (norm?.tstResult) {
       const tst = norm.tstResult;
       tstEl.textContent = `${_pad(tst.trueSolarHour)}:${_pad(tst.trueSolarMinute)}` +
-        (tst.isEstimated ? '（北京经度估算）' : ` (${tst.diffStr})`);
+        (tst.isEstimated ? '（北京经度估算）' : `（偏差${tst.diffStr}）`);
+    } else if (norm?.cstHour !== undefined) {
+      // 无 TST 结果时回落：直接用北京时间显示，并说明
+      tstEl.textContent = `${_pad(norm.cstHour)}:${_pad(norm.cstMinute)}（未校正）`;
     } else {
       tstEl.textContent = '—';
     }
   }
-  // 排盘时辰（来自真太阳时换算的 finalTimeIdx，即 timeIdx）
+  // 排盘时辰
   const shichenEl = document.getElementById('fc-c-shichen');
-  if (shichenEl) {
-    const usedIdx = norm ? norm.timeIdx : 6;
-    shichenEl.textContent = _SHICHEN_NAMES[usedIdx] + '时';
-  }
+  if (shichenEl) shichenEl.textContent = usedShi;
 
   const sizhuEl = document.getElementById('fc-c-sizhu');
   const STEM_COLORS = ['#886a4a','#4d7a5b','#9b4238','#476885'];
