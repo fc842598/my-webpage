@@ -10,6 +10,7 @@
   <script src="../js/cities.js"></script>
   <script src="../js/lunarCalendar.js"></script>
   <script src="../js/trueSolarTime.js"></script>
+  <script src="guaci-data.js"></script>
 </head>
 <body>
 
@@ -231,6 +232,11 @@
       <div class="fc-hex-name" id="fc-hex-name">风水涣</div>
       <div class="fc-hex-sub" id="fc-hex-sub">FENG SHUI HUAN</div>
       <div class="fc-hex-lines" id="fc-hex-lines"></div>
+    </div>
+
+    <!-- 卦辞文案 -->
+    <div class="fc-guaci-card" id="fc-guaci-card" style="display:none">
+      <p class="fc-guaci-text" id="fc-guaci-text"></p>
     </div>
 
     <!-- 重新排盘按钮 -->
@@ -1270,10 +1276,15 @@ function fcRenderHexagram() {
       ? { name: _liunianGuaResult.name, sub: '', lines: _liunianGuaResult.lines }
       : null;
   }
+
+  const guaciCard = document.getElementById('fc-guaci-card');
+  const guaciText = document.getElementById('fc-guaci-text');
+
   if (!hexData) {
     document.getElementById('fc-hex-name').textContent = '—';
     document.getElementById('fc-hex-sub').textContent  = '';
     document.getElementById('fc-hex-lines').innerHTML  = '';
+    guaciCard.style.display = 'none';
     return;
   }
   document.getElementById('fc-hex-name').textContent = hexData.name;
@@ -1287,6 +1298,17 @@ function fcRenderHexagram() {
     else { el.className = 'fc-yao-broken'; el.innerHTML = '<div></div><div></div>'; }
     container.appendChild(el);
   });
+
+  // 渲染卦辞文案
+  const entry = (typeof GUACI_DATA !== 'undefined') && GUACI_DATA[hexData.name];
+  if (entry) {
+    const tabKey = _fcActiveTab === '先天卦' ? 'xian' : _fcActiveTab === '后天卦' ? 'hou' : 'liu';
+    const text = entry[tabKey] || '暂无对应解读';
+    guaciText.textContent = text;
+    guaciCard.style.display = 'block';
+  } else {
+    guaciCard.style.display = 'none';
+  }
 }
 
 function fcRenderTabs() {

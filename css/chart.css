@@ -739,6 +739,22 @@
   border-radius: 1px;
 }
 
+/* 卦辞文案卡片 */
+.fc-guaci-card {
+  margin: 0 12px 16px;
+  padding: 14px 16px;
+  background: #fdf8f2;
+  border: 1px solid rgba(150,61,50,.18);
+  border-radius: 8px;
+}
+.fc-guaci-text {
+  font-size: 13px;
+  color: #3d2b22;
+  line-height: 1.9;
+  margin: 0;
+  white-space: pre-wrap;
+}
+
 /* 流年卦叠加行 */
 .fc-yearly-row {
   display: flex;
