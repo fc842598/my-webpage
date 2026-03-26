@@ -1,11 +1,20 @@
 /**
- * 子平法命卦 — 黄金样本
- * 每个 case 至少包含：先天卦、后天卦、元堂爻、若干年龄点流年卦。
+ * 子平法命卦 — 黄金样本 v2
  *
  * source 说明：
  *   "algorithm-trace"   — 本地逐步手算推出，结构可信，尚未对照专业工具
  *   "professional-tool" — 已用专业排盘软件核对 ← 待填入
  *   "tianji-dao-book"   — 来源《天机道》书中示例 ← 待填入
+ *
+ * verified 说明：
+ *   false → provisional（临时自洽，失败只产生警告）
+ *   true  → 已外部核对（失败视为算法错误，需立即修复）
+ *
+ * 填入 verified=true case 的方法：
+ *   1. 用专业排盘软件（万年历Pro / 海厦学员工具）排出四柱
+ *   2. 对照先天卦、后天卦、元堂爻、各年流年卦
+ *   3. 将 source 改为 "professional-tool"，verified 改为 true
+ *   4. 删除或留空此注释块
  */
 const ZIPING_GOLDEN_CASES = [
 
@@ -22,7 +31,7 @@ const ZIPING_GOLDEN_CASES = [
     id: 'case-壬辰-男-1952',
     description: '壬辰甲子丁丑壬子 男命 birthYear=1952',
     source: 'algorithm-trace',
-    verified: false,
+    verified: false,   // provisional：仅算法自洽，待专业工具核对
     input: {
       pillars: {
         yearStem:'壬', yearBranch:'辰',
@@ -44,7 +53,7 @@ const ZIPING_GOLDEN_CASES = [
         upper: 1, lower: 6,
         yuanTangLine: 2, yuanTangLineType: 'yang',
       },
-      xiantian: { name: '天水讼', num: 6, upper: 1, lower: 6 },
+      xiantian: { name: '天水讼', num: 6,  upper: 1, lower: 6 },
       houtian:  { name: '天地否', num: 12, upper: 1, lower: 8 },
       spotChecks: [
         // 爻2阳爻(9年)，age1=1952=壬(9阳)→ 保持本卦 天水讼
@@ -62,8 +71,8 @@ const ZIPING_GOLDEN_CASES = [
         // 爻1阴爻(6年)：ages 43-48 → 天泽履
         { age: 43, guaName: '天泽履', period: '先天' },
         // 后天卦期 爻2阴爻(6年)：ages 49-54 → 翻爻2 of 天地否
-        // 天地否 upper=乾(1) lower=坤(8)，爻2在lower坤(8)，坤=['b','b','b']，idx=1 solid→broken
-        // flip 坤爻2 → ['b','s','b']=坎(6)，天水讼(6)
+        // 天地否 upper=乾(1) lower=坤(8)，爻2在lower坤(8)，坤=['b','b','b']，idx=1 b→s
+        // flip 坤爻2 → ['b','s','b']=坎(6)，上乾下坎=天水讼(6)
         { age: 49, guaName: '天水讼', period: '后天' },
       ],
     },
@@ -82,7 +91,7 @@ const ZIPING_GOLDEN_CASES = [
     id: 'case-辛亥-女-1971',
     description: '辛亥甲子庚午甲子 女命 birthYear=1971',
     source: 'algorithm-trace',
-    verified: false,
+    verified: false,   // provisional
     input: {
       pillars: {
         yearStem:'辛', yearBranch:'亥',
@@ -132,7 +141,7 @@ const ZIPING_GOLDEN_CASES = [
     id: 'case-丙子-男-1996',
     description: '丙子庚子丁丑壬午 男命 birthYear=1996',
     source: 'algorithm-trace',
-    verified: false,
+    verified: false,   // provisional
     input: {
       pillars: {
         yearStem:'丙', yearBranch:'子',
@@ -169,16 +178,35 @@ const ZIPING_GOLDEN_CASES = [
     },
   },
 
-  // ── Case 4：待专业工具核对 ── (placeholder) ───────────────────
-  // 请使用专业八字/子平法排盘软件（如万年历Pro、海厦学员专用工具）
-  // 核对后填入此 case 并设置 verified: true
+  // ── Case 4：待专业工具核对 ─────────────────────────────────
+  // 填入步骤：
+  //   1. 用专业排盘工具（万年历Pro / 海厦学员工具）输入四柱
+  //   2. 记录：先天卦名/卦号、后天卦名/卦号、元堂爻序、至少5个流年卦
+  //   3. 将 verified 改为 true，source 改为 "professional-tool"
+  //   4. 取消注释并填入实际数值
   // {
-  //   id: 'case-verified-external',
+  //   id: 'case-verified-external-001',
   //   description: '待填入：来自专业工具验证的盘',
   //   source: 'professional-tool',
   //   verified: true,
-  //   input: { pillars: {...}, gender: '...', birthYear: ... },
-  //   expected: { ... },
+  //   input: {
+  //     pillars: {
+  //       yearStem: '?', yearBranch: '?',
+  //       monthStem: '?', monthBranch: '?',
+  //       dayStem: '?', dayBranch: '?',
+  //       hourStem: '?', hourBranch: '?',
+  //     },
+  //     gender: 'male',   // or 'female'
+  //     birthYear: 0000,
+  //   },
+  //   expected: {
+  //     xiantian: { name: '?', num: 0, upper: 0, lower: 0 },
+  //     houtian:  { name: '?', num: 0, upper: 0, lower: 0 },
+  //     spotChecks: [
+  //       { age: 1,  guaName: '?', period: '先天' },
+  //       { age: 10, guaName: '?', period: '先天' },
+  //     ],
+  //   },
   // },
 
 ];
