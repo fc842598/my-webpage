@@ -1000,11 +1000,28 @@ const GUA_TABLE = [
   [11, 19, 36, 24, 46,  7, 15,  2], // 坤上
 ];
 
-function numToTrigramGua(sum, isHeavenNum) {
+// ─── 三元 & 5寄宫（《天机道》三元 × 阴阳命查表） ──────────
+function getSanyuan(birthYear) {
+  const mod180 = ((birthYear - 1864) % 180 + 180) % 180;
+  if (mod180 < 60)  return '上元';
+  if (mod180 < 120) return '中元';
+  return '下元';
+}
+// 注：寄宫值据《天机道》三元寄宫表，需核对原书
+const WU_JIGONG = {
+  '上元': { yang: 1, yin: 8 }, // 寄乾(阳命) / 寄坤(阴命)
+  '中元': { yang: 6, yin: 3 }, // 寄坎(阳命) / 寄离(阴命)
+  '下元': { yang: 7, yin: 2 }, // 寄艮(阳命) / 寄兑(阴命)
+};
+function getFiveResidueGong(birthYear, isYangPerson) {
+  const sy = getSanyuan(birthYear);
+  return isYangPerson ? WU_JIGONG[sy].yang : WU_JIGONG[sy].yin;
+}
+function numToTrigramGua(sum, isHeavenNum, birthYear, isYangPerson) {
   const mod = isHeavenNum ? 25 : 30;
   let r = sum % mod;
   if (r === 0) r = mod;
-  if (r === 5) return isHeavenNum ? 1 : 8; // 天寄乾(1)，地寄坤(8)
+  if (r === 5) return getFiveResidueGong(birthYear, isYangPerson);
   let g = r % 8;
   if (g === 0) g = 8;
   return g;
@@ -1033,7 +1050,7 @@ function extractPillars(chart) {
   return p;
 }
 
-function calcXianTianGua(pillars, gender) {
+function calcXianTianGua(pillars, gender, birthYear) {
   const { yearStem, yearBranch, monthStem, monthBranch, dayStem, dayBranch, hourStem, hourBranch } = pillars;
   const nums = [
     STEM_NUM[yearStem],   BRANCH_NUM[yearBranch],
@@ -1046,12 +1063,15 @@ function calcXianTianGua(pillars, gender) {
   let tian = 0, di = 0;
   nums.forEach(n => { if (n % 2 === 1) tian += n; else di += n; });
 
-  const guaTian = numToTrigramGua(tian, true);
-  const guaDi   = numToTrigramGua(di,   false);
-
   // 年干单数=阳干；阳男阴女→天上地下，阴男阳女→地上天下
+  // 先算 isYangPerson，供 5寄宫 查表使用
   const isYangYear   = (STEM_NUM[yearStem] || 0) % 2 === 1;
   const isYangPerson = (gender === 'male') === isYangYear;
+  const bYear        = birthYear || _fcBirthYear || 1991;
+
+  const guaTian = numToTrigramGua(tian, true,  bYear, isYangPerson);
+  const guaDi   = numToTrigramGua(di,   false, bYear, isYangPerson);
+
   const upper = isYangPerson ? guaTian : guaDi;
   const lower = isYangPerson ? guaDi   : guaTian;
 
@@ -1061,21 +1081,67 @@ function calcXianTianGua(pillars, gender) {
   return { name: hexName, num: hexNum, upper, lower, lines, isYangPerson };
 }
 
-// ─── 后天卦计算（元堂中爻翻转） ──────────────────────────────
-// 阳人(阳男/阴女)：天数在上，元堂=上卦中爻(爻5)
-// 阴人(阴男/阳女)：地数在上，元堂=下卦中爻(爻2)
-// 翻转中爻配对：乾↔离 兑↔震 巽↔艮 坎↔坤
-const MID_INVERT = {1:3, 2:4, 3:1, 4:2, 5:7, 6:8, 7:5, 8:6};
+// ─── 元堂 & 后天卦 & 流年序列（《天机道》P49-51 元堂游变法）──
 
-function calcHouTianGua(xianTian) {
-  if (!xianTian) return null;
-  // 阳人翻上卦中爻；阴人翻下卦中爻
-  const newUpper = xianTian.isYangPerson ? MID_INVERT[xianTian.upper] : xianTian.upper;
-  const newLower = xianTian.isYangPerson ? xianTian.lower : MID_INVERT[xianTian.lower];
-  const hexNum  = GUA_TABLE[newUpper - 1][newLower - 1];
-  const hexName = HEX_NAME[hexNum] || '—';
-  const lines   = [...TRIGRAM_LINES_MAP[newUpper], 'gap', ...TRIGRAM_LINES_MAP[newLower]];
-  return { name: hexName, num: hexNum, upper: newUpper, lower: newLower, lines };
+// 取卦爻线数组 [line1(底)..line6(顶)] = 'solid'|'broken'
+function getHexLines(upper, lower) {
+  const l = TRIGRAM_LINES_MAP[lower]; // display: [爻3顶, 爻2中, 爻1底]
+  const u = TRIGRAM_LINES_MAP[upper]; // display: [爻6顶, 爻5中, 爻4底]
+  return [l[2], l[1], l[0], u[2], u[1], u[0]]; // index 0=爻1, 5=爻6
+}
+
+// 翻转卦体内第 lineInTrigram 爻（1=底,2=中,3=顶）
+function flipLineInTrigram(trigramNum, lineInTrigram) {
+  const idx   = 3 - lineInTrigram;            // 爻1→idx2, 爻2→idx1, 爻3→idx0
+  const lines = [...TRIGRAM_LINES_MAP[trigramNum]];
+  lines[idx]  = lines[idx] === 'solid' ? 'broken' : 'solid';
+  for (let n = 1; n <= 8; n++) {
+    const t = TRIGRAM_LINES_MAP[n];
+    if (t[0]===lines[0] && t[1]===lines[1] && t[2]===lines[2]) return n;
+  }
+  return trigramNum;
+}
+
+// 翻转卦中第 lineNum 爻（1-6），返回新卦象对象
+function flipLineInHex(gua, lineNum) {
+  const newUpper = lineNum >= 4 ? flipLineInTrigram(gua.upper, lineNum - 3) : gua.upper;
+  const newLower = lineNum  < 4 ? flipLineInTrigram(gua.lower, lineNum    ) : gua.lower;
+  const hexNum   = GUA_TABLE[newUpper - 1][newLower - 1];
+  const hexName  = HEX_NAME[hexNum] || '—';
+  const lines    = [...TRIGRAM_LINES_MAP[newUpper], 'gap', ...TRIGRAM_LINES_MAP[newLower]];
+  return { name: hexName, num: hexNum, upper: newUpper, lower: newLower,
+           lines, isYangPerson: gua.isYangPerson };
+}
+
+// 元堂定位（P49-51）
+// 阳时(子寅辰午申戌)生人：取本卦阳爻，从子时起顺序对应
+// 阴时(丑卯巳未酉亥)生人：取本卦阴爻，从午时起（午后首阴=未）
+const _YANG_SHI   = ['子','寅','辰','午','申','戌'];
+const _YIN_SHI_WU = ['未','酉','亥','丑','卯','巳'];
+
+function getYuanTang(upper, lower, hourBranch) {
+  const hexLines  = getHexLines(upper, lower);
+  const yangLines = hexLines.map((l,i) => l==='solid'  ? i+1 : null).filter(Boolean);
+  const yinLines  = hexLines.map((l,i) => l==='broken' ? i+1 : null).filter(Boolean);
+  if (_YANG_SHI.includes(hourBranch)) {
+    const pos  = _YANG_SHI.indexOf(hourBranch);
+    const pool = yangLines.length ? yangLines : yinLines; // 全阴卦降级
+    return pool[pos % pool.length];
+  } else {
+    const pos  = _YIN_SHI_WU.indexOf(hourBranch);
+    const pool = yinLines.length ? yinLines : yangLines;  // 全阳卦降级
+    return pool[pos % pool.length];
+  }
+}
+
+// 后天卦：元堂爻翻转
+// 三至尊卦（坎为水29、水雷屯3、水山蹇39）阴令/阳令细则待完善
+const _THREE_ZIZUN = new Set([29, 3, 39]);
+
+function calcHouTianGua(xianTian, yuanTangLine) {
+  if (!xianTian || !yuanTangLine) return null;
+  // TODO: 三至尊卦按阴令/阳令处理，当前暂用普通变爻逻辑
+  return flipLineInHex(xianTian, yuanTangLine);
 }
 
 let _fcActiveTab       = '先天卦';
@@ -1087,7 +1153,8 @@ let _fcXiaoLianBranch  = null; // 当前虚岁小限所在地支
 let _xianTianGuaResult = null; // 先天卦
 let _houTianGuaResult  = null; // 后天卦
 let _liunianGuaResult  = null; // 当前选中年龄的流年卦
-let _birthPillarsCache = null; // 出生四柱缓存（流年卦复用）
+let _liunianSeq        = {};   // 流年序列 { age: guaResult }
+let _birthPillarsCache = null; // 出生四柱缓存
 let _birthGender       = null;
 
 // ─── 流年年干支 & 流年卦计算 ──────────────────────────────
@@ -1099,20 +1166,38 @@ function yearGanzhi(year) {
     branch: _LN_BRANCHES[((year - 4) % 12 + 12) % 12],
   };
 }
-// 流年卦：用流年年干支替换出生年干支，月日时保持不变，再跑同一套天地数规则
-function calcLiunianGua(xuAge, birthYear, gender, birthPillars) {
-  if (!birthPillars) return null;
-  const gz = yearGanzhi(birthYear + xuAge - 1);
-  return calcXianTianGua({
-    yearStem:    gz.stem,
-    yearBranch:  gz.branch,
-    monthStem:   birthPillars.monthStem,
-    monthBranch: birthPillars.monthBranch,
-    dayStem:     birthPillars.dayStem,
-    dayBranch:   birthPillars.dayBranch,
-    hourStem:    birthPillars.hourStem,
-    hourBranch:  birthPillars.hourBranch,
-  }, gender);
+// 流年序列：从元堂起逐爻游变，阳爻9年/阴爻6年
+// 先天卦期（元堂→爻6 循序）→ 后天卦期（元堂→爻6 循序）
+function buildLiuNianSequence(xianTian, houTian, yuanTangLine, birthYear) {
+  if (!xianTian || !yuanTangLine) return {};
+  const seq = {};
+  let age   = 1;
+
+  function fillPeriod(baseGua) {
+    const hexLines  = getHexLines(baseGua.upper, baseGua.lower);
+    const lineOrder = [];
+    for (let i = yuanTangLine; i <= 6; i++) lineOrder.push(i);
+    for (let i = 1; i < yuanTangLine; i++) lineOrder.push(i);
+    for (const ln of lineOrder) {
+      if (age > 100) break;
+      const isYang   = hexLines[ln - 1] === 'solid';
+      const numYears = isYang ? 9 : 6;
+      for (let y = 0; y < numYears && age <= 100; y++, age++) {
+        const curYear    = birthYear + age - 1;
+        const isYangYear = (STEM_NUM[yearGanzhi(curYear).stem] % 2) === 1;
+        // 阳爻遇阳年本卦不变；阳爻遇阴年或阴爻每年皆变爻
+        const gua = (isYang && isYangYear) ? baseGua : flipLineInHex(baseGua, ln);
+        seq[age] = { ...gua, lineNum: ln, period: baseGua === xianTian ? '先天' : '后天' };
+      }
+    }
+  }
+
+  fillPeriod(xianTian);
+  if (houTian && age <= 100) fillPeriod(houTian);
+  // 超出 87 年后用最后已知结果补全到 100
+  const last = seq[Math.max(...Object.keys(seq).map(Number))];
+  for (let a = age; a <= 100; a++) seq[a] = last;
+  return seq;
 }
 
 // ── 小限宫位计算 ──────────────────────────────────────────
@@ -1220,7 +1305,7 @@ function fcSelectYear(age) {
   _fcActiveAge = age;
   const year = _fcBirthYear + age - 1; // 虚岁N → 出生年+N-1
   fcLoadYearly(year);
-  _liunianGuaResult = calcLiunianGua(age, _fcBirthYear, _birthGender, _birthPillarsCache);
+  _liunianGuaResult = _liunianSeq[age] ?? null;
   const lnName = _liunianGuaResult?.name ?? '—';
   document.getElementById('fc-c-liunian').textContent = `${age}岁 · ${lnName}`;
   fcRenderLiunianScroll();
@@ -1410,10 +1495,14 @@ function renderFigmaChart(chart, gender, dateStr, norm) {
   fcLoadYearly(_fcBirthYear + _fcActiveAge - 1); // 虚岁N → 出生年+N-1
 
   _birthPillarsCache = extractPillars(chart);
-  _birthGender = gender;
-  _xianTianGuaResult = calcXianTianGua(_birthPillarsCache, gender);
-  _houTianGuaResult  = calcHouTianGua(_xianTianGuaResult);
-  _liunianGuaResult  = calcLiunianGua(_fcActiveAge, _fcBirthYear, gender, _birthPillarsCache);
+  _birthGender       = gender;
+  _xianTianGuaResult = calcXianTianGua(_birthPillarsCache, gender, _fcBirthYear);
+  const _yuanTang    = _xianTianGuaResult
+    ? getYuanTang(_xianTianGuaResult.upper, _xianTianGuaResult.lower, _birthPillarsCache.hourBranch)
+    : null;
+  _houTianGuaResult  = calcHouTianGua(_xianTianGuaResult, _yuanTang);
+  _liunianSeq        = buildLiuNianSequence(_xianTianGuaResult, _houTianGuaResult, _yuanTang, _fcBirthYear);
+  _liunianGuaResult  = _liunianSeq[_fcActiveAge] ?? null;
   document.getElementById('fc-c-xiantian').textContent = _xianTianGuaResult?.name ?? '—';
   document.getElementById('fc-c-houtian').textContent  = _houTianGuaResult?.name  ?? '—';
   document.getElementById('fc-c-liunian').textContent  = `${_fcActiveAge}岁 · ${_liunianGuaResult?.name ?? '—'}`;
