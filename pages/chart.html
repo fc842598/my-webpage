@@ -233,6 +233,16 @@
       <button class="fc-scroll-btn" id="fc-scroll-right">▷</button>
     </div>
 
+    <div class="fc-score-wrap" id="fc-score-wrap" style="display:none">
+      <div class="fc-score-head">
+        <div class="fc-score-title">人生曲线</div>
+        <div class="fc-score-meta" id="fc-score-meta">按小流年落宫与宫内星曜估算近10年分值</div>
+      </div>
+      <div class="fc-score-current" id="fc-score-current">—</div>
+      <svg class="fc-score-svg" id="fc-score-svg" viewBox="0 0 360 168" preserveAspectRatio="none"></svg>
+      <div class="fc-score-list" id="fc-score-list"></div>
+    </div>
+
     <!-- 卦象展示 -->
     <div class="fc-hexagram-area" id="fc-hexagram-area">
       <div class="fc-hex-name" id="fc-hex-name">风水涣</div>
@@ -1425,14 +1435,18 @@ function renderFigmaChart(chart, gender, dateStr, norm) {
   const _pad = n => String(n).padStart(2,'0');
   // 公历：日期 + 北京时间 + 最终排盘时辰
   const usedIdx  = norm ? norm.timeIdx : 6;
-  const usedShi  = _SHICHEN_NAMES[usedIdx] + '时';
-  if (norm) {
-    const cstStr = norm.cstHour !== undefined
-      ? `${norm.calModeLabel || dateStr} ${_pad(norm.cstHour)}:${_pad(norm.cstMinute)} ${usedShi}`
-      : (norm.calModeLabel || dateStr);
-    document.getElementById('fc-c-solar').textContent = cstStr;
-  } else {
-    document.getElementById('fc-c-solar').textContent = dateStr || '';
+  const usedShi  = (_SHICHEN_NAMES[usedIdx] || '午') + '时';
+  const solarEl  = document.getElementById('fc-c-solar');
+  if (solarEl) {
+    if (norm) {
+      const solarBase = norm.calModeLabel || dateStr || '';
+      const cstPart = norm.cstHour !== undefined
+        ? `${_pad(norm.cstHour)}:${_pad(norm.cstMinute)}`
+        : '';
+      solarEl.textContent = [solarBase, cstPart, usedShi].filter(Boolean).join(' ');
+    } else {
+      solarEl.textContent = [dateStr || '', usedShi].filter(Boolean).join(' ');
+    }
   }
   // 农历
   document.getElementById('fc-c-lunar').textContent = chart.chineseDate || chart.lunarDate || '—';
