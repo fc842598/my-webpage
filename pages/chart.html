@@ -561,13 +561,13 @@ function normalizeInput() {
 }
 
 // ─── 默认测试值 ────────────────────────────────────────────
-const DEFAULT_TEST = { year: 1991, month: 2, day: 16, time: '21:00', gender: 'male' };
+const DEFAULT_TEST = { year: 1991, month: 2, day: 16, time: '22:00', gender: 'male' };
 
 function applyDefaults() {
   document.getElementById('inp-year').value     = DEFAULT_TEST.year;
   document.getElementById('inp-month').value    = DEFAULT_TEST.month;
   document.getElementById('inp-day').value      = DEFAULT_TEST.day;
-  document.getElementById('inp-time-h').value = 21;
+  document.getElementById('inp-time-h').value = 22;
   document.getElementById('inp-time-m').value = 0;
   document.querySelectorAll('.nf-gender-btn').forEach(btn => {
     btn.classList.toggle('active', btn.dataset.v === DEFAULT_TEST.gender);
