@@ -1672,6 +1672,18 @@ function _aipPalaceMap(chart) {
 function _aipMajor(p)  { return (p?.majorStars || []).map(s => s.name); }
 function _aipMutagen(p){ return [...(p?.majorStars||[]), ...(p?.minorStars||[])]
                            .filter(s => s.mutagen).map(s => `${s.name}${s.mutagen}`); }
+function _aipGetPalace(pm, baseName) {
+  if (!pm || !baseName) return null;
+  return pm[baseName] || pm[`${baseName}宫`] || null;
+}
+function _aipStarSummary(p) {
+  if (!p) return '未取到宫位';
+  const major = (p.majorStars || []).map(s => s.name + (s.mutagen || ''));
+  const minor = (p.minorStars || []).map(s => s.name + (s.mutagen || ''));
+  const adj   = (p.adjectiveStars || p.adjStars || []).map(s => s.name || s).filter(Boolean);
+  const all   = [...major, ...minor, ...adj];
+  return all.length ? all.join('、') : '空宫';
+}
 
 function buildBaseMingAnalysis(chart, inputs) {
   if (!chart) return null;
@@ -1952,15 +1964,7 @@ const AIDBG_MODULES = [
 语言简洁有据，不说空泛套话。`,
 
     buildContext(chart, inputs) {
-      const pm = {};
-      (chart?.palaces || []).forEach(p => {
-        if (p.name) { pm[p.name] = p; pm[p.name.replace('宫', '')] = p; }
-      });
-      const starStr = p => {
-        if (!p) return '空宫';
-        return [...(p.majorStars||[]), ...(p.minorStars||[])]
-          .map(s => s.name + (s.mutagen || '')).join('、') || '空宫';
-      };
+      const pm = _aipPalaceMap(chart);
       const shenP = (chart.palaces||[]).find(p =>
         p.earthlyBranch === chart.earthlyBranchOfBodyPalace);
       const allMut = (chart.palaces||[]).flatMap(p =>
@@ -1972,11 +1976,11 @@ const AIDBG_MODULES = [
       return {
         基本信息  : `${norm.year}年${norm.month}月${norm.day}日 ${_SHICHEN_NAMES[norm.timeIdx]}时 ${norm.gender==='male'?'男':'女'}命`,
         命盘格局  : chart.fiveElementsClass || '—',
-        命宫      : starStr(pm['命宫']),
-        身宫      : shenP ? `${shenP.name}（${starStr(shenP)}）` : '—',
-        官禄宫    : starStr(pm['官禄宫']),
-        财帛宫    : starStr(pm['财帛宫']),
-        迁移宫    : starStr(pm['迁移宫']),
+        命宫      : _aipStarSummary(_aipGetPalace(pm, '命')),
+        身宫      : shenP ? `${shenP.name}（${_aipStarSummary(shenP)}）` : '—',
+        官禄宫    : _aipStarSummary(_aipGetPalace(pm, '官禄')),
+        财帛宫    : _aipStarSummary(_aipGetPalace(pm, '财帛')),
+        迁移宫    : _aipStarSummary(_aipGetPalace(pm, '迁移')),
         生年四化  : allMut.join('　') || '无',
       };
     },
@@ -2006,15 +2010,8 @@ const AIDBG_MODULES = [
       const lnYear  = _fcBirthYear + activeAge - 1;
       const dxIdx   = Math.ceil(activeAge / 10);
       const xlBranch = _fcXiaoLianBranch || lnData?.xiaoLian;
-      const pm = {};
-      (chart?.palaces || []).forEach(p => { if (p.name) pm[p.name] = p; });
       const xlPalace = (chart.palaces||[]).find(p => p.earthlyBranch === xlBranch);
       const xlName   = xlPalace?.name || (xlBranch ? xlBranch : '—');
-      const starStr  = p => {
-        if (!p) return '空宫';
-        return [...(p.majorStars||[]), ...(p.minorStars||[])]
-          .map(s => s.name + (s.mutagen || '')).join('、') || '空宫';
-      };
       const gua = _liunianGuaResult || lnData;
       return {
         当前虚岁  : `${activeAge} 岁`,
@@ -2023,7 +2020,7 @@ const AIDBG_MODULES = [
         流年卦    : gua ? `${gua.name}${gua.num?`（#${gua.num}）`:''}${gua.period?` · ${gua.period}`:''}` : '—',
         流年爻位  : lnData ? `第${lnData.lineNum}爻（${lnData.lineType==='yang'?'阳爻9年':'阴爻6年'}）` : '—',
         小限落宫  : xlName,
-        小限宫星曜: starStr(xlPalace),
+        小限宫星曜: _aipStarSummary(xlPalace),
       };
     },
   },
