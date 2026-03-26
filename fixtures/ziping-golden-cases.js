@@ -209,6 +209,39 @@ const ZIPING_GOLDEN_CASES = [
   //   },
   // },
 
+  {
+    id: 'case-ui-calibration-1991-xieguangzhou',
+    description: 'UI-calibrated yearly sequence for 辛未 庚寅 丁巳 辛亥 男 1991',
+    source: 'user-screenshot',
+    verified: false,
+    input: {
+      pillars: {
+        yearStem: '辛', yearBranch: '未',
+        monthStem: '庚', monthBranch: '寅',
+        dayStem: '丁', dayBranch: '巳',
+        hourStem: '辛', hourBranch: '亥',
+      },
+      gender: 'male',
+      birthYear: 1991,
+    },
+    uiOverrides: {
+      liunianByAge: {
+        31: '山雷颐',
+        32: '山地剥',
+        33: '山水蒙',
+        34: '山风蛊',
+        35: '火风鼎',
+        36: '天风姤',
+        37: '泽风大过',
+        38: '泽天夬',
+        39: '泽火革',
+        40: '巽为风',
+        41: '天风姤',
+        42: '火风鼎',
+        43: '雷风恒',
+      },
+    },
+  },
 ];
 
 if (typeof window !== 'undefined') {

@@ -203,6 +203,29 @@
     let age = 1;
     const birthYearBranch = yearGanzhi(birthYear).branch;
     const yangStems = new Set(['甲', '丙', '戊', '庚', '壬']);
+    const yingLine = lineNum => ((lineNum + 2) % 6) + 1;
+    const nextLine = lineNum => (lineNum % 6) + 1;
+
+    function buildFlipSchedule(lineNum, yearsInPeriod, firstYearUnchanged) {
+      if (yearsInPeriod <= 1) return [];
+      const schedule = [];
+      if (firstYearUnchanged) {
+        schedule.push(yingLine(lineNum));
+        let cur = lineNum;
+        while (schedule.length < yearsInPeriod - 1) {
+          schedule.push(cur);
+          cur = nextLine(cur);
+        }
+        return schedule;
+      }
+
+      let cur = nextLine(lineNum);
+      while (schedule.length < yearsInPeriod - 1) {
+        schedule.push(cur);
+        cur = nextLine(cur);
+      }
+      return schedule;
+    }
 
     function fillPeriod(baseGua, period) {
       const h6 = hexLines6(baseGua.upper, baseGua.lower);
@@ -214,12 +237,18 @@
         if (age > maxAge) break;
         const isYang   = h6[ln - 1] === 'solid';
         const numYears = isYang ? 9 : 6;
+        const firstYear = birthYear + age - 1;
+        const firstGz = yearGanzhi(firstYear);
+        const firstYearUnchanged = isYang && yangStems.has(firstGz.stem);
+        let gua = firstYearUnchanged ? baseGua : flipHex(baseGua, ln);
+        const flipSchedule = buildFlipSchedule(ln, numYears, firstYearUnchanged);
 
         for (let y = 0; y < numYears && age <= maxAge; y++, age++) {
+          if (y > 0) {
+            gua = flipHex(gua, flipSchedule[y - 1]);
+          }
           const curYear    = birthYear + age - 1;
           const gz         = yearGanzhi(curYear);
-          const isYangYear = yangStems.has(gz.stem);
-          const gua        = (isYang && isYangYear) ? baseGua : flipHex(baseGua, ln);
           const xiaoLian   = calcXiaoLian(birthYearBranch, gender, age);
           map[age] = {
             name: gua.name, num: gua.num,
