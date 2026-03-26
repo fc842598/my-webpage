@@ -125,6 +125,40 @@ async function callDeepSeekRaw(system, user) {
   return resp.choices[0]?.message?.content || '';
 }
 
+async function callDeepSeekRawStream(system, user, onChunk) {
+  const stream = await deepseek.chat.completions.create({
+    model      : MODEL,
+    messages   : [
+      { role: 'system', content: system },
+      { role: 'user',   content: user   },
+    ],
+    temperature: 0.7,
+    max_tokens : 1200,
+    stream     : true,
+  });
+
+  let fullText = '';
+  for await (const part of stream) {
+    const chunk = part?.choices?.[0]?.delta?.content || '';
+    if (!chunk) continue;
+    fullText += chunk;
+    if (onChunk) await onChunk(chunk);
+  }
+  return fullText;
+}
+
+function sanitizeAiText(text) {
+  return String(text || '')
+    .replace(/\r\n/g, '\n')
+    .replace(/```+/g, '')
+    .replace(/^\s{0,3}#{1,6}\s*/gm, '')
+    .replace(/\*\*(.*?)\*\*/g, '$1')
+    .replace(/__(.*?)__/g, '$1')
+    .replace(/^\s*>\s?/gm, '')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim();
+}
+
 // ── 请求体格式化（把前端数据转成可读文本）───────────────────
 
 function formatBody(req) {
@@ -155,8 +189,20 @@ app.post('/api/piming', async (req, res) => {
   // 调试台透传模式：调用方自己组装 system+user，返回纯文本
   if (_rawPrompt) {
     try {
+      if (_rawPrompt.stream) {
+        res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+        res.setHeader('Cache-Control', 'no-cache');
+        res.setHeader('X-AI-Model', MODEL);
+        await callDeepSeekRawStream(
+          _rawPrompt.system || '',
+          _rawPrompt.user || '',
+          chunk => res.write(chunk)
+        );
+        return res.end();
+      }
+
       const text = await callDeepSeekRaw(_rawPrompt.system || '', _rawPrompt.user || '');
-      return res.json({ ok: true, topic, model: MODEL, text });
+      return res.json({ ok: true, topic, model: MODEL, text: sanitizeAiText(text) });
     } catch (err) {
       console.error('[piming-api] DeepSeek raw 调用失败:', err.message);
       return res.status(502).json({ error: 'AI 调用失败：' + err.message });

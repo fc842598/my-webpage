@@ -2163,6 +2163,18 @@ function _aidbgShow() {
   _aidbgRefreshCtx();
 }
 
+function _aidbgCleanAiText(text) {
+  return String(text || '')
+    .replace(/\r\n/g, '\n')
+    .replace(/```+/g, '')
+    .replace(/^\s{0,3}#{1,6}\s*/gm, '')
+    .replace(/\*\*(.*?)\*\*/g, '$1')
+    .replace(/__(.*?)__/g, '$1')
+    .replace(/^\s*>\s?/gm, '')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim();
+}
+
 // ── 单模块 AI 生成 ────────────────────────────────────────────
 
 async function _aidbgGenerate(modId) {
@@ -2175,9 +2187,9 @@ async function _aidbgGenerate(modId) {
   const btn      = document.querySelector(`.aidbg-gen-btn[data-mod="${modId}"]`);
 
   if (btn) btn.disabled = true;
-  statusEl.textContent = '请求中…';
+  statusEl.textContent = '生成中…';
   resultEl.classList.remove('empty');
-  resultEl.textContent = '…';
+  resultEl.textContent = '';
 
   try {
     const ctx     = mod.buildContext(_chart, _chartInputs, _fcActiveAge);
@@ -2191,17 +2203,39 @@ async function _aidbgGenerate(modId) {
       body   : JSON.stringify({
         topic      : modId,
         _rawPrompt : {
-          system: '你是一位精通紫微斗数的命理师，分析简洁有据，不说空泛套话。',
+          stream: true,
+          system: '你是一位精通紫微斗数的命理师。请直接输出纯文本结论，不要 markdown 标题，不要 ###，不要代码块，不要表格，不要多余格式符号。',
           user  : prompt + '\n\n---\n命盘数据：\n' + ctxText,
         },
       }),
     });
     if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
-    const data = await resp.json();
-    if (!data.ok) throw new Error(data.error || '未知错误');
+    const contentType = resp.headers.get('content-type') || '';
+    if (contentType.includes('application/json')) {
+      const data = await resp.json();
+      if (!data.ok) throw new Error(data.error || '未知错误');
+      resultEl.textContent = _aidbgCleanAiText(data.text || '(no content)');
+      statusEl.textContent = `AI OK: ${data.model}`;
+      return;
+    }
 
-    resultEl.textContent = data.text || '(no content)';
-    statusEl.textContent = `AI OK: ${data.model}`;
+    const reader = resp.body?.getReader();
+    if (!reader) throw new Error('AI 返回流不可读取');
+
+    const decoder = new TextDecoder('utf-8');
+    let rawText = '';
+
+    while (true) {
+      const { value, done } = await reader.read();
+      if (done) break;
+      rawText += decoder.decode(value, { stream: true });
+      resultEl.textContent = _aidbgCleanAiText(rawText);
+      statusEl.textContent = `生成中 ${resultEl.textContent.length}字`;
+    }
+
+    rawText += decoder.decode();
+    resultEl.textContent = _aidbgCleanAiText(rawText) || '(no content)';
+    statusEl.textContent = `AI OK: ${resp.headers.get('X-AI-Model') || 'stream'}`;
   } catch (err) {
     resultEl.classList.add('empty');
     resultEl.textContent = 'Error: ' + err.message;
