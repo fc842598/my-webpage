@@ -1861,7 +1861,71 @@ function renderAIPimingLuck() {
 }
 
 // ── AI 深度批命按钮 ───────────────────────────────────────
-const _API_BASE = 'http://localhost:3001';
+let _PIMING_API_BASE = null;
+
+function _normalizeApiBase(base) {
+  if (base == null) return '';
+  return String(base).trim().replace(/\/+$/, '');
+}
+
+function _joinApiUrl(base, path) {
+  const cleanBase = _normalizeApiBase(base);
+  return cleanBase ? `${cleanBase}${path}` : path;
+}
+
+async function _probeApiBase(base) {
+  try {
+    const resp = await fetch(_joinApiUrl(base, '/api/ping'), {
+      method: 'GET',
+      headers: { 'Accept': 'application/json' },
+    });
+    return resp.ok;
+  } catch (_err) {
+    return false;
+  }
+}
+
+async function _resolvePimingApiBase(force = false) {
+  if (!force && _PIMING_API_BASE !== null) return _PIMING_API_BASE;
+
+  const qs = new URLSearchParams(location.search);
+  const queryBase = qs.get('pimingApiBase') || qs.get('apiBase') || '';
+  const savedBase = localStorage.getItem('pimingApiBase') || '';
+  const candidates = [];
+  const pushCandidate = (base) => {
+    const clean = _normalizeApiBase(base);
+    if (candidates.includes(clean)) return;
+    candidates.push(clean);
+  };
+
+  if (queryBase) {
+    pushCandidate(queryBase);
+    localStorage.setItem('pimingApiBase', _normalizeApiBase(queryBase));
+  }
+  if (savedBase) pushCandidate(savedBase);
+  if (location.protocol === 'http:' || location.protocol === 'https:') pushCandidate('');
+  pushCandidate('http://localhost:3001');
+
+  for (const candidate of candidates) {
+    if (await _probeApiBase(candidate)) {
+      _PIMING_API_BASE = candidate;
+      return _PIMING_API_BASE;
+    }
+  }
+
+  throw new Error('AI 接口未连接：当前页面没有可用的 /api/piming 服务。若本机测试，请先启动 server/index.js；若线上使用，请配置可访问的 API 地址。');
+}
+
+async function _refreshPimingApiHint() {
+  const noteEl = document.getElementById('aip-footer-note');
+  if (!noteEl) return;
+  try {
+    const base = await _resolvePimingApiBase(true);
+    noteEl.textContent = `AI 接口已连接：${base || '同源 /api'}`;
+  } catch (err) {
+    noteEl.textContent = err.message;
+  }
+}
 
 (function _bindAipAiBtn() {
   const btn      = document.getElementById('aip-ai-btn');
@@ -1896,7 +1960,8 @@ const _API_BASE = 'http://localhost:3001';
     };
 
     try {
-      const resp = await fetch(`${_API_BASE}/api/piming`, {
+      const apiBase = await _resolvePimingApiBase();
+      const resp = await fetch(_joinApiUrl(apiBase, '/api/piming'), {
         method : 'POST',
         headers: { 'Content-Type': 'application/json' },
         body   : JSON.stringify(payload),
@@ -1906,8 +1971,8 @@ const _API_BASE = 'http://localhost:3001';
       if (!data.ok) throw new Error(data.error || '未知错误');
 
       const r = data.result;
-      statusEl.textContent = `✓ ${data.model}`;
-      noteEl.textContent   = `AI 深度解读版 · ${data.model}`;
+      statusEl.textContent = `AI OK: ${data.model}`;
+      noteEl.textContent   = `AI backend connected: ${data.model}`;
 
       if (topic === 'base') {
         _aipSetCard('aip-life', { title: 'AI 命格总览', body: r.overview + '\n' + r.minggong, tip: r.advice });
@@ -1917,12 +1982,15 @@ const _API_BASE = 'http://localhost:3001';
         _aipSetCard('aip-gua',  { title: 'AI 风险提示', body: r.risks, tip: '' });
       }
     } catch (err) {
-      statusEl.textContent = '✗ ' + err.message;
+      statusEl.textContent = 'AI error';
+      noteEl.textContent = err.message;
     } finally {
       btn.disabled = false;
     }
   });
 }());
+
+void _refreshPimingApiHint();
 
 // Tab 切换
 (function _bindAipTabs() {
@@ -1942,7 +2010,6 @@ const _API_BASE = 'http://localhost:3001';
 // 新增模块：在 AIDBG_MODULES 数组末尾追加配置对象即可
 // ══════════════════════════════════════════════════════════════
 
-const _AIDBG_API_BASE = 'http://localhost:3001';
 
 // ── 模块配置表（可持续扩展）──────────────────────────────────
 const AIDBG_MODULES = [
@@ -2117,7 +2184,8 @@ async function _aidbgGenerate(modId) {
     const ctxText = Object.entries(ctx).map(([k, v]) => `【${k}】${v}`).join('\n');
     const prompt  = promptEl?.value?.trim() || mod.defaultPrompt;
 
-    const resp = await fetch(`${_AIDBG_API_BASE}/api/piming`, {
+    const apiBase = await _resolvePimingApiBase();
+    const resp = await fetch(_joinApiUrl(apiBase, '/api/piming'), {
       method : 'POST',
       headers: { 'Content-Type': 'application/json' },
       body   : JSON.stringify({
@@ -2132,12 +2200,12 @@ async function _aidbgGenerate(modId) {
     const data = await resp.json();
     if (!data.ok) throw new Error(data.error || '未知错误');
 
-    resultEl.textContent = data.text || '（无返回内容）';
-    statusEl.textContent = `✓ ${data.model}`;
+    resultEl.textContent = data.text || '(no content)';
+    statusEl.textContent = `AI OK: ${data.model}`;
   } catch (err) {
     resultEl.classList.add('empty');
-    resultEl.textContent = '错误：' + err.message;
-    statusEl.textContent = '✗ 失败';
+    resultEl.textContent = 'Error: ' + err.message;
+    statusEl.textContent = 'Failed';
   } finally {
     if (btn) btn.disabled = false;
   }
