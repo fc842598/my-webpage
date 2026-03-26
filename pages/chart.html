@@ -1012,21 +1012,25 @@ function numToTrigramGua(sum, isHeavenNum) {
 
 function extractPillars(chart) {
   const rd   = chart.rawDates || chart;
-  // iztro v2：heavenlyStemAndEarthlyBranchDate 可能在 rawDates 下，也可能在 chart 顶层
-  const hseb = rd.heavenlyStemAndEarthlyBranchDate
-            || chart.heavenlyStemAndEarthlyBranchDate
-            || {};
+  // 路径1：iztro v2 rawDates.chineseDate = { yearly:[干,支], monthly, daily, hourly }
+  const cd   = (rd.chineseDate && typeof rd.chineseDate === 'object') ? rd.chineseDate : {};
+  // 路径2：heavenlyStemAndEarthlyBranchDate（旧路径兜底）
+  const hseb = rd.heavenlyStemAndEarthlyBranchDate || chart.heavenlyStemAndEarthlyBranchDate || {};
+  // 路径3：解析顶层 chineseDate 字符串，如 '庚辰 甲申 丙午 庚寅'
+  const cdStr   = typeof chart.chineseDate === 'string' ? chart.chineseDate : '';
+  const cdParts = cdStr.split(/\s+/).filter(s => s.length >= 2);
+
   const p = {
-    yearStem:    rd.yearStem    || rd.yearHeavenlyStem    || hseb.year?.heavenlyStem   || '',
-    yearBranch:  rd.yearBranch  || rd.yearEarthlyBranch   || hseb.year?.earthlyBranch  || '',
-    monthStem:   rd.monthStem   || rd.monthHeavenlyStem   || hseb.month?.heavenlyStem  || '',
-    monthBranch: rd.monthBranch || rd.monthEarthlyBranch  || hseb.month?.earthlyBranch || '',
-    dayStem:     rd.dayStem     || rd.dayHeavenlyStem     || hseb.day?.heavenlyStem    || '',
-    dayBranch:   rd.dayBranch   || rd.dayEarthlyBranch    || hseb.day?.earthlyBranch   || '',
-    hourStem:    rd.timeStem    || rd.timeHeavenlyStem    || hseb.hour?.heavenlyStem   || '',
-    hourBranch:  rd.timeBranch  || rd.timeEarthlyBranch   || hseb.hour?.earthlyBranch  || '',
+    yearStem:    cd.yearly?.[0]  || hseb.year?.heavenlyStem  || rd.yearStem  || cdParts[0]?.[0] || '',
+    yearBranch:  cd.yearly?.[1]  || hseb.year?.earthlyBranch || rd.yearBranch|| cdParts[0]?.[1] || '',
+    monthStem:   cd.monthly?.[0] || hseb.month?.heavenlyStem || rd.monthStem || cdParts[1]?.[0] || '',
+    monthBranch: cd.monthly?.[1] || hseb.month?.earthlyBranch|| rd.monthBranch||cdParts[1]?.[1] || '',
+    dayStem:     cd.daily?.[0]   || hseb.day?.heavenlyStem   || rd.dayStem   || cdParts[2]?.[0] || '',
+    dayBranch:   cd.daily?.[1]   || hseb.day?.earthlyBranch  || rd.dayBranch || cdParts[2]?.[1] || '',
+    hourStem:    cd.hourly?.[0]  || hseb.hour?.heavenlyStem  || rd.timeStem  || cdParts[3]?.[0] || '',
+    hourBranch:  cd.hourly?.[1]  || hseb.hour?.earthlyBranch || rd.timeBranch|| cdParts[3]?.[1] || '',
   };
-  console.log('[extractPillars]', p);
+  console.log('[extractPillars]', p, '| chineseDate:', chart.chineseDate);
   return p;
 }
 
@@ -1056,6 +1060,7 @@ function calcXianTianGua(pillars, gender) {
   const hexNum  = GUA_TABLE[upper - 1][lower - 1];
   const hexName = HEX_NAME[hexNum] || '—';
   const lines   = [...TRIGRAM_LINES_MAP[upper], 'gap', ...TRIGRAM_LINES_MAP[lower]];
+  console.log('[calcXianTianGua]', hexName, '| 天数:', tian, '地数:', di, '上卦:', upper, '下卦:', lower);
   return { name: hexName, num: hexNum, upper, lower, lines };
 }
 
@@ -1365,14 +1370,13 @@ function renderFigmaChart(chart, gender, dateStr, norm) {
 
   const sizhuEl = document.getElementById('fc-c-sizhu');
   const STEM_COLORS = ['#886a4a','#4d7a5b','#9b4238','#476885'];
-  const rd = chart.rawDates || chart;
-  // iztro v2：hseb 可能在 rawDates 下或 chart 顶层
-  const hseb = rd.heavenlyStemAndEarthlyBranchDate || chart.heavenlyStemAndEarthlyBranchDate || {};
+  // 直接复用 extractPillars 保证与卦计算同源
+  const _ep = extractPillars(chart);
   const pillars = [
-    [rd.yearStem||rd.yearHeavenlyStem||hseb.year?.heavenlyStem||'',   rd.yearBranch||rd.yearEarthlyBranch||hseb.year?.earthlyBranch||''],
-    [rd.monthStem||rd.monthHeavenlyStem||hseb.month?.heavenlyStem||'', rd.monthBranch||rd.monthEarthlyBranch||hseb.month?.earthlyBranch||''],
-    [rd.dayStem||rd.dayHeavenlyStem||hseb.day?.heavenlyStem||'',      rd.dayBranch||rd.dayEarthlyBranch||hseb.day?.earthlyBranch||''],
-    [rd.timeStem||rd.timeHeavenlyStem||hseb.hour?.heavenlyStem||'',   rd.timeBranch||rd.timeEarthlyBranch||hseb.hour?.earthlyBranch||''],
+    [_ep.yearStem,  _ep.yearBranch ],
+    [_ep.monthStem, _ep.monthBranch],
+    [_ep.dayStem,   _ep.dayBranch  ],
+    [_ep.hourStem,  _ep.hourBranch ],
   ];
   sizhuEl.innerHTML = '';
   pillars.forEach(([stem, branch], i) => {
