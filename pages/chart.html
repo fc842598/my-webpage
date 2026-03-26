@@ -616,60 +616,109 @@ document.getElementById('btn-submit').addEventListener('click', async () => {
 });
 
 // ─── 时辰校定模式 ─────────────────────────────────────────
-let _fcAdjustMode   = false;   // 是否处于校定模式
-let _fcBaseTimeIdx  = null;    // 进入校定时记录的基准时辰
+let _fcAdjustMode = false;   // 是否处于校定模式
+let _fcBaseNorm   = null;    // 进入校定时记录的基准 norm（含原始时间、TST、timeIdx）
 
 function _updateAdjustBanner() {
   const banner = document.getElementById('fc-adjust-banner');
   const adjBtn = document.getElementById('fc-btn-adjust');
   if (!banner || !adjBtn) return;
   if (!_fcAdjustMode || !_chartInputs) {
-    banner.style.display = 'none';
-    adjBtn.textContent   = '时辰校定';
+    banner.style.display    = 'none';
+    adjBtn.textContent      = '时辰校定';
     adjBtn.style.background = '';
     adjBtn.style.color      = '';
     return;
   }
-  const cur  = _SHICHEN_NAMES[_chartInputs.timeIdx];
-  const base = _fcBaseTimeIdx !== null ? _SHICHEN_NAMES[_fcBaseTimeIdx] : cur;
-  const diff = _fcBaseTimeIdx !== null
-    ? (_chartInputs.timeIdx - _fcBaseTimeIdx + 12) % 12
-    : 0;
-  const diffStr = diff === 0 ? '（与默认相同）'
-    : diff <= 6 ? `（已后移${diff}个时辰）`
-    : `（已前移${12 - diff}个时辰）`;
-  banner.textContent  = `校定中 · 当前：${cur}时  默认：${base}时 ${diffStr}`;
-  banner.style.display = 'block';
-  adjBtn.textContent   = '退出校定';
+  const pad     = n => String(n).padStart(2, '0');
+  const curNorm = _chartInputs.norm;
+  const curRaw  = `${pad(curNorm.cstHour)}:${pad(curNorm.cstMinute)}`;
+  const curShi  = _SHICHEN_NAMES[_chartInputs.timeIdx];
+  const baseRaw = _fcBaseNorm ? `${pad(_fcBaseNorm.cstHour)}:${pad(_fcBaseNorm.cstMinute)}` : curRaw;
+  const baseShi = _fcBaseNorm ? _SHICHEN_NAMES[_fcBaseNorm.timeIdx] : curShi;
+  let diffStr = '';
+  if (_fcBaseNorm) {
+    const dm = (curNorm.cstHour * 60 + curNorm.cstMinute) - (_fcBaseNorm.cstHour * 60 + _fcBaseNorm.cstMinute);
+    diffStr = dm === 0 ? '（与进入时相同）' : dm > 0 ? `（+${dm}分钟）` : `（${dm}分钟）`;
+  }
+  banner.textContent      = `校定中 · 当前：${curRaw} ${curShi}时  基准：${baseRaw} ${baseShi}时 ${diffStr}`;
+  banner.style.display    = 'block';
+  adjBtn.textContent      = '退出校定';
   adjBtn.style.background = '#fdf3ec';
   adjBtn.style.color      = '#963d32';
 }
 
-function stepTimeIndex(delta) {
+// ─── 原始时间步进（±2小时，走完整 TST→timeIdx→排盘 链路） ───
+function stepRawBirthTime(hoursDelta) {
   if (!_iztroLib || !_chartInputs) return;
-  const nextIdx   = (_chartInputs.timeIdx + delta + 12) % 12;
-  const genderStr = _chartInputs.gender === 'male' ? '男' : '女';
+  const norm = _chartInputs.norm;
+
+  // 1. 在分钟层面加减，跨日自动处理
+  const totalMin = norm.cstHour * 60 + norm.cstMinute + hoursDelta * 60;
+  const dayShift = Math.floor(totalMin / (24 * 60));
+  const dayMin   = ((totalMin % (24 * 60)) + 24 * 60) % (24 * 60);
+  const newHour  = Math.floor(dayMin / 60);
+  const newMinute = dayMin % 60;
+
+  // 2. 更新公历日期（含跨日）
+  const d = new Date(norm.year, norm.month - 1, norm.day);
+  d.setDate(d.getDate() + dayShift);
+  const newYear  = d.getFullYear();
+  const newMonth = d.getMonth() + 1;
+  const newDay   = d.getDate();
+
+  // 3. 重新计算真太阳时（复用现有函数 + 当前已选城市）
+  const newTst = typeof calcTrueSolarTime !== 'undefined'
+    ? calcTrueSolarTime({
+        year: newYear, month: newMonth, day: newDay,
+        hour: newHour, minute: newMinute,
+        longitude: _selectedCity?.lon,
+        cityName : _selectedCity ? `${_selectedCity.province}${_selectedCity.city}` : null,
+      })
+    : null;
+
+  // 4. 从新真太阳时重新确定时辰索引（如无 TST 模块则直接用北京时间）
+  const newTimeIdx = typeof tstToShichen !== 'undefined'
+    ? tstToShichen(newTst?.trueSolarHour ?? newHour, newTst?.trueSolarMinute ?? newMinute)
+    : 6;
+
+  // 5. 构建新 norm（与 normalizeInput 输出结构一致）
+  const pad2 = n => String(n).padStart(2, '0');
+  const newDateStr = `${newYear}-${pad2(newMonth)}-${pad2(newDay)}`;
+  const newNorm = {
+    ...norm,
+    year: newYear, month: newMonth, day: newDay,
+    dateStr   : newDateStr,
+    cstHour   : newHour,
+    cstMinute : newMinute,
+    timeIdx   : newTimeIdx,
+    tstResult : newTst,
+    calModeLabel: `公历 ${newDateStr}`,
+  };
+
+  // 6. 重新排盘
+  const genderStr = newNorm.gender === 'male' ? '男' : '女';
   const newChart  = typeof _iztroLib.bySolar === 'function'
-    ? _iztroLib.bySolar(_chartInputs.dateStr, nextIdx, genderStr, true)
-    : _iztroLib.astrolabeBySolarDate(_chartInputs.dateStr, nextIdx, genderStr, true);
-  const updatedNorm = { ..._chartInputs.norm, timeIdx: nextIdx, tstResult: null };
+    ? _iztroLib.bySolar(newDateStr, newTimeIdx, genderStr, true)
+    : _iztroLib.astrolabeBySolarDate(newDateStr, newTimeIdx, genderStr, true);
+
+  // 7. 更新全局状态
+  _tstResult   = newTst;
   _chart       = newChart;
-  _chartInputs = { ..._chartInputs, timeIdx: nextIdx, norm: updatedNorm };
-  renderFigmaChart(_chart, _chartInputs.gender, _chartInputs.dateStr, updatedNorm);
+  _chartInputs = { dateStr: newDateStr, timeIdx: newTimeIdx, gender: newNorm.gender, norm: newNorm };
+
+  renderFigmaChart(_chart, _chartInputs.gender, newDateStr, newNorm);
   if (_fcAdjustMode) _updateAdjustBanner();
 }
 
-document.getElementById('fc-btn-time-up').addEventListener('click',   () => stepTimeIndex(-1));
-document.getElementById('fc-btn-time-down').addEventListener('click', () => stepTimeIndex(+1));
+// 时↑ = 上一个时辰 = 原始时间 -2小时；时↓ = 下一个时辰 = 原始时间 +2小时
+document.getElementById('fc-btn-time-up').addEventListener('click',   () => stepRawBirthTime(-2));
+document.getElementById('fc-btn-time-down').addEventListener('click', () => stepRawBirthTime(+2));
 
 document.getElementById('fc-btn-adjust').addEventListener('click', () => {
   if (!_chartInputs) return;
   _fcAdjustMode = !_fcAdjustMode;
-  if (_fcAdjustMode) {
-    _fcBaseTimeIdx = _chartInputs.timeIdx;  // 记住进入时的时辰作为基准
-  } else {
-    _fcBaseTimeIdx = null;
-  }
+  _fcBaseNorm   = _fcAdjustMode ? _chartInputs.norm : null;
   _updateAdjustBanner();
 });
 
