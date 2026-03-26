@@ -201,8 +201,8 @@
             <div class="fc-gua-row"><span class="fc-center-lbl">流年卦</span><span class="fc-center-val" id="fc-c-liunian">—</span></div>
           </div>
           <div class="fc-center-btns">
-            <button class="fc-center-btn">时 ↑</button>
-            <button class="fc-center-btn">时 ↓</button>
+            <button class="fc-center-btn" id="fc-btn-time-up">时 ↑</button>
+            <button class="fc-center-btn" id="fc-btn-time-down">时 ↓</button>
             <button class="fc-center-btn">时辰校定</button>
           </div>
         </div>
@@ -590,6 +590,7 @@ document.getElementById('btn-submit').addEventListener('click', async () => {
     const mod = await import('https://esm.sh/iztro@2');
     const lib = mod.astro || mod.default?.astro;
     if (!lib) throw new Error('iztro 加载失败，请刷新重试');
+    _iztroLib = lib;  // 保存供时辰微调复用
 
     const genderStr = norm.gender === 'male' ? '男' : '女';
     _chart = typeof lib.bySolar === 'function'
@@ -612,6 +613,24 @@ document.getElementById('btn-submit').addEventListener('click', async () => {
     setLoading(false);
   }
 });
+
+// ─── 时辰微调 ─────────────────────────────────────────────
+function stepTimeIndex(delta) {
+  if (!_iztroLib || !_chartInputs) return;
+  const nextIdx    = (_chartInputs.timeIdx + delta + 12) % 12;
+  const genderStr  = _chartInputs.gender === 'male' ? '男' : '女';
+  const newChart   = typeof _iztroLib.bySolar === 'function'
+    ? _iztroLib.bySolar(_chartInputs.dateStr, nextIdx, genderStr, true)
+    : _iztroLib.astrolabeBySolarDate(_chartInputs.dateStr, nextIdx, genderStr, true);
+  // 手动调整时辰后，TST 参考值清空，避免显示与排盘时辰不一致
+  const updatedNorm = { ..._chartInputs.norm, timeIdx: nextIdx, tstResult: null };
+  _chart       = newChart;
+  _chartInputs = { ..._chartInputs, timeIdx: nextIdx, norm: updatedNorm };
+  renderFigmaChart(_chart, _chartInputs.gender, _chartInputs.dateStr, updatedNorm);
+}
+
+document.getElementById('fc-btn-time-up').addEventListener('click',   () => stepTimeIndex(-1));
+document.getElementById('fc-btn-time-down').addEventListener('click', () => stepTimeIndex(+1));
 
 // ─── 地图常量 ─────────────────────────────────────────────
 const BRANCH_ID = {
@@ -660,6 +679,7 @@ const STARS = {
 // ─── 全局状态 ─────────────────────────────────────────────
 let _chart = null;   // 当前命盘对象
 let _chartInputs = null;
+let _iztroLib = null;  // iztro 库引用（供时辰微调复用）
 let _currentSanyaoBranch = null;
 
 // ─── 重新排盘按钮 ─────────────────────────────────────────
