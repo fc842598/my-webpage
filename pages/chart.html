@@ -2120,6 +2120,56 @@ function _aipStarSummary(p) {
   return all.length ? all.join('、') : '空宫';
 }
 
+// 结构化宫位详情（供 AI 调试台 buildContext 使用）
+// 规则：只有所有星曜字段均为空时才允许 summary='空宫'；
+//       主星空但辅星有内容 → isEmptyMain:true，summary 说明辅曜
+function _aipPalaceDetail(p) {
+  if (!p) return null;
+  const majorStars = (p.majorStars || []).map(s => ({
+    name      : s.name || '',
+    brightness: s.brightness || '',
+    mutagen   : s.mutagen || null,
+  }));
+  const minorStars = (p.minorStars || []).map(s => ({
+    name   : s.name || '',
+    mutagen: s.mutagen || null,
+  }));
+  const adjStars = (p.adjectiveStars || p.adjStars || [])
+    .map(s => (typeof s === 'string' ? s : (s.name || '')))
+    .filter(Boolean);
+  const mutagens = [
+    ...majorStars.filter(s => s.mutagen).map(s => `${s.name}${s.mutagen}`),
+    ...minorStars.filter(s => s.mutagen).map(s => `${s.name}${s.mutagen}`),
+  ];
+  const isEmptyMain  = majorStars.length === 0;
+  const hasAnyContent = majorStars.length || minorStars.length || adjStars.length;
+  let summary;
+  if (!hasAnyContent) {
+    summary = '空宫';
+  } else if (isEmptyMain) {
+    const auxList = [
+      ...minorStars.map(s => s.name + (s.mutagen || '')),
+      ...adjStars,
+    ].join('、');
+    summary = `主星空宫，辅曜：${auxList}`;
+  } else {
+    const mainStr = majorStars
+      .map(s => s.name + (s.brightness || '') + (s.mutagen || ''))
+      .join('+');
+    summary = mainStr + (mutagens.length ? `，四化：${mutagens.join('、')}` : '');
+  }
+  return {
+    name       : p.name || '',
+    branch     : p.earthlyBranch || '',
+    majorStars,
+    minorStars,
+    adjStars,
+    mutagens,
+    isEmptyMain,
+    summary,
+  };
+}
+
 function buildBaseMingAnalysis(chart, inputs) {
   if (!chart) return null;
   const pm = _aipPalaceMap(chart);
@@ -2487,14 +2537,16 @@ const AIDBG_MODULES = [
           .map(s => `${p.name}${s.mutagen}（${s.name}）`)
       );
       const norm = inputs.norm;
+      const shenDetail = _aipPalaceDetail(shenP);
+      if (shenDetail) shenDetail.isBodyPalace = true;
       return {
         基本信息  : `${norm.year}年${norm.month}月${norm.day}日 ${_SHICHEN_NAMES[norm.timeIdx]}时 ${norm.gender==='male'?'男':'女'}命`,
         命盘格局  : chart.fiveElementsClass || '—',
-        命宫      : _aipStarSummary(_aipGetPalace(pm, '命')),
-        身宫      : shenP ? `${shenP.name}（${_aipStarSummary(shenP)}）` : '—',
-        官禄宫    : _aipStarSummary(_aipGetPalace(pm, '官禄')),
-        财帛宫    : _aipStarSummary(_aipGetPalace(pm, '财帛')),
-        迁移宫    : _aipStarSummary(_aipGetPalace(pm, '迁移')),
+        命宫      : _aipPalaceDetail(_aipGetPalace(pm, '命')),
+        身宫      : shenDetail,
+        官禄宫    : _aipPalaceDetail(_aipGetPalace(pm, '官禄')),
+        财帛宫    : _aipPalaceDetail(_aipGetPalace(pm, '财帛')),
+        迁移宫    : _aipPalaceDetail(_aipGetPalace(pm, '迁移')),
         生年四化  : allMut.join('　') || '无',
       };
     },
@@ -2534,7 +2586,7 @@ const AIDBG_MODULES = [
         流年卦    : gua ? `${gua.name}${gua.num?`（#${gua.num}）`:''}${gua.period?` · ${gua.period}`:''}` : '—',
         流年爻位  : lnData ? `第${lnData.lineNum}爻（${lnData.lineType==='yang'?'阳爻9年':'阴爻6年'}）` : '—',
         小限落宫  : xlName,
-        小限宫星曜: _aipStarSummary(xlPalace),
+        小限宫详情: _aipPalaceDetail(xlPalace),
       };
     },
   },
@@ -2610,6 +2662,30 @@ function _aidbgShow() {
   _aidbgRefreshCtx();
 }
 
+// 把 buildContext 返回的结构化对象序列化成 AI 可读文本
+// 宫位详情对象（含 summary / majorStars 字段）有专用格式；其余值直接转字符串
+function _aidbgCtxToText(ctx) {
+  return Object.entries(ctx).map(([k, v]) => {
+    if (v === null || v === undefined) return `【${k}】—`;
+    if (typeof v !== 'object') return `【${k}】${v}`;
+    // 宫位详情对象
+    if ('summary' in v && 'majorStars' in v) {
+      const lines = [`【${k}】${v.name || k}（${v.branch || '—'}）　${v.summary}`];
+      if (v.majorStars?.length) {
+        lines.push(`  主星：${v.majorStars.map(s => s.name + (s.brightness||'') + (s.mutagen||'')).join('、')}`);
+      }
+      if (v.minorStars?.length) {
+        lines.push(`  辅星：${v.minorStars.map(s => s.name + (s.mutagen||'')).join('、')}`);
+      }
+      if (v.adjStars?.length)   lines.push(`  杂曜：${v.adjStars.join('、')}`);
+      if (v.mutagens?.length)   lines.push(`  四化：${v.mutagens.join('、')}`);
+      if (v.isEmptyMain)        lines.push(`  （主星空宫，以辅曜为主参考）`);
+      return lines.join('\n');
+    }
+    return `【${k}】${JSON.stringify(v)}`;
+  }).join('\n\n');
+}
+
 function _aidbgCleanAiText(text) {
   return String(text || '')
     .replace(/\r\n/g, '\n')
@@ -2640,7 +2716,7 @@ async function _aidbgGenerate(modId) {
 
   try {
     const ctx     = mod.buildContext(_chart, _chartInputs, _fcActiveAge);
-    const ctxText = Object.entries(ctx).map(([k, v]) => `【${k}】${v}`).join('\n');
+    const ctxText = _aidbgCtxToText(ctx);
     const prompt  = promptEl?.value?.trim() || mod.defaultPrompt;
 
     const apiBase = await _resolvePimingApiBase();
