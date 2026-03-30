@@ -711,6 +711,36 @@
   gap: 12px;
   margin-bottom: 4px;
 }
+.fc-score-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+.fc-score-modes {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px;
+  border-radius: 999px;
+  background: #f3ece4;
+  border: 1px solid rgba(210,196,181,.72);
+}
+.fc-score-mode {
+  border: 0;
+  background: transparent;
+  color: #7d6859;
+  border-radius: 999px;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.fc-score-mode.active {
+  background: #46352d;
+  color: #fff9f1;
+}
 .fc-score-head-main {
   flex: 1 1 auto;
   min-width: 0;
@@ -808,6 +838,9 @@
   display: block;
   font-size: 12px;
   font-weight: 700;
+}
+.aip-score-wrap {
+  margin: 0 0 14px;
 }
 
 /* 卦象展示区 */
@@ -1313,6 +1346,9 @@
   .fc-hex-lines { width: 96px; }
   .fc-score-wrap { margin: 6px 6px 2px; padding: 10px 10px 12px; }
   .fc-score-head { gap: 8px; }
+  .fc-score-actions { width: 100%; justify-content: space-between; }
+  .fc-score-modes { flex: 1 1 auto; }
+  .fc-score-mode { flex: 1 1 0; padding: 7px 0; font-size: 11px; }
   .fc-score-title { font-size: 12px; }
   .fc-score-meta { font-size: 10px; }
   .fc-score-btn { padding: 7px 10px; font-size: 11px; }

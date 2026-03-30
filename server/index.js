@@ -364,14 +364,15 @@ app.post('/api/piming', async (req, res) => {
 });
 
 app.post('/api/life-curve', async (req, res) => {
-  const { chartSummary = {}, years = [], stream = true } = req.body || {};
+  const { chartSummary = {}, years = [], stream = true, chunkSize } = req.body || {};
   if (!Array.isArray(years) || !years.length) {
     return res.status(400).json({ ok: false, error: 'years 不能为空' });
   }
 
+  const safeChunkSize = Math.max(1, Math.min(20, Number(chunkSize) || LIFE_CURVE_CHUNK_SIZE));
   const chunks = [];
-  for (let i = 0; i < years.length; i += LIFE_CURVE_CHUNK_SIZE) {
-    chunks.push(years.slice(i, i + LIFE_CURVE_CHUNK_SIZE));
+  for (let i = 0; i < years.length; i += safeChunkSize) {
+    chunks.push(years.slice(i, i + safeChunkSize));
   }
 
   const run = async writeEvent => {
@@ -382,6 +383,14 @@ app.post('/api/life-curve', async (req, res) => {
       const result = await scoreLifeCurveChunk(chartSummary, chunk);
       if (result.warning) warningCount += 1;
       allScores = allScores.concat(result.scores);
+      await writeEvent({
+        type: 'partial',
+        model: result.model || MODEL,
+        scores: result.scores || [],
+        done: done + chunk.length,
+        total: years.length,
+        warnings: warningCount,
+      });
       done += chunk.length;
       await writeEvent({
         type: 'progress',
