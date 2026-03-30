@@ -1372,6 +1372,20 @@ function _fcLifeCurveScoresMap() {
   return map;
 }
 
+function _fcLifeCurveUpsertDecades(decades) {
+  if (!Array.isArray(decades) || !decades.length) return;
+  if (!_fcLifeCurveData) _fcLifeCurveData = { scores: [], model: '', decades: [] };
+  _fcLifeCurveData = { ..._fcLifeCurveData, decades };
+}
+
+function _fcDecadeCurrentProfile(age = _fcActiveAge) {
+  const decades = _fcLifeCurveData?.decades || [];
+  return decades.find(d => {
+    const m = String(d.range || '').match(/(\d+)/g);
+    return m && m.length >= 2 && age >= Number(m[0]) && age <= Number(m[1]);
+  }) || null;
+}
+
 function _fcLifeCurveUpsertScores(scores, model = '') {
   const map = _fcLifeCurveScoresMap();
   (scores || []).forEach(item => {
@@ -1384,8 +1398,9 @@ function _fcLifeCurveUpsertScores(scores, model = '') {
     });
   });
   _fcLifeCurveData = {
-    scores: [...map.values()].sort((a, b) => a.age - b.age),
-    model: model || _fcLifeCurveData?.model || '',
+    scores : [...map.values()].sort((a, b) => a.age - b.age),
+    model  : model || _fcLifeCurveData?.model || '',
+    decades: _fcLifeCurveData?.decades || [],
   };
 }
 
@@ -1450,11 +1465,24 @@ function _fcBuildLifeCurveYear(age) {
       palace: duiPalace?.name || '',
       stars: _fcLifeCurveStarLine(duiPalace),
     },
-    decadal: {
-      palace: decadalPalace?.name || '',
-      range: _fcLifeCurveRangeText(decadalPalace?.decadal?.range),
-      stars: _fcLifeCurveStarLine(decadalPalace),
-    },
+    decadal: (() => {
+      const dBranch  = decadalPalace?.earthlyBranch || '';
+      const oppBranch = DUIGONG[dBranch] || '';
+      const oppPalace = (_chart?.palaces || []).find(p => p.earthlyBranch === oppBranch) || null;
+      const sfBranches = SANHE_PARTNERS[dBranch] || [];
+      const sanfang = sfBranches.map(b => {
+        const sp = (_chart?.palaces || []).find(p => p.earthlyBranch === b) || null;
+        return { palace: sp?.name || '', branch: b, stars: _fcLifeCurveStarLine(sp) };
+      });
+      return {
+        palace  : decadalPalace?.name || '',
+        branch  : dBranch,
+        range   : _fcLifeCurveRangeText(decadalPalace?.decadal?.range),
+        stars   : _fcLifeCurveStarLine(decadalPalace),
+        opposite: { palace: oppPalace?.name || '', branch: oppBranch, stars: _fcLifeCurveStarLine(oppPalace) },
+        sanfang,
+      };
+    })(),
   };
 }
 
@@ -1615,8 +1643,19 @@ function _fcRenderScoreCurve() {
     svg.appendChild(hit);
   });
 
-  const current = _fcScoreCurrentItem() || visibleScores[0];
-  cur.textContent = `${current.age}岁：${current.score}分${current.summary ? ` · ${current.summary}` : ''}`;
+  const current     = _fcScoreCurrentItem() || visibleScores[0];
+  const decadeProf  = _fcDecadeCurrentProfile(current.age);
+  const decadePart  = decadeProf
+    ? `  ｜大运底色 ${decadeProf.range}：${decadeProf.decadeBaseScore}分×${decadeProf.decadeFactor}  ${decadeProf.summary}`
+    : '';
+  const trendLabel  = (() => {
+    if (!decadeProf) return '';
+    const expected = Math.round(decadeProf.decadeBaseScore * decadeProf.decadeFactor);
+    if (decadeProf.decadeFactor < 0.9 && current.score > expected + 4) return '（逆势局部回升）';
+    if (decadeProf.decadeFactor >= 1.0 && current.score < expected - 4) return '（顺势局部下探）';
+    return '';
+  })();
+  cur.textContent = `${current.age}岁：${current.score}分${trendLabel}${current.summary ? `  ${current.summary}` : ''}${decadePart}`;
   meta.textContent = _fcLifeCurveMode === 'all'
     ? (_fcLifeCurveLoading
         ? `整体运势图生成中：已完成 ${loadedCount}/${totalCount} 年`
@@ -1674,6 +1713,7 @@ async function _fcGenerateLifeCurve(options = {}) {
     if (contentType.includes('application/json')) {
       const data = await resp.json();
       if (!data.ok) throw new Error(data.error || '生成失败');
+      if (data.decades?.length) _fcLifeCurveUpsertDecades(data.decades);
       _fcLifeCurveUpsertScores(data.scores || [], data.model || '');
       _fcRenderScoreCurve();
       return;
@@ -1692,7 +1732,12 @@ async function _fcGenerateLifeCurve(options = {}) {
       for (const line of lines) {
         if (!line.trim()) continue;
         const evt = JSON.parse(line);
-        if (evt.type === 'progress') {
+        if (evt.type === 'decades') {
+          _fcLifeCurveUpsertDecades(evt.decades || []);
+          if (meta && evt.decades?.length) meta.textContent = mode === 'all'
+            ? `大运底色已完成，逐年评分中…`
+            : `大运底色已就绪，逐年评分中…`;
+        } else if (evt.type === 'progress') {
           if (meta) meta.textContent = mode === 'all'
             ? `整体运势图生成中：已完成 ${evt.done}/${evt.total} 年`
             : `当前十年走势生成中：已完成 ${evt.done}/${evt.total} 年`;
@@ -1701,6 +1746,7 @@ async function _fcGenerateLifeCurve(options = {}) {
           _fcRenderScoreCurve();
         } else if (evt.type === 'result') {
           _fcLifeCurveUpsertScores(evt.scores || [], evt.model || '');
+          if (evt.decades?.length) _fcLifeCurveUpsertDecades(evt.decades);
         } else if (evt.type === 'error') {
           throw new Error(evt.error || '生成失败');
         }
@@ -1709,6 +1755,8 @@ async function _fcGenerateLifeCurve(options = {}) {
     if (buffer.trim()) {
       const evt = JSON.parse(buffer);
       if (evt.type === 'partial' || evt.type === 'result') _fcLifeCurveUpsertScores(evt.scores || [], evt.model || '');
+      if (evt.type === 'result' && evt.decades?.length) _fcLifeCurveUpsertDecades(evt.decades);
+      if (evt.type === 'decades') _fcLifeCurveUpsertDecades(evt.decades || []);
       if (evt.type === 'error') throw new Error(evt.error || '生成失败');
     }
     _fcRenderScoreCurve();

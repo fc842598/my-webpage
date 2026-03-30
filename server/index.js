@@ -36,7 +36,7 @@ const deepseek = new OpenAI({
 });
 
 // ── 评分缓存（文件级，同命盘同年龄段不重复调用 AI）──────────────
-const PROMPT_VERSION = 'v2-structured';
+const PROMPT_VERSION = 'v3-two-layer';
 const CACHE_DIR = path.join(__dirname, '.cache', 'life-curve');
 
 function buildChunkCacheKey(chartSummary, yearsChunk) {
@@ -63,6 +63,147 @@ function setCachedChunk(cacheKey, data) {
   } catch (err) {
     console.warn('[piming-api] 缓存写入失败:', err.message);
   }
+}
+
+function buildDecadeCacheKey(chartSummary, range) {
+  const keyData = JSON.stringify({
+    v     : PROMPT_VERSION,
+    name  : chartSummary?.name   || '',
+    solar : chartSummary?.solar  || '',
+    gender: chartSummary?.gender || '',
+    range,
+  });
+  return 'decade_' + crypto.createHash('md5').update(keyData).digest('hex');
+}
+
+// 从一组年数据里取代表年，构建十年段输入结构
+function buildDecadeInput(rangeLabel, yearsInDecade) {
+  const rep = yearsInDecade[0];
+  const d   = rep?.decadal || {};
+  return {
+    range   : rangeLabel,
+    palace  : d.palace   || '—',
+    branch  : d.branch   || '',
+    stars   : d.stars    || '—',
+    opposite: d.opposite || { palace: '—', branch: '', stars: '—' },
+    sanfang : d.sanfang  || [],
+  };
+}
+
+function buildDecadeProfilePrompt(chartSummary, decadeInputs) {
+  const decadeText = decadeInputs.map(d => {
+    const lines = [
+      `【${d.range}】大运宫：${d.palace}（${d.branch || '—'}）`,
+      `  本宫星曜：${d.stars}`,
+      `  对宫（${d.opposite?.branch || '—'}）${d.opposite?.palace || '—'}：${d.opposite?.stars || '—'}`,
+    ];
+    (d.sanfang || []).forEach((sf, i) => {
+      lines.push(`  三合宫${i + 1}（${sf.branch || '—'}）${sf.palace || '—'}：${sf.stars || '—'}`);
+    });
+    return lines.join('\n');
+  }).join('\n\n');
+
+  return {
+    system: [
+      '你是紫微斗数大运分析助手，专注海厦体系的大限格局判断。',
+      '每个十年大运段，必须综合本宫、对宫、两个三合宫四个宫位的星曜，才能判断底色。',
+      '化忌、羊陀火铃空劫为煞，主压制；禄权科、左右昌曲魁钺禄存为吉，主助力。',
+      'decadeBaseScore [20-80]：十年整体底色分，60=普通，高分明显顺，低分明显压。',
+      'decadeFactor [0.55-1.25]：年度压制因子，好运>1，差运<1，作用于年度最终得分。',
+      '若三方四正均差，decadeFactor 可低到 0.55；三方四正均好可到 1.25。',
+      '返回必须是严格 JSON，不要 markdown，不要任何解释。',
+    ].join('\n'),
+    user: [
+      '请为下列命盘的各个十年大运段，给出底色评分和压制因子。',
+      '',
+      '【命盘摘要】',
+      `姓名：${chartSummary?.name || '—'}  性别：${chartSummary?.gender || '—'}`,
+      `公历：${chartSummary?.solar || '—'}  五行局：${chartSummary?.fiveElementsClass || '—'}`,
+      '',
+      '【各十年大运段（本宫 + 对宫 + 三合宫）】',
+      decadeText,
+      '',
+      '返回格式（严格遵守，不得增删字段）：',
+      '{',
+      '  "decades": [',
+      '    {',
+      '      "range": "1-10岁",',
+      '      "decadeBaseScore": 58,',
+      '      "decadeFactor": 0.95,',
+      '      "summary": "十年底色一句话，20字内"',
+      '    }',
+      '  ]',
+      '}',
+      '',
+      '要求：',
+      '1. 每个十年段都必须返回一条，range 与输入完全一致。',
+      '2. decadeFactor：四正均差可低至 0.55，四正均佳可到 1.25；普通约 0.90-1.05。',
+      '3. 对宫与三合宫必须一并参考，不能只看本宫。',
+      '4. summary 直接点出核心吉凶，不要重复 range 信息。',
+    ].join('\n'),
+  };
+}
+
+// 先解析 range 字符串中的起始岁数，用于容错匹配
+function _rangeStartAge(rangeStr) {
+  const m = String(rangeStr || '').match(/(\d+)/);
+  return m ? Number(m[1]) : -1;
+}
+
+async function scoreDecadesBatch(chartSummary, years) {
+  // 按大运 range 分组
+  const decadeMap = new Map();
+  years.forEach(y => {
+    const range = y.decadal?.range || '—';
+    if (!decadeMap.has(range)) decadeMap.set(range, []);
+    decadeMap.get(range).push(y);
+  });
+
+  const allRanges    = [...decadeMap.keys()];
+  const profilesMap  = new Map();
+  const uncachedMeta = [];
+
+  for (const range of allRanges) {
+    const cacheKey = buildDecadeCacheKey(chartSummary, range);
+    const cached   = getCachedChunk(cacheKey);
+    if (cached) {
+      profilesMap.set(range, cached);
+    } else {
+      uncachedMeta.push({ range, cacheKey, input: buildDecadeInput(range, decadeMap.get(range)) });
+    }
+  }
+
+  if (uncachedMeta.length) {
+    const prompt = buildDecadeProfilePrompt(chartSummary, uncachedMeta.map(u => u.input));
+    let result = null;
+    for (let attempt = 0; attempt < 2; attempt++) {
+      try {
+        result = await callDeepSeek(prompt.system, prompt.user, { maxTokens: 1200, temperature: 0 });
+        break;
+      } catch (err) {
+        console.error('[piming-api] 大运层评分失败:', err.message);
+      }
+    }
+
+    const aiDecades = result?.decades || [];
+    uncachedMeta.forEach(({ range, cacheKey }) => {
+      const startAge = _rangeStartAge(range);
+      const hit = aiDecades.find(d => _rangeStartAge(d.range) === startAge) || aiDecades.find(d => d.range === range);
+      const profile = hit
+        ? {
+            range,
+            decadeBaseScore: Math.max(20, Math.min(80, Math.round(Number(hit.decadeBaseScore) || 55))),
+            decadeFactor   : Math.max(0.55, Math.min(1.25, Number(hit.decadeFactor) || 1.0)),
+            summary        : sanitizeAiText(hit.summary || '').slice(0, 40),
+          }
+        : { range, decadeBaseScore: 55, decadeFactor: 1.0, summary: '大运数据缺失，使用默认底色' };
+
+      profilesMap.set(range, profile);
+      setCachedChunk(cacheKey, profile);
+    });
+  }
+
+  return profilesMap;
 }
 
 // ── CORS ────────────────────────────────────────────────
@@ -195,84 +336,98 @@ function sanitizeAiText(text) {
 const LIFE_CURVE_CHUNK_SIZE = 20;
 
 // 校验并重算 finalScore（防止 AI 随意填数）
+// v3：finalScore = round((base + deltas) * factor)，因子由大运层决定
 function computeValidatedScore(item) {
-  const base = Math.max(20, Math.min(80, Math.round(Number(item?.baseScore)     || 60)));
-  const d1   = Math.max(-20, Math.min(20, Math.round(Number(item?.xiaoLianDelta) || 0)));
-  const d2   = Math.max(-15, Math.min(15, Math.round(Number(item?.oppositeDelta) || 0)));
-  const d3   = Math.max(-15, Math.min(15, Math.round(Number(item?.decadalDelta)  || 0)));
-  const d4   = Math.max(-10, Math.min(10, Math.round(Number(item?.guaDelta)      || 0)));
-  const computed = base + d1 + d2 + d3 + d4;
+  const base   = Math.max(20, Math.min(80,   Math.round(Number(item?.baseScore)     || 55)));
+  const d1     = Math.max(-20, Math.min(20,  Math.round(Number(item?.xiaoLianDelta) || 0)));
+  const d2     = Math.max(-15, Math.min(15,  Math.round(Number(item?.oppositeDelta) || 0)));
+  const d3     = Math.max(-10, Math.min(10,  Math.round(Number(item?.guaDelta)      || 0)));
+  const factor = Math.max(0.55, Math.min(1.25, Number(item?.decadeFactor)           || 1.0));
+  const computed = Math.round((base + d1 + d2 + d3) * factor);
   const claimed  = Math.round(Number(item?.finalScore) || computed);
-  // 若 AI 的 finalScore 与算出值偏差 ≤ 8 则采纳，否则用算出值
-  const final = Math.abs(claimed - computed) <= 8 ? claimed : computed;
+  // 偏差 ≤ 8 则采纳 AI 填报值，否则用算出值
+  const final    = Math.abs(claimed - computed) <= 8 ? claimed : computed;
   return Math.max(5, Math.min(98, final));
 }
 
-function buildLifeCurvePrompt(chartSummary, yearsChunk) {
-  const chunkText = yearsChunk.map(year => [
-    `- ${year.age}岁 / ${year.year}年`,
-    `  流年卦: ${year.liunianGua?.name || '—'} ${year.liunianGua?.period || ''}`.trim(),
-    `  小流年本宫: ${year.xiaoLian?.palace || '—'}（${year.xiaoLian?.branch || '—'}）`,
-    `  本宫星曜: ${year.xiaoLian?.stars || '—'}`,
-    `  对宫: ${year.opposite?.palace || '—'}（${year.opposite?.branch || '—'}）`,
-    `  对宫星曜: ${year.opposite?.stars || '—'}`,
-    `  十年大运: ${year.decadal?.palace || '—'} ${year.decadal?.range ? `（${year.decadal.range}）` : ''}`.trim(),
-    `  大运星曜: ${year.decadal?.stars || '—'}`,
-  ].join('\n')).join('\n');
+// v3 两层评分：年度层 prompt，baseScore/factor 继承自大运底色
+function buildLifeCurvePrompt(chartSummary, yearsChunk, decadeProfilesMap) {
+  // 构建本 chunk 涉及的大运底色上下文
+  const seenRanges  = new Set();
+  const decadeLines = [];
+  yearsChunk.forEach(y => {
+    const range = y.decadal?.range || '';
+    if (range && !seenRanges.has(range)) {
+      seenRanges.add(range);
+      const p = decadeProfilesMap?.get(range);
+      if (p) decadeLines.push(
+        `  ${range}：底色分=${p.decadeBaseScore}，压制因子=${p.decadeFactor}，${p.summary}`
+      );
+    }
+  });
+
+  const chunkText = yearsChunk.map(year => {
+    const range   = year.decadal?.range || '—';
+    const profile = decadeProfilesMap?.get(range);
+    const memo    = profile ? `底色=${profile.decadeBaseScore}×${profile.decadeFactor}` : '底色=未知';
+    return [
+      `- ${year.age}岁 / ${year.year}年  大运[${range} ${memo}]`,
+      `  流年卦: ${year.liunianGua?.name || '—'} ${year.liunianGua?.period || ''}`.trim(),
+      `  小流年本宫: ${year.xiaoLian?.palace || '—'}（${year.xiaoLian?.branch || '—'}）  星曜: ${year.xiaoLian?.stars || '—'}`,
+      `  对宫: ${year.opposite?.palace || '—'}（${year.opposite?.branch || '—'}）  星曜: ${year.opposite?.stars || '—'}`,
+    ].join('\n');
+  }).join('\n');
 
   return {
     system: [
-      '你是紫微斗数流年评分助手，按海厦体系的命理精神做年度趋势评分。',
-      '你只负责给每一个年龄单独评分，不要把相邻年龄机械合并成同一结果。',
-      '评分规则（四维度分解）：',
-      '  baseScore [20-80]：命盘先天格局底分，全段相同。',
-      '  xiaoLianDelta [-20~+20]：小流年本宫星曜的当年影响（忌煞为负，吉曜为正）。',
-      '  oppositeDelta [-15~+15]：对宫星曜对本宫的反冲影响（同上规则）。',
-      '  decadalDelta  [-15~+15]：十年大运整体底色（大运劣则全段偏负）。',
-      '  guaDelta      [-10~+10]：流年卦提示的吉凶调整量。',
-      '  finalScore = baseScore + xiaoLianDelta + oppositeDelta + decadalDelta + guaDelta，夹在 5-98 之间。',
-      '60 为普通，80 以上明显顺，40 以下明显低谷。',
-      '返回必须是严格 JSON，不要 markdown，不要解释过程。'
+      '你是紫微斗数流年评分助手（年度微调层），按海厦体系做年度细化评分。',
+      '十年大运底色已由上层预先确定，你不要重新评估大运层。',
+      '你的任务：根据当年小流年本宫、对宫、流年卦，计算年度微调量。',
+      '评分公式（严格遵守）：',
+      '  baseScore：直接沿用所属十年的 decadeBaseScore，不得改变。',
+      '  xiaoLianDelta [-20~+20]：小流年本宫星曜当年调整（忌煞负，吉曜正）。',
+      '  oppositeDelta [-15~+15]：对宫反冲影响（同规则）。',
+      '  guaDelta      [-10~+10]：流年卦吉凶调整。',
+      '  decadeFactor：沿用所属十年的值，不得改变。',
+      '  finalScore = round((baseScore + xiaoLianDelta + oppositeDelta + guaDelta) * decadeFactor)，夹在 5-98。',
+      '同一十年内不同年份必须有真实差异，不要机械重复同一 delta。',
+      '返回必须是严格 JSON，不要 markdown，不要任何解释。',
     ].join('\n'),
     user: [
-      '请根据下面命盘摘要和年度数据，为每一个年龄给出四维度分解评分。',
+      '请根据以下十年底色和年度数据，为每一年给出年度微调评分。',
       '',
       '【命盘摘要】',
-      `姓名：${chartSummary?.name || '—'}`,
-      `性别：${chartSummary?.gender || '—'}`,
-      `公历：${chartSummary?.solar || '—'}`,
-      `农历：${chartSummary?.lunar || '—'}`,
-      `节气四柱：${chartSummary?.sizhu || '—'}`,
-      `先天卦：${chartSummary?.xianTian || '—'}`,
-      `后天卦：${chartSummary?.houTian || '—'}`,
-      `当前流年卦：${chartSummary?.currentLiuNian || '—'}`,
-      `五行局：${chartSummary?.fiveElementsClass || '—'}`,
+      `姓名：${chartSummary?.name || '—'}  五行局：${chartSummary?.fiveElementsClass || '—'}`,
       '',
-      '【待评分年龄数据】',
+      '【所属十年底色（已定，不可改变）】',
+      decadeLines.join('\n') || '（底色数据缺失，请用 decadeBaseScore=55, decadeFactor=1.0）',
+      '',
+      '【待评分年龄数据（每行附有底色备注）】',
       chunkText,
       '',
       '返回格式（严格遵守，不得增删字段）：',
       '{',
       '  "scores": [',
       '    {',
-      '      "age": 1,',
-      '      "baseScore": 58,',
-      '      "xiaoLianDelta": 5,',
+      '      "age": 36,',
+      '      "baseScore": 52,',
+      '      "xiaoLianDelta": 8,',
       '      "oppositeDelta": -3,',
-      '      "decadalDelta": 2,',
-      '      "guaDelta": 0,',
-      '      "finalScore": 62,',
+      '      "guaDelta": 4,',
+      '      "decadeFactor": 0.75,',
+      '      "finalScore": 46,',
       '      "summary": "一句话主因，15字内"',
       '    }',
       '  ]',
       '}',
       '',
       '要求：',
-      '1. 每个年龄都必须返回一条，不允许漏年龄。',
-      '2. finalScore 必须等于四个 delta 与 baseScore 之和（允许 ±2 舍入误差）。',
-      '3. summary 直接点出高低分主因，不要重复年龄数字。',
-      '4. 不允许把多个年龄合并描述。',
-    ].join('\n')
+      '1. baseScore 和 decadeFactor 必须原样沿用所属十年的值，不得自行改变。',
+      '2. finalScore = round((baseScore + xiaoLianDelta + oppositeDelta + guaDelta) * decadeFactor)。',
+      '3. 每个年龄都必须返回一条，不允许漏年龄。',
+      '4. 同一十年内各年份的 delta 值必须有真实差异，体现当年星曜实际情况。',
+      '5. summary 直接点出当年主因，不要重复年龄或大运信息。',
+    ].join('\n'),
   };
 }
 
@@ -296,7 +451,7 @@ function estimateFallbackScore(year) {
   return Math.max(18, Math.min(92, raw));
 }
 
-function normalizeLifeCurveScores(rawScores, yearsChunk) {
+function normalizeLifeCurveScores(rawScores, yearsChunk, decadeProfilesMap) {
   const map = new Map();
   if (Array.isArray(rawScores)) {
     rawScores.forEach(item => {
@@ -304,37 +459,48 @@ function normalizeLifeCurveScores(rawScores, yearsChunk) {
       if (!Number.isFinite(age)) return;
       const score   = computeValidatedScore(item);
       const summary = sanitizeAiText(item?.summary || '').slice(0, 48);
-      map.set(age, { age, score, summary });
+      map.set(age, {
+        age,
+        score,
+        summary,
+        decadeFactor: Math.max(0.55, Math.min(1.25, Number(item?.decadeFactor) || 1.0)),
+        baseScore   : Math.max(20, Math.min(80, Math.round(Number(item?.baseScore) || 55))),
+      });
     });
   }
   return yearsChunk.map(year => {
     const hit = map.get(year.age);
     if (hit) return hit;
+    const range   = year.decadal?.range || '';
+    const profile = decadeProfilesMap?.get(range);
+    const base    = profile?.decadeBaseScore || 55;
+    const factor  = profile?.decadeFactor   || 1.0;
+    const raw     = estimateFallbackScore(year);
+    const blended = Math.round((base * 0.5 + raw * 0.5) * factor);
     return {
-      age    : year.age,
-      score  : estimateFallbackScore(year),
-      summary: '模型未返回，按盘面规则估算',
+      age         : year.age,
+      score       : Math.max(5, Math.min(98, blended)),
+      summary     : '模型未返回，按盘面规则估算',
+      decadeFactor: factor,
+      baseScore   : base,
     };
   });
 }
 
-async function scoreLifeCurveChunk(chartSummary, yearsChunk) {
+async function scoreLifeCurveChunk(chartSummary, yearsChunk, decadeProfilesMap) {
   const cacheKey = buildChunkCacheKey(chartSummary, yearsChunk);
-  const cached = getCachedChunk(cacheKey);
+  const cached   = getCachedChunk(cacheKey);
   if (cached) {
     console.log(`[piming-api] 命中缓存 ${cacheKey.slice(0, 8)} ages ${yearsChunk[0]?.age}-${yearsChunk[yearsChunk.length - 1]?.age}`);
     return cached;
   }
 
-  const prompt = buildLifeCurvePrompt(chartSummary, yearsChunk);
-  let result = null;
-  let lastError = null;
+  const prompt    = buildLifeCurvePrompt(chartSummary, yearsChunk, decadeProfilesMap);
+  let result      = null;
+  let lastError   = null;
   for (let attempt = 0; attempt < 2; attempt++) {
     try {
-      result = await callDeepSeek(prompt.system, prompt.user, {
-        maxTokens  : 2400,
-        temperature: 0,
-      });
+      result = await callDeepSeek(prompt.system, prompt.user, { maxTokens: 2400, temperature: 0 });
       break;
     } catch (err) {
       lastError = err;
@@ -343,7 +509,7 @@ async function scoreLifeCurveChunk(chartSummary, yearsChunk) {
   if (!result) {
     return {
       model  : MODEL,
-      scores : normalizeLifeCurveScores([], yearsChunk).map(item => ({
+      scores : normalizeLifeCurveScores([], yearsChunk, decadeProfilesMap).map(item => ({
         ...item,
         summary: `接口异常，规则估算：${item.summary}`.slice(0, 48),
       })),
@@ -352,7 +518,7 @@ async function scoreLifeCurveChunk(chartSummary, yearsChunk) {
   }
   const out = {
     model  : MODEL,
-    scores : normalizeLifeCurveScores(result?.scores, yearsChunk),
+    scores : normalizeLifeCurveScores(result?.scores, yearsChunk, decadeProfilesMap),
     warning: null,
   };
   setCachedChunk(cacheKey, out);
@@ -442,34 +608,44 @@ app.post('/api/life-curve', async (req, res) => {
   }
 
   const run = async writeEvent => {
+    // ── 第一层：先算十年大运底色 ──────────────────────────────
+    let decadeProfilesMap = new Map();
+    try {
+      decadeProfilesMap = await scoreDecadesBatch(chartSummary, years);
+      await writeEvent({
+        type   : 'decades',
+        decades: Array.from(decadeProfilesMap.values()),
+      });
+    } catch (err) {
+      console.warn('[piming-api] 大运层评分失败:', err.message);
+      await writeEvent({ type: 'decades', decades: [], warning: err.message });
+    }
+
+    // ── 第二层：逐年评分，注入大运底色 ───────────────────────
     let done = 0;
     let allScores = [];
     let warningCount = 0;
     for (const chunk of chunks) {
-      const result = await scoreLifeCurveChunk(chartSummary, chunk);
+      const result = await scoreLifeCurveChunk(chartSummary, chunk, decadeProfilesMap);
       if (result.warning) warningCount += 1;
       allScores = allScores.concat(result.scores);
       await writeEvent({
-        type: 'partial',
-        model: result.model || MODEL,
-        scores: result.scores || [],
-        done: done + chunk.length,
-        total: years.length,
+        type   : 'partial',
+        model  : result.model || MODEL,
+        scores : result.scores || [],
+        done   : done + chunk.length,
+        total  : years.length,
         warnings: warningCount,
       });
       done += chunk.length;
-      await writeEvent({
-        type: 'progress',
-        done,
-        total: years.length,
-        warnings: warningCount,
-      });
+      await writeEvent({ type: 'progress', done, total: years.length, warnings: warningCount });
     }
     allScores.sort((a, b) => a.age - b.age);
     await writeEvent({
-      type: 'result',
-      model: MODEL,
-      scores: allScores,
+      type   : 'result',
+      model  : MODEL,
+      scores : allScores,
+      decades: Array.from(decadeProfilesMap.values()),
       warnings: warningCount,
     });
     return allScores;
