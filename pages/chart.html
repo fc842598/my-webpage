@@ -331,6 +331,7 @@
           </div>
         </div>
         <div class="fc-score-current" id="fc-score-current">—</div>
+        <div class="fc-decade-bar" id="fc-decade-bar" style="display:none"></div>
         <svg class="fc-score-svg" id="fc-score-svg" viewBox="0 0 360 168" preserveAspectRatio="none"></svg>
         <div class="fc-score-list" id="fc-score-list"></div>
       </div>
@@ -1525,6 +1526,103 @@ function _fcScoreCurrentItem() {
   return items.find(item => item.age === _fcActiveAge) || null;
 }
 
+// ── 十年大运可视化辅助函数 ──────────────────────────────────
+
+function _fcDecadeFactorClass(factor) {
+  if (factor >= 1.05) return 'good';
+  if (factor >= 0.90) return 'mid';
+  if (factor >= 0.75) return 'weak';
+  return 'low';
+}
+
+function _fcDecadeSanfangText(age) {
+  const dp = _fcFindDecadalPalace(age);
+  if (!dp) return '';
+  const dBranch    = dp.earthlyBranch || '';
+  const oppBranch  = DUIGONG[dBranch] || '';
+  const sfBranches = SANHE_PARTNERS[dBranch] || [];
+  const parts = [];
+  if (oppBranch) {
+    const opp = (_chart?.palaces || []).find(p => p.earthlyBranch === oppBranch);
+    if (opp?.name) parts.push(`对宫·${opp.name}`);
+  }
+  sfBranches.forEach(b => {
+    const sp = (_chart?.palaces || []).find(p => p.earthlyBranch === b);
+    if (sp?.name) parts.push(sp.name);
+  });
+  return parts.length ? `三方四正联动：${parts.join(' · ')}` : '';
+}
+
+function _fcUpdateDecadeBar(age) {
+  const bar = document.getElementById('fc-decade-bar');
+  if (!bar) return;
+  const dp = _fcDecadeCurrentProfile(age);
+  if (!dp) { bar.style.display = 'none'; return; }
+  const cls      = _fcDecadeFactorClass(dp.decadeFactor);
+  const sfText   = _fcDecadeSanfangText(age);
+  bar.style.display = '';
+  bar.innerHTML =
+    `<div class="fc-decade-bar-header">` +
+      `<span class="fc-decade-bar-range">当前大运 ${dp.range}</span>` +
+      `<span class="fc-decade-bar-score ${cls}">${dp.decadeBaseScore}分 × ${dp.decadeFactor}</span>` +
+    `</div>` +
+    `<div class="fc-decade-bar-summary">${dp.summary}</div>` +
+    (sfText ? `<div class="fc-decade-bar-sanfang">${sfText}</div>` : '');
+}
+
+function _fcRenderDecadeBands(svg, rangeStart, rangeEnd, padX, padTop, innerW, innerH) {
+  const decades = _fcLifeCurveData?.decades || [];
+  const byStart = new Map();
+  decades.forEach(d => {
+    const m = String(d.range || '').match(/(\d+)/g);
+    if (m && m.length >= 2) byStart.set(Number(m[0]), d);
+  });
+
+  let bandIdx = 0;
+  for (let dStart = 1; dStart <= 91; dStart += 10, bandIdx++) {
+    const dEnd = dStart + 9;
+    if (dEnd < rangeStart || dStart > rangeEnd) continue;
+    const visStart = Math.max(dStart, rangeStart);
+    const visEnd   = Math.min(dEnd, rangeEnd);
+    const span     = Math.max(1, rangeEnd - rangeStart);
+    const x1 = padX + ((visStart - rangeStart) * innerW) / span;
+    const x2 = padX + ((visEnd + 1 - rangeStart) * innerW) / span;
+    const w  = Math.max(0, x2 - x1 - 0.5);
+    if (w <= 0) continue;
+
+    const profile  = byStart.get(dStart);
+    const factor   = profile?.decadeFactor ?? null;
+    const isActive = _fcActiveAge >= dStart && _fcActiveAge <= dEnd;
+
+    let cls = 'fc-decade-band ';
+    if (factor === null) cls += bandIdx % 2 === 0 ? 'fc-decade-band-even' : 'fc-decade-band-odd';
+    else if (factor >= 1.05) cls += 'fc-decade-band-good';
+    else if (factor >= 0.90) cls += 'fc-decade-band-mid';
+    else if (factor >= 0.75) cls += 'fc-decade-band-weak';
+    else                     cls += 'fc-decade-band-low';
+    if (isActive) cls += ' active';
+
+    const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+    rect.setAttribute('x', String(x1));
+    rect.setAttribute('y', String(padTop));
+    rect.setAttribute('width', String(w));
+    rect.setAttribute('height', String(innerH));
+    rect.setAttribute('class', cls.trim());
+    svg.appendChild(rect);
+
+    // Range label at top of each band
+    if (w > 16) {
+      const lbl = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+      lbl.setAttribute('x', String(x1 + w / 2));
+      lbl.setAttribute('y', String(padTop + 8));
+      lbl.setAttribute('text-anchor', 'middle');
+      lbl.setAttribute('class', 'fc-decade-band-label' + (isActive ? ' active' : ''));
+      lbl.textContent = `${dStart}`;
+      svg.appendChild(lbl);
+    }
+  }
+}
+
 function _fcRenderScoreCurve() {
   const wrap = document.getElementById('fc-score-wrap');
   const meta = document.getElementById('fc-score-meta');
@@ -1572,13 +1670,19 @@ function _fcRenderScoreCurve() {
 
   btn.textContent = _fcLifeCurveMode === 'all' ? (_fcLifeCurveLoading ? '整体生成中…' : '重新生成整体100年') : '生成整体运势图';
 
+  // 十年色块在 all 模式无数据时也先画出分段背景
+  if (_fcLifeCurveMode === 'all') {
+    _fcRenderDecadeBands(svg, rangeStart, rangeEnd, padX, padTop, innerW, innerH);
+  }
+
   if (!visibleScores.length) {
     meta.textContent = _fcLifeCurveMode === 'all'
-      ? (_fcLifeCurveLoading ? `正在逐年生成 1-100 岁（0/100）` : '点击“整体100年”或“生成整体运势图”查看全龄曲线')
+      ? (_fcLifeCurveLoading ? `正在逐年生成 1-100 岁（0/100）` : '点击”整体100年”或”生成整体运势图”查看全龄曲线')
       : (_fcLifeCurveLoading ? `正在逐年生成当前十年（0/${totalCount}）` : `默认展示 ${rangeStart}-${rangeEnd} 岁十年走势`);
     cur.textContent = _fcLifeCurveMode === 'all'
       ? '整体运势图将按年龄逐年补齐'
       : `${rangeStart}-${rangeEnd} 岁十年走势将逐年显示`;
+    _fcUpdateDecadeBar(_fcActiveAge);
     return;
   }
 
@@ -1587,6 +1691,11 @@ function _fcRenderScoreCurve() {
     const y = padTop + (100 - Math.max(0, Math.min(100, Number(item.score) || 0))) / 100 * innerH;
     return { ...item, x, y };
   });
+
+  // decade 模式下也画一条色块背景（all 模式已在上方画过）
+  if (_fcLifeCurveMode !== 'all') {
+    _fcRenderDecadeBands(svg, rangeStart, rangeEnd, padX, padTop, innerW, innerH);
+  }
 
   if (points.length >= 2) {
     const area = document.createElementNS('http://www.w3.org/2000/svg', 'path');
@@ -1643,19 +1752,17 @@ function _fcRenderScoreCurve() {
     svg.appendChild(hit);
   });
 
-  const current     = _fcScoreCurrentItem() || visibleScores[0];
-  const decadeProf  = _fcDecadeCurrentProfile(current.age);
-  const decadePart  = decadeProf
-    ? `  ｜大运底色 ${decadeProf.range}：${decadeProf.decadeBaseScore}分×${decadeProf.decadeFactor}  ${decadeProf.summary}`
-    : '';
-  const trendLabel  = (() => {
+  const current    = _fcScoreCurrentItem() || visibleScores[0];
+  const decadeProf = _fcDecadeCurrentProfile(current.age);
+  const trendLabel = (() => {
     if (!decadeProf) return '';
     const expected = Math.round(decadeProf.decadeBaseScore * decadeProf.decadeFactor);
-    if (decadeProf.decadeFactor < 0.9 && current.score > expected + 4) return '（逆势局部回升）';
-    if (decadeProf.decadeFactor >= 1.0 && current.score < expected - 4) return '（顺势局部下探）';
+    if (decadeProf.decadeFactor < 0.9  && current.score > expected + 4) return '  逆势局部回升';
+    if (decadeProf.decadeFactor >= 1.0 && current.score < expected - 4) return '  顺势局部下探';
     return '';
   })();
-  cur.textContent = `${current.age}岁：${current.score}分${trendLabel}${current.summary ? `  ${current.summary}` : ''}${decadePart}`;
+  cur.textContent = `${current.age}岁：${current.score}分${trendLabel}${current.summary ? `  ${current.summary}` : ''}`;
+  _fcUpdateDecadeBar(current.age);
   meta.textContent = _fcLifeCurveMode === 'all'
     ? (_fcLifeCurveLoading
         ? `整体运势图生成中：已完成 ${loadedCount}/${totalCount} 年`
