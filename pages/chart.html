@@ -1593,12 +1593,26 @@ function _fcRenderScoreCurve() {
   });
 
   points.forEach(item => {
+    const title = document.createElementNS('http://www.w3.org/2000/svg', 'title');
+    title.textContent = `${item.age}岁 · ${item.score}分${item.summary ? ` · ${item.summary}` : ''}`;
+
     const point = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
     point.setAttribute('cx', String(item.x));
     point.setAttribute('cy', String(item.y));
     point.setAttribute('r', item.age === _fcActiveAge ? '4.6' : '3.2');
     point.setAttribute('class', `fc-score-point ${_fcScoreClass(item.score)}`);
+    point.appendChild(title);
     svg.appendChild(point);
+
+    // 不可见的大点击区域，方便触控/精确点击
+    const hit = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    hit.setAttribute('cx', String(item.x));
+    hit.setAttribute('cy', String(item.y));
+    hit.setAttribute('r', '9');
+    hit.setAttribute('fill', 'transparent');
+    hit.setAttribute('style', 'cursor:pointer');
+    hit.addEventListener('click', () => fcSelectYear(item.age));
+    svg.appendChild(hit);
   });
 
   const current = _fcScoreCurrentItem() || visibleScores[0];

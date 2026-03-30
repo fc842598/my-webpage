@@ -11,7 +11,9 @@
  */
 
 'use strict';
-const path = require('path');
+const path   = require('path');
+const crypto = require('crypto');
+const fs     = require('fs');
 require('dotenv').config({ path: path.join(__dirname, '.env') });
 
 const express = require('express');
@@ -32,6 +34,36 @@ const deepseek = new OpenAI({
   baseURL: 'https://api.deepseek.com',
   apiKey : API_KEY,
 });
+
+// ── 评分缓存（文件级，同命盘同年龄段不重复调用 AI）──────────────
+const PROMPT_VERSION = 'v2-structured';
+const CACHE_DIR = path.join(__dirname, '.cache', 'life-curve');
+
+function buildChunkCacheKey(chartSummary, yearsChunk) {
+  const keyData = JSON.stringify({
+    v     : PROMPT_VERSION,
+    name  : chartSummary?.name   || '',
+    solar : chartSummary?.solar  || '',
+    gender: chartSummary?.gender || '',
+    ages  : yearsChunk.map(y => y.age),
+  });
+  return crypto.createHash('md5').update(keyData).digest('hex');
+}
+
+function getCachedChunk(cacheKey) {
+  try {
+    return JSON.parse(fs.readFileSync(path.join(CACHE_DIR, `${cacheKey}.json`), 'utf8'));
+  } catch { return null; }
+}
+
+function setCachedChunk(cacheKey, data) {
+  try {
+    fs.mkdirSync(CACHE_DIR, { recursive: true });
+    fs.writeFileSync(path.join(CACHE_DIR, `${cacheKey}.json`), JSON.stringify(data), 'utf8');
+  } catch (err) {
+    console.warn('[piming-api] 缓存写入失败:', err.message);
+  }
+}
 
 // ── CORS ────────────────────────────────────────────────
 const allowedOrigins = process.env.ALLOWED_ORIGINS
@@ -162,6 +194,20 @@ function sanitizeAiText(text) {
 
 const LIFE_CURVE_CHUNK_SIZE = 20;
 
+// 校验并重算 finalScore（防止 AI 随意填数）
+function computeValidatedScore(item) {
+  const base = Math.max(20, Math.min(80, Math.round(Number(item?.baseScore)     || 60)));
+  const d1   = Math.max(-20, Math.min(20, Math.round(Number(item?.xiaoLianDelta) || 0)));
+  const d2   = Math.max(-15, Math.min(15, Math.round(Number(item?.oppositeDelta) || 0)));
+  const d3   = Math.max(-15, Math.min(15, Math.round(Number(item?.decadalDelta)  || 0)));
+  const d4   = Math.max(-10, Math.min(10, Math.round(Number(item?.guaDelta)      || 0)));
+  const computed = base + d1 + d2 + d3 + d4;
+  const claimed  = Math.round(Number(item?.finalScore) || computed);
+  // 若 AI 的 finalScore 与算出值偏差 ≤ 8 则采纳，否则用算出值
+  const final = Math.abs(claimed - computed) <= 8 ? claimed : computed;
+  return Math.max(5, Math.min(98, final));
+}
+
 function buildLifeCurvePrompt(chartSummary, yearsChunk) {
   const chunkText = yearsChunk.map(year => [
     `- ${year.age}岁 / ${year.year}年`,
@@ -178,16 +224,20 @@ function buildLifeCurvePrompt(chartSummary, yearsChunk) {
     system: [
       '你是紫微斗数流年评分助手，按海厦体系的命理精神做年度趋势评分。',
       '你只负责给每一个年龄单独评分，不要把相邻年龄机械合并成同一结果。',
-      '你必须综合考虑：小流年本宫、对宫、十年大运、流年卦。',
-      '十年大运若整体不佳，年度分数应整体下压；若本宫或对宫见明显煞忌、空劫、羊陀、火铃、刑忌，分数应明显下降。',
-      '若本宫、对宫、大运见明显吉曜、禄权科、左右昌曲魁钺、禄存等，分数可提高。',
-      '评分范围 0-100，60 为普通，80 以上明显顺，40 以下明显低谷。',
+      '评分规则（四维度分解）：',
+      '  baseScore [20-80]：命盘先天格局底分，全段相同。',
+      '  xiaoLianDelta [-20~+20]：小流年本宫星曜的当年影响（忌煞为负，吉曜为正）。',
+      '  oppositeDelta [-15~+15]：对宫星曜对本宫的反冲影响（同上规则）。',
+      '  decadalDelta  [-15~+15]：十年大运整体底色（大运劣则全段偏负）。',
+      '  guaDelta      [-10~+10]：流年卦提示的吉凶调整量。',
+      '  finalScore = baseScore + xiaoLianDelta + oppositeDelta + decadalDelta + guaDelta，夹在 5-98 之间。',
+      '60 为普通，80 以上明显顺，40 以下明显低谷。',
       '返回必须是严格 JSON，不要 markdown，不要解释过程。'
     ].join('\n'),
     user: [
-      '请根据下面命盘摘要和年度数据，为每一个年龄给出单独评分。',
+      '请根据下面命盘摘要和年度数据，为每一个年龄给出四维度分解评分。',
       '',
-      `【命盘摘要】`,
+      '【命盘摘要】',
       `姓名：${chartSummary?.name || '—'}`,
       `性别：${chartSummary?.gender || '—'}`,
       `公历：${chartSummary?.solar || '—'}`,
@@ -198,22 +248,30 @@ function buildLifeCurvePrompt(chartSummary, yearsChunk) {
       `当前流年卦：${chartSummary?.currentLiuNian || '—'}`,
       `五行局：${chartSummary?.fiveElementsClass || '—'}`,
       '',
-      `【待评分年龄数据】`,
+      '【待评分年龄数据】',
       chunkText,
       '',
-      '返回格式：',
+      '返回格式（严格遵守，不得增删字段）：',
       '{',
       '  "scores": [',
-      '    { "age": 1, "score": 63, "summary": "一句话理由，20字内" }',
+      '    {',
+      '      "age": 1,',
+      '      "baseScore": 58,',
+      '      "xiaoLianDelta": 5,',
+      '      "oppositeDelta": -3,',
+      '      "decadalDelta": 2,',
+      '      "guaDelta": 0,',
+      '      "finalScore": 62,',
+      '      "summary": "一句话主因，15字内"',
+      '    }',
       '  ]',
       '}',
       '',
       '要求：',
-      '1. 每个年龄都必须返回一条。',
-      '2. summary 简短，直接说明高低分主因。',
-      '3. 不允许漏年龄。',
+      '1. 每个年龄都必须返回一条，不允许漏年龄。',
+      '2. finalScore 必须等于四个 delta 与 baseScore 之和（允许 ±2 舍入误差）。',
+      '3. summary 直接点出高低分主因，不要重复年龄数字。',
       '4. 不允许把多个年龄合并描述。',
-      '5. 相邻年龄可以相同，但必须是独立判断，不要机械重复。'
     ].join('\n')
   };
 }
@@ -244,7 +302,7 @@ function normalizeLifeCurveScores(rawScores, yearsChunk) {
     rawScores.forEach(item => {
       const age = Number(item?.age);
       if (!Number.isFinite(age)) return;
-      const score = Math.max(0, Math.min(100, Math.round(Number(item?.score) || 0)));
+      const score   = computeValidatedScore(item);
       const summary = sanitizeAiText(item?.summary || '').slice(0, 48);
       map.set(age, { age, score, summary });
     });
@@ -252,24 +310,30 @@ function normalizeLifeCurveScores(rawScores, yearsChunk) {
   return yearsChunk.map(year => {
     const hit = map.get(year.age);
     if (hit) return hit;
-    const fallbackScore = estimateFallbackScore(year);
     return {
-      age: year.age,
-      score: fallbackScore,
+      age    : year.age,
+      score  : estimateFallbackScore(year),
       summary: '模型未返回，按盘面规则估算',
     };
   });
 }
 
 async function scoreLifeCurveChunk(chartSummary, yearsChunk) {
+  const cacheKey = buildChunkCacheKey(chartSummary, yearsChunk);
+  const cached = getCachedChunk(cacheKey);
+  if (cached) {
+    console.log(`[piming-api] 命中缓存 ${cacheKey.slice(0, 8)} ages ${yearsChunk[0]?.age}-${yearsChunk[yearsChunk.length - 1]?.age}`);
+    return cached;
+  }
+
   const prompt = buildLifeCurvePrompt(chartSummary, yearsChunk);
   let result = null;
   let lastError = null;
   for (let attempt = 0; attempt < 2; attempt++) {
     try {
       result = await callDeepSeek(prompt.system, prompt.user, {
-        maxTokens: 2200,
-        temperature: 0.35,
+        maxTokens  : 2400,
+        temperature: 0,
       });
       break;
     } catch (err) {
@@ -278,19 +342,21 @@ async function scoreLifeCurveChunk(chartSummary, yearsChunk) {
   }
   if (!result) {
     return {
-      model: MODEL,
-      scores: normalizeLifeCurveScores([], yearsChunk).map(item => ({
+      model  : MODEL,
+      scores : normalizeLifeCurveScores([], yearsChunk).map(item => ({
         ...item,
         summary: `接口异常，规则估算：${item.summary}`.slice(0, 48),
       })),
       warning: lastError?.message || '模型调用失败',
     };
   }
-  return {
-    model: MODEL,
-    scores: normalizeLifeCurveScores(result?.scores, yearsChunk),
+  const out = {
+    model  : MODEL,
+    scores : normalizeLifeCurveScores(result?.scores, yearsChunk),
     warning: null,
   };
+  setCachedChunk(cacheKey, out);
+  return out;
 }
 
 // ── 请求体格式化（把前端数据转成可读文本）───────────────────
