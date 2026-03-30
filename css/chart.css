@@ -842,6 +842,20 @@
 .aip-score-wrap {
   margin: 0 0 14px;
 }
+.fc-score-progress-wrap {
+  height: 5px;
+  background: rgba(210,196,181,.35);
+  border-radius: 99px;
+  overflow: hidden;
+  margin: 2px 0 6px;
+}
+.fc-score-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #7a4a37 0%, #c07050 60%, #e8a070 100%);
+  border-radius: 99px;
+  transition: width 0.5s ease;
+  min-width: 3%;
+}
 
 /* ── 十年大运色块（SVG rect 背景）──────────────────────────── */
 .fc-decade-band-even  { fill: rgba(140,110,90,.06); }

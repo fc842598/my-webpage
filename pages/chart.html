@@ -331,6 +331,9 @@
           </div>
         </div>
         <div class="fc-score-current" id="fc-score-current">—</div>
+        <div class="fc-score-progress-wrap" id="fc-score-progress-wrap" style="display:none">
+          <div class="fc-score-progress-fill" id="fc-score-progress-fill"></div>
+        </div>
         <div class="fc-decade-bar" id="fc-decade-bar" style="display:none"></div>
         <svg class="fc-score-svg" id="fc-score-svg" viewBox="0 0 360 168" preserveAspectRatio="none"></svg>
         <div class="fc-score-list" id="fc-score-list"></div>
@@ -794,7 +797,11 @@ document.getElementById('fc-score-mode-decade')?.addEventListener('click', () =>
 document.getElementById('fc-score-mode-all')?.addEventListener('click', () => {
   _fcLifeCurveMode = 'all';
   _fcRenderScoreCurve();
-  _fcEnsureLifeCurveVisible(false);
+  // 切到整体100年时立即触发补算，不需要用户再点"生成"
+  if (!_fcLifeCurveLoading && _chart && _chartInputs) {
+    const missing = _fcLifeCurveMissingAges('all');
+    if (missing.length) _fcGenerateLifeCurve({ mode: 'all', ages: missing, auto: false });
+  }
 });
 
 // ─── 地图常量 ─────────────────────────────────────────────
@@ -1675,10 +1682,21 @@ function _fcRenderScoreCurve() {
     _fcRenderDecadeBands(svg, rangeStart, rangeEnd, padX, padTop, innerW, innerH);
   }
 
+  const progressWrap = document.getElementById('fc-score-progress-wrap');
+  const progressFill = document.getElementById('fc-score-progress-fill');
+  // 进度条：仅 all 模式生成中才显示
+  if (progressWrap) {
+    const showBar = _fcLifeCurveLoading && _fcLifeCurveMode === 'all';
+    progressWrap.style.display = showBar ? '' : 'none';
+    if (showBar && progressFill && totalCount > 0) {
+      progressFill.style.width = `${Math.max(3, Math.round((loadedCount / totalCount) * 100))}%`;
+    }
+  }
+
   if (!visibleScores.length) {
     meta.textContent = _fcLifeCurveMode === 'all'
-      ? (_fcLifeCurveLoading ? `正在逐年生成 1-100 岁（0/100）` : '点击”整体100年”或”生成整体运势图”查看全龄曲线')
-      : (_fcLifeCurveLoading ? `正在逐年生成当前十年（0/${totalCount}）` : `默认展示 ${rangeStart}-${rangeEnd} 岁十年走势`);
+      ? (_fcLifeCurveLoading ? `大运底色评估中，逐年评分即将开始…` : '点击”整体100年”或”生成整体运势图”查看全龄曲线')
+      : (_fcLifeCurveLoading ? `当前十年生成中（0/${totalCount}）` : `默认展示 ${rangeStart}-${rangeEnd} 岁十年走势`);
     cur.textContent = _fcLifeCurveMode === 'all'
       ? '整体运势图将按年龄逐年补齐'
       : `${rangeStart}-${rangeEnd} 岁十年走势将逐年显示`;
@@ -1763,13 +1781,21 @@ function _fcRenderScoreCurve() {
   })();
   cur.textContent = `${current.age}岁：${current.score}分${trendLabel}${current.summary ? `  ${current.summary}` : ''}`;
   _fcUpdateDecadeBar(current.age);
-  meta.textContent = _fcLifeCurveMode === 'all'
-    ? (_fcLifeCurveLoading
-        ? `整体运势图生成中：已完成 ${loadedCount}/${totalCount} 年`
-        : `整体运势图已完成 ${loadedCount}/${totalCount} 年评分`)
-    : (_fcLifeCurveLoading
-        ? `当前十年走势生成中：已完成 ${loadedCount}/${totalCount} 年`
-        : `当前十年走势：${rangeStart}-${rangeEnd} 岁`);
+  if (_fcLifeCurveMode === 'all') {
+    if (_fcLifeCurveLoading) {
+      meta.textContent = `正在补算整体100年：已完成 ${loadedCount}/${totalCount} 年`;
+    } else if (loadedCount >= 100) {
+      meta.textContent = `整体100年已全部完成`;
+    } else {
+      meta.textContent = loadedCount > 0
+        ? `当前已有 ${loadedCount}/100 年，点"生成整体运势图"补全`
+        : '点"生成整体运势图"查看全龄曲线';
+    }
+  } else {
+    meta.textContent = _fcLifeCurveLoading
+      ? `当前十年走势生成中：已完成 ${loadedCount}/${totalCount} 年`
+      : `当前十年走势：${rangeStart}-${rangeEnd} 岁`;
+  }
 
   const chipAges = _fcLifeCurveTargetAges('decade');
   chipAges.forEach(age => {
@@ -1798,13 +1824,13 @@ async function _fcGenerateLifeCurve(options = {}) {
   const meta = document.getElementById('fc-score-meta');
   const cur = document.getElementById('fc-score-current');
   _fcLifeCurveLoading = true;
-  _fcRenderScoreCurve();
+  _fcRenderScoreCurve();  // 此时进度条已显示（0%）
   if (meta) meta.textContent = mode === 'all'
-    ? `正在逐年生成 1-100 岁（0/${wantedAges.length}）`
-    : `正在逐年生成当前十年（0/${wantedAges.length}）`;
+    ? `准备中：先评十年大运底色…（待评 ${wantedAges.length} 年）`
+    : `准备中：评十年大运底色…`;
   if (cur) cur.textContent = mode === 'all'
-    ? '整体运势图将按年份逐年补齐'
-    : `${_fcLifeCurveDecadeRange()[0]}-${_fcLifeCurveDecadeRange()[1]} 岁十年走势将逐年补齐`;
+    ? '整体运势图将按批次逐步补齐'
+    : `${_fcLifeCurveDecadeRange()[0]}-${_fcLifeCurveDecadeRange()[1]} 岁十年走势生成中`;
   if (btn) btn.textContent = mode === 'all' ? '整体生成中…' : '生成整体运势图';
 
   try {
@@ -1812,7 +1838,7 @@ async function _fcGenerateLifeCurve(options = {}) {
     const resp = await fetch(_joinApiUrl(apiBase, '/api/life-curve'), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ...payload, stream: true, chunkSize: 1 }),
+      body: JSON.stringify({ ...payload, stream: true, chunkSize: 10 }),
     });
     if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
 
@@ -1841,12 +1867,17 @@ async function _fcGenerateLifeCurve(options = {}) {
         const evt = JSON.parse(line);
         if (evt.type === 'decades') {
           _fcLifeCurveUpsertDecades(evt.decades || []);
-          if (meta && evt.decades?.length) meta.textContent = mode === 'all'
-            ? `大运底色已完成，逐年评分中…`
-            : `大运底色已就绪，逐年评分中…`;
-        } else if (evt.type === 'progress') {
           if (meta) meta.textContent = mode === 'all'
-            ? `整体运势图生成中：已完成 ${evt.done}/${evt.total} 年`
+            ? `大运底色就绪（${(evt.decades||[]).length} 段），开始逐年评分…`
+            : `大运底色就绪，开始逐年评分…`;
+          _fcRenderScoreCurve(); // 更新十年色块
+        } else if (evt.type === 'progress') {
+          const pFill = document.getElementById('fc-score-progress-fill');
+          if (pFill && evt.total > 0) {
+            pFill.style.width = `${Math.max(3, Math.round((evt.done / evt.total) * 100))}%`;
+          }
+          if (meta) meta.textContent = mode === 'all'
+            ? `正在补算整体100年：已完成 ${evt.done}/${evt.total} 年`
             : `当前十年走势生成中：已完成 ${evt.done}/${evt.total} 年`;
         } else if (evt.type === 'partial') {
           _fcLifeCurveUpsertScores(evt.scores || [], evt.model || '');
@@ -1872,6 +1903,8 @@ async function _fcGenerateLifeCurve(options = {}) {
     if (cur) cur.textContent = 'AI 年度评分生成失败';
   } finally {
     _fcLifeCurveLoading = false;
+    const pWrap = document.getElementById('fc-score-progress-wrap');
+    if (pWrap) pWrap.style.display = 'none';
     if (btn) btn.textContent = _fcLifeCurveMode === 'all' ? '重新生成整体100年' : '生成整体运势图';
     _fcRenderScoreCurve();
   }
@@ -2583,7 +2616,7 @@ async function _refreshPimingApiHint() {
   if (!noteEl) return;
   try {
     const base = await _resolvePimingApiBase(true);
-    noteEl.textContent = `AI 接口已连接：${base || '同源 /api'}`;
+    noteEl.textContent = base ? 'AI 服务已连接' : 'AI 服务已连接（同源）';
   } catch (err) {
     noteEl.textContent = err.message;
   }
