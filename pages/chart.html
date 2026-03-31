@@ -317,26 +317,68 @@
     <!-- 人生曲线 -->
     <div class="aip-panel" id="aip-panel-curve" style="display:none">
       <div class="fc-score-wrap aip-score-wrap" id="fc-score-wrap" style="display:none">
+        <!-- 标题 + pill tabs -->
         <div class="fc-score-head">
-          <div class="fc-score-head-main">
-            <div class="fc-score-title">人生曲线</div>
-            <div class="fc-score-meta" id="fc-score-meta">默认先生成当前十年 10 个评分点，逐年返回；点击整体后再扩展到 1-100 岁</div>
-          </div>
-          <div class="fc-score-actions">
-            <div class="fc-score-modes">
-              <button type="button" class="fc-score-mode active" id="fc-score-mode-decade">当前10年</button>
-              <button type="button" class="fc-score-mode" id="fc-score-mode-all">整体100年</button>
-            </div>
-            <button class="fc-score-btn" id="fc-score-generate">生成整体运势图</button>
+          <div class="fc-score-title">人生曲线</div>
+          <div class="fc-score-modes">
+            <button type="button" class="fc-score-mode active" id="fc-score-mode-decade">十年</button>
+            <button type="button" class="fc-score-mode" id="fc-score-mode-all">百年</button>
           </div>
         </div>
-        <div class="fc-score-current" id="fc-score-current">—</div>
+
+        <!-- Hero: 大分数 + 年龄 + 趋势 -->
+        <div class="fc-hero" id="fc-hero">
+          <div class="fc-hero-left">
+            <span class="fc-hero-score" id="fc-hero-score">—</span>
+            <span class="fc-hero-unit">分</span>
+            <span class="fc-hero-age" id="fc-hero-age"></span>
+            <span class="fc-hero-trend" id="fc-hero-trend"></span>
+          </div>
+          <div class="fc-hero-right" id="fc-hero-summary"></div>
+        </div>
+
+        <!-- 大运一行 -->
+        <div class="fc-decade-bar" id="fc-decade-bar" style="display:none"></div>
+
+        <!-- 进度条 -->
         <div class="fc-score-progress-wrap" id="fc-score-progress-wrap" style="display:none">
           <div class="fc-score-progress-fill" id="fc-score-progress-fill"></div>
+          <span class="fc-score-progress-text" id="fc-score-progress-text"></span>
         </div>
-        <div class="fc-decade-bar" id="fc-decade-bar" style="display:none"></div>
-        <svg class="fc-score-svg" id="fc-score-svg" viewBox="0 0 360 168" preserveAspectRatio="none"></svg>
+
+        <!-- 加载状态文字 -->
+        <div class="fc-score-meta" id="fc-score-meta" style="display:none"></div>
+
+        <!-- 曲线图（主角，大面积） -->
+        <svg class="fc-score-svg" id="fc-score-svg" viewBox="0 0 390 260" preserveAspectRatio="xMidYMid meet"></svg>
+
+        <!-- Tooltip 浮层 -->
+        <div class="fc-tooltip" id="fc-tooltip" style="display:none">
+          <div class="fc-tooltip-age" id="fc-tooltip-age"></div>
+          <div class="fc-tooltip-score-row">
+            <span class="fc-tooltip-score" id="fc-tooltip-score"></span>
+            <span class="fc-tooltip-level" id="fc-tooltip-level"></span>
+          </div>
+          <div class="fc-tooltip-summary" id="fc-tooltip-summary"></div>
+          <div class="fc-tooltip-decade" id="fc-tooltip-decade"></div>
+        </div>
+
+        <!-- 十年卡片 -->
         <div class="fc-score-list" id="fc-score-list"></div>
+
+        <!-- 峰谷一行 -->
+        <div class="fc-peaks-row" id="fc-peaks-row" style="display:none"></div>
+
+        <!-- 大运总览横滚 -->
+        <div class="fc-decades-scroll-wrap" id="fc-decades-scroll-wrap" style="display:none">
+          <div class="fc-decades-scroll-title">大运总览</div>
+          <div class="fc-decades-scroll" id="fc-decades-scroll"></div>
+        </div>
+
+        <!-- 按钮 -->
+        <div class="fc-bottom-actions">
+          <button class="fc-score-btn" id="fc-score-generate">重新生成</button>
+        </div>
       </div>
     </div>
 
@@ -1565,16 +1607,10 @@ function _fcUpdateDecadeBar(age) {
   if (!bar) return;
   const dp = _fcDecadeCurrentProfile(age);
   if (!dp) { bar.style.display = 'none'; return; }
-  const cls      = _fcDecadeFactorClass(dp.decadeFactor);
-  const sfText   = _fcDecadeSanfangText(age);
+  const cls = _fcDecadeFactorClass(dp.decadeFactor);
   bar.style.display = '';
-  bar.innerHTML =
-    `<div class="fc-decade-bar-header">` +
-      `<span class="fc-decade-bar-range">当前大运 ${dp.range}</span>` +
-      `<span class="fc-decade-bar-score ${cls}">${dp.decadeBaseScore}分 × ${dp.decadeFactor}</span>` +
-    `</div>` +
-    `<div class="fc-decade-bar-summary">${dp.summary}</div>` +
-    (sfText ? `<div class="fc-decade-bar-sanfang">${sfText}</div>` : '');
+  // 极简一行：大运范围 · 底色分×因子 · 一句话摘要
+  bar.textContent = `大运 ${dp.range}  ·  ${dp.decadeBaseScore}分×${dp.decadeFactor}  ·  ${dp.summary}`;
 }
 
 function _fcRenderDecadeBands(svg, rangeStart, rangeEnd, padX, padTop, innerW, innerH) {
@@ -1630,183 +1666,312 @@ function _fcRenderDecadeBands(svg, rangeStart, rangeEnd, padX, padTop, innerW, i
   }
 }
 
+// ── 峰谷摘要行 ───────────────────────────────────────────────
+function _fcRenderPeaksRow() {
+  const row = document.getElementById('fc-peaks-row');
+  if (!row) return;
+  const scores = _fcLifeCurveData?.scores || [];
+  if (scores.length < 10 || _fcLifeCurveMode !== 'all') { row.style.display = 'none'; return; }
+
+  const sorted = [...scores].sort((a, b) => b.score - a.score);
+  const peak = sorted[0];
+  const valley = sorted[sorted.length - 1];
+  const avg = Math.round(scores.reduce((s, i) => s + i.score, 0) / scores.length);
+
+  // 最佳十年：按十年均分
+  const decadeAvg = new Map();
+  for (let d = 1; d <= 91; d += 10) {
+    const chunk = scores.filter(s => s.age >= d && s.age <= d + 9);
+    if (chunk.length) decadeAvg.set(d, chunk.reduce((s, i) => s + i.score, 0) / chunk.length);
+  }
+  let bestDStart = 1, bestAvg = 0;
+  decadeAvg.forEach((v, k) => { if (v > bestAvg) { bestAvg = v; bestDStart = k; } });
+
+  row.style.display = '';
+  row.innerHTML =
+    `<span class=”fc-peaks-item”><span class=”fc-peaks-label good”>巅峰</span> ${peak.age}岁</span>` +
+    `<span class=”fc-peaks-item”><span class=”fc-peaks-label low”>低谷</span> ${valley.age}岁</span>` +
+    `<span class=”fc-peaks-item”><span class=”fc-peaks-label avg”>均分</span> ${avg}</span>` +
+    `<span class=”fc-peaks-item”><span class=”fc-peaks-label best”>最佳</span> ${bestDStart}-${bestDStart+9}岁</span>`;
+}
+
+// ── 大运总览横滚 ──────────────────────────────────────────────
+function _fcRenderDecadesScroll() {
+  const wrap = document.getElementById('fc-decades-scroll-wrap');
+  const scroll = document.getElementById('fc-decades-scroll');
+  if (!wrap || !scroll) return;
+  const decades = _fcLifeCurveData?.decades || [];
+  if (!decades.length || _fcLifeCurveMode !== 'all') { wrap.style.display = 'none'; return; }
+
+  wrap.style.display = '';
+  scroll.innerHTML = '';
+  const [curStart] = _fcLifeCurveDecadeRange();
+
+  decades.forEach(d => {
+    const m = String(d.range || '').match(/(\d+)/g);
+    const dStart = m ? Number(m[0]) : 0;
+    const isActive = _fcActiveAge >= dStart && _fcActiveAge <= dStart + 9;
+    const cls = _fcDecadeFactorClass(d.decadeFactor);
+    const bgMap = { good: '#e8f5ec', mid: '#f5f0e4', weak: '#f5ece8', low: '#f2e8e6' };
+    const card = document.createElement('button');
+    card.type = 'button';
+    card.className = 'fc-decade-card' + (isActive ? ' active' : '');
+    card.style.background = bgMap[cls] || bgMap.mid;
+    card.innerHTML =
+      `<div class=”fc-decade-card-range”>${d.range}</div>` +
+      `<div class=”fc-decade-card-label ${cls}”>${d.summary ? d.summary.slice(0, 4) : cls}</div>`;
+    card.addEventListener('click', () => { if (m) fcSelectYear(dStart + 5); });
+    scroll.appendChild(card);
+  });
+}
+
 function _fcRenderScoreCurve() {
   const wrap = document.getElementById('fc-score-wrap');
-  const meta = document.getElementById('fc-score-meta');
-  const cur  = document.getElementById('fc-score-current');
   const svg  = document.getElementById('fc-score-svg');
   const list = document.getElementById('fc-score-list');
   const btn  = document.getElementById('fc-score-generate');
+  const meta = document.getElementById('fc-score-meta');
   const modeDecadeBtn = document.getElementById('fc-score-mode-decade');
-  const modeAllBtn = document.getElementById('fc-score-mode-all');
-  if (!wrap || !meta || !cur || !svg || !list || !btn || !modeDecadeBtn || !modeAllBtn) return;
+  const modeAllBtn    = document.getElementById('fc-score-mode-all');
+  if (!wrap || !svg || !list || !btn || !modeDecadeBtn || !modeAllBtn) return;
 
   wrap.style.display = (_chart && _chartInputs) ? 'block' : 'none';
   if (!_chart || !_chartInputs) return;
 
   btn.disabled = _fcLifeCurveLoading;
+  btn.textContent = _fcLifeCurveLoading ? '生成中…' : '重新生成';
   modeDecadeBtn.classList.toggle('active', _fcLifeCurveMode === 'decade');
   modeAllBtn.classList.toggle('active', _fcLifeCurveMode === 'all');
-  svg.innerHTML = '';
-  list.innerHTML = '';
 
-  const width = 360;
-  const height = 168;
-  const padX = 18;
-  const padTop = 18;
-  const padBottom = 24;
-  const innerW = width - padX * 2;
-  const innerH = height - padTop - padBottom;
-
-  const axis = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-  axis.setAttribute('x1', String(padX));
-  axis.setAttribute('x2', String(width - padX));
-  axis.setAttribute('y1', String(height - padBottom));
-  axis.setAttribute('y2', String(height - padBottom));
-  axis.setAttribute('class', 'fc-score-axis-line');
-  svg.appendChild(axis);
-
-  const plotAges = _fcLifeCurveTargetAges(_fcLifeCurveMode);
-  const visibleScores = plotAges
-    .map(age => _fcLifeCurveScoresMap().get(age))
-    .filter(Boolean)
-    .sort((a, b) => a.age - b.age);
-  const [rangeStart, rangeEnd] = _fcLifeCurveMode === 'all' ? [1, 100] : _fcLifeCurveDecadeRange();
-  const loadedCount = visibleScores.length;
-  const totalCount = plotAges.length;
-
-  btn.textContent = _fcLifeCurveMode === 'all' ? (_fcLifeCurveLoading ? '整体生成中…' : '重新生成整体100年') : '生成整体运势图';
-
-  // 十年色块在 all 模式无数据时也先画出分段背景
-  if (_fcLifeCurveMode === 'all') {
-    _fcRenderDecadeBands(svg, rangeStart, rangeEnd, padX, padTop, innerW, innerH);
-  }
-
+  // ── 进度条 ──
   const progressWrap = document.getElementById('fc-score-progress-wrap');
   const progressFill = document.getElementById('fc-score-progress-fill');
-  // 进度条：仅 all 模式生成中才显示
+  const progressText = document.getElementById('fc-score-progress-text');
+  const plotAges     = _fcLifeCurveTargetAges(_fcLifeCurveMode);
+  const scoresMap    = _fcLifeCurveScoresMap();
+  const visibleScores = plotAges.map(age => scoresMap.get(age)).filter(Boolean).sort((a, b) => a.age - b.age);
+  const loadedCount   = visibleScores.length;
+  const totalCount    = plotAges.length;
+
   if (progressWrap) {
     const showBar = _fcLifeCurveLoading && _fcLifeCurveMode === 'all';
-    progressWrap.style.display = showBar ? '' : 'none';
-    if (showBar && progressFill && totalCount > 0) {
-      progressFill.style.width = `${Math.max(3, Math.round((loadedCount / totalCount) * 100))}%`;
+    progressWrap.style.display = showBar ? 'flex' : 'none';
+    if (showBar && progressFill) {
+      const pct = Math.max(3, Math.round((loadedCount / totalCount) * 100));
+      progressFill.style.setProperty('--fc-progress', `${pct}%`);
+      if (progressText) progressText.textContent = `${loadedCount}/${totalCount}`;
     }
   }
 
-  if (!visibleScores.length) {
-    meta.textContent = _fcLifeCurveMode === 'all'
-      ? (_fcLifeCurveLoading ? `大运底色评估中，逐年评分即将开始…` : '点击”整体100年”或”生成整体运势图”查看全龄曲线')
-      : (_fcLifeCurveLoading ? `当前十年生成中（0/${totalCount}）` : `默认展示 ${rangeStart}-${rangeEnd} 岁十年走势`);
-    cur.textContent = _fcLifeCurveMode === 'all'
-      ? '整体运势图将按年龄逐年补齐'
-      : `${rangeStart}-${rangeEnd} 岁十年走势将逐年显示`;
-    _fcUpdateDecadeBar(_fcActiveAge);
-    return;
+  // ── 加载状态文字 ──
+  if (meta) {
+    const showMeta = _fcLifeCurveLoading;
+    meta.style.display = showMeta ? 'block' : 'none';
+    if (showMeta) {
+      meta.textContent = loadedCount === 0
+        ? '评估大运底色…'
+        : `${loadedCount}/${totalCount} 年已完成`;
+    }
   }
 
-  const points = visibleScores.map(item => {
-    const x = padX + ((item.age - rangeStart) * innerW) / Math.max(1, rangeEnd - rangeStart);
-    const y = padTop + (100 - Math.max(0, Math.min(100, Number(item.score) || 0))) / 100 * innerH;
-    return { ...item, x, y };
-  });
+  // ── SVG ──
+  const W = 390, H = 260, pX = 16, pT = 20, pB = 22;
+  const iW = W - pX * 2, iH = H - pT - pB;
+  const [rangeStart, rangeEnd] = _fcLifeCurveMode === 'all' ? [1, 100] : _fcLifeCurveDecadeRange();
+  const span = Math.max(1, rangeEnd - rangeStart);
+  const toX  = age => pX + ((age - rangeStart) / span) * iW;
+  const toY  = score => pT + (100 - Math.max(0, Math.min(100, score))) / 100 * iH;
 
-  // decade 模式下也画一条色块背景（all 模式已在上方画过）
-  if (_fcLifeCurveMode !== 'all') {
-    _fcRenderDecadeBands(svg, rangeStart, rangeEnd, padX, padTop, innerW, innerH);
+  svg.innerHTML = '';
+
+  // 十年色块背景
+  _fcRenderDecadeBands(svg, rangeStart, rangeEnd, pX, pT, iW, iH);
+
+  // 参考线（50分虚线）
+  if (visibleScores.length) {
+    const ref = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+    ref.setAttribute('x1', String(pX)); ref.setAttribute('x2', String(pX + iW));
+    ref.setAttribute('y1', String(toY(50))); ref.setAttribute('y2', String(toY(50)));
+    ref.setAttribute('class', 'fc-score-refline');
+    svg.appendChild(ref);
   }
 
-  if (points.length >= 2) {
+  if (visibleScores.length >= 2) {
+    const pts = visibleScores.map(item => ({ ...item, x: toX(item.age), y: toY(item.score) }));
+
+    // 面积
     const area = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-    const areaD = [
-      `M ${points[0].x} ${height - padBottom}`,
-      ...points.map(p => `L ${p.x} ${p.y}`),
-      `L ${points[points.length - 1].x} ${height - padBottom}`,
-      'Z',
-    ].join(' ');
-    area.setAttribute('d', areaD);
+    area.setAttribute('d', `M ${pts[0].x} ${pT + iH} ${pts.map(p => `L ${p.x} ${p.y}`).join(' ')} L ${pts[pts.length-1].x} ${pT+iH} Z`);
     area.setAttribute('class', 'fc-score-area');
     svg.appendChild(area);
 
+    // 曲线
     const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-    path.setAttribute('d', points.map((p, idx) => `${idx === 0 ? 'M' : 'L'} ${p.x} ${p.y}`).join(' '));
+    path.setAttribute('d', pts.map((p, i) => `${i === 0 ? 'M' : 'L'} ${p.x} ${p.y}`).join(' '));
     path.setAttribute('class', 'fc-score-path');
     svg.appendChild(path);
-  }
 
-  const axisAges = _fcLifeCurveMode === 'all'
-    ? [1, 20, 40, 60, 80, 100]
-    : plotAges.filter((age, idx) => idx === 0 || idx === plotAges.length - 1 || idx === 4 || idx === 9);
-  axisAges.forEach(age => {
-    const x = padX + ((age - rangeStart) * innerW) / Math.max(1, rangeEnd - rangeStart);
-    const label = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-    label.setAttribute('x', String(x));
-    label.setAttribute('y', String(height - 8));
-    label.setAttribute('text-anchor', age === rangeStart ? 'start' : age === rangeEnd ? 'end' : 'middle');
-    label.setAttribute('class', 'fc-score-label' + (age === _fcActiveAge ? ' active' : ''));
-    label.textContent = `${age}`;
-    svg.appendChild(label);
-  });
+    // X 轴刻度
+    const axisAges = _fcLifeCurveMode === 'all' ? [1, 20, 40, 60, 80, 100]
+      : plotAges.filter((_, i) => i === 0 || i === plotAges.length - 1 || i === 4);
+    axisAges.forEach(age => {
+      const lbl = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+      lbl.setAttribute('x', String(toX(age)));
+      lbl.setAttribute('y', String(H - 6));
+      lbl.setAttribute('text-anchor', age === rangeStart ? 'start' : age === rangeEnd ? 'end' : 'middle');
+      lbl.setAttribute('class', 'fc-score-label');
+      lbl.textContent = `${age}`;
+      svg.appendChild(lbl);
+    });
 
-  points.forEach(item => {
-    const title = document.createElementNS('http://www.w3.org/2000/svg', 'title');
-    title.textContent = `${item.age}岁 · ${item.score}分${item.summary ? ` · ${item.summary}` : ''}`;
-
-    const point = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-    point.setAttribute('cx', String(item.x));
-    point.setAttribute('cy', String(item.y));
-    point.setAttribute('r', item.age === _fcActiveAge ? '4.6' : '3.2');
-    point.setAttribute('class', `fc-score-point ${_fcScoreClass(item.score)}`);
-    point.appendChild(title);
-    svg.appendChild(point);
-
-    // 不可见的大点击区域，方便触控/精确点击
-    const hit = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-    hit.setAttribute('cx', String(item.x));
-    hit.setAttribute('cy', String(item.y));
-    hit.setAttribute('r', '9');
-    hit.setAttribute('fill', 'transparent');
-    hit.setAttribute('style', 'cursor:pointer');
-    hit.addEventListener('click', () => fcSelectYear(item.age));
-    svg.appendChild(hit);
-  });
-
-  const current    = _fcScoreCurrentItem() || visibleScores[0];
-  const decadeProf = _fcDecadeCurrentProfile(current.age);
-  const trendLabel = (() => {
-    if (!decadeProf) return '';
-    const expected = Math.round(decadeProf.decadeBaseScore * decadeProf.decadeFactor);
-    if (decadeProf.decadeFactor < 0.9  && current.score > expected + 4) return '  逆势局部回升';
-    if (decadeProf.decadeFactor >= 1.0 && current.score < expected - 4) return '  顺势局部下探';
-    return '';
-  })();
-  cur.textContent = `${current.age}岁：${current.score}分${trendLabel}${current.summary ? `  ${current.summary}` : ''}`;
-  _fcUpdateDecadeBar(current.age);
-  if (_fcLifeCurveMode === 'all') {
-    if (_fcLifeCurveLoading) {
-      meta.textContent = `正在补算整体100年：已完成 ${loadedCount}/${totalCount} 年`;
-    } else if (loadedCount >= 100) {
-      meta.textContent = `整体100年已全部完成`;
-    } else {
-      meta.textContent = loadedCount > 0
-        ? `当前已有 ${loadedCount}/100 年，点"生成整体运势图"补全`
-        : '点"生成整体运势图"查看全龄曲线';
+    // 峰谷标注（all 模式：最高 2 个、最低 2 个）
+    if (_fcLifeCurveMode === 'all' && pts.length >= 5) {
+      const sorted = [...pts].sort((a, b) => b.score - a.score);
+      const peaks  = sorted.slice(0, 2);
+      const valleys = sorted.slice(-2);
+      const keySet = new Set([...peaks, ...valleys]);
+      keySet.forEach(item => {
+        const isPeak = item.score >= 50;
+        const col = isPeak ? '#2a6b42' : '#b3443a';
+        const dot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        dot.setAttribute('cx', String(item.x)); dot.setAttribute('cy', String(item.y));
+        dot.setAttribute('r', '5'); dot.setAttribute('class', `fc-score-point-key ${_fcScoreClass(item.score)}`);
+        dot.setAttribute('fill', col); dot.setAttribute('stroke', '#fff'); dot.setAttribute('stroke-width', '2.5');
+        svg.appendChild(dot);
+        const lbl = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        lbl.setAttribute('x', String(item.x));
+        lbl.setAttribute('y', String(isPeak ? item.y - 9 : item.y + 15));
+        lbl.setAttribute('text-anchor', 'middle');
+        lbl.setAttribute('class', 'fc-score-keylabel');
+        lbl.setAttribute('fill', col);
+        lbl.textContent = `${item.score}`;
+        svg.appendChild(lbl);
+      });
     }
-  } else {
-    meta.textContent = _fcLifeCurveLoading
-      ? `当前十年走势生成中：已完成 ${loadedCount}/${totalCount} 年`
-      : `当前十年走势：${rangeStart}-${rangeEnd} 岁`;
+
+    // 选中年龄竖线
+    const selItem = pts.find(p => p.age === _fcActiveAge);
+    if (selItem) {
+      const cursor = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+      cursor.setAttribute('x1', String(selItem.x)); cursor.setAttribute('x2', String(selItem.x));
+      cursor.setAttribute('y1', String(pT)); cursor.setAttribute('y2', String(pT + iH));
+      cursor.setAttribute('class', 'fc-score-cursor');
+      svg.appendChild(cursor);
+    }
+
+    // 所有数据点（可点击）— all 模式只画小点，decade 画正常大点
+    pts.forEach(item => {
+      const isActive = item.age === _fcActiveAge;
+      const r = _fcLifeCurveMode === 'all' ? (isActive ? 4 : 2.5) : (isActive ? 5 : 3.5);
+      const dot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      dot.setAttribute('cx', String(item.x)); dot.setAttribute('cy', String(item.y));
+      dot.setAttribute('r', String(r));
+      dot.setAttribute('class', `fc-score-point ${_fcScoreClass(item.score)}`);
+      svg.appendChild(dot);
+
+      const hit = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      hit.setAttribute('cx', String(item.x)); hit.setAttribute('cy', String(item.y));
+      hit.setAttribute('r', '10'); hit.setAttribute('fill', 'transparent'); hit.setAttribute('style', 'cursor:pointer');
+      hit.addEventListener('click', () => fcSelectYear(item.age));
+      // Tooltip on hover
+      hit.addEventListener('mouseenter', (e) => _fcShowTooltip(item, e));
+      hit.addEventListener('mouseleave', () => _fcHideTooltip());
+      hit.addEventListener('touchstart', (e) => { e.preventDefault(); _fcShowTooltip(item, e.touches[0]); fcSelectYear(item.age); }, { passive: false });
+      svg.appendChild(hit);
+    });
   }
 
+  // ── Hero 区 ──
+  const current    = _fcScoreCurrentItem() || visibleScores[0];
+  const heroScore  = document.getElementById('fc-hero-score');
+  const heroAge    = document.getElementById('fc-hero-age');
+  const heroTrend  = document.getElementById('fc-hero-trend');
+  const heroSummary = document.getElementById('fc-hero-summary');
+  if (current && heroScore) {
+    const cls = _fcScoreClass(current.score);
+    heroScore.textContent = current.score;
+    heroScore.className = `fc-hero-score ${cls}`;
+    if (heroAge) heroAge.textContent = `${current.age}岁`;
+    if (heroTrend) {
+      const dp = _fcDecadeCurrentProfile(current.age);
+      if (dp) {
+        const expected = Math.round(dp.decadeBaseScore * dp.decadeFactor);
+        if (dp.decadeFactor < 0.9  && current.score > expected + 4) { heroTrend.textContent = '逆势回升'; heroTrend.style.color = '#2a6b42'; }
+        else if (dp.decadeFactor >= 1.0 && current.score < expected - 4) { heroTrend.textContent = '顺势下探'; heroTrend.style.color = '#b3443a'; }
+        else heroTrend.textContent = '';
+      } else heroTrend.textContent = '';
+    }
+    if (heroSummary) heroSummary.textContent = current.summary || '';
+  } else if (heroScore) {
+    heroScore.textContent = '—';
+    heroScore.className = 'fc-hero-score';
+    if (heroAge) heroAge.textContent = '';
+    if (heroTrend) heroTrend.textContent = '';
+    if (heroSummary) heroSummary.textContent = '';
+  }
+
+  // ── 大运条 ──
+  _fcUpdateDecadeBar(current ? current.age : _fcActiveAge);
+
+  // ── 十年卡片 ──
+  list.innerHTML = '';
   const chipAges = _fcLifeCurveTargetAges('decade');
   chipAges.forEach(age => {
-    const item = visibleScores.find(row => row.age === age);
+    const item = scoresMap.get(age);
+    const isActive = age === _fcActiveAge;
     const chip = document.createElement('button');
     chip.type = 'button';
-    chip.className = 'fc-score-chip' + (age === _fcActiveAge ? ' active' : '');
-    chip.innerHTML = `<span class="fc-score-chip-age">${age}岁</span><span class="fc-score-chip-score">${item ? `${item.score}分` : (_fcLifeCurveLoading ? '生成中' : '—')}</span>`;
+    chip.className = 'fc-score-chip' + (isActive ? ' active' : '');
+    const scoreVal = item ? item.score : null;
+    const scoreColor = scoreVal !== null
+      ? (scoreVal >= 75 ? '#2a6b42' : scoreVal >= 50 ? '#9a6a18' : '#b3443a') : '';
+    const barColor = scoreVal !== null
+      ? (scoreVal >= 75 ? '#2a6b42' : scoreVal >= 50 ? '#9a6a18' : '#b3443a') : 'transparent';
+    chip.innerHTML =
+      `<span class=”fc-score-chip-age”>${age}岁</span>` +
+      `<span class=”fc-score-chip-score” style=”${!isActive && scoreVal !== null ? `color:${scoreColor}` : ''}”>${scoreVal !== null ? scoreVal : (_fcLifeCurveLoading ? '…' : '—')}</span>` +
+      `<span class=”fc-score-chip-bar” style=”background:${isActive ? 'rgba(255,255,255,.5)' : barColor}”></span>`;
     chip.addEventListener('click', () => fcSelectYear(age));
     list.appendChild(chip);
   });
+
+  // ── 峰谷行 + 大运总览 ──
+  _fcRenderPeaksRow();
+  _fcRenderDecadesScroll();
+}
+
+// ── Tooltip ──────────────────────────────────────────────────
+function _fcShowTooltip(item, e) {
+  const tip = document.getElementById('fc-tooltip');
+  if (!tip) return;
+  const dp = _fcDecadeCurrentProfile(item.age);
+  const cls = _fcScoreClass(item.score);
+  const levelText = cls === 'good' ? '旺' : cls === 'mid' ? '平' : '弱';
+
+  document.getElementById('fc-tooltip-age').textContent = `${item.age}岁`;
+  document.getElementById('fc-tooltip-score').textContent = item.score;
+  const levelEl = document.getElementById('fc-tooltip-level');
+  levelEl.textContent = levelText; levelEl.className = `fc-tooltip-level ${cls}`;
+  document.getElementById('fc-tooltip-summary').textContent = item.summary || '';
+  document.getElementById('fc-tooltip-decade').textContent = dp ? `大运 ${dp.range}` : '';
+
+  const svgEl = document.getElementById('fc-score-svg');
+  const rect  = svgEl ? svgEl.getBoundingClientRect() : { left: 0, top: 0 };
+  const cx = (e.clientX ?? e.pageX) - rect.left;
+  const cy = (e.clientY ?? e.pageY) - rect.top;
+  const tipW = 140, tipH = 90;
+  const left = Math.min(cx + 12, (svgEl ? svgEl.offsetWidth : 300) - tipW - 8);
+  const top  = Math.max(cy - tipH - 8, 4);
+
+  tip.style.display = 'block';
+  tip.style.left = `${left}px`;
+  tip.style.top  = `${top + (svgEl ? svgEl.offsetTop : 0)}px`;
+  tip.style.position = 'absolute';
+}
+
+function _fcHideTooltip() {
+  const tip = document.getElementById('fc-tooltip');
+  if (tip) tip.style.display = 'none';
 }
 
 async function _fcGenerateLifeCurve(options = {}) {
@@ -1821,17 +1986,8 @@ async function _fcGenerateLifeCurve(options = {}) {
   if (!payload) return;
 
   const btn = document.getElementById('fc-score-generate');
-  const meta = document.getElementById('fc-score-meta');
-  const cur = document.getElementById('fc-score-current');
   _fcLifeCurveLoading = true;
-  _fcRenderScoreCurve();  // 此时进度条已显示（0%）
-  if (meta) meta.textContent = mode === 'all'
-    ? `准备中：先评十年大运底色…（待评 ${wantedAges.length} 年）`
-    : `准备中：评十年大运底色…`;
-  if (cur) cur.textContent = mode === 'all'
-    ? '整体运势图将按批次逐步补齐'
-    : `${_fcLifeCurveDecadeRange()[0]}-${_fcLifeCurveDecadeRange()[1]} 岁十年走势生成中`;
-  if (btn) btn.textContent = mode === 'all' ? '整体生成中…' : '生成整体运势图';
+  _fcRenderScoreCurve();
 
   try {
     const apiBase = await _resolvePimingApiBase();
@@ -1867,18 +2023,15 @@ async function _fcGenerateLifeCurve(options = {}) {
         const evt = JSON.parse(line);
         if (evt.type === 'decades') {
           _fcLifeCurveUpsertDecades(evt.decades || []);
-          if (meta) meta.textContent = mode === 'all'
-            ? `大运底色就绪（${(evt.decades||[]).length} 段），开始逐年评分…`
-            : `大运底色就绪，开始逐年评分…`;
-          _fcRenderScoreCurve(); // 更新十年色块
+          _fcRenderScoreCurve();
         } else if (evt.type === 'progress') {
           const pFill = document.getElementById('fc-score-progress-fill');
+          const pText = document.getElementById('fc-score-progress-text');
           if (pFill && evt.total > 0) {
-            pFill.style.width = `${Math.max(3, Math.round((evt.done / evt.total) * 100))}%`;
+            const pct = Math.max(3, Math.round((evt.done / evt.total) * 100));
+            pFill.style.setProperty('--fc-progress', `${pct}%`);
+            if (pText) pText.textContent = `${evt.done}/${evt.total}`;
           }
-          if (meta) meta.textContent = mode === 'all'
-            ? `正在补算整体100年：已完成 ${evt.done}/${evt.total} 年`
-            : `当前十年走势生成中：已完成 ${evt.done}/${evt.total} 年`;
         } else if (evt.type === 'partial') {
           _fcLifeCurveUpsertScores(evt.scores || [], evt.model || '');
           _fcRenderScoreCurve();
@@ -1899,13 +2052,10 @@ async function _fcGenerateLifeCurve(options = {}) {
     }
     _fcRenderScoreCurve();
   } catch (err) {
-    if (meta) meta.textContent = err.message;
-    if (cur) cur.textContent = 'AI 年度评分生成失败';
+    const metaEl = document.getElementById('fc-score-meta');
+    if (metaEl) { metaEl.style.display = 'block'; metaEl.textContent = err.message; }
   } finally {
     _fcLifeCurveLoading = false;
-    const pWrap = document.getElementById('fc-score-progress-wrap');
-    if (pWrap) pWrap.style.display = 'none';
-    if (btn) btn.textContent = _fcLifeCurveMode === 'all' ? '重新生成整体100年' : '生成整体运势图';
     _fcRenderScoreCurve();
   }
 }

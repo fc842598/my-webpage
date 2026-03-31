@@ -621,23 +621,29 @@ app.post('/api/life-curve', async (req, res) => {
       await writeEvent({ type: 'decades', decades: [], warning: err.message });
     }
 
-    // ── 第二层：逐年评分，注入大运底色 ───────────────────────
+    // ── 第二层：逐年评分，最多 3 个 chunk 并发 ───────────────
+    const CONCURRENCY = 3;
     let done = 0;
     let allScores = [];
     let warningCount = 0;
-    for (const chunk of chunks) {
-      const result = await scoreLifeCurveChunk(chartSummary, chunk, decadeProfilesMap);
-      if (result.warning) warningCount += 1;
-      allScores = allScores.concat(result.scores);
-      await writeEvent({
-        type   : 'partial',
-        model  : result.model || MODEL,
-        scores : result.scores || [],
-        done   : done + chunk.length,
-        total  : years.length,
-        warnings: warningCount,
-      });
-      done += chunk.length;
+    for (let i = 0; i < chunks.length; i += CONCURRENCY) {
+      const batch = chunks.slice(i, i + CONCURRENCY);
+      const results = await Promise.all(
+        batch.map(chunk => scoreLifeCurveChunk(chartSummary, chunk, decadeProfilesMap))
+      );
+      for (const result of results) {
+        if (result.warning) warningCount += 1;
+        allScores = allScores.concat(result.scores);
+        done += result.scores.length;
+        await writeEvent({
+          type    : 'partial',
+          model   : result.model || MODEL,
+          scores  : result.scores || [],
+          done,
+          total   : years.length,
+          warnings: warningCount,
+        });
+      }
       await writeEvent({ type: 'progress', done, total: years.length, warnings: warningCount });
     }
     allScores.sort((a, b) => a.age - b.age);
