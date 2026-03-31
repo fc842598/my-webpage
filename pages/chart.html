@@ -403,7 +403,7 @@
       <button class="aip-ai-btn" id="aip-ai-btn">✦ AI 深度批命</button>
       <span class="aip-ai-status" id="aip-ai-status"></span>
     </div>
-    <div class="aip-footer-note" id="aip-footer-note">本地规则版 · 点击上方按钮获取 AI 深度解读</div>
+    <div class="aip-footer-note" id="aip-footer-note">AI服务检测中… · 点击上方按钮获取深度解读</div>
   </div>
 </section>
 
@@ -2216,12 +2216,12 @@ async function _fcGenerateLifeCurve(options = {}) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ ...payload, stream: true, chunkSize: 10 }),
     });
-    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+    if (!resp.ok) throw new Error(_AI_STATUS_FAILED);
 
     const contentType = resp.headers.get('content-type') || '';
     if (contentType.includes('application/json')) {
       const data = await resp.json();
-      if (!data.ok) throw new Error(data.error || '生成失败');
+      if (!data.ok) throw new Error(_AI_STATUS_FAILED);
       if (data.decades?.length) _fcLifeCurveUpsertDecades(data.decades);
       _fcLifeCurveUpsertScores(data.scores || [], data.model || '');
       _fcRenderScoreCurve();
@@ -2229,7 +2229,7 @@ async function _fcGenerateLifeCurve(options = {}) {
     }
 
     const reader = resp.body?.getReader();
-    if (!reader) throw new Error('AI 曲线接口不可读');
+    if (!reader) throw new Error(_AI_STATUS_FAILED);
     const decoder = new TextDecoder('utf-8');
     let buffer = '';
     while (true) {
@@ -2259,7 +2259,7 @@ async function _fcGenerateLifeCurve(options = {}) {
           _fcLifeCurveUpsertScores(evt.scores || [], evt.model || '');
           if (evt.decades?.length) _fcLifeCurveUpsertDecades(evt.decades);
         } else if (evt.type === 'error') {
-          throw new Error(evt.error || '生成失败');
+          throw new Error(_AI_STATUS_FAILED);
         }
       }
     }
@@ -2268,12 +2268,12 @@ async function _fcGenerateLifeCurve(options = {}) {
       if (evt.type === 'partial' || evt.type === 'result') _fcLifeCurveUpsertScores(evt.scores || [], evt.model || '');
       if (evt.type === 'result' && evt.decades?.length) _fcLifeCurveUpsertDecades(evt.decades);
       if (evt.type === 'decades') _fcLifeCurveUpsertDecades(evt.decades || []);
-      if (evt.type === 'error') throw new Error(evt.error || '生成失败');
+      if (evt.type === 'error') throw new Error(_AI_STATUS_FAILED);
     }
     _fcRenderScoreCurve();
   } catch (err) {
     const metaEl = document.getElementById('fc-score-meta');
-    if (metaEl) { metaEl.style.display = 'block'; metaEl.textContent = err.message; }
+    if (metaEl) { metaEl.style.display = 'block'; metaEl.textContent = _aiStatusForError(err); }
   } finally {
     _fcLifeCurveLoading = false;
     _fcRenderScoreCurve();
@@ -2652,7 +2652,7 @@ function hideError() {
 }
 
 // ══════════════════════════════════════════════════════════
-// AI 批命区 — 本地规则版 v1
+// AI 批命区 — 在线接入版 v1
 // ── 接入大模型时只需替换 _pimingEngine.generate()：
 //    将 mode 设为 'api'，实现 async generate(section, ctx) → { title, body, tip }
 //    ctx 包含完整命盘数据（palaces, pillars, gua, activeAge 等）
@@ -2927,6 +2927,17 @@ function renderAIPimingLuck() {
 
 // ── AI 深度批命按钮 ───────────────────────────────────────
 let _PIMING_API_BASE = null;
+const _PIMING_API_PUBLIC_BASE = 'https://peaceful-celebration-production-74c8.up.railway.app';
+const _AI_STATUS_CONNECTED = 'AI服务已连接';
+const _AI_STATUS_DISCONNECTED = 'AI服务未连接';
+const _AI_STATUS_FAILED = 'AI生成失败，请稍后重试';
+
+function _aiStatusForError(err) {
+  const msg = String(err?.message || err || '');
+  return /未连接|failed to fetch|networkerror|network request failed|fetch/i.test(msg)
+    ? _AI_STATUS_DISCONNECTED
+    : _AI_STATUS_FAILED;
+}
 
 function _normalizeApiBase(base) {
   if (base == null) return '';
@@ -2955,7 +2966,6 @@ async function _resolvePimingApiBase(force = false) {
 
   const qs = new URLSearchParams(location.search);
   const queryBase = qs.get('pimingApiBase') || qs.get('apiBase') || '';
-  const savedBase = localStorage.getItem('pimingApiBase') || '';
   const candidates = [];
   const pushCandidate = (base) => {
     const clean = _normalizeApiBase(base);
@@ -2963,13 +2973,8 @@ async function _resolvePimingApiBase(force = false) {
     candidates.push(clean);
   };
 
-  if (queryBase) {
-    pushCandidate(queryBase);
-    localStorage.setItem('pimingApiBase', _normalizeApiBase(queryBase));
-  }
-  if (savedBase) pushCandidate(savedBase);
-  if (location.protocol === 'http:' || location.protocol === 'https:') pushCandidate('');
-  pushCandidate('http://localhost:3001');
+  if (queryBase) pushCandidate(queryBase);
+  pushCandidate(_PIMING_API_PUBLIC_BASE);
 
   for (const candidate of candidates) {
     if (await _probeApiBase(candidate)) {
@@ -2978,17 +2983,17 @@ async function _resolvePimingApiBase(force = false) {
     }
   }
 
-  throw new Error('AI 接口未连接：当前页面没有可用的 /api/piming 服务。若本机测试，请先启动 server/index.js；若线上使用，请配置可访问的 API 地址。');
+  throw new Error(_AI_STATUS_DISCONNECTED);
 }
 
 async function _refreshPimingApiHint() {
   const noteEl = document.getElementById('aip-footer-note');
   if (!noteEl) return;
   try {
-    const base = await _resolvePimingApiBase(true);
-    noteEl.textContent = base ? 'AI 服务已连接' : 'AI 服务已连接（同源）';
-  } catch (err) {
-    noteEl.textContent = err.message;
+    await _resolvePimingApiBase(true);
+    noteEl.textContent = _AI_STATUS_CONNECTED;
+  } catch (_err) {
+    noteEl.textContent = _AI_STATUS_DISCONNECTED;
   }
 }
 
@@ -3031,13 +3036,13 @@ async function _refreshPimingApiHint() {
         headers: { 'Content-Type': 'application/json' },
         body   : JSON.stringify(payload),
       });
-      if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+      if (!resp.ok) throw new Error(_AI_STATUS_FAILED);
       const data = await resp.json();
-      if (!data.ok) throw new Error(data.error || '未知错误');
+      if (!data.ok) throw new Error(_AI_STATUS_FAILED);
 
       const r = data.result;
-      statusEl.textContent = `AI OK: ${data.model}`;
-      noteEl.textContent   = `AI backend connected: ${data.model}`;
+      statusEl.textContent = _AI_STATUS_CONNECTED;
+      noteEl.textContent   = _AI_STATUS_CONNECTED;
 
       if (topic === 'base') {
         _aipSetCard('aip-life', { title: 'AI 命格总览', body: r.overview + '\n' + r.minggong, tip: r.advice });
@@ -3047,8 +3052,9 @@ async function _refreshPimingApiHint() {
         _aipSetCard('aip-gua',  { title: 'AI 风险提示', body: r.risks, tip: '' });
       }
     } catch (err) {
-      statusEl.textContent = 'AI error';
-      noteEl.textContent = err.message;
+      const statusText = _aiStatusForError(err);
+      statusEl.textContent = statusText;
+      noteEl.textContent = statusText;
     } finally {
       btn.disabled = false;
     }
@@ -3304,18 +3310,18 @@ async function _aidbgGenerate(modId) {
         },
       }),
     });
-    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+    if (!resp.ok) throw new Error(_AI_STATUS_FAILED);
     const contentType = resp.headers.get('content-type') || '';
     if (contentType.includes('application/json')) {
       const data = await resp.json();
-      if (!data.ok) throw new Error(data.error || '未知错误');
+      if (!data.ok) throw new Error(_AI_STATUS_FAILED);
       resultEl.textContent = _aidbgCleanAiText(data.text || '(no content)');
-      statusEl.textContent = `AI OK: ${data.model}`;
+      statusEl.textContent = _AI_STATUS_CONNECTED;
       return;
     }
 
     const reader = resp.body?.getReader();
-    if (!reader) throw new Error('AI 返回流不可读取');
+    if (!reader) throw new Error(_AI_STATUS_FAILED);
 
     const decoder = new TextDecoder('utf-8');
     let rawText = '';
@@ -3330,11 +3336,12 @@ async function _aidbgGenerate(modId) {
 
     rawText += decoder.decode();
     resultEl.textContent = _aidbgCleanAiText(rawText) || '(no content)';
-    statusEl.textContent = `AI OK: ${resp.headers.get('X-AI-Model') || 'stream'}`;
+    statusEl.textContent = _AI_STATUS_CONNECTED;
   } catch (err) {
     resultEl.classList.add('empty');
-    resultEl.textContent = 'Error: ' + err.message;
-    statusEl.textContent = 'Failed';
+    const statusText = _aiStatusForError(err);
+    resultEl.textContent = statusText;
+    statusEl.textContent = statusText;
   } finally {
     if (btn) btn.disabled = false;
   }
