@@ -331,14 +331,19 @@
           <div class="fc-hero-left">
             <span class="fc-hero-score" id="fc-hero-score">—</span>
             <span class="fc-hero-unit">分</span>
-            <span class="fc-hero-age" id="fc-hero-age"></span>
-            <span class="fc-hero-trend" id="fc-hero-trend"></span>
           </div>
-          <div class="fc-hero-right" id="fc-hero-summary"></div>
+          <div class="fc-hero-right">
+            <div class="fc-hero-age" id="fc-hero-age"></div>
+            <div class="fc-hero-trend" id="fc-hero-trend"></div>
+          </div>
+          <div class="fc-hero-summary" id="fc-hero-summary"></div>
         </div>
 
-        <!-- 大运一行 -->
+        <!-- 大运一行（纯文字） -->
         <div class="fc-decade-bar" id="fc-decade-bar" style="display:none"></div>
+
+        <!-- 分割线 -->
+        <div class="fc-divider"></div>
 
         <!-- 进度条 -->
         <div class="fc-score-progress-wrap" id="fc-score-progress-wrap" style="display:none">
@@ -349,10 +354,8 @@
         <!-- 加载状态文字 -->
         <div class="fc-score-meta" id="fc-score-meta" style="display:none"></div>
 
-        <!-- 曲线图（主角，大面积） -->
-        <div class="fc-score-svg-wrap">
-          <svg class="fc-score-svg" id="fc-score-svg" viewBox="0 0 390 260" preserveAspectRatio="none"></svg>
-        </div>
+        <!-- 曲线图（主角，满宽） -->
+        <svg class="fc-score-svg" id="fc-score-svg" viewBox="0 0 390 260" preserveAspectRatio="none"></svg>
 
         <!-- Tooltip 浮层 -->
         <div class="fc-tooltip" id="fc-tooltip" style="display:none">
@@ -379,8 +382,10 @@
 
         <!-- 按钮 -->
         <div class="fc-bottom-actions">
-          <button class="fc-score-btn" id="fc-score-generate">重新生成</button>
+          <button class="fc-score-btn fc-btn-primary" id="fc-score-generate">重新生成</button>
+          <button class="fc-score-btn fc-btn-secondary" id="fc-score-export">导出图片</button>
         </div>
+        <div class="fc-footer">数据仅供参考 · deepseek-chat</div>
       </div>
     </div>
 
