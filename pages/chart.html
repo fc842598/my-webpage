@@ -1562,6 +1562,9 @@ let _fcLifeCurveLoading = false;
 let _fcLifeCurveCacheKey = '';
 let _fcLifeCurveAutoTriggered = false;
 let _fcLifeCurveMode = 'decade';
+let _fcLifeCurveProgressDone = 0;
+let _fcLifeCurveProgressTotal = 0;
+let _fcLifeCurveStageHint = '';
 
 function _fcCurveKey() {
   const p = _birthPillarsCache || (_chart ? extractPillars(_chart) : null);
@@ -1830,19 +1833,26 @@ function _fcScoreCurrentItem() {
 }
 
 function _fcLifeCurveLoadingText(loadedCount, totalCount) {
+  const done = Math.max(_fcLifeCurveProgressDone || 0, loadedCount || 0);
+  const total = Math.max(_fcLifeCurveProgressTotal || 0, totalCount || 0);
+  const stage = String(_fcLifeCurveStageHint || '').trim();
+  if (stage) {
+    if (total > 0) return `${stage} ${Math.min(done, total)}/${total}`;
+    return stage;
+  }
   const decadesReady = ((_fcLifeCurveData?.decades || []).length > 0);
-  if (loadedCount <= 0) {
+  if (done <= 0) {
     if (_fcLifeCurveMode === 'all') {
       return decadesReady ? '十年底色已定，正在计算 1-100 岁评分…' : '正在定势十年大运…';
     }
     return decadesReady ? '十年底色已定，正在计算当前十年评分…' : '正在定势当前十年大运…';
   }
-  if (loadedCount < totalCount) {
+  if (total > 0 && done < total) {
     return decadesReady
-      ? `十年底色已定，正在逐年评分 ${loadedCount}/${totalCount}…`
-      : `正在逐年评分 ${loadedCount}/${totalCount}…`;
+      ? `十年底色已定，正在逐年评分 ${done}/${total}…`
+      : `正在逐年评分 ${done}/${total}…`;
   }
-  return `正在收尾 ${loadedCount}/${totalCount}…`;
+  return `正在收尾 ${done}/${total || totalCount}…`;
 }
 
 // ── 十年大运可视化辅助函数 ──────────────────────────────────
@@ -2026,14 +2036,19 @@ function _fcRenderScoreCurve() {
   const visibleScores = plotAges.map(age => scoresMap.get(age)).filter(Boolean).sort((a, b) => a.age - b.age);
   const loadedCount   = visibleScores.length;
   const totalCount    = plotAges.length;
+  const progressTotal = Math.max(_fcLifeCurveProgressTotal || 0, totalCount);
+  const progressDone  = Math.min(
+    progressTotal,
+    Math.max(_fcLifeCurveProgressDone || 0, loadedCount),
+  );
 
   if (progressWrap) {
     const showBar = _fcLifeCurveLoading;
     progressWrap.style.display = showBar ? 'flex' : 'none';
-    if (showBar && progressFill) {
-      const pct = Math.max(3, Math.round((loadedCount / totalCount) * 100));
+    if (showBar && progressFill && progressTotal > 0) {
+      const pct = Math.max(3, Math.round((progressDone / progressTotal) * 100));
       progressFill.style.setProperty('--fc-progress', `${pct}%`);
-      if (progressText) progressText.textContent = `${loadedCount}/${totalCount}`;
+      if (progressText) progressText.textContent = `${progressDone}/${progressTotal}`;
     }
   }
 
@@ -2261,6 +2276,11 @@ async function _fcGenerateLifeCurve(options = {}) {
 
   const btn = document.getElementById('fc-score-generate');
   _fcLifeCurveLoading = true;
+  _fcLifeCurveProgressDone = 0;
+  _fcLifeCurveProgressTotal = wantedAges.length;
+  _fcLifeCurveStageHint = mode === 'all'
+    ? '百年评分任务已提交，排队中…'
+    : '十年评分任务已提交，排队中…';
   _fcRenderScoreCurve();
 
   try {
@@ -2268,7 +2288,7 @@ async function _fcGenerateLifeCurve(options = {}) {
     const resp = await fetch(_joinApiUrl(apiBase, '/api/life-curve'), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ...payload, stream: true, chunkSize: 10 }),
+      body: JSON.stringify({ ...payload, stream: true, chunkSize: 6 }),
     });
     if (!resp.ok) throw new Error(_AI_STATUS_FAILED);
 
@@ -2295,23 +2315,38 @@ async function _fcGenerateLifeCurve(options = {}) {
       for (const line of lines) {
         if (!line.trim()) continue;
         const evt = JSON.parse(line);
-        if (evt.type === 'decades') {
+        if (evt.type === 'stage') {
+          _fcLifeCurveStageHint = String(evt.message || '').trim() || _fcLifeCurveStageHint;
+          _fcRenderScoreCurve();
+        } else if (evt.type === 'decades') {
           _fcLifeCurveUpsertDecades(evt.decades || []);
+          if (evt.provisional) {
+            _fcLifeCurveStageHint = '十年底色预估已展示，AI 正在校准…';
+          } else {
+            _fcLifeCurveStageHint = '十年底色已校准，正在逐年精算…';
+          }
           _fcRenderScoreCurve();
         } else if (evt.type === 'progress') {
-          const pFill = document.getElementById('fc-score-progress-fill');
-          const pText = document.getElementById('fc-score-progress-text');
-          if (pFill && evt.total > 0) {
-            const pct = Math.max(3, Math.round((evt.done / evt.total) * 100));
-            pFill.style.setProperty('--fc-progress', `${pct}%`);
-            if (pText) pText.textContent = `${evt.done}/${evt.total}`;
+          _fcLifeCurveProgressDone = Number(evt.done) || 0;
+          _fcLifeCurveProgressTotal = Number(evt.total) || _fcLifeCurveProgressTotal || wantedAges.length;
+          if (_fcLifeCurveProgressDone < _fcLifeCurveProgressTotal) {
+            _fcLifeCurveStageHint = 'AI 正在逐年精算…';
           }
+          _fcRenderScoreCurve();
         } else if (evt.type === 'partial') {
           _fcLifeCurveUpsertScores(evt.scores || [], evt.model || '');
+          _fcLifeCurveProgressDone = Number(evt.done) || _fcLifeCurveProgressDone;
+          _fcLifeCurveProgressTotal = Number(evt.total) || _fcLifeCurveProgressTotal || wantedAges.length;
+          if (_fcLifeCurveProgressDone < _fcLifeCurveProgressTotal) {
+            _fcLifeCurveStageHint = '已返回部分结果，继续精算中…';
+          }
           _fcRenderScoreCurve();
         } else if (evt.type === 'result') {
           _fcLifeCurveUpsertScores(evt.scores || [], evt.model || '');
           if (evt.decades?.length) _fcLifeCurveUpsertDecades(evt.decades);
+          _fcLifeCurveProgressDone = Number(evt.scores?.length) || _fcLifeCurveProgressTotal || wantedAges.length;
+          _fcLifeCurveProgressTotal = _fcLifeCurveProgressTotal || wantedAges.length;
+          _fcLifeCurveStageHint = '评分完成';
         } else if (evt.type === 'error') {
           throw new Error(_AI_STATUS_FAILED);
         }
@@ -2319,6 +2354,7 @@ async function _fcGenerateLifeCurve(options = {}) {
     }
     if (buffer.trim()) {
       const evt = JSON.parse(buffer);
+      if (evt.type === 'stage') _fcLifeCurveStageHint = String(evt.message || '').trim() || _fcLifeCurveStageHint;
       if (evt.type === 'partial' || evt.type === 'result') _fcLifeCurveUpsertScores(evt.scores || [], evt.model || '');
       if (evt.type === 'result' && evt.decades?.length) _fcLifeCurveUpsertDecades(evt.decades);
       if (evt.type === 'decades') _fcLifeCurveUpsertDecades(evt.decades || []);
@@ -2330,6 +2366,7 @@ async function _fcGenerateLifeCurve(options = {}) {
     if (metaEl) { metaEl.style.display = 'block'; metaEl.textContent = _aiStatusForError(err); }
   } finally {
     _fcLifeCurveLoading = false;
+    _fcLifeCurveStageHint = '';
     _fcRenderScoreCurve();
   }
 }

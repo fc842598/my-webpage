@@ -206,6 +206,21 @@ async function scoreDecadesBatch(chartSummary, years) {
   return profilesMap;
 }
 
+function buildDefaultDecadeProfilesMap(years) {
+  const map = new Map();
+  years.forEach(y => {
+    const range = y?.decadal?.range || '—';
+    if (map.has(range)) return;
+    map.set(range, {
+      range,
+      decadeBaseScore: 55,
+      decadeFactor: 1.0,
+      summary: '十年底色预估中',
+    });
+  });
+  return map;
+}
+
 // ── CORS ────────────────────────────────────────────────
 const allowedOrigins = process.env.ALLOWED_ORIGINS
   ? process.env.ALLOWED_ORIGINS.split(',').map(s => s.trim())
@@ -333,7 +348,7 @@ function sanitizeAiText(text) {
     .trim();
 }
 
-const LIFE_CURVE_CHUNK_SIZE = 20;
+const LIFE_CURVE_CHUNK_SIZE = 8;
 
 // 校验并重算 finalScore（防止 AI 随意填数）
 // v3：finalScore = round((base + deltas) * factor)，因子由大运层决定
@@ -608,44 +623,93 @@ app.post('/api/life-curve', async (req, res) => {
   }
 
   const run = async writeEvent => {
+    await writeEvent({
+      type: 'stage',
+      stage: 'queued',
+      message: `已收到请求，准备评分 ${years.length} 个年龄点`,
+    });
+    await writeEvent({ type: 'progress', done: 0, total: years.length, warnings: 0 });
+
+    const defaultDecadeProfiles = buildDefaultDecadeProfilesMap(years);
+    await writeEvent({
+      type: 'decades',
+      decades: Array.from(defaultDecadeProfiles.values()),
+      provisional: true,
+    });
+
     // ── 第一层：先算十年大运底色 ──────────────────────────────
-    let decadeProfilesMap = new Map();
+    let decadeProfilesMap = defaultDecadeProfiles;
+    await writeEvent({
+      type: 'stage',
+      stage: 'decade',
+      message: '正在分析十年大运底色…',
+    });
     try {
       decadeProfilesMap = await scoreDecadesBatch(chartSummary, years);
       await writeEvent({
         type   : 'decades',
         decades: Array.from(decadeProfilesMap.values()),
+        provisional: false,
       });
     } catch (err) {
       console.warn('[piming-api] 大运层评分失败:', err.message);
-      await writeEvent({ type: 'decades', decades: [], warning: err.message });
+      await writeEvent({
+        type: 'decades',
+        decades: Array.from(defaultDecadeProfiles.values()),
+        warning: err.message,
+        provisional: true,
+      });
     }
 
-    // ── 第二层：逐年评分，最多 3 个 chunk 并发 ───────────────
+    await writeEvent({
+      type: 'stage',
+      stage: 'yearly',
+      message: '十年底色已就绪，开始逐年精算…',
+    });
+
+    // ── 第二层：逐年评分，最多 3 个 chunk 并发，按完成顺序实时回传 ──
     const CONCURRENCY = 3;
     let done = 0;
     let allScores = [];
     let warningCount = 0;
-    for (let i = 0; i < chunks.length; i += CONCURRENCY) {
-      const batch = chunks.slice(i, i + CONCURRENCY);
-      const results = await Promise.all(
-        batch.map(chunk => scoreLifeCurveChunk(chartSummary, chunk, decadeProfilesMap))
-      );
-      for (const result of results) {
-        if (result.warning) warningCount += 1;
-        allScores = allScores.concat(result.scores);
-        done += result.scores.length;
-        await writeEvent({
-          type    : 'partial',
-          model   : result.model || MODEL,
-          scores  : result.scores || [],
-          done,
-          total   : years.length,
-          warnings: warningCount,
-        });
-      }
-      await writeEvent({ type: 'progress', done, total: years.length, warnings: warningCount });
+    const pending = chunks.map((chunk, idx) => ({ idx, chunk }));
+    const running = new Map();
+
+    const launchOne = () => {
+      if (!pending.length) return false;
+      const task = pending.shift();
+      const promise = scoreLifeCurveChunk(chartSummary, task.chunk, decadeProfilesMap)
+        .then(result => ({ idx: task.idx, result }));
+      running.set(task.idx, promise);
+      return true;
+    };
+
+    for (let i = 0; i < CONCURRENCY; i++) {
+      if (!launchOne()) break;
     }
+
+    while (running.size) {
+      const settled = await Promise.race([...running.values()]);
+      running.delete(settled.idx);
+
+      const result = settled.result || { scores: [], model: MODEL };
+      if (result.warning) warningCount += 1;
+      allScores = allScores.concat(result.scores || []);
+      done += (result.scores || []).length;
+
+      await writeEvent({
+        type    : 'partial',
+        model   : result.model || MODEL,
+        scores  : result.scores || [],
+        done,
+        total   : years.length,
+        warnings: warningCount,
+      });
+      await writeEvent({ type: 'progress', done, total: years.length, warnings: warningCount });
+
+      launchOne();
+    }
+
     allScores.sort((a, b) => a.age - b.age);
     await writeEvent({
       type   : 'result',
