@@ -1404,13 +1404,46 @@ function _fcLifeCurveRangeText(range) {
   return Array.isArray(range) && range.length === 2 ? `${range[0]}-${range[1]}岁` : '';
 }
 
-function _fcLifeCurveDecadeRange(age = _fcActiveAge) {
-  const start = Math.floor((Math.max(1, age) - 1) / 10) * 10 + 1;
-  return [start, Math.min(100, start + 9)];
+/* 从盘上 palaces 读取真实大限区间，按起始年龄排序 */
+function _fcGetChartDecades() {
+  const palaces = _chart?.palaces || [];
+  const decades = [];
+  palaces.forEach(p => {
+    const r = p?.decadal?.range;
+    if (Array.isArray(r) && r.length === 2) decades.push({ start: r[0], end: r[1], palace: p });
+  });
+  decades.sort((a, b) => a.start - b.start);
+  return decades;
 }
 
+/* 当前 age 所在的真实大限区间 */
+function _fcLifeCurveDecadeRange(age = _fcActiveAge) {
+  const decades = _fcGetChartDecades();
+  const found = decades.find(d => age >= d.start && age <= d.end);
+  if (found) return [found.start, found.end];
+  // fallback: 最近的大限
+  if (decades.length) {
+    const first = decades[0], last = decades[decades.length - 1];
+    if (age < first.start) return [first.start, first.end];
+    return [last.start, last.end];
+  }
+  // 无大限数据时 fallback
+  const s = Math.floor((Math.max(1, age) - 1) / 10) * 10 + 1;
+  return [s, Math.min(100, s + 9)];
+}
+
+/* 全部大限的总年龄范围，或当前大限的年龄列表 */
 function _fcLifeCurveTargetAges(mode = _fcLifeCurveMode) {
-  const [start, end] = mode === 'all' ? [1, 100] : _fcLifeCurveDecadeRange();
+  const decades = _fcGetChartDecades();
+  let start, end;
+  if (mode === 'all' && decades.length) {
+    start = decades[0].start;
+    end   = decades[decades.length - 1].end;
+  } else if (mode === 'all') {
+    start = 1; end = 100;
+  } else {
+    [start, end] = _fcLifeCurveDecadeRange();
+  }
   const ages = [];
   for (let age = start; age <= end; age++) ages.push(age);
   return ages;
@@ -1623,26 +1656,26 @@ function _fcUpdateDecadeBar(age) {
 }
 
 function _fcRenderDecadeBands(svg, rangeStart, rangeEnd, padX, padTop, innerW, innerH) {
-  const decades = _fcLifeCurveData?.decades || [];
-  const byStart = new Map();
-  decades.forEach(d => {
+  const profileDecades = _fcLifeCurveData?.decades || [];
+  const byRange = new Map();
+  profileDecades.forEach(d => {
     const m = String(d.range || '').match(/(\d+)/g);
-    if (m && m.length >= 2) byStart.set(Number(m[0]), d);
+    if (m && m.length >= 2) byRange.set(Number(m[0]) + '-' + Number(m[1]), d);
   });
 
-  let bandIdx = 0;
-  for (let dStart = 1; dStart <= 91; dStart += 10, bandIdx++) {
-    const dEnd = dStart + 9;
-    if (dEnd < rangeStart || dStart > rangeEnd) continue;
+  const chartDecades = _fcGetChartDecades();
+  chartDecades.forEach((dec, bandIdx) => {
+    const dStart = dec.start, dEnd = dec.end;
+    if (dEnd < rangeStart || dStart > rangeEnd) return;
     const visStart = Math.max(dStart, rangeStart);
     const visEnd   = Math.min(dEnd, rangeEnd);
     const span     = Math.max(1, rangeEnd - rangeStart);
     const x1 = padX + ((visStart - rangeStart) * innerW) / span;
     const x2 = padX + ((visEnd + 1 - rangeStart) * innerW) / span;
     const w  = Math.max(0, x2 - x1 - 0.5);
-    if (w <= 0) continue;
+    if (w <= 0) return;
 
-    const profile  = byStart.get(dStart);
+    const profile  = byRange.get(dStart + '-' + dEnd);
     const factor   = profile?.decadeFactor ?? null;
     const isActive = _fcActiveAge >= dStart && _fcActiveAge <= dEnd;
 
@@ -1672,7 +1705,7 @@ function _fcRenderDecadeBands(svg, rangeStart, rangeEnd, padX, padTop, innerW, i
       lbl.textContent = `${dStart}`;
       svg.appendChild(lbl);
     }
-  }
+  });
 }
 
 // ── 峰谷摘要行 ───────────────────────────────────────────────
@@ -1719,7 +1752,8 @@ function _fcRenderDecadesScroll() {
   decades.forEach(d => {
     const m = String(d.range || '').match(/(\d+)/g);
     const dStart = m ? Number(m[0]) : 0;
-    const isActive = _fcActiveAge >= dStart && _fcActiveAge <= dStart + 9;
+    const dEnd   = m && m.length >= 2 ? Number(m[1]) : dStart + 9;
+    const isActive = _fcActiveAge >= dStart && _fcActiveAge <= dEnd;
     const cls = _fcDecadeFactorClass(d.decadeFactor);
     const bgMap = { good: '#e8f5ec', mid: '#f5f0e4', weak: '#f5ece8', low: '#f2e8e6' };
     const card = document.createElement('button');
@@ -1729,7 +1763,7 @@ function _fcRenderDecadesScroll() {
     card.innerHTML =
       `<div class=”fc-decade-card-range”>${d.range}</div>` +
       `<div class=”fc-decade-card-label ${cls}”>${d.summary ? d.summary.slice(0, 4) : cls}</div>`;
-    card.addEventListener('click', () => { if (m) fcSelectYear(dStart + 5); });
+    card.addEventListener('click', () => { if (m) fcSelectYear(Math.floor((dStart + dEnd) / 2)); });
     scroll.appendChild(card);
   });
 }
@@ -1786,7 +1820,10 @@ function _fcRenderScoreCurve() {
   // ── SVG ──
   const W = 390, H = 260, pX = 16, pT = 20, pB = 22;
   const iW = W - pX * 2, iH = H - pT - pB;
-  const [rangeStart, rangeEnd] = _fcLifeCurveMode === 'all' ? [1, 100] : _fcLifeCurveDecadeRange();
+  const chartDecs = _fcGetChartDecades();
+  const [rangeStart, rangeEnd] = _fcLifeCurveMode === 'all'
+    ? (chartDecs.length ? [chartDecs[0].start, chartDecs[chartDecs.length - 1].end] : [1, 100])
+    : _fcLifeCurveDecadeRange();
   const span = Math.max(1, rangeEnd - rangeStart);
   const toX  = age => pX + ((age - rangeStart) / span) * iW;
   const toY  = score => pT + (100 - Math.max(0, Math.min(100, score))) / 100 * iH;
