@@ -1574,17 +1574,48 @@ function _fcCurveKey() {
   ].join('|');
 }
 
+function _fcParseDecadeRange(range) {
+  if (Array.isArray(range) && range.length >= 2) {
+    const a = Number(range[0]);
+    const b = Number(range[1]);
+    if (Number.isFinite(a) && Number.isFinite(b)) {
+      return a <= b ? [a, b] : [b, a];
+    }
+  }
+  const nums = String(range || '').match(/\d+/g);
+  if (nums && nums.length >= 2) {
+    const a = Number(nums[0]);
+    const b = Number(nums[1]);
+    if (Number.isFinite(a) && Number.isFinite(b)) {
+      return a <= b ? [a, b] : [b, a];
+    }
+  }
+  return null;
+}
+
+function _fcFallbackDecadeRange(age) {
+  const start = Math.floor((Math.max(1, age) - 1) / 10) * 10 + 1;
+  return [start, Math.min(100, start + 9)];
+}
+
 function _fcLifeCurveRangeText(range) {
-  return Array.isArray(range) && range.length === 2 ? `${range[0]}-${range[1]}岁` : '';
+  const parsed = _fcParseDecadeRange(range);
+  return parsed ? `${parsed[0]}-${parsed[1]}岁` : '';
 }
 
 /* 从盘上 palaces 读取真实大限区间，按起始年龄排序 */
 function _fcGetChartDecades() {
   const palaces = _chart?.palaces || [];
   const decades = [];
+  const seen = new Set();
   palaces.forEach(p => {
-    const r = p?.decadal?.range;
-    if (Array.isArray(r) && r.length === 2) decades.push({ start: r[0], end: r[1], palace: p });
+    const parsed = _fcParseDecadeRange(p?.decadal?.range);
+    if (!parsed) return;
+    const [start, end] = parsed;
+    const key = `${start}-${end}`;
+    if (seen.has(key)) return;
+    seen.add(key);
+    decades.push({ start, end, palace: p });
   });
   decades.sort((a, b) => a.start - b.start);
   return decades;
@@ -1608,13 +1639,10 @@ function _fcLifeCurveDecadeRange(age = _fcActiveAge) {
 
 /* 全部大限的总年龄范围，或当前大限的年龄列表 */
 function _fcLifeCurveTargetAges(mode = _fcLifeCurveMode) {
-  const decades = _fcGetChartDecades();
   let start, end;
-  if (mode === 'all' && decades.length) {
-    start = decades[0].start;
-    end   = decades[decades.length - 1].end;
-  } else if (mode === 'all') {
-    start = 1; end = 100;
+  if (mode === 'all') {
+    start = 1;
+    end = 100;
   } else {
     [start, end] = _fcLifeCurveDecadeRange();
   }
@@ -1693,10 +1721,21 @@ function _fcLifeCurveStarLine(palace) {
 }
 
 function _fcFindDecadalPalace(age) {
-  return (_chart?.palaces || []).find(p => {
+  const exact = (_chart?.palaces || []).find(p => {
     const range = p?.decadal?.range;
-    return Array.isArray(range) && age >= range[0] && age <= range[1];
-  }) || null;
+    const parsed = _fcParseDecadeRange(range);
+    return parsed && age >= parsed[0] && age <= parsed[1];
+  });
+  if (exact) return exact;
+  const decades = _fcGetChartDecades();
+  if (!decades.length) return null;
+  let nearest = decades[0];
+  let best = Infinity;
+  decades.forEach(d => {
+    const dist = age < d.start ? (d.start - age) : (age > d.end ? (age - d.end) : 0);
+    if (dist < best) { best = dist; nearest = d; }
+  });
+  return nearest.palace || null;
 }
 
 function _fcBuildLifeCurveYear(age) {
@@ -1709,6 +1748,7 @@ function _fcBuildLifeCurveYear(age) {
   const duiBranch  = xiaoBranch ? (DUIGONG[xiaoBranch] || '') : '';
   const duiPalace  = (_chart?.palaces || []).find(p => p.earthlyBranch === duiBranch) || null;
   const decadalPalace = _fcFindDecadalPalace(age);
+  const decadalRange = _fcParseDecadeRange(decadalPalace?.decadal?.range) || _fcFallbackDecadeRange(age);
   const liunian = _liunianSeq?.[age] || null;
   return {
     age,
@@ -1741,7 +1781,7 @@ function _fcBuildLifeCurveYear(age) {
       return {
         palace  : decadalPalace?.name || '',
         branch  : dBranch,
-        range   : _fcLifeCurveRangeText(decadalPalace?.decadal?.range),
+        range   : _fcLifeCurveRangeText(decadalRange),
         stars   : _fcLifeCurveStarLine(decadalPalace),
         opposite: { palace: oppPalace?.name || '', branch: oppBranch, stars: _fcLifeCurveStarLine(oppPalace) },
         sanfang,
@@ -2009,9 +2049,8 @@ function _fcRenderScoreCurve() {
   // ── SVG ──
   const W = 390, H = 260, pX = 16, pT = 20, pB = 22;
   const iW = W - pX * 2, iH = H - pT - pB;
-  const chartDecs = _fcGetChartDecades();
   const [rangeStart, rangeEnd] = _fcLifeCurveMode === 'all'
-    ? (chartDecs.length ? [chartDecs[0].start, chartDecs[chartDecs.length - 1].end] : [1, 100])
+    ? [1, 100]
     : _fcLifeCurveDecadeRange();
   const span = Math.max(1, rangeEnd - rangeStart);
   const toX  = age => pX + ((age - rangeStart) / span) * iW;
