@@ -350,7 +350,9 @@
         <div class="fc-score-meta" id="fc-score-meta" style="display:none"></div>
 
         <!-- 曲线图（主角，大面积） -->
-        <svg class="fc-score-svg" id="fc-score-svg" viewBox="0 0 390 260" preserveAspectRatio="xMidYMid meet"></svg>
+        <div class="fc-score-svg-wrap">
+          <svg class="fc-score-svg" id="fc-score-svg" viewBox="0 0 390 260" preserveAspectRatio="none"></svg>
+        </div>
 
         <!-- Tooltip 浮层 -->
         <div class="fc-tooltip" id="fc-tooltip" style="display:none">
@@ -1610,7 +1612,9 @@ function _fcUpdateDecadeBar(age) {
   const cls = _fcDecadeFactorClass(dp.decadeFactor);
   bar.style.display = '';
   // 极简一行：大运范围 · 底色分×因子 · 一句话摘要
-  bar.textContent = `大运 ${dp.range}  ·  ${dp.decadeBaseScore}分×${dp.decadeFactor}  ·  ${dp.summary}`;
+  // 摘要截短到10字，保持一行不换行
+  const shortSummary = (dp.summary || '').slice(0, 10);
+  bar.textContent = `大运 ${dp.range}  ·  底色 ${dp.decadeBaseScore}×${dp.decadeFactor}  ·  ${shortSummary}`;
 }
 
 function _fcRenderDecadeBands(svg, rangeStart, rangeEnd, padX, padTop, innerW, innerH) {
@@ -1930,7 +1934,7 @@ function _fcRenderScoreCurve() {
     chip.innerHTML =
       `<span class=”fc-score-chip-age”>${age}岁</span>` +
       `<span class=”fc-score-chip-score” style=”${!isActive && scoreVal !== null ? `color:${scoreColor}` : ''}”>${scoreVal !== null ? scoreVal : (_fcLifeCurveLoading ? '…' : '—')}</span>` +
-      `<span class=”fc-score-chip-bar” style=”background:${isActive ? 'rgba(255,255,255,.5)' : barColor}”></span>`;
+      (scoreVal !== null ? `<span class=”fc-score-chip-bar” style=”background:${isActive ? 'rgba(255,255,255,.4)' : barColor}”></span>` : '');
     chip.addEventListener('click', () => fcSelectYear(age));
     list.appendChild(chip);
   });

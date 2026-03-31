@@ -700,102 +700,125 @@
 /* ── 人生曲线 v3 极简版 ────────────────────────────────────── */
 .fc-score-wrap {
   margin: 6px 12px 4px;
-  padding: 12px 14px 14px;
+  padding: 14px 14px 16px;
   background: #fdfaf5;
   border: 1px solid rgba(210,196,181,.72);
-  border-radius: 14px;
+  border-radius: 16px;
   position: relative;
 }
 .aip-score-wrap { margin: 0 0 14px; }
+
+/* ── 标题行 ────────────────────────────────────────────────── */
 .fc-score-head {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
 }
 .fc-score-title {
-  font-size: 17px;
+  font-size: 16px;
   font-weight: 700;
   color: #3d302b;
+  letter-spacing: .02em;
 }
 .fc-score-modes {
   display: inline-flex;
   gap: 2px;
   padding: 3px;
   border-radius: 999px;
-  background: #f3ece4;
-  border: 1px solid rgba(210,196,181,.72);
+  background: #ede6dc;
+  border: 1px solid rgba(210,196,181,.6);
 }
 .fc-score-mode {
   border: 0;
   background: transparent;
-  color: #7d6859;
+  color: #9c8878;
   border-radius: 999px;
-  padding: 5px 14px;
-  font-size: 12px;
-  font-weight: 700;
+  padding: 5px 18px;
+  font-size: 13px;
+  font-weight: 600;
   cursor: pointer;
-  transition: all .2s;
+  transition: all .18s;
+  white-space: nowrap;
 }
 .fc-score-mode.active {
-  background: #5a3524;
+  background: #46352d;
   color: #fff9f1;
+  box-shadow: 0 1px 4px rgba(40,20,10,.18);
 }
 
 /* ── Hero 区 ──────────────────────────────────────────────── */
 .fc-hero {
   display: flex;
-  align-items: baseline;
+  align-items: flex-start;
   justify-content: space-between;
-  margin-bottom: 4px;
-  padding: 0 2px;
+  gap: 8px;
+  margin-bottom: 6px;
 }
 .fc-hero-left {
   display: flex;
   align-items: baseline;
-  gap: 3px;
-  flex-wrap: wrap;
+  gap: 0;
+  flex-wrap: nowrap;
 }
 .fc-hero-score {
-  font-size: 38px;
+  font-size: 44px;
   font-weight: 800;
   line-height: 1;
   color: #3d302b;
   transition: color .3s;
+  letter-spacing: -.02em;
 }
 .fc-hero-score.good { color: #2a6b42; }
 .fc-hero-score.mid  { color: #9a6a18; }
 .fc-hero-score.low  { color: #b3443a; }
 .fc-hero-unit {
-  font-size: 13px;
+  font-size: 14px;
+  font-weight: 400;
   color: #9c8878;
-  margin-right: 6px;
+  margin: 0 8px 0 2px;
+  align-self: flex-end;
+  padding-bottom: 6px;
 }
 .fc-hero-age {
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 700;
   color: #3d302b;
+  align-self: flex-end;
+  padding-bottom: 6px;
 }
 .fc-hero-trend {
   font-size: 12px;
   font-weight: 600;
   color: #2a6b42;
-  margin-left: 2px;
+  align-self: flex-end;
+  padding-bottom: 7px;
+  margin-left: 6px;
+  white-space: nowrap;
 }
 .fc-hero-right {
-  font-size: 12px;
+  font-size: 11.5px;
   color: #9c8878;
   text-align: right;
-  max-width: 45%;
+  max-width: 42%;
+  line-height: 1.55;
+  padding-top: 4px;
+  word-break: break-all;
 }
 
-/* ── 大运条（一行极简）─────────────────────────────────────── */
+/* ── 大运条（一行，截断不换行）──────────────────────────────── */
 .fc-decade-bar {
   font-size: 12px;
   color: #7a6050;
-  margin: 0 0 6px;
-  padding: 0 2px;
-  line-height: 1.6;
+  margin: 0 0 8px;
+  padding: 7px 10px;
+  background: #f4ede4;
+  border-radius: 8px;
+  border: 1px solid rgba(210,196,181,.5);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.5;
 }
 
 /* ── 进度条 ────────────────────────────────────────────────── */
@@ -838,15 +861,19 @@
 }
 
 /* ── 曲线图 SVG（主角）─────────────────────────────────────── */
+.fc-score-svg-wrap {
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(210,196,181,.4);
+  background: #fff;
+  margin-bottom: 2px;
+}
 .fc-score-svg {
   width: 100%;
   height: auto;
   aspect-ratio: 390 / 260;
   display: block;
-  overflow: visible;
-  border-radius: 12px;
-  background: #fff;
-  border: 1px solid rgba(210,196,181,.4);
+  overflow: hidden;
 }
 .fc-score-path {
   fill: none;
@@ -942,56 +969,59 @@
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 5px;
-  margin-top: 8px;
+  margin-top: 10px;
 }
 .fc-score-chip {
-  border: 1px solid rgba(210,196,181,.35);
+  border: 1px solid rgba(210,196,181,.4);
   border-radius: 10px;
   background: #fff;
-  padding: 6px 4px 8px;
+  padding: 7px 4px 9px;
   text-align: center;
   cursor: pointer;
-  position: relative;
   transition: all .15s;
 }
-.fc-score-chip:hover { border-color: rgba(122,74,55,.3); }
+.fc-score-chip:hover { border-color: rgba(122,74,55,.35); background: #fdf8f2; }
 .fc-score-chip.active {
-  background: #5a3524;
-  color: #fffdf9;
-  border-color: #5a3524;
+  background: #46352d;
+  border-color: #46352d;
 }
 .fc-score-chip-age {
   display: block;
   font-size: 10px;
-  margin-bottom: 1px;
+  color: #9c8878;
+  margin-bottom: 3px;
+  line-height: 1;
 }
+.fc-score-chip.active .fc-score-chip-age { color: rgba(255,249,241,.65); }
 .fc-score-chip-score {
   display: block;
-  font-size: 16px;
-  font-weight: 700;
-  line-height: 1.2;
+  font-size: 18px;
+  font-weight: 800;
+  line-height: 1.1;
+  color: #3d302b;
 }
+.fc-score-chip.active .fc-score-chip-score { color: #fff9f1; }
 .fc-score-chip-bar {
   display: block;
-  height: 2.5px;
+  height: 3px;
   border-radius: 2px;
-  margin: 4px auto 0;
-  width: 70%;
-  opacity: .6;
+  margin: 5px auto 0;
+  width: 60%;
+  opacity: .55;
 }
 
 /* ── 峰谷一行 ──────────────────────────────────────────────── */
 .fc-peaks-row {
   display: flex;
   align-items: center;
-  gap: 0;
   flex-wrap: wrap;
+  gap: 0;
   margin-top: 8px;
-  padding: 8px 10px;
+  padding: 9px 12px;
   background: #fff;
   border-radius: 10px;
-  border: 1px solid rgba(210,196,181,.35);
-  font-size: 11px;
+  border: 1px solid rgba(210,196,181,.4);
+  font-size: 12px;
   color: #5a4030;
   line-height: 1.5;
 }
@@ -1607,12 +1637,13 @@
   .fc-hex-name { font-size: .95rem; letter-spacing: 3px; }
   .fc-hex-sub  { margin-bottom: 8px; }
   .fc-hex-lines { width: 96px; }
-  .fc-score-wrap { margin: 6px 6px 2px; padding: 10px 10px 12px; }
-  .fc-hero-score { font-size: 30px; }
-  .fc-hero-age { font-size: 13px; }
-  .fc-score-chip-score { font-size: 14px; }
-  .fc-score-chip { padding: 5px 3px 7px; }
+  .fc-score-wrap { margin: 6px 6px 4px; padding: 12px 10px 14px; }
+  .fc-hero-score { font-size: 36px; }
+  .fc-hero-age { font-size: 14px; }
+  .fc-score-chip-score { font-size: 16px; }
+  .fc-score-chip { padding: 6px 3px 8px; }
   .fc-score-list { gap: 4px; }
+  .fc-score-mode { padding: 5px 12px; font-size: 12px; }
 
   /* ── 重新排盘按钮 ── */
   .nf-reset-btn {
