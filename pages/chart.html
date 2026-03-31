@@ -272,13 +272,13 @@
       <span class="aip-desc" id="aip-desc"></span>
     </div>
     <div class="aip-tabs">
-      <button class="aip-tab active" data-panel="aip-panel-base">本命批命</button>
+      <button class="aip-tab active" data-panel="aip-panel-curve">人生曲线</button>
+      <button class="aip-tab"        data-panel="aip-panel-base">本命批命</button>
       <button class="aip-tab"        data-panel="aip-panel-luck">大限流年</button>
-      <button class="aip-tab"        data-panel="aip-panel-curve">人生曲线</button>
     </div>
 
     <!-- 本命批命 -->
-    <div class="aip-panel" id="aip-panel-base">
+    <div class="aip-panel" id="aip-panel-base" style="display:none">
       <div class="aip-card">
         <div class="aip-card-head"><span class="aip-tag">命宫格局</span><span class="aip-card-title" id="aip-life-ttl"></span></div>
         <div class="aip-card-body" id="aip-life-body"></div>
@@ -326,7 +326,7 @@
     </div>
 
     <!-- 人生曲线 -->
-    <div class="aip-panel" id="aip-panel-curve" style="display:none">
+    <div class="aip-panel" id="aip-panel-curve">
       <div class="fc-score-wrap aip-score-wrap" id="fc-score-wrap" style="display:none">
         <!-- 标题 + pill tabs -->
         <div class="fc-score-head">
