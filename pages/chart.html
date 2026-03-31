@@ -1625,6 +1625,29 @@ function _fcGetChartDecades() {
   return decades;
 }
 
+function _fcGetDisplayDecades() {
+  const chartDecades = _fcGetChartDecades();
+  if (chartDecades.length) {
+    const inLifeRange = chartDecades.filter(d => d.start <= 100 && d.end >= 1);
+    const source = inLifeRange.length ? inLifeRange : chartDecades;
+    return source.slice(0, 10);
+  }
+
+  const derived = [];
+  const seen = new Set();
+  (_fcLifeCurveData?.decades || []).forEach(d => {
+    const parsed = _fcParseDecadeRange(d?.range);
+    if (!parsed) return;
+    const [start, end] = parsed;
+    const key = `${start}-${end}`;
+    if (seen.has(key)) return;
+    seen.add(key);
+    derived.push({ start, end, palace: null });
+  });
+  derived.sort((a, b) => a.start - b.start);
+  return derived.slice(0, 10);
+}
+
 /* 当前 age 所在的真实大限区间 */
 function _fcLifeCurveDecadeRange(age = _fcActiveAge) {
   const decades = _fcGetChartDecades();
@@ -1671,15 +1694,66 @@ function _fcLifeCurveScoresMap() {
 function _fcLifeCurveUpsertDecades(decades) {
   if (!Array.isArray(decades) || !decades.length) return;
   if (!_fcLifeCurveData) _fcLifeCurveData = { scores: [], model: '', decades: [] };
-  _fcLifeCurveData = { ..._fcLifeCurveData, decades };
+  const map = new Map();
+  (_fcLifeCurveData.decades || []).forEach(item => {
+    const parsed = _fcParseDecadeRange(item?.range);
+    const key = parsed ? `${parsed[0]}-${parsed[1]}` : String(item?.range || '');
+    map.set(key, item);
+  });
+  decades.forEach(item => {
+    const parsed = _fcParseDecadeRange(item?.range);
+    const key = parsed ? `${parsed[0]}-${parsed[1]}` : String(item?.range || '');
+    map.set(key, {
+      ...item,
+      range: parsed ? _fcLifeCurveRangeText(parsed) : String(item?.range || ''),
+    });
+  });
+  const merged = [...map.values()].sort((a, b) => {
+    const pa = _fcParseDecadeRange(a?.range);
+    const pb = _fcParseDecadeRange(b?.range);
+    const sa = pa ? pa[0] : Number.MAX_SAFE_INTEGER;
+    const sb = pb ? pb[0] : Number.MAX_SAFE_INTEGER;
+    return sa - sb;
+  });
+  _fcLifeCurveData = { ..._fcLifeCurveData, decades: merged };
+}
+
+function _fcLifeCurveDecadeProfileMap() {
+  const map = new Map();
+  (_fcLifeCurveData?.decades || []).forEach(item => {
+    const parsed = _fcParseDecadeRange(item?.range);
+    if (!parsed) return;
+    map.set(`${parsed[0]}-${parsed[1]}`, item);
+  });
+  return map;
+}
+
+function _fcDecadeAverageScore(start, end) {
+  const scores = (_fcLifeCurveData?.scores || []).filter(s => s.age >= start && s.age <= end);
+  if (!scores.length) return null;
+  return Math.round(scores.reduce((sum, s) => sum + s.score, 0) / scores.length);
 }
 
 function _fcDecadeCurrentProfile(age = _fcActiveAge) {
-  const decades = _fcLifeCurveData?.decades || [];
-  return decades.find(d => {
-    const m = String(d.range || '').match(/(\d+)/g);
-    return m && m.length >= 2 && age >= Number(m[0]) && age <= Number(m[1]);
-  }) || null;
+  const chartDecade = _fcGetDisplayDecades().find(d => age >= d.start && age <= d.end);
+  if (!chartDecade) return null;
+  const key = `${chartDecade.start}-${chartDecade.end}`;
+  const profile = _fcLifeCurveDecadeProfileMap().get(key);
+  const avg = _fcDecadeAverageScore(chartDecade.start, chartDecade.end);
+  if (profile) {
+    return {
+      ...profile,
+      range: _fcLifeCurveRangeText([chartDecade.start, chartDecade.end]),
+      decadeBaseScore: Number(profile.decadeBaseScore) || avg || 55,
+      summary: profile.summary || (avg != null ? `十年均分${avg}` : '等待评分'),
+    };
+  }
+  return {
+    range: _fcLifeCurveRangeText([chartDecade.start, chartDecade.end]),
+    decadeBaseScore: avg != null ? avg : 55,
+    decadeFactor: 1.0,
+    summary: avg != null ? `十年均分${avg}` : '等待评分',
+  };
 }
 
 function _fcLifeCurveUpsertScores(scores, model = '') {
@@ -1983,27 +2057,42 @@ function _fcRenderDecadesScroll() {
   const wrap = document.getElementById('fc-decades-scroll-wrap');
   const scroll = document.getElementById('fc-decades-scroll');
   if (!wrap || !scroll) return;
-  const decades = _fcLifeCurveData?.decades || [];
+  const decades = _fcGetDisplayDecades();
   if (!decades.length || _fcLifeCurveMode !== 'all') { wrap.style.display = 'none'; return; }
 
   wrap.style.display = '';
   scroll.innerHTML = '';
+  const profileMap = _fcLifeCurveDecadeProfileMap();
 
   decades.forEach(d => {
-    const m = String(d.range || '').match(/(\d+)/g);
-    const dStart = m ? Number(m[0]) : 0;
-    const dEnd   = m && m.length >= 2 ? Number(m[1]) : dStart + 9;
+    const dStart = Number(d.start);
+    const dEnd   = Number(d.end);
+    if (!Number.isFinite(dStart) || !Number.isFinite(dEnd)) return;
     const isActive = _fcActiveAge >= dStart && _fcActiveAge <= dEnd;
-    const cls = _fcDecadeFactorClass(d.decadeFactor);
+    const profile = profileMap.get(`${dStart}-${dEnd}`) || null;
+    const avgScore = _fcDecadeAverageScore(dStart, dEnd);
+    const cls = profile ? _fcDecadeFactorClass(profile.decadeFactor) : (avgScore == null ? 'mid' : _fcScoreClass(avgScore));
     const bgMap = { good: '#e8f5ec', mid: '#f5f0e4', weak: '#f5ece8', low: '#f2e8e6' };
+    const rangeText = _fcLifeCurveRangeText([dStart, dEnd]);
+    const scoreText = avgScore == null ? '待算' : `${avgScore}分`;
+    const summaryText = (profile?.summary || '').trim();
+    const labelText = summaryText ? summaryText.slice(0, 4) : scoreText;
+
     const card = document.createElement('button');
     card.type = 'button';
     card.className = 'fc-decade-card' + (isActive ? ' active' : '');
     card.style.background = bgMap[cls] || bgMap.mid;
     card.innerHTML =
-      `<div class="fc-decade-card-range">${d.range}</div>` +
-      `<div class="fc-decade-card-label ${cls}">${d.summary ? d.summary.slice(0, 4) : cls}</div>`;
-    card.addEventListener('click', () => { if (m) fcSelectYear(Math.floor((dStart + dEnd) / 2)); });
+      `<div class="fc-decade-card-range">${rangeText}</div>` +
+      `<div class="fc-decade-card-score ${avgScore == null ? '' : _fcScoreClass(avgScore)}">${scoreText}</div>` +
+      `<div class="fc-decade-card-label ${cls}">${labelText}</div>`;
+    card.addEventListener('click', () => {
+      const scoresInRange = (_fcLifeCurveData?.scores || []).filter(s => s.age >= dStart && s.age <= dEnd);
+      const targetAge = scoresInRange.length
+        ? scoresInRange[Math.floor(scoresInRange.length / 2)].age
+        : Math.floor((dStart + dEnd) / 2);
+      fcSelectYear(targetAge);
+    });
     scroll.appendChild(card);
   });
 }
