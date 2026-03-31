@@ -161,6 +161,17 @@
   </div>
 </section>
 
+<!-- 排盘历史弹窗 -->
+<div class="history-overlay" id="history-overlay" style="display:none">
+  <div class="history-panel">
+    <div class="history-panel-head">
+      <span class="history-panel-title">排盘记录</span>
+      <button class="history-panel-close" id="history-close">✕</button>
+    </div>
+    <div class="history-list" id="history-list"></div>
+  </div>
+</div>
+
 <!-- ② Figma 新版命盘 -->
 <section id="fc-section" class="fc-section" style="display:none">
   <div class="fc-card">
@@ -757,6 +768,7 @@ document.getElementById('btn-submit').addEventListener('click', async () => {
     };
 
     renderFigmaChart(_chart, norm.gender, norm.dateStr, norm);
+    historySave(norm);
     document.getElementById('fc-section').style.display = 'block';
     document.getElementById('fc-section').scrollIntoView({ behavior: 'smooth' });
   } catch (err) {
@@ -765,6 +777,148 @@ document.getElementById('btn-submit').addEventListener('click', async () => {
   } finally {
     setLoading(false);
   }
+});
+
+// ─── 排盘历史记录（localStorage，最多保存 20 条）────────────
+const HISTORY_KEY = 'ziwei_history_v1';
+const HISTORY_MAX = 20;
+
+function historyLoad() {
+  try { return JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]'); }
+  catch { return []; }
+}
+
+function historySave(norm) {
+  const list = historyLoad().filter(r =>
+    !(r.dateStr === norm.dateStr && r.cstHour === norm.cstHour &&
+      r.cstMinute === norm.cstMinute && r.gender === norm.gender)
+  );
+  list.unshift({
+    id: Date.now(),
+    savedAt: new Date().toISOString(),
+    name: norm.name || '',
+    gender: norm.gender,
+    dateStr: norm.dateStr,
+    year: norm.year, month: norm.month, day: norm.day,
+    calMode: norm.calMode,
+    calModeLabel: norm.calModeLabel,
+    cstHour: norm.cstHour,
+    cstMinute: norm.cstMinute,
+    city: norm.city || null,
+  });
+  localStorage.setItem(HISTORY_KEY, JSON.stringify(list.slice(0, HISTORY_MAX)));
+}
+
+function historyDelete(id) {
+  const list = historyLoad().filter(r => r.id !== id);
+  localStorage.setItem(HISTORY_KEY, JSON.stringify(list));
+}
+
+function historyRenderPanel() {
+  const list = historyLoad();
+  const container = document.getElementById('history-list');
+  if (!container) return;
+  if (!list.length) {
+    container.innerHTML = '<div class="history-empty">暂无排盘记录</div>';
+    return;
+  }
+  container.innerHTML = '';
+  list.forEach(r => {
+    const isFemale = r.gender === 'female';
+    const label = r.name || (isFemale ? '女' : '男');
+    const initial = label.slice(-1);
+    const timeStr = `${String(r.cstHour).padStart(2,'0')}:${String(r.cstMinute).padStart(2,'0')}`;
+    const savedDate = new Date(r.savedAt);
+    const timeAgo = (() => {
+      const diff = Date.now() - savedDate.getTime();
+      const m = Math.floor(diff / 60000);
+      if (m < 1) return '刚刚';
+      if (m < 60) return `${m}分钟前`;
+      const h = Math.floor(m / 60);
+      if (h < 24) return `${h}小时前`;
+      return `${Math.floor(h / 24)}天前`;
+    })();
+
+    const item = document.createElement('div');
+    item.className = 'history-item';
+    item.innerHTML =
+      `<div class="history-item-avatar${isFemale ? ' female' : ''}">${initial}</div>` +
+      `<div class="history-item-info">` +
+        `<div class="history-item-name">${label}${r.name ? (isFemale ? ' · 女' : ' · 男') : ''}</div>` +
+        `<div class="history-item-date">${r.calModeLabel}  ${timeStr}  ${r.city ? r.city.name : ''}</div>` +
+      `</div>` +
+      `<div class="history-item-time">${timeAgo}</div>` +
+      `<button class="history-item-del" data-id="${r.id}" title="删除">×</button>`;
+
+    item.querySelector('.history-item-del').addEventListener('click', e => {
+      e.stopPropagation();
+      historyDelete(r.id);
+      historyRenderPanel();
+    });
+    item.addEventListener('click', () => {
+      historyFillForm(r);
+      document.getElementById('history-overlay').style.display = 'none';
+    });
+    container.appendChild(item);
+  });
+}
+
+function historyFillForm(r) {
+  // 切换公历/农历模式
+  if (r.calMode === 'lunar') {
+    document.querySelectorAll('.nf-cal-btn').forEach(b => b.classList.toggle('active', b.dataset.cal === 'lunar'));
+    document.getElementById('solar-inputs').style.display = 'none';
+    document.getElementById('lunar-inputs').style.display = '';
+    _calMode = 'lunar';
+    document.getElementById('inp-lunar-year').value = r.year;
+    document.getElementById('inp-lunar-month').value = r.month;
+    // day filled below
+  } else {
+    document.querySelectorAll('.nf-cal-btn').forEach(b => b.classList.toggle('active', b.dataset.cal === 'solar'));
+    document.getElementById('solar-inputs').style.display = '';
+    document.getElementById('lunar-inputs').style.display = 'none';
+    _calMode = 'solar';
+    document.getElementById('inp-year').value  = r.year;
+    document.getElementById('inp-month').value = r.month;
+    // trigger day options rebuild
+    updateDayOptions?.();
+    document.getElementById('inp-day').value   = r.day;
+  }
+  document.getElementById('inp-time-h').value = r.cstHour;
+  document.getElementById('inp-time-m').value = r.cstMinute;
+  document.getElementById('inp-name').value   = r.name || '';
+  const genderVal = r.gender || 'male';
+  document.getElementById('inp-gender').value = genderVal;
+  document.querySelectorAll('.nf-gender-btn').forEach(b => b.classList.toggle('active', b.dataset.v === genderVal));
+  if (r.city) {
+    _selectedCity = r.city;
+    const selEl = document.getElementById('city-selected');
+    const nameEl = document.getElementById('city-selected-name');
+    const lonEl  = document.getElementById('city-selected-lon');
+    const latEl  = document.getElementById('city-selected-lat');
+    if (selEl) selEl.style.display = '';
+    if (nameEl) nameEl.textContent = r.city.name;
+    if (lonEl)  lonEl.textContent  = r.city.lon?.toFixed(2) ?? '';
+    if (latEl)  latEl.textContent  = r.city.lat?.toFixed(2) ?? '';
+    document.getElementById('inp-city-search').value = r.city.name;
+    document.getElementById('btn-clear-city').style.display = '';
+  }
+  updateTrueSolarTime?.();
+  updateDatePreview?.();
+  // 自动排盘
+  document.getElementById('btn-submit').click();
+}
+
+// 按钮绑定
+document.querySelector('.nf-history-btn').addEventListener('click', () => {
+  historyRenderPanel();
+  document.getElementById('history-overlay').style.display = 'flex';
+});
+document.getElementById('history-close').addEventListener('click', () => {
+  document.getElementById('history-overlay').style.display = 'none';
+});
+document.getElementById('history-overlay').addEventListener('click', e => {
+  if (e.target === e.currentTarget) e.currentTarget.style.display = 'none';
 });
 
 // ─── 原始时间步进（±2小时，走完整 TST→timeIdx→排盘 链路） ───

@@ -1825,3 +1825,67 @@
   .aidbg-right { width: 100%; }
   .aidbg-prompt-ta { min-height: 160px; }
 }
+
+/* ══════════════════════════════════════════
+   排盘历史记录弹窗
+══════════════════════════════════════════ */
+.history-overlay {
+  position: fixed; inset: 0; z-index: 9000;
+  background: rgba(30,22,16,.55);
+  backdrop-filter: blur(2px);
+  display: flex; align-items: flex-end; justify-content: center;
+}
+.history-panel {
+  width: 100%; max-width: 480px;
+  background: #fdf8f2;
+  border-radius: 18px 18px 0 0;
+  padding: 0 0 env(safe-area-inset-bottom,0);
+  max-height: 72vh;
+  display: flex; flex-direction: column;
+  box-shadow: 0 -4px 32px rgba(80,40,10,.18);
+}
+.history-panel-head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 18px 12px;
+  border-bottom: 1px solid rgba(210,196,181,.5);
+}
+.history-panel-title { font-size: 15px; font-weight: 700; color: #3d302b; }
+.history-panel-close {
+  background: none; border: none; cursor: pointer;
+  font-size: 18px; color: #a09080; line-height: 1; padding: 2px 4px;
+}
+.history-panel-close:hover { color: #5a3524; }
+.history-list {
+  overflow-y: auto; flex: 1;
+  padding: 8px 12px 16px;
+  display: flex; flex-direction: column; gap: 8px;
+}
+.history-list::-webkit-scrollbar { width: 4px; }
+.history-list::-webkit-scrollbar-thumb { background: #d8ccbf; border-radius: 2px; }
+.history-empty {
+  text-align: center; color: #b0a89f; font-size: 13px; padding: 32px 0;
+}
+.history-item {
+  display: flex; align-items: center; gap: 10px;
+  background: #fff9f4; border: 1px solid rgba(210,196,181,.6);
+  border-radius: 10px; padding: 10px 12px;
+  cursor: pointer; transition: background .12s, border-color .12s;
+}
+.history-item:hover { background: #fff3e8; border-color: #c8a070; }
+.history-item-avatar {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: #46352d; color: #fff9f1;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 700; flex-shrink: 0;
+}
+.history-item-avatar.female { background: #7a3a5a; }
+.history-item-info { flex: 1; min-width: 0; }
+.history-item-name { font-size: 14px; font-weight: 700; color: #3d302b; }
+.history-item-date { font-size: 12px; color: #8e7a6c; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.history-item-time { font-size: 11px; color: #b0a89f; flex-shrink: 0; text-align: right; }
+.history-item-del {
+  background: none; border: none; cursor: pointer;
+  color: #c0afa0; font-size: 16px; padding: 2px 4px; flex-shrink: 0;
+  line-height: 1;
+}
+.history-item-del:hover { color: #b3443a; }
