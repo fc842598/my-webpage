@@ -1789,6 +1789,22 @@ function _fcScoreCurrentItem() {
   return items.find(item => item.age === _fcActiveAge) || null;
 }
 
+function _fcLifeCurveLoadingText(loadedCount, totalCount) {
+  const decadesReady = ((_fcLifeCurveData?.decades || []).length > 0);
+  if (loadedCount <= 0) {
+    if (_fcLifeCurveMode === 'all') {
+      return decadesReady ? '十年底色已定，正在计算 1-100 岁评分…' : '正在定势十年大运…';
+    }
+    return decadesReady ? '十年底色已定，正在计算当前十年评分…' : '正在定势当前十年大运…';
+  }
+  if (loadedCount < totalCount) {
+    return decadesReady
+      ? `十年底色已定，正在逐年评分 ${loadedCount}/${totalCount}…`
+      : `正在逐年评分 ${loadedCount}/${totalCount}…`;
+  }
+  return `正在收尾 ${loadedCount}/${totalCount}…`;
+}
+
 // ── 十年大运可视化辅助函数 ──────────────────────────────────
 
 function _fcDecadeFactorClass(factor) {
@@ -1905,10 +1921,10 @@ function _fcRenderPeaksRow() {
 
   row.style.display = '';
   row.innerHTML =
-    `<span class=”fc-peaks-item”><span class=”fc-peaks-label good”>巅峰</span> ${peak.age}岁</span>` +
-    `<span class=”fc-peaks-item”><span class=”fc-peaks-label low”>低谷</span> ${valley.age}岁</span>` +
-    `<span class=”fc-peaks-item”><span class=”fc-peaks-label avg”>均分</span> ${avg}</span>` +
-    `<span class=”fc-peaks-item”><span class=”fc-peaks-label best”>最佳</span> ${bestDStart}-${bestDStart+9}岁</span>`;
+    `<span class="fc-peaks-item"><span class="fc-peaks-label good">巅峰</span> ${peak.age}岁</span>` +
+    `<span class="fc-peaks-item"><span class="fc-peaks-label low">低谷</span> ${valley.age}岁</span>` +
+    `<span class="fc-peaks-item"><span class="fc-peaks-label avg">均分</span> ${avg}</span>` +
+    `<span class="fc-peaks-item"><span class="fc-peaks-label best">最佳</span> ${bestDStart}-${bestDStart+9}岁</span>`;
 }
 
 // ── 大运总览横滚 ──────────────────────────────────────────────
@@ -1921,7 +1937,6 @@ function _fcRenderDecadesScroll() {
 
   wrap.style.display = '';
   scroll.innerHTML = '';
-  const [curStart] = _fcLifeCurveDecadeRange();
 
   decades.forEach(d => {
     const m = String(d.range || '').match(/(\d+)/g);
@@ -1935,8 +1950,8 @@ function _fcRenderDecadesScroll() {
     card.className = 'fc-decade-card' + (isActive ? ' active' : '');
     card.style.background = bgMap[cls] || bgMap.mid;
     card.innerHTML =
-      `<div class=”fc-decade-card-range”>${d.range}</div>` +
-      `<div class=”fc-decade-card-label ${cls}”>${d.summary ? d.summary.slice(0, 4) : cls}</div>`;
+      `<div class="fc-decade-card-range">${d.range}</div>` +
+      `<div class="fc-decade-card-label ${cls}">${d.summary ? d.summary.slice(0, 4) : cls}</div>`;
     card.addEventListener('click', () => { if (m) fcSelectYear(Math.floor((dStart + dEnd) / 2)); });
     scroll.appendChild(card);
   });
@@ -1956,7 +1971,9 @@ function _fcRenderScoreCurve() {
   if (!_chart || !_chartInputs) return;
 
   btn.disabled = _fcLifeCurveLoading;
-  btn.textContent = _fcLifeCurveLoading ? '生成中…' : '重新生成';
+  btn.textContent = _fcLifeCurveLoading
+    ? (_fcLifeCurveMode === 'all' ? '百年生成中…' : '十年生成中…')
+    : '重新生成';
   modeDecadeBtn.classList.toggle('active', _fcLifeCurveMode === 'decade');
   modeAllBtn.classList.toggle('active', _fcLifeCurveMode === 'all');
 
@@ -1971,7 +1988,7 @@ function _fcRenderScoreCurve() {
   const totalCount    = plotAges.length;
 
   if (progressWrap) {
-    const showBar = _fcLifeCurveLoading && _fcLifeCurveMode === 'all';
+    const showBar = _fcLifeCurveLoading;
     progressWrap.style.display = showBar ? 'flex' : 'none';
     if (showBar && progressFill) {
       const pct = Math.max(3, Math.round((loadedCount / totalCount) * 100));
@@ -1985,9 +2002,7 @@ function _fcRenderScoreCurve() {
     const showMeta = _fcLifeCurveLoading;
     meta.style.display = showMeta ? 'block' : 'none';
     if (showMeta) {
-      meta.textContent = loadedCount === 0
-        ? '评估大运底色…'
-        : `${loadedCount}/${totalCount} 年已完成`;
+      meta.textContent = _fcLifeCurveLoadingText(loadedCount, totalCount);
     }
   }
 
@@ -2148,9 +2163,9 @@ function _fcRenderScoreCurve() {
     const barColor = scoreVal !== null
       ? (scoreVal >= 75 ? '#2a6b42' : scoreVal >= 50 ? '#9a6a18' : '#b3443a') : 'transparent';
     chip.innerHTML =
-      `<span class=”fc-score-chip-age”>${age}岁</span>` +
-      `<span class=”fc-score-chip-score” style=”${!isActive && scoreVal !== null ? `color:${scoreColor}` : ''}”>${scoreVal !== null ? scoreVal : (_fcLifeCurveLoading ? '…' : '—')}</span>` +
-      (scoreVal !== null ? `<span class=”fc-score-chip-bar” style=”background:${isActive ? 'rgba(255,255,255,.4)' : barColor}”></span>` : '');
+      `<span class="fc-score-chip-age">${age}岁</span>` +
+      `<span class="fc-score-chip-score" style="${!isActive && scoreVal !== null ? `color:${scoreColor}` : ''}">${scoreVal !== null ? scoreVal : (_fcLifeCurveLoading ? '…' : '—')}</span>` +
+      (scoreVal !== null ? `<span class="fc-score-chip-bar" style="background:${isActive ? 'rgba(255,255,255,.4)' : barColor}"></span>` : '');
     chip.addEventListener('click', () => fcSelectYear(age));
     list.appendChild(chip);
   });
