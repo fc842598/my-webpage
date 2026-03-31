@@ -25,21 +25,23 @@ function calcEquationOfTime(date) {
  * @param {number} params.year
  * @param {number} params.month  (1-12)
  * @param {number} params.day
- * @param {number} params.hour   (0-23)
+ * @param {number} params.hour   (0-23, local standard time)
  * @param {number} params.minute (0-59, default 0)
  * @param {number} params.longitude  (degrees, east positive)
+ * @param {number} params.tzOffset   (UTC offset, e.g. 8=UTC+8, -5=UTC-5, 5.5=UTC+5:30; default 8)
  * @param {string} params.cityName
- * @returns {object} { trueSolarHour, trueSolarMinute, cstHour, cstMinute, diffMinutes, isEstimated, displayStr, diffStr }
+ * @returns {object} { trueSolarHour, trueSolarMinute, localHour, localMinute, diffMinutes, isEstimated, displayStr, diffStr }
  */
-function calcTrueSolarTime({year, month, day, hour, minute = 0, longitude, cityName}) {
+function calcTrueSolarTime({year, month, day, hour, minute = 0, longitude, tzOffset, cityName}) {
   const isEstimated = !longitude;
   const lon = longitude || 116.4; // Default Beijing
+  const tz  = (tzOffset !== undefined && tzOffset !== null) ? tzOffset : 8;
 
   const date = new Date(year, month - 1, day, hour, minute);
   const eot = calcEquationOfTime(date);
 
-  // Longitude correction: 4 min per degree from meridian 120°E
-  const lonCorrection = 4 * (lon - 120);
+  // Longitude correction from the timezone's standard meridian (tzOffset * 15°)
+  const lonCorrection = 4 * (lon - tz * 15);
 
   // Total offset from CST in minutes
   const totalOffsetMin = lonCorrection + eot;
@@ -66,6 +68,9 @@ function calcTrueSolarTime({year, month, day, hour, minute = 0, longitude, cityN
   return {
     trueSolarHour: tstHour,
     trueSolarMinute: tstMin,
+    localHour: hour,
+    localMinute: minute || 0,
+    // Keep cstHour/cstMinute as aliases for backward compatibility
     cstHour: hour,
     cstMinute: minute || 0,
     diffMinutes: Math.round(totalOffsetMin),
@@ -74,6 +79,7 @@ function calcTrueSolarTime({year, month, day, hour, minute = 0, longitude, cityN
     tstStr,
     diffStr,
     cityName: cityName || '北京（默认）',
+    tzOffset: tz,
     eot: Math.round(eot * 10) / 10,
     lonCorrection: Math.round(lonCorrection * 10) / 10,
   };

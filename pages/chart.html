@@ -125,7 +125,7 @@
         <span style="font-size:.75rem;color:#b0a89f">（影响真太阳时）</span>
       </div>
       <div style="position:relative">
-        <input type="text" id="inp-city-search" placeholder="搜索城市，如：北京、深圳" class="nf-select" style="width:100%;padding-right:60px" autocomplete="off">
+        <input type="text" id="inp-city-search" placeholder="搜索城市，如：北京、Tokyo、London" class="nf-select" style="width:100%;padding-right:60px" autocomplete="off">
         <button type="button" id="btn-clear-city" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);background:none;border:none;color:#b0a89f;cursor:pointer;font-size:.8rem;display:none">清除</button>
       </div>
       <div id="city-dropdown" class="nf-city-dropdown" style="display:none"></div>
@@ -486,12 +486,23 @@ const citySelectedEl= document.getElementById('city-selected');
 const btnClearCity  = document.getElementById('btn-clear-city');
 
 citySearchEl.addEventListener('input', () => {
-  const q = citySearchEl.value.trim();
+  const q = citySearchEl.value.trim().toLowerCase();
   if (!q || typeof CITIES === 'undefined') { cityDropdown.style.display = 'none'; return; }
-  const results = CITIES.filter(c => c[0].includes(q) || c[1].includes(q)).slice(0, 8);
+  const results = CITIES.filter(c =>
+    c[0].toLowerCase().includes(q) || c[1].toLowerCase().includes(q)
+  ).slice(0, 10);
   if (!results.length) { cityDropdown.style.display = 'none'; return; }
+  const tzLabel = tz => {
+    if (!tz && tz !== 0) return '';
+    const sign = tz >= 0 ? '+' : '';
+    // handle half-hours like 5.5 → +5:30
+    const h = Math.floor(Math.abs(tz));
+    const m = Math.round((Math.abs(tz) - h) * 60);
+    return `UTC${sign}${tz < 0 ? '-' : ''}${h}${m ? ':' + String(m).padStart(2,'0') : ''}`;
+  };
   cityDropdown.innerHTML = results.map(c =>
-    `<div class="nf-city-item" data-province="${c[0]}" data-city="${c[1]}" data-lon="${c[2]}" data-lat="${c[3]}">${c[0]} · ${c[1]}</div>`
+    `<div class="nf-city-item" data-province="${c[0]}" data-city="${c[1]}" data-lon="${c[2]}" data-lat="${c[3]}" data-tz="${c[4] ?? 8}">` +
+    `${c[0]} · ${c[1]}<span style="float:right;font-size:.72rem;color:#b0a89f">${tzLabel(c[4] ?? 8)}</span></div>`
   ).join('');
   cityDropdown.style.display = 'block';
 });
@@ -502,8 +513,10 @@ cityDropdown.addEventListener('click', e => {
   _selectedCity = {
     province: item.dataset.province,
     city: item.dataset.city,
+    name: `${item.dataset.province} ${item.dataset.city}`,
     lon: parseFloat(item.dataset.lon),
     lat: parseFloat(item.dataset.lat),
+    tzOffset: parseFloat(item.dataset.tz ?? 8),
   };
   citySearchEl.value = `${_selectedCity.province} · ${_selectedCity.city}`;
   btnClearCity.style.display = 'block';
@@ -572,6 +585,7 @@ function updateTrueSolarTime() {
   _tstResult = calcTrueSolarTime({
     year, month, day, hour, minute,
     longitude: _selectedCity?.lon,
+    tzOffset: _selectedCity?.tzOffset ?? 8,
     cityName: _selectedCity ? `${_selectedCity.province}${_selectedCity.city}` : null
   });
 
@@ -586,13 +600,19 @@ function updateTrueSolarTime() {
   // 时辰预览行（明确告知最终采用哪个时辰）
   if (shichenPreview) {
     shichenPreview.innerHTML = crossed
-      ? `北京时间 ${pad(hour)}:${pad(minute)} → ${cstShichen}时，真太阳时修正后跨越时辰 → <strong style="color:#963d32">${tstShichen}时（排盘采用）</strong>`
+      ? `当地时间 ${pad(hour)}:${pad(minute)} → ${cstShichen}时，真太阳时修正后跨越时辰 → <strong style="color:#963d32">${tstShichen}时（排盘采用）</strong>`
       : `${pad(hour)}:${pad(minute)} 真太阳时修正后仍在 <strong>${cstShichen}时</strong>，排盘采用 <strong>${cstShichen}时</strong>`;
     shichenPreview.style.display = 'block';
   }
 
+  const tzOff = _selectedCity?.tzOffset ?? 8;
+  const tzSign = tzOff >= 0 ? '+' : '';
+  const tzH = Math.floor(Math.abs(tzOff));
+  const tzM = Math.round((Math.abs(tzOff) - tzH) * 60);
+  const tzLabel = `UTC${tzOff < 0 ? '-' : tzSign}${tzH}${tzM ? ':' + String(tzM).padStart(2,'0') : ''}`;
+  const localLabel = _tstResult.isEstimated ? '北京时间（默认）' : `当地时间 (${tzLabel})`;
   document.getElementById('tst-display').innerHTML =
-    `<span style="color:#4a3f35">北京时间: ${pad(hour)}:${pad(minute)} · ${cstShichen}时</span><br>` +
+    `<span style="color:#4a3f35">${localLabel}: ${pad(hour)}:${pad(minute)} · ${cstShichen}时</span><br>` +
     `<span style="color:${_tstResult.isEstimated?'#c08060':'#6b4e41'}">真太阳时: ${pad(_tstResult.trueSolarHour)}:${pad(_tstResult.trueSolarMinute)} · <strong>${tstShichen}时</strong>${_tstResult.isEstimated?' （无出生地，以北京经度估算）':''}</span><br>` +
     `<span style="color:#b0a89f">偏差 ${_tstResult.diffStr}（经度修正 ${_tstResult.lonCorrection>0?'+':''}${_tstResult.lonCorrection}分，均时差 ${_tstResult.eot>0?'+':''}${_tstResult.eot}分）</span>`;
 }
@@ -946,6 +966,7 @@ function stepRawBirthTime(hoursDelta) {
         year: newYear, month: newMonth, day: newDay,
         hour: newHour, minute: newMinute,
         longitude: _selectedCity?.lon,
+        tzOffset : _selectedCity?.tzOffset ?? 8,
         cityName : _selectedCity ? `${_selectedCity.province}${_selectedCity.city}` : null,
       })
     : null;
