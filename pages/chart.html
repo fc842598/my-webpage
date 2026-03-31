@@ -1565,6 +1565,7 @@ let _fcLifeCurveMode = 'decade';
 let _fcLifeCurveProgressDone = 0;
 let _fcLifeCurveProgressTotal = 0;
 let _fcLifeCurveStageHint = '';
+let _fcLifeCurveStickyMeta = '';
 
 function _fcCurveKey() {
   const p = _birthPillarsCache || (_chart ? extractPillars(_chart) : null);
@@ -2054,10 +2055,13 @@ function _fcRenderScoreCurve() {
 
   // ── 加载状态文字 ──
   if (meta) {
-    const showMeta = _fcLifeCurveLoading;
+    const stickyText = String(_fcLifeCurveStickyMeta || '').trim();
+    const showMeta = _fcLifeCurveLoading || !!stickyText;
     meta.style.display = showMeta ? 'block' : 'none';
     if (showMeta) {
-      meta.textContent = _fcLifeCurveLoadingText(loadedCount, totalCount);
+      meta.textContent = _fcLifeCurveLoading
+        ? _fcLifeCurveLoadingText(loadedCount, totalCount)
+        : stickyText;
     }
   }
 
@@ -2266,18 +2270,33 @@ function _fcHideTooltip() {
 async function _fcGenerateLifeCurve(options = {}) {
   if (_fcLifeCurveLoading || !_chart || !_chartInputs) return;
   const mode = options.mode || _fcLifeCurveMode;
-  const wantedAges = Array.isArray(options.ages) && options.ages.length ? options.ages : _fcLifeCurveMissingAges(mode);
+  const wantedAgesRaw = Array.isArray(options.ages) && options.ages.length ? options.ages : _fcLifeCurveMissingAges(mode);
+  const wantedAges = [...new Set((wantedAgesRaw || []).map(v => Number(v)).filter(Number.isFinite))].sort((a, b) => a - b);
   if (!wantedAges.length) {
     _fcRenderScoreCurve();
     return;
   }
-  const payload = _fcBuildLifeCurvePayload(wantedAges);
-  if (!payload) return;
+
+  let orderedAges = [...wantedAges];
+  if (mode === 'all') {
+    const [decStart, decEnd] = _fcLifeCurveDecadeRange();
+    const currentDecade = orderedAges.filter(age => age >= decStart && age <= decEnd);
+    const others = orderedAges.filter(age => age < decStart || age > decEnd);
+    orderedAges = [...currentDecade, ...others];
+  }
+
+  const requestBatchSize = mode === 'all' ? 20 : orderedAges.length;
+  const ageBatches = [];
+  for (let i = 0; i < orderedAges.length; i += requestBatchSize) {
+    ageBatches.push(orderedAges.slice(i, i + requestBatchSize));
+  }
+  const totalWanted = wantedAges.length;
 
   const btn = document.getElementById('fc-score-generate');
   _fcLifeCurveLoading = true;
+  _fcLifeCurveStickyMeta = '';
   _fcLifeCurveProgressDone = 0;
-  _fcLifeCurveProgressTotal = wantedAges.length;
+  _fcLifeCurveProgressTotal = totalWanted;
   _fcLifeCurveStageHint = mode === 'all'
     ? '百年评分任务已提交，排队中…'
     : '十年评分任务已提交，排队中…';
@@ -2285,88 +2304,117 @@ async function _fcGenerateLifeCurve(options = {}) {
 
   try {
     const apiBase = await _resolvePimingApiBase();
-    const resp = await fetch(_joinApiUrl(apiBase, '/api/life-curve'), {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ...payload, stream: true, chunkSize: 6 }),
-    });
-    if (!resp.ok) throw new Error(_AI_STATUS_FAILED);
+    let finishedAgeCount = 0;
 
-    const contentType = resp.headers.get('content-type') || '';
-    if (contentType.includes('application/json')) {
-      const data = await resp.json();
-      if (!data.ok) throw new Error(_AI_STATUS_FAILED);
-      if (data.decades?.length) _fcLifeCurveUpsertDecades(data.decades);
-      _fcLifeCurveUpsertScores(data.scores || [], data.model || '');
-      _fcRenderScoreCurve();
-      return;
-    }
+    const applyEvent = (evt) => {
+      if (!evt || typeof evt !== 'object') return;
+      if (evt.type === 'stage') {
+        _fcLifeCurveStageHint = String(evt.message || '').trim() || _fcLifeCurveStageHint;
+        _fcRenderScoreCurve();
+        return;
+      }
+      if (evt.type === 'decades') {
+        _fcLifeCurveUpsertDecades(evt.decades || []);
+        if (evt.provisional) _fcLifeCurveStageHint = '十年底色预估已展示，AI 正在校准…';
+        else _fcLifeCurveStageHint = '十年底色已校准，正在逐年精算…';
+        _fcRenderScoreCurve();
+        return;
+      }
+      if (evt.type === 'partial') {
+        _fcLifeCurveUpsertScores(evt.scores || [], evt.model || '');
+        const localDone = Number(evt.done) || 0;
+        _fcLifeCurveProgressDone = Math.min(totalWanted, Math.max(_fcLifeCurveProgressDone, finishedAgeCount + localDone));
+        _fcLifeCurveProgressTotal = totalWanted;
+        if (_fcLifeCurveProgressDone < _fcLifeCurveProgressTotal) {
+          _fcLifeCurveStageHint = '已返回部分结果，继续精算中…';
+        }
+        _fcRenderScoreCurve();
+        return;
+      }
+      if (evt.type === 'progress') {
+        const localDone = Number(evt.done) || 0;
+        _fcLifeCurveProgressDone = Math.min(totalWanted, Math.max(_fcLifeCurveProgressDone, finishedAgeCount + localDone));
+        _fcLifeCurveProgressTotal = totalWanted;
+        if (_fcLifeCurveProgressDone < _fcLifeCurveProgressTotal) {
+          _fcLifeCurveStageHint = 'AI 正在逐年精算…';
+        }
+        _fcRenderScoreCurve();
+        return;
+      }
+      if (evt.type === 'result') {
+        _fcLifeCurveUpsertScores(evt.scores || [], evt.model || '');
+        if (evt.decades?.length) _fcLifeCurveUpsertDecades(evt.decades);
+        const localDone = Array.isArray(evt.scores) ? evt.scores.length : 0;
+        _fcLifeCurveProgressDone = Math.min(totalWanted, Math.max(_fcLifeCurveProgressDone, finishedAgeCount + localDone));
+        _fcLifeCurveProgressTotal = totalWanted;
+        return;
+      }
+      if (evt.type === 'error') throw new Error(_AI_STATUS_FAILED);
+    };
 
-    const reader = resp.body?.getReader();
-    if (!reader) throw new Error(_AI_STATUS_FAILED);
-    const decoder = new TextDecoder('utf-8');
-    let buffer = '';
-    while (true) {
-      const { value, done } = await reader.read();
-      if (done) break;
-      buffer += decoder.decode(value, { stream: true });
-      const lines = buffer.split('\n');
-      buffer = lines.pop() || '';
-      for (const line of lines) {
-        if (!line.trim()) continue;
-        const evt = JSON.parse(line);
-        if (evt.type === 'stage') {
-          _fcLifeCurveStageHint = String(evt.message || '').trim() || _fcLifeCurveStageHint;
-          _fcRenderScoreCurve();
-        } else if (evt.type === 'decades') {
-          _fcLifeCurveUpsertDecades(evt.decades || []);
-          if (evt.provisional) {
-            _fcLifeCurveStageHint = '十年底色预估已展示，AI 正在校准…';
-          } else {
-            _fcLifeCurveStageHint = '十年底色已校准，正在逐年精算…';
-          }
-          _fcRenderScoreCurve();
-        } else if (evt.type === 'progress') {
-          _fcLifeCurveProgressDone = Number(evt.done) || 0;
-          _fcLifeCurveProgressTotal = Number(evt.total) || _fcLifeCurveProgressTotal || wantedAges.length;
-          if (_fcLifeCurveProgressDone < _fcLifeCurveProgressTotal) {
-            _fcLifeCurveStageHint = 'AI 正在逐年精算…';
-          }
-          _fcRenderScoreCurve();
-        } else if (evt.type === 'partial') {
-          _fcLifeCurveUpsertScores(evt.scores || [], evt.model || '');
-          _fcLifeCurveProgressDone = Number(evt.done) || _fcLifeCurveProgressDone;
-          _fcLifeCurveProgressTotal = Number(evt.total) || _fcLifeCurveProgressTotal || wantedAges.length;
-          if (_fcLifeCurveProgressDone < _fcLifeCurveProgressTotal) {
-            _fcLifeCurveStageHint = '已返回部分结果，继续精算中…';
-          }
-          _fcRenderScoreCurve();
-        } else if (evt.type === 'result') {
-          _fcLifeCurveUpsertScores(evt.scores || [], evt.model || '');
-          if (evt.decades?.length) _fcLifeCurveUpsertDecades(evt.decades);
-          _fcLifeCurveProgressDone = Number(evt.scores?.length) || _fcLifeCurveProgressTotal || wantedAges.length;
-          _fcLifeCurveProgressTotal = _fcLifeCurveProgressTotal || wantedAges.length;
-          _fcLifeCurveStageHint = '评分完成';
-        } else if (evt.type === 'error') {
-          throw new Error(_AI_STATUS_FAILED);
+    for (let batchIdx = 0; batchIdx < ageBatches.length; batchIdx++) {
+      const batchAges = ageBatches[batchIdx];
+      const payload = _fcBuildLifeCurvePayload(batchAges);
+      if (!payload) continue;
+
+      if (mode === 'all' && ageBatches.length > 1) {
+        _fcLifeCurveStageHint = `正在处理第 ${batchIdx + 1}/${ageBatches.length} 批…`;
+        _fcRenderScoreCurve();
+      }
+
+      const resp = await fetch(_joinApiUrl(apiBase, '/api/life-curve'), {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...payload, stream: true, chunkSize: 6 }),
+      });
+      if (!resp.ok) throw new Error(_AI_STATUS_FAILED);
+
+      const contentType = resp.headers.get('content-type') || '';
+      if (contentType.includes('application/json')) {
+        const data = await resp.json();
+        if (!data.ok) throw new Error(_AI_STATUS_FAILED);
+        if (data.decades?.length) _fcLifeCurveUpsertDecades(data.decades);
+        _fcLifeCurveUpsertScores(data.scores || [], data.model || '');
+        finishedAgeCount += batchAges.length;
+        _fcLifeCurveProgressDone = Math.min(totalWanted, finishedAgeCount);
+        _fcLifeCurveProgressTotal = totalWanted;
+        _fcRenderScoreCurve();
+        continue;
+      }
+
+      const reader = resp.body?.getReader();
+      if (!reader) throw new Error(_AI_STATUS_FAILED);
+      const decoder = new TextDecoder('utf-8');
+      let buffer = '';
+      while (true) {
+        const { value, done } = await reader.read();
+        if (done) break;
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split('\n');
+        buffer = lines.pop() || '';
+        for (const line of lines) {
+          if (!line.trim()) continue;
+          applyEvent(JSON.parse(line));
         }
       }
+      if (buffer.trim()) {
+        applyEvent(JSON.parse(buffer));
+      }
+      finishedAgeCount += batchAges.length;
+      _fcLifeCurveProgressDone = Math.min(totalWanted, Math.max(_fcLifeCurveProgressDone, finishedAgeCount));
+      _fcLifeCurveProgressTotal = totalWanted;
+      _fcRenderScoreCurve();
     }
-    if (buffer.trim()) {
-      const evt = JSON.parse(buffer);
-      if (evt.type === 'stage') _fcLifeCurveStageHint = String(evt.message || '').trim() || _fcLifeCurveStageHint;
-      if (evt.type === 'partial' || evt.type === 'result') _fcLifeCurveUpsertScores(evt.scores || [], evt.model || '');
-      if (evt.type === 'result' && evt.decades?.length) _fcLifeCurveUpsertDecades(evt.decades);
-      if (evt.type === 'decades') _fcLifeCurveUpsertDecades(evt.decades || []);
-      if (evt.type === 'error') throw new Error(_AI_STATUS_FAILED);
-    }
+
+    _fcLifeCurveProgressDone = totalWanted;
+    _fcLifeCurveProgressTotal = totalWanted;
+    _fcLifeCurveStageHint = '评分完成';
     _fcRenderScoreCurve();
   } catch (err) {
-    const metaEl = document.getElementById('fc-score-meta');
-    if (metaEl) { metaEl.style.display = 'block'; metaEl.textContent = _aiStatusForError(err); }
+    _fcLifeCurveStickyMeta = _aiStatusForError(err);
   } finally {
     _fcLifeCurveLoading = false;
-    _fcLifeCurveStageHint = '';
+    if (!_fcLifeCurveStickyMeta) _fcLifeCurveStageHint = '';
     _fcRenderScoreCurve();
   }
 }

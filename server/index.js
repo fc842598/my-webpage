@@ -232,7 +232,7 @@ app.use(cors({
     ? (origin, cb) => cb(null, !origin || allowedOrigins.includes(origin))
     : true,
 }));
-app.use(express.json({ limit: '64kb' }));
+app.use(express.json({ limit: '1mb' }));
 
 // ── 健康检查 ─────────────────────────────────────────────
 app.get('/api/ping', (_req, res) => res.json({ ok: true, model: MODEL }));
