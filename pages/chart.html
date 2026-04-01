@@ -1473,6 +1473,11 @@ function _fcResolveXiaoLianBranch(age = _fcActiveAge) {
   return calcXiaoLianBranch(yearBranch, gender, age);
 }
 
+function _fcResolveDisplayedXiaoLianBranch(age = _fcActiveAge) {
+  const rawBranch = _fcResolveXiaoLianBranch(age);
+  return rawBranch ? (DUIGONG[rawBranch] || rawBranch) : null;
+}
+
 function fcBuildYearCards(birthYear) {
   const curYear = new Date().getFullYear();
   const curAge  = curYear - birthYear + 1; // 虚岁
@@ -1502,13 +1507,13 @@ function fcLoadYearly(year) {
   } catch(e) {
     console.warn('horoscope() 调用失败:', e);
   }
-  // 始终用公式计算小限宫（含虚岁-1 + 对宫校正）
+  // 始终先取原始小限分支，再在显示层映射到对宫宫位
   _fcComputeXiaoLian();
 }
 
 function _fcComputeXiaoLian() {
   if (!_chart) return;
-  _fcXiaoLianBranch = _fcResolveXiaoLianBranch(_fcActiveAge);
+  _fcXiaoLianBranch = _fcResolveDisplayedXiaoLianBranch(_fcActiveAge);
 }
 
 function fcRenderHexagram() {
@@ -1844,7 +1849,7 @@ function _fcFindDecadalPalace(age) {
 }
 
 function _fcBuildLifeCurveYear(age) {
-  const xiaoBranch = _fcResolveXiaoLianBranch(age) || '';
+  const xiaoBranch = _fcResolveDisplayedXiaoLianBranch(age) || '';
   const xiaoPalace = (_chart?.palaces || []).find(p => p.earthlyBranch === xiaoBranch) || null;
   const duiBranch  = xiaoBranch ? (DUIGONG[xiaoBranch] || '') : '';
   const duiPalace  = (_chart?.palaces || []).find(p => p.earthlyBranch === duiBranch) || null;
@@ -3199,7 +3204,7 @@ function buildCurrentLuckAnalysis(chart, inputs, activeAge) {
     : '阴爻段：全年走变卦，变动较大，顺势而动勿强求';
 
   // 小限
-  const xlBranch = lnData?.xiaoLian || _fcXiaoLianBranch;
+  const xlBranch = _fcResolveDisplayedXiaoLianBranch(activeAge) || _fcXiaoLianBranch;
   const xlPalace = (chart.palaces||[]).find(p => p.earthlyBranch === xlBranch);
   const xlName   = xlPalace?.name || (xlBranch ? xlBranch+'宫' : '计算中');
   const xlMaj    = _aipMajor(xlPalace);
@@ -3514,7 +3519,7 @@ const AIDBG_MODULES = [
         ? lnData.yearGanzhi.stem + lnData.yearGanzhi.branch + '年' : '—';
       const lnYear  = _fcBirthYear + activeAge - 1;
       const dxIdx   = Math.ceil(activeAge / 10);
-      const xlBranch = lnData?.xiaoLian || _fcXiaoLianBranch;
+      const xlBranch = _fcResolveDisplayedXiaoLianBranch(activeAge) || _fcXiaoLianBranch;
       const xlPalace = (chart.palaces||[]).find(p => p.earthlyBranch === xlBranch);
       const xlName   = xlPalace?.name || (xlBranch ? xlBranch : '—');
       const gua = _liunianGuaResult || lnData;
