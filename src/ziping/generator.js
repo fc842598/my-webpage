@@ -31,6 +31,7 @@
     if (r === 5) return getJigong(birthYear, gender, isYangPerson);
     // 《天机道》P48：超过十位时，只用个位；整十则用十位
     const digit = r >= 10 ? (r % 10 === 0 ? Math.floor(r / 10) : r % 10) : r;
+    if (digit === 5) return getJigong(birthYear, gender, isYangPerson);
     return T().LUOSHU_TO_TRIGRAM[digit] || null;
   }
 
@@ -140,6 +141,9 @@
     const isYangPerson = isYangPersonByYearBranch(yearBranch, gender);
     const guaTian = numToTrigram(tian, true,  birthYear, gender, isYangPerson);
     const guaDi   = numToTrigram(di,   false, birthYear, gender, isYangPerson);
+    if (!guaTian || !guaDi) {
+      return { error: `先天卦数计算失败: guaTian=${guaTian}, guaDi=${guaDi}` };
+    }
     const upper   = isYangPerson ? guaTian : guaDi;
     const lower   = isYangPerson ? guaDi   : guaTian;
     const gua     = buildGua(upper, lower, isYangPerson);
@@ -197,11 +201,11 @@
    *
    * 规则依据：《天机道》逐爻游变章。
    */
-  function buildLiuNianMap(xianTian, houTian, yuanTangLine, birthYear, maxAge, gender) {
+  function buildLiuNianMap(xianTian, houTian, yuanTangLine, birthYear, maxAge, gender, birthYearBranch) {
     if (!xianTian || !yuanTangLine) return {};
     const map = {};
     let age = 1;
-    const birthYearBranch = yearGanzhi(birthYear).branch;
+    const xiaoLianYearBranch = birthYearBranch || yearGanzhi(birthYear).branch;
     const yangStems = new Set(['甲', '丙', '戊', '庚', '壬']);
     const yingLine = lineNum => ((lineNum + 2) % 6) + 1;
     const nextLine = lineNum => (lineNum % 6) + 1;
@@ -249,7 +253,7 @@
           }
           const curYear    = birthYear + age - 1;
           const gz         = yearGanzhi(curYear);
-          const xiaoLian   = calcXiaoLian(birthYearBranch, gender, age);
+          const xiaoLian   = calcXiaoLian(xiaoLianYearBranch, gender, age);
           map[age] = {
             name: gua.name, num: gua.num,
             upper: gua.upper, lower: gua.lower, lines: gua.lines,
@@ -289,7 +293,7 @@
 
     const houTian    = computeHouTian(xianTian, yuanTangLine, warnings);
     const liunianMap = buildLiuNianMap(
-      xianTian, houTian, yuanTangLine, birthYear, maxAge, gender
+      xianTian, houTian, yuanTangLine, birthYear, maxAge, gender, pillars.yearBranch
     );
 
     return {

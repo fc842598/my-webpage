@@ -34,6 +34,7 @@
   }
 
   function applyUiOverrides(result, pillars, gender, birthYear) {
+    if (root.__ZIPING_ENABLE_UI_OVERRIDES__ !== true) return result;
     const cases = root.ZIPING_GOLDEN_CASES;
     if (!Array.isArray(cases) || !result || result.error) return result;
 
