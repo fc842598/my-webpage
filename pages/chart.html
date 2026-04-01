@@ -1009,8 +1009,18 @@ document.getElementById('fc-btn-time-up').addEventListener('click',   () => step
 document.getElementById('fc-btn-time-down').addEventListener('click', () => stepRawBirthTime(+2));
 document.getElementById('fc-score-generate')?.addEventListener('click', () => {
   _fcLifeCurveMode = 'all';
+  // 清空本次将要重算的人生曲线已加载结果、进度状态、sticky meta、阶段文案
+  if (_fcLifeCurveData) {
+    const targetAges = _fcLifeCurveTargetAges('all');
+    const targetAgesSet = new Set(targetAges);
+    _fcLifeCurveData.scores = (_fcLifeCurveData.scores || []).filter(item => !targetAgesSet.has(Number(item.age)));
+  }
+  _fcLifeCurveStickyMeta = '';
+  _fcLifeCurveProgressDone = 0;
+  _fcLifeCurveProgressTotal = 0;
+  _fcLifeCurveStageHint = '';
   _fcRenderScoreCurve();
-  _fcGenerateLifeCurve({ mode: 'all', auto: false });
+  _fcGenerateLifeCurve({ mode: 'all', forceRefresh: true, auto: false });
 });
 document.getElementById('fc-score-mode-decade')?.addEventListener('click', () => {
   _fcLifeCurveMode = 'decade';
@@ -2359,7 +2369,20 @@ function _fcHideTooltip() {
 async function _fcGenerateLifeCurve(options = {}) {
   if (_fcLifeCurveLoading || !_chart || !_chartInputs) return;
   const mode = options.mode || _fcLifeCurveMode;
-  const wantedAgesRaw = Array.isArray(options.ages) && options.ages.length ? options.ages : _fcLifeCurveMissingAges(mode);
+  const forceRefresh = options.forceRefresh === true;
+
+  let wantedAgesRaw;
+  if (Array.isArray(options.ages) && options.ages.length) {
+    // 如果明确传入 ages，直接用传入的
+    wantedAgesRaw = options.ages;
+  } else if (forceRefresh) {
+    // 重新生成时，强制使用完整目标年龄，不走缺失补算逻辑
+    wantedAgesRaw = _fcLifeCurveTargetAges(mode);
+  } else {
+    // 自动补算模式，只补缺失的
+    wantedAgesRaw = _fcLifeCurveMissingAges(mode);
+  }
+
   const wantedAges = [...new Set((wantedAgesRaw || []).map(v => Number(v)).filter(Number.isFinite))].sort((a, b) => a - b);
   if (!wantedAges.length) {
     _fcRenderScoreCurve();
