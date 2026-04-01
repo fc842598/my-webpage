@@ -2735,7 +2735,6 @@ function fcBuildCell(p, activeBranch) {
   const palaceName = (isBody ? '身宫\n' : '') + (p.name || '');
 
   cell.innerHTML = `
-    ${xiaoLianHtml}
     <div class="fc-cell-top">
       ${palMutagenHtml ? `<div class="fc-cell-mutagen">${palMutagenHtml}</div>` : ''}
       <div class="fc-major-list">${majorHtml}</div>
@@ -2749,6 +2748,7 @@ function fcBuildCell(p, activeBranch) {
         <span class="fc-age">${ageStr}</span>
         <span class="fc-palace-name">${palaceName}</span>
       </div>
+      ${xiaoLianHtml}
     </div>`;
 
   cell.onclick = () => renderFigmaHighlight(branch);
