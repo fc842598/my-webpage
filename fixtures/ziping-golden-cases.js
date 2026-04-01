@@ -72,6 +72,156 @@ const ZIPING_GOLDEN_CASES = [
     },
   },
 
+  // ── Verified 3：天纪软件样本，男，1991-02-16 亥时 ─────────────────
+  {
+    id: 'verified-tianji-pdf-1991-02-16-hai',
+    description: '天纪软件样本：辛未 庚寅 丁巳 辛亥，男，1991-02-16 亥时',
+    source: 'professional-tool',
+    verified: true,
+    input: {
+      pillars: {
+        yearStem:'辛', yearBranch:'未',
+        monthStem:'庚', monthBranch:'寅',
+        dayStem:'丁', dayBranch:'巳',
+        hourStem:'辛', hourBranch:'亥',
+      },
+      gender: 'male',
+      birthYear: 1991,
+    },
+    expected: {
+      debug: {
+        tian: 26,
+        di: 34,
+        tianRemainder: 1,
+        diRemainder: 4,
+        guaTian: 6,
+        guaDi: 5,
+        yuanTangLine: 4,
+        houYuanTangLine: 1,
+      },
+      xiantian: { name: '风水涣', num: 59, upper: 5, lower: 6 },
+      houtian:  { name: '水天需', num: 5, upper: 6, lower: 1 },
+      spotChecks: [
+        { age: 35, guaName: '火风鼎', period: '先天' },
+        { age: 36, guaName: '天风姤', period: '先天' },
+        { age: 37, guaName: '泽风大过', period: '先天' },
+        { age: 38, guaName: '泽天夬', period: '先天' },
+        { age: 39, guaName: '泽火革', period: '先天' },
+        { age: 40, guaName: '巽为风', period: '先天' },
+        { age: 41, guaName: '天风姤', period: '先天' },
+        { age: 42, guaName: '火风鼎', period: '先天' },
+        { age: 43, guaName: '雷风恒', period: '先天' },
+        { age: 44, guaName: '雷天大壮', period: '先天' },
+        { age: 45, guaName: '雷火丰', period: '先天' },
+        { age: 46, guaName: '水天需', period: '后天' },
+        { age: 47, guaName: '泽天夬', period: '后天' },
+        { age: 48, guaName: '泽风大过', period: '后天' },
+        { age: 49, guaName: '泽山咸', period: '后天' },
+        { age: 50, guaName: '泽地萃', period: '后天' },
+      ],
+    },
+  },
+
+  // ── Verified 4：天纪软件样本，男，1969-03-26 亥时 ─────────────────
+  {
+    id: 'verified-tianji-pdf-1969-03-26-hai',
+    description: '天纪软件样本：己酉 丁卯 庚子 丁亥，男，1969-03-26 亥时',
+    source: 'professional-tool',
+    verified: true,
+    input: {
+      pillars: {
+        yearStem:'己', yearBranch:'酉',
+        monthStem:'丁', monthBranch:'卯',
+        dayStem:'庚', dayBranch:'子',
+        hourStem:'丁', hourBranch:'亥',
+      },
+      gender: 'male',
+      birthYear: 1969,
+    },
+    expected: {
+      debug: {
+        tian: 40,
+        di: 24,
+        tianRemainder: 15,
+        diRemainder: 24,
+        guaTian: 6,
+        guaDi: 5,
+        yuanTangLine: 4,
+        houYuanTangLine: 1,
+      },
+      xiantian: { name: '风水涣', num: 59, upper: 5, lower: 6 },
+      houtian:  { name: '水天需', num: 5, upper: 6, lower: 1 },
+      spotChecks: [
+        { age: 57, guaName: '地天泰', period: '后天' },
+        { age: 58, guaName: '地泽临', period: '后天' },
+        { age: 59, guaName: '雷泽归妹', period: '后天' },
+        { age: 60, guaName: '兑为泽', period: '后天' },
+        { age: 61, guaName: '天泽履', period: '后天' },
+        { age: 62, guaName: '天水讼', period: '后天' },
+        { age: 63, guaName: '天地否', period: '后天' },
+        { age: 64, guaName: '水天需', period: '后天' },
+        { age: 65, guaName: '风天小畜', period: '后天' },
+        { age: 66, guaName: '风泽中孚', period: '后天' },
+        { age: 67, guaName: '天泽履', period: '后天' },
+        { age: 68, guaName: '火泽睽', period: '后天' },
+        { age: 69, guaName: '雷泽归妹', period: '后天' },
+        { age: 70, guaName: '雷水解', period: '后天' },
+        { age: 71, guaName: '雷地豫', period: '后天' },
+        { age: 72, guaName: '雷山小过', period: '后天' },
+      ],
+    },
+  },
+
+  // ── Verified 5：天纪软件样本，男，1966-06-25 亥时 ─────────────────
+  {
+    id: 'verified-tianji-pdf-1966-06-25-hai',
+    description: '天纪软件样本：丙午 甲午 乙卯 丁亥，男，1966-06-25 亥时',
+    source: 'professional-tool',
+    verified: true,
+    input: {
+      pillars: {
+        yearStem:'丙', yearBranch:'午',
+        monthStem:'甲', monthBranch:'午',
+        dayStem:'乙', dayBranch:'卯',
+        hourStem:'丁', hourBranch:'亥',
+      },
+      gender: 'male',
+      birthYear: 1966,
+    },
+    expected: {
+      debug: {
+        tian: 25,
+        di: 34,
+        tianRemainder: 25,
+        diRemainder: 4,
+        guaTian: 7,
+        guaDi: 5,
+        yuanTangLine: 5,
+        houYuanTangLine: 2,
+      },
+      xiantian: { name: '山风蛊', num: 18, upper: 7, lower: 5 },
+      houtian:  { name: '巽为风', num: 57, upper: 5, lower: 5 },
+      spotChecks: [
+        { age: 60, guaName: '火水未济', period: '后天' },
+        { age: 61, guaName: '火泽睽', period: '后天' },
+        { age: 62, guaName: '火雷噬嗑', period: '后天' },
+        { age: 63, guaName: '离为火', period: '后天' },
+        { age: 64, guaName: '天风姤', period: '后天' },
+        { age: 65, guaName: '火风鼎', period: '后天' },
+        { age: 66, guaName: '雷风恒', period: '后天' },
+        { age: 67, guaName: '雷天大壮', period: '后天' },
+        { age: 68, guaName: '雷火丰', period: '后天' },
+        { age: 69, guaName: '震为雷', period: '后天' },
+        { age: 70, guaName: '山风蛊', period: '后天' },
+        { age: 71, guaName: '艮为山', period: '后天' },
+        { age: 72, guaName: '风山渐', period: '后天' },
+        { age: 73, guaName: '水山蹇', period: '后天' },
+        { age: 74, guaName: '水火既济', period: '后天' },
+        { age: 75, guaName: '水天需', period: '后天' },
+      ],
+    },
+  },
+
   // ── Case 1：壬辰甲子丁丑壬子，男，1952 ──────────────────────
   // 手算过程：
   //   天干数：壬(9)甲(1)丁(4)壬(9) + 地支数：辰(5)子(1)丑(2)子(1)
@@ -263,39 +413,6 @@ const ZIPING_GOLDEN_CASES = [
   //   },
   // },
 
-  {
-    id: 'case-ui-calibration-1991-xieguangzhou',
-    description: 'UI-calibrated yearly sequence for 辛未 庚寅 丁巳 辛亥 男 1991',
-    source: 'user-screenshot',
-    verified: false,
-    input: {
-      pillars: {
-        yearStem: '辛', yearBranch: '未',
-        monthStem: '庚', monthBranch: '寅',
-        dayStem: '丁', dayBranch: '巳',
-        hourStem: '辛', hourBranch: '亥',
-      },
-      gender: 'male',
-      birthYear: 1991,
-    },
-    uiOverrides: {
-      liunianByAge: {
-        31: '山雷颐',
-        32: '山地剥',
-        33: '山水蒙',
-        34: '山风蛊',
-        35: '火风鼎',
-        36: '天风姤',
-        37: '泽风大过',
-        38: '泽天夬',
-        39: '泽火革',
-        40: '巽为风',
-        41: '天风姤',
-        42: '火风鼎',
-        43: '雷风恒',
-      },
-    },
-  },
 ];
 
 if (typeof window !== 'undefined') {

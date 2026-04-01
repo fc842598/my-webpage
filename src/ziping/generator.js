@@ -1,6 +1,7 @@
 /**
  * 子平法命卦 — 离线生成器 v2
- * 规则来源：海厦《天机道》
+ * 基础规则来源：海厦《天机道》
+ * 并按天纪软件实盘样本校准取数与流年推进细节
  * 输出包含完整 debug 中间过程 + warnings 数组（用于外部校验反馈）
  */
 (function (root) {
@@ -23,16 +24,43 @@
     return isYangPerson ? T().JIGONG[sy].yang : T().JIGONG[sy].yin;
   }
 
+  function getRemainderDetail(sum, isHeaven) {
+    const mod = isHeaven ? 25 : 30;
+    let remainder = sum % mod;
+    if (remainder === 0) remainder = mod;
+
+    let digit;
+    let usesJigong = false;
+    let trigramOverride = null;
+
+    if (remainder === 5) {
+      digit = 5;
+      usesJigong = true;
+    } else if (isHeaven && remainder === 15) {
+      // 天纪软件样本校准：天数余 15 时，软件落坎卦。
+      digit = 1;
+      trigramOverride = 6;
+    } else if (isHeaven && remainder === 25) {
+      // 天纪软件样本校准：天数余 25 时，软件落艮卦。
+      digit = 7;
+      trigramOverride = 7;
+    } else {
+      // 《天机道》P48：超过十位时，只用个位；整十则用十位
+      digit = remainder >= 10
+        ? (remainder % 10 === 0 ? Math.floor(remainder / 10) : remainder % 10)
+        : remainder;
+      usesJigong = digit === 5;
+    }
+
+    return { remainder, digit, usesJigong, trigramOverride };
+  }
+
   // ── 数字合 → 先天卦数（天数 mod25，地数 mod30） ─────────────
   function numToTrigram(sum, isHeaven, birthYear, gender, isYangPerson) {
-    const mod = isHeaven ? 25 : 30;
-    let r = sum % mod;
-    if (r === 0) r = mod;
-    if (r === 5) return getJigong(birthYear, gender, isYangPerson);
-    // 《天机道》P48：超过十位时，只用个位；整十则用十位
-    const digit = r >= 10 ? (r % 10 === 0 ? Math.floor(r / 10) : r % 10) : r;
-    if (digit === 5) return getJigong(birthYear, gender, isYangPerson);
-    return T().LUOSHU_TO_TRIGRAM[digit] || null;
+    const detail = getRemainderDetail(sum, isHeaven);
+    if (detail.trigramOverride) return detail.trigramOverride;
+    if (detail.usesJigong) return getJigong(birthYear, gender, isYangPerson);
+    return T().LUOSHU_TO_TRIGRAM[detail.digit] || null;
   }
 
   // ── 六爻数组（爻1底→爻6顶） ──────────────────────────────────
@@ -98,6 +126,10 @@
     }
   }
 
+  function yingLine(lineNum) {
+    return ((lineNum + 2) % 6) + 1;
+  }
+
   // ── 年干支 ───────────────────────────────────────────────────
   function yearGanzhi(year) {
     return {
@@ -134,8 +166,10 @@
     const evenNums = allNums.filter(n => n % 2 === 0);
     const tian     = oddNums.reduce((a, b) => a + b, 0);
     const di       = evenNums.reduce((a, b) => a + b, 0);
-    const tianR    = (() => { const r = tian % 25; return r === 0 ? 25 : r; })();
-    const diR      = (() => { const r = di   % 30; return r === 0 ? 30 : r; })();
+    const tianDetail = getRemainderDetail(tian, true);
+    const diDetail   = getRemainderDetail(di, false);
+    const tianR      = tianDetail.remainder;
+    const diR        = diDetail.remainder;
     const yangBranches = new Set(['子', '寅', '辰', '午', '申', '戌']);
     const isYangYear   = yangBranches.has(yearBranch);
     const isYangPerson = isYangPersonByYearBranch(yearBranch, gender);
@@ -150,10 +184,11 @@
     const debug   = {
       allNums, oddNums, evenNums, tian, di,
       tianRemainder: tianR, diRemainder: diR,
-      tianRem5: tianR === 5, diRem5: diR === 5,
+      tianDigit: tianDetail.digit, diDigit: diDetail.digit,
+      tianRem5: tianDetail.usesJigong, diRem5: diDetail.usesJigong,
       sanyuan: getSanyuan(birthYear),
       isYangYear, isYangPerson,
-      guaTian, guaDi, jigongApplied: tianR === 5 || diR === 5,
+      guaTian, guaDi, jigongApplied: tianDetail.usesJigong || diDetail.usesJigong,
       upper, lower, hexLines6: hexLines6(upper, lower),
     };
     return { gua, debug };
@@ -213,19 +248,18 @@
    *
    * 规则依据：《天机道》逐爻游变章。
    */
-  function buildLiuNianMap(xianTian, houTian, yuanTangLine, birthYear, maxAge, gender, birthYearBranch) {
-    if (!xianTian || !yuanTangLine) return {};
+  function buildLiuNianMap(xianTian, houTian, xianYuanTangLine, houYuanTangLine, birthYear, maxAge, gender, birthYearBranch) {
+    if (!xianTian || !xianYuanTangLine) return {};
     const map = {};
     let age = 1;
     const xiaoLianYearBranch = birthYearBranch || yearGanzhi(birthYear).branch;
     const yangStems = new Set(['甲', '丙', '戊', '庚', '壬']);
-    const yingLine = lineNum => ((lineNum + 2) % 6) + 1;
     const nextLine = lineNum => (lineNum % 6) + 1;
 
-    function buildFlipSchedule(lineNum, yearsInPeriod, firstYearUnchanged) {
+    function buildFlipSchedule(lineNum, yearsInPeriod, isYangLine) {
       if (yearsInPeriod <= 1) return [];
       const schedule = [];
-      if (firstYearUnchanged) {
+      if (isYangLine) {
         schedule.push(yingLine(lineNum));
         let cur = lineNum;
         while (schedule.length < yearsInPeriod - 1) {
@@ -243,7 +277,7 @@
       return schedule;
     }
 
-    function fillPeriod(baseGua, period) {
+    function fillPeriod(baseGua, period, yuanTangLine) {
       const h6 = hexLines6(baseGua.upper, baseGua.lower);
       const lineOrder = [];
       for (let i = yuanTangLine; i <= 6; i++) lineOrder.push(i);
@@ -257,7 +291,7 @@
         const firstGz = yearGanzhi(firstYear);
         const firstYearUnchanged = isYang && yangStems.has(firstGz.stem);
         let gua = firstYearUnchanged ? baseGua : flipHex(baseGua, ln);
-        const flipSchedule = buildFlipSchedule(ln, numYears, firstYearUnchanged);
+        const flipSchedule = buildFlipSchedule(ln, numYears, isYang);
 
         for (let y = 0; y < numYears && age <= maxAge; y++, age++) {
           if (y > 0) {
@@ -278,8 +312,8 @@
       }
     }
 
-    fillPeriod(xianTian, '先天');
-    if (houTian && age <= maxAge) fillPeriod(houTian, '后天');
+    fillPeriod(xianTian, '先天', xianYuanTangLine);
+    if (houTian && age <= maxAge) fillPeriod(houTian, '后天', houYuanTangLine);
     if (age <= maxAge) {
       const lastKey = Math.max(...Object.keys(map).map(Number));
       const last    = map[lastKey];
@@ -300,13 +334,15 @@
 
     const { gua: xianTian, debug } = xtResult;
     const yuanTangLine = getYuanTang(xianTian.upper, xianTian.lower, pillars.hourBranch);
+    const houYuanTangLine = yingLine(yuanTangLine);
     debug.yuanTangLine     = yuanTangLine;
     debug.yuanTangLineType = debug.hexLines6[yuanTangLine - 1] === 'solid' ? 'yang' : 'yin';
+    debug.houYuanTangLine  = houYuanTangLine;
 
     const houTian    = computeHouTian(xianTian, yuanTangLine, pillars.monthBranch, warnings);
     debug.monthLing  = getLingType(pillars.monthBranch);
     const liunianMap = buildLiuNianMap(
-      xianTian, houTian, yuanTangLine, birthYear, maxAge, gender, pillars.yearBranch
+      xianTian, houTian, yuanTangLine, houYuanTangLine, birthYear, maxAge, gender, pillars.yearBranch
     );
 
     return {
@@ -316,6 +352,7 @@
       xiantian:    { name: xianTian.name, num: xianTian.num, upper: xianTian.upper, lower: xianTian.lower, lines: xianTian.lines },
       houtian:     houTian ? { name: houTian.name, num: houTian.num, upper: houTian.upper, lower: houTian.lower, lines: houTian.lines } : null,
       yuanTangLine,
+      houYuanTangLine,
       liunianMap,
     };
   }

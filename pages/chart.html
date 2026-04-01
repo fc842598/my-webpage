@@ -12,6 +12,7 @@
   <script src="../js/trueSolarTime.js"></script>
   <script src="guaci-data.js"></script>
   <!-- 子平法命卦模块（顺序依赖：tables → generator → validator → runtime） -->
+  <script src="../src/ziping/tianji-bazi.js"></script>
   <script src="../src/ziping/tables.js"></script>
   <script src="../src/ziping/generator.js"></script>
   <script src="../src/ziping/validator.js"></script>
@@ -778,6 +779,11 @@ document.getElementById('btn-submit').addEventListener('click', async () => {
     const lib = mod.astro || mod.default?.astro;
     if (!lib) throw new Error('iztro 加载失败，请刷新重试');
     _iztroLib = lib;  // 保存供时辰微调复用
+    try {
+      await _ensureTianjiBaziLib();
+    } catch (tianjiErr) {
+      console.warn('天纪四柱库加载失败，先回退到命盘原始四柱：', tianjiErr);
+    }
 
     const genderStr = norm.gender === 'male' ? '男' : '女';
     _chart = typeof lib.bySolar === 'function'
@@ -1412,6 +1418,12 @@ const FC_ZHI = ['寅','卯','辰','巳','午','未','申','酉','戌','亥','子
 // ─── 页面层只读取 ZipingRuntime.compute() 返回的结果对象 ────────
 
 function extractPillars(chart) {
+  const Solar = _getTianjiSolarClass();
+  const tianjiPillars = (typeof TianjiBazi !== 'undefined' && Solar && _chartInputs?.norm)
+    ? TianjiBazi.computePillarsFromSolarLib(Solar, _chartInputs.norm)
+    : null;
+  if (tianjiPillars) return tianjiPillars;
+
   const rd   = chart.rawDates || chart;
   // 路径1：iztro v2 rawDates.chineseDate = { yearly:[干,支], monthly, daily, hourly }
   const cd   = (rd.chineseDate && typeof rd.chineseDate === 'object') ? rd.chineseDate : {};
@@ -1447,6 +1459,27 @@ let _liunianGuaResult  = null; // 当前选中年龄的流年卦
 let _liunianSeq        = {};   // 流年序列 { age: guaResult }（即 liunianMap）
 let _birthPillarsCache = null; // 出生四柱缓存
 let _birthGender       = null;
+let _tianjiBaziLib     = null;
+let _tianjiBaziLibErr  = null;
+
+function _getTianjiSolarClass() {
+  return _tianjiBaziLib?.Solar
+    || _tianjiBaziLib?.default?.Solar
+    || _tianjiBaziLib?.default?.default?.Solar
+    || null;
+}
+
+async function _ensureTianjiBaziLib() {
+  if (_getTianjiSolarClass()) return _tianjiBaziLib;
+  if (_tianjiBaziLibErr) throw _tianjiBaziLibErr;
+  try {
+    _tianjiBaziLib = await import('https://esm.sh/lunar-javascript@1.7.7');
+    return _tianjiBaziLib;
+  } catch (err) {
+    _tianjiBaziLibErr = err;
+    throw err;
+  }
+}
 
 // ── 小限宫位计算 ──────────────────────────────────────────
 // 按传统紫微斗数：年支三合起点 + 男顺女逆
