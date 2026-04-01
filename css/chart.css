@@ -843,11 +843,47 @@
   border-radius: 99px;
   transition: width .5s ease;
 }
+/* indeterminate 扫描态：第一批 partial 到达前使用 */
+.fc-score-progress-fill.fc-progress-indeterminate::after {
+  width: 38% !important;
+  left: -45%;
+  animation: fc-progress-sweep 1.5s cubic-bezier(.45,.05,.55,.95) infinite;
+  transition: none;
+}
+@keyframes fc-progress-sweep {
+  0%   { left: -45%; }
+  100% { left: 115%; }
+}
 .fc-score-progress-text {
   font-size: 10px;
   color: #9c8878;
   flex: 0 0 auto;
   white-space: nowrap;
+}
+
+/* ── SVG 预热骨架动画 ──────────────────────────────────────── */
+.fc-score-skeleton-bg {
+  fill: rgba(210,196,181,.12);
+}
+.fc-score-skeleton-line {
+  stroke: rgba(140,100,80,.28);
+  stroke-width: 1.5;
+  stroke-dasharray: 6 4;
+  animation: fc-skeleton-pulse 1.6s ease-in-out infinite;
+}
+/* shimmer：宽条位置由 JS 设置，translate 驱动扫过整个图表区 */
+.fc-score-shimmer {
+  fill: rgba(180,148,122,.13);
+  pointer-events: none;
+  animation: fc-shimmer-sweep 1.8s ease-in-out infinite;
+}
+@keyframes fc-skeleton-pulse {
+  0%, 100% { stroke-opacity: .25; }
+  50%       { stroke-opacity: .95; }
+}
+@keyframes fc-shimmer-sweep {
+  0%   { transform: translateX(0px);    }
+  100% { transform: translateX(1100px); }
 }
 
 /* ── 加载状态文字 ──────────────────────────────────────────── */

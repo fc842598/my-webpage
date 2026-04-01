@@ -667,13 +667,16 @@ app.post('/api/life-curve', async (req, res) => {
       message: '十年底色已就绪，开始逐年精算…',
     });
 
-    // ── 第二层：逐年评分，最多 3 个 chunk 并发，按完成顺序实时回传 ──
+    // ── 第二层：逐年评分，并发计算但按 chunk 原始顺序向前端发 partial ──
     const CONCURRENCY = 3;
     let done = 0;
     let allScores = [];
     let warningCount = 0;
     const pending = chunks.map((chunk, idx) => ({ idx, chunk }));
     const running = new Map();
+    // 缓冲已完成但还不到发送顺序的 chunk，保证按 idx 升序 flush
+    const completedBuffer = new Map();
+    let nextToSend = 0;
 
     const launchOne = () => {
       if (!pending.length) return false;
@@ -695,17 +698,25 @@ app.post('/api/life-curve', async (req, res) => {
       const result = settled.result || { scores: [], model: MODEL };
       if (result.warning) warningCount += 1;
       allScores = allScores.concat(result.scores || []);
-      done += (result.scores || []).length;
 
-      await writeEvent({
-        type    : 'partial',
-        model   : result.model || MODEL,
-        scores  : result.scores || [],
-        done,
-        total   : years.length,
-        warnings: warningCount,
-      });
-      await writeEvent({ type: 'progress', done, total: years.length, warnings: warningCount });
+      // 先缓冲，等待按 idx 升序发送，确保前端收到的 partial 严格按年龄从小到大
+      completedBuffer.set(settled.idx, result);
+
+      while (completedBuffer.has(nextToSend)) {
+        const r = completedBuffer.get(nextToSend);
+        completedBuffer.delete(nextToSend);
+        done += (r.scores || []).length;
+        await writeEvent({
+          type    : 'partial',
+          model   : r.model || MODEL,
+          scores  : r.scores || [],
+          done,
+          total   : years.length,
+          warnings: warningCount,
+        });
+        await writeEvent({ type: 'progress', done, total: years.length, warnings: warningCount });
+        nextToSend++;
+      }
 
       launchOne();
     }

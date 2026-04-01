@@ -1019,6 +1019,7 @@ document.getElementById('fc-score-generate')?.addEventListener('click', () => {
   _fcLifeCurveProgressDone = 0;
   _fcLifeCurveProgressTotal = 0;
   _fcLifeCurveStageHint = '';
+  _fcLifeCurveHasFirstPartial = false;
   _fcRenderScoreCurve();
   _fcGenerateLifeCurve({ mode: 'all', forceRefresh: true, auto: false });
 });
@@ -1576,6 +1577,8 @@ let _fcLifeCurveProgressDone = 0;
 let _fcLifeCurveProgressTotal = 0;
 let _fcLifeCurveStageHint = '';
 let _fcLifeCurveStickyMeta = '';
+// 第一批真实 partial 是否已到达（用于区分"预热占位"和"真实进度"两种状态）
+let _fcLifeCurveHasFirstPartial = false;
 
 function _fcCurveKey() {
   const p = _birthPillarsCache || (_chart ? extractPillars(_chart) : null);
@@ -2020,16 +2023,7 @@ function _fcRenderDecadeBands(svg, rangeStart, rangeEnd, padX, padTop, innerW, i
     rect.setAttribute('class', cls.trim());
     svg.appendChild(rect);
 
-    // Range label at top of each band
-    if (w > 16) {
-      const lbl = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-      lbl.setAttribute('x', String(x1 + w / 2));
-      lbl.setAttribute('y', String(padTop + 8));
-      lbl.setAttribute('text-anchor', 'middle');
-      lbl.setAttribute('class', 'fc-decade-band-label' + (isActive ? ' active' : ''));
-      lbl.textContent = `${dStart}`;
-      svg.appendChild(lbl);
-    }
+    // 顶部 band 起始年龄标签已移除（对用户无意义）
   });
 }
 
@@ -2145,10 +2139,21 @@ function _fcRenderScoreCurve() {
   if (progressWrap) {
     const showBar = _fcLifeCurveLoading;
     progressWrap.style.display = showBar ? 'flex' : 'none';
-    if (showBar && progressFill && progressTotal > 0) {
-      const pct = Math.max(3, Math.round((progressDone / progressTotal) * 100));
-      progressFill.style.setProperty('--fc-progress', `${pct}%`);
-      if (progressText) progressText.textContent = `${progressDone}/${progressTotal}`;
+    if (showBar && progressFill) {
+      if (!_fcLifeCurveHasFirstPartial) {
+        // 预热态：indeterminate 扫描动画，不显示假进度
+        progressFill.classList.add('fc-progress-indeterminate');
+        progressFill.style.removeProperty('--fc-progress');
+        if (progressText) progressText.textContent = '排队中…';
+      } else {
+        // 真实进度态
+        progressFill.classList.remove('fc-progress-indeterminate');
+        if (progressTotal > 0) {
+          const pct = Math.max(3, Math.round((progressDone / progressTotal) * 100));
+          progressFill.style.setProperty('--fc-progress', `${pct}%`);
+          if (progressText) progressText.textContent = `${progressDone}/${progressTotal}`;
+        }
+      }
     }
   }
 
@@ -2178,6 +2183,30 @@ function _fcRenderScoreCurve() {
 
   // 十年色块背景
   _fcRenderDecadeBands(svg, rangeStart, rangeEnd, pX, pT, iW, iH);
+
+  // 预热骨架动画：在第一批真实 partial 到达前显示，不伪造任何分数
+  if (_fcLifeCurveLoading && !_fcLifeCurveHasFirstPartial && visibleScores.length === 0) {
+    // 骨架背景层
+    const skelBg = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+    skelBg.setAttribute('x', String(pX)); skelBg.setAttribute('y', String(pT));
+    skelBg.setAttribute('width', String(iW)); skelBg.setAttribute('height', String(iH));
+    skelBg.setAttribute('class', 'fc-score-skeleton-bg');
+    svg.appendChild(skelBg);
+    // 骨架脉冲线（中性50分基准线位置，纯占位）
+    const skelLine = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+    skelLine.setAttribute('x1', String(pX)); skelLine.setAttribute('x2', String(pX + iW));
+    skelLine.setAttribute('y1', String(toY(50))); skelLine.setAttribute('y2', String(toY(50)));
+    skelLine.setAttribute('class', 'fc-score-skeleton-line');
+    svg.appendChild(skelLine);
+    // shimmer 扫描层：初始位置在图表左侧外，CSS animation 驱动向右扫
+    const shimmer = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+    shimmer.setAttribute('x', String(pX - Math.round(iW * 0.55)));
+    shimmer.setAttribute('y', String(pT));
+    shimmer.setAttribute('width', String(Math.round(iW * 0.5)));
+    shimmer.setAttribute('height', String(iH));
+    shimmer.setAttribute('class', 'fc-score-shimmer');
+    svg.appendChild(shimmer);
+  }
 
   // 参考线（50分虚线）
   if (visibleScores.length) {
@@ -2406,6 +2435,7 @@ async function _fcGenerateLifeCurve(options = {}) {
 
   const btn = document.getElementById('fc-score-generate');
   _fcLifeCurveLoading = true;
+  _fcLifeCurveHasFirstPartial = false;
   _fcLifeCurveStickyMeta = '';
   _fcLifeCurveProgressDone = 0;
   _fcLifeCurveProgressTotal = totalWanted;
@@ -2433,6 +2463,7 @@ async function _fcGenerateLifeCurve(options = {}) {
         return;
       }
       if (evt.type === 'partial') {
+        _fcLifeCurveHasFirstPartial = true;
         _fcLifeCurveUpsertScores(evt.scores || [], evt.model || '');
         const localDone = Number(evt.done) || 0;
         _fcLifeCurveProgressDone = Math.min(totalWanted, Math.max(_fcLifeCurveProgressDone, finishedAgeCount + localDone));
@@ -2477,7 +2508,7 @@ async function _fcGenerateLifeCurve(options = {}) {
       const resp = await fetch(_joinApiUrl(apiBase, '/api/life-curve'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...payload, stream: true, chunkSize: 6 }),
+        body: JSON.stringify({ ...payload, stream: true, chunkSize: mode === 'decade' ? 2 : 3 }),
       });
       if (!resp.ok) throw new Error(_AI_STATUS_FAILED);
 
@@ -2736,6 +2767,7 @@ function renderFigmaChart(chart, gender, dateStr, norm) {
     _fcLifeCurveData = null;
     _fcLifeCurveAutoTriggered = false;
     _fcLifeCurveMode = 'decade';
+    _fcLifeCurveHasFirstPartial = false;
   }
   // ── 子平法卦：统一由 ZipingRuntime 离线生成 ────────────────
   const _zipingResult  = ZipingRuntime.compute(_birthPillarsCache, gender, _fcBirthYear);
