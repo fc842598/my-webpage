@@ -106,7 +106,7 @@
     };
   }
 
-  // ── 小流年宫位（紫微斗数三合起宫法） ────────────────────────
+  // ── 小限宫位（紫微斗数三合起宫法） ──────────────────────────
   function calcXiaoLian(birthYearBranch, gender, xuAge) {
     const startMap = gender === 'male'
       ? T().XIAOLIAN_MALE_START
@@ -272,7 +272,7 @@
             isYangPerson: gua.isYangPerson,
             lineNum: ln, lineType: isYang ? 'yang' : 'yin',
             period, yearGanzhi: gz,
-            xiaoLian,           // 小流年宫位（出生年支 + 虚岁计算）
+            xiaoLian,           // 小限宫位（出生年支 + 虚岁计算）
           };
         }
       }

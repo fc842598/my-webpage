@@ -2716,7 +2716,7 @@ function fcBuildCell(p, activeBranch) {
   const shenHtml = [p.changsheng12, p.boshi12].filter(Boolean)
     .map(s=>`<span>${s}</span>`).join('');
 
-  // 小流年宫位标识（优先于普通流年叠加行）
+  // 小限宫位标识（优先于普通流年叠加行）
   let xiaoLianHtml = '';
   if (isXiaoLian) {
     xiaoLianHtml = `<div class="fc-xiaolian-badge">${_fcActiveAge}岁</div>`;
