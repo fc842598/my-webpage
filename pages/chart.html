@@ -365,6 +365,9 @@
         <!-- 加载状态文字 -->
         <div class="fc-score-meta" id="fc-score-meta" style="display:none"></div>
 
+        <!-- 重大关口年提示横幅 -->
+        <div class="fc-critical-banner" id="fc-critical-banner" style="display:none"></div>
+
         <!-- 曲线图（主角，满宽） -->
         <svg class="fc-score-svg" id="fc-score-svg" viewBox="0 0 390 260" preserveAspectRatio="none"></svg>
 
@@ -1020,6 +1023,7 @@ document.getElementById('fc-score-generate')?.addEventListener('click', () => {
   _fcLifeCurveProgressTotal = 0;
   _fcLifeCurveStageHint = '';
   _fcLifeCurveHasFirstPartial = false;
+  _fcLifeCurveCriticalYear = null;
   _fcRenderScoreCurve();
   _fcGenerateLifeCurve({ mode: 'all', forceRefresh: true, auto: false });
 });
@@ -1579,6 +1583,8 @@ let _fcLifeCurveStageHint = '';
 let _fcLifeCurveStickyMeta = '';
 // 第一批真实 partial 是否已到达（用于区分"预热占位"和"真实进度"两种状态）
 let _fcLifeCurveHasFirstPartial = false;
+// 重大关口年（null = 本命盘无重大关口）
+let _fcLifeCurveCriticalYear = null;
 
 function _fcCurveKey() {
   const p = _birthPillarsCache || (_chart ? extractPillars(_chart) : null);
@@ -2220,17 +2226,41 @@ function _fcRenderScoreCurve() {
   if (visibleScores.length >= 2) {
     const pts = visibleScores.map(item => ({ ...item, x: toX(item.age), y: toY(item.score) }));
 
-    // 面积
-    const area = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-    area.setAttribute('d', `M ${pts[0].x} ${pT + iH} ${pts.map(p => `L ${p.x} ${p.y}`).join(' ')} L ${pts[pts.length-1].x} ${pT+iH} Z`);
-    area.setAttribute('class', 'fc-score-area');
-    svg.appendChild(area);
+    // ── 找出关口年在 pts 中的分割点 ──
+    const critIdx = (_fcLifeCurveCriticalYear !== null && _fcLifeCurveMode === 'all')
+      ? pts.findIndex(p => p.age === _fcLifeCurveCriticalYear)
+      : -1;
 
-    // 曲线
-    const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-    path.setAttribute('d', pts.map((p, i) => `${i === 0 ? 'M' : 'L'} ${p.x} ${p.y}`).join(' '));
-    path.setAttribute('class', 'fc-score-path');
-    svg.appendChild(path);
+    if (critIdx > 0 && critIdx < pts.length - 1) {
+      // 前段（1岁 ~ criticalYear，含）
+      const preP  = pts.slice(0, critIdx + 1);
+      // 后段（criticalYear ~ 100岁，含，首点重叠以连续）
+      const postP = pts.slice(critIdx);
+
+      const mkAreaD = p => `M ${p[0].x} ${pT + iH} ${p.map(q => `L ${q.x} ${q.y}`).join(' ')} L ${p[p.length-1].x} ${pT+iH} Z`;
+      const mkLineD = p => p.map((q, i) => `${i === 0 ? 'M' : 'L'} ${q.x} ${q.y}`).join(' ');
+
+      const preArea = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      preArea.setAttribute('d', mkAreaD(preP)); preArea.setAttribute('class', 'fc-score-area'); svg.appendChild(preArea);
+
+      const postArea = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      postArea.setAttribute('d', mkAreaD(postP)); postArea.setAttribute('class', 'fc-score-area fc-score-area-postcritical'); svg.appendChild(postArea);
+
+      const prePath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      prePath.setAttribute('d', mkLineD(preP)); prePath.setAttribute('class', 'fc-score-path'); svg.appendChild(prePath);
+
+      const postPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      postPath.setAttribute('d', mkLineD(postP)); postPath.setAttribute('class', 'fc-score-path fc-score-path-postcritical'); svg.appendChild(postPath);
+    } else {
+      // 无关口年：正常单段渲染
+      const area = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      area.setAttribute('d', `M ${pts[0].x} ${pT + iH} ${pts.map(p => `L ${p.x} ${p.y}`).join(' ')} L ${pts[pts.length-1].x} ${pT+iH} Z`);
+      area.setAttribute('class', 'fc-score-area'); svg.appendChild(area);
+
+      const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      path.setAttribute('d', pts.map((p, i) => `${i === 0 ? 'M' : 'L'} ${p.x} ${p.y}`).join(' '));
+      path.setAttribute('class', 'fc-score-path'); svg.appendChild(path);
+    }
 
     // X 轴刻度
     const axisAges = _fcLifeCurveMode === 'all' ? [1, 20, 40, 60, 80, 100]
@@ -2283,23 +2313,52 @@ function _fcRenderScoreCurve() {
     // 所有数据点（可点击）— all 模式只画小点，decade 画正常大点
     pts.forEach(item => {
       const isActive = item.age === _fcActiveAge;
+      const isPostCritical = _fcLifeCurveCriticalYear !== null && item.age > _fcLifeCurveCriticalYear;
       const r = _fcLifeCurveMode === 'all' ? (isActive ? 4 : 2.5) : (isActive ? 5 : 3.5);
       const dot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
       dot.setAttribute('cx', String(item.x)); dot.setAttribute('cy', String(item.y));
       dot.setAttribute('r', String(r));
-      dot.setAttribute('class', `fc-score-point ${_fcScoreClass(item.score)}`);
+      dot.setAttribute('class', `fc-score-point ${_fcScoreClass(item.score)}${isPostCritical ? ' fc-post-critical' : ''}`);
       svg.appendChild(dot);
 
       const hit = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
       hit.setAttribute('cx', String(item.x)); hit.setAttribute('cy', String(item.y));
       hit.setAttribute('r', '10'); hit.setAttribute('fill', 'transparent'); hit.setAttribute('style', 'cursor:pointer');
       hit.addEventListener('click', () => fcSelectYear(item.age));
-      // Tooltip on hover
       hit.addEventListener('mouseenter', (e) => _fcShowTooltip(item, e));
       hit.addEventListener('mouseleave', () => _fcHideTooltip());
       hit.addEventListener('touchstart', (e) => { e.preventDefault(); _fcShowTooltip(item, e.touches[0]); fcSelectYear(item.age); }, { passive: false });
       svg.appendChild(hit);
     });
+
+    // 关口年竖线标记（pointer-events: none，不阻塞点击）
+    if (critIdx > 0) {
+      const critPt = pts[critIdx];
+      const critLine = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+      critLine.setAttribute('x1', String(critPt.x)); critLine.setAttribute('x2', String(critPt.x));
+      critLine.setAttribute('y1', String(pT)); critLine.setAttribute('y2', String(pT + iH));
+      critLine.setAttribute('class', 'fc-score-critical-line');
+      svg.appendChild(critLine);
+      // 关口年顶部小标签
+      const critLbl = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+      critLbl.setAttribute('x', String(critPt.x));
+      critLbl.setAttribute('y', String(pT + 10));
+      critLbl.setAttribute('text-anchor', 'middle');
+      critLbl.setAttribute('class', 'fc-score-critical-label');
+      critLbl.textContent = `关口 ${critPt.age}岁`;
+      svg.appendChild(critLbl);
+    }
+  }
+
+  // ── 重大关口年提示横幅 ──
+  const critBanner = document.getElementById('fc-critical-banner');
+  if (critBanner) {
+    if (_fcLifeCurveCriticalYear !== null && _fcLifeCurveMode === 'all' && visibleScores.length > 0) {
+      critBanner.style.display = 'block';
+      critBanner.textContent = `重大关口年：${_fcLifeCurveCriticalYear}岁，此后运势进入重大关口期，建议主动趋避调理`;
+    } else {
+      critBanner.style.display = 'none';
+    }
   }
 
   // ── Hero 区 ──
@@ -2322,7 +2381,13 @@ function _fcRenderScoreCurve() {
         else heroTrend.textContent = '';
       } else heroTrend.textContent = '';
     }
-    if (heroSummary) heroSummary.textContent = current.summary || '';
+    if (heroSummary) {
+      const baseSummary = current.summary || '';
+      const isPostCrit = _fcLifeCurveCriticalYear !== null && current.age > _fcLifeCurveCriticalYear;
+      heroSummary.textContent = isPostCrit
+        ? (baseSummary ? `${baseSummary} · 处于重大关口后阶段` : '处于重大关口后阶段')
+        : baseSummary;
+    }
   } else if (heroScore) {
     heroScore.textContent = '—';
     heroScore.className = 'fc-hero-score';
@@ -2373,7 +2438,11 @@ function _fcShowTooltip(item, e) {
   document.getElementById('fc-tooltip-score').textContent = item.score;
   const levelEl = document.getElementById('fc-tooltip-level');
   levelEl.textContent = levelText; levelEl.className = `fc-tooltip-level ${cls}`;
-  document.getElementById('fc-tooltip-summary').textContent = item.summary || '';
+  const isPostCrit = _fcLifeCurveCriticalYear !== null && item.age > _fcLifeCurveCriticalYear;
+  const summaryText = item.summary || '';
+  document.getElementById('fc-tooltip-summary').textContent = isPostCrit
+    ? (summaryText ? `${summaryText}（重关期折减）` : '该分数已按重大关口期折减显示')
+    : summaryText;
   document.getElementById('fc-tooltip-decade').textContent = dp ? `大运 ${dp.range}` : '';
 
   const svgEl = document.getElementById('fc-score-svg');
@@ -2436,6 +2505,7 @@ async function _fcGenerateLifeCurve(options = {}) {
   const btn = document.getElementById('fc-score-generate');
   _fcLifeCurveLoading = true;
   _fcLifeCurveHasFirstPartial = false;
+  _fcLifeCurveCriticalYear = null;
   _fcLifeCurveStickyMeta = '';
   _fcLifeCurveProgressDone = 0;
   _fcLifeCurveProgressTotal = totalWanted;
@@ -2487,6 +2557,9 @@ async function _fcGenerateLifeCurve(options = {}) {
       if (evt.type === 'result') {
         _fcLifeCurveUpsertScores(evt.scores || [], evt.model || '');
         if (evt.decades?.length) _fcLifeCurveUpsertDecades(evt.decades);
+        // 提取重大关口年（null = 无，Number = 命中年龄）
+        _fcLifeCurveCriticalYear = Number.isFinite(Number(evt.criticalYear))
+          ? Number(evt.criticalYear) : null;
         const localDone = Array.isArray(evt.scores) ? evt.scores.length : 0;
         _fcLifeCurveProgressDone = Math.min(totalWanted, Math.max(_fcLifeCurveProgressDone, finishedAgeCount + localDone));
         _fcLifeCurveProgressTotal = totalWanted;
@@ -2768,6 +2841,7 @@ function renderFigmaChart(chart, gender, dateStr, norm) {
     _fcLifeCurveAutoTriggered = false;
     _fcLifeCurveMode = 'decade';
     _fcLifeCurveHasFirstPartial = false;
+    _fcLifeCurveCriticalYear = null;
   }
   // ── 子平法卦：统一由 ZipingRuntime 离线生成 ────────────────
   const _zipingResult  = ZipingRuntime.compute(_birthPillarsCache, gender, _fcBirthYear);

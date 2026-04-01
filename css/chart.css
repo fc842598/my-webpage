@@ -894,6 +894,46 @@
   padding: 0 2px;
 }
 
+/* ── 重大关口年提示横幅 ──────────────────────────────────────── */
+.fc-critical-banner {
+  background: rgba(140,60,40,.08);
+  border-left: 3px solid rgba(160,70,45,.55);
+  border-radius: 0 4px 4px 0;
+  color: #7a3825;
+  font-size: 12px;
+  line-height: 1.5;
+  padding: 6px 10px;
+  margin-bottom: 6px;
+}
+
+/* ── 重大关口年 SVG 标记 ─────────────────────────────────────── */
+.fc-score-critical-line {
+  stroke: rgba(160,70,45,.55);
+  stroke-width: 1.2;
+  stroke-dasharray: 3 3;
+  pointer-events: none;
+}
+.fc-score-critical-label {
+  font-size: 8px;
+  fill: rgba(140,60,40,.75);
+  pointer-events: none;
+  user-select: none;
+}
+/* 关口期后段曲线样式（降低透明度，体现低迷但不报丧） */
+.fc-score-area-postcritical {
+  fill-opacity: 0.35;
+}
+.fc-score-path-postcritical {
+  stroke: #a06040;
+  stroke-width: 1.5;
+  stroke-dasharray: 4 3;
+  opacity: 0.6;
+}
+/* 关口期后的数据点：略微淡化 */
+.fc-score-point.fc-post-critical {
+  opacity: 0.55;
+}
+
 /* ── 曲线图 SVG（主角，满宽）───────────────────────────────── */
 .fc-score-svg {
   width: calc(100% + 28px);

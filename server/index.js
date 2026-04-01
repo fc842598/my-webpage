@@ -37,11 +37,14 @@ const deepseek = new OpenAI({
 
 // ── 评分缓存（文件级，同命盘同年龄段不重复调用 AI）──────────────
 const PROMPT_VERSION = 'v3-two-layer';
+// 算法升级版本号：修改此值会使旧 chunk 缓存全部失效，强制用新算法重算
+const LIFE_CURVE_ALGO_VERSION = 'v2-critical-year';
 const CACHE_DIR = path.join(__dirname, '.cache', 'life-curve');
 
 function buildChunkCacheKey(chartSummary, yearsChunk) {
   const keyData = JSON.stringify({
     v     : PROMPT_VERSION,
+    algo  : LIFE_CURVE_ALGO_VERSION,
     name  : chartSummary?.name   || '',
     solar : chartSummary?.solar  || '',
     gender: chartSummary?.gender || '',
@@ -477,9 +480,13 @@ function normalizeLifeCurveScores(rawScores, yearsChunk, decadeProfilesMap) {
       map.set(age, {
         age,
         score,
+        rawScore     : score,   // 保留原始分供 criticalYear 检测使用
         summary,
-        decadeFactor: Math.max(0.55, Math.min(1.25, Number(item?.decadeFactor) || 1.0)),
-        baseScore   : Math.max(20, Math.min(80, Math.round(Number(item?.baseScore) || 55))),
+        decadeFactor : Math.max(0.55, Math.min(1.25, Number(item?.decadeFactor) || 1.0)),
+        baseScore    : Math.max(20, Math.min(80, Math.round(Number(item?.baseScore) || 55))),
+        xiaoLianDelta: Math.max(-20, Math.min(20, Math.round(Number(item?.xiaoLianDelta) || 0))),
+        oppositeDelta: Math.max(-15, Math.min(15, Math.round(Number(item?.oppositeDelta) || 0))),
+        guaDelta     : Math.max(-10, Math.min(10, Math.round(Number(item?.guaDelta)      || 0))),
       });
     });
   }
@@ -492,12 +499,147 @@ function normalizeLifeCurveScores(rawScores, yearsChunk, decadeProfilesMap) {
     const factor  = profile?.decadeFactor   || 1.0;
     const raw     = estimateFallbackScore(year);
     const blended = Math.round((base * 0.5 + raw * 0.5) * factor);
+    const score   = Math.max(5, Math.min(98, blended));
     return {
-      age         : year.age,
-      score       : Math.max(5, Math.min(98, blended)),
-      summary     : '模型未返回，按盘面规则估算',
-      decadeFactor: factor,
-      baseScore   : base,
+      age          : year.age,
+      score,
+      rawScore     : score,
+      summary      : '模型未返回，按盘面规则估算',
+      decadeFactor : factor,
+      baseScore    : base,
+      xiaoLianDelta: 0,
+      oppositeDelta: 0,
+      guaDelta     : 0,
+    };
+  });
+}
+
+// ── 重大关口年检测 ────────────────────────────────────────────
+
+/**
+ * 统计 summary 中高危关键词命中数
+ */
+function countCriticalKeywords(text) {
+  const keywords = ['忌', '空', '劫', '煞', '刑', '病', '死', '绝', '丧', '哭'];
+  const t = String(text || '');
+  return keywords.filter(kw => t.includes(kw)).length;
+}
+
+/**
+ * 从完整年龄分数序列中检测"第一个结构性断崖年"
+ * - 必须基于完整序列（不能在单个 chunk 内判断）
+ * - 仅在 years.length >= 30 时调用（all 模式）
+ * - 返回 criticalYear（整数年龄）或 null
+ */
+function detectCriticalYear(scores, decadeProfilesMap) {
+  if (!Array.isArray(scores) || scores.length < 3) return null;
+
+  const sorted = [...scores].sort((a, b) => a.age - b.age);
+
+  // 解析并排序大运十年段
+  const orderedDecades = [];
+  decadeProfilesMap.forEach((profile, range) => {
+    const m = String(range).match(/\d+/g);
+    if (m && m.length >= 2) {
+      const start = Number(m[0]), end = Number(m[1]);
+      if (Number.isFinite(start) && Number.isFinite(end)) {
+        orderedDecades.push({
+          range, start, end,
+          decadeFactor   : profile.decadeFactor    || 1.0,
+          decadeBaseScore: profile.decadeBaseScore  || 55,
+          expected       : Math.max(5, Math.min(98,
+            Math.round((profile.decadeBaseScore || 55) * (profile.decadeFactor || 1.0))
+          )),
+        });
+      }
+    }
+  });
+  orderedDecades.sort((a, b) => a.start - b.start);
+
+  const getDecadeForAge = age =>
+    orderedDecades.find(d => age >= d.start && age <= d.end) || null;
+
+  for (let i = 1; i < sorted.length - 1; i++) {
+    const curr = sorted[i];
+    const prev = sorted[i - 1];
+    const next = sorted[i + 1];
+
+    const currDecade = getDecadeForAge(curr.age);
+    if (!currDecade) continue;
+
+    const currentExp    = currDecade.expected;
+    const prevDecade    = orderedDecades.slice().reverse().find(d => d.end < currDecade.start);
+    const prevExp       = prevDecade ? prevDecade.expected : currentExp;
+    const futureDecades = orderedDecades.filter(d => d.start > currDecade.end);
+
+    // 条件 A：弱大运（因子≤0.78 或期望分≤42）
+    const condA = currDecade.decadeFactor <= 0.78 || currentExp <= 42;
+    if (!condA) continue;
+
+    // 条件 B：前一个十年明显更强
+    const condB = (prevExp - currentExp) >= 10;
+    if (!condB) continue;
+
+    // 条件 C：未来没有明显翻盘十年
+    const condC = futureDecades.every(d => d.expected <= currentExp + 5);
+    if (!condC) continue;
+
+    // 条件 D：前一年是局部高点（落差≥10）
+    const condD = prev.score > curr.score && (prev.score - curr.score) >= 10;
+    if (!condD) continue;
+
+    // 条件 E：当前年已经断崖（分数≤35 或三角度量之和≤-18）
+    const delta = (curr.xiaoLianDelta || 0) + (curr.oppositeDelta || 0) + (curr.guaDelta || 0);
+    const condE = curr.score <= 35 || delta <= -18;
+    if (!condE) continue;
+
+    // 条件 F：下一年没有明显回升（≤当前+5）
+    const condF = next.score <= curr.score + 5;
+    if (!condF) continue;
+
+    // 条件 G：凶象确认（二选一）
+    const kwCount = countCriticalKeywords(curr.summary);
+    const condG   = kwCount >= 2 || (curr.score <= 35 && next.score <= 38);
+    if (!condG) continue;
+
+    // 排除 P1：下一年强反弹（≥12分）
+    if (next.score - curr.score >= 12) continue;
+
+    // 排除 P2：未来仍有更强十年
+    if (futureDecades.some(d => d.expected >= currentExp + 8)) continue;
+
+    // 排除 P3：只是流年差，不是大运结构断崖
+    if (currDecade.decadeFactor > 0.88 && currentExp > 48) continue;
+
+    return curr.age;
+  }
+  return null;
+}
+
+/**
+ * 对 criticalYear 之后的年份统一乘以 0.5
+ * - criticalYear 当年本身不打折
+ * - 打折范围：age > criticalYear
+ * - 结果仍夹在 5-98
+ */
+function applyCriticalPenalty(scores, criticalYear) {
+  if (criticalYear == null) return scores;
+  return scores.map(item => {
+    const rawScore = item.rawScore ?? item.score;
+    if (item.age > criticalYear) {
+      return {
+        ...item,
+        rawScore,
+        score                 : Math.max(5, Math.min(98, Math.round(rawScore * 0.5))),
+        criticalPenaltyApplied: true,
+        criticalYear,
+      };
+    }
+    return {
+      ...item,
+      rawScore,
+      criticalPenaltyApplied: false,
+      criticalYear,
     };
   });
 }
@@ -722,12 +864,24 @@ app.post('/api/life-curve', async (req, res) => {
     }
 
     allScores.sort((a, b) => a.age - b.age);
+
+    // ── 重大关口年检测（全局，仅在 all 模式 years >= 30 时执行）──────────────
+    let criticalYear = null;
+    if (years.length >= 30) {
+      criticalYear = detectCriticalYear(allScores, decadeProfilesMap);
+      if (criticalYear !== null) {
+        console.log(`[piming-api] 重大关口年: ${criticalYear}岁，此后分数按 0.5 折减`);
+        allScores = applyCriticalPenalty(allScores, criticalYear);
+      }
+    }
+
     await writeEvent({
-      type   : 'result',
-      model  : MODEL,
-      scores : allScores,
-      decades: Array.from(decadeProfilesMap.values()),
-      warnings: warningCount,
+      type        : 'result',
+      model       : MODEL,
+      scores      : allScores,
+      decades     : Array.from(decadeProfilesMap.values()),
+      warnings    : warningCount,
+      criticalYear,
     });
     return allScores;
   };
