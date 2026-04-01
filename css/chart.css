@@ -1314,25 +1314,37 @@
   background: #fef3e2 !important;
   outline: 2px solid #c07820;
   outline-offset: -2px;
+  position: relative;  /* 供 badge absolute 定位 */
 }
 .fc-cell.fc-ben.fc-xiaolian  { background: #fceac0 !important; }
 .fc-cell.fc-rel.fc-xiaolian  { background: #fef3e2 !important; }
 
 .fc-xiaolian-badge {
-  display: block;
-  width: 100%;
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  display: inline-flex;
+  align-items: center;
   background: #c07820;
   color: #fff;
-  font-size: 9px;
-  font-weight: bold;
-  text-align: center;
-  padding: 1px 0;
-  letter-spacing: .5px;
-  line-height: 1.5;
+  font-size: 8px;
+  font-weight: 600;
+  padding: 1px 5px;
+  border-radius: 999px;
+  line-height: 1.4;
+  pointer-events: none;   /* 不遮挡宫位点击 */
+  z-index: 1;
+  white-space: nowrap;
+  max-width: calc(100% - 8px);
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-@media (max-width: 540px) {
-  .fc-xiaolian-badge { font-size: 8px; }
+@media (max-width: 400px) {
+  .fc-xiaolian-badge {
+    font-size: 7px;
+    padding: 1px 4px;
+  }
 }
 
 /* ══════════════════════════════════════════
