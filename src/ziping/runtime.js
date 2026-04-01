@@ -90,14 +90,14 @@
    * runValidation() — 在浏览器控制台运行黄金样本校验
    * 需先加载 fixtures/ziping-golden-cases.js
    */
-  function runValidation() {
+  function runValidation(options) {
     const validator = root.ZipingValidator;
     const cases     = root.ZIPING_GOLDEN_CASES;
     if (!validator || !cases) {
       console.warn('[ZipingRuntime] 校验器或 golden cases 未加载');
       return null;
     }
-    return validator.validate(cases);
+    return validator.validate(cases, options);
   }
 
   root.ZipingRuntime = { compute, getLastResult, runValidation };

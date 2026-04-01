@@ -18,6 +18,60 @@
  */
 const ZIPING_GOLDEN_CASES = [
 
+  // ── Verified 1：《天机道》P47-P49 数表取例，男，1969 ────────────
+  // 书中给出：己酉 / 戊辰 / 戊寅 / 甲寅
+  // 单数相加为天数 31，双数相加为地数 36，天数得乾，地数得乾。
+  {
+    id: 'verified-book-己酉-男-1969',
+    description: '《天机道》P47-P49：己酉 戊辰 戊寅 甲寅 男命 birthYear=1969',
+    source: 'tianji-dao-book',
+    verified: true,
+    input: {
+      pillars: {
+        yearStem:'己', yearBranch:'酉',
+        monthStem:'戊', monthBranch:'辰',
+        dayStem:'戊', dayBranch:'寅',
+        hourStem:'甲', hourBranch:'寅',
+      },
+      gender: 'male',
+      birthYear: 1969,
+    },
+    expected: {
+      debug: {
+        tian: 31,
+        di: 36,
+        tianRemainder: 6,
+        diRemainder: 6,
+        guaTian: 1,
+        guaDi: 1,
+      },
+      xiantian: { name: '乾为天', num: 1, upper: 1, lower: 1 },
+    },
+  },
+
+  // ── Verified 2：《天机道》P53 三至尊卦图示规则 ─────────────────
+  // 坎为水，元堂在九五，阳令所生，则后天卦取雷地豫。
+  {
+    id: 'verified-book-rule-坎为水-九五-阳令',
+    description: '《天机道》P53：坎为水，九五在阳令所生则后天卦为雷地豫',
+    source: 'tianji-dao-book',
+    kind: 'houtian-rule',
+    verified: true,
+    input: {
+      xiantian: { upper: 6, lower: 6, isYangPerson: true },
+      yuanTangLine: 5,
+      monthBranch: '子',
+    },
+    expected: {
+      debug: {
+        yuanTangLine: 5,
+        monthLing: 'yang',
+      },
+      xiantian: { name: '坎为水', num: 29, upper: 6, lower: 6 },
+      houtian:  { name: '雷地豫', num: 16, upper: 4, lower: 8 },
+    },
+  },
+
   // ── Case 1：壬辰甲子丁丑壬子，男，1952 ──────────────────────
   // 手算过程：
   //   天干数：壬(9)甲(1)丁(4)壬(9) + 地支数：辰(5)子(1)丑(2)子(1)

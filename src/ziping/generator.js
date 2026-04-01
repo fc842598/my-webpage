@@ -159,34 +159,46 @@
     return { gua, debug };
   }
 
+  function getLingType(monthBranch) {
+    if (['子', '丑', '寅', '卯', '辰', '巳'].includes(monthBranch)) return 'yang';
+    if (['午', '未', '申', '酉', '戌', '亥'].includes(monthBranch)) return 'yin';
+    return null;
+  }
+
+  const THREE_ZIZUN_HOUTIAN_RULES = {
+    29: {
+      5: { yin: [8, 6], yang: [4, 8] }, // 坎为水 -> 地水师 / 雷地豫
+      6: { yin: [6, 5], yang: [5, 4] }, // 坎为水 -> 水风井 / 风雷益
+    },
+    3: {
+      5: { yin: [8, 4], yang: [7, 8] }, // 水雷屯 -> 地雷复 / 山地剥
+      6: { yin: [4, 5], yang: [5, 7] }, // 水雷屯 -> 雷风恒 / 风山渐
+    },
+    39: {
+      5: { yin: [8, 7], yang: [6, 8] }, // 水山蹇 -> 地山谦 / 水地比
+      6: { yin: [7, 5], yang: [5, 6] }, // 水山蹇 -> 山风蛊 / 风水涣
+    },
+  };
+
   // ── 后天卦（三至尊卦特殊处理）───────────────────────────────
   /**
-   * 三至尊卦（坎为水29/水雷屯3/水山蹇39）规则：
-   *   《天机道》原文：至尊之卦，阳令不变，阴令从爻。
-   *   阳令（元堂爻为阳爻）→ 后天卦 = 先天卦（不变）
-   *   阴令（元堂爻为阴爻）→ 后天卦 = 翻转元堂爻（同普通卦）
-   *
-   * NOTE: 此规则来源于对海厦课程的整理，尚未经外部专业工具完整核对。
-   *       若发现不一致，请以专业工具或书中案例为准，并更新 golden cases。
+   * 普通卦：元堂爻变后，外卦入内、内卦出外。
+   * 三至尊卦（坎为水29 / 水雷屯3 / 水山蹇39）：
+   *   《天机道》P53-P54 对九五/上六在阴令、阳令的后天卦有明确图示，
+   *   不再用简化口径推断，直接按书中映射处理。
    */
-  function computeHouTian(xianTian, yuanTangLine, warnings) {
+  function computeHouTian(xianTian, yuanTangLine, monthBranch, warnings) {
     if (!xianTian || !yuanTangLine) return null;
-    const THREE_ZIZUN = T().THREE_ZIZUN;
-    if (THREE_ZIZUN.has(xianTian.num)) {
-      const h6          = hexLines6(xianTian.upper, xianTian.lower);
-      const yuanTangType = h6[yuanTangLine - 1] === 'solid' ? 'yang' : 'yin';
-      const msg = `三至尊卦(${xianTian.name} #${xianTian.num}) 元堂爻${yuanTangLine}为${yuanTangType}爻`;
+    warnings = Array.isArray(warnings) ? warnings : [];
+    const lingType = getLingType(monthBranch);
+    const specialRule = THREE_ZIZUN_HOUTIAN_RULES[xianTian.num]?.[yuanTangLine]?.[lingType || ''];
+    if (specialRule) {
+      const [upper, lower] = specialRule;
       warnings.push({
         code: 'THREE_ZIZUN',
-        message: msg + (yuanTangType === 'yang'
-          ? '→ 阳令，后天卦 = 先天卦（至尊不变）'
-          : '→ 阴令，后天卦按普通元堂爻翻转'),
+        message: `三至尊卦(${xianTian.name} #${xianTian.num}) 元堂爻${yuanTangLine}，${lingType === 'yang' ? '阳令' : '阴令'}按《天机道》图示直取后天卦`,
       });
-      if (yuanTangType === 'yang') {
-        // 阳令 → 至尊不变（后天卦 = 先天卦）
-        return { ...xianTian };
-      }
-      // 阴令 → 正常翻转
+      return buildGua(upper, lower, xianTian.isYangPerson);
     }
     const changed = flipHex(xianTian, yuanTangLine);
     // 《天机道》：元堂爻变后，外卦入内、内卦出外
@@ -291,7 +303,8 @@
     debug.yuanTangLine     = yuanTangLine;
     debug.yuanTangLineType = debug.hexLines6[yuanTangLine - 1] === 'solid' ? 'yang' : 'yin';
 
-    const houTian    = computeHouTian(xianTian, yuanTangLine, warnings);
+    const houTian    = computeHouTian(xianTian, yuanTangLine, pillars.monthBranch, warnings);
+    debug.monthLing  = getLingType(pillars.monthBranch);
     const liunianMap = buildLiuNianMap(
       xianTian, houTian, yuanTangLine, birthYear, maxAge, gender, pillars.yearBranch
     );
@@ -307,6 +320,15 @@
     };
   }
 
-  root.ZipingGenerator = { generate, getSanyuan, getYuanTang, yearGanzhi, calcXiaoLian };
+  root.ZipingGenerator = {
+    generate,
+    getSanyuan,
+    getYuanTang,
+    yearGanzhi,
+    calcXiaoLian,
+    getLingType,
+    computeHouTian,
+    buildGua,
+  };
 
 }(typeof window !== 'undefined' ? window : global));

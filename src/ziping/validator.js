@@ -63,7 +63,7 @@
    * 运行单个 case，返回 { id, verified, passed, diffs, result }
    */
   function runCase(goldenCase) {
-    const { id, input, expected, verified } = goldenCase;
+    const { id, input, expected, verified, kind } = goldenCase;
     const gen = root.ZipingGenerator;
     if (!gen) {
       return { id, verified: !!verified, passed: false,
@@ -71,7 +71,22 @@
     }
     let result;
     try {
-      result = gen.generate(input.pillars, input.gender, input.birthYear);
+      if (kind === 'houtian-rule') {
+        const x = input.xiantian || {};
+        const xianTian = gen.buildGua(x.upper, x.lower, x.isYangPerson !== false);
+        const houtian = gen.computeHouTian(xianTian, input.yuanTangLine, input.monthBranch, []);
+        result = {
+          debug: {
+            yuanTangLine: input.yuanTangLine,
+            monthLing: gen.getLingType(input.monthBranch),
+          },
+          xiantian: { name: xianTian.name, num: xianTian.num, upper: xianTian.upper, lower: xianTian.lower },
+          houtian: houtian ? { name: houtian.name, num: houtian.num, upper: houtian.upper, lower: houtian.lower } : null,
+          liunianMap: {},
+        };
+      } else {
+        result = gen.generate(input.pillars, input.gender, input.birthYear);
+      }
     } catch (e) {
       return { id, verified: !!verified, passed: false,
                diffs: [{ label: 'exception', error: String(e) }] };
@@ -91,15 +106,17 @@
    * 整体通过准则：所有 verified=true 的 case 必须全部通过。
    * provisional 失败只产生警告，不影响整体 passed 判断。
    */
-  function validate(cases) {
+  function validate(cases, options) {
+    const includeProvisional = options?.includeProvisional === true;
     if (!Array.isArray(cases) || cases.length === 0) {
       console.warn('[ZipingValidator] 没有 golden case 可校验');
       return { passedVerified: 0, failedVerified: 0,
-               passedProvisional: 0, failedProvisional: 0,
-               total: 0, details: [] };
+                passedProvisional: 0, failedProvisional: 0,
+                total: 0, details: [] };
     }
 
-    const details          = cases.map(runCase);
+    const selectedCases    = includeProvisional ? cases : cases.filter(item => item?.verified);
+    const details          = selectedCases.map(runCase);
     const verified         = details.filter(d => d.verified);
     const provisional      = details.filter(d => !d.verified);
     const passedVerified   = verified.filter(d => d.passed).length;
@@ -124,7 +141,7 @@
     }
 
     // ── provisional case 输出（WARN 级别） ───────────────────
-    if (failedProvisional > 0) {
+    if (includeProvisional && failedProvisional > 0) {
       console.warn(`[子平法] ⚠ ${failedProvisional}/${provisional.length} 个临时样本失败（provisional，仅供参考）`);
       details.forEach(d => {
         if (!d.verified && !d.passed) {
@@ -133,7 +150,7 @@
           console.groupEnd();
         }
       });
-    } else if (provisional.length > 0) {
+    } else if (includeProvisional && provisional.length > 0) {
       console.info(`[子平法] ✓ 全部 ${passedProvisional}/${provisional.length} 个临时样本自洽（需外部核对）`);
     }
 
