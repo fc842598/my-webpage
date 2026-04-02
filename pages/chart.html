@@ -11,6 +11,7 @@
   <script src="../js/lunarCalendar.js"></script>
   <script src="../js/trueSolarTime.js"></script>
   <script src="../js/vendor/lunar-javascript.js"></script>
+  <script src="../js/vendor/iztro.min.js"></script>
   <script src="guaci-data.js"></script>
   <!-- 子平法命卦模块（顺序依赖：tables → generator → validator → runtime） -->
   <script src="../src/ziping/tianji-bazi.js"></script>
@@ -159,7 +160,8 @@
         <span class="nf-label">真太阳时</span>
         <span id="tst-estimated-badge" style="font-size:.72rem;color:#c08060;background:#fff3ec;border:1px solid #f0d0b8;border-radius:4px;padding:1px 6px;display:none">默认估算</span>
       </div>
-      <div id="tst-display" style="font-size:.82rem;color:#8e857d">请先输入出生时间和地点</div>
+      <div id="tst-display" style="font-size:.82rem;color:#8e857d">请先输入出生日期，地点可选</div>
+      <div id="shichen-preview" style="display:none;font-size:.78rem;color:#8e857d"></div>
     </div>
 
     <!-- 错误提示 -->
@@ -503,6 +505,27 @@ for (let d = 1; d <= 31; d++) {
   dayEl.appendChild(o);
 }
 
+function updateDayOptions() {
+  const yearEl = document.getElementById('inp-year');
+  const monthEl = document.getElementById('inp-month');
+  const dayEl = document.getElementById('inp-day');
+  if (!yearEl || !monthEl || !dayEl) return;
+  const year = parseInt(yearEl.value, 10);
+  const month = parseInt(monthEl.value, 10);
+  const prevDay = parseInt(dayEl.value, 10);
+  const totalDays = year && month ? new Date(year, month, 0).getDate() : 31;
+  dayEl.innerHTML = '<option value="">日</option>';
+  for (let d = 1; d <= totalDays; d++) {
+    const o = document.createElement('option');
+    o.value = d;
+    o.textContent = d + '日';
+    dayEl.appendChild(o);
+  }
+  if (prevDay && prevDay <= totalDays) {
+    dayEl.value = String(prevDay);
+  }
+}
+
 // ─── 性别按钮 ──────────────────────────────────────────────
 document.querySelectorAll('.nf-gender-btn').forEach(btn => {
   btn.addEventListener('click', () => {
@@ -577,6 +600,7 @@ document.addEventListener('click', e => {
 
 // ─── 真太阳时计算 ─────────────────────────────────────────
 const _SHICHEN_NAMES = ['子','丑','寅','卯','辰','巳','午','未','申','酉','戌','亥'];
+const shichenPreview = document.getElementById('shichen-preview');
 
 function updateTrueSolarTime() {
   // 获取公历日期（兼容农历模式）
@@ -679,6 +703,11 @@ function updateDatePreview() {
   const el = document.getElementById(id);
   if (el) el.addEventListener('change', updateDatePreview);
   if (el && el.type === 'number') el.addEventListener('input', updateDatePreview);
+});
+['inp-year','inp-month'].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) el.addEventListener('change', updateDayOptions);
+  if (el && el.type === 'number') el.addEventListener('input', updateDayOptions);
 });
 ['inp-lunar-year','inp-lunar-month','inp-lunar-day','inp-lunar-leap'].forEach(id => {
   const el = document.getElementById(id);
@@ -816,20 +845,12 @@ applyDefaults();
 
 async function _ensureIztroLib() {
   if (_iztroLib) return _iztroLib;
-  if (!window.__iztroImportPromise) {
-    window.__iztroImportPromise = import('https://esm.sh/iztro@2')
-      .then(mod => mod.astro || mod.default?.astro)
-      .then(lib => {
-        if (!lib) throw new Error('iztro 加载失败，请刷新重试');
-        _iztroLib = lib;
-        return lib;
-      })
-      .catch(err => {
-        window.__iztroImportPromise = null;
-        throw err;
-      });
+  const localLib = window.iztro?.astro || window.iztro || null;
+  if (!localLib) {
+    throw new Error('排盘模块未加载，请刷新后重试');
   }
-  return window.__iztroImportPromise;
+  _iztroLib = localLib;
+  return _iztroLib;
 }
 
 // ─── 表单提交 ─────────────────────────────────────────────
