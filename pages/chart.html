@@ -3761,12 +3761,13 @@ if (typeof ZipingRuntime !== 'undefined') {
 (function () {
   const SHICHEN = ['子','丑','寅','卯','辰','巳','午','未','申','酉','戌','亥'];
 
-  let _chatHistory = [];       // [{role, content}]
-  let _chatExtracted = null;   // 完整信息对象
+  let _chatHistory = [];
+  let _chatExtracted = null;
 
   const msgList   = document.getElementById('ai-chat-messages');
   const inputEl   = document.getElementById('ai-chat-input');
   const sendBtn   = document.getElementById('ai-chat-send');
+  console.log('[AI Chat] init: msgList=', msgList, 'inputEl=', inputEl, 'sendBtn=', sendBtn);
   const overlay   = document.getElementById('ai-confirm-overlay');
   const confirmRows = document.getElementById('ai-confirm-rows');
   const cancelBtn = document.getElementById('ai-confirm-cancel');
@@ -3909,7 +3910,11 @@ if (typeof ZipingRuntime !== 'undefined') {
     document.getElementById('btn-submit').click();
   }
 
-  sendBtn.addEventListener('click', send);
+  if (!sendBtn || !inputEl || !msgList) {
+    console.error('[AI Chat] 初始化失败：元素未找到', { sendBtn, inputEl, msgList });
+    return;
+  }
+  sendBtn.addEventListener('click', () => { console.log('[AI Chat] 点击发送'); send(); });
   inputEl.addEventListener('keydown', e => { if (e.key === 'Enter') send(); });
 
   cancelBtn.addEventListener('click', () => { overlay.style.display = 'none'; });
