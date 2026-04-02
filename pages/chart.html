@@ -594,32 +594,28 @@ function updateTrueSolarTime() {
     cityName: _selectedCity ? `${_selectedCity.province}${_selectedCity.city}` : null
   });
 
-  const badge = document.getElementById('tst-estimated-badge');
-  badge.style.display = _tstResult.isEstimated ? 'inline' : 'none';
+  document.getElementById('tst-estimated-badge').style.display = 'none';
 
   const pad = n => String(n).padStart(2,'0');
   const cstShichen = _SHICHEN_NAMES[tstToShichen(hour, minute)];
   const tstShichen = _SHICHEN_NAMES[tstToShichen(_tstResult.trueSolarHour, _tstResult.trueSolarMinute)];
   const crossed = cstShichen !== tstShichen;
 
-  // 时辰预览行（明确告知最终采用哪个时辰）
+  // 时辰预览行（仅时辰跨越时提示）
   if (shichenPreview) {
-    shichenPreview.innerHTML = crossed
-      ? `当地时间 ${pad(hour)}:${pad(minute)} → ${cstShichen}时，真太阳时修正后跨越时辰 → <strong style="color:#963d32">${tstShichen}时（排盘采用）</strong>`
-      : `${pad(hour)}:${pad(minute)} 真太阳时修正后仍在 <strong>${cstShichen}时</strong>，排盘采用 <strong>${cstShichen}时</strong>`;
-    shichenPreview.style.display = 'block';
+    if (crossed) {
+      shichenPreview.innerHTML = `真太阳时修正后时辰跨越 → <strong style="color:#963d32">${tstShichen}时（排盘采用）</strong>`;
+      shichenPreview.style.display = 'block';
+    } else {
+      shichenPreview.style.display = 'none';
+    }
   }
 
-  const tzOff = _selectedCity?.tzOffset ?? 8;
-  const tzSign = tzOff >= 0 ? '+' : '';
-  const tzH = Math.floor(Math.abs(tzOff));
-  const tzM = Math.round((Math.abs(tzOff) - tzH) * 60);
-  const tzLabel = `UTC${tzOff < 0 ? '-' : tzSign}${tzH}${tzM ? ':' + String(tzM).padStart(2,'0') : ''}`;
-  const localLabel = _tstResult.isEstimated ? '北京时间（默认）' : `当地时间 (${tzLabel})`;
+  const dateStr = `${year}-${month}-${day}`;
+  const cityLabel = _tstResult.isEstimated ? '北京' : (_selectedCity?.city || '当地');
   document.getElementById('tst-display').innerHTML =
-    `<span style="color:#4a3f35">${localLabel}: ${pad(hour)}:${pad(minute)} · ${cstShichen}时</span><br>` +
-    `<span style="color:${_tstResult.isEstimated?'#c08060':'#6b4e41'}">真太阳时: ${pad(_tstResult.trueSolarHour)}:${pad(_tstResult.trueSolarMinute)} · <strong>${tstShichen}时</strong>${_tstResult.isEstimated?' （无出生地，以北京经度估算）':''}</span><br>` +
-    `<span style="color:#b0a89f">偏差 ${_tstResult.diffStr}（经度修正 ${_tstResult.lonCorrection>0?'+':''}${_tstResult.lonCorrection}分，均时差 ${_tstResult.eot>0?'+':''}${_tstResult.eot}分）</span>`;
+    `<span style="color:#4a3f35">区时（${cityLabel}）${dateStr} ${pad(hour)}:${pad(minute)} · ${cstShichen}时</span><br>` +
+    `<span style="color:${_tstResult.isEstimated?'#c08060':'#6b4e41'}">计算真太阳时（经度偏差 ${_tstResult.diffStr}）${dateStr} ${pad(_tstResult.trueSolarHour)}:${pad(_tstResult.trueSolarMinute)} · <strong>${tstShichen}时</strong></span>`;
 }
 
 // ─── 日期预览 ─────────────────────────────────────────────
