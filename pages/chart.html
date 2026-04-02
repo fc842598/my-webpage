@@ -3756,8 +3756,45 @@ if (typeof ZipingRuntime !== 'undefined') {
 }
 
 // ══════════════════════════════════════════
-// AI 智能识别对话（逻辑在独立 script 标签，见下方）
+// AI 智能识别：暴露填表函数给外部 script
 // ══════════════════════════════════════════
+window._aiChatFill = function(data) {
+  // 切换公历模式
+  _calMode = 'solar';
+  document.querySelectorAll('.nf-cal-btn').forEach(b => b.classList.toggle('active', b.dataset.cal === 'solar'));
+  document.getElementById('solar-inputs').style.display = 'flex';
+  document.getElementById('lunar-inputs').style.display = 'none';
+  // 填入日期时间性别
+  document.getElementById('inp-year').value   = data.year;
+  document.getElementById('inp-month').value  = data.month;
+  document.getElementById('inp-day').value    = data.day;
+  document.getElementById('inp-time-h').value = data.hour;
+  document.getElementById('inp-time-m').value = data.minute || 0;
+  const gv = data.gender || 'male';
+  document.getElementById('inp-gender').value = gv;
+  document.querySelectorAll('.nf-gender-btn').forEach(b => b.classList.toggle('active', b.dataset.v === gv));
+  // 城市
+  if (data.city && typeof CITIES !== 'undefined') {
+    const q = data.city.toLowerCase();
+    const found = CITIES.find(c => c[1].toLowerCase().includes(q) || c[0].toLowerCase().includes(q));
+    if (found) {
+      _selectedCity = { province: found[0], city: found[1], lon: found[2], lat: found[3], tzOffset: found[4] ?? 8 };
+      document.getElementById('inp-city-search').value = `${found[0]} · ${found[1]}`;
+      document.getElementById('city-selected-name').textContent = `${found[0]} ${found[1]}`;
+      document.getElementById('city-selected-lon').textContent  = found[2];
+      document.getElementById('city-selected-lat').textContent  = found[3];
+      document.getElementById('city-selected').style.display = 'block';
+      document.getElementById('btn-clear-city').style.display = 'inline';
+    } else {
+      _selectedCity = null;
+    }
+  }
+  // 触发 TST 更新
+  updateDatePreview();
+  updateTrueSolarTime();
+  // 提交
+  document.getElementById('btn-submit').click();
+};
 </script>
 
 <!-- ══ AI 智能识别：独立 script，与主模块隔离 ══ -->
@@ -3863,39 +3900,9 @@ if (typeof ZipingRuntime !== 'undefined') {
   function pad2(n) { return String(n).padStart(2, '0'); }
 
   function fillFormAndSubmit(data) {
-    // 公历模式
-    document.querySelectorAll('.nf-cal-btn').forEach(function(b) { b.classList.toggle('active', b.dataset.cal === 'solar'); });
-    document.getElementById('solar-inputs').style.display = 'flex';
-    document.getElementById('lunar-inputs').style.display = 'none';
-    // 填入
-    document.getElementById('inp-year').value   = data.year;
-    document.getElementById('inp-month').value  = data.month;
-    document.getElementById('inp-day').value    = data.day;
-    document.getElementById('inp-time-h').value = data.hour;
-    document.getElementById('inp-time-m').value = data.minute || 0;
-    var gv = data.gender || 'male';
-    document.getElementById('inp-gender').value = gv;
-    document.querySelectorAll('.nf-gender-btn').forEach(function(b) { b.classList.toggle('active', b.dataset.v === gv); });
-    // 城市
-    if (data.city && typeof CITIES !== 'undefined') {
-      var q = data.city.toLowerCase();
-      var found = CITIES.find(function(c) { return c[1].toLowerCase().includes(q) || c[0].toLowerCase().includes(q); });
-      if (found) {
-        document.getElementById('inp-city-search').value = found[0] + ' · ' + found[1];
-        document.getElementById('city-selected-name').textContent = found[0] + ' ' + found[1];
-        document.getElementById('city-selected-lon').textContent  = found[2];
-        document.getElementById('city-selected-lat').textContent  = found[3];
-        document.getElementById('city-selected').style.display = 'block';
-        document.getElementById('btn-clear-city').style.display = 'inline';
-      }
+    if (typeof window._aiChatFill === 'function') {
+      window._aiChatFill(data);
     }
-    // 触发事件让 TST 刷新
-    ['inp-year','inp-month','inp-day'].forEach(function(id) {
-      document.getElementById(id).dispatchEvent(new Event('change'));
-    });
-    document.getElementById('inp-time-h').dispatchEvent(new Event('change'));
-    // 提交
-    document.getElementById('btn-submit').click();
   }
 
   sendBtn.addEventListener('click', send);
