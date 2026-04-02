@@ -3976,10 +3976,7 @@ window._aiChatFill = function(data, submit) {
           _extracted = data;
           syncInputState(originalText, true);
           if (autoSubmit) {
-            if (typeof window._aiChatFill === 'function') {
-              window.__skipAiSubmitOnce = true;
-              window._aiChatFill(data, true);
-            }
+            fillFormAndSubmit(data);
           } else {
             // 先填表（不提交），让用户看到已填好的数据
             if (typeof window._aiChatFill === 'function') window._aiChatFill(data, false);
@@ -4033,7 +4030,17 @@ window._aiChatFill = function(data, submit) {
   function fillFormAndSubmit(data) {
     if (typeof window._aiChatFill === 'function') {
       window.__skipAiSubmitOnce = true;
-      window._aiChatFill(data, true);  // true = 提交
+      if (typeof window._chartFormSetLoading === 'function') {
+        window._chartFormSetLoading(false);
+      }
+      window._aiChatFill(data, false);
+      setTimeout(function() {
+        var submitBtn = document.getElementById('btn-submit');
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.click();
+        }
+      }, 80);
     }
   }
 
