@@ -222,6 +222,163 @@ const ZIPING_GOLDEN_CASES = [
     },
   },
 
+  // ── Verified 6：天纪软件样本，男，1996-01-02 酉时 ───────────────
+  {
+    id: 'verified-tianji-pdf-1996-01-02-you',
+    description: '天纪软件样本：乙亥 戊子 戊戌 辛酉，男，1996-01-02 酉时',
+    source: 'professional-tool',
+    verified: true,
+    input: {
+      pillars: {
+        yearStem:'乙', yearBranch:'亥',
+        monthStem:'戊', monthBranch:'子',
+        dayStem:'戊', dayBranch:'戌',
+        hourStem:'辛', hourBranch:'酉',
+      },
+      gender: 'male',
+      birthYear: 1996,
+    },
+    expected: {
+      debug: {
+        yuanTangLine: 5,
+        yuanTangLineType: 'yin',
+        yuanTangPoolType: 'yin',
+        yuanTangHourGroup: 'lower-six',
+      },
+      xiantian: { name: '地山谦', num: 15, upper: 8, lower: 7 },
+      houtian:  { name: '山水蒙', num: 4, upper: 7, lower: 6 },
+      spotChecks: [
+        { age: 1, guaName: '水山蹇', period: '先天' },
+        { age: 2, guaName: '风山渐', period: '先天' },
+        { age: 3, guaName: '风火家人', period: '先天' },
+        { age: 4, guaName: '风天小畜', period: '先天' },
+        { age: 5, guaName: '风泽中孚', period: '先天' },
+        { age: 6, guaName: '天泽履', period: '先天' },
+        { age: 7, guaName: '艮为山', period: '先天' },
+        { age: 8, guaName: '山火贲', period: '先天' },
+        { age: 9, guaName: '山天大畜', period: '先天' },
+      ],
+    },
+  },
+
+  // ── Verified 7：天纪软件样本，女，2021-03-28 夜子 ──────────────
+  {
+    id: 'verified-tianji-pdf-2021-03-28-yezi',
+    description: '天纪软件样本：辛丑 辛卯 乙亥 戊子，女，2021-03-28 夜子',
+    source: 'professional-tool',
+    verified: true,
+    input: {
+      pillars: {
+        yearStem:'辛', yearBranch:'丑',
+        monthStem:'辛', monthBranch:'卯',
+        dayStem:'乙', dayBranch:'亥',
+        hourStem:'戊', hourBranch:'子',
+      },
+      gender: 'female',
+      birthYear: 2021,
+    },
+    expected: {
+      debug: {
+        yuanTangLine: 2,
+        yuanTangLineType: 'yang',
+        yuanTangPoolType: 'yang',
+        yuanTangHourGroup: 'upper-six',
+      },
+      xiantian: { name: '坎为水', num: 29, upper: 6, lower: 6 },
+      houtian:  { name: '地水师', num: 7, upper: 8, lower: 6 },
+      spotChecks: [
+        { age: 1, guaName: '水地比', period: '先天' },
+        { age: 2, guaName: '坤为地', period: '先天' },
+        { age: 3, guaName: '地水师', period: '先天' },
+        { age: 4, guaName: '地风升', period: '先天' },
+        { age: 5, guaName: '雷风恒', period: '先天' },
+        { age: 6, guaName: '泽风大过', period: '先天' },
+        { age: 7, guaName: '天风姤', period: '先天' },
+        { age: 8, guaName: '乾为天', period: '先天' },
+        { age: 9, guaName: '天火同人', period: '先天' },
+      ],
+    },
+  },
+
+  // ── Verified 8：天纪软件样本，女，1984-04-08 辰时 ──────────────
+  {
+    id: 'verified-tianji-pdf-1984-04-08-chen',
+    description: '天纪软件样本：甲子 戊辰 壬申 甲辰，女，1984-04-08 辰时',
+    source: 'professional-tool',
+    verified: true,
+    input: {
+      pillars: {
+        yearStem:'甲', yearBranch:'子',
+        monthStem:'戊', monthBranch:'辰',
+        dayStem:'壬', dayBranch:'申',
+        hourStem:'甲', hourBranch:'辰',
+      },
+      gender: 'female',
+      birthYear: 1984,
+    },
+    expected: {
+      debug: {
+        yuanTangLine: 1,
+        yuanTangLineType: 'yin',
+        yuanTangPoolType: 'yin',
+        yuanTangHourGroup: 'upper-six',
+      },
+      xiantian: { name: '山水蒙', num: 4, upper: 7, lower: 6 },
+      houtian:  { name: '泽山咸', num: 31, upper: 2, lower: 7 },
+      spotChecks: [
+        { age: 1, guaName: '山泽损', period: '先天' },
+        { age: 2, guaName: '山雷颐', period: '先天' },
+        { age: 3, guaName: '山火贲', period: '先天' },
+        { age: 4, guaName: '离为火', period: '先天' },
+        { age: 5, guaName: '天火同人', period: '先天' },
+        { age: 6, guaName: '泽火革', period: '先天' },
+        { age: 7, guaName: '山水蒙', period: '先天' },
+        { age: 8, guaName: '风水涣', period: '先天' },
+        { age: 9, guaName: '风地观', period: '先天' },
+        { age: 10, guaName: '风山渐', period: '先天' },
+      ],
+    },
+  },
+
+  // ── Verified 9：天纪软件样本，男，1971-10-06 申时 ──────────────
+  {
+    id: 'verified-tianji-pdf-1971-10-06-shen',
+    description: '天纪软件样本：辛亥 丁酉 甲子 壬申，男，1971-10-06 申时',
+    source: 'professional-tool',
+    verified: true,
+    input: {
+      pillars: {
+        yearStem:'辛', yearBranch:'亥',
+        monthStem:'丁', monthBranch:'酉',
+        dayStem:'甲', dayBranch:'子',
+        hourStem:'壬', hourBranch:'申',
+      },
+      gender: 'male',
+      birthYear: 1971,
+    },
+    expected: {
+      debug: {
+        yuanTangLine: 3,
+        yuanTangLineType: 'yin',
+        yuanTangPoolType: 'yin',
+        yuanTangHourGroup: 'lower-six',
+      },
+      xiantian: { name: '天地否', num: 12, upper: 1, lower: 8 },
+      houtian:  { name: '山天大畜', num: 26, upper: 7, lower: 1 },
+      spotChecks: [
+        { age: 1, guaName: '天山遁', period: '先天' },
+        { age: 2, guaName: '风山渐', period: '先天' },
+        { age: 3, guaName: '艮为山', period: '先天' },
+        { age: 4, guaName: '地山谦', period: '先天' },
+        { age: 5, guaName: '地火明夷', period: '先天' },
+        { age: 6, guaName: '地天泰', period: '先天' },
+        { age: 7, guaName: '风地观', period: '先天' },
+        { age: 8, guaName: '风雷益', period: '先天' },
+        { age: 9, guaName: '天雷无妄', period: '先天' },
+      ],
+    },
+  },
+
   // ── Case 1：壬辰甲子丁丑壬子，男，1952 ──────────────────────
   // 手算过程：
   //   天干数：壬(9)甲(1)丁(4)壬(9) + 地支数：辰(5)子(1)丑(2)子(1)

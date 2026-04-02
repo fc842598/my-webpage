@@ -109,21 +109,39 @@
   }
 
   // ── 元堂定位 ─────────────────────────────────────────────────
-  // 阳时（子寅辰午申戌）→ 取本卦阳爻，子时对第1阳爻
-  // 阴时（丑卯巳未酉亥）→ 取本卦阴爻，未时对第1阴爻（午后首阴）
-  function getYuanTang(upper, lower, hourBranch) {
+  // 结合《天机道》与天纪软件实测样本校准：
+  // 上六时（子丑寅卯辰巳）：
+  //   阳命取本卦阳爻池；阴命取本卦阴爻池
+  // 下六时（午未申酉戌亥）：
+  //   取本卦阴爻池
+  // 各组六时按时序轮转；若目标池为空，再回退到另一池。
+  function getYuanTangDetail(upper, lower, hourBranch, isYangPerson) {
     const h6   = hexLines6(upper, lower);
     const yang = h6.map((v, i) => v === 'solid'  ? i + 1 : null).filter(Boolean);
     const yin  = h6.map((v, i) => v === 'broken' ? i + 1 : null).filter(Boolean);
-    if (T().YANG_HOURS.includes(hourBranch)) {
-      const pos  = T().YANG_HOURS.indexOf(hourBranch);
-      const pool = yang.length ? yang : yin;
-      return pool[pos % pool.length];
-    } else {
-      const pos  = T().YIN_HOURS.indexOf(hourBranch);
-      const pool = yin.length ? yin : yang;
-      return pool[pos % pool.length];
-    }
+    const isUpperSix = T().YANG_HOURS.includes(hourBranch);
+    const pos = isUpperSix
+      ? T().YANG_HOURS.indexOf(hourBranch)
+      : T().YIN_HOURS.indexOf(hourBranch);
+    const preferredPoolType = isUpperSix && isYangPerson !== false ? 'yang' : 'yin';
+    const preferredPool = preferredPoolType === 'yang' ? yang : yin;
+    const fallbackPool = preferredPoolType === 'yang' ? yin : yang;
+    const pool = preferredPool.length ? preferredPool : fallbackPool;
+    const poolType = preferredPool.length
+      ? preferredPoolType
+      : (preferredPoolType === 'yang' ? 'yin' : 'yang');
+    return {
+      line: pool[pos % pool.length],
+      poolType,
+      hourGroup: isUpperSix ? 'upper-six' : 'lower-six',
+      hourPos: pos,
+      yangPool: yang,
+      yinPool: yin,
+    };
+  }
+
+  function getYuanTang(upper, lower, hourBranch, isYangPerson) {
+    return getYuanTangDetail(upper, lower, hourBranch, isYangPerson).line;
   }
 
   function yingLine(lineNum) {
@@ -333,10 +351,19 @@
     }
 
     const { gua: xianTian, debug } = xtResult;
-    const yuanTangLine = getYuanTang(xianTian.upper, xianTian.lower, pillars.hourBranch);
+    const yuanTangInfo = getYuanTangDetail(
+      xianTian.upper,
+      xianTian.lower,
+      pillars.hourBranch,
+      xianTian.isYangPerson
+    );
+    const yuanTangLine = yuanTangInfo.line;
     const houYuanTangLine = yingLine(yuanTangLine);
     debug.yuanTangLine     = yuanTangLine;
     debug.yuanTangLineType = debug.hexLines6[yuanTangLine - 1] === 'solid' ? 'yang' : 'yin';
+    debug.yuanTangPoolType = yuanTangInfo.poolType;
+    debug.yuanTangHourGroup = yuanTangInfo.hourGroup;
+    debug.yuanTangHourPos = yuanTangInfo.hourPos;
     debug.houYuanTangLine  = houYuanTangLine;
 
     const houTian    = computeHouTian(xianTian, yuanTangLine, pillars.monthBranch, warnings);
@@ -361,6 +388,7 @@
     generate,
     getSanyuan,
     getYuanTang,
+    getYuanTangDetail,
     yearGanzhi,
     calcXiaoLian,
     getLingType,
