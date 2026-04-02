@@ -3760,25 +3760,43 @@ if (typeof ZipingRuntime !== 'undefined') {
 // ══════════════════════════════════════════
 // AI 智能识别：暴露填表函数给外部 script
 // ══════════════════════════════════════════
-window._aiChatFill = function(data) {
-  // 切换公历模式
-  _calMode = 'solar';
-  document.querySelectorAll('.nf-cal-btn').forEach(b => b.classList.toggle('active', b.dataset.cal === 'solar'));
-  document.getElementById('solar-inputs').style.display = 'flex';
-  document.getElementById('lunar-inputs').style.display = 'none';
-  // 填入日期时间性别
-  document.getElementById('inp-year').value   = data.year;
-  document.getElementById('inp-month').value  = data.month;
-  document.getElementById('inp-day').value    = data.day;
+window._aiChatFill = function(data, submit) {
+  var isLunar = data.calType === 'lunar';
+  _calMode = isLunar ? 'lunar' : 'solar';
+
+  // 切换公历/农历按钮
+  document.querySelectorAll('.nf-cal-btn').forEach(function(b) {
+    b.classList.toggle('active', b.dataset.cal === _calMode);
+  });
+  document.getElementById('solar-inputs').style.display = isLunar ? 'none' : 'flex';
+  document.getElementById('lunar-inputs').style.display = isLunar ? 'flex' : 'none';
+
+  if (isLunar) {
+    document.getElementById('inp-lunar-year').value  = data.year;
+    document.getElementById('inp-lunar-month').value = data.month;
+    document.getElementById('inp-lunar-day').value   = data.day;
+    document.getElementById('inp-lunar-leap').checked = !!data.isLeap;
+  } else {
+    document.getElementById('inp-year').value  = data.year;
+    document.getElementById('inp-month').value = data.month;
+    document.getElementById('inp-day').value   = data.day;
+  }
+
   document.getElementById('inp-time-h').value = data.hour;
   document.getElementById('inp-time-m').value = data.minute || 0;
   const gv = data.gender || 'male';
   document.getElementById('inp-gender').value = gv;
-  document.querySelectorAll('.nf-gender-btn').forEach(b => b.classList.toggle('active', b.dataset.v === gv));
-  // 城市
+  document.querySelectorAll('.nf-gender-btn').forEach(function(b) {
+    b.classList.toggle('active', b.dataset.v === gv);
+  });
+
+  // 城市匹配
+  _selectedCity = null;
   if (data.city && typeof CITIES !== 'undefined') {
     const q = data.city.toLowerCase();
-    const found = CITIES.find(c => c[1].toLowerCase().includes(q) || c[0].toLowerCase().includes(q));
+    const found = CITIES.find(function(c) {
+      return c[1].toLowerCase().includes(q) || c[0].toLowerCase().includes(q);
+    });
     if (found) {
       _selectedCity = { province: found[0], city: found[1], lon: found[2], lat: found[3], tzOffset: found[4] ?? 8 };
       document.getElementById('inp-city-search').value = `${found[0]} · ${found[1]}`;
@@ -3787,15 +3805,19 @@ window._aiChatFill = function(data) {
       document.getElementById('city-selected-lat').textContent  = found[3];
       document.getElementById('city-selected').style.display = 'block';
       document.getElementById('btn-clear-city').style.display = 'inline';
-    } else {
-      _selectedCity = null;
     }
   }
-  // 触发 TST 更新
+
+  // 刷新日期预览和真太阳时
   updateDatePreview();
   updateTrueSolarTime();
-  // 提交（延一帧，确保 DOM 值已稳定）
-  setTimeout(function() { document.getElementById('btn-submit').click(); }, 50);
+
+  // 滚动到表单
+  document.getElementById('form-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+  if (submit) {
+    setTimeout(function() { document.getElementById('btn-submit').click(); }, 80);
+  }
 };
 </script>
 
@@ -3867,6 +3889,8 @@ window._aiChatFill = function(data) {
       } else if (data.complete) {
         _history.push({ role: 'assistant', content: JSON.stringify(data) });
         _extracted = data;
+        // 先填表（不提交），让用户看到已填好的数据
+        if (typeof window._aiChatFill === 'function') window._aiChatFill(data, false);
         showConfirm(data);
       } else {
         var reply = data.reply || '请补充信息。';
@@ -3886,10 +3910,14 @@ window._aiChatFill = function(data) {
 
   function showConfirm(data) {
     var genderText = data.gender === 'female' ? '女' : '男';
+    var calLabel = data.calType === 'lunar' ? '农历' : '公历';
+    var dateLabel = '出生' + calLabel;
+    var leapText = (data.calType === 'lunar' && data.isLeap) ? '（闰月）' : '';
+    var dateText = data.year + '年' + data.month + '月' + data.day + '日' + leapText;
     var timeText = pad2(data.hour) + ':' + pad2(data.minute || 0) + '（' + shichenLabel(data.hour) + '）';
     var rows = [
       ['性别', genderText],
-      ['出生公历', data.year + '年' + data.month + '月' + data.day + '日'],
+      [dateLabel, dateText],
       ['出生时刻', timeText],
     ];
     if (data.city) rows.push(['出生地点', data.city]);
@@ -3903,7 +3931,7 @@ window._aiChatFill = function(data) {
 
   function fillFormAndSubmit(data) {
     if (typeof window._aiChatFill === 'function') {
-      window._aiChatFill(data);
+      window._aiChatFill(data, true);  // true = 提交
     }
   }
 
