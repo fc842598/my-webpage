@@ -2034,6 +2034,12 @@
 }
 .ai-chat-send:hover { opacity: .85; }
 .ai-chat-send:disabled { opacity: .4; cursor: default; }
+.ai-chat-tip {
+  margin-top: 8px;
+  font-size: 12px;
+  line-height: 1.55;
+  color: #9a8a7b;
+}
 .ai-chat-divider {
   text-align: center; font-size: 12px; color: #b0a89f;
   margin: 0 0 16px; letter-spacing: .04em;

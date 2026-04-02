@@ -59,6 +59,7 @@
                placeholder="年月日、时间、性别、城市…" autocomplete="off">
         <button type="button" id="ai-chat-send" class="ai-chat-send">发送</button>
       </div>
+      <div class="ai-chat-tip">上面直接输入也行。若还没点“发送”，直接点下面“开始排盘”也会先自动识别。</div>
     </div>
     <div class="ai-chat-divider">— 或手动填写 —</div>
 
@@ -596,7 +597,7 @@ function updateTrueSolarTime() {
   }
 
   if (!year || !month || !day) {
-    document.getElementById('tst-display').textContent = '请先输入出生日期和地点';
+    document.getElementById('tst-display').textContent = '请先输入出生日期，地点可选';
     document.getElementById('tst-estimated-badge').style.display = 'none';
     _tstResult = null;
     return;
@@ -769,28 +770,77 @@ function normalizeInput() {
   };
 }
 
-// ─── 默认测试值 ────────────────────────────────────────────
-const DEFAULT_TEST = { year: 1991, month: 2, day: 16, time: '22:00', gender: 'male' };
+const _demoDefaults = new URLSearchParams(location.search).get('demo') === '1';
 
-function applyDefaults() {
-  document.getElementById('inp-year').value     = DEFAULT_TEST.year;
-  document.getElementById('inp-month').value    = DEFAULT_TEST.month;
-  document.getElementById('inp-day').value      = DEFAULT_TEST.day;
-  document.getElementById('inp-time-h').value = 22;
+function _resetCitySelection() {
+  _selectedCity = null;
+  const cityInput = document.getElementById('inp-city-search');
+  const clearBtn = document.getElementById('btn-clear-city');
+  const selectedWrap = document.getElementById('city-selected');
+  if (cityInput) cityInput.value = '';
+  if (clearBtn) clearBtn.style.display = 'none';
+  if (selectedWrap) selectedWrap.style.display = 'none';
+}
+
+function applyDefaults(options) {
+  const useDemo = options?.demo === true || (_demoDefaults && options?.demo !== false);
+  document.getElementById('inp-name').value = '';
+  _calMode = 'solar';
+  document.querySelectorAll('.nf-cal-btn').forEach(b => b.classList.toggle('active', b.dataset.cal === 'solar'));
+  document.getElementById('solar-inputs').style.display = 'flex';
+  document.getElementById('lunar-inputs').style.display = 'none';
+  document.getElementById('inp-year').value = useDemo ? 1991 : '';
+  document.getElementById('inp-month').value = useDemo ? 2 : '';
+  updateDayOptions?.();
+  document.getElementById('inp-day').value = useDemo ? 16 : '';
+  document.getElementById('inp-lunar-year').value = '';
+  document.getElementById('inp-lunar-month').value = '';
+  document.getElementById('inp-lunar-day').value = '';
+  document.getElementById('inp-lunar-leap').checked = false;
+  document.getElementById('inp-time-h').value = useDemo ? 22 : 12;
   document.getElementById('inp-time-m').value = 0;
   document.querySelectorAll('.nf-gender-btn').forEach(btn => {
-    btn.classList.toggle('active', btn.dataset.v === DEFAULT_TEST.gender);
+    btn.classList.toggle('active', btn.dataset.v === 'male');
   });
-  document.getElementById('inp-gender').value = DEFAULT_TEST.gender;
+  document.getElementById('inp-gender').value = 'male';
+  if (options?.clearAi !== false) {
+    const aiInput = document.getElementById('ai-chat-input');
+    if (aiInput) aiInput.value = '';
+  }
+  _resetCitySelection();
+  hideError?.();
   updateDatePreview();
 }
 
 applyDefaults();
 
+async function _ensureIztroLib() {
+  if (_iztroLib) return _iztroLib;
+  if (!window.__iztroImportPromise) {
+    window.__iztroImportPromise = import('https://esm.sh/iztro@2')
+      .then(mod => mod.astro || mod.default?.astro)
+      .then(lib => {
+        if (!lib) throw new Error('iztro 加载失败，请刷新重试');
+        _iztroLib = lib;
+        return lib;
+      })
+      .catch(err => {
+        window.__iztroImportPromise = null;
+        throw err;
+      });
+  }
+  return window.__iztroImportPromise;
+}
+
 // ─── 表单提交 ─────────────────────────────────────────────
 document.getElementById('btn-submit').addEventListener('click', async () => {
   // 防止按钮意外卡 disabled：如果是用户手动触发则先解锁
   document.getElementById('btn-submit').disabled = false;
+  if (!window.__skipAiSubmitOnce && typeof window._aiChatMaybeSubmitFromInput === 'function') {
+    const aiConsumed = await window._aiChatMaybeSubmitFromInput();
+    if (aiConsumed) return;
+  }
+  window.__skipAiSubmitOnce = false;
   const norm = normalizeInput();
   if (norm.error) { showError(norm.error); return; }
 
@@ -798,10 +848,7 @@ document.getElementById('btn-submit').addEventListener('click', async () => {
   setLoading(true);
 
   try {
-    const mod = await import('https://esm.sh/iztro@2');
-    const lib = mod.astro || mod.default?.astro;
-    if (!lib) throw new Error('iztro 加载失败，请刷新重试');
-    _iztroLib = lib;  // 保存供时辰微调复用
+    const lib = await _ensureIztroLib();
 
     const genderStr = norm.gender === 'male' ? '男' : '女';
     _chart = typeof lib.bySolar === 'function'
@@ -3041,6 +3088,9 @@ function renderAnalysis(r) {
 
 // ─── 工具函数 ─────────────────────────────────────────────
 function setLoading(on) {
+  document.getElementById('btn-loading').textContent = on && window.__chartLoadingLabel
+    ? window.__chartLoadingLabel
+    : '排盘中…';
   document.getElementById('btn-text').style.display    = on ? 'none' : 'inline';
   document.getElementById('btn-loading').style.display = on ? 'inline' : 'none';
   document.getElementById('btn-submit').disabled = on;
@@ -3052,6 +3102,13 @@ function showError(msg) {
 function hideError() {
   document.getElementById('form-error').style.display = 'none';
 }
+window._chartFormSetLoading = function(on, label) {
+  window.__chartLoadingLabel = label || '';
+  setLoading(on);
+  if (!on) window.__chartLoadingLabel = '';
+};
+window._chartFormShowError = showError;
+window._chartFormHideError = hideError;
 
 // ══════════════════════════════════════════════════════════
 // AI 批命区 — 在线接入版 v1
@@ -3829,6 +3886,8 @@ window._aiChatFill = function(data, submit) {
 
   var _history = [];
   var _extracted = null;
+  var _lastCompletedText = '';
+  var _inputDirty = false;
 
   var msgList    = document.getElementById('ai-chat-messages');
   var inputEl    = document.getElementById('ai-chat-input');
@@ -3871,35 +3930,77 @@ window._aiChatFill = function(data, submit) {
     .catch(function(err) { cb(err, null); });
   }
 
-  function send() {
+  function setChartLoading(on, label) {
+    if (typeof window._chartFormSetLoading === 'function') {
+      window._chartFormSetLoading(on, label);
+    }
+  }
+
+  function syncInputState(text, completed) {
+    _inputDirty = !completed;
+    if (completed) _lastCompletedText = text;
+  }
+
+  function send(options) {
+    options = options || {};
+    var autoSubmit = !!options.autoSubmit;
     var text = inputEl.value.trim();
-    if (!text) return;
+    if (!text) return Promise.resolve(false);
+    if (sendBtn.disabled) return Promise.resolve(false);
+    var originalText = text;
     inputEl.value = '';
     sendBtn.disabled = true;
     inputEl.disabled = true;
+    if (autoSubmit) {
+      setChartLoading(true, '识别中…');
+      if (typeof window._chartFormHideError === 'function') window._chartFormHideError();
+    }
 
     addBubble('user', text);
     _history.push({ role: 'user', content: text });
 
     var thinking = addThinking();
-    callChat(_history.slice(), function(err, data) {
-      thinking.remove();
-      if (err || !data) {
-        addBubble('ai', '服务暂时不可用，请手动填写。');
-      } else if (data.complete) {
-        _history.push({ role: 'assistant', content: JSON.stringify(data) });
-        _extracted = data;
-        // 先填表（不提交），让用户看到已填好的数据
-        if (typeof window._aiChatFill === 'function') window._aiChatFill(data, false);
-        showConfirm(data);
-      } else {
-        var reply = data.reply || '请补充信息。';
-        _history.push({ role: 'assistant', content: reply });
-        addBubble('ai', reply);
-      }
-      sendBtn.disabled = false;
-      inputEl.disabled = false;
-      inputEl.focus();
+    return new Promise(function(resolve) {
+      callChat(_history.slice(), function(err, data) {
+        thinking.remove();
+        if (err || !data) {
+          inputEl.value = originalText;
+          addBubble('ai', '服务暂时不可用，请手动填写。');
+          if (autoSubmit && typeof window._chartFormShowError === 'function') {
+            window._chartFormShowError('AI识别暂时不可用，请手动填写或稍后重试。');
+          }
+          setChartLoading(false);
+          resolve(false);
+        } else if (data.complete) {
+          _history.push({ role: 'assistant', content: JSON.stringify(data) });
+          _extracted = data;
+          syncInputState(originalText, true);
+          if (autoSubmit) {
+            if (typeof window._aiChatFill === 'function') {
+              window.__skipAiSubmitOnce = true;
+              window._aiChatFill(data, true);
+            }
+          } else {
+            // 先填表（不提交），让用户看到已填好的数据
+            if (typeof window._aiChatFill === 'function') window._aiChatFill(data, false);
+            showConfirm(data);
+          }
+          resolve(true);
+        } else {
+          var reply = data.reply || '请补充信息。';
+          inputEl.value = originalText;
+          _history.push({ role: 'assistant', content: reply });
+          addBubble('ai', reply);
+          if (autoSubmit && typeof window._chartFormShowError === 'function') {
+            window._chartFormShowError('AI还需要更多信息，请补充后再排盘，或改为手动填写。');
+          }
+          setChartLoading(false);
+          resolve(false);
+        }
+        sendBtn.disabled = false;
+        inputEl.disabled = false;
+        inputEl.focus();
+      });
     });
   }
 
@@ -3931,11 +4032,22 @@ window._aiChatFill = function(data, submit) {
 
   function fillFormAndSubmit(data) {
     if (typeof window._aiChatFill === 'function') {
+      window.__skipAiSubmitOnce = true;
       window._aiChatFill(data, true);  // true = 提交
     }
   }
 
-  sendBtn.addEventListener('click', send);
+  window._aiChatMaybeSubmitFromInput = function() {
+    var text = inputEl.value.trim();
+    if (!text) return Promise.resolve(false);
+    if (!_inputDirty && text === _lastCompletedText) return Promise.resolve(false);
+    return send({ autoSubmit: true }).then(function() { return true; });
+  };
+
+  inputEl.addEventListener('input', function() {
+    _inputDirty = inputEl.value.trim() !== _lastCompletedText;
+  });
+  sendBtn.addEventListener('click', function() { send(); });
   inputEl.addEventListener('keydown', function(e) { if (e.key === 'Enter') send(); });
   if (cancelBtn) cancelBtn.addEventListener('click', function() { overlay.style.display = 'none'; });
   if (overlay)   overlay.addEventListener('click', function(e) { if (e.target === overlay) overlay.style.display = 'none'; });
