@@ -1642,14 +1642,7 @@
   color: #8e857d;
   padding: 0 2px;
 }
-/* 时辰预览 */
-.nf-shichen-preview {
-  font-size: .78rem;
-  color: #6b4e41;
-  padding: 4px 0 2px 2px;
-  min-height: 0;
-  display: none;
-}
+/* 时辰预览（已移除，保留空规则避免旧引用报错） */
 @media (max-width: 540px) {
   .nf-time-sel { width: 64px; font-size: .92rem; }
 }
@@ -1982,3 +1975,109 @@
   line-height: 1;
 }
 .history-item-del:hover { color: #b3443a; }
+
+/* ══════════════════════════════════════════
+   AI 智能识别聊天区
+══════════════════════════════════════════ */
+.ai-chat-wrap {
+  margin-bottom: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #e8ddd0;
+}
+.ai-chat-label {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 13px; font-weight: 700; color: #5c4a3a;
+  margin-bottom: 12px;
+}
+.ai-chat-label-icon { color: #c08060; }
+.ai-chat-messages {
+  display: flex; flex-direction: column; gap: 8px;
+  margin-bottom: 10px;
+  max-height: 220px; overflow-y: auto;
+}
+.ai-chat-messages::-webkit-scrollbar { width: 3px; }
+.ai-chat-messages::-webkit-scrollbar-thumb { background: #d8ccbf; border-radius: 2px; }
+.ai-msg {
+  max-width: 88%; padding: 9px 13px;
+  font-size: 13.5px; line-height: 1.65;
+}
+.ai-msg-ai {
+  background: #f5efe6; color: #3d302b;
+  border-radius: 4px 14px 14px 14px;
+  align-self: flex-start;
+}
+.ai-msg-ai em { font-style: italic; color: #8e6a4a; }
+.ai-msg-user {
+  background: #5a3824; color: #fff9f2;
+  border-radius: 14px 4px 14px 14px;
+  align-self: flex-end;
+}
+.ai-msg-thinking {
+  font-size: 12px; color: #b0a89f;
+  padding: 4px 2px; align-self: flex-start;
+}
+.ai-chat-input-row {
+  display: flex; gap: 8px; align-items: center;
+}
+.ai-chat-input {
+  flex: 1; border: 1.5px solid #d8ccbf; border-radius: 20px;
+  padding: 9px 14px; font-size: 13.5px; color: #2e221a;
+  background: #fdfaf6; outline: none; font-family: inherit;
+}
+.ai-chat-input:focus { border-color: #9a6a4a; }
+.ai-chat-input::placeholder { color: #b0a89f; }
+.ai-chat-send {
+  background: #5a3824; color: #fff5ec; border: none; border-radius: 20px;
+  padding: 9px 18px; font-size: 13px; font-weight: 700;
+  cursor: pointer; white-space: nowrap; transition: opacity .15s;
+  font-family: inherit;
+}
+.ai-chat-send:hover { opacity: .85; }
+.ai-chat-send:disabled { opacity: .4; cursor: default; }
+.ai-chat-divider {
+  text-align: center; font-size: 12px; color: #b0a89f;
+  margin: 0 0 16px; letter-spacing: .04em;
+}
+
+/* ══════════════════════════════════════════
+   AI 确认弹窗
+══════════════════════════════════════════ */
+.ai-confirm-overlay {
+  position: fixed; inset: 0; z-index: 9100;
+  background: rgba(30,22,16,.58);
+  display: flex; align-items: center; justify-content: center;
+  padding: 20px;
+}
+.ai-confirm-card {
+  background: #fdf8f2; border-radius: 18px;
+  padding: 24px 22px; max-width: 340px; width: 100%;
+  box-shadow: 0 8px 40px rgba(80,40,10,.28);
+}
+.ai-confirm-title {
+  font-size: 16px; font-weight: 700; color: #2e221a;
+  margin-bottom: 18px; text-align: center;
+}
+.ai-confirm-rows {
+  display: flex; flex-direction: column; gap: 10px;
+  margin-bottom: 22px;
+  background: #f8f3eb; border-radius: 10px; padding: 14px 16px;
+}
+.ai-confirm-row {
+  display: flex; align-items: baseline; gap: 8px;
+  font-size: 14px; color: #3d302b;
+}
+.ai-confirm-label { color: #9a8878; min-width: 52px; flex-shrink: 0; }
+.ai-confirm-value { font-weight: 600; color: #2e221a; }
+.ai-confirm-btns { display: flex; gap: 10px; }
+.ai-confirm-cancel {
+  flex: 1; background: none; border: 1.5px solid #d8ccbf; border-radius: 24px;
+  padding: 11px; font-size: 14px; color: #5a4a3a; cursor: pointer;
+  font-family: inherit; transition: border-color .15s;
+}
+.ai-confirm-cancel:hover { border-color: #9a6a4a; }
+.ai-confirm-ok {
+  flex: 2; background: #5a3824; color: #fff5ec; border: none; border-radius: 24px;
+  padding: 11px; font-size: 14px; font-weight: 700; cursor: pointer;
+  font-family: inherit; transition: opacity .15s;
+}
+.ai-confirm-ok:hover { opacity: .88; }

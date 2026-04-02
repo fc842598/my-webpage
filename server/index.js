@@ -703,6 +703,47 @@ function formatBody(req) {
   return lines.join('\n');
 }
 
+// ── AI 智能识别对话接口 ──────────────────────────────────
+const CHAT_SYSTEM = `你是紫微斗数排盘助手，帮助收集用户的出生信息。
+必须收集（缺一不可）：出生年、月、日、小时（0-23制）、性别（male/female）。
+城市可选。
+每次只返回 JSON，不要任何其他文字。
+
+信息完整时返回：
+{"complete":true,"year":1991,"month":2,"day":16,"hour":22,"minute":0,"gender":"male","city":"上海"}
+city 无则省略该字段。
+
+信息不完整时返回：
+{"complete":false,"reply":"你好，请问你的性别是男还是女？"}
+reply 简短自然，每次只问一个缺失项。
+
+时辰换算（取每个时辰起始小时）：子=0,丑=1,寅=3,卯=5,辰=7,巳=9,午=11,未=13,申=15,酉=17,戌=19,亥=21
+"下午X点"或"晚上X点"分别加12处理（如晚上10点=22点）。`;
+
+app.post('/api/chat', async (req, res) => {
+  const { messages } = req.body || {};
+  if (!Array.isArray(messages) || !messages.length) {
+    return res.status(400).json({ error: 'messages 字段缺失或为空' });
+  }
+  try {
+    const resp = await deepseek.chat.completions.create({
+      model          : MODEL,
+      messages       : [{ role: 'system', content: CHAT_SYSTEM }, ...messages],
+      response_format: { type: 'json_object' },
+      temperature    : 0.3,
+      max_tokens     : 200,
+    });
+    const raw = resp.choices[0]?.message?.content || '{}';
+    let data;
+    try { data = JSON.parse(raw); }
+    catch { data = { complete: false, reply: '抱歉，请重新输入你的出生信息。' }; }
+    return res.json({ ok: true, data });
+  } catch (err) {
+    console.error('[chat-api] DeepSeek 调用失败:', err.message);
+    return res.status(502).json({ error: 'AI 调用失败：' + err.message });
+  }
+});
+
 // ── 主接口 ───────────────────────────────────────────────
 
 app.post('/api/piming', async (req, res) => {

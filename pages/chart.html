@@ -45,6 +45,23 @@
 
   <div class="nf-card">
 
+    <!-- AI 智能识别 -->
+    <div class="ai-chat-wrap" id="ai-chat-wrap">
+      <div class="ai-chat-label">
+        <span class="ai-chat-label-icon">✦</span>
+        AI 智能识别
+      </div>
+      <div class="ai-chat-messages" id="ai-chat-messages">
+        <div class="ai-msg ai-msg-ai">你好！直接告诉我出生信息就好，比如：<em>1991年2月16日晚上10点，男，出生在上海</em></div>
+      </div>
+      <div class="ai-chat-input-row">
+        <input type="text" id="ai-chat-input" class="ai-chat-input"
+               placeholder="输入出生年月日、时间、性别，城市可选…" autocomplete="off">
+        <button type="button" id="ai-chat-send" class="ai-chat-send">发送</button>
+      </div>
+    </div>
+    <div class="ai-chat-divider">— 或手动填写 —</div>
+
     <!-- 姓名 & 性别 -->
     <div class="nf-row">
       <div class="nf-row-left">
@@ -118,8 +135,6 @@
         <span class="nf-time-sep">分</span>
       </div>
     </div>
-    <div id="tst-shichen-preview" class="nf-shichen-preview"></div>
-
     <!-- 出生地点 -->
     <div class="nf-row" style="flex-direction:column;align-items:stretch;gap:8px">
       <div style="display:flex;justify-content:space-between;align-items:center">
@@ -423,6 +438,18 @@
   </div>
 </section>
 
+<!-- AI 确认弹窗 -->
+<div class="ai-confirm-overlay" id="ai-confirm-overlay" style="display:none">
+  <div class="ai-confirm-card">
+    <div class="ai-confirm-title">确认出生信息</div>
+    <div class="ai-confirm-rows" id="ai-confirm-rows"></div>
+    <div class="ai-confirm-btns">
+      <button type="button" class="ai-confirm-cancel" id="ai-confirm-cancel">取消</button>
+      <button type="button" class="ai-confirm-ok" id="ai-confirm-ok">确认排盘 →</button>
+    </div>
+  </div>
+</div>
+
 <footer class="footer">
   <div class="footer-inner">
     <span>© 2026 紫微斗数在线排盘</span>
@@ -568,12 +595,9 @@ function updateTrueSolarTime() {
     day   = parseInt(document.getElementById('inp-day').value);
   }
 
-  const shichenPreview = document.getElementById('tst-shichen-preview');
-
   if (!year || !month || !day) {
     document.getElementById('tst-display').textContent = '请先输入出生日期和地点';
     document.getElementById('tst-estimated-badge').style.display = 'none';
-    if (shichenPreview) shichenPreview.textContent = '';
     _tstResult = null;
     return;
   }
@@ -3730,6 +3754,171 @@ if (typeof ZipingRuntime !== 'undefined') {
     ZipingRuntime.runValidation();
   }
 }
+
+// ══════════════════════════════════════════
+// AI 智能识别对话
+// ══════════════════════════════════════════
+(function () {
+  const SHICHEN = ['子','丑','寅','卯','辰','巳','午','未','申','酉','戌','亥'];
+  const AI_SYSTEM = `你是紫微斗数排盘助手，帮助收集用户的出生信息。
+必须收集（缺一不可）：出生年、月、日、小时（0-23制）、性别（male/female）。
+城市可选。
+每次只返回 JSON，不要任何其他文字。
+
+信息完整时返回：
+{"complete":true,"year":1991,"month":2,"day":16,"hour":22,"minute":0,"gender":"male","city":"上海"}
+city 无则省略该字段。
+
+信息不完整时返回：
+{"complete":false,"reply":"你好，请问你的性别是男还是女？"}
+reply 简短自然，每次只问一个缺失项。
+
+时辰换算（取每个时辰起始小时）：子=0,丑=1,寅=3,卯=5,辰=7,巳=9,午=11,未=13,申=15,酉=17,戌=19,亥=21
+"下午X点"或"晚上X点"分别加12处理（如晚上10点=22点）。`;
+
+  let _chatHistory = [];       // [{role, content}]
+  let _chatExtracted = null;   // 完整信息对象
+
+  const msgList   = document.getElementById('ai-chat-messages');
+  const inputEl   = document.getElementById('ai-chat-input');
+  const sendBtn   = document.getElementById('ai-chat-send');
+  const overlay   = document.getElementById('ai-confirm-overlay');
+  const confirmRows = document.getElementById('ai-confirm-rows');
+  const cancelBtn = document.getElementById('ai-confirm-cancel');
+  const okBtn     = document.getElementById('ai-confirm-ok');
+
+  function addBubble(role, html) {
+    const div = document.createElement('div');
+    div.className = 'ai-msg ' + (role === 'user' ? 'ai-msg-user' : 'ai-msg-ai');
+    div.innerHTML = html;
+    msgList.appendChild(div);
+    msgList.scrollTop = msgList.scrollHeight;
+    return div;
+  }
+
+  function addThinking() {
+    const div = document.createElement('div');
+    div.className = 'ai-msg-thinking';
+    div.textContent = '正在思考…';
+    msgList.appendChild(div);
+    msgList.scrollTop = msgList.scrollHeight;
+    return div;
+  }
+
+  async function callChat(messages) {
+    const base = await _resolvePimingApiBase();
+    const resp = await fetch((base || '') + '/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messages }),
+    });
+    if (!resp.ok) throw new Error('AI 服务暂时不可用');
+    const json = await resp.json();
+    if (!json.ok) throw new Error(json.error || 'AI 服务出错');
+    return json.data;
+  }
+
+  async function send() {
+    const text = inputEl.value.trim();
+    if (!text) return;
+    inputEl.value = '';
+    sendBtn.disabled = true;
+    inputEl.disabled = true;
+
+    addBubble('user', text);
+    _chatHistory.push({ role: 'user', content: text });
+
+    const thinking = addThinking();
+    try {
+      const data = await callChat([..._chatHistory]);
+      thinking.remove();
+
+      if (data.complete) {
+        _chatHistory.push({ role: 'assistant', content: JSON.stringify(data) });
+        _chatExtracted = data;
+        showConfirm(data);
+      } else {
+        const reply = data.reply || '请再补充一些信息。';
+        _chatHistory.push({ role: 'assistant', content: reply });
+        addBubble('ai', reply);
+      }
+    } catch (err) {
+      thinking.remove();
+      addBubble('ai', '服务暂时不可用，请稍后再试或手动填写。');
+    }
+
+    sendBtn.disabled = false;
+    inputEl.disabled = false;
+    inputEl.focus();
+  }
+
+  function shichenLabel(hour) {
+    const idx = hour >= 23 ? 0 : Math.floor(hour / 2);
+    return SHICHEN[idx] + '时';
+  }
+
+  function showConfirm(data) {
+    const genderText = data.gender === 'female' ? '女' : '男';
+    const timeText = `${String(data.hour).padStart(2,'0')}:${String(data.minute||0).padStart(2,'0')}（${shichenLabel(data.hour)}）`;
+    confirmRows.innerHTML = [
+      ['性别', genderText],
+      ['出生公历', `${data.year}年${data.month}月${data.day}日`],
+      ['出生时刻', timeText],
+      data.city ? ['出生地点', data.city] : null,
+    ].filter(Boolean).map(([label, value]) =>
+      `<div class="ai-confirm-row"><span class="ai-confirm-label">${label}</span><span class="ai-confirm-value">${value}</span></div>`
+    ).join('');
+    overlay.style.display = 'flex';
+  }
+
+  function fillFormAndSubmit(data) {
+    // 确保公历模式
+    document.querySelectorAll('.nf-cal-btn').forEach(b => b.classList.toggle('active', b.dataset.cal === 'solar'));
+    document.getElementById('solar-inputs').style.display = 'flex';
+    document.getElementById('lunar-inputs').style.display = 'none';
+    _calMode = 'solar';
+    // 填入日期
+    document.getElementById('inp-year').value  = data.year;
+    document.getElementById('inp-month').value = data.month;
+    document.getElementById('inp-day').value   = data.day;
+    // 填入时间
+    document.getElementById('inp-time-h').value = data.hour;
+    document.getElementById('inp-time-m').value = data.minute || 0;
+    // 填入性别
+    const gv = data.gender || 'male';
+    document.getElementById('inp-gender').value = gv;
+    document.querySelectorAll('.nf-gender-btn').forEach(b => b.classList.toggle('active', b.dataset.v === gv));
+    // 城市（简单文本匹配）
+    if (data.city && typeof CITIES !== 'undefined') {
+      const q = data.city.toLowerCase();
+      const found = CITIES.find(c => c[1].toLowerCase().includes(q) || c[0].toLowerCase().includes(q));
+      if (found) {
+        _selectedCity = { province: found[0], city: found[1], lon: found[2], lat: found[3], tzOffset: found[4] ?? 8 };
+        document.getElementById('inp-city-search').value = `${found[0]} · ${found[1]}`;
+        document.getElementById('city-selected-name').textContent = `${found[0]} ${found[1]}`;
+        document.getElementById('city-selected-lon').textContent  = found[2];
+        document.getElementById('city-selected-lat').textContent  = found[3];
+        document.getElementById('city-selected').style.display = 'block';
+        document.getElementById('btn-clear-city').style.display = 'inline';
+      }
+    }
+    // 触发更新
+    updateDatePreview?.();
+    updateTrueSolarTime?.();
+    // 提交
+    document.getElementById('btn-submit').click();
+  }
+
+  sendBtn.addEventListener('click', send);
+  inputEl.addEventListener('keydown', e => { if (e.key === 'Enter') send(); });
+
+  cancelBtn.addEventListener('click', () => { overlay.style.display = 'none'; });
+  overlay.addEventListener('click', e => { if (e.target === overlay) overlay.style.display = 'none'; });
+  okBtn.addEventListener('click', () => {
+    overlay.style.display = 'none';
+    if (_chatExtracted) fillFormAndSubmit(_chatExtracted);
+  });
+}());
 </script>
 </body>
 </html>
