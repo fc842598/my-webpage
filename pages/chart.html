@@ -3760,21 +3760,6 @@ if (typeof ZipingRuntime !== 'undefined') {
 // ══════════════════════════════════════════
 (function () {
   const SHICHEN = ['子','丑','寅','卯','辰','巳','午','未','申','酉','戌','亥'];
-  const AI_SYSTEM = `你是紫微斗数排盘助手，帮助收集用户的出生信息。
-必须收集（缺一不可）：出生年、月、日、小时（0-23制）、性别（male/female）。
-城市可选。
-每次只返回 JSON，不要任何其他文字。
-
-信息完整时返回：
-{"complete":true,"year":1991,"month":2,"day":16,"hour":22,"minute":0,"gender":"male","city":"上海"}
-city 无则省略该字段。
-
-信息不完整时返回：
-{"complete":false,"reply":"你好，请问你的性别是男还是女？"}
-reply 简短自然，每次只问一个缺失项。
-
-时辰换算（取每个时辰起始小时）：子=0,丑=1,寅=3,卯=5,辰=7,巳=9,午=11,未=13,申=15,酉=17,戌=19,亥=21
-"下午X点"或"晚上X点"分别加12处理（如晚上10点=22点）。`;
 
   let _chatHistory = [];       // [{role, content}]
   let _chatExtracted = null;   // 完整信息对象
@@ -3806,16 +3791,31 @@ reply 简短自然，每次只问一个缺失项。
   }
 
   async function callChat(messages) {
-    const base = await _resolvePimingApiBase();
-    const resp = await fetch((base || '') + '/api/chat', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ messages }),
-    });
-    if (!resp.ok) throw new Error('AI 服务暂时不可用');
-    const json = await resp.json();
-    if (!json.ok) throw new Error(json.error || 'AI 服务出错');
-    return json.data;
+    // 先尝试同源（Railway 生产），再 fallback localhost
+    const bases = [_PIMING_API_PUBLIC_BASE, 'http://localhost:3001', ''];
+    let lastErr = null;
+    for (const base of bases) {
+      try {
+        const resp = await fetch(base + '/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ messages }),
+          signal: AbortSignal.timeout(15000),
+        });
+        if (!resp.ok) {
+          const errText = await resp.text().catch(() => '');
+          throw new Error('HTTP ' + resp.status + (errText ? ': ' + errText : ''));
+        }
+        const json = await resp.json();
+        if (!json.ok) throw new Error(json.error || 'AI 服务出错');
+        return json.data;
+      } catch (err) {
+        lastErr = err;
+        // 仅网络错误或 404 才尝试下一个，其他错误直接抛出
+        if (!(err instanceof TypeError) && !String(err.message).startsWith('HTTP 404')) break;
+      }
+    }
+    throw lastErr || new Error('AI 服务不可用');
   }
 
   async function send() {
