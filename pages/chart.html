@@ -789,6 +789,8 @@ applyDefaults();
 
 // ─── 表单提交 ─────────────────────────────────────────────
 document.getElementById('btn-submit').addEventListener('click', async () => {
+  // 防止按钮意外卡 disabled：如果是用户手动触发则先解锁
+  document.getElementById('btn-submit').disabled = false;
   const norm = normalizeInput();
   if (norm.error) { showError(norm.error); return; }
 
@@ -3792,8 +3794,8 @@ window._aiChatFill = function(data) {
   // 触发 TST 更新
   updateDatePreview();
   updateTrueSolarTime();
-  // 提交
-  document.getElementById('btn-submit').click();
+  // 提交（延一帧，确保 DOM 值已稳定）
+  setTimeout(function() { document.getElementById('btn-submit').click(); }, 50);
 };
 </script>
 
