@@ -254,7 +254,6 @@
         </button>
         <button class="fc-tab" data-tab="后天卦">后天卦</button>
         <button class="fc-tab" data-tab="流年卦">流年卦</button>
-        <button class="fc-tab" data-tab="年卦">年卦</button>
       </div>
     </div>
 
@@ -263,13 +262,6 @@
       <button class="fc-scroll-btn" id="fc-scroll-left">◁</button>
       <div class="fc-liunian-scroll" id="fc-liunian-scroll"></div>
       <button class="fc-scroll-btn" id="fc-scroll-right">▷</button>
-    </div>
-
-    <!-- 年卦滚动（仅年卦标签显示） -->
-    <div class="fc-liunian-wrap" id="fc-niangua-wrap" style="display:none">
-      <button class="fc-scroll-btn" id="fc-niangua-left">◁</button>
-      <div class="fc-liunian-scroll" id="fc-niangua-scroll"></div>
-      <button class="fc-scroll-btn" id="fc-niangua-right">▷</button>
     </div>
 
     <!-- 卦象展示 -->
@@ -1592,7 +1584,6 @@ let _fcXiaoLianBranch  = null; // 当前虚岁小限所在地支
 let _xianTianGuaResult = null; // 先天卦（来自 ZipingRuntime 结果）
 let _houTianGuaResult  = null; // 后天卦
 let _liunianGuaResult  = null; // 当前选中年龄的流年卦
-let _fcActiveNianGuaAge = null; // 年卦 tab 当前选中条目的 age（后天期）
 let _liunianSeq        = {};   // 流年序列 { age: guaResult }（即 liunianMap）
 let _birthPillarsCache = null; // 出生四柱缓存
 let _birthGender       = null;
@@ -1726,15 +1717,6 @@ function fcRenderHexagram() {
     hexData = _houTianGuaResult
       ? { name: _houTianGuaResult.name, sub: '', lines: _houTianGuaResult.lines }
       : null;
-  } else if (_fcActiveTab === '年卦') {
-    const ng = _fcActiveNianGuaAge ? _liunianSeq[_fcActiveNianGuaAge] : null;
-    if (ng) {
-      const houFirstAge = Object.keys(_liunianSeq || {}).map(Number).sort((a,b)=>a-b).find(a => _liunianSeq[a].period === '后天');
-      const nianIdx = houFirstAge != null ? (_fcActiveNianGuaAge - houFirstAge + 1) : '';
-      hexData = { name: ng.name, sub: `后天 年${nianIdx}`, lines: ng.lines };
-    } else {
-      hexData = null;
-    }
   } else { // 流年卦
     hexData = _liunianGuaResult
       ? { name: _liunianGuaResult.name, sub: '', lines: _liunianGuaResult.lines }
@@ -1786,35 +1768,6 @@ function fcRenderLiunianScroll() {
     card.className = 'fc-year-card' + (item.age === _fcActiveAge ? ' active' : '');
     card.innerHTML = `<span>${item.age}岁</span><span style="font-size:10px">${item.year}年</span>`;
     card.addEventListener('click', () => fcSelectYear(item.age));
-    scroll.appendChild(card);
-  });
-  requestAnimationFrame(() => {
-    const active = scroll.querySelector('.fc-year-card.active');
-    if (active) active.scrollIntoView({ inline: 'center', behavior: 'smooth', block: 'nearest' });
-  });
-}
-
-function fcRenderNianGuaScroll() {
-  const scroll = document.getElementById('fc-niangua-scroll');
-  if (!scroll) return;
-  scroll.innerHTML = '';
-  const entries = Object.entries(_liunianSeq || {})
-    .filter(([, v]) => v.period === '后天')
-    .sort(([a], [b]) => Number(a) - Number(b));
-  if (!entries.length) return;
-  if (!_fcActiveNianGuaAge || !_liunianSeq[_fcActiveNianGuaAge] || _liunianSeq[_fcActiveNianGuaAge].period !== '后天') {
-    _fcActiveNianGuaAge = Number(entries[0][0]);
-  }
-  entries.forEach(([ageStr, entry], idx) => {
-    const age = Number(ageStr);
-    const card = document.createElement('div');
-    card.className = 'fc-year-card' + (age === _fcActiveNianGuaAge ? ' active' : '');
-    card.innerHTML = `<span>年${idx + 1}</span><span style="font-size:10px">${entry.name}</span>`;
-    card.addEventListener('click', () => {
-      _fcActiveNianGuaAge = age;
-      fcRenderNianGuaScroll();
-      fcRenderHexagram();
-    });
     scroll.appendChild(card);
   });
   requestAnimationFrame(() => {
@@ -2917,8 +2870,6 @@ function fcRenderTabs() {
   });
   const lnWrap = document.getElementById('fc-liunian-wrap');
   if (lnWrap) lnWrap.style.display = _fcActiveTab === '流年卦' ? 'flex' : 'none';
-  const ngWrap = document.getElementById('fc-niangua-wrap');
-  if (ngWrap) ngWrap.style.display = _fcActiveTab === '年卦' ? 'flex' : 'none';
 }
 
 function fcSelectYear(age) {
@@ -3137,7 +3088,6 @@ function renderFigmaChart(chart, gender, dateStr, norm) {
   _fcActiveTab = '先天卦';
   fcRenderTabs();
   fcRenderLiunianScroll();
-  fcRenderNianGuaScroll();
   fcRenderHexagram();
   _fcRenderScoreCurve();
   renderAIPiming();   // AI批命区全量刷新
@@ -3145,7 +3095,6 @@ function renderFigmaChart(chart, gender, dateStr, norm) {
   document.querySelectorAll('.fc-tab').forEach(btn => {
     btn.onclick = () => {
       _fcActiveTab = btn.dataset.tab;
-      if (_fcActiveTab === '年卦') fcRenderNianGuaScroll();
       fcRenderTabs();
       fcRenderHexagram();
       _fcRenderScoreCurve();
@@ -3155,9 +3104,6 @@ function renderFigmaChart(chart, gender, dateStr, norm) {
   const scrollEl = document.getElementById('fc-liunian-scroll');
   document.getElementById('fc-scroll-left').onclick  = () => scrollEl.scrollBy({left:-90,behavior:'smooth'});
   document.getElementById('fc-scroll-right').onclick = () => scrollEl.scrollBy({left: 90,behavior:'smooth'});
-  const ngScrollEl = document.getElementById('fc-niangua-scroll');
-  document.getElementById('fc-niangua-left').onclick  = () => ngScrollEl.scrollBy({left:-90,behavior:'smooth'});
-  document.getElementById('fc-niangua-right').onclick = () => ngScrollEl.scrollBy({left: 90,behavior:'smooth'});
 }
 
 // ─── AI 解盘引擎 ──────────────────────────────────────────
