@@ -23,15 +23,17 @@
     };
   }
 
-  function getHourFromNorm(norm) {
-    const hour = norm?.tstResult?.trueSolarHour ?? norm?.cstHour;
-    const minute = norm?.tstResult?.trueSolarMinute ?? norm?.cstMinute ?? 0;
+  function getCivilHourFromNorm(norm) {
+    const hour = norm?.cstHour ?? norm?.tstResult?.localHour ?? norm?.tstResult?.cstHour;
+    const minute = norm?.cstMinute ?? norm?.tstResult?.localMinute ?? norm?.tstResult?.cstMinute ?? 0;
     if (typeof hour !== 'number' || Number.isNaN(hour)) return null;
     return { hour, minute };
   }
 
   function resolveTimeSlot(norm) {
-    const current = getHourFromNorm(norm);
+    // TianJi's time-slot selection is based on the entered civil clock time:
+    // 早子=00:00-00:59, 夜子=23:00-23:59.
+    const current = getCivilHourFromNorm(norm);
     if (!current) return null;
     const hour = current.hour;
 
@@ -101,7 +103,7 @@
         hourPillar,
         timeSlot: slot.name,
         hourDayStem,
-        source: 'tianji-like-whole-day',
+        source: 'tianji-like-civil-slot',
       },
     };
   }

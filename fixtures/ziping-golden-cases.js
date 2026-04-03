@@ -300,7 +300,119 @@ const ZIPING_GOLDEN_CASES = [
     },
   },
 
-  // ── Verified 8：天纪软件样本，女，1984-04-08 辰时 ──────────────
+  // ── Verified 8：天纪软件样本，男，1991-02-16 早子 ──────────────
+  {
+    id: 'verified-tianji-ui-1991-02-16-earlyzi',
+    description: '天纪软件实抓：辛未 庚寅 丁巳 庚子，男，1991-02-16 早子',
+    source: 'professional-tool',
+    verified: true,
+    input: {
+      pillars: {
+        yearStem:'辛', yearBranch:'未',
+        monthStem:'庚', monthBranch:'寅',
+        dayStem:'丁', dayBranch:'巳',
+        hourStem:'庚', hourBranch:'子',
+      },
+      gender: 'male',
+      birthYear: 1991,
+    },
+    expected: {
+      debug: {
+        yuanTangLine: 2,
+        yuanTangLineType: 'yang',
+        yuanTangPoolType: 'yang',
+        yuanTangHourGroup: 'upper-six',
+      },
+      xiantian: { name: '雷风恒', num: 32, upper: 4, lower: 5 },
+      houtian:  { name: '山雷颐', num: 27, upper: 7, lower: 4 },
+    },
+  },
+
+  // ── Verified 9：天纪软件样本，男，1991-02-16 夜子 ──────────────
+  {
+    id: 'verified-tianji-ui-1991-02-16-nightzi',
+    description: '天纪软件实抓：辛未 庚寅 丁巳 壬子，男，1991-02-16 夜子',
+    source: 'professional-tool',
+    verified: true,
+    input: {
+      pillars: {
+        yearStem:'辛', yearBranch:'未',
+        monthStem:'庚', monthBranch:'寅',
+        dayStem:'丁', dayBranch:'巳',
+        hourStem:'壬', hourBranch:'子',
+      },
+      gender: 'male',
+      birthYear: 1991,
+    },
+    expected: {
+      debug: {
+        yuanTangLine: 2,
+        yuanTangLineType: 'yang',
+        yuanTangPoolType: 'yang',
+        yuanTangHourGroup: 'upper-six',
+      },
+      xiantian: { name: '天水讼', num: 6, upper: 1, lower: 6 },
+      houtian:  { name: '地天泰', num: 11, upper: 8, lower: 1 },
+    },
+  },
+
+  // ── Verified 10：天纪软件样本，男，1991-02-17 早子 ─────────────
+  {
+    id: 'verified-tianji-ui-1991-02-17-earlyzi',
+    description: '天纪软件实抓：辛未 庚寅 戊午 壬子，男，1991-02-17 早子',
+    source: 'professional-tool',
+    verified: true,
+    input: {
+      pillars: {
+        yearStem:'辛', yearBranch:'未',
+        monthStem:'庚', monthBranch:'寅',
+        dayStem:'戊', dayBranch:'午',
+        hourStem:'壬', hourBranch:'子',
+      },
+      gender: 'male',
+      birthYear: 1991,
+    },
+    expected: {
+      debug: {
+        yuanTangLine: 4,
+        yuanTangLineType: 'yang',
+        yuanTangPoolType: 'yang',
+        yuanTangHourGroup: 'upper-six',
+      },
+      xiantian: { name: '天地否', num: 12, upper: 1, lower: 8 },
+      houtian:  { name: '地风升', num: 46, upper: 8, lower: 5 },
+    },
+  },
+
+  // ── Verified 11：天纪软件样本，男，1999-12-26 早子 ─────────────
+  {
+    id: 'verified-tianji-ui-1999-12-26-earlyzi',
+    description: '天纪软件实抓：己卯 丙子 壬子 庚子，男，1999-12-26 早子',
+    source: 'professional-tool',
+    verified: true,
+    input: {
+      pillars: {
+        yearStem:'己', yearBranch:'卯',
+        monthStem:'丙', monthBranch:'子',
+        dayStem:'壬', dayBranch:'子',
+        hourStem:'庚', hourBranch:'子',
+      },
+      gender: 'male',
+      birthYear: 1999,
+    },
+    expected: {
+      debug: {
+        yuanTangLine: 3,
+        yuanTangLineType: 'yang',
+        yuanTangPoolType: 'yang',
+        yuanTangHourGroup: 'upper-six',
+      },
+      xiantian: { name: '水山蹇', num: 39, upper: 6, lower: 7 },
+      houtian:  { name: '地水师', num: 7, upper: 8, lower: 6 },
+    },
+  },
+
+  // ── Verified 12：天纪软件样本，女，1984-04-08 辰时 ─────────────
   {
     id: 'verified-tianji-pdf-1984-04-08-chen',
     description: '天纪软件样本：甲子 戊辰 壬申 甲辰，女，1984-04-08 辰时',
@@ -340,7 +452,7 @@ const ZIPING_GOLDEN_CASES = [
     },
   },
 
-  // ── Verified 9：天纪软件样本，男，1971-10-06 申时 ──────────────
+  // ── Verified 13：天纪软件样本，男，1971-10-06 申时 ─────────────
   {
     id: 'verified-tianji-pdf-1971-10-06-shen',
     description: '天纪软件样本：辛亥 丁酉 甲子 壬申，男，1971-10-06 申时',

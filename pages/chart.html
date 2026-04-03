@@ -254,6 +254,7 @@
         </button>
         <button class="fc-tab" data-tab="后天卦">后天卦</button>
         <button class="fc-tab" data-tab="流年卦">流年卦</button>
+        <button class="fc-tab" data-tab="年卦">年卦</button>
       </div>
     </div>
 
@@ -262,6 +263,13 @@
       <button class="fc-scroll-btn" id="fc-scroll-left">◁</button>
       <div class="fc-liunian-scroll" id="fc-liunian-scroll"></div>
       <button class="fc-scroll-btn" id="fc-scroll-right">▷</button>
+    </div>
+
+    <!-- 年卦滚动（仅年卦标签显示） -->
+    <div class="fc-liunian-wrap" id="fc-niangua-wrap" style="display:none">
+      <button class="fc-scroll-btn" id="fc-niangua-left">◁</button>
+      <div class="fc-liunian-scroll" id="fc-niangua-scroll"></div>
+      <button class="fc-scroll-btn" id="fc-niangua-right">▷</button>
     </div>
 
     <!-- 卦象展示 -->
@@ -1566,16 +1574,25 @@ function extractPillars(chart) {
   return p;
 }
 
+function _fcResolvedShichenName(chart, norm) {
+  const tianjiSlot = extractPillars(chart)?._tianji?.timeSlot;
+  if (tianjiSlot) return tianjiSlot;
+  return _SHICHEN_NAMES[norm?.timeIdx] || '午';
+}
+
 // ─── UI 状态 ───────────────────────────────────────────────
 let _fcActiveTab       = '先天卦';
 let _fcActiveAge       = 1;
 let _fcBirthYear       = 1991;
 let _fcYearCards       = [];
 let _fcYearlyMap       = {};
+let _fcSequenceStartYear = 1991;
+let _fcZipingMaxAge      = 100;
 let _fcXiaoLianBranch  = null; // 当前虚岁小限所在地支
 let _xianTianGuaResult = null; // 先天卦（来自 ZipingRuntime 结果）
 let _houTianGuaResult  = null; // 后天卦
 let _liunianGuaResult  = null; // 当前选中年龄的流年卦
+let _fcActiveNianGuaAge = null; // 年卦 tab 当前选中条目的 age（后天期）
 let _liunianSeq        = {};   // 流年序列 { age: guaResult }（即 liunianMap）
 let _birthPillarsCache = null; // 出生四柱缓存
 let _birthGender       = null;
@@ -1584,6 +1601,50 @@ function _getTianjiSolarClass() {
   return window.Solar
     || globalThis?.Solar
     || null;
+}
+
+function _fcGetZipingMaxAge() {
+  const direct = Number(_fcZipingMaxAge);
+  if (Number.isFinite(direct) && direct >= 1) return Math.max(1, Math.floor(direct));
+  const ages = Object.keys(_liunianSeq || {})
+    .map(Number)
+    .filter(age => Number.isFinite(age) && age >= 1);
+  return ages.length ? Math.max(...ages) : 100;
+}
+
+function _fcGetSequenceStartYear() {
+  const year = Number(_fcSequenceStartYear);
+  if (Number.isFinite(year)) return Math.floor(year);
+  const birthYear = Number(_fcBirthYear);
+  return Number.isFinite(birthYear) ? Math.floor(birthYear) : new Date().getFullYear();
+}
+
+function _fcClampAge(age) {
+  const num = Math.floor(Number(age) || 1);
+  return Math.max(1, Math.min(_fcGetZipingMaxAge(), num));
+}
+
+function _fcAgeToYear(age) {
+  return _fcGetSequenceStartYear() + _fcClampAge(age) - 1;
+}
+
+function _fcClipAgeRange(start, end) {
+  const maxAge = _fcGetZipingMaxAge();
+  const clippedStart = Math.max(1, Math.floor(Number(start) || 1));
+  const clippedEnd = Math.min(maxAge, Math.floor(Number(end) || maxAge));
+  return clippedEnd >= clippedStart ? [clippedStart, clippedEnd] : null;
+}
+
+function _fcAllModeAxisAges() {
+  const maxAge = _fcGetZipingMaxAge();
+  const ages = [1];
+  if (maxAge > 1) {
+    for (let i = 1; i <= 4; i++) {
+      ages.push(Math.round(1 + ((maxAge - 1) * i) / 5));
+    }
+    ages.push(maxAge);
+  }
+  return [...new Set(ages.filter(age => age >= 1 && age <= maxAge))];
 }
 
 // ── 小限宫位计算 ──────────────────────────────────────────
@@ -1616,13 +1677,14 @@ function _fcResolveDisplayedXiaoLianBranch(age = _fcActiveAge) {
   return rawBranch ? (DUIGONG[rawBranch] || rawBranch) : null;
 }
 
-function fcBuildYearCards(birthYear) {
+function fcBuildYearCards(startYear = _fcGetSequenceStartYear()) {
   const curYear = new Date().getFullYear();
-  const curAge  = curYear - birthYear + 1; // 虚岁
-  _fcActiveAge  = Math.max(1, Math.min(100, curAge));
+  const maxAge  = _fcGetZipingMaxAge();
+  const curAge  = curYear - startYear + 1; // 虚岁
+  _fcActiveAge  = _fcClampAge(curAge);
   _fcYearCards  = [];
-  for (let age = 1; age <= 100; age++) {
-    _fcYearCards.push({ age, year: birthYear + age - 1 }); // 虚岁N → 出生年+N-1
+  for (let age = 1; age <= maxAge; age++) {
+    _fcYearCards.push({ age, year: startYear + age - 1 }); // 虚岁N → 起算年+N-1
   }
 }
 
@@ -1664,6 +1726,15 @@ function fcRenderHexagram() {
     hexData = _houTianGuaResult
       ? { name: _houTianGuaResult.name, sub: '', lines: _houTianGuaResult.lines }
       : null;
+  } else if (_fcActiveTab === '年卦') {
+    const ng = _fcActiveNianGuaAge ? _liunianSeq[_fcActiveNianGuaAge] : null;
+    if (ng) {
+      const houFirstAge = Object.keys(_liunianSeq || {}).map(Number).sort((a,b)=>a-b).find(a => _liunianSeq[a].period === '后天');
+      const nianIdx = houFirstAge != null ? (_fcActiveNianGuaAge - houFirstAge + 1) : '';
+      hexData = { name: ng.name, sub: `后天 年${nianIdx}`, lines: ng.lines };
+    } else {
+      hexData = null;
+    }
   } else { // 流年卦
     hexData = _liunianGuaResult
       ? { name: _liunianGuaResult.name, sub: '', lines: _liunianGuaResult.lines }
@@ -1723,6 +1794,35 @@ function fcRenderLiunianScroll() {
   });
 }
 
+function fcRenderNianGuaScroll() {
+  const scroll = document.getElementById('fc-niangua-scroll');
+  if (!scroll) return;
+  scroll.innerHTML = '';
+  const entries = Object.entries(_liunianSeq || {})
+    .filter(([, v]) => v.period === '后天')
+    .sort(([a], [b]) => Number(a) - Number(b));
+  if (!entries.length) return;
+  if (!_fcActiveNianGuaAge || !_liunianSeq[_fcActiveNianGuaAge] || _liunianSeq[_fcActiveNianGuaAge].period !== '后天') {
+    _fcActiveNianGuaAge = Number(entries[0][0]);
+  }
+  entries.forEach(([ageStr, entry], idx) => {
+    const age = Number(ageStr);
+    const card = document.createElement('div');
+    card.className = 'fc-year-card' + (age === _fcActiveNianGuaAge ? ' active' : '');
+    card.innerHTML = `<span>年${idx + 1}</span><span style="font-size:10px">${entry.name}</span>`;
+    card.addEventListener('click', () => {
+      _fcActiveNianGuaAge = age;
+      fcRenderNianGuaScroll();
+      fcRenderHexagram();
+    });
+    scroll.appendChild(card);
+  });
+  requestAnimationFrame(() => {
+    const active = scroll.querySelector('.fc-year-card.active');
+    if (active) active.scrollIntoView({ inline: 'center', behavior: 'smooth', block: 'nearest' });
+  });
+}
+
 let _fcLifeCurveData = null;
 let _fcLifeCurveLoading = false;
 let _fcLifeCurveCacheKey = '';
@@ -1769,7 +1869,7 @@ function _fcParseDecadeRange(range) {
 
 function _fcFallbackDecadeRange(age) {
   const start = Math.floor((Math.max(1, age) - 1) / 10) * 10 + 1;
-  return [start, Math.min(100, start + 9)];
+  return [start, Math.min(_fcGetZipingMaxAge(), start + 9)];
 }
 
 function _fcLifeCurveRangeText(range) {
@@ -1796,11 +1896,17 @@ function _fcGetChartDecades() {
 }
 
 function _fcGetDisplayDecades() {
+  const maxAge = _fcGetZipingMaxAge();
   const chartDecades = _fcGetChartDecades();
   if (chartDecades.length) {
-    const inLifeRange = chartDecades.filter(d => d.start <= 100 && d.end >= 1);
-    const source = inLifeRange.length ? inLifeRange : chartDecades;
-    return source.slice(0, 10);
+    const inLifeRange = chartDecades
+      .filter(d => d.start <= maxAge && d.end >= 1)
+      .map(d => {
+        const clipped = _fcClipAgeRange(d.start, d.end);
+        return clipped ? { ...d, start: clipped[0], end: clipped[1] } : null;
+      })
+      .filter(Boolean);
+    return inLifeRange.slice(0, 10);
   }
 
   const derived = [];
@@ -1808,7 +1914,9 @@ function _fcGetDisplayDecades() {
   (_fcLifeCurveData?.decades || []).forEach(d => {
     const parsed = _fcParseDecadeRange(d?.range);
     if (!parsed) return;
-    const [start, end] = parsed;
+    const clipped = _fcClipAgeRange(parsed[0], parsed[1]);
+    if (!clipped) return;
+    const [start, end] = clipped;
     const key = `${start}-${end}`;
     if (seen.has(key)) return;
     seen.add(key);
@@ -1820,29 +1928,34 @@ function _fcGetDisplayDecades() {
 
 /* 当前 age 所在的真实大限区间 */
 function _fcLifeCurveDecadeRange(age = _fcActiveAge) {
+  const maxAge = _fcGetZipingMaxAge();
   const decades = _fcGetChartDecades();
   const found = decades.find(d => age >= d.start && age <= d.end);
-  if (found) return [found.start, found.end];
+  if (found) return _fcClipAgeRange(found.start, found.end) || [1, maxAge];
   // fallback: 最近的大限
   if (decades.length) {
     const first = decades[0], last = decades[decades.length - 1];
-    if (age < first.start) return [first.start, first.end];
-    return [last.start, last.end];
+    if (age < first.start) return _fcClipAgeRange(first.start, first.end) || [1, maxAge];
+    return _fcClipAgeRange(last.start, last.end) || [1, maxAge];
   }
   // 无大限数据时 fallback
   const s = Math.floor((Math.max(1, age) - 1) / 10) * 10 + 1;
-  return [s, Math.min(100, s + 9)];
+  return [s, Math.min(maxAge, s + 9)];
 }
 
 /* 全部大限的总年龄范围，或当前大限的年龄列表 */
 function _fcLifeCurveTargetAges(mode = _fcLifeCurveMode) {
+  const maxAge = _fcGetZipingMaxAge();
   let start, end;
   if (mode === 'all') {
     start = 1;
-    end = 100;
+    end = maxAge;
   } else {
     [start, end] = _fcLifeCurveDecadeRange();
   }
+  const clipped = _fcClipAgeRange(start, end);
+  if (!clipped) return [];
+  [start, end] = clipped;
   const ages = [];
   for (let age = start; age <= end; age++) ages.push(age);
   return ages;
@@ -1867,15 +1980,17 @@ function _fcLifeCurveUpsertDecades(decades) {
   const map = new Map();
   (_fcLifeCurveData.decades || []).forEach(item => {
     const parsed = _fcParseDecadeRange(item?.range);
-    const key = parsed ? `${parsed[0]}-${parsed[1]}` : String(item?.range || '');
-    map.set(key, item);
+    const clipped = parsed ? _fcClipAgeRange(parsed[0], parsed[1]) : null;
+    const key = clipped ? `${clipped[0]}-${clipped[1]}` : String(item?.range || '');
+    map.set(key, clipped ? { ...item, range: _fcLifeCurveRangeText(clipped) } : item);
   });
   decades.forEach(item => {
     const parsed = _fcParseDecadeRange(item?.range);
-    const key = parsed ? `${parsed[0]}-${parsed[1]}` : String(item?.range || '');
+    const clipped = parsed ? _fcClipAgeRange(parsed[0], parsed[1]) : null;
+    const key = clipped ? `${clipped[0]}-${clipped[1]}` : String(item?.range || '');
     map.set(key, {
       ...item,
-      range: parsed ? _fcLifeCurveRangeText(parsed) : String(item?.range || ''),
+      range: clipped ? _fcLifeCurveRangeText(clipped) : String(item?.range || ''),
     });
   });
   const merged = [...map.values()].sort((a, b) => {
@@ -1937,8 +2052,11 @@ function _fcLifeCurveUpsertScores(scores, model = '') {
       summary: String(item?.summary || '').trim(),
     });
   });
+  const maxAge = _fcGetZipingMaxAge();
   _fcLifeCurveData = {
-    scores : [...map.values()].sort((a, b) => a.age - b.age),
+    scores : [...map.values()]
+      .filter(item => item.age >= 1 && item.age <= maxAge)
+      .sort((a, b) => a.age - b.age),
     model  : model || _fcLifeCurveData?.model || '',
     decades: _fcLifeCurveData?.decades || [],
   };
@@ -1992,11 +2110,12 @@ function _fcBuildLifeCurveYear(age) {
   const duiBranch  = xiaoBranch ? (DUIGONG[xiaoBranch] || '') : '';
   const duiPalace  = (_chart?.palaces || []).find(p => p.earthlyBranch === duiBranch) || null;
   const decadalPalace = _fcFindDecadalPalace(age);
-  const decadalRange = _fcParseDecadeRange(decadalPalace?.decadal?.range) || _fcFallbackDecadeRange(age);
+  const parsedDecadalRange = _fcParseDecadeRange(decadalPalace?.decadal?.range);
+  const decadalRange = _fcClipAgeRange(parsedDecadalRange?.[0], parsedDecadalRange?.[1]) || _fcFallbackDecadeRange(age);
   const liunian = _liunianSeq?.[age] || null;
   return {
     age,
-    year: _fcBirthYear + age - 1,
+    year: _fcAgeToYear(age),
     liunianGua: liunian ? {
       name: liunian.name || '',
       lineType: liunian.lineType || '',
@@ -2084,7 +2203,7 @@ function _fcLifeCurveLoadingText(loadedCount, totalCount) {
   const decadesReady = ((_fcLifeCurveData?.decades || []).length > 0);
   if (done <= 0) {
     if (_fcLifeCurveMode === 'all') {
-      return decadesReady ? '十年底色已定，正在计算 1-100 岁评分…' : '正在定势十年大运…';
+      return decadesReady ? `十年底色已定，正在计算 1-${_fcGetZipingMaxAge()} 岁评分…` : '正在定势十年大运…';
     }
     return decadesReady ? '十年底色已定，正在计算当前十年评分…' : '正在定势当前十年大运…';
   }
@@ -2148,6 +2267,8 @@ function _fcRenderDecadeBands(svg, rangeStart, rangeEnd, padX, padTop, innerW, i
   chartDecades.forEach((dec, bandIdx) => {
     const dStart = dec.start, dEnd = dec.end;
     if (dEnd < rangeStart || dStart > rangeEnd) return;
+    const clippedRange = _fcClipAgeRange(dStart, dEnd);
+    const rangeKey = clippedRange ? `${clippedRange[0]}-${clippedRange[1]}` : `${dStart}-${dEnd}`;
     const visStart = Math.max(dStart, rangeStart);
     const visEnd   = Math.min(dEnd, rangeEnd);
     const span     = Math.max(1, rangeEnd - rangeStart);
@@ -2156,7 +2277,7 @@ function _fcRenderDecadeBands(svg, rangeStart, rangeEnd, padX, padTop, innerW, i
     const w  = Math.max(0, x2 - x1 - 0.5);
     if (w <= 0) return;
 
-    const profile  = byRange.get(dStart + '-' + dEnd);
+    const profile  = byRange.get(rangeKey);
     const factor   = profile?.decadeFactor ?? null;
     const isActive = _fcActiveAge >= dStart && _fcActiveAge <= dEnd;
 
@@ -2184,7 +2305,8 @@ function _fcRenderDecadeBands(svg, rangeStart, rangeEnd, padX, padTop, innerW, i
 function _fcRenderPeaksRow() {
   const row = document.getElementById('fc-peaks-row');
   if (!row) return;
-  const scores = _fcLifeCurveData?.scores || [];
+  const maxAge = _fcGetZipingMaxAge();
+  const scores = (_fcLifeCurveData?.scores || []).filter(s => s.age >= 1 && s.age <= maxAge);
   if (scores.length < 10 || _fcLifeCurveMode !== 'all') { row.style.display = 'none'; return; }
 
   const sorted = [...scores].sort((a, b) => b.score - a.score);
@@ -2194,19 +2316,21 @@ function _fcRenderPeaksRow() {
 
   // 最佳十年：按十年均分
   const decadeAvg = new Map();
-  for (let d = 1; d <= 91; d += 10) {
-    const chunk = scores.filter(s => s.age >= d && s.age <= d + 9);
+  for (let d = 1; d <= maxAge; d += 10) {
+    const dEnd = Math.min(maxAge, d + 9);
+    const chunk = scores.filter(s => s.age >= d && s.age <= dEnd);
     if (chunk.length) decadeAvg.set(d, chunk.reduce((s, i) => s + i.score, 0) / chunk.length);
   }
   let bestDStart = 1, bestAvg = 0;
   decadeAvg.forEach((v, k) => { if (v > bestAvg) { bestAvg = v; bestDStart = k; } });
+  const bestDEnd = Math.min(maxAge, bestDStart + 9);
 
   row.style.display = '';
   row.innerHTML =
     `<span class="fc-peaks-item"><span class="fc-peaks-label good">巅峰</span> ${peak.age}岁</span>` +
     `<span class="fc-peaks-item"><span class="fc-peaks-label low">低谷</span> ${valley.age}岁</span>` +
     `<span class="fc-peaks-item"><span class="fc-peaks-label avg">均分</span> ${avg}</span>` +
-    `<span class="fc-peaks-item"><span class="fc-peaks-label best">最佳</span> ${bestDStart}-${bestDStart+9}岁</span>`;
+    `<span class="fc-peaks-item"><span class="fc-peaks-label best">最佳</span> ${bestDStart}-${bestDEnd}岁</span>`;
 }
 
 // ── 大运总览横滚 ──────────────────────────────────────────────
@@ -2325,8 +2449,9 @@ function _fcRenderScoreCurve() {
   // ── SVG ──
   const W = 390, H = 260, pX = 16, pT = 20, pB = 22;
   const iW = W - pX * 2, iH = H - pT - pB;
+  const maxAge = _fcGetZipingMaxAge();
   const [rangeStart, rangeEnd] = _fcLifeCurveMode === 'all'
-    ? [1, 100]
+    ? [1, maxAge]
     : _fcLifeCurveDecadeRange();
   const span = Math.max(1, rangeEnd - rangeStart);
   const toX  = age => pX + ((age - rangeStart) / span) * iW;
@@ -2410,7 +2535,7 @@ function _fcRenderScoreCurve() {
     }
 
     // X 轴刻度
-    const axisAges = _fcLifeCurveMode === 'all' ? [1, 20, 40, 60, 80, 100]
+    const axisAges = _fcLifeCurveMode === 'all' ? _fcAllModeAxisAges()
       : plotAges.filter((_, i) => i === 0 || i === plotAges.length - 1 || i === 4);
     axisAges.forEach(age => {
       const lbl = document.createElementNS('http://www.w3.org/2000/svg', 'text');
@@ -2792,15 +2917,17 @@ function fcRenderTabs() {
   });
   const lnWrap = document.getElementById('fc-liunian-wrap');
   if (lnWrap) lnWrap.style.display = _fcActiveTab === '流年卦' ? 'flex' : 'none';
+  const ngWrap = document.getElementById('fc-niangua-wrap');
+  if (ngWrap) ngWrap.style.display = _fcActiveTab === '年卦' ? 'flex' : 'none';
 }
 
 function fcSelectYear(age) {
-  _fcActiveAge = age;
-  const year = _fcBirthYear + age - 1; // 虚岁N → 出生年+N-1
+  _fcActiveAge = _fcClampAge(age);
+  const year = _fcAgeToYear(_fcActiveAge); // 虚岁N → 起算年+N-1
   fcLoadYearly(year);
-  _liunianGuaResult = _liunianSeq[age] ?? null;
+  _liunianGuaResult = _liunianSeq[_fcActiveAge] ?? null;
   const lnName = _liunianGuaResult?.name ?? '—';
-  document.getElementById('fc-c-liunian').textContent = `${age}岁 · ${lnName}`;
+  document.getElementById('fc-c-liunian').textContent = `${_fcActiveAge}岁 · ${lnName}`;
   fcRenderLiunianScroll();
   _fcRenderScoreCurve();
   if (_fcLifeCurveMode === 'decade') _fcEnsureLifeCurveVisible(true);
@@ -2919,9 +3046,10 @@ function renderFigmaChart(chart, gender, dateStr, norm) {
 
   // 中央面板时间信息
   const _pad = n => String(n).padStart(2,'0');
+  const _ep = extractPillars(chart);
   // 公历：日期 + 北京时间 + 最终排盘时辰
-  const usedIdx  = norm ? norm.timeIdx : 6;
-  const usedShi  = (_SHICHEN_NAMES[usedIdx] || '午') + '时';
+  const usedShiName = _fcResolvedShichenName(chart, norm);
+  const usedShi  = `${usedShiName}时`;
   const solarEl  = document.getElementById('fc-c-solar');
   if (solarEl) {
     if (norm) {
@@ -2957,7 +3085,6 @@ function renderFigmaChart(chart, gender, dateStr, norm) {
   const sizhuEl = document.getElementById('fc-c-sizhu');
   const STEM_COLORS = ['#886a4a','#4d7a5b','#9b4238','#476885'];
   // 直接复用 extractPillars 保证与卦计算同源
-  const _ep = extractPillars(chart);
   const pillars = [
     [_ep.yearStem,  _ep.yearBranch ],
     [_ep.monthStem, _ep.monthBranch],
@@ -2978,8 +3105,6 @@ function renderFigmaChart(chart, gender, dateStr, norm) {
 
   _birthPillarsCache = extractPillars(chart);
   _birthGender       = gender;
-  fcBuildYearCards(_fcBirthYear);
-  fcLoadYearly(_fcBirthYear + _fcActiveAge - 1); // 虚岁N → 出生年+N-1
   const nextCurveKey = _fcCurveKey();
   if (_fcLifeCurveCacheKey !== nextCurveKey) {
     _fcLifeCurveCacheKey = nextCurveKey;
@@ -2994,7 +3119,11 @@ function renderFigmaChart(chart, gender, dateStr, norm) {
   _xianTianGuaResult   = _zipingResult?.xiantian    ?? null;
   _houTianGuaResult    = _zipingResult?.houtian     ?? null;
   _liunianSeq          = _zipingResult?.liunianMap  ?? {};
+  _fcSequenceStartYear = Number(_zipingResult?.sequenceStartYear) || _fcBirthYear;
+  _fcZipingMaxAge      = Number(_zipingResult?.naturalEndAge) || Math.max(1, Object.keys(_liunianSeq).length || 100);
+  fcBuildYearCards(_fcSequenceStartYear);
   _liunianGuaResult    = _liunianSeq[_fcActiveAge]  ?? null;
+  fcLoadYearly(_fcAgeToYear(_fcActiveAge));
   _fcComputeXiaoLian();
   // 控制台输出 debug 以便核查（可在 DevTools 检查）
   if (_zipingResult) console.debug('[子平法 debug]', _zipingResult.debug);
@@ -3008,6 +3137,7 @@ function renderFigmaChart(chart, gender, dateStr, norm) {
   _fcActiveTab = '先天卦';
   fcRenderTabs();
   fcRenderLiunianScroll();
+  fcRenderNianGuaScroll();
   fcRenderHexagram();
   _fcRenderScoreCurve();
   renderAIPiming();   // AI批命区全量刷新
@@ -3015,6 +3145,7 @@ function renderFigmaChart(chart, gender, dateStr, norm) {
   document.querySelectorAll('.fc-tab').forEach(btn => {
     btn.onclick = () => {
       _fcActiveTab = btn.dataset.tab;
+      if (_fcActiveTab === '年卦') fcRenderNianGuaScroll();
       fcRenderTabs();
       fcRenderHexagram();
       _fcRenderScoreCurve();
@@ -3024,6 +3155,9 @@ function renderFigmaChart(chart, gender, dateStr, norm) {
   const scrollEl = document.getElementById('fc-liunian-scroll');
   document.getElementById('fc-scroll-left').onclick  = () => scrollEl.scrollBy({left:-90,behavior:'smooth'});
   document.getElementById('fc-scroll-right').onclick = () => scrollEl.scrollBy({left: 90,behavior:'smooth'});
+  const ngScrollEl = document.getElementById('fc-niangua-scroll');
+  document.getElementById('fc-niangua-left').onclick  = () => ngScrollEl.scrollBy({left:-90,behavior:'smooth'});
+  document.getElementById('fc-niangua-right').onclick = () => ngScrollEl.scrollBy({left: 90,behavior:'smooth'});
 }
 
 // ─── AI 解盘引擎 ──────────────────────────────────────────
@@ -3275,7 +3409,7 @@ function _aipBuildMinggongDevContext(chart, inputs) {
       .map(s => `${p.name}${s.mutagen}：${s.name}`)
   );
   return {
-    基本信息 : `${inputs.norm.year}年${inputs.norm.month}月${inputs.norm.day}日${_SHICHEN_NAMES[inputs.norm.timeIdx]}时${inputs.norm.gender === 'male' ? '男' : '女'}命`,
+    基本信息 : `${inputs.norm.year}年${inputs.norm.month}月${inputs.norm.day}日${_fcResolvedShichenName(chart, inputs.norm)}时${inputs.norm.gender === 'male' ? '男' : '女'}命`,
     命盘格局 : chart.fiveElementsClass || '—',
     命宫标题 : lifeMaj.length ? `${lifeMaj.join('+')} 坐命` : '空宫坐命',
     命宫     : _aipPalaceDetail(lifePalace),
@@ -3359,10 +3493,8 @@ function buildBaseMingAnalysis(chart, inputs) {
 function buildCurrentLuckAnalysis(chart, inputs, activeAge) {
   if (!chart || !activeAge) return null;
 
-  // 大限（近似：每10年一大限，精确起大限宫需命盘数据）
-  const dxIdx   = Math.ceil(activeAge / 10);
-  const dxStart = (dxIdx - 1) * 10 + 1;
-  const dxEnd   = dxIdx * 10;
+  const [dxStart, dxEnd] = _fcLifeCurveDecadeRange(activeAge);
+  const dxIdx   = Math.ceil(dxStart / 10);
   const dxBody  = `当前虚岁 ${activeAge} 岁，处于第 ${dxIdx} 大限（${dxStart}～${dxEnd} 岁）。` +
     (dxIdx <= 2 ? '早年奠基阶段，宜专注学业与自我塑造。'
     : dxIdx <= 4 ? '中年黄金期，事业家庭并进，主动推进为宜。'
@@ -3372,7 +3504,7 @@ function buildCurrentLuckAnalysis(chart, inputs, activeAge) {
   // 流年
   const lnData  = _liunianSeq?.[activeAge];
   const gz = lnData?.yearGanzhi ? lnData.yearGanzhi.stem + lnData.yearGanzhi.branch + '年' : '—';
-  const lnYear  = _fcBirthYear + activeAge - 1;
+  const lnYear  = _fcAgeToYear(activeAge);
   const lnGuaName = lnData?.name || '—';
   const lnPeriod  = lnData?.period || '';
   const lnLine    = lnData ? `第${lnData.lineNum}爻（${lnData.lineType==='yang'?'阳爻9年':'阴爻6年'}）` : '';
@@ -3719,7 +3851,7 @@ async function _refreshPimingApiHint() {
     statusEl.textContent = '正在请求 AI 解读…';
 
     const norm = _chartInputs.norm;
-    const chartSummary = `出生：${norm.year}年${norm.month}月${norm.day}日 ${_SHICHEN_NAMES[norm.timeIdx]}时 ${norm.gender === 'male' ? '男' : '女'}命`;
+    const chartSummary = `出生：${norm.year}年${norm.month}月${norm.day}日 ${_fcResolvedShichenName(_chart, norm)}时 ${norm.gender === 'male' ? '男' : '女'}命`;
 
     const activeGua = _liunianGuaResult || _houTianGuaResult || _xianTianGuaResult;
     const payload = {
@@ -3826,15 +3958,16 @@ const AIDBG_MODULES = [
       const lnData  = _liunianSeq?.[activeAge];
       const gz      = lnData?.yearGanzhi
         ? lnData.yearGanzhi.stem + lnData.yearGanzhi.branch + '年' : '—';
-      const lnYear  = _fcBirthYear + activeAge - 1;
-      const dxIdx   = Math.ceil(activeAge / 10);
+      const lnYear  = _fcAgeToYear(activeAge);
+      const [dxStart, dxEnd] = _fcLifeCurveDecadeRange(activeAge);
+      const dxIdx   = Math.ceil(dxStart / 10);
       const xlBranch = _fcResolveDisplayedXiaoLianBranch(activeAge) || _fcXiaoLianBranch;
       const xlPalace = (chart.palaces||[]).find(p => p.earthlyBranch === xlBranch);
       const xlName   = xlPalace?.name || (xlBranch ? xlBranch : '—');
       const gua = _liunianGuaResult || lnData;
       return {
         当前虚岁  : `${activeAge} 岁`,
-        大限阶段  : `第 ${dxIdx} 大限（${(dxIdx-1)*10+1}～${dxIdx*10} 岁）`,
+        大限阶段  : `第 ${dxIdx} 大限（${dxStart}～${dxEnd} 岁）`,
         流年      : `${lnYear} 年 · ${gz}`,
         流年卦    : gua ? `${gua.name}${gua.num?`（#${gua.num}）`:''}${gua.period?` · ${gua.period}`:''}` : '—',
         流年爻位  : lnData ? `第${lnData.lineNum}爻（${lnData.lineType==='yang'?'阳爻9年':'阴爻6年'}）` : '—',

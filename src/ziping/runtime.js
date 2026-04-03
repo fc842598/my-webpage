@@ -66,7 +66,7 @@
   }
 
   /**
-   * compute(pillars, gender, birthYear, maxAge=100) → 完整结果对象
+   * compute(pillars, gender, birthYear, maxAge) → 完整结果对象
    * pillars 格式同 generator.generate() 的第一个参数。
    */
   function compute(pillars, gender, birthYear, maxAge) {
@@ -75,7 +75,7 @@
       console.error('[ZipingRuntime] ZipingGenerator 未加载');
       return null;
     }
-    _lastResult = gen.generate(pillars, gender, birthYear, maxAge || 100);
+    _lastResult = gen.generate(pillars, gender, birthYear, maxAge);
     _lastResult = applyUiOverrides(_lastResult, pillars, gender, birthYear);
     if (_lastResult.error) {
       console.error('[ZipingRuntime] 计算失败:', _lastResult.error, _lastResult.input);

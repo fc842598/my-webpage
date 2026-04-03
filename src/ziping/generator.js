@@ -112,6 +112,7 @@
   // 结合《天机道》与天纪软件实测样本校准：
   // 上六时（子丑寅卯辰巳）：
   //   阳命取本卦阳爻池；阴命取本卦阴爻池
+  //   但子时（早子 / 夜子）是天纪特例，固定走阳爻池
   // 下六时（午未申酉戌亥）：
   //   取本卦阴爻池
   // 各组六时按时序轮转；若目标池为空，再回退到另一池。
@@ -123,7 +124,9 @@
     const pos = isUpperSix
       ? T().YANG_HOURS.indexOf(hourBranch)
       : T().YIN_HOURS.indexOf(hourBranch);
-    const preferredPoolType = isUpperSix && isYangPerson !== false ? 'yang' : 'yin';
+    const preferredPoolType = hourBranch === '子'
+      ? 'yang'
+      : (isUpperSix && isYangPerson !== false ? 'yang' : 'yin');
     const preferredPool = preferredPoolType === 'yang' ? yang : yin;
     const fallbackPool = preferredPoolType === 'yang' ? yin : yang;
     const pool = preferredPool.length ? preferredPool : fallbackPool;
@@ -154,6 +157,25 @@
       stem:   T().STEMS[  ((year - 4) % 10 + 10) % 10],
       branch: T().BRANCHES[((year - 4) % 12 + 12) % 12],
     };
+  }
+
+  function resolveSequenceStartYear(birthYear, pillars) {
+    const yearStem = pillars?.yearStem;
+    const yearBranch = pillars?.yearBranch;
+    if (!yearStem || !yearBranch) return birthYear;
+    const offsets = [0, -1, 1, -2, 2];
+    for (const offset of offsets) {
+      const year = birthYear + offset;
+      const gz = yearGanzhi(year);
+      if (gz.stem === yearStem && gz.branch === yearBranch) return year;
+    }
+    return birthYear;
+  }
+
+  function getHexPeriodYears(gua) {
+    if (!gua) return 0;
+    return hexLines6(gua.upper, gua.lower)
+      .reduce((sum, line) => sum + (line === 'solid' ? 9 : 6), 0);
   }
 
   // ── 小限宫位（紫微斗数三合起宫法） ──────────────────────────
@@ -266,15 +288,15 @@
    *
    * 规则依据：《天机道》逐爻游变章。
    */
-  function buildLiuNianMap(xianTian, houTian, xianYuanTangLine, houYuanTangLine, birthYear, maxAge, gender, birthYearBranch) {
+  function buildLiuNianMap(xianTian, houTian, xianYuanTangLine, houYuanTangLine, startYear, maxAge, gender, birthYearBranch) {
     if (!xianTian || !xianYuanTangLine) return {};
     const map = {};
     let age = 1;
-    const xiaoLianYearBranch = birthYearBranch || yearGanzhi(birthYear).branch;
+    const xiaoLianYearBranch = birthYearBranch || yearGanzhi(startYear).branch;
     const yangStems = new Set(['甲', '丙', '戊', '庚', '壬']);
     const nextLine = lineNum => (lineNum % 6) + 1;
 
-    function buildFlipSchedule(lineNum, yearsInPeriod, isYangLine) {
+    function buildFlipSchedule(lineNum, yearsInPeriod, isYangLine, isHouTianYin) {
       if (yearsInPeriod <= 1) return [];
       const schedule = [];
       if (isYangLine) {
@@ -286,7 +308,17 @@
         }
         return schedule;
       }
-
+      if (isHouTianYin) {
+        // 后天阴爻：y=0 取本卦，之后先翻元堂爻，再从应线续推
+        schedule.push(lineNum);
+        let cur = yingLine(lineNum);
+        while (schedule.length < yearsInPeriod - 1) {
+          schedule.push(cur);
+          cur = nextLine(cur);
+        }
+        return schedule;
+      }
+      // 先天阴爻：y=0 已翻，之后从 nextLine 续推
       let cur = nextLine(lineNum);
       while (schedule.length < yearsInPeriod - 1) {
         schedule.push(cur);
@@ -305,17 +337,18 @@
         if (age > maxAge) break;
         const isYang   = h6[ln - 1] === 'solid';
         const numYears = isYang ? 9 : 6;
-        const firstYear = birthYear + age - 1;
+        const firstYear = startYear + age - 1;
         const firstGz = yearGanzhi(firstYear);
-        const firstYearUnchanged = isYang && yangStems.has(firstGz.stem);
+        const isHouTianYin = !isYang && period === '后天';
+        const firstYearUnchanged = isYang ? yangStems.has(firstGz.stem) : isHouTianYin;
         let gua = firstYearUnchanged ? baseGua : flipHex(baseGua, ln);
-        const flipSchedule = buildFlipSchedule(ln, numYears, isYang);
+        const flipSchedule = buildFlipSchedule(ln, numYears, isYang, isHouTianYin);
 
         for (let y = 0; y < numYears && age <= maxAge; y++, age++) {
           if (y > 0) {
             gua = flipHex(gua, flipSchedule[y - 1]);
           }
-          const curYear    = birthYear + age - 1;
+          const curYear    = startYear + age - 1;
           const gz         = yearGanzhi(curYear);
           const xiaoLian   = calcXiaoLian(xiaoLianYearBranch, gender, age);
           map[age] = {
@@ -332,17 +365,11 @@
 
     fillPeriod(xianTian, '先天', xianYuanTangLine);
     if (houTian && age <= maxAge) fillPeriod(houTian, '后天', houYuanTangLine);
-    if (age <= maxAge) {
-      const lastKey = Math.max(...Object.keys(map).map(Number));
-      const last    = map[lastKey];
-      for (let a = age; a <= maxAge; a++) map[a] = last;
-    }
     return map;
   }
 
   // ── 主入口 ──────────────────────────────────────────────────
   function generate(pillars, gender, birthYear, maxAge) {
-    maxAge = maxAge || 100;
     const warnings = [];
 
     const xtResult = computeXianTian(pillars, gender, birthYear);
@@ -368,18 +395,34 @@
 
     const houTian    = computeHouTian(xianTian, yuanTangLine, pillars.monthBranch, warnings);
     debug.monthLing  = getLingType(pillars.monthBranch);
+    const sequenceStartYear = resolveSequenceStartYear(birthYear, pillars);
+    const naturalEndAge = getHexPeriodYears(xianTian) + getHexPeriodYears(houTian);
+    const requestedMaxAge = Number(maxAge);
+    const effectiveMaxAge = Number.isFinite(requestedMaxAge) && requestedMaxAge > 0
+      ? Math.min(Math.floor(requestedMaxAge), naturalEndAge)
+      : naturalEndAge;
+    debug.sequenceStartYear = sequenceStartYear;
+    debug.naturalEndAge = naturalEndAge;
     const liunianMap = buildLiuNianMap(
-      xianTian, houTian, yuanTangLine, houYuanTangLine, birthYear, maxAge, gender, pillars.yearBranch
+      xianTian, houTian, yuanTangLine, houYuanTangLine, sequenceStartYear, effectiveMaxAge, gender, pillars.yearBranch
     );
 
     return {
-      input:  { pillars, gender, birthYear, maxAge },
+      input:  {
+        pillars,
+        gender,
+        birthYear,
+        maxAge: effectiveMaxAge,
+        requestedMaxAge: Number.isFinite(requestedMaxAge) ? requestedMaxAge : null,
+      },
       debug,
       warnings,   // 三至尊、寄宫等特殊分支的说明
       xiantian:    { name: xianTian.name, num: xianTian.num, upper: xianTian.upper, lower: xianTian.lower, lines: xianTian.lines },
       houtian:     houTian ? { name: houTian.name, num: houTian.num, upper: houTian.upper, lower: houTian.lower, lines: houTian.lines } : null,
       yuanTangLine,
       houYuanTangLine,
+      sequenceStartYear,
+      naturalEndAge,
       liunianMap,
     };
   }
