@@ -296,7 +296,7 @@
     const yangStems = new Set(['甲', '丙', '戊', '庚', '壬']);
     const nextLine = lineNum => (lineNum % 6) + 1;
 
-    function buildFlipSchedule(lineNum, yearsInPeriod, isYangLine, isHouTianYin) {
+    function buildFlipSchedule(lineNum, yearsInPeriod, isYangLine) {
       if (yearsInPeriod <= 1) return [];
       const schedule = [];
       if (isYangLine) {
@@ -308,17 +308,7 @@
         }
         return schedule;
       }
-      if (isHouTianYin) {
-        // 后天阴爻：y=0 取本卦，之后先翻元堂爻，再从应线续推
-        schedule.push(lineNum);
-        let cur = yingLine(lineNum);
-        while (schedule.length < yearsInPeriod - 1) {
-          schedule.push(cur);
-          cur = nextLine(cur);
-        }
-        return schedule;
-      }
-      // 先天阴爻：y=0 已翻，之后从 nextLine 续推
+      // 阴爻（先天或后天）：y=0 已翻，之后从 nextLine 续推
       let cur = nextLine(lineNum);
       while (schedule.length < yearsInPeriod - 1) {
         schedule.push(cur);
@@ -339,10 +329,11 @@
         const numYears = isYang ? 9 : 6;
         const firstYear = startYear + age - 1;
         const firstGz = yearGanzhi(firstYear);
-        const isHouTianYin = !isYang && period === '后天';
-        const firstYearUnchanged = isYang ? yangStems.has(firstGz.stem) : isHouTianYin;
+        // 阳爻首年：起始年天干为阳则取本卦，为阴则先翻
+        // 阴爻首年：始终直接翻（先天阴爻、后天阴爻规则完全一致）
+        const firstYearUnchanged = isYang && yangStems.has(firstGz.stem);
         let gua = firstYearUnchanged ? baseGua : flipHex(baseGua, ln);
-        const flipSchedule = buildFlipSchedule(ln, numYears, isYang, isHouTianYin);
+        const flipSchedule = buildFlipSchedule(ln, numYears, isYang);
 
         for (let y = 0; y < numYears && age <= maxAge; y++, age++) {
           if (y > 0) {

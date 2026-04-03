@@ -257,6 +257,17 @@ const ZIPING_GOLDEN_CASES = [
         { age: 7, guaName: '艮为山', period: '先天' },
         { age: 8, guaName: '山火贲', period: '先天' },
         { age: 9, guaName: '山天大畜', period: '先天' },
+        // 后天阴爻 line3（爻3在山水蒙中为阴爻）：首年直接翻，不取本卦
+        // 若"后天阴爻首年取本卦"bug 重现，age49 会变成 山水蒙 而非 山风蛊
+        { age: 49, guaName: '山风蛊',   period: '后天', lineNum: 3 },
+        { age: 50, guaName: '火风鼎',   period: '后天', lineNum: 3 },
+        { age: 54, guaName: '泽火革',   period: '后天', lineNum: 3 },
+        // 后天阴爻 line4：首年直接翻
+        { age: 55, guaName: '火水未济', period: '后天', lineNum: 4 },
+        { age: 60, guaName: '泽火革',   period: '后天', lineNum: 4 },
+        // 后天阴爻 line5：首年直接翻
+        { age: 61, guaName: '风水涣',   period: '后天', lineNum: 5 },
+        { age: 66, guaName: '泽火革',   period: '后天', lineNum: 5 },
       ],
     },
   },
@@ -448,6 +459,18 @@ const ZIPING_GOLDEN_CASES = [
         { age: 8, guaName: '风水涣', period: '先天' },
         { age: 9, guaName: '风地观', period: '先天' },
         { age: 10, guaName: '风山渐', period: '先天' },
+        // 后天阴爻 line6（爻6在泽山咸中为阴爻）：首年直接翻，不取本卦
+        // 若"后天阴爻首年取本卦"bug 重现，age61 会变成 泽山咸 而非 天山遁
+        { age: 61, guaName: '天山遁', period: '后天', lineNum: 6 },
+        { age: 62, guaName: '天火同人', period: '后天', lineNum: 6 },
+        { age: 63, guaName: '乾为天',   period: '后天', lineNum: 6 },
+        { age: 66, guaName: '山泽损',   period: '后天', lineNum: 6 },
+        // 后天阴爻 line1：首年直接翻
+        { age: 67, guaName: '泽火革',   period: '后天', lineNum: 1 },
+        { age: 72, guaName: '山泽损',   period: '后天', lineNum: 1 },
+        // 后天阴爻 line2：首年直接翻
+        { age: 73, guaName: '泽风大过', period: '后天', lineNum: 2 },
+        { age: 78, guaName: '山泽损',   period: '后天', lineNum: 2 },
       ],
     },
   },
@@ -487,6 +510,18 @@ const ZIPING_GOLDEN_CASES = [
         { age: 7, guaName: '风地观', period: '先天' },
         { age: 8, guaName: '风雷益', period: '先天' },
         { age: 9, guaName: '天雷无妄', period: '先天' },
+        // 后天阴爻 line4（爻4在山天大畜中为阴爻）：首年直接翻，不取本卦
+        // 若"后天阴爻首年取本卦"bug 重现，age82 会变成 山天大畜 而非 火天大有
+        { age: 82, guaName: '火天大有', period: '后天', lineNum: 4 },
+        { age: 83, guaName: '乾为天',   period: '后天', lineNum: 4 },
+        { age: 84, guaName: '泽天夬',   period: '后天', lineNum: 4 },
+        { age: 85, guaName: '泽风大过', period: '后天', lineNum: 4 },
+        { age: 86, guaName: '泽山咸',   period: '后天', lineNum: 4 },
+        { age: 87, guaName: '泽地萃',   period: '后天', lineNum: 4 },
+        // 后天阴爻 line5（爻5在山天大畜中为阴爻）：首年直接翻
+        { age: 88, guaName: '风天小畜', period: '后天', lineNum: 5 },
+        { age: 89, guaName: '水天需',   period: '后天', lineNum: 5 },
+        { age: 93, guaName: '泽地萃',   period: '后天', lineNum: 5 },
       ],
     },
   },
