@@ -24,6 +24,7 @@ const OpenAI  = require('openai').default ?? require('openai');
 const PORT    = process.env.PORT    || 3001;
 const MODEL   = process.env.DEEPSEEK_MODEL || 'deepseek-chat';  // 改成 deepseek-reasoner 即升级推理
 const API_KEY = process.env.DEEPSEEK_API_KEY;
+const MINGGONG_DEBUG_DOC_PATH = path.join(__dirname, '..', 'docs', 'minggong-ai-debug-base.md');
 
 if (!API_KEY) {
   console.error('[piming-api] 缺少 DEEPSEEK_API_KEY 环境变量，请在 server/.env 中设置');
@@ -34,6 +35,25 @@ const deepseek = new OpenAI({
   baseURL: 'https://api.deepseek.com',
   apiKey : API_KEY,
 });
+
+function readTextFileSafe(filePath, fallback = '') {
+  try {
+    return fs.readFileSync(filePath, 'utf8');
+  } catch (_err) {
+    return fallback;
+  }
+}
+
+const FALLBACK_MINGGONG_DEBUG_DOC = `
+## 命宫总批 AI 调试文档（基础版）
+- 只处理命宫格局卡片
+- 只看命宫与三方四正
+- 标题沿用前端标题
+- summary 必须引用命宫主星和至少一个三方四正宫位
+- risk 只写一条最关键提醒
+- basis 只写本次判断主要依据
+`.trim();
+const MINGGONG_DEBUG_DOC = readTextFileSafe(MINGGONG_DEBUG_DOC_PATH, FALLBACK_MINGGONG_DEBUG_DOC);
 
 // ── 评分缓存（文件级，同命盘同年龄段不重复调用 AI）──────────────
 const PROMPT_VERSION = 'v3-two-layer';
@@ -283,6 +303,54 @@ ${RETURN_SCHEMA}`,
   return {
     system: '你是一位精通紫微斗数的命理师，分析简洁有依据。',
     user  : `主题：${topic}\n\n${body}\n\n${RETURN_SCHEMA}`,
+  };
+}
+
+function buildMinggongDevPrompt(req) {
+  const { cardTitle = '', ctx = {}, taskPrompt = '' } = req || {};
+  const contextText = JSON.stringify(ctx || {}, null, 2);
+  const system = [
+    '你是紫微斗数命宫总批模块的开发调试分析助手。',
+    '你只处理命宫格局这一张卡片，不扩写其它主题。',
+    '你必须严格依照调试文档和结构化上下文输出，不得杜撰未提供的星曜、宫位、四化。',
+    '你必须返回严格 JSON，不要 markdown，不要代码块。',
+  ].join('\n');
+
+  const user = [
+    '【当前卡片标题】',
+    cardTitle || '（未提供）',
+    '',
+    '【调试文档】',
+    MINGGONG_DEBUG_DOC.trim(),
+    '',
+    ...(taskPrompt ? ['【任务补充】', taskPrompt.trim(), ''] : []),
+    '【结构化命盘上下文】',
+    contextText,
+    '',
+    '【输出格式】',
+    '{',
+    '  "title": "沿用当前卡片标题",',
+    '  "summary": "80到160字，必须引用命宫主星，并至少提到一个三方四正宫位",',
+    '  "risk": "一句最关键提醒，50字内",',
+    '  "basis": "开发调试字段，说明本次判断主要依据，必须点名命宫和至少一个三方四正宫位"',
+    '}',
+  ].join('\n');
+
+  return {
+    system,
+    user,
+    contextText,
+    trace: {
+      docPath: MINGGONG_DEBUG_DOC_PATH,
+      debugDoc: MINGGONG_DEBUG_DOC.trim(),
+      steps: [
+        '收到 /api/piming topic=minggong_dev',
+        `载入调试文档：${path.basename(MINGGONG_DEBUG_DOC_PATH)}`,
+        '整理命宫与三方四正结构化上下文',
+        `调用 DeepSeek 模型：${MODEL}`,
+        '解析 JSON 返回并回传前端',
+      ],
+    },
   };
 }
 
@@ -794,6 +862,33 @@ app.post('/api/piming', async (req, res) => {
   }
 
   try {
+    if (topic === 'minggong_dev') {
+      const prompt = buildMinggongDevPrompt(req.body);
+      const result = await callDeepSeek(prompt.system, prompt.user, {
+        temperature: 0.4,
+        maxTokens: 900,
+      });
+      const out = {
+        title  : sanitizeAiText(result.title || req.body.cardTitle || ''),
+        summary: sanitizeAiText(result.summary || ''),
+        risk   : sanitizeAiText(result.risk || ''),
+        basis  : sanitizeAiText(result.basis || ''),
+      };
+      return res.json({
+        ok: true,
+        topic,
+        model: MODEL,
+        result: out,
+        trace: {
+          ...prompt.trace,
+          system: prompt.system,
+          user: prompt.user,
+          context: prompt.contextText,
+          response: JSON.stringify(out, null, 2),
+        },
+      });
+    }
+
     const body   = formatBody(req.body);
     const prompt = buildPrompt(topic, body);
     const result = await callDeepSeek(prompt.system, prompt.user);

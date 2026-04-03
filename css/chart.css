@@ -1846,6 +1846,19 @@
 .aip-card-tip   { margin-top: 7px; font-size: 11px; color: #963d32;
                   padding-left: 9px; border-left: 2px solid #e8c9b0; line-height: 1.6; }
 .aip-footer-note { text-align: center; font-size: 11px; color: #c0b4aa; padding: 14px 0 0; }
+.aip-devbox    { margin-top: 14px; padding-top: 14px; border-top: 1px dashed #ddd0bc; display: flex;
+                 flex-direction: column; gap: 10px; }
+.aip-devbar    { display: flex; align-items: center; gap: 10px; justify-content: space-between; }
+.aip-devbadge  { background: #2e221a; color: #f5ede0; font-size: 10px; font-weight: bold;
+                 padding: 3px 10px; border-radius: 999px; letter-spacing: .08em; }
+.aip-devstatus { font-size: 11px; color: #7a5c4a; }
+.aip-devgrid   { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.aip-devgroup  { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.aip-devlabel  { font-size: 10px; font-weight: bold; color: #9a8878; letter-spacing: .06em; text-transform: uppercase; }
+.aip-devpre    { margin: 0; background: #f8f3eb; border: 1px solid #ddd0bc; border-radius: 6px;
+                 padding: 10px 12px; font-size: 11px; font-family: 'Courier New', monospace;
+                 color: #4a3f35; line-height: 1.6; white-space: pre-wrap; word-break: break-word;
+                 min-height: 58px; max-height: 220px; overflow-y: auto; }
 
 .aip-ai-bar   { display: flex; align-items: center; gap: 12px; margin-top: 18px; justify-content: center; }
 .aip-ai-btn   { background: linear-gradient(135deg, #7a3b2e 0%, #b05a3a 100%);
@@ -1863,6 +1876,8 @@
   .aip-card-title { font-size: 12px; }
   .aip-card-body  { font-size: 11px; }
   .aip-card-tip   { font-size: 10px; }
+  .aip-devgrid    { grid-template-columns: 1fr; }
+  .aip-devpre     { max-height: 180px; font-size: 10px; }
 }
 
 /* ─────────────────────────────────────────────────────────────
