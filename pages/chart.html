@@ -833,7 +833,7 @@ function normalizeInput() {
   };
 }
 
-const _demoDefaults = new URLSearchParams(location.search).get('demo') === '1';
+const _demoDefaults = new URLSearchParams(location.search).get('demo') !== '0';
 
 function _resetCitySelection() {
   _selectedCity = null;
@@ -870,7 +870,22 @@ function applyDefaults(options) {
     const aiInput = document.getElementById('ai-chat-input');
     if (aiInput) aiInput.value = '';
   }
-  _resetCitySelection();
+  if (useDemo) {
+    _selectedCity = { province: '上海', city: '上海', name: '上海 上海', lon: 121.47, lat: 31.23, tzOffset: 8 };
+    const citySearchEl = document.getElementById('inp-city-search');
+    const btnClearCity = document.getElementById('btn-clear-city');
+    const citySelectedEl = document.getElementById('city-selected');
+    if (citySearchEl) citySearchEl.value = '上海 · 上海';
+    if (btnClearCity) btnClearCity.style.display = 'block';
+    if (citySelectedEl) {
+      document.getElementById('city-selected-name').textContent = '上海 上海';
+      document.getElementById('city-selected-lon').textContent  = '121.47';
+      document.getElementById('city-selected-lat').textContent  = '31.23';
+      citySelectedEl.style.display = 'block';
+    }
+  } else {
+    _resetCitySelection();
+  }
   hideError?.();
   updateDatePreview();
 }
