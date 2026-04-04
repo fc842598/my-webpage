@@ -211,18 +211,44 @@
     </div>
     <!-- 问题区 -->
     <div id="shichen-questions" style="padding:16px 18px;overflow-y:auto">
-      <p style="font-size:.82rem;color:#8e857d;margin:0 0 14px">依据倪海厦《天纪》，从后面看头旋位置推算出生时辰。</p>
-      <div class="sc-q"><div class="sc-q-label">头顶旋毛（头旋）位置</div><div class="sc-q-opts">
-        <label class="sc-opt"><input type="radio" name="sc_whorl" value="0"> 单个，居中或偏左 → 子午卯酉时</label>
-        <label class="sc-opt"><input type="radio" name="sc_whorl" value="1"> 单个，偏右 → 寅申巳亥时</label>
-        <label class="sc-opt"><input type="radio" name="sc_whorl" value="2"> 两个或多个 → 辰戌丑未时</label>
-      </div></div>
-      <button id="shichen-calc" style="width:100%;margin-top:6px;padding:12px;background:#3d2b1f;color:#f5e6c8;border:none;border-radius:10px;font-size:1rem;cursor:pointer;font-weight:600">推算时辰 →</button>
+      <p style="font-size:.82rem;color:#8e857d;margin:0 0 14px">先选大概出生时间区间，再结合头旋位置自动收敛到具体时辰。</p>
+
+      <!-- Step 1: 大概时间区间 -->
+      <div class="sc-q">
+        <div class="sc-q-label">① 大概出生时间区间（可选）</div>
+        <div class="sc-q-opts" id="sc-time-range-opts" style="display:grid;grid-template-columns:1fr 1fr;gap:4px 8px">
+          <label class="sc-opt"><input type="radio" name="sc_range" value="23"> 子 23–01时</label>
+          <label class="sc-opt"><input type="radio" name="sc_range" value="1"> 丑 01–03时</label>
+          <label class="sc-opt"><input type="radio" name="sc_range" value="3"> 寅 03–05时</label>
+          <label class="sc-opt"><input type="radio" name="sc_range" value="5"> 卯 05–07时</label>
+          <label class="sc-opt"><input type="radio" name="sc_range" value="7"> 辰 07–09时</label>
+          <label class="sc-opt"><input type="radio" name="sc_range" value="9"> 巳 09–11时</label>
+          <label class="sc-opt"><input type="radio" name="sc_range" value="11"> 午 11–13时</label>
+          <label class="sc-opt"><input type="radio" name="sc_range" value="13"> 未 13–15时</label>
+          <label class="sc-opt"><input type="radio" name="sc_range" value="15"> 申 15–17时</label>
+          <label class="sc-opt"><input type="radio" name="sc_range" value="17"> 酉 17–19时</label>
+          <label class="sc-opt"><input type="radio" name="sc_range" value="19"> 戌 19–21时</label>
+          <label class="sc-opt"><input type="radio" name="sc_range" value="21"> 亥 21–23时</label>
+        </div>
+        <div style="margin-top:4px"><label class="sc-opt" style="color:#b0a89f;font-size:.78rem"><input type="radio" name="sc_range" value="" checked> 不确定 / 不选</label></div>
+      </div>
+
+      <!-- Step 2: 头旋位置 -->
+      <div class="sc-q" style="margin-top:12px">
+        <div class="sc-q-label">② 头旋位置（从后面看）</div>
+        <div class="sc-q-opts">
+          <label class="sc-opt"><input type="radio" name="sc_whorl" value="0"> 单个，居中或偏左 → 子午卯酉</label>
+          <label class="sc-opt"><input type="radio" name="sc_whorl" value="1"> 单个，偏右 → 寅申巳亥</label>
+          <label class="sc-opt"><input type="radio" name="sc_whorl" value="2"> 两个或多个 → 辰戌丑未</label>
+        </div>
+      </div>
+
+      <button id="shichen-calc" style="width:100%;margin-top:12px;padding:12px;background:#3d2b1f;color:#f5e6c8;border:none;border-radius:10px;font-size:1rem;cursor:pointer;font-weight:600">自动推算时辰 →</button>
     </div>
     <!-- 结果区 -->
     <div id="shichen-result" style="display:none;padding:16px 18px;overflow-y:auto">
       <div id="sc-result-group" style="text-align:center;font-size:1.05rem;font-weight:700;color:#3d302b;margin-bottom:4px"></div>
-      <div style="text-align:center;font-size:.8rem;color:#8e857d;margin-bottom:14px">选择最接近的时辰填入表单</div>
+      <div id="sc-result-hint" style="text-align:center;font-size:.8rem;color:#8e857d;margin-bottom:14px"></div>
       <div id="sc-hour-btns" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px"></div>
       <button id="shichen-back" style="width:100%;padding:10px;background:none;border:1px solid #d0c8be;border-radius:10px;font-size:.88rem;cursor:pointer;color:#8e7c6a">← 重新作答</button>
     </div>
@@ -4530,7 +4556,9 @@ window._aiChatFill = function(data, submit) {
     overlay.style.display = 'flex';
     questions.style.display = 'block';
     result.style.display = 'none';
-    overlay.querySelectorAll('input[type=radio]').forEach(function(r) { r.checked = false; });
+    // 重置：头旋清空，时间区间回到"不确定"
+    overlay.querySelectorAll('input[name="sc_whorl"]').forEach(function(r) { r.checked = false; });
+    overlay.querySelectorAll('input[name="sc_range"]').forEach(function(r) { r.checked = r.value === ''; });
   });
   document.getElementById('shichen-close').addEventListener('click', function() {
     overlay.style.display = 'none';
@@ -4543,37 +4571,108 @@ window._aiChatFill = function(data, submit) {
     result.style.display = 'none';
   });
 
-  // ── 天纪推时辰：头旋 → 时辰组（倪海厦《天纪》规则，从后面看）
-  // 规则：单旋居中或偏左→子午卯酉；单旋偏右→寅申巳亥；双旋→辰戌丑未
-  // 仅作为"时辰未知"的 fallback，不覆盖用户手动输入的真实时辰。
+  // ── 天纪推时辰（倪海厦《天纪》规则，从后面看头旋）
+  // 主流程：时间区间 + 头旋 → 自动收敛到最接近的时辰
+  // 兜底：无时间区间时，显示候选按钮手动选
+
+  // 24小时环形距离：把一天当圆环，计算两点间最短距离
+  function _hourDist(a, b) {
+    var d = Math.abs(a - b);
+    return d > 12 ? 24 - d : d;
+  }
+
+  // 时间区间中心小时（子时 23→0 环形中心）
+  function _rangeCenterHour(startHour) {
+    var h = parseInt(startHour);
+    if (isNaN(h)) return null;
+    // 每个时辰 2 小时，中心 = startHour + 1；子时特殊：23+1=24→0
+    return (h + 1) % 24;
+  }
+
+  function _applyResult(h, badgeText) {
+    document.getElementById('inp-time-h').value = h.hour;
+    document.getElementById('inp-time-m').value = 0;
+    var badge = document.getElementById('shichen-infer-badge');
+    if (badge) { badge.textContent = badgeText; badge.style.display = 'inline'; }
+    if (typeof updateTrueSolarTime === 'function') updateTrueSolarTime();
+    overlay.style.display = 'none';
+  }
+
+  function _buildCandidateBtn(h, badgeText) {
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.style.cssText = 'padding:14px 8px;background:#fdf0e0;border:1.5px solid #d8c9b5;border-radius:10px;cursor:pointer;text-align:center;transition:background .15s';
+    btn.innerHTML = '<div style="font-size:1.1rem;font-weight:700;color:#3d302b">' + h.label + '</div>' +
+                    '<div style="font-size:.75rem;color:#8e857d;margin-top:3px">' + h.range + '</div>';
+    btn.addEventListener('mouseenter', function() { btn.style.background = '#f5e2c0'; });
+    btn.addEventListener('mouseleave', function() { btn.style.background = '#fdf0e0'; });
+    btn.addEventListener('click', function() { _applyResult(h, badgeText); });
+    return btn;
+  }
+
   document.getElementById('shichen-calc').addEventListener('click', function() {
-    var el = overlay.querySelector('input[name="sc_whorl"]:checked');
-    if (!el) { alert('请选择头旋位置'); return; }
-    var group = GROUPS[parseInt(el.value)];
+    var whorlEl = overlay.querySelector('input[name="sc_whorl"]:checked');
+    if (!whorlEl) { alert('请选择头旋位置'); return; }
+
+    var group = GROUPS[parseInt(whorlEl.value)];
     if (!group) { alert('无法判断，请检查选项'); return; }
 
+    var rangeEl = overlay.querySelector('input[name="sc_range"]:checked');
+    var rangeVal = rangeEl ? rangeEl.value : '';
+    var hasRange = rangeVal !== '';
+
+    if (hasRange) {
+      // ── 主流程：区间 + 头旋 → 自动选最接近的时辰 ──
+      var center = _rangeCenterHour(rangeVal);
+      var bestDist = 999;
+      var bestH = null;
+      group.hours.forEach(function(h) {
+        // 候选时辰中心 = h.hour + 1
+        var candCenter = (h.hour + 1) % 24;
+        var dist = _hourDist(center, candCenter);
+        if (dist < bestDist) { bestDist = dist; bestH = h; }
+      });
+
+      if (bestH && bestDist <= 2) {
+        // 精确匹配（时间区间就在候选组内）：直接自动填入
+        _applyResult(bestH, '天纪推·' + bestH.label);
+        return;
+      }
+
+      if (bestH) {
+        // 区间和候选有一定距离：显示推荐结果 + 全部候选
+        document.getElementById('sc-result-group').textContent =
+          '推算结果：' + group.name + '（推荐 ' + bestH.label + '）';
+        document.getElementById('sc-result-hint').textContent =
+          '所选区间最接近 ' + bestH.label + '，点击确认或选其他时辰';
+
+        var btnsDiv = document.getElementById('sc-hour-btns');
+        btnsDiv.innerHTML = '';
+
+        group.hours.forEach(function(h) {
+          var btn = _buildCandidateBtn(h, '天纪推·' + h.label);
+          if (h === bestH) {
+            btn.style.background = '#f0e0c0';
+            btn.style.borderColor = '#c9a848';
+            btn.style.borderWidth = '2px';
+          }
+          btnsDiv.appendChild(btn);
+        });
+
+        questions.style.display = 'none';
+        result.style.display = 'block';
+        return;
+      }
+    }
+
+    // ── 兜底：无时间区间 → 显示 4 个候选按钮 ──
     document.getElementById('sc-result-group').textContent = '推算结果：' + group.name + ' 时辰组';
+    document.getElementById('sc-result-hint').textContent = '选择最接近的时辰填入表单';
 
     var btnsDiv = document.getElementById('sc-hour-btns');
     btnsDiv.innerHTML = '';
     group.hours.forEach(function(h) {
-      var btn = document.createElement('button');
-      btn.type = 'button';
-      btn.style.cssText = 'padding:14px 8px;background:#fdf0e0;border:1.5px solid #d8c9b5;border-radius:10px;cursor:pointer;text-align:center;transition:background .15s';
-      btn.innerHTML = '<div style="font-size:1.1rem;font-weight:700;color:#3d302b">' + h.label + '</div>' +
-                      '<div style="font-size:.75rem;color:#8e857d;margin-top:3px">' + h.range + '</div>';
-      btn.addEventListener('mouseenter', function() { btn.style.background = '#f5e2c0'; });
-      btn.addEventListener('mouseleave', function() { btn.style.background = '#fdf0e0'; });
-      btn.addEventListener('click', function() {
-        document.getElementById('inp-time-h').value = h.hour;
-        document.getElementById('inp-time-m').value = 0;
-        // 标注"天纪推时辰"来源
-        var badge = document.getElementById('shichen-infer-badge');
-        if (badge) { badge.textContent = '天纪推·' + h.label; badge.style.display = 'inline'; }
-        if (typeof updateTrueSolarTime === 'function') updateTrueSolarTime();
-        overlay.style.display = 'none';
-      });
-      btnsDiv.appendChild(btn);
+      btnsDiv.appendChild(_buildCandidateBtn(h, '天纪推·' + h.label));
     });
 
     questions.style.display = 'none';
