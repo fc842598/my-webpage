@@ -4382,16 +4382,44 @@ window._aiChatFill = function(data, submit) {
 
   function showConfirm(data) {
     var genderText = data.gender === 'female' ? '女' : '男';
-    var calLabel = data.calType === 'lunar' ? '农历' : '公历';
-    var dateLabel = '出生' + calLabel;
-    var leapText = (data.calType === 'lunar' && data.isLeap) ? '（闰月）' : '';
-    var dateText = data.year + '年' + data.month + '月' + data.day + '日' + leapText;
+
+    // 公历 & 农历互转
+    var solarYear, solarMonth, solarDay, solarText, lunarText;
+    if (data.calType === 'lunar') {
+      var leapText = data.isLeap ? '（闰月）' : '';
+      lunarText = data.year + '年' + data.month + '月' + data.day + '日' + leapText;
+      var sd = typeof lunarToSolar === 'function' ? lunarToSolar(data.year, data.month, data.day, !!data.isLeap) : null;
+      if (sd) { solarYear = sd.year; solarMonth = sd.month; solarDay = sd.day; solarText = sd.year + '年' + sd.month + '月' + sd.day + '日'; }
+    } else {
+      solarYear = data.year; solarMonth = data.month; solarDay = data.day;
+      solarText = data.year + '年' + data.month + '月' + data.day + '日';
+      var lo = typeof solarToLunar === 'function' ? solarToLunar(data.year, data.month, data.day) : null;
+      lunarText = lo ? formatLunarDate(lo) : '';
+    }
+
+    // 真太阳时
     var timeText = pad2(data.hour) + ':' + pad2(data.minute || 0) + '（' + shichenLabel(data.hour) + '）';
+    var tstText = '';
+    if (solarYear && typeof calcTrueSolarTime === 'function') {
+      var tst = calcTrueSolarTime({
+        year: solarYear, month: solarMonth, day: solarDay,
+        hour: data.hour, minute: data.minute || 0,
+        longitude: _selectedCity ? _selectedCity.lon : undefined,
+        tzOffset: _selectedCity ? (_selectedCity.tzOffset || 8) : 8,
+        cityName: data.city || ''
+      });
+      tstText = pad2(tst.trueSolarHour) + ':' + pad2(tst.trueSolarMinute) +
+                '（' + shichenLabel(tst.trueSolarHour) + '）' +
+                (tst.isEstimated ? ' *估算' : '');
+    }
+
     var rows = [
       ['性别', genderText],
-      [dateLabel, dateText],
+      ['公历', solarText || '—'],
+      ['农历', lunarText || '—'],
       ['出生时刻', timeText],
     ];
+    if (tstText) rows.push(['真太阳时', tstText]);
     if (data.city) rows.push(['出生地点', data.city]);
     confirmRows.innerHTML = rows.map(function(r) {
       return '<div class="ai-confirm-row"><span class="ai-confirm-label">' + r[0] + '</span><span class="ai-confirm-value">' + r[1] + '</span></div>';
