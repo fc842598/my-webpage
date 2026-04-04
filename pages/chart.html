@@ -950,10 +950,23 @@ const _sb = supabase.createClient(
   'sb_publishable_Y2W9eDscfJwK1sgSitbmFA_ta5btvaR'
 );
 
+// 设备 ID：匿名用户用 localStorage 里的随机 UUID 隔离记录
+function getClientId() {
+  const KEY = 'ziwei_client_id';
+  let id = localStorage.getItem(KEY);
+  if (!id) {
+    id = crypto.randomUUID();
+    localStorage.setItem(KEY, id);
+  }
+  return id;
+}
+
 async function historyLoad() {
+  const clientId = getClientId();
   const { data, error } = await _sb
     .from('chart_records')
     .select('*')
+    .eq('client_id', clientId)
     .order('created_at', { ascending: false })
     .limit(50);
   if (error) { console.error('historyLoad error', error); return []; }
@@ -973,6 +986,7 @@ async function historySave(norm) {
     birth_time: `${norm.cstHour}:${String(norm.cstMinute).padStart(2,'0')}`,
     city: norm.city?.name || '',
     input_raw: JSON.stringify(norm),
+    client_id: getClientId(),
   });
   if (error) console.error('historySave error', error);
 }
