@@ -1934,16 +1934,16 @@
   position: fixed; inset: 0; z-index: 9000;
   background: rgba(30,22,16,.55);
   backdrop-filter: blur(2px);
-  display: flex; align-items: flex-end; justify-content: center;
+  display: flex; align-items: center; justify-content: center;
 }
 .history-panel {
-  width: 100%; max-width: 480px;
+  width: 92%; max-width: 480px;
   background: #fdf8f2;
-  border-radius: 18px 18px 0 0;
-  padding: 0 0 env(safe-area-inset-bottom,0);
+  border-radius: 18px;
+  padding: 0;
   max-height: 72vh;
   display: flex; flex-direction: column;
-  box-shadow: 0 -4px 32px rgba(80,40,10,.18);
+  box-shadow: 0 8px 40px rgba(80,40,10,.22);
 }
 .history-panel-head {
   display: flex; align-items: center; justify-content: space-between;
