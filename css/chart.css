@@ -1992,6 +1992,16 @@
 .history-item-del:hover { color: #b3443a; }
 
 /* ══════════════════════════════════════════
+   天纪推时辰
+══════════════════════════════════════════ */
+.sc-q { margin-bottom: 14px; }
+.sc-q-label { font-size: .85rem; font-weight: 600; color: #4a3f35; margin-bottom: 6px; }
+.sc-q-opts { display: flex; flex-direction: column; gap: 5px; }
+.sc-opt { display: flex; align-items: center; gap: 7px; font-size: .85rem; color: #4a3f35; cursor: pointer; padding: 5px 8px; border-radius: 7px; transition: background .15s; }
+.sc-opt:hover { background: #f0e8de; }
+.sc-opt input { accent-color: #7a4f2e; width: 15px; height: 15px; flex-shrink: 0; }
+
+/* ══════════════════════════════════════════
    AI 智能识别聊天区
 ══════════════════════════════════════════ */
 .ai-chat-wrap {

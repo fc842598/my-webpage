@@ -136,6 +136,7 @@
         <span class="nf-time-sep">时</span>
         <select id="inp-time-m" class="nf-select nf-time-sel"></select>
         <span class="nf-time-sep">分</span>
+        <button type="button" id="shichen-trigger" style="margin-left:8px;background:none;border:1px solid #c9b99e;border-radius:6px;padding:3px 8px;font-size:.75rem;color:#8e7c6a;cursor:pointer;white-space:nowrap">不知道时辰？</button>
       </div>
     </div>
     <!-- 出生地点 -->
@@ -197,6 +198,48 @@
       <button id="history-logout-btn" style="display:none;background:none;border:none;font-size:.8rem;color:#b0a89f;cursor:pointer;text-decoration:underline">退出</button>
     </div>
     <div class="history-list" id="history-list"></div>
+  </div>
+</div>
+
+<!-- 天纪推时辰弹窗 -->
+<div id="shichen-overlay" style="display:none;position:fixed;inset:0;z-index:9100;background:rgba(30,22,16,.55);backdrop-filter:blur(2px);align-items:center;justify-content:center">
+  <div style="width:92%;max-width:460px;background:#fdf8f2;border-radius:18px;overflow:hidden;max-height:90vh;display:flex;flex-direction:column;box-shadow:0 8px 40px rgba(80,40,10,.22)">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 18px 12px;border-bottom:1px solid rgba(210,196,181,.5);flex-shrink:0">
+      <span style="font-size:15px;font-weight:700;color:#3d302b">☯ 天纪推时辰</span>
+      <button id="shichen-close" style="background:none;border:none;font-size:18px;color:#b0a89f;cursor:pointer">✕</button>
+    </div>
+    <!-- 问题区 -->
+    <div id="shichen-questions" style="padding:16px 18px;overflow-y:auto">
+      <p style="font-size:.82rem;color:#8e857d;margin:0 0 14px">依据倪海厦《天纪》，四项特征多数吻合即为答案。</p>
+      <div class="sc-q"><div class="sc-q-label">① 头顶旋毛（头旋）位置</div><div class="sc-q-opts">
+        <label class="sc-opt"><input type="radio" name="sc_whorl" value="0"> 单个，居中</label>
+        <label class="sc-opt"><input type="radio" name="sc_whorl" value="1"> 单个，偏左或偏右</label>
+        <label class="sc-opt"><input type="radio" name="sc_whorl" value="2"> 两个或多个</label>
+      </div></div>
+      <div class="sc-q"><div class="sc-q-label">② 脸型</div><div class="sc-q-opts">
+        <label class="sc-opt"><input type="radio" name="sc_face" value="0"> 圆脸 / 圆方脸</label>
+        <label class="sc-opt"><input type="radio" name="sc_face" value="1"> 方脸 / 长方脸</label>
+        <label class="sc-opt"><input type="radio" name="sc_face" value="2"> 长脸 / 椭圆长脸</label>
+      </div></div>
+      <div class="sc-q"><div class="sc-q-label">③ 兄弟姐妹数量（含自己）</div><div class="sc-q-opts">
+        <label class="sc-opt"><input type="radio" name="sc_sibling" value="0"> 4人及以上</label>
+        <label class="sc-opt"><input type="radio" name="sc_sibling" value="1"> 2–3人</label>
+        <label class="sc-opt"><input type="radio" name="sc_sibling" value="2"> 独生或只有1人</label>
+      </div></div>
+      <div class="sc-q"><div class="sc-q-label">④ 小指长度（与无名指比较）</div><div class="sc-q-opts">
+        <label class="sc-opt"><input type="radio" name="sc_pinky" value="0"> 超过无名指第一关节</label>
+        <label class="sc-opt"><input type="radio" name="sc_pinky" value="1"> 与第一关节齐平</label>
+        <label class="sc-opt"><input type="radio" name="sc_pinky" value="2"> 未到第一关节</label>
+      </div></div>
+      <button id="shichen-calc" style="width:100%;margin-top:6px;padding:12px;background:#3d2b1f;color:#f5e6c8;border:none;border-radius:10px;font-size:1rem;cursor:pointer;font-weight:600">推算时辰 →</button>
+    </div>
+    <!-- 结果区 -->
+    <div id="shichen-result" style="display:none;padding:16px 18px;overflow-y:auto">
+      <div id="sc-result-group" style="text-align:center;font-size:1.05rem;font-weight:700;color:#3d302b;margin-bottom:4px"></div>
+      <div style="text-align:center;font-size:.8rem;color:#8e857d;margin-bottom:14px">选择最接近的时辰填入表单</div>
+      <div id="sc-hour-btns" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px"></div>
+      <button id="shichen-back" style="width:100%;padding:10px;background:none;border:1px solid #d0c8be;border-radius:10px;font-size:.88rem;cursor:pointer;color:#8e7c6a">← 重新作答</button>
+    </div>
   </div>
 </div>
 
@@ -4463,6 +4506,88 @@ window._aiChatFill = function(data, submit) {
   if (okBtn)     okBtn.addEventListener('click', function() {
     overlay.style.display = 'none';
     if (_extracted) fillFormAndSubmit(_extracted);
+  });
+}());
+
+// ─── 天纪推时辰 ───────────────────────────────────────────
+(function() {
+  var GROUPS = [
+    { name: '子午卯酉', hours: [
+      { label: '子时', range: '23:00–01:00', hour: 23 },
+      { label: '卯时', range: '05:00–07:00', hour: 5  },
+      { label: '午时', range: '11:00–13:00', hour: 11 },
+      { label: '酉时', range: '17:00–19:00', hour: 17 },
+    ]},
+    { name: '寅申巳亥', hours: [
+      { label: '寅时', range: '03:00–05:00', hour: 3  },
+      { label: '巳时', range: '09:00–11:00', hour: 9  },
+      { label: '申时', range: '15:00–17:00', hour: 15 },
+      { label: '亥时', range: '21:00–23:00', hour: 21 },
+    ]},
+    { name: '辰戌丑未', hours: [
+      { label: '丑时', range: '01:00–03:00', hour: 1  },
+      { label: '辰时', range: '07:00–09:00', hour: 7  },
+      { label: '未时', range: '13:00–15:00', hour: 13 },
+      { label: '戌时', range: '19:00–21:00', hour: 19 },
+    ]},
+  ];
+
+  var overlay   = document.getElementById('shichen-overlay');
+  var questions = document.getElementById('shichen-questions');
+  var result    = document.getElementById('shichen-result');
+
+  document.getElementById('shichen-trigger').addEventListener('click', function() {
+    overlay.style.display = 'flex';
+    questions.style.display = 'block';
+    result.style.display = 'none';
+    overlay.querySelectorAll('input[type=radio]').forEach(function(r) { r.checked = false; });
+  });
+  document.getElementById('shichen-close').addEventListener('click', function() {
+    overlay.style.display = 'none';
+  });
+  overlay.addEventListener('click', function(e) {
+    if (e.target === overlay) overlay.style.display = 'none';
+  });
+  document.getElementById('shichen-back').addEventListener('click', function() {
+    questions.style.display = 'block';
+    result.style.display = 'none';
+  });
+
+  document.getElementById('shichen-calc').addEventListener('click', function() {
+    var scores = [0, 0, 0];
+    var answered = 0;
+    ['sc_whorl','sc_face','sc_sibling','sc_pinky'].forEach(function(name) {
+      var el = overlay.querySelector('input[name="' + name + '"]:checked');
+      if (el) { scores[parseInt(el.value)]++; answered++; }
+    });
+    if (answered < 2) { alert('请至少回答 2 个问题'); return; }
+
+    var best = scores.indexOf(Math.max.apply(null, scores));
+    var group = GROUPS[best];
+
+    document.getElementById('sc-result-group').textContent = '推算结果：' + group.name + ' 时辰组';
+
+    var btnsDiv = document.getElementById('sc-hour-btns');
+    btnsDiv.innerHTML = '';
+    group.hours.forEach(function(h) {
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.style.cssText = 'padding:14px 8px;background:#fdf0e0;border:1.5px solid #d8c9b5;border-radius:10px;cursor:pointer;text-align:center;transition:background .15s';
+      btn.innerHTML = '<div style="font-size:1.1rem;font-weight:700;color:#3d302b">' + h.label + '</div>' +
+                      '<div style="font-size:.75rem;color:#8e857d;margin-top:3px">' + h.range + '</div>';
+      btn.addEventListener('mouseenter', function() { btn.style.background = '#f5e2c0'; });
+      btn.addEventListener('mouseleave', function() { btn.style.background = '#fdf0e0'; });
+      btn.addEventListener('click', function() {
+        document.getElementById('inp-time-h').value = h.hour;
+        document.getElementById('inp-time-m').value = 0;
+        if (typeof updateTrueSolarTime === 'function') updateTrueSolarTime();
+        overlay.style.display = 'none';
+      });
+      btnsDiv.appendChild(btn);
+    });
+
+    questions.style.display = 'none';
+    result.style.display = 'block';
   });
 }());
 </script>
