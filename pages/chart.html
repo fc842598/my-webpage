@@ -137,6 +137,7 @@
         <select id="inp-time-m" class="nf-select nf-time-sel"></select>
         <span class="nf-time-sep">分</span>
         <button type="button" id="shichen-trigger" style="margin-left:8px;background:none;border:1px solid #c9b99e;border-radius:6px;padding:3px 8px;font-size:.75rem;color:#8e7c6a;cursor:pointer;white-space:nowrap">不知道时辰？</button>
+        <span id="shichen-infer-badge" style="display:none;margin-left:6px;font-size:.7rem;color:#8e6a3a;background:#fdf3e0;border:1px solid #e0c888;border-radius:4px;padding:1px 6px;white-space:nowrap">天纪推</span>
       </div>
     </div>
     <!-- 出生地点 -->
@@ -210,26 +211,11 @@
     </div>
     <!-- 问题区 -->
     <div id="shichen-questions" style="padding:16px 18px;overflow-y:auto">
-      <p style="font-size:.82rem;color:#8e857d;margin:0 0 14px">依据倪海厦《天纪》，四项特征多数吻合即为答案。</p>
-      <div class="sc-q"><div class="sc-q-label">① 头顶旋毛（头旋）位置</div><div class="sc-q-opts">
-        <label class="sc-opt"><input type="radio" name="sc_whorl" value="0"> 单个，居中</label>
-        <label class="sc-opt"><input type="radio" name="sc_whorl" value="1"> 单个，偏左或偏右</label>
-        <label class="sc-opt"><input type="radio" name="sc_whorl" value="2"> 两个或多个</label>
-      </div></div>
-      <div class="sc-q"><div class="sc-q-label">② 脸型</div><div class="sc-q-opts">
-        <label class="sc-opt"><input type="radio" name="sc_face" value="0"> 圆脸 / 圆方脸</label>
-        <label class="sc-opt"><input type="radio" name="sc_face" value="1"> 方脸 / 长方脸</label>
-        <label class="sc-opt"><input type="radio" name="sc_face" value="2"> 长脸 / 椭圆长脸</label>
-      </div></div>
-      <div class="sc-q"><div class="sc-q-label">③ 兄弟姐妹数量（含自己）</div><div class="sc-q-opts">
-        <label class="sc-opt"><input type="radio" name="sc_sibling" value="0"> 4人及以上</label>
-        <label class="sc-opt"><input type="radio" name="sc_sibling" value="1"> 2–3人</label>
-        <label class="sc-opt"><input type="radio" name="sc_sibling" value="2"> 独生或只有1人</label>
-      </div></div>
-      <div class="sc-q"><div class="sc-q-label">④ 小指长度（与无名指比较）</div><div class="sc-q-opts">
-        <label class="sc-opt"><input type="radio" name="sc_pinky" value="0"> 超过无名指第一关节</label>
-        <label class="sc-opt"><input type="radio" name="sc_pinky" value="1"> 与第一关节齐平</label>
-        <label class="sc-opt"><input type="radio" name="sc_pinky" value="2"> 未到第一关节</label>
+      <p style="font-size:.82rem;color:#8e857d;margin:0 0 14px">依据倪海厦《天纪》，从后面看头旋位置推算出生时辰。</p>
+      <div class="sc-q"><div class="sc-q-label">头顶旋毛（头旋）位置</div><div class="sc-q-opts">
+        <label class="sc-opt"><input type="radio" name="sc_whorl" value="0"> 单个，居中或偏左 → 子午卯酉时</label>
+        <label class="sc-opt"><input type="radio" name="sc_whorl" value="1"> 单个，偏右 → 寅申巳亥时</label>
+        <label class="sc-opt"><input type="radio" name="sc_whorl" value="2"> 两个或多个 → 辰戌丑未时</label>
       </div></div>
       <button id="shichen-calc" style="width:100%;margin-top:6px;padding:12px;background:#3d2b1f;color:#f5e6c8;border:none;border-radius:10px;font-size:1rem;cursor:pointer;font-weight:600">推算时辰 →</button>
     </div>
@@ -818,8 +804,12 @@ function updateDatePreview() {
   }
 })();
 // 时刻输入监听
-document.getElementById('inp-time-h')?.addEventListener('change', updateTrueSolarTime);
-document.getElementById('inp-time-m')?.addEventListener('change', updateTrueSolarTime);
+function _clearShichenInferBadge() {
+  var b = document.getElementById('shichen-infer-badge');
+  if (b) b.style.display = 'none';
+}
+document.getElementById('inp-time-h')?.addEventListener('change', function() { _clearShichenInferBadge(); updateTrueSolarTime(); });
+document.getElementById('inp-time-m')?.addEventListener('change', function() { _clearShichenInferBadge(); updateTrueSolarTime(); });
 
 // ─── 输入归一化 ────────────────────────────────────────────
 function normalizeInput() {
@@ -4553,17 +4543,14 @@ window._aiChatFill = function(data, submit) {
     result.style.display = 'none';
   });
 
+  // ── 天纪推时辰：头旋 → 时辰组（倪海厦《天纪》规则，从后面看）
+  // 规则：单旋居中或偏左→子午卯酉；单旋偏右→寅申巳亥；双旋→辰戌丑未
+  // 仅作为"时辰未知"的 fallback，不覆盖用户手动输入的真实时辰。
   document.getElementById('shichen-calc').addEventListener('click', function() {
-    var scores = [0, 0, 0];
-    var answered = 0;
-    ['sc_whorl','sc_face','sc_sibling','sc_pinky'].forEach(function(name) {
-      var el = overlay.querySelector('input[name="' + name + '"]:checked');
-      if (el) { scores[parseInt(el.value)]++; answered++; }
-    });
-    if (answered < 2) { alert('请至少回答 2 个问题'); return; }
-
-    var best = scores.indexOf(Math.max.apply(null, scores));
-    var group = GROUPS[best];
+    var el = overlay.querySelector('input[name="sc_whorl"]:checked');
+    if (!el) { alert('请选择头旋位置'); return; }
+    var group = GROUPS[parseInt(el.value)];
+    if (!group) { alert('无法判断，请检查选项'); return; }
 
     document.getElementById('sc-result-group').textContent = '推算结果：' + group.name + ' 时辰组';
 
@@ -4580,6 +4567,9 @@ window._aiChatFill = function(data, submit) {
       btn.addEventListener('click', function() {
         document.getElementById('inp-time-h').value = h.hour;
         document.getElementById('inp-time-m').value = 0;
+        // 标注"天纪推时辰"来源
+        var badge = document.getElementById('shichen-infer-badge');
+        if (badge) { badge.textContent = '天纪推·' + h.label; badge.style.display = 'inline'; }
         if (typeof updateTrueSolarTime === 'function') updateTrueSolarTime();
         overlay.style.display = 'none';
       });
