@@ -189,6 +189,13 @@
       <span class="history-panel-title">排盘记录</span>
       <button class="history-panel-close" id="history-close">✕</button>
     </div>
+    <div id="history-auth-bar" style="padding:10px 16px;border-bottom:1px solid #ede8e0;display:flex;align-items:center;justify-content:space-between;gap:8px">
+      <span id="history-auth-info" style="font-size:.8rem;color:#8e857d"></span>
+      <button id="history-google-btn" style="display:none;align-items:center;gap:6px;background:#fff;border:1px solid #d0c8be;border-radius:6px;padding:5px 12px;font-size:.8rem;cursor:pointer;color:#4a3f35">
+        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" style="width:16px;height:16px"> 用 Google 登录
+      </button>
+      <button id="history-logout-btn" style="display:none;background:none;border:none;font-size:.8rem;color:#b0a89f;cursor:pointer;text-decoration:underline">退出</button>
+    </div>
     <div class="history-list" id="history-list"></div>
   </div>
 </div>
@@ -950,8 +957,47 @@ const _sb = supabase.createClient(
   'sb_publishable_Y2W9eDscfJwK1sgSitbmFA_ta5btvaR'
 );
 
+// ─── Google 登录 ──────────────────────────────────────────
+let _currentUser = null;
+
+_sb.auth.getSession().then(({ data }) => {
+  _currentUser = data.session?.user || null;
+  _updateAuthBar();
+});
+_sb.auth.onAuthStateChange((_event, session) => {
+  _currentUser = session?.user || null;
+  _updateAuthBar();
+});
+
+function _updateAuthBar() {
+  const info = document.getElementById('history-auth-info');
+  const googleBtn = document.getElementById('history-google-btn');
+  const logoutBtn = document.getElementById('history-logout-btn');
+  if (!info) return;
+  if (_currentUser) {
+    info.textContent = _currentUser.email || '已登录';
+    googleBtn.style.display = 'none';
+    logoutBtn.style.display = 'inline';
+  } else {
+    info.textContent = '未登录，记录仅存本设备';
+    googleBtn.style.display = 'flex';
+    logoutBtn.style.display = 'none';
+  }
+}
+
+document.getElementById('history-google-btn').addEventListener('click', () => {
+  _sb.auth.signInWithOAuth({
+    provider: 'google',
+    options: { redirectTo: 'https://fc842598.github.io/my-webpage/pages/chart.html' }
+  });
+});
+document.getElementById('history-logout-btn').addEventListener('click', async () => {
+  await _sb.auth.signOut();
+});
+
 // 设备 ID：匿名用户用 localStorage 里的随机 UUID 隔离记录
 function getClientId() {
+  if (_currentUser) return _currentUser.id;
   const KEY = 'ziwei_client_id';
   let id = localStorage.getItem(KEY);
   if (!id) {
