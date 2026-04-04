@@ -21,6 +21,7 @@
   <script src="../src/ziping/runtime.js"></script>
   <!-- 黄金样本（开发期自动校验，生产可移除） -->
   <script src="../fixtures/ziping-golden-cases.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 </head>
 <body>
 
@@ -932,7 +933,7 @@ document.getElementById('btn-submit').addEventListener('click', async () => {
     };
 
     renderFigmaChart(_chart, norm.gender, norm.dateStr, norm);
-    historySave(norm);
+    await historySave(norm);
     document.getElementById('fc-section').style.display = 'block';
     document.getElementById('fc-section').scrollIntoView({ behavior: 'smooth' });
   } catch (err) {
@@ -943,45 +944,49 @@ document.getElementById('btn-submit').addEventListener('click', async () => {
   }
 });
 
-// ─── 排盘历史记录（localStorage，最多保存 20 条）────────────
-const HISTORY_KEY = 'ziwei_history_v1';
-const HISTORY_MAX = 20;
+// ─── 排盘历史记录（Supabase 云端）────────────────────────────
+const _sb = supabase.createClient(
+  'https://jmmlijqeexdbxgpfyhgf.supabase.co',
+  'sb_publishable_Y2W9eDscfJwK1sgSitbmFA_ta5btvaR'
+);
 
-function historyLoad() {
-  try { return JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]'); }
-  catch { return []; }
+async function historyLoad() {
+  const { data, error } = await _sb
+    .from('chart_records')
+    .select('*')
+    .order('created_at', { ascending: false })
+    .limit(50);
+  if (error) { console.error('historyLoad error', error); return []; }
+  return (data || []).map(row => {
+    const norm = JSON.parse(row.input_raw || '{}');
+    norm.id = row.id;
+    norm.savedAt = row.created_at;
+    return norm;
+  });
 }
 
-function historySave(norm) {
-  const list = historyLoad().filter(r =>
-    !(r.dateStr === norm.dateStr && r.cstHour === norm.cstHour &&
-      r.cstMinute === norm.cstMinute && r.gender === norm.gender)
-  );
-  list.unshift({
-    id: Date.now(),
-    savedAt: new Date().toISOString(),
+async function historySave(norm) {
+  const { error } = await _sb.from('chart_records').insert({
     name: norm.name || '',
     gender: norm.gender,
-    dateStr: norm.dateStr,
-    year: norm.year, month: norm.month, day: norm.day,
-    calMode: norm.calMode,
-    calModeLabel: norm.calModeLabel,
-    cstHour: norm.cstHour,
-    cstMinute: norm.cstMinute,
-    city: norm.city || null,
+    birth_date: norm.dateStr || '',
+    birth_time: `${norm.cstHour}:${String(norm.cstMinute).padStart(2,'0')}`,
+    city: norm.city?.name || '',
+    input_raw: JSON.stringify(norm),
   });
-  localStorage.setItem(HISTORY_KEY, JSON.stringify(list.slice(0, HISTORY_MAX)));
+  if (error) console.error('historySave error', error);
 }
 
-function historyDelete(id) {
-  const list = historyLoad().filter(r => r.id !== id);
-  localStorage.setItem(HISTORY_KEY, JSON.stringify(list));
+async function historyDelete(id) {
+  const { error } = await _sb.from('chart_records').delete().eq('id', id);
+  if (error) console.error('historyDelete error', error);
 }
 
-function historyRenderPanel() {
-  const list = historyLoad();
+async function historyRenderPanel() {
   const container = document.getElementById('history-list');
   if (!container) return;
+  container.innerHTML = '<div class="history-empty">加载中…</div>';
+  const list = await historyLoad();
   if (!list.length) {
     container.innerHTML = '<div class="history-empty">暂无排盘记录</div>';
     return;
@@ -1014,9 +1019,9 @@ function historyRenderPanel() {
       `<div class="history-item-time">${timeAgo}</div>` +
       `<button class="history-item-del" data-id="${r.id}" title="删除">×</button>`;
 
-    item.querySelector('.history-item-del').addEventListener('click', e => {
+    item.querySelector('.history-item-del').addEventListener('click', async e => {
       e.stopPropagation();
-      historyDelete(r.id);
+      await historyDelete(r.id);
       historyRenderPanel();
     });
     item.addEventListener('click', () => {
@@ -1679,8 +1684,7 @@ function _fcResolveXiaoLianBranch(age = _fcActiveAge) {
 }
 
 function _fcResolveDisplayedXiaoLianBranch(age = _fcActiveAge) {
-  const rawBranch = _fcResolveXiaoLianBranch(age);
-  return rawBranch ? (DUIGONG[rawBranch] || rawBranch) : null;
+  return _fcResolveXiaoLianBranch(age);
 }
 
 function fcBuildYearCards(startYear = _fcGetSequenceStartYear()) {
