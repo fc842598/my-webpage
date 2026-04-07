@@ -211,44 +211,42 @@
     </div>
     <!-- 问题区 -->
     <div id="shichen-questions" style="padding:16px 18px;overflow-y:auto">
-      <p style="font-size:.82rem;color:#8e857d;margin:0 0 14px">先选大概出生时间区间，再结合头旋位置自动收敛到具体时辰。</p>
+      <p style="font-size:.82rem;color:#8e857d;margin:0 0 14px">描述大概出生时间 + 头旋位置，AI 结合天纪规则推算时辰。</p>
 
-      <!-- Step 1: 大概时间区间 -->
+      <!-- Step 1: 模糊时间描述 -->
       <div class="sc-q">
-        <div class="sc-q-label">① 大概出生时间区间（可选）</div>
-        <div class="sc-q-opts" id="sc-time-range-opts" style="display:grid;grid-template-columns:1fr 1fr;gap:4px 8px">
-          <label class="sc-opt"><input type="radio" name="sc_range" value="23"> 子 23–01时</label>
-          <label class="sc-opt"><input type="radio" name="sc_range" value="1"> 丑 01–03时</label>
-          <label class="sc-opt"><input type="radio" name="sc_range" value="3"> 寅 03–05时</label>
-          <label class="sc-opt"><input type="radio" name="sc_range" value="5"> 卯 05–07时</label>
-          <label class="sc-opt"><input type="radio" name="sc_range" value="7"> 辰 07–09时</label>
-          <label class="sc-opt"><input type="radio" name="sc_range" value="9"> 巳 09–11时</label>
-          <label class="sc-opt"><input type="radio" name="sc_range" value="11"> 午 11–13时</label>
-          <label class="sc-opt"><input type="radio" name="sc_range" value="13"> 未 13–15时</label>
-          <label class="sc-opt"><input type="radio" name="sc_range" value="15"> 申 15–17时</label>
-          <label class="sc-opt"><input type="radio" name="sc_range" value="17"> 酉 17–19时</label>
-          <label class="sc-opt"><input type="radio" name="sc_range" value="19"> 戌 19–21时</label>
-          <label class="sc-opt"><input type="radio" name="sc_range" value="21"> 亥 21–23时</label>
-        </div>
-        <div style="margin-top:4px"><label class="sc-opt" style="color:#b0a89f;font-size:.78rem"><input type="radio" name="sc_range" value="" checked> 不确定 / 不选</label></div>
+        <div class="sc-q-label">① 大概什么时候出生的？</div>
+        <input type="text" id="sc-vague-time" placeholder="如：大概晚上、天亮前、吃早饭时、日落、凌晨…" autocomplete="off"
+               style="width:100%;padding:10px 12px;border:1px solid #d0c8be;border-radius:8px;font-size:.9rem;color:#3d302b;background:#fff;margin-top:6px;box-sizing:border-box">
+        <div style="font-size:.72rem;color:#b0a89f;margin-top:4px">不知道也可以留空，只用头旋推算</div>
       </div>
 
       <!-- Step 2: 头旋位置 -->
       <div class="sc-q" style="margin-top:12px">
         <div class="sc-q-label">② 头旋位置（从后面看）</div>
         <div class="sc-q-opts">
-          <label class="sc-opt"><input type="radio" name="sc_whorl" value="0"> 单个，居中或偏左 → 子午卯酉</label>
-          <label class="sc-opt"><input type="radio" name="sc_whorl" value="1"> 单个，偏右 → 寅申巳亥</label>
-          <label class="sc-opt"><input type="radio" name="sc_whorl" value="2"> 两个或多个 → 辰戌丑未</label>
+          <label class="sc-opt"><input type="radio" name="sc_whorl" value="center-left"> 单个，居中或偏左 → 子午卯酉</label>
+          <label class="sc-opt"><input type="radio" name="sc_whorl" value="right"> 单个，偏右 → 寅申巳亥</label>
+          <label class="sc-opt"><input type="radio" name="sc_whorl" value="double"> 两个或多个 → 辰戌丑未</label>
         </div>
       </div>
 
-      <button id="shichen-calc" style="width:100%;margin-top:12px;padding:12px;background:#3d2b1f;color:#f5e6c8;border:none;border-radius:10px;font-size:1rem;cursor:pointer;font-weight:600">自动推算时辰 →</button>
+      <button id="shichen-calc" style="width:100%;margin-top:12px;padding:12px;background:#3d2b1f;color:#f5e6c8;border:none;border-radius:10px;font-size:1rem;cursor:pointer;font-weight:600">AI 推算时辰 →</button>
+      <div id="sc-loading" style="display:none;text-align:center;padding:12px;color:#8e857d;font-size:.88rem">AI 推算中…</div>
     </div>
     <!-- 结果区 -->
     <div id="shichen-result" style="display:none;padding:16px 18px;overflow-y:auto">
       <div id="sc-result-group" style="text-align:center;font-size:1.05rem;font-weight:700;color:#3d302b;margin-bottom:4px"></div>
-      <div id="sc-result-hint" style="text-align:center;font-size:.8rem;color:#8e857d;margin-bottom:14px"></div>
+      <div id="sc-result-hint" style="text-align:center;font-size:.8rem;color:#8e857d;margin-bottom:10px"></div>
+      <div id="sc-result-reason" style="font-size:.78rem;color:#6b5a48;background:#fdf3e0;border-radius:8px;padding:10px 12px;margin-bottom:12px;line-height:1.6;display:none"></div>
+      <div id="sc-result-followup" style="font-size:.8rem;color:#8e6a3a;margin-bottom:12px;display:none"></div>
+      <!-- 追问输入 + 再次推算 -->
+      <div id="sc-followup-input-wrap" style="display:none;margin-bottom:12px">
+        <input type="text" id="sc-followup-input" placeholder="补充更多信息后再次推算…" autocomplete="off"
+               style="width:100%;padding:10px 12px;border:1px solid #d0c8be;border-radius:8px;font-size:.88rem;color:#3d302b;background:#fff;box-sizing:border-box">
+        <button id="sc-followup-submit" style="width:100%;margin-top:8px;padding:10px;background:#3d2b1f;color:#f5e6c8;border:none;border-radius:10px;font-size:.9rem;cursor:pointer;font-weight:600">补充信息，再次推算 →</button>
+        <div id="sc-followup-loading" style="display:none;text-align:center;padding:8px;color:#8e857d;font-size:.84rem">AI 推算中…</div>
+      </div>
       <div id="sc-hour-btns" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px"></div>
       <button id="shichen-back" style="width:100%;padding:10px;background:none;border:1px solid #d0c8be;border-radius:10px;font-size:.88rem;cursor:pointer;color:#8e7c6a">← 重新作答</button>
     </div>
@@ -4397,7 +4395,7 @@ window._aiChatFill = function(data, submit) {
       callChat(_history.slice(), function(err, data) {
         thinking.remove();
         if (err || !data) {
-          inputEl.value = originalText;
+          // 不还原输入框 — 消息已在聊天气泡中
           addBubble('ai', '服务暂时不可用，请手动填写。');
           if (autoSubmit && typeof window._chartFormShowError === 'function') {
             window._chartFormShowError('AI识别暂时不可用，请手动填写或稍后重试。');
@@ -4418,7 +4416,7 @@ window._aiChatFill = function(data, submit) {
           resolve(true);
         } else {
           var reply = data.reply || '请补充信息。';
-          inputEl.value = originalText;
+          // 不再还原输入框 — 消息已在聊天气泡中
           _history.push({ role: 'assistant', content: reply });
           addBubble('ai', reply);
           if (autoSubmit && typeof window._chartFormShowError === 'function') {
@@ -4525,8 +4523,10 @@ window._aiChatFill = function(data, submit) {
   });
 }());
 
-// ─── 天纪推时辰 ───────────────────────────────────────────
+// ─── 天纪推时辰（AI 辅助 + 天纪规则兜底）─────────────────────
 (function() {
+  var RAILWAY = 'https://peaceful-celebration-production-74c8.up.railway.app';
+  var WHORL_MAP = { 'center-left': 0, 'right': 1, 'double': 2 };
   var GROUPS = [
     { name: '子午卯酉', hours: [
       { label: '子时', range: '23:00–01:00', hour: 23 },
@@ -4551,132 +4551,237 @@ window._aiChatFill = function(data, submit) {
   var overlay   = document.getElementById('shichen-overlay');
   var questions = document.getElementById('shichen-questions');
   var result    = document.getElementById('shichen-result');
+  var calcBtn   = document.getElementById('shichen-calc');
+  var loadingEl = document.getElementById('sc-loading');
 
   document.getElementById('shichen-trigger').addEventListener('click', function() {
     overlay.style.display = 'flex';
     questions.style.display = 'block';
     result.style.display = 'none';
-    // 重置：头旋清空，时间区间回到"不确定"
     overlay.querySelectorAll('input[name="sc_whorl"]').forEach(function(r) { r.checked = false; });
-    overlay.querySelectorAll('input[name="sc_range"]').forEach(function(r) { r.checked = r.value === ''; });
+    var vagueInput = document.getElementById('sc-vague-time');
+    if (vagueInput) vagueInput.value = '';
   });
-  document.getElementById('shichen-close').addEventListener('click', function() {
-    overlay.style.display = 'none';
-  });
-  overlay.addEventListener('click', function(e) {
-    if (e.target === overlay) overlay.style.display = 'none';
-  });
+  document.getElementById('shichen-close').addEventListener('click', function() { overlay.style.display = 'none'; });
+  overlay.addEventListener('click', function(e) { if (e.target === overlay) overlay.style.display = 'none'; });
   document.getElementById('shichen-back').addEventListener('click', function() {
     questions.style.display = 'block';
     result.style.display = 'none';
   });
 
-  // ── 天纪推时辰（倪海厦《天纪》规则，从后面看头旋）
-  // 主流程：时间区间 + 头旋 → 自动收敛到最接近的时辰
-  // 兜底：无时间区间时，显示候选按钮手动选
+  // 记住上一次请求的上下文，用于追问再提交
+  var _lastInferCtx = {};
 
-  // 24小时环形距离：把一天当圆环，计算两点间最短距离
-  function _hourDist(a, b) {
-    var d = Math.abs(a - b);
-    return d > 12 ? 24 - d : d;
-  }
-
-  // 时间区间中心小时（子时 23→0 环形中心）
-  function _rangeCenterHour(startHour) {
-    var h = parseInt(startHour);
-    if (isNaN(h)) return null;
-    // 每个时辰 2 小时，中心 = startHour + 1；子时特殊：23+1=24→0
-    return (h + 1) % 24;
-  }
-
-  function _applyResult(h, badgeText) {
-    document.getElementById('inp-time-h').value = h.hour;
+  // ── 填入结果 ──
+  function applyHour(hour, label, timeBand) {
+    document.getElementById('inp-time-h').value = hour;
     document.getElementById('inp-time-m').value = 0;
     var badge = document.getElementById('shichen-infer-badge');
-    if (badge) { badge.textContent = badgeText; badge.style.display = 'inline'; }
+    if (badge) {
+      var txt = 'AI推·' + label;
+      if (timeBand) txt += ' / ' + timeBand;
+      badge.textContent = txt;
+      badge.style.display = 'inline';
+    }
     if (typeof updateTrueSolarTime === 'function') updateTrueSolarTime();
     overlay.style.display = 'none';
   }
 
-  function _buildCandidateBtn(h, badgeText) {
+  function buildBtn(label, range, hour, highlight, timeBand) {
     var btn = document.createElement('button');
     btn.type = 'button';
-    btn.style.cssText = 'padding:14px 8px;background:#fdf0e0;border:1.5px solid #d8c9b5;border-radius:10px;cursor:pointer;text-align:center;transition:background .15s';
-    btn.innerHTML = '<div style="font-size:1.1rem;font-weight:700;color:#3d302b">' + h.label + '</div>' +
-                    '<div style="font-size:.75rem;color:#8e857d;margin-top:3px">' + h.range + '</div>';
+    var bg = highlight ? '#f0e0c0' : '#fdf0e0';
+    var bc = highlight ? '#c9a848' : '#d8c9b5';
+    var bw = highlight ? '2px' : '1.5px';
+    btn.style.cssText = 'padding:14px 8px;background:' + bg + ';border:' + bw + ' solid ' + bc + ';border-radius:10px;cursor:pointer;text-align:center;transition:background .15s';
+    btn.innerHTML = '<div style="font-size:1.1rem;font-weight:700;color:#3d302b">' + label + '</div>' +
+                    '<div style="font-size:.75rem;color:#8e857d;margin-top:3px">' + range + '</div>';
     btn.addEventListener('mouseenter', function() { btn.style.background = '#f5e2c0'; });
-    btn.addEventListener('mouseleave', function() { btn.style.background = '#fdf0e0'; });
-    btn.addEventListener('click', function() { _applyResult(h, badgeText); });
+    btn.addEventListener('mouseleave', function() { btn.style.background = bg; });
+    btn.addEventListener('click', function() { applyHour(hour, label, timeBand); });
     return btn;
   }
 
-  document.getElementById('shichen-calc').addEventListener('click', function() {
-    var whorlEl = overlay.querySelector('input[name="sc_whorl"]:checked');
-    if (!whorlEl) { alert('请选择头旋位置'); return; }
+  // ── 收集表单已有的出生信息（供 AI 参考）──
+  function collectBirthContext() {
+    var y = document.getElementById('inp-year')?.value;
+    var m = document.getElementById('inp-month')?.value;
+    var d = document.getElementById('inp-day')?.value;
+    var g = document.getElementById('inp-gender')?.value;
+    var city = typeof _selectedCity !== 'undefined' && _selectedCity ? _selectedCity.name : '';
+    var date = (y && m && d) ? y + '-' + String(m).padStart(2,'0') + '-' + String(d).padStart(2,'0') : '';
+    return { birthDate: date, gender: g || '', city: city };
+  }
 
-    var group = GROUPS[parseInt(whorlEl.value)];
-    if (!group) { alert('无法判断，请检查选项'); return; }
+  // ── 显示 AI 推断结果 ──
+  function showAiResult(data) {
+    var groupEl = document.getElementById('sc-result-group');
+    var hintEl  = document.getElementById('sc-result-hint');
+    var reasonEl = document.getElementById('sc-result-reason');
+    var followupEl = document.getElementById('sc-result-followup');
+    var followupWrap = document.getElementById('sc-followup-input-wrap');
+    var followupInput = document.getElementById('sc-followup-input');
+    var btnsDiv = document.getElementById('sc-hour-btns');
 
-    var rangeEl = overlay.querySelector('input[name="sc_range"]:checked');
-    var rangeVal = rangeEl ? rangeEl.value : '';
-    var hasRange = rangeVal !== '';
+    var conf = data.confidence || 'low';
+    var best = data.bestGuess;
+    var candidates = data.candidateHours || [];
+    var reason = data.reasonSummary || '';
+    var followups = data.followupQuestions || [];
+    var timeBand = data.approxTimeBand || '';
 
-    if (hasRange) {
-      // ── 主流程：区间 + 头旋 → 自动选最接近的时辰 ──
-      var center = _rangeCenterHour(rangeVal);
-      var bestDist = 999;
-      var bestH = null;
-      group.hours.forEach(function(h) {
-        // 候选时辰中心 = h.hour + 1
-        var candCenter = (h.hour + 1) % 24;
-        var dist = _hourDist(center, candCenter);
-        if (dist < bestDist) { bestDist = dist; bestH = h; }
-      });
-
-      if (bestH && bestDist <= 2) {
-        // 精确匹配（时间区间就在候选组内）：直接自动填入
-        _applyResult(bestH, '天纪推·' + bestH.label);
-        return;
-      }
-
-      if (bestH) {
-        // 区间和候选有一定距离：显示推荐结果 + 全部候选
-        document.getElementById('sc-result-group').textContent =
-          '推算结果：' + group.name + '（推荐 ' + bestH.label + '）';
-        document.getElementById('sc-result-hint').textContent =
-          '所选区间最接近 ' + bestH.label + '，点击确认或选其他时辰';
-
-        var btnsDiv = document.getElementById('sc-hour-btns');
-        btnsDiv.innerHTML = '';
-
-        group.hours.forEach(function(h) {
-          var btn = _buildCandidateBtn(h, '天纪推·' + h.label);
-          if (h === bestH) {
-            btn.style.background = '#f0e0c0';
-            btn.style.borderColor = '#c9a848';
-            btn.style.borderWidth = '2px';
-          }
-          btnsDiv.appendChild(btn);
-        });
-
-        questions.style.display = 'none';
-        result.style.display = 'block';
-        return;
-      }
+    // 标题
+    if (conf === 'high' && best) {
+      groupEl.textContent = 'AI 推算结果：推荐 ' + best.shichen + '时';
+      hintEl.textContent = '置信度高，可直接采用或选其他候选';
+    } else if (conf === 'medium') {
+      groupEl.textContent = 'AI 推算结果：' + candidates.length + ' 个候选';
+      hintEl.textContent = '请选择最接近的时辰，或补充信息再次推算';
+    } else {
+      groupEl.textContent = 'AI 推算结果：信息不足';
+      hintEl.textContent = '建议补充更多信息后再试，或从候选中选择';
     }
 
-    // ── 兜底：无时间区间 → 显示 4 个候选按钮 ──
-    document.getElementById('sc-result-group').textContent = '推算结果：' + group.name + ' 时辰组';
-    document.getElementById('sc-result-hint').textContent = '选择最接近的时辰填入表单';
+    // 推理摘要
+    if (reason) { reasonEl.textContent = reason; reasonEl.style.display = 'block'; }
+    else { reasonEl.style.display = 'none'; }
+
+    // 追问提示 + 输入框
+    if (followups.length && conf !== 'high') {
+      followupEl.innerHTML = '还可以补充：' + followups.map(function(q) {
+        return '<div style="margin-top:4px">• ' + q + '</div>';
+      }).join('');
+      followupEl.style.display = 'block';
+      followupWrap.style.display = 'block';
+      followupInput.value = '';
+      followupInput.placeholder = followups[0] || '补充更多信息…';
+    } else {
+      followupEl.style.display = 'none';
+      followupWrap.style.display = (conf !== 'high') ? 'block' : 'none';
+      if (followupInput) { followupInput.value = ''; followupInput.placeholder = '补充更多信息后再次推算…'; }
+    }
+
+    // 候选按钮
+    btnsDiv.innerHTML = '';
+    if (candidates.length === 0 && best) candidates = [best];
+    candidates.forEach(function(c) {
+      var isBest = best && c.shichen === best.shichen;
+      var label = c.shichen + '时';
+      var range = c.range || (c.hour + ':00');
+      btnsDiv.appendChild(buildBtn(label, range, c.hour, isBest, timeBand));
+    });
+
+    // 高置信度 + 唯一候选 → 自动填入
+    if (conf === 'high' && best && candidates.length <= 1) {
+      applyHour(best.hour, best.shichen + '时', timeBand);
+      return;
+    }
+
+    questions.style.display = 'none';
+    result.style.display = 'block';
+  }
+
+  // ── 本地兜底（纯头旋规则，无 AI）──
+  function fallbackLocal(whorlType) {
+    var idx = WHORL_MAP[whorlType];
+    if (idx === undefined) idx = 0;
+    var group = GROUPS[idx];
+
+    document.getElementById('sc-result-group').textContent = '天纪规则：' + group.name + ' 时辰组';
+    document.getElementById('sc-result-hint').textContent = '（AI 不可用，仅凭头旋规则）选择最接近的时辰';
+    document.getElementById('sc-result-reason').style.display = 'none';
+    document.getElementById('sc-result-followup').style.display = 'none';
+    document.getElementById('sc-followup-input-wrap').style.display = 'none';
 
     var btnsDiv = document.getElementById('sc-hour-btns');
     btnsDiv.innerHTML = '';
     group.hours.forEach(function(h) {
-      btnsDiv.appendChild(_buildCandidateBtn(h, '天纪推·' + h.label));
+      btnsDiv.appendChild(buildBtn(h.label, h.range, h.hour, false, '天纪头旋'));
     });
-
     questions.style.display = 'none';
     result.style.display = 'block';
+  }
+
+  // ── 调用 AI 推断 ──
+  function callShichenInfer(body, loadingTarget, btnTarget) {
+    if (btnTarget) btnTarget.style.display = 'none';
+    if (loadingTarget) loadingTarget.style.display = 'block';
+
+    return fetch(RAILWAY + '/api/shichen-infer', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(json) {
+      if (json.ok && json.data) {
+        showAiResult(json.data);
+      } else {
+        throw new Error(json.error || '推断失败');
+      }
+    })
+    .catch(function(err) {
+      console.warn('[天纪推时辰] AI 调用失败，回退本地规则:', err);
+      if (body.whorlType) {
+        fallbackLocal(body.whorlType);
+      } else {
+        alert('AI 推断暂不可用，请选择头旋位置后重试');
+        questions.style.display = 'block';
+        result.style.display = 'none';
+      }
+    })
+    .finally(function() {
+      if (btnTarget) btnTarget.style.display = 'block';
+      if (loadingTarget) loadingTarget.style.display = 'none';
+    });
+  }
+
+  // ── 主按钮点击 ──
+  calcBtn.addEventListener('click', function() {
+    var whorlEl = overlay.querySelector('input[name="sc_whorl"]:checked');
+    var vagueTime = (document.getElementById('sc-vague-time')?.value || '').trim();
+    var whorlType = whorlEl ? whorlEl.value : '';
+
+    if (!vagueTime && !whorlType) {
+      alert('请至少填写一项：模糊时间描述或头旋位置');
+      return;
+    }
+
+    // 有模糊时间描述 → 走 AI 推断
+    if (vagueTime) {
+      var ctx = collectBirthContext();
+      var body = {
+        birthDate: ctx.birthDate,
+        gender: ctx.gender,
+        city: ctx.city,
+        vagueTime: vagueTime,
+        whorlType: whorlType || undefined,
+      };
+      _lastInferCtx = body; // 保存上下文，追问时复用
+      callShichenInfer(body, loadingEl, calcBtn);
+      return;
+    }
+
+    // 只有头旋，无模糊描述 → 本地天纪规则兜底
+    fallbackLocal(whorlType);
+  });
+
+  // ── 追问再提交 ──
+  document.getElementById('sc-followup-submit').addEventListener('click', function() {
+    var input = document.getElementById('sc-followup-input');
+    var extra = (input?.value || '').trim();
+    if (!extra) { input.focus(); return; }
+
+    var body = Object.assign({}, _lastInferCtx);
+    body.additionalInfo = (body.additionalInfo ? body.additionalInfo + '；' : '') + extra;
+    _lastInferCtx = body;
+
+    var submitBtn = document.getElementById('sc-followup-submit');
+    var loadEl = document.getElementById('sc-followup-loading');
+    callShichenInfer(body, loadEl, submitBtn);
+  });
+  document.getElementById('sc-followup-input').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') document.getElementById('sc-followup-submit').click();
   });
 }());
 </script>

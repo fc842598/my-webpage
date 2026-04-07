@@ -808,6 +808,94 @@ city 未提供则省略。
 不完整时：
 {"complete":false,"reply":"好的，公历还是农历？几号几点，出生城市？"}`;
 
+// ── 天纪 AI 辅助推时辰 ──────────────────────────────────────
+const SHICHEN_INFER_SYSTEM = `你是出生时辰推断助手，依据倪海厦《天纪》规则。
+用户不知道准确出生时辰，请根据所有线索推断最可能的出生时辰。
+
+【天纪头旋规则（从后面看）】
+- 单旋，居中或偏左 → 子午卯酉时辰组（子23-01、午11-13、卯05-07、酉17-19）
+- 单旋，偏右 → 寅申巳亥时辰组（寅03-05、巳09-11、申15-17、亥21-23）
+- 双旋/多旋 → 辰戌丑未时辰组（丑01-03、辰07-09、未13-15、戌19-21）
+
+【推断方法】
+1. 先用模糊时间描述（"早上""晚上""凌晨""日落""吃早饭时"等）缩小到粗时段
+2. 再用头旋规则从粗时段内筛出候选时辰
+3. 如果粗时段和头旋都有，取交集
+4. 如果交集为空，以头旋组为主、粗时段为参考
+5. 如果只有一条线索，基于该线索给出候选
+
+【模糊时间→粗时段映射参考】
+- 凌晨/深夜/半夜 → 23:00-03:00
+- 天亮前/黎明 → 03:00-07:00
+- 早上/上午/吃早饭 → 07:00-11:00
+- 中午/正午/吃午饭 → 11:00-13:00
+- 下午 → 13:00-17:00
+- 傍晚/日落/黄昏 → 17:00-19:00
+- 晚上/晚饭后 → 19:00-23:00
+
+【返回格式 — 必须是纯 JSON】
+{
+  "approxTimeBand": "晚上(19:00-23:00)",
+  "candidateHours": [
+    {"shichen":"亥","hour":21,"range":"21:00-23:00"},
+    {"shichen":"戌","hour":19,"range":"19:00-21:00"}
+  ],
+  "bestGuess": {"shichen":"亥","hour":21,"range":"21:00-23:00"},
+  "confidence": "high",
+  "followupQuestions": [],
+  "reasonSummary": "用户说晚上出生，头旋偏右对应寅申巳亥组，亥时(21-23)落在晚上范围，推荐亥时。"
+}
+
+confidence 标准：
+- high: 粗时段+头旋交集唯一，或信息足够明确
+- medium: 可缩小到2-3个候选
+- low: 信息太少，无法有效缩小
+
+followupQuestions: 如果 confidence 不是 high，给出1-2个可以帮助进一步缩小的追问。
+例如："是否记得当时天已经全黑了？""是在吃早饭前还是后？"
+
+candidateHours 按可能性从高到低排列，最多4个。`;
+
+app.post('/api/shichen-infer', async (req, res) => {
+  const { birthDate, gender, city, vagueTime, whorlType, additionalInfo } = req.body || {};
+  if (!vagueTime && !whorlType) {
+    return res.status(400).json({ error: '至少提供模糊时间描述或头旋信息' });
+  }
+
+  const parts = [];
+  if (birthDate) parts.push('出生日期：' + birthDate);
+  if (gender) parts.push('性别：' + (gender === 'female' ? '女' : '男'));
+  if (city) parts.push('出生城市：' + city);
+  if (vagueTime) parts.push('模糊时间描述：' + vagueTime);
+  if (whorlType === 'center-left') parts.push('头旋：单旋，居中或偏左');
+  else if (whorlType === 'right') parts.push('头旋：单旋，偏右');
+  else if (whorlType === 'double') parts.push('头旋：双旋/多旋');
+  if (additionalInfo) parts.push('其他信息：' + additionalInfo);
+
+  const userMsg = '请根据以下信息推断出生时辰：\n' + parts.join('\n');
+
+  try {
+    const resp = await deepseek.chat.completions.create({
+      model: MODEL,
+      messages: [
+        { role: 'system', content: SHICHEN_INFER_SYSTEM },
+        { role: 'user', content: userMsg },
+      ],
+      response_format: { type: 'json_object' },
+      temperature: 0.3,
+      max_tokens: 400,
+    });
+    const raw = resp.choices[0]?.message?.content || '{}';
+    let data;
+    try { data = JSON.parse(raw); }
+    catch { data = { confidence: 'low', reasonSummary: '解析失败', candidateHours: [], followupQuestions: ['请提供更多信息'] }; }
+    return res.json({ ok: true, data });
+  } catch (err) {
+    console.error('[shichen-infer] DeepSeek 调用失败:', err.message);
+    return res.status(502).json({ error: 'AI 调用失败：' + err.message });
+  }
+});
+
 app.post('/api/chat', async (req, res) => {
   const { messages } = req.body || {};
   if (!Array.isArray(messages) || !messages.length) {
