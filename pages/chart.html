@@ -1267,11 +1267,10 @@ function stepRawBirthTime(hoursDelta) {
 document.getElementById('fc-btn-time-up').addEventListener('click',   () => stepRawBirthTime(-2));
 document.getElementById('fc-btn-time-down').addEventListener('click', () => stepRawBirthTime(+2));
 document.getElementById('fc-score-generate')?.addEventListener('click', () => {
-  _fcLifeCurveMode = 'all';
-  // 清空本次将要重算的人生曲线已加载结果、进度状态、sticky meta、阶段文案
+  const mode = _fcLifeCurveMode;
+  // 清空当前模式的已加载评分、进度状态
   if (_fcLifeCurveData) {
-    const targetAges = _fcLifeCurveTargetAges('all');
-    const targetAgesSet = new Set(targetAges);
+    const targetAgesSet = new Set(_fcLifeCurveTargetAges(mode));
     _fcLifeCurveData.scores = (_fcLifeCurveData.scores || []).filter(item => !targetAgesSet.has(Number(item.age)));
   }
   _fcLifeCurveStickyMeta = '';
@@ -1281,7 +1280,7 @@ document.getElementById('fc-score-generate')?.addEventListener('click', () => {
   _fcLifeCurveHasFirstPartial = false;
   _fcLifeCurveCriticalYear = null;
   _fcRenderScoreCurve();
-  _fcGenerateLifeCurve({ mode: 'all', forceRefresh: true, auto: false });
+  _fcGenerateLifeCurve({ mode, forceRefresh: true, auto: false });
 });
 document.getElementById('fc-score-mode-decade')?.addEventListener('click', () => {
   _fcLifeCurveMode = 'decade';
