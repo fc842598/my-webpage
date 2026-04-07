@@ -4344,32 +4344,10 @@ window._aiChatFill = function(data, submit) {
   }
 
   function callChat(messages, cb) {
-    var maxRetry = 3;
-    var warmedOnce = false;
-    function warmupPing() {
+    // 先 ping 唤醒 Railway，再发真实请求，避免冷启动超时误报
+    function doRequest() {
       var controller = typeof AbortController === 'function' ? new AbortController() : null;
-      var timer = setTimeout(function() {
-        if (controller) controller.abort();
-      }, 20000);
-      return fetch(RAILWAY + '/api/ping', {
-        method: 'GET',
-        signal: controller ? controller.signal : undefined,
-      })
-      .then(function() {
-        clearTimeout(timer);
-        warmedOnce = true;
-      })
-      .catch(function() {
-        clearTimeout(timer);
-      });
-    }
-    function run(attempt) {
-      var controller = typeof AbortController === 'function' ? new AbortController() : null;
-      // Railway 冷启动偶发会超过 30 秒，首次给更长窗口。
-      var timeoutMs = attempt === 0 ? 60000 : 35000;
-      var timer = setTimeout(function() {
-        if (controller) controller.abort();
-      }, timeoutMs);
+      var timer = setTimeout(function() { if (controller) controller.abort(); }, 35000);
       fetch(RAILWAY + '/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -4377,11 +4355,9 @@ window._aiChatFill = function(data, submit) {
         signal: controller ? controller.signal : undefined,
       })
       .then(function(r) {
-        if (!r.ok) {
-          return r.text().then(function(txt) {
-            throw new Error('HTTP ' + r.status + (txt ? (': ' + txt.slice(0, 120)) : ''));
-          });
-        }
+        if (!r.ok) return r.text().then(function(txt) {
+          throw new Error('HTTP ' + r.status + (txt ? ': ' + txt.slice(0, 120) : ''));
+        });
         return r.json();
       })
       .then(function(json) {
@@ -4391,21 +4367,21 @@ window._aiChatFill = function(data, submit) {
       })
       .catch(function(err) {
         clearTimeout(timer);
-        var isTimeout = err && (err.name === 'AbortError' || /timeout/i.test(String(err.message || '')));
-        if (isTimeout && !warmedOnce) {
-          warmupPing().finally(function() {
-            setTimeout(function() { run(attempt); }, 800);
-          });
-          return;
-        }
-        if (attempt < maxRetry) {
-          setTimeout(function() { run(attempt + 1); }, 350 * (attempt + 1));
-          return;
-        }
         cb(err, null);
       });
     }
-    run(0);
+
+    // ping 最多等 25s；成功后服务已热，直接发请求
+    var pingController = typeof AbortController === 'function' ? new AbortController() : null;
+    var pingTimer = setTimeout(function() { if (pingController) pingController.abort(); }, 25000);
+    setChartLoading(true, '连接服务中…');
+    fetch(RAILWAY + '/api/ping', {
+      method: 'GET',
+      signal: pingController ? pingController.signal : undefined,
+    })
+    .then(function() { clearTimeout(pingTimer); })
+    .catch(function() { clearTimeout(pingTimer); }) // ping 失败也继续尝试
+    .finally(function() { doRequest(); });
   }
 
   function setChartLoading(on, label) {
@@ -4487,16 +4463,10 @@ window._aiChatFill = function(data, submit) {
     if (sendBtn.disabled) return Promise.resolve(false);
     var originalText = text;
     inputEl.value = '';
+    // 重置输入框状态，避免残留文本导致误判
+    syncInputState('', false);
     sendBtn.disabled = true;
     inputEl.disabled = true;
-    if (autoSubmit) {
-      setChartLoading(true, '识别中…');
-      if (typeof window._chartFormHideError === 'function') window._chartFormHideError();
-    }
-
-    addBubble('user', text);
-    _history.push({ role: 'user', content: text });
-
     var thinking = addThinking();
     return new Promise(function(resolve) {
       callChat(_history.slice(), function(err, data) {
