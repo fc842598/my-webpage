@@ -4347,9 +4347,11 @@ window._aiChatFill = function(data, submit) {
     var maxRetry = 2;
     function run(attempt) {
       var controller = typeof AbortController === 'function' ? new AbortController() : null;
+      // 首次请求给 30s（Railway 冷启动可能需要 15-20s），重试给 25s
+      var timeoutMs = attempt === 0 ? 30000 : 25000;
       var timer = setTimeout(function() {
         if (controller) controller.abort();
-      }, 15000);
+      }, timeoutMs);
       fetch(RAILWAY + '/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -4416,7 +4418,7 @@ window._aiChatFill = function(data, submit) {
         thinking.remove();
         if (err || !data) {
           // 不还原输入框 — 消息已在聊天气泡中
-          addBubble('ai', '服务暂时不可用，请手动填写。');
+          addBubble('ai', '服务响应超时（可能正在唤醒），请稍等几秒后重新发送，或直接手动填写。');
           if (autoSubmit && typeof window._chartFormShowError === 'function') {
             window._chartFormShowError('AI识别暂时不可用，请手动填写或稍后重试。');
           }
