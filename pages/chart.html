@@ -4771,6 +4771,7 @@ window._aiChatFill = function(data, submit) {
     var input = document.getElementById('sc-followup-input');
     var extra = (input?.value || '').trim();
     if (!extra) { input.focus(); return; }
+    input.value = '';
 
     var body = Object.assign({}, _lastInferCtx);
     body.additionalInfo = (body.additionalInfo ? body.additionalInfo + '；' : '') + extra;
