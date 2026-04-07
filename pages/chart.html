@@ -510,7 +510,7 @@
         <div class="fc-bottom-actions">
           <button class="fc-score-btn fc-btn-primary" id="fc-score-generate">重新生成</button>
         </div>
-        <div class="fc-footer">数据仅供参考 · deepseek-chat</div>
+        <div class="fc-footer">数据仅供参考</div>
       </div>
     </div>
 
@@ -3774,7 +3774,7 @@ async function _aipRefreshMinggongDevCard(cardTitle) {
       error: '',
       result: data.result || null,
       trace: {
-        status : `已连接 · ${data.model || ''}`.trim(),
+        status : '已连接',
         steps  : traceSteps,
         context: data.trace?.context || JSON.stringify(ctx, null, 2),
         debugDoc: data.trace?.debugDoc || '后端未返回调试文档',
