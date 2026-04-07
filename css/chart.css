@@ -1594,6 +1594,23 @@
   color: #fff;
   box-shadow: 0 1px 4px rgba(0,0,0,.12);
 }
+.nf-cal-btn-ai { font-size: .78rem; }
+.nf-cal-btn-ai.active {
+  background: #5a3824;
+  color: #f5e6c8;
+}
+/* ── AI识别 内联面板 ── */
+#ai-inline-wrap {
+  margin-top: 4px;
+  padding: 12px 14px;
+  background: #fdf8f2;
+  border-radius: 12px;
+  border: 1px solid #e8ddd0;
+}
+#ai-inline-wrap .ai-chat-messages {
+  max-height: 160px;
+  margin-bottom: 10px;
+}
 /* ── 日期输入行 ── */
 .nf-date-inputs {
   display: flex;

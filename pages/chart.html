@@ -47,24 +47,6 @@
 
   <div class="nf-card">
 
-    <!-- AI 智能识别 -->
-    <div class="ai-chat-wrap" id="ai-chat-wrap">
-      <div class="ai-chat-label">
-        <span class="ai-chat-label-icon">✦</span>
-        AI 智能识别
-      </div>
-      <div class="ai-chat-messages" id="ai-chat-messages">
-        <div class="ai-msg ai-msg-ai">告诉我出生信息就好，比如：<em>1991年2月16日晚上10点，男，上海</em><br>城市影响真太阳时，尽量填。</div>
-      </div>
-      <div class="ai-chat-input-row">
-        <input type="text" id="ai-chat-input" class="ai-chat-input"
-               placeholder="年月日、时间、性别、城市…" autocomplete="off">
-        <button type="button" id="ai-chat-send" class="ai-chat-send">发送</button>
-      </div>
-      <div class="ai-chat-tip">上面直接输入也行。若还没点“发送”，直接点下面“开始排盘”也会先自动识别。</div>
-    </div>
-    <div class="ai-chat-divider">— 或手动填写 —</div>
-
     <!-- 姓名 & 性别 -->
     <div class="nf-row">
       <div class="nf-row-left">
@@ -88,6 +70,7 @@
         <div class="nf-cal-toggle">
           <button type="button" class="nf-cal-btn active" data-cal="solar">公历</button>
           <button type="button" class="nf-cal-btn" data-cal="lunar">农历</button>
+          <button type="button" class="nf-cal-btn nf-cal-btn-ai" data-cal="ai">✦ AI识别</button>
         </div>
       </div>
 
@@ -126,6 +109,19 @@
 
       <!-- 日期预览 -->
       <div id="date-preview" style="font-size:.8rem;color:#8e857d;min-height:18px;padding-left:2px"></div>
+
+      <!-- AI识别 内联聊天 -->
+      <div id="ai-inline-wrap" style="display:none">
+        <div class="ai-chat-messages" id="ai-chat-messages">
+          <div class="ai-msg ai-msg-ai">告诉我出生信息就好，比如：<em>1991年2月16日晚上10点，男，上海</em><br>城市影响真太阳时，尽量填。</div>
+        </div>
+        <div class="ai-chat-input-row">
+          <input type="text" id="ai-chat-input" class="ai-chat-input"
+                 placeholder="年月日、时间、性别、城市…" autocomplete="off">
+          <button type="button" id="ai-chat-send" class="ai-chat-send">发送</button>
+        </div>
+        <div class="ai-chat-tip">直接输入出生信息，AI自动识别填入下方表单。</div>
+      </div>
     </div>
 
     <!-- 出生时刻 -->
@@ -567,20 +563,25 @@
 // ═══════════════════════════════════════════════════════════
 
 // State
-let _calMode = 'solar';      // 'solar' | 'lunar'
+let _calMode = 'solar';      // 'solar' | 'lunar' | 'ai'
 let _selectedCity = null;    // { province, city, lon, lat }
 let _tstResult = null;       // result from calcTrueSolarTime()
 let _inputNormalized = null; // final normalized params for chart engine
 
-// ─── 公历/农历切换 ─────────────────────────────────────────
+// ─── 公历/农历/AI识别 切换 ──────────────────────────────────
+function applyCalMode(mode) {
+  _calMode = mode;
+  const isAi = mode === 'ai';
+  document.querySelectorAll('.nf-cal-btn').forEach(b => b.classList.toggle('active', b.dataset.cal === mode));
+  document.getElementById('solar-inputs').style.display = (!isAi && mode === 'solar') ? 'flex' : 'none';
+  document.getElementById('lunar-inputs').style.display = (!isAi && mode === 'lunar') ? 'flex' : 'none';
+  document.getElementById('date-preview').style.display = isAi ? 'none' : '';
+  document.getElementById('ai-inline-wrap').style.display = isAi ? 'block' : 'none';
+  if (!isAi) updateDatePreview();
+  else if (isAi) { setTimeout(() => document.getElementById('ai-chat-input')?.focus(), 50); }
+}
 document.querySelectorAll('.nf-cal-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    _calMode = btn.dataset.cal;
-    document.querySelectorAll('.nf-cal-btn').forEach(b => b.classList.toggle('active', b.dataset.cal === _calMode));
-    document.getElementById('solar-inputs').style.display = _calMode === 'solar' ? 'flex' : 'none';
-    document.getElementById('lunar-inputs').style.display = _calMode === 'lunar' ? 'flex' : 'none';
-    updateDatePreview();
-  });
+  btn.addEventListener('click', () => applyCalMode(btn.dataset.cal));
 });
 
 // ─── 农历日期下拉 ───────────────────────────────────────────
@@ -913,10 +914,7 @@ function _resetCitySelection() {
 function applyDefaults(options) {
   const useDemo = options?.demo === true || (_demoDefaults && options?.demo !== false);
   document.getElementById('inp-name').value = '';
-  _calMode = 'solar';
-  document.querySelectorAll('.nf-cal-btn').forEach(b => b.classList.toggle('active', b.dataset.cal === 'solar'));
-  document.getElementById('solar-inputs').style.display = 'flex';
-  document.getElementById('lunar-inputs').style.display = 'none';
+  applyCalMode('solar');
   document.getElementById('inp-year').value = useDemo ? 1991 : '';
   document.getElementById('inp-month').value = useDemo ? 2 : '';
   updateDayOptions?.();
@@ -1152,18 +1150,12 @@ async function historyRenderPanel() {
 function historyFillForm(r) {
   // 切换公历/农历模式
   if (r.calMode === 'lunar') {
-    document.querySelectorAll('.nf-cal-btn').forEach(b => b.classList.toggle('active', b.dataset.cal === 'lunar'));
-    document.getElementById('solar-inputs').style.display = 'none';
-    document.getElementById('lunar-inputs').style.display = '';
-    _calMode = 'lunar';
+    applyCalMode('lunar');
     document.getElementById('inp-lunar-year').value = r.year;
     document.getElementById('inp-lunar-month').value = r.month;
     // day filled below
   } else {
-    document.querySelectorAll('.nf-cal-btn').forEach(b => b.classList.toggle('active', b.dataset.cal === 'solar'));
-    document.getElementById('solar-inputs').style.display = '';
-    document.getElementById('lunar-inputs').style.display = 'none';
-    _calMode = 'solar';
+    applyCalMode('solar');
     document.getElementById('inp-year').value  = r.year;
     document.getElementById('inp-month').value = r.month;
     // trigger day options rebuild
@@ -4246,14 +4238,7 @@ if (typeof ZipingRuntime !== 'undefined') {
 // ══════════════════════════════════════════
 window._aiChatFill = function(data, submit) {
   var isLunar = data.calType === 'lunar';
-  _calMode = isLunar ? 'lunar' : 'solar';
-
-  // 切换公历/农历按钮
-  document.querySelectorAll('.nf-cal-btn').forEach(function(b) {
-    b.classList.toggle('active', b.dataset.cal === _calMode);
-  });
-  document.getElementById('solar-inputs').style.display = isLunar ? 'none' : 'flex';
-  document.getElementById('lunar-inputs').style.display = isLunar ? 'flex' : 'none';
+  applyCalMode(isLunar ? 'lunar' : 'solar');
 
   if (isLunar) {
     document.getElementById('inp-lunar-year').value  = data.year;
