@@ -3820,12 +3820,8 @@ function renderAIPiming() {
   if (desc) desc.textContent =
     `${_chart.zodiac||''}年 · ${_chart.fiveElementsClass||''} · 命宫${lifeMaj[0]||'空宫'}`;
   section.style.display = 'block';
-  if (!_fcLifeCurveAutoTriggered) {
-    _fcLifeCurveAutoTriggered = true;
-    _fcEnsureLifeCurveVisible(true);
-  } else {
-    _fcRenderScoreCurve();
-  }
+  // 人生曲线不自动请求 AI，只渲染已有缓存；用户点"开始排"按钮时才触发
+  _fcRenderScoreCurve();
   _aidbgShow();
 }
 
@@ -4348,17 +4344,41 @@ window._aiChatFill = function(data, submit) {
   }
 
   function callChat(messages, cb) {
-    fetch(RAILWAY + '/api/chat', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ messages: messages }),
-    })
-    .then(function(r) { return r.json(); })
-    .then(function(json) {
-      if (!json.ok) throw new Error(json.error || '出错');
-      cb(null, json.data);
-    })
-    .catch(function(err) { cb(err, null); });
+    var maxRetry = 2;
+    function run(attempt) {
+      var controller = typeof AbortController === 'function' ? new AbortController() : null;
+      var timer = setTimeout(function() {
+        if (controller) controller.abort();
+      }, 15000);
+      fetch(RAILWAY + '/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages: messages }),
+        signal: controller ? controller.signal : undefined,
+      })
+      .then(function(r) {
+        if (!r.ok) {
+          return r.text().then(function(txt) {
+            throw new Error('HTTP ' + r.status + (txt ? (': ' + txt.slice(0, 120)) : ''));
+          });
+        }
+        return r.json();
+      })
+      .then(function(json) {
+        clearTimeout(timer);
+        if (!json || !json.ok) throw new Error((json && json.error) || '出错');
+        cb(null, json.data);
+      })
+      .catch(function(err) {
+        clearTimeout(timer);
+        if (attempt < maxRetry) {
+          setTimeout(function() { run(attempt + 1); }, 350 * (attempt + 1));
+          return;
+        }
+        cb(err, null);
+      });
+    }
+    run(0);
   }
 
   function setChartLoading(on, label) {
