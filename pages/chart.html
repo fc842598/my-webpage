@@ -4344,11 +4344,29 @@ window._aiChatFill = function(data, submit) {
   }
 
   function callChat(messages, cb) {
-    var maxRetry = 2;
+    var maxRetry = 3;
+    var warmedOnce = false;
+    function warmupPing() {
+      var controller = typeof AbortController === 'function' ? new AbortController() : null;
+      var timer = setTimeout(function() {
+        if (controller) controller.abort();
+      }, 20000);
+      return fetch(RAILWAY + '/api/ping', {
+        method: 'GET',
+        signal: controller ? controller.signal : undefined,
+      })
+      .then(function() {
+        clearTimeout(timer);
+        warmedOnce = true;
+      })
+      .catch(function() {
+        clearTimeout(timer);
+      });
+    }
     function run(attempt) {
       var controller = typeof AbortController === 'function' ? new AbortController() : null;
-      // 首次请求给 30s（Railway 冷启动可能需要 15-20s），重试给 25s
-      var timeoutMs = attempt === 0 ? 30000 : 25000;
+      // Railway 冷启动偶发会超过 30 秒，首次给更长窗口。
+      var timeoutMs = attempt === 0 ? 60000 : 35000;
       var timer = setTimeout(function() {
         if (controller) controller.abort();
       }, timeoutMs);
@@ -4373,6 +4391,13 @@ window._aiChatFill = function(data, submit) {
       })
       .catch(function(err) {
         clearTimeout(timer);
+        var isTimeout = err && (err.name === 'AbortError' || /timeout/i.test(String(err.message || '')));
+        if (isTimeout && !warmedOnce) {
+          warmupPing().finally(function() {
+            setTimeout(function() { run(attempt); }, 800);
+          });
+          return;
+        }
         if (attempt < maxRetry) {
           setTimeout(function() { run(attempt + 1); }, 350 * (attempt + 1));
           return;
@@ -4392,6 +4417,66 @@ window._aiChatFill = function(data, submit) {
   function syncInputState(text, completed) {
     _inputDirty = !completed;
     if (completed) _lastCompletedText = text;
+  }
+
+  function parseBirthFallback(rawText) {
+    var text = String(rawText || '').trim();
+    if (!text) return null;
+
+    var nums = text.match(/\d{1,4}/g) || [];
+    var yIndex = -1;
+    for (var i = 0; i < nums.length; i += 1) {
+      var n = parseInt(nums[i], 10);
+      if (nums[i].length === 4 && n >= 1900 && n <= 2030) {
+        yIndex = i;
+        break;
+      }
+    }
+    if (yIndex < 0 || nums.length < yIndex + 4) return null;
+
+    var year = parseInt(nums[yIndex], 10);
+    var month = parseInt(nums[yIndex + 1], 10);
+    var day = parseInt(nums[yIndex + 2], 10);
+    var hour = parseInt(nums[yIndex + 3], 10);
+    var minute = nums.length > yIndex + 4 ? parseInt(nums[yIndex + 4], 10) : 0;
+
+    if (!(year >= 1900 && year <= 2030 && month >= 1 && month <= 12 && day >= 1 && day <= 31)) return null;
+    if (Number.isNaN(hour)) return null;
+    if (Number.isNaN(minute)) minute = 0;
+
+    var lowerText = text.toLowerCase();
+    var isPm = /\bpm\b|evening|night/.test(lowerText);
+    var isAm = /\bam\b|morning|dawn/.test(lowerText);
+    if (isPm && hour >= 1 && hour <= 11) hour += 12;
+    if (isAm && hour === 12) hour = 0;
+    if (hour === 24) hour = 0;
+    if (!(hour >= 0 && hour <= 23)) return null;
+    if (!(minute >= 0 && minute <= 59)) minute = 0;
+
+    var city = '';
+    if (typeof CITIES !== 'undefined' && Array.isArray(CITIES)) {
+      for (var j = 0; j < CITIES.length; j += 1) {
+        var row = CITIES[j] || [];
+        var c = String(row[1] || '');
+        var prov = String(row[0] || '');
+        if (c && (text.indexOf(c) >= 0 || text.indexOf(prov + c) >= 0)) {
+          city = c;
+          break;
+        }
+      }
+    }
+
+    return {
+      complete: true,
+      calType: /lunar|yinli/.test(lowerText) ? 'lunar' : 'solar',
+      year: year,
+      month: month,
+      day: day,
+      hour: hour,
+      minute: minute,
+      gender: /\bfemale\b|\bwoman\b|\bgirl\b/.test(lowerText) ? 'female' : 'male',
+      city: city,
+    };
   }
 
   function send(options) {
@@ -4417,13 +4502,28 @@ window._aiChatFill = function(data, submit) {
       callChat(_history.slice(), function(err, data) {
         thinking.remove();
         if (err || !data) {
-          // 不还原输入框 — 消息已在聊天气泡中
-          addBubble('ai', '服务响应超时（可能正在唤醒），请稍等几秒后重新发送，或直接手动填写。');
-          if (autoSubmit && typeof window._chartFormShowError === 'function') {
-            window._chartFormShowError('AI识别暂时不可用，请手动填写或稍后重试。');
+          var parsed = parseBirthFallback(originalText);
+          if (parsed) {
+            addBubble('ai', '\u0041\u0049\u670d\u52a1\u7e41\u5fd9\uff0c\u5df2\u6309\u672c\u5730\u89c4\u5219\u8bc6\u522b\uff0c\u8bf7\u6838\u5bf9\u540e\u7ee7\u7eed\u3002');
+            _history.push({ role: 'assistant', content: JSON.stringify(parsed) });
+            _extracted = parsed;
+            syncInputState(originalText, true);
+            if (autoSubmit) {
+              fillFormAndSubmit(parsed);
+            } else {
+              if (typeof window._aiChatFill === 'function') window._aiChatFill(parsed, false);
+              showConfirm(parsed);
+            }
+            setChartLoading(false);
+            resolve(true);
+          } else {
+            addBubble('ai', '\u670d\u52a1\u54cd\u5e94\u8d85\u65f6\uff08\u53ef\u80fd\u6b63\u5728\u5524\u9192\uff09\uff0c\u8bf7\u7a0d\u7b49\u540e\u91cd\u65b0\u53d1\u9001\uff0c\u6216\u76f4\u63a5\u624b\u52a8\u586b\u5199\u3002');
+            if (autoSubmit && typeof window._chartFormShowError === 'function') {
+              window._chartFormShowError('\u0041\u0049\u8bc6\u522b\u6682\u65f6\u4e0d\u53ef\u7528\uff0c\u8bf7\u624b\u52a8\u586b\u5199\u6216\u7a0d\u540e\u91cd\u8bd5\u3002');
+            }
+            setChartLoading(false);
+            resolve(false);
           }
-          setChartLoading(false);
-          resolve(false);
         } else if (data.complete) {
           _history.push({ role: 'assistant', content: JSON.stringify(data) });
           _extracted = data;
@@ -4480,11 +4580,12 @@ window._aiChatFill = function(data, submit) {
     var timeText = pad2(data.hour) + ':' + pad2(data.minute || 0) + '（' + shichenLabel(data.hour) + '）';
     var tstText = '';
     if (solarYear && typeof calcTrueSolarTime === 'function') {
+      var cityRef = (typeof _selectedCity !== 'undefined') ? _selectedCity : null;
       var tst = calcTrueSolarTime({
         year: solarYear, month: solarMonth, day: solarDay,
         hour: data.hour, minute: data.minute || 0,
-        longitude: _selectedCity ? _selectedCity.lon : undefined,
-        tzOffset: _selectedCity ? (_selectedCity.tzOffset || 8) : 8,
+        longitude: cityRef ? cityRef.lon : undefined,
+        tzOffset: cityRef ? (cityRef.tzOffset || 8) : 8,
         cityName: data.city || ''
       });
       tstText = pad2(tst.trueSolarHour) + ':' + pad2(tst.trueSolarMinute) +

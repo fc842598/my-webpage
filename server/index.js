@@ -902,13 +902,28 @@ app.post('/api/chat', async (req, res) => {
     return res.status(400).json({ error: 'messages 字段缺失或为空' });
   }
   try {
-    const resp = await deepseek.chat.completions.create({
-      model          : MODEL,
-      messages       : [{ role: 'system', content: CHAT_SYSTEM }, ...messages],
-      response_format: { type: 'json_object' },
-      temperature    : 0.3,
-      max_tokens     : 200,
-    });
+    let resp = null;
+    let lastErr = null;
+    for (let attempt = 1; attempt <= 3; attempt++) {
+      try {
+        resp = await deepseek.chat.completions.create({
+          model          : MODEL,
+          messages       : [{ role: 'system', content: CHAT_SYSTEM }, ...messages],
+          response_format: { type: 'json_object' },
+          temperature    : 0.3,
+          max_tokens     : 200,
+        });
+        break;
+      } catch (err) {
+        lastErr = err;
+        console.error(`[chat-api] DeepSeek 调用失败(第${attempt}/3次):`, err.message);
+        if (attempt < 3) {
+          await new Promise(resolve => setTimeout(resolve, 250 * attempt));
+        }
+      }
+    }
+    if (!resp) throw lastErr || new Error('DeepSeek 无响应');
+
     const raw = resp.choices[0]?.message?.content || '{}';
     let data;
     try { data = JSON.parse(raw); }
@@ -916,7 +931,14 @@ app.post('/api/chat', async (req, res) => {
     return res.json({ ok: true, data });
   } catch (err) {
     console.error('[chat-api] DeepSeek 调用失败:', err.message);
-    return res.status(502).json({ error: 'AI 调用失败：' + err.message });
+    // 聊天识别走前端交互链路，这里统一降级为可继续对话，避免前端直接判定“服务不可用”。
+    return res.json({
+      ok: true,
+      data: {
+        complete: false,
+        reply: 'AI服务繁忙，请稍后重试，或先手动填写下面的出生信息。',
+      },
+    });
   }
 });
 
