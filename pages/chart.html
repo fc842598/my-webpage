@@ -444,6 +444,7 @@
           <div class="fc-score-title">人生曲线</div>
           <div class="fc-score-modes">
             <button type="button" class="fc-score-mode active" id="fc-score-mode-decade">十年</button>
+            <button type="button" class="fc-score-mode" id="fc-score-mode-twenty">廿年</button>
             <button type="button" class="fc-score-mode" id="fc-score-mode-all">百年</button>
           </div>
         </div>
@@ -1287,6 +1288,14 @@ document.getElementById('fc-score-mode-decade')?.addEventListener('click', () =>
   _fcRenderScoreCurve();
   _fcEnsureLifeCurveVisible(true);
 });
+document.getElementById('fc-score-mode-twenty')?.addEventListener('click', () => {
+  _fcLifeCurveMode = 'twenty';
+  _fcRenderScoreCurve();
+  if (!_fcLifeCurveLoading && _chart && _chartInputs) {
+    const missing = _fcLifeCurveMissingAges('twenty');
+    if (missing.length) _fcGenerateLifeCurve({ mode: 'twenty', ages: missing, auto: false });
+  }
+});
 document.getElementById('fc-score-mode-all')?.addEventListener('click', () => {
   _fcLifeCurveMode = 'all';
   _fcRenderScoreCurve();
@@ -2031,6 +2040,11 @@ function _fcLifeCurveTargetAges(mode = _fcLifeCurveMode) {
   if (mode === 'all') {
     start = 1;
     end = maxAge;
+  } else if (mode === 'twenty') {
+    const [dS, dE] = _fcLifeCurveDecadeRange();
+    const mid = Math.round((dS + dE) / 2);
+    start = Math.max(1, mid - 10);
+    end   = Math.min(maxAge, mid + 10);
   } else {
     [start, end] = _fcLifeCurveDecadeRange();
   }
@@ -2466,6 +2480,7 @@ function _fcRenderScoreCurve() {
   const btn  = document.getElementById('fc-score-generate');
   const meta = document.getElementById('fc-score-meta');
   const modeDecadeBtn = document.getElementById('fc-score-mode-decade');
+  const modeTwentyBtn = document.getElementById('fc-score-mode-twenty');
   const modeAllBtn    = document.getElementById('fc-score-mode-all');
   if (!wrap || !svg || !list || !btn || !modeDecadeBtn || !modeAllBtn) return;
 
@@ -2474,9 +2489,10 @@ function _fcRenderScoreCurve() {
 
   btn.disabled = _fcLifeCurveLoading;
   btn.textContent = _fcLifeCurveLoading
-    ? (_fcLifeCurveMode === 'all' ? '百年生成中…' : '十年生成中…')
+    ? (_fcLifeCurveMode === 'all' ? '百年生成中…' : _fcLifeCurveMode === 'twenty' ? '廿年生成中…' : '十年生成中…')
     : '重新生成';
   modeDecadeBtn.classList.toggle('active', _fcLifeCurveMode === 'decade');
+  if (modeTwentyBtn) modeTwentyBtn.classList.toggle('active', _fcLifeCurveMode === 'twenty');
   modeAllBtn.classList.toggle('active', _fcLifeCurveMode === 'all');
 
   // ── 进度条 ──
@@ -2531,9 +2547,11 @@ function _fcRenderScoreCurve() {
   const W = 390, H = 260, pX = 16, pT = 20, pB = 22;
   const iW = W - pX * 2, iH = H - pT - pB;
   const maxAge = _fcGetZipingMaxAge();
-  const [rangeStart, rangeEnd] = _fcLifeCurveMode === 'all'
-    ? [1, maxAge]
-    : _fcLifeCurveDecadeRange();
+  const [rangeStart, rangeEnd] = (() => {
+    if (_fcLifeCurveMode === 'all') return [1, maxAge];
+    const ages = _fcLifeCurveTargetAges(_fcLifeCurveMode);
+    return ages.length ? [ages[0], ages[ages.length - 1]] : _fcLifeCurveDecadeRange();
+  })();
   const span = Math.max(1, rangeEnd - rangeStart);
   const toX  = age => pX + ((age - rangeStart) / span) * iW;
   const toY  = score => pT + (100 - Math.max(0, Math.min(100, score))) / 100 * iH;
