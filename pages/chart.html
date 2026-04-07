@@ -4467,6 +4467,9 @@ window._aiChatFill = function(data, submit) {
     syncInputState('', false);
     sendBtn.disabled = true;
     inputEl.disabled = true;
+    // 用户消息写入气泡和历史，AI 才能看到上下文
+    addBubble('user', originalText);
+    _history.push({ role: 'user', content: originalText });
     var thinking = addThinking();
     return new Promise(function(resolve) {
       callChat(_history.slice(), function(err, data) {
