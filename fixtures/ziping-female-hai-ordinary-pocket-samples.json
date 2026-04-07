@@ -1,0 +1,493 @@
+[
+  {
+    "id": "1930-01-06-2100-f",
+    "calendar": "solar",
+    "birth": "1930-01-06 21:00",
+    "location": "Beijing",
+    "gender": "female",
+    "civilSlot": "亥",
+    "comboSelected": "亥(21~23)",
+    "inputEcho": {
+      "year": "1930",
+      "month": "1",
+      "day": "6",
+      "combo": "亥(21~23)"
+    },
+    "genderText": "阴女",
+    "wuxing": "火六局",
+    "lunar": "",
+    "pillars": {
+      "raw": "四柱 : 己巳 丁丑 丙辰 己亥"
+    },
+    "xiantian": "山天大畜",
+    "yuanTangLine": "待复核",
+    "houtian": "火山旅",
+    "coverageTags": [
+      "female",
+      "lower-six",
+      "ordinary",
+      "hai-hour",
+      "pocket",
+      "lower-1",
+      "upper-7"
+    ],
+    "notes": "候选：山天大畜",
+    "validationMode": "core"
+  },
+  {
+    "id": "1930-01-11-2100-f",
+    "calendar": "solar",
+    "birth": "1930-01-11 21:00",
+    "location": "Beijing",
+    "gender": "female",
+    "civilSlot": "亥",
+    "comboSelected": "亥(21~23)",
+    "inputEcho": {
+      "year": "1930",
+      "month": "1",
+      "day": "11",
+      "combo": "亥(21~23)"
+    },
+    "genderText": "阴女",
+    "wuxing": "火六局",
+    "lunar": "",
+    "pillars": {
+      "raw": "四柱 : 己巳 丁丑 辛酉 己亥"
+    },
+    "xiantian": "地天泰",
+    "yuanTangLine": "待复核",
+    "houtian": "天山遯",
+    "coverageTags": [
+      "female",
+      "lower-six",
+      "ordinary",
+      "hai-hour",
+      "pocket",
+      "lower-1",
+      "upper-8",
+      "control"
+    ],
+    "notes": "控制盘：地天泰",
+    "validationMode": "core"
+  },
+  {
+    "id": "1930-01-15-2100-f",
+    "calendar": "solar",
+    "birth": "1930-01-15 21:00",
+    "location": "Beijing",
+    "gender": "female",
+    "civilSlot": "亥",
+    "comboSelected": "亥(21~23)",
+    "inputEcho": {
+      "year": "1930",
+      "month": "1",
+      "day": "15",
+      "combo": "亥(21~23)"
+    },
+    "genderText": "阴女",
+    "wuxing": "火六局",
+    "lunar": "",
+    "pillars": {
+      "raw": "四柱 : 己巳 丁丑 乙丑 丁亥"
+    },
+    "xiantian": "天雷无妄",
+    "yuanTangLine": "待复核",
+    "houtian": "雷风恒",
+    "coverageTags": [
+      "female",
+      "lower-six",
+      "ordinary",
+      "hai-hour",
+      "pocket",
+      "lower-4",
+      "upper-1"
+    ],
+    "notes": "候选：天雷无妄",
+    "validationMode": "core"
+  },
+  {
+    "id": "1930-01-17-2100-f",
+    "calendar": "solar",
+    "birth": "1930-01-17 21:00",
+    "location": "Beijing",
+    "gender": "female",
+    "civilSlot": "亥",
+    "comboSelected": "亥(21~23)",
+    "inputEcho": {
+      "year": "1930",
+      "month": "1",
+      "day": "17",
+      "combo": "亥(21~23)"
+    },
+    "genderText": "阴女",
+    "wuxing": "火六局",
+    "lunar": "",
+    "pillars": {
+      "raw": "四柱 : 己巳 丁丑 丁卯 辛亥"
+    },
+    "xiantian": "风雷益",
+    "yuanTangLine": "待复核",
+    "houtian": "雷天大壮",
+    "coverageTags": [
+      "female",
+      "lower-six",
+      "ordinary",
+      "hai-hour",
+      "pocket",
+      "lower-4",
+      "upper-5"
+    ],
+    "notes": "候选：风雷益",
+    "validationMode": "core"
+  },
+  {
+    "id": "1930-01-24-2100-f",
+    "calendar": "solar",
+    "birth": "1930-01-24 21:00",
+    "location": "Beijing",
+    "gender": "female",
+    "civilSlot": "亥",
+    "comboSelected": "亥(21~23)",
+    "inputEcho": {
+      "year": "1930",
+      "month": "1",
+      "day": "24",
+      "combo": "亥(21~23)"
+    },
+    "genderText": "阴女",
+    "wuxing": "火六局",
+    "lunar": "",
+    "pillars": {
+      "raw": "四柱 : 己巳 丁丑 甲戌 乙亥"
+    },
+    "xiantian": "火天大有",
+    "yuanTangLine": "待复核",
+    "houtian": "天山遯",
+    "coverageTags": [
+      "female",
+      "lower-six",
+      "ordinary",
+      "hai-hour",
+      "pocket",
+      "lower-1",
+      "upper-3"
+    ],
+    "notes": "候选：火天大有",
+    "validationMode": "core"
+  },
+  {
+    "id": "1930-01-29-2100-f",
+    "calendar": "solar",
+    "birth": "1930-01-29 21:00",
+    "location": "Beijing",
+    "gender": "female",
+    "civilSlot": "亥",
+    "comboSelected": "亥(21~23)",
+    "inputEcho": {
+      "year": "1930",
+      "month": "1",
+      "day": "29",
+      "combo": "亥(21~23)"
+    },
+    "genderText": "阴女",
+    "wuxing": "火六局",
+    "lunar": "",
+    "pillars": {
+      "raw": "四柱 : 己巳 丁丑 己卯 乙亥"
+    },
+    "xiantian": "天山遯",
+    "yuanTangLine": "待复核",
+    "houtian": "山风蛊",
+    "coverageTags": [
+      "female",
+      "lower-six",
+      "ordinary",
+      "hai-hour",
+      "pocket",
+      "lower-7",
+      "upper-1"
+    ],
+    "notes": "候选：天山遯",
+    "validationMode": "core"
+  },
+  {
+    "id": "1930-01-30-2100-f",
+    "calendar": "solar",
+    "birth": "1930-01-30 21:00",
+    "location": "Beijing",
+    "gender": "female",
+    "civilSlot": "亥",
+    "comboSelected": "亥(21~23)",
+    "inputEcho": {
+      "year": "1930",
+      "month": "1",
+      "day": "30",
+      "combo": "亥(21~23)"
+    },
+    "genderText": "阳女",
+    "wuxing": "土五局",
+    "lunar": "",
+    "pillars": {
+      "raw": "四柱 : 己巳 丁丑 庚辰 丁亥"
+    },
+    "xiantian": "火山旅",
+    "yuanTangLine": "待复核",
+    "houtian": "山天大畜",
+    "coverageTags": [
+      "female",
+      "lower-six",
+      "ordinary",
+      "hai-hour",
+      "pocket",
+      "lower-7",
+      "upper-3"
+    ],
+    "notes": "候选：火山旅",
+    "validationMode": "core"
+  },
+  {
+    "id": "1930-01-09-2100-f",
+    "calendar": "solar",
+    "birth": "1930-01-09 21:00",
+    "location": "Beijing",
+    "gender": "female",
+    "civilSlot": "亥",
+    "comboSelected": "亥(21~23)",
+    "inputEcho": {
+      "year": "1930",
+      "month": "1",
+      "day": "9",
+      "combo": "亥(21~23)"
+    },
+    "genderText": "阴女",
+    "wuxing": "火六局",
+    "lunar": "",
+    "pillars": {
+      "raw": "四柱 : 己巳 丁丑 己未 乙亥"
+    },
+    "xiantian": "山雷颐",
+    "yuanTangLine": "待复核",
+    "houtian": "雷地豫",
+    "coverageTags": [
+      "female",
+      "lower-six",
+      "ordinary",
+      "hai-hour",
+      "pocket-2",
+      "lower-4",
+      "upper-7"
+    ],
+    "notes": "候选：山雷颐",
+    "validationMode": "core"
+  },
+  {
+    "id": "1930-02-16-2100-f",
+    "calendar": "solar",
+    "birth": "1930-02-16 21:00",
+    "location": "Beijing",
+    "gender": "female",
+    "civilSlot": "亥",
+    "comboSelected": "亥(21~23)",
+    "inputEcho": {
+      "year": "1930",
+      "month": "2",
+      "day": "16",
+      "combo": "亥(21~23)"
+    },
+    "genderText": "阳女",
+    "wuxing": "土五局",
+    "lunar": "",
+    "pillars": {
+      "raw": "四柱 : 庚午 戊寅 丁酉 辛亥"
+    },
+    "xiantian": "风天小畜",
+    "yuanTangLine": "待复核",
+    "houtian": "天山遯",
+    "coverageTags": [
+      "female",
+      "lower-six",
+      "ordinary",
+      "hai-hour",
+      "pocket-2",
+      "lower-1",
+      "upper-5"
+    ],
+    "notes": "候选：风天小畜",
+    "validationMode": "core"
+  },
+  {
+    "id": "1930-02-18-2100-f",
+    "calendar": "solar",
+    "birth": "1930-02-18 21:00",
+    "location": "Beijing",
+    "gender": "female",
+    "civilSlot": "亥",
+    "comboSelected": "亥(21~23)",
+    "inputEcho": {
+      "year": "1930",
+      "month": "2",
+      "day": "18",
+      "combo": "亥(21~23)"
+    },
+    "genderText": "阳女",
+    "wuxing": "土五局",
+    "lunar": "",
+    "pillars": {
+      "raw": "四柱 : 庚午 戊寅 己亥 乙亥"
+    },
+    "xiantian": "风地观",
+    "yuanTangLine": "待复核",
+    "houtian": "地水师",
+    "coverageTags": [
+      "female",
+      "lower-six",
+      "ordinary",
+      "hai-hour",
+      "pocket-2",
+      "lower-7",
+      "upper-5"
+    ],
+    "notes": "候选：风山渐",
+    "validationMode": "exploratory-xiantian"
+  },
+  {
+    "id": "1930-02-25-2100-f",
+    "calendar": "solar",
+    "birth": "1930-02-25 21:00",
+    "location": "Beijing",
+    "gender": "female",
+    "civilSlot": "亥",
+    "comboSelected": "亥(21~23)",
+    "inputEcho": {
+      "year": "1930",
+      "month": "2",
+      "day": "25",
+      "combo": "亥(21~23)"
+    },
+    "genderText": "阳女",
+    "wuxing": "土五局",
+    "lunar": "",
+    "pillars": {
+      "raw": "四柱 : 庚午 戊寅 丙午 己亥"
+    },
+    "xiantian": "乾为天",
+    "yuanTangLine": "待复核",
+    "houtian": "风天小畜",
+    "coverageTags": [
+      "female",
+      "lower-six",
+      "ordinary",
+      "hai-hour",
+      "pocket-2",
+      "lower-1",
+      "upper-1"
+    ],
+    "notes": "候选：乾为天",
+    "validationMode": "core"
+  },
+  {
+    "id": "1930-02-27-2100-f",
+    "calendar": "solar",
+    "birth": "1930-02-27 21:00",
+    "location": "Beijing",
+    "gender": "female",
+    "civilSlot": "亥",
+    "comboSelected": "亥(21~23)",
+    "inputEcho": {
+      "year": "1930",
+      "month": "2",
+      "day": "27",
+      "combo": "亥(21~23)"
+    },
+    "genderText": "阳女",
+    "wuxing": "土五局",
+    "lunar": "",
+    "pillars": {
+      "raw": "四柱 : 庚午 戊寅 戊申 癸亥"
+    },
+    "xiantian": "坤为地",
+    "yuanTangLine": "待复核",
+    "houtian": "地山谦",
+    "coverageTags": [
+      "female",
+      "lower-six",
+      "ordinary",
+      "hai-hour",
+      "pocket-2",
+      "lower-7",
+      "upper-8"
+    ],
+    "notes": "候选：地山谦",
+    "validationMode": "exploratory-xiantian"
+  },
+  {
+    "id": "1930-03-17-2100-f",
+    "calendar": "solar",
+    "birth": "1930-03-17 21:00",
+    "location": "Beijing",
+    "gender": "female",
+    "civilSlot": "亥",
+    "comboSelected": "亥(21~23)",
+    "inputEcho": {
+      "year": "1930",
+      "month": "3",
+      "day": "17",
+      "combo": "亥(21~23)"
+    },
+    "genderText": "阳女",
+    "wuxing": "金四局",
+    "lunar": "",
+    "pillars": {
+      "raw": "四柱 : 庚午 己卯 丙寅 己亥"
+    },
+    "xiantian": "地雷复",
+    "yuanTangLine": "待复核",
+    "houtian": "坤为地",
+    "coverageTags": [
+      "female",
+      "lower-six",
+      "ordinary",
+      "hai-hour",
+      "pocket-2",
+      "lower-4",
+      "upper-8"
+    ],
+    "notes": "候选：地雷复",
+    "validationMode": "core"
+  },
+  {
+    "id": "1930-03-27-2100-f",
+    "calendar": "solar",
+    "birth": "1930-03-27 21:00",
+    "location": "Beijing",
+    "gender": "female",
+    "civilSlot": "亥",
+    "comboSelected": "亥(21~23)",
+    "inputEcho": {
+      "year": "1930",
+      "month": "3",
+      "day": "27",
+      "combo": "亥(21~23)"
+    },
+    "genderText": "阳女",
+    "wuxing": "金四局",
+    "lunar": "",
+    "pillars": {
+      "raw": "四柱 : 庚午 己卯 丙子 己亥"
+    },
+    "xiantian": "雷山小过",
+    "yuanTangLine": "待复核",
+    "houtian": "山地剥",
+    "coverageTags": [
+      "female",
+      "lower-six",
+      "ordinary",
+      "hai-hour",
+      "pocket-2",
+      "lower-7",
+      "upper-4"
+    ],
+    "notes": "候选：雷山小过",
+    "validationMode": "core"
+  }
+]

@@ -1,0 +1,9 @@
+{
+  "name": "codex-browser-session",
+  "private": true,
+  "scripts": {
+    "validate:ziping": "node scripts/validate-ziping-professional-tool-samples.js",
+    "validate:ziping:boundary": "node scripts/validate-ziping-boundary-rules.js",
+    "validate:ziping:all": "node scripts/validate-ziping-professional-tool-samples.js && node scripts/validate-ziping-boundary-rules.js"
+  }
+}

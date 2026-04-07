@@ -1,0 +1,112 @@
+[
+  {
+    "id": "1930-02-05-1900-f",
+    "birth": "1930-02-05 19:00",
+    "gender": "female",
+    "comboSelected": "戌(19~21)",
+    "genderText": "阳女",
+    "pillars": "庚午 戊寅 丙戌 戊戌",
+    "xiantian": "山地剥",
+    "houtian": "地风升",
+    "notes": "tianR25 阴命候选，当前本地=艮为山"
+  },
+  {
+    "id": "1930-02-20-0300-f",
+    "birth": "1930-02-20 03:00",
+    "gender": "female",
+    "comboSelected": "寅(3~5)",
+    "genderText": "阳女",
+    "pillars": "庚午 戊寅 辛丑 庚寅",
+    "xiantian": "坤为地",
+    "houtian": "山地剥",
+    "notes": "tianR25 阴命候选，当前本地=地山谦"
+  },
+  {
+    "id": "1930-04-18-2100-f",
+    "birth": "1930-04-18 21:00",
+    "gender": "female",
+    "comboSelected": "亥(21~23)",
+    "genderText": "阳女",
+    "pillars": "庚午 庚辰 戊戌 癸亥",
+    "xiantian": "雷地豫",
+    "houtian": "坤为地",
+    "notes": "tianR25 阴命候选，当前本地=雷山小过"
+  },
+  {
+    "id": "1930-04-08-1900-f",
+    "birth": "1930-04-08 19:00",
+    "gender": "female",
+    "comboSelected": "戌(19~21)",
+    "genderText": "阳女",
+    "pillars": "庚午 庚辰 戊子 壬戌",
+    "xiantian": "风地观",
+    "houtian": "地山谦",
+    "notes": "tianR25 阴命候选，当前本地=风山渐"
+  },
+  {
+    "id": "1930-02-23-2100-f",
+    "birth": "1930-02-23 21:00",
+    "gender": "female",
+    "comboSelected": "亥(21~23)",
+    "genderText": "阳女",
+    "pillars": "庚午 戊寅 甲辰 乙亥",
+    "xiantian": "风地观",
+    "houtian": "地水师",
+    "notes": "风地观@亥 对照1"
+  },
+  {
+    "id": "1930-04-20-2100-f",
+    "birth": "1930-04-20 21:00",
+    "gender": "female",
+    "comboSelected": "亥(21~23)",
+    "genderText": "阳女",
+    "pillars": "庚午 庚辰 庚子 丁亥",
+    "xiantian": "风地观",
+    "houtian": "地水师",
+    "notes": "风地观@亥 对照2"
+  },
+  {
+    "id": "1930-02-26-2100-f",
+    "birth": "1930-02-26 21:00",
+    "gender": "female",
+    "comboSelected": "亥(21~23)",
+    "genderText": "阳女",
+    "pillars": "庚午 戊寅 丁未 辛亥",
+    "xiantian": "雷地豫",
+    "houtian": "坤为地",
+    "notes": "雷地豫@亥 对照1"
+  },
+  {
+    "id": "1930-04-16-2100-f",
+    "birth": "1930-04-16 21:00",
+    "gender": "female",
+    "comboSelected": "亥(21~23)",
+    "genderText": "阳女",
+    "pillars": "庚午 庚辰 丙申 己亥",
+    "xiantian": "雷地豫",
+    "houtian": "坤为地",
+    "notes": "雷地豫@亥 对照2"
+  },
+  {
+    "id": "1930-02-20-1900-f",
+    "birth": "1930-02-20 19:00",
+    "gender": "female",
+    "comboSelected": "戌(19~21)",
+    "genderText": "阳女",
+    "pillars": "庚午 戊寅 辛丑 戊戌",
+    "xiantian": "风地观",
+    "houtian": "地山谦",
+    "notes": "风地观@戌 对照1"
+  },
+  {
+    "id": "1930-04-25-1900-f",
+    "birth": "1930-04-25 19:00",
+    "gender": "female",
+    "comboSelected": "戌(19~21)",
+    "genderText": "阳女",
+    "pillars": "庚午 庚辰 乙巳 丙戌",
+    "xiantian": "风地观",
+    "houtian": "地山谦",
+    "notes": "风地观@戌 对照2"
+  }
+]

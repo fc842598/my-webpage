@@ -1,0 +1,42 @@
+[
+  {
+    "id": "1930-01-14-1700-f",
+    "birth": "1930-01-14 17:00",
+    "genderText": "阴女",
+    "pillars": "己巳 丁丑 甲子 癸酉",
+    "xiantian": "震为雷",
+    "houtian": "雷火丰",
+    "combo": "酉(17~19)",
+    "notes": "震为雷 candidate"
+  },
+  {
+    "id": "1930-01-03-2100-f",
+    "birth": "1930-01-03 21:00",
+    "genderText": "阴女",
+    "pillars": "己巳 丙子 癸丑 癸亥",
+    "xiantian": "雷天大壮",
+    "houtian": "火雷噬嗑",
+    "combo": "亥(21~23)",
+    "notes": "雷天大壮 candidate"
+  },
+  {
+    "id": "1930-02-15-2100-f",
+    "birth": "1930-02-15 21:00",
+    "genderText": "阳女",
+    "pillars": "庚午 戊寅 丙申 己亥",
+    "xiantian": "艮为山",
+    "houtian": "山地剥",
+    "combo": "亥(21~23)",
+    "notes": "艮为山 candidate"
+  },
+  {
+    "id": "1930-01-20-1900-f",
+    "birth": "1930-01-20 19:00",
+    "genderText": "阴女",
+    "pillars": "己巳 丁丑 庚午 丙戌",
+    "xiantian": "山地剥",
+    "houtian": "地风升",
+    "combo": "戌(19~21)",
+    "notes": "山地剥 candidate"
+  }
+]

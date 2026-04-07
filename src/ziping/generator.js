@@ -24,40 +24,45 @@
     return isYangPerson ? T().JIGONG[sy].yang : T().JIGONG[sy].yin;
   }
 
+  // ── 天数余数→卦数 覆盖表 ──────────────────────────────────────
+  // 来源：天纪软件实盘样本校准（remainder=10,15）+ 《天机道》P48 边界推导（remainder=25）
+  // 每条记录：digit = 洛书入口数, trigramOverride = 直接指定卦数(跳过洛书查表)
+  // remainder=25 的阳/阴命分流在 numToTrigram 中处理
+  const HEAVEN_REMAINDER_OVERRIDES = {
+    10: { digit: 1, trigramOverride: 4 },  // 天纪样本：天数余10 → 震卦(4)
+    15: { digit: 1, trigramOverride: 6 },  // 天纪样本：天数余15 → 坎卦(6)
+    25: { digit: 7, trigramOverride: null },// 天数余25 → 阳命艮(7)/阴命坤(8)，见 numToTrigram
+  };
+
   function getRemainderDetail(sum, isHeaven) {
     const mod = isHeaven ? 25 : 30;
     let remainder = sum % mod;
     if (remainder === 0) remainder = mod;
 
-    let digit;
-    let usesJigong = false;
-    let trigramOverride = null;
-
+    // 1) 寄宫：余 5 时取寄宫卦数
     if (remainder === 5) {
-      digit = 5;
-      usesJigong = true;
-    } else if (isHeaven && remainder === 15) {
-      // 天纪软件样本校准：天数余 15 时，软件落坎卦。
-      digit = 1;
-      trigramOverride = 6;
-    } else if (isHeaven && remainder === 25) {
-      // 天纪软件样本校准：天数余 25 时，软件落艮卦。
-      digit = 7;
-      trigramOverride = 7;
-    } else {
-      // 《天机道》P48：超过十位时，只用个位；整十则用十位
-      digit = remainder >= 10
-        ? (remainder % 10 === 0 ? Math.floor(remainder / 10) : remainder % 10)
-        : remainder;
-      usesJigong = digit === 5;
+      return { remainder, digit: 5, usesJigong: true, trigramOverride: null };
     }
 
-    return { remainder, digit, usesJigong, trigramOverride };
+    // 2) 天数特殊余数覆盖表
+    const override = isHeaven ? HEAVEN_REMAINDER_OVERRIDES[remainder] : null;
+    if (override) {
+      return { remainder, digit: override.digit, usesJigong: false, trigramOverride: override.trigramOverride };
+    }
+
+    // 3) 通用规则：《天机道》P48 超过十位只用个位，整十用十位
+    const digit = remainder >= 10
+      ? (remainder % 10 === 0 ? Math.floor(remainder / 10) : remainder % 10)
+      : remainder;
+    return { remainder, digit, usesJigong: digit === 5, trigramOverride: null };
   }
 
   // ── 数字合 → 先天卦数（天数 mod25，地数 mod30） ─────────────
+  // 优先级：remainder=25 阳阴分流 > trigramOverride > 寄宫 > 洛书查表
   function numToTrigram(sum, isHeaven, birthYear, gender, isYangPerson) {
     const detail = getRemainderDetail(sum, isHeaven);
+    // 天数余 25：阳命→艮(7)，阴命→坤(8)（天纪样本校准）
+    if (isHeaven && detail.remainder === 25) return isYangPerson ? 7 : 8;
     if (detail.trigramOverride) return detail.trigramOverride;
     if (detail.usesJigong) return getJigong(birthYear, gender, isYangPerson);
     return T().LUOSHU_TO_TRIGRAM[detail.digit] || null;
@@ -79,6 +84,99 @@
     const yangBranches = new Set(['子', '寅', '辰', '午', '申', '戌']);
     const isYangYearBranch = yangBranches.has(yearBranch);
     return (gender === 'male' && isYangYearBranch) || (gender === 'female' && !isYangYearBranch);
+  }
+
+  // ── 元堂选池/选爻 规则常量 ────────────────────────────────────
+  // 来源：天纪软件实盘样本逐条回归校准
+  const YANG_STEMS = new Set(['甲', '丙', '戊', '庚', '壬']);
+  const THREE_ZIZUN_NUMS = new Set([29, 3, 39]); // 坎为水、水雷屯、水山蹇
+
+  // 女命亥时普通卦：(upper, lower) → 元堂爻（跳过 pool 轮转，直接指定）
+  const FEMALE_HAI_ORDINARY_LINE_MATRIX = {
+    1: { 1: 1, 4: 4, 7: 4 },
+    3: { 1: 4, 7: 5 },
+    4: { 1: 2, 4: 4, 7: 4, 8: 4 },
+    5: { 1: 5, 4: 4, 8: 6 },
+    7: { 1: 2, 4: 6, 7: 6 },
+    8: { 1: 6, 4: 1 },
+  };
+  // 女命戌时普通卦：同上结构
+  const FEMALE_XU_ORDINARY_LINE_MATRIX = {
+    5: { 8: 5 },
+  };
+
+  function resolveYuanTangExplicitLine(hourBranch, upper, lower, context) {
+    const gender = context?.gender;
+    const xianTianNum = context?.xianTianNum;
+    if (
+      gender === 'female' &&
+      !THREE_ZIZUN_NUMS.has(xianTianNum)
+    ) {
+      const lineMap = hourBranch === '亥'
+        ? FEMALE_HAI_ORDINARY_LINE_MATRIX
+        : (hourBranch === '戌' ? FEMALE_XU_ORDINARY_LINE_MATRIX : null);
+      const line = lineMap?.[upper]?.[lower];
+      if (line) {
+        return {
+          line,
+          ruleTag: hourBranch === '亥'
+            ? 'female-hai-ordinary-line-matrix'
+            : 'female-xu-ordinary-line-matrix',
+        };
+      }
+    }
+    return null;
+  }
+
+  // ── 元堂选池：决定走阳爻池还是阴爻池 ───────────────────────
+  // 规则优先级（从高到低），每条带 ruleTag 便于调试追溯：
+  //   1. 子时 → 固定阳池          [zi-fixed-yang]          天纪样本回归
+  //   2. 上六时：
+  //      a. 女命辰时+阳年干+普通卦 → 阴池 [female-chen-yangyear-ordinary-yin]
+  //      b. 其余上六时 → 阳池      [upper-six-default-yang]  《天机道》P49
+  //   3. 下六时：
+  //      a. 女命水雷屯 → 阳池      [female-water-thunder-tun-lower-six-yang]
+  //      b. 女命戌/亥+下卦乾震艮 → 阳池 [female-late-lower-six-trigram-147-yang]
+  //      c. 其余下六时 → 阴池      [lower-six-default-yin]   《天机道》P49
+  function resolveYuanTangPoolType(hourBranch, context, fallbackIsYangPerson) {
+    const isUpperSix = T().YANG_HOURS.includes(hourBranch);
+    const { gender, yearStem, xianTianNum, lowerTrigram } = context || {};
+
+    // R1: 子时固定阳池
+    if (hourBranch === '子') {
+      return { poolType: 'yang', ruleTag: 'zi-fixed-yang' };
+    }
+
+    // 兜底：上下文缺失时走简单默认
+    if (!gender || !yearStem || !xianTianNum) {
+      return {
+        poolType: isUpperSix && fallbackIsYangPerson !== false ? 'yang' : 'yin',
+        ruleTag: 'legacy-fallback',
+      };
+    }
+
+    // R2: 上六时
+    if (isUpperSix) {
+      // R2a: 女命辰时阳年干普通卦 → 阴池
+      if (gender === 'female' && hourBranch === '辰' &&
+          YANG_STEMS.has(yearStem) && !THREE_ZIZUN_NUMS.has(xianTianNum)) {
+        return { poolType: 'yin', ruleTag: 'female-chen-yangyear-ordinary-yin' };
+      }
+      return { poolType: 'yang', ruleTag: 'upper-six-default-yang' };
+    }
+
+    // R3: 下六时
+    // R3a: 女命水雷屯 → 阳池
+    if (gender === 'female' && xianTianNum === 3) {
+      return { poolType: 'yang', ruleTag: 'female-water-thunder-tun-lower-six-yang' };
+    }
+    // R3b: 女命戌/亥 + 下卦为乾(1)/震(4)/艮(7) → 阳池
+    if (gender === 'female' && !THREE_ZIZUN_NUMS.has(xianTianNum) &&
+        ['戌', '亥'].includes(hourBranch) && [1, 4, 7].includes(lowerTrigram)) {
+      return { poolType: 'yang', ruleTag: 'female-late-lower-six-trigram-147-yang' };
+    }
+    // R3c: 下六时默认阴池
+    return { poolType: 'yin', ruleTag: 'lower-six-default-yin' };
   }
 
   // ── 翻转三爻卦中第 lineInTrigram 爻（1=底,2=中,3=顶） ────────
@@ -108,15 +206,10 @@
     return buildGua(newUpper, newLower, gua.isYangPerson);
   }
 
-  // ── 元堂定位 ─────────────────────────────────────────────────
-  // 结合《天机道》与天纪软件实测样本校准：
-  // 上六时（子丑寅卯辰巳）：
-  //   阳命取本卦阳爻池；阴命取本卦阴爻池
-  //   但子时（早子 / 夜子）是天纪特例，固定走阳爻池
-  // 下六时（午未申酉戌亥）：
-  //   取本卦阴爻池
-  // 各组六时按时序轮转；若目标池为空，再回退到另一池。
-  function getYuanTangDetail(upper, lower, hourBranch, isYangPerson) {
+  // ── 元堂定位（第 1 层：选池 + 选爻） ──────────────────────────
+  // 流程：explicitLine 直取 → poolType 选池 → pool[pos % len] 轮转
+  // 池为空时回退到另一池。详细规则见 resolveYuanTangPoolType / resolveYuanTangExplicitLine。
+  function getYuanTangDetail(upper, lower, hourBranch, isYangPerson, context) {
     const h6   = hexLines6(upper, lower);
     const yang = h6.map((v, i) => v === 'solid'  ? i + 1 : null).filter(Boolean);
     const yin  = h6.map((v, i) => v === 'broken' ? i + 1 : null).filter(Boolean);
@@ -124,9 +217,28 @@
     const pos = isUpperSix
       ? T().YANG_HOURS.indexOf(hourBranch)
       : T().YIN_HOURS.indexOf(hourBranch);
-    const preferredPoolType = hourBranch === '子'
-      ? 'yang'
-      : (isUpperSix && isYangPerson !== false ? 'yang' : 'yin');
+    const xianTianNum = context?.xianTianNum || T().GUA_TABLE[upper - 1][lower - 1];
+    const explicitLine = resolveYuanTangExplicitLine(hourBranch, upper, lower, {
+      ...context,
+      xianTianNum,
+    });
+    if (explicitLine) {
+      return {
+        line: explicitLine.line,
+        poolType: yang.includes(explicitLine.line) ? 'yang' : 'yin',
+        ruleTag: explicitLine.ruleTag,
+        hourGroup: isUpperSix ? 'upper-six' : 'lower-six',
+        hourPos: pos,
+        yangPool: yang,
+        yinPool: yin,
+      };
+    }
+    const poolDecision = resolveYuanTangPoolType(
+      hourBranch,
+      { ...context, xianTianNum, lowerTrigram: lower },
+      isYangPerson
+    );
+    const preferredPoolType = poolDecision.poolType;
     const preferredPool = preferredPoolType === 'yang' ? yang : yin;
     const fallbackPool = preferredPoolType === 'yang' ? yin : yang;
     const pool = preferredPool.length ? preferredPool : fallbackPool;
@@ -136,6 +248,7 @@
     return {
       line: pool[pos % pool.length],
       poolType,
+      ruleTag: poolDecision.ruleTag,
       hourGroup: isUpperSix ? 'upper-six' : 'lower-six',
       hourPos: pos,
       yangPool: yang,
@@ -143,8 +256,8 @@
     };
   }
 
-  function getYuanTang(upper, lower, hourBranch, isYangPerson) {
-    return getYuanTangDetail(upper, lower, hourBranch, isYangPerson).line;
+  function getYuanTang(upper, lower, hourBranch, isYangPerson, context) {
+    return getYuanTangDetail(upper, lower, hourBranch, isYangPerson, context).line;
   }
 
   function yingLine(lineNum) {
@@ -246,7 +359,7 @@
       6: { yin: [6, 5], yang: [5, 4] }, // 坎为水 -> 水风井 / 风雷益
     },
     3: {
-      5: { yin: [8, 4], yang: [7, 8] }, // 水雷屯 -> 地雷复 / 山地剥
+      5: { yin: [7, 8], yang: [8, 4] }, // 水雷屯 -> 山地剥 / 地雷复
       6: { yin: [4, 5], yang: [5, 7] }, // 水雷屯 -> 雷风恒 / 风山渐
     },
     39: {
@@ -255,13 +368,9 @@
     },
   };
 
-  // ── 后天卦（三至尊卦特殊处理）───────────────────────────────
-  /**
-   * 普通卦：元堂爻变后，外卦入内、内卦出外。
-   * 三至尊卦（坎为水29 / 水雷屯3 / 水山蹇39）：
-   *   《天机道》P53-P54 对九五/上六在阴令、阳令的后天卦有明确图示，
-   *   不再用简化口径推断，直接按书中映射处理。
-   */
+  // ── 后天卦映射（第 2 层） ────────────────────────────────────
+  // 普通卦：元堂爻变 → 外卦入内、内卦出外
+  // 三至尊卦：查 THREE_ZIZUN_HOUTIAN_RULES（来源《天机道》P53-P54 图示）
   function computeHouTian(xianTian, yuanTangLine, monthBranch, warnings) {
     if (!xianTian || !yuanTangLine) return null;
     warnings = Array.isArray(warnings) ? warnings : [];
@@ -271,7 +380,7 @@
       const [upper, lower] = specialRule;
       warnings.push({
         code: 'THREE_ZIZUN',
-        message: `三至尊卦(${xianTian.name} #${xianTian.num}) 元堂爻${yuanTangLine}，${lingType === 'yang' ? '阳令' : '阴令'}按《天机道》图示直取后天卦`,
+        message: `三至尊卦(${xianTian.name} #${xianTian.num}) 元堂爻=${yuanTangLine}，${lingType === 'yang' ? '阳令' : '阴令'}按《天机道》图示直取后天卦`,
       });
       return buildGua(upper, lower, xianTian.isYangPerson);
     }
@@ -373,15 +482,23 @@
       xianTian.upper,
       xianTian.lower,
       pillars.hourBranch,
-      xianTian.isYangPerson
+      xianTian.isYangPerson,
+      {
+        gender,
+        yearStem: pillars.yearStem,
+        xianTianNum: xianTian.num,
+      }
     );
     const yuanTangLine = yuanTangInfo.line;
     const houYuanTangLine = yingLine(yuanTangLine);
     debug.yuanTangLine     = yuanTangLine;
     debug.yuanTangLineType = debug.hexLines6[yuanTangLine - 1] === 'solid' ? 'yang' : 'yin';
     debug.yuanTangPoolType = yuanTangInfo.poolType;
+    debug.yuanTangRuleTag  = yuanTangInfo.ruleTag;
     debug.yuanTangHourGroup = yuanTangInfo.hourGroup;
     debug.yuanTangHourPos = yuanTangInfo.hourPos;
+    debug.yuanTangYangPool = yuanTangInfo.yangPool;
+    debug.yuanTangYinPool = yuanTangInfo.yinPool;
     debug.houYuanTangLine  = houYuanTangLine;
 
     const houTian    = computeHouTian(xianTian, yuanTangLine, pillars.monthBranch, warnings);
