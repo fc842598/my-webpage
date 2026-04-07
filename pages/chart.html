@@ -3245,6 +3245,7 @@ function renderFigmaChart(chart, gender, dateStr, norm) {
     btn.onclick = () => {
       _fcActiveTab = btn.dataset.tab;
       fcRenderTabs();
+      if (_fcActiveTab === '流年卦') fcRenderLiunianScroll();
       fcRenderHexagram();
       _fcRenderScoreCurve();
       renderFigmaHighlight(_fcActiveBranch);
