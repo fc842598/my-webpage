@@ -3121,7 +3121,10 @@ function renderFigmaChart(chart, gender, dateStr, norm) {
   const genderLabel = gender === 'male' ? '阳男' : '阴女';
   const nameVal = document.getElementById('inp-name')?.value || genderLabel;
   document.getElementById('fc-c-name').textContent    = nameVal;
-  document.getElementById('fc-c-meta').textContent    = chart.fiveElementsClass || '';
+  const _zodiac = ['鼠','牛','虎','兔','龙','蛇','马','羊','猴','鸡','狗','猪'];
+  const _zodiacSign = _zodiac[(_fcBirthYear - 4) % 12];
+  const _metaBase = chart.fiveElementsClass || '';
+  document.getElementById('fc-c-meta').textContent = _metaBase ? `${_metaBase}  属${_zodiacSign}` : `属${_zodiacSign}`;
 
   // 中央面板时间信息
   const _pad = n => String(n).padStart(2,'0');
