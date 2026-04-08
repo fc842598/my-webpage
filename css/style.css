@@ -516,3 +516,114 @@ html {
     word-break: break-word;
   }
 }
+
+/* ═══════════════════════════════════
+   v2 升级：卡片与背景优化
+═══════════════════════════════════ */
+.value-card, .trust-card {
+  background: linear-gradient(135deg, rgba(232, 220, 200, 0.05), rgba(201, 169, 97, 0.03));
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(10px);
+}
+
+.hero-tag {
+  background: rgba(232, 220, 200, 0.08);
+  border: 1px solid rgba(201, 169, 97, 0.25);
+  color: var(--brown-gold);
+}
+
+/* ═══════════════════════════════════
+   v3 升级：排版与字体优化
+═══════════════════════════════════ */
+.hero-title {
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  line-height: 1.3;
+}
+
+.section-title {
+  font-weight: 700;
+  letter-spacing: -1px;
+  text-shadow: 0 2px 8px rgba(201, 169, 97, 0.1);
+}
+
+.hero-desc, .section-sub {
+  letter-spacing: 0.3px;
+}
+
+/* ═══════════════════════════════════
+   v4 升级：动画与交互效果
+═══════════════════════════════════ */
+@keyframes brown-glow {
+  0%, 100% { box-shadow: 0 0 20px rgba(201, 169, 97, 0.3); }
+  50% { box-shadow: 0 0 40px rgba(201, 169, 97, 0.5); }
+}
+
+@keyframes gold-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+.btn-primary {
+  animation: gold-float 3s ease-in-out infinite;
+}
+
+.logo-star {
+  animation: brown-glow 2s ease-in-out infinite;
+}
+
+.value-card:hover, .trust-card:hover {
+  border-color: rgba(201, 169, 97, 0.4);
+  box-shadow: 0 8px 32px rgba(201, 169, 97, 0.15);
+  transform: translateY(-4px);
+}
+
+/* ═══════════════════════════════════
+   v5 升级：细节与装饰元素
+═══════════════════════════════════ */
+.hero-deco {
+  opacity: 0.6;
+}
+
+.deco-ring {
+  border: 2px solid rgba(201, 169, 97, 0.3);
+}
+
+.deco-center {
+  background: linear-gradient(135deg, var(--brown-gold), var(--brown-gold-light));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  box-shadow: 0 0 40px rgba(201, 169, 97, 0.2);
+}
+
+.value-icon, .trust-icon {
+  filter: drop-shadow(0 2px 8px rgba(201, 169, 97, 0.15));
+}
+
+.step-num {
+  background: linear-gradient(135deg, var(--brown-gold), var(--brown-gold-light));
+  color: var(--dark-bg);
+  box-shadow: 0 4px 16px rgba(201, 169, 97, 0.25);
+}
+
+.final-cta-inner {
+  background: rgba(201, 169, 97, 0.05);
+  border-radius: var(--radius-lg);
+  padding: 60px 40px;
+}
+
+/* 手机端调整 */
+@media (max-width:480px) {
+  .section-title {
+    text-shadow: 0 1px 4px rgba(201, 169, 97, 0.1);
+  }
+
+  .btn-primary {
+    animation: none;
+  }
+
+  .value-card:hover, .trust-card:hover {
+    transform: translateY(-2px);
+  }
+}
