@@ -1,0 +1,537 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - generic [ref=e3]:
+      - link "☽ 紫微斗数" [ref=e4] [cursor=pointer]:
+        - /url: ../index.html
+        - generic [ref=e5]: ☽
+        - text: 紫微斗数
+      - navigation [ref=e6]:
+        - link "首页" [ref=e7] [cursor=pointer]:
+          - /url: ../index.html
+        - link "免费排盘" [ref=e8] [cursor=pointer]:
+          - /url: chart.html
+  - generic [ref=e9]:
+    - generic [ref=e10]:
+      - generic [ref=e13]: 紫微排盘
+      - button "🕐 排盘记录" [ref=e14] [cursor=pointer]
+    - generic [ref=e15]:
+      - generic [ref=e16]:
+        - generic [ref=e17]:
+          - generic [ref=e18]: "姓名:"
+          - textbox "请输入姓名（选填）" [ref=e19]
+        - generic [ref=e20]:
+          - button "男" [ref=e21] [cursor=pointer]
+          - button "女" [ref=e22] [cursor=pointer]
+      - generic [ref=e23]:
+        - generic [ref=e24]:
+          - generic [ref=e25]:
+            - generic [ref=e26]: "*"
+            - generic [ref=e27]: 出生时间
+          - generic [ref=e28]:
+            - button "公历" [ref=e29] [cursor=pointer]
+            - button "农历" [ref=e30] [cursor=pointer]
+        - generic [ref=e31]:
+          - spinbutton [ref=e32]: "1991"
+          - combobox [ref=e33]:
+            - option "月"
+            - option "1月"
+            - option "2月" [selected]
+            - option "3月"
+            - option "4月"
+            - option "5月"
+            - option "6月"
+            - option "7月"
+            - option "8月"
+            - option "9月"
+            - option "10月"
+            - option "11月"
+            - option "12月"
+          - combobox [ref=e34]:
+            - option "日"
+            - option "1日"
+            - option "2日"
+            - option "3日"
+            - option "4日"
+            - option "5日"
+            - option "6日"
+            - option "7日"
+            - option "8日"
+            - option "9日"
+            - option "10日"
+            - option "11日"
+            - option "12日"
+            - option "13日"
+            - option "14日"
+            - option "15日"
+            - option "16日" [selected]
+            - option "17日"
+            - option "18日"
+            - option "19日"
+            - option "20日"
+            - option "21日"
+            - option "22日"
+            - option "23日"
+            - option "24日"
+            - option "25日"
+            - option "26日"
+            - option "27日"
+            - option "28日"
+            - option "29日"
+            - option "30日"
+            - option "31日"
+        - generic [ref=e35]: "农历: 辛未年正月初二"
+      - generic [ref=e36]:
+        - generic [ref=e37]: 出生时刻
+        - generic [ref=e38]:
+          - combobox [ref=e39]:
+            - option "00"
+            - option "01"
+            - option "02"
+            - option "03"
+            - option "04"
+            - option "05"
+            - option "06"
+            - option "07"
+            - option "08"
+            - option "09"
+            - option "10"
+            - option "11"
+            - option "12"
+            - option "13"
+            - option "14"
+            - option "15"
+            - option "16"
+            - option "17"
+            - option "18"
+            - option "19"
+            - option "20"
+            - option "21"
+            - option "22" [selected]
+            - option "23"
+          - generic [ref=e40]: 时
+          - combobox [ref=e41]:
+            - option "00" [selected]
+            - option "01"
+            - option "02"
+            - option "03"
+            - option "04"
+            - option "05"
+            - option "06"
+            - option "07"
+            - option "08"
+            - option "09"
+            - option "10"
+            - option "11"
+            - option "12"
+            - option "13"
+            - option "14"
+            - option "15"
+            - option "16"
+            - option "17"
+            - option "18"
+            - option "19"
+            - option "20"
+            - option "21"
+            - option "22"
+            - option "23"
+            - option "24"
+            - option "25"
+            - option "26"
+            - option "27"
+            - option "28"
+            - option "29"
+            - option "30"
+            - option "31"
+            - option "32"
+            - option "33"
+            - option "34"
+            - option "35"
+            - option "36"
+            - option "37"
+            - option "38"
+            - option "39"
+            - option "40"
+            - option "41"
+            - option "42"
+            - option "43"
+            - option "44"
+            - option "45"
+            - option "46"
+            - option "47"
+            - option "48"
+            - option "49"
+            - option "50"
+            - option "51"
+            - option "52"
+            - option "53"
+            - option "54"
+            - option "55"
+            - option "56"
+            - option "57"
+            - option "58"
+            - option "59"
+          - generic [ref=e42]: 分
+      - generic [ref=e43]:
+        - text: 22:00 真太阳时修正后仍在
+        - strong [ref=e44]: 亥时
+        - text: ，排盘采用
+        - strong [ref=e45]: 亥时
+      - generic [ref=e46]:
+        - generic [ref=e47]:
+          - generic [ref=e48]: 出生地点
+          - generic [ref=e49]: （影响真太阳时）
+        - textbox "搜索城市，如：北京、深圳" [ref=e51]
+      - generic [ref=e52]:
+        - generic [ref=e53]:
+          - generic [ref=e54]: 真太阳时
+          - generic [ref=e55]: 默认估算
+        - generic [ref=e56]:
+          - text: "北京时间: 22:00 · 亥时"
+          - generic [ref=e57]:
+            - text: "真太阳时: 21:31 ·"
+            - strong [ref=e58]: 亥时
+            - text: （无出生地，以北京经度估算）
+          - text: 偏差 -29分钟（经度修正 -14.4分，均时差 -14.5分）
+      - button "开 始 排 盘" [ref=e69] [cursor=pointer]
+      - paragraph [ref=e61]:
+        - text: 数据仅在本地浏览器运算，不上传，不储存。
+        - text: 算法基于
+        - link "iztro" [ref=e62] [cursor=pointer]:
+          - /url: https://github.com/SylarLong/iztro
+        - text: （MIT 许可）
+  - generic [ref=e71]:
+    - generic [ref=e73]: 紫微排盘
+    - generic [ref=e75]:
+      - generic [ref=e76] [cursor=pointer]:
+        - generic [ref=e77]:
+          - generic [ref=e78]:
+            - generic [ref=e79]: 廉贞陷
+            - generic [ref=e80]: 贪狼陷
+          - generic [ref=e81]:
+            - generic [ref=e82]: 天马
+            - generic [ref=e83]: 三台
+            - generic [ref=e84]: 台辅
+            - generic [ref=e85]: 天巫
+            - generic [ref=e86]: 天福
+            - generic [ref=e87]: 空亡
+        - generic [ref=e88]:
+          - generic [ref=e89]:
+            - generic [ref=e90]: 病
+            - generic [ref=e91]: 将军
+          - generic [ref=e92]:
+            - generic [ref=e93]: 癸巳
+            - generic [ref=e94]: 103–112
+            - generic [ref=e95]: 福德
+      - generic [ref=e96] [cursor=pointer]:
+        - generic [ref=e97]:
+          - generic [ref=e99]: 禄
+          - generic [ref=e101]: 巨门旺
+          - generic [ref=e102]:
+            - generic [ref=e103]: 天魁
+            - generic [ref=e104]: 天厨
+        - generic [ref=e105]:
+          - generic [ref=e106]:
+            - generic [ref=e107]: 衰
+            - generic [ref=e108]: 小耗
+          - generic [ref=e109]:
+            - generic [ref=e110]: 甲午
+            - generic [ref=e111]: 93–102
+            - generic [ref=e112]: 田宅
+      - generic [ref=e113] [cursor=pointer]:
+        - generic [ref=e114]:
+          - generic [ref=e116]: 天相得
+          - generic [ref=e118]: 华盖
+        - generic [ref=e119]:
+          - generic [ref=e120]:
+            - generic [ref=e121]: 帝旺
+            - generic [ref=e122]: 青龙
+          - generic [ref=e123]:
+            - generic [ref=e124]: 乙未
+            - generic [ref=e125]: 83–92
+            - generic [ref=e126]: 官禄
+      - generic [ref=e127] [cursor=pointer]:
+        - generic [ref=e128]:
+          - generic [ref=e129]:
+            - generic [ref=e130]: 天同旺
+            - generic [ref=e131]: 天梁陷
+          - generic [ref=e132]:
+            - generic [ref=e133]: 火星
+            - generic [ref=e134]: 陀罗
+            - generic [ref=e135]: 红鸾
+            - generic [ref=e136]: 解神
+            - generic [ref=e137]: 天寿
+            - generic [ref=e138]: 天空
+            - generic [ref=e139]: 孤辰
+            - generic [ref=e140]: 天伤
+        - generic [ref=e141]:
+          - generic [ref=e142]:
+            - generic [ref=e143]: 临官
+            - generic [ref=e144]: 力士
+          - generic [ref=e145]:
+            - generic [ref=e146]: 丙申
+            - generic [ref=e147]: 73–82
+            - generic [ref=e148]: 仆役
+      - generic [ref=e149] [cursor=pointer]:
+        - generic [ref=e150]:
+          - generic [ref=e152]: 太阴陷
+          - generic [ref=e153]:
+            - generic [ref=e154]: 左辅
+            - generic [ref=e155]: 天德
+            - generic [ref=e156]: 截路
+            - generic [ref=e157]: 寡宿
+        - generic [ref=e158]:
+          - generic [ref=e159]:
+            - generic [ref=e160]: 死
+            - generic [ref=e161]: 奏书
+          - generic [ref=e162]:
+            - generic [ref=e163]: 壬辰
+            - generic [ref=e164]: 113–122
+            - generic [ref=e165]: 父母
+      - generic [ref=e166]:
+        - generic [ref=e167]: 紫微排盘
+        - generic [ref=e168]:
+          - generic [ref=e169]: 阳男
+          - generic [ref=e170]: 木三局
+        - generic [ref=e171]:
+          - generic [ref=e172]:
+            - generic [ref=e173]: 公历
+            - generic [ref=e174]: 公历 1991-02-16 22:00 亥时
+          - generic [ref=e175]:
+            - generic [ref=e176]: 农历
+            - generic [ref=e177]: 辛未 庚寅 丁巳 辛亥
+          - generic [ref=e178]:
+            - generic [ref=e179]: 真太阳时
+            - generic [ref=e180]: 21:31（北京经度估算）
+          - generic [ref=e181]:
+            - generic [ref=e182]: 排盘时辰
+            - generic [ref=e183]: 亥时
+          - generic [ref=e184]:
+            - generic [ref=e185]: 节气四柱
+            - generic [ref=e186]:
+              - generic [ref=e187]:
+                - generic [ref=e188]: 辛
+                - generic [ref=e189]: 未
+              - generic [ref=e190]:
+                - generic [ref=e191]: 庚
+                - generic [ref=e192]: 寅
+              - generic [ref=e193]:
+                - generic [ref=e194]: 丁
+                - generic [ref=e195]: 巳
+              - generic [ref=e196]:
+                - generic [ref=e197]: 辛
+                - generic [ref=e198]: 亥
+        - generic [ref=e199]:
+          - generic [ref=e200]:
+            - generic [ref=e201]: 先天卦
+            - generic [ref=e202]: 风水涣
+          - generic [ref=e203]:
+            - generic [ref=e204]: 后天卦
+            - generic [ref=e205]: 水天需
+          - generic [ref=e206]:
+            - generic [ref=e207]: 流年卦
+            - generic [ref=e208]: 36岁 · 天风姤
+        - generic [ref=e209]:
+          - button "时 ↑" [ref=e210] [cursor=pointer]
+          - button "时 ↓" [ref=e211] [cursor=pointer]
+      - generic [ref=e212] [cursor=pointer]:
+        - generic [ref=e213]:
+          - generic [ref=e214]:
+            - generic [ref=e215]: 武曲利
+            - generic [ref=e216]: 七杀庙
+          - generic [ref=e217]:
+            - generic [ref=e218]: 禄存
+            - generic [ref=e219]: 铃星
+            - generic [ref=e220]: 八座
+            - generic [ref=e221]: 天官
+            - generic [ref=e222]: 天刑
+        - generic [ref=e223]:
+          - generic [ref=e224]:
+            - generic [ref=e225]: 冠带
+            - generic [ref=e226]: 博士
+          - generic [ref=e227]:
+            - generic [ref=e228]: 丁酉
+            - generic [ref=e229]: 63–72
+            - generic [ref=e230]: 迁移
+      - generic [ref=e231] [cursor=pointer]:
+        - generic [ref=e232]:
+          - generic [ref=e234]: 科
+          - generic [ref=e236]: 天府得
+          - generic [ref=e237]:
+            - generic [ref=e238]: 文曲
+            - generic [ref=e239]: 天贵
+            - generic [ref=e240]: 凤阁
+            - generic [ref=e241]: 蜚廉
+            - generic [ref=e242]: 年解
+        - generic [ref=e243]:
+          - generic [ref=e244]:
+            - generic [ref=e245]: 墓
+            - generic [ref=e246]: 飞廉
+          - generic [ref=e247]:
+            - generic [ref=e248]: 辛卯
+            - generic [ref=e249]: 3–12
+            - generic [ref=e250]: 命宫
+      - generic [ref=e251] [cursor=pointer]:
+        - generic [ref=e252]:
+          - generic [ref=e254]: 权
+          - generic [ref=e256]: 太阳不
+          - generic [ref=e257]:
+            - generic [ref=e258]: 右弼
+            - generic [ref=e259]: 地劫
+            - generic [ref=e260]: 擎羊
+            - generic [ref=e261]: 天才
+            - generic [ref=e262]: 天月
+            - generic [ref=e263]: 天使
+        - generic [ref=e264]:
+          - generic [ref=e265]:
+            - generic [ref=e266]: 沐浴
+            - generic [ref=e267]: 官府
+          - generic [ref=e268]:
+            - generic [ref=e269]: 戊戌
+            - generic [ref=e270]: 53–62
+            - generic [ref=e271]: 疾厄
+      - generic [ref=e272] [cursor=pointer]:
+        - generic [ref=e274]:
+          - generic [ref=e275]: 天钺
+          - generic [ref=e276]: 天喜
+          - generic [ref=e277]: 阴煞
+        - generic [ref=e278]:
+          - generic [ref=e279]:
+            - generic [ref=e280]: 绝
+            - generic [ref=e281]: 喜神
+          - generic [ref=e282]:
+            - generic [ref=e283]: 庚寅
+            - generic [ref=e284]: 13–22
+            - generic [ref=e285]: 兄弟
+      - generic [ref=e286] [cursor=pointer]:
+        - generic [ref=e287]:
+          - generic [ref=e288]:
+            - generic [ref=e289]: 紫微庙
+            - generic [ref=e290]: 破军旺
+          - generic [ref=e291]:
+            - generic [ref=e292]: 天姚
+            - generic [ref=e293]: 封诰
+            - generic [ref=e294]: 破碎
+            - generic [ref=e295]: 天虚
+        - generic [ref=e296]:
+          - generic [ref=e297]:
+            - generic [ref=e298]: 胎
+            - generic [ref=e299]: 病符
+          - generic [ref=e300]:
+            - generic [ref=e301]: 辛丑
+            - generic [ref=e302]: 23–32
+            - generic [ref=e303]: 身宫 夫妻
+      - generic [ref=e304] [cursor=pointer]:
+        - generic [ref=e305]:
+          - generic [ref=e307]: 天机庙
+          - generic [ref=e308]:
+            - generic [ref=e309]: 地空
+            - generic [ref=e310]: 咸池
+            - generic [ref=e311]: 月德
+        - generic [ref=e312]:
+          - generic [ref=e313]:
+            - generic [ref=e314]: 养
+            - generic [ref=e315]: 大耗
+          - generic [ref=e316]:
+            - generic [ref=e317]: 庚子
+            - generic [ref=e318]: 33–42
+            - generic [ref=e319]: 子女
+      - generic [ref=e320] [cursor=pointer]:
+        - generic [ref=e321]:
+          - generic [ref=e323]: 忌
+          - generic [ref=e324]:
+            - generic [ref=e325]: 文昌
+            - generic [ref=e326]: 恩光
+            - generic [ref=e327]: 龙池
+            - generic [ref=e328]: 旬空
+            - generic [ref=e329]: 天哭
+        - generic [ref=e330]:
+          - generic [ref=e331]:
+            - generic [ref=e332]: 长生
+            - generic [ref=e333]: 伏兵
+          - generic [ref=e334]:
+            - generic [ref=e335]: 己亥
+            - generic [ref=e336]: 43–52
+            - generic [ref=e337]: 财帛
+    - generic [ref=e339]:
+      - button "◇ 先天卦 ◇" [ref=e340] [cursor=pointer]:
+        - generic [ref=e341]: ◇
+        - text: 先天卦
+        - generic [ref=e342]: ◇
+      - button "后天卦" [ref=e343] [cursor=pointer]
+      - button "流年卦" [ref=e344] [cursor=pointer]
+    - generic [ref=e346]: 风水涣
+    - paragraph [ref=e362]: 生具慈悲心，莫恨人生害。天机：山桥曲转，八千女鬼（魏）。革故鼎信路是阻，好事多磨。婚姻亦有阻，然需耐心，终成眷属，二八之年。
+    - button "重新排盘" [ref=e364] [cursor=pointer]
+  - generic [ref=e366]:
+    - generic [ref=e367]:
+      - generic [ref=e368]: AI 批命
+      - generic [ref=e369]: 羊年 · 木三局 · 命宫天府
+    - generic [ref=e370]:
+      - button "本命批命" [ref=e371] [cursor=pointer]
+      - button "大限流年" [ref=e372] [cursor=pointer]
+    - generic [ref=e373]:
+      - generic [ref=e374]:
+        - generic [ref=e375]:
+          - generic [ref=e376]: 命宫格局
+          - generic [ref=e377]: 天府 坐命
+        - generic [ref=e378]: 稳健踏实，守成有道，注重细节，有威仪，物质感强 命宫四化：文曲科。
+        - generic [ref=e379]: 注意：过保守，缺乏冒险精神；固执己见，不易接受新事物；文昌/文曲入命，聪颖有才华
+      - generic [ref=e380]:
+        - generic [ref=e381]:
+          - generic [ref=e382]: 三方四正
+          - generic [ref=e383]: 官禄 / 财帛 / 迁移
+        - generic [ref=e384]: 官禄：天相 财帛：空宫 迁移：武曲+七杀
+        - generic [ref=e385]: 三方四化：财帛文昌忌
+      - generic [ref=e386]:
+        - generic [ref=e387]:
+          - generic [ref=e388]: 身宫辅助
+          - generic [ref=e389]: 丑宫 · 夫妻
+        - generic [ref=e390]: 身宫主星 紫微+破军：天生领袖气质，处事稳重大气，有贵人缘，自尊心强，重视面子与权威
+        - generic [ref=e391]: 身宫修正命宫，适合从政、管理、法律、大型机构；最忌仅当辅佐而无主导权
+      - generic [ref=e392]:
+        - generic [ref=e393]:
+          - generic [ref=e394]: 生年四化
+          - generic [ref=e395]: 化禄×1 化权×1 化科×1 化忌×1
+        - generic [ref=e396]: 命宫科（文曲） 田宅禄（巨门） 疾厄权（太阳） 财帛忌（文昌）
+        - generic [ref=e397]: 四化分布均衡，无明显凶险宫位
+    - button "✦ AI 深度批命" [ref=e399] [cursor=pointer]
+    - generic [ref=e400]: AI 接口已连接：http://localhost:3001
+  - generic [ref=e402]:
+    - generic [ref=e403]:
+      - generic [ref=e404]: AI 批命调试台
+      - generic [ref=e405]: 提示词可直接编辑 · 每模块独立调用 · 测试阶段
+    - generic [ref=e406]:
+      - generic [ref=e407]:
+        - generic [ref=e408]:
+          - generic [ref=e409]: 命宫批命
+          - button "▶ 生成结果" [ref=e410] [cursor=pointer]
+        - generic [ref=e411]:
+          - generic [ref=e412]:
+            - generic [ref=e413]: 结构化数据（自动提取，随年龄同步更新）
+            - generic [ref=e414]: "{ \"基本信息\": \"1991年2月16日 亥时 男命\", \"命盘格局\": \"木三局\", \"命宫\": \"天府、文曲科、天贵、凤阁、蜚廉、年解\", \"身宫\": \"夫妻（紫微、破军、天姚、封诰、破碎、天虚）\", \"官禄宫\": \"天相、华盖\", \"财帛宫\": \"文昌忌、恩光、龙池、旬空、天哭\", \"迁移宫\": \"武曲、七杀、禄存、铃星、八座、天官、天刑\", \"生年四化\": \"命宫科（文曲） 田宅禄（巨门） 疾厄权（太阳） 财帛忌（文昌）\" }"
+            - generic [ref=e415]: AI 返回结果
+            - generic [ref=e416]: 点击"生成结果"调用 AI
+          - generic [ref=e417]:
+            - generic [ref=e418]: 提示词（可直接编辑）
+            - textbox [ref=e419]: 请根据以下命宫相关数据，给出命宫格局的批命分析。 分析要点： 1. 命宫主星的核心特质与人生底色 2. 三方四正（官禄、财帛、迁移）对命宫的助力或冲克 3. 身宫对命格的修正与补充 4. 生年四化中影响命格的关键化曜 最后给出一段自然流畅的命格总评（100字以内）。 语言简洁有据，不说空泛套话。
+      - generic [ref=e420]:
+        - generic [ref=e421]:
+          - generic [ref=e422]: 大限流年批命
+          - button "▶ 生成结果" [ref=e423] [cursor=pointer]
+        - generic [ref=e424]:
+          - generic [ref=e425]:
+            - generic [ref=e426]: 结构化数据（自动提取，随年龄同步更新）
+            - generic [ref=e427]: "{ \"当前虚岁\": \"36 岁\", \"大限阶段\": \"第 4 大限（31～40 岁）\", \"流年\": \"2026 年 · 丙午年\", \"流年卦\": \"天风姤（#44） · 先天\", \"流年爻位\": \"第2爻（阳爻9年）\", \"小限落宫\": \"田宅\", \"小限宫星曜\": \"巨门禄、天魁、天厨\" }"
+            - generic [ref=e428]: AI 返回结果
+            - generic [ref=e429]: 点击"生成结果"调用 AI
+          - generic [ref=e430]:
+            - generic [ref=e431]: 提示词（可直接编辑）
+            - textbox [ref=e432]: 请根据以下当前大限、流年、小限数据，给出这一阶段的综合批命分析。 分析要点： 1. 当前大限阶段的整体运势走向与主要象意 2. 流年卦象的提示与本年重点事项 3. 小限落宫的宫位含义与近期关注领域 4. 大限 + 流年 + 小限三重时间叠合的综合行动建议 最后给出一段自然流畅的阶段总评（100字以内）。 语言简洁有据，不说空泛套话。
+  - contentinfo [ref=e63]:
+    - generic [ref=e64]:
+      - generic [ref=e65]: © 2026 紫微斗数在线排盘
+      - generic [ref=e66]:
+        - text: 排盘算法基于
+        - link "iztro" [ref=e67] [cursor=pointer]:
+          - /url: https://github.com/SylarLong/iztro
+        - text: （MIT 许可）

@@ -1,0 +1,4 @@
+[  106542ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://fc842598.github.io/favicon.ico:0
+[41899737ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_CLOSED @ https://jmmlijqeexdbxgpfyhgf.supabase.co/rest/v1/chart_records:0
+[41899738ms] [ERROR] historySave error {message: TypeError: Failed to fetch, details: TypeError: Failed to fetch
+    at https://cdn.jsde…2598.github.io/my-webpage/pages/chart.html:999:5), hint: , code: } @ https://fc842598.github.io/my-webpage/pages/chart.html:1092

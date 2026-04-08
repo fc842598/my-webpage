@@ -1,0 +1,8635 @@
+[
+  {
+    "id": "TJ-TRUTH-001",
+    "calendar": "solar",
+    "birth": "1927-06-22 00:23",
+    "location": "南京",
+    "gender": "male",
+    "civilSlot": "早子",
+    "pillars": {
+      "year": "甲子",
+      "month": "丙寅",
+      "day": "戊辰",
+      "hour": "庚午"
+    },
+    "xiantian": "坎为水",
+    "houtian": "艮为山",
+    "liunian": [
+      {
+        "age": 1,
+        "year": 1928,
+        "gua": "泽雷随",
+        "line": 3
+      },
+      {
+        "age": 2,
+        "year": 1929,
+        "gua": "震为雷",
+        "line": 5
+      },
+      {
+        "age": 3,
+        "year": 1930,
+        "gua": "坤为地",
+        "line": 2
+      },
+      {
+        "age": 4,
+        "year": 1931,
+        "gua": "巽为风",
+        "line": 3
+      },
+      {
+        "age": 5,
+        "year": 1932,
+        "gua": "风火家人",
+        "line": 3
+      },
+      {
+        "age": 6,
+        "year": 1933,
+        "gua": "艮为山",
+        "line": 3
+      },
+      {
+        "age": 7,
+        "year": 1934,
+        "gua": "乾为天",
+        "line": 3
+      },
+      {
+        "age": 8,
+        "year": 1935,
+        "gua": "乾为天",
+        "line": 6
+      },
+      {
+        "age": 9,
+        "year": 1936,
+        "gua": "泽雷随",
+        "line": 3
+      },
+      {
+        "age": 10,
+        "year": 1937,
+        "gua": "火风鼎",
+        "line": 4
+      }
+    ],
+    "source": "tianji.exe",
+    "collectedAt": "2026-04-07T17:32:55.694354",
+    "notes": "模拟数据（占位）",
+    "coverageTags": [
+      "cal:solar",
+      "decade:1927s",
+      "shichen:早子",
+      "supreme:坎为水"
+    ]
+  },
+  {
+    "id": "TJ-TRUTH-002",
+    "calendar": "solar",
+    "birth": "1928-08-01 00:20",
+    "location": "南京",
+    "gender": "female",
+    "civilSlot": "早子",
+    "pillars": {
+      "year": "甲子",
+      "month": "丙寅",
+      "day": "戊辰",
+      "hour": "庚午"
+    },
+    "xiantian": "坎为水",
+    "houtian": "泽雷随",
+    "liunian": [
+      {
+        "age": 1,
+        "year": 1929,
+        "gua": "震为雷",
+        "line": 2
+      },
+      {
+        "age": 2,
+        "year": 1930,
+        "gua": "水山蹇",
+        "line": 2
+      },
+      {
+        "age": 3,
+        "year": 1931,
+        "gua": "坤为地",
+        "line": 3
+      },
+      {
+        "age": 4,
+        "year": 1932,
+        "gua": "艮为山",
+        "line": 5
+      },
+      {
+        "age": 5,
+        "year": 1933,
+        "gua": "火风鼎",
+        "line": 4
+      },
+      {
+        "age": 6,
+        "year": 1934,
+        "gua": "乾为天",
+        "line": 1
+      },
+      {
+        "age": 7,
+        "year": 1935,
+        "gua": "坤为地",
+        "line": 5
+      },
+      {
+        "age": 8,
+        "year": 1936,
+        "gua": "离为火",
+        "line": 1
+      },
+      {
+        "age": 9,
+        "year": 1937,
+        "gua": "火风鼎",
+        "line": 2
+      },
+      {
+        "age": 10,
+        "year": 1938,
+        "gua": "水山蹇",
+        "line": 3
+      }
+    ],
+    "source": "tianji.exe",
+    "collectedAt": "2026-04-07T17:32:55.694354",
+    "notes": "模拟数据（占位）",
+    "coverageTags": [
+      "cal:solar",
+      "decade:1927s",
+      "shichen:早子",
+      "supreme:坎为水"
+    ]
+  },
+  {
+    "id": "TJ-TRUTH-003",
+    "calendar": "solar",
+    "birth": "1934-05-19 00:31",
+    "location": "广州",
+    "gender": "male",
+    "civilSlot": "早子",
+    "pillars": {
+      "year": "甲子",
+      "month": "丙寅",
+      "day": "戊辰",
+      "hour": "庚午"
+    },
+    "xiantian": "坎为水",
+    "houtian": "离为火",
+    "liunian": [
+      {
+        "age": 1,
+        "year": 1935,
+        "gua": "坤为地",
+        "line": 4
+      },
+      {
+        "age": 2,
+        "year": 1936,
+        "gua": "离为火",
+        "line": 6
+      },
+      {
+        "age": 3,
+        "year": 1937,
+        "gua": "兑为泽",
+        "line": 5
+      },
+      {
+        "age": 4,
+        "year": 1938,
+        "gua": "水雷屯",
+        "line": 2
+      },
+      {
+        "age": 5,
+        "year": 1939,
+        "gua": "乾为天",
+        "line": 6
+      },
+      {
+        "age": 6,
+        "year": 1940,
+        "gua": "天风姤",
+        "line": 4
+      },
+      {
+        "age": 7,
+        "year": 1941,
+        "gua": "泽雷随",
+        "line": 1
+      },
+      {
+        "age": 8,
+        "year": 1942,
+        "gua": "地雷复",
+        "line": 5
+      },
+      {
+        "age": 9,
+        "year": 1943,
+        "gua": "乾为天",
+        "line": 4
+      },
+      {
+        "age": 10,
+        "year": 1944,
+        "gua": "坤为地",
+        "line": 4
+      }
+    ],
+    "source": "tianji.exe",
+    "collectedAt": "2026-04-07T17:32:55.694354",
+    "notes": "模拟数据（占位）",
+    "coverageTags": [
+      "cal:solar",
+      "decade:1927s",
+      "shichen:早子",
+      "supreme:坎为水"
+    ]
+  },
+  {
+    "id": "TJ-TRUTH-004",
+    "calendar": "solar",
+    "birth": "1929-12-22 00:38",
+    "location": "广州",
+    "gender": "female",
+    "civilSlot": "早子",
+    "pillars": {
+      "year": "甲子",
+      "month": "丙寅",
+      "day": "戊辰",
+      "hour": "庚午"
+    },
+    "xiantian": "坎为水",
+    "houtian": "水山蹇",
+    "liunian": [
+      {
+        "age": 1,
+        "year": 1930,
+        "gua": "震为雷",
+        "line": 5
+      },
+      {
+        "age": 2,
+        "year": 1931,
+        "gua": "艮为山",
+        "line": 4
+      },
+      {
+        "age": 3,
+        "year": 1932,
+        "gua": "山水蒙",
+        "line": 6
+      },
+      {
+        "age": 4,
+        "year": 1933,
+        "gua": "水雷屯",
+        "line": 2
+      },
+      {
+        "age": 5,
+        "year": 1934,
+        "gua": "巽为风",
+        "line": 4
+      },
+      {
+        "age": 6,
+        "year": 1935,
+        "gua": "坎为水",
+        "line": 3
+      },
+      {
+        "age": 7,
+        "year": 1936,
+        "gua": "水山蹇",
+        "line": 3
+      },
+      {
+        "age": 8,
+        "year": 1937,
+        "gua": "震为雷",
+        "line": 6
+      },
+      {
+        "age": 9,
+        "year": 1938,
+        "gua": "山水蒙",
+        "line": 1
+      },
+      {
+        "age": 10,
+        "year": 1939,
+        "gua": "山水蒙",
+        "line": 4
+      }
+    ],
+    "source": "tianji.exe",
+    "collectedAt": "2026-04-07T17:32:55.694354",
+    "notes": "模拟数据（占位）",
+    "coverageTags": [
+      "cal:solar",
+      "decade:1927s",
+      "shichen:早子",
+      "supreme:坎为水"
+    ]
+  },
+  {
+    "id": "TJ-TRUTH-005",
+    "calendar": "solar",
+    "birth": "1929-04-21 00:35",
+    "location": "南京",
+    "gender": "male",
+    "civilSlot": "早子",
+    "pillars": {
+      "year": "甲子",
+      "month": "丙寅",
+      "day": "戊辰",
+      "hour": "庚午"
+    },
+    "xiantian": "坎为水",
+    "houtian": "巽为风",
+    "liunian": [
+      {
+        "age": 1,
+        "year": 1930,
+        "gua": "风火家人",
+        "line": 4
+      },
+      {
+        "age": 2,
+        "year": 1931,
+        "gua": "艮为山",
+        "line": 4
+      },
+      {
+        "age": 3,
+        "year": 1932,
+        "gua": "巽为风",
+        "line": 4
+      },
+      {
+        "age": 4,
+        "year": 1933,
+        "gua": "离为火",
+        "line": 5
+      },
+      {
+        "age": 5,
+        "year": 1934,
+        "gua": "离为火",
+        "line": 6
+      },
+      {
+        "age": 6,
+        "year": 1935,
+        "gua": "乾为天",
+        "line": 3
+      },
+      {
+        "age": 7,
+        "year": 1936,
+        "gua": "震为雷",
+        "line": 3
+      },
+      {
+        "age": 8,
+        "year": 1937,
+        "gua": "泽雷随",
+        "line": 4
+      },
+      {
+        "age": 9,
+        "year": 1938,
+        "gua": "水山蹇",
+        "line": 2
+      },
+      {
+        "age": 10,
+        "year": 1939,
+        "gua": "乾为天",
+        "line": 2
+      }
+    ],
+    "source": "tianji.exe",
+    "collectedAt": "2026-04-07T17:32:55.694354",
+    "notes": "模拟数据（占位）",
+    "coverageTags": [
+      "cal:solar",
+      "decade:1927s",
+      "shichen:早子",
+      "supreme:坎为水"
+    ]
+  },
+  {
+    "id": "TJ-TRUTH-006",
+    "calendar": "solar",
+    "birth": "1930-06-14 00:25",
+    "location": "沈阳",
+    "gender": "female",
+    "civilSlot": "早子",
+    "pillars": {
+      "year": "甲子",
+      "month": "丙寅",
+      "day": "戊辰",
+      "hour": "庚午"
+    },
+    "xiantian": "坎为水",
+    "houtian": "乾为天",
+    "liunian": [
+      {
+        "age": 1,
+        "year": 1931,
+        "gua": "坤为地",
+        "line": 1
+      },
+      {
+        "age": 2,
+        "year": 1932,
+        "gua": "地雷复",
+        "line": 1
+      },
+      {
+        "age": 3,
+        "year": 1933,
+        "gua": "坤为地",
+        "line": 1
+      },
+      {
+        "age": 4,
+        "year": 1934,
+        "gua": "地雷复",
+        "line": 1
+      },
+      {
+        "age": 5,
+        "year": 1935,
+        "gua": "离为火",
+        "line": 2
+      },
+      {
+        "age": 6,
+        "year": 1936,
+        "gua": "乾为天",
+        "line": 3
+      },
+      {
+        "age": 7,
+        "year": 1937,
+        "gua": "巽为风",
+        "line": 6
+      },
+      {
+        "age": 8,
+        "year": 1938,
+        "gua": "坎为水",
+        "line": 4
+      },
+      {
+        "age": 9,
+        "year": 1939,
+        "gua": "水山蹇",
+        "line": 6
+      },
+      {
+        "age": 10,
+        "year": 1940,
+        "gua": "水山蹇",
+        "line": 2
+      }
+    ],
+    "source": "tianji.exe",
+    "collectedAt": "2026-04-07T17:32:55.694354",
+    "notes": "模拟数据（占位）",
+    "coverageTags": [
+      "cal:solar",
+      "decade:1927s",
+      "shichen:早子",
+      "supreme:坎为水"
+    ]
+  },
+  {
+    "id": "TJ-TRUTH-007",
+    "calendar": "solar",
+    "birth": "1934-02-14 00:29",
+    "location": "成都",
+    "gender": "male",
+    "civilSlot": "早子",
+    "pillars": {
+      "year": "甲子",
+      "month": "丙寅",
+      "day": "戊辰",
+      "hour": "庚午"
+    },
+    "xiantian": "水雷屯",
+    "houtian": "天风姤",
+    "liunian": [
+      {
+        "age": 1,
+        "year": 1935,
+        "gua": "乾为天",
+        "line": 5
+      },
+      {
+        "age": 2,
+        "year": 1936,
+        "gua": "坤为地",
+        "line": 2
+      },
+      {
+        "age": 3,
+        "year": 1937,
+        "gua": "艮为山",
+        "line": 5
+      },
+      {
+        "age": 4,
+        "year": 1938,
+        "gua": "巽为风",
+        "line": 2
+      },
+      {
+        "age": 5,
+        "year": 1939,
+        "gua": "水雷屯",
+        "line": 6
+      },
+      {
+        "age": 6,
+        "year": 1940,
+        "gua": "火风鼎",
+        "line": 2
+      },
+      {
+        "age": 7,
+        "year": 1941,
+        "gua": "地雷复",
+        "line": 3
+      },
+      {
+        "age": 8,
+        "year": 1942,
+        "gua": "火风鼎",
+        "line": 2
+      },
+      {
+        "age": 9,
+        "year": 1943,
+        "gua": "风火家人",
+        "line": 4
+      },
+      {
+        "age": 10,
+        "year": 1944,
+        "gua": "山水蒙",
+        "line": 2
+      }
+    ],
+    "source": "tianji.exe",
+    "collectedAt": "2026-04-07T17:32:55.694354",
+    "notes": "模拟数据（占位）",
+    "coverageTags": [
+      "cal:solar",
+      "decade:1927s",
+      "shichen:早子",
+      "supreme:水雷屯"
+    ]
+  },
+  {
+    "id": "TJ-TRUTH-008",
+    "calendar": "solar",
+    "birth": "1931-06-26 00:25",
+    "location": "武汉",
+    "gender": "female",
+    "civilSlot": "早子",
+    "pillars": {
+      "year": "甲子",
+      "month": "丙寅",
+      "day": "戊辰",
+      "hour": "庚午"
+    },
+    "xiantian": "水雷屯",
+    "houtian": "风火家人",
+    "liunian": [
+      {
+        "age": 1,
+        "year": 1932,
+        "gua": "坤为地",
+        "line": 5
+      },
+      {
+        "age": 2,
+        "year": 1933,
+        "gua": "水雷屯",
+        "line": 3
+      },
+      {
+        "age": 3,
+        "year": 1934,
+        "gua": "水山蹇",
+        "line": 1
+      },
+      {
+        "age": 4,
+        "year": 1935,
+        "gua": "乾为天",
+        "line": 2
+      },
+      {
+        "age": 5,
+        "year": 1936,
+        "gua": "火风鼎",
+        "line": 3
+      },
+      {
+        "age": 6,
+        "year": 1937,
+        "gua": "泽雷随",
+        "line": 1
+      },
+      {
+        "age": 7,
+        "year": 1938,
+        "gua": "泽雷随",
+        "line": 3
+      },
+      {
+        "age": 8,
+        "year": 1939,
+        "gua": "泽雷随",
+        "line": 5
+      },
+      {
+        "age": 9,
+        "year": 1940,
+        "gua": "震为雷",
+        "line": 4
+      },
+      {
+        "age": 10,
+        "year": 1941,
+        "gua": "坎为水",
+        "line": 2
+      }
+    ],
+    "source": "tianji.exe",
+    "collectedAt": "2026-04-07T17:32:55.694354",
+    "notes": "模拟数据（占位）",
+    "coverageTags": [
+      "cal:solar",
+      "decade:1927s",
+      "shichen:早子",
+      "supreme:水雷屯"
+    ]
+  },
+  {
+    "id": "TJ-TRUTH-009",
+    "calendar": "solar",
+    "birth": "1945-02-08 23:19",
+    "location": "成都",
+    "gender": "male",
+    "civilSlot": "夜子",
+    "pillars": {
+      "year": "甲子",
+      "month": "丙寅",
+      "day": "戊辰",
+      "hour": "庚午"
+    },
+    "xiantian": "水雷屯",
+    "houtian": "艮为山",
+    "liunian": [
+      {
+        "age": 1,
+        "year": 1946,
+        "gua": "离为火",
+        "line": 3
+      },
+      {
+        "age": 2,
+        "year": 1947,
+        "gua": "水山蹇",
+        "line": 6
+      },
+      {
+        "age": 3,
+        "year": 1948,
+        "gua": "巽为风",
+        "line": 4
+      },
+      {
+        "age": 4,
+        "year": 1949,
+        "gua": "离为火",
+        "line": 5
+      },
+      {
+        "age": 5,
+        "year": 1950,
+        "gua": "水山蹇",
+        "line": 4
+      },
+      {
+        "age": 6,
+        "year": 1951,
+        "gua": "震为雷",
+        "line": 4
+      },
+      {
+        "age": 7,
+        "year": 1952,
+        "gua": "艮为山",
+        "line": 5
+      },
+      {
+        "age": 8,
+        "year": 1953,
+        "gua": "风火家人",
+        "line": 1
+      },
+      {
+        "age": 9,
+        "year": 1954,
+        "gua": "山水蒙",
+        "line": 1
+      },
+      {
+        "age": 10,
+        "year": 1955,
+        "gua": "巽为风",
+        "line": 1
+      }
+    ],
+    "source": "tianji.exe",
+    "collectedAt": "2026-04-07T17:32:55.694354",
+    "notes": "模拟数据（占位）",
+    "coverageTags": [
+      "cal:solar",
+      "decade:1937s",
+      "shichen:夜子",
+      "supreme:水雷屯"
+    ]
+  },
+  {
+    "id": "TJ-TRUTH-010",
+    "calendar": "solar",
+    "birth": "1944-09-01 23:04",
+    "location": "南京",
+    "gender": "female",
+    "civilSlot": "夜子",
+    "pillars": {
+      "year": "甲子",
+      "month": "丙寅",
+      "day": "戊辰",
+      "hour": "庚午"
+    },
+    "xiantian": "水雷屯",
+    "houtian": "水山蹇",
+    "liunian": [
+      {
+        "age": 1,
+        "year": 1945,
+        "gua": "坎为水",
+        "line": 2
+      },
+      {
+        "age": 2,
+        "year": 1946,
+        "gua": "水山蹇",
+        "line": 1
+      },
+      {
+        "age": 3,
+        "year": 1947,
+        "gua": "天风姤",
+        "line": 6
+      },
+      {
+        "age": 4,
+        "year": 1948,
+        "gua": "水雷屯",
+        "line": 1
+      },
+      {
+        "age": 5,
+        "year": 1949,
+        "gua": "兑为泽",
+        "line": 6
+      },
+      {
+        "age": 6,
+        "year": 1950,
+        "gua": "水雷屯",
+        "line": 2
+      },
+      {
+        "age": 7,
+        "year": 1951,
+        "gua": "火风鼎",
+        "line": 4
+      },
+      {
+        "age": 8,
+        "year": 1952,
+        "gua": "水山蹇",
+        "line": 1
+      },
+      {
+        "age": 9,
+        "year": 1953,
+        "gua": "乾为天",
+        "line": 5
+      },
+      {
+        "age": 10,
+        "year": 1954,
+        "gua": "兑为泽",
+        "line": 1
+      }
+    ],
+    "source": "tianji.exe",
+    "collectedAt": "2026-04-07T17:32:55.694354",
+    "notes": "模拟数据（占位）",
+    "coverageTags": [
+      "cal:solar",
+      "decade:1937s",
+      "shichen:夜子",
+      "supreme:水雷屯"
+    ]
+  },
+  {
+    "id": "TJ-TRUTH-011",
+    "calendar": "solar",
+    "birth": "1943-06-04 23:31",
+    "location": "西安",
+    "gender": "male",
+    "civilSlot": "夜子",
+    "pillars": {
+      "year": "甲子",
+      "month": "丙寅",
+      "day": "戊辰",
+      "hour": "庚午"
+    },
+    "xiantian": "水雷屯",
+    "houtian": "巽为风",
+    "liunian": [
+      {
+        "age": 1,
+        "year": 1944,
+        "gua": "兑为泽",
+        "line": 2
+      },
+      {
+        "age": 2,
+        "year": 1945,
+        "gua": "火风鼎",
+        "line": 1
+      },
+      {
+        "age": 3,
+        "year": 1946,
+        "gua": "离为火",
+        "line": 3
+      },
+      {
+        "age": 4,
+        "year": 1947,
+        "gua": "地雷复",
+        "line": 5
+      },
+      {
+        "age": 5,
+        "year": 1948,
+        "gua": "乾为天",
+        "line": 6
+      },
+      {
+        "age": 6,
+        "year": 1949,
+        "gua": "火风鼎",
+        "line": 2
+      },
+      {
+        "age": 7,
+        "year": 1950,
+        "gua": "乾为天",
+        "line": 6
+      },
+      {
+        "age": 8,
+        "year": 1951,
+        "gua": "天风姤",
+        "line": 6
+      },
+      {
+        "age": 9,
+        "year": 1952,
+        "gua": "风火家人",
+        "line": 1
+      },
+      {
+        "age": 10,
+        "year": 1953,
+        "gua": "火风鼎",
+        "line": 1
+      }
+    ],
+    "source": "tianji.exe",
+    "collectedAt": "2026-04-07T17:32:55.694354",
+    "notes": "模拟数据（占位）",
+    "coverageTags": [
+      "cal:solar",
+      "decade:1937s",
+      "shichen:夜子",
+      "supreme:水雷屯"
+    ]
+  },
+  {
+    "id": "TJ-TRUTH-012",
+    "calendar": "solar",
+    "birth": "1938-05-28 23:32",
+    "location": "武汉",
+    "gender": "female",
+    "civilSlot": "夜子",
+    "pillars": {
+      "year": "甲子",
+      "month": "丙寅",
+      "day": "戊辰",
+      "hour": "庚午"
+    },
+    "xiantian": "水雷屯",
+    "houtian": "坎为水",
+    "liunian": [
+      {
+        "age": 1,
+        "year": 1939,
+        "gua": "乾为天",
+        "line": 1
+      },
+      {
+        "age": 2,
+        "year": 1940,
+        "gua": "巽为风",
+        "line": 4
+      },
+      {
+        "age": 3,
+        "year": 1941,
+        "gua": "水雷屯",
+        "line": 4
+      },
+      {
+        "age": 4,
+        "year": 1942,
+        "gua": "山水蒙",
+        "line": 2
+      },
+      {
+        "age": 5,
+        "year": 1943,
+        "gua": "风火家人",
+        "line": 2
+      },
+      {
+        "age": 6,
+        "year": 1944,
+        "gua": "天风姤",
+        "line": 1
+      },
+      {
+        "age": 7,
+        "year": 1945,
+        "gua": "震为雷",
+        "line": 2
+      },
+      {
+        "age": 8,
+        "year": 1946,
+        "gua": "水山蹇",
+        "line": 4
+      },
+      {
+        "age": 9,
+        "year": 1947,
+        "gua": "离为火",
+        "line": 3
+      },
+      {
+        "age": 10,
+        "year": 1948,
+        "gua": "艮为山",
+        "line": 4
+      }
+    ],
+    "source": "tianji.exe",
+    "collectedAt": "2026-04-07T17:32:55.694354",
+    "notes": "模拟数据（占位）",
+    "coverageTags": [
+      "cal:solar",
+      "decade:1937s",
+      "shichen:夜子",
+      "supreme:水雷屯"
+    ]
+  },
+  {
+    "id": "TJ-TRUTH-013",
+    "calendar": "solar",
+    "birth": "1938-01-02 23:29",
+    "location": "沈阳",
+    "gender": "male",
+    "civilSlot": "夜子",
+    "pillars": {
+      "year": "甲子",
+      "month": "丙寅",
+      "day": "戊辰",
+      "hour": "庚午"
+    },
+    "xiantian": "水山蹇",
+    "houtian": "风火家人",
+    "liunian": [
+      {
+        "age": 1,
+        "year": 1939,
+        "gua": "震为雷",
+        "line": 2
+      },
+      {
+        "age": 2,
+        "year": 1940,
+        "gua": "离为火",
+        "line": 1
+      },
+      {
+        "age": 3,
+        "year": 1941,
+        "gua": "水雷屯",
+        "line": 6
+      },
+      {
+        "age": 4,
+        "year": 1942,
+        "gua": "山水蒙",
+        "line": 2
+      },
+      {
+        "age": 5,
+        "year": 1943,
+        "gua": "坎为水",
+        "line": 4
+      },
+      {
+        "age": 6,
+        "year": 1944,
+        "gua": "坤为地",
+        "line": 4
+      },
+      {
+        "age": 7,
+        "year": 1945,
+        "gua": "兑为泽",
+        "line": 3
+      },
+      {
+        "age": 8,
+        "year": 1946,
+        "gua": "艮为山",
+        "line": 2
+      },
+      {
+        "age": 9,
+        "year": 1947,
+        "gua": "风火家人",
+        "line": 5
+      },
+      {
+        "age": 10,
+        "year": 1948,
+        "gua": "水雷屯",
+        "line": 5
+      }
+    ],
+    "source": "tianji.exe",
+    "collectedAt": "2026-04-07T17:32:55.694931",
+    "notes": "模拟数据（占位）",
+    "coverageTags": [
+      "cal:solar",
+      "decade:1937s",
+      "shichen:夜子",
+      "supreme:水山蹇"
+    ]
+  },
+  {
+    "id": "TJ-TRUTH-014",
+    "calendar": "solar",
+    "birth": "1944-10-07 23:15",
+    "location": "沈阳",
+    "gender": "female",
+    "civilSlot": "夜子",
+    "pillars": {
+      "year": "甲子",
+      "month": "丙寅",
+      "day": "戊辰",
+      "hour": "庚午"
+    },
+    "xiantian": "水山蹇",
+    "houtian": "艮为山",
+    "liunian": [
+      {
+        "age": 1,
+        "year": 1945,
+        "gua": "水雷屯",
+        "line": 6
+      },
+      {
+        "age": 2,
+        "year": 1946,
+        "gua": "离为火",
+        "line": 5
+      },
+      {
+        "age": 3,
+        "year": 1947,
+        "gua": "水雷屯",
+        "line": 1
+      },
+      {
+        "age": 4,
+        "year": 1948,
+        "gua": "水雷屯",
+        "line": 3
+      },
+      {
+        "age": 5,
+        "year": 1949,
+        "gua": "离为火",
+        "line": 5
+      },
+      {
+        "age": 6,
+        "year": 1950,
+        "gua": "地雷复",
+        "line": 3
+      },
+      {
+        "age": 7,
+        "year": 1951,
+        "gua": "风火家人",
+        "line": 3
+      },
+      {
+        "age": 8,
+        "year": 1952,
+        "gua": "震为雷",
+        "line": 4
+      },
+      {
+        "age": 9,
+        "year": 1953,
+        "gua": "离为火",
+        "line": 5
+      },
+      {
+        "age": 10,
+        "year": 1954,
+        "gua": "山水蒙",
+        "line": 3
+      }
+    ],
+    "source": "tianji.exe",
+    "collectedAt": "2026-04-07T17:32:55.694931",
+    "notes": "模拟数据（占位）",
+    "coverageTags": [
+      "cal:solar",
+      "decade:1937s",
+      "shichen:夜子",
+      "supreme:水山蹇"
+    ]
+  },
+  {
+    "id": "TJ-TRUTH-015",
+    "calendar": "solar",
+    "birth": "1939-10-15 23:40",
+    "location": "成都",
+    "gender": "male",
+    "civilSlot": "夜子",
+    "pillars": {
+      "year": "甲子",
+      "month": "丙寅",
+      "day": "戊辰",
+      "hour": "庚午"
+    },
+    "xiantian": "水山蹇",
+    "houtian": "地雷复",
+    "liunian": [
+      {
+        "age": 1,
+        "year": 1940,
+        "gua": "乾为天",
+        "line": 1
+      },
+      {
+        "age": 2,
+        "year": 1941,
+        "gua": "兑为泽",
+        "line": 4
+      },
+      {
+        "age": 3,
+        "year": 1942,
+        "gua": "兑为泽",
+        "line": 6
+      },
+      {
+        "age": 4,
+        "year": 1943,
+        "gua": "火风鼎",
+        "line": 4
+      },
+      {
+        "age": 5,
+        "year": 1944,
+        "gua": "泽雷随",
+        "line": 2
+      },
+      {
+        "age": 6,
+        "year": 1945,
+        "gua": "兑为泽",
+        "line": 1
+      },
+      {
+        "age": 7,
+        "year": 1946,
+        "gua": "乾为天",
+        "line": 6
+      },
+      {
+        "age": 8,
+        "year": 1947,
+        "gua": "火风鼎",
+        "line": 2
+      },
+      {
+        "age": 9,
+        "year": 1948,
+        "gua": "艮为山",
+        "line": 4
+      },
+      {
+        "age": 10,
+        "year": 1949,
+        "gua": "艮为山",
+        "line": 2
+      }
+    ],
+    "source": "tianji.exe",
+    "collectedAt": "2026-04-07T17:32:55.694931",
+    "notes": "模拟数据（占位）",
+    "coverageTags": [
+      "cal:solar",
+      "decade:1937s",
+      "shichen:夜子",
+      "supreme:水山蹇"
+    ]
+  },
+  {
+    "id": "TJ-TRUTH-016",
+    "calendar": "solar",
+    "birth": "1938-01-16 23:24",
+    "location": "北京",
+    "gender": "female",
+    "civilSlot": "夜子",
+    "pillars": {
+      "year": "甲子",
+      "month": "丙寅",
+      "day": "戊辰",
+      "hour": "庚午"
+    },
+    "xiantian": "水山蹇",
+    "houtian": "火风鼎",
+    "liunian": [
+      {
+        "age": 1,
+        "year": 1939,
+        "gua": "兑为泽",
+        "line": 6
+      },
+      {
+        "age": 2,
+        "year": 1940,
+        "gua": "巽为风",
+        "line": 5
+      },
+      {
+        "age": 3,
+        "year": 1941,
+        "gua": "水山蹇",
+        "line": 2
+      },
+      {
+        "age": 4,
+        "year": 1942,
+        "gua": "坤为地",
+        "line": 4
+      },
+      {
+        "age": 5,
+        "year": 1943,
+        "gua": "震为雷",
+        "line": 5
+      },
+      {
+        "age": 6,
+        "year": 1944,
+        "gua": "泽雷随",
+        "line": 2
+      },
+      {
+        "age": 7,
+        "year": 1945,
+        "gua": "巽为风",
+        "line": 4
+      },
+      {
+        "age": 8,
+        "year": 1946,
+        "gua": "坤为地",
+        "line": 2
+      },
+      {
+        "age": 9,
+        "year": 1947,
+        "gua": "火风鼎",
+        "line": 6
+      },
+      {
+        "age": 10,
+        "year": 1948,
+        "gua": "震为雷",
+        "line": 6
+      }
+    ],
+    "source": "tianji.exe",
+    "collectedAt": "2026-04-07T17:32:55.694931",
+    "notes": "模拟数据（占位）",
+    "coverageTags": [
+      "cal:solar",
+      "decade:1937s",
+      "shichen:夜子",
+      "supreme:水山蹇"
+    ]
+  },
+  {
+    "id": "TJ-TRUTH-017",
+    "calendar": "solar",
+    "birth": "1954-03-13 01:30",
+    "location": "武汉",
+    "gender": "male",
+    "civilSlot": "丑",
+    "pillars": {
+      "year": "甲子",
+      "month": "丙寅",
+      "day": "戊辰",
+      "hour": "庚午"
+    },
+    "xiantian": "水山蹇",
+    "houtian": "坎为水",
+    "liunian": [
+      {
+        "age": 1,
+        "year": 1955,
+        "gua": "坤为地",
+        "line": 4
+      },
+      {
+        "age": 2,
+        "year": 1956,
+        "gua": "山水蒙",
+        "line": 6
+      },
+      {
+        "age": 3,
+        "year": 1957,
+        "gua": "艮为山",
+        "line": 5
+      },
+      {
+        "age": 4,
+        "year": 1958,
+        "gua": "艮为山",
+        "line": 3
+      },
+      {
+        "age": 5,
+        "year": 1959,
+        "gua": "震为雷",
+        "line": 5
+      },
+      {
+        "age": 6,
+        "year": 1960,
+        "gua": "水雷屯",
+        "line": 3
+      },
+      {
+        "age": 7,
+        "year": 1961,
+        "gua": "风火家人",
+        "line": 3
+      },
+      {
+        "age": 8,
+        "year": 1962,
+        "gua": "艮为山",
+        "line": 5
+      },
+      {
+        "age": 9,
+        "year": 1963,
+        "gua": "震为雷",
+        "line": 3
+      },
+      {
+        "age": 10,
+        "year": 1964,
+        "gua": "山水蒙",
+        "line": 4
+      }
+    ],
+    "source": "tianji.exe",
+    "collectedAt": "2026-04-07T17:32:55.694931",
+    "notes": "模拟数据（占位）",
+    "coverageTags": [
+      "cal:solar",
+      "decade:1947s",
+      "shichen:丑",
+      "supreme:水山蹇"
+    ]
+  },
+  {
+    "id": "TJ-TRUTH-018",
+    "calendar": "solar",
+    "birth": "1954-12-05 03:30",
+    "location": "沈阳",
+    "gender": "female",
+    "civilSlot": "寅",
+    "pillars": {
+      "year": "甲子",
+      "month": "丙寅",
+      "day": "戊辰",
+      "hour": "庚午"
+    },
+    "xiantian": "水山蹇",
+    "houtian": "天风姤",
+    "liunian": [
+      {
+        "age": 1,
+        "year": 1955,
+        "gua": "坤为地",
+        "line": 5
+      },
+      {
+        "age": 2,
+        "year": 1956,
+        "gua": "坎为水",
+        "line": 1
+      },
+      {
+        "age": 3,
+        "year": 1957,
+        "gua": "离为火",
+        "line": 1
+      },
+      {
+        "age": 4,
+        "year": 1958,
+        "gua": "地雷复",
+        "line": 5
+      },
+      {
+        "age": 5,
+        "year": 1959,
+        "gua": "坎为水",
+        "line": 6
+      },
+      {
+        "age": 6,
+        "year": 1960,
+        "gua": "艮为山",
+        "line": 3
+      },
+      {
+        "age": 7,
+        "year": 1961,
+        "gua": "坎为水",
+        "line": 4
+      },
+      {
+        "age": 8,
+        "year": 1962,
+        "gua": "泽雷随",
+        "line": 4
+      },
+      {
+        "age": 9,
+        "year": 1963,
+        "gua": "坤为地",
+        "line": 2
+      },
+      {
+        "age": 10,
+        "year": 1964,
+        "gua": "水雷屯",
+        "line": 5
+      }
+    ],
+    "source": "tianji.exe",
+    "collectedAt": "2026-04-07T17:32:55.694931",
+    "notes": "模拟数据（占位）",
+    "coverageTags": [
+      "cal:solar",
+      "decade:1947s",
+      "shichen:寅",
+      "supreme:水山蹇"
+    ]
+  },
+  {
+    "id": "TJ-TRUTH-019",
+    "calendar": "solar",
+    "birth": "1951-11-05 05:30",
+    "location": "杭州",
+    "gender": "male",
+    "civilSlot": "卯",
+    "pillars": {
+      "year": "甲子",
+      "month": "丙寅",
+      "day": "戊辰",
+      "hour": "庚午"
+    },
+    "xiantian": "坎为水",
+    "houtian": "火风鼎",
+    "liunian": [
+      {
+        "age": 1,
+        "year": 1952,
+        "gua": "天风姤",
+        "line": 6
+      },
+      {
+        "age": 2,
+        "year": 1953,
+        "gua": "山水蒙",
+        "line": 1
+      },
+      {
+        "age": 3,
+        "year": 1954,
+        "gua": "地雷复",
+        "line": 3
+      },
+      {
+        "age": 4,
+        "year": 1955,
+        "gua": "坎为水",
+        "line": 2
+      },
+      {
+        "age": 5,
+        "year": 1956,
+        "gua": "艮为山",
+        "line": 2
+      },
+      {
+        "age": 6,
+        "year": 1957,
+        "gua": "泽雷随",
+        "line": 4
+      },
+      {
+        "age": 7,
+        "year": 1958,
+        "gua": "山水蒙",
+        "line": 4
+      },
+      {
+        "age": 8,
+        "year": 1959,
+        "gua": "火风鼎",
+        "line": 6
+      },
+      {
+        "age": 9,
+        "year": 1960,
+        "gua": "风火家人",
+        "line": 1
+      },
+      {
+        "age": 10,
+        "year": 1961,
+        "gua": "坎为水",
+        "line": 1
+      }
+    ],
+    "source": "tianji.exe",
+    "collectedAt": "2026-04-07T17:32:55.694931",
+    "notes": "模拟数据（占位）",
+    "coverageTags": [
+      "cal:solar",
+      "decade:1947s",
+      "shichen:卯",
+      "supreme:坎为水"
+    ]
+  },
+  {
+    "id": "TJ-TRUTH-020",
+    "calendar": "solar",
+    "birth": "1949-11-07 07:30",
+    "location": "杭州",
+    "gender": "female",
+    "civilSlot": "辰",
+    "pillars": {
+      "year": "甲子",
+      "month": "丙寅",
+      "day": "戊辰",
+      "hour": "庚午"
+    },
+    "xiantian": "风火家人",
+    "houtian": "乾为天",
+    "liunian": [
+      {
+        "age": 1,
+        "year": 1950,
+        "gua": "震为雷",
+        "line": 4
+      },
+      {
+        "age": 2,
+        "year": 1951,
+        "gua": "水雷屯",
+        "line": 5
+      },
+      {
+        "age": 3,
+        "year": 1952,
+        "gua": "震为雷",
+        "line": 5
+      },
+      {
+        "age": 4,
+        "year": 1953,
+        "gua": "水雷屯",
+        "line": 3
+      },
+      {
+        "age": 5,
+        "year": 1954,
+        "gua": "泽雷随",
+        "line": 4
+      },
+      {
+        "age": 6,
+        "year": 1955,
+        "gua": "水山蹇",
+        "line": 5
+      },
+      {
+        "age": 7,
+        "year": 1956,
+        "gua": "乾为天",
+        "line": 5
+      },
+      {
+        "age": 8,
+        "year": 1957,
+        "gua": "坤为地",
+        "line": 5
+      },
+      {
+        "age": 9,
+        "year": 1958,
+        "gua": "地雷复",
+        "line": 6
+      },
+      {
+        "age": 10,
+        "year": 1959,
+        "gua": "水雷屯",
+        "line": 4
+      }
+    ],
+    "source": "tianji.exe",
+    "collectedAt": "2026-04-07T17:32:55.694931",
+    "notes": "模拟数据（占位）",
+    "coverageTags": [
+      "cal:solar",
+      "decade:1947s",
+      "shichen:辰"
+    ]
+  },
+  {
+    "id": "TJ-TRUTH-021",
+    "calendar": "solar",
+    "birth": "1956-09-06 09:30",
+    "location": "沈阳",
+    "gender": "male",
+    "civilSlot": "巳",
+    "pillars": {
+      "year": "甲子",
+      "month": "丙寅",
+      "day": "戊辰",
+      "hour": "庚午"
+    },
+    "xiantian": "火风鼎",
+    "houtian": "乾为天",
+    "liunian": [
+      {
+        "age": 1,
+        "year": 1957,
+        "gua": "水雷屯",
+        "line": 1
+      },
+      {
+        "age": 2,
+        "year": 1958,
+        "gua": "坤为地",
+        "line": 3
+      },
+      {
+        "age": 3,
+        "year": 1959,
+        "gua": "天风姤",
+        "line": 5
+      },
+      {
+        "age": 4,
+        "year": 1960,
+        "gua": "兑为泽",
+        "line": 6
+      },
+      {
+        "age": 5,
+        "year": 1961,
+        "gua": "水山蹇",
+        "line": 4
+      },
+      {
+        "age": 6,
+        "year": 1962,
+        "gua": "水山蹇",
+        "line": 2
+      },
+      {
+        "age": 7,
+        "year": 1963,
+        "gua": "离为火",
+        "line": 4
+      },
+      {
+        "age": 8,
+        "year": 1964,
+        "gua": "泽雷随",
+        "line": 6
+      },
+      {
+        "age": 9,
+        "year": 1965,
+        "gua": "火风鼎",
+        "line": 1
+      },
+      {
+        "age": 10,
+        "year": 1966,
+        "gua": "离为火",
+        "line": 5
+      }
+    ],
+    "source": "tianji.exe",
+    "collectedAt": "2026-04-07T17:32:55.694931",
+    "notes": "模拟数据（占位）",
+    "coverageTags": [
+      "cal:solar",
+      "decade:1947s",
+      "shichen:巳"
+    ]
+  },
+  {
+    "id": "TJ-TRUTH-022",
+    "calendar": "solar",
+    "birth": "1956-05-05 11:30",
+    "location": "上海",
+    "gender": "female",
+    "civilSlot": "午",
+    "pillars": {
+      "year": "甲子",
+      "month": "丙寅",
+      "day": "戊辰",
+      "hour": "庚午"
+    },
+    "xiantian": "艮为山",
+    "houtian": "水山蹇",
+    "liunian": [
+      {
+        "age": 1,
+        "year": 1957,
+        "gua": "风火家人",
+        "line": 3
+      },
+      {
+        "age": 2,
+        "year": 1958,
+        "gua": "艮为山",
+        "line": 1
+      },
+      {
+        "age": 3,
+        "year": 1959,
+        "gua": "艮为山",
+        "line": 4
+      },
+      {
+        "age": 4,
+        "year": 1960,
+        "gua": "水雷屯",
+        "line": 2
+      },
+      {
+        "age": 5,
+        "year": 1961,
+        "gua": "坤为地",
+        "line": 5
+      },
+      {
+        "age": 6,
+        "year": 1962,
+        "gua": "地雷复",
+        "line": 6
+      },
+      {
+        "age": 7,
+        "year": 1963,
+        "gua": "山水蒙",
+        "line": 3
+      },
+      {
+        "age": 8,
+        "year": 1964,
+        "gua": "离为火",
+        "line": 6
+      },
+      {
+        "age": 9,
+        "year": 1965,
+        "gua": "巽为风",
+        "line": 4
+      },
+      {
+        "age": 10,
+        "year": 1966,
+        "gua": "乾为天",
+        "line": 2
+      }
+    ],
+    "source": "tianji.exe",
+    "collectedAt": "2026-04-07T17:32:55.694931",
+    "notes": "模拟数据（占位）",
+    "coverageTags": [
+      "cal:solar",
+      "decade:1947s",
+      "shichen:午"
+    ]
+  },
+  {
+    "id": "TJ-TRUTH-023",
+    "calendar": "solar",
+    "birth": "1954-02-17 13:30",
+    "location": "广州",
+    "gender": "male",
+    "civilSlot": "未",
+    "pillars": {
+      "year": "甲子",
+      "month": "丙寅",
+      "day": "戊辰",
+      "hour": "庚午"
+    },
+    "xiantian": "巽为风",
+    "houtian": "艮为山",
+    "liunian": [
+      {
+        "age": 1,
+        "year": 1955,
+        "gua": "泽雷随",
+        "line": 5
+      },
+      {
+        "age": 2,
+        "year": 1956,
+        "gua": "坤为地",
+        "line": 2
+      },
+      {
+        "age": 3,
+        "year": 1957,
+        "gua": "水雷屯",
+        "line": 6
+      },
+      {
+        "age": 4,
+        "year": 1958,
+        "gua": "地雷复",
+        "line": 4
+      },
+      {
+        "age": 5,
+        "year": 1959,
+        "gua": "风火家人",
+        "line": 1
+      },
+      {
+        "age": 6,
+        "year": 1960,
+        "gua": "坤为地",
+        "line": 6
+      },
+      {
+        "age": 7,
+        "year": 1961,
+        "gua": "水山蹇",
+        "line": 2
+      },
+      {
+        "age": 8,
+        "year": 1962,
+        "gua": "兑为泽",
+        "line": 5
+      },
+      {
+        "age": 9,
+        "year": 1963,
+        "gua": "山水蒙",
+        "line": 3
+      },
+      {
+        "age": 10,
+        "year": 1964,
+        "gua": "兑为泽",
+        "line": 4
+      }
+    ],
+    "source": "tianji.exe",
+    "collectedAt": "2026-04-07T17:32:55.694931",
+    "notes": "模拟数据（占位）",
+    "coverageTags": [
+      "cal:solar",
+      "decade:1947s",
+      "shichen:未"
+    ]
+  },
+  {
+    "id": "TJ-TRUTH-024",
+    "calendar": "solar",
+    "birth": "1948-09-01 15:30",
+    "location": "北京",
+    "gender": "female",
+    "civilSlot": "申",
+    "pillars": {
+      "year": "甲子",
+      "month": "丙寅",
+      "day": "戊辰",
+      "hour": "庚午"
+    },
+    "xiantian": "坤为地",
+    "houtian": "泽雷随",
+    "liunian": [
+      {
+        "age": 1,
+        "year": 1949,
+        "gua": "山水蒙",
+        "line": 4
+      },
+      {
+        "age": 2,
+        "year": 1950,
+        "gua": "泽雷随",
+        "line": 1
+      },
+      {
+        "age": 3,
+        "year": 1951,
+        "gua": "水山蹇",
+        "line": 2
+      },
+      {
+        "age": 4,
+        "year": 1952,
+        "gua": "离为火",
+        "line": 2
+      },
+      {
+        "age": 5,
+        "year": 1953,
+        "gua": "乾为天",
+        "line": 3
+      },
+      {
+        "age": 6,
+        "year": 1954,
+        "gua": "巽为风",
+        "line": 5
+      },
+      {
+        "age": 7,
+        "year": 1955,
+        "gua": "坎为水",
+        "line": 3
+      },
+      {
+        "age": 8,
+        "year": 1956,
+        "gua": "乾为天",
+        "line": 6
+      },
+      {
+        "age": 9,
+        "year": 1957,
+        "gua": "坤为地",
+        "line": 6
+      },
+      {
+        "age": 10,
+        "year": 1958,
+        "gua": "坎为水",
+        "line": 1
+      }
+    ],
+    "source": "tianji.exe",
+    "collectedAt": "2026-04-07T17:32:55.694931",
+    "notes": "模拟数据（占位）",
+    "coverageTags": [
+      "cal:solar",
+      "decade:1947s",
+      "shichen:申"
+    ]
+  },
+  {
+    "id": "TJ-TRUTH-025",
+    "calendar": "solar",
+    "birth": "1961-05-27 17:30",
+    "location": "广州",
+    "gender": "male",
+    "civilSlot": "酉",
+    "pillars": {
+      "year": "甲子",
+      "month": "丙寅",
+      "day": "戊辰",
+      "hour": "庚午"
+    },
+    "xiantian": "坤为地",
+    "houtian": "坎为水",
+    "liunian": [
+      {
+        "age": 1,
+        "year": 1962,
+        "gua": "坤为地",
+        "line": 1
+      },
+      {
+        "age": 2,
+        "year": 1963,
+        "gua": "地雷复",
+        "line": 2
+      },
+      {
+        "age": 3,
+        "year": 1964,
+        "gua": "水山蹇",
+        "line": 2
+      },
+      {
+        "age": 4,
+        "year": 1965,
+        "gua": "泽雷随",
+        "line": 4
+      },
+      {
+        "age": 5,
+        "year": 1966,
+        "gua": "水山蹇",
+        "line": 1
+      },
+      {
+        "age": 6,
+        "year": 1967,
+        "gua": "坤为地",
+        "line": 6
+      },
+      {
+        "age": 7,
+        "year": 1968,
+        "gua": "离为火",
+        "line": 4
+      },
+      {
+        "age": 8,
+        "year": 1969,
+        "gua": "天风姤",
+        "line": 5
+      },
+      {
+        "age": 9,
+        "year": 1970,
+        "gua": "离为火",
+        "line": 3
+      },
+      {
+        "age": 10,
+        "year": 1971,
+        "gua": "风火家人",
+        "line": 5
+      }
+    ],
+    "source": "tianji.exe",
+    "collectedAt": "2026-04-07T17:32:55.694931",
+    "notes": "模拟数据（占位）",
+    "coverageTags": [
+      "cal:solar",
+      "decade:1957s",
+      "shichen:酉"
+    ]
+  },
+  {
+    "id": "TJ-TRUTH-026",
+    "calendar": "solar",
+    "birth": "1963-04-16 19:30",
+    "location": "成都",
+    "gender": "female",
+    "civilSlot": "戌",
+    "pillars": {
+      "year": "甲子",
+      "month": "丙寅",
+      "day": "戊辰",
+      "hour": "庚午"
+    },
+    "xiantian": "巽为风",
+    "houtian": "巽为风",
+    "liunian": [
+      {
+        "age": 1,
+        "year": 1964,
+        "gua": "天风姤",
+        "line": 3
+      },
+      {
+        "age": 2,
+        "year": 1965,
+        "gua": "水雷屯",
+        "line": 2
+      },
+      {
+        "age": 3,
+        "year": 1966,
+        "gua": "水山蹇",
+        "line": 1
+      },
+      {
+        "age": 4,
+        "year": 1967,
+        "gua": "乾为天",
+        "line": 4
+      },
+      {
+        "age": 5,
+        "year": 1968,
+        "gua": "水雷屯",
+        "line": 1
+      },
+      {
+        "age": 6,
+        "year": 1969,
+        "gua": "艮为山",
+        "line": 6
+      },
+      {
+        "age": 7,
+        "year": 1970,
+        "gua": "山水蒙",
+        "line": 3
+      },
+      {
+        "age": 8,
+        "year": 1971,
+        "gua": "地雷复",
+        "line": 6
+      },
+      {
+        "age": 9,
+        "year": 1972,
+        "gua": "坎为水",
+        "line": 3
+      },
+      {
+        "age": 10,
+        "year": 1973,
+        "gua": "泽雷随",
+        "line": 1
+      }
+    ],
+    "source": "tianji.exe",
+    "collectedAt": "2026-04-07T17:32:55.694931",
+    "notes": "模拟数据（占位）",
+    "coverageTags": [
+      "cal:solar",
+      "decade:1957s",
+      "shichen:戌"
+    ]
+  },
+  {
+    "id": "TJ-TRUTH-027",
+    "calendar": "solar",
+    "birth": "1962-05-28 21:30",
+    "location": "南京",
+    "gender": "male",
+    "civilSlot": "亥",
+    "pillars": {
+      "year": "甲子",
+      "month": "丙寅",
+      "day": "戊辰",
+      "hour": "庚午"
+    },
+    "xiantian": "艮为山",
+    "houtian": "坎为水",
+    "liunian": [
+      {
+        "age": 1,
+        "year": 1963,
+        "gua": "坎为水",
+        "line": 2
+      },
+      {
+        "age": 2,
+        "year": 1964,
+        "gua": "坎为水",
+        "line": 2
+      },
+      {
+        "age": 3,
+        "year": 1965,
+        "gua": "水雷屯",
+        "line": 3
+      },
+      {
+        "age": 4,
+        "year": 1966,
+        "gua": "震为雷",
+        "line": 6
+      },
+      {
+        "age": 5,
+        "year": 1967,
+        "gua": "巽为风",
+        "line": 1
+      },
+      {
+        "age": 6,
+        "year": 1968,
+        "gua": "离为火",
+        "line": 1
+      },
+      {
+        "age": 7,
+        "year": 1969,
+        "gua": "山水蒙",
+        "line": 2
+      },
+      {
+        "age": 8,
+        "year": 1970,
+        "gua": "风火家人",
+        "line": 1
+      },
+      {
+        "age": 9,
+        "year": 1971,
+        "gua": "巽为风",
+        "line": 1
+      },
+      {
+        "age": 10,
+        "year": 1972,
+        "gua": "水山蹇",
+        "line": 2
+      }
+    ],
+    "source": "tianji.exe",
+    "collectedAt": "2026-04-07T17:32:55.694931",
+    "notes": "模拟数据（占位）",
+    "coverageTags": [
+      "cal:solar",
+      "decade:1957s",
+      "shichen:亥"
+    ]
+  },
+  {
+    "id": "TJ-TRUTH-028",
+    "calendar": "solar",
+    "birth": "1960-11-24 01:30",
+    "location": "杭州",
+    "gender": "female",
+    "civilSlot": "丑",
+    "pillars": {
+      "year": "甲子",
+      "month": "丙寅",
+      "day": "戊辰",
+      "hour": "庚午"
+    },
+    "xiantian": "火风鼎",
+    "houtian": "天风姤",
+    "liunian": [
+      {
+        "age": 1,
+        "year": 1961,
+        "gua": "地雷复",
+        "line": 2
+      },
+      {
+        "age": 2,
+        "year": 1962,
+        "gua": "坎为水",
+        "line": 3
+      },
+      {
+        "age": 3,
+        "year": 1963,
+        "gua": "乾为天",
+        "line": 5
+      },
+      {
+        "age": 4,
+        "year": 1964,
+        "gua": "地雷复",
+        "line": 4
+      },
+      {
+        "age": 5,
+        "year": 1965,
+        "gua": "兑为泽",
+        "line": 2
+      },
+      {
+        "age": 6,
+        "year": 1966,
+        "gua": "坤为地",
+        "line": 6
+      },
+      {
+        "age": 7,
+        "year": 1967,
+        "gua": "离为火",
+        "line": 1
+      },
+      {
+        "age": 8,
+        "year": 1968,
+        "gua": "震为雷",
+        "line": 3
+      },
+      {
+        "age": 9,
+        "year": 1969,
+        "gua": "离为火",
+        "line": 1
+      },
+      {
+        "age": 10,
+        "year": 1970,
+        "gua": "天风姤",
+        "line": 1
+      }
+    ],
+    "source": "tianji.exe",
+    "collectedAt": "2026-04-07T17:32:55.694931",
+    "notes": "模拟数据（占位）",
+    "coverageTags": [
+      "cal:solar",
+      "decade:1957s",
+      "shichen:丑"
+    ]
+  },
+  {
+    "id": "TJ-TRUTH-029",
+    "calendar": "solar",
+    "birth": "1959-05-15 03:30",
+    "location": "南京",
+    "gender": "male",
+    "civilSlot": "寅",
+    "pillars": {
+      "year": "甲子",
+      "month": "丙寅",
+      "day": "戊辰",
+      "hour": "庚午"
+    },
+    "xiantian": "巽为风",
+    "houtian": "震为雷",
+    "liunian": [
+      {
+        "age": 1,
+        "year": 1960,
+        "gua": "坤为地",
+        "line": 5
+      },
+      {
+        "age": 2,
+        "year": 1961,
+        "gua": "艮为山",
+        "line": 4
+      },
+      {
+        "age": 3,
+        "year": 1962,
+        "gua": "坎为水",
+        "line": 2
+      },
+      {
+        "age": 4,
+        "year": 1963,
+        "gua": "震为雷",
+        "line": 5
+      },
+      {
+        "age": 5,
+        "year": 1964,
+        "gua": "风火家人",
+        "line": 4
+      },
+      {
+        "age": 6,
+        "year": 1965,
+        "gua": "乾为天",
+        "line": 3
+      },
+      {
+        "age": 7,
+        "year": 1966,
+        "gua": "坎为水",
+        "line": 2
+      },
+      {
+        "age": 8,
+        "year": 1967,
+        "gua": "水雷屯",
+        "line": 6
+      },
+      {
+        "age": 9,
+        "year": 1968,
+        "gua": "火风鼎",
+        "line": 5
+      },
+      {
+        "age": 10,
+        "year": 1969,
+        "gua": "兑为泽",
+        "line": 1
+      }
+    ],
+    "source": "tianji.exe",
+    "collectedAt": "2026-04-07T17:32:55.694931",
+    "notes": "模拟数据（占位）",
+    "coverageTags": [
+      "cal:solar",
+      "decade:1957s",
+      "shichen:寅"
+    ]
+  },
+  {
+    "id": "TJ-TRUTH-030",
+    "calendar": "solar",
+    "birth": "1958-12-01 05:30",
+    "location": "沈阳",
+    "gender": "female",
+    "civilSlot": "卯",
+    "pillars": {
+      "year": "甲子",
+      "month": "丙寅",
+      "day": "戊辰",
+      "hour": "庚午"
+    },
+    "xiantian": "艮为山",
+    "houtian": "风火家人",
+    "liunian": [
+      {
+        "age": 1,
+        "year": 1959,
+        "gua": "兑为泽",
+        "line": 5
+      },
+      {
+        "age": 2,
+        "year": 1960,
+        "gua": "水山蹇",
+        "line": 2
+      },
+      {
+        "age": 3,
+        "year": 1961,
+        "gua": "震为雷",
+        "line": 4
+      },
+      {
+        "age": 4,
+        "year": 1962,
+        "gua": "山水蒙",
+        "line": 4
+      },
+      {
+        "age": 5,
+        "year": 1963,
+        "gua": "巽为风",
+        "line": 3
+      },
+      {
+        "age": 6,
+        "year": 1964,
+        "gua": "坤为地",
+        "line": 6
+      },
+      {
+        "age": 7,
+        "year": 1965,
+        "gua": "震为雷",
+        "line": 4
+      },
+      {
+        "age": 8,
+        "year": 1966,
+        "gua": "艮为山",
+        "line": 2
+      },
+      {
+        "age": 9,
+        "year": 1967,
+        "gua": "泽雷随",
+        "line": 4
+      },
+      {
+        "age": 10,
+        "year": 1968,
+        "gua": "泽雷随",
+        "line": 4
+      }
+    ],
+    "source": "tianji.exe",
+    "collectedAt": "2026-04-07T17:32:55.694931",
+    "notes": "模拟数据（占位）",
+    "coverageTags": [
+      "cal:solar",
+      "decade:1957s",
+      "shichen:卯"
+    ]
+  },
+  {
+    "id": "TJ-TRUTH-031",
+    "calendar": "solar",
+    "birth": "1959-12-20 07:30",
+    "location": "南京",
+    "gender": "male",
+    "civilSlot": "辰",
+    "pillars": {
+      "year": "甲子",
+      "month": "丙寅",
+      "day": "戊辰",
+      "hour": "庚午"
+    },
+    "xiantian": "乾为天",
+    "houtian": "乾为天",
+    "liunian": [
+      {
+        "age": 1,
+        "year": 1960,
+        "gua": "泽雷随",
+        "line": 6
+      },
+      {
+        "age": 2,
+        "year": 1961,
+        "gua": "火风鼎",
+        "line": 5
+      },
+      {
+        "age": 3,
+        "year": 1962,
+        "gua": "坎为水",
+        "line": 3
+      },
+      {
+        "age": 4,
+        "year": 1963,
+        "gua": "火风鼎",
+        "line": 2
+      },
+      {
+        "age": 5,
+        "year": 1964,
+        "gua": "山水蒙",
+        "line": 3
+      },
+      {
+        "age": 6,
+        "year": 1965,
+        "gua": "泽雷随",
+        "line": 5
+      },
+      {
+        "age": 7,
+        "year": 1966,
+        "gua": "兑为泽",
+        "line": 2
+      },
+      {
+        "age": 8,
+        "year": 1967,
+        "gua": "巽为风",
+        "line": 4
+      },
+      {
+        "age": 9,
+        "year": 1968,
+        "gua": "风火家人",
+        "line": 5
+      },
+      {
+        "age": 10,
+        "year": 1969,
+        "gua": "火风鼎",
+        "line": 5
+      }
+    ],
+    "source": "tianji.exe",
+    "collectedAt": "2026-04-07T17:32:55.694931",
+    "notes": "模拟数据（占位）",
+    "coverageTags": [
+      "cal:solar",
+      "decade:1957s",
+      "shichen:辰"
+    ]
+  },
+  {
+    "id": "TJ-TRUTH-032",
+    "calendar": "solar",
+    "birth": "1962-03-13 09:30",
+    "location": "广州",
+    "gender": "female",
+    "civilSlot": "巳",
+    "pillars": {
+      "year": "甲子",
+      "month": "丙寅",
+      "day": "戊辰",
+      "hour": "庚午"
+    },
+    "xiantian": "山水蒙",
+    "houtian": "天风姤",
+    "liunian": [
+      {
+        "age": 1,
+        "year": 1963,
+        "gua": "山水蒙",
+        "line": 2
+      },
+      {
+        "age": 2,
+        "year": 1964,
+        "gua": "乾为天",
+        "line": 6
+      },
+      {
+        "age": 3,
+        "year": 1965,
+        "gua": "泽雷随",
+        "line": 4
+      },
+      {
+        "age": 4,
+        "year": 1966,
+        "gua": "风火家人",
+        "line": 4
+      },
+      {
+        "age": 5,
+        "year": 1967,
+        "gua": "山水蒙",
+        "line": 5
+      },
+      {
+        "age": 6,
+        "year": 1968,
+        "gua": "山水蒙",
+        "line": 1
+      },
+      {
+        "age": 7,
+        "year": 1969,
+        "gua": "水雷屯",
+        "line": 3
+      },
+      {
+        "age": 8,
+        "year": 1970,
+        "gua": "泽雷随",
+        "line": 6
+      },
+      {
+        "age": 9,
+        "year": 1971,
+        "gua": "艮为山",
+        "line": 1
+      },
+      {
+        "age": 10,
+        "year": 1972,
+        "gua": "坎为水",
+        "line": 3
+      }
+    ],
+    "source": "tianji.exe",
+    "collectedAt": "2026-04-07T17:32:55.694931",
+    "notes": "模拟数据（占位）",
+    "coverageTags": [
+      "cal:solar",
+      "decade:1957s",
+      "shichen:巳"
+    ]
+  },
+  {
+    "id": "TJ-TRUTH-033",
+    "calendar": "solar",
+    "birth": "1970-08-19 11:30",
+    "location": "西安",
+    "gender": "male",
+    "civilSlot": "午",
+    "pillars": {
+      "year": "甲子",
+      "month": "丙寅",
+      "day": "戊辰",
+      "hour": "庚午"
+    },
+    "xiantian": "地雷复",
+    "houtian": "山水蒙",
+    "liunian": [
+      {
+        "age": 1,
+        "year": 1971,
+        "gua": "风火家人",
+        "line": 3
+      },
+      {
+        "age": 2,
+        "year": 1972,
+        "gua": "震为雷",
+        "line": 1
+      },
+      {
+        "age": 3,
+        "year": 1973,
+        "gua": "坎为水",
+        "line": 6
+      },
+      {
+        "age": 4,
+        "year": 1974,
+        "gua": "水山蹇",
+        "line": 6
+      },
+      {
+        "age": 5,
+        "year": 1975,
+        "gua": "地雷复",
+        "line": 6
+      },
+      {
+        "age": 6,
+        "year": 1976,
+        "gua": "山水蒙",
+        "line": 6
+      },
+      {
+        "age": 7,
+        "year": 1977,
+        "gua": "火风鼎",
+        "line": 1
+      },
+      {
+        "age": 8,
+        "year": 1978,
+        "gua": "泽雷随",
+        "line": 4
+      },
+      {
+        "age": 9,
+        "year": 1979,
+        "gua": "水山蹇",
+        "line": 4
+      },
+      {
+        "age": 10,
+        "year": 1980,
+        "gua": "山水蒙",
+        "line": 1
+      }
+    ],
+    "source": "tianji.exe",
+    "collectedAt": "2026-04-07T17:32:55.694931",
+    "notes": "模拟数据（占位）",
+    "coverageTags": [
+      "cal:solar",
+      "decade:1967s",
+      "shichen:午"
+    ]
+  },
+  {
+    "id": "TJ-TRUTH-034",
+    "calendar": "solar",
+    "birth": "1969-05-04 13:30",
+    "location": "上海",
+    "gender": "female",
+    "civilSlot": "未",
+    "pillars": {
+      "year": "甲子",
+      "month": "丙寅",
+      "day": "戊辰",
+      "hour": "庚午"
+    },
+    "xiantian": "乾为天",
+    "houtian": "水雷屯",
+    "liunian": [
+      {
+        "age": 1,
+        "year": 1970,
+        "gua": "震为雷",
+        "line": 4
+      },
+      {
+        "age": 2,
+        "year": 1971,
+        "gua": "离为火",
+        "line": 2
+      },
+      {
+        "age": 3,
+        "year": 1972,
+        "gua": "地雷复",
+        "line": 3
+      },
+      {
+        "age": 4,
+        "year": 1973,
+        "gua": "山水蒙",
+        "line": 6
+      },
+      {
+        "age": 5,
+        "year": 1974,
+        "gua": "坤为地",
+        "line": 4
+      },
+      {
+        "age": 6,
+        "year": 1975,
+        "gua": "艮为山",
+        "line": 1
+      },
+      {
+        "age": 7,
+        "year": 1976,
+        "gua": "兑为泽",
+        "line": 5
+      },
+      {
+        "age": 8,
+        "year": 1977,
+        "gua": "离为火",
+        "line": 2
+      },
+      {
+        "age": 9,
+        "year": 1978,
+        "gua": "火风鼎",
+        "line": 4
+      },
+      {
+        "age": 10,
+        "year": 1979,
+        "gua": "震为雷",
+        "line": 4
+      }
+    ],
+    "source": "tianji.exe",
+    "collectedAt": "2026-04-07T17:32:55.694931",
+    "notes": "模拟数据（占位）",
+    "coverageTags": [
+      "cal:solar",
+      "decade:1967s",
+      "shichen:未"
+    ]
+  },
+  {
+    "id": "TJ-TRUTH-035",
+    "calendar": "solar",
+    "birth": "1975-10-05 15:30",
+    "location": "武汉",
+    "gender": "male",
+    "civilSlot": "申",
+    "pillars": {
+      "year": "甲子",
+      "month": "丙寅",
+      "day": "戊辰",
+      "hour": "庚午"
+    },
+    "xiantian": "艮为山",
+    "houtian": "震为雷",
+    "liunian": [
+      {
+        "age": 1,
+        "year": 1976,
+        "gua": "火风鼎",
+        "line": 4
+      },
+      {
+        "age": 2,
+        "year": 1977,
+        "gua": "泽雷随",
+        "line": 6
+      },
+      {
+        "age": 3,
+        "year": 1978,
+        "gua": "坎为水",
+        "line": 4
+      },
+      {
+        "age": 4,
+        "year": 1979,
+        "gua": "坤为地",
+        "line": 6
+      },
+      {
+        "age": 5,
+        "year": 1980,
+        "gua": "水雷屯",
+        "line": 1
+      },
+      {
+        "age": 6,
+        "year": 1981,
+        "gua": "泽雷随",
+        "line": 1
+      },
+      {
+        "age": 7,
+        "year": 1982,
+        "gua": "乾为天",
+        "line": 1
+      },
+      {
+        "age": 8,
+        "year": 1983,
+        "gua": "兑为泽",
+        "line": 5
+      },
+      {
+        "age": 9,
+        "year": 1984,
+        "gua": "震为雷",
+        "line": 5
+      },
+      {
+        "age": 10,
+        "year": 1985,
+        "gua": "艮为山",
+        "line": 3
+      }
+    ],
+    "source": "tianji.exe",
+    "collectedAt": "2026-04-07T17:32:55.694931",
+    "notes": "模拟数据（占位）",
+    "coverageTags": [
+      "cal:solar",
+      "decade:1967s",
+      "shichen:申"
+    ]
+  },
+  {
+    "id": "TJ-TRUTH-036",
+    "calendar": "solar",
+    "birth": "1973-10-21 17:30",
+    "location": "武汉",
+    "gender": "female",
+    "civilSlot": "酉",
+    "pillars": {
+      "year": "甲子",
+      "month": "丙寅",
+      "day": "戊辰",
+      "hour": "庚午"
+    },
+    "xiantian": "坤为地",
+    "houtian": "坎为水",
+    "liunian": [
+      {
+        "age": 1,
+        "year": 1974,
+        "gua": "兑为泽",
+        "line": 1
+      },
+      {
+        "age": 2,
+        "year": 1975,
+        "gua": "地雷复",
+        "line": 5
+      },
+      {
+        "age": 3,
+        "year": 1976,
+        "gua": "山水蒙",
+        "line": 5
+      },
+      {
+        "age": 4,
+        "year": 1977,
+        "gua": "乾为天",
+        "line": 1
+      },
+      {
+        "age": 5,
+        "year": 1978,
+        "gua": "地雷复",
+        "line": 3
+      },
+      {
+        "age": 6,
+        "year": 1979,
+        "gua": "地雷复",
+        "line": 6
+      },
+      {
+        "age": 7,
+        "year": 1980,
+        "gua": "火风鼎",
+        "line": 6
+      },
+      {
+        "age": 8,
+        "year": 1981,
+        "gua": "地雷复",
+        "line": 2
+      },
+      {
+        "age": 9,
+        "year": 1982,
+        "gua": "离为火",
+        "line": 5
+      },
+      {
+        "age": 10,
+        "year": 1983,
+        "gua": "风火家人",
+        "line": 2
+      }
+    ],
+    "source": "tianji.exe",
+    "collectedAt": "2026-04-07T17:32:55.694931",
+    "notes": "模拟数据（占位）",
+    "coverageTags": [
+      "cal:solar",
+      "decade:1967s",
+      "shichen:酉"
+    ]
+  },
+  {
+    "id": "TJ-TRUTH-037",
+    "calendar": "solar",
+    "birth": "1975-11-22 19:30",
+    "location": "沈阳",
+    "gender": "male",
+    "civilSlot": "戌",
+    "pillars": {
+      "year": "甲子",
+      "month": "丙寅",
+      "day": "戊辰",
+      "hour": "庚午"
+    },
+    "xiantian": "巽为风",
+    "houtian": "火风鼎",
+    "liunian": [
+      {
+        "age": 1,
+        "year": 1976,
+        "gua": "水雷屯",
+        "line": 3
+      },
+      {
+        "age": 2,
+        "year": 1977,
+        "gua": "山水蒙",
+        "line": 4
+      },
+      {
+        "age": 3,
+        "year": 1978,
+        "gua": "风火家人",
+        "line": 6
+      },
+      {
+        "age": 4,
+        "year": 1979,
+        "gua": "水雷屯",
+        "line": 5
+      },
+      {
+        "age": 5,
+        "year": 1980,
+        "gua": "水山蹇",
+        "line": 4
+      },
+      {
+        "age": 6,
+        "year": 1981,
+        "gua": "离为火",
+        "line": 6
+      },
+      {
+        "age": 7,
+        "year": 1982,
+        "gua": "泽雷随",
+        "line": 5
+      },
+      {
+        "age": 8,
+        "year": 1983,
+        "gua": "坤为地",
+        "line": 3
+      },
+      {
+        "age": 9,
+        "year": 1984,
+        "gua": "艮为山",
+        "line": 6
+      },
+      {
+        "age": 10,
+        "year": 1985,
+        "gua": "天风姤",
+        "line": 4
+      }
+    ],
+    "source": "tianji.exe",
+    "collectedAt": "2026-04-07T17:32:55.694931",
+    "notes": "模拟数据（占位）",
+    "coverageTags": [
+      "cal:solar",
+      "decade:1967s",
+      "shichen:戌"
+    ]
+  },
+  {
+    "id": "TJ-TRUTH-038",
+    "calendar": "solar",
+    "birth": "1967-04-27 21:30",
+    "location": "上海",
+    "gender": "female",
+    "civilSlot": "亥",
+    "pillars": {
+      "year": "甲子",
+      "month": "丙寅",
+      "day": "戊辰",
+      "hour": "庚午"
+    },
+    "xiantian": "坎为水",
+    "houtian": "兑为泽",
+    "liunian": [
+      {
+        "age": 1,
+        "year": 1968,
+        "gua": "山水蒙",
+        "line": 6
+      },
+      {
+        "age": 2,
+        "year": 1969,
+        "gua": "兑为泽",
+        "line": 6
+      },
+      {
+        "age": 3,
+        "year": 1970,
+        "gua": "天风姤",
+        "line": 3
+      },
+      {
+        "age": 4,
+        "year": 1971,
+        "gua": "泽雷随",
+        "line": 6
+      },
+      {
+        "age": 5,
+        "year": 1972,
+        "gua": "火风鼎",
+        "line": 3
+      },
+      {
+        "age": 6,
+        "year": 1973,
+        "gua": "兑为泽",
+        "line": 4
+      },
+      {
+        "age": 7,
+        "year": 1974,
+        "gua": "震为雷",
+        "line": 4
+      },
+      {
+        "age": 8,
+        "year": 1975,
+        "gua": "风火家人",
+        "line": 3
+      },
+      {
+        "age": 9,
+        "year": 1976,
+        "gua": "水山蹇",
+        "line": 3
+      },
+      {
+        "age": 10,
+        "year": 1977,
+        "gua": "乾为天",
+        "line": 6
+      }
+    ],
+    "source": "tianji.exe",
+    "collectedAt": "2026-04-07T17:32:55.694931",
+    "notes": "模拟数据（占位）",
+    "coverageTags": [
+      "cal:solar",
+      "decade:1967s",
+      "shichen:亥",
+      "supreme:坎为水"
+    ]
+  },
+  {
+    "id": "TJ-TRUTH-039",
+    "calendar": "solar",
+    "birth": "1973-09-02 01:30",
+    "location": "北京",
+    "gender": "male",
+    "civilSlot": "丑",
+    "pillars": {
+      "year": "甲子",
+      "month": "丙寅",
+      "day": "戊辰",
+      "hour": "庚午"
+    },
+    "xiantian": "离为火",
+    "houtian": "兑为泽",
+    "liunian": [
+      {
+        "age": 1,
+        "year": 1974,
+        "gua": "乾为天",
+        "line": 2
+      },
+      {
+        "age": 2,
+        "year": 1975,
+        "gua": "乾为天",
+        "line": 6
+      },
+      {
+        "age": 3,
+        "year": 1976,
+        "gua": "天风姤",
+        "line": 1
+      },
+      {
+        "age": 4,
+        "year": 1977,
+        "gua": "水山蹇",
+        "line": 6
+      },
+      {
+        "age": 5,
+        "year": 1978,
+        "gua": "震为雷",
+        "line": 3
+      },
+      {
+        "age": 6,
+        "year": 1979,
+        "gua": "火风鼎",
+        "line": 4
+      },
+      {
+        "age": 7,
+        "year": 1980,
+        "gua": "水雷屯",
+        "line": 2
+      },
+      {
+        "age": 8,
+        "year": 1981,
+        "gua": "泽雷随",
+        "line": 6
+      },
+      {
+        "age": 9,
+        "year": 1982,
+        "gua": "坎为水",
+        "line": 5
+      },
+      {
+        "age": 10,
+        "year": 1983,
+        "gua": "艮为山",
+        "line": 6
+      }
+    ],
+    "source": "tianji.exe",
+    "collectedAt": "2026-04-07T17:32:55.694931",
+    "notes": "模拟数据（占位）",
+    "coverageTags": [
+      "cal:solar",
+      "decade:1967s",
+      "shichen:丑"
+    ]
+  },
+  {
+    "id": "TJ-TRUTH-040",
+    "calendar": "solar",
+    "birth": "1975-01-03 03:30",
+    "location": "重庆",
+    "gender": "female",
+    "civilSlot": "寅",
+    "pillars": {
+      "year": "甲子",
+      "month": "丙寅",
+      "day": "戊辰",
+      "hour": "庚午"
+    },
+    "xiantian": "巽为风",
+    "houtian": "泽雷随",
+    "liunian": [
+      {
+        "age": 1,
+        "year": 1976,
+        "gua": "乾为天",
+        "line": 5
+      },
+      {
+        "age": 2,
+        "year": 1977,
+        "gua": "坤为地",
+        "line": 1
+      },
+      {
+        "age": 3,
+        "year": 1978,
+        "gua": "地雷复",
+        "line": 6
+      },
+      {
+        "age": 4,
+        "year": 1979,
+        "gua": "坤为地",
+        "line": 1
+      },
+      {
+        "age": 5,
+        "year": 1980,
+        "gua": "泽雷随",
+        "line": 4
+      },
+      {
+        "age": 6,
+        "year": 1981,
+        "gua": "离为火",
+        "line": 6
+      },
+      {
+        "age": 7,
+        "year": 1982,
+        "gua": "泽雷随",
+        "line": 1
+      },
+      {
+        "age": 8,
+        "year": 1983,
+        "gua": "乾为天",
+        "line": 1
+      },
+      {
+        "age": 9,
+        "year": 1984,
+        "gua": "地雷复",
+        "line": 6
+      },
+      {
+        "age": 10,
+        "year": 1985,
+        "gua": "坤为地",
+        "line": 6
+      }
+    ],
+    "source": "tianji.exe",
+    "collectedAt": "2026-04-07T17:32:55.694931",
+    "notes": "模拟数据（占位）",
+    "coverageTags": [
+      "cal:solar",
+      "decade:1967s",
+      "shichen:寅"
+    ]
+  },
+  {
+    "id": "TJ-TRUTH-041",
+    "calendar": "solar",
+    "birth": "1977-03-12 05:30",
+    "location": "杭州",
+    "gender": "male",
+    "civilSlot": "卯",
+    "pillars": {
+      "year": "甲子",
+      "month": "丙寅",
+      "day": "戊辰",
+      "hour": "庚午"
+    },
+    "xiantian": "坎为水",
+    "houtian": "巽为风",
+    "liunian": [
+      {
+        "age": 1,
+        "year": 1978,
+        "gua": "水雷屯",
+        "line": 2
+      },
+      {
+        "age": 2,
+        "year": 1979,
+        "gua": "泽雷随",
+        "line": 3
+      },
+      {
+        "age": 3,
+        "year": 1980,
+        "gua": "乾为天",
+        "line": 5
+      },
+      {
+        "age": 4,
+        "year": 1981,
+        "gua": "山水蒙",
+        "line": 3
+      },
+      {
+        "age": 5,
+        "year": 1982,
+        "gua": "离为火",
+        "line": 2
+      },
+      {
+        "age": 6,
+        "year": 1983,
+        "gua": "坤为地",
+        "line": 6
+      },
+      {
+        "age": 7,
+        "year": 1984,
+        "gua": "泽雷随",
+        "line": 2
+      },
+      {
+        "age": 8,
+        "year": 1985,
+        "gua": "坤为地",
+        "line": 2
+      },
+      {
+        "age": 9,
+        "year": 1986,
+        "gua": "风火家人",
+        "line": 5
+      },
+      {
+        "age": 10,
+        "year": 1987,
+        "gua": "地雷复",
+        "line": 6
+      }
+    ],
+    "source": "tianji.exe",
+    "collectedAt": "2026-04-07T17:32:55.694931",
+    "notes": "模拟数据（占位）",
+    "coverageTags": [
+      "cal:solar",
+      "decade:1977s",
+      "shichen:卯",
+      "supreme:坎为水"
+    ]
+  },
+  {
+    "id": "TJ-TRUTH-042",
+    "calendar": "solar",
+    "birth": "1984-11-13 07:30",
+    "location": "成都",
+    "gender": "female",
+    "civilSlot": "辰",
+    "pillars": {
+      "year": "甲子",
+      "month": "丙寅",
+      "day": "戊辰",
+      "hour": "庚午"
+    },
+    "xiantian": "火风鼎",
+    "houtian": "风火家人",
+    "liunian": [
+      {
+        "age": 1,
+        "year": 1985,
+        "gua": "坎为水",
+        "line": 4
+      },
+      {
+        "age": 2,
+        "year": 1986,
+        "gua": "风火家人",
+        "line": 1
+      },
+      {
+        "age": 3,
+        "year": 1987,
+        "gua": "地雷复",
+        "line": 4
+      },
+      {
+        "age": 4,
+        "year": 1988,
+        "gua": "震为雷",
+        "line": 3
+      },
+      {
+        "age": 5,
+        "year": 1989,
+        "gua": "离为火",
+        "line": 2
+      },
+      {
+        "age": 6,
+        "year": 1990,
+        "gua": "艮为山",
+        "line": 5
+      },
+      {
+        "age": 7,
+        "year": 1991,
+        "gua": "坎为水",
+        "line": 3
+      },
+      {
+        "age": 8,
+        "year": 1992,
+        "gua": "山水蒙",
+        "line": 6
+      },
+      {
+        "age": 9,
+        "year": 1993,
+        "gua": "水山蹇",
+        "line": 2
+      },
+      {
+        "age": 10,
+        "year": 1994,
+        "gua": "水雷屯",
+        "line": 5
+      }
+    ],
+    "source": "tianji.exe",
+    "collectedAt": "2026-04-07T17:32:55.694931",
+    "notes": "模拟数据（占位）",
+    "coverageTags": [
+      "cal:solar",
+      "decade:1977s",
+      "shichen:辰"
+    ]
+  },
+  {
+    "id": "TJ-TRUTH-043",
+    "calendar": "solar",
+    "birth": "1986-12-25 09:30",
+    "location": "上海",
+    "gender": "male",
+    "civilSlot": "巳",
+    "pillars": {
+      "year": "甲子",
+      "month": "丙寅",
+      "day": "戊辰",
+      "hour": "庚午"
+    },
+    "xiantian": "兑为泽",
+    "houtian": "震为雷",
+    "liunian": [
+      {
+        "age": 1,
+        "year": 1987,
+        "gua": "风火家人",
+        "line": 4
+      },
+      {
+        "age": 2,
+        "year": 1988,
+        "gua": "水山蹇",
+        "line": 3
+      },
+      {
+        "age": 3,
+        "year": 1989,
+        "gua": "泽雷随",
+        "line": 2
+      },
+      {
+        "age": 4,
+        "year": 1990,
+        "gua": "巽为风",
+        "line": 4
+      },
+      {
+        "age": 5,
+        "year": 1991,
+        "gua": "火风鼎",
+        "line": 6
+      },
+      {
+        "age": 6,
+        "year": 1992,
+        "gua": "水山蹇",
+        "line": 5
+      },
+      {
+        "age": 7,
+        "year": 1993,
+        "gua": "地雷复",
+        "line": 4
+      },
+      {
+        "age": 8,
+        "year": 1994,
+        "gua": "水雷屯",
+        "line": 5
+      },
+      {
+        "age": 9,
+        "year": 1995,
+        "gua": "艮为山",
+        "line": 3
+      },
+      {
+        "age": 10,
+        "year": 1996,
+        "gua": "震为雷",
+        "line": 2
+      }
+    ],
+    "source": "tianji.exe",
+    "collectedAt": "2026-04-07T17:32:55.694931",
+    "notes": "模拟数据（占位）",
+    "coverageTags": [
+      "cal:solar",
+      "decade:1977s",
+      "shichen:巳"
+    ]
+  },
+  {
+    "id": "TJ-TRUTH-044",
+    "calendar": "solar",
+    "birth": "1984-04-20 11:30",
+    "location": "杭州",
+    "gender": "female",
+    "civilSlot": "午",
+    "pillars": {
+      "year": "甲子",
+      "month": "丙寅",
+      "day": "戊辰",
+      "hour": "庚午"
+    },
+    "xiantian": "震为雷",
+    "houtian": "坎为水",
+    "liunian": [
+      {
+        "age": 1,
+        "year": 1985,
+        "gua": "水雷屯",
+        "line": 5
+      },
+      {
+        "age": 2,
+        "year": 1986,
+        "gua": "天风姤",
+        "line": 3
+      },
+      {
+        "age": 3,
+        "year": 1987,
+        "gua": "震为雷",
+        "line": 5
+      },
+      {
+        "age": 4,
+        "year": 1988,
+        "gua": "天风姤",
+        "line": 6
+      },
+      {
+        "age": 5,
+        "year": 1989,
+        "gua": "山水蒙",
+        "line": 1
+      },
+      {
+        "age": 6,
+        "year": 1990,
+        "gua": "坎为水",
+        "line": 4
+      },
+      {
+        "age": 7,
+        "year": 1991,
+        "gua": "乾为天",
+        "line": 4
+      },
+      {
+        "age": 8,
+        "year": 1992,
+        "gua": "巽为风",
+        "line": 4
+      },
+      {
+        "age": 9,
+        "year": 1993,
+        "gua": "泽雷随",
+        "line": 6
+      },
+      {
+        "age": 10,
+        "year": 1994,
+        "gua": "巽为风",
+        "line": 1
+      }
+    ],
+    "source": "tianji.exe",
+    "collectedAt": "2026-04-07T17:32:55.694931",
+    "notes": "模拟数据（占位）",
+    "coverageTags": [
+      "cal:solar",
+      "decade:1977s",
+      "shichen:午"
+    ]
+  },
+  {
+    "id": "TJ-TRUTH-045",
+    "calendar": "solar",
+    "birth": "1981-04-28 13:30",
+    "location": "南京",
+    "gender": "male",
+    "civilSlot": "未",
+    "pillars": {
+      "year": "甲子",
+      "month": "丙寅",
+      "day": "戊辰",
+      "hour": "庚午"
+    },
+    "xiantian": "坤为地",
+    "houtian": "兑为泽",
+    "liunian": [
+      {
+        "age": 1,
+        "year": 1982,
+        "gua": "巽为风",
+        "line": 3
+      },
+      {
+        "age": 2,
+        "year": 1983,
+        "gua": "离为火",
+        "line": 4
+      },
+      {
+        "age": 3,
+        "year": 1984,
+        "gua": "地雷复",
+        "line": 4
+      },
+      {
+        "age": 4,
+        "year": 1985,
+        "gua": "水雷屯",
+        "line": 3
+      },
+      {
+        "age": 5,
+        "year": 1986,
+        "gua": "离为火",
+        "line": 2
+      },
+      {
+        "age": 6,
+        "year": 1987,
+        "gua": "震为雷",
+        "line": 1
+      },
+      {
+        "age": 7,
+        "year": 1988,
+        "gua": "火风鼎",
+        "line": 1
+      },
+      {
+        "age": 8,
+        "year": 1989,
+        "gua": "巽为风",
+        "line": 1
+      },
+      {
+        "age": 9,
+        "year": 1990,
+        "gua": "水雷屯",
+        "line": 3
+      },
+      {
+        "age": 10,
+        "year": 1991,
+        "gua": "兑为泽",
+        "line": 1
+      }
+    ],
+    "source": "tianji.exe",
+    "collectedAt": "2026-04-07T17:32:55.694931",
+    "notes": "模拟数据（占位）",
+    "coverageTags": [
+      "cal:solar",
+      "decade:1977s",
+      "shichen:未"
+    ]
+  },
+  {
+    "id": "TJ-TRUTH-046",
+    "calendar": "solar",
+    "birth": "1984-10-01 15:30",
+    "location": "武汉",
+    "gender": "female",
+    "civilSlot": "申",
+    "pillars": {
+      "year": "甲子",
+      "month": "丙寅",
+      "day": "戊辰",
+      "hour": "庚午"
+    },
+    "xiantian": "震为雷",
+    "houtian": "天风姤",
+    "liunian": [
+      {
+        "age": 1,
+        "year": 1985,
+        "gua": "山水蒙",
+        "line": 2
+      },
+      {
+        "age": 2,
+        "year": 1986,
+        "gua": "乾为天",
+        "line": 3
+      },
+      {
+        "age": 3,
+        "year": 1987,
+        "gua": "火风鼎",
+        "line": 2
+      },
+      {
+        "age": 4,
+        "year": 1988,
+        "gua": "天风姤",
+        "line": 1
+      },
+      {
+        "age": 5,
+        "year": 1989,
+        "gua": "巽为风",
+        "line": 4
+      },
+      {
+        "age": 6,
+        "year": 1990,
+        "gua": "天风姤",
+        "line": 5
+      },
+      {
+        "age": 7,
+        "year": 1991,
+        "gua": "乾为天",
+        "line": 1
+      },
+      {
+        "age": 8,
+        "year": 1992,
+        "gua": "火风鼎",
+        "line": 4
+      },
+      {
+        "age": 9,
+        "year": 1993,
+        "gua": "兑为泽",
+        "line": 1
+      },
+      {
+        "age": 10,
+        "year": 1994,
+        "gua": "天风姤",
+        "line": 1
+      }
+    ],
+    "source": "tianji.exe",
+    "collectedAt": "2026-04-07T17:32:55.695450",
+    "notes": "模拟数据（占位）",
+    "coverageTags": [
+      "cal:solar",
+      "decade:1977s",
+      "shichen:申"
+    ]
+  },
+  {
+    "id": "TJ-TRUTH-047",
+    "calendar": "solar",
+    "birth": "1977-10-21 17:30",
+    "location": "沈阳",
+    "gender": "male",
+    "civilSlot": "酉",
+    "pillars": {
+      "year": "甲子",
+      "month": "丙寅",
+      "day": "戊辰",
+      "hour": "庚午"
+    },
+    "xiantian": "风火家人",
+    "houtian": "震为雷",
+    "liunian": [
+      {
+        "age": 1,
+        "year": 1978,
+        "gua": "坎为水",
+        "line": 3
+      },
+      {
+        "age": 2,
+        "year": 1979,
+        "gua": "火风鼎",
+        "line": 3
+      },
+      {
+        "age": 3,
+        "year": 1980,
+        "gua": "风火家人",
+        "line": 5
+      },
+      {
+        "age": 4,
+        "year": 1981,
+        "gua": "乾为天",
+        "line": 6
+      },
+      {
+        "age": 5,
+        "year": 1982,
+        "gua": "火风鼎",
+        "line": 3
+      },
+      {
+        "age": 6,
+        "year": 1983,
+        "gua": "艮为山",
+        "line": 3
+      },
+      {
+        "age": 7,
+        "year": 1984,
+        "gua": "天风姤",
+        "line": 6
+      },
+      {
+        "age": 8,
+        "year": 1985,
+        "gua": "巽为风",
+        "line": 5
+      },
+      {
+        "age": 9,
+        "year": 1986,
+        "gua": "巽为风",
+        "line": 1
+      },
+      {
+        "age": 10,
+        "year": 1987,
+        "gua": "地雷复",
+        "line": 1
+      }
+    ],
+    "source": "tianji.exe",
+    "collectedAt": "2026-04-07T17:32:55.695450",
+    "notes": "模拟数据（占位）",
+    "coverageTags": [
+      "cal:solar",
+      "decade:1977s",
+      "shichen:酉"
+    ]
+  },
+  {
+    "id": "TJ-TRUTH-048",
+    "calendar": "solar",
+    "birth": "1982-10-23 19:30",
+    "location": "成都",
+    "gender": "female",
+    "civilSlot": "戌",
+    "pillars": {
+      "year": "甲子",
+      "month": "丙寅",
+      "day": "戊辰",
+      "hour": "庚午"
+    },
+    "xiantian": "艮为山",
+    "houtian": "巽为风",
+    "liunian": [
+      {
+        "age": 1,
+        "year": 1983,
+        "gua": "山水蒙",
+        "line": 1
+      },
+      {
+        "age": 2,
+        "year": 1984,
+        "gua": "坤为地",
+        "line": 2
+      },
+      {
+        "age": 3,
+        "year": 1985,
+        "gua": "山水蒙",
+        "line": 5
+      },
+      {
+        "age": 4,
+        "year": 1986,
+        "gua": "山水蒙",
+        "line": 6
+      },
+      {
+        "age": 5,
+        "year": 1987,
+        "gua": "火风鼎",
+        "line": 5
+      },
+      {
+        "age": 6,
+        "year": 1988,
+        "gua": "坎为水",
+        "line": 4
+      },
+      {
+        "age": 7,
+        "year": 1989,
+        "gua": "山水蒙",
+        "line": 1
+      },
+      {
+        "age": 8,
+        "year": 1990,
+        "gua": "泽雷随",
+        "line": 2
+      },
+      {
+        "age": 9,
+        "year": 1991,
+        "gua": "风火家人",
+        "line": 2
+      },
+      {
+        "age": 10,
+        "year": 1992,
+        "gua": "兑为泽",
+        "line": 3
+      }
+    ],
+    "source": "tianji.exe",
+    "collectedAt": "2026-04-07T17:32:55.695450",
+    "notes": "模拟数据（占位）",
+    "coverageTags": [
+      "cal:solar",
+      "decade:1977s",
+      "shichen:戌"
+    ]
+  },
+  {
+    "id": "TJ-TRUTH-049",
+    "calendar": "solar",
+    "birth": "1989-06-12 21:30",
+    "location": "广州",
+    "gender": "male",
+    "civilSlot": "亥",
+    "pillars": {
+      "year": "甲子",
+      "month": "丙寅",
+      "day": "戊辰",
+      "hour": "庚午"
+    },
+    "xiantian": "震为雷",
+    "houtian": "离为火",
+    "liunian": [
+      {
+        "age": 1,
+        "year": 1990,
+        "gua": "离为火",
+        "line": 5
+      },
+      {
+        "age": 2,
+        "year": 1991,
+        "gua": "艮为山",
+        "line": 5
+      },
+      {
+        "age": 3,
+        "year": 1992,
+        "gua": "震为雷",
+        "line": 4
+      },
+      {
+        "age": 4,
+        "year": 1993,
+        "gua": "离为火",
+        "line": 1
+      },
+      {
+        "age": 5,
+        "year": 1994,
+        "gua": "震为雷",
+        "line": 2
+      },
+      {
+        "age": 6,
+        "year": 1995,
+        "gua": "兑为泽",
+        "line": 6
+      },
+      {
+        "age": 7,
+        "year": 1996,
+        "gua": "巽为风",
+        "line": 5
+      },
+      {
+        "age": 8,
+        "year": 1997,
+        "gua": "山水蒙",
+        "line": 3
+      },
+      {
+        "age": 9,
+        "year": 1998,
+        "gua": "火风鼎",
+        "line": 5
+      },
+      {
+        "age": 10,
+        "year": 1999,
+        "gua": "震为雷",
+        "line": 4
+      }
+    ],
+    "source": "tianji.exe",
+    "collectedAt": "2026-04-07T17:32:55.695450",
+    "notes": "模拟数据（占位）",
+    "coverageTags": [
+      "cal:solar",
+      "decade:1987s",
+      "shichen:亥"
+    ]
+  },
+  {
+    "id": "TJ-TRUTH-050",
+    "calendar": "solar",
+    "birth": "1990-06-13 01:30",
+    "location": "上海",
+    "gender": "female",
+    "civilSlot": "丑",
+    "pillars": {
+      "year": "甲子",
+      "month": "丙寅",
+      "day": "戊辰",
+      "hour": "庚午"
+    },
+    "xiantian": "震为雷",
+    "houtian": "水山蹇",
+    "liunian": [
+      {
+        "age": 1,
+        "year": 1991,
+        "gua": "乾为天",
+        "line": 3
+      },
+      {
+        "age": 2,
+        "year": 1992,
+        "gua": "天风姤",
+        "line": 5
+      },
+      {
+        "age": 3,
+        "year": 1993,
+        "gua": "坎为水",
+        "line": 4
+      },
+      {
+        "age": 4,
+        "year": 1994,
+        "gua": "水山蹇",
+        "line": 6
+      },
+      {
+        "age": 5,
+        "year": 1995,
+        "gua": "泽雷随",
+        "line": 3
+      },
+      {
+        "age": 6,
+        "year": 1996,
+        "gua": "泽雷随",
+        "line": 1
+      },
+      {
+        "age": 7,
+        "year": 1997,
+        "gua": "坤为地",
+        "line": 6
+      },
+      {
+        "age": 8,
+        "year": 1998,
+        "gua": "坎为水",
+        "line": 2
+      },
+      {
+        "age": 9,
+        "year": 1999,
+        "gua": "水雷屯",
+        "line": 6
+      },
+      {
+        "age": 10,
+        "year": 2000,
+        "gua": "风火家人",
+        "line": 2
+      }
+    ],
+    "source": "tianji.exe",
+    "collectedAt": "2026-04-07T17:32:55.695450",
+    "notes": "模拟数据（占位）",
+    "coverageTags": [
+      "cal:solar",
+      "decade:1987s",
+      "shichen:丑"
+    ]
+  },
+  {
+    "id": "TJ-TRUTH-051",
+    "calendar": "solar",
+    "birth": "1991-10-22 03:30",
+    "location": "西安",
+    "gender": "male",
+    "civilSlot": "寅",
+    "pillars": {
+      "year": "甲子",
+      "month": "丙寅",
+      "day": "戊辰",
+      "hour": "庚午"
+    },
+    "xiantian": "山水蒙",
+    "houtian": "巽为风",
+    "liunian": [
+      {
+        "age": 1,
+        "year": 1992,
+        "gua": "天风姤",
+        "line": 1
+      },
+      {
+        "age": 2,
+        "year": 1993,
+        "gua": "震为雷",
+        "line": 5
+      },
+      {
+        "age": 3,
+        "year": 1994,
+        "gua": "火风鼎",
+        "line": 1
+      },
+      {
+        "age": 4,
+        "year": 1995,
+        "gua": "离为火",
+        "line": 6
+      },
+      {
+        "age": 5,
+        "year": 1996,
+        "gua": "风火家人",
+        "line": 2
+      },
+      {
+        "age": 6,
+        "year": 1997,
+        "gua": "兑为泽",
+        "line": 4
+      },
+      {
+        "age": 7,
+        "year": 1998,
+        "gua": "水雷屯",
+        "line": 4
+      },
+      {
+        "age": 8,
+        "year": 1999,
+        "gua": "艮为山",
+        "line": 6
+      },
+      {
+        "age": 9,
+        "year": 2000,
+        "gua": "巽为风",
+        "line": 4
+      },
+      {
+        "age": 10,
+        "year": 2001,
+        "gua": "离为火",
+        "line": 1
+      }
+    ],
+    "source": "tianji.exe",
+    "collectedAt": "2026-04-07T17:32:55.695450",
+    "notes": "模拟数据（占位）",
+    "coverageTags": [
+      "cal:solar",
+      "decade:1987s",
+      "shichen:寅"
+    ]
+  },
+  {
+    "id": "TJ-TRUTH-052",
+    "calendar": "solar",
+    "birth": "1992-04-01 05:30",
+    "location": "杭州",
+    "gender": "female",
+    "civilSlot": "卯",
+    "pillars": {
+      "year": "甲子",
+      "month": "丙寅",
+      "day": "戊辰",
+      "hour": "庚午"
+    },
+    "xiantian": "坤为地",
+    "houtian": "山水蒙",
+    "liunian": [
+      {
+        "age": 1,
+        "year": 1993,
+        "gua": "泽雷随",
+        "line": 2
+      },
+      {
+        "age": 2,
+        "year": 1994,
+        "gua": "离为火",
+        "line": 5
+      },
+      {
+        "age": 3,
+        "year": 1995,
+        "gua": "火风鼎",
+        "line": 4
+      },
+      {
+        "age": 4,
+        "year": 1996,
+        "gua": "坎为水",
+        "line": 2
+      },
+      {
+        "age": 5,
+        "year": 1997,
+        "gua": "水山蹇",
+        "line": 1
+      },
+      {
+        "age": 6,
+        "year": 1998,
+        "gua": "地雷复",
+        "line": 1
+      },
+      {
+        "age": 7,
+        "year": 1999,
+        "gua": "火风鼎",
+        "line": 2
+      },
+      {
+        "age": 8,
+        "year": 2000,
+        "gua": "坎为水",
+        "line": 3
+      },
+      {
+        "age": 9,
+        "year": 2001,
+        "gua": "兑为泽",
+        "line": 3
+      },
+      {
+        "age": 10,
+        "year": 2002,
+        "gua": "坎为水",
+        "line": 6
+      }
+    ],
+    "source": "tianji.exe",
+    "collectedAt": "2026-04-07T17:32:55.695450",
+    "notes": "模拟数据（占位）",
+    "coverageTags": [
+      "cal:solar",
+      "decade:1987s",
+      "shichen:卯"
+    ]
+  },
+  {
+    "id": "TJ-TRUTH-053",
+    "calendar": "solar",
+    "birth": "1987-05-16 07:30",
+    "location": "重庆",
+    "gender": "male",
+    "civilSlot": "辰",
+    "pillars": {
+      "year": "甲子",
+      "month": "丙寅",
+      "day": "戊辰",
+      "hour": "庚午"
+    },
+    "xiantian": "水雷屯",
+    "houtian": "山水蒙",
+    "liunian": [
+      {
+        "age": 1,
+        "year": 1988,
+        "gua": "水山蹇",
+        "line": 5
+      },
+      {
+        "age": 2,
+        "year": 1989,
+        "gua": "巽为风",
+        "line": 2
+      },
+      {
+        "age": 3,
+        "year": 1990,
+        "gua": "天风姤",
+        "line": 2
+      },
+      {
+        "age": 4,
+        "year": 1991,
+        "gua": "水雷屯",
+        "line": 3
+      },
+      {
+        "age": 5,
+        "year": 1992,
+        "gua": "风火家人",
+        "line": 5
+      },
+      {
+        "age": 6,
+        "year": 1993,
+        "gua": "水雷屯",
+        "line": 1
+      },
+      {
+        "age": 7,
+        "year": 1994,
+        "gua": "离为火",
+        "line": 2
+      },
+      {
+        "age": 8,
+        "year": 1995,
+        "gua": "火风鼎",
+        "line": 1
+      },
+      {
+        "age": 9,
+        "year": 1996,
+        "gua": "水山蹇",
+        "line": 6
+      },
+      {
+        "age": 10,
+        "year": 1997,
+        "gua": "坤为地",
+        "line": 6
+      }
+    ],
+    "source": "tianji.exe",
+    "collectedAt": "2026-04-07T17:32:55.695450",
+    "notes": "模拟数据（占位）",
+    "coverageTags": [
+      "cal:solar",
+      "decade:1987s",
+      "shichen:辰",
+      "supreme:水雷屯"
+    ]
+  },
+  {
+    "id": "TJ-TRUTH-054",
+    "calendar": "solar",
+    "birth": "1987-07-02 09:30",
+    "location": "杭州",
+    "gender": "female",
+    "civilSlot": "巳",
+    "pillars": {
+      "year": "甲子",
+      "month": "丙寅",
+      "day": "戊辰",
+      "hour": "庚午"
+    },
+    "xiantian": "火风鼎",
+    "houtian": "震为雷",
+    "liunian": [
+      {
+        "age": 1,
+        "year": 1988,
+        "gua": "艮为山",
+        "line": 5
+      },
+      {
+        "age": 2,
+        "year": 1989,
+        "gua": "山水蒙",
+        "line": 4
+      },
+      {
+        "age": 3,
+        "year": 1990,
+        "gua": "坤为地",
+        "line": 1
+      },
+      {
+        "age": 4,
+        "year": 1991,
+        "gua": "风火家人",
+        "line": 4
+      },
+      {
+        "age": 5,
+        "year": 1992,
+        "gua": "地雷复",
+        "line": 4
+      },
+      {
+        "age": 6,
+        "year": 1993,
+        "gua": "水山蹇",
+        "line": 2
+      },
+      {
+        "age": 7,
+        "year": 1994,
+        "gua": "震为雷",
+        "line": 2
+      },
+      {
+        "age": 8,
+        "year": 1995,
+        "gua": "水山蹇",
+        "line": 5
+      },
+      {
+        "age": 9,
+        "year": 1996,
+        "gua": "水雷屯",
+        "line": 6
+      },
+      {
+        "age": 10,
+        "year": 1997,
+        "gua": "天风姤",
+        "line": 2
+      }
+    ],
+    "source": "tianji.exe",
+    "collectedAt": "2026-04-07T17:32:55.695450",
+    "notes": "模拟数据（占位）",
+    "coverageTags": [
+      "cal:solar",
+      "decade:1987s",
+      "shichen:巳"
+    ]
+  },
+  {
+    "id": "TJ-TRUTH-055",
+    "calendar": "solar",
+    "birth": "1990-11-28 11:30",
+    "location": "上海",
+    "gender": "male",
+    "civilSlot": "午",
+    "pillars": {
+      "year": "甲子",
+      "month": "丙寅",
+      "day": "戊辰",
+      "hour": "庚午"
+    },
+    "xiantian": "山水蒙",
+    "houtian": "风火家人",
+    "liunian": [
+      {
+        "age": 1,
+        "year": 1991,
+        "gua": "离为火",
+        "line": 1
+      },
+      {
+        "age": 2,
+        "year": 1992,
+        "gua": "震为雷",
+        "line": 4
+      },
+      {
+        "age": 3,
+        "year": 1993,
+        "gua": "风火家人",
+        "line": 5
+      },
+      {
+        "age": 4,
+        "year": 1994,
+        "gua": "水雷屯",
+        "line": 5
+      },
+      {
+        "age": 5,
+        "year": 1995,
+        "gua": "离为火",
+        "line": 6
+      },
+      {
+        "age": 6,
+        "year": 1996,
+        "gua": "天风姤",
+        "line": 4
+      },
+      {
+        "age": 7,
+        "year": 1997,
+        "gua": "坎为水",
+        "line": 5
+      },
+      {
+        "age": 8,
+        "year": 1998,
+        "gua": "泽雷随",
+        "line": 6
+      },
+      {
+        "age": 9,
+        "year": 1999,
+        "gua": "巽为风",
+        "line": 5
+      },
+      {
+        "age": 10,
+        "year": 2000,
+        "gua": "天风姤",
+        "line": 1
+      }
+    ],
+    "source": "tianji.exe",
+    "collectedAt": "2026-04-07T17:32:55.695450",
+    "notes": "模拟数据（占位）",
+    "coverageTags": [
+      "cal:solar",
+      "decade:1987s",
+      "shichen:午"
+    ]
+  },
+  {
+    "id": "TJ-TRUTH-056",
+    "calendar": "solar",
+    "birth": "1993-08-03 13:30",
+    "location": "武汉",
+    "gender": "female",
+    "civilSlot": "未",
+    "pillars": {
+      "year": "甲子",
+      "month": "丙寅",
+      "day": "戊辰",
+      "hour": "庚午"
+    },
+    "xiantian": "艮为山",
+    "houtian": "离为火",
+    "liunian": [
+      {
+        "age": 1,
+        "year": 1994,
+        "gua": "震为雷",
+        "line": 5
+      },
+      {
+        "age": 2,
+        "year": 1995,
+        "gua": "离为火",
+        "line": 6
+      },
+      {
+        "age": 3,
+        "year": 1996,
+        "gua": "离为火",
+        "line": 5
+      },
+      {
+        "age": 4,
+        "year": 1997,
+        "gua": "火风鼎",
+        "line": 6
+      },
+      {
+        "age": 5,
+        "year": 1998,
+        "gua": "坤为地",
+        "line": 6
+      },
+      {
+        "age": 6,
+        "year": 1999,
+        "gua": "震为雷",
+        "line": 1
+      },
+      {
+        "age": 7,
+        "year": 2000,
+        "gua": "风火家人",
+        "line": 2
+      },
+      {
+        "age": 8,
+        "year": 2001,
+        "gua": "艮为山",
+        "line": 5
+      },
+      {
+        "age": 9,
+        "year": 2002,
+        "gua": "地雷复",
+        "line": 6
+      },
+      {
+        "age": 10,
+        "year": 2003,
+        "gua": "风火家人",
+        "line": 1
+      }
+    ],
+    "source": "tianji.exe",
+    "collectedAt": "2026-04-07T17:32:55.695450",
+    "notes": "模拟数据（占位）",
+    "coverageTags": [
+      "cal:solar",
+      "decade:1987s",
+      "shichen:未"
+    ]
+  },
+  {
+    "id": "TJ-TRUTH-057",
+    "calendar": "solar",
+    "birth": "2006-11-18 15:30",
+    "location": "杭州",
+    "gender": "male",
+    "civilSlot": "申",
+    "pillars": {
+      "year": "甲子",
+      "month": "丙寅",
+      "day": "戊辰",
+      "hour": "庚午"
+    },
+    "xiantian": "坎为水",
+    "houtian": "艮为山",
+    "liunian": [
+      {
+        "age": 1,
+        "year": 2007,
+        "gua": "火风鼎",
+        "line": 5
+      },
+      {
+        "age": 2,
+        "year": 2008,
+        "gua": "水山蹇",
+        "line": 4
+      },
+      {
+        "age": 3,
+        "year": 2009,
+        "gua": "地雷复",
+        "line": 2
+      },
+      {
+        "age": 4,
+        "year": 2010,
+        "gua": "坤为地",
+        "line": 4
+      },
+      {
+        "age": 5,
+        "year": 2011,
+        "gua": "火风鼎",
+        "line": 1
+      },
+      {
+        "age": 6,
+        "year": 2012,
+        "gua": "水山蹇",
+        "line": 6
+      },
+      {
+        "age": 7,
+        "year": 2013,
+        "gua": "天风姤",
+        "line": 1
+      },
+      {
+        "age": 8,
+        "year": 2014,
+        "gua": "水山蹇",
+        "line": 4
+      },
+      {
+        "age": 9,
+        "year": 2015,
+        "gua": "巽为风",
+        "line": 5
+      },
+      {
+        "age": 10,
+        "year": 2016,
+        "gua": "兑为泽",
+        "line": 6
+      }
+    ],
+    "source": "tianji.exe",
+    "collectedAt": "2026-04-07T17:32:55.695450",
+    "notes": "模拟数据（占位）",
+    "coverageTags": [
+      "cal:solar",
+      "decade:1997s",
+      "shichen:申",
+      "supreme:坎为水"
+    ]
+  },
+  {
+    "id": "TJ-TRUTH-058",
+    "calendar": "solar",
+    "birth": "2001-09-13 17:30",
+    "location": "广州",
+    "gender": "female",
+    "civilSlot": "酉",
+    "pillars": {
+      "year": "甲子",
+      "month": "丙寅",
+      "day": "戊辰",
+      "hour": "庚午"
+    },
+    "xiantian": "地雷复",
+    "houtian": "泽雷随",
+    "liunian": [
+      {
+        "age": 1,
+        "year": 2002,
+        "gua": "艮为山",
+        "line": 6
+      },
+      {
+        "age": 2,
+        "year": 2003,
+        "gua": "艮为山",
+        "line": 3
+      },
+      {
+        "age": 3,
+        "year": 2004,
+        "gua": "兑为泽",
+        "line": 3
+      },
+      {
+        "age": 4,
+        "year": 2005,
+        "gua": "坤为地",
+        "line": 2
+      },
+      {
+        "age": 5,
+        "year": 2006,
+        "gua": "火风鼎",
+        "line": 2
+      },
+      {
+        "age": 6,
+        "year": 2007,
+        "gua": "乾为天",
+        "line": 3
+      },
+      {
+        "age": 7,
+        "year": 2008,
+        "gua": "水雷屯",
+        "line": 6
+      },
+      {
+        "age": 8,
+        "year": 2009,
+        "gua": "艮为山",
+        "line": 2
+      },
+      {
+        "age": 9,
+        "year": 2010,
+        "gua": "风火家人",
+        "line": 1
+      },
+      {
+        "age": 10,
+        "year": 2011,
+        "gua": "风火家人",
+        "line": 4
+      }
+    ],
+    "source": "tianji.exe",
+    "collectedAt": "2026-04-07T17:32:55.695450",
+    "notes": "模拟数据（占位）",
+    "coverageTags": [
+      "cal:solar",
+      "decade:1997s",
+      "shichen:酉"
+    ]
+  },
+  {
+    "id": "TJ-TRUTH-059",
+    "calendar": "solar",
+    "birth": "1997-09-01 19:30",
+    "location": "上海",
+    "gender": "male",
+    "civilSlot": "戌",
+    "pillars": {
+      "year": "甲子",
+      "month": "丙寅",
+      "day": "戊辰",
+      "hour": "庚午"
+    },
+    "xiantian": "火风鼎",
+    "houtian": "泽雷随",
+    "liunian": [
+      {
+        "age": 1,
+        "year": 1998,
+        "gua": "艮为山",
+        "line": 3
+      },
+      {
+        "age": 2,
+        "year": 1999,
+        "gua": "震为雷",
+        "line": 1
+      },
+      {
+        "age": 3,
+        "year": 2000,
+        "gua": "天风姤",
+        "line": 6
+      },
+      {
+        "age": 4,
+        "year": 2001,
+        "gua": "震为雷",
+        "line": 6
+      },
+      {
+        "age": 5,
+        "year": 2002,
+        "gua": "泽雷随",
+        "line": 6
+      },
+      {
+        "age": 6,
+        "year": 2003,
+        "gua": "震为雷",
+        "line": 4
+      },
+      {
+        "age": 7,
+        "year": 2004,
+        "gua": "坎为水",
+        "line": 1
+      },
+      {
+        "age": 8,
+        "year": 2005,
+        "gua": "水山蹇",
+        "line": 6
+      },
+      {
+        "age": 9,
+        "year": 2006,
+        "gua": "坎为水",
+        "line": 3
+      },
+      {
+        "age": 10,
+        "year": 2007,
+        "gua": "乾为天",
+        "line": 2
+      }
+    ],
+    "source": "tianji.exe",
+    "collectedAt": "2026-04-07T17:32:55.695450",
+    "notes": "模拟数据（占位）",
+    "coverageTags": [
+      "cal:solar",
+      "decade:1997s",
+      "shichen:戌"
+    ]
+  },
+  {
+    "id": "TJ-TRUTH-060",
+    "calendar": "solar",
+    "birth": "2002-06-28 21:30",
+    "location": "上海",
+    "gender": "female",
+    "civilSlot": "亥",
+    "pillars": {
+      "year": "甲子",
+      "month": "丙寅",
+      "day": "戊辰",
+      "hour": "庚午"
+    },
+    "xiantian": "水山蹇",
+    "houtian": "地雷复",
+    "liunian": [
+      {
+        "age": 1,
+        "year": 2003,
+        "gua": "艮为山",
+        "line": 5
+      },
+      {
+        "age": 2,
+        "year": 2004,
+        "gua": "天风姤",
+        "line": 3
+      },
+      {
+        "age": 3,
+        "year": 2005,
+        "gua": "坤为地",
+        "line": 2
+      },
+      {
+        "age": 4,
+        "year": 2006,
+        "gua": "离为火",
+        "line": 6
+      },
+      {
+        "age": 5,
+        "year": 2007,
+        "gua": "火风鼎",
+        "line": 4
+      },
+      {
+        "age": 6,
+        "year": 2008,
+        "gua": "地雷复",
+        "line": 1
+      },
+      {
+        "age": 7,
+        "year": 2009,
+        "gua": "火风鼎",
+        "line": 1
+      },
+      {
+        "age": 8,
+        "year": 2010,
+        "gua": "火风鼎",
+        "line": 2
+      },
+      {
+        "age": 9,
+        "year": 2011,
+        "gua": "水山蹇",
+        "line": 5
+      },
+      {
+        "age": 10,
+        "year": 2012,
+        "gua": "水雷屯",
+        "line": 2
+      }
+    ],
+    "source": "tianji.exe",
+    "collectedAt": "2026-04-07T17:32:55.695450",
+    "notes": "模拟数据（占位）",
+    "coverageTags": [
+      "cal:solar",
+      "decade:1997s",
+      "shichen:亥",
+      "supreme:水山蹇"
+    ]
+  },
+  {
+    "id": "TJ-TRUTH-061",
+    "calendar": "solar",
+    "birth": "1999-03-13 01:30",
+    "location": "重庆",
+    "gender": "male",
+    "civilSlot": "丑",
+    "pillars": {
+      "year": "甲子",
+      "month": "丙寅",
+      "day": "戊辰",
+      "hour": "庚午"
+    },
+    "xiantian": "天风姤",
+    "houtian": "水山蹇",
+    "liunian": [
+      {
+        "age": 1,
+        "year": 2000,
+        "gua": "坤为地",
+        "line": 5
+      },
+      {
+        "age": 2,
+        "year": 2001,
+        "gua": "震为雷",
+        "line": 2
+      },
+      {
+        "age": 3,
+        "year": 2002,
+        "gua": "离为火",
+        "line": 2
+      },
+      {
+        "age": 4,
+        "year": 2003,
+        "gua": "兑为泽",
+        "line": 4
+      },
+      {
+        "age": 5,
+        "year": 2004,
+        "gua": "震为雷",
+        "line": 2
+      },
+      {
+        "age": 6,
+        "year": 2005,
+        "gua": "火风鼎",
+        "line": 3
+      },
+      {
+        "age": 7,
+        "year": 2006,
+        "gua": "水山蹇",
+        "line": 1
+      },
+      {
+        "age": 8,
+        "year": 2007,
+        "gua": "坤为地",
+        "line": 3
+      },
+      {
+        "age": 9,
+        "year": 2008,
+        "gua": "兑为泽",
+        "line": 6
+      },
+      {
+        "age": 10,
+        "year": 2009,
+        "gua": "乾为天",
+        "line": 2
+      }
+    ],
+    "source": "tianji.exe",
+    "collectedAt": "2026-04-07T17:32:55.695450",
+    "notes": "模拟数据（占位）",
+    "coverageTags": [
+      "cal:solar",
+      "decade:1997s",
+      "shichen:丑"
+    ]
+  },
+  {
+    "id": "TJ-TRUTH-062",
+    "calendar": "solar",
+    "birth": "1998-01-05 03:30",
+    "location": "广州",
+    "gender": "female",
+    "civilSlot": "寅",
+    "pillars": {
+      "year": "甲子",
+      "month": "丙寅",
+      "day": "戊辰",
+      "hour": "庚午"
+    },
+    "xiantian": "山水蒙",
+    "houtian": "震为雷",
+    "liunian": [
+      {
+        "age": 1,
+        "year": 1999,
+        "gua": "巽为风",
+        "line": 6
+      },
+      {
+        "age": 2,
+        "year": 2000,
+        "gua": "山水蒙",
+        "line": 3
+      },
+      {
+        "age": 3,
+        "year": 2001,
+        "gua": "水雷屯",
+        "line": 4
+      },
+      {
+        "age": 4,
+        "year": 2002,
+        "gua": "坤为地",
+        "line": 6
+      },
+      {
+        "age": 5,
+        "year": 2003,
+        "gua": "兑为泽",
+        "line": 5
+      },
+      {
+        "age": 6,
+        "year": 2004,
+        "gua": "地雷复",
+        "line": 6
+      },
+      {
+        "age": 7,
+        "year": 2005,
+        "gua": "震为雷",
+        "line": 3
+      },
+      {
+        "age": 8,
+        "year": 2006,
+        "gua": "水雷屯",
+        "line": 5
+      },
+      {
+        "age": 9,
+        "year": 2007,
+        "gua": "天风姤",
+        "line": 3
+      },
+      {
+        "age": 10,
+        "year": 2008,
+        "gua": "艮为山",
+        "line": 4
+      }
+    ],
+    "source": "tianji.exe",
+    "collectedAt": "2026-04-07T17:32:55.695450",
+    "notes": "模拟数据（占位）",
+    "coverageTags": [
+      "cal:solar",
+      "decade:1997s",
+      "shichen:寅"
+    ]
+  },
+  {
+    "id": "TJ-TRUTH-063",
+    "calendar": "solar",
+    "birth": "2002-09-20 05:30",
+    "location": "广州",
+    "gender": "male",
+    "civilSlot": "卯",
+    "pillars": {
+      "year": "甲子",
+      "month": "丙寅",
+      "day": "戊辰",
+      "hour": "庚午"
+    },
+    "xiantian": "水山蹇",
+    "houtian": "艮为山",
+    "liunian": [
+      {
+        "age": 1,
+        "year": 2003,
+        "gua": "地雷复",
+        "line": 6
+      },
+      {
+        "age": 2,
+        "year": 2004,
+        "gua": "坤为地",
+        "line": 5
+      },
+      {
+        "age": 3,
+        "year": 2005,
+        "gua": "天风姤",
+        "line": 2
+      },
+      {
+        "age": 4,
+        "year": 2006,
+        "gua": "火风鼎",
+        "line": 2
+      },
+      {
+        "age": 5,
+        "year": 2007,
+        "gua": "风火家人",
+        "line": 1
+      },
+      {
+        "age": 6,
+        "year": 2008,
+        "gua": "震为雷",
+        "line": 1
+      },
+      {
+        "age": 7,
+        "year": 2009,
+        "gua": "山水蒙",
+        "line": 2
+      },
+      {
+        "age": 8,
+        "year": 2010,
+        "gua": "风火家人",
+        "line": 4
+      },
+      {
+        "age": 9,
+        "year": 2011,
+        "gua": "水山蹇",
+        "line": 1
+      },
+      {
+        "age": 10,
+        "year": 2012,
+        "gua": "巽为风",
+        "line": 1
+      }
+    ],
+    "source": "tianji.exe",
+    "collectedAt": "2026-04-07T17:32:55.695450",
+    "notes": "模拟数据（占位）",
+    "coverageTags": [
+      "cal:solar",
+      "decade:1997s",
+      "shichen:卯",
+      "supreme:水山蹇"
+    ]
+  },
+  {
+    "id": "TJ-TRUTH-064",
+    "calendar": "solar",
+    "birth": "1999-11-26 07:30",
+    "location": "西安",
+    "gender": "female",
+    "civilSlot": "辰",
+    "pillars": {
+      "year": "甲子",
+      "month": "丙寅",
+      "day": "戊辰",
+      "hour": "庚午"
+    },
+    "xiantian": "泽雷随",
+    "houtian": "水雷屯",
+    "liunian": [
+      {
+        "age": 1,
+        "year": 2000,
+        "gua": "坎为水",
+        "line": 6
+      },
+      {
+        "age": 2,
+        "year": 2001,
+        "gua": "震为雷",
+        "line": 6
+      },
+      {
+        "age": 3,
+        "year": 2002,
+        "gua": "震为雷",
+        "line": 6
+      },
+      {
+        "age": 4,
+        "year": 2003,
+        "gua": "火风鼎",
+        "line": 6
+      },
+      {
+        "age": 5,
+        "year": 2004,
+        "gua": "坤为地",
+        "line": 4
+      },
+      {
+        "age": 6,
+        "year": 2005,
+        "gua": "风火家人",
+        "line": 6
+      },
+      {
+        "age": 7,
+        "year": 2006,
+        "gua": "艮为山",
+        "line": 3
+      },
+      {
+        "age": 8,
+        "year": 2007,
+        "gua": "地雷复",
+        "line": 2
+      },
+      {
+        "age": 9,
+        "year": 2008,
+        "gua": "水山蹇",
+        "line": 5
+      },
+      {
+        "age": 10,
+        "year": 2009,
+        "gua": "乾为天",
+        "line": 4
+      }
+    ],
+    "source": "tianji.exe",
+    "collectedAt": "2026-04-07T17:32:55.695450",
+    "notes": "模拟数据（占位）",
+    "coverageTags": [
+      "cal:solar",
+      "decade:1997s",
+      "shichen:辰"
+    ]
+  },
+  {
+    "id": "TJ-TRUTH-065",
+    "calendar": "solar",
+    "birth": "2009-05-01 09:30",
+    "location": "上海",
+    "gender": "male",
+    "civilSlot": "巳",
+    "pillars": {
+      "year": "甲子",
+      "month": "丙寅",
+      "day": "戊辰",
+      "hour": "庚午"
+    },
+    "xiantian": "火风鼎",
+    "houtian": "泽雷随",
+    "liunian": [
+      {
+        "age": 1,
+        "year": 2010,
+        "gua": "风火家人",
+        "line": 4
+      },
+      {
+        "age": 2,
+        "year": 2011,
+        "gua": "艮为山",
+        "line": 3
+      },
+      {
+        "age": 3,
+        "year": 2012,
+        "gua": "离为火",
+        "line": 4
+      },
+      {
+        "age": 4,
+        "year": 2013,
+        "gua": "艮为山",
+        "line": 4
+      },
+      {
+        "age": 5,
+        "year": 2014,
+        "gua": "艮为山",
+        "line": 4
+      },
+      {
+        "age": 6,
+        "year": 2015,
+        "gua": "坎为水",
+        "line": 3
+      },
+      {
+        "age": 7,
+        "year": 2016,
+        "gua": "水山蹇",
+        "line": 2
+      },
+      {
+        "age": 8,
+        "year": 2017,
+        "gua": "水雷屯",
+        "line": 6
+      },
+      {
+        "age": 9,
+        "year": 2018,
+        "gua": "水雷屯",
+        "line": 4
+      },
+      {
+        "age": 10,
+        "year": 2019,
+        "gua": "坤为地",
+        "line": 1
+      }
+    ],
+    "source": "tianji.exe",
+    "collectedAt": "2026-04-07T17:32:55.695450",
+    "notes": "模拟数据（占位）",
+    "coverageTags": [
+      "cal:solar",
+      "decade:2007s",
+      "shichen:巳"
+    ]
+  },
+  {
+    "id": "TJ-TRUTH-066",
+    "calendar": "solar",
+    "birth": "2012-04-10 11:30",
+    "location": "上海",
+    "gender": "female",
+    "civilSlot": "午",
+    "pillars": {
+      "year": "甲子",
+      "month": "丙寅",
+      "day": "戊辰",
+      "hour": "庚午"
+    },
+    "xiantian": "水山蹇",
+    "houtian": "山水蒙",
+    "liunian": [
+      {
+        "age": 1,
+        "year": 2013,
+        "gua": "水山蹇",
+        "line": 3
+      },
+      {
+        "age": 2,
+        "year": 2014,
+        "gua": "震为雷",
+        "line": 1
+      },
+      {
+        "age": 3,
+        "year": 2015,
+        "gua": "巽为风",
+        "line": 3
+      },
+      {
+        "age": 4,
+        "year": 2016,
+        "gua": "风火家人",
+        "line": 2
+      },
+      {
+        "age": 5,
+        "year": 2017,
+        "gua": "地雷复",
+        "line": 1
+      },
+      {
+        "age": 6,
+        "year": 2018,
+        "gua": "泽雷随",
+        "line": 6
+      },
+      {
+        "age": 7,
+        "year": 2019,
+        "gua": "艮为山",
+        "line": 5
+      },
+      {
+        "age": 8,
+        "year": 2020,
+        "gua": "巽为风",
+        "line": 2
+      },
+      {
+        "age": 9,
+        "year": 2021,
+        "gua": "泽雷随",
+        "line": 6
+      },
+      {
+        "age": 10,
+        "year": 2022,
+        "gua": "地雷复",
+        "line": 4
+      }
+    ],
+    "source": "tianji.exe",
+    "collectedAt": "2026-04-07T17:32:55.695450",
+    "notes": "模拟数据（占位）",
+    "coverageTags": [
+      "cal:solar",
+      "decade:2007s",
+      "shichen:午",
+      "supreme:水山蹇"
+    ]
+  },
+  {
+    "id": "TJ-TRUTH-067",
+    "calendar": "solar",
+    "birth": "2007-07-28 13:30",
+    "location": "广州",
+    "gender": "male",
+    "civilSlot": "未",
+    "pillars": {
+      "year": "甲子",
+      "month": "丙寅",
+      "day": "戊辰",
+      "hour": "庚午"
+    },
+    "xiantian": "天风姤",
+    "houtian": "泽雷随",
+    "liunian": [
+      {
+        "age": 1,
+        "year": 2008,
+        "gua": "水山蹇",
+        "line": 2
+      },
+      {
+        "age": 2,
+        "year": 2009,
+        "gua": "山水蒙",
+        "line": 3
+      },
+      {
+        "age": 3,
+        "year": 2010,
+        "gua": "坎为水",
+        "line": 5
+      },
+      {
+        "age": 4,
+        "year": 2011,
+        "gua": "兑为泽",
+        "line": 5
+      },
+      {
+        "age": 5,
+        "year": 2012,
+        "gua": "震为雷",
+        "line": 1
+      },
+      {
+        "age": 6,
+        "year": 2013,
+        "gua": "水雷屯",
+        "line": 4
+      },
+      {
+        "age": 7,
+        "year": 2014,
+        "gua": "山水蒙",
+        "line": 6
+      },
+      {
+        "age": 8,
+        "year": 2015,
+        "gua": "巽为风",
+        "line": 4
+      },
+      {
+        "age": 9,
+        "year": 2016,
+        "gua": "离为火",
+        "line": 4
+      },
+      {
+        "age": 10,
+        "year": 2017,
+        "gua": "水山蹇",
+        "line": 5
+      }
+    ],
+    "source": "tianji.exe",
+    "collectedAt": "2026-04-07T17:32:55.695450",
+    "notes": "模拟数据（占位）",
+    "coverageTags": [
+      "cal:solar",
+      "decade:2007s",
+      "shichen:未"
+    ]
+  },
+  {
+    "id": "TJ-TRUTH-068",
+    "calendar": "solar",
+    "birth": "2012-01-08 15:30",
+    "location": "沈阳",
+    "gender": "female",
+    "civilSlot": "申",
+    "pillars": {
+      "year": "甲子",
+      "month": "丙寅",
+      "day": "戊辰",
+      "hour": "庚午"
+    },
+    "xiantian": "水雷屯",
+    "houtian": "地雷复",
+    "liunian": [
+      {
+        "age": 1,
+        "year": 2013,
+        "gua": "泽雷随",
+        "line": 1
+      },
+      {
+        "age": 2,
+        "year": 2014,
+        "gua": "艮为山",
+        "line": 2
+      },
+      {
+        "age": 3,
+        "year": 2015,
+        "gua": "震为雷",
+        "line": 4
+      },
+      {
+        "age": 4,
+        "year": 2016,
+        "gua": "火风鼎",
+        "line": 3
+      },
+      {
+        "age": 5,
+        "year": 2017,
+        "gua": "兑为泽",
+        "line": 2
+      },
+      {
+        "age": 6,
+        "year": 2018,
+        "gua": "坤为地",
+        "line": 2
+      },
+      {
+        "age": 7,
+        "year": 2019,
+        "gua": "天风姤",
+        "line": 1
+      },
+      {
+        "age": 8,
+        "year": 2020,
+        "gua": "水雷屯",
+        "line": 1
+      },
+      {
+        "age": 9,
+        "year": 2021,
+        "gua": "天风姤",
+        "line": 6
+      },
+      {
+        "age": 10,
+        "year": 2022,
+        "gua": "兑为泽",
+        "line": 4
+      }
+    ],
+    "source": "tianji.exe",
+    "collectedAt": "2026-04-07T17:32:55.695450",
+    "notes": "模拟数据（占位）",
+    "coverageTags": [
+      "cal:solar",
+      "decade:2007s",
+      "shichen:申",
+      "supreme:水雷屯"
+    ]
+  },
+  {
+    "id": "TJ-TRUTH-069",
+    "calendar": "solar",
+    "birth": "2015-01-08 17:30",
+    "location": "重庆",
+    "gender": "male",
+    "civilSlot": "酉",
+    "pillars": {
+      "year": "甲子",
+      "month": "丙寅",
+      "day": "戊辰",
+      "hour": "庚午"
+    },
+    "xiantian": "水山蹇",
+    "houtian": "兑为泽",
+    "liunian": [
+      {
+        "age": 1,
+        "year": 2016,
+        "gua": "震为雷",
+        "line": 2
+      },
+      {
+        "age": 2,
+        "year": 2017,
+        "gua": "兑为泽",
+        "line": 2
+      },
+      {
+        "age": 3,
+        "year": 2018,
+        "gua": "巽为风",
+        "line": 1
+      },
+      {
+        "age": 4,
+        "year": 2019,
+        "gua": "震为雷",
+        "line": 4
+      },
+      {
+        "age": 5,
+        "year": 2020,
+        "gua": "艮为山",
+        "line": 6
+      },
+      {
+        "age": 6,
+        "year": 2021,
+        "gua": "水山蹇",
+        "line": 2
+      },
+      {
+        "age": 7,
+        "year": 2022,
+        "gua": "坎为水",
+        "line": 3
+      },
+      {
+        "age": 8,
+        "year": 2023,
+        "gua": "风火家人",
+        "line": 4
+      },
+      {
+        "age": 9,
+        "year": 2024,
+        "gua": "乾为天",
+        "line": 5
+      },
+      {
+        "age": 10,
+        "year": 2025,
+        "gua": "水雷屯",
+        "line": 5
+      }
+    ],
+    "source": "tianji.exe",
+    "collectedAt": "2026-04-07T17:32:55.695450",
+    "notes": "模拟数据（占位）",
+    "coverageTags": [
+      "cal:solar",
+      "decade:2007s",
+      "shichen:酉",
+      "supreme:水山蹇"
+    ]
+  },
+  {
+    "id": "TJ-TRUTH-070",
+    "calendar": "solar",
+    "birth": "2012-12-12 19:30",
+    "location": "西安",
+    "gender": "female",
+    "civilSlot": "戌",
+    "pillars": {
+      "year": "甲子",
+      "month": "丙寅",
+      "day": "戊辰",
+      "hour": "庚午"
+    },
+    "xiantian": "水雷屯",
+    "houtian": "山水蒙",
+    "liunian": [
+      {
+        "age": 1,
+        "year": 2013,
+        "gua": "天风姤",
+        "line": 1
+      },
+      {
+        "age": 2,
+        "year": 2014,
+        "gua": "风火家人",
+        "line": 5
+      },
+      {
+        "age": 3,
+        "year": 2015,
+        "gua": "震为雷",
+        "line": 5
+      },
+      {
+        "age": 4,
+        "year": 2016,
+        "gua": "山水蒙",
+        "line": 2
+      },
+      {
+        "age": 5,
+        "year": 2017,
+        "gua": "坤为地",
+        "line": 4
+      },
+      {
+        "age": 6,
+        "year": 2018,
+        "gua": "离为火",
+        "line": 3
+      },
+      {
+        "age": 7,
+        "year": 2019,
+        "gua": "坎为水",
+        "line": 2
+      },
+      {
+        "age": 8,
+        "year": 2020,
+        "gua": "巽为风",
+        "line": 4
+      },
+      {
+        "age": 9,
+        "year": 2021,
+        "gua": "坎为水",
+        "line": 1
+      },
+      {
+        "age": 10,
+        "year": 2022,
+        "gua": "艮为山",
+        "line": 3
+      }
+    ],
+    "source": "tianji.exe",
+    "collectedAt": "2026-04-07T17:32:55.695450",
+    "notes": "模拟数据（占位）",
+    "coverageTags": [
+      "cal:solar",
+      "decade:2007s",
+      "shichen:戌",
+      "supreme:水雷屯"
+    ]
+  },
+  {
+    "id": "TJ-TRUTH-071",
+    "calendar": "lunar",
+    "birth": "2010-07-21 21:30",
+    "location": "沈阳",
+    "gender": "male",
+    "civilSlot": "亥",
+    "pillars": {
+      "year": "甲子",
+      "month": "丙寅",
+      "day": "戊辰",
+      "hour": "庚午"
+    },
+    "xiantian": "地雷复",
+    "houtian": "震为雷",
+    "liunian": [
+      {
+        "age": 1,
+        "year": 2011,
+        "gua": "天风姤",
+        "line": 1
+      },
+      {
+        "age": 2,
+        "year": 2012,
+        "gua": "风火家人",
+        "line": 4
+      },
+      {
+        "age": 3,
+        "year": 2013,
+        "gua": "震为雷",
+        "line": 1
+      },
+      {
+        "age": 4,
+        "year": 2014,
+        "gua": "天风姤",
+        "line": 2
+      },
+      {
+        "age": 5,
+        "year": 2015,
+        "gua": "地雷复",
+        "line": 1
+      },
+      {
+        "age": 6,
+        "year": 2016,
+        "gua": "坤为地",
+        "line": 5
+      },
+      {
+        "age": 7,
+        "year": 2017,
+        "gua": "山水蒙",
+        "line": 3
+      },
+      {
+        "age": 8,
+        "year": 2018,
+        "gua": "火风鼎",
+        "line": 6
+      },
+      {
+        "age": 9,
+        "year": 2019,
+        "gua": "震为雷",
+        "line": 3
+      },
+      {
+        "age": 10,
+        "year": 2020,
+        "gua": "坤为地",
+        "line": 6
+      }
+    ],
+    "source": "tianji.exe",
+    "collectedAt": "2026-04-07T17:32:55.695450",
+    "notes": "模拟数据（占位）",
+    "coverageTags": [
+      "cal:lunar",
+      "decade:2007s",
+      "shichen:亥"
+    ]
+  },
+  {
+    "id": "TJ-TRUTH-072",
+    "calendar": "lunar",
+    "birth": "2014-06-21 01:30",
+    "location": "沈阳",
+    "gender": "female",
+    "civilSlot": "丑",
+    "pillars": {
+      "year": "甲子",
+      "month": "丙寅",
+      "day": "戊辰",
+      "hour": "庚午"
+    },
+    "xiantian": "山水蒙",
+    "houtian": "泽雷随",
+    "liunian": [
+      {
+        "age": 1,
+        "year": 2015,
+        "gua": "风火家人",
+        "line": 4
+      },
+      {
+        "age": 2,
+        "year": 2016,
+        "gua": "兑为泽",
+        "line": 6
+      },
+      {
+        "age": 3,
+        "year": 2017,
+        "gua": "山水蒙",
+        "line": 1
+      },
+      {
+        "age": 4,
+        "year": 2018,
+        "gua": "水雷屯",
+        "line": 4
+      },
+      {
+        "age": 5,
+        "year": 2019,
+        "gua": "乾为天",
+        "line": 1
+      },
+      {
+        "age": 6,
+        "year": 2020,
+        "gua": "巽为风",
+        "line": 2
+      },
+      {
+        "age": 7,
+        "year": 2021,
+        "gua": "艮为山",
+        "line": 6
+      },
+      {
+        "age": 8,
+        "year": 2022,
+        "gua": "风火家人",
+        "line": 1
+      },
+      {
+        "age": 9,
+        "year": 2023,
+        "gua": "水雷屯",
+        "line": 2
+      },
+      {
+        "age": 10,
+        "year": 2024,
+        "gua": "火风鼎",
+        "line": 5
+      }
+    ],
+    "source": "tianji.exe",
+    "collectedAt": "2026-04-07T17:32:55.695450",
+    "notes": "模拟数据（占位）",
+    "coverageTags": [
+      "cal:lunar",
+      "decade:2007s",
+      "shichen:丑"
+    ]
+  },
+  {
+    "id": "TJ-TRUTH-073",
+    "calendar": "lunar",
+    "birth": "2019-01-21 03:30",
+    "location": "北京",
+    "gender": "male",
+    "civilSlot": "寅",
+    "pillars": {
+      "year": "甲子",
+      "month": "丙寅",
+      "day": "戊辰",
+      "hour": "庚午"
+    },
+    "xiantian": "艮为山",
+    "houtian": "天风姤",
+    "liunian": [
+      {
+        "age": 1,
+        "year": 2020,
+        "gua": "水山蹇",
+        "line": 1
+      },
+      {
+        "age": 2,
+        "year": 2021,
+        "gua": "巽为风",
+        "line": 3
+      },
+      {
+        "age": 3,
+        "year": 2022,
+        "gua": "坤为地",
+        "line": 1
+      },
+      {
+        "age": 4,
+        "year": 2023,
+        "gua": "地雷复",
+        "line": 5
+      },
+      {
+        "age": 5,
+        "year": 2024,
+        "gua": "水雷屯",
+        "line": 1
+      },
+      {
+        "age": 6,
+        "year": 2025,
+        "gua": "坤为地",
+        "line": 1
+      },
+      {
+        "age": 7,
+        "year": 2026,
+        "gua": "泽雷随",
+        "line": 1
+      },
+      {
+        "age": 8,
+        "year": 2027,
+        "gua": "巽为风",
+        "line": 5
+      },
+      {
+        "age": 9,
+        "year": 2028,
+        "gua": "离为火",
+        "line": 4
+      },
+      {
+        "age": 10,
+        "year": 2029,
+        "gua": "乾为天",
+        "line": 2
+      }
+    ],
+    "source": "tianji.exe",
+    "collectedAt": "2026-04-07T17:32:55.695450",
+    "notes": "模拟数据（占位）",
+    "coverageTags": [
+      "cal:lunar",
+      "decade:2017s",
+      "shichen:寅"
+    ]
+  },
+  {
+    "id": "TJ-TRUTH-074",
+    "calendar": "lunar",
+    "birth": "2021-05-15 05:30",
+    "location": "杭州",
+    "gender": "female",
+    "civilSlot": "卯",
+    "pillars": {
+      "year": "甲子",
+      "month": "丙寅",
+      "day": "戊辰",
+      "hour": "庚午"
+    },
+    "xiantian": "震为雷",
+    "houtian": "天风姤",
+    "liunian": [
+      {
+        "age": 1,
+        "year": 2022,
+        "gua": "地雷复",
+        "line": 1
+      },
+      {
+        "age": 2,
+        "year": 2023,
+        "gua": "艮为山",
+        "line": 6
+      },
+      {
+        "age": 3,
+        "year": 2024,
+        "gua": "艮为山",
+        "line": 4
+      },
+      {
+        "age": 4,
+        "year": 2025,
+        "gua": "离为火",
+        "line": 1
+      },
+      {
+        "age": 5,
+        "year": 2026,
+        "gua": "坤为地",
+        "line": 3
+      },
+      {
+        "age": 6,
+        "year": 2027,
+        "gua": "坎为水",
+        "line": 5
+      },
+      {
+        "age": 7,
+        "year": 2028,
+        "gua": "地雷复",
+        "line": 4
+      },
+      {
+        "age": 8,
+        "year": 2029,
+        "gua": "山水蒙",
+        "line": 4
+      },
+      {
+        "age": 9,
+        "year": 2030,
+        "gua": "山水蒙",
+        "line": 4
+      },
+      {
+        "age": 10,
+        "year": 2031,
+        "gua": "巽为风",
+        "line": 2
+      }
+    ],
+    "source": "tianji.exe",
+    "collectedAt": "2026-04-07T17:32:55.695450",
+    "notes": "模拟数据（占位）",
+    "coverageTags": [
+      "cal:lunar",
+      "decade:2017s",
+      "shichen:卯"
+    ]
+  },
+  {
+    "id": "TJ-TRUTH-075",
+    "calendar": "lunar",
+    "birth": "2025-11-18 07:30",
+    "location": "沈阳",
+    "gender": "male",
+    "civilSlot": "辰",
+    "pillars": {
+      "year": "甲子",
+      "month": "丙寅",
+      "day": "戊辰",
+      "hour": "庚午"
+    },
+    "xiantian": "地雷复",
+    "houtian": "乾为天",
+    "liunian": [
+      {
+        "age": 1,
+        "year": 2026,
+        "gua": "离为火",
+        "line": 4
+      },
+      {
+        "age": 2,
+        "year": 2027,
+        "gua": "泽雷随",
+        "line": 5
+      },
+      {
+        "age": 3,
+        "year": 2028,
+        "gua": "乾为天",
+        "line": 4
+      },
+      {
+        "age": 4,
+        "year": 2029,
+        "gua": "天风姤",
+        "line": 4
+      },
+      {
+        "age": 5,
+        "year": 2030,
+        "gua": "离为火",
+        "line": 1
+      },
+      {
+        "age": 6,
+        "year": 2031,
+        "gua": "风火家人",
+        "line": 3
+      },
+      {
+        "age": 7,
+        "year": 2032,
+        "gua": "水山蹇",
+        "line": 6
+      },
+      {
+        "age": 8,
+        "year": 2033,
+        "gua": "水雷屯",
+        "line": 1
+      },
+      {
+        "age": 9,
+        "year": 2034,
+        "gua": "兑为泽",
+        "line": 2
+      },
+      {
+        "age": 10,
+        "year": 2035,
+        "gua": "坤为地",
+        "line": 2
+      }
+    ],
+    "source": "tianji.exe",
+    "collectedAt": "2026-04-07T17:32:55.695980",
+    "notes": "模拟数据（占位）",
+    "coverageTags": [
+      "cal:lunar",
+      "decade:2017s",
+      "shichen:辰"
+    ]
+  },
+  {
+    "id": "TJ-TRUTH-076",
+    "calendar": "lunar",
+    "birth": "2026-12-07 09:30",
+    "location": "武汉",
+    "gender": "female",
+    "civilSlot": "巳",
+    "pillars": {
+      "year": "甲子",
+      "month": "丙寅",
+      "day": "戊辰",
+      "hour": "庚午"
+    },
+    "xiantian": "水雷屯",
+    "houtian": "乾为天",
+    "liunian": [
+      {
+        "age": 1,
+        "year": 2027,
+        "gua": "离为火",
+        "line": 4
+      },
+      {
+        "age": 2,
+        "year": 2028,
+        "gua": "坎为水",
+        "line": 2
+      },
+      {
+        "age": 3,
+        "year": 2029,
+        "gua": "乾为天",
+        "line": 2
+      },
+      {
+        "age": 4,
+        "year": 2030,
+        "gua": "兑为泽",
+        "line": 4
+      },
+      {
+        "age": 5,
+        "year": 2031,
+        "gua": "离为火",
+        "line": 4
+      },
+      {
+        "age": 6,
+        "year": 2032,
+        "gua": "坎为水",
+        "line": 4
+      },
+      {
+        "age": 7,
+        "year": 2033,
+        "gua": "泽雷随",
+        "line": 5
+      },
+      {
+        "age": 8,
+        "year": 2034,
+        "gua": "火风鼎",
+        "line": 6
+      },
+      {
+        "age": 9,
+        "year": 2035,
+        "gua": "火风鼎",
+        "line": 5
+      },
+      {
+        "age": 10,
+        "year": 2036,
+        "gua": "艮为山",
+        "line": 1
+      }
+    ],
+    "source": "tianji.exe",
+    "collectedAt": "2026-04-07T17:32:55.695980",
+    "notes": "模拟数据（占位）",
+    "coverageTags": [
+      "cal:lunar",
+      "decade:2017s",
+      "shichen:巳",
+      "supreme:水雷屯"
+    ]
+  },
+  {
+    "id": "TJ-TRUTH-077",
+    "calendar": "lunar",
+    "birth": "2025-12-01 11:30",
+    "location": "北京",
+    "gender": "male",
+    "civilSlot": "午",
+    "pillars": {
+      "year": "甲子",
+      "month": "丙寅",
+      "day": "戊辰",
+      "hour": "庚午"
+    },
+    "xiantian": "兑为泽",
+    "houtian": "天风姤",
+    "liunian": [
+      {
+        "age": 1,
+        "year": 2026,
+        "gua": "山水蒙",
+        "line": 4
+      },
+      {
+        "age": 2,
+        "year": 2027,
+        "gua": "坎为水",
+        "line": 5
+      },
+      {
+        "age": 3,
+        "year": 2028,
+        "gua": "离为火",
+        "line": 1
+      },
+      {
+        "age": 4,
+        "year": 2029,
+        "gua": "泽雷随",
+        "line": 6
+      },
+      {
+        "age": 5,
+        "year": 2030,
+        "gua": "乾为天",
+        "line": 2
+      },
+      {
+        "age": 6,
+        "year": 2031,
+        "gua": "巽为风",
+        "line": 4
+      },
+      {
+        "age": 7,
+        "year": 2032,
+        "gua": "火风鼎",
+        "line": 2
+      },
+      {
+        "age": 8,
+        "year": 2033,
+        "gua": "坤为地",
+        "line": 5
+      },
+      {
+        "age": 9,
+        "year": 2034,
+        "gua": "离为火",
+        "line": 4
+      },
+      {
+        "age": 10,
+        "year": 2035,
+        "gua": "泽雷随",
+        "line": 1
+      }
+    ],
+    "source": "tianji.exe",
+    "collectedAt": "2026-04-07T17:32:55.695980",
+    "notes": "模拟数据（占位）",
+    "coverageTags": [
+      "cal:lunar",
+      "decade:2017s",
+      "shichen:午"
+    ]
+  },
+  {
+    "id": "TJ-TRUTH-078",
+    "calendar": "lunar",
+    "birth": "2017-05-09 13:30",
+    "location": "西安",
+    "gender": "female",
+    "civilSlot": "未",
+    "pillars": {
+      "year": "甲子",
+      "month": "丙寅",
+      "day": "戊辰",
+      "hour": "庚午"
+    },
+    "xiantian": "地雷复",
+    "houtian": "坤为地",
+    "liunian": [
+      {
+        "age": 1,
+        "year": 2018,
+        "gua": "离为火",
+        "line": 1
+      },
+      {
+        "age": 2,
+        "year": 2019,
+        "gua": "兑为泽",
+        "line": 2
+      },
+      {
+        "age": 3,
+        "year": 2020,
+        "gua": "天风姤",
+        "line": 6
+      },
+      {
+        "age": 4,
+        "year": 2021,
+        "gua": "艮为山",
+        "line": 6
+      },
+      {
+        "age": 5,
+        "year": 2022,
+        "gua": "巽为风",
+        "line": 3
+      },
+      {
+        "age": 6,
+        "year": 2023,
+        "gua": "巽为风",
+        "line": 5
+      },
+      {
+        "age": 7,
+        "year": 2024,
+        "gua": "风火家人",
+        "line": 6
+      },
+      {
+        "age": 8,
+        "year": 2025,
+        "gua": "乾为天",
+        "line": 5
+      },
+      {
+        "age": 9,
+        "year": 2026,
+        "gua": "巽为风",
+        "line": 3
+      },
+      {
+        "age": 10,
+        "year": 2027,
+        "gua": "地雷复",
+        "line": 4
+      }
+    ],
+    "source": "tianji.exe",
+    "collectedAt": "2026-04-07T17:32:55.695980",
+    "notes": "模拟数据（占位）",
+    "coverageTags": [
+      "cal:lunar",
+      "decade:2017s",
+      "shichen:未"
+    ]
+  },
+  {
+    "id": "TJ-TRUTH-079",
+    "calendar": "lunar",
+    "birth": "2025-07-28 15:30",
+    "location": "上海",
+    "gender": "male",
+    "civilSlot": "申",
+    "pillars": {
+      "year": "甲子",
+      "month": "丙寅",
+      "day": "戊辰",
+      "hour": "庚午"
+    },
+    "xiantian": "水山蹇",
+    "houtian": "天风姤",
+    "liunian": [
+      {
+        "age": 1,
+        "year": 2026,
+        "gua": "乾为天",
+        "line": 4
+      },
+      {
+        "age": 2,
+        "year": 2027,
+        "gua": "火风鼎",
+        "line": 3
+      },
+      {
+        "age": 3,
+        "year": 2028,
+        "gua": "巽为风",
+        "line": 6
+      },
+      {
+        "age": 4,
+        "year": 2029,
+        "gua": "天风姤",
+        "line": 3
+      },
+      {
+        "age": 5,
+        "year": 2030,
+        "gua": "水山蹇",
+        "line": 1
+      },
+      {
+        "age": 6,
+        "year": 2031,
+        "gua": "水雷屯",
+        "line": 3
+      },
+      {
+        "age": 7,
+        "year": 2032,
+        "gua": "兑为泽",
+        "line": 6
+      },
+      {
+        "age": 8,
+        "year": 2033,
+        "gua": "火风鼎",
+        "line": 1
+      },
+      {
+        "age": 9,
+        "year": 2034,
+        "gua": "山水蒙",
+        "line": 2
+      },
+      {
+        "age": 10,
+        "year": 2035,
+        "gua": "水雷屯",
+        "line": 2
+      }
+    ],
+    "source": "tianji.exe",
+    "collectedAt": "2026-04-07T17:32:55.695980",
+    "notes": "模拟数据（占位）",
+    "coverageTags": [
+      "cal:lunar",
+      "decade:2017s",
+      "shichen:申",
+      "supreme:水山蹇"
+    ]
+  },
+  {
+    "id": "TJ-TRUTH-080",
+    "calendar": "lunar",
+    "birth": "2025-02-19 17:30",
+    "location": "南京",
+    "gender": "female",
+    "civilSlot": "酉",
+    "pillars": {
+      "year": "甲子",
+      "month": "丙寅",
+      "day": "戊辰",
+      "hour": "庚午"
+    },
+    "xiantian": "巽为风",
+    "houtian": "山水蒙",
+    "liunian": [
+      {
+        "age": 1,
+        "year": 2026,
+        "gua": "艮为山",
+        "line": 2
+      },
+      {
+        "age": 2,
+        "year": 2027,
+        "gua": "震为雷",
+        "line": 3
+      },
+      {
+        "age": 3,
+        "year": 2028,
+        "gua": "火风鼎",
+        "line": 2
+      },
+      {
+        "age": 4,
+        "year": 2029,
+        "gua": "巽为风",
+        "line": 4
+      },
+      {
+        "age": 5,
+        "year": 2030,
+        "gua": "乾为天",
+        "line": 1
+      },
+      {
+        "age": 6,
+        "year": 2031,
+        "gua": "离为火",
+        "line": 1
+      },
+      {
+        "age": 7,
+        "year": 2032,
+        "gua": "巽为风",
+        "line": 3
+      },
+      {
+        "age": 8,
+        "year": 2033,
+        "gua": "震为雷",
+        "line": 4
+      },
+      {
+        "age": 9,
+        "year": 2034,
+        "gua": "震为雷",
+        "line": 4
+      },
+      {
+        "age": 10,
+        "year": 2035,
+        "gua": "巽为风",
+        "line": 1
+      }
+    ],
+    "source": "tianji.exe",
+    "collectedAt": "2026-04-07T17:32:55.695980",
+    "notes": "模拟数据（占位）",
+    "coverageTags": [
+      "cal:lunar",
+      "decade:2017s",
+      "shichen:酉"
+    ]
+  },
+  {
+    "id": "TJ-TRUTH-081",
+    "calendar": "lunar",
+    "birth": "1959-12-24 17:30",
+    "location": "成都",
+    "gender": "male",
+    "civilSlot": "酉",
+    "pillars": {
+      "year": "甲子",
+      "month": "丙寅",
+      "day": "戊辰",
+      "hour": "庚午"
+    },
+    "xiantian": "乾为天",
+    "houtian": "山水蒙",
+    "liunian": [
+      {
+        "age": 1,
+        "year": 1960,
+        "gua": "风火家人",
+        "line": 1
+      },
+      {
+        "age": 2,
+        "year": 1961,
+        "gua": "地雷复",
+        "line": 4
+      },
+      {
+        "age": 3,
+        "year": 1962,
+        "gua": "地雷复",
+        "line": 3
+      },
+      {
+        "age": 4,
+        "year": 1963,
+        "gua": "天风姤",
+        "line": 3
+      },
+      {
+        "age": 5,
+        "year": 1964,
+        "gua": "山水蒙",
+        "line": 6
+      },
+      {
+        "age": 6,
+        "year": 1965,
+        "gua": "坎为水",
+        "line": 1
+      },
+      {
+        "age": 7,
+        "year": 1966,
+        "gua": "坎为水",
+        "line": 1
+      },
+      {
+        "age": 8,
+        "year": 1967,
+        "gua": "兑为泽",
+        "line": 3
+      },
+      {
+        "age": 9,
+        "year": 1968,
+        "gua": "地雷复",
+        "line": 3
+      },
+      {
+        "age": 10,
+        "year": 1969,
+        "gua": "山水蒙",
+        "line": 6
+      }
+    ],
+    "source": "tianji.exe",
+    "collectedAt": "2026-04-07T17:32:55.695980",
+    "notes": "模拟数据（占位）",
+    "coverageTags": [
+      "cal:lunar",
+      "decade:1957s",
+      "shichen:酉"
+    ]
+  },
+  {
+    "id": "TJ-TRUTH-082",
+    "calendar": "lunar",
+    "birth": "1974-09-17 05:30",
+    "location": "杭州",
+    "gender": "female",
+    "civilSlot": "卯",
+    "pillars": {
+      "year": "甲子",
+      "month": "丙寅",
+      "day": "戊辰",
+      "hour": "庚午"
+    },
+    "xiantian": "泽雷随",
+    "houtian": "火风鼎",
+    "liunian": [
+      {
+        "age": 1,
+        "year": 1975,
+        "gua": "水山蹇",
+        "line": 6
+      },
+      {
+        "age": 2,
+        "year": 1976,
+        "gua": "火风鼎",
+        "line": 6
+      },
+      {
+        "age": 3,
+        "year": 1977,
+        "gua": "水雷屯",
+        "line": 5
+      },
+      {
+        "age": 4,
+        "year": 1978,
+        "gua": "巽为风",
+        "line": 1
+      },
+      {
+        "age": 5,
+        "year": 1979,
+        "gua": "天风姤",
+        "line": 3
+      },
+      {
+        "age": 6,
+        "year": 1980,
+        "gua": "巽为风",
+        "line": 3
+      },
+      {
+        "age": 7,
+        "year": 1981,
+        "gua": "乾为天",
+        "line": 6
+      },
+      {
+        "age": 8,
+        "year": 1982,
+        "gua": "火风鼎",
+        "line": 5
+      },
+      {
+        "age": 9,
+        "year": 1983,
+        "gua": "震为雷",
+        "line": 6
+      },
+      {
+        "age": 10,
+        "year": 1984,
+        "gua": "乾为天",
+        "line": 4
+      }
+    ],
+    "source": "tianji.exe",
+    "collectedAt": "2026-04-07T17:32:55.695980",
+    "notes": "模拟数据（占位）",
+    "coverageTags": [
+      "cal:lunar",
+      "decade:1967s",
+      "shichen:卯"
+    ]
+  },
+  {
+    "id": "TJ-TRUTH-083",
+    "calendar": "lunar",
+    "birth": "1981-10-04 15:30",
+    "location": "北京",
+    "gender": "male",
+    "civilSlot": "申",
+    "pillars": {
+      "year": "甲子",
+      "month": "丙寅",
+      "day": "戊辰",
+      "hour": "庚午"
+    },
+    "xiantian": "火风鼎",
+    "houtian": "离为火",
+    "liunian": [
+      {
+        "age": 1,
+        "year": 1982,
+        "gua": "艮为山",
+        "line": 5
+      },
+      {
+        "age": 2,
+        "year": 1983,
+        "gua": "震为雷",
+        "line": 3
+      },
+      {
+        "age": 3,
+        "year": 1984,
+        "gua": "水山蹇",
+        "line": 5
+      },
+      {
+        "age": 4,
+        "year": 1985,
+        "gua": "坤为地",
+        "line": 4
+      },
+      {
+        "age": 5,
+        "year": 1986,
+        "gua": "离为火",
+        "line": 4
+      },
+      {
+        "age": 6,
+        "year": 1987,
+        "gua": "水山蹇",
+        "line": 6
+      },
+      {
+        "age": 7,
+        "year": 1988,
+        "gua": "兑为泽",
+        "line": 6
+      },
+      {
+        "age": 8,
+        "year": 1989,
+        "gua": "巽为风",
+        "line": 6
+      },
+      {
+        "age": 9,
+        "year": 1990,
+        "gua": "巽为风",
+        "line": 5
+      },
+      {
+        "age": 10,
+        "year": 1991,
+        "gua": "乾为天",
+        "line": 5
+      }
+    ],
+    "source": "tianji.exe",
+    "collectedAt": "2026-04-07T17:32:55.695980",
+    "notes": "模拟数据（占位）",
+    "coverageTags": [
+      "cal:lunar",
+      "decade:1977s",
+      "shichen:申"
+    ]
+  },
+  {
+    "id": "TJ-TRUTH-084",
+    "calendar": "lunar",
+    "birth": "1971-11-02 19:30",
+    "location": "重庆",
+    "gender": "female",
+    "civilSlot": "戌",
+    "pillars": {
+      "year": "甲子",
+      "month": "丙寅",
+      "day": "戊辰",
+      "hour": "庚午"
+    },
+    "xiantian": "乾为天",
+    "houtian": "离为火",
+    "liunian": [
+      {
+        "age": 1,
+        "year": 1972,
+        "gua": "地雷复",
+        "line": 3
+      },
+      {
+        "age": 2,
+        "year": 1973,
+        "gua": "坎为水",
+        "line": 2
+      },
+      {
+        "age": 3,
+        "year": 1974,
+        "gua": "水雷屯",
+        "line": 6
+      },
+      {
+        "age": 4,
+        "year": 1975,
+        "gua": "风火家人",
+        "line": 3
+      },
+      {
+        "age": 5,
+        "year": 1976,
+        "gua": "泽雷随",
+        "line": 6
+      },
+      {
+        "age": 6,
+        "year": 1977,
+        "gua": "地雷复",
+        "line": 6
+      },
+      {
+        "age": 7,
+        "year": 1978,
+        "gua": "坤为地",
+        "line": 5
+      },
+      {
+        "age": 8,
+        "year": 1979,
+        "gua": "坤为地",
+        "line": 1
+      },
+      {
+        "age": 9,
+        "year": 1980,
+        "gua": "水雷屯",
+        "line": 4
+      },
+      {
+        "age": 10,
+        "year": 1981,
+        "gua": "兑为泽",
+        "line": 4
+      }
+    ],
+    "source": "tianji.exe",
+    "collectedAt": "2026-04-07T17:32:55.695980",
+    "notes": "模拟数据（占位）",
+    "coverageTags": [
+      "cal:lunar",
+      "decade:1967s",
+      "shichen:戌"
+    ]
+  },
+  {
+    "id": "TJ-TRUTH-085",
+    "calendar": "lunar",
+    "birth": "1999-11-07 01:30",
+    "location": "上海",
+    "gender": "male",
+    "civilSlot": "丑",
+    "pillars": {
+      "year": "甲子",
+      "month": "丙寅",
+      "day": "戊辰",
+      "hour": "庚午"
+    },
+    "xiantian": "离为火",
+    "houtian": "火风鼎",
+    "liunian": [
+      {
+        "age": 1,
+        "year": 2000,
+        "gua": "巽为风",
+        "line": 5
+      },
+      {
+        "age": 2,
+        "year": 2001,
+        "gua": "地雷复",
+        "line": 5
+      },
+      {
+        "age": 3,
+        "year": 2002,
+        "gua": "艮为山",
+        "line": 2
+      },
+      {
+        "age": 4,
+        "year": 2003,
+        "gua": "坤为地",
+        "line": 6
+      },
+      {
+        "age": 5,
+        "year": 2004,
+        "gua": "巽为风",
+        "line": 6
+      },
+      {
+        "age": 6,
+        "year": 2005,
+        "gua": "乾为天",
+        "line": 5
+      },
+      {
+        "age": 7,
+        "year": 2006,
+        "gua": "山水蒙",
+        "line": 3
+      },
+      {
+        "age": 8,
+        "year": 2007,
+        "gua": "水山蹇",
+        "line": 1
+      },
+      {
+        "age": 9,
+        "year": 2008,
+        "gua": "震为雷",
+        "line": 6
+      },
+      {
+        "age": 10,
+        "year": 2009,
+        "gua": "风火家人",
+        "line": 3
+      }
+    ],
+    "source": "tianji.exe",
+    "collectedAt": "2026-04-07T17:32:55.695980",
+    "notes": "模拟数据（占位）",
+    "coverageTags": [
+      "cal:lunar",
+      "decade:1997s",
+      "shichen:丑"
+    ]
+  },
+  {
+    "id": "TJ-TRUTH-086",
+    "calendar": "lunar",
+    "birth": "1982-04-06 01:30",
+    "location": "上海",
+    "gender": "female",
+    "civilSlot": "丑",
+    "pillars": {
+      "year": "甲子",
+      "month": "丙寅",
+      "day": "戊辰",
+      "hour": "庚午"
+    },
+    "xiantian": "风火家人",
+    "houtian": "水雷屯",
+    "liunian": [
+      {
+        "age": 1,
+        "year": 1983,
+        "gua": "震为雷",
+        "line": 4
+      },
+      {
+        "age": 2,
+        "year": 1984,
+        "gua": "坎为水",
+        "line": 4
+      },
+      {
+        "age": 3,
+        "year": 1985,
+        "gua": "泽雷随",
+        "line": 3
+      },
+      {
+        "age": 4,
+        "year": 1986,
+        "gua": "离为火",
+        "line": 3
+      },
+      {
+        "age": 5,
+        "year": 1987,
+        "gua": "天风姤",
+        "line": 2
+      },
+      {
+        "age": 6,
+        "year": 1988,
+        "gua": "风火家人",
+        "line": 5
+      },
+      {
+        "age": 7,
+        "year": 1989,
+        "gua": "天风姤",
+        "line": 1
+      },
+      {
+        "age": 8,
+        "year": 1990,
+        "gua": "火风鼎",
+        "line": 1
+      },
+      {
+        "age": 9,
+        "year": 1991,
+        "gua": "震为雷",
+        "line": 1
+      },
+      {
+        "age": 10,
+        "year": 1992,
+        "gua": "乾为天",
+        "line": 2
+      }
+    ],
+    "source": "tianji.exe",
+    "collectedAt": "2026-04-07T17:32:55.695980",
+    "notes": "模拟数据（占位）",
+    "coverageTags": [
+      "cal:lunar",
+      "decade:1977s",
+      "shichen:丑"
+    ]
+  },
+  {
+    "id": "TJ-TRUTH-087",
+    "calendar": "lunar",
+    "birth": "2012-01-02 03:30",
+    "location": "武汉",
+    "gender": "male",
+    "civilSlot": "寅",
+    "pillars": {
+      "year": "甲子",
+      "month": "丙寅",
+      "day": "戊辰",
+      "hour": "庚午"
+    },
+    "xiantian": "水雷屯",
+    "houtian": "泽雷随",
+    "liunian": [
+      {
+        "age": 1,
+        "year": 2013,
+        "gua": "火风鼎",
+        "line": 4
+      },
+      {
+        "age": 2,
+        "year": 2014,
+        "gua": "水雷屯",
+        "line": 2
+      },
+      {
+        "age": 3,
+        "year": 2015,
+        "gua": "山水蒙",
+        "line": 4
+      },
+      {
+        "age": 4,
+        "year": 2016,
+        "gua": "乾为天",
+        "line": 5
+      },
+      {
+        "age": 5,
+        "year": 2017,
+        "gua": "水山蹇",
+        "line": 2
+      },
+      {
+        "age": 6,
+        "year": 2018,
+        "gua": "风火家人",
+        "line": 5
+      },
+      {
+        "age": 7,
+        "year": 2019,
+        "gua": "兑为泽",
+        "line": 4
+      },
+      {
+        "age": 8,
+        "year": 2020,
+        "gua": "乾为天",
+        "line": 1
+      },
+      {
+        "age": 9,
+        "year": 2021,
+        "gua": "水雷屯",
+        "line": 5
+      },
+      {
+        "age": 10,
+        "year": 2022,
+        "gua": "火风鼎",
+        "line": 3
+      }
+    ],
+    "source": "tianji.exe",
+    "collectedAt": "2026-04-07T17:32:55.695980",
+    "notes": "模拟数据（占位）",
+    "coverageTags": [
+      "cal:lunar",
+      "decade:2007s",
+      "shichen:寅",
+      "supreme:水雷屯"
+    ]
+  },
+  {
+    "id": "TJ-TRUTH-088",
+    "calendar": "lunar",
+    "birth": "1972-03-15 21:30",
+    "location": "成都",
+    "gender": "female",
+    "civilSlot": "亥",
+    "pillars": {
+      "year": "甲子",
+      "month": "丙寅",
+      "day": "戊辰",
+      "hour": "庚午"
+    },
+    "xiantian": "风火家人",
+    "houtian": "火风鼎",
+    "liunian": [
+      {
+        "age": 1,
+        "year": 1973,
+        "gua": "水山蹇",
+        "line": 5
+      },
+      {
+        "age": 2,
+        "year": 1974,
+        "gua": "火风鼎",
+        "line": 3
+      },
+      {
+        "age": 3,
+        "year": 1975,
+        "gua": "山水蒙",
+        "line": 3
+      },
+      {
+        "age": 4,
+        "year": 1976,
+        "gua": "震为雷",
+        "line": 2
+      },
+      {
+        "age": 5,
+        "year": 1977,
+        "gua": "离为火",
+        "line": 5
+      },
+      {
+        "age": 6,
+        "year": 1978,
+        "gua": "兑为泽",
+        "line": 4
+      },
+      {
+        "age": 7,
+        "year": 1979,
+        "gua": "兑为泽",
+        "line": 1
+      },
+      {
+        "age": 8,
+        "year": 1980,
+        "gua": "火风鼎",
+        "line": 1
+      },
+      {
+        "age": 9,
+        "year": 1981,
+        "gua": "坎为水",
+        "line": 3
+      },
+      {
+        "age": 10,
+        "year": 1982,
+        "gua": "山水蒙",
+        "line": 1
+      }
+    ],
+    "source": "tianji.exe",
+    "collectedAt": "2026-04-07T17:32:55.695980",
+    "notes": "模拟数据（占位）",
+    "coverageTags": [
+      "cal:lunar",
+      "decade:1967s",
+      "shichen:亥"
+    ]
+  },
+  {
+    "id": "TJ-TRUTH-089",
+    "calendar": "lunar",
+    "birth": "1962-03-02 11:30",
+    "location": "上海",
+    "gender": "male",
+    "civilSlot": "午",
+    "pillars": {
+      "year": "甲子",
+      "month": "丙寅",
+      "day": "戊辰",
+      "hour": "庚午"
+    },
+    "xiantian": "巽为风",
+    "houtian": "兑为泽",
+    "liunian": [
+      {
+        "age": 1,
+        "year": 1963,
+        "gua": "坎为水",
+        "line": 6
+      },
+      {
+        "age": 2,
+        "year": 1964,
+        "gua": "地雷复",
+        "line": 4
+      },
+      {
+        "age": 3,
+        "year": 1965,
+        "gua": "水雷屯",
+        "line": 1
+      },
+      {
+        "age": 4,
+        "year": 1966,
+        "gua": "水雷屯",
+        "line": 5
+      },
+      {
+        "age": 5,
+        "year": 1967,
+        "gua": "火风鼎",
+        "line": 5
+      },
+      {
+        "age": 6,
+        "year": 1968,
+        "gua": "坎为水",
+        "line": 6
+      },
+      {
+        "age": 7,
+        "year": 1969,
+        "gua": "乾为天",
+        "line": 5
+      },
+      {
+        "age": 8,
+        "year": 1970,
+        "gua": "水山蹇",
+        "line": 3
+      },
+      {
+        "age": 9,
+        "year": 1971,
+        "gua": "风火家人",
+        "line": 5
+      },
+      {
+        "age": 10,
+        "year": 1972,
+        "gua": "坤为地",
+        "line": 1
+      }
+    ],
+    "source": "tianji.exe",
+    "collectedAt": "2026-04-07T17:32:55.695980",
+    "notes": "模拟数据（占位）",
+    "coverageTags": [
+      "cal:lunar",
+      "decade:1957s",
+      "shichen:午"
+    ]
+  },
+  {
+    "id": "TJ-TRUTH-090",
+    "calendar": "lunar",
+    "birth": "1932-02-26 11:30",
+    "location": "杭州",
+    "gender": "female",
+    "civilSlot": "午",
+    "pillars": {
+      "year": "甲子",
+      "month": "丙寅",
+      "day": "戊辰",
+      "hour": "庚午"
+    },
+    "xiantian": "山水蒙",
+    "houtian": "震为雷",
+    "liunian": [
+      {
+        "age": 1,
+        "year": 1933,
+        "gua": "水山蹇",
+        "line": 3
+      },
+      {
+        "age": 2,
+        "year": 1934,
+        "gua": "坤为地",
+        "line": 6
+      },
+      {
+        "age": 3,
+        "year": 1935,
+        "gua": "艮为山",
+        "line": 3
+      },
+      {
+        "age": 4,
+        "year": 1936,
+        "gua": "天风姤",
+        "line": 3
+      },
+      {
+        "age": 5,
+        "year": 1937,
+        "gua": "巽为风",
+        "line": 3
+      },
+      {
+        "age": 6,
+        "year": 1938,
+        "gua": "兑为泽",
+        "line": 5
+      },
+      {
+        "age": 7,
+        "year": 1939,
+        "gua": "坤为地",
+        "line": 1
+      },
+      {
+        "age": 8,
+        "year": 1940,
+        "gua": "水山蹇",
+        "line": 1
+      },
+      {
+        "age": 9,
+        "year": 1941,
+        "gua": "巽为风",
+        "line": 1
+      },
+      {
+        "age": 10,
+        "year": 1942,
+        "gua": "乾为天",
+        "line": 6
+      }
+    ],
+    "source": "tianji.exe",
+    "collectedAt": "2026-04-07T17:32:55.695980",
+    "notes": "模拟数据（占位）",
+    "coverageTags": [
+      "cal:lunar",
+      "decade:1927s",
+      "shichen:午"
+    ]
+  },
+  {
+    "id": "TJ-TRUTH-091",
+    "calendar": "lunar",
+    "birth": "2000-06-10 19:30",
+    "location": "杭州",
+    "gender": "male",
+    "civilSlot": "戌",
+    "pillars": {
+      "year": "甲子",
+      "month": "丙寅",
+      "day": "戊辰",
+      "hour": "庚午"
+    },
+    "xiantian": "乾为天",
+    "houtian": "震为雷",
+    "liunian": [
+      {
+        "age": 1,
+        "year": 2001,
+        "gua": "山水蒙",
+        "line": 2
+      },
+      {
+        "age": 2,
+        "year": 2002,
+        "gua": "兑为泽",
+        "line": 2
+      },
+      {
+        "age": 3,
+        "year": 2003,
+        "gua": "天风姤",
+        "line": 3
+      },
+      {
+        "age": 4,
+        "year": 2004,
+        "gua": "乾为天",
+        "line": 5
+      },
+      {
+        "age": 5,
+        "year": 2005,
+        "gua": "巽为风",
+        "line": 6
+      },
+      {
+        "age": 6,
+        "year": 2006,
+        "gua": "火风鼎",
+        "line": 6
+      },
+      {
+        "age": 7,
+        "year": 2007,
+        "gua": "坤为地",
+        "line": 6
+      },
+      {
+        "age": 8,
+        "year": 2008,
+        "gua": "乾为天",
+        "line": 1
+      },
+      {
+        "age": 9,
+        "year": 2009,
+        "gua": "火风鼎",
+        "line": 1
+      },
+      {
+        "age": 10,
+        "year": 2010,
+        "gua": "离为火",
+        "line": 5
+      }
+    ],
+    "source": "tianji.exe",
+    "collectedAt": "2026-04-07T17:32:55.695980",
+    "notes": "模拟数据（占位）",
+    "coverageTags": [
+      "cal:lunar",
+      "decade:1997s",
+      "shichen:戌"
+    ]
+  },
+  {
+    "id": "TJ-TRUTH-092",
+    "calendar": "lunar",
+    "birth": "1940-07-03 09:30",
+    "location": "上海",
+    "gender": "female",
+    "civilSlot": "巳",
+    "pillars": {
+      "year": "甲子",
+      "month": "丙寅",
+      "day": "戊辰",
+      "hour": "庚午"
+    },
+    "xiantian": "天风姤",
+    "houtian": "水雷屯",
+    "liunian": [
+      {
+        "age": 1,
+        "year": 1941,
+        "gua": "震为雷",
+        "line": 6
+      },
+      {
+        "age": 2,
+        "year": 1942,
+        "gua": "兑为泽",
+        "line": 4
+      },
+      {
+        "age": 3,
+        "year": 1943,
+        "gua": "水雷屯",
+        "line": 3
+      },
+      {
+        "age": 4,
+        "year": 1944,
+        "gua": "坎为水",
+        "line": 5
+      },
+      {
+        "age": 5,
+        "year": 1945,
+        "gua": "火风鼎",
+        "line": 6
+      },
+      {
+        "age": 6,
+        "year": 1946,
+        "gua": "风火家人",
+        "line": 3
+      },
+      {
+        "age": 7,
+        "year": 1947,
+        "gua": "乾为天",
+        "line": 3
+      },
+      {
+        "age": 8,
+        "year": 1948,
+        "gua": "艮为山",
+        "line": 3
+      },
+      {
+        "age": 9,
+        "year": 1949,
+        "gua": "坎为水",
+        "line": 1
+      },
+      {
+        "age": 10,
+        "year": 1950,
+        "gua": "火风鼎",
+        "line": 1
+      }
+    ],
+    "source": "tianji.exe",
+    "collectedAt": "2026-04-07T17:32:55.695980",
+    "notes": "模拟数据（占位）",
+    "coverageTags": [
+      "cal:lunar",
+      "decade:1937s",
+      "shichen:巳"
+    ]
+  },
+  {
+    "id": "TJ-TRUTH-093",
+    "calendar": "lunar",
+    "birth": "1939-04-21 09:30",
+    "location": "广州",
+    "gender": "male",
+    "civilSlot": "巳",
+    "pillars": {
+      "year": "甲子",
+      "month": "丙寅",
+      "day": "戊辰",
+      "hour": "庚午"
+    },
+    "xiantian": "泽雷随",
+    "houtian": "离为火",
+    "liunian": [
+      {
+        "age": 1,
+        "year": 1940,
+        "gua": "地雷复",
+        "line": 1
+      },
+      {
+        "age": 2,
+        "year": 1941,
+        "gua": "巽为风",
+        "line": 3
+      },
+      {
+        "age": 3,
+        "year": 1942,
+        "gua": "坤为地",
+        "line": 6
+      },
+      {
+        "age": 4,
+        "year": 1943,
+        "gua": "坎为水",
+        "line": 2
+      },
+      {
+        "age": 5,
+        "year": 1944,
+        "gua": "离为火",
+        "line": 4
+      },
+      {
+        "age": 6,
+        "year": 1945,
+        "gua": "风火家人",
+        "line": 3
+      },
+      {
+        "age": 7,
+        "year": 1946,
+        "gua": "山水蒙",
+        "line": 5
+      },
+      {
+        "age": 8,
+        "year": 1947,
+        "gua": "兑为泽",
+        "line": 2
+      },
+      {
+        "age": 9,
+        "year": 1948,
+        "gua": "坤为地",
+        "line": 2
+      },
+      {
+        "age": 10,
+        "year": 1949,
+        "gua": "水雷屯",
+        "line": 2
+      }
+    ],
+    "source": "tianji.exe",
+    "collectedAt": "2026-04-07T17:32:55.695980",
+    "notes": "模拟数据（占位）",
+    "coverageTags": [
+      "cal:lunar",
+      "decade:1937s",
+      "shichen:巳"
+    ]
+  },
+  {
+    "id": "TJ-TRUTH-094",
+    "calendar": "lunar",
+    "birth": "1970-10-13 21:30",
+    "location": "沈阳",
+    "gender": "female",
+    "civilSlot": "亥",
+    "pillars": {
+      "year": "甲子",
+      "month": "丙寅",
+      "day": "戊辰",
+      "hour": "庚午"
+    },
+    "xiantian": "水山蹇",
+    "houtian": "坤为地",
+    "liunian": [
+      {
+        "age": 1,
+        "year": 1971,
+        "gua": "天风姤",
+        "line": 5
+      },
+      {
+        "age": 2,
+        "year": 1972,
+        "gua": "艮为山",
+        "line": 3
+      },
+      {
+        "age": 3,
+        "year": 1973,
+        "gua": "水山蹇",
+        "line": 6
+      },
+      {
+        "age": 4,
+        "year": 1974,
+        "gua": "天风姤",
+        "line": 5
+      },
+      {
+        "age": 5,
+        "year": 1975,
+        "gua": "水山蹇",
+        "line": 2
+      },
+      {
+        "age": 6,
+        "year": 1976,
+        "gua": "震为雷",
+        "line": 3
+      },
+      {
+        "age": 7,
+        "year": 1977,
+        "gua": "离为火",
+        "line": 1
+      },
+      {
+        "age": 8,
+        "year": 1978,
+        "gua": "坎为水",
+        "line": 1
+      },
+      {
+        "age": 9,
+        "year": 1979,
+        "gua": "离为火",
+        "line": 6
+      },
+      {
+        "age": 10,
+        "year": 1980,
+        "gua": "乾为天",
+        "line": 3
+      }
+    ],
+    "source": "tianji.exe",
+    "collectedAt": "2026-04-07T17:32:55.695980",
+    "notes": "模拟数据（占位）",
+    "coverageTags": [
+      "cal:lunar",
+      "decade:1967s",
+      "shichen:亥",
+      "supreme:水山蹇"
+    ]
+  },
+  {
+    "id": "TJ-TRUTH-095",
+    "calendar": "lunar",
+    "birth": "2024-04-09 21:30",
+    "location": "北京",
+    "gender": "male",
+    "civilSlot": "亥",
+    "pillars": {
+      "year": "甲子",
+      "month": "丙寅",
+      "day": "戊辰",
+      "hour": "庚午"
+    },
+    "xiantian": "泽雷随",
+    "houtian": "坤为地",
+    "liunian": [
+      {
+        "age": 1,
+        "year": 2025,
+        "gua": "艮为山",
+        "line": 4
+      },
+      {
+        "age": 2,
+        "year": 2026,
+        "gua": "兑为泽",
+        "line": 2
+      },
+      {
+        "age": 3,
+        "year": 2027,
+        "gua": "水山蹇",
+        "line": 5
+      },
+      {
+        "age": 4,
+        "year": 2028,
+        "gua": "山水蒙",
+        "line": 1
+      },
+      {
+        "age": 5,
+        "year": 2029,
+        "gua": "兑为泽",
+        "line": 1
+      },
+      {
+        "age": 6,
+        "year": 2030,
+        "gua": "山水蒙",
+        "line": 1
+      },
+      {
+        "age": 7,
+        "year": 2031,
+        "gua": "兑为泽",
+        "line": 5
+      },
+      {
+        "age": 8,
+        "year": 2032,
+        "gua": "艮为山",
+        "line": 6
+      },
+      {
+        "age": 9,
+        "year": 2033,
+        "gua": "泽雷随",
+        "line": 5
+      },
+      {
+        "age": 10,
+        "year": 2034,
+        "gua": "兑为泽",
+        "line": 5
+      }
+    ],
+    "source": "tianji.exe",
+    "collectedAt": "2026-04-07T17:32:55.695980",
+    "notes": "模拟数据（占位）",
+    "coverageTags": [
+      "cal:lunar",
+      "decade:2017s",
+      "shichen:亥"
+    ]
+  },
+  {
+    "id": "TJ-TRUTH-096",
+    "calendar": "lunar",
+    "birth": "1944-12-25 09:30",
+    "location": "南京",
+    "gender": "female",
+    "civilSlot": "巳",
+    "pillars": {
+      "year": "甲子",
+      "month": "丙寅",
+      "day": "戊辰",
+      "hour": "庚午"
+    },
+    "xiantian": "离为火",
+    "houtian": "地雷复",
+    "liunian": [
+      {
+        "age": 1,
+        "year": 1945,
+        "gua": "坤为地",
+        "line": 2
+      },
+      {
+        "age": 2,
+        "year": 1946,
+        "gua": "巽为风",
+        "line": 6
+      },
+      {
+        "age": 3,
+        "year": 1947,
+        "gua": "巽为风",
+        "line": 3
+      },
+      {
+        "age": 4,
+        "year": 1948,
+        "gua": "震为雷",
+        "line": 3
+      },
+      {
+        "age": 5,
+        "year": 1949,
+        "gua": "风火家人",
+        "line": 1
+      },
+      {
+        "age": 6,
+        "year": 1950,
+        "gua": "泽雷随",
+        "line": 3
+      },
+      {
+        "age": 7,
+        "year": 1951,
+        "gua": "地雷复",
+        "line": 3
+      },
+      {
+        "age": 8,
+        "year": 1952,
+        "gua": "火风鼎",
+        "line": 4
+      },
+      {
+        "age": 9,
+        "year": 1953,
+        "gua": "兑为泽",
+        "line": 5
+      },
+      {
+        "age": 10,
+        "year": 1954,
+        "gua": "天风姤",
+        "line": 6
+      }
+    ],
+    "source": "tianji.exe",
+    "collectedAt": "2026-04-07T17:32:55.695980",
+    "notes": "模拟数据（占位）",
+    "coverageTags": [
+      "cal:lunar",
+      "decade:1937s",
+      "shichen:巳"
+    ]
+  },
+  {
+    "id": "TJ-TRUTH-097",
+    "calendar": "lunar",
+    "birth": "2000-11-11 15:30",
+    "location": "西安",
+    "gender": "male",
+    "civilSlot": "申",
+    "pillars": {
+      "year": "甲子",
+      "month": "丙寅",
+      "day": "戊辰",
+      "hour": "庚午"
+    },
+    "xiantian": "坤为地",
+    "houtian": "地雷复",
+    "liunian": [
+      {
+        "age": 1,
+        "year": 2001,
+        "gua": "艮为山",
+        "line": 4
+      },
+      {
+        "age": 2,
+        "year": 2002,
+        "gua": "震为雷",
+        "line": 1
+      },
+      {
+        "age": 3,
+        "year": 2003,
+        "gua": "山水蒙",
+        "line": 4
+      },
+      {
+        "age": 4,
+        "year": 2004,
+        "gua": "地雷复",
+        "line": 4
+      },
+      {
+        "age": 5,
+        "year": 2005,
+        "gua": "巽为风",
+        "line": 3
+      },
+      {
+        "age": 6,
+        "year": 2006,
+        "gua": "火风鼎",
+        "line": 6
+      },
+      {
+        "age": 7,
+        "year": 2007,
+        "gua": "艮为山",
+        "line": 4
+      },
+      {
+        "age": 8,
+        "year": 2008,
+        "gua": "离为火",
+        "line": 1
+      },
+      {
+        "age": 9,
+        "year": 2009,
+        "gua": "乾为天",
+        "line": 3
+      },
+      {
+        "age": 10,
+        "year": 2010,
+        "gua": "乾为天",
+        "line": 2
+      }
+    ],
+    "source": "tianji.exe",
+    "collectedAt": "2026-04-07T17:32:55.695980",
+    "notes": "模拟数据（占位）",
+    "coverageTags": [
+      "cal:lunar",
+      "decade:1997s",
+      "shichen:申"
+    ]
+  },
+  {
+    "id": "TJ-TRUTH-098",
+    "calendar": "lunar",
+    "birth": "1930-05-21 11:30",
+    "location": "成都",
+    "gender": "female",
+    "civilSlot": "午",
+    "pillars": {
+      "year": "甲子",
+      "month": "丙寅",
+      "day": "戊辰",
+      "hour": "庚午"
+    },
+    "xiantian": "泽雷随",
+    "houtian": "天风姤",
+    "liunian": [
+      {
+        "age": 1,
+        "year": 1931,
+        "gua": "风火家人",
+        "line": 4
+      },
+      {
+        "age": 2,
+        "year": 1932,
+        "gua": "泽雷随",
+        "line": 6
+      },
+      {
+        "age": 3,
+        "year": 1933,
+        "gua": "风火家人",
+        "line": 5
+      },
+      {
+        "age": 4,
+        "year": 1934,
+        "gua": "风火家人",
+        "line": 1
+      },
+      {
+        "age": 5,
+        "year": 1935,
+        "gua": "山水蒙",
+        "line": 6
+      },
+      {
+        "age": 6,
+        "year": 1936,
+        "gua": "水雷屯",
+        "line": 5
+      },
+      {
+        "age": 7,
+        "year": 1937,
+        "gua": "水山蹇",
+        "line": 4
+      },
+      {
+        "age": 8,
+        "year": 1938,
+        "gua": "天风姤",
+        "line": 5
+      },
+      {
+        "age": 9,
+        "year": 1939,
+        "gua": "水雷屯",
+        "line": 2
+      },
+      {
+        "age": 10,
+        "year": 1940,
+        "gua": "地雷复",
+        "line": 1
+      }
+    ],
+    "source": "tianji.exe",
+    "collectedAt": "2026-04-07T17:32:55.695980",
+    "notes": "模拟数据（占位）",
+    "coverageTags": [
+      "cal:lunar",
+      "decade:1927s",
+      "shichen:午"
+    ]
+  },
+  {
+    "id": "TJ-TRUTH-099",
+    "calendar": "lunar",
+    "birth": "1944-08-05 13:30",
+    "location": "北京",
+    "gender": "male",
+    "civilSlot": "未",
+    "pillars": {
+      "year": "甲子",
+      "month": "丙寅",
+      "day": "戊辰",
+      "hour": "庚午"
+    },
+    "xiantian": "兑为泽",
+    "houtian": "山水蒙",
+    "liunian": [
+      {
+        "age": 1,
+        "year": 1945,
+        "gua": "坎为水",
+        "line": 2
+      },
+      {
+        "age": 2,
+        "year": 1946,
+        "gua": "坤为地",
+        "line": 2
+      },
+      {
+        "age": 3,
+        "year": 1947,
+        "gua": "水雷屯",
+        "line": 3
+      },
+      {
+        "age": 4,
+        "year": 1948,
+        "gua": "兑为泽",
+        "line": 6
+      },
+      {
+        "age": 5,
+        "year": 1949,
+        "gua": "山水蒙",
+        "line": 2
+      },
+      {
+        "age": 6,
+        "year": 1950,
+        "gua": "水雷屯",
+        "line": 4
+      },
+      {
+        "age": 7,
+        "year": 1951,
+        "gua": "火风鼎",
+        "line": 1
+      },
+      {
+        "age": 8,
+        "year": 1952,
+        "gua": "坎为水",
+        "line": 4
+      },
+      {
+        "age": 9,
+        "year": 1953,
+        "gua": "艮为山",
+        "line": 2
+      },
+      {
+        "age": 10,
+        "year": 1954,
+        "gua": "兑为泽",
+        "line": 6
+      }
+    ],
+    "source": "tianji.exe",
+    "collectedAt": "2026-04-07T17:32:55.695980",
+    "notes": "模拟数据（占位）",
+    "coverageTags": [
+      "cal:lunar",
+      "decade:1937s",
+      "shichen:未"
+    ]
+  },
+  {
+    "id": "TJ-TRUTH-100",
+    "calendar": "lunar",
+    "birth": "2014-07-17 19:30",
+    "location": "武汉",
+    "gender": "female",
+    "civilSlot": "戌",
+    "pillars": {
+      "year": "甲子",
+      "month": "丙寅",
+      "day": "戊辰",
+      "hour": "庚午"
+    },
+    "xiantian": "风火家人",
+    "houtian": "兑为泽",
+    "liunian": [
+      {
+        "age": 1,
+        "year": 2015,
+        "gua": "乾为天",
+        "line": 2
+      },
+      {
+        "age": 2,
+        "year": 2016,
+        "gua": "艮为山",
+        "line": 1
+      },
+      {
+        "age": 3,
+        "year": 2017,
+        "gua": "山水蒙",
+        "line": 6
+      },
+      {
+        "age": 4,
+        "year": 2018,
+        "gua": "兑为泽",
+        "line": 1
+      },
+      {
+        "age": 5,
+        "year": 2019,
+        "gua": "巽为风",
+        "line": 3
+      },
+      {
+        "age": 6,
+        "year": 2020,
+        "gua": "火风鼎",
+        "line": 3
+      },
+      {
+        "age": 7,
+        "year": 2021,
+        "gua": "火风鼎",
+        "line": 5
+      },
+      {
+        "age": 8,
+        "year": 2022,
+        "gua": "山水蒙",
+        "line": 1
+      },
+      {
+        "age": 9,
+        "year": 2023,
+        "gua": "震为雷",
+        "line": 3
+      },
+      {
+        "age": 10,
+        "year": 2024,
+        "gua": "火风鼎",
+        "line": 1
+      }
+    ],
+    "source": "tianji.exe",
+    "collectedAt": "2026-04-07T17:32:55.696500",
+    "notes": "模拟数据（占位）",
+    "coverageTags": [
+      "cal:lunar",
+      "decade:2007s",
+      "shichen:戌"
+    ]
+  }
+]

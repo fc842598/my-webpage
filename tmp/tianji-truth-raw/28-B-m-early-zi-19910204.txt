@@ -1,0 +1,152 @@
+id: B-19910204-m-early-zi
+birth: 1991-02-04 00:30
+gender: male
+comboSelected: 早子(0~1)
+
+[#32770] 天纪 ck.w
+[Edit] 大耗
+[Edit] 临官
+[Edit] 破碎
+[Edit] 辛巳
+[Edit] 46-55                事业宫
+[Edit] 太阳旺化禄
+[Edit] 伏兵
+[Edit] 天伤
+[Edit] 截路
+[Edit] 帝旺
+[Edit] 台辅
+[Edit] 天福
+[Edit] 壬午
+[Edit] 56-65                友仆宫
+[Edit] 天同平化忌
+[Edit] 文曲地
+[Edit] 病符
+[Edit] 冠带
+[Edit] 阴煞
+[Edit] 八座
+[Edit] 恩光
+[Edit] 解神凤阁寡宿
+[Edit] 庚辰
+[Edit] 36-45                田宅宫
+[Edit] 37岁 顺行
+[Edit] 铃星利
+[Edit] 左辅
+[Edit] 喜神
+[Edit] 沐浴
+[Edit] 天喜
+[Edit] 咸池
+[Edit] 天德
+[Edit] 己卯
+[Edit] 26-35                福德宫
+[Edit] 飞廉
+[Edit] 长生
+[Edit] 封诰
+[Edit] 天月
+[Edit] 蜚廉
+[Edit] 天厨
+[Edit] 戊寅
+[Edit] 16-25                父母宫
+[Edit] 廉贞利
+[Edit] 七杀庙
+[Edit] 火星地
+[Edit] 奏书
+[Edit] 养
+[Edit] 天魁
+[Edit] 己丑
+[Edit] 6-15     身 宫  命 宫
+[Edit] 天梁庙
+[Edit] 将军
+[Edit] 胎
+[Edit] 天姚
+[Edit] 天哭
+[Edit] 天虚
+[Edit] 戊子
+[Edit] 116-125            兄弟宫
+[Edit] 天相地
+[Edit] 地劫
+[Edit] 地空
+[Edit] 小耗
+[Edit] 空亡
+[Edit] 绝
+[Edit] 右弼
+[Edit] 天巫
+[Edit] 月德
+[Edit] 天官
+[Edit] 丁亥
+[Edit] 106-115            夫妻宫
+[Edit] 巨门陷
+[Edit] 文昌陷
+[Edit] 青龙
+[Edit] 旬中
+[Edit] 墓
+[Edit] 三台
+[Edit] 天贵
+[Edit] 龙池
+[Edit] 华盖
+[Edit] 丙戌
+[Edit] 96-105               子女宫
+[Edit] 紫微旺
+[Edit] 贪狼利
+[Edit] 擎羊陷
+[Edit] 力士
+[Edit] 死
+[Edit] 红鸾
+[Edit] 乙酉
+[Edit] 86-95                财帛宫
+[Edit] 天机地
+[Edit] 太阴利化科
+[Edit] 天马
+[Edit] 博士
+[Edit] 天使
+[Edit] 病
+[Edit] 禄存庙
+[Edit] 天刑
+[Edit] 孤辰
+[Edit] 甲申
+[Edit] 76-85                疾厄宫
+[Edit] 天府庙
+[Edit] 陀罗庙
+[Edit] 天钺
+[Edit] 官府
+[Edit] 空亡
+[Edit] 衰
+[Edit] 天空
+[Edit] 天才
+[Edit] 天寿
+[Edit] 癸未
+[Edit] 66-75                迁移宫
+[Static] 姓名
+[Edit] 匿名者
+[Button] 男
+[Button] 女
+[Button] 西历
+[Edit] 1991
+[Edit] 年    年
+[Edit] 2
+[Edit] 月		月
+[Edit] 4
+[Edit] 日    日
+[Button] 农历
+[Edit] 1990
+[Edit] 12
+[Edit] 20
+[Static] 时辰
+[ComboBox] 早子(0~1)
+[Edit] 庚午年腊月二十
+[Edit] 阳男
+[Edit] 火六局
+[Button] 开始计算
+[Button] 存储姓名
+[Button] 历史记录
+[Button] 额外诸星
+[Button] 月,日卦
+[Button] 清除画面
+[SysListView32] List3
+[SysListView32] List3
+[SysListView32] List3
+[Edit] 先天卦:水火既济
+[SysListView32] List3
+[Edit] 四柱 : 辛未 庚寅 乙巳 丙子
+[Edit] 后天卦:山水蒙
+[Edit] 武曲平化权
+[Edit] 破军平

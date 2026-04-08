@@ -1,0 +1,370 @@
+[
+  {
+    "id": "1960-01-01-0030-f",
+    "calendar": "solar",
+    "birth": "1960-01-01 00:30",
+    "location": "Beijing",
+    "gender": "female",
+    "civilSlot": "early-zi",
+    "comboSelected": "早子(0~1)",
+    "genderText": "阴女",
+    "wuxing": "水二局",
+    "lunar": "己亥年腊月初三",
+    "pillars": {
+      "raw": "四柱 : 己亥 丙子 戊子 壬子",
+      "year": "己亥",
+      "month": "丙子",
+      "day": "戊子",
+      "hour": "壬子"
+    },
+    "xiantian": "风山渐",
+    "yuanTangLine": "待复核",
+    "houtian": "地风升",
+    "coverageTags": [
+      "female",
+      "early-zi",
+      "ordinary"
+    ],
+    "notes": "female early-zi ordinary sample 1; combo/hour branch consistent"
+  },
+  {
+    "id": "1960-01-09-0030-f",
+    "calendar": "solar",
+    "birth": "1960-01-09 00:30",
+    "location": "Beijing",
+    "gender": "female",
+    "civilSlot": "early-zi",
+    "comboSelected": "早子(0~1)",
+    "genderText": "阴女",
+    "wuxing": "水二局",
+    "lunar": "己亥年腊月十一",
+    "pillars": {
+      "raw": "四柱 : 己亥 丁丑 丙申 戊子",
+      "year": "己亥",
+      "month": "丁丑",
+      "day": "丙申",
+      "hour": "戊子"
+    },
+    "xiantian": "山风蛊",
+    "yuanTangLine": "待复核",
+    "houtian": "艮为山",
+    "coverageTags": [
+      "female",
+      "early-zi",
+      "ordinary"
+    ],
+    "notes": "female early-zi ordinary sample 2; combo/hour branch consistent"
+  },
+  {
+    "id": "1960-01-01-1600-f",
+    "calendar": "solar",
+    "birth": "1960-01-01 16:00",
+    "location": "Beijing",
+    "gender": "female",
+    "civilSlot": "申",
+    "comboSelected": "申(15~17)",
+    "genderText": "阴女",
+    "wuxing": "木三局",
+    "lunar": "己亥年腊月初三",
+    "pillars": {
+      "raw": "四柱 : 己亥 丙子 戊子 庚申",
+      "year": "己亥",
+      "month": "丙子",
+      "day": "戊子",
+      "hour": "庚申"
+    },
+    "xiantian": "山雷颐",
+    "yuanTangLine": "待复核",
+    "houtian": "雷火丰",
+    "coverageTags": [
+      "female",
+      "lower-six",
+      "ordinary"
+    ],
+    "notes": "female lower-six ordinary shen sample; combo/hour branch consistent"
+  },
+  {
+    "id": "1960-01-01-2000-f",
+    "calendar": "solar",
+    "birth": "1960-01-01 20:00",
+    "location": "Beijing",
+    "gender": "female",
+    "civilSlot": "戌",
+    "comboSelected": "戌(19~21)",
+    "genderText": "阴女",
+    "wuxing": "火六局",
+    "lunar": "己亥年腊月初三",
+    "pillars": {
+      "raw": "四柱 : 己亥 丙子 戊子 壬戌",
+      "year": "己亥",
+      "month": "丙子",
+      "day": "戊子",
+      "hour": "壬戌"
+    },
+    "xiantian": "山地剥",
+    "yuanTangLine": "待复核",
+    "houtian": "地风升",
+    "coverageTags": [
+      "female",
+      "lower-six",
+      "ordinary"
+    ],
+    "notes": "female lower-six ordinary xu sample; combo/hour branch consistent"
+  },
+  {
+    "id": "1960-01-01-0200-m",
+    "calendar": "solar",
+    "birth": "1960-01-01 02:00",
+    "location": "Beijing",
+    "gender": "male",
+    "civilSlot": "丑",
+    "comboSelected": "丑(1~3)",
+    "genderText": "阴男",
+    "wuxing": "水二局",
+    "lunar": "己亥年腊月初三",
+    "pillars": {
+      "raw": "四柱 : 己亥 丙子 戊子 癸丑",
+      "year": "己亥",
+      "month": "丙子",
+      "day": "戊子",
+      "hour": "癸丑"
+    },
+    "xiantian": "艮为山",
+    "yuanTangLine": "待复核",
+    "houtian": "山地剥",
+    "coverageTags": [
+      "male",
+      "upper-six-non-zi",
+      "ordinary"
+    ],
+    "notes": "male upper-six non-zi ordinary sample 1; combo/hour branch consistent"
+  },
+  {
+    "id": "1960-01-02-0400-m",
+    "calendar": "solar",
+    "birth": "1960-01-02 04:00",
+    "location": "Beijing",
+    "gender": "male",
+    "civilSlot": "寅",
+    "comboSelected": "寅(3~5)",
+    "genderText": "阴男",
+    "wuxing": "火六局",
+    "lunar": "己亥年腊月初四",
+    "pillars": {
+      "raw": "四柱 : 己亥 丙子 己丑 丙寅",
+      "year": "己亥",
+      "month": "丙子",
+      "day": "己丑",
+      "hour": "丙寅"
+    },
+    "xiantian": "天雷无妄",
+    "yuanTangLine": "待复核",
+    "houtian": "雷火丰",
+    "coverageTags": [
+      "male",
+      "upper-six-non-zi",
+      "ordinary"
+    ],
+    "notes": "male upper-six non-zi ordinary sample 2; combo/hour branch consistent"
+  },
+  {
+    "id": "1960-01-01-0800-m",
+    "calendar": "solar",
+    "birth": "1960-01-01 08:00",
+    "location": "Beijing",
+    "gender": "male",
+    "civilSlot": "辰",
+    "comboSelected": "辰(7~9)",
+    "genderText": "阴男",
+    "wuxing": "金四局",
+    "lunar": "己亥年腊月初三",
+    "pillars": {
+      "raw": "四柱 : 己亥 丙子 戊子 丙辰",
+      "year": "己亥",
+      "month": "丙子",
+      "day": "戊子",
+      "hour": "丙辰"
+    },
+    "xiantian": "风山渐",
+    "yuanTangLine": "待复核",
+    "houtian": "艮为山",
+    "coverageTags": [
+      "male",
+      "upper-six-non-zi",
+      "ordinary"
+    ],
+    "notes": "male upper-six non-zi ordinary multi-hex sample; combo/hour branch consistent"
+  },
+  {
+    "id": "1960-01-01-0400-f",
+    "calendar": "solar",
+    "birth": "1960-01-01 04:00",
+    "location": "Beijing",
+    "gender": "female",
+    "civilSlot": "寅",
+    "comboSelected": "寅(3~5)",
+    "genderText": "阴女",
+    "wuxing": "火六局",
+    "lunar": "己亥年腊月初三",
+    "pillars": {
+      "raw": "四柱 : 己亥 丙子 戊子 甲寅",
+      "year": "己亥",
+      "month": "丙子",
+      "day": "戊子",
+      "hour": "甲寅"
+    },
+    "xiantian": "天水讼",
+    "yuanTangLine": "待复核",
+    "houtian": "水火既济",
+    "coverageTags": [
+      "female",
+      "upper-six-non-zi",
+      "ordinary"
+    ],
+    "notes": "female upper-six non-zi ordinary sample 1; combo/hour branch consistent"
+  },
+  {
+    "id": "1960-01-01-0800-f",
+    "calendar": "solar",
+    "birth": "1960-01-01 08:00",
+    "location": "Beijing",
+    "gender": "female",
+    "civilSlot": "辰",
+    "comboSelected": "辰(7~9)",
+    "genderText": "阴女",
+    "wuxing": "金四局",
+    "lunar": "己亥年腊月初三",
+    "pillars": {
+      "raw": "四柱 : 己亥 丙子 戊子 丙辰",
+      "year": "己亥",
+      "month": "丙子",
+      "day": "戊子",
+      "hour": "丙辰"
+    },
+    "xiantian": "山风蛊",
+    "yuanTangLine": "待复核",
+    "houtian": "水山蹇",
+    "coverageTags": [
+      "female",
+      "upper-six-non-zi",
+      "ordinary"
+    ],
+    "notes": "female upper-six non-zi ordinary multi-hex sample; combo/hour branch consistent"
+  },
+  {
+    "id": "1960-01-16-0400-m",
+    "calendar": "solar",
+    "birth": "1960-01-16 04:00",
+    "location": "Beijing",
+    "gender": "male",
+    "civilSlot": "寅",
+    "comboSelected": "寅(3~5)",
+    "genderText": "阴男",
+    "wuxing": "火六局",
+    "lunar": "己亥年腊月十八",
+    "pillars": {
+      "raw": "四柱 : 己亥 丁丑 癸卯 甲寅",
+      "year": "己亥",
+      "month": "丁丑",
+      "day": "癸卯",
+      "hour": "甲寅"
+    },
+    "xiantian": "水雷屯",
+    "yuanTangLine": "待复核",
+    "houtian": "地水师",
+    "coverageTags": [
+      "male",
+      "upper-six-non-zi",
+      "three-zizun",
+      "water-thunder-tun"
+    ],
+    "notes": "upper-six non-zi three-zizun water-thunder-tun; combo/hour branch consistent"
+  },
+  {
+    "id": "1960-01-10-2000-f",
+    "calendar": "solar",
+    "birth": "1960-01-10 20:00",
+    "location": "Beijing",
+    "gender": "female",
+    "civilSlot": "戌",
+    "comboSelected": "戌(19~21)",
+    "genderText": "阴女",
+    "wuxing": "火六局",
+    "lunar": "己亥年腊月十二",
+    "pillars": {
+      "raw": "四柱 : 己亥 丁丑 丁酉 庚戌",
+      "year": "己亥",
+      "month": "丁丑",
+      "day": "丁酉",
+      "hour": "庚戌"
+    },
+    "xiantian": "水雷屯",
+    "yuanTangLine": "待复核",
+    "houtian": "地水师",
+    "coverageTags": [
+      "female",
+      "lower-six",
+      "three-zizun",
+      "water-thunder-tun"
+    ],
+    "notes": "female lower-six three-zizun water-thunder-tun; combo/hour branch consistent"
+  },
+  {
+    "id": "1960-01-11-1200-f",
+    "calendar": "solar",
+    "birth": "1960-01-11 12:00",
+    "location": "Beijing",
+    "gender": "female",
+    "civilSlot": "午",
+    "comboSelected": "午(11~13)",
+    "genderText": "阴女",
+    "wuxing": "土五局",
+    "lunar": "己亥年腊月十三",
+    "pillars": {
+      "raw": "四柱 : 己亥 丁丑 戊戌 戊午",
+      "year": "己亥",
+      "month": "丁丑",
+      "day": "戊戌",
+      "hour": "戊午"
+    },
+    "xiantian": "水山蹇",
+    "yuanTangLine": "待复核",
+    "houtian": "火水未济",
+    "coverageTags": [
+      "female",
+      "lower-six",
+      "three-zizun",
+      "water-mountain-jian"
+    ],
+    "notes": "female lower-six three-zizun water-mountain-jian; combo/hour branch consistent"
+  },
+  {
+    "id": "1960-01-04-1200-f",
+    "calendar": "solar",
+    "birth": "1960-01-04 12:00",
+    "location": "Beijing",
+    "gender": "female",
+    "civilSlot": "午",
+    "comboSelected": "午(11~13)",
+    "genderText": "阴女",
+    "wuxing": "土五局",
+    "lunar": "己亥年腊月初六",
+    "pillars": {
+      "raw": "四柱 : 己亥 丙子 辛卯 甲午",
+      "year": "己亥",
+      "month": "丙子",
+      "day": "辛卯",
+      "hour": "甲午"
+    },
+    "xiantian": "坎为水",
+    "yuanTangLine": "待复核",
+    "houtian": "泽水困",
+    "coverageTags": [
+      "female",
+      "lower-six",
+      "three-zizun",
+      "kan-wei-shui"
+    ],
+    "notes": "female lower-six three-zizun kan-wei-shui; combo/hour branch consistent"
+  }
+]

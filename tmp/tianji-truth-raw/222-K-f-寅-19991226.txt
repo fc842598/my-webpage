@@ -1,0 +1,153 @@
+id: K-19991226-f-寅
+birth: 1999-12-26 04:00
+gender: female
+comboSelected: 寅(3~5)
+
+[#32770] 天纪 ck.w
+[Edit] 官府
+[Edit] 天使
+[Edit] 临官
+[Edit] 孤辰
+[Edit] 蜚廉
+[Edit] 破碎
+[Edit] 天寿
+[Edit] 己巳
+[Edit] 76-85                疾厄宫
+[Edit] 贪狼旺化权
+[Edit] 文曲陷化忌
+[Edit] 禄存庙
+[Edit] 博士
+[Edit] 帝旺
+[Edit] 阴煞
+[Edit] 八座
+[Edit] 天喜
+[Edit] 庚午
+[Edit] 86-95                财帛宫
+[Edit] 天府庙
+[Edit] 廉贞利
+[Edit] 伏兵
+[Edit] 冠带
+[Edit] 封诰
+[Edit] 天空
+[Edit] 戊辰
+[Edit] 66-75                迁移宫
+[Edit] 大耗
+[Edit] 天伤
+[Edit] 沐浴
+[Edit] 天哭
+[Edit] 丁卯
+[Edit] 56-65                友仆宫
+[Edit] 破军地
+[Edit] 左辅
+[Edit] 病符
+[Edit] 长生
+[Edit] 天巫
+[Edit] 天福
+[Edit] 丙寅
+[Edit] 46-55    身 宫  事业宫
+[Edit] 地劫
+[Edit] 喜神
+[Edit] 养
+[Edit] 恩光
+[Edit] 寡宿
+[Edit] 天才
+[Edit] 丁丑
+[Edit] 36-45                田宅宫
+[Edit] 紫微平
+[Edit] 铃星陷
+[Edit] 右弼
+[Edit] 飞廉
+[Edit] 胎
+[Edit] 天魁
+[Edit] 红鸾
+[Edit] 咸池
+[Edit] 天德
+[Edit] 丙子
+[Edit] 26-35                福德宫
+[Edit] 天机平
+[Edit] 火星利
+[Edit] 奏书
+[Edit] 绝
+[Edit] 天姚
+[Edit] 天贵
+[Edit] 乙亥
+[Edit] 16-25                父母宫
+[Edit] 七杀庙
+[Edit] 将军
+[Edit] 墓
+[Edit] 天月
+[Edit] 甲戌
+[Edit] 6-15                  命 宫
+[Edit] 28岁 逆行
+[Edit] 太阳平
+[Edit] 天梁地化科
+[Edit] 地空
+[Edit] 小耗
+[Edit] 空亡
+[Edit] 空亡
+[Edit] 死
+[Edit] 天虚
+[Edit] 天官
+[Edit] 癸酉
+[Edit] 116-125            兄弟宫
+[Edit] 武曲地化禄
+[Edit] 天相庙
+[Edit] 文昌地
+[Edit] 青龙
+[Edit] 旬中
+[Edit] 截路
+[Edit] 病
+[Edit] 天钺
+[Edit] 台辅
+[Edit] 三台
+[Edit] 月德
+[Edit] 天厨
+[Edit] 壬申
+[Edit] 106-115            夫妻宫
+[Edit] 天同
+[Edit] 巨门
+[Edit] 擎羊庙
+[Edit] 力士
+[Edit] 衰
+[Edit] 天刑
+[Edit] 解神
+[Edit] 龙池
+[Edit] 凤阁华盖
+[Edit] 辛未
+[Edit] 96-105               子女宫
+[Static] 姓名
+[Edit] 匿名者
+[Button] 男
+[Button] 女
+[Button] 西历
+[Edit] 1999
+[Edit] 年    年
+[Edit] 12
+[Edit] 月		月
+[Edit] 26
+[Edit] 日    日
+[Button] 农历
+[Edit] 1999
+[Edit] 11
+[Edit] 19
+[Static] 时辰
+[ComboBox] 寅(3~5)
+[Edit] 己卯年十一月十九
+[Edit] 阴女
+[Edit] 火六局
+[Button] 开始计算
+[Button] 存储姓名
+[Button] 历史记录
+[Button] 额外诸星
+[Button] 月,日卦
+[Button] 清除画面
+[SysListView32] List3
+[SysListView32] List3
+[SysListView32] List3
+[Edit] 先天卦:泽山咸
+[SysListView32] List3
+[Edit] 四柱 : 己卯 丙子 壬子 壬寅
+[Edit] 后天卦:山雷颐
+[Edit] 太阴陷
+[Edit] 天马
+[Edit] 陀罗陷

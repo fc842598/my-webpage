@@ -1,0 +1,151 @@
+id: L-20210328-m-午
+birth: 2021-03-28 12:00
+gender: male
+comboSelected: 午(11~13)
+
+[#32770] 天纪 ck.w
+[Edit] 将军
+[Edit] 空亡
+[Edit] 空亡
+[Edit] 绝
+[Edit] 天月
+[Edit] 天哭
+[Edit] 龙池
+[Edit] 天福
+[Edit] 癸巳
+[Edit] 46-55                财帛宫
+[Edit] 紫微庙
+[Edit] 天魁
+[Edit] 小耗
+[Edit] 墓
+[Edit] 八座
+[Edit] 恩光
+[Edit] 月德
+[Edit] 咸池天厨
+[Edit] 甲午
+[Edit] 36-45                子女宫
+[Edit] 七杀庙
+[Edit] 文昌地化忌
+[Edit] 铃星陷
+[Edit] 天使
+[Edit] 旬中
+[Edit] 截路
+[Edit] 胎
+[Edit] 壬辰
+[Edit] 56-65                疾厄宫
+[Edit] 太阳庙化权
+[Edit] 天梁庙
+[Edit] 飞廉
+[Edit] 养
+[Edit] 辛卯
+[Edit] 66-75                迁移宫
+[Edit] 武曲地
+[Edit] 天相庙
+[Edit] 天钺
+[Edit] 喜神
+[Edit] 天伤
+[Edit] 长生
+[Edit] 天姚
+[Edit] 红鸾
+[Edit] 孤辰
+[Edit] 天空
+[Edit] 庚寅
+[Edit] 76-85                友仆宫
+[Edit] 天同
+[Edit] 巨门化禄
+[Edit] 病符
+[Edit] 沐浴
+[Edit] 破碎
+[Edit] 华盖
+[Edit] 辛丑
+[Edit] 86-95                事业宫
+[Edit] 贪狼旺
+[Edit] 大耗
+[Edit] 冠带
+[Edit] 台辅
+[Edit] 阴煞
+[Edit] 天贵
+[Edit] 庚子
+[Edit] 96-105               田宅宫
+[Edit] 06岁 顺行
+[Edit] 太阴庙
+[Edit] 天马
+[Edit] 伏兵
+[Edit] 临官
+[Edit] 己亥
+[Edit] 106-115            福德宫
+[Edit] 天府庙
+[Edit] 廉贞利
+[Edit] 文曲陷化科
+[Edit] 官府
+[Edit] 帝旺
+[Edit] 擎羊庙
+[Edit] 天刑
+[Edit] 寡宿
+[Edit] 天才
+[Edit] 天寿天德
+[Edit] 戊戌
+[Edit] 116-125            父母宫
+[Edit] 火星地
+[Edit] 右弼
+[Edit] 禄存庙
+[Edit] 博士
+[Edit] 衰
+[Edit] 解神
+[Edit] 凤阁
+[Edit] 蜚廉
+[Edit] 天官
+[Edit] 丁酉
+[Edit] 6-15     身 宫  命 宫
+[Edit] 破军地
+[Edit] 陀罗陷
+[Edit] 力士
+[Edit] 病
+[Edit] 封诰
+[Edit] 天巫
+[Edit] 三台
+[Edit] 天喜
+[Edit] 丙申
+[Edit] 16-25                兄弟宫
+[Edit] 青龙
+[Edit] 死
+[Edit] 天虚
+[Edit] 乙未
+[Edit] 26-35                夫妻宫
+[Static] 姓名
+[Edit] 匿名者
+[Button] 男
+[Button] 女
+[Button] 西历
+[Edit] 2021
+[Edit] 年    年
+[Edit] 3
+[Edit] 月		月
+[Edit] 28
+[Edit] 日    日
+[Button] 农历
+[Edit] 2021
+[Edit] 2
+[Edit] 16
+[Static] 时辰
+[ComboBox] 午(11~13)
+[Edit] 辛丑年二月十六
+[Edit] 阴男
+[Edit] 火六局
+[Button] 开始计算
+[Button] 存储姓名
+[Button] 历史记录
+[Button] 额外诸星
+[Button] 月,日卦
+[Button] 清除画面
+[SysListView32] List3
+[SysListView32] List3
+[SysListView32] List3
+[Edit] 先天卦:地天泰
+[SysListView32] List3
+[Edit] 四柱 : 辛丑 辛卯 乙亥 壬午
+[Edit] 后天卦:天雷无妄
+[Edit] 天机平
+[Edit] 地劫
+[Edit] 地空
+[Edit] 左辅

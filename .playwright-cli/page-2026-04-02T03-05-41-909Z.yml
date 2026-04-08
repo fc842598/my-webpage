@@ -1,0 +1,867 @@
+- generic [ref=e1]:
+  - banner [ref=e2]:
+    - generic [ref=e3]:
+      - link "☽ 紫微斗数" [ref=e4] [cursor=pointer]:
+        - /url: ../index.html
+        - generic [ref=e5]: ☽
+        - text: 紫微斗数
+      - navigation [ref=e6]:
+        - link "首页" [ref=e7] [cursor=pointer]:
+          - /url: ../index.html
+        - link "免费排盘" [ref=e8] [cursor=pointer]:
+          - /url: chart.html
+  - generic [ref=e9]:
+    - generic [ref=e10]:
+      - generic [ref=e13]: 紫微排盘
+      - button "🕐 排盘记录" [ref=e14] [cursor=pointer]
+    - generic [ref=e15]:
+      - generic [ref=e16]:
+        - generic [ref=e17]:
+          - generic [ref=e18]: "姓名:"
+          - textbox "请输入姓名（选填）" [ref=e19]
+        - generic [ref=e20]:
+          - button "男" [ref=e21] [cursor=pointer]
+          - button "女" [ref=e22] [cursor=pointer]
+      - generic [ref=e23]:
+        - generic [ref=e24]:
+          - generic [ref=e25]:
+            - generic [ref=e26]: "*"
+            - generic [ref=e27]: 出生时间
+          - generic [ref=e28]:
+            - button "公历" [ref=e29] [cursor=pointer]
+            - button "农历" [ref=e30] [cursor=pointer]
+        - generic [ref=e31]:
+          - spinbutton [ref=e32]: "1969"
+          - combobox [ref=e33]:
+            - option "月"
+            - option "1月"
+            - option "2月"
+            - option "3月" [selected]
+            - option "4月"
+            - option "5月"
+            - option "6月"
+            - option "7月"
+            - option "8月"
+            - option "9月"
+            - option "10月"
+            - option "11月"
+            - option "12月"
+          - combobox [ref=e34]:
+            - option "日"
+            - option "1日"
+            - option "2日"
+            - option "3日"
+            - option "4日"
+            - option "5日"
+            - option "6日"
+            - option "7日"
+            - option "8日"
+            - option "9日"
+            - option "10日"
+            - option "11日"
+            - option "12日"
+            - option "13日"
+            - option "14日"
+            - option "15日"
+            - option "16日"
+            - option "17日"
+            - option "18日"
+            - option "19日"
+            - option "20日"
+            - option "21日"
+            - option "22日"
+            - option "23日"
+            - option "24日"
+            - option "25日"
+            - option "26日" [selected]
+            - option "27日"
+            - option "28日"
+            - option "29日"
+            - option "30日"
+            - option "31日"
+      - generic [ref=e36]:
+        - generic [ref=e37]: 出生时刻
+        - generic [ref=e38]:
+          - combobox [ref=e39]:
+            - option "00"
+            - option "01"
+            - option "02"
+            - option "03"
+            - option "04"
+            - option "05"
+            - option "06"
+            - option "07"
+            - option "08"
+            - option "09"
+            - option "10"
+            - option "11"
+            - option "12"
+            - option "13"
+            - option "14"
+            - option "15"
+            - option "16"
+            - option "17"
+            - option "18"
+            - option "19"
+            - option "20"
+            - option "21"
+            - option "22" [selected]
+            - option "23"
+          - generic [ref=e40]: 时
+          - combobox [ref=e41]:
+            - option "00" [selected]
+            - option "01"
+            - option "02"
+            - option "03"
+            - option "04"
+            - option "05"
+            - option "06"
+            - option "07"
+            - option "08"
+            - option "09"
+            - option "10"
+            - option "11"
+            - option "12"
+            - option "13"
+            - option "14"
+            - option "15"
+            - option "16"
+            - option "17"
+            - option "18"
+            - option "19"
+            - option "20"
+            - option "21"
+            - option "22"
+            - option "23"
+            - option "24"
+            - option "25"
+            - option "26"
+            - option "27"
+            - option "28"
+            - option "29"
+            - option "30"
+            - option "31"
+            - option "32"
+            - option "33"
+            - option "34"
+            - option "35"
+            - option "36"
+            - option "37"
+            - option "38"
+            - option "39"
+            - option "40"
+            - option "41"
+            - option "42"
+            - option "43"
+            - option "44"
+            - option "45"
+            - option "46"
+            - option "47"
+            - option "48"
+            - option "49"
+            - option "50"
+            - option "51"
+            - option "52"
+            - option "53"
+            - option "54"
+            - option "55"
+            - option "56"
+            - option "57"
+            - option "58"
+            - option "59"
+          - generic [ref=e42]: 分
+      - generic [ref=e43]:
+        - text: 22:00 真太阳时修正后仍在
+        - strong [ref=e496]: 亥时
+        - text: ，排盘采用
+        - strong [ref=e497]: 亥时
+      - generic [ref=e46]:
+        - generic [ref=e47]:
+          - generic [ref=e48]: 出生地点
+          - generic [ref=e49]: （影响真太阳时）
+        - textbox "搜索城市，如：北京、Tokyo、London" [ref=e51]
+      - generic [ref=e52]:
+        - generic [ref=e53]:
+          - generic [ref=e54]: 真太阳时
+          - generic [ref=e55]: 默认估算
+        - generic [ref=e56]:
+          - text: "北京时间（默认）: 22:00 · 亥时"
+          - generic [ref=e498]:
+            - text: "真太阳时: 21:39 ·"
+            - strong [ref=e499]: 亥时
+            - text: （无出生地，以北京经度估算）
+          - text: 偏差 -21分钟（经度修正 -14.4分，均时差 -6.3分）
+      - button "开 始 排 盘" [ref=e69] [cursor=pointer]
+      - paragraph [ref=e61]:
+        - text: 数据仅在本地浏览器运算，不上传，不储存。
+        - text: 算法基于
+        - link "iztro" [ref=e62] [cursor=pointer]:
+          - /url: https://github.com/SylarLong/iztro
+        - text: （MIT 许可）
+  - generic [ref=e71]:
+    - generic [ref=e73]: 紫微排盘
+    - generic [ref=e75]:
+      - generic [ref=e76] [cursor=pointer]:
+        - generic [ref=e835]:
+          - generic [ref=e837]: 科
+          - generic [ref=e839]: 天梁陷
+          - generic [ref=e840]:
+            - generic [ref=e841]: 左辅
+            - generic [ref=e842]: 陀罗
+            - generic [ref=e843]: 台辅
+            - generic [ref=e844]: 天月
+            - generic [ref=e845]: 破碎
+        - generic [ref=e846]:
+          - generic [ref=e847]:
+            - generic [ref=e848]: 病
+            - generic [ref=e849]: 力士
+          - generic [ref=e850]:
+            - generic [ref=e851]: 己巳
+            - generic [ref=e852]: 113–122
+            - generic [ref=e853]: 父母
+      - generic [ref=e96] [cursor=pointer]:
+        - generic [ref=e854]:
+          - generic [ref=e856]: 七杀旺
+          - generic [ref=e857]:
+            - generic [ref=e858]: 禄存
+            - generic [ref=e859]: 红鸾
+            - generic [ref=e860]: 咸池
+            - generic [ref=e861]: 恩光
+            - generic [ref=e862]: 天德
+        - generic [ref=e863]:
+          - generic [ref=e864]:
+            - generic [ref=e865]: 衰
+            - generic [ref=e866]: 博士
+          - generic [ref=e867]:
+            - generic [ref=e868]: 庚午
+            - generic [ref=e869]: 103–112
+            - generic [ref=e870]: 福德
+      - generic [ref=e113] [cursor=pointer]:
+        - generic [ref=e872]:
+          - generic [ref=e873]: 擎羊
+          - generic [ref=e874]: 寡宿
+        - generic [ref=e875]:
+          - generic [ref=e876]:
+            - generic [ref=e877]: 帝旺
+            - generic [ref=e878]: 官府
+          - generic [ref=e879]:
+            - generic [ref=e880]: 辛未
+            - generic [ref=e881]: 93–102
+            - generic [ref=e882]: 田宅
+      - generic [ref=e127] [cursor=pointer]:
+        - generic [ref=e883]:
+          - generic [ref=e885]: 廉贞庙
+          - generic [ref=e886]:
+            - generic [ref=e887]: 天钺
+            - generic [ref=e888]: 解神
+            - generic [ref=e889]: 天巫
+            - generic [ref=e890]: 天厨
+            - generic [ref=e891]: 截路
+        - generic [ref=e892]:
+          - generic [ref=e893]:
+            - generic [ref=e894]: 临官
+            - generic [ref=e895]: 伏兵
+          - generic [ref=e896]:
+            - generic [ref=e897]: 壬申
+            - generic [ref=e898]: 83–92
+            - generic [ref=e899]: 官禄
+      - generic [ref=e149] [cursor=pointer]:
+        - generic [ref=e901]:
+          - generic [ref=e902]: 紫微得
+          - generic [ref=e903]: 天相得
+        - generic [ref=e904]:
+          - generic [ref=e905]:
+            - generic [ref=e906]: 死
+            - generic [ref=e907]: 青龙
+          - generic [ref=e908]:
+            - generic [ref=e909]: 戊辰
+            - generic [ref=e910]: 3–12
+            - generic [ref=e911]: 命宫
+      - generic [ref=e166]:
+        - generic [ref=e167]: 紫微排盘
+        - generic [ref=e168]:
+          - generic [ref=e169]: 阳男
+          - generic [ref=e170]: 木三局
+        - generic [ref=e171]:
+          - generic [ref=e172]:
+            - generic [ref=e173]: 公历
+            - generic [ref=e174]: 公历 1969-03-26 22:00 亥时
+          - generic [ref=e175]:
+            - generic [ref=e176]: 农历
+            - generic [ref=e177]: 己酉 丁卯 庚子 丁亥
+          - generic [ref=e178]:
+            - generic [ref=e179]: 真太阳时
+            - generic [ref=e180]: 21:39（北京经度估算）
+          - generic [ref=e181]:
+            - generic [ref=e182]: 排盘时辰
+            - generic [ref=e183]: 亥时
+          - generic [ref=e184]:
+            - generic [ref=e185]: 节气四柱
+            - generic [ref=e186]:
+              - generic [ref=e577]:
+                - generic [ref=e578]: 己
+                - generic [ref=e579]: 酉
+              - generic [ref=e580]:
+                - generic [ref=e581]: 丁
+                - generic [ref=e582]: 卯
+              - generic [ref=e583]:
+                - generic [ref=e584]: 庚
+                - generic [ref=e585]: 子
+              - generic [ref=e586]:
+                - generic [ref=e587]: 丁
+                - generic [ref=e588]: 亥
+        - generic [ref=e199]:
+          - generic [ref=e200]:
+            - generic [ref=e201]: 先天卦
+            - generic [ref=e202]: 风水涣
+          - generic [ref=e203]:
+            - generic [ref=e204]: 后天卦
+            - generic [ref=e205]: 水天需
+          - generic [ref=e206]:
+            - generic [ref=e207]: 流年卦
+            - generic [ref=e208]: 58岁 · 地泽临
+        - generic [ref=e209]:
+          - button "时 ↑" [ref=e210] [cursor=pointer]
+          - button "时 ↓" [ref=e211] [cursor=pointer]
+      - generic [ref=e212] [cursor=pointer]:
+        - generic [ref=e913]:
+          - generic [ref=e914]: 右弼
+          - generic [ref=e915]: 铃星
+          - generic [ref=e916]: 天官
+          - generic [ref=e917]: 空亡
+          - generic [ref=e918]: 天哭
+          - generic [ref=e919]: 天伤
+        - generic [ref=e920]:
+          - generic [ref=e921]:
+            - generic [ref=e922]: 冠带
+            - generic [ref=e923]: 大耗
+          - generic [ref=e924]:
+            - generic [ref=e925]: 癸酉
+            - generic [ref=e926]: 73–82
+            - generic [ref=e927]: 仆役
+      - generic [ref=e231] [cursor=pointer]:
+        - generic [ref=e928]:
+          - generic [ref=e930]: 忌
+          - generic [ref=e931]:
+            - generic [ref=e932]: 天机旺
+            - generic [ref=e933]: 巨门庙
+          - generic [ref=e934]:
+            - generic [ref=e935]: 文曲
+            - generic [ref=e936]: 旬空
+            - generic [ref=e937]: 天虚
+        - generic [ref=e938]:
+          - generic [ref=e939]:
+            - generic [ref=e940]: 墓
+            - generic [ref=e941]: 小耗
+          - generic [ref=e942]:
+            - generic [ref=e943]: 丁卯
+            - generic [ref=e944]: 13–22
+            - generic [ref=e945]: 兄弟
+      - generic [ref=e251] [cursor=pointer]:
+        - generic [ref=e946]:
+          - generic [ref=e948]: 破军旺
+          - generic [ref=e949]:
+            - generic [ref=e950]: 地劫
+            - generic [ref=e951]: 天贵
+            - generic [ref=e952]: 天空
+            - generic [ref=e953]: 天刑
+        - generic [ref=e954]:
+          - generic [ref=e955]:
+            - generic [ref=e956]: 沐浴
+            - generic [ref=e957]: 病符
+          - generic [ref=e958]:
+            - generic [ref=e959]: 甲戌
+            - generic [ref=e960]: 63–72
+            - generic [ref=e961]: 迁移
+          - generic [ref=e962]: 58岁
+      - generic [ref=e272] [cursor=pointer]:
+        - generic [ref=e963]:
+          - generic [ref=e965]: 权
+          - generic [ref=e967]: 贪狼平
+          - generic [ref=e968]:
+            - generic [ref=e969]: 火星
+            - generic [ref=e970]: 天姚
+            - generic [ref=e971]: 天福
+            - generic [ref=e972]: 月德
+        - generic [ref=e973]:
+          - generic [ref=e974]:
+            - generic [ref=e975]: 绝
+            - generic [ref=e976]: 将军
+          - generic [ref=e977]:
+            - generic [ref=e978]: 丙寅
+            - generic [ref=e979]: 23–32
+            - generic [ref=e980]: 身宫 夫妻
+      - generic [ref=e286] [cursor=pointer]:
+        - generic [ref=e981]:
+          - generic [ref=e982]:
+            - generic [ref=e983]: 太阳不
+            - generic [ref=e984]: 太阴庙
+          - generic [ref=e985]:
+            - generic [ref=e986]: 三台
+            - generic [ref=e987]: 八座
+            - generic [ref=e988]: 龙池
+            - generic [ref=e989]: 凤阁
+            - generic [ref=e990]: 天才
+            - generic [ref=e991]: 封诰
+            - generic [ref=e992]: 华盖
+            - generic [ref=e993]: 年解
+        - generic [ref=e994]:
+          - generic [ref=e995]:
+            - generic [ref=e996]: 胎
+            - generic [ref=e997]: 奏书
+          - generic [ref=e998]:
+            - generic [ref=e999]: 丁丑
+            - generic [ref=e1000]: 33–42
+            - generic [ref=e1001]: 子女
+      - generic [ref=e304] [cursor=pointer]:
+        - generic [ref=e1002]:
+          - generic [ref=e1004]: 禄
+          - generic [ref=e1005]:
+            - generic [ref=e1006]: 武曲旺
+            - generic [ref=e1007]: 天府庙
+          - generic [ref=e1008]:
+            - generic [ref=e1009]: 天魁
+            - generic [ref=e1010]: 地空
+            - generic [ref=e1011]: 天喜
+            - generic [ref=e1012]: 阴煞
+        - generic [ref=e1013]:
+          - generic [ref=e1014]:
+            - generic [ref=e1015]: 养
+            - generic [ref=e1016]: 飞廉
+          - generic [ref=e1017]:
+            - generic [ref=e1018]: 丙子
+            - generic [ref=e1019]: 43–52
+            - generic [ref=e1020]: 财帛
+      - generic [ref=e320] [cursor=pointer]:
+        - generic [ref=e1021]:
+          - generic [ref=e1023]: 天同庙
+          - generic [ref=e1024]:
+            - generic [ref=e1025]: 文昌
+            - generic [ref=e1026]: 天马
+            - generic [ref=e1027]: 天寿
+            - generic [ref=e1028]: 孤辰
+            - generic [ref=e1029]: 蜚廉
+            - generic [ref=e1030]: 天使
+        - generic [ref=e1031]:
+          - generic [ref=e1032]:
+            - generic [ref=e1033]: 长生
+            - generic [ref=e1034]: 喜神
+          - generic [ref=e1035]:
+            - generic [ref=e1036]: 乙亥
+            - generic [ref=e1037]: 53–62
+            - generic [ref=e1038]: 疾厄
+    - generic [ref=e339]:
+      - button "先天卦" [ref=e1039] [cursor=pointer]
+      - button "后天卦" [ref=e343] [cursor=pointer]
+      - button "◇ 流年卦 ◇" [active] [ref=e1040] [cursor=pointer]:
+        - generic [ref=e1041]: ◇
+        - text: 流年卦
+        - generic [ref=e1042]: ◇
+    - generic [ref=e1043]:
+      - button "◁" [ref=e1044] [cursor=pointer]
+      - generic [ref=e1045]:
+        - generic [ref=e1046] [cursor=pointer]:
+          - generic [ref=e1047]: 1岁
+          - generic [ref=e1048]: 1969年
+        - generic [ref=e1049] [cursor=pointer]:
+          - generic [ref=e1050]: 2岁
+          - generic [ref=e1051]: 1970年
+        - generic [ref=e1052] [cursor=pointer]:
+          - generic [ref=e1053]: 3岁
+          - generic [ref=e1054]: 1971年
+        - generic [ref=e1055] [cursor=pointer]:
+          - generic [ref=e1056]: 4岁
+          - generic [ref=e1057]: 1972年
+        - generic [ref=e1058] [cursor=pointer]:
+          - generic [ref=e1059]: 5岁
+          - generic [ref=e1060]: 1973年
+        - generic [ref=e1061] [cursor=pointer]:
+          - generic [ref=e1062]: 6岁
+          - generic [ref=e1063]: 1974年
+        - generic [ref=e1064] [cursor=pointer]:
+          - generic [ref=e1065]: 7岁
+          - generic [ref=e1066]: 1975年
+        - generic [ref=e1067] [cursor=pointer]:
+          - generic [ref=e1068]: 8岁
+          - generic [ref=e1069]: 1976年
+        - generic [ref=e1070] [cursor=pointer]:
+          - generic [ref=e1071]: 9岁
+          - generic [ref=e1072]: 1977年
+        - generic [ref=e1073] [cursor=pointer]:
+          - generic [ref=e1074]: 10岁
+          - generic [ref=e1075]: 1978年
+        - generic [ref=e1076] [cursor=pointer]:
+          - generic [ref=e1077]: 11岁
+          - generic [ref=e1078]: 1979年
+        - generic [ref=e1079] [cursor=pointer]:
+          - generic [ref=e1080]: 12岁
+          - generic [ref=e1081]: 1980年
+        - generic [ref=e1082] [cursor=pointer]:
+          - generic [ref=e1083]: 13岁
+          - generic [ref=e1084]: 1981年
+        - generic [ref=e1085] [cursor=pointer]:
+          - generic [ref=e1086]: 14岁
+          - generic [ref=e1087]: 1982年
+        - generic [ref=e1088] [cursor=pointer]:
+          - generic [ref=e1089]: 15岁
+          - generic [ref=e1090]: 1983年
+        - generic [ref=e1091] [cursor=pointer]:
+          - generic [ref=e1092]: 16岁
+          - generic [ref=e1093]: 1984年
+        - generic [ref=e1094] [cursor=pointer]:
+          - generic [ref=e1095]: 17岁
+          - generic [ref=e1096]: 1985年
+        - generic [ref=e1097] [cursor=pointer]:
+          - generic [ref=e1098]: 18岁
+          - generic [ref=e1099]: 1986年
+        - generic [ref=e1100] [cursor=pointer]:
+          - generic [ref=e1101]: 19岁
+          - generic [ref=e1102]: 1987年
+        - generic [ref=e1103] [cursor=pointer]:
+          - generic [ref=e1104]: 20岁
+          - generic [ref=e1105]: 1988年
+        - generic [ref=e1106] [cursor=pointer]:
+          - generic [ref=e1107]: 21岁
+          - generic [ref=e1108]: 1989年
+        - generic [ref=e1109] [cursor=pointer]:
+          - generic [ref=e1110]: 22岁
+          - generic [ref=e1111]: 1990年
+        - generic [ref=e1112] [cursor=pointer]:
+          - generic [ref=e1113]: 23岁
+          - generic [ref=e1114]: 1991年
+        - generic [ref=e1115] [cursor=pointer]:
+          - generic [ref=e1116]: 24岁
+          - generic [ref=e1117]: 1992年
+        - generic [ref=e1118] [cursor=pointer]:
+          - generic [ref=e1119]: 25岁
+          - generic [ref=e1120]: 1993年
+        - generic [ref=e1121] [cursor=pointer]:
+          - generic [ref=e1122]: 26岁
+          - generic [ref=e1123]: 1994年
+        - generic [ref=e1124] [cursor=pointer]:
+          - generic [ref=e1125]: 27岁
+          - generic [ref=e1126]: 1995年
+        - generic [ref=e1127] [cursor=pointer]:
+          - generic [ref=e1128]: 28岁
+          - generic [ref=e1129]: 1996年
+        - generic [ref=e1130] [cursor=pointer]:
+          - generic [ref=e1131]: 29岁
+          - generic [ref=e1132]: 1997年
+        - generic [ref=e1133] [cursor=pointer]:
+          - generic [ref=e1134]: 30岁
+          - generic [ref=e1135]: 1998年
+        - generic [ref=e1136] [cursor=pointer]:
+          - generic [ref=e1137]: 31岁
+          - generic [ref=e1138]: 1999年
+        - generic [ref=e1139] [cursor=pointer]:
+          - generic [ref=e1140]: 32岁
+          - generic [ref=e1141]: 2000年
+        - generic [ref=e1142] [cursor=pointer]:
+          - generic [ref=e1143]: 33岁
+          - generic [ref=e1144]: 2001年
+        - generic [ref=e1145] [cursor=pointer]:
+          - generic [ref=e1146]: 34岁
+          - generic [ref=e1147]: 2002年
+        - generic [ref=e1148] [cursor=pointer]:
+          - generic [ref=e1149]: 35岁
+          - generic [ref=e1150]: 2003年
+        - generic [ref=e1151] [cursor=pointer]:
+          - generic [ref=e1152]: 36岁
+          - generic [ref=e1153]: 2004年
+        - generic [ref=e1154] [cursor=pointer]:
+          - generic [ref=e1155]: 37岁
+          - generic [ref=e1156]: 2005年
+        - generic [ref=e1157] [cursor=pointer]:
+          - generic [ref=e1158]: 38岁
+          - generic [ref=e1159]: 2006年
+        - generic [ref=e1160] [cursor=pointer]:
+          - generic [ref=e1161]: 39岁
+          - generic [ref=e1162]: 2007年
+        - generic [ref=e1163] [cursor=pointer]:
+          - generic [ref=e1164]: 40岁
+          - generic [ref=e1165]: 2008年
+        - generic [ref=e1166] [cursor=pointer]:
+          - generic [ref=e1167]: 41岁
+          - generic [ref=e1168]: 2009年
+        - generic [ref=e1169] [cursor=pointer]:
+          - generic [ref=e1170]: 42岁
+          - generic [ref=e1171]: 2010年
+        - generic [ref=e1172] [cursor=pointer]:
+          - generic [ref=e1173]: 43岁
+          - generic [ref=e1174]: 2011年
+        - generic [ref=e1175] [cursor=pointer]:
+          - generic [ref=e1176]: 44岁
+          - generic [ref=e1177]: 2012年
+        - generic [ref=e1178] [cursor=pointer]:
+          - generic [ref=e1179]: 45岁
+          - generic [ref=e1180]: 2013年
+        - generic [ref=e1181] [cursor=pointer]:
+          - generic [ref=e1182]: 46岁
+          - generic [ref=e1183]: 2014年
+        - generic [ref=e1184] [cursor=pointer]:
+          - generic [ref=e1185]: 47岁
+          - generic [ref=e1186]: 2015年
+        - generic [ref=e1187] [cursor=pointer]:
+          - generic [ref=e1188]: 48岁
+          - generic [ref=e1189]: 2016年
+        - generic [ref=e1190] [cursor=pointer]:
+          - generic [ref=e1191]: 49岁
+          - generic [ref=e1192]: 2017年
+        - generic [ref=e1193] [cursor=pointer]:
+          - generic [ref=e1194]: 50岁
+          - generic [ref=e1195]: 2018年
+        - generic [ref=e1196] [cursor=pointer]:
+          - generic [ref=e1197]: 51岁
+          - generic [ref=e1198]: 2019年
+        - generic [ref=e1199] [cursor=pointer]:
+          - generic [ref=e1200]: 52岁
+          - generic [ref=e1201]: 2020年
+        - generic [ref=e1202] [cursor=pointer]:
+          - generic [ref=e1203]: 53岁
+          - generic [ref=e1204]: 2021年
+        - generic [ref=e1205] [cursor=pointer]:
+          - generic [ref=e1206]: 54岁
+          - generic [ref=e1207]: 2022年
+        - generic [ref=e1208] [cursor=pointer]:
+          - generic [ref=e1209]: 55岁
+          - generic [ref=e1210]: 2023年
+        - generic [ref=e1211] [cursor=pointer]:
+          - generic [ref=e1212]: 56岁
+          - generic [ref=e1213]: 2024年
+        - generic [ref=e1214] [cursor=pointer]:
+          - generic [ref=e1215]: 57岁
+          - generic [ref=e1216]: 2025年
+        - generic [ref=e1217] [cursor=pointer]:
+          - generic [ref=e1218]: 58岁
+          - generic [ref=e1219]: 2026年
+        - generic [ref=e1220] [cursor=pointer]:
+          - generic [ref=e1221]: 59岁
+          - generic [ref=e1222]: 2027年
+        - generic [ref=e1223] [cursor=pointer]:
+          - generic [ref=e1224]: 60岁
+          - generic [ref=e1225]: 2028年
+        - generic [ref=e1226] [cursor=pointer]:
+          - generic [ref=e1227]: 61岁
+          - generic [ref=e1228]: 2029年
+        - generic [ref=e1229] [cursor=pointer]:
+          - generic [ref=e1230]: 62岁
+          - generic [ref=e1231]: 2030年
+        - generic [ref=e1232] [cursor=pointer]:
+          - generic [ref=e1233]: 63岁
+          - generic [ref=e1234]: 2031年
+        - generic [ref=e1235] [cursor=pointer]:
+          - generic [ref=e1236]: 64岁
+          - generic [ref=e1237]: 2032年
+        - generic [ref=e1238] [cursor=pointer]:
+          - generic [ref=e1239]: 65岁
+          - generic [ref=e1240]: 2033年
+        - generic [ref=e1241] [cursor=pointer]:
+          - generic [ref=e1242]: 66岁
+          - generic [ref=e1243]: 2034年
+        - generic [ref=e1244] [cursor=pointer]:
+          - generic [ref=e1245]: 67岁
+          - generic [ref=e1246]: 2035年
+        - generic [ref=e1247] [cursor=pointer]:
+          - generic [ref=e1248]: 68岁
+          - generic [ref=e1249]: 2036年
+        - generic [ref=e1250] [cursor=pointer]:
+          - generic [ref=e1251]: 69岁
+          - generic [ref=e1252]: 2037年
+        - generic [ref=e1253] [cursor=pointer]:
+          - generic [ref=e1254]: 70岁
+          - generic [ref=e1255]: 2038年
+        - generic [ref=e1256] [cursor=pointer]:
+          - generic [ref=e1257]: 71岁
+          - generic [ref=e1258]: 2039年
+        - generic [ref=e1259] [cursor=pointer]:
+          - generic [ref=e1260]: 72岁
+          - generic [ref=e1261]: 2040年
+        - generic [ref=e1262] [cursor=pointer]:
+          - generic [ref=e1263]: 73岁
+          - generic [ref=e1264]: 2041年
+        - generic [ref=e1265] [cursor=pointer]:
+          - generic [ref=e1266]: 74岁
+          - generic [ref=e1267]: 2042年
+        - generic [ref=e1268] [cursor=pointer]:
+          - generic [ref=e1269]: 75岁
+          - generic [ref=e1270]: 2043年
+        - generic [ref=e1271] [cursor=pointer]:
+          - generic [ref=e1272]: 76岁
+          - generic [ref=e1273]: 2044年
+        - generic [ref=e1274] [cursor=pointer]:
+          - generic [ref=e1275]: 77岁
+          - generic [ref=e1276]: 2045年
+        - generic [ref=e1277] [cursor=pointer]:
+          - generic [ref=e1278]: 78岁
+          - generic [ref=e1279]: 2046年
+        - generic [ref=e1280] [cursor=pointer]:
+          - generic [ref=e1281]: 79岁
+          - generic [ref=e1282]: 2047年
+        - generic [ref=e1283] [cursor=pointer]:
+          - generic [ref=e1284]: 80岁
+          - generic [ref=e1285]: 2048年
+        - generic [ref=e1286] [cursor=pointer]:
+          - generic [ref=e1287]: 81岁
+          - generic [ref=e1288]: 2049年
+        - generic [ref=e1289] [cursor=pointer]:
+          - generic [ref=e1290]: 82岁
+          - generic [ref=e1291]: 2050年
+        - generic [ref=e1292] [cursor=pointer]:
+          - generic [ref=e1293]: 83岁
+          - generic [ref=e1294]: 2051年
+        - generic [ref=e1295] [cursor=pointer]:
+          - generic [ref=e1296]: 84岁
+          - generic [ref=e1297]: 2052年
+        - generic [ref=e1298] [cursor=pointer]:
+          - generic [ref=e1299]: 85岁
+          - generic [ref=e1300]: 2053年
+        - generic [ref=e1301] [cursor=pointer]:
+          - generic [ref=e1302]: 86岁
+          - generic [ref=e1303]: 2054年
+        - generic [ref=e1304] [cursor=pointer]:
+          - generic [ref=e1305]: 87岁
+          - generic [ref=e1306]: 2055年
+        - generic [ref=e1307] [cursor=pointer]:
+          - generic [ref=e1308]: 88岁
+          - generic [ref=e1309]: 2056年
+        - generic [ref=e1310] [cursor=pointer]:
+          - generic [ref=e1311]: 89岁
+          - generic [ref=e1312]: 2057年
+        - generic [ref=e1313] [cursor=pointer]:
+          - generic [ref=e1314]: 90岁
+          - generic [ref=e1315]: 2058年
+        - generic [ref=e1316] [cursor=pointer]:
+          - generic [ref=e1317]: 91岁
+          - generic [ref=e1318]: 2059年
+        - generic [ref=e1319] [cursor=pointer]:
+          - generic [ref=e1320]: 92岁
+          - generic [ref=e1321]: 2060年
+        - generic [ref=e1322] [cursor=pointer]:
+          - generic [ref=e1323]: 93岁
+          - generic [ref=e1324]: 2061年
+        - generic [ref=e1325] [cursor=pointer]:
+          - generic [ref=e1326]: 94岁
+          - generic [ref=e1327]: 2062年
+        - generic [ref=e1328] [cursor=pointer]:
+          - generic [ref=e1329]: 95岁
+          - generic [ref=e1330]: 2063年
+        - generic [ref=e1331] [cursor=pointer]:
+          - generic [ref=e1332]: 96岁
+          - generic [ref=e1333]: 2064年
+        - generic [ref=e1334] [cursor=pointer]:
+          - generic [ref=e1335]: 97岁
+          - generic [ref=e1336]: 2065年
+        - generic [ref=e1337] [cursor=pointer]:
+          - generic [ref=e1338]: 98岁
+          - generic [ref=e1339]: 2066年
+        - generic [ref=e1340] [cursor=pointer]:
+          - generic [ref=e1341]: 99岁
+          - generic [ref=e1342]: 2067年
+        - generic [ref=e1343] [cursor=pointer]:
+          - generic [ref=e1344]: 100岁
+          - generic [ref=e1345]: 2068年
+      - button "▷" [ref=e1346] [cursor=pointer]
+    - generic [ref=e346]: 地泽临
+    - paragraph [ref=e362]: 婚事须防，虎生暗害。武官外调。出使他国。等待吉。强进生是非，官司。可不动声色，假作不知。
+    - button "重新排盘" [ref=e364] [cursor=pointer]
+  - generic [ref=e366]:
+    - generic [ref=e367]:
+      - generic [ref=e368]: AI 批命
+      - generic [ref=e369]: 鸡年 · 木三局 · 命宫紫微
+    - generic [ref=e370]:
+      - button "人生曲线" [ref=e371] [cursor=pointer]
+      - button "本命批命" [ref=e372] [cursor=pointer]
+      - button "大限流年" [ref=e373] [cursor=pointer]
+    - generic [ref=e375]:
+      - generic [ref=e376]:
+        - generic [ref=e377]: 人生曲线
+        - generic [ref=e378]:
+          - button "十年" [ref=e379] [cursor=pointer]
+          - button "百年" [ref=e380] [cursor=pointer]
+      - generic [ref=e381]:
+        - generic [ref=e382]:
+          - generic [ref=e383]: "53"
+          - generic [ref=e384]: 分
+        - generic [ref=e385]:
+          - generic [ref=e386]: 58岁
+          - generic [ref=e767]: 逆势回升
+        - generic [ref=e387]: 迁移破军地劫，对宫紫微天相吉 · 处于重大关口后阶段
+      - generic [ref=e388]: 大运 53-62岁 · 底色 55×0.85 · 疾厄天同文昌吉，三方
+      - img [ref=e390]:
+        - generic [ref=e1365]: "53"
+        - generic [ref=e1366]: "57"
+        - generic [ref=e1367]: "62"
+      - generic [ref=e417]:
+        - button "53岁 44" [ref=e1388] [cursor=pointer]:
+          - generic [ref=e1389]: 53岁
+          - generic [ref=e1390]: "44"
+        - button "54岁 69" [ref=e1392] [cursor=pointer]:
+          - generic [ref=e1393]: 54岁
+          - generic [ref=e1394]: "69"
+        - button "55岁 49" [ref=e1396] [cursor=pointer]:
+          - generic [ref=e1397]: 55岁
+          - generic [ref=e1398]: "49"
+        - button "56岁 42" [ref=e1400] [cursor=pointer]:
+          - generic [ref=e1401]: 56岁
+          - generic [ref=e1402]: "42"
+        - button "57岁 37" [ref=e1404] [cursor=pointer]:
+          - generic [ref=e1405]: 57岁
+          - generic [ref=e1406]: "37"
+        - button "58岁 53" [ref=e1408] [cursor=pointer]:
+          - generic [ref=e1409]: 58岁
+          - generic [ref=e1410]: "53"
+        - button "59岁 46" [ref=e1412] [cursor=pointer]:
+          - generic [ref=e1413]: 59岁
+          - generic [ref=e1414]: "46"
+        - button "60岁 71" [ref=e1416] [cursor=pointer]:
+          - generic [ref=e1417]: 60岁
+          - generic [ref=e1418]: "71"
+        - button "61岁 48" [ref=e1420] [cursor=pointer]:
+          - generic [ref=e1421]: 61岁
+          - generic [ref=e1422]: "48"
+        - button "62岁 55" [ref=e1424] [cursor=pointer]:
+          - generic [ref=e1425]: 62岁
+          - generic [ref=e1426]: "55"
+      - button "重新生成" [ref=e834] [cursor=pointer]
+      - generic [ref=e460]: 数据仅供参考 · deepseek-chat
+    - button "✦ AI 深度批命" [ref=e462] [cursor=pointer]
+    - generic [ref=e463]: AI服务已连接
+  - generic [ref=e465]:
+    - generic [ref=e466]:
+      - generic [ref=e467]: AI 批命调试台
+      - generic [ref=e468]: 提示词可直接编辑 · 每模块独立调用 · 测试阶段
+    - generic [ref=e469]:
+      - generic [ref=e470]:
+        - generic [ref=e471]:
+          - generic [ref=e472]: 命宫批命
+          - button "▶ 生成结果" [ref=e473] [cursor=pointer]
+        - generic [ref=e474]:
+          - generic [ref=e475]:
+            - generic [ref=e476]: 结构化数据（自动提取，随年龄同步更新）
+            - generic [ref=e477]: "{ \"基本信息\": \"1969年3月26日 亥时 男命\", \"命盘格局\": \"木三局\", \"命宫\": { \"name\": \"命宫\", \"branch\": \"辰\", \"majorStars\": [ { \"name\": \"紫微\", \"brightness\": \"得\", \"mutagen\": null }, { \"name\": \"天相\", \"brightness\": \"得\", \"mutagen\": null } ], \"minorStars\": [], \"adjStars\": [], \"mutagens\": [], \"isEmptyMain\": false, \"summary\": \"紫微得+天相得\" }, \"身宫\": { \"name\": \"夫妻\", \"branch\": \"寅\", \"majorStars\": [ { \"name\": \"贪狼\", \"brightness\": \"平\", \"mutagen\": \"权\" } ], \"minorStars\": [ { \"name\": \"火星\", \"mutagen\": null } ], \"adjStars\": [ \"天姚\", \"天福\", \"月德\" ], \"mutagens\": [ \"贪狼权\" ], \"isEmptyMain\": false, \"summary\": \"贪狼平权，四化：贪狼权\", \"isBodyPalace\": true }, \"官禄宫\": { \"name\": \"官禄\", \"branch\": \"申\", \"majorStars\": [ { \"name\": \"廉贞\", \"brightness\": \"庙\", \"mutagen\": null } ], \"minorStars\": [ { \"name\": \"天钺\", \"mutagen\": null } ], \"adjStars\": [ \"解神\", \"天巫\", \"天厨\", \"截路\" ], \"mutagens\": [], \"isEmptyMain\": false, \"summary\": \"廉贞庙\" }, \"财帛宫\": { \"name\": \"财帛\", \"branch\": \"子\", \"majorStars\": [ { \"name\": \"武曲\", \"brightness\": \"旺\", \"mutagen\": \"禄\" }, { \"name\": \"天府\", \"brightness\": \"庙\", \"mutagen\": null } ], \"minorStars\": [ { \"name\": \"天魁\", \"mutagen\": null }, { \"name\": \"地空\", \"mutagen\": null } ], \"adjStars\": [ \"天喜\", \"阴煞\" ], \"mutagens\": [ \"武曲禄\" ], \"isEmptyMain\": false, \"summary\": \"武曲旺禄+天府庙，四化：武曲禄\" }, \"迁移宫\": { \"name\": \"迁移\", \"branch\": \"戌\", \"majorStars\": [ { \"name\": \"破军\", \"brightness\": \"旺\", \"mutagen\": null } ], \"minorStars\": [ { \"name\": \"地劫\", \"mutagen\": null } ], \"adjStars\": [ \"天贵\", \"天空\", \"天刑\" ], \"mutagens\": [], \"isEmptyMain\": false, \"summary\": \"破军旺\" }, \"生年四化\": \"夫妻权（贪狼） 兄弟忌（文曲） 父母科（天梁） 财帛禄（武曲）\" }"
+            - generic [ref=e478]: AI 返回结果
+            - generic [ref=e479]: 点击"生成结果"调用 AI
+          - generic [ref=e480]:
+            - generic [ref=e481]: 提示词（可直接编辑）
+            - textbox [ref=e482]: 请根据以下命宫相关数据，给出命宫格局的批命分析。 分析要点： 1. 命宫主星的核心特质与人生底色 2. 三方四正（官禄、财帛、迁移）对命宫的助力或冲克 3. 身宫对命格的修正与补充 4. 生年四化中影响命格的关键化曜 最后给出一段自然流畅的命格总评（100字以内）。 语言简洁有据，不说空泛套话。
+      - generic [ref=e483]:
+        - generic [ref=e484]:
+          - generic [ref=e485]: 大限流年批命
+          - button "▶ 生成结果" [ref=e486] [cursor=pointer]
+        - generic [ref=e487]:
+          - generic [ref=e488]:
+            - generic [ref=e489]: 结构化数据（自动提取，随年龄同步更新）
+            - generic [ref=e490]: "{ \"当前虚岁\": \"58 岁\", \"大限阶段\": \"第 6 大限（51～60 岁）\", \"流年\": \"2026 年 · 丙午年\", \"流年卦\": \"地泽临（#19） · 后天\", \"流年爻位\": \"第2爻（阳爻9年）\", \"小限落宫\": \"迁移\", \"小限宫详情\": { \"name\": \"迁移\", \"branch\": \"戌\", \"majorStars\": [ { \"name\": \"破军\", \"brightness\": \"旺\", \"mutagen\": null } ], \"minorStars\": [ { \"name\": \"地劫\", \"mutagen\": null } ], \"adjStars\": [ \"天贵\", \"天空\", \"天刑\" ], \"mutagens\": [], \"isEmptyMain\": false, \"summary\": \"破军旺\" } }"
+            - generic [ref=e491]: AI 返回结果
+            - generic [ref=e492]: 点击"生成结果"调用 AI
+          - generic [ref=e493]:
+            - generic [ref=e494]: 提示词（可直接编辑）
+            - textbox [ref=e495]: 请根据以下当前大限、流年、小限数据，给出这一阶段的综合批命分析。 分析要点： 1. 当前大限阶段的整体运势走向与主要象意 2. 流年卦象的提示与本年重点事项 3. 小限落宫的宫位含义与近期关注领域 4. 大限 + 流年 + 小限三重时间叠合的综合行动建议 最后给出一段自然流畅的阶段总评（100字以内）。 语言简洁有据，不说空泛套话。
+  - contentinfo [ref=e63]:
+    - generic [ref=e64]:
+      - generic [ref=e65]: © 2026 紫微斗数在线排盘
+      - generic [ref=e66]:
+        - text: 排盘算法基于
+        - link "iztro" [ref=e67] [cursor=pointer]:
+          - /url: https://github.com/SylarLong/iztro
+        - text: （MIT 许可）

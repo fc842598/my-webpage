@@ -1,0 +1,24 @@
+[
+  {
+    "id": "1930-02-20-1900-f",
+    "birth": "1930-02-20 19:00",
+    "gender": "female",
+    "comboSelected": "戌(19~21)",
+    "genderText": "阳女",
+    "pillars": "庚午 戊寅 辛丑 戊戌",
+    "xiantian": "风地观",
+    "houtian": "地山谦",
+    "notes": "风地观@戌 对照1"
+  },
+  {
+    "id": "1930-04-25-1900-f",
+    "birth": "1930-04-25 19:00",
+    "gender": "female",
+    "comboSelected": "戌(19~21)",
+    "genderText": "阳女",
+    "pillars": "庚午 庚辰 乙巳 丙戌",
+    "xiantian": "风地观",
+    "houtian": "地山谦",
+    "notes": "风地观@戌 对照2"
+  }
+]

@@ -1,0 +1,105 @@
+{
+  "test_time": "2026-04-07T20:53:42.607579",
+  "total_tests": 15,
+  "success_tests": 8,
+  "failed_tests": 7,
+  "success_rate": 53.3,
+  "by_user": [
+    {
+      "name": "用户A - 标准格式",
+      "total": 3,
+      "success": 3
+    },
+    {
+      "name": "用户B - 口语化表达",
+      "total": 3,
+      "success": 1
+    },
+    {
+      "name": "用户C - 模糊时间",
+      "total": 3,
+      "success": 0
+    },
+    {
+      "name": "用户D - 简洁格式",
+      "total": 3,
+      "success": 3
+    },
+    {
+      "name": "用户E - 特殊场景",
+      "total": 3,
+      "success": 1
+    }
+  ],
+  "failure_cases": [
+    {
+      "input": "帮我看看这个命盘：1992年农历七月初三下午5点，女性，杭州",
+      "parsed": null,
+      "missing_fields": [
+        "month",
+        "day",
+        "hour"
+      ]
+    },
+    {
+      "input": "1985年冬月十五凌晨2点，男，成都",
+      "parsed": null,
+      "missing_fields": [
+        "month",
+        "day",
+        "hour"
+      ]
+    },
+    {
+      "input": "1991年左右出生的，大概是晚上饭点时候，男性，南京",
+      "parsed": null,
+      "missing_fields": [
+        "month",
+        "day",
+        "hour"
+      ]
+    },
+    {
+      "input": "记得是1987年夏天，应该是下午吧，女的，武汉",
+      "parsed": null,
+      "missing_fields": [
+        "month",
+        "day",
+        "hour"
+      ]
+    },
+    {
+      "input": "好像是1993年过年的时候，男孩，西安",
+      "parsed": null,
+      "missing_fields": [
+        "month",
+        "day",
+        "hour"
+      ]
+    },
+    {
+      "input": "我儿子是2005年9月10号中午12点在苏州出生的",
+      "parsed": null,
+      "missing_fields": [
+        "gender"
+      ]
+    },
+    {
+      "input": "老公1978年11月25日亥时，哈尔滨",
+      "parsed": null,
+      "missing_fields": [
+        "month",
+        "day",
+        "hour",
+        "gender"
+      ]
+    }
+  ],
+  "suggestions": [
+    "2. 模糊时间处理：对'大概'、'好像'等模糊描述给出提示，引导用户补充",
+    "5. 输入示例引导：在输入框下方显示3-5个标准输入示例",
+    "6. 实时反馈：用户输入时即时显示识别结果（如已识别的字段高亮）",
+    "7. 容错增强：支持更多日期分隔符（.、/、-等）和混合格式",
+    "8. 城市联想：输入城市名时提供自动补全"
+  ]
+}

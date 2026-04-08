@@ -1,0 +1,9 @@
+=== 完整窗口文本 ===
+GDI+ Window (天纪.exe)
+
+=== Static控件文本 ===
+
+=== 控件统计 ===
+Static: 0
+Edit: 0
+Button: 0

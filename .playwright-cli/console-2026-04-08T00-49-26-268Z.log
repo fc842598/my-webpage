@@ -1,0 +1,25 @@
+[   25971ms] [INFO] Slow network is detected. See https://www.chromestatus.com/feature/5636954674692096 for more details. Fallback font will be used while loading: https://fonts.gstatic.com/s/googlesans/v62/4UaRrENHsxJlGDuGo1OIlJfC6l_24rlCK1Yo_Iq2vgCI.woff2 @ https://ogs.google.com/u/0/widget/app?eom=1&awwd=1&em=2&dpi=89978449&origin=https%3A%2F%2Fwww.google.com&cn=app&pid=1&spid=1&hl=zh-CN:30
+[   25972ms] [INFO] Slow network is detected. See https://www.chromestatus.com/feature/5636954674692096 for more details. Fallback font will be used while loading: https://fonts.gstatic.com/s/roboto/v18/KFOmCnqEu92Fr1Mu4mxK.woff2 @ https://ogs.google.com/u/0/widget/app?eom=1&awwd=1&em=2&dpi=89978449&origin=https%3A%2F%2Fwww.google.com&cn=app&pid=1&spid=1&hl=zh-CN:30
+[   25973ms] [INFO] Slow network is detected. See https://www.chromestatus.com/feature/5636954674692096 for more details. Fallback font will be used while loading: https://fonts.gstatic.com/s/roboto/v18/KFOlCnqEu92Fr1MmEU9fBBc4.woff2 @ https://ogs.google.com/u/0/widget/app?eom=1&awwd=1&em=2&dpi=89978449&origin=https%3A%2F%2Fwww.google.com&cn=app&pid=1&spid=1&hl=zh-CN:30
+[  132914ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_CLOSED @ https://a-api.anthropic.com/v1/m:0
+[  132914ms] [ERROR] Error sending segment performance metrics TypeError: Failed to fetch
+    at o (https://a-cdn.anthropic.com/analytics.js/v1/LKJN8LsLERHEOXkw487o7qCTFOrGPimI/analytics.min.js:1:23763)
+    at t.<anonymous> (https://a-cdn.anthropic.com/analytics.js/v1/LKJN8LsLERHEOXkw487o7qCTFOrGPimI/analytics.min.js:1:22238)
+    at https://a-cdn.anthropic.com/analytics.js/v1/LKJN8LsLERHEOXkw487o7qCTFOrGPimI/analytics.min.js:1:33689
+    at Object.next (https://a-cdn.anthropic.com/analytics.js/v1/LKJN8LsLERHEOXkw487o7qCTFOrGPimI/analytics.min.js:1:33794)
+    at https://a-cdn.anthropic.com/analytics.js/v1/LKJN8LsLERHEOXkw487o7qCTFOrGPimI/analytics.min.js:1:32710
+    at new Promise (<anonymous>)
+    at u (https://a-cdn.anthropic.com/analytics.js/v1/LKJN8LsLERHEOXkw487o7qCTFOrGPimI/analytics.min.js:1:32455)
+    at t.send (https://a-cdn.anthropic.com/analytics.js/v1/LKJN8LsLERHEOXkw487o7qCTFOrGPimI/analytics.min.js:1:22021)
+    at t.<anonymous> (https://a-cdn.anthropic.com/analytics.js/v1/LKJN8LsLERHEOXkw487o7qCTFOrGPimI/analytics.min.js:1:21894)
+    at https://a-cdn.anthropic.com/analytics.js/v1/LKJN8LsLERHEOXkw487o7qCTFOrGPimI/analytics.min.js:1:33689 @ https://a-cdn.anthropic.com/analytics.js/v1/LKJN8LsLERHEOXkw487o7qCTFOrGPimI/analytics.min.js:0
+[  171423ms] Error: Minified React error #418; visit https://react.dev/errors/418?args[]=text&args[]= for the full message or use the non-minified dev environment for full errors and additional helpful warnings.
+    at rK (https://www.anthropic.com/_next/static/chunks/d0300bffb79131f2.js:1:40118)
+    at rY (https://www.anthropic.com/_next/static/chunks/d0300bffb79131f2.js:1:41151)
+    at https://www.anthropic.com/_next/static/chunks/d0300bffb79131f2.js:1:134871
+    at sp (https://www.anthropic.com/_next/static/chunks/d0300bffb79131f2.js:1:140032)
+    at sc (https://www.anthropic.com/_next/static/chunks/d0300bffb79131f2.js:1:131372)
+    at https://www.anthropic.com/_next/static/chunks/d0300bffb79131f2.js:1:126201
+    at u9 (https://www.anthropic.com/_next/static/chunks/d0300bffb79131f2.js:1:126302)
+    at s$ (https://www.anthropic.com/_next/static/chunks/d0300bffb79131f2.js:1:152816)
+    at MessagePort._ (https://www.anthropic.com/_next/static/chunks/d0300bffb79131f2.js:1:1656)

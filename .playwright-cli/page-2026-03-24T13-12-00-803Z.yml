@@ -1,0 +1,691 @@
+- generic [active] [ref=e1]:
+  - navigation [ref=e2]:
+    - generic [ref=e4]:
+      - link "天机玄鉴 Logo 天机玄鉴 天機玄鑒" [ref=e5] [cursor=pointer]:
+        - /url: /
+        - img "天机玄鉴 Logo" [ref=e7]
+        - generic [ref=e8]:
+          - generic [ref=e9]: 天机玄鉴
+          - generic [ref=e10]: 天機玄鑒
+      - generic [ref=e11]:
+        - link "首页" [ref=e12] [cursor=pointer]:
+          - /url: /
+        - button "免费占卜" [ref=e14]:
+          - text: 免费占卜
+          - img [ref=e15]
+        - link "命理服务" [ref=e17] [cursor=pointer]:
+          - /url: /readings
+        - button "风水服务" [ref=e19]:
+          - text: 风水服务
+          - img [ref=e20]
+        - link "运势洞察" [ref=e22] [cursor=pointer]:
+          - /url: /blog/fortune-insights
+        - link "常见问题" [ref=e23] [cursor=pointer]:
+          - /url: /faq
+        - button "Switch language" [ref=e25]:
+          - img [ref=e26]
+          - generic [ref=e29]: EN
+        - link "登录" [ref=e30] [cursor=pointer]:
+          - /url: /login
+          - img [ref=e31]
+          - generic [ref=e34]: 登录
+  - main [ref=e35]:
+    - generic [ref=e36]:
+      - generic:
+        - generic: ☁️
+        - generic: 🌙
+        - generic: ⭐
+        - generic: ☁️
+      - generic [ref=e37]:
+        - generic [ref=e38]:
+          - heading "紫微斗数在线排盘" [level=1] [ref=e39]
+          - generic [ref=e40]:
+            - generic [ref=e41]: 免费排盘
+            - generic [ref=e42]: "|"
+            - generic [ref=e43]: 宫位分析
+            - generic [ref=e44]: "|"
+            - generic [ref=e45]: 运势变化
+          - paragraph [ref=e46]: 🔮 AI技术 × 30年命理大师 = 精准命盘解读
+        - generic [ref=e48]:
+          - heading "📝 出生信息" [level=2] [ref=e49]
+          - generic [ref=e50]:
+            - generic [ref=e51]:
+              - generic [ref=e52]: 历法类型
+              - generic [ref=e53]:
+                - button "阳历（公历）" [ref=e54]:
+                  - img [ref=e55]
+                  - generic [ref=e57]: 阳历（公历）
+                - button "阴历（农历）" [ref=e58]:
+                  - img [ref=e59]
+                  - generic [ref=e61]: 阴历（农历）
+            - generic [ref=e62]:
+              - generic [ref=e63]: 出生日期
+              - textbox [ref=e64]
+            - generic [ref=e65]:
+              - generic [ref=e66]:
+                - img [ref=e67]
+                - text: 出生时辰
+              - combobox [ref=e70]:
+                - option "子时初 (00:00-01:00)"
+                - option "丑时 (01:00-03:00)"
+                - option "寅时 (03:00-05:00)"
+                - option "卯时 (05:00-07:00)"
+                - option "辰时 (07:00-09:00)"
+                - option "巳时 (09:00-11:00)"
+                - option "午时 (11:00-13:00)" [selected]
+                - option "未时 (13:00-15:00)"
+                - option "申时 (15:00-17:00)"
+                - option "酉时 (17:00-19:00)"
+                - option "戌时 (19:00-21:00)"
+                - option "亥时 (21:00-23:00)"
+                - option "子时末 (23:00-00:00)"
+            - generic [ref=e71]:
+              - generic [ref=e72]:
+                - img [ref=e73]
+                - text: 性别
+              - generic [ref=e76]:
+                - button "👨 男" [ref=e77]:
+                  - generic [ref=e78]: 👨
+                  - generic [ref=e79]: 男
+                - button "👩 女" [ref=e80]:
+                  - generic [ref=e81]: 👩
+                  - generic [ref=e82]: 女
+            - generic [ref=e83]:
+              - generic [ref=e84]: 📧 邮箱（选填）
+              - textbox "输入邮箱，免费获取运势变化提醒" [ref=e85]
+              - paragraph [ref=e86]: 不影响排盘功能，仅用于运势提醒
+            - button "🔮 开始排盘" [ref=e87]:
+              - img [ref=e88]
+              - text: 🔮 开始排盘
+            - paragraph [ref=e92]: ✨ 紫微命盘免费查看 | AI深度解读仅需 $9.99
+      - generic [ref=e98]:
+        - generic [ref=e99]:
+          - paragraph [ref=e100]: What You Will Get
+          - heading "Free Ziwei Doushu Calculator" [level=2] [ref=e101]
+          - paragraph [ref=e102]: 免费紫微斗数排盘 — 帝王级命理工具
+          - paragraph [ref=e103]: AstrologyBazi.com provides the most complete free Ziwei Doushu (Purple Star Astrology) calculator online. Generate your full birth chart with 12 palaces and 66 stars instantly. No registration required. Known as the Emperor's Astrology, Ziwei Doushu offers the most detailed personality and destiny analysis in Chinese metaphysics.
+        - generic [ref=e105]:
+          - heading "What You Need" [level=3] [ref=e106]
+          - list [ref=e107]:
+            - listitem [ref=e108]:
+              - generic [ref=e109]: ◆
+              - text: Birth date (year, month, day)
+            - listitem [ref=e110]:
+              - generic [ref=e111]: ◆
+              - text: Birth hour (Chinese double-hour system)
+            - listitem [ref=e112]:
+              - generic [ref=e113]: ◆
+              - text: Gender (male or female)
+            - listitem [ref=e114]:
+              - generic [ref=e115]: ◆
+              - text: Calendar type (lunar or solar)
+        - generic [ref=e116]:
+          - generic [ref=e117]:
+            - heading "Free Results Included" [level=3] [ref=e118]
+            - generic [ref=e119]: Free
+          - list [ref=e120]:
+            - listitem [ref=e121]:
+              - generic [ref=e122]: ✓
+              - text: Complete Ziwei chart with 12 palaces (宫位)
+            - listitem [ref=e123]:
+              - generic [ref=e124]: ✓
+              - text: 66 stars placed in palace positions
+            - listitem [ref=e125]:
+              - generic [ref=e126]: ✓
+              - text: 14 Main Stars (紫微/天机/太阳/武曲/天同/廉贞/天府/太阴/贪狼/巨门/天相/天梁/七杀/破军)
+            - listitem [ref=e127]:
+              - generic [ref=e128]: ✓
+              - text: Four Transformations (化禄/化权/化科/化忌)
+            - listitem [ref=e129]:
+              - generic [ref=e130]: ✓
+              - text: Auxiliary stars and minor stars (杂曜)
+            - listitem [ref=e131]:
+              - generic [ref=e132]: ✓
+              - text: Life Palace (命宫) and Body Palace (身宫)
+            - listitem [ref=e133]:
+              - generic [ref=e134]: ✓
+              - text: Decade transit (大限) analysis
+            - listitem [ref=e135]:
+              - generic [ref=e136]: ✓
+              - text: Annual transit (流年) positions
+            - listitem [ref=e137]:
+              - generic [ref=e138]: ✓
+              - text: Monthly and daily transit options
+            - listitem [ref=e139]:
+              - generic [ref=e140]: ✓
+              - text: 12 Shensha (神煞) indicators
+            - listitem [ref=e141]:
+              - generic [ref=e142]: ✓
+              - text: Chang Sheng 12 Spirits (长生十二神)
+            - listitem [ref=e143]:
+              - generic [ref=e144]: ✓
+              - text: Star brightness ratings for each palace
+        - generic [ref=e145]:
+          - generic [ref=e146]:
+            - heading "AI Palace Interpretation Upgrade" [level=3] [ref=e147]
+            - generic [ref=e148]: From $9.99
+          - list [ref=e149]:
+            - listitem [ref=e150]:
+              - generic [ref=e151]: ★
+              - text: Detailed personality profile from Life Palace
+            - listitem [ref=e152]:
+              - generic [ref=e153]: ★
+              - text: Career destiny from Career Palace analysis
+            - listitem [ref=e154]:
+              - generic [ref=e155]: ★
+              - text: Wealth potential from Wealth Palace reading
+            - listitem [ref=e156]:
+              - generic [ref=e157]: ★
+              - text: Marriage and love from Marriage Palace
+            - listitem [ref=e158]:
+              - generic [ref=e159]: ★
+              - text: Health insights from Health Palace
+            - listitem [ref=e160]:
+              - generic [ref=e161]: ★
+              - text: Annual forecast for each palace
+            - listitem [ref=e162]:
+              - generic [ref=e163]: ★
+              - text: Star interaction deep analysis
+            - listitem [ref=e164]:
+              - generic [ref=e165]: ★
+              - text: Personalized life guidance
+        - generic [ref=e167]:
+          - generic [ref=e168]: "Accuracy: 99.9% chart calculation based on authentic Ziwei algorithms"
+          - generic [ref=e169]: "Trusted by: 50,000+ users worldwide"
+          - generic [ref=e170]: "Registration: Not required"
+      - generic [ref=e172]:
+        - generic [ref=e173]:
+          - heading "什么是紫微斗数？" [level=2] [ref=e174]
+          - generic [ref=e175]:
+            - paragraph [ref=e176]:
+              - strong [ref=e177]: 紫微斗数在线排盘
+              - text: 是中国传统命理学的数字化工具，让古老的紫微斗数焕发新生。 紫微斗数与八字命理并称为"中国两大神数"，它通过分析你出生时刻的天象（108颗星曜的分布）， 推算人生运势、性格特质、事业财运、感情婚姻等。紫微斗数起源于北宋时期，由道家学者陈抟（陈希夷）所创， 经过千年发展，形成了完整的理论体系。现在通过紫微斗数在线排盘工具，只需几秒钟即可生成专业命盘。
+            - paragraph [ref=e178]: 紫微斗数的核心是"紫微星"，紫微星在中国古代天文学中代表北极星，是天帝所居之处， 象征着至高无上的权力和尊贵。命盘以紫微星为中心，结合其他星曜在十二宫位的分布， 形成一个完整的命运图谱。
+            - generic [ref=e179]:
+              - paragraph [ref=e180]: 💡 为什么叫"斗数"？
+              - paragraph [ref=e181]: "\"斗\"指北斗七星，\"数\"指推算。紫微斗数通过北斗星系的运行规律来推算人的命运， 这是一门结合天文学和命理学的精密科学。"
+        - generic [ref=e182]:
+          - heading "紫微斗数 vs 八字：有什么区别？" [level=2] [ref=e183]
+          - table [ref=e185]:
+            - rowgroup [ref=e186]:
+              - row "特点 紫微斗数 八字命理" [ref=e187]:
+                - columnheader "特点" [ref=e188]
+                - columnheader "紫微斗数" [ref=e189]
+                - columnheader "八字命理" [ref=e190]
+            - rowgroup [ref=e191]:
+              - row "核心元素 星曜、宫位（108颗星+12宫） 天干地支、五行（年月日时）" [ref=e192]:
+                - cell "核心元素" [ref=e193]
+                - cell "星曜、宫位（108颗星+12宫）" [ref=e194]
+                - cell "天干地支、五行（年月日时）" [ref=e195]
+              - row "时间精度 需要精确时辰（2小时） 需要精确时辰（2小时）" [ref=e196]:
+                - cell "时间精度" [ref=e197]
+                - cell "需要精确时辰（2小时）" [ref=e198]
+                - cell "需要精确时辰（2小时）" [ref=e199]
+              - row "擅长领域 性格、人际关系、流年运势 五行平衡、事业财运、健康" [ref=e200]:
+                - cell "擅长领域" [ref=e201]
+                - cell "性格、人际关系、流年运势" [ref=e202]
+                - cell "五行平衡、事业财运、健康" [ref=e203]
+              - row "学习难度 ⭐⭐⭐⭐（较难） ⭐⭐⭐⭐⭐（非常难）" [ref=e204]:
+                - cell "学习难度" [ref=e205]
+                - cell "⭐⭐⭐⭐（较难）" [ref=e206]
+                - cell "⭐⭐⭐⭐⭐（非常难）" [ref=e207]
+              - row "可视化程度 高（命盘图直观） 中（四柱表格）" [ref=e208]:
+                - cell "可视化程度" [ref=e209]
+                - cell "高（命盘图直观）" [ref=e210]
+                - cell "中（四柱表格）" [ref=e211]
+          - paragraph [ref=e212]: 很多专业命理师会同时参考紫微斗数和八字，因为两者互补。紫微斗数更直观、图形化， 适合看流年运势和人际关系；八字更抽象、深奥，适合看五行平衡和大运趋势。
+        - generic [ref=e213]:
+          - heading "紫微斗数的核心概念" [level=2] [ref=e214]
+          - generic [ref=e215]:
+            - heading "1. 十二宫位：人生的十二个领域" [level=3] [ref=e216]
+            - paragraph [ref=e217]: 紫微命盘由十二个宫位组成，每个宫位代表人生的不同方面。从命宫开始， 逆时针方向依次排列：
+            - generic [ref=e218]:
+              - generic [ref=e219]:
+                - generic [ref=e220]: 👤
+                - heading "命宫" [level=4] [ref=e221]
+                - paragraph [ref=e222]: 核心性格、人生观
+              - generic [ref=e223]:
+                - generic [ref=e224]: 👨‍👩‍👧‍👦
+                - heading "兄弟宫" [level=4] [ref=e225]
+                - paragraph [ref=e226]: 兄弟姐妹、朋友关系
+              - generic [ref=e227]:
+                - generic [ref=e228]: 💑
+                - heading "夫妻宫" [level=4] [ref=e229]
+                - paragraph [ref=e230]: 婚姻、感情状态
+              - generic [ref=e231]:
+                - generic [ref=e232]: 👶
+                - heading "子女宫" [level=4] [ref=e233]
+                - paragraph [ref=e234]: 子女运势、后代福分
+              - generic [ref=e235]:
+                - generic [ref=e236]: 💰
+                - heading "财帛宫" [level=4] [ref=e237]
+                - paragraph [ref=e238]: 赚钱能力、财运
+              - generic [ref=e239]:
+                - generic [ref=e240]: 🏥
+                - heading "疾厄宫" [level=4] [ref=e241]
+                - paragraph [ref=e242]: 健康状况、体质
+              - generic [ref=e243]:
+                - generic [ref=e244]: ✈️
+                - heading "迁移宫" [level=4] [ref=e245]
+                - paragraph [ref=e246]: 外出运势、贵人运
+              - generic [ref=e247]:
+                - generic [ref=e248]: 👥
+                - heading "交友宫" [level=4] [ref=e249]
+                - paragraph [ref=e250]: 人际关系、下属运
+              - generic [ref=e251]:
+                - generic [ref=e252]: 💼
+                - heading "事业宫" [level=4] [ref=e253]
+                - paragraph [ref=e254]: 事业发展、工作运
+              - generic [ref=e255]:
+                - generic [ref=e256]: 🏠
+                - heading "田宅宫" [level=4] [ref=e257]
+                - paragraph [ref=e258]: 房产、家庭运
+              - generic [ref=e259]:
+                - generic [ref=e260]: 😊
+                - heading "福德宫" [level=4] [ref=e261]
+                - paragraph [ref=e262]: 精神状态、享受福分
+              - generic [ref=e263]:
+                - generic [ref=e264]: 👴
+                - heading "父母宫" [level=4] [ref=e265]
+                - paragraph [ref=e266]: 父母关系、长辈运
+            - paragraph [ref=e267]: 每个宫位都有不同的星曜组合，影响该领域的运势。比如命宫有紫微星的人， 天生具有领导气质；财帛宫有武曲星的人，理财能力强。
+          - generic [ref=e268]:
+            - heading "2. 六十六星曜系统：命运的密码" [level=3] [ref=e269]
+            - paragraph [ref=e270]: 紫微斗数有108颗星，常用的主要星曜有66颗，分为：
+            - generic [ref=e271]:
+              - generic [ref=e272]:
+                - heading "⭐ 14颗主星（北斗、南斗系统）" [level=4] [ref=e273]
+                - generic [ref=e274]:
+                  - generic [ref=e275]:
+                    - paragraph [ref=e276]: 紫微星
+                    - paragraph [ref=e277]: 帝王星，领导力强
+                  - generic [ref=e278]:
+                    - paragraph [ref=e279]: 天机星
+                    - paragraph [ref=e280]: 智慧星，善于策划
+                  - generic [ref=e281]:
+                    - paragraph [ref=e282]: 太阳星
+                    - paragraph [ref=e283]: 权贵星，男性贵人
+                  - generic [ref=e284]:
+                    - paragraph [ref=e285]: 武曲星
+                    - paragraph [ref=e286]: 财星，理财能力强
+                  - generic [ref=e287]:
+                    - paragraph [ref=e288]: 天同星
+                    - paragraph [ref=e289]: 福星，心态平和
+                  - generic [ref=e290]:
+                    - paragraph [ref=e291]: 廉贞星
+                    - paragraph [ref=e292]: 桃花星，魅力强
+                  - generic [ref=e293]:
+                    - paragraph [ref=e294]: 天府星
+                    - paragraph [ref=e295]: 财库星，守财能力强
+                  - generic [ref=e296]:
+                    - paragraph [ref=e297]: 太阴星
+                    - paragraph [ref=e298]: 财星，女性贵人
+                  - generic [ref=e299]:
+                    - paragraph [ref=e300]: 贪狼星
+                    - paragraph [ref=e301]: 欲望星，多才多艺
+                  - generic [ref=e302]:
+                    - paragraph [ref=e303]: 巨门星
+                    - paragraph [ref=e304]: 口才星，善于沟通
+                  - generic [ref=e305]:
+                    - paragraph [ref=e306]: 天相星
+                    - paragraph [ref=e307]: 宰相星，协调能力强
+                  - generic [ref=e308]:
+                    - paragraph [ref=e309]: 天梁星
+                    - paragraph [ref=e310]: 寿星，长辈缘好
+                  - generic [ref=e311]:
+                    - paragraph [ref=e312]: 七杀星
+                    - paragraph [ref=e313]: 将军星，果断勇敢
+                  - generic [ref=e314]:
+                    - paragraph [ref=e315]: 破军星
+                    - paragraph [ref=e316]: 先锋星，开创性强
+              - generic [ref=e317]:
+                - heading "✨ 其他重要星曜" [level=4] [ref=e318]
+                - list [ref=e319]:
+                  - listitem [ref=e320]:
+                    - strong [ref=e321]: 32颗辅星
+                    - text: ：左辅、右弼、文昌、文曲、天魁、天钺等（辅助主星，增加吉运）
+                  - listitem [ref=e322]:
+                    - strong [ref=e323]: 4颗煞星
+                    - text: ：擎羊、陀罗、火星、铃星（破坏力强，需要化解）
+                  - listitem [ref=e324]:
+                    - strong [ref=e325]: 其他吉星凶星
+                    - text: ：天马、天空、地劫、红鸾、天喜等（影响特定运势）
+          - generic [ref=e326]:
+            - heading "3. 四化星：命运的动态变化" [level=3] [ref=e327]
+            - paragraph [ref=e328]: 四化星是紫微斗数的核心，代表星曜的"化学反应"，决定你的运势变化：
+            - generic [ref=e329]:
+              - generic [ref=e330]:
+                - heading "✅ 化禄 (Fortune)" [level=5] [ref=e331]
+                - paragraph [ref=e332]: 代表财运、机会、顺利。化禄的星曜所在宫位，会带来好运和财富。 例如太阳化禄，贵人运旺，事业发展顺利。
+              - generic [ref=e333]:
+                - heading "👑 化权 (Power)" [level=5] [ref=e334]
+                - paragraph [ref=e335]: 代表权力、掌控、主导。化权的星曜所在宫位，会让你有掌控力和话语权。 例如武曲化权，财务管理能力强，适合做管理层。
+              - generic [ref=e336]:
+                - heading "🎓 化科 (Reputation)" [level=5] [ref=e337]
+                - paragraph [ref=e338]: 代表名声、贵人、考试运。化科的星曜所在宫位，会带来好名声和贵人帮助。 例如文昌化科，学业优秀，容易考上理想学校。
+              - generic [ref=e339]:
+                - heading "⚠️ 化忌 (Obstruction)" [level=5] [ref=e340]
+                - paragraph [ref=e341]: 代表阻碍、困扰、挫折。化忌的星曜所在宫位，会遇到困难和挑战。 但化忌不一定是坏事，有时是"塞翁失马，焉知非福"。
+            - paragraph [ref=e342]: 不同年份的天干，会让不同的星曜产生四化。例如2024年（甲辰年）是甲天干， 廉贞化禄、破军化权、武曲化科、太阳化忌。这就是为什么每年的运势都不同。
+          - generic [ref=e343]:
+            - heading "4. 大限和流年：时间的密码" [level=3] [ref=e344]
+            - paragraph [ref=e345]: 紫微斗数不仅看你的本命盘（天生的命运），还能看运势的变化：
+            - list [ref=e346]:
+              - listitem [ref=e347]:
+                - strong [ref=e348]: 大限（Decadal Fortune）
+                - text: ：10年一个运势周期。 例如你现在走"事业宫大限"，这10年事业运特别好。
+              - listitem [ref=e349]:
+                - strong [ref=e350]: 流年（Annual Fortune）
+                - text: ：每年的运势。 例如2024年走"财帛宫流年"，今年财运旺。
+              - listitem [ref=e351]:
+                - strong [ref=e352]: 流月（Monthly Fortune）
+                - text: ：每月的运势变化。
+              - listitem [ref=e353]:
+                - strong [ref=e354]: 流日（Daily Fortune）
+                - text: ：每天的运势细节。
+            - generic [ref=e355]:
+              - paragraph [ref=e356]: 💡 为什么同样的命盘，不同年份运势不同？
+              - paragraph [ref=e357]: 这就是大限和流年的作用！本命盘是你的"硬件配置"，大限流年是"软件版本"。 即使硬件一样，不同的软件版本会有不同的表现。这也是为什么有些人年轻时辛苦， 中年后才发达；有些人少年得志，晚年却平淡。
+        - generic [ref=e358]:
+          - heading "如何使用紫微斗数在线排盘看懂你的命盘？" [level=2] [ref=e359]
+          - generic [ref=e360]:
+            - generic [ref=e361]:
+              - generic [ref=e362]: "1"
+              - generic [ref=e363]:
+                - heading "找到你的命宫" [level=4] [ref=e364]
+                - paragraph [ref=e365]: 命宫是整个命盘的核心，代表你的本质。使用上方的紫微斗数在线排盘工具， 输入出生信息后，命盘上会标注"命宫"位置。
+            - generic [ref=e366]:
+              - generic [ref=e367]: "2"
+              - generic [ref=e368]:
+                - heading "看命宫的主星" [level=4] [ref=e369]
+                - paragraph [ref=e370]: 命宫有哪颗主星？不同主星的性格完全不同。例如紫微星是领导型， 天机星是智慧型，太阳星是权贵型。如果命宫没有主星（空宫）， 要看对宫（迁移宫）的星曜。
+            - generic [ref=e371]:
+              - generic [ref=e372]: "3"
+              - generic [ref=e373]:
+                - heading "分析其他重要宫位" [level=4] [ref=e374]
+                - paragraph [ref=e375]: 重点看：财帛宫（财运）、事业宫（工作）、夫妻宫（感情）、福德宫（心态）。 这四个宫位决定了你的物质生活和精神状态。
+            - generic [ref=e376]:
+              - generic [ref=e377]: "4"
+              - generic [ref=e378]:
+                - heading "查看大限和流年" [level=4] [ref=e379]
+                - paragraph [ref=e380]:
+                  - text: 大限：10年一个运势周期，看你现在走哪个宫位的大限。
+                  - text: 流年：每年的运势变化，看今年走哪个宫位的流年。
+                  - text: 使用我们的工具，可以切换"本命盘/流年/流月/流日"查看不同时期的运势。
+          - generic [ref=e381]:
+            - paragraph [ref=e382]: ⚠️ 重要提醒：出生时辰的准确性
+            - paragraph [ref=e383]:
+              - text: 紫微斗数对出生时辰的要求极高！差2小时（一个时辰）会导致：
+              - text: • 命宫位置完全不同
+              - text: • 所有主星分布改变
+              - text: • 大限起法改变
+              - text: • 身宫位置改变
+              - text: 如果不确定出生时辰，可以咨询父母或查看出生证明。实在不确定的话， 可以多排几个相邻时辰的命盘，看哪个更符合你的实际情况。
+        - generic [ref=e384]:
+          - heading "紫微斗数能看什么？" [level=2] [ref=e385]
+          - generic [ref=e386]:
+            - generic [ref=e387]:
+              - generic [ref=e388]: 👤
+              - heading "性格特质" [level=3] [ref=e389]
+              - paragraph [ref=e390]: 你天生的优势和劣势，为什么你是这样的人
+              - paragraph [ref=e391]: 例如：为什么你喜欢独来独往？为什么你善于社交？
+            - generic [ref=e392]:
+              - generic [ref=e393]: 💼
+              - heading "事业方向" [level=3] [ref=e394]
+              - paragraph [ref=e395]: 适合什么行业、什么时候升职、事业发展轨迹
+              - paragraph [ref=e396]: 例如：适合当老师还是做生意？何时会升职？
+            - generic [ref=e397]:
+              - generic [ref=e398]: 💰
+              - heading "财运分析" [level=3] [ref=e399]
+              - paragraph [ref=e400]: 何时发财、如何理财、财富来源、破财化解
+              - paragraph [ref=e401]: 例如：正财运还是偏财运？哪年会发大财？
+            - generic [ref=e402]:
+              - generic [ref=e403]: 💑
+              - heading "感情婚姻" [level=3] [ref=e404]
+              - paragraph [ref=e405]: 什么时候遇到真爱、配偶特质、婚姻状态、桃花运
+              - paragraph [ref=e406]: 例如：配偶长相、性格？何时结婚最好？
+            - generic [ref=e407]:
+              - generic [ref=e408]: 🏥
+              - heading "健康运势" [level=3] [ref=e409]
+              - paragraph [ref=e410]: 身体弱点、需要注意什么疾病、如何养生
+              - paragraph [ref=e411]: 例如：容易有什么健康问题？如何预防？
+            - generic [ref=e412]:
+              - generic [ref=e413]: 👥
+              - heading "人际关系" [level=3] [ref=e414]
+              - paragraph [ref=e415]: 贵人在哪里、小人如何化解、社交能力、合作运
+              - paragraph [ref=e416]: 例如：什么人是你的贵人？如何避开小人？
+            - generic [ref=e417]:
+              - generic [ref=e418]: 📅
+              - heading "流年运势" [level=3] [ref=e419]
+              - paragraph [ref=e420]: 每年的运势起伏、重要时间点、吉凶预测
+              - paragraph [ref=e421]: 例如：今年适合创业吗？何时运势最好？
+            - generic [ref=e422]:
+              - generic [ref=e423]: 🎓
+              - heading "学业考运" [level=3] [ref=e424]
+              - paragraph [ref=e425]: 学习能力、考试运势、适合的专业方向
+              - paragraph [ref=e426]: 例如：考公务员容易吗？读书运好不好？
+        - generic [ref=e427]:
+          - heading "常见问题（FAQ）" [level=2] [ref=e428]
+          - generic [ref=e429]:
+            - group [ref=e430] [cursor=pointer]:
+              - generic "紫微斗数准吗？" [ref=e431]
+            - group [ref=e432] [cursor=pointer]:
+              - generic "紫微斗数和八字哪个更准？" [ref=e433]
+            - group [ref=e434] [cursor=pointer]:
+              - generic "命盘中没有主星怎么办？" [ref=e435]
+            - group [ref=e436] [cursor=pointer]:
+              - generic "化忌是不是很不好？" [ref=e437]
+            - group [ref=e438] [cursor=pointer]:
+              - generic "紫微斗数可以改命吗？" [ref=e439]
+            - group [ref=e440] [cursor=pointer]:
+              - generic "为什么需要精确到时辰？" [ref=e441]
+            - group [ref=e442] [cursor=pointer]:
+              - generic "流年、流月、流日有什么区别？" [ref=e443]
+            - group [ref=e444] [cursor=pointer]:
+              - generic "紫微斗数适合所有人吗？" [ref=e445]
+        - generic [ref=e446]:
+          - heading "紫微斗数实战案例：历史名人命盘解读" [level=2] [ref=e447]
+          - paragraph [ref=e448]: 理论再多不如看实例。以下是三个经典紫微斗数命盘案例，展示如何从命宫、格局、大运层层分析， 读懂一张命盘背后的人生密码。
+          - generic [ref=e449]:
+            - generic [ref=e450]:
+              - generic [ref=e451]: 🏛️
+              - heading "张之洞" [level=3] [ref=e452]
+              - paragraph [ref=e453]: 清末名臣 · 一品大员
+              - paragraph [ref=e454]: 天府右弼坐命，官禄宫构成"财荫夹印"大格局。三位妻子英年早逝，四十岁后才真正发迹—— 命盘同时藏着大富大贵与人生遗憾。
+              - paragraph [ref=e455]: 看盘重点：格局判断 · 双重格局 · 大运激活
+            - generic [ref=e456]:
+              - generic [ref=e457]: 📚
+              - heading "蒲松龄" [level=3] [ref=e458]
+              - paragraph [ref=e459]: 《聊斋志异》作者 · 享年76岁
+              - paragraph [ref=e460]: 19岁连中三元却一生科举不顺。福德宫紫微贪狼加擎羊地劫——爱好特殊、与常人不同， 正是这个"缺陷"成就了中国文学史上的经典。
+              - paragraph [ref=e461]: 看盘重点：福德宫看兴趣 · 长寿判断 · 考运分析
+            - generic [ref=e462]:
+              - generic [ref=e463]: ✈️
+              - heading "现代出行案例" [level=3] [ref=e464]
+              - paragraph [ref=e465]: 2013年 · 精确到月的预测
+              - paragraph [ref=e466]: 太阳天马坐命的"奔波命"，原局+大运+流年三层确认2013年出国。 更精准预测3月走不了、7月能成行——两个月的推断全部应验。
+              - paragraph [ref=e467]: 看盘重点：层层递进法 · 流月预测 · 感情分析
+          - link "阅读完整案例解析 →" [ref=e469] [cursor=pointer]:
+            - /url: /blog/eastern-wisdom/zh/ziwei-doushu-mingren-kanpan-jiaocheng
+        - generic [ref=e470]:
+          - heading "紫微斗数学习资源" [level=2] [ref=e471]
+          - generic [ref=e472]:
+            - link "紫微斗数入门指南 十二宫位含义、十四主星特性、命盘结构完整介绍" [ref=e473] [cursor=pointer]:
+              - /url: /blog/eastern-wisdom/zh/ziwei-doushu-rumen-zhinan
+              - heading "紫微斗数入门指南" [level=3] [ref=e474]
+              - paragraph [ref=e475]: 十二宫位含义、十四主星特性、命盘结构完整介绍
+            - link "流年流月预测方法 大限、流年、流月推算原理与四化飞星详解" [ref=e476] [cursor=pointer]:
+              - /url: /blog/eastern-wisdom/zh/ziwei-liunian-liuyue-yuce
+              - heading "流年流月预测方法" [level=3] [ref=e477]
+              - paragraph [ref=e478]: 大限、流年、流月推算原理与四化飞星详解
+            - link "3个名人命盘看盘教程 用张之洞、蒲松龄真实命盘，手把手教你20分钟学会看盘" [ref=e479] [cursor=pointer]:
+              - /url: /blog/eastern-wisdom/zh/ziwei-doushu-mingren-kanpan-jiaocheng
+              - heading "3个名人命盘看盘教程" [level=3] [ref=e480]
+              - paragraph [ref=e481]: 用张之洞、蒲松龄真实命盘，手把手教你20分钟学会看盘
+            - link "八字事业财运测算 八字与紫微并用，全面分析事业方向与财运走势" [ref=e482] [cursor=pointer]:
+              - /url: /blog/eastern-wisdom/zh/bazi-shiye-caiyun-cesuan
+              - heading "八字事业财运测算" [level=3] [ref=e483]
+              - paragraph [ref=e484]: 八字与紫微并用，全面分析事业方向与财运走势
+        - generic [ref=e485]:
+          - heading "开始你的紫微斗数之旅" [level=2] [ref=e486]
+          - paragraph [ref=e487]: 👆 向上滚动，使用免费排盘工具，输入你的出生信息，立即生成你的专属紫微命盘！
+          - generic [ref=e488]:
+            - paragraph [ref=e489]: 🤔 看到命盘了，但还是看不懂每颗星的含义？
+            - paragraph [ref=e490]: 试试我们的AI专业解读！
+            - list [ref=e491]:
+              - listitem [ref=e492]: ✅ 15-20页深度报告
+              - listitem [ref=e493]: ✅ 每颗星曜详细解释
+              - listitem [ref=e494]: ✅ 性格、事业、财运、感情全面分析
+              - listitem [ref=e495]: ✅ 未来10年运势预测
+              - listitem [ref=e496]: ✅ 只需$9.99，终身保存
+            - link "👆 滚动到顶部，生成命盘后解锁AI解读" [ref=e497] [cursor=pointer]:
+              - /url: "#top"
+      - generic [ref=e499]:
+        - generic [ref=e500]:
+          - generic [ref=e501]:
+            - img [ref=e502]
+            - heading "常见问题解答" [level=2] [ref=e505]
+          - paragraph [ref=e506]: 关于紫微斗数排盘的一切疑问，这里都有答案。 从入门到进阶，助您深入理解命理玄机。
+        - generic [ref=e507]:
+          - button "1 什么是紫微斗数？它与八字有什么区别？" [ref=e509]:
+            - generic [ref=e510]:
+              - generic [ref=e511]: "1"
+              - heading "什么是紫微斗数？它与八字有什么区别？" [level=3] [ref=e512]
+            - img [ref=e514]
+          - button "2 如何使用这个紫微斗数排盘工具？" [ref=e517]:
+            - generic [ref=e518]:
+              - generic [ref=e519]: "2"
+              - heading "如何使用这个紫微斗数排盘工具？" [level=3] [ref=e520]
+            - img [ref=e522]
+          - button "3 命盘上的星曜为什么这么多？它们都有什么作用？" [ref=e525]:
+            - generic [ref=e526]:
+              - generic [ref=e527]: "3"
+              - heading "命盘上的星曜为什么这么多？它们都有什么作用？" [level=3] [ref=e528]
+            - img [ref=e530]
+          - button "4 什么是大限、流年、流月、流日？" [ref=e533]:
+            - generic [ref=e534]:
+              - generic [ref=e535]: "4"
+              - heading "什么是大限、流年、流月、流日？" [level=3] [ref=e536]
+            - img [ref=e538]
+          - button "5 为什么命盘上有些宫位会高亮显示？" [ref=e541]:
+            - generic [ref=e542]:
+              - generic [ref=e543]: "5"
+              - heading "为什么命盘上有些宫位会高亮显示？" [level=3] [ref=e544]
+            - img [ref=e546]
+          - button "6 命盘中的\"身宫\"是什么意思？" [ref=e549]:
+            - generic [ref=e550]:
+              - generic [ref=e551]: "6"
+              - heading "命盘中的\"身宫\"是什么意思？" [level=3] [ref=e552]
+            - img [ref=e554]
+          - button "7 四化星（禄权科忌）是如何影响命运的？" [ref=e557]:
+            - generic [ref=e558]:
+              - generic [ref=e559]: "7"
+              - heading "四化星（禄权科忌）是如何影响命运的？" [level=3] [ref=e560]
+            - img [ref=e562]
+          - button "8 12神煞（长生、沐浴、冠带等）有什么作用？" [ref=e565]:
+            - generic [ref=e566]:
+              - generic [ref=e567]: "8"
+              - heading "12神煞（长生、沐浴、冠带等）有什么作用？" [level=3] [ref=e568]
+            - img [ref=e570]
+          - button "9 这个工具的排盘准确吗？数据来源是什么？" [ref=e573]:
+            - generic [ref=e574]:
+              - generic [ref=e575]: "9"
+              - heading "这个工具的排盘准确吗？数据来源是什么？" [level=3] [ref=e576]
+            - img [ref=e578]
+          - button "10 可以用紫微斗数预测具体事件吗？" [ref=e581]:
+            - generic [ref=e582]:
+              - generic [ref=e583]: "10"
+              - heading "可以用紫微斗数预测具体事件吗？" [level=3] [ref=e584]
+            - img [ref=e586]
+          - button "11 为什么需要精确的出生时辰？差2小时会有影响吗？" [ref=e589]:
+            - generic [ref=e590]:
+              - generic [ref=e591]: "11"
+              - heading "为什么需要精确的出生时辰？差2小时会有影响吗？" [level=3] [ref=e592]
+            - img [ref=e594]
+          - button "12 紫微斗数可以看婚姻和感情吗？" [ref=e597]:
+            - generic [ref=e598]:
+              - generic [ref=e599]: "12"
+              - heading "紫微斗数可以看婚姻和感情吗？" [level=3] [ref=e600]
+            - img [ref=e602]
+        - generic [ref=e604]:
+          - heading "为什么选择我们的紫微斗数排盘工具？" [level=3] [ref=e605]
+          - generic [ref=e606]:
+            - generic [ref=e607]:
+              - heading "🚀 自主研发AI引擎" [level=4] [ref=e608]
+              - paragraph [ref=e609]: 天机玄鉴团队自主研发的紫微斗数算法引擎，采用MCP（Model Context Protocol）架构，支持API调用。结合传统命理古籍与20年+命理师实战经验，算法精确可靠。技术领先，可定制化服务。
+            - generic [ref=e610]:
+              - heading "🎯 企业级API服务" [level=4] [ref=e611]
+              - paragraph [ref=e612]: 提供专业的紫微斗数API接口，支持批量排盘、深度解读、运势预测等功能。已为多家命理平台提供技术支持，日处理请求1000+次，响应速度<200ms。
+            - generic [ref=e613]:
+              - heading "🤖 AI深度解读" [level=4] [ref=e614]
+              - paragraph [ref=e615]: 独家AI命理解读引擎，结合GPT-4、Claude等先进AI模型，提供个性化、深度的命盘分析。不只是排盘，更有专业的人生建议和运势指引。
+            - generic [ref=e616]:
+              - heading "🔮 完全免费使用" [level=4] [ref=e617]
+              - paragraph [ref=e618]: 基础排盘功能完全免费，无需注册即可获得完整的66星曜、四化、12神煞、大限流年分析。支持本命盘、流年、流月、流日查看，实时高亮当前运势。
+          - generic [ref=e619]:
+            - heading "🌟 适合人群" [level=4] [ref=e620]
+            - list [ref=e621]:
+              - listitem [ref=e622]:
+                - text: •
+                - strong [ref=e623]: 命理爱好者
+                - text: ：学习紫微斗数，了解自己的命盘结构
+              - listitem [ref=e624]:
+                - text: •
+                - strong [ref=e625]: 专业命理师
+                - text: ：快速排盘，辅助客户咨询分析
+              - listitem [ref=e626]:
+                - text: •
+                - strong [ref=e627]: 自我探索者
+                - text: ：通过命理认识自己，规划人生方向
+              - listitem [ref=e628]:
+                - text: •
+                - strong [ref=e629]: 决策需求者
+                - text: ：查看流年运势，选择最佳行动时机
+          - generic [ref=e630]:
+            - heading "📚 相关资源推荐" [level=4] [ref=e631]
+            - paragraph [ref=e632]: 想要深入学习紫微斗数？推荐以下权威书籍和资源：
+            - list [ref=e633]:
+              - listitem [ref=e634]: • 《紫微斗数全书》（清·陈希夷）- 紫微斗数开山之作
+              - listitem [ref=e635]: • 《紫微斗数捷览》（民国·张开卷）- 系统全面的教材
+              - listitem [ref=e636]: • 《飞星紫微斗数》（当代）- 四化飞星进阶技法
+              - listitem [ref=e637]: • 天机玄鉴AI命理师 - 结合传统命理与现代AI技术的专业解读
+        - generic [ref=e638]:
+          - paragraph [ref=e639]: 还有其他问题？欢迎通过页面顶部导航联系我们
+          - link "回到顶部开始排盘" [ref=e640] [cursor=pointer]:
+            - /url: "#top"
+    - generic [ref=e642]:
+      - heading "探索更多命理工具" [level=2] [ref=e643]
+      - generic [ref=e644]:
+        - link "🏛️ 免费八字排盘" [ref=e645] [cursor=pointer]:
+          - /url: /bazi-professional
+          - generic [ref=e646]: 🏛️
+          - text: 免费八字排盘
+        - link "📈 人生运势曲线" [ref=e647] [cursor=pointer]:
+          - /url: /life-transit-curve
+          - generic [ref=e648]: 📈
+          - text: 人生运势曲线
+        - link "☯️ 易经文王神卦" [ref=e649] [cursor=pointer]:
+          - /url: /iching-oracle
+          - generic [ref=e650]: ☯️
+          - text: 易经文王神卦
+        - link "💕 恋爱婚姻预测" [ref=e651] [cursor=pointer]:
+          - /url: /love-fortune
+          - generic [ref=e652]: 💕
+          - text: 恋爱婚姻预测
+        - link "🔮 未来运势预测" [ref=e653] [cursor=pointer]:
+          - /url: /future-fortune
+          - generic [ref=e654]: 🔮
+          - text: 未来运势预测
+        - link "💑 生肖配对测试" [ref=e655] [cursor=pointer]:
+          - /url: /tools/zodiac-compatibility
+          - generic [ref=e656]: 💑
+          - text: 生肖配对测试
+        - link "🙏 观音灵签" [ref=e657] [cursor=pointer]:
+          - /url: /guanyin-oracle
+          - generic [ref=e658]: 🙏
+          - text: 观音灵签
+        - link "🏠 返回首页" [ref=e659] [cursor=pointer]:
+          - /url: /
+          - generic [ref=e660]: 🏠
+          - text: 返回首页
+  - alert [ref=e661]

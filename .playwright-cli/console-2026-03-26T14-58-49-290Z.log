@@ -1,0 +1,7 @@
+[     156ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://localhost:4173/api/ping:0
+[     191ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://localhost:4173/favicon.ico:0
+[  518203ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://localhost:4173/api/ping:0
+[  521200ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://localhost:4173/api/ping:0
+[  521443ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://localhost:4173/api/ping:0
+[  523310ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://localhost:4173/api/ping:0
+[  523556ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://localhost:4173/api/ping:0

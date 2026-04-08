@@ -68,6 +68,7 @@
 
     const slot = resolveTimeSlot(norm);
     if (!slot) return null;
+    const current = getCivilHourFromNorm(norm) || { hour: 0, minute: 0 };
 
     const solarDay = Solar.fromYmd(year, month, day);
     const lunarDay = solarDay.getLunar();
@@ -102,6 +103,11 @@
         dayPillar,
         hourPillar,
         timeSlot: slot.name,
+        timeSlotBranch: slot.branch,
+        timeSlotKind: slot.kind,
+        timeSlotIndex: slot.index,
+        civilHour: current.hour,
+        civilMinute: current.minute,
         hourDayStem,
         source: 'tianji-like-civil-slot',
       },

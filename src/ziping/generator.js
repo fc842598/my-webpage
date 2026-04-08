@@ -104,10 +104,52 @@
   const FEMALE_XU_ORDINARY_LINE_MATRIX = {
     5: { 8: 5 },
   };
+  const FEMALE_HAI_QIAN_YIN_HALF_MONTHS = new Set(['丑', '寅', '卯', '辰', '巳', '午']);
+
+  function countSolidLines(upper, lower) {
+    return hexLines6(upper, lower).filter(line => line === 'solid').length;
+  }
+
+  function getCivilSlotMeta(pillars) {
+    const info = pillars?._tianji || {};
+    const timeSlot = info.timeSlot || '';
+    const timeSlotBranch = info.timeSlotBranch ||
+      (timeSlot === '早子' || timeSlot === '夜子' ? '子' : timeSlot || '');
+    const timeSlotKind = info.timeSlotKind ||
+      (timeSlot === '早子'
+        ? 'early-zi'
+        : (timeSlot === '夜子'
+            ? 'night-zi'
+            : (timeSlotBranch ? 'normal' : '')));
+    return {
+      timeSlot,
+      timeSlotBranch,
+      timeSlotKind,
+    };
+  }
 
   function resolveYuanTangExplicitLine(hourBranch, upper, lower, context) {
     const gender = context?.gender;
     const xianTianNum = context?.xianTianNum;
+    const monthBranch = context?.monthBranch;
+    const solidCount = context?.solidCount;
+    const civilSlotBranch = context?.civilSlotBranch || hourBranch;
+    const civilSlotKind = context?.civilSlotKind || 'normal';
+    const isNativeHai = civilSlotBranch === '亥' && civilSlotKind === 'normal';
+    if (
+      gender === 'female' &&
+      isNativeHai &&
+      upper === 1 &&
+      lower === 1 &&
+      monthBranch
+    ) {
+      return {
+        line: FEMALE_HAI_QIAN_YIN_HALF_MONTHS.has(monthBranch) ? 1 : 6,
+        ruleTag: FEMALE_HAI_QIAN_YIN_HALF_MONTHS.has(monthBranch)
+          ? 'female-hai-qian-half-line-1'
+          : 'female-hai-qian-half-line-6',
+      };
+    }
     if (
       gender === 'female' &&
       !THREE_ZIZUN_NUMS.has(xianTianNum)
@@ -125,6 +167,16 @@
         };
       }
     }
+    if (
+      isNativeHai &&
+      !THREE_ZIZUN_NUMS.has(xianTianNum) &&
+      solidCount === 5
+    ) {
+      return {
+        line: 5,
+        ruleTag: 'native-hai-five-solid-virtual-mao-line5',
+      };
+    }
     return null;
   }
 
@@ -140,7 +192,16 @@
   //      c. 其余下六时 → 阴池      [lower-six-default-yin]   《天机道》P49
   function resolveYuanTangPoolType(hourBranch, context, fallbackIsYangPerson) {
     const isUpperSix = T().YANG_HOURS.includes(hourBranch);
-    const { gender, yearStem, xianTianNum, lowerTrigram } = context || {};
+    const {
+      gender,
+      yearStem,
+      xianTianNum,
+      lowerTrigram,
+      solidCount,
+      civilSlotBranch,
+      civilSlotKind,
+    } = context || {};
+    const isNativeHai = civilSlotBranch === '亥' && civilSlotKind === 'normal';
 
     // R1: 子时固定阳池
     if (hourBranch === '子') {
@@ -174,6 +235,14 @@
     if (gender === 'female' && !THREE_ZIZUN_NUMS.has(xianTianNum) &&
         ['戌', '亥'].includes(hourBranch) && [1, 4, 7].includes(lowerTrigram)) {
       return { poolType: 'yang', ruleTag: 'female-late-lower-six-trigram-147-yang' };
+    }
+    if (isNativeHai && !THREE_ZIZUN_NUMS.has(xianTianNum)) {
+      if ([1, 2, 4].includes(solidCount)) {
+        return { poolType: 'yang', ruleTag: 'native-hai-solid-124-yang' };
+      }
+      if ([0, 3, 6].includes(solidCount)) {
+        return { poolType: 'yin', ruleTag: 'native-hai-solid-036-yin' };
+      }
     }
     // R3c: 下六时默认阴池
     return { poolType: 'yin', ruleTag: 'lower-six-default-yin' };
@@ -478,21 +547,33 @@
     }
 
     const { gua: xianTian, debug } = xtResult;
+    const civilSlotMeta = getCivilSlotMeta(pillars);
+    const yuanTangHourBranch = civilSlotMeta.timeSlotBranch || pillars.hourBranch;
+    const solidCount = countSolidLines(xianTian.upper, xianTian.lower);
     const yuanTangInfo = getYuanTangDetail(
       xianTian.upper,
       xianTian.lower,
-      pillars.hourBranch,
+      yuanTangHourBranch,
       xianTian.isYangPerson,
       {
         gender,
         yearStem: pillars.yearStem,
         xianTianNum: xianTian.num,
+        monthBranch: pillars.monthBranch,
+        solidCount,
+        civilSlotBranch: civilSlotMeta.timeSlotBranch || pillars.hourBranch,
+        civilSlotKind: civilSlotMeta.timeSlotKind,
       }
     );
     const yuanTangLine = yuanTangInfo.line;
     const houYuanTangLine = yingLine(yuanTangLine);
     debug.yuanTangLine     = yuanTangLine;
     debug.yuanTangLineType = debug.hexLines6[yuanTangLine - 1] === 'solid' ? 'yang' : 'yin';
+    debug.civilTimeSlot = civilSlotMeta.timeSlot || null;
+    debug.civilTimeSlotBranch = civilSlotMeta.timeSlotBranch || null;
+    debug.civilTimeSlotKind = civilSlotMeta.timeSlotKind || null;
+    debug.yuanTangHourBranch = yuanTangHourBranch;
+    debug.xianSolidCount = solidCount;
     debug.yuanTangPoolType = yuanTangInfo.poolType;
     debug.yuanTangRuleTag  = yuanTangInfo.ruleTag;
     debug.yuanTangHourGroup = yuanTangInfo.hourGroup;

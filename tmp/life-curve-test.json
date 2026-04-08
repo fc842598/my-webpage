@@ -1,0 +1,32 @@
+﻿{
+  "chartSummary": {
+    "name": "测试",
+    "gender": "male",
+    "solar": "1991-02-16 22:00 亥时",
+    "lunar": "辛未年正月初二亥时",
+    "sizhu": "辛未 庚寅 丁巳 辛亥",
+    "xianTian": "风水涣",
+    "houTian": "水天需",
+    "currentLiuNian": "36岁 天风姤",
+    "fiveElementsClass": "木三局"
+  },
+  "years": [
+    {
+      "age": 36,
+      "year": 2026,
+      "liunianGua": {"name": "天风姤", "period": "先天"},
+      "xiaoLian": {"branch": "子", "palace": "子女宫", "stars": "天机、地空"},
+      "opposite": {"branch": "午", "palace": "田宅宫", "stars": "巨门、天魁、天厨"},
+      "decadal": {"palace": "子女宫", "range": "33-42岁", "stars": "天机、地空"}
+    },
+    {
+      "age": 37,
+      "year": 2027,
+      "liunianGua": {"name": "泽风大过", "period": "先天"},
+      "xiaoLian": {"branch": "丑", "palace": "夫妻宫", "stars": "紫微、破军、天姚、封诰"},
+      "opposite": {"branch": "未", "palace": "官禄宫", "stars": "天相、华盖"},
+      "decadal": {"palace": "子女宫", "range": "33-42岁", "stars": "天机、地空"}
+    }
+  ],
+  "stream": false
+}

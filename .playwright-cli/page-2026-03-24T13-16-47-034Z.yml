@@ -1,0 +1,324 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - generic [ref=e4]:
+        - link "PurpleStarAstro logo PurpleStarAstro" [ref=e7] [cursor=pointer]:
+          - /url: /
+          - img "PurpleStarAstro logo" [ref=e8]
+          - generic [ref=e9]: PurpleStarAstro
+        - generic [ref=e10]:
+          - navigation [ref=e11]:
+            - link "功能" [ref=e12] [cursor=pointer]:
+              - /url: /zh#features
+            - link "常见问题" [ref=e13] [cursor=pointer]:
+              - /url: /zh#faq
+            - link "定价" [ref=e14] [cursor=pointer]:
+              - /url: /pricing
+            - link "我的运势" [ref=e15] [cursor=pointer]:
+              - /url: /astro/horoscope
+          - button [ref=e17] [cursor=pointer]:
+            - img
+          - link "登录" [ref=e19] [cursor=pointer]:
+            - /url: /login
+            - button "登录" [ref=e20]
+    - main [ref=e21]:
+      - generic [ref=e24]:
+        - generic [ref=e25]:
+          - heading "紫 微 斗 数 ：您的专属命运导航与智慧人生指南" [level=1] [ref=e26]:
+            - generic [ref=e27]:
+              - generic [ref=e28]: 紫
+              - generic [ref=e29]: 微
+              - generic [ref=e30]: 斗
+              - generic [ref=e31]: 数
+            - text: ：您的专属命运导航与智慧人生指南
+          - heading "紫微斗数：您的专属命运导航与智慧人生指南" [level=2] [ref=e32]
+          - paragraph [ref=e33]: 融合千年古老紫微斗数智慧与顶尖AI算法，为您提供超个性化的每日运势、本命星盘深度解读与关系合盘，助您洞察天机，掌控未来。
+          - generic [ref=e34]:
+            - link "免费获取我的专属AI报告" [ref=e35] [cursor=pointer]:
+              - /url: /astro/horoscope
+              - button "免费获取我的专属AI报告" [ref=e36]:
+                - text: 免费获取我的专属AI报告
+                - img
+            - generic [ref=e37]: 无需登录，无需信用卡。
+        - img "PurpleStarAstro Home Banner" [ref=e39]
+      - generic [ref=e200]:
+        - generic [ref=e201]:
+          - heading "什么是AI智能紫微斗数？革新您的命运解析体验" [level=2] [ref=e202]
+          - paragraph [ref=e203]:
+            - text: 传统紫微斗数源远流长，深邃玄奥。PurpleStarAstro将这门古老的东方命理学与现代人工智能技术完美融合，为您带来前所未有的
+            - strong [ref=e204]: 精准性、深度和个性化体验
+            - text: 。我们通过AI强大计算能力，超越传统人工测算局限，为您精准勾勒命运轨迹，揭示潜在机遇与挑战。
+          - generic [ref=e205]:
+            - text: 【我们的三大核心优势】
+            - list [ref=e206]:
+              - listitem [ref=e207]:
+                - strong [ref=e208]: 智慧融合
+                - text: ：千年古老紫微斗数精髓与AI尖端科技相结合，为您提供更客观、更具洞察力的分析结果。
+              - listitem [ref=e209]:
+                - strong [ref=e210]: 深度个性化
+                - text: ：每一份报告都基于您的独特星盘生成，真正为您量身定制，解决您的专属人生疑问。
+              - listitem [ref=e211]:
+                - strong [ref=e212]: 持续进化
+                - text: ：我们的AI模型与数据算法不断迭代，确保为您提供最前沿、最精准的命运解析与个性化成长指引。
+          - link "深入了解紫微斗数原理" [ref=e213] [cursor=pointer]:
+            - /url: /blog/purple-star-astrology-introduction
+            - button "深入了解紫微斗数原理" [ref=e214]:
+              - text: 深入了解紫微斗数原理
+              - img
+        - generic [ref=e215]:
+          - generic [ref=e217]:
+            - generic:
+              - generic [ref=e219] [cursor=pointer]: 子女
+              - img [ref=e220]
+            - generic:
+              - generic [ref=e223] [cursor=pointer]: 财帛
+              - img [ref=e224]
+            - generic:
+              - generic [ref=e227] [cursor=pointer]: 疾厄
+              - img [ref=e228]
+            - generic:
+              - generic [ref=e231] [cursor=pointer]: 迁移
+              - img [ref=e232]
+            - generic:
+              - generic [ref=e235] [cursor=pointer]: 仆役
+              - img [ref=e236]
+            - generic:
+              - generic [ref=e239] [cursor=pointer]: 官禄
+              - img [ref=e240]
+            - generic:
+              - generic [ref=e243] [cursor=pointer]: 田宅
+              - img [ref=e244]
+            - generic:
+              - generic [ref=e247] [cursor=pointer]: 福德
+              - img [ref=e248]
+            - generic:
+              - generic [ref=e251] [cursor=pointer]: 父母
+              - img [ref=e252]
+            - generic:
+              - generic [ref=e255] [cursor=pointer]: 命宫
+              - img [ref=e256]
+            - generic:
+              - generic [ref=e259] [cursor=pointer]: 兄弟
+              - img [ref=e260]
+            - generic:
+              - generic [ref=e263] [cursor=pointer]: 夫妻
+              - img [ref=e264]
+          - generic [ref=e267]: 紫微
+          - generic [ref=e269]: 天机
+          - generic [ref=e271]: 太阳
+          - generic [ref=e273]: 武曲
+          - generic [ref=e275]: 天同
+          - generic [ref=e277]: 廉贞
+          - generic [ref=e279]: 天府
+          - generic [ref=e281]: 太阴
+          - generic [ref=e283]: 贪狼
+          - generic [ref=e285]: 巨门
+          - generic [ref=e287]: 天相
+          - generic [ref=e289]: 天梁
+          - generic [ref=e291]: 七杀
+          - generic [ref=e293]: 破军
+          - generic [ref=e294]:
+            - generic [ref=e297]: 化禄
+            - generic [ref=e299]: 化权
+            - generic [ref=e301]: 化科
+            - generic [ref=e303]: 化忌
+          - generic [ref=e306]: 运势
+      - generic [ref=e307]:
+        - heading "什么是AI智能紫微斗数？革新您的命运解析体验" [level=2] [ref=e308]
+        - generic [ref=e309]:
+          - text: 传统紫微斗数源远流长，深邃玄奥。PurpleStarAstro将这门古老的东方命理学与现代人工智能技术完美融合，为您带来前所未有的
+          - strong [ref=e310]: 精准性、深度和个性化体验
+          - text: 。我们通过AI强大计算能力，超越传统人工测算局限，为您精准勾勒命运轨迹，揭示潜在机遇与挑战。
+        - generic [ref=e311]:
+          - text: 【我们的三大核心优势】
+          - list [ref=e312]:
+            - listitem [ref=e313]: <strong>智慧融合</strong>：千年古老紫微斗数精髓与AI尖端科技相结合，为您提供更客观、更具洞察力的分析结果。
+            - listitem [ref=e314]: <strong>深度个性化</strong>：每一份报告都基于您的独特星盘生成，真正为您量身定制，解决您的专属人生疑问。
+            - listitem [ref=e315]: <strong>持续进化</strong>：我们的AI模型与数据算法不断迭代，确保为您提供最前沿、最精准的命运解析与个性化成长指引。
+      - generic [ref=e316]:
+        - heading "探索您的专属AI命运功能：洞悉未来，掌控人生" [level=2] [ref=e317]
+        - generic [ref=e318]:
+          - generic [ref=e319]:
+            - img "每日/月/年运势预测：洞察趋势，把握先机" [ref=e321]
+            - generic [ref=e322]:
+              - img [ref=e324]
+              - heading "每日/月/年运势预测：洞察趋势，把握先机" [level=3] [ref=e327]
+              - paragraph [ref=e328]: AI智能分析您的紫微星盘，为您提供每日、每月、每年的详细运势走向。深入解读您在感情、事业、财运、健康、家庭等各方面的吉凶变化，并提供具体、可操作的个性化指导建议，助您轻松应对生活中的机遇与挑战。
+          - generic [ref=e329]:
+            - img "本命星盘深度解读：解锁生命潜能，认识真正的自己" [ref=e331]
+            - generic [ref=e332]:
+              - img [ref=e334]
+              - heading "本命星盘深度解读：解锁生命潜能，认识真正的自己" [level=3] [ref=e340]
+              - paragraph [ref=e341]: 基于您的紫微本命星盘，AI将为您绘制一份专属的“人生地图”。深度解读您的性格特质、家庭关系、感情发展、事业格局、财富积累与健康状况。精准识别您生命中的关键节点，助您洞察自我，实现人生飞跃。
+          - generic [ref=e342]:
+            - img "紫微星盘匹配：AI智能合盘，洞悉关系奥秘，提升人际和谐" [ref=e344]
+            - generic [ref=e345]:
+              - img [ref=e347]
+              - heading "紫微星盘匹配：AI智能合盘，洞悉关系奥秘，提升人际和谐" [level=3] [ref=e351]
+              - paragraph [ref=e352]: 想知道您与TA的缘分？AI智能合盘功能，深度解析您与情侣、亲友、合作伙伴的紫微星盘数据，洞察双方在性格兼容性、互动模式与发展趋势。提供具体、可操作的个性化互动建议，助您维护健康和谐的人际关系。
+      - generic [ref=e354]:
+        - heading "为什么选择PurpleStarAstro？更懂您的AI智能命理平台" [level=2] [ref=e355]
+        - generic [ref=e356]:
+          - generic [ref=e357]:
+            - img [ref=e359]
+            - heading "古今智慧，深度解析" [level=3] [ref=e362]
+            - paragraph [ref=e363]: 我们将千年古老紫微斗数精髓与AI尖端科技完美结合，为您带来前所未有的精准与深度解析，洞悉命运奥秘。
+          - generic [ref=e364]:
+            - img [ref=e366]
+            - heading "数据安全，安心无忧" [level=3] [ref=e368]
+            - paragraph [ref=e369]: 我们严格保护您的个人信息与数据安全，所有测算结果隐私加密存储，绝不泄露或他用，让您安心探索。
+          - generic [ref=e370]:
+            - img [ref=e372]
+            - heading "智能迭代，伴您成长" [level=3] [ref=e377]
+            - paragraph [ref=e378]: 我们的AI模型与数据算法不断迭代，确保为您提供最前沿、最精准的命运解析与个性化成长指引，伴随您一路前行。
+      - generic [ref=e379]:
+        - generic [ref=e380]:
+          - heading "定价简单" [level=2] [ref=e381]
+          - paragraph [ref=e382]: 选择适合您的服务，可随时取消服务。
+        - generic [ref=e383]:
+          - generic [ref=e384]: 月付
+          - switch "switch-year" [checked] [ref=e385] [cursor=pointer]
+          - generic [ref=e386]: 年付
+        - generic [ref=e387]:
+          - generic [ref=e388]:
+            - generic [ref=e389]:
+              - paragraph [ref=e390]: 免费版
+              - generic [ref=e392]:
+                - generic [ref=e393]: $0
+                - generic [ref=e395]: / 月
+            - generic [ref=e396]:
+              - list [ref=e397]:
+                - listitem [ref=e398]:
+                  - img [ref=e399]
+                  - generic [ref=e401]:
+                    - text: 查看星盘的基本信息
+                    - img [ref=e402]
+                - listitem [ref=e404]:
+                  - img [ref=e405]
+                  - generic [ref=e407]:
+                    - text: 每月 3 次免费生成当日的运势分析
+                    - img [ref=e408]
+                - listitem [ref=e410]:
+                  - img [ref=e411]
+                  - generic [ref=e414]: 无法查看明日、每月、每年的运势分析
+                - listitem [ref=e415]:
+                  - img [ref=e416]
+                  - generic [ref=e419]: 无法进行星盘匹配
+              - link "开始体验" [ref=e420] [cursor=pointer]:
+                - /url: /astro/horoscope
+                - text: 开始体验
+                - img
+          - generic [ref=e421]:
+            - generic [ref=e422]:
+              - paragraph [ref=e423]:
+                - text: 会员版
+                - generic [ref=e424]: 推荐
+              - generic [ref=e426]:
+                - generic [ref=e427]:
+                  - generic [ref=e428]: $5
+                  - generic [ref=e429]: $2
+                - generic [ref=e431]: / 月
+              - generic [ref=e433]: 按年收费，优惠60%
+            - generic [ref=e434]:
+              - list [ref=e435]:
+                - listitem [ref=e436]:
+                  - img [ref=e437]
+                  - generic [ref=e439]:
+                    - text: 查看星盘的完整信息
+                    - img [ref=e440]
+                - listitem [ref=e442]:
+                  - img [ref=e443]
+                  - generic [ref=e445]:
+                    - text: 无限次的每日、每月、每年运势分析
+                    - img [ref=e446]
+                - listitem [ref=e448]:
+                  - img [ref=e449]
+                  - generic [ref=e451]:
+                    - text: 无限次的星盘匹配
+                    - img [ref=e452]
+                - listitem [ref=e454]:
+                  - img [ref=e455]
+                  - generic [ref=e457]: 优先客户支持
+              - link "开始体验" [ref=e458] [cursor=pointer]:
+                - /url: /login?from=%2Fpricing
+                - text: 开始体验
+                - img
+      - generic [ref=e459]:
+        - heading "常见问题" [level=2] [ref=e460]
+        - generic [ref=e461]:
+          - generic [ref=e462]:
+            - heading "紫微斗数是什么？" [level=3] [ref=e463]
+            - paragraph [ref=e464]:
+              - generic [ref=e465]:
+                - text: 紫微斗数是中国古代最精妙的命理学之一，在古代被尊称为“帝王学”，主要用于给皇帝和贵族进行命理测算。它通过分析一个人出生时的天体位置，推断其性格特质和人生走向。它以紫微星为核心，结合其他主星和辅星的位置，形成完整的命盘体系。
+                - link "查看详细介绍" [ref=e466] [cursor=pointer]:
+                  - /url: /blog/purple-star-astrology-introduction
+          - generic [ref=e467]:
+            - heading "PurpleStarAstro 是如何工作的？" [level=3] [ref=e468]
+            - paragraph [ref=e469]: 我们的系统根据用户的出生日期和时辰，通过算法精准地计算出对应的紫微斗数命盘，然后将用户命盘、大量紫微斗数案例和理论与DeepSeek、GPT等大模型结合，让模型精准地分析用户的命盘并提供针对性的建议和指导。
+          - generic [ref=e470]:
+            - heading "PurpleStarAstro 可以免费使用吗？" [level=3] [ref=e471]
+            - paragraph [ref=e472]: 是的，我们的免费版提供了试用功能，您可以查看命盘的基本信息，以及有5天的免费运势预测。
+          - generic [ref=e473]:
+            - heading "需要提供哪些信息才能获得准确的命盘解析？" [level=3] [ref=e474]
+            - paragraph [ref=e475]: 您需要提供准确的出生年、月、日、时间区间，出生地点也会影响解析的准确度。只有提供准确的信息我们才能正确计算出您的命盘，后续的所有预测才是准确的，所以一定要提供准确的信息。
+          - generic [ref=e476]:
+            - heading "PurpleStarAstro 如何保护我的隐私？" [level=3] [ref=e477]
+            - paragraph [ref=e478]: 我们致力于保护您个人信息的保密性和安全性。我们的平台严格遵守全球隐私法规，采用最先进的技术和组织保障措施，防止未经授权访问、披露或滥用您的数据。
+          - generic [ref=e479]:
+            - heading "如何理解和应用命盘解析结果？" [level=3] [ref=e480]
+            - paragraph [ref=e481]: 命盘解析提供的是参考和指导，而非绝对命运。我们建议您将解析结果作为自我认知和生活决策的参考工具，结合自身实际情况，理性查看命运，积极把握人生。
+          - generic [ref=e482]:
+            - heading "如何获取帮助和提供反馈？" [level=3] [ref=e483]
+            - paragraph [ref=e484]:
+              - generic [ref=e485]:
+                - text: 您可以通过
+                - link "wxiangshy@gmail.com" [ref=e486] [cursor=pointer]:
+                  - /url: mailto:wxiangshy@gmail.com
+                - text: 联系我们的支持团队获取帮助和提供反馈。我们欢迎您的反馈！
+          - generic [ref=e487]:
+            - heading "PurpleStarAstro 的下一步是什么？" [level=3] [ref=e488]
+            - paragraph [ref=e489]: 我们会定期更新用户界面和提高预测的准确度来不断改进我们的服务。不久的将来，我们还会提供个性化的AI聊天指导服务。
+    - contentinfo [ref=e490]:
+      - generic [ref=e491]:
+        - generic [ref=e492]:
+          - generic [ref=e493]:
+            - img "PurpleStarAstro logo" [ref=e494]
+            - generic [ref=e495]:
+              - heading "PurpleStarAstro" [level=2] [ref=e496]
+              - generic [ref=e497]: 您的专属命运导航与智慧人生指南
+          - generic [ref=e498]:
+            - generic [ref=e499]:
+              - heading "博客" [level=3] [ref=e500]
+              - list [ref=e501]:
+                - listitem [ref=e502]:
+                  - link "紫微斗数是什么" [ref=e503] [cursor=pointer]:
+                    - /url: /blog/purple-star-astrology-introduction
+                - listitem [ref=e504]:
+                  - link "紫微斗数术语表" [ref=e505] [cursor=pointer]:
+                    - /url: /blog/purple-star-astrology-terminology-reference
+                - listitem [ref=e506]:
+                  - link "所有文章" [ref=e507] [cursor=pointer]:
+                    - /url: /blog
+            - generic [ref=e508]:
+              - heading "关于" [level=3] [ref=e509]
+              - list [ref=e510]:
+                - listitem [ref=e511]:
+                  - link "隐私政策" [ref=e512] [cursor=pointer]:
+                    - /url: /protocols/privacy-policy
+                - listitem [ref=e513]:
+                  - link "服务条款" [ref=e514] [cursor=pointer]:
+                    - /url: /protocols/terms-of-service
+                - listitem [ref=e515]:
+                  - link "联系我们" [ref=e516] [cursor=pointer]:
+                    - /url: mailto:wxiangshy@gmail.com
+            - generic [ref=e517]:
+              - heading "更多产品" [level=3] [ref=e518]
+              - list [ref=e519]:
+                - listitem [ref=e520]:
+                  - link "InterviewPro" [ref=e521] [cursor=pointer]:
+                    - /url: https://interviewpro.net
+        - generic [ref=e523]: © 2026 • PurpleStarAstro 保留所有权利
+  - region "Notifications (F8)":
+    - list
+  - alert [ref=e524]

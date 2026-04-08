@@ -1,0 +1,153 @@
+id: L-20210328-m-丑
+birth: 2021-03-28 02:00
+gender: male
+comboSelected: 丑(1~3)
+
+[#32770] 天纪 ck.w
+[Edit] 将军
+[Edit] 空亡
+[Edit] 空亡
+[Edit] 病
+[Edit] 天月
+[Edit] 天哭
+[Edit] 龙池
+[Edit] 天寿天福
+[Edit] 癸巳
+[Edit] 93-102               田宅宫
+[Edit] 太阳旺化权
+[Edit] 天魁
+[Edit] 小耗
+[Edit] 衰
+[Edit] 八座
+[Edit] 月德
+[Edit] 咸池
+[Edit] 天厨
+[Edit] 甲午
+[Edit] 83-92                事业宫
+[Edit] 天同平
+[Edit] 火星陷
+[Edit] 奏书
+[Edit] 旬中
+[Edit] 截路
+[Edit] 死
+[Edit] 壬辰
+[Edit] 103-112身 宫  福德宫
+[Edit] 飞廉
+[Edit] 墓
+[Edit] 封诰
+[Edit] 天才
+[Edit] 辛卯
+[Edit] 113-122            父母宫
+[Edit] 天钺
+[Edit] 喜神
+[Edit] 绝
+[Edit] 天姚
+[Edit] 红鸾
+[Edit] 孤辰
+[Edit] 天空
+[Edit] 庚寅
+[Edit] 3-12                  命 宫
+[Edit] 廉贞利
+[Edit] 七杀庙
+[Edit] 病符
+[Edit] 胎
+[Edit] 破碎
+[Edit] 华盖
+[Edit] 辛丑
+[Edit] 13-22                兄弟宫
+[Edit] 天梁庙
+[Edit] 地劫
+[Edit] 大耗
+[Edit] 养
+[Edit] 阴煞
+[Edit] 庚子
+[Edit] 23-32                夫妻宫
+[Edit] 06岁 顺行
+[Edit] 天相地
+[Edit] 铃星利
+[Edit] 天马
+[Edit] 伏兵
+[Edit] 长生
+[Edit] 恩光
+[Edit] 己亥
+[Edit] 33-42                子女宫
+[Edit] 巨门陷化禄
+[Edit] 地空
+[Edit] 擎羊庙
+[Edit] 官府
+[Edit] 沐浴
+[Edit] 天刑
+[Edit] 寡宿
+[Edit] 天德
+[Edit] 戊戌
+[Edit] 43-52                财帛宫
+[Edit] 紫微旺
+[Edit] 贪狼利
+[Edit] 文昌庙化忌
+[Edit] 博士
+[Edit] 天使
+[Edit] 冠带
+[Edit] 右弼
+[Edit] 禄存庙
+[Edit] 解神
+[Edit] 凤阁
+[Edit] 蜚廉
+[Edit] 天官
+[Edit] 丁酉
+[Edit] 53-62                疾厄宫
+[Edit] 天机地
+[Edit] 太阴利
+[Edit] 陀罗陷
+[Edit] 力士
+[Edit] 临官
+[Edit] 天巫
+[Edit] 三台
+[Edit] 天喜
+[Edit] 丙申
+[Edit] 63-72                迁移宫
+[Edit] 天府庙
+[Edit] 青龙
+[Edit] 天伤
+[Edit] 帝旺
+[Edit] 台辅
+[Edit] 天贵
+[Edit] 天虚
+[Edit] 乙未
+[Edit] 73-82                友仆宫
+[Static] 姓名
+[Edit] 匿名者
+[Button] 男
+[Button] 女
+[Button] 西历
+[Edit] 2021
+[Edit] 年    年
+[Edit] 3
+[Edit] 月		月
+[Edit] 28
+[Edit] 日    日
+[Button] 农历
+[Edit] 2021
+[Edit] 2
+[Edit] 16
+[Static] 时辰
+[ComboBox] 丑(1~3)
+[Edit] 辛丑年二月十六
+[Edit] 阴男
+[Edit] 木三局
+[Button] 开始计算
+[Button] 存储姓名
+[Button] 历史记录
+[Button] 额外诸星
+[Button] 月,日卦
+[Button] 清除画面
+[SysListView32] List3
+[SysListView32] List3
+[SysListView32] List3
+[Edit] 先天卦:风水涣
+[SysListView32] List3
+[Edit] 四柱 : 辛丑 辛卯 乙亥 丁丑
+[Edit] 后天卦:水山蹇
+[Edit] 武曲平
+[Edit] 破军平
+[Edit] 文曲庙化科
+[Edit] 左辅

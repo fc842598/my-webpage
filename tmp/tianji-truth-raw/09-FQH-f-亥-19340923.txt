@@ -1,0 +1,153 @@
+id: fqh-19340923
+birth: 1934-09-23 22:00
+gender: female
+comboSelected: 亥(21~23)
+
+[#32770] 天纪 ck.w
+[Edit] 大耗
+[Edit] 天使
+[Edit] 绝
+[Edit] 台辅
+[Edit] 红鸾
+[Edit] 天厨
+[Edit] 己巳
+[Edit] 56-65                疾厄宫
+[Edit] 巨门旺
+[Edit] 病符
+[Edit] 墓
+[Edit] 天寿
+[Edit] 庚午
+[Edit] 46-55                财帛宫
+[Edit] 太阴陷
+[Edit] 伏兵
+[Edit] 胎
+[Edit] 天刑
+[Edit] 天贵
+[Edit] 天虚
+[Edit] 戊辰
+[Edit] 66-75                迁移宫
+[Edit] 天府地
+[Edit] 文曲旺
+[Edit] 右弼
+[Edit] 官府
+[Edit] 天伤
+[Edit] 养
+[Edit] 擎羊陷
+[Edit] 月德
+[Edit] 咸池
+[Edit] 丁卯
+[Edit] 76-85                友仆宫
+[Edit] 铃星庙
+[Edit] 禄存庙
+[Edit] 博士
+[Edit] 长生
+[Edit] 龙池
+[Edit] 丙寅
+[Edit] 86-95                事业宫
+[Edit] 紫微庙
+[Edit] 破军旺化权
+[Edit] 陀罗庙
+[Edit] 力士
+[Edit] 沐浴
+[Edit] 天魁
+[Edit] 封诰
+[Edit] 三台
+[Edit] 八座
+[Edit] 破碎
+[Edit] 丁丑
+[Edit] 96-105               田宅宫
+[Edit] 天机庙
+[Edit] 火星陷
+[Edit] 地空
+[Edit] 青龙
+[Edit] 冠带
+[Edit] 阴煞
+[Edit] 恩光
+[Edit] 解神
+[Edit] 凤阁蜚廉
+[Edit] 丙子
+[Edit] 106-115            福德宫
+[Edit] 文昌利
+[Edit] 左辅
+[Edit] 小耗
+[Edit] 临官
+[Edit] 天巫
+[Edit] 天喜
+[Edit] 孤辰
+[Edit] 天空
+[Edit] 乙亥
+[Edit] 116-125            父母宫
+[Edit] 太阳化忌
+[Edit] 地劫
+[Edit] 将军
+[Edit] 帝旺
+[Edit] 华盖
+[Edit] 甲戌
+[Edit] 6-15                  命 宫
+[Edit] 武曲利化科
+[Edit] 七杀旺
+[Edit] 奏书
+[Edit] 空亡
+[Edit] 空亡
+[Edit] 衰
+[Edit] 天福
+[Edit] 癸酉
+[Edit] 16-25                兄弟宫
+[Edit] 天同旺
+[Edit] 天梁陷
+[Edit] 天马
+[Edit] 飞廉
+[Edit] 旬中
+[Edit] 截路
+[Edit] 病
+[Edit] 天姚
+[Edit] 天哭
+[Edit] 天才
+[Edit] 壬申
+[Edit] 26-35    身 宫  夫妻宫
+[Edit] 93岁 逆行
+[Edit] 天相地
+[Edit] 天钺
+[Edit] 喜神
+[Edit] 死
+[Edit] 天月
+[Edit] 寡宿
+[Edit] 天德
+[Edit] 天官
+[Edit] 辛未
+[Edit] 36-45                子女宫
+[Static] 姓名
+[Edit] 匿名者
+[Button] 男
+[Button] 女
+[Button] 西历
+[Edit] 1934
+[Edit] 年    年
+[Edit] 9
+[Edit] 月		月
+[Edit] 23
+[Edit] 日    日
+[Button] 农历
+[Edit] 1934
+[Edit] 8
+[Edit] 15
+[Static] 时辰
+[ComboBox] 亥(21~23)
+[Edit] 甲戌年八月十五
+[Edit] 阳女
+[Edit] 火六局
+[Button] 开始计算
+[Button] 存储姓名
+[Button] 历史记录
+[Button] 额外诸星
+[Button] 月,日卦
+[Button] 清除画面
+[SysListView32] List3
+[SysListView32] List3
+[SysListView32] List3
+[Edit] 先天卦:乾为天
+[SysListView32] List3
+[Edit] 四柱 : 甲戌 癸酉 丁酉 辛亥
+[Edit] 后天卦:天泽履
+[Edit] 廉贞陷化禄
+[Edit] 贪狼陷

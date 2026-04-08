@@ -1,0 +1,207 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - generic [ref=e3]:
+      - link "☽ 紫微斗数" [ref=e4] [cursor=pointer]:
+        - /url: ../index.html
+      - navigation [ref=e5]:
+        - link "首页" [ref=e6] [cursor=pointer]:
+          - /url: ../index.html
+        - link "免费排盘" [ref=e7] [cursor=pointer]:
+          - /url: chart.html
+  - generic [ref=e8]:
+    - generic [ref=e9]:
+      - generic [ref=e10]: 紫微排盘
+      - button "🕐 排盘记录" [ref=e11]
+    - generic [ref=e12]:
+      - generic [ref=e13]:
+        - generic [ref=e14]: ✦ AI 智能识别
+        - generic [ref=e16]:
+          - text: 告诉我出生信息就好，比如：
+          - emphasis [ref=e17]: 1991年2月16日晚上10点，男，上海
+          - text: 城市影响真太阳时，尽量填。
+        - generic [ref=e18]:
+          - textbox "年月日、时间、性别、城市…" [ref=e19]
+          - button "发送" [ref=e20]
+        - generic [ref=e21]: 上面直接输入也行。若还没点“发送”，直接点下面“开始排盘”也会先自动识别。
+      - generic [ref=e22]: — 或手动填写 —
+      - generic [ref=e23]:
+        - generic [ref=e24]:
+          - text: "姓名:"
+          - textbox "请输入姓名（选填）" [ref=e25]
+        - generic [ref=e26]:
+          - button "男" [ref=e27]
+          - button "女" [ref=e28]
+      - generic [ref=e29]:
+        - generic [ref=e30]:
+          - generic [ref=e31]:
+            - generic [ref=e32]: "*"
+            - generic [ref=e33]: 出生时间
+          - generic [ref=e34]:
+            - button "公历" [ref=e35]
+            - button "农历" [ref=e36]
+        - generic [ref=e37]:
+          - spinbutton [ref=e38]: "1991"
+          - combobox [ref=e39]:
+            - option "月"
+            - option "1月"
+            - option "2月" [selected]
+            - option "3月"
+            - option "4月"
+            - option "5月"
+            - option "6月"
+            - option "7月"
+            - option "8月"
+            - option "9月"
+            - option "10月"
+            - option "11月"
+            - option "12月"
+          - combobox [ref=e40]:
+            - option "日"
+            - option "1日"
+            - option "2日"
+            - option "3日"
+            - option "4日"
+            - option "5日"
+            - option "6日"
+            - option "7日"
+            - option "8日"
+            - option "9日"
+            - option "10日"
+            - option "11日"
+            - option "12日"
+            - option "13日"
+            - option "14日"
+            - option "15日"
+            - option "16日" [selected]
+            - option "17日"
+            - option "18日"
+            - option "19日"
+            - option "20日"
+            - option "21日"
+            - option "22日"
+            - option "23日"
+            - option "24日"
+            - option "25日"
+            - option "26日"
+            - option "27日"
+            - option "28日"
+      - generic [ref=e42]:
+        - text: 出生时刻
+        - generic [ref=e43]:
+          - combobox [ref=e44]:
+            - option "00"
+            - option "01"
+            - option "02"
+            - option "03"
+            - option "04"
+            - option "05"
+            - option "06"
+            - option "07"
+            - option "08"
+            - option "09"
+            - option "10"
+            - option "11"
+            - option "12"
+            - option "13"
+            - option "14"
+            - option "15"
+            - option "16"
+            - option "17"
+            - option "18"
+            - option "19"
+            - option "20"
+            - option "21"
+            - option "22" [selected]
+            - option "23"
+          - text: 时
+          - combobox [ref=e45]:
+            - option "00" [selected]
+            - option "01"
+            - option "02"
+            - option "03"
+            - option "04"
+            - option "05"
+            - option "06"
+            - option "07"
+            - option "08"
+            - option "09"
+            - option "10"
+            - option "11"
+            - option "12"
+            - option "13"
+            - option "14"
+            - option "15"
+            - option "16"
+            - option "17"
+            - option "18"
+            - option "19"
+            - option "20"
+            - option "21"
+            - option "22"
+            - option "23"
+            - option "24"
+            - option "25"
+            - option "26"
+            - option "27"
+            - option "28"
+            - option "29"
+            - option "30"
+            - option "31"
+            - option "32"
+            - option "33"
+            - option "34"
+            - option "35"
+            - option "36"
+            - option "37"
+            - option "38"
+            - option "39"
+            - option "40"
+            - option "41"
+            - option "42"
+            - option "43"
+            - option "44"
+            - option "45"
+            - option "46"
+            - option "47"
+            - option "48"
+            - option "49"
+            - option "50"
+            - option "51"
+            - option "52"
+            - option "53"
+            - option "54"
+            - option "55"
+            - option "56"
+            - option "57"
+            - option "58"
+            - option "59"
+          - text: 分
+          - button "不知道时辰？" [ref=e46] [cursor=pointer]
+      - generic [ref=e47]:
+        - generic [ref=e48]:
+          - generic [ref=e49]: 出生地点
+          - generic [ref=e50]: （影响真太阳时）
+        - generic [ref=e51]:
+          - textbox "搜索城市，如：北京、Tokyo、London" [ref=e52]: 上海 · 上海
+          - button "清除" [ref=e53] [cursor=pointer]
+        - generic [ref=e54]:
+          - text: "已选: 上海 上海"
+          - generic [ref=e55]: (121.47°E, 31.23°N)
+      - generic [ref=e56]:
+        - generic [ref=e58]: 真太阳时
+        - generic [ref=e59]: 真太阳时模块未加载
+      - button "开 始 排 盘" [ref=e61]
+      - paragraph [ref=e62]:
+        - text: 数据仅在本地浏览器运算，不上传，不储存。
+        - text: 算法基于
+        - link "iztro" [ref=e63] [cursor=pointer]:
+          - /url: https://github.com/SylarLong/iztro
+        - text: （MIT 许可）
+  - contentinfo [ref=e64]:
+    - generic [ref=e65]:
+      - text: © 2026 紫微斗数在线排盘
+      - generic [ref=e66]:
+        - text: 排盘算法基于
+        - link "iztro" [ref=e67] [cursor=pointer]:
+          - /url: https://github.com/SylarLong/iztro
+        - text: （MIT 许可）

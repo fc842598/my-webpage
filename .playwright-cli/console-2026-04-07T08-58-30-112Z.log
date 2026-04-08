@@ -1,0 +1,5 @@
+[    2816ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://127.0.0.1:8765/favicon.ico:0
+[   60058ms] ReferenceError: _selectedCity is not defined
+    at showConfirm (http://127.0.0.1:8765/pages/chart.html:4586:20)
+    at http://127.0.0.1:8765/pages/chart.html:4515:15
+    at http://127.0.0.1:8765/pages/chart.html:4405:9

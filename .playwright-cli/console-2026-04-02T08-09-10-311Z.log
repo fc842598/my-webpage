@@ -1,0 +1,15 @@
+[     270ms] ReferenceError: updateDayOptions is not defined
+    at applyDefaults (http://127.0.0.1:8123/pages/chart.html:794:3)
+    at http://127.0.0.1:8123/pages/chart.html:815:1
+[     439ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://127.0.0.1:8123/favicon.ico:0
+[ 1118931ms] ReferenceError: shichenPreview is not defined
+    at updateTrueSolarTime (http://127.0.0.1:8123/pages/chart.html:651:3)
+    at HTMLInputElement.updateDatePreview (http://127.0.0.1:8123/pages/chart.html:695:3)
+[ 1241600ms] ReferenceError: shichenPreview is not defined
+    at HTMLSelectElement.updateTrueSolarTime (http://127.0.0.1:8123/pages/chart.html:651:3)
+    at async <anonymous>:328:30
+[ 1257380ms] ReferenceError: shichenPreview is not defined
+    at updateTrueSolarTime (http://127.0.0.1:8123/pages/chart.html:651:3)
+    at HTMLInputElement.updateDatePreview (http://127.0.0.1:8123/pages/chart.html:695:3)
+[ 1328662ms] [ERROR] Failed to load resource: net::ERR_QUIC_PROTOCOL_ERROR @ https://esm.sh/lunar-typescript@1.8.6/es2022/lunar-typescript.mjs:0
+[ 1328662ms] [ERROR] TypeError: Failed to fetch dynamically imported module: https://esm.sh/iztro@2 @ http://127.0.0.1:8123/pages/chart.html:895
