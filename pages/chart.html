@@ -1355,11 +1355,15 @@ document.getElementById('fc-score-generate')?.addEventListener('click', () => {
 });
 document.getElementById('fc-score-mode-decade')?.addEventListener('click', () => {
   _fcLifeCurveMode = 'decade';
+  const svg = document.getElementById('fc-score-svg');
+  if (svg) svg.innerHTML = '';  // 清空SVG
   _fcRenderScoreCurve();
   _fcEnsureLifeCurveVisible(true);
 });
 document.getElementById('fc-score-mode-twenty')?.addEventListener('click', () => {
   _fcLifeCurveMode = 'twenty';
+  const svg = document.getElementById('fc-score-svg');
+  if (svg) svg.innerHTML = '';  // 清空SVG
   _fcRenderScoreCurve();
   if (!_fcLifeCurveLoading && _chart && _chartInputs) {
     const missing = _fcLifeCurveMissingAges('twenty');
@@ -1368,6 +1372,8 @@ document.getElementById('fc-score-mode-twenty')?.addEventListener('click', () =>
 });
 document.getElementById('fc-score-mode-all')?.addEventListener('click', () => {
   _fcLifeCurveMode = 'all';
+  const svg = document.getElementById('fc-score-svg');
+  if (svg) svg.innerHTML = '';  // 清空SVG
   _fcRenderScoreCurve();
   // 切到整体100年时立即触发补算，不需要用户再点"生成"
   if (!_fcLifeCurveLoading && _chart && _chartInputs) {
