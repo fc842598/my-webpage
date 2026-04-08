@@ -458,10 +458,6 @@
               <label style="font-size:.82rem;color:#5c4a3a;white-space:nowrap">小学入学年龄</label>
               <input type="number" id="fc-school-start-age" min="5" max="9" placeholder="如7" style="width:50px;padding:4px 8px;border:1px solid #d0c8be;border-radius:4px;font-size:.8rem" />
             </div>
-            <div id="fc-college-grad-wrap" style="display:none;flex:1;gap:6px;align-items:center">
-              <label style="font-size:.82rem;color:#5c4a3a;white-space:nowrap">大学毕业年龄</label>
-              <input type="number" id="fc-college-grad-age" min="20" max="26" placeholder="如22" style="width:50px;padding:4px 8px;border:1px solid #d0c8be;border-radius:4px;font-size:.8rem" />
-            </div>
             <button type="button" id="fc-education-clear" style="padding:4px 12px;font-size:.75rem;background:none;border:1px solid #d0c8be;border-radius:4px;color:#8e857d;cursor:pointer">清除</button>
           </div>
         </div>
@@ -2006,13 +2002,10 @@ let _fcLifeCurveCriticalYear = null;
 // ─── 教育阶段定位 ─────────────────────────────────────────
 let _fcEducationTimeline = null;   // { 年龄 => '小一' | '初二' | ... }
 let _fcSchoolStartAge = null;      // 小学入学年龄锚点
-let _fcCollegeGradAge = null;      // 大学毕业年龄锚点（备用）
 
 function _fcBuildEducationTimeline() {
   _fcEducationTimeline = {};
-  let startAge = _fcSchoolStartAge;
-  if (!startAge && _fcCollegeGradAge) startAge = _fcCollegeGradAge - 15;
-  if (!startAge) return;
+  if (!_fcSchoolStartAge) return;
 
   const stages = [
     '小一','小二','小三','小四','小五','小六',  // 0-5: 6年
@@ -2021,7 +2014,7 @@ function _fcBuildEducationTimeline() {
     '大一','大二','大三','大四'                 // 12-15: 4年
   ];
   for (let i = 0; i < stages.length; i++) {
-    _fcEducationTimeline[startAge + i] = stages[i];
+    _fcEducationTimeline[_fcSchoolStartAge + i] = stages[i];
   }
 }
 
@@ -2030,23 +2023,10 @@ function _fcResolveEducationStage(age) {
   return _fcEducationTimeline[age] || null;
 }
 
-function _fcGetCurrentActualAge() {
-  if (!_fcBirthYear) return null;
-  const now = new Date().getFullYear();
-  return now - _fcBirthYear;
-}
-
-function _fcShouldShowCollegeGradInput() {
-  const actualAge = _fcGetCurrentActualAge();
-  return actualAge !== null && actualAge >= 21;
-}
-
 function _fcRenderEducationAnchorControls() {
   const wrap = document.getElementById('fc-education-anchor');
-  const collegeWrap = document.getElementById('fc-college-grad-wrap');
   if (!wrap) return;
   wrap.style.display = _fcBirthYear ? 'block' : 'none';
-  if (collegeWrap) collegeWrap.style.display = _fcShouldShowCollegeGradInput() ? 'flex' : 'none';
 }
 
 function _fcCurveKey() {
@@ -3419,35 +3399,19 @@ function renderFigmaChart(chart, gender, dateStr, norm) {
   // ─── 教育锚点控制初始化 ────────────────────────────────────
   _fcRenderEducationAnchorControls();
   const schoolStartInput = document.getElementById('fc-school-start-age');
-  const collegeGradInput = document.getElementById('fc-college-grad-age');
   const educationClearBtn = document.getElementById('fc-education-clear');
-
-  const updateEducationTimeline = () => {
-    _fcBuildEducationTimeline();
-    _fcRenderScoreCurve();
-  };
 
   if (schoolStartInput) {
     schoolStartInput.addEventListener('input', (e) => {
       _fcSchoolStartAge = e.target.value ? Number(e.target.value) : null;
-      _fcCollegeGradAge = null;
-      if (collegeGradInput) collegeGradInput.value = '';
-      updateEducationTimeline();
-    });
-  }
-  if (collegeGradInput) {
-    collegeGradInput.addEventListener('input', (e) => {
-      if (_fcSchoolStartAge) return; // 如果已有小学入学年龄，忽略此输入
-      _fcCollegeGradAge = e.target.value ? Number(e.target.value) : null;
-      updateEducationTimeline();
+      _fcBuildEducationTimeline();
+      _fcRenderScoreCurve();
     });
   }
   if (educationClearBtn) {
     educationClearBtn.addEventListener('click', () => {
       _fcSchoolStartAge = null;
-      _fcCollegeGradAge = null;
       if (schoolStartInput) schoolStartInput.value = '';
-      if (collegeGradInput) collegeGradInput.value = '';
       _fcEducationTimeline = null;
       _fcRenderScoreCurve();
     });
