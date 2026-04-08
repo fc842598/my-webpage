@@ -155,9 +155,9 @@
     </div>
 
     <!-- 真太阳时显示 -->
-    <div class="nf-row" style="flex-direction:column;align-items:stretch;gap:4px;border-bottom:none">
+    <div class="nf-row" id="tst-row" style="flex-direction:column;align-items:stretch;gap:4px;border-bottom:none;display:none">
       <div style="display:flex;justify-content:space-between;align-items:center">
-        <span class="nf-label">真太阳时</span>
+        <span class="nf-label" id="tst-label" style="cursor:pointer;user-select:none">真太阳时</span>
         <span id="tst-estimated-badge" style="font-size:.72rem;color:#c08060;background:#fff3ec;border:1px solid #f0d0b8;border-radius:4px;padding:1px 6px;display:none">默认估算</span>
       </div>
       <div id="tst-display" style="font-size:.82rem;color:#8e857d">请先输入出生日期，地点可选</div>
@@ -732,7 +732,11 @@ cityDropdown.addEventListener('click', e => {
   citySearchEl.value = `${_selectedCity.province} · ${_selectedCity.city}`;
   btnClearCity.style.display = 'block';
   cityDropdown.style.display = 'none';
-  document.getElementById('city-selected-name').textContent = `${_selectedCity.province} ${_selectedCity.city}`;
+  // 如果省和市同名，只显示市；否则显示"省-市"
+  const cityDisplay = _selectedCity.province === _selectedCity.city
+    ? `中国-${_selectedCity.city}`
+    : `${_selectedCity.province}-${_selectedCity.city}`;
+  document.getElementById('city-selected-name').textContent = cityDisplay;
   document.getElementById('city-selected-lon').textContent  = _selectedCity.lon.toFixed(2);
   document.getElementById('city-selected-lat').textContent  = _selectedCity.lat.toFixed(2);
   citySelectedEl.style.display = 'block';
@@ -752,6 +756,16 @@ document.addEventListener('click', e => {
     cityDropdown.style.display = 'none';
   }
 });
+
+// ─── 真太阳时折叠/展开 ─────────────────────────────────────
+const tstLabel = document.getElementById('tst-label');
+const tstRow = document.getElementById('tst-row');
+if (tstLabel && tstRow) {
+  tstLabel.addEventListener('click', () => {
+    const isHidden = tstRow.style.display === 'none';
+    tstRow.style.display = isHidden ? 'flex' : 'none';
+  });
+}
 
 // ─── 真太阳时计算 ─────────────────────────────────────────
 const _SHICHEN_NAMES = ['子','丑','寅','卯','辰','巳','午','未','申','酉','戌','亥'];
@@ -1008,7 +1022,7 @@ function applyDefaults(options) {
     if (citySearchEl) citySearchEl.value = '上海 · 上海';
     if (btnClearCity) btnClearCity.style.display = 'block';
     if (citySelectedEl) {
-      document.getElementById('city-selected-name').textContent = '上海 上海';
+      document.getElementById('city-selected-name').textContent = '中国-上海';
       document.getElementById('city-selected-lon').textContent  = '121.47';
       document.getElementById('city-selected-lat').textContent  = '31.23';
       citySelectedEl.style.display = 'block';
@@ -4455,7 +4469,8 @@ window._aiChatFill = function(data, submit) {
     if (found) {
       _selectedCity = { province: found[0], city: found[1], lon: found[2], lat: found[3], tzOffset: found[4] ?? 8 };
       document.getElementById('inp-city-search').value = `${found[0]} · ${found[1]}`;
-      document.getElementById('city-selected-name').textContent = `${found[0]} ${found[1]}`;
+      const cityDisplay = found[0] === found[1] ? `中国-${found[1]}` : `${found[0]}-${found[1]}`;
+      document.getElementById('city-selected-name').textContent = cityDisplay;
       document.getElementById('city-selected-lon').textContent  = found[2];
       document.getElementById('city-selected-lat').textContent  = found[3];
       document.getElementById('city-selected').style.display = 'block';
