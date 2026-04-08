@@ -444,9 +444,9 @@
         <div class="fc-score-head">
           <div class="fc-score-title">人生曲线</div>
           <div class="fc-score-modes">
-            <button type="button" class="fc-score-mode active" id="fc-score-mode-decade">十年</button>
-            <button type="button" class="fc-score-mode" id="fc-score-mode-twenty">廿年</button>
-            <button type="button" class="fc-score-mode" id="fc-score-mode-all">百年</button>
+            <button type="button" class="fc-score-mode active" id="fc-score-mode-decade">生成10年</button>
+            <button type="button" class="fc-score-mode" id="fc-score-mode-twenty">生成20年</button>
+            <button type="button" class="fc-score-mode" id="fc-score-mode-all">生成100年</button>
           </div>
         </div>
 
@@ -2618,9 +2618,10 @@ function _fcRenderScoreCurve() {
   if (!_chart || !_chartInputs) return;
 
   btn.disabled = _fcLifeCurveLoading;
+  const modeLabel = _fcLifeCurveMode === 'all' ? '100年' : _fcLifeCurveMode === 'twenty' ? '20年' : '10年';
   btn.textContent = _fcLifeCurveLoading
-    ? (_fcLifeCurveMode === 'all' ? '百年生成中…' : _fcLifeCurveMode === 'twenty' ? '廿年生成中…' : '十年生成中…')
-    : '重新生成';
+    ? `${modeLabel}生成中…`
+    : `重新生成${modeLabel}`;
   modeDecadeBtn.classList.toggle('active', _fcLifeCurveMode === 'decade');
   if (modeTwentyBtn) modeTwentyBtn.classList.toggle('active', _fcLifeCurveMode === 'twenty');
   modeAllBtn.classList.toggle('active', _fcLifeCurveMode === 'all');
@@ -3021,9 +3022,8 @@ async function _fcGenerateLifeCurve(options = {}) {
   _fcLifeCurveStickyMeta = '';
   _fcLifeCurveProgressDone = 0;
   _fcLifeCurveProgressTotal = totalWanted;
-  _fcLifeCurveStageHint = mode === 'all'
-    ? '百年评分任务已提交，排队中…'
-    : '十年评分任务已提交，排队中…';
+  const modeHint = mode === 'all' ? '100年' : mode === 'twenty' ? '20年' : '10年';
+  _fcLifeCurveStageHint = `${modeHint}评分任务已提交，排队中…`;
   _fcRenderScoreCurve();
 
   try {
@@ -3039,8 +3039,8 @@ async function _fcGenerateLifeCurve(options = {}) {
       }
       if (evt.type === 'decades') {
         _fcLifeCurveUpsertDecades(evt.decades || []);
-        if (evt.provisional) _fcLifeCurveStageHint = '十年底色预估已展示，AI 正在校准…';
-        else _fcLifeCurveStageHint = '十年底色已校准，正在逐年精算…';
+        if (evt.provisional) _fcLifeCurveStageHint = `${modeHint}底色预估已展示，AI 正在校准…`;
+        else _fcLifeCurveStageHint = `${modeHint}底色已校准，正在逐年精算…`;
         _fcRenderScoreCurve();
         return;
       }
