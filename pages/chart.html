@@ -2964,12 +2964,14 @@ function _fcShowTooltip(item, e) {
   const cy = (e.clientY ?? e.pageY) - rect.top;
   const tipW = 140, tipH = 90;
   const left = Math.min(cx + 12, (svgEl ? svgEl.offsetWidth : 300) - tipW - 8);
-  const top  = Math.max(cy - tipH - 8, 4);
+  // 优先显示在点的上方，贴紧点
+  const top = Math.max(cy - tipH - 4, 4);
 
   tip.style.display = 'block';
   tip.style.left = `${left}px`;
-  tip.style.top  = `${top + (svgEl ? svgEl.offsetTop : 0)}px`;
+  tip.style.top = `${top}px`;
   tip.style.position = 'absolute';
+  tip.style.pointerEvents = 'none';
 }
 
 function _fcHideTooltip() {
