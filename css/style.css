@@ -61,7 +61,7 @@ html {
   width: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: var(--purple-dark);
+  background: var(--dark-bg-mid);
 }
 ::-webkit-scrollbar-thumb {
   background: var(--brown-gold);
@@ -151,12 +151,12 @@ html {
 }
 .hero-content { max-width: 540px; position: relative; z-index: 1; }
 .hero-tag {
-  display: inline-block; color: var(--gold); font-size: .78rem;
+  display: inline-block; color: var(--brown-gold); font-size: .78rem;
   letter-spacing: 2px; border: 1px solid rgba(212,168,67,.35);
   border-radius: 20px; padding: 4px 14px; margin-bottom: 20px;
 }
 .hero-title { font-size: clamp(2.2rem,4.5vw,3.4rem); line-height: 1.22; color: #fff; margin-bottom: 20px; }
-.hero-title span { color: var(--gold); }
+.hero-title span { color: var(--brown-gold); }
 .hero-desc { color: var(--text-muted); font-size: 1rem; line-height: 1.8; margin-bottom: 28px; }
 .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 20px; }
 .btn-hero { padding: 16px 36px; font-size: 1.05rem; }
@@ -181,7 +181,7 @@ html {
 @keyframes spin { to { transform:rotate(360deg); } }
 .deco-center {
   width:74px; height:74px;
-  background: linear-gradient(135deg, var(--purple-main), var(--gold));
+  background: linear-gradient(135deg, var(--brown-gold), var(--brown-gold-light));
   border-radius: 50%; display: flex; align-items: center; justify-content: center;
   font-size: 1.1rem; font-weight: bold; color: #fff; text-align: center; line-height: 1.3;
   box-shadow: 0 0 36px rgba(212,168,67,.28); z-index: 1;
@@ -202,7 +202,7 @@ html {
 }
 .value-card:hover { transform: translateY(-4px); border-color: rgba(212,168,67,.38); }
 .value-icon { font-size: 1.9rem; margin-bottom: 12px; }
-.value-card h3 { color: var(--gold-light); font-size: 1rem; margin-bottom: 8px; }
+.value-card h3 { color: var(--brown-gold-light); font-size: 1rem; margin-bottom: 8px; }
 .value-card p  { color: var(--text-muted); font-size: .88rem; line-height: 1.65; }
 
 .howto-section { padding: 88px 10%; }
@@ -212,7 +212,7 @@ html {
 }
 .step { flex:1; min-width:180px; padding: 0 16px; }
 .step-num { font-size:2.4rem; font-weight:bold; color:rgba(212,168,67,.25); line-height:1; margin-bottom:10px; }
-.step h3  { color: var(--gold-light); font-size: 1rem; margin-bottom: 8px; }
+.step h3  { color: var(--brown-gold-light); font-size: 1rem; margin-bottom: 8px; }
 .step p   { color: var(--text-muted); font-size: .87rem; line-height: 1.65; }
 .step-arrow { font-size:1.3rem; color:rgba(212,168,67,.35); padding-top:10px; flex-shrink:0; }
 
@@ -226,7 +226,7 @@ html {
   border-radius: var(--radius); padding: 26px 22px;
 }
 .trust-icon { font-size:1.7rem; margin-bottom:12px; }
-.trust-card h3 { color: var(--gold-light); font-size:1rem; margin-bottom:8px; }
+.trust-card h3 { color: var(--brown-gold-light); font-size:1rem; margin-bottom:8px; }
 .trust-card p  { color: var(--text-muted); font-size:.87rem; line-height:1.7; }
 
 .final-cta {
@@ -422,7 +422,7 @@ html {
   .step-num {
     font-size: 20px;
     margin-bottom: 8px;
-    color: var(--gold);
+    color: var(--brown-gold);
   }
 
   .step h3 {
