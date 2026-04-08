@@ -4,7 +4,9 @@
   "scripts": {
     "validate:ziping": "node scripts/validate-ziping-professional-tool-samples.js",
     "validate:ziping:boundary": "node scripts/validate-ziping-boundary-rules.js",
+    "validate:ziping:xian": "node scripts/validate-ziping-xiantian-experimental.js",
+    "validate:ziping:hai": "node scripts/validate-ziping-hai-experimental.js",
     "validate:ziping:zi": "node scripts/validate-ziping-zi-hour.js",
-    "validate:ziping:all": "node scripts/validate-ziping-professional-tool-samples.js && node scripts/validate-ziping-boundary-rules.js && node scripts/validate-ziping-zi-hour.js"
+    "validate:ziping:all": "node scripts/validate-ziping-professional-tool-samples.js && node scripts/validate-ziping-boundary-rules.js && node scripts/validate-ziping-xiantian-experimental.js && node scripts/validate-ziping-hai-experimental.js && node scripts/validate-ziping-zi-hour.js"
   }
 }

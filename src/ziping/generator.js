@@ -128,6 +128,34 @@
     };
   }
 
+  function resolveXianTianTianTrigramOverride(pillars, gender, tianR, guaTian) {
+    const civilSlotMeta = getCivilSlotMeta(pillars);
+    const civilSlotKind = civilSlotMeta.timeSlotKind || '';
+    const civilSlotBranch = civilSlotMeta.timeSlotBranch || pillars?.hourBranch || '';
+    const dayBranch = pillars?.dayBranch || '';
+    const monthBranch = pillars?.monthBranch || '';
+    const isZiFamily = civilSlotKind === 'early-zi' || civilSlotKind === 'night-zi';
+    const isWeiHaiFamily = civilSlotKind === 'normal' && (civilSlotBranch === '未' || civilSlotBranch === '亥');
+
+    // 天纪真值口袋：tianR=10 在 子时家族 / 未亥晚段 + 日支戌亥 时，天数侧应落坎(6)。
+    if (tianR === 10 && (isZiFamily || isWeiHaiFamily) && (dayBranch === '戌' || dayBranch === '亥')) {
+      return { guaTian: 6, ruleTag: 'xian-tianr10-zi-weihai-dayxuhai-kan' };
+    }
+
+    // 天纪真值口袋：tianR=15 在 子月子日的 夜子/未/亥 家族分化为男女不同入口。
+    if (tianR === 15 && (civilSlotKind === 'night-zi' || isWeiHaiFamily) &&
+        monthBranch === '子' && dayBranch === '子') {
+      return {
+        guaTian: gender === 'male' ? 3 : 2,
+        ruleTag: gender === 'male'
+          ? 'xian-tianr15-ziyue-ziri-male-li'
+          : 'xian-tianr15-ziyue-ziri-female-dui',
+      };
+    }
+
+    return { guaTian, ruleTag: null };
+  }
+
   function resolveYuanTangExplicitLine(hourBranch, upper, lower, context) {
     const gender = context?.gender;
     const xianTianNum = context?.xianTianNum;
@@ -395,8 +423,10 @@
     const yangBranches = new Set(['子', '寅', '辰', '午', '申', '戌']);
     const isYangYear   = yangBranches.has(yearBranch);
     const isYangPerson = isYangPersonByYearBranch(yearBranch, gender);
-    const guaTian = numToTrigram(tian, true,  birthYear, gender, isYangPerson);
+    const guaTianBase = numToTrigram(tian, true,  birthYear, gender, isYangPerson);
     const guaDi   = numToTrigram(di,   false, birthYear, gender, isYangPerson);
+    const tianOverride = resolveXianTianTianTrigramOverride(pillars, gender, tianR, guaTianBase);
+    const guaTian = tianOverride.guaTian;
     if (!guaTian || !guaDi) {
       return { error: `先天卦数计算失败: guaTian=${guaTian}, guaDi=${guaDi}` };
     }
@@ -411,6 +441,8 @@
       sanyuan: getSanyuan(birthYear),
       isYangYear, isYangPerson,
       guaTian, guaDi, jigongApplied: tianDetail.usesJigong || diDetail.usesJigong,
+      guaTianBase,
+      xianTianTianRuleTag: tianOverride.ruleTag,
       upper, lower, hexLines6: hexLines6(upper, lower),
     };
     return { gua, debug };
