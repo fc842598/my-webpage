@@ -4,45 +4,46 @@
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
 :root {
-  /* 主色调 - 保持品牌一致性 */
-  --purple-dark:  #0a0612;
-  --purple-mid:   #1e0f3a;
-  --purple-main:  #7c3aed;
-  --purple-light: #a78bfa;
-  --purple-glow:  #c4b5fd;
-  
-  /* 金色系 - 提升饱和度 */
-  --gold:         #fbbf24;
-  --gold-light:   #fcd34d;
-  --gold-glow:    rgba(251, 191, 36, 0.3);
-  
-  /* 新增渐变色 */
-  --gradient-hero: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
-  --gradient-card: linear-gradient(135deg, rgba(124, 58, 237, 0.1), rgba(251, 191, 36, 0.05));
-  --gradient-cta: linear-gradient(135deg, #f59e0b, #f97316);
-  
+  /* v1 升级：东方棕金色系 */
+
+  /* 主背景 - 深棕色 */
+  --dark-bg:      #1a1410;
+  --dark-bg-mid:  #2a2420;
+  --dark-bg-light: #3a3430;
+
+  /* 棕金色系 - 主要强调 */
+  --brown-gold:   #c9a961;
+  --brown-gold-light: #d9b97f;
+  --brown-gold-pale: #e8dcc8;
+
   /* 文字颜色 */
-  --text:         #f5f3ff;
-  --text-secondary: #c4b5fd;
-  --text-muted:   #8b7fa8;
-  
-  /* 玻璃态背景 */
-  --glass-bg:     rgba(255, 255, 255, 0.03);
-  --glass-border: rgba(255, 255, 255, 0.08);
-  
-  /* 阴影系统 */
-  --shadow-sm:    0 2px 8px rgba(0, 0, 0, 0.15);
-  --shadow-md:    0 4px 16px rgba(124, 58, 237, 0.25);
-  --shadow-lg:    0 8px 32px rgba(124, 58, 237, 0.35);
-  --shadow-glow:  0 0 40px rgba(251, 191, 36, 0.2);
-  
+  --text:         #e8dcc8;
+  --text-secondary: #c9a961;
+  --text-muted:   #8b7c6b;
+
+  /* 渐变 */
+  --gradient-hero: linear-gradient(135deg, #c9a961 0%, #d9b97f 50%, #e8dcc8 100%);
+  --gradient-card: linear-gradient(135deg, rgba(201, 169, 97, 0.1), rgba(232, 220, 200, 0.05));
+  --gradient-cta: linear-gradient(135deg, #c9a961, #d9b97f);
+
+  /* 玻璃态 */
+  --glass-bg:     rgba(232, 220, 200, 0.02);
+  --glass-border: rgba(201, 169, 97, 0.15);
+
+  /* 阴影 */
+  --shadow-sm:    0 2px 8px rgba(0, 0, 0, 0.3);
+  --shadow-md:    0 4px 16px rgba(201, 169, 97, 0.2);
+  --shadow-lg:    0 8px 32px rgba(201, 169, 97, 0.25);
+  --shadow-glow:  0 0 40px rgba(201, 169, 97, 0.15);
+
+  /* 圆角 */
   --radius:       16px;
   --radius-lg:    24px;
 }
 
 body {
   font-family: "Microsoft YaHei", "PingFang SC", -apple-system, BlinkMacSystemFont, sans-serif;
-  background: var(--purple-dark);
+  background: var(--dark-bg);
   color: var(--text);
   line-height: 1.7;
   overflow-x: hidden;
@@ -63,11 +64,11 @@ html {
   background: var(--purple-dark);
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--purple-main);
+  background: var(--brown-gold);
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--gold);
+  background: var(--brown-gold-light);
 }
 
 /* ═══════════════════════════════════
@@ -75,9 +76,9 @@ html {
 ═══════════════════════════════════ */
 .navbar {
   position: fixed; top:0; left:0; right:0; z-index:100;
-  background: rgba(18,7,31,.94);
+  background: rgba(26, 20, 16, 0.95);
   backdrop-filter: blur(14px);
-  border-bottom: 1px solid rgba(212,168,67,.18);
+  border-bottom: 1px solid rgba(201, 169, 97, 0.15);
 }
 .nav-inner {
   max-width: 1060px; margin: 0 auto;
@@ -85,7 +86,7 @@ html {
   display: flex; align-items: center; gap: 24px;
 }
 .nav-logo {
-  text-decoration: none; color: var(--gold);
+  text-decoration: none; color: var(--brown-gold);
   font-size: 1.15rem; font-weight: bold;
   display: flex; align-items: center; gap: 8px; white-space: nowrap;
 }
@@ -97,41 +98,41 @@ html {
   transition: color .2s, background .2s;
 }
 .nav-links a:hover, .nav-links a.active {
-  color: var(--gold); background: rgba(212,168,67,.1);
+  color: var(--brown-gold); background: rgba(201, 169, 97, 0.1);
 }
 .nav-cta {
-  background: var(--gold); color: var(--purple-dark);
+  background: var(--brown-gold); color: var(--dark-bg);
   border: none; padding: 8px 20px; border-radius: 8px;
   font-size: .88rem; font-weight: bold; cursor: pointer; white-space: nowrap;
   transition: background .2s, transform .15s;
 }
-.nav-cta:hover { background: var(--gold-light); transform: translateY(-1px); }
+.nav-cta:hover { background: var(--brown-gold-light); transform: translateY(-1px); }
 
 /* ═══════════════════════════════════
    通用
 ═══════════════════════════════════ */
 .section-inner { max-width: 1060px; margin: 0 auto; padding: 0 24px; }
-.section-title { text-align:center; font-size:1.75rem; color:var(--gold); margin-bottom:12px; }
+.section-title { text-align:center; font-size:1.75rem; color:var(--brown-gold); margin-bottom:12px; }
 .section-sub   { text-align:center; color:var(--text-muted); font-size:.95rem; margin-bottom:40px; }
 
 .btn-primary {
-  background: linear-gradient(135deg, var(--purple-main), var(--purple-light));
-  color: #fff; border: none; padding: 13px 30px;
+  background: linear-gradient(135deg, var(--brown-gold), var(--brown-gold-light));
+  color: var(--dark-bg); border: none; padding: 13px 30px;
   border-radius: var(--radius); font-size: 1rem; cursor: pointer;
   transition: transform .15s, box-shadow .15s;
-  box-shadow: 0 4px 18px rgba(107,63,160,.45);
+  box-shadow: 0 4px 18px rgba(201, 169, 97, 0.35);
 }
-.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 26px rgba(107,63,160,.55); }
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 26px rgba(201, 169, 97, 0.45); }
 .btn-large { padding: 16px 40px; font-size: 1.05rem; }
 
 .btn-ghost {
-  background: transparent; color: var(--gold);
-  border: 1px solid rgba(212,168,67,.45);
+  background: transparent; color: var(--brown-gold);
+  border: 1px solid rgba(201, 169, 97, 0.45);
   padding: 12px 28px; border-radius: var(--radius);
   font-size: .95rem; cursor: pointer;
   transition: background .2s, border-color .2s;
 }
-.btn-ghost:hover { background: rgba(212,168,67,.1); border-color: var(--gold); }
+.btn-ghost:hover { background: rgba(201, 169, 97, 0.1); border-color: var(--brown-gold); }
 
 /* ═══════════════════════════════════
    Hero
@@ -144,8 +145,8 @@ html {
 .hero-bg {
   position: absolute; inset: 0;
   background:
-    radial-gradient(ellipse at 28% 55%, rgba(107,63,160,.28) 0%, transparent 58%),
-    radial-gradient(ellipse at 78% 18%, rgba(212,168,67,.08) 0%, transparent 50%);
+    radial-gradient(ellipse at 28% 55%, rgba(201, 169, 97, 0.15) 0%, transparent 58%),
+    radial-gradient(ellipse at 78% 18%, rgba(201, 169, 97, 0.08) 0%, transparent 50%);
   pointer-events: none;
 }
 .hero-content { max-width: 540px; position: relative; z-index: 1; }
