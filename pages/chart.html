@@ -101,9 +101,10 @@
           <option value="">日</option>
         </select>
         <div style="display:flex;gap:6px;flex:1.5;align-items:center">
-          <label style="font-size:.78rem;color:#8e857d;white-space:nowrap">
+          <label id="inp-lunar-leap-wrap" style="font-size:.78rem;color:#8e857d;white-space:nowrap;display:flex;align-items:center">
             <input type="checkbox" id="inp-lunar-leap" style="margin-right:3px">闰月
           </label>
+          <span id="inp-lunar-leap-note" style="font-size:.72rem;color:#b0a89f;line-height:1.2"></span>
         </div>
       </div>
 
@@ -449,6 +450,22 @@
           </div>
         </div>
 
+        <!-- 教育锚点设置 -->
+        <div class="fc-education-anchor" id="fc-education-anchor" style="display:none">
+          <div style="font-size:.75rem;color:#8e857d;margin-bottom:8px">用于把人生曲线年龄映射到教育阶段，方便回看哪一年发生了什么</div>
+          <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center">
+            <div style="display:flex;gap:6px;align-items:center">
+              <label style="font-size:.82rem;color:#5c4a3a;white-space:nowrap">小学入学年龄</label>
+              <input type="number" id="fc-school-start-age" min="5" max="9" placeholder="如7" style="width:50px;padding:4px 8px;border:1px solid #d0c8be;border-radius:4px;font-size:.8rem" />
+            </div>
+            <div id="fc-college-grad-wrap" style="display:none;flex:1;gap:6px;align-items:center">
+              <label style="font-size:.82rem;color:#5c4a3a;white-space:nowrap">大学毕业年龄</label>
+              <input type="number" id="fc-college-grad-age" min="20" max="26" placeholder="如22" style="width:50px;padding:4px 8px;border:1px solid #d0c8be;border-radius:4px;font-size:.8rem" />
+            </div>
+            <button type="button" id="fc-education-clear" style="padding:4px 12px;font-size:.75rem;background:none;border:1px solid #d0c8be;border-radius:4px;color:#8e857d;cursor:pointer">清除</button>
+          </div>
+        </div>
+
         <!-- Hero: 大分数 + 年龄 + 趋势 -->
         <div class="fc-hero" id="fc-hero">
           <div class="fc-hero-left">
@@ -578,6 +595,7 @@ function applyCalMode(mode) {
   document.getElementById('lunar-inputs').style.display = (!isAi && mode === 'lunar') ? 'flex' : 'none';
   document.getElementById('date-preview').style.display = isAi ? 'none' : '';
   document.getElementById('ai-inline-wrap').style.display = isAi ? 'block' : 'none';
+  _fcSyncLunarLeapControl();
   if (!isAi) updateDatePreview();
   else if (isAi) { setTimeout(() => document.getElementById('ai-chat-input')?.focus(), 50); }
 }
@@ -587,11 +605,55 @@ document.querySelectorAll('.nf-cal-btn').forEach(btn => {
 
 // ─── 农历日期下拉 ───────────────────────────────────────────
 const lunarDayEl = document.getElementById('inp-lunar-day');
+const lunarLeapEl = document.getElementById('inp-lunar-leap');
+const lunarLeapWrapEl = document.getElementById('inp-lunar-leap-wrap');
+const lunarLeapNoteEl = document.getElementById('inp-lunar-leap-note');
 for (let d = 1; d <= 30; d++) {
   const o = document.createElement('option');
   o.value = d;
   o.textContent = (typeof DAYS_CN !== 'undefined' ? DAYS_CN[d-1] : d + '日');
   lunarDayEl.appendChild(o);
+}
+
+function _fcGetLunarLeapMonth(year) {
+  const y = Number(year);
+  if (!Number.isFinite(y)) return 0;
+  if (window.LunarYear && typeof window.LunarYear.fromYear === 'function') {
+    try {
+      return Math.abs(Number(window.LunarYear.fromYear(y)?.getLeapMonth?.())) || 0;
+    } catch (_) {}
+  }
+  if (typeof LUNAR_MONTHS === 'undefined' || !LUNAR_MONTHS[y]) return 0;
+  return Number(LUNAR_MONTHS[y].leap) || 0;
+}
+
+function _fcSyncLunarLeapControl(desiredChecked) {
+  if (!lunarLeapEl) return;
+  const isLunarMode = _calMode === 'lunar';
+  const year = parseInt(document.getElementById('inp-lunar-year')?.value, 10);
+  const month = parseInt(document.getElementById('inp-lunar-month')?.value, 10);
+  const leapMonth = _fcGetLunarLeapMonth(year);
+  const isApplicable = isLunarMode && Number.isFinite(year) && Number.isFinite(month) && leapMonth > 0 && leapMonth === month;
+
+  lunarLeapEl.disabled = !isApplicable;
+  if (!isApplicable) {
+    lunarLeapEl.checked = false;
+  } else if (typeof desiredChecked === 'boolean') {
+    lunarLeapEl.checked = desiredChecked;
+  }
+
+  if (lunarLeapWrapEl) lunarLeapWrapEl.style.opacity = isApplicable ? '1' : '0.55';
+  if (lunarLeapNoteEl) {
+    if (!isLunarMode) lunarLeapNoteEl.textContent = '';
+    else if (!Number.isFinite(year) || !Number.isFinite(month)) lunarLeapNoteEl.textContent = '先选农历年、月';
+    else if (leapMonth <= 0) lunarLeapNoteEl.textContent = '该年无闰月';
+    else if (leapMonth !== month) {
+      const monthText = (typeof MONTHS_CN !== 'undefined' && MONTHS_CN[leapMonth - 1]) ? MONTHS_CN[leapMonth - 1] : `${leapMonth}`;
+      lunarLeapNoteEl.textContent = `该年闰${monthText}月`;
+    } else {
+      lunarLeapNoteEl.textContent = '本月可选闰月';
+    }
+  }
 }
 
 // ─── 公历日期下拉 ───────────────────────────────────────────
@@ -811,6 +873,13 @@ function updateDatePreview() {
   if (el) el.addEventListener('change', updateDatePreview);
   if (el && el.type === 'number') el.addEventListener('input', updateDatePreview);
 });
+['inp-lunar-year','inp-lunar-month'].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) {
+    el.addEventListener('change', () => { _fcSyncLunarLeapControl(); updateDatePreview(); });
+    if (el.type === 'number') el.addEventListener('input', () => { _fcSyncLunarLeapControl(); updateDatePreview(); });
+  }
+});
 // 填充小时/分钟下拉选项
 (function buildTimeSelects() {
   const hEl = document.getElementById('inp-time-h');
@@ -853,7 +922,7 @@ function normalizeInput() {
     if (!ly || !lm || !ld) return { error: '请填写完整的农历出生年、月、日' };
 
     const solar = (typeof lunarToSolar !== 'undefined') ? lunarToSolar(ly, lm, ld, ll) : null;
-    if (!solar) return { error: '农历日期无效或超出支持范围（1990-2026）' };
+    if (!solar) return { error: '农历日期无效或超出当前支持范围' };
 
     year  = solar.getFullYear();
     month = solar.getMonth() + 1;
@@ -924,6 +993,7 @@ function applyDefaults(options) {
   document.getElementById('inp-lunar-month').value = '';
   document.getElementById('inp-lunar-day').value = '';
   document.getElementById('inp-lunar-leap').checked = false;
+  _fcSyncLunarLeapControl(false);
   document.getElementById('inp-time-h').value = useDemo ? 22 : 12;
   document.getElementById('inp-time-m').value = 0;
   document.querySelectorAll('.nf-gender-btn').forEach(btn => {
@@ -1154,7 +1224,8 @@ function historyFillForm(r) {
     applyCalMode('lunar');
     document.getElementById('inp-lunar-year').value = r.year;
     document.getElementById('inp-lunar-month').value = r.month;
-    // day filled below
+    document.getElementById('inp-lunar-day').value = r.day;
+    _fcSyncLunarLeapControl(!!r.isLeap);
   } else {
     applyCalMode('solar');
     document.getElementById('inp-year').value  = r.year;
@@ -1926,6 +1997,52 @@ let _fcLifeCurveHasFirstPartial = false;
 // 重大关口年（null = 本命盘无重大关口）
 let _fcLifeCurveCriticalYear = null;
 
+// ─── 教育阶段定位 ─────────────────────────────────────────
+let _fcEducationTimeline = null;   // { 年龄 => '小一' | '初二' | ... }
+let _fcSchoolStartAge = null;      // 小学入学年龄锚点
+let _fcCollegeGradAge = null;      // 大学毕业年龄锚点（备用）
+
+function _fcBuildEducationTimeline() {
+  _fcEducationTimeline = {};
+  let startAge = _fcSchoolStartAge;
+  if (!startAge && _fcCollegeGradAge) startAge = _fcCollegeGradAge - 15;
+  if (!startAge) return;
+
+  const stages = [
+    '小一','小二','小三','小四','小五','小六',  // 0-5: 6年
+    '初一','初二','初三',                        // 6-8: 3年
+    '高一','高二','高三',                        // 9-11: 3年
+    '大一','大二','大三','大四'                 // 12-15: 4年
+  ];
+  for (let i = 0; i < stages.length; i++) {
+    _fcEducationTimeline[startAge + i] = stages[i];
+  }
+}
+
+function _fcResolveEducationStage(age) {
+  if (!_fcEducationTimeline) return null;
+  return _fcEducationTimeline[age] || null;
+}
+
+function _fcGetCurrentActualAge() {
+  if (!_fcBirthYear) return null;
+  const now = new Date().getFullYear();
+  return now - _fcBirthYear;
+}
+
+function _fcShouldShowCollegeGradInput() {
+  const actualAge = _fcGetCurrentActualAge();
+  return actualAge !== null && actualAge >= 21;
+}
+
+function _fcRenderEducationAnchorControls() {
+  const wrap = document.getElementById('fc-education-anchor');
+  const collegeWrap = document.getElementById('fc-college-grad-wrap');
+  if (!wrap) return;
+  wrap.style.display = _fcBirthYear ? 'block' : 'none';
+  if (collegeWrap) collegeWrap.style.display = _fcShouldShowCollegeGradInput() ? 'flex' : 'none';
+}
+
 function _fcCurveKey() {
   const p = _birthPillarsCache || (_chart ? extractPillars(_chart) : null);
   if (!p) return '';
@@ -2284,6 +2401,34 @@ function _fcScoreClass(score) {
 function _fcScoreCurrentItem() {
   const items = _fcLifeCurveData?.scores || [];
   return items.find(item => item.age === _fcActiveAge) || null;
+}
+
+function _fcPickLowestScoreItem(items) {
+  if (!Array.isArray(items) || !items.length) return null;
+  return items.reduce((best, item) => {
+    if (!best) return item;
+    if (item.score < best.score) return item;
+    if (item.score === best.score && item.age < best.age) return item;
+    return best;
+  }, null);
+}
+
+function _fcLifeCurveTurningAges(referenceAge = _fcActiveAge) {
+  const maxAge = _fcGetZipingMaxAge();
+  const items = (_fcLifeCurveData?.scores || [])
+    .filter(item => Number.isFinite(Number(item?.age)) && Number.isFinite(Number(item?.score)))
+    .map(item => ({
+      age: Number(item.age),
+      score: Number(item.score),
+      summary: item.summary || '',
+    }))
+    .filter(item => item.age >= 1 && item.age <= maxAge)
+    .sort((a, b) => a.age - b.age);
+  if (!items.length) return { before: null, after: null };
+  return {
+    before: _fcPickLowestScoreItem(items.filter(item => item.age < referenceAge)),
+    after : _fcPickLowestScoreItem(items.filter(item => item.age > referenceAge)),
+  };
 }
 
 function _fcLifeCurveLoadingText(loadedCount, totalCount) {
@@ -2720,19 +2865,30 @@ function _fcRenderScoreCurve() {
     }
   }
 
-  // ── 重大关口年提示横幅 ──
+  const current = _fcScoreCurrentItem() || visibleScores[0];
+
+  // ── 转折留意提示横幅：按当前年龄前后两段最低分提示 ──
   const critBanner = document.getElementById('fc-critical-banner');
   if (critBanner) {
-    if (_fcLifeCurveCriticalYear !== null && _fcLifeCurveMode === 'all' && visibleScores.length > 0) {
+    const turning = current && _fcLifeCurveMode === 'all'
+      ? _fcLifeCurveTurningAges(current.age)
+      : { before: null, after: null };
+    const parts = [];
+    if (turning.before) {
+      parts.push(`${current.age}岁前最低分在${turning.before.age}岁（${turning.before.score}分），可视作前段转折点`);
+    }
+    if (turning.after) {
+      parts.push(`${current.age}岁后最低分在${turning.after.age}岁（${turning.after.score}分），当年需重点留意`);
+    }
+    if (parts.length) {
       critBanner.style.display = 'block';
-      critBanner.textContent = `重大关口年：${_fcLifeCurveCriticalYear}岁，此后运势进入重大关口期，建议主动趋避调理`;
+      critBanner.textContent = `转折留意：${parts.join('；')}`;
     } else {
       critBanner.style.display = 'none';
     }
   }
 
   // ── Hero 区 ──
-  const current    = _fcScoreCurrentItem() || visibleScores[0];
   const heroScore  = document.getElementById('fc-hero-score');
   const heroAge    = document.getElementById('fc-hero-age');
   const heroTrend  = document.getElementById('fc-hero-trend');
@@ -2741,7 +2897,10 @@ function _fcRenderScoreCurve() {
     const cls = _fcScoreClass(current.score);
     heroScore.textContent = current.score;
     heroScore.className = `fc-hero-score ${cls}`;
-    if (heroAge) heroAge.textContent = `${current.age}岁`;
+    if (heroAge) {
+      const eduStage = _fcResolveEducationStage(current.age);
+      heroAge.textContent = eduStage ? `${current.age}岁 · ${eduStage}` : `${current.age}岁`;
+    }
     if (heroTrend) {
       const dp = _fcDecadeCurrentProfile(current.age);
       if (dp) {
@@ -2752,11 +2911,7 @@ function _fcRenderScoreCurve() {
       } else heroTrend.textContent = '';
     }
     if (heroSummary) {
-      const baseSummary = current.summary || '';
-      const isPostCrit = _fcLifeCurveCriticalYear !== null && current.age > _fcLifeCurveCriticalYear;
-      heroSummary.textContent = isPostCrit
-        ? (baseSummary ? `${baseSummary} · 处于重大关口后阶段` : '处于重大关口后阶段')
-        : baseSummary;
+      heroSummary.textContent = current.summary || '';
     }
   } else if (heroScore) {
     heroScore.textContent = '—';
@@ -2783,8 +2938,10 @@ function _fcRenderScoreCurve() {
       ? (scoreVal >= 75 ? '#2a6b42' : scoreVal >= 50 ? '#9a6a18' : '#b3443a') : '';
     const barColor = scoreVal !== null
       ? (scoreVal >= 75 ? '#2a6b42' : scoreVal >= 50 ? '#9a6a18' : '#b3443a') : 'transparent';
+    const eduStage = _fcResolveEducationStage(age);
+    const ageLabel = eduStage ? `${age}岁<br><small style="font-size:.7em;color:#8e857d">${eduStage}</small>` : `${age}岁`;
     chip.innerHTML =
-      `<span class="fc-score-chip-age">${age}岁</span>` +
+      `<span class="fc-score-chip-age">${ageLabel}</span>` +
       `<span class="fc-score-chip-score" style="${!isActive && scoreVal !== null ? `color:${scoreColor}` : ''}">${scoreVal !== null ? scoreVal : (_fcLifeCurveLoading ? '…' : '—')}</span>` +
       (scoreVal !== null ? `<span class="fc-score-chip-bar" style="background:${isActive ? 'rgba(255,255,255,.4)' : barColor}"></span>` : '');
     chip.addEventListener('click', () => fcSelectYear(age));
@@ -2804,15 +2961,14 @@ function _fcShowTooltip(item, e) {
   const cls = _fcScoreClass(item.score);
   const levelText = cls === 'good' ? '旺' : cls === 'mid' ? '平' : '弱';
 
-  document.getElementById('fc-tooltip-age').textContent = `${item.age}岁`;
+  const eduStage = _fcResolveEducationStage(item.age);
+  const ageText = eduStage ? `${item.age}岁 · ${eduStage}` : `${item.age}岁`;
+  document.getElementById('fc-tooltip-age').textContent = ageText;
   document.getElementById('fc-tooltip-score').textContent = item.score;
   const levelEl = document.getElementById('fc-tooltip-level');
   levelEl.textContent = levelText; levelEl.className = `fc-tooltip-level ${cls}`;
-  const isPostCrit = _fcLifeCurveCriticalYear !== null && item.age > _fcLifeCurveCriticalYear;
   const summaryText = item.summary || '';
-  document.getElementById('fc-tooltip-summary').textContent = isPostCrit
-    ? (summaryText ? `${summaryText}（重关期折减）` : '该分数已按重大关口期折减显示')
-    : summaryText;
+  document.getElementById('fc-tooltip-summary').textContent = summaryText;
   document.getElementById('fc-tooltip-decade').textContent = dp ? `大运 ${dp.range}` : '';
 
   const svgEl = document.getElementById('fc-score-svg');
@@ -2928,7 +3084,7 @@ async function _fcGenerateLifeCurve(options = {}) {
         _fcLifeCurveUpsertScores(evt.scores || [], evt.model || '');
         if (evt.decades?.length) _fcLifeCurveUpsertDecades(evt.decades);
         // 提取重大关口年（null = 无，Number = 命中年龄）
-        _fcLifeCurveCriticalYear = Number.isFinite(Number(evt.criticalYear))
+        _fcLifeCurveCriticalYear = (Number.isFinite(Number(evt.criticalYear)) && Number(evt.criticalYear) >= 1)
           ? Number(evt.criticalYear) : null;
         const localDone = Array.isArray(evt.scores) ? evt.scores.length : 0;
         _fcLifeCurveProgressDone = Math.min(totalWanted, Math.max(_fcLifeCurveProgressDone, finishedAgeCount + localDone));
@@ -3253,6 +3409,43 @@ function renderFigmaChart(chart, gender, dateStr, norm) {
   const scrollEl = document.getElementById('fc-liunian-scroll');
   document.getElementById('fc-scroll-left').onclick  = () => scrollEl.scrollBy({left:-90,behavior:'smooth'});
   document.getElementById('fc-scroll-right').onclick = () => scrollEl.scrollBy({left: 90,behavior:'smooth'});
+
+  // ─── 教育锚点控制初始化 ────────────────────────────────────
+  _fcRenderEducationAnchorControls();
+  const schoolStartInput = document.getElementById('fc-school-start-age');
+  const collegeGradInput = document.getElementById('fc-college-grad-age');
+  const educationClearBtn = document.getElementById('fc-education-clear');
+
+  const updateEducationTimeline = () => {
+    _fcBuildEducationTimeline();
+    _fcRenderScoreCurve();
+  };
+
+  if (schoolStartInput) {
+    schoolStartInput.addEventListener('input', (e) => {
+      _fcSchoolStartAge = e.target.value ? Number(e.target.value) : null;
+      _fcCollegeGradAge = null;
+      if (collegeGradInput) collegeGradInput.value = '';
+      updateEducationTimeline();
+    });
+  }
+  if (collegeGradInput) {
+    collegeGradInput.addEventListener('input', (e) => {
+      if (_fcSchoolStartAge) return; // 如果已有小学入学年龄，忽略此输入
+      _fcCollegeGradAge = e.target.value ? Number(e.target.value) : null;
+      updateEducationTimeline();
+    });
+  }
+  if (educationClearBtn) {
+    educationClearBtn.addEventListener('click', () => {
+      _fcSchoolStartAge = null;
+      _fcCollegeGradAge = null;
+      if (schoolStartInput) schoolStartInput.value = '';
+      if (collegeGradInput) collegeGradInput.value = '';
+      _fcEducationTimeline = null;
+      _fcRenderScoreCurve();
+    });
+  }
 }
 
 // ─── AI 解盘引擎 ──────────────────────────────────────────
@@ -4265,7 +4458,7 @@ window._aiChatFill = function(data, submit) {
     document.getElementById('inp-lunar-year').value  = data.year;
     document.getElementById('inp-lunar-month').value = data.month;
     document.getElementById('inp-lunar-day').value   = data.day;
-    document.getElementById('inp-lunar-leap').checked = !!data.isLeap;
+    _fcSyncLunarLeapControl(!!data.isLeap);
   } else {
     document.getElementById('inp-year').value  = data.year;
     document.getElementById('inp-month').value = data.month;

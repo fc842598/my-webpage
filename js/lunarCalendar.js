@@ -1,5 +1,5 @@
 // Lunar calendar data and converter
-// Precomputed Spring Festival dates and month lengths (1990-2026)
+// Prefer vendor lunar-javascript for broad year support, keep local tables as fallback.
 
 const SPRING_FESTIVAL = {
   1990: [1990, 1, 27], 1991: [1991, 2, 15], 1992: [1992, 2, 4], 1993: [1993, 1, 23],
@@ -65,6 +65,17 @@ const LUNAR_MONTHS = {
  * @returns {Date|null}
  */
 function lunarToSolar(lunarYear, lunarMonth, lunarDay, isLeap = false) {
+  const VendorLunar = globalThis?.Lunar;
+  if (VendorLunar && typeof VendorLunar.fromYmd === 'function') {
+    try {
+      const lunar = VendorLunar.fromYmd(lunarYear, isLeap ? -Math.abs(lunarMonth) : Math.abs(lunarMonth), lunarDay);
+      const solar = lunar?.getSolar?.();
+      if (solar) {
+        return new Date(solar.getYear(), solar.getMonth() - 1, solar.getDay());
+      }
+    } catch (_) {}
+  }
+
   const sf = SPRING_FESTIVAL[lunarYear];
   const monthData = LUNAR_MONTHS[lunarYear];
   if (!sf || !monthData) return null;
@@ -108,6 +119,32 @@ function lunarToSolar(lunarYear, lunarMonth, lunarDay, isLeap = false) {
  * @returns {{year, month, day, isLeap, leapMonth}|null}
  */
 function solarToLunar(year, month, day) {
+  const VendorSolar = globalThis?.Solar;
+  const VendorLunarYear = globalThis?.LunarYear;
+  if (VendorSolar && typeof VendorSolar.fromYmd === 'function') {
+    try {
+      const solar = VendorSolar.fromYmd(year, month, day);
+      const lunar = solar?.getLunar?.();
+      if (lunar) {
+        const rawMonth = Number(lunar.getMonth());
+        const lunarYear = Number(lunar.getYear());
+        let leapMonth = 0;
+        if (VendorLunarYear && typeof VendorLunarYear.fromYear === 'function') {
+          try {
+            leapMonth = Math.abs(Number(VendorLunarYear.fromYear(lunarYear)?.getLeapMonth?.())) || 0;
+          } catch (_) {}
+        }
+        return {
+          year: lunarYear,
+          month: Math.abs(rawMonth),
+          day: Number(lunar.getDay()),
+          isLeap: rawMonth < 0,
+          leapMonth,
+        };
+      }
+    } catch (_) {}
+  }
+
   let lunarYear = year;
   let sf = SPRING_FESTIVAL[lunarYear];
   const target = new Date(year, month - 1, day);
