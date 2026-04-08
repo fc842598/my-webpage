@@ -2333,6 +2333,9 @@ function _fcBuildLifeCurveYear(age) {
       name: liunian.name || '',
       lineType: liunian.lineType || '',
       lineNum: liunian.lineNum || '',
+      governingLineNum: liunian.governingLineNum || liunian.lineNum || '',
+      appliedLineNum: liunian.appliedLineNum || '',
+      tianjiLineNum: liunian.tianjiLineNum ?? liunian.lineNum ?? '',
       period: liunian.period || '',
     } : null,
     xiaoLian: {
@@ -3783,7 +3786,8 @@ function buildCurrentLuckAnalysis(chart, inputs, activeAge) {
   const lnYear  = _fcAgeToYear(activeAge);
   const lnGuaName = lnData?.name || '—';
   const lnPeriod  = lnData?.period || '';
-  const lnLine    = lnData ? `第${lnData.lineNum}爻（${lnData.lineType==='yang'?'阳爻9年':'阴爻6年'}）` : '';
+  const lnLineNum = lnData?.tianjiLineNum ?? lnData?.lineNum ?? '';
+  const lnLine    = lnData ? `第${lnLineNum}爻（${lnData.lineType==='yang'?'阳爻9年':'阴爻6年'}）` : '';
   const lnBody  = `${lnYear} 年 · ${gz} · 虚岁 ${activeAge} 岁\n流年卦：${lnGuaName}（${lnPeriod}）　${lnLine}`;
   const lnTip   = lnData?.lineType === 'yang'
     ? '阳爻段：阳年走本卦，阴年走变卦，注意奇偶年节奏'
