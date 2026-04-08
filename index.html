@@ -8,124 +8,136 @@
 </head>
 <body>
 
-  <header class="navbar">
+  <!-- v3 高级版：带动画、玻璃态、交互元素 -->
+
+  <header class="navbar navbar-v3">
     <div class="nav-inner">
-      <a href="index.html" class="nav-logo"><span class="logo-star">☽</span> 紫微斗数</a>
+      <a href="index.html" class="nav-logo"><span class="logo-star logo-glow">☽</span> 紫微斗数</a>
       <nav class="nav-links">
         <a href="index.html" class="active">首页</a>
         <a href="pages/chart.html">免费排盘</a>
       </nav>
-      <button class="nav-cta" onclick="location.href='pages/chart.html'">立即排盘</button>
+      <button class="nav-cta nav-cta-v3" onclick="location.href='pages/chart.html'">立即排盘</button>
     </div>
   </header>
 
-  <!-- Hero -->
-  <section class="hero">
-    <div class="hero-bg"></div>
-    <div class="hero-content">
-      <p class="hero-tag">紫微斗数 · 在线免费排盘 · 站内直接出结果</p>
-      <h1 class="hero-title">输入出生时间<br>免费看你的<span>紫微命盘</span></h1>
-      <p class="hero-desc">
-        填入出生年月日时辰，在本页直接生成十二宫命盘，
-        看命宫主星、感情格局、事业财运和大运走势。
+  <!-- Hero v3: 沉浸式 -->
+  <section class="hero hero-v3">
+    <div class="hero-bg hero-bg-animated">
+      <div class="gradient-orb orb-1"></div>
+      <div class="gradient-orb orb-2"></div>
+      <div class="gradient-orb orb-3"></div>
+    </div>
+    <div class="hero-content hero-content-v3">
+      <p class="hero-tag hero-tag-glass">✨ 免费在线排盘 • 实时计算结果</p>
+      <h1 class="hero-title hero-title-gradient">输入出生时间<br>免费看你的<span class="gold-text-glow">紫微命盘</span></h1>
+      <p class="hero-desc hero-desc-large">
+        填入出生年月日时辰，在本页直接生成十二宫命盘，看命宫主星、感情格局、事业财运和大运走势。
       </p>
       <div class="hero-actions">
-        <button class="btn-primary btn-hero" onclick="location.href='pages/chart.html'">
+        <button class="btn-primary btn-hero btn-v3-primary" onclick="location.href='pages/chart.html'">
           免费排我的命盘 →
         </button>
+        <button class="btn-secondary btn-v3-secondary" onclick="location.href='pages/chart.html'">
+          查看示例
+        </button>
       </div>
-      <ul class="hero-trust">
-        <li>✓ 完全免费</li>
-        <li>✓ 站内直接出结果</li>
-        <li>✓ 无需注册</li>
-        <li>✓ 不储存你的信息</li>
+      <ul class="hero-trust hero-trust-v3">
+        <li class="trust-item-v3"><span class="check-icon">✓</span> 完全免费</li>
+        <li class="trust-item-v3"><span class="check-icon">✓</span> 无需注册</li>
+        <li class="trust-item-v3"><span class="check-icon">✓</span> 本地计算</li>
+        <li class="trust-item-v3"><span class="check-icon">✓</span> 不存储数据</li>
       </ul>
     </div>
-    <div class="hero-deco">
-      <div class="deco-ring ring1"></div>
-      <div class="deco-ring ring2"></div>
-      <div class="deco-ring ring3"></div>
-      <div class="deco-center">紫<br>微</div>
+    <div class="hero-deco hero-deco-v3">
+      <div class="deco-ring ring1 ring-animated"></div>
+      <div class="deco-ring ring2 ring-animated" style="animation-delay: -1s"></div>
+      <div class="deco-ring ring3 ring-animated" style="animation-delay: -2s"></div>
+      <div class="deco-center deco-glow">紫<br>微</div>
     </div>
   </section>
 
-  <!-- 命盘能告诉你什么 -->
-  <section class="value-section">
+  <!-- 命盘能告诉你什么 v3 -->
+  <section class="value-section value-section-v3">
     <div class="section-inner">
-      <h2 class="section-title">命盘能告诉你什么？</h2>
+      <h2 class="section-title section-title-gold">命盘能告诉你什么？</h2>
       <p class="section-sub">大多数人看盘，最关心这四件事</p>
-      <div class="value-grid">
-        <div class="value-card">
+      <div class="value-grid value-grid-v3">
+        <div class="value-card value-card-v3 value-card-hover" style="animation-delay: 0s">
           <div class="value-icon">🧠</div>
           <h3>性格与天赋</h3>
           <p>命宫主星揭示你天生的性格底色与优势所在。</p>
+          <div class="card-accent"></div>
         </div>
-        <div class="value-card">
+        <div class="value-card value-card-v3 value-card-hover" style="animation-delay: 0.1s">
           <div class="value-icon">💑</div>
           <h3>感情与婚姻</h3>
           <p>夫妻宫看你的感情模式、缘分时机与伴侣特征。</p>
+          <div class="card-accent"></div>
         </div>
-        <div class="value-card">
+        <div class="value-card value-card-v3 value-card-hover" style="animation-delay: 0.2s">
           <div class="value-icon">💼</div>
           <h3>事业与财运</h3>
           <p>官禄宫和财帛宫判断适合的发展方向与财富格局。</p>
+          <div class="card-accent"></div>
         </div>
-        <div class="value-card">
+        <div class="value-card value-card-v3 value-card-hover" style="animation-delay: 0.3s">
           <div class="value-icon">📆</div>
           <h3>大运走势</h3>
           <p>十年大限帮你看清当前所处阶段是顺势还是积蓄。</p>
+          <div class="card-accent"></div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- 怎么用 -->
-  <section class="howto-section">
+  <!-- 三步流程 v3 -->
+  <section class="howto-section howto-section-v3">
     <div class="section-inner">
-      <h2 class="section-title">三步拿到你的命盘</h2>
-      <div class="steps">
-        <div class="step">
-          <div class="step-num">01</div>
+      <h2 class="section-title section-title-gold">三步拿到你的命盘</h2>
+      <div class="steps steps-v3">
+        <div class="step step-v3">
+          <div class="step-num step-num-v3">01</div>
           <h3>点击排盘</h3>
           <p>进入排盘页面，填入出生年、月、日和时辰</p>
+          <div class="step-line"></div>
         </div>
-        <div class="step-arrow">→</div>
-        <div class="step">
-          <div class="step-num">02</div>
+        <div class="step step-v3">
+          <div class="step-num step-num-v3">02</div>
           <h3>即时计算</h3>
           <p>点击提交，命盘在本站页面内直接生成</p>
+          <div class="step-line"></div>
         </div>
-        <div class="step-arrow">→</div>
-        <div class="step">
-          <div class="step-num">03</div>
+        <div class="step step-v3">
+          <div class="step-num step-num-v3">03</div>
           <h3>查看命盘</h3>
           <p>十二宫位、主星辅星和大限信息全部呈现</p>
         </div>
       </div>
-      <div style="text-align:center;margin-top:40px">
-        <button class="btn-primary btn-large" onclick="location.href='pages/chart.html'">
+      <div style="text-align:center;margin-top:48px">
+        <button class="btn-primary btn-large btn-v3-primary" onclick="location.href='pages/chart.html'">
           开始免费排盘 →
         </button>
       </div>
     </div>
   </section>
 
-  <!-- 信任 -->
-  <section class="trust-section">
+  <!-- 信任区域 v3 -->
+  <section class="trust-section trust-section-v3">
     <div class="section-inner">
-      <h2 class="section-title">为什么可以信任这份结果？</h2>
-      <div class="trust-grid">
-        <div class="trust-card">
+      <h2 class="section-title section-title-gold">为什么可以信任这份结果？</h2>
+      <div class="trust-grid trust-grid-v3">
+        <div class="trust-card trust-card-v3 trust-card-glass">
           <div class="trust-icon">📜</div>
           <h3>开源算法，有据可查</h3>
           <p>排盘基于 <a href="https://github.com/SylarLong/iztro" target="_blank" style="color:var(--gold)">iztro</a> 开源库（MIT 许可），遵循传统紫微斗数安星规则，算法公开透明。</p>
         </div>
-        <div class="trust-card">
+        <div class="trust-card trust-card-v3 trust-card-glass">
           <div class="trust-icon">🔒</div>
           <h3>隐私优先，不留数据</h3>
           <p>所有计算在你的浏览器本地完成，出生信息不上传服务器，不储存，不用于任何用途。</p>
         </div>
-        <div class="trust-card">
+        <div class="trust-card trust-card-v3 trust-card-glass">
           <div class="trust-icon">🎯</div>
           <h3>结果客观，不制造焦虑</h3>
           <p>命盘呈现星曜分布与宫位格局，解读由你自己对照，不夸大吉凶，不替你下结论。</p>
@@ -134,24 +146,431 @@
     </div>
   </section>
 
-  <!-- 最终 CTA -->
-  <section class="final-cta">
+  <!-- 最终 CTA v3 -->
+  <section class="final-cta final-cta-v3">
     <div class="section-inner final-cta-inner">
-      <h2>准备好了吗？</h2>
-      <p>填入出生时间，2 分钟在本站看到你的紫微命盘。</p>
-      <button class="btn-primary btn-large" onclick="location.href='pages/chart.html'">
-        免费排我的命盘
-      </button>
-      <p class="final-note">完全免费 · 无需注册 · 站内直接出结果</p>
+      <div class="cta-content cta-content-glow">
+        <h2 class="cta-title">准备好了吗？</h2>
+        <p class="cta-subtitle">2 分钟看清你的紫微命盘和大运走势</p>
+        <button class="btn-primary btn-large btn-v3-primary btn-xl" onclick="location.href='pages/chart.html'">
+          免费排我的命盘
+        </button>
+        <p class="final-note">完全免费 · 无需注册 · 本地计算 · 不存储数据</p>
+      </div>
     </div>
   </section>
 
-  <footer class="footer">
+  <footer class="footer footer-v3">
     <div class="footer-inner">
       <span>© 2026 紫微斗数在线排盘</span>
       <span>排盘算法基于 iztro 开源项目（MIT 许可）</span>
     </div>
   </footer>
+
+  <style>
+    /* v3 高级样式 - 动画、玻璃态、交互 */
+
+    /* 动画定义 */
+    @keyframes float-in {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes glow-pulse {
+      0%, 100% { box-shadow: 0 0 20px rgba(251, 191, 36, 0.4); }
+      50% { box-shadow: 0 0 40px rgba(251, 191, 36, 0.6); }
+    }
+
+    @keyframes ring-rotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes orb-float {
+      0%, 100% { transform: translate(0, 0); }
+      50% { transform: translate(30px, -30px); }
+    }
+
+    .navbar-v3 {
+      backdrop-filter: blur(20px);
+      background: rgba(10, 6, 18, 0.7);
+      border-bottom: 1px solid rgba(251, 191, 36, 0.1);
+    }
+
+    .logo-glow {
+      animation: glow-pulse 3s ease-in-out infinite;
+    }
+
+    .nav-cta-v3 {
+      background: linear-gradient(135deg, var(--purple-main), var(--purple-light));
+      box-shadow: 0 4px 16px rgba(124, 58, 237, 0.3);
+      transition: all 0.3s ease;
+    }
+
+    .nav-cta-v3:hover {
+      box-shadow: 0 8px 32px rgba(124, 58, 237, 0.5);
+      transform: translateY(-2px);
+    }
+
+    .hero-v3 {
+      position: relative;
+      overflow: hidden;
+      min-height: 110vh;
+      padding: 120px 5% 80px;
+    }
+
+    .hero-bg-animated {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+    }
+
+    .gradient-orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.6;
+      animation: orb-float 20s ease-in-out infinite;
+    }
+
+    .orb-1 {
+      width: 400px;
+      height: 400px;
+      top: -100px;
+      left: 10%;
+      background: radial-gradient(circle, rgba(124, 58, 237, 0.4), transparent);
+    }
+
+    .orb-2 {
+      width: 300px;
+      height: 300px;
+      top: 50%;
+      right: 5%;
+      background: radial-gradient(circle, rgba(251, 191, 36, 0.2), transparent);
+      animation-delay: -5s;
+    }
+
+    .orb-3 {
+      width: 350px;
+      height: 350px;
+      bottom: -50px;
+      left: 50%;
+      background: radial-gradient(circle, rgba(160, 144, 192, 0.15), transparent);
+      animation-delay: -10s;
+    }
+
+    .hero-content-v3 {
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-tag-glass {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(251, 191, 36, 0.2);
+      border-radius: 20px;
+      padding: 8px 16px;
+      display: inline-block;
+      backdrop-filter: blur(10px);
+      animation: float-in 0.6s ease-out;
+    }
+
+    .hero-title-gradient {
+      background: linear-gradient(135deg, #f5f3ff 0%, #a78bfa 50%, #fbbf24 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: float-in 0.8s ease-out 0.2s backwards;
+      font-size: clamp(28px, 6vw, 56px);
+    }
+
+    .gold-text-glow {
+      text-shadow: 0 0 30px rgba(251, 191, 36, 0.6);
+    }
+
+    .hero-desc-large {
+      font-size: 1.05rem;
+      line-height: 1.8;
+      animation: float-in 0.8s ease-out 0.4s backwards;
+    }
+
+    .btn-v3-primary {
+      background: linear-gradient(135deg, var(--purple-main), var(--purple-light));
+      box-shadow: 0 8px 32px rgba(124, 58, 237, 0.4);
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      animation: float-in 0.8s ease-out 0.6s backwards;
+    }
+
+    .btn-v3-primary:hover {
+      box-shadow: 0 16px 48px rgba(124, 58, 237, 0.6);
+      transform: translateY(-4px);
+    }
+
+    .btn-v3-secondary {
+      background: transparent;
+      border: 2px solid var(--gold);
+      color: var(--gold);
+      padding: 11px 28px;
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      animation: float-in 0.8s ease-out 0.7s backwards;
+    }
+
+    .btn-v3-secondary:hover {
+      background: rgba(251, 191, 36, 0.1);
+      box-shadow: 0 0 20px rgba(251, 191, 36, 0.3);
+    }
+
+    .btn-xl {
+      padding: 18px 48px;
+      font-size: 1.1rem;
+    }
+
+    .hero-trust-v3 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      animation: float-in 0.8s ease-out 0.8s backwards;
+    }
+
+    .trust-item-v3 {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      backdrop-filter: blur(10px);
+      padding: 12px 16px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.9rem;
+    }
+
+    .check-icon {
+      color: var(--gold);
+      font-weight: bold;
+    }
+
+    .deco-glow {
+      box-shadow: 0 0 60px rgba(251, 191, 36, 0.3);
+    }
+
+    .ring-animated {
+      animation: ring-rotate 8s linear infinite;
+    }
+
+    .value-section-v3 {
+      position: relative;
+    }
+
+    .value-grid-v3 {
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+    }
+
+    .value-card-v3 {
+      background: linear-gradient(135deg, rgba(124, 58, 237, 0.08), rgba(251, 191, 36, 0.03));
+      border: 1px solid rgba(251, 191, 36, 0.15);
+      backdrop-filter: blur(20px);
+      position: relative;
+      overflow: hidden;
+      transition: all 0.4s ease;
+    }
+
+    .value-card-hover {
+      animation: float-in 0.6s ease-out backwards;
+    }
+
+    .value-card-v3:hover {
+      border-color: rgba(251, 191, 36, 0.4);
+      box-shadow: 0 8px 32px rgba(124, 58, 237, 0.2);
+      transform: translateY(-8px);
+    }
+
+    .card-accent {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .value-card-v3:hover .card-accent {
+      opacity: 1;
+    }
+
+    .section-title-gold {
+      background: linear-gradient(135deg, var(--gold), var(--gold-light));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .howto-section-v3 {
+      position: relative;
+    }
+
+    .steps-v3 {
+      display: flex;
+      gap: 0;
+      flex-direction: column;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .step-v3 {
+      position: relative;
+      padding: 32px 24px 32px 80px;
+      background: rgba(255, 255, 255, 0.02);
+      border-left: 2px solid var(--gold);
+      border-radius: 0;
+      transition: all 0.3s ease;
+    }
+
+    .step-v3:hover {
+      background: rgba(255, 255, 255, 0.04);
+      border-left-color: var(--gold-light);
+      padding-left: 86px;
+    }
+
+    .step-num-v3 {
+      position: absolute;
+      left: -46px;
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, var(--gold), var(--gold-light));
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      color: var(--purple-dark);
+      font-size: 16px;
+      box-shadow: 0 4px 16px rgba(251, 191, 36, 0.3);
+    }
+
+    .step-line {
+      display: none;
+    }
+
+    .trust-section-v3 {
+      background: rgba(124, 58, 237, 0.06);
+    }
+
+    .trust-grid-v3 {
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+    }
+
+    .trust-card-v3 {
+      position: relative;
+      overflow: hidden;
+      transition: all 0.4s ease;
+    }
+
+    .trust-card-glass {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(20px);
+    }
+
+    .trust-card-v3:hover {
+      border-color: rgba(251, 191, 36, 0.3);
+      box-shadow: 0 8px 32px rgba(124, 58, 237, 0.15);
+      transform: translateY(-6px);
+    }
+
+    .final-cta-v3 {
+      background: linear-gradient(135deg, rgba(124, 58, 237, 0.1), rgba(251, 191, 36, 0.05));
+      position: relative;
+      overflow: hidden;
+      padding: 100px 5%;
+    }
+
+    .final-cta-v3::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 20% 50%, rgba(124, 58, 237, 0.1), transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(251, 191, 36, 0.08), transparent 50%);
+      pointer-events: none;
+    }
+
+    .cta-content {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+    }
+
+    .cta-content-glow {
+      animation: float-in 0.8s ease-out;
+    }
+
+    .cta-title {
+      font-size: clamp(28px, 5vw, 48px);
+      margin-bottom: 12px;
+      background: linear-gradient(135deg, #f5f3ff, #fbbf24);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .cta-subtitle {
+      font-size: 1.1rem;
+      color: var(--text-secondary);
+      margin-bottom: 36px;
+    }
+
+    .footer-v3 {
+      border-top: 1px solid rgba(251, 191, 36, 0.1);
+    }
+
+    /* 响应式 */
+    @media (max-width: 768px) {
+      .hero-v3 {
+        min-height: auto;
+        padding: 80px 4% 60px;
+      }
+
+      .hero-title-gradient {
+        font-size: clamp(24px, 5vw, 36px);
+      }
+
+      .steps-v3 {
+        max-width: 100%;
+      }
+
+      .step-v3 {
+        padding: 24px 16px 24px 60px;
+      }
+
+      .step-num-v3 {
+        width: 36px;
+        height: 36px;
+        font-size: 14px;
+        left: -36px;
+      }
+
+      .step-v3:hover {
+        padding-left: 66px;
+      }
+
+      .hero-actions {
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .btn-v3-primary,
+      .btn-v3-secondary {
+        width: 100%;
+      }
+    }
+  </style>
 
 </body>
 </html>
