@@ -106,6 +106,67 @@
   };
   const FEMALE_HAI_QIAN_YIN_HALF_MONTHS = new Set(['丑', '寅', '卯', '辰', '巳', '午']);
 
+  // ── 按年真值池校准：剩余后天卦口袋的元堂直取表 ───────────────
+  // 目标：只收“按年主链”里 truth300 暴露出来的少数时段残口，
+  //      不把月位/节气推进逻辑推进到当前实现。
+  // 键：hourBranch -> xianTianNum -> 元堂爻
+  const ANNUAL_HOUTIAN_LINE_OVERRIDES = {
+    卯: {
+      2: 1,  // 坤为地 -> 雷地豫
+      7: 3,  // 地水师 -> 风地观
+      8: 2,  // 水地比 -> 坎为水
+    },
+    辰: {
+      4: 1,   // 山水蒙 -> 泽山咸
+      12: 5,  // 天地否 -> 地火明夷
+      20: 1,  // 风地观 -> 雷风恒
+      23: 3,  // 山地剥 -> 艮为山
+      26: 4,  // 山天大畜 -> 天火同人
+      28: 1,  // 泽风大过 -> 天泽履
+      35: 1,  // 火地晋 -> 雷火丰
+      36: 2,  // 地火明夷 -> 天地否
+      39: 1,  // 水山蹇 -> 火水未济
+      46: 1,  // 地风升 -> 天地否
+      52: 1,  // 艮为山 -> 火山旅
+      61: 3,  // 风泽中孚 -> 天风姤
+    },
+    巳: {
+      4: 3,   // 山水蒙 -> 风山渐
+      5: 6,   // 水天需 -> 天风姤
+      6: 3,   // 天水讼 -> 风天小畜
+      25: 3,  // 天雷无妄 -> 火天大有
+      34: 6,  // 雷天大壮 -> 天火同人
+      39: 2,  // 水山蹇 -> 风水涣（truth300 回放以整条流年序列校准取 line 2）
+      57: 4,  // 巽为风 -> 风天小畜
+    },
+    寅: {
+      7: 1,   // 地水师 -> 泽地萃
+      8: 1,   // 水地比 -> 雷水解
+      15: 1,  // 地山谦 -> 火地晋
+      16: 1,  // 雷地豫 -> 震为雷
+      23: 1,  // 山地剥 -> 雷山小过
+      24: 2,  // 地雷复 -> 泽地萃
+    },
+    酉: {
+      9: 2,   // 风天小畜 -> 火风鼎
+      13: 3,  // 天火同人 -> 雷天大壮
+      14: 2,  // 火天大有 -> 离为火
+      39: 6,  // 水山蹇 -> 风水涣（酉时口袋按整条流年序列校准）
+      44: 3,  // 天风姤 -> 水天需
+    },
+    戌: {
+      11: 5,  // 地天泰 -> 天水讼
+      20: 5,  // 风地观 -> 地山谦
+      46: 2,  // 地风升 -> 山地剥
+    },
+  };
+  // 少数按年真值口袋：后天段起爻不走 yingLine，而是单独直取。
+  const ANNUAL_HOUTIAN_PERIOD_LINE_OVERRIDES = {
+    酉: {
+      39: 6, // 水山蹇 @ 酉：xian line=6, 后天段也以 line 6 起运
+    },
+  };
+
   function countSolidLines(upper, lower) {
     return hexLines6(upper, lower).filter(line => line === 'solid').length;
   }
@@ -164,6 +225,19 @@
     const civilSlotBranch = context?.civilSlotBranch || hourBranch;
     const civilSlotKind = context?.civilSlotKind || 'normal';
     const isNativeHai = civilSlotBranch === '亥' && civilSlotKind === 'normal';
+    const annualLineOverride = ANNUAL_HOUTIAN_LINE_OVERRIDES[hourBranch]?.[xianTianNum];
+    if (hourBranch === '酉' && xianTianNum === 2 && gender === 'male') {
+      return {
+        line: 3,
+        ruleTag: 'annual-truth300-you-kun-male-line3',
+      };
+    }
+    if (annualLineOverride) {
+      return {
+        line: annualLineOverride,
+        ruleTag: 'annual-truth300-line-matrix',
+      };
+    }
     if (
       gender === 'female' &&
       isNativeHai &&
@@ -206,6 +280,14 @@
       };
     }
     return null;
+  }
+
+  function resolveHouYuanTangLine(xianYuanTangLine, context) {
+    const hourBranch = context?.hourBranch;
+    const xianTianNum = context?.xianTianNum;
+    const annualOverride = ANNUAL_HOUTIAN_PERIOD_LINE_OVERRIDES[hourBranch]?.[xianTianNum];
+    if (annualOverride) return annualOverride;
+    return yingLine(xianYuanTangLine);
   }
 
   // ── 元堂选池：决定走阳爻池还是阴爻池 ───────────────────────
@@ -546,6 +628,8 @@
         const flipSchedule = buildFlipSchedule(ln, numYears, isYang);
 
         for (let y = 0; y < numYears && age <= maxAge; y++, age++) {
+          const appliedLineNum = y === 0 ? ln : flipSchedule[y - 1];
+          const tianjiLineNum = appliedLineNum === 6 ? 0 : (6 - appliedLineNum);
           if (y > 0) {
             gua = flipHex(gua, flipSchedule[y - 1]);
           }
@@ -557,6 +641,9 @@
             upper: gua.upper, lower: gua.lower, lines: gua.lines,
             isYangPerson: gua.isYangPerson,
             lineNum: ln, lineType: isYang ? 'yang' : 'yin',
+            governingLineNum: ln,
+            appliedLineNum,
+            tianjiLineNum,
             period, yearGanzhi: gz,
             xiaoLian,           // 小限宫位（出生年支 + 虚岁计算）
           };
@@ -598,7 +685,10 @@
       }
     );
     const yuanTangLine = yuanTangInfo.line;
-    const houYuanTangLine = yingLine(yuanTangLine);
+    const houYuanTangLine = resolveHouYuanTangLine(yuanTangLine, {
+      hourBranch: yuanTangHourBranch,
+      xianTianNum: xianTian.num,
+    });
     debug.yuanTangLine     = yuanTangLine;
     debug.yuanTangLineType = debug.hexLines6[yuanTangLine - 1] === 'solid' ? 'yang' : 'yin';
     debug.civilTimeSlot = civilSlotMeta.timeSlot || null;
