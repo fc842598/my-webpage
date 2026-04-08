@@ -1343,7 +1343,8 @@
 }
 
 /* ══════════════════════════════════════════
-   新版 Figma 风格表单（nf-* 前缀）
+   排盘表单 — 棕金色东方美学（Figma 轮5最终稿）
+   色系: bg #18130e | card #211b15 | gold #c9a961
 ══════════════════════════════════════════ */
 .nf-page {
   padding-top: 70px;
@@ -1351,7 +1352,8 @@
   padding-right: 16px;
   padding-bottom: 80px;
   min-height: 100vh;
-  background: #f7f6f2;
+  background: #18130e;
+  color: #c6b7a6;
 }
 .nf-header {
   display: flex;
@@ -1363,44 +1365,100 @@
   display: flex;
   gap: 8px;
   align-items: center;
-  font-size: 1.1rem;
-  font-weight: bold;
-  color: #4a3f35;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #c9a961;
   letter-spacing: 3px;
 }
 .nf-diamond {
   width: 8px;
   height: 8px;
-  background: #b59e8f;
+  background: #c9a961;
   transform: rotate(45deg);
   border-radius: 2px;
+  opacity: .7;
 }
 .nf-history-btn {
   display: flex;
   align-items: center;
   gap: 6px;
   font-size: .82rem;
-  color: #7e726b;
-  background: #edebe4;
+  color: #c6b7a6;
+  background: rgba(201,169,97,.10);
+  border: 1px solid rgba(201,169,97,.30);
   padding: 6px 14px;
   border-radius: 999px;
-  border: none;
   cursor: pointer;
+  transition: background .15s;
+}
+.nf-history-btn:hover {
+  background: rgba(201,169,97,.16);
 }
 .nf-card {
-  background: white;
-  border-radius: 24px;
+  background: #211b15;
+  border-radius: 20px;
   padding: 0 20px;
-  box-shadow: 0 4px 20px rgba(0,0,0,.05);
+  border: 1px solid rgba(201,169,97,.20);
+  box-shadow: 0 8px 32px rgba(0,0,0,.45);
   max-width: 480px;
   margin: 0 auto;
+  position: relative;
+  overflow: visible;
+}
+/* 卡片顶部金色横线 */
+.nf-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: rgba(201,169,97,.75);
+  border-radius: 20px 20px 0 0;
+}
+/* 卡片左右上角金点 */
+.nf-card::after {
+  content: '';
+  position: absolute;
+  top: 8px; right: 14px;
+  width: 4px; height: 4px;
+  background: rgba(201,169,97,.35);
+  border-radius: 50%;
+  box-shadow: -320px 0 0 rgba(201,169,97,.35);
 }
 .nf-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 16px 0;
-  border-bottom: 1px solid #f5f4f0;
+  border-bottom: none;
+  position: relative;
+}
+/* 行间分隔：金色菱形线 */
+.nf-row + .nf-row::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(201,169,97,.15) 20%,
+    rgba(201,169,97,.15) 48%,
+    transparent 50%,
+    rgba(201,169,97,.15) 52%,
+    rgba(201,169,97,.15) 80%,
+    transparent 100%
+  );
+}
+/* 菱形中心点 */
+.nf-row + .nf-row::after {
+  content: '';
+  position: absolute;
+  top: -3px;
+  left: 50%;
+  transform: translateX(-50%) rotate(45deg);
+  width: 7px; height: 7px;
+  background: rgba(201,169,97,.45);
+  border-radius: 1px;
 }
 .nf-row:last-child, .nf-row-last {
   border-bottom: none;
@@ -1412,56 +1470,61 @@
   flex: 1;
 }
 .nf-label {
-  color: #8e857d;
-  font-size: .92rem;
+  color: #a29482;
+  font-size: .88rem;
+  font-weight: 500;
 }
 .nf-required {
-  color: red;
+  color: #e04d4d;
   margin-right: 4px;
+  font-weight: 700;
 }
 .nf-row-right {
   display: flex;
   align-items: center;
   gap: 6px;
-  color: #4a3f35;
+  color: #c6b7a6;
   font-weight: 500;
   cursor: pointer;
 }
 .nf-chevron {
-  color: #c8c2bc;
+  color: rgba(201,169,97,.4);
   font-size: 1.1rem;
 }
 .nf-name-input {
   border: none;
   outline: none;
   background: transparent;
-  color: #4a3f35;
+  color: #c6b7a6;
   flex: 1;
   font-size: .92rem;
   font-family: inherit;
 }
+.nf-name-input::placeholder { color: #a29482; }
 .nf-gender-pill {
   display: flex;
-  background: #f5f4f0;
+  background: #110d09;
+  border: 1px solid rgba(201,169,97,.22);
   border-radius: 999px;
   padding: 4px;
   gap: 0;
 }
 .nf-gender-btn {
-  padding: 6px 16px;
+  padding: 5px 14px;
   border-radius: 999px;
   border: none;
   background: transparent;
-  color: #8e857d;
+  color: #a29482;
   font-size: .88rem;
   cursor: pointer;
   font-family: inherit;
   transition: all .15s;
 }
 .nf-gender-btn.active {
-  background: #cba587;
-  color: white;
-  box-shadow: 0 2px 6px rgba(0,0,0,.15);
+  background: #c9a961;
+  color: #14100c;
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(201,169,97,.3);
 }
 .nf-inline-inputs {
   padding: 12px 0;
@@ -1471,21 +1534,26 @@
 }
 .nf-select {
   width: 100%;
-  border-radius: 8px;
-  border: 1px solid #e8e4dc;
-  background: #faf9f5;
-  color: #4a3f35;
-  padding: 8px 10px;
+  border-radius: 10px;
+  border: 1px solid rgba(201,169,97,.20);
+  background: #110d09;
+  color: #c6b7a6;
+  padding: 9px 10px;
   font-size: .9rem;
   font-family: inherit;
   outline: none;
   -webkit-appearance: none;
+  transition: border-color .15s;
 }
 .nf-select:focus {
-  border-color: #cba587;
+  border-color: rgba(201,169,97,.55);
+}
+.nf-select option {
+  background: #211b15;
+  color: #c6b7a6;
 }
 .nf-val-muted {
-  color: #a8a09a;
+  color: #a29482;
   font-size: .85rem;
 }
 .nf-toggle-row {
@@ -1498,7 +1566,7 @@
   height: 24px;
   border-radius: 999px;
   border: none;
-  background: #e0ddd8;
+  background: rgba(201,169,97,.18);
   padding: 2px;
   cursor: pointer;
   transition: background .2s;
@@ -1507,14 +1575,14 @@
   align-items: center;
 }
 .nf-toggle.on {
-  background: #cba587;
+  background: #c9a961;
 }
 .nf-toggle-knob {
   width: 20px;
   height: 20px;
-  background: white;
+  background: #e8dcc8;
   border-radius: 50%;
-  box-shadow: 0 1px 3px rgba(0,0,0,.2);
+  box-shadow: 0 1px 4px rgba(0,0,0,.4);
   transition: transform .2s;
   transform: translateX(0);
 }
@@ -1522,11 +1590,11 @@
   transform: translateX(20px);
 }
 .nf-error {
-  background: rgba(200,60,60,.08);
-  border: 1px solid rgba(200,60,60,.3);
+  background: rgba(224,77,77,.08);
+  border: 1px solid rgba(224,77,77,.30);
   border-radius: 10px;
   padding: 10px 14px;
-  color: #c04040;
+  color: #e07070;
   font-size: .85rem;
   margin-top: 8px;
 }
@@ -1536,22 +1604,36 @@
 .nf-submit {
   width: 100%;
   padding: 16px;
-  background: #edece6;
-  color: #6b4e41;
+  background: #c9a961;
+  color: #14100c;
   border: none;
-  border-radius: 999px;
-  font-size: 1rem;
-  letter-spacing: 3px;
+  border-radius: 14px;
+  font-size: 1.05rem;
+  letter-spacing: 4px;
   cursor: pointer;
   font-family: inherit;
-  transition: background .15s;
-  font-weight: 500;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  transition: opacity .15s, box-shadow .15s;
+  box-shadow: 0 4px 20px rgba(201,169,97,.35);
 }
-.nf-submit:hover {
-  background: #e0ddd6;
+/* 顶部光泽 */
+.nf-submit::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 40%;
+  background: rgba(255,255,255,.07);
+  border-radius: 14px 14px 0 0;
+  pointer-events: none;
+}
+.nf-submit:hover:not(:disabled) {
+  opacity: .92;
+  box-shadow: 0 6px 28px rgba(201,169,97,.5);
 }
 .nf-submit:disabled {
-  opacity: .6;
+  opacity: .5;
   cursor: not-allowed;
 }
 .nf-reset-btn {
@@ -1559,53 +1641,63 @@
   margin: 20px auto 0;
   padding: 12px 40px;
   background: transparent;
-  color: #8e857d;
-  border: 1px solid #d2c4b5;
+  color: #a29482;
+  border: 1px solid rgba(201,169,97,.30);
   border-radius: 999px;
   font-size: .9rem;
   cursor: pointer;
   font-family: inherit;
+  transition: background .15s;
 }
 .nf-reset-btn:hover {
-  background: rgba(210,196,181,.2);
+  background: rgba(201,169,97,.08);
 }
 
 /* ── 公历/农历切换 ── */
 .nf-cal-toggle {
   display: flex;
-  background: #f0ede6;
+  background: #110d09;
+  border: 1px solid rgba(201,169,97,.18);
   border-radius: 999px;
-  padding: 2px;
+  padding: 3px;
   gap: 2px;
 }
 .nf-cal-btn {
-  padding: 4px 14px;
+  padding: 4px 13px;
   border-radius: 999px;
   border: none;
   background: transparent;
-  color: #8e857d;
+  color: #a29482;
   font-size: .82rem;
   cursor: pointer;
   font-family: inherit;
   transition: all .15s;
 }
 .nf-cal-btn.active {
-  background: #cba587;
-  color: #fff;
-  box-shadow: 0 1px 4px rgba(0,0,0,.12);
+  background: #c9a961;
+  color: #14100c;
+  font-weight: 700;
+  box-shadow: 0 1px 6px rgba(201,169,97,.3);
 }
-.nf-cal-btn-ai { font-size: .78rem; }
+.nf-cal-btn-ai {
+  font-size: .76rem;
+  color: #dec48c;
+  border: 1px solid rgba(201,169,97,.0);
+}
 .nf-cal-btn-ai.active {
-  background: #5a3824;
-  color: #f5e6c8;
+  background: rgba(201,169,97,.12);
+  border: 1px solid rgba(201,169,97,.45);
+  color: #dec48c;
+  font-weight: 500;
+  box-shadow: none;
 }
 /* ── AI识别 内联面板 ── */
 #ai-inline-wrap {
   margin-top: 4px;
   padding: 12px 14px;
-  background: #fdf8f2;
+  background: rgba(201,169,97,.05);
   border-radius: 12px;
-  border: 1px solid #e8ddd0;
+  border: 1px solid rgba(201,169,97,.15);
 }
 #ai-inline-wrap .ai-chat-messages {
   max-height: 160px;
@@ -1622,10 +1714,10 @@
 }
 /* ── 城市搜索下拉 ── */
 .nf-city-dropdown {
-  background: #fff;
-  border: 1px solid #e8e4dc;
+  background: #1a1410;
+  border: 1px solid rgba(201,169,97,.20);
   border-radius: 12px;
-  box-shadow: 0 4px 16px rgba(0,0,0,.08);
+  box-shadow: 0 8px 24px rgba(0,0,0,.5);
   overflow: hidden;
   max-height: 220px;
   overflow-y: auto;
@@ -1633,11 +1725,15 @@
 .nf-city-item {
   padding: 10px 16px;
   font-size: .88rem;
-  color: #4a3f35;
+  color: #c6b7a6;
   cursor: pointer;
   transition: background .1s;
+  border-bottom: 1px solid rgba(201,169,97,.06);
 }
-.nf-city-item:hover { background: #f7f4ef; }
+.nf-city-item:hover {
+  background: rgba(201,169,97,.10);
+  color: #dec48c;
+}
 
 /* ── 出生时刻行 ── */
 .nf-time-row {
@@ -1656,10 +1752,59 @@
 }
 .nf-time-sep {
   font-size: .88rem;
-  color: #8e857d;
+  color: #c6b7a6;
   padding: 0 2px;
 }
-/* 时辰预览（已移除，保留空规则避免旧引用报错） */
+
+/* ── 真太阳时区域 ── */
+#tst-row .nf-label,
+#tst-label { color: #a29482 !important; }
+#tst-display { color: #e8dcc8 !important; font-size: .88rem; }
+#tst-estimated-badge {
+  background: rgba(201,169,97,.10) !important;
+  border: 1px solid rgba(201,169,97,.28) !important;
+  color: #dec48c !important;
+  border-radius: 4px;
+  padding: 2px 8px;
+  font-size: .72rem;
+}
+#shichen-preview { color: #a29482 !important; }
+#shichen-infer-badge {
+  background: rgba(201,169,97,.12) !important;
+  border: 1px solid rgba(201,169,97,.35) !important;
+  color: #c9a961 !important;
+}
+
+/* ── 日期/城市 相关内联颜色覆盖 ── */
+#date-preview { color: #a29482 !important; }
+#city-selected { color: #dec48c !important; }
+#city-selected span[style] { color: #a29482 !important; }
+#btn-clear-city { color: #a29482 !important; }
+
+/* ── 不知道时辰按钮 ── */
+#shichen-trigger {
+  background: rgba(201,169,97,.08) !important;
+  border: 1px solid rgba(201,169,97,.30) !important;
+  border-radius: 8px !important;
+  color: #dec48c !important;
+  font-size: .75rem;
+  padding: 4px 10px;
+  cursor: pointer;
+}
+
+/* ── 底部版权文字 ── */
+.nf-card > p,
+.nf-card p[style*="text-align:center"] {
+  color: #a29482 !important;
+}
+.nf-card a[href*="iztro"] {
+  color: #c9a961 !important;
+}
+
+/* ── 农历闰月 ── */
+#inp-lunar-leap-wrap { color: #a29482 !important; }
+#inp-lunar-leap-note { color: #8e7c6b !important; }
+
 @media (max-width: 540px) {
   .nf-time-sel { width: 64px; font-size: .92rem; }
 }
@@ -2024,52 +2169,54 @@
 .ai-chat-wrap {
   margin-bottom: 16px;
   padding-bottom: 16px;
-  border-bottom: 1px solid #e8ddd0;
+  border-bottom: 1px solid rgba(201,169,97,.12);
 }
 .ai-chat-label {
   display: flex; align-items: center; gap: 6px;
-  font-size: 13px; font-weight: 700; color: #5c4a3a;
+  font-size: 13px; font-weight: 700; color: #c6b7a6;
   margin-bottom: 12px;
 }
-.ai-chat-label-icon { color: #c08060; }
+.ai-chat-label-icon { color: #c9a961; }
 .ai-chat-messages {
   display: flex; flex-direction: column; gap: 8px;
   margin-bottom: 10px;
   max-height: 220px; overflow-y: auto;
 }
 .ai-chat-messages::-webkit-scrollbar { width: 3px; }
-.ai-chat-messages::-webkit-scrollbar-thumb { background: #d8ccbf; border-radius: 2px; }
+.ai-chat-messages::-webkit-scrollbar-thumb { background: rgba(201,169,97,.25); border-radius: 2px; }
 .ai-msg {
   max-width: 88%; padding: 9px 13px;
   font-size: 13.5px; line-height: 1.65;
 }
 .ai-msg-ai {
-  background: #f5efe6; color: #3d302b;
+  background: rgba(201,169,97,.08); color: #c6b7a6;
   border-radius: 4px 14px 14px 14px;
+  border: 1px solid rgba(201,169,97,.12);
   align-self: flex-start;
 }
-.ai-msg-ai em { font-style: italic; color: #8e6a4a; }
+.ai-msg-ai em { font-style: italic; color: #dec48c; }
 .ai-msg-user {
-  background: #5a3824; color: #fff9f2;
+  background: rgba(201,169,97,.18); color: #e8dcc8;
   border-radius: 14px 4px 14px 14px;
   align-self: flex-end;
 }
 .ai-msg-thinking {
-  font-size: 12px; color: #b0a89f;
+  font-size: 12px; color: #a29482;
   padding: 4px 2px; align-self: flex-start;
 }
 .ai-chat-input-row {
   display: flex; gap: 8px; align-items: center;
 }
 .ai-chat-input {
-  flex: 1; border: 1.5px solid #d8ccbf; border-radius: 20px;
-  padding: 9px 14px; font-size: 13.5px; color: #2e221a;
-  background: #fdfaf6; outline: none; font-family: inherit;
+  flex: 1; border: 1px solid rgba(201,169,97,.25); border-radius: 20px;
+  padding: 9px 14px; font-size: 13.5px; color: #c6b7a6;
+  background: #110d09; outline: none; font-family: inherit;
+  transition: border-color .15s;
 }
-.ai-chat-input:focus { border-color: #9a6a4a; }
-.ai-chat-input::placeholder { color: #b0a89f; }
+.ai-chat-input:focus { border-color: rgba(201,169,97,.55); }
+.ai-chat-input::placeholder { color: #a29482; }
 .ai-chat-send {
-  background: #5a3824; color: #fff5ec; border: none; border-radius: 20px;
+  background: #c9a961; color: #14100c; border: none; border-radius: 20px;
   padding: 9px 18px; font-size: 13px; font-weight: 700;
   cursor: pointer; white-space: nowrap; transition: opacity .15s;
   font-family: inherit;
@@ -2080,10 +2227,10 @@
   margin-top: 8px;
   font-size: 12px;
   line-height: 1.55;
-  color: #9a8a7b;
+  color: #a29482;
 }
 .ai-chat-divider {
-  text-align: center; font-size: 12px; color: #b0a89f;
+  text-align: center; font-size: 12px; color: #a29482;
   margin: 0 0 16px; letter-spacing: .04em;
 }
 
