@@ -3981,6 +3981,10 @@ async function _refreshPimingApiHint() {
 
 void _refreshPimingApiHint();
 
+// 暴露给普通脚本（ai-piming.js），module 作用域内的函数默认不可见
+window._resolvePimingApiBase = _resolvePimingApiBase;
+window._joinApiUrl            = _joinApiUrl;
+
 // Tab 切换
 (function _bindAipTabs() {
   document.querySelectorAll('.aip-tab').forEach(btn => {
