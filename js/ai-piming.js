@@ -8,18 +8,14 @@
  */
 
 // ── 配置 ──────────────────────────────────────────────────────────────────────
-// overall_piming 走本站老后端（server/index.js），其余 moduleKey 走 ai-piming-backend
-const AI_BACKEND_BASE        = 'https://ai-piming-backend-production.up.railway.app';
-const OVERALL_PIMING_API_BASE = 'https://peaceful-celebration-production-74c8.up.railway.app';
+// overall 走 chart.html 里的 _resolvePimingApiBase()（与其他 topic 共用同一套探测逻辑）
+// 其余 moduleKey 走 ai-piming-backend
+const AI_BACKEND_BASE = 'https://ai-piming-backend-production.up.railway.app';
 
 // ── 工具 ──────────────────────────────────────────────────────────────────────
 function _aipJoin(path) {
   const base = (AI_BACKEND_BASE || '').replace(/\/$/, '');
   return base ? `${base}${path}` : path;
-}
-
-function _aipJoinOverall(path) {
-  return OVERALL_PIMING_API_BASE.replace(/\/$/, '') + path;
 }
 
 function _palaceSummary(palaces) {
@@ -175,9 +171,10 @@ async function _aipCallBackend(moduleKey, extraParams = {}) {
   const chartData = buildChartPayload();
   if (!chartData) throw new Error('请先完成排盘');
 
-  // overall_piming 走 server/index.js（返回 card+debug 结构）
+  // overall_piming 走 server/index.js（card+debug 结构），复用 chart.html 的 API base 探测
   if (moduleKey === 'overall') {
-    const resp = await fetch(_aipJoinOverall('/api/piming'), {
+    const apiBase = await _resolvePimingApiBase();
+    const resp = await fetch(_joinApiUrl(apiBase, '/api/piming'), {
       method : 'POST',
       headers: { 'Content-Type': 'application/json' },
       body   : JSON.stringify({ topic: 'overall_piming', chartData }),
@@ -212,14 +209,33 @@ function _aipShowLoading(ids) {
 function _aipRenderResult(moduleKey, data) {
   switch (moduleKey) {
     case 'overall': {
-      // card+debug 结构（来自 server/index.js overall_piming）
+      // card → 命宫格局主卡片（aip-life）
       const card = data.card || {};
-      const ttl  = document.getElementById('aip-sh-ttl');
-      const body = document.getElementById('aip-sh-body');
-      const tip  = document.getElementById('aip-sh-tip');
+      const ttl  = document.getElementById('aip-life-ttl');
+      const body = document.getElementById('aip-life-body');
+      const tip  = document.getElementById('aip-life-tip');
       if (ttl)  ttl.textContent  = card.title   || 'AI 整体批命';
       if (body) { body.textContent = card.summary || ''; body.style.whiteSpace = 'pre-wrap'; }
-      if (tip)  tip.textContent  = [card.risk, card.basis].filter(Boolean).join('\n────\n');
+      if (tip)  tip.textContent  = [card.risk ? `⚠ ${card.risk}` : '', card.basis ? `依据：${card.basis}` : ''].filter(Boolean).join('\n');
+
+      // debug → 调试区
+      const dbg = data.debug || {};
+      const debugCard = document.getElementById('aip-overall-debug-card');
+      const debugPre  = document.getElementById('aip-overall-debug-pre');
+      if (debugCard) debugCard.style.display = '';
+      if (debugPre) {
+        const lines = [
+          `模型：${dbg.model || '—'}   耗时：${dbg.durationMs || 0}ms`,
+          `摘要：${dbg.requestSummary || '—'}`,
+          '',
+          '流程：',
+          ...(Array.isArray(dbg.trace) ? dbg.trace.map(s => '  ' + s) : [String(dbg.trace || '—')]),
+          '',
+          'rawResponse：',
+          dbg.rawResponse || '—',
+        ];
+        debugPre.textContent = lines.join('\n');
+      }
       break;
     }
     case 'current_luck': {
