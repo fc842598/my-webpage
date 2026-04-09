@@ -8,13 +8,18 @@
  */
 
 // ── 配置 ──────────────────────────────────────────────────────────────────────
-// 部署到 Vercel 后替换为实际 URL，本地开发时留空（走相对路径 /api/ai/run）
-const AI_BACKEND_BASE = 'https://ai-piming-backend-production.up.railway.app';
+// overall_piming 走本站老后端（server/index.js），其余 moduleKey 走 ai-piming-backend
+const AI_BACKEND_BASE        = 'https://ai-piming-backend-production.up.railway.app';
+const OVERALL_PIMING_API_BASE = 'https://peaceful-celebration-production-74c8.up.railway.app';
 
 // ── 工具 ──────────────────────────────────────────────────────────────────────
 function _aipJoin(path) {
   const base = (AI_BACKEND_BASE || '').replace(/\/$/, '');
   return base ? `${base}${path}` : path;
+}
+
+function _aipJoinOverall(path) {
+  return OVERALL_PIMING_API_BASE.replace(/\/$/, '') + path;
 }
 
 function _palaceSummary(palaces) {
@@ -170,6 +175,19 @@ async function _aipCallBackend(moduleKey, extraParams = {}) {
   const chartData = buildChartPayload();
   if (!chartData) throw new Error('请先完成排盘');
 
+  // overall_piming 走 server/index.js（返回 card+debug 结构）
+  if (moduleKey === 'overall') {
+    const resp = await fetch(_aipJoinOverall('/api/piming'), {
+      method : 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body   : JSON.stringify({ topic: 'overall_piming', chartData }),
+    });
+    const data = await resp.json();
+    if (!resp.ok || !data.ok) throw new Error(data.error || 'AI 服务异常');
+    return data; // { ok, module, card, debug }
+  }
+
+  // 其他 moduleKey 继续走 ai-piming-backend
   const resp = await fetch(_aipJoin('/api/ai/run'), {
     method : 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -192,19 +210,20 @@ function _aipShowLoading(ids) {
 
 // ── 渲染结果到现有卡片 ────────────────────────────────────────────────────────
 function _aipRenderResult(moduleKey, data) {
-  const text = data.finalAnswer || '';
-
   switch (moduleKey) {
-    case 'overall':
-    case 'minggong': {
-      // 将 AI 回复渲染到"生年四化"卡片的 body（最后一张卡，最适合放综合文字）
-      const shBody = document.getElementById('aip-sh-body');
-      if (shBody) { shBody.textContent = text; shBody.style.whiteSpace = 'pre-wrap'; }
-      const shTtl  = document.getElementById('aip-sh-ttl');
-      if (shTtl) shTtl.textContent = 'AI 综合批命';
+    case 'overall': {
+      // card+debug 结构（来自 server/index.js overall_piming）
+      const card = data.card || {};
+      const ttl  = document.getElementById('aip-sh-ttl');
+      const body = document.getElementById('aip-sh-body');
+      const tip  = document.getElementById('aip-sh-tip');
+      if (ttl)  ttl.textContent  = card.title   || 'AI 整体批命';
+      if (body) { body.textContent = card.summary || ''; body.style.whiteSpace = 'pre-wrap'; }
+      if (tip)  tip.textContent  = [card.risk, card.basis].filter(Boolean).join('\n────\n');
       break;
     }
     case 'current_luck': {
+      const text   = data.finalAnswer || '';
       const dxBody = document.getElementById('aip-dx-body');
       if (dxBody) { dxBody.textContent = text; dxBody.style.whiteSpace = 'pre-wrap'; }
       const dxTtl  = document.getElementById('aip-dx-ttl');
@@ -212,6 +231,7 @@ function _aipRenderResult(moduleKey, data) {
       break;
     }
     default: {
+      const text   = data.finalAnswer || '';
       const shBody = document.getElementById('aip-sh-body');
       if (shBody) { shBody.textContent = text; shBody.style.whiteSpace = 'pre-wrap'; }
     }
@@ -249,8 +269,10 @@ function _aipRenderResult(moduleKey, data) {
         const data = await _aipCallBackend(moduleKey, extraParams);
         _aipRenderResult(moduleKey, data);
 
-        const meta = data.meta || {};
-        const hint = `v${meta.versionNo || '?'} · ${meta.modelName || ''} · ${meta.tokensUsed || 0} tokens · ${meta.durationMs || 0}ms`;
+        const meta = data.meta || data.debug || {};
+        const hint = data.module === 'overall_piming'
+          ? `overall_piming · ${meta.model || ''} · ${meta.durationMs || 0}ms`
+          : `v${meta.versionNo || '?'} · ${meta.modelName || ''} · ${meta.tokensUsed || 0} tokens · ${meta.durationMs || 0}ms`;
         if (statusEl) statusEl.textContent = '生成完成';
         if (noteEl)   noteEl.textContent   = hint;
 

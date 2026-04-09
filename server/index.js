@@ -306,6 +306,77 @@ ${RETURN_SCHEMA}`,
   };
 }
 
+function buildOverallPimingPrompt(body) {
+  const cd = body.chartData || body; // 兼容直接传 chartData 或把字段平铺的情况
+  const {
+    gender = '', fiveElementsClass = '', zodiac = '', lifeMain = '', bodyMain = '', yearStem = '',
+    lifePalace = null, bodyPalaceDetail = null, careerPalace = null, wealthPalace = null, movePalace = null,
+    yearMutagens = [], palacesSummary = [], birthDate = '',
+  } = cd;
+
+  // 构建可读的命盘文本
+  const genderStr  = gender === 'female' ? '女命' : '男命';
+  const starLine   = s => `${s.name}${s.mutagen ? s.mutagen : ''}${s.brightness ? `(${s.brightness})` : ''}`;
+  const palaceLine = p => `${p.name}【${p.branch || ''}】：` +
+    (p.majorStars || []).map(starLine).join('、') +
+    (p.minorStars?.length ? ' / ' + p.minorStars.map(s => s.name + (s.mutagen || '')).join('、') : '');
+
+  const mutagenLines = (yearMutagens || []).map(m => `${m.star}${m.type} 在 ${m.palace}`).join('；');
+
+  const keyPalaces = [lifePalace, bodyPalaceDetail, careerPalace, wealthPalace, movePalace]
+    .filter(Boolean).map(palaceLine).join('\n');
+
+  const allPalaces = (palacesSummary || []).map(palaceLine).join('\n');
+
+  const ctx = [
+    `【基本信息】${genderStr}，${birthDate}，${fiveElementsClass}，生肖${zodiac}，命主星${lifeMain}，身主星${bodyMain}，年干${yearStem}`,
+    '',
+    '【核心宫位】',
+    keyPalaces,
+    '',
+    '【生年四化】',
+    mutagenLines || '（无）',
+    '',
+    '【十二宫全览】',
+    allPalaces,
+  ].join('\n');
+
+  const requestSummary = `${fiveElementsClass} ${lifeMain}命宫 ${yearStem}年生 ${genderStr}`;
+
+  const system = [
+    '你是一位精通紫微斗数的命理师，有二十年实战批命经验，语言简练有力，不说空泛套话。',
+    '你只做整体命格分析，不扩写大限流年，不展开子平法。',
+    '你必须返回严格 JSON，不要 markdown，不要代码块。',
+  ].join('\n');
+
+  const user = [
+    '以下是命盘结构化数据：',
+    '',
+    ctx,
+    '',
+    '请对整体命格进行批命分析，返回以下 JSON 格式（字段说明见括号，括号内容不要输出）：',
+    '{',
+    '  "title": "一句话点明命格特质，≤20字，必须含命主星名",',
+    '  "summary": "整体命格分析，100-200字，须引用命宫主星、身宫、三方四正、生年四化中的关键星曜",',
+    '  "risk": "最关键的一条风险提示，≤50字",',
+    '  "basis": "本次判断依据，列出引用的主星和宫位，≤60字"',
+    '}',
+  ].join('\n');
+
+  return {
+    system,
+    user,
+    requestSummary,
+    trace: [
+      `整理命盘：${requestSummary}`,
+      `核心宫位 ${[lifePalace, careerPalace, wealthPalace].filter(Boolean).map(p => p.name).join('/')} 已解析`,
+      `生年四化：${mutagenLines || '无'}`,
+      `调用 DeepSeek 模型：${MODEL}`,
+      '解析 JSON 返回 card 结构',
+    ],
+  };
+}
+
 function buildMinggongDevPrompt(req) {
   const { cardTitle = '', ctx = {}, taskPrompt = '' } = req || {};
   const contextText = JSON.stringify(ctx || {}, null, 2);
@@ -968,6 +1039,34 @@ app.post('/api/piming', async (req, res) => {
   }
 
   try {
+    if (topic === 'overall_piming') {
+      const prompt = buildOverallPimingPrompt(req.body);
+      const t0 = Date.now();
+      const result = await callDeepSeek(prompt.system, prompt.user, {
+        temperature: 0.75,
+        maxTokens: 800,
+      });
+      const card = {
+        title  : sanitizeAiText(result.title   || '整体命格分析'),
+        summary: sanitizeAiText(result.summary  || ''),
+        risk   : sanitizeAiText(result.risk     || ''),
+        basis  : sanitizeAiText(result.basis    || ''),
+      };
+      return res.json({
+        ok    : true,
+        module: 'overall_piming',
+        card,
+        debug : {
+          topic         : 'overall_piming',
+          requestSummary: prompt.requestSummary,
+          trace         : prompt.trace,
+          rawResponse   : JSON.stringify(result),
+          durationMs    : Date.now() - t0,
+          model         : MODEL,
+        },
+      });
+    }
+
     if (topic === 'minggong_dev') {
       const prompt = buildMinggongDevPrompt(req.body);
       const result = await callDeepSeek(prompt.system, prompt.user, {
