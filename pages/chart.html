@@ -373,40 +373,6 @@
         <div class="aip-card-head"><span class="aip-tag">命宫格局</span><span class="aip-card-title" id="aip-life-ttl"></span></div>
         <div class="aip-card-body" id="aip-life-body"></div>
         <div class="aip-card-tip"  id="aip-life-tip"></div>
-        <div class="aip-devbox" id="aip-life-devbox">
-          <div class="aip-devbar">
-            <span class="aip-devbadge">开发调试</span>
-            <span class="aip-devstatus" id="aip-life-dev-status">等待排盘</span>
-          </div>
-          <div class="aip-devgroup">
-            <div class="aip-devlabel">后端流程</div>
-            <pre class="aip-devpre" id="aip-life-dev-steps">等待排盘</pre>
-          </div>
-          <div class="aip-devgrid">
-            <div class="aip-devgroup">
-              <div class="aip-devlabel">结构化上下文</div>
-              <pre class="aip-devpre" id="aip-life-dev-ctx">等待排盘</pre>
-            </div>
-            <div class="aip-devgroup">
-              <div class="aip-devlabel">调试文档</div>
-              <pre class="aip-devpre" id="aip-life-dev-doc">等待后端返回</pre>
-            </div>
-          </div>
-          <div class="aip-devgrid">
-            <div class="aip-devgroup">
-              <div class="aip-devlabel">System Prompt</div>
-              <pre class="aip-devpre" id="aip-life-dev-system">等待后端返回</pre>
-            </div>
-            <div class="aip-devgroup">
-              <div class="aip-devlabel">User Prompt</div>
-              <pre class="aip-devpre" id="aip-life-dev-user">等待后端返回</pre>
-            </div>
-          </div>
-          <div class="aip-devgroup">
-            <div class="aip-devlabel">后端返回</div>
-            <pre class="aip-devpre" id="aip-life-dev-result">等待后端返回</pre>
-          </div>
-        </div>
       </div>
       <div class="aip-card">
         <div class="aip-card-head"><span class="aip-tag">三方四正</span><span class="aip-card-title" id="aip-sf-ttl"></span></div>
@@ -3681,36 +3647,6 @@ function _aipPalaceDetail(p) {
   };
 }
 
-const MINGGONG_DEV_DEFAULT_PROMPT = `请只针对“命宫格局”这一张卡片生成命宫总批。
-必须直接引用当前命宫主星，并结合命宫三方四正（官禄、财帛、迁移）来判断。
-不要扩写婚姻、健康、子平法等其它模块。
-summary 需要可直接展示给前端，risk 只保留一条最关键提醒，basis 用于开发调试。`;
-
-function _aipBuildMinggongDevContext(chart, inputs) {
-  if (!chart || !inputs?.norm) return { 提示: '请先完成排盘' };
-  const pm = _aipPalaceMap(chart);
-  const lifePalace   = _aipGetPalace(pm, '命');
-  const careerPalace = _aipGetPalace(pm, '官禄');
-  const wealthPalace = _aipGetPalace(pm, '财帛');
-  const movePalace   = _aipGetPalace(pm, '迁移');
-  const lifeMaj = _aipMajor(lifePalace);
-  const allMut = (chart.palaces || []).flatMap(p =>
-    [...(p?.majorStars || []), ...(p?.minorStars || [])]
-      .filter(s => s.mutagen)
-      .map(s => `${p.name}${s.mutagen}：${s.name}`)
-  );
-  return {
-    基本信息 : `${inputs.norm.year}年${inputs.norm.month}月${inputs.norm.day}日${_fcResolvedShichenName(chart, inputs.norm)}时${inputs.norm.gender === 'male' ? '男' : '女'}命`,
-    命盘格局 : chart.fiveElementsClass || '—',
-    命宫标题 : lifeMaj.length ? `${lifeMaj.join('+')} 坐命` : '空宫坐命',
-    命宫     : _aipPalaceDetail(lifePalace),
-    官禄宫   : _aipPalaceDetail(careerPalace),
-    财帛宫   : _aipPalaceDetail(wealthPalace),
-    迁移宫   : _aipPalaceDetail(movePalace),
-    生年四化 : allMut.join('、') || '无',
-  };
-}
-
 function buildBaseMingAnalysis(chart, inputs) {
   if (!chart) return null;
   const pm = _aipPalaceMap(chart);
@@ -3846,167 +3782,6 @@ function _aipSetCard(prefix, data) {
   if (p) p.textContent = data.tip   || '';
 }
 
-let _aipMinggongDevState = {
-  key    : '',
-  loading: false,
-  error  : '',
-  result : null,
-  trace  : null,
-};
-let _aipMinggongDevSeq = 0;
-
-function _aipSetLifeDevTrace(trace = {}) {
-  const mapping = {
-    'aip-life-dev-status': trace.status || '等待排盘',
-    'aip-life-dev-steps' : Array.isArray(trace.steps) ? trace.steps.join('\n') : (trace.steps || '等待后端流程'),
-    'aip-life-dev-ctx'   : trace.context || '等待排盘',
-    'aip-life-dev-doc'   : trace.debugDoc || '等待后端返回',
-    'aip-life-dev-system': trace.system || '等待后端返回',
-    'aip-life-dev-user'  : trace.user || '等待后端返回',
-    'aip-life-dev-result': trace.response || '等待后端返回',
-  };
-  Object.entries(mapping).forEach(([id, value]) => {
-    const el = document.getElementById(id);
-    if (el) el.textContent = value;
-  });
-}
-
-function _aipRenderMinggongDevCard(cardTitle) {
-  const title = _aipMinggongDevState.result?.title || cardTitle || '命宫总批';
-  if (_aipMinggongDevState.loading) {
-    _aipSetCard('aip-life', {
-      title,
-      body: '正在调用 DeepSeek 生成命宫总批，当前只看命宫与三方四正。',
-      tip : '开发中：下方直接显示后端流程、提示词和返回结果。',
-    });
-    return;
-  }
-  if (_aipMinggongDevState.error) {
-    _aipSetCard('aip-life', {
-      title,
-      body: '命宫总批 AI 生成失败，请直接看下方调试区定位问题。',
-      tip : _aipMinggongDevState.error,
-    });
-    return;
-  }
-  if (_aipMinggongDevState.result) {
-    const result = _aipMinggongDevState.result;
-    _aipSetCard('aip-life', {
-      title,
-      body: result.summary || 'AI 已返回，但 summary 为空。',
-      tip : result.risk ? `风险提示：${result.risk}` : (result.basis ? `判读依据：${result.basis}` : ''),
-    });
-    return;
-  }
-  _aipSetCard('aip-life', {
-    title,
-    body: '等待命盘数据。',
-    tip : '开发中：这张卡片将改为纯 AI 生成。',
-  });
-}
-
-async function _aipRefreshMinggongDevCard(cardTitle) {
-  if (!_chart || !_chartInputs) return;
-  const ctx = _aipBuildMinggongDevContext(_chart, _chartInputs);
-  const key = JSON.stringify(ctx);
-
-  if (_aipMinggongDevState.key === key && _aipMinggongDevState.loading) {
-    _aipRenderMinggongDevCard(cardTitle);
-    return;
-  }
-  if (_aipMinggongDevState.key === key && _aipMinggongDevState.result) {
-    _aipRenderMinggongDevCard(cardTitle);
-    _aipSetLifeDevTrace(_aipMinggongDevState.trace || {});
-    return;
-  }
-
-  const seq = ++_aipMinggongDevSeq;
-  _aipMinggongDevState = {
-    key,
-    loading: true,
-    error: '',
-    result: null,
-    trace: {
-      status : '准备请求命宫总批',
-      steps  : [
-        '[前端] 收集命宫与三方四正结构化数据',
-        '[前端] 等待 AI 接口基址',
-        '[前端] 准备调用 /api/piming topic=minggong_dev',
-      ],
-      context : JSON.stringify(ctx, null, 2),
-      debugDoc: '等待后端返回',
-      system  : '等待后端返回',
-      user    : '等待后端返回',
-      response: '等待后端返回',
-    },
-  };
-  _aipRenderMinggongDevCard(cardTitle);
-  _aipSetLifeDevTrace(_aipMinggongDevState.trace);
-
-  try {
-    const apiBase = await _resolvePimingApiBase();
-    const resp = await fetch(_joinApiUrl(apiBase, '/api/piming'), {
-      method : 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body   : JSON.stringify({
-        topic     : 'minggong_dev',
-        cardTitle,
-        taskPrompt: MINGGONG_DEV_DEFAULT_PROMPT,
-        ctx,
-      }),
-    });
-    const data = await resp.json();
-    if (!resp.ok || !data.ok) throw new Error(_AI_STATUS_FAILED);
-    if (seq !== _aipMinggongDevSeq) return;
-
-    const traceSteps = [
-      '[前端] 收集命宫与三方四正结构化数据',
-      `[前端] 请求 ${_joinApiUrl(apiBase, '/api/piming')} topic=minggong_dev`,
-      ...((data.trace?.steps || []).map(step => `[后端] ${step}`)),
-      '[前端] 渲染命宫总批卡片',
-    ];
-    _aipMinggongDevState = {
-      key,
-      loading: false,
-      error: '',
-      result: data.result || null,
-      trace: {
-        status : '已连接',
-        steps  : traceSteps,
-        context: data.trace?.context || JSON.stringify(ctx, null, 2),
-        debugDoc: data.trace?.debugDoc || '后端未返回调试文档',
-        system  : data.trace?.system || '后端未返回 system prompt',
-        user    : data.trace?.user || '后端未返回 user prompt',
-        response: data.trace?.response || JSON.stringify(data.result || {}, null, 2),
-      },
-    };
-  } catch (err) {
-    if (seq !== _aipMinggongDevSeq) return;
-    const statusText = _aiStatusForError(err);
-    _aipMinggongDevState = {
-      key,
-      loading: false,
-      error: statusText,
-      result: null,
-      trace: {
-        status : statusText,
-        steps  : [
-          '[前端] 收集命宫与三方四正结构化数据',
-          '[前端] 调用 /api/piming topic=minggong_dev 失败',
-        ],
-        context : JSON.stringify(ctx, null, 2),
-        debugDoc: '后端未返回调试文档',
-        system  : '后端未返回 system prompt',
-        user    : '后端未返回 user prompt',
-        response: String(err?.message || err || statusText),
-      },
-    };
-  }
-
-  _aipRenderMinggongDevCard(cardTitle);
-  _aipSetLifeDevTrace(_aipMinggongDevState.trace || {});
-}
-
 function renderAIPiming() {
   if (!_chart || !_chartInputs) return;
   const section = document.getElementById('aip-section');
@@ -4017,7 +3792,6 @@ function renderAIPiming() {
     _aipSetCard('aip-sf',   base.sanfang);
     _aipSetCard('aip-shen', base.shen);
     _aipSetCard('aip-sh',   base.sihua);
-    _aipRefreshMinggongDevCard(base.life?.title || '命宫总批');
   }
   if (luck) {
     _aipSetCard('aip-dx',  luck.daxian);
