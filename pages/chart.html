@@ -1076,6 +1076,7 @@ document.getElementById('btn-submit').addEventListener('click', async () => {
       gender: norm.gender,
       norm  // store full normalized info
     };
+    window._chart = _chart; window._chartInputs = _chartInputs;
 
     renderFigmaChart(_chart, norm.gender, norm.dateStr, norm);
     await historySave(norm);
@@ -1342,6 +1343,7 @@ function stepRawBirthTime(hoursDelta) {
   _tstResult   = newTst;
   _chart       = newChart;
   _chartInputs = { dateStr: newDateStr, timeIdx: newTimeIdx, gender: newNorm.gender, norm: newNorm };
+  window._chart = _chart; window._chartInputs = _chartInputs;
 
   renderFigmaChart(_chart, _chartInputs.gender, newDateStr, newNorm);
 }
@@ -1813,6 +1815,16 @@ let _liunianGuaResult  = null; // 当前选中年龄的流年卦
 let _liunianSeq        = {};   // 流年序列 { age: guaResult }（即 liunianMap）
 let _birthPillarsCache = null; // 出生四柱缓存
 let _birthGender       = null;
+// ai-piming.js 通过 window.* 访问这些变量
+Object.defineProperties(window, {
+  _fcActiveAge:       { get() { return _fcActiveAge; },       configurable: true },
+  _liunianSeq:        { get() { return _liunianSeq; },        configurable: true },
+  _birthPillarsCache: { get() { return _birthPillarsCache; }, configurable: true },
+  _xianTianGuaResult: { get() { return _xianTianGuaResult; }, configurable: true },
+  _houTianGuaResult:  { get() { return _houTianGuaResult; },  configurable: true },
+  _liunianGuaResult:  { get() { return _liunianGuaResult; },  configurable: true },
+  _fcLifeCurveData:   { get() { return typeof _fcLifeCurveData !== 'undefined' ? _fcLifeCurveData : null; }, configurable: true },
+});
 
 function _getTianjiSolarClass() {
   return window.Solar
