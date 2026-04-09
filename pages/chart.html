@@ -3796,15 +3796,17 @@ function renderAIPiming() {
   const base = buildBaseMingAnalysis(_chart, _chartInputs);
   const luck = buildCurrentLuckAnalysis(_chart, _chartInputs, _fcActiveAge);
   if (base) {
-    // aip-life：命宫格局由 AI overall_piming 填写，这里只写占位（不覆盖已有 AI 结果）
-    const lifeBody = document.getElementById('aip-life-body');
-    if (lifeBody && !lifeBody.textContent.trim()) {
-      _aipSetCard('aip-life', {
-        title: base.life?.title || '命宫格局',
-        body : base.life?.body  || '',
-        tip  : '点击「AI 深度批命」获取 AI 整体解读',
-      });
-    }
+    // aip-life：新命盘渲染时无条件重置为本地占位，清除旧盘 AI 结果
+    _aipSetCard('aip-life', {
+      title: base.life?.title || '命宫格局',
+      body : base.life?.body  || '',
+      tip  : '点击「AI 深度批命」获取 AI 整体解读',
+    });
+    // 同步隐藏并清空调试卡，避免旧盘 debug 残留
+    const debugCard = document.getElementById('aip-overall-debug-card');
+    const debugPre  = document.getElementById('aip-overall-debug-pre');
+    if (debugCard) debugCard.style.display = 'none';
+    if (debugPre)  debugPre.textContent = '';
     _aipSetCard('aip-sf',   base.sanfang);
     _aipSetCard('aip-shen', base.shen);
     _aipSetCard('aip-sh',   base.sihua);
