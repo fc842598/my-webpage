@@ -306,60 +306,218 @@ ${RETURN_SCHEMA}`,
   };
 }
 
+// ── overall_piming 规则层 ────────────────────────────────────────────────────
+
+/**
+ * Step 1: 从 chartData 提取结构化信号
+ */
+function collectOverallSignals(cd) {
+  const majorNames  = p => (p?.majorStars  || []).map(s => s.name);
+  const minorNames  = p => (p?.minorStars  || []).map(s => s.name);
+  const mutagenOf   = (p, type) => [
+    ...(p?.majorStars || []),
+    ...(p?.minorStars || []),
+  ].filter(s => s.mutagen && s.mutagen.includes(type)).map(s => s.name);
+
+  const lp = cd.lifePalace        || null;
+  const bp = cd.bodyPalaceDetail  || null;
+  const cp = cd.careerPalace      || null;
+  const wp = cd.wealthPalace      || null;
+  const mp = cd.movePalace        || null;
+
+  // 命宫辅星中有价值的（文昌/文曲/左辅/右弼/天魁/天钺）
+  const AUX_STARS = ['文昌', '文曲', '左辅', '右弼', '天魁', '天钺', '天刑', '擎羊', '陀罗', '火星', '铃星'];
+  const lifeAux = minorNames(lp).filter(n => AUX_STARS.includes(n));
+
+  // 三方四正各宫主星
+  const sanfang = {
+    career : majorNames(cp),
+    wealth : majorNames(wp),
+    move   : majorNames(mp),
+  };
+
+  // 生年四化按类型归类
+  const mutagens = cd.yearMutagens || [];
+  const lu  = mutagens.filter(m => m.type === '化禄');
+  const quan= mutagens.filter(m => m.type === '化权');
+  const ke  = mutagens.filter(m => m.type === '化科');
+  const ji  = mutagens.filter(m => m.type === '化忌');
+
+  // 命宫落忌（凶）
+  const lifeJi = mutagenOf(lp, '忌');
+
+  // 重点宫位落忌：官禄/财帛/夫妻/命宫
+  const KEY_JI_PALACES = ['命宫', '官禄宫', '财帛宫', '夫妻宫', '迁移宫'];
+  const keyJiMutagens = mutagens.filter(m =>
+    m.type === '化忌' && KEY_JI_PALACES.some(k => (m.palace || '').includes(k.replace('宫', '')))
+  );
+
+  // 命宫化禄/化权/化科（吉）
+  const lifeGood = [
+    ...mutagenOf(lp, '化禄').map(n => n + '禄'),
+    ...mutagenOf(lp, '化权').map(n => n + '权'),
+    ...mutagenOf(lp, '化科').map(n => n + '科'),
+  ];
+
+  return {
+    gender        : cd.gender || 'male',
+    genderStr     : cd.gender === 'female' ? '女命' : '男命',
+    fiveElements  : cd.fiveElementsClass || '',
+    zodiac        : cd.zodiac || '',
+    yearStem      : cd.yearStem || '',
+    lifeMain      : majorNames(lp),   // 命宫主星（可能多颗）
+    lifeAux,                          // 命宫有意义辅星
+    lifeGood,                         // 命宫吉化
+    lifeJi,                           // 命宫落忌星
+    bodyMain      : majorNames(bp),   // 身宫主星
+    bodyPalaceName: bp?.name || '',
+    sanfang,
+    lu, quan, ke, ji,
+    keyJiMutagens,                    // 重点宫位化忌
+    birthDate     : cd.birthDate || '',
+  };
+}
+
+/**
+ * Step 2: 从信号生成 evidence[] 证据列表
+ */
+function buildOverallEvidence(sig) {
+  const ev = [];
+
+  // 命宫底色
+  ev.push({
+    key  : 'minggong_main',
+    label: '命宫主星',
+    value: sig.lifeMain.join('+') || '空宫',
+  });
+  if (sig.lifeAux.length) {
+    ev.push({ key: 'minggong_aux', label: '命宫辅星', value: sig.lifeAux.join('、') });
+  }
+  if (sig.lifeGood.length) {
+    ev.push({ key: 'minggong_good', label: '命宫吉化', value: sig.lifeGood.join('、') });
+  }
+  if (sig.lifeJi.length) {
+    ev.push({ key: 'minggong_ji', label: '命宫落忌', value: sig.lifeJi.join('、') + '化忌入命' });
+  }
+
+  // 三方四正
+  if (sig.sanfang.career.length) {
+    ev.push({ key: 'sanfang_career', label: '官禄宫主星', value: sig.sanfang.career.join('+') });
+  }
+  if (sig.sanfang.wealth.length) {
+    ev.push({ key: 'sanfang_wealth', label: '财帛宫主星', value: sig.sanfang.wealth.join('+') });
+  }
+  if (sig.sanfang.move.length) {
+    ev.push({ key: 'sanfang_move',   label: '迁移宫主星', value: sig.sanfang.move.join('+') });
+  }
+
+  // 生年四化
+  if (sig.lu.length)   ev.push({ key: 'mutagen_lu',   label: '生年化禄', value: sig.lu.map(m=>`${m.star}禄在${m.palace}`).join('；') });
+  if (sig.quan.length) ev.push({ key: 'mutagen_quan', label: '生年化权', value: sig.quan.map(m=>`${m.star}权在${m.palace}`).join('；') });
+  if (sig.ke.length)   ev.push({ key: 'mutagen_ke',   label: '生年化科', value: sig.ke.map(m=>`${m.star}科在${m.palace}`).join('；') });
+  if (sig.ji.length)   ev.push({ key: 'mutagen_ji',   label: '生年化忌', value: sig.ji.map(m=>`${m.star}忌在${m.palace}`).join('；') });
+
+  // 身宫
+  if (sig.bodyMain.length) {
+    ev.push({
+      key  : 'shengong',
+      label: `身宫（${sig.bodyPalaceName}）`,
+      value: sig.bodyMain.join('+'),
+    });
+  }
+
+  return ev;
+}
+
+/**
+ * Step 3: 规则层结论（先于模型产出，喂给模型作为约束）
+ */
+function buildOverallRuleSummary(sig) {
+  // 命宫底色
+  const mainStar = sig.lifeMain[0] || '';
+  let baseTone = mainStar ? `命宫${sig.lifeMain.join('+')}` : '命宫空宫';
+  if (sig.lifeAux.length) baseTone += `，辅有${sig.lifeAux.join('+')}`;
+
+  // 三方结构
+  const sfParts = [];
+  if (sig.sanfang.career.length) sfParts.push(`官禄${sig.sanfang.career.join('+')}`);
+  if (sig.sanfang.wealth.length) sfParts.push(`财帛${sig.sanfang.wealth.join('+')}`);
+  if (sig.sanfang.move.length)   sfParts.push(`迁移${sig.sanfang.move.join('+')}`);
+  const structure = sfParts.length ? sfParts.join('，') : '三方数据不完整';
+
+  // 四化影响
+  const mutagenParts = [];
+  if (sig.lu.length)   mutagenParts.push(sig.lu.map(m=>`${m.star}化禄入${m.palace}`).join('，'));
+  if (sig.quan.length) mutagenParts.push(sig.quan.map(m=>`${m.star}化权入${m.palace}`).join('，'));
+  if (sig.ke.length)   mutagenParts.push(sig.ke.map(m=>`${m.star}化科入${m.palace}`).join('，'));
+  if (sig.ji.length)   mutagenParts.push(sig.ji.map(m=>`${m.star}化忌入${m.palace}`).join('，'));
+  const mutagenEffect = mutagenParts.join('；') || '无明显生年四化';
+
+  // 身宫修正
+  const sameAsLife = sig.bodyMain.some(n => sig.lifeMain.includes(n));
+  let bodyAdjustment = '';
+  if (sig.bodyMain.length) {
+    bodyAdjustment = sameAsLife
+      ? `身宫（${sig.bodyPalaceName}）与命宫同星${sig.bodyMain[0]}，命身同星，特质高度聚焦`
+      : `身宫（${sig.bodyPalaceName}）主星${sig.bodyMain.join('+')}，修正命宫方向`;
+  }
+
+  // 主要风险
+  const riskParts = [];
+  if (sig.lifeJi.length) riskParts.push(`命宫落${sig.lifeJi.join('+')}化忌，自身受困`);
+  sig.keyJiMutagens.forEach(m => {
+    riskParts.push(`${m.star}化忌入${m.palace}，该宫受损`);
+  });
+  const mainRisk = riskParts.length ? riskParts.join('；') : '暂无明显重点风险';
+
+  return { baseTone, structure, mutagenEffect, bodyAdjustment, mainRisk };
+}
+
+/**
+ * Step 4: 组装 prompt（规则 + 证据 → 模型只负责表达）
+ */
 function buildOverallPimingPrompt(body) {
-  const cd = body.chartData || body; // 兼容直接传 chartData 或把字段平铺的情况
-  const {
-    gender = '', fiveElementsClass = '', zodiac = '', lifeMain = '', bodyMain = '', yearStem = '',
-    lifePalace = null, bodyPalaceDetail = null, careerPalace = null, wealthPalace = null, movePalace = null,
-    yearMutagens = [], palacesSummary = [], birthDate = '',
-  } = cd;
+  const cd = body.chartData || body;
 
-  // 构建可读的命盘文本
-  const genderStr  = gender === 'female' ? '女命' : '男命';
-  const starLine   = s => `${s.name}${s.mutagen ? s.mutagen : ''}${s.brightness ? `(${s.brightness})` : ''}`;
-  const palaceLine = p => `${p.name}【${p.branch || ''}】：` +
-    (p.majorStars || []).map(starLine).join('、') +
-    (p.minorStars?.length ? ' / ' + p.minorStars.map(s => s.name + (s.mutagen || '')).join('、') : '');
+  const sig         = collectOverallSignals(cd);
+  const evidence    = buildOverallEvidence(sig);
+  const ruleSummary = buildOverallRuleSummary(sig);
 
-  const mutagenLines = (yearMutagens || []).map(m => `${m.star}${m.type} 在 ${m.palace}`).join('；');
+  const requestSummary = `${sig.fiveElements} ${sig.lifeMain.join('+')||'空宫'}命宫 ${sig.yearStem}年生 ${sig.genderStr}`;
 
-  const keyPalaces = [lifePalace, bodyPalaceDetail, careerPalace, wealthPalace, movePalace]
-    .filter(Boolean).map(palaceLine).join('\n');
+  // 证据清单（给模型看）
+  const evidenceText = evidence.map(e => `· ${e.label}：${e.value}`).join('\n');
 
-  const allPalaces = (palacesSummary || []).map(palaceLine).join('\n');
-
-  const ctx = [
-    `【基本信息】${genderStr}，${birthDate}，${fiveElementsClass}，生肖${zodiac}，命主星${lifeMain}，身主星${bodyMain}，年干${yearStem}`,
-    '',
-    '【核心宫位】',
-    keyPalaces,
-    '',
-    '【生年四化】',
-    mutagenLines || '（无）',
-    '',
-    '【十二宫全览】',
-    allPalaces,
-  ].join('\n');
-
-  const requestSummary = `${fiveElementsClass} ${lifeMain}命宫 ${yearStem}年生 ${genderStr}`;
+  // 规则层结论（约束模型，不让它自由发挥）
+  const ruleText = [
+    `命宫底色：${ruleSummary.baseTone}`,
+    `三方结构：${ruleSummary.structure}`,
+    `四化影响：${ruleSummary.mutagenEffect}`,
+    ruleSummary.bodyAdjustment ? `身宫修正：${ruleSummary.bodyAdjustment}` : '',
+    `主要风险：${ruleSummary.mainRisk}`,
+  ].filter(Boolean).join('\n');
 
   const system = [
-    '你是一位精通紫微斗数的命理师，有二十年实战批命经验，语言简练有力，不说空泛套话。',
+    '你是一位精通紫微斗数的命理师，语言简练有力，不说空泛套话。',
     '你只做整体命格分析，不扩写大限流年，不展开子平法。',
+    '以下【规则层结论】是后端已经依据星曜规则推算出的结果，你不得推翻或忽略这些结论。',
+    '你的任务只是：在规则层结论的基础上，写出流畅、有依据感的批命文字。',
     '你必须返回严格 JSON，不要 markdown，不要代码块。',
   ].join('\n');
 
   const user = [
-    '以下是命盘结构化数据：',
+    '【命盘证据】（已提取的星曜和宫位信息，只能引用不能杜撰）',
+    evidenceText,
     '',
-    ctx,
+    '【规则层结论】（后端已推算，你必须以此为基础作文，不得矛盾）',
+    ruleText,
     '',
-    '请对整体命格进行批命分析，返回以下 JSON 格式（字段说明见括号，括号内容不要输出）：',
+    '请基于以上内容，返回以下 JSON（括号内是说明，不要输出括号内容）：',
     '{',
-    '  "title": "一句话点明命格特质，≤20字，必须含命主星名",',
-    '  "summary": "整体命格分析，100-200字，须引用命宫主星、身宫、三方四正、生年四化中的关键星曜",',
-    '  "risk": "最关键的一条风险提示，≤50字",',
-    '  "basis": "本次判断依据，列出引用的主星和宫位，≤60字"',
+    '  "title": "一句话命格特质，≤20字，必须含命宫主星名",',
+    '  "summary": "整体批命，120-200字，须引用命宫主星、三方四正、四化、身宫，语气肯定有据",',
+    '  "risk": "最关键的一条风险，≤50字，必须源自规则层主要风险",',
+    '  "basis": "判断依据简述，列出引用的主星和宫位，≤60字"',
     '}',
   ].join('\n');
 
@@ -367,11 +525,17 @@ function buildOverallPimingPrompt(body) {
     system,
     user,
     requestSummary,
+    evidence,
+    ruleSummary,
     trace: [
-      `整理命盘：${requestSummary}`,
-      `核心宫位 ${[lifePalace, careerPalace, wealthPalace].filter(Boolean).map(p => p.name).join('/')} 已解析`,
-      `生年四化：${mutagenLines || '无'}`,
-      `调用 DeepSeek 模型：${MODEL}`,
+      `提取信号：${requestSummary}`,
+      `命宫：${sig.lifeMain.join('+')||'空宫'}，辅星：${sig.lifeAux.join('+')||'无'}`,
+      `三方：官禄${sig.sanfang.career.join('+')||'空'}／财帛${sig.sanfang.wealth.join('+')||'空'}／迁移${sig.sanfang.move.join('+')||'空'}`,
+      `化忌落宫：${sig.keyJiMutagens.map(m=>m.palace).join('，')||'无'}`,
+      `身宫：${sig.bodyPalaceName} ${sig.bodyMain.join('+')||'空'}`,
+      `规则结论 → baseTone: ${ruleSummary.baseTone}`,
+      `规则结论 → mainRisk: ${ruleSummary.mainRisk}`,
+      `调用 ${MODEL} 生成表达层`,
       '解析 JSON 返回 card 结构',
     ],
   };
@@ -1043,14 +1207,15 @@ app.post('/api/piming', async (req, res) => {
       const prompt = buildOverallPimingPrompt(req.body);
       const t0 = Date.now();
       const result = await callDeepSeek(prompt.system, prompt.user, {
-        temperature: 0.75,
-        maxTokens: 800,
+        temperature: 0.7,
+        maxTokens: 900,
       });
       const card = {
-        title  : sanitizeAiText(result.title   || '整体命格分析'),
-        summary: sanitizeAiText(result.summary  || ''),
-        risk   : sanitizeAiText(result.risk     || ''),
-        basis  : sanitizeAiText(result.basis    || ''),
+        title   : sanitizeAiText(result.title   || '整体命格分析'),
+        summary : sanitizeAiText(result.summary  || ''),
+        risk    : sanitizeAiText(result.risk     || ''),
+        basis   : sanitizeAiText(result.basis    || ''),
+        evidence: prompt.evidence,   // 供前端调试区展示，主卡片不用
       };
       return res.json({
         ok    : true,
@@ -1063,6 +1228,7 @@ app.post('/api/piming', async (req, res) => {
           rawResponse   : JSON.stringify(result),
           durationMs    : Date.now() - t0,
           model         : MODEL,
+          ruleSummary   : prompt.ruleSummary,
         },
       });
     }
