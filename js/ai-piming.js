@@ -36,15 +36,28 @@ function _findPalaceByName(chart, names) {
   return (chart?.palaces || []).find(p => arr.includes(p.name)) || null;
 }
 
+// 四化 type 归一：禄/权/科/忌 → 化禄/化权/化科/化忌
+function _normMutagenType(t) {
+  if (!t) return '';
+  if (String(t).startsWith('化')) return t;
+  return { '禄': '化禄', '权': '化权', '科': '化科', '忌': '化忌' }[t] || t;
+}
+
 function _yearMutagens(chart) {
-  // 取生年四化 (mutagens / yearMutagen 字段，具体字段名视 iztro 版本而定)
+  // 优先取 iztro 自带的生年四化字段
   const m = chart?.mutagens || chart?.yearMutagen || [];
-  if (Array.isArray(m) && m.length) return m;
-  // 从 palaces 里收集标注了 mutagen 的主星
+  if (Array.isArray(m) && m.length) {
+    return m.map(item => ({ ...item, type: _normMutagenType(item.type || '') }));
+  }
+  // fallback：同时扫 majorStars 和 minorStars（辅星如文曲/文昌也可能带四化）
   const result = [];
   (chart?.palaces || []).forEach(p => {
-    (p.majorStars || []).forEach(s => {
-      if (s.mutagen) result.push({ star: s.name, type: s.mutagen, palace: p.name });
+    [...(p.majorStars || []), ...(p.minorStars || [])].forEach(s => {
+      if (s.mutagen) result.push({
+        star  : s.name,
+        type  : _normMutagenType(s.mutagen),
+        palace: p.name,
+      });
     });
   });
   return result;

@@ -312,12 +312,24 @@ ${RETURN_SCHEMA}`,
  * Step 1: 从 chartData 提取结构化信号
  */
 function collectOverallSignals(cd) {
-  const majorNames  = p => (p?.majorStars  || []).map(s => s.name);
-  const minorNames  = p => (p?.minorStars  || []).map(s => s.name);
-  const mutagenOf   = (p, type) => [
+  // ── 安全取星名：兼容 string[] 和 {name}[] 两种形态 ──────────────────────────
+  const starName   = s => (typeof s === 'string' ? s : s?.name) || '';
+  const majorNames = p => (p?.majorStars || []).map(starName).filter(Boolean);
+  const minorNames = p => (p?.minorStars || []).map(starName).filter(Boolean);
+
+  // 四化 type 归一：裸字 禄/权/科/忌 → 化禄/化权/化科/化忌
+  const normType = t => {
+    if (!t) return '';
+    if (String(t).startsWith('化')) return t;
+    return { '禄': '化禄', '权': '化权', '科': '化科', '忌': '化忌' }[t] || t;
+  };
+
+  // 命宫四化：只有 lifePalace 带完整对象（含 mutagen 字段）
+  const mutagenOf = (p, normalizedType) => [
     ...(p?.majorStars || []),
     ...(p?.minorStars || []),
-  ].filter(s => s.mutagen && s.mutagen.includes(type)).map(s => s.name);
+  ].filter(s => typeof s === 'object' && normType(s?.mutagen) === normalizedType)
+   .map(s => starName(s));
 
   const lp = cd.lifePalace        || null;
   const bp = cd.bodyPalaceDetail  || null;
@@ -329,30 +341,30 @@ function collectOverallSignals(cd) {
   const AUX_STARS = ['文昌', '文曲', '左辅', '右弼', '天魁', '天钺', '天刑', '擎羊', '陀罗', '火星', '铃星'];
   const lifeAux = minorNames(lp).filter(n => AUX_STARS.includes(n));
 
-  // 三方四正各宫主星
+  // 三方四正各宫主星（careerPalace 等只有字符串数组，majorNames 已兼容）
   const sanfang = {
     career : majorNames(cp),
     wealth : majorNames(wp),
     move   : majorNames(mp),
   };
 
-  // 生年四化按类型归类
-  const mutagens = cd.yearMutagens || [];
+  // 生年四化归一后过滤
+  const mutagens = (cd.yearMutagens || []).map(m => ({ ...m, type: normType(m.type || '') }));
   const lu  = mutagens.filter(m => m.type === '化禄');
   const quan= mutagens.filter(m => m.type === '化权');
   const ke  = mutagens.filter(m => m.type === '化科');
   const ji  = mutagens.filter(m => m.type === '化忌');
 
   // 命宫落忌（凶）
-  const lifeJi = mutagenOf(lp, '忌');
+  const lifeJi = mutagenOf(lp, '化忌');
 
-  // 重点宫位落忌：官禄/财帛/夫妻/命宫
+  // 重点宫位落忌：官禄/财帛/夫妻/命宫/迁移
   const KEY_JI_PALACES = ['命宫', '官禄宫', '财帛宫', '夫妻宫', '迁移宫'];
   const keyJiMutagens = mutagens.filter(m =>
     m.type === '化忌' && KEY_JI_PALACES.some(k => (m.palace || '').includes(k.replace('宫', '')))
   );
 
-  // 命宫化禄/化权/化科（吉）
+  // 命宫吉化
   const lifeGood = [
     ...mutagenOf(lp, '化禄').map(n => n + '禄'),
     ...mutagenOf(lp, '化权').map(n => n + '权'),
