@@ -3786,16 +3786,28 @@ function _aipFillStructLocal(chart) {
   if (!chart) return;
   const pm = _aipPalaceMap(chart);
 
-  // 辅助：取宫的主星文本 和 小星文本
-  const ALL_NOTABLE_MIN = ['文昌','文曲','左辅','右弼','天魁','天钺','擎羊','陀罗','火星','铃星','天马','禄存'];
+  // 主星：name + brightness（旺/庙/陷/平/利/得/不 等），用空格拼，多星用 · 分隔
   function palaceMaj(p) {
-    const stars = _aipMajor(p);
-    return stars.length ? stars.join(' · ') : '空宫';
+    const stars = (p?.majorStars || []);
+    if (!stars.length) return '空宫';
+    return stars.map(s => {
+      const n = (typeof s === 'string') ? s : (s.name || '');
+      const b = (typeof s === 'object' && s.brightness) ? s.brightness : '';
+      return b ? `${n} ${b}` : n;
+    }).join(' · ');
   }
+  // 小星：minorStars + adjectiveStars 全量，带四化标注
   function palaceMin(p) {
-    const mins = (p?.minorStars || []).map(s => s.name || '').filter(Boolean)
-      .filter(n => ALL_NOTABLE_MIN.includes(n));
-    return mins.length ? mins.join('  ') : '';
+    const mins = (p?.minorStars || []).map(s => {
+      const n = (typeof s === 'string') ? s : (s.name || '');
+      const mut = (typeof s === 'object' && s.mutagen) ? s.mutagen : '';
+      return mut ? `${n}${mut}` : n;
+    }).filter(Boolean);
+    const adjs = (p?.adjectiveStars || p?.adjStars || []).map(s =>
+      (typeof s === 'string') ? s : (s.name || '')
+    ).filter(Boolean);
+    const all = [...mins, ...adjs];
+    return all.length ? all.join('  ') : '';
   }
   function fillPalace(majId, minId, p) {
     const majEl = document.getElementById(majId);
