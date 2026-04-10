@@ -2031,51 +2031,6 @@
   text-transform: uppercase; padding: 2px 0 5px;
 }
 
-/* ── 命盘展开依据折叠区 ───────────────────────────────── */
-.aip-expand-block {
-  border: 1px solid #e8ddd0; border-radius: 7px;
-  background: #fdf9f4; overflow: hidden;
-}
-.aip-expand-summary {
-  list-style: none; cursor: pointer; user-select: none;
-  padding: 9px 13px; font-size: 11px; font-weight: 600;
-  color: #9a7a60; letter-spacing: .04em;
-  display: flex; align-items: center; gap: 6px;
-}
-.aip-expand-summary::-webkit-details-marker { display: none; }
-.aip-expand-summary::before {
-  content: '▶'; font-size: 8px; color: #c0a888;
-  transition: transform .2s; display: inline-block;
-}
-.aip-expand-block[open] .aip-expand-summary::before { transform: rotate(90deg); }
-.aip-expand-inner { display: flex; flex-direction: column; gap: 0; padding: 0 12px 10px; }
-
-/* 依据块：轻量，无白卡，只用左边线分隔 */
-.aip-basis-block { padding: 8px 0; border-bottom: 1px solid #ede6dc; }
-.aip-basis-block:last-child { border-bottom: none; }
-.aip-basis-head  { display: flex; align-items: baseline; gap: 7px; margin-bottom: 3px; }
-.aip-basis-label { font-size: 10px; font-weight: 700; color: #b09070;
-                   background: #f0e8d8; padding: 1px 6px; border-radius: 4px; flex-shrink: 0; }
-.aip-basis-ttl   { font-size: 11.5px; font-weight: 600; color: #5c4d45; }
-.aip-basis-body  { font-size: 11px; color: #7a6a60; line-height: 1.7; white-space: pre-line; }
-.aip-basis-tip   { margin-top: 3px; font-size: 10.5px; color: #a08878;
-                   padding-left: 8px; border-left: 1px solid #e0d0c0; line-height: 1.55; }
-
-/* ── 开发调试区 ─────────────────────────────────────── */
-.aip-debug-block { background: transparent; }
-.aip-debug-summary {
-  list-style: none; cursor: pointer; user-select: none;
-  font-size: 10px; color: #b8a898; letter-spacing: .06em; padding: 6px 2px;
-  display: flex; align-items: center; gap: 5px;
-}
-.aip-debug-summary::-webkit-details-marker { display: none; }
-.aip-debug-summary::before { content: '▸'; font-size: 9px; }
-.aip-debug-pre {
-  margin: 4px 0 0; white-space: pre-wrap; word-break: break-all;
-  font-size: 10px; font-family: 'Courier New', monospace;
-  background: #f8f3eb; padding: 8px 10px; border-radius: 4px;
-  max-height: 240px; overflow-y: auto; color: #4a3f35; line-height: 1.6;
-}
 /* 速览区容器 */
 .aip-struct {
   margin: 9px 0 6px;
