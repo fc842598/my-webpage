@@ -391,6 +391,8 @@ function _aipRenderResult(moduleKey, data) {
         if (profileBadge) profileBadge.textContent = '';
         if (patternRow)   patternRow.style.display = 'none';
         if (breakRow)     breakRow.style.display   = 'none';
+        // 加载中收起折叠区，避免旧盘内容残留展开
+        document.getElementById('aip-expand-basis')?.removeAttribute('open');
       }
 
       try {

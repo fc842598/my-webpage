@@ -2007,26 +2007,74 @@
 .aip-card-body  { font-size: 12px; color: #5c4d45; line-height: 1.75; white-space: pre-line; }
 .aip-card-tip   { margin-top: 7px; font-size: 11px; color: #963d32;
                   padding-left: 9px; border-left: 2px solid #e8c9b0; line-height: 1.6; }
+/* overall_piming 主卡片（略加强边框） */
+.aip-main-card { border-color: #ddd0c0; }
 /* overall_piming 主卡片分区 */
-.aip-life-risk  { margin-top: 9px; font-size: 11px; color: #963d32; white-space: pre-line;
-                  padding: 5px 9px; background: rgba(150,61,50,.04);
-                  border-left: 2px solid #e8c9b0; border-radius: 0 4px 4px 0; line-height: 1.65; }
-.aip-life-basis { margin-top: 7px; font-size: 11px; color: #8a7a70; white-space: pre-line;
-                  padding-left: 9px; border-left: 2px solid #d4c9be; line-height: 1.6; }
-.aip-life-ev    { margin-top: 9px; display: flex; flex-wrap: wrap; gap: 5px; }
-.aip-ev-item    { font-size: 10px; background: #f5ede0; color: #7a5c4a;
-                  padding: 2px 8px; border-radius: 10px; }
-.aip-ev-item b  { color: #3d302b; font-weight: 600; }
+.aip-life-risk  { margin-top: 11px; font-size: 11.5px; color: #7a2e20; white-space: pre-line;
+                  padding: 7px 10px; background: rgba(150,61,50,.06);
+                  border: 1px solid rgba(150,61,50,.18); border-radius: 5px; line-height: 1.7; }
+.aip-life-basis { margin-top: 8px; font-size: 11px; color: #8a7a70; white-space: pre-line;
+                  padding: 4px 9px; border-left: 2px solid #d4c9be; line-height: 1.6; }
+.aip-life-ev    { display: none; }  /* evidence 不进用户态 */
 
 /* ── 命格速览结构卡 ──────────────────────────────────── */
-/* 命格定位行（AI 返回后显示，速览结构卡 AI 区第一行） */
-.aip-struct-badge-row { background: #f5ede0; }
-.aip-struct-badge-row .aip-struct-label { color: #9a7040; }
-.aip-struct-badge-row .aip-struct-val   { font-weight: 600; color: #7a4e2a; font-size: 12px; }
-/* AI 批命解读区 section 标签 */
+/* 命格定位行 — 最重要，用暖金背景 + 加粗 + 顶部分割线突出 */
+.aip-struct-badge-row {
+  background: #f5ede0;
+  border-top: 1px solid #e0d0bc !important;  /* 与本地行视觉分隔 */
+}
+.aip-struct-badge-row .aip-struct-label { color: #9a6a30; font-weight: 700; }
+.aip-struct-badge-row .aip-struct-val   { font-size: 12.5px; font-weight: 700; color: #7a4e2a; letter-spacing: .02em; }
+/* AI 综合解读 section 标签 */
 .aip-section-label {
-  font-size: 9px; color: #c0aa94; letter-spacing: .1em;
-  text-transform: uppercase; padding: 1px 0 4px;
+  font-size: 9.5px; font-weight: 600; color: #b09a84; letter-spacing: .12em;
+  text-transform: uppercase; padding: 2px 0 5px;
+}
+
+/* ── 命盘展开依据折叠区 ───────────────────────────────── */
+.aip-expand-block {
+  border: 1px solid #e8ddd0; border-radius: 7px;
+  background: #fdf9f4; overflow: hidden;
+}
+.aip-expand-summary {
+  list-style: none; cursor: pointer; user-select: none;
+  padding: 9px 13px; font-size: 11px; font-weight: 600;
+  color: #9a7a60; letter-spacing: .04em;
+  display: flex; align-items: center; gap: 6px;
+}
+.aip-expand-summary::-webkit-details-marker { display: none; }
+.aip-expand-summary::before {
+  content: '▶'; font-size: 8px; color: #c0a888;
+  transition: transform .2s; display: inline-block;
+}
+.aip-expand-block[open] .aip-expand-summary::before { transform: rotate(90deg); }
+.aip-expand-inner { display: flex; flex-direction: column; gap: 0; padding: 0 12px 10px; }
+
+/* 依据块：轻量，无白卡，只用左边线分隔 */
+.aip-basis-block { padding: 8px 0; border-bottom: 1px solid #ede6dc; }
+.aip-basis-block:last-child { border-bottom: none; }
+.aip-basis-head  { display: flex; align-items: baseline; gap: 7px; margin-bottom: 3px; }
+.aip-basis-label { font-size: 10px; font-weight: 700; color: #b09070;
+                   background: #f0e8d8; padding: 1px 6px; border-radius: 4px; flex-shrink: 0; }
+.aip-basis-ttl   { font-size: 11.5px; font-weight: 600; color: #5c4d45; }
+.aip-basis-body  { font-size: 11px; color: #7a6a60; line-height: 1.7; white-space: pre-line; }
+.aip-basis-tip   { margin-top: 3px; font-size: 10.5px; color: #a08878;
+                   padding-left: 8px; border-left: 1px solid #e0d0c0; line-height: 1.55; }
+
+/* ── 开发调试区 ─────────────────────────────────────── */
+.aip-debug-block { background: transparent; }
+.aip-debug-summary {
+  list-style: none; cursor: pointer; user-select: none;
+  font-size: 10px; color: #b8a898; letter-spacing: .06em; padding: 6px 2px;
+  display: flex; align-items: center; gap: 5px;
+}
+.aip-debug-summary::-webkit-details-marker { display: none; }
+.aip-debug-summary::before { content: '▸'; font-size: 9px; }
+.aip-debug-pre {
+  margin: 4px 0 0; white-space: pre-wrap; word-break: break-all;
+  font-size: 10px; font-family: 'Courier New', monospace;
+  background: #f8f3eb; padding: 8px 10px; border-radius: 4px;
+  max-height: 240px; overflow-y: auto; color: #4a3f35; line-height: 1.6;
 }
 /* 速览区容器 */
 .aip-struct {
