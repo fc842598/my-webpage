@@ -377,64 +377,55 @@
           <span class="aip-card-title" id="aip-life-ttl"></span>
         </div>
 
-        <!-- 命盘骨架：命宫 + 三方四正，本地立即填充 -->
-        <div class="aip-struct" id="aip-struct">
-          <!-- 命宫 -->
-          <div class="aip-struct-row aip-struct-life-row">
-            <span class="aip-struct-label">命宫</span>
-            <div class="aip-struct-palace" id="aip-struct-life">
-              <span class="aip-palace-maj" id="aip-struct-life-maj">—</span>
-              <span class="aip-palace-min" id="aip-struct-life-min"></span>
+        <!-- 命盘骨架：折叠区，默认关闭，点开查看三方四正 -->
+        <details class="aip-struct-details" id="aip-struct-details">
+          <summary class="aip-struct-summary">
+            <span class="aip-struct-summary-label">命盘</span>
+            <span class="aip-struct-summary-life" id="aip-struct-life-maj">—</span>
+            <span class="aip-struct-summary-min"  id="aip-struct-life-min"></span>
+          </summary>
+          <div class="aip-struct" id="aip-struct">
+            <!-- 命宫 -->
+            <div class="aip-struct-row aip-struct-life-row">
+              <span class="aip-struct-label">命宫</span>
+              <span class="aip-inline-val"><span id="aip-struct-life-maj2"></span><span class="aip-inline-min" id="aip-struct-life-min2"></span></span>
+            </div>
+            <!-- 官禄 -->
+            <div class="aip-struct-row">
+              <span class="aip-struct-label">官禄</span>
+              <span class="aip-inline-val"><span id="aip-sf-career-maj"></span><span class="aip-inline-min" id="aip-sf-career-min"></span></span>
+            </div>
+            <!-- 财帛 -->
+            <div class="aip-struct-row">
+              <span class="aip-struct-label">财帛</span>
+              <span class="aip-inline-val"><span id="aip-sf-wealth-maj"></span><span class="aip-inline-min" id="aip-sf-wealth-min"></span></span>
+            </div>
+            <!-- 迁移 -->
+            <div class="aip-struct-row">
+              <span class="aip-struct-label">迁移</span>
+              <span class="aip-inline-val"><span id="aip-sf-move-maj"></span><span class="aip-inline-min" id="aip-sf-move-min"></span></span>
+            </div>
+            <!-- AI 后填充：命格定位 / 格局 / 破格 -->
+            <div class="aip-struct-row aip-struct-ai aip-struct-badge-row" id="aip-badge-row" style="display:none">
+              <span class="aip-struct-label">定位</span>
+              <span class="aip-struct-val" id="aip-profile-badge"></span>
+            </div>
+            <div class="aip-struct-row aip-struct-ai" id="aip-struct-pattern-row" style="display:none">
+              <span class="aip-struct-label">格局</span>
+              <span class="aip-struct-val" id="aip-struct-pattern"></span>
+            </div>
+            <div class="aip-struct-row aip-struct-ai" id="aip-struct-break-row" style="display:none">
+              <span class="aip-struct-label">破格</span>
+              <span class="aip-struct-val" id="aip-struct-break"></span>
             </div>
           </div>
-          <!-- 三方四正分隔标题 -->
-          <div class="aip-struct-section">三方四正</div>
-          <!-- 命宫（三方内重复，结构完整） -->
-          <div class="aip-struct-row">
-            <span class="aip-struct-label">命</span>
-            <div class="aip-struct-palace" id="aip-sf-life">
-              <span class="aip-palace-maj" id="aip-sf-life-maj">—</span>
-              <span class="aip-palace-min" id="aip-sf-life-min"></span>
-            </div>
-          </div>
-          <!-- 官禄 -->
-          <div class="aip-struct-row">
-            <span class="aip-struct-label">官禄</span>
-            <div class="aip-struct-palace" id="aip-sf-career">
-              <span class="aip-palace-maj" id="aip-sf-career-maj">—</span>
-              <span class="aip-palace-min" id="aip-sf-career-min"></span>
-            </div>
-          </div>
-          <!-- 财帛 -->
-          <div class="aip-struct-row">
-            <span class="aip-struct-label">财帛</span>
-            <div class="aip-struct-palace" id="aip-sf-wealth">
-              <span class="aip-palace-maj" id="aip-sf-wealth-maj">—</span>
-              <span class="aip-palace-min" id="aip-sf-wealth-min"></span>
-            </div>
-          </div>
-          <!-- 迁移 -->
-          <div class="aip-struct-row">
-            <span class="aip-struct-label">迁移</span>
-            <div class="aip-struct-palace" id="aip-sf-move">
-              <span class="aip-palace-maj" id="aip-sf-move-maj">—</span>
-              <span class="aip-palace-min" id="aip-sf-move-min"></span>
-            </div>
-          </div>
-          <!-- AI 后填充：命格定位 / 格局 / 破格 -->
-          <div class="aip-struct-row aip-struct-ai aip-struct-badge-row" id="aip-badge-row" style="display:none">
-            <span class="aip-struct-label">定位</span>
-            <span class="aip-struct-val" id="aip-profile-badge"></span>
-          </div>
-          <div class="aip-struct-row aip-struct-ai" id="aip-struct-pattern-row" style="display:none">
-            <span class="aip-struct-label">格局</span>
-            <span class="aip-struct-val" id="aip-struct-pattern"></span>
-          </div>
-          <div class="aip-struct-row aip-struct-ai" id="aip-struct-break-row" style="display:none">
-            <span class="aip-struct-label">破格</span>
-            <span class="aip-struct-val" id="aip-struct-break"></span>
-          </div>
-        </div>
+        </details>
+
+        <!-- 隐藏的旧 id 占位，保证合约脚本和 JS 兼容 -->
+        <span id="aip-struct-life"     style="display:none"></span>
+        <span id="aip-sf-life"         style="display:none"></span>
+        <span id="aip-sf-life-maj"     style="display:none"></span>
+        <span id="aip-sf-life-min"     style="display:none"></span>
 
         <!-- AI 综合解读正文 -->
         <hr class="aip-struct-divider">
@@ -3816,16 +3807,17 @@ function _aipFillStructLocal(chart) {
     if (minEl) minEl.textContent = palaceMin(p);
   }
 
-  // ── 命宫（独立大行）
-  const life = pm['命宫'] || pm['命'];
-  fillPalace('aip-struct-life-maj', 'aip-struct-life-min', life);
-
-  // ── 三方四正 4 宫
+  // ── 命宫
+  const life   = pm['命宫'] || pm['命'];
   const career = pm['官禄宫'] || pm['官禄'];
   const wealth = pm['财帛宫'] || pm['财帛'];
   const move   = pm['迁移宫'] || pm['迁移'];
 
-  fillPalace('aip-sf-life-maj',   'aip-sf-life-min',   life);
+  // summary 行（折叠标题）：命宫主星 + 小星
+  fillPalace('aip-struct-life-maj', 'aip-struct-life-min', life);
+  // 展开内命宫行（带 2 后缀，独立 id 避免重复）
+  fillPalace('aip-struct-life-maj2', 'aip-struct-life-min2', life);
+  // 三方
   fillPalace('aip-sf-career-maj', 'aip-sf-career-min', career);
   fillPalace('aip-sf-wealth-maj', 'aip-sf-wealth-min', wealth);
   fillPalace('aip-sf-move-maj',   'aip-sf-move-min',   move);
@@ -3936,9 +3928,8 @@ function renderAIPiming() {
     if (profileBadge) profileBadge.textContent = '';
     if (patternRow)   patternRow.style.display = 'none';
     if (breakRow)     breakRow.style.display   = 'none';
-    // 新盘重置：收起"命盘展开依据"折叠区，避免旧盘内容残留展开
-    const expandBasis = document.getElementById('aip-expand-basis');
-    if (expandBasis)  expandBasis.removeAttribute('open');
+    // 新盘重置：收起命盘骨架折叠区，避免旧盘内容残留展开
+    document.getElementById('aip-struct-details')?.removeAttribute('open');
 
     // 填入本地命格速览 4 行（立即显示，无需 AI）
     _aipFillStructLocal(_chart);

@@ -2031,12 +2031,43 @@
   text-transform: uppercase; padding: 2px 0 5px;
 }
 
+/* 命盘折叠容器 */
+.aip-struct-details { margin: 8px 0 4px; }
+.aip-struct-summary {
+  list-style: none; cursor: pointer; user-select: none;
+  display: flex; align-items: center; gap: 7px;
+  padding: 5px 2px; font-size: 11px;
+}
+.aip-struct-summary::-webkit-details-marker { display: none; }
+.aip-struct-summary-label {
+  font-size: 9.5px; font-weight: 700; color: #b09070; letter-spacing: .08em;
+  background: #f0e8d8; padding: 1px 6px; border-radius: 4px; flex-shrink: 0;
+}
+.aip-struct-summary::before {
+  content: '▶'; font-size: 8px; color: #c0a888;
+  transition: transform .18s; display: inline-block; order: -1;
+}
+.aip-struct-details[open] .aip-struct-summary::before { transform: rotate(90deg); }
+.aip-struct-summary-life {
+  font-size: 12px; font-weight: 700; color: #3d302b;
+}
+.aip-struct-summary-min {
+  font-size: 10.5px; color: #9a7a60;
+}
+.aip-struct-summary-min:empty { display: none; }
+
 /* 速览区容器 */
 .aip-struct {
-  margin: 9px 0 6px;
+  margin: 4px 0 2px;
   border: 1px solid #ede6dc; border-radius: 6px;
   overflow: hidden; font-size: 11.5px;
 }
+
+/* 单行内联：主星 + 小星在同一行 */
+.aip-inline-val { flex: 1; display: flex; align-items: baseline; gap: 6px; flex-wrap: wrap; }
+.aip-inline-val > span:first-child { font-size: 12px; font-weight: 600; color: #3d302b; }
+.aip-inline-min { font-size: 10.5px; color: #9a7a60; }
+.aip-inline-min:empty { display: none; }
 /* 每行 */
 .aip-struct-row {
   display: flex; align-items: flex-start;
