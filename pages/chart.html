@@ -370,11 +370,10 @@
     <!-- 整体批命 -->
     <div class="aip-panel" id="aip-panel-base" style="display:none">
       <div class="aip-card">
-        <!-- 卡头：tag + AI 标题 + 命格定位 badge（AI 后显示） -->
+        <!-- 卡头：tag + AI 标题 -->
         <div class="aip-card-head">
           <span class="aip-tag">整体批命</span>
           <span class="aip-card-title" id="aip-life-ttl"></span>
-          <span class="aip-profile-badge" id="aip-profile-badge" style="display:none"></span>
         </div>
 
         <!-- 命格速览：本地立即填充，AI 补充格局/破格两行 -->
@@ -395,7 +394,11 @@
             <span class="aip-struct-label">身宫</span>
             <span class="aip-struct-val"   id="aip-struct-shen">—</span>
           </div>
-          <!-- AI 后填充：格局 / 破格 -->
+          <!-- AI 后填充：命格定位 / 格局 / 破格 -->
+          <div class="aip-struct-row aip-struct-ai aip-struct-badge-row" id="aip-badge-row" style="display:none">
+            <span class="aip-struct-label">定位</span>
+            <span class="aip-struct-val"   id="aip-profile-badge"></span>
+          </div>
           <div class="aip-struct-row aip-struct-ai" id="aip-struct-pattern-row" style="display:none">
             <span class="aip-struct-label">格局</span>
             <span class="aip-struct-val"   id="aip-struct-pattern"></span>
@@ -408,6 +411,7 @@
 
         <!-- AI 解读正文（AI 返回前显示本地特质占位，AI 返回后替换为 summary） -->
         <hr class="aip-struct-divider">
+        <div class="aip-section-label">AI 批命</div>
         <div class="aip-card-body" id="aip-life-body"></div>
         <div class="aip-card-tip"  id="aip-life-tip"></div>
 
@@ -3914,11 +3918,13 @@ function renderAIPiming() {
     const noteEl   = document.getElementById('aip-footer-note');
     if (statusEl) statusEl.textContent = '';
     if (noteEl)   noteEl.textContent   = _AI_STATUS_CONNECTED;
-    // 重置命格速览 AI 行（格局/破格/badge），清除旧盘 AI 结果
+    // 重置命格速览 AI 行（命格定位/格局/破格），清除旧盘 AI 结果
+    const badgeRow     = document.getElementById('aip-badge-row');
     const profileBadge = document.getElementById('aip-profile-badge');
     const patternRow   = document.getElementById('aip-struct-pattern-row');
     const breakRow     = document.getElementById('aip-struct-break-row');
-    if (profileBadge) { profileBadge.style.display = 'none'; profileBadge.textContent = ''; }
+    if (badgeRow)     badgeRow.style.display   = 'none';
+    if (profileBadge) profileBadge.textContent = '';
     if (patternRow)   patternRow.style.display = 'none';
     if (breakRow)     breakRow.style.display   = 'none';
 

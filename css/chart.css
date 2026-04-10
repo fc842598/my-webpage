@@ -2019,12 +2019,14 @@
 .aip-ev-item b  { color: #3d302b; font-weight: 600; }
 
 /* ── 命格速览结构卡 ──────────────────────────────────── */
-/* 命格定位 badge（AI 返回后显示） */
-.aip-profile-badge {
-  display: inline-block; font-size: 10px; font-weight: 600;
-  background: #f0e8d8; color: #7a4e2a;
-  padding: 1px 8px; border-radius: 10px;
-  border: 1px solid #d4c0a0; white-space: nowrap; margin-left: auto;
+/* 命格定位行（AI 返回后显示，速览结构卡 AI 区第一行） */
+.aip-struct-badge-row { background: #f5ede0; }
+.aip-struct-badge-row .aip-struct-label { color: #9a7040; }
+.aip-struct-badge-row .aip-struct-val   { font-weight: 600; color: #7a4e2a; font-size: 12px; }
+/* AI 批命解读区 section 标签 */
+.aip-section-label {
+  font-size: 9px; color: #c0aa94; letter-spacing: .1em;
+  text-transform: uppercase; padding: 1px 0 4px;
 }
 /* 速览区容器 */
 .aip-struct {

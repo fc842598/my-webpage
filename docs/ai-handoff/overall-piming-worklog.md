@@ -2,7 +2,7 @@
 
 ## 1. 当前阶段
 
-整体批命 **v2 规则加厚**（Step 1~5 已完成，v1 已交付）
+整体批命 **v1 用户态收口**（已完成）
 
 步骤完成情况：
 - Step 1 ✅ 冻结 overall_piming 前后端 I/O 结构
@@ -10,7 +10,9 @@
 - Step 3 ✅ 规则层骨架（collectOverallSignals → buildOverallEvidence → buildOverallRuleSummary）+ correctness 修正
 - Step 4 ✅ admin 测试台（overall 独立测试台，不走 prompt DB；首页区分规则层/提示词模块）
 - Step 5 ✅ 前台展示优化 + v1 验收（含收尾补丁）
-- v2 🔄 规则层加厚（本次进行）
+- v2 ✅ 规则层加厚（天纪规则第一批：格局/破格/三方定位/confirmed 分层）
+- v3 ✅ 后端 contract 对齐 + 前端骨架化（profileBadge/patternText/breakText/breakConditions confirmed 分层）
+- **v4 ✅ 用户态收口（本次完成）**
 
 ---
 
@@ -33,6 +35,82 @@
 未改动：
 - `pages/chart.html`、`js/ai-piming.js`、`css/chart.css`（前台链路不变，debug 字段自然透传到调试区）
 - `ai-piming-backend`（admin 测试台自动展示新 debug 字段，无需改动）
+
+---
+
+## v3 改动（后端 contract 对齐 + 前端骨架化）
+
+**主站改动：**
+- `server/index.js`：
+  - `detectOverallBreaks`：七杀临身/三方多忌 加 `confirmed:true`；廉贪/廉杀/武杀 加 `confirmed:false + reason`
+  - `mainRisk` / prompt `breakLines`：均过滤 `confirmed:false`，未完整核验的破格不进模型输入
+  - `card` 新增平铺字段：`profileBadge / patternText / breakText`
+  - `card.breaks` 只输出 `confirmed !== false` 的项
+  - `debug` 新增 `patternCandidates / breakConditions`（含 confirmed + reason）
+- `pages/chart.html`：整体批命卡片骨架化（命宫/三方/四化/身宫本地行 + 格局/破格 AI 行）
+- `js/ai-piming.js`：AI 回填逻辑（badge/格局标签/破格标签）+ `profileBadge` 兜底读取
+- `css/chart.css`：骨架表格/badge/pattern-tag/break-tag 样式
+
+**后台改动：**
+- `admin/module/[moduleKey].js`：主卡片新增命格定位/格局/破格行；breakConditions 表格加 confirmed 列（✓确定/❌候选）
+
+---
+
+## v4 改动（用户态收口）
+
+**目标：** 前台卡片层次清晰，confirmed:false 破格不进用户态，badge 视觉升级
+
+### 用户态字段分层（最终）
+
+| 字段 | 去向 | 说明 |
+|------|------|------|
+| `card.title` | 用户态 | AI 生成的命格特质标题 |
+| `card.summary` | 用户态 | 120-200 字整体批命 |
+| `card.risk` | 用户态 | 最关键一条风险 |
+| `card.basis` | 用户态 | 判断依据简述 |
+| `card.profileBadge` | 用户态 | 命格定位标签（三方结构定位） |
+| `card.patternText` | 用户态 | 已成立格局文本 |
+| `card.breakText` | 用户态 | **仅 confirmed:true 的破格** |
+| `card.patterns[]` | 用户态 | 格局标签数组 |
+| `card.breaks[]` | 用户态 | **仅 confirmed:true 的破格** |
+| `card.evidence[]` | debug only | 前台不再渲染 |
+| `debug.patternCandidates` | debug only | 完整格局候选列表 |
+| `debug.breakConditions` | debug only | 全部破格候选，含 confirmed+reason |
+
+### 破格 confirmed 分层
+
+| 破格名 | confirmed | 能否进用户态 | 原因 |
+|--------|-----------|------------|------|
+| 七杀临身 | true | ✅ 能 | 身宫星曜已知，无需额外条件 |
+| 化忌入命 | true | ✅ 能（已在 risk 文本体现，break 行排除） | |
+| 三方多忌 | true | ✅ 能 | 化忌宫位确定 |
+| 廉贪同命 | false | ❌ 不能 | 需双陷亮度验证 |
+| 廉杀同命 | false | ❌ 不能 | 需双陷亮度验证 |
+| 武杀同命 | false | ❌ 不能 | 需卯宫+双陷验证 |
+
+### 前端改动
+
+- `pages/chart.html`：
+  - 命格定位 badge 从卡头移入速览结构卡，作为独立"定位"行（`aip-badge-row`）
+  - AI 解读区加 `aip-section-label` 分区标签
+  - 重置逻辑同步更新 `aip-badge-row`
+- `css/chart.css`：
+  - 定位行独立样式（暖色调，区别于本地行）
+  - 新增 `aip-section-label` 小字分区标签
+- `js/ai-piming.js`：
+  - badge 改用 `aip-badge-row` 控制显隐
+  - evidence 用户态不再渲染（debug 区仍保留）
+  - 加载态同步重置 `aip-badge-row`
+
+### 测试结果
+
+```
+node --check server/index.js           ✅
+node scripts/check-overall-piming-ui-contract.js  ✅ 15 ids, 6 mappings
+npm run validate:ziping:truth300       ✅ 300/300 全过
+node scripts/smoke-overall-piming-contract.js --base=http://127.0.0.1:3011  ✅
+npm run build (ai-piming-backend)      ✅
+```
 
 ---
 
@@ -322,77 +400,98 @@ ziping 测试说明：
 
 ---
 
-## 12. v2 规则加厚完成情况
+## 12. v2 规则加厚完成情况（天纪规则第一批，2026-04-09）
 
-### 新增规则库常量（server/index.js）
+### 来源
 
-| 常量 | 条目数 | 作用 |
-|---|---|---|
-| `STAR_TONE_DB` | 14 颗主星 | 主星特质文本 + 品类标签 |
-| `AUX_STAR_EFFECT_DB` | 10 类辅星 | 辅星修饰效果描述 |
-| `DUAL_STAR_PATTERN_DB` | 19 种双星组合 | 同宫结构名称 + 描述 |
+读取《天纪》听课笔记（天纪笔记jeff个人整理.docx），抽取以下规则索引表，落地第一批高频规则。
+
+### 规则索引表（第一批）
+
+| 类别 | 规则 | 天纪出处 | 优先级 | 落地状态 |
+|------|------|----------|--------|----------|
+| 命格定位 | 三方四正科权禄都会到 → 财官双美，一方之主 | 总论#34,35 | 高 | ✅ |
+| 命格定位 | 三方四正无科权禄 → 正才正官，领薪水 | 命宫#20 | 高 | ✅ |
+| 命格定位 | 三方四正权禄相逢 → 可自立当老板 | 迁移宫#10 | 高 | ✅ |
+| 身宫 | 七杀临身终不美 → 多败少成 | 七杀#6 | 高 | ✅ |
+| 格局 | 机月同梁（≥3颗）→ 公职薪水命 | 总格#12 | 高 | ✅ |
+| 格局 | 火贪格（命宫贪狼+火星）→ 出武贵 | 贪狼#10 | 中 | ✅ |
+| 格局 | 铃贪格（命宫贪狼+铃星）→ 同火贪 | 贪狼同理 | 中 | ✅ |
+| 格局 | 紫微孤君（无辅弼）→ 孤高难聚人心 | 紫微#5 | 中 | ✅ |
+| 破格 | 廉贞贪狼同命宫 → 自杀格（双陷时） | 贪狼#14 | 高 | ✅ |
+| 破格 | 廉贞七杀同命宫 → 横死格（双陷时） | 廉贞#4 | 高 | ✅ |
+| 破格 | 武曲七杀同命宫 → 兵阵死亡（卯宫陷地） | 武曲#13 | 高 | ✅ |
+| 破格 | 三方四正≥2宫落化忌 → 三方多忌 | 化忌规则 | 中 | ✅ |
+
+尚未落地（需更多宫位数据或下一轮实现）：
+- 日月反背（需12宫亮度数据）
+- 巨日格庙旺（需亮度数据）
+- 雄宿朝元（廉贞单星寅申，需宫支数据）
+- 日月科禄丑未中
+- 羊陀夹杀（需夹宫检测，需完整12宫数据）
+
+### 新增信号字段（collectOverallSignals）
+
+| 字段 | 说明 |
+|------|------|
+| `allSanfang` | 命+官禄+财帛+迁移四宫主星合集 |
+| `sanfangLu/Quan/Ke` | 三方四正落禄/权/科的化忌对象数组 |
+| `sanfangJi` | 三方四正落化忌的数组 |
+| `lifeHasFubei` | 命宫辅星中是否含左辅或右弼（bool） |
 
 ### 新增规则层函数
 
-#### `buildOverallToneDetails(sig)` → `toneDetails`
-- `mainStarTraits[]`：命宫每颗主星的"品类+特质"全文
-- `dualPattern`：命宫双星同宫结构（命中则输出，如"武杀同宫——猛将格..."）
-- `auxEffects[]`：命宫辅星各自修饰效果
-- `lifePalaceQuality`：命宫质量评级（7档：严重受损 / 落忌 / 有煞 / 佳 / 良 / 有吉化 / 普通）
+#### `buildSanfangProfile(sig)` → `{ label, profile }`
+判断命格天生倾向，按三方四正禄/权/科落宫情况输出：
+- 财官双美 / 权禄相逢 / 科权入宫 / 化权入宫 / 化禄入宫 / 化科入宫 / 正才正官
 
-#### `buildOverallPatternCandidates(sig)` → `patternCandidates[]`
-每项含 `{ type, desc, stars?, palace? }`，已实现：
-- `dual_sanfang`：三方宫位双星同宫（命中 DUAL_STAR_PATTERN_DB）
-- `sanfang_full`：三方四正均有实星（仅记录，不送模型）
-- `sanqi`：科权禄三奇嘉会（三类四化均存在）
-- `huotan`：火贪格（命宫贪狼+火星）
-- `lingtan`：铃贪格（命宫贪狼+铃星）
+#### `detectOverallPatterns(sig)` → `patterns[]`
+每项含 `{ name, desc, level }`，已实现：
+- `机月同梁`：三方四正天机太阴天同天梁 ≥3 颗
+- `紫微孤君`：命宫紫微无左辅右弼
+- `火贪格`：命宫贪狼+火星
+- `铃贪格`：命宫贪狼+铃星
 
-#### `buildOverallBreakConditions(sig)` → `breakConditions[]`
-每项含 `{ type, desc, severity: 'high'|'medium' }`，已实现：
-- `life_ji`：命宫化忌（severity: high）
-- `life_sha`：命宫煞星——羊陀火铃（severity: medium）
-- `career_ji`：官禄宫化忌（severity: high）
-- `wealth_ji`：财帛宫化忌（severity: high）
-- `spouse_ji`：夫妻宫化忌（severity: medium）
-- `move_ji`：迁移宫化忌（severity: medium）
+#### `detectOverallBreaks(sig)` → `breaks[]`
+每项含 `{ name, desc, severity }`，已实现：
+- `七杀临身`（high）：身宫主星含七杀
+- `化忌入命`（high）：命宫落化忌
+- `廉贪同命`（high）：廉贞贪狼同坐命宫
+- `廉杀同命`（high）：廉贞七杀同坐命宫
+- `武杀同命`（high）：武曲七杀同坐命宫
+- `三方多忌`（medium）：三方四正≥2宫落化忌
 
-### v2 对输出的影响
+### 对 buildOverallRuleSummary 的更新
 
-**prompt 注入（模型输入加厚）：**
-- 命宫底色区增加：主星特质 / 双星结构 / 辅星修饰 / 命宫质量
-- 新增"已命中格局"区块（过滤了 sanfang_full，不送泛化信息）
-- 新增"破格/凶险条件"区块（high/medium 标签）
-- summary 字数约束从 120-200 字扩展到 150-220 字
-- basis 上限从 60 字扩展到 70 字
-- system 补充：格局名如已在规则层出现，模型可引用，不得自行新增
+`ruleSummary` 输出新增字段：
+- `sanfangProfile`：命格定位（label + profile）
+- `patterns[]`：格局识别结果
+- `breaks[]`：破格识别结果
+- `bodyAdjustment`：七杀临身检测已整合
 
-**debug 新增字段：**
-- `debug.toneDetails`
-- `debug.patternCandidates`
-- `debug.breakConditions`
+`mainRisk` 现在合并：化忌 + high severity 破格（排除重复的"化忌入命"）
 
-**trace 新增条目：**
-- 命宫质量
-- 双星结构
-- 格局命中（type 列表）
-- 破格条件（type 列表）
+### 对 buildOverallPimingPrompt 的更新
 
-**前台无改动**，admin 测试台的 rawResponse 可看到新字段。
+ruleText 新增两个区块：
+- `命格定位：<label>——<profile>`
+- `格局判断：` + patterns 列表
+- `破格凶象：` + breaks 列表（排除化忌入命重复）
+
+trace 新增：命格定位、格局列表、破格列表
+
+### 前台/admin 无改动
+
+admin 测试台的 trace 和 ruleSummary 展示区会自动展示新字段。
 
 ### 明确还没做
 
 | 项目 | 状态 |
-|---|---|
-| 辅弼夹命 / 昌曲夹命检测 | ❌ 需 12 宫完整 palace 数据，现有信号不足 |
-| 化禄入命 / 化权入命特殊加成 | ❌ 暂未加规则 |
-| 格局质量等级（上/中/下格） | ❌ 未实现 |
-| 大限层 / 小流年层 | ❌ 明确排除 |
+|------|------|
 | 宫位亮度（旺/庙/陷）作为信号 | ❌ 需从 palacesSummary 提取 |
-
-### 下一步建议
-
-1. **拓展 collectOverallSignals 读取 `palacesSummary`**：获取全 12 宫信息，解锁夹宫检测和亮度判断
-2. **加禄权科入命宫特殊加成**：`mutagenOf(lp, '化禄')` 已有，可直接在 toneDetails 里描述"化禄入命，财运好逢"
-3. **格局质量打分**：综合命宫质量 + 三方 + 四化，给出"上/中/下格"评级
-4. **admin 测试台展示新字段**：toneDetails / patternCandidates / breakConditions 当前只在 rawResponse 可见，可加专属展示区块
+| 日月反背检测 | ❌ 需亮度数据 |
+| 巨日格 / 雄宿朝元 / 日月科禄丑未中 | ❌ 需亮度或宫支数据 |
+| 羊陀夹杀检测 | ❌ 需完整12宫排列数据 |
+| 格局质量打分（上/中/下格） | ❌ 未实现 |
+| STAR_TONE_DB / 主星特质文本注入 | ❌ 下一批 |
+| 大限层 / 小流年层 | ❌ 明确排除 |

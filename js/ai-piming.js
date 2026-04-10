@@ -231,15 +231,16 @@ function _aipRenderResult(moduleKey, data) {
       const basisEl = document.getElementById('aip-life-basis');
       const evEl    = document.getElementById('aip-life-ev');
 
-      // ── 1. 命格定位 badge ─────────────────────────────
+      // ── 1. 命格定位行（速览结构卡内独立行，AI 后填充）────
+      const badgeRow     = document.getElementById('aip-badge-row');
       const profileBadge = document.getElementById('aip-profile-badge');
       if (profileBadge) {
         const label = card.profileBadge || card.sanfangProfile?.label || '';
         if (label) {
           profileBadge.textContent = label;
-          profileBadge.style.display = '';
+          if (badgeRow) badgeRow.style.display = '';
         } else {
-          profileBadge.style.display = 'none';
+          if (badgeRow) badgeRow.style.display = 'none';
         }
       }
 
@@ -305,18 +306,8 @@ function _aipRenderResult(moduleKey, data) {
         }
       }
 
-      // ── 8. evidence 轻量标签 ───────────────────────────
-      if (evEl) {
-        const ev = Array.isArray(card.evidence) ? card.evidence : [];
-        if (ev.length) {
-          evEl.innerHTML = ev
-            .map(e => `<span class="aip-ev-item">${e.label} <b>${e.value}</b></span>`)
-            .join('');
-          evEl.style.display = '';
-        } else {
-          evEl.style.display = 'none';
-        }
-      }
+      // ── 8. evidence — 用户态不渲染，debug 区已完整记录
+      if (evEl) evEl.style.display = 'none';
 
       // ── 9. debug → 调试区 ──────────────────────────────
       const dbg = data.debug || {};
@@ -392,10 +383,12 @@ function _aipRenderResult(moduleKey, data) {
           if (el) { el.style.display = 'none'; el.innerHTML = ''; }
         });
         // 隐藏 AI 速览行（防止上一次结果在加载中期残留）
+        const badgeRow     = document.getElementById('aip-badge-row');
         const profileBadge = document.getElementById('aip-profile-badge');
         const patternRow   = document.getElementById('aip-struct-pattern-row');
         const breakRow     = document.getElementById('aip-struct-break-row');
-        if (profileBadge) { profileBadge.style.display = 'none'; profileBadge.textContent = ''; }
+        if (badgeRow)     badgeRow.style.display   = 'none';
+        if (profileBadge) profileBadge.textContent = '';
         if (patternRow)   patternRow.style.display = 'none';
         if (breakRow)     breakRow.style.display   = 'none';
       }
