@@ -182,33 +182,18 @@ function buildChartPayload() {
 // ── 调用后端 ──────────────────────────────────────────────────────────────────
 async function _aipCallBackend(moduleKey, extraParams = {}) {
   const chartData = buildChartPayload();
-  if (!chartData) throw new Error('请先完成排盘');
+  if (!chartData) throw new Error('\u8bf7\u5148\u5b8c\u6210\u6392\u76d8');
 
-  // overall_piming 走 server/index.js（card+debug 结构），复用 chart.html 的 API base 探测
-  if (moduleKey === 'overall') {
-    const apiBase = await _resolvePimingApiBase();
-    const resp = await fetch(_joinApiUrl(apiBase, '/api/piming'), {
-      method : 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body   : JSON.stringify({ topic: 'overall_piming', chartData }),
-    });
-    const data = await resp.json();
-    if (!resp.ok || !data.ok) throw new Error(data.error || 'AI 服务异常');
-    return data; // { ok, module, card, debug }
-  }
-
-  // 其他 moduleKey 继续走 ai-piming-backend
   const resp = await fetch(_aipJoin('/api/ai/run'), {
     method : 'POST',
     headers: { 'Content-Type': 'application/json' },
     body   : JSON.stringify({ moduleKey, chartData, extraParams }),
   });
   const data = await resp.json();
-  if (!resp.ok || !data.success) throw new Error(data.error || 'AI 服务异常');
+  if (!resp.ok || !(data.success || data.ok)) throw new Error(data.error || 'AI \u670d\u52a1\u5f02\u5e38');
   return data;
 }
 
-// ── DOM 辅助 ──────────────────────────────────────────────────────────────────
 function _aipSetEl(id, text) {
   const el = document.getElementById(id);
   if (el) el.textContent = text || '';
