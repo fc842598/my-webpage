@@ -40,6 +40,11 @@ const PROMPT_VERSION = 'v3-two-layer';
 // 算法升级版本号：修改此值会使旧 chunk 缓存全部失效，强制用新算法重算
 const LIFE_CURVE_ALGO_VERSION = 'v2-critical-year';
 const CACHE_DIR = path.join(__dirname, '.cache', 'life-curve');
+const OVERALL_PIMING_PROMPT_RELATIVE_PATH = path.join('ai-prompts', 'overall-piming-minggong-sanfang-v1.txt');
+const OVERALL_PIMING_PROMPT_CANDIDATES = [
+  path.join(__dirname, OVERALL_PIMING_PROMPT_RELATIVE_PATH),
+  path.join(__dirname, '..', 'docs', OVERALL_PIMING_PROMPT_RELATIVE_PATH),
+];
 
 function buildChunkCacheKey(chartSummary, yearsChunk) {
   const keyData = JSON.stringify({
@@ -66,6 +71,45 @@ function setCachedChunk(cacheKey, data) {
   } catch (err) {
     console.warn('[piming-api] 缓存写入失败:', err.message);
   }
+}
+
+function loadOverallPimingPromptGuide() {
+  const tried = [];
+  for (const candidatePath of OVERALL_PIMING_PROMPT_CANDIDATES) {
+    tried.push(candidatePath);
+    try {
+      const rawText = fs.readFileSync(candidatePath, 'utf8').replace(/^\uFEFF/, '').trim();
+      const outputMarker = '【输出要求】';
+      const expressionMarker = '【表达原则】';
+      const outputIdx = rawText.indexOf(outputMarker);
+      const expressionIdx = rawText.indexOf(expressionMarker);
+
+      const ruleText = (outputIdx >= 0 ? rawText.slice(0, outputIdx) : rawText).trim();
+      const expressionText = (expressionIdx >= 0 ? rawText.slice(expressionIdx) : '').trim();
+      const hash = crypto.createHash('md5').update(rawText).digest('hex').slice(0, 8);
+
+      return {
+        loaded        : true,
+        path          : candidatePath,
+        hash,
+        rawText,
+        ruleText,
+        expressionText,
+      };
+    } catch (_err) {}
+  }
+
+  const error = `未找到提示词文件，尝试路径：${tried.join(' | ')}`;
+  console.warn('[piming-api] 整体批命提示词文件读取失败:', error);
+  return {
+    loaded        : false,
+    path          : tried[0] || '',
+    hash          : null,
+    rawText       : '',
+    ruleText      : '',
+    expressionText: '',
+    error,
+  };
 }
 
 function buildDecadeCacheKey(chartSummary, range) {
@@ -289,8 +333,8 @@ function collectOverallSignals(cd) {
   // 命宫落忌（凶）
   const lifeJi = mutagenOf(lp, '化忌');
 
-  // 重点宫位落忌：官禄/财帛/夫妻/命宫/迁移
-  const KEY_JI_PALACES = ['命宫', '官禄宫', '财帛宫', '夫妻宫', '迁移宫'];
+  // 重点宫位落忌：只保留整体批命允许使用的四宫
+  const KEY_JI_PALACES = ['命宫', '官禄宫', '财帛宫', '迁移宫'];
   const keyJiMutagens = mutagens.filter(m =>
     m.type === '化忌' && KEY_JI_PALACES.some(k => (m.palace || '').includes(k.replace('宫', '')))
   );
@@ -349,7 +393,8 @@ function collectOverallSignals(cd) {
 /**
  * Step 2: 从信号生成 evidence[] 证据列表
  */
-function buildOverallEvidence(sig) {
+function buildOverallEvidence(sig, options = {}) {
+  const includeBody = !!options.includeBody;
   const ev = [];
 
   // 命宫底色
@@ -385,8 +430,8 @@ function buildOverallEvidence(sig) {
   if (sig.ke.length)   ev.push({ key: 'mutagen_ke',   label: '生年化科', value: sig.ke.map(m=>`${m.star}科在${m.palace}`).join('；') });
   if (sig.ji.length)   ev.push({ key: 'mutagen_ji',   label: '生年化忌', value: sig.ji.map(m=>`${m.star}忌在${m.palace}`).join('；') });
 
-  // 身宫
-  if (sig.bodyMain.length) {
+  // 身宫（overall 默认不喂给模型，仅在显式需要时附带）
+  if (includeBody && sig.bodyMain.length) {
     ev.push({
       key  : 'shengong',
       label: `身宫（${sig.bodyPalaceName}）`,
@@ -487,16 +532,6 @@ function detectOverallPatterns(sig) {
 function detectOverallBreaks(sig) {
   const breaks = [];
 
-  // 七杀临身
-  if (sig.bodyMain.includes('七杀')) {
-    breaks.push({
-      name     : '七杀临身',
-      desc     : '七杀临身，天纪云"七杀临身终不美"，一生多劳少成，需防刚强过度招损',
-      severity : 'high',
-      confirmed: true,
-    });
-  }
-
   // 化忌入命（已在 mainRisk 中，这里作为 break 强调完整性）
   if (sig.lifeJi.length > 0) {
     breaks.push({
@@ -551,6 +586,30 @@ function detectOverallBreaks(sig) {
   }
 
   return breaks;
+}
+
+/**
+ * 命格细化：给 admin/debug 用的结构化补充，不直接等于用户态文案
+ */
+function buildOverallToneDetails(sig) {
+  const joinStars = (stars, empty = '无') => stars.length ? stars.join('+') : empty;
+  const joinMutagens = (items, suffix) =>
+    items.length ? items.map(m => `${m.star}${suffix}在${m.palace}`).join('；') : '无';
+
+  return {
+    lifeTone    : `${joinStars(sig.lifeMain, '空宫')}${sig.lifeAux.length ? `，辅有${sig.lifeAux.join('+')}` : ''}`,
+    sanfangFocus: `官禄${joinStars(sig.sanfang.career, '空宫')} / 财帛${joinStars(sig.sanfang.wealth, '空宫')} / 迁移${joinStars(sig.sanfang.move, '空宫')}`,
+    bodyFocus   : sig.bodyMain.length ? `${sig.bodyPalaceName || '身宫'} ${sig.bodyMain.join('+')}` : '无明显身宫修正',
+    mutagenFocus: [
+      `禄：${joinMutagens(sig.lu, '化禄')}`,
+      `权：${joinMutagens(sig.quan, '化权')}`,
+      `科：${joinMutagens(sig.ke, '化科')}`,
+      `忌：${joinMutagens(sig.ji, '化忌')}`,
+    ].join('\n'),
+    riskFocus   : sig.keyJiMutagens.length
+      ? sig.keyJiMutagens.map(m => `${m.star}化忌在${m.palace}`).join('；')
+      : '暂无重点宫位化忌',
+  };
 }
 
 /**
@@ -624,8 +683,10 @@ function buildOverallPimingPrompt(body) {
   const cd = body.chartData || body;
 
   const sig         = collectOverallSignals(cd);
-  const evidence    = buildOverallEvidence(sig);
+  const promptGuide = loadOverallPimingPromptGuide();
+  const evidence    = buildOverallEvidence(sig, { includeBody: false });
   const ruleSummary = buildOverallRuleSummary(sig);
+  const toneDetails = buildOverallToneDetails(sig);
 
   const requestSummary = `${sig.fiveElements} ${sig.lifeMain.join('+')||'空宫'}命宫 ${sig.yearStem}年生 ${sig.genderStr}`;
 
@@ -646,21 +707,38 @@ function buildOverallPimingPrompt(body) {
     `三方结构：${ruleSummary.structure}`,
     `命格定位：${ruleSummary.sanfangProfile.label}——${ruleSummary.sanfangProfile.profile}`,
     `四化影响：${ruleSummary.mutagenEffect}`,
-    ruleSummary.bodyAdjustment ? `身宫修正：${ruleSummary.bodyAdjustment}` : '',
     `格局判断：\n${patternLines}`,
     `破格凶象：\n${breakLines}`,
     `主要风险：${ruleSummary.mainRisk}`,
   ].filter(Boolean).join('\n');
 
+  const externalRuleBlocks = [];
+  if (promptGuide.ruleText) {
+    externalRuleBlocks.push(
+      `【外部批命规则】（来源：${promptGuide.path}${promptGuide.hash ? `，hash ${promptGuide.hash}` : ''}）`,
+      promptGuide.ruleText
+    );
+  }
+  if (promptGuide.expressionText) {
+    externalRuleBlocks.push(promptGuide.expressionText);
+  }
+  const externalRuleText = externalRuleBlocks.length
+    ? externalRuleBlocks.join('\n\n')
+    : `【外部批命规则】\n（未加载到提示词文件：${promptGuide.path}）`;
+
   const system = [
     '你是一位精通紫微斗数的命理师，语言简练有力，不说空泛套话。',
-    '你只做整体命格分析，不扩写大限流年，不展开子平法。',
+    '你只做整体命格分析，只围绕命宫、官禄、财帛、迁移四宫展开，不扩写大限流年，不展开子平法。',
+    '如果已加载【外部批命规则】，你必须优先遵守其中关于可用宫位、肯定批法、提醒批法、表达原则的约束。',
+    '外部批命规则中的输出版式只作为内容规范参考，最终返回格式仍以本文最后给出的 JSON 要求为准。',
     '以下【规则层结论】是后端已经依据星曜规则推算出的结果，你不得推翻或忽略这些结论。',
     '你的任务只是：在规则层结论的基础上，写出流畅、有依据感的批命文字。',
     '你必须返回严格 JSON，不要 markdown，不要代码块。',
   ].join('\n');
 
   const user = [
+    externalRuleText,
+    '',
     '【命盘证据】（已提取的星曜和宫位信息，只能引用不能杜撰）',
     evidenceText,
     '',
@@ -670,7 +748,7 @@ function buildOverallPimingPrompt(body) {
     '请基于以上内容，返回以下 JSON（括号内是说明，不要输出括号内容）：',
     '{',
     '  "title": "一句话命格特质，≤20字，必须含命宫主星名",',
-    '  "summary": "整体批命，120-200字，须引用命宫主星、三方四正、四化、身宫，语气肯定有据",',
+    '  "summary": "整体批命，120-200字，优先引用命宫主星与三方四正；若输入明确给出四化可引用，但不要自行扩写身宫、大限、流年、父母夫妻等额外层，语气肯定有据",',
     '  "risk": "最关键的一条风险，≤50字，必须源自规则层主要风险",',
     '  "basis": "判断依据简述，列出引用的主星和宫位，≤60字"',
     '}',
@@ -682,12 +760,19 @@ function buildOverallPimingPrompt(body) {
     requestSummary,
     evidence,
     ruleSummary,
+    toneDetails,
+    promptGuideMeta: {
+      loaded: !!promptGuide.loaded,
+      path  : promptGuide.path,
+      hash  : promptGuide.hash,
+      error : promptGuide.error || null,
+    },
     trace: [
       `提取信号：${requestSummary}`,
+      `外部提示词：${promptGuide.loaded ? `已加载 ${promptGuide.path}${promptGuide.hash ? ` (${promptGuide.hash})` : ''}` : `未加载 ${promptGuide.path}`}`,
       `命宫：${sig.lifeMain.join('+')||'空宫'}，辅星：${sig.lifeAux.join('+')||'无'}`,
       `三方：官禄${sig.sanfang.career.join('+')||'空'}／财帛${sig.sanfang.wealth.join('+')||'空'}／迁移${sig.sanfang.move.join('+')||'空'}`,
       `化忌落宫：${sig.keyJiMutagens.map(m=>m.palace).join('，')||'无'}`,
-      `身宫：${sig.bodyPalaceName} ${sig.bodyMain.join('+')||'空'}`,
       `命格定位：${ruleSummary.sanfangProfile.label}`,
       `格局：${ruleSummary.patterns.map(p=>p.name).join('、')||'无'}`,
       `破格：${ruleSummary.breaks.map(b=>b.name).join('、')||'无'}`,
@@ -1320,14 +1405,16 @@ app.post('/api/piming', async (req, res) => {
         ok    : true,
         module: 'overall_piming',
         card,
-        debug : {
+      debug : {
           topic            : 'overall_piming',
           requestSummary   : prompt.requestSummary,
           trace            : prompt.trace,
           rawResponse      : JSON.stringify(result),
           durationMs       : Date.now() - t0,
           model            : MODEL,
+          promptGuide      : prompt.promptGuideMeta,
           ruleSummary      : prompt.ruleSummary,
+          toneDetails      : prompt.toneDetails,
           // 完整格局/破格候选（含 confirmed:false），仅供调试
           patternCandidates: (rs?.patterns || []).map(p => ({ name: p.name, level: p.level, desc: p.desc })),
           breakConditions  : (rs?.breaks   || []).map(b => ({
