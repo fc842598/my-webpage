@@ -2017,6 +2017,63 @@
 .aip-ev-item    { font-size: 10px; background: #f5ede0; color: #7a5c4a;
                   padding: 2px 8px; border-radius: 10px; }
 .aip-ev-item b  { color: #3d302b; font-weight: 600; }
+
+/* ── 命格速览结构卡 ──────────────────────────────────── */
+/* 命格定位 badge（AI 返回后显示） */
+.aip-profile-badge {
+  display: inline-block; font-size: 10px; font-weight: 600;
+  background: #f0e8d8; color: #7a4e2a;
+  padding: 1px 8px; border-radius: 10px;
+  border: 1px solid #d4c0a0; white-space: nowrap; margin-left: auto;
+}
+/* 速览区容器 */
+.aip-struct {
+  margin: 9px 0 6px;
+  border: 1px solid #ede6dc; border-radius: 6px;
+  overflow: hidden; font-size: 11.5px;
+}
+/* 每行 */
+.aip-struct-row {
+  display: flex; align-items: baseline;
+  gap: 8px; padding: 5px 10px;
+  border-bottom: 1px solid #f2ece4;
+  line-height: 1.55;
+}
+.aip-struct-row:last-child { border-bottom: none; }
+/* label 列 */
+.aip-struct-label {
+  flex-shrink: 0; width: 28px;
+  font-size: 10px; font-weight: 600;
+  color: #a08878; letter-spacing: .04em; padding-top: 1px;
+}
+/* value 列 */
+.aip-struct-val {
+  flex: 1; color: #3d302b; font-size: 11.5px; line-height: 1.55;
+  word-break: break-all;
+}
+/* AI 补充行（格局/破格）—— 浅背景区分 */
+.aip-struct-row.aip-struct-ai {
+  background: #fdf8f2;
+}
+.aip-struct-row.aip-struct-ai .aip-struct-label { color: #7a5c4a; }
+/* 格局标签 */
+.aip-pattern-tag {
+  display: inline-block; font-size: 10px;
+  background: #eef5ea; color: #4a6a3a;
+  padding: 1px 7px; border-radius: 9px;
+  margin: 1px 3px 1px 0;
+}
+/* 破格标签 */
+.aip-break-tag {
+  display: inline-block; font-size: 10px;
+  background: rgba(150,61,50,.07); color: #7a3020;
+  padding: 1px 7px; border-radius: 9px;
+  margin: 1px 3px 1px 0;
+}
+/* 速览区与 body 之间的分割线 */
+.aip-struct-divider {
+  border: none; border-top: 1px solid #ede6dc; margin: 6px 0;
+}
 .aip-footer-note { text-align: center; font-size: 11px; color: #c0b4aa; padding: 14px 0 0; }
 
 .aip-ai-bar   { display: flex; align-items: center; gap: 12px; margin-top: 18px; justify-content: center; }

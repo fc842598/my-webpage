@@ -223,18 +223,60 @@ function _aipRenderResult(moduleKey, data) {
   switch (moduleKey) {
     case 'overall': {
       // card → 整体批命主卡片（aip-life）
-      const card  = data.card || {};
-      const ttl   = document.getElementById('aip-life-ttl');
-      const body  = document.getElementById('aip-life-body');
-      const tip   = document.getElementById('aip-life-tip');
+      const card    = data.card || {};
+      const ttl     = document.getElementById('aip-life-ttl');
+      const body    = document.getElementById('aip-life-body');
+      const tip     = document.getElementById('aip-life-tip');
       const riskEl  = document.getElementById('aip-life-risk');
       const basisEl = document.getElementById('aip-life-basis');
       const evEl    = document.getElementById('aip-life-ev');
 
-      // 标题
+      // ── 1. 命格定位 badge ─────────────────────────────
+      const profileBadge = document.getElementById('aip-profile-badge');
+      if (profileBadge) {
+        const label = card.profileBadge || card.sanfangProfile?.label || '';
+        if (label) {
+          profileBadge.textContent = label;
+          profileBadge.style.display = '';
+        } else {
+          profileBadge.style.display = 'none';
+        }
+      }
+
+      // ── 2. 格局行（AI 补充） ──────────────────────────
+      const patternRow = document.getElementById('aip-struct-pattern-row');
+      const patternVal = document.getElementById('aip-struct-pattern');
+      if (patternRow && patternVal) {
+        const patterns = Array.isArray(card.patterns) ? card.patterns : [];
+        if (patterns.length) {
+          patternVal.innerHTML = patterns
+            .map(p => `<span class="aip-pattern-tag">${p.name}</span>`)
+            .join('');
+          patternRow.style.display = '';
+        } else {
+          patternRow.style.display = 'none';
+        }
+      }
+
+      // ── 3. 破格行（AI 补充） ──────────────────────────
+      const breakRow = document.getElementById('aip-struct-break-row');
+      const breakVal = document.getElementById('aip-struct-break');
+      if (breakRow && breakVal) {
+        const breaks = Array.isArray(card.breaks) ? card.breaks : [];
+        if (breaks.length) {
+          breakVal.innerHTML = breaks
+            .map(b => `<span class="aip-break-tag">${b.name}</span>`)
+            .join('');
+          breakRow.style.display = '';
+        } else {
+          breakRow.style.display = 'none';
+        }
+      }
+
+      // ── 4. 标题 ────────────────────────────────────────
       if (ttl) ttl.textContent = card.title || 'AI 整体批命';
 
-      // 主体解读
+      // ── 5. 主体解读 ────────────────────────────────────
       if (body) {
         body.textContent = card.summary || '';
         body.style.color = '';  // 恢复正常颜色（清除加载/错误状态的颜色）
@@ -243,7 +285,7 @@ function _aipRenderResult(moduleKey, data) {
       // 占位提示隐藏（AI 内容接管）
       if (tip) tip.textContent = '';
 
-      // 风险提醒：单独区块
+      // ── 6. 风险提醒 ────────────────────────────────────
       if (riskEl) {
         if (card.risk) {
           riskEl.textContent = '⚠ ' + card.risk;
@@ -253,7 +295,7 @@ function _aipRenderResult(moduleKey, data) {
         }
       }
 
-      // 判断依据：单独区块
+      // ── 7. 判断依据 ────────────────────────────────────
       if (basisEl) {
         if (card.basis) {
           basisEl.textContent = '依据：' + card.basis;
@@ -263,7 +305,7 @@ function _aipRenderResult(moduleKey, data) {
         }
       }
 
-      // evidence 轻量标签（有则展示，无则隐藏）
+      // ── 8. evidence 轻量标签 ───────────────────────────
       if (evEl) {
         const ev = Array.isArray(card.evidence) ? card.evidence : [];
         if (ev.length) {
@@ -276,7 +318,7 @@ function _aipRenderResult(moduleKey, data) {
         }
       }
 
-      // debug → 调试区
+      // ── 9. debug → 调试区 ──────────────────────────────
       const dbg = data.debug || {};
       const debugCard = document.getElementById('aip-overall-debug-card');
       const debugPre  = document.getElementById('aip-overall-debug-pre');
@@ -349,6 +391,13 @@ function _aipRenderResult(moduleKey, data) {
           const el = document.getElementById(id);
           if (el) { el.style.display = 'none'; el.innerHTML = ''; }
         });
+        // 隐藏 AI 速览行（防止上一次结果在加载中期残留）
+        const profileBadge = document.getElementById('aip-profile-badge');
+        const patternRow   = document.getElementById('aip-struct-pattern-row');
+        const breakRow     = document.getElementById('aip-struct-break-row');
+        if (profileBadge) { profileBadge.style.display = 'none'; profileBadge.textContent = ''; }
+        if (patternRow)   patternRow.style.display = 'none';
+        if (breakRow)     breakRow.style.display   = 'none';
       }
 
       try {

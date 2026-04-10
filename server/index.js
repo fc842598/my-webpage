@@ -302,6 +302,28 @@ function collectOverallSignals(cd) {
     ...mutagenOf(lp, '化科').map(n => n + '科'),
   ];
 
+  // 三方四正（命+官+财+迁）所有主星合集
+  const allSanfang = [
+    ...majorNames(lp),
+    ...majorNames(cp),
+    ...majorNames(wp),
+    ...majorNames(mp),
+  ];
+
+  // 三方四正落忌宫位
+  const SANFANG_KEYS = ['命', '官禄', '财帛', '迁移'];
+  const sanfangJi = mutagens.filter(m =>
+    m.type === '化忌' && SANFANG_KEYS.some(k => (m.palace || '').includes(k))
+  );
+
+  // 三方四正落禄/权/科
+  const sanfangLu   = lu.filter(m => SANFANG_KEYS.some(k => (m.palace || '').includes(k)));
+  const sanfangQuan = quan.filter(m => SANFANG_KEYS.some(k => (m.palace || '').includes(k)));
+  const sanfangKe   = ke.filter(m => SANFANG_KEYS.some(k => (m.palace || '').includes(k)));
+
+  // 命宫是否有左辅/右弼
+  const lifeHasFubei = minorNames(lp).some(n => ['左辅', '右弼'].includes(n));
+
   return {
     gender        : cd.gender || 'male',
     genderStr     : cd.gender === 'female' ? '女命' : '男命',
@@ -312,9 +334,12 @@ function collectOverallSignals(cd) {
     lifeAux,                          // 命宫有意义辅星
     lifeGood,                         // 命宫吉化
     lifeJi,                           // 命宫落忌星
+    lifeHasFubei,                     // 命宫是否有辅弼
     bodyMain      : majorNames(bp),   // 身宫主星
     bodyPalaceName: bp?.name || '',
     sanfang,
+    allSanfang,                       // 三方四正全部主星
+    sanfangLu, sanfangQuan, sanfangKe, sanfangJi,
     lu, quan, ke, ji,
     keyJiMutagens,                    // 重点宫位化忌
     birthDate     : cd.birthDate || '',
@@ -373,6 +398,162 @@ function buildOverallEvidence(sig) {
 }
 
 /**
+ * 三方四正命格定位（天纪规则）
+ * 判断此人天生宜领薪/创业/掌权/专业
+ */
+function buildSanfangProfile(sig) {
+  const hasLu   = sig.sanfangLu.length > 0;
+  const hasQuan = sig.sanfangQuan.length > 0;
+  const hasKe   = sig.sanfangKe.length > 0;
+
+  let profile, label;
+  if (hasLu && hasQuan && hasKe) {
+    label   = '财官双美';
+    profile = '三方四正科权禄俱会，财官双美，一方之主，可自立成大业';
+  } else if (hasLu && hasQuan) {
+    label   = '权禄相逢';
+    profile = '三方四正权禄相逢，宜自立创业当老板，不甘人下';
+  } else if (hasQuan && hasKe) {
+    label   = '科权入宫';
+    profile = '三方四正科权会入，宜公职或专业，可晋升主管';
+  } else if (hasQuan) {
+    label   = '化权入宫';
+    profile = '三方四正有化权，宜掌管职权，公私皆可升任主管';
+  } else if (hasLu) {
+    label   = '化禄入宫';
+    profile = '三方四正有化禄，财路顺畅，可经营或兼营自立';
+  } else if (hasKe) {
+    label   = '化科入宫';
+    profile = '三方四正有化科，宜专业技术路线，以专长立身';
+  } else {
+    label   = '正才正官';
+    profile = '三方四正无科权禄会入，宜专注本职，正才正官，领薪稳健';
+  }
+
+  return { label, profile };
+}
+
+/**
+ * 格局识别（天纪规则，第一批）
+ */
+function detectOverallPatterns(sig) {
+  const patterns = [];
+  const all = sig.allSanfang;
+
+  // 机月同梁格：三方四正含天机/太阴/天同/天梁 ≥3 颗
+  const jyltStars = ['天机', '太阴', '天同', '天梁'];
+  const jyltCount = jyltStars.filter(s => all.includes(s)).length;
+  if (jyltCount >= 3) {
+    patterns.push({
+      name : '机月同梁',
+      desc : '三方四正天机太阴天同天梁为主，宜公职或固定薪水，不宜孤注一掷自立创业',
+      level: 'high',
+    });
+  }
+
+  // 紫微孤君：命宫有紫微，但无左辅右弼
+  if (sig.lifeMain.includes('紫微') && !sig.lifeHasFubei) {
+    patterns.push({
+      name : '紫微孤君',
+      desc : '紫微无辅弼，孤高自守，领导力强但难聚人心，易孤立无援',
+      level: 'medium',
+    });
+  }
+
+  // 火贪格：命宫贪狼+火星
+  if (sig.lifeMain.includes('贪狼') && sig.lifeAux.includes('火星')) {
+    patterns.push({
+      name : '火贪格',
+      desc : '贪狼逢火星，火贪格成，事业有爆发力，主出武贵或商界突破',
+      level: 'medium',
+    });
+  }
+
+  // 铃贪格：命宫贪狼+铃星
+  if (sig.lifeMain.includes('贪狼') && sig.lifeAux.includes('铃星')) {
+    patterns.push({
+      name : '铃贪格',
+      desc : '贪狼逢铃星，铃贪格成，与火贪格同性质，主事业爆发',
+      level: 'medium',
+    });
+  }
+
+  return patterns;
+}
+
+/**
+ * 破格/凶象识别（天纪规则，第一批）
+ */
+function detectOverallBreaks(sig) {
+  const breaks = [];
+
+  // 七杀临身
+  if (sig.bodyMain.includes('七杀')) {
+    breaks.push({
+      name     : '七杀临身',
+      desc     : '七杀临身，天纪云"七杀临身终不美"，一生多劳少成，需防刚强过度招损',
+      severity : 'high',
+      confirmed: true,
+    });
+  }
+
+  // 化忌入命（已在 mainRisk 中，这里作为 break 强调完整性）
+  if (sig.lifeJi.length > 0) {
+    breaks.push({
+      name     : '化忌入命',
+      desc     : `${sig.lifeJi.join('+')}化忌落命宫，本人自困，易有阻碍与伤损`,
+      severity : 'high',
+      confirmed: true,
+    });
+  }
+
+  // 廉贞贪狼同宫（命宫）——需双陷才成凶格，当前未验证亮度，仅候选
+  if (sig.lifeMain.includes('廉贞') && sig.lifeMain.includes('贪狼')) {
+    breaks.push({
+      name     : '廉贪同命',
+      desc     : '廉贞贪狼同坐命宫，双陷时天纪论自杀格；庙旺则不成凶。需验亮度后才能定论',
+      severity : 'high',
+      confirmed: false,   // 条件不完整：需双陷才成格，当前未读命宫亮度
+      reason   : '需双陷才成格，命宫亮度数据未验证',
+    });
+  }
+
+  // 廉贞七杀同宫（命宫）——需双陷，仅候选
+  if (sig.lifeMain.includes('廉贞') && sig.lifeMain.includes('七杀')) {
+    breaks.push({
+      name     : '廉杀同命',
+      desc     : '廉贞七杀同坐命宫，双陷时天纪论横死，庙旺则刚强出将。需验亮度后才能定论',
+      severity : 'high',
+      confirmed: false,
+      reason   : '需双陷才成格，命宫亮度数据未验证',
+    });
+  }
+
+  // 武曲七杀同宫（命宫）——需双陷（卯宫陷地），仅候选
+  if (sig.lifeMain.includes('武曲') && sig.lifeMain.includes('七杀')) {
+    breaks.push({
+      name     : '武杀同命',
+      desc     : '武曲七杀同坐命宫，卯宫双陷时天纪论兵阵死亡，庙旺则将星得地。需验宫支+亮度',
+      severity : 'high',
+      confirmed: false,
+      reason   : '需卯宫双陷才成格，当前未验证宫支与亮度',
+    });
+  }
+
+  // 三方四正多重化忌（2个以上）
+  if (sig.sanfangJi.length >= 2) {
+    breaks.push({
+      name     : '三方多忌',
+      desc     : `三方四正${sig.sanfangJi.map(m => m.palace).join('、')}均落化忌，多宫受损，行运受阻`,
+      severity : 'medium',
+      confirmed: true,
+    });
+  }
+
+  return breaks;
+}
+
+/**
  * Step 3: 规则层结论（先于模型产出，喂给模型作为约束）
  */
 function buildOverallRuleSummary(sig) {
@@ -396,24 +577,44 @@ function buildOverallRuleSummary(sig) {
   if (sig.ji.length)   mutagenParts.push(sig.ji.map(m=>`${m.star}化忌入${m.palace}`).join('，'));
   const mutagenEffect = mutagenParts.join('；') || '无明显生年四化';
 
-  // 身宫修正
+  // 三方四正命格定位
+  const sanfangProfile = buildSanfangProfile(sig);
+
+  // 格局识别
+  const patterns = detectOverallPatterns(sig);
+
+  // 破格识别
+  const breaks = detectOverallBreaks(sig);
+
+  // 身宫修正（含七杀临身检测）
   const sameAsLife = sig.bodyMain.some(n => sig.lifeMain.includes(n));
   let bodyAdjustment = '';
   if (sig.bodyMain.length) {
-    bodyAdjustment = sameAsLife
-      ? `身宫（${sig.bodyPalaceName}）与命宫同星${sig.bodyMain[0]}，命身同星，特质高度聚焦`
-      : `身宫（${sig.bodyPalaceName}）主星${sig.bodyMain.join('+')}，修正命宫方向`;
+    const bodyHasQisha = sig.bodyMain.includes('七杀');
+    if (bodyHasQisha) {
+      bodyAdjustment = `身宫（${sig.bodyPalaceName}）为七杀，天纪"七杀临身终不美"，一生多劳`;
+    } else if (sameAsLife) {
+      bodyAdjustment = `身宫（${sig.bodyPalaceName}）与命宫同星${sig.bodyMain[0]}，命身同星，特质高度聚焦`;
+    } else {
+      bodyAdjustment = `身宫（${sig.bodyPalaceName}）主星${sig.bodyMain.join('+')}，修正命宫方向`;
+    }
   }
 
-  // 主要风险
+  // 主要风险（化忌 + 破格合并）
   const riskParts = [];
   if (sig.lifeJi.length) riskParts.push(`命宫落${sig.lifeJi.join('+')}化忌，自身受困`);
   sig.keyJiMutagens.forEach(m => {
-    riskParts.push(`${m.star}化忌入${m.palace}，该宫受损`);
+    if (!sig.lifeJi.length || m.palace !== '命宫') {  // 避免与 lifeJi 重复
+      riskParts.push(`${m.star}化忌入${m.palace}，该宫受损`);
+    }
+  });
+  breaks.filter(b => b.severity === 'high' && b.name !== '化忌入命' && b.confirmed !== false).forEach(b => {
+    riskParts.push(b.desc);
   });
   const mainRisk = riskParts.length ? riskParts.join('；') : '暂无明显重点风险';
 
-  return { baseTone, structure, mutagenEffect, bodyAdjustment, mainRisk };
+  return { baseTone, structure, mutagenEffect, bodyAdjustment, mainRisk,
+           sanfangProfile, patterns, breaks };
 }
 
 /**
@@ -432,11 +633,22 @@ function buildOverallPimingPrompt(body) {
   const evidenceText = evidence.map(e => `· ${e.label}：${e.value}`).join('\n');
 
   // 规则层结论（约束模型，不让它自由发挥）
+  const patternLines = ruleSummary.patterns.length
+    ? ruleSummary.patterns.map(p => `· ${p.name}：${p.desc}`).join('\n')
+    : '· 无明显格局成立';
+  const confirmedBreaks = ruleSummary.breaks.filter(b => b.name !== '化忌入命' && b.confirmed !== false);
+  const breakLines = confirmedBreaks.length
+    ? confirmedBreaks.map(b => `· 【${b.severity === 'high' ? '高' : '中'}】${b.name}：${b.desc}`).join('\n')
+    : '· 无明显破格';
+
   const ruleText = [
     `命宫底色：${ruleSummary.baseTone}`,
     `三方结构：${ruleSummary.structure}`,
+    `命格定位：${ruleSummary.sanfangProfile.label}——${ruleSummary.sanfangProfile.profile}`,
     `四化影响：${ruleSummary.mutagenEffect}`,
     ruleSummary.bodyAdjustment ? `身宫修正：${ruleSummary.bodyAdjustment}` : '',
+    `格局判断：\n${patternLines}`,
+    `破格凶象：\n${breakLines}`,
     `主要风险：${ruleSummary.mainRisk}`,
   ].filter(Boolean).join('\n');
 
@@ -476,6 +688,9 @@ function buildOverallPimingPrompt(body) {
       `三方：官禄${sig.sanfang.career.join('+')||'空'}／财帛${sig.sanfang.wealth.join('+')||'空'}／迁移${sig.sanfang.move.join('+')||'空'}`,
       `化忌落宫：${sig.keyJiMutagens.map(m=>m.palace).join('，')||'无'}`,
       `身宫：${sig.bodyPalaceName} ${sig.bodyMain.join('+')||'空'}`,
+      `命格定位：${ruleSummary.sanfangProfile.label}`,
+      `格局：${ruleSummary.patterns.map(p=>p.name).join('、')||'无'}`,
+      `破格：${ruleSummary.breaks.map(b=>b.name).join('、')||'无'}`,
       `规则结论 → baseTone: ${ruleSummary.baseTone}`,
       `规则结论 → mainRisk: ${ruleSummary.mainRisk}`,
       `调用 ${MODEL} 生成表达层`,
@@ -1083,25 +1298,45 @@ app.post('/api/piming', async (req, res) => {
         temperature: 0.7,
         maxTokens: 900,
       });
+      const rs = prompt.ruleSummary;
+      // 只向前端输出 confirmed !== false 的破格（条件不完整的仅留 debug）
+      const userBreaks = (rs?.breaks || [])
+        .filter(b => b.name !== '化忌入命' && b.confirmed !== false);
       const card = {
         title   : sanitizeAiText(result.title   || '整体命格分析'),
         summary : sanitizeAiText(result.summary  || ''),
         risk    : sanitizeAiText(result.risk     || ''),
         basis   : sanitizeAiText(result.basis    || ''),
-        evidence: prompt.evidence,   // 供前端调试区展示，主卡片不用
+        evidence: prompt.evidence,
+        // 结构化字段：前端速览卡 AI 两行 + badge 使用
+        sanfangProfile: rs?.sanfangProfile ? { label: rs.sanfangProfile.label } : null,
+        profileBadge  : rs?.sanfangProfile?.label || null,   // 平铺字段，供前端直接读取
+        patterns      : (rs?.patterns || []).map(p => ({ name: p.name, level: p.level })),
+        patternText   : (rs?.patterns || []).map(p => p.name).join('、') || null,
+        breaks        : userBreaks.map(b => ({ name: b.name, severity: b.severity })),
+        breakText     : userBreaks.map(b => b.name).join('、') || null,
       };
       return res.json({
         ok    : true,
         module: 'overall_piming',
         card,
         debug : {
-          topic         : 'overall_piming',
-          requestSummary: prompt.requestSummary,
-          trace         : prompt.trace,
-          rawResponse   : JSON.stringify(result),
-          durationMs    : Date.now() - t0,
-          model         : MODEL,
-          ruleSummary   : prompt.ruleSummary,
+          topic            : 'overall_piming',
+          requestSummary   : prompt.requestSummary,
+          trace            : prompt.trace,
+          rawResponse      : JSON.stringify(result),
+          durationMs       : Date.now() - t0,
+          model            : MODEL,
+          ruleSummary      : prompt.ruleSummary,
+          // 完整格局/破格候选（含 confirmed:false），仅供调试
+          patternCandidates: (rs?.patterns || []).map(p => ({ name: p.name, level: p.level, desc: p.desc })),
+          breakConditions  : (rs?.breaks   || []).map(b => ({
+            name     : b.name,
+            severity : b.severity,
+            confirmed: b.confirmed ?? true,
+            reason   : b.reason || null,
+            desc     : b.desc,
+          })),
         },
       });
     }

@@ -370,9 +370,47 @@
     <!-- 整体批命 -->
     <div class="aip-panel" id="aip-panel-base" style="display:none">
       <div class="aip-card">
-        <div class="aip-card-head"><span class="aip-tag">整体批命</span><span class="aip-card-title" id="aip-life-ttl"></span></div>
+        <!-- 卡头：tag + AI 标题 + 命格定位 badge（AI 后显示） -->
+        <div class="aip-card-head">
+          <span class="aip-tag">整体批命</span>
+          <span class="aip-card-title" id="aip-life-ttl"></span>
+          <span class="aip-profile-badge" id="aip-profile-badge" style="display:none"></span>
+        </div>
+
+        <!-- 命格速览：本地立即填充，AI 补充格局/破格两行 -->
+        <div class="aip-struct" id="aip-struct">
+          <div class="aip-struct-row">
+            <span class="aip-struct-label">命宫</span>
+            <span class="aip-struct-val"   id="aip-struct-life">—</span>
+          </div>
+          <div class="aip-struct-row">
+            <span class="aip-struct-label">三方</span>
+            <span class="aip-struct-val"   id="aip-struct-sf">—</span>
+          </div>
+          <div class="aip-struct-row">
+            <span class="aip-struct-label">四化</span>
+            <span class="aip-struct-val"   id="aip-struct-sihua">—</span>
+          </div>
+          <div class="aip-struct-row">
+            <span class="aip-struct-label">身宫</span>
+            <span class="aip-struct-val"   id="aip-struct-shen">—</span>
+          </div>
+          <!-- AI 后填充：格局 / 破格 -->
+          <div class="aip-struct-row aip-struct-ai" id="aip-struct-pattern-row" style="display:none">
+            <span class="aip-struct-label">格局</span>
+            <span class="aip-struct-val"   id="aip-struct-pattern"></span>
+          </div>
+          <div class="aip-struct-row aip-struct-ai" id="aip-struct-break-row" style="display:none">
+            <span class="aip-struct-label">破格</span>
+            <span class="aip-struct-val"   id="aip-struct-break"></span>
+          </div>
+        </div>
+
+        <!-- AI 解读正文（AI 返回前显示本地特质占位，AI 返回后替换为 summary） -->
+        <hr class="aip-struct-divider">
         <div class="aip-card-body" id="aip-life-body"></div>
         <div class="aip-card-tip"  id="aip-life-tip"></div>
+
         <!-- AI 结果分区：risk / basis / evidence（AI 返回后填充，初始隐藏） -->
         <div class="aip-life-risk"  id="aip-life-risk"  style="display:none"></div>
         <div class="aip-life-basis" id="aip-life-basis" style="display:none"></div>
@@ -3728,6 +3766,58 @@ function buildBaseMingAnalysis(chart, inputs) {
   };
 }
 
+/**
+ * 填入命格速览的本地 4 行（排盘后立即调用，无需 AI）
+ * 只操作 #aip-struct-* 系列 id，不影响大限流年任何元素
+ */
+function _aipFillStructLocal(chart) {
+  if (!chart) return;
+  const pm      = _aipPalaceMap(chart);
+  const setVal  = (id, txt) => { const el = document.getElementById(id); if (el) el.textContent = txt || '—'; };
+
+  // 命宫：主星名列表
+  const life    = pm['命宫'] || pm['命'];
+  const lifeMaj = _aipMajor(life);
+  const lifeMin = (life?.minorStars || []).map(s => s.name || '').filter(Boolean);
+  const notableMin = lifeMin.filter(n => ['文昌','文曲','左辅','右弼','天魁','天钺','擎羊','陀罗','火星','铃星'].includes(n));
+  let lifeVal = lifeMaj.length ? lifeMaj.join(' + ') : '空宫';
+  if (notableMin.length) lifeVal += '　（' + notableMin.join('、') + '）';
+  setVal('aip-struct-life', lifeVal);
+
+  // 三方四正：官禄 / 财帛 / 迁移
+  const career = pm['官禄宫'] || pm['官禄'];
+  const wealth = pm['财帛宫'] || pm['财帛'];
+  const move   = pm['迁移宫'] || pm['迁移'];
+  const sfVal  = [
+    `官禄 ${_aipMajor(career).join('+') || '空宫'}`,
+    `财帛 ${_aipMajor(wealth).join('+') || '空宫'}`,
+    `迁移 ${_aipMajor(move).join('+')   || '空宫'}`,
+  ].join(' · ');
+  setVal('aip-struct-sf', sfVal);
+
+  // 四化：禄/权/科/忌 → 落宫，简写
+  const allMut = (chart.palaces || []).flatMap(p =>
+    [...(p?.majorStars || []), ...(p?.minorStars || [])]
+      .filter(s => s.mutagen)
+      .map(s => ({ palace: p.name, star: s.name, type: String(s.mutagen || '') }))
+  );
+  const normT = t => { if (t.startsWith('化')) return t; return { '禄':'化禄','权':'化权','科':'化科','忌':'化忌' }[t] || t; };
+  const palShort = n => n.replace(/宫$/, '');
+  const sihuaParts = ['禄','权','科','忌'].map(k => {
+    const hits = allMut.filter(m => normT(m.type).includes(k));
+    return hits.length ? `化${k}→${hits.map(m => palShort(m.palace)).join('/')}` : null;
+  }).filter(Boolean);
+  setVal('aip-struct-sihua', sihuaParts.length ? sihuaParts.join(' · ') : '无生年四化');
+
+  // 身宫：宫名 + 主星
+  const shenP    = (chart.palaces || []).find(p => p.isBodyPalace) || null;
+  const shenMaj  = _aipMajor(shenP);
+  const shenName = shenP?.name || '—';
+  let shenVal = shenMaj.length ? `${shenName} · ${shenMaj.join('+')}` : `${shenName} · 空宫`;
+  if (shenMaj[0] && lifeMaj[0] && shenMaj[0] === lifeMaj[0]) shenVal += ' · 命身同星';
+  setVal('aip-struct-shen', shenVal);
+}
+
 function buildCurrentLuckAnalysis(chart, inputs, activeAge) {
   if (!chart || !activeAge) return null;
 
@@ -3824,6 +3914,17 @@ function renderAIPiming() {
     const noteEl   = document.getElementById('aip-footer-note');
     if (statusEl) statusEl.textContent = '';
     if (noteEl)   noteEl.textContent   = _AI_STATUS_CONNECTED;
+    // 重置命格速览 AI 行（格局/破格/badge），清除旧盘 AI 结果
+    const profileBadge = document.getElementById('aip-profile-badge');
+    const patternRow   = document.getElementById('aip-struct-pattern-row');
+    const breakRow     = document.getElementById('aip-struct-break-row');
+    if (profileBadge) { profileBadge.style.display = 'none'; profileBadge.textContent = ''; }
+    if (patternRow)   patternRow.style.display = 'none';
+    if (breakRow)     breakRow.style.display   = 'none';
+
+    // 填入本地命格速览 4 行（立即显示，无需 AI）
+    _aipFillStructLocal(_chart);
+
     _aipSetCard('aip-sf',   base.sanfang);
     _aipSetCard('aip-shen', base.shen);
     _aipSetCard('aip-sh',   base.sihua);
