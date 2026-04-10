@@ -2051,10 +2051,25 @@
   font-size: 10px; font-weight: 600;
   color: #a08878; letter-spacing: .04em; padding-top: 1px;
 }
-/* value 列 */
+/* value 列（旧兼容）*/
 .aip-struct-val {
   flex: 1; color: #3d302b; font-size: 11.5px; line-height: 1.55;
   word-break: break-all;
+}
+/* 宫位内容容器：主星 + 小星两行 */
+.aip-struct-palace { flex: 1; display: flex; flex-direction: column; gap: 1px; }
+.aip-palace-maj    { font-size: 12px; font-weight: 600; color: #3d302b; line-height: 1.5; }
+.aip-palace-min    { font-size: 10.5px; color: #9a7a60; line-height: 1.4; }
+.aip-palace-min:empty { display: none; }
+/* 命宫行：比三方行略重 */
+.aip-struct-life-row { background: #faf5ee; }
+.aip-struct-life-row .aip-struct-label { color: #7a4e2a; font-weight: 700; }
+.aip-struct-life-row .aip-palace-maj   { font-size: 13px; color: #2d2218; }
+/* 三方四正分节标题 */
+.aip-struct-section {
+  padding: 4px 10px 3px;
+  font-size: 9.5px; font-weight: 700; color: #b09070; letter-spacing: .1em;
+  background: #f5ede0; border-bottom: 1px solid #ede6dc;
 }
 /* AI 补充行（格局/破格）—— 浅背景区分 */
 .aip-struct-row.aip-struct-ai {

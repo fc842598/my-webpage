@@ -377,25 +377,51 @@
           <span class="aip-card-title" id="aip-life-ttl"></span>
         </div>
 
-        <!-- 命盘速览：本地 4 行立即填充 -->
+        <!-- 命盘骨架：命宫 + 三方四正，本地立即填充 -->
         <div class="aip-struct" id="aip-struct">
-          <div class="aip-struct-row">
+          <!-- 命宫 -->
+          <div class="aip-struct-row aip-struct-life-row">
             <span class="aip-struct-label">命宫</span>
-            <span class="aip-struct-val" id="aip-struct-life">—</span>
+            <div class="aip-struct-palace" id="aip-struct-life">
+              <span class="aip-palace-maj" id="aip-struct-life-maj">—</span>
+              <span class="aip-palace-min" id="aip-struct-life-min"></span>
+            </div>
           </div>
+          <!-- 三方四正分隔标题 -->
+          <div class="aip-struct-section">三方四正</div>
+          <!-- 命宫（三方内重复，结构完整） -->
           <div class="aip-struct-row">
-            <span class="aip-struct-label">三方</span>
-            <span class="aip-struct-val" id="aip-struct-sf">—</span>
+            <span class="aip-struct-label">命</span>
+            <div class="aip-struct-palace" id="aip-sf-life">
+              <span class="aip-palace-maj" id="aip-sf-life-maj">—</span>
+              <span class="aip-palace-min" id="aip-sf-life-min"></span>
+            </div>
           </div>
+          <!-- 官禄 -->
           <div class="aip-struct-row">
-            <span class="aip-struct-label">四化</span>
-            <span class="aip-struct-val" id="aip-struct-sihua">—</span>
+            <span class="aip-struct-label">官禄</span>
+            <div class="aip-struct-palace" id="aip-sf-career">
+              <span class="aip-palace-maj" id="aip-sf-career-maj">—</span>
+              <span class="aip-palace-min" id="aip-sf-career-min"></span>
+            </div>
           </div>
+          <!-- 财帛 -->
           <div class="aip-struct-row">
-            <span class="aip-struct-label">身宫</span>
-            <span class="aip-struct-val" id="aip-struct-shen">—</span>
+            <span class="aip-struct-label">财帛</span>
+            <div class="aip-struct-palace" id="aip-sf-wealth">
+              <span class="aip-palace-maj" id="aip-sf-wealth-maj">—</span>
+              <span class="aip-palace-min" id="aip-sf-wealth-min"></span>
+            </div>
           </div>
-          <!-- AI 后填充：命格定位（最重要）/ 格局 / 破格 -->
+          <!-- 迁移 -->
+          <div class="aip-struct-row">
+            <span class="aip-struct-label">迁移</span>
+            <div class="aip-struct-palace" id="aip-sf-move">
+              <span class="aip-palace-maj" id="aip-sf-move-maj">—</span>
+              <span class="aip-palace-min" id="aip-sf-move-min"></span>
+            </div>
+          </div>
+          <!-- AI 后填充：命格定位 / 格局 / 破格 -->
           <div class="aip-struct-row aip-struct-ai aip-struct-badge-row" id="aip-badge-row" style="display:none">
             <span class="aip-struct-label">定位</span>
             <span class="aip-struct-val" id="aip-profile-badge"></span>
@@ -3753,55 +3779,44 @@ function buildBaseMingAnalysis(chart, inputs) {
 }
 
 /**
- * 填入命格速览的本地 4 行（排盘后立即调用，无需 AI）
- * 只操作 #aip-struct-* 系列 id，不影响大限流年任何元素
+ * 填入命盘骨架：命宫 + 三方四正 4 宫完整信息（排盘后立即调用，无需 AI）
+ * 只操作 #aip-struct-* / #aip-sf-* 系列 id，不影响大限流年任何元素
  */
 function _aipFillStructLocal(chart) {
   if (!chart) return;
-  const pm      = _aipPalaceMap(chart);
-  const setVal  = (id, txt) => { const el = document.getElementById(id); if (el) el.textContent = txt || '—'; };
+  const pm = _aipPalaceMap(chart);
 
-  // 命宫：主星名列表
-  const life    = pm['命宫'] || pm['命'];
-  const lifeMaj = _aipMajor(life);
-  const lifeMin = (life?.minorStars || []).map(s => s.name || '').filter(Boolean);
-  const notableMin = lifeMin.filter(n => ['文昌','文曲','左辅','右弼','天魁','天钺','擎羊','陀罗','火星','铃星'].includes(n));
-  let lifeVal = lifeMaj.length ? lifeMaj.join(' + ') : '空宫';
-  if (notableMin.length) lifeVal += '　（' + notableMin.join('、') + '）';
-  setVal('aip-struct-life', lifeVal);
+  // 辅助：取宫的主星文本 和 小星文本
+  const ALL_NOTABLE_MIN = ['文昌','文曲','左辅','右弼','天魁','天钺','擎羊','陀罗','火星','铃星','天马','禄存'];
+  function palaceMaj(p) {
+    const stars = _aipMajor(p);
+    return stars.length ? stars.join(' · ') : '空宫';
+  }
+  function palaceMin(p) {
+    const mins = (p?.minorStars || []).map(s => s.name || '').filter(Boolean)
+      .filter(n => ALL_NOTABLE_MIN.includes(n));
+    return mins.length ? mins.join('  ') : '';
+  }
+  function fillPalace(majId, minId, p) {
+    const majEl = document.getElementById(majId);
+    const minEl = document.getElementById(minId);
+    if (majEl) majEl.textContent = palaceMaj(p);
+    if (minEl) minEl.textContent = palaceMin(p);
+  }
 
-  // 三方四正：官禄 / 财帛 / 迁移
+  // ── 命宫（独立大行）
+  const life = pm['命宫'] || pm['命'];
+  fillPalace('aip-struct-life-maj', 'aip-struct-life-min', life);
+
+  // ── 三方四正 4 宫
   const career = pm['官禄宫'] || pm['官禄'];
   const wealth = pm['财帛宫'] || pm['财帛'];
   const move   = pm['迁移宫'] || pm['迁移'];
-  const sfVal  = [
-    `官禄 ${_aipMajor(career).join('+') || '空宫'}`,
-    `财帛 ${_aipMajor(wealth).join('+') || '空宫'}`,
-    `迁移 ${_aipMajor(move).join('+')   || '空宫'}`,
-  ].join(' · ');
-  setVal('aip-struct-sf', sfVal);
 
-  // 四化：禄/权/科/忌 → 落宫，简写
-  const allMut = (chart.palaces || []).flatMap(p =>
-    [...(p?.majorStars || []), ...(p?.minorStars || [])]
-      .filter(s => s.mutagen)
-      .map(s => ({ palace: p.name, star: s.name, type: String(s.mutagen || '') }))
-  );
-  const normT = t => { if (t.startsWith('化')) return t; return { '禄':'化禄','权':'化权','科':'化科','忌':'化忌' }[t] || t; };
-  const palShort = n => n.replace(/宫$/, '');
-  const sihuaParts = ['禄','权','科','忌'].map(k => {
-    const hits = allMut.filter(m => normT(m.type).includes(k));
-    return hits.length ? `化${k}→${hits.map(m => palShort(m.palace)).join('/')}` : null;
-  }).filter(Boolean);
-  setVal('aip-struct-sihua', sihuaParts.length ? sihuaParts.join(' · ') : '无生年四化');
-
-  // 身宫：宫名 + 主星
-  const shenP    = (chart.palaces || []).find(p => p.isBodyPalace) || null;
-  const shenMaj  = _aipMajor(shenP);
-  const shenName = shenP?.name || '—';
-  let shenVal = shenMaj.length ? `${shenName} · ${shenMaj.join('+')}` : `${shenName} · 空宫`;
-  if (shenMaj[0] && lifeMaj[0] && shenMaj[0] === lifeMaj[0]) shenVal += ' · 命身同星';
-  setVal('aip-struct-shen', shenVal);
+  fillPalace('aip-sf-life-maj',   'aip-sf-life-min',   life);
+  fillPalace('aip-sf-career-maj', 'aip-sf-career-min', career);
+  fillPalace('aip-sf-wealth-maj', 'aip-sf-wealth-min', wealth);
+  fillPalace('aip-sf-move-maj',   'aip-sf-move-min',   move);
 }
 
 function buildCurrentLuckAnalysis(chart, inputs, activeAge) {
