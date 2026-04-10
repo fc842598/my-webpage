@@ -218,6 +218,26 @@ function _aipShowLoading(ids) {
   ids.forEach(id => _aipSetEl(id, '正在生成…'));
 }
 
+// 逐字打印效果（用于 AI 解读正文）
+let _aipTypewriterTimer = null;
+function _aipTypewriter(el, text, speed) {
+  if (!el) return;
+  if (_aipTypewriterTimer) { clearTimeout(_aipTypewriterTimer); _aipTypewriterTimer = null; }
+  el.textContent = '';
+  if (!text) return;
+  const ms = speed != null ? speed : Math.max(8, Math.min(25, Math.round(6000 / text.length)));
+  let i = 0;
+  function step() {
+    if (i < text.length) {
+      el.textContent += text[i++];
+      _aipTypewriterTimer = setTimeout(step, ms);
+    } else {
+      _aipTypewriterTimer = null;
+    }
+  }
+  step();
+}
+
 // ── 渲染结果到现有卡片 ────────────────────────────────────────────────────────
 function _aipRenderResult(moduleKey, data) {
   switch (moduleKey) {
@@ -277,10 +297,10 @@ function _aipRenderResult(moduleKey, data) {
       // ── 4. 标题 ────────────────────────────────────────
       if (ttl) ttl.textContent = card.title || 'AI 整体批命';
 
-      // ── 5. 主体解读 ────────────────────────────────────
+      // ── 5. 主体解读（逐字打印效果） ────────────────────────
       if (body) {
-        body.textContent = card.summary || '';
         body.style.color = '';  // 恢复正常颜色（清除加载/错误状态的颜色）
+        _aipTypewriter(body, card.summary || '');
       }
 
       // 占位提示隐藏（AI 内容接管）

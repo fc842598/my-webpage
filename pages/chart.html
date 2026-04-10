@@ -3895,10 +3895,11 @@ function renderAIPiming() {
   const base = buildBaseMingAnalysis(_chart, _chartInputs);
   const luck = buildCurrentLuckAnalysis(_chart, _chartInputs, _fcActiveAge);
   if (base) {
-    // aip-life：新命盘渲染时无条件重置为本地占位，清除旧盘 AI 结果
+    // aip-life：新命盘渲染时无条件重置为占位，清除旧盘 AI 结果
+    // body 留空，等 AI 返回后才显示（避免本地预生成文案被误认为 AI 结果）
     _aipSetCard('aip-life', {
       title: base.life?.title || '命宫格局',
-      body : base.life?.body  || '',
+      body : '',
       tip  : '点击「AI 深度批命」获取 AI 整体解读',
     });
     // 同步隐藏并清空调试卡，避免旧盘 debug 残留
