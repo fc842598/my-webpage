@@ -370,9 +370,13 @@
     <!-- 整体批命 -->
     <div class="aip-panel" id="aip-panel-base" style="display:none">
       <div class="aip-card">
-        <div class="aip-card-head"><span class="aip-tag">命宫格局</span><span class="aip-card-title" id="aip-life-ttl"></span></div>
+        <div class="aip-card-head"><span class="aip-tag">整体批命</span><span class="aip-card-title" id="aip-life-ttl"></span></div>
         <div class="aip-card-body" id="aip-life-body"></div>
         <div class="aip-card-tip"  id="aip-life-tip"></div>
+        <!-- AI 结果分区：risk / basis / evidence（AI 返回后填充，初始隐藏） -->
+        <div class="aip-life-risk"  id="aip-life-risk"  style="display:none"></div>
+        <div class="aip-life-basis" id="aip-life-basis" style="display:none"></div>
+        <div class="aip-life-ev"    id="aip-life-ev"    style="display:none"></div>
       </div>
       <div class="aip-card">
         <div class="aip-card-head"><span class="aip-tag">三方四正</span><span class="aip-card-title" id="aip-sf-ttl"></span></div>
@@ -3807,6 +3811,19 @@ function renderAIPiming() {
     const debugPre  = document.getElementById('aip-overall-debug-pre');
     if (debugCard) debugCard.style.display = 'none';
     if (debugPre)  debugPre.textContent = '';
+    // 清空 overall_piming AI 分区（risk / basis / evidence），避免旧盘结果残留
+    ['aip-life-risk', 'aip-life-basis', 'aip-life-ev'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) { el.style.display = 'none'; el.innerHTML = ''; }
+    });
+    // 清除 aip-life-body 的内联颜色（loading 设灰、error 设红、reset 时必须还原）
+    const lifeBodyEl = document.getElementById('aip-life-body');
+    if (lifeBodyEl) lifeBodyEl.style.color = '';
+    // 重置 AI 状态栏，避免上一盘"生成完成"和耗时信息串到新盘
+    const statusEl = document.getElementById('aip-ai-status');
+    const noteEl   = document.getElementById('aip-footer-note');
+    if (statusEl) statusEl.textContent = '';
+    if (noteEl)   noteEl.textContent   = _AI_STATUS_CONNECTED;
     _aipSetCard('aip-sf',   base.sanfang);
     _aipSetCard('aip-shen', base.shen);
     _aipSetCard('aip-sh',   base.sihua);
@@ -3912,76 +3929,9 @@ async function _refreshPimingApiHint() {
   }
 }
 
-(function _bindAipAiBtn() {
-  const btn      = document.getElementById('aip-ai-btn');
-  const statusEl = document.getElementById('aip-ai-status');
-  const noteEl   = document.getElementById('aip-footer-note');
-  if (!btn) return;
-
-  btn.addEventListener('click', async function () {
-    if (!_chart || !_chartInputs) return;
-
-    // 当前激活面板决定 topic
-    const luckPanelVisible = document.getElementById('aip-panel-luck')?.style.display !== 'none';
-    const topic = luckPanelVisible ? 'luck' : 'base';
-
-    btn.disabled = true;
-    statusEl.textContent = '正在请求 AI 解读…';
-
-    const norm = _chartInputs.norm;
-    const chartSummary = `出生：${norm.year}年${norm.month}月${norm.day}日 ${_fcResolvedShichenName(_chart, norm)}时 ${norm.gender === 'male' ? '男' : '女'}命`;
-
-    const activeGua = _liunianGuaResult || _houTianGuaResult || _xianTianGuaResult;
-    const payload = {
-      topic,
-      chartSummary,
-      palaces: (_chart.palaces || []).map(p => ({
-        name      : p.name,
-        majorStars: (p.majorStars || []).map(s => ({ name: s.name, mutagen: s.mutagen || null })),
-        minorStars: (p.minorStars || []).map(s => ({ name: s.name, mutagen: s.mutagen || null })),
-      })),
-      activeAge: _fcActiveAge,
-      gua: activeGua ? { name: activeGua.name, period: activeGua.period || '' } : null,
-    };
-
-    try {
-      const apiBase = await _resolvePimingApiBase();
-      const resp = await fetch(_joinApiUrl(apiBase, '/api/piming'), {
-        method : 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body   : JSON.stringify(payload),
-      });
-      if (!resp.ok) throw new Error(_AI_STATUS_FAILED);
-      const data = await resp.json();
-      if (!data.ok) throw new Error(_AI_STATUS_FAILED);
-
-      const r = data.result;
-      statusEl.textContent = _AI_STATUS_CONNECTED;
-      noteEl.textContent   = _AI_STATUS_CONNECTED;
-
-      if (topic === 'base') {
-        _aipSetCard('aip-sh', {
-          title: 'AI 风险提示',
-          body : [r.overview, r.risks].filter(Boolean).join('\n'),
-          tip  : r.advice || '',
-        });
-      } else {
-        _aipSetCard('aip-dx',   { title: 'AI 大限解读', body: r.overview + '\n' + r.currentLuck, tip: r.advice });
-        _aipSetCard('aip-gua',  { title: 'AI 风险提示', body: r.risks, tip: '' });
-      }
-    } catch (err) {
-      const statusText = _aiStatusForError(err);
-      statusEl.textContent = statusText;
-      noteEl.textContent = statusText;
-    } finally {
-      btn.disabled = false;
-    }
-  });
-}());
-
 void _refreshPimingApiHint();
 
-// 暴露给普通脚本（ai-piming.js），module 作用域内的函数默认不可见
+// 暴露给普通脚本（ai-piming.js），按钮绑定和新后端调用都由 ai-piming.js 接管
 window._resolvePimingApiBase = _resolvePimingApiBase;
 window._joinApiUrl            = _joinApiUrl;
 

@@ -2007,6 +2007,16 @@
 .aip-card-body  { font-size: 12px; color: #5c4d45; line-height: 1.75; white-space: pre-line; }
 .aip-card-tip   { margin-top: 7px; font-size: 11px; color: #963d32;
                   padding-left: 9px; border-left: 2px solid #e8c9b0; line-height: 1.6; }
+/* overall_piming 主卡片分区 */
+.aip-life-risk  { margin-top: 9px; font-size: 11px; color: #963d32; white-space: pre-line;
+                  padding: 5px 9px; background: rgba(150,61,50,.04);
+                  border-left: 2px solid #e8c9b0; border-radius: 0 4px 4px 0; line-height: 1.65; }
+.aip-life-basis { margin-top: 7px; font-size: 11px; color: #8a7a70; white-space: pre-line;
+                  padding-left: 9px; border-left: 2px solid #d4c9be; line-height: 1.6; }
+.aip-life-ev    { margin-top: 9px; display: flex; flex-wrap: wrap; gap: 5px; }
+.aip-ev-item    { font-size: 10px; background: #f5ede0; color: #7a5c4a;
+                  padding: 2px 8px; border-radius: 10px; }
+.aip-ev-item b  { color: #3d302b; font-weight: 600; }
 .aip-footer-note { text-align: center; font-size: 11px; color: #c0b4aa; padding: 14px 0 0; }
 
 .aip-ai-bar   { display: flex; align-items: center; gap: 12px; margin-top: 18px; justify-content: center; }

@@ -24,7 +24,6 @@ const OpenAI  = require('openai').default ?? require('openai');
 const PORT    = process.env.PORT    || 3001;
 const MODEL   = process.env.DEEPSEEK_MODEL || 'deepseek-chat';  // 改成 deepseek-reasoner 即升级推理
 const API_KEY = process.env.DEEPSEEK_API_KEY;
-const MINGGONG_DEBUG_DOC_PATH = path.join(__dirname, '..', 'docs', 'minggong-ai-debug-base.md');
 
 if (!API_KEY) {
   console.error('[piming-api] 缺少 DEEPSEEK_API_KEY 环境变量，请在 server/.env 中设置');
@@ -35,25 +34,6 @@ const deepseek = new OpenAI({
   baseURL: 'https://api.deepseek.com',
   apiKey : API_KEY,
 });
-
-function readTextFileSafe(filePath, fallback = '') {
-  try {
-    return fs.readFileSync(filePath, 'utf8');
-  } catch (_err) {
-    return fallback;
-  }
-}
-
-const FALLBACK_MINGGONG_DEBUG_DOC = `
-## 命宫总批 AI 调试文档（基础版）
-- 只处理命宫格局卡片
-- 只看命宫与三方四正
-- 标题沿用前端标题
-- summary 必须引用命宫主星和至少一个三方四正宫位
-- risk 只写一条最关键提醒
-- basis 只写本次判断主要依据
-`.trim();
-const MINGGONG_DEBUG_DOC = readTextFileSafe(MINGGONG_DEBUG_DOC_PATH, FALLBACK_MINGGONG_DEBUG_DOC);
 
 // ── 评分缓存（文件级，同命盘同年龄段不重复调用 AI）──────────────
 const PROMPT_VERSION = 'v3-two-layer';
@@ -262,55 +242,6 @@ app.get('/api/ping', (_req, res) => res.json({ ok: true, model: MODEL }));
 
 // ── Prompt 构建 ──────────────────────────────────────────
 
-function buildPrompt(topic, body) {
-  const RETURN_SCHEMA = `
-返回严格JSON（只返回JSON，不要任何额外说明或 markdown 代码块）：
-{
-  "overview":    "命格/阶段一句话总结（≤30字）",
-  "minggong":    "命宫格局分析（≤60字，必须引用主星名）",
-  "currentLuck": "当前大限/流年重点（≤60字，引用具体宫位或卦名）",
-  "risks":       "最需注意的风险点（≤40字）",
-  "advice":      "核心建议（≤40字）"
-}`;
-
-  if (topic === 'base') {
-    return {
-      system: '你是一位精通紫微斗数的命理师，分析简洁、有依据，不说空泛套话。',
-      user  : `请根据以下本命盘数据，对"本命格局"进行结构化批命分析：
-
-${body}
-
-重点分析：命宫主星与特质、身宫辅助、三方四正对命宫的影响、生年四化中的重点。
-currentLuck 字段本命批命不适用，填写 "（见大限流年）" 即可。
-${RETURN_SCHEMA}`,
-    };
-  }
-
-  if (topic === 'luck') {
-    return {
-      system: '你是一位精通紫微斗数和子平法的命理师，分析精准、有依据，不说空泛套话。',
-      user  : `请根据以下当前大限/流年数据，进行结构化批命分析：
-
-${body}
-
-重点分析：当前大限阶段特质、流年卦象提示、小限落宫的宫位意义、近期行动建议。
-minggong 字段大限流年批命不适用，填写 "（见本命批命）" 即可。
-${RETURN_SCHEMA}`,
-    };
-  }
-
-  // 通用主题（婚姻/财运/事业/健康）预留
-  return {
-    system: '你是一位精通紫微斗数的命理师，分析简洁有依据。',
-    user  : `主题：${topic}\n\n${body}\n\n${RETURN_SCHEMA}`,
-  };
-}
-
-// ── overall_piming 规则层 ────────────────────────────────────────────────────
-
-/**
- * Step 1: 从 chartData 提取结构化信号
- */
 function collectOverallSignals(cd) {
   // ── 安全取星名：兼容 string[] 和 {name}[] 两种形态 ──────────────────────────
   const starName   = s => (typeof s === 'string' ? s : s?.name) || '';
@@ -552,56 +483,6 @@ function buildOverallPimingPrompt(body) {
     ],
   };
 }
-
-function buildMinggongDevPrompt(req) {
-  const { cardTitle = '', ctx = {}, taskPrompt = '' } = req || {};
-  const contextText = JSON.stringify(ctx || {}, null, 2);
-  const system = [
-    '你是紫微斗数命宫总批模块的开发调试分析助手。',
-    '你只处理命宫格局这一张卡片，不扩写其它主题。',
-    '你必须严格依照调试文档和结构化上下文输出，不得杜撰未提供的星曜、宫位、四化。',
-    '你必须返回严格 JSON，不要 markdown，不要代码块。',
-  ].join('\n');
-
-  const user = [
-    '【当前卡片标题】',
-    cardTitle || '（未提供）',
-    '',
-    '【调试文档】',
-    MINGGONG_DEBUG_DOC.trim(),
-    '',
-    ...(taskPrompt ? ['【任务补充】', taskPrompt.trim(), ''] : []),
-    '【结构化命盘上下文】',
-    contextText,
-    '',
-    '【输出格式】',
-    '{',
-    '  "title": "沿用当前卡片标题",',
-    '  "summary": "80到160字，必须引用命宫主星，并至少提到一个三方四正宫位",',
-    '  "risk": "一句最关键提醒，50字内",',
-    '  "basis": "开发调试字段，说明本次判断主要依据，必须点名命宫和至少一个三方四正宫位"',
-    '}',
-  ].join('\n');
-
-  return {
-    system,
-    user,
-    contextText,
-    trace: {
-      docPath: MINGGONG_DEBUG_DOC_PATH,
-      debugDoc: MINGGONG_DEBUG_DOC.trim(),
-      steps: [
-        '收到 /api/piming topic=minggong_dev',
-        `载入调试文档：${path.basename(MINGGONG_DEBUG_DOC_PATH)}`,
-        '整理命宫与三方四正结构化上下文',
-        `调用 DeepSeek 模型：${MODEL}`,
-        '解析 JSON 返回并回传前端',
-      ],
-    },
-  };
-}
-
-// ── 调用 DeepSeek ────────────────────────────────────────
 
 async function callDeepSeek(system, user, options = {}) {
   const resp = await deepseek.chat.completions.create({
@@ -999,26 +880,6 @@ async function scoreLifeCurveChunk(chartSummary, yearsChunk, decadeProfilesMap) 
 
 // ── 请求体格式化（把前端数据转成可读文本）───────────────────
 
-function formatBody(req) {
-  const { chartSummary = '', palaces = [], focus = '', activeAge, gua } = req;
-  let lines = [];
-  if (chartSummary) lines.push('【命盘摘要】', chartSummary, '');
-  if (palaces.length) {
-    lines.push('【宫位数据】');
-    palaces.forEach(p => {
-      const stars = [...(p.majorStars||[]), ...(p.minorStars||[])];
-      const starStr = stars.map(s => s.name + (s.mutagen ? s.mutagen : '')).join('、') || '空宫';
-      lines.push(`  ${p.name}：${starStr}`);
-    });
-    lines.push('');
-  }
-  if (activeAge) lines.push(`【当前虚岁】${activeAge}岁`);
-  if (gua)       lines.push(`【流年卦】${gua.name || '—'}（${gua.period || ''}）`);
-  if (focus)     lines.push('', '【重点关注】', focus);
-  return lines.join('\n');
-}
-
-// ── AI 智能识别对话接口 ──────────────────────────────────
 const CHAT_SYSTEM = `你是紫微斗数排盘信息采集助手，唯一任务是收集命盘所需的出生信息。
 
 【必须收集的字段】
@@ -1245,46 +1106,11 @@ app.post('/api/piming', async (req, res) => {
       });
     }
 
-    if (topic === 'minggong_dev') {
-      const prompt = buildMinggongDevPrompt(req.body);
-      const result = await callDeepSeek(prompt.system, prompt.user, {
-        temperature: 0.4,
-        maxTokens: 900,
-      });
-      const out = {
-        title  : sanitizeAiText(result.title || req.body.cardTitle || ''),
-        summary: sanitizeAiText(result.summary || ''),
-        risk   : sanitizeAiText(result.risk || ''),
-        basis  : sanitizeAiText(result.basis || ''),
-      };
-      return res.json({
-        ok: true,
-        topic,
-        model: MODEL,
-        result: out,
-        trace: {
-          ...prompt.trace,
-          system: prompt.system,
-          user: prompt.user,
-          context: prompt.contextText,
-          response: JSON.stringify(out, null, 2),
-        },
-      });
-    }
-
-    const body   = formatBody(req.body);
-    const prompt = buildPrompt(topic, body);
-    const result = await callDeepSeek(prompt.system, prompt.user);
-
-    // 保证返回结构完整（缺字段时填默认值）
-    const out = {
-      overview   : result.overview    || '',
-      minggong   : result.minggong    || '',
-      currentLuck: result.currentLuck || '',
-      risks      : result.risks       || '',
-      advice     : result.advice      || '',
-    };
-    res.json({ ok: true, topic, model: MODEL, result: out });
+    return res.status(400).json({
+      ok: false,
+      error: 'unsupported topic',
+      supportedTopics: ['overall_piming'],
+    });
   } catch (err) {
     console.error('[piming-api] DeepSeek 调用失败:', err.message);
     res.status(502).json({ error: 'AI 调用失败：' + err.message });

@@ -222,14 +222,59 @@ function _aipShowLoading(ids) {
 function _aipRenderResult(moduleKey, data) {
   switch (moduleKey) {
     case 'overall': {
-      // card → 命宫格局主卡片（aip-life）
-      const card = data.card || {};
-      const ttl  = document.getElementById('aip-life-ttl');
-      const body = document.getElementById('aip-life-body');
-      const tip  = document.getElementById('aip-life-tip');
-      if (ttl)  ttl.textContent  = card.title   || 'AI 整体批命';
-      if (body) { body.textContent = card.summary || ''; body.style.whiteSpace = 'pre-wrap'; }
-      if (tip)  tip.textContent  = [card.risk ? `⚠ ${card.risk}` : '', card.basis ? `依据：${card.basis}` : ''].filter(Boolean).join('\n');
+      // card → 整体批命主卡片（aip-life）
+      const card  = data.card || {};
+      const ttl   = document.getElementById('aip-life-ttl');
+      const body  = document.getElementById('aip-life-body');
+      const tip   = document.getElementById('aip-life-tip');
+      const riskEl  = document.getElementById('aip-life-risk');
+      const basisEl = document.getElementById('aip-life-basis');
+      const evEl    = document.getElementById('aip-life-ev');
+
+      // 标题
+      if (ttl) ttl.textContent = card.title || 'AI 整体批命';
+
+      // 主体解读
+      if (body) {
+        body.textContent = card.summary || '';
+        body.style.color = '';  // 恢复正常颜色（清除加载/错误状态的颜色）
+      }
+
+      // 占位提示隐藏（AI 内容接管）
+      if (tip) tip.textContent = '';
+
+      // 风险提醒：单独区块
+      if (riskEl) {
+        if (card.risk) {
+          riskEl.textContent = '⚠ ' + card.risk;
+          riskEl.style.display = '';
+        } else {
+          riskEl.style.display = 'none';
+        }
+      }
+
+      // 判断依据：单独区块
+      if (basisEl) {
+        if (card.basis) {
+          basisEl.textContent = '依据：' + card.basis;
+          basisEl.style.display = '';
+        } else {
+          basisEl.style.display = 'none';
+        }
+      }
+
+      // evidence 轻量标签（有则展示，无则隐藏）
+      if (evEl) {
+        const ev = Array.isArray(card.evidence) ? card.evidence : [];
+        if (ev.length) {
+          evEl.innerHTML = ev
+            .map(e => `<span class="aip-ev-item">${e.label} <b>${e.value}</b></span>`)
+            .join('');
+          evEl.style.display = '';
+        } else {
+          evEl.style.display = 'none';
+        }
+      }
 
       // debug → 调试区
       const dbg = data.debug || {};
@@ -294,6 +339,18 @@ function _aipRenderResult(moduleKey, data) {
       if (statusEl) statusEl.textContent = '正在生成…';
       if (noteEl)   noteEl.textContent   = '正在调用 AI…';
 
+      // overall 加载中：清空 AI 分区，body 改为加载提示
+      if (moduleKey === 'overall') {
+        const body = document.getElementById('aip-life-body');
+        const tip  = document.getElementById('aip-life-tip');
+        if (body) { body.textContent = 'AI 正在分析命盘，请稍候…'; body.style.color = '#9a8878'; }
+        if (tip)  tip.textContent = '';
+        ['aip-life-risk', 'aip-life-basis', 'aip-life-ev'].forEach(id => {
+          const el = document.getElementById(id);
+          if (el) { el.style.display = 'none'; el.innerHTML = ''; }
+        });
+      }
+
       try {
         const data = await _aipCallBackend(moduleKey, extraParams);
         _aipRenderResult(moduleKey, data);
@@ -309,12 +366,20 @@ function _aipRenderResult(moduleKey, data) {
         const msg = err?.message || 'AI 生成失败';
         if (statusEl) statusEl.textContent = msg;
         if (noteEl)   noteEl.textContent   = msg;
+        // overall 失败：在 body 显示错误，保持其他分区隐藏
+        if (moduleKey === 'overall') {
+          const body = document.getElementById('aip-life-body');
+          const tip  = document.getElementById('aip-life-tip');
+          if (body) { body.textContent = '⚠ ' + msg + '\n请稍后重试'; body.style.color = '#963d32'; }
+          if (tip)  tip.textContent = '';
+        }
       } finally {
         newBtn.disabled = false;
       }
     });
 
-    if (noteEl) noteEl.textContent = 'AI 批命已就绪（新后端）· 点击上方按钮获取深度解读';
+    // 保持 chart.html 的连接状态文案，不再额外覆盖成另一套“已就绪”提示
+    if (noteEl && !noteEl.textContent.trim()) noteEl.textContent = 'AI服务已连接';
   }
 
   if (document.readyState === 'loading') {
