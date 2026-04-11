@@ -36,6 +36,25 @@ function _findPalaceByName(chart, names) {
   return (chart?.palaces || []).find(p => arr.includes(p.name)) || null;
 }
 
+function _serializePalaceDetail(palace) {
+  if (!palace) return null;
+
+  return {
+    name: palace.name,
+    branch: palace.earthlyBranch,
+    majorStars: (palace.majorStars || []).map(s => ({
+      name: s.name,
+      mutagen: s.mutagen || null,
+      brightness: s.brightness || '',
+    })),
+    minorStars: (palace.minorStars || []).map(s => ({
+      name: s.name,
+      mutagen: s.mutagen || null,
+    })),
+    adjStars: (palace.adjectiveStars || []).map(s => ({ name: s.name })),
+  };
+}
+
 // 四化 type 归一：禄/权/科/忌 → 化禄/化权/化科/化忌
 function _normMutagenType(t) {
   if (!t) return '';
@@ -142,16 +161,13 @@ function buildChartPayload() {
     yearStem:          chart.yearStem          || pillars?.yearStem   || '',
 
     // 核心宫位（详细信息，供 overall/minggong 使用）
-    lifePalace:        lifePalace   ? { name: lifePalace.name,   branch: lifePalace.earthlyBranch,
-      majorStars: (lifePalace.majorStars || []).map(s => ({ name: s.name, mutagen: s.mutagen || null, brightness: s.brightness || '' })),
-      minorStars: (lifePalace.minorStars || []).map(s => ({ name: s.name, mutagen: s.mutagen || null })),
-    } : null,
+    lifePalace:        _serializePalaceDetail(lifePalace),
     bodyPalaceDetail:  bodyPalaceDetail ? { name: bodyPalaceDetail.name, branch: bodyPalaceDetail.earthlyBranch,
       majorStars: (bodyPalaceDetail.majorStars || []).map(s => s.name),
     } : null,
-    careerPalace:      careerPalace  ? { name: careerPalace.name,  majorStars: (careerPalace.majorStars || []).map(s => s.name)  } : null,
-    wealthPalace:      wealthPalace  ? { name: wealthPalace.name,  majorStars: (wealthPalace.majorStars || []).map(s => s.name)  } : null,
-    movePalace:        movePalace    ? { name: movePalace.name,    majorStars: (movePalace.majorStars   || []).map(s => s.name)  } : null,
+    careerPalace:      _serializePalaceDetail(careerPalace),
+    wealthPalace:      _serializePalaceDetail(wealthPalace),
+    movePalace:        _serializePalaceDetail(movePalace),
     yearMutagens:      _yearMutagens(chart),
     palacesSummary:    _palaceSummary(chart.palaces),
 
