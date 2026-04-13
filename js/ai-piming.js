@@ -310,7 +310,7 @@ function _aipRenderResult(moduleKey, data) {
       // ── 6. 风险提醒 ────────────────────────────────────
       if (riskEl) {
         if (card.risk) {
-          riskEl.textContent = '⚠ ' + card.risk;
+          riskEl.textContent = '要留意：' + card.risk;
           riskEl.style.display = '';
         } else {
           riskEl.style.display = 'none';
@@ -320,7 +320,7 @@ function _aipRenderResult(moduleKey, data) {
       // ── 7. 判断依据 ────────────────────────────────────
       if (basisEl) {
         if (card.basis) {
-          basisEl.textContent = '依据：' + card.basis;
+          basisEl.textContent = '判断依据：' + card.basis;
           basisEl.style.display = '';
         } else {
           basisEl.style.display = 'none';
@@ -413,7 +413,7 @@ function _aipRenderResult(moduleKey, data) {
         if (patternRow)   patternRow.style.display = 'none';
         if (breakRow)     breakRow.style.display   = 'none';
         // 加载中收起折叠区，避免旧盘内容残留展开
-        document.getElementById('aip-expand-basis')?.removeAttribute('open');
+        document.getElementById('aip-struct-details')?.setAttribute('open', 'open');
       }
 
       try {

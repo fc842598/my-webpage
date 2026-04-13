@@ -368,23 +368,33 @@
     </div>
 
     <!-- 整体批命 -->
+    <div class="aip-mainline-note">
+      <span class="aip-mainline-tag">当前主线</span>
+      <span class="aip-mainline-copy">先把整体批命主卡做成成品，人生曲线和大限流年先作为辅助信息保留。</span>
+    </div>
+
     <div class="aip-panel" id="aip-panel-base">
 
       <!-- ① 主功能卡：唯一主视图 -->
       <div class="aip-card aip-main-card">
-        <div class="aip-card-head">
+        <div class="aip-card-head aip-main-card-head">
           <span class="aip-tag">整体批命</span>
           <span class="aip-card-title" id="aip-life-ttl"></span>
         </div>
 
         <!-- 命盘骨架：折叠区，默认关闭，点开查看三方四正 -->
-        <details class="aip-struct-details" id="aip-struct-details">
+        <div class="aip-main-card-intro">
+          <div class="aip-main-card-kicker">命宫 + 三方四正</div>
+          <div class="aip-main-card-copy">先看命宫定人的底色，再看官禄、财帛、迁移，直接收成这个人一生怎么走。</div>
+        </div>
+        <details class="aip-struct-details" id="aip-struct-details" open>
           <summary class="aip-struct-summary">
-            <span class="aip-struct-summary-label">命盘</span>
+            <span class="aip-struct-summary-label">命宫 + 三方四正</span>
             <span class="aip-struct-summary-life" id="aip-struct-life-maj">—</span>
             <span class="aip-struct-summary-min"  id="aip-struct-life-min"></span>
           </summary>
           <div class="aip-struct" id="aip-struct">
+            <div class="aip-struct-section">命宫 + 三方四正</div>
             <!-- 命宫 -->
             <div class="aip-struct-row aip-struct-life-row">
               <span class="aip-struct-label">命宫</span>
@@ -410,14 +420,6 @@
               <span class="aip-struct-label">定位</span>
               <span class="aip-struct-val" id="aip-profile-badge"></span>
             </div>
-            <div class="aip-struct-row aip-struct-ai" id="aip-struct-pattern-row" style="display:none">
-              <span class="aip-struct-label">格局</span>
-              <span class="aip-struct-val" id="aip-struct-pattern"></span>
-            </div>
-            <div class="aip-struct-row aip-struct-ai" id="aip-struct-break-row" style="display:none">
-              <span class="aip-struct-label">破格</span>
-              <span class="aip-struct-val" id="aip-struct-break"></span>
-            </div>
           </div>
         </details>
 
@@ -429,7 +431,7 @@
 
         <!-- AI 综合解读正文 -->
         <hr class="aip-struct-divider">
-        <div class="aip-section-label">AI 综合解读</div>
+        <div class="aip-section-label">整体解读</div>
         <div class="aip-card-body" id="aip-life-body"></div>
         <div class="aip-card-tip"  id="aip-life-tip"></div>
 
@@ -3929,8 +3931,8 @@ function renderAIPiming() {
     if (profileBadge) profileBadge.textContent = '';
     if (patternRow)   patternRow.style.display = 'none';
     if (breakRow)     breakRow.style.display   = 'none';
-    // 新盘重置：收起命盘骨架折叠区，避免旧盘内容残留展开
-    document.getElementById('aip-struct-details')?.removeAttribute('open');
+    // 新盘重置：默认展开命宫 + 三方四正，直接把主卡骨架呈现给用户
+    document.getElementById('aip-struct-details')?.setAttribute('open', 'open');
 
     // 填入本地命格速览 4 行（立即显示，无需 AI）
     _aipFillStructLocal(_chart);

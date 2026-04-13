@@ -1998,17 +1998,68 @@
                font-family: inherit; margin-bottom: -1px; transition: color .15s; }
 .aip-tab.active  { color: #963d32; border-bottom-color: #963d32; font-weight: bold; }
 .aip-tab:hover   { color: #6b4e41; }
+.aip-mainline-note {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 14px;
+  padding: 10px 12px;
+  background: #f7efe4;
+  border: 1px solid #eadcca;
+  border-radius: 10px;
+}
+.aip-mainline-tag {
+  flex-shrink: 0;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: #efe1cd;
+  color: #8b5e32;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .08em;
+}
+.aip-mainline-copy {
+  font-size: 11px;
+  line-height: 1.7;
+  color: #7a6758;
+}
 .aip-panel   { display: flex; flex-direction: column; gap: 10px; }
 .aip-card    { background: #fff; border: 1px solid #ede6dc; border-radius: 8px; padding: 13px 15px; }
 .aip-card-head  { display: flex; align-items: center; gap: 9px; margin-bottom: 7px; }
 .aip-tag        { background: #f5ede0; color: #7a5c4a; font-size: 10px;
                   padding: 2px 9px; border-radius: 10px; white-space: nowrap; flex-shrink: 0; }
 .aip-card-title { font-size: 13px; font-weight: bold; color: #3d302b; }
-.aip-card-body  { font-size: 12px; color: #5c4d45; line-height: 1.75; white-space: pre-line; }
+.aip-card-body  { font-size: 12.5px; color: #5c4d45; line-height: 1.88; white-space: pre-line; }
 .aip-card-tip   { margin-top: 7px; font-size: 11px; color: #963d32;
                   padding-left: 9px; border-left: 2px solid #e8c9b0; line-height: 1.6; }
 /* overall_piming 主卡片（略加强边框） */
-.aip-main-card { border-color: #ddd0c0; }
+.aip-main-card {
+  border-color: #d9c9b7;
+  border-radius: 14px;
+  padding: 18px 18px 16px;
+  box-shadow: 0 10px 26px rgba(72, 46, 28, 0.04);
+}
+.aip-main-card-head { margin-bottom: 10px; }
+.aip-main-card-intro {
+  margin-bottom: 10px;
+  padding: 10px 12px;
+  background: linear-gradient(180deg, #fbf5ed 0%, #f8efe3 100%);
+  border: 1px solid #eadfce;
+  border-radius: 10px;
+}
+.aip-main-card-kicker {
+  margin-bottom: 4px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  color: #a07c56;
+  text-transform: uppercase;
+}
+.aip-main-card-copy {
+  font-size: 11.5px;
+  line-height: 1.7;
+  color: #6a584c;
+}
 /* overall_piming 主卡片分区 */
 .aip-life-risk  { margin-top: 11px; font-size: 11.5px; color: #7a2e20; white-space: pre-line;
                   padding: 7px 10px; background: rgba(150,61,50,.06);
@@ -2032,11 +2083,11 @@
 }
 
 /* 命盘折叠容器 */
-.aip-struct-details { margin: 8px 0 4px; }
+.aip-struct-details { margin: 8px 0 6px; }
 .aip-struct-summary {
   list-style: none; cursor: pointer; user-select: none;
   display: flex; align-items: center; gap: 7px;
-  padding: 5px 2px; font-size: 11px;
+  padding: 6px 2px 8px; font-size: 11px;
 }
 .aip-struct-summary::-webkit-details-marker { display: none; }
 .aip-struct-summary-label {
@@ -2059,8 +2110,9 @@
 /* 速览区容器 */
 .aip-struct {
   margin: 4px 0 2px;
-  border: 1px solid #ede6dc; border-radius: 6px;
+  border: 1px solid #e6dbce; border-radius: 10px;
   overflow: hidden; font-size: 11.5px;
+  background: #fffdfa;
 }
 
 /* 单行内联：主星 + 小星在同一行 */
@@ -2071,7 +2123,7 @@
 /* 每行 */
 .aip-struct-row {
   display: flex; align-items: flex-start;
-  gap: 8px; padding: 6px 10px;
+  gap: 8px; padding: 8px 11px;
   border-bottom: 1px solid #f2ece4;
 }
 .aip-struct-row:last-child { border-bottom: none; }
@@ -2099,7 +2151,7 @@
 .aip-struct-life-row .aip-palace-maj   { font-size: 13px; color: #2d2218; }
 /* 三方四正分节标题 */
 .aip-struct-section {
-  padding: 4px 10px 3px;
+  padding: 7px 11px 6px;
   font-size: 9.5px; font-weight: 700; color: #b09070; letter-spacing: .1em;
   background: #f5ede0; border-bottom: 1px solid #ede6dc;
 }
@@ -2138,6 +2190,7 @@
 .aip-ai-status { font-size: 12px; color: #7a5c4a; }
 
 @media (max-width: 540px) {
+  .aip-mainline-note { align-items: flex-start; flex-direction: column; gap: 6px; }
   .aip-wrap { padding: 0 10px; }
   .aip-tab  { font-size: 12px; padding: 7px 14px; }
   .aip-card { padding: 10px 12px; }
