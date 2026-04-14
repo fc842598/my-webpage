@@ -378,16 +378,12 @@ function _aipRenderResult(moduleKey, data) {
   }
 }
 
-// ── 主入口：劫持 aip-ai-btn，替换为新后端调用 ────────────────────────────────
+// ── 主入口：两个独立 AI 批命按钮 ─────────────────────────────────────────────
 (function _initAipNewBackend() {
-  // 等 DOM 就绪（chart.html 里 IIFE 已先运行，这里覆盖）
-  function _bind() {
-    const btn      = document.getElementById('aip-ai-btn');
-    const statusEl = document.getElementById('aip-ai-status');
-    const noteEl   = document.getElementById('aip-footer-note');
+  function _bindOverallBtn() {
+    const btn      = document.getElementById('aip-overall-btn');
+    const statusEl = document.getElementById('aip-overall-status');
     if (!btn) return;
-
-    // 移除旧的所有点击监听（通过替换 DOM 节点）
     const newBtn = btn.cloneNode(true);
     btn.parentNode.replaceChild(newBtn, btn);
 
@@ -396,105 +392,89 @@ function _aipRenderResult(moduleKey, data) {
         if (statusEl) statusEl.textContent = '请先完成排盘';
         return;
       }
-
-      const luckPanelVisible = document.getElementById('aip-panel-luck')?.style.display !== 'none';
-      const moduleKey = luckPanelVisible ? 'current_luck' : 'overall';
-      const extraParams = luckPanelVisible ? { activeAge: window._fcActiveAge || 1 } : {};
-
       newBtn.disabled = true;
       if (statusEl) statusEl.textContent = '正在生成…';
-      if (noteEl)   noteEl.textContent   = '正在调用 AI…';
 
-      // overall 加载中：清空 AI 分区，body 改为加载提示
-      if (moduleKey === 'overall') {
-        const body = document.getElementById('aip-life-body');
-        const tip  = document.getElementById('aip-life-tip');
-        if (body) { body.textContent = 'AI 正在分析命盘，请稍候…'; body.style.color = '#9a8878'; }
-        if (tip)  tip.textContent = '';
-        ['aip-life-risk', 'aip-life-basis', 'aip-life-ev'].forEach(id => {
-          const el = document.getElementById(id);
-          if (el) { el.style.display = 'none'; el.innerHTML = ''; }
-        });
-        // 隐藏 AI 速览行（防止上一次结果在加载中期残留）
-        const badgeRow     = document.getElementById('aip-badge-row');
-        const profileBadge = document.getElementById('aip-profile-badge');
-        const patternRow   = document.getElementById('aip-struct-pattern-row');
-        const breakRow     = document.getElementById('aip-struct-break-row');
-        if (badgeRow)     badgeRow.style.display   = 'none';
-        if (profileBadge) profileBadge.textContent = '';
-        if (patternRow)   patternRow.style.display = 'none';
-        if (breakRow)     breakRow.style.display   = 'none';
-        document.getElementById('aip-struct-details')?.removeAttribute('open');
-
-        const shenTtl  = document.getElementById('aip-shen-ttl');
-        const shenBody = document.getElementById('aip-shen-body');
-        const shenTip  = document.getElementById('aip-shen-tip');
-        if (shenTtl)  shenTtl.textContent = '身宫批命';
-        if (shenBody) { shenBody.textContent = 'AI 正在分析身宫，请稍候…'; shenBody.style.color = '#9a8878'; }
-        if (shenTip)  shenTip.textContent = '';
-      }
+      const body = document.getElementById('aip-life-body');
+      const tip  = document.getElementById('aip-life-tip');
+      if (body) { body.textContent = 'AI 正在分析命盘，请稍候…'; body.style.color = '#9a8878'; }
+      if (tip)  tip.textContent = '';
+      ['aip-life-risk', 'aip-life-basis', 'aip-life-ev'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) { el.style.display = 'none'; el.innerHTML = ''; }
+      });
+      const badgeRow     = document.getElementById('aip-badge-row');
+      const profileBadge = document.getElementById('aip-profile-badge');
+      const patternRow   = document.getElementById('aip-struct-pattern-row');
+      const breakRow     = document.getElementById('aip-struct-break-row');
+      if (badgeRow)     badgeRow.style.display   = 'none';
+      if (profileBadge) profileBadge.textContent = '';
+      if (patternRow)   patternRow.style.display = 'none';
+      if (breakRow)     breakRow.style.display   = 'none';
+      document.getElementById('aip-struct-details')?.removeAttribute('open');
 
       try {
-        if (moduleKey === 'overall') {
-          const overallData = await _aipCallBackend('overall', extraParams);
-          _aipRenderResult('overall', overallData);
-
-          let shengongHint = '';
-          try {
-            const shengongData = await _aipCallBackend('shengong', extraParams);
-            _aipRenderResult('shengong', shengongData);
-            const smeta = shengongData.meta || shengongData.debug || {};
-            shengongHint = ` · shengong ${smeta.durationMs || 0}ms`;
-          } catch (shenErr) {
-            const shenBody = document.getElementById('aip-shen-body');
-            const shenTip = document.getElementById('aip-shen-tip');
-            if (shenBody) { shenBody.textContent = `⚠ ${shenErr?.message || '身宫批命生成失败'}`; shenBody.style.color = '#963d32'; }
-            if (shenTip) shenTip.textContent = '请稍后重试';
-            shengongHint = ' · shengong failed';
-          }
-
-          const meta = overallData.meta || overallData.debug || {};
-          const hint = `overall ${meta.durationMs || 0}ms${shengongHint}`;
-          if (statusEl) statusEl.textContent = '生成完成';
-          if (noteEl)   noteEl.textContent   = hint;
-        } else {
-          const data = await _aipCallBackend(moduleKey, extraParams);
-          _aipRenderResult(moduleKey, data);
-
-          const meta = data.meta || data.debug || {};
-          const hint = `v${meta.versionNo || '?'} · ${meta.modelName || ''} · ${meta.tokensUsed || 0} tokens · ${meta.durationMs || 0}ms`;
-          if (statusEl) statusEl.textContent = '生成完成';
-          if (noteEl)   noteEl.textContent   = hint;
-        }
-
+        const data = await _aipCallBackend('overall');
+        _aipRenderResult('overall', data);
+        const meta = data.meta || data.debug || {};
+        if (statusEl) statusEl.textContent = `完成 · ${meta.durationMs || 0}ms`;
       } catch (err) {
         const msg = err?.message || 'AI 生成失败';
         if (statusEl) statusEl.textContent = msg;
-        if (noteEl)   noteEl.textContent   = msg;
-        // overall 失败：在 body 显示错误，保持其他分区隐藏
-        if (moduleKey === 'overall') {
-          const body = document.getElementById('aip-life-body');
-          const tip  = document.getElementById('aip-life-tip');
-          if (body) { body.textContent = '⚠ ' + msg + '\n请稍后重试'; body.style.color = '#963d32'; }
-          if (tip)  tip.textContent = '';
-          const shenBody = document.getElementById('aip-shen-body');
-          const shenTip  = document.getElementById('aip-shen-tip');
-          if (shenBody) { shenBody.textContent = '⚠ 整体批命未完成，身宫批命未启动'; shenBody.style.color = '#963d32'; }
-          if (shenTip)  shenTip.textContent = '';
-        }
+        if (body) { body.textContent = '⚠ ' + msg + '\n请稍后重试'; body.style.color = '#963d32'; }
+        if (tip)  tip.textContent = '';
       } finally {
         newBtn.disabled = false;
       }
     });
+  }
 
-    // 保持 chart.html 的连接状态文案，不再额外覆盖成另一套“已就绪”提示
-    if (noteEl && !noteEl.textContent.trim()) noteEl.textContent = 'AI服务已连接';
+  function _bindShenBtn() {
+    const btn      = document.getElementById('aip-shen-btn');
+    const statusEl = document.getElementById('aip-shen-status');
+    if (!btn) return;
+    const newBtn = btn.cloneNode(true);
+    btn.parentNode.replaceChild(newBtn, btn);
+
+    newBtn.addEventListener('click', async function () {
+      if (!window._chart || !window._chartInputs) {
+        if (statusEl) statusEl.textContent = '请先完成排盘';
+        return;
+      }
+      newBtn.disabled = true;
+      if (statusEl) statusEl.textContent = '正在生成…';
+
+      const shenTtl  = document.getElementById('aip-shen-ttl');
+      const shenBody = document.getElementById('aip-shen-body');
+      const shenTip  = document.getElementById('aip-shen-tip');
+      if (shenTtl)  shenTtl.textContent = '身宫批命';
+      if (shenBody) { shenBody.textContent = 'AI 正在分析身宫，请稍候…'; shenBody.style.color = '#9a8878'; }
+      if (shenTip)  shenTip.textContent = '';
+
+      try {
+        const data = await _aipCallBackend('shengong');
+        _aipRenderResult('shengong', data);
+        const meta = data.meta || data.debug || {};
+        if (statusEl) statusEl.textContent = `完成 · ${meta.durationMs || 0}ms`;
+      } catch (err) {
+        const msg = err?.message || 'AI 生成失败';
+        if (statusEl) statusEl.textContent = msg;
+        if (shenBody) { shenBody.textContent = '⚠ ' + msg + '\n请稍后重试'; shenBody.style.color = '#963d32'; }
+        if (shenTip)  shenTip.textContent = '';
+      } finally {
+        newBtn.disabled = false;
+      }
+    });
+  }
+
+  function _bind() {
+    _bindOverallBtn();
+    _bindShenBtn();
   }
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', _bind);
   } else {
-    // 延迟一帧，确保 chart.html 内联 IIFE 已运行
     setTimeout(_bind, 0);
   }
 }());

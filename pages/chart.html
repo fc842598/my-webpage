@@ -186,10 +186,6 @@
         <span id="btn-loading" style="display:none">排盘中…</span>
       </button>
     </div>
-    <p style="text-align:center;margin-top:10px;margin-bottom:4px;color:#b0a89f;font-size:.72rem">
-      数据仅在本地浏览器运算，不上传，不储存。<br>
-      算法基于 <a href="https://github.com/SylarLong/iztro" target="_blank" style="color:#b59e8f">iztro</a>（MIT 许可）
-    </p>
   </div>
 </section>
 
@@ -368,11 +364,6 @@
     </div>
 
     <!-- 整体批命 -->
-    <div class="aip-mainline-note">
-      <span class="aip-mainline-tag">当前主线</span>
-      <span class="aip-mainline-copy">先把整体批命主卡做成成品，人生曲线和大限流年先作为辅助信息保留。</span>
-    </div>
-
     <div class="aip-panel" id="aip-panel-base">
 
       <!-- ① 主功能卡：唯一主视图 -->
@@ -398,6 +389,10 @@
 
         <!-- AI 综合解读正文 -->
         <hr class="aip-struct-divider">
+        <div class="aip-card-ai-bar">
+          <button class="aip-card-ai-btn" id="aip-overall-btn">✦ AI 整体批命</button>
+          <span class="aip-ai-status" id="aip-overall-status"></span>
+        </div>
         <div class="aip-section-label">整体解读</div>
         <div class="aip-card-body" id="aip-life-body"></div>
         <div class="aip-card-tip"  id="aip-life-tip"></div>
@@ -414,6 +409,10 @@
         <div class="aip-card-head">
           <span class="aip-tag">身宫批命</span>
           <span class="aip-card-title" id="aip-shen-ttl"></span>
+        </div>
+        <div class="aip-card-ai-bar">
+          <button class="aip-card-ai-btn" id="aip-shen-btn">✦ AI 身宫批命</button>
+          <span class="aip-ai-status" id="aip-shen-status"></span>
         </div>
         <div class="aip-card-body" id="aip-shen-body"></div>
         <div class="aip-card-tip"  id="aip-shen-tip"></div>
@@ -535,11 +534,7 @@
       </div>
     </div>
 
-    <div class="aip-ai-bar">
-      <button class="aip-ai-btn" id="aip-ai-btn">✦ AI 深度批命</button>
-      <span class="aip-ai-status" id="aip-ai-status"></span>
-    </div>
-    <div class="aip-footer-note" id="aip-footer-note">AI服务检测中… · 点击上方按钮获取深度解读</div>
+    <div class="aip-footer-note" id="aip-footer-note"></div>
   </div>
 </section>
 
@@ -3791,10 +3786,6 @@ function _aipFillStructLocal(chart) {
       <div class="aip-struct-row aip-struct-life-row">
         <span class="aip-struct-label">命宫</span>
         <span class="aip-inline-val"><span id="aip-struct-life-maj2"></span><span class="aip-inline-min" id="aip-struct-life-min2"></span></span>
-      </div>
-      <div class="aip-struct-row">
-        <span class="aip-struct-label">身宫</span>
-        <span class="aip-inline-val"><span id="aip-struct-body-maj"></span><span class="aip-inline-min" id="aip-struct-body-min"></span></span>
       </div>
       <div class="aip-struct-row">
         <span class="aip-struct-label">官禄</span>
