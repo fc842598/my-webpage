@@ -162,9 +162,7 @@ function buildChartPayload() {
 
     // 核心宫位（详细信息，供 overall/minggong 使用）
     lifePalace:        _serializePalaceDetail(lifePalace),
-    bodyPalaceDetail:  bodyPalaceDetail ? { name: bodyPalaceDetail.name, branch: bodyPalaceDetail.earthlyBranch,
-      majorStars: (bodyPalaceDetail.majorStars || []).map(s => s.name),
-    } : null,
+    bodyPalaceDetail:  _serializePalaceDetail(bodyPalaceDetail),
     careerPalace:      _serializePalaceDetail(careerPalace),
     wealthPalace:      _serializePalaceDetail(wealthPalace),
     movePalace:        _serializePalaceDetail(movePalace),
@@ -358,6 +356,20 @@ function _aipRenderResult(moduleKey, data) {
       if (dxTtl) dxTtl.textContent = 'AI 大限流年解读';
       break;
     }
+    case 'shengong': {
+      const card = data.card || {};
+      const ttl = document.getElementById('aip-shen-ttl');
+      const body = document.getElementById('aip-shen-body');
+      const tip = document.getElementById('aip-shen-tip');
+      if (ttl) ttl.textContent = card.title || '身宫批命';
+      if (body) {
+        body.textContent = card.body || data.finalAnswer || '';
+        body.style.whiteSpace = 'pre-wrap';
+        body.style.color = '';
+      }
+      if (tip) tip.textContent = card.tip || '';
+      break;
+    }
     default: {
       const text   = data.finalAnswer || '';
       const shBody = document.getElementById('aip-sh-body');
@@ -412,20 +424,48 @@ function _aipRenderResult(moduleKey, data) {
         if (profileBadge) profileBadge.textContent = '';
         if (patternRow)   patternRow.style.display = 'none';
         if (breakRow)     breakRow.style.display   = 'none';
-        // 加载中收起折叠区，避免旧盘内容残留展开
-        document.getElementById('aip-struct-details')?.setAttribute('open', 'open');
+        document.getElementById('aip-struct-details')?.removeAttribute('open');
+
+        const shenTtl  = document.getElementById('aip-shen-ttl');
+        const shenBody = document.getElementById('aip-shen-body');
+        const shenTip  = document.getElementById('aip-shen-tip');
+        if (shenTtl)  shenTtl.textContent = '身宫批命';
+        if (shenBody) { shenBody.textContent = 'AI 正在分析身宫，请稍候…'; shenBody.style.color = '#9a8878'; }
+        if (shenTip)  shenTip.textContent = '';
       }
 
       try {
-        const data = await _aipCallBackend(moduleKey, extraParams);
-        _aipRenderResult(moduleKey, data);
+        if (moduleKey === 'overall') {
+          const overallData = await _aipCallBackend('overall', extraParams);
+          _aipRenderResult('overall', overallData);
 
-        const meta = data.meta || data.debug || {};
-        const hint = data.module === 'overall_piming'
-          ? `overall_piming · ${meta.model || ''} · ${meta.durationMs || 0}ms`
-          : `v${meta.versionNo || '?'} · ${meta.modelName || ''} · ${meta.tokensUsed || 0} tokens · ${meta.durationMs || 0}ms`;
-        if (statusEl) statusEl.textContent = '生成完成';
-        if (noteEl)   noteEl.textContent   = hint;
+          let shengongHint = '';
+          try {
+            const shengongData = await _aipCallBackend('shengong', extraParams);
+            _aipRenderResult('shengong', shengongData);
+            const smeta = shengongData.meta || shengongData.debug || {};
+            shengongHint = ` · shengong ${smeta.durationMs || 0}ms`;
+          } catch (shenErr) {
+            const shenBody = document.getElementById('aip-shen-body');
+            const shenTip = document.getElementById('aip-shen-tip');
+            if (shenBody) { shenBody.textContent = `⚠ ${shenErr?.message || '身宫批命生成失败'}`; shenBody.style.color = '#963d32'; }
+            if (shenTip) shenTip.textContent = '请稍后重试';
+            shengongHint = ' · shengong failed';
+          }
+
+          const meta = overallData.meta || overallData.debug || {};
+          const hint = `overall ${meta.durationMs || 0}ms${shengongHint}`;
+          if (statusEl) statusEl.textContent = '生成完成';
+          if (noteEl)   noteEl.textContent   = hint;
+        } else {
+          const data = await _aipCallBackend(moduleKey, extraParams);
+          _aipRenderResult(moduleKey, data);
+
+          const meta = data.meta || data.debug || {};
+          const hint = `v${meta.versionNo || '?'} · ${meta.modelName || ''} · ${meta.tokensUsed || 0} tokens · ${meta.durationMs || 0}ms`;
+          if (statusEl) statusEl.textContent = '生成完成';
+          if (noteEl)   noteEl.textContent   = hint;
+        }
 
       } catch (err) {
         const msg = err?.message || 'AI 生成失败';
@@ -437,6 +477,10 @@ function _aipRenderResult(moduleKey, data) {
           const tip  = document.getElementById('aip-life-tip');
           if (body) { body.textContent = '⚠ ' + msg + '\n请稍后重试'; body.style.color = '#963d32'; }
           if (tip)  tip.textContent = '';
+          const shenBody = document.getElementById('aip-shen-body');
+          const shenTip  = document.getElementById('aip-shen-tip');
+          if (shenBody) { shenBody.textContent = '⚠ 整体批命未完成，身宫批命未启动'; shenBody.style.color = '#963d32'; }
+          if (shenTip)  shenTip.textContent = '';
         }
       } finally {
         newBtn.disabled = false;

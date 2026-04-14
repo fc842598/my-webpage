@@ -2039,26 +2039,18 @@
   padding: 18px 18px 16px;
   box-shadow: 0 10px 26px rgba(72, 46, 28, 0.04);
 }
-.aip-main-card-head { margin-bottom: 10px; }
-.aip-main-card-intro {
-  margin-bottom: 10px;
-  padding: 10px 12px;
-  background: linear-gradient(180deg, #fbf5ed 0%, #f8efe3 100%);
-  border: 1px solid #eadfce;
-  border-radius: 10px;
+.aip-main-card-head { margin-bottom: 12px; }
+.aip-sub-card {
+  border-color: #e4d7ca;
+  border-radius: 12px;
+  padding: 14px 16px;
+  background: #fffdfa;
 }
-.aip-main-card-kicker {
-  margin-bottom: 4px;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: .12em;
-  color: #a07c56;
-  text-transform: uppercase;
+.aip-shen-card {
+  margin-top: 4px;
 }
-.aip-main-card-copy {
-  font-size: 11.5px;
-  line-height: 1.7;
-  color: #6a584c;
+.aip-shen-card .aip-card-body {
+  min-height: 48px;
 }
 /* overall_piming 主卡片分区 */
 .aip-life-risk  { margin-top: 11px; font-size: 11.5px; color: #7a2e20; white-space: pre-line;
@@ -2082,34 +2074,40 @@
   text-transform: uppercase; padding: 2px 0 5px;
 }
 
-/* 命盘折叠容器 */
-.aip-struct-details { margin: 8px 0 6px; }
+/* 命盘结构区 */
+.aip-struct-details { margin: 6px 0 6px; }
 .aip-struct-summary {
-  list-style: none; cursor: pointer; user-select: none;
-  display: flex; align-items: center; gap: 7px;
-  padding: 6px 2px 8px; font-size: 11px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  list-style: none;
+  padding: 2px 2px 8px;
 }
 .aip-struct-summary::-webkit-details-marker { display: none; }
-.aip-struct-summary-label {
-  font-size: 9.5px; font-weight: 700; color: #b09070; letter-spacing: .08em;
-  background: #f0e8d8; padding: 1px 6px; border-radius: 4px; flex-shrink: 0;
-}
 .aip-struct-summary::before {
-  content: '▶'; font-size: 8px; color: #c0a888;
-  transition: transform .18s; display: inline-block; order: -1;
+  content: '▸';
+  font-size: 11px;
+  color: #b0957e;
+  line-height: 1;
+  transition: transform .18s ease;
 }
 .aip-struct-details[open] .aip-struct-summary::before { transform: rotate(90deg); }
-.aip-struct-summary-life {
-  font-size: 12px; font-weight: 700; color: #3d302b;
+.aip-struct-summary-label {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 0 12px;
+  border-radius: 999px;
+  background: #f7efe3;
+  color: #8f745d;
+  font-size: 11px;
+  font-weight: 700;
 }
-.aip-struct-summary-min {
-  font-size: 10.5px; color: #9a7a60;
-}
-.aip-struct-summary-min:empty { display: none; }
 
 /* 速览区容器 */
 .aip-struct {
-  margin: 4px 0 2px;
+  margin: 0 0 2px;
   border: 1px solid #e6dbce; border-radius: 10px;
   overflow: hidden; font-size: 11.5px;
   background: #fffdfa;
@@ -2149,12 +2147,6 @@
 .aip-struct-life-row { background: #faf5ee; }
 .aip-struct-life-row .aip-struct-label { color: #7a4e2a; font-weight: 700; }
 .aip-struct-life-row .aip-palace-maj   { font-size: 13px; color: #2d2218; }
-/* 三方四正分节标题 */
-.aip-struct-section {
-  padding: 7px 11px 6px;
-  font-size: 9.5px; font-weight: 700; color: #b09070; letter-spacing: .1em;
-  background: #f5ede0; border-bottom: 1px solid #ede6dc;
-}
 /* AI 补充行（格局/破格）—— 浅背景区分 */
 .aip-struct-row.aip-struct-ai {
   background: #fdf8f2;
