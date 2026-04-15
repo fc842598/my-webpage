@@ -223,31 +223,41 @@ function _fmtDuration(ms) {
   return (ms / 1000).toFixed(1) + '秒';
 }
 
-// 将 AI 纯文本转为带格式的 HTML（段落标题加粗）
+// 将 AI 纯文本转为带格式的 HTML（段落标题加粗，段落用 <p> 包裹）
 function _formatAiBody(text) {
   if (!text) return '';
   const lines = text.split('\n');
-  const out = [];
+  const blocks = [];   // 每个 block = { type: 'title'|'para', lines: [] }
+  let cur = null;
+
   for (let i = 0; i < lines.length; i++) {
-    const line = lines[i];
-    const trimmed = line.trim();
-    if (!trimmed) { out.push('<br>'); continue; }
-    // 判断是否为大标题：纯汉字/字母，不超过12字，不以标点/数字开头，下一行有内容
+    const trimmed = lines[i].trim();
+    if (!trimmed) { cur = null; continue; }
+
     const isHeader = trimmed.length <= 12
       && !/^[\d\-\*\·\（\(]/.test(trimmed)
       && /^[\u4e00-\u9fa5a-zA-Z\s]+$/.test(trimmed)
-      && i + 1 < lines.length && lines[i + 1].trim();
+      && i + 1 < lines.length && lines[i + 1]?.trim();
+
     const safe = trimmed.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
     if (isHeader) {
-      out.push(`<strong class="aip-body-title">${safe}</strong>`);
+      cur = null;
+      blocks.push({ type: 'title', html: `<strong class="aip-body-title">${safe}</strong>` });
     } else {
-      out.push(`<span>${safe}</span>`);
+      if (!cur) { cur = { type: 'para', lines: [] }; blocks.push(cur); }
+      cur.lines.push(safe);
     }
   }
-  return out.join('\n');
+
+  return blocks.map(b =>
+    b.type === 'title'
+      ? b.html
+      : `<p class="aip-body-para">${b.lines.join('<br>')}</p>`
+  ).join('');
 }
 
-// 逐行显示效果（保留打字感，同时支持 HTML 格式）
+// 整体渲染（不逐字，直接呈现 HTML 格式）
 let _aipTypewriterTimer = null;
 function _aipTypewriter(el, text, speed) {
   if (!el) return;
@@ -255,12 +265,12 @@ function _aipTypewriter(el, text, speed) {
   el.innerHTML = '';
   if (!text) return;
   const html = _formatAiBody(text);
-  const lines = html.split('\n');
-  const delay = speed != null ? speed : Math.max(40, Math.min(120, Math.round(3000 / lines.length)));
+  const blocks = html.split(/(?=<strong|<p)/);
+  const delay = speed != null ? speed : Math.max(30, Math.min(80, Math.round(2000 / blocks.length)));
   let i = 0;
   function step() {
-    if (i < lines.length) {
-      el.innerHTML += (i > 0 ? '\n' : '') + lines[i++];
+    if (i < blocks.length) {
+      el.innerHTML += blocks[i++];
       _aipTypewriterTimer = setTimeout(step, delay);
     } else {
       _aipTypewriterTimer = null;
