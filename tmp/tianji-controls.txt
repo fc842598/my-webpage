@@ -1,2 +1,0 @@
-Static=0, Edit=0, Button=0
-

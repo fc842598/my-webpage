@@ -1,6 +1,0 @@
-[  328038ms] TypeError: Cannot read properties of undefined (reading 'm')
-    at solarToLunar (https://fc842598.github.io/my-webpage/js/lunarCalendar.js:146:24)
-    at HTMLSelectElement.updateDatePreview (https://fc842598.github.io/my-webpage/pages/chart.html:775:61)
-[  331885ms] TypeError: Cannot read properties of undefined (reading 'm')
-    at solarToLunar (https://fc842598.github.io/my-webpage/js/lunarCalendar.js:146:24)
-    at HTMLSelectElement.updateDatePreview (https://fc842598.github.io/my-webpage/pages/chart.html:775:61)

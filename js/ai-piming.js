@@ -217,19 +217,51 @@ function _aipShowLoading(ids) {
   ids.forEach(id => _aipSetEl(id, '正在生成…'));
 }
 
-// 逐字打印效果（用于 AI 解读正文）
+// 耗时格式化：ms → 秒（保留1位小数）
+function _fmtDuration(ms) {
+  if (!ms) return '0秒';
+  return (ms / 1000).toFixed(1) + '秒';
+}
+
+// 将 AI 纯文本转为带格式的 HTML（段落标题加粗）
+function _formatAiBody(text) {
+  if (!text) return '';
+  const lines = text.split('\n');
+  const out = [];
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    const trimmed = line.trim();
+    if (!trimmed) { out.push('<br>'); continue; }
+    // 判断是否为大标题：纯汉字/字母，不超过12字，不以标点/数字开头，下一行有内容
+    const isHeader = trimmed.length <= 12
+      && !/^[\d\-\*\·\（\(]/.test(trimmed)
+      && /^[\u4e00-\u9fa5a-zA-Z\s]+$/.test(trimmed)
+      && i + 1 < lines.length && lines[i + 1].trim();
+    const safe = trimmed.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    if (isHeader) {
+      out.push(`<strong class="aip-body-title">${safe}</strong>`);
+    } else {
+      out.push(`<span>${safe}</span>`);
+    }
+  }
+  return out.join('\n');
+}
+
+// 逐行显示效果（保留打字感，同时支持 HTML 格式）
 let _aipTypewriterTimer = null;
 function _aipTypewriter(el, text, speed) {
   if (!el) return;
   if (_aipTypewriterTimer) { clearTimeout(_aipTypewriterTimer); _aipTypewriterTimer = null; }
-  el.textContent = '';
+  el.innerHTML = '';
   if (!text) return;
-  const ms = speed != null ? speed : Math.max(8, Math.min(25, Math.round(6000 / text.length)));
+  const html = _formatAiBody(text);
+  const lines = html.split('\n');
+  const delay = speed != null ? speed : Math.max(40, Math.min(120, Math.round(3000 / lines.length)));
   let i = 0;
   function step() {
-    if (i < text.length) {
-      el.textContent += text[i++];
-      _aipTypewriterTimer = setTimeout(step, ms);
+    if (i < lines.length) {
+      el.innerHTML += (i > 0 ? '\n' : '') + lines[i++];
+      _aipTypewriterTimer = setTimeout(step, delay);
     } else {
       _aipTypewriterTimer = null;
     }
@@ -417,7 +449,7 @@ function _aipRenderResult(moduleKey, data) {
         const data = await _aipCallBackend('overall');
         _aipRenderResult('overall', data);
         const meta = data.meta || data.debug || {};
-        if (statusEl) statusEl.textContent = `完成 · ${meta.durationMs || 0}ms`;
+        if (statusEl) statusEl.textContent = `完成 · ${_fmtDuration(meta.durationMs)}`;
       } catch (err) {
         const msg = err?.message || 'AI 生成失败';
         if (statusEl) statusEl.textContent = msg;
@@ -455,7 +487,7 @@ function _aipRenderResult(moduleKey, data) {
         const data = await _aipCallBackend('shengong');
         _aipRenderResult('shengong', data);
         const meta = data.meta || data.debug || {};
-        if (statusEl) statusEl.textContent = `完成 · ${meta.durationMs || 0}ms`;
+        if (statusEl) statusEl.textContent = `完成 · ${_fmtDuration(meta.durationMs)}`;
       } catch (err) {
         const msg = err?.message || 'AI 生成失败';
         if (statusEl) statusEl.textContent = msg;

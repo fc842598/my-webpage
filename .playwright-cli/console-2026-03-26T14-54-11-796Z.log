@@ -1,5 +1,0 @@
-[    2524ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://fc842598.github.io/api/ping:0
-[    2551ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://fc842598.github.io/favicon.ico:0
-[  818776ms] [ERROR] Access to fetch at 'http://localhost:3001/api/ping' from origin 'https://fc842598.github.io' has been blocked by CORS policy: Permission was denied for this request to access the `loopback` address space. @ https://fc842598.github.io/my-webpage/pages/chart.html:0
-[  818776ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:3001/api/ping:0
-[  835864ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://fc842598.github.io/api/ping:0
