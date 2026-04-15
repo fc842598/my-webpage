@@ -1069,8 +1069,9 @@ document.getElementById('btn-submit').addEventListener('click', async () => {
 
     renderFigmaChart(_chart, norm.gender, norm.dateStr, norm);
     await historySave(norm);
+    document.getElementById('form-section').style.display = 'none';
     document.getElementById('fc-section').style.display = 'block';
-    document.getElementById('fc-section').scrollIntoView({ behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   } catch (err) {
     showError('排盘失败：' + (err.message || '请检查出生日期，或刷新重试'));
     console.error(err);
@@ -1438,7 +1439,9 @@ let _currentSanyaoBranch = null;
 // ─── 重新排盘按钮 ─────────────────────────────────────────
 document.getElementById('btn-reset').addEventListener('click', () => {
   document.getElementById('fc-section').style.display = 'none';
-  document.getElementById('form-section').scrollIntoView({ behavior: 'smooth' });
+  document.getElementById('aip-section').style.display = 'none';
+  document.getElementById('form-section').style.display = '';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
   applyDefaults();
 });
 
