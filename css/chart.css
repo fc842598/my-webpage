@@ -2030,9 +2030,9 @@
                   padding: 2px 9px; border-radius: 10px; white-space: nowrap; flex-shrink: 0; }
 .aip-card-title { font-size: 13px; font-weight: bold; color: #3d302b; }
 .aip-card-body  { font-size: 12.5px; color: #5c4d45; line-height: 1.75; }
-.aip-card-body .aip-body-title { display: block; font-size: 13px; font-weight: 700; color: #3d2b1f; margin: 10px 0 3px; }
-.aip-card-body .aip-body-title:first-child { margin-top: 0; }
-.aip-card-body .aip-body-para  { margin: 0 0 4px; }
+.aip-card-body .aip-body-title { display: block; font-size: 13px; font-weight: 700; color: #3d2b1f; margin: 14px 0 4px; }
+.aip-card-body .aip-body-title:first-child { margin-top: 2px; }
+.aip-card-body .aip-body-para  { margin: 0 0 2px; }
 .aip-card-tip   { margin-top: 7px; font-size: 11px; color: #963d32;
                   padding-left: 9px; border-left: 2px solid #e8c9b0; line-height: 1.6; }
 /* overall_piming 主卡片（略加强边框） */

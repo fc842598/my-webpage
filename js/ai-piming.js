@@ -279,6 +279,36 @@ function _aipTypewriter(el, text, speed) {
   step();
 }
 
+// sections 结构化渲染（title + content 逐块显示）
+function _aipRenderSections(el, sections) {
+  if (!el) return;
+  if (_aipTypewriterTimer) { clearTimeout(_aipTypewriterTimer); _aipTypewriterTimer = null; }
+  el.innerHTML = '';
+
+  const blocks = sections.map(s => {
+    const title = (s.title || '').trim();
+    const content = (s.content || '').trim();
+    const safeTitle = title.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    const safeContent = content
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+      .replace(/\n/g, '<br>');
+    return (title ? `<strong class="aip-body-title">${safeTitle}</strong>` : '')
+      + `<p class="aip-body-para">${safeContent}</p>`;
+  });
+
+  let i = 0;
+  const delay = Math.max(60, Math.min(200, Math.round(1200 / blocks.length)));
+  function step() {
+    if (i < blocks.length) {
+      el.innerHTML += blocks[i++];
+      _aipTypewriterTimer = setTimeout(step, delay);
+    } else {
+      _aipTypewriterTimer = null;
+    }
+  }
+  step();
+}
+
 // ── 渲染结果到现有卡片 ────────────────────────────────────────────────────────
 function _aipRenderResult(moduleKey, data) {
   switch (moduleKey) {
@@ -338,10 +368,13 @@ function _aipRenderResult(moduleKey, data) {
       // ── 4. 标题 ────────────────────────────────────────
       if (ttl) ttl.textContent = card.title || 'AI 整体批命';
 
-      // ── 5. 主体解读（逐字打印效果） ────────────────────────
+      // ── 5. 主体解读（sections 结构化渲染） ─────────────────
       if (body) {
-        body.style.color = '';  // 恢复正常颜色（清除加载/错误状态的颜色）
-        _aipTypewriter(body, card.summary || '');
+        body.style.color = '';
+        const sections = Array.isArray(card.sections) && card.sections.length
+          ? card.sections
+          : [{ title: '', content: card.summary || '' }];
+        _aipRenderSections(body, sections);
       }
 
       // 占位提示隐藏（AI 内容接管）
