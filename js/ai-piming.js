@@ -145,6 +145,7 @@ function buildChartPayload() {
   const birthYear = norm.year || 1990;
 
   return {
+    chartRecordId: window._chartRecordId || null,
     // 基础生辰
     gender:          inputs.gender || 'male',
     birthDate:       norm.dateStr ? `${norm.dateStr} ${norm.timeStr || ''}`.trim() : '',

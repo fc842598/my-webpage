@@ -2196,6 +2196,29 @@
 .dlx-section { margin-bottom: 16px; }
 .dlx-section-label { font-size: 11px; color: #9c8878; letter-spacing: .08em; margin-bottom: 8px; }
 .dlx-pills { display: flex; flex-wrap: wrap; gap: 8px; }
+.dlx-overview-list { display: grid; gap: 10px; margin-top: 8px; }
+.dlx-overview-item {
+  border: 1px solid rgba(216, 204, 188, .88);
+  background: #fffaf5;
+  border-radius: 14px;
+  padding: 12px 14px;
+}
+.dlx-overview-item.active {
+  border-color: #7a3b2e;
+  box-shadow: 0 0 0 1px rgba(122, 59, 46, .08);
+}
+.dlx-overview-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 8px; }
+.dlx-overview-title { font-size: 14px; font-weight: 700; color: #3d2b1f; }
+.dlx-overview-badge {
+  flex-shrink: 0;
+  font-size: 11px;
+  color: #8d6f5a;
+  background: #f4ece3;
+  border-radius: 999px;
+  padding: 3px 8px;
+}
+.dlx-overview-summary { font-size: 13px; line-height: 1.7; color: #5d4c3f; }
+.dlx-overview-risk { margin-top: 8px; font-size: 12px; color: #9b5a4b; }
 .dlx-pill-btn {
   background: #f5f0e8; border: 1px solid #d8ccbc; border-radius: 20px;
   padding: 5px 14px; font-size: 13px; color: #6b4e41; cursor: pointer;

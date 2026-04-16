@@ -423,6 +423,26 @@
 
       <!-- ── 新版大运/流年选择器 ── -->
       <div id="dlx-wrap">
+        <div class="aip-card" id="dlx-batch-card">
+          <div class="aip-card-head">
+            <span class="aip-tag">大运整体</span>
+            <span class="aip-card-title">一键批完整组大运</span>
+          </div>
+          <div class="aip-card-tip" id="dlx-batch-tip">先按命盘真实大运区间生成整组总览，再点下方区间看对应流年。</div>
+          <div class="aip-card-ai-bar">
+            <button class="aip-card-ai-btn" id="dlx-batch-ai-btn">✦ 一键批完整组大运</button>
+            <span class="aip-card-ai-status" id="dlx-batch-ai-status"></span>
+          </div>
+        </div>
+
+        <div class="aip-card" id="dlx-overview-card" style="display:none">
+          <div class="aip-card-head">
+            <span class="aip-tag">总览</span>
+            <span class="aip-card-title">大运结论总览</span>
+          </div>
+          <div id="dlx-overview-list" class="dlx-overview-list"></div>
+        </div>
+
         <!-- 大运选择栏 -->
         <div class="dlx-section">
           <div class="dlx-section-label">选择大运</div>
@@ -438,10 +458,7 @@
             <span class="aip-card-title" id="dlx-dx-ttl"></span>
           </div>
           <div class="dlx-info-grid" id="dlx-dx-info"></div>
-          <div class="aip-card-ai-bar">
-            <button class="aip-card-ai-btn" id="dlx-dx-ai-btn">✦ AI分析此大运</button>
-            <span class="aip-card-ai-status" id="dlx-dx-ai-status"></span>
-          </div>
+          <div class="aip-card-ai-bar"><span class="aip-card-ai-status" id="dlx-dx-ai-status"></span></div>
           <div class="aip-card-body" id="dlx-dx-ai-body"></div>
           <div class="aip-card-tip"  id="dlx-dx-risk"></div>
         </div>
@@ -459,10 +476,7 @@
             <span class="aip-card-title" id="dlx-ln-ttl"></span>
           </div>
           <div class="dlx-info-grid" id="dlx-ln-info"></div>
-          <div class="aip-card-ai-bar">
-            <button class="aip-card-ai-btn" id="dlx-ln-ai-btn">✦ AI分析此流年</button>
-            <span class="aip-card-ai-status" id="dlx-ln-ai-status"></span>
-          </div>
+          <div class="aip-card-ai-bar"><span class="aip-card-ai-status" id="dlx-ln-ai-status"></span></div>
           <div class="aip-card-body" id="dlx-ln-ai-body"></div>
           <div class="aip-card-tip"  id="dlx-ln-risk"></div>
         </div>
@@ -1120,7 +1134,12 @@ document.getElementById('btn-submit').addEventListener('click', async () => {
     window._chart = _chart; window._chartInputs = _chartInputs;
 
     renderFigmaChart(_chart, norm.gender, norm.dateStr, norm);
-    await historySave(norm);
+    if (window._pendingHistoryRecordId) {
+      window._chartRecordId = window._pendingHistoryRecordId;
+      window._pendingHistoryRecordId = null;
+    } else {
+      window._chartRecordId = await historySave(norm);
+    }
     document.getElementById('form-section').style.display = 'none';
     document.getElementById('fc-section').style.display = 'block';
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -1137,6 +1156,8 @@ const _sb = supabase.createClient(
   'https://jmmlijqeexdbxgpfyhgf.supabase.co',
   'sb_publishable_Y2W9eDscfJwK1sgSitbmFA_ta5btvaR'
 );
+window._chartRecordId = window._chartRecordId || null;
+window._pendingHistoryRecordId = window._pendingHistoryRecordId || null;
 
 // ─── Google 登录 ──────────────────────────────────────────
 let _currentUser = null;
@@ -1209,16 +1230,24 @@ async function historyLoad() {
 }
 
 async function historySave(norm) {
-  const { error } = await _sb.from('chart_records').insert({
-    name: norm.name || '',
-    gender: norm.gender,
-    birth_date: norm.dateStr || '',
-    birth_time: `${norm.cstHour}:${String(norm.cstMinute).padStart(2,'0')}`,
-    city: norm.city?.name || '',
-    input_raw: JSON.stringify(norm),
-    client_id: getClientId(),
-  });
-  if (error) console.error('historySave error', error);
+  const { data, error } = await _sb
+    .from('chart_records')
+    .insert({
+      name: norm.name || '',
+      gender: norm.gender,
+      birth_date: norm.dateStr || '',
+      birth_time: `${norm.cstHour}:${String(norm.cstMinute).padStart(2,'0')}`,
+      city: norm.city?.name || '',
+      input_raw: JSON.stringify(norm),
+      client_id: getClientId(),
+    })
+    .select('id')
+    .single();
+  if (error) {
+    console.error('historySave error', error);
+    return null;
+  }
+  return data?.id || null;
 }
 
 async function historyDelete(id) {
@@ -1277,6 +1306,7 @@ async function historyRenderPanel() {
 }
 
 function historyFillForm(r) {
+  window._pendingHistoryRecordId = r.id || null;
   // 切换公历/农历模式
   if (r.calMode === 'lunar') {
     applyCalMode('lunar');
@@ -4005,6 +4035,9 @@ function renderAIPiming() {
   if (desc) desc.textContent =
     `${_chart.zodiac||''}年 · ${_chart.fiveElementsClass||''} · 命宫${lifeMaj[0]||'空宫'}`;
   section.style.display = 'block';
+  if (typeof window._aipDlxRefresh === 'function') {
+    window._aipDlxRefresh();
+  }
   // 人生曲线不自动请求 AI，只渲染已有缓存；用户点"开始排"按钮时才触发
   _fcRenderScoreCurve();
 }
@@ -4052,10 +4085,10 @@ function _dlxInit() {
   // 自动选中当前大限
   const activeAge = _fcActiveAge || 1;
   const current = decades.find(d => activeAge >= d.start && activeAge <= d.end) || decades[0];
-  if (current) _dlxSelectDecade(current, decades);
+  if (current) _dlxSelectDecade(current, decades, { source: 'init' });
 }
 
-function _dlxSelectDecade(d, decades) {
+function _dlxSelectDecade(d, decades, options) {
   _dlxSelectedDecade = d;
   _dlxSelectedAge = null;
 
@@ -4091,6 +4124,9 @@ function _dlxSelectDecade(d, decades) {
   _dlxRenderYears(d.start, d.end);
   document.getElementById('dlx-year-section').style.display = '';
   document.getElementById('dlx-liunian-card').style.display = 'none';
+  if (typeof window._aipDlxOnDecadeSelected === 'function') {
+    window._aipDlxOnDecadeSelected(d, decades || _fcGetDisplayDecades(), options || { source: 'user' });
+  }
 }
 
 function _dlxRenderYears(start, end) {
@@ -4108,10 +4144,10 @@ function _dlxRenderYears(start, end) {
     btn.onclick = () => _dlxSelectYear(age);
     container.appendChild(btn);
   }
-  if (activeAge >= start && activeAge <= end) _dlxSelectYear(activeAge);
+  if (activeAge >= start && activeAge <= end) _dlxSelectYear(activeAge, { source: 'init' });
 }
 
-function _dlxSelectYear(age) {
+function _dlxSelectYear(age, options) {
   _dlxSelectedAge = age;
 
   document.querySelectorAll('#dlx-year-pills .dlx-pill-btn').forEach(btn => {
@@ -4141,6 +4177,9 @@ function _dlxSelectYear(age) {
   document.getElementById('dlx-ln-ai-status').textContent = '';
   document.getElementById('dlx-ln-risk').textContent = '';
   document.getElementById('dlx-liunian-card').style.display = '';
+  if (typeof window._aipDlxOnYearSelected === 'function') {
+    window._aipDlxOnYearSelected(age, options || { source: 'user' });
+  }
 }
 
 // ── AI 深度批命按钮 ───────────────────────────────────────
@@ -4886,5 +4925,6 @@ window._aiChatFill = function(data, submit) {
 </script>
 <!-- AI 批命新后端集成（调用 Vercel /api/ai/run） -->
 <script src="../js/ai-piming.js"></script>
+<script src="../js/dayun-panel.js"></script>
 </body>
 </html>
