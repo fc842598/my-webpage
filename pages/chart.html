@@ -357,8 +357,8 @@
     </div>
     <div class="aip-tabs">
       <button class="aip-tab active" data-panel="aip-panel-base">整体批命</button>
-      <button class="aip-tab"        data-panel="aip-panel-curve">人生曲线</button>
       <button class="aip-tab"        data-panel="aip-panel-luck">大限流年</button>
+      <button class="aip-tab"        data-panel="aip-panel-curve">人生曲线</button>
     </div>
 
     <!-- 整体批命 -->
@@ -1115,9 +1115,12 @@ function _updateAuthBar() {
 }
 
 document.getElementById('history-google-btn').addEventListener('click', () => {
+  const redirectUrl = new URL(window.location.href);
+  redirectUrl.hash = '';
+  redirectUrl.search = '';
   _sb.auth.signInWithOAuth({
     provider: 'google',
-    options: { redirectTo: 'https://fc842598.github.io/my-webpage/pages/chart.html' }
+    options: { redirectTo: redirectUrl.toString() }
   });
 });
 document.getElementById('history-logout-btn').addEventListener('click', async () => {
