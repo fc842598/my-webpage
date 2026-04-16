@@ -2191,6 +2191,24 @@
 .aip-card-ai-btn:hover    { opacity: .88; }
 .aip-card-ai-btn:disabled { opacity: .5; cursor: default; }
 
+/* ── 大限流年 新版选择器 ──────────────────────────────────── */
+#dlx-wrap { width: 100%; }
+.dlx-section { margin-bottom: 16px; }
+.dlx-section-label { font-size: 11px; color: #9c8878; letter-spacing: .08em; margin-bottom: 8px; }
+.dlx-pills { display: flex; flex-wrap: wrap; gap: 8px; }
+.dlx-pill-btn {
+  background: #f5f0e8; border: 1px solid #d8ccbc; border-radius: 20px;
+  padding: 5px 14px; font-size: 13px; color: #6b4e41; cursor: pointer;
+  font-family: inherit; transition: background .15s, border-color .15s, color .15s;
+  white-space: nowrap; }
+.dlx-pill-btn:hover   { background: #ede5d4; border-color: #b8a492; }
+.dlx-pill-btn.active  { background: #7a3b2e; border-color: #7a3b2e; color: #fff5ec; font-weight: bold; }
+.dlx-year-pills .dlx-pill-btn { padding: 4px 10px; font-size: 12px; }
+.dlx-info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 16px; margin: 8px 0 12px; }
+.dlx-info-row  { display: flex; gap: 6px; align-items: baseline; font-size: 13px; }
+.dlx-info-label { color: #9c8878; font-size: 11px; white-space: nowrap; flex-shrink: 0; }
+.dlx-info-val  { color: #3d2b1f; }
+
 @media (max-width: 540px) {
   .aip-mainline-note { align-items: flex-start; flex-direction: column; gap: 6px; }
   .aip-wrap { padding: 0 10px; }

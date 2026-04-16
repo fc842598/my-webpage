@@ -420,26 +420,78 @@
 
     <!-- 大限流年 -->
     <div class="aip-panel" id="aip-panel-luck" style="display:none">
-      <div class="aip-card">
-        <div class="aip-card-head"><span class="aip-tag">大限</span><span class="aip-card-title" id="aip-dx-ttl"></span></div>
-        <div class="aip-card-body" id="aip-dx-body"></div>
-        <div class="aip-card-tip"  id="aip-dx-tip"></div>
+
+      <!-- ── 新版大运/流年选择器 ── -->
+      <div id="dlx-wrap">
+        <!-- 大运选择栏 -->
+        <div class="dlx-section">
+          <div class="dlx-section-label">选择大运</div>
+          <div class="dlx-pills" id="dlx-decade-pills">
+            <span style="color:#a89880;font-size:13px">请先完成排盘</span>
+          </div>
+        </div>
+
+        <!-- 大运详情卡 -->
+        <div class="aip-card" id="dlx-daxian-card" style="display:none">
+          <div class="aip-card-head">
+            <span class="aip-tag">大限</span>
+            <span class="aip-card-title" id="dlx-dx-ttl"></span>
+          </div>
+          <div class="dlx-info-grid" id="dlx-dx-info"></div>
+          <div class="aip-card-ai-bar">
+            <button class="aip-card-ai-btn" id="dlx-dx-ai-btn">✦ AI分析此大运</button>
+            <span class="aip-card-ai-status" id="dlx-dx-ai-status"></span>
+          </div>
+          <div class="aip-card-body" id="dlx-dx-ai-body"></div>
+          <div class="aip-card-tip"  id="dlx-dx-risk"></div>
+        </div>
+
+        <!-- 流年选择栏 -->
+        <div class="dlx-section" id="dlx-year-section" style="display:none">
+          <div class="dlx-section-label">选择流年</div>
+          <div class="dlx-pills dlx-year-pills" id="dlx-year-pills"></div>
+        </div>
+
+        <!-- 流年详情卡 -->
+        <div class="aip-card" id="dlx-liunian-card" style="display:none">
+          <div class="aip-card-head">
+            <span class="aip-tag">流年</span>
+            <span class="aip-card-title" id="dlx-ln-ttl"></span>
+          </div>
+          <div class="dlx-info-grid" id="dlx-ln-info"></div>
+          <div class="aip-card-ai-bar">
+            <button class="aip-card-ai-btn" id="dlx-ln-ai-btn">✦ AI分析此流年</button>
+            <span class="aip-card-ai-status" id="dlx-ln-ai-status"></span>
+          </div>
+          <div class="aip-card-body" id="dlx-ln-ai-body"></div>
+          <div class="aip-card-tip"  id="dlx-ln-risk"></div>
+        </div>
       </div>
-      <div class="aip-card">
-        <div class="aip-card-head"><span class="aip-tag">流年</span><span class="aip-card-title" id="aip-ln-ttl"></span></div>
-        <div class="aip-card-body" id="aip-ln-body"></div>
-        <div class="aip-card-tip"  id="aip-ln-tip"></div>
+
+      <!-- ── 原内容保留（暂时隐藏）── -->
+      <div id="dlx-legacy" style="display:none">
+        <div class="aip-card">
+          <div class="aip-card-head"><span class="aip-tag">大限</span><span class="aip-card-title" id="aip-dx-ttl"></span></div>
+          <div class="aip-card-body" id="aip-dx-body"></div>
+          <div class="aip-card-tip"  id="aip-dx-tip"></div>
+        </div>
+        <div class="aip-card">
+          <div class="aip-card-head"><span class="aip-tag">流年</span><span class="aip-card-title" id="aip-ln-ttl"></span></div>
+          <div class="aip-card-body" id="aip-ln-body"></div>
+          <div class="aip-card-tip"  id="aip-ln-tip"></div>
+        </div>
+        <div class="aip-card">
+          <div class="aip-card-head"><span class="aip-tag">小限落宫</span><span class="aip-card-title" id="aip-xl-ttl"></span></div>
+          <div class="aip-card-body" id="aip-xl-body"></div>
+          <div class="aip-card-tip"  id="aip-xl-tip"></div>
+        </div>
+        <div class="aip-card">
+          <div class="aip-card-head"><span class="aip-tag">子平法卦</span><span class="aip-card-title" id="aip-gua-ttl"></span></div>
+          <div class="aip-card-body" id="aip-gua-body"></div>
+          <div class="aip-card-tip"  id="aip-gua-tip"></div>
+        </div>
       </div>
-      <div class="aip-card">
-        <div class="aip-card-head"><span class="aip-tag">小限落宫</span><span class="aip-card-title" id="aip-xl-ttl"></span></div>
-        <div class="aip-card-body" id="aip-xl-body"></div>
-        <div class="aip-card-tip"  id="aip-xl-tip"></div>
-      </div>
-      <div class="aip-card">
-        <div class="aip-card-head"><span class="aip-tag">子平法卦</span><span class="aip-card-title" id="aip-gua-ttl"></span></div>
-        <div class="aip-card-body" id="aip-gua-body"></div>
-        <div class="aip-card-tip"  id="aip-gua-tip"></div>
-      </div>
+
     </div>
 
     <!-- 人生曲线 -->
@@ -3971,6 +4023,126 @@ function renderAIPimingLuck() {
   if (_fcLifeCurveMode === 'decade') _fcEnsureLifeCurveVisible(true);
 }
 
+// ── 大限流年 新版选择器 ──────────────────────────────────────
+let _dlxSelectedDecade = null;
+let _dlxSelectedAge    = null;
+
+function _dlxInit() {
+  const container = document.getElementById('dlx-decade-pills');
+  if (!container) return;
+  if (!_chart) {
+    container.innerHTML = '<span style="color:#a89880;font-size:13px">请先完成排盘</span>';
+    return;
+  }
+  const decades = _fcGetDisplayDecades();
+  if (!decades.length) {
+    container.innerHTML = '<span style="color:#a89880;font-size:13px">暂无大运数据</span>';
+    return;
+  }
+  container.innerHTML = '';
+  decades.forEach(d => {
+    const btn = document.createElement('button');
+    btn.className = 'dlx-pill-btn';
+    btn.textContent = `${d.start}–${d.end}岁`;
+    btn.dataset.start = d.start;
+    btn.dataset.end = d.end;
+    btn.onclick = () => _dlxSelectDecade(d, decades);
+    container.appendChild(btn);
+  });
+  // 自动选中当前大限
+  const activeAge = _fcActiveAge || 1;
+  const current = decades.find(d => activeAge >= d.start && activeAge <= d.end) || decades[0];
+  if (current) _dlxSelectDecade(current, decades);
+}
+
+function _dlxSelectDecade(d, decades) {
+  _dlxSelectedDecade = d;
+  _dlxSelectedAge = null;
+
+  document.querySelectorAll('#dlx-decade-pills .dlx-pill-btn').forEach(btn => {
+    btn.classList.toggle('active', Number(btn.dataset.start) === d.start);
+  });
+
+  const idx = (decades || _fcGetDisplayDecades()).findIndex(x => x.start === d.start) + 1;
+  const palace = d.palace;
+  const palaceName = palace?.name || '—';
+  const stem = palace?.decadal?.heavenlyStem || '';
+  const majorStars = (palace?.majorStars || []).map(s => s.name + (s.brightness || '')).join('、') || '—';
+  const minorStars = (palace?.minorStars || []).map(s => s.name).join('、') || '';
+  const mutagens = [];
+  [...(palace?.majorStars || []), ...(palace?.minorStars || [])].forEach(s => {
+    if (s.mutagen) mutagens.push(s.name + s.mutagen);
+  });
+
+  document.getElementById('dlx-dx-ttl').textContent = `第${idx}大限 · ${d.start}–${d.end}岁`;
+  document.getElementById('dlx-dx-info').innerHTML = [
+    `<div class="dlx-info-row"><span class="dlx-info-label">大限宫</span><span class="dlx-info-val">${palaceName}</span></div>`,
+    stem ? `<div class="dlx-info-row"><span class="dlx-info-label">宫干</span><span class="dlx-info-val">${stem}干</span></div>` : '',
+    `<div class="dlx-info-row"><span class="dlx-info-label">主星</span><span class="dlx-info-val">${majorStars}</span></div>`,
+    minorStars ? `<div class="dlx-info-row"><span class="dlx-info-label">辅星</span><span class="dlx-info-val">${minorStars}</span></div>` : '',
+    mutagens.length ? `<div class="dlx-info-row"><span class="dlx-info-label">大限四化</span><span class="dlx-info-val">${mutagens.join('　')}</span></div>` : '',
+  ].join('');
+
+  document.getElementById('dlx-dx-ai-body').innerHTML = '';
+  document.getElementById('dlx-dx-ai-status').textContent = '';
+  document.getElementById('dlx-dx-risk').textContent = '';
+  document.getElementById('dlx-daxian-card').style.display = '';
+
+  _dlxRenderYears(d.start, d.end);
+  document.getElementById('dlx-year-section').style.display = '';
+  document.getElementById('dlx-liunian-card').style.display = 'none';
+}
+
+function _dlxRenderYears(start, end) {
+  const container = document.getElementById('dlx-year-pills');
+  if (!container) return;
+  container.innerHTML = '';
+  const activeAge = _fcActiveAge || 1;
+  for (let age = start; age <= end; age++) {
+    const btn = document.createElement('button');
+    btn.className = 'dlx-pill-btn';
+    btn.textContent = `${age}岁`;
+    btn.dataset.age = age;
+    const year = typeof _fcAgeToYear === 'function' ? _fcAgeToYear(age) : '—';
+    btn.title = `${year}年`;
+    btn.onclick = () => _dlxSelectYear(age);
+    container.appendChild(btn);
+  }
+  if (activeAge >= start && activeAge <= end) _dlxSelectYear(activeAge);
+}
+
+function _dlxSelectYear(age) {
+  _dlxSelectedAge = age;
+
+  document.querySelectorAll('#dlx-year-pills .dlx-pill-btn').forEach(btn => {
+    btn.classList.toggle('active', Number(btn.dataset.age) === age);
+  });
+
+  const year = typeof _fcAgeToYear === 'function' ? _fcAgeToYear(age) : '—';
+  const lnData = (_liunianSeq || {})[age] || null;
+  const gz = lnData?.yearGanzhi
+    ? (lnData.yearGanzhi.stem || '') + (lnData.yearGanzhi.branch || '')
+    : '—';
+
+  const xlBranch = typeof _fcResolveDisplayedXiaoLianBranch === 'function'
+    ? _fcResolveDisplayedXiaoLianBranch(age) : '';
+  const xlPalace = (_chart?.palaces || []).find(p => p.earthlyBranch === xlBranch);
+  const xlName = xlPalace?.name || (xlBranch ? xlBranch + '宫' : '—');
+
+  document.getElementById('dlx-ln-ttl').textContent = `${year}年 · 虚岁${age}岁`;
+  document.getElementById('dlx-ln-info').innerHTML = [
+    `<div class="dlx-info-row"><span class="dlx-info-label">干支</span><span class="dlx-info-val">${gz}</span></div>`,
+    `<div class="dlx-info-row"><span class="dlx-info-label">公历年</span><span class="dlx-info-val">${year}年</span></div>`,
+    `<div class="dlx-info-row"><span class="dlx-info-label">小限落宫</span><span class="dlx-info-val">${xlName}</span></div>`,
+    `<div class="dlx-info-row"><span class="dlx-info-label">虚岁</span><span class="dlx-info-val">${age}岁</span></div>`,
+  ].join('');
+
+  document.getElementById('dlx-ln-ai-body').innerHTML = '';
+  document.getElementById('dlx-ln-ai-status').textContent = '';
+  document.getElementById('dlx-ln-risk').textContent = '';
+  document.getElementById('dlx-liunian-card').style.display = '';
+}
+
 // ── AI 深度批命按钮 ───────────────────────────────────────
 let _PIMING_API_BASE = null;
 const _PIMING_API_PUBLIC_BASE = 'https://peaceful-celebration-production-74c8.up.railway.app';
@@ -4061,6 +4233,9 @@ window._joinApiUrl            = _joinApiUrl;
       if (btn.dataset.panel === 'aip-panel-curve') {
         _fcRenderScoreCurve();
         if (_fcLifeCurveMode === 'decade') _fcEnsureLifeCurveVisible(true);
+      }
+      if (btn.dataset.panel === 'aip-panel-luck') {
+        _dlxInit();
       }
     });
   });

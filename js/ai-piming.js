@@ -542,9 +542,131 @@ function _aipRenderResult(moduleKey, data) {
     });
   }
 
+  // ── 大限 AI ───────────────────────────────────────────────
+  function _dlxGetDecadeMutagens(palace) {
+    const result = [];
+    [...(palace?.majorStars || []), ...(palace?.minorStars || [])].forEach(s => {
+      if (s.mutagen) result.push({ star: s.name, type: s.mutagen });
+    });
+    return result;
+  }
+
+  function _dlxBuildDecadePayload() {
+    const d = window._dlxSelectedDecade;
+    if (!d) return null;
+    const palace = d.palace;
+    return {
+      大限区间: `${d.start}-${d.end}岁`,
+      大限宫位: palace?.name || '',
+      宫干: palace?.decadal?.heavenlyStem || '',
+      主星: (palace?.majorStars || []).map(s => ({ name: s.name, brightness: s.brightness || '', mutagen: s.mutagen || null })),
+      辅星: (palace?.minorStars || []).map(s => s.name),
+      大限四化: _dlxGetDecadeMutagens(palace),
+    };
+  }
+
+  function _dlxBuildLiunianPayload() {
+    const age = window._dlxSelectedAge;
+    if (!age) return null;
+    const lnData = (window._liunianSeq || {})[age] || null;
+    const gz = lnData?.yearGanzhi
+      ? (lnData.yearGanzhi.stem || '') + (lnData.yearGanzhi.branch || '') : '';
+    const year = typeof _fcAgeToYear === 'function' ? _fcAgeToYear(age) : '';
+    let xlName = '';
+    if (typeof _fcResolveDisplayedXiaoLianBranch === 'function') {
+      const xlBranch = _fcResolveDisplayedXiaoLianBranch(age);
+      const xlPalace = (window._chart?.palaces || []).find(p => p.earthlyBranch === xlBranch);
+      xlName = xlPalace?.name || xlBranch || '';
+    }
+    return { 虚岁: age, 公历年: year, 干支: gz, 小限落宫: xlName };
+  }
+
+  function _bindDlxDaxianBtn() {
+    const btn = document.getElementById('dlx-dx-ai-btn');
+    if (!btn) return;
+    const newBtn = btn.cloneNode(true);
+    btn.parentNode.replaceChild(newBtn, btn);
+    newBtn.addEventListener('click', async function () {
+      if (!window._chart || !window._dlxSelectedDecade) {
+        const s = document.getElementById('dlx-dx-ai-status');
+        if (s) s.textContent = '请先选择大运';
+        return;
+      }
+      newBtn.disabled = true;
+      const statusEl = document.getElementById('dlx-dx-ai-status');
+      const bodyEl   = document.getElementById('dlx-dx-ai-body');
+      const riskEl   = document.getElementById('dlx-dx-risk');
+      if (statusEl) statusEl.textContent = '正在生成…';
+      if (bodyEl)   bodyEl.innerHTML = '<span style="color:#9a8878">AI 分析中，请稍候…</span>';
+      try {
+        const decadeData = _dlxBuildDecadePayload();
+        const t0 = Date.now();
+        const data = await _aipCallBackend('daxian', { decadeData });
+        const card = data.card || {};
+        const durationMs = data.meta?.durationMs || (Date.now() - t0);
+        if (statusEl) statusEl.textContent = `完成 · ${_fmtDuration(durationMs)}`;
+        if (bodyEl) {
+          bodyEl.innerHTML = '';
+          const sections = Array.isArray(card.sections) && card.sections.length
+            ? card.sections : [{ title: '', content: card.summary || card.body || '' }];
+          _aipRenderSections(bodyEl, sections);
+        }
+        if (riskEl) riskEl.textContent = card.risk ? '要留意：' + card.risk : '';
+      } catch (err) {
+        if (statusEl) statusEl.textContent = err?.message || 'AI生成失败';
+        if (bodyEl)   bodyEl.innerHTML = '';
+      } finally {
+        newBtn.disabled = false;
+      }
+    });
+  }
+
+  function _bindDlxLiunianBtn() {
+    const btn = document.getElementById('dlx-ln-ai-btn');
+    if (!btn) return;
+    const newBtn = btn.cloneNode(true);
+    btn.parentNode.replaceChild(newBtn, btn);
+    newBtn.addEventListener('click', async function () {
+      if (!window._chart || !window._dlxSelectedAge) {
+        const s = document.getElementById('dlx-ln-ai-status');
+        if (s) s.textContent = '请先选择流年';
+        return;
+      }
+      newBtn.disabled = true;
+      const statusEl = document.getElementById('dlx-ln-ai-status');
+      const bodyEl   = document.getElementById('dlx-ln-ai-body');
+      const riskEl   = document.getElementById('dlx-ln-risk');
+      if (statusEl) statusEl.textContent = '正在生成…';
+      if (bodyEl)   bodyEl.innerHTML = '<span style="color:#9a8878">AI 分析中，请稍候…</span>';
+      try {
+        const decadeData  = _dlxBuildDecadePayload();
+        const liunianData = _dlxBuildLiunianPayload();
+        const t0 = Date.now();
+        const data = await _aipCallBackend('liunian', { decadeData, liunianData });
+        const card = data.card || {};
+        const durationMs = data.meta?.durationMs || (Date.now() - t0);
+        if (statusEl) statusEl.textContent = `完成 · ${_fmtDuration(durationMs)}`;
+        if (bodyEl) {
+          bodyEl.innerHTML = '';
+          const sections = Array.isArray(card.sections) && card.sections.length
+            ? card.sections : [{ title: '', content: card.summary || card.body || '' }];
+          _aipRenderSections(bodyEl, sections);
+        }
+        if (riskEl) riskEl.textContent = card.risk ? '要留意：' + card.risk : '';
+      } catch (err) {
+        if (statusEl) statusEl.textContent = err?.message || 'AI生成失败';
+        if (bodyEl)   bodyEl.innerHTML = '';
+      } finally {
+        newBtn.disabled = false;
+      }
+    });
+  }
+
   function _bind() {
     _bindOverallBtn();
     _bindShenBtn();
+    _bindDlxDaxianBtn();
+    _bindDlxLiunianBtn();
   }
 
   if (document.readyState === 'loading') {
