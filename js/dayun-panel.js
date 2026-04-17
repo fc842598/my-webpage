@@ -78,8 +78,12 @@
     };
   }
 
+  function getSelectedDayunRaw() {
+    return state.dayunRanges.find((item) => `${item.start}-${item.end}` === state.selectedDayunKey) || null;
+  }
+
   function getSelectedDayun() {
-    return serializeDayun(window._dlxSelectedDecade);
+    return serializeDayun(getSelectedDayunRaw());
   }
 
   function exposeLifeCurveSignals() {
@@ -165,7 +169,7 @@
   }
 
   function renderSelectedDayunResult() {
-    const selected = window._dlxSelectedDecade;
+    const selected = getSelectedDayunRaw();
     const bodyEl = document.getElementById('dlx-dx-ai-body');
     if (!selected || !bodyEl) return;
 
@@ -193,8 +197,7 @@
   }
 
   function syncCurrentYears() {
-    const selected = window._dlxSelectedDecade;
-    state.selectedDayunKey = selected ? `${selected.start}-${selected.end}` : '';
+    const selected = getSelectedDayunRaw();
     state.liunianYears = selected
       ? Array.from({ length: selected.end - selected.start + 1 }, (_, index) => selected.start + index)
       : [];
@@ -297,6 +300,7 @@
 
   window._aipDlxOnDecadeSelected = function (_dayun, decades) {
     state.dayunRanges = Array.isArray(decades) ? decades : state.dayunRanges;
+    state.selectedDayunKey = _dayun ? `${_dayun.start}-${_dayun.end}` : state.selectedDayunKey;
     syncCurrentYears();
     renderOverviewList();
     bindOverviewClicks();
@@ -314,6 +318,14 @@
 
   window._aipDlxRefresh = function () {
     state.dayunRanges = typeof _fcGetDisplayDecades === 'function' ? _fcGetDisplayDecades() : [];
+    if (!state.selectedDayunKey) {
+      const activeBtn = document.querySelector('#dlx-decade-pills .dlx-pill-btn.active');
+      if (activeBtn?.dataset?.start) {
+        const start = Number(activeBtn.dataset.start);
+        const matched = state.dayunRanges.find((item) => Number(item.start) === start);
+        if (matched) state.selectedDayunKey = `${matched.start}-${matched.end}`;
+      }
+    }
     syncCurrentYears();
     exposeLifeCurveSignals();
     renderOverviewList();
