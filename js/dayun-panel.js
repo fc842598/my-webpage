@@ -74,6 +74,12 @@
     return `${liunian.yearGanzhi.stem || ''}${liunian.yearGanzhi.branch || ''}`;
   }
 
+  function getSolarYear(age) {
+    const birthYear = Number(window._chartInputs?.norm?.year || 0);
+    if (!birthYear) return 0;
+    return birthYear + Number(age) - 1;
+  }
+
   function renderSectionsHtml(card) {
     const sections = Array.isArray(card?.sections) && card.sections.length
       ? card.sections
@@ -172,9 +178,8 @@
   }
 
   function getXiaolianPalace(age) {
-    const branch = typeof _fcResolveDisplayedXiaoLianBranch === 'function'
-      ? _fcResolveDisplayedXiaoLianBranch(age)
-      : '';
+    const liunian = (window._liunianSeq || {})[Number(age)] || null;
+    const branch = liunian?.xiaoLian || '';
     return getPalaceByBranch(branch);
   }
 
@@ -185,7 +190,7 @@
     return {
       rangeKey: selectedDayun?.rangeKey || '',
       age: numericAge,
-      solarYear: typeof _fcAgeToYear === 'function' ? Number(_fcAgeToYear(numericAge)) : 0,
+      solarYear: getSolarYear(numericAge),
       yearGanzhi: formatYearGanzhi(liunian),
       xiaolianPalace: serializePalaceForContext(palace),
       xiaolianPalaceName: palace?.name || '',
@@ -359,7 +364,7 @@
   function renderYearInfo(age) {
     const numericAge = Number(age);
     const palace = getXiaolianPalace(numericAge);
-    const year = typeof _fcAgeToYear === 'function' ? _fcAgeToYear(numericAge) : '';
+    const year = getSolarYear(numericAge);
     const infoEl = document.getElementById('dlx-ln-info');
     const cardEl = document.getElementById('dlx-liunian-card');
     if (!infoEl || !cardEl) return;
