@@ -2219,6 +2219,39 @@
 }
 .dlx-overview-summary { font-size: 13px; line-height: 1.7; color: #5d4c3f; }
 .dlx-overview-risk { margin-top: 8px; font-size: 12px; color: #9b5a4b; }
+.dlx-overview-meta {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px 16px;
+  margin-bottom: 12px;
+}
+.dlx-overview-row {
+  display: flex;
+  gap: 6px;
+  align-items: baseline;
+  font-size: 13px;
+}
+.dlx-overview-label {
+  color: #9c8878;
+  font-size: 11px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.dlx-overview-value { color: #3d2b1f; }
+.dlx-overview-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+.dlx-overview-actions .aip-card-ai-btn {
+  padding: 7px 18px;
+  font-size: 13px;
+}
+.dlx-overview-status { font-size: 12px; color: #9c8878; }
+.dlx-overview-item.is-loading { border-color: #c8a99c; background: #fff8f3; }
+.dlx-overview-item.is-empty .aip-card-body { color: #9c8878; }
 .dlx-pill-btn {
   background: #f5f0e8; border: 1px solid #d8ccbc; border-radius: 20px;
   padding: 5px 14px; font-size: 13px; color: #6b4e41; cursor: pointer;
@@ -2240,6 +2273,7 @@
   .aip-card-title { font-size: 12px; }
   .aip-card-body  { font-size: 11px; }
   .aip-card-tip   { font-size: 10px; }
+  .dlx-overview-meta { grid-template-columns: 1fr; }
 }
 
 /* ─────────────────────────────────────────────────────────────

@@ -352,7 +352,7 @@
 <section id="aip-section" style="display:none">
   <div class="aip-wrap">
     <div class="aip-head">
-      <span class="aip-badge">AI 批命</span>
+      <span class="aip-badge">命书解读</span>
       <span class="aip-desc" id="aip-desc"></span>
     </div>
     <div class="aip-tabs">
@@ -3711,6 +3711,16 @@ function _aipStarSummary(p) {
 // 结构化宫位详情（供 AI 调试台 buildContext 使用）
 // 规则：只有所有星曜字段均为空时才允许 summary='空宫'；
 //       主星空但辅星有内容 → isEmptyMain:true，summary 说明辅曜
+function _aipBuildHeaderMeta(chart, inputs) {
+  const pm = _aipPalaceMap(chart);
+  const lifePalace = _aipGetPalace(pm, '\u547d\u5bab') || _aipGetPalace(pm, '\u547d');
+  const gender = String(inputs?.gender || 'male').toLowerCase() === 'female' ? '\u5973' : '\u7537';
+  const zodiac = chart?.zodiac || '\u2014';
+  const lifeMain = (lifePalace?.majorStars || []).map(s => s.name).filter(Boolean).join('\u3001') || chart?.lifeMain || chart?.lifeMainStar || '\u7a7a\u5bab';
+  const lifeMinor = (lifePalace?.minorStars || []).map(s => s.name).filter(Boolean).slice(0, 4).join('\u3001') || '\u2014';
+  return `\u5c5e\u6027\uff1a${zodiac}  \u6027\u522b\uff1a${gender}  \u547d\u5bab\uff1a${lifeMain}  \u5c0f\u661f\uff1a${lifeMinor}`;
+}
+
 function _aipPalaceDetail(p) {
   if (!p) return null;
   const majorStars = (p.majorStars || []).map(s => ({
@@ -4034,6 +4044,9 @@ function renderAIPiming() {
   const desc = document.getElementById('aip-desc');
   if (desc) desc.textContent =
     `${_chart.zodiac||''}年 · ${_chart.fiveElementsClass||''} · 命宫${lifeMaj[0]||'空宫'}`;
+  const headBadge = document.querySelector('#aip-section .aip-badge');
+  if (headBadge) headBadge.textContent = '命书解读';
+  if (desc) desc.textContent = _aipBuildHeaderMeta(_chart, _chartInputs);
   section.style.display = 'block';
   if (typeof window._aipDlxRefresh === 'function') {
     window._aipDlxRefresh();
@@ -4185,7 +4198,7 @@ function _dlxSelectYear(age, options) {
 // ── AI 深度批命按钮 ───────────────────────────────────────
 let _PIMING_API_BASE = null;
 const _PIMING_API_PUBLIC_BASE = 'https://peaceful-celebration-production-74c8.up.railway.app';
-const _AI_STATUS_CONNECTED = 'AI服务已连接';
+const _AI_STATUS_CONNECTED = 'AI大模型正常连接';
 const _AI_STATUS_DISCONNECTED = 'AI服务未连接';
 const _AI_STATUS_FAILED = 'AI生成失败，请稍后重试';
 
