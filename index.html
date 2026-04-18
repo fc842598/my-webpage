@@ -6,520 +6,638 @@
   <title>紫微斗数 · 免费在线排盘</title>
   <link rel="stylesheet" href="css/style.css">
   <style>
-    /* ═══════════════════════════════════════════════════
-       Figma 轮5最终稿 → HTML/CSS 精准转换
-       配色来源：jhbGXTM7FOOnLL4xTa9TRC / nodeId 7:2
-    ═══════════════════════════════════════════════════ */
-
-    /* ── 动画 ── */
-    @keyframes orb-float {
-      0%,100% { transform: translate(0,0); }
-      50%      { transform: translate(24px,-20px); }
-    }
-    @keyframes ring-spin {
-      to { transform: rotate(360deg); }
-    }
-    @keyframes gold-glow {
-      0%,100% { box-shadow: 0 0 40px rgba(201,169,97,0.38); }
-      50%      { box-shadow: 0 0 60px rgba(201,169,97,0.55); }
+    @keyframes gold-pulse {
+      0%,100% { opacity:.7; }
+      50%      { opacity:1; }
     }
     @keyframes fade-up {
-      from { opacity:0; transform:translateY(18px); }
+      from { opacity:0; transform:translateY(16px); }
       to   { opacity:1; transform:translateY(0); }
     }
+    @keyframes spin-slow { to { transform:rotate(360deg); } }
 
-    /* ── 全局重置 ── */
     *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
     html { scroll-behavior:smooth; }
     body {
-      font-family: "Microsoft YaHei", "PingFang SC", "Noto Sans SC", sans-serif;
-      background: #1a1510;
-      color: #e8dcc8;
-      line-height: 1.7;
-      overflow-x: hidden;
-      -webkit-font-smoothing: antialiased;
+      font-family:"Microsoft YaHei","PingFang SC","Noto Sans SC",sans-serif;
+      background:#18130e;
+      color:#c6b7a6;
+      line-height:1.7;
+      overflow-x:hidden;
+      -webkit-font-smoothing:antialiased;
     }
-    a { text-decoration: none; }
-    ul, ol { list-style: none; }
-    button { cursor: pointer; border: none; font-family: inherit; }
+    a { text-decoration:none; }
+    ul,ol { list-style:none; }
+    button { cursor:pointer; border:none; font-family:inherit; }
 
-    /* ── 导航栏（来自 Figma 7:6）──  */
+    /* ── 导航 ── */
     .navbar {
-      position: fixed; top:0; left:0; right:0; z-index:100;
-      height: 68px;
-      background: rgba(26,21,16,0.96);
-      border-bottom: 1px solid rgba(201,169,97,0.10);
-      backdrop-filter: blur(16px);
+      position:fixed; top:0; left:0; right:0; z-index:100;
+      height:56px;
+      background:rgba(24,19,14,.96);
+      border-bottom:1px solid rgba(201,169,97,.12);
+      backdrop-filter:blur(14px);
     }
     .nav-inner {
-      max-width: 1440px; margin:0 auto;
-      padding: 0 72px; height:100%;
-      display: flex; align-items: center; gap: 0;
+      max-width:1200px; margin:0 auto;
+      padding:0 40px; height:100%;
+      display:flex; align-items:center;
     }
     .nav-logo {
-      color: #c9a961; font-size: 18px; font-weight: 700;
-      display: flex; align-items: center; gap: 8px;
-      margin-right: auto;
+      color:#c9a961; font-size:17px; font-weight:700;
+      display:flex; align-items:center; gap:7px;
+      margin-right:auto;
     }
     .nav-links {
-      display: flex; gap: 48px; margin-right: 48px;
+      display:flex; gap:36px; margin-right:32px;
     }
-    .nav-links a {
-      color: #8b7c6b; font-size: 15px;
-      transition: color .2s;
-    }
-    .nav-links a:hover, .nav-links a.active { color: #c9a961; }
+    .nav-links a { color:#9a8878; font-size:14px; transition:color .2s; }
+    .nav-links a:hover,.nav-links a.active { color:#c9a961; }
     .nav-cta {
-      background: #c9a961; color: #1a1510;
-      font-size: 14px; font-weight: 700;
-      padding: 0 24px; height: 38px;
-      border-radius: 8px;
-      transition: background .2s, box-shadow .2s, transform .2s;
+      background:#7a3b2e; color:#fff5ec;
+      font-size:13px; font-weight:700;
+      padding:0 20px; height:34px; border-radius:20px;
+      transition:background .2s, box-shadow .2s;
     }
-    .nav-cta:hover {
-      background: #d9b97f;
-      box-shadow: 0 4px 16px rgba(201,169,97,0.45);
-      transform: translateY(-1px);
-    }
+    .nav-cta:hover { background:#963d32; box-shadow:0 4px 14px rgba(150,61,50,.4); }
 
-    /* ── Hero 区域（来自 Figma 7:12~7:32）── */
+    /* ── Hero ── */
     .hero {
-      min-height: 100vh;
-      padding: 120px 0 60px;
-      display: flex; align-items: center;
-      position: relative; overflow: hidden;
+      min-height:100vh;
+      padding:100px 0 60px;
+      display:flex; align-items:center;
+      position:relative; overflow:hidden;
     }
-    /* 背景光晕 */
-    .hero-halo {
-      position: absolute; border-radius:50%;
-      filter: blur(100px); pointer-events:none;
-    }
-    .halo-1 {
-      width:600px; height:600px; top:-150px; left:-100px;
-      background: rgba(201,169,97,0.06);
-      animation: orb-float 20s ease-in-out infinite;
-    }
-    .halo-2 {
-      width:420px; height:420px; top:0; right:-60px;
-      background: rgba(217,185,127,0.04);
-      animation: orb-float 26s ease-in-out infinite reverse;
-    }
-    .halo-3 {
-      width:340px; height:340px; top:55%; left:38%;
-      background: rgba(201,169,97,0.025);
-      animation: orb-float 18s ease-in-out infinite;
-      animation-delay: -8s;
+    /* 背景暗纹 */
+    .hero::before {
+      content:'';
+      position:absolute; inset:0;
+      background:
+        radial-gradient(ellipse 60% 50% at 70% 50%, rgba(201,169,97,.04) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 60% at 20% 60%, rgba(122,59,46,.06) 0%, transparent 70%);
+      pointer-events:none;
     }
 
     .hero-inner {
-      max-width: 1440px; margin:0 auto;
-      padding: 0 180px;
-      display: flex; align-items: center; gap:60px;
+      max-width:1200px; margin:0 auto;
+      padding:0 40px;
+      display:flex; align-items:center; gap:60px;
       width:100%; position:relative; z-index:1;
     }
-    .hero-content { flex:1; max-width:620px; }
+    .hero-content { flex:1; max-width:560px; }
 
-    /* 小标签（7:12）*/
-    .hero-tag {
-      display: inline-flex; align-items: center; gap: 6px;
-      background: rgba(201,169,97,0.10);
-      border: 1px solid rgba(201,169,97,0.28);
-      border-radius: 17px; padding: 8px 14px;
-      font-size: 13px; color: #d9b97f;
-      margin-bottom: 22px;
-      animation: fade-up .6s ease-out;
+    .hero-eyebrow {
+      display:inline-flex; align-items:center; gap:6px;
+      background:rgba(201,169,97,.08);
+      border:1px solid rgba(201,169,97,.22);
+      border-radius:20px; padding:5px 14px;
+      font-size:12px; color:#c9a961; letter-spacing:.05em;
+      margin-bottom:20px;
+      animation:fade-up .6s ease-out;
+    }
+    .eyebrow-dot {
+      width:6px; height:6px; border-radius:50%;
+      background:#c9a961;
+      animation:gold-pulse 2s ease-in-out infinite;
     }
 
-    /* 主标题（7:14 + 7:15）*/
-    .hero-title-line1 {
-      font-size: clamp(30px, 3.2vw, 46px);
-      font-weight: 700; line-height: 1.25;
-      color: #e8dcc8;
-      animation: fade-up .7s ease-out .1s backwards;
+    .hero-title {
+      font-size:clamp(28px,3vw,44px);
+      font-weight:700; line-height:1.25;
+      color:#e8dcc8;
+      margin-bottom:6px;
+      animation:fade-up .7s ease-out .1s backwards;
     }
-    .hero-title-line2 {
-      font-size: clamp(38px, 4.3vw, 62px);
-      font-weight: 700; line-height: 1.15;
-      color: #c9a961;
-      text-shadow: 0 0 30px rgba(201,169,97,0.38);
-      margin-bottom: 20px;
-      animation: fade-up .7s ease-out .2s backwards;
-    }
+    .hero-title .gold { color:#c9a961; display:block; font-size:clamp(36px,4vw,56px); }
 
-    /* 描述文字（7:16）*/
     .hero-desc {
-      font-size: 17px; line-height: 1.8;
-      color: #b8a89a;
-      margin-bottom: 36px;
-      animation: fade-up .7s ease-out .3s backwards;
+      font-size:15px; line-height:1.85; color:#9a8878;
+      margin:18px 0 32px;
+      animation:fade-up .7s ease-out .2s backwards;
     }
 
-    /* 按钮组 */
     .hero-actions {
-      display: flex; gap: 16px; flex-wrap: wrap;
-      margin-bottom: 24px;
-      animation: fade-up .7s ease-out .4s backwards;
+      display:flex; gap:14px; flex-wrap:wrap;
+      animation:fade-up .7s ease-out .3s backwards;
     }
-    .btn-primary {
-      background: #c9a961; color: #1a1510;
-      font-size: 16px; font-weight: 700;
-      padding: 0 32px; height: 54px;
-      border-radius: 12px;
-      box-shadow: 0 8px 28px rgba(201,169,97,0.40);
-      transition: box-shadow .25s, transform .25s, background .2s;
+    .btn-main {
+      background:linear-gradient(135deg,#7a3b2e 0%,#b05a3a 100%);
+      color:#fff5ec; font-size:15px; font-weight:700;
+      padding:0 28px; height:48px; border-radius:24px;
+      box-shadow:0 6px 20px rgba(122,59,46,.35);
+      transition:box-shadow .2s, transform .2s;
     }
-    .btn-primary:hover {
-      background: #d9b97f;
-      box-shadow: 0 12px 40px rgba(201,169,97,0.55);
-      transform: translateY(-3px);
+    .btn-main:hover { box-shadow:0 10px 28px rgba(122,59,46,.5); transform:translateY(-2px); }
+    .btn-sub {
+      background:transparent; color:#c9a961;
+      font-size:14px;
+      padding:0 22px; height:48px; border-radius:24px;
+      border:1px solid rgba(201,169,97,.35);
+      transition:border-color .2s, background .2s;
     }
-    .btn-secondary {
-      background: transparent; color: #d9b97f;
-      font-size: 16px; font-weight: 400;
-      padding: 0 26px; height: 54px;
-      border-radius: 12px;
-      border: 1.5px solid rgba(201,169,97,0.40);
-      transition: border-color .2s, background .2s;
+    .btn-sub:hover { border-color:rgba(201,169,97,.7); background:rgba(201,169,97,.06); }
+
+    .hero-badges {
+      display:flex; flex-wrap:wrap; gap:8px;
+      margin-top:20px;
+      animation:fade-up .7s ease-out .4s backwards;
     }
-    .btn-secondary:hover {
-      border-color: rgba(201,169,97,0.70);
-      background: rgba(201,169,97,0.07);
+    .badge {
+      background:rgba(201,169,97,.07);
+      border:1px solid rgba(201,169,97,.14);
+      border-radius:6px; padding:4px 12px;
+      font-size:12px; color:#9a8878;
+    }
+    .badge .ok { color:#c9a961; margin-right:4px; }
+
+    /* ── 右侧命盘预览 ── */
+    .hero-preview {
+      flex-shrink:0; width:420px;
+      animation:fade-up .8s ease-out .2s backwards;
     }
 
-    /* 信任标签（7:21~7:28）*/
-    .hero-trust {
-      display: flex; flex-wrap: wrap; gap: 10px;
-      animation: fade-up .7s ease-out .5s backwards;
+    /* 仿真命盘格 */
+    .mini-chart {
+      background:#f5f0e8;
+      border-radius:12px;
+      overflow:hidden;
+      box-shadow:0 20px 60px rgba(0,0,0,.5), 0 0 0 1px rgba(201,169,97,.15);
     }
-    .trust-pill {
-      background: rgba(201,169,97,0.06);
-      border: 1px solid rgba(201,169,97,0.12);
-      border-radius: 8px; padding: 6px 14px;
-      font-size: 12px; color: #b8a89a;
-      display: flex; align-items: center; gap: 5px;
+    .mini-chart-title {
+      background:#1a130c;
+      color:#c9a961;
+      text-align:center;
+      font-size:14px; font-weight:700;
+      padding:10px 0;
+      letter-spacing:.15em;
+      border-bottom:1px solid rgba(201,169,97,.2);
     }
-    .trust-pill .check { color: #c9a961; font-weight: 700; }
+    .mini-grid {
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      grid-template-rows:repeat(4,1fr);
+      gap:1px;
+      background:#d8cfc2;
+      padding:1px;
+    }
+    .mini-cell {
+      background:#f5f0e8;
+      padding:7px 8px 6px;
+      min-height:62px;
+      font-size:10px; color:#5a4030;
+      position:relative;
+    }
+    .mini-cell.center-span {
+      grid-column:2/4; grid-row:2/4;
+      background:#fdf8f2;
+      display:flex; flex-direction:column; align-items:center; justify-content:center;
+      gap:4px;
+    }
+    .mc-palace {
+      font-size:9px; color:#9c8878; letter-spacing:.05em;
+    }
+    .mc-stars {
+      font-size:11px; color:#3d2b1f; font-weight:700; line-height:1.5;
+    }
+    .mc-age { font-size:8.5px; color:#b8a898; margin-top:2px; }
+    .mc-tag {
+      display:inline-block;
+      font-size:8px; color:#963d32; border:1px solid #e8c0b0;
+      border-radius:3px; padding:0 3px; margin-bottom:3px;
+    }
+    .mc-center-name {
+      font-size:13px; font-weight:700; color:#3d2b1f;
+    }
+    .mc-center-sub {
+      font-size:10px; color:#9c8878;
+    }
+    .mc-center-data {
+      font-size:9px; color:#6b4e41; text-align:center; line-height:1.7;
+    }
 
-    /* ── 右侧装饰圆环（7:29~7:33）── */
-    .hero-deco {
-      flex-shrink: 0; width: 400px; height: 400px;
-      position: relative; display: flex;
-      align-items: center; justify-content: center;
+    /* 命盘卡片底部 */
+    .mini-chart-footer {
+      background:#1a130c;
+      padding:8px 12px;
+      display:flex; gap:0; justify-content:center;
     }
-    .deco-ring {
-      position:absolute; border-radius:50%;
-      border: 1px solid rgba(201,169,97,0.14);
+    .mini-tab {
+      font-size:10px; color:#8e6a3a;
+      padding:4px 14px; border-radius:12px;
     }
-    .deco-ring-1 { width:400px; height:400px; animation: ring-spin 32s linear infinite; }
-    .deco-ring-2 { width:295px; height:295px; border-color:rgba(201,169,97,0.09); border-style:dashed; animation: ring-spin 22s linear infinite reverse; }
-    .deco-ring-3 { width:172px; height:172px; border-color:rgba(201,169,97,0.20); animation: ring-spin 14s linear infinite; }
-    .deco-center {
-      width:110px; height:110px; border-radius:50%;
-      background: #c9a961;
-      display: flex; align-items:center; justify-content:center;
-      font-size: 22px; font-weight: 700; color: #1a1510;
-      box-shadow: 0 0 50px rgba(201,169,97,0.45);
-      animation: gold-glow 3s ease-in-out infinite;
-      position: relative; z-index:2;
+    .mini-tab.active {
+      background:#3d2b1f; color:#c9a961; font-weight:700;
     }
 
-    /* ── 东方分割线 ── */
-    .divider {
-      display: flex; align-items: center; gap:0;
-      padding: 0 120px; margin: 48px 0 60px;
+    /* ── 分割线 ── */
+    .section-divider {
+      display:flex; align-items:center; gap:0;
+      padding:0 60px; margin:48px 0;
     }
-    .divider-line {
+    .sdiv-line {
       flex:1; height:1px;
-      background: linear-gradient(to right, transparent, rgba(201,169,97,0.12), transparent);
+      background:linear-gradient(to right, transparent, rgba(201,169,97,.12), transparent);
     }
-    .divider-diamond {
-      width:10px; height:10px; flex-shrink:0;
-      background: rgba(201,169,97,0.45);
-      transform: rotate(45deg); margin: 0 10px;
-    }
-
-    /* ── 功能卡片区（7:37~7:62）── */
-    .section { padding: 0 120px 80px; }
-    .section-title {
-      text-align: center; font-size: 34px; font-weight: 700;
-      color: #c9a961; margin-bottom: 12px;
-    }
-    .section-sub {
-      text-align: center; font-size: 16px;
-      color: #8b7c6b; margin-bottom: 40px;
+    .sdiv-diamond {
+      width:8px; height:8px; flex-shrink:0;
+      background:rgba(201,169,97,.4); transform:rotate(45deg); margin:0 10px;
     }
 
-    .value-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 24px;
+    /* ── 功能区 ── */
+    .features {
+      max-width:1200px; margin:0 auto; padding:0 40px 80px;
     }
-    .value-card {
-      background: #251e18;
-      border: 1px solid rgba(201,169,97,0.14);
-      border-radius: 16px; padding: 18px 22px 22px;
-      position: relative; overflow: hidden;
-      transition: transform .3s, border-color .3s, box-shadow .3s;
+    .section-heading {
+      text-align:center; margin-bottom:36px;
     }
-    .value-card::before {
-      content: '';
-      position: absolute; top:0; left:0; right:0; height:2px;
-      background: rgba(201,169,97,0.32);
-      border-radius: 16px 16px 0 0;
+    .section-heading h2 {
+      font-size:28px; font-weight:700; color:#e8dcc8;
+      margin-bottom:6px;
     }
-    .value-card:hover {
-      transform: translateY(-6px);
-      border-color: rgba(201,169,97,0.32);
-      box-shadow: 0 12px 36px rgba(201,169,97,0.12);
-    }
-    .card-icon-wrap {
-      width:44px; height:44px; border-radius:50%;
-      background: rgba(201,169,97,0.10);
-      display: flex; align-items:center; justify-content:center;
-      font-size: 22px; margin-bottom: 20px;
-    }
-    .value-card h3 {
-      font-size: 16px; font-weight: 700;
-      color: #d9b97f; margin-bottom: 10px;
-    }
-    .value-card p {
-      font-size: 13px; line-height: 1.7; color: #8b7c6b;
+    .section-heading p { font-size:14px; color:#8e7c6a; }
+    .section-heading .ornament {
+      color:rgba(201,169,97,.5); font-size:18px; letter-spacing:8px;
+      display:block; margin-bottom:8px;
     }
 
-    /* ── 步骤区（7:63~7:78）── */
+    .feature-grid {
+      display:grid; grid-template-columns:repeat(4,1fr); gap:16px;
+    }
+    .feature-card {
+      background:#221a13;
+      border:1px solid rgba(201,169,97,.12);
+      border-radius:12px; padding:20px 16px 18px;
+      position:relative; overflow:hidden;
+      transition:transform .25s, border-color .25s, box-shadow .25s;
+    }
+    .feature-card::after {
+      content:''; position:absolute; top:0; left:0; right:0; height:2px;
+      background:linear-gradient(90deg, transparent, rgba(201,169,97,.3), transparent);
+    }
+    .feature-card:hover {
+      transform:translateY(-4px);
+      border-color:rgba(201,169,97,.28);
+      box-shadow:0 12px 32px rgba(0,0,0,.3);
+    }
+    .fc-icon {
+      font-size:24px; margin-bottom:12px; display:block;
+    }
+    .feature-card h3 {
+      font-size:15px; font-weight:700; color:#d9b97f; margin-bottom:8px;
+    }
+    .feature-card p { font-size:12.5px; line-height:1.7; color:#7a6a5a; }
+
+    /* ── AI 功能条 ── */
+    .ai-strip {
+      max-width:1200px; margin:0 auto 60px; padding:0 40px;
+    }
+    .ai-strip-inner {
+      background:#221a13;
+      border:1px solid rgba(201,169,97,.15);
+      border-radius:14px; padding:24px 28px;
+      display:flex; align-items:center; gap:24px;
+    }
+    .ai-strip-badge {
+      flex-shrink:0;
+      background:linear-gradient(135deg,#7a3b2e,#b05a3a);
+      color:#fff5ec; font-size:11px; font-weight:700;
+      padding:4px 12px; border-radius:20px; letter-spacing:.06em;
+    }
+    .ai-strip-text {
+      flex:1;
+    }
+    .ai-strip-text strong { color:#d9b97f; font-size:15px; }
+    .ai-strip-text p { color:#8e7c6a; font-size:13px; margin-top:2px; }
+    .ai-strip-btn {
+      flex-shrink:0;
+      background:rgba(201,169,97,.1); color:#c9a961;
+      border:1px solid rgba(201,169,97,.25);
+      font-size:13px; font-weight:700;
+      padding:8px 20px; border-radius:20px;
+      transition:background .2s, border-color .2s;
+    }
+    .ai-strip-btn:hover { background:rgba(201,169,97,.18); border-color:rgba(201,169,97,.5); }
+
+    /* ── 步骤 ── */
     .steps-section {
-      background: #14100c; padding: 60px 120px;
+      background:#130f0a; padding:50px 0;
     }
-    .steps-header {
-      display: flex; align-items: center; gap: 0;
-      margin-bottom: 40px;
+    .steps-inner {
+      max-width:1200px; margin:0 auto; padding:0 40px;
     }
-    .steps-header-line {
+    .steps-title-row {
+      display:flex; align-items:center; gap:0; margin-bottom:36px;
+    }
+    .stl-line {
       flex:1; height:1px;
-      background: linear-gradient(to right, transparent, rgba(201,169,97,0.08), transparent);
+      background:linear-gradient(to right, transparent, rgba(201,169,97,.1), transparent);
     }
-    .steps-title {
-      font-size: 28px; font-weight: 700;
-      color: #c9a961; padding: 0 28px;
-      white-space: nowrap;
+    .stl-text {
+      font-size:20px; font-weight:700; color:#c9a961;
+      padding:0 24px; letter-spacing:.05em;
+    }
+    .steps-row {
+      display:flex; align-items:flex-start; justify-content:center; gap:0;
+      max-width:700px; margin:0 auto;
+    }
+    .step-item {
+      flex:1; display:flex; flex-direction:column; align-items:center; text-align:center;
+    }
+    .step-circle {
+      width:46px; height:46px; border-radius:50%;
+      background:linear-gradient(135deg,#7a3b2e,#b05a3a);
+      color:#fff5ec; font-size:14px; font-weight:700;
+      display:flex; align-items:center; justify-content:center;
+      margin-bottom:12px;
+      box-shadow:0 4px 12px rgba(122,59,46,.35);
+    }
+    .step-item h3 { font-size:14px; font-weight:700; color:#d9b97f; }
+    .step-item p { font-size:12px; color:#7a6a5a; margin-top:4px; }
+    .step-arrow {
+      flex-shrink:0; margin-top:22px;
+      color:rgba(201,169,97,.3); font-size:18px;
+      padding:0 8px;
     }
 
-    .steps-grid {
-      display: flex; align-items: flex-start;
-      justify-content: center; gap: 0;
-      max-width: 860px; margin: 0 auto;
-    }
-    .step { flex:1; display:flex; flex-direction:column; align-items:center; text-align:center; }
-    .step-num {
-      width:48px; height:48px; border-radius:50%;
-      background: #c9a961; color: #1a1510;
-      font-size: 16px; font-weight: 700;
-      display: flex; align-items:center; justify-content:center;
-      margin-bottom: 16px;
-      box-shadow: 0 4px 14px rgba(201,169,97,0.35);
-    }
-    .step h3 { font-size: 16px; font-weight: 700; color: #d9b97f; }
-    .step-connector {
-      flex-shrink:0; margin-top:24px;
-      width:100px; height:1px;
-      background: repeating-linear-gradient(to right, rgba(201,169,97,0.22) 0, rgba(201,169,97,0.22) 4px, transparent 4px, transparent 8px);
-    }
-
-    /* ── 最终 CTA（7:79~7:87）── */
+    /* ── CTA ── */
     .final-cta {
-      background: rgba(201,169,97,0.055);
-      padding: 72px 120px 60px;
-      text-align: center;
-      position: relative;
+      text-align:center; padding:70px 40px 60px;
+      position:relative;
     }
-    .cta-divider {
-      display: flex; align-items:center; gap:0;
-      margin-bottom: 40px;
+    .final-cta::before {
+      content:'';
+      position:absolute; inset:0;
+      background:radial-gradient(ellipse 60% 80% at 50% 50%, rgba(201,169,97,.04) 0%, transparent 70%);
+      pointer-events:none;
     }
-    .cta-divider-line {
-      flex:1; height:1px;
-      background: linear-gradient(to right, transparent, rgba(201,169,97,0.08), transparent);
-    }
-    .cta-divider-diamond {
-      width:10px; height:10px; flex-shrink:0;
-      background: rgba(201,169,97,0.45);
-      transform: rotate(45deg); margin: 0 10px;
+    .cta-ornament {
+      font-size:13px; color:rgba(201,169,97,.5);
+      letter-spacing:12px; margin-bottom:14px; display:block;
     }
     .final-cta h2 {
-      font-size: clamp(28px, 2.8vw, 40px);
-      font-weight: 700; color: #e8dcc8;
-      margin-bottom: 12px;
+      font-size:clamp(24px,2.5vw,36px); font-weight:700;
+      color:#e8dcc8; margin-bottom:10px;
     }
-    .final-cta .cta-sub {
-      font-size: 16px; color: #8b7c6b;
-      margin-bottom: 36px;
-    }
-    .final-note {
-      margin-top: 20px;
-      font-size: 13px; color: #8b7c6b; opacity: .8;
-    }
+    .final-cta p { font-size:14px; color:#8e7c6a; margin-bottom:28px; }
+    .final-note { margin-top:16px; font-size:12px; color:#7a6a5a; }
 
     /* ── 页脚 ── */
     .footer {
-      border-top: 1px solid rgba(201,169,97,0.08);
-      padding: 24px 120px;
-      display: flex; justify-content: center; gap: 48px;
-      font-size: 13px; color: #8b7c6b;
+      border-top:1px solid rgba(201,169,97,.08);
+      padding:20px 40px;
+      display:flex; justify-content:center; gap:40px;
+      font-size:12px; color:#7a6a5a;
     }
-    .footer a { color: #c9a961; }
+    .footer a { color:#c9a961; }
 
     /* ── 响应式 ── */
-    @media (max-width: 1100px) {
-      .hero-inner { padding: 0 80px; }
-      .value-grid { grid-template-columns: repeat(2,1fr); }
-      .section, .steps-section, .final-cta, .footer { padding-left:60px; padding-right:60px; }
-      .divider { padding: 0 60px; }
+    @media (max-width:1000px) {
+      .hero-preview { display:none; }
+      .feature-grid { grid-template-columns:repeat(2,1fr); }
     }
-
-    @media (max-width: 820px) {
-      .nav-links { display: none; }
-      .hero-inner { flex-direction: column; padding: 0 32px; gap: 40px; }
-      .hero-deco { display: none; }
-      .hero-content { max-width:100%; }
-      .hero-actions { flex-direction: column; }
-      .btn-primary, .btn-secondary { width:100%; }
-      .value-grid { grid-template-columns: 1fr; }
-      .steps-grid { flex-direction: column; align-items:center; gap: 24px; }
-      .step-connector { display: none; }
-      .section, .steps-section, .final-cta, .footer { padding-left:24px; padding-right:24px; }
-      .divider { padding: 0 24px; }
-      .footer { flex-direction: column; gap:8px; text-align:center; }
+    @media (max-width:640px) {
+      .nav-links { display:none; }
+      .hero-inner { flex-direction:column; padding:0 20px; }
+      .hero-actions { flex-direction:column; }
+      .btn-main,.btn-sub { width:100%; }
+      .feature-grid { grid-template-columns:1fr; }
+      .features,.ai-strip,.steps-inner,.footer { padding-left:20px; padding-right:20px; }
+      .section-divider { padding:0 20px; }
+      .steps-row { flex-direction:column; align-items:center; gap:20px; }
+      .step-arrow { display:none; }
+      .footer { flex-direction:column; gap:6px; text-align:center; }
     }
   </style>
 </head>
 <body>
 
-  <!-- 导航栏 -->
-  <header class="navbar">
-    <div class="nav-inner">
-      <a href="index.html" class="nav-logo">☽ 紫微斗数</a>
-      <nav class="nav-links">
-        <a href="index.html" class="active">首页</a>
-        <a href="pages/chart.html">免费排盘</a>
-      </nav>
-      <button class="nav-cta" onclick="location.href='pages/chart.html'">立即排盘</button>
-    </div>
-  </header>
-
-  <!-- Hero -->
-  <section class="hero">
-    <div class="hero-halo halo-1"></div>
-    <div class="hero-halo halo-2"></div>
-    <div class="hero-halo halo-3"></div>
-
-    <div class="hero-inner">
-      <div class="hero-content">
-        <p class="hero-tag">✨ 免费在线排盘 · 实时计算结果</p>
-        <h1 class="hero-title-line1">输入出生时间，免费看你的</h1>
-        <h1 class="hero-title-line2">紫微命盘</h1>
-        <p class="hero-desc">
-          填入出生年月日时辰，在本页直接生成十二宫命盘<br>
-          看命宫主星、感情格局、事业财运和大运走势。
-        </p>
-        <div class="hero-actions">
-          <button class="btn-primary" onclick="location.href='pages/chart.html'">免费排我的命盘 →</button>
-          <button class="btn-secondary" onclick="location.href='pages/chart.html'">查看示例</button>
-        </div>
-        <ul class="hero-trust">
-          <li class="trust-pill"><span class="check">✓</span> 完全免费</li>
-          <li class="trust-pill"><span class="check">✓</span> 无需注册</li>
-          <li class="trust-pill"><span class="check">✓</span> 本地计算</li>
-          <li class="trust-pill"><span class="check">✓</span> 不存储数据</li>
-        </ul>
-      </div>
-
-      <div class="hero-deco">
-        <div class="deco-ring deco-ring-1"></div>
-        <div class="deco-ring deco-ring-2"></div>
-        <div class="deco-ring deco-ring-3"></div>
-        <div class="deco-center">紫微</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 分割线 -->
-  <div class="divider">
-    <div class="divider-line"></div>
-    <div class="divider-diamond"></div>
-    <div class="divider-line"></div>
+<header class="navbar">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">☽ 紫微斗数</a>
+    <nav class="nav-links">
+      <a href="index.html" class="active">首页</a>
+      <a href="pages/chart.html">免费排盘</a>
+    </nav>
+    <button class="nav-cta" onclick="location.href='pages/chart.html'">立即排盘</button>
   </div>
+</header>
 
-  <!-- 功能卡片区 -->
-  <section class="section">
-    <h2 class="section-title">命盘能告诉你什么？</h2>
-    <p class="section-sub">大多数人看盘，最关心这四件事</p>
-    <div class="value-grid">
-      <div class="value-card">
-        <div class="card-icon-wrap">🧠</div>
-        <h3>性格与天赋</h3>
-        <p>命宫主星揭示天生性格底色与优势所在</p>
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-content">
+      <span class="hero-eyebrow">
+        <span class="eyebrow-dot"></span>
+        免费在线排盘 · 实时计算
+      </span>
+      <h1 class="hero-title">
+        输入出生时间
+        <span class="gold">看你的紫微命盘</span>
+      </h1>
+      <p class="hero-desc">
+        填入年月日时辰，即时生成十二宫命盘。<br>
+        命宫主星、大运流年、AI 深度批命——一站看清。
+      </p>
+      <div class="hero-actions">
+        <button class="btn-main" onclick="location.href='pages/chart.html'">免费排我的命盘 →</button>
+        <button class="btn-sub" onclick="location.href='pages/chart.html'">查看示例</button>
       </div>
-      <div class="value-card">
-        <div class="card-icon-wrap">💑</div>
-        <h3>感情与婚姻</h3>
-        <p>夫妻宫看感情模式、缘分时机与伴侣特征</p>
-      </div>
-      <div class="value-card">
-        <div class="card-icon-wrap">💼</div>
-        <h3>事业与财运</h3>
-        <p>官禄财帛宫判断发展方向与财富格局</p>
-      </div>
-      <div class="value-card">
-        <div class="card-icon-wrap">📆</div>
-        <h3>大运走势</h3>
-        <p>十年大限看清当前所处阶段走势</p>
+      <ul class="hero-badges">
+        <li class="badge"><span class="ok">✓</span>完全免费</li>
+        <li class="badge"><span class="ok">✓</span>无需注册</li>
+        <li class="badge"><span class="ok">✓</span>本地计算</li>
+        <li class="badge"><span class="ok">✓</span>AI 批命</li>
+      </ul>
+    </div>
+
+    <!-- 仿真命盘预览 -->
+    <div class="hero-preview">
+      <div class="mini-chart">
+        <div class="mini-chart-title">紫 微 排 盘</div>
+        <div class="mini-grid">
+          <!-- 上排 4 格 -->
+          <div class="mini-cell">
+            <div class="mc-stars">廉贞陷<br>贪狼陷</div>
+            <div class="mc-age">癸巳 103–112</div>
+            <div class="mc-palace">福德</div>
+          </div>
+          <div class="mini-cell">
+            <span class="mc-tag">官</span>
+            <div class="mc-stars">巨门旺<br>天魁</div>
+            <div class="mc-age">甲午 93–102</div>
+            <div class="mc-palace">田宅</div>
+          </div>
+          <div class="mini-cell">
+            <div class="mc-stars">天相得</div>
+            <div class="mc-age">乙未 83–92</div>
+            <div class="mc-palace">官禄</div>
+          </div>
+          <div class="mini-cell">
+            <div class="mc-stars">天同旺<br>天梁旺</div>
+            <div class="mc-age">丙申 73–82</div>
+            <div class="mc-palace">仆役</div>
+          </div>
+          <!-- 第二排 -->
+          <div class="mini-cell">
+            <div class="mc-stars">太阴陷</div>
+            <div class="mc-age">壬辰 113–122</div>
+            <div class="mc-palace">父母</div>
+          </div>
+          <!-- 中间信息格 -->
+          <div class="mini-cell center-span">
+            <div class="mc-center-name">紫 微 排 盘</div>
+            <div class="mc-center-sub">阳男 · 木三局</div>
+            <div class="mc-center-data">
+              公历 1991-02-16 22:00<br>
+              节气时：辛<br>
+              命宫：辰 · 身宫：财<br>
+              流年卦：风水涣
+            </div>
+          </div>
+          <div class="mini-cell">
+            <span class="mc-tag">权</span>
+            <div class="mc-stars">太阳不</div>
+            <div class="mc-age">丁酉 63–72</div>
+            <div class="mc-palace">迁移</div>
+          </div>
+          <!-- 第三排 -->
+          <div class="mini-cell">
+            <span class="mc-tag">科</span>
+            <div class="mc-stars">天府得</div>
+            <div class="mc-age">辛卯 3–12</div>
+            <div class="mc-palace">命宫</div>
+          </div>
+          <!-- center-span 占位，跳过 2 格 -->
+          <div class="mini-cell">
+            <div class="mc-stars">七杀旺<br>破军旺</div>
+            <div class="mc-age">戊戌 53–62</div>
+            <div class="mc-palace">疾厄</div>
+          </div>
+          <!-- 下排 4 格 -->
+          <div class="mini-cell">
+            <div class="mc-stars">紫微庙<br>破军旺</div>
+            <div class="mc-age">庚寅 13–22</div>
+            <div class="mc-palace">兄弟</div>
+          </div>
+          <div class="mini-cell">
+            <div class="mc-stars">天机庙</div>
+            <div class="mc-age">辛丑 23–32</div>
+            <div class="mc-palace">夫妻</div>
+          </div>
+          <div class="mini-cell">
+            <div class="mc-stars">天机庙</div>
+            <div class="mc-age">庚子 33–42</div>
+            <div class="mc-palace">子女</div>
+          </div>
+          <div class="mini-cell">
+            <div class="mc-age">己亥 43–52</div>
+            <div class="mc-palace">财帛</div>
+          </div>
+        </div>
+        <div class="mini-chart-footer">
+          <span class="mini-tab active">◇先天卦◇</span>
+          <span class="mini-tab">后天卦</span>
+          <span class="mini-tab">流年卦</span>
+        </div>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- 步骤区 -->
-  <section class="steps-section">
-    <div class="steps-header">
-      <div class="steps-header-line"></div>
-      <h2 class="steps-title">三步拿到你的命盘</h2>
-      <div class="steps-header-line"></div>
-    </div>
-    <div class="steps-grid">
-      <div class="step">
-        <div class="step-num">01</div>
-        <h3>点击排盘</h3>
-      </div>
-      <div class="step-connector"></div>
-      <div class="step">
-        <div class="step-num">02</div>
-        <h3>即时计算</h3>
-      </div>
-      <div class="step-connector"></div>
-      <div class="step">
-        <div class="step-num">03</div>
-        <h3>查看命盘</h3>
-      </div>
-    </div>
-  </section>
+<!-- 分割线 -->
+<div class="section-divider">
+  <div class="sdiv-line"></div>
+  <div class="sdiv-diamond"></div>
+  <div class="sdiv-line"></div>
+</div>
 
-  <!-- 最终 CTA -->
-  <section class="final-cta">
-    <div class="cta-divider">
-      <div class="cta-divider-line"></div>
-      <div class="cta-divider-diamond"></div>
-      <div class="cta-divider-line"></div>
+<!-- 功能区 -->
+<section class="features">
+  <div class="section-heading">
+    <span class="ornament">◆ ◇ ◆</span>
+    <h2>命盘能告诉你什么？</h2>
+    <p>大多数人看盘，最想知道这四件事</p>
+  </div>
+  <div class="feature-grid">
+    <div class="feature-card">
+      <span class="fc-icon">命</span>
+      <h3>性格与天赋</h3>
+      <p>命宫主星揭示天生性格底色与优势所在，看清自己的先天格局。</p>
     </div>
-    <h2>准备好了吗？</h2>
-    <p class="cta-sub">2 分钟看清你的紫微命盘和大运走势</p>
-    <button class="btn-primary" onclick="location.href='pages/chart.html'">免费排我的命盘</button>
-    <p class="final-note">完全免费 · 无需注册 · 本地计算 · 不存储数据</p>
-  </section>
+    <div class="feature-card">
+      <span class="fc-icon">夫</span>
+      <h3>感情与婚姻</h3>
+      <p>夫妻宫看感情模式、缘分时机与伴侣特征，感情走势早知道。</p>
+    </div>
+    <div class="feature-card">
+      <span class="fc-icon">财</span>
+      <h3>事业与财运</h3>
+      <p>官禄财帛宫判断发展方向与财富格局，找准人生主线。</p>
+    </div>
+    <div class="feature-card">
+      <span class="fc-icon">限</span>
+      <h3>大运走势</h3>
+      <p>十年大限 + AI 流年批命，看清当前所处阶段与未来走向。</p>
+    </div>
+  </div>
+</section>
 
-  <!-- 页脚 -->
-  <footer class="footer">
-    <span>© 2026 紫微斗数在线排盘</span>
-    <span>排盘算法基于 <a href="https://github.com/SylarLong/iztro" target="_blank">iztro</a> 开源项目（MIT 许可）</span>
-  </footer>
+<!-- AI 功能条 -->
+<div class="ai-strip">
+  <div class="ai-strip-inner">
+    <span class="ai-strip-badge">✦ AI 批命</span>
+    <div class="ai-strip-text">
+      <strong>AI 深度批命 · 整体 / 大运 / 流年逐一解读</strong>
+      <p>排盘后可调用 AI 对整体命格、身宫、每十年大运、每年流年进行深度分析批命。</p>
+    </div>
+    <button class="ai-strip-btn" onclick="location.href='pages/chart.html'">立即体验 →</button>
+  </div>
+</div>
+
+<!-- 步骤 -->
+<section class="steps-section">
+  <div class="steps-inner">
+    <div class="steps-title-row">
+      <div class="stl-line"></div>
+      <span class="stl-text">三步拿到你的命盘</span>
+      <div class="stl-line"></div>
+    </div>
+    <div class="steps-row">
+      <div class="step-item">
+        <div class="step-circle">01</div>
+        <h3>输入出生信息</h3>
+        <p>年月日时辰 + 出生地点</p>
+      </div>
+      <div class="step-arrow">›</div>
+      <div class="step-item">
+        <div class="step-circle">02</div>
+        <h3>即时生成命盘</h3>
+        <p>十二宫 · 主辅星 · 四化</p>
+      </div>
+      <div class="step-arrow">›</div>
+      <div class="step-item">
+        <div class="step-circle">03</div>
+        <h3>AI 深度批命</h3>
+        <p>整体 · 大运 · 流年</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 最终 CTA -->
+<section class="final-cta">
+  <span class="cta-ornament">◆ ◇ ◆</span>
+  <h2>准备好了吗？</h2>
+  <p>2 分钟看清你的紫微命盘和大运走势</p>
+  <button class="btn-main" onclick="location.href='pages/chart.html'">免费排我的命盘 →</button>
+  <p class="final-note">完全免费 · 无需注册 · 本地计算 · 不存储数据</p>
+</section>
+
+<!-- 页脚 -->
+<footer class="footer">
+  <span>© 2026 紫微斗数在线排盘</span>
+  <span>排盘算法基于 <a href="https://github.com/SylarLong/iztro" target="_blank">iztro</a>（MIT 许可）</span>
+</footer>
 
 </body>
 </html>
