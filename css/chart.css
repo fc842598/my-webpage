@@ -2493,6 +2493,10 @@
   color: #c9a961; border-color: rgba(201,169,97,.45);
   background: rgba(201,169,97,.13);
 }
+.chat-badge.chat-badge-stale {
+  color: #b08050; border-color: rgba(180,120,60,.4);
+  background: rgba(180,120,60,.1);
+}
 .chat-role-tip {
   margin-top: 10px; font-size: 12px; color: #9c8878; line-height: 1.5;
   background: rgba(122,59,46,.08); border: 1px solid rgba(122,59,46,.18);

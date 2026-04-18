@@ -7,15 +7,48 @@
  *   buildChartPayload()
  */
 (function () {
-  var BASE = 'https://ai-piming-backend-production.up.railway.app';
+  var BASE           = 'https://ai-piming-backend-production.up.railway.app';
+  var RETRY_DELAY    = 3000;  // chartRecordId 未就绪时的轮询间隔(ms)
+  var MAX_RETRIES    = 6;     // 最多等待 18 秒
 
-  var _sessionId   = null;
-  var _initialized = false;
-  var _loading     = false;
+  var _sessionId      = null;
+  var _initialized    = false;
+  var _loading        = false;
+  var _memoryAStale   = false; // 大运/流年批命完成后置 true，下次发送强制重建 A
+  var _retryCount     = 0;
+  var _warmUpDone     = false;
 
   // ── 对外钩子 ────────────────────────────────────────────────
-  window._chatPanelInit    = init;
-  window._chatPanelRefresh = refresh;
+  window._chatPanelInit         = init;
+  window._chatPanelRefresh      = refresh;
+  /**
+   * dayun-panel 批命完成后调用此函数，标记 Memory A 需要刷新
+   * 下次用户发送消息时，后端会强制重建 A，不影响聊天流程
+   */
+  window._chatInvalidateMemoryA = function () {
+    _memoryAStale = true;
+    // 更新命档徽章提示状态过期
+    var badgeA = document.getElementById('chat-badge-a');
+    if (badgeA && badgeA.textContent === '命档 已建立') {
+      badgeA.textContent = '命档 待更新';
+      badgeA.classList.remove('chat-badge-ok');
+      badgeA.classList.add('chat-badge-stale');
+    }
+  };
+
+  // ── 预热（脚本加载时立即触发，无论用户是否点 tab）──────────
+  function _warmUp() {
+    if (_warmUpDone) return;
+    _warmUpDone = true;
+    // 发一个轻量 ping，唤醒 Railway 冷启动中的服务
+    // 不等结果，失败静默
+    fetch(BASE + '/api/ai/chat/session?chartRecordId=__ping__', {
+      method: 'GET',
+      signal: (typeof AbortController !== 'undefined')
+        ? (function () { var c = new AbortController(); setTimeout(function () { c.abort(); }, 8000); return c.signal; }())
+        : undefined,
+    }).catch(function () {});
+  }
 
   // ── 初始化（进入 tab 时调用）────────────────────────────────
   function init() {
@@ -29,11 +62,30 @@
     }
 
     var chartRecordId = window._chartRecordId;
+
+    // chartRecordId 尚未写入（异步 save 还没完成）→ 自动重试
     if (!chartRecordId) {
-      _setMsgArea('<div class="chat-sys-msg">命盘正在保存，请稍候后再点击 AI半仙 tab。</div>');
-      _setInputEnabled(false);
+      if (_retryCount < MAX_RETRIES) {
+        _retryCount++;
+        _setMsgArea(
+          '<div class="chat-sys-msg">命盘正在保存，稍候自动载入…（' + _retryCount + '/' + MAX_RETRIES + '）</div>'
+        );
+        setTimeout(init, RETRY_DELAY);
+      } else {
+        // 超时后显示手动重试按钮
+        _setMsgArea(
+          '<div class="chat-sys-msg">命盘保存超时，' +
+          '<button onclick="window._chatPanelRefresh()" ' +
+          'style="margin-left:6px;padding:2px 10px;border:1px solid rgba(201,169,97,.4);' +
+          'border-radius:12px;background:rgba(201,169,97,.1);color:#c9a961;' +
+          'font-size:12px;cursor:pointer;font-family:inherit">点击重试</button>' +
+          '</div>'
+        );
+      }
       return;
     }
+
+    _retryCount = 0; // 重置重试计数
 
     // 已初始化，不重复加载
     if (_initialized && _sessionId) {
@@ -62,7 +114,14 @@
         _setInputEnabled(true);
       })
       .catch(function (err) {
-        _setMsgArea('<div class="chat-sys-msg chat-err">载入失败：' + _esc(err.message) + '</div>');
+        _setMsgArea(
+          '<div class="chat-sys-msg chat-err">载入失败：' + _esc(err.message) +
+          '&nbsp;<button onclick="window._chatPanelRefresh()" ' +
+          'style="margin-left:6px;padding:2px 10px;border:1px solid rgba(200,80,80,.4);' +
+          'border-radius:12px;background:rgba(200,80,80,.1);color:#c06060;' +
+          'font-size:12px;cursor:pointer;font-family:inherit">重试</button>' +
+          '</div>'
+        );
       })
       .finally(function () {
         _showLoadingBar(false);
@@ -72,6 +131,7 @@
   function refresh() {
     _initialized = false;
     _sessionId   = null;
+    _retryCount  = 0;
     init();
   }
 
@@ -98,6 +158,10 @@
     _setInputEnabled(false);
     if (input) input.value = '';
 
+    // 本次是否需要强制重建 Memory A
+    var doForceRefreshA = _memoryAStale;
+    _memoryAStale = false; // 清标记（不管成功失败，避免每条都重建）
+
     _appendMsg('user', msg);
     _appendTyping();
 
@@ -105,9 +169,10 @@
       method:  'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        chartRecordId: window._chartRecordId,
-        message:       msg,
-        chartData:     chartData,
+        chartRecordId:      window._chartRecordId,
+        message:            msg,
+        chartData:          chartData,
+        forceRefreshMemoryA: doForceRefreshA || undefined,
       }),
     })
       .then(function (r) { return r.json(); })
@@ -117,7 +182,7 @@
         if (data.error) throw new Error(data.error);
 
         _appendMsg('assistant', data.reply);
-        _updateBadges(data.hasMemoryA, data.hasMemoryB);
+        _updateBadges(data.hasMemoryA, data.hasMemoryB, data.memoryBVersion);
 
         if (data.memoryAJustBuilt) {
           _appendMsg('system', '✦ 命盘总档已建立，许半仙已完整读取您的命盘。');
@@ -128,6 +193,7 @@
       })
       .catch(function (err) {
         _removeTyping();
+        _memoryAStale = doForceRefreshA; // 失败时恢复标记，下次再试
         _appendMsg('system', '发送失败：' + _esc(err.message));
       })
       .finally(function () {
@@ -214,6 +280,7 @@
     if (badgeA) {
       badgeA.textContent = hasA ? '命档 已建立' : '命档 未建立';
       badgeA.classList.toggle('chat-badge-ok', !!hasA);
+      badgeA.classList.remove('chat-badge-stale');
     }
     if (badgeB) {
       badgeB.textContent = hasB ? ('摘要 v' + (bVersion || 1)) : '摘要 无';
@@ -224,7 +291,6 @@
   function _scrollToBottom() {
     var box = document.getElementById('chat-messages');
     if (box) {
-      // rAF 保证渲染后再滚动
       requestAnimationFrame(function () { box.scrollTop = box.scrollHeight; });
     }
   }
@@ -238,7 +304,7 @@
       .replace(/\n/g, '<br>');
   }
 
-  // ── 事件绑定 ─────────────────────────────────────────────────
+  // ── 事件绑定 + 预热 ──────────────────────────────────────────
   document.addEventListener('DOMContentLoaded', function () {
     var btn   = document.getElementById('chat-send-btn');
     var input = document.getElementById('chat-input');
@@ -252,5 +318,8 @@
         }
       });
     }
+
+    // 预热：页面就绪后延迟 2 秒触发，避免和排盘请求竞争带宽
+    setTimeout(_warmUp, 2000);
   });
 }());

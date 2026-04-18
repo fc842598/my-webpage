@@ -453,6 +453,10 @@
       exposeLifeCurveSignals();
       renderOverviewList();
       bindOverviewActions();
+      // 大运批命完成后通知 AI半仙 命盘总档需要刷新
+      if (!data.meta?.cacheHit && typeof window._chatInvalidateMemoryA === 'function') {
+        window._chatInvalidateMemoryA();
+      }
     } catch (_err) {
       state.dayunStatusMap[rangeKey] = 'error';
       renderOverviewList();
