@@ -19,6 +19,9 @@
   var _warmUpDone = false;
   var _lastChartRecordId = null;
   var _transientMode = false;
+  var _backgroundWarmupTimer = null;
+  var _lastUserActionAt = 0;
+  var _BACKGROUND_IDLE_MS = 15000;
   var _backgroundWarmupState = {
     chartRecordId: null,
     running: false,
@@ -72,10 +75,30 @@
   }
 
   function _resetBackgroundWarmup() {
+    if (_backgroundWarmupTimer) {
+      clearTimeout(_backgroundWarmupTimer);
+      _backgroundWarmupTimer = null;
+    }
     _backgroundWarmupState.chartRecordId = null;
     _backgroundWarmupState.running = false;
     _backgroundWarmupState.done = false;
     _backgroundWarmupState.token += 1;
+  }
+
+  function _markUserActivity() {
+    _lastUserActionAt = Date.now();
+    if (!_backgroundWarmupState.chartRecordId) return;
+
+    if (_backgroundWarmupTimer) {
+      clearTimeout(_backgroundWarmupTimer);
+      _backgroundWarmupTimer = null;
+    }
+    if (_backgroundWarmupState.running) {
+      _backgroundWarmupState.running = false;
+      _backgroundWarmupState.done = false;
+      _backgroundWarmupState.token += 1;
+    }
+    _setBackgroundStatus('你先直接问，等你停一下后许半仙再后台补全命书。', 'working');
   }
 
   function _setBackgroundStatus(text, tone) {
@@ -251,14 +274,24 @@
     if (_backgroundWarmupState.done && _backgroundWarmupState.chartRecordId === chartRecordId && !_memoryAStale) return;
 
     _backgroundWarmupState.chartRecordId = chartRecordId;
-    _backgroundWarmupState.running = true;
+    _backgroundWarmupState.running = false;
     _backgroundWarmupState.done = false;
     var token = ++_backgroundWarmupState.token;
+    var idleBase = _lastUserActionAt || Date.now();
+    var idleLeft = _BACKGROUND_IDLE_MS - (Date.now() - idleBase);
+    var delay = idleLeft > 1200 ? idleLeft : 1200;
 
-    _setBackgroundStatus('许半仙已经可直接回复，后台正在补全整体/身宫/大运/流年。', 'working');
-    setTimeout(function () {
+    if (_backgroundWarmupTimer) {
+      clearTimeout(_backgroundWarmupTimer);
+      _backgroundWarmupTimer = null;
+    }
+    _setBackgroundStatus('你先直接问，等你停一下后许半仙再后台补全命书。', 'working');
+    _backgroundWarmupTimer = setTimeout(function () {
+      if (_backgroundWarmupState.token !== token || window._chartRecordId !== chartRecordId) return;
+      _backgroundWarmupTimer = null;
+      _backgroundWarmupState.running = true;
       _runBackgroundWarmup(chartRecordId, chartData, memoryMeta, token);
-    }, 80);
+    }, delay);
   }
 
   async function _runBackgroundWarmup(chartRecordId, chartData, memoryMeta, token) {
@@ -556,6 +589,7 @@
     var input = document.getElementById('chat-input');
     var msg = (input ? input.value : '').trim();
     if (!msg) return;
+    _markUserActivity();
 
     if (!_sessionId) {
       init();
@@ -602,6 +636,7 @@
         _setModeBadge(_transientMode);
         _setContextPreview(data.memoryASummary || '');
         _setMemorySources(data.memoryAMeta || null);
+        _startBackgroundWarmup(window._chartRecordId, chartData, data.memoryAMeta || null);
 
         if (data.memoryAJustBuilt) {
           _appendMsg('system', '命盘主线已刷新，许半仙会按最新结论继续回答。');
