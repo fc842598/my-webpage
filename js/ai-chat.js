@@ -19,16 +19,37 @@
   var _warmUpDone = false;
   var _lastChartRecordId = null;
   var _transientMode = false;
+  var _backgroundWarmupState = {
+    chartRecordId: null,
+    running: false,
+    done: false,
+    token: 0,
+  };
+  var _SANHE_PARTNERS = {
+    '子': ['申', '辰'], '申': ['子', '辰'], '辰': ['子', '申'],
+    '寅': ['午', '戌'], '午': ['寅', '戌'], '戌': ['寅', '午'],
+    '巳': ['酉', '丑'], '酉': ['巳', '丑'], '丑': ['巳', '酉'],
+    '亥': ['卯', '未'], '卯': ['亥', '未'], '未': ['亥', '卯'],
+  };
+  var _DUIGONG = {
+    '子': '午', '丑': '未', '寅': '申', '卯': '酉', '辰': '戌', '巳': '亥',
+    '午': '子', '未': '丑', '申': '寅', '酉': '卯', '戌': '辰', '亥': '巳',
+  };
 
   window._chatPanelInit = init;
   window._chatPanelRefresh = refresh;
   window._chatRebuildMemoryA = rebuildMemoryA;
   window._chatInvalidateMemoryA = function () {
     _memoryAStale = true;
+    _backgroundWarmupState.done = false;
+    _backgroundWarmupState.running = false;
+    _backgroundWarmupState.chartRecordId = null;
+    _backgroundWarmupState.token += 1;
     _setContextPreview('命盘有新的批命结果，建议点“重读命盘”，让许半仙先把新的主线读进去。');
     _updateBadges(false, false, 0, true);
     _setModeBadge(_transientMode);
     _setMemorySources(null);
+    _setBackgroundStatus('命盘有新结果，许半仙会在后台重新并入。', 'working');
   };
 
   function _warmUp() {
@@ -48,6 +69,273 @@
 
   function _getChartPayload() {
     return (typeof buildChartPayload === 'function') ? buildChartPayload() : null;
+  }
+
+  function _resetBackgroundWarmup() {
+    _backgroundWarmupState.chartRecordId = null;
+    _backgroundWarmupState.running = false;
+    _backgroundWarmupState.done = false;
+    _backgroundWarmupState.token += 1;
+  }
+
+  function _setBackgroundStatus(text, tone) {
+    var el = document.getElementById('chat-background-status');
+    if (!el) return;
+    el.textContent = text || '';
+    el.className = 'chat-background-status' + (tone ? (' is-' + tone) : '');
+    el.style.display = text ? 'block' : 'none';
+  }
+
+  function _getPalaces() {
+    return Array.isArray(window._chart && window._chart.palaces) ? window._chart.palaces : [];
+  }
+
+  function _getPalaceByBranch(branch) {
+    if (!branch) return null;
+    var palaces = _getPalaces();
+    for (var i = 0; i < palaces.length; i++) {
+      if (palaces[i] && palaces[i].earthlyBranch === branch) return palaces[i];
+    }
+    return null;
+  }
+
+  function _parseRange(range) {
+    var matched = String(range || '').match(/(\d+)/g);
+    if (!matched || matched.length < 2) return null;
+    return { start: Number(matched[0]), end: Number(matched[1]) };
+  }
+
+  function _getDayunRanges() {
+    return _getPalaces()
+      .map(function (palace) {
+        var parsed = _parseRange(palace && palace.decadal && palace.decadal.range);
+        if (!parsed) return null;
+        return {
+          palace: palace,
+          start: parsed.start,
+          end: parsed.end,
+        };
+      })
+      .filter(Boolean)
+      .sort(function (a, b) { return a.start - b.start; });
+  }
+
+  function _serializeStars(stars, includeBrightness) {
+    return (Array.isArray(stars) ? stars : []).map(function (star) {
+      return {
+        name: star && star.name || '',
+        brightness: includeBrightness ? (star && star.brightness || '') : '',
+        mutagen: star && star.mutagen || null,
+      };
+    });
+  }
+
+  function _serializeAdjStars(stars) {
+    return (Array.isArray(stars) ? stars : []).map(function (star) {
+      return { name: typeof star === 'string' ? star : (star && star.name || '') };
+    });
+  }
+
+  function _buildSanfangSizheng(branch) {
+    if (!branch) return [];
+    var branches = [branch].concat(_SANHE_PARTNERS[branch] || []);
+    if (_DUIGONG[branch]) branches.push(_DUIGONG[branch]);
+    return branches.filter(Boolean).map(function (item, index) {
+      var palace = _getPalaceByBranch(item);
+      var role = index === 0 ? '本宫' : (index === 3 ? '对宫' : '三方');
+      return {
+        role: role,
+        branch: item,
+        palaceName: palace && palace.name || item,
+        majorStars: _serializeStars(palace && palace.majorStars, true),
+        minorStars: _serializeStars(palace && palace.minorStars, false),
+        adjStars: (Array.isArray(palace && palace.adjectiveStars) ? palace.adjectiveStars : []).map(function (star) {
+          return typeof star === 'string' ? star : (star && star.name || '');
+        }).filter(Boolean),
+      };
+    });
+  }
+
+  function _getCurrentDayunRaw(chartData) {
+    var activeAge = Number(window._fcActiveAge || (chartData && chartData.activeAge) || 0);
+    var dayunRanges = _getDayunRanges();
+    for (var i = 0; i < dayunRanges.length; i++) {
+      if (activeAge >= dayunRanges[i].start && activeAge <= dayunRanges[i].end) return dayunRanges[i];
+    }
+    return dayunRanges[0] || null;
+  }
+
+  function _serializeDayunForWarmup(dayun) {
+    if (!dayun || !dayun.palace) return null;
+    return {
+      rangeKey: dayun.start + '-' + dayun.end,
+      rangeLabel: dayun.start + '-' + dayun.end + '岁',
+      ageStart: Number(dayun.start),
+      ageEnd: Number(dayun.end),
+      palaceName: dayun.palace.name || '',
+      palaceBranch: dayun.palace.earthlyBranch || '',
+      palaceStem: dayun.palace.decadal && dayun.palace.decadal.heavenlyStem || '',
+      majorStars: _serializeStars(dayun.palace.majorStars, true),
+      minorStars: _serializeStars(dayun.palace.minorStars, false),
+      adjStars: (Array.isArray(dayun.palace.adjectiveStars) ? dayun.palace.adjectiveStars : []).map(function (star) {
+        return typeof star === 'string' ? star : (star && star.name || '');
+      }).filter(Boolean),
+      mutagens: []
+        .concat(Array.isArray(dayun.palace.majorStars) ? dayun.palace.majorStars : [])
+        .concat(Array.isArray(dayun.palace.minorStars) ? dayun.palace.minorStars : [])
+        .filter(function (star) { return star && star.mutagen; })
+        .map(function (star) {
+          return { star: star.name, type: star.mutagen };
+        }),
+      sanfangSizheng: _buildSanfangSizheng(dayun.palace.earthlyBranch || ''),
+    };
+  }
+
+  function _serializeYearForWarmup(age, selectedDayun) {
+    var numericAge = Number(age);
+    var liunian = window._liunianSeq && window._liunianSeq[numericAge] || null;
+    var palace = _getPalaceByBranch(liunian && liunian.xiaoLian || '');
+    var birthYear = Number(window._chartInputs && window._chartInputs.norm && window._chartInputs.norm.year || 0);
+    return {
+      rangeKey: selectedDayun && selectedDayun.rangeKey || '',
+      age: numericAge,
+      solarYear: birthYear ? (birthYear + numericAge - 1) : 0,
+      yearGanzhi: liunian && liunian.yearGanzhi
+        ? ((liunian.yearGanzhi.stem || '') + (liunian.yearGanzhi.branch || ''))
+        : '',
+      xiaolianPalace: palace ? {
+        name: palace.name || '',
+        branch: palace.earthlyBranch || '',
+        majorStars: _serializeStars(palace.majorStars, true),
+        minorStars: _serializeStars(palace.minorStars, false),
+        adjStars: _serializeAdjStars(palace.adjectiveStars),
+      } : null,
+      xiaolianPalaceName: palace && palace.name || '',
+      liunianGua: liunian ? {
+        name: liunian.name || '',
+        period: liunian.period || '',
+      } : null,
+    };
+  }
+
+  function _getModulesIncluded(meta) {
+    var modules = meta && meta.modulesIncluded || {};
+    return {
+      overall: !!modules.overall,
+      shengong: !!modules.shengong,
+      dayun: !!modules.dayun,
+      liunian: !!modules.liunian,
+    };
+  }
+
+  function _getMissingModuleKeys(meta) {
+    var modules = _getModulesIncluded(meta);
+    return ['overall', 'shengong', 'dayun', 'liunian'].filter(function (key) {
+      return !modules[key];
+    });
+  }
+
+  function _startBackgroundWarmup(chartRecordId, chartData, memoryMeta) {
+    var missing = _getMissingModuleKeys(memoryMeta);
+    var buildMode = memoryMeta && memoryMeta.buildMode || '';
+    var needsRichRefresh = buildMode !== 'rich';
+
+    if (!chartRecordId || !chartData) return;
+    if (!missing.length && !needsRichRefresh) {
+      _backgroundWarmupState.done = true;
+      _backgroundWarmupState.chartRecordId = chartRecordId;
+      _setBackgroundStatus('命书记忆已就绪，可直接追问。', 'ok');
+      return;
+    }
+    if (_backgroundWarmupState.running && _backgroundWarmupState.chartRecordId === chartRecordId) return;
+    if (_backgroundWarmupState.done && _backgroundWarmupState.chartRecordId === chartRecordId && !_memoryAStale) return;
+
+    _backgroundWarmupState.chartRecordId = chartRecordId;
+    _backgroundWarmupState.running = true;
+    _backgroundWarmupState.done = false;
+    var token = ++_backgroundWarmupState.token;
+
+    _setBackgroundStatus('许半仙已经可直接回复，后台正在补全整体/身宫/大运/流年。', 'working');
+    setTimeout(function () {
+      _runBackgroundWarmup(chartRecordId, chartData, memoryMeta, token);
+    }, 80);
+  }
+
+  async function _runBackgroundWarmup(chartRecordId, chartData, memoryMeta, token) {
+    var missing = _getMissingModuleKeys(memoryMeta);
+    var needsRichRefresh = !(memoryMeta && memoryMeta.buildMode === 'rich');
+    var hasChanged = false;
+    var failures = [];
+
+    function isValid() {
+      return _backgroundWarmupState.token === token && window._chartRecordId === chartRecordId;
+    }
+
+    async function runStep(label, fn) {
+      if (!isValid()) return false;
+      _setBackgroundStatus('后台补全中：' + label + '…', 'working');
+      try {
+        await fn();
+        hasChanged = true;
+        return true;
+      } catch (_err) {
+        failures.push(label);
+        return false;
+      }
+    }
+
+    var currentDayunRaw = _getCurrentDayunRaw(chartData);
+    var currentDayun = _serializeDayunForWarmup(currentDayunRaw);
+    var activeAge = Number(window._fcActiveAge || chartData.activeAge || 0);
+
+    if (missing.indexOf('overall') >= 0) {
+      await runStep('整体批命', function () { return _aipCallBackend('overall'); });
+    }
+    if (missing.indexOf('shengong') >= 0) {
+      await runStep('身宫批命', function () { return _aipCallBackend('shengong'); });
+    }
+    if (missing.indexOf('dayun') >= 0 && currentDayun) {
+      await runStep('当前大运', function () {
+        return _aipCallBackend('dayun_item', { selectedDayun: currentDayun });
+      });
+    }
+    if (missing.indexOf('liunian') >= 0 && currentDayun && activeAge) {
+      await runStep('当前流年', function () {
+        return _aipCallBackend('liunian_year', {
+          selectedDayun: currentDayun,
+          selectedYear: _serializeYearForWarmup(activeAge, currentDayun),
+        });
+      });
+    }
+
+    if (!isValid()) return;
+
+    if (hasChanged || needsRichRefresh || _memoryAStale) {
+      _setBackgroundStatus('正在把新结果并入许半仙记忆…', 'working');
+      try {
+        await _loadSession({
+          chartRecordId: chartRecordId,
+          chartData: chartData,
+          forceRefreshMemoryA: true,
+          preserveMessages: true,
+          quietGreeting: true,
+          backgroundSync: true,
+          silentSync: true,
+        });
+      } catch (_err) {
+        failures.push('命书记忆刷新');
+      }
+    }
+
+    if (!isValid()) return;
+    _backgroundWarmupState.running = false;
+    if (failures.length) {
+      _backgroundWarmupState.done = false;
+      _setBackgroundStatus('已先可聊天，剩余少量命书结果稍后补全。', 'warn');
+      return;
+    }
+    _backgroundWarmupState.done = true;
+    _setBackgroundStatus('命书记忆已补全，可直接继续追问。', 'ok');
   }
 
   function _getTransientKey(chartRecordId) {
@@ -81,6 +369,7 @@
     _loading = false;
     _memoryAStale = false;
     _transientMode = false;
+    _resetBackgroundWarmup();
   }
 
   function init() {
@@ -93,6 +382,7 @@
       _setRefreshEnabled(false);
       _setModeBadge(false);
       _setMemorySources(null);
+      _setBackgroundStatus('', '');
       _setContextPreview('先完成排盘，许半仙才能读取你的命盘主线、流年与批命结果。');
       return;
     }
@@ -116,6 +406,7 @@
       _setInputEnabled(false);
       _setStarterEnabled(false);
       _setRefreshEnabled(false);
+      _setBackgroundStatus('', '');
       return;
     }
 
@@ -171,11 +462,15 @@
     var chartData = options.chartData;
     var preserveMessages = !!options.preserveMessages;
     var quietGreeting = !!options.quietGreeting;
+    var backgroundSync = !!options.backgroundSync;
+    var silentSync = !!options.silentSync;
 
-    _showLoadingBar(true);
-    _setInputEnabled(false);
-    _setStarterEnabled(false);
-    _setRefreshEnabled(false);
+    if (!backgroundSync) {
+      _showLoadingBar(true);
+      _setInputEnabled(false);
+      _setStarterEnabled(false);
+      _setRefreshEnabled(false);
+    }
 
     var usePost = !!chartData;
     var requestBody = usePost
@@ -191,7 +486,7 @@
       ? (BASE + '/api/ai/chat/session')
       : (BASE + '/api/ai/chat/session?chartRecordId=' + encodeURIComponent(chartRecordId));
 
-    fetch(url, usePost ? {
+    return fetch(url, usePost ? {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(requestBody),
@@ -213,15 +508,19 @@
         _setContextPreview(data.memoryASummary || '');
         _setMemorySources(data.memoryAMeta || null);
 
+        if (!backgroundSync) {
+          _startBackgroundWarmup(chartRecordId, chartData, data.memoryAMeta || null);
+        }
+
         if (!preserveMessages) {
           _renderMessages(data.messages || []);
         }
 
-        if (data.memoryAJustBuilt) {
+        if (data.memoryAJustBuilt && !silentSync) {
           _appendMsg('system', '许半仙已重新读入你的命盘主线，可以继续发问。');
         }
 
-        if (data.transientMode) {
+        if (data.transientMode && !silentSync) {
           _appendMsg('system', '当前是临时会话模式：你现在可以继续聊，但在补聊天表 SQL 前，这段对话不会正式落库。');
         }
 
@@ -229,15 +528,25 @@
           _appendMsg('assistant', '你好，我是许半仙。我会先按你的命盘主线、大运与流年脉络来回答，你可以直接问感情、事业、财运或最近一年。');
         }
 
-        _setInputEnabled(true);
-        _setStarterEnabled(true);
-        _setRefreshEnabled(true);
+        if (!backgroundSync) {
+          _setInputEnabled(true);
+          _setStarterEnabled(true);
+          _setRefreshEnabled(true);
+        }
+        return data;
       })
       .catch(function (err) {
+        if (backgroundSync) {
+          _setBackgroundStatus('后台补全暂时失败，稍后会再试。', 'warn');
+          throw err;
+        }
         _handleLoadError(err);
+        throw err;
       })
       .finally(function () {
-        _showLoadingBar(false);
+        if (!backgroundSync) {
+          _showLoadingBar(false);
+        }
       });
   }
 
@@ -387,6 +696,7 @@
       _setContextPreview('当前缺少聊天表，许半仙还没法保存会话记忆。先把数据库初始化好，这个板块才能真正工作。');
       _setModeBadge(false);
       _setMemorySources(null);
+      _setBackgroundStatus('', '');
       _setInputEnabled(false);
       _setStarterEnabled(false);
       _setRefreshEnabled(false);
@@ -401,6 +711,7 @@
     _setContextPreview('许半仙暂时没成功读到命盘或后端服务，请稍后重试。');
     _setModeBadge(false);
     _setMemorySources(null);
+    _setBackgroundStatus('', '');
     _setInputEnabled(false);
     _setStarterEnabled(false);
     _setRefreshEnabled(!!window._chartRecordId);
