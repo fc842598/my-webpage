@@ -609,6 +609,7 @@
     if (input) input.value = '';
 
     var doForceRefreshA = _memoryAStale;
+    var shouldRestoreInput = true;
     _memoryAStale = false;
 
     _appendMsg('user', msg);
@@ -650,6 +651,7 @@
         _memoryAStale = doForceRefreshA;
 
         if (err && err.setupRequired) {
+          shouldRestoreInput = false;
           _setInputEnabled(false);
           _setStarterEnabled(false);
           _setRefreshEnabled(false);
@@ -662,7 +664,7 @@
       })
       .finally(function () {
         _loading = false;
-        if (!_sessionId || !(document.getElementById('chat-send-btn') || {}).disabled) {
+        if (shouldRestoreInput) {
           _setInputEnabled(true);
           _setStarterEnabled(true);
           _setRefreshEnabled(true);
