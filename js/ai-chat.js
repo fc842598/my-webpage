@@ -503,9 +503,10 @@
   function _setModeBadge(isTransient) {
     var badge = document.getElementById('chat-badge-mode');
     if (!badge) return;
-    badge.textContent = isTransient ? '临时会话' : '已连正式会话';
+    badge.textContent = isTransient ? '临时会话' : '会话正常';
     badge.classList.toggle('chat-badge-ok', !isTransient);
-    badge.classList.toggle('chat-badge-stale', !!isTransient);
+    badge.classList.toggle('chat-badge-stale', false);
+    badge.classList.toggle('chat-badge-transient', !!isTransient);
   }
 
   function _setMemorySources(meta) {
