@@ -359,6 +359,7 @@
       <button class="aip-tab active" data-panel="aip-panel-base">整体批命</button>
       <button class="aip-tab"        data-panel="aip-panel-luck">大限流年</button>
       <button class="aip-tab"        data-panel="aip-panel-curve">人生曲线</button>
+      <button class="aip-tab"        data-panel="aip-panel-chat">AI半仙</button>
     </div>
 
     <!-- 整体批命 -->
@@ -596,6 +597,49 @@
         </div>
         <div class="fc-footer">数据仅供参考</div>
       </div>
+    </div>
+
+    <!-- AI半仙 -->
+    <div class="aip-panel" id="aip-panel-chat" style="display:none">
+
+      <!-- 角色卡 -->
+      <div class="aip-card chat-role-card">
+        <div class="chat-role-head">
+          <div class="chat-role-avatar">仙</div>
+          <div class="chat-role-info">
+            <div class="chat-role-name">许半仙</div>
+            <div class="chat-role-tagline">带命盘记忆的命理顾问</div>
+          </div>
+          <div class="chat-role-status">
+            <span class="chat-badge" id="chat-badge-a">命档 未建立</span>
+            <span class="chat-badge" id="chat-badge-b">摘要 无</span>
+          </div>
+        </div>
+        <div class="chat-role-tip">⚠ 许半仙只回答命理相关问题（运势、感情、事业、财运等），跑题问题恕难作答</div>
+      </div>
+
+      <!-- 载入进度条 -->
+      <div id="chat-loading-bar"></div>
+
+      <!-- 消息列表 -->
+      <div class="aip-card chat-messages" id="chat-messages">
+        <div class="chat-sys-msg">请先完成排盘，再使用 AI半仙。</div>
+      </div>
+
+      <!-- 输入区 -->
+      <div class="aip-card" style="padding:12px 16px">
+        <div class="chat-input-bar">
+          <textarea
+            id="chat-input"
+            class="chat-input"
+            placeholder="问命理、运势、感情、事业…（Enter 发送，Shift+Enter 换行）"
+            rows="2"
+            disabled
+          ></textarea>
+          <button class="chat-send-btn" id="chat-send-btn" disabled>发送</button>
+        </div>
+      </div>
+
     </div>
 
     <div class="aip-footer-note" id="aip-footer-note"></div>
@@ -4289,6 +4333,9 @@ window._joinApiUrl            = _joinApiUrl;
       if (btn.dataset.panel === 'aip-panel-luck') {
         _dlxInit();
       }
+      if (btn.dataset.panel === 'aip-panel-chat') {
+        if (typeof window._chatPanelInit === 'function') window._chatPanelInit();
+      }
     });
   });
 }());
@@ -4939,5 +4986,7 @@ window._aiChatFill = function(data, submit) {
 <!-- AI 批命新后端集成（调用 Vercel /api/ai/run） -->
 <script src="../js/ai-piming.js"></script>
 <script src="../js/dayun-panel.js"></script>
+<!-- AI半仙 对话面板 -->
+<script src="../js/ai-chat.js"></script>
 </body>
 </html>
