@@ -11,12 +11,13 @@
   var RETRY_DELAY    = 3000;  // chartRecordId 未就绪时的轮询间隔(ms)
   var MAX_RETRIES    = 6;     // 最多等待 18 秒
 
-  var _sessionId      = null;
-  var _initialized    = false;
-  var _loading        = false;
-  var _memoryAStale   = false; // 大运/流年批命完成后置 true，下次发送强制重建 A
-  var _retryCount     = 0;
-  var _warmUpDone     = false;
+  var _sessionId          = null;
+  var _initialized        = false;
+  var _loading            = false;
+  var _memoryAStale       = false; // 大运/流年批命完成后置 true，下次发送强制重建 A
+  var _retryCount         = 0;
+  var _warmUpDone         = false;
+  var _lastChartRecordId  = null;  // 检测命盘切换，切换时重置会话
 
   // ── 对外钩子 ────────────────────────────────────────────────
   window._chatPanelInit         = init;
@@ -87,6 +88,14 @@
 
     _retryCount = 0; // 重置重试计数
 
+    // 命盘切换时强制重置会话
+    if (_lastChartRecordId && _lastChartRecordId !== chartRecordId) {
+      _sessionId   = null;
+      _initialized = false;
+      _memoryAStale = false;
+    }
+    _lastChartRecordId = chartRecordId;
+
     // 已初始化，不重复加载
     if (_initialized && _sessionId) {
       _setInputEnabled(true);
@@ -96,8 +105,27 @@
     _showLoadingBar(true);
     _setInputEnabled(false);
 
-    fetch(BASE + '/api/ai/chat/session?chartRecordId=' + encodeURIComponent(chartRecordId))
-      .then(function (r) { return r.json(); })
+    var chartData = (typeof buildChartPayload === 'function') ? buildChartPayload() : null;
+
+    // POST with chartData to trigger eager Memory A build
+    var fetchOpts = chartData
+      ? {
+          method:  'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body:    JSON.stringify({ chartRecordId: chartRecordId, chartData: chartData }),
+        }
+      : { method: 'GET' };
+    var url = chartData
+      ? (BASE + '/api/ai/chat/session')
+      : (BASE + '/api/ai/chat/session?chartRecordId=' + encodeURIComponent(chartRecordId));
+
+    fetch(url, fetchOpts)
+      .then(function (r) {
+        if (!r.ok && r.headers.get('content-type') && r.headers.get('content-type').indexOf('application/json') === -1) {
+          throw new Error('服务器返回 ' + r.status + '，请稍后重试');
+        }
+        return r.json();
+      })
       .then(function (data) {
         if (data.error) throw new Error(data.error);
 
@@ -106,6 +134,10 @@
 
         _updateBadges(data.hasMemoryA, data.hasMemoryB, data.memoryBVersion);
         _renderMessages(data.messages || []);
+
+        if (data.memoryAJustBuilt) {
+          _appendMsg('system', '✦ 命盘总档已建立，许半仙已完整读取您的命盘。');
+        }
 
         if (!data.messages || data.messages.length === 0) {
           _appendMsg('assistant', '你好，我是许半仙。你的命盘我已详细查看，有什么命理问题尽管问。');
