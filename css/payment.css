@@ -391,3 +391,91 @@
   opacity: 0.88;
   transform: translateY(-1px);
 }
+
+/* ── 配额显示栏（嵌在角色卡内）────────────────────────────── */
+.chat-quota-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 5px 0 2px;
+}
+.chat-quota-text {
+  font-size: 12px;
+  color: #8a7a5a;
+}
+.chat-quota-text.chat-quota-member {
+  color: #c9a961;
+}
+.chat-quota-upgrade {
+  font-size: 11px;
+  padding: 2px 10px;
+  background: rgba(106,50,38,.5);
+  border: 1px solid rgba(201,169,97,.3);
+  border-radius: 999px;
+  color: #c9a961;
+  cursor: pointer;
+  transition: background .2s;
+}
+.chat-quota-upgrade:hover { background: rgba(106,50,38,.8); }
+
+/* ── 会员商品卡片 ──────────────────────────────────────────── */
+.pay-member-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 32px 24px 28px;
+  gap: 12px;
+}
+.pay-member-icon {
+  font-size: 36px;
+  color: #c9a961;
+}
+.pay-member-name {
+  font-size: 20px;
+  font-weight: 700;
+  color: #e8d5a3;
+}
+.pay-member-price {
+  font-size: 16px;
+  color: #8a7a5a;
+  display: flex;
+  align-items: baseline;
+  gap: 2px;
+}
+.pay-member-amount {
+  font-size: 42px;
+  font-weight: 800;
+  color: #c9a961;
+  line-height: 1;
+}
+.pay-member-period {
+  font-size: 14px;
+}
+.pay-member-perks {
+  list-style: none;
+  padding: 0;
+  margin: 4px 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  max-width: 280px;
+}
+.pay-member-perks li {
+  font-size: 13px;
+  color: #c8b58a;
+  padding-left: 18px;
+  position: relative;
+}
+.pay-member-perks li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: #c9a961;
+  font-weight: 700;
+}
+.pay-member-note {
+  font-size: 11px;
+  color: #5a4e3a;
+  margin-top: 4px;
+}

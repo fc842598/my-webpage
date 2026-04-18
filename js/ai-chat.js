@@ -638,6 +638,9 @@
         _setContextPreview(data.memoryASummary || '');
         _setMemorySources(data.memoryAMeta || null);
         _startBackgroundWarmup(window._chartRecordId, chartData, data.memoryAMeta || null);
+        if (data.quota && typeof window._updateQuotaDisplay === 'function') {
+          window._updateQuotaDisplay(data.quota);
+        }
 
         if (data.memoryAJustBuilt) {
           _appendMsg('system', '命盘主线已刷新，许半仙会按最新结论继续回答。');
