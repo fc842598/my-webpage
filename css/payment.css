@@ -370,3 +370,24 @@
   background: rgba(106, 50, 38, 0.75);
   color: #e8d5a3;
 }
+
+
+/* ── 导航栏充值按钮 ─────────────────────────────────────────── */
+.nav-pay-btn {
+  margin-left: 12px;
+  padding: 6px 16px;
+  background: linear-gradient(135deg, #7a3b2e, #a05030);
+  border: 1px solid rgba(201, 169, 97, 0.45);
+  border-radius: 999px;
+  color: #f5e6c8;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  letter-spacing: 0.5px;
+  transition: opacity 0.2s, transform 0.15s;
+  white-space: nowrap;
+}
+.nav-pay-btn:hover {
+  opacity: 0.88;
+  transform: translateY(-1px);
+}
