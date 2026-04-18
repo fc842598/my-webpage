@@ -6,6 +6,7 @@
   <title>紫微斗数 · 免费排盘与命盘解析</title>
   <link rel="stylesheet" href="../css/style.css">
   <link rel="stylesheet" href="../css/chart.css">
+  <link rel="stylesheet" href="../css/payment.css">
   <style>
     body { background: #18130e !important; color: #c6b7a6; }
     /* 内联颜色覆盖：统一暗色主题 */
@@ -634,6 +635,13 @@
           <button type="button" class="chat-starter-btn" data-chat-prompt="结合我的命盘，重点看事业发展和赚钱方式，哪些路更适合我。">问事业财运</button>
           <button type="button" class="chat-starter-btn" data-chat-prompt="结合我的命盘和当前流年，提醒我接下来一年最该注意什么。">问最近一年</button>
         </div>
+        <!-- 购买入口 -->
+        <div class="pay-entry-bar">
+          <span class="pay-entry-label">解锁更多服务：</span>
+          <button class="pay-entry-btn" data-pay-open="chat_package">许半仙深度对话包</button>
+          <button class="pay-entry-btn" data-pay-open="overall_report">整体批命</button>
+          <button class="pay-entry-btn" data-pay-open="shop">查看全部</button>
+        </div>
       </div>
 
       <!-- 载入进度条 -->
@@ -675,6 +683,24 @@
       <button type="button" class="ai-confirm-ok" id="ai-confirm-ok">确认排盘 →</button>
     </div>
   </div>
+</div>
+
+<!-- 商城弹层 -->
+<div class="pay-overlay" id="pay-shop-modal" style="display:none">
+  <div class="pay-shop-modal-inner">
+    <div class="pay-shop-head">
+      <span class="pay-shop-title">选择服务</span>
+      <button class="pay-shop-close" id="pay-shop-close">×</button>
+    </div>
+    <div class="pay-shop-body">
+      <div class="pay-products-grid" id="pay-shop-products"></div>
+    </div>
+  </div>
+</div>
+
+<!-- 支付流程弹层 -->
+<div class="pay-overlay" id="pay-modal" style="display:none">
+  <div class="pay-modal-inner" id="pay-modal-content"></div>
 </div>
 
 <footer class="footer">
@@ -5006,5 +5032,7 @@ window._aiChatFill = function(data, submit) {
 <script src="../js/dayun-panel.js"></script>
 <!-- AI半仙 对话面板 -->
 <script src="../js/ai-chat.js"></script>
+<!-- 微信支付前端 -->
+<script src="../js/payment.js"></script>
 </body>
 </html>
