@@ -611,11 +611,28 @@
             <div class="chat-role-tagline">带命盘记忆的命理顾问</div>
           </div>
           <div class="chat-role-status">
-            <span class="chat-badge" id="chat-badge-a">命档 未建立</span>
-            <span class="chat-badge" id="chat-badge-b">摘要 无</span>
+            <span class="chat-badge" id="chat-badge-mode">会话待接入</span>
+            <span class="chat-badge" id="chat-badge-a">命盘待读取</span>
+            <span class="chat-badge" id="chat-badge-b">对话未整理</span>
           </div>
         </div>
         <div class="chat-role-tip">⚠ 许半仙只回答命理相关问题（运势、感情、事业、财运等），跑题问题恕难作答</div>
+        <div class="chat-role-tools">
+          <button type="button" class="chat-mini-btn" id="chat-refresh-memory-btn">重读命盘</button>
+          <span class="chat-role-tools-note">整体批命、大运或流年更新后，可点这里刷新许半仙的命盘记忆。</span>
+        </div>
+        <div class="chat-context-preview" id="chat-context-preview">
+          命盘摘要会在这里显示。先完成排盘，许半仙会先读入你的命盘主线，再回答后面的追问。
+        </div>
+        <div class="chat-memory-sources" id="chat-memory-sources">
+          <span class="chat-memory-source">待读入基础命盘</span>
+        </div>
+        <div class="chat-starters" id="chat-starters">
+          <button type="button" class="chat-starter-btn" data-chat-prompt="结合我的命盘，先讲我的整体人生主线和最该把握的方向。">先看人生主线</button>
+          <button type="button" class="chat-starter-btn" data-chat-prompt="结合我的命盘，重点看感情婚姻，告诉我容易遇到的问题和适合的相处方式。">问感情婚姻</button>
+          <button type="button" class="chat-starter-btn" data-chat-prompt="结合我的命盘，重点看事业发展和赚钱方式，哪些路更适合我。">问事业财运</button>
+          <button type="button" class="chat-starter-btn" data-chat-prompt="结合我的命盘和当前流年，提醒我接下来一年最该注意什么。">问最近一年</button>
+        </div>
       </div>
 
       <!-- 载入进度条 -->
