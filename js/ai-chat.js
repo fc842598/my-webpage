@@ -348,7 +348,7 @@
       try {
         await _loadSession({
           chartRecordId: chartRecordId,
-          chartData: chartData,
+          chartData: _getChartPayload() || chartData,
           forceRefreshMemoryA: true,
           preserveMessages: true,
           quietGreeting: true,
