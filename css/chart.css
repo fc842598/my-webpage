@@ -2991,7 +2991,9 @@
 
 #aip-panel-chat .xb-starters {
   margin-top: 0;
-  gap: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
   flex: 1;
 }
 
