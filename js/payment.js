@@ -224,7 +224,7 @@
 
       body =
         '<div class="pay-order-row"><span>商品</span><span>' + PRODUCT.name + '</span></div>' +
-        '<div class="pay-order-row"><span>金额</span><strong>¥' + PRODUCT.price + ' / 月</strong></div>' +
+        '<div class="pay-order-row"><span>实付金额</span><strong>¥' + PRODUCT.price + '<span style="font-size:13px;font-weight:400;color:#7a6a4a;margin-left:2px">/ 月</span></strong></div>' +
         '<div class="pay-order-row"><span>订单号</span><code>' + (data.orderNo || '') + '</code></div>' +
         '<div class="pay-order-row"><span>状态</span><span class="pay-state pay-state-pending">待支付</span></div>' +
         (lines ? '<div class="pay-tip">' + lines + '</div>' : '') +
@@ -392,15 +392,29 @@
     var perks = PRODUCT.perks.map(function(p){ return '<li>' + p + '</li>'; }).join('');
     c.innerHTML =
       '<div class="pay-member-card">' +
-        '<div class="pay-member-icon">' + PRODUCT.icon + '</div>' +
-        '<div class="pay-member-name">' + PRODUCT.name + '</div>' +
-        '<div class="pay-member-price">¥<span class="pay-member-amount">' + PRODUCT.price + '</span><span class="pay-member-period">/ 月</span></div>' +
+        '<div class="pay-member-hero">' +
+          '<div class="pay-member-icon-wrap">' +
+            '<span class="pay-member-icon">' + PRODUCT.icon + '</span>' +
+          '</div>' +
+          '<div class="pay-member-hero-text">' +
+            '<div class="pay-member-name">' + PRODUCT.name + '</div>' +
+            '<div class="pay-member-tagline">每日200次 · 解锁全功能</div>' +
+          '</div>' +
+          '<button class="pay-member-close-btn" id="pay-shop-close">×</button>' +
+        '</div>' +
+        '<div class="pay-member-price-wrap">' +
+          '<span class="pay-member-currency">¥</span>' +
+          '<span class="pay-member-amount">' + PRODUCT.price + '</span>' +
+          '<span class="pay-member-period">/ 月</span>' +
+        '</div>' +
         '<ul class="pay-member-perks">' + perks + '</ul>' +
         '<button class="pay-product-btn" id="pay-shop-buy-btn">' + PRODUCT.icon + ' 立即开通</button>' +
         '<div class="pay-member-note">支持微信支付 · 随时可取消</div>' +
       '</div>';
     var btn = qs('pay-shop-buy-btn');
     if (btn) btn.onclick = function(){ hide('pay-shop-modal'); startPurchase(); };
+    var closeBtn = qs('pay-shop-close');
+    if (closeBtn) closeBtn.onclick = function(){ hide('pay-shop-modal'); };
   }
 
   // ── 初始化 ────────────────────────────────────────────────────
