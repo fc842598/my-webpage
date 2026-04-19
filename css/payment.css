@@ -211,6 +211,51 @@
   border-radius: 999px;
 }
 
+/* ── 二维码区域 ──────────────────────────────────────────────── */
+.pay-qr-area {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+.pay-qr-area canvas {
+  border-radius: 8px;
+  background: #fff;
+  padding: 6px;
+}
+.pay-qr-hint {
+  font-size: 12px;
+  color: #a89070;
+}
+.pay-qr-fallback {
+  font-size: 12px;
+  color: #c97040;
+  text-align: center;
+  padding: 8px;
+}
+
+/* ── H5 跳转区域 ─────────────────────────────────────────────── */
+.pay-h5-area {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+.pay-h5-btn {
+  display: inline-block;
+  padding: 10px 24px;
+  background: #07c160;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: opacity .15s;
+}
+.pay-h5-btn:hover { opacity: .88; }
+
 /* ── Mock 测试按钮区 ─────────────────────────────────────────── */
 .pay-mock-btns {
   margin-top: 4px;

@@ -604,70 +604,102 @@
     <!-- AI半仙 -->
     <div class="aip-panel" id="aip-panel-chat" style="display:none">
 
-      <!-- 角色卡 -->
-      <div class="aip-card chat-role-card">
-        <div class="chat-role-head">
-          <div class="chat-role-avatar">仙</div>
-          <div class="chat-role-info">
-            <div class="chat-role-name">许半仙</div>
-            <div class="chat-role-tagline">带命盘记忆的命理顾问</div>
+      <!-- 角色卡（紧凑头部 + 洞察条 + 元数据） -->
+      <section class="aip-card xb-hero">
+        <div class="xb-head">
+          <div class="xb-avatar" aria-hidden="true">仙</div>
+          <div class="xb-identity">
+            <div class="xb-name-row">
+              <span class="xb-name">许半仙</span>
+              <span class="chat-badge xb-status" id="chat-badge-mode">会话待接入</span>
+            </div>
+            <div class="xb-tagline">带命盘记忆的 AI 命理顾问 · 深度解读主线与近期流年</div>
           </div>
-          <div class="chat-role-status">
-            <span class="chat-badge" id="chat-badge-mode">会话待接入</span>
-            <span class="chat-badge" id="chat-badge-a">命盘待读取</span>
-            <span class="chat-badge" id="chat-badge-b">对话未整理</span>
+          <div class="xb-quota chat-quota-bar" id="chat-quota-bar" style="display:none">
+            <div class="xb-quota-label">今日剩余</div>
+            <div class="chat-quota-text xb-quota-value" id="chat-quota-text">-- / 200</div>
+            <button class="chat-quota-upgrade xb-quota-upgrade" id="chat-quota-upgrade" data-pay-open="shop" style="display:none">开通</button>
           </div>
         </div>
-        <div class="chat-quota-bar" id="chat-quota-bar" style="display:none">
-          <span class="chat-quota-text" id="chat-quota-text">今日剩余 -- 次</span>
-          <button class="chat-quota-upgrade" id="chat-quota-upgrade" data-pay-open="shop" style="display:none">开通会员</button>
+
+        <!-- 洞察条 -->
+        <div class="xb-insight">
+          <div class="xb-insight-body">
+            <div class="xb-insight-head">
+              <span class="xb-insight-dot" aria-hidden="true"></span>
+              <span class="chat-badge xb-insight-label" id="chat-badge-a">命盘待读取</span>
+            </div>
+            <div class="xb-insight-text chat-context-preview" id="chat-context-preview">完成排盘后，许半仙会先读入你的命盘主线，再回答后面的追问。</div>
+          </div>
+          <button type="button" class="xb-refresh" id="chat-refresh-memory-btn" disabled>
+            <span class="xb-refresh-icon" aria-hidden="true">↻</span>
+            <span>重读</span>
+          </button>
         </div>
-        <div class="chat-role-tip">⚠ 许半仙只回答命理相关问题（运势、感情、事业、财运等），跑题问题恕难作答</div>
-        <div class="chat-role-tools">
-          <button type="button" class="chat-mini-btn" id="chat-refresh-memory-btn">重读命盘</button>
-          <span class="chat-role-tools-note">整体批命、大运或流年更新后，可点这里刷新许半仙的命盘记忆。</span>
+
+        <!-- 已读模块 / 整理状态 -->
+        <div class="xb-meta">
+          <div class="xb-meta-sources chat-memory-sources" id="chat-memory-sources"></div>
+          <span class="chat-badge xb-meta-b" id="chat-badge-b">对话未整理</span>
         </div>
-        <div class="chat-context-preview" id="chat-context-preview">
-          命盘摘要会在这里显示。先完成排盘，许半仙会先读入你的命盘主线，再回答后面的追问。
+
+        <!-- 后台读取提示（保留现有 id） -->
+        <div class="chat-background-status xb-bg-status" id="chat-background-status" style="display:none"></div>
+      </section>
+
+      <!-- 起始问题（空状态入口） -->
+      <section class="xb-starters-bar">
+        <div class="xb-starters-kicker">
+          <span class="xb-starters-glyph" aria-hidden="true">✦</span>
+          <span>可以从这里开始</span>
         </div>
-        <div class="chat-memory-sources" id="chat-memory-sources">
-          <span class="chat-memory-source">待读入基础命盘</span>
+        <div class="chat-starters xb-starters" id="chat-starters">
+          <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="结合我的命盘，先讲我的整体人生主线和最该把握的方向。">
+            <span class="xb-starter-icon" aria-hidden="true">◇</span>
+            <span>先看人生主线</span>
+          </button>
+          <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="结合我的命盘，重点看感情婚姻，告诉我容易遇到的问题和适合的相处方式。">
+            <span class="xb-starter-icon" aria-hidden="true">♡</span>
+            <span>问感情婚姻</span>
+          </button>
+          <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="结合我的命盘，重点看事业发展和赚钱方式，哪些路更适合我。">
+            <span class="xb-starter-icon" aria-hidden="true">✦</span>
+            <span>问事业财运</span>
+          </button>
+          <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="结合我的命盘和当前流年，提醒我接下来一年最该注意什么。">
+            <span class="xb-starter-icon" aria-hidden="true">◉</span>
+            <span>问最近一年</span>
+          </button>
         </div>
-        <div class="chat-background-status" id="chat-background-status" style="display:none"></div>
-        <div class="chat-starters" id="chat-starters">
-          <button type="button" class="chat-starter-btn" data-chat-prompt="结合我的命盘，先讲我的整体人生主线和最该把握的方向。">先看人生主线</button>
-          <button type="button" class="chat-starter-btn" data-chat-prompt="结合我的命盘，重点看感情婚姻，告诉我容易遇到的问题和适合的相处方式。">问感情婚姻</button>
-          <button type="button" class="chat-starter-btn" data-chat-prompt="结合我的命盘，重点看事业发展和赚钱方式，哪些路更适合我。">问事业财运</button>
-          <button type="button" class="chat-starter-btn" data-chat-prompt="结合我的命盘和当前流年，提醒我接下来一年最该注意什么。">问最近一年</button>
-        </div>
-        <!-- 购买入口 -->
-        <div class="pay-entry-bar">
-          <span class="pay-entry-label">解锁更多服务：</span>
-          <button class="pay-entry-btn" data-pay-open="chat_package">许半仙深度对话包</button>
-          <button class="pay-entry-btn" data-pay-open="overall_report">整体批命</button>
-          <button class="pay-entry-btn" data-pay-open="shop">查看全部</button>
-        </div>
-      </div>
+        <div class="xb-starters-tip">⚠ 只回答命理相关问题（运势、感情、事业、财运），跑题问题恕难作答</div>
+      </section>
 
       <!-- 载入进度条 -->
       <div id="chat-loading-bar"></div>
 
       <!-- 消息列表 -->
-      <div class="aip-card chat-messages" id="chat-messages">
+      <section class="aip-card xb-conversation chat-messages" id="chat-messages" aria-live="polite">
         <div class="chat-sys-msg">请先完成排盘，再使用 AI半仙。</div>
-      </div>
+      </section>
 
       <!-- 输入区 -->
-      <div class="aip-card" style="padding:12px 16px">
-        <div class="chat-input-bar">
+      <div class="xb-composer">
+        <div class="xb-input-pill">
           <textarea
             id="chat-input"
-            class="chat-input"
-            placeholder="问命理、运势、感情、事业…（Enter 发送，Shift+Enter 换行）"
-            rows="2"
+            class="chat-input xb-input"
+            placeholder="问一个问题… 命理、运势、感情、事业都可以"
+            rows="1"
             disabled
           ></textarea>
-          <button class="chat-send-btn" id="chat-send-btn" disabled>发送</button>
+          <button class="chat-send-btn xb-send" id="chat-send-btn" disabled aria-label="发送">
+            <span aria-hidden="true">↑</span>
+          </button>
+        </div>
+        <div class="xb-composer-hint">
+          <span>Enter 发送</span>
+          <span class="xb-dot" aria-hidden="true">·</span>
+          <span>Shift + Enter 换行</span>
         </div>
       </div>
 
@@ -5037,6 +5069,8 @@ window._aiChatFill = function(data, submit) {
 <script src="../js/dayun-panel.js"></script>
 <!-- AI半仙 对话面板 -->
 <script src="../js/ai-chat.js"></script>
+<!-- QRCode 库（微信扫码支付） -->
+<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
 <!-- 微信支付前端 -->
 <script src="../js/payment.js"></script>
 </body>

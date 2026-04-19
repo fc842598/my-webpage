@@ -762,17 +762,25 @@
     if (!box) return;
     box.innerHTML = '';
     for (var i = 0; i < messages.length; i++) {
-      _appendMsg(messages[i].sender, messages[i].content);
+      _appendMsg(messages[i].sender, messages[i].content, messages[i].createdAt);
     }
     _scrollToBottom();
   }
 
-  function _appendMsg(sender, content) {
+  function _formatChatTime(createdAt) {
+    if (!createdAt) return '';
+    var d = new Date(createdAt);
+    if (isNaN(d.getTime())) return '';
+    return d.toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' });
+  }
+
+  function _appendMsg(sender, content, createdAt) {
     var box = document.getElementById('chat-messages');
     if (!box) return;
 
     var div = document.createElement('div');
     div.className = 'chat-msg chat-msg-' + sender;
+    var time = _formatChatTime(createdAt);
 
     if (sender === 'assistant') {
       div.innerHTML =
@@ -851,6 +859,20 @@
     el.innerHTML = '<strong>已读命盘：</strong>' + _esc(text);
   }
 
+  function _upgradeChatLayout() {
+    var nameRow = document.querySelector('.xb-name-row');
+    var badgeB = document.getElementById('chat-badge-b');
+    var insightBody = document.querySelector('.xb-insight-body');
+    var memorySources = document.getElementById('chat-memory-sources');
+
+    if (nameRow && badgeB && !nameRow.contains(badgeB)) {
+      nameRow.appendChild(badgeB);
+    }
+    if (insightBody && memorySources && !insightBody.contains(memorySources)) {
+      insightBody.appendChild(memorySources);
+    }
+  }
+
   function _setModeBadge(isTransient) {
     var badge = document.getElementById('chat-badge-mode');
     if (!badge) return;
@@ -922,6 +944,8 @@
     var btn = document.getElementById('chat-send-btn');
     var input = document.getElementById('chat-input');
     var refreshBtn = document.getElementById('chat-refresh-memory-btn');
+
+    _upgradeChatLayout();
 
     if (btn) btn.addEventListener('click', send);
     if (refreshBtn) refreshBtn.addEventListener('click', rebuildMemoryA);
