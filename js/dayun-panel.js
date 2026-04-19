@@ -251,16 +251,36 @@
   function getStatusMeta(status, card) {
     switch (status) {
       case 'loading':
-        return { badge: '生成中', text: '正在调用 AI 批这10年…' };
+        return { badge: '生成中', badgeClass: 'dlx-badge-loading', btnState: 'state-loading', btnLabel: '⟳ 批命中…', text: '正在调用 AI 批这10年…' };
       case 'generated':
-        return { badge: '已生成', text: card?.summary ? '这10年的批命结果已更新。' : '已生成。' };
+        return { badge: '已生成', badgeClass: 'dlx-badge-done', btnState: 'state-done', btnLabel: '✓ 已批命', text: card?.summary ? '批命结果已生成，点此刷新。' : '已生成。' };
       case 'cached':
-        return { badge: '已缓存', text: card?.summary ? '已读取缓存结果，可直接查看。' : '已读取缓存。' };
+        return { badge: '已生成', badgeClass: 'dlx-badge-done', btnState: 'state-done', btnLabel: '✓ 已批命', text: card?.summary ? '已读取缓存，点此重新生成。' : '已读取缓存。' };
       case 'error':
-        return { badge: '失败', text: '生成失败，请稍后重试。' };
+        return { badge: '失败', badgeClass: 'dlx-badge-error', btnState: 'state-error', btnLabel: '✕ 重试', text: '生成失败，请稍后重试。' };
       default:
-        return { badge: '待批命', text: '先看本宫与三方四正，再点按钮批这10年。' };
+        return { badge: '待批命', badgeClass: 'dlx-badge-empty', btnState: 'state-idle', btnLabel: '✦ 批命这10年', text: '点按钮让 AI 批命这10年。' };
     }
+  }
+
+  function formatStarBadgesHtml(stars) {
+    const BRIGHTNESS_CLASS = { '庙': '庙', '旺': '旺', '得': '得', '利': '利', '平': '平', '不': '不', '陷': '陷' };
+    const list = Array.isArray(stars) ? stars : [];
+    if (!list.length) return '<span class="dlx-overview-value">空宫</span>';
+    return list.map(s => {
+      if (!s || !s.name) return '';
+      const cls = BRIGHTNESS_CLASS[s.brightness] ? `dlx-star-${s.brightness}` : 'dlx-star-default';
+      const label = s.brightness ? `${s.name}${s.brightness}` : s.name;
+      return `<span class="dlx-star-badge ${cls}">${escapeHtml(label)}</span>`;
+    }).filter(Boolean).join('');
+  }
+
+  function getEraClass(dayun) {
+    const activeAge = Number(window._fcActiveAge || 0);
+    if (!activeAge) return '';
+    if (dayun.end < activeAge) return 'era-past';
+    if (dayun.start > activeAge) return 'era-future';
+    return 'era-current';
   }
 
   function updateOverviewHead() {
@@ -295,36 +315,45 @@
       const card = state.dayunResultMap[key] || state.dayunOverviewMap[key]?.card || null;
       const status = state.dayunStatusMap[key] || state.dayunOverviewMap[key]?.status || (card ? 'cached' : 'empty');
       const statusMeta = getStatusMeta(status, card);
+      const eraClass = getEraClass(dayun);
       const palace = dayun.palace || {};
+      const stem = palace?.decadal?.heavenlyStem || '';
       const sanfang = getSanfangSizheng(palace?.earthlyBranch || '')
-        .map((item) => `${item.role}${item.palaceName}`)
-        .join('、') || '—';
-      const summaryHtml = card
-        ? renderSectionsHtml(card)
-        : `<p class="aip-body-para">${escapeHtml(statusMeta.text)}</p>`;
+        .map((item) => item.palaceName)
+        .join(' · ') || '—';
+      const summaryHtml = card ? renderSectionsHtml(card) : '';
       const riskHtml = card?.risk
         ? `<div class="dlx-overview-risk">提醒：${escapeHtml(card.risk)}</div>`
         : '';
+      const isLoading = status === 'loading';
 
       return (
-        `<article class="dlx-overview-item dlx-dayun-card${selected ? ' active' : ''}${status === 'loading' ? ' is-loading' : ''}${!card ? ' is-empty' : ''}" data-range-key="${escapeHtml(key)}">` +
+        `<article class="dlx-overview-item dlx-dayun-card${selected ? ' active' : ''}${eraClass ? ' ' + eraClass : ''}${isLoading ? ' is-loading' : ''}${!card ? ' is-empty' : ''}" data-range-key="${escapeHtml(key)}">` +
           `<div class="dlx-overview-head">` +
-            `<div class="dlx-overview-title">第${index + 1}大运 · ${escapeHtml(`${dayun.start}-${dayun.end}岁`)}</div>` +
-            `<span class="dlx-overview-badge">${escapeHtml(statusMeta.badge)}</span>` +
+            `<div class="dlx-title-group">` +
+              `<div class="dlx-decade-num">第${index + 1}大运</div>` +
+              `<div class="dlx-overview-title">${escapeHtml(`${dayun.start}-${dayun.end}岁`)}</div>` +
+            `</div>` +
+            `<span class="dlx-overview-badge ${statusMeta.badgeClass}">${escapeHtml(statusMeta.badge)}</span>` +
           `</div>` +
           `<div class="dlx-overview-meta">` +
-            `<div class="dlx-overview-row"><span class="dlx-overview-label">大运宫</span><span class="dlx-overview-value">${escapeHtml(palace?.name || '—')}</span></div>` +
-            `<div class="dlx-overview-row"><span class="dlx-overview-label">宫干</span><span class="dlx-overview-value">${escapeHtml((palace?.decadal?.heavenlyStem || '') ? `${palace.decadal.heavenlyStem}干` : '—')}</span></div>` +
-            `<div class="dlx-overview-row"><span class="dlx-overview-label">主星</span><span class="dlx-overview-value">${escapeHtml(formatStarList(palace?.majorStars || [], true))}</span></div>` +
-            `<div class="dlx-overview-row"><span class="dlx-overview-label">辅星</span><span class="dlx-overview-value">${escapeHtml(formatStarList(palace?.minorStars || [], false))}</span></div>` +
-            `<div class="dlx-overview-row"><span class="dlx-overview-label">三方四正</span><span class="dlx-overview-value">${escapeHtml(sanfang)}</span></div>` +
-            `<div class="dlx-overview-row"><span class="dlx-overview-label">杂曜</span><span class="dlx-overview-value">${escapeHtml(formatAdjStarList(palace?.adjectiveStars || []))}</span></div>` +
+            `<div class="dlx-overview-row"><span class="dlx-overview-label">大运宫</span><span class="dlx-overview-value" style="font-weight:600">${escapeHtml(palace?.name || '—')}</span></div>` +
+            `<div class="dlx-overview-row"><span class="dlx-overview-label">宫干</span><span class="dlx-overview-value">${escapeHtml(stem || '—')}</span></div>` +
+            `<div class="dlx-overview-row"><span class="dlx-overview-label">辅星</span><span class="dlx-overview-value">${escapeHtml(formatStarList(palace?.minorStars || [], false)) || '—'}</span></div>` +
+            `<div class="dlx-overview-row"><span class="dlx-overview-label">杂曜</span><span class="dlx-overview-value">${escapeHtml(formatAdjStarList(palace?.adjectiveStars || [])) || '—'}</span></div>` +
+          `</div>` +
+          `<div class="dlx-overview-meta" style="border-bottom:none;padding-bottom:8px;margin-bottom:4px">` +
+            `<div class="dlx-overview-row" style="min-width:0;flex:0 0 auto"><span class="dlx-overview-label">主星</span><div class="dlx-stars-wrap">${formatStarBadgesHtml(palace?.majorStars || [])}</div></div>` +
+          `</div>` +
+          `<div class="dlx-sanfang-row">` +
+            `<span class="dlx-overview-label">三方四正</span>` +
+            `<span class="dlx-sanfang-value">${escapeHtml(sanfang)}</span>` +
           `</div>` +
           `<div class="dlx-overview-actions">` +
-            `<button class="aip-card-ai-btn dlx-dayun-ai-btn" data-ai-range-key="${escapeHtml(key)}">✦ 批命这10年</button>` +
-            `<span class="dlx-overview-status">${escapeHtml(statusMeta.text)}</span>` +
+            `<button class="dlx-dayun-ai-btn ${statusMeta.btnState}" data-ai-range-key="${escapeHtml(key)}"${isLoading ? ' disabled' : ''}>${escapeHtml(statusMeta.btnLabel)}</button>` +
+            `<span class="dlx-overview-status">${card ? escapeHtml(statusMeta.text) : ''}</span>` +
           `</div>` +
-          `<div class="aip-card-body">${summaryHtml}</div>` +
+          `${summaryHtml ? `<div class="aip-card-body dlx-overview-summary">${summaryHtml}</div>` : ''}` +
           `${riskHtml}` +
         `</article>`
       );

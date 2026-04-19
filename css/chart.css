@@ -2196,61 +2196,127 @@
 .dlx-section { margin-bottom: 16px; }
 .dlx-section-label { font-size: 11px; color: #9c8878; letter-spacing: .08em; margin-bottom: 8px; }
 .dlx-pills { display: flex; flex-wrap: wrap; gap: 8px; }
-.dlx-overview-list { display: grid; gap: 10px; margin-top: 8px; }
+.dlx-overview-list { display: grid; gap: 8px; margin-top: 8px; }
+
+/* ── 大运卡片 ── */
 .dlx-overview-item {
-  border: 1px solid rgba(216, 204, 188, .88);
-  background: #fffaf5;
-  border-radius: 14px;
-  padding: 12px 14px;
+  position: relative;
+  border: 1px solid rgba(200, 185, 162, .55);
+  background: #fefaf3;
+  border-radius: 10px;
+  padding: 14px 16px 12px 20px;
+  cursor: pointer;
+  transition: border-color .18s, box-shadow .18s;
+}
+.dlx-overview-item::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 10px;
+  width: 3px; height: calc(100% - 20px);
+  background: #cdb89a;
+  border-radius: 2px;
+}
+.dlx-overview-item:hover:not(.active) {
+  border-color: rgba(200, 168, 120, .45);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .06);
 }
 .dlx-overview-item.active {
-  border-color: #7a3b2e;
-  box-shadow: 0 0 0 1px rgba(122, 59, 46, .08);
+  background: #1e1409;
+  border-color: #c9a878;
+  box-shadow: 0 4px 20px rgba(200, 168, 120, .16);
 }
-.dlx-overview-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 8px; }
-.dlx-overview-title { font-size: 14px; font-weight: 700; color: #3d2b1f; }
+.dlx-overview-item.active::before { background: #c9a878; }
+.dlx-overview-item.era-past { background: #f5f2ee; border-color: rgba(190, 178, 162, .5); }
+.dlx-overview-item.era-past::before { background: #b8a994; }
+.dlx-overview-item.is-loading { border-color: #c8b080; }
+
+/* ── 卡片头部 ── */
+.dlx-overview-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 10px; }
+.dlx-title-group { display: flex; flex-direction: column; gap: 2px; }
+.dlx-decade-num { font-size: 10px; font-weight: 600; color: #9c8c7c; letter-spacing: .04em; }
+.dlx-overview-item.active .dlx-decade-num { color: #c9a878; }
+.dlx-overview-item.era-past .dlx-decade-num { color: #a09080; }
+.dlx-overview-title { font-size: 16px; font-weight: 700; color: #2e1e14; line-height: 1.2; }
+.dlx-overview-item.active .dlx-overview-title { color: #ffe8c4; }
+.dlx-overview-item.era-past .dlx-overview-title { color: #6a5244; }
+
+/* ── 状态徽章（4色编码）── */
 .dlx-overview-badge {
   flex-shrink: 0;
   font-size: 11px;
-  color: #8d6f5a;
-  background: #f4ece3;
-  border-radius: 999px;
-  padding: 3px 8px;
-}
-.dlx-overview-summary { font-size: 13px; line-height: 1.7; color: #5d4c3f; }
-.dlx-overview-risk { margin-top: 8px; font-size: 12px; color: #9b5a4b; }
-.dlx-overview-meta {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 6px 16px;
-  margin-bottom: 12px;
-}
-.dlx-overview-row {
-  display: flex;
-  gap: 6px;
-  align-items: baseline;
-  font-size: 13px;
-}
-.dlx-overview-label {
-  color: #9c8878;
-  font-size: 11px;
+  font-weight: 600;
+  border-radius: 11px;
+  padding: 3px 10px;
   white-space: nowrap;
-  flex-shrink: 0;
 }
-.dlx-overview-value { color: #3d2b1f; }
-.dlx-overview-actions {
+.dlx-badge-empty   { background: #e9e6e2; color: #857569; }
+.dlx-badge-loading { background: #fff0cc; color: #9e5a0a; }
+.dlx-badge-done    { background: #d9f0e0; color: #296637; }
+.dlx-badge-error   { background: #f9ddd9; color: #8c2920; }
+
+/* ── Meta 行 ── */
+.dlx-overview-meta {
   display: flex;
-  align-items: center;
-  gap: 12px;
   flex-wrap: wrap;
-  margin-bottom: 10px;
+  gap: 4px 20px;
+  padding-bottom: 10px;
+  margin-bottom: 8px;
+  border-bottom: 1px solid rgba(190, 178, 162, .4);
 }
-.dlx-overview-actions .aip-card-ai-btn {
-  padding: 7px 18px;
-  font-size: 13px;
+.dlx-overview-item.active .dlx-overview-meta { border-bottom-color: rgba(80, 60, 40, .5); }
+.dlx-overview-row { display: flex; flex-direction: column; gap: 2px; min-width: 48px; }
+.dlx-overview-label { color: #9c8878; font-size: 10px; white-space: nowrap; }
+.dlx-overview-item.active .dlx-overview-label { color: #7a6c5e; }
+.dlx-overview-value { color: #3d2b1f; font-size: 12px; }
+.dlx-overview-item.active .dlx-overview-value { color: #e0cdb4; }
+.dlx-overview-item.era-past .dlx-overview-value { color: #6a5a4e; }
+
+/* ── 星曜徽章 ── */
+.dlx-stars-wrap { display: flex; flex-wrap: wrap; gap: 4px; align-items: center; padding-top: 1px; }
+.dlx-star-badge {
+  display: inline-flex; align-items: center;
+  border-radius: 11px; padding: 2px 7px;
+  font-size: 11px; font-weight: 600; white-space: nowrap;
 }
-.dlx-overview-status { font-size: 12px; color: #9c8878; }
-.dlx-overview-item.is-loading { border-color: #c8a99c; background: #fff8f3; }
+.dlx-star-庙 { background: #fded7f; color: #4d3300; }
+.dlx-star-旺 { background: #f5e08c; color: #503800; }
+.dlx-star-得 { background: #dff2c7; color: #2e5922; }
+.dlx-star-利 { background: #d6eafb; color: #1a4d7a; }
+.dlx-star-平 { background: #ebe9e6; color: #5a524c; }
+.dlx-star-不 { background: #f7e2dd; color: #7a3e34; }
+.dlx-star-陷 { background: #f5d0cc; color: #8c2920; }
+.dlx-star-default { background: #ebe9e6; color: #5a524c; }
+
+/* ── 三方四正独立行 ── */
+.dlx-sanfang-row { display: flex; align-items: baseline; gap: 6px; margin-bottom: 10px; }
+.dlx-sanfang-value { font-size: 12px; color: #5a4c40; }
+.dlx-overview-item.active .dlx-sanfang-value { color: #a09080; }
+.dlx-overview-item.era-past .dlx-sanfang-value { color: #7a6c62; }
+
+/* ── 操作区 ── */
+.dlx-overview-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.dlx-overview-status { font-size: 11px; color: #9c8878; flex: 1; }
+.dlx-overview-item.active .dlx-overview-status { color: #7a6c5e; }
+
+/* 批命按钮（状态驱动颜色）*/
+.dlx-dayun-ai-btn {
+  flex-shrink: 0;
+  color: #fff5ec; font-size: 12px; font-weight: 600;
+  border: none; border-radius: 14px; padding: 6px 16px;
+  cursor: pointer; font-family: inherit; letter-spacing: .02em;
+  transition: opacity .15s;
+}
+.dlx-dayun-ai-btn:hover:not(:disabled) { opacity: .88; }
+.dlx-dayun-ai-btn:disabled { opacity: .5; cursor: default; }
+.dlx-dayun-ai-btn.state-idle    { background: linear-gradient(135deg, #7a3b2e 0%, #b05a3a 100%); }
+.dlx-dayun-ai-btn.state-loading { background: #854c10; }
+.dlx-dayun-ai-btn.state-done    { background: #296637; }
+.dlx-dayun-ai-btn.state-error   { background: #8c2920; }
+
+/* ── AI 结果体 ── */
+.dlx-overview-summary { font-size: 13px; line-height: 1.75; color: #5d4c3f; margin-top: 10px; }
+.dlx-overview-item.active .dlx-overview-summary { color: #c8b89a; }
+.dlx-overview-risk { margin-top: 8px; font-size: 12px; color: #9b5a4b; padding-left: 8px; border-left: 2px solid #e8c9b0; }
 .dlx-overview-item.is-empty .aip-card-body { color: #9c8878; }
 .dlx-pill-btn {
   background: #f5f0e8; border: 1px solid #d8ccbc; border-radius: 20px;
