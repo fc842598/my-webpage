@@ -15,6 +15,7 @@
   'use strict';
 
   var BACKEND = 'https://ai-piming-backend-production.up.railway.app';
+  var CHAT_QUOTA_UNLIMITED = true;
 
   // 本地兜底商品（backend 不可用时使用）
   var PRODUCT = {
@@ -76,6 +77,17 @@
       if (!r.ok) throw new Error(j.error || 'error');
       return { ok: true, data: j };
     } catch (e) { return { ok: false, error: e.message }; }
+  }
+
+  function normalizeQuota(quota) {
+    var normalized = quota || {};
+    if (!CHAT_QUOTA_UNLIMITED) return normalized;
+    return {
+      testingUnlimited: true,
+      isMember: !!normalized.isMember,
+      dailyLimit: null,
+      remaining: null,
+    };
   }
 
   // ── 启动时拉取后端商品（保持价格/描述与 DB 一致）──────────
@@ -322,6 +334,7 @@
 
   // ── 配额显示（由 ai-chat.js 返回的 quota 字段驱动）──────────
   function updateQuotaDisplay(quota) {
+    quota = normalizeQuota(quota);
     if (!quota) return;
     var bar = qs('chat-quota-bar');
     var txt = qs('chat-quota-text');
@@ -334,6 +347,7 @@
     if (quota.testingUnlimited) {
       txt.textContent = '测试期不限次数';
       txt.className = 'chat-quota-text chat-quota-member';
+      txt.textContent = '当前不限次数';
       if (upg) upg.style.display = 'none';
       var testingInput = qs('chat-input');
       var testingBtn = qs('chat-send-btn');
