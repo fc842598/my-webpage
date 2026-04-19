@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>紫微斗数 · 免费在线排盘</title>
+  <title>阅天 · 命，只是底牌</title>
   <link rel="stylesheet" href="css/style.css">
   <style>
     @keyframes gold-pulse {
@@ -68,7 +68,6 @@
       display:flex; align-items:center;
       position:relative; overflow:hidden;
     }
-    /* 背景暗纹 */
     .hero::before {
       content:'';
       position:absolute; inset:0;
@@ -77,7 +76,6 @@
         radial-gradient(ellipse 40% 60% at 20% 60%, rgba(122,59,46,.06) 0%, transparent 70%);
       pointer-events:none;
     }
-
     .hero-inner {
       max-width:1200px; margin:0 auto;
       padding:0 40px;
@@ -110,9 +108,17 @@
     }
     .hero-title .gold { color:#c9a961; display:block; font-size:clamp(36px,4vw,56px); }
 
+    .hero-subtitle {
+      font-size:15px; color:#a89878; margin:10px 0 6px;
+      letter-spacing:.04em;
+      animation:fade-up .7s ease-out .15s backwards;
+    }
+
     .hero-desc {
-      font-size:15px; line-height:1.85; color:#9a8878;
-      margin:18px 0 32px;
+      font-size:14px; line-height:1.9; color:#7a6a5a;
+      margin:14px 0 28px;
+      border-left:2px solid rgba(201,169,97,.25);
+      padding-left:14px;
       animation:fade-up .7s ease-out .2s backwards;
     }
 
@@ -155,13 +161,18 @@
       flex-shrink:0; width:420px;
       animation:fade-up .8s ease-out .2s backwards;
     }
+    .hero-preview a { display:block; }
 
-    /* 仿真命盘格 */
     .mini-chart {
       background:#f5f0e8;
       border-radius:12px;
       overflow:hidden;
       box-shadow:0 20px 60px rgba(0,0,0,.5), 0 0 0 1px rgba(201,169,97,.15);
+      transition:transform .25s, box-shadow .25s;
+    }
+    .hero-preview a:hover .mini-chart {
+      transform:translateY(-4px);
+      box-shadow:0 28px 70px rgba(0,0,0,.6), 0 0 0 1px rgba(201,169,97,.3);
     }
     .mini-chart-title {
       background:#1a130c;
@@ -193,170 +204,157 @@
       display:flex; flex-direction:column; align-items:center; justify-content:center;
       gap:4px;
     }
-    .mc-palace {
-      font-size:9px; color:#9c8878; letter-spacing:.05em;
-    }
-    .mc-stars {
-      font-size:11px; color:#3d2b1f; font-weight:700; line-height:1.5;
-    }
+    .mc-palace { font-size:9px; color:#9c8878; letter-spacing:.05em; }
+    .mc-stars { font-size:11px; color:#3d2b1f; font-weight:700; line-height:1.5; }
     .mc-age { font-size:8.5px; color:#b8a898; margin-top:2px; }
     .mc-tag {
       display:inline-block;
       font-size:8px; color:#963d32; border:1px solid #e8c0b0;
       border-radius:3px; padding:0 3px; margin-bottom:3px;
     }
-    .mc-center-name {
-      font-size:13px; font-weight:700; color:#3d2b1f;
-    }
-    .mc-center-sub {
-      font-size:10px; color:#9c8878;
-    }
-    .mc-center-data {
-      font-size:9px; color:#6b4e41; text-align:center; line-height:1.7;
-    }
-
-    /* 命盘卡片底部 */
+    .mc-center-name { font-size:13px; font-weight:700; color:#3d2b1f; }
+    .mc-center-sub { font-size:10px; color:#9c8878; }
+    .mc-center-data { font-size:9px; color:#6b4e41; text-align:center; line-height:1.7; }
     .mini-chart-footer {
       background:#1a130c;
       padding:8px 12px;
       display:flex; gap:0; justify-content:center;
     }
-    .mini-tab {
-      font-size:10px; color:#8e6a3a;
-      padding:4px 14px; border-radius:12px;
-    }
-    .mini-tab.active {
-      background:#3d2b1f; color:#c9a961; font-weight:700;
-    }
+    .mini-tab { font-size:10px; color:#8e6a3a; padding:4px 14px; border-radius:12px; }
+    .mini-tab.active { background:#3d2b1f; color:#c9a961; font-weight:700; }
 
-    /* ── 分割线 ── */
-    .section-divider {
-      display:flex; align-items:center; gap:0;
-      padding:0 60px; margin:48px 0;
+    /* ── 公共 section 样式 ── */
+    .sec-wrap {
+      max-width:1200px; margin:0 auto; padding:0 40px;
     }
-    .sdiv-line {
+    .sec-head {
+      text-align:center; margin-bottom:40px;
+    }
+    .sec-head .orn {
+      display:block; font-size:13px;
+      color:rgba(201,169,97,.4); letter-spacing:10px;
+      margin-bottom:10px;
+    }
+    .sec-head h2 {
+      font-size:clamp(20px,2.2vw,28px); font-weight:700; color:#e8dcc8;
+      margin-bottom:8px;
+    }
+    .sec-head p { font-size:13px; color:#7a6a5a; }
+
+    .sdivider {
+      display:flex; align-items:center;
+      padding:0 60px; margin:52px 0;
+    }
+    .sdivider-line {
       flex:1; height:1px;
       background:linear-gradient(to right, transparent, rgba(201,169,97,.12), transparent);
     }
-    .sdiv-diamond {
-      width:8px; height:8px; flex-shrink:0;
-      background:rgba(201,169,97,.4); transform:rotate(45deg); margin:0 10px;
+    .sdivider-diamond {
+      width:7px; height:7px; flex-shrink:0;
+      background:rgba(201,169,97,.35); transform:rotate(45deg); margin:0 10px;
     }
 
-    /* ── 功能区 ── */
-    .features {
-      max-width:1200px; margin:0 auto; padding:0 40px 80px;
+    /* ── 三才板块 ── */
+    .sancai-section { padding:70px 0 0; }
+    .sancai-grid {
+      display:grid; grid-template-columns:repeat(3,1fr); gap:20px;
     }
-    .section-heading {
-      text-align:center; margin-bottom:36px;
-    }
-    .section-heading h2 {
-      font-size:28px; font-weight:700; color:#e8dcc8;
-      margin-bottom:6px;
-    }
-    .section-heading p { font-size:14px; color:#8e7c6a; }
-    .section-heading .ornament {
-      color:rgba(201,169,97,.5); font-size:18px; letter-spacing:8px;
-      display:block; margin-bottom:8px;
-    }
-
-    .feature-grid {
-      display:grid; grid-template-columns:repeat(4,1fr); gap:16px;
-    }
-    .feature-card {
-      background:#221a13;
-      border:1px solid rgba(201,169,97,.12);
-      border-radius:12px; padding:20px 16px 18px;
+    .sancai-card {
+      background:#1e1609;
+      border:1px solid rgba(201,169,97,.14);
+      border-radius:14px; padding:28px 24px 26px;
       position:relative; overflow:hidden;
       transition:transform .25s, border-color .25s, box-shadow .25s;
     }
-    .feature-card::after {
-      content:''; position:absolute; top:0; left:0; right:0; height:2px;
-      background:linear-gradient(90deg, transparent, rgba(201,169,97,.3), transparent);
-    }
-    .feature-card:hover {
+    .sancai-card:hover {
       transform:translateY(-4px);
+      border-color:rgba(201,169,97,.32);
+      box-shadow:0 16px 40px rgba(0,0,0,.3);
+    }
+    .sancai-card::before {
+      content:''; position:absolute; top:0; left:0; right:0; height:2px;
+      background:linear-gradient(90deg, transparent, rgba(201,169,97,.4), transparent);
+    }
+    .sc-label {
+      font-size:28px; font-weight:700; color:rgba(201,169,97,.6);
+      margin-bottom:10px; letter-spacing:.05em;
+    }
+    .sc-title {
+      font-size:17px; font-weight:700; color:#e8d5a3;
+      margin-bottom:6px;
+    }
+    .sc-sub {
+      font-size:11px; color:#c9a961; letter-spacing:.08em;
+      margin-bottom:14px;
+    }
+    .sc-body {
+      font-size:13px; line-height:1.85; color:#8a7860;
+    }
+    .sc-quote {
+      margin-top:14px; padding:8px 12px;
+      background:rgba(201,169,97,.05);
+      border-left:2px solid rgba(201,169,97,.3);
+      font-size:12px; color:#a89060; font-style:italic;
+      border-radius:0 6px 6px 0;
+    }
+
+    /* ── 哲学金句 ── */
+    .philosophy-section {
+      padding:60px 0;
+      background:#130f0a;
+    }
+    .quote-grid {
+      display:grid; grid-template-columns:repeat(3,1fr); gap:16px;
+    }
+    .quote-card {
+      background:#1a1409;
+      border:1px solid rgba(201,169,97,.1);
+      border-radius:10px; padding:20px 18px;
+      transition:border-color .2s;
+    }
+    .quote-card:hover { border-color:rgba(201,169,97,.28); }
+    .qc-text {
+      font-size:15px; font-weight:700; color:#d9b97f;
+      line-height:1.5; margin-bottom:8px;
+    }
+    .qc-note { font-size:12px; color:#6a5a42; line-height:1.6; }
+
+    /* ── 知识目录 ── */
+    .knowledge-section { padding:60px 0 80px; }
+    .knowledge-grid {
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:14px;
+    }
+    .kc {
+      background:#1e1609;
+      border:1px solid rgba(201,169,97,.1);
+      border-radius:10px; padding:18px 16px 16px;
+      transition:transform .2s, border-color .2s, box-shadow .2s;
+      cursor:default;
+    }
+    .kc:hover {
+      transform:translateY(-3px);
       border-color:rgba(201,169,97,.28);
-      box-shadow:0 12px 32px rgba(0,0,0,.3);
+      box-shadow:0 10px 28px rgba(0,0,0,.25);
     }
-    .fc-icon {
-      font-size:24px; margin-bottom:12px; display:block;
+    .kc-num {
+      font-size:10px; color:rgba(201,169,97,.4);
+      letter-spacing:.08em; margin-bottom:6px;
     }
-    .feature-card h3 {
-      font-size:15px; font-weight:700; color:#d9b97f; margin-bottom:8px;
+    .kc-title {
+      font-size:14px; font-weight:700; color:#d9b97f;
+      margin-bottom:8px;
     }
-    .feature-card p { font-size:12.5px; line-height:1.7; color:#7a6a5a; }
-
-    /* ── AI 功能条 ── */
-    .ai-strip {
-      max-width:1200px; margin:0 auto 60px; padding:0 40px;
+    .kc-items {
+      display:flex; flex-direction:column; gap:3px;
     }
-    .ai-strip-inner {
-      background:#221a13;
-      border:1px solid rgba(201,169,97,.15);
-      border-radius:14px; padding:24px 28px;
-      display:flex; align-items:center; gap:24px;
+    .kc-item {
+      font-size:11px; color:#6a5a42; line-height:1.5;
+      padding-left:10px; position:relative;
     }
-    .ai-strip-badge {
-      flex-shrink:0;
-      background:linear-gradient(135deg,#7a3b2e,#b05a3a);
-      color:#fff5ec; font-size:11px; font-weight:700;
-      padding:4px 12px; border-radius:20px; letter-spacing:.06em;
-    }
-    .ai-strip-text {
-      flex:1;
-    }
-    .ai-strip-text strong { color:#d9b97f; font-size:15px; }
-    .ai-strip-text p { color:#8e7c6a; font-size:13px; margin-top:2px; }
-    .ai-strip-btn {
-      flex-shrink:0;
-      background:rgba(201,169,97,.1); color:#c9a961;
-      border:1px solid rgba(201,169,97,.25);
-      font-size:13px; font-weight:700;
-      padding:8px 20px; border-radius:20px;
-      transition:background .2s, border-color .2s;
-    }
-    .ai-strip-btn:hover { background:rgba(201,169,97,.18); border-color:rgba(201,169,97,.5); }
-
-    /* ── 步骤 ── */
-    .steps-section {
-      background:#130f0a; padding:50px 0;
-    }
-    .steps-inner {
-      max-width:1200px; margin:0 auto; padding:0 40px;
-    }
-    .steps-title-row {
-      display:flex; align-items:center; gap:0; margin-bottom:36px;
-    }
-    .stl-line {
-      flex:1; height:1px;
-      background:linear-gradient(to right, transparent, rgba(201,169,97,.1), transparent);
-    }
-    .stl-text {
-      font-size:20px; font-weight:700; color:#c9a961;
-      padding:0 24px; letter-spacing:.05em;
-    }
-    .steps-row {
-      display:flex; align-items:flex-start; justify-content:center; gap:0;
-      max-width:700px; margin:0 auto;
-    }
-    .step-item {
-      flex:1; display:flex; flex-direction:column; align-items:center; text-align:center;
-    }
-    .step-circle {
-      width:46px; height:46px; border-radius:50%;
-      background:linear-gradient(135deg,#7a3b2e,#b05a3a);
-      color:#fff5ec; font-size:14px; font-weight:700;
-      display:flex; align-items:center; justify-content:center;
-      margin-bottom:12px;
-      box-shadow:0 4px 12px rgba(122,59,46,.35);
-    }
-    .step-item h3 { font-size:14px; font-weight:700; color:#d9b97f; }
-    .step-item p { font-size:12px; color:#7a6a5a; margin-top:4px; }
-    .step-arrow {
-      flex-shrink:0; margin-top:22px;
-      color:rgba(201,169,97,.3); font-size:18px;
-      padding:0 8px;
+    .kc-item::before {
+      content:'·'; position:absolute; left:0; color:rgba(201,169,97,.35);
     }
 
     /* ── CTA ── */
@@ -375,7 +373,7 @@
       letter-spacing:12px; margin-bottom:14px; display:block;
     }
     .final-cta h2 {
-      font-size:clamp(24px,2.5vw,36px); font-weight:700;
+      font-size:clamp(22px,2.2vw,32px); font-weight:700;
       color:#e8dcc8; margin-bottom:10px;
     }
     .final-cta p { font-size:14px; color:#8e7c6a; margin-bottom:28px; }
@@ -393,18 +391,18 @@
     /* ── 响应式 ── */
     @media (max-width:1000px) {
       .hero-preview { display:none; }
-      .feature-grid { grid-template-columns:repeat(2,1fr); }
+      .sancai-grid { grid-template-columns:1fr; }
+      .quote-grid { grid-template-columns:repeat(2,1fr); }
+      .knowledge-grid { grid-template-columns:repeat(2,1fr); }
     }
     @media (max-width:640px) {
       .nav-links { display:none; }
       .hero-inner { flex-direction:column; padding:0 20px; }
       .hero-actions { flex-direction:column; }
       .btn-main,.btn-sub { width:100%; }
-      .feature-grid { grid-template-columns:1fr; }
-      .features,.ai-strip,.steps-inner,.footer { padding-left:20px; padding-right:20px; }
-      .section-divider { padding:0 20px; }
-      .steps-row { flex-direction:column; align-items:center; gap:20px; }
-      .step-arrow { display:none; }
+      .quote-grid,.knowledge-grid { grid-template-columns:1fr; }
+      .sec-wrap,.sdivider,.footer { padding-left:20px; padding-right:20px; }
+      .sdivider { padding:0 20px; }
       .footer { flex-direction:column; gap:6px; text-align:center; }
     }
   </style>
@@ -413,7 +411,7 @@
 
 <header class="navbar">
   <div class="nav-inner">
-    <a href="index.html" class="nav-logo">☽ 紫微斗数</a>
+    <a href="index.html" class="nav-logo">☽ 阅天</a>
     <nav class="nav-links">
       <a href="index.html" class="active">首页</a>
       <a href="pages/chart.html">免费排盘</a>
@@ -428,214 +426,384 @@
     <div class="hero-content">
       <span class="hero-eyebrow">
         <span class="eyebrow-dot"></span>
-        免费在线排盘 · 实时计算
+        阅天 · 三才命理体系
       </span>
       <h1 class="hero-title">
-        输入出生时间
-        <span class="gold">看你的紫微命盘</span>
+        命，只是底牌
+        <span class="gold">阅天知时，顺势而为</span>
       </h1>
+      <p class="hero-subtitle">天定格局，运决时机，地显吉凶——三才合参，方知走向</p>
       <p class="hero-desc">
-        填入年月日时辰，即时生成十二宫命盘。<br>
-        命宫主星、大运流年、AI 深度批命——一站看清。
+        算命是谈结果的哲学，不是改命，是知时。<br>
+        命好不如限好。知道自己在哪个运，比知道命好命差更有用。<br>
+        君子事天，小人事人——懂天时的人不认命，是顺势。
       </p>
       <div class="hero-actions">
-        <button class="btn-main" onclick="location.href='pages/chart.html'">免费排我的命盘 →</button>
-        <button class="btn-sub" onclick="location.href='pages/chart.html'">查看示例</button>
+        <button class="btn-main" onclick="location.href='pages/chart.html'">排我的命盘 →</button>
+        <button class="btn-sub" onclick="document.getElementById('sancai').scrollIntoView({behavior:'smooth'})">了解三才体系</button>
       </div>
       <ul class="hero-badges">
         <li class="badge"><span class="ok">✓</span>完全免费</li>
         <li class="badge"><span class="ok">✓</span>无需注册</li>
-        <li class="badge"><span class="ok">✓</span>本地计算</li>
+        <li class="badge"><span class="ok">✓</span>三才合参</li>
         <li class="badge"><span class="ok">✓</span>AI 批命</li>
       </ul>
     </div>
 
-    <!-- 仿真命盘预览 -->
+    <!-- 右侧命盘预览（不变，加跳转） -->
     <div class="hero-preview">
-      <div class="mini-chart">
-        <div class="mini-chart-title">紫 微 排 盘</div>
-        <div class="mini-grid">
-          <!-- 上排 4 格 -->
-          <div class="mini-cell">
-            <div class="mc-stars">廉贞陷<br>贪狼陷</div>
-            <div class="mc-age">癸巳 103–112</div>
-            <div class="mc-palace">福德</div>
-          </div>
-          <div class="mini-cell">
-            <span class="mc-tag">官</span>
-            <div class="mc-stars">巨门旺<br>天魁</div>
-            <div class="mc-age">甲午 93–102</div>
-            <div class="mc-palace">田宅</div>
-          </div>
-          <div class="mini-cell">
-            <div class="mc-stars">天相得</div>
-            <div class="mc-age">乙未 83–92</div>
-            <div class="mc-palace">官禄</div>
-          </div>
-          <div class="mini-cell">
-            <div class="mc-stars">天同旺<br>天梁旺</div>
-            <div class="mc-age">丙申 73–82</div>
-            <div class="mc-palace">仆役</div>
-          </div>
-          <!-- 第二排 -->
-          <div class="mini-cell">
-            <div class="mc-stars">太阴陷</div>
-            <div class="mc-age">壬辰 113–122</div>
-            <div class="mc-palace">父母</div>
-          </div>
-          <!-- 中间信息格 -->
-          <div class="mini-cell center-span">
-            <div class="mc-center-name">紫 微 排 盘</div>
-            <div class="mc-center-sub">阳男 · 木三局</div>
-            <div class="mc-center-data">
-              公历 1991-02-16 22:00<br>
-              节气时：辛<br>
-              命宫：辰 · 身宫：财<br>
-              流年卦：风水涣
+      <a href="pages/chart.html" title="点击排盘">
+        <div class="mini-chart">
+          <div class="mini-chart-title">紫 微 排 盘</div>
+          <div class="mini-grid">
+            <div class="mini-cell">
+              <div class="mc-stars">廉贞陷<br>贪狼陷</div>
+              <div class="mc-age">癸巳 103–112</div>
+              <div class="mc-palace">福德</div>
+            </div>
+            <div class="mini-cell">
+              <span class="mc-tag">官</span>
+              <div class="mc-stars">巨门旺<br>天魁</div>
+              <div class="mc-age">甲午 93–102</div>
+              <div class="mc-palace">田宅</div>
+            </div>
+            <div class="mini-cell">
+              <div class="mc-stars">天相得</div>
+              <div class="mc-age">乙未 83–92</div>
+              <div class="mc-palace">官禄</div>
+            </div>
+            <div class="mini-cell">
+              <div class="mc-stars">天同旺<br>天梁旺</div>
+              <div class="mc-age">丙申 73–82</div>
+              <div class="mc-palace">仆役</div>
+            </div>
+            <div class="mini-cell">
+              <div class="mc-stars">太阴陷</div>
+              <div class="mc-age">壬辰 113–122</div>
+              <div class="mc-palace">父母</div>
+            </div>
+            <div class="mini-cell center-span">
+              <div class="mc-center-name">紫 微 排 盘</div>
+              <div class="mc-center-sub">阳男 · 木三局</div>
+              <div class="mc-center-data">
+                公历 1991-02-16 22:00<br>
+                节气时：辛<br>
+                命宫：辰 · 身宫：财<br>
+                流年卦：风水涣
+              </div>
+            </div>
+            <div class="mini-cell">
+              <span class="mc-tag">权</span>
+              <div class="mc-stars">太阳不</div>
+              <div class="mc-age">丁酉 63–72</div>
+              <div class="mc-palace">迁移</div>
+            </div>
+            <div class="mini-cell">
+              <span class="mc-tag">科</span>
+              <div class="mc-stars">天府得</div>
+              <div class="mc-age">辛卯 3–12</div>
+              <div class="mc-palace">命宫</div>
+            </div>
+            <div class="mini-cell">
+              <div class="mc-stars">七杀旺<br>破军旺</div>
+              <div class="mc-age">戊戌 53–62</div>
+              <div class="mc-palace">疾厄</div>
+            </div>
+            <div class="mini-cell">
+              <div class="mc-stars">紫微庙<br>破军旺</div>
+              <div class="mc-age">庚寅 13–22</div>
+              <div class="mc-palace">兄弟</div>
+            </div>
+            <div class="mini-cell">
+              <div class="mc-stars">天机庙</div>
+              <div class="mc-age">辛丑 23–32</div>
+              <div class="mc-palace">夫妻</div>
+            </div>
+            <div class="mini-cell">
+              <div class="mc-stars">天机庙</div>
+              <div class="mc-age">庚子 33–42</div>
+              <div class="mc-palace">子女</div>
+            </div>
+            <div class="mini-cell">
+              <div class="mc-age">己亥 43–52</div>
+              <div class="mc-palace">财帛</div>
             </div>
           </div>
-          <div class="mini-cell">
-            <span class="mc-tag">权</span>
-            <div class="mc-stars">太阳不</div>
-            <div class="mc-age">丁酉 63–72</div>
-            <div class="mc-palace">迁移</div>
-          </div>
-          <!-- 第三排 -->
-          <div class="mini-cell">
-            <span class="mc-tag">科</span>
-            <div class="mc-stars">天府得</div>
-            <div class="mc-age">辛卯 3–12</div>
-            <div class="mc-palace">命宫</div>
-          </div>
-          <!-- center-span 占位，跳过 2 格 -->
-          <div class="mini-cell">
-            <div class="mc-stars">七杀旺<br>破军旺</div>
-            <div class="mc-age">戊戌 53–62</div>
-            <div class="mc-palace">疾厄</div>
-          </div>
-          <!-- 下排 4 格 -->
-          <div class="mini-cell">
-            <div class="mc-stars">紫微庙<br>破军旺</div>
-            <div class="mc-age">庚寅 13–22</div>
-            <div class="mc-palace">兄弟</div>
-          </div>
-          <div class="mini-cell">
-            <div class="mc-stars">天机庙</div>
-            <div class="mc-age">辛丑 23–32</div>
-            <div class="mc-palace">夫妻</div>
-          </div>
-          <div class="mini-cell">
-            <div class="mc-stars">天机庙</div>
-            <div class="mc-age">庚子 33–42</div>
-            <div class="mc-palace">子女</div>
-          </div>
-          <div class="mini-cell">
-            <div class="mc-age">己亥 43–52</div>
-            <div class="mc-palace">财帛</div>
+          <div class="mini-chart-footer">
+            <span class="mini-tab active">◇先天卦◇</span>
+            <span class="mini-tab">后天卦</span>
+            <span class="mini-tab">流年卦</span>
           </div>
         </div>
-        <div class="mini-chart-footer">
-          <span class="mini-tab active">◇先天卦◇</span>
-          <span class="mini-tab">后天卦</span>
-          <span class="mini-tab">流年卦</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ── 三才总论 ── -->
+<section class="sancai-section" id="sancai">
+  <div class="sec-wrap">
+    <div class="sec-head">
+      <span class="orn">◆ ◇ ◆</span>
+      <h2>天地人三才</h2>
+      <p>算命只是看"天"这一层——三才合参，才是完整的命理体系</p>
+    </div>
+    <div class="sancai-grid">
+      <div class="sancai-card">
+        <div class="sc-label">天</div>
+        <div class="sc-title">命 · 先天格局</div>
+        <div class="sc-sub">MING · INNATE CHART</div>
+        <div class="sc-body">
+          出生时辰定命盘，十二宫布星，主星亮度定性情与潜力。命是你拿到的牌，决定能走多远。<br><br>
+          先看总格（命宫三方四正），再看四化（科权禄忌）落在哪个宫，最后看父母宫与兄弟宫。星得正位才成格；星不得位，再好的星也发不出来。
+        </div>
+        <div class="sc-quote">治天下：天时 &gt; 地利 &gt; 人和<br>平天下：人和 &gt; 地利 &gt; 天时</div>
+      </div>
+      <div class="sancai-card">
+        <div class="sc-label">人</div>
+        <div class="sc-title">运 · 后天时机</div>
+        <div class="sc-sub">YUN · TIMING & CYCLES</div>
+        <div class="sc-body">
+          十年大运为主（看三方四正），流年为辅（只看本宫对宫）。命与运两重叠合才成吉凶——单一不成格。<br><br>
+          化忌落在哪个宫，那十年就在哪件事上事倍功半。知道哪段时间不利，比知道命好命差更有用。
+        </div>
+        <div class="sc-quote">命好不如限好。<br>命上有灾 + 运上有灾，才真正呈现。</div>
+      </div>
+      <div class="sancai-card">
+        <div class="sc-label">地</div>
+        <div class="sc-title">相 · 环境接口</div>
+        <div class="sc-sub">XIANG · ENVIRONMENT</div>
+        <div class="sc-body">
+          面相气色映当下两周内的状态：枯焦已发生，枯黄两周内，暗黑近期将至。阳宅方位影响六亲吉凶，居所朝向是人与天之间的接口。<br><br>
+          读书时书桌朝化科所在宫位，做生意朝化禄所在宫位。
+        </div>
+        <div class="sc-quote">名=位（家和）；位=名（住对了，万事兴）。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="sdivider"><div class="sdivider-line"></div><div class="sdivider-diamond"></div><div class="sdivider-line"></div></div>
+
+<!-- ── 哲学总纲 ── -->
+<section class="philosophy-section">
+  <div class="sec-wrap">
+    <div class="sec-head">
+      <span class="orn">◆ ◇ ◆</span>
+      <h2>哲学总纲</h2>
+      <p>阅天体系的核心认知——知时，方能以果决行</p>
+    </div>
+    <div class="quote-grid">
+      <div class="quote-card">
+        <div class="qc-text">算命是谈结果的哲学</div>
+        <div class="qc-note">不是宿命论，是从已知结果倒推当下该做什么。知时顺势，而非改命。</div>
+      </div>
+      <div class="quote-card">
+        <div class="qc-text">命好不如限好</div>
+        <div class="qc-note">十年大运才是主场。同样的命，遇到好大运天差地别。知道在哪个运，比知道命好命差更重要。</div>
+      </div>
+      <div class="quote-card">
+        <div class="qc-text">吉处藏凶必凶；凶处藏吉平安</div>
+        <div class="qc-note">戒之初，戒之盛。最顺的时候反而要保守。命盘早年凶、晚年吉，比反过来好得多。</div>
+      </div>
+      <div class="quote-card">
+        <div class="qc-text">君子事天，小人事人</div>
+        <div class="qc-note">懂天时的人顺势而为，不与时势相争。阅天的目的，是让人做君子，不做时势的对抗者。</div>
+      </div>
+      <div class="quote-card">
+        <div class="qc-text">遇险而止招险；遇险行险亦招险</div>
+        <div class="qc-note">知险方能化险。既不能因惧而止步，也不能莽撞硬闯。知时，才有第三条路。</div>
+      </div>
+      <div class="quote-card">
+        <div class="qc-text">命上有灾，运上有灾，才真正呈现</div>
+        <div class="qc-note">先天命格的凶象，须与当下运限叠合才成格。单一不够——这是命理最重要的判断原则。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="sdivider"><div class="sdivider-line"></div><div class="sdivider-diamond"></div><div class="sdivider-line"></div></div>
+
+<!-- ── 知识目录 ── -->
+<section class="knowledge-section">
+  <div class="sec-wrap">
+    <div class="sec-head">
+      <span class="orn">◆ ◇ ◆</span>
+      <h2>阅天知识体系</h2>
+      <p>天纪·天机道完整体系 · 十四章</p>
+    </div>
+    <div class="knowledge-grid">
+
+      <div class="kc">
+        <div class="kc-num">第一章</div>
+        <div class="kc-title">哲学总纲</div>
+        <div class="kc-items">
+          <span class="kc-item">算命是谈结果的哲学</span>
+          <span class="kc-item">君子事天，小人事人</span>
+          <span class="kc-item">吉处藏凶 / 凶处藏吉</span>
+          <span class="kc-item">命好不如限好</span>
         </div>
       </div>
+
+      <div class="kc">
+        <div class="kc-num">第二章</div>
+        <div class="kc-title">天地人三才</div>
+        <div class="kc-items">
+          <span class="kc-item">天·命（先天格局）</span>
+          <span class="kc-item">人·运（后天时机）</span>
+          <span class="kc-item">地·相（环境接口）</span>
+          <span class="kc-item">三才主次与用法</span>
+        </div>
+      </div>
+
+      <div class="kc">
+        <div class="kc-num">第三章</div>
+        <div class="kc-title">算命三大体系</div>
+        <div class="kc-items">
+          <span class="kc-item">铁板神算（核对六亲）</span>
+          <span class="kc-item">子平法（八字格局）</span>
+          <span class="kc-item">紫微斗数（最精妙）</span>
+          <span class="kc-item">三法比较与适用场景</span>
+        </div>
+      </div>
+
+      <div class="kc">
+        <div class="kc-num">第四章</div>
+        <div class="kc-title">紫微十二宫</div>
+        <div class="kc-items">
+          <span class="kc-item">命/兄/夫/子/财/疾</span>
+          <span class="kc-item">迁/仆/官/田/福/父</span>
+          <span class="kc-item">三方四正联动原理</span>
+          <span class="kc-item">宫位与面相对应</span>
+        </div>
+      </div>
+
+      <div class="kc">
+        <div class="kc-num">第五章</div>
+        <div class="kc-title">主星星性</div>
+        <div class="kc-items">
+          <span class="kc-item">北斗六星（紫机阳武同廉）</span>
+          <span class="kc-item">南斗六星（府阴贪巨相梁）</span>
+          <span class="kc-item">三方杀星（杀破狼）</span>
+          <span class="kc-item">星性体相与命格</span>
+        </div>
+      </div>
+
+      <div class="kc">
+        <div class="kc-num">第六章</div>
+        <div class="kc-title">四化星</div>
+        <div class="kc-items">
+          <span class="kc-item">化科：名气 / 科甲 / 专技</span>
+          <span class="kc-item">化权：掌权 / 性刚 / 官印</span>
+          <span class="kc-item">化禄：财 / 守财</span>
+          <span class="kc-item">化忌：停滞 / 破耗 / 官司</span>
+        </div>
+      </div>
+
+      <div class="kc">
+        <div class="kc-num">第七章</div>
+        <div class="kc-title">副星与六杀</div>
+        <div class="kc-items">
+          <span class="kc-item">左辅右弼 / 三台八座</span>
+          <span class="kc-item">天魁天钺 / 文昌文曲</span>
+          <span class="kc-item">红鸾天喜 / 禄存天马</span>
+          <span class="kc-item">六杀：羊陀火铃空劫</span>
+        </div>
+      </div>
+
+      <div class="kc">
+        <div class="kc-num">第八章</div>
+        <div class="kc-title">批命方法论</div>
+        <div class="kc-items">
+          <span class="kc-item">三步看命法</span>
+          <span class="kc-item">重要格局（十余种）</span>
+          <span class="kc-item">命宫与身宫之别</span>
+          <span class="kc-item">星亮度：庙旺利平不陷</span>
+        </div>
+      </div>
+
+      <div class="kc">
+        <div class="kc-num">第九章</div>
+        <div class="kc-title">大运与流年</div>
+        <div class="kc-items">
+          <span class="kc-item">十年大运为主（三方四正）</span>
+          <span class="kc-item">流年为辅（本宫对宫）</span>
+          <span class="kc-item">化忌宫位的十年判断</span>
+          <span class="kc-item">特殊节气离日 / 决日</span>
+        </div>
+      </div>
+
+      <div class="kc">
+        <div class="kc-num">第十章</div>
+        <div class="kc-title">面相与气色</div>
+        <div class="kc-items">
+          <span class="kc-item">面部十二宫对应</span>
+          <span class="kc-item">气色时效（主两周）</span>
+          <span class="kc-item">贵相 / 凶相特征</span>
+          <span class="kc-item">五形体相（木火土金水）</span>
+        </div>
+      </div>
+
+      <div class="kc">
+        <div class="kc-num">第十一章</div>
+        <div class="kc-title">手相</div>
+        <div class="kc-items">
+          <span class="kc-item">八卦掌丘（巽离坤兑乾坎震艮）</span>
+          <span class="kc-item">天柱纹：科甲有名</span>
+          <span class="kc-item">手纹细清：心性正</span>
+          <span class="kc-item">明堂平广微凹最吉</span>
+        </div>
+      </div>
+
+      <div class="kc">
+        <div class="kc-num">第十二章</div>
+        <div class="kc-title">阳宅风水</div>
+        <div class="kc-items">
+          <span class="kc-item">方位吉凶（西北/西南/正东）</span>
+          <span class="kc-item">延年方：脚朝东北角</span>
+          <span class="kc-item">书桌朝向对应命盘宫位</span>
+          <span class="kc-item">名位法：位对则万事兴</span>
+        </div>
+      </div>
+
+      <div class="kc">
+        <div class="kc-num">第十三章</div>
+        <div class="kc-title">改运与化解</div>
+        <div class="kc-items">
+          <span class="kc-item">婚姻凶化解（年差/二婚）</span>
+          <span class="kc-item">子女时机选择</span>
+          <span class="kc-item">单身改运卧房朝向</span>
+          <span class="kc-item">改运时机：有人之宫前一年</span>
+        </div>
+      </div>
+
+      <div class="kc">
+        <div class="kc-num">第十四章</div>
+        <div class="kc-title">六壬速断法</div>
+        <div class="kc-items">
+          <span class="kc-item">只需农历月日时，三指起课</span>
+          <span class="kc-item">大安 / 流连 / 速喜</span>
+          <span class="kc-item">赤口 / 小吉 / 空亡</span>
+          <span class="kc-item">测心血来潮单一事件</span>
+        </div>
+      </div>
+
     </div>
   </div>
 </section>
 
-<!-- 分割线 -->
-<div class="section-divider">
-  <div class="sdiv-line"></div>
-  <div class="sdiv-diamond"></div>
-  <div class="sdiv-line"></div>
-</div>
-
-<!-- 功能区 -->
-<section class="features">
-  <div class="section-heading">
-    <span class="ornament">◆ ◇ ◆</span>
-    <h2>命盘能告诉你什么？</h2>
-    <p>大多数人看盘，最想知道这四件事</p>
-  </div>
-  <div class="feature-grid">
-    <div class="feature-card">
-      <span class="fc-icon">命</span>
-      <h3>性格与天赋</h3>
-      <p>命宫主星揭示天生性格底色与优势所在，看清自己的先天格局。</p>
-    </div>
-    <div class="feature-card">
-      <span class="fc-icon">夫</span>
-      <h3>感情与婚姻</h3>
-      <p>夫妻宫看感情模式、缘分时机与伴侣特征，感情走势早知道。</p>
-    </div>
-    <div class="feature-card">
-      <span class="fc-icon">财</span>
-      <h3>事业与财运</h3>
-      <p>官禄财帛宫判断发展方向与财富格局，找准人生主线。</p>
-    </div>
-    <div class="feature-card">
-      <span class="fc-icon">限</span>
-      <h3>大运走势</h3>
-      <p>十年大限 + AI 流年批命，看清当前所处阶段与未来走向。</p>
-    </div>
-  </div>
-</section>
-
-<!-- AI 功能条 -->
-<div class="ai-strip">
-  <div class="ai-strip-inner">
-    <span class="ai-strip-badge">✦ AI 批命</span>
-    <div class="ai-strip-text">
-      <strong>AI 深度批命 · 整体 / 大运 / 流年逐一解读</strong>
-      <p>排盘后可调用 AI 对整体命格、身宫、每十年大运、每年流年进行深度分析批命。</p>
-    </div>
-    <button class="ai-strip-btn" onclick="location.href='pages/chart.html'">立即体验 →</button>
-  </div>
-</div>
-
-<!-- 步骤 -->
-<section class="steps-section">
-  <div class="steps-inner">
-    <div class="steps-title-row">
-      <div class="stl-line"></div>
-      <span class="stl-text">三步拿到你的命盘</span>
-      <div class="stl-line"></div>
-    </div>
-    <div class="steps-row">
-      <div class="step-item">
-        <div class="step-circle">01</div>
-        <h3>输入出生信息</h3>
-        <p>年月日时辰 + 出生地点</p>
-      </div>
-      <div class="step-arrow">›</div>
-      <div class="step-item">
-        <div class="step-circle">02</div>
-        <h3>即时生成命盘</h3>
-        <p>十二宫 · 主辅星 · 四化</p>
-      </div>
-      <div class="step-arrow">›</div>
-      <div class="step-item">
-        <div class="step-circle">03</div>
-        <h3>AI 深度批命</h3>
-        <p>整体 · 大运 · 流年</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- 最终 CTA -->
+<!-- ── 最终 CTA ── -->
 <section class="final-cta">
   <span class="cta-ornament">◆ ◇ ◆</span>
-  <h2>准备好了吗？</h2>
-  <p>2 分钟看清你的紫微命盘和大运走势</p>
-  <button class="btn-main" onclick="location.href='pages/chart.html'">免费排我的命盘 →</button>
+  <h2>阅天始于排盘</h2>
+  <p>输入出生时辰，即刻生成你的紫微命盘 · 三才合参 · AI 深度批命</p>
+  <button class="btn-main" onclick="location.href='pages/chart.html'">排我的命盘 →</button>
   <p class="final-note">完全免费 · 无需注册 · 本地计算 · 不存储数据</p>
 </section>
 
 <!-- 页脚 -->
 <footer class="footer">
-  <span>© 2026 紫微斗数在线排盘</span>
+  <span>© 2026 阅天 · 三才命理体系</span>
   <span>排盘算法基于 <a href="https://github.com/SylarLong/iztro" target="_blank">iztro</a>（MIT 许可）</span>
 </footer>
 
