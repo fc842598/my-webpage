@@ -399,7 +399,7 @@
    Figma 新版命盘样式（fc-* 前缀）
 ══════════════════════════════════════════ */
 .fc-section {
-  padding: 48px 10% 80px;
+  padding: 72px 10% 80px;   /* 62px navbar + 10px 间距 */
   background: transparent;
 }
 .fc-section-title {
@@ -1831,7 +1831,7 @@
 
   /* ── 命盘区域整体 ── */
   .fc-section {
-    padding: 12px 8px 16px;
+    padding: 66px 8px 16px;   /* 56px navbar + 10px 间距 */
   }
   .fc-card {
     max-width: calc(100vw - 16px);
