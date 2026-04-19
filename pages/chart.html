@@ -369,46 +369,55 @@
 
       <!-- ① 主功能卡：唯一主视图 -->
       <div class="aip-card aip-main-card">
-        <div class="aip-card-head aip-main-card-head">
-          <span class="aip-tag">整体批命</span>
-          <span class="aip-card-title" id="aip-life-ttl"></span>
+
+        <!-- Hero 头（深色命格标识区）-->
+        <div class="aip-main-hero">
+          <div class="aip-card-head aip-main-card-head">
+            <span class="aip-tag aip-hero-tag">整体批命</span>
+          </div>
+          <div class="aip-hero-title" id="aip-life-ttl"></div>
         </div>
 
-        <!-- 命盘骨架：只保留四宫结构本身，不再重复显示说明和摘要 -->
-        <details class="aip-struct-details" id="aip-struct-details">
-          <summary class="aip-struct-summary">
-            <span class="aip-struct-summary-label">查看命盘结构</span>
-          </summary>
-          <div class="aip-struct" id="aip-struct"></div>
-        </details>
+        <!-- 正文内容区 -->
+        <div class="aip-main-body-wrap">
 
-        <!-- 隐藏的旧 id 占位，保证合约脚本和 JS 兼容 -->
-        <span id="aip-struct-life"     style="display:none"></span>
-        <span id="aip-sf-life"         style="display:none"></span>
-        <span id="aip-sf-life-maj"     style="display:none"></span>
-        <span id="aip-sf-life-min"     style="display:none"></span>
+          <!-- 命盘骨架：只保留四宫结构本身 -->
+          <details class="aip-struct-details" id="aip-struct-details">
+            <summary class="aip-struct-summary">
+              <span class="aip-struct-summary-label">查看命盘结构</span>
+            </summary>
+            <div class="aip-struct" id="aip-struct"></div>
+          </details>
 
-        <!-- AI 综合解读正文 -->
-        <hr class="aip-struct-divider">
-        <div class="aip-card-ai-bar">
-          <button class="aip-card-ai-btn" id="aip-overall-btn">✦ AI 整体批命</button>
-          <span class="aip-ai-status" id="aip-overall-status"></span>
-        </div>
-        <div class="aip-section-label">整体解读</div>
-        <div class="aip-card-body" id="aip-life-body"></div>
-        <div class="aip-card-tip"  id="aip-life-tip"></div>
+          <!-- 隐藏的旧 id 占位，保证 JS 兼容 -->
+          <span id="aip-struct-life"     style="display:none"></span>
+          <span id="aip-sf-life"         style="display:none"></span>
+          <span id="aip-sf-life-maj"     style="display:none"></span>
+          <span id="aip-sf-life-min"     style="display:none"></span>
 
-        <!-- 风险提醒（AI 后显示，视觉独立） -->
-        <div class="aip-life-risk"  id="aip-life-risk"  style="display:none"></div>
+          <!-- AI 综合解读正文 -->
+          <hr class="aip-struct-divider">
+          <div class="aip-card-ai-bar">
+            <button class="aip-card-ai-btn" id="aip-overall-btn">✦ AI 整体批命</button>
+            <span class="aip-ai-status" id="aip-overall-status"></span>
+          </div>
+          <div class="aip-section-label">整体解读</div>
+          <div class="aip-card-body" id="aip-life-body"></div>
+          <div class="aip-card-tip"  id="aip-life-tip"></div>
 
-        <!-- 判断依据（AI 后显示，比风险弱） -->
-        <div class="aip-life-basis" id="aip-life-basis" style="display:none"></div>
-        <div class="aip-life-ev"    id="aip-life-ev"    style="display:none"></div>
+          <!-- 风险提醒（AI 后显示，视觉独立） -->
+          <div class="aip-life-risk"  id="aip-life-risk"  style="display:none"></div>
+
+          <!-- 判断依据 -->
+          <div class="aip-life-basis" id="aip-life-basis" style="display:none"></div>
+          <div class="aip-life-ev"    id="aip-life-ev"    style="display:none"></div>
+
+        </div><!-- /.aip-main-body-wrap -->
       </div>
 
       <div class="aip-card aip-sub-card aip-shen-card">
         <div class="aip-card-head">
-          <span class="aip-tag">身宫批命</span>
+          <span class="aip-tag aip-shen-tag">身宫</span>
           <span class="aip-card-title" id="aip-shen-ttl"></span>
         </div>
         <div class="aip-card-ai-bar">

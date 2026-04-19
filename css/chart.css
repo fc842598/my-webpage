@@ -2035,78 +2035,111 @@
 .aip-card-body .aip-body-para  { margin: 0 0 2px; }
 .aip-card-tip   { margin-top: 7px; font-size: 11px; color: #963d32;
                   padding-left: 9px; border-left: 2px solid #e8c9b0; line-height: 1.6; }
-/* overall_piming 主卡片（略加强边框） */
+/* ── 整体批命主卡片 ──────────────────────────────────── */
 .aip-main-card {
-  border-color: #d9c9b7;
+  border-color: #d4c4b0;
   border-radius: 14px;
-  padding: 18px 18px 16px;
-  box-shadow: 0 10px 26px rgba(72, 46, 28, 0.04);
+  padding: 0;
+  overflow: hidden;
+  box-shadow: 0 8px 28px rgba(40, 20, 8, .09);
 }
-.aip-main-card-head { margin-bottom: 12px; }
+
+/* Hero 头（深色命格标识区）*/
+.aip-main-hero {
+  background: #201208;
+  border-radius: 14px 14px 0 0;
+  padding: 16px 20px 18px;
+}
+.aip-main-card-head {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 8px;
+}
+.aip-hero-tag {
+  background: rgba(180, 120, 50, .35) !important;
+  color: #f0c878 !important;
+  border: 1px solid rgba(200, 160, 80, .3);
+}
+.aip-hero-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #ffe8c4;
+  letter-spacing: .02em;
+  line-height: 1.3;
+}
+
+/* 正文内容区 */
+.aip-main-body-wrap {
+  padding: 14px 18px 18px;
+}
+
+/* 身宫副卡（降层级）*/
 .aip-sub-card {
-  border-color: #e4d7ca;
-  border-radius: 12px;
+  border-color: #e0d4c4;
+  border-radius: 10px;
   padding: 14px 16px;
-  background: #fffdfa;
+  background: #f8f4ee;
 }
-.aip-shen-card {
-  margin-top: 4px;
+.aip-shen-card { margin-top: 6px; }
+.aip-shen-card .aip-card-body { min-height: 48px; font-size: 13px; }
+.aip-shen-tag {
+  background: #ede4d4 !important;
+  color: #8a6840 !important;
+  font-size: 10px !important;
 }
-.aip-shen-card .aip-card-body {
-  min-height: 48px;
+
+/* 主卡分区：风险 / 依据 */
+.aip-life-risk {
+  margin-top: 12px;
+  font-size: 12px; color: #7a2e20; white-space: pre-line;
+  padding: 10px 14px;
+  background: #fdf0ec;
+  border: 1px solid rgba(180, 80, 60, .25);
+  border-radius: 8px; line-height: 1.75;
 }
-/* overall_piming 主卡片分区 */
-.aip-life-risk  { margin-top: 11px; font-size: 11.5px; color: #7a2e20; white-space: pre-line;
-                  padding: 7px 10px; background: rgba(150,61,50,.06);
-                  border: 1px solid rgba(150,61,50,.18); border-radius: 5px; line-height: 1.7; }
-.aip-life-basis { margin-top: 8px; font-size: 11px; color: #8a7a70; white-space: pre-line;
-                  padding: 4px 9px; border-left: 2px solid #d4c9be; line-height: 1.6; }
-.aip-life-ev    { display: none; }  /* evidence 不进用户态 */
+.aip-life-basis {
+  margin-top: 8px; font-size: 11px; color: #8a7a70; white-space: pre-line;
+  padding: 4px 9px; border-left: 2px solid #d4c9be; line-height: 1.6;
+}
+.aip-life-ev { display: none; }
 
 /* ── 命格速览结构卡 ──────────────────────────────────── */
-/* 命格定位行 — 最重要，用暖金背景 + 加粗 + 顶部分割线突出 */
 .aip-struct-badge-row {
   background: #f5ede0;
-  border-top: 1px solid #e0d0bc !important;  /* 与本地行视觉分隔 */
+  border-top: 1px solid #e0d0bc !important;
 }
 .aip-struct-badge-row .aip-struct-label { color: #9a6a30; font-weight: 700; }
 .aip-struct-badge-row .aip-struct-val   { font-size: 12.5px; font-weight: 700; color: #7a4e2a; letter-spacing: .02em; }
-/* AI 综合解读 section 标签 */
+
+/* AI 综合解读 section 标签（胶囊式）*/
 .aip-section-label {
-  font-size: 9.5px; font-weight: 600; color: #b09a84; letter-spacing: .12em;
-  text-transform: uppercase; padding: 2px 0 5px;
+  display: inline-flex; align-items: center;
+  background: #f0e8d8; border-radius: 9px;
+  padding: 3px 10px; margin-bottom: 8px;
+  font-size: 10px; font-weight: 700;
+  color: #8a6030; letter-spacing: .06em;
 }
 
 /* 命盘结构区 */
-.aip-struct-details { margin: 6px 0 6px; }
+.aip-struct-details { margin: 0 0 8px; }
 .aip-struct-summary {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  cursor: pointer;
-  list-style: none;
-  padding: 2px 2px 8px;
+  display: flex; align-items: center; gap: 8px;
+  cursor: pointer; list-style: none; padding: 4px 0 8px;
 }
 .aip-struct-summary::-webkit-details-marker { display: none; }
 .aip-struct-summary::before {
-  content: '▸';
-  font-size: 11px;
-  color: #b0957e;
-  line-height: 1;
-  transition: transform .18s ease;
+  content: '▸'; font-size: 11px; color: #b0957e;
+  line-height: 1; transition: transform .18s ease;
 }
 .aip-struct-details[open] .aip-struct-summary::before { transform: rotate(90deg); }
 .aip-struct-summary-label {
-  display: inline-flex;
-  align-items: center;
-  min-height: 28px;
-  padding: 0 12px;
-  border-radius: 999px;
-  background: #f7efe3;
-  color: #8f745d;
-  font-size: 11px;
-  font-weight: 700;
+  display: inline-flex; align-items: center;
+  height: 30px; padding: 0 14px;
+  border-radius: 8px;
+  background: #f5ede0; color: #7a5c40;
+  font-size: 12px; font-weight: 600;
+  transition: background .15s;
 }
+.aip-struct-summary:hover .aip-struct-summary-label { background: #ede4d4; }
 
 /* 速览区容器 */
 .aip-struct {
@@ -2171,8 +2204,12 @@
 }
 /* 速览区与 body 之间的分割线 */
 .aip-struct-divider {
-  border: none; border-top: 1px solid #ede6dc; margin: 6px 0;
+  border: none; border-top: 1px solid #ede6dc; margin: 10px 0 4px;
 }
+
+/* 主卡 AI 按钮区 — 已生成时变绿 */
+.aip-main-card .aip-card-ai-btn.done    { background: #296637; }
+.aip-main-card .aip-card-ai-btn.loading { background: #854c10; }
 .aip-footer-note { text-align: center; font-size: 11px; color: #c0b4aa; padding: 14px 0 0; }
 
 .aip-ai-bar   { display: flex; align-items: center; gap: 12px; margin-top: 18px; justify-content: center; }
@@ -2336,6 +2373,10 @@
   .aip-wrap { padding: 0 10px; }
   .aip-tab  { font-size: 12px; padding: 7px 14px; }
   .aip-card { padding: 10px 12px; }
+  .aip-main-card { padding: 0; }
+  .aip-main-hero { padding: 14px 16px 16px; }
+  .aip-hero-title { font-size: 18px; }
+  .aip-main-body-wrap { padding: 12px 14px 16px; }
   .aip-card-title { font-size: 12px; }
   .aip-card-body  { font-size: 11px; }
   .aip-card-tip   { font-size: 10px; }
