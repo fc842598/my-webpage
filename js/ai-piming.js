@@ -183,6 +183,9 @@ function buildChartPayload() {
   const currentYear = new Date().getFullYear();
   const birthYear = norm.year || 1990;
 
+  // 真实当前虚岁（出生年推算），与用户在流年栏点击的 activeAge 区分
+  const realCurrentAge = birthYear ? (currentYear - birthYear + 1) : 0;
+
   return {
     chartRecordId: window._chartRecordId || null,
     // 基础生辰
@@ -190,6 +193,7 @@ function buildChartPayload() {
     birthDate:       norm.dateStr ? `${norm.dateStr} ${norm.timeStr || ''}`.trim() : '',
     solarTime:       norm.solarTimeStr || '',
     birthYear, birthMonth: norm.month, birthDay: norm.day, birthHour: norm.hour,
+    realCurrentAge,
     isLunar:         norm.isLunar || false,
     city:            norm.city || '',
 
