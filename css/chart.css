@@ -1987,7 +1987,7 @@
 
 /* ─── AI批命区 ──────────────────────────────────────────── */
 #aip-section { background: #faf6f0; padding: 0 0 36px; border-top: 1px solid #ede6dc; }
-.aip-wrap    { max-width: 780px; margin: 0 auto; padding: 0 16px; }
+.aip-wrap    { max-width: 1080px; margin: 0 auto; padding: 0 16px; }
 .aip-head    { display: flex; align-items: center; gap: 10px; padding: 20px 0 10px; }
 .aip-badge   { background: #963d32; color: #fff; font-size: 11px; font-weight: bold;
                padding: 3px 10px; border-radius: 20px; letter-spacing: 1px; }
@@ -2951,38 +2951,60 @@
 }
 
 #aip-panel-chat .xb-starters-bar {
-  margin: 14px 0;
-  padding: 18px 20px;
+  order: 20;
+  margin: 8px 0 0;
+  padding: 0;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
 }
 
 #aip-panel-chat .xb-starters-kicker {
   display: flex;
   align-items: center;
-  gap: 8px;
-  color: var(--xb-gold);
+  gap: 6px;
+  color: var(--xb-soft);
   font-size: 12px;
-  letter-spacing: .08em;
-  text-transform: uppercase;
+  letter-spacing: .04em;
+  text-transform: none;
+  flex-shrink: 0;
+}
+
+#aip-panel-chat .xb-starters-kicker span:last-child {
+  font-size: 0;
+  line-height: 0;
+}
+
+#aip-panel-chat .xb-starters-kicker span:last-child::after {
+  content: '常用快捷问答';
+  font-size: 12px;
+  line-height: 1;
 }
 
 #aip-panel-chat .xb-starters-glyph {
-  font-size: 14px;
+  font-size: 12px;
 }
 
 #aip-panel-chat .xb-starters {
-  margin-top: 14px;
+  margin-top: 0;
   gap: 10px;
+  flex: 1;
 }
 
 #aip-panel-chat .xb-starter {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 10px 14px;
+  padding: 8px 12px;
   border-radius: 999px;
   border: 1px solid rgba(201, 168, 120, .16);
   background: var(--xb-bg-2);
   color: var(--xb-text);
+  font-size: 13px;
 }
 
 #aip-panel-chat .xb-starter:hover:not(:disabled) {
@@ -2993,14 +3015,11 @@
 
 #aip-panel-chat .xb-starter-icon {
   color: var(--xb-gold);
-  font-size: 12px;
+  font-size: 11px;
 }
 
 #aip-panel-chat .xb-starters-tip {
-  margin-top: 12px;
-  color: var(--xb-soft);
-  font-size: 12px;
-  line-height: 1.6;
+  display: none;
 }
 
 #aip-panel-chat #chat-loading-bar {
@@ -3014,9 +3033,9 @@
 }
 
 #aip-panel-chat .chat-messages {
-  min-height: 320px;
-  max-height: 520px;
-  padding: 18px;
+  min-height: 420px;
+  max-height: 680px;
+  padding: 22px 24px;
   gap: 18px;
 }
 
@@ -3066,7 +3085,7 @@
 #aip-panel-chat .chat-msg-assistant .chat-bubble {
   grid-column: 2;
   grid-row: 2;
-  max-width: min(68%, 620px);
+  max-width: min(78%, 780px);
   padding: 13px 16px;
   border: 1px solid rgba(201, 168, 120, .14);
   border-radius: 8px 18px 18px 18px;
@@ -3100,7 +3119,7 @@
 }
 
 #aip-panel-chat .chat-bubble-user {
-  max-width: min(68%, 560px);
+  max-width: min(74%, 760px);
   margin-left: auto;
   padding: 13px 16px;
   border: 1px solid rgba(233, 207, 154, .28);
@@ -3131,7 +3150,7 @@
 }
 
 #aip-panel-chat .xb-composer {
-  margin-top: 14px;
+  margin-top: 12px;
   padding: 0;
   border: none;
   background: transparent;
@@ -3224,6 +3243,14 @@
 
   #aip-panel-chat .chat-msg-assistant .chat-bubble {
     max-width: 88%;
+  }
+
+  #aip-panel-chat .xb-starters-bar {
+    align-items: flex-start;
+  }
+
+  #aip-panel-chat .xb-starters {
+    flex-basis: 100%;
   }
 
   #aip-panel-chat .xb-input-pill {
