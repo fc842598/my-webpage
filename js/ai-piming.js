@@ -124,6 +124,45 @@ function buildChartPayload() {
     period: liunianEntry.period || '', xiaoLian: liunianEntry.xiaoLian || '',
   } : null;
 
+  // 全量大运表（供后端按任意年龄查表，不让 AI 自己推算）
+  const dayunTable = (chart.palaces || [])
+    .map(p => {
+      const range = p?.decadal?.range;
+      if (!range) return null;
+      const m = String(range).match(/(\d+)/g);
+      if (!m || m.length < 2) return null;
+      return {
+        ageStart: Number(m[0]),
+        ageEnd: Number(m[1]),
+        range: `${m[0]}-${m[1]}`,
+        palaceName: p.name || '',
+        palaceBranch: p.earthlyBranch || '',
+        palaceStem: p?.decadal?.heavenlyStem || '',
+        majorStars: (p.majorStars || []).map(s => ({ name: s.name, brightness: s.brightness || '', mutagen: s.mutagen || null })),
+      };
+    })
+    .filter(Boolean)
+    .sort((a, b) => a.ageStart - b.ageStart);
+
+  // 全量小限/流年表（供后端按任意年龄查表）
+  const _birthYearForTable = norm.year || 0;
+  const liunianTable = Object.keys(window._liunianSeq || {})
+    .map(k => {
+      const age = Number(k);
+      if (!age) return null;
+      const e = window._liunianSeq[k] || {};
+      return {
+        age,
+        solarYear: _birthYearForTable ? (_birthYearForTable + age - 1) : 0,
+        xiaoLianBranch: e.xiaoLian || '',
+        yearGanzhi: e.yearGanzhi ? ((e.yearGanzhi.stem || '') + (e.yearGanzhi.branch || '')) : '',
+        liunianGuaName: e.name || '',
+        liunianGuaPeriod: e.period || '',
+      };
+    })
+    .filter(Boolean)
+    .sort((a, b) => a.age - b.age);
+
   // 子平四柱
   const sizhu = pillars ? {
     year:  `${pillars.yearStem || ''}${pillars.yearBranch || ''}`,
@@ -175,6 +214,8 @@ function buildChartPayload() {
     currentYear,
     currentDecade,
     currentLiunian,
+    dayunTable,
+    liunianTable,
     currentXiaolian: liunianEntry?.xiaoLian
       ? { branch: liunianEntry.xiaoLian }
       : null,

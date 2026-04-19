@@ -10,6 +10,8 @@
   var BASE = 'https://ai-piming-backend-production.up.railway.app';
   var RETRY_DELAY = 3000;
   var MAX_RETRIES = 6;
+  var TYPEWRITER_BASE_MS = 22;
+  var INITIAL_GREETING_TEXT = '你好，我是许半仙。我会先按你的命盘主线、大运与流年脉络来回答，你可以直接问感情、事业、财运或最近一年。';
 
   var _sessionId = null;
   var _initialized = false;
@@ -527,7 +529,7 @@
       method: 'GET',
     })
       .then(_readJsonResponse)
-      .then(function (data) {
+      .then(async function (data) {
         _sessionId = data.sessionId;
         _initialized = true;
         _memoryAStale = false;
@@ -762,7 +764,7 @@
     if (!box) return;
     box.innerHTML = '';
     for (var i = 0; i < messages.length; i++) {
-      _appendMsg(messages[i].sender, messages[i].content, messages[i].createdAt);
+      _appendMsg(messages[i].sender, messages[i].content, messages[i].createdAt, { instant: true });
     }
     _scrollToBottom();
   }
@@ -774,9 +776,58 @@
     return d.toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' });
   }
 
-  function _appendMsg(sender, content, createdAt) {
+  function _getTypewriterStep(length) {
+    if (length > 220) return 4;
+    if (length > 120) return 3;
+    if (length > 60) return 2;
+    return 1;
+  }
+
+  function _getTypewriterDelay(length) {
+    if (length > 220) return 8;
+    if (length > 120) return 11;
+    if (length > 60) return 15;
+    return TYPEWRITER_BASE_MS;
+  }
+
+  function _typeAssistantBubble(bubble, content) {
+    var chars = Array.from(String(content || ''));
+    var total = chars.length;
+    if (!bubble) return Promise.resolve();
+    if (!total) {
+      bubble.innerHTML = '';
+      bubble.classList.remove('chat-bubble-typing');
+      return Promise.resolve();
+    }
+
+    var step = _getTypewriterStep(total);
+    var delay = _getTypewriterDelay(total);
+    var index = 0;
+    bubble.classList.add('chat-bubble-typing');
+
+    return new Promise(function (resolve) {
+      function tick() {
+        index = Math.min(total, index + step);
+        bubble.innerHTML = _esc(chars.slice(0, index).join(''));
+        _scrollToBottom();
+
+        if (index >= total) {
+          bubble.classList.remove('chat-bubble-typing');
+          resolve();
+          return;
+        }
+
+        setTimeout(tick, delay);
+      }
+
+      tick();
+    });
+  }
+
+  function _appendMsg(sender, content, createdAt, options) {
+    options = options || {};
     var box = document.getElementById('chat-messages');
-    if (!box) return;
+    if (!box) return Promise.resolve();
 
     var div = document.createElement('div');
     div.className = 'chat-msg chat-msg-' + sender;
@@ -785,7 +836,7 @@
     if (sender === 'assistant') {
       div.innerHTML =
         '<span class="chat-sender">许半仙</span>' +
-        '<span class="chat-bubble">' + _esc(content) + '</span>';
+        '<span class="chat-bubble"></span>';
     } else if (sender === 'user') {
       div.innerHTML =
         '<span class="chat-bubble chat-bubble-user">' + _esc(content) + '</span>';
@@ -795,6 +846,18 @@
 
     box.appendChild(div);
     _scrollToBottom();
+
+    if (sender === 'assistant') {
+      var bubble = div.querySelector('.chat-bubble');
+      if (bubble) {
+        if (options.animate && !options.instant) {
+          return _typeAssistantBubble(bubble, content);
+        }
+        bubble.innerHTML = _esc(content);
+      }
+    }
+
+    return Promise.resolve(div);
   }
 
   function _appendTyping() {
