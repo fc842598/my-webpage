@@ -100,6 +100,7 @@ function buildChartPayload() {
   const movePalace   = _findPalaceByName(chart, ['迁移宫', '迁移']);
   const spousePalace = _findPalaceByName(chart, ['夫妻宫', '夫妻']);
   const happinessPalace = _findPalaceByName(chart, ['福德宫', '福德']);
+  const illnessPalace = _findPalaceByName(chart, ['疾厄宫', '疾厄']);
 
   // 当前大限：找包含 _fcActiveAge 的 decadal.range 的宫
   const activeAge = window._fcActiveAge || 1;
@@ -214,6 +215,7 @@ function buildChartPayload() {
     movePalace:        _serializePalaceDetail(movePalace),
     spousePalace:      _serializePalaceDetail(spousePalace),
     happinessPalace:   _serializePalaceDetail(happinessPalace),
+    illnessPalace:     _serializePalaceDetail(illnessPalace),
     yearMutagens:      _yearMutagens(chart),
     palacesSummary:    _palaceSummary(chart.palaces),
 
@@ -509,6 +511,20 @@ function _aipRenderResult(moduleKey, data) {
       if (tip) tip.textContent = card.tip || '';
       break;
     }
+    case 'jiankang': {
+      const card = data.card || {};
+      const ttl = document.getElementById('aip-jiankang-ttl');
+      const body = document.getElementById('aip-jiankang-body');
+      const tip = document.getElementById('aip-jiankang-tip');
+      if (ttl) ttl.textContent = card.title || '健康批命';
+      if (body) {
+        body.textContent = card.body || data.finalAnswer || '';
+        body.style.whiteSpace = 'pre-wrap';
+        body.style.color = '';
+      }
+      if (tip) tip.textContent = card.tip || '';
+      break;
+    }
     default: {
       const text   = data.finalAnswer || '';
       const shBody = document.getElementById('aip-sh-body');
@@ -644,6 +660,44 @@ function _aipRenderResult(moduleKey, data) {
     });
   }
 
+  function _bindJiankangBtn() {
+    const btn      = document.getElementById('aip-jiankang-btn');
+    const statusEl = document.getElementById('aip-jiankang-status');
+    if (!btn) return;
+    const newBtn = btn.cloneNode(true);
+    btn.parentNode.replaceChild(newBtn, btn);
+
+    newBtn.addEventListener('click', async function () {
+      if (!window._chart || !window._chartInputs) {
+        if (statusEl) statusEl.textContent = '请先完成排盘';
+        return;
+      }
+      newBtn.disabled = true;
+      if (statusEl) statusEl.textContent = '正在生成…';
+
+      const ttl  = document.getElementById('aip-jiankang-ttl');
+      const body = document.getElementById('aip-jiankang-body');
+      const tip  = document.getElementById('aip-jiankang-tip');
+      if (ttl)  ttl.textContent = '健康批命';
+      if (body) { body.textContent = 'AI 正在分析疾厄宫，请稍候…'; body.style.color = '#9a8878'; }
+      if (tip)  tip.textContent = '';
+
+      try {
+        const data = await _aipCallBackend('jiankang');
+        _aipRenderResult('jiankang', data);
+        const meta = data.meta || data.debug || {};
+        if (statusEl) statusEl.textContent = `完成 · ${_fmtDuration(meta.durationMs)}`;
+      } catch (err) {
+        const msg = err?.message || 'AI 生成失败';
+        if (statusEl) statusEl.textContent = msg;
+        if (body) { body.textContent = '⚠ ' + msg + '\n请稍后重试'; body.style.color = '#963d32'; }
+        if (tip)  tip.textContent = '';
+      } finally {
+        newBtn.disabled = false;
+      }
+    });
+  }
+
   // ── 大限 AI ───────────────────────────────────────────────
   function _dlxGetDecadeMutagens(palace) {
     const result = [];
@@ -768,6 +822,7 @@ function _aipRenderResult(moduleKey, data) {
     _bindOverallBtn();
     _bindShenBtn();
     _bindHunyinBtn();
+    _bindJiankangBtn();
     _bindDlxDaxianBtn();
     _bindDlxLiunianBtn();
   }
