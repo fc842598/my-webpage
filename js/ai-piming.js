@@ -525,6 +525,20 @@ function _aipRenderResult(moduleKey, data) {
       if (tip) tip.textContent = card.tip || '';
       break;
     }
+    case 'caiyun': {
+      const card = data.card || {};
+      const ttl = document.getElementById('aip-caiyun-ttl');
+      const body = document.getElementById('aip-caiyun-body');
+      const tip = document.getElementById('aip-caiyun-tip');
+      if (ttl) ttl.textContent = card.title || '财运批命';
+      if (body) {
+        body.textContent = card.body || data.finalAnswer || '';
+        body.style.whiteSpace = 'pre-wrap';
+        body.style.color = '';
+      }
+      if (tip) tip.textContent = card.tip || '';
+      break;
+    }
     default: {
       const text   = data.finalAnswer || '';
       const shBody = document.getElementById('aip-sh-body');
@@ -698,6 +712,44 @@ function _aipRenderResult(moduleKey, data) {
     });
   }
 
+  function _bindCaiyunBtn() {
+    const btn      = document.getElementById('aip-caiyun-btn');
+    const statusEl = document.getElementById('aip-caiyun-status');
+    if (!btn) return;
+    const newBtn = btn.cloneNode(true);
+    btn.parentNode.replaceChild(newBtn, btn);
+
+    newBtn.addEventListener('click', async function () {
+      if (!window._chart || !window._chartInputs) {
+        if (statusEl) statusEl.textContent = '请先完成排盘';
+        return;
+      }
+      newBtn.disabled = true;
+      if (statusEl) statusEl.textContent = '正在生成…';
+
+      const ttl  = document.getElementById('aip-caiyun-ttl');
+      const body = document.getElementById('aip-caiyun-body');
+      const tip  = document.getElementById('aip-caiyun-tip');
+      if (ttl)  ttl.textContent = '财运批命';
+      if (body) { body.textContent = 'AI 正在分析财帛宫，请稍候…'; body.style.color = '#9a8878'; }
+      if (tip)  tip.textContent = '';
+
+      try {
+        const data = await _aipCallBackend('caiyun');
+        _aipRenderResult('caiyun', data);
+        const meta = data.meta || data.debug || {};
+        if (statusEl) statusEl.textContent = `完成 · ${_fmtDuration(meta.durationMs)}`;
+      } catch (err) {
+        const msg = err?.message || 'AI 生成失败';
+        if (statusEl) statusEl.textContent = msg;
+        if (body) { body.textContent = '⚠ ' + msg + '\n请稍后重试'; body.style.color = '#963d32'; }
+        if (tip)  tip.textContent = '';
+      } finally {
+        newBtn.disabled = false;
+      }
+    });
+  }
+
   // ── 大限 AI ───────────────────────────────────────────────
   function _dlxGetDecadeMutagens(palace) {
     const result = [];
@@ -823,6 +875,7 @@ function _aipRenderResult(moduleKey, data) {
     _bindShenBtn();
     _bindHunyinBtn();
     _bindJiankangBtn();
+    _bindCaiyunBtn();
     _bindDlxDaxianBtn();
     _bindDlxLiunianBtn();
   }

@@ -2101,6 +2101,14 @@
   font-size: 10px !important;
 }
 
+.aip-caiyun-card { margin-top: 6px; }
+.aip-caiyun-card .aip-card-body { min-height: 48px; font-size: 13px; }
+.aip-caiyun-tag {
+  background: #f5eed6 !important;
+  color: #7a5c1a !important;
+  font-size: 10px !important;
+}
+
 /* 主卡分区：风险 / 依据 */
 .aip-life-risk {
   margin-top: 12px;
