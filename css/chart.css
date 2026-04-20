@@ -2086,6 +2086,13 @@
   color: #8a6840 !important;
   font-size: 10px !important;
 }
+.aip-hunyin-card { margin-top: 6px; }
+.aip-hunyin-card .aip-card-body { min-height: 48px; font-size: 13px; }
+.aip-hunyin-tag {
+  background: #f0dde8 !important;
+  color: #8a4068 !important;
+  font-size: 10px !important;
+}
 
 /* 主卡分区：风险 / 依据 */
 .aip-life-risk {

@@ -98,6 +98,8 @@ function buildChartPayload() {
   const careerPalace = _findPalaceByName(chart, ['官禄宫', '官禄', '事业宫']);
   const wealthPalace = _findPalaceByName(chart, ['财帛宫', '财帛']);
   const movePalace   = _findPalaceByName(chart, ['迁移宫', '迁移']);
+  const spousePalace = _findPalaceByName(chart, ['夫妻宫', '夫妻']);
+  const happinessPalace = _findPalaceByName(chart, ['福德宫', '福德']);
 
   // 当前大限：找包含 _fcActiveAge 的 decadal.range 的宫
   const activeAge = window._fcActiveAge || 1;
@@ -210,6 +212,8 @@ function buildChartPayload() {
     careerPalace:      _serializePalaceDetail(careerPalace),
     wealthPalace:      _serializePalaceDetail(wealthPalace),
     movePalace:        _serializePalaceDetail(movePalace),
+    spousePalace:      _serializePalaceDetail(spousePalace),
+    happinessPalace:   _serializePalaceDetail(happinessPalace),
     yearMutagens:      _yearMutagens(chart),
     palacesSummary:    _palaceSummary(chart.palaces),
 
@@ -491,6 +495,20 @@ function _aipRenderResult(moduleKey, data) {
       if (tip) tip.textContent = card.tip || '';
       break;
     }
+    case 'hunyin': {
+      const card = data.card || {};
+      const ttl = document.getElementById('aip-hunyin-ttl');
+      const body = document.getElementById('aip-hunyin-body');
+      const tip = document.getElementById('aip-hunyin-tip');
+      if (ttl) ttl.textContent = card.title || '婚姻批命';
+      if (body) {
+        body.textContent = card.body || data.finalAnswer || '';
+        body.style.whiteSpace = 'pre-wrap';
+        body.style.color = '';
+      }
+      if (tip) tip.textContent = card.tip || '';
+      break;
+    }
     default: {
       const text   = data.finalAnswer || '';
       const shBody = document.getElementById('aip-sh-body');
@@ -582,6 +600,44 @@ function _aipRenderResult(moduleKey, data) {
         if (statusEl) statusEl.textContent = msg;
         if (shenBody) { shenBody.textContent = '⚠ ' + msg + '\n请稍后重试'; shenBody.style.color = '#963d32'; }
         if (shenTip)  shenTip.textContent = '';
+      } finally {
+        newBtn.disabled = false;
+      }
+    });
+  }
+
+  function _bindHunyinBtn() {
+    const btn      = document.getElementById('aip-hunyin-btn');
+    const statusEl = document.getElementById('aip-hunyin-status');
+    if (!btn) return;
+    const newBtn = btn.cloneNode(true);
+    btn.parentNode.replaceChild(newBtn, btn);
+
+    newBtn.addEventListener('click', async function () {
+      if (!window._chart || !window._chartInputs) {
+        if (statusEl) statusEl.textContent = '请先完成排盘';
+        return;
+      }
+      newBtn.disabled = true;
+      if (statusEl) statusEl.textContent = '正在生成…';
+
+      const hunyinTtl  = document.getElementById('aip-hunyin-ttl');
+      const hunyinBody = document.getElementById('aip-hunyin-body');
+      const hunyinTip  = document.getElementById('aip-hunyin-tip');
+      if (hunyinTtl)  hunyinTtl.textContent = '婚姻批命';
+      if (hunyinBody) { hunyinBody.textContent = 'AI 正在分析婚姻，请稍候…'; hunyinBody.style.color = '#9a8878'; }
+      if (hunyinTip)  hunyinTip.textContent = '';
+
+      try {
+        const data = await _aipCallBackend('hunyin');
+        _aipRenderResult('hunyin', data);
+        const meta = data.meta || data.debug || {};
+        if (statusEl) statusEl.textContent = `完成 · ${_fmtDuration(meta.durationMs)}`;
+      } catch (err) {
+        const msg = err?.message || 'AI 生成失败';
+        if (statusEl) statusEl.textContent = msg;
+        if (hunyinBody) { hunyinBody.textContent = '⚠ ' + msg + '\n请稍后重试'; hunyinBody.style.color = '#963d32'; }
+        if (hunyinTip)  hunyinTip.textContent = '';
       } finally {
         newBtn.disabled = false;
       }
@@ -711,6 +767,7 @@ function _aipRenderResult(moduleKey, data) {
   function _bind() {
     _bindOverallBtn();
     _bindShenBtn();
+    _bindHunyinBtn();
     _bindDlxDaxianBtn();
     _bindDlxLiunianBtn();
   }
