@@ -6,22 +6,16 @@
   <title>阅天 · 命，只是底牌</title>
   <link rel="icon" href="images/logo-mark.svg" type="image/svg+xml">
   <link rel="stylesheet" href="css/style.css">
-  <style>
-    @keyframes gold-pulse {
-      0%,100% { opacity:.7; }
-      50%      { opacity:1; }
-    }
-    @keyframes fade-up {
-      from { opacity:0; transform:translateY(16px); }
-      to   { opacity:1; transform:translateY(0); }
-    }
-    @keyframes spin-slow { to { transform:rotate(360deg); } }
+<style>
+    @keyframes gold-pulse { 0%,100%{opacity:.7} 50%{opacity:1} }
+    @keyframes fade-up { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes twinkle { 0%,100%{opacity:.2} 50%{opacity:.6} }
 
     *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
     html { scroll-behavior:smooth; }
     body {
       font-family:"Microsoft YaHei","PingFang SC","Noto Sans SC",sans-serif;
-      background:#18130e;
+      background:#0f0c08;
       color:#c6b7a6;
       line-height:1.7;
       overflow-x:hidden;
@@ -31,13 +25,20 @@
     ul,ol { list-style:none; }
     button { cursor:pointer; border:none; font-family:inherit; }
 
+    /* ── 顶部装饰线 ── */
+    .top-accent {
+      position:fixed; top:0; left:0; right:0; z-index:200;
+      height:2px;
+      background:linear-gradient(90deg,transparent 0%,rgba(201,169,97,.6) 50%,transparent 100%);
+    }
+
     /* ── 导航 ── */
     .navbar {
-      position:fixed; top:0; left:0; right:0; z-index:100;
-      height:56px;
-      background:rgba(24,19,14,.96);
-      border-bottom:1px solid rgba(201,169,97,.12);
-      backdrop-filter:blur(14px);
+      position:fixed; top:2px; left:0; right:0; z-index:100;
+      height:64px;
+      background:rgba(15,12,8,.97);
+      border-bottom:1px solid rgba(201,169,97,.1);
+      backdrop-filter:blur(16px);
     }
     .nav-inner {
       max-width:1200px; margin:0 auto;
@@ -45,37 +46,56 @@
       display:flex; align-items:center;
     }
     .nav-logo {
-      color:#c9a961; font-size:17px; font-weight:700;
+      color:#c9a961; font-size:18px; font-weight:700;
       display:flex; align-items:center; gap:8px;
       margin-right:auto; text-decoration:none;
+      letter-spacing:.05em;
     }
     .nav-logo-img { width:24px; height:24px; flex-shrink:0; }
-    .nav-links {
-      display:flex; gap:36px; margin-right:32px;
-    }
-    .nav-links a { color:#9a8878; font-size:14px; transition:color .2s; }
-    .nav-links a:hover,.nav-links a.active { color:#c9a961; }
+    .nav-links { display:flex; gap:36px; margin-right:32px; }
+    .nav-links a { color:#a89878; font-size:14px; transition:color .2s; }
+    .nav-links a:hover, .nav-links a.active { color:#c9a961; }
     .nav-cta {
-      background:#7a3b2e; color:#fff5ec;
-      font-size:13px; font-weight:700;
-      padding:0 20px; height:34px; border-radius:20px;
-      transition:background .2s, box-shadow .2s;
+      background:linear-gradient(135deg,#7a3b2e 0%,#b05a3a 100%);
+      color:#fff5ec; font-size:13px; font-weight:700;
+      padding:0 22px; height:36px; border-radius:18px;
+      box-shadow:0 4px 12px rgba(122,59,46,.3);
+      transition:box-shadow .2s, transform .2s;
     }
-    .nav-cta:hover { background:#963d32; box-shadow:0 4px 14px rgba(150,61,50,.4); }
+    .nav-cta:hover { box-shadow:0 6px 18px rgba(122,59,46,.45); transform:translateY(-1px); }
 
     /* ── Hero ── */
     .hero {
       min-height:100vh;
-      padding:100px 0 60px;
+      padding:120px 0 60px;
       display:flex; align-items:center;
       position:relative; overflow:hidden;
     }
+    /* atmospheric glows */
     .hero::before {
       content:'';
       position:absolute; inset:0;
       background:
-        radial-gradient(ellipse 60% 50% at 70% 50%, rgba(201,169,97,.04) 0%, transparent 70%),
-        radial-gradient(ellipse 40% 60% at 20% 60%, rgba(122,59,46,.06) 0%, transparent 70%);
+        radial-gradient(ellipse 50% 50% at 5% 50%, rgba(122,59,46,.13) 0%, transparent 60%),
+        radial-gradient(ellipse 36% 40% at 75% 45%, rgba(201,169,97,.07) 0%, transparent 70%);
+      pointer-events:none;
+    }
+    /* star dots — right quadrant */
+    .hero::after {
+      content:'';
+      position:absolute; top:0; right:0;
+      width:55%; height:100%;
+      background-image:
+        radial-gradient(1.5px 1.5px at 12% 12%,  rgba(201,169,97,.38) 0%, transparent 100%),
+        radial-gradient(1.5px 1.5px at 38% 8%,   rgba(201,169,97,.30) 0%, transparent 100%),
+        radial-gradient(1px   1px   at 60% 18%,   rgba(201,169,97,.22) 0%, transparent 100%),
+        radial-gradient(1.5px 1.5px at 82% 6%,   rgba(201,169,97,.35) 0%, transparent 100%),
+        radial-gradient(1px   1px   at 92% 28%,   rgba(201,169,97,.20) 0%, transparent 100%),
+        radial-gradient(1.5px 1.5px at 70% 36%,  rgba(201,169,97,.28) 0%, transparent 100%),
+        radial-gradient(1px   1px   at 20% 48%,   rgba(201,169,97,.18) 0%, transparent 100%),
+        radial-gradient(1px   1px   at 50% 55%,   rgba(201,169,97,.15) 0%, transparent 100%),
+        radial-gradient(1.5px 1.5px at 85% 62%,  rgba(201,169,97,.25) 0%, transparent 100%),
+        radial-gradient(1px   1px   at 30% 72%,   rgba(201,169,97,.18) 0%, transparent 100%);
       pointer-events:none;
     }
     .hero-inner {
@@ -88,11 +108,11 @@
 
     .hero-eyebrow {
       display:inline-flex; align-items:center; gap:6px;
-      background:rgba(201,169,97,.08);
-      border:1px solid rgba(201,169,97,.22);
-      border-radius:20px; padding:5px 14px;
+      background:rgba(201,169,97,.09);
+      border:1px solid rgba(201,169,97,.24);
+      border-radius:16px; padding:6px 16px;
       font-size:12px; color:#c9a961; letter-spacing:.05em;
-      margin-bottom:20px;
+      margin-bottom:22px;
       animation:fade-up .6s ease-out;
     }
     .eyebrow-dot {
@@ -102,26 +122,38 @@
     }
 
     .hero-title {
-      font-size:clamp(28px,3vw,44px);
-      font-weight:700; line-height:1.25;
-      color:#e8dcc8;
-      margin-bottom:6px;
+      font-size:clamp(30px,3.2vw,60px);
+      font-weight:700; line-height:1.2;
+      color:#ede4d4;
+      margin-bottom:4px;
+      letter-spacing:-.03em;
       animation:fade-up .7s ease-out .1s backwards;
     }
-    .hero-title .gold { color:#c9a961; display:block; font-size:clamp(36px,4vw,56px); }
+    .hero-title .gold {
+      color:#c9a961; display:block;
+      font-size:clamp(26px,2.8vw,46px);
+    }
 
-    .hero-subtitle {
-      font-size:15px; color:#a89878; margin:10px 0 6px;
-      letter-spacing:.04em;
+    .hero-title-sep {
+      width:36px; height:3px;
+      background:rgba(201,169,97,.65);
+      margin:16px 0 14px;
       animation:fade-up .7s ease-out .15s backwards;
     }
 
+    .hero-subtitle {
+      font-size:16px; color:#a89878;
+      letter-spacing:.08em;
+      animation:fade-up .7s ease-out .18s backwards;
+      margin-bottom:14px;
+    }
+
     .hero-desc {
-      font-size:14px; line-height:1.9; color:#7a6a5a;
-      margin:14px 0 28px;
+      font-size:14px; line-height:1.95; color:#6b5c4a;
+      margin-bottom:28px;
       border-left:2px solid rgba(201,169,97,.25);
       padding-left:14px;
-      animation:fade-up .7s ease-out .2s backwards;
+      animation:fade-up .7s ease-out .22s backwards;
     }
 
     .hero-actions {
@@ -131,16 +163,16 @@
     .btn-main {
       background:linear-gradient(135deg,#7a3b2e 0%,#b05a3a 100%);
       color:#fff5ec; font-size:15px; font-weight:700;
-      padding:0 28px; height:48px; border-radius:24px;
-      box-shadow:0 6px 20px rgba(122,59,46,.35);
+      padding:0 28px; height:52px; border-radius:26px;
+      box-shadow:0 7px 22px rgba(122,59,46,.38);
       transition:box-shadow .2s, transform .2s;
     }
-    .btn-main:hover { box-shadow:0 10px 28px rgba(122,59,46,.5); transform:translateY(-2px); }
+    .btn-main:hover { box-shadow:0 10px 30px rgba(122,59,46,.52); transform:translateY(-2px); }
     .btn-sub {
       background:transparent; color:#c9a961;
       font-size:14px;
-      padding:0 22px; height:48px; border-radius:24px;
-      border:1px solid rgba(201,169,97,.35);
+      padding:0 24px; height:52px; border-radius:26px;
+      border:1px solid rgba(201,169,97,.38);
       transition:border-color .2s, background .2s;
     }
     .btn-sub:hover { border-color:rgba(201,169,97,.7); background:rgba(201,169,97,.06); }
@@ -152,239 +184,282 @@
     }
     .badge {
       background:rgba(201,169,97,.07);
-      border:1px solid rgba(201,169,97,.14);
-      border-radius:6px; padding:4px 12px;
-      font-size:12px; color:#9a8878;
+      border:1px solid rgba(201,169,97,.15);
+      border-radius:5px; padding:4px 12px;
+      font-size:11px; color:#a89878; letter-spacing:.03em;
     }
-    .badge .ok { color:#c9a961; margin-right:4px; }
 
-    /* ── 右侧命盘预览 ── */
+    /* ── 命盘预览 ── */
     .hero-preview {
-      flex-shrink:0; width:420px;
+      flex-shrink:0; width:420px; position:relative;
       animation:fade-up .8s ease-out .2s backwards;
     }
-    .hero-preview a { display:block; }
-
+    /* golden glow behind chart */
+    .hero-preview::before {
+      content:'';
+      position:absolute; inset:-30px;
+      background:radial-gradient(ellipse 60% 60% at 50% 50%, rgba(201,169,97,.1) 0%, transparent 70%);
+      pointer-events:none;
+    }
+    .hero-preview a { display:block; position:relative; }
     .mini-chart {
       background:#f5f0e8;
-      border-radius:12px;
-      overflow:hidden;
-      box-shadow:0 20px 60px rgba(0,0,0,.5), 0 0 0 1px rgba(201,169,97,.15);
+      border-radius:14px; overflow:hidden;
+      box-shadow:0 22px 72px rgba(0,0,0,.55), 0 0 0 1px rgba(201,169,97,.22);
       transition:transform .25s, box-shadow .25s;
     }
+    /* top gradient accent */
+    .mini-chart::before {
+      content:'';
+      position:absolute; top:0; left:0; right:0; height:2px;
+      background:linear-gradient(90deg,transparent,rgba(201,169,97,.65),transparent);
+      z-index:1;
+    }
     .hero-preview a:hover .mini-chart {
-      transform:translateY(-4px);
-      box-shadow:0 28px 70px rgba(0,0,0,.6), 0 0 0 1px rgba(201,169,97,.3);
+      transform:translateY(-5px);
+      box-shadow:0 30px 80px rgba(0,0,0,.65), 0 0 0 1px rgba(201,169,97,.35);
     }
     .mini-chart-title {
-      background:#1a130c;
-      color:#c9a961;
-      text-align:center;
-      font-size:14px; font-weight:700;
-      padding:10px 0;
-      letter-spacing:.15em;
-      border-bottom:1px solid rgba(201,169,97,.2);
+      background:#1a130c; color:#c9a961;
+      text-align:center; font-size:14px; font-weight:700;
+      padding:11px 0; letter-spacing:.15em;
+      border-bottom:1px solid rgba(201,169,97,.18);
     }
     .mini-grid {
-      display:grid;
-      grid-template-columns:repeat(4,1fr);
-      grid-template-rows:repeat(4,1fr);
-      gap:1px;
-      background:#d8cfc2;
-      padding:1px;
+      display:grid; grid-template-columns:repeat(4,1fr); grid-template-rows:repeat(4,1fr);
+      gap:1px; background:#d8cfc2; padding:1px;
     }
     .mini-cell {
-      background:#f5f0e8;
-      padding:7px 8px 6px;
-      min-height:62px;
-      font-size:10px; color:#5a4030;
+      background:#f5f0e8; padding:7px 7px 6px;
+      min-height:62px; font-size:10px; color:#5a4030;
       position:relative;
     }
     .mini-cell.center-span {
       grid-column:2/4; grid-row:2/4;
       background:#fdf8f2;
-      display:flex; flex-direction:column; align-items:center; justify-content:center;
-      gap:4px;
+      display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px;
     }
     .mc-palace { font-size:9px; color:#9c8878; letter-spacing:.05em; }
     .mc-stars { font-size:11px; color:#3d2b1f; font-weight:700; line-height:1.5; }
     .mc-age { font-size:8.5px; color:#b8a898; margin-top:2px; }
     .mc-tag {
-      display:inline-block;
-      font-size:8px; color:#963d32; border:1px solid #e8c0b0;
-      border-radius:3px; padding:0 3px; margin-bottom:3px;
+      display:inline-block; font-size:8px; color:#963d32;
+      border:1px solid #e8c0b0; border-radius:3px;
+      padding:0 3px; margin-bottom:3px;
     }
     .mc-center-name { font-size:13px; font-weight:700; color:#3d2b1f; }
     .mc-center-sub { font-size:10px; color:#9c8878; }
     .mc-center-data { font-size:9px; color:#6b4e41; text-align:center; line-height:1.7; }
     .mini-chart-footer {
-      background:#1a130c;
-      padding:8px 12px;
+      background:#1a130c; padding:9px 12px;
       display:flex; gap:0; justify-content:center;
     }
     .mini-tab { font-size:10px; color:#8e6a3a; padding:4px 14px; border-radius:12px; }
     .mini-tab.active { background:#3d2b1f; color:#c9a961; font-weight:700; }
 
-    /* ── 公共 section 样式 ── */
-    .sec-wrap {
-      max-width:1200px; margin:0 auto; padding:0 40px;
-    }
-    .sec-head {
-      text-align:center; margin-bottom:40px;
-    }
-    .sec-head .orn {
-      display:block; font-size:13px;
-      color:rgba(201,169,97,.4); letter-spacing:10px;
+    /* ── 公共 section ── */
+    .sec-wrap { max-width:1200px; margin:0 auto; padding:0 40px; }
+
+    /* section 标题区 */
+    .sec-head { text-align:center; margin-bottom:40px; position:relative; z-index:1; }
+    .sec-orn-pill {
+      display:inline-flex; align-items:center;
+      background:rgba(201,169,97,.09);
+      border:1px solid rgba(201,169,97,.22);
+      border-radius:13px; padding:5px 16px;
+      font-size:11px; color:#c9a961; letter-spacing:.08em;
       margin-bottom:10px;
     }
     .sec-head h2 {
-      font-size:clamp(20px,2.2vw,28px); font-weight:700; color:#e8dcc8;
-      margin-bottom:8px;
+      font-size:clamp(22px,2.4vw,34px); font-weight:700; color:#ede4d4;
+      margin-bottom:0;
     }
-    .sec-head p { font-size:13px; color:#7a6a5a; }
+    .sec-head-underline {
+      width:52px; height:2px;
+      background:rgba(201,169,97,.5);
+      margin:10px auto 12px;
+    }
+    .sec-head p { font-size:14px; color:#6b5c4a; letter-spacing:.03em; }
 
+    /* ghost number */
+    .ghost-num {
+      position:absolute; top:28px; left:38px;
+      font-size:130px; font-weight:700; line-height:1;
+      color:#c9a961; opacity:.05; letter-spacing:-4px;
+      pointer-events:none; z-index:0;
+      font-family:"Microsoft YaHei","PingFang SC",sans-serif;
+    }
+
+    /* 分割线 */
     .sdivider {
       display:flex; align-items:center;
-      padding:0 60px; margin:52px 0;
+      padding:0; margin:0;
+      height:20px; position:relative;
     }
-    .sdivider-line {
-      flex:1; height:1px;
-      background:linear-gradient(to right, transparent, rgba(201,169,97,.12), transparent);
+    .sdivider-line-main {
+      position:absolute; left:50%; transform:translateX(-50%);
+      width:800px; height:1px;
+      background:rgba(201,169,97,.15);
+    }
+    .sdivider-line-side-l {
+      position:absolute; left:110px;
+      width:200px; height:1px;
+      background:rgba(201,169,97,.08);
+    }
+    .sdivider-line-side-r {
+      position:absolute; right:110px;
+      width:200px; height:1px;
+      background:rgba(201,169,97,.08);
     }
     .sdivider-diamond {
-      width:7px; height:7px; flex-shrink:0;
-      background:rgba(201,169,97,.35); transform:rotate(45deg); margin:0 10px;
+      position:absolute; left:50%; top:50%;
+      transform:translate(-50%,-50%) rotate(45deg);
+      width:10px; height:10px;
+      background:rgba(201,169,97,.4);
     }
 
-    /* ── 三才板块 ── */
-    .sancai-section { padding:70px 0 0; }
-    .sancai-grid {
-      display:grid; grid-template-columns:repeat(3,1fr); gap:20px;
-    }
-    .sancai-card {
-      background:#1e1609;
-      border:1px solid rgba(201,169,97,.14);
-      border-radius:14px; padding:28px 24px 26px;
+    /* 卡片公共 */
+    .card-base {
+      border-radius:14px;
       position:relative; overflow:hidden;
       transition:transform .25s, border-color .25s, box-shadow .25s;
     }
-    .sancai-card:hover {
+    .card-base:hover {
       transform:translateY(-4px);
-      border-color:rgba(201,169,97,.32);
       box-shadow:0 16px 40px rgba(0,0,0,.3);
     }
-    .sancai-card::before {
-      content:''; position:absolute; top:0; left:0; right:0; height:2px;
-      background:linear-gradient(90deg, transparent, rgba(201,169,97,.4), transparent);
+    /* 卡片顶部渐变线 */
+    .card-base::before {
+      content:'';
+      position:absolute; top:0; left:0; right:0; height:2px;
+      background:linear-gradient(90deg,transparent,rgba(201,169,97,.45),transparent);
+      z-index:1;
     }
-    .sc-label {
-      font-size:28px; font-weight:700; color:rgba(201,169,97,.6);
-      margin-bottom:10px; letter-spacing:.05em;
+    /* 卡片内顶部微光 */
+    .card-base::after {
+      content:'';
+      position:absolute; top:0; left:0; right:0;
+      height:40%;
+      background:linear-gradient(180deg,rgba(255,240,200,.04) 0%,transparent 100%);
+      pointer-events:none;
     }
-    .sc-title {
-      font-size:17px; font-weight:700; color:#e8d5a3;
-      margin-bottom:6px;
+    /* 左侧色条变体 */
+    .card-left-bar::before {
+      background:none;
+      height:100%;
+      width:3px;
+      right:auto; bottom:auto;
+      background:rgba(201,169,97,.3) !important;
     }
-    .sc-sub {
-      font-size:11px; color:#c9a961; letter-spacing:.08em;
-      margin-bottom:14px;
+
+    /* ── 三才板块 ── */
+    .sancai-section { padding:70px 0; }
+    .sancai-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
+    .sancai-card {
+      background:#1c150c;
+      border:1px solid rgba(201,169,97,.15);
+      padding:28px 26px;
     }
-    .sc-body {
-      font-size:13px; line-height:1.85; color:#8a7860;
-    }
+    .sc-label { font-size:38px; font-weight:700; color:rgba(201,169,97,.55); margin-bottom:10px; letter-spacing:.05em; }
+    .sc-title { font-size:18px; font-weight:700; color:#e8d5a3; margin-bottom:6px; }
+    .sc-sub { font-size:11px; color:#c9a961; letter-spacing:.1em; margin-bottom:14px; opacity:.8; }
+    .sc-body { font-size:13px; line-height:1.9; color:#8a7860; }
     .sc-quote {
-      margin-top:14px; padding:8px 12px;
+      margin-top:16px; padding:10px 14px 10px 16px;
       background:rgba(201,169,97,.05);
       border-left:2px solid rgba(201,169,97,.3);
-      font-size:12px; color:#a89060; font-style:italic;
+      font-size:12px; color:#a89060;
       border-radius:0 6px 6px 0;
+      line-height:1.7;
     }
 
     /* ── 哲学金句 ── */
-    .philosophy-section {
-      padding:60px 0;
-      background:#130f0a;
-    }
-    .quote-grid {
-      display:grid; grid-template-columns:repeat(3,1fr); gap:16px;
-    }
+    .philosophy-section { padding:70px 0; background:#130f0a; }
+    .quote-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
     .quote-card {
-      background:#1a1409;
+      background:#1c150c;
       border:1px solid rgba(201,169,97,.1);
-      border-radius:10px; padding:20px 18px;
-      transition:border-color .2s;
+      border-radius:14px; padding:24px 22px;
+      position:relative; overflow:hidden;
+      transition:border-color .2s, transform .2s;
     }
-    .quote-card:hover { border-color:rgba(201,169,97,.28); }
-    .qc-text {
-      font-size:15px; font-weight:700; color:#d9b97f;
-      line-height:1.5; margin-bottom:8px;
+    .quote-card::before {
+      content:''; position:absolute; top:0; left:0; right:0; height:2px;
+      background:linear-gradient(90deg,transparent,rgba(201,169,97,.4),transparent);
     }
-    .qc-note { font-size:12px; color:#6a5a42; line-height:1.6; }
+    .quote-card::after {
+      content:''; position:absolute; top:0; left:0; right:0; height:40%;
+      background:linear-gradient(180deg,rgba(255,240,200,.04) 0%,transparent 100%);
+      pointer-events:none;
+    }
+    .quote-card:hover { border-color:rgba(201,169,97,.28); transform:translateY(-3px); }
+    .qc-text { font-size:15px; font-weight:700; color:#d9b97f; line-height:1.5; margin-bottom:10px; }
+    .qc-note { font-size:12px; color:#6a5a42; line-height:1.7; }
+
+    /* step cards (判断顺序) */
+    .step-card {
+      background:#1c150c;
+      border:1px solid rgba(201,169,97,.1);
+      border-radius:12px; padding:16px 20px 16px 22px;
+      position:relative; overflow:hidden;
+      transition:border-color .2s, transform .2s;
+    }
+    .step-card::before {
+      content:''; position:absolute; top:0; left:0; bottom:0; width:3px;
+      background:rgba(201,169,97,.3);
+    }
+    .step-card::after {
+      content:''; position:absolute; top:0; left:0; right:0; height:40%;
+      background:linear-gradient(180deg,rgba(255,240,200,.04) 0%,transparent 100%);
+      pointer-events:none;
+    }
+    .step-card:hover { border-color:rgba(201,169,97,.28); transform:translateY(-3px); }
+    .sc-num { font-size:11px; color:rgba(201,169,97,.75); letter-spacing:.1em; margin-bottom:8px; }
+    .sc-step-title { font-size:16px; font-weight:700; color:#d9b97f; margin-bottom:8px; }
+    .sc-step-desc { font-size:12px; color:#6b5c4a; line-height:1.75; }
 
     /* ── 知识目录 ── */
-    .knowledge-section { padding:60px 0 80px; }
+    .knowledge-section { padding:70px 0; }
     .knowledge-grid {
-      display:grid;
-      grid-template-columns:repeat(4,1fr);
-      gap:14px;
+      display:grid; grid-template-columns:repeat(5,1fr); gap:16px;
     }
     .kc {
-      background:#1e1609;
+      background:#1c150c;
       border:1px solid rgba(201,169,97,.1);
-      border-radius:10px; padding:18px 16px 16px;
-      transition:transform .2s, border-color .2s, box-shadow .2s;
-      cursor:default;
+      border-radius:10px; padding:20px 18px;
+      position:relative; overflow:hidden;
+      transition:transform .2s, border-color .2s;
     }
-    .kc:hover {
-      transform:translateY(-3px);
-      border-color:rgba(201,169,97,.28);
-      box-shadow:0 10px 28px rgba(0,0,0,.25);
-    }
-    .kc-num {
-      font-size:10px; color:rgba(201,169,97,.4);
-      letter-spacing:.08em; margin-bottom:6px;
-    }
-    .kc-title {
-      font-size:14px; font-weight:700; color:#d9b97f;
-      margin-bottom:8px;
-    }
-    .kc-items {
-      display:flex; flex-direction:column; gap:3px;
-    }
-    .kc-item {
-      font-size:11px; color:#6a5a42; line-height:1.5;
-      padding-left:10px; position:relative;
-    }
-    .kc-item::before {
-      content:'·'; position:absolute; left:0; color:rgba(201,169,97,.35);
-    }
+    .kc:hover { transform:translateY(-3px); border-color:rgba(201,169,97,.28); }
+    .kc::after { content:''; position:absolute; top:0; left:0; right:0; height:40%; background:linear-gradient(180deg,rgba(255,240,200,.04) 0%,transparent 100%); pointer-events:none; }
+    /* per-layer top lines injected via inline style */
+    .kc-tl { position:absolute; top:0; left:0; right:0; height:2px; }
+    .kc-num { font-size:10px; letter-spacing:.08em; margin-bottom:8px; }
+    .kc-title { font-size:15px; font-weight:700; color:#d9b97f; margin-bottom:10px; }
+    .kc-items { display:flex; flex-direction:column; gap:4px; }
+    .kc-item { font-size:11px; color:#6a5a42; line-height:1.6; padding-left:10px; position:relative; }
+    .kc-item::before { content:'·'; position:absolute; left:0; color:rgba(201,169,97,.35); }
 
     /* ── CTA ── */
     .final-cta {
-      text-align:center; padding:70px 40px 60px;
-      position:relative;
+      text-align:center; padding:80px 40px 60px;
+      position:relative; background:#130f0a;
     }
     .final-cta::before {
       content:'';
       position:absolute; inset:0;
-      background:radial-gradient(ellipse 60% 80% at 50% 50%, rgba(201,169,97,.04) 0%, transparent 70%);
+      background:radial-gradient(ellipse 50% 80% at 50% 50%, rgba(201,169,97,.05) 0%, transparent 70%);
       pointer-events:none;
     }
-    .cta-ornament {
-      font-size:13px; color:rgba(201,169,97,.5);
-      letter-spacing:12px; margin-bottom:14px; display:block;
-    }
-    .final-cta h2 {
-      font-size:clamp(22px,2.2vw,32px); font-weight:700;
-      color:#e8dcc8; margin-bottom:10px;
-    }
-    .final-cta p { font-size:14px; color:#8e7c6a; margin-bottom:28px; }
-    .final-note { margin-top:16px; font-size:12px; color:#7a6a5a; }
+    .cta-ornament { font-size:13px; color:rgba(201,169,97,.55); letter-spacing:12px; margin-bottom:16px; display:block; }
+    .final-cta h2 { font-size:clamp(24px,2.5vw,40px); font-weight:700; color:#ede4d4; margin-bottom:12px; line-height:1.4; }
+    .final-cta p { font-size:14px; color:#7a6a5a; margin-bottom:30px; letter-spacing:.03em; }
+    .final-note { margin-top:18px; font-size:12px; color:#7a6a5a; }
 
     /* ── 页脚 ── */
     .footer {
       border-top:1px solid rgba(201,169,97,.08);
-      padding:20px 40px;
+      padding:22px 40px;
       display:flex; justify-content:center; gap:40px;
       font-size:12px; color:#7a6a5a;
     }
@@ -396,6 +471,7 @@
       .sancai-grid { grid-template-columns:1fr; }
       .quote-grid { grid-template-columns:repeat(2,1fr); }
       .knowledge-grid { grid-template-columns:repeat(2,1fr); }
+      .step-grid { grid-template-columns:repeat(2,1fr) !important; }
     }
     @media (max-width:640px) {
       .nav-links { display:none; }
@@ -403,17 +479,22 @@
       .hero-actions { flex-direction:column; }
       .btn-main,.btn-sub { width:100%; }
       .quote-grid,.knowledge-grid { grid-template-columns:1fr; }
-      .sec-wrap,.sdivider,.footer { padding-left:20px; padding-right:20px; }
-      .sdivider { padding:0 20px; }
+      .step-grid { grid-template-columns:1fr !important; }
+      .sec-wrap,.footer { padding-left:20px; padding-right:20px; }
       .footer { flex-direction:column; gap:6px; text-align:center; }
+      .ghost-num { display:none; }
     }
   </style>
 </head>
 <body>
 
+<div class="top-accent"></div>
+
 <header class="navbar">
   <div class="nav-inner">
-    <a href="index.html" class="nav-logo"><img src="images/logo-mark.svg" class="nav-logo-img" alt=""> 阅天</a>
+    <a href="index.html" class="nav-logo">
+      <img src="images/logo-mark.svg" class="nav-logo-img" alt=""> 阅天
+    </a>
     <nav class="nav-links">
       <a href="index.html" class="active">首页</a>
       <a href="pages/chart.html">免费排盘</a>
@@ -422,7 +503,7 @@
   </div>
 </header>
 
-<!-- Hero -->
+<!-- ═══ Hero ═══════════════════════════════════════════════ -->
 <section class="hero">
   <div class="hero-inner">
     <div class="hero-content">
@@ -432,104 +513,48 @@
       </span>
       <h1 class="hero-title">
         命，只是底牌
-        <span class="gold">阅天知时，顺势而为</span>
+        <span class="gold">知时，才知道下一步怎么走</span>
       </h1>
-      <p class="hero-subtitle">天定格局，运决时机，地显吉凶——三才合参，方知走向</p>
+      <div class="hero-title-sep"></div>
+      <p class="hero-subtitle">一念改，命运才能改。</p>
       <p class="hero-desc">
-        算命是谈结果的哲学，不是改命，是知时。<br>
-        命好不如限好。知道自己在哪个运，比知道命好命差更有用。<br>
-        君子事天，小人事人——懂天时的人不认命，是顺势。
+        阅天不是替你认命，而是帮你看清：什么该守，什么该动，什么该顺势而行。<br>
+        同一张命盘，走对时机，结果可以完全不同。命好不如限好。
       </p>
       <div class="hero-actions">
-        <button class="btn-main" onclick="location.href='pages/chart.html'">排我的命盘 →</button>
-        <button class="btn-sub" onclick="document.getElementById('sancai').scrollIntoView({behavior:'smooth'})">了解三才体系</button>
+        <button class="btn-main" onclick="location.href='pages/chart.html'">先排盘，看我现在的时机 →</button>
+        <button class="btn-sub" onclick="document.getElementById('overview').scrollIntoView({behavior:'smooth'})">看看阅天怎么看</button>
       </div>
-      <ul class="hero-badges">
-        <li class="badge"><span class="ok">✓</span>完全免费</li>
-        <li class="badge"><span class="ok">✓</span>无需注册</li>
-        <li class="badge"><span class="ok">✓</span>三才合参</li>
-        <li class="badge"><span class="ok">✓</span>AI 批命</li>
-      </ul>
+      <div class="hero-badges">
+        <span class="badge">✦ 紫微命盘</span>
+        <span class="badge">✦ 子平八字</span>
+        <span class="badge">✦ 大运流年</span>
+        <span class="badge">✦ 三才体系</span>
+      </div>
     </div>
 
-    <!-- 右侧命盘预览（不变，加跳转） -->
     <div class="hero-preview">
       <a href="pages/chart.html" title="点击排盘">
         <div class="mini-chart">
           <div class="mini-chart-title">紫 微 排 盘</div>
           <div class="mini-grid">
-            <div class="mini-cell">
-              <div class="mc-stars">廉贞陷<br>贪狼陷</div>
-              <div class="mc-age">癸巳 103–112</div>
-              <div class="mc-palace">福德</div>
-            </div>
-            <div class="mini-cell">
-              <span class="mc-tag">官</span>
-              <div class="mc-stars">巨门旺<br>天魁</div>
-              <div class="mc-age">甲午 93–102</div>
-              <div class="mc-palace">田宅</div>
-            </div>
-            <div class="mini-cell">
-              <div class="mc-stars">天相得</div>
-              <div class="mc-age">乙未 83–92</div>
-              <div class="mc-palace">官禄</div>
-            </div>
-            <div class="mini-cell">
-              <div class="mc-stars">天同旺<br>天梁旺</div>
-              <div class="mc-age">丙申 73–82</div>
-              <div class="mc-palace">仆役</div>
-            </div>
-            <div class="mini-cell">
-              <div class="mc-stars">太阴陷</div>
-              <div class="mc-age">壬辰 113–122</div>
-              <div class="mc-palace">父母</div>
-            </div>
+            <div class="mini-cell"><div class="mc-stars">廉贞陷<br>贪狼陷</div><div class="mc-age">癸巳 103–112</div><div class="mc-palace">福德</div></div>
+            <div class="mini-cell"><span class="mc-tag">官</span><div class="mc-stars">巨门旺<br>天魁</div><div class="mc-age">甲午 93–102</div><div class="mc-palace">田宅</div></div>
+            <div class="mini-cell"><div class="mc-stars">天相得</div><div class="mc-age">乙未 83–92</div><div class="mc-palace">官禄</div></div>
+            <div class="mini-cell"><div class="mc-stars">天同旺<br>天梁旺</div><div class="mc-age">丙申 73–82</div><div class="mc-palace">仆役</div></div>
+            <div class="mini-cell"><div class="mc-stars">太阴陷</div><div class="mc-age">壬辰 113–122</div><div class="mc-palace">父母</div></div>
             <div class="mini-cell center-span">
               <div class="mc-center-name">紫 微 排 盘</div>
               <div class="mc-center-sub">阳男 · 木三局</div>
-              <div class="mc-center-data">
-                公历 1991-02-16 22:00<br>
-                节气时：辛<br>
-                命宫：辰 · 身宫：财<br>
-                流年卦：风水涣
-              </div>
+              <div class="mc-center-data">公历 1991-02-16 22:00<br>节气时：辛<br>命宫：辰 · 身宫：财<br>流年卦：风水涣</div>
             </div>
-            <div class="mini-cell">
-              <span class="mc-tag">权</span>
-              <div class="mc-stars">太阳不</div>
-              <div class="mc-age">丁酉 63–72</div>
-              <div class="mc-palace">迁移</div>
-            </div>
-            <div class="mini-cell">
-              <span class="mc-tag">科</span>
-              <div class="mc-stars">天府得</div>
-              <div class="mc-age">辛卯 3–12</div>
-              <div class="mc-palace">命宫</div>
-            </div>
-            <div class="mini-cell">
-              <div class="mc-stars">七杀旺<br>破军旺</div>
-              <div class="mc-age">戊戌 53–62</div>
-              <div class="mc-palace">疾厄</div>
-            </div>
-            <div class="mini-cell">
-              <div class="mc-stars">紫微庙<br>破军旺</div>
-              <div class="mc-age">庚寅 13–22</div>
-              <div class="mc-palace">兄弟</div>
-            </div>
-            <div class="mini-cell">
-              <div class="mc-stars">天机庙</div>
-              <div class="mc-age">辛丑 23–32</div>
-              <div class="mc-palace">夫妻</div>
-            </div>
-            <div class="mini-cell">
-              <div class="mc-stars">天机庙</div>
-              <div class="mc-age">庚子 33–42</div>
-              <div class="mc-palace">子女</div>
-            </div>
-            <div class="mini-cell">
-              <div class="mc-age">己亥 43–52</div>
-              <div class="mc-palace">财帛</div>
-            </div>
+            <div class="mini-cell"><span class="mc-tag">权</span><div class="mc-stars">太阳不</div><div class="mc-age">丁酉 63–72</div><div class="mc-palace">迁移</div></div>
+            <div class="mini-cell"><span class="mc-tag">科</span><div class="mc-stars">天府得</div><div class="mc-age">辛卯 3–12</div><div class="mc-palace">命宫</div></div>
+            <div class="mini-cell"><div class="mc-stars">七杀旺<br>破军旺</div><div class="mc-age">戊戌 53–62</div><div class="mc-palace">疾厄</div></div>
+            <div class="mini-cell"><div class="mc-stars">紫微庙<br>破军旺</div><div class="mc-age">庚寅 13–22</div><div class="mc-palace">兄弟</div></div>
+            <div class="mini-cell"><div class="mc-stars">天机庙</div><div class="mc-age">辛丑 23–32</div><div class="mc-palace">夫妻</div></div>
+            <div class="mini-cell"><div class="mc-stars">天机庙</div><div class="mc-age">庚子 33–42</div><div class="mc-palace">子女</div></div>
+            <div class="mini-cell"><div class="mc-age">己亥 43–52</div><div class="mc-palace">财帛</div></div>
           </div>
           <div class="mini-chart-footer">
             <span class="mini-tab active">◇先天卦◇</span>
@@ -542,265 +567,199 @@
   </div>
 </section>
 
-<!-- ── 三才总论 ── -->
-<section class="sancai-section" id="sancai">
+<!-- ═══ 分割线 ══════════════════════════════════════════════ -->
+<div class="sdivider"><div class="sdivider-line-main"></div><div class="sdivider-line-side-l"></div><div class="sdivider-line-side-r"></div><div class="sdivider-diamond"></div></div>
+
+<!-- ═══ S1: 不是算命站 ════════════════════════════════════ -->
+<section class="philosophy-section" id="overview" style="position:relative;padding:70px 0;">
+  <span class="ghost-num">01</span>
   <div class="sec-wrap">
     <div class="sec-head">
-      <span class="orn">◆ ◇ ◆</span>
-      <h2>天地人三才</h2>
-      <p>算命只是看"天"这一层——三才合参，才是完整的命理体系</p>
-    </div>
-    <div class="sancai-grid">
-      <div class="sancai-card">
-        <div class="sc-label">天</div>
-        <div class="sc-title">命 · 先天格局</div>
-        <div class="sc-sub">MING · INNATE CHART</div>
-        <div class="sc-body">
-          出生时辰定命盘，十二宫布星，主星亮度定性情与潜力。命是你拿到的牌，决定能走多远。<br><br>
-          先看总格（命宫三方四正），再看四化（科权禄忌）落在哪个宫，最后看父母宫与兄弟宫。星得正位才成格；星不得位，再好的星也发不出来。
-        </div>
-        <div class="sc-quote">治天下：天时 &gt; 地利 &gt; 人和<br>平天下：人和 &gt; 地利 &gt; 天时</div>
-      </div>
-      <div class="sancai-card">
-        <div class="sc-label">人</div>
-        <div class="sc-title">运 · 后天时机</div>
-        <div class="sc-sub">YUN · TIMING & CYCLES</div>
-        <div class="sc-body">
-          十年大运为主（看三方四正），流年为辅（只看本宫对宫）。命与运两重叠合才成吉凶——单一不成格。<br><br>
-          化忌落在哪个宫，那十年就在哪件事上事倍功半。知道哪段时间不利，比知道命好命差更有用。
-        </div>
-        <div class="sc-quote">命好不如限好。<br>命上有灾 + 运上有灾，才真正呈现。</div>
-      </div>
-      <div class="sancai-card">
-        <div class="sc-label">地</div>
-        <div class="sc-title">相 · 环境接口</div>
-        <div class="sc-sub">XIANG · ENVIRONMENT</div>
-        <div class="sc-body">
-          面相气色映当下两周内的状态：枯焦已发生，枯黄两周内，暗黑近期将至。阳宅方位影响六亲吉凶，居所朝向是人与天之间的接口。<br><br>
-          读书时书桌朝化科所在宫位，做生意朝化禄所在宫位。
-        </div>
-        <div class="sc-quote">名=位（家和）；位=名（住对了，万事兴）。</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<div class="sdivider"><div class="sdivider-line"></div><div class="sdivider-diamond"></div><div class="sdivider-line"></div></div>
-
-<!-- ── 哲学总纲 ── -->
-<section class="philosophy-section">
-  <div class="sec-wrap">
-    <div class="sec-head">
-      <span class="orn">◆ ◇ ◆</span>
-      <h2>哲学总纲</h2>
-      <p>阅天体系的核心认知——知时，方能以果决行</p>
+      <div class="sec-orn-pill">◈ 体系概览</div>
+      <h2>不是算命站</h2>
+      <div class="sec-head-underline"></div>
+      <p>阅天不问空吉凶，只问人此刻该怎么走。</p>
     </div>
     <div class="quote-grid">
       <div class="quote-card">
-        <div class="qc-text">算命是谈结果的哲学</div>
-        <div class="qc-note">不是宿命论，是从已知结果倒推当下该做什么。知时顺势，而非改命。</div>
+        <div class="qc-text">命，决定你拿到什么牌</div>
+        <div class="qc-note">命宫、身宫、三方四正，先告诉你底色、根器与先天限制。先知道自己是什么盘，才知道什么路走得长。</div>
       </div>
       <div class="quote-card">
-        <div class="qc-text">命好不如限好</div>
-        <div class="qc-note">十年大运才是主场。同样的命，遇到好大运天差地别。知道在哪个运，比知道命好命差更重要。</div>
+        <div class="qc-text">运，决定你走到哪一步</div>
+        <div class="qc-note">十年大运看主线，小流年看眼前。很多人不是输在命不好，而是输在没看懂自己正走到哪一个阶段。</div>
       </div>
       <div class="quote-card">
-        <div class="qc-text">吉处藏凶必凶；凶处藏吉平安</div>
-        <div class="qc-note">戒之初，戒之盛。最顺的时候反而要保守。命盘早年凶、晚年吉，比反过来好得多。</div>
-      </div>
-      <div class="quote-card">
-        <div class="qc-text">君子事天，小人事人</div>
-        <div class="qc-note">懂天时的人顺势而为，不与时势相争。阅天的目的，是让人做君子，不做时势的对抗者。</div>
-      </div>
-      <div class="quote-card">
-        <div class="qc-text">遇险而止招险；遇险行险亦招险</div>
-        <div class="qc-note">知险方能化险。既不能因惧而止步，也不能莽撞硬闯。知时，才有第三条路。</div>
-      </div>
-      <div class="quote-card">
-        <div class="qc-text">命上有灾，运上有灾，才真正呈现</div>
-        <div class="qc-note">先天命格的凶象，须与当下运限叠合才成格。单一不够——这是命理最重要的判断原则。</div>
+        <div class="qc-text">地，决定结果怎么落下来</div>
+        <div class="qc-note">同一张盘，站对位置和站错位置，走出来完全不同。人和、环境、方位、起居，都会放大或拖住你的命局。</div>
       </div>
     </div>
   </div>
 </section>
 
-<div class="sdivider"><div class="sdivider-line"></div><div class="sdivider-diamond"></div><div class="sdivider-line"></div></div>
+<!-- ═══ S2: 三才总论 ══════════════════════════════════════ -->
+<div class="sdivider"><div class="sdivider-line-main"></div><div class="sdivider-line-side-l"></div><div class="sdivider-line-side-r"></div><div class="sdivider-diamond"></div></div>
 
-<!-- ── 知识目录 ── -->
-<section class="knowledge-section">
+<section class="sancai-section" id="sancai" style="background:#0f0c08;position:relative;">
+  <span class="ghost-num">02</span>
   <div class="sec-wrap">
     <div class="sec-head">
-      <span class="orn">◆ ◇ ◆</span>
-      <h2>阅天知识体系</h2>
-      <p>天纪·天机道完整体系 · 十四章</p>
+      <div class="sec-orn-pill">◈ 核心体系</div>
+      <h2>天地人三才</h2>
+      <div class="sec-head-underline"></div>
+      <p>只看命，不够。命、运、地三层一起看，才知道事怎么成、坑在哪。</p>
     </div>
-    <div class="knowledge-grid">
-
-      <div class="kc">
-        <div class="kc-num">第一章</div>
-        <div class="kc-title">哲学总纲</div>
-        <div class="kc-items">
-          <span class="kc-item">算命是谈结果的哲学</span>
-          <span class="kc-item">君子事天，小人事人</span>
-          <span class="kc-item">吉处藏凶 / 凶处藏吉</span>
-          <span class="kc-item">命好不如限好</span>
-        </div>
+    <div class="sancai-grid">
+      <div class="sancai-card card-base">
+        <div class="sc-label">天</div>
+        <div class="sc-title">命 · 看底色与格局</div>
+        <div class="sc-sub">MING · INNATE CHART</div>
+        <div class="sc-body">命宫、身宫、三方四正，先看底色与格局。<br><br>先知道自己是什么盘，再决定怎么用力。</div>
+        <div class="sc-quote">命盘不是结论书。<br>它先告诉你，你本来是什么样的人。</div>
       </div>
-
-      <div class="kc">
-        <div class="kc-num">第二章</div>
-        <div class="kc-title">天地人三才</div>
-        <div class="kc-items">
-          <span class="kc-item">天·命（先天格局）</span>
-          <span class="kc-item">人·运（后天时机）</span>
-          <span class="kc-item">地·相（环境接口）</span>
-          <span class="kc-item">三才主次与用法</span>
-        </div>
+      <div class="sancai-card card-base">
+        <div class="sc-label">人</div>
+        <div class="sc-title">运 · 看时机与轻重</div>
+        <div class="sc-sub">YUN · TIMING & CYCLES</div>
+        <div class="sc-body">十年大运看主线，小流年看眼前。<br><br>命好不如限好，关键不只在命，也在时机。</div>
+        <div class="sc-quote">十年大运为主，小流年为辅。<br>先看主线，再看这一年怎么应。</div>
       </div>
-
-      <div class="kc">
-        <div class="kc-num">第三章</div>
-        <div class="kc-title">算命三大体系</div>
-        <div class="kc-items">
-          <span class="kc-item">铁板神算（核对六亲）</span>
-          <span class="kc-item">子平法（八字格局）</span>
-          <span class="kc-item">紫微斗数（最精妙）</span>
-          <span class="kc-item">三法比较与适用场景</span>
-        </div>
+      <div class="sancai-card card-base">
+        <div class="sc-label">地</div>
+        <div class="sc-title">地 · 看方位与位置</div>
+        <div class="sc-sub">XIANG · ENVIRONMENT</div>
+        <div class="sc-body">地，不只是环境，更是位置。<br><br>阳宅、方位、起居摆正了，人站对位置，念头才会跟着改。</div>
+        <div class="sc-quote">先正其位，再正其念。<br>位置摆正，路才会顺。</div>
       </div>
-
-      <div class="kc">
-        <div class="kc-num">第四章</div>
-        <div class="kc-title">紫微十二宫</div>
-        <div class="kc-items">
-          <span class="kc-item">命/兄/夫/子/财/疾</span>
-          <span class="kc-item">迁/仆/官/田/福/父</span>
-          <span class="kc-item">三方四正联动原理</span>
-          <span class="kc-item">宫位与面相对应</span>
-        </div>
-      </div>
-
-      <div class="kc">
-        <div class="kc-num">第五章</div>
-        <div class="kc-title">主星星性</div>
-        <div class="kc-items">
-          <span class="kc-item">北斗六星（紫机阳武同廉）</span>
-          <span class="kc-item">南斗六星（府阴贪巨相梁）</span>
-          <span class="kc-item">三方杀星（杀破狼）</span>
-          <span class="kc-item">星性体相与命格</span>
-        </div>
-      </div>
-
-      <div class="kc">
-        <div class="kc-num">第六章</div>
-        <div class="kc-title">四化星</div>
-        <div class="kc-items">
-          <span class="kc-item">化科：名气 / 科甲 / 专技</span>
-          <span class="kc-item">化权：掌权 / 性刚 / 官印</span>
-          <span class="kc-item">化禄：财 / 守财</span>
-          <span class="kc-item">化忌：停滞 / 破耗 / 官司</span>
-        </div>
-      </div>
-
-      <div class="kc">
-        <div class="kc-num">第七章</div>
-        <div class="kc-title">副星与六杀</div>
-        <div class="kc-items">
-          <span class="kc-item">左辅右弼 / 三台八座</span>
-          <span class="kc-item">天魁天钺 / 文昌文曲</span>
-          <span class="kc-item">红鸾天喜 / 禄存天马</span>
-          <span class="kc-item">六杀：羊陀火铃空劫</span>
-        </div>
-      </div>
-
-      <div class="kc">
-        <div class="kc-num">第八章</div>
-        <div class="kc-title">批命方法论</div>
-        <div class="kc-items">
-          <span class="kc-item">三步看命法</span>
-          <span class="kc-item">重要格局（十余种）</span>
-          <span class="kc-item">命宫与身宫之别</span>
-          <span class="kc-item">星亮度：庙旺利平不陷</span>
-        </div>
-      </div>
-
-      <div class="kc">
-        <div class="kc-num">第九章</div>
-        <div class="kc-title">大运与流年</div>
-        <div class="kc-items">
-          <span class="kc-item">十年大运为主（三方四正）</span>
-          <span class="kc-item">流年为辅（本宫对宫）</span>
-          <span class="kc-item">化忌宫位的十年判断</span>
-          <span class="kc-item">特殊节气离日 / 决日</span>
-        </div>
-      </div>
-
-      <div class="kc">
-        <div class="kc-num">第十章</div>
-        <div class="kc-title">面相与气色</div>
-        <div class="kc-items">
-          <span class="kc-item">面部十二宫对应</span>
-          <span class="kc-item">气色时效（主两周）</span>
-          <span class="kc-item">贵相 / 凶相特征</span>
-          <span class="kc-item">五形体相（木火土金水）</span>
-        </div>
-      </div>
-
-      <div class="kc">
-        <div class="kc-num">第十一章</div>
-        <div class="kc-title">手相</div>
-        <div class="kc-items">
-          <span class="kc-item">八卦掌丘（巽离坤兑乾坎震艮）</span>
-          <span class="kc-item">天柱纹：科甲有名</span>
-          <span class="kc-item">手纹细清：心性正</span>
-          <span class="kc-item">明堂平广微凹最吉</span>
-        </div>
-      </div>
-
-      <div class="kc">
-        <div class="kc-num">第十二章</div>
-        <div class="kc-title">阳宅风水</div>
-        <div class="kc-items">
-          <span class="kc-item">方位吉凶（西北/西南/正东）</span>
-          <span class="kc-item">延年方：脚朝东北角</span>
-          <span class="kc-item">书桌朝向对应命盘宫位</span>
-          <span class="kc-item">名位法：位对则万事兴</span>
-        </div>
-      </div>
-
-      <div class="kc">
-        <div class="kc-num">第十三章</div>
-        <div class="kc-title">改运与化解</div>
-        <div class="kc-items">
-          <span class="kc-item">婚姻凶化解（年差/二婚）</span>
-          <span class="kc-item">子女时机选择</span>
-          <span class="kc-item">单身改运卧房朝向</span>
-          <span class="kc-item">改运时机：有人之宫前一年</span>
-        </div>
-      </div>
-
-      <div class="kc">
-        <div class="kc-num">第十四章</div>
-        <div class="kc-title">六壬速断法</div>
-        <div class="kc-items">
-          <span class="kc-item">只需农历月日时，三指起课</span>
-          <span class="kc-item">大安 / 流连 / 速喜</span>
-          <span class="kc-item">赤口 / 小吉 / 空亡</span>
-          <span class="kc-item">测心血来潮单一事件</span>
-        </div>
-      </div>
-
     </div>
   </div>
 </section>
 
-<!-- ── 最终 CTA ── -->
+<!-- ═══ S3: 判断顺序 ══════════════════════════════════════ -->
+<div class="sdivider"><div class="sdivider-line-main"></div><div class="sdivider-line-side-l"></div><div class="sdivider-line-side-r"></div><div class="sdivider-diamond"></div></div>
+
+<section class="philosophy-section" style="position:relative;padding:70px 0;">
+  <span class="ghost-num">03</span>
+  <div class="sec-wrap">
+    <div class="sec-head">
+      <div class="sec-orn-pill">◈ 判断方法</div>
+      <h2>阅天不靠一句断语</h2>
+      <div class="sec-head-underline"></div>
+      <p>靠的是判断顺序，一步一步看：为什么会这样。</p>
+    </div>
+    <div class="step-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:18px;">
+      <div class="step-card"><div class="sc-num">01</div><div class="sc-step-title">· 先看命宫与身宫</div><div class="sc-step-desc">先定底色、根器与发力方式。命先告诉你是什么人，再谈这一生怎么走。</div></div>
+      <div class="step-card"><div class="sc-num">02</div><div class="sc-step-title">· 再看三方四正</div><div class="sc-step-desc">单看一个宫位不够，要看整组结构。格局大不大、力量稳不稳，要在这里看。</div></div>
+      <div class="step-card"><div class="sc-num">03</div><div class="sc-step-title">· 再看四化落宫</div><div class="sc-step-desc">化禄、化权、化科、化忌，是命局发用的关键。星不只是谁，还要看落在哪。</div></div>
+      <div class="step-card"><div class="sc-num">04</div><div class="sc-step-title">· 十年大运为主</div><div class="sc-step-desc">先看大运主线，再看事情落在哪一段。命好不如限好，轻重往往在这里拉开。</div></div>
+      <div class="step-card"><div class="sc-num">05</div><div class="sc-step-title">· 小流年为辅</div><div class="sc-step-desc">流年决定这一年怎么应。看流年，不能脱开大运单看，也不能拿一年的动静代替十年的方向。</div></div>
+      <div class="step-card"><div class="sc-num">06</div><div class="sc-step-title">· 命上有象，运上有应</div><div class="sc-step-desc">命盘里有这个信息，运势又刚好碰上，事情才会真正落地。单看一个点，不够。</div></div>
+    </div>
+    <div class="sec-head" style="margin-top:36px">
+      <p>命好不如限好。同一张盘，走对运与走错运，轻重完全不同。</p>
+    </div>
+  </div>
+</section>
+
+<div class="sdivider"><div class="sdivider-line-main"></div><div class="sdivider-line-side-l"></div><div class="sdivider-line-side-r"></div><div class="sdivider-diamond"></div></div>
+
+<!-- ═══ S4: 变常用 ════════════════════════════════════════ -->
+<section class="philosophy-section" style="padding:70px 0;">
+  <div class="sec-wrap">
+    <div class="sec-head">
+      <div class="sec-orn-pill">◈ 天道规律</div>
+      <h2>阅天先看天道</h2>
+      <div class="sec-head-underline"></div>
+      <p>不是越说越玄，而是把复杂变化，看成可判断的脉络。</p>
+    </div>
+    <div class="quote-grid">
+      <div class="quote-card"><div class="qc-text">变</div><div class="qc-note">局势会变，运势会转，人的处境不会永远停在原地。看命不能把一时当一世。</div></div>
+      <div class="quote-card"><div class="qc-text">常</div><div class="qc-note">命盘的底色不轻易变，格局、气质、根器，都有其根本。变的是局，不变的是底色。</div></div>
+      <div class="quote-card"><div class="qc-text">用</div><div class="qc-note">真正重要的，不只是知道命，而是知道此刻该怎么用这张盘。知时，才能定用。</div></div>
+    </div>
+    <div class="sec-head" style="margin-top:34px">
+      <p>天所赋为命，运操之在己。君子静而观象，动而占卜，以果决行。</p>
+    </div>
+  </div>
+</section>
+
+<div class="sdivider"><div class="sdivider-line-main"></div><div class="sdivider-line-side-l"></div><div class="sdivider-line-side-r"></div><div class="sdivider-diamond"></div></div>
+
+<!-- ═══ S5: 知识体系 ══════════════════════════════════════ -->
+<section class="knowledge-section" style="position:relative;">
+  <span class="ghost-num">04</span>
+  <div class="sec-wrap">
+    <div class="sec-head">
+      <div class="sec-orn-pill">◈ 五层结构</div>
+      <h2>阅天的知识体系</h2>
+      <div class="sec-head-underline"></div>
+      <p>先看底牌，再看运势，最后才谈应事与决策。</p>
+    </div>
+    <div class="knowledge-grid">
+      <div class="kc">
+        <div class="kc-tl" style="background:linear-gradient(90deg,transparent,rgba(201,169,97,.6),transparent)"></div>
+        <div class="kc-num" style="color:rgba(201,169,97,.75)">第一层</div>
+        <div class="kc-title">命盘格局</div>
+        <div class="kc-items"><span class="kc-item">命宫、身宫</span><span class="kc-item">三方四正</span><span class="kc-item">主星与亮度</span><span class="kc-item">四化与格局</span></div>
+      </div>
+      <div class="kc">
+        <div class="kc-tl" style="background:linear-gradient(90deg,transparent,rgba(180,130,80,.6),transparent)"></div>
+        <div class="kc-num" style="color:rgba(180,130,80,.75)">第二层</div>
+        <div class="kc-title">星曜四化</div>
+        <div class="kc-items"><span class="kc-item">主星</span><span class="kc-item">辅星</span><span class="kc-item">六杀</span><span class="kc-item">化禄化权化科化忌</span></div>
+      </div>
+      <div class="kc">
+        <div class="kc-tl" style="background:linear-gradient(90deg,transparent,rgba(160,110,70,.6),transparent)"></div>
+        <div class="kc-num" style="color:rgba(160,110,70,.75)">第三层</div>
+        <div class="kc-title">大运流年</div>
+        <div class="kc-items"><span class="kc-item">十年主线</span><span class="kc-item">当前流年</span><span class="kc-item">小限落宫</span><span class="kc-item">时机轻重</span></div>
+      </div>
+      <div class="kc">
+        <div class="kc-tl" style="background:linear-gradient(90deg,transparent,rgba(140,95,60,.6),transparent)"></div>
+        <div class="kc-num" style="color:rgba(140,95,60,.75)">第四层</div>
+        <div class="kc-title">六亲与关系</div>
+        <div class="kc-items"><span class="kc-item">父母</span><span class="kc-item">夫妻</span><span class="kc-item">子女</span><span class="kc-item">合作与人际</span></div>
+      </div>
+      <div class="kc">
+        <div class="kc-tl" style="background:linear-gradient(90deg,transparent,rgba(120,80,50,.6),transparent)"></div>
+        <div class="kc-num" style="color:rgba(120,80,50,.75)">第五层</div>
+        <div class="kc-title">环境应法</div>
+        <div class="kc-items"><span class="kc-item">阳宅</span><span class="kc-item">方位</span><span class="kc-item">气色</span><span class="kc-item">起居与当下选择</span></div>
+      </div>
+    </div>
+    <div class="sec-head" style="margin-top:34px">
+      <p>首页讲的是体系，真正有用的是把你的盘排出来。</p>
+    </div>
+  </div>
+</section>
+
+<div class="sdivider"><div class="sdivider-line-main"></div><div class="sdivider-line-side-l"></div><div class="sdivider-line-side-r"></div><div class="sdivider-diamond"></div></div>
+
+<!-- ═══ S6: 对比 ══════════════════════════════════════════ -->
+<section class="philosophy-section" style="padding:70px 0;">
+  <div class="sec-wrap">
+    <div class="sec-head">
+      <div class="sec-orn-pill">◈ 阅天不同</div>
+      <h2>阅天与普通算命，有什么不同</h2>
+      <div class="sec-head-underline"></div>
+      <p>不只问吉凶，也问你当下该怎么做。</p>
+    </div>
+    <div class="step-grid" style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px;">
+      <div class="step-card"><div class="sc-step-title">不只看先天命格</div><div class="sc-step-desc" style="font-size:13px;margin-top:6px">也看后天运势。命盘告诉你底色，运势告诉你轻重，不能把两者拆开看。</div></div>
+      <div class="step-card"><div class="sc-step-title">不只讲性格</div><div class="sc-step-desc" style="font-size:13px;margin-top:6px">也讲时间点与发力顺序。哪件事该先，哪件事该后，往往比一句"你适合什么"更有用。</div></div>
+      <div class="step-card"><div class="sc-step-title">不只给结论</div><div class="sc-step-desc" style="font-size:13px;margin-top:6px">也讲为什么应在此时。命上有象，运上有应，事情才会真正显出来。</div></div>
+      <div class="step-card"><div class="sc-step-title">不只问好坏</div><div class="sc-step-desc" style="font-size:13px;margin-top:6px">也问你当下该守、该动，还是该换路。知时定用，才是阅天真正要给你的东西。</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 最终 CTA ═══════════════════════════════════════════ -->
 <section class="final-cta">
-  <span class="cta-ornament">◆ ◇ ◆</span>
-  <h2>阅天始于排盘</h2>
-  <p>输入出生时辰，即刻生成你的紫微命盘 · 三才合参 · AI 深度批命</p>
-  <button class="btn-main" onclick="location.href='pages/chart.html'">排我的命盘 →</button>
-  <p class="final-note">完全免费 · 无需注册 · 本地计算 · 不存储数据</p>
+  <span class="cta-ornament">◆  ◇  ◆</span>
+  <h2>别急着问命好不好<br>先看你现在走到哪里</h2>
+  <p>很多人不是输在命不好，而是输在运来时没接住，运去时还在硬扛。排盘不是为了听一句好坏，是为了看你现在这一步，到底该守、该动，还是该换路。</p>
+  <button class="btn-main" onclick="location.href='pages/chart.html'">现在排盘 →</button>
+  <p class="final-note">免费排盘 · 无需注册 · 可继续查看 AI 命书解读</p>
 </section>
 
 <!-- 页脚 -->
