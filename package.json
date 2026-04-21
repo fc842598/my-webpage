@@ -2,10 +2,12 @@
   "name": "codex-browser-session",
   "private": true,
   "scripts": {
+    "smoke:overall-piming": "node scripts/smoke-overall-piming-contract.js",
     "validate:ziping": "node scripts/validate-ziping-professional-tool-samples.js",
     "validate:ziping:boundary": "node scripts/validate-ziping-boundary-rules.js",
     "validate:ziping:book-liunian": "node scripts/validate-ziping-book-liunian-rules.js",
     "validate:ziping:book-batch01": "node scripts/validate-ziping-book-batch01.js",
+    "validate:ziping:book-batch02": "node scripts/validate-ziping-book-batch02.js",
     "validate:ziping:truth300": "node scripts/validate-ziping-truth300-fullchain.js",
     "validate:ziping:xian": "node scripts/validate-ziping-xiantian-experimental.js",
     "validate:ziping:hai": "node scripts/validate-ziping-hai-experimental.js",

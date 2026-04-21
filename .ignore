@@ -1,0 +1,15 @@
+node_modules/
+tmp/
+output/
+.playwright-cli/
+.git/
+__pycache__/
+*.pyc
+*.log
+*.err
+*.out
+*.png
+*.jpg
+*.jpeg
+*.webp
+*.yml

@@ -1,0 +1,24 @@
+# Dependencies
+node_modules/
+
+# Generated and scratch data
+tmp/
+output/
+.playwright-cli/
+
+# Git internals
+.git/
+
+# Local caches
+__pycache__/
+*.pyc
+
+# Logs and snapshots
+*.log
+*.err
+*.out
+*.png
+*.jpg
+*.jpeg
+*.webp
+*.yml

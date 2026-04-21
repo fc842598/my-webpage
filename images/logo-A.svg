@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36" fill="none">
+  <defs>
+    <linearGradient id="gA" x1="4" y1="4" x2="22" y2="32" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#f8eea0"/>
+      <stop offset="50%" stop-color="#c9a961"/>
+      <stop offset="100%" stop-color="#7a5018"/>
+    </linearGradient>
+  </defs>
+  <!-- 金月：经典竖向月牙，开口朝右 -->
+  <path d="
+    M 18 3
+    C 10 3, 3 10, 3 18
+    C 3 26, 10 33, 18 33
+    C 14 30, 11 25, 11 18
+    C 11 11, 14 6, 18 3 Z
+  " fill="url(#gA)"/>
+  <!-- 月内小星 -->
+  <circle cx="8.5" cy="13" r="1.1" fill="rgba(255,248,200,0.65)"/>
+  <circle cx="7" cy="20" r="0.65" fill="rgba(255,248,200,0.4)"/>
+</svg>

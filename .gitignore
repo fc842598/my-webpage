@@ -1,0 +1,22 @@
+# Dependencies
+node_modules/
+
+# Generated data
+tmp/
+output/
+.playwright-cli/
+
+# Local caches
+__pycache__/
+*.pyc
+
+# Logs
+*.log
+*.err.log
+*.out.log
+
+# Local screenshots / browser smoke captures
+tmp-*.jpg
+tmp-*.jpeg
+tmp-*.png
+tmp-*.webp
