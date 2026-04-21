@@ -289,14 +289,34 @@
     card.style.display = '';
     const tag = card.querySelector('.aip-tag');
     const title = card.querySelector('.aip-card-title');
-    if (tag) tag.textContent = '十年大运';
-    if (title) title.textContent = '每个十年直接查看与批命';
+    if (tag) tag.textContent = '当前大运';
+    if (title) title.textContent = '先看当前十年，再上下切换';
     const batchCard = document.getElementById('dlx-batch-card');
     const decadeSection = document.getElementById('dlx-decade-pills')?.closest('.dlx-section');
     const daxianCard = document.getElementById('dlx-daxian-card');
     if (batchCard) batchCard.style.display = 'none';
     if (decadeSection) decadeSection.style.display = 'none';
     if (daxianCard) daxianCard.style.display = 'none';
+  }
+
+  function getSelectedDayunIndex() {
+    return Math.max(0, state.dayunRanges.findIndex((item) => `${item.start}-${item.end}` === state.selectedDayunKey));
+  }
+
+  function renderDayunNavigator(currentIndex) {
+    const total = state.dayunRanges.length;
+    const current = state.dayunRanges[currentIndex] || null;
+    const currentLabel = current ? `${current.start}-${current.end}岁` : '—';
+    return [
+      '<div class="dlx-nav">',
+        `<button type="button" class="dlx-nav-btn" data-dlx-nav="prev"${currentIndex <= 0 ? ' disabled' : ''}>上一运</button>`,
+        '<div class="dlx-nav-mid">',
+          `<div class="dlx-nav-title">${escapeHtml(currentLabel)}</div>`,
+          `<div class="dlx-nav-sub">第 ${currentIndex + 1} / ${total} 组大运</div>`,
+        '</div>',
+        `<button type="button" class="dlx-nav-btn" data-dlx-nav="next"${currentIndex >= total - 1 ? ' disabled' : ''}>下一运</button>`,
+      '</div>',
+    ].join('');
   }
 
   function renderOverviewList() {
@@ -309,7 +329,11 @@
       return;
     }
 
-    listEl.innerHTML = state.dayunRanges.map((dayun, index) => {
+    const selectedIndex = getSelectedDayunIndex();
+    const visibleDayun = state.dayunRanges[selectedIndex] ? [state.dayunRanges[selectedIndex]] : [state.dayunRanges[0]];
+
+    listEl.innerHTML = renderDayunNavigator(selectedIndex) + visibleDayun.map((dayun) => {
+      const index = state.dayunRanges.findIndex((item) => item.start === dayun.start && item.end === dayun.end);
       const key = `${dayun.start}-${dayun.end}`;
       const selected = key === state.selectedDayunKey;
       const card = state.dayunResultMap[key] || state.dayunOverviewMap[key]?.card || null;
@@ -360,9 +384,30 @@
     }).join('');
   }
 
+  function selectDayunByOffset(offset) {
+    if (!state.dayunRanges.length) return;
+    const currentIndex = getSelectedDayunIndex();
+    const nextIndex = Math.max(0, Math.min(state.dayunRanges.length - 1, currentIndex + offset));
+    const raw = state.dayunRanges[nextIndex];
+    if (!raw) return;
+    if (typeof window._dlxSelectDecade === 'function') {
+      window._dlxSelectDecade(raw, state.dayunRanges, { source: 'user' });
+    }
+  }
+
   function bindOverviewActions() {
     const listEl = document.getElementById('dlx-overview-list');
     if (!listEl) return;
+
+    listEl.querySelectorAll('[data-dlx-nav]').forEach((btn) => {
+      if (btn.dataset.bound === '1') return;
+      btn.dataset.bound = '1';
+      btn.addEventListener('click', function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+        selectDayunByOffset(btn.dataset.dlxNav === 'prev' ? -1 : 1);
+      });
+    });
 
     listEl.querySelectorAll('.dlx-dayun-card').forEach((cardEl) => {
       if (cardEl.dataset.bound === '1') return;
@@ -372,8 +417,8 @@
         const rangeKey = cardEl.dataset.rangeKey || '';
         const raw = state.dayunRanges.find((item) => `${item.start}-${item.end}` === rangeKey);
         if (!raw) return;
-        if (typeof _dlxSelectDecade === 'function') {
-          _dlxSelectDecade(raw, state.dayunRanges, { source: 'user' });
+        if (typeof window._dlxSelectDecade === 'function') {
+          window._dlxSelectDecade(raw, state.dayunRanges, { source: 'user' });
         }
       });
     });
@@ -416,6 +461,16 @@
     setText('dlx-ln-risk', card?.risk ? `提醒：${card.risk}` : '');
   }
 
+  function updateYearAction(age) {
+    const btn = document.getElementById('dlx-year-ai-btn');
+    const cached = state.yearResultMap[String(age)] || null;
+    if (btn) {
+      btn.disabled = !age;
+      btn.textContent = cached ? '✓ 已批这一年' : '✦ 批这一年';
+    }
+    setText('dlx-ln-ai-status', cached ? '已读取缓存' : '点按钮批这一年');
+  }
+
   async function loadDayunOverview(generateMissing) {
     const chartData = getChartPayload();
     const dayunRanges = state.dayunRanges.map(serializeDayun).filter(Boolean);
@@ -448,7 +503,40 @@
       exposeLifeCurveSignals();
       renderOverviewList();
       bindOverviewActions();
+      const hasCachedOverview = overview.some((item) => item?.card && item.status !== 'empty');
+      setText(
+        'dlx-batch-all-status',
+        data.meta?.generated ? '整组大运已批完' : (hasCachedOverview ? '已读取已有大运缓存' : '')
+      );
     } catch (_err) {
+      setText('dlx-batch-all-status', generateMissing ? '整组大运读取失败' : '');
+      renderOverviewList();
+      bindOverviewActions();
+    }
+  }
+
+  async function runAllDayunAI() {
+    const btn = document.getElementById('dlx-batch-all-btn');
+    if (!state.dayunRanges.length) {
+      setText('dlx-batch-all-status', '请先完成排盘');
+      return;
+    }
+
+    if (btn) btn.disabled = true;
+    state.dayunRanges.forEach((item) => {
+      const key = `${item.start}-${item.end}`;
+      if (!state.dayunResultMap[key]) state.dayunStatusMap[key] = 'loading';
+    });
+    setText('dlx-batch-all-status', '正在逐个批完整组大运…');
+    renderOverviewList();
+    bindOverviewActions();
+
+    try {
+      await loadDayunOverview(true);
+      setText('dlx-batch-all-status', '整组大运已完成');
+      if (typeof window._chatInvalidateMemoryA === 'function') window._chatInvalidateMemoryA();
+    } finally {
+      if (btn) btn.disabled = false;
       renderOverviewList();
       bindOverviewActions();
     }
@@ -458,8 +546,8 @@
     const raw = state.dayunRanges.find((item) => `${item.start}-${item.end}` === rangeKey);
     if (!raw) return;
 
-    if (typeof _dlxSelectDecade === 'function') {
-      _dlxSelectDecade(raw, state.dayunRanges, { source: 'user' });
+    if (typeof window._dlxSelectDecade === 'function') {
+      window._dlxSelectDecade(raw, state.dayunRanges, { source: 'user' });
     }
 
     state.dayunStatusMap[rangeKey] = 'loading';
@@ -503,9 +591,12 @@
     if (state.yearResultMap[String(numericAge)]) {
       setText('dlx-ln-ai-status', '已读取缓存');
       renderYearResult(numericAge);
+      updateYearAction(numericAge);
       return;
     }
 
+    const actionBtn = document.getElementById('dlx-year-ai-btn');
+    if (actionBtn) actionBtn.disabled = true;
     setText('dlx-ln-ai-status', '正在批这一年…');
     if (bodyEl) bodyEl.innerHTML = '<p class="aip-body-para">AI 正在结合大运与流年生成结果…</p>';
 
@@ -518,10 +609,13 @@
       exposeLifeCurveSignals();
       setText('dlx-ln-ai-status', `已完成 · ${_fmtDuration(data.meta?.durationMs || 0)}`);
       renderYearResult(numericAge);
+      updateYearAction(numericAge);
     } catch (err) {
       setText('dlx-ln-ai-status', err?.message || '流年批命失败');
       if (bodyEl) bodyEl.innerHTML = '';
       setText('dlx-ln-risk', '');
+    } finally {
+      if (actionBtn) actionBtn.disabled = false;
     }
   }
 
@@ -537,12 +631,8 @@
     state.selectedYearAge = Number(age);
     renderYearInfo(age);
     setText('dlx-ln-risk', '');
-    if (options?.source === 'user') {
-      loadSelectedYear(age);
-      return;
-    }
-    setText('dlx-ln-ai-status', state.yearResultMap[String(age)] ? '已读取缓存' : '');
     renderYearResult(age);
+    updateYearAction(age);
   };
 
   window._aipDlxRefresh = function () {
@@ -565,6 +655,23 @@
 
   function bind() {
     updateOverviewHead();
+    const yearBtn = document.getElementById('dlx-year-ai-btn');
+    if (yearBtn && yearBtn.dataset.bound !== '1') {
+      yearBtn.dataset.bound = '1';
+      yearBtn.addEventListener('click', function () {
+        if (!state.selectedYearAge) {
+          setText('dlx-ln-ai-status', '请先选择流年');
+          return;
+        }
+        loadSelectedYear(state.selectedYearAge);
+      });
+    }
+
+    const batchBtn = document.getElementById('dlx-batch-all-btn');
+    if (batchBtn && batchBtn.dataset.bound !== '1') {
+      batchBtn.dataset.bound = '1';
+      batchBtn.addEventListener('click', runAllDayunAI);
+    }
   }
 
   if (document.readyState === 'loading') {

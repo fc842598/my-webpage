@@ -2264,6 +2264,34 @@
 .dlx-section-label { font-size: 11px; color: #9c8878; letter-spacing: .08em; margin-bottom: 8px; }
 .dlx-pills { display: flex; flex-wrap: wrap; gap: 8px; }
 .dlx-overview-list { display: grid; gap: 8px; margin-top: 8px; }
+.dlx-nav {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  margin-bottom: 10px;
+  border: 1px solid rgba(200, 185, 162, .48);
+  border-radius: 18px;
+  background: linear-gradient(135deg, #f7f0e6 0%, #fffaf3 100%);
+}
+.dlx-nav-mid { text-align: center; min-width: 0; }
+.dlx-nav-title { font-size: 18px; font-weight: 800; color: #4a2d20; letter-spacing: .02em; }
+.dlx-nav-sub { margin-top: 2px; font-size: 11px; color: #9c8878; }
+.dlx-nav-btn {
+  border: 1px solid #d4c4b2;
+  background: #fffaf3;
+  color: #744538;
+  border-radius: 999px;
+  padding: 7px 14px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+}
+.dlx-nav-btn:hover:not(:disabled) { background: #7a3b2e; border-color: #7a3b2e; color: #fff5ec; }
+.dlx-nav-btn:disabled { opacity: .38; cursor: default; }
+.dlx-bottom-batch-card { margin-top: 16px; border-style: dashed; }
 
 /* ── 大运卡片 ── */
 .dlx-overview-item {
@@ -2410,6 +2438,9 @@
   .aip-card-title { font-size: 12px; }
   .aip-card-body  { font-size: 11px; }
   .aip-card-tip   { font-size: 10px; }
+  .dlx-nav { grid-template-columns: 1fr 1fr; }
+  .dlx-nav-mid { grid-column: 1 / -1; grid-row: 1; }
+  .dlx-nav-btn { grid-row: 2; }
   .dlx-overview-meta { grid-template-columns: 1fr; }
 }
 

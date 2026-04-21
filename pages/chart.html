@@ -541,9 +541,24 @@
             <span class="aip-card-title" id="dlx-ln-ttl"></span>
           </div>
           <div class="dlx-info-grid" id="dlx-ln-info"></div>
-          <div class="aip-card-ai-bar"><span class="aip-card-ai-status" id="dlx-ln-ai-status"></span></div>
+          <div class="aip-card-ai-bar">
+            <button class="aip-card-ai-btn" id="dlx-year-ai-btn">✦ 批这一年</button>
+            <span class="aip-card-ai-status" id="dlx-ln-ai-status"></span>
+          </div>
           <div class="aip-card-body" id="dlx-ln-ai-body"></div>
           <div class="aip-card-tip"  id="dlx-ln-risk"></div>
+        </div>
+
+        <div class="aip-card dlx-bottom-batch-card" id="dlx-bottom-batch-card">
+          <div class="aip-card-head">
+            <span class="aip-tag">整组大运</span>
+            <span class="aip-card-title">最后再一键批完整组</span>
+          </div>
+          <div class="aip-card-tip">单个大运、单年流年先按需批；需要总览时，再一键把全部十年大运补齐。</div>
+          <div class="aip-card-ai-bar">
+            <button class="aip-card-ai-btn" id="dlx-batch-all-btn">✦ 一键批完整组大运</button>
+            <span class="aip-card-ai-status" id="dlx-batch-all-status"></span>
+          </div>
         </div>
       </div>
 
@@ -4348,6 +4363,7 @@ function _dlxSelectDecade(d, decades, options) {
     window._aipDlxOnDecadeSelected(d, decades || _fcGetDisplayDecades(), options || { source: 'user' });
   }
 }
+window._dlxSelectDecade = _dlxSelectDecade;
 
 function _dlxRenderYears(start, end) {
   const container = document.getElementById('dlx-year-pills');
