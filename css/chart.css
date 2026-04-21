@@ -3440,6 +3440,282 @@
   }
 }
 
+/* ══════════════════════════════════════════
+   命书解读区 — 深色主题升级 (Round 2)
+   覆盖上方所有 aip-* / dlx-* 浅色默认值
+══════════════════════════════════════════ */
+
+/* ── 整体容器 ── */
+#aip-section {
+  background: transparent !important;
+  border-top: 1px solid rgba(201,169,97,.12) !important;
+  padding: 0 0 48px !important;
+}
+.aip-wrap { max-width: 860px !important; padding: 0 20px !important; }
+
+/* ── 顶部信息栏 ── */
+.aip-head { padding: 24px 0 14px !important; }
+.aip-badge {
+  background: linear-gradient(135deg, #7a3b2e 0%, #b05a3a 100%) !important;
+  color: #fff5ec !important;
+  font-size: 11px !important;
+  padding: 4px 12px !important;
+  border-radius: 20px !important;
+  letter-spacing: .08em !important;
+  box-shadow: 0 2px 8px rgba(122,59,46,.3) !important;
+}
+.aip-desc { font-size: 12px !important; color: #6b5c4a !important; }
+
+/* ── 标签栏 ── */
+.aip-tabs {
+  border-bottom: 1px solid rgba(201,169,97,.15) !important;
+  margin-bottom: 18px !important;
+}
+.aip-tab {
+  color: #6b5c4a !important;
+  padding: 10px 22px !important;
+  font-size: 13px !important;
+  transition: color .15s !important;
+}
+.aip-tab.active {
+  color: #c9a961 !important;
+  border-bottom-color: #c9a961 !important;
+  font-weight: 700 !important;
+}
+.aip-tab:hover { color: #a89878 !important; }
+
+/* ── 卡片基础 ── */
+.aip-panel { gap: 12px !important; }
+.aip-card {
+  background: #1a1208 !important;
+  border: 1px solid rgba(201,169,97,.12) !important;
+  border-radius: 12px !important;
+  padding: 16px 18px !important;
+  position: relative !important;
+  overflow: hidden !important;
+}
+/* 卡片顶部渐变光边（类首页 card） */
+.aip-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(201,169,97,.25), transparent);
+  pointer-events: none;
+}
+
+/* ── 通用元素 ── */
+.aip-card-head { margin-bottom: 10px !important; }
+.aip-tag {
+  background: rgba(201,169,97,.1) !important;
+  color: #a89878 !important;
+  border: 1px solid rgba(201,169,97,.18) !important;
+  font-size: 10px !important;
+  padding: 2px 9px !important;
+  border-radius: 10px !important;
+}
+.aip-card-title { color: #ede4d4 !important; font-size: 13px !important; }
+.aip-card-body  { color: #a89878 !important; font-size: 13px !important; line-height: 1.8 !important; }
+.aip-card-body .aip-body-title { color: #c9a961 !important; font-size: 13.5px !important; }
+.aip-card-body .aip-body-para  { color: #a89878 !important; }
+.aip-card-tip {
+  color: #c9a961 !important;
+  border-left-color: rgba(201,169,97,.3) !important;
+  margin-top: 10px !important;
+  font-size: 12px !important;
+}
+
+/* ── 整体批命主卡 ── */
+.aip-main-card {
+  border-color: rgba(201,169,97,.2) !important;
+  border-radius: 14px !important;
+  box-shadow: 0 8px 32px rgba(0,0,0,.35) !important;
+}
+.aip-main-card::before { display: none; }
+.aip-main-hero {
+  background: linear-gradient(135deg, #150e06 0%, #201208 100%) !important;
+  border-radius: 14px 14px 0 0 !important;
+  padding: 18px 22px 20px !important;
+  border-bottom: 1px solid rgba(201,169,97,.15) !important;
+  position: relative !important;
+  overflow: hidden !important;
+}
+.aip-main-hero::after {
+  content: '';
+  position: absolute; top: 0; right: 0; bottom: 0;
+  width: 40%;
+  background: radial-gradient(ellipse at 100% 50%, rgba(122,59,46,.15) 0%, transparent 70%);
+  pointer-events: none;
+}
+.aip-hero-tag {
+  background: rgba(201,169,97,.15) !important;
+  color: #c9a961 !important;
+  border: 1px solid rgba(201,169,97,.25) !important;
+}
+.aip-hero-title { color: #ede4d4 !important; font-size: 24px !important; letter-spacing: .03em !important; }
+.aip-main-body-wrap { background: #1a1208 !important; padding: 16px 20px 20px !important; }
+
+/* ── 副卡 ── */
+.aip-sub-card {
+  background: #160f08 !important;
+  border-color: rgba(201,169,97,.1) !important;
+  border-radius: 10px !important;
+  padding: 14px 16px !important;
+  margin-top: 4px !important;
+}
+/* 各主题标签 */
+.aip-shen-tag     { background: rgba(201,169,97,.12) !important; color: #c9a961 !important; border: 1px solid rgba(201,169,97,.2) !important; }
+.aip-hunyin-tag   { background: rgba(180,80,140,.1)  !important; color: #d4789a !important; border: 1px solid rgba(180,80,140,.2) !important; }
+.aip-jiankang-tag { background: rgba(60,160,100,.1)  !important; color: #6dc48a !important; border: 1px solid rgba(60,160,100,.2) !important; }
+.aip-caiyun-tag   { background: rgba(220,170,40,.1)  !important; color: #d4a832 !important; border: 1px solid rgba(220,170,40,.2) !important; }
+.aip-shiye-tag    { background: rgba(100,80,200,.1)  !important; color: #9888d4 !important; border: 1px solid rgba(100,80,200,.2) !important; }
+
+/* ── 风险/依据区 ── */
+.aip-life-risk {
+  color: #d4786a !important;
+  background: rgba(180,60,50,.1) !important;
+  border-color: rgba(180,60,50,.25) !important;
+}
+.aip-life-basis { color: #6b5c4a !important; border-left-color: rgba(201,169,97,.2) !important; }
+
+/* ── 命格速览 ── */
+.aip-section-label {
+  background: rgba(201,169,97,.1) !important;
+  color: #c9a961 !important;
+  border: 1px solid rgba(201,169,97,.18) !important;
+  border-radius: 9px !important;
+  font-size: 10px !important;
+}
+.aip-struct-summary::before { color: #c9a961 !important; }
+.aip-struct-summary-label {
+  background: rgba(201,169,97,.1) !important;
+  color: #a89878 !important;
+  border: 1px solid rgba(201,169,97,.15) !important;
+  font-size: 12px !important;
+}
+.aip-struct-summary:hover .aip-struct-summary-label {
+  background: rgba(201,169,97,.18) !important;
+  color: #c9a961 !important;
+}
+.aip-struct {
+  background: #150e06 !important;
+  border-color: rgba(201,169,97,.12) !important;
+}
+.aip-struct-row { border-bottom-color: rgba(201,169,97,.08) !important; }
+.aip-struct-label { color: #6b5c4a !important; }
+.aip-struct-val { color: #ede4d4 !important; }
+.aip-palace-maj { color: #ede4d4 !important; }
+.aip-palace-min { color: #6b5c4a !important; }
+.aip-inline-val > span:first-child { color: #ede4d4 !important; }
+.aip-inline-min { color: #6b5c4a !important; }
+.aip-struct-life-row { background: rgba(201,169,97,.06) !important; }
+.aip-struct-life-row .aip-struct-label { color: #c9a961 !important; }
+.aip-struct-life-row .aip-palace-maj { color: #ede4d4 !important; }
+.aip-struct-row.aip-struct-ai { background: rgba(255,255,255,.02) !important; }
+.aip-struct-row.aip-struct-ai .aip-struct-label { color: #a89878 !important; }
+.aip-struct-badge-row { background: rgba(201,169,97,.06) !important; border-top-color: rgba(201,169,97,.12) !important; }
+.aip-struct-badge-row .aip-struct-label { color: #c9a961 !important; }
+.aip-struct-badge-row .aip-struct-val { color: #ede4d4 !important; }
+.aip-struct-divider { border-top-color: rgba(201,169,97,.1) !important; }
+.aip-pattern-tag { background: rgba(60,160,100,.1) !important; color: #6dc48a !important; }
+.aip-break-tag   { background: rgba(180,60,50,.1)  !important; color: #d4786a !important; }
+
+/* ── mainline note ── */
+.aip-mainline-note {
+  background: rgba(201,169,97,.06) !important;
+  border-color: rgba(201,169,97,.15) !important;
+}
+.aip-mainline-tag { background: rgba(201,169,97,.15) !important; color: #c9a961 !important; }
+.aip-mainline-copy { color: #6b5c4a !important; }
+
+/* ── 大限流年 ── */
+.dlx-section-label { color: #6b5c4a !important; }
+.dlx-nav {
+  background: linear-gradient(135deg, #1c1509 0%, #221a0c 100%) !important;
+  border-color: rgba(201,169,97,.2) !important;
+}
+.dlx-nav-title { color: #ede4d4 !important; }
+.dlx-nav-sub { color: #6b5c4a !important; }
+.dlx-nav-btn {
+  background: rgba(201,169,97,.08) !important;
+  border-color: rgba(201,169,97,.2) !important;
+  color: #a89878 !important;
+}
+.dlx-nav-btn:hover:not(:disabled) {
+  background: linear-gradient(135deg, #7a3b2e 0%, #b05a3a 100%) !important;
+  border-color: #b05a3a !important;
+  color: #fff5ec !important;
+}
+.dlx-bottom-batch-card { border-color: rgba(201,169,97,.15) !important; }
+
+/* ── 大运卡片 ── */
+.dlx-overview-item {
+  background: #1a1208 !important;
+  border-color: rgba(201,169,97,.12) !important;
+}
+.dlx-overview-item::before { background: rgba(201,169,97,.3) !important; }
+.dlx-overview-item:hover:not(.active) {
+  border-color: rgba(201,169,97,.25) !important;
+  box-shadow: 0 2px 12px rgba(0,0,0,.3) !important;
+}
+.dlx-overview-item.active {
+  background: #201408 !important;
+  border-color: rgba(201,169,97,.4) !important;
+  box-shadow: 0 4px 20px rgba(201,169,97,.08) !important;
+}
+.dlx-overview-item.active::before { background: #c9a961 !important; }
+.dlx-overview-item.era-past { background: #150f08 !important; border-color: rgba(201,169,97,.07) !important; }
+.dlx-overview-item.era-past::before { background: rgba(201,169,97,.2) !important; }
+.dlx-decade-num { color: #6b5c4a !important; }
+.dlx-overview-item.active .dlx-decade-num { color: #c9a961 !important; }
+.dlx-overview-title { color: #ede4d4 !important; }
+.dlx-overview-item.active .dlx-overview-title { color: #ede4d4 !important; }
+.dlx-overview-item.era-past .dlx-overview-title { color: #6b5c4a !important; }
+.dlx-overview-label { color: #6b5c4a !important; }
+.dlx-overview-item.active .dlx-overview-label { color: #6b5c4a !important; }
+.dlx-overview-value { color: #a89878 !important; }
+.dlx-overview-item.active .dlx-overview-value { color: #ede4d4 !important; }
+.dlx-overview-item.era-past .dlx-overview-value { color: #4a3d34 !important; }
+.dlx-overview-meta { border-bottom-color: rgba(201,169,97,.1) !important; }
+.dlx-overview-item.active .dlx-overview-meta { border-bottom-color: rgba(201,169,97,.15) !important; }
+.dlx-sanfang-value { color: #a89878 !important; }
+
+/* ── 星曜徽章（强度4色）── */
+.dlx-star-庙 { background: rgba(220,168,40,.2) !important; color: #d4a832 !important; }
+.dlx-star-旺 { background: rgba(220,168,40,.15) !important; color: #c9a440 !important; }
+.dlx-star-得 { background: rgba(60,160,100,.12) !important; color: #6dc48a !important; }
+.dlx-star-利 { background: rgba(60,140,220,.1)  !important; color: #6aaad4 !important; }
+.dlx-star-平 { background: rgba(255,255,255,.05) !important; color: #6b5c4a !important; }
+.dlx-star-不 { background: rgba(180,60,50,.1)   !important; color: #d4786a !important; }
+.dlx-star-陷 { background: rgba(180,60,50,.15)  !important; color: #c05a50 !important; }
+.dlx-star-default { background: rgba(255,255,255,.05) !important; color: #6b5c4a !important; }
+
+/* ── 状态徽章 ── */
+.dlx-badge-empty   { background: rgba(255,255,255,.05) !important; color: #6b5c4a !important; }
+.dlx-badge-loading { background: rgba(220,168,40,.12)  !important; color: #c9a440 !important; }
+.dlx-badge-done    { background: rgba(60,160,100,.12)  !important; color: #6dc48a !important; }
+.dlx-badge-error   { background: rgba(180,60,50,.12)   !important; color: #d4786a !important; }
+
+/* ── 大限流年选择 pill ── */
+.dlx-pills .dlx-pill,
+.dlx-pills [class*="dlx-pill"] {
+  background: rgba(201,169,97,.08) !important;
+  border: 1px solid rgba(201,169,97,.15) !important;
+  color: #a89878 !important;
+  border-radius: 20px !important;
+}
+.dlx-pills .dlx-pill.active,
+.dlx-pills .dlx-pill-active {
+  background: rgba(201,169,97,.2) !important;
+  border-color: rgba(201,169,97,.4) !important;
+  color: #c9a961 !important;
+}
+.dlx-info-grid { color: #a89878 !important; }
+
+/* ── AI 状态文字 ── */
+.aip-ai-status, .aip-card-ai-status { color: #6b5c4a !important; }
+.aip-footer-note { color: #4a3d34 !important; }
+
 /* 打字动画 */
 .chat-typing-dots {
   display: inline-flex; gap: 4px; align-items: center;
