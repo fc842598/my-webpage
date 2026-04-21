@@ -2759,6 +2759,12 @@
   color: #7a6a4a;
 }
 .chat-memory-source.is-demand::before { content: '○ '; }
+.chat-memory-source.is-used {
+  background: rgba(132, 66, 48, .08);
+  border-color: rgba(132, 66, 48, .34);
+  color: #844230;
+}
+.chat-memory-source.is-used::before { content: '✓ '; }
 .chat-background-status {
   margin-top: 10px;
   padding: 8px 12px;
@@ -3117,7 +3123,17 @@
   color: rgba(150, 130, 80, .6);
 }
 
+#aip-panel-chat .chat-memory-source.is-used {
+  background: rgba(132, 66, 48, .14);
+  border-color: rgba(178, 112, 82, .42);
+  color: #e4c3a4;
+}
+
 #aip-panel-chat .chat-memory-source.is-ready::before {
+  content: '✓ ';
+}
+
+#aip-panel-chat .chat-memory-source.is-used::before {
   content: '✓ ';
 }
 

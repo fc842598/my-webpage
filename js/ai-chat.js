@@ -197,7 +197,7 @@
         _updateBadges(data.hasMemoryA, data.hasMemoryB, data.memoryBVersion || 0, false);
         _setModeBadge(_transientMode);
         _setContextPreview(data.memoryASummary || '');
-        _setMemorySources(data.memoryAMeta || null);
+        _setMemorySources(data.memoryAMeta || null, null);
         _setBackgroundStatus('基础命盘已读入，专题结论按需调用。', 'ok');
 
         if (!preserveMessages) {
@@ -282,7 +282,7 @@
         _updateBadges(data.hasMemoryA, data.hasMemoryB, data.memoryBVersion || 0, false);
         _setModeBadge(_transientMode);
         _setContextPreview(data.memoryASummary || '');
-        _setMemorySources(data.memoryAMeta || null);
+        _setMemorySources(data.memoryAMeta || null, data.activeTopicTargets || null);
         if (data.quota && typeof window._updateQuotaDisplay === 'function') {
           window._updateQuotaDisplay(data.quota);
         }
@@ -303,7 +303,7 @@
           _setStarterEnabled(false);
           _setRefreshEnabled(false);
           _setModeBadge(true);
-          _setMemorySources(null);
+          _setMemorySources(null, null);
           _setContextPreview('当前聊天数据库还没建好，许半仙暂时无法保存会话与命盘记忆。先执行 Supabase SQL，再回来重试。');
         }
 
@@ -596,21 +596,35 @@
     badge.classList.toggle('chat-badge-transient', !!isTransient);
   }
 
-  function _setMemorySources(meta) {
+  function _setMemorySources(meta, activeTargets) {
     var el = document.getElementById('chat-memory-sources');
     if (!el) return;
 
     var baseReady = !!meta;
+    var targets = activeTargets || {};
+    function topicItem(key, label) {
+      var active = !!targets[key];
+      return {
+        label: label,
+        cls: active ? 'is-used' : 'is-demand',
+        prefix: active ? '本轮命中' : '按问调入',
+        title: active
+          ? '本轮问题命中该专题，会优先读取已有结论；没有结论时用命盘明细补判。'
+          : '用户问到相关主题时才调入，避免每次都消耗算力。'
+      };
+    }
+
     var items = [
       { label: '基础命盘', cls: baseReady ? 'is-ready' : '', prefix: baseReady ? '已读' : '未读' },
-      { label: '整体结论', cls: 'is-demand', prefix: '按需' },
-      { label: '身宫结论', cls: 'is-demand', prefix: '按需' },
-      { label: '大运结论', cls: 'is-demand', prefix: '按需' },
-      { label: '流年结论', cls: 'is-demand', prefix: '按需' },
+      topicItem('needsA1', '整体结论'),
+      topicItem('needsA2', '身宫结论'),
+      topicItem('needsA3', '大运结论'),
+      topicItem('needsA4', '流年结论'),
     ];
 
     el.innerHTML = items.map(function (item) {
-      return '<span class="chat-memory-source ' + (item.cls || '') + '">' +
+      return '<span class="chat-memory-source ' + (item.cls || '') + '"' +
+        (item.title ? ' title="' + item.title + '"' : '') + '>' +
         item.prefix + ' ' + item.label +
         '</span>';
     }).join('');
