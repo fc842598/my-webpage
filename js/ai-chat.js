@@ -23,12 +23,13 @@
   window._chatPanelInit = init;
   window._chatPanelRefresh = refresh;
   window._chatRebuildMemoryA = rebuildMemoryA;
+  window._chatPanelPrepareForNewChart = prepareForNewChart;
   window._chatInvalidateMemoryA = function () {
     _memoryAStale = true;
     _setContextPreview('命盘信息已更新，建议点"重读命盘"让许半仙重新读入基础命盘。');
     _updateBadges(false, false, 0, true);
     _setModeBadge(_transientMode);
-    _setMemorySources(null);
+    _setMemorySources(null, null);
     _setBackgroundStatus('', '');
   };
 
@@ -134,6 +135,21 @@
     _resetSessionState();
     _retryCount = 0;
     init();
+  }
+
+  function prepareForNewChart() {
+    _resetSessionState();
+    _retryCount = 0;
+    _lastChartRecordId = null;
+    _setMsgArea('<div class="chat-sys-msg">检测到新命盘，等待保存后重新读取。</div>');
+    _setInputEnabled(false);
+    _setStarterEnabled(false);
+    _setRefreshEnabled(false);
+    _setModeBadge(false);
+    _updateBadges(false, false, 0, false);
+    _setMemorySources(null, null);
+    _setContextPreview('新命盘正在保存，许半仙稍后会重新读取，不会沿用上一张盘。');
+    _setBackgroundStatus('', '');
   }
 
   function rebuildMemoryA() {

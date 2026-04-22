@@ -1355,6 +1355,20 @@ document.getElementById('btn-submit').addEventListener('click', async () => {
     };
     window._chart = _chart; window._chartInputs = _chartInputs;
 
+    const shouldReloadChatPanel = (() => {
+      const panel = document.getElementById('aip-panel-chat');
+      const section = document.getElementById('aip-section');
+      return !!(
+        panel &&
+        section &&
+        getComputedStyle(panel).display !== 'none' &&
+        getComputedStyle(section).display !== 'none'
+      );
+    })();
+    if (shouldReloadChatPanel && typeof window._chatPanelPrepareForNewChart === 'function') {
+      window._chatPanelPrepareForNewChart();
+    }
+
     renderFigmaChart(_chart, norm.gender, norm.dateStr, norm);
     if (window._pendingHistoryRecordId) {
       window._chartRecordId = window._pendingHistoryRecordId;
@@ -1364,6 +1378,9 @@ document.getElementById('btn-submit').addEventListener('click', async () => {
     }
     document.getElementById('form-section').style.display = 'none';
     document.getElementById('fc-section').style.display = 'block';
+    if (shouldReloadChatPanel && typeof window._chatPanelInit === 'function') {
+      window._chatPanelInit();
+    }
     window.scrollTo({ top: 0, behavior: 'smooth' });
   } catch (err) {
     showError('排盘失败：' + (err.message || '请检查出生日期，或刷新重试'));
