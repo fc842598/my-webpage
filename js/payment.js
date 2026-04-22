@@ -427,6 +427,12 @@
     var shopClose = qs('pay-shop-close');
     if (shopClose) shopClose.onclick = function(){ hide('pay-shop-modal'); };
 
+    document.addEventListener('keydown', function(e) {
+      if (e.key !== 'Escape') return;
+      hide('pay-shop-modal');
+      closeModal();
+    });
+
     renderShop('pay-shop-products');
 
     document.querySelectorAll('[data-pay-open]').forEach(function(btn) {
