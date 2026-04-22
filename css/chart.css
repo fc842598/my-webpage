@@ -3575,9 +3575,9 @@
 .aip-sub-card {
   background: #160f08 !important;
   border-color: rgba(201,169,97,.1) !important;
-  border-radius: 10px !important;
-  padding: 14px 16px !important;
-  margin-top: 4px !important;
+  border-radius: 12px !important;
+  padding: 18px 20px !important;
+  margin-top: 12px !important;
 }
 /* 五个专项批命卡统一展示层级：向身宫卡靠齐，避免颜色体系杂乱 */
 .aip-shen-card,
@@ -3589,27 +3589,39 @@
     linear-gradient(180deg, rgba(30,20,10,.98) 0%, rgba(20,14,8,.98) 100%) !important;
   border: 1px solid rgba(201,169,97,.13) !important;
   box-shadow: inset 0 1px 0 rgba(255,235,190,.035) !important;
+  min-height: 0 !important;
+  display: grid !important;
+  grid-template-columns: 1fr auto !important;
+  column-gap: 16px !important;
+  row-gap: 12px !important;
+  align-items: center !important;
 }
 
 .aip-sub-card .aip-card-head {
   display: flex !important;
   align-items: center !important;
   gap: 10px !important;
-  margin-bottom: 10px !important;
+  margin: 0 !important;
+  min-width: 0 !important;
 }
 
 .aip-sub-card .aip-card-title {
   color: #ede4d4 !important;
-  font-size: 13px !important;
+  font-size: 15px !important;
   font-weight: 700 !important;
   letter-spacing: .02em !important;
+  min-width: 0 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
 }
 
 .aip-sub-card .aip-card-ai-bar {
   display: flex !important;
   align-items: center !important;
   gap: 12px !important;
-  margin: 12px 0 11px !important;
+  justify-content: flex-end !important;
+  margin: 0 !important;
 }
 
 .aip-sub-card .aip-card-ai-btn {
@@ -3637,21 +3649,39 @@
 }
 
 .aip-sub-card .aip-card-body {
-  min-height: 48px !important;
-  margin-top: 2px !important;
-  padding-top: 12px !important;
+  grid-column: 1 / -1 !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding-top: 14px !important;
   border-top: 1px solid rgba(201,169,97,.08) !important;
   color: #a89878 !important;
   font-size: 13px !important;
   line-height: 1.82 !important;
 }
 
+.aip-sub-card .aip-card-body:empty {
+  display: none !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border-top: 0 !important;
+}
+
 .aip-sub-card .aip-card-tip {
-  margin-top: 10px !important;
+  grid-column: 1 / -1 !important;
+  margin: 0 !important;
+  padding: 0 0 0 10px !important;
   color: #9b7b52 !important;
   border-left-color: rgba(201,169,97,.24) !important;
   background: transparent !important;
   font-size: 12px !important;
+}
+
+.aip-sub-card .aip-card-tip:empty {
+  display: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border-left: 0 !important;
 }
 
 /* 五个专项标签统一为身宫的金色体系 */
@@ -3666,6 +3696,25 @@
   font-size: 10px !important;
   padding: 2px 9px !important;
   border-radius: 10px !important;
+}
+
+@media (max-width: 720px) {
+  .aip-shen-card,
+  .aip-hunyin-card,
+  .aip-jiankang-card,
+  .aip-caiyun-card,
+  .aip-shiye-card {
+    grid-template-columns: 1fr !important;
+    row-gap: 10px !important;
+  }
+
+  .aip-sub-card .aip-card-ai-bar {
+    justify-content: flex-start !important;
+  }
+
+  .aip-sub-card .aip-card-ai-btn {
+    width: 100% !important;
+  }
 }
 
 /* ── 风险/依据区 ── */
