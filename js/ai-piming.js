@@ -366,6 +366,8 @@ const TIEKOU_TEST_MODULES = [
   { index: 2, moduleKey: 'tiekou_test_2' },
   { index: 3, moduleKey: 'tiekou_test_3' },
   { index: 4, moduleKey: 'tiekou_test_4' },
+  { index: 5, moduleKey: 'tiekou_test_5' },
+  { index: 6, moduleKey: 'tiekou_test_6' },
 ];
 
 function _aipRenderTiekouResult(moduleKey, data) {
