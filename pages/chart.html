@@ -363,6 +363,7 @@
       <button class="aip-tab"        data-panel="aip-panel-luck">大限流年</button>
       <button class="aip-tab"        data-panel="aip-panel-curve">人生曲线</button>
       <button class="aip-tab"        data-panel="aip-panel-chat">AI半仙</button>
+      <button class="aip-tab"        data-panel="aip-panel-tiekou">铁口直断</button>
     </div>
 
     <!-- 整体批命 -->
@@ -804,6 +805,73 @@
         </div>
       </div>
 
+    </div>
+
+    <!-- 铁口直断测试 -->
+    <div class="aip-panel" id="aip-panel-tiekou" style="display:none">
+      <div class="aip-card tiekou-intro-card">
+        <div class="aip-card-head">
+          <span class="aip-tag">测试级</span>
+          <span class="aip-card-title">铁口直断 · 长笔记匹配实验</span>
+        </div>
+        <div class="aip-card-tip">
+          后台每个测试位可粘贴不同长笔记。AI 只从对应笔记中找匹配批语；找不到就留空；输出必须带出处。
+        </div>
+      </div>
+
+      <div class="tiekou-test-grid">
+        <div class="aip-card aip-sub-card aip-tiekou-card">
+          <div class="aip-card-head">
+            <span class="aip-tag">测试一</span>
+            <span class="aip-card-title">笔记一匹配</span>
+          </div>
+          <div class="aip-card-ai-bar">
+            <button class="aip-card-ai-btn" id="aip-tiekou-1-btn">✦ 测试一批命</button>
+            <span class="aip-ai-status" id="aip-tiekou-1-status"></span>
+          </div>
+          <div class="aip-card-body" id="aip-tiekou-1-body"></div>
+          <div class="aip-card-tip" id="aip-tiekou-1-tip">后台模块：铁口直断测试一。</div>
+        </div>
+
+        <div class="aip-card aip-sub-card aip-tiekou-card">
+          <div class="aip-card-head">
+            <span class="aip-tag">测试二</span>
+            <span class="aip-card-title">笔记二匹配</span>
+          </div>
+          <div class="aip-card-ai-bar">
+            <button class="aip-card-ai-btn" id="aip-tiekou-2-btn">✦ 测试二批命</button>
+            <span class="aip-ai-status" id="aip-tiekou-2-status"></span>
+          </div>
+          <div class="aip-card-body" id="aip-tiekou-2-body"></div>
+          <div class="aip-card-tip" id="aip-tiekou-2-tip">后台模块：铁口直断测试二。</div>
+        </div>
+
+        <div class="aip-card aip-sub-card aip-tiekou-card">
+          <div class="aip-card-head">
+            <span class="aip-tag">测试三</span>
+            <span class="aip-card-title">笔记三匹配</span>
+          </div>
+          <div class="aip-card-ai-bar">
+            <button class="aip-card-ai-btn" id="aip-tiekou-3-btn">✦ 测试三批命</button>
+            <span class="aip-ai-status" id="aip-tiekou-3-status"></span>
+          </div>
+          <div class="aip-card-body" id="aip-tiekou-3-body"></div>
+          <div class="aip-card-tip" id="aip-tiekou-3-tip">后台模块：铁口直断测试三。</div>
+        </div>
+
+        <div class="aip-card aip-sub-card aip-tiekou-card">
+          <div class="aip-card-head">
+            <span class="aip-tag">测试四</span>
+            <span class="aip-card-title">笔记四匹配</span>
+          </div>
+          <div class="aip-card-ai-bar">
+            <button class="aip-card-ai-btn" id="aip-tiekou-4-btn">✦ 测试四批命</button>
+            <span class="aip-ai-status" id="aip-tiekou-4-status"></span>
+          </div>
+          <div class="aip-card-body" id="aip-tiekou-4-body"></div>
+          <div class="aip-card-tip" id="aip-tiekou-4-tip">后台模块：铁口直断测试四。</div>
+        </div>
+      </div>
     </div>
 
     <div class="aip-footer-note" id="aip-footer-note"></div>

@@ -361,8 +361,46 @@ function _aipRenderSections(el, sections) {
   step();
 }
 
+const TIEKOU_TEST_MODULES = [
+  { index: 1, moduleKey: 'tiekou_test_1' },
+  { index: 2, moduleKey: 'tiekou_test_2' },
+  { index: 3, moduleKey: 'tiekou_test_3' },
+  { index: 4, moduleKey: 'tiekou_test_4' },
+];
+
+function _aipRenderTiekouResult(moduleKey, data) {
+  const item = TIEKOU_TEST_MODULES.find(x => x.moduleKey === moduleKey);
+  if (!item) return;
+  const card = data.card || {};
+  const body = document.getElementById(`aip-tiekou-${item.index}-body`);
+  const tip = document.getElementById(`aip-tiekou-${item.index}-tip`);
+  const sections = (Array.isArray(card.sections) ? card.sections : [])
+    .filter(s => String(s?.content || '').trim());
+
+  if (body) {
+    body.innerHTML = '';
+    body.style.color = '';
+    if (sections.length) {
+      _aipRenderSections(body, sections);
+    } else {
+      body.textContent = '未匹配到明确批语。';
+      body.style.color = '#9a8878';
+    }
+  }
+  if (tip) {
+    tip.textContent = card.risk
+      ? `提醒：${card.risk}`
+      : '规则：只显示笔记命中的批语；每条必须带出处。';
+  }
+}
+
 // ── 渲染结果到现有卡片 ────────────────────────────────────────────────────────
 function _aipRenderResult(moduleKey, data) {
+  if (moduleKey && String(moduleKey).startsWith('tiekou_test_')) {
+    _aipRenderTiekouResult(moduleKey, data);
+    return;
+  }
+
   switch (moduleKey) {
     case 'overall': {
       // card → 整体批命主卡片（aip-life）
@@ -918,6 +956,50 @@ function _aipRenderResult(moduleKey, data) {
     });
   }
 
+  function _bindTiekouTestBtns() {
+    TIEKOU_TEST_MODULES.forEach(({ index, moduleKey }) => {
+      const btn = document.getElementById(`aip-tiekou-${index}-btn`);
+      const statusEl = document.getElementById(`aip-tiekou-${index}-status`);
+      if (!btn) return;
+      const newBtn = btn.cloneNode(true);
+      btn.parentNode.replaceChild(newBtn, btn);
+
+      newBtn.addEventListener('click', async function () {
+        if (!window._chart || !window._chartInputs) {
+          if (statusEl) statusEl.textContent = '请先完成排盘';
+          return;
+        }
+        newBtn.disabled = true;
+        if (statusEl) statusEl.textContent = '正在匹配笔记…';
+
+        const body = document.getElementById(`aip-tiekou-${index}-body`);
+        const tip = document.getElementById(`aip-tiekou-${index}-tip`);
+        if (body) {
+          body.textContent = 'AI 正在通读对应笔记并匹配命盘，请稍候…';
+          body.style.color = '#9a8878';
+        }
+        if (tip) tip.textContent = '匹配中：找不到明确出处时会返回空。';
+
+        try {
+          const data = await _aipCallBackend(moduleKey);
+          _aipRenderResult(moduleKey, data);
+          const meta = data.meta || data.debug || {};
+          if (statusEl) statusEl.textContent = `完成 · ${_fmtDuration(meta.durationMs)}`;
+        } catch (err) {
+          const msg = err?.message || 'AI 生成失败';
+          if (statusEl) statusEl.textContent = msg;
+          if (body) {
+            body.textContent = '⚠ ' + msg + '\n请检查后台是否已发布该测试位提示词。';
+            body.style.color = '#963d32';
+          }
+          if (tip) tip.textContent = '';
+        } finally {
+          newBtn.disabled = false;
+        }
+      });
+    });
+  }
+
   function _bind() {
     _bindOverallBtn();
     _bindShenBtn();
@@ -927,6 +1009,7 @@ function _aipRenderResult(moduleKey, data) {
     _bindShiyeBtn();
     _bindDlxDaxianBtn();
     _bindDlxLiunianBtn();
+    _bindTiekouTestBtns();
   }
 
   if (document.readyState === 'loading') {

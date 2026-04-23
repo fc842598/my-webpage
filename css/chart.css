@@ -3584,7 +3584,8 @@
 .aip-hunyin-card,
 .aip-jiankang-card,
 .aip-caiyun-card,
-.aip-shiye-card {
+.aip-shiye-card,
+.aip-tiekou-card {
   background:
     linear-gradient(180deg, rgba(30,20,10,.98) 0%, rgba(20,14,8,.98) 100%) !important;
   border: 1px solid rgba(201,169,97,.13) !important;
@@ -3698,12 +3699,38 @@
   border-radius: 10px !important;
 }
 
+.tiekou-intro-card {
+  border-color: rgba(201,169,97,.18) !important;
+  background:
+    linear-gradient(135deg, rgba(201,169,97,.08), rgba(122,59,46,.08)),
+    #160f08 !important;
+}
+
+.tiekou-test-grid {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 12px !important;
+}
+
+.aip-tiekou-card {
+  min-height: 185px !important;
+}
+
+.aip-tiekou-card .aip-card-body {
+  min-height: 64px !important;
+}
+
+.aip-tiekou-card .aip-card-tip {
+  color: #8f785b !important;
+}
+
 @media (max-width: 720px) {
   .aip-shen-card,
   .aip-hunyin-card,
   .aip-jiankang-card,
   .aip-caiyun-card,
-  .aip-shiye-card {
+  .aip-shiye-card,
+  .aip-tiekou-card {
     grid-template-columns: 1fr !important;
     row-gap: 10px !important;
   }
@@ -3714,6 +3741,10 @@
 
   .aip-sub-card .aip-card-ai-btn {
     width: 100% !important;
+  }
+
+  .tiekou-test-grid {
+    grid-template-columns: 1fr !important;
   }
 }
 
