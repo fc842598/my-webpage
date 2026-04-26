@@ -362,22 +362,116 @@ function _aipRenderSections(el, sections) {
 }
 
 const TIEKOU_TEST_MODULES = [
-  { index: 1, moduleKey: 'tiekou_test_1' },
-  { index: 2, moduleKey: 'tiekou_test_2' },
-  { index: 3, moduleKey: 'tiekou_test_3' },
-  { index: 4, moduleKey: 'tiekou_test_4' },
-  { index: 5, moduleKey: 'tiekou_test_5' },
-  { index: 6, moduleKey: 'tiekou_test_6' },
-  { index: 7, moduleKey: 'tiekou_test_7' },
+  { index: 1, moduleKey: 'tiekou_test_1', summaryName: '测试一', defaultTip: '定位：主力直断，输出 4-6 条最硬命中。' },
+  { index: 2, moduleKey: 'tiekou_test_2', summaryName: '测试二', defaultTip: '定位：替换原 OCR 调试文档，用《紫微斗数全书》做主公版测试。' },
+  { index: 3, moduleKey: 'tiekou_test_3', summaryName: '测试三', defaultTip: '定位：课堂规则验证，重点看星曜、四化、格局出处。' },
+  { index: 4, moduleKey: 'tiekou_test_4', summaryName: '测试四', defaultTip: '定位：人性、进退、时机补充，不强行斗数断语。' },
+  { index: 5, moduleKey: 'tiekou_test_5', summaryName: '测试五', defaultTip: '定位：用《紫微斗数》做第二份斗数公版文本对照。' },
+  { index: 6, moduleKey: 'tiekou_test_6', summaryName: '测试六', defaultTip: '定位：用《三命通会》做八字命理旁证，不强行套紫微。' },
+  { index: 7, moduleKey: 'tiekou_test_7', summaryName: '测试七', defaultTip: '定位：合并全部文本，后台先检索候选片段，再做双轮自查，只留最终通过项。' },
 ];
+
+let _aipTiekouSummaryState = {};
+
+function _aipBuildTiekouSummaryState() {
+  return TIEKOU_TEST_MODULES.reduce((acc, item) => {
+    acc[item.moduleKey] = {
+      state: 'idle',
+      text: '待测试',
+      hitCount: 0,
+      duration: '',
+    };
+    return acc;
+  }, {});
+}
+
+function _aipRenderTiekouSummary() {
+  const overviewEl = document.getElementById('aip-tiekou-summary-overview');
+  const gridEl = document.getElementById('aip-tiekou-summary-grid');
+  if (!overviewEl || !gridEl) return;
+
+  const allStates = TIEKOU_TEST_MODULES.map(item => _aipTiekouSummaryState[item.moduleKey] || { state: 'idle', text: '待测试' });
+  const tested = allStates.filter(s => s.state !== 'idle').length;
+  const running = allStates.filter(s => s.state === 'running').length;
+  const hit = allStates.filter(s => s.state === 'done').length;
+  const empty = allStates.filter(s => s.state === 'empty').length;
+  const error = allStates.filter(s => s.state === 'error').length;
+
+  overviewEl.textContent = tested
+    ? `总览：已测 ${tested}/${TIEKOU_TEST_MODULES.length} · 命中 ${hit} · 空结果 ${empty} · 失败 ${error}${running ? ` · 运行中 ${running}` : ''}`
+    : '总览：还没开始测试，先排盘后逐个试。';
+
+  gridEl.innerHTML = TIEKOU_TEST_MODULES.map(item => {
+    const state = _aipTiekouSummaryState[item.moduleKey] || { state: 'idle', text: '待测试' };
+    const cls = `is-${state.state || 'idle'}`;
+    const duration = state.duration ? ` · ${state.duration}` : '';
+    return `<span class="tiekou-summary-pill ${cls}"><strong>${item.summaryName}</strong><em>${state.text || '待测试'}${duration}</em></span>`;
+  }).join('');
+}
+
+function _aipSetTiekouSummaryState(moduleKey, patch) {
+  const prev = _aipTiekouSummaryState[moduleKey] || {};
+  _aipTiekouSummaryState[moduleKey] = { ...prev, ...patch };
+  _aipRenderTiekouSummary();
+}
+
+function _aipResetTiekouCards() {
+  if (_aipTypewriterTimer) {
+    clearTimeout(_aipTypewriterTimer);
+    _aipTypewriterTimer = null;
+  }
+  _aipTiekouSummaryState = _aipBuildTiekouSummaryState();
+  TIEKOU_TEST_MODULES.forEach(({ index, defaultTip }) => {
+    const body = document.getElementById(`aip-tiekou-${index}-body`);
+    const tip = document.getElementById(`aip-tiekou-${index}-tip`);
+    const status = document.getElementById(`aip-tiekou-${index}-status`);
+    if (body) {
+      body.innerHTML = '';
+      body.style.color = '';
+    }
+    if (tip) tip.textContent = defaultTip;
+    if (status) status.textContent = '';
+  });
+  _aipRenderTiekouSummary();
+}
+
+function _aipGetTiekouEmptyMessage(item, data) {
+  const card = data.card || {};
+  const meta = data.meta || {};
+  const debug = data.debug || {};
+  const hint = [
+    card.risk,
+    meta.noMatchReason,
+    debug.noMatchReason,
+    ...(Array.isArray(debug.trace) ? debug.trace : []),
+  ].filter(Boolean).join(' ');
+
+  if (item.moduleKey === 'tiekou_test_7') {
+    return /自查|验算|复核|未通过|打回/.test(hint)
+      ? '总库命中过候选，但双轮自查没有全部通过，已按规则留空。'
+      : '总库这次没有留下能通过双轮自查的批语。';
+  }
+  if (/自查|验算|复核|未通过|打回/.test(hint)) {
+    return '本轮其实命中过候选，但验算没过，已按规则留空。';
+  }
+  if (/出处|原文|引文|回查|找不到/.test(hint)) {
+    return '本轮有候选，但出处不够硬，已按规则留空。';
+  }
+  if (/命盘|宫位|四化|星曜|对不上|不一致/.test(hint)) {
+    return '本轮有候选，但和当前命盘对不上，已按规则留空。';
+  }
+  if (/空|未匹配|无匹配|未命中/.test(hint)) {
+    return '当前测试位没有命中足够硬的批语。';
+  }
+  return '当前测试位没有通过最终验算的批语。';
+}
 
 function _aipRenderTiekouResult(moduleKey, data) {
   const item = TIEKOU_TEST_MODULES.find(x => x.moduleKey === moduleKey);
-  if (!item) return;
-  const card = data.card || {};
+  if (!item) return { hitCount: 0, hasResult: false };
   const body = document.getElementById(`aip-tiekou-${item.index}-body`);
   const tip = document.getElementById(`aip-tiekou-${item.index}-tip`);
-  const sections = (Array.isArray(card.sections) ? card.sections : [])
+  const sections = (Array.isArray(data.card?.sections) ? data.card.sections : [])
     .filter(s => String(s?.content || '').trim());
 
   if (body) {
@@ -386,22 +480,20 @@ function _aipRenderTiekouResult(moduleKey, data) {
     if (sections.length) {
       _aipRenderSections(body, sections);
     } else {
-      body.textContent = '未匹配到明确批语。';
+      body.textContent = _aipGetTiekouEmptyMessage(item, data);
       body.style.color = '#9a8878';
     }
   }
-  if (tip) {
-    tip.textContent = card.risk
-      ? `提醒：${card.risk}`
-      : '规则：只显示笔记命中的批语；每条必须带出处。';
-  }
+  if (tip) tip.textContent = item.defaultTip;
+  return { hitCount: sections.length, hasResult: sections.length > 0 };
 }
+
+window._aipResetTiekouCards = _aipResetTiekouCards;
 
 // ── 渲染结果到现有卡片 ────────────────────────────────────────────────────────
 function _aipRenderResult(moduleKey, data) {
   if (moduleKey && String(moduleKey).startsWith('tiekou_test_')) {
-    _aipRenderTiekouResult(moduleKey, data);
-    return;
+    return _aipRenderTiekouResult(moduleKey, data);
   }
 
   switch (moduleKey) {
@@ -972,22 +1064,41 @@ function _aipRenderResult(moduleKey, data) {
           if (statusEl) statusEl.textContent = '请先完成排盘';
           return;
         }
+        if (_aipTypewriterTimer) {
+          clearTimeout(_aipTypewriterTimer);
+          _aipTypewriterTimer = null;
+        }
         newBtn.disabled = true;
         if (statusEl) statusEl.textContent = '正在匹配笔记…';
+        _aipSetTiekouSummaryState(moduleKey, {
+          state: 'running',
+          text: '运行中',
+          hitCount: 0,
+          duration: '',
+        });
 
         const body = document.getElementById(`aip-tiekou-${index}-body`);
-        const tip = document.getElementById(`aip-tiekou-${index}-tip`);
         if (body) {
           body.textContent = 'AI 正在通读对应笔记并匹配命盘，请稍候…';
           body.style.color = '#9a8878';
         }
-        if (tip) tip.textContent = '匹配中：找不到明确出处时会返回空。';
 
         try {
           const data = await _aipCallBackend(moduleKey);
-          _aipRenderResult(moduleKey, data);
+          const result = _aipRenderResult(moduleKey, data) || {};
           const meta = data.meta || data.debug || {};
-          if (statusEl) statusEl.textContent = `完成 · ${_fmtDuration(meta.durationMs)}`;
+          if (statusEl) {
+            const resultLabel = result.hasResult
+              ? `命中 ${result.hitCount} 条`
+              : '空结果';
+            statusEl.textContent = `完成 · ${resultLabel} · ${_fmtDuration(meta.durationMs)}`;
+          }
+          _aipSetTiekouSummaryState(moduleKey, {
+            state: result.hasResult ? 'done' : 'empty',
+            text: result.hasResult ? `命中 ${result.hitCount} 条` : '空结果',
+            hitCount: result.hitCount || 0,
+            duration: _fmtDuration(meta.durationMs),
+          });
         } catch (err) {
           const msg = err?.message || 'AI 生成失败';
           if (statusEl) statusEl.textContent = msg;
@@ -995,7 +1106,12 @@ function _aipRenderResult(moduleKey, data) {
             body.textContent = '⚠ ' + msg + '\n请检查后台是否已发布该测试位提示词。';
             body.style.color = '#963d32';
           }
-          if (tip) tip.textContent = '';
+          _aipSetTiekouSummaryState(moduleKey, {
+            state: 'error',
+            text: '失败',
+            hitCount: 0,
+            duration: '',
+          });
         } finally {
           newBtn.disabled = false;
         }
@@ -1013,6 +1129,7 @@ function _aipRenderResult(moduleKey, data) {
     _bindDlxDaxianBtn();
     _bindDlxLiunianBtn();
     _bindTiekouTestBtns();
+    _aipResetTiekouCards();
   }
 
   if (document.readyState === 'loading') {

@@ -817,10 +817,19 @@
         <div class="aip-card-tip">
           测试二、五、六用于公版古籍对照；每个测试位单独走后台提示词版本，方便逐本试命中效果。
         </div>
+        <div class="tiekou-summary" id="aip-tiekou-summary">
+          <div class="tiekou-summary-overview" id="aip-tiekou-summary-overview">总览：还没开始测试。</div>
+          <div class="tiekou-summary-grid" id="aip-tiekou-summary-grid"></div>
+        </div>
       </div>
 
-      <div class="tiekou-test-grid">
-        <div class="aip-card aip-sub-card aip-tiekou-card">
+      <div class="tiekou-test-grid tiekou-test-flow">
+        <div class="tiekou-group-banner tiekou-group-banner-private">
+          <span class="tiekou-group-banner-tag">私有笔记系</span>
+          <span class="tiekou-group-banner-title">直断 / 规则 / 人性补充</span>
+          <span class="tiekou-group-banner-desc">先测你自己的笔记体系，看硬命中、课堂规则和老师傅味道。</span>
+        </div>
+        <div class="aip-card aip-sub-card aip-tiekou-card tiekou-card-order-1">
           <div class="aip-card-head">
             <span class="aip-tag">测试一</span>
             <span class="aip-card-title">Jeff整理版 · 斗数直断</span>
@@ -833,7 +842,12 @@
           <div class="aip-card-tip" id="aip-tiekou-1-tip">定位：主力直断，输出 4-6 条最硬命中。</div>
         </div>
 
-        <div class="aip-card aip-sub-card aip-tiekou-card">
+        <div class="tiekou-group-banner tiekou-group-banner-public">
+          <span class="tiekou-group-banner-tag">公版古籍系</span>
+          <span class="tiekou-group-banner-title">古籍原文 / 公版对照 / 命理旁证</span>
+          <span class="tiekou-group-banner-desc">再看公版文本里能不能找到够硬、够准、还能回查的出处。</span>
+        </div>
+        <div class="aip-card aip-sub-card aip-tiekou-card tiekou-card-order-4">
           <div class="aip-card-head">
             <span class="aip-tag">测试二</span>
             <span class="aip-card-title">紫微斗数全书 · 公版古籍</span>
@@ -846,7 +860,7 @@
           <div class="aip-card-tip" id="aip-tiekou-2-tip">定位：替换原 OCR 调试文档，用《紫微斗数全书》做主公版测试。</div>
         </div>
 
-        <div class="aip-card aip-sub-card aip-tiekou-card">
+        <div class="aip-card aip-sub-card aip-tiekou-card tiekou-card-order-2">
           <div class="aip-card-head">
             <span class="aip-tag">测试三</span>
             <span class="aip-card-title">天机道笔记 · 规则验证</span>
@@ -859,7 +873,7 @@
           <div class="aip-card-tip" id="aip-tiekou-3-tip">定位：课堂规则验证，重点看星曜、四化、格局出处。</div>
         </div>
 
-        <div class="aip-card aip-sub-card aip-tiekou-card">
+        <div class="aip-card aip-sub-card aip-tiekou-card tiekou-card-order-3">
           <div class="aip-card-head">
             <span class="aip-tag">测试四</span>
             <span class="aip-card-title">人间道笔记 · 处世补充</span>
@@ -872,7 +886,7 @@
           <div class="aip-card-tip" id="aip-tiekou-4-tip">定位：人性、进退、时机补充，不强行斗数断语。</div>
         </div>
 
-        <div class="aip-card aip-sub-card aip-tiekou-card">
+        <div class="aip-card aip-sub-card aip-tiekou-card tiekou-card-order-5">
           <div class="aip-card-head">
             <span class="aip-tag">测试五</span>
             <span class="aip-card-title">紫微斗数 · 公版对照</span>
@@ -885,7 +899,7 @@
           <div class="aip-card-tip" id="aip-tiekou-5-tip">定位：用《紫微斗数》做第二份斗数公版文本对照。</div>
         </div>
 
-        <div class="aip-card aip-sub-card aip-tiekou-card">
+        <div class="aip-card aip-sub-card aip-tiekou-card tiekou-card-order-6">
           <div class="aip-card-head">
             <span class="aip-tag">测试六</span>
             <span class="aip-card-title">三命通会 · 命理旁证</span>
@@ -898,7 +912,12 @@
           <div class="aip-card-tip" id="aip-tiekou-6-tip">定位：用《三命通会》做八字命理旁证，不强行套紫微。</div>
         </div>
 
-        <div class="aip-card aip-sub-card aip-tiekou-card">
+        <div class="tiekou-group-banner tiekou-group-banner-final">
+          <span class="tiekou-group-banner-tag">总库终审</span>
+          <span class="tiekou-group-banner-title">合并文本 + 双轮验算</span>
+          <span class="tiekou-group-banner-desc">最后用总库做终审，只留下能通过双轮自查的结果。</span>
+        </div>
+        <div class="aip-card aip-sub-card aip-tiekou-card tiekou-card-order-7 tiekou-card-final">
           <div class="aip-card-head">
             <span class="aip-tag">测试七</span>
             <span class="aip-card-title">总库合并 · 双轮验算</span>
@@ -4361,6 +4380,9 @@ function renderAIPiming() {
     const noteEl   = document.getElementById('aip-footer-note');
     if (statusEl) statusEl.textContent = '';
     if (noteEl)   noteEl.textContent   = _AI_STATUS_CONNECTED;
+    if (typeof window._aipResetTiekouCards === 'function') {
+      window._aipResetTiekouCards();
+    }
     // 重置命格速览 AI 行（命格定位/格局/破格），清除旧盘 AI 结果
     const badgeRow     = document.getElementById('aip-badge-row');
     const profileBadge = document.getElementById('aip-profile-badge');

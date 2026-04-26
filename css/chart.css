@@ -3706,14 +3706,146 @@
     #160f08 !important;
 }
 
+.tiekou-summary {
+  margin-top: 14px !important;
+  padding-top: 14px !important;
+  border-top: 1px solid rgba(201,169,97,.08) !important;
+}
+
+.tiekou-summary-overview {
+  color: #d7c3a2 !important;
+  font-size: 12.5px !important;
+  line-height: 1.7 !important;
+}
+
+.tiekou-summary-grid {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 8px !important;
+  margin-top: 10px !important;
+}
+
+.tiekou-summary-pill {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  min-height: 30px !important;
+  padding: 0 10px !important;
+  border-radius: 999px !important;
+  border: 1px solid rgba(201,169,97,.14) !important;
+  background: rgba(255,255,255,.02) !important;
+  color: #a89878 !important;
+  font-size: 11px !important;
+}
+
+.tiekou-summary-pill strong {
+  color: #e6d5b7 !important;
+  font-weight: 700 !important;
+}
+
+.tiekou-summary-pill em {
+  font-style: normal !important;
+  color: inherit !important;
+}
+
+.tiekou-summary-pill.is-idle {
+  color: #7f6d59 !important;
+}
+
+.tiekou-summary-pill.is-running {
+  color: #c9a961 !important;
+  border-color: rgba(201,169,97,.28) !important;
+  background: rgba(201,169,97,.08) !important;
+}
+
+.tiekou-summary-pill.is-done {
+  color: #d8c19a !important;
+  border-color: rgba(144,181,120,.22) !important;
+  background: rgba(144,181,120,.08) !important;
+}
+
+.tiekou-summary-pill.is-empty {
+  color: #af987a !important;
+  border-color: rgba(175,152,122,.2) !important;
+  background: rgba(175,152,122,.08) !important;
+}
+
+.tiekou-summary-pill.is-error {
+  color: #d79083 !important;
+  border-color: rgba(180,60,50,.22) !important;
+  background: rgba(180,60,50,.08) !important;
+}
+
 .tiekou-test-grid {
   display: grid !important;
   grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
   gap: 12px !important;
 }
 
+.tiekou-test-flow {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 12px !important;
+  align-items: stretch !important;
+}
+
+.tiekou-group-banner {
+  order: 0;
+  flex: 0 0 100% !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  min-height: 48px !important;
+  padding: 0 14px !important;
+  border-radius: 14px !important;
+  border: 1px solid rgba(201,169,97,.1) !important;
+  background: rgba(255,255,255,.02) !important;
+}
+
+.tiekou-group-banner-tag {
+  display: inline-flex !important;
+  align-items: center !important;
+  height: 24px !important;
+  padding: 0 10px !important;
+  border-radius: 999px !important;
+  background: rgba(201,169,97,.1) !important;
+  color: #c9a961 !important;
+  font-size: 10px !important;
+  border: 1px solid rgba(201,169,97,.18) !important;
+  white-space: nowrap !important;
+}
+
+.tiekou-group-banner-title {
+  color: #ede4d4 !important;
+  font-size: 14px !important;
+  font-weight: 700 !important;
+  white-space: nowrap !important;
+}
+
+.tiekou-group-banner-desc {
+  color: #8f785b !important;
+  font-size: 12px !important;
+  line-height: 1.6 !important;
+}
+
+.tiekou-card-order-1 { order: 1 !important; }
+.tiekou-card-order-2 { order: 2 !important; }
+.tiekou-card-order-3 { order: 3 !important; }
+.tiekou-group-banner-public { order: 4 !important; }
+.tiekou-card-order-4 { order: 5 !important; }
+.tiekou-card-order-5 { order: 6 !important; }
+.tiekou-card-order-6 { order: 7 !important; }
+.tiekou-group-banner-final { order: 8 !important; }
+.tiekou-card-order-7 { order: 9 !important; }
+
 .aip-tiekou-card {
+  flex: 1 1 calc(33.333% - 12px) !important;
+  min-width: 280px !important;
   min-height: 185px !important;
+}
+
+.tiekou-card-final {
+  flex-basis: 100% !important;
 }
 
 .aip-tiekou-card .aip-card-body {
@@ -3745,6 +3877,23 @@
 
   .tiekou-test-grid {
     grid-template-columns: 1fr !important;
+  }
+
+  .tiekou-test-flow {
+    flex-direction: column !important;
+  }
+
+  .tiekou-group-banner {
+    align-items: flex-start !important;
+    flex-direction: column !important;
+    padding: 12px !important;
+    gap: 6px !important;
+  }
+
+  .aip-tiekou-card,
+  .tiekou-card-final {
+    min-width: 0 !important;
+    flex-basis: 100% !important;
   }
 }
 
