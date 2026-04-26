@@ -252,6 +252,9 @@
     var input = document.getElementById('chat-input');
     var msg = (input ? input.value : '').trim();
     if (!msg) return;
+    if (typeof window._desktopNotifyPrepare === 'function') {
+      window._desktopNotifyPrepare();
+    }
 
     if (!_sessionId) {
       init();
@@ -294,7 +297,8 @@
         _transientMode = !!data.transientMode;
         if (data.transientState) _saveTransientState(window._chartRecordId, data.transientState);
         else _saveTransientState(window._chartRecordId, null);
-        _appendMsg('assistant', data.reply);
+        return Promise.resolve(_appendMsg('assistant', data.reply, null, { animate: true }))
+          .then(function () {
         _updateBadges(data.hasMemoryA, data.hasMemoryB, data.memoryBVersion || 0, false);
         _setModeBadge(_transientMode);
         _setContextPreview(data.memoryASummary || '');
@@ -308,6 +312,10 @@
         if (data.memoryBJustBuilt) {
           _appendMsg('system', '本轮对话重点已自动整理，后续回答会更贴着你的问题走。');
         }
+        if (typeof window._desktopNotifyTaskDone === 'function') {
+          window._desktopNotifyTaskDone('AI\u534a\u4ed9\u56de\u590d', '\u8bb8\u534a\u4ed9\u5df2\u7ecf\u56de\u5b8c\u4e86\u3002', { tag: 'yuetian-chat' });
+        }
+          });
       })
       .catch(function (err) {
         _removeTyping();
@@ -324,6 +332,9 @@
         }
 
         _appendMsg('system', '发送失败：' + _friendlyErrorMessage(err));
+        if (typeof window._desktopNotifyTaskFailed === 'function') {
+          window._desktopNotifyTaskFailed('AI\u534a\u4ed9\u56de\u590d', _friendlyErrorMessage(err), { tag: 'yuetian-chat-error' });
+        }
       })
       .finally(function () {
         _loading = false;
@@ -437,9 +448,6 @@
   }
 
   function _getTypewriterStep(length) {
-    if (length > 220) return 4;
-    if (length > 120) return 3;
-    if (length > 60) return 2;
     return 1;
   }
 
@@ -509,7 +517,8 @@
     if (sender === 'assistant') {
       var bubble = div.querySelector('.chat-bubble');
       if (bubble) {
-        if (options.animate && !options.instant) {
+        var shouldAnimate = !options.instant && options.animate !== false;
+        if (shouldAnimate) {
           return _typeAssistantBubble(bubble, content);
         }
         bubble.innerHTML = _esc(content);
