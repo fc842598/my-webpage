@@ -19,7 +19,23 @@
     dayunOverviewMap: {},
     dayunStatusMap: {},
     yearResultMap: {},
+    yearStatusMap: {},
+    expandedRangeMap: {},
+    showAllDayun: false,
+    rangeBatchMap: {},
   };
+
+  function notifyDone(label, detail, tag) {
+    if (typeof window._desktopNotifyTaskDone === 'function') {
+      window._desktopNotifyTaskDone(label, detail, { tag });
+    }
+  }
+
+  function notifyFailed(label, err, tag) {
+    if (typeof window._desktopNotifyTaskFailed === 'function') {
+      window._desktopNotifyTaskFailed(label, err?.message || '\u8bf7\u56de\u5230\u9875\u9762\u67e5\u770b\u539f\u56e0\u3002', { tag });
+    }
+  }
 
   function getChartPayload() {
     return typeof buildChartPayload === 'function' ? buildChartPayload() : null;
@@ -89,6 +105,44 @@
       const content = escapeHtml(item?.content || '').replace(/\n/g, '<br>');
       return `${title ? `<strong class="aip-body-title">${title}</strong>` : ''}<p class="aip-body-para">${content || '—'}</p>`;
     }).join('');
+  }
+
+  function getCardScore(card) {
+    const score = card?.scoreBreakdown?.finalScore ?? card?.score;
+    const numeric = Math.round(Number(score));
+    return Number.isFinite(numeric) ? Math.max(0, Math.min(100, numeric)) : null;
+  }
+
+  function scoreClass(score) {
+    if (score == null) return 'pending';
+    if (score >= 75) return 'good';
+    if (score >= 50) return 'mid';
+    return 'low';
+  }
+
+  function renderScorePillHtml(card, fallbackText) {
+    const score = getCardScore(card);
+    if (score == null) {
+      return `<span class="dlx-ai-score-pill pending">${escapeHtml(fallbackText || '待评分')}</span>`;
+    }
+    return `<span class="dlx-ai-score-pill ${scoreClass(score)}">${score}分</span>`;
+  }
+
+  function renderScoreDetailHtml(card) {
+    const score = getCardScore(card);
+    const detail = card?.scoreBreakdown || {};
+    const reason = detail.reason || '';
+    if (score == null && !reason) return '';
+
+    const rows = [
+      `<div class="dlx-ai-score-main"><span>本次批命评分</span><b class="${scoreClass(score)}">${score == null ? '待评分' : `${score}分`}</b></div>`,
+    ];
+    if (detail.decadeScore != null) rows.push(`<span>十年底色 ${escapeHtml(String(detail.decadeScore))}</span>`);
+    if (detail.yearScore != null) rows.push(`<span>流年原分 ${escapeHtml(String(detail.yearScore))}</span>`);
+    if (detail.adjustment != null) rows.push(`<span>流年修正 ${detail.adjustment > 0 ? '+' : ''}${escapeHtml(String(detail.adjustment))}</span>`);
+    if (reason) rows.push(`<em>${escapeHtml(reason)}</em>`);
+
+    return `<div class="dlx-ai-score-box">${rows.join('')}</div>`;
   }
 
   function setText(id, text) {
@@ -283,19 +337,61 @@
     return 'era-current';
   }
 
+  function getRangeKey(dayun) {
+    return dayun ? `${dayun.start}-${dayun.end}` : '';
+  }
+
+  function getCurrentDayunIndex() {
+    const activeAge = Number(window._fcActiveAge || 0);
+    const index = state.dayunRanges.findIndex((item) => activeAge >= item.start && activeAge <= item.end);
+    return index >= 0 ? index : getSelectedDayunIndex();
+  }
+
+  function getFocusDayunList() {
+    const currentIndex = getCurrentDayunIndex();
+    const focus = [
+      { index: currentIndex - 1, label: '过去10年', tone: 'past' },
+      { index: currentIndex, label: '现行10年大运', tone: 'current' },
+      { index: currentIndex + 1, label: '未来10年', tone: 'future' },
+    ].filter((item) => state.dayunRanges[item.index]);
+
+    if (!state.showAllDayun) {
+      return focus.map((item) => ({ ...item, dayun: state.dayunRanges[item.index], isFocus: true }));
+    }
+
+    const focusIndexes = new Set(focus.map((item) => item.index));
+    const rest = state.dayunRanges
+      .map((dayun, index) => ({ index, dayun, label: `第${index + 1}大运`, tone: 'normal', isFocus: false }))
+      .filter((item) => !focusIndexes.has(item.index));
+    return [
+      ...focus.map((item) => ({ ...item, dayun: state.dayunRanges[item.index], isFocus: true })),
+      ...rest,
+    ];
+  }
+
+  function isRangeExpanded(dayun) {
+    const key = getRangeKey(dayun);
+    if (Object.prototype.hasOwnProperty.call(state.expandedRangeMap, key)) {
+      return !!state.expandedRangeMap[key];
+    }
+    return getEraClass(dayun) === 'era-current';
+  }
+
   function updateOverviewHead() {
     const card = document.getElementById('dlx-overview-card');
     if (!card) return;
     card.style.display = '';
     const tag = card.querySelector('.aip-tag');
     const title = card.querySelector('.aip-card-title');
-    if (tag) tag.textContent = '当前大运';
-    if (title) title.textContent = '先看当前十年，再上下切换';
+    if (tag) tag.textContent = '三段大运';
+    if (title) title.textContent = '过去10年 / 现行10年 / 未来10年';
     const batchCard = document.getElementById('dlx-batch-card');
     const decadeSection = document.getElementById('dlx-decade-pills')?.closest('.dlx-section');
+    const yearSection = document.getElementById('dlx-year-section');
     const daxianCard = document.getElementById('dlx-daxian-card');
     if (batchCard) batchCard.style.display = 'none';
     if (decadeSection) decadeSection.style.display = 'none';
+    if (yearSection) yearSection.style.display = 'none';
     if (daxianCard) daxianCard.style.display = 'none';
   }
 
@@ -319,6 +415,102 @@
     ].join('');
   }
 
+  function getYearCard(age) {
+    return state.yearResultMap[String(Number(age))] || null;
+  }
+
+  function getGeneratedYearCount(dayun) {
+    if (!dayun) return 0;
+    let count = 0;
+    for (let age = Number(dayun.start); age <= Number(dayun.end); age++) {
+      if (getYearCard(age)) count += 1;
+    }
+    return count;
+  }
+
+  function isRangeComplete(dayun) {
+    const key = getRangeKey(dayun);
+    return !!(state.dayunResultMap[key] || state.dayunOverviewMap[key]?.card) && getGeneratedYearCount(dayun) >= 10;
+  }
+
+  function renderInlineYearsHtml(dayun, expanded) {
+    if (!expanded) return '';
+    const years = [];
+    for (let age = Number(dayun.start); age <= Number(dayun.end); age++) {
+      const card = getYearCard(age);
+      const score = getCardScore(card);
+      const selected = Number(state.selectedYearAge) === age;
+      const loading = state.yearStatusMap[String(age)] === 'loading';
+      const year = getSolarYear(age);
+      years.push(
+        `<div class="dlx-inline-year${selected ? ' active' : ''}${card ? ' done' : ''}${loading ? ' loading' : ''}" data-year-age="${age}">` +
+          `<button type="button" class="dlx-inline-year-select" data-year-age="${age}">` +
+            `<span class="dlx-inline-year-age">${age}岁</span>` +
+            `<span class="dlx-inline-year-sub">${year ? `${year}年` : '小流年'}</span>` +
+            renderScorePillHtml(card, loading ? '批命中' : '待批') +
+          `</button>` +
+          `<button type="button" class="dlx-inline-year-ai-btn" data-year-age="${age}" data-range-key="${escapeHtml(getRangeKey(dayun))}"${loading ? ' disabled' : ''}>${card ? '查看' : '批这一年'}</button>` +
+        `</div>`
+      );
+    }
+    return `<div class="dlx-inline-years">${years.join('')}</div>`;
+  }
+
+  function renderDayunGroupCard(item) {
+    const dayun = item.dayun;
+    const index = item.index;
+    const key = getRangeKey(dayun);
+    const selected = key === state.selectedDayunKey;
+    const expanded = isRangeExpanded(dayun);
+    const card = state.dayunResultMap[key] || state.dayunOverviewMap[key]?.card || null;
+    const status = state.dayunStatusMap[key] || state.dayunOverviewMap[key]?.status || (card ? 'cached' : 'empty');
+    const statusMeta = getStatusMeta(status, card);
+    const eraClass = getEraClass(dayun);
+    const palace = dayun.palace || {};
+    const stem = palace?.decadal?.heavenlyStem || '';
+    const generatedYears = getGeneratedYearCount(dayun);
+    const rangeLoading = state.rangeBatchMap[key] === 'loading';
+    const complete = isRangeComplete(dayun);
+    const sanfang = getSanfangSizheng(palace?.earthlyBranch || '')
+      .map((sf) => sf.palaceName)
+      .join(' · ') || '—';
+    const summaryHtml = card ? renderSectionsHtml(card) : '';
+    const riskHtml = card?.risk ? `<div class="dlx-overview-risk">提醒：${escapeHtml(card.risk)}</div>` : '';
+
+    return (
+      `<article class="dlx-overview-item dlx-dayun-card dlx-focus-card dlx-focus-${escapeHtml(item.tone || 'normal')}${selected ? ' active' : ''}${eraClass ? ' ' + eraClass : ''}${status === 'loading' || rangeLoading ? ' is-loading' : ''}${!card ? ' is-empty' : ''}" data-range-key="${escapeHtml(key)}">` +
+        `<div class="dlx-focus-label">${escapeHtml(item.label || `第${index + 1}大运`)}</div>` +
+        `<div class="dlx-overview-head">` +
+          `<div class="dlx-title-group">` +
+            `<div class="dlx-decade-num">第${index + 1}大运</div>` +
+            `<div class="dlx-overview-title">${escapeHtml(`${dayun.start}-${dayun.end}岁`)}</div>` +
+          `</div>` +
+          `<span class="dlx-overview-badge ${statusMeta.badgeClass}">${escapeHtml(statusMeta.badge)}</span>` +
+          renderScorePillHtml(card, '待评分') +
+        `</div>` +
+        `<div class="dlx-overview-meta">` +
+          `<div class="dlx-overview-row"><span class="dlx-overview-label">大运宫</span><span class="dlx-overview-value" style="font-weight:600">${escapeHtml(palace?.name || '—')}</span></div>` +
+          `<div class="dlx-overview-row"><span class="dlx-overview-label">宫干</span><span class="dlx-overview-value">${escapeHtml(stem || '—')}</span></div>` +
+          `<div class="dlx-overview-row"><span class="dlx-overview-label">已批流年</span><span class="dlx-overview-value">${generatedYears}/10</span></div>` +
+          `<div class="dlx-overview-row"><span class="dlx-overview-label">三方四正</span><span class="dlx-overview-value">${escapeHtml(sanfang)}</span></div>` +
+        `</div>` +
+        `<div class="dlx-overview-meta" style="border-bottom:none;padding-bottom:8px;margin-bottom:4px">` +
+          `<div class="dlx-overview-row" style="min-width:0;flex:0 0 auto"><span class="dlx-overview-label">主星</span><div class="dlx-stars-wrap">${formatStarBadgesHtml(palace?.majorStars || [])}</div></div>` +
+        `</div>` +
+        `<div class="dlx-overview-actions">` +
+          `<button class="dlx-dayun-ai-btn ${statusMeta.btnState}" data-ai-range-key="${escapeHtml(key)}"${status === 'loading' ? ' disabled' : ''}>${escapeHtml(statusMeta.btnLabel)}</button>` +
+          `<button class="dlx-range-batch-btn" data-batch-range-key="${escapeHtml(key)}"${rangeLoading ? ' disabled' : ''}>${rangeLoading ? '批完整组中…' : (complete ? '✓ 已批完整组' : '✦ 一键批完这10年')}</button>` +
+          `<button class="dlx-decade-toggle-btn" data-toggle-range-key="${escapeHtml(key)}">${expanded ? '收起小流年' : '展开小流年'}</button>` +
+          `<span class="dlx-overview-status">${rangeLoading ? '正在按十年大运 + 10个小流年逐个批命…' : (card ? escapeHtml(statusMeta.text) : '')}</span>` +
+        `</div>` +
+        `${card ? renderScoreDetailHtml(card) : ''}` +
+        `${summaryHtml ? `<div class="aip-card-body dlx-overview-summary">${summaryHtml}</div>` : ''}` +
+        `${riskHtml}` +
+        renderInlineYearsHtml(dayun, expanded) +
+      `</article>`
+    );
+  }
+
   function renderOverviewList() {
     updateOverviewHead();
     const listEl = document.getElementById('dlx-overview-list');
@@ -329,59 +521,15 @@
       return;
     }
 
-    const selectedIndex = getSelectedDayunIndex();
-    const visibleDayun = state.dayunRanges[selectedIndex] ? [state.dayunRanges[selectedIndex]] : [state.dayunRanges[0]];
-
-    listEl.innerHTML = renderDayunNavigator(selectedIndex) + visibleDayun.map((dayun) => {
-      const index = state.dayunRanges.findIndex((item) => item.start === dayun.start && item.end === dayun.end);
-      const key = `${dayun.start}-${dayun.end}`;
-      const selected = key === state.selectedDayunKey;
-      const card = state.dayunResultMap[key] || state.dayunOverviewMap[key]?.card || null;
-      const status = state.dayunStatusMap[key] || state.dayunOverviewMap[key]?.status || (card ? 'cached' : 'empty');
-      const statusMeta = getStatusMeta(status, card);
-      const eraClass = getEraClass(dayun);
-      const palace = dayun.palace || {};
-      const stem = palace?.decadal?.heavenlyStem || '';
-      const sanfang = getSanfangSizheng(palace?.earthlyBranch || '')
-        .map((item) => item.palaceName)
-        .join(' · ') || '—';
-      const summaryHtml = card ? renderSectionsHtml(card) : '';
-      const riskHtml = card?.risk
-        ? `<div class="dlx-overview-risk">提醒：${escapeHtml(card.risk)}</div>`
-        : '';
-      const isLoading = status === 'loading';
-
-      return (
-        `<article class="dlx-overview-item dlx-dayun-card${selected ? ' active' : ''}${eraClass ? ' ' + eraClass : ''}${isLoading ? ' is-loading' : ''}${!card ? ' is-empty' : ''}" data-range-key="${escapeHtml(key)}">` +
-          `<div class="dlx-overview-head">` +
-            `<div class="dlx-title-group">` +
-              `<div class="dlx-decade-num">第${index + 1}大运</div>` +
-              `<div class="dlx-overview-title">${escapeHtml(`${dayun.start}-${dayun.end}岁`)}</div>` +
-            `</div>` +
-            `<span class="dlx-overview-badge ${statusMeta.badgeClass}">${escapeHtml(statusMeta.badge)}</span>` +
-          `</div>` +
-          `<div class="dlx-overview-meta">` +
-            `<div class="dlx-overview-row"><span class="dlx-overview-label">大运宫</span><span class="dlx-overview-value" style="font-weight:600">${escapeHtml(palace?.name || '—')}</span></div>` +
-            `<div class="dlx-overview-row"><span class="dlx-overview-label">宫干</span><span class="dlx-overview-value">${escapeHtml(stem || '—')}</span></div>` +
-            `<div class="dlx-overview-row"><span class="dlx-overview-label">辅星</span><span class="dlx-overview-value">${escapeHtml(formatStarList(palace?.minorStars || [], false)) || '—'}</span></div>` +
-            `<div class="dlx-overview-row"><span class="dlx-overview-label">杂曜</span><span class="dlx-overview-value">${escapeHtml(formatAdjStarList(palace?.adjectiveStars || [])) || '—'}</span></div>` +
-          `</div>` +
-          `<div class="dlx-overview-meta" style="border-bottom:none;padding-bottom:8px;margin-bottom:4px">` +
-            `<div class="dlx-overview-row" style="min-width:0;flex:0 0 auto"><span class="dlx-overview-label">主星</span><div class="dlx-stars-wrap">${formatStarBadgesHtml(palace?.majorStars || [])}</div></div>` +
-          `</div>` +
-          `<div class="dlx-sanfang-row">` +
-            `<span class="dlx-overview-label">三方四正</span>` +
-            `<span class="dlx-sanfang-value">${escapeHtml(sanfang)}</span>` +
-          `</div>` +
-          `<div class="dlx-overview-actions">` +
-            `<button class="dlx-dayun-ai-btn ${statusMeta.btnState}" data-ai-range-key="${escapeHtml(key)}"${isLoading ? ' disabled' : ''}>${escapeHtml(statusMeta.btnLabel)}</button>` +
-            `<span class="dlx-overview-status">${card ? escapeHtml(statusMeta.text) : ''}</span>` +
-          `</div>` +
-          `${summaryHtml ? `<div class="aip-card-body dlx-overview-summary">${summaryHtml}</div>` : ''}` +
-          `${riskHtml}` +
-        `</article>`
-      );
-    }).join('');
+    const activeAge = Number(window._fcActiveAge || 0);
+    const groups = getFocusDayunList();
+    listEl.innerHTML = [
+      `<div class="dlx-focus-toolbar">` +
+        `<div><b>按客户当前虚岁切三段</b><span>${activeAge ? `当前虚岁 ${activeAge} 岁` : '当前年龄未识别'}</span></div>` +
+        `<button type="button" class="dlx-show-all-btn" data-dlx-show-all="1">${state.showAllDayun ? '收起其它大运' : '查看全部大运'}</button>` +
+      `</div>`,
+      ...groups.map(renderDayunGroupCard),
+    ].join('');
   }
 
   function selectDayunByOffset(offset) {
@@ -399,6 +547,18 @@
     const listEl = document.getElementById('dlx-overview-list');
     if (!listEl) return;
 
+    listEl.querySelectorAll('[data-dlx-show-all]').forEach((btn) => {
+      if (btn.dataset.bound === '1') return;
+      btn.dataset.bound = '1';
+      btn.addEventListener('click', function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+        state.showAllDayun = !state.showAllDayun;
+        renderOverviewList();
+        bindOverviewActions();
+      });
+    });
+
     listEl.querySelectorAll('[data-dlx-nav]').forEach((btn) => {
       if (btn.dataset.bound === '1') return;
       btn.dataset.bound = '1';
@@ -413,7 +573,7 @@
       if (cardEl.dataset.bound === '1') return;
       cardEl.dataset.bound = '1';
       cardEl.addEventListener('click', function (event) {
-        if (event.target?.closest('.dlx-dayun-ai-btn')) return;
+        if (event.target?.closest('button')) return;
         const rangeKey = cardEl.dataset.rangeKey || '';
         const raw = state.dayunRanges.find((item) => `${item.start}-${item.end}` === rangeKey);
         if (!raw) return;
@@ -433,6 +593,51 @@
         runDayunAI(rangeKey);
       });
     });
+
+    listEl.querySelectorAll('.dlx-range-batch-btn').forEach((btn) => {
+      if (btn.dataset.bound === '1') return;
+      btn.dataset.bound = '1';
+      btn.addEventListener('click', function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+        runRangeFullAI(btn.dataset.batchRangeKey || '');
+      });
+    });
+
+    listEl.querySelectorAll('.dlx-decade-toggle-btn').forEach((btn) => {
+      if (btn.dataset.bound === '1') return;
+      btn.dataset.bound = '1';
+      btn.addEventListener('click', function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+        const key = btn.dataset.toggleRangeKey || '';
+        const raw = state.dayunRanges.find((item) => `${item.start}-${item.end}` === key);
+        state.expandedRangeMap[key] = !isRangeExpanded(raw);
+        renderOverviewList();
+        bindOverviewActions();
+      });
+    });
+
+    listEl.querySelectorAll('.dlx-inline-year-select').forEach((btn) => {
+      if (btn.dataset.bound === '1') return;
+      btn.dataset.bound = '1';
+      btn.addEventListener('click', function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+        selectInlineYear(Number(btn.dataset.yearAge));
+      });
+    });
+
+    listEl.querySelectorAll('.dlx-inline-year-ai-btn').forEach((btn) => {
+      if (btn.dataset.bound === '1') return;
+      btn.dataset.bound = '1';
+      btn.addEventListener('click', function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+        const raw = state.dayunRanges.find((item) => `${item.start}-${item.end}` === (btn.dataset.rangeKey || ''));
+        loadYearForRange(Number(btn.dataset.yearAge), raw);
+      });
+    });
   }
 
   function renderYearInfo(age) {
@@ -442,6 +647,7 @@
     const infoEl = document.getElementById('dlx-ln-info');
     const cardEl = document.getElementById('dlx-liunian-card');
     if (!infoEl || !cardEl) return;
+    const card = state.yearResultMap[String(numericAge)] || null;
 
     setText('dlx-ln-ttl', `${year || '—'}年 · 虚岁${numericAge}岁`);
     infoEl.innerHTML = [
@@ -449,6 +655,7 @@
       `<div class="dlx-info-row"><span class="dlx-info-label">辅星</span><span class="dlx-info-val">${escapeHtml(formatStarList(palace?.minorStars || [], false))}</span></div>`,
       `<div class="dlx-info-row"><span class="dlx-info-label">落宫</span><span class="dlx-info-val">${escapeHtml(palace?.name || '—')}</span></div>`,
       `<div class="dlx-info-row"><span class="dlx-info-label">杂曜</span><span class="dlx-info-val">${escapeHtml(formatAdjStarList(palace?.adjectiveStars || []))}</span></div>`,
+      `<div class="dlx-info-row"><span class="dlx-info-label">AI评分</span><span class="dlx-info-val">${renderScorePillHtml(card, '待批命')}</span></div>`,
     ].join('');
     cardEl.style.display = '';
   }
@@ -457,7 +664,8 @@
     const card = state.yearResultMap[String(age)] || null;
     const bodyEl = document.getElementById('dlx-ln-ai-body');
     if (!bodyEl) return;
-    bodyEl.innerHTML = card ? renderSectionsHtml(card) : '';
+    bodyEl.innerHTML = card ? (renderScoreDetailHtml(card) + renderSectionsHtml(card)) : '';
+    renderYearInfo(age);
     setText('dlx-ln-risk', card?.risk ? `提醒：${card.risk}` : '');
   }
 
@@ -534,7 +742,10 @@
     try {
       await loadDayunOverview(true);
       setText('dlx-batch-all-status', '整组大运已完成');
+      notifyDone('AI\u6574\u7ec4\u5927\u8fd0', '\u6574\u7ec4\u5927\u8fd0\u5df2\u6279\u5b8c\u3002', 'yuetian-dayun-batch');
       if (typeof window._chatInvalidateMemoryA === 'function') window._chatInvalidateMemoryA();
+    } catch (err) {
+      notifyFailed('AI\u6574\u7ec4\u5927\u8fd0', err, 'yuetian-dayun-batch-error');
     } finally {
       if (btn) btn.disabled = false;
       renderOverviewList();
@@ -570,35 +781,68 @@
       exposeLifeCurveSignals();
       renderOverviewList();
       bindOverviewActions();
+      notifyDone('AI\u5355\u4e2a\u5927\u8fd0', '\u8fd9\u6bb5\u5927\u8fd0\u5df2\u6279\u5b8c\u3002', 'yuetian-dayun-item');
       // 大运批命完成后通知 AI半仙 命盘总档需要刷新
       if (!data.meta?.cacheHit && typeof window._chatInvalidateMemoryA === 'function') {
         window._chatInvalidateMemoryA();
       }
     } catch (_err) {
       state.dayunStatusMap[rangeKey] = 'error';
+      notifyFailed('AI\u5355\u4e2a\u5927\u8fd0', _err, 'yuetian-dayun-item-error');
       renderOverviewList();
       bindOverviewActions();
     }
   }
 
-  async function loadSelectedYear(age) {
-    const chartData = getChartPayload();
-    const selectedDayun = getSelectedDayun();
+  function selectInlineYear(age) {
     const numericAge = Number(age);
+    const raw = state.dayunRanges.find((item) => numericAge >= item.start && numericAge <= item.end) || getSelectedDayunRaw();
+    if (raw) {
+      const key = getRangeKey(raw);
+      state.selectedDayunKey = key;
+      state.expandedRangeMap[key] = true;
+      if (typeof window._dlxSelectDecade === 'function') {
+        window._dlxSelectDecade(raw, state.dayunRanges, { source: 'inline-year' });
+      }
+    }
+    state.selectedYearAge = numericAge;
+    if (typeof window._dlxSelectYear === 'function') {
+      window._dlxSelectYear(numericAge, { source: 'inline-year' });
+    } else {
+      renderYearResult(numericAge);
+      updateYearAction(numericAge);
+    }
+    renderOverviewList();
+    bindOverviewActions();
+  }
+
+  async function loadYearForRange(age, rawDayun) {
+    const chartData = getChartPayload();
+    const numericAge = Number(age);
+    const raw = rawDayun || state.dayunRanges.find((item) => numericAge >= item.start && numericAge <= item.end) || getSelectedDayunRaw();
+    const selectedDayun = serializeDayun(raw);
     const bodyEl = document.getElementById('dlx-ln-ai-body');
     if (!chartData || !selectedDayun || !Number.isFinite(numericAge)) return;
+
+    state.selectedDayunKey = getRangeKey(raw);
+    state.selectedYearAge = numericAge;
 
     if (state.yearResultMap[String(numericAge)]) {
       setText('dlx-ln-ai-status', '已读取缓存');
       renderYearResult(numericAge);
       updateYearAction(numericAge);
+      renderOverviewList();
+      bindOverviewActions();
       return;
     }
 
     const actionBtn = document.getElementById('dlx-year-ai-btn');
     if (actionBtn) actionBtn.disabled = true;
+    state.yearStatusMap[String(numericAge)] = 'loading';
     setText('dlx-ln-ai-status', '正在批这一年…');
     if (bodyEl) bodyEl.innerHTML = '<p class="aip-body-para">AI 正在结合大运与流年生成结果…</p>';
+    renderOverviewList();
+    bindOverviewActions();
 
     try {
       const data = await _aipCallBackend('liunian_year', {
@@ -606,16 +850,55 @@
         selectedYear: serializeYear(numericAge, selectedDayun),
       });
       state.yearResultMap[String(numericAge)] = data.card || {};
+      state.yearStatusMap[String(numericAge)] = data.meta?.cacheHit ? 'cached' : 'generated';
       exposeLifeCurveSignals();
       setText('dlx-ln-ai-status', `已完成 · ${_fmtDuration(data.meta?.durationMs || 0)}`);
       renderYearResult(numericAge);
       updateYearAction(numericAge);
+      renderOverviewList();
+      bindOverviewActions();
+      notifyDone('AI\u6d41\u5e74', '\u8fd9\u4e00\u5e74\u5df2\u6279\u5b8c\u3002', 'yuetian-liunian-year');
     } catch (err) {
+      state.yearStatusMap[String(numericAge)] = 'error';
       setText('dlx-ln-ai-status', err?.message || '流年批命失败');
       if (bodyEl) bodyEl.innerHTML = '';
       setText('dlx-ln-risk', '');
+      notifyFailed('AI\u6d41\u5e74', err, 'yuetian-liunian-year-error');
     } finally {
       if (actionBtn) actionBtn.disabled = false;
+      renderOverviewList();
+      bindOverviewActions();
+    }
+  }
+
+  async function loadSelectedYear(age) {
+    return loadYearForRange(age, getSelectedDayunRaw());
+  }
+
+  async function runRangeFullAI(rangeKey) {
+    const raw = state.dayunRanges.find((item) => `${item.start}-${item.end}` === rangeKey);
+    if (!raw || state.rangeBatchMap[rangeKey] === 'loading') return;
+
+    state.selectedDayunKey = rangeKey;
+    state.expandedRangeMap[rangeKey] = true;
+    state.rangeBatchMap[rangeKey] = 'loading';
+    renderOverviewList();
+    bindOverviewActions();
+
+    try {
+      await runDayunAI(rangeKey);
+      for (let age = Number(raw.start); age <= Number(raw.end); age++) {
+        await loadYearForRange(age, raw);
+      }
+      state.rangeBatchMap[rangeKey] = 'generated';
+      notifyDone('AI\u5341\u5e74\u6d41\u5e74', '\u8fd9\u7ec4\u5927\u8fd0\u4e0e10\u4e2a\u5c0f\u6d41\u5e74\u5df2\u6279\u5b8c\u3002', 'yuetian-dayun-years');
+    } catch (err) {
+      state.rangeBatchMap[rangeKey] = 'error';
+      notifyFailed('AI\u5341\u5e74\u6d41\u5e74', err, 'yuetian-dayun-years-error');
+    } finally {
+      if (state.rangeBatchMap[rangeKey] === 'loading') state.rangeBatchMap[rangeKey] = '';
+      renderOverviewList();
+      bindOverviewActions();
     }
   }
 

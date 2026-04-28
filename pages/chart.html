@@ -426,6 +426,12 @@
           <button class="aip-card-ai-btn" id="aip-shen-btn">✦ AI 身宫批命</button>
           <span class="aip-ai-status" id="aip-shen-status"></span>
         </div>
+        <details class="aip-struct-details aip-sub-struct-details" id="aip-shen-struct-details">
+          <summary class="aip-struct-summary">
+            <span class="aip-struct-summary-label">查看身宫结构</span>
+          </summary>
+          <div class="aip-struct aip-sub-struct" id="aip-shen-struct"></div>
+        </details>
         <div class="aip-card-body" id="aip-shen-body"></div>
         <div class="aip-card-tip"  id="aip-shen-tip"></div>
       </div>
@@ -439,6 +445,12 @@
           <button class="aip-card-ai-btn" id="aip-hunyin-btn">✦ AI 婚姻批命</button>
           <span class="aip-ai-status" id="aip-hunyin-status"></span>
         </div>
+        <details class="aip-struct-details aip-sub-struct-details" id="aip-hunyin-struct-details">
+          <summary class="aip-struct-summary">
+            <span class="aip-struct-summary-label">查看婚姻结构</span>
+          </summary>
+          <div class="aip-struct aip-sub-struct" id="aip-hunyin-struct"></div>
+        </details>
         <div class="aip-card-body" id="aip-hunyin-body"></div>
         <div class="aip-card-tip"  id="aip-hunyin-tip"></div>
       </div>
@@ -452,6 +464,12 @@
           <button class="aip-card-ai-btn" id="aip-jiankang-btn">✦ AI 健康批命</button>
           <span class="aip-ai-status" id="aip-jiankang-status"></span>
         </div>
+        <details class="aip-struct-details aip-sub-struct-details" id="aip-jiankang-struct-details">
+          <summary class="aip-struct-summary">
+            <span class="aip-struct-summary-label">查看健康结构</span>
+          </summary>
+          <div class="aip-struct aip-sub-struct" id="aip-jiankang-struct"></div>
+        </details>
         <div class="aip-card-body" id="aip-jiankang-body"></div>
         <div class="aip-card-tip"  id="aip-jiankang-tip"></div>
       </div>
@@ -465,6 +483,12 @@
           <button class="aip-card-ai-btn" id="aip-caiyun-btn">✦ AI 财运批命</button>
           <span class="aip-ai-status" id="aip-caiyun-status"></span>
         </div>
+        <details class="aip-struct-details aip-sub-struct-details" id="aip-caiyun-struct-details">
+          <summary class="aip-struct-summary">
+            <span class="aip-struct-summary-label">查看财运结构</span>
+          </summary>
+          <div class="aip-struct aip-sub-struct" id="aip-caiyun-struct"></div>
+        </details>
         <div class="aip-card-body" id="aip-caiyun-body"></div>
         <div class="aip-card-tip"  id="aip-caiyun-tip"></div>
       </div>
@@ -478,6 +502,12 @@
           <button class="aip-card-ai-btn" id="aip-shiye-btn">✦ AI 事业批命</button>
           <span class="aip-ai-status" id="aip-shiye-status"></span>
         </div>
+        <details class="aip-struct-details aip-sub-struct-details" id="aip-shiye-struct-details">
+          <summary class="aip-struct-summary">
+            <span class="aip-struct-summary-label">查看事业结构</span>
+          </summary>
+          <div class="aip-struct aip-sub-struct" id="aip-shiye-struct"></div>
+        </details>
         <div class="aip-card-body" id="aip-shiye-body"></div>
         <div class="aip-card-tip"  id="aip-shiye-tip"></div>
       </div>
@@ -3613,8 +3643,14 @@ async function _fcGenerateLifeCurve(options = {}) {
     _fcLifeCurveProgressTotal = totalWanted;
     _fcLifeCurveStageHint = '评分完成';
     _fcRenderScoreCurve();
+    if (typeof window._desktopNotifyTaskDone === 'function') {
+      window._desktopNotifyTaskDone('AI\u4eba\u751f\u66f2\u7ebf', '\u4eba\u751f\u66f2\u7ebf\u5df2\u751f\u6210\u3002', { tag: 'yuetian-life-curve' });
+    }
   } catch (err) {
     _fcLifeCurveStickyMeta = _aiStatusForError(err);
+    if (typeof window._desktopNotifyTaskFailed === 'function') {
+      window._desktopNotifyTaskFailed('AI\u4eba\u751f\u66f2\u7ebf', _aiStatusForError(err), { tag: 'yuetian-life-curve-error' });
+    }
   } finally {
     _fcLifeCurveLoading = false;
     if (!_fcLifeCurveStickyMeta) _fcLifeCurveStageHint = '';
@@ -4283,6 +4319,104 @@ function _aipFillStructLocal(chart) {
   fillPalace('aip-sf-move-maj',   'aip-sf-move-min',   move);
 }
 
+function _aipFillSubStructLocal(chart) {
+  if (!chart) return;
+  const palaces = chart.palaces || [];
+  const order = ['命宫','兄弟宫','夫妻宫','子女宫','财帛宫','疾厄宫','迁移宫','仆役宫','官禄宫','田宅宫','福德宫','父母宫'];
+
+  function esc(v) {
+    return String(v == null ? '' : v)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;');
+  }
+  function norm(name) {
+    const raw = String(name || '').trim();
+    if (!raw) return '';
+    return raw.endsWith('宫') ? raw : raw + '宫';
+  }
+  function shortName(name) {
+    return norm(name).replace(/宫$/, '');
+  }
+  function findPalace(name) {
+    const target = norm(name);
+    return palaces.find(p => norm(p?.name) === target) || null;
+  }
+  function bodyPalace() {
+    return palaces.find(p => p.earthlyBranch === chart.earthlyBranchOfBodyPalace)
+      || palaces.find(p => p.isBodyPalace)
+      || findPalace('身宫')
+      || null;
+  }
+  function palaceMaj(p) {
+    const stars = p?.majorStars || [];
+    if (!stars.length) return '空宫';
+    return stars.map(s => {
+      const n = (typeof s === 'string') ? s : (s.name || '');
+      const b = (typeof s === 'object' && s.brightness) ? s.brightness : '';
+      const m = (typeof s === 'object' && s.mutagen) ? s.mutagen : '';
+      return `${n}${b ? ' ' + b : ''}${m || ''}`;
+    }).filter(Boolean).join(' · ') || '空宫';
+  }
+  function palaceMin(p) {
+    const mins = (p?.minorStars || []).map(s => {
+      const n = (typeof s === 'string') ? s : (s.name || '');
+      const m = (typeof s === 'object' && s.mutagen) ? s.mutagen : '';
+      return `${n}${m || ''}`;
+    }).filter(Boolean);
+    const adjs = (p?.adjectiveStars || p?.adjStars || []).map(s =>
+      (typeof s === 'string') ? s : (s.name || '')
+    ).filter(Boolean);
+    return [...mins, ...adjs].join('  ');
+  }
+  function rowHtml(row, idx) {
+    const p = row.p;
+    const lead = row.lead || '';
+    const maj = p ? palaceMaj(p) : '—';
+    const min = p ? palaceMin(p) : '';
+    const cls = idx === 0 ? ' aip-struct-life-row' : '';
+    return `
+      <div class="aip-struct-row${cls}">
+        <span class="aip-struct-label">${esc(row.label)}</span>
+        <span class="aip-inline-val">
+          <span>${lead ? esc(lead) + ' · ' : ''}${esc(maj)}</span>
+          <span class="aip-inline-min">${esc(min)}</span>
+        </span>
+      </div>
+    `;
+  }
+  function render(id, rows) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.innerHTML = rows.map(rowHtml).join('');
+  }
+  function rowsByNames(names) {
+    return names.map(name => ({
+      label: shortName(name),
+      p: findPalace(name),
+    }));
+  }
+  function sanfangRowsFor(p) {
+    if (!p?.name) return [{ label: '身宫', p: null }];
+    const root = norm(p.name);
+    const idx = order.indexOf(root);
+    const names = idx >= 0
+      ? [root, order[(idx + 4) % 12], order[(idx + 8) % 12], order[(idx + 6) % 12]]
+      : [root];
+    return names.map((name, i) => ({
+      label: i === 0 ? '身宫' : shortName(name),
+      lead: i === 0 ? shortName(p.name) : '',
+      p: i === 0 ? p : findPalace(name),
+    }));
+  }
+
+  render('aip-shen-struct', sanfangRowsFor(bodyPalace()));
+  render('aip-hunyin-struct', rowsByNames(['夫妻宫', '福德宫', '迁移宫', '官禄宫']));
+  render('aip-jiankang-struct', rowsByNames(['疾厄宫', '兄弟宫', '田宅宫', '父母宫']));
+  render('aip-caiyun-struct', rowsByNames(['财帛宫', '命宫', '官禄宫', '福德宫']));
+  render('aip-shiye-struct', rowsByNames(['官禄宫', '命宫', '财帛宫', '夫妻宫']));
+}
+
 function buildCurrentLuckAnalysis(chart, inputs, activeAge) {
   if (!chart || !activeAge) return null;
 
@@ -4394,9 +4528,11 @@ function renderAIPiming() {
     if (breakRow)     breakRow.style.display   = 'none';
     // 新盘重置：命盘结构默认收起，按需展开
     document.getElementById('aip-struct-details')?.removeAttribute('open');
+    document.querySelectorAll('.aip-sub-struct-details').forEach(el => el.removeAttribute('open'));
 
     // 填入本地命格速览 4 行（立即显示，无需 AI）
     _aipFillStructLocal(_chart);
+    _aipFillSubStructLocal(_chart);
 
     _aipSetCard('aip-sf',   base.sanfang);
     _aipSetCard('aip-shen', base.shen);
@@ -4565,6 +4701,124 @@ function _dlxSelectYear(age, options) {
 }
 
 // ── AI 深度批命按钮 ───────────────────────────────────────
+function _dlxGetYearScore(age) {
+  const targetAge = Number(age);
+  if (!Number.isFinite(targetAge)) return null;
+  const card = window._liunianAiResultMap?.[String(targetAge)] || null;
+  const score = card?.scoreBreakdown?.finalScore ?? card?.score;
+  const numeric = Math.round(Number(score));
+  if (!Number.isFinite(numeric)) return null;
+  return {
+    age: targetAge,
+    score: Math.max(0, Math.min(100, numeric)),
+    summary: card?.scoreBreakdown?.reason || card?.summary || '',
+  };
+}
+
+function _dlxYearScoreClass(score) {
+  return typeof _fcScoreClass === 'function'
+    ? _fcScoreClass(Number(score))
+    : (score >= 75 ? 'good' : score >= 50 ? 'mid' : 'low');
+}
+
+function _dlxYearScoreText(age) {
+  const item = _dlxGetYearScore(age);
+  if (item) return `${Math.round(Number(item.score))}分`;
+  return '待批命';
+}
+
+function _dlxRenderYearButtonContent(btn, age) {
+  if (!btn) return;
+  const item = _dlxGetYearScore(age);
+  const scoreClass = item ? _dlxYearScoreClass(item.score) : 'pending';
+  btn.classList.toggle('has-score', !!item);
+  btn.innerHTML = [
+    `<span class="dlx-year-age">${age}岁</span>`,
+    `<span class="dlx-year-score ${scoreClass}">${_dlxYearScoreText(age)}</span>`,
+  ].join('');
+}
+
+function _dlxRenderSelectedYearScore(age) {
+  const scoreEl = document.getElementById('dlx-ln-score-val');
+  const summaryEl = document.getElementById('dlx-ln-score-summary');
+  if (!scoreEl) return;
+  const item = _dlxGetYearScore(age);
+  if (item) {
+    const score = Math.round(Number(item.score));
+    scoreEl.textContent = `${score}分`;
+    scoreEl.className = `dlx-info-val dlx-year-score-val ${_dlxYearScoreClass(score)}`;
+    if (summaryEl) summaryEl.textContent = item.summary || 'AI批命评分';
+  } else {
+    scoreEl.textContent = '待批命';
+    scoreEl.className = 'dlx-info-val dlx-year-score-val pending';
+    if (summaryEl) summaryEl.textContent = '点“批这一年”后显示 AI 批命评分';
+  }
+}
+
+function _dlxRefreshYearScores() {
+  document.querySelectorAll('#dlx-year-pills .dlx-pill-btn').forEach(btn => {
+    _dlxRenderYearButtonContent(btn, Number(btn.dataset.age));
+  });
+  if (_dlxSelectedAge) _dlxRenderSelectedYearScore(_dlxSelectedAge);
+}
+window._aipDlxRefreshYearScores = _dlxRefreshYearScores;
+
+function _dlxRenderYears(start, end) {
+  const container = document.getElementById('dlx-year-pills');
+  if (!container) return;
+  container.innerHTML = '';
+  const activeAge = _fcActiveAge || 1;
+  for (let age = start; age <= end; age++) {
+    const btn = document.createElement('button');
+    btn.className = 'dlx-pill-btn dlx-year-pill';
+    btn.dataset.age = age;
+    _dlxRenderYearButtonContent(btn, age);
+    const year = typeof _fcAgeToYear === 'function' ? _fcAgeToYear(age) : '—';
+    btn.title = `${year}年`;
+    btn.onclick = () => _dlxSelectYear(age);
+    container.appendChild(btn);
+  }
+  if (activeAge >= start && activeAge <= end) _dlxSelectYear(activeAge, { source: 'init' });
+}
+
+function _dlxSelectYear(age, options) {
+  _dlxSelectedAge = age;
+
+  document.querySelectorAll('#dlx-year-pills .dlx-pill-btn').forEach(btn => {
+    btn.classList.toggle('active', Number(btn.dataset.age) === age);
+  });
+
+  const year = typeof _fcAgeToYear === 'function' ? _fcAgeToYear(age) : '—';
+  const lnData = (_liunianSeq || {})[age] || null;
+  const gz = lnData?.yearGanzhi
+    ? (lnData.yearGanzhi.stem || '') + (lnData.yearGanzhi.branch || '')
+    : '—';
+
+  const xlBranch = typeof _fcResolveDisplayedXiaoLianBranch === 'function'
+    ? _fcResolveDisplayedXiaoLianBranch(age) : '';
+  const xlPalace = (_chart?.palaces || []).find(p => p.earthlyBranch === xlBranch);
+  const xlName = xlPalace?.name || (xlBranch ? xlBranch + '宫' : '—');
+
+  document.getElementById('dlx-ln-ttl').textContent = `${year}年 · 虚岁${age}岁`;
+  document.getElementById('dlx-ln-info').innerHTML = [
+    `<div class="dlx-info-row"><span class="dlx-info-label">干支</span><span class="dlx-info-val">${gz}</span></div>`,
+    `<div class="dlx-info-row"><span class="dlx-info-label">公历年</span><span class="dlx-info-val">${year}年</span></div>`,
+    `<div class="dlx-info-row"><span class="dlx-info-label">小限落宫</span><span class="dlx-info-val">${xlName}</span></div>`,
+    `<div class="dlx-info-row"><span class="dlx-info-label">虚岁</span><span class="dlx-info-val">${age}岁</span></div>`,
+    `<div class="dlx-info-row dlx-score-row"><span class="dlx-info-label">本年评分</span><span class="dlx-info-val dlx-year-score-val pending" id="dlx-ln-score-val">待评分</span></div>`,
+    `<div class="dlx-info-row dlx-score-row"><span class="dlx-info-label">评分摘要</span><span class="dlx-info-val" id="dlx-ln-score-summary">等待评分</span></div>`,
+  ].join('');
+  _dlxRenderSelectedYearScore(age);
+
+  document.getElementById('dlx-ln-ai-body').innerHTML = '';
+  document.getElementById('dlx-ln-ai-status').textContent = '';
+  document.getElementById('dlx-ln-risk').textContent = '';
+  document.getElementById('dlx-liunian-card').style.display = '';
+  if (typeof window._aipDlxOnYearSelected === 'function') {
+    window._aipDlxOnYearSelected(age, options || { source: 'user' });
+  }
+}
+
 let _PIMING_API_BASE = null;
 const _PIMING_API_PUBLIC_BASE = 'https://peaceful-celebration-production-74c8.up.railway.app';
 const _AI_STATUS_CONNECTED = 'AI大模型正常连接';
@@ -5238,11 +5492,17 @@ window._aiChatFill = function(data, submit) {
     .then(function(json) {
       if (json.ok && json.data) {
         showAiResult(json.data);
+        if (typeof window._desktopNotifyTaskDone === 'function') {
+          window._desktopNotifyTaskDone('AI\u63a8\u65f6\u8fb0', '\u65f6\u8fb0\u63a8\u65ad\u5df2\u5b8c\u6210\u3002', { tag: 'yuetian-shichen' });
+        }
       } else {
         throw new Error(json.error || '推断失败');
       }
     })
     .catch(function(err) {
+      if (typeof window._desktopNotifyTaskFailed === 'function') {
+        window._desktopNotifyTaskFailed('AI\u63a8\u65f6\u8fb0', err?.message || '\u8bf7\u56de\u5230\u9875\u9762\u67e5\u770b\u7ed3\u679c\u3002', { tag: 'yuetian-shichen-error' });
+      }
       console.warn('[天纪推时辰] AI 调用失败，回退本地规则:', err);
       if (body.whorlType) {
         fallbackLocal(body.whorlType);
@@ -5309,6 +5569,7 @@ window._aiChatFill = function(data, submit) {
 }());
 </script>
 <!-- AI 批命新后端集成（调用 Vercel /api/ai/run） -->
+<script src="../js/desktop-notify.js?v=20260423-notify"></script>
 <script src="../js/ai-piming.js"></script>
 <script src="../js/dayun-panel.js"></script>
 <!-- AI半仙 对话面板 -->
