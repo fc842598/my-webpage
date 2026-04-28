@@ -4669,7 +4669,7 @@ function _dlxYearScoreClass(score) {
 
 function _dlxYearScoreText(age) {
   const item = _dlxGetYearScore(age);
-  if (item) return `${Math.round(Number(item.score))}分`;
+  if (item) return '已批命';
   return '待批命';
 }
 
@@ -4690,14 +4690,13 @@ function _dlxRenderSelectedYearScore(age) {
   if (!scoreEl) return;
   const item = _dlxGetYearScore(age);
   if (item) {
-    const score = Math.round(Number(item.score));
-    scoreEl.textContent = `${score}分`;
-    scoreEl.className = `dlx-info-val dlx-year-score-val ${_dlxYearScoreClass(score)}`;
-    if (summaryEl) summaryEl.textContent = item.summary || 'AI批命评分';
+    scoreEl.textContent = '已批命';
+    scoreEl.className = 'dlx-info-val dlx-year-score-val good';
+    if (summaryEl) summaryEl.textContent = item.summary || '真实评分已生成，可在测试评分区查看具体分数';
   } else {
     scoreEl.textContent = '待批命';
     scoreEl.className = 'dlx-info-val dlx-year-score-val pending';
-    if (summaryEl) summaryEl.textContent = '点“批这一年”后显示 AI 批命评分';
+    if (summaryEl) summaryEl.textContent = '点“批这一年”后生成真实评分，具体分数在测试评分区单独显示';
   }
 }
 
@@ -4751,8 +4750,8 @@ function _dlxSelectYear(age, options) {
     `<div class="dlx-info-row"><span class="dlx-info-label">公历年</span><span class="dlx-info-val">${year}年</span></div>`,
     `<div class="dlx-info-row"><span class="dlx-info-label">小限落宫</span><span class="dlx-info-val">${xlName}</span></div>`,
     `<div class="dlx-info-row"><span class="dlx-info-label">虚岁</span><span class="dlx-info-val">${age}岁</span></div>`,
-    `<div class="dlx-info-row dlx-score-row"><span class="dlx-info-label">本年评分</span><span class="dlx-info-val dlx-year-score-val pending" id="dlx-ln-score-val">待评分</span></div>`,
-    `<div class="dlx-info-row dlx-score-row"><span class="dlx-info-label">评分摘要</span><span class="dlx-info-val" id="dlx-ln-score-summary">等待评分</span></div>`,
+    `<div class="dlx-info-row dlx-score-row"><span class="dlx-info-label">批命状态</span><span class="dlx-info-val dlx-year-score-val pending" id="dlx-ln-score-val">待批命</span></div>`,
+    `<div class="dlx-info-row dlx-score-row"><span class="dlx-info-label">结果说明</span><span class="dlx-info-val" id="dlx-ln-score-summary">真实评分将单独显示在测试评分区</span></div>`,
   ].join('');
   _dlxRenderSelectedYearScore(age);
 

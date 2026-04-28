@@ -121,29 +121,25 @@
     return 'low';
   }
 
+  function getVisibleScoreState(card, loading) {
+    if (loading) return { text: '批命中', className: 'pending' };
+    if (card) return { text: '已批命', className: 'done' };
+    return { text: '待批命', className: 'pending' };
+  }
+
+  function renderVisibleStatePillHtml(card, loading) {
+    const meta = getVisibleScoreState(card, loading);
+    return `<span class="dlx-ai-score-pill ${meta.className}">${escapeHtml(meta.text)}</span>`;
+  }
+
   function renderScorePillHtml(card, fallbackText) {
-    const score = getCardScore(card);
-    if (score == null) {
-      return `<span class="dlx-ai-score-pill pending">${escapeHtml(fallbackText || '待评分')}</span>`;
-    }
-    return `<span class="dlx-ai-score-pill ${scoreClass(score)}">${score}分</span>`;
+    void fallbackText;
+    return renderVisibleStatePillHtml(card, false);
   }
 
   function renderScoreDetailHtml(card) {
-    const score = getCardScore(card);
-    const detail = card?.scoreBreakdown || {};
-    const reason = detail.reason || '';
-    if (score == null && !reason) return '';
-
-    const rows = [
-      `<div class="dlx-ai-score-main"><span>本次批命评分</span><b class="${scoreClass(score)}">${score == null ? '待评分' : `${score}分`}</b></div>`,
-    ];
-    if (detail.decadeScore != null) rows.push(`<span>十年底色 ${escapeHtml(String(detail.decadeScore))}</span>`);
-    if (detail.yearScore != null) rows.push(`<span>流年原分 ${escapeHtml(String(detail.yearScore))}</span>`);
-    if (detail.adjustment != null) rows.push(`<span>流年修正 ${detail.adjustment > 0 ? '+' : ''}${escapeHtml(String(detail.adjustment))}</span>`);
-    if (reason) rows.push(`<em>${escapeHtml(reason)}</em>`);
-
-    return `<div class="dlx-ai-score-box">${rows.join('')}</div>`;
+    void card;
+    return '';
   }
 
   function getCardBrief(card) {
@@ -182,14 +178,14 @@
     const card = state.dayunResultMap[key] || state.dayunOverviewMap[key]?.card || null;
     const isCurrent = item.tone === 'current';
     const isSelected = key === selectedKey;
-    const score = getCardScore(card);
+    const visibleState = getVisibleScoreState(card, false);
     const reason = getCardShortReason(card, isCurrent ? '把握当下十年主节奏' : '点击切换查看这段运势');
     return (
       `<button type="button" class="dlx-timeline-node dlx-timeline-${escapeHtml(item.tone || 'normal')}${isCurrent ? ' is-current' : ''}${isSelected ? ' is-selected' : ''}" data-range-key="${escapeHtml(key)}">` +
         `<span class="dlx-timeline-node-label">${escapeHtml(item.label || `第${item.index + 1}大运`)}</span>` +
         `<span class="dlx-timeline-node-age">${escapeHtml(`${item.dayun.start}-${item.dayun.end}岁`)}</span>` +
         `<span class="dlx-timeline-node-copy">${escapeHtml(reason)}</span>` +
-        `<span class="dlx-timeline-node-score">${score == null ? '待批命' : `${score}分`}</span>` +
+        `<span class="dlx-timeline-node-score ${visibleState.className}">${escapeHtml(visibleState.text)}</span>` +
       `</button>`
     );
   }
@@ -198,7 +194,7 @@
     const selectedDayun = selectedItem?.dayun || null;
     const selectedKey = getRangeKey(selectedDayun);
     const selectedCard = selectedKey ? (state.dayunResultMap[selectedKey] || state.dayunOverviewMap[selectedKey]?.card || null) : null;
-    const selectedScore = getCardScore(selectedCard);
+    const selectedState = getVisibleScoreState(selectedCard, false);
     const summary = getCardShortReason(selectedCard, '先看三段十年，再进入单年判断。');
     const trackHtml = (focusItems || []).map((item, idx) => (
       `${idx ? '<span class="dlx-timeline-connector" aria-hidden="true"></span>' : ''}${renderTimelineNode(item, selectedKey)}`
@@ -215,7 +211,7 @@
         `</div>` +
         `<div class="dlx-timeline-track">${trackHtml}</div>` +
         `<div class="dlx-timeline-summary">` +
-          `<div class="dlx-timeline-summary-score"><span>整体节奏</span><strong>${selectedScore == null ? '待批' : selectedScore}</strong><em>${selectedScore == null ? '' : '/100'}</em></div>` +
+          `<div class="dlx-timeline-summary-score"><span>整体节奏</span><strong>${escapeHtml(selectedState.text)}</strong><em>${selectedCard ? '真实评分已计算' : '先批当前十年'}</em></div>` +
           `<div class="dlx-timeline-summary-copy">${escapeHtml(summary)}</div>` +
           `<div class="dlx-timeline-summary-meta">${activeAge ? `当前虚岁 ${activeAge} 岁` : '当前年龄未识别'}${selectedDayun ? ` · 当前查看 ${selectedDayun.start}-${selectedDayun.end}岁` : ''}</div>` +
         `</div>` +
@@ -246,11 +242,7 @@
   }
 
   function renderYearStatePillHtml(card, loading) {
-    if (loading) return '<span class="dlx-ai-score-pill pending">批命中</span>';
-    const score = getCardScore(card);
-    if (score != null) return `<span class="dlx-ai-score-pill ${scoreClass(score)}">${score}分</span>`;
-    if (card) return '<span class="dlx-ai-score-pill done">已批</span>';
-    return '<span class="dlx-ai-score-pill pending">待批</span>';
+    return renderVisibleStatePillHtml(card, loading);
   }
 
   function setText(id, text) {
@@ -728,7 +720,7 @@ function renderDayunGroupCard(item) {
         `</details>`
       )
       : '';
-    const score = getCardScore(card);
+    const visibleState = getVisibleScoreState(card, false);
 
     return (
       `<article class="dlx-overview-item dlx-dayun-card dlx-focus-card dlx-focus-${escapeHtml(item.tone || 'normal')}${selected ? ' active' : ''}${eraClass ? ' ' + eraClass : ''}${status === 'loading' || rangeLoading ? ' is-loading' : ''}${!card ? ' is-empty' : ''}" data-range-key="${escapeHtml(key)}">` +
@@ -746,9 +738,9 @@ function renderDayunGroupCard(item) {
             `<div class="dlx-spotlight-copy">${escapeHtml(summaryLine || '等待批命')}</div>` +
           `</div>` +
           `<div class="dlx-spotlight-score-box">` +
-            `<span>整体评分</span>` +
-            `<strong class="${scoreClass(score)}">${score == null ? '待批' : score}</strong>` +
-            `<em>${score == null ? '' : '/100'}</em>` +
+            `<span>整体状态</span>` +
+            `<strong class="${visibleState.className}">${escapeHtml(visibleState.text)}</strong>` +
+            `<em>${card ? '真实评分已完成计算' : '先看总运，再看年份'}</em>` +
             `<b>${escapeHtml(getCardShortReason(card, '先看总运，再看年份。'))}</b>` +
           `</div>` +
         `</div>` +
@@ -796,7 +788,40 @@ function renderOverviewList() {
       renderTimelineHeroHtml(focusGroups, selectedItem, activeAge),
       renderDayunGroupCard(selectedItem),
       state.showAllDayun ? renderRestDayunRail(restGroups, selectedKey) : '',
+      renderTestScorePanelHtml(),
     ].join('');
+  }
+
+  function renderTestScorePanelHtml() {
+    const items = [];
+    let readyCount = 0;
+    for (let age = 1; age <= 100; age += 1) {
+      const card = state.yearResultMap[String(age)] || null;
+      const score = getCardScore(card);
+      const chipClass = score == null ? 'pending' : scoreClass(score);
+      const year = getSolarYear(age);
+      if (score != null) readyCount += 1;
+      items.push(
+        `<div class="dlx-test-score-chip ${chipClass}">` +
+          `<span class="dlx-test-score-age">${age}岁</span>` +
+          `<span class="dlx-test-score-year">${year || '—'}</span>` +
+          `<strong>${score == null ? '待批' : `${score}分`}</strong>` +
+        `</div>`
+      );
+    }
+    return (
+      `<section class="dlx-test-score-card">` +
+        `<div class="dlx-test-score-head">` +
+          `<div>` +
+            `<div class="dlx-test-score-kicker">测试评分</div>` +
+            `<div class="dlx-test-score-title">1-100岁真实评分</div>` +
+            `<div class="dlx-test-score-copy">这里只在测试期显示，读取第二板块真实 AI 评分，不额外造分。</div>` +
+          `</div>` +
+          `<div class="dlx-test-score-meta">已出分 ${readyCount}/100</div>` +
+        `</div>` +
+        `<div class="dlx-test-score-grid">${items.join('')}</div>` +
+      `</section>`
+    );
   }
 
   function selectDayunByOffset(offset) {
@@ -937,7 +962,7 @@ function renderOverviewList() {
       `<div class="dlx-info-row"><span class="dlx-info-label">辅星</span><span class="dlx-info-val">${escapeHtml(formatStarList(palace?.minorStars || [], false))}</span></div>`,
       `<div class="dlx-info-row"><span class="dlx-info-label">落宫</span><span class="dlx-info-val">${escapeHtml(palace?.name || '—')}</span></div>`,
       `<div class="dlx-info-row"><span class="dlx-info-label">杂曜</span><span class="dlx-info-val">${escapeHtml(formatAdjStarList(palace?.adjectiveStars || []))}</span></div>`,
-      `<div class="dlx-info-row"><span class="dlx-info-label">AI评分</span><span class="dlx-info-val">${renderScorePillHtml(card, '待批命')}</span></div>`,
+      `<div class="dlx-info-row"><span class="dlx-info-label">批命状态</span><span class="dlx-info-val">${renderScorePillHtml(card, '待批命')}</span></div>`,
     ].join('');
     cardEl.style.display = '';
   }
