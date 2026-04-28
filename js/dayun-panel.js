@@ -408,6 +408,9 @@
     window._fcGetLuckAiScoreInput = function (age) {
       return window._fcGetLuckAiSignalForAge(age);
     };
+    if (typeof window._fcSyncLifeCurveFromLuckScores === 'function') {
+      window._fcSyncLifeCurveFromLuckScores();
+    }
   }
 
   function getStatusMeta(status, card) {
