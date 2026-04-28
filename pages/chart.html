@@ -733,7 +733,7 @@
 
         <!-- 按钮 -->
         <div class="fc-bottom-actions">
-          <button class="fc-score-btn fc-btn-primary" id="fc-score-generate">去大限流年批分</button>
+          <button class="fc-score-btn fc-btn-primary" id="fc-score-generate">生成真实评分</button>
         </div>
         <div class="fc-footer">数据仅供参考</div>
       </div>
@@ -1863,40 +1863,46 @@ function _fcBootLuckScoreEngine() {
   return typeof window._fcEnsureLuckScoresForAges === 'function';
 }
 
-document.getElementById('fc-score-generate')?.addEventListener('click', async () => {
-  const ages = _fcLifeCurveMissingAges(_fcLifeCurveMode);
+async function _fcRequestLifeCurveScores(mode = _fcLifeCurveMode, options = {}) {
+  const ages = _fcLifeCurveMissingAges(mode);
   if (!ages.length) {
     _fcLifeCurveStickyMeta = '当前人生曲线所需分数都已是真实评分。';
     _fcRenderScoreCurve();
-    return;
+    return { ok: true, skipped: true };
   }
   if (!_fcBootLuckScoreEngine()) {
-    _fcLifeCurveStickyMeta = '评分引擎尚未就绪，已切到大限流年。';
+    _fcLifeCurveStickyMeta = '真实评分引擎尚未就绪，请稍后再试。';
     _fcRenderScoreCurve();
-    _fcOpenLuckPanelForScores();
-    return;
+    if (!options.silent) _fcOpenLuckPanelForScores();
+    return { ok: false, booted: false };
   }
 
   _fcLifeCurveLoading = true;
   _fcLifeCurveStickyMeta = '';
-  _fcLifeCurveStageHint = '正在调用大限流年的真实评分…';
+  _fcLifeCurveStageHint = '正在调用第二板块真实评分…';
   _fcRenderScoreCurve();
 
   try {
     await window._fcEnsureLuckScoresForAges(ages, {
       onStage(message) {
-        _fcLifeCurveStageHint = message || '正在调用大限流年的真实评分…';
+        _fcLifeCurveStageHint = message || '正在调用第二板块真实评分…';
         _fcRenderScoreCurve();
       },
     });
     _fcLifeCurveStickyMeta = '真实评分已同步到人生曲线。';
+    return { ok: true, generated: true };
   } catch (err) {
     _fcLifeCurveStickyMeta = _aiStatusForError(err) || '真实评分生成失败，请重试';
+    return { ok: false, error: err };
   } finally {
     _fcLifeCurveLoading = false;
     _fcLifeCurveStageHint = '';
     _fcRenderScoreCurve();
   }
+}
+
+document.getElementById('fc-score-generate')?.addEventListener('click', async () => {
+  await _fcRequestLifeCurveScores(_fcLifeCurveMode);
 });
 document.getElementById('fc-score-mode-decade')?.addEventListener('click', () => {
   _fcLifeCurveMode = 'decade';
@@ -2809,7 +2815,7 @@ function _fcOpenLuckPanelForScores() {
   if (tab) tab.click();
   else if (typeof _dlxInit === 'function') _dlxInit();
   const status = document.getElementById('dlx-batch-all-status') || document.getElementById('dlx-ln-ai-status');
-  if (status && !status.textContent) status.textContent = '人生曲线分数来自这里：先批十年大运和单年流年';
+  if (status && !status.textContent) status.textContent = '人生曲线与这里共用同一套真实评分数据。';
 }
 
 window._fcSyncLifeCurveFromLuckScores = function () {
@@ -3286,8 +3292,8 @@ function _fcRenderScoreCurve() {
   btn.textContent = _fcLifeCurveLoading
     ? '真实评分生成中…'
     : (missingCount > 0
-        ? (loadedCount > 0 ? '去补缺失评分' : '去大限流年批分')
-        : '刷新大限流年分数');
+        ? (loadedCount > 0 ? '补齐真实评分' : '生成真实评分')
+        : '刷新真实评分');
 
   if (progressWrap) {
     progressWrap.style.display = _fcLifeCurveLoading ? 'flex' : 'none';
@@ -3305,10 +3311,10 @@ function _fcRenderScoreCurve() {
     const stickyText = String(_fcLifeCurveStickyMeta || '').trim();
     const syncText = totalCount
       ? (loadedCount
-          ? `已同步大限流年真实 AI 评分 ${loadedCount}/${totalCount}；缺分年份请回到「大限流年」批单年。`
-          : '暂无真实评分。人生曲线只读取「大限流年」批出来的分数，请先批十年大运和单年流年。')
-      : '';
-    const loadingText = _fcLifeCurveLoading ? (_fcLifeCurveStageHint || '正在调用大限流年的真实评分…') : '';
+          ? `已同步第二板块真实 AI 评分 ${loadedCount}/${totalCount}；缺分可直接在这里继续补齐。`
+          : '暂无真实评分。人生曲线只读取第二板块的真实分数，点下方按钮即可直接触发评分。')
+      : '暂无真实评分。';
+    const loadingText = _fcLifeCurveLoading ? (_fcLifeCurveStageHint || '正在调用第二板块真实评分…') : '';
     const showMeta = !!stickyText || !!loadingText || !!syncText;
     meta.style.display = showMeta ? 'block' : 'none';
     if (showMeta) {
@@ -3622,12 +3628,12 @@ function _fcHideTooltip() {
 }
 
 async function _fcGenerateLifeCurve(options = {}) {
-  _fcLifeCurveLoading = false;
-  _fcLifeCurveStickyMeta = '人生曲线已改为只读取「大限流年」真实 AI 评分，不再单独生成分数。';
-  _fcRenderScoreCurve();
-  if (!options.auto && _fcLifeCurveMissingAges(options.mode || _fcLifeCurveMode).length) {
-    _fcOpenLuckPanelForScores();
+  if (options.auto) {
+    _fcLifeCurveStickyMeta = '人生曲线已连接第二板块真实评分。';
+    _fcRenderScoreCurve();
+    return;
   }
+  await _fcRequestLifeCurveScores(options.mode || _fcLifeCurveMode);
 }
 
 function fcRenderTabs() {
