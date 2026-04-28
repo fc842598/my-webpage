@@ -566,7 +566,7 @@
 
   function renderInlineYearTrendHtml(dayun) {
     const fallbackScores = [62, 68, 76, 82, 74, 70, 78, 84, 72, 66];
-    const rowPoints = [[], []];
+    const points = [];
     let index = 0;
 
     for (let age = Number(dayun.start); age <= Number(dayun.end); age++) {
@@ -575,33 +575,43 @@
       const safeScore = Number.isFinite(Number(score)) ? Number(score) : fallbackScores[index] || 72;
       const row = index < 5 ? 0 : 1;
       const col = index % 5;
-      const baseY = row === 0 ? 126 : 270;
-      const lift = row === 0 ? 3.1 : 2.35;
-      rowPoints[row].push({
+      const waveBias = row === 0
+        ? [48, 18, 44, -38, 16][col]
+        : [18, -18, 34, -30, 14][col];
+      const baseY = row === 0 ? 170 : 318;
+      const lift = row === 0 ? 2.15 : 1.65;
+      points.push({
         x: 58 + col * 221,
-        y: Math.max(row === 0 ? 60 : 220, Math.min(row === 0 ? 176 : 315, baseY + (76 - safeScore) * lift)),
+        y: Math.max(row === 0 ? 62 : 230, Math.min(row === 0 ? 226 : 372, baseY + (76 - safeScore) * lift + waveBias)),
         active: Number(state.selectedYearAge) === Number(age),
       });
       index += 1;
     }
 
-    const paths = rowPoints
-      .map((points, row) => {
-        const d = buildSmoothTrendPath(points);
-        if (!d) return '';
-        return (
-          `<path class="dlx-inline-year-trend-glow row-${row + 1}" d="${d}"></path>` +
-          `<path class="dlx-inline-year-trend-line row-${row + 1}" d="${d}"></path>`
-        );
-      })
-      .join('');
-    const dots = rowPoints.flat().map((point) => (
+    const visualPoints = points.length >= 10
+      ? [
+        { x: -24, y: points[5].y + 8 },
+        points[5],
+        points[1],
+        points[2],
+        points[6],
+        points[7],
+        points[3],
+        points[4],
+        points[8],
+        points[9],
+        { x: 1024, y: points[9].y + 10 },
+      ]
+      : points;
+    const d = buildSmoothTrendPath(visualPoints);
+    const dots = points.map((point) => (
       `<circle class="dlx-inline-year-trend-dot${point.active ? ' active' : ''}" cx="${toTrendNumber(point.x)}" cy="${toTrendNumber(point.y)}" r="${point.active ? 5.5 : 3.5}"></circle>`
     )).join('');
 
     return (
-      `<svg class="dlx-inline-year-trend" viewBox="0 0 1000 360" preserveAspectRatio="none" aria-hidden="true">` +
-        paths +
+      `<svg class="dlx-inline-year-trend" viewBox="0 0 1000 420" preserveAspectRatio="none" aria-hidden="true">` +
+        `<path class="dlx-inline-year-trend-glow" d="${d}"></path>` +
+        `<path class="dlx-inline-year-trend-line" d="${d}"></path>` +
         `<g class="dlx-inline-year-trend-dots">${dots}</g>` +
       `</svg>`
     );

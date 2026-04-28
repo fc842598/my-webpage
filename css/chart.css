@@ -4985,30 +4985,31 @@
 
 .dlx-inline-year-trend {
   position: absolute !important;
-  inset: 28px 1.5% 18px 1.5% !important;
-  width: 97% !important;
-  height: calc(100% - 46px) !important;
+  inset: -4px 0 -8px 0 !important;
+  width: 100% !important;
+  height: calc(100% + 12px) !important;
   pointer-events: none !important;
-  z-index: 1 !important;
-  opacity: .95 !important;
+  z-index: 4 !important;
+  opacity: .9 !important;
+  mix-blend-mode: screen !important;
 }
 
 .dlx-inline-year-trend-glow {
   fill: none !important;
-  stroke: rgba(224, 174, 72, .2) !important;
-  stroke-width: 13 !important;
+  stroke: rgba(224, 174, 72, .26) !important;
+  stroke-width: 15 !important;
   stroke-linecap: round !important;
   stroke-linejoin: round !important;
-  filter: blur(3px) drop-shadow(0 0 14px rgba(238, 190, 82, .42)) !important;
+  filter: blur(4px) drop-shadow(0 0 18px rgba(238, 190, 82, .52)) !important;
 }
 
 .dlx-inline-year-trend-line {
   fill: none !important;
-  stroke: rgba(245, 207, 112, .84) !important;
-  stroke-width: 2.2 !important;
+  stroke: rgba(250, 218, 124, .9) !important;
+  stroke-width: 2.6 !important;
   stroke-linecap: round !important;
   stroke-linejoin: round !important;
-  filter: drop-shadow(0 0 7px rgba(245, 207, 112, .7)) !important;
+  filter: drop-shadow(0 0 9px rgba(245, 207, 112, .86)) !important;
 }
 
 .dlx-inline-year-trend-dot {
