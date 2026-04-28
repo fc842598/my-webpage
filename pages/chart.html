@@ -475,8 +475,8 @@
           </summary>
           <div class="aip-struct aip-sub-struct" id="aip-hunyin-struct"></div>
         </details>
-        <div class="aip-card-body" id="aip-hunyin-body"></div>
-        <div class="aip-card-tip"  id="aip-hunyin-tip"></div>
+        <div class="aip-card-body" id="aip-hunyin-body">先看夫妻宫、福德宫与迁移宫，判断感情节奏、择偶倾向和婚姻稳定度。</div>
+        <div class="aip-card-tip"  id="aip-hunyin-tip">点击「AI 婚姻批命」后，会补充缘分模式、相处风险与推进方式。</div>
       </div>
 
       <div class="aip-card aip-sub-card aip-jiankang-card">
@@ -494,8 +494,8 @@
           </summary>
           <div class="aip-struct aip-sub-struct" id="aip-jiankang-struct"></div>
         </details>
-        <div class="aip-card-body" id="aip-jiankang-body"></div>
-        <div class="aip-card-tip"  id="aip-jiankang-tip"></div>
+        <div class="aip-card-body" id="aip-jiankang-body">先看疾厄宫、兄弟宫与田宅宫，判断体质倾向、压力来源和长期留意点。</div>
+        <div class="aip-card-tip"  id="aip-jiankang-tip">点击「AI 健康批命」后，会补充健康节奏、风险提醒与调养方向。</div>
       </div>
 
       <div class="aip-card aip-sub-card aip-caiyun-card">
@@ -513,8 +513,8 @@
           </summary>
           <div class="aip-struct aip-sub-struct" id="aip-caiyun-struct"></div>
         </details>
-        <div class="aip-card-body" id="aip-caiyun-body"></div>
-        <div class="aip-card-tip"  id="aip-caiyun-tip"></div>
+        <div class="aip-card-body" id="aip-caiyun-body">先看财帛宫、官禄宫与命宫，判断赚钱方式、守财能力和投资风险。</div>
+        <div class="aip-card-tip"  id="aip-caiyun-tip">点击「AI 财运批命」后，会补充财源路径、破财点和适合的用钱策略。</div>
       </div>
 
       <div class="aip-card aip-sub-card aip-shiye-card">
@@ -532,8 +532,8 @@
           </summary>
           <div class="aip-struct aip-sub-struct" id="aip-shiye-struct"></div>
         </details>
-        <div class="aip-card-body" id="aip-shiye-body"></div>
-        <div class="aip-card-tip"  id="aip-shiye-tip"></div>
+        <div class="aip-card-body" id="aip-shiye-body">先看官禄宫、命宫与迁移宫，判断事业方向、发展节奏和适合的工作模式。</div>
+        <div class="aip-card-tip"  id="aip-shiye-tip">点击「AI 事业批命」后，会补充职业定位、机会窗口与需要避开的坑。</div>
       </div>
 
     </div>
@@ -4506,6 +4506,47 @@ function _aipSetCard(prefix, data) {
   if (p) p.textContent = data.tip   || '';
 }
 
+const AIP_SUBCARD_INITIALS = {
+  'aip-life': {
+    title: '命宫格局',
+    body: '先看命宫、三方四正与四化，判断一生命格主线。点击按钮后生成完整 AI 解读。',
+    tip: '点击「AI 深度批命」获取 AI 整体解读',
+  },
+  'aip-hunyin': {
+    title: '婚姻批命',
+    body: '先看夫妻宫、福德宫与迁移宫，判断感情节奏、择偶倾向和婚姻稳定度。',
+    tip: '点击「AI 婚姻批命」后，会补充缘分模式、相处风险与推进方式。',
+  },
+  'aip-jiankang': {
+    title: '健康批命',
+    body: '先看疾厄宫、兄弟宫与田宅宫，判断体质倾向、压力来源和长期留意点。',
+    tip: '点击「AI 健康批命」后，会补充健康节奏、风险提醒与调养方向。',
+  },
+  'aip-caiyun': {
+    title: '财运批命',
+    body: '先看财帛宫、官禄宫与命宫，判断赚钱方式、守财能力和投资风险。',
+    tip: '点击「AI 财运批命」后，会补充财源路径、破财点和适合的用钱策略。',
+  },
+  'aip-shiye': {
+    title: '事业批命',
+    body: '先看官禄宫、命宫与迁移宫，判断事业方向、发展节奏和适合的工作模式。',
+    tip: '点击「AI 事业批命」后，会补充职业定位、机会窗口与需要避开的坑。',
+  },
+};
+
+function _aipResetSpecialtyCards() {
+  Object.keys(AIP_SUBCARD_INITIALS).forEach(prefix => {
+    _aipSetCard(prefix, AIP_SUBCARD_INITIALS[prefix]);
+    const body = document.getElementById(prefix + '-body');
+    const status = document.getElementById(prefix + '-status');
+    if (body) {
+      body.style.whiteSpace = '';
+      body.style.color = '';
+    }
+    if (status) status.textContent = '';
+  });
+}
+
 function renderAIPiming() {
   if (!_chart || !_chartInputs) return;
   const section = document.getElementById('aip-section');
@@ -4513,13 +4554,9 @@ function renderAIPiming() {
   const base = buildBaseMingAnalysis(_chart, _chartInputs);
   const luck = buildCurrentLuckAnalysis(_chart, _chartInputs, _fcActiveAge);
   if (base) {
-    // aip-life：新命盘渲染时无条件重置为占位，清除旧盘 AI 结果
-    // body 留空，等 AI 返回后才显示（避免本地预生成文案被误认为 AI 结果）
-    _aipSetCard('aip-life', {
-      title: base.life?.title || '命宫格局',
-      body : '',
-      tip  : '点击「AI 深度批命」获取 AI 整体解读',
-    });
+    _aipResetSpecialtyCards();
+    const lifeTitle = base.life?.title || AIP_SUBCARD_INITIALS['aip-life'].title;
+    _aipSetCard('aip-life', { ...AIP_SUBCARD_INITIALS['aip-life'], title: lifeTitle });
     // 同步隐藏并清空调试卡，避免旧盘 debug 残留
     const debugCard = document.getElementById('aip-overall-debug-card');
     const debugPre  = document.getElementById('aip-overall-debug-pre');
