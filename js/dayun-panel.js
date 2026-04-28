@@ -152,6 +152,99 @@
     return String(text || '').replace(/\s+/g, ' ').trim();
   }
 
+  function truncateText(text, limit) {
+    const raw = String(text || '').trim();
+    if (!raw) return '';
+    return raw.length > limit ? `${raw.slice(0, limit)}…` : raw;
+  }
+
+  function getCardShortReason(card, fallback) {
+    return truncateText(card?.scoreBreakdown?.reason || getCardBrief(card) || fallback || '', 38);
+  }
+
+  function getCardSummaryLine(card, fallback) {
+    return truncateText(getCardBrief(card) || card?.scoreBreakdown?.reason || fallback || '', 86);
+  }
+
+  function renderDecadeMetaChips(dayun) {
+    const palace = dayun?.palace || {};
+    const stem = palace?.decadal?.heavenlyStem || '';
+    const stars = Array.isArray(palace?.majorStars)
+      ? palace.majorStars.slice(0, 3).map((star) => `${star.name || ''}${star.brightness || ''}`.trim()).filter(Boolean)
+      : [];
+    const chips = [palace?.name ? `${palace.name}宫` : '', stem ? `${stem}干` : '', ...stars].filter(Boolean);
+    return chips.map((label) => `<span class="dlx-meta-chip">${escapeHtml(label)}</span>`).join('');
+  }
+
+  function renderTimelineNode(item, selectedKey) {
+    if (!item || !item.dayun) return '';
+    const key = getRangeKey(item.dayun);
+    const card = state.dayunResultMap[key] || state.dayunOverviewMap[key]?.card || null;
+    const isCurrent = item.tone === 'current';
+    const isSelected = key === selectedKey;
+    const score = getCardScore(card);
+    const reason = getCardShortReason(card, isCurrent ? '把握当下十年主节奏' : '点击切换查看这段运势');
+    return (
+      `<button type="button" class="dlx-timeline-node dlx-timeline-${escapeHtml(item.tone || 'normal')}${isCurrent ? ' is-current' : ''}${isSelected ? ' is-selected' : ''}" data-range-key="${escapeHtml(key)}">` +
+        `<span class="dlx-timeline-node-label">${escapeHtml(item.label || `第${item.index + 1}大运`)}</span>` +
+        `<span class="dlx-timeline-node-age">${escapeHtml(`${item.dayun.start}-${item.dayun.end}岁`)}</span>` +
+        `<span class="dlx-timeline-node-copy">${escapeHtml(reason)}</span>` +
+        `<span class="dlx-timeline-node-score">${score == null ? '待批命' : `${score}分`}</span>` +
+      `</button>`
+    );
+  }
+
+  function renderTimelineHeroHtml(focusItems, selectedItem, activeAge) {
+    const selectedDayun = selectedItem?.dayun || null;
+    const selectedKey = getRangeKey(selectedDayun);
+    const selectedCard = selectedKey ? (state.dayunResultMap[selectedKey] || state.dayunOverviewMap[selectedKey]?.card || null) : null;
+    const selectedScore = getCardScore(selectedCard);
+    const summary = getCardShortReason(selectedCard, '先看三段十年，再进入单年判断。');
+    const trackHtml = (focusItems || []).map((item, idx) => (
+      `${idx ? '<span class="dlx-timeline-connector" aria-hidden="true"></span>' : ''}${renderTimelineNode(item, selectedKey)}`
+    )).join('');
+    return (
+      `<section class="dlx-timeline-shell">` +
+        `<div class="dlx-timeline-head">` +
+          `<div>` +
+            `<div class="dlx-timeline-kicker">时间叙事线</div>` +
+            `<div class="dlx-timeline-title">大限流年</div>` +
+            `<div class="dlx-timeline-copy">时间的轻重，跟着总运势走。</div>` +
+          `</div>` +
+          `<button type="button" class="dlx-show-all-btn" data-dlx-show-all="1">${state.showAllDayun ? '收起其它大运' : '查看全部大运'}</button>` +
+        `</div>` +
+        `<div class="dlx-timeline-track">${trackHtml}</div>` +
+        `<div class="dlx-timeline-summary">` +
+          `<div class="dlx-timeline-summary-score"><span>整体节奏</span><strong>${selectedScore == null ? '待批' : selectedScore}</strong><em>${selectedScore == null ? '' : '/100'}</em></div>` +
+          `<div class="dlx-timeline-summary-copy">${escapeHtml(summary)}</div>` +
+          `<div class="dlx-timeline-summary-meta">${activeAge ? `当前虚岁 ${activeAge} 岁` : '当前年龄未识别'}${selectedDayun ? ` · 当前查看 ${selectedDayun.start}-${selectedDayun.end}岁` : ''}</div>` +
+        `</div>` +
+      `</section>`
+    );
+  }
+
+  function renderRestDayunRail(items, selectedKey) {
+    if (!items.length) return '';
+    return (
+      `<section class="dlx-rest-rail">` +
+        `<div class="dlx-rest-rail-title">其它大运</div>` +
+        `<div class="dlx-rest-rail-grid">` +
+          items.map((item) => {
+            const key = getRangeKey(item.dayun);
+            const card = state.dayunResultMap[key] || state.dayunOverviewMap[key]?.card || null;
+            return (
+              `<button type="button" class="dlx-rail-card${key === selectedKey ? ' active' : ''}" data-range-key="${escapeHtml(key)}">` +
+                `<span class="dlx-rail-card-top">${escapeHtml(item.label || `第${item.index + 1}大运`)}</span>` +
+                `<span class="dlx-rail-card-age">${escapeHtml(`${item.dayun.start}-${item.dayun.end}岁`)}</span>` +
+                `<span class="dlx-rail-card-copy">${escapeHtml(getCardShortReason(card, '点击切换查看'))}</span>` +
+              `</button>`
+            );
+          }).join('') +
+        `</div>` +
+      `</section>`
+    );
+  }
+
   function renderYearStatePillHtml(card, loading) {
     if (loading) return '<span class="dlx-ai-score-pill pending">批命中</span>';
     const score = getCardScore(card);
@@ -401,10 +494,12 @@
     if (tag) tag.textContent = '三段大运';
     if (title) title.textContent = '过去10年 / 现行10年 / 未来10年';
     const batchCard = document.getElementById('dlx-batch-card');
+    const bottomBatchCard = document.getElementById('dlx-bottom-batch-card');
     const decadeSection = document.getElementById('dlx-decade-pills')?.closest('.dlx-section');
     const yearSection = document.getElementById('dlx-year-section');
     const daxianCard = document.getElementById('dlx-daxian-card');
     if (batchCard) batchCard.style.display = 'none';
+    if (bottomBatchCard) bottomBatchCard.style.display = 'none';
     if (decadeSection) decadeSection.style.display = 'none';
     if (yearSection) yearSection.style.display = 'none';
     if (daxianCard) daxianCard.style.display = 'none';
@@ -448,7 +543,7 @@
     return !!(state.dayunResultMap[key] || state.dayunOverviewMap[key]?.card) && getGeneratedYearCount(dayun) >= 10;
   }
 
-  function renderInlineYearsHtml(dayun, expanded) {
+function renderInlineYearsHtml(dayun, expanded) {
     if (!expanded) return '';
     const years = [];
     for (let age = Number(dayun.start); age <= Number(dayun.end); age++) {
@@ -460,10 +555,9 @@
       years.push(
         `<div class="dlx-inline-year${selected ? ' active' : ''}${card ? ' done' : ''}${loading ? ' loading' : ''}" data-year-age="${age}">` +
           `<button type="button" class="dlx-inline-year-select" data-year-age="${age}">` +
-            `<span class="dlx-inline-year-age">${age}岁</span>` +
-            `<span class="dlx-inline-year-sub">${year ? `${year}年` : '小流年'}</span>` +
+            `<span class="dlx-inline-year-top"><span class="dlx-inline-year-age">${age}岁</span><span class="dlx-inline-year-sub">${year ? `${year}年` : '小流年'}</span></span>` +
             renderYearStatePillHtml(card, loading) +
-            `<span class="dlx-inline-year-preview">${escapeHtml(brief ? `${brief.slice(0, 34)}${brief.length > 34 ? '…' : ''}` : '等待批命')}</span>` +
+            `<span class="dlx-inline-year-preview">${escapeHtml(brief ? `${brief.slice(0, 32)}${brief.length > 32 ? '…' : ''}` : '等待批命')}</span>` +
           `</button>` +
           `<button type="button" class="dlx-inline-year-ai-btn" data-year-age="${age}" data-range-key="${escapeHtml(getRangeKey(dayun))}"${loading ? ' disabled' : ''}>${card ? '查看' : '批这一年'}</button>` +
         `</div>`
@@ -472,7 +566,7 @@
     return `<div class="dlx-inline-years">${years.join('')}</div>`;
   }
 
-  function renderInlineYearDetailHtml(dayun, expanded) {
+function renderInlineYearDetailHtml(dayun, expanded) {
     if (!expanded) return '';
     const age = Number(state.selectedYearAge);
     if (!Number.isFinite(age) || age < Number(dayun.start) || age > Number(dayun.end)) return '';
@@ -493,7 +587,7 @@
     );
   }
 
-  function renderDayunGroupCard(item) {
+function renderDayunGroupCard(item) {
     const dayun = item.dayun;
     const index = item.index;
     const key = getRangeKey(dayun);
@@ -504,44 +598,52 @@
     const statusMeta = getStatusMeta(status, card);
     const eraClass = getEraClass(dayun);
     const palace = dayun.palace || {};
-    const stem = palace?.decadal?.heavenlyStem || '';
     const generatedYears = getGeneratedYearCount(dayun);
     const rangeLoading = state.rangeBatchMap[key] === 'loading';
     const complete = isRangeComplete(dayun);
-    const sanfang = getSanfangSizheng(palace?.earthlyBranch || '')
-      .map((sf) => sf.palaceName)
-      .join(' · ') || '—';
-    const summaryHtml = card ? renderSectionsHtml(card) : '';
+    const summaryLine = getCardSummaryLine(card, '先批这一整段十年，再逐年展开。');
     const riskHtml = card?.risk ? `<div class="dlx-overview-risk">提醒：${escapeHtml(card.risk)}</div>` : '';
+    const detailHtml = card
+      ? (
+        `<details class="dlx-decade-detail">` +
+          `<summary>查看完整十年批命</summary>` +
+          `<div class="aip-card-body dlx-overview-summary">${renderSectionsHtml(card)}</div>` +
+        `</details>`
+      )
+      : '';
+    const score = getCardScore(card);
 
     return (
       `<article class="dlx-overview-item dlx-dayun-card dlx-focus-card dlx-focus-${escapeHtml(item.tone || 'normal')}${selected ? ' active' : ''}${eraClass ? ' ' + eraClass : ''}${status === 'loading' || rangeLoading ? ' is-loading' : ''}${!card ? ' is-empty' : ''}" data-range-key="${escapeHtml(key)}">` +
-        `<div class="dlx-focus-label">${escapeHtml(item.label || `第${index + 1}大运`)}</div>` +
-        `<div class="dlx-overview-head">` +
-          `<div class="dlx-title-group">` +
-            `<div class="dlx-decade-num">第${index + 1}大运</div>` +
-            `<div class="dlx-overview-title">${escapeHtml(`${dayun.start}-${dayun.end}岁`)}</div>` +
+        `<div class="dlx-spotlight-top">` +
+          `<div class="dlx-spotlight-main">` +
+            `<div class="dlx-focus-label">${escapeHtml(item.label || `第${index + 1}大运`)}</div>` +
+            `<div class="dlx-overview-head">` +
+              `<div class="dlx-title-group">` +
+                `<div class="dlx-decade-num">第${index + 1}大运</div>` +
+                `<div class="dlx-overview-title">${escapeHtml(`${dayun.start}-${dayun.end}岁`)}</div>` +
+              `</div>` +
+              `<span class="dlx-overview-badge ${statusMeta.badgeClass}">${escapeHtml(statusMeta.badge)}</span>` +
+            `</div>` +
+            `<div class="dlx-spotlight-meta">${renderDecadeMetaChips(dayun)}<span class="dlx-meta-chip">${generatedYears}/10 流年</span></div>` +
+            `<div class="dlx-spotlight-copy">${escapeHtml(summaryLine || '等待批命')}</div>` +
           `</div>` +
-          `<span class="dlx-overview-badge ${statusMeta.badgeClass}">${escapeHtml(statusMeta.badge)}</span>` +
-          renderScorePillHtml(card, '待评分') +
+          `<div class="dlx-spotlight-score-box">` +
+            `<span>整体评分</span>` +
+            `<strong class="${scoreClass(score)}">${score == null ? '待批' : score}</strong>` +
+            `<em>${score == null ? '' : '/100'}</em>` +
+            `<b>${escapeHtml(getCardShortReason(card, '先看总运，再看年份。'))}</b>` +
+          `</div>` +
         `</div>` +
-        `<div class="dlx-overview-meta">` +
-          `<div class="dlx-overview-row"><span class="dlx-overview-label">大运宫</span><span class="dlx-overview-value" style="font-weight:600">${escapeHtml(palace?.name || '—')}</span></div>` +
-          `<div class="dlx-overview-row"><span class="dlx-overview-label">宫干</span><span class="dlx-overview-value">${escapeHtml(stem || '—')}</span></div>` +
-          `<div class="dlx-overview-row"><span class="dlx-overview-label">已批流年</span><span class="dlx-overview-value">${generatedYears}/10</span></div>` +
-          `<div class="dlx-overview-row"><span class="dlx-overview-label">三方四正</span><span class="dlx-overview-value">${escapeHtml(sanfang)}</span></div>` +
-        `</div>` +
-        `<div class="dlx-overview-meta" style="border-bottom:none;padding-bottom:8px;margin-bottom:4px">` +
-          `<div class="dlx-overview-row" style="min-width:0;flex:0 0 auto"><span class="dlx-overview-label">主星</span><div class="dlx-stars-wrap">${formatStarBadgesHtml(palace?.majorStars || [])}</div></div>` +
-        `</div>` +
+        `<div class="dlx-stars-line"><span class="dlx-overview-label">主星</span><div class="dlx-stars-wrap">${formatStarBadgesHtml(palace?.majorStars || [])}</div></div>` +
         `<div class="dlx-overview-actions">` +
           `<button class="dlx-dayun-ai-btn ${statusMeta.btnState}" data-ai-range-key="${escapeHtml(key)}"${status === 'loading' ? ' disabled' : ''}>${escapeHtml(statusMeta.btnLabel)}</button>` +
           `<button class="dlx-range-batch-btn" data-batch-range-key="${escapeHtml(key)}"${rangeLoading ? ' disabled' : ''}>${rangeLoading ? '批完整组中…' : (complete ? '✓ 已批完整组' : '✦ 一键批完这10年')}</button>` +
           `<button class="dlx-decade-toggle-btn" data-toggle-range-key="${escapeHtml(key)}">${expanded ? '收起小流年' : '展开小流年'}</button>` +
-          `<span class="dlx-overview-status">${rangeLoading ? '正在按十年大运 + 10个小流年逐个批命…' : (card ? escapeHtml(statusMeta.text) : '')}</span>` +
+          `<span class="dlx-overview-status">${rangeLoading ? '正在按十年大运 + 10个小流年逐个批命…' : (card ? escapeHtml(statusMeta.text) : '先批十年总运，再看单年变化')}</span>` +
         `</div>` +
         `${card ? renderScoreDetailHtml(card) : ''}` +
-        `${summaryHtml ? `<div class="aip-card-body dlx-overview-summary">${summaryHtml}</div>` : ''}` +
+        `${detailHtml}` +
         `${riskHtml}` +
         renderInlineYearsHtml(dayun, expanded) +
         renderInlineYearDetailHtml(dayun, expanded) +
@@ -549,7 +651,7 @@
     );
   }
 
-  function renderOverviewList() {
+function renderOverviewList() {
     updateOverviewHead();
     const listEl = document.getElementById('dlx-overview-list');
     if (!listEl) return;
@@ -561,12 +663,22 @@
 
     const activeAge = Number(window._fcActiveAge || 0);
     const groups = getFocusDayunList();
+    const focusGroups = groups.filter((item) => item.isFocus);
+    const selectedRaw = getSelectedDayunRaw() || state.dayunRanges[getCurrentDayunIndex()] || state.dayunRanges[0];
+    const selectedKey = getRangeKey(selectedRaw);
+    const selectedIndex = state.dayunRanges.findIndex((item) => getRangeKey(item) === selectedKey);
+    const selectedItem = groups.find((item) => getRangeKey(item.dayun) === selectedKey) || {
+      index: selectedIndex >= 0 ? selectedIndex : 0,
+      dayun: selectedRaw,
+      label: `第${(selectedIndex >= 0 ? selectedIndex : 0) + 1}大运`,
+      tone: selectedIndex < getCurrentDayunIndex() ? 'past' : (selectedIndex > getCurrentDayunIndex() ? 'future' : 'current'),
+      isFocus: false,
+    };
+    const restGroups = groups.filter((item) => !item.isFocus);
     listEl.innerHTML = [
-      `<div class="dlx-focus-toolbar">` +
-        `<div><b>按客户当前虚岁切三段</b><span>${activeAge ? `当前虚岁 ${activeAge} 岁` : '当前年龄未识别'}</span></div>` +
-        `<button type="button" class="dlx-show-all-btn" data-dlx-show-all="1">${state.showAllDayun ? '收起其它大运' : '查看全部大运'}</button>` +
-      `</div>`,
-      ...groups.map(renderDayunGroupCard),
+      renderTimelineHeroHtml(focusGroups, selectedItem, activeAge),
+      renderDayunGroupCard(selectedItem),
+      state.showAllDayun ? renderRestDayunRail(restGroups, selectedKey) : '',
     ].join('');
   }
 
@@ -613,6 +725,21 @@
       cardEl.addEventListener('click', function (event) {
         if (event.target?.closest('button')) return;
         const rangeKey = cardEl.dataset.rangeKey || '';
+        const raw = state.dayunRanges.find((item) => `${item.start}-${item.end}` === rangeKey);
+        if (!raw) return;
+        if (typeof window._dlxSelectDecade === 'function') {
+          window._dlxSelectDecade(raw, state.dayunRanges, { source: 'user' });
+        }
+      });
+    });
+
+    listEl.querySelectorAll('.dlx-timeline-node, .dlx-rail-card').forEach((btn) => {
+      if (btn.dataset.bound === '1') return;
+      btn.dataset.bound = '1';
+      btn.addEventListener('click', function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+        const rangeKey = btn.dataset.rangeKey || '';
         const raw = state.dayunRanges.find((item) => `${item.start}-${item.end}` === rangeKey);
         if (!raw) return;
         if (typeof window._dlxSelectDecade === 'function') {
