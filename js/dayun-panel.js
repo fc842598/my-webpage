@@ -97,9 +97,10 @@
   }
 
   function renderSectionsHtml(card) {
+    const fallbackText = card?.summary || card?.body || card?.scoreBreakdown?.reason || '';
     const sections = Array.isArray(card?.sections) && card.sections.length
       ? card.sections
-      : [{ title: '', content: card?.summary || card?.body || '' }];
+      : [{ title: card?.scoreBreakdown?.reason ? '评分依据' : '', content: fallbackText }];
     return sections.map((item) => {
       const title = escapeHtml(item?.title || '');
       const content = escapeHtml(item?.content || '').replace(/\n/g, '<br>');
@@ -471,6 +472,27 @@
     return `<div class="dlx-inline-years">${years.join('')}</div>`;
   }
 
+  function renderInlineYearDetailHtml(dayun, expanded) {
+    if (!expanded) return '';
+    const age = Number(state.selectedYearAge);
+    if (!Number.isFinite(age) || age < Number(dayun.start) || age > Number(dayun.end)) return '';
+    const card = getYearCard(age);
+    if (!card) return '';
+    const year = getSolarYear(age);
+    const riskHtml = card?.risk ? `<div class="dlx-overview-risk">提醒：${escapeHtml(card.risk)}</div>` : '';
+    return (
+      `<div class="dlx-inline-year-detail">` +
+        `<div class="dlx-inline-year-detail-head">` +
+          `<span>单年批命详情 · ${age}岁${year ? ` / ${year}年` : ''}</span>` +
+          renderYearStatePillHtml(card, false) +
+        `</div>` +
+        `${renderScoreDetailHtml(card)}` +
+        `<div class="aip-card-body dlx-overview-summary">${renderSectionsHtml(card)}</div>` +
+        `${riskHtml}` +
+      `</div>`
+    );
+  }
+
   function renderDayunGroupCard(item) {
     const dayun = item.dayun;
     const index = item.index;
@@ -522,6 +544,7 @@
         `${summaryHtml ? `<div class="aip-card-body dlx-overview-summary">${summaryHtml}</div>` : ''}` +
         `${riskHtml}` +
         renderInlineYearsHtml(dayun, expanded) +
+        renderInlineYearDetailHtml(dayun, expanded) +
       `</article>`
     );
   }

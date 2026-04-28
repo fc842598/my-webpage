@@ -2383,6 +2383,23 @@
   padding: 4px 9px;
   font-size: 11px;
 }
+.dlx-inline-year-detail {
+  margin-top: 12px;
+  padding: 12px 14px;
+  border: 1px solid rgba(201, 169, 97, .28);
+  border-radius: 14px;
+  background: rgba(255, 246, 228, .045);
+}
+.dlx-inline-year-detail-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 8px;
+  color: #f2dfbd;
+  font-size: 13px;
+  font-weight: 900;
+}
 .dlx-nav {
   display: grid;
   grid-template-columns: auto 1fr auto;
