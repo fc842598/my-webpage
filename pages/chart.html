@@ -1852,6 +1852,17 @@ function stepRawBirthTime(hoursDelta) {
 // 时↑ = 上一个时辰 = 原始时间 -2小时；时↓ = 下一个时辰 = 原始时间 +2小时
 document.getElementById('fc-btn-time-up').addEventListener('click',   () => stepRawBirthTime(-2));
 document.getElementById('fc-btn-time-down').addEventListener('click', () => stepRawBirthTime(+2));
+
+function _fcBootLuckScoreEngine() {
+  if (typeof window._fcEnsureLuckScoresForAges === 'function') return true;
+  if (typeof window._aipDlxRefresh === 'function') {
+    window._aipDlxRefresh();
+  } else if (typeof _dlxInit === 'function') {
+    _dlxInit();
+  }
+  return typeof window._fcEnsureLuckScoresForAges === 'function';
+}
+
 document.getElementById('fc-score-generate')?.addEventListener('click', async () => {
   const ages = _fcLifeCurveMissingAges(_fcLifeCurveMode);
   if (!ages.length) {
@@ -1859,7 +1870,7 @@ document.getElementById('fc-score-generate')?.addEventListener('click', async ()
     _fcRenderScoreCurve();
     return;
   }
-  if (typeof window._fcEnsureLuckScoresForAges !== 'function') {
+  if (!_fcBootLuckScoreEngine()) {
     _fcLifeCurveStickyMeta = '评分引擎尚未就绪，已切到大限流年。';
     _fcRenderScoreCurve();
     _fcOpenLuckPanelForScores();
@@ -3256,7 +3267,6 @@ function _fcRenderScoreCurve() {
   wrap.style.display = (_chart && _chartInputs) ? 'block' : 'none';
   if (!_chart || !_chartInputs) return;
   _fcSyncLifeCurveDataFromLuckScores();
-  _fcLifeCurveLoading = false;
 
   modeDecadeBtn.classList.toggle('active', _fcLifeCurveMode === 'decade');
   if (modeTwentyBtn) modeTwentyBtn.classList.toggle('active', _fcLifeCurveMode === 'twenty');
