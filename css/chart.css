@@ -2372,6 +2372,12 @@
   color: #7f6e5c;
   font-size: 10px;
 }
+.dlx-inline-year-preview {
+  min-height: 30px;
+  color: #a89878;
+  font-size: 10px;
+  line-height: 1.45;
+}
 .dlx-inline-year-ai-btn {
   justify-self: start;
   padding: 4px 9px;
@@ -2543,6 +2549,7 @@
 .dlx-ai-score-pill.good { background: #dfead9; color: #2f6b3a; }
 .dlx-ai-score-pill.mid { background: #f2e4c6; color: #8a5c12; }
 .dlx-ai-score-pill.low { background: #f0d2cb; color: #9b3a31; }
+.dlx-ai-score-pill.done { background: #dfead9; color: #2f6b3a; }
 .dlx-ai-score-pill.pending { background: #eee7dc; color: #9c8878; }
 .dlx-ai-score-box {
   margin-top: 10px;

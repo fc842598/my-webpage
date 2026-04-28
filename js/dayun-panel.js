@@ -145,6 +145,20 @@
     return `<div class="dlx-ai-score-box">${rows.join('')}</div>`;
   }
 
+  function getCardBrief(card) {
+    const firstSection = Array.isArray(card?.sections) ? card.sections.find((item) => item?.content) : null;
+    const text = card?.summary || firstSection?.content || card?.body || '';
+    return String(text || '').replace(/\s+/g, ' ').trim();
+  }
+
+  function renderYearStatePillHtml(card, loading) {
+    if (loading) return '<span class="dlx-ai-score-pill pending">批命中</span>';
+    const score = getCardScore(card);
+    if (score != null) return `<span class="dlx-ai-score-pill ${scoreClass(score)}">${score}分</span>`;
+    if (card) return '<span class="dlx-ai-score-pill done">已批</span>';
+    return '<span class="dlx-ai-score-pill pending">待批</span>';
+  }
+
   function setText(id, text) {
     const el = document.getElementById(id);
     if (el) el.textContent = text || '';
@@ -438,16 +452,17 @@
     const years = [];
     for (let age = Number(dayun.start); age <= Number(dayun.end); age++) {
       const card = getYearCard(age);
-      const score = getCardScore(card);
       const selected = Number(state.selectedYearAge) === age;
       const loading = state.yearStatusMap[String(age)] === 'loading';
       const year = getSolarYear(age);
+      const brief = getCardBrief(card);
       years.push(
         `<div class="dlx-inline-year${selected ? ' active' : ''}${card ? ' done' : ''}${loading ? ' loading' : ''}" data-year-age="${age}">` +
           `<button type="button" class="dlx-inline-year-select" data-year-age="${age}">` +
             `<span class="dlx-inline-year-age">${age}岁</span>` +
             `<span class="dlx-inline-year-sub">${year ? `${year}年` : '小流年'}</span>` +
-            renderScorePillHtml(card, loading ? '批命中' : '待批') +
+            renderYearStatePillHtml(card, loading) +
+            `<span class="dlx-inline-year-preview">${escapeHtml(brief ? `${brief.slice(0, 34)}${brief.length > 34 ? '…' : ''}` : '等待批命')}</span>` +
           `</button>` +
           `<button type="button" class="dlx-inline-year-ai-btn" data-year-age="${age}" data-range-key="${escapeHtml(getRangeKey(dayun))}"${loading ? ' disabled' : ''}>${card ? '查看' : '批这一年'}</button>` +
         `</div>`
