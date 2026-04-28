@@ -1852,10 +1852,40 @@ function stepRawBirthTime(hoursDelta) {
 // 时↑ = 上一个时辰 = 原始时间 -2小时；时↓ = 下一个时辰 = 原始时间 +2小时
 document.getElementById('fc-btn-time-up').addEventListener('click',   () => stepRawBirthTime(-2));
 document.getElementById('fc-btn-time-down').addEventListener('click', () => stepRawBirthTime(+2));
-document.getElementById('fc-score-generate')?.addEventListener('click', () => {
+document.getElementById('fc-score-generate')?.addEventListener('click', async () => {
+  const ages = _fcLifeCurveMissingAges(_fcLifeCurveMode);
+  if (!ages.length) {
+    _fcLifeCurveStickyMeta = '当前人生曲线所需分数都已是真实评分。';
+    _fcRenderScoreCurve();
+    return;
+  }
+  if (typeof window._fcEnsureLuckScoresForAges !== 'function') {
+    _fcLifeCurveStickyMeta = '评分引擎尚未就绪，已切到大限流年。';
+    _fcRenderScoreCurve();
+    _fcOpenLuckPanelForScores();
+    return;
+  }
+
+  _fcLifeCurveLoading = true;
   _fcLifeCurveStickyMeta = '';
+  _fcLifeCurveStageHint = '正在调用大限流年的真实评分…';
   _fcRenderScoreCurve();
-  if (_fcLifeCurveMissingAges(_fcLifeCurveMode).length) _fcOpenLuckPanelForScores();
+
+  try {
+    await window._fcEnsureLuckScoresForAges(ages, {
+      onStage(message) {
+        _fcLifeCurveStageHint = message || '正在调用大限流年的真实评分…';
+        _fcRenderScoreCurve();
+      },
+    });
+    _fcLifeCurveStickyMeta = '真实评分已同步到人生曲线。';
+  } catch (err) {
+    _fcLifeCurveStickyMeta = _aiStatusForError(err) || '真实评分生成失败，请重试';
+  } finally {
+    _fcLifeCurveLoading = false;
+    _fcLifeCurveStageHint = '';
+    _fcRenderScoreCurve();
+  }
 });
 document.getElementById('fc-score-mode-decade')?.addEventListener('click', () => {
   _fcLifeCurveMode = 'decade';
@@ -3242,14 +3272,22 @@ function _fcRenderScoreCurve() {
   const loadedCount   = visibleScores.length;
   const totalCount    = plotAges.length;
   const missingCount = Math.max(0, totalCount - loadedCount);
-  btn.disabled = false;
-  btn.textContent = missingCount > 0
-    ? (loadedCount > 0 ? '去补缺失评分' : '去大限流年批分')
-    : '刷新大限流年分数';
+  btn.disabled = _fcLifeCurveLoading;
+  btn.textContent = _fcLifeCurveLoading
+    ? '真实评分生成中…'
+    : (missingCount > 0
+        ? (loadedCount > 0 ? '去补缺失评分' : '去大限流年批分')
+        : '刷新大限流年分数');
 
   if (progressWrap) {
-    progressWrap.style.display = 'none';
-    if (progressFill) progressFill.classList.remove('fc-progress-indeterminate');
+    progressWrap.style.display = _fcLifeCurveLoading ? 'flex' : 'none';
+    if (progressFill) {
+      progressFill.classList.add('fc-progress-indeterminate');
+      progressFill.style.removeProperty('--fc-progress');
+    }
+    if (progressText) {
+      progressText.textContent = _fcLifeCurveLoading ? '真实评分中…' : '';
+    }
   }
 
   // ── 加载状态文字 ──
@@ -3260,10 +3298,11 @@ function _fcRenderScoreCurve() {
           ? `已同步大限流年真实 AI 评分 ${loadedCount}/${totalCount}；缺分年份请回到「大限流年」批单年。`
           : '暂无真实评分。人生曲线只读取「大限流年」批出来的分数，请先批十年大运和单年流年。')
       : '';
-    const showMeta = !!stickyText || !!syncText;
+    const loadingText = _fcLifeCurveLoading ? (_fcLifeCurveStageHint || '正在调用大限流年的真实评分…') : '';
+    const showMeta = !!stickyText || !!loadingText || !!syncText;
     meta.style.display = showMeta ? 'block' : 'none';
     if (showMeta) {
-      meta.textContent = stickyText || syncText;
+      meta.textContent = stickyText || loadingText || syncText;
     }
   }
 

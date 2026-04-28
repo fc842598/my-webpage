@@ -408,6 +408,58 @@
     window._fcGetLuckAiScoreInput = function (age) {
       return window._fcGetLuckAiSignalForAge(age);
     };
+    window._fcEnsureLuckScoresForAges = async function (ages, hooks) {
+      const onStage = typeof hooks?.onStage === 'function' ? hooks.onStage : function () {};
+      const wantedAges = [...new Set((Array.isArray(ages) ? ages : []).map((age) => Number(age)).filter(Number.isFinite))].sort((a, b) => a - b);
+      if (!wantedAges.length) return { ok: true, generatedRanges: 0, generatedYears: 0 };
+
+      const grouped = new Map();
+      wantedAges.forEach((age) => {
+        const raw = state.dayunRanges.find((item) => age >= item.start && age <= item.end) || null;
+        if (!raw) return;
+        const key = `${raw.start}-${raw.end}`;
+        if (!grouped.has(key)) grouped.set(key, { raw, ages: [] });
+        grouped.get(key).ages.push(age);
+      });
+
+      let generatedRanges = 0;
+      let generatedYears = 0;
+      const groups = [...grouped.values()].sort((a, b) => a.raw.start - b.raw.start);
+
+      for (const group of groups) {
+        const raw = group.raw;
+        const key = `${raw.start}-${raw.end}`;
+        const fullRangeAges = [];
+        for (let age = Number(raw.start); age <= Number(raw.end); age++) fullRangeAges.push(age);
+        const missingAges = group.ages.filter((age) => !state.yearResultMap[String(age)]);
+        const needDayun = !state.dayunResultMap[key];
+
+        if (!needDayun && !missingAges.length) continue;
+
+        const needsWholeRange = group.ages.length === fullRangeAges.length && missingAges.length === fullRangeAges.length;
+        onStage(`正在评分 ${raw.start}-${raw.end}岁`);
+
+        if (needsWholeRange) {
+          await runRangeFullAI(key);
+          generatedRanges += 1;
+          generatedYears += fullRangeAges.length;
+          continue;
+        }
+
+        if (needDayun) {
+          await runDayunAI(key);
+          generatedRanges += 1;
+        }
+        for (const age of missingAges) {
+          onStage(`正在评分 ${age}岁`);
+          await loadYearForRange(age, raw);
+          generatedYears += 1;
+        }
+      }
+
+      exposeLifeCurveSignals();
+      return { ok: true, generatedRanges, generatedYears };
+    };
     if (typeof window._fcSyncLifeCurveFromLuckScores === 'function') {
       window._fcSyncLifeCurveFromLuckScores();
     }
