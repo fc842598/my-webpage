@@ -4647,59 +4647,6 @@ function _dlxSelectDecade(d, decades, options) {
 }
 window._dlxSelectDecade = _dlxSelectDecade;
 
-function _dlxRenderYears(start, end) {
-  const container = document.getElementById('dlx-year-pills');
-  if (!container) return;
-  container.innerHTML = '';
-  const activeAge = _fcActiveAge || 1;
-  for (let age = start; age <= end; age++) {
-    const btn = document.createElement('button');
-    btn.className = 'dlx-pill-btn';
-    btn.textContent = `${age}岁`;
-    btn.dataset.age = age;
-    const year = typeof _fcAgeToYear === 'function' ? _fcAgeToYear(age) : '—';
-    btn.title = `${year}年`;
-    btn.onclick = () => _dlxSelectYear(age);
-    container.appendChild(btn);
-  }
-  if (activeAge >= start && activeAge <= end) _dlxSelectYear(activeAge, { source: 'init' });
-}
-
-function _dlxSelectYear(age, options) {
-  _dlxSelectedAge = age;
-
-  document.querySelectorAll('#dlx-year-pills .dlx-pill-btn').forEach(btn => {
-    btn.classList.toggle('active', Number(btn.dataset.age) === age);
-  });
-
-  const year = typeof _fcAgeToYear === 'function' ? _fcAgeToYear(age) : '—';
-  const lnData = (_liunianSeq || {})[age] || null;
-  const gz = lnData?.yearGanzhi
-    ? (lnData.yearGanzhi.stem || '') + (lnData.yearGanzhi.branch || '')
-    : '—';
-
-  const xlBranch = typeof _fcResolveDisplayedXiaoLianBranch === 'function'
-    ? _fcResolveDisplayedXiaoLianBranch(age) : '';
-  const xlPalace = (_chart?.palaces || []).find(p => p.earthlyBranch === xlBranch);
-  const xlName = xlPalace?.name || (xlBranch ? xlBranch + '宫' : '—');
-
-  document.getElementById('dlx-ln-ttl').textContent = `${year}年 · 虚岁${age}岁`;
-  document.getElementById('dlx-ln-info').innerHTML = [
-    `<div class="dlx-info-row"><span class="dlx-info-label">干支</span><span class="dlx-info-val">${gz}</span></div>`,
-    `<div class="dlx-info-row"><span class="dlx-info-label">公历年</span><span class="dlx-info-val">${year}年</span></div>`,
-    `<div class="dlx-info-row"><span class="dlx-info-label">小限落宫</span><span class="dlx-info-val">${xlName}</span></div>`,
-    `<div class="dlx-info-row"><span class="dlx-info-label">虚岁</span><span class="dlx-info-val">${age}岁</span></div>`,
-  ].join('');
-
-  document.getElementById('dlx-ln-ai-body').innerHTML = '';
-  document.getElementById('dlx-ln-ai-status').textContent = '';
-  document.getElementById('dlx-ln-risk').textContent = '';
-  document.getElementById('dlx-liunian-card').style.display = '';
-  if (typeof window._aipDlxOnYearSelected === 'function') {
-    window._aipDlxOnYearSelected(age, options || { source: 'user' });
-  }
-}
-
 // ── AI 深度批命按钮 ───────────────────────────────────────
 function _dlxGetYearScore(age) {
   const targetAge = Number(age);
