@@ -4313,3 +4313,183 @@
   0%, 80%, 100% { transform: scale(.75); opacity: .4; }
   40% { transform: scale(1.2); opacity: 1; }
 }
+
+/* ── 三段大运分层配色 ── */
+.dlx-focus-card {
+  --dlx-tone-bg: #1a1208;
+  --dlx-tone-bg-active: #22160a;
+  --dlx-tone-border: rgba(201, 169, 97, .16);
+  --dlx-tone-border-strong: rgba(201, 169, 97, .28);
+  --dlx-tone-border-active: rgba(201, 169, 97, .42);
+  --dlx-tone-stripe: rgba(201, 169, 97, .34);
+  --dlx-tone-stripe-active: #d4ac56;
+  --dlx-tone-label-bg: rgba(181, 105, 62, .18);
+  --dlx-tone-label-border: rgba(214, 161, 104, .24);
+  --dlx-tone-label-color: #f0cb93;
+  --dlx-tone-title: #f2e5cf;
+  --dlx-tone-muted: #a08663;
+  --dlx-tone-value: #cbb190;
+  --dlx-tone-value-active: #f7ead2;
+  --dlx-tone-divider: rgba(201, 169, 97, .12);
+  --dlx-tone-inline-bg: rgba(255, 246, 228, .03);
+  --dlx-tone-inline-border: rgba(201, 169, 97, .16);
+  --dlx-tone-inline-active: rgba(201, 169, 97, .12);
+  --dlx-tone-detail-bg: rgba(201, 169, 97, .07);
+  --dlx-tone-detail-border: rgba(201, 169, 97, .24);
+  --dlx-tone-shadow: rgba(201, 169, 97, .12);
+  --dlx-tone-wash: rgba(201, 169, 97, .08);
+}
+
+.dlx-focus-past {
+  --dlx-tone-bg: #15140f;
+  --dlx-tone-bg-active: #1b1913;
+  --dlx-tone-border: rgba(129, 154, 116, .18);
+  --dlx-tone-border-strong: rgba(143, 169, 129, .30);
+  --dlx-tone-border-active: rgba(159, 190, 145, .38);
+  --dlx-tone-stripe: rgba(151, 179, 136, .42);
+  --dlx-tone-stripe-active: #8faa78;
+  --dlx-tone-label-bg: rgba(118, 144, 106, .16);
+  --dlx-tone-label-border: rgba(141, 171, 128, .24);
+  --dlx-tone-label-color: #b9cca9;
+  --dlx-tone-title: #d8dfd2;
+  --dlx-tone-muted: #7f8b73;
+  --dlx-tone-value: #a9b39d;
+  --dlx-tone-value-active: #e0ead9;
+  --dlx-tone-divider: rgba(151, 179, 136, .12);
+  --dlx-tone-inline-bg: rgba(118, 144, 106, .04);
+  --dlx-tone-inline-border: rgba(151, 179, 136, .16);
+  --dlx-tone-inline-active: rgba(118, 144, 106, .11);
+  --dlx-tone-detail-bg: rgba(122, 146, 110, .06);
+  --dlx-tone-detail-border: rgba(151, 179, 136, .22);
+  --dlx-tone-shadow: rgba(118, 144, 106, .12);
+  --dlx-tone-wash: rgba(118, 144, 106, .09);
+}
+
+.dlx-focus-current {
+  --dlx-tone-shadow: rgba(201, 169, 97, .14);
+  --dlx-tone-wash: rgba(201, 169, 97, .10);
+}
+
+.dlx-focus-future {
+  --dlx-tone-bg: #12151a;
+  --dlx-tone-bg-active: #161c23;
+  --dlx-tone-border: rgba(104, 150, 173, .18);
+  --dlx-tone-border-strong: rgba(122, 173, 199, .30);
+  --dlx-tone-border-active: rgba(126, 182, 212, .42);
+  --dlx-tone-stripe: rgba(118, 173, 199, .46);
+  --dlx-tone-stripe-active: #7fc4df;
+  --dlx-tone-label-bg: rgba(82, 121, 140, .18);
+  --dlx-tone-label-border: rgba(124, 171, 194, .24);
+  --dlx-tone-label-color: #b9dbe7;
+  --dlx-tone-title: #d8ecf3;
+  --dlx-tone-muted: #7d97a3;
+  --dlx-tone-value: #9eb7c1;
+  --dlx-tone-value-active: #e0f2f8;
+  --dlx-tone-divider: rgba(118, 173, 199, .14);
+  --dlx-tone-inline-bg: rgba(82, 121, 140, .05);
+  --dlx-tone-inline-border: rgba(118, 173, 199, .16);
+  --dlx-tone-inline-active: rgba(82, 121, 140, .14);
+  --dlx-tone-detail-bg: rgba(78, 118, 138, .08);
+  --dlx-tone-detail-border: rgba(118, 173, 199, .22);
+  --dlx-tone-shadow: rgba(82, 121, 140, .13);
+  --dlx-tone-wash: rgba(118, 173, 199, .10);
+}
+
+.dlx-overview-item.dlx-focus-card {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, .015), transparent 44%),
+    radial-gradient(circle at top right, var(--dlx-tone-wash) 0, transparent 40%),
+    var(--dlx-tone-bg) !important;
+  border-color: var(--dlx-tone-border) !important;
+}
+
+.dlx-overview-item.dlx-focus-card::before {
+  background: var(--dlx-tone-stripe) !important;
+}
+
+.dlx-overview-item.dlx-focus-card:hover:not(.active) {
+  border-color: var(--dlx-tone-border-strong) !important;
+  box-shadow: 0 4px 18px var(--dlx-tone-shadow) !important;
+}
+
+.dlx-overview-item.dlx-focus-card.active {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, .02), transparent 42%),
+    radial-gradient(circle at top right, var(--dlx-tone-wash) 0, transparent 44%),
+    var(--dlx-tone-bg-active) !important;
+  border-color: var(--dlx-tone-border-active) !important;
+  box-shadow: 0 6px 22px var(--dlx-tone-shadow) !important;
+}
+
+.dlx-overview-item.dlx-focus-card.active::before {
+  background: var(--dlx-tone-stripe-active) !important;
+}
+
+.dlx-focus-card .dlx-focus-label {
+  background: var(--dlx-tone-label-bg) !important;
+  border: 1px solid var(--dlx-tone-label-border) !important;
+  color: var(--dlx-tone-label-color) !important;
+}
+
+.dlx-overview-item.dlx-focus-card .dlx-decade-num,
+.dlx-overview-item.dlx-focus-card .dlx-overview-label,
+.dlx-overview-item.dlx-focus-card .dlx-inline-year-sub,
+.dlx-overview-item.dlx-focus-card .dlx-overview-status,
+.dlx-overview-item.dlx-focus-card .dlx-ai-score-main span,
+.dlx-overview-item.dlx-focus-card .dlx-ai-score-box > span {
+  color: var(--dlx-tone-muted) !important;
+}
+
+.dlx-overview-item.dlx-focus-card .dlx-overview-title,
+.dlx-overview-item.dlx-focus-card .dlx-inline-year-age,
+.dlx-overview-item.dlx-focus-card .dlx-inline-year-detail-head {
+  color: var(--dlx-tone-title) !important;
+}
+
+.dlx-overview-item.dlx-focus-card .dlx-overview-value,
+.dlx-overview-item.dlx-focus-card .dlx-sanfang-value,
+.dlx-overview-item.dlx-focus-card .dlx-overview-summary,
+.dlx-overview-item.dlx-focus-card .dlx-inline-year-preview,
+.dlx-overview-item.dlx-focus-card .dlx-ai-score-box,
+.dlx-overview-item.dlx-focus-card .aip-body-para {
+  color: var(--dlx-tone-value) !important;
+}
+
+.dlx-overview-item.dlx-focus-card.active .dlx-overview-value,
+.dlx-overview-item.dlx-focus-card.active .dlx-sanfang-value,
+.dlx-overview-item.dlx-focus-card.active .dlx-overview-summary,
+.dlx-overview-item.dlx-focus-card.active .dlx-inline-year-preview,
+.dlx-overview-item.dlx-focus-card.active .aip-body-para {
+  color: var(--dlx-tone-value-active) !important;
+}
+
+.dlx-overview-item.dlx-focus-card .dlx-overview-meta,
+.dlx-overview-item.dlx-focus-card .dlx-inline-years {
+  border-color: var(--dlx-tone-divider) !important;
+}
+
+.dlx-overview-item.dlx-focus-card .dlx-inline-year {
+  border-color: var(--dlx-tone-inline-border) !important;
+  background: var(--dlx-tone-inline-bg) !important;
+}
+
+.dlx-overview-item.dlx-focus-card .dlx-inline-year.active {
+  border-color: var(--dlx-tone-border-active) !important;
+  background: var(--dlx-tone-inline-active) !important;
+}
+
+.dlx-overview-item.dlx-focus-card .dlx-inline-year-detail,
+.dlx-overview-item.dlx-focus-card .dlx-ai-score-box {
+  border-color: var(--dlx-tone-detail-border) !important;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, .02), transparent 55%),
+    var(--dlx-tone-detail-bg) !important;
+}
+
+.dlx-overview-item.dlx-focus-card .dlx-overview-risk {
+  border-left-color: var(--dlx-tone-stripe) !important;
+}
+
+.dlx-overview-item.dlx-focus-card .dlx-ai-score-main b.pending {
+  color: var(--dlx-tone-muted) !important;
+}
