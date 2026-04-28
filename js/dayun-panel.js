@@ -543,6 +543,70 @@
     return !!(state.dayunResultMap[key] || state.dayunOverviewMap[key]?.card) && getGeneratedYearCount(dayun) >= 10;
   }
 
+  function toTrendNumber(value) {
+    const num = Number(value);
+    return Number.isFinite(num) ? Math.round(num * 10) / 10 : 0;
+  }
+
+  function buildSmoothTrendPath(points) {
+    if (!points.length) return '';
+    const parts = [`M ${toTrendNumber(points[0].x)} ${toTrendNumber(points[0].y)}`];
+    for (let i = 0; i < points.length - 1; i++) {
+      const current = points[i];
+      const next = points[i + 1];
+      const midX = (current.x + next.x) / 2;
+      parts.push(
+        `C ${toTrendNumber(midX)} ${toTrendNumber(current.y)}, ` +
+        `${toTrendNumber(midX)} ${toTrendNumber(next.y)}, ` +
+        `${toTrendNumber(next.x)} ${toTrendNumber(next.y)}`
+      );
+    }
+    return parts.join(' ');
+  }
+
+  function renderInlineYearTrendHtml(dayun) {
+    const fallbackScores = [62, 68, 76, 82, 74, 70, 78, 84, 72, 66];
+    const rowPoints = [[], []];
+    let index = 0;
+
+    for (let age = Number(dayun.start); age <= Number(dayun.end); age++) {
+      const card = getYearCard(age);
+      const score = getCardScore(card);
+      const safeScore = Number.isFinite(Number(score)) ? Number(score) : fallbackScores[index] || 72;
+      const row = index < 5 ? 0 : 1;
+      const col = index % 5;
+      const baseY = row === 0 ? 126 : 270;
+      const lift = row === 0 ? 3.1 : 2.35;
+      rowPoints[row].push({
+        x: 58 + col * 221,
+        y: Math.max(row === 0 ? 60 : 220, Math.min(row === 0 ? 176 : 315, baseY + (76 - safeScore) * lift)),
+        active: Number(state.selectedYearAge) === Number(age),
+      });
+      index += 1;
+    }
+
+    const paths = rowPoints
+      .map((points, row) => {
+        const d = buildSmoothTrendPath(points);
+        if (!d) return '';
+        return (
+          `<path class="dlx-inline-year-trend-glow row-${row + 1}" d="${d}"></path>` +
+          `<path class="dlx-inline-year-trend-line row-${row + 1}" d="${d}"></path>`
+        );
+      })
+      .join('');
+    const dots = rowPoints.flat().map((point) => (
+      `<circle class="dlx-inline-year-trend-dot${point.active ? ' active' : ''}" cx="${toTrendNumber(point.x)}" cy="${toTrendNumber(point.y)}" r="${point.active ? 5.5 : 3.5}"></circle>`
+    )).join('');
+
+    return (
+      `<svg class="dlx-inline-year-trend" viewBox="0 0 1000 360" preserveAspectRatio="none" aria-hidden="true">` +
+        paths +
+        `<g class="dlx-inline-year-trend-dots">${dots}</g>` +
+      `</svg>`
+    );
+  }
+
 function renderInlineYearsHtml(dayun, expanded) {
     if (!expanded) return '';
     const years = [];
@@ -563,7 +627,7 @@ function renderInlineYearsHtml(dayun, expanded) {
         `</div>`
       );
     }
-    return `<div class="dlx-inline-years">${years.join('')}</div>`;
+    return `<div class="dlx-inline-years">${renderInlineYearTrendHtml(dayun)}${years.join('')}</div>`;
   }
 
 function renderInlineYearDetailHtml(dayun, expanded) {
