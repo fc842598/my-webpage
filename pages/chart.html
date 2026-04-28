@@ -359,34 +359,40 @@
       <span class="aip-desc" id="aip-desc"></span>
     </div>
     <div class="aip-tabs-guide">
-      <span class="aip-tabs-guide-tag">切换入口</span>
-      <span class="aip-tabs-guide-copy">点下面任一入口，切换不同的解读视角与功能区。</span>
+      <span class="aip-tabs-guide-tag">可切换入口</span>
+      <span class="aip-tabs-guide-title" id="aip-tabs-guide-title">点击下方任一模块卡片，切换不同解读功能区</span>
+      <span class="aip-tabs-guide-copy" id="aip-tabs-guide-copy">当前：整体批命</span>
     </div>
     <div class="aip-tabs" role="tablist" aria-label="命书解读入口">
-      <button class="aip-tab active" data-panel="aip-panel-base">
+      <button type="button" class="aip-tab active" data-panel="aip-panel-base" aria-selected="true">
         <span class="aip-tab-kicker">总览</span>
         <span class="aip-tab-title">整体批命</span>
         <span class="aip-tab-sub">先看主结论</span>
+        <span class="aip-tab-action">当前查看</span>
       </button>
-      <button class="aip-tab" data-panel="aip-panel-luck">
+      <button type="button" class="aip-tab" data-panel="aip-panel-luck" aria-selected="false">
         <span class="aip-tab-kicker">走势</span>
         <span class="aip-tab-title">大限流年</span>
         <span class="aip-tab-sub">看10年与单年</span>
+        <span class="aip-tab-action">点击切换</span>
       </button>
-      <button class="aip-tab" data-panel="aip-panel-curve">
+      <button type="button" class="aip-tab" data-panel="aip-panel-curve" aria-selected="false">
         <span class="aip-tab-kicker">节奏</span>
         <span class="aip-tab-title">人生曲线</span>
         <span class="aip-tab-sub">回看高低起伏</span>
+        <span class="aip-tab-action">点击切换</span>
       </button>
-      <button class="aip-tab" data-panel="aip-panel-chat">
+      <button type="button" class="aip-tab" data-panel="aip-panel-chat" aria-selected="false">
         <span class="aip-tab-kicker">追问</span>
         <span class="aip-tab-title">AI半仙</span>
         <span class="aip-tab-sub">继续深聊命盘</span>
+        <span class="aip-tab-action">点击切换</span>
       </button>
-      <button class="aip-tab" data-panel="aip-panel-tiekou">
+      <button type="button" class="aip-tab" data-panel="aip-panel-tiekou" aria-selected="false">
         <span class="aip-tab-kicker">对照</span>
         <span class="aip-tab-title">铁口直断</span>
         <span class="aip-tab-sub">看命中原话</span>
+        <span class="aip-tab-action">点击切换</span>
       </button>
     </div>
 
@@ -4907,11 +4913,27 @@ window._joinApiUrl            = _joinApiUrl;
 
 // Tab 切换
 (function _bindAipTabs() {
+  function syncAipTabsGuide(activeBtn) {
+    if (!activeBtn) return;
+    const copyEl = document.getElementById('aip-tabs-guide-copy');
+    const title = activeBtn.querySelector('.aip-tab-title')?.textContent?.trim() || '命书解读';
+    const sub = activeBtn.querySelector('.aip-tab-sub')?.textContent?.trim() || '切换不同解读视角';
+    document.querySelectorAll('.aip-tab').forEach(tab => {
+      const active = tab === activeBtn;
+      tab.classList.toggle('active', active);
+      tab.setAttribute('aria-selected', active ? 'true' : 'false');
+      const action = tab.querySelector('.aip-tab-action');
+      if (action) action.textContent = active ? '当前查看' : '点击切换';
+    });
+    if (copyEl) copyEl.textContent = `当前：${title} · ${sub}`;
+  }
+
+  syncAipTabsGuide(document.querySelector('.aip-tab.active'));
+
   document.querySelectorAll('.aip-tab').forEach(btn => {
     btn.addEventListener('click', () => {
-      document.querySelectorAll('.aip-tab').forEach(b => b.classList.remove('active'));
       document.querySelectorAll('.aip-panel').forEach(p => { p.style.display = 'none'; });
-      btn.classList.add('active');
+      syncAipTabsGuide(btn);
       const panel = document.getElementById(btn.dataset.panel);
       if (panel) panel.style.display = 'flex';
       if (btn.dataset.panel === 'aip-panel-curve') {
