@@ -96,20 +96,67 @@
     return birthYear + Number(age) - 1;
   }
 
+  function parseJsonPayload(value) {
+    if (typeof value !== 'string') return null;
+    const raw = value.trim()
+      .replace(/^```(?:json)?\s*/i, '')
+      .replace(/\s*```$/i, '')
+      .trim();
+    if (!raw) return null;
+    const start = raw.indexOf('{');
+    const end = raw.lastIndexOf('}');
+    if (start < 0 || end <= start) return null;
+    try {
+      const parsed = JSON.parse(raw.slice(start, end + 1));
+      return parsed && typeof parsed === 'object' && !Array.isArray(parsed) ? parsed : null;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  function normalizeAiCard(card) {
+    if (!card || typeof card !== 'object') return card || null;
+    const parsed = parseJsonPayload(card.body)
+      || parseJsonPayload(card.content)
+      || parseJsonPayload(card.summary)
+      || parseJsonPayload(card.text)
+      || parseJsonPayload(card.raw);
+    if (!parsed) return card;
+    const next = { ...card };
+    if (parsed.title && !next.title) next.title = parsed.title;
+    if (parsed.summary && !next.summary) next.summary = parsed.summary;
+    if (parsed.risk && !next.risk) next.risk = parsed.risk;
+    if (Array.isArray(parsed.sections) && parsed.sections.length) {
+      next.sections = parsed.sections;
+      if (parseJsonPayload(next.body)) next.body = '';
+      if (parseJsonPayload(next.summary)) next.summary = '';
+    }
+    if (parsed.scoreBreakdown && typeof parsed.scoreBreakdown === 'object') {
+      next.scoreBreakdown = { ...(next.scoreBreakdown || {}), ...parsed.scoreBreakdown };
+    }
+    return next;
+  }
+
   function renderSectionsHtml(card) {
-    const fallbackText = card?.summary || card?.body || card?.scoreBreakdown?.reason || '';
-    const sections = Array.isArray(card?.sections) && card.sections.length
-      ? card.sections
-      : [{ title: card?.scoreBreakdown?.reason ? '评分依据' : '', content: fallbackText }];
-    return sections.map((item) => {
+    const normalized = normalizeAiCard(card);
+    const fallbackText = normalized?.summary || normalized?.body || normalized?.scoreBreakdown?.reason || '';
+    const sections = Array.isArray(normalized?.sections) && normalized.sections.length
+      ? normalized.sections
+      : [{ title: normalized?.scoreBreakdown?.reason ? '评分依据' : '', content: fallbackText }];
+    const titleHtml = normalized?.title
+      ? `<strong class="aip-body-title dlx-card-main-title">${escapeHtml(normalized.title)}</strong>`
+      : '';
+    const bodyHtml = sections.map((item) => {
       const title = escapeHtml(item?.title || '');
       const content = escapeHtml(item?.content || '').replace(/\n/g, '<br>');
       return `${title ? `<strong class="aip-body-title">${title}</strong>` : ''}<p class="aip-body-para">${content || '—'}</p>`;
     }).join('');
+    return titleHtml + bodyHtml;
   }
 
   function getCardScore(card) {
-    const score = card?.scoreBreakdown?.finalScore ?? card?.score;
+    const normalized = normalizeAiCard(card);
+    const score = normalized?.scoreBreakdown?.finalScore ?? normalized?.score;
     const numeric = Math.round(Number(score));
     return Number.isFinite(numeric) ? Math.max(0, Math.min(100, numeric)) : null;
   }
@@ -143,8 +190,9 @@
   }
 
   function getCardBrief(card) {
-    const firstSection = Array.isArray(card?.sections) ? card.sections.find((item) => item?.content) : null;
-    const text = card?.summary || firstSection?.content || card?.body || '';
+    const normalized = normalizeAiCard(card);
+    const firstSection = Array.isArray(normalized?.sections) ? normalized.sections.find((item) => item?.content) : null;
+    const text = normalized?.summary || firstSection?.content || normalized?.body || '';
     return String(text || '').replace(/\s+/g, ' ').trim();
   }
 
@@ -956,7 +1004,7 @@ function renderOverviewList() {
   }
 
   function renderYearResult(age) {
-    const card = state.yearResultMap[String(age)] || null;
+    const card = normalizeAiCard(state.yearResultMap[String(age)] || null);
     const bodyEl = document.getElementById('dlx-ln-ai-body');
     if (!bodyEl) return;
     bodyEl.innerHTML = card ? (renderScoreDetailHtml(card) + renderSectionsHtml(card)) : '';
@@ -998,7 +1046,7 @@ function renderOverviewList() {
       overview.forEach((item) => {
         if (!item?.rangeKey) return;
         state.dayunOverviewMap[item.rangeKey] = item;
-        if (item.card) state.dayunResultMap[item.rangeKey] = item.card;
+        if (item.card) state.dayunResultMap[item.rangeKey] = normalizeAiCard(item.card);
         if (!state.dayunStatusMap[item.rangeKey] || item.status !== 'empty') {
           state.dayunStatusMap[item.rangeKey] = item.status || (item.card ? 'cached' : 'empty');
         }
@@ -1064,13 +1112,14 @@ function renderOverviewList() {
       const data = await _aipCallBackend('dayun_item', {
         selectedDayun: serializeDayun(raw),
       });
-      state.dayunResultMap[rangeKey] = data.card || {};
+      const card = normalizeAiCard(data.card || {});
+      state.dayunResultMap[rangeKey] = card;
       state.dayunOverviewMap[rangeKey] = {
         ...(state.dayunOverviewMap[rangeKey] || {}),
         rangeKey,
         rangeLabel: `${raw.start}-${raw.end}岁`,
         status: 'generated',
-        card: data.card || {},
+        card,
       };
       state.dayunStatusMap[rangeKey] = data.meta?.cacheHit ? 'cached' : 'generated';
       exposeLifeCurveSignals();
@@ -1144,7 +1193,7 @@ function renderOverviewList() {
         selectedDayun,
         selectedYear: serializeYear(numericAge, selectedDayun),
       });
-      state.yearResultMap[String(numericAge)] = data.card || {};
+      state.yearResultMap[String(numericAge)] = normalizeAiCard(data.card || {});
       state.yearStatusMap[String(numericAge)] = data.meta?.cacheHit ? 'cached' : 'generated';
       exposeLifeCurveSignals();
       setText('dlx-ln-ai-status', `已完成 · ${_fmtDuration(data.meta?.durationMs || 0)}`);
