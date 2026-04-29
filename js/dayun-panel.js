@@ -609,34 +609,26 @@
   }
 
   function renderInlineYearTrendHtml(dayun) {
-    const fallbackScores = [62, 68, 76, 82, 74, 70, 78, 84, 72, 66];
-    const scores = [];
-    let index = 0;
+    const startAge = Number(dayun.start);
+    const endAge = Number(dayun.end);
+    const total = Math.max(1, endAge - startAge + 1);
+    const scored = [];
 
-    for (let age = Number(dayun.start); age <= Number(dayun.end); age++) {
+    for (let age = startAge; age <= endAge; age++) {
       const card = getYearCard(age);
       const score = getCardScore(card);
-      scores.push(Number.isFinite(Number(score)) ? Number(score) : fallbackScores[index] || 72);
-      index += 1;
+      if (Number.isFinite(Number(score))) {
+        scored.push({ age, score: Number(score), index: age - startAge });
+      }
     }
+    if (scored.length < 2) return '';
 
-    const avg = scores.length ? scores.reduce((sum, value) => sum + value, 0) / scores.length : 72;
-    const peak = scores.length ? Math.max(...scores) : 78;
-    const drift = Math.max(-10, Math.min(10, (72 - avg) * 0.6));
-    const lift = Math.max(-8, Math.min(18, (peak - 76) * 0.75));
-    const points = [
-      { x: -26, y: 70 + drift },
-      { x: 105, y: 62 + drift },
-      { x: 235, y: 42 - lift },
-      { x: 360, y: 64 + drift },
-      { x: 505, y: 76 + drift },
-      { x: 645, y: 50 - lift },
-      { x: 790, y: 46 - lift },
-      { x: 925, y: 61 + drift },
-      { x: 1026, y: 70 + drift },
-    ];
+    const points = scored.map((item) => ({
+      x: 58 + (item.index / Math.max(1, total - 1)) * 884,
+      y: 98 - (Math.max(0, Math.min(100, item.score)) / 100) * 76,
+    }));
     const d = buildSmoothTrendPath(points);
-    const dots = [points[1], points[3], points[5], points[7]].map((point) => (
+    const dots = points.map((point) => (
       `<circle class="dlx-inline-year-trend-dot" cx="${toTrendNumber(point.x)}" cy="${toTrendNumber(point.y)}" r="3.4"></circle>`
     )).join('');
 
