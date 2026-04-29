@@ -4605,6 +4605,260 @@
   }
 }
 
+/* ── 整体批命 V8：命格主卡 + 操作薄条 + 紧凑卡组 ── */
+.aip-overall-panel {
+  gap: 16px !important;
+}
+
+.aip-overall-panel .aip-main-card {
+  position: relative !important;
+  overflow: visible !important;
+  border-radius: 14px !important;
+  border-color: rgba(201,169,97,.24) !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.aip-overall-panel .aip-main-card::before {
+  display: none !important;
+}
+
+.aip-overall-panel .aip-main-hero {
+  min-height: 142px !important;
+  padding: 28px 30px !important;
+  border: 1px solid rgba(201,169,97,.28) !important;
+  border-radius: 14px !important;
+  background:
+    linear-gradient(110deg, rgba(28,18,9,.98) 0%, rgba(26,16,8,.98) 54%, rgba(76,31,18,.72) 100%) !important;
+  box-shadow: inset 0 1px 0 rgba(255,235,190,.04) !important;
+}
+
+.aip-overall-panel .aip-hero-title {
+  max-width: 680px !important;
+  color: #fff1d6 !important;
+  font-size: 34px !important;
+  line-height: 1.15 !important;
+  letter-spacing: 0 !important;
+}
+
+.aip-overall-panel .aip-main-body-wrap {
+  display: block !important;
+  padding: 14px 0 0 !important;
+  background: transparent !important;
+}
+
+.aip-main-structure-pane {
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+}
+
+.aip-main-structure-pane .aip-struct-details {
+  margin: 0 !important;
+}
+
+.aip-main-structure-pane .aip-struct-summary {
+  min-height: 48px !important;
+  padding: 0 18px !important;
+  border: 1px solid rgba(201,169,97,.22) !important;
+  border-radius: 10px !important;
+  background: rgba(70,49,26,.54) !important;
+}
+
+.aip-main-structure-pane .aip-struct-summary-label {
+  width: auto !important;
+  min-width: 128px !important;
+  height: 30px !important;
+  justify-content: center !important;
+  border-radius: 8px !important;
+  background: rgba(255,255,255,.035) !important;
+}
+
+.aip-main-structure-pane .aip-struct {
+  margin-top: 10px !important;
+  border-radius: 10px !important;
+}
+
+.aip-main-result-pane {
+  display: block !important;
+}
+
+.aip-main-result-pane > .aip-card-ai-bar {
+  position: absolute !important;
+  top: 52px !important;
+  right: 30px !important;
+  display: flex !important;
+  justify-content: flex-end !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+}
+
+.aip-main-result-pane #aip-overall-btn {
+  min-width: 156px !important;
+  height: 38px !important;
+  padding: 0 22px !important;
+  border-radius: 19px !important;
+  box-shadow: 0 12px 22px rgba(122,59,46,.24) !important;
+}
+
+.aip-main-result-pane .aip-ai-status {
+  align-self: center !important;
+}
+
+.aip-main-result-pane #aip-life-body:not(:empty) {
+  margin-top: 16px !important;
+  padding: 24px 28px !important;
+  border: 1px solid rgba(201,169,97,.2) !important;
+  border-radius: 12px !important;
+  background: rgba(13,9,5,.74) !important;
+  color: #ead9bd !important;
+  font-size: 15px !important;
+  line-height: 1.9 !important;
+}
+
+.aip-main-result-pane #aip-life-body .aip-body-title {
+  color: #e8c878 !important;
+  font-size: 15px !important;
+  margin: 18px 0 8px !important;
+}
+
+.aip-main-result-pane #aip-life-tip:not(:empty) {
+  margin-top: 12px !important;
+  padding-left: 12px !important;
+  border-left-width: 2px !important;
+  color: #c9a961 !important;
+}
+
+.aip-main-result-pane .aip-life-risk,
+.aip-main-result-pane .aip-life-basis {
+  margin-top: 12px !important;
+}
+
+.aip-specialty-grid {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 14px !important;
+}
+
+.aip-specialty-grid .aip-shen-card {
+  grid-column: auto !important;
+}
+
+.aip-specialty-grid .aip-sub-card {
+  min-height: 0 !important;
+  margin-top: 0 !important;
+  padding: 16px !important;
+  border-radius: 12px !important;
+  align-items: start !important;
+  background:
+    linear-gradient(180deg, rgba(30,20,10,.94), rgba(17,11,6,.98)) !important;
+  border-color: rgba(201,169,97,.2) !important;
+  box-shadow: none !important;
+}
+
+.aip-specialty-grid .aip-sub-card .aip-card-head {
+  align-self: center !important;
+}
+
+.aip-specialty-grid .aip-sub-card .aip-card-title {
+  font-size: 16px !important;
+  color: #f1e4cd !important;
+}
+
+.aip-specialty-grid .aip-sub-card .aip-card-ai-bar {
+  align-self: center !important;
+}
+
+.aip-specialty-grid .aip-sub-card .aip-card-ai-btn {
+  min-width: 112px !important;
+  width: auto !important;
+  height: 32px !important;
+  padding: 0 14px !important;
+  font-size: 12px !important;
+}
+
+.aip-specialty-grid .aip-sub-card .aip-sub-struct-details {
+  grid-column: 1 / -1 !important;
+  opacity: .62 !important;
+}
+
+.aip-specialty-grid .aip-sub-card .aip-sub-struct-details[open] {
+  opacity: 1 !important;
+}
+
+.aip-specialty-grid .aip-sub-card .aip-sub-struct-details .aip-struct-summary-label {
+  height: 28px !important;
+  padding: 0 10px !important;
+  background: rgba(201,169,97,.08) !important;
+}
+
+.aip-specialty-grid .aip-sub-card .aip-card-body:not(:empty) {
+  grid-column: 1 / -1 !important;
+  padding: 10px 0 0 12px !important;
+  border-top: 0 !important;
+  border-left: 1px solid rgba(201,169,97,.18) !important;
+  color: #d9c6a7 !important;
+  font-size: 13px !important;
+  line-height: 1.82 !important;
+}
+
+.aip-specialty-grid .aip-sub-card .aip-card-tip:not(:empty) {
+  grid-column: 1 / -1 !important;
+  padding-left: 12px !important;
+  border-left-width: 1px !important;
+}
+
+@media (max-width: 1120px) {
+  .aip-specialty-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (max-width: 720px) {
+  .aip-overall-panel .aip-main-hero {
+    min-height: 116px !important;
+    padding: 20px !important;
+  }
+
+  .aip-overall-panel .aip-hero-title {
+    font-size: 30px !important;
+    padding-right: 0 !important;
+  }
+
+  .aip-main-result-pane > .aip-card-ai-bar {
+    position: static !important;
+    margin-top: 12px !important;
+  }
+
+  .aip-main-result-pane #aip-overall-btn {
+    width: 100% !important;
+  }
+
+  .aip-main-result-pane #aip-life-body:not(:empty) {
+    padding: 18px !important;
+    font-size: 14px !important;
+  }
+
+  .aip-specialty-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .aip-specialty-grid .aip-sub-card {
+    grid-template-columns: 1fr !important;
+  }
+
+  .aip-specialty-grid .aip-sub-card .aip-card-ai-bar {
+    justify-content: stretch !important;
+    width: 100% !important;
+  }
+
+  .aip-specialty-grid .aip-sub-card .aip-card-ai-btn {
+    width: 100% !important;
+  }
+}
+
 /* ── 大限流年 ── */
 .dlx-section-label { color: #6b5c4a !important; }
 .dlx-nav {
