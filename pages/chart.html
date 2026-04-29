@@ -382,7 +382,7 @@
     </div>
 
     <!-- 整体批命 -->
-    <div class="aip-panel" id="aip-panel-base">
+    <div class="aip-panel aip-overall-panel" id="aip-panel-base">
 
       <!-- ① 主功能卡：唯一主视图 -->
       <div class="aip-card aip-main-card">
@@ -397,6 +397,7 @@
 
         <!-- 正文内容区 -->
         <div class="aip-main-body-wrap">
+          <div class="aip-main-structure-pane">
 
           <!-- 命盘骨架：只保留四宫结构本身 -->
           <details class="aip-struct-details" id="aip-struct-details">
@@ -411,8 +412,10 @@
           <span id="aip-sf-life"         style="display:none"></span>
           <span id="aip-sf-life-maj"     style="display:none"></span>
           <span id="aip-sf-life-min"     style="display:none"></span>
+          </div>
 
           <!-- AI 综合解读正文 -->
+          <div class="aip-main-result-pane">
           <hr class="aip-struct-divider">
           <div class="aip-card-ai-bar">
             <button class="aip-card-ai-btn" id="aip-overall-btn">✦ AI 整体批命</button>
@@ -427,10 +430,12 @@
           <!-- 判断依据 -->
           <div class="aip-life-basis" id="aip-life-basis" style="display:none"></div>
           <div class="aip-life-ev"    id="aip-life-ev"    style="display:none"></div>
+          </div>
 
         </div><!-- /.aip-main-body-wrap -->
       </div>
 
+      <div class="aip-specialty-grid">
       <div class="aip-card aip-sub-card aip-shen-card">
         <div class="aip-card-head">
           <span class="aip-tag aip-shen-tag">身宫</span>
@@ -524,6 +529,7 @@
         </details>
         <div class="aip-card-body" id="aip-shiye-body"></div>
         <div class="aip-card-tip"  id="aip-shiye-tip"></div>
+      </div>
       </div>
 
     </div>

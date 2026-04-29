@@ -4392,6 +4392,219 @@
 .aip-mainline-tag { background: rgba(201,169,97,.15) !important; color: #c9a961 !important; }
 .aip-mainline-copy { color: #6b5c4a !important; }
 
+/* ── 整体批命阅读层级重构 ── */
+.aip-overall-panel {
+  gap: 18px !important;
+}
+
+.aip-overall-panel .aip-main-card {
+  overflow: hidden !important;
+  border-radius: 18px !important;
+  border-color: rgba(201,169,97,.24) !important;
+  background: linear-gradient(180deg, rgba(35,24,12,.98), rgba(18,12,7,.98)) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,235,190,.04),
+    0 18px 44px rgba(0,0,0,.3) !important;
+}
+
+.aip-overall-panel .aip-main-hero {
+  min-height: 116px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: flex-end !important;
+  padding: 22px 26px !important;
+  background:
+    linear-gradient(115deg, rgba(26,18,9,.98) 0%, rgba(34,20,10,.98) 58%, rgba(63,25,14,.9) 100%) !important;
+}
+
+.aip-overall-panel .aip-main-card-head {
+  margin-bottom: 12px !important;
+}
+
+.aip-overall-panel .aip-hero-title {
+  max-width: 760px !important;
+  color: #fff2d8 !important;
+  font-size: clamp(24px, 3vw, 34px) !important;
+  line-height: 1.18 !important;
+  letter-spacing: 0 !important;
+}
+
+.aip-overall-panel .aip-main-body-wrap {
+  display: grid !important;
+  grid-template-columns: minmax(250px, 32%) minmax(0, 1fr) !important;
+  gap: 18px !important;
+  padding: 20px !important;
+  background:
+    linear-gradient(180deg, rgba(24,16,8,.96), rgba(17,11,6,.98)) !important;
+}
+
+.aip-main-structure-pane,
+.aip-main-result-pane {
+  min-width: 0 !important;
+}
+
+.aip-main-structure-pane {
+  align-self: start !important;
+  padding: 12px !important;
+  border: 1px solid rgba(201,169,97,.1) !important;
+  border-radius: 14px !important;
+  background: rgba(255,255,255,.018) !important;
+}
+
+.aip-main-structure-pane .aip-struct-details {
+  margin: 0 !important;
+}
+
+.aip-main-structure-pane .aip-struct-summary {
+  padding: 0 !important;
+}
+
+.aip-main-structure-pane .aip-struct-summary-label {
+  width: 100% !important;
+  justify-content: center !important;
+  height: 34px !important;
+}
+
+.aip-main-structure-pane .aip-struct {
+  margin-top: 12px !important;
+  border-radius: 12px !important;
+}
+
+.aip-main-result-pane {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 12px !important;
+}
+
+.aip-main-result-pane .aip-struct-divider {
+  display: none !important;
+}
+
+.aip-main-result-pane > .aip-card-ai-bar {
+  justify-content: space-between !important;
+  gap: 14px !important;
+  margin: 0 !important;
+  padding: 0 0 14px !important;
+  border-bottom: 1px solid rgba(201,169,97,.1) !important;
+}
+
+.aip-main-result-pane #aip-overall-btn {
+  min-width: 168px !important;
+  height: 38px !important;
+  padding: 0 22px !important;
+}
+
+.aip-main-result-pane #aip-life-body:not(:empty) {
+  padding: 18px 20px !important;
+  border: 1px solid rgba(201,169,97,.11) !important;
+  border-radius: 14px !important;
+  background: rgba(255,255,255,.026) !important;
+  color: #d4c3a8 !important;
+  font-size: 14px !important;
+  line-height: 1.92 !important;
+}
+
+.aip-main-result-pane #aip-life-body:empty {
+  display: none !important;
+}
+
+.aip-main-result-pane #aip-life-tip:empty,
+.aip-main-result-pane #aip-life-risk:empty,
+.aip-main-result-pane #aip-life-basis:empty {
+  display: none !important;
+}
+
+.aip-main-result-pane .aip-life-risk,
+.aip-main-result-pane .aip-life-basis {
+  margin-top: 0 !important;
+  border-radius: 12px !important;
+}
+
+.aip-specialty-grid {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 14px !important;
+}
+
+.aip-specialty-grid .aip-shen-card {
+  grid-column: 1 / -1 !important;
+}
+
+.aip-specialty-grid .aip-sub-card {
+  margin-top: 0 !important;
+  min-height: 168px !important;
+  align-items: start !important;
+  align-content: start !important;
+  padding: 18px !important;
+  border-radius: 14px !important;
+  background:
+    linear-gradient(180deg, rgba(31,21,11,.96), rgba(18,12,7,.98)) !important;
+}
+
+.aip-specialty-grid .aip-sub-card .aip-card-title {
+  white-space: normal !important;
+  line-height: 1.4 !important;
+}
+
+.aip-specialty-grid .aip-sub-card .aip-card-body:not(:empty) {
+  padding: 12px 0 0 12px !important;
+  border-top: 0 !important;
+  border-left: 1px solid rgba(201,169,97,.16) !important;
+  color: #d2bf9f !important;
+}
+
+.aip-specialty-grid .aip-sub-card .aip-card-tip:not(:empty) {
+  padding: 0 0 0 12px !important;
+  border-left-width: 1px !important;
+}
+
+.aip-specialty-grid .aip-sub-card .aip-sub-struct-details {
+  opacity: .72 !important;
+}
+
+.aip-specialty-grid .aip-sub-card .aip-sub-struct-details[open] {
+  opacity: 1 !important;
+}
+
+@media (max-width: 900px) {
+  .aip-overall-panel .aip-main-body-wrap {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@media (max-width: 720px) {
+  .aip-overall-panel .aip-main-hero {
+    min-height: 96px !important;
+    padding: 18px !important;
+  }
+
+  .aip-overall-panel .aip-hero-title {
+    font-size: 24px !important;
+  }
+
+  .aip-overall-panel .aip-main-body-wrap {
+    padding: 14px !important;
+    gap: 14px !important;
+  }
+
+  .aip-main-result-pane > .aip-card-ai-bar {
+    align-items: stretch !important;
+    flex-direction: column !important;
+  }
+
+  .aip-main-result-pane #aip-overall-btn {
+    width: 100% !important;
+  }
+
+  .aip-specialty-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .aip-specialty-grid .aip-sub-card {
+    min-height: 0 !important;
+  }
+}
+
 /* ── 大限流年 ── */
 .dlx-section-label { color: #6b5c4a !important; }
 .dlx-nav {
