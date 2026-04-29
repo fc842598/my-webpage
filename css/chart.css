@@ -7315,3 +7315,138 @@
     min-height: 0 !important;
   }
 }
+
+/* Figma Make 背景补强：把导出稿里的星盘暗纹落到网页层 */
+.aip-fm-overall {
+  overflow: visible !important;
+}
+
+.aip-fm-overall::before {
+  inset: -150px -10vw auto !important;
+  height: 780px !important;
+  z-index: 0 !important;
+  opacity: .9 !important;
+  background:
+    radial-gradient(ellipse 72% 44% at 50% 22%, rgba(128, 55, 28, .32) 0%, transparent 64%),
+    radial-gradient(circle at 50% 44%, rgba(232, 200, 112, .18) 0 2px, transparent 3px 78px, rgba(185, 148, 68, .2) 79px 80px, transparent 81px 150px, rgba(185, 148, 68, .13) 151px 152px, transparent 153px 230px, rgba(185, 148, 68, .08) 231px 232px, transparent 233px),
+    repeating-conic-gradient(from -8deg at 50% 44%, rgba(185, 148, 68, .18) 0deg 1deg, transparent 1deg 14deg),
+    linear-gradient(90deg, transparent 0 49.8%, rgba(185, 148, 68, .12) 50%, transparent 50.2% 100%),
+    linear-gradient(0deg, transparent 0 49.8%, rgba(185, 148, 68, .08) 50%, transparent 50.2% 100%),
+    radial-gradient(ellipse at 50% 12%, #1e0f06 0%, #0c0704 56%, transparent 78%) !important;
+  -webkit-mask-image: radial-gradient(ellipse 72% 50% at 50% 36%, #000 0 66%, transparent 100%);
+  mask-image: radial-gradient(ellipse 72% 50% at 50% 36%, #000 0 66%, transparent 100%);
+}
+
+.aip-fm-overall::after {
+  content: '' !important;
+  position: absolute !important;
+  inset: -120px -8vw auto !important;
+  height: 720px !important;
+  z-index: 0 !important;
+  pointer-events: none !important;
+  opacity: .44 !important;
+  background-image:
+    radial-gradient(circle at 12% 18%, rgba(232, 200, 112, .95) 0 1px, transparent 1.6px),
+    radial-gradient(circle at 28% 64%, rgba(185, 148, 68, .72) 0 1px, transparent 1.5px),
+    radial-gradient(circle at 72% 28%, rgba(232, 200, 112, .9) 0 1px, transparent 1.5px),
+    radial-gradient(circle at 88% 58%, rgba(185, 148, 68, .7) 0 1px, transparent 1.5px);
+  background-size: 220px 180px, 260px 220px, 300px 240px, 240px 200px;
+  filter: drop-shadow(0 0 8px rgba(232, 200, 112, .18));
+  -webkit-mask-image: radial-gradient(ellipse 76% 46% at 50% 34%, #000 0 62%, transparent 100%);
+  mask-image: radial-gradient(ellipse 76% 46% at 50% 34%, #000 0 62%, transparent 100%);
+}
+
+.aip-fm-overall > * {
+  position: relative;
+  z-index: 1;
+}
+
+.aip-fm-overall .aip-main-card::before {
+  z-index: 0 !important;
+  opacity: 1 !important;
+  background:
+    radial-gradient(circle at 74% 48%, rgba(232, 200, 112, .16) 0 2px, transparent 3px 86px, rgba(185, 148, 68, .2) 87px 89px, transparent 90px 162px, rgba(185, 148, 68, .15) 163px 165px, transparent 166px 242px, rgba(185, 148, 68, .09) 243px 245px, transparent 246px),
+    repeating-conic-gradient(from 10deg at 74% 48%, rgba(185,148,68,.16) 0deg 1deg, transparent 1deg 15deg),
+    repeating-linear-gradient(0deg, transparent, transparent 28px, rgba(185,148,68,.035) 29px),
+    radial-gradient(circle at 78% 22%, rgba(125,35,22,.22), transparent 28%) !important;
+}
+
+.aip-fm-overall .aip-main-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+.aip-fm-overall .aip-main-body-wrap {
+  position: relative !important;
+  overflow: hidden !important;
+}
+
+.aip-fm-overall .aip-main-body-wrap::before {
+  content: '' !important;
+  position: absolute !important;
+  inset: -120px -70px -90px 20% !important;
+  z-index: 0 !important;
+  pointer-events: none !important;
+  opacity: .72 !important;
+  background:
+    radial-gradient(circle at 54% 48%, transparent 0 96px, rgba(232, 200, 112, .2) 97px 99px, transparent 100px 178px, rgba(185, 148, 68, .16) 179px 181px, transparent 182px 264px, rgba(185, 148, 68, .1) 265px 267px, transparent 268px),
+    repeating-conic-gradient(from -18deg at 54% 48%, rgba(185,148,68,.18) 0deg 1deg, transparent 1deg 12deg),
+    linear-gradient(90deg, transparent 49.8%, rgba(185,148,68,.12) 50%, transparent 50.2%),
+    linear-gradient(0deg, transparent 49.8%, rgba(185,148,68,.1) 50%, transparent 50.2%);
+  filter: drop-shadow(0 0 24px rgba(232, 200, 112, .1));
+  -webkit-mask-image: radial-gradient(ellipse 78% 58% at 54% 48%, #000 0 70%, transparent 100%);
+  mask-image: radial-gradient(ellipse 78% 58% at 54% 48%, #000 0 70%, transparent 100%);
+}
+
+.aip-fm-overall .aip-main-body-wrap > * {
+  position: relative;
+  z-index: 1;
+}
+
+.aip-fm-chart-wheel {
+  opacity: 1 !important;
+  box-shadow:
+    inset 0 0 0 1px rgba(185,148,68,.1),
+    0 0 38px rgba(185,148,68,.12) !important;
+}
+
+.aip-fm-overall .aip-specialty-grid {
+  position: relative !important;
+}
+
+.aip-fm-overall .aip-specialty-grid::before {
+  content: '' !important;
+  position: absolute !important;
+  inset: -70px -60px -50px !important;
+  z-index: 0 !important;
+  pointer-events: none !important;
+  opacity: .34 !important;
+  background:
+    radial-gradient(circle at 50% 42%, transparent 0 120px, rgba(185,148,68,.16) 121px 123px, transparent 124px 230px, rgba(185,148,68,.1) 231px 233px, transparent 234px),
+    repeating-conic-gradient(from 6deg at 50% 42%, rgba(185,148,68,.14) 0deg 1deg, transparent 1deg 18deg),
+    radial-gradient(ellipse at 50% 18%, rgba(105, 42, 23, .18), transparent 62%);
+}
+
+.aip-fm-overall .aip-specialty-grid > * {
+  position: relative !important;
+  z-index: 1 !important;
+}
+
+@media (max-width: 820px) {
+  .aip-fm-overall::before {
+    inset: -90px -24vw auto !important;
+    height: 520px !important;
+    opacity: .72 !important;
+  }
+
+  .aip-fm-overall::after {
+    inset: -70px -20vw auto !important;
+    height: 460px !important;
+    opacity: .28 !important;
+  }
+
+  .aip-fm-overall .aip-main-body-wrap::before {
+    inset: -70px -40px -60px 0 !important;
+    opacity: .45 !important;
+  }
+}
