@@ -735,52 +735,57 @@
     <div class="aip-panel" id="aip-panel-chat" style="display:none">
 
       <!-- 角色卡（紧凑头部 + 洞察条 + 元数据） -->
-      <section class="aip-card xb-hero">
-        <div class="xb-head">
+      <details class="aip-card xb-hero xb-control-drawer" id="xb-control-drawer">
+        <summary class="xb-head xb-control-summary">
           <div class="xb-avatar" aria-hidden="true">仙</div>
           <div class="xb-identity">
             <div class="xb-name-row">
               <span class="xb-name">许半仙</span>
               <span class="chat-badge xb-status" id="chat-badge-mode">会话待接入</span>
             </div>
-            <div class="xb-tagline">带命盘记忆的 AI 命理顾问 · 深度解读主线与近期流年</div>
+            <div class="xb-mini-tagline">可直接问感情、事业、财运或近一年</div>
           </div>
+          <span class="xb-control-hint">状态</span>
+        </summary>
+
+        <div class="xb-control-panel">
+          <div class="xb-tagline">带命盘记忆的 AI 命理顾问 · 深度解读主线与近期流年</div>
           <div class="xb-quota chat-quota-bar" id="chat-quota-bar" style="display:none">
             <div class="xb-quota-label">今日剩余</div>
             <div class="chat-quota-text xb-quota-value" id="chat-quota-text">-- / 200</div>
             <button class="chat-quota-upgrade xb-quota-upgrade" id="chat-quota-upgrade" data-pay-open="shop" style="display:none">开通</button>
           </div>
-        </div>
 
-        <details class="xb-memory-drawer" id="xb-memory-drawer">
-          <summary class="xb-memory-summary">
-            <span class="xb-memory-summary-label">命盘状态</span>
-            <span class="chat-badge xb-memory-badge" id="chat-badge-a">命盘待读取</span>
-          </summary>
-          <div class="xb-memory-panel">
-            <div class="xb-insight">
-              <div class="xb-insight-body">
-                <div class="xb-insight-head">
-                  <span class="xb-insight-dot" aria-hidden="true"></span>
-                  <span class="xb-insight-title">命盘摘要</span>
+          <details class="xb-memory-drawer" id="xb-memory-drawer">
+            <summary class="xb-memory-summary">
+              <span class="xb-memory-summary-label">命盘状态</span>
+              <span class="chat-badge xb-memory-badge" id="chat-badge-a">命盘待读取</span>
+            </summary>
+            <div class="xb-memory-panel">
+              <div class="xb-insight">
+                <div class="xb-insight-body">
+                  <div class="xb-insight-head">
+                    <span class="xb-insight-dot" aria-hidden="true"></span>
+                    <span class="xb-insight-title">命盘摘要</span>
+                  </div>
+                  <div class="xb-insight-text chat-context-preview" id="chat-context-preview">完成排盘后可在这里查看命盘摘要。</div>
                 </div>
-                <div class="xb-insight-text chat-context-preview" id="chat-context-preview">完成排盘后可在这里查看命盘摘要。</div>
+                <button type="button" class="xb-refresh" id="chat-refresh-memory-btn" disabled>
+                  <span class="xb-refresh-icon" aria-hidden="true">↻</span>
+                  <span>重读</span>
+                </button>
               </div>
-              <button type="button" class="xb-refresh" id="chat-refresh-memory-btn" disabled>
-                <span class="xb-refresh-icon" aria-hidden="true">↻</span>
-                <span>重读</span>
-              </button>
-            </div>
 
-            <div class="xb-meta">
-              <div class="xb-meta-sources chat-memory-sources" id="chat-memory-sources"></div>
-              <span class="chat-badge xb-meta-b" id="chat-badge-b">未整理</span>
-            </div>
+              <div class="xb-meta">
+                <div class="xb-meta-sources chat-memory-sources" id="chat-memory-sources"></div>
+                <span class="chat-badge xb-meta-b" id="chat-badge-b">未整理</span>
+              </div>
 
-            <div class="chat-background-status xb-bg-status" id="chat-background-status" style="display:none"></div>
-          </div>
-        </details>
-      </section>
+              <div class="chat-background-status xb-bg-status" id="chat-background-status" style="display:none"></div>
+            </div>
+          </details>
+        </div>
+      </details>
 
       <!-- 起始问题（空状态入口） -->
       <section class="xb-starters-bar">
