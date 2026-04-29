@@ -379,6 +379,10 @@
         <span class="aip-tab-kicker">对照</span>
         <span class="aip-tab-title">铁口直断</span>
       </button>
+      <button type="button" class="aip-tab" data-panel="aip-panel-report" aria-selected="false">
+        <span class="aip-tab-kicker">报告</span>
+        <span class="aip-tab-title">深度报告</span>
+      </button>
     </div>
 
     <!-- 整体批命 -->
@@ -983,6 +987,76 @@
           <div class="aip-card-tip" id="aip-tiekou-7-tip">定位：合并全部文本，后台先检索候选片段，再做双轮自查，只留最终通过项。</div>
         </div>
       </div>
+    </div>
+
+    <!-- 深度报告 -->
+    <div class="aip-panel report-panel" id="aip-panel-report" style="display:none">
+      <section class="report-stage">
+        <div class="report-topbar">
+          <button type="button" class="report-icon-btn" aria-label="返回">‹</button>
+          <div class="report-title-wrap">
+            <div class="report-title">天命人B800 的报告</div>
+            <div class="report-subtitle">Yuetian Premium Destiny Report</div>
+          </div>
+          <button type="button" class="report-icon-btn" aria-label="更多">⋯</button>
+        </div>
+
+        <div class="report-mode-row" aria-label="报告类型">
+          <button type="button" class="report-mode report-mode-year">2026年度报告</button>
+          <button type="button" class="report-mode active">个性报告</button>
+          <button type="button" class="report-mode locked"><span class="report-lock-mark" aria-hidden="true"></span>深度报告</button>
+        </div>
+
+        <article class="report-paper">
+          <header class="report-paper-head">
+            <div>
+              <span class="report-paper-kicker">PERSONAL REPORT</span>
+              <h2>个性报告</h2>
+            </div>
+            <button type="button" class="report-refresh-btn">重新生成报告</button>
+          </header>
+
+          <section class="report-block">
+            <h3>性格简述</h3>
+            <p>命主格局以稳中见锋为主，外在给人的感觉沉着、克制，内里却有明确的目标感与自我要求。处事不喜欢空谈，更重视结果、秩序与可落地的推进。</p>
+            <p><strong>务实能干：</strong>对现实世界有敏锐触觉，重视实际效益和资源积累，容易在长期项目、管理型事务或需要耐心经营的领域里逐步建立优势。</p>
+            <p><strong>责任心强：</strong>遇事愿意扛事，也容易把压力往自己身上收。越是在关键阶段，越需要分清“该自己承担”和“该交给别人”的边界。</p>
+          </section>
+
+          <section class="report-block">
+            <h3>性格缺点</h3>
+            <p><strong>内心易纠结：</strong>一边想突破，一边又希望保持稳定，容易在“要守成”和“要变化”之间反复权衡，导致行动变慢。</p>
+            <p><strong>固执己见：</strong>当自己已经判断清楚方向时，不太愿意被外界打乱节奏。优点是定力强，缺点是容易错过旁人的提醒。</p>
+          </section>
+
+          <section class="report-block">
+            <h3>做事风格（工作表现）</h3>
+            <p><strong>目标导向：</strong>适合把复杂问题拆成清晰步骤，一步一步推进。越是需要长期耐力、资源整合、专业判断的事情，越容易做出成果。</p>
+            <p><strong>才华与规则间的平衡者：</strong>既有自己的想法，也懂得制度和边界的重要性。真正适合的路线不是短线冲刺，而是建立个人方法论和可信赖的专业位置。</p>
+          </section>
+
+          <section class="report-block report-grid-block">
+            <div>
+              <h3>财富路径</h3>
+              <p>财富不宜急取，更适合靠专业能力、稳定资源和长期复利积累。越到中后期，越容易看到前期布局的回报。</p>
+            </div>
+            <div>
+              <h3>关系模式</h3>
+              <p>重视承诺与稳定，但表达不一定外放。关系里最需要避免的是把责任感变成控制感。</p>
+            </div>
+          </section>
+
+          <footer class="report-paper-foot">
+            <span>阅天深度报告</span>
+            <span>命 · 运 · 地 · 人</span>
+          </footer>
+        </article>
+
+        <div class="report-askbar">
+          <input type="text" placeholder="问一问" aria-label="问一问">
+          <button type="button" aria-label="发送">➤</button>
+        </div>
+      </section>
     </div>
 
     <div class="aip-footer-note" id="aip-footer-note"></div>
