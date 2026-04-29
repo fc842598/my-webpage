@@ -418,7 +418,6 @@
             <button class="aip-card-ai-btn" id="aip-overall-btn">✦ AI 整体批命</button>
             <span class="aip-ai-status" id="aip-overall-status"></span>
           </div>
-          <div class="aip-section-label">整体解读</div>
           <div class="aip-card-body" id="aip-life-body"></div>
           <div class="aip-card-tip"  id="aip-life-tip"></div>
 
@@ -466,8 +465,8 @@
           </summary>
           <div class="aip-struct aip-sub-struct" id="aip-hunyin-struct"></div>
         </details>
-        <div class="aip-card-body" id="aip-hunyin-body">先看夫妻宫、福德宫与迁移宫，判断感情节奏、择偶倾向和婚姻稳定度。</div>
-        <div class="aip-card-tip"  id="aip-hunyin-tip">点击「AI 婚姻批命」后，会补充缘分模式、相处风险与推进方式。</div>
+        <div class="aip-card-body" id="aip-hunyin-body"></div>
+        <div class="aip-card-tip"  id="aip-hunyin-tip"></div>
       </div>
 
       <div class="aip-card aip-sub-card aip-jiankang-card">
@@ -485,8 +484,8 @@
           </summary>
           <div class="aip-struct aip-sub-struct" id="aip-jiankang-struct"></div>
         </details>
-        <div class="aip-card-body" id="aip-jiankang-body">先看疾厄宫、兄弟宫与田宅宫，判断体质倾向、压力来源和长期留意点。</div>
-        <div class="aip-card-tip"  id="aip-jiankang-tip">点击「AI 健康批命」后，会补充健康节奏、风险提醒与调养方向。</div>
+        <div class="aip-card-body" id="aip-jiankang-body"></div>
+        <div class="aip-card-tip"  id="aip-jiankang-tip"></div>
       </div>
 
       <div class="aip-card aip-sub-card aip-caiyun-card">
@@ -504,8 +503,8 @@
           </summary>
           <div class="aip-struct aip-sub-struct" id="aip-caiyun-struct"></div>
         </details>
-        <div class="aip-card-body" id="aip-caiyun-body">先看财帛宫、官禄宫与命宫，判断赚钱方式、守财能力和投资风险。</div>
-        <div class="aip-card-tip"  id="aip-caiyun-tip">点击「AI 财运批命」后，会补充财源路径、破财点和适合的用钱策略。</div>
+        <div class="aip-card-body" id="aip-caiyun-body"></div>
+        <div class="aip-card-tip"  id="aip-caiyun-tip"></div>
       </div>
 
       <div class="aip-card aip-sub-card aip-shiye-card">
@@ -523,8 +522,8 @@
           </summary>
           <div class="aip-struct aip-sub-struct" id="aip-shiye-struct"></div>
         </details>
-        <div class="aip-card-body" id="aip-shiye-body">先看官禄宫、命宫与迁移宫，判断事业方向、发展节奏和适合的工作模式。</div>
-        <div class="aip-card-tip"  id="aip-shiye-tip">点击「AI 事业批命」后，会补充职业定位、机会窗口与需要避开的坑。</div>
+        <div class="aip-card-body" id="aip-shiye-body"></div>
+        <div class="aip-card-tip"  id="aip-shiye-tip"></div>
       </div>
 
     </div>
@@ -536,20 +535,20 @@
       <div id="dlx-wrap">
         <div class="aip-card" id="dlx-batch-card">
           <div class="aip-card-head">
-            <span class="aip-tag">大运整体</span>
-            <span class="aip-card-title">一键批完整组大运</span>
+            <span class="aip-tag">整组</span>
+            <span class="aip-card-title">批整组</span>
           </div>
-          <div class="aip-card-tip" id="dlx-batch-tip">先按命盘真实大运区间生成整组总览，再点下方区间看对应流年。</div>
+          <div class="aip-card-tip" id="dlx-batch-tip"></div>
           <div class="aip-card-ai-bar">
-            <button class="aip-card-ai-btn" id="dlx-batch-ai-btn">✦ 一键批完整组大运</button>
+            <button class="aip-card-ai-btn" id="dlx-batch-ai-btn">✦ 批整组</button>
             <span class="aip-card-ai-status" id="dlx-batch-ai-status"></span>
           </div>
         </div>
 
         <div class="aip-card" id="dlx-overview-card" style="display:none">
           <div class="aip-card-head">
-            <span class="aip-tag">总览</span>
-            <span class="aip-card-title">大运结论总览</span>
+            <span class="aip-tag">三段</span>
+            <span class="aip-card-title">大运</span>
           </div>
           <div id="dlx-overview-list" class="dlx-overview-list"></div>
         </div>
@@ -598,11 +597,11 @@
         <div class="aip-card dlx-bottom-batch-card" id="dlx-bottom-batch-card">
           <div class="aip-card-head">
             <span class="aip-tag">整组大运</span>
-            <span class="aip-card-title">最后再一键批完整组</span>
+            <span class="aip-card-title">补齐整组</span>
           </div>
-          <div class="aip-card-tip">单个大运、单年流年先按需批；需要总览时，再一键把全部十年大运补齐。</div>
+          <div class="aip-card-tip"></div>
           <div class="aip-card-ai-bar">
-            <button class="aip-card-ai-btn" id="dlx-batch-all-btn">✦ 一键批完整组大运</button>
+            <button class="aip-card-ai-btn" id="dlx-batch-all-btn">✦ 补齐整组</button>
             <span class="aip-card-ai-status" id="dlx-batch-all-status"></span>
           </div>
         </div>
@@ -4446,28 +4445,28 @@ function _aipSetCard(prefix, data) {
 const AIP_SUBCARD_INITIALS = {
   'aip-life': {
     title: '命宫格局',
-    body: '先看命宫、三方四正与四化，判断一生命格主线。点击按钮后生成完整 AI 解读。',
-    tip: '点击「AI 深度批命」获取 AI 整体解读',
+    body: '',
+    tip: '',
   },
   'aip-hunyin': {
     title: '婚姻批命',
-    body: '先看夫妻宫、福德宫与迁移宫，判断感情节奏、择偶倾向和婚姻稳定度。',
-    tip: '点击「AI 婚姻批命」后，会补充缘分模式、相处风险与推进方式。',
+    body: '',
+    tip: '',
   },
   'aip-jiankang': {
     title: '健康批命',
-    body: '先看疾厄宫、兄弟宫与田宅宫，判断体质倾向、压力来源和长期留意点。',
-    tip: '点击「AI 健康批命」后，会补充健康节奏、风险提醒与调养方向。',
+    body: '',
+    tip: '',
   },
   'aip-caiyun': {
     title: '财运批命',
-    body: '先看财帛宫、官禄宫与命宫，判断赚钱方式、守财能力和投资风险。',
-    tip: '点击「AI 财运批命」后，会补充财源路径、破财点和适合的用钱策略。',
+    body: '',
+    tip: '',
   },
   'aip-shiye': {
     title: '事业批命',
-    body: '先看官禄宫、命宫与迁移宫，判断事业方向、发展节奏和适合的工作模式。',
-    tip: '点击「AI 事业批命」后，会补充职业定位、机会窗口与需要避开的坑。',
+    body: '',
+    tip: '',
   },
 };
 

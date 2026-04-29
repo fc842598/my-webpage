@@ -679,7 +679,7 @@ function renderInlineYearDetailHtml(dayun, expanded) {
     const card = getYearCard(age);
     if (!card) return '';
     const year = getSolarYear(age);
-    const riskHtml = card?.risk ? `<div class="dlx-overview-risk">提醒：${escapeHtml(card.risk)}</div>` : '';
+    const riskHtml = card?.risk ? `<div class="dlx-overview-risk">${escapeHtml(card.risk)}</div>` : '';
     return (
       `<div class="dlx-inline-year-detail">` +
         `<div class="dlx-inline-year-detail-head">` +
@@ -712,7 +712,7 @@ function renderDayunGroupCard(item) {
     const detailHtml = card
       ? (
         `<details class="dlx-decade-detail">` +
-          `<summary>查看完整十年批命</summary>` +
+          `<summary>展开全文</summary>` +
           `<div class="aip-card-body dlx-overview-summary">${renderSectionsHtml(card)}</div>` +
         `</details>`
       )
@@ -732,10 +732,10 @@ function renderDayunGroupCard(item) {
               `<span class="dlx-overview-badge ${statusMeta.badgeClass}">${escapeHtml(statusMeta.badge)}</span>` +
             `</div>` +
             `<div class="dlx-spotlight-meta">${renderDecadeMetaChips(dayun)}<span class="dlx-meta-chip">${generatedYears}/10 流年</span></div>` +
-            `<div class="dlx-spotlight-copy">${escapeHtml(summaryLine || '等待批命')}</div>` +
+            `${summaryLine ? `<div class="dlx-spotlight-copy">${escapeHtml(summaryLine)}</div>` : ''}` +
           `</div>` +
           `<div class="dlx-spotlight-score-box">` +
-            `<span>整体状态</span>` +
+            `<span>状态</span>` +
             `<strong class="${visibleState.className}">${escapeHtml(visibleState.text)}</strong>` +
             `${getCardShortReason(card, '') ? `<b>${escapeHtml(getCardShortReason(card, ''))}</b>` : ''}` +
           `</div>` +
@@ -743,8 +743,8 @@ function renderDayunGroupCard(item) {
         `<div class="dlx-stars-line"><span class="dlx-overview-label">主星</span><div class="dlx-stars-wrap">${formatStarBadgesHtml(palace?.majorStars || [])}</div></div>` +
         `<div class="dlx-overview-actions">` +
           `<button class="dlx-dayun-ai-btn ${statusMeta.btnState}" data-ai-range-key="${escapeHtml(key)}"${status === 'loading' ? ' disabled' : ''}>${escapeHtml(statusMeta.btnLabel)}</button>` +
-          `<button class="dlx-range-batch-btn" data-batch-range-key="${escapeHtml(key)}"${rangeLoading ? ' disabled' : ''}>${rangeLoading ? '批完整组中…' : (complete ? '✓ 已批完整组' : '✦ 一键批完这10年')}</button>` +
-          `<button class="dlx-decade-toggle-btn" data-toggle-range-key="${escapeHtml(key)}">${expanded ? '收起小流年' : '展开小流年'}</button>` +
+          `<button class="dlx-range-batch-btn" data-batch-range-key="${escapeHtml(key)}"${rangeLoading ? ' disabled' : ''}>${rangeLoading ? '批整组中…' : (complete ? '✓ 已完成' : '✦ 批这10年')}</button>` +
+          `<button class="dlx-decade-toggle-btn" data-toggle-range-key="${escapeHtml(key)}">${expanded ? '收起' : '展开'}</button>` +
           `<span class="dlx-overview-status">${rangeLoading ? '批命中…' : ''}</span>` +
         `</div>` +
         `${card ? renderScoreDetailHtml(card) : ''}` +
@@ -762,7 +762,7 @@ function renderOverviewList() {
     if (!listEl) return;
 
     if (!state.dayunRanges.length) {
-      listEl.innerHTML = '<div class="dlx-overview-item"><div class="dlx-overview-summary">请先完成排盘。</div></div>';
+      listEl.innerHTML = '<div class="dlx-overview-item"><div class="dlx-overview-summary"></div></div>';
       return;
     }
 
@@ -811,7 +811,7 @@ function renderOverviewList() {
           `<div>` +
             `<div class="dlx-test-score-title">测试分数</div>` +
           `</div>` +
-          `<div class="dlx-test-score-meta">已出分 ${readyCount}/100</div>` +
+          `<div class="dlx-test-score-meta">${readyCount}/100</div>` +
         `</div>` +
         `<div class="dlx-test-score-grid">${items.join('')}</div>` +
       `</section>`
