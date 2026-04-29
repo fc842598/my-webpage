@@ -558,6 +558,183 @@
       </div>
       </div>
 
+      <!-- 新版“命书卷轴”样式预览：只做样式与占位镜像，不影响旧版 -->
+      <details class="mk-preview-details" id="mk-overall-preview">
+        <summary class="mk-preview-summary">
+          <span class="mk-preview-badge">新版预览</span>
+          <span class="mk-preview-name">整体批命 · 命书卷轴</span>
+          <span class="mk-preview-hint">点此展开</span>
+        </summary>
+        <div class="mk-preview-stage">
+          <div class="mk-preview-scroll-rod mk-preview-scroll-rod-left" aria-hidden="true"></div>
+          <div class="mk-preview-scroll-rod mk-preview-scroll-rod-right" aria-hidden="true"></div>
+
+          <div class="mk-preview-inner">
+            <!-- 封面 -->
+            <section class="mk-cover">
+              <div class="mk-cover-stamp-wrap">
+                <div class="mk-seal stamp-in" aria-hidden="true">
+                  <div class="mk-seal-inner-frame" aria-hidden="true"></div>
+                  <div class="mk-seal-grain" aria-hidden="true"></div>
+                  <span>紫</span>
+                  <span>微</span>
+                </div>
+              </div>
+
+              <div class="mk-cover-kicker">命　書　啟　卷</div>
+              <h2 class="mk-mega-title">紫 微 命 書</h2>
+
+              <div class="mk-cover-subline">
+                <span class="mk-cover-line mk-cover-line-left" aria-hidden="true"></span>
+                <span class="mk-cover-subtitle" id="mk-life-title">天 府 坐 命</span>
+                <span class="mk-cover-line mk-cover-line-right" aria-hidden="true"></span>
+              </div>
+
+              <p class="mk-cover-meta" id="mk-cover-meta">
+                紫 微 在 午 · 帝 旺 之 格<br>
+                甲 子 · 丙 寅 · 戊 午 · 庚 申
+              </p>
+
+              <div class="mk-cover-hint" aria-hidden="true">
+                <span class="mk-cover-hint-text">滚 动 展 卷</span>
+                <span class="mk-cover-hint-arrow">↓</span>
+              </div>
+            </section>
+
+            <!-- 卷一 -->
+            <div class="mk-chapter">
+              <span class="mk-chapter-title">卷 一</span>
+              <span class="mk-chapter-subtitle">命 格 总 览</span>
+            </div>
+            <section class="mk-card mk-overview">
+              <div class="mk-card-head">
+                <div class="mk-card-head-left">
+                  <div class="mk-card-title">命书解读</div>
+                  <div class="mk-card-desc" id="mk-header-meta">属性：—  性别：—  命宫：—  小星：—</div>
+                </div>
+                <div class="mk-card-head-right">
+                  <button class="mk-mini-btn" type="button" data-mk-proxy-click="#aip-struct-details">查看命盘结构</button>
+                </div>
+              </div>
+
+              <div class="mk-card-actions">
+                <button class="mk-ai-btn" type="button" data-mk-proxy-click="#aip-overall-btn">✦ AI 整体批命</button>
+                <span class="mk-ai-status" id="mk-overall-status"></span>
+              </div>
+
+              <details class="mk-struct-details" id="mk-struct-details">
+                <summary class="mk-struct-summary">命盘结构（镜像）</summary>
+                <div class="mk-struct-body" id="mk-struct"></div>
+              </details>
+            </section>
+
+            <!-- 卷二 -->
+            <div class="mk-chapter">
+              <span class="mk-chapter-title">卷 二</span>
+              <span class="mk-chapter-subtitle">主 论</span>
+            </div>
+            <section class="mk-card mk-main-reading">
+              <div class="mk-card-title-row">
+                <div class="mk-card-title">整体批命</div>
+                <div class="mk-card-meta" id="mk-overall-title">—</div>
+              </div>
+              <div class="mk-reading-body" id="mk-life-body"></div>
+              <div class="mk-footnotes">
+                <div class="mk-footnote mk-footnote-risk" id="mk-life-risk" style="display:none"></div>
+                <div class="mk-footnote mk-footnote-basis" id="mk-life-basis" style="display:none"></div>
+              </div>
+            </section>
+
+            <!-- 卷三 -->
+            <div class="mk-chapter">
+              <span class="mk-chapter-title">卷 三</span>
+              <span class="mk-chapter-subtitle">五 宫 详 解</span>
+            </div>
+            <section class="mk-specialty-grid">
+              <div class="mk-card mk-spec mk-spec-shen">
+                <div class="mk-spec-head">
+                  <span class="mk-spec-tag">身宫</span>
+                  <span class="mk-spec-title" id="mk-shen-ttl">—</span>
+                </div>
+                <div class="mk-card-actions">
+                  <button class="mk-ai-btn" type="button" data-mk-proxy-click="#aip-shen-btn">✦ AI 身宫批命</button>
+                  <span class="mk-ai-status" id="mk-shen-status"></span>
+                </div>
+                <details class="mk-struct-details" id="mk-shen-struct-details">
+                  <summary class="mk-struct-summary">查看身宫结构</summary>
+                  <div class="mk-struct-body" id="mk-shen-struct"></div>
+                </details>
+                <div class="mk-spec-body" id="mk-shen-body"></div>
+              </div>
+
+              <div class="mk-card mk-spec mk-spec-hunyin">
+                <div class="mk-spec-head">
+                  <span class="mk-spec-tag">婚姻</span>
+                  <span class="mk-spec-title" id="mk-hunyin-ttl">—</span>
+                </div>
+                <div class="mk-card-actions">
+                  <button class="mk-ai-btn" type="button" data-mk-proxy-click="#aip-hunyin-btn">✦ AI 婚姻批命</button>
+                  <span class="mk-ai-status" id="mk-hunyin-status"></span>
+                </div>
+                <details class="mk-struct-details" id="mk-hunyin-struct-details">
+                  <summary class="mk-struct-summary">查看婚姻结构</summary>
+                  <div class="mk-struct-body" id="mk-hunyin-struct"></div>
+                </details>
+                <div class="mk-spec-body" id="mk-hunyin-body"></div>
+              </div>
+
+              <div class="mk-card mk-spec mk-spec-jiankang">
+                <div class="mk-spec-head">
+                  <span class="mk-spec-tag">健康</span>
+                  <span class="mk-spec-title" id="mk-jiankang-ttl">—</span>
+                </div>
+                <div class="mk-card-actions">
+                  <button class="mk-ai-btn" type="button" data-mk-proxy-click="#aip-jiankang-btn">✦ AI 健康批命</button>
+                  <span class="mk-ai-status" id="mk-jiankang-status"></span>
+                </div>
+                <details class="mk-struct-details" id="mk-jiankang-struct-details">
+                  <summary class="mk-struct-summary">查看健康结构</summary>
+                  <div class="mk-struct-body" id="mk-jiankang-struct"></div>
+                </details>
+                <div class="mk-spec-body" id="mk-jiankang-body"></div>
+              </div>
+
+              <div class="mk-card mk-spec mk-spec-caiyun">
+                <div class="mk-spec-head">
+                  <span class="mk-spec-tag">财运</span>
+                  <span class="mk-spec-title" id="mk-caiyun-ttl">—</span>
+                </div>
+                <div class="mk-card-actions">
+                  <button class="mk-ai-btn" type="button" data-mk-proxy-click="#aip-caiyun-btn">✦ AI 财运批命</button>
+                  <span class="mk-ai-status" id="mk-caiyun-status"></span>
+                </div>
+                <details class="mk-struct-details" id="mk-caiyun-struct-details">
+                  <summary class="mk-struct-summary">查看财运结构</summary>
+                  <div class="mk-struct-body" id="mk-caiyun-struct"></div>
+                </details>
+                <div class="mk-spec-body" id="mk-caiyun-body"></div>
+              </div>
+
+              <div class="mk-card mk-spec mk-spec-shiye">
+                <div class="mk-spec-head">
+                  <span class="mk-spec-tag">事业</span>
+                  <span class="mk-spec-title" id="mk-shiye-ttl">—</span>
+                </div>
+                <div class="mk-card-actions">
+                  <button class="mk-ai-btn" type="button" data-mk-proxy-click="#aip-shiye-btn">✦ AI 事业批命</button>
+                  <span class="mk-ai-status" id="mk-shiye-status"></span>
+                </div>
+                <details class="mk-struct-details" id="mk-shiye-struct-details">
+                  <summary class="mk-struct-summary">查看事业结构</summary>
+                  <div class="mk-struct-body" id="mk-shiye-struct"></div>
+                </details>
+                <div class="mk-spec-body" id="mk-shiye-body"></div>
+              </div>
+            </section>
+          </div>
+        </div>
+      </details>
+
     </div>
 
     <!-- 大限流年 -->
@@ -5659,6 +5836,7 @@ window._aiChatFill = function(data, submit) {
 <!-- AI 批命新后端集成（调用 Vercel /api/ai/run） -->
 <script src="../js/desktop-notify.js?v=20260423-notify"></script>
 <script src="../js/ai-piming.js"></script>
+<script src="../js/mk-overall-preview.js?v=20260429-mkpreview"></script>
 <script src="../js/dayun-panel.js"></script>
 <!-- AI半仙 对话面板 -->
 <script src="../js/ai-chat.js?v=20260419-unlimited"></script>
