@@ -6872,3 +6872,446 @@
     padding: 0 14px 14px;
   }
 }
+
+/* Figma Make 提取版：整体批命命书封面视觉 */
+.aip-fm-overall {
+  position: relative;
+  isolation: isolate;
+  gap: 24px !important;
+}
+
+.aip-fm-overall::before {
+  content: '';
+  position: absolute;
+  inset: -40px -18px auto;
+  height: 520px;
+  z-index: -1;
+  pointer-events: none;
+  opacity: .48;
+  background:
+    radial-gradient(circle at 50% 36%, rgba(185, 148, 68, .16), transparent 28%),
+    repeating-conic-gradient(from 8deg at 50% 45%, rgba(185,148,68,.12) 0 1deg, transparent 1deg 30deg),
+    radial-gradient(circle at 50% 45%, transparent 0 150px, rgba(185,148,68,.12) 151px 152px, transparent 153px 210px, rgba(185,148,68,.08) 211px 212px, transparent 213px);
+}
+
+.aip-fm-overall .aip-main-card {
+  position: relative !important;
+  overflow: hidden !important;
+  padding: 0 !important;
+  border-radius: 8px !important;
+  border: 1px solid rgba(201, 169, 97, .38) !important;
+  background: linear-gradient(175deg, #100c08 0%, #090704 52%, #0e0a05 100%) !important;
+  box-shadow: 0 0 0 3px rgba(185,148,68,.055), 0 30px 76px rgba(0,0,0,.56), inset 0 0 0 1px rgba(255,236,180,.025) !important;
+}
+
+.aip-fm-overall .aip-main-card::before {
+  content: '' !important;
+  display: block !important;
+  position: absolute !important;
+  inset: 11px !important;
+  pointer-events: none !important;
+  border: 1px solid rgba(185, 148, 68, .13) !important;
+  border-radius: 4px !important;
+  background:
+    repeating-linear-gradient(0deg, transparent, transparent 28px, rgba(185,148,68,.025) 29px),
+    radial-gradient(circle at 78% 22%, rgba(125,35,22,.18), transparent 26%) !important;
+}
+
+.aip-fm-overall .aip-main-card::after {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto;
+  height: 3px;
+  background: linear-gradient(90deg, transparent 6%, #772418 39%, #b23a24 50%, #772418 61%, transparent 94%);
+  box-shadow: 0 0 20px rgba(160, 48, 32, .35);
+}
+
+.aip-fm-corner {
+  position: absolute;
+  z-index: 2;
+  width: 34px;
+  height: 34px;
+  pointer-events: none;
+  border-color: rgba(201, 169, 97, .42);
+}
+.aip-fm-corner-tl { top: 7px; left: 7px; border-top: 1px solid; border-left: 1px solid; }
+.aip-fm-corner-tr { top: 7px; right: 7px; border-top: 1px solid; border-right: 1px solid; }
+.aip-fm-corner-bl { bottom: 7px; left: 7px; border-bottom: 1px solid; border-left: 1px solid; }
+.aip-fm-corner-br { bottom: 7px; right: 7px; border-bottom: 1px solid; border-right: 1px solid; }
+
+.aip-fm-overall .aip-main-hero {
+  position: relative !important;
+  min-height: 184px !important;
+  padding: 72px 44px 30px 104px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: linear-gradient(110deg, rgba(20,13,7,.82) 0%, rgba(26,16,8,.62) 58%, rgba(84,31,18,.42) 100%) !important;
+  box-shadow: none !important;
+}
+
+.aip-fm-overall .aip-main-hero::after {
+  content: '';
+  position: absolute;
+  left: 44px;
+  right: 44px;
+  bottom: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(201,169,97,.42), transparent);
+}
+
+.aip-fm-seal {
+  position: absolute;
+  top: 34px;
+  left: 38px;
+  width: 54px;
+  height: 54px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
+  border-radius: 4px;
+  transform: rotate(-4deg);
+  color: #ffe7dc;
+  font-family: "KaiTi", "STKaiti", "SimSun", serif;
+  font-weight: 900;
+  font-size: 18px;
+  line-height: 1;
+  background: radial-gradient(circle at 34% 28%, #cf4635 0%, #982719 56%, #6e1b12 100%);
+  border: 1px solid #8b2418;
+  box-shadow: 0 0 0 2px rgba(190,54,35,.86), 0 12px 24px rgba(120,25,14,.36), inset 0 0 0 4px rgba(0,0,0,.14);
+}
+
+.aip-fm-seal::before {
+  content: '';
+  position: absolute;
+  inset: 5px;
+  border: 1px solid rgba(255,224,214,.36);
+  border-radius: 2px;
+}
+
+.aip-fm-birthmark {
+  position: absolute;
+  top: 34px;
+  right: 38px;
+  padding: 7px 13px;
+  border: 1px solid rgba(201,169,97,.28);
+  border-radius: 4px;
+  background: linear-gradient(180deg, #110c07, #090704);
+  color: rgba(232,200,112,.86);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .18em;
+}
+
+.aip-fm-overall .aip-main-card-head { margin-bottom: 16px !important; }
+
+.aip-fm-overall .aip-hero-tag {
+  border-radius: 3px !important;
+  border-color: rgba(201,169,97,.42) !important;
+  background: rgba(185,148,68,.12) !important;
+  color: #d8b967 !important;
+  letter-spacing: .16em !important;
+}
+
+.aip-fm-overall .aip-hero-title {
+  max-width: 760px !important;
+  color: #f7e7bd !important;
+  font-family: "Noto Serif SC", "Source Han Serif SC", "STSong", "SimSun", serif !important;
+  font-size: clamp(28px, 4vw, 44px) !important;
+  font-weight: 900 !important;
+  line-height: 1.28 !important;
+  letter-spacing: .04em !important;
+  text-shadow: 0 12px 28px rgba(185,148,68,.18) !important;
+}
+
+.aip-fm-hero-sub {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 18px;
+  color: rgba(185,148,68,.66);
+  font-size: 12px;
+  letter-spacing: .22em;
+}
+
+.aip-fm-hero-sub::before,
+.aip-fm-hero-sub::after {
+  content: '';
+  width: 72px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(185,148,68,.45));
+}
+.aip-fm-hero-sub::after { background: linear-gradient(90deg, rgba(185,148,68,.45), transparent); }
+
+.aip-fm-overall .aip-main-body-wrap {
+  display: grid !important;
+  grid-template-columns: minmax(230px, 300px) minmax(0, 1fr) !important;
+  gap: 26px !important;
+  padding: 28px 44px 40px !important;
+  background: transparent !important;
+}
+
+.aip-fm-overall .aip-main-structure-pane {
+  position: relative !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+}
+
+.aip-fm-overall .aip-main-structure-pane .aip-struct-summary {
+  min-height: 42px !important;
+  padding: 0 !important;
+  border: 1px solid rgba(185,148,68,.32) !important;
+  border-radius: 3px !important;
+  background: transparent !important;
+}
+
+.aip-fm-overall .aip-main-structure-pane .aip-struct-summary-label {
+  min-width: 100% !important;
+  height: 40px !important;
+  color: rgba(232,200,112,.84) !important;
+  background: rgba(185,148,68,.055) !important;
+  border: 0 !important;
+  letter-spacing: .12em !important;
+}
+
+.aip-fm-chart-wheel {
+  position: relative;
+  width: min(220px, 100%);
+  aspect-ratio: 1;
+  margin: 24px auto 0;
+  border: 1px solid rgba(185,148,68,.32);
+  box-shadow: inset 0 0 0 1px rgba(185,148,68,.08);
+  background:
+    linear-gradient(90deg, transparent 49.5%, rgba(185,148,68,.18) 50%, transparent 50.5%),
+    linear-gradient(0deg, transparent 49.5%, rgba(185,148,68,.18) 50%, transparent 50.5%),
+    radial-gradient(circle, transparent 0 23%, rgba(185,148,68,.18) 23.5% 24%, transparent 24.5% 42%, rgba(185,148,68,.12) 42.5% 43%, transparent 43.5%),
+    repeating-conic-gradient(from 0deg, rgba(185,148,68,.16) 0 1deg, transparent 1deg 30deg);
+  opacity: .8;
+}
+
+.aip-fm-chart-wheel::before {
+  content: '';
+  position: absolute;
+  inset: 25%;
+  border: 1px solid rgba(185,148,68,.26);
+  background: rgba(185,148,68,.035);
+}
+
+.aip-fm-chart-wheel span {
+  position: absolute;
+  inset: 50% auto auto 50%;
+  transform: translate(-50%, -50%);
+  color: rgba(232,200,112,.78);
+  font-size: 18px;
+  font-weight: 900;
+  letter-spacing: .18em;
+}
+
+.aip-fm-overall .aip-main-result-pane {
+  position: relative !important;
+  display: block !important;
+  min-width: 0 !important;
+  padding-top: 4px !important;
+}
+
+.aip-fm-overall .aip-main-result-pane > .aip-card-ai-bar {
+  position: static !important;
+  justify-content: center !important;
+  margin: 18px 0 0 !important;
+  padding: 22px 0 0 !important;
+  border-top: 1px solid rgba(185,148,68,.16) !important;
+  border-bottom: 0 !important;
+}
+
+.aip-fm-overall .aip-main-result-pane #aip-overall-btn {
+  min-width: 230px !important;
+  height: 50px !important;
+  padding: 0 42px !important;
+  border-radius: 3px !important;
+  border: 1px solid rgba(240,205,115,.5) !important;
+  background: linear-gradient(135deg, #c9a050 0%, #e8c870 42%, #b98536 100%) !important;
+  color: #180d05 !important;
+  font-size: 15px !important;
+  font-weight: 900 !important;
+  letter-spacing: .16em !important;
+  box-shadow: 0 14px 34px rgba(185,148,68,.25), inset 0 1px 0 rgba(255,240,180,.5) !important;
+}
+
+.aip-fm-overall .aip-main-result-pane #aip-life-body:not(:empty) {
+  margin-top: 24px !important;
+  padding: 24px 28px !important;
+  border-radius: 4px !important;
+  border: 1px solid rgba(185,148,68,.18) !important;
+  background: rgba(185,148,68,.035) !important;
+  color: rgba(245,228,184,.9) !important;
+}
+
+.aip-fm-overall .aip-specialty-grid {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 18px !important;
+}
+
+.aip-fm-overall .aip-sub-card {
+  position: relative !important;
+  overflow: hidden !important;
+  min-height: 260px !important;
+  padding: 26px 24px 24px !important;
+  border-radius: 6px !important;
+  border: 1px solid rgba(185,148,68,.2) !important;
+  background: linear-gradient(180deg, rgba(18,13,8,.94), rgba(8,6,3,.98)) !important;
+  box-shadow: inset 0 1px 0 rgba(255,236,180,.025), 0 18px 44px rgba(0,0,0,.24) !important;
+}
+
+.aip-fm-overall .aip-sub-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 4px;
+  background: var(--aip-card-accent, #b8903c);
+  opacity: .9;
+  box-shadow: 0 0 22px var(--aip-card-glow, rgba(185,148,68,.18));
+}
+
+.aip-fm-overall .aip-sub-card::after {
+  content: var(--aip-card-watermark, '卷');
+  position: absolute;
+  right: 12px;
+  bottom: -24px;
+  color: var(--aip-card-accent, #b8903c);
+  opacity: .055;
+  font-family: "KaiTi", "STKaiti", "SimSun", serif;
+  font-size: 118px;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.aip-fm-overall .aip-shen-card { --aip-card-accent: #c8a652; --aip-card-glow: rgba(200,166,82,.22); --aip-card-watermark: '身'; }
+.aip-fm-overall .aip-hunyin-card { --aip-card-accent: #b86b75; --aip-card-glow: rgba(184,107,117,.22); --aip-card-watermark: '婚'; }
+.aip-fm-overall .aip-jiankang-card { --aip-card-accent: #6aa678; --aip-card-glow: rgba(106,166,120,.2); --aip-card-watermark: '疾'; }
+.aip-fm-overall .aip-caiyun-card { --aip-card-accent: #d0a044; --aip-card-glow: rgba(208,160,68,.22); --aip-card-watermark: '财'; }
+.aip-fm-overall .aip-shiye-card { --aip-card-accent: #8f75cc; --aip-card-glow: rgba(143,117,204,.2); --aip-card-watermark: '官'; }
+
+.aip-fm-overall .aip-sub-card .aip-card-head {
+  position: relative !important;
+  z-index: 1 !important;
+  justify-content: space-between !important;
+  align-items: flex-start !important;
+  margin-bottom: 24px !important;
+}
+
+.aip-fm-overall .aip-sub-card .aip-tag {
+  border-radius: 3px !important;
+  background: rgba(185,148,68,.08) !important;
+  border: 1px solid rgba(185,148,68,.2) !important;
+  color: var(--aip-card-accent, #b8903c) !important;
+}
+
+.aip-fm-overall .aip-sub-card .aip-card-title {
+  display: block !important;
+  color: #f5e4b8 !important;
+  font-family: "Noto Serif SC", "Source Han Serif SC", "STSong", "SimSun", serif !important;
+  font-size: 20px !important;
+  font-weight: 900 !important;
+  line-height: 1.35 !important;
+}
+
+.aip-fm-overall .aip-sub-card .aip-card-ai-bar {
+  position: relative !important;
+  z-index: 1 !important;
+  justify-content: stretch !important;
+  width: 100% !important;
+  margin: 0 0 22px !important;
+}
+
+.aip-fm-overall .aip-sub-card .aip-card-ai-btn {
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 44px !important;
+  border-radius: 3px !important;
+  border: 1px solid rgba(185,148,68,.26) !important;
+  background: rgba(185,148,68,.035) !important;
+  color: var(--aip-card-accent, #b8903c) !important;
+  box-shadow: none !important;
+  font-size: 14px !important;
+  font-weight: 900 !important;
+  letter-spacing: .12em !important;
+}
+
+.aip-fm-overall .aip-sub-card .aip-card-ai-btn:hover:not(:disabled) {
+  background: rgba(185,148,68,.12) !important;
+  transform: translateY(-1px);
+}
+
+.aip-fm-overall .aip-sub-card .aip-sub-struct-details {
+  position: relative !important;
+  z-index: 1 !important;
+  opacity: .78 !important;
+}
+
+.aip-fm-overall .aip-sub-card .aip-sub-struct-details .aip-struct-summary-label {
+  height: 30px !important;
+  padding: 0 12px !important;
+  border-radius: 3px !important;
+  background: transparent !important;
+  border-color: rgba(185,148,68,.16) !important;
+  color: rgba(185,148,68,.68) !important;
+}
+
+.aip-fm-overall .aip-sub-card .aip-card-body:not(:empty),
+.aip-fm-overall .aip-sub-card .aip-card-tip:not(:empty) {
+  position: relative !important;
+  z-index: 1 !important;
+}
+
+@media (max-width: 1120px) {
+  .aip-fm-overall .aip-specialty-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (max-width: 820px) {
+  .aip-fm-overall .aip-main-hero {
+    min-height: 162px !important;
+    padding: 68px 22px 24px !important;
+  }
+
+  .aip-fm-seal {
+    top: 20px;
+    left: 22px;
+    width: 44px;
+    height: 44px;
+    font-size: 15px;
+  }
+
+  .aip-fm-birthmark {
+    top: 22px;
+    right: 22px;
+    font-size: 10px;
+  }
+
+  .aip-fm-overall .aip-hero-title {
+    font-size: 28px !important;
+  }
+
+  .aip-fm-overall .aip-main-body-wrap {
+    grid-template-columns: 1fr !important;
+    padding: 20px !important;
+  }
+
+  .aip-fm-chart-wheel {
+    display: none;
+  }
+
+  .aip-fm-overall .aip-specialty-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .aip-fm-overall .aip-sub-card {
+    min-height: 0 !important;
+  }
+}
