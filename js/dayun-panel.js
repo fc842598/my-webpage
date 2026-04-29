@@ -807,13 +807,15 @@ function renderOverviewList() {
     }
     return (
       `<section class="dlx-test-score-card">` +
-        `<div class="dlx-test-score-head">` +
-          `<div>` +
+        `<details class="dlx-test-score-details">` +
+          `<summary class="dlx-test-score-head">` +
             `<div class="dlx-test-score-title">测试分数</div>` +
-          `</div>` +
-          `<div class="dlx-test-score-meta">${readyCount}/100</div>` +
-        `</div>` +
-        `<div class="dlx-test-score-grid">${items.join('')}</div>` +
+            `<div class="dlx-test-score-copy">点开查看 1-100 岁评分</div>` +
+            `<div class="dlx-test-score-meta">${readyCount}/100</div>` +
+            `<span class="dlx-test-score-toggle" aria-hidden="true">展开</span>` +
+          `</summary>` +
+          `<div class="dlx-test-score-grid">${items.join('')}</div>` +
+        `</details>` +
       `</section>`
     );
   }

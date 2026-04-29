@@ -5892,21 +5892,38 @@
 
 .dlx-test-score-card {
   margin-top: 18px !important;
-  padding: 18px !important;
+  padding: 0 !important;
   border-radius: 22px !important;
   border: 1px solid rgba(201,169,97,.14) !important;
   background:
     linear-gradient(180deg, rgba(255,255,255,.025), rgba(255,255,255,.01)),
     rgba(22, 16, 11, .92) !important;
+  overflow: hidden !important;
+}
+
+.dlx-test-score-details {
+  display: block !important;
 }
 
 .dlx-test-score-head {
   display: flex !important;
-  align-items: flex-end !important;
+  align-items: center !important;
   justify-content: space-between !important;
   gap: 12px !important;
-  margin-bottom: 14px !important;
+  min-height: 58px !important;
+  padding: 0 18px !important;
+  margin-bottom: 0 !important;
   flex-wrap: wrap !important;
+  cursor: pointer !important;
+  list-style: none !important;
+}
+
+.dlx-test-score-head::-webkit-details-marker {
+  display: none !important;
+}
+
+.dlx-test-score-details[open] .dlx-test-score-head {
+  border-bottom: 1px solid rgba(201,169,97,.12) !important;
 }
 
 .dlx-test-score-kicker {
@@ -5918,10 +5935,11 @@
 
 .dlx-test-score-title {
   color: #f5e9d2 !important;
-  font-size: 24px !important;
+  font-size: 18px !important;
   font-weight: 900 !important;
   line-height: 1.15 !important;
-  margin-top: 4px !important;
+  margin: 0 !important;
+  white-space: nowrap !important;
 }
 
 .dlx-test-score-copy,
@@ -5929,12 +5947,48 @@
   color: #9d8462 !important;
   font-size: 12px !important;
   line-height: 1.7 !important;
+  margin-left: auto !important;
+  white-space: nowrap !important;
+}
+
+.dlx-test-score-toggle {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-width: 54px !important;
+  height: 28px !important;
+  padding: 0 12px !important;
+  border-radius: 999px !important;
+  border: 1px solid rgba(201,169,97,.22) !important;
+  color: #d7bb82 !important;
+  font-size: 12px !important;
+  font-weight: 800 !important;
+  white-space: nowrap !important;
+}
+
+.dlx-test-score-details[open] .dlx-test-score-toggle {
+  color: #14100c !important;
+  background: #c9a961 !important;
+  border-color: #c9a961 !important;
+}
+
+.dlx-test-score-details[open] .dlx-test-score-toggle::before {
+  content: '收起';
+}
+
+.dlx-test-score-details[open] .dlx-test-score-toggle {
+  font-size: 0 !important;
+}
+
+.dlx-test-score-details[open] .dlx-test-score-toggle::before {
+  font-size: 12px !important;
 }
 
 .dlx-test-score-grid {
   display: grid !important;
   grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 10px !important;
+  padding: 18px !important;
 }
 
 .dlx-test-score-chip {
