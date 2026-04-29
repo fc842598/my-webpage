@@ -179,12 +179,12 @@
     const isCurrent = item.tone === 'current';
     const isSelected = key === selectedKey;
     const visibleState = getVisibleScoreState(card, false);
-    const reason = getCardShortReason(card, isCurrent ? '把握当下十年主节奏' : '点击切换查看这段运势');
+    const reason = getCardShortReason(card, '');
     return (
       `<button type="button" class="dlx-timeline-node dlx-timeline-${escapeHtml(item.tone || 'normal')}${isCurrent ? ' is-current' : ''}${isSelected ? ' is-selected' : ''}" data-range-key="${escapeHtml(key)}">` +
         `<span class="dlx-timeline-node-label">${escapeHtml(item.label || `第${item.index + 1}大运`)}</span>` +
         `<span class="dlx-timeline-node-age">${escapeHtml(`${item.dayun.start}-${item.dayun.end}岁`)}</span>` +
-        `<span class="dlx-timeline-node-copy">${escapeHtml(reason)}</span>` +
+        `${reason ? `<span class="dlx-timeline-node-copy">${escapeHtml(reason)}</span>` : ''}` +
         `<span class="dlx-timeline-node-score ${visibleState.className}">${escapeHtml(visibleState.text)}</span>` +
       `</button>`
     );
@@ -195,7 +195,7 @@
     const selectedKey = getRangeKey(selectedDayun);
     const selectedCard = selectedKey ? (state.dayunResultMap[selectedKey] || state.dayunOverviewMap[selectedKey]?.card || null) : null;
     const selectedState = getVisibleScoreState(selectedCard, false);
-    const summary = getCardShortReason(selectedCard, '先看三段十年，再进入单年判断。');
+    const summary = getCardShortReason(selectedCard, '');
     const trackHtml = (focusItems || []).map((item, idx) => (
       `${idx ? '<span class="dlx-timeline-connector" aria-hidden="true"></span>' : ''}${renderTimelineNode(item, selectedKey)}`
     )).join('');
@@ -203,17 +203,14 @@
       `<section class="dlx-timeline-shell">` +
         `<div class="dlx-timeline-head">` +
           `<div>` +
-            `<div class="dlx-timeline-kicker">时间叙事线</div>` +
             `<div class="dlx-timeline-title">大限流年</div>` +
-            `<div class="dlx-timeline-copy">时间的轻重，跟着总运势走。</div>` +
           `</div>` +
-          `<button type="button" class="dlx-show-all-btn" data-dlx-show-all="1">${state.showAllDayun ? '收起其它大运' : '查看全部大运'}</button>` +
+          `<button type="button" class="dlx-show-all-btn" data-dlx-show-all="1">${state.showAllDayun ? '收起' : '全部大运'}</button>` +
         `</div>` +
         `<div class="dlx-timeline-track">${trackHtml}</div>` +
         `<div class="dlx-timeline-summary">` +
-          `<div class="dlx-timeline-summary-score"><span>整体节奏</span><strong>${escapeHtml(selectedState.text)}</strong><em>${selectedCard ? '真实评分已计算' : '先批当前十年'}</em></div>` +
-          `<div class="dlx-timeline-summary-copy">${escapeHtml(summary)}</div>` +
-          `<div class="dlx-timeline-summary-meta">${activeAge ? `当前虚岁 ${activeAge} 岁` : '当前年龄未识别'}${selectedDayun ? ` · 当前查看 ${selectedDayun.start}-${selectedDayun.end}岁` : ''}</div>` +
+          `<div class="dlx-timeline-summary-score"><span>状态</span><strong>${escapeHtml(selectedState.text)}</strong><em>${selectedDayun ? `${selectedDayun.start}-${selectedDayun.end}岁` : ''}</em></div>` +
+          `${summary ? `<div class="dlx-timeline-summary-copy">${escapeHtml(summary)}</div>` : ''}` +
         `</div>` +
       `</section>`
     );
@@ -232,7 +229,7 @@
               `<button type="button" class="dlx-rail-card${key === selectedKey ? ' active' : ''}" data-range-key="${escapeHtml(key)}">` +
                 `<span class="dlx-rail-card-top">${escapeHtml(item.label || `第${item.index + 1}大运`)}</span>` +
                 `<span class="dlx-rail-card-age">${escapeHtml(`${item.dayun.start}-${item.dayun.end}岁`)}</span>` +
-                `<span class="dlx-rail-card-copy">${escapeHtml(getCardShortReason(card, '点击切换查看'))}</span>` +
+                `${getCardShortReason(card, '') ? `<span class="dlx-rail-card-copy">${escapeHtml(getCardShortReason(card, ''))}</span>` : ''}` +
               `</button>`
             );
           }).join('') +
@@ -710,7 +707,7 @@ function renderDayunGroupCard(item) {
     const generatedYears = getGeneratedYearCount(dayun);
     const rangeLoading = state.rangeBatchMap[key] === 'loading';
     const complete = isRangeComplete(dayun);
-    const summaryLine = getCardSummaryLine(card, '先批这一整段十年，再逐年展开。');
+    const summaryLine = getCardSummaryLine(card, '');
     const riskHtml = card?.risk ? `<div class="dlx-overview-risk">提醒：${escapeHtml(card.risk)}</div>` : '';
     const detailHtml = card
       ? (
@@ -740,8 +737,7 @@ function renderDayunGroupCard(item) {
           `<div class="dlx-spotlight-score-box">` +
             `<span>整体状态</span>` +
             `<strong class="${visibleState.className}">${escapeHtml(visibleState.text)}</strong>` +
-            `<em>${card ? '真实评分已完成计算' : '先看总运，再看年份'}</em>` +
-            `<b>${escapeHtml(getCardShortReason(card, '先看总运，再看年份。'))}</b>` +
+            `${getCardShortReason(card, '') ? `<b>${escapeHtml(getCardShortReason(card, ''))}</b>` : ''}` +
           `</div>` +
         `</div>` +
         `<div class="dlx-stars-line"><span class="dlx-overview-label">主星</span><div class="dlx-stars-wrap">${formatStarBadgesHtml(palace?.majorStars || [])}</div></div>` +
@@ -749,7 +745,7 @@ function renderDayunGroupCard(item) {
           `<button class="dlx-dayun-ai-btn ${statusMeta.btnState}" data-ai-range-key="${escapeHtml(key)}"${status === 'loading' ? ' disabled' : ''}>${escapeHtml(statusMeta.btnLabel)}</button>` +
           `<button class="dlx-range-batch-btn" data-batch-range-key="${escapeHtml(key)}"${rangeLoading ? ' disabled' : ''}>${rangeLoading ? '批完整组中…' : (complete ? '✓ 已批完整组' : '✦ 一键批完这10年')}</button>` +
           `<button class="dlx-decade-toggle-btn" data-toggle-range-key="${escapeHtml(key)}">${expanded ? '收起小流年' : '展开小流年'}</button>` +
-          `<span class="dlx-overview-status">${rangeLoading ? '正在按十年大运 + 10个小流年逐个批命…' : (card ? escapeHtml(statusMeta.text) : '先批十年总运，再看单年变化')}</span>` +
+          `<span class="dlx-overview-status">${rangeLoading ? '批命中…' : ''}</span>` +
         `</div>` +
         `${card ? renderScoreDetailHtml(card) : ''}` +
         `${detailHtml}` +
@@ -813,9 +809,7 @@ function renderOverviewList() {
       `<section class="dlx-test-score-card">` +
         `<div class="dlx-test-score-head">` +
           `<div>` +
-            `<div class="dlx-test-score-kicker">测试评分</div>` +
-            `<div class="dlx-test-score-title">1-100岁真实评分</div>` +
-            `<div class="dlx-test-score-copy">这里只在测试期显示，读取第二板块真实 AI 评分，不额外造分。</div>` +
+            `<div class="dlx-test-score-title">测试分数</div>` +
           `</div>` +
           `<div class="dlx-test-score-meta">已出分 ${readyCount}/100</div>` +
         `</div>` +

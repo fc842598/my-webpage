@@ -358,41 +358,26 @@
       <span class="aip-badge">命书解读</span>
       <span class="aip-desc" id="aip-desc"></span>
     </div>
-    <div class="aip-tabs-guide">
-      <span class="aip-tabs-guide-tag">可切换入口</span>
-      <span class="aip-tabs-guide-title" id="aip-tabs-guide-title">点击下方任一模块卡片，切换不同解读功能区</span>
-      <span class="aip-tabs-guide-copy" id="aip-tabs-guide-copy">当前：整体批命</span>
-    </div>
     <div class="aip-tabs" role="tablist" aria-label="命书解读入口">
       <button type="button" class="aip-tab active" data-panel="aip-panel-base" aria-selected="true">
         <span class="aip-tab-kicker">总览</span>
         <span class="aip-tab-title">整体批命</span>
-        <span class="aip-tab-sub">先看主结论</span>
-        <span class="aip-tab-action">当前查看</span>
       </button>
       <button type="button" class="aip-tab" data-panel="aip-panel-luck" aria-selected="false">
         <span class="aip-tab-kicker">走势</span>
         <span class="aip-tab-title">大限流年</span>
-        <span class="aip-tab-sub">看10年与单年</span>
-        <span class="aip-tab-action">点击切换</span>
       </button>
       <button type="button" class="aip-tab" data-panel="aip-panel-curve" aria-selected="false">
         <span class="aip-tab-kicker">节奏</span>
         <span class="aip-tab-title">人生曲线</span>
-        <span class="aip-tab-sub">回看高低起伏</span>
-        <span class="aip-tab-action">点击切换</span>
       </button>
       <button type="button" class="aip-tab" data-panel="aip-panel-chat" aria-selected="false">
         <span class="aip-tab-kicker">追问</span>
         <span class="aip-tab-title">AI半仙</span>
-        <span class="aip-tab-sub">继续深聊命盘</span>
-        <span class="aip-tab-action">点击切换</span>
       </button>
       <button type="button" class="aip-tab" data-panel="aip-panel-tiekou" aria-selected="false">
         <span class="aip-tab-kicker">对照</span>
         <span class="aip-tab-title">铁口直断</span>
-        <span class="aip-tab-sub">看命中原话</span>
-        <span class="aip-tab-action">点击切换</span>
       </button>
     </div>
 
@@ -664,7 +649,6 @@
 
         <!-- 教育锚点设置 -->
         <div class="fc-education-anchor" id="fc-education-anchor" style="display:none">
-          <div style="font-size:.75rem;color:#8e857d;margin-bottom:8px">用于把人生曲线年龄映射到教育阶段，方便回看哪一年发生了什么</div>
           <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center">
             <div style="display:flex;gap:6px;align-items:center">
               <label style="font-size:.82rem;color:#5c4a3a;white-space:nowrap">小学入学年龄</label>
@@ -733,9 +717,8 @@
 
         <!-- 按钮 -->
         <div class="fc-bottom-actions">
-          <button class="fc-score-btn fc-btn-primary" id="fc-score-generate">生成真实评分</button>
+          <button class="fc-score-btn fc-btn-primary" id="fc-score-generate">生成评分</button>
         </div>
-        <div class="fc-footer">数据仅供参考</div>
       </div>
     </div>
 
@@ -1866,7 +1849,7 @@ function _fcBootLuckScoreEngine() {
 async function _fcRequestLifeCurveScores(mode = _fcLifeCurveMode, options = {}) {
   const ages = _fcLifeCurveMissingAges(mode);
   if (!ages.length) {
-    _fcLifeCurveStickyMeta = '当前人生曲线所需分数都已是真实评分。';
+    _fcLifeCurveStickyMeta = '已是最新评分';
     _fcRenderScoreCurve();
     return { ok: true, skipped: true };
   }
@@ -1889,7 +1872,7 @@ async function _fcRequestLifeCurveScores(mode = _fcLifeCurveMode, options = {}) 
         _fcRenderScoreCurve();
       },
     });
-    _fcLifeCurveStickyMeta = '真实评分已同步到人生曲线。';
+    _fcLifeCurveStickyMeta = '评分已更新';
     return { ok: true, generated: true };
   } catch (err) {
     _fcLifeCurveStickyMeta = _aiStatusForError(err) || '真实评分生成失败，请重试';
@@ -3290,10 +3273,10 @@ function _fcRenderScoreCurve() {
   const missingCount = Math.max(0, totalCount - loadedCount);
   btn.disabled = _fcLifeCurveLoading;
   btn.textContent = _fcLifeCurveLoading
-    ? '真实评分生成中…'
+    ? '评分中…'
     : (missingCount > 0
-        ? (loadedCount > 0 ? '补齐真实评分' : '生成真实评分')
-        : '刷新真实评分');
+        ? (loadedCount > 0 ? '补分' : '生成评分')
+        : '刷新评分');
 
   if (progressWrap) {
     progressWrap.style.display = _fcLifeCurveLoading ? 'flex' : 'none';
@@ -3311,10 +3294,10 @@ function _fcRenderScoreCurve() {
     const stickyText = String(_fcLifeCurveStickyMeta || '').trim();
     const syncText = totalCount
       ? (loadedCount
-          ? `已同步第二板块真实 AI 评分 ${loadedCount}/${totalCount}；缺分可直接在这里继续补齐。`
-          : '暂无真实评分。人生曲线只读取第二板块的真实分数，点下方按钮即可直接触发评分。')
-      : '暂无真实评分。';
-    const loadingText = _fcLifeCurveLoading ? (_fcLifeCurveStageHint || '正在调用第二板块真实评分…') : '';
+          ? `已评分 ${loadedCount}/${totalCount}`
+          : '暂无评分')
+      : '暂无评分';
+    const loadingText = _fcLifeCurveLoading ? (_fcLifeCurveStageHint || '评分中…') : '';
     const showMeta = !!stickyText || !!loadingText || !!syncText;
     meta.style.display = showMeta ? 'block' : 'none';
     if (showMeta) {
@@ -3629,7 +3612,7 @@ function _fcHideTooltip() {
 
 async function _fcGenerateLifeCurve(options = {}) {
   if (options.auto) {
-    _fcLifeCurveStickyMeta = '人生曲线已连接第二板块真实评分。';
+    _fcLifeCurveStickyMeta = '已连接评分';
     _fcRenderScoreCurve();
     return;
   }
@@ -4861,17 +4844,11 @@ window._joinApiUrl            = _joinApiUrl;
 (function _bindAipTabs() {
   function syncAipTabsGuide(activeBtn) {
     if (!activeBtn) return;
-    const copyEl = document.getElementById('aip-tabs-guide-copy');
-    const title = activeBtn.querySelector('.aip-tab-title')?.textContent?.trim() || '命书解读';
-    const sub = activeBtn.querySelector('.aip-tab-sub')?.textContent?.trim() || '切换不同解读视角';
     document.querySelectorAll('.aip-tab').forEach(tab => {
       const active = tab === activeBtn;
       tab.classList.toggle('active', active);
       tab.setAttribute('aria-selected', active ? 'true' : 'false');
-      const action = tab.querySelector('.aip-tab-action');
-      if (action) action.textContent = active ? '当前查看' : '点击切换';
     });
-    if (copyEl) copyEl.textContent = `当前：${title} · ${sub}`;
   }
 
   syncAipTabsGuide(document.querySelector('.aip-tab.active'));
