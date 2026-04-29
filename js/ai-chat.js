@@ -26,7 +26,7 @@
   window._chatPanelPrepareForNewChart = prepareForNewChart;
   window._chatInvalidateMemoryA = function () {
     _memoryAStale = true;
-    _setContextPreview('命盘信息已更新，建议点"重读命盘"让许半仙重新读入基础命盘。');
+    _setContextPreview('命盘已更新，点“重读”即可同步。');
     _updateBadges(false, false, 0, true);
     _setModeBadge(_transientMode);
     _setMemorySources(null, null);
@@ -81,7 +81,7 @@
       _setModeBadge(false);
       _setMemorySources(null);
       _setBackgroundStatus('', '');
-      _setContextPreview('先完成排盘，许半仙才能读取你的命盘主线与宫位信息。');
+      _setContextPreview('完成排盘后可在这里查看命盘摘要。');
       return;
     }
 
@@ -582,12 +582,12 @@
 
     var text = String(summary || '').replace(/\s+/g, ' ').trim();
     if (!text) {
-      el.innerHTML = '命盘摘要会在这里显示。先完成排盘，许半仙会先读入你的基础命盘，再回答后面的追问。';
+      el.textContent = '命盘摘要会显示在这里。';
       return;
     }
 
     if (text.length > 150) text = text.slice(0, 150) + '…';
-    el.innerHTML = '<strong>已读命盘：</strong>' + _esc(text);
+    el.innerHTML = _esc(text);
   }
 
   function _setBackgroundStatus(text, tone) {
@@ -599,23 +599,13 @@
   }
 
   function _upgradeChatLayout() {
-    var nameRow = document.querySelector('.xb-name-row');
-    var badgeB = document.getElementById('chat-badge-b');
-    var insightBody = document.querySelector('.xb-insight-body');
-    var memorySources = document.getElementById('chat-memory-sources');
-
-    if (nameRow && badgeB && !nameRow.contains(badgeB)) {
-      nameRow.appendChild(badgeB);
-    }
-    if (insightBody && memorySources && !insightBody.contains(memorySources)) {
-      insightBody.appendChild(memorySources);
-    }
+    return;
   }
 
   function _setModeBadge(isTransient) {
     var badge = document.getElementById('chat-badge-mode');
     if (!badge) return;
-    badge.textContent = isTransient ? '临时会话' : '会话正常';
+    badge.textContent = isTransient ? '临时' : '已连接';
     badge.classList.toggle('chat-badge-ok', !isTransient);
     badge.classList.toggle('chat-badge-stale', false);
     badge.classList.toggle('chat-badge-transient', !!isTransient);
@@ -632,7 +622,6 @@
       return {
         label: label,
         cls: active ? 'is-used' : 'is-demand',
-        prefix: active ? '本轮命中' : '按问调入',
         title: active
           ? '本轮问题命中该专题，会优先读取已有结论；没有结论时用命盘明细补判。'
           : '用户问到相关主题时才调入，避免每次都消耗算力。'
@@ -640,7 +629,7 @@
     }
 
     var items = [
-      { label: '基础命盘', cls: baseReady ? 'is-ready' : '', prefix: baseReady ? '已读' : '未读' },
+      { label: '基础命盘', cls: baseReady ? 'is-ready' : '' },
       topicItem('needsA1', '整体结论'),
       topicItem('needsA2', '身宫结论'),
       topicItem('needsA3', '大运结论'),
@@ -650,7 +639,7 @@
     el.innerHTML = items.map(function (item) {
       return '<span class="chat-memory-source ' + (item.cls || '') + '"' +
         (item.title ? ' title="' + item.title + '"' : '') + '>' +
-        item.prefix + ' ' + item.label +
+        item.label +
         '</span>';
     }).join('');
   }
@@ -661,18 +650,18 @@
 
     if (badgeA) {
       if (staleA) {
-        badgeA.textContent = '命盘待刷新';
+        badgeA.textContent = '待刷新';
         badgeA.classList.remove('chat-badge-ok');
         badgeA.classList.add('chat-badge-stale');
       } else {
-        badgeA.textContent = hasA ? '命盘已读入' : '命盘待读取';
+        badgeA.textContent = hasA ? '已读入' : '待读取';
         badgeA.classList.toggle('chat-badge-ok', !!hasA);
         badgeA.classList.remove('chat-badge-stale');
       }
     }
 
     if (badgeB) {
-      badgeB.textContent = hasB ? ('对话已整理 v' + (bVersion || 1)) : '对话未整理';
+      badgeB.textContent = hasB ? ('已整理 v' + (bVersion || 1)) : '未整理';
       badgeB.classList.toggle('chat-badge-ok', !!hasB);
     }
   }

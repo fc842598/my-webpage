@@ -3267,6 +3267,40 @@
   justify-content: space-between;
 }
 
+#aip-panel-chat .xb-memory-drawer {
+  border: 1px solid rgba(201, 168, 120, .12);
+  border-radius: 18px;
+  background: var(--xb-bg-2);
+  overflow: hidden;
+}
+
+#aip-panel-chat .xb-memory-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 12px 14px;
+  cursor: pointer;
+  list-style: none;
+}
+
+#aip-panel-chat .xb-memory-summary::-webkit-details-marker {
+  display: none;
+}
+
+#aip-panel-chat .xb-memory-summary-label {
+  color: var(--xb-muted);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+#aip-panel-chat .xb-memory-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 0 14px 14px;
+}
+
 #aip-panel-chat .xb-insight-body {
   flex: 1;
   min-width: 0;
@@ -3277,6 +3311,12 @@
   align-items: center;
   gap: 8px;
   margin-bottom: 8px;
+}
+
+#aip-panel-chat .xb-insight-title {
+  color: var(--xb-gold);
+  font-size: 12px;
+  font-weight: 700;
 }
 
 #aip-panel-chat .xb-insight-dot {
@@ -3657,6 +3697,11 @@
   #aip-panel-chat .xb-quota {
     grid-column: 1 / -1;
     align-items: flex-start;
+  }
+
+  #aip-panel-chat .xb-memory-summary {
+    align-items: flex-start;
+    flex-direction: column;
   }
 
   #aip-panel-chat .chat-bubble-user {

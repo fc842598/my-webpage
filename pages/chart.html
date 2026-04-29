@@ -742,29 +742,34 @@
           </div>
         </div>
 
-        <!-- 洞察条 -->
-        <div class="xb-insight">
-          <div class="xb-insight-body">
-            <div class="xb-insight-head">
-              <span class="xb-insight-dot" aria-hidden="true"></span>
-              <span class="chat-badge xb-insight-label" id="chat-badge-a">命盘待读取</span>
+        <details class="xb-memory-drawer" id="xb-memory-drawer">
+          <summary class="xb-memory-summary">
+            <span class="xb-memory-summary-label">命盘状态</span>
+            <span class="chat-badge xb-memory-badge" id="chat-badge-a">命盘待读取</span>
+          </summary>
+          <div class="xb-memory-panel">
+            <div class="xb-insight">
+              <div class="xb-insight-body">
+                <div class="xb-insight-head">
+                  <span class="xb-insight-dot" aria-hidden="true"></span>
+                  <span class="xb-insight-title">命盘摘要</span>
+                </div>
+                <div class="xb-insight-text chat-context-preview" id="chat-context-preview">完成排盘后可在这里查看命盘摘要。</div>
+              </div>
+              <button type="button" class="xb-refresh" id="chat-refresh-memory-btn" disabled>
+                <span class="xb-refresh-icon" aria-hidden="true">↻</span>
+                <span>重读</span>
+              </button>
             </div>
-            <div class="xb-insight-text chat-context-preview" id="chat-context-preview">完成排盘后，许半仙会先读入你的命盘主线，再回答后面的追问。</div>
+
+            <div class="xb-meta">
+              <div class="xb-meta-sources chat-memory-sources" id="chat-memory-sources"></div>
+              <span class="chat-badge xb-meta-b" id="chat-badge-b">未整理</span>
+            </div>
+
+            <div class="chat-background-status xb-bg-status" id="chat-background-status" style="display:none"></div>
           </div>
-          <button type="button" class="xb-refresh" id="chat-refresh-memory-btn" disabled>
-            <span class="xb-refresh-icon" aria-hidden="true">↻</span>
-            <span>重读</span>
-          </button>
-        </div>
-
-        <!-- 已读模块 / 整理状态 -->
-        <div class="xb-meta">
-          <div class="xb-meta-sources chat-memory-sources" id="chat-memory-sources"></div>
-          <span class="chat-badge xb-meta-b" id="chat-badge-b">对话未整理</span>
-        </div>
-
-        <!-- 后台读取提示（保留现有 id） -->
-        <div class="chat-background-status xb-bg-status" id="chat-background-status" style="display:none"></div>
+        </details>
       </section>
 
       <!-- 起始问题（空状态入口） -->
