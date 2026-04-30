@@ -74,15 +74,20 @@
   }
 
   function syncAll() {
+    const lifeTitleText = (qs('#aip-life-ttl')?.textContent || '').trim();
+    const metaText = (qs('#aip-desc')?.textContent || '').trim();
+
     // 顶部 meta
     copyText('#aip-desc', '#mk-header-meta');
 
     // 封面副标题/主标题（尽量镜像现有展示）
     copyText('#aip-life-ttl', '#mk-life-title', spacedTitle);
     setLines(qs('#mk-cover-meta'), [
-      (qs('#aip-life-ttl')?.textContent || '').trim() || '整体批命',
-      (qs('#aip-desc')?.textContent || '').trim()
+      lifeTitleText || '整体批命',
+      metaText
     ]);
+    setText(qs('#mk-sidebar-avatar'), (lifeTitleText || '命').trim().charAt(0) || '命');
+    setText(qs('#mk-sidebar-meta'), metaText || '待 排 盘 · 命 书 未 启');
 
     // AI 状态
     copyText('#aip-overall-status', '#mk-overall-status');
@@ -146,11 +151,57 @@
     });
   }
 
+  function bindSidebar(preview) {
+    const sidebar = qs('#mk-overall-preview .mk-sidebar');
+    if (!sidebar) return;
+
+    sidebar.addEventListener('click', function (e) {
+      const tabBtn = e.target && e.target.closest ? e.target.closest('[data-mk-tab-panel]') : null;
+      if (tabBtn) {
+        const panel = tabBtn.getAttribute('data-mk-tab-panel');
+        const originalTab = qs(`.aip-tab[data-panel="${panel}"]`);
+        if (originalTab && typeof originalTab.click === 'function') originalTab.click();
+
+        sidebar.querySelectorAll('.mk-sidebar-item').forEach(function (node) {
+          node.classList.toggle('active', node === tabBtn);
+          const stamp = node.querySelector('strong');
+          if (stamp) stamp.style.display = node === tabBtn ? '' : 'none';
+        });
+        return;
+      }
+
+      const scrollBtn = e.target && e.target.closest ? e.target.closest('[data-mk-scroll]') : null;
+      if (!scrollBtn) return;
+      const sel = scrollBtn.getAttribute('data-mk-scroll');
+      const target = sel ? qs(sel) : null;
+      if (!target) return;
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+
+    function syncSubNav() {
+      if (!preview.open) return;
+      let active = '#mk-cover-section';
+      sidebar.querySelectorAll('[data-mk-scroll]').forEach(function (btn) {
+        const sel = btn.getAttribute('data-mk-scroll');
+        const target = sel ? qs(sel) : null;
+        if (target && target.getBoundingClientRect().top <= 180) active = sel;
+      });
+      sidebar.querySelectorAll('[data-mk-scroll]').forEach(function (btn) {
+        btn.classList.toggle('active', btn.getAttribute('data-mk-scroll') === active);
+      });
+    }
+
+    window.addEventListener('scroll', syncSubNav, { passive: true });
+    preview.addEventListener('toggle', syncSubNav);
+    syncSubNav();
+  }
+
   function init() {
     const preview = qs('#mk-overall-preview');
     if (!preview) return;
 
     bindProxyClicks(preview);
+    bindSidebar(preview);
 
     // 初次同步
     syncAll();
