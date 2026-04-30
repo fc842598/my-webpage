@@ -6,7 +6,7 @@
   <title>阅天 · 免费排盘与命盘解析</title>
   <link rel="icon" href="../images/logo-mark.svg" type="image/svg+xml">
   <link rel="stylesheet" href="../css/style.css">
-  <link rel="stylesheet" href="../css/chart.css?v=20260430-scroll-sidebar">
+  <link rel="stylesheet" href="../css/chart.css?v=20260430-report-v7">
   <link rel="stylesheet" href="../css/payment.css">
   <style>
     body { background: #18130e !important; color: #c6b7a6; }
@@ -1250,28 +1250,57 @@
     <!-- 深度报告 -->
     <div class="aip-panel report-panel" id="aip-panel-report" style="display:none">
       <section class="report-stage">
+        <div class="report-bg-sigil" aria-hidden="true">命</div>
         <div class="report-topbar">
-          <button type="button" class="report-icon-btn" aria-label="返回">‹</button>
+          <button type="button" class="report-icon-btn report-back-btn" aria-label="返回铁口直断">‹</button>
           <div class="report-title-wrap">
-            <div class="report-title">阅天深度报告</div>
-            <div class="report-subtitle">Yuetian Premium Destiny Report</div>
+            <div class="report-title" id="report-owner-title">命主深度报告</div>
+            <div class="report-subtitle" id="report-owner-meta">Yuetian Premium Destiny Report</div>
           </div>
           <button type="button" class="report-icon-btn" aria-label="更多">⋯</button>
         </div>
 
+        <section class="report-cover-card">
+          <div class="report-cover-copy">
+            <span class="report-cover-kicker">付费报告预览 · PREMIUM DOSSIER</span>
+            <h2>把命盘结论整理成一份能读下去的报告</h2>
+            <p>先看总论，再看性格、财富、关系与阶段提醒。生成后可按章节阅读，也能继续向 AI半仙追问细节。</p>
+            <div class="report-cover-tags">
+              <span>命格主线</span>
+              <span>财富路径</span>
+              <span>关系模式</span>
+              <span>阶段提醒</span>
+            </div>
+          </div>
+          <div class="report-score-orb" aria-label="深度指数 92 分">
+            <span>深度指数</span>
+            <strong>92</strong>
+            <em>/100</em>
+          </div>
+        </section>
+
         <div class="report-mode-row" aria-label="报告类型">
-          <button type="button" class="report-mode">年度报告</button>
-          <button type="button" class="report-mode">个性报告</button>
-          <button type="button" class="report-mode active">深度报告</button>
+          <button type="button" class="report-mode">
+            <span>年度报告</span>
+            <small>看今年重点</small>
+          </button>
+          <button type="button" class="report-mode">
+            <span>个性报告</span>
+            <small>看底层性格</small>
+          </button>
+          <button type="button" class="report-mode active">
+            <span>深度报告</span>
+            <small>完整卷宗</small>
+          </button>
         </div>
 
         <div class="report-score-strip">
           <div>
-            <span class="report-score-label">深度指数</span>
-            <span class="report-score-num">92</span>
-            <span class="report-score-unit">/100</span>
+            <span class="report-score-label">已整理</span>
+            <span class="report-score-num">6</span>
+            <span class="report-score-unit">个章节</span>
           </div>
-          <span class="report-score-copy">完整解读 · 可追问</span>
+          <span class="report-score-copy">总论 · 性格 · 财富 · 关系 · 阶段 · 行动</span>
         </div>
 
         <article class="report-paper">
@@ -1295,6 +1324,12 @@
               <span>03 关系模式</span>
               <span>04 阶段提醒</span>
             </div>
+          </section>
+
+          <section class="report-keyline">
+            <div><span>核心气质</span><strong>稳中见锋</strong></div>
+            <div><span>做事方式</span><strong>先立秩序</strong></div>
+            <div><span>阶段策略</span><strong>再求突破</strong></div>
           </section>
 
           <section class="report-block">
@@ -1327,15 +1362,20 @@
             </div>
           </section>
 
+          <section class="report-action-card">
+            <span>下一步建议</span>
+            <p>这份报告适合做你的“主线说明书”：先读懂自己，再把问题交给 AI半仙继续追问细节。</p>
+          </section>
+
           <footer class="report-paper-foot">
             <span>阅天深度报告</span>
             <span>命 · 运 · 地 · 人</span>
           </footer>
         </article>
 
-        <div class="report-askbar">
-          <input type="text" placeholder="问一问这份报告" aria-label="问一问这份报告">
-          <button type="button" aria-label="发送">›</button>
+        <div class="report-askbar" id="report-askbar">
+          <input type="text" id="report-ask-input" placeholder="问一问这份报告" aria-label="问一问这份报告">
+          <button type="button" id="report-ask-submit" aria-label="发送">›</button>
         </div>
       </section>
     </div>
@@ -5235,6 +5275,79 @@ window._joinApiUrl            = _joinApiUrl;
         if (typeof window._chatPanelInit === 'function') window._chatPanelInit();
       }
     });
+  });
+}());
+
+// 深度报告：轻交互（返回、报告类型高亮、底部追问跳到许半仙）
+(function _bindReportPanel() {
+  const reportPanel = document.getElementById('aip-panel-report');
+  if (!reportPanel) return;
+
+  function switchAipPanel(panelId) {
+    const tab = document.querySelector(`.aip-tab[data-panel="${panelId}"]`);
+    if (tab) tab.click();
+  }
+
+  function syncReportMeta() {
+    const name = (document.getElementById('inp-name')?.value || '').trim();
+    const desc = (document.getElementById('aip-desc')?.textContent || '').trim();
+    const title = document.getElementById('report-owner-title');
+    const meta = document.getElementById('report-owner-meta');
+    if (title) title.textContent = name ? `${name}的深度报告` : '命主深度报告';
+    if (meta) meta.textContent = desc || 'Yuetian Premium Destiny Report';
+  }
+
+  document.querySelector('.aip-tab[data-panel="aip-panel-report"]')?.addEventListener('click', () => {
+    setTimeout(syncReportMeta, 30);
+  });
+
+  reportPanel.querySelector('.report-back-btn')?.addEventListener('click', () => {
+    switchAipPanel('aip-panel-tiekou');
+  });
+
+  reportPanel.querySelectorAll('.report-mode').forEach(btn => {
+    btn.addEventListener('click', () => {
+      reportPanel.querySelectorAll('.report-mode').forEach(item => item.classList.toggle('active', item === btn));
+    });
+  });
+
+  function askFromReport() {
+    const input = document.getElementById('report-ask-input');
+    const raw = (input?.value || '').trim();
+    if (!raw) {
+      input?.focus();
+      return;
+    }
+    const prompt = `针对这份深度报告，帮我进一步解释：${raw}`;
+    switchAipPanel('aip-panel-chat');
+    setTimeout(() => {
+      const chatInput = document.getElementById('chat-input');
+      const sendBtn = document.getElementById('chat-send-btn');
+      if (!chatInput) {
+        if (input) input.placeholder = '请先完成排盘，再追问报告';
+        return;
+      }
+      chatInput.value = prompt;
+      chatInput.dispatchEvent(new Event('input', { bubbles: true }));
+      if (chatInput.disabled || (sendBtn && sendBtn.disabled)) {
+        if (input) {
+          input.value = '';
+          input.placeholder = '请先完成排盘，再追问报告';
+        }
+        return;
+      }
+      chatInput.focus();
+      if (sendBtn && !sendBtn.disabled) sendBtn.click();
+      if (input) input.value = '';
+    }, 160);
+  }
+
+  document.getElementById('report-ask-submit')?.addEventListener('click', askFromReport);
+  document.getElementById('report-ask-input')?.addEventListener('keydown', e => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      askFromReport();
+    }
   });
 }());
 
