@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="../css/style.css">
   <link rel="stylesheet" href="../css/chart.css?v=20260430-report-v7">
   <link rel="stylesheet" href="../css/payment.css">
+  <script src="../js/config.js?v=20260508-backend-base"></script>
   <style>
     body { background: #18130e !important; color: #c6b7a6; }
     /* 内联颜色覆盖：统一暗色主题 */
@@ -5169,7 +5170,7 @@ function _dlxSelectYear(age, options) {
 }
 
 let _PIMING_API_BASE = null;
-const _PIMING_API_PUBLIC_BASE = 'https://peaceful-celebration-production-74c8.up.railway.app';
+const _PIMING_API_PUBLIC_BASE = ((window.SITE_CONFIG && window.SITE_CONFIG.aiBackendBase) || 'https://ai-piming-backend-production.up.railway.app').replace(/\/$/, '');
 const _AI_STATUS_CONNECTED = 'AI大模型正常连接';
 const _AI_STATUS_DISCONNECTED = 'AI服务未连接';
 const _AI_STATUS_FAILED = 'AI生成失败，请稍后重试';
@@ -5420,7 +5421,7 @@ window._aiChatFill = function(data, submit) {
 <!-- ══ AI 智能识别：独立 script，与主模块隔离 ══ -->
 <script>
 (function () {
-  var RAILWAY = 'https://peaceful-celebration-production-74c8.up.railway.app';
+  var RAILWAY = ((window.SITE_CONFIG && window.SITE_CONFIG.aiBackendBase) || 'https://ai-piming-backend-production.up.railway.app').replace(/\/$/, '');
   var SHICHEN = ['子','丑','寅','卯','辰','巳','午','未','申','酉','戌','亥'];
 
   var _history = [];
@@ -5733,7 +5734,7 @@ window._aiChatFill = function(data, submit) {
 
 // ─── 天纪推时辰（AI 辅助 + 天纪规则兜底）─────────────────────
 (function() {
-  var RAILWAY = 'https://peaceful-celebration-production-74c8.up.railway.app';
+  var RAILWAY = ((window.SITE_CONFIG && window.SITE_CONFIG.aiBackendBase) || 'https://ai-piming-backend-production.up.railway.app').replace(/\/$/, '');
   var WHORL_MAP = { 'center-left': 0, 'right': 1, 'double': 2 };
   var GROUPS = [
     { name: '子午卯酉', hours: [
@@ -6002,14 +6003,14 @@ window._aiChatFill = function(data, submit) {
 </script>
 <!-- AI 批命新后端集成（调用 Vercel /api/ai/run） -->
 <script src="../js/desktop-notify.js?v=20260423-notify"></script>
-<script src="../js/ai-piming.js?v=20260508-ai-error-guard"></script>
+<script src="../js/ai-piming.js?v=20260508-backend-base"></script>
 <script src="../js/mk-overall-preview.js?v=20260430-scroll-sidebar"></script>
 <script src="../js/dayun-panel.js"></script>
 <!-- AI半仙 对话面板 -->
-<script src="../js/ai-chat.js?v=20260419-unlimited"></script>
+<script src="../js/ai-chat.js?v=20260508-backend-base"></script>
 <!-- QRCode 库（微信扫码支付） -->
 <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
 <!-- 微信支付前端 -->
-<script src="../js/payment.js?v=20260419-unlimited"></script>
+<script src="../js/payment.js?v=20260508-backend-base"></script>
 </body>
 </html>

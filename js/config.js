@@ -27,4 +27,10 @@ const SITE_CONFIG = {
 
   // ── 服务说明页（可选）──────────────────────────────────────
   serviceNoticeUrl: "#faq",
+
+  // ── AI 后端地址 ───────────────────────────────────────────
+  // 迁移 Vercel 后只需要替换这一处，例如：https://xxx.vercel.app
+  aiBackendBase: "https://ai-piming-backend-production.up.railway.app",
 };
+
+window.SITE_CONFIG = SITE_CONFIG;

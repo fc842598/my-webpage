@@ -14,7 +14,7 @@
 (function () {
   'use strict';
 
-  var BACKEND = 'https://ai-piming-backend-production.up.railway.app';
+  var BACKEND = getBackendBase();
   var CHAT_QUOTA_UNLIMITED = true;
 
   // 本地兜底商品（backend 不可用时使用）
@@ -47,6 +47,16 @@
 
   // ── 本地 Mock（仅本地开发，后端不可用时降级）─────────────────
   var _mockOrders = {};
+
+  function getBackendBase() {
+    try {
+      var qsBase = new URLSearchParams(location.search).get('aiBackendBase') || '';
+      var cfgBase = window.SITE_CONFIG && window.SITE_CONFIG.aiBackendBase;
+      return (qsBase || cfgBase || 'https://ai-piming-backend-production.up.railway.app').replace(/\/$/, '');
+    } catch (_) {
+      return 'https://ai-piming-backend-production.up.railway.app';
+    }
+  }
 
   function _mockOrderNo() {
     var p = function(n,l){ return String(n).padStart(l,'0'); };

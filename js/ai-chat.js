@@ -7,7 +7,7 @@
  * 依赖全局变量：window._chart, window._chartInputs, window._chartRecordId
  */
 (function () {
-  var BASE = 'https://ai-piming-backend-production.up.railway.app';
+  var BASE = getBackendBase();
   var RETRY_DELAY = 3000;
   var MAX_RETRIES = 6;
   var TYPEWRITER_BASE_MS = 22;
@@ -32,6 +32,16 @@
     _setMemorySources(null, null);
     _setBackgroundStatus('', '');
   };
+
+  function getBackendBase() {
+    try {
+      var qsBase = new URLSearchParams(location.search).get('aiBackendBase') || '';
+      var cfgBase = window.SITE_CONFIG && window.SITE_CONFIG.aiBackendBase;
+      return (qsBase || cfgBase || 'https://ai-piming-backend-production.up.railway.app').replace(/\/$/, '');
+    } catch (_) {
+      return 'https://ai-piming-backend-production.up.railway.app';
+    }
+  }
 
   function _getChartPayload() {
     return (typeof buildChartPayload === 'function') ? buildChartPayload() : null;
