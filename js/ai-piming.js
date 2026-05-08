@@ -1,6 +1,6 @@
 /**
  * js/ai-piming.js — 前端 AI 批命集成层
- * 调用 Vercel 后端 /api/ai/run，不含任何排盘逻辑，不修改 _chart/_chartInputs 等全局变量
+ * 调用 AI 批命后端 /api/ai/run，不含任何排盘逻辑，不修改 _chart/_chartInputs 等全局变量
  *
  * 依赖全局变量（由 chart.html 内联脚本维护）：
  *   _chart, _chartInputs, _fcActiveAge, _liunianSeq,
@@ -8,14 +8,34 @@
  */
 
 // ── 配置 ──────────────────────────────────────────────────────────────────────
-// overall 走 chart.html 里的 _resolvePimingApiBase()（与其他 topic 共用同一套探测逻辑）
-// 其余 moduleKey 走 ai-piming-backend
-const AI_BACKEND_BASE = 'https://ai-piming-backend-production.up.railway.app';
+// 支持 URL 临时覆盖：?aiBackendBase=https://xxx
+const AI_BACKEND_BASE = (() => {
+  try {
+    const qsBase = new URLSearchParams(location.search).get('aiBackendBase') || '';
+    return (qsBase || 'https://ai-piming-backend-production.up.railway.app').replace(/\/$/, '');
+  } catch (_err) {
+    return 'https://ai-piming-backend-production.up.railway.app';
+  }
+})();
 
 // ── 工具 ──────────────────────────────────────────────────────────────────────
 function _aipJoin(path) {
   const base = (AI_BACKEND_BASE || '').replace(/\/$/, '');
   return base ? `${base}${path}` : path;
+}
+
+function _aipFriendlyError(err) {
+  const raw = String(err?.message || err || '').trim();
+  if (/failed to fetch|networkerror|load failed|network request failed|fetch/i.test(raw)) {
+    return 'AI服务未连接，请稍后重试';
+  }
+  if (/404|not found|unexpected token|json|html/i.test(raw)) {
+    return 'AI后端接口未连接，请稍后重试';
+  }
+  if (/timeout|abort/i.test(raw)) {
+    return 'AI响应超时，请稍后重试';
+  }
+  return raw || 'AI生成失败';
 }
 
 function _palaceSummary(palaces) {
@@ -250,14 +270,25 @@ async function _aipCallBackend(moduleKey, extraParams = {}) {
   const chartData = buildChartPayload();
   if (!chartData) throw new Error('\u8bf7\u5148\u5b8c\u6210\u6392\u76d8');
 
-  const resp = await fetch(_aipJoin('/api/ai/run'), {
-    method : 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body   : JSON.stringify({ moduleKey, chartData, extraParams }),
-  });
-  const data = await resp.json();
-  if (!resp.ok || !(data.success || data.ok)) throw new Error(data.error || 'AI \u670d\u52a1\u5f02\u5e38');
-  return data;
+  try {
+    const resp = await fetch(_aipJoin('/api/ai/run'), {
+      method : 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body   : JSON.stringify({ moduleKey, chartData, extraParams }),
+    });
+
+    const contentType = resp.headers?.get('content-type') || '';
+    const data = contentType.includes('application/json')
+      ? await resp.json()
+      : { error: await resp.text() };
+
+    if (!resp.ok || !(data.success || data.ok)) {
+      throw new Error(data.error || `AI 后端异常 ${resp.status}`);
+    }
+    return data;
+  } catch (err) {
+    throw new Error(_aipFriendlyError(err));
+  }
 }
 
 function _aipSetEl(id, text) {
@@ -704,7 +735,7 @@ function _aipRenderResult(moduleKey, data) {
 
   function _notifyFailed(label, err, tag) {
     if (typeof window._desktopNotifyTaskFailed === 'function') {
-      window._desktopNotifyTaskFailed(label, err?.message || '\u8bf7\u56de\u5230\u9875\u9762\u67e5\u770b\u539f\u56e0\u3002', { tag: tag });
+      window._desktopNotifyTaskFailed(label, _aipFriendlyError(err) || '\u8bf7\u56de\u5230\u9875\u9762\u67e5\u770b\u539f\u56e0\u3002', { tag: tag });
     }
   }
 
@@ -748,7 +779,7 @@ function _aipRenderResult(moduleKey, data) {
         _notifyDone('AI\u6574\u4f53\u6279\u547d', '\u6574\u4f53\u6279\u547d\u5df2\u751f\u6210\u3002', 'yuetian-aip-overall');
         if (statusEl) statusEl.textContent = `完成 · ${_fmtDuration(meta.durationMs)}`;
       } catch (err) {
-        const msg = err?.message || 'AI 生成失败';
+        const msg = _aipFriendlyError(err);
         _notifyFailed('AI\u6574\u4f53\u6279\u547d', err, 'yuetian-aip-overall-error');
         if (statusEl) statusEl.textContent = msg;
         if (body) { body.textContent = '⚠ ' + msg + '\n请稍后重试'; body.style.color = '#963d32'; }
@@ -788,7 +819,7 @@ function _aipRenderResult(moduleKey, data) {
         _notifyDone('AI\u8eab\u5bab\u6279\u547d', '\u8eab\u5bab\u6279\u547d\u5df2\u751f\u6210\u3002', 'yuetian-aip-shengong');
         if (statusEl) statusEl.textContent = `完成 · ${_fmtDuration(meta.durationMs)}`;
       } catch (err) {
-        const msg = err?.message || 'AI 生成失败';
+        const msg = _aipFriendlyError(err);
         _notifyFailed('AI\u8eab\u5bab\u6279\u547d', err, 'yuetian-aip-shengong-error');
         if (statusEl) statusEl.textContent = msg;
         if (shenBody) { shenBody.textContent = '⚠ ' + msg + '\n请稍后重试'; shenBody.style.color = '#963d32'; }
@@ -828,7 +859,7 @@ function _aipRenderResult(moduleKey, data) {
         _notifyDone('AI\u5a5a\u59fb\u6279\u547d', '\u5a5a\u59fb\u6279\u547d\u5df2\u751f\u6210\u3002', 'yuetian-aip-hunyin');
         if (statusEl) statusEl.textContent = `完成 · ${_fmtDuration(meta.durationMs)}`;
       } catch (err) {
-        const msg = err?.message || 'AI 生成失败';
+        const msg = _aipFriendlyError(err);
         _notifyFailed('AI\u5a5a\u59fb\u6279\u547d', err, 'yuetian-aip-hunyin-error');
         if (statusEl) statusEl.textContent = msg;
         if (hunyinBody) { hunyinBody.textContent = '⚠ ' + msg + '\n请稍后重试'; hunyinBody.style.color = '#963d32'; }
@@ -868,7 +899,7 @@ function _aipRenderResult(moduleKey, data) {
         _notifyDone('AI\u5065\u5eb7\u6279\u547d', '\u5065\u5eb7\u6279\u547d\u5df2\u751f\u6210\u3002', 'yuetian-aip-jiankang');
         if (statusEl) statusEl.textContent = `完成 · ${_fmtDuration(meta.durationMs)}`;
       } catch (err) {
-        const msg = err?.message || 'AI 生成失败';
+        const msg = _aipFriendlyError(err);
         _notifyFailed('AI\u5065\u5eb7\u6279\u547d', err, 'yuetian-aip-jiankang-error');
         if (statusEl) statusEl.textContent = msg;
         if (body) { body.textContent = '⚠ ' + msg + '\n请稍后重试'; body.style.color = '#963d32'; }
@@ -908,7 +939,7 @@ function _aipRenderResult(moduleKey, data) {
         _notifyDone('AI\u8d22\u8fd0\u6279\u547d', '\u8d22\u8fd0\u6279\u547d\u5df2\u751f\u6210\u3002', 'yuetian-aip-caiyun');
         if (statusEl) statusEl.textContent = `完成 · ${_fmtDuration(meta.durationMs)}`;
       } catch (err) {
-        const msg = err?.message || 'AI 生成失败';
+        const msg = _aipFriendlyError(err);
         _notifyFailed('AI\u8d22\u8fd0\u6279\u547d', err, 'yuetian-aip-caiyun-error');
         if (statusEl) statusEl.textContent = msg;
         if (body) { body.textContent = '⚠ ' + msg + '\n请稍后重试'; body.style.color = '#963d32'; }
@@ -944,7 +975,7 @@ function _aipRenderResult(moduleKey, data) {
         _notifyDone('AI\u4e8b\u4e1a\u6279\u547d', '\u4e8b\u4e1a\u6279\u547d\u5df2\u751f\u6210\u3002', 'yuetian-aip-shiye');
         if (statusEl) statusEl.textContent = `完成 · ${_fmtDuration(meta.durationMs)}`;
       } catch (err) {
-        const msg = err?.message || 'AI 生成失败';
+        const msg = _aipFriendlyError(err);
         _notifyFailed('AI\u4e8b\u4e1a\u6279\u547d', err, 'yuetian-aip-shiye-error');
         if (statusEl) statusEl.textContent = msg;
         if (body) { body.textContent = '⚠ ' + msg + '\n请稍后重试'; body.style.color = '#963d32'; }
@@ -1028,7 +1059,7 @@ function _aipRenderResult(moduleKey, data) {
         if (riskEl) riskEl.textContent = card.risk ? '要留意：' + card.risk : '';
       } catch (err) {
         _notifyFailed('AI\u5927\u9650\u6279\u547d', err, 'yuetian-aip-daxian-error');
-        if (statusEl) statusEl.textContent = err?.message || 'AI生成失败';
+        if (statusEl) statusEl.textContent = _aipFriendlyError(err);
         if (bodyEl)   bodyEl.innerHTML = '';
       } finally {
         newBtn.disabled = false;
@@ -1071,7 +1102,7 @@ function _aipRenderResult(moduleKey, data) {
         if (riskEl) riskEl.textContent = card.risk ? '要留意：' + card.risk : '';
       } catch (err) {
         _notifyFailed('AI\u6d41\u5e74\u6279\u547d', err, 'yuetian-aip-liunian-error');
-        if (statusEl) statusEl.textContent = err?.message || 'AI生成失败';
+        if (statusEl) statusEl.textContent = _aipFriendlyError(err);
         if (bodyEl)   bodyEl.innerHTML = '';
       } finally {
         newBtn.disabled = false;
@@ -1128,7 +1159,7 @@ function _aipRenderResult(moduleKey, data) {
             duration: _fmtDuration(meta.durationMs),
           });
         } catch (err) {
-          const msg = err?.message || 'AI 生成失败';
+          const msg = _aipFriendlyError(err);
           if (statusEl) statusEl.textContent = msg;
           if (body) {
             body.textContent = '⚠ ' + msg + '\n请检查后台是否已发布该测试位提示词。';
