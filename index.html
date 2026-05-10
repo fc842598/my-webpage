@@ -66,25 +66,6 @@
       0%, 100% { opacity: .18; transform: translate3d(-14px, 0, 0) scaleX(.86); }
       50% { opacity: .72; transform: translate3d(18px, 0, 0) scaleX(1.08); }
     }
-    @keyframes orbit-fast {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
-    }
-    @keyframes orbit-reverse {
-      from { transform: rotate(360deg); }
-      to { transform: rotate(0deg); }
-    }
-    @keyframes radar-arm {
-      from { transform: rotate(0deg); opacity: .28; }
-      50% { opacity: .76; }
-      to { transform: rotate(360deg); opacity: .28; }
-    }
-    @keyframes particle-flare {
-      0%, 100% { opacity: .22; filter: blur(.2px); }
-      45% { opacity: .95; filter: blur(0); }
-      70% { opacity: .48; }
-    }
-
     * { box-sizing: border-box; }
     html { scroll-behavior: smooth; background: var(--bg); }
     body {
@@ -464,81 +445,18 @@
       animation: halo-spin 18s linear infinite reverse;
     }
 
-    .desktop-orbit-field {
+    .motion-wheel-canvas {
       position: absolute;
-      inset: -12%;
-      z-index: 6;
-      border-radius: 50%;
+      left: -15%;
+      top: -15%;
+      z-index: 4;
+      width: 130%;
+      height: 130%;
       pointer-events: none;
+      opacity: .96;
+      filter: saturate(1.12);
       mix-blend-mode: screen;
     }
-
-    .desktop-orbit-field .track {
-      position: absolute;
-      border-radius: 50%;
-      border: 1px solid rgba(240, 215, 155, .24);
-      box-shadow: 0 0 22px rgba(201, 169, 97, .10);
-    }
-
-    .desktop-orbit-field .track::before {
-      content: "";
-      position: absolute;
-      left: 50%;
-      top: -4px;
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: #fff3c4;
-      box-shadow: 0 0 16px rgba(240, 215, 155, .95), 0 0 34px rgba(201, 169, 97, .52);
-    }
-
-    .desktop-orbit-field .track-a {
-      inset: 0;
-      border-top-color: rgba(240, 215, 155, .74);
-      border-right-color: rgba(240, 215, 155, .08);
-      animation: orbit-fast 9s linear infinite;
-    }
-
-    .desktop-orbit-field .track-b {
-      inset: 10%;
-      border-left-color: rgba(240, 215, 155, .58);
-      border-bottom-color: rgba(240, 215, 155, .10);
-      animation: orbit-reverse 12s linear infinite;
-    }
-
-    .desktop-orbit-field .track-c {
-      inset: 22%;
-      border-style: dashed;
-      border-color: rgba(240, 215, 155, .26);
-      animation: orbit-fast 16s linear infinite;
-    }
-
-    .desktop-orbit-field .radar {
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      width: 50%;
-      height: 2px;
-      transform-origin: left center;
-      background: linear-gradient(90deg, rgba(255, 244, 205, .86), rgba(240, 215, 155, .18), transparent);
-      filter: blur(.3px);
-      animation: radar-arm 5.6s linear infinite;
-    }
-
-    .desktop-orbit-field .spark {
-      position: absolute;
-      width: 3px;
-      height: 3px;
-      border-radius: 50%;
-      background: #fff3c4;
-      box-shadow: 0 0 14px rgba(240, 215, 155, .86);
-      animation: particle-flare 2.8s ease-in-out infinite;
-    }
-
-    .desktop-orbit-field .spark-1 { left: 18%; top: 34%; animation-delay: .1s; }
-    .desktop-orbit-field .spark-2 { right: 24%; top: 18%; animation-delay: .6s; }
-    .desktop-orbit-field .spark-3 { right: 16%; bottom: 28%; animation-delay: 1.1s; }
-    .desktop-orbit-field .spark-4 { left: 31%; bottom: 18%; animation-delay: 1.7s; }
 
     .wheel-shell {
       position: relative;
@@ -725,7 +643,7 @@
       position: absolute;
       right: 0;
       bottom: 6%;
-      z-index: 3;
+      z-index: 7;
       width: 160px;
       text-align: right;
     }
@@ -755,7 +673,7 @@
 
     .wheel-orbit-label {
       position: absolute;
-      z-index: 3;
+      z-index: 7;
       display: flex;
       flex-direction: column;
       gap: 4px;
@@ -1607,7 +1525,7 @@
       }
       .destiny-wheel::before,
       .destiny-wheel::after,
-      .desktop-orbit-field { display: none; }
+      .motion-wheel-canvas { display: none; }
       .wheel-core { inset: 29%; padding: 10px; }
       .wheel-core-title { margin-bottom: 6px; font-size: 11px; }
       .wheel-core-motto { margin-bottom: 6px; font-size: 20px; }
@@ -1907,16 +1825,7 @@
                   <b>当年落点</b>
                   <span>LIUNIAN</span>
                 </div>
-                <div class="desktop-orbit-field" aria-hidden="true">
-                  <span class="track track-a"></span>
-                  <span class="track track-b"></span>
-                  <span class="track track-c"></span>
-                  <span class="radar"></span>
-                  <span class="spark spark-1"></span>
-                  <span class="spark spark-2"></span>
-                  <span class="spark spark-3"></span>
-                  <span class="spark spark-4"></span>
-                </div>
+                <canvas class="motion-wheel-canvas" aria-hidden="true"></canvas>
                 <div class="wheel-shell">
                   <div class="wheel-grid"></div>
                   <div class="wheel-radials"></div>
@@ -2148,6 +2057,210 @@
       } else {
         lazyBackgrounds.forEach(loadBackground);
       }
+
+      const initMotionWheel = () => {
+        const canvas = document.querySelector('.motion-wheel-canvas');
+        if (!canvas || !window.matchMedia('(min-width: 861px)').matches) return;
+        const ctx = canvas.getContext('2d', { alpha: true });
+        if (!ctx) return;
+
+        let cssWidth = 0;
+        let cssHeight = 0;
+        let dpr = 1;
+        let rafId = 0;
+        let active = false;
+        let resizeObserver;
+        let wheelObserver;
+
+        const gold = (alpha) => `rgba(231, 194, 110, ${alpha})`;
+        const pale = (alpha) => `rgba(255, 243, 202, ${alpha})`;
+
+        const resize = () => {
+          const rect = canvas.getBoundingClientRect();
+          cssWidth = Math.max(1, rect.width);
+          cssHeight = Math.max(1, rect.height);
+          dpr = Math.min(window.devicePixelRatio || 1, 1.75);
+          const nextWidth = Math.floor(cssWidth * dpr);
+          const nextHeight = Math.floor(cssHeight * dpr);
+          if (canvas.width !== nextWidth || canvas.height !== nextHeight) {
+            canvas.width = nextWidth;
+            canvas.height = nextHeight;
+          }
+          ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        };
+
+        const dot = (x, y, radius, alpha = 1) => {
+          const gradient = ctx.createRadialGradient(x, y, 0, x, y, radius * 5.8);
+          gradient.addColorStop(0, pale(.98 * alpha));
+          gradient.addColorStop(.18, gold(.72 * alpha));
+          gradient.addColorStop(1, 'rgba(231, 194, 110, 0)');
+          ctx.fillStyle = gradient;
+          ctx.beginPath();
+          ctx.arc(x, y, radius * 5.8, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.fillStyle = pale(.92 * alpha);
+          ctx.beginPath();
+          ctx.arc(x, y, radius, 0, Math.PI * 2);
+          ctx.fill();
+        };
+
+        const drawRing = (cx, cy, radius, alpha, lineWidth = 1) => {
+          ctx.strokeStyle = gold(alpha);
+          ctx.lineWidth = lineWidth;
+          ctx.beginPath();
+          ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+          ctx.stroke();
+        };
+
+        const render = (now) => {
+          if (!active) return;
+          if (!cssWidth || !cssHeight) resize();
+
+          const t = now / 1000;
+          const w = cssWidth;
+          const h = cssHeight;
+          const cx = w / 2;
+          const cy = h / 2;
+          const base = Math.min(w, h) * .386;
+
+          ctx.clearRect(0, 0, w, h);
+          ctx.globalCompositeOperation = 'lighter';
+          ctx.lineCap = 'round';
+
+          const coreGlow = ctx.createRadialGradient(cx, cy, base * .08, cx, cy, base * 1.04);
+          coreGlow.addColorStop(0, 'rgba(231, 194, 110, .20)');
+          coreGlow.addColorStop(.52, 'rgba(231, 194, 110, .045)');
+          coreGlow.addColorStop(1, 'rgba(231, 194, 110, 0)');
+          ctx.fillStyle = coreGlow;
+          ctx.beginPath();
+          ctx.arc(cx, cy, base * 1.08, 0, Math.PI * 2);
+          ctx.fill();
+
+          [1.04, .91, .77, .62, .46].forEach((scale, index) => {
+            drawRing(cx, cy, base * scale, index === 0 ? .28 : .18, index === 0 ? 1.2 : .8);
+          });
+
+          for (let i = 0; i < 72; i += 1) {
+            const angle = (Math.PI * 2 * i) / 72 + t * .055;
+            const strong = i % 6 === 0;
+            const inner = base * (strong ? .94 : .985);
+            const outer = base * (strong ? 1.045 : 1.018);
+            ctx.strokeStyle = gold(strong ? .42 : .18);
+            ctx.lineWidth = strong ? 1.1 : .55;
+            ctx.beginPath();
+            ctx.moveTo(cx + Math.cos(angle) * inner, cy + Math.sin(angle) * inner);
+            ctx.lineTo(cx + Math.cos(angle) * outer, cy + Math.sin(angle) * outer);
+            ctx.stroke();
+          }
+
+          [
+            { r: 1.045, speed: .32, size: .62, phase: .2 },
+            { r: .91, speed: -.46, size: .5, phase: 1.55 },
+            { r: .77, speed: .58, size: .44, phase: 2.7 },
+            { r: .62, speed: -.35, size: .36, phase: 4.1 }
+          ].forEach(({ r, speed, size, phase }, ringIndex) => {
+            const radius = base * r;
+            for (let i = 0; i < 3; i += 1) {
+              const angle = t * speed + phase + i * Math.PI * .72;
+              ctx.strokeStyle = gold(.3 - ringIndex * .035);
+              ctx.lineWidth = 1.4 - ringIndex * .12;
+              ctx.beginPath();
+              ctx.arc(cx, cy, radius, angle - .26 * Math.sign(speed || 1), angle, speed < 0);
+              ctx.stroke();
+            }
+            const angle = t * speed + phase;
+            dot(cx + Math.cos(angle) * radius, cy + Math.sin(angle) * radius, base * .012 * size, .95);
+          });
+
+          const radarAngle = t * .72;
+          ctx.save();
+          ctx.translate(cx, cy);
+          ctx.rotate(radarAngle);
+          const beam = ctx.createLinearGradient(0, 0, base * 1.08, 0);
+          beam.addColorStop(0, pale(.86));
+          beam.addColorStop(.22, gold(.52));
+          beam.addColorStop(1, 'rgba(231, 194, 110, 0)');
+          ctx.strokeStyle = beam;
+          ctx.lineWidth = 1.8;
+          ctx.beginPath();
+          ctx.moveTo(0, 0);
+          ctx.lineTo(base * 1.08, 0);
+          ctx.stroke();
+          ctx.fillStyle = 'rgba(231, 194, 110, .065)';
+          ctx.beginPath();
+          ctx.moveTo(0, 0);
+          ctx.arc(0, 0, base * 1.02, -.08, .08);
+          ctx.closePath();
+          ctx.fill();
+          ctx.restore();
+
+          const scanY = cy + Math.sin(t * 1.16) * base * .17;
+          const scan = ctx.createLinearGradient(cx - base * 1.08, 0, cx + base * 1.08, 0);
+          scan.addColorStop(0, 'rgba(231, 194, 110, 0)');
+          scan.addColorStop(.43, gold(.26));
+          scan.addColorStop(.5, pale(.38));
+          scan.addColorStop(.57, gold(.22));
+          scan.addColorStop(1, 'rgba(231, 194, 110, 0)');
+          ctx.fillStyle = scan;
+          ctx.fillRect(cx - base * 1.08, scanY, base * 2.16, 2);
+
+          const points = [
+            [.35, -.62], [.52, -.18], [.46, .36], [.18, .54],
+            [-.24, .42], [-.48, .06], [-.34, -.42], [.06, -.5]
+          ].map(([x, y]) => [cx + x * base, cy + y * base]);
+          ctx.strokeStyle = gold(.16 + Math.sin(t * 1.7) * .04);
+          ctx.lineWidth = .8;
+          ctx.beginPath();
+          points.forEach(([x, y], index) => {
+            if (index === 0) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+          });
+          ctx.closePath();
+          ctx.stroke();
+          points.forEach(([x, y], index) => dot(x, y, index % 3 === 0 ? 1.55 : 1.15, .54));
+
+          rafId = requestAnimationFrame(render);
+        };
+
+        const start = () => {
+          if (active) return;
+          active = true;
+          canvas.dataset.motionActive = 'true';
+          resize();
+          rafId = requestAnimationFrame(render);
+        };
+
+        const stop = () => {
+          active = false;
+          cancelAnimationFrame(rafId);
+        };
+
+        if ('ResizeObserver' in window) {
+          resizeObserver = new ResizeObserver(resize);
+          resizeObserver.observe(canvas);
+        } else {
+          window.addEventListener('resize', resize, { passive: true });
+        }
+
+        if ('IntersectionObserver' in window) {
+          wheelObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) start();
+              else stop();
+            });
+          }, { threshold: .08 });
+          wheelObserver.observe(canvas);
+        } else {
+          start();
+        }
+
+        document.addEventListener('visibilitychange', () => {
+          if (document.hidden) stop();
+          else start();
+        });
+      };
+
+      initMotionWheel();
 
       const revealTargets = document.querySelectorAll('.micro-item, .triad-card, .step, .k-card, .final .container');
       if (reduceMotion) return;
