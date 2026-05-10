@@ -635,6 +635,121 @@
     .footer a { color:#c9a961; }
 
     /* ── 响应式 ── */
+    @media (min-width:1001px) {
+      .hero {
+        min-height:75vh;
+        padding:90px 0 45px;
+      }
+      .hero-inner {
+        max-width:900px;
+        gap:54px;
+        padding:0;
+      }
+      .hero-content {
+        max-width:405px;
+      }
+      .hero-eyebrow {
+        padding:5px 12px;
+        font-size:11px;
+        margin-bottom:16px;
+      }
+      .hero-title {
+        font-size:clamp(27px,3vw,54px);
+        line-height:1.18;
+        margin-bottom:3px;
+      }
+      .hero-title .gold {
+        font-size:clamp(21px,2.25vw,36px);
+      }
+      .hero-title-sep {
+        width:27px;
+        height:2px;
+        margin:12px 0 10px;
+      }
+      .hero-subtitle {
+        font-size:12px;
+        margin-bottom:10px;
+      }
+      .hero-desc {
+        font-size:12px;
+        line-height:1.8;
+        margin-bottom:22px;
+        padding-left:12px;
+      }
+      .hero-actions {
+        gap:10px;
+      }
+      .btn-main,
+      .btn-sub {
+        height:39px;
+        padding:0 21px;
+        border-radius:20px;
+        font-size:12px;
+      }
+      .hero-badges {
+        gap:8px;
+        margin-top:18px;
+      }
+      .badge {
+        padding:5px 10px;
+        font-size:10px;
+      }
+      .hero-preview {
+        flex:0 0 min(34.5vw,420px);
+      }
+      .hero-preview::before {
+        inset:-54px;
+      }
+      .destiny-wheel {
+        width:min(34.5vw,420px);
+      }
+      .wheel-core {
+        padding:15px;
+      }
+      .wheel-core-title {
+        font-size:12px;
+        margin-bottom:7px;
+      }
+      .wheel-core-motto {
+        font-size:23px;
+        margin-bottom:7px;
+      }
+      .wheel-core-sub {
+        font-size:10px;
+      }
+      .wheel-node-major {
+        width:52px;
+        height:52px;
+        font-size:20px;
+      }
+      .wheel-node-small {
+        width:32px;
+        height:32px;
+        font-size:12px;
+      }
+      .wheel-copy {
+        width:120px;
+      }
+      .wheel-copy-label {
+        font-size:9px;
+        margin-bottom:4px;
+      }
+      .wheel-copy-title {
+        font-size:12px;
+        margin-bottom:4px;
+      }
+      .wheel-copy-sub {
+        font-size:10px;
+        line-height:1.6;
+      }
+      .wheel-orbit-label b {
+        font-size:10px;
+      }
+      .wheel-orbit-label span {
+        font-size:9px;
+      }
+    }
+
     @media (max-width:1000px) {
       .hero-inner { flex-direction:column; align-items:flex-start; gap:40px; }
       .hero-preview { width:100%; flex:none; }
