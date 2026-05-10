@@ -1950,13 +1950,15 @@ document.getElementById('btn-submit').addEventListener('click', async () => {
       window._chartRecordId = window._pendingHistoryRecordId;
       window._pendingHistoryRecordId = null;
     } else {
-      window._chartRecordId = null;
+      window._chartRecordId = makeLocalChartRecordId();
       const saveToken = `${norm.dateStr}|${norm.timeIdx}|${norm.gender}|${Date.now()}`;
       window._chartHistorySaveToken = saveToken;
       historySave(norm)
         .then((id) => {
           if (id && window._chartHistorySaveToken === saveToken) {
-            window._chartRecordId = id;
+            const chatPanel = document.getElementById('aip-panel-chat');
+            const chatVisible = chatPanel && getComputedStyle(chatPanel).display !== 'none';
+            if (!chatVisible) window._chartRecordId = id;
           }
         })
         .catch((saveErr) => console.error('historySave async error', saveErr));
@@ -2030,64 +2032,109 @@ function getClientId() {
   const KEY = 'ziwei_client_id';
   let id = localStorage.getItem(KEY);
   if (!id) {
-    if (window.crypto && typeof crypto.randomUUID === 'function') {
-      id = crypto.randomUUID();
-    } else if (window.crypto && typeof crypto.getRandomValues === 'function') {
-      const bytes = new Uint8Array(16);
-      crypto.getRandomValues(bytes);
-      bytes[6] = (bytes[6] & 0x0f) | 0x40;
-      bytes[8] = (bytes[8] & 0x3f) | 0x80;
-      const hex = Array.from(bytes, (b) => b.toString(16).padStart(2, '0')).join('');
-      id = `${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(12, 16)}-${hex.slice(16, 20)}-${hex.slice(20)}`;
-    } else {
-      id = `client-${Date.now()}-${Math.random().toString(16).slice(2)}`;
-    }
+    id = makeLocalChartRecordId();
     localStorage.setItem(KEY, id);
   }
   return id;
 }
 
+function makeLocalChartRecordId() {
+  if (window.crypto && typeof crypto.randomUUID === 'function') {
+    return crypto.randomUUID();
+  }
+  if (window.crypto && typeof crypto.getRandomValues === 'function') {
+    const bytes = new Uint8Array(16);
+    crypto.getRandomValues(bytes);
+    bytes[6] = (bytes[6] & 0x0f) | 0x40;
+    bytes[8] = (bytes[8] & 0x3f) | 0x80;
+    const hex = Array.from(bytes, (b) => b.toString(16).padStart(2, '0')).join('');
+    return `${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(12, 16)}-${hex.slice(16, 20)}-${hex.slice(20)}`;
+  }
+  const hex = `${Date.now().toString(16).padStart(12, '0')}${Math.random().toString(16).slice(2).padEnd(20, '0')}`.slice(0, 32);
+  return `${hex.slice(0, 8)}-${hex.slice(8, 12)}-4${hex.slice(13, 16)}-a${hex.slice(17, 20)}-${hex.slice(20)}`;
+}
+
+const LOCAL_HISTORY_KEY = 'ziwei_local_chart_history_v1';
+
+function historyLoadLocal() {
+  try {
+    const raw = localStorage.getItem(LOCAL_HISTORY_KEY);
+    const list = raw ? JSON.parse(raw) : [];
+    return Array.isArray(list) ? list : [];
+  } catch (_) {
+    return [];
+  }
+}
+
+function historySaveLocal(norm) {
+  const id = makeLocalChartRecordId();
+  const savedAt = new Date().toISOString();
+  const record = { ...norm, id, savedAt };
+  const list = historyLoadLocal()
+    .filter(item => item && item.id !== id)
+    .slice(0, 49);
+  localStorage.setItem(LOCAL_HISTORY_KEY, JSON.stringify([record, ...list]));
+  return id;
+}
+
+function historyDeleteLocal(id) {
+  const list = historyLoadLocal().filter(item => item && item.id !== id);
+  localStorage.setItem(LOCAL_HISTORY_KEY, JSON.stringify(list));
+}
+
 async function historyLoad() {
   const clientId = getClientId();
-  const { data, error } = await _sb
-    .from('chart_records')
-    .select('*')
-    .eq('client_id', clientId)
-    .order('created_at', { ascending: false })
-    .limit(50);
-  if (error) { console.error('historyLoad error', error); return []; }
-  return (data || []).map(row => {
-    const norm = JSON.parse(row.input_raw || '{}');
-    norm.id = row.id;
-    norm.savedAt = row.created_at;
-    return norm;
-  });
+  try {
+    const { data, error } = await _sb
+      .from('chart_records')
+      .select('*')
+      .eq('client_id', clientId)
+      .order('created_at', { ascending: false })
+      .limit(50);
+    if (error) throw error;
+    return (data || []).map(row => {
+      const norm = JSON.parse(row.input_raw || '{}');
+      norm.id = row.id;
+      norm.savedAt = row.created_at;
+      return norm;
+    });
+  } catch (error) {
+    console.info('historyLoad local fallback', error);
+    return historyLoadLocal();
+  }
 }
 
 async function historySave(norm) {
-  const { data, error } = await _sb
-    .from('chart_records')
-    .insert({
-      name: norm.name || '',
-      gender: norm.gender,
-      birth_date: norm.dateStr || '',
-      birth_time: `${norm.cstHour}:${String(norm.cstMinute).padStart(2,'0')}`,
-      city: norm.city?.name || '',
-      input_raw: JSON.stringify(norm),
-      client_id: getClientId(),
-    })
-    .select('id')
-    .single();
-  if (error) {
-    console.error('historySave error', error);
-    return null;
+  try {
+    const { data, error } = await _sb
+      .from('chart_records')
+      .insert({
+        name: norm.name || '',
+        gender: norm.gender,
+        birth_date: norm.dateStr || '',
+        birth_time: `${norm.cstHour}:${String(norm.cstMinute).padStart(2,'0')}`,
+        city: norm.city?.name || '',
+        input_raw: JSON.stringify(norm),
+        client_id: getClientId(),
+      })
+      .select('id')
+      .single();
+    if (error) throw error;
+    return data?.id || null;
+  } catch (error) {
+    console.info('historySave local fallback', error);
+    return historySaveLocal(norm);
   }
-  return data?.id || null;
 }
 
 async function historyDelete(id) {
-  const { error } = await _sb.from('chart_records').delete().eq('id', id);
-  if (error) console.error('historyDelete error', error);
+  historyDeleteLocal(id);
+  try {
+    const { error } = await _sb.from('chart_records').delete().eq('id', id);
+    if (error) throw error;
+  } catch (error) {
+    console.info('historyDelete local fallback', error);
+  }
 }
 
 async function historyRenderPanel() {
