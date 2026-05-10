@@ -263,6 +263,26 @@
       position: relative;
     }
 
+    .hero-art {
+      display: none;
+      position: absolute;
+      pointer-events: none;
+      background: url("images/home2/reference-hero-art.jpg") center / contain no-repeat;
+      filter: contrast(1.08) saturate(1.05);
+      overflow: hidden;
+      -webkit-mask-image: radial-gradient(ellipse 59% 58% at 51% 50%, #000 0 62%, rgba(0, 0, 0, .74) 72%, transparent 88%);
+      mask-image: radial-gradient(ellipse 59% 58% at 51% 50%, #000 0 62%, rgba(0, 0, 0, .74) 72%, transparent 88%);
+    }
+
+    .hero-art::after {
+      content: "";
+      position: absolute;
+      inset: -1px;
+      background:
+        linear-gradient(90deg, #030201 0%, rgba(3, 2, 1, 0) 18%, rgba(3, 2, 1, 0) 84%, #030201 100%),
+        linear-gradient(180deg, #030201 0%, rgba(3, 2, 1, 0) 18%, rgba(3, 2, 1, 0) 80%, #030201 100%);
+    }
+
     .astrolabe-glow {
       position: absolute;
       right: -38px;
@@ -416,8 +436,8 @@
       z-index: 0;
       background-position: center;
       background-size: cover;
-      opacity: .34;
-      filter: saturate(.86);
+      opacity: .58;
+      filter: saturate(1.08) contrast(1.08);
     }
 
     .triad-card:nth-child(1)::before { background-image: url("images/home2/triad-tian-bg.jpg"); }
@@ -540,6 +560,26 @@
       color: var(--text);
     }
 
+    .step-mark {
+      position: absolute;
+      top: -10px;
+      width: 58px;
+      height: 58px;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(201, 169, 97, .52);
+      border-radius: 50%;
+      color: var(--gold-soft);
+      background:
+        radial-gradient(circle, rgba(201,169,97,.16), rgba(3,2,1,.72) 66%),
+        repeating-conic-gradient(rgba(201,169,97,.12) 0 10deg, transparent 10deg 24deg);
+      font: 700 18px/1 "Noto Serif SC", "Songti SC", serif;
+      box-shadow: 0 0 22px rgba(201, 169, 97, .14), inset 0 0 0 7px rgba(201,169,97,.04);
+    }
+
+    .step.left .step-mark { left: -96px; }
+    .step.right .step-mark { right: -96px; }
+
     .step h3 {
       margin: 0 0 8px;
       color: var(--ivory);
@@ -576,11 +616,46 @@
 
     .k-card {
       height: 220px;
-      padding: 36px 18px;
+      padding: 36px 18px 48px;
       border: 1px solid rgba(201, 169, 97, .38);
       border-radius: 6px;
       background: rgba(9, 7, 4, .78);
       text-align: center;
+      position: relative;
+    }
+
+    .k-card::before,
+    .k-card::after {
+      content: "";
+      position: absolute;
+      pointer-events: none;
+    }
+
+    .k-card::before {
+      inset: 10px;
+      border: 1px solid rgba(201, 169, 97, .12);
+      clip-path: polygon(8% 0, 92% 0, 100% 8%, 100% 92%, 92% 100%, 8% 100%, 0 92%, 0 8%);
+    }
+
+    .k-card::after {
+      content: "";
+      left: 50%;
+      bottom: 18px;
+      width: 14px;
+      height: 14px;
+      display: grid;
+      place-items: center;
+      transform: translateX(-50%);
+      border: 1px solid rgba(201, 169, 97, .42);
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(201,169,97,.52) 0 2px, transparent 3px);
+    }
+
+    .k-card .mark,
+    .k-card h3,
+    .k-card p {
+      position: relative;
+      z-index: 1;
     }
 
     .k-card .mark {
@@ -590,8 +665,9 @@
       place-items: center;
       margin: 0 auto 26px;
       border: 1px solid rgba(201, 169, 97, .45);
-      border-radius: 50%;
+      clip-path: polygon(50% 0, 92% 25%, 92% 75%, 50% 100%, 8% 75%, 8% 25%);
       color: var(--gold-soft);
+      background: rgba(201,169,97,.035);
     }
 
     .k-card h3 {
@@ -724,7 +800,11 @@
       .micro h3 { font-size: 14px; margin-bottom: 7px; }
       .micro p { font-size: 12px; line-height: 1.65; }
       .astrolabe-wrap { height: 439px; margin-top: -14px; }
-      .astrolabe-glow { right: -25px; top: -51px; width: 439px; height: 439px; }
+      .hero-art { display: block; right: -24px; top: -36px; width: 430px; height: 418px; opacity: .98; }
+      .astrolabe-glow,
+      .astrolabe,
+      .stone,
+      .stone-line { display: none; }
       .astrolabe { right: 3px; top: -27px; width: 385px; height: 385px; }
       .astrolabe::before { width: 78px; height: 78px; font-size: 19px; }
       .astrolabe::after { inset: 54px; }
@@ -778,8 +858,9 @@
       .step:nth-of-type(6) { top: 362px !important; }
 
       .knowledge { gap: 18px; }
-      .k-card { height: 165px; padding: 27px 14px; border-radius: 5px; }
-      .k-card .mark { width: 42px; height: 42px; margin-bottom: 18px; }
+      .k-card { height: 172px; padding: 24px 14px 34px; border-radius: 5px; }
+      .k-card .mark { width: 42px; height: 42px; margin-bottom: 15px; }
+      .k-card::after { bottom: 12px; width: 12px; height: 12px; }
       .k-card h3 { margin-bottom: 8px; font-size: 15px; }
       .k-card p { font-size: 12px; line-height: 1.55; }
 
@@ -844,6 +925,7 @@
       .rail,
       .node,
       .step::after { display: none; }
+      .step-mark { display: none; }
       .step { position: static; width: auto; text-align: left; padding: 18px 0; border-bottom: 1px solid rgba(201,169,97,.14); }
       .step.left,
       .step.right { text-align: left; }
@@ -915,6 +997,7 @@
           </div>
 
           <div class="astrolabe-wrap" aria-hidden="true">
+            <div class="hero-art"></div>
             <div class="astrolabe-glow"></div>
             <div class="astrolabe"></div>
             <div class="stone-line"></div>
@@ -996,26 +1079,32 @@
             <span class="node" style="top: 506px" aria-hidden="true"></span>
 
             <article class="step left" style="top: 32px">
+              <span class="step-mark">日</span>
               <h3>输入信息</h3>
               <p>出生时间、地点，精准到分钟</p>
             </article>
             <article class="step right" style="top: 122px">
+              <span class="step-mark">盘</span>
               <h3>排出命盘</h3>
               <p>紫微斗数排盘，生成命盘格局</p>
             </article>
             <article class="step left" style="top: 212px">
+              <span class="step-mark">局</span>
               <h3>先看格局</h3>
               <p>分析命宫格局，看清先天底牌</p>
             </article>
             <article class="step right" style="top: 302px">
+              <span class="step-mark">运</span>
               <h3>再看大运</h3>
               <p>解读大运趋势，把握十年趋势</p>
             </article>
             <article class="step left" style="top: 392px">
+              <span class="step-mark">年</span>
               <h3>最后看流年</h3>
               <p>分析流年变化，洞察关键时机</p>
             </article>
             <article class="step right" style="top: 482px">
+              <span class="step-mark">策</span>
               <h3>给出建议</h3>
               <p>趋吉避凶建议，助你决策前行</p>
             </article>
