@@ -7,7 +7,8 @@
   <meta name="description" content="阅天默认首页，基于紫微斗数、时空推演与趋势洞察的星盘仪式感首页。">
   <link rel="icon" href="images/logo-mark.svg" type="image/svg+xml">
   <meta name="theme-color" content="#030201">
-  <link rel="preload" as="image" href="images/home2/hero-bg.webp" type="image/webp" fetchpriority="high">
+  <link rel="preload" as="image" href="images/home2/hero-bg.webp" type="image/webp" fetchpriority="high" media="(min-width: 861px)">
+  <link rel="preload" as="image" href="images/home2/hero-bg-mobile.webp" type="image/webp" fetchpriority="high" media="(max-width: 860px)">
   <style>
     :root {
       --bg: #030201;
@@ -815,9 +816,9 @@
       filter: saturate(1.08) contrast(1.08);
     }
 
-    .triad-card:nth-child(1)::before { background-image: url("images/home2/triad-tian-bg.webp"); }
-    .triad-card:nth-child(2)::before { background-image: url("images/home2/triad-ren-bg.webp"); }
-    .triad-card:nth-child(3)::before { background-image: url("images/home2/triad-di-bg.webp"); }
+    .triad.bg-ready .triad-card:nth-child(1)::before { background-image: url("images/home2/triad-tian-bg.webp"); }
+    .triad.bg-ready .triad-card:nth-child(2)::before { background-image: url("images/home2/triad-ren-bg.webp"); }
+    .triad.bg-ready .triad-card:nth-child(3)::before { background-image: url("images/home2/triad-di-bg.webp"); }
 
     .triad-card::after {
       content: "";
@@ -888,10 +889,16 @@
       z-index: 0;
       background:
         linear-gradient(90deg, rgba(3,2,1,.94), rgba(3,2,1,.56) 52%, rgba(3,2,1,.94)),
-        linear-gradient(180deg, rgba(3,2,1,.64), rgba(3,2,1,.82)),
-        url("images/home2/process-bg.webp") center / cover no-repeat;
+        linear-gradient(180deg, rgba(3,2,1,.64), rgba(3,2,1,.82));
       opacity: .54;
       pointer-events: none;
+    }
+
+    .steps.bg-ready::before {
+      background:
+        linear-gradient(90deg, rgba(3,2,1,.94), rgba(3,2,1,.56) 52%, rgba(3,2,1,.94)),
+        linear-gradient(180deg, rgba(3,2,1,.64), rgba(3,2,1,.82)),
+        url("images/home2/process-bg.webp") center / cover no-repeat;
     }
 
     .steps > * {
@@ -1085,10 +1092,14 @@
       position: absolute;
       inset: 0;
       z-index: 0;
+      background: linear-gradient(180deg, rgba(3,2,1,.58), rgba(3,2,1,.76));
+      opacity: .78;
+    }
+
+    .final.bg-ready::before {
       background:
         linear-gradient(180deg, rgba(3,2,1,.58), rgba(3,2,1,.76)),
         url("images/home2/cta-bg.webp") center bottom / cover no-repeat;
-      opacity: .78;
     }
 
     .final .container {
@@ -1392,7 +1403,7 @@
       .hero::before {
         background:
           linear-gradient(180deg, rgba(3,2,1,.72) 0%, rgba(3,2,1,.54) 40%, rgba(3,2,1,.92) 100%),
-          url("images/home2/hero-bg.webp") 58% top / auto 760px no-repeat;
+          url("images/home2/hero-bg-mobile.webp") center top / cover no-repeat;
         opacity: .88;
       }
       .hero::after {
@@ -1954,9 +1965,25 @@
   <script>
     (() => {
       const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      if (reduceMotion) return;
+      const lazyBackgrounds = document.querySelectorAll('.triad, .steps, .final');
+      const loadBackground = (el) => el.classList.add('bg-ready');
+
+      if ('IntersectionObserver' in window) {
+        const bgObserver = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+            loadBackground(entry.target);
+            bgObserver.unobserve(entry.target);
+          });
+        }, { threshold: .01 });
+        lazyBackgrounds.forEach((el) => bgObserver.observe(el));
+      } else {
+        lazyBackgrounds.forEach(loadBackground);
+      }
 
       const revealTargets = document.querySelectorAll('.micro-item, .triad-card, .step, .k-card, .final .container');
+      if (reduceMotion) return;
+
       revealTargets.forEach((el, index) => {
         el.classList.add('motion-reveal');
         el.style.setProperty('--reveal-delay', `${Math.min(index % 6, 5) * 70}ms`);
