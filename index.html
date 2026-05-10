@@ -816,9 +816,9 @@
       filter: saturate(1.08) contrast(1.08);
     }
 
-    .triad.bg-ready .triad-card:nth-child(1)::before { background-image: url("images/home2/triad-tian-bg.webp"); }
-    .triad.bg-ready .triad-card:nth-child(2)::before { background-image: url("images/home2/triad-ren-bg.webp"); }
-    .triad.bg-ready .triad-card:nth-child(3)::before { background-image: url("images/home2/triad-di-bg.webp"); }
+    .triad-card:nth-child(1)::before { background-image: url("images/home2/triad-tian-bg.webp"); }
+    .triad-card:nth-child(2)::before { background-image: url("images/home2/triad-ren-bg.webp"); }
+    .triad-card:nth-child(3)::before { background-image: url("images/home2/triad-di-bg.webp"); }
 
     .triad-card::after {
       content: "";
@@ -889,16 +889,10 @@
       z-index: 0;
       background:
         linear-gradient(90deg, rgba(3,2,1,.94), rgba(3,2,1,.56) 52%, rgba(3,2,1,.94)),
-        linear-gradient(180deg, rgba(3,2,1,.64), rgba(3,2,1,.82));
-      opacity: .54;
-      pointer-events: none;
-    }
-
-    .steps.bg-ready::before {
-      background:
-        linear-gradient(90deg, rgba(3,2,1,.94), rgba(3,2,1,.56) 52%, rgba(3,2,1,.94)),
         linear-gradient(180deg, rgba(3,2,1,.64), rgba(3,2,1,.82)),
         url("images/home2/process-bg.webp") center / cover no-repeat;
+      opacity: .54;
+      pointer-events: none;
     }
 
     .steps > * {
@@ -1092,14 +1086,10 @@
       position: absolute;
       inset: 0;
       z-index: 0;
-      background: linear-gradient(180deg, rgba(3,2,1,.58), rgba(3,2,1,.76));
-      opacity: .78;
-    }
-
-    .final.bg-ready::before {
       background:
         linear-gradient(180deg, rgba(3,2,1,.58), rgba(3,2,1,.76)),
         url("images/home2/cta-bg.webp") center bottom / cover no-repeat;
+      opacity: .78;
     }
 
     .final .container {
@@ -1567,6 +1557,12 @@
         scroll-snap-align: center;
       }
       .triad-card::after { left: 36%; top: -58px; width: 240px; height: 220px; }
+      .triad-card:nth-child(1)::before,
+      .triad-card:nth-child(2)::before,
+      .triad-card:nth-child(3)::before { background-image: none; }
+      .triad.bg-ready .triad-card:nth-child(1)::before { background-image: url("images/home2/triad-tian-bg.webp"); }
+      .triad.bg-ready .triad-card:nth-child(2)::before { background-image: url("images/home2/triad-ren-bg.webp"); }
+      .triad.bg-ready .triad-card:nth-child(3)::before { background-image: url("images/home2/triad-di-bg.webp"); }
       .triad .big { font-size: 42px; }
       .triad h3 { margin-bottom: 8px; font-size: 17px; }
       .triad p { font-size: 12px; line-height: 1.72; }
@@ -1588,7 +1584,19 @@
         gap: 12px;
         counter-reset: step;
       }
-      .steps::before { inset: -32px -34px -40px; opacity: .42; }
+      .steps::before {
+        inset: -32px -34px -40px;
+        opacity: .42;
+        background:
+          linear-gradient(90deg, rgba(3,2,1,.94), rgba(3,2,1,.56) 52%, rgba(3,2,1,.94)),
+          linear-gradient(180deg, rgba(3,2,1,.64), rgba(3,2,1,.82));
+      }
+      .steps.bg-ready::before {
+        background:
+          linear-gradient(90deg, rgba(3,2,1,.94), rgba(3,2,1,.56) 52%, rgba(3,2,1,.94)),
+          linear-gradient(180deg, rgba(3,2,1,.64), rgba(3,2,1,.82)),
+          url("images/home2/process-bg.webp") center / cover no-repeat;
+      }
       .rail,
       .node,
       .step::after,
@@ -1645,6 +1653,12 @@
         margin-top: 64px;
         padding: 78px 0 82px;
         border-top: 1px solid rgba(201,169,97,.08);
+      }
+      .final::before { background: linear-gradient(180deg, rgba(3,2,1,.58), rgba(3,2,1,.76)); }
+      .final.bg-ready::before {
+        background:
+          linear-gradient(180deg, rgba(3,2,1,.58), rgba(3,2,1,.76)),
+          url("images/home2/cta-bg.webp") center bottom / cover no-repeat;
       }
       .final h2 { font-size: 28px; line-height: 1.42; }
       .final p { margin: 16px auto 24px; max-width: 320px; font-size: 13px; line-height: 1.75; }
