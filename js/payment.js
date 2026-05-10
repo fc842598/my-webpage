@@ -174,9 +174,20 @@
   function renderQR(containerId, url) {
     var el = qs(containerId);
     if (!el || !url) return;
-    if (typeof QRCode !== 'undefined') {
+    if (typeof QRCode !== 'undefined' && typeof QRCode.toCanvas === 'function') {
       QRCode.toCanvas(el, url, { width: 180, margin: 1 }, function(err) {
         if (err) el.title = url;
+      });
+    } else if (typeof QRCode === 'function') {
+      var holder = document.createElement('div');
+      holder.id = containerId;
+      holder.className = el.className || '';
+      el.parentNode.replaceChild(holder, el);
+      new QRCode(holder, {
+        text: url,
+        width: 180,
+        height: 180,
+        correctLevel: QRCode.CorrectLevel ? QRCode.CorrectLevel.M : undefined,
       });
     } else {
       el.style.display = 'none';

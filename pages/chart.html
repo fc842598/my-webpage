@@ -1950,7 +1950,16 @@ document.getElementById('btn-submit').addEventListener('click', async () => {
       window._chartRecordId = window._pendingHistoryRecordId;
       window._pendingHistoryRecordId = null;
     } else {
-      window._chartRecordId = await historySave(norm);
+      window._chartRecordId = null;
+      const saveToken = `${norm.dateStr}|${norm.timeIdx}|${norm.gender}|${Date.now()}`;
+      window._chartHistorySaveToken = saveToken;
+      historySave(norm)
+        .then((id) => {
+          if (id && window._chartHistorySaveToken === saveToken) {
+            window._chartRecordId = id;
+          }
+        })
+        .catch((saveErr) => console.error('historySave async error', saveErr));
     }
     document.getElementById('form-section').style.display = 'none';
     document.getElementById('fc-section').style.display = 'block';
@@ -6009,7 +6018,7 @@ window._aiChatFill = function(data, submit) {
 <!-- AI半仙 对话面板 -->
 <script src="../js/ai-chat.js?v=20260508-backend-base"></script>
 <!-- QRCode 库（微信扫码支付） -->
-<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
 <!-- 微信支付前端 -->
 <script src="../js/payment.js?v=20260508-backend-base"></script>
 </body>
