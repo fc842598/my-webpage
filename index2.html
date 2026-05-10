@@ -24,6 +24,9 @@
       --container: 1200px;
     }
 
+    @keyframes wheel-rotate { from { transform: rotate(0); } to { transform: rotate(360deg); } }
+    @keyframes wheel-drift { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+
     * { box-sizing: border-box; }
     html { scroll-behavior: smooth; background: var(--bg); }
     body {
@@ -188,6 +191,20 @@
       text-shadow: 0 0 30px rgba(201, 169, 97, .12);
     }
 
+    h1 .gold {
+      display: block;
+      color: var(--gold);
+      font-size: .75em;
+      line-height: 1.18;
+    }
+
+    .hero-title-sep {
+      width: 36px;
+      height: 3px;
+      margin: 18px 0 14px;
+      background: rgba(201, 169, 97, .65);
+    }
+
     .subline {
       margin-top: 34px;
       color: var(--gold-soft);
@@ -201,6 +218,8 @@
       color: #8f805b;
       font-size: 15px;
       line-height: 1.9;
+      border-left: 2px solid rgba(201, 169, 97, .24);
+      padding-left: 16px;
     }
 
     .micro {
@@ -262,6 +281,263 @@
       margin-top: -20px;
       position: relative;
     }
+
+    .hero-preview {
+      position: relative;
+      min-height: 650px;
+      animation: wheel-drift 6s ease-in-out infinite;
+    }
+
+    .hero-preview::before {
+      content: "";
+      position: absolute;
+      inset: 18px -74px auto auto;
+      width: 620px;
+      height: 620px;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 50% 50%, rgba(201,169,97,.18), rgba(201,169,97,.08) 35%, transparent 68%),
+        radial-gradient(circle at 52% 48%, rgba(122,59,46,.14), transparent 62%);
+      filter: blur(12px);
+      pointer-events: none;
+    }
+
+    .hero-preview a {
+      display: block;
+      position: relative;
+      color: inherit;
+    }
+
+    .destiny-wheel {
+      position: relative;
+      width: min(46vw, 560px);
+      aspect-ratio: 1;
+      margin: -20px 0 0 auto;
+    }
+
+    .wheel-shell {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      border: 1px solid rgba(201,169,97,.42);
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 50% 50%, rgba(14,11,8,.98) 0 16%, rgba(24,18,12,.96) 16% 27%, rgba(15,12,8,.94) 27% 38%, rgba(11,9,6,.78) 38% 58%, rgba(11,9,6,.12) 58% 62%, transparent 62%),
+        radial-gradient(circle at 50% 50%, rgba(201,169,97,.05), transparent 70%);
+      box-shadow: inset 0 0 0 1px rgba(255,237,198,.06), inset 0 0 44px rgba(201,169,97,.08), 0 26px 82px rgba(0,0,0,.42);
+    }
+
+    .wheel-shell::before,
+    .wheel-shell::after {
+      content: "";
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .wheel-shell::before {
+      inset: 6%;
+      background: radial-gradient(circle, transparent 0 53%, rgba(201,169,97,.18) 53.4% 53.9%, transparent 54.2% 61%, rgba(201,169,97,.14) 61.4% 61.9%, transparent 62.2% 69%, rgba(201,169,97,.12) 69.4% 69.8%, transparent 70.2% 78%, rgba(201,169,97,.08) 78.3% 78.7%, transparent 79%);
+      opacity: .92;
+    }
+
+    .wheel-shell::after {
+      inset: 0;
+      background:
+        conic-gradient(from 0deg, rgba(201,169,97,.18), transparent 12%, transparent 38%, rgba(201,169,97,.08) 50%, transparent 62%, transparent 88%, rgba(201,169,97,.16)),
+        radial-gradient(circle at 50% 50%, transparent 0 60%, rgba(255,240,214,.04) 60% 100%);
+      mix-blend-mode: screen;
+      opacity: .55;
+    }
+
+    .wheel-grid,
+    .wheel-grid::before,
+    .wheel-grid::after {
+      position: absolute;
+      inset: 10%;
+      content: "";
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .wheel-grid {
+      background:
+        linear-gradient(90deg, transparent calc(50% - .5px), rgba(201,169,97,.18) calc(50% - .5px), rgba(201,169,97,.18) calc(50% + .5px), transparent calc(50% + .5px)),
+        linear-gradient(0deg, transparent calc(50% - .5px), rgba(201,169,97,.18) calc(50% - .5px), rgba(201,169,97,.18) calc(50% + .5px), transparent calc(50% + .5px));
+      opacity: .8;
+    }
+
+    .wheel-grid::before {
+      inset: 0;
+      background:
+        linear-gradient(45deg, transparent calc(50% - .5px), rgba(201,169,97,.13) calc(50% - .5px), rgba(201,169,97,.13) calc(50% + .5px), transparent calc(50% + .5px)),
+        linear-gradient(-45deg, transparent calc(50% - .5px), rgba(201,169,97,.13) calc(50% - .5px), rgba(201,169,97,.13) calc(50% + .5px), transparent calc(50% + .5px));
+    }
+
+    .wheel-grid::after {
+      inset: -6%;
+      border: 1px solid rgba(201,169,97,.14);
+    }
+
+    .wheel-constellation,
+    .wheel-radials {
+      position: absolute;
+      inset: 8%;
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .wheel-constellation {
+      background:
+        radial-gradient(circle at 18% 32%, rgba(201,169,97,.95) 0 1.8px, transparent 2.2px),
+        radial-gradient(circle at 28% 58%, rgba(201,169,97,.58) 0 1.6px, transparent 2px),
+        radial-gradient(circle at 42% 24%, rgba(201,169,97,.8) 0 2px, transparent 2.4px),
+        radial-gradient(circle at 56% 68%, rgba(201,169,97,.6) 0 1.8px, transparent 2.2px),
+        radial-gradient(circle at 67% 38%, rgba(201,169,97,.72) 0 2px, transparent 2.4px),
+        radial-gradient(circle at 78% 74%, rgba(201,169,97,.7) 0 1.8px, transparent 2.2px),
+        radial-gradient(circle at 82% 18%, rgba(201,169,97,.48) 0 1.6px, transparent 2px),
+        radial-gradient(circle at 35% 80%, rgba(201,169,97,.5) 0 1.5px, transparent 1.9px);
+      animation: wheel-rotate 32s linear infinite;
+      opacity: .85;
+    }
+
+    .wheel-radials {
+      background:
+        linear-gradient(18deg, transparent 49.8%, rgba(201,169,97,.1) 50%, transparent 50.2%),
+        linear-gradient(78deg, transparent 49.8%, rgba(201,169,97,.09) 50%, transparent 50.2%),
+        linear-gradient(132deg, transparent 49.8%, rgba(201,169,97,.08) 50%, transparent 50.2%);
+      animation: wheel-rotate 52s linear infinite reverse;
+    }
+
+    .wheel-core {
+      position: absolute;
+      inset: 33%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid rgba(201,169,97,.34);
+      border-radius: 50%;
+      padding: 20px;
+      text-align: center;
+      background:
+        radial-gradient(circle at 50% 40%, rgba(81,51,27,.82), rgba(38,24,14,.96) 72%),
+        linear-gradient(135deg, rgba(201,169,97,.18), rgba(122,59,46,.12));
+      box-shadow: inset 0 0 0 1px rgba(255,237,198,.06), 0 0 22px rgba(201,169,97,.12);
+    }
+
+    .wheel-core-title {
+      margin-bottom: 10px;
+      color: #f4ead9;
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: .2em;
+    }
+
+    .wheel-core-motto {
+      margin-bottom: 10px;
+      color: var(--gold);
+      font-size: 30px;
+      font-weight: 700;
+      line-height: 1.15;
+    }
+
+    .wheel-core-sub {
+      color: #9f8969;
+      font-size: 12px;
+      letter-spacing: .18em;
+    }
+
+    .wheel-node {
+      position: absolute;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid rgba(201,169,97,.44);
+      border-radius: 999px;
+      color: #f2e2c1;
+      background: rgba(20,15,10,.88);
+      box-shadow: 0 0 18px rgba(201,169,97,.12);
+      font-weight: 700;
+    }
+
+    .wheel-node-major {
+      width: 70px;
+      height: 70px;
+      font-size: 26px;
+      background: radial-gradient(circle at 50% 35%, rgba(201,169,97,.25), rgba(20,15,10,.94) 70%);
+    }
+
+    .wheel-node-small {
+      width: 42px;
+      height: 42px;
+      color: #d7bd8f;
+      font-size: 16px;
+    }
+
+    .wheel-node-center-top { top: 6%; left: 50%; transform: translateX(-50%); }
+    .wheel-node-left { left: 10%; top: 46%; transform: translateY(-50%); }
+    .wheel-node-right { right: 10%; top: 46%; transform: translateY(-50%); }
+    .wheel-node-lower-left { left: 22%; bottom: 16%; }
+    .wheel-node-lower-right { right: 22%; bottom: 16%; }
+
+    .wheel-copy {
+      position: absolute;
+      right: 0;
+      bottom: 6%;
+      z-index: 3;
+      width: 160px;
+      text-align: right;
+    }
+
+    .wheel-copy-label {
+      display: block;
+      margin-bottom: 6px;
+      color: #7e6849;
+      font-size: 11px;
+      letter-spacing: .26em;
+    }
+
+    .wheel-copy-title {
+      display: block;
+      margin-bottom: 6px;
+      color: #ead9b5;
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .wheel-copy-sub {
+      display: block;
+      color: #9e8867;
+      font-size: 12px;
+      line-height: 1.8;
+    }
+
+    .wheel-orbit-label {
+      position: absolute;
+      z-index: 3;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .wheel-orbit-label b {
+      color: #ead9b5;
+      font-size: 13px;
+      letter-spacing: .12em;
+    }
+
+    .wheel-orbit-label span {
+      color: #8f7958;
+      font-size: 11px;
+      letter-spacing: .18em;
+    }
+
+    .wheel-orbit-top-left { left: 0; top: 18%; }
+    .wheel-orbit-bottom-left { left: 6%; bottom: 10%; }
+    .wheel-orbit-right { right: -2%; top: 22%; text-align: right; }
 
     .hero-art {
       display: none;
@@ -790,15 +1066,32 @@
       .cta { height: 34px; margin-left: 48px; padding: 0 24px; font-size: 13px; border-radius: 5px; }
 
       .hero { min-height: 554px; padding-top: 68px; }
-      .hero-grid { width: 810px; grid-template-columns: 351px 1fr; gap: 52px; }
-      h1 { width: 351px; font-size: 43px; }
+      .hero-grid { width: 900px; grid-template-columns: 405px 1fr; gap: 54px; }
+      h1 { width: 405px; font-size: 43px; line-height: 1.18; }
+      h1 .gold { font-size: 34px; }
+      .hero-title-sep { width: 27px; height: 2px; margin: 12px 0 10px; }
       .subline { margin-top: 23px; font-size: 12px; letter-spacing: 3px; }
-      .desc { margin-top: 12px; max-width: 290px; font-size: 12px; }
-      .micro { width: 378px; gap: 29px; margin-top: 73px; }
+      .desc { margin-top: 12px; max-width: 320px; font-size: 12px; padding-left: 12px; }
+      .micro { width: 405px; gap: 24px; margin-top: 68px; }
       .icon { width: 43px; height: 43px; font-size: 15px; }
       .micro-line { width: 76px; margin: 18px 0 14px 24px; }
       .micro h3 { font-size: 14px; margin-bottom: 7px; }
       .micro p { font-size: 12px; line-height: 1.65; }
+      .hero-preview { min-height: 439px; margin-top: -14px; }
+      .hero-preview::before { inset: -34px -46px auto auto; width: 465px; height: 465px; }
+      .destiny-wheel { width: 405px; margin-top: -10px; }
+      .wheel-core { padding: 15px; }
+      .wheel-core-title { margin-bottom: 7px; font-size: 12px; }
+      .wheel-core-motto { margin-bottom: 7px; font-size: 23px; }
+      .wheel-core-sub { font-size: 10px; }
+      .wheel-node-major { width: 52px; height: 52px; font-size: 20px; }
+      .wheel-node-small { width: 32px; height: 32px; font-size: 12px; }
+      .wheel-copy { width: 120px; }
+      .wheel-copy-label { margin-bottom: 4px; font-size: 9px; }
+      .wheel-copy-title { margin-bottom: 4px; font-size: 12px; }
+      .wheel-copy-sub { font-size: 10px; line-height: 1.6; }
+      .wheel-orbit-label b { font-size: 10px; }
+      .wheel-orbit-label span { font-size: 9px; }
       .astrolabe-wrap { height: 439px; margin-top: -14px; }
       .hero-art { display: block; right: -24px; top: -36px; width: 430px; height: 418px; opacity: .98; }
       .astrolabe-glow,
@@ -881,8 +1174,11 @@
       .links { gap: 28px; }
       .cta { margin-left: 28px; }
       h1 { width: auto; font-size: 54px; }
+      h1 .gold { font-size: .74em; }
       .hero-grid { grid-template-columns: minmax(360px, 480px) 1fr; gap: 36px; }
       .micro { width: auto; gap: 24px; }
+      .hero-preview { min-height: 520px; }
+      .destiny-wheel { width: min(45vw, 500px); }
       .astrolabe { right: -40px; width: 500px; height: 500px; }
       .stone { right: 12px; width: 420px; }
       .stone-line { right: -20px; width: 480px; }
@@ -900,10 +1196,28 @@
       .hero { min-height: auto; padding: 72px 0 48px; }
       .hero-grid { display: block; }
       h1 { font-size: 38px; line-height: 1.28; }
+      h1 .gold { margin-top: 4px; font-size: 30px; }
+      .hero-title-sep { margin: 18px 0 14px; }
       .subline { font-size: 13px; letter-spacing: 2px; }
       .desc { max-width: none; }
       .micro { grid-template-columns: 1fr; gap: 28px; margin-top: 44px; }
       .micro-line { width: calc(100% - 36px); }
+      .hero-preview { min-height: 0; margin-top: 40px; }
+      .hero-preview::before { inset: -28px 0 auto 0; width: 100%; height: 360px; }
+      .destiny-wheel { width: min(88vw, 360px); margin: 0 auto; }
+      .wheel-core { inset: 30%; padding: 12px; }
+      .wheel-core-title { margin-bottom: 8px; font-size: 13px; }
+      .wheel-core-motto { margin-bottom: 8px; font-size: 24px; }
+      .wheel-core-sub { font-size: 10px; letter-spacing: .14em; }
+      .wheel-node-major { width: 58px; height: 58px; font-size: 24px; }
+      .wheel-node-small { width: 38px; height: 38px; font-size: 14px; }
+      .wheel-node-center-top { top: 7%; }
+      .wheel-node-left { left: 9%; }
+      .wheel-node-right { right: 9%; }
+      .wheel-node-lower-left { left: 16%; bottom: 12%; }
+      .wheel-node-lower-right { right: 16%; bottom: 12%; }
+      .wheel-copy,
+      .wheel-orbit-label { display: none; }
       .astrolabe-wrap { height: 420px; margin-top: 40px; }
       .astrolabe-glow { right: 50%; transform: translateX(50%); width: 430px; height: 430px; }
       .astrolabe { right: 50%; transform: translateX(50%); width: 390px; height: 390px; }
@@ -970,38 +1284,70 @@
         <div class="stars" aria-hidden="true"></div>
         <div class="container hero-grid">
           <div>
-            <h1 id="hero-title">命，只是底牌<br>知时，才知道下一步怎么走</h1>
-            <div class="subline">紫微斗数 × 时空推演 × 趋势洞察</div>
-            <p class="desc">同一张命盘，不同的时间，走向截然不同。</p>
+            <h1 id="hero-title">先看命<span class="gold">再看你现在走到哪一步</span></h1>
+            <div class="hero-title-sep"></div>
+            <div class="subline">命盘看底色，大运看节奏，流年看这一年的落点。</div>
+            <p class="desc">阅天先看清底牌，再看此刻该守、该动，还是顺势而行。</p>
 
             <div class="micro" aria-label="排盘方法">
               <div class="micro-item">
-                <div class="icon">局</div>
+                <div class="icon">命</div>
                 <div class="micro-line"></div>
-                <h3>先看格局</h3>
-                <p>看清先天给你的追问起点与底色</p>
+                <h3>命盘底色</h3>
+                <p>命宫、身宫、三方四正，先告诉你底色与根器</p>
               </div>
               <div class="micro-item">
                 <div class="icon">运</div>
                 <div class="micro-line"></div>
-                <h3>再看大运</h3>
-                <p>把握十年趋势，找准人生的节奏</p>
+                <h3>十年节奏</h3>
+                <p>大运看选择与时机，找到人生节奏</p>
               </div>
               <div class="micro-item">
                 <div class="icon">年</div>
                 <div class="micro-line"></div>
-                <h3>最后看流年</h3>
-                <p>洞察每年变化，抓住关键时机</p>
+                <h3>当年落点</h3>
+                <p>流年看这一年的变化，抓住关键时机</p>
               </div>
             </div>
           </div>
 
-          <div class="astrolabe-wrap" aria-hidden="true">
-            <div class="hero-art"></div>
-            <div class="astrolabe-glow"></div>
-            <div class="astrolabe"></div>
-            <div class="stone-line"></div>
-            <div class="stone"></div>
+          <div class="hero-preview">
+            <a href="pages/chart.html" title="点击排盘">
+              <div class="destiny-wheel">
+                <div class="wheel-orbit-label wheel-orbit-top-left">
+                  <b>命盘底色</b>
+                  <span>MING</span>
+                </div>
+                <div class="wheel-orbit-label wheel-orbit-bottom-left">
+                  <b>十年节奏</b>
+                  <span>DAYUN</span>
+                </div>
+                <div class="wheel-orbit-label wheel-orbit-right">
+                  <b>当年落点</b>
+                  <span>LIUNIAN</span>
+                </div>
+                <div class="wheel-shell">
+                  <div class="wheel-grid"></div>
+                  <div class="wheel-radials"></div>
+                  <div class="wheel-constellation"></div>
+                  <div class="wheel-node wheel-node-major wheel-node-center-top">运</div>
+                  <div class="wheel-node wheel-node-small wheel-node-left">命</div>
+                  <div class="wheel-node wheel-node-small wheel-node-right">时</div>
+                  <div class="wheel-node wheel-node-small wheel-node-lower-left">势</div>
+                  <div class="wheel-node wheel-node-small wheel-node-lower-right">机</div>
+                  <div class="wheel-core">
+                    <div class="wheel-core-title">阅天</div>
+                    <div class="wheel-core-motto">知时而动</div>
+                    <div class="wheel-core-sub">命 · 运 · 地</div>
+                  </div>
+                </div>
+                <div class="wheel-copy">
+                  <span class="wheel-copy-label">ZTWEI INSIGHT</span>
+                  <span class="wheel-copy-title">先看底牌</span>
+                  <span class="wheel-copy-sub">再看这十年<br>再看这一年</span>
+                </div>
+              </div>
+            </a>
           </div>
         </div>
       </section>
