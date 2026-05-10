@@ -54,6 +54,18 @@
       from { transform: scaleX(.05); opacity: .22; }
       to { transform: scaleX(1); opacity: 1; }
     }
+    @keyframes halo-spin {
+      from { transform: rotate(0deg) scale(1); }
+      to { transform: rotate(360deg) scale(1); }
+    }
+    @keyframes core-breathe {
+      0%, 100% { transform: scale(1); box-shadow: inset 0 0 0 1px rgba(255,237,198,.06), 0 0 22px rgba(201,169,97,.12); }
+      50% { transform: scale(1.035); box-shadow: inset 0 0 0 1px rgba(255,237,198,.14), 0 0 48px rgba(240,215,155,.28); }
+    }
+    @keyframes glow-travel {
+      0%, 100% { opacity: .18; transform: translate3d(-14px, 0, 0) scaleX(.86); }
+      50% { opacity: .72; transform: translate3d(18px, 0, 0) scaleX(1.08); }
+    }
 
     * { box-sizing: border-box; }
     html { scroll-behavior: smooth; background: var(--bg); }
@@ -382,12 +394,13 @@
       top: 156px;
       right: 4%;
       z-index: 4;
-      width: min(420px, 78%);
-      height: 16px;
+      width: min(460px, 84%);
+      height: 18px;
       pointer-events: none;
-      background: linear-gradient(90deg, transparent, rgba(240, 215, 155, .58), transparent);
-      filter: blur(5px);
-      animation: scan-sweep 5.8s ease-in-out infinite;
+      background:
+        linear-gradient(90deg, transparent, rgba(240, 215, 155, .82), rgba(255,255,255,.36), rgba(240, 215, 155, .48), transparent);
+      filter: blur(4px);
+      animation: scan-sweep 4.8s ease-in-out infinite, glow-travel 2.8s ease-in-out infinite;
     }
 
     .hero-preview a {
@@ -403,8 +416,39 @@
       margin: -20px 0 0 auto;
     }
 
+    .destiny-wheel::before,
+    .destiny-wheel::after {
+      content: "";
+      position: absolute;
+      pointer-events: none;
+      border-radius: 50%;
+    }
+
+    .destiny-wheel::before {
+      inset: -7%;
+      z-index: 0;
+      border: 1px solid rgba(240, 215, 155, .18);
+      background:
+        conic-gradient(from 0deg, transparent 0 12%, rgba(240, 215, 155, .34) 16%, transparent 21% 56%, rgba(201, 169, 97, .24) 62%, transparent 68% 100%);
+      filter: blur(.2px);
+      opacity: .78;
+      animation: halo-spin 26s linear infinite;
+    }
+
+    .destiny-wheel::after {
+      inset: 8%;
+      z-index: 1;
+      background:
+        radial-gradient(circle at 18% 50%, rgba(240, 215, 155, .72) 0 2px, transparent 3px),
+        radial-gradient(circle at 78% 32%, rgba(240, 215, 155, .5) 0 1.5px, transparent 2.5px),
+        radial-gradient(circle at 62% 84%, rgba(201, 169, 97, .42) 0 1.5px, transparent 2.5px);
+      opacity: .62;
+      animation: halo-spin 18s linear infinite reverse;
+    }
+
     .wheel-shell {
       position: relative;
+      z-index: 2;
       width: 100%;
       height: 100%;
       overflow: hidden;
@@ -439,7 +483,7 @@
         conic-gradient(from 0deg, rgba(201,169,97,.18), transparent 12%, transparent 38%, rgba(201,169,97,.08) 50%, transparent 62%, transparent 88%, rgba(201,169,97,.16)),
         radial-gradient(circle at 50% 50%, transparent 0 60%, rgba(255,240,214,.04) 60% 100%);
       mix-blend-mode: screen;
-      opacity: .55;
+      opacity: .76;
       animation: wheel-rotate 80s linear infinite;
     }
 
@@ -517,6 +561,8 @@
         radial-gradient(circle at 50% 40%, rgba(81,51,27,.82), rgba(38,24,14,.96) 72%),
         linear-gradient(135deg, rgba(201,169,97,.18), rgba(122,59,46,.12));
       box-shadow: inset 0 0 0 1px rgba(255,237,198,.06), 0 0 22px rgba(201,169,97,.12);
+      animation: core-breathe 4.8s ease-in-out infinite;
+      transform-origin: center;
     }
 
     .wheel-core-title {
@@ -1237,6 +1283,7 @@
       .hero-preview { min-height: 439px; margin-top: -14px; }
       .hero-preview::before { inset: -34px -46px auto auto; width: 465px; height: 465px; }
       .destiny-wheel { width: 405px; margin-top: -10px; }
+      .destiny-wheel::before { inset: -6%; }
       .wheel-core { padding: 15px; }
       .wheel-core-title { margin-bottom: 7px; font-size: 12px; }
       .wheel-core-motto { margin-bottom: 7px; font-size: 23px; }
@@ -1464,6 +1511,8 @@
         width: min(70vw, 264px);
         margin: 6px 0 0 auto;
       }
+      .destiny-wheel::before,
+      .destiny-wheel::after { display: none; }
       .wheel-core { inset: 29%; padding: 10px; }
       .wheel-core-title { margin-bottom: 6px; font-size: 11px; }
       .wheel-core-motto { margin-bottom: 6px; font-size: 20px; }
