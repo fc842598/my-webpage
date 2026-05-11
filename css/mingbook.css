@@ -12,6 +12,12 @@
   --yt-red: #8e3428;
   --yt-green: #50743c;
   --yt-line: rgba(166, 104, 35, .34);
+  --yt-page-pad-y: clamp(6px, 1.35vh, 14px);
+  --yt-page-pad-x: clamp(14px, 1.9vw, 28px);
+  --yt-topbar-h: clamp(54px, 7.5vh, 70px);
+  --yt-gap-y: clamp(6px, 1.25vh, 12px);
+  --yt-footer-h: clamp(14px, 2.1vh, 20px);
+  --yt-layout-h: calc(100dvh - (var(--yt-page-pad-y) * 2) - var(--yt-topbar-h) - var(--yt-gap-y) - var(--yt-footer-h) - 8px);
 }
 
 * { box-sizing: border-box; }
@@ -42,17 +48,18 @@ button {
 
 .yt-book-app {
   width: 100%;
-  min-height: 100vh;
-  padding: 14px 28px 8px;
+  height: 100dvh;
+  min-height: 0;
+  padding: var(--yt-page-pad-y) var(--yt-page-pad-x) 6px;
   overflow: hidden;
 }
 
 .yt-topbar {
-  width: min(1420px, calc(100vw - 56px));
-  height: 70px;
-  margin: 0 auto 12px;
+  width: min(1420px, calc(100vw - (var(--yt-page-pad-x) * 2)));
+  height: var(--yt-topbar-h);
+  margin: 0 auto var(--yt-gap-y);
   display: grid;
-  grid-template-columns: 250px minmax(560px, 1fr) 150px;
+  grid-template-columns: clamp(210px, 17vw, 250px) minmax(520px, 1fr) 150px;
   align-items: center;
   gap: 28px;
 }
@@ -67,8 +74,8 @@ button {
 
 .yt-brand-mark {
   position: relative;
-  width: 52px;
-  height: 52px;
+  width: clamp(42px, 5.7vh, 52px);
+  height: clamp(42px, 5.7vh, 52px);
   border: 2px solid var(--yt-gold);
   border-radius: 50%;
 }
@@ -95,22 +102,22 @@ button {
 
 .yt-brand strong {
   display: block;
-  font-size: 28px;
+  font-size: clamp(23px, 3.1vh, 28px);
   line-height: 1.1;
   letter-spacing: 0;
 }
 
 .yt-brand small {
   display: block;
-  margin-top: 6px;
+  margin-top: clamp(2px, .7vh, 6px);
   color: #9c8156;
-  font-size: 15px;
+  font-size: clamp(12px, 1.65vh, 15px);
 }
 
 .yt-birth-pill {
   position: relative;
-  min-height: 70px;
-  padding: 12px 180px 10px 24px;
+  min-height: var(--yt-topbar-h);
+  padding: clamp(7px, 1.2vh, 12px) 180px clamp(6px, 1vh, 10px) 24px;
   border: 1px solid rgba(232, 160, 68, .22);
   border-radius: 12px;
   background: rgba(17, 18, 16, .92);
@@ -120,10 +127,10 @@ button {
 .yt-birth-main {
   display: flex;
   flex-wrap: wrap;
-  gap: 16px;
+  gap: clamp(8px, 1.2vw, 16px);
   align-items: center;
   color: #f0d9ab;
-  font-size: 17px;
+  font-size: clamp(14px, 1.9vh, 17px);
   line-height: 1.5;
 }
 
@@ -137,7 +144,7 @@ button {
 
 .yt-birth-sub {
   color: #c49d62;
-  font-size: 15px;
+  font-size: clamp(12px, 1.65vh, 15px);
 }
 
 .yt-outline-btn,
@@ -152,9 +159,10 @@ button {
 .yt-outline-btn {
   position: absolute;
   right: 16px;
-  top: 17px;
+  top: 50%;
+  transform: translateY(-50%);
   min-width: 138px;
-  height: 38px;
+  height: clamp(32px, 4.1vh, 38px);
 }
 
 .yt-old-link {
@@ -166,13 +174,13 @@ button {
 }
 
 .yt-layout {
-  width: min(1420px, calc(100vw - 56px));
-  height: min(780px, calc(100vh - 154px));
-  min-height: 700px;
+  width: min(1420px, calc(100vw - (var(--yt-page-pad-x) * 2)));
+  height: min(780px, max(500px, var(--yt-layout-h)));
+  min-height: 0;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: 220px minmax(760px, 1fr) 240px;
-  gap: 16px;
+  grid-template-columns: clamp(168px, 15vw, 220px) minmax(640px, 1fr) clamp(206px, 16vw, 240px);
+  gap: clamp(10px, 1.1vw, 16px);
 }
 
 .yt-left-book,
@@ -186,7 +194,7 @@ button {
 }
 
 .yt-left-book {
-  padding: 18px 14px;
+  padding: clamp(10px, 1.8vh, 18px) 14px;
   overflow: hidden;
 }
 
@@ -202,23 +210,23 @@ button {
 }
 
 .yt-side-label {
-  margin: 3px 0 16px 28px;
+  margin: 2px 0 clamp(8px, 1.5vh, 16px) 28px;
   color: #746344;
-  font-size: 12px;
+  font-size: clamp(11px, 1.45vh, 12px);
   text-align: center;
 }
 
 .yt-chapters {
   position: relative;
   display: grid;
-  gap: 12px;
+  gap: clamp(7px, 1.2vh, 12px);
   padding-left: 18px;
 }
 
 .yt-chapter-btn {
-  height: 88px;
+  height: clamp(60px, 10.1vh, 88px);
   display: grid;
-  grid-template-columns: 44px 1fr;
+  grid-template-columns: clamp(36px, 4.5vh, 44px) 1fr;
   align-items: center;
   gap: 8px;
   padding: 0 10px;
@@ -236,33 +244,33 @@ button {
 }
 
 .yt-chapter-icon {
-  width: 34px;
-  height: 34px;
+  width: clamp(28px, 4.2vh, 34px);
+  height: clamp(28px, 4.2vh, 34px);
   display: grid;
   place-items: center;
   border: 1px solid rgba(232, 160, 68, .65);
   border-radius: 50%;
   font-family: "Microsoft YaHei", sans-serif;
-  font-size: 18px;
+  font-size: clamp(14px, 2.3vh, 18px);
 }
 
 .yt-chapter-kicker {
   display: block;
   color: #9a7a48;
-  font-size: 12px;
+  font-size: clamp(11px, 1.45vh, 12px);
 }
 
 .yt-chapter-name {
   display: block;
   margin-top: 2px;
   color: #f1c36d;
-  font-size: 24px;
+  font-size: clamp(18px, 3vh, 24px);
   line-height: 1.05;
   letter-spacing: 0;
 }
 
 .yt-center-book {
-  padding: 24px 16px 88px;
+  padding: clamp(14px, 2.4vh, 24px) 16px clamp(68px, 9.4vh, 88px);
 }
 
 .yt-reading-tab {
@@ -270,8 +278,8 @@ button {
   left: 50%;
   top: -1px;
   transform: translateX(-50%);
-  width: 172px;
-  height: 28px;
+  width: clamp(142px, 13vw, 172px);
+  height: clamp(24px, 3.2vh, 28px);
   display: grid;
   place-items: center;
   border: 1px solid rgba(232, 160, 68, .55);
@@ -279,14 +287,14 @@ button {
   background: #151007;
   color: var(--yt-gold);
   font-weight: 700;
-  font-size: 14px;
+  font-size: clamp(12px, 1.7vh, 14px);
 }
 
 .yt-paper {
   height: 100%;
-  max-height: 610px;
+  max-height: none;
   overflow: hidden;
-  padding: 26px 34px;
+  padding: clamp(16px, 2.5vh, 26px) clamp(22px, 2.4vw, 34px);
   border: 1px solid rgba(166, 104, 35, .48);
   border-radius: 8px;
   background:
@@ -305,40 +313,40 @@ button {
 
 .paper-stamp {
   display: inline-flex;
-  min-width: 112px;
-  height: 32px;
+  min-width: clamp(96px, 8vw, 112px);
+  height: clamp(26px, 3.5vh, 32px);
   align-items: center;
   justify-content: center;
   border: 1px solid rgba(142, 52, 40, .42);
   border-radius: 4px;
   color: var(--yt-red);
   font-weight: 700;
-  font-size: 14px;
+  font-size: clamp(12px, 1.65vh, 14px);
 }
 
 .paper-title {
   margin: -4px 0 0;
   color: var(--yt-ink);
   text-align: center;
-  font-size: 36px;
+  font-size: clamp(28px, 4.1vh, 36px);
   line-height: 1.15;
 }
 
 .paper-subtitle {
-  margin: 8px auto 24px;
+  margin: clamp(4px, .9vh, 8px) auto clamp(12px, 2.1vh, 24px);
   color: var(--yt-muted);
   text-align: center;
-  font-size: 15px;
+  font-size: clamp(12px, 1.7vh, 15px);
 }
 
 .mingpan-grid {
   display: grid;
   grid-template-columns: 300px 1fr;
-  gap: 26px;
+  gap: clamp(14px, 1.3vw, 26px);
 }
 
 .palace-mini {
-  padding: 22px 18px;
+  padding: clamp(12px, 2vh, 22px) clamp(12px, 1.2vw, 18px);
   border: 1px solid rgba(166, 104, 35, .34);
   border-radius: 7px;
 }
@@ -380,9 +388,9 @@ button {
   flex-wrap: wrap;
   justify-content: center;
   gap: 12px 24px;
-  margin: -10px 0 16px;
+  margin: -8px 0 clamp(8px, 1.4vh, 16px);
   color: #6e5738;
-  font-size: 13px;
+  font-size: clamp(11px, 1.55vh, 13px);
 }
 
 .mingpan-grid-real {
@@ -417,12 +425,12 @@ button {
 .real-palace-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 8px;
+  gap: clamp(5px, .8vh, 8px);
 }
 
 .real-palace-cell {
-  min-height: 76px;
-  padding: 7px 8px;
+  min-height: clamp(58px, 8.6vh, 76px);
+  padding: clamp(5px, .8vh, 7px) 8px;
   border: 1px solid rgba(166, 104, 35, .3);
   border-radius: 6px;
   background: rgba(238, 211, 164, .26);
@@ -450,20 +458,20 @@ button {
 
 .real-palace-head b {
   color: #2d1d12;
-  font-size: 15px;
+  font-size: clamp(13px, 1.8vh, 15px);
 }
 
 .real-palace-head em {
   color: #8e3428;
   font-style: normal;
-  font-size: 12px;
+  font-size: clamp(10px, 1.4vh, 12px);
 }
 
 .real-palace-cell strong {
   display: block;
-  min-height: 24px;
+  min-height: clamp(18px, 3vh, 24px);
   color: #7a4d18;
-  font-size: 12px;
+  font-size: clamp(10px, 1.48vh, 12px);
   line-height: 1.35;
 }
 
@@ -471,11 +479,11 @@ button {
   display: block;
   margin-top: 4px;
   color: var(--yt-muted);
-  font-size: 11px;
+  font-size: clamp(9px, 1.35vh, 11px);
 }
 
 .palace-detail-panel {
-  padding: 14px;
+  padding: clamp(10px, 1.65vh, 14px);
   border: 1px solid rgba(166, 104, 35, .34);
   border-radius: 7px;
   background: rgba(231, 204, 157, .34);
@@ -499,7 +507,7 @@ button {
   margin: 0;
   color: var(--yt-ink);
   text-align: center;
-  font-size: 24px;
+  font-size: clamp(18px, 2.8vh, 24px);
 }
 
 .star-chip-row {
@@ -510,12 +518,12 @@ button {
 }
 
 .star-chip-row span {
-  padding: 4px 8px;
+  padding: clamp(3px, .5vh, 4px) 8px;
   border: 1px solid rgba(166, 104, 35, .24);
   border-radius: 999px;
   background: rgba(255, 236, 196, .38);
   color: #5d4227;
-  font-size: 12px;
+  font-size: clamp(10px, 1.42vh, 12px);
 }
 
 .star-chip-row.major span {
@@ -530,12 +538,12 @@ button {
 .palace-facts {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 8px;
+  gap: clamp(5px, .8vh, 8px);
   margin-top: 8px;
 }
 
 .palace-facts div {
-  padding: 9px;
+  padding: clamp(6px, .9vh, 9px);
   border: 1px solid rgba(166, 104, 35, .22);
   border-radius: 5px;
   background: rgba(255, 240, 205, .28);
@@ -544,20 +552,20 @@ button {
 .palace-facts span {
   display: block;
   color: var(--yt-muted);
-  font-size: 11px;
+  font-size: clamp(9px, 1.3vh, 11px);
 }
 
 .palace-facts strong {
   display: block;
   margin-top: 4px;
   color: var(--yt-ink);
-  font-size: 14px;
+  font-size: clamp(12px, 1.65vh, 14px);
 }
 
 .palace-note {
   margin: 8px 0 0;
   color: var(--yt-muted);
-  font-size: 13px;
+  font-size: clamp(11px, 1.48vh, 13px);
   line-height: 1.5;
 }
 
@@ -636,10 +644,10 @@ button {
 
 .paper-cta {
   width: min(280px, 100%);
-  height: 48px;
+  height: clamp(38px, 5.3vh, 48px);
   display: grid;
   place-items: center;
-  margin: 26px auto 0;
+  margin: clamp(12px, 2vh, 26px) auto 0;
   text-decoration: none;
 }
 
@@ -855,8 +863,8 @@ button {
   position: absolute;
   left: 16px;
   right: 16px;
-  bottom: 34px;
-  height: 58px;
+  bottom: clamp(26px, 3.8vh, 34px);
+  height: clamp(46px, 6.4vh, 58px);
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   border: 1px solid rgba(232, 160, 68, .24);
@@ -885,24 +893,24 @@ button {
   position: absolute;
   left: 16px;
   right: 16px;
-  bottom: 8px;
-  height: 22px;
+  bottom: 6px;
+  height: clamp(16px, 2.4vh, 22px);
   color: #9e7b48;
-  font-size: 12px;
+  font-size: clamp(10px, 1.45vh, 12px);
   text-align: center;
 }
 
 .yt-right-book {
-  padding: 46px 24px;
+  padding: clamp(26px, 4.8vh, 46px) clamp(16px, 1.7vw, 24px);
   overflow: hidden;
 }
 
 .yt-astrolabe {
   position: absolute;
-  width: 250px;
-  height: 250px;
+  width: clamp(180px, 27vh, 250px);
+  height: clamp(180px, 27vh, 250px);
   right: -80px;
-  top: 58px;
+  top: clamp(38px, 6.2vh, 58px);
   border: 1px solid rgba(166, 104, 35, .11);
   border-radius: 50%;
   box-shadow: inset 0 0 0 34px rgba(166, 104, 35, .03), inset 0 0 0 72px rgba(166, 104, 35, .025);
@@ -910,25 +918,25 @@ button {
 
 .yt-right-book h2 {
   position: relative;
-  margin: 36px 0 28px;
+  margin: clamp(22px, 3.9vh, 36px) 0 clamp(16px, 2.8vh, 28px);
   color: #f0bf64;
   text-align: center;
-  font-size: 23px;
+  font-size: clamp(19px, 2.7vh, 23px);
 }
 
 .yt-action-list {
   position: relative;
   display: grid;
-  gap: 18px;
+  gap: clamp(10px, 1.7vh, 18px);
 }
 
 .yt-action {
-  min-height: 94px;
+  min-height: clamp(70px, 10.2vh, 94px);
   display: grid;
-  grid-template-columns: 42px 1fr 18px;
+  grid-template-columns: clamp(32px, 4.5vh, 42px) 1fr 18px;
   align-items: center;
   gap: 10px;
-  padding: 14px;
+  padding: clamp(9px, 1.5vh, 14px);
   border: 1px solid rgba(232, 160, 68, .32);
   border-radius: 7px;
   background: rgba(22, 19, 14, .88);
@@ -942,8 +950,8 @@ button {
 }
 
 .yt-action-icon {
-  width: 34px;
-  height: 34px;
+  width: clamp(28px, 4vh, 34px);
+  height: clamp(28px, 4vh, 34px);
   display: grid;
   place-items: center;
   border: 1px solid rgba(232, 160, 68, .55);
@@ -952,35 +960,36 @@ button {
 
 .yt-action strong {
   display: block;
-  font-size: 17px;
+  font-size: clamp(14px, 2vh, 17px);
   white-space: nowrap;
 }
 
 .yt-action span {
   display: block;
-  margin-top: 5px;
+  margin-top: clamp(2px, .6vh, 5px);
   color: #9f8151;
-  font-size: 12px;
-  line-height: 1.5;
+  font-size: clamp(10px, 1.42vh, 12px);
+  line-height: 1.45;
 }
 
 .yt-action-note {
   position: absolute;
   left: 32px;
   right: 32px;
-  bottom: 54px;
+  bottom: clamp(28px, 5.8vh, 54px);
   margin: 0;
   color: #7d6847;
-  font-size: 13px;
+  font-size: clamp(11px, 1.45vh, 13px);
   line-height: 1.7;
   text-align: center;
 }
 
 .yt-footer {
-  width: min(1420px, calc(100vw - 56px));
-  margin: 8px auto 0;
+  width: min(1420px, calc(100vw - (var(--yt-page-pad-x) * 2)));
+  height: var(--yt-footer-h);
+  margin: 6px auto 0;
   color: #5c5850;
-  font-size: 14px;
+  font-size: clamp(11px, 1.5vh, 14px);
   text-align: center;
 }
 
@@ -1111,6 +1120,8 @@ button {
 
 @media (max-width: 1180px) {
   .yt-book-app {
+    height: auto;
+    min-height: 100vh;
     overflow: auto;
   }
 
@@ -1131,6 +1142,7 @@ button {
 
   .yt-outline-btn {
     position: static;
+    transform: none;
     margin-top: 10px;
   }
 
@@ -1150,7 +1162,7 @@ button {
   }
 
   .yt-center-book {
-    min-height: 760px;
+    min-height: 720px;
   }
 }
 
