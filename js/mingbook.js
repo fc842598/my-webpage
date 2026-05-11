@@ -29,6 +29,22 @@
     gender: 'male',
     city: '北京市 东城区',
   };
+  const starProfiles = {
+    '紫微': { trait: '主见强，重秩序与掌控，适合站到台前承担责任', career: '利管理、组织、大型平台与需要决策的位置', wealth: '财随地位与资源而来，重在守成与统筹', love: '择偶标准高，关系里需要尊重与安全感', risk: '忌过度要面子，需学会听取不同意见' },
+    '天机': { trait: '思维快，善谋划，适合变化与信息密集的环境', career: '利策划、咨询、技术、研究和流程优化', wealth: '靠技能、信息差和灵活判断得财', love: '感情中容易想太多，需要稳定沟通', risk: '忌三心二意，先定方向再行动' },
+    '太阳': { trait: '外向热心，重名誉与责任，愿意照顾他人', career: '利教育、公职、传播、医疗和对外服务', wealth: '财与名望、影响力、公开机会相关', love: '表达直接，但容易因忙事业忽略伴侣', risk: '忌过度消耗精力，需留意作息' },
+    '武曲': { trait: '务实果断，重效率和结果，抗压能力强', career: '利财务、金融、工程、军警和执行管理', wealth: '理财意识强，适合靠专业和执行积累', love: '不善甜言，重行动和责任', risk: '忌太硬太急，合作中要留弹性' },
+    '天同': { trait: '温和随缘，重生活感和情绪舒适', career: '利服务、文艺、教育、餐饮和照顾型行业', wealth: '财运平稳，但容易为享受花钱', love: '重温情与陪伴，关系需要主动经营', risk: '忌安逸拖延，关键处要主动推进' },
+    '廉贞': { trait: '有魅力也有原则，竞争心强，情绪起伏明显', career: '利法律、管理、艺术、品牌和规则型事务', wealth: '财运有波动，适合控风险后再扩张', love: '桃花感强，关系里需减少试探', risk: '忌冲动和是非，先稳情绪再决策' },
+    '天府': { trait: '稳健务实，重安全感和资源积累', career: '利行政、财务、审计、管理和守成型岗位', wealth: '财库稳，适合长期积累和稳健配置', love: '重承诺与现实保障，关系稳定为佳', risk: '忌过保守，机会来时要敢于落子' },
+    '太阴': { trait: '细腻敏感，直觉强，适合幕后和审美型事务', career: '利设计、心理、文化、内容和精细管理', wealth: '适合慢慢积累，重隐性资产和稳定现金流', love: '感情含蓄深沉，需要被理解', risk: '忌情绪内耗，重要事要说清楚' },
+    '贪狼': { trait: '社交强，兴趣广，欲望和创造力都旺', career: '利销售、公关、娱乐、品牌、流量和资源整合', wealth: '偏财机会多，但也容易因享乐破财', love: '桃花旺，关系里需保持边界', risk: '忌贪快贪多，选择比冲刺重要' },
+    '巨门': { trait: '善分析表达，怀疑精神强，适合深度判断', career: '利法律、咨询、写作、教学、谈判和信息分析', wealth: '靠口才、知识和信息获财', love: '关系易有口舌，需减少反复质疑', risk: '忌言语过锋，沟通要留余地' },
+    '天相': { trait: '正直守则，重信誉与协作，适合做可信赖的人', career: '利行政、顾问、监察、法务和服务管理', wealth: '正财稳定，靠信誉与能力积累', love: '重承诺和礼仪，适合稳定关系', risk: '忌太依赖规则，要保留灵活度' },
+    '天梁': { trait: '有保护欲和责任感，重道义，能处理难题', career: '利医疗、公益、法律、咨询、教育和解难型事务', wealth: '财运平稳，常有贵人或缓冲', love: '愿照顾对方，但别承担过度', risk: '忌替人背太多压力，要分清边界' },
+    '七杀': { trait: '独立果断，行动力强，不喜被束缚', career: '利创业、武职、体育、项目攻坚和开拓型岗位', wealth: '靠行动和风险判断得财，起伏也较明显', love: '感情直接强势，需要学会妥协', risk: '忌冲动硬碰，重要事先算代价' },
+    '破军': { trait: '敢破旧局，变化力强，适合新赛道和重组', career: '利创业、改革、新兴行业和独立经营', wealth: '财运有破有立，适合先控成本再扩张', love: '关系不喜束缚，需要自由与信任', risk: '忌先破后想，行动前要留后路' },
+  };
 
   const state = {
     chapter: new URLSearchParams(location.search).get('chapter') || 'chart',
@@ -326,6 +342,105 @@
     `;
   }
 
+  function normalizePalaceName(name = '') {
+    return String(name).replace(/宫/g, '');
+  }
+
+  function findPalaceByName(chart, name) {
+    const target = normalizePalaceName(name);
+    return (chart?.palaces || []).find((palace) => normalizePalaceName(palace.name) === target)
+      || (chart?.palaces || []).find((palace) => normalizePalaceName(palace.name).includes(target));
+  }
+
+  function majorNames(palace) {
+    return (palace?.majorStars || []).map((star) => star.name || star).filter(Boolean);
+  }
+
+  function allReadableStars(palace) {
+    return [
+      ...(palace?.majorStars || []),
+      ...(palace?.minorStars || []),
+      ...(palace?.adjectiveStars || palace?.adjStars || []),
+    ];
+  }
+
+  function mutagenText(palace) {
+    return allReadableStars(palace)
+      .filter((star) => star?.mutagen)
+      .map((star) => `${star.name}${star.mutagen}`);
+  }
+
+  function allMutagens(chart) {
+    return (chart?.palaces || []).flatMap((palace) =>
+      allReadableStars(palace)
+        .filter((star) => star?.mutagen)
+        .map((star) => `${palace.name}${star.mutagen}(${star.name})`)
+    );
+  }
+
+  function hasStar(palace, name) {
+    return allReadableStars(palace).some((star) => String(star.name || star).includes(name));
+  }
+
+  function palaceMainLabel(palace) {
+    const names = majorNames(palace);
+    return names.length ? names.join('、') : '空宫';
+  }
+
+  function palaceAge(palace) {
+    return palace?.decadal?.range ? `${palace.decadal.range[0]}-${palace.decadal.range[1]}岁` : '大限未标注';
+  }
+
+  function firstProfile(palace) {
+    return starProfiles[majorNames(palace)[0]] || null;
+  }
+
+  function compactSentence(text, fallback) {
+    const value = String(text || fallback || '').trim();
+    return value.endsWith('。') ? value : `${value}。`;
+  }
+
+  function buildSummaryData(chart) {
+    const life = findLifePalace(chart);
+    const body = findBodyPalace(chart);
+    const career = findPalaceByName(chart, '官禄');
+    const wealth = findPalaceByName(chart, '财帛');
+    const love = findPalaceByName(chart, '夫妻');
+    const travel = findPalaceByName(chart, '迁移');
+    const lifeProfile = firstProfile(life);
+    const careerProfile = firstProfile(career);
+    const wealthProfile = firstProfile(wealth);
+    const loveProfile = firstProfile(love);
+    const mutagens = allMutagens(chart);
+    const ji = mutagens.filter((item) => item.includes('化忌'));
+
+    const overview = [
+      chart.zodiac ? `${chart.zodiac}年生` : '',
+      chart.fiveElementsClass || '',
+      `命宫${life?.earthlyBranch || '未见'}`,
+      body ? `身宫落${body.name}` : '',
+    ].filter(Boolean).join(' · ');
+
+    const points = [
+      ['命盘总览', `${overview}。命宫主星${palaceMainLabel(life)}，身宫主星${palaceMainLabel(body)}。`],
+      ['先天格局', `${lifeProfile ? lifeProfile.trait : '命宫空宫，需借三方四正与对宫综合定性'}。${mutagens.length ? `生年四化见${mutagens.slice(0, 4).join('、')}。` : '四化不显，格局看宫位组合。'}`],
+      ['性格特质', `${lifeProfile ? lifeProfile.trait : '适应力强，但主线需要后天沉淀'}${hasStar(life, '文昌') || hasStar(life, '文曲') ? '，带文昌文曲，表达与学习力更强' : ''}${hasStar(life, '左辅') || hasStar(life, '右弼') ? '，有辅弼贵人助力' : ''}。`],
+      ['事业财运', `官禄宫${palaceMainLabel(career)}：${careerProfile ? careerProfile.career : '事业方向宜结合命宫与迁移宫判断'}。财帛宫${palaceMainLabel(wealth)}：${wealthProfile ? wealthProfile.wealth : '财运重在稳定规划'}。`],
+      ['感情婚姻', `夫妻宫${palaceMainLabel(love)}：${loveProfile ? loveProfile.love : '感情需要主动经营与清晰沟通'}。${mutagenText(love).length ? `夫妻宫四化：${mutagenText(love).join('、')}。` : ''}`],
+      ['关键提醒', ji.length ? `化忌落点：${ji.join('、')}，对应领域少冲动、多复盘。` : compactSentence(lifeProfile?.risk, '当前命盘阻滞不重，但仍需结合大运看节奏')],
+    ];
+
+    const evidence = [
+      ['命宫依据', `${life?.heavenlyStem || ''}${life?.earthlyBranch || ''} · ${palaceMainLabel(life)} · ${palaceAge(life)}`],
+      ['身宫依据', body ? `${body.name} · ${body.heavenlyStem || ''}${body.earthlyBranch || ''} · ${palaceMainLabel(body)}` : '身宫未见，先按命宫与三方四正判断。'],
+      ['事业财帛', `官禄${palaceMainLabel(career)}；财帛${palaceMainLabel(wealth)}。`],
+      ['感情迁移', `夫妻${palaceMainLabel(love)}；迁移${palaceMainLabel(travel)}。`],
+      ['四化分布', mutagens.length ? mutagens.join('、') : '未读取到明显生年四化。'],
+    ];
+
+    return { points, evidence, life, body, career, wealth, love, mutagens };
+  }
+
   function fillBirthForm() {
     const map = {
       mbYear: state.profile.year,
@@ -451,31 +566,40 @@
   }
 
   function renderSummary() {
-    const points = [
-      ['先天格局', '日主壬水，生于巳月，火旺水弱，幸得庚金相生。'],
-      ['性格特质', '聪明机敏，思维活跃，外柔内刚，富有同理心。'],
-      ['事业财运', '利于学术、策划、咨询、技术与资源整合。'],
-      ['感情婚姻', '重视精神契合，宜晚婚，更利于长久。'],
-      ['关键提醒', '先稳节奏，再求突破；流年起伏需结合大运看。'],
-    ];
+    const bundle = getChartBundle();
+    if (bundle.error) {
+      return `
+        ${paperHead('第二章 · 总批', 'AI 整体批命', '先生成命盘，再读取总批。')}
+        <section class="chart-error">
+          <h2>总批暂未生成</h2>
+          <p>${escapeHtml(bundle.error)}</p>
+          <button type="button" class="paper-cta" id="openBirthFromError">编辑出生信息</button>
+        </section>
+      `;
+    }
+    const { chart } = bundle;
+    const summary = buildSummaryData(chart);
+    const lifeName = palaceMainLabel(summary.life);
+    const bodyName = palaceMainLabel(summary.body);
     return `
       ${paperHead('第二章 · 总批', 'AI 整体批命', '先天格局 · 人生底色 · 命运趋势')}
+      <div class="summary-meta-strip">
+        <span><b>命宫</b>${escapeHtml(lifeName)}</span>
+        <span><b>身宫</b>${escapeHtml(summary.body?.name || '未见')} · ${escapeHtml(bodyName)}</span>
+        <span><b>四化</b>${summary.mutagens.length ? `${summary.mutagens.length}处` : '未显'}</span>
+      </div>
       <div class="summary-grid">
         <section class="key-points">
-          ${points.map((item) => `
+          ${summary.points.map((item) => `
             <div class="key-point">
               <span>◇</span>
-              <div><b>${item[0]}</b><p>${item[1]}</p></div>
+              <div><b>${escapeHtml(item[0])}</b><p>${escapeHtml(item[1])}</p></div>
             </div>
           `).join('')}
         </section>
         <aside class="evidence-panel">
           <h3>批命依据</h3>
-          ${[
-            ['命盘总览', '命宫、身宫、四柱、三方四正综合判断。'],
-            ['命格定位', '水火交界，先稳心气，再借金生水。'],
-            ['格局优势', '善思辨，适合技术整合与咨询。'],
-          ].map((item) => `<div class="evidence-card"><strong>${item[0]}</strong><p>${item[1]}</p></div>`).join('')}
+          ${summary.evidence.map((item) => `<div class="evidence-card"><strong>${escapeHtml(item[0])}</strong><p>${escapeHtml(item[1])}</p></div>`).join('')}
         </aside>
       </div>
       <a class="paper-cta" href="#" data-chapter="special">继续看第三章 · 专项</a>
