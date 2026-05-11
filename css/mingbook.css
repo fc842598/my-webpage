@@ -18,6 +18,8 @@
   --yt-gap-y: clamp(6px, 1.25vh, 12px);
   --yt-footer-h: clamp(14px, 2.1vh, 20px);
   --yt-layout-h: calc(100dvh - (var(--yt-page-pad-y) * 2) - var(--yt-topbar-h) - var(--yt-gap-y) - var(--yt-footer-h) - 8px);
+  --yt-shell-max: 1280px;
+  --yt-shell-side-space: clamp(56px, 6vw, 160px);
 }
 
 * { box-sizing: border-box; }
@@ -55,27 +57,27 @@ button {
 }
 
 .yt-topbar {
-  width: min(1420px, calc(100vw - (var(--yt-page-pad-x) * 2)));
+  width: min(var(--yt-shell-max), calc(100vw - (var(--yt-shell-side-space) * 2)));
   height: var(--yt-topbar-h);
   margin: 0 auto var(--yt-gap-y);
   display: grid;
-  grid-template-columns: clamp(210px, 17vw, 250px) minmax(520px, 1fr) 150px;
+  grid-template-columns: clamp(190px, 15vw, 230px) minmax(460px, 1fr) 140px;
   align-items: center;
-  gap: 28px;
+  gap: clamp(16px, 1.6vw, 24px);
 }
 
 .yt-brand {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 12px;
   color: var(--yt-gold);
   text-decoration: none;
 }
 
 .yt-brand-mark {
   position: relative;
-  width: clamp(42px, 5.7vh, 52px);
-  height: clamp(42px, 5.7vh, 52px);
+  width: clamp(38px, 5.2vh, 48px);
+  height: clamp(38px, 5.2vh, 48px);
   border: 2px solid var(--yt-gold);
   border-radius: 50%;
 }
@@ -102,7 +104,7 @@ button {
 
 .yt-brand strong {
   display: block;
-  font-size: clamp(23px, 3.1vh, 28px);
+  font-size: clamp(21px, 2.8vh, 25px);
   line-height: 1.1;
   letter-spacing: 0;
 }
@@ -111,7 +113,7 @@ button {
   display: block;
   margin-top: clamp(2px, .7vh, 6px);
   color: #9c8156;
-  font-size: clamp(12px, 1.65vh, 15px);
+  font-size: clamp(11px, 1.45vh, 13px);
 }
 
 .yt-birth-pill {
@@ -130,7 +132,7 @@ button {
   gap: clamp(8px, 1.2vw, 16px);
   align-items: center;
   color: #f0d9ab;
-  font-size: clamp(14px, 1.9vh, 17px);
+  font-size: clamp(13px, 1.65vh, 15px);
   line-height: 1.5;
 }
 
@@ -139,12 +141,12 @@ button {
   border: 1px solid rgba(232, 160, 68, .4);
   border-radius: 5px;
   color: var(--yt-gold);
-  font-size: 14px;
+  font-size: 12px;
 }
 
 .yt-birth-sub {
   color: #c49d62;
-  font-size: clamp(12px, 1.65vh, 15px);
+  font-size: clamp(11px, 1.45vh, 13px);
 }
 
 .yt-outline-btn,
@@ -170,16 +172,17 @@ button {
   align-items: center;
   justify-content: center;
   height: 42px;
+  font-size: clamp(13px, 1.55vh, 15px);
   white-space: nowrap;
 }
 
 .yt-layout {
-  width: min(1420px, calc(100vw - (var(--yt-page-pad-x) * 2)));
+  width: min(var(--yt-shell-max), calc(100vw - (var(--yt-shell-side-space) * 2)));
   height: min(780px, max(500px, var(--yt-layout-h)));
   min-height: 0;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: clamp(168px, 15vw, 220px) minmax(640px, 1fr) clamp(206px, 16vw, 240px);
+  grid-template-columns: clamp(150px, 14vw, 208px) minmax(560px, 1fr) clamp(184px, 15vw, 220px);
   gap: clamp(10px, 1.1vw, 16px);
 }
 
@@ -224,7 +227,7 @@ button {
 }
 
 .yt-chapter-btn {
-  height: clamp(60px, 10.1vh, 88px);
+  height: clamp(56px, 9.2vh, 80px);
   display: grid;
   grid-template-columns: clamp(36px, 4.5vh, 44px) 1fr;
   align-items: center;
@@ -264,7 +267,7 @@ button {
   display: block;
   margin-top: 2px;
   color: #f1c36d;
-  font-size: clamp(18px, 3vh, 24px);
+  font-size: clamp(16px, 2.45vh, 20px);
   line-height: 1.05;
   letter-spacing: 0;
 }
@@ -328,7 +331,7 @@ button {
   margin: -4px 0 0;
   color: var(--yt-ink);
   text-align: center;
-  font-size: clamp(28px, 4.1vh, 36px);
+  font-size: clamp(24px, 3.45vh, 32px);
   line-height: 1.15;
 }
 
@@ -336,7 +339,7 @@ button {
   margin: clamp(4px, .9vh, 8px) auto clamp(12px, 2.1vh, 24px);
   color: var(--yt-muted);
   text-align: center;
-  font-size: clamp(12px, 1.7vh, 15px);
+  font-size: clamp(11px, 1.45vh, 13px);
 }
 
 .mingpan-grid {
@@ -653,13 +656,13 @@ button {
 
 .summary-grid {
   display: grid;
-  grid-template-columns: 1fr 230px;
-  gap: 28px;
+  grid-template-columns: 1fr 210px;
+  gap: 22px;
 }
 
 .key-points {
   display: grid;
-  gap: 16px;
+  gap: clamp(10px, 1.6vh, 14px);
 }
 
 .key-point {
@@ -670,8 +673,8 @@ button {
 
 .key-point b {
   display: block;
-  margin-bottom: 5px;
-  font-size: 18px;
+  margin-bottom: 3px;
+  font-size: clamp(15px, 2vh, 17px);
 }
 
 .key-point p,
@@ -682,26 +685,26 @@ button {
 .fortune-card p {
   margin: 0;
   color: var(--yt-muted);
-  font-size: 13px;
+  font-size: clamp(11px, 1.45vh, 12px);
   line-height: 1.55;
 }
 
 .evidence-panel {
-  padding: 16px;
+  padding: clamp(12px, 1.7vh, 14px);
   border: 1px solid rgba(166, 104, 35, .34);
   border-radius: 7px;
   background: rgba(231, 204, 157, .34);
 }
 
 .evidence-panel h3 {
-  margin: 0 0 12px;
+  margin: 0 0 10px;
   text-align: center;
-  font-size: 20px;
+  font-size: clamp(17px, 2.2vh, 19px);
 }
 
 .evidence-card {
-  padding: 12px;
-  margin-top: 10px;
+  padding: 10px;
+  margin-top: 8px;
 }
 
 .special-overview {
@@ -921,7 +924,7 @@ button {
   margin: clamp(22px, 3.9vh, 36px) 0 clamp(16px, 2.8vh, 28px);
   color: #f0bf64;
   text-align: center;
-  font-size: clamp(19px, 2.7vh, 23px);
+  font-size: clamp(17px, 2.25vh, 20px);
 }
 
 .yt-action-list {
@@ -932,6 +935,7 @@ button {
 
 .yt-action {
   min-height: clamp(70px, 10.2vh, 94px);
+  min-width: 0;
   display: grid;
   grid-template-columns: clamp(32px, 4.5vh, 42px) 1fr 18px;
   align-items: center;
@@ -960,16 +964,22 @@ button {
 
 .yt-action strong {
   display: block;
-  font-size: clamp(14px, 2vh, 17px);
+  font-size: clamp(13px, 1.7vh, 15px);
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .yt-action span {
   display: block;
   margin-top: clamp(2px, .6vh, 5px);
   color: #9f8151;
-  font-size: clamp(10px, 1.42vh, 12px);
+  font-size: clamp(10px, 1.3vh, 11px);
   line-height: 1.45;
+}
+
+.yt-action > span:not(.yt-action-icon) {
+  min-width: 0;
 }
 
 .yt-action-note {
@@ -985,7 +995,7 @@ button {
 }
 
 .yt-footer {
-  width: min(1420px, calc(100vw - (var(--yt-page-pad-x) * 2)));
+  width: min(var(--yt-shell-max), calc(100vw - (var(--yt-shell-side-space) * 2)));
   height: var(--yt-footer-h);
   margin: 6px auto 0;
   color: #5c5850;
