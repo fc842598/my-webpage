@@ -276,6 +276,38 @@ button {
   padding: clamp(14px, 2.4vh, 24px) 16px clamp(68px, 9.4vh, 88px);
 }
 
+.yt-center-book.chart-mode {
+  padding-bottom: clamp(12px, 2vh, 20px);
+}
+
+.yt-center-book.chart-mode .yt-special-tabs,
+.yt-center-book.chart-mode .yt-hidden-note {
+  display: none;
+}
+
+.yt-center-book.chart-mode .yt-paper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: clamp(14px, 2vh, 18px);
+  padding-bottom: clamp(12px, 2vh, 18px);
+}
+
+.yt-center-book.chart-mode .paper-title {
+  margin-top: 2px;
+  font-size: clamp(22px, 3.2vh, 28px);
+  line-height: 1.05;
+}
+
+.yt-center-book.chart-mode .paper-subtitle {
+  display: none;
+}
+
+.yt-center-book.chart-mode .chart-profile-line {
+  margin: clamp(5px, .9vh, 8px) 0 clamp(7px, 1.1vh, 10px);
+  font-size: clamp(10px, 1.45vh, 12px);
+}
+
 .yt-reading-tab {
   position: absolute;
   left: 50%;
@@ -490,6 +522,273 @@ button {
   border: 1px solid rgba(166, 104, 35, .34);
   border-radius: 7px;
   background: rgba(231, 204, 157, .34);
+}
+
+.mb-classic-chart-wrap {
+  height: calc(100% - clamp(130px, 18vh, 164px));
+  min-height: 0;
+  display: grid;
+  place-items: center;
+}
+
+.yt-center-book.chart-mode .mb-classic-chart-wrap {
+  flex: 1;
+  width: 100%;
+  height: auto;
+}
+
+.mb-classic-chart {
+  width: min(100%, 720px);
+  height: min(100%, 530px);
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: 1.18fr 1.26fr 1.26fr 1fr;
+  gap: 1px;
+  border: 1px solid #d2c4b5;
+  border-radius: 5px;
+  background: #d2c4b5;
+  overflow: hidden;
+  box-shadow: 0 1px 0 rgba(255,255,255,.35);
+}
+
+.yt-center-book.chart-mode .mb-classic-chart {
+  width: auto;
+  max-width: min(100%, 720px);
+  height: min(100%, 600px);
+  aspect-ratio: 1 / 1.18;
+}
+
+.mb-classic-cell {
+  min-width: 0;
+  min-height: 0;
+  padding: 6px 7px;
+  border: 0;
+  background: #fdfcf9;
+  color: #2d2420;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: left;
+  overflow: hidden;
+}
+
+.mb-classic-cell:hover {
+  background: #f7f2ea;
+}
+
+.mb-classic-cell.is-life {
+  background: #fae5df;
+}
+
+.mb-classic-cell.is-body {
+  background: #f4ebd5;
+}
+
+.mb-classic-cell.active {
+  box-shadow: inset 0 0 0 2px rgba(150, 61, 50, .34);
+}
+
+.mb-classic-巳 { grid-column: 1; grid-row: 1; }
+.mb-classic-午 { grid-column: 2; grid-row: 1; }
+.mb-classic-未 { grid-column: 3; grid-row: 1; }
+.mb-classic-申 { grid-column: 4; grid-row: 1; }
+.mb-classic-辰 { grid-column: 1; grid-row: 2; }
+.mb-classic-酉 { grid-column: 4; grid-row: 2; }
+.mb-classic-卯 { grid-column: 1; grid-row: 3; }
+.mb-classic-戌 { grid-column: 4; grid-row: 3; }
+.mb-classic-寅 { grid-column: 1; grid-row: 4; }
+.mb-classic-丑 { grid-column: 2; grid-row: 4; }
+.mb-classic-子 { grid-column: 3; grid-row: 4; }
+.mb-classic-亥 { grid-column: 4; grid-row: 4; }
+
+.mb-classic-cell-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 3px;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.mb-classic-major-list,
+.mb-classic-minor-list,
+.mb-classic-shen {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.mb-classic-minor-list {
+  align-items: flex-end;
+}
+
+.mb-classic-major-star {
+  color: #1f1917;
+  font-size: clamp(10px, 1.35vh, 12px);
+  font-weight: 700;
+  line-height: 1.25;
+  white-space: nowrap;
+}
+
+.mb-classic-minor-star,
+.mb-classic-empty {
+  color: #73655c;
+  font-size: clamp(8px, 1.08vh, 10px);
+  line-height: 1.15;
+  white-space: nowrap;
+}
+
+.mb-classic-empty {
+  color: #a99a8f;
+}
+
+.mb-classic-mutagen {
+  display: inline-flex;
+  min-width: 18px;
+  height: 18px;
+  margin: 0 3px 2px 0;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(163, 68, 57, .5);
+  border-radius: 4px;
+  color: #a34439;
+  background: rgba(250, 229, 223, .8);
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.mb-classic-cell-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 2px;
+  margin-top: 2px;
+}
+
+.mb-classic-shen {
+  color: #8c7e75;
+  font-size: clamp(7px, .95vh, 9px);
+  line-height: 1.2;
+}
+
+.mb-classic-palace-info {
+  min-width: 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.mb-classic-branch {
+  color: #4a3f39;
+  font-size: clamp(8px, 1.05vh, 10px);
+  line-height: 1.2;
+}
+
+.mb-classic-age {
+  color: #6e615a;
+  font-size: clamp(7px, 1vh, 9px);
+  line-height: 1.2;
+}
+
+.mb-classic-palace-info strong {
+  color: #1f1917;
+  font-size: clamp(10px, 1.35vh, 12px);
+  font-weight: 700;
+  line-height: 1.2;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.mb-classic-palace-info em {
+  display: block;
+  color: #8c7e75;
+  font-size: 9px;
+  font-style: normal;
+  font-weight: 400;
+}
+
+.mb-classic-center {
+  grid-column: 2 / 4;
+  grid-row: 2 / 4;
+  padding: 12px 12px 8px;
+  background: #fdfcf9;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  overflow: hidden;
+}
+
+.mb-classic-center h2 {
+  margin: 0 0 2px;
+  color: #2d2420;
+  text-align: center;
+  font-size: clamp(15px, 2vh, 18px);
+  letter-spacing: 4px;
+}
+
+.mb-classic-center-meta {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  color: #6e615a;
+  font-size: clamp(9px, 1.2vh, 11px);
+}
+
+.mb-classic-center-meta b {
+  color: #963d32;
+}
+
+.mb-classic-center-rows {
+  display: grid;
+  gap: 3px;
+}
+
+.mb-classic-center-rows div {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  color: #6e615a;
+  font-size: clamp(8px, 1.05vh, 10px);
+  line-height: 1.35;
+}
+
+.mb-classic-center-rows span {
+  width: 58px;
+  flex: 0 0 58px;
+}
+
+.mb-classic-center-rows strong {
+  min-width: 0;
+  color: #4a3f39;
+  font-size: clamp(8px, 1.1vh, 10px);
+  font-weight: 700;
+}
+
+.mb-classic-pillars strong {
+  display: flex;
+  gap: 8px;
+}
+
+.mb-classic-pillars i {
+  color: #963d32;
+  font-style: normal;
+}
+
+.mb-classic-center-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+  margin-top: auto;
+}
+
+.mb-classic-center-actions button {
+  height: 24px;
+  border: 1px solid #e4dcce;
+  border-radius: 999px;
+  background: #f0ebe1;
+  color: #6e615a;
+  font-size: 10px;
 }
 
 .detail-title-row {

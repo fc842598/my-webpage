@@ -62,6 +62,7 @@
   const actionsTitle = document.getElementById('actionsTitle');
   const actionNote = document.getElementById('actionNote');
   const specialTabs = document.getElementById('specialTabs');
+  const centerBook = document.querySelector('.yt-center-book');
   const toast = document.getElementById('toast');
   const editBirthBtn = document.getElementById('editBirthBtn');
   const birthDialog = document.getElementById('birthDialog');
@@ -342,6 +343,101 @@
     `;
   }
 
+  function pillarPair(value) {
+    return Array.isArray(value) ? value.join('') : '';
+  }
+
+  function chartPillars(chart) {
+    const cd = chart?.rawDates?.chineseDate || {};
+    if (Array.isArray(cd.yearly)) {
+      return [
+        pillarPair(cd.yearly),
+        pillarPair(cd.monthly),
+        pillarPair(cd.daily),
+        pillarPair(cd.hourly),
+      ].filter(Boolean);
+    }
+    return String(chart?.chineseDate || '').split(/\s+/).filter(Boolean);
+  }
+
+  function formatClassicSolar(norm) {
+    if (!norm) return '';
+    return `${norm.dateStr} ${pad2(norm.cstHour)}:${pad2(norm.cstMinute)} ${shichenLabel(norm)}时`;
+  }
+
+  function formatClassicTst(norm) {
+    const tst = norm?.tstResult;
+    if (!tst) return '未校正';
+    const diff = tst.diffMinutes ? `偏差${tst.diffMinutes > 0 ? '+' : ''}${tst.diffMinutes}分钟` : '无偏差';
+    return `${pad2(tst.trueSolarHour)}:${pad2(tst.trueSolarMinute)}（${diff}）`;
+  }
+
+  function renderClassicStars(stars = [], limit = 7, className = 'mb-classic-minor-star') {
+    return stars.slice(0, limit).map((star) => `<span class="${className}">${escapeHtml(starText(star))}</span>`).join('');
+  }
+
+  function renderClassicMutagens(palace) {
+    return allReadableStars(palace)
+      .filter((star) => star?.mutagen)
+      .slice(0, 2)
+      .map((star) => `<span class="mb-classic-mutagen">${escapeHtml(star.mutagen.replace('化', ''))}</span>`)
+      .join('');
+  }
+
+  function renderClassicPalace(palace, chart) {
+    if (!palace) return '';
+    const isLife = palace.earthlyBranch === chart.earthlyBranchOfSoulPalace || palace.name === '命宫' || palace.name === '命';
+    const isBody = !!palace.isBodyPalace;
+    const isActive = palace.earthlyBranch === state.activeBranch;
+    const age = palace.decadal?.range ? `${palace.decadal.range[0]}-${palace.decadal.range[1]}` : '';
+    const minorStars = allSmallStars(palace);
+    return `
+      <button class="mb-classic-cell mb-classic-${palace.earthlyBranch} ${isLife ? 'is-life' : ''} ${isBody ? 'is-body' : ''} ${isActive ? 'active' : ''}" type="button" data-palace-branch="${palace.earthlyBranch}">
+        <div class="mb-classic-cell-top">
+          <div>
+            ${renderClassicMutagens(palace)}
+            <div class="mb-classic-major-list">${renderClassicStars(palace.majorStars || [], 3, 'mb-classic-major-star') || '<span class="mb-classic-empty">空宫</span>'}</div>
+          </div>
+          <div class="mb-classic-minor-list">${renderClassicStars(minorStars, 6)}</div>
+        </div>
+        <div class="mb-classic-cell-bottom">
+          <div class="mb-classic-shen">
+            ${[palace.changsheng12, palace.boshi12].filter(Boolean).map((item) => `<span>${escapeHtml(item)}</span>`).join('')}
+          </div>
+          <div class="mb-classic-palace-info">
+            <span class="mb-classic-branch">${escapeHtml((palace.heavenlyStem || '') + (palace.earthlyBranch || ''))}</span>
+            <span class="mb-classic-age">${escapeHtml(age)}</span>
+            <strong>${escapeHtml(palace.name || '')}${isBody ? '<em>身宫</em>' : ''}</strong>
+          </div>
+        </div>
+      </button>
+    `;
+  }
+
+  function renderClassicCenter(chart, norm) {
+    const genderText = state.profile.gender === 'male' ? '阳男' : '阴女';
+    const pillars = chartPillars(chart);
+    const life = findLifePalace(chart);
+    return `
+      <div class="mb-classic-center">
+        <h2>紫微排盘</h2>
+        <div class="mb-classic-center-meta"><b>${genderText}</b><span>${escapeHtml(chart.fiveElementsClass || '')}</span><span>命宫${escapeHtml(life?.earthlyBranch || '')}</span></div>
+        <div class="mb-classic-center-rows">
+          <div><span>公历</span><strong>${escapeHtml(formatClassicSolar(norm))}</strong></div>
+          <div><span>农历</span><strong>${escapeHtml(chart.lunarDate || '')}</strong></div>
+          <div><span>真太阳时</span><strong>${escapeHtml(formatClassicTst(norm))}</strong></div>
+          <div><span>排盘时辰</span><strong>${escapeHtml(shichenLabel(norm))}时</strong></div>
+          <div class="mb-classic-pillars"><span>节气四柱</span><strong>${pillars.map((item) => `<i>${escapeHtml(item)}</i>`).join('')}</strong></div>
+          <div><span>命主身主</span><strong>${escapeHtml(chart.soul || '—')} · ${escapeHtml(chart.body || '—')}</strong></div>
+        </div>
+        <div class="mb-classic-center-actions">
+          <button type="button" data-toast="后续会接原版时辰微调">时↑</button>
+          <button type="button" data-toast="后续会接原版时辰微调">时↓</button>
+        </div>
+      </div>
+    `;
+  }
+
   function normalizePalaceName(name = '') {
     return String(name).replace(/宫/g, '');
   }
@@ -535,7 +631,6 @@
     const palaces = orderedPalaces(chart);
     const lifePalace = findLifePalace(chart);
     if (!state.activeBranch) state.activeBranch = lifePalace?.earthlyBranch || palaces[0]?.earthlyBranch || '';
-    const activePalace = palaces.find((item) => item.earthlyBranch === state.activeBranch) || lifePalace;
     const bodyPalace = findBodyPalace(chart);
     const meta = [
       `${state.profile.gender === 'male' ? '男命' : '女命'}`,
@@ -545,22 +640,16 @@
     ].join(' · ');
 
     return `
-      ${paperHead('第一章 · 命盘', '紫微命盘', '真实排盘已接入，先看十二宫结构，再展开各宫细节。')}
+      ${paperHead('第一章 · 命盘', '紫微排盘', '按原版命盘样式排布，十二宫围中宫。')}
       <div class="chart-profile-line">
         <span>${escapeHtml(meta)}</span>
         <span>公历 ${escapeHtml(norm.dateStr)} · ${shichenLabel(norm)}时</span>
       </div>
-      <div class="mingpan-grid mingpan-grid-real">
-        <section class="palace-mini real-palace-board">
-          <div class="board-head">
-            <h2>十二宫命盘</h2>
-            <p>${escapeHtml(chart.chineseDate || chart.lunarDate || '农历信息未见')}</p>
-          </div>
-          <div class="real-palace-grid">
-            ${palaces.map((palace) => renderPalaceCell(palace, state.activeBranch)).join('')}
-          </div>
-        </section>
-        ${renderPalaceDetail(activePalace, chart)}
+      <div class="mb-classic-chart-wrap">
+        <div class="mb-classic-chart">
+          ${palaces.map((palace) => renderClassicPalace(palace, chart)).join('')}
+          ${renderClassicCenter(chart, norm)}
+        </div>
       </div>
     `;
   }
@@ -794,9 +883,10 @@
     if (!renderers[state.chapter]) state.chapter = 'chart';
     const bundle = getChartBundle();
     updateBirthSummary(bundle);
+    centerBook?.classList.toggle('chart-mode', state.chapter === 'chart');
     renderNav();
     renderSpecialTabs();
-    chapterContent.classList.toggle('scrollable', state.chapter === 'special' || state.chapter === 'oracle' || state.chapter === 'chart');
+    chapterContent.classList.toggle('scrollable', state.chapter === 'special' || state.chapter === 'oracle');
     chapterContent.innerHTML = renderers[state.chapter]();
     renderActions();
     updateUrl();
