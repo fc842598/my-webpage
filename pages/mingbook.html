@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>阅天AI命理 · 暗金命书新版</title>
+  <link rel="icon" href="../images/logo-mark.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../css/mingbook.css">
+  <script defer src="../js/mingbook.js"></script>
+</head>
+<body>
+  <main class="yt-book-app" aria-label="阅天AI命理暗金命书新版">
+    <header class="yt-topbar">
+      <a class="yt-brand" href="../index.html" aria-label="返回首页">
+        <span class="yt-brand-mark" aria-hidden="true"></span>
+        <span>
+          <strong>阅天AI命理</strong>
+          <small>用东方智慧 · 照见人生</small>
+        </span>
+      </a>
+
+      <section class="yt-birth-pill" aria-label="当前命盘信息">
+        <div class="yt-birth-main">
+          <span>1990年05月20日</span>
+          <span>08:30</span>
+          <b>阳历</b>
+          <span>男</span>
+          <span>北京市 东城区</span>
+        </div>
+        <div class="yt-birth-sub">庚午年 四月廿六 辰时（真太阳时 08:18）</div>
+        <button class="yt-outline-btn" type="button" data-toast="可返回建档页调整出生信息">编辑出生信息</button>
+      </section>
+
+      <a class="yt-old-link" href="./chart.html">返回原版排盘</a>
+    </header>
+
+    <section class="yt-layout">
+      <aside class="yt-left-book" aria-label="命书章节">
+        <div class="yt-side-label">命书目录</div>
+        <nav class="yt-chapters" id="chapterNav"></nav>
+      </aside>
+
+      <section class="yt-center-book">
+        <div class="yt-reading-tab">当前阅读页</div>
+        <article class="yt-paper" id="chapterContent"></article>
+        <nav class="yt-special-tabs" id="specialTabs" aria-label="专项切换"></nav>
+        <div class="yt-hidden-note">专项深度解析已隐藏，点击章节「专项」查看完整内容</div>
+      </section>
+
+      <aside class="yt-right-book" aria-label="后续动作">
+        <div class="yt-astrolabe" aria-hidden="true"></div>
+        <h2 id="actionsTitle">后续动作</h2>
+        <div class="yt-action-list" id="chapterActions"></div>
+        <p class="yt-action-note" id="actionNote">按章节阅读命书，重要内容可继续追问或生成报告。</p>
+      </aside>
+    </section>
+
+    <footer class="yt-footer">
+      粤ICP备2026055337号 ｜ 雷州市客路镇阅天工作室（个体工商户） ｜ 许太碧
+    </footer>
+  </main>
+
+  <div class="yt-toast" id="toast" role="status" aria-live="polite"></div>
+</body>
+</html>
