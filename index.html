@@ -2302,7 +2302,7 @@
 
       const initMotionWheel = () => {
         const canvas = document.querySelector('.motion-wheel-canvas');
-        if (!canvas || !window.matchMedia('(min-width: 861px)').matches) return;
+        if (reduceMotion || !canvas || !window.matchMedia('(min-width: 861px)').matches) return;
         const ctx = canvas.getContext('2d', { alpha: true });
         if (!ctx) return;
 
@@ -2529,11 +2529,22 @@
 
       const hero = document.querySelector('.hero');
       if (!hero) return;
+      let heroPointerFrame = 0;
+      let heroPointerX = 0;
+      let heroPointerY = 0;
+      const updateHeroPointer = () => {
+        heroPointerFrame = 0;
+        hero.style.setProperty('--cursor-x', `${heroPointerX}px`);
+        hero.style.setProperty('--cursor-y', `${heroPointerY}px`);
+      };
       document.addEventListener('pointermove', (event) => {
         const rect = hero.getBoundingClientRect();
-        if (event.clientY > rect.bottom) return;
-        hero.style.setProperty('--cursor-x', `${event.clientX}px`);
-        hero.style.setProperty('--cursor-y', `${event.clientY}px`);
+        if (event.clientY < rect.top || event.clientY > rect.bottom) return;
+        heroPointerX = event.clientX - rect.left;
+        heroPointerY = event.clientY - rect.top;
+        if (!heroPointerFrame) {
+          heroPointerFrame = requestAnimationFrame(updateHeroPointer);
+        }
       }, { passive: true });
     })();
   </script>
