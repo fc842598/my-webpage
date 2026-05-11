@@ -16,9 +16,28 @@
     { key: 'career', label: '事业', icon: '▣' },
   ];
 
+  const profileStorageKey = 'yt_mingbook_profile_v1';
+  const legacyHistoryKey = 'ziwei_local_chart_history_v1';
+  const shichenNames = ['子', '丑', '寅', '卯', '辰', '巳', '午', '未', '申', '酉', '戌', '亥'];
+  const palaceOrder = ['巳', '午', '未', '申', '辰', '酉', '卯', '戌', '寅', '丑', '子', '亥'];
+  const defaultProfile = {
+    year: 1990,
+    month: 5,
+    day: 20,
+    hour: 8,
+    minute: 30,
+    gender: 'male',
+    city: '北京市 东城区',
+  };
+
   const state = {
     chapter: new URLSearchParams(location.search).get('chapter') || 'chart',
     special: new URLSearchParams(location.search).get('special') || 'marriage',
+    profile: readInitialProfile(),
+    activeBranch: '',
+    chart: null,
+    norm: null,
+    chartKey: '',
   };
 
   const chapterNav = document.getElementById('chapterNav');
@@ -28,6 +47,311 @@
   const actionNote = document.getElementById('actionNote');
   const specialTabs = document.getElementById('specialTabs');
   const toast = document.getElementById('toast');
+  const editBirthBtn = document.getElementById('editBirthBtn');
+  const birthDialog = document.getElementById('birthDialog');
+  const closeBirthDialog = document.getElementById('closeBirthDialog');
+  const cancelBirthDialog = document.getElementById('cancelBirthDialog');
+
+  function pad2(value) {
+    return String(value).padStart(2, '0');
+  }
+
+  function clampNumber(value, min, max, fallback) {
+    const num = Number.parseInt(value, 10);
+    if (Number.isNaN(num)) return fallback;
+    return Math.min(max, Math.max(min, num));
+  }
+
+  function escapeHtml(value) {
+    return String(value ?? '').replace(/[&<>"']/g, (char) => ({
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#39;',
+    }[char]));
+  }
+
+  function normalizeProfile(input = {}) {
+    return {
+      year: clampNumber(input.year, 1900, 2030, defaultProfile.year),
+      month: clampNumber(input.month, 1, 12, defaultProfile.month),
+      day: clampNumber(input.day, 1, 31, defaultProfile.day),
+      hour: clampNumber(input.hour ?? input.cstHour, 0, 23, defaultProfile.hour),
+      minute: clampNumber(input.minute ?? input.cstMinute, 0, 59, defaultProfile.minute),
+      gender: input.gender === 'female' || input.gender === '女' ? 'female' : 'male',
+      city: String(input.cityName || input.city?.name || input.city || defaultProfile.city).trim() || defaultProfile.city,
+    };
+  }
+
+  function profileFromParams() {
+    const params = new URLSearchParams(location.search);
+    if (!['year', 'month', 'day', 'hour', 'minute', 'gender', 'city'].some((key) => params.has(key))) return null;
+    return normalizeProfile({
+      year: params.get('year'),
+      month: params.get('month'),
+      day: params.get('day'),
+      hour: params.get('hour'),
+      minute: params.get('minute'),
+      gender: params.get('gender'),
+      city: params.get('city'),
+    });
+  }
+
+  function profileFromSaved() {
+    try {
+      const raw = localStorage.getItem(profileStorageKey);
+      return raw ? normalizeProfile(JSON.parse(raw)) : null;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  function profileFromLegacyHistory() {
+    try {
+      const raw = localStorage.getItem(legacyHistoryKey);
+      const list = raw ? JSON.parse(raw) : [];
+      const item = Array.isArray(list) ? list[0] : null;
+      if (!item) return null;
+      const source = item.norm || item;
+      const date = String(source.dateStr || '').split('-').map((part) => Number.parseInt(part, 10));
+      return normalizeProfile({
+        year: source.year || date[0],
+        month: source.month || date[1],
+        day: source.day || date[2],
+        hour: source.cstHour ?? source.hour ?? indexToHour(source.timeIdx),
+        minute: source.cstMinute ?? source.minute ?? 0,
+        gender: source.gender,
+        city: source.city,
+      });
+    } catch (_) {
+      return null;
+    }
+  }
+
+  function readInitialProfile() {
+    return profileFromParams() || profileFromSaved() || profileFromLegacyHistory() || { ...defaultProfile };
+  }
+
+  function indexToHour(index) {
+    const idx = clampNumber(index, 0, 11, 4);
+    return idx === 0 ? 0 : idx * 2;
+  }
+
+  function saveProfile(profile) {
+    try {
+      localStorage.setItem(profileStorageKey, JSON.stringify(profile));
+    } catch (_) {}
+  }
+
+  function dateStr(profile) {
+    return `${profile.year}-${pad2(profile.month)}-${pad2(profile.day)}`;
+  }
+
+  function localShichenIndex(hour, minute) {
+    const total = hour * 60 + minute;
+    return Math.floor(((total + 60) % 1440) / 120);
+  }
+
+  function computeNorm(profile) {
+    const tstResult = typeof window.calcTrueSolarTime === 'function'
+      ? window.calcTrueSolarTime({
+        year: profile.year,
+        month: profile.month,
+        day: profile.day,
+        hour: profile.hour,
+        minute: profile.minute,
+        cityName: profile.city,
+      })
+      : null;
+    const timeIdx = typeof window.tstToShichen === 'function' && tstResult
+      ? window.tstToShichen(tstResult.trueSolarHour, tstResult.trueSolarMinute)
+      : localShichenIndex(profile.hour, profile.minute);
+    return {
+      ...profile,
+      dateStr: dateStr(profile),
+      cstHour: profile.hour,
+      cstMinute: profile.minute,
+      timeIdx,
+      calMode: 'solar',
+      calModeLabel: `公历 ${dateStr(profile)}`,
+      tstResult,
+    };
+  }
+
+  function getAstroLib() {
+    return window.iztro?.astro || window.iztro || null;
+  }
+
+  function profileKey(profile) {
+    return [
+      profile.year,
+      profile.month,
+      profile.day,
+      profile.hour,
+      profile.minute,
+      profile.gender,
+      profile.city,
+    ].join('|');
+  }
+
+  function getChartBundle() {
+    const key = profileKey(state.profile);
+    if (state.chart && state.chartKey === key) {
+      return { chart: state.chart, norm: state.norm };
+    }
+
+    const lib = getAstroLib();
+    if (!lib) return { error: '排盘模块未加载，请刷新页面重试。' };
+
+    const norm = computeNorm(state.profile);
+    const genderStr = state.profile.gender === 'male' ? '男' : '女';
+    try {
+      const chart = typeof lib.bySolar === 'function'
+        ? lib.bySolar(norm.dateStr, norm.timeIdx, genderStr, true)
+        : lib.astrolabeBySolarDate(norm.dateStr, norm.timeIdx, genderStr, true);
+      state.chart = chart;
+      state.norm = norm;
+      state.chartKey = key;
+      window._mingbookChart = chart;
+      window._mingbookChartInputs = { dateStr: norm.dateStr, timeIdx: norm.timeIdx, gender: state.profile.gender, norm };
+      window._chart = chart;
+      window._chartInputs = window._mingbookChartInputs;
+      return { chart, norm };
+    } catch (error) {
+      return { error: error.message || '命盘生成失败，请检查出生信息。' };
+    }
+  }
+
+  function starText(star) {
+    if (!star) return '';
+    const name = star.name || star;
+    const brightness = star.brightness ? ` ${star.brightness}` : '';
+    const mutagen = star.mutagen ? ` ${star.mutagen}` : '';
+    return `${name}${brightness}${mutagen}`.trim();
+  }
+
+  function starChips(stars = [], limit = 6) {
+    const list = stars.slice(0, limit).map((star) => `<span>${escapeHtml(starText(star))}</span>`).join('');
+    return list || '<span class="muted">空宫</span>';
+  }
+
+  function allSmallStars(palace) {
+    return [
+      ...(palace?.minorStars || []),
+      ...(palace?.adjectiveStars || palace?.adjStars || []),
+    ];
+  }
+
+  function orderedPalaces(chart) {
+    const palaces = chart?.palaces || [];
+    return palaceOrder
+      .map((branch) => palaces.find((item) => item.earthlyBranch === branch))
+      .filter(Boolean);
+  }
+
+  function findLifePalace(chart) {
+    return (chart?.palaces || []).find((item) => item.name === '命宫' || item.name === '命')
+      || (chart?.palaces || []).find((item) => item.earthlyBranch === chart.earthlyBranchOfSoulPalace)
+      || (chart?.palaces || [])[0];
+  }
+
+  function findBodyPalace(chart) {
+    return (chart?.palaces || []).find((item) => item.isBodyPalace)
+      || (chart?.palaces || []).find((item) => item.earthlyBranch === chart.earthlyBranchOfBodyPalace);
+  }
+
+  function shichenLabel(norm) {
+    return shichenNames[norm?.timeIdx] || '辰';
+  }
+
+  function updateBirthSummary(bundle) {
+    const main = document.querySelector('.yt-birth-main');
+    const sub = document.querySelector('.yt-birth-sub');
+    if (!main || !sub) return;
+    const profile = state.profile;
+    const genderText = profile.gender === 'male' ? '男' : '女';
+    main.innerHTML = `
+      <span>${profile.year}年${pad2(profile.month)}月${pad2(profile.day)}日</span>
+      <span>${pad2(profile.hour)}:${pad2(profile.minute)}</span>
+      <b>阳历</b>
+      <span>${genderText}</span>
+      <span>${escapeHtml(profile.city)}</span>
+    `;
+    if (bundle?.chart && bundle?.norm) {
+      const tst = bundle.norm.tstResult;
+      const tstText = tst ? `真太阳时 ${pad2(tst.trueSolarHour)}:${pad2(tst.trueSolarMinute)}` : '未校正真太阳时';
+      sub.textContent = `${bundle.chart.chineseDate || bundle.chart.lunarDate || '农历信息'} ${shichenLabel(bundle.norm)}时（${tstText}）`;
+    } else {
+      sub.textContent = '命盘信息待生成';
+    }
+  }
+
+  function renderPalaceCell(palace, activeBranch) {
+    const isActive = palace.earthlyBranch === activeBranch;
+    const isLife = palace.name === '命宫' || palace.name === '命';
+    const isBody = !!palace.isBodyPalace;
+    const age = palace.decadal?.range ? `${palace.decadal.range[0]}-${palace.decadal.range[1]}岁` : '';
+    const major = (palace.majorStars || []).map(starText).filter(Boolean).slice(0, 3).join('、') || '空宫';
+    return `
+      <button class="real-palace-cell ${isActive ? 'active' : ''} ${isLife ? 'is-life' : ''}" type="button" data-palace-branch="${palace.earthlyBranch}">
+        <span class="real-palace-head"><b>${escapeHtml(palace.name || '')}</b><em>${escapeHtml((palace.heavenlyStem || '') + (palace.earthlyBranch || ''))}</em></span>
+        <strong>${escapeHtml(major)}</strong>
+        <span>${escapeHtml(age)}${isBody ? ' · 身宫' : ''}</span>
+      </button>
+    `;
+  }
+
+  function renderPalaceDetail(palace, chart) {
+    if (!palace) return '<section class="palace-detail-panel"><h2>宫位详情</h2><p>点击左侧宫位查看细节。</p></section>';
+    const age = palace.decadal?.range ? `${palace.decadal.range[0]}-${palace.decadal.range[1]}岁` : '未标注';
+    const bodyPalace = findBodyPalace(chart);
+    return `
+      <section class="palace-detail-panel">
+        <div class="detail-title-row">
+          <span>${escapeHtml((palace.heavenlyStem || '') + (palace.earthlyBranch || ''))}</span>
+          <h2>${escapeHtml(palace.name || '宫位')}</h2>
+          <b>${escapeHtml(age)}</b>
+        </div>
+        <div class="star-chip-row major">${starChips(palace.majorStars || [], 8)}</div>
+        <div class="star-chip-row">${starChips(allSmallStars(palace), 12)}</div>
+        <div class="palace-facts">
+          <div><span>命主</span><strong>${escapeHtml(chart.soul || '未见')}</strong></div>
+          <div><span>身主</span><strong>${escapeHtml(chart.body || '未见')}</strong></div>
+          <div><span>五行局</span><strong>${escapeHtml(chart.fiveElementsClass || '未见')}</strong></div>
+          <div><span>身宫</span><strong>${escapeHtml(bodyPalace?.name || '未见')}</strong></div>
+        </div>
+        <p class="palace-note">已接入真实排盘数据。点击任一宫位，可在这里查看主星、辅星、宫位和大限信息。</p>
+      </section>
+    `;
+  }
+
+  function fillBirthForm() {
+    const map = {
+      mbYear: state.profile.year,
+      mbMonth: state.profile.month,
+      mbDay: state.profile.day,
+      mbHour: state.profile.hour,
+      mbMinute: state.profile.minute,
+      mbGender: state.profile.gender,
+      mbCity: state.profile.city,
+    };
+    Object.entries(map).forEach(([id, value]) => {
+      const el = document.getElementById(id);
+      if (el) el.value = value;
+    });
+  }
+
+  function openBirthDialog() {
+    fillBirthForm();
+    if (birthDialog?.showModal) birthDialog.showModal();
+    else birthDialog?.setAttribute('open', '');
+  }
+
+  function closeBirthDialogBox() {
+    if (birthDialog?.close) birthDialog.close();
+    else birthDialog?.removeAttribute('open');
+  }
 
   function setChapter(key) {
     state.chapter = key;
@@ -80,34 +404,49 @@
   }
 
   function renderChart() {
+    const bundle = getChartBundle();
+    if (bundle.error) {
+      return `
+        ${paperHead('第一章 · 命盘', '紫微命盘', '先把出生信息校准，再进入命书阅读。')}
+        <section class="chart-error">
+          <h2>命盘暂未生成</h2>
+          <p>${escapeHtml(bundle.error)}</p>
+          <button type="button" class="paper-cta" id="openBirthFromError">编辑出生信息</button>
+        </section>
+      `;
+    }
+
+    const { chart, norm } = bundle;
+    const palaces = orderedPalaces(chart);
+    const lifePalace = findLifePalace(chart);
+    if (!state.activeBranch) state.activeBranch = lifePalace?.earthlyBranch || palaces[0]?.earthlyBranch || '';
+    const activePalace = palaces.find((item) => item.earthlyBranch === state.activeBranch) || lifePalace;
+    const bodyPalace = findBodyPalace(chart);
+    const meta = [
+      `${state.profile.gender === 'male' ? '男命' : '女命'}`,
+      `${chart.fiveElementsClass || '五行局待定'}`,
+      `命宫${lifePalace?.earthlyBranch || '未见'}`,
+      `身宫${bodyPalace?.earthlyBranch || '未见'}`,
+    ].join(' · ');
+
     return `
-      ${paperHead('第一章 · 命盘', '紫微命盘', '命盘为根，先看总览，再按章节展开各宫详批。')}
-      <div class="mingpan-grid">
-        <section class="palace-mini">
-          <h2>命盘核心</h2>
-          <p>庚午年 · 巳时 · 紫微天府</p>
-          <div class="palace-grid">
-            ${['巳 夫妇', '午 太阳', '未 天府', '申 文曲', '辰 财帛', '命宫', '酉 天同', '卯 天机', '戌 太阴', '寅 福德', '丑 七杀', '亥 天梁']
-              .map((text) => `<div class="palace-cell ${text === '命宫' ? 'active' : ''}">${text}</div>`).join('')}
+      ${paperHead('第一章 · 命盘', '紫微命盘', '真实排盘已接入，先看十二宫结构，再展开各宫细节。')}
+      <div class="chart-profile-line">
+        <span>${escapeHtml(meta)}</span>
+        <span>公历 ${escapeHtml(norm.dateStr)} · ${shichenLabel(norm)}时</span>
+      </div>
+      <div class="mingpan-grid mingpan-grid-real">
+        <section class="palace-mini real-palace-board">
+          <div class="board-head">
+            <h2>十二宫命盘</h2>
+            <p>${escapeHtml(chart.chineseDate || chart.lunarDate || '农历信息未见')}</p>
+          </div>
+          <div class="real-palace-grid">
+            ${palaces.map((palace) => renderPalaceCell(palace, state.activeBranch)).join('')}
           </div>
         </section>
-        <section class="chapter-list">
-          ${[
-            ['命盘总览', '命主格局偏稳，主星落点清晰，当前适合先看命宫、身宫与事业三处。'],
-            ['先天格局', '格局层次、三方四正、人生底色。'],
-            ['十二宫详解', '命宫、财帛、官禄、夫妻等宫位。'],
-            ['四化与五行', '生年四化与五行流转。'],
-            ['时辰校验', '不知道时辰时，进入天纪推时辰。'],
-          ].map((row, index) => `
-            <button type="button" data-toast="${row[1]}">
-              <b>${String(index + 1).padStart(2, '0')}</b>
-              <span><strong>${row[0]}</strong><small>${row[1]}</small></span>
-              <span>∨</span>
-            </button>
-          `).join('')}
-        </section>
+        ${renderPalaceDetail(activePalace, chart)}
       </div>
-      <a class="paper-cta" href="#" data-chapter="summary">继续看第二章 · 总批</a>
     `;
   }
 
@@ -312,17 +651,46 @@
     `).join('');
   }
 
+  function updateUrl() {
+    const params = new URLSearchParams({
+      chapter: state.chapter,
+      special: state.special,
+      year: String(state.profile.year),
+      month: String(state.profile.month),
+      day: String(state.profile.day),
+      hour: String(state.profile.hour),
+      minute: String(state.profile.minute),
+      gender: state.profile.gender,
+      city: state.profile.city,
+    });
+    history.replaceState(null, '', `?${params.toString()}`);
+  }
+
   function render() {
     if (!renderers[state.chapter]) state.chapter = 'chart';
+    const bundle = getChartBundle();
+    updateBirthSummary(bundle);
     renderNav();
     renderSpecialTabs();
-    chapterContent.classList.toggle('scrollable', state.chapter === 'special' || state.chapter === 'oracle');
+    chapterContent.classList.toggle('scrollable', state.chapter === 'special' || state.chapter === 'oracle' || state.chapter === 'chart');
     chapterContent.innerHTML = renderers[state.chapter]();
     renderActions();
-    history.replaceState(null, '', `?chapter=${state.chapter}&special=${state.special}`);
+    updateUrl();
   }
 
   document.addEventListener('click', (event) => {
+    const palaceTarget = event.target.closest('[data-palace-branch]');
+    if (palaceTarget) {
+      event.preventDefault();
+      state.activeBranch = palaceTarget.dataset.palaceBranch;
+      render();
+      return;
+    }
+    if (event.target.closest('#openBirthFromError')) {
+      event.preventDefault();
+      openBirthDialog();
+      return;
+    }
     const chapterTarget = event.target.closest('[data-chapter]');
     if (chapterTarget) {
       event.preventDefault();
@@ -349,7 +717,37 @@
     }
   });
 
+  editBirthBtn?.addEventListener('click', openBirthDialog);
+  closeBirthDialog?.addEventListener('click', closeBirthDialogBox);
+  cancelBirthDialog?.addEventListener('click', closeBirthDialogBox);
+  birthDialog?.addEventListener('click', (event) => {
+    if (event.target === birthDialog) closeBirthDialogBox();
+  });
+
   document.addEventListener('submit', (event) => {
+    if (event.target.id === 'birthForm') {
+      event.preventDefault();
+      const nextProfile = normalizeProfile({
+        year: document.getElementById('mbYear')?.value,
+        month: document.getElementById('mbMonth')?.value,
+        day: document.getElementById('mbDay')?.value,
+        hour: document.getElementById('mbHour')?.value,
+        minute: document.getElementById('mbMinute')?.value,
+        gender: document.getElementById('mbGender')?.value,
+        city: document.getElementById('mbCity')?.value,
+      });
+      state.profile = nextProfile;
+      state.activeBranch = '';
+      state.chart = null;
+      state.norm = null;
+      state.chartKey = '';
+      state.chapter = 'chart';
+      saveProfile(nextProfile);
+      closeBirthDialogBox();
+      render();
+      toastText('第一章命盘已重新生成');
+      return;
+    }
     if (event.target.id !== 'askForm') return;
     event.preventDefault();
     const input = document.getElementById('askInput');

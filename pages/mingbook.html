@@ -6,6 +6,8 @@
   <title>阅天AI命理 · 暗金命书新版</title>
   <link rel="icon" href="../images/logo-mark.svg" type="image/svg+xml">
   <link rel="stylesheet" href="../css/mingbook.css">
+  <script defer src="../js/trueSolarTime.js"></script>
+  <script defer src="../js/vendor/iztro.min.js"></script>
   <script defer src="../js/mingbook.js"></script>
 </head>
 <body>
@@ -28,7 +30,7 @@
           <span>北京市 东城区</span>
         </div>
         <div class="yt-birth-sub">庚午年 四月廿六 辰时（真太阳时 08:18）</div>
-        <button class="yt-outline-btn" type="button" data-toast="可返回建档页调整出生信息">编辑出生信息</button>
+        <button class="yt-outline-btn" id="editBirthBtn" type="button">编辑出生信息</button>
       </section>
 
       <a class="yt-old-link" href="./chart.html">返回原版排盘</a>
@@ -61,5 +63,50 @@
   </main>
 
   <div class="yt-toast" id="toast" role="status" aria-live="polite"></div>
+
+  <dialog class="yt-birth-dialog" id="birthDialog" aria-labelledby="birthDialogTitle">
+    <form class="yt-birth-form" id="birthForm">
+      <button class="yt-dialog-close" type="button" id="closeBirthDialog" aria-label="关闭">×</button>
+      <h2 id="birthDialogTitle">编辑出生信息</h2>
+      <p>当前先接第一章命盘，修改后只刷新新版命书页。</p>
+      <div class="yt-form-grid">
+        <label>
+          <span>出生年</span>
+          <input id="mbYear" name="year" inputmode="numeric" required min="1900" max="2030">
+        </label>
+        <label>
+          <span>出生月</span>
+          <input id="mbMonth" name="month" inputmode="numeric" required min="1" max="12">
+        </label>
+        <label>
+          <span>出生日</span>
+          <input id="mbDay" name="day" inputmode="numeric" required min="1" max="31">
+        </label>
+        <label>
+          <span>小时</span>
+          <input id="mbHour" name="hour" inputmode="numeric" required min="0" max="23">
+        </label>
+        <label>
+          <span>分钟</span>
+          <input id="mbMinute" name="minute" inputmode="numeric" required min="0" max="59">
+        </label>
+        <label>
+          <span>性别</span>
+          <select id="mbGender" name="gender">
+            <option value="male">男</option>
+            <option value="female">女</option>
+          </select>
+        </label>
+        <label class="yt-form-wide">
+          <span>出生地</span>
+          <input id="mbCity" name="city" placeholder="例如：北京市 东城区">
+        </label>
+      </div>
+      <div class="yt-dialog-actions">
+        <button type="button" class="yt-dialog-ghost" id="cancelBirthDialog">取消</button>
+        <button type="submit" class="yt-dialog-primary">重新排盘</button>
+      </div>
+    </form>
+  </dialog>
 </body>
 </html>
