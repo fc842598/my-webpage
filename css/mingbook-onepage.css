@@ -533,6 +533,45 @@ select {
   opacity: .72;
 }
 
+.mbp-module-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.mbp-module-actions button,
+.mbp-card-ai-btn {
+  min-width: 0;
+  border: 1px solid rgba(241, 212, 125, .24);
+  border-radius: 999px;
+  background: rgba(241, 212, 125, .07);
+  color: var(--gold);
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.mbp-module-actions button {
+  height: 34px;
+  padding: 0 10px;
+  font-size: 13px;
+}
+
+.mbp-card-ai-btn {
+  position: relative;
+  z-index: 1;
+  width: max-content;
+  height: 36px;
+  margin: -2px 0 14px;
+  padding: 0 16px;
+}
+
+.mbp-module-actions button:disabled,
+.mbp-card-ai-btn:disabled {
+  cursor: wait;
+  opacity: .58;
+}
+
 .mbp-decode-status {
   margin-top: 14px;
   color: var(--gold-2);
@@ -720,6 +759,14 @@ select {
   margin-top: 14px;
 }
 
+.mbp-insight-detail.is-direct {
+  margin-top: 14px;
+}
+
+.mbp-insight-detail.is-direct > div {
+  margin-top: 0;
+}
+
 .mbp-insight-detail section {
   padding: 12px 14px;
   border: 1px solid rgba(241, 212, 125, .12);
@@ -744,23 +791,23 @@ select {
 
 @media (min-width: 1021px) {
   .is-decoded .mbp-special-grid {
-    grid-template-columns: repeat(5, minmax(0, 1fr));
-    gap: 14px;
+    grid-template-columns: 1fr;
+    gap: 18px;
   }
 
   .is-decoded .mbp-special-card,
   .is-decoded .mbp-special-card.is-wide {
     grid-column: auto;
     min-height: 0;
-    height: 318px;
-    display: flex;
-    flex-direction: column;
-    padding: 20px 18px 18px;
+    height: auto;
+    display: grid;
+    grid-template-columns: 170px minmax(0, 1fr);
+    gap: 0 24px;
+    padding: 24px 26px;
   }
 
   .is-decoded .mbp-special-card:has(.mbp-insight-detail[open]) {
-    grid-column: 1 / -1;
-    height: auto;
+    grid-column: auto;
   }
 
   .is-decoded .mbp-special-card i {
@@ -774,6 +821,13 @@ select {
     padding-inline: 9px;
   }
 
+  .is-decoded .mbp-special-card span,
+  .is-decoded .mbp-special-card h3,
+  .is-decoded .mbp-special-card .mbp-ai-status,
+  .is-decoded .mbp-special-card .mbp-card-ai-btn {
+    grid-column: 1;
+  }
+
   .is-decoded .mbp-special-card h3 {
     margin: 14px 0 8px;
     font-size: 22px;
@@ -784,22 +838,20 @@ select {
   }
 
   .is-decoded .mbp-special-result {
+    grid-column: 2;
+    grid-row: 1 / span 5;
     max-width: none;
-    display: flex;
+    display: block;
     min-height: 0;
-    flex: 1;
-    flex-direction: column;
   }
 
   .is-decoded .mbp-special-card .mbp-insight-summary,
   .is-decoded .mbp-special-card .mbp-insight-points li {
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
+    display: block;
+    overflow: visible;
   }
 
   .is-decoded .mbp-special-card .mbp-insight-summary {
-    -webkit-line-clamp: 4;
     font-size: 14px;
     line-height: 1.7;
   }
@@ -810,19 +862,21 @@ select {
   }
 
   .is-decoded .mbp-special-card .mbp-insight-points li {
-    -webkit-line-clamp: 2;
     font-size: 12px;
     line-height: 1.55;
   }
 
   .is-decoded .mbp-special-card .mbp-insight-detail {
-    margin-top: auto;
+    margin-top: 12px;
     padding-top: 10px;
   }
 
-  .is-decoded .mbp-special-card:has(.mbp-insight-detail[open]) .mbp-insight-summary,
-  .is-decoded .mbp-special-card:has(.mbp-insight-detail[open]) .mbp-insight-points li {
-    display: block;
+  .is-decoded .mbp-special-card .mbp-insight-detail.is-direct > div {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .is-decoded .mbp-special-card .mbp-insight-detail.is-direct section:only-child {
+    grid-column: 1 / -1;
   }
 }
 

@@ -30,6 +30,16 @@
     aiResults: {},
   };
 
+  const aiTasks = [
+    { module: 'overall', label: '整体批命' },
+    { module: 'current_luck', label: '大限流年' },
+    { module: 'shengong', key: 'body', label: '身宫批命' },
+    { module: 'hunyin', key: 'marriage', label: '婚姻批命' },
+    { module: 'jiankang', key: 'health', label: '健康批命' },
+    { module: 'caiyun', key: 'wealth', label: '财运批命' },
+    { module: 'shiye', key: 'career', label: '事业批命' },
+  ];
+
   const $ = (selector) => document.querySelector(selector);
 
   function pad2(value) {
@@ -361,17 +371,53 @@
     return String(error?.message || error || 'AI生成失败');
   }
 
+  function parseAiJson(value) {
+    if (!value || typeof value !== 'string') return null;
+    let text = value.trim();
+    if (!text) return null;
+    text = text.replace(/^```(?:json)?/i, '').replace(/```$/i, '').trim();
+    const start = text.indexOf('{');
+    const end = text.lastIndexOf('}');
+    if (start >= 0 && end > start) text = text.slice(start, end + 1);
+    if (!text.startsWith('{')) return null;
+    try {
+      return JSON.parse(text);
+    } catch (_) {
+      return null;
+    }
+  }
+
+  function normalizeAiData(data) {
+    if (!data) return data;
+    const parsedRoot = parseAiJson(data.finalAnswer || data.answer || data.result || data.text);
+    const parsedCard = parseAiJson(data.card);
+    const card = parsedCard || data.card || parsedRoot?.card || parsedRoot || {};
+    const next = { ...data, ...(parsedRoot?.card ? parsedRoot : {}) };
+    if (card && typeof card === 'object' && !Array.isArray(card)) {
+      next.card = { ...card };
+    }
+    const bodyAsJson = parseAiJson(next.card?.body || next.card?.summary);
+    if (bodyAsJson?.card) {
+      next.card = { ...bodyAsJson.card };
+    } else if (bodyAsJson && (bodyAsJson.title || bodyAsJson.summary || bodyAsJson.body || bodyAsJson.sections)) {
+      next.card = { ...bodyAsJson };
+    }
+    return next;
+  }
+
   function aiCardText(data) {
-    const card = data?.card || {};
+    const normalized = normalizeAiData(data);
+    const card = normalized?.card || {};
     const sections = Array.isArray(card.sections) ? card.sections : [];
     if (sections.length) {
       return sections.map((section) => [section.title, section.content].filter(Boolean).join('：')).filter(Boolean).join('\n\n');
     }
-    return card.body || card.summary || data?.finalAnswer || '';
+    const finalAnswer = parseAiJson(normalized?.finalAnswer) ? '' : normalized?.finalAnswer;
+    return card.body || card.summary || finalAnswer || '';
   }
 
   function aiCardTitle(data, fallback) {
-    return data?.card?.title || fallback;
+    return normalizeAiData(data)?.card?.title || fallback;
   }
 
   function normalizeText(text) {
@@ -386,19 +432,23 @@
   }
 
   function aiSections(data) {
-    const card = data?.card || {};
+    const normalized = normalizeAiData(data);
+    const card = normalized?.card || {};
     const sections = Array.isArray(card.sections) ? card.sections.filter((item) => item?.content || item?.title) : [];
     if (sections.length) return sections.map((item) => ({
       title: item.title || '解读',
       content: item.content || '',
     }));
-    const text = card.body || card.summary || data?.finalAnswer || '';
+    const finalAnswer = parseAiJson(normalized?.finalAnswer) ? '' : normalized?.finalAnswer;
+    const text = card.body || card.summary || finalAnswer || '';
     return text ? [{ title: card.title || '解读', content: text }] : [];
   }
 
   function insightSummary(data, fallback = '等待原站 AI 返回。', max = 88) {
-    const card = data?.card || {};
-    const source = card.summary || aiSections(data)[0]?.content || card.body || data?.finalAnswer || fallback;
+    const normalized = normalizeAiData(data);
+    const card = normalized?.card || {};
+    const finalAnswer = parseAiJson(normalized?.finalAnswer) ? '' : normalized?.finalAnswer;
+    const source = card.summary || aiSections(data)[0]?.content || card.body || finalAnswer || fallback;
     return trimText(source, max);
   }
 
@@ -430,6 +480,24 @@
     const bullets = sectionBullets(sections, options.bulletLimit || 3, summary);
     const detail = sections.length ? sections : [{ title: fallbackTitle, content: fallbackText }];
     const detailLabel = options.detailLabel || '展开完整解读';
+    if (options.direct) {
+      const summaryHead = normalizeText(summary).slice(0, 32);
+      const showSummary = !!summaryHead && !detail.some((section) => normalizeText(section.content).startsWith(summaryHead));
+      return `
+        ${showSummary ? `<p class="mbp-insight-summary">${escapeHtml(summary)}</p>` : ''}
+        ${bullets.length ? `<ul class="mbp-insight-points">${bullets.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ul>` : ''}
+        <div class="mbp-insight-detail is-direct">
+          <div>
+            ${detail.map((section) => `
+              <section>
+                <strong>${escapeHtml(section.title || '解读')}</strong>
+                <p>${escapeHtml(section.content || '')}</p>
+              </section>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    }
     return `
       <p class="mbp-insight-summary">${escapeHtml(summary)}</p>
       ${bullets.length ? `<ul class="mbp-insight-points">${bullets.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ul>` : ''}
@@ -465,6 +533,7 @@
   function renderSpecialAi(key, data, fallbackTitle) {
     const card = document.querySelector(`[data-report="${key}"]`);
     if (!card) return;
+    const normalized = normalizeAiData(data);
     const title = card.querySelector('h3');
     let body = card.querySelector('.mbp-special-result');
     if (!body) {
@@ -474,12 +543,12 @@
       if (oldBody) oldBody.replaceWith(body);
       else card.appendChild(body);
     }
-    if (title) title.textContent = aiCardTitle(data, fallbackTitle);
+    if (title) title.textContent = aiCardTitle(normalized, fallbackTitle);
     if (body) {
-      body.innerHTML = renderInsightBlock(data, fallbackTitle, '原站 AI 暂未返回内容，请稍后重试。', {
-        summaryMax: 76,
+      body.innerHTML = renderInsightBlock(normalized, fallbackTitle, '原站 AI 暂未返回内容，请稍后重试。', {
+        summaryMax: 96,
         bulletLimit: 2,
-        detailLabel: '查看全文',
+        direct: true,
       });
     }
   }
@@ -499,16 +568,36 @@
 
   function renderChaptersFromAi() {
     const facts = chartFacts();
-    const overall = state.aiResults.overall;
-    const luck = state.aiResults.current_luck;
+    const overall = normalizeAiData(state.aiResults.overall);
+    const luck = normalizeAiData(state.aiResults.current_luck);
     const overallText = aiCardText(overall);
     const luckText = aiCardText(luck);
-    const specialText = ['shengong', 'hunyin', 'jiankang', 'caiyun', 'shiye']
-      .map((key) => aiCardText(state.aiResults[key]))
+    const specialModules = [
+      ['shengong', '身宫批命'],
+      ['hunyin', '婚姻批命'],
+      ['jiankang', '健康批命'],
+      ['caiyun', '财运批命'],
+      ['shiye', '事业批命'],
+    ];
+    const specialText = specialModules
+      .map(([key]) => aiCardText(state.aiResults[key]))
       .filter(Boolean)
       .slice(0, 5)
       .join('\n\n');
-    const overallCard = overall?.card || {};
+    const specialBriefSections = specialModules
+      .map(([key, title]) => {
+        const data = normalizeAiData(state.aiResults[key]);
+        if (!data) return null;
+        return {
+          title: aiCardTitle(data, title),
+          content: insightSummary(data, '', 118),
+        };
+      })
+      .filter((item) => item?.content);
+    const specialBriefText = specialBriefSections
+      .map((section) => `${section.title}：${section.content}`)
+      .join('\n\n');
+    const overallCard = normalizeAiData(overall)?.card || {};
     const decodeList = $('#mbpDecodeList');
     if (decodeList) {
       const highlights = [
@@ -525,14 +614,14 @@
       [aiCardTitle(overall, '命格总览'), overallText || '整体批命等待原站 AI 返回。'],
       ['大限流年', luckText || '当前大限流年接口暂未返回，后续继续接原站大限模块。'],
       ['人生曲线', '人生曲线属于原站独立模块，下一步接入原站曲线评分与关键年份。'],
-      ['五宫详解', specialText || '五宫专项等待原站 AI 返回。'],
+      ['五宫详解', specialBriefText || '五宫专项等待原站 AI 返回。', specialBriefSections],
       ['证据链', overallCard.basis || facts.evidence],
       ['行动建议', overallCard.risk ? `要留意：${overallCard.risk}` : '先看命盘底色，再看大运节奏；重要决策不只问准不准，还要知道何时动、如何动。'],
     ];
     const chapters = $('#mbpChapters');
     if (chapters) {
       chapters.innerHTML = chaptersData.map((item, index) => {
-        const data = index === 0 ? overall : index === 1 ? luck : { card: { title: item[0], body: item[1] } };
+        const data = index === 0 ? overall : index === 1 ? luck : { card: { title: item[0], body: item[1], sections: item[2] || null } };
         return `
         <article class="mbp-report-row">
           <span>卷${index + 1}</span>
@@ -541,9 +630,9 @@
           </div>
           <div class="mbp-report-content">
             ${renderInsightBlock(data, item[0], item[1], {
-              summaryMax: 112,
+              summaryMax: 128,
               bulletLimit: 3,
-              detailLabel: '打开完整卷章',
+              direct: true,
             })}
           </div>
         </article>
@@ -558,7 +647,61 @@
     if (typeof window._aipCallBackend !== 'function') {
       throw new Error('原站 AI 批命脚本未加载');
     }
-    return window._aipCallBackend(moduleKey);
+    return normalizeAiData(await window._aipCallBackend(moduleKey));
+  }
+
+  function setModuleButtonsBusy(moduleKey, busy) {
+    document.querySelectorAll(`[data-ai-module="${moduleKey}"]`).forEach((button) => {
+      button.disabled = busy;
+      button.classList.toggle('is-running', busy);
+    });
+  }
+
+  function setAllModuleButtonsBusy(busy) {
+    aiTasks.forEach((task) => setModuleButtonsBusy(task.module, busy));
+  }
+
+  function taskByModule(moduleKey) {
+    return aiTasks.find((task) => task.module === moduleKey);
+  }
+
+  async function decodeSingleModule(moduleKey, options = {}) {
+    const bundle = getChartBundle();
+    if (bundle.error) {
+      alert(bundle.error);
+      return false;
+    }
+    const task = taskByModule(moduleKey);
+    if (!task) return false;
+    state.decoded = true;
+    document.body.classList.add('is-decoded');
+    if (task.key) setSpecialStatus(task.key, '正在生成…', 'running');
+    setModuleButtonsBusy(task.module, true);
+    setDecodeStatus(`正在单独批命：${task.label}`);
+    try {
+      const data = await callOriginalAi(task.module);
+      state.aiResults[task.module] = data;
+      if (task.key) {
+        renderSpecialAi(task.key, data, task.label);
+        setSpecialStatus(task.key, '已生成', 'done');
+      }
+      renderChaptersFromAi();
+      setDecodeStatus(`${task.label} 已生成。`);
+      if (options.scroll && task.key) {
+        document.querySelector(`[data-report="${task.key}"]`)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+      return true;
+    } catch (error) {
+      const message = friendlyAiError(error);
+      if (task.key) {
+        renderSpecialAi(task.key, { card: { title: task.label, body: `⚠ ${message}` } }, task.label);
+        setSpecialStatus(task.key, message, 'error');
+      }
+      setDecodeStatus(`${task.label} 失败：${message}`);
+      return false;
+    } finally {
+      setModuleButtonsBusy(task.module, false);
+    }
   }
 
   async function decodeReports() {
@@ -576,19 +719,10 @@
     state.aiResults = {};
     document.body.classList.add('is-decoded');
     setDecodeStatus('正在调用原站 AI 批命：整体批命');
-
-    const tasks = [
-      { module: 'overall', label: '整体批命' },
-      { module: 'current_luck', label: '大限流年' },
-      { module: 'shengong', key: 'body', label: '身宫批命' },
-      { module: 'hunyin', key: 'marriage', label: '婚姻批命' },
-      { module: 'jiankang', key: 'health', label: '健康批命' },
-      { module: 'caiyun', key: 'wealth', label: '财运批命' },
-      { module: 'shiye', key: 'career', label: '事业批命' },
-    ];
+    setAllModuleButtonsBusy(true);
 
     let successCount = 0;
-    for (const task of tasks) {
+    for (const task of aiTasks) {
       if (task.key) setSpecialStatus(task.key, '正在生成…', 'running');
       setDecodeStatus(`正在调用原站 AI 批命：${task.label}`);
       try {
@@ -610,7 +744,8 @@
     }
 
     renderChaptersFromAi();
-    setDecodeStatus(successCount ? `已接入原站 AI：完成 ${successCount}/${tasks.length} 个模块。` : 'AI 服务暂未连接，请稍后重试。');
+    setDecodeStatus(successCount ? `已接入原站 AI：完成 ${successCount}/${aiTasks.length} 个模块。` : 'AI 服务暂未连接，请稍后重试。');
+    setAllModuleButtonsBusy(false);
     if (btn) {
       btn.disabled = false;
       btn.textContent = successCount ? '重新一键解读' : '重试一键解读';
@@ -663,6 +798,7 @@
       btn.disabled = false;
       btn.textContent = '✦ 一键解读';
     }
+    setAllModuleButtonsBusy(false);
     setDecodeStatus('接入原站 AI 批命接口，排盘后可一键生成。');
   }
 
@@ -700,6 +836,12 @@
     $('#mbpDecodeBtn')?.addEventListener('click', () => {
       decodeReports();
       $('#specials')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+
+    document.querySelectorAll('[data-ai-module]').forEach((button) => {
+      button.addEventListener('click', () => {
+        decodeSingleModule(button.dataset.aiModule, { scroll: button.classList.contains('mbp-card-ai-btn') });
+      });
     });
 
     $('#mbpScrollReport')?.addEventListener('click', () => {

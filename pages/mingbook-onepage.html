@@ -95,6 +95,15 @@
           <span>排盘完成后</span>
           <h3>一键解读全部模块</h3>
           <button class="mbp-decode-btn" id="mbpDecodeBtn" type="button">✦ 一键解读</button>
+          <div class="mbp-module-actions" aria-label="单独批命入口">
+            <button type="button" data-ai-module="overall">批整体</button>
+            <button type="button" data-ai-module="current_luck">批走势</button>
+            <button type="button" data-ai-module="shengong">批身宫</button>
+            <button type="button" data-ai-module="hunyin">批婚姻</button>
+            <button type="button" data-ai-module="jiankang">批健康</button>
+            <button type="button" data-ai-module="caiyun">批财运</button>
+            <button type="button" data-ai-module="shiye">批事业</button>
+          </div>
           <div class="mbp-decode-status" id="mbpDecodeStatus">接入原站 AI 批命接口，排盘后可一键生成。</div>
           <div class="mbp-decode-list" id="mbpDecodeList">
             <p>整体批命先给主线</p>
@@ -116,28 +125,22 @@
 
       <div class="mbp-special-grid">
         <article class="mbp-special-card is-wide" data-report="body">
-          <i>身</i><span>身宫</span><h3>身宫批命</h3><small class="mbp-ai-status" data-status="body">待生成</small><p>点击一键解读后生成。</p>
+          <i>身</i><span>身宫</span><h3>身宫批命</h3><small class="mbp-ai-status" data-status="body">待生成</small><button class="mbp-card-ai-btn" type="button" data-ai-module="shengong">单独批身宫</button><p>点击一键解读后生成。</p>
         </article>
         <article class="mbp-special-card" data-report="marriage">
-          <i>婚</i><span>婚姻</span><h3>婚姻批命</h3><small class="mbp-ai-status" data-status="marriage">待生成</small><p>点击一键解读后生成。</p>
+          <i>婚</i><span>婚姻</span><h3>婚姻批命</h3><small class="mbp-ai-status" data-status="marriage">待生成</small><button class="mbp-card-ai-btn" type="button" data-ai-module="hunyin">单独批婚姻</button><p>点击一键解读后生成。</p>
         </article>
         <article class="mbp-special-card" data-report="health">
-          <i>疾</i><span>健康</span><h3>健康批命</h3><small class="mbp-ai-status" data-status="health">待生成</small><p>点击一键解读后生成。</p>
+          <i>疾</i><span>健康</span><h3>健康批命</h3><small class="mbp-ai-status" data-status="health">待生成</small><button class="mbp-card-ai-btn" type="button" data-ai-module="jiankang">单独批健康</button><p>点击一键解读后生成。</p>
         </article>
         <article class="mbp-special-card is-wide" data-report="wealth">
-          <i>财</i><span>财运</span><h3>财运批命</h3><small class="mbp-ai-status" data-status="wealth">待生成</small><p>点击一键解读后生成。</p>
+          <i>财</i><span>财运</span><h3>财运批命</h3><small class="mbp-ai-status" data-status="wealth">待生成</small><button class="mbp-card-ai-btn" type="button" data-ai-module="caiyun">单独批财运</button><p>点击一键解读后生成。</p>
         </article>
         <article class="mbp-special-card is-wide" data-report="career">
-          <i>官</i><span>事业</span><h3>事业批命</h3><small class="mbp-ai-status" data-status="career">待生成</small><p>点击一键解读后生成。</p>
+          <i>官</i><span>事业</span><h3>事业批命</h3><small class="mbp-ai-status" data-status="career">待生成</small><button class="mbp-card-ai-btn" type="button" data-ai-module="shiye">单独批事业</button><p>点击一键解读后生成。</p>
         </article>
       </div>
     </section>
-
-    <div class="mbp-preview-bar">
-      <span>新版预览</span>
-      <strong>整体批命 · 命书卷轴</strong>
-      <em>点开即进入同一页完整报告</em>
-    </div>
 
     <section class="mbp-book" id="report">
       <div class="mbp-section-head">
@@ -163,13 +166,6 @@
       </div>
     </section>
 
-    <section class="mbp-final">
-      <div>
-        <h2>用户最后看到的是一份完整命书，而不是散落的按钮。</h2>
-        <p>输入 → 排盘 → 一键解读 → 全页报告 → 继续追问。</p>
-      </div>
-      <a href="#chart">开始排盘</a>
-    </section>
   </main>
 
   <footer class="mbp-footer">
