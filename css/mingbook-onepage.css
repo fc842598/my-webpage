@@ -673,10 +673,10 @@ select {
 }
 
 .nf-cal-btn {
-  min-width: 68px;
-  height: 34px;
-  padding: 0 14px;
-  font-size: 14px;
+  min-width: 60px;
+  height: 30px;
+  padding: 0 12px;
+  font-size: 13px;
 }
 
 .nf-gender-btn.active,
@@ -821,8 +821,9 @@ select {
 }
 
 .nf-soft-btn {
-  height: 40px;
-  padding: 0 14px;
+  height: 32px;
+  padding: 0 12px;
+  font-size: 13px;
 }
 
 .nf-hint {
@@ -2228,6 +2229,146 @@ select {
   color: #5c4c35;
   text-align: center;
   font-size: 13px;
+}
+
+.mbp-shichen-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(18, 12, 8, .66);
+  backdrop-filter: blur(4px);
+}
+
+.mbp-shichen-overlay[hidden] {
+  display: none;
+}
+
+.mbp-shichen-modal {
+  width: min(460px, 100%);
+  max-height: min(720px, 90vh);
+  overflow: auto;
+  border: 1px solid rgba(241, 212, 125, .26);
+  border-radius: 18px;
+  background: #fdf8f2;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, .46);
+  color: #3d302b;
+}
+
+.mbp-shichen-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 18px 12px;
+  border-bottom: 1px solid rgba(110, 82, 48, .16);
+}
+
+.mbp-shichen-head strong {
+  color: #3d302b;
+  font-size: 15px;
+}
+
+.mbp-shichen-head button {
+  width: 30px;
+  height: 30px;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(61, 48, 43, .06);
+  color: #8e7c6a;
+  cursor: pointer;
+  font-size: 20px;
+  line-height: 1;
+}
+
+.mbp-shichen-questions,
+.mbp-shichen-result {
+  padding: 16px 18px 18px;
+}
+
+.mbp-shichen-questions p,
+.mbp-shichen-result p {
+  margin: 0 0 14px;
+  color: #8e857d;
+  font-size: 13px;
+  line-height: 1.65;
+}
+
+.mbp-shichen-field {
+  display: grid;
+  gap: 8px;
+  margin-top: 12px;
+  color: #6f5e4e;
+  font-size: 13px;
+}
+
+.mbp-shichen-field > span {
+  color: #3d302b;
+  font-weight: 800;
+}
+
+.mbp-shichen-field input[type="text"] {
+  width: 100%;
+  height: 42px;
+  border: 1px solid #d0c8be;
+  border-radius: 9px;
+  outline: 0;
+  background: #fff;
+  color: #3d302b;
+  padding: 0 12px;
+}
+
+.mbp-shichen-field label {
+  display: flex;
+  gap: 7px;
+  align-items: flex-start;
+  line-height: 1.5;
+}
+
+.mbp-shichen-primary,
+.mbp-shichen-back,
+.mbp-shichen-candidates button {
+  width: 100%;
+  min-height: 42px;
+  border-radius: 10px;
+  font: inherit;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.mbp-shichen-primary {
+  margin-top: 14px;
+  border: 0;
+  background: #3d2b1f;
+  color: #f5e6c8;
+}
+
+.mbp-shichen-result strong {
+  display: block;
+  color: #3d302b;
+  text-align: center;
+  font-size: 18px;
+}
+
+.mbp-shichen-candidates {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin: 14px 0;
+}
+
+.mbp-shichen-candidates button {
+  border: 1px solid #d6c08e;
+  background: #fff7e8;
+  color: #4b3824;
+}
+
+.mbp-shichen-back {
+  border: 1px solid #d0c8be;
+  background: transparent;
+  color: #8e7c6a;
 }
 
 .is-decoded .mbp-special-card p,

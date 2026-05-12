@@ -1687,6 +1687,84 @@
     setDecodeStatus('接入原站 AI 批命接口，排盘后可一键生成。');
   }
 
+  const shichenCandidates = [
+    { name: '子时', hour: 23, keys: ['子', '半夜', '午夜', '夜里'] },
+    { name: '丑时', hour: 1, keys: ['丑', '凌晨'] },
+    { name: '寅时', hour: 3, keys: ['寅', '天亮前', '黎明前'] },
+    { name: '卯时', hour: 5, keys: ['卯', '清晨', '晨', '天亮'] },
+    { name: '辰时', hour: 7, keys: ['辰', '早饭', '早上', '早'] },
+    { name: '巳时', hour: 9, keys: ['巳', '上午'] },
+    { name: '午时', hour: 11, keys: ['午', '中午'] },
+    { name: '未时', hour: 13, keys: ['未', '午后'] },
+    { name: '申时', hour: 15, keys: ['申', '下午'] },
+    { name: '酉时', hour: 17, keys: ['酉', '傍晚', '黄昏'] },
+    { name: '戌时', hour: 19, keys: ['戌', '日落', '晚饭', '晚'] },
+    { name: '亥时', hour: 21, keys: ['亥', '晚上', '夜晚', '夜里', '睡前', '夜'] },
+  ];
+
+  const whorlGroups = {
+    'center-left': ['子时', '午时', '卯时', '酉时'],
+    right: ['寅时', '申时', '巳时', '亥时'],
+    double: ['辰时', '戌时', '丑时', '未时'],
+  };
+
+  function openShichenModal() {
+    const overlay = $('#mbpShichenOverlay');
+    if (!overlay) return;
+    overlay.hidden = false;
+    $('#mbpShichenQuestions').hidden = false;
+    $('#mbpShichenResult').hidden = true;
+    $('#mbpVagueTime')?.focus();
+  }
+
+  function closeShichenModal() {
+    const overlay = $('#mbpShichenOverlay');
+    if (overlay) overlay.hidden = true;
+  }
+
+  function candidateByName(name) {
+    return shichenCandidates.find((item) => item.name === name);
+  }
+
+  function inferShichenCandidates() {
+    const vague = normalizeText($('#mbpVagueTime')?.value);
+    const whorl = document.querySelector('input[name="mbpWhorl"]:checked')?.value;
+    const byText = shichenCandidates.filter((item) => item.keys.some((key) => vague.includes(key)));
+    const byWhorl = (whorlGroups[whorl] || []).map(candidateByName).filter(Boolean);
+    const merged = byText.filter((item) => byWhorl.some((match) => match.name === item.name));
+    const picks = merged.length ? merged : byText.length ? byText : byWhorl.length ? byWhorl : [candidateByName('午时')];
+    return picks.filter(Boolean).slice(0, 4);
+  }
+
+  function renderShichenResult() {
+    const picks = inferShichenCandidates();
+    const title = $('#mbpShichenResultTitle');
+    const reason = $('#mbpShichenResultReason');
+    const list = $('#mbpShichenCandidates');
+    const vague = normalizeText($('#mbpVagueTime')?.value) || '未填写大概时间';
+    const whorl = document.querySelector('input[name="mbpWhorl"]:checked')?.parentElement?.textContent?.trim() || '未选择头旋';
+    if (title) title.textContent = `推荐 ${picks.map((item) => item.name).join(' / ')}`;
+    if (reason) reason.textContent = `依据：${vague}；${whorl}。可先采用最接近的时辰排盘，后续再核对人生事件。`;
+    if (list) {
+      list.innerHTML = picks.map((item) => `<button type="button" data-shichen-hour="${item.hour}" data-shichen-name="${item.name}">${item.name} · ${pad2(item.hour)}:00</button>`).join('');
+    }
+    $('#mbpShichenQuestions').hidden = true;
+    $('#mbpShichenResult').hidden = false;
+  }
+
+  function applyShichenCandidate(button) {
+    const hour = Number(button.dataset.shichenHour);
+    const name = button.dataset.shichenName || '候选时辰';
+    const hourEl = $('#mbpHour');
+    const minuteEl = $('#mbpMinute');
+    if (hourEl) hourEl.value = String(hour);
+    if (minuteEl) minuteEl.value = '0';
+    updateTrueSolarPreview();
+    const preview = $('#mbpShichenPreview');
+    if (preview) preview.textContent = `已按天纪推时辰采用：${name} ${pad2(hour)}:00。${preview.textContent ? ` ${preview.textContent}` : ''}`;
+    closeShichenModal();
+  }
+
   function saveProfile() {
     try {
       localStorage.setItem(storageKey, JSON.stringify(state.profile));
@@ -1790,11 +1868,20 @@
     $('#mbpHour')?.addEventListener('change', updateTrueSolarPreview);
     $('#mbpMinute')?.addEventListener('change', updateTrueSolarPreview);
 
-    $('#mbpUnknownTime')?.addEventListener('click', () => {
-      $('#mbpHour').value = 12;
-      $('#mbpMinute').value = 0;
-      $('#mbpShichenPreview').textContent = '已按午时 12:00 暂排，可之后回原版做时辰推断。';
-      updateTrueSolarPreview();
+    $('#mbpUnknownTime')?.addEventListener('click', openShichenModal);
+    $('#mbpShichenClose')?.addEventListener('click', closeShichenModal);
+    $('#mbpShichenOverlay')?.addEventListener('click', (event) => {
+      if (event.target.id === 'mbpShichenOverlay') closeShichenModal();
+    });
+    $('#mbpShichenCalc')?.addEventListener('click', renderShichenResult);
+    $('#mbpShichenBack')?.addEventListener('click', () => {
+      $('#mbpShichenQuestions').hidden = false;
+      $('#mbpShichenResult').hidden = true;
+      $('#mbpVagueTime')?.focus();
+    });
+    $('#mbpShichenCandidates')?.addEventListener('click', (event) => {
+      const button = event.target.closest('[data-shichen-hour]');
+      if (button) applyShichenCandidate(button);
     });
 
     $('#mbpCitySearch')?.addEventListener('input', () => {
