@@ -164,21 +164,21 @@ function convertedHeader(screen) {
 function convertedBottomNav(active) {
   if (!active) return "";
   const items = [
-    ["screen-2", "首页", 24],
-    ["screen-3", "档案", 98],
-    ["screen-4", "问天AI", 172],
-    ["screen-22", "活动", 246],
-    ["screen-31", "我的", 320]
+    ["screen-2", "首页", 24, 16, 12],
+    ["screen-3", "档案", 98, 90, 88],
+    ["screen-4", "问天AI", 172, 164, 164],
+    ["screen-22", "活动", 246, 238, 240],
+    ["screen-31", "我的", 320, 312, 316]
   ];
   return `
-    ${figBox("converted-bottom-bg", 0, 780, 390, 64, "", "background:#fff;box-shadow:0 -6px 16px rgba(0,0,0,.04);")}
-    ${items.map(([route, label, x]) => {
+    ${items.map(([, label, , , tileX]) => figBox(`converted-bottom-tile-${label}`, tileX, 780, 70, 60, "", "background:#fff;")).join("")}
+    ${items.map(([route, label, iconX, labelX]) => {
       const on = label === active;
       const color = on ? "#b88c33" : "#8c8275";
       return `
-        ${figButton(`converted-bottom-${label}`, x - 12, 780, 70, 60, `data-route="${route}"`)}
-        ${figText(`converted-bottom-dot-${label}`, on ? "●" : "○", x, 792, 40, 18, color, 400, "center")}
-        ${figText(`converted-bottom-label-${label}`, label, x - 8, 817, 56, 10, on ? "#26211c" : color, 400, "center")}
+        ${figButton(`converted-bottom-${label}`, labelX - 4, 780, 70, 60, `data-route="${route}"`)}
+        ${figText(`converted-bottom-dot-${label}`, on ? "●" : "○", iconX, 792, 40, 18, color, 400, "center")}
+        ${figText(`converted-bottom-label-${label}`, label, labelX, 817, 56, 10, on ? "#26211c" : color, 400, "center")}
       `;
     }).join("")}
   `;
@@ -188,12 +188,13 @@ function convertedCards(screen) {
   const cards = screen.cards || [];
   return cards.map(([title, desc, cta, route], index) => {
     const y = screen.no === 2 ? [120, 250, 368, 486][index] : 112 + index * 104;
-    const h = screen.no === 2 && index === 0 ? 104 : 86;
+    const h = screen.no === 2 ? (index === 0 ? 104 : 92) : 86;
+    const ctaStyle = screen.no === 2 ? "background:#a13824;" : "";
     return `
       ${figBox(`screen-${screen.no}-card-${index}`, 24, y, 342, h, "converted-card", "")}
       ${figText(`screen-${screen.no}-card-title-${index}`, title, 40, y + 14, 310, 15, "#26211c", 700)}
       ${desc ? figText(`screen-${screen.no}-card-desc-${index}`, desc, 40, y + 42, 310, 12, "#8c8275") : ""}
-      ${cta ? figBox(`screen-${screen.no}-cta-box-${index}`, 250, y + h - 40, 96, 30, "converted-button", "") : ""}
+      ${cta ? figBox(`screen-${screen.no}-cta-box-${index}`, 250, y + h - 40, 96, 30, "converted-button", ctaStyle) : ""}
       ${cta ? figButton(`screen-${screen.no}-cta-${index}`, 250, y + h - 40, 96, 30, `data-route="${route || "screen-2"}"`) : ""}
       ${cta ? figText(`screen-${screen.no}-cta-text-${index}`, cta, 250, y + h - 32, 96, 11, "#fff", 500, "center") : ""}
     `;
@@ -364,7 +365,7 @@ function renderConvertedScreen(no) {
     ${badge}
     ${convertedButton(screen)}
     ${convertedBottomNav(screen.active)}
-  `, 844, "converted", screen.no !== 1);
+  `, 844, "converted", false);
 }
 
 function navigate(route, push = true) {
