@@ -3,6 +3,37 @@
   const legacyHistoryKey = 'yt_zw_history_v1';
   const palaceOrder = ['巳', '午', '未', '申', '辰', null, null, '酉', '卯', null, null, '戌', '寅', '丑', '子', '亥'];
   const shichenNames = ['子', '丑', '寅', '卯', '辰', '巳', '午', '未', '申', '酉', '戌', '亥'];
+  const fcBranchId = {
+    巳: 'mbp-fc-si',
+    午: 'mbp-fc-wu',
+    未: 'mbp-fc-wei',
+    申: 'mbp-fc-shen',
+    辰: 'mbp-fc-chen',
+    酉: 'mbp-fc-you',
+    卯: 'mbp-fc-mao',
+    戌: 'mbp-fc-xu',
+    寅: 'mbp-fc-yin',
+    丑: 'mbp-fc-chou',
+    子: 'mbp-fc-zi',
+    亥: 'mbp-fc-hai',
+  };
+  const fcZhi = ['寅', '卯', '辰', '巳', '午', '未', '申', '酉', '戌', '亥', '子', '丑'];
+  let fcActiveTab = '先天卦';
+  let fcActiveAge = 1;
+  let fcBirthYear = 1990;
+  let fcSequenceStartYear = 1990;
+  let fcZipingMaxAge = 100;
+  let fcActiveBranch = '';
+  let fcYearCards = [];
+  let fcYearlyMap = {};
+  let fcXiaoLianBranch = null;
+  let fcXiantianResult = null;
+  let fcHoutianResult = null;
+  let fcLiunianResult = null;
+  let fcLiunianSeq = {};
+  let fcCurrentChart = null;
+  let fcCurrentGender = 'male';
+  let fcBirthPillars = null;
   const defaultProfile = { name: '', year: 1990, month: 8, day: 16, hour: 12, minute: 0, gender: 'male', city: '北京市 东城区', cityName: '北京市 东城区' };
   const starProfiles = {
     紫微: { trait: '主星稳重，有掌控局面和整合资源的能力', career: '适合管理、统筹、品牌和资源型岗位', wealth: '财运重在长期配置，不宜频繁追涨杀跌', love: '感情里要减少控制感，多给对方空间' },
@@ -555,46 +586,364 @@
     }
   }
 
+  function getTianjiSolarClass() {
+    return window.Solar || globalThis.Solar || null;
+  }
+
+  function extractPillars(chart, norm) {
+    const Solar = getTianjiSolarClass();
+    const tianjiPillars = (typeof window.TianjiBazi !== 'undefined' && Solar && norm)
+      ? window.TianjiBazi.computePillarsFromSolarLib(Solar, norm)
+      : null;
+    if (tianjiPillars) return tianjiPillars;
+
+    const rd = chart.rawDates || chart;
+    const cd = (rd.chineseDate && typeof rd.chineseDate === 'object') ? rd.chineseDate : {};
+    const hseb = rd.heavenlyStemAndEarthlyBranchDate || chart.heavenlyStemAndEarthlyBranchDate || {};
+    const cdStr = typeof chart.chineseDate === 'string' ? chart.chineseDate : '';
+    const cdParts = cdStr.split(/\s+/).filter((part) => part.length >= 2);
+
+    return {
+      yearStem: cd.yearly?.[0] || hseb.year?.heavenlyStem || rd.yearStem || cdParts[0]?.[0] || '',
+      yearBranch: cd.yearly?.[1] || hseb.year?.earthlyBranch || rd.yearBranch || cdParts[0]?.[1] || '',
+      monthStem: cd.monthly?.[0] || hseb.month?.heavenlyStem || rd.monthStem || cdParts[1]?.[0] || '',
+      monthBranch: cd.monthly?.[1] || hseb.month?.earthlyBranch || rd.monthBranch || cdParts[1]?.[1] || '',
+      dayStem: cd.daily?.[0] || hseb.day?.heavenlyStem || rd.dayStem || cdParts[2]?.[0] || '',
+      dayBranch: cd.daily?.[1] || hseb.day?.earthlyBranch || rd.dayBranch || cdParts[2]?.[1] || '',
+      hourStem: cd.hourly?.[0] || hseb.hour?.heavenlyStem || rd.timeStem || cdParts[3]?.[0] || '',
+      hourBranch: cd.hourly?.[1] || hseb.hour?.earthlyBranch || rd.timeBranch || cdParts[3]?.[1] || '',
+    };
+  }
+
+  function fcResolvedShichenName(chart, norm) {
+    return extractPillars(chart, norm)?._tianji?.timeSlot || shichenLabel(norm);
+  }
+
+  function fcMaxAge() {
+    const direct = Number(fcZipingMaxAge);
+    if (Number.isFinite(direct) && direct >= 1) return Math.max(1, Math.floor(direct));
+    const ages = Object.keys(fcLiunianSeq || {}).map(Number).filter((age) => Number.isFinite(age) && age >= 1);
+    return ages.length ? Math.max(...ages) : 100;
+  }
+
+  function fcClampAge(age) {
+    const num = Math.floor(Number(age) || 1);
+    return Math.max(1, Math.min(fcMaxAge(), num));
+  }
+
+  function fcAgeToYear(age) {
+    return fcSequenceStartYear + fcClampAge(age) - 1;
+  }
+
+  function calcXiaoLianBranch(yearBranch, gender, xuAge) {
+    const branches = ['子', '丑', '寅', '卯', '辰', '巳', '午', '未', '申', '酉', '戌', '亥'];
+    const startMap = { 寅: 4, 午: 4, 戌: 4, 申: 10, 子: 10, 辰: 10, 亥: 1, 卯: 1, 未: 1, 巳: 7, 酉: 7, 丑: 7 };
+    const dir = gender === 'male' ? 1 : -1;
+    const startIdx = startMap[yearBranch] ?? 2;
+    return branches[((startIdx + dir * (xuAge - 1)) % 12 + 12) % 12];
+  }
+
+  function fcResolveXiaoLianBranch(age = fcActiveAge) {
+    if (fcLiunianSeq?.[age]?.xiaoLian) return fcLiunianSeq[age].xiaoLian;
+    const yearBranch = fcBirthPillars?.yearBranch
+      || fcCurrentChart?.rawDates?.yearBranch
+      || fcCurrentChart?.yearBranch
+      || fcCurrentChart?.yearEarthlyBranch
+      || '';
+    return yearBranch ? calcXiaoLianBranch(yearBranch, fcCurrentGender, age) : null;
+  }
+
+  function fcBuildYearCards(startYear = fcSequenceStartYear) {
+    const curYear = new Date().getFullYear();
+    const maxAge = fcMaxAge();
+    fcActiveAge = fcClampAge(curYear - startYear + 1);
+    fcYearCards = [];
+    for (let age = 1; age <= maxAge; age += 1) {
+      fcYearCards.push({ age, year: startYear + age - 1 });
+    }
+  }
+
+  function fcLoadYearly(year) {
+    fcYearlyMap = {};
+    fcXiaoLianBranch = null;
+    if (fcCurrentChart && typeof fcCurrentChart.horoscope === 'function') {
+      try {
+        const h = fcCurrentChart.horoscope(`${year}-06-01`, 0);
+        const scope = h.yearly || h.decadal || h;
+        const palaces = scope.palaces || scope.palace || [];
+        palaces.forEach((palace) => {
+          if (palace.earthlyBranch) fcYearlyMap[palace.earthlyBranch] = palace;
+        });
+      } catch (error) {
+        console.warn('horoscope() 调用失败:', error);
+      }
+    }
+    fcXiaoLianBranch = fcResolveXiaoLianBranch(fcActiveAge);
+  }
+
+  function fcMutagenClass(mutagen) {
+    if (mutagen === '化禄') return 'fc-mutagen-lu';
+    if (mutagen === '化权') return 'fc-mutagen-quan';
+    if (mutagen === '化科') return 'fc-mutagen-ke';
+    return 'fc-mutagen-ji';
+  }
+
+  function fcBuildCell(palace, activeBranch) {
+    const branch = palace.earthlyBranch;
+    const cell = document.getElementById(fcBranchId[branch]);
+    if (!cell) return;
+
+    const activeIndex = Math.max(0, fcZhi.indexOf(activeBranch));
+    const related = [fcZhi[(activeIndex + 4) % 12], fcZhi[(activeIndex + 8) % 12], fcZhi[(activeIndex + 6) % 12]];
+    const isBen = branch === activeBranch;
+    const isRel = !isBen && related.includes(branch);
+    const isXiaoLian = fcActiveTab === '流年卦' && branch === fcXiaoLianBranch;
+    cell.className = `fc-cell${isBen ? ' fc-ben' : isRel ? ' fc-rel' : ''}${isXiaoLian ? ' fc-xiaolian' : ''}`;
+
+    const allStarsForMutagen = [
+      ...(palace.majorStars || []),
+      ...(palace.minorStars || []),
+      ...(palace.adjectiveStars || palace.adjStars || []),
+    ];
+    const mutagenHtml = allStarsForMutagen
+      .filter((star) => star && star.mutagen)
+      .map((star) => `<span class="fc-pal-mutagen ${fcMutagenClass(star.mutagen)}">${escapeHtml(star.mutagen)}</span>`)
+      .join('');
+
+    const majorHtml = (palace.majorStars || [])
+      .map((star) => `<div class="fc-major-star">${escapeHtml((star.name || '') + (star.brightness || ''))}</div>`)
+      .join('');
+    const minorHtml = allSmallStars(palace)
+      .map((star) => `<div class="fc-minor-star">${escapeHtml(starText(star))}</div>`)
+      .join('');
+    const shenHtml = [palace.changsheng12, palace.boshi12].filter(Boolean)
+      .map((item) => `<span>${escapeHtml(item)}</span>`)
+      .join('');
+    const yearly = fcActiveTab === '流年卦' ? fcYearlyMap[branch] : null;
+    const yearlyMutagen = yearly ? (yearly.mutagen || [])
+      .map((item) => `<span class="fc-minor-star" style="color:#963d32">${escapeHtml(item)}</span>`)
+      .join('') : '';
+    const yearlyStars = yearly ? (yearly.stars || yearly.majorStars || [])
+      .map((star) => `<span class="fc-minor-star" style="color:#476885">${escapeHtml(star.name || star)}</span>`)
+      .join('') : '';
+    const yearlyHtml = yearlyMutagen || yearlyStars ? `<div class="fc-yearly-row">${yearlyMutagen}${yearlyStars}</div>` : '';
+    const xiaoLianHtml = isXiaoLian ? `<div class="fc-xiaolian-badge">${fcActiveAge}岁</div>` : '';
+    const stemBranch = `${palace.heavenlyStem || ''}${palace.earthlyBranch || ''}`;
+    const ageStr = palace.decadal?.range ? `${palace.decadal.range[0]}–${palace.decadal.range[1]}` : '';
+    const palaceName = `${palace.isBodyPalace ? '身宫\n' : ''}${palace.name || ''}`;
+
+    cell.innerHTML = `
+      <div class="fc-cell-top">
+        ${mutagenHtml ? `<div class="fc-cell-mutagen">${mutagenHtml}</div>` : ''}
+        <div class="fc-major-list">${majorHtml || '<div class="fc-major-star">空宫</div>'}</div>
+        <div class="fc-minor-list">${minorHtml}</div>
+      </div>
+      ${yearlyHtml}
+      <div class="fc-cell-bottom">
+        <div class="fc-shen-list">${shenHtml}</div>
+        <div class="fc-palace-info">
+          <span class="fc-branch">${escapeHtml(stemBranch)}</span>
+          <span class="fc-age">${escapeHtml(ageStr)}</span>
+          <span class="fc-palace-name">${escapeHtml(palaceName)}</span>
+        </div>
+        ${xiaoLianHtml}
+      </div>`;
+    cell.onclick = () => fcRenderHighlight(branch);
+  }
+
+  function fcClearCells(message) {
+    Object.values(fcBranchId).forEach((id) => {
+      const cell = document.getElementById(id);
+      if (cell) {
+        cell.className = 'fc-cell';
+        cell.innerHTML = '';
+      }
+    });
+    $('#mbpFcName').textContent = '待排盘';
+    $('#mbpFcMeta').textContent = '';
+    $('#mbpFcSolar').textContent = message || '—';
+    $('#mbpFcLunar').textContent = '—';
+    $('#mbpFcTst').textContent = '—';
+    $('#mbpFcShichen').textContent = '—';
+    $('#mbpFcSizhu').innerHTML = '';
+    $('#mbpFcXiantian').textContent = '—';
+    $('#mbpFcHoutian').textContent = '—';
+    $('#mbpFcLiunian').textContent = '—';
+    fcRenderHexagram(null);
+  }
+
+  function fcRenderHighlight(activeBranch) {
+    if (!fcCurrentChart) return;
+    fcActiveBranch = activeBranch;
+    (fcCurrentChart.palaces || []).forEach((palace) => fcBuildCell(palace, activeBranch));
+  }
+
+  function fcRenderTabs() {
+    document.querySelectorAll('.mbp-fc-card .fc-tab').forEach((button) => {
+      const active = button.dataset.tab === fcActiveTab;
+      button.classList.toggle('active', active);
+      button.innerHTML = active
+        ? `<span class="fc-tab-deco">◇</span>${button.dataset.tab}<span class="fc-tab-deco">◇</span>`
+        : button.dataset.tab;
+    });
+    const wrap = $('#mbpFcLiunianWrap');
+    if (wrap) wrap.style.display = fcActiveTab === '流年卦' ? 'flex' : 'none';
+  }
+
+  function fcRenderLiunianScroll() {
+    const scroll = $('#mbpFcLiunianScroll');
+    if (!scroll) return;
+    scroll.innerHTML = fcYearCards.map((item) => `
+      <div class="fc-year-card${item.age === fcActiveAge ? ' active' : ''}" data-age="${item.age}">
+        <span>${item.age}岁</span>
+        <span style="font-size:10px">${item.year}年</span>
+      </div>
+    `).join('');
+    scroll.querySelectorAll('.fc-year-card').forEach((card) => {
+      card.addEventListener('click', () => fcSelectYear(card.dataset.age));
+    });
+    requestAnimationFrame(() => {
+      scroll.querySelector('.fc-year-card.active')?.scrollIntoView({ inline: 'center', behavior: 'smooth', block: 'nearest' });
+    });
+  }
+
+  function fcRenderHexagram(forced) {
+    let result = forced;
+    if (!result) {
+      if (fcActiveTab === '先天卦') result = fcXiantianResult;
+      else if (fcActiveTab === '后天卦') result = fcHoutianResult;
+      else result = fcLiunianResult;
+    }
+
+    const name = $('#mbpFcHexName');
+    const sub = $('#mbpFcHexSub');
+    const lines = $('#mbpFcHexLines');
+    const guaciCard = $('#mbpFcGuaciCard');
+    const guaciText = $('#mbpFcGuaciText');
+    if (!name || !sub || !lines || !guaciCard || !guaciText) return;
+
+    if (!result) {
+      name.textContent = '—';
+      sub.textContent = '';
+      lines.innerHTML = '';
+      guaciCard.style.display = 'none';
+      return;
+    }
+
+    name.textContent = result.name || '—';
+    sub.textContent = result.num ? `#${result.num}` : '';
+    lines.innerHTML = (result.lines || []).map((line) => {
+      if (line === 'gap') return '<div class="fc-hex-gap"></div>';
+      if (line === 'solid') return '<div class="fc-yao-solid"></div>';
+      return '<div class="fc-yao-broken"><div></div><div></div></div>';
+    }).join('');
+
+    const entry = typeof window.getGuaciEntryByName === 'function'
+      ? window.getGuaciEntryByName(result.name)
+      : (window.GUACI_DATA && window.GUACI_DATA[result.name]);
+    if (entry) {
+      const key = fcActiveTab === '先天卦' ? 'xian' : fcActiveTab === '后天卦' ? 'hou' : 'liu';
+      guaciText.textContent = entry[key] || '';
+      guaciCard.style.display = guaciText.textContent ? 'block' : 'none';
+    } else {
+      guaciCard.style.display = 'none';
+    }
+  }
+
+  function fcSelectYear(age) {
+    fcActiveAge = fcClampAge(age);
+    fcLoadYearly(fcAgeToYear(fcActiveAge));
+    fcLiunianResult = fcLiunianSeq[fcActiveAge] || null;
+    $('#mbpFcLiunian').textContent = `${fcActiveAge}岁 · ${fcLiunianResult?.name || '—'}`;
+    fcRenderLiunianScroll();
+    if (fcActiveTab === '流年卦') fcRenderHexagram();
+    fcRenderHighlight(fcActiveBranch || fcCurrentChart?.earthlyBranchOfSoulPalace || '卯');
+  }
+
+  function renderClassicChart(chart, norm) {
+    fcCurrentChart = chart;
+    fcCurrentGender = norm.gender || state.profile.gender;
+    fcBirthYear = Number(norm.year) || Number(String(norm.dateStr || '').slice(0, 4)) || state.profile.year;
+
+    const genderLabel = fcCurrentGender === 'male' ? '阳男' : '阴女';
+    const zodiac = ['鼠', '牛', '虎', '兔', '龙', '蛇', '马', '羊', '猴', '鸡', '狗', '猪'];
+    const zodiacSign = zodiac[((fcBirthYear - 4) % 12 + 12) % 12];
+    $('#mbpFcName').textContent = state.profile.name || genderLabel;
+    $('#mbpFcMeta').textContent = chart.fiveElementsClass ? `${chart.fiveElementsClass}  属${zodiacSign}` : `属${zodiacSign}`;
+
+    const usedShichen = fcResolvedShichenName(chart, norm);
+    const cstPart = norm.cstHour !== undefined ? `${pad2(norm.cstHour)}:${pad2(norm.cstMinute)}` : '';
+    $('#mbpFcSolar').textContent = [norm.calModeLabel || norm.dateStr || '', cstPart, `${usedShichen}时`].filter(Boolean).join(' ');
+    $('#mbpFcLunar').textContent = chart.chineseDate || chart.lunarDate || '—';
+    if (norm.tstResult) {
+      $('#mbpFcTst').textContent = `${pad2(norm.tstResult.trueSolarHour)}:${pad2(norm.tstResult.trueSolarMinute)}${norm.tstResult.isEstimated ? '（北京经度估算）' : `（偏差${norm.tstResult.diffStr}）`}`;
+    } else {
+      $('#mbpFcTst').textContent = cstPart ? `${cstPart}（未校正）` : '—';
+    }
+    $('#mbpFcShichen').textContent = `${usedShichen}时`;
+
+    fcBirthPillars = extractPillars(chart, norm);
+    const sizhu = $('#mbpFcSizhu');
+    const stemColors = ['#886a4a', '#4d7a5b', '#9b4238', '#476885'];
+    const pillars = [
+      [fcBirthPillars.yearStem, fcBirthPillars.yearBranch],
+      [fcBirthPillars.monthStem, fcBirthPillars.monthBranch],
+      [fcBirthPillars.dayStem, fcBirthPillars.dayBranch],
+      [fcBirthPillars.hourStem, fcBirthPillars.hourBranch],
+    ];
+    sizhu.innerHTML = pillars.map(([stem, branch], index) => (stem || branch)
+      ? `<div class="fc-sizhu-col" style="color:${stemColors[index]}"><span>${escapeHtml(stem || '?')}</span><span>${escapeHtml(branch || '?')}</span></div>`
+      : '').join('');
+
+    if (window.ZipingRuntime && fcBirthPillars) {
+      const zipingResult = window.ZipingRuntime.compute(fcBirthPillars, fcCurrentGender, fcBirthYear);
+      fcXiantianResult = zipingResult?.xiantian || null;
+      fcHoutianResult = zipingResult?.houtian || null;
+      fcLiunianSeq = zipingResult?.liunianMap || {};
+      fcSequenceStartYear = Number(zipingResult?.sequenceStartYear) || fcBirthYear;
+      fcZipingMaxAge = Number(zipingResult?.naturalEndAge) || Math.max(1, Object.keys(fcLiunianSeq).length || 100);
+    } else {
+      fcXiantianResult = null;
+      fcHoutianResult = null;
+      fcLiunianSeq = {};
+      fcSequenceStartYear = fcBirthYear;
+      fcZipingMaxAge = 100;
+    }
+    fcBuildYearCards(fcSequenceStartYear);
+    fcLiunianResult = fcLiunianSeq[fcActiveAge] || null;
+    fcLoadYearly(fcAgeToYear(fcActiveAge));
+
+    $('#mbpFcXiantian').textContent = fcXiantianResult?.name || '—';
+    $('#mbpFcHoutian').textContent = fcHoutianResult?.name || '—';
+    $('#mbpFcLiunian').textContent = `${fcActiveAge}岁 · ${fcLiunianResult?.name || '—'}`;
+
+    fcActiveTab = '先天卦';
+    fcActiveBranch = chart.earthlyBranchOfSoulPalace || '卯';
+    fcRenderTabs();
+    fcRenderLiunianScroll();
+    fcRenderHexagram();
+    fcRenderHighlight(fcActiveBranch);
+  }
+
   function renderChart() {
     const bundle = getChartBundle();
     updateHeroMeta(bundle);
-    const grid = $('#mbpChartGrid');
     const summary = $('#mbpChartSummary');
-    if (!grid || !summary) return;
+    if (!summary) return;
 
     if (bundle.error) {
-      grid.innerHTML = `<div class="mbp-chart-center"><div><h3>命盘待生成</h3><p>${escapeHtml(bundle.error)}</p></div></div>`;
+      fcCurrentChart = null;
+      fcXiantianResult = null;
+      fcHoutianResult = null;
+      fcLiunianResult = null;
+      fcLiunianSeq = {};
+      fcClearCells(bundle.error);
       summary.textContent = bundle.error;
       return;
     }
 
     const { chart, norm } = bundle;
-    const life = findLifePalace(chart);
-    const body = findBodyPalace(chart);
-    const palaceByBranch = new Map((chart.palaces || []).map((palace) => [palace.earthlyBranch, palace]));
-    grid.innerHTML = palaceOrder.map((branch) => {
-      if (!branch) return '';
-      const palace = palaceByBranch.get(branch);
-      if (!palace) return `<div class="mbp-palace"></div>`;
-      const isLife = palace === life || palace.name === '命宫' || palace.earthlyBranch === chart.earthlyBranchOfSoulPalace;
-      const isBody = palace === body || palace.isBodyPalace;
-      const major = palaceMainLabel(palace);
-      const small = allSmallStars(palace).map(starText).filter(Boolean).slice(0, 4).join('、') || '辅星待看';
-      return `
-        <div class="mbp-palace ${isLife ? 'is-life' : ''} ${isBody ? 'is-body' : ''}">
-          <div class="mbp-palace-head"><b>${escapeHtml(palace.name || '')}</b><em>${escapeHtml((palace.heavenlyStem || '') + (palace.earthlyBranch || ''))}</em></div>
-          <div class="mbp-palace-stars">${escapeHtml(major)}</div>
-          <div class="mbp-palace-small">${escapeHtml(small)}</div>
-        </div>
-      `;
-    }).join('') + `
-      <div class="mbp-chart-center">
-        <div>
-          <h3>阅天命盘</h3>
-          <p>${state.profile.gender === 'male' ? '男命' : '女命'} · ${escapeHtml(chart.fiveElementsClass || '五行局')}<br>命宫 ${escapeHtml(life?.name || '未见')} · 身宫 ${escapeHtml(body?.name || '未见')}<br>${escapeHtml(norm.dateStr)} · ${escapeHtml(shichenLabel(norm))}时</p>
-        </div>
-      </div>
-    `;
+    renderClassicChart(chart, norm);
     const four = mutagens(chart);
     summary.innerHTML = `命主身主：<b>${escapeHtml(chart.soul || '—')} · ${escapeHtml(chart.body || '—')}</b><br>四化分布：${escapeHtml(four.slice(0, 4).join('、') || '未读取到明显四化')}`;
   }
@@ -1095,6 +1444,43 @@
   }
 
   function bindEvents() {
+    function rerenderAfterProfileChange() {
+      state.chart = null;
+      state.chartKey = '';
+      state.decoded = false;
+      state.aiResults = {};
+      document.body.classList.remove('is-decoded');
+      resetAiContent();
+      saveProfile();
+      updateForm();
+      renderChart();
+    }
+
+    document.querySelectorAll('.mbp-fc-card .fc-tab').forEach((button) => {
+      button.addEventListener('click', () => {
+        fcActiveTab = button.dataset.tab || '先天卦';
+        fcRenderTabs();
+        if (fcActiveTab === '流年卦') fcRenderLiunianScroll();
+        fcRenderHexagram();
+        fcRenderHighlight(fcActiveBranch || fcCurrentChart?.earthlyBranchOfSoulPalace || '卯');
+      });
+    });
+
+    $('#mbpFcScrollLeft')?.addEventListener('click', () => {
+      $('#mbpFcLiunianScroll')?.scrollBy({ left: -100, behavior: 'smooth' });
+    });
+    $('#mbpFcScrollRight')?.addEventListener('click', () => {
+      $('#mbpFcLiunianScroll')?.scrollBy({ left: 100, behavior: 'smooth' });
+    });
+    $('#mbpFcTimeUp')?.addEventListener('click', () => {
+      state.profile = normalizeProfile({ ...state.profile, hour: (state.profile.hour + 1) % 24 });
+      rerenderAfterProfileChange();
+    });
+    $('#mbpFcTimeDown')?.addEventListener('click', () => {
+      state.profile = normalizeProfile({ ...state.profile, hour: (state.profile.hour + 23) % 24 });
+      rerenderAfterProfileChange();
+    });
+
     document.querySelectorAll('.nf-gender-btn').forEach((btn) => {
       btn.addEventListener('click', () => {
         $('#mbpGender').value = btn.dataset.v;

@@ -5,15 +5,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>阅天 · 紫微命书长页新版</title>
   <link rel="icon" href="../images/logo-mark.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../css/mingbook-onepage.css?v=20260512b">
+  <link rel="stylesheet" href="../css/mingbook-onepage.css?v=20260512c">
   <script src="../js/config.js?v=20260509-vercel-backend"></script>
   <script defer src="../js/cities.js"></script>
   <script defer src="../js/lunarCalendar.js"></script>
   <script defer src="../js/trueSolarTime.js"></script>
   <script defer src="../js/vendor/lunar-javascript.js"></script>
   <script defer src="../js/vendor/iztro.min.js"></script>
+  <script defer src="./guaci-data.js"></script>
+  <script defer src="../src/ziping/tianji-bazi.js"></script>
+  <script defer src="../src/ziping/tables.js"></script>
+  <script defer src="../src/ziping/generator.js"></script>
+  <script defer src="../src/ziping/validator.js"></script>
+  <script defer src="../src/ziping/runtime.js"></script>
   <script defer src="../js/ai-piming.js?v=20260508-backend-base"></script>
-  <script defer src="../js/mingbook-onepage.js?v=20260512b"></script>
+  <script defer src="../js/mingbook-onepage.js?v=20260512c"></script>
 </head>
 <body>
   <header class="mbp-nav">
@@ -170,7 +176,80 @@
 
       <div class="mbp-chart-stage">
         <div class="mbp-chart-panel">
-          <div class="mbp-chart-grid" id="mbpChartGrid" aria-label="紫微命盘"></div>
+          <div class="fc-card mbp-fc-card" id="mbpFcCard">
+            <div class="fc-header">
+              <div class="fc-header-title">紫微排盘</div>
+            </div>
+
+            <div class="fc-grid-wrap">
+              <div class="fc-grid" id="mbpChartGrid" aria-label="紫微命盘">
+                <div class="fc-cell" id="mbp-fc-si"></div>
+                <div class="fc-cell" id="mbp-fc-wu"></div>
+                <div class="fc-cell" id="mbp-fc-wei"></div>
+                <div class="fc-cell" id="mbp-fc-shen"></div>
+                <div class="fc-cell" id="mbp-fc-chen"></div>
+                <div id="mbp-fc-center-panel">
+                  <div class="fc-center-title">紫微排盘</div>
+                  <div class="fc-center-meta">
+                    <span class="fc-center-name" id="mbpFcName"></span>
+                    <span id="mbpFcMeta"></span>
+                  </div>
+                  <div class="fc-center-rows">
+                    <div class="fc-center-row"><span class="fc-center-lbl">公历</span><span class="fc-center-val" id="mbpFcSolar"></span></div>
+                    <div class="fc-center-row"><span class="fc-center-lbl">农历</span><span class="fc-center-val" id="mbpFcLunar"></span></div>
+                    <div class="fc-center-row"><span class="fc-center-lbl">真太阳时</span><span class="fc-center-val" id="mbpFcTst"></span></div>
+                    <div class="fc-center-row"><span class="fc-center-lbl">排盘时辰</span><span class="fc-center-val" id="mbpFcShichen"></span></div>
+                    <div class="fc-center-row" style="align-items:flex-start;margin-top:3px">
+                      <span class="fc-center-lbl" style="margin-top:1px">节气四柱</span>
+                      <div class="fc-sizhu" id="mbpFcSizhu"></div>
+                    </div>
+                  </div>
+                  <div class="fc-gua-rows">
+                    <div class="fc-gua-row"><span class="fc-center-lbl">先天卦</span><span class="fc-center-val" id="mbpFcXiantian">—</span></div>
+                    <div class="fc-gua-row"><span class="fc-center-lbl">后天卦</span><span class="fc-center-val" id="mbpFcHoutian">—</span></div>
+                    <div class="fc-gua-row"><span class="fc-center-lbl">流年卦</span><span class="fc-center-val" id="mbpFcLiunian">—</span></div>
+                  </div>
+                  <div class="fc-center-btns">
+                    <button class="fc-center-btn" id="mbpFcTimeUp" type="button">时 ↑</button>
+                    <button class="fc-center-btn" id="mbpFcTimeDown" type="button">时 ↓</button>
+                  </div>
+                </div>
+                <div class="fc-cell" id="mbp-fc-you"></div>
+                <div class="fc-cell" id="mbp-fc-mao"></div>
+                <div class="fc-cell" id="mbp-fc-xu"></div>
+                <div class="fc-cell" id="mbp-fc-yin"></div>
+                <div class="fc-cell" id="mbp-fc-chou"></div>
+                <div class="fc-cell" id="mbp-fc-zi"></div>
+                <div class="fc-cell" id="mbp-fc-hai"></div>
+              </div>
+            </div>
+
+            <div class="fc-tabs-wrap">
+              <div class="fc-tabs">
+                <button class="fc-tab active" type="button" data-tab="先天卦">
+                  <span class="fc-tab-deco">◇</span>先天卦<span class="fc-tab-deco">◇</span>
+                </button>
+                <button class="fc-tab" type="button" data-tab="后天卦">后天卦</button>
+                <button class="fc-tab" type="button" data-tab="流年卦">流年卦</button>
+              </div>
+            </div>
+
+            <div class="fc-liunian-wrap" id="mbpFcLiunianWrap" style="display:none">
+              <button class="fc-scroll-btn" id="mbpFcScrollLeft" type="button">◁</button>
+              <div class="fc-liunian-scroll" id="mbpFcLiunianScroll"></div>
+              <button class="fc-scroll-btn" id="mbpFcScrollRight" type="button">▷</button>
+            </div>
+
+            <div class="fc-hexagram-area" id="mbpFcHexagramArea">
+              <div class="fc-hex-name" id="mbpFcHexName">—</div>
+              <div class="fc-hex-sub" id="mbpFcHexSub"></div>
+              <div class="fc-hex-lines" id="mbpFcHexLines"></div>
+            </div>
+
+            <div class="fc-guaci-card" id="mbpFcGuaciCard" style="display:none">
+              <p class="fc-guaci-text" id="mbpFcGuaciText"></p>
+            </div>
+          </div>
         </div>
         <aside class="mbp-decode-panel">
           <span>排盘完成后</span>
