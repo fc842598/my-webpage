@@ -396,29 +396,45 @@
     return text ? [{ title: card.title || '解读', content: text }] : [];
   }
 
-  function insightSummary(data, fallback = '等待原站 AI 返回。') {
+  function insightSummary(data, fallback = '等待原站 AI 返回。', max = 88) {
     const card = data?.card || {};
     const source = card.summary || aiSections(data)[0]?.content || card.body || data?.finalAnswer || fallback;
-    return trimText(source, 88);
+    return trimText(source, max);
   }
 
-  function sectionBullets(sections, limit = 3) {
+  function sectionBullets(sections, limit = 3, summary = '') {
+    const summaryText = normalizeText(summary);
     return sections
-      .map((section) => trimText(section.content || section.title, 54))
+      .map((section) => {
+        const title = normalizeText(section.title);
+        const content = normalizeText(section.content);
+        if (!content && !title) return '';
+        if (content && summaryText) {
+          const contentHead = content.slice(0, 32);
+          const summaryHead = summaryText.slice(0, 32);
+          if (contentHead && (summaryText.startsWith(contentHead) || content.startsWith(summaryHead))) {
+            return '';
+          }
+        }
+        const body = trimText(content || title, 46);
+        if (!title || title === '解读') return body;
+        return `${title}：${body}`;
+      })
       .filter(Boolean)
       .slice(0, limit);
   }
 
-  function renderInsightBlock(data, fallbackTitle, fallbackText) {
+  function renderInsightBlock(data, fallbackTitle, fallbackText, options = {}) {
     const sections = aiSections(data);
-    const summary = insightSummary(data, fallbackText);
-    const bullets = sectionBullets(sections);
+    const summary = insightSummary(data, fallbackText, options.summaryMax || 88);
+    const bullets = sectionBullets(sections, options.bulletLimit || 3, summary);
     const detail = sections.length ? sections : [{ title: fallbackTitle, content: fallbackText }];
+    const detailLabel = options.detailLabel || '展开完整解读';
     return `
       <p class="mbp-insight-summary">${escapeHtml(summary)}</p>
       ${bullets.length ? `<ul class="mbp-insight-points">${bullets.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ul>` : ''}
       <details class="mbp-insight-detail">
-        <summary>展开完整解读</summary>
+        <summary>${escapeHtml(detailLabel)}</summary>
         <div>
           ${detail.map((section) => `
             <section>
@@ -460,7 +476,11 @@
     }
     if (title) title.textContent = aiCardTitle(data, fallbackTitle);
     if (body) {
-      body.innerHTML = renderInsightBlock(data, fallbackTitle, '原站 AI 暂未返回内容，请稍后重试。');
+      body.innerHTML = renderInsightBlock(data, fallbackTitle, '原站 AI 暂未返回内容，请稍后重试。', {
+        summaryMax: 76,
+        bulletLimit: 2,
+        detailLabel: '查看全文',
+      });
     }
   }
 
@@ -514,10 +534,18 @@
       chapters.innerHTML = chaptersData.map((item, index) => {
         const data = index === 0 ? overall : index === 1 ? luck : { card: { title: item[0], body: item[1] } };
         return `
-        <article>
+        <article class="mbp-report-row">
           <span>卷${index + 1}</span>
-          <h3>${escapeHtml(item[0])}</h3>
-          ${renderInsightBlock(data, item[0], item[1])}
+          <div class="mbp-report-title">
+            <h3>${escapeHtml(item[0])}</h3>
+          </div>
+          <div class="mbp-report-content">
+            ${renderInsightBlock(data, item[0], item[1], {
+              summaryMax: 112,
+              bulletLimit: 3,
+              detailLabel: '打开完整卷章',
+            })}
+          </div>
         </article>
       `;
       }).join('');

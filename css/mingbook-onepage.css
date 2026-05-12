@@ -742,6 +742,90 @@ select {
   overflow-wrap: anywhere;
 }
 
+@media (min-width: 1021px) {
+  .is-decoded .mbp-special-grid {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  .is-decoded .mbp-special-card,
+  .is-decoded .mbp-special-card.is-wide {
+    grid-column: auto;
+    min-height: 0;
+    height: 318px;
+    display: flex;
+    flex-direction: column;
+    padding: 20px 18px 18px;
+  }
+
+  .is-decoded .mbp-special-card:has(.mbp-insight-detail[open]) {
+    grid-column: 1 / -1;
+    height: auto;
+  }
+
+  .is-decoded .mbp-special-card i {
+    right: 14px;
+    bottom: -14px;
+    font-size: 82px;
+  }
+
+  .is-decoded .mbp-special-card span {
+    align-self: flex-start;
+    padding-inline: 9px;
+  }
+
+  .is-decoded .mbp-special-card h3 {
+    margin: 14px 0 8px;
+    font-size: 22px;
+  }
+
+  .is-decoded .mbp-ai-status {
+    margin-bottom: 8px;
+  }
+
+  .is-decoded .mbp-special-result {
+    max-width: none;
+    display: flex;
+    min-height: 0;
+    flex: 1;
+    flex-direction: column;
+  }
+
+  .is-decoded .mbp-special-card .mbp-insight-summary,
+  .is-decoded .mbp-special-card .mbp-insight-points li {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .is-decoded .mbp-special-card .mbp-insight-summary {
+    -webkit-line-clamp: 4;
+    font-size: 14px;
+    line-height: 1.7;
+  }
+
+  .is-decoded .mbp-special-card .mbp-insight-points {
+    gap: 6px;
+    margin-top: 10px;
+  }
+
+  .is-decoded .mbp-special-card .mbp-insight-points li {
+    -webkit-line-clamp: 2;
+    font-size: 12px;
+    line-height: 1.55;
+  }
+
+  .is-decoded .mbp-special-card .mbp-insight-detail {
+    margin-top: auto;
+    padding-top: 10px;
+  }
+
+  .is-decoded .mbp-special-card:has(.mbp-insight-detail[open]) .mbp-insight-summary,
+  .is-decoded .mbp-special-card:has(.mbp-insight-detail[open]) .mbp-insight-points li {
+    display: block;
+  }
+}
+
 .mbp-preview-bar {
   display: grid;
   grid-template-columns: auto 1fr auto;
@@ -851,6 +935,102 @@ select {
 
 .mbp-chapters .mbp-insight-detail p {
   color: var(--muted);
+}
+
+.mbp-report-row {
+  display: grid;
+  grid-template-columns: 58px minmax(148px, 210px) minmax(0, 1fr);
+  gap: 18px;
+  align-items: start;
+}
+
+.mbp-report-row > span {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border: 1px solid rgba(241, 212, 125, .18);
+  border-radius: 999px;
+  background: rgba(241, 212, 125, .06);
+}
+
+.mbp-report-title h3 {
+  margin: 0;
+}
+
+.mbp-report-content {
+  min-width: 0;
+}
+
+.mbp-report-content .mbp-insight-summary {
+  margin-top: -2px;
+}
+
+@media (min-width: 1021px) {
+  .is-decoded .mbp-book-layout {
+    grid-template-columns: 230px minmax(0, 1fr);
+    gap: 24px;
+    align-items: start;
+  }
+
+  .is-decoded .mbp-book-cover {
+    position: sticky;
+    top: 84px;
+    min-height: 420px;
+    padding: 28px 20px;
+  }
+
+  .is-decoded .mbp-book-cover div {
+    font-size: 30px;
+    letter-spacing: .12em;
+  }
+
+  .is-decoded .mbp-book-cover p {
+    margin: 22px 0 54px;
+    letter-spacing: .14em;
+  }
+
+  .is-decoded .mbp-book-cover button {
+    width: 150px;
+  }
+
+  .is-decoded .mbp-chapters {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .is-decoded .mbp-chapters article {
+    min-height: 0;
+    padding: 18px 20px;
+  }
+
+  .is-decoded .mbp-report-row .mbp-insight-summary {
+    font-size: 15px;
+    line-height: 1.75;
+  }
+
+  .is-decoded .mbp-report-row .mbp-insight-points {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .is-decoded .mbp-report-row .mbp-insight-points li {
+    padding: 9px 10px 9px 22px;
+    border: 1px solid rgba(241, 212, 125, .1);
+    border-radius: 7px;
+    background: rgba(241, 212, 125, .035);
+    font-size: 12px;
+    line-height: 1.55;
+  }
+
+  .is-decoded .mbp-report-row .mbp-insight-points li::before {
+    left: 10px;
+    top: 17px;
+  }
+
+  .is-decoded .mbp-report-row .mbp-insight-detail {
+    margin-top: 12px;
+  }
 }
 
 .mbp-final {
@@ -1011,6 +1191,18 @@ select {
   .mbp-special-card.is-wide {
     grid-column: auto;
     min-height: 178px;
+  }
+
+  .mbp-report-row {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .mbp-report-row > span {
+    width: max-content;
+    height: auto;
+    padding: 6px 12px;
+    border-radius: 999px;
   }
 
   .mbp-preview-bar {
