@@ -473,6 +473,39 @@ select {
   font-size: 15px;
 }
 
+.mbp-path-strip {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 22px;
+}
+
+.mbp-path-strip span {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  min-height: 34px;
+  padding: 0 13px;
+  border: 1px solid rgba(241, 212, 125, .16);
+  border-radius: 999px;
+  background: rgba(241, 212, 125, .045);
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.mbp-path-strip b {
+  color: var(--gold);
+  font-size: 12px;
+}
+
+.mbp-path-strip span.is-current {
+  border-color: rgba(241, 212, 125, .36);
+  background: rgba(241, 212, 125, .1);
+  color: var(--ivory);
+}
+
 .mbp-birth-form {
   width: min(620px, 100%);
   margin-top: 16px;
@@ -908,6 +941,38 @@ select {
   margin: 12px 0 0;
   color: var(--muted);
   font-size: 16px;
+}
+
+.mbp-report-pulse {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.mbp-report-pulse span {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  min-height: 34px;
+  padding: 0 13px;
+  border: 1px solid rgba(241, 212, 125, .14);
+  border-radius: 999px;
+  background: rgba(241, 212, 125, .045);
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.mbp-report-pulse b {
+  color: var(--gold);
+}
+
+.is-decoded .mbp-report-pulse span,
+.mbp-book.is-generated .mbp-report-pulse span {
+  border-color: rgba(241, 212, 125, .32);
+  background: rgba(241, 212, 125, .09);
+  color: var(--ivory);
 }
 
 .mbp-chart-stage {
@@ -1532,6 +1597,29 @@ select {
   opacity: .72;
 }
 
+.mbp-decode-meter {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+  width: min(260px, 100%);
+  margin-top: 16px;
+}
+
+.mbp-decode-meter i {
+  height: 5px;
+  border-radius: 999px;
+  background: rgba(241, 212, 125, .12);
+  box-shadow: inset 0 0 0 1px rgba(241, 212, 125, .08);
+}
+
+.mbp-decode-meter i.is-running {
+  background: rgba(241, 212, 125, .42);
+}
+
+.mbp-decode-meter i.is-done {
+  background: linear-gradient(90deg, var(--gold), var(--copper));
+}
+
 .mbp-module-actions {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1569,6 +1657,13 @@ select {
 .mbp-card-ai-btn:disabled {
   cursor: wait;
   opacity: .58;
+}
+
+.mbp-module-actions button.is-done,
+.mbp-card-ai-btn.is-done {
+  border-color: rgba(241, 212, 125, .46);
+  background: rgba(241, 212, 125, .14);
+  color: var(--ivory);
 }
 
 .mbp-decode-status {
@@ -2188,6 +2283,16 @@ select {
     font-size: 15px;
   }
 
+  .mbp-path-strip {
+    justify-content: flex-start;
+  }
+
+  .mbp-path-strip span {
+    flex: 1 1 108px;
+    justify-content: center;
+    padding-inline: 8px;
+  }
+
   .mbp-birth-form {
     margin-top: 30px;
   }
@@ -2303,6 +2408,10 @@ select {
   }
 
   .mbp-decode-btn {
+    width: 100%;
+  }
+
+  .mbp-decode-meter {
     width: 100%;
   }
 

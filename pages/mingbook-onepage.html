@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>阅天 · 紫微命书长页新版</title>
   <link rel="icon" href="../images/logo-mark.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../css/mingbook-onepage.css?v=20260512f">
+  <link rel="stylesheet" href="../css/mingbook-onepage.css?v=20260512g">
   <script src="../js/config.js?v=20260509-vercel-backend"></script>
   <script defer src="../js/cities.js"></script>
   <script defer src="../js/lunarCalendar.js"></script>
@@ -19,7 +19,7 @@
   <script defer src="../src/ziping/validator.js"></script>
   <script defer src="../src/ziping/runtime.js"></script>
   <script defer src="../js/ai-piming.js?v=20260508-backend-base"></script>
-  <script defer src="../js/mingbook-onepage.js?v=20260512f"></script>
+  <script defer src="../js/mingbook-onepage.js?v=20260512g"></script>
 </head>
 <body>
   <header class="mbp-nav">
@@ -74,6 +74,11 @@
         <p class="mbp-hero-kicker">命 书 长 页</p>
         <h1 id="mbpHeroTitle">紫 微 命 书</h1>
         <p class="mbp-hero-copy">输入出生信息，排出命盘，再点一次「一键解读」。五大专项、命书卷轴、走势曲线和深度报告在同一页展开。</p>
+        <div class="mbp-path-strip" aria-label="命书生成路径">
+          <span class="is-current"><b>01</b>输入资料</span>
+          <span><b>02</b>排盘校验</span>
+          <span><b>03</b>一键成书</span>
+        </div>
 
         <form class="mbp-birth-form" id="mbpBirthForm">
           <div class="mbp-form-card">
@@ -266,6 +271,9 @@
           <span>排盘完成后</span>
           <h3>一键解读全部模块</h3>
           <button class="mbp-decode-btn" id="mbpDecodeBtn" type="button">✦ 一键解读</button>
+          <div class="mbp-decode-meter" id="mbpDecodeMeter" role="progressbar" aria-label="AI生成进度" aria-valuemin="0" aria-valuemax="7" aria-valuenow="0">
+            <i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+          </div>
           <div class="mbp-module-actions" aria-label="单独批命入口">
             <button type="button" data-ai-module="overall">批整体</button>
             <button type="button" data-ai-module="current_luck">批走势</button>
@@ -317,6 +325,11 @@
       <div class="mbp-section-head">
         <span>03 命书卷轴报告</span>
         <h2>从「准」到「专业」：有结构、有证据、有可读性</h2>
+        <div class="mbp-report-pulse" id="mbpReportPulse">
+          <span><b id="mbpReportReadyCount">0/7</b> 模块</span>
+          <span><b id="mbpReportStateText">待生成</b> 状态</span>
+          <span><b>6</b> 卷报告</span>
+        </div>
       </div>
 
       <div class="mbp-book-layout">

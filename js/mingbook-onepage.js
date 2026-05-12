@@ -1405,6 +1405,37 @@
     $('#mbpChapters')?.classList.toggle('is-generated', enabled);
   }
 
+  function generatedModuleCount() {
+    return aiTasks.filter((task) => state.aiResults[task.module]).length;
+  }
+
+  function updateDecodeProgress(done = 0, runningIndex = -1, stateText = '待生成') {
+    const total = aiTasks.length;
+    const meter = $('#mbpDecodeMeter');
+    if (meter) {
+      meter.setAttribute('aria-valuemax', String(total));
+      meter.setAttribute('aria-valuenow', String(Math.min(done, total)));
+      meter.querySelectorAll('i').forEach((bar, index) => {
+        bar.classList.toggle('is-done', index < done);
+        bar.classList.toggle('is-running', index === runningIndex && index >= done);
+      });
+    }
+    const count = $('#mbpReportReadyCount');
+    if (count) count.textContent = `${Math.min(done, total)}/${total}`;
+    const label = $('#mbpReportStateText');
+    if (label) label.textContent = stateText;
+  }
+
+  function setModuleDone(moduleKey, done) {
+    document.querySelectorAll(`[data-ai-module="${moduleKey}"]`).forEach((button) => {
+      button.classList.toggle('is-done', done);
+    });
+  }
+
+  function resetModuleDoneStates() {
+    aiTasks.forEach((task) => setModuleDone(task.module, false));
+  }
+
   function renderChaptersFromAi() {
     setReportGeneratedState(true);
     const facts = chartFacts();
@@ -1516,17 +1547,20 @@
     if (!task) return false;
     state.decoded = true;
     document.body.classList.add('is-decoded');
+    updateDecodeProgress(generatedModuleCount(), aiTasks.indexOf(task), task.label);
     if (task.key) setSpecialStatus(task.key, '正在生成…', 'running');
     setModuleButtonsBusy(task.module, true);
     setDecodeStatus(`正在单独批命：${task.label}`);
     try {
       const data = await callOriginalAi(task.module);
       state.aiResults[task.module] = data;
+      setModuleDone(task.module, true);
       if (task.key) {
         renderSpecialAi(task.key, data, task.label);
         setSpecialStatus(task.key, '已生成', 'done');
       }
       renderChaptersFromAi();
+      updateDecodeProgress(generatedModuleCount(), -1, '已生成');
       setDecodeStatus(`${task.label} 已生成。`);
       if (options.scroll && task.key) {
         document.querySelector(`[data-report="${task.key}"]`)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -1538,6 +1572,7 @@
         renderSpecialAi(task.key, { card: { title: task.label, body: `⚠ ${message}` } }, task.label);
         setSpecialStatus(task.key, message, 'error');
       }
+      updateDecodeProgress(generatedModuleCount(), -1, '生成失败');
       setDecodeStatus(`${task.label} 失败：${message}`);
       return false;
     } finally {
@@ -1561,20 +1596,25 @@
     document.body.classList.add('is-decoded');
     setDecodeStatus('正在调用原站 AI 批命：整体批命');
     setAllModuleButtonsBusy(true);
+    resetModuleDoneStates();
+    updateDecodeProgress(0, 0, '生成中');
 
     let successCount = 0;
-    for (const task of aiTasks) {
+    for (const [index, task] of aiTasks.entries()) {
+      updateDecodeProgress(successCount, index, task.label);
       if (task.key) setSpecialStatus(task.key, '正在生成…', 'running');
       setDecodeStatus(`正在调用原站 AI 批命：${task.label}`);
       try {
         const data = await callOriginalAi(task.module);
         state.aiResults[task.module] = data;
         successCount += 1;
+        setModuleDone(task.module, true);
         if (task.key) {
           renderSpecialAi(task.key, data, task.label);
           setSpecialStatus(task.key, '已生成', 'done');
         }
         renderChaptersFromAi();
+        updateDecodeProgress(successCount, index, task.label);
       } catch (error) {
         const message = friendlyAiError(error);
         if (task.key) {
@@ -1586,6 +1626,7 @@
 
     renderChaptersFromAi();
     setDecodeStatus(successCount ? `已接入原站 AI：完成 ${successCount}/${aiTasks.length} 个模块。` : 'AI 服务暂未连接，请稍后重试。');
+    updateDecodeProgress(successCount, -1, successCount ? '已生成' : '生成失败');
     setAllModuleButtonsBusy(false);
     if (btn) {
       btn.disabled = false;
@@ -1595,6 +1636,8 @@
 
   function resetAiContent() {
     setReportGeneratedState(false);
+    resetModuleDoneStates();
+    updateDecodeProgress(0, -1, '待生成');
     const defaults = {
       body: ['身宫批命', '点击一键解读后生成。'],
       marriage: ['婚姻批命', '点击一键解读后生成。'],
