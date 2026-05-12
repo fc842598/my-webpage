@@ -91,7 +91,7 @@ function figBottomNav(active) {
     ["mine", "●", "我的"]
   ];
   return `
-    ${figBox("bottom-bg", 0, 760, 390, 84, "", "background:rgba(255,255,255,.88);")}
+    ${figBox("bottom-bg", 0, 760, 390, 84, "", "background:#fff;box-shadow:0 -8px 18px rgba(0,0,0,.04);")}
     ${items.map(([route, icon, label], index) => {
       const left = [18, 95, 178, 259, 333][index];
       const color = label === active ? "#b81a05" : "#8c8c80";
@@ -118,8 +118,15 @@ function navigate(route, push = true) {
 }
 
 function syncActive() {
+  const activeRoute = {
+    recharge: "mine",
+    settings: "mine",
+    pay: "mine",
+    report: "home",
+    chart: "archive"
+  }[state.route] || state.route;
   for (const button of document.querySelectorAll("[data-route]")) {
-    button.classList.toggle("is-active", button.dataset.route === state.route);
+    button.classList.toggle("is-active", button.dataset.route === activeRoute);
   }
 }
 
