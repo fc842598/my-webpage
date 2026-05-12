@@ -1400,7 +1400,13 @@
     };
   }
 
+  function setReportGeneratedState(enabled) {
+    $('#report')?.classList.toggle('is-generated', enabled);
+    $('#mbpChapters')?.classList.toggle('is-generated', enabled);
+  }
+
   function renderChaptersFromAi() {
+    setReportGeneratedState(true);
     const facts = chartFacts();
     const overall = normalizeAiData(state.aiResults.overall);
     const luck = normalizeAiData(state.aiResults.current_luck);
@@ -1454,6 +1460,7 @@
     ];
     const chapters = $('#mbpChapters');
     if (chapters) {
+      chapters.classList.add('is-generated');
       chapters.innerHTML = chaptersData.map((item, index) => {
         const data = index === 0 ? overall : index === 1 ? luck : { card: { title: item[0], body: item[1], sections: item[2] || null } };
         return `
@@ -1587,6 +1594,7 @@
   }
 
   function resetAiContent() {
+    setReportGeneratedState(false);
     const defaults = {
       body: ['身宫批命', '点击一键解读后生成。'],
       marriage: ['婚姻批命', '点击一键解读后生成。'],

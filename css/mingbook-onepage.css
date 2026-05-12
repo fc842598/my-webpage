@@ -1957,6 +1957,12 @@ select {
   align-content: start;
 }
 
+.mbp-chapters.is-generated,
+.mbp-chapters:has(.mbp-report-row) {
+  grid-template-columns: 1fr;
+  gap: 14px;
+}
+
 .mbp-chapters article {
   min-height: 170px;
   padding: 22px;
@@ -2020,39 +2026,48 @@ select {
 }
 
 @media (min-width: 1021px) {
-  .is-decoded .mbp-book-layout {
+  .is-decoded .mbp-book-layout,
+  .mbp-book.is-generated .mbp-book-layout {
     grid-template-columns: 230px minmax(0, 1fr);
     gap: 24px;
     align-items: start;
   }
 
-  .is-decoded .mbp-book-cover {
+  .is-decoded .mbp-book-cover,
+  .mbp-book.is-generated .mbp-book-cover {
     position: sticky;
     top: 84px;
     min-height: 420px;
     padding: 28px 20px;
   }
 
-  .is-decoded .mbp-book-cover div {
+  .is-decoded .mbp-book-cover div,
+  .mbp-book.is-generated .mbp-book-cover div {
     font-size: 30px;
     letter-spacing: .12em;
   }
 
-  .is-decoded .mbp-book-cover p {
+  .is-decoded .mbp-book-cover p,
+  .mbp-book.is-generated .mbp-book-cover p {
     margin: 22px 0 54px;
     letter-spacing: .14em;
   }
 
-  .is-decoded .mbp-book-cover button {
+  .is-decoded .mbp-book-cover button,
+  .mbp-book.is-generated .mbp-book-cover button {
     width: 150px;
   }
 
-  .is-decoded .mbp-chapters {
+  .is-decoded .mbp-chapters,
+  .mbp-chapters.is-generated,
+  .mbp-chapters:has(.mbp-report-row) {
     grid-template-columns: 1fr;
     gap: 14px;
   }
 
-  .is-decoded .mbp-chapters article {
+  .is-decoded .mbp-chapters article,
+  .mbp-chapters.is-generated article,
+  .mbp-chapters:has(.mbp-report-row) article {
     min-height: 0;
     padding: 18px 20px;
   }
