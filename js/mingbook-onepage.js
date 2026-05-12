@@ -1,6 +1,7 @@
 (function () {
   const storageKey = 'yt_mingbook_onepage_profile_v1';
   const legacyHistoryKey = 'yt_zw_history_v1';
+  const chartHistoryKey = 'ziwei_local_chart_history_v1';
   const palaceOrder = ['巳', '午', '未', '申', '辰', null, null, '酉', '卯', null, null, '戌', '寅', '丑', '子', '亥'];
   const shichenNames = ['子', '丑', '寅', '卯', '辰', '巳', '午', '未', '申', '酉', '戌', '亥'];
   const fcBranchId = {
@@ -62,6 +63,7 @@
   };
   let formCalMode = state.profile.isLunar ? 'lunar' : 'solar';
   let selectedCity = null;
+  let clientRecordsCache = [];
 
   const aiTasks = [
     { module: 'overall', label: '整体批命' },
@@ -147,6 +149,16 @@
     }
   }
 
+  function readJsonList(key) {
+    try {
+      const raw = localStorage.getItem(key);
+      const list = raw ? JSON.parse(raw) : [];
+      return Array.isArray(list) ? list : [];
+    } catch (_) {
+      return [];
+    }
+  }
+
   function indexToHour(index) {
     const idx = clampNumber(index, 0, 11, 6);
     return idx === 0 ? 0 : idx * 2;
@@ -154,8 +166,7 @@
 
   function profileFromLegacyHistory() {
     try {
-      const raw = localStorage.getItem(legacyHistoryKey);
-      const list = raw ? JSON.parse(raw) : [];
+      const list = readJsonList(legacyHistoryKey);
       const item = Array.isArray(list) ? list[0] : null;
       if (!item) return null;
       const source = item.norm || item;
@@ -172,6 +183,129 @@
     } catch (_) {
       return null;
     }
+  }
+
+  function makeLocalId() {
+    if (window.crypto?.randomUUID) return window.crypto.randomUUID();
+    return `mbp-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 9)}`;
+  }
+
+  function parseTimeText(value) {
+    const match = String(value || '').match(/(\d{1,2})[:：](\d{1,2})/);
+    return match ? { hour: Number(match[1]), minute: Number(match[2]) } : {};
+  }
+
+  function recordToProfile(record) {
+    const source = record?.norm || record || {};
+    const date = String(source.dateStr || source.birth_date || '').split('-').map((part) => Number.parseInt(part, 10));
+    const time = parseTimeText(source.birth_time);
+    const cityObj = source.city && typeof source.city === 'object' ? source.city : null;
+    const cityName = cityObj?.name || source.cityName || source.city || defaultProfile.city;
+    return normalizeProfile({
+      name: source.name || '',
+      year: source.year || date[0],
+      month: source.month || date[1],
+      day: source.day || date[2],
+      hour: source.cstHour ?? source.hour ?? time.hour ?? indexToHour(source.timeIdx),
+      minute: source.cstMinute ?? source.minute ?? time.minute ?? 0,
+      gender: source.gender,
+      city: cityName,
+      cityName,
+      cityProvince: source.cityProvince || cityObj?.province,
+      cityShort: source.cityShort || cityObj?.city,
+      cityLon: source.cityLon ?? cityObj?.lon,
+      cityLat: source.cityLat ?? cityObj?.lat,
+      cityTz: source.cityTz ?? cityObj?.tzOffset,
+      isLunar: source.calMode === 'lunar' || source.isLunar,
+      lunarYear: source.lunarYear,
+      lunarMonth: source.lunarMonth,
+      lunarDay: source.lunarDay,
+      lunarLeap: source.lunarLeap || source.isLeap,
+      calModeLabel: source.calModeLabel,
+      lunarLabel: source.lunarLabel,
+    });
+  }
+
+  function profileHistoryKey(profile) {
+    return [
+      profile.name || '',
+      profile.gender,
+      profile.year,
+      profile.month,
+      profile.day,
+      profile.hour,
+      profile.minute,
+      profile.cityLon || '',
+      profile.cityName || profile.city || '',
+      profile.isLunar ? 'lunar' : 'solar',
+    ].join('|');
+  }
+
+  function cityRecordFromProfile(profile) {
+    return {
+      name: profile.cityName || profile.city || '',
+      province: profile.cityProvince || '',
+      city: profile.cityShort || '',
+      lon: profile.cityLon,
+      lat: profile.cityLat,
+      tzOffset: profile.cityTz ?? 8,
+    };
+  }
+
+  function profileToRecord(profile) {
+    return {
+      id: makeLocalId(),
+      savedAt: new Date().toISOString(),
+      name: profile.name || '',
+      gender: profile.gender,
+      year: profile.year,
+      month: profile.month,
+      day: profile.day,
+      cstHour: profile.hour,
+      cstMinute: profile.minute,
+      dateStr: dateStr(profile),
+      calMode: profile.isLunar ? 'lunar' : 'solar',
+      calModeLabel: profile.calModeLabel || `公历 ${dateStr(profile)}`,
+      city: cityRecordFromProfile(profile),
+      cityName: profile.cityName || profile.city || '',
+      cityLon: profile.cityLon,
+      cityLat: profile.cityLat,
+      cityTz: profile.cityTz ?? 8,
+      lunarYear: profile.lunarYear,
+      lunarMonth: profile.lunarMonth,
+      lunarDay: profile.lunarDay,
+      lunarLeap: profile.lunarLeap,
+    };
+  }
+
+  function loadCustomerRecords() {
+    const records = [
+      ...readJsonList(chartHistoryKey),
+      ...readJsonList(legacyHistoryKey),
+    ];
+    const current = { ...profileToRecord(state.profile), id: 'current', savedAt: new Date().toISOString() };
+    const seen = new Set();
+    return [current, ...records]
+      .map((record) => {
+        const profile = recordToProfile(record);
+        const key = profileHistoryKey(profile);
+        if (seen.has(key)) return null;
+        seen.add(key);
+        return { id: record.id || key, savedAt: record.savedAt || record.created_at || '', profile };
+      })
+      .filter(Boolean)
+      .slice(0, 50);
+  }
+
+  function saveProfileToHistory(profile) {
+    const record = profileToRecord(profile);
+    const key = profileHistoryKey(profile);
+    const list = readJsonList(chartHistoryKey)
+      .filter((item) => profileHistoryKey(recordToProfile(item)) !== key)
+      .slice(0, 49);
+    try {
+      localStorage.setItem(chartHistoryKey, JSON.stringify([record, ...list]));
+    } catch (_) {}
   }
 
   function readInitialProfile() {
@@ -573,9 +707,11 @@
 
   function updateHeroMeta(bundle) {
     const mark = $('#mbpProfileMark');
+    const title = $('#mbpProfileTitle');
     const meta = $('#mbpProfileMeta');
     if (!mark || !meta) return;
     const genderText = state.profile.gender === 'male' ? '男命' : '女命';
+    if (title) title.textContent = state.profile.name || '命 主';
     if (bundle.chart) {
       const life = findLifePalace(bundle.chart);
       mark.textContent = (life?.earthlyBranch || '命').slice(0, 1);
@@ -584,6 +720,69 @@
       mark.textContent = '命';
       meta.textContent = '待排盘 · 命书未启';
     }
+    renderClientList();
+  }
+
+  function clientLabel(profile) {
+    return profile.name || (profile.gender === 'female' ? '女命客户' : '男命客户');
+  }
+
+  function clientSubline(profile) {
+    return `${profile.year}-${pad2(profile.month)}-${pad2(profile.day)} ${pad2(profile.hour)}:${pad2(profile.minute)} · ${profile.cityName || profile.city || '未填地点'}`;
+  }
+
+  function renderClientList() {
+    const listEl = $('#mbpClientList');
+    const countEl = $('#mbpClientCount');
+    if (!listEl) return;
+    clientRecordsCache = loadCustomerRecords();
+    if (countEl) countEl.textContent = `${clientRecordsCache.length} 个盘`;
+    if (!clientRecordsCache.length) {
+      listEl.innerHTML = '<div class="mbp-client-empty">暂无客户盘，排盘后会自动保存。</div>';
+      return;
+    }
+    const activeKey = profileHistoryKey(state.profile);
+    listEl.innerHTML = clientRecordsCache.map((item, index) => {
+      const profile = item.profile;
+      const label = clientLabel(profile);
+      const mark = (label || '命').slice(-1);
+      const isActive = profileHistoryKey(profile) === activeKey;
+      return `
+        <button class="mbp-client-item ${isActive ? 'is-active' : ''}" type="button" data-client-index="${index}">
+          <span class="mbp-client-mini">${escapeHtml(mark)}</span>
+          <span>
+            <b>${escapeHtml(label)}</b>
+            <small>${escapeHtml(clientSubline(profile))}</small>
+          </span>
+        </button>
+      `;
+    }).join('');
+  }
+
+  function closeClientMenu() {
+    const menu = $('#mbpClientMenu');
+    const toggle = $('#mbpClientToggle');
+    if (menu) menu.hidden = true;
+    if (toggle) toggle.setAttribute('aria-expanded', 'false');
+  }
+
+  function resetForProfileChange() {
+    state.chart = null;
+    state.chartKey = '';
+    state.decoded = false;
+    state.aiResults = {};
+    document.body.classList.remove('is-decoded');
+    resetAiContent();
+  }
+
+  function applyClientProfile(profile) {
+    state.profile = normalizeProfile(profile);
+    formCalMode = state.profile.isLunar ? 'lunar' : 'solar';
+    resetForProfileChange();
+    saveProfile();
+    updateForm();
+    renderChart();
+    closeClientMenu();
   }
 
   function getTianjiSolarClass() {
@@ -1445,16 +1644,38 @@
 
   function bindEvents() {
     function rerenderAfterProfileChange() {
-      state.chart = null;
-      state.chartKey = '';
-      state.decoded = false;
-      state.aiResults = {};
-      document.body.classList.remove('is-decoded');
-      resetAiContent();
+      resetForProfileChange();
       saveProfile();
       updateForm();
       renderChart();
     }
+
+    $('#mbpClientToggle')?.addEventListener('click', (event) => {
+      event.stopPropagation();
+      const menu = $('#mbpClientMenu');
+      const toggle = $('#mbpClientToggle');
+      if (!menu || !toggle) return;
+      const nextOpen = menu.hidden;
+      renderClientList();
+      menu.hidden = !nextOpen;
+      toggle.setAttribute('aria-expanded', String(nextOpen));
+    });
+
+    $('#mbpClientList')?.addEventListener('click', (event) => {
+      const item = event.target.closest('.mbp-client-item');
+      if (!item) return;
+      const record = clientRecordsCache[Number(item.dataset.clientIndex)];
+      if (record?.profile) applyClientProfile(record.profile);
+    });
+
+    $('#mbpClientNew')?.addEventListener('click', () => {
+      applyClientProfile({ ...defaultProfile, name: '' });
+      $('#mbpBirthForm')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+
+    document.addEventListener('click', (event) => {
+      if (!event.target.closest('#mbpClientPicker')) closeClientMenu();
+    });
 
     document.querySelectorAll('.mbp-fc-card .fc-tab').forEach((button) => {
       button.addEventListener('click', () => {
@@ -1635,6 +1856,7 @@
       document.body.classList.remove('is-decoded');
       resetAiContent();
       saveProfile();
+      saveProfileToHistory(state.profile);
       renderChart();
       $('#chart')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
