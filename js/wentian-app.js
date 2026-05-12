@@ -62,6 +62,49 @@ const convertedScreens = [
 
 const convertedByNo = new Map(convertedScreens.map((screen) => [screen.no, screen]));
 
+const screenFlowHotspots = {
+  2: [[24, 120, 342, 104, "screen-4"], [24, 250, 342, 92, "screen-4"], [24, 368, 342, 92, "screen-4"], [24, 486, 342, 92, "screen-4"]],
+  3: [[18, 43, 48, 48, "screen-2"], [310, 43, 58, 48, "screen-5"], [20, 114, 350, 118, "screen-4"]],
+  4: [[21, 96, 348, 78, "screen-9"], [32, 177, 326, 50, "screen-5"], [28, 274, 334, 62, "screen-6"], [28, 346, 334, 62, "screen-6"], [51, 750, 240, 50, "screen-6"]],
+  5: [[320, 116, 48, 48, "screen-4"], [34, 235, 322, 72, "screen-6"], [34, 318, 322, 72, "screen-6"], [48, 748, 294, 52, "screen-6"]],
+  6: [[18, 44, 48, 48, "screen-4"], [88, 600, 220, 76, "screen-7"]],
+  7: [[18, 44, 48, 48, "screen-4"], [54, 280, 282, 168, "screen-8"]],
+  8: [[18, 44, 48, 48, "screen-7"]],
+  9: [[18, 44, 48, 48, "screen-4"], [278, 44, 84, 48, "screen-4"], [20, 118, 350, 72, "screen-7"], [20, 198, 350, 72, "screen-7"], [20, 278, 350, 72, "screen-7"]],
+  10: [[18, 44, 48, 48, "screen-2"], [24, 165, 342, 90, "screen-11"], [24, 270, 342, 90, "screen-11"], [24, 375, 342, 90, "screen-11"]],
+  11: [[18, 44, 48, 48, "screen-10"], [20, 120, 350, 88, "screen-12"], [20, 220, 350, 88, "screen-12"], [42, 742, 306, 56, "screen-12"], [220, 708, 108, 44, "screen-12"]],
+  12: [[18, 44, 48, 48, "screen-4"], [22, 150, 346, 72, "screen-4"], [116, 690, 158, 54, "screen-4"]],
+  13: [[18, 44, 48, 48, "screen-2"], [82, 620, 226, 70, "screen-14"]],
+  14: [[65, 570, 260, 90, "screen-15"]],
+  15: [[18, 44, 48, 48, "screen-13"], [43, 615, 304, 58, "screen-16"]],
+  16: [[18, 44, 48, 48, "screen-15"], [162, 1210, 66, 44, "screen-4"]],
+  17: [[18, 44, 48, 48, "screen-2"], [70, 610, 250, 72, "screen-18"]],
+  18: [[18, 44, 48, 48, "screen-17"], [70, 610, 250, 72, "screen-19"]],
+  19: [[18, 44, 48, 48, "screen-18"], [70, 610, 250, 72, "screen-20"]],
+  20: [[18, 44, 48, 48, "screen-19"], [42, 742, 306, 56, "screen-21"]],
+  21: [[316, 175, 48, 48, "screen-20"], [50, 705, 290, 58, "screen-29"]],
+  22: [[18, 44, 48, 48, "screen-31"], [250, 44, 112, 48, "screen-23"], [42, 735, 306, 62, "screen-24"]],
+  23: [[18, 44, 48, 48, "screen-22"], [50, 680, 290, 58, "screen-22"]],
+  24: [[18, 44, 48, 48, "screen-22"]],
+  25: [[18, 44, 48, 48, "screen-3"]],
+  26: [[18, 44, 48, 48, "screen-3"], [42, 742, 306, 56, "screen-27"]],
+  27: [[18, 44, 48, 48, "screen-26"], [42, 742, 306, 56, "screen-33"]],
+  28: [[18, 44, 48, 48, "screen-31"], [42, 735, 306, 58, "screen-29"]],
+  29: [[18, 44, 48, 48, "screen-31"], [22, 178, 346, 70, "screen-30"], [22, 257, 346, 70, "screen-30"], [22, 336, 346, 70, "screen-30"], [34, 738, 322, 58, "screen-30"]],
+  30: [[18, 44, 48, 48, "screen-29"], [42, 735, 306, 58, "screen-31"]],
+  31: [[318, 44, 48, 48, "screen-38"], [20, 154, 350, 58, "screen-33"], [20, 216, 350, 58, "screen-29"], [20, 386, 350, 58, "screen-22"], [20, 618, 350, 58, "screen-34"]],
+  32: [[18, 44, 48, 48, "screen-31"], [20, 94, 350, 56, "screen-39"], [20, 164, 350, 56, "screen-33"], [20, 236, 350, 56, "screen-40"], [20, 306, 350, 56, "screen-41"], [20, 376, 350, 56, "screen-37"], [20, 452, 350, 56, "screen-34"], [20, 520, 350, 56, "screen-35"], [20, 590, 350, 56, "screen-36"]],
+  33: [[18, 44, 48, 48, "screen-31"], [42, 735, 306, 58, "screen-29"]],
+  34: [[18, 44, 48, 48, "screen-31"], [42, 735, 306, 58, "screen-22"]],
+  35: [[18, 44, 48, 48, "screen-38"]],
+  36: [[18, 44, 48, 48, "screen-38"]],
+  37: [[18, 44, 48, 48, "screen-38"], [20, 145, 350, 56, "screen-38"]],
+  38: [[18, 44, 48, 48, "screen-31"], [20, 150, 350, 56, "screen-39"], [20, 220, 350, 56, "screen-40"], [20, 290, 350, 56, "screen-41"], [20, 360, 350, 56, "screen-37"], [20, 500, 350, 56, "screen-35"], [20, 570, 350, 56, "screen-36"]],
+  39: [[18, 44, 48, 48, "screen-38"], [42, 742, 306, 56, "screen-38"]],
+  40: [[18, 44, 48, 48, "screen-38"], [20, 236, 350, 56, "screen-41"]],
+  41: [[18, 44, 48, 48, "screen-40"], [42, 742, 306, 56, "screen-40"]]
+};
+
 const routes = {
   home: ["问天AI", "命理报告", renderHome],
   ai: ["问天AI", "AI问天", renderAI],
@@ -365,6 +408,12 @@ function convertedButton(screen) {
   `;
 }
 
+function convertedFlowHotspots(screen) {
+  return (screenFlowHotspots[screen.no] || []).map(([x, y, w, h, route], index) =>
+    figButton(`screen-${screen.no}-flow-${index}`, x, y, w, h, `data-route="${route}"`, "flow-hotspot", "z-index:30;")
+  ).join("");
+}
+
 function renderConvertedScreen(no) {
   const screen = convertedByNo.get(no) || convertedByNo.get(2);
   const heading = screen.heading ? figText(`screen-${screen.no}-heading`, screen.heading, 24, 72, 180, 26, "#26211c", 700) : "";
@@ -379,6 +428,7 @@ function renderConvertedScreen(no) {
     ${badge}
     ${convertedButton(screen)}
     ${convertedBottomNav(screen.active)}
+    ${convertedFlowHotspots(screen)}
   `, 844, "converted", false);
 }
 
