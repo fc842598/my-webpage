@@ -16,6 +16,52 @@ const plans = [
   ["580 灵石", "¥58.00", "适合报告与问答组合"]
 ];
 
+const convertedScreens = [
+  { no: 1, title: "授权书", active: "", cards: [["本人授权问天AI依据输入资料生成排盘、合盘与AI解读。", "签署人：谢广周 / 2026-05-11"]], badge: "已授权" },
+  { no: 2, title: "首页/报告商城", active: "首页", heading: "问天AI", cards: [["你的专属命理报告，立即生成", "排盘、合盘、流年、AI解读", "立即生成", "screen-26"], ["生命曲线预测报告 ¥99", "可编辑报告卡片", "", "screen-27"], ["2026丙午年预测报告 ¥50", "可编辑报告卡片", "", "screen-27"], ["八字与MBTI人格深度解析 ¥58", "可编辑报告卡片", "", "screen-27"]] },
+  { no: 3, title: "档案列表", active: "档案", list: [["谢｜男｜阳历 2026-05-12", "用于排盘、合盘、AI问答", "screen-25"], ["命主｜女｜阴历八月", "用于排盘、合盘、AI问答", "screen-25"], ["贵王红仪｜VIP", "用于排盘、合盘、AI问答", "screen-25"], ["情侣合盘", "用于排盘、合盘、AI问答", "screen-10"]] },
+  { no: 4, title: "AI问天", active: "问天AI", ai: "base" },
+  { no: 5, title: "选择档案", active: "问天AI", ai: "modal", modalTitle: "选择档案", modalItems: ["谢｜男｜阳历", "命主｜女｜阴历"], next: "screen-6" },
+  { no: 6, title: "AI提问中", active: "问天AI", ai: "asking" },
+  { no: 7, title: "AI回复", active: "问天AI", ai: "reply" },
+  { no: 8, title: "AI长文解读", active: "问天AI", sections: ["核心结论", "性格优势", "隐性风险", "事业建议", "感情建议", "财运建议", "行动方案"] },
+  { no: 9, title: "对话记录", active: "问天AI", modalTitle: "对话记录", modalItems: ["新的对话 15:18", "新的对话 22:06"], next: "screen-7" },
+  { no: 10, title: "合盘类型", cards: [["情侣合盘", "合盘深度解析｜情感契合度｜冲突化解建议"], ["合盘主视觉", ""]], button: ["开始合盘对话", "screen-11"] },
+  { no: 11, title: "选择合盘档案", modalTitle: "选择合盘档案", modalItems: ["谢｜男｜阳历", "命主｜女｜阴历"], next: "screen-25" },
+  { no: 12, title: "随机提问", cards: [["今日适合问什么？", "事业方向 / 感情状态 / 近期机会"], ["换一批问题", ""]], button: ["开始问天", "screen-4"] },
+  { no: 13, title: "抽签", active: "活动", cards: [["抽签", "静心默念问题，抽取一支签文。"]], button: ["开始抽签", "screen-14"] },
+  { no: 14, title: "抽签中", active: "活动", cards: [["抽签中", "签筒正在摇动，请稍候。"]], button: ["查看结果", "screen-15"] },
+  { no: 15, title: "抽签结果", active: "活动", cards: [["上上签", "当前所问宜稳中推进，先定边界，再谈扩张。"]], button: ["查看签文详情", "screen-16"] },
+  { no: 16, title: "签文详情", active: "活动", sections: ["签文", "解签", "事业", "感情", "行动建议"] },
+  { no: 17, title: "起卦", active: "活动", cards: [["起卦", "抛掷六次生成卦象。"]], button: ["开始投掷", "screen-18"] },
+  { no: 18, title: "投掷4次", active: "活动", cards: [["已投掷 4 次", "还差 2 次完成本卦。"]], button: ["继续投掷", "screen-19"] },
+  { no: 19, title: "投掷5次", active: "活动", cards: [["已投掷 5 次", "再投一次查看结果。"]], button: ["查看结果", "screen-20"] },
+  { no: 20, title: "地风升", active: "活动", sections: ["本卦：地风升", "卦意", "事业建议", "关系建议", "行动窗口"], button: ["购买解读", "screen-21"] },
+  { no: 21, title: "购买弹窗", active: "活动", modalTitle: "购买完整解读", modalItems: ["地风升完整卦象 ¥12", "包含本卦、变卦与行动建议"], next: "screen-29" },
+  { no: 22, title: "邀请好友", active: "活动", cards: [["邀请好友", "邀请码：8R7U58ZW"], ["奖励规则", "好友注册后可获得灵石。"]], button: ["查看活动中心", "screen-23"] },
+  { no: 23, title: "活动中心", active: "活动", cards: [["活动中心", "邀请、签到、兑换礼包。"], ["当前进度", "已邀请 0 人"]], button: ["邀请好友", "screen-22"] },
+  { no: 24, title: "邀请详情", active: "活动", sections: ["邀请详情", "奖励说明", "到账规则", "常见问题"] },
+  { no: 25, title: "档案", active: "档案", list: [["谢广周", "男｜阳历 2026-05-12", "screen-26"], ["查看命盘", "紫微命盘 / 八字", "screen-27"], ["AI问天", "使用当前档案提问", "screen-4"]] },
+  { no: 26, title: "排盘表单", active: "档案", form: ["姓名", "性别", "出生日期", "出生地"], button: ["开始排盘", "screen-27"] },
+  { no: 27, title: "紫微命盘", active: "档案", chart: true, button: ["购买解读", "screen-21"] },
+  { no: 28, title: "卡券包", active: "我的", cards: [["卡券包", "暂无可用卡券"], ["兑换报告券", "可使用灵石兑换。"]] },
+  { no: 29, title: "灵石充值", active: "我的", recharge: true },
+  { no: 30, title: "支付页", active: "我的", cards: [["订单信息", "支付金额 ¥12.00"]], button: ["确认支付 ¥12.00", "screen-31"] },
+  { no: 31, title: "我的", active: "我的", mine: true },
+  { no: 32, title: "账户设置", active: "我的", list: [["基本信息", "", "screen-39"], ["登录方式", "", "screen-40"], ["设置密码", "", "screen-41"], ["退出登录", "", "screen-31"]] },
+  { no: 33, title: "问天会员", active: "我的", cards: [["普通会员", ""], ["会员权益", "会员权益/套餐信息"], ["月度会员 ¥38", "会员权益/套餐信息"], ["年度会员 ¥348", "会员权益/套餐信息"]], button: ["立即开通 ¥38", "screen-30"] },
+  { no: 34, title: "分享应用", active: "我的", modalTitle: "分享应用", modalItems: ["分享文本", "邀请码：8R7U58ZW", "微信好友 / 朋友圈 / 复制链接"], next: "screen-31" },
+  { no: 35, title: "联系我们", active: "我的", list: [["电子邮箱", "", ""], ["小红书", "", ""], ["微信公众号", "", ""], ["X", "", ""]] },
+  { no: 36, title: "关于我们", active: "我的", cards: [["问天AI v1.0.3199", "问天AI是一款命理排盘、合盘、抽签与AI解读工具。"], ["隐私协议", ""], ["用户协议", ""], ["检查更新", ""]] },
+  { no: 37, title: "语言设置", active: "我的", modalTitle: "语言设置", modalItems: ["简体中文 ✓", "繁體中文", "English"], next: "screen-38" },
+  { no: 38, title: "账户设置", active: "我的", list: [["基本信息", "", "screen-39"], ["登录方式", "", "screen-40"], ["设置密码", "", "screen-41"], ["退出登录", "", "screen-31"]] },
+  { no: 39, title: "基本信息", active: "我的", form: ["昵称 谢广周", "邮箱 aa1598...@gmail.com", "手机号 绑定"], button: ["保存", "screen-38"] },
+  { no: 40, title: "登录方式", active: "我的", list: [["Apple", "", ""], ["邮箱", "", ""], ["手机号", "", ""], ["Google", "", ""]] },
+  { no: 41, title: "设置密码", active: "我的", form: ["新密码", "确认密码"], button: ["保存", "screen-40"] }
+];
+
+const convertedByNo = new Map(convertedScreens.map((screen) => [screen.no, screen]));
+
 const routes = {
   home: ["问天AI", "命理报告", renderHome],
   ai: ["问天AI", "AI问天", renderAI],
@@ -37,6 +83,7 @@ const state = {
 const view = document.getElementById("view");
 const routeKicker = document.getElementById("routeKicker");
 const routeTitle = document.getElementById("routeTitle");
+const screenNav = document.getElementById("screenNav");
 
 function escapeHtml(value) {
   return String(value).replace(/[&<>"']/g, (char) => ({
@@ -71,10 +118,10 @@ function figStatus(time) {
   `;
 }
 
-function figPhone(nodeId, name, body, height = 844) {
+function figPhone(nodeId, name, body, height = 844, extraClass = "") {
   return `
     <div class="phone-wrap">
-      <section class="figma-phone" data-node-id="${nodeId}" data-name="${name}" style="height:${height}px">
+      <section class="figma-phone ${extraClass}" data-node-id="${nodeId}" data-name="${name}" style="height:${height}px">
         ${body}
         <div class="fig-home-indicator"></div>
       </section>
@@ -104,7 +151,229 @@ function figBottomNav(active) {
   `;
 }
 
+function convertedHeader(screen) {
+  return `
+    ${figText(`screen-${screen.no}-time`, screen.no >= 36 ? "15:19" : screen.no >= 30 ? "15:18" : "15:16", 18, 10, 70, 11, "#26211c")}
+    ${figText(`screen-${screen.no}-battery`, "● ● ● 72%", 292, 10, 78, 11, "#26211c", 400, "right")}
+    ${figButton(`screen-${screen.no}-back-hit`, 10, 36, 54, 54, 'data-action="back"')}
+    ${figText(`screen-${screen.no}-back`, "‹", 22, 42, 30, 28, "#26211c")}
+    ${figText(`screen-${screen.no}-title`, screen.title, 62, 48, 266, 17, "#26211c", 700, "center")}
+  `;
+}
+
+function convertedBottomNav(active) {
+  if (!active) return "";
+  const items = [
+    ["screen-2", "首页", 24],
+    ["screen-3", "档案", 98],
+    ["screen-4", "问天AI", 172],
+    ["screen-22", "活动", 246],
+    ["screen-31", "我的", 320]
+  ];
+  return `
+    ${figBox("converted-bottom-bg", 0, 780, 390, 64, "", "background:#fff;box-shadow:0 -6px 16px rgba(0,0,0,.04);")}
+    ${items.map(([route, label, x]) => {
+      const on = label === active;
+      const color = on ? "#b88c33" : "#8c8275";
+      return `
+        ${figButton(`converted-bottom-${label}`, x - 12, 780, 70, 60, `data-route="${route}"`)}
+        ${figText(`converted-bottom-dot-${label}`, on ? "●" : "○", x, 792, 40, 18, color, 400, "center")}
+        ${figText(`converted-bottom-label-${label}`, label, x - 8, 817, 56, 10, on ? "#26211c" : color, 400, "center")}
+      `;
+    }).join("")}
+  `;
+}
+
+function convertedCards(screen) {
+  const cards = screen.cards || [];
+  return cards.map(([title, desc, cta, route], index) => {
+    const y = screen.no === 2 ? [120, 250, 368, 486][index] : 112 + index * 104;
+    const h = screen.no === 2 && index === 0 ? 104 : 86;
+    return `
+      ${figBox(`screen-${screen.no}-card-${index}`, 24, y, 342, h, "converted-card", "")}
+      ${figText(`screen-${screen.no}-card-title-${index}`, title, 40, y + 14, 310, 15, "#26211c", 700)}
+      ${desc ? figText(`screen-${screen.no}-card-desc-${index}`, desc, 40, y + 42, 310, 12, "#8c8275") : ""}
+      ${cta ? figBox(`screen-${screen.no}-cta-box-${index}`, 250, y + h - 40, 96, 30, "converted-button", "") : ""}
+      ${cta ? figButton(`screen-${screen.no}-cta-${index}`, 250, y + h - 40, 96, 30, `data-route="${route || "screen-2"}"`) : ""}
+      ${cta ? figText(`screen-${screen.no}-cta-text-${index}`, cta, 250, y + h - 32, 96, 11, "#fff", 500, "center") : ""}
+    `;
+  }).join("");
+}
+
+function convertedList(screen) {
+  const list = screen.list || [];
+  return list.map(([title, desc, route], index) => {
+    const y = 112 + index * 72;
+    return `
+      ${figBox(`screen-${screen.no}-row-${index}`, 24, y, 342, 56, "converted-card", "")}
+      ${route ? figButton(`screen-${screen.no}-row-hit-${index}`, 24, y, 342, 56, `data-route="${route}"`) : ""}
+      ${figText(`screen-${screen.no}-row-title-${index}`, title, 40, y + 14, 280, 15, "#26211c", 700)}
+      ${desc ? figText(`screen-${screen.no}-row-desc-${index}`, desc, 40, y + 38, 280, 12, "#8c8275") : ""}
+      ${figText(`screen-${screen.no}-row-arrow-${index}`, "›", 330, y + 13, 20, 18, "#8c8275", 700, "center")}
+    `;
+  }).join("");
+}
+
+function convertedForm(screen) {
+  return (screen.form || []).map((label, index) => {
+    const y = 120 + index * 62;
+    return `
+      ${figText(`screen-${screen.no}-label-${index}`, label, 34, y + 12, 110, 14, "#8c8275")}
+      ${figBox(`screen-${screen.no}-input-${index}`, 130, y, 224, 42, "converted-card", "border-radius:8px;")}
+      ${figText(`screen-${screen.no}-placeholder-${index}`, "请输入", 144, y + 12, 160, 13, "#b7ac9c")}
+    `;
+  }).join("");
+}
+
+function convertedSections(screen) {
+  return (screen.sections || []).map((title, index) => {
+    const y = 96 + index * 86;
+    return `
+      ${figBox(`screen-${screen.no}-section-${index}`, 42, y, 306, 68, "converted-card", "")}
+      ${figText(`screen-${screen.no}-section-title-${index}`, title, 58, y + 14, 274, 15, "#26211c", 700)}
+      ${figText(`screen-${screen.no}-section-desc-${index}`, "这里放置完整长文解读内容。", 58, y + 42, 274, 12, "#8c8275")}
+    `;
+  }).join("");
+}
+
+function convertedModal(screen) {
+  if (!screen.modalTitle) return "";
+  const items = screen.modalItems || [];
+  return `
+    ${figBox(`screen-${screen.no}-overlay`, 0, 0, 390, 844, "", "background:rgba(0,0,0,.3);")}
+    ${figBox(`screen-${screen.no}-modal`, 20, 500, 350, 260, "", "border-radius:20px;background:#fff;")}
+    ${figText(`screen-${screen.no}-modal-title`, screen.modalTitle, 42, 526, 200, 18, "#26211c", 700)}
+    ${items.map((item, index) => `
+      ${figBox(`screen-${screen.no}-modal-row-${index}`, 42, 570 + index * 42, 306, 34, "converted-card", "border-radius:10px;")}
+      ${figText(`screen-${screen.no}-modal-text-${index}`, item, 58, 578 + index * 42, 274, 13, "#26211c")}
+    `).join("")}
+    ${figBox(`screen-${screen.no}-modal-btn`, 220, 708, 108, 44, "converted-button", "")}
+    ${figButton(`screen-${screen.no}-modal-hit`, 220, 708, 108, 44, `data-route="${screen.next || "screen-2"}"`)}
+    ${figText(`screen-${screen.no}-modal-confirm`, "确定", 220, 720, 108, 13, "#fff", 500, "center")}
+  `;
+}
+
+function convertedAi(screen) {
+  const base = `
+    ${figBox(`screen-${screen.no}-avatar`, 42, 108, 44, 44, "converted-card", "border-radius:22px;background:#f2e8d6;")}
+    ${figText(`screen-${screen.no}-avatar-text`, "谢", 42, 120, 44, 14, "#b88c33", 700, "center")}
+    ${figText(`screen-${screen.no}-hello`, "你好！我是量子阿炳", 92, 112, 240, 21, "#b88c33", 700)}
+    ${figBox(`screen-${screen.no}-bazi`, 32, 170, 326, 88, "converted-card", "")}
+    ${figText(`screen-${screen.no}-bazi-title`, "当前八字", 48, 184, 294, 15, "#26211c", 700)}
+    ${figText(`screen-${screen.no}-bazi-desc`, "年 辛未｜月 癸巳｜日 丁亥｜时 辛亥", 48, 212, 294, 12, "#8c8275")}
+    ${figBox(`screen-${screen.no}-ask-box`, 24, 704, 342, 44, "converted-card", "border-radius:22px;")}
+    ${figText(`screen-${screen.no}-ask-text`, "问一问", 48, 718, 170, 14, "#8c8275")}
+    ${figButton(`screen-${screen.no}-ask-hit`, 24, 704, 342, 44, 'data-route="screen-6"')}
+    ${figText(`screen-${screen.no}-plus`, "+", 318, 710, 28, 24, "#b88c33", 700, "center")}
+  `;
+  if (screen.ai === "asking") {
+    return base + figBox("asking-bubble", 46, 286, 298, 92, "", "border-radius:14px;background:#b88c33;") +
+      figText("asking-text", "请根据我的八字，深度拆解核心性格特质。", 64, 306, 260, 14, "#fff") +
+      figText("asking-wait", "推算中...", 46, 420, 200, 14, "#8c8275");
+  }
+  if (screen.ai === "reply") {
+    return base + figBox("reply-user", 46, 260, 298, 74, "", "border-radius:14px;background:#b88c33;") +
+      figText("reply-user-text", "请根据我的八字拆解性格。", 64, 282, 260, 14, "#fff") +
+      figText("reply-ai", "你的八字显示辛未、癸巳、丁亥、辛亥。核心是敏感、洞察力强，适合把直觉转化为决策。", 42, 360, 304, 14, "#26211c");
+  }
+  return base;
+}
+
+function convertedSpecial(screen) {
+  if (screen.ai === "modal") return convertedAi(screen) + convertedModal(screen);
+  if (screen.ai) return convertedAi(screen);
+  if (screen.modalTitle) return convertedModal(screen);
+  if (screen.form) return convertedForm(screen);
+  if (screen.sections) return convertedSections(screen);
+  if (screen.list) return convertedList(screen);
+  if (screen.recharge) {
+    return `
+      ${figBox("recharge-current", 42, 112, 306, 80, "converted-card", "")}
+      ${figText("recharge-current-title", "当前灵石", 68, 138, 160, 18, "#26211c", 700)}
+      ${figText("recharge-current-count", "1", 250, 132, 60, 26, "#b88c33", 700, "center")}
+      ${[["120 ¥12", 42, 220], ["280 ¥28", 146, 220], ["580 ¥58", 250, 220], ["980 ¥98", 42, 332]].map(([label, x, y], index) => `
+        ${figBox(`recharge-plan-${index}`, x, y, index === 3 ? 306 : 92, 86, "converted-card", index === 0 ? "border-color:#b88c33;" : "")}
+        ${figText(`recharge-plan-text-${index}`, label, x + 8, y + 28, index === 3 ? 290 : 76, 16, index === 0 ? "#b88c33" : "#26211c", 700, "center")}
+      `).join("")}
+      ${figText("recharge-pay-title", "选择支付方式", 42, 462, 220, 18, "#26211c", 700)}
+      ${figBox("recharge-alipay", 42, 508, 140, 44, "converted-card", "border-color:#b88c33;")}
+      ${figText("recharge-alipay-text", "支付宝", 42, 520, 140, 14, "#b88c33", 500, "center")}
+      ${figBox("recharge-card", 202, 508, 140, 44, "converted-card", "")}
+      ${figText("recharge-card-text", "信用卡", 202, 520, 140, 14, "#26211c", 500, "center")}
+    `;
+  }
+  if (screen.mine) {
+    return `
+      ${figBox("mine-profile", 24, 112, 342, 86, "converted-card", "")}
+      ${figText("mine-name", "谢广周", 40, 126, 310, 15, "#26211c", 700)}
+      ${figText("mine-meta", "普通会员 / 账号信息", 40, 154, 310, 12, "#8c8275")}
+      ${[["问天会员", "screen-33"], ["灵石充值", "screen-29"], ["我的报告", "screen-27"], ["订单记录", "screen-30"], ["邀请好友", "screen-22"], ["语言设置", "screen-37"], ["分享应用", "screen-34"], ["联系我们", "screen-35"]].map(([label, route], index) => {
+        const y = 224 + index * 54;
+        return `
+          ${figBox(`mine-row-${index}`, 24, y, 342, 42, "converted-card", "border-radius:8px;")}
+          ${figButton(`mine-row-hit-${index}`, 24, y, 342, 42, `data-route="${route}"`)}
+          ${figText(`mine-row-text-${index}`, label, 40, y + 14, 280, 15, "#26211c")}
+          ${figText(`mine-row-arrow-${index}`, "›", 330, y + 12, 20, 16, "#8c8275", 700, "center")}
+        `;
+      }).join("")}
+    `;
+  }
+  if (screen.chart) {
+    return Array.from({ length: 12 }, (_, index) => {
+      const col = index % 3;
+      const row = Math.floor(index / 3);
+      return `
+        ${figBox(`chart-cell-${index}`, 34 + col * 108, 126 + row * 108, 98, 98, "converted-card", "border-radius:10px;")}
+        ${figText(`chart-cell-title-${index}`, ["命宫","兄弟","夫妻","子女","财帛","疾厄","迁移","仆役","官禄","田宅","福德","父母"][index], 42 + col * 108, 136 + row * 108, 82, 13, "#26211c", 700, "center")}
+        ${figText(`chart-cell-stars-${index}`, "紫微 天府\\n文昌 禄存", 42 + col * 108, 164 + row * 108, 82, 11, "#8c8275", 400, "center")}
+      `;
+    }).join("");
+  }
+  return convertedCards(screen);
+}
+
+function convertedButton(screen) {
+  if (!screen.button) return "";
+  const [label, route] = screen.button;
+  return `
+    ${figBox(`screen-${screen.no}-bottom-button`, 56, 746, 278, 44, "converted-button", "")}
+    ${figButton(`screen-${screen.no}-bottom-hit`, 56, 746, 278, 44, `data-route="${route}"`)}
+    ${figText(`screen-${screen.no}-bottom-label`, label, 56, 758, 278, 13, "#fff", 500, "center")}
+  `;
+}
+
+function renderConvertedScreen(no) {
+  const screen = convertedByNo.get(no) || convertedByNo.get(2);
+  const heading = screen.heading ? figText(`screen-${screen.no}-heading`, screen.heading, 24, 72, 180, 26, "#26211c", 700) : "";
+  const badge = screen.badge ? `
+    ${figBox(`screen-${screen.no}-badge`, 226, 520, 90, 90, "", "border-radius:45px;background:#a13824;")}
+    ${figText(`screen-${screen.no}-badge-text`, screen.badge, 228, 552, 86, 18, "#fff", 700, "center")}
+  ` : "";
+  return figPhone(`screen-${screen.no}`, `${String(screen.no).padStart(2, "0")} ${screen.title}`, `
+    ${convertedHeader(screen)}
+    ${heading}
+    ${convertedSpecial(screen)}
+    ${badge}
+    ${convertedButton(screen)}
+    ${convertedBottomNav(screen.active)}
+  `, 844, "converted");
+}
+
 function navigate(route, push = true) {
+  if (/^screen-?\d+$/.test(route)) {
+    const no = Number(route.replace("screen-", ""));
+    const screen = convertedByNo.get(no) || convertedByNo.get(2);
+    route = `screen-${screen.no}`;
+    if (push && route !== state.route) state.stack.push(state.route);
+    state.route = route;
+    routeKicker.textContent = "Figma Editable Prototype";
+    routeTitle.textContent = `${String(screen.no).padStart(2, "0")} ${screen.title}`;
+    view.innerHTML = renderConvertedScreen(screen.no);
+    syncActive();
+    location.hash = route;
+    window.scrollTo(0, 0);
+    return;
+  }
   if (!routes[route]) route = "home";
   if (push && route !== state.route) state.stack.push(state.route);
   state.route = route;
@@ -118,16 +387,29 @@ function navigate(route, push = true) {
 }
 
 function syncActive() {
-  const activeRoute = {
-    recharge: "mine",
-    settings: "mine",
-    pay: "mine",
-    report: "home",
-    chart: "archive"
+  const screenNo = state.route.startsWith("screen-") ? Number(state.route.replace("screen-", "")) : 0;
+  let railRoute = {
+    recharge: "screen-31",
+    settings: "screen-31",
+    pay: "screen-31",
+    report: "screen-2",
+    chart: "screen-3"
   }[state.route] || state.route;
+  if (screenNo >= 4 && screenNo <= 9 || screenNo === 12) railRoute = "screen-4";
+  if (screenNo === 3 || screenNo >= 25 && screenNo <= 27) railRoute = "screen-3";
+  if (screenNo >= 13 && screenNo <= 24) railRoute = "screen-13";
+  if (screenNo >= 28 && screenNo <= 41) railRoute = "screen-31";
+  if (screenNo === 1 || screenNo === 2 || screenNo === 10 || screenNo === 11) railRoute = "screen-2";
   for (const button of document.querySelectorAll("[data-route]")) {
-    button.classList.toggle("is-active", button.dataset.route === activeRoute);
+    if (button.closest(".rail-nav")) {
+      button.classList.toggle("is-active", button.dataset.route === railRoute);
+    } else if (button.closest(".screen-nav")) {
+      button.classList.toggle("is-active", button.dataset.route === state.route);
+    } else {
+      button.classList.toggle("is-active", button.dataset.route === state.route);
+    }
   }
+  screenNav?.querySelector(`[data-route="${state.route}"]`)?.scrollIntoView({ block: "nearest" });
 }
 
 function reportCards() {
@@ -458,5 +740,15 @@ document.addEventListener("click", (event) => {
   }
 });
 
+function buildScreenNav() {
+  if (!screenNav) return;
+  screenNav.innerHTML = convertedScreens.map((screen) => `
+    <button type="button" data-route="screen-${screen.no}">
+      ${String(screen.no).padStart(2, "0")} ${screen.title}
+    </button>
+  `).join("");
+}
+
 window.addEventListener("hashchange", () => navigate(location.hash.slice(1) || "home", false));
-navigate(location.hash.slice(1) || "home", false);
+buildScreenNav();
+navigate(location.hash.slice(1) || "screen-2", false);
