@@ -126,6 +126,38 @@ select {
   padding: 26px 0 80px;
 }
 
+@media (min-width: 1021px) {
+  :root {
+    --mbp-ui-scale: .8;
+  }
+}
+
+@media (min-width: 1600px) {
+  :root {
+    --mbp-ui-scale: .86;
+  }
+}
+
+@media (min-width: 1920px) {
+  :root {
+    --mbp-ui-scale: .9;
+  }
+}
+
+@media (min-width: 1021px) {
+  .mbp-nav {
+    height: calc(64px * var(--mbp-ui-scale));
+  }
+
+  .mbp-nav > * {
+    zoom: var(--mbp-ui-scale);
+  }
+
+  .mbp-page {
+    zoom: var(--mbp-ui-scale);
+  }
+}
+
 .mbp-hero {
   display: grid;
   grid-template-columns: 330px minmax(0, 1fr);
