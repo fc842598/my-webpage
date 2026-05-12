@@ -118,12 +118,12 @@ function figStatus(time) {
   `;
 }
 
-function figPhone(nodeId, name, body, height = 844, extraClass = "") {
+function figPhone(nodeId, name, body, height = 844, extraClass = "", showHomeIndicator = true) {
   return `
     <div class="phone-wrap">
       <section class="figma-phone ${extraClass}" data-node-id="${nodeId}" data-name="${name}" style="height:${height}px">
         ${body}
-        <div class="fig-home-indicator"></div>
+        ${showHomeIndicator ? '<div class="fig-home-indicator"></div>' : ""}
       </section>
     </div>
   `;
@@ -280,6 +280,14 @@ function convertedAi(screen) {
 }
 
 function convertedSpecial(screen) {
+  if (screen.no === 1) {
+    return `
+      ${figText("screen-1-hero-title", "授权书", 0, 92, 390, 22, "#26211c", 700, "center")}
+      ${figText("screen-1-auth-copy", "本人授权问天AI依据输入资料生成排盘、合盘\\n与AI解读。\\n\\n签署人：谢广周 / 2026-05-11", 42, 150, 306, 15, "#26211c", 400, "left", "line-height:1.35;")}
+      ${figBox("screen-1-seal", 226, 520, 90, 90, "", "border-radius:45px;background:#a13824;")}
+      ${figText("screen-1-seal-text", "已授权", 228, 552, 86, 18, "#fff", 700, "center")}
+    `;
+  }
   if (screen.ai === "modal") return convertedAi(screen) + convertedModal(screen);
   if (screen.ai) return convertedAi(screen);
   if (screen.modalTitle) return convertedModal(screen);
@@ -345,7 +353,7 @@ function convertedButton(screen) {
 function renderConvertedScreen(no) {
   const screen = convertedByNo.get(no) || convertedByNo.get(2);
   const heading = screen.heading ? figText(`screen-${screen.no}-heading`, screen.heading, 24, 72, 180, 26, "#26211c", 700) : "";
-  const badge = screen.badge ? `
+  const badge = screen.badge && screen.no !== 1 ? `
     ${figBox(`screen-${screen.no}-badge`, 226, 520, 90, 90, "", "border-radius:45px;background:#a13824;")}
     ${figText(`screen-${screen.no}-badge-text`, screen.badge, 228, 552, 86, 18, "#fff", 700, "center")}
   ` : "";
@@ -356,7 +364,7 @@ function renderConvertedScreen(no) {
     ${badge}
     ${convertedButton(screen)}
     ${convertedBottomNav(screen.active)}
-  `, 844, "converted");
+  `, 844, "converted", screen.no !== 1);
 }
 
 function navigate(route, push = true) {
