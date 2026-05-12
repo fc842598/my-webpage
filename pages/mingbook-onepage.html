@@ -5,12 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>阅天 · 紫微命书长页新版</title>
   <link rel="icon" href="../images/logo-mark.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../css/mingbook-onepage.css?v=20260512a">
+  <link rel="stylesheet" href="../css/mingbook-onepage.css?v=20260512b">
   <script src="../js/config.js?v=20260509-vercel-backend"></script>
+  <script defer src="../js/cities.js"></script>
+  <script defer src="../js/lunarCalendar.js"></script>
   <script defer src="../js/trueSolarTime.js"></script>
+  <script defer src="../js/vendor/lunar-javascript.js"></script>
   <script defer src="../js/vendor/iztro.min.js"></script>
   <script defer src="../js/ai-piming.js?v=20260508-backend-base"></script>
-  <script defer src="../js/mingbook-onepage.js?v=20260512a"></script>
+  <script defer src="../js/mingbook-onepage.js?v=20260512b"></script>
 </head>
 <body>
   <header class="mbp-nav">
@@ -56,26 +59,104 @@
         <p class="mbp-hero-copy">输入出生信息，排出命盘，再点一次「一键解读」。五大专项、命书卷轴、走势曲线和深度报告在同一页展开。</p>
 
         <form class="mbp-birth-form" id="mbpBirthForm">
-          <label>
-            <span>出生日期</span>
-            <input id="mbpDate" name="date" type="date" required>
-          </label>
-          <label>
-            <span>出生时间</span>
-            <input id="mbpTime" name="time" type="time" required>
-          </label>
-          <label>
-            <span>性别</span>
-            <select id="mbpGender" name="gender">
-              <option value="male">男命</option>
-              <option value="female">女命</option>
-            </select>
-          </label>
-          <label>
-            <span>出生地</span>
-            <input id="mbpCity" name="city" type="text" placeholder="北京市 东城区">
-          </label>
-          <button type="submit">排盘</button>
+          <div class="mbp-form-card">
+            <div class="nf-row">
+              <div class="nf-row-left">
+                <span class="nf-label">姓名:</span>
+                <input type="text" id="mbpName" placeholder="请输入姓名（选填）" class="nf-name-input" autocomplete="off">
+              </div>
+              <div class="nf-gender-pill">
+                <button type="button" class="nf-gender-btn active" data-v="male">男</button>
+                <button type="button" class="nf-gender-btn" data-v="female">女</button>
+                <input type="hidden" id="mbpGender" value="male">
+              </div>
+            </div>
+
+            <div class="nf-row nf-date-row">
+              <div class="nf-row-head">
+                <div>
+                  <span class="nf-required">*</span>
+                  <span class="nf-label">出生时间</span>
+                </div>
+                <div class="nf-cal-toggle">
+                  <button type="button" class="nf-cal-btn active" data-cal="solar">公历</button>
+                  <button type="button" class="nf-cal-btn" data-cal="lunar">农历</button>
+                  <button type="button" class="nf-cal-btn nf-cal-btn-ai" data-cal="ai">✦ AI识别</button>
+                </div>
+              </div>
+
+              <div id="mbpSolarInputs" class="nf-date-inputs">
+                <input type="number" id="mbpYear" min="1900" max="2030" placeholder="年 如1990" class="nf-select" autocomplete="off">
+                <select id="mbpMonth" class="nf-select"></select>
+                <select id="mbpDay" class="nf-select"></select>
+              </div>
+
+              <div id="mbpLunarInputs" class="nf-date-inputs" style="display:none">
+                <input type="number" id="mbpLunarYear" min="1900" max="2030" placeholder="农历年 如1990" class="nf-select" autocomplete="off">
+                <select id="mbpLunarMonth" class="nf-select"></select>
+                <select id="mbpLunarDay" class="nf-select"></select>
+                <label id="mbpLunarLeapWrap" class="nf-lunar-leap">
+                  <input type="checkbox" id="mbpLunarLeap">闰月
+                  <span id="mbpLunarLeapNote"></span>
+                </label>
+              </div>
+
+              <div id="mbpDatePreview" class="nf-muted-line"></div>
+
+              <div id="mbpAiInlineWrap" class="mbp-ai-inline" style="display:none">
+                <div class="ai-msg ai-msg-ai">告诉我出生信息就好，比如：<em>1991年2月16日晚上10点，男，上海</em><br>城市影响真太阳时，尽量填。</div>
+                <div class="ai-chat-input-row">
+                  <input type="text" id="mbpAiInput" class="ai-chat-input" placeholder="年月日、时间、性别、城市…" autocomplete="off">
+                  <button type="button" id="mbpAiSend" class="ai-chat-send">识别</button>
+                </div>
+                <div class="ai-chat-tip" id="mbpAiTip">直接输入出生信息，系统自动填入下方表单。</div>
+              </div>
+            </div>
+
+            <div class="nf-row nf-time-row">
+              <span class="nf-label">出生时刻</span>
+              <div class="nf-time-selects">
+                <select id="mbpHour" class="nf-select nf-time-sel"></select>
+                <span class="nf-time-sep">时</span>
+                <select id="mbpMinute" class="nf-select nf-time-sel"></select>
+                <span class="nf-time-sep">分</span>
+                <button type="button" id="mbpUnknownTime" class="nf-soft-btn">不知道时辰？</button>
+              </div>
+            </div>
+
+            <div class="nf-row nf-city-row">
+              <div class="nf-row-head">
+                <span class="nf-label">出生地点</span>
+                <span class="nf-hint">（影响真太阳时）</span>
+              </div>
+              <div class="nf-city-search-wrap">
+                <input type="text" id="mbpCitySearch" placeholder="搜索城市，如：北京、Tokyo、London" class="nf-select" autocomplete="off">
+                <button type="button" id="mbpClearCity" class="nf-clear-city" style="display:none">清除</button>
+              </div>
+              <div id="mbpCityDropdown" class="nf-city-dropdown" style="display:none"></div>
+              <div id="mbpCitySelected" class="nf-city-selected" style="display:none">
+                已选: <span id="mbpCitySelectedName"></span>
+                <span>(<span id="mbpCityLon"></span>°E, <span id="mbpCityLat"></span>°N)</span>
+              </div>
+            </div>
+
+            <div class="nf-row nf-tst-row" id="mbpTstRow">
+              <div class="nf-row-head">
+                <span class="nf-label">真太阳时</span>
+                <span id="mbpTstBadge" class="nf-hint">默认估算</span>
+              </div>
+              <div id="mbpTstDisplay" class="nf-muted-line">请先输入出生日期，地点可选</div>
+              <div id="mbpShichenPreview" class="nf-muted-line"></div>
+            </div>
+
+            <div id="mbpFormError" class="nf-error" style="display:none"></div>
+
+            <div class="nf-submit-wrap">
+              <button type="submit" class="nf-submit">
+                <span>开 始 排 盘</span>
+              </button>
+            </div>
+          </div>
         </form>
       </div>
     </section>

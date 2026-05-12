@@ -3,7 +3,7 @@
   const legacyHistoryKey = 'yt_zw_history_v1';
   const palaceOrder = ['巳', '午', '未', '申', '辰', null, null, '酉', '卯', null, null, '戌', '寅', '丑', '子', '亥'];
   const shichenNames = ['子', '丑', '寅', '卯', '辰', '巳', '午', '未', '申', '酉', '戌', '亥'];
-  const defaultProfile = { year: 1990, month: 8, day: 16, hour: 12, minute: 0, gender: 'male', city: '北京市 东城区' };
+  const defaultProfile = { name: '', year: 1990, month: 8, day: 16, hour: 12, minute: 0, gender: 'male', city: '北京市 东城区', cityName: '北京市 东城区' };
   const starProfiles = {
     紫微: { trait: '主星稳重，有掌控局面和整合资源的能力', career: '适合管理、统筹、品牌和资源型岗位', wealth: '财运重在长期配置，不宜频繁追涨杀跌', love: '感情里要减少控制感，多给对方空间' },
     天府: { trait: '格局厚实，重秩序、信用与长期积累', career: '适合组织管理、财务、法务、运营与稳定体系', wealth: '守财能力强，越长期越能看出优势', love: '重承诺，也需要被稳定回应' },
@@ -29,6 +29,8 @@
     decoded: false,
     aiResults: {},
   };
+  let formCalMode = state.profile.isLunar ? 'lunar' : 'solar';
+  let selectedCity = null;
 
   const aiTasks = [
     { module: 'overall', label: '整体批命' },
@@ -63,14 +65,30 @@
   }
 
   function normalizeProfile(input = {}) {
+    const cityObj = input.city && typeof input.city === 'object' ? input.city : null;
+    const cityName = String(input.cityName || cityObj?.name || cityObj?.cityName || input.city || defaultProfile.city).trim() || defaultProfile.city;
     return {
+      name: String(input.name || '').trim(),
       year: clampNumber(input.year, 1900, 2030, defaultProfile.year),
       month: clampNumber(input.month, 1, 12, defaultProfile.month),
       day: clampNumber(input.day, 1, 31, defaultProfile.day),
       hour: clampNumber(input.hour ?? input.cstHour, 0, 23, defaultProfile.hour),
       minute: clampNumber(input.minute ?? input.cstMinute, 0, 59, defaultProfile.minute),
       gender: input.gender === 'female' || input.gender === '女' ? 'female' : 'male',
-      city: String(input.cityName || input.city?.name || input.city || defaultProfile.city).trim() || defaultProfile.city,
+      city: cityName,
+      cityName,
+      cityProvince: String(input.cityProvince || cityObj?.province || '').trim(),
+      cityShort: String(input.cityShort || cityObj?.city || '').trim(),
+      cityLon: Number.isFinite(Number(input.cityLon ?? cityObj?.lon)) ? Number(input.cityLon ?? cityObj?.lon) : null,
+      cityLat: Number.isFinite(Number(input.cityLat ?? cityObj?.lat)) ? Number(input.cityLat ?? cityObj?.lat) : null,
+      cityTz: Number.isFinite(Number(input.cityTz ?? cityObj?.tzOffset)) ? Number(input.cityTz ?? cityObj?.tzOffset) : 8,
+      isLunar: !!input.isLunar,
+      lunarYear: input.lunarYear ? clampNumber(input.lunarYear, 1900, 2030, input.lunarYear) : null,
+      lunarMonth: input.lunarMonth ? clampNumber(input.lunarMonth, 1, 12, input.lunarMonth) : null,
+      lunarDay: input.lunarDay ? clampNumber(input.lunarDay, 1, 30, input.lunarDay) : null,
+      lunarLeap: !!input.lunarLeap,
+      calModeLabel: input.calModeLabel || '',
+      lunarLabel: input.lunarLabel || '',
     };
   }
 
@@ -85,6 +103,7 @@
       minute: params.get('minute'),
       gender: params.get('gender'),
       city: params.get('city'),
+      name: params.get('name'),
     });
   }
 
@@ -132,6 +151,243 @@
     return `${profile.year}-${pad2(profile.month)}-${pad2(profile.day)}`;
   }
 
+  function daysInMonth(year, month) {
+    return new Date(year, month, 0).getDate();
+  }
+
+  function setOptions(select, values, placeholder) {
+    if (!select) return;
+    const current = String(select.value || '');
+    select.innerHTML = `<option value="">${placeholder}</option>` + values.map((item) => {
+      const value = Array.isArray(item) ? item[0] : item;
+      const label = Array.isArray(item) ? item[1] : item;
+      return `<option value="${escapeHtml(value)}">${escapeHtml(label)}</option>`;
+    }).join('');
+    if ([...select.options].some((option) => option.value === current)) select.value = current;
+  }
+
+  function populateFormControls() {
+    setOptions($('#mbpMonth'), Array.from({ length: 12 }, (_, index) => [index + 1, `${index + 1}月`]), '月');
+    setOptions($('#mbpLunarMonth'), ['正月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'].map((label, index) => [index + 1, label]), '月');
+    setOptions($('#mbpHour'), Array.from({ length: 24 }, (_, hour) => [hour, pad2(hour)]), '时');
+    setOptions($('#mbpMinute'), Array.from({ length: 60 }, (_, minute) => [minute, pad2(minute)]), '分');
+    refreshDayOptions();
+    refreshLunarDayOptions();
+  }
+
+  function refreshDayOptions() {
+    const year = Number($('#mbpYear')?.value || state.profile.year);
+    const month = Number($('#mbpMonth')?.value || state.profile.month);
+    setOptions($('#mbpDay'), Array.from({ length: daysInMonth(year, month) }, (_, index) => [index + 1, `${index + 1}日`]), '日');
+  }
+
+  function refreshLunarDayOptions() {
+    const labels = ['初一', '初二', '初三', '初四', '初五', '初六', '初七', '初八', '初九', '初十', '十一', '十二', '十三', '十四', '十五', '十六', '十七', '十八', '十九', '二十', '廿一', '廿二', '廿三', '廿四', '廿五', '廿六', '廿七', '廿八', '廿九', '三十'];
+    setOptions($('#mbpLunarDay'), labels.map((label, index) => [index + 1, label]), '日');
+  }
+
+  function formatCityLabel(city) {
+    if (!city) return '';
+    return city.province === city.city ? `中国-${city.city}` : `${city.province}-${city.city}`;
+  }
+
+  function cityFromRow(row) {
+    if (!row) return null;
+    return { province: row[0], city: row[1], name: `${row[0]} ${row[1]}`, lon: Number(row[2]), lat: Number(row[3]), tzOffset: Number(row[4] ?? 8) };
+  }
+
+  function findCity(query) {
+    const q = String(query || '').trim().toLowerCase();
+    const list = typeof CITIES !== 'undefined' ? CITIES : (window.CITIES || globalThis.CITIES);
+    if (!q || !Array.isArray(list)) return null;
+    const compact = q.replace(/\s|·|-/g, '');
+    const found = list.find((row) => {
+      const province = String(row[0]).toLowerCase();
+      const city = String(row[1]).toLowerCase();
+      const text = `${province}${city} ${province} ${city}`;
+      const rowCompact = `${province}${city}`.replace(/\s/g, '');
+      const cityCompact = city.replace(/\s/g, '');
+      return text.includes(q)
+        || text.replace(/\s/g, '').includes(compact)
+        || compact.includes(rowCompact)
+        || (cityCompact.length >= 2 && compact.includes(cityCompact));
+    });
+    return cityFromRow(found);
+  }
+
+  function applySelectedCity(city) {
+    selectedCity = city || null;
+    const input = $('#mbpCitySearch');
+    const clear = $('#mbpClearCity');
+    const selected = $('#mbpCitySelected');
+    if (input) input.value = city ? `${city.province} · ${city.city}` : '';
+    if (clear) clear.style.display = city ? '' : 'none';
+    if (selected) selected.style.display = city ? 'block' : 'none';
+    if (city) {
+      $('#mbpCitySelectedName').textContent = formatCityLabel(city);
+      $('#mbpCityLon').textContent = Number(city.lon).toFixed(2);
+      $('#mbpCityLat').textContent = Number(city.lat).toFixed(2);
+    }
+    updateTrueSolarPreview();
+  }
+
+  function setCalMode(mode) {
+    formCalMode = mode;
+    document.querySelectorAll('.nf-cal-btn').forEach((btn) => btn.classList.toggle('active', btn.dataset.cal === mode));
+    const isLunar = mode === 'lunar';
+    const isAi = mode === 'ai';
+    $('#mbpSolarInputs').style.display = isLunar ? 'none' : '';
+    $('#mbpLunarInputs').style.display = isLunar ? '' : 'none';
+    $('#mbpAiInlineWrap').style.display = isAi ? 'block' : 'none';
+    updateDatePreview();
+  }
+
+  function solarFromForm() {
+    if (formCalMode === 'lunar') {
+      const lunarYear = Number($('#mbpLunarYear')?.value);
+      const lunarMonth = Number($('#mbpLunarMonth')?.value);
+      const lunarDay = Number($('#mbpLunarDay')?.value);
+      const lunarLeap = !!$('#mbpLunarLeap')?.checked;
+      if (!lunarYear || !lunarMonth || !lunarDay) return { error: '请填写完整的农历出生年、月、日' };
+      if (typeof lunarToSolar !== 'function') return { error: '农历转换模块未加载，请刷新后重试' };
+      const solar = lunarToSolar(lunarYear, lunarMonth, lunarDay, lunarLeap);
+      if (!solar) return { error: '农历日期无效或超出支持范围' };
+      const lunarObj = { year: lunarYear, month: lunarMonth, day: lunarDay, isLeap: lunarLeap };
+      return {
+        year: solar.getFullYear(),
+        month: solar.getMonth() + 1,
+        day: solar.getDate(),
+        isLunar: true,
+        lunarYear,
+        lunarMonth,
+        lunarDay,
+        lunarLeap,
+        lunarLabel: typeof formatLunarDate === 'function' ? formatLunarDate(lunarObj) : `${lunarYear}年${lunarMonth}月${lunarDay}日`,
+        calModeLabel: `农历 ${typeof formatLunarDate === 'function' ? formatLunarDate(lunarObj) : `${lunarYear}年${lunarMonth}月${lunarDay}日`}（公历 ${solar.getFullYear()}-${pad2(solar.getMonth() + 1)}-${pad2(solar.getDate())}）`,
+      };
+    }
+    const year = Number($('#mbpYear')?.value);
+    const month = Number($('#mbpMonth')?.value);
+    const day = Number($('#mbpDay')?.value);
+    if (!year || !month || !day) return { error: '请填写完整的出生年、月、日' };
+    if (year < 1900 || year > 2030) return { error: '出生年份请填写 1900-2030' };
+    return {
+      year,
+      month,
+      day,
+      isLunar: false,
+      calModeLabel: `公历 ${year}-${pad2(month)}-${pad2(day)}`,
+    };
+  }
+
+  function updateDatePreview() {
+    const preview = $('#mbpDatePreview');
+    if (!preview) return;
+    const data = solarFromForm();
+    if (data.error) {
+      preview.textContent = '';
+    } else if (data.isLunar) {
+      preview.textContent = `公历: ${data.year}-${pad2(data.month)}-${pad2(data.day)}`;
+    } else if (typeof solarToLunar === 'function') {
+      const lunar = solarToLunar(data.year, data.month, data.day);
+      preview.textContent = lunar ? `农历: ${typeof formatLunarDate === 'function' ? formatLunarDate(lunar) : ''}` : '';
+    } else {
+      preview.textContent = '';
+    }
+    updateTrueSolarPreview();
+  }
+
+  function updateLunarLeapState() {
+    const year = Number($('#mbpLunarYear')?.value);
+    const month = Number($('#mbpLunarMonth')?.value);
+    let leapMonth = 0;
+    if (window.LunarYear && typeof window.LunarYear.fromYear === 'function' && year) {
+      try {
+        leapMonth = Math.abs(Number(window.LunarYear.fromYear(year)?.getLeapMonth?.())) || 0;
+      } catch (_) {
+        leapMonth = 0;
+      }
+    }
+    const wrap = $('#mbpLunarLeapWrap');
+    const note = $('#mbpLunarLeapNote');
+    const checkbox = $('#mbpLunarLeap');
+    const enabled = !!(leapMonth && month === leapMonth);
+    if (wrap) wrap.style.opacity = enabled ? '1' : '.55';
+    if (checkbox && !enabled) checkbox.checked = false;
+    if (note) note.textContent = leapMonth ? (enabled ? '可选闰月' : `闰${leapMonth}月`) : '无闰月';
+  }
+
+  function formTime() {
+    return {
+      hour: clampNumber($('#mbpHour')?.value, 0, 23, state.profile.hour),
+      minute: clampNumber($('#mbpMinute')?.value, 0, 59, state.profile.minute),
+    };
+  }
+
+  function updateTrueSolarPreview() {
+    const display = $('#mbpTstDisplay');
+    const badge = $('#mbpTstBadge');
+    const shichen = $('#mbpShichenPreview');
+    if (!display) return;
+    const date = solarFromForm();
+    if (date.error) {
+      display.textContent = '请先输入出生日期，地点可选';
+      if (shichen) shichen.textContent = '';
+      return;
+    }
+    const time = formTime();
+    if (typeof window.calcTrueSolarTime !== 'function') {
+      display.textContent = `${date.year}-${pad2(date.month)}-${pad2(date.day)} ${pad2(time.hour)}:${pad2(time.minute)}`;
+      return;
+    }
+    const tst = window.calcTrueSolarTime({
+      year: date.year,
+      month: date.month,
+      day: date.day,
+      hour: time.hour,
+      minute: time.minute,
+      longitude: selectedCity?.lon,
+      tzOffset: selectedCity?.tzOffset ?? 8,
+      cityName: selectedCity ? selectedCity.city : '',
+    });
+    display.innerHTML = `区时 ${pad2(time.hour)}:${pad2(time.minute)} · 真太阳时 <b>${pad2(tst.trueSolarHour)}:${pad2(tst.trueSolarMinute)}</b> · ${escapeHtml(tst.diffStr)}`;
+    if (badge) {
+      badge.textContent = tst.isEstimated ? '默认估算' : formatCityLabel(selectedCity);
+      badge.style.display = '';
+    }
+    if (shichen) {
+      const idx = typeof window.tstToShichen === 'function' ? window.tstToShichen(tst.trueSolarHour, tst.trueSolarMinute) : localShichenIndex(tst.trueSolarHour, tst.trueSolarMinute);
+      shichen.textContent = `排盘采用：${shichenNames[idx]}时`;
+    }
+  }
+
+  function showFormError(message) {
+    const error = $('#mbpFormError');
+    if (!error) return;
+    error.textContent = message || '';
+    error.style.display = message ? 'block' : 'none';
+  }
+
+  function collectProfileFromForm() {
+    const date = solarFromForm();
+    if (date.error) return { error: date.error };
+    const time = formTime();
+    const cityText = selectedCity ? formatCityLabel(selectedCity) : String($('#mbpCitySearch')?.value || defaultProfile.city).trim();
+    return normalizeProfile({
+      ...date,
+      ...time,
+      name: $('#mbpName')?.value || '',
+      gender: $('#mbpGender')?.value || 'male',
+      city: cityText,
+      cityName: cityText,
+      cityProvince: selectedCity?.province,
+      cityShort: selectedCity?.city,
+      cityLon: selectedCity?.lon,
+      cityLat: selectedCity?.lat,
+      cityTz: selectedCity?.tzOffset ?? 8,
+    });
+  }
+
   function localShichenIndex(hour, minute) {
     const total = hour * 60 + minute;
     return Math.floor(((total + 60) % 1440) / 120);
@@ -145,13 +401,23 @@
         day: profile.day,
         hour: profile.hour,
         minute: profile.minute,
-        cityName: profile.city,
+        longitude: profile.cityLon,
+        tzOffset: profile.cityTz ?? 8,
+        cityName: profile.cityName || profile.city,
       })
       : null;
     const timeIdx = typeof window.tstToShichen === 'function' && tstResult
       ? window.tstToShichen(tstResult.trueSolarHour, tstResult.trueSolarMinute)
       : localShichenIndex(profile.hour, profile.minute);
-    return { ...profile, dateStr: dateStr(profile), cstHour: profile.hour, cstMinute: profile.minute, timeIdx, tstResult };
+    return {
+      ...profile,
+      dateStr: dateStr(profile),
+      cstHour: profile.hour,
+      cstMinute: profile.minute,
+      timeIdx,
+      tstResult,
+      cityDetail: profile.cityLon ? { name: profile.city, lon: profile.cityLon, lat: profile.cityLat, tzOffset: profile.cityTz ?? 8 } : null,
+    };
   }
 
   function getAstroLib() {
@@ -159,7 +425,7 @@
   }
 
   function profileKey(profile) {
-    return [profile.year, profile.month, profile.day, profile.hour, profile.minute, profile.gender, profile.city].join('|');
+    return [profile.year, profile.month, profile.day, profile.hour, profile.minute, profile.gender, profile.city, profile.cityLon, profile.isLunar].join('|');
   }
 
   function getChartBundle() {
@@ -248,10 +514,30 @@
   }
 
   function updateForm() {
-    $('#mbpDate').value = dateStr(state.profile);
-    $('#mbpTime').value = `${pad2(state.profile.hour)}:${pad2(state.profile.minute)}`;
-    $('#mbpGender').value = state.profile.gender;
-    $('#mbpCity').value = state.profile.city;
+    populateFormControls();
+    const profile = state.profile;
+    $('#mbpName').value = profile.name || '';
+    $('#mbpGender').value = profile.gender;
+    document.querySelectorAll('.nf-gender-btn').forEach((btn) => btn.classList.toggle('active', btn.dataset.v === profile.gender));
+    $('#mbpYear').value = profile.year;
+    $('#mbpMonth').value = profile.month;
+    refreshDayOptions();
+    $('#mbpDay').value = profile.day;
+    $('#mbpLunarYear').value = profile.lunarYear || profile.year;
+    $('#mbpLunarMonth').value = profile.lunarMonth || profile.month;
+    refreshLunarDayOptions();
+    $('#mbpLunarDay').value = profile.lunarDay || profile.day;
+    $('#mbpLunarLeap').checked = !!profile.lunarLeap;
+    $('#mbpHour').value = profile.hour;
+    $('#mbpMinute').value = profile.minute;
+    selectedCity = profile.cityLon ? { province: profile.cityProvince || profile.city, city: profile.cityShort || profile.city, name: profile.city, lon: profile.cityLon, lat: profile.cityLat, tzOffset: profile.cityTz ?? 8 } : findCity(profile.city);
+    applySelectedCity(selectedCity);
+    if (!selectedCity) {
+      $('#mbpCitySearch').value = profile.city || '';
+    }
+    setCalMode(profile.isLunar ? 'lunar' : formCalMode);
+    updateLunarLeapState();
+    updateDatePreview();
   }
 
   function updateHeroMeta(bundle) {
@@ -262,7 +548,7 @@
     if (bundle.chart) {
       const life = findLifePalace(bundle.chart);
       mark.textContent = (life?.earthlyBranch || '命').slice(0, 1);
-      meta.textContent = `${genderText} · ${bundle.chart.fiveElementsClass || '五行局'} · ${state.profile.city}`;
+      meta.textContent = `${state.profile.name || genderText} · ${bundle.chart.fiveElementsClass || '五行局'} · ${state.profile.city}`;
     } else {
       mark.textContent = '命';
       meta.textContent = '待排盘 · 命书未启';
@@ -809,19 +1095,153 @@
   }
 
   function bindEvents() {
+    document.querySelectorAll('.nf-gender-btn').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        $('#mbpGender').value = btn.dataset.v;
+        document.querySelectorAll('.nf-gender-btn').forEach((item) => item.classList.toggle('active', item === btn));
+      });
+    });
+
+    document.querySelectorAll('.nf-cal-btn').forEach((btn) => {
+      btn.addEventListener('click', () => setCalMode(btn.dataset.cal || 'solar'));
+    });
+
+    ['#mbpYear', '#mbpMonth'].forEach((selector) => {
+      $(selector)?.addEventListener('change', () => {
+        refreshDayOptions();
+        updateDatePreview();
+      });
+      $(selector)?.addEventListener('input', () => {
+        refreshDayOptions();
+        updateDatePreview();
+      });
+    });
+    $('#mbpDay')?.addEventListener('change', updateDatePreview);
+    ['#mbpLunarYear', '#mbpLunarMonth'].forEach((selector) => {
+      $(selector)?.addEventListener('change', () => {
+        updateLunarLeapState();
+        updateDatePreview();
+      });
+      $(selector)?.addEventListener('input', () => {
+        updateLunarLeapState();
+        updateDatePreview();
+      });
+    });
+    $('#mbpLunarDay')?.addEventListener('change', updateDatePreview);
+    $('#mbpLunarLeap')?.addEventListener('change', updateDatePreview);
+    $('#mbpHour')?.addEventListener('change', updateTrueSolarPreview);
+    $('#mbpMinute')?.addEventListener('change', updateTrueSolarPreview);
+
+    $('#mbpUnknownTime')?.addEventListener('click', () => {
+      $('#mbpHour').value = 12;
+      $('#mbpMinute').value = 0;
+      $('#mbpShichenPreview').textContent = '已按午时 12:00 暂排，可之后回原版做时辰推断。';
+      updateTrueSolarPreview();
+    });
+
+    $('#mbpCitySearch')?.addEventListener('input', () => {
+      const input = $('#mbpCitySearch');
+      const dropdown = $('#mbpCityDropdown');
+      const q = input.value.trim().toLowerCase();
+      const list = typeof CITIES !== 'undefined' ? CITIES : (window.CITIES || globalThis.CITIES || []);
+      selectedCity = null;
+      $('#mbpClearCity').style.display = q ? '' : 'none';
+      $('#mbpCitySelected').style.display = 'none';
+      if (!q || !Array.isArray(list)) {
+        dropdown.style.display = 'none';
+        updateTrueSolarPreview();
+        return;
+      }
+      const compact = q.replace(/\s|·|-/g, '');
+      const results = list.filter((row) => {
+        const text = `${row[0]}${row[1]} ${row[0]} ${row[1]}`.toLowerCase();
+        return text.includes(q) || text.replace(/\s/g, '').includes(compact);
+      }).slice(0, 12);
+      if (!results.length) {
+        dropdown.style.display = 'none';
+        return;
+      }
+      dropdown.innerHTML = results.map((row, index) => `
+        <div class="nf-city-item" data-index="${index}">
+          <b>${escapeHtml(row[0])} · ${escapeHtml(row[1])}</b>
+          <span>${Number(row[2]).toFixed(2)}°E, ${Number(row[3]).toFixed(2)}°N</span>
+        </div>
+      `).join('');
+      dropdown._mbpResults = results;
+      dropdown.style.display = 'block';
+    });
+
+    $('#mbpCityDropdown')?.addEventListener('click', (event) => {
+      const item = event.target.closest('.nf-city-item');
+      if (!item) return;
+      const row = $('#mbpCityDropdown')._mbpResults?.[Number(item.dataset.index)];
+      applySelectedCity(cityFromRow(row));
+      $('#mbpCityDropdown').style.display = 'none';
+    });
+
+    $('#mbpClearCity')?.addEventListener('click', () => {
+      applySelectedCity(null);
+      $('#mbpCitySearch').value = '';
+      $('#mbpCityDropdown').style.display = 'none';
+    });
+
+    document.addEventListener('click', (event) => {
+      if (!event.target.closest('#mbpCitySearch') && !event.target.closest('#mbpCityDropdown')) {
+        const dropdown = $('#mbpCityDropdown');
+        if (dropdown) dropdown.style.display = 'none';
+      }
+    });
+
+    function applyAiText() {
+      const text = $('#mbpAiInput')?.value || '';
+      const year = text.match(/(19|20)\d{2}/)?.[0];
+      const numbers = [...text.matchAll(/(\d{1,2})\s*(?:月|月份|[\/.-])/g)].map((match) => Number(match[1]));
+      const dayMatch = text.match(/(\d{1,2})\s*(?:日|号)/);
+      const hourMatch = text.match(/(\d{1,2})\s*(?:点|时|:)/);
+      const minuteMatch = text.match(/[:：]\s*(\d{1,2})|(\d{1,2})\s*分/);
+      if (year) $('#mbpYear').value = year;
+      if (numbers[0]) $('#mbpMonth').value = numbers[0];
+      refreshDayOptions();
+      if (dayMatch) $('#mbpDay').value = dayMatch[1];
+      if (/女/.test(text)) {
+        $('#mbpGender').value = 'female';
+        document.querySelectorAll('.nf-gender-btn').forEach((btn) => btn.classList.toggle('active', btn.dataset.v === 'female'));
+      } else if (/男/.test(text)) {
+        $('#mbpGender').value = 'male';
+        document.querySelectorAll('.nf-gender-btn').forEach((btn) => btn.classList.toggle('active', btn.dataset.v === 'male'));
+      }
+      if (hourMatch) {
+        let hour = Number(hourMatch[1]);
+        if (/下午|晚上|夜里/.test(text) && hour < 12) hour += 12;
+        $('#mbpHour').value = Math.min(23, hour);
+      }
+      const minute = Number(minuteMatch?.[1] || minuteMatch?.[2] || 0);
+      $('#mbpMinute').value = Number.isFinite(minute) ? Math.min(59, minute) : 0;
+      const city = findCity(text);
+      if (city) applySelectedCity(city);
+      setCalMode('solar');
+      $('#mbpAiTip').textContent = city || year ? '已识别并填入，可检查后排盘。' : '暂未识别完整，请补充年月日、时间、性别、城市。';
+      updateDatePreview();
+    }
+
+    $('#mbpAiSend')?.addEventListener('click', applyAiText);
+    $('#mbpAiInput')?.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter') {
+        event.preventDefault();
+        applyAiText();
+      }
+    });
+
     $('#mbpBirthForm')?.addEventListener('submit', (event) => {
       event.preventDefault();
-      const [year, month, day] = $('#mbpDate').value.split('-').map((part) => Number.parseInt(part, 10));
-      const [hour, minute] = $('#mbpTime').value.split(':').map((part) => Number.parseInt(part, 10));
-      state.profile = normalizeProfile({
-        year,
-        month,
-        day,
-        hour,
-        minute,
-        gender: $('#mbpGender').value,
-        city: $('#mbpCity').value,
-      });
+      const profile = collectProfileFromForm();
+      if (profile.error) {
+        showFormError(profile.error);
+        return;
+      }
+      showFormError('');
+      state.profile = profile;
+      formCalMode = profile.isLunar ? 'lunar' : 'solar';
       state.chart = null;
       state.chartKey = '';
       state.decoded = false;
