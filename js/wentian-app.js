@@ -203,6 +203,20 @@ function convertedCards(screen) {
 
 function convertedList(screen) {
   const list = screen.list || [];
+  if (screen.no === 3) {
+    return list.map(([title, desc, route], index) => {
+      const y = 112 + index * 92;
+      const avatar = index === 0 ? "谢" : "命";
+      return `
+        ${figBox(`screen-${screen.no}-row-${index}`, 24, y, 342, 70, "converted-card", "")}
+        ${figButton(`screen-${screen.no}-row-hit-${index}`, 24, y, 342, 70, `data-route="${route || "screen-25"}"`)}
+        ${figText(`screen-${screen.no}-row-title-${index}`, title, 40, y + 14, 310, 15, "#26211c", 700)}
+        ${figText(`screen-${screen.no}-row-desc-${index}`, desc, 40, y + 42, 310, 12, "#8c8275")}
+        ${figBox(`screen-${screen.no}-avatar-${index}`, 42, y + 14, 44, 44, "converted-card", "border-radius:22px;background:#f2e8d6;")}
+        ${figText(`screen-${screen.no}-avatar-text-${index}`, avatar, 42, y + 26, 44, 14, "#b88c33", 700, "center")}
+      `;
+    }).join("");
+  }
   return list.map(([title, desc, route], index) => {
     const y = 112 + index * 72;
     return `
