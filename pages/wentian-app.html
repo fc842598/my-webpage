@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>问天AI</title>
+  <link rel="icon" href="../images/logo-mark.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../css/wentian-app.css">
+  <script defer src="../js/wentian-app.js"></script>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="app-rail">
+      <a class="brand" href="#home" aria-label="问天AI 首页">
+        <span class="brand-mark">问</span>
+        <span>问天AI</span>
+      </a>
+      <nav class="rail-nav" aria-label="主导航">
+        <button type="button" data-route="home">商城</button>
+        <button type="button" data-route="ai">AI问天</button>
+        <button type="button" data-route="archive">档案</button>
+        <button type="button" data-route="divine">占问</button>
+        <button type="button" data-route="mine">我的</button>
+      </nav>
+    </aside>
+
+    <main class="app-main">
+      <header class="topbar">
+        <button class="ghost-btn" type="button" data-action="back">返回</button>
+        <div>
+          <p id="routeKicker">问天AI</p>
+          <h1 id="routeTitle">命理报告</h1>
+        </div>
+        <button class="primary-btn small" type="button" data-route="recharge">灵石充值</button>
+      </header>
+
+      <section class="view" id="view"></section>
+    </main>
+  </div>
+
+  <nav class="bottom-nav" aria-label="底部导航">
+    <button type="button" data-route="home">商城</button>
+    <button type="button" data-route="ai">问天</button>
+    <button type="button" data-route="archive">档案</button>
+    <button type="button" data-route="mine">我的</button>
+  </nav>
+</body>
+</html>
