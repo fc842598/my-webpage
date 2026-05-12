@@ -552,6 +552,14 @@ select {
   border-radius: 7px;
   background: rgba(241, 212, 125, .05);
   color: #c9b47d;
+  overflow-wrap: anywhere;
+}
+
+.mbp-decode-list strong {
+  display: inline-block;
+  min-width: 42px;
+  margin-right: 10px;
+  color: var(--gold);
 }
 
 .mbp-chart-summary {
@@ -643,6 +651,97 @@ select {
   white-space: pre-line;
 }
 
+.mbp-special-result,
+.mbp-insight-summary,
+.mbp-insight-detail p {
+  color: #d4c096;
+}
+
+.mbp-special-result {
+  position: relative;
+  z-index: 1;
+  max-width: 96%;
+  overflow-wrap: anywhere;
+}
+
+.mbp-insight-summary {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 800;
+  line-height: 1.85;
+  overflow-wrap: anywhere;
+}
+
+.mbp-insight-points {
+  display: grid;
+  gap: 8px;
+  margin: 14px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.mbp-insight-points li {
+  position: relative;
+  padding-left: 18px;
+  color: #a99463;
+  font-size: 14px;
+  line-height: 1.65;
+  overflow-wrap: anywhere;
+}
+
+.mbp-insight-points li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: .72em;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--gold-2);
+}
+
+.mbp-insight-detail {
+  margin-top: 16px;
+  border-top: 1px solid rgba(241, 212, 125, .12);
+  padding-top: 12px;
+}
+
+.mbp-insight-detail summary {
+  width: max-content;
+  cursor: pointer;
+  color: var(--gold);
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.mbp-insight-detail div {
+  display: grid;
+  gap: 14px;
+  margin-top: 14px;
+}
+
+.mbp-insight-detail section {
+  padding: 12px 14px;
+  border: 1px solid rgba(241, 212, 125, .12);
+  border-radius: 8px;
+  background: rgba(241, 212, 125, .035);
+}
+
+.mbp-insight-detail strong {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--ivory);
+}
+
+.mbp-insight-detail p {
+  margin: 0;
+  max-width: none;
+  white-space: pre-line;
+  font-size: 14px;
+  line-height: 1.8;
+  overflow-wrap: anywhere;
+}
+
 .mbp-preview-bar {
   display: grid;
   grid-template-columns: auto 1fr auto;
@@ -722,7 +821,7 @@ select {
 }
 
 .mbp-chapters article {
-  min-height: 118px;
+  min-height: 170px;
   padding: 22px;
   border: 1px solid rgba(241, 212, 125, .2);
   border-radius: 10px;
@@ -744,6 +843,14 @@ select {
   margin: 0;
   color: var(--muted);
   white-space: pre-line;
+}
+
+.mbp-chapters .mbp-insight-summary {
+  color: #ddcca2;
+}
+
+.mbp-chapters .mbp-insight-detail p {
+  color: var(--muted);
 }
 
 .mbp-final {

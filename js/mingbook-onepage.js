@@ -374,6 +374,63 @@
     return data?.card?.title || fallback;
   }
 
+  function normalizeText(text) {
+    return String(text || '').replace(/\s+/g, ' ').trim();
+  }
+
+  function trimText(text, max = 92) {
+    const value = normalizeText(text);
+    if (value.length <= max) return value;
+    const head = value.slice(0, max).replace(/[，。；、,.!?！？：:]+$/, '');
+    return `${head || value.slice(0, max)}…`;
+  }
+
+  function aiSections(data) {
+    const card = data?.card || {};
+    const sections = Array.isArray(card.sections) ? card.sections.filter((item) => item?.content || item?.title) : [];
+    if (sections.length) return sections.map((item) => ({
+      title: item.title || '解读',
+      content: item.content || '',
+    }));
+    const text = card.body || card.summary || data?.finalAnswer || '';
+    return text ? [{ title: card.title || '解读', content: text }] : [];
+  }
+
+  function insightSummary(data, fallback = '等待原站 AI 返回。') {
+    const card = data?.card || {};
+    const source = card.summary || aiSections(data)[0]?.content || card.body || data?.finalAnswer || fallback;
+    return trimText(source, 88);
+  }
+
+  function sectionBullets(sections, limit = 3) {
+    return sections
+      .map((section) => trimText(section.content || section.title, 54))
+      .filter(Boolean)
+      .slice(0, limit);
+  }
+
+  function renderInsightBlock(data, fallbackTitle, fallbackText) {
+    const sections = aiSections(data);
+    const summary = insightSummary(data, fallbackText);
+    const bullets = sectionBullets(sections);
+    const detail = sections.length ? sections : [{ title: fallbackTitle, content: fallbackText }];
+    return `
+      <p class="mbp-insight-summary">${escapeHtml(summary)}</p>
+      ${bullets.length ? `<ul class="mbp-insight-points">${bullets.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ul>` : ''}
+      <details class="mbp-insight-detail">
+        <summary>展开完整解读</summary>
+        <div>
+          ${detail.map((section) => `
+            <section>
+              <strong>${escapeHtml(section.title || '解读')}</strong>
+              <p>${escapeHtml(section.content || '')}</p>
+            </section>
+          `).join('')}
+        </div>
+      </details>
+    `;
+  }
+
   function setDecodeStatus(text) {
     const el = $('#mbpDecodeStatus');
     if (el) el.textContent = text;
@@ -393,10 +450,18 @@
     const card = document.querySelector(`[data-report="${key}"]`);
     if (!card) return;
     const title = card.querySelector('h3');
-    const body = card.querySelector('p');
-    const text = aiCardText(data);
+    let body = card.querySelector('.mbp-special-result');
+    if (!body) {
+      const oldBody = card.querySelector('p');
+      body = document.createElement('div');
+      body.className = 'mbp-special-result';
+      if (oldBody) oldBody.replaceWith(body);
+      else card.appendChild(body);
+    }
     if (title) title.textContent = aiCardTitle(data, fallbackTitle);
-    if (body) body.textContent = text || '原站 AI 暂未返回内容，请稍后重试。';
+    if (body) {
+      body.innerHTML = renderInsightBlock(data, fallbackTitle, '原站 AI 暂未返回内容，请稍后重试。');
+    }
   }
 
   function chartFacts() {
@@ -424,6 +489,18 @@
       .slice(0, 5)
       .join('\n\n');
     const overallCard = overall?.card || {};
+    const decodeList = $('#mbpDecodeList');
+    if (decodeList) {
+      const highlights = [
+        ['主线', overallText || '整体批命生成后显示'],
+        ['走势', luckText || '大限流年生成后显示'],
+        ['专项', specialText || '五宫专项生成后显示'],
+        ['依据', overallCard.basis || facts.evidence],
+      ];
+      decodeList.innerHTML = highlights.map((item) => `
+        <p><strong>${escapeHtml(item[0])}</strong>${escapeHtml(trimText(item[1], 48))}</p>
+      `).join('');
+    }
     const chaptersData = [
       [aiCardTitle(overall, '命格总览'), overallText || '整体批命等待原站 AI 返回。'],
       ['大限流年', luckText || '当前大限流年接口暂未返回，后续继续接原站大限模块。'],
@@ -434,13 +511,16 @@
     ];
     const chapters = $('#mbpChapters');
     if (chapters) {
-      chapters.innerHTML = chaptersData.map((item, index) => `
+      chapters.innerHTML = chaptersData.map((item, index) => {
+        const data = index === 0 ? overall : index === 1 ? luck : { card: { title: item[0], body: item[1] } };
+        return `
         <article>
           <span>卷${index + 1}</span>
           <h3>${escapeHtml(item[0])}</h3>
-          <p>${escapeHtml(item[1])}</p>
+          ${renderInsightBlock(data, item[0], item[1])}
         </article>
-      `).join('');
+      `;
+      }).join('');
     }
     const subtitle = $('#mbpBookSubtitle');
     if (subtitle) subtitle.textContent = facts.subtitle;
@@ -522,7 +602,12 @@
       if (!card) return;
       card.classList.remove('is-running', 'is-error');
       const title = card.querySelector('h3');
-      const body = card.querySelector('p');
+      let body = card.querySelector('.mbp-special-result') || card.querySelector('p');
+      if (!body) {
+        body = document.createElement('div');
+        body.className = 'mbp-special-result';
+        card.appendChild(body);
+      }
       const status = document.querySelector(`[data-status="${key}"]`);
       if (title) title.textContent = value[0];
       if (body) body.textContent = value[1];
@@ -536,6 +621,15 @@
     }
     const subtitle = $('#mbpBookSubtitle');
     if (subtitle) subtitle.textContent = '命书启卷';
+    const decodeList = $('#mbpDecodeList');
+    if (decodeList) {
+      decodeList.innerHTML = `
+        <p>整体批命先给主线</p>
+        <p>五大专项直接出结论</p>
+        <p>命书卷轴沉浸阅读</p>
+        <p>深度报告可继续追问</p>
+      `;
+    }
     const btn = $('#mbpDecodeBtn');
     if (btn) {
       btn.disabled = false;
