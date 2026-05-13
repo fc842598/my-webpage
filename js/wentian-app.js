@@ -674,7 +674,14 @@ const WENTIAN_UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f
 const WENTIAN_CHART_STORAGE_KEY = "wentian-app-current-chart-v1";
 const WENTIAN_ARCHIVES_STORAGE_KEY = "wentian-app-archives-v1";
 const WENTIAN_SELECTED_ARCHIVE_KEY = "wentian-app-selected-archive-id";
+const WENTIAN_LANGUAGE_STORAGE_KEY = "wentian-app-language-v1";
+const WENTIAN_LANGUAGE_OPTIONS = [
+  { code: "zh-Hans", label: "简体中文", htmlLang: "zh-CN" },
+  { code: "zh-Hant", label: "繁體中文", htmlLang: "zh-TW" },
+  { code: "en", label: "English", htmlLang: "en" },
+];
 let wentianArchiveDraftId = null;
+let wentianLanguageDraft = null;
 const WENTIAN_BRANCH_POSITIONS = {
   "巳": [0, 0],
   "午": [1, 0],
@@ -1068,6 +1075,43 @@ function getWentianArchiveDisplay(archive) {
   };
 }
 
+function getWentianLanguageCode() {
+  let code = "";
+  try {
+    code = localStorage.getItem(WENTIAN_LANGUAGE_STORAGE_KEY) || "";
+  } catch (_err) {}
+  return WENTIAN_LANGUAGE_OPTIONS.some((item) => item.code === code) ? code : "zh-Hans";
+}
+
+function getWentianLanguageOption(code = getWentianLanguageCode()) {
+  return WENTIAN_LANGUAGE_OPTIONS.find((item) => item.code === code) || WENTIAN_LANGUAGE_OPTIONS[0];
+}
+
+function setWentianLanguageCode(code) {
+  const option = getWentianLanguageOption(code);
+  try {
+    localStorage.setItem(WENTIAN_LANGUAGE_STORAGE_KEY, option.code);
+  } catch (_err) {}
+  document.documentElement.lang = option.htmlLang;
+}
+
+function pickWentianLanguage(code) {
+  wentianLanguageDraft = getWentianLanguageOption(code).code;
+  for (const row of document.querySelectorAll("[data-wentian-language-option]")) {
+    const selected = row.dataset.languageCode === wentianLanguageDraft;
+    row.classList.toggle("is-selected", selected);
+    row.setAttribute("aria-pressed", selected ? "true" : "false");
+    const check = row.querySelector(".wentian-language-check");
+    if (check) check.textContent = selected ? "✓" : "";
+  }
+}
+
+function confirmWentianLanguage() {
+  setWentianLanguageCode(wentianLanguageDraft || getWentianLanguageCode());
+  wentianLanguageDraft = null;
+  navigate(state.stack.pop() || "screen-31", false);
+}
+
 function getCurrentWentianArchive() {
   const archives = getWentianArchiveList();
   const current = getWentianSavedChart();
@@ -1445,6 +1489,7 @@ function sourceProfileScreen(screen) {
 }
 
 function sourceMineScreen(screen) {
+  const languageLabel = getWentianLanguageOption().label;
   return `
     ${figText("source-31-time", "15:23", 18, 15, 70, 14, "#26211c")}
     ${figText("source-31-status", "◉  30.4  5G  ▮ 33 ⚡", 250, 14, 120, 10, "#26211c", 700, "right")}
@@ -1469,7 +1514,7 @@ function sourceMineScreen(screen) {
       ${figText(`source-31-quick-icon-text-${index}`, icon, x + 17, y + 21, 36, 14, "#b88c33", 800, "center")}
       ${figText(`source-31-quick-label-${index}`, label, x + 62, y + 21, 90, 16, "#26211c", 700)}
     `).join("")}
-    ${[["邀请好友", "0 人", 491], ["兑换礼包", "", 552], ["语言设置", "简体中文", 629], ["分享应用", "", 690], ["联系我们", "", 767]].map(([label, value, y], index) => `
+    ${[["邀请好友", "0 人", 491], ["兑换礼包", "", 552], ["语言设置", languageLabel, 629], ["分享应用", "", 690], ["联系我们", "", 767]].map(([label, value, y], index) => `
       ${figBox(`source-31-row-${index}`, 16, y, 358, 61, "converted-card", `border-radius:${index === 0 || index === 2 || index === 4 ? "12px" : "0"};border-bottom:${index === 0 || index === 2 ? "0" : "1px solid #eee8df"};box-shadow:${index === 0 || index === 2 || index === 4 ? "0 5px 14px rgba(74,55,32,.08)" : "none"};`)}
       ${figText(`source-31-row-icon-${index}`, ["♧", "♁", "文", "⌯", "☏"][index], 34, y + 21, 24, 16, "#b88c33", 700, "center")}
       ${figText(`source-31-row-label-${index}`, label, 68, y + 20, 140, 16, "#26211c", 600)}
@@ -1477,6 +1522,34 @@ function sourceMineScreen(screen) {
       ${figText(`source-31-row-arrow-${index}`, "›", 342, y + 18, 16, 20, "#aaa196", 500, "center")}
     `).join("")}
     ${sourceAppBottomNav("我的", 755)}
+  `;
+}
+
+function sourceLanguageSettingsScreen() {
+  const activeCode = wentianLanguageDraft || getWentianLanguageCode();
+  return `
+    ${figBox("source-37-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
+    ${figButton("source-37-back-hit", 18, 40, 54, 54, 'data-action="back"')}
+    ${figText("source-37-back", "‹", 28, 49, 28, 30, "#26211c", 600)}
+    ${figText("source-37-title", "语言设置", 0, 56, 390, 22, "#1f1d1a", 800, "center")}
+    ${figText("source-37-copy", "选择界面显示语言", 34, 128, 220, 15, "#8f857a")}
+    ${figBox("source-37-preview", 22, 166, 346, 74, "converted-card", "border-radius:14px;box-shadow:0 6px 16px rgba(74,55,32,.08);")}
+    ${figText("source-37-preview-title", getWentianLanguageOption(activeCode).label, 42, 188, 180, 18, "#26211c", 800)}
+    ${figText("source-37-preview-desc", "确认后会同步保存到当前浏览器", 42, 215, 260, 13, "#8f857a")}
+    ${sourceAppBottomNav("我的", 755)}
+    ${figBox("source-37-overlay", 0, 0, 390, 844, "", "background:rgba(0,0,0,.36);")}
+    ${figBox("source-37-sheet", 20, 500, 350, 260, "", "border-radius:20px;background:#fff;box-shadow:0 -8px 24px rgba(0,0,0,.14);")}
+    ${figText("source-37-sheet-title", "语言设置", 42, 526, 200, 18, "#26211c", 800)}
+    ${WENTIAN_LANGUAGE_OPTIONS.map((option, index) => {
+      const selected = option.code === activeCode;
+      return `
+        <button class="wentian-language-option ${selected ? "is-selected" : ""}" type="button" data-action="wentian-language-pick" data-wentian-language-option="1" data-language-code="${option.code}" aria-pressed="${selected ? "true" : "false"}" style="left:42px;top:${570 + index * 42}px">
+          <span class="wentian-language-label">${option.label}</span>
+          <span class="wentian-language-check">${selected ? "✓" : ""}</span>
+        </button>
+      `;
+    }).join("")}
+    <button class="wentian-language-confirm" type="button" data-action="wentian-language-confirm">确定</button>
   `;
 }
 
@@ -1908,6 +1981,12 @@ function renderConvertedScreen(no) {
       ${sourceMineScreen(screen)}
       ${convertedFlowHotspots(screen)}
     `, 844, "converted source-screen", true);
+  }
+  if (screen.no === 37) {
+    wentianLanguageDraft = null;
+    return figPhone(`screen-${screen.no}`, `${String(screen.no).padStart(2, "0")} ${screen.title}`, `
+      ${sourceLanguageSettingsScreen()}
+    `, 844, "converted source-screen no-status-shift", true);
   }
   if (screen.no === 26) {
     return figPhone(`screen-${screen.no}`, `${String(screen.no).padStart(2, "0")} ${screen.title}`, `
@@ -2354,6 +2433,15 @@ document.addEventListener("click", (event) => {
   }
   if (action === "wentian-archive-confirm") {
     confirmWentianArchiveSelection();
+    return;
+  }
+  if (action === "wentian-language-pick") {
+    const option = event.target.closest("[data-language-code]");
+    if (option?.dataset.languageCode) pickWentianLanguage(option.dataset.languageCode);
+    return;
+  }
+  if (action === "wentian-language-confirm") {
+    confirmWentianLanguage();
     return;
   }
   if (action === "wentian-chat-send") {

@@ -868,6 +868,51 @@ button { cursor: pointer; }
   box-shadow: 0 7px 14px rgba(130, 91, 31, .14);
 }
 
+.wentian-language-option {
+  position: absolute;
+  width: 306px;
+  height: 34px;
+  border: 1px solid #e5dbc7;
+  border-radius: 10px;
+  background: #fff;
+  color: #26211c;
+  padding: 0 14px;
+  font-family: inherit;
+  font-size: 13px;
+  text-align: left;
+}
+
+.wentian-language-option.is-selected {
+  border-color: #c5a458;
+  box-shadow: 0 0 0 1px rgba(197, 164, 88, .35) inset;
+}
+
+.wentian-language-label,
+.wentian-language-check {
+  pointer-events: none;
+}
+
+.wentian-language-check {
+  float: right;
+  color: #9b742e;
+  font-weight: 800;
+}
+
+.wentian-language-confirm {
+  position: absolute;
+  left: 220px;
+  top: 708px;
+  width: 108px;
+  height: 44px;
+  border: 0;
+  border-radius: 22px;
+  background: #c5a458;
+  color: #fff;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 700;
+}
+
 .converted-button {
   position: absolute;
   border: 0;
