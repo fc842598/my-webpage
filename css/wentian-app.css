@@ -462,6 +462,88 @@ button { cursor: pointer; }
   background: #fff;
 }
 
+.wentian-chart-input,
+.wentian-chart-select {
+  position: absolute;
+  height: 40px;
+  border: 0;
+  background: transparent;
+  color: #26211c;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 400;
+  text-align: right;
+  outline: 0;
+}
+
+.wentian-chart-input::placeholder {
+  color: #928d86;
+}
+
+.wentian-chart-select {
+  border-radius: 12px;
+  padding: 0 12px;
+  background: #f1eadf;
+  color: #514b44;
+  text-align: center;
+  text-align-last: center;
+}
+
+.wentian-chart-toggle {
+  position: absolute;
+  width: 46px;
+  height: 28px;
+}
+
+.wentian-chart-toggle input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.wentian-chart-toggle span {
+  position: absolute;
+  inset: 3px 0;
+  border-radius: 14px;
+  background: #eeeeec;
+}
+
+.wentian-chart-toggle span::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: -3px;
+  width: 28px;
+  height: 28px;
+  border-radius: 14px;
+  background: #e0dfdd;
+  transition: transform .16s ease, background .16s ease;
+}
+
+.wentian-chart-toggle input:checked + span {
+  background: #eadfc7;
+}
+
+.wentian-chart-toggle input:checked + span::after {
+  transform: translateX(18px);
+  background: #c39a49;
+}
+
+.wentian-chart-status {
+  position: absolute;
+  left: 24px;
+  top: 672px;
+  width: 342px;
+  color: #9d8a62;
+  font-size: 12px;
+  line-height: 16px;
+  text-align: center;
+}
+
+.wentian-chart-status[data-tone="error"] {
+  color: #b33a2f;
+}
+
 .wentian-chat-status {
   position: absolute;
   left: 24px;
