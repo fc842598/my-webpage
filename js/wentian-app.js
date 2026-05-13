@@ -2016,6 +2016,37 @@ function renderWentianPolishedScreen(screen) {
       ${figText("wt8-input-plus", "+", 318, 1205, 28, 24, "#c49a34", 800, "center")}
     `;
   }
+  if (no === 9) {
+    const records = [
+      ["新的对话", "15:18", "根据我的八字拆解核心性格特质"],
+      ["新的对话", "22:06", "最近事业机会应该怎么判断"],
+      ["命盘追问", "昨天", "感情关系里需要注意什么"]
+    ];
+    return `
+      ${sourceAiChatScreen(screen)}
+      ${figBox("wt9-overlay", 0, 0, 390, 844, "", "background:rgba(0,0,0,.36);")}
+      ${figBox("wt9-sheet", 0, 500, 390, 344, "", "border-radius:22px 22px 0 0;background:#fff;box-shadow:0 -14px 32px rgba(0,0,0,.16);")}
+      ${figBox("wt9-handle", 160, 514, 70, 5, "", "border-radius:4px;background:#eee8df;")}
+      ${figText("wt9-title", "对话记录", 28, 540, 130, 18, "#25211d", 800)}
+      ${figBox("wt9-new", 270, 536, 82, 32, "", "border-radius:16px;background:#d0a03a;")}
+      ${figButton("wt9-new-hit", 270, 536, 82, 32, 'data-route="screen-4"')}
+      ${figText("wt9-new-text", "新对话", 270, 545, 82, 12, "#fff", 800, "center")}
+      ${records.map(([title, time, desc], index) => {
+        const y = 586 + index * 72;
+        return `
+          ${figBox(`wt9-row-${index}`, 24, y, 342, 58, "", "border-radius:14px;background:#fffaf3;border:1px solid #efe2d0;")}
+          ${figBox(`wt9-row-icon-${index}`, 40, y + 15, 28, 28, "", "border-radius:14px;background:#fff0d6;")}
+          ${figText(`wt9-row-icon-text-${index}`, "◷", 40, y + 21, 28, 12, "#bd8624", 800, "center")}
+          ${figText(`wt9-row-title-${index}`, title, 82, y + 11, 132, 14, "#25211d", 800)}
+          ${figText(`wt9-row-time-${index}`, time, 278, y + 12, 54, 12, "#a39a90", 600, "right")}
+          ${figText(`wt9-row-desc-${index}`, desc, 82, y + 34, 210, 11, "#7f766b", 500)}
+          ${figText(`wt9-row-arrow-${index}`, "›", 334, y + 23, 18, 18, "#c5b7a5", 800, "center")}
+          ${figButton(`wt9-row-hit-${index}`, 24, y, 342, 58, 'data-route="screen-7"')}
+        `;
+      }).join("")}
+      ${figText("wt9-foot", "仅保留最近 10 条对话", 0, 812, 390, 11, "#b2aaa2", 500, "center")}
+    `;
+  }
   if (no === 10) {
     return `
       ${figBox("wt10-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
@@ -2263,16 +2294,53 @@ function renderWentianPolishedScreen(screen) {
   }
   if (no === 24) {
     return `
-      ${figBox("wt24-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
-      ${wentianSimpleHeader("wt24", "邀请详情")}
-      ${["活动详情", "奖励说明", "到账规则", "常见问题"].map((title, index) => {
-        const y = 118 + index * 120;
+      ${figBox("wt24-bg", 0, 0, 390, 1180, "", "background:#fbf7ef;")}
+      ${wentianSimpleHeader("wt24", "邀请好友")}
+      ${figBox("wt24-hero", 24, 98, 342, 118, "", "border-radius:16px;background:linear-gradient(135deg,#d5ad42,#9f741d);box-shadow:0 12px 26px rgba(121,82,18,.18);")}
+      ${figText("wt24-hero-num", "0", 54, 126, 80, 34, "#fff", 800)}
+      ${figText("wt24-hero-label", "已邀请好友", 54, 168, 120, 13, "#fff7df", 700)}
+      ${figBox("wt24-hero-badge", 246, 126, 82, 34, "", "border-radius:17px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.28);")}
+      ${figText("wt24-hero-badge-text", "累计奖励 0", 246, 136, 82, 11, "#fff", 800, "center")}
+      ${figText("wt24-hero-copy", "邀请好友注册问天AI，双方都可获得灵石与对话奖励。", 54, 190, 250, 12, "#fff5dc", 600)}
+
+      ${figBox("wt24-code-card", 24, 240, 342, 130, "", "border-radius:14px;background:#fff;box-shadow:0 8px 20px rgba(70,45,25,.08);")}
+      ${figText("wt24-code-title", "我的邀请码", 44, 262, 110, 14, "#7f766b", 700)}
+      ${figText("wt24-code", "8R7U58ZW", 44, 298, 178, 24, "#25211d", 900)}
+      ${figBox("wt24-copy-code", 260, 285, 72, 34, "", "border-radius:17px;background:#d0a03a;")}
+      ${figText("wt24-copy-code-text", "复制", 260, 295, 72, 12, "#fff", 800, "center")}
+      ${figText("wt24-code-tip", "好友注册时填写邀请码即可绑定邀请关系", 44, 342, 250, 12, "#9a9289", 500)}
+
+      ${figBox("wt24-link-card", 24, 394, 342, 138, "", "border-radius:14px;background:#fff;box-shadow:0 8px 20px rgba(70,45,25,.08);")}
+      ${figText("wt24-link-title", "我的邀请链接", 44, 416, 120, 14, "#25211d", 800)}
+      ${figBox("wt24-link-box", 44, 454, 248, 38, "", "border-radius:9px;background:#fff7ec;border:1px solid #ead9bd;")}
+      ${figText("wt24-link", "yuetianai.com/i/8R7U58ZW", 56, 466, 220, 11, "#7f766b", 600)}
+      ${figBox("wt24-copy-link", 304, 454, 42, 38, "", "border-radius:9px;background:#25211d;")}
+      ${figText("wt24-copy-link-text", "复制", 304, 466, 42, 11, "#fff", 800, "center")}
+      ${figText("wt24-link-tip", "也可以直接分享链接给好友，系统自动识别。", 44, 506, 260, 12, "#9a9289", 500)}
+
+      ${figBox("wt24-reward", 24, 556, 342, 288, "", "border-radius:14px;background:#fff;box-shadow:0 8px 20px rgba(70,45,25,.08);")}
+      ${figText("wt24-reward-title", "邀请奖励", 44, 580, 120, 16, "#25211d", 800)}
+      ${[["好友注册", "可获得：5 灵石 + 2 次对话", "立即到账"], ["邀请满 3 人", "额外获得：会员体验券", "阶段奖励"], ["邀请满 10 人", "额外获得：高级报告券", "进阶奖励"]].map(([title, desc, tag], index) => {
+        const y = 620 + index * 66;
         return `
-          ${figBox(`wt24-card-${index}`, 24, y, 342, 94, "", "border-radius:12px;background:#fff;box-shadow:0 8px 20px rgba(70,45,25,.07);")}
-          ${figText(`wt24-title-${index}`, title, 44, y + 20, 120, 15, "#25211d", 800)}
-          ${figText(`wt24-desc-${index}`, "邀请好友使用问天AI，按规则获得灵石与会员权益奖励。", 44, y + 50, 280, 13, "#756d63", 500, "left", "line-height:1.45;")}
+          ${figBox(`wt24-reward-dot-${index}`, 44, y + 8, 9, 9, "", "border-radius:5px;background:#d0a03a;")}
+          ${figText(`wt24-reward-name-${index}`, title, 68, y, 92, 14, "#25211d", 800)}
+          ${figText(`wt24-reward-desc-${index}`, desc, 68, y + 24, 190, 12, "#7f766b", 500)}
+          ${figBox(`wt24-reward-tag-${index}`, 262, y + 4, 70, 26, "", "border-radius:13px;background:#fff0d6;")}
+          ${figText(`wt24-reward-tag-text-${index}`, tag, 262, y + 11, 70, 10, "#bd8624", 800, "center")}
         `;
       }).join("")}
+
+      ${figBox("wt24-pay", 24, 868, 342, 118, "", "border-radius:14px;background:#fff;box-shadow:0 8px 20px rgba(70,45,25,.08);")}
+      ${figText("wt24-pay-title", "好友首次充值奖励", 44, 892, 150, 16, "#25211d", 800)}
+      ${figText("wt24-pay-desc", "好友完成首次付费后，邀请人可额外获得 50 灵石。", 44, 926, 238, 13, "#756d63", 500, "left", "line-height:1.45;")}
+      ${figBox("wt24-pay-badge", 284, 906, 52, 52, "", "border-radius:26px;background:#fff0d6;")}
+      ${figText("wt24-pay-badge-text", "+50", 284, 922, 52, 16, "#bd8624", 900, "center")}
+
+      ${figBox("wt24-record", 24, 1010, 342, 118, "", "border-radius:14px;background:#fff;box-shadow:0 8px 20px rgba(70,45,25,.08);")}
+      ${figText("wt24-record-title", "邀请记录", 44, 1034, 120, 16, "#25211d", 800)}
+      ${figBox("wt24-empty-icon", 174, 1066, 42, 26, "", "border-radius:8px;background:#eee6db;")}
+      ${figText("wt24-empty", "暂无邀请记录", 0, 1104, 390, 12, "#a59d94", 600, "center")}
     `;
   }
   if (no === 28) {
@@ -2898,7 +2966,7 @@ function renderConvertedScreen(no) {
   }
   const polishedScreen = renderWentianPolishedScreen(screen);
   if (polishedScreen) {
-    const polishedHeight = screen.no === 8 ? 1280 : screen.no === 20 ? 1072 : 844;
+    const polishedHeight = screen.no === 8 ? 1280 : screen.no === 20 ? 1072 : screen.no === 24 ? 1180 : 844;
     return figPhone(`screen-${screen.no}`, `${String(screen.no).padStart(2, "0")} ${screen.title}`, `
       ${polishedScreen}
       ${convertedFlowHotspots(screen)}
