@@ -1397,6 +1397,60 @@
     `;
   }
 
+  function renderCurveChapterBlock() {
+    return `
+      <div class="mbp-curve-summary">
+        <div>
+          <strong>整体是“先压后升，中年见高点”</strong>
+          <p>36岁前后守住节奏，44岁前后主动扩张，56岁后还有第二波抬升。</p>
+        </div>
+        <em>客户易懂版</em>
+      </div>
+      <div class="mbp-curve-chart" aria-label="人生曲线示意">
+        <svg viewBox="0 0 760 210" role="img">
+          <line x1="40" y1="36" x2="730" y2="36"></line>
+          <line x1="40" y1="86" x2="730" y2="86"></line>
+          <line x1="40" y1="136" x2="730" y2="136"></line>
+          <line x1="40" y1="186" x2="730" y2="186"></line>
+          <path class="mbp-curve-fill" d="M42 158 C108 132 168 92 230 88 C302 84 308 162 362 152 C446 134 454 58 526 58 C608 58 622 114 720 82 L720 186 L42 186 Z"></path>
+          <path class="mbp-curve-line" d="M42 158 C108 132 168 92 230 88 C302 84 308 162 362 152 C446 134 454 58 526 58 C608 58 622 114 720 82"></path>
+          <circle class="is-warn" cx="42" cy="158" r="7"></circle>
+          <text class="mbp-curve-label" x="34" y="138">21岁</text>
+          <text class="mbp-curve-note" x="16" y="176">起势</text>
+          <circle cx="230" cy="88" r="7"></circle>
+          <text class="mbp-curve-label" x="210" y="68">29岁</text>
+          <text class="mbp-curve-note" x="190" y="106">事业起势</text>
+          <circle class="is-warn" cx="362" cy="152" r="7"></circle>
+          <text class="mbp-curve-label" x="340" y="132">36岁</text>
+          <text class="mbp-curve-note" x="330" y="170">低谷期</text>
+          <circle cx="526" cy="58" r="7"></circle>
+          <text class="mbp-curve-label" x="506" y="38">44岁</text>
+          <text class="mbp-curve-note" x="492" y="76">高峰期</text>
+          <circle class="is-warn" cx="622" cy="114" r="7"></circle>
+          <text class="mbp-curve-label" x="604" y="96">49岁</text>
+          <text class="mbp-curve-note" x="590" y="132">调整期</text>
+          <circle cx="720" cy="82" r="7"></circle>
+          <text class="mbp-curve-label" x="694" y="62">56岁</text>
+          <text class="mbp-curve-note" x="666" y="100">二次提升</text>
+        </svg>
+      </div>
+      <div class="mbp-curve-cards">
+        <section>
+          <strong>低点</strong>
+          <p><b>36岁</b> 控节奏、稳关系。</p>
+        </section>
+        <section>
+          <strong>高点</strong>
+          <p><b>44岁</b> 扩资源、定方向。</p>
+        </section>
+        <section>
+          <strong>后势</strong>
+          <p><b>56岁</b> 声望与资源回升。</p>
+        </section>
+      </div>
+    `;
+  }
+
   function setDecodeStatus(text) {
     const el = $('#mbpDecodeStatus');
     if (el) el.textContent = text;
@@ -1705,7 +1759,7 @@
             <h3>${escapeHtml(item[0])}</h3>
           </div>
             <div class="mbp-report-content">
-              ${renderInsightBlock(data, item[0], item[1], {
+              ${index === 2 ? renderCurveChapterBlock() : renderInsightBlock(data, item[0], item[1], {
                 summaryMax: 128,
                 bulletLimit: 0,
                 direct: true,
