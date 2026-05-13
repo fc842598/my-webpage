@@ -1305,8 +1305,21 @@
     }
   }
 
+  function parsedAiCard(value) {
+    const parsed = parseAiJson(value);
+    if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) return null;
+    const card = parsed.card && typeof parsed.card === 'object' ? parsed.card : parsed;
+    return (card.title || card.summary || card.body || card.content || card.sections || card.profileBadge)
+      ? { ...card }
+      : null;
+  }
+
   function normalizeAiData(data) {
     if (!data) return data;
+    if (typeof data === 'string') {
+      const parsed = parseAiJson(data);
+      return parsed ? normalizeAiData(parsed) : { card: { body: data } };
+    }
     const parsedRoot = parseAiJson(data.finalAnswer || data.answer || data.result || data.text);
     const parsedCard = parseAiJson(data.card);
     const card = parsedCard || data.card || parsedRoot?.card || parsedRoot || {};
@@ -1314,11 +1327,15 @@
     if (card && typeof card === 'object' && !Array.isArray(card)) {
       next.card = { ...card };
     }
-    const bodyAsJson = parseAiJson(next.card?.body || next.card?.summary);
-    if (bodyAsJson?.card) {
-      next.card = { ...bodyAsJson.card };
-    } else if (bodyAsJson && (bodyAsJson.title || bodyAsJson.summary || bodyAsJson.body || bodyAsJson.sections)) {
-      next.card = { ...bodyAsJson };
+    const bodyAsCard = parsedAiCard(next.card?.body || next.card?.summary || next.card?.content);
+    if (bodyAsCard) {
+      next.card = { ...next.card, ...bodyAsCard };
+    }
+    const nestedSectionCard = Array.isArray(next.card?.sections)
+      ? next.card.sections.map((section) => parsedAiCard(section?.content || section?.body || section?.summary)).find(Boolean)
+      : null;
+    if (nestedSectionCard) {
+      next.card = { ...next.card, ...nestedSectionCard };
     }
     return next;
   }
