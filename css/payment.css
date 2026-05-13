@@ -652,6 +652,36 @@
   transform: translateY(-1px);
 }
 
+.nav-auth-btn {
+  margin-left: 8px;
+  padding: 6px 14px;
+  background: rgba(201, 169, 97, 0.08);
+  border: 1px solid rgba(201, 169, 97, 0.28);
+  border-radius: 999px;
+  color: #e8d5a3;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.2s, transform 0.15s;
+}
+
+.nav-auth-btn:hover {
+  background: rgba(201, 169, 97, 0.16);
+  transform: translateY(-1px);
+}
+
+.nav-auth-btn.is-logged-in {
+  color: #c9a961;
+}
+
+@media (max-width: 760px) {
+  .nav-auth-btn {
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+}
+
 /* ── 配额显示栏（嵌在角色卡内）────────────────────────────── */
 .chat-quota-bar {
   display: flex;
@@ -787,4 +817,27 @@
 .pay-auth-submit:disabled {
   opacity: 0.55;
   cursor: default;
+}
+
+.pay-account-box {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  text-align: center;
+}
+
+.pay-account-title {
+  color: #e8d5a3;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.pay-account-user {
+  color: #c9a961;
+  font-size: 13px;
+  padding: 10px 12px;
+  border: 1px solid rgba(201, 169, 97, 0.16);
+  border-radius: 10px;
+  background: rgba(201, 169, 97, 0.06);
+  word-break: break-all;
 }

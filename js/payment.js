@@ -105,6 +105,40 @@
     return false;
   }
 
+  function updateAuthButtons(session) {
+    document.querySelectorAll('[data-auth-open]').forEach(function(btn) {
+      if (session && session.user) {
+        btn.textContent = '已登录';
+        btn.classList.add('is-logged-in');
+        btn.dataset.authOpen = 'account';
+      } else {
+        btn.textContent = '注册 / 登录';
+        btn.classList.remove('is-logged-in');
+        btn.dataset.authOpen = 'register';
+      }
+    });
+  }
+
+  async function initAuthButtons() {
+    var client = getAuthClient();
+    if (!client) return;
+    var session = await getAuthSession();
+    updateAuthButtons(session);
+    client.auth.onAuthStateChange(function(_event, nextSession) {
+      updateAuthButtons(nextSession);
+    });
+  }
+
+  async function openAuthPanel(mode) {
+    var session = await getAuthSession();
+    show('pay-modal');
+    if (session && session.user) {
+      renderModal('account', { session: session });
+      return;
+    }
+    renderModal('auth', { mode: mode === 'login' ? 'login' : 'register' });
+  }
+
   // ── 本地 Mock（仅本地开发，后端不可用时降级）─────────────────
   var _mockOrders = {};
 
@@ -338,6 +372,7 @@
       var signed = await client.auth.signInWithPassword({ email: email, password: password });
       if (signed.error) throw signed.error;
 
+      updateAuthButtons(signed.data.session);
       hide('pay-modal');
       if (_pendingPurchaseAfterLogin) {
         _pendingPurchaseAfterLogin = false;
@@ -370,12 +405,22 @@
     var mockBadge = _s.isMock ? '<span class="pay-mock-badge">模拟模式</span>' : '';
     var body = '';
 
-    if (phase === 'auth') {
+    if (phase === 'account') {
+      var label = getUserLabel(data.session);
+      body =
+        '<div class="pay-account-box">' +
+          '<div class="pay-account-title">账号已登录</div>' +
+          '<div class="pay-account-user">' + (label || '已登录') + '</div>' +
+          '<button class="pay-auth-submit" id="pay-account-buy">去购买会员</button>' +
+          '<button class="pay-auth-google" id="pay-auth-logout">退出登录</button>' +
+        '</div>';
+
+    } else if (phase === 'auth') {
       var mode = data.mode === 'register' ? 'register' : 'login';
       var isRegister = mode === 'register';
       body =
         '<div class="pay-auth-box">' +
-          '<div class="pay-auth-title">登录后再购买</div>' +
+          '<div class="pay-auth-title">' + (isRegister ? '注册账号' : '登录账号') + '</div>' +
           '<div class="pay-auth-subtitle">会员会绑定到你的账号，换设备也能找回。</div>' +
           (data.error ? '<div class="pay-auth-error">' + data.error + '</div>' : '') +
           '<div class="pay-auth-tabs">' +
@@ -509,6 +554,13 @@
     el = qs('pay-auth-submit');       if (el) el.onclick = function(){ submitAuth(data.mode === 'register' ? 'register' : 'login'); };
     el = qs('pay-auth-google');       if (el) el.onclick = startGoogleLogin;
     el = qs('pay-auth-password');     if (el) el.onkeydown = function(e){ if (e.key === 'Enter') submitAuth(data.mode === 'register' ? 'register' : 'login'); };
+    el = qs('pay-account-buy');       if (el) el.onclick = function(){ closeModal(); show('pay-shop-modal'); };
+    el = qs('pay-auth-logout');       if (el) el.onclick = async function(){
+      var client = getAuthClient();
+      if (client) await client.auth.signOut();
+      updateAuthButtons(null);
+      closeModal();
+    };
 
     // Render QR code after DOM is ready
     if (phase === 'pending' && !_s.isMock && _s.payUrl && _s.payMethod !== 'h5') {
@@ -768,15 +820,23 @@
       };
     });
 
+    document.querySelectorAll('[data-auth-open]').forEach(function(btn) {
+      btn.onclick = function() {
+        openAuthPanel(btn.dataset.authOpen || 'register');
+      };
+    });
+
     // 拉取后端商品后刷新商城卡片
     fetchBackendProduct().then(function() {
       renderShop('pay-shop-products');
     });
     updateQuotaDisplay({ testingUnlimited: true, isMember: false, dailyLimit: null, remaining: null });
+    initAuthButtons();
   });
 
   window.PaymentPanel = {
     openShop:    function(){ show('pay-shop-modal'); },
+    openAuth:    openAuthPanel,
     buy:         startPurchase,
     close:       closeModal,
     updateQuota: updateQuotaDisplay,
