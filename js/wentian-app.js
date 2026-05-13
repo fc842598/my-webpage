@@ -675,6 +675,7 @@ const WENTIAN_CHART_STORAGE_KEY = "wentian-app-current-chart-v1";
 const WENTIAN_ARCHIVES_STORAGE_KEY = "wentian-app-archives-v1";
 const WENTIAN_SELECTED_ARCHIVE_KEY = "wentian-app-selected-archive-id";
 const WENTIAN_LANGUAGE_STORAGE_KEY = "wentian-app-language-v1";
+const WENTIAN_PROFILE_STORAGE_KEY = "wentian-app-profile-v1";
 const WENTIAN_LANGUAGE_OPTIONS = [
   { code: "zh-Hans", label: "简体中文", htmlLang: "zh-CN" },
   { code: "zh-Hant", label: "繁體中文", htmlLang: "zh-TW" },
@@ -1112,6 +1113,51 @@ function confirmWentianLanguage() {
   navigate(state.stack.pop() || "screen-31", false);
 }
 
+function getWentianProfile() {
+  const defaults = {
+    nickname: "谢广周",
+    email: "aa15989267747@gmail.com",
+    phone: "",
+  };
+  try {
+    const raw = localStorage.getItem(WENTIAN_PROFILE_STORAGE_KEY);
+    const saved = raw ? JSON.parse(raw) : null;
+    return { ...defaults, ...(saved || {}) };
+  } catch (_err) {
+    return defaults;
+  }
+}
+
+function saveWentianProfile(profile) {
+  try {
+    localStorage.setItem(WENTIAN_PROFILE_STORAGE_KEY, JSON.stringify(profile));
+  } catch (_err) {}
+}
+
+function setWentianProfileStatus(text, tone = "") {
+  const el = document.getElementById("wentian-profile-status");
+  if (!el) return;
+  el.textContent = text;
+  el.dataset.tone = tone;
+}
+
+function submitWentianProfileForm() {
+  const nickname = (document.getElementById("wentian-profile-nickname")?.value || "").trim();
+  const email = (document.getElementById("wentian-profile-email")?.value || "").trim();
+  const phone = (document.getElementById("wentian-profile-phone")?.value || "").trim();
+  if (!nickname) {
+    setWentianProfileStatus("请填写昵称", "error");
+    return;
+  }
+  if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    setWentianProfileStatus("邮箱格式不正确", "error");
+    return;
+  }
+  saveWentianProfile({ nickname, email, phone });
+  setWentianProfileStatus("已保存", "ok");
+  window.setTimeout(() => navigate(state.stack.pop() || "screen-31", false), 260);
+}
+
 function getCurrentWentianArchive() {
   const archives = getWentianArchiveList();
   const current = getWentianSavedChart();
@@ -1490,6 +1536,7 @@ function sourceProfileScreen(screen) {
 
 function sourceMineScreen(screen) {
   const languageLabel = getWentianLanguageOption().label;
+  const profile = getWentianProfile();
   return `
     ${figText("source-31-time", "15:23", 18, 15, 70, 14, "#26211c")}
     ${figText("source-31-status", "◉  30.4  5G  ▮ 33 ⚡", 250, 14, 120, 10, "#26211c", 700, "right")}
@@ -1500,9 +1547,9 @@ function sourceMineScreen(screen) {
     ${figBox("source-31-profile", 16, 126, 358, 96, "converted-card", "border-radius:12px;box-shadow:0 6px 16px rgba(74,55,32,.08);")}
     ${figBox("source-31-avatar", 34, 144, 60, 60, "", "border-radius:30px;background:#b88c33;")}
     ${figText("source-31-avatar-icon", "人", 34, 157, 60, 28, "#fff", 700, "center")}
-    ${figText("source-31-name", "谢广周", 116, 150, 140, 18, "#26211c", 800)}
+    ${figText("source-31-name", escapeHtml(profile.nickname), 116, 150, 140, 18, "#26211c", 800)}
     ${figText("source-31-vip", "开通会员享专属权益", 116, 177, 150, 13, "#8f857a")}
-    ${figText("source-31-email", "aa15989267747@gmail.com", 116, 197, 200, 12, "#8f857a")}
+    ${figText("source-31-email", escapeHtml(profile.email || "未绑定邮箱"), 116, 197, 200, 12, "#8f857a")}
     ${[["◇ 灵石", "1", 16], ["▣ 卡券", "0 个", 139], ["☵ 对话", "0 /0", 262]].map(([label, count, x], index) => `
       ${figBox(`source-31-stat-${index}`, x, 240, 111, 75, "converted-card", "border-radius:12px;box-shadow:0 5px 14px rgba(74,55,32,.08);")}
       ${figText(`source-31-stat-label-${index}`, label, x + 14, 253, 80, 12, "#9b742e", 500)}
@@ -1521,6 +1568,35 @@ function sourceMineScreen(screen) {
       ${value ? figText(`source-31-row-value-${index}`, value, 274, y + 21, 60, 13, "#9b742e", 500, "right") : ""}
       ${figText(`source-31-row-arrow-${index}`, "›", 342, y + 18, 16, 20, "#aaa196", 500, "center")}
     `).join("")}
+    ${sourceAppBottomNav("我的", 755)}
+  `;
+}
+
+function sourceBasicInfoScreen() {
+  const profile = getWentianProfile();
+  return `
+    ${figBox("source-39-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
+    ${figButton("source-39-back-hit", 18, 40, 54, 54, 'data-action="back"')}
+    ${figText("source-39-back", "‹", 28, 49, 28, 30, "#26211c", 600)}
+    ${figText("source-39-title", "基本信息", 0, 56, 390, 22, "#1f1d1a", 800, "center")}
+    ${figBox("source-39-card", 22, 130, 346, 290, "", "border:1px solid #e2d8c8;border-radius:16px;background:#fff;box-shadow:0 6px 16px rgba(74,55,32,.06);")}
+
+    ${figText("source-39-name-label", "昵称", 42, 162, 90, 17, "#5f5a52", 500)}
+    <input id="wentian-profile-nickname" class="wentian-profile-input" style="left:132px;top:145px;width:214px" value="${escapeHtml(profile.nickname)}" placeholder="请输入昵称" autocomplete="name">
+    ${figLine("source-39-line-1", 42, 210, 304, "#e6ded2")}
+
+    ${figText("source-39-email-label", "邮箱", 42, 242, 90, 17, "#5f5a52", 500)}
+    <input id="wentian-profile-email" class="wentian-profile-input" type="email" style="left:132px;top:225px;width:214px" value="${escapeHtml(profile.email)}" placeholder="请输入邮箱" autocomplete="email">
+    ${figLine("source-39-line-2", 42, 290, 304, "#e6ded2")}
+
+    ${figText("source-39-phone-label", "手机号", 42, 322, 90, 17, "#5f5a52", 500)}
+    <input id="wentian-profile-phone" class="wentian-profile-input" inputmode="tel" style="left:132px;top:305px;width:214px" value="${escapeHtml(profile.phone)}" placeholder="绑定手机号" autocomplete="tel">
+
+    ${figText("source-39-tip", "信息仅保存在当前浏览器，用于原型体验。", 42, 454, 300, 13, "#9b9287")}
+    <div id="wentian-profile-status" class="wentian-profile-status"></div>
+    ${figBox("source-39-save", 36, 690, 318, 58, "", "border-radius:29px;background:#c09a49;box-shadow:0 8px 18px rgba(130,91,31,.12);")}
+    ${figButton("source-39-save-hit", 36, 690, 318, 58, 'data-action="wentian-profile-save"')}
+    ${figText("source-39-save-text", "保存", 36, 709, 318, 18, "#fff", 700, "center")}
     ${sourceAppBottomNav("我的", 755)}
   `;
 }
@@ -1988,6 +2064,11 @@ function renderConvertedScreen(no) {
       ${sourceLanguageSettingsScreen()}
     `, 844, "converted source-screen no-status-shift", true);
   }
+  if (screen.no === 39) {
+    return figPhone(`screen-${screen.no}`, `${String(screen.no).padStart(2, "0")} ${screen.title}`, `
+      ${sourceBasicInfoScreen()}
+    `, 844, "converted source-screen no-status-shift", true);
+  }
   if (screen.no === 26) {
     return figPhone(`screen-${screen.no}`, `${String(screen.no).padStart(2, "0")} ${screen.title}`, `
       ${sourceChartFormScreen()}
@@ -2442,6 +2523,10 @@ document.addEventListener("click", (event) => {
   }
   if (action === "wentian-language-confirm") {
     confirmWentianLanguage();
+    return;
+  }
+  if (action === "wentian-profile-save") {
+    submitWentianProfileForm();
     return;
   }
   if (action === "wentian-chat-send") {

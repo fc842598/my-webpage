@@ -913,6 +913,49 @@ button { cursor: pointer; }
   font-weight: 700;
 }
 
+.wentian-profile-input {
+  position: absolute;
+  height: 44px;
+  border: 1px solid #e1d7c8;
+  border-radius: 10px;
+  background: #fff;
+  color: #26211c;
+  padding: 0 14px;
+  font-family: inherit;
+  font-size: 15px;
+  line-height: 44px;
+  outline: 0;
+}
+
+.wentian-profile-input::placeholder {
+  color: #aaa196;
+}
+
+.wentian-profile-input:focus {
+  border-color: #c09a49;
+  box-shadow: 0 0 0 2px rgba(192, 154, 73, .12);
+}
+
+.wentian-profile-status {
+  position: absolute;
+  left: 36px;
+  top: 645px;
+  width: 318px;
+  height: 22px;
+  color: #9b742e;
+  font-size: 13px;
+  line-height: 22px;
+  text-align: center;
+}
+
+.wentian-profile-status[data-tone="error"] {
+  color: #b33a2f;
+}
+
+.wentian-profile-status[data-tone="ok"] {
+  color: #7d8d52;
+}
+
 .converted-button {
   position: absolute;
   border: 0;
