@@ -1703,6 +1703,38 @@ function wentianHexLines(id, y, variant = 0) {
 
 function renderWentianPolishedScreen(screen) {
   const no = screen.no;
+  if (no === 8) {
+    const paragraphs = [
+      ["核心结论", "你的命盘不是单一路线，而是“先观察、后出手”的结构。真正适合你的节奏，是先把信息摸透，再用稳定执行换结果。"],
+      ["性格优势", "思考细密，能抓到别人忽略的线索。遇到复杂问题时，反而比简单重复的任务更能发挥。"],
+      ["隐性风险", "容易在关键节点想太多，迟迟不愿下注。越重要的事情，越需要把判断拆成小步骤去验证。"],
+      ["事业建议", "适合做需要判断、整合、表达的工作。近期不要频繁换方向，先把一个可见成果做厚。"],
+      ["感情建议", "关系里要少用试探，多说真实需求。你适合稳定、讲信用、能一起规划生活的人。"],
+      ["财运建议", "财运来自长期积累，不宜追短线。先守现金流，再考虑扩张。"],
+      ["行动方案", "未来三个月，把精力放在一个主目标上，每周复盘一次，删掉消耗型关系和低回报事项。"]
+    ];
+    return `
+      ${figBox("wt8-bg", 0, 0, 390, 1280, "", "background:#fbf7ef;")}
+      ${wentianSimpleHeader("wt8", "AI长文解读")}
+      ${figBox("wt8-master", 24, 100, 342, 92, "", "border-radius:16px;background:#fff;box-shadow:0 8px 20px rgba(70,45,25,.08);")}
+      ${figImage("wt8-avatar", "../images/wentian-prototype-assets/xu-banxian.jpg", 42, 116, 58, 58, "border-radius:29px;object-fit:cover;object-position:center 18%;")}
+      ${figText("wt8-name", "许半仙", 116, 122, 120, 17, "#25211d", 800)}
+      ${figText("wt8-desc", "已结合紫微命盘、八字与当前档案生成", 116, 150, 210, 13, "#8d857b", 500)}
+      ${figBox("wt8-question", 42, 222, 306, 88, "", "border-radius:14px;background:#c69a34;box-shadow:0 8px 18px rgba(148,101,25,.16);")}
+      ${figText("wt8-question-text", "请根据我的八字，深度拆解我的核心性格特质、事业机会和近期行动重点。", 62, 246, 266, 14, "#fff", 700, "left", "line-height:1.55;")}
+      ${paragraphs.map(([title, desc], index) => {
+        const y = 344 + index * 118;
+        return `
+          ${figBox(`wt8-card-${index}`, 24, y, 342, 94, "", "border-radius:14px;background:#fff;box-shadow:0 6px 18px rgba(70,45,25,.07);")}
+          ${figText(`wt8-title-${index}`, title, 44, y + 17, 110, 15, "#25211d", 800)}
+          ${figText(`wt8-desc-${index}`, desc, 44, y + 45, 290, 13, "#625b53", 500, "left", "line-height:1.55;")}
+        `;
+      }).join("")}
+      ${figBox("wt8-input", 24, 1198, 342, 44, "", "border-radius:22px;background:#fff;border:1px solid #eadfce;")}
+      ${figText("wt8-input-text", "继续追问", 48, 1212, 160, 13, "#a09890")}
+      ${figText("wt8-input-plus", "+", 318, 1205, 28, 24, "#c49a34", 800, "center")}
+    `;
+  }
   if (no === 10) {
     return `
       ${figBox("wt10-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
@@ -1713,7 +1745,7 @@ function renderWentianPolishedScreen(screen) {
         ${figBox(`wt10-pill-${index}`, 122, 178 + index * 34, 146, 24, "", "border:1px solid #c8a65f;border-radius:12px;background:#fffaf0;")}
         ${figText(`wt10-pill-text-${index}`, text, 122, 184 + index * 34, 146, 11, "#7c5d22", 700, "center")}
       `).join("")}
-      ${figImage("wt10-image", "../images/wentian-prototype-assets/01-feature-hepan.png", 58, 282, 274, 228, "object-fit:contain;")}
+      ${figImage("wt10-image", "../images/wentian-prototype-assets/hepan-master.jpg", 34, 320, 322, 278, "object-fit:cover;object-position:center 18%;")}
       ${figBox("wt10-start-row", 90, 564, 210, 28, "", "border-radius:14px;background:#fbf7ef;")}
       ${figText("wt10-start-text", "开启合盘对话", 90, 571, 210, 12, "#25211d", 700, "center")}
       ${figBox("wt10-record-row", 90, 604, 210, 28, "", "border-radius:14px;background:#fbf7ef;")}
@@ -1727,7 +1759,7 @@ function renderWentianPolishedScreen(screen) {
       ${wentianSimpleHeader("wt11", "选择合盘档案")}
       ${figBox("wt11-hero", 36, 120, 318, 330, "", "border-radius:18px;background:#fff;box-shadow:0 10px 24px rgba(70,45,25,.12);")}
       ${figText("wt11-title", "情侣合盘", 0, 150, 390, 22, "#25211d", 800, "center")}
-      ${figImage("wt11-img", "../images/wentian-prototype-assets/01-feature-hepan.png", 76, 205, 238, 178, "object-fit:contain;opacity:.9;")}
+      ${figImage("wt11-img", "../images/wentian-prototype-assets/hepan-master.jpg", 58, 218, 274, 178, "border-radius:0 0 14px 14px;object-fit:cover;object-position:center 18%;opacity:.9;")}
       ${figBox("wt11-overlay", 0, 0, 390, 844, "", "background:rgba(0,0,0,.32);")}
       ${figBox("wt11-sheet", 0, 486, 390, 358, "", "border-radius:22px 22px 0 0;background:#fff;")}
       ${figBox("wt11-handle", 164, 500, 62, 4, "", "border-radius:4px;background:#e3d8c8;")}
@@ -1843,17 +1875,26 @@ function renderWentianPolishedScreen(screen) {
   if (no === 21) {
     return `
       ${figBox("wt21-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
-      ${wentianSimpleHeader("wt21", "购买完整解读")}
-      ${figBox("wt21-card", 32, 160, 326, 360, "", "border-radius:18px;background:#fff;box-shadow:0 12px 30px rgba(70,45,25,.12);")}
-      ${figText("wt21-title", "对话次数已用尽", 0, 218, 390, 20, "#25211d", 800, "center")}
-      ${figText("wt21-desc", "可通过开通会员、购买对话包或充值灵石继续深度解读。", 70, 260, 250, 14, "#756d63", 500, "center", "line-height:1.55;")}
-      ${figBox("wt21-vip", 58, 334, 274, 42, "", "border-radius:8px;background:#d1a43b;")}
-      ${figText("wt21-vip-text", "开通会员", 58, 346, 274, 14, "#fff", 800, "center")}
-      ${figBox("wt21-buy", 58, 388, 274, 42, "", "border-radius:8px;background:#a73f35;")}
-      ${figText("wt21-buy-text", "购买对话包", 58, 400, 274, 14, "#fff", 800, "center")}
-      ${figBox("wt21-cancel", 58, 442, 274, 42, "", "border:1px solid #eadfce;border-radius:8px;background:#fff;")}
-      ${figText("wt21-cancel-text", "取消", 58, 454, 274, 14, "#756d63", 700, "center")}
-      ${figButton("wt21-pay-hit", 58, 388, 274, 42, 'data-route="screen-29"')}
+      ${wentianSimpleHeader("wt21", "地风升", "◷")}
+      ${["本卦：地风升", "卦意", "事业建议", "关系建议"].map((title, index) => {
+        const y = 112 + index * 110;
+        return `
+          ${figBox(`wt21-under-${index}`, 24, y, 342, 82, "", "border-radius:12px;background:#fff;box-shadow:0 6px 16px rgba(70,45,25,.07);")}
+          ${figText(`wt21-under-title-${index}`, title, 44, y + 18, 150, 14, "#25211d", 800)}
+          ${figText(`wt21-under-desc-${index}`, "购买完整解读后可查看详细分析。", 44, y + 46, 260, 12, "#756d63")}
+        `;
+      }).join("")}
+      ${figBox("wt21-overlay", 0, 0, 390, 844, "", "background:rgba(0,0,0,.34);")}
+      ${figBox("wt21-card", 36, 376, 318, 264, "", "border-radius:16px;background:#fff;box-shadow:0 16px 36px rgba(0,0,0,.18);")}
+      ${figText("wt21-title", "对话次数已用尽", 0, 408, 390, 18, "#25211d", 800, "center")}
+      ${figText("wt21-desc", "可通过开通会员、购买对话包或充值灵石继续深度解读。", 70, 450, 250, 13, "#756d63", 500, "center", "line-height:1.5;")}
+      ${figBox("wt21-vip", 58, 510, 274, 38, "", "border-radius:6px;background:#d1a43b;")}
+      ${figText("wt21-vip-text", "开通会员", 58, 520, 274, 13, "#fff", 800, "center")}
+      ${figBox("wt21-buy", 58, 558, 274, 38, "", "border-radius:6px;background:#a73f35;")}
+      ${figText("wt21-buy-text", "购买对话包", 58, 568, 274, 13, "#fff", 800, "center")}
+      ${figBox("wt21-cancel", 58, 604, 274, 28, "", "border:1px solid #eadfce;border-radius:6px;background:#fff;")}
+      ${figText("wt21-cancel-text", "取消", 58, 611, 274, 12, "#756d63", 700, "center")}
+      ${figButton("wt21-pay-hit", 58, 558, 274, 38, 'data-route="screen-29"')}
     `;
   }
   if (no === 22) {
@@ -2507,10 +2548,11 @@ function renderConvertedScreen(no) {
   }
   const polishedScreen = renderWentianPolishedScreen(screen);
   if (polishedScreen) {
+    const polishedHeight = screen.no === 8 ? 1280 : 844;
     return figPhone(`screen-${screen.no}`, `${String(screen.no).padStart(2, "0")} ${screen.title}`, `
       ${polishedScreen}
       ${convertedFlowHotspots(screen)}
-    `, 844, "converted source-screen no-status-shift", false);
+    `, polishedHeight, "converted source-screen no-status-shift", false);
   }
   const heading = screen.heading ? figText(`screen-${screen.no}-heading`, screen.heading, 24, 72, 180, 26, "#26211c", 700) : "";
   const badge = screen.badge && screen.no !== 1 ? `
