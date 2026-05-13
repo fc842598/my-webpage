@@ -167,6 +167,7 @@ const view = document.getElementById("view");
 const routeKicker = document.getElementById("routeKicker");
 const routeTitle = document.getElementById("routeTitle");
 const screenNav = document.getElementById("screenNav");
+let wentianFitRaf = 0;
 
 function escapeHtml(value) {
   return String(value).replace(/[&<>"']/g, (char) => ({
@@ -2171,6 +2172,21 @@ function stripScreenshotStatusBar() {
   }
 }
 
+function fitActivePhoneShell() {
+  if (wentianFitRaf) window.cancelAnimationFrame(wentianFitRaf);
+  wentianFitRaf = window.requestAnimationFrame(() => {
+    wentianFitRaf = 0;
+    const wrap = view.querySelector(".phone-wrap");
+    const phone = view.querySelector(".figma-phone");
+    if (!wrap || !phone) return;
+    const available = Math.max(320, Math.min(window.innerWidth, 430));
+    const scale = Math.min(1, available / 390);
+    phone.style.setProperty("--wentian-phone-scale", String(scale));
+    const rawHeight = parseFloat(phone.style.height) || phone.offsetHeight || 844;
+    wrap.style.height = `${Math.ceil(rawHeight * scale)}px`;
+  });
+}
+
 function navigate(route, push = true) {
   route = resolveRoute(route);
   if (/^screen-?\d+$/.test(route)) {
@@ -2179,10 +2195,11 @@ function navigate(route, push = true) {
     route = `screen-${screen.no}`;
     if (push && route !== state.route) state.stack.push(state.route);
     state.route = route;
-    routeKicker.textContent = "Figma Editable Prototype";
-    routeTitle.textContent = `${String(screen.no).padStart(2, "0")} ${screen.title}`;
+    if (routeKicker) routeKicker.textContent = "问天AI";
+    if (routeTitle) routeTitle.textContent = screen.title;
     view.innerHTML = renderConvertedScreen(screen.no);
     stripScreenshotStatusBar();
+    fitActivePhoneShell();
     syncActive();
     if (screen.no === 4) window.setTimeout(initWentianXuChat, 0);
     if (screen.no === 26) window.setTimeout(initWentianChartForm, 0);
@@ -2592,5 +2609,6 @@ function buildScreenNav() {
 }
 
 window.addEventListener("hashchange", () => navigate(routeFromLocation(), false));
+window.addEventListener("resize", fitActivePhoneShell);
 buildScreenNav();
 navigate(routeFromLocation(), false);

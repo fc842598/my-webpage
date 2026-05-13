@@ -2,42 +2,18 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>问天AI</title>
   <link rel="icon" href="../images/logo-mark.svg" type="image/svg+xml">
   <script src="../js/config.js?v=20260509-vercel-backend"></script>
   <script defer src="../js/trueSolarTime.js"></script>
   <script defer src="../js/vendor/iztro.min.js"></script>
-  <link rel="stylesheet" href="../css/wentian-app.css?v=20260513-nativechart1">
-  <script defer src="../js/wentian-app.js?v=20260513-nativechart1"></script>
+  <link rel="stylesheet" href="../css/wentian-app.css?v=20260513-mobile1">
+  <script defer src="../js/wentian-app.js?v=20260513-mobile1"></script>
 </head>
 <body>
   <div class="app-shell">
-    <aside class="app-rail">
-      <a class="brand" href="#home" aria-label="问天AI 首页">
-        <span class="brand-mark">问</span>
-        <span>问天AI</span>
-      </a>
-      <nav class="rail-nav" aria-label="主导航">
-        <button type="button" data-route="screen-2">商城</button>
-        <button type="button" data-route="screen-4">AI问天</button>
-        <button type="button" data-route="screen-3">档案</button>
-        <button type="button" data-route="screen-13">占问</button>
-        <button type="button" data-route="screen-31">我的</button>
-      </nav>
-      <nav class="screen-nav" id="screenNav" aria-label="Figma 已转换页面"></nav>
-    </aside>
-
     <main class="app-main">
-      <header class="topbar">
-        <button class="ghost-btn" type="button" data-action="back">返回</button>
-        <div>
-          <p id="routeKicker">问天AI</p>
-          <h1 id="routeTitle">命理报告</h1>
-        </div>
-        <button class="primary-btn small" type="button" data-route="screen-29">灵石充值</button>
-      </header>
-
       <section class="view" id="view"></section>
     </main>
   </div>
