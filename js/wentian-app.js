@@ -63,7 +63,7 @@ const convertedScreens = [
 const convertedByNo = new Map(convertedScreens.map((screen) => [screen.no, screen]));
 
 const screenFlowHotspots = {
-  1: [[286, 24, 86, 52, "screen-26"], [48, 249, 295, 45, "screen-4"], [18, 342, 318, 157, "screen-2"], [18, 580, 170, 274, "screen-4"], [202, 580, 170, 274, "screen-3"], [18, 875, 354, 96, "screen-10"], [18, 984, 354, 96, "screen-13"], [18, 1093, 354, 96, "screen-17"], [18, 1202, 354, 96, "screen-23"], [18, 1378, 354, 104, "screen-22"], [18, 1502, 354, 104, "screen-23"], [2, 1638, 76, 83, "screen-1"], [80, 1638, 76, 83, "screen-25"], [158, 1638, 76, 83, "screen-3"], [236, 1638, 76, 83, "screen-13"], [314, 1638, 76, 83, "screen-31"]],
+  1: [[286, 24, 86, 52, "screen-26"], [48, 249, 295, 45, "screen-4"], [18, 342, 318, 157, "screen-2"], [18, 580, 354, 274, "screen-4"], [18, 875, 354, 96, "screen-10"], [18, 984, 354, 96, "screen-13"], [18, 1093, 354, 96, "screen-17"], [18, 1202, 354, 96, "screen-23"], [18, 1378, 354, 104, "screen-22"], [18, 1502, 354, 104, "screen-23"], [2, 1638, 76, 83, "screen-1"], [80, 1638, 76, 83, "screen-25"], [158, 1638, 76, 83, "screen-3"], [236, 1638, 76, 83, "screen-13"], [314, 1638, 76, 83, "screen-31"]],
   2: [[18, 282, 354, 190, "screen-4"], [18, 487, 354, 190, "screen-4"], [18, 692, 354, 175, "screen-4"]],
   3: [[285, 128, 82, 28, "screen-5"], [16, 164, 358, 84, "screen-5"], [16, 305, 358, 116, "screen-4"], [2, 761, 76, 72, "screen-1"], [80, 761, 76, 72, "screen-25"], [158, 761, 76, 72, "screen-3"], [236, 761, 76, 72, "screen-13"], [314, 761, 76, 72, "screen-31"]],
   4: [[18, 44, 48, 48, "screen-3"], [276, 44, 96, 48, "screen-9"], [300, 104, 58, 34, "screen-5"]],
@@ -433,7 +433,7 @@ function sourceArchiveScreen(screen) {
     ${figText("source-3-master-title", "命理师", 18, 276, 160, 15, "#26211c", 800)}
     ${masters.map(([name, tag1, tag2, tag3, desc, y], index) => `
       ${figBox(`source-3-master-${index}`, 16, y, 358, 116, "converted-card", "border-radius:17px;background:linear-gradient(110deg,#fff,#f8f4ea);box-shadow:0 7px 20px rgba(92,64,32,.11);")}
-      ${figImage(`source-3-master-avatar-${index}`, "../images/wentian-prototype-assets/03-master-1.jpg", 34, y + 20, 62, 62, "border-radius:31px;")}
+      ${figImage(`source-3-master-avatar-${index}`, "../images/wentian-prototype-assets/xu-banxian.jpg", 34, y + 20, 62, 62, "border-radius:31px;object-fit:cover;object-position:center 18%;")}
       ${figText(`source-3-master-name-${index}`, name, 112, y + 24, 194, 17, "#26211c", 800)}
       ${figBox(`source-3-pill-a-${index}`, 112, y + 54, 62, 18, "", "border-radius:9px;background:#f7ecd8;")}
       ${figText(`source-3-pill-a-text-${index}`, tag1, 112, y + 58, 62, 10, "#b88c33", 600, "center")}
@@ -453,7 +453,7 @@ function sourceAiChatScreen(screen) {
   return `
     ${figBox("source-4-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
     ${figText("source-4-back", "‹", 28, 35, 28, 34, "#26211c", 500)}
-    ${figImage("source-4-avatar", "../images/wentian-prototype-assets/03-master-1.jpg", 58, 31, 34, 34, "border-radius:17px;")}
+    ${figImage("source-4-avatar", "../images/wentian-prototype-assets/xu-banxian.jpg", 58, 31, 34, 34, "border-radius:17px;object-fit:cover;object-position:center 18%;")}
     ${figText("source-4-name", "许半仙", 100, 39, 130, 16, "#26211c", 800)}
     ${figText("source-4-record", "◷ 对话记录", 282, 40, 88, 12, "#6f665d", 500, "right")}
     ${figLine("source-4-line-a", 0, 84, 390, "#eee8df")}
@@ -490,7 +490,7 @@ function sourceArchiveSelectScreen() {
   return `
     ${figBox("source-5-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
     ${figText("source-5-back", "‹", 28, 35, 28, 34, "#26211c", 500)}
-    ${figImage("source-5-avatar", "../images/wentian-prototype-assets/03-master-1.jpg", 58, 31, 34, 34, "border-radius:17px;")}
+    ${figImage("source-5-avatar", "../images/wentian-prototype-assets/xu-banxian.jpg", 58, 31, 34, 34, "border-radius:17px;object-fit:cover;object-position:center 18%;")}
     ${figText("source-5-name", "许半仙", 100, 39, 130, 16, "#26211c", 800)}
     ${figText("source-5-record", "◷ 对话记录", 282, 40, 88, 12, "#6f665d", 500, "right")}
     ${figLine("source-5-line-a", 0, 84, 390, "#eee8df")}
@@ -1757,21 +1757,17 @@ function sourceDashboardHomeScreen() {
     ${figText("source-1-report-dots", "●  ●", 184, 514, 28, 8, "#bdb5aa", 700, "center")}
 
     ${figText("source-1-recommend-title", "为你推荐", 18, 548, 130, 22, "#25221f", 800)}
-    ${figText("source-1-more", "更多〉", 322, 553, 50, 14, "#9a938a", 500, "right")}
-    ${figBox("source-1-master-1", 18, 580, 170, 274, "converted-card", "border-radius:14px;overflow:hidden;box-shadow:0 10px 24px rgba(70,45,25,.13);")}
-    ${figImage("source-1-master-img-1", "../images/wentian-prototype-assets/01-home-master-1.jpg", 18, 580, 170, 183, "border-radius:14px 14px 0 0;")}
-    ${figText("source-1-master-name-1", "瞎子阿炳", 36, 777, 132, 22, "#25221f", 800)}
-    ${figBox("source-1-chip-1a", 36, 820, 62, 24, "", "border-radius:12px;background:#f8f3ea;border:1px solid #efe4d2;")}
-    ${figText("source-1-chip-1a-text", "八字解析", 43, 826, 48, 11, "#b2822e", 700, "center")}
-    ${figBox("source-1-chip-1b", 110, 820, 62, 24, "", "border-radius:12px;background:#f8f3ea;border:1px solid #efe4d2;")}
-    ${figText("source-1-chip-1b-text", "流年趋势", 117, 826, 48, 11, "#b2822e", 700, "center")}
-    ${figBox("source-1-master-2", 202, 580, 170, 274, "converted-card", "border-radius:14px;overflow:hidden;box-shadow:0 10px 24px rgba(70,45,25,.13);")}
-    ${figImage("source-1-master-img-2", "../images/wentian-prototype-assets/01-home-master-2.jpg", 202, 580, 170, 183, "border-radius:14px 14px 0 0;")}
-    ${figText("source-1-master-name-2", "紫微瑞神", 220, 777, 132, 22, "#25221f", 800)}
-    ${figBox("source-1-chip-2a", 220, 820, 62, 24, "", "border-radius:12px;background:#f8f3ea;border:1px solid #efe4d2;")}
-    ${figText("source-1-chip-2a-text", "紫微解盘", 227, 826, 48, 11, "#b2822e", 700, "center")}
-    ${figBox("source-1-chip-2b", 294, 820, 62, 24, "", "border-radius:12px;background:#f8f3ea;border:1px solid #efe4d2;")}
-    ${figText("source-1-chip-2b-text", "命宫分析", 301, 826, 48, 11, "#b2822e", 700, "center")}
+    ${figBox("source-1-master-1", 18, 580, 354, 274, "converted-card", "border-radius:16px;overflow:hidden;box-shadow:0 10px 24px rgba(70,45,25,.13);")}
+    ${figImage("source-1-master-img-1", "../images/wentian-prototype-assets/xu-banxian.jpg", 18, 580, 354, 184, "border-radius:16px 16px 0 0;object-fit:cover;object-position:center 20%;")}
+    ${figBox("source-1-master-shade", 18, 708, 354, 56, "", "background:linear-gradient(180deg,rgba(0,0,0,0),rgba(0,0,0,.32));")}
+    ${figText("source-1-master-name-1", "许半仙", 36, 782, 132, 24, "#25221f", 800)}
+    ${figText("source-1-master-desc-1", "紫微命盘专属解析，已接入当前档案", 36, 812, 230, 14, "#91897f", 500)}
+    ${figBox("source-1-chip-1a", 36, 835, 70, 24, "", "border-radius:12px;background:#f8f3ea;border:1px solid #efe4d2;")}
+    ${figText("source-1-chip-1a-text", "紫微命盘", 44, 841, 54, 11, "#b2822e", 700, "center")}
+    ${figBox("source-1-chip-1b", 118, 835, 62, 24, "", "border-radius:12px;background:#f8f3ea;border:1px solid #efe4d2;")}
+    ${figText("source-1-chip-1b-text", "AI解析", 125, 841, 48, 11, "#b2822e", 700, "center")}
+    ${figBox("source-1-master-go", 278, 807, 72, 36, "", "border-radius:18px;background:#c08a2c;")}
+    ${figText("source-1-master-go-text", "去问他", 286, 817, 56, 13, "#fff", 700, "center")}
 
     ${[["合盘分析", "命理相合，缘分几许", "01-feature-hepan.png", "screen-10", 875], ["黄大仙灵签", "求签问卦，指引方向", "01-feature-qian.png", "screen-13", 984], ["六爻占卜", "铜钱起卦，纳甲解卦", "01-feature-gua.png", "screen-17", 1093], ["万年历", "每日宜忌，趋吉避凶", "01-feature-li.png", "screen-23", 1202]].map(([title, sub, icon, route, y], index) => `
       ${figBox(`source-1-feature-${index}`, 18, y, 354, 96, "converted-card", "border-radius:14px;box-shadow:0 8px 20px rgba(70,45,25,.1);background:#fffdfb;")}
@@ -2215,7 +2211,7 @@ function renderAI() {
     ${figButton("17:6-hit", 14, 54, 54, 62, 'data-route="home"')}
     ${figText("17:6", "‹", 28, 66, 26, 42, "#21211f", 700, "center")}
     ${figBox("17:7", 58, 54, 32, 32, "", "border-radius:50%;background:linear-gradient(145deg,#2f2f2b,#756f5f);box-shadow:inset 0 -6px 10px rgba(0,0,0,.22);")}
-    ${figText("17:8", "瞎子阿炳", 96, 59, 150, 22, "#21211f", 700)}
+    ${figText("17:8", "许半仙", 96, 59, 150, 22, "#21211f", 700)}
     ${figButton("17:9-hit", 294, 54, 90, 42, 'data-route="archive"')}
     ${figText("17:9", "◷ 对话记录", 306, 63, 78, 15, "#75756e", 500, "right")}
     ${figLine("17:10", 0, 116, 390)}
@@ -2226,7 +2222,7 @@ function renderAI() {
     ${figBox("17:15", 318, 124, 56, 34, "fig-card fig-pill", "box-shadow:0 1px 5px rgba(0,0,0,.1);")}
     ${figText("17:16", "谢⌄", 329, 132, 34, 17, "#21211f", 700, "center")}
     ${figLine("17:17", 0, 161, 390)}
-    ${figText("17:18", "你好！我是瞎子阿炳", 24, 219, 316, 32, "#ba8f38", 700)}
+    ${figText("17:18", "你好！我是许半仙", 24, 219, 316, 32, "#ba8f38", 700)}
     ${figText("17:19", "需要我为您做些什么？", 24, 272, 260, 22, "#adaba1")}
     ${figBox("17:20", 24, 326, 342, 178, "fig-card", "border-radius:18px;box-shadow:0 4px 12px rgba(0,0,0,.16);")}
     ${figText("17:21", "谢的八字", 42, 348, 180, 20, "#75756e", 700)}
