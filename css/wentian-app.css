@@ -462,6 +462,146 @@ button { cursor: pointer; }
   background: #fff;
 }
 
+.wentian-chat-status {
+  position: absolute;
+  left: 24px;
+  top: 420px;
+  width: 342px;
+  height: 18px;
+  color: #9d8a62;
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.wentian-chat-status[data-tone="ok"] {
+  color: #7d8d52;
+}
+
+.wentian-chat-status[data-tone="warn"] {
+  color: #b88c33;
+}
+
+.wentian-chat-status[data-tone="error"] {
+  color: #b33a2f;
+}
+
+.wentian-chat-log {
+  position: absolute;
+  left: 22px;
+  top: 445px;
+  width: 346px;
+  height: 244px;
+  overflow-y: auto;
+  padding: 2px 2px 12px;
+}
+
+.wentian-chat-log::-webkit-scrollbar {
+  width: 3px;
+}
+
+.wentian-chat-log::-webkit-scrollbar-thumb {
+  border-radius: 3px;
+  background: rgba(184, 140, 51, .24);
+}
+
+.wentian-chat-msg {
+  width: fit-content;
+  max-width: 292px;
+  margin: 0 0 10px;
+  padding: 10px 12px;
+  border: 1px solid #eadfce;
+  border-radius: 14px;
+  background: #fff;
+  color: #4c453d;
+  font-size: 13px;
+  line-height: 1.55;
+  box-shadow: 0 4px 12px rgba(74, 55, 32, .06);
+}
+
+.wentian-chat-msg.is-user {
+  margin-left: auto;
+  border-color: rgba(184, 140, 51, .26);
+  background: #c39a49;
+  color: #fff;
+}
+
+.wentian-chat-msg.is-system {
+  max-width: 342px;
+  margin-right: auto;
+  margin-left: auto;
+  border-color: rgba(179, 58, 47, .18);
+  background: #fff7f2;
+  color: #9c4a3e;
+  text-align: center;
+  box-shadow: none;
+}
+
+.wentian-chat-chip {
+  position: absolute;
+  top: 704px;
+  height: 34px;
+  min-width: 82px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: 17px;
+  background: #fff;
+  color: #26211c;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 34px;
+  box-shadow: 0 3px 9px rgba(0, 0, 0, .05);
+}
+
+.wentian-chat-field {
+  position: absolute;
+  left: 16px;
+  top: 755px;
+  width: 358px;
+  height: 48px;
+  border: 1px solid #e5ded3;
+  border-radius: 24px;
+  background: #faf8f3;
+  color: #26211c;
+  padding: 0 58px 0 18px;
+  font-family: inherit;
+  font-size: 17px;
+  font-weight: 500;
+  line-height: 48px;
+  outline: 0;
+  box-shadow: 0 3px 9px rgba(0, 0, 0, .08);
+}
+
+.wentian-chat-field::placeholder {
+  color: #b8b0a7;
+}
+
+.wentian-chat-field:disabled {
+  color: #9f978f;
+}
+
+.wentian-chat-send {
+  position: absolute;
+  left: 338px;
+  top: 763px;
+  width: 32px;
+  height: 32px;
+  border: 0;
+  border-radius: 16px;
+  background: #c39a49;
+  color: #fff;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 800;
+  line-height: 32px;
+  text-align: center;
+  box-shadow: 0 3px 8px rgba(111, 76, 23, .18);
+}
+
+.wentian-chat-send:disabled {
+  background: #e6dfd0;
+}
+
 .converted-button {
   position: absolute;
   border: 0;

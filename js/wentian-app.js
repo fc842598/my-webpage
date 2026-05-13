@@ -66,7 +66,7 @@ const screenFlowHotspots = {
   1: [[286, 24, 86, 52, "screen-26"], [48, 249, 295, 45, "screen-4"], [18, 342, 318, 157, "screen-2"], [18, 580, 170, 274, "screen-4"], [202, 580, 170, 274, "screen-3"], [18, 875, 354, 96, "screen-10"], [18, 984, 354, 96, "screen-13"], [18, 1093, 354, 96, "screen-17"], [18, 1202, 354, 96, "screen-23"], [18, 1378, 354, 104, "screen-22"], [18, 1502, 354, 104, "screen-23"], [2, 1638, 76, 83, "screen-1"], [80, 1638, 76, 83, "screen-25"], [158, 1638, 76, 83, "screen-3"], [236, 1638, 76, 83, "screen-13"], [314, 1638, 76, 83, "screen-31"]],
   2: [[18, 282, 354, 190, "screen-4"], [18, 487, 354, 190, "screen-4"], [18, 692, 354, 175, "screen-4"]],
   3: [[285, 128, 82, 28, "screen-5"], [16, 164, 358, 84, "screen-5"], [16, 305, 358, 116, "screen-4"], [16, 437, 358, 116, "screen-4"], [16, 570, 358, 160, "screen-4"], [16, 752, 358, 116, "screen-10"], [2, 928, 76, 72, "screen-1"], [80, 928, 76, 72, "screen-25"], [158, 928, 76, 72, "screen-3"], [236, 928, 76, 72, "screen-13"], [314, 928, 76, 72, "screen-31"]],
-  4: [[18, 44, 48, 48, "screen-3"], [276, 44, 96, 48, "screen-9"], [300, 104, 58, 34, "screen-5"], [20, 704, 82, 34, "screen-6"], [114, 704, 88, 34, "screen-6"], [16, 755, 358, 48, "screen-6"]],
+  4: [[18, 44, 48, 48, "screen-3"], [276, 44, 96, 48, "screen-9"], [300, 104, 58, 34, "screen-5"]],
   5: [[320, 116, 48, 48, "screen-4"], [34, 235, 322, 72, "screen-6"], [34, 318, 322, 72, "screen-6"], [48, 748, 294, 52, "screen-6"]],
   6: [[18, 44, 48, 48, "screen-4"], [88, 600, 220, 76, "screen-7"]],
   7: [[18, 44, 48, 48, "screen-4"], [54, 280, 282, 168, "screen-8"]],
@@ -452,37 +452,355 @@ function sourceArchiveScreen(screen) {
 
 function sourceAiChatScreen(screen) {
   return `
-    ${figText("source-4-time", "15:17", 18, 15, 70, 14, "#26211c")}
-    ${figText("source-4-status", "◉  0.00  5G  ▮ 31 ⚡", 250, 14, 120, 10, "#26211c", 700, "right")}
-    ${figText("source-4-back", "‹", 28, 52, 28, 34, "#26211c", 500)}
-    ${figImage("source-4-avatar", "../images/wentian-prototype-assets/03-master-1.jpg", 58, 50, 34, 34, "border-radius:17px;")}
-    ${figText("source-4-name", "瞎子阿炳", 100, 58, 130, 16, "#26211c", 800)}
-    ${figText("source-4-record", "◷ 对话记录", 282, 59, 88, 12, "#6f665d", 500, "right")}
-    ${figLine("source-4-line-a", 0, 96, 390, "#eee8df")}
-    ${figText("source-4-left", "◇ 剩余 1 条", 18, 112, 140, 12, "#9d8a62")}
-    ${figBox("source-4-profile-pill", 300, 104, 58, 34, "", "border-radius:17px;background:#fff;box-shadow:0 4px 12px rgba(70,45,25,.08);")}
-    ${figText("source-4-profile-text", "谢⌄", 312, 114, 34, 13, "#26211c", 500, "center")}
-    ${figLine("source-4-line-b", 0, 153, 390, "#eee8df")}
-    ${figText("source-4-hello", "你好！我是瞎子阿炳", 24, 183, 320, 27, "#c4a45a", 800)}
-    ${figText("source-4-sub", "需要我为您做些什么？", 24, 230, 260, 15, "#aaa196")}
-    ${figBox("source-4-bazi", 22, 270, 346, 166, "converted-card", "border-radius:12px;box-shadow:0 6px 18px rgba(74,55,32,.12);")}
-    ${figText("source-4-bazi-name", "谢的八字", 42, 292, 120, 13, "#8f857a")}
-    ${["年柱", "月柱", "日柱", "时柱"].map((label, index) => figText(`source-4-bazi-label-${index}`, label, 70 + index * 76, 322, 46, 11, "#aaa196", 400, "center")).join("")}
-    ${["辛", "庚", "丁", "辛"].map((label, index) => figText(`source-4-bazi-top-${index}`, label, 70 + index * 76, 346, 46, 17, index === 1 ? "#7aa65b" : "#c69a3e", 800, "center")).join("")}
-    ${["未", "寅", "巳", "亥"].map((label, index) => figText(`source-4-bazi-bottom-${index}`, label, 70 + index * 76, 374, 46, 17, index === 1 ? "#7aa65b" : "#c69a3e", 800, "center")).join("")}
-    ${figLine("source-4-bazi-line", 40, 394, 310, "#e8ded0")}
-    ${figText("source-4-bazi-foot", "日主：丁    生肖：羊", 0, 408, 390, 12, "#8f857a", 500, "center")}
-    ${figBox("source-4-chip-a", 20, 704, 82, 34, "", "border-radius:17px;background:#fff;box-shadow:0 3px 9px rgba(0,0,0,.05);")}
-    ${figText("source-4-chip-a-text", "个人性格", 20, 715, 82, 12, "#26211c", 500, "center")}
-    ${figBox("source-4-chip-b", 114, 704, 88, 34, "", "border-radius:17px;background:#fff;box-shadow:0 3px 9px rgba(0,0,0,.05);")}
-    ${figText("source-4-chip-b-text", "感情建议", 114, 715, 88, 12, "#26211c", 500, "center")}
+    ${figBox("source-4-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
+    ${figText("source-4-back", "‹", 28, 35, 28, 34, "#26211c", 500)}
+    ${figImage("source-4-avatar", "../images/wentian-prototype-assets/03-master-1.jpg", 58, 31, 34, 34, "border-radius:17px;")}
+    ${figText("source-4-name", "许半仙", 100, 39, 130, 16, "#26211c", 800)}
+    ${figText("source-4-record", "◷ 对话记录", 282, 40, 88, 12, "#6f665d", 500, "right")}
+    ${figLine("source-4-line-a", 0, 84, 390, "#eee8df")}
+    ${figText("source-4-left", "◇ 许半仙体系", 18, 101, 150, 12, "#9d8a62")}
+    ${figBox("source-4-profile-pill", 286, 92, 72, 34, "", "border-radius:17px;background:#fff;box-shadow:0 4px 12px rgba(70,45,25,.08);")}
+    ${figText("source-4-profile-text", "谢 · 已读", 296, 102, 52, 13, "#26211c", 500, "center")}
+    ${figLine("source-4-line-b", 0, 137, 390, "#eee8df")}
+    ${figText("source-4-hello", "你好！我是许半仙", 24, 169, 320, 27, "#c4a45a", 800)}
+    ${figText("source-4-sub", "当前命盘已接入，可直接追问。", 24, 210, 260, 15, "#aaa196")}
+    ${figBox("source-4-bazi", 22, 250, 346, 156, "converted-card", "border-radius:13px;box-shadow:0 6px 18px rgba(74,55,32,.12);")}
+    ${figText("source-4-bazi-name", "谢的八字", 42, 272, 120, 13, "#8f857a")}
+    ${["年柱", "月柱", "日柱", "时柱"].map((label, index) => figText(`source-4-bazi-label-${index}`, label, 70 + index * 76, 300, 46, 11, "#aaa196", 400, "center")).join("")}
+    ${["辛", "庚", "丁", "辛"].map((label, index) => figText(`source-4-bazi-top-${index}`, label, 70 + index * 76, 322, 46, 17, index === 1 ? "#7aa65b" : "#c69a3e", 800, "center")).join("")}
+    ${["未", "寅", "巳", "亥"].map((label, index) => figText(`source-4-bazi-bottom-${index}`, label, 70 + index * 76, 350, 46, 17, index === 1 ? "#7aa65b" : "#c69a3e", 800, "center")).join("")}
+    ${figLine("source-4-bazi-line", 40, 372, 310, "#e8ded0")}
+    ${figText("source-4-bazi-foot", "日主：丁    生肖：羊", 0, 386, 390, 12, "#8f857a", 500, "center")}
+    <div id="wentian-chat-status" class="wentian-chat-status">正在接入许半仙…</div>
+    <div id="wentian-chat-messages" class="wentian-chat-log" aria-live="polite"></div>
+    <button class="wentian-chat-chip" type="button" style="left:18px" data-wentian-prompt="结合我的命盘，先讲我的个人性格和做事模式。">个人性格</button>
+    <button class="wentian-chat-chip" type="button" style="left:112px" data-wentian-prompt="结合我的命盘，重点看感情建议，我容易卡在哪里？">感情建议</button>
+    <button class="wentian-chat-chip" type="button" style="left:212px" data-wentian-prompt="结合我的命盘，看事业财运接下来怎么走。">事业财运</button>
     ${figBox("source-4-input-bg", 0, 742, 390, 102, "", "background:#fff;")}
-    ${figBox("source-4-input", 16, 755, 358, 48, "", "border-radius:24px;background:#faf8f3;border:1px solid #e5ded3;box-shadow:0 3px 9px rgba(0,0,0,.08);")}
-    ${figText("source-4-placeholder", "问一问", 34, 769, 160, 17, "#b8b0a7")}
-    ${figBox("source-4-send", 338, 763, 32, 32, "", "border-radius:16px;background:#e6dfd0;")}
-    ${figText("source-4-send-text", "↑", 338, 770, 32, 15, "#fff", 800, "center")}
-    ${figText("source-4-disclaimer", "内容由AI生成，仅供娱乐参考", 0, 815, 390, 10, "#b8b0a7", 400, "center")}
+    <input id="wentian-chat-input" class="wentian-chat-field" placeholder="问一问" autocomplete="off">
+    <button id="wentian-chat-send" class="wentian-chat-send" type="button" data-action="wentian-chat-send" aria-label="发送">↑</button>
+    ${figText("source-4-disclaimer", "内容由AI生成，仅供娱乐参考", 0, 812, 390, 10, "#b8b0a7", 400, "center")}
   `;
+}
+
+function wentianStar(name, brightness = "", mutagen = null) {
+  return { name, brightness, mutagen };
+}
+
+function wentianPalace(name, branch, majorStars, minorStars = [], range = "") {
+  return {
+    name,
+    branch,
+    majorStars: majorStars.map((item) => Array.isArray(item) ? wentianStar(item[0], item[1] || "", item[2] || null) : wentianStar(item)),
+    minorStars: minorStars.map((name) => ({ name })),
+    decadal: range ? { range } : null,
+  };
+}
+
+const WENTIAN_XU_PALACES = [
+  wentianPalace("命宫", "申", ["贪狼"], ["天马", "右弼"], "6-15"),
+  wentianPalace("兄弟宫", "未", ["太阳", "太阴"], ["地劫"], "116-125"),
+  wentianPalace("夫妻宫", "午", ["武曲", "天府"], ["擎羊", "左辅"], "106-115"),
+  wentianPalace("子女宫", "巳", ["天同"], ["禄存"], "96-105"),
+  wentianPalace("财帛宫", "辰", ["破军"], ["陀罗"], "86-95"),
+  wentianPalace("疾厄宫", "卯", [], ["地空"], "76-85"),
+  wentianPalace("迁移宫", "寅", ["廉贞"], ["文昌"], "66-75"),
+  wentianPalace("仆役宫", "丑", [], [], "56-65"),
+  wentianPalace("官禄宫", "子", ["七杀"], ["文曲"], "46-55"),
+  wentianPalace("田宅宫", "亥", ["天梁"], ["铃星", "天魁"], "36-45"),
+  wentianPalace("福德宫", "戌", ["紫微", "天相"], [], "26-35"),
+  wentianPalace("父母宫", "酉", ["天机", "巨门"], ["火星", "天钺"], "16-25"),
+];
+
+function wentianFindPalace(name) {
+  return WENTIAN_XU_PALACES.find((item) => item.name === name) || null;
+}
+
+const WENTIAN_XU_CHART_BASE = {
+  gender: "male",
+  birthDate: "1991-02-16 22:58",
+  solarTime: "1991-02-16 22:58",
+  birthYear: 1991,
+  birthMonth: 2,
+  birthDay: 16,
+  birthHour: 22,
+  realCurrentAge: 36,
+  isLunar: false,
+  city: "",
+  fiveElementsClass: "火六局",
+  zodiac: "羊",
+  yearStem: "辛",
+  lifeMain: "廉贞",
+  bodyMain: "火星",
+  lifePalace: wentianFindPalace("命宫"),
+  bodyPalaceDetail: wentianFindPalace("官禄宫"),
+  careerPalace: wentianFindPalace("官禄宫"),
+  wealthPalace: wentianFindPalace("财帛宫"),
+  movePalace: wentianFindPalace("迁移宫"),
+  spousePalace: wentianFindPalace("夫妻宫"),
+  happinessPalace: wentianFindPalace("福德宫"),
+  illnessPalace: wentianFindPalace("疾厄宫"),
+  yearMutagens: [
+    { star: "巨门", mutagen: "禄" },
+    { star: "太阳", mutagen: "权" },
+    { star: "文曲", mutagen: "科" },
+    { star: "文昌", mutagen: "忌" },
+  ],
+  palacesSummary: WENTIAN_XU_PALACES,
+  activeAge: 36,
+  currentYear: 2026,
+  currentDecade: {
+    palace: "田宅宫",
+    branch: "亥",
+    range: "36-45",
+    stem: "己",
+    majorStars: ["天梁"],
+  },
+  currentLiunian: {
+    name: "流年小限",
+    branch: "午",
+    period: "2026",
+    xiaoLian: "戌",
+  },
+  currentXiaolian: { branch: "戌" },
+  dayunTable: WENTIAN_XU_PALACES
+    .map((palace) => {
+      const range = String(palace.decadal?.range || "").match(/\d+/g);
+      if (!range || range.length < 2) return null;
+      return {
+        ageStart: Number(range[0]),
+        ageEnd: Number(range[1]),
+        range: `${range[0]}-${range[1]}`,
+        palaceName: palace.name,
+        palaceBranch: palace.branch,
+        palaceStem: "",
+        majorStars: palace.majorStars,
+      };
+    })
+    .filter(Boolean),
+  liunianTable: [
+    { age: 36, solarYear: 2026, xiaoLianBranch: "戌", yearGanzhi: "丙午", liunianGuaName: "流年小限", liunianGuaPeriod: "2026" },
+  ],
+  sizhu: {
+    year: "辛未",
+    month: "庚寅",
+    day: "丁巳",
+    hour: "辛亥",
+    yearStem: "辛",
+    yearBranch: "未",
+    monthStem: "庚",
+    monthBranch: "寅",
+    dayStem: "丁",
+    dayBranch: "巳",
+    hourStem: "辛",
+    hourBranch: "亥",
+  },
+  peakAges: [],
+  valleyAges: [],
+};
+
+const wentianXuChat = {
+  sessionId: null,
+  sessionPromise: null,
+  messages: [],
+  loading: false,
+};
+
+function getWentianApiBase() {
+  const qs = new URLSearchParams(location.search);
+  const queryBase = qs.get("aiBackendBase") || qs.get("pimingApiBase") || qs.get("apiBase") || "";
+  const configBase = window.SITE_CONFIG?.aiBackendBase || "";
+  return (queryBase || configBase || "https://ai-piming-backend.vercel.app").replace(/\/+$/, "");
+}
+
+function getWentianChartRecordId() {
+  const key = "wentian-xubanxian-chart-record-id";
+  try {
+    let id = localStorage.getItem(key);
+    if (!id) {
+      id = `wentian-app-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`;
+      localStorage.setItem(key, id);
+    }
+    return id;
+  } catch (_err) {
+    return "wentian-app-demo-chart";
+  }
+}
+
+function getWentianChartPayload() {
+  const chartRecordId = getWentianChartRecordId();
+  return { ...WENTIAN_XU_CHART_BASE, chartRecordId };
+}
+
+function getWentianTransientKey() {
+  return `wentian-xubanxian-transient:${getWentianChartRecordId()}`;
+}
+
+function loadWentianTransientState() {
+  try {
+    const raw = sessionStorage.getItem(getWentianTransientKey());
+    return raw ? JSON.parse(raw) : null;
+  } catch (_err) {
+    return null;
+  }
+}
+
+function saveWentianTransientState(state) {
+  try {
+    if (state) sessionStorage.setItem(getWentianTransientKey(), JSON.stringify(state));
+    else sessionStorage.removeItem(getWentianTransientKey());
+  } catch (_err) {}
+}
+
+async function wentianPostJson(path, payload, timeoutMs = 45000) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    const response = await fetch(`${getWentianApiBase()}${path}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+      signal: controller.signal,
+    });
+    const contentType = String(response.headers.get("content-type") || "");
+    const data = contentType.includes("application/json")
+      ? await response.json()
+      : { error: await response.text() };
+    if (!response.ok || data.error) throw new Error(data.error || `许半仙服务异常 ${response.status}`);
+    return data;
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+function setWentianChatStatus(text, tone = "") {
+  const el = document.getElementById("wentian-chat-status");
+  if (!el) return;
+  el.textContent = text;
+  el.dataset.tone = tone;
+}
+
+function setWentianQuota(quota) {
+  const el = document.querySelector('[data-node-id="source-4-left"]');
+  if (!el || !quota) return;
+  const remaining = Number.isFinite(Number(quota.remaining)) ? quota.remaining : "--";
+  const limit = Number.isFinite(Number(quota.limit)) ? quota.limit : "--";
+  el.textContent = `◇ 今日 ${remaining}/${limit}`;
+}
+
+function renderWentianMessages() {
+  const box = document.getElementById("wentian-chat-messages");
+  if (!box) return;
+  box.innerHTML = wentianXuChat.messages.map((message) => {
+    const role = message.role === "user" ? "user" : message.role === "system" ? "system" : "assistant";
+    return `<div class="wentian-chat-msg is-${role}">${escapeHtml(message.text)}</div>`;
+  }).join("");
+  box.scrollTop = box.scrollHeight;
+}
+
+function addWentianMessage(role, text) {
+  wentianXuChat.messages.push({ role, text });
+  if (wentianXuChat.messages.length > 30) wentianXuChat.messages.shift();
+  renderWentianMessages();
+}
+
+function setWentianChatBusy(busy) {
+  wentianXuChat.loading = busy;
+  const input = document.getElementById("wentian-chat-input");
+  const send = document.getElementById("wentian-chat-send");
+  if (input) input.disabled = busy;
+  if (send) send.disabled = busy;
+}
+
+async function ensureWentianXuSession() {
+  if (wentianXuChat.sessionId) return wentianXuChat.sessionId;
+  if (wentianXuChat.sessionPromise) return wentianXuChat.sessionPromise;
+
+  setWentianChatStatus("正在接入许半仙…");
+  const chartData = getWentianChartPayload();
+  wentianXuChat.sessionPromise = wentianPostJson("/api/ai/chat/session", {
+    chartRecordId: chartData.chartRecordId,
+    chartData,
+    transientState: loadWentianTransientState(),
+  }, 20000).then((data) => {
+    wentianXuChat.sessionId = data.sessionId || `transient:${chartData.chartRecordId}`;
+    if (data.transientState) saveWentianTransientState(data.transientState);
+    setWentianChatStatus(data.transientMode ? "临时会话已接入" : "许半仙已连接", data.transientMode ? "warn" : "ok");
+    if (!wentianXuChat.messages.length) {
+      if (Array.isArray(data.messages) && data.messages.length) {
+        wentianXuChat.messages = data.messages.slice(-12).map((item) => ({
+          role: item.sender === "user" ? "user" : item.sender === "system" ? "system" : "assistant",
+          text: item.content || "",
+        }));
+      } else {
+        addWentianMessage("assistant", "命盘我已经读到了。你可以直接问感情、事业、财运，或者问最近一年怎么走。");
+      }
+      renderWentianMessages();
+    }
+    return wentianXuChat.sessionId;
+  }).catch((error) => {
+    setWentianChatStatus("许半仙暂时未连上", "error");
+    if (!wentianXuChat.messages.length) addWentianMessage("system", `连接失败：${error.message || "后端暂时不可用"}`);
+    throw error;
+  }).finally(() => {
+    wentianXuChat.sessionPromise = null;
+  });
+  return wentianXuChat.sessionPromise;
+}
+
+async function sendWentianXuChat(promptText = "") {
+  if (wentianXuChat.loading) return;
+  const input = document.getElementById("wentian-chat-input");
+  const message = (promptText || input?.value || "").trim();
+  if (!message) return;
+  if (input) input.value = "";
+
+  addWentianMessage("user", message);
+  addWentianMessage("assistant", "许半仙正在看盘…");
+  setWentianChatBusy(true);
+
+  try {
+    const chartData = getWentianChartPayload();
+    await ensureWentianXuSession();
+    const data = await wentianPostJson("/api/ai/chat/send", {
+      chartRecordId: chartData.chartRecordId,
+      message,
+      chartData,
+      transientState: loadWentianTransientState(),
+    }, 60000);
+    wentianXuChat.messages.pop();
+    if (data.transientState) saveWentianTransientState(data.transientState);
+    setWentianQuota(data.quota);
+    setWentianChatStatus(data.transientMode ? "临时会话已接入" : "许半仙已连接", data.transientMode ? "warn" : "ok");
+    addWentianMessage("assistant", data.reply || "我看到了，但这轮没有返回内容，请再问一次。");
+  } catch (error) {
+    wentianXuChat.messages.pop();
+    addWentianMessage("system", `发送失败：${error.message || "许半仙暂时不可用"}`);
+  } finally {
+    setWentianChatBusy(false);
+    input?.focus();
+  }
+}
+
+function initWentianXuChat() {
+  const input = document.getElementById("wentian-chat-input");
+  const send = document.getElementById("wentian-chat-send");
+  if (!input || !send) return;
+
+  send.onclick = () => sendWentianXuChat();
+  input.onkeydown = (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      sendWentianXuChat();
+    }
+  };
+
+  if (!wentianXuChat.messages.length) {
+    addWentianMessage("assistant", "我是许半仙，已经切到你网站的命盘对话体系。你问一句，我按当前命盘答。");
+  } else {
+    renderWentianMessages();
+  }
+  ensureWentianXuSession().catch(() => {});
 }
 
 function sourceProfileScreen(screen) {
@@ -872,7 +1190,7 @@ function renderConvertedScreen(no) {
     return figPhone(`screen-${screen.no}`, `${String(screen.no).padStart(2, "0")} ${screen.title}`, `
       ${sourceAiChatScreen(screen)}
       ${convertedFlowHotspots(screen)}
-    `, 844, "converted source-screen", true);
+    `, 844, "converted source-screen no-status-shift", true);
   }
   if (screen.no === 25) {
     return figPhone(`screen-${screen.no}`, `${String(screen.no).padStart(2, "0")} ${screen.title}`, `
@@ -972,6 +1290,7 @@ function navigate(route, push = true) {
     view.innerHTML = renderConvertedScreen(screen.no);
     stripScreenshotStatusBar();
     syncActive();
+    if (screen.no === 4) window.setTimeout(initWentianXuChat, 0);
     if (!location.hash.includes("figmacapture=")) location.hash = route;
     window.scrollTo(0, 0);
     return;
@@ -1310,6 +1629,11 @@ function renderPay() {
 }
 
 document.addEventListener("click", (event) => {
+  const promptButton = event.target.closest("[data-wentian-prompt]");
+  if (promptButton) {
+    sendWentianXuChat(promptButton.dataset.wentianPrompt || "");
+    return;
+  }
   const routeButton = event.target.closest("[data-route]");
   if (routeButton) {
     navigate(routeButton.dataset.route);
@@ -1317,6 +1641,10 @@ document.addEventListener("click", (event) => {
   }
   const action = event.target.closest("[data-action]")?.dataset.action;
   if (action === "back") navigate(state.stack.pop() || "home", false);
+  if (action === "wentian-chat-send") {
+    sendWentianXuChat();
+    return;
+  }
   if (action === "ask") {
     const input = document.getElementById("askInput");
     const messages = document.getElementById("messages");
