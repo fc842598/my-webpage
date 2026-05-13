@@ -1503,6 +1503,7 @@
   function setReportGeneratedState(enabled) {
     $('#report')?.classList.toggle('is-generated', enabled);
     $('#mbpChapters')?.classList.toggle('is-generated', enabled);
+    setPdfHint(enabled ? '已生成，可下载客户版 PDF' : '生成后可下载客户版命盘解读', enabled ? 'ready' : '');
   }
 
   function generatedModuleCount() {
@@ -1601,6 +1602,29 @@
       .slice(0, 48) || '个人命盘解读';
   }
 
+  function pdfReportReady() {
+    return state.decoded && generatedModuleCount() > 0 && $('#mbpChapters')?.classList.contains('is-generated');
+  }
+
+  function setPdfHint(text, mode = '') {
+    const hint = $('#mbpPdfHint');
+    const btn = $('#mbpExportPdf');
+    if (hint) {
+      hint.textContent = text;
+      hint.classList.toggle('is-ready', mode === 'ready');
+      hint.classList.toggle('is-error', mode === 'error');
+    }
+    if (btn) {
+      btn.classList.toggle('is-ready', mode === 'ready');
+      btn.classList.toggle('is-error', mode === 'error');
+    }
+  }
+
+  function pdfGeneratedAt() {
+    const now = new Date();
+    return `${now.getFullYear()}-${pad2(now.getMonth() + 1)}-${pad2(now.getDate())} ${pad2(now.getHours())}:${pad2(now.getMinutes())}`;
+  }
+
   function cleanCloneIds(root) {
     root.querySelectorAll('[id]').forEach((node) => node.removeAttribute('id'));
     return root;
@@ -1613,6 +1637,7 @@
     const gender = state.profile.gender === 'female' ? '女命' : '男命';
     const city = state.profile.cityName || state.profile.city || '未填地点';
     const time = `${dateStr(state.profile)} ${pad2(state.profile.hour)}:${pad2(state.profile.minute)}`;
+    const generatedAt = pdfGeneratedAt();
     const report = document.createElement('article');
     report.className = 'mbp-pdf-report';
     report.innerHTML = `
@@ -1621,6 +1646,18 @@
         <h1>${escapeHtml(name)}个人命盘解读</h1>
         <p>${escapeHtml(gender)} · ${escapeHtml(time)} · ${escapeHtml(city)}</p>
         <p>${escapeHtml(facts.subtitle || '命盘解读')}</p>
+        <div class="mbp-pdf-meta">
+          <div><b>命主信息</b><span>${escapeHtml(name)} · ${escapeHtml(gender)}</span></div>
+          <div><b>出生资料</b><span>${escapeHtml(time)}</span></div>
+          <div><b>生成时间</b><span>${escapeHtml(generatedAt)}</span></div>
+        </div>
+        <ol class="mbp-pdf-toc">
+          <li>命格总览</li>
+          <li>大限流年</li>
+          <li>人生曲线</li>
+          <li>五宫详解</li>
+          <li>行动建议</li>
+        </ol>
       </header>
       <section class="mbp-pdf-section">
         <h2>命盘</h2>
@@ -1642,6 +1679,9 @@
     if (chapters) {
       cleanCloneIds(chapters);
       chapters.classList.add('mbp-pdf-chapters');
+      chapters.querySelectorAll('details').forEach((detail) => {
+        detail.open = true;
+      });
       report.querySelector('.mbp-pdf-chapters-slot')?.appendChild(chapters);
     }
     return report;
@@ -1649,8 +1689,9 @@
 
   async function downloadMingbookPdf() {
     const btn = $('#mbpExportPdf');
-    if (!state.decoded) {
+    if (!pdfReportReady()) {
       setDecodeStatus('请先完成一键批命，再打包深度报告。');
+      setPdfHint('先生成五卷命书，再下载客户版 PDF', 'error');
       $('#mbpDecodeBtn')?.focus({ preventScroll: true });
       return;
     }
@@ -1659,6 +1700,7 @@
       btn.disabled = true;
       btn.innerHTML = '<span>正在打包…</span><small>PDF</small>';
     }
+    setPdfHint('正在整理命盘、五卷解读与目录…', 'ready');
     setDecodeStatus('正在打包深度报告 PDF…');
     const host = document.createElement('div');
     host.className = 'mbp-pdf-export-host';
@@ -1667,7 +1709,8 @@
     document.body.appendChild(host);
     try {
       const html2pdf = await loadHtml2Pdf();
-      const filename = `${safePdfFileName(state.profile.name || '个人命盘解读')}-命盘解读.pdf`;
+      const profileKey = dateStr(state.profile).replace(/-/g, '');
+      const filename = `${safePdfFileName(state.profile.name || '个人命盘')}-${profileKey}-紫微命盘深度报告.pdf`;
       await html2pdf().set({
         filename,
         margin: [8, 8, 8, 8],
@@ -1684,9 +1727,11 @@
         pagebreak: { mode: ['css', 'legacy'], avoid: ['article', '.mbp-pdf-section', '.mbp-report-row'] },
       }).from(report).save();
       setDecodeStatus('PDF 已开始下载。');
+      setPdfHint('已生成客户版 PDF，可重新打包', 'ready');
     } catch (error) {
       console.error(error);
       setDecodeStatus('PDF 打包失败，请刷新后重试。');
+      setPdfHint('PDF 打包失败，请检查网络后重试', 'error');
     } finally {
       host.remove();
       if (btn) {
