@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>阅天 · 紫微命书长页新版</title>
   <link rel="icon" href="../images/logo-mark.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../css/mingbook-onepage.css?v=20260513r">
+  <link rel="stylesheet" href="../css/mingbook-onepage.css?v=20260513s">
   <script src="../js/config.js?v=20260509-vercel-backend"></script>
   <script defer src="../js/cities.js"></script>
   <script defer src="../js/lunarCalendar.js"></script>
@@ -19,7 +19,7 @@
   <script defer src="../src/ziping/validator.js"></script>
   <script defer src="../src/ziping/runtime.js"></script>
   <script defer src="../js/ai-piming.js?v=20260508-backend-base"></script>
-  <script defer src="../js/mingbook-onepage.js?v=20260513r"></script>
+  <script defer src="../js/mingbook-onepage.js?v=20260513s"></script>
 </head>
 <body>
   <header class="mbp-nav">
@@ -269,6 +269,36 @@
 
             <div class="fc-guaci-card" id="mbpFcGuaciCard" style="display:none">
               <p class="fc-guaci-text" id="mbpFcGuaciText"></p>
+            </div>
+
+            <div class="fc-ziping-footer" id="mbpZipingFooter">
+              <div class="fc-ziping-head">
+                <span>子平法</span>
+                <strong>四柱补充</strong>
+              </div>
+              <div class="fc-ziping-pillars">
+                <div class="fc-ziping-pillar">
+                  <small>年柱</small>
+                  <b id="mbpZipingYear">—</b>
+                  <span>根基</span>
+                </div>
+                <div class="fc-ziping-pillar">
+                  <small>月柱</small>
+                  <b id="mbpZipingMonth">—</b>
+                  <span>节令</span>
+                </div>
+                <div class="fc-ziping-pillar is-main">
+                  <small>日柱</small>
+                  <b id="mbpZipingDay">—</b>
+                  <span>日主</span>
+                </div>
+                <div class="fc-ziping-pillar">
+                  <small>时柱</small>
+                  <b id="mbpZipingHour">—</b>
+                  <span>后势</span>
+                </div>
+              </div>
+              <p class="fc-ziping-note" id="mbpZipingNote">排盘后显示子平法四柱摘要。</p>
             </div>
           </div>
         </div>

@@ -5,6 +5,8 @@
   const html2PdfUrl = 'https://cdn.jsdelivr.net/npm/html2pdf.js@0.10.1/dist/html2pdf.bundle.min.js';
   const palaceOrder = ['巳', '午', '未', '申', '辰', null, null, '酉', '卯', null, null, '戌', '寅', '丑', '子', '亥'];
   const shichenNames = ['子', '丑', '寅', '卯', '辰', '巳', '午', '未', '申', '酉', '戌', '亥'];
+  const stemElements = { 甲: '木', 乙: '木', 丙: '火', 丁: '火', 戊: '土', 己: '土', 庚: '金', 辛: '金', 壬: '水', 癸: '水' };
+  const branchSeasons = { 寅: '春木', 卯: '春木', 辰: '季春土', 巳: '夏火', 午: '夏火', 未: '季夏土', 申: '秋金', 酉: '秋金', 戌: '季秋土', 亥: '冬水', 子: '冬水', 丑: '季冬土' };
   const fcBranchId = {
     巳: 'mbp-fc-si',
     午: 'mbp-fc-wu',
@@ -1017,6 +1019,7 @@
     $('#mbpFcHoutian').textContent = '—';
     $('#mbpFcLiunian').textContent = '—';
     fcRenderHexagram(null);
+    renderZipingFooter(null);
   }
 
   function fcRenderHighlight(activeBranch) {
@@ -1097,6 +1100,39 @@
     }
   }
 
+  function pillarText(stem, branch) {
+    return [stem, branch].filter(Boolean).join('') || '—';
+  }
+
+  function renderZipingFooter(pillars = fcBirthPillars) {
+    const ids = [
+      ['mbpZipingYear', 'yearStem', 'yearBranch'],
+      ['mbpZipingMonth', 'monthStem', 'monthBranch'],
+      ['mbpZipingDay', 'dayStem', 'dayBranch'],
+      ['mbpZipingHour', 'hourStem', 'hourBranch'],
+    ];
+    ids.forEach(([id, stemKey, branchKey]) => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = pillars ? pillarText(pillars[stemKey], pillars[branchKey]) : '—';
+    });
+
+    const note = $('#mbpZipingNote');
+    if (!note) return;
+    if (!pillars) {
+      note.textContent = '排盘后显示子平法四柱摘要。';
+      return;
+    }
+
+    const dayStem = pillars.dayStem || '—';
+    const dayElement = stemElements[dayStem] ? `属${stemElements[dayStem]}` : '';
+    const monthBranch = pillars.monthBranch || '—';
+    const season = branchSeasons[monthBranch] || '节令';
+    const guaNames = [fcXiantianResult?.name, fcHoutianResult?.name, fcLiunianResult?.name]
+      .filter(Boolean)
+      .join('、');
+    note.textContent = `日主${dayStem}${dayElement}，月令${monthBranch}为${season}。这里先把年、月、日、时拆开，后续可与${guaNames || '先后天卦和流年卦'}一起看根气、格局与当下应期。`;
+  }
+
   function fcSelectYear(age) {
     fcActiveAge = fcClampAge(age);
     fcLoadYearly(fcAgeToYear(fcActiveAge));
@@ -1104,6 +1140,7 @@
     $('#mbpFcLiunian').textContent = `${fcActiveAge}岁 · ${fcLiunianResult?.name || '—'}`;
     fcRenderLiunianScroll();
     if (fcActiveTab === '流年卦') fcRenderHexagram();
+    renderZipingFooter();
     fcRenderHighlight(fcActiveBranch || fcCurrentChart?.earthlyBranchOfSoulPalace || '卯');
   }
 
@@ -1169,6 +1206,7 @@
     fcRenderTabs();
     fcRenderLiunianScroll();
     fcRenderHexagram();
+    renderZipingFooter(fcBirthPillars);
     fcRenderHighlight(fcActiveBranch);
   }
 
@@ -2239,6 +2277,7 @@
         fcRenderTabs();
         if (fcActiveTab === '流年卦') fcRenderLiunianScroll();
         fcRenderHexagram();
+        renderZipingFooter();
         fcRenderHighlight(fcActiveBranch || fcCurrentChart?.earthlyBranchOfSoulPalace || '卯');
       });
     });
