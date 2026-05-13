@@ -63,22 +63,23 @@ const convertedScreens = [
 const convertedByNo = new Map(convertedScreens.map((screen) => [screen.no, screen]));
 
 const screenFlowHotspots = {
+  1: [[286, 58, 86, 44, "screen-26"], [36, 292, 300, 52, "screen-4"], [48, 435, 154, 220, "screen-2"], [215, 435, 154, 220, "screen-3"], [18, 695, 354, 58, "screen-10"], [18, 763, 354, 58, "screen-13"], [2, 784, 76, 72, "screen-1"], [80, 784, 76, 72, "screen-25"], [158, 784, 76, 72, "screen-3"], [236, 784, 76, 72, "screen-13"], [314, 784, 76, 72, "screen-31"]],
   2: [[18, 282, 354, 190, "screen-4"], [18, 487, 354, 190, "screen-4"], [18, 692, 354, 175, "screen-4"]],
-  3: [[285, 128, 82, 28, "screen-5"], [16, 164, 358, 84, "screen-5"], [16, 305, 358, 116, "screen-4"], [16, 437, 358, 116, "screen-4"], [16, 570, 358, 160, "screen-4"], [16, 752, 358, 116, "screen-10"], [2, 928, 76, 72, "screen-2"], [80, 928, 76, 72, "screen-25"], [158, 928, 76, 72, "screen-3"], [236, 928, 76, 72, "screen-13"], [314, 928, 76, 72, "screen-31"]],
+  3: [[285, 128, 82, 28, "screen-5"], [16, 164, 358, 84, "screen-5"], [16, 305, 358, 116, "screen-4"], [16, 437, 358, 116, "screen-4"], [16, 570, 358, 160, "screen-4"], [16, 752, 358, 116, "screen-10"], [2, 928, 76, 72, "screen-1"], [80, 928, 76, 72, "screen-25"], [158, 928, 76, 72, "screen-3"], [236, 928, 76, 72, "screen-13"], [314, 928, 76, 72, "screen-31"]],
   4: [[18, 44, 48, 48, "screen-3"], [276, 44, 96, 48, "screen-9"], [300, 104, 58, 34, "screen-5"], [20, 704, 82, 34, "screen-6"], [114, 704, 88, 34, "screen-6"], [16, 755, 358, 48, "screen-6"]],
   5: [[320, 116, 48, 48, "screen-4"], [34, 235, 322, 72, "screen-6"], [34, 318, 322, 72, "screen-6"], [48, 748, 294, 52, "screen-6"]],
   6: [[18, 44, 48, 48, "screen-4"], [88, 600, 220, 76, "screen-7"]],
   7: [[18, 44, 48, 48, "screen-4"], [54, 280, 282, 168, "screen-8"]],
   8: [[18, 44, 48, 48, "screen-7"]],
   9: [[18, 44, 48, 48, "screen-4"], [278, 44, 84, 48, "screen-4"], [20, 118, 350, 72, "screen-7"], [20, 198, 350, 72, "screen-7"], [20, 278, 350, 72, "screen-7"]],
-  10: [[18, 44, 48, 48, "screen-2"], [24, 165, 342, 90, "screen-11"], [24, 270, 342, 90, "screen-11"], [24, 375, 342, 90, "screen-11"]],
+  10: [[18, 44, 48, 48, "screen-1"], [24, 165, 342, 90, "screen-11"], [24, 270, 342, 90, "screen-11"], [24, 375, 342, 90, "screen-11"]],
   11: [[18, 44, 48, 48, "screen-10"], [20, 120, 350, 88, "screen-12"], [20, 220, 350, 88, "screen-12"], [42, 742, 306, 56, "screen-12"], [220, 708, 108, 44, "screen-12"]],
   12: [[18, 44, 48, 48, "screen-4"], [22, 150, 346, 72, "screen-4"], [116, 690, 158, 54, "screen-4"]],
-  13: [[18, 44, 48, 48, "screen-2"], [82, 620, 226, 70, "screen-14"]],
+  13: [[18, 44, 48, 48, "screen-1"], [82, 620, 226, 70, "screen-14"]],
   14: [[65, 570, 260, 90, "screen-15"]],
   15: [[18, 44, 48, 48, "screen-13"], [43, 615, 304, 58, "screen-16"]],
   16: [[18, 44, 48, 48, "screen-15"], [162, 1210, 66, 44, "screen-4"]],
-  17: [[18, 44, 48, 48, "screen-2"], [70, 610, 250, 72, "screen-18"]],
+  17: [[18, 44, 48, 48, "screen-1"], [70, 610, 250, 72, "screen-18"]],
   18: [[18, 44, 48, 48, "screen-17"], [70, 610, 250, 72, "screen-19"]],
   19: [[18, 44, 48, 48, "screen-18"], [70, 610, 250, 72, "screen-20"]],
   20: [[18, 44, 48, 48, "screen-19"], [42, 742, 306, 56, "screen-21"]],
@@ -86,13 +87,13 @@ const screenFlowHotspots = {
   22: [[18, 44, 48, 48, "screen-31"], [250, 44, 112, 48, "screen-23"], [42, 735, 306, 62, "screen-24"]],
   23: [[18, 44, 48, 48, "screen-22"], [50, 680, 290, 58, "screen-22"]],
   24: [[18, 44, 48, 48, "screen-22"]],
-  25: [[302, 54, 70, 46, "screen-26"], [18, 129, 354, 95, "screen-27"], [18, 247, 354, 95, "screen-27"], [2, 784, 76, 72, "screen-2"], [80, 784, 76, 72, "screen-25"], [158, 784, 76, 72, "screen-3"], [236, 784, 76, 72, "screen-13"], [314, 784, 76, 72, "screen-31"]],
+  25: [[302, 54, 70, 46, "screen-26"], [18, 129, 354, 95, "screen-27"], [18, 247, 354, 95, "screen-27"], [2, 784, 76, 72, "screen-1"], [80, 784, 76, 72, "screen-25"], [158, 784, 76, 72, "screen-3"], [236, 784, 76, 72, "screen-13"], [314, 784, 76, 72, "screen-31"]],
   26: [[18, 44, 48, 48, "screen-3"], [42, 742, 306, 56, "screen-27"]],
   27: [[18, 44, 48, 48, "screen-26"], [42, 742, 306, 56, "screen-33"]],
   28: [[18, 44, 48, 48, "screen-31"], [42, 735, 306, 58, "screen-29"]],
   29: [[18, 44, 48, 48, "screen-31"], [22, 178, 346, 70, "screen-30"], [22, 257, 346, 70, "screen-30"], [22, 336, 346, 70, "screen-30"], [34, 738, 322, 58, "screen-30"]],
   30: [[18, 44, 48, 48, "screen-29"], [42, 735, 306, 58, "screen-31"]],
-  31: [[336, 54, 42, 42, "screen-38"], [16, 126, 358, 96, "screen-38"], [16, 240, 111, 75, "screen-29"], [139, 240, 111, 75, "screen-28"], [262, 240, 111, 75, "screen-9"], [16, 330, 174, 60, "screen-33"], [200, 330, 174, 60, "screen-29"], [16, 400, 174, 60, "screen-27"], [200, 400, 174, 60, "screen-30"], [16, 491, 358, 61, "screen-22"], [16, 552, 358, 61, "screen-28"], [16, 629, 358, 61, "screen-37"], [16, 690, 358, 61, "screen-34"], [16, 767, 358, 61, "screen-35"], [2, 762, 76, 72, "screen-2"], [80, 762, 76, 72, "screen-25"], [158, 762, 76, 72, "screen-3"], [236, 762, 76, 72, "screen-13"], [314, 762, 76, 72, "screen-31"]],
+  31: [[336, 54, 42, 42, "screen-38"], [16, 126, 358, 96, "screen-38"], [16, 240, 111, 75, "screen-29"], [139, 240, 111, 75, "screen-28"], [262, 240, 111, 75, "screen-9"], [16, 330, 174, 60, "screen-33"], [200, 330, 174, 60, "screen-29"], [16, 400, 174, 60, "screen-27"], [200, 400, 174, 60, "screen-30"], [16, 491, 358, 61, "screen-22"], [16, 552, 358, 61, "screen-28"], [16, 629, 358, 61, "screen-37"], [16, 690, 358, 61, "screen-34"], [16, 767, 358, 61, "screen-35"], [2, 762, 76, 72, "screen-1"], [80, 762, 76, 72, "screen-25"], [158, 762, 76, 72, "screen-3"], [236, 762, 76, 72, "screen-13"], [314, 762, 76, 72, "screen-31"]],
   32: [[18, 44, 48, 48, "screen-31"], [20, 94, 350, 56, "screen-39"], [20, 164, 350, 56, "screen-33"], [20, 236, 350, 56, "screen-40"], [20, 306, 350, 56, "screen-41"], [20, 376, 350, 56, "screen-37"], [20, 452, 350, 56, "screen-34"], [20, 520, 350, 56, "screen-35"], [20, 590, 350, 56, "screen-36"]],
   33: [[18, 44, 48, 48, "screen-31"], [42, 735, 306, 58, "screen-29"]],
   34: [[18, 44, 48, 48, "screen-31"], [42, 735, 306, 58, "screen-22"]],
@@ -119,9 +120,9 @@ const routes = {
 };
 
 const routeAliases = {
-  "": "screen-2",
-  home: "screen-2",
-  index: "screen-2",
+  "": "screen-1",
+  home: "screen-1",
+  index: "screen-1",
   mall: "screen-2",
   shop: "screen-2",
   store: "screen-2",
@@ -158,7 +159,7 @@ const routeAliases = {
 };
 
 const state = {
-  route: "screen-2",
+  route: "screen-1",
   stack: []
 };
 
@@ -250,7 +251,7 @@ function convertedHeader(screen) {
 function convertedBottomNav(active) {
   if (!active) return "";
   const items = [
-    ["screen-2", "首页", 24, 16, 12],
+    ["screen-1", "首页", 24, 16, 12],
     ["screen-25", "档案", 98, 90, 88],
     ["screen-3", "问天AI", 172, 164, 164],
     ["screen-13", "藏宝阁", 246, 238, 240],
@@ -386,7 +387,7 @@ function sourceHomeScreen(screen) {
 
 function sourceAppBottomNav(active, y = 778) {
   const items = [
-    ["首页", "◒", 39, "screen-2"],
+    ["首页", "◒", 39, "screen-1"],
     ["档案", "▢", 117, "screen-25"],
     ["问天AI", "◐", 195, "screen-3"],
     ["藏宝阁", "♧", 273, "screen-13"],
@@ -637,6 +638,63 @@ function convertedSpecial(screen) {
   return convertedCards(screen);
 }
 
+function sourceDashboardHomeScreen() {
+  return `
+    ${figBox("source-1-bg", 0, 0, 390, 867, "", "background:linear-gradient(180deg,#fffdf8 0%,#fbf6ee 58%,#faf5ed 100%);")}
+    ${figBox("source-1-avatar", 18, 38, 54, 54, "", "border-radius:27px;background:#f4ead8;box-shadow:0 5px 16px rgba(188,142,59,.12);")}
+    ${figText("source-1-avatar-icon", "●", 34, 49, 22, 22, "#c58d25", 700, "center")}
+    ${figText("source-1-greet", "谢广周，安好", 82, 38, 190, 27, "#25221f", 800)}
+    ${figText("source-1-date", "2026年三月廿七", 82, 75, 190, 20, "#8d877e", 500)}
+    ${figText("source-1-stone", "灵石 83", 278, 33, 82, 14, "#f6f0e7", 700, "right")}
+    ${figBox("source-1-chart-pill", 286, 70, 86, 40, "", "border-radius:22px;background:#f3eadc;box-shadow:0 8px 18px rgba(190,142,45,.12);")}
+    ${figText("source-1-chart-text", "✦ 排盘", 298, 80, 62, 18, "#bd8624", 800, "center")}
+
+    ${figBox("source-1-mood-card", 18, 128, 354, 220, "converted-card", "border-radius:18px;box-shadow:0 10px 25px rgba(70,45,25,.12);")}
+    ${figText("source-1-mood-label", "今日心情", 42, 174, 120, 22, "#26211c", 700)}
+    ${figText("source-1-mood-score", "73", 134, 162, 72, 52, "#26211c", 800)}
+    ${figText("source-1-mood-unit", "分", 202, 187, 26, 16, "#26211c", 700)}
+    ${figText("source-1-mood-copy", "灵感迸发的一天，\n无论是吸收新知…", 42, 220, 150, 18, "#9a938a", 500, "left", "line-height:1.45;")}
+    ${[["爱情", 62, 238, "#ed7385"], ["财富", 48, 268, "#c58a2c"], ["事业", 78, 298, "#4e9b93"], ["学习", 78, 328, "#4f82a4"], ["人际", 75, 358, "#9e698c"]].map(([label, score, x, color]) => `
+      ${figBox(`source-1-meter-bg-${label}`, x, 160, 10, 68, "", "border-radius:8px;background:#f2efea;")}
+      ${figBox(`source-1-meter-${label}`, x, 188 - Number(score) * 0.38, 10, Number(score) * 0.38, "", `border-radius:8px;background:${color};`)}
+      ${figText(`source-1-meter-score-${label}`, score, x - 10, 236, 30, 20, "#26211c", 700, "center")}
+      ${figText(`source-1-meter-label-${label}`, label, x - 14, 264, 38, 11, "#928b83", 500, "center")}
+    `).join("")}
+    ${figBox("source-1-ask", 36, 292, 300, 52, "", "border:1px solid #eadfce;border-radius:26px;background:#fff;")}
+    ${figText("source-1-ask-icon", "⌘", 52, 305, 28, 20, "#b98729", 700, "center")}
+    ${figText("source-1-ask-text", "今日运势如何？事业感情有何指引？", 86, 304, 188, 17, "#8f887f", 500)}
+    ${figBox("source-1-ask-send", 292, 298, 40, 40, "", "border-radius:20px;background:#c08a2c;")}
+    ${figText("source-1-ask-arrow", "↑", 300, 303, 24, 24, "#fff", 800, "center")}
+
+    ${figText("source-1-recommend-title", "为你推荐", 18, 382, 160, 28, "#25221f", 800)}
+    ${figText("source-1-more", "更多〉", 306, 388, 62, 18, "#9a938a", 500, "right")}
+    ${figBox("source-1-master-1", 18, 435, 168, 220, "converted-card", "border-radius:18px;overflow:hidden;box-shadow:0 10px 24px rgba(70,45,25,.14);")}
+    ${figImage("source-1-master-img-1", "../images/wentian-prototype-assets/03-master-1.jpg", 18, 435, 168, 122, "border-radius:18px 18px 0 0;")}
+    ${figText("source-1-master-name-1", "瞎子阿炳", 36, 570, 132, 27, "#25221f", 800)}
+    ${figBox("source-1-chip-1a", 36, 614, 64, 28, "", "border-radius:14px;background:#f8f3ea;border:1px solid #efe4d2;")}
+    ${figText("source-1-chip-1a-text", "八字解析", 42, 621, 52, 12, "#b2822e", 700, "center")}
+    ${figBox("source-1-chip-1b", 106, 614, 64, 28, "", "border-radius:14px;background:#f8f3ea;border:1px solid #efe4d2;")}
+    ${figText("source-1-chip-1b-text", "流年趋势", 112, 621, 52, 12, "#b2822e", 700, "center")}
+    ${figBox("source-1-master-2", 202, 435, 168, 220, "converted-card", "border-radius:18px;overflow:hidden;box-shadow:0 10px 24px rgba(70,45,25,.14);")}
+    ${figImage("source-1-master-img-2", "../images/wentian-prototype-assets/03-master-2.jpg", 202, 435, 168, 122, "border-radius:18px 18px 0 0;")}
+    ${figText("source-1-master-name-2", "紫微瑞神", 220, 570, 132, 27, "#25221f", 800)}
+    ${figBox("source-1-chip-2a", 220, 614, 64, 28, "", "border-radius:14px;background:#f8f3ea;border:1px solid #efe4d2;")}
+    ${figText("source-1-chip-2a-text", "紫微解盘", 226, 621, 52, 12, "#b2822e", 700, "center")}
+    ${figBox("source-1-chip-2b", 290, 614, 64, 28, "", "border-radius:14px;background:#f8f3ea;border:1px solid #efe4d2;")}
+    ${figText("source-1-chip-2b-text", "命宫分析", 296, 621, 52, 12, "#b2822e", 700, "center")}
+
+    ${figText("source-1-more-title", "更多功能", 18, 682, 150, 28, "#25221f", 800)}
+    ${[["合盘分析", "命理相合，缘分几许", "screen-10", 728], ["黄大仙灵签", "求签问卦，指引方向", "screen-13", 792]].map(([title, sub, route, y], index) => `
+      ${figBox(`source-1-feature-${index}`, 18, y, 354, 58, "converted-card", "border-radius:16px;box-shadow:0 7px 18px rgba(70,45,25,.1);")}
+      ${figText(`source-1-feature-title-${index}`, title, 44, y + 12, 180, 21, "#25221f", 800)}
+      ${figText(`source-1-feature-sub-${index}`, sub, 44, y + 36, 200, 13, "#969087", 500)}
+      ${figText(`source-1-feature-icon-${index}`, index === 0 ? "合" : "签", 314, y + 17, 36, 22, "#c08a2c", 800, "center")}
+      ${figButton(`source-1-feature-hit-${index}`, 18, y, 354, 58, `data-route="${route}"`)}
+    `).join("")}
+    ${sourceAppBottomNav("首页", 778)}
+  `;
+}
+
 function convertedButton(screen) {
   if (!screen.button) return "";
   const [label, route] = screen.button;
@@ -654,7 +712,13 @@ function convertedFlowHotspots(screen) {
 }
 
 function renderConvertedScreen(no) {
-  const screen = convertedByNo.get(no) || convertedByNo.get(2);
+  const screen = convertedByNo.get(no) || convertedByNo.get(1);
+  if (screen.no === 1) {
+    return figPhone(`screen-${screen.no}`, `${String(screen.no).padStart(2, "0")} 首页`, `
+      ${sourceDashboardHomeScreen()}
+      ${convertedFlowHotspots(screen)}
+    `, 867, "converted source-screen", true);
+  }
   if (screen.no === 2) {
     return figPhone(`screen-${screen.no}`, `${String(screen.no).padStart(2, "0")} ${screen.title}`, `
       ${sourceHomeScreen(screen)}
@@ -707,7 +771,7 @@ function normalizeRoute(route) {
 
 function resolveRoute(route) {
   const clean = normalizeRoute(route).replace(/^#/, "");
-  return routeAliases[clean] || clean || "screen-2";
+  return routeAliases[clean] || clean || "screen-1";
 }
 
 function routeFromLocation() {
@@ -715,7 +779,7 @@ function routeFromLocation() {
   if (hashRoute && !hashRoute.startsWith("figmacapture=")) return resolveRoute(hashRoute);
   const screen = new URLSearchParams(location.search).get("screen");
   if (screen) return resolveRoute(screen.startsWith("screen") ? screen : `screen-${screen}`);
-  return "screen-2";
+  return "screen-1";
 }
 
 function stripScreenshotStatusBar() {
@@ -762,7 +826,7 @@ function navigate(route, push = true) {
     window.scrollTo(0, 0);
     return;
   }
-  navigate("screen-2", push);
+  navigate("screen-1", push);
 }
 
 function syncActive() {
@@ -771,14 +835,14 @@ function syncActive() {
     recharge: "screen-31",
     settings: "screen-31",
     pay: "screen-31",
-    report: "screen-2",
+    report: "screen-1",
     chart: "screen-3"
   }[state.route] || state.route;
   if (screenNo >= 4 && screenNo <= 9 || screenNo === 12) railRoute = "screen-4";
   if (screenNo === 3 || screenNo >= 25 && screenNo <= 27) railRoute = "screen-3";
   if (screenNo >= 13 && screenNo <= 24) railRoute = "screen-13";
   if (screenNo >= 28 && screenNo <= 41) railRoute = "screen-31";
-  if (screenNo === 1 || screenNo === 2 || screenNo === 10 || screenNo === 11) railRoute = "screen-2";
+  if (screenNo === 1 || screenNo === 2 || screenNo === 10 || screenNo === 11) railRoute = "screen-1";
   for (const button of document.querySelectorAll("[data-route]")) {
     if (button.closest(".rail-nav")) {
       button.classList.toggle("is-active", button.dataset.route === railRoute);
