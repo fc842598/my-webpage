@@ -65,7 +65,7 @@ const convertedByNo = new Map(convertedScreens.map((screen) => [screen.no, scree
 const screenFlowHotspots = {
   1: [[286, 24, 86, 52, "screen-26"], [48, 249, 295, 45, "screen-4"], [18, 342, 318, 157, "screen-2"], [18, 580, 170, 274, "screen-4"], [202, 580, 170, 274, "screen-3"], [18, 875, 354, 96, "screen-10"], [18, 984, 354, 96, "screen-13"], [18, 1093, 354, 96, "screen-17"], [18, 1202, 354, 96, "screen-23"], [18, 1378, 354, 104, "screen-22"], [18, 1502, 354, 104, "screen-23"], [2, 1638, 76, 83, "screen-1"], [80, 1638, 76, 83, "screen-25"], [158, 1638, 76, 83, "screen-3"], [236, 1638, 76, 83, "screen-13"], [314, 1638, 76, 83, "screen-31"]],
   2: [[18, 282, 354, 190, "screen-4"], [18, 487, 354, 190, "screen-4"], [18, 692, 354, 175, "screen-4"]],
-  3: [[285, 128, 82, 28, "screen-5"], [16, 164, 358, 84, "screen-5"], [16, 305, 358, 116, "screen-4"], [16, 437, 358, 116, "screen-4"], [16, 570, 358, 160, "screen-4"], [16, 752, 358, 116, "screen-10"], [2, 928, 76, 72, "screen-1"], [80, 928, 76, 72, "screen-25"], [158, 928, 76, 72, "screen-3"], [236, 928, 76, 72, "screen-13"], [314, 928, 76, 72, "screen-31"]],
+  3: [[285, 128, 82, 28, "screen-5"], [16, 164, 358, 84, "screen-5"], [16, 305, 358, 116, "screen-4"], [2, 761, 76, 72, "screen-1"], [80, 761, 76, 72, "screen-25"], [158, 761, 76, 72, "screen-3"], [236, 761, 76, 72, "screen-13"], [314, 761, 76, 72, "screen-31"]],
   4: [[18, 44, 48, 48, "screen-3"], [276, 44, 96, 48, "screen-9"], [300, 104, 58, 34, "screen-5"]],
   5: [[320, 116, 48, 48, "screen-4"], [34, 235, 322, 72, "screen-6"], [34, 318, 322, 72, "screen-6"], [48, 748, 294, 52, "screen-6"]],
   6: [[18, 44, 48, 48, "screen-4"], [88, 600, 220, 76, "screen-7"]],
@@ -409,45 +409,41 @@ function sourceAppBottomNav(active, y = 778) {
 }
 
 function sourceArchiveScreen(screen) {
+  const activeArchive = getCurrentWentianArchive();
+  const active = getWentianArchiveDisplay(activeArchive);
   const masters = [
-    ["瞎子阿炳", "八字解析", "流年趋势", "", "擅长八字全盘综合分析", 305, "#6b543e", "炳", ""],
-    ["紫微瑞神", "紫微解盘", "命宫分析", "", "擅长紫微斗数全盘综合分析", 437, "#4d2d28", "紫", ""],
-    ["陈主任(仅供娱乐)", "先天体质分析", "四时养生推导", "", "运用五运六气破译体质密码，提供节气\n健康与养生建议", 570, "#8d8a82", "陈", "VIP"],
-    ["情侣合盘", "合婚深度解析", "情感契合度", "冲突化解建议", "深度拆解两人缘分羁绊与长久相处逻辑", 752, "#803720", "合", ""]
+    ["许半仙", "紫微命盘", "AI解析", "", "已接入您的紫微命盘，可直接开启对话", 305]
   ];
   return `
     ${figText("source-3-time", "15:17", 18, 16, 70, 14, "#26211c")}
     ${figText("source-3-status", "◉  0.00  5G  ▮ 31 ⚡", 250, 14, 120, 10, "#26211c", 700, "right")}
     ${figText("source-3-title", "问天AI", 18, 62, 160, 29, "#26211c", 800)}
-    ${figText("source-3-subtitle", "选择一位AI命理师开启对话", 18, 101, 220, 13, "#7f756b")}
+    ${figText("source-3-subtitle", "许半仙已准备好为您解读", 18, 101, 220, 13, "#7f756b")}
     ${figText("source-3-current-title", "当前档案", 18, 136, 120, 15, "#26211c", 800)}
     ${figText("source-3-change", "更换档案 〉", 284, 138, 88, 12, "#9b742e", 500, "right")}
     ${figBox("source-3-profile", 16, 164, 358, 84, "converted-card", "border-radius:12px;box-shadow:0 6px 18px rgba(90,62,34,.09);")}
     ${figImage("source-3-profile-avatar", "../images/wentian-prototype-assets/03-profile.jpg", 38, 182, 48, 48, "border-radius:24px;border:1px solid #e4d2a7;")}
-    ${figText("source-3-profile-name", "谢", 102, 189, 28, 16, "#26211c", 800)}
+    ${figText("source-3-profile-name", escapeHtml(active.name), 102, 189, 62, 16, "#26211c", 800)}
     ${figBox("source-3-gender", 128, 186, 30, 18, "", "border-radius:9px;background:#f7ecd5;")}
-    ${figText("source-3-gender-text", "男", 128, 190, 30, 10, "#b07a2d", 700, "center")}
+    ${figText("source-3-gender-text", active.gender, 128, 190, 30, 10, "#b07a2d", 700, "center")}
     ${figBox("source-3-profile-tag", 164, 186, 62, 18, "", "border-radius:9px;background:#f7ecd5;")}
-    ${figText("source-3-profile-tag-text", "四柱八字", 164, 190, 62, 10, "#c3a371", 500, "center")}
-    ${figText("source-3-profile-date", "1991-02-16 22:58:00", 102, 215, 170, 12, "#8d8175")}
+    ${figText("source-3-profile-tag-text", "紫微命盘", 164, 190, 62, 10, "#c3a371", 500, "center")}
+    ${figText("source-3-profile-date", escapeHtml(active.datetime), 102, 215, 170, 12, "#8d8175")}
     ${figText("source-3-profile-switch", "⇅", 334, 199, 22, 22, "#b5ad9d", 500, "center")}
-    ${figText("source-3-master-title", "选择命理师", 18, 276, 160, 15, "#26211c", 800)}
-    ${masters.map(([name, tag1, tag2, tag3, desc, y, avatarColor, mark, vip], index) => `
-      ${figBox(`source-3-master-${index}`, 16, y, 358, index === 2 ? 160 : 116, "converted-card", "border-radius:17px;background:linear-gradient(110deg,#fff,#f8f4ea);box-shadow:0 7px 20px rgba(92,64,32,.11);")}
-      ${figImage(`source-3-master-avatar-${index}`, `../images/wentian-prototype-assets/03-master-${index + 1}.jpg`, 34, y + 20, 62, 62, "border-radius:31px;")}
-      ${figText(`source-3-master-name-${index}`, name, 112, y + 24, 194, 17, index === 2 ? "#8d8a82" : "#26211c", 800)}
-      ${vip ? figBox(`source-3-vip-${index}`, 322, y + 26, 34, 19, "", "border-radius:9px;background:#b5924b;") : ""}
-      ${vip ? figText(`source-3-vip-text-${index}`, vip, 322, y + 30, 34, 10, "#fff", 800, "center") : ""}
-      ${figBox(`source-3-pill-a-${index}`, 112, y + 54, index === 2 ? 82 : 58, 18, "", "border-radius:9px;background:#f7ecd8;")}
-      ${figText(`source-3-pill-a-text-${index}`, tag1, 112, y + 58, index === 2 ? 82 : 58, 10, "#b88c33", 600, "center")}
-      ${figBox(`source-3-pill-b-${index}`, index === 2 ? 204 : 178, y + 54, index === 2 ? 82 : 62, 18, "", "border-radius:9px;background:#f7ecd8;")}
-      ${figText(`source-3-pill-b-text-${index}`, tag2, index === 2 ? 204 : 178, y + 58, index === 2 ? 82 : 62, 10, "#b88c33", 600, "center")}
+    ${figText("source-3-master-title", "命理师", 18, 276, 160, 15, "#26211c", 800)}
+    ${masters.map(([name, tag1, tag2, tag3, desc, y], index) => `
+      ${figBox(`source-3-master-${index}`, 16, y, 358, 116, "converted-card", "border-radius:17px;background:linear-gradient(110deg,#fff,#f8f4ea);box-shadow:0 7px 20px rgba(92,64,32,.11);")}
+      ${figImage(`source-3-master-avatar-${index}`, "../images/wentian-prototype-assets/03-master-1.jpg", 34, y + 20, 62, 62, "border-radius:31px;")}
+      ${figText(`source-3-master-name-${index}`, name, 112, y + 24, 194, 17, "#26211c", 800)}
+      ${figBox(`source-3-pill-a-${index}`, 112, y + 54, 62, 18, "", "border-radius:9px;background:#f7ecd8;")}
+      ${figText(`source-3-pill-a-text-${index}`, tag1, 112, y + 58, 62, 10, "#b88c33", 600, "center")}
+      ${figBox(`source-3-pill-b-${index}`, 184, y + 54, 62, 18, "", "border-radius:9px;background:#f7ecd8;")}
+      ${figText(`source-3-pill-b-text-${index}`, tag2, 184, y + 58, 62, 10, "#b88c33", 600, "center")}
       ${tag3 ? figBox(`source-3-pill-c-${index}`, 252, y + 54, 82, 18, "", "border-radius:9px;background:#f7ecd8;") : ""}
       ${tag3 ? figText(`source-3-pill-c-text-${index}`, tag3, 252, y + 58, 82, 10, "#b88c33", 600, "center") : ""}
       ${figText(`source-3-master-desc-${index}`, desc, 112, y + 82, 232, 13, "#9a9086", 400, "left", "line-height:1.5;")}
-      ${index === 2 ? figText("source-3-vip-lock", "■ 需要VIP", 112, y + 132, 110, 12, "#c4932b", 700) : ""}
     `).join("")}
-    ${sourceAppBottomNav("问天AI", 922)}
+    ${sourceAppBottomNav("问天AI", 755)}
   `;
 }
 
@@ -2029,7 +2025,7 @@ function renderConvertedScreen(no) {
     return figPhone(`screen-${screen.no}`, `${String(screen.no).padStart(2, "0")} ${screen.title}`, `
       ${sourceArchiveScreen(screen)}
       ${convertedFlowHotspots(screen)}
-    `, 1011, "converted source-screen", false);
+    `, 844, "converted source-screen", true);
   }
   if (screen.no === 4) {
     return figPhone(`screen-${screen.no}`, `${String(screen.no).padStart(2, "0")} ${screen.title}`, `
