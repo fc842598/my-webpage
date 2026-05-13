@@ -606,6 +606,9 @@ const wentianXuChat = {
   loading: false,
 };
 
+let wentianFallbackChartRecordId = null;
+const WENTIAN_UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
 function getWentianApiBase() {
   const qs = new URLSearchParams(location.search);
   const queryBase = qs.get("aiBackendBase") || qs.get("pimingApiBase") || qs.get("apiBase") || "";
@@ -613,17 +616,43 @@ function getWentianApiBase() {
   return (queryBase || configBase || "https://ai-piming-backend.vercel.app").replace(/\/+$/, "");
 }
 
+function makeWentianUuid() {
+  if (window.crypto && typeof window.crypto.randomUUID === "function") {
+    return window.crypto.randomUUID();
+  }
+
+  const bytes = new Uint8Array(16);
+  if (window.crypto && typeof window.crypto.getRandomValues === "function") {
+    window.crypto.getRandomValues(bytes);
+  } else {
+    let seed = Date.now();
+    for (let i = 0; i < bytes.length; i += 1) {
+      seed = (seed * 1664525 + 1013904223) >>> 0;
+      bytes[i] = (seed + Math.floor(Math.random() * 256)) & 0xff;
+    }
+  }
+  bytes[6] = (bytes[6] & 0x0f) | 0x40;
+  bytes[8] = (bytes[8] & 0x3f) | 0x80;
+  const hex = Array.from(bytes, (b) => b.toString(16).padStart(2, "0")).join("");
+  return `${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(12, 16)}-${hex.slice(16, 20)}-${hex.slice(20)}`;
+}
+
+function isWentianUuid(id) {
+  return typeof id === "string" && WENTIAN_UUID_RE.test(id);
+}
+
 function getWentianChartRecordId() {
   const key = "wentian-xubanxian-chart-record-id";
   try {
     let id = localStorage.getItem(key);
-    if (!id) {
-      id = `wentian-app-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`;
+    if (!isWentianUuid(id)) {
+      id = makeWentianUuid();
       localStorage.setItem(key, id);
     }
     return id;
   } catch (_err) {
-    return "wentian-app-demo-chart";
+    if (!wentianFallbackChartRecordId) wentianFallbackChartRecordId = makeWentianUuid();
+    return wentianFallbackChartRecordId;
   }
 }
 
