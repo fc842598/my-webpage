@@ -2337,10 +2337,10 @@ select {
   width: 100%;
   min-height: 46px;
   display: grid;
-  grid-template-columns: 34px minmax(0, 1fr) 30px;
+  grid-template-columns: 28px minmax(0, 1fr);
   align-items: center;
-  gap: 10px;
-  padding: 0 10px;
+  gap: 8px;
+  padding: 0 8px;
   border: 0;
   background: transparent;
   color: inherit;
@@ -2357,21 +2357,21 @@ select {
 .mbp-book-menu b {
   color: var(--gold);
   font-family: "Noto Serif SC", "Songti SC", serif;
-  font-size: 18px;
+  font-size: 17px;
   line-height: 1;
 }
 
 .mbp-book-menu span {
-  overflow: hidden;
+  overflow: visible;
   color: inherit;
-  font-size: 17px;
+  font-size: 15px;
   font-weight: 900;
   white-space: nowrap;
-  text-overflow: ellipsis;
+  text-overflow: clip;
 }
 
 .mbp-book-menu i {
-  display: grid;
+  display: none;
   place-items: center;
   width: 28px;
   height: 28px;
@@ -2385,7 +2385,7 @@ select {
   visibility: hidden;
 }
 
-.mbp-book-cover button {
+.mbp-book-cover > button {
   width: 180px;
   height: 46px;
   margin: 4px auto 0;
@@ -2637,8 +2637,8 @@ select {
     gap: 18px;
   }
 
-  .is-decoded .mbp-book-cover button,
-  .mbp-book.is-generated .mbp-book-cover button {
+  .is-decoded .mbp-book-cover > button,
+  .mbp-book.is-generated .mbp-book-cover > button {
     width: 150px;
   }
 
