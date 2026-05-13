@@ -1253,7 +1253,7 @@
     return {
       specials: {
         body: {
-          title: body ? `身宫在${body.name}` : '身宫待查',
+          title: '身宫批命',
           body: `${body ? `身宫主星 ${palaceMainLabel(body)}。` : ''}${bodyProfile ? bodyProfile.trait : '身宫看后天行动方式，需结合命宫与三方四正。'}`
         },
         marriage: {
@@ -1277,7 +1277,7 @@
         ['命格总览', `命宫 ${palaceMainLabel(life)}。${lifeProfile ? lifeProfile.trait : '先天底色需要从命宫和三方四正合看。'}`],
         ['大限流年', `当前页面先接命盘主线，后续可把原版大限流年结论并入这里，形成十年节奏。`],
         ['人生曲线', `把关键年份做成曲线阅读，帮助用户看清高低点和转折位置。`],
-        ['五宫详解', `身宫、夫妻、疾厄、财帛、官禄五宫已在上方展开，适合作为深度报告主体。`],
+        ['专题批命', `身宫、婚姻、健康、财运、事业五项专题已在上方展开，适合作为深度报告主体。`],
         ['行动建议', `先看命盘底色，再看大运节奏；重要决策不只问准不准，还要知道何时动、如何动。`],
       ],
       subtitle: `${chart.fiveElementsClass || '五行局'} · 命宫${life?.earthlyBranch || '未见'} · 身宫${body?.earthlyBranch || '未见'}`,
@@ -1656,7 +1656,7 @@
       if (oldBody) oldBody.replaceWith(body);
       else card.appendChild(body);
     }
-    if (title) title.textContent = aiCardTitle(normalized, fallbackTitle);
+    if (title) title.textContent = fallbackTitle;
     if (body) {
       body.innerHTML = renderInsightBlock(normalized, fallbackTitle, '原站 AI 暂未返回内容，请稍后重试。', {
         summaryMax: 96,
@@ -1832,7 +1832,7 @@
           <li>命格总览</li>
           <li>大限流年</li>
           <li>人生曲线</li>
-          <li>五宫详解</li>
+          <li>专题批命</li>
           <li>行动建议</li>
         </ol>
       </header>
@@ -1941,9 +1941,11 @@
       .map(([key, title]) => {
         const data = normalizeAiData(state.aiResults[key]);
         if (!data) return null;
+        const generatedTitle = aiCardTitle(data, '');
+        const summary = insightSummary(data, '', 118);
         return {
-          title: aiCardTitle(data, title),
-          content: insightSummary(data, '', 118),
+          title,
+          content: generatedTitle && generatedTitle !== title ? `${generatedTitle}：${summary}` : summary,
         };
       })
       .filter((item) => item?.content);
@@ -1956,7 +1958,7 @@
       const highlights = [
         ['主线', overallText || '整体批命生成后显示'],
         ['走势', luckText || '大限流年生成后显示'],
-        ['专项', specialText || '五宫专项生成后显示'],
+        ['专题', specialText || '五项专题生成后显示'],
       ];
       decodeList.innerHTML = highlights.map((item) => `
         <p><strong>${escapeHtml(item[0])}</strong>${escapeHtml(trimText(item[1], 48))}</p>
@@ -1966,7 +1968,7 @@
       [aiCardTitle(overall, '命格总览'), overallText || '整体批命等待原站 AI 返回。'],
       ['大限流年', luckText || '当前大限流年接口暂未返回，后续继续接原站大限模块。'],
       ['人生曲线', '人生曲线属于原站独立模块，下一步接入原站曲线评分与关键年份。'],
-      ['五宫详解', specialBriefText || '五宫专项等待原站 AI 返回。', specialBriefSections],
+      ['专题批命', specialBriefText || '五项专题等待原站 AI 返回。', specialBriefSections],
       ['行动建议', overallCard.risk ? `要留意：${overallCard.risk}` : '先看命盘底色，再看大运节奏；重要决策不只问准不准，还要知道何时动、如何动。'],
     ];
     const chapters = $('#mbpChapters');
@@ -2144,7 +2146,7 @@
     });
     const chapters = $('#mbpChapters');
     if (chapters) {
-      chapters.innerHTML = ['命格总览', '大限流年', '人生曲线', '五宫详解', '行动建议'].map((title, index) => `
+      chapters.innerHTML = ['命格总览', '大限流年', '人生曲线', '专题批命', '行动建议'].map((title, index) => `
         <article id="mbp-chapter-${index}" data-report-chapter="${index}"><span>卷${index + 1}</span><h3>${title}</h3><p>等待一键批命。</p></article>
       `).join('');
     }
@@ -2154,7 +2156,7 @@
     if (decodeList) {
       decodeList.innerHTML = `
         <p>整体批命先给主线</p>
-        <p>五大专项直接出结论</p>
+        <p>五项专题直接出结论</p>
         <p>命书卷轴沉浸阅读</p>
         <p>深度报告可继续追问</p>
       `;
