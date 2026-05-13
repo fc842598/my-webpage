@@ -410,6 +410,7 @@ button { cursor: pointer; }
 .fig-text,
 .fig-box,
 .fig-line,
+.fig-img,
 .fig-click {
   position: absolute;
 }
@@ -427,6 +428,11 @@ button { cursor: pointer; }
   color: inherit;
   text-align: inherit;
   background: transparent;
+}
+
+.fig-img {
+  display: block;
+  object-fit: cover;
 }
 
 .fig-card {

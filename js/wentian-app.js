@@ -63,8 +63,8 @@ const convertedScreens = [
 const convertedByNo = new Map(convertedScreens.map((screen) => [screen.no, screen]));
 
 const screenFlowHotspots = {
-  2: [[24, 120, 342, 104, "screen-4"], [24, 250, 342, 92, "screen-4"], [24, 368, 342, 92, "screen-4"], [24, 486, 342, 92, "screen-4"]],
-  3: [[18, 43, 48, 48, "screen-2"], [310, 43, 58, 48, "screen-5"], [20, 114, 350, 118, "screen-4"]],
+  2: [[18, 282, 354, 190, "screen-4"], [18, 487, 354, 190, "screen-4"], [18, 692, 354, 175, "screen-4"]],
+  3: [[285, 128, 82, 28, "screen-5"], [16, 164, 358, 84, "screen-5"], [16, 305, 358, 116, "screen-4"], [16, 437, 358, 116, "screen-4"], [16, 570, 358, 160, "screen-4"], [16, 752, 358, 116, "screen-10"], [2, 928, 76, 72, "screen-2"], [80, 928, 76, 72, "screen-25"], [158, 928, 76, 72, "screen-4"], [236, 928, 76, 72, "screen-13"], [314, 928, 76, 72, "screen-31"]],
   4: [[21, 96, 348, 78, "screen-9"], [32, 177, 326, 50, "screen-5"], [28, 274, 334, 62, "screen-6"], [28, 346, 334, 62, "screen-6"], [51, 750, 240, 50, "screen-6"]],
   5: [[320, 116, 48, 48, "screen-4"], [34, 235, 322, 72, "screen-6"], [34, 318, 322, 72, "screen-6"], [48, 748, 294, 52, "screen-6"]],
   6: [[18, 44, 48, 48, "screen-4"], [88, 600, 220, 76, "screen-7"]],
@@ -144,6 +144,10 @@ function figText(id, text, x, y, w, size, color, weight = 400, align = "left", e
 
 function figBox(id, x, y, w, h, className = "", style = "", attrs = "") {
   return `<div class="fig-box ${className}" data-node-id="${id}" ${attrs} style="left:${x}px;top:${y}px;width:${w}px;height:${h}px;${style}"></div>`;
+}
+
+function figImage(id, src, x, y, w, h, style = "") {
+  return `<img class="fig-img" data-node-id="${id}" src="${src}" alt="" style="left:${x}px;top:${y}px;width:${w}px;height:${h}px;${style}">`;
 }
 
 function figButton(id, x, y, w, h, attrs, className = "", style = "") {
@@ -311,6 +315,101 @@ function convertedModal(screen) {
   `;
 }
 
+function sourceHomeScreen(screen) {
+  const reports = [
+    ["生命健康预测报告(文字版持续更新)", "基于您的八字信息，系统将计算出横跨121年的生命能量曲线。预见人生的波峰与波谷，在关键节…", "¥99", "¥199.99", "980 灵石", 282],
+    ["2026丙午年预测报告", "全面八字分析，2026概览、太岁情况、事业发展、财富运势、爱情婚姻、健康关注、风水建议、每…", "¥50", "¥99", "500 灵石", 487],
+    ["八字与MBTI人格深度解析及运势全面预测", "融合八字命理学与MBTI四维模型。从五行能量场到潜意识决策模式，为您深度揭示性格底色、原生…", "¥58", "¥88", "580 灵石", 692]
+  ];
+  return `
+    ${figText("source-2-time", "15:16", 18, 16, 70, 14, "#26211c")}
+    ${figText("source-2-status", "◉  0.00  5G  ▮ 31 ⚡", 250, 14, 120, 10, "#26211c", 700, "right")}
+    ${figText("source-2-back", "‹", 28, 56, 28, 28, "#c6a763", 400)}
+    ${figText("source-2-title", "命理报告", 62, 61, 266, 18, "#c6a763", 700, "center")}
+    ${figBox("source-2-hero", 18, 98, 354, 166, "", "border-radius:13px;background:linear-gradient(135deg,#b64c47,#8d302a);box-shadow:0 9px 22px rgba(161,56,36,.18);")}
+    ${figText("source-2-hero-title", "你的专属命理报告，立即生成", 36, 119, 320, 22, "#fff", 800)}
+    ${figText("source-2-hero-sub", "解锁AI专属命理报告，快速获得可执行建议", 36, 153, 304, 14, "rgba(255,255,255,.9)")}
+    ${figText("source-2-hero-lines", "· 覆盖事业、情感、财富等核心场景\\n· 结合命盘结构输出高价值行动建议\\n· 下单后自动生成，可在我的报告持续复盘", 36, 184, 312, 13, "#fff", 500, "left", "line-height:1.75;")}
+    ${reports.map(([title, desc, price, oldPrice, stones, y], index) => `
+      ${figBox(`source-2-report-${index}`, 18, y, 354, index === 2 ? 184 : 190, "converted-card", "border-radius:12px;box-shadow:0 8px 20px rgba(70,45,25,.12);")}
+      ${figBox(`source-2-tag-${index}`, 36, y + 22, 44, 28, "", "border-radius:14px;background:#fff4ec;")}
+      ${figText(`source-2-tag-text-${index}`, "八字", 44, y + 29, 28, 11, "#9a6b33", 700, "center")}
+      ${figText(`source-2-price-${index}`, price, 285, y + 20, 60, 26, "#8d251d", 800, "right")}
+      ${figText(`source-2-card-title-${index}`, title, 36, y + 60, index === 2 ? 322 : 300, index === 2 ? 15 : 17, "#26211c", 800, "left", index === 2 ? "white-space:nowrap;" : "")}
+      ${figText(`source-2-card-desc-${index}`, desc, 36, y + 92, 300, 13, "#6f665d", 400, "left", "line-height:1.55;")}
+      ${figText(`source-2-old-${index}`, oldPrice, 36, y + 143, 80, 12, "#a99f94", 400, "left", "text-decoration:line-through;")}
+      ${figText(`source-2-stone-${index}`, stones, 36, y + 160, 90, 13, "#6f665d")}
+      ${figBox(`source-2-unlock-${index}`, 262, y + 145, 88, 32, "", "border-radius:16px;background:#fff3ef;")}
+      ${figText(`source-2-unlock-text-${index}`, "立即解锁 →", 270, y + 153, 72, 12, "#8d251d", 700, "center")}
+    `).join("")}
+  `;
+}
+
+function sourceAppBottomNav(active, y = 778) {
+  const items = [
+    ["首页", "◒", 39, "screen-2"],
+    ["档案", "▢", 117, "screen-25"],
+    ["问天AI", "◐", 195, "screen-4"],
+    ["藏宝阁", "♧", 273, "screen-13"],
+    ["我的", "○", 351, "screen-31"]
+  ];
+  return `
+    ${figBox("source-bottom-bg", 0, y, 390, 89, "", "background:#fff;box-shadow:0 -4px 14px rgba(0,0,0,.06);")}
+    ${items.map(([label, icon, x, route]) => {
+      const on = label === active;
+      const color = on ? "#a34d33" : "#79766f";
+      return `
+        ${figButton(`source-bottom-hit-${label}`, x - 37, y + 6, 76, 72, `data-route="${route}"`)}
+        ${figText(`source-bottom-icon-${label}`, icon, x - 16, y + 16, 32, 22, color, 700, "center")}
+        ${figText(`source-bottom-label-${label}`, label, x - 28, y + 48, 56, 12, color, on ? 700 : 400, "center")}
+      `;
+    }).join("")}
+  `;
+}
+
+function sourceArchiveScreen(screen) {
+  const masters = [
+    ["瞎子阿炳", "八字解析", "流年趋势", "", "擅长八字全盘综合分析", 305, "#6b543e", "炳", ""],
+    ["紫微瑞神", "紫微解盘", "命宫分析", "", "擅长紫微斗数全盘综合分析", 437, "#4d2d28", "紫", ""],
+    ["陈主任(仅供娱乐)", "先天体质分析", "四时养生推导", "", "运用五运六气破译体质密码，提供节气\n健康与养生建议", 570, "#8d8a82", "陈", "VIP"],
+    ["情侣合盘", "合婚深度解析", "情感契合度", "冲突化解建议", "深度拆解两人缘分羁绊与长久相处逻辑", 752, "#803720", "合", ""]
+  ];
+  return `
+    ${figText("source-3-time", "15:17", 18, 16, 70, 14, "#26211c")}
+    ${figText("source-3-status", "◉  0.00  5G  ▮ 31 ⚡", 250, 14, 120, 10, "#26211c", 700, "right")}
+    ${figText("source-3-title", "问天AI", 18, 62, 160, 29, "#26211c", 800)}
+    ${figText("source-3-subtitle", "选择一位AI命理师开启对话", 18, 101, 220, 13, "#7f756b")}
+    ${figText("source-3-current-title", "当前档案", 18, 136, 120, 15, "#26211c", 800)}
+    ${figText("source-3-change", "更换档案 〉", 284, 138, 88, 12, "#9b742e", 500, "right")}
+    ${figBox("source-3-profile", 16, 164, 358, 84, "converted-card", "border-radius:12px;box-shadow:0 6px 18px rgba(90,62,34,.09);")}
+    ${figImage("source-3-profile-avatar", "../images/wentian-prototype-assets/03-profile.jpg", 38, 182, 48, 48, "border-radius:24px;border:1px solid #e4d2a7;")}
+    ${figText("source-3-profile-name", "谢", 102, 189, 28, 16, "#26211c", 800)}
+    ${figBox("source-3-gender", 128, 186, 30, 18, "", "border-radius:9px;background:#f7ecd5;")}
+    ${figText("source-3-gender-text", "男", 128, 190, 30, 10, "#b07a2d", 700, "center")}
+    ${figBox("source-3-profile-tag", 164, 186, 62, 18, "", "border-radius:9px;background:#f7ecd5;")}
+    ${figText("source-3-profile-tag-text", "四柱八字", 164, 190, 62, 10, "#c3a371", 500, "center")}
+    ${figText("source-3-profile-date", "1991-02-16 22:58:00", 102, 215, 170, 12, "#8d8175")}
+    ${figText("source-3-profile-switch", "⇅", 334, 199, 22, 22, "#b5ad9d", 500, "center")}
+    ${figText("source-3-master-title", "选择命理师", 18, 276, 160, 15, "#26211c", 800)}
+    ${masters.map(([name, tag1, tag2, tag3, desc, y, avatarColor, mark, vip], index) => `
+      ${figBox(`source-3-master-${index}`, 16, y, 358, index === 2 ? 160 : 116, "converted-card", "border-radius:17px;background:linear-gradient(110deg,#fff,#f8f4ea);box-shadow:0 7px 20px rgba(92,64,32,.11);")}
+      ${figImage(`source-3-master-avatar-${index}`, `../images/wentian-prototype-assets/03-master-${index + 1}.jpg`, 34, y + 20, 62, 62, "border-radius:31px;")}
+      ${figText(`source-3-master-name-${index}`, name, 112, y + 24, 194, 17, index === 2 ? "#8d8a82" : "#26211c", 800)}
+      ${vip ? figBox(`source-3-vip-${index}`, 322, y + 26, 34, 19, "", "border-radius:9px;background:#b5924b;") : ""}
+      ${vip ? figText(`source-3-vip-text-${index}`, vip, 322, y + 30, 34, 10, "#fff", 800, "center") : ""}
+      ${figBox(`source-3-pill-a-${index}`, 112, y + 54, index === 2 ? 82 : 58, 18, "", "border-radius:9px;background:#f7ecd8;")}
+      ${figText(`source-3-pill-a-text-${index}`, tag1, 112, y + 58, index === 2 ? 82 : 58, 10, "#b88c33", 600, "center")}
+      ${figBox(`source-3-pill-b-${index}`, index === 2 ? 204 : 178, y + 54, index === 2 ? 82 : 62, 18, "", "border-radius:9px;background:#f7ecd8;")}
+      ${figText(`source-3-pill-b-text-${index}`, tag2, index === 2 ? 204 : 178, y + 58, index === 2 ? 82 : 62, 10, "#b88c33", 600, "center")}
+      ${tag3 ? figBox(`source-3-pill-c-${index}`, 252, y + 54, 82, 18, "", "border-radius:9px;background:#f7ecd8;") : ""}
+      ${tag3 ? figText(`source-3-pill-c-text-${index}`, tag3, 252, y + 58, 82, 10, "#b88c33", 600, "center") : ""}
+      ${figText(`source-3-master-desc-${index}`, desc, 112, y + 82, 232, 13, "#9a9086", 400, "left", "line-height:1.5;")}
+      ${index === 2 ? figText("source-3-vip-lock", "■ 需要VIP", 112, y + 132, 110, 12, "#c4932b", 700) : ""}
+    `).join("")}
+    ${sourceAppBottomNav("问天AI", 922)}
+  `;
+}
+
 function convertedAi(screen) {
   const base = `
     ${figBox(`screen-${screen.no}-avatar`, 42, 108, 44, 44, "converted-card", "border-radius:22px;background:#f2e8d6;")}
@@ -416,6 +515,18 @@ function convertedFlowHotspots(screen) {
 
 function renderConvertedScreen(no) {
   const screen = convertedByNo.get(no) || convertedByNo.get(2);
+  if (screen.no === 2) {
+    return figPhone(`screen-${screen.no}`, `${String(screen.no).padStart(2, "0")} ${screen.title}`, `
+      ${sourceHomeScreen(screen)}
+      ${convertedFlowHotspots(screen)}
+    `, 867, "converted source-screen", true);
+  }
+  if (screen.no === 3) {
+    return figPhone(`screen-${screen.no}`, `${String(screen.no).padStart(2, "0")} ${screen.title}`, `
+      ${sourceArchiveScreen(screen)}
+      ${convertedFlowHotspots(screen)}
+    `, 1011, "converted source-screen", false);
+  }
   const heading = screen.heading ? figText(`screen-${screen.no}-heading`, screen.heading, 24, 72, 180, 26, "#26211c", 700) : "";
   const badge = screen.badge && screen.no !== 1 ? `
     ${figBox(`screen-${screen.no}-badge`, 226, 520, 90, 90, "", "border-radius:45px;background:#a13824;")}
@@ -432,7 +543,20 @@ function renderConvertedScreen(no) {
   `, 844, "converted", false);
 }
 
+function normalizeRoute(route) {
+  return String(route || "").split("&")[0];
+}
+
+function routeFromLocation() {
+  const hashRoute = normalizeRoute(location.hash.slice(1));
+  if (/^screen-?\d+$/.test(hashRoute) || routes[hashRoute]) return hashRoute;
+  const screen = new URLSearchParams(location.search).get("screen");
+  if (screen) return screen.startsWith("screen") ? screen : `screen-${screen}`;
+  return hashRoute || "screen-2";
+}
+
 function navigate(route, push = true) {
+  route = normalizeRoute(route);
   if (/^screen-?\d+$/.test(route)) {
     const no = Number(route.replace("screen-", ""));
     const screen = convertedByNo.get(no) || convertedByNo.get(2);
@@ -443,7 +567,7 @@ function navigate(route, push = true) {
     routeTitle.textContent = `${String(screen.no).padStart(2, "0")} ${screen.title}`;
     view.innerHTML = renderConvertedScreen(screen.no);
     syncActive();
-    location.hash = route;
+    if (!location.hash.includes("figmacapture=")) location.hash = route;
     window.scrollTo(0, 0);
     return;
   }
@@ -455,7 +579,7 @@ function navigate(route, push = true) {
   routeTitle.textContent = title;
   view.innerHTML = render();
   syncActive();
-  location.hash = route;
+  if (!location.hash.includes("figmacapture=")) location.hash = route;
   window.scrollTo(0, 0);
 }
 
@@ -822,6 +946,6 @@ function buildScreenNav() {
   `).join("");
 }
 
-window.addEventListener("hashchange", () => navigate(location.hash.slice(1) || "home", false));
+window.addEventListener("hashchange", () => navigate(routeFromLocation(), false));
 buildScreenNav();
-navigate(location.hash.slice(1) || "screen-2", false);
+navigate(routeFromLocation(), false);
