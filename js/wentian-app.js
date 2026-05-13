@@ -64,8 +64,8 @@ const convertedByNo = new Map(convertedScreens.map((screen) => [screen.no, scree
 
 const screenFlowHotspots = {
   2: [[18, 282, 354, 190, "screen-4"], [18, 487, 354, 190, "screen-4"], [18, 692, 354, 175, "screen-4"]],
-  3: [[285, 128, 82, 28, "screen-5"], [16, 164, 358, 84, "screen-5"], [16, 305, 358, 116, "screen-4"], [16, 437, 358, 116, "screen-4"], [16, 570, 358, 160, "screen-4"], [16, 752, 358, 116, "screen-10"], [2, 928, 76, 72, "screen-2"], [80, 928, 76, 72, "screen-25"], [158, 928, 76, 72, "screen-4"], [236, 928, 76, 72, "screen-13"], [314, 928, 76, 72, "screen-31"]],
-  4: [[21, 96, 348, 78, "screen-9"], [32, 177, 326, 50, "screen-5"], [28, 274, 334, 62, "screen-6"], [28, 346, 334, 62, "screen-6"], [51, 750, 240, 50, "screen-6"]],
+  3: [[285, 128, 82, 28, "screen-5"], [16, 164, 358, 84, "screen-5"], [16, 305, 358, 116, "screen-4"], [16, 437, 358, 116, "screen-4"], [16, 570, 358, 160, "screen-4"], [16, 752, 358, 116, "screen-10"], [2, 928, 76, 72, "screen-2"], [80, 928, 76, 72, "screen-25"], [158, 928, 76, 72, "screen-3"], [236, 928, 76, 72, "screen-13"], [314, 928, 76, 72, "screen-31"]],
+  4: [[18, 44, 48, 48, "screen-3"], [276, 44, 96, 48, "screen-9"], [300, 104, 58, 34, "screen-5"], [20, 704, 82, 34, "screen-6"], [114, 704, 88, 34, "screen-6"], [16, 755, 358, 48, "screen-6"]],
   5: [[320, 116, 48, 48, "screen-4"], [34, 235, 322, 72, "screen-6"], [34, 318, 322, 72, "screen-6"], [48, 748, 294, 52, "screen-6"]],
   6: [[18, 44, 48, 48, "screen-4"], [88, 600, 220, 76, "screen-7"]],
   7: [[18, 44, 48, 48, "screen-4"], [54, 280, 282, 168, "screen-8"]],
@@ -86,13 +86,13 @@ const screenFlowHotspots = {
   22: [[18, 44, 48, 48, "screen-31"], [250, 44, 112, 48, "screen-23"], [42, 735, 306, 62, "screen-24"]],
   23: [[18, 44, 48, 48, "screen-22"], [50, 680, 290, 58, "screen-22"]],
   24: [[18, 44, 48, 48, "screen-22"]],
-  25: [[18, 44, 48, 48, "screen-3"]],
+  25: [[302, 54, 70, 46, "screen-26"], [18, 129, 354, 95, "screen-27"], [18, 247, 354, 95, "screen-27"], [2, 784, 76, 72, "screen-2"], [80, 784, 76, 72, "screen-25"], [158, 784, 76, 72, "screen-3"], [236, 784, 76, 72, "screen-13"], [314, 784, 76, 72, "screen-31"]],
   26: [[18, 44, 48, 48, "screen-3"], [42, 742, 306, 56, "screen-27"]],
   27: [[18, 44, 48, 48, "screen-26"], [42, 742, 306, 56, "screen-33"]],
   28: [[18, 44, 48, 48, "screen-31"], [42, 735, 306, 58, "screen-29"]],
   29: [[18, 44, 48, 48, "screen-31"], [22, 178, 346, 70, "screen-30"], [22, 257, 346, 70, "screen-30"], [22, 336, 346, 70, "screen-30"], [34, 738, 322, 58, "screen-30"]],
   30: [[18, 44, 48, 48, "screen-29"], [42, 735, 306, 58, "screen-31"]],
-  31: [[318, 44, 48, 48, "screen-38"], [20, 154, 350, 58, "screen-33"], [20, 216, 350, 58, "screen-29"], [20, 386, 350, 58, "screen-22"], [20, 618, 350, 58, "screen-34"]],
+  31: [[336, 54, 42, 42, "screen-38"], [16, 126, 358, 96, "screen-38"], [16, 240, 111, 75, "screen-29"], [139, 240, 111, 75, "screen-28"], [262, 240, 111, 75, "screen-9"], [16, 330, 174, 60, "screen-33"], [200, 330, 174, 60, "screen-29"], [16, 400, 174, 60, "screen-27"], [200, 400, 174, 60, "screen-30"], [16, 491, 358, 61, "screen-22"], [16, 552, 358, 61, "screen-28"], [16, 629, 358, 61, "screen-37"], [16, 690, 358, 61, "screen-34"], [16, 767, 358, 61, "screen-35"], [2, 762, 76, 72, "screen-2"], [80, 762, 76, 72, "screen-25"], [158, 762, 76, 72, "screen-3"], [236, 762, 76, 72, "screen-13"], [314, 762, 76, 72, "screen-31"]],
   32: [[18, 44, 48, 48, "screen-31"], [20, 94, 350, 56, "screen-39"], [20, 164, 350, 56, "screen-33"], [20, 236, 350, 56, "screen-40"], [20, 306, 350, 56, "screen-41"], [20, 376, 350, 56, "screen-37"], [20, 452, 350, 56, "screen-34"], [20, 520, 350, 56, "screen-35"], [20, 590, 350, 56, "screen-36"]],
   33: [[18, 44, 48, 48, "screen-31"], [42, 735, 306, 58, "screen-29"]],
   34: [[18, 44, 48, 48, "screen-31"], [42, 735, 306, 58, "screen-22"]],
@@ -118,8 +118,47 @@ const routes = {
   pay: ["支付", "支付页", renderPay]
 };
 
+const routeAliases = {
+  "": "screen-2",
+  home: "screen-2",
+  index: "screen-2",
+  mall: "screen-2",
+  shop: "screen-2",
+  store: "screen-2",
+  ai: "screen-3",
+  ask: "screen-3",
+  chat: "screen-4",
+  records: "screen-9",
+  archive: "screen-25",
+  archives: "screen-25",
+  profile: "screen-25",
+  chart: "screen-26",
+  report: "screen-27",
+  reports: "screen-27",
+  divine: "screen-13",
+  activity: "screen-13",
+  treasure: "screen-13",
+  mine: "screen-31",
+  account: "screen-31",
+  settings: "screen-38",
+  recharge: "screen-29",
+  pay: "screen-30",
+  payment: "screen-30",
+  coupons: "screen-28",
+  vip: "screen-33",
+  membership: "screen-33",
+  invite: "screen-22",
+  share: "screen-34",
+  contact: "screen-35",
+  about: "screen-36",
+  language: "screen-37",
+  basic: "screen-39",
+  login: "screen-40",
+  password: "screen-41"
+};
+
 const state = {
-  route: "home",
+  route: "screen-2",
   stack: []
 };
 
@@ -212,9 +251,9 @@ function convertedBottomNav(active) {
   if (!active) return "";
   const items = [
     ["screen-2", "首页", 24, 16, 12],
-    ["screen-3", "档案", 98, 90, 88],
-    ["screen-4", "问天AI", 172, 164, 164],
-    ["screen-22", "活动", 246, 238, 240],
+    ["screen-25", "档案", 98, 90, 88],
+    ["screen-3", "问天AI", 172, 164, 164],
+    ["screen-13", "藏宝阁", 246, 238, 240],
     ["screen-31", "我的", 320, 312, 316]
   ];
   return `
@@ -349,7 +388,7 @@ function sourceAppBottomNav(active, y = 778) {
   const items = [
     ["首页", "◒", 39, "screen-2"],
     ["档案", "▢", 117, "screen-25"],
-    ["问天AI", "◐", 195, "screen-4"],
+    ["问天AI", "◐", 195, "screen-3"],
     ["藏宝阁", "♧", 273, "screen-13"],
     ["我的", "○", 351, "screen-31"]
   ];
@@ -407,6 +446,107 @@ function sourceArchiveScreen(screen) {
       ${index === 2 ? figText("source-3-vip-lock", "■ 需要VIP", 112, y + 132, 110, 12, "#c4932b", 700) : ""}
     `).join("")}
     ${sourceAppBottomNav("问天AI", 922)}
+  `;
+}
+
+function sourceAiChatScreen(screen) {
+  return `
+    ${figText("source-4-time", "15:17", 18, 15, 70, 14, "#26211c")}
+    ${figText("source-4-status", "◉  0.00  5G  ▮ 31 ⚡", 250, 14, 120, 10, "#26211c", 700, "right")}
+    ${figText("source-4-back", "‹", 28, 52, 28, 34, "#26211c", 500)}
+    ${figImage("source-4-avatar", "../images/wentian-prototype-assets/03-master-1.jpg", 58, 50, 34, 34, "border-radius:17px;")}
+    ${figText("source-4-name", "瞎子阿炳", 100, 58, 130, 16, "#26211c", 800)}
+    ${figText("source-4-record", "◷ 对话记录", 282, 59, 88, 12, "#6f665d", 500, "right")}
+    ${figLine("source-4-line-a", 0, 96, 390, "#eee8df")}
+    ${figText("source-4-left", "◇ 剩余 1 条", 18, 112, 140, 12, "#9d8a62")}
+    ${figBox("source-4-profile-pill", 300, 104, 58, 34, "", "border-radius:17px;background:#fff;box-shadow:0 4px 12px rgba(70,45,25,.08);")}
+    ${figText("source-4-profile-text", "谢⌄", 312, 114, 34, 13, "#26211c", 500, "center")}
+    ${figLine("source-4-line-b", 0, 153, 390, "#eee8df")}
+    ${figText("source-4-hello", "你好！我是瞎子阿炳", 24, 183, 320, 27, "#c4a45a", 800)}
+    ${figText("source-4-sub", "需要我为您做些什么？", 24, 230, 260, 15, "#aaa196")}
+    ${figBox("source-4-bazi", 22, 270, 346, 166, "converted-card", "border-radius:12px;box-shadow:0 6px 18px rgba(74,55,32,.12);")}
+    ${figText("source-4-bazi-name", "谢的八字", 42, 292, 120, 13, "#8f857a")}
+    ${["年柱", "月柱", "日柱", "时柱"].map((label, index) => figText(`source-4-bazi-label-${index}`, label, 70 + index * 76, 322, 46, 11, "#aaa196", 400, "center")).join("")}
+    ${["辛", "庚", "丁", "辛"].map((label, index) => figText(`source-4-bazi-top-${index}`, label, 70 + index * 76, 346, 46, 17, index === 1 ? "#7aa65b" : "#c69a3e", 800, "center")).join("")}
+    ${["未", "寅", "巳", "亥"].map((label, index) => figText(`source-4-bazi-bottom-${index}`, label, 70 + index * 76, 374, 46, 17, index === 1 ? "#7aa65b" : "#c69a3e", 800, "center")).join("")}
+    ${figLine("source-4-bazi-line", 40, 394, 310, "#e8ded0")}
+    ${figText("source-4-bazi-foot", "日主：丁    生肖：羊", 0, 408, 390, 12, "#8f857a", 500, "center")}
+    ${figBox("source-4-chip-a", 20, 704, 82, 34, "", "border-radius:17px;background:#fff;box-shadow:0 3px 9px rgba(0,0,0,.05);")}
+    ${figText("source-4-chip-a-text", "个人性格", 20, 715, 82, 12, "#26211c", 500, "center")}
+    ${figBox("source-4-chip-b", 114, 704, 88, 34, "", "border-radius:17px;background:#fff;box-shadow:0 3px 9px rgba(0,0,0,.05);")}
+    ${figText("source-4-chip-b-text", "感情建议", 114, 715, 88, 12, "#26211c", 500, "center")}
+    ${figBox("source-4-input-bg", 0, 742, 390, 102, "", "background:#fff;")}
+    ${figBox("source-4-input", 16, 755, 358, 48, "", "border-radius:24px;background:#faf8f3;border:1px solid #e5ded3;box-shadow:0 3px 9px rgba(0,0,0,.08);")}
+    ${figText("source-4-placeholder", "问一问", 34, 769, 160, 17, "#b8b0a7")}
+    ${figBox("source-4-send", 338, 763, 32, 32, "", "border-radius:16px;background:#e6dfd0;")}
+    ${figText("source-4-send-text", "↑", 338, 770, 32, 15, "#fff", 800, "center")}
+    ${figText("source-4-disclaimer", "内容由AI生成，仅供娱乐参考", 0, 815, 390, 10, "#b8b0a7", 400, "center")}
+  `;
+}
+
+function sourceProfileScreen(screen) {
+  const profiles = [
+    ["谢", "男", "四柱八字", "1991年2月16日 22:58", "辛未 庚寅 丁巳 辛亥", 129, "默认"],
+    ["命主", "男", "四柱八字", "2026年5月12日 15:08", "丙午 癸巳 丙戌 丙申", 247, ""]
+  ];
+  return `
+    ${figText("source-25-time", "15:21", 18, 15, 70, 14, "#26211c")}
+    ${figText("source-25-status", "◉  0.30  5G  ▮ 33 ⚡", 250, 14, 120, 10, "#26211c", 700, "right")}
+    ${figText("source-25-title", "档案", 18, 58, 150, 30, "#26211c", 800)}
+    ${figText("source-25-sub", "管理你的命盘资料", 18, 101, 180, 14, "#8f857a")}
+    ${figBox("source-25-add", 296, 56, 76, 38, "", "border-radius:18px;background:#fff;box-shadow:0 5px 14px rgba(80,55,28,.10);")}
+    ${figText("source-25-add-text", "+ 添加", 304, 68, 58, 13, "#a47725", 700, "center")}
+    ${profiles.map(([name, gender, tag, date, detail, y, badge], index) => `
+      ${figBox(`source-25-card-${index}`, 18, y, 354, 95, "converted-card", "border-radius:12px;box-shadow:0 6px 16px rgba(74,55,32,.08);")}
+      ${figImage(`source-25-avatar-${index}`, "../images/wentian-prototype-assets/03-profile.jpg", 37, y + 18, 54, 54, "border-radius:27px;")}
+      ${figText(`source-25-name-${index}`, name, 102, y + 20, 58, 16, "#26211c", 800)}
+      ${figBox(`source-25-gender-${index}`, 154, y + 17, 28, 18, "", "border-radius:9px;background:#f6ecd7;")}
+      ${figText(`source-25-gender-text-${index}`, gender, 154, y + 21, 28, 10, "#b07a2d", 700, "center")}
+      ${figBox(`source-25-tag-${index}`, 188, y + 17, 62, 18, "", "border-radius:9px;background:#f6ecd7;")}
+      ${figText(`source-25-tag-text-${index}`, tag, 188, y + 21, 62, 10, "#b07a2d", 500, "center")}
+      ${badge ? figBox(`source-25-badge-${index}`, 326, y + 17, 36, 20, "", "border-radius:10px;background:#fbf4df;") : ""}
+      ${badge ? figText(`source-25-badge-text-${index}`, badge, 326, y + 21, 36, 10, "#b88c33", 700, "center") : ""}
+      ${figText(`source-25-date-${index}`, date, 102, y + 45, 190, 13, "#8f857a")}
+      ${figText(`source-25-detail-${index}`, detail, 102, y + 67, 210, 13, "#8f857a")}
+      ${figText(`source-25-arrow-${index}`, "›", 338, y + 36, 20, 24, "#aaa196", 500, "center")}
+    `).join("")}
+    ${sourceAppBottomNav("档案", 778)}
+  `;
+}
+
+function sourceMineScreen(screen) {
+  return `
+    ${figText("source-31-time", "15:23", 18, 15, 70, 14, "#26211c")}
+    ${figText("source-31-status", "◉  30.4  5G  ▮ 33 ⚡", 250, 14, 120, 10, "#26211c", 700, "right")}
+    ${figText("source-31-title", "我的", 18, 58, 150, 30, "#26211c", 800)}
+    ${figText("source-31-sub", "账户与偏好设置", 18, 101, 180, 14, "#8f857a")}
+    ${figBox("source-31-gear", 338, 56, 38, 38, "", "border-radius:19px;background:#fff;box-shadow:0 5px 14px rgba(80,55,28,.10);")}
+    ${figText("source-31-gear-text", "⚙", 338, 64, 38, 18, "#b88c33", 700, "center")}
+    ${figBox("source-31-profile", 16, 126, 358, 96, "converted-card", "border-radius:12px;box-shadow:0 6px 16px rgba(74,55,32,.08);")}
+    ${figBox("source-31-avatar", 34, 144, 60, 60, "", "border-radius:30px;background:#b88c33;")}
+    ${figText("source-31-avatar-icon", "人", 34, 157, 60, 28, "#fff", 700, "center")}
+    ${figText("source-31-name", "谢广周", 116, 150, 140, 18, "#26211c", 800)}
+    ${figText("source-31-vip", "开通会员享专属权益", 116, 177, 150, 13, "#8f857a")}
+    ${figText("source-31-email", "aa15989267747@gmail.com", 116, 197, 200, 12, "#8f857a")}
+    ${[["◇ 灵石", "1", 16], ["▣ 卡券", "0 个", 139], ["☵ 对话", "0 /0", 262]].map(([label, count, x], index) => `
+      ${figBox(`source-31-stat-${index}`, x, 240, 111, 75, "converted-card", "border-radius:12px;box-shadow:0 5px 14px rgba(74,55,32,.08);")}
+      ${figText(`source-31-stat-label-${index}`, label, x + 14, 253, 80, 12, "#9b742e", 500)}
+      ${figText(`source-31-stat-count-${index}`, count, x + 14, 279, 80, 21, "#b88c33", 800)}
+    `).join("")}
+    ${[["♛", "问天会员", 16, 330], ["◇", "灵石充值", 200, 330], ["▤", "我的报告", 16, 400], ["▦", "订单记录", 200, 400]].map(([icon, label, x, y], index) => `
+      ${figBox(`source-31-quick-${index}`, x, y, 174, 60, "converted-card", "border-radius:12px;box-shadow:0 5px 14px rgba(74,55,32,.08);")}
+      ${figBox(`source-31-quick-icon-${index}`, x + 17, y + 12, 36, 36, "", "border-radius:10px;background:#f6f2e9;")}
+      ${figText(`source-31-quick-icon-text-${index}`, icon, x + 17, y + 21, 36, 14, "#b88c33", 800, "center")}
+      ${figText(`source-31-quick-label-${index}`, label, x + 62, y + 21, 90, 16, "#26211c", 700)}
+    `).join("")}
+    ${[["邀请好友", "0 人", 491], ["兑换礼包", "", 552], ["语言设置", "简体中文", 629], ["分享应用", "", 690], ["联系我们", "", 767]].map(([label, value, y], index) => `
+      ${figBox(`source-31-row-${index}`, 16, y, 358, 61, "converted-card", `border-radius:${index === 0 || index === 2 || index === 4 ? "12px" : "0"};border-bottom:${index === 0 || index === 2 ? "0" : "1px solid #eee8df"};box-shadow:${index === 0 || index === 2 || index === 4 ? "0 5px 14px rgba(74,55,32,.08)" : "none"};`)}
+      ${figText(`source-31-row-icon-${index}`, ["♧", "♁", "文", "⌯", "☏"][index], 34, y + 21, 24, 16, "#b88c33", 700, "center")}
+      ${figText(`source-31-row-label-${index}`, label, 68, y + 20, 140, 16, "#26211c", 600)}
+      ${value ? figText(`source-31-row-value-${index}`, value, 274, y + 21, 60, 13, "#9b742e", 500, "right") : ""}
+      ${figText(`source-31-row-arrow-${index}`, "›", 342, y + 18, 16, 20, "#aaa196", 500, "center")}
+    `).join("")}
+    ${sourceAppBottomNav("我的", 755)}
   `;
 }
 
@@ -527,6 +667,24 @@ function renderConvertedScreen(no) {
       ${convertedFlowHotspots(screen)}
     `, 1011, "converted source-screen", false);
   }
+  if (screen.no === 4) {
+    return figPhone(`screen-${screen.no}`, `${String(screen.no).padStart(2, "0")} ${screen.title}`, `
+      ${sourceAiChatScreen(screen)}
+      ${convertedFlowHotspots(screen)}
+    `, 844, "converted source-screen", true);
+  }
+  if (screen.no === 25) {
+    return figPhone(`screen-${screen.no}`, `${String(screen.no).padStart(2, "0")} ${screen.title}`, `
+      ${sourceProfileScreen(screen)}
+      ${convertedFlowHotspots(screen)}
+    `, 867, "converted source-screen", true);
+  }
+  if (screen.no === 31) {
+    return figPhone(`screen-${screen.no}`, `${String(screen.no).padStart(2, "0")} ${screen.title}`, `
+      ${sourceMineScreen(screen)}
+      ${convertedFlowHotspots(screen)}
+    `, 844, "converted source-screen", true);
+  }
   const heading = screen.heading ? figText(`screen-${screen.no}-heading`, screen.heading, 24, 72, 180, 26, "#26211c", 700) : "";
   const badge = screen.badge && screen.no !== 1 ? `
     ${figBox(`screen-${screen.no}-badge`, 226, 520, 90, 90, "", "border-radius:45px;background:#a13824;")}
@@ -547,18 +705,23 @@ function normalizeRoute(route) {
   return String(route || "").split("&")[0];
 }
 
+function resolveRoute(route) {
+  const clean = normalizeRoute(route).replace(/^#/, "");
+  return routeAliases[clean] || clean || "screen-2";
+}
+
 function routeFromLocation() {
   const hashRoute = normalizeRoute(location.hash.slice(1));
-  if (/^screen-?\d+$/.test(hashRoute) || routes[hashRoute]) return hashRoute;
+  if (hashRoute && !hashRoute.startsWith("figmacapture=")) return resolveRoute(hashRoute);
   const screen = new URLSearchParams(location.search).get("screen");
-  if (screen) return screen.startsWith("screen") ? screen : `screen-${screen}`;
-  return hashRoute || "screen-2";
+  if (screen) return resolveRoute(screen.startsWith("screen") ? screen : `screen-${screen}`);
+  return "screen-2";
 }
 
 function navigate(route, push = true) {
-  route = normalizeRoute(route);
+  route = resolveRoute(route);
   if (/^screen-?\d+$/.test(route)) {
-    const no = Number(route.replace("screen-", ""));
+    const no = Number(route.replace(/^screen-?/, ""));
     const screen = convertedByNo.get(no) || convertedByNo.get(2);
     route = `screen-${screen.no}`;
     if (push && route !== state.route) state.stack.push(state.route);
@@ -571,16 +734,7 @@ function navigate(route, push = true) {
     window.scrollTo(0, 0);
     return;
   }
-  if (!routes[route]) route = "home";
-  if (push && route !== state.route) state.stack.push(state.route);
-  state.route = route;
-  const [kicker, title, render] = routes[route];
-  routeKicker.textContent = kicker;
-  routeTitle.textContent = title;
-  view.innerHTML = render();
-  syncActive();
-  if (!location.hash.includes("figmacapture=")) location.hash = route;
-  window.scrollTo(0, 0);
+  navigate("screen-2", push);
 }
 
 function syncActive() {
