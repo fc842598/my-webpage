@@ -454,7 +454,6 @@ function sourceArchiveScreen(screen) {
 function sourceAiChatScreen(screen) {
   const activeArchive = getCurrentWentianArchive();
   const active = getWentianArchiveDisplay(activeArchive);
-  const activeSizhu = activeArchive?.chartData?.sizhu || WENTIAN_XU_CHART_BASE.sizhu;
   return `
     ${figBox("source-4-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
     ${figText("source-4-back", "‹", 28, 35, 28, 34, "#26211c", 500)}
@@ -469,12 +468,10 @@ function sourceAiChatScreen(screen) {
     ${figText("source-4-hello", "你好！我是许半仙", 24, 169, 320, 27, "#c4a45a", 800)}
     ${figText("source-4-sub", "当前命盘已接入，可直接追问。", 24, 210, 260, 15, "#aaa196")}
     ${figBox("source-4-bazi", 22, 250, 346, 156, "converted-card", "border-radius:13px;box-shadow:0 6px 18px rgba(74,55,32,.12);")}
-    ${figText("source-4-bazi-name", `${escapeHtml(active.name)}的八字`, 42, 272, 120, 13, "#8f857a")}
-    ${["年柱", "月柱", "日柱", "时柱"].map((label, index) => figText(`source-4-bazi-label-${index}`, label, 70 + index * 76, 300, 46, 11, "#aaa196", 400, "center")).join("")}
-    ${[activeSizhu.yearStem, activeSizhu.monthStem, activeSizhu.dayStem, activeSizhu.hourStem].map((label, index) => figText(`source-4-bazi-top-${index}`, label || "—", 70 + index * 76, 322, 46, 17, index === 1 ? "#7aa65b" : "#c69a3e", 800, "center")).join("")}
-    ${[activeSizhu.yearBranch, activeSizhu.monthBranch, activeSizhu.dayBranch, activeSizhu.hourBranch].map((label, index) => figText(`source-4-bazi-bottom-${index}`, label || "—", 70 + index * 76, 350, 46, 17, index === 1 ? "#7aa65b" : "#c69a3e", 800, "center")).join("")}
-    ${figLine("source-4-bazi-line", 40, 372, 310, "#e8ded0")}
-    ${figText("source-4-bazi-foot", `日主：${activeSizhu.dayStem || "—"}    生肖：${activeArchive?.chartData?.zodiac || "—"}`, 0, 386, 390, 12, "#8f857a", 500, "center")}
+    ${figBox("source-4-mingpan-icon", 166, 282, 58, 58, "", "border-radius:18px;background:#f6efdf;")}
+    ${figText("source-4-mingpan-icon-text", "紫", 166, 297, 58, 25, "#c4a45a", 800, "center")}
+    ${figText("source-4-mingpan-title", "已读取您的紫微命盘", 0, 352, 390, 20, "#26211c", 800, "center")}
+    ${figText("source-4-mingpan-sub", `${escapeHtml(active.name)}的命盘已接入，可直接提问`, 42, 382, 306, 13, "#8f857a", 400, "center")}
     <div id="wentian-chat-status" class="wentian-chat-status">正在接入许半仙…</div>
     <div id="wentian-chat-messages" class="wentian-chat-log" aria-live="polite"></div>
     <button class="wentian-chat-chip" type="button" style="left:18px" data-wentian-prompt="结合我的命盘，先讲我的个人性格和做事模式。">个人性格</button>
