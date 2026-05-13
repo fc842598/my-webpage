@@ -1905,6 +1905,7 @@ function sourceLanguageSettingsScreen() {
 
 function convertedAi(screen) {
   const base = `
+    ${figBox(`screen-${screen.no}-bg`, 0, 0, 390, 844, "", "background:#fbf7ef;")}
     ${figImage(`screen-${screen.no}-avatar`, "../images/wentian-prototype-assets/xu-banxian.jpg", 42, 108, 44, 44, "border-radius:22px;object-fit:cover;object-position:center 18%;")}
     ${figText(`screen-${screen.no}-hello`, "你好！我是许半仙", 92, 112, 240, 21, "#b88c33", 700)}
     ${figBox(`screen-${screen.no}-bazi`, 32, 170, 326, 88, "converted-card", "")}
@@ -1923,7 +1924,8 @@ function convertedAi(screen) {
   if (screen.ai === "reply") {
     return base + figBox("reply-user", 46, 260, 298, 74, "", "border-radius:14px;background:#b88c33;") +
       figText("reply-user-text", "请根据我的八字拆解性格。", 64, 282, 260, 14, "#fff") +
-      figText("reply-ai", "你的八字显示辛未、癸巳、丁亥、辛亥。核心是敏感、洞察力强，适合把直觉转化为决策。", 42, 360, 304, 14, "#26211c");
+      figBox("reply-ai-card", 42, 360, 306, 112, "", "border-radius:14px;background:#fff;box-shadow:0 6px 16px rgba(74,55,32,.07);") +
+      figText("reply-ai", "你的八字显示辛未、癸巳、丁亥、辛亥。核心是敏感、洞察力强，适合把直觉转化为决策。", 60, 384, 270, 14, "#26211c", 500, "left", "line-height:1.55;");
   }
   return base;
 }
@@ -2166,19 +2168,34 @@ function renderWentianPolishedScreen(screen) {
     `;
   }
   if (no === 20) {
-    const sections = [["本卦：地风升", "升而有序，适合积累资源，稳步推进。"], ["卦意", "先小后大，贵在持久。"], ["事业建议", "不要急于换道，先把手头筹码做厚。"], ["关系建议", "关系中宜柔和沟通，避免强推。"]];
+    const sections = [
+      ["本卦：地风升", "升而有序，适合积累资源，稳步推进。此卦重在“循序”，先把基础铺实，再谈突破。"],
+      ["变卦：风地观", "外部环境正在观察你是否稳定。少解释，多用结果证明判断。"],
+      ["事业建议", "不要急于换道。先把手头筹码做厚，把一个小成果做成可复用的方法。"],
+      ["关系建议", "关系中宜柔和沟通，避免强推。真正有效的推进来自耐心和边界。"],
+      ["行动窗口", "未来三十日适合复盘、签约、修正计划；不宜仓促做高风险扩张。"]
+    ];
     return `
-      ${figBox("wt20-bg", 0, 0, 390, 844, "", "background:#f7f7f6;")}
+      ${figBox("wt20-bg", 0, 0, 390, 1072, "", "background:#f7f7f6;")}
       ${wentianSimpleHeader("wt20", "地风升")}
+      ${figBox("wt20-summary", 24, 100, 342, 160, "", "border-radius:14px;background:#fff;box-shadow:0 8px 20px rgba(70,45,25,.08);")}
+      ${figText("wt20-summary-title", "地风升", 44, 122, 120, 18, "#25211d", 800)}
+      ${figText("wt20-summary-sub", "升而有序，先小后大", 44, 154, 180, 13, "#756d63", 600)}
+      ${wentianHexLines("wt20-mini", 184, 1)}
+      ${figBox("wt20-tag", 268, 120, 70, 28, "", "border-radius:14px;background:#fff8ec;border:1px solid #e0c98c;")}
+      ${figText("wt20-tag-text", "事业问卦", 268, 128, 70, 11, "#a77721", 800, "center")}
       ${sections.map(([title, desc], index) => {
-        const y = 112 + index * 120;
+        const y = 288 + index * 126;
         return `
-          ${figBox(`wt20-sec-${index}`, 24, y, 342, 92, "", "border-radius:12px;background:#fff;box-shadow:0 6px 16px rgba(70,45,25,.07);")}
+          ${figBox(`wt20-sec-${index}`, 24, y, 342, 102, "", "border-radius:12px;background:#fff;box-shadow:0 6px 16px rgba(70,45,25,.07);")}
           ${figText(`wt20-title-${index}`, title, 44, y + 18, 160, 15, "#25211d", 800)}
-          ${figText(`wt20-desc-${index}`, desc, 44, y + 48, 286, 13, "#706a63", 500, "left", "line-height:1.5;")}
+          ${figText(`wt20-desc-${index}`, desc, 44, y + 46, 286, 13, "#706a63", 500, "left", "line-height:1.5;")}
         `;
       }).join("")}
-      ${wentianGoldButton("wt20", "购买完整解读", "screen-21", 720)}
+      ${figBox("wt20-ai", 24, 930, 342, 70, "", "border-radius:14px;background:#fff;box-shadow:0 6px 16px rgba(70,45,25,.07);")}
+      ${figText("wt20-ai-title", "AI解卦", 44, 950, 100, 15, "#25211d", 800)}
+      ${figText("wt20-ai-copy", "可让许半仙结合当前命盘继续解读此卦。", 44, 978, 260, 12, "#756d63")}
+      ${wentianGoldButton("wt20", "购买完整解读", "screen-21", 1012)}
     `;
   }
   if (no === 21) {
@@ -2819,6 +2836,13 @@ function renderConvertedScreen(no) {
       ${sourceArchiveSelectScreen()}
     `, 844, "converted source-screen no-status-shift", true);
   }
+  if (screen.no === 6 || screen.no === 7) {
+    return figPhone(`screen-${screen.no}`, `${String(screen.no).padStart(2, "0")} ${screen.title}`, `
+      ${convertedHeader(screen)}
+      ${convertedAi(screen)}
+      ${convertedFlowHotspots(screen)}
+    `, 844, "converted source-screen no-status-shift", true);
+  }
   if (screen.no === 25) {
     return figPhone(`screen-${screen.no}`, `${String(screen.no).padStart(2, "0")} ${screen.title}`, `
       ${sourceProfileScreen(screen)}
@@ -2874,7 +2898,7 @@ function renderConvertedScreen(no) {
   }
   const polishedScreen = renderWentianPolishedScreen(screen);
   if (polishedScreen) {
-    const polishedHeight = screen.no === 8 ? 1280 : 844;
+    const polishedHeight = screen.no === 8 ? 1280 : screen.no === 20 ? 1072 : 844;
     return figPhone(`screen-${screen.no}`, `${String(screen.no).padStart(2, "0")} ${screen.title}`, `
       ${polishedScreen}
       ${convertedFlowHotspots(screen)}
