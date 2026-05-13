@@ -451,6 +451,9 @@ function sourceArchiveScreen(screen) {
 }
 
 function sourceAiChatScreen(screen) {
+  const activeArchive = getCurrentWentianArchive();
+  const active = getWentianArchiveDisplay(activeArchive);
+  const activeSizhu = activeArchive?.chartData?.sizhu || WENTIAN_XU_CHART_BASE.sizhu;
   return `
     ${figBox("source-4-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
     ${figText("source-4-back", "‹", 28, 35, 28, 34, "#26211c", 500)}
@@ -460,17 +463,17 @@ function sourceAiChatScreen(screen) {
     ${figLine("source-4-line-a", 0, 84, 390, "#eee8df")}
     ${figText("source-4-left", "◇ 许半仙体系", 18, 101, 150, 12, "#9d8a62")}
     ${figBox("source-4-profile-pill", 286, 92, 72, 34, "", "border-radius:17px;background:#fff;box-shadow:0 4px 12px rgba(70,45,25,.08);")}
-    ${figText("source-4-profile-text", "谢 · 已读", 296, 102, 52, 13, "#26211c", 500, "center")}
+    ${figText("source-4-profile-text", `${escapeHtml(active.name)}⌄`, 296, 102, 52, 13, "#26211c", 500, "center")}
     ${figLine("source-4-line-b", 0, 137, 390, "#eee8df")}
     ${figText("source-4-hello", "你好！我是许半仙", 24, 169, 320, 27, "#c4a45a", 800)}
     ${figText("source-4-sub", "当前命盘已接入，可直接追问。", 24, 210, 260, 15, "#aaa196")}
     ${figBox("source-4-bazi", 22, 250, 346, 156, "converted-card", "border-radius:13px;box-shadow:0 6px 18px rgba(74,55,32,.12);")}
-    ${figText("source-4-bazi-name", "谢的八字", 42, 272, 120, 13, "#8f857a")}
+    ${figText("source-4-bazi-name", `${escapeHtml(active.name)}的八字`, 42, 272, 120, 13, "#8f857a")}
     ${["年柱", "月柱", "日柱", "时柱"].map((label, index) => figText(`source-4-bazi-label-${index}`, label, 70 + index * 76, 300, 46, 11, "#aaa196", 400, "center")).join("")}
-    ${["辛", "庚", "丁", "辛"].map((label, index) => figText(`source-4-bazi-top-${index}`, label, 70 + index * 76, 322, 46, 17, index === 1 ? "#7aa65b" : "#c69a3e", 800, "center")).join("")}
-    ${["未", "寅", "巳", "亥"].map((label, index) => figText(`source-4-bazi-bottom-${index}`, label, 70 + index * 76, 350, 46, 17, index === 1 ? "#7aa65b" : "#c69a3e", 800, "center")).join("")}
+    ${[activeSizhu.yearStem, activeSizhu.monthStem, activeSizhu.dayStem, activeSizhu.hourStem].map((label, index) => figText(`source-4-bazi-top-${index}`, label || "—", 70 + index * 76, 322, 46, 17, index === 1 ? "#7aa65b" : "#c69a3e", 800, "center")).join("")}
+    ${[activeSizhu.yearBranch, activeSizhu.monthBranch, activeSizhu.dayBranch, activeSizhu.hourBranch].map((label, index) => figText(`source-4-bazi-bottom-${index}`, label || "—", 70 + index * 76, 350, 46, 17, index === 1 ? "#7aa65b" : "#c69a3e", 800, "center")).join("")}
     ${figLine("source-4-bazi-line", 40, 372, 310, "#e8ded0")}
-    ${figText("source-4-bazi-foot", "日主：丁    生肖：羊", 0, 386, 390, 12, "#8f857a", 500, "center")}
+    ${figText("source-4-bazi-foot", `日主：${activeSizhu.dayStem || "—"}    生肖：${activeArchive?.chartData?.zodiac || "—"}`, 0, 386, 390, 12, "#8f857a", 500, "center")}
     <div id="wentian-chat-status" class="wentian-chat-status">正在接入许半仙…</div>
     <div id="wentian-chat-messages" class="wentian-chat-log" aria-live="polite"></div>
     <button class="wentian-chat-chip" type="button" style="left:18px" data-wentian-prompt="结合我的命盘，先讲我的个人性格和做事模式。">个人性格</button>
@@ -480,6 +483,65 @@ function sourceAiChatScreen(screen) {
     <input id="wentian-chat-input" class="wentian-chat-field" placeholder="问一问" autocomplete="off">
     <button id="wentian-chat-send" class="wentian-chat-send" type="button" data-action="wentian-chat-send" aria-label="发送">↑</button>
     ${figText("source-4-disclaimer", "内容由AI生成，仅供娱乐参考", 0, 812, 390, 10, "#b8b0a7", 400, "center")}
+  `;
+}
+
+function sourceArchiveSelectScreen() {
+  const archives = getWentianArchiveList();
+  const activeId = wentianArchiveDraftId || getWentianSelectedArchiveId(archives);
+  const activeArchive = archives.find((item) => item.id === activeId) || archives[0];
+  const active = getWentianArchiveDisplay(activeArchive);
+  const activeSizhu = activeArchive?.chartData?.sizhu || {};
+  const displayArchives = archives.slice(0, 8);
+  return `
+    ${figBox("source-5-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
+    ${figText("source-5-back", "‹", 28, 35, 28, 34, "#26211c", 500)}
+    ${figImage("source-5-avatar", "../images/wentian-prototype-assets/03-master-1.jpg", 58, 31, 34, 34, "border-radius:17px;")}
+    ${figText("source-5-name", "许半仙", 100, 39, 130, 16, "#26211c", 800)}
+    ${figText("source-5-record", "◷ 对话记录", 282, 40, 88, 12, "#6f665d", 500, "right")}
+    ${figLine("source-5-line-a", 0, 84, 390, "#eee8df")}
+    ${figText("source-5-left", "◇ 剩余 1 条", 18, 101, 150, 12, "#9d8a62")}
+    ${figBox("source-5-profile-pill", 286, 92, 72, 34, "", "border-radius:17px;background:#fff;box-shadow:0 4px 12px rgba(70,45,25,.08);")}
+    ${figText("source-5-profile-text", `${escapeHtml(active.name)}⌄`, 296, 102, 52, 13, "#26211c", 500, "center")}
+    ${figLine("source-5-line-b", 0, 137, 390, "#eee8df")}
+    ${figText("source-5-hello", `你好！我是许半仙`, 24, 205, 320, 27, "#c4a45a", 800)}
+    ${figText("source-5-sub", "需要我为您做些什么？", 24, 246, 260, 15, "#aaa196")}
+    ${figBox("source-5-bazi", 22, 302, 346, 156, "converted-card", "border-radius:13px;box-shadow:0 6px 18px rgba(74,55,32,.12);")}
+    ${figText("source-5-bazi-name", `${escapeHtml(active.name)}的八字`, 42, 324, 120, 13, "#8f857a")}
+    ${["年柱", "月柱", "日柱", "时柱"].map((label, index) => figText(`source-5-bazi-label-${index}`, label, 70 + index * 76, 352, 46, 11, "#aaa196", 400, "center")).join("")}
+    ${[activeSizhu.yearStem, activeSizhu.monthStem, activeSizhu.dayStem, activeSizhu.hourStem].map((label, index) => figText(`source-5-bazi-top-${index}`, label || "—", 70 + index * 76, 374, 46, 17, index === 1 ? "#7aa65b" : "#c69a3e", 800, "center")).join("")}
+    ${[activeSizhu.yearBranch, activeSizhu.monthBranch, activeSizhu.dayBranch, activeSizhu.hourBranch].map((label, index) => figText(`source-5-bazi-bottom-${index}`, label || "—", 70 + index * 76, 402, 46, 17, index === 1 ? "#7aa65b" : "#c69a3e", 800, "center")).join("")}
+    ${figLine("source-5-bazi-line", 40, 424, 310, "#e8ded0")}
+    ${figText("source-5-bazi-foot", `日主：${activeSizhu.dayStem || "—"}    生肖：${activeArchive?.chartData?.zodiac || "—"}`, 0, 438, 390, 12, "#8f857a", 500, "center")}
+
+    ${figBox("source-5-overlay", 0, 0, 390, 844, "", "background:rgba(0,0,0,.38);")}
+    ${figBox("source-5-sheet", 0, 458, 390, 386, "", "border-radius:22px 22px 0 0;background:#fff;box-shadow:0 -12px 30px rgba(0,0,0,.14);")}
+    ${figBox("source-5-sheet-handle", 160, 472, 70, 5, "", "border-radius:3px;background:#eee9e2;")}
+    ${figText("source-5-sheet-title", "选择档案", 36, 498, 150, 25, "#1f1d1a", 800)}
+    ${figBox("source-5-sheet-count", 304, 498, 58, 30, "", "border-radius:8px;background:#f7f2ec;")}
+    ${figText("source-5-sheet-count-text", "已选 1/1", 304, 507, 58, 11, "#8b8176", 700, "center")}
+    ${figText("source-5-sheet-sub", "最多选择1张", 36, 536, 150, 15, "#8b8176", 400)}
+    <div class="wentian-archive-list">
+    ${displayArchives.map((archive) => {
+      const item = getWentianArchiveDisplay(archive);
+      const selected = archive.id === activeId;
+      return `
+        <button class="wentian-archive-option ${selected ? "is-selected" : ""}" type="button" data-action="wentian-archive-pick" data-wentian-archive-option="1" data-archive-id="${escapeHtml(archive.id)}" aria-pressed="${selected ? "true" : "false"}">
+          <span class="wentian-archive-avatar">${escapeHtml(item.name.slice(0, 1))}</span>
+          <span class="wentian-archive-name">${escapeHtml(item.name)}</span>
+          ${item.badge ? `<span class="wentian-archive-badge">${escapeHtml(item.badge)}</span>` : ""}
+          <span class="wentian-archive-gender">${item.gender}</span>
+          <span class="wentian-archive-tag">${escapeHtml(item.tag)}</span>
+          <span class="wentian-archive-date">${escapeHtml(item.datetime)}</span>
+          <span class="wentian-archive-pillars">${escapeHtml(item.pillars)}</span>
+          <span class="wentian-archive-check">${selected ? "✓" : ""}</span>
+        </button>
+      `;
+    }).join("")}
+    </div>
+    ${figLine("source-5-sheet-line", 24, 750, 342, "#eee8df")}
+    <button class="wentian-archive-new" type="button" data-route="screen-26">＋ 新建档案</button>
+    <button class="wentian-archive-confirm" type="button" data-action="wentian-archive-confirm">确定</button>
   `;
 }
 
@@ -609,6 +671,9 @@ const wentianXuChat = {
 let wentianFallbackChartRecordId = null;
 const WENTIAN_UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 const WENTIAN_CHART_STORAGE_KEY = "wentian-app-current-chart-v1";
+const WENTIAN_ARCHIVES_STORAGE_KEY = "wentian-app-archives-v1";
+const WENTIAN_SELECTED_ARCHIVE_KEY = "wentian-app-selected-archive-id";
+let wentianArchiveDraftId = null;
 const WENTIAN_BRANCH_POSITIONS = {
   "巳": [0, 0],
   "午": [1, 0],
@@ -691,10 +756,169 @@ function getWentianSavedChart() {
   }
 }
 
-function saveWentianChart(chartState) {
+function readWentianArchives() {
+  try {
+    const raw = localStorage.getItem(WENTIAN_ARCHIVES_STORAGE_KEY);
+    const list = raw ? JSON.parse(raw) : [];
+    return Array.isArray(list) ? list : [];
+  } catch (_err) {
+    return [];
+  }
+}
+
+function writeWentianArchives(archives) {
+  try {
+    localStorage.setItem(WENTIAN_ARCHIVES_STORAGE_KEY, JSON.stringify(archives));
+  } catch (_err) {}
+}
+
+function makeWentianArchiveId(prefix = "archive") {
+  return `${prefix}-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`;
+}
+
+function setWentianSelectedArchiveId(id) {
+  try {
+    localStorage.setItem(WENTIAN_SELECTED_ARCHIVE_KEY, id);
+  } catch (_err) {}
+}
+
+function getWentianSelectedArchiveId(archives) {
+  let selectedId = "";
+  try {
+    selectedId = localStorage.getItem(WENTIAN_SELECTED_ARCHIVE_KEY) || "";
+  } catch (_err) {}
+  if (archives.some((item) => item.id === selectedId)) return selectedId;
+  return archives[0]?.id || "";
+}
+
+function archiveFromChartState(chartState) {
+  if (!chartState?.chartData) return null;
+  const chartRecordId = chartState.chartData.chartRecordId || getWentianChartRecordId();
+  const form = chartState.form || {};
+  const id = chartState.archiveId || form.archiveId || `archive-${chartRecordId}`;
+  return {
+    id,
+    chartRecordId,
+    chart: chartState.chart || null,
+    chartData: { ...chartState.chartData, chartRecordId },
+    form: { ...form, archiveId: id },
+    createdAt: chartState.createdAt || new Date().toISOString(),
+  };
+}
+
+function buildWentianArchiveFromInput({ id, name, gender, datetime, isDefault = false }) {
+  const chartRecordId = makeWentianUuid();
+  const date = new Date(datetime);
+  const dateStr = datetime.slice(0, 10);
+  const timeIndex = getWentianTimeIndex(date.getHours(), date.getMinutes());
+  let chart = null;
+  let chartData = null;
+  const lib = getWentianIztroLib();
+
+  try {
+    if (lib) {
+      chart = typeof lib.bySolar === "function"
+        ? lib.bySolar(dateStr, timeIndex, gender === "female" ? "女" : "男", true)
+        : lib.astrolabeBySolarDate(dateStr, timeIndex, gender === "female" ? "女" : "男", true);
+      chartData = buildWentianChartPayload(chart, { gender, date, dateStr, timeIndex, city: "" });
+    }
+  } catch (_err) {
+    chart = null;
+  }
+
+  if (!chartData) {
+    chartData = {
+      ...WENTIAN_XU_CHART_BASE,
+      gender,
+      birthDate: formatWentianDateTime(date),
+      solarTime: formatWentianDateTime(date),
+    };
+  }
+  chartData.chartRecordId = chartRecordId;
+
+  return {
+    id,
+    chartRecordId,
+    chart,
+    chartData,
+    form: { archiveId: id, name, gender, type: "ziwei", datetime, useTrueSolar: false, isDefault },
+    createdAt: new Date().toISOString(),
+  };
+}
+
+function getDefaultWentianArchives() {
+  return [
+    {
+      id: "default-xie",
+      chartRecordId: makeWentianUuid(),
+      chart: null,
+      chartData: { ...WENTIAN_XU_CHART_BASE, chartRecordId: makeWentianUuid() },
+      form: {
+        archiveId: "default-xie",
+        name: "谢",
+        gender: "male",
+        type: "ziwei",
+        datetime: "1991-02-16T22:58",
+        useTrueSolar: false,
+        isDefault: true,
+      },
+      createdAt: new Date().toISOString(),
+    },
+    buildWentianArchiveFromInput({
+      id: "default-mingzhu",
+      name: "命主",
+      gender: "female",
+      datetime: "2026-05-12T15:08",
+      isDefault: true,
+    }),
+  ].map((archive) => {
+    if (archive.id === "default-xie") {
+      archive.chartData.chartRecordId = archive.chartRecordId;
+    }
+    return archive;
+  });
+}
+
+function normalizeWentianArchive(archive) {
+  if (!archive?.chartData) return null;
+  const id = archive.id || archive.form?.archiveId || makeWentianArchiveId();
+  const chartRecordId = archive.chartRecordId || archive.chartData.chartRecordId || makeWentianUuid();
+  return {
+    ...archive,
+    id,
+    chartRecordId,
+    chartData: { ...archive.chartData, chartRecordId },
+    form: { ...(archive.form || {}), archiveId: id },
+  };
+}
+
+function getWentianArchiveList() {
+  let archives = readWentianArchives().map(normalizeWentianArchive).filter(Boolean);
+  const currentArchive = archiveFromChartState(getWentianSavedChart());
+  if (!archives.length) archives = getDefaultWentianArchives();
+  if (currentArchive && !archives.some((item) => item.id === currentArchive.id)) {
+    archives.unshift(currentArchive);
+  }
+  writeWentianArchives(archives);
+  return archives;
+}
+
+function saveWentianArchiveFromChartState(chartState) {
+  const archive = archiveFromChartState(chartState);
+  if (!archive) return;
+  const archives = getWentianArchiveList();
+  const index = archives.findIndex((item) => item.id === archive.id || item.chartRecordId === archive.chartRecordId);
+  if (index >= 0) archives[index] = archive;
+  else archives.unshift(archive);
+  writeWentianArchives(archives);
+  setWentianSelectedArchiveId(archive.id);
+}
+
+function saveWentianChart(chartState, options = {}) {
   try {
     localStorage.setItem(WENTIAN_CHART_STORAGE_KEY, JSON.stringify(chartState));
   } catch (_err) {}
+  if (options.upsertArchive !== false) saveWentianArchiveFromChartState(chartState);
 }
 
 function formatWentianDateTime(date) {
@@ -823,6 +1047,74 @@ function getWentianChartPayload() {
   const saved = getWentianSavedChart();
   if (saved?.chartData) return { ...saved.chartData, chartRecordId };
   return { ...WENTIAN_XU_CHART_BASE, chartRecordId };
+}
+
+function getWentianArchiveDisplay(archive) {
+  const form = archive?.form || {};
+  const chartData = archive?.chartData || {};
+  const sizhu = chartData.sizhu || {};
+  const name = form.name || "命主";
+  const gender = form.gender === "female" ? "女" : "男";
+  const datetime = (form.datetime || chartData.birthDate || chartData.solarTime || "").replace("T", " ").replace(/:00$/, "");
+  const pillars = [sizhu.year, sizhu.month, sizhu.day, sizhu.hour].filter(Boolean).join(" ");
+  return {
+    name,
+    gender,
+    datetime,
+    pillars: pillars || "辛未 庚寅 丁巳 辛亥",
+    tag: "四柱八字",
+    badge: form.isDefault ? "默认" : "",
+  };
+}
+
+function getCurrentWentianArchive() {
+  const archives = getWentianArchiveList();
+  const current = getWentianSavedChart();
+  const currentId = current?.archiveId || current?.form?.archiveId || "";
+  const selectedId = currentId || getWentianSelectedArchiveId(archives);
+  return archives.find((item) => item.id === selectedId) || archives[0] || null;
+}
+
+function applyWentianArchiveToCurrent(archive) {
+  if (!archive) return false;
+  const chartRecordId = archive.chartRecordId || archive.chartData?.chartRecordId || makeWentianUuid();
+  try {
+    localStorage.setItem("wentian-xubanxian-chart-record-id", chartRecordId);
+  } catch (_err) {
+    wentianFallbackChartRecordId = chartRecordId;
+  }
+  setWentianSelectedArchiveId(archive.id);
+  saveWentianChart({
+    archiveId: archive.id,
+    chart: archive.chart || null,
+    chartData: { ...archive.chartData, chartRecordId },
+    form: { ...(archive.form || {}), archiveId: archive.id },
+    createdAt: archive.createdAt || new Date().toISOString(),
+  }, { upsertArchive: false });
+  wentianXuChat.sessionId = null;
+  wentianXuChat.sessionPromise = null;
+  wentianXuChat.messages = [];
+  return true;
+}
+
+function pickWentianArchive(id) {
+  wentianArchiveDraftId = id;
+  for (const row of document.querySelectorAll("[data-wentian-archive-option]")) {
+    const selected = row.dataset.archiveId === id;
+    row.classList.toggle("is-selected", selected);
+    row.setAttribute("aria-pressed", selected ? "true" : "false");
+    const check = row.querySelector(".wentian-archive-check");
+    if (check) check.textContent = selected ? "✓" : "";
+  }
+}
+
+function confirmWentianArchiveSelection() {
+  const archives = getWentianArchiveList();
+  const id = wentianArchiveDraftId || getWentianSelectedArchiveId(archives);
+  const archive = archives.find((item) => item.id === id) || archives[0];
+  if (!applyWentianArchiveToCurrent(archive)) return;
+  wentianArchiveDraftId = null;
+  navigate("screen-4");
 }
 
 function getWentianTransientKey() {
@@ -995,6 +1287,8 @@ function initWentianXuChat() {
     });
     const nameEl = document.querySelector('[data-node-id="source-4-bazi-name"]');
     if (nameEl) nameEl.textContent = `${saved.form?.name || "当前"}的八字`;
+    const profileEl = document.querySelector('[data-node-id="source-4-profile-text"]');
+    if (profileEl) profileEl.textContent = `${saved.form?.name || "当前"}⌄`;
     const footEl = document.querySelector('[data-node-id="source-4-bazi-foot"]');
     if (footEl) footEl.textContent = `日主：${sizhu.dayStem || "—"}    生肖：${saved.chartData?.zodiac || "—"}`;
   }
@@ -1076,9 +1370,11 @@ async function submitWentianChartForm() {
     const chartData = buildWentianChartPayload(chart, norm);
 
     saveWentianChart({
+      archiveId: `archive-${chartData.chartRecordId}`,
       chart,
       chartData,
       form: {
+        archiveId: `archive-${chartData.chartRecordId}`,
         name: norm.name,
         gender: norm.gender,
         type: norm.type,
@@ -1594,6 +1890,12 @@ function renderConvertedScreen(no) {
       ${convertedFlowHotspots(screen)}
     `, 844, "converted source-screen no-status-shift", true);
   }
+  if (screen.no === 5) {
+    wentianArchiveDraftId = null;
+    return figPhone(`screen-${screen.no}`, `${String(screen.no).padStart(2, "0")} ${screen.title}`, `
+      ${sourceArchiveSelectScreen()}
+    `, 844, "converted source-screen no-status-shift", true);
+  }
   if (screen.no === 25) {
     return figPhone(`screen-${screen.no}`, `${String(screen.no).padStart(2, "0")} ${screen.title}`, `
       ${sourceProfileScreen(screen)}
@@ -2044,6 +2346,15 @@ document.addEventListener("click", (event) => {
   }
   const action = event.target.closest("[data-action]")?.dataset.action;
   if (action === "back") navigate(state.stack.pop() || "home", false);
+  if (action === "wentian-archive-pick") {
+    const option = event.target.closest("[data-archive-id]");
+    if (option?.dataset.archiveId) pickWentianArchive(option.dataset.archiveId);
+    return;
+  }
+  if (action === "wentian-archive-confirm") {
+    confirmWentianArchiveSelection();
+    return;
+  }
   if (action === "wentian-chat-send") {
     sendWentianXuChat();
     return;
