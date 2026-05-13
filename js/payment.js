@@ -35,6 +35,8 @@
     payMethod: 'native',
     paidReloadTimer: null,
     checkingStatus: false,
+    expiredAt: null,
+    expiryTimer: null,
   };
 
   function isLocalDev() {
@@ -117,11 +119,13 @@
   // ── 购买流程 ──────────────────────────────────────────────────
   async function startPurchase() {
     clearPaidReload();
+    clearExpiryTimer();
     _s.orderNo  = null;
     _s.isMock   = false;
     _s.payUrl   = null;
     _s.payMethod = 'native';
     _s.checkingStatus = false;
+    _s.expiredAt = null;
     stopPoll();
     show('pay-modal');
     renderModal('loading');
@@ -150,6 +154,8 @@
 
     _s.orderNo  = r1.data.orderNo;
     _s.isMock   = !!r1.data.mockMode;
+    _s.expiredAt = r1.data.expiredAt || null;
+    if (r1.data.amountYuan) PRODUCT.price = r1.data.amountYuan;
 
     var r2 = await tryPost('/api/payments/create-session', {
       orderNo:   _s.orderNo,
@@ -159,6 +165,9 @@
     if (r2.ok) {
       _s.payUrl    = r2.data.payUrl  || null;
       _s.payMethod = r2.data.payMethod || _s.payMethod;
+    } else if (!_s.isMock) {
+      renderModal('error', { error: r2.error || '二维码生成失败，请稍后重试' });
+      return;
     }
 
     var tip = '';
@@ -171,7 +180,10 @@
     }
 
     renderModal('pending', { orderNo: _s.orderNo, tip: tip });
-    if (!_s.isMock) startPoll(_s.orderNo);
+    if (!_s.isMock) {
+      startPoll(_s.orderNo);
+      startExpiryCountdown();
+    }
   }
 
   // ── QR 码渲染 ─────────────────────────────────────────────────
@@ -251,15 +263,22 @@
       }
 
       body =
+        '<div class="pay-steps pay-steps-pending">' +
+          '<span>扫码付款</span><i></i><span>自动确认</span><i></i><span>开通会员</span>' +
+        '</div>' +
         '<div class="pay-order-row"><span>商品</span><span>' + PRODUCT.name + '</span></div>' +
         '<div class="pay-order-row"><span>实付金额</span><strong>¥' + PRODUCT.price + '<span style="font-size:13px;font-weight:400;color:#7a6a4a;margin-left:2px">/ 月</span></strong></div>' +
         '<div class="pay-order-row"><span>订单号</span><code>' + (data.orderNo || '') + '</code></div>' +
+        (_s.expiredAt ? '<div class="pay-order-row"><span>有效时间</span><span id="pay-expire-countdown">--:--</span></div>' : '') +
         '<div class="pay-order-row"><span>状态</span><span class="pay-state pay-state-pending">待支付</span></div>' +
         (lines ? '<div class="pay-tip">' + lines + '</div>' : '') +
         actionArea;
 
     } else if (phase === 'paid') {
       body =
+        '<div class="pay-steps pay-steps-done">' +
+          '<span>扫码付款</span><i></i><span>确认完成</span><i></i><span>已开通</span>' +
+        '</div>' +
         '<div class="pay-success-icon">✓</div>' +
         '<div class="pay-success-title">支付成功，已开通会员</div>' +
         '<div class="pay-order-row"><span>订单号</span><code>' + (_s.orderNo || '') + '</code></div>' +
@@ -311,13 +330,46 @@
     }
   }
 
-  function closeModal() { stopPoll(); clearPaidReload(); hide('pay-modal'); }
+  function closeModal() { stopPoll(); clearPaidReload(); clearExpiryTimer(); hide('pay-modal'); }
 
   function clearPaidReload() {
     if (_s.paidReloadTimer) {
       clearTimeout(_s.paidReloadTimer);
       _s.paidReloadTimer = null;
     }
+  }
+
+  function clearExpiryTimer() {
+    if (_s.expiryTimer) {
+      clearInterval(_s.expiryTimer);
+      _s.expiryTimer = null;
+    }
+  }
+
+  function formatRemaining(ms) {
+    var total = Math.max(0, Math.floor(ms / 1000));
+    var m = String(Math.floor(total / 60)).padStart(2, '0');
+    var s = String(total % 60).padStart(2, '0');
+    return m + ':' + s;
+  }
+
+  function updateExpiryCountdown() {
+    if (!_s.expiredAt) return;
+    var el = qs('pay-expire-countdown');
+    var remaining = new Date(_s.expiredAt).getTime() - Date.now();
+    if (el) el.textContent = formatRemaining(remaining);
+    if (remaining <= 0) {
+      clearExpiryTimer();
+      stopPoll();
+      renderModal('error', { error: '订单已过期，请重新下单' });
+    }
+  }
+
+  function startExpiryCountdown() {
+    clearExpiryTimer();
+    if (!_s.expiredAt) return;
+    updateExpiryCountdown();
+    _s.expiryTimer = setInterval(updateExpiryCountdown, 1000);
   }
 
   function setConfirmState(state, message, lockButton) {
@@ -338,6 +390,7 @@
   function handlePaid() {
     _s.checkingStatus = false;
     stopPoll();
+    clearExpiryTimer();
     renderModal('paid');
     updateQuotaDisplay({ isMember: true, dailyLimit: 200, remaining: 200 });
     clearPaidReload();
@@ -386,6 +439,10 @@
       setConfirmState('error', '暂时没有确认成功，稍后会自动重试');
       return;
     }
+    if (r.data.expiredAt && !_s.expiredAt) {
+      _s.expiredAt = r.data.expiredAt;
+      startExpiryCountdown();
+    }
     var st = r.data.status;
     if (st === 'paid') { handlePaid(); }
     else if (st === 'created' || st === 'pending') {
@@ -403,6 +460,11 @@
   }
   function stopPoll() {
     if (_s.pollTimer) { clearInterval(_s.pollTimer); _s.pollTimer = null; }
+  }
+
+  function confirmActivePayment() {
+    if (!_s.orderNo || _s.isMock || !_s.payUrl) return;
+    checkStatus(_s.orderNo, true);
   }
 
   // ── 配额显示（由 ai-chat.js 返回的 quota 字段驱动）──────────
@@ -504,6 +566,10 @@
       if (e.key !== 'Escape') return;
       hide('pay-shop-modal');
       closeModal();
+    });
+    window.addEventListener('focus', confirmActivePayment);
+    document.addEventListener('visibilitychange', function() {
+      if (!document.hidden) confirmActivePayment();
     });
 
     renderShop('pay-shop-products');

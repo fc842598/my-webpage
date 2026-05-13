@@ -245,6 +245,36 @@
   gap: 0;
 }
 
+.pay-steps {
+  display: grid;
+  grid-template-columns: auto 1fr auto 1fr auto;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 10px;
+  color: #7a6a4a;
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.pay-steps span {
+  min-width: 0;
+  text-align: center;
+}
+
+.pay-steps i {
+  height: 1px;
+  background: rgba(201, 169, 97, 0.16);
+}
+
+.pay-steps-pending span:first-child,
+.pay-steps-done span {
+  color: #c9a961;
+}
+
+.pay-steps-done i {
+  background: rgba(109, 202, 138, 0.35);
+}
+
 /* ── 关闭按钮 ──────────────────────────────────────────────── */
 .pay-shop-close,
 .pay-modal-close,
@@ -302,6 +332,11 @@
   color: #e8d5a3;
   font-size: 18px;
   font-weight: 700;
+}
+
+#pay-expire-countdown {
+  color: #c9a961;
+  font-variant-numeric: tabular-nums;
 }
 
 /* ── 状态标签 ──────────────────────────────────────────────── */
@@ -438,6 +473,7 @@
   color: #8a7a5a;
   text-align: center;
   line-height: 1.5;
+  padding: 0 6px;
 }
 
 .pay-confirm-checking {
@@ -450,6 +486,21 @@
 
 .pay-confirm-error {
   color: #c97040;
+}
+
+@media (max-width: 420px) {
+  .pay-modal-body {
+    padding: 16px 16px 18px;
+  }
+
+  .pay-steps {
+    gap: 5px;
+    font-size: 10px;
+  }
+
+  .pay-order-row code {
+    max-width: 170px;
+  }
 }
 
 /* ── 提示文字 ──────────────────────────────────────────────── */
