@@ -1792,17 +1792,34 @@ function renderWentianPolishedScreen(screen) {
   if (no === 13 || no === 14) {
     const loading = no === 14;
     return `
-      ${figBox(`wt${no}-bg`, 0, 0, 390, 844, "", "background:#f7f7f6;")}
-      ${wentianSimpleHeader(`wt${no}`, "抽签", "◷")}
+      ${figBox(`wt${no}-bg`, 0, 0, 390, 844, "", "background:linear-gradient(180deg,#fffdf8 0%,#fbf7ef 48%,#f7f2ea 100%);")}
+      ${wentianSimpleHeader(`wt${no}`, "黄大仙灵签", "◷")}
+      ${figBox(`wt${no}-hero`, 22, 104, 346, 108, "", "border-radius:18px;background:#fff;box-shadow:0 10px 26px rgba(70,45,25,.1);")}
+      ${figText(`wt${no}-hero-title`, loading ? "正在为你取签" : "心中默念所问之事", 44, 128, 210, 18, "#25211d", 800)}
+      ${figText(`wt${no}-hero-copy`, loading ? "已接入当前档案，签文生成后可交给许半仙继续解读。" : "感情、事业、财运皆可问。抽签后可查看签文、解签和 AI 延展。", 44, 160, 282, 13, "#776f65", 500, "left", "line-height:1.55;")}
+      ${figBox(`wt${no}-count`, 270, 126, 72, 26, "", "border-radius:13px;background:#fff7e8;border:1px solid #ead8ae;")}
+      ${figText(`wt${no}-count-text`, "剩余 1 次", 270, 133, 72, 11, "#9b742e", 800, "center")}
+      ${figBox(`wt${no}-stage`, 32, 246, 326, 330, "", "border-radius:24px;background:#fff;box-shadow:0 14px 34px rgba(70,45,25,.11);overflow:hidden;")}
+      ${figBox(`wt${no}-halo`, 96, 268, 198, 198, "", "border-radius:99px;background:radial-gradient(circle,rgba(215,172,70,.22),rgba(215,172,70,0) 68%);")}
       ${Array.from({ length: 18 }, (_, index) => {
-        const x = 88 + index * 12 + (loading ? (index % 2) * 2 : 0);
-        const y = loading ? 300 + (index % 5) * 4 : 292 + Math.abs(index - 9) * 3;
+        const x = 86 + index * 12 + (loading ? (index % 2) * 2 : 0);
+        const y = loading ? 306 + (index % 5) * 4 : 296 + Math.abs(index - 9) * 3;
         const rotate = -12 + index * 1.2;
-        return figBox(`wt${no}-stick-${index}`, x, y, 7, 190, "", `border-radius:4px;background:#f3d86d;transform:rotate(${rotate}deg);transform-origin:bottom center;`);
+        return figBox(`wt${no}-stick-${index}`, x, y, 7, 184, "", `border-radius:4px;background:#f3d86d;transform:rotate(${rotate}deg);transform-origin:bottom center;`);
       }).join("")}
-      ${figBox(`wt${no}-bucket`, 96, 462, 198, 138, "", "border-radius:4px 4px 20px 20px;background:#e5e3df;")}
-      ${loading ? figBox(`wt${no}-load`, 154, 676, 82, 44, "", "border-radius:22px;background:#777;") : wentianGoldButton(`wt${no}`, "点击抽取签文", "screen-14", 680)}
-      ${loading ? figText(`wt${no}-load-text`, "↻", 154, 686, 82, 18, "#fff", 800, "center") : ""}
+      ${figBox(`wt${no}-bucket`, 96, 454, 198, 126, "", "border-radius:6px 6px 22px 22px;background:linear-gradient(180deg,#ebe8e2,#ddd9d2);")}
+      ${figText(`wt${no}-bucket-text`, loading ? "请稍候" : "黄大仙灵签", 0, 520, 390, 16, "#7f766b", 800, "center")}
+      ${loading ? `
+        ${figBox(`wt${no}-load-card`, 68, 612, 254, 76, "", "border-radius:18px;background:#1f1d1a;box-shadow:0 10px 22px rgba(20,15,10,.18);")}
+        ${figText(`wt${no}-load-title`, "签文将现", 68, 628, 254, 16, "#fff", 800, "center")}
+        ${figText(`wt${no}-load-copy`, "正在抽取第廿九签", 68, 655, 254, 12, "#f1d88a", 700, "center")}
+      ` : `
+        ${["感情", "事业", "财运"].map((text, index) => `
+          ${figBox(`wt${no}-chip-${index}`, 64 + index * 88, 612, 72, 30, "", "border-radius:15px;background:#fff;border:1px solid #ead8ae;")}
+          ${figText(`wt${no}-chip-text-${index}`, text, 64 + index * 88, 620, 72, 11, "#9b742e", 800, "center")}
+        `).join("")}
+        ${wentianGoldButton(`wt${no}`, "虔诚抽签", "screen-14", 690)}
+      `}
     `;
   }
   if (no === 15) {
@@ -1840,17 +1857,23 @@ function renderWentianPolishedScreen(screen) {
   if (no >= 17 && no <= 19) {
     const count = no === 17 ? 0 : no === 18 ? 4 : 5;
     return `
-      ${figBox(`wt${no}-bg`, 0, 0, 390, 844, "", "background:#f7f7f6;")}
+      ${figBox(`wt${no}-bg`, 0, 0, 390, 844, "", "background:linear-gradient(180deg,#fffdf8 0%,#fbf7ef 52%,#f7f2ea 100%);")}
       ${wentianSimpleHeader(`wt${no}`, "起卦", "◷")}
-      ${figBox(`wt${no}-card`, 24, 126, 342, 130, "", "border-radius:14px;background:#fff;box-shadow:0 8px 20px rgba(70,45,25,.08);")}
-      ${figText(`wt${no}-method`, "起卦方式", 42, 148, 80, 14, "#7f766b", 700)}
-      ${figBox(`wt${no}-method-a`, 42, 178, 132, 32, "", "border-radius:16px;background:#fff8ec;border:1px solid #e0c98c;")}
-      ${figText(`wt${no}-method-a-text`, "在线起卦", 42, 187, 132, 12, "#a77721", 800, "center")}
-      ${figBox(`wt${no}-method-b`, 190, 178, 132, 32, "", "border-radius:16px;background:#f2ede8;")}
-      ${figText(`wt${no}-method-b-text`, "手动起卦", 190, 187, 132, 12, "#8f867b", 700, "center")}
-      ${figText(`wt${no}-time-label`, "起卦时间", 42, 226, 80, 13, "#7f766b")}
-      ${figText(`wt${no}-time`, "公历 2026-05-12 15:20", 128, 225, 160, 13, "#25211d", 700)}
-      ${[0, 1, 2].map((idx) => wentianCoin(`wt${no}-coin-${idx}`, 94 + idx * 76, 328, count > idx)).join("")}
+      ${count === 0 ? `
+        ${figBox(`wt${no}-intro`, 24, 88, 342, 76, "", "border-radius:16px;background:#fff;box-shadow:0 8px 20px rgba(70,45,25,.08);")}
+        ${figText(`wt${no}-intro-title`, "六爻在线起卦", 44, 108, 150, 17, "#25211d", 800)}
+        ${figText(`wt${no}-intro-copy`, "先定问题，再投铜钱。系统会生成本卦、变卦和 AI 解读入口。", 44, 136, 282, 12, "#7f766b", 500)}
+      ` : ""}
+      ${figBox(`wt${no}-card`, 24, count === 0 ? 184 : 126, 342, count === 0 ? 166 : 130, "", "border-radius:14px;background:#fff;box-shadow:0 8px 20px rgba(70,45,25,.08);")}
+      ${figText(`wt${no}-method`, "起卦方式", 42, count === 0 ? 206 : 148, 80, 14, "#7f766b", 700)}
+      ${figBox(`wt${no}-method-a`, 42, count === 0 ? 236 : 178, 132, 32, "", "border-radius:16px;background:#fff8ec;border:1px solid #e0c98c;")}
+      ${figText(`wt${no}-method-a-text`, "在线起卦", 42, count === 0 ? 245 : 187, 132, 12, "#a77721", 800, "center")}
+      ${figBox(`wt${no}-method-b`, 190, count === 0 ? 236 : 178, 132, 32, "", "border-radius:16px;background:#f2ede8;")}
+      ${figText(`wt${no}-method-b-text`, "手动起卦", 190, count === 0 ? 245 : 187, 132, 12, "#8f867b", 700, "center")}
+      ${figText(`wt${no}-time-label`, "起卦时间", 42, count === 0 ? 284 : 226, 80, 13, "#7f766b")}
+      ${figText(`wt${no}-time`, "公历 2026-05-12 15:20", 128, count === 0 ? 283 : 225, 160, 13, "#25211d", 700)}
+      ${count === 0 ? figText(`wt${no}-question`, "所问：事业近期是否适合推进新计划？", 42, 318, 260, 13, "#7f766b") : ""}
+      ${[0, 1, 2].map((idx) => wentianCoin(`wt${no}-coin-${idx}`, 94 + idx * 76, count === 0 ? 404 : 328, count > idx)).join("")}
       ${count ? wentianHexLines(`wt${no}`, 470, no === 19 ? 1 : 0) : ""}
       ${wentianGoldButton(`wt${no}`, count ? `投掷 ${count} 次` : "点击投掷铜钱", no === 19 ? "screen-20" : `screen-${no + 1}`, 724)}
     `;
