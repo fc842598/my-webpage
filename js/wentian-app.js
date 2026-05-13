@@ -1649,6 +1649,400 @@ function convertedAi(screen) {
   return base;
 }
 
+function wentianSimpleHeader(id, title, right = "") {
+  return `
+    ${figButton(`${id}-back-hit`, 10, 38, 54, 54, 'data-action="back"')}
+    ${figText(`${id}-back`, "‹", 22, 42, 30, 30, "#25211d", 400)}
+    ${figText(`${id}-title`, title, 62, 51, 266, 17, "#25211d", 800, "center")}
+    ${right ? figText(`${id}-right`, right, 334, 48, 36, 20, "#8d857b", 700, "center") : ""}
+  `;
+}
+
+function wentianGoldButton(id, label, route, y = 742) {
+  return `
+    ${figBox(`${id}-button`, 42, y, 306, 50, "", "border-radius:25px;background:#111;box-shadow:0 8px 18px rgba(20,15,10,.16);")}
+    ${figButton(`${id}-button-hit`, 42, y, 306, 50, `data-route="${route}"`)}
+    ${figText(`${id}-button-text`, label, 42, y + 15, 306, 14, "#fff", 800, "center")}
+  `;
+}
+
+function wentianArchiveMini(id, y, name = "谢", selected = false) {
+  return `
+    ${figBox(`${id}-row`, 34, y, 322, 72, "", `border:1px solid ${selected ? "#d0a33c" : "#efe3d0"};border-radius:14px;background:#fff;box-shadow:0 6px 16px rgba(72,48,26,.07);`)}
+    ${figBox(`${id}-avatar`, 50, y + 14, 44, 44, "", "border-radius:22px;background:#f5ead4;")}
+    ${figText(`${id}-avatar-text`, name.slice(0, 1), 50, y + 27, 44, 13, "#bd8624", 800, "center")}
+    ${figText(`${id}-name`, name, 110, y + 16, 78, 15, "#25211d", 800)}
+    ${figText(`${id}-meta`, selected ? "默认　男　阳历" : "命主　女　阴历", 164, y + 17, 120, 11, "#b28b45", 700)}
+    ${figText(`${id}-date`, selected ? "1991-02-16 22:58" : "2026-05-12 15:08", 110, y + 42, 160, 12, "#8d857b")}
+    ${figText(`${id}-check`, selected ? "✓" : "○", 320, y + 25, 22, 18, selected ? "#bd8624" : "#d8cdbc", 800, "center")}
+  `;
+}
+
+function wentianCoin(id, x, y, active = true) {
+  return `
+    ${figBox(`${id}-coin`, x, y, 46, 46, "", `border-radius:23px;background:${active ? "linear-gradient(145deg,#d8aa3b,#a47420)" : "linear-gradient(145deg,#c7b8a0,#867968)"};box-shadow:0 8px 16px rgba(93,63,24,.18);`)}
+    ${figBox(`${id}-coin-in`, x + 12, y + 12, 22, 22, "", "border-radius:11px;border:2px solid rgba(255,255,255,.45);")}
+  `;
+}
+
+function wentianHexLines(id, y, variant = 0) {
+  const lines = variant === 1
+    ? [["一爻", false], ["二爻", true], ["三爻", true], ["四爻", false], ["五爻", false], ["六爻", true]]
+    : [["一爻", false], ["二爻", false], ["三爻", true], ["四爻", true], ["五爻", false], ["六爻", false]];
+  return lines.map(([label, broken], index) => {
+    const top = y + index * 24;
+    return `
+      ${figText(`${id}-line-label-${index}`, label, 52, top - 4, 40, 12, "#8f867b")}
+      ${broken
+        ? `${figBox(`${id}-line-a-${index}`, 110, top, 70, 4, "", "border-radius:4px;background:#2b2722;")}${figBox(`${id}-line-b-${index}`, 210, top, 70, 4, "", "border-radius:4px;background:#2b2722;")}`
+        : figBox(`${id}-line-${index}`, 110, top, 170, 4, "", "border-radius:4px;background:#2b2722;")}
+      ${figText(`${id}-line-side-${index}`, broken ? "阴" : "阳", 306, top - 5, 24, 12, "#8f867b")}
+    `;
+  }).join("");
+}
+
+function renderWentianPolishedScreen(screen) {
+  const no = screen.no;
+  if (no === 10) {
+    return `
+      ${figBox("wt10-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
+      ${wentianSimpleHeader("wt10", "选择合盘类型")}
+      ${figBox("wt10-card", 34, 108, 322, 584, "", "border-radius:18px;background:#fff;box-shadow:0 12px 30px rgba(69,45,24,.12);overflow:hidden;")}
+      ${figText("wt10-title", "情侣合盘", 0, 136, 390, 25, "#25211d", 800, "center")}
+      ${["缘分深浅", "情感契合度", "冲突化解建议"].map((text, index) => `
+        ${figBox(`wt10-pill-${index}`, 122, 178 + index * 34, 146, 24, "", "border:1px solid #c8a65f;border-radius:12px;background:#fffaf0;")}
+        ${figText(`wt10-pill-text-${index}`, text, 122, 184 + index * 34, 146, 11, "#7c5d22", 700, "center")}
+      `).join("")}
+      ${figImage("wt10-image", "../images/wentian-prototype-assets/01-feature-hepan.png", 58, 282, 274, 228, "object-fit:contain;")}
+      ${figBox("wt10-start-row", 90, 564, 210, 28, "", "border-radius:14px;background:#fbf7ef;")}
+      ${figText("wt10-start-text", "开启合盘对话", 90, 571, 210, 12, "#25211d", 700, "center")}
+      ${figBox("wt10-record-row", 90, 604, 210, 28, "", "border-radius:14px;background:#fbf7ef;")}
+      ${figText("wt10-record-text", "查看合盘记录", 90, 611, 210, 12, "#25211d", 700, "center")}
+      ${wentianGoldButton("wt10", "开始合盘", "screen-11", 746)}
+    `;
+  }
+  if (no === 11) {
+    return `
+      ${figBox("wt11-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
+      ${wentianSimpleHeader("wt11", "选择合盘档案")}
+      ${figBox("wt11-hero", 36, 120, 318, 330, "", "border-radius:18px;background:#fff;box-shadow:0 10px 24px rgba(70,45,25,.12);")}
+      ${figText("wt11-title", "情侣合盘", 0, 150, 390, 22, "#25211d", 800, "center")}
+      ${figImage("wt11-img", "../images/wentian-prototype-assets/01-feature-hepan.png", 76, 205, 238, 178, "object-fit:contain;opacity:.9;")}
+      ${figBox("wt11-overlay", 0, 0, 390, 844, "", "background:rgba(0,0,0,.32);")}
+      ${figBox("wt11-sheet", 0, 486, 390, 358, "", "border-radius:22px 22px 0 0;background:#fff;")}
+      ${figBox("wt11-handle", 164, 500, 62, 4, "", "border-radius:4px;background:#e3d8c8;")}
+      ${figText("wt11-sheet-title", "选择档案", 28, 526, 160, 17, "#25211d", 800)}
+      ${figText("wt11-step", "已选0/2", 304, 529, 48, 11, "#a79986", 600, "right")}
+      ${wentianArchiveMini("wt11-a", 566, "谢", false)}
+      ${wentianArchiveMini("wt11-b", 650, "命主", false)}
+      ${figBox("wt11-new", 42, 746, 136, 44, "", "border:1px solid #d6b463;border-radius:10px;background:#fff;")}
+      ${figText("wt11-new-text", "+ 新建档案", 42, 758, 136, 13, "#9b742e", 700, "center")}
+      ${figBox("wt11-confirm", 212, 746, 136, 44, "", "border-radius:10px;background:#d2a642;opacity:.45;")}
+      ${figText("wt11-confirm-text", "确定", 212, 758, 136, 13, "#fff", 800, "center")}
+    `;
+  }
+  if (no === 12) {
+    return `
+      ${figBox("wt12-bg", 0, 0, 390, 844, "", "background:#f7f7f6;")}
+      ${wentianSimpleHeader("wt12", "", "◷")}
+      ${figBox("wt12-avatar", 145, 126, 100, 100, "", "border-radius:50px;background:#222;")}
+      ${figText("wt12-name", "两呼吸", 0, 252, 390, 16, "#25211d", 800, "center")}
+      ${figText("wt12-sub", "写下你的问题", 0, 279, 390, 14, "#8f8a84", 500, "center")}
+      ${figBox("wt12-input", 36, 356, 318, 92, "", "border-radius:12px;background:#fff;")}
+      ${figText("wt12-placeholder", "请输入想问什么？", 56, 386, 220, 14, "#b6b0aa")}
+      ${figBox("wt12-send", 314, 400, 32, 32, "", "border-radius:16px;background:#e4e1dd;")}
+      ${figText("wt12-send-text", "+", 314, 405, 32, 20, "#fff", 800, "center")}
+      ${["今日运势如何？", "最近的工作会有好的转机吗？", "我和TA的感情未来如何发展？", "近期的贵人会何时出现？"].map((text, index) => `
+        ${figBox(`wt12-chip-${index}`, 54, 504 + index * 42, 282, 30, "", "border-radius:15px;background:#fff;")}
+        ${figText(`wt12-chip-text-${index}`, text, 54, 512 + index * 42, 282, 12, "#7f7a74", 600, "center")}
+      `).join("")}
+    `;
+  }
+  if (no === 13 || no === 14) {
+    const loading = no === 14;
+    return `
+      ${figBox(`wt${no}-bg`, 0, 0, 390, 844, "", "background:#f7f7f6;")}
+      ${wentianSimpleHeader(`wt${no}`, "抽签", "◷")}
+      ${Array.from({ length: 18 }, (_, index) => {
+        const x = 88 + index * 12 + (loading ? (index % 2) * 2 : 0);
+        const y = loading ? 300 + (index % 5) * 4 : 292 + Math.abs(index - 9) * 3;
+        const rotate = -12 + index * 1.2;
+        return figBox(`wt${no}-stick-${index}`, x, y, 7, 190, "", `border-radius:4px;background:#f3d86d;transform:rotate(${rotate}deg);transform-origin:bottom center;`);
+      }).join("")}
+      ${figBox(`wt${no}-bucket`, 96, 462, 198, 138, "", "border-radius:4px 4px 20px 20px;background:#e5e3df;")}
+      ${loading ? figBox(`wt${no}-load`, 154, 676, 82, 44, "", "border-radius:22px;background:#777;") : wentianGoldButton(`wt${no}`, "点击抽取签文", "screen-14", 680)}
+      ${loading ? figText(`wt${no}-load-text`, "↻", 154, 686, 82, 18, "#fff", 800, "center") : ""}
+    `;
+  }
+  if (no === 15) {
+    return `
+      ${figBox("wt15-bg", 0, 0, 390, 844, "", "background:#2a2928;")}
+      ${wentianSimpleHeader("wt15", "", "◷")}
+      ${figBox("wt15-card", 62, 150, 266, 446, "", "border-radius:10px;background:#111;box-shadow:0 16px 36px rgba(0,0,0,.32);")}
+      ${figBox("wt15-paper", 92, 184, 206, 290, "", "border:2px solid #462b2b;border-radius:3px;background:#e98aa0;")}
+      ${figText("wt15-paper-title", "朱大仙灵签", 112, 220, 96, 20, "#2b201d", 800)}
+      ${figText("wt15-poem", "遗定良缘\n乱转涡鱼\n性立盖守\n家奇得靖\n舞烟泛鹤\n燕上晚也", 128, 258, 90, 22, "#2b201d", 800, "center", "line-height:1.22;")}
+      ${figBox("wt15-seal", 234, 202, 42, 42, "", "border:2px solid #332;border-radius:21px;")}
+      ${figText("wt15-result", "第廿九签", 0, 506, 390, 20, "#d7a941", 800, "center")}
+      ${figText("wt15-grade", "【中吉】", 0, 538, 390, 15, "#6fb866", 800, "center")}
+      ${figText("wt15-tip", "点击签面查看详情", 0, 566, 390, 12, "#bbb3aa", 500, "center")}
+      ${figButton("wt15-hit", 62, 150, 266, 446, 'data-route="screen-16"')}
+    `;
+  }
+  if (no === 16) {
+    const sections = [["签文", "岁岁休言悔，莫道定难改。"], ["解签", "眼前事宜先稳住心神，不急于求成。"], ["详情", "所问之事有转机，但需顺势而行。"], ["AI解签", "请许半仙结合命盘继续解读"]];
+    return `
+      ${figBox("wt16-bg", 0, 0, 390, 844, "", "background:#f7f7f6;")}
+      ${wentianSimpleHeader("wt16", "第廿九签\n【中吉】", "◷")}
+      ${sections.map(([title, desc], index) => {
+        const y = index === 0 ? 110 : 214 + (index - 1) * 130;
+        const h = index === 0 ? 80 : 104;
+        return `
+          ${figBox(`wt16-card-${index}`, 28, y, 334, h, "", "border-radius:12px;background:#fff;box-shadow:0 6px 18px rgba(70,45,25,.07);")}
+          ${figText(`wt16-title-${index}`, title, 48, y + 18, 120, 15, "#25211d", 800)}
+          ${figText(`wt16-desc-${index}`, desc, 48, y + 48, 284, 13, "#706a63", 500, "left", "line-height:1.55;")}
+        `;
+      }).join("")}
+      ${wentianGoldButton("wt16", "让 AI 继续解读此签", "screen-4", 720)}
+    `;
+  }
+  if (no >= 17 && no <= 19) {
+    const count = no === 17 ? 0 : no === 18 ? 4 : 5;
+    return `
+      ${figBox(`wt${no}-bg`, 0, 0, 390, 844, "", "background:#f7f7f6;")}
+      ${wentianSimpleHeader(`wt${no}`, "起卦", "◷")}
+      ${figBox(`wt${no}-card`, 24, 126, 342, 130, "", "border-radius:14px;background:#fff;box-shadow:0 8px 20px rgba(70,45,25,.08);")}
+      ${figText(`wt${no}-method`, "起卦方式", 42, 148, 80, 14, "#7f766b", 700)}
+      ${figBox(`wt${no}-method-a`, 42, 178, 132, 32, "", "border-radius:16px;background:#fff8ec;border:1px solid #e0c98c;")}
+      ${figText(`wt${no}-method-a-text`, "在线起卦", 42, 187, 132, 12, "#a77721", 800, "center")}
+      ${figBox(`wt${no}-method-b`, 190, 178, 132, 32, "", "border-radius:16px;background:#f2ede8;")}
+      ${figText(`wt${no}-method-b-text`, "手动起卦", 190, 187, 132, 12, "#8f867b", 700, "center")}
+      ${figText(`wt${no}-time-label`, "起卦时间", 42, 226, 80, 13, "#7f766b")}
+      ${figText(`wt${no}-time`, "公历 2026-05-12 15:20", 128, 225, 160, 13, "#25211d", 700)}
+      ${[0, 1, 2].map((idx) => wentianCoin(`wt${no}-coin-${idx}`, 94 + idx * 76, 328, count > idx)).join("")}
+      ${count ? wentianHexLines(`wt${no}`, 470, no === 19 ? 1 : 0) : ""}
+      ${wentianGoldButton(`wt${no}`, count ? `投掷 ${count} 次` : "点击投掷铜钱", no === 19 ? "screen-20" : `screen-${no + 1}`, 724)}
+    `;
+  }
+  if (no === 20) {
+    const sections = [["本卦：地风升", "升而有序，适合积累资源，稳步推进。"], ["卦意", "先小后大，贵在持久。"], ["事业建议", "不要急于换道，先把手头筹码做厚。"], ["关系建议", "关系中宜柔和沟通，避免强推。"]];
+    return `
+      ${figBox("wt20-bg", 0, 0, 390, 844, "", "background:#f7f7f6;")}
+      ${wentianSimpleHeader("wt20", "地风升")}
+      ${sections.map(([title, desc], index) => {
+        const y = 112 + index * 120;
+        return `
+          ${figBox(`wt20-sec-${index}`, 24, y, 342, 92, "", "border-radius:12px;background:#fff;box-shadow:0 6px 16px rgba(70,45,25,.07);")}
+          ${figText(`wt20-title-${index}`, title, 44, y + 18, 160, 15, "#25211d", 800)}
+          ${figText(`wt20-desc-${index}`, desc, 44, y + 48, 286, 13, "#706a63", 500, "left", "line-height:1.5;")}
+        `;
+      }).join("")}
+      ${wentianGoldButton("wt20", "购买完整解读", "screen-21", 720)}
+    `;
+  }
+  if (no === 21) {
+    return `
+      ${figBox("wt21-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
+      ${wentianSimpleHeader("wt21", "购买完整解读")}
+      ${figBox("wt21-card", 32, 160, 326, 360, "", "border-radius:18px;background:#fff;box-shadow:0 12px 30px rgba(70,45,25,.12);")}
+      ${figText("wt21-title", "对话次数已用尽", 0, 218, 390, 20, "#25211d", 800, "center")}
+      ${figText("wt21-desc", "可通过开通会员、购买对话包或充值灵石继续深度解读。", 70, 260, 250, 14, "#756d63", 500, "center", "line-height:1.55;")}
+      ${figBox("wt21-vip", 58, 334, 274, 42, "", "border-radius:8px;background:#d1a43b;")}
+      ${figText("wt21-vip-text", "开通会员", 58, 346, 274, 14, "#fff", 800, "center")}
+      ${figBox("wt21-buy", 58, 388, 274, 42, "", "border-radius:8px;background:#a73f35;")}
+      ${figText("wt21-buy-text", "购买对话包", 58, 400, 274, 14, "#fff", 800, "center")}
+      ${figBox("wt21-cancel", 58, 442, 274, 42, "", "border:1px solid #eadfce;border-radius:8px;background:#fff;")}
+      ${figText("wt21-cancel-text", "取消", 58, 454, 274, 14, "#756d63", 700, "center")}
+      ${figButton("wt21-pay-hit", 58, 388, 274, 42, 'data-route="screen-29"')}
+    `;
+  }
+  if (no === 22) {
+    return `
+      ${figBox("wt22-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
+      ${wentianSimpleHeader("wt22", "邀请好友")}
+      ${figBox("wt22-top", 16, 94, 358, 92, "", "border-radius:12px;background:linear-gradient(135deg,#d5ad42,#9f741d);")}
+      ${figText("wt22-num", "0", 80, 112, 80, 34, "#fff", 800)}
+      ${figText("wt22-num-label", "邀请好友人数", 80, 152, 130, 13, "#fff6df", 600)}
+      ${figBox("wt22-code", 16, 202, 358, 88, "", "border-radius:12px;background:#fff;box-shadow:0 8px 20px rgba(70,45,25,.08);")}
+      ${figText("wt22-code-title", "我的邀请码", 38, 220, 100, 13, "#8f867b", 700)}
+      ${figText("wt22-code-num", "8 R 7 U 5 8 Z W", 60, 252, 210, 18, "#25211d", 800, "center")}
+      ${["奖励规则", "邀请奖励", "收益记录"].map((title, index) => {
+        const y = 318 + index * 112;
+        return `
+          ${figBox(`wt22-rule-${index}`, 16, y, 358, 94, "", "border-radius:12px;background:#fff;box-shadow:0 8px 20px rgba(70,45,25,.07);")}
+          ${figText(`wt22-rule-title-${index}`, title, 42, y + 20, 110, 15, "#25211d", 800)}
+          ${figText(`wt22-rule-desc-${index}`, "好友注册后双方可获得灵石奖励，完成付费后可继续返利。", 42, y + 50, 278, 13, "#756d63", 500, "left", "line-height:1.45;")}
+        `;
+      }).join("")}
+      ${sourceAppBottomNav("藏宝阁", 780)}
+    `;
+  }
+  if (no === 23) {
+    return `
+      ${figBox("wt23-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
+      ${wentianSimpleHeader("wt23", "活动中心")}
+      ${[["邀请好友注册", "邀请好友注册，双方均可获得灵石奖励", "#d8ab3c"], ["邀请好友首次充值", "好友首次付费后，邀请人可获得额外奖励", "#f0a229"], ["每日签到", "连续签到获取灵石奖励", "#5fae95"]].map(([title, desc, color], index) => {
+        const y = 112 + index * 118;
+        return `
+          ${figBox(`wt23-card-${index}`, 16, y, 358, 94, "", "border-radius:12px;background:#fff;box-shadow:0 8px 20px rgba(70,45,25,.07);")}
+          ${figBox(`wt23-icon-${index}`, 34, y + 18, 52, 52, "", `border-radius:26px;background:${color};`)}
+          ${figText(`wt23-icon-text-${index}`, index === 0 ? "礼" : index === 1 ? "奖" : "签", 34, y + 34, 52, 15, "#fff", 800, "center")}
+          ${figText(`wt23-title-${index}`, title, 104, y + 18, 150, 16, "#25211d", 800)}
+          ${figText(`wt23-desc-${index}`, desc, 104, y + 46, 210, 13, "#756d63", 500)}
+          ${figText(`wt23-arrow-${index}`, "›", 338, y + 34, 20, 20, "#c9bba6", 800, "center")}
+        `;
+      }).join("")}
+    `;
+  }
+  if (no === 24) {
+    return `
+      ${figBox("wt24-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
+      ${wentianSimpleHeader("wt24", "邀请详情")}
+      ${["活动详情", "奖励说明", "到账规则", "常见问题"].map((title, index) => {
+        const y = 118 + index * 120;
+        return `
+          ${figBox(`wt24-card-${index}`, 24, y, 342, 94, "", "border-radius:12px;background:#fff;box-shadow:0 8px 20px rgba(70,45,25,.07);")}
+          ${figText(`wt24-title-${index}`, title, 44, y + 20, 120, 15, "#25211d", 800)}
+          ${figText(`wt24-desc-${index}`, "邀请好友使用问天AI，按规则获得灵石与会员权益奖励。", 44, y + 50, 280, 13, "#756d63", 500, "left", "line-height:1.45;")}
+        `;
+      }).join("")}
+    `;
+  }
+  if (no === 28) {
+    return `
+      ${figBox("wt28-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
+      ${wentianSimpleHeader("wt28", "卡券包")}
+      ${figText("wt28-sub", "可用的报告券", 0, 92, 390, 13, "#8d857b", 500, "center")}
+      ${figBox("wt28-icon", 170, 332, 50, 36, "", "border-radius:6px;background:#d8d2ca;")}
+      ${figBox("wt28-icon-cut", 188, 347, 14, 14, "", "border-radius:7px;background:#fbf7ef;")}
+      ${figText("wt28-empty", "暂无可用", 0, 394, 390, 14, "#a19a91", 600, "center")}
+      ${sourceAppBottomNav("我的", 780)}
+    `;
+  }
+  if (no === 29) {
+    return `
+      ${figBox("wt29-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
+      ${wentianSimpleHeader("wt29", "灵石充值")}
+      ${figBox("wt29-balance", 24, 118, 342, 106, "", "border-radius:14px;background:linear-gradient(135deg,#2b2620,#16130f);box-shadow:0 12px 26px rgba(25,18,12,.18);")}
+      ${figText("wt29-balance-label", "当前灵石", 48, 146, 110, 15, "#c9b887", 700)}
+      ${figText("wt29-balance-num", "1", 48, 172, 80, 32, "#fff", 800)}
+      ${figText("wt29-note", "灵石可以在藏宝阁兑换报告券/对话包", 48, 202, 250, 12, "#a69b8d")}
+      ${figText("wt29-select", "选择充值套餐", 24, 254, 130, 16, "#25211d", 800)}
+      ${[["120", "¥12", 24, 290], ["280", "¥28", 118, 290], ["580", "¥58", 212, 290], ["980", "¥98", 24, 388]].map(([stone, price, x, y], index) => `
+        ${figBox(`wt29-plan-${index}`, x, y, index === 3 ? 342 : 82, 74, "", `border:1px solid ${index === 0 ? "#c8a65f" : "#eadfce"};border-radius:10px;background:#fff;`)}
+        ${figText(`wt29-plan-stone-${index}`, stone, x, y + 18, index === 3 ? 342 : 82, 15, "#25211d", 800, "center")}
+        ${figText(`wt29-plan-price-${index}`, price, x, y + 43, index === 3 ? 342 : 82, 12, "#8d857b", 600, "center")}
+      `).join("")}
+      ${figText("wt29-pay-title", "选择支付方式", 24, 510, 130, 16, "#25211d", 800)}
+      ${figBox("wt29-alipay", 24, 548, 150, 42, "", "border:1px solid #c8a65f;border-radius:9px;background:#fff;")}
+      ${figText("wt29-alipay-text", "支付宝", 24, 560, 150, 13, "#bd8624", 800, "center")}
+      ${figBox("wt29-card", 196, 548, 150, 42, "", "border:1px solid #eadfce;border-radius:9px;background:#fff;")}
+      ${figText("wt29-card-text", "信用卡", 196, 560, 150, 13, "#25211d", 700, "center")}
+      ${figText("wt29-terms", "灵石仅限问天App内使用，充值后不支持退款", 0, 692, 390, 12, "#9e968d", 500, "center")}
+      ${figBox("wt29-submit", 42, 736, 306, 50, "", "border-radius:9px;background:#c49a34;")}
+      ${figButton("wt29-submit-hit", 42, 736, 306, 50, 'data-route="screen-30"')}
+      ${figText("wt29-submit-text", "立即充值 ¥12", 42, 751, 306, 14, "#fff", 800, "center")}
+    `;
+  }
+  if (no === 30) {
+    return `
+      ${figBox("wt30-bg", 0, 0, 390, 844, "", "background:#f3f4f7;")}
+      ${figBox("wt30-browser", 20, 20, 218, 34, "", "border:2px solid #111;border-radius:8px;background:#fff;")}
+      ${figText("wt30-browser-text", "UniPay", 52, 29, 90, 13, "#222", 700)}
+      ${figText("wt30-icons", "○  ◰", 306, 26, 48, 16, "#111", 700, "center")}
+      ${figBox("wt30-card", 28, 314, 334, 172, "", "border-radius:4px;background:#fff;")}
+      ${figText("wt30-title", "订单信息", 52, 342, 110, 16, "#25211d", 800)}
+      ${figText("wt30-id", "订单号　PAY_20260512_cfa12a1e", 52, 390, 240, 12, "#7d7670")}
+      ${figText("wt30-price-label", "支付金额", 52, 428, 100, 13, "#7d7670")}
+      ${figText("wt30-price", "¥12.00", 226, 424, 90, 20, "#145bdc", 800, "right")}
+      ${figBox("wt30-pay", 52, 512, 286, 42, "", "border-radius:3px;background:#145bdc;")}
+      ${figButton("wt30-pay-hit", 52, 512, 286, 42, 'data-route="screen-31"')}
+      ${figText("wt30-pay-text", "确认支付 ¥12.00", 52, 524, 286, 13, "#fff", 800, "center")}
+      ${figText("wt30-safe", "由支付服务商安全处理支付信息", 0, 578, 390, 11, "#a09a94", 500, "center")}
+    `;
+  }
+  if (no === 33) {
+    return `
+      ${figBox("wt33-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
+      ${wentianSimpleHeader("wt33", "问天会员")}
+      ${figBox("wt33-card", 24, 108, 342, 110, "", "border-radius:14px;background:linear-gradient(135deg,#2b2722,#14110d);")}
+      ${figText("wt33-card-title", "普通会员", 52, 138, 120, 19, "#fff", 800)}
+      ${figText("wt33-card-sub", "开通后享专属权益", 52, 170, 160, 13, "#c7bda8", 600)}
+      ${["命盘解析", "会员报告", "专属客服"].map((text, index) => `
+        ${figBox(`wt33-right-${index}`, 40 + index * 105, 252, 78, 70, "", "border-radius:10px;background:#fff;")}
+        ${figText(`wt33-right-icon-${index}`, index === 0 ? "◇" : index === 1 ? "▤" : "♛", 40 + index * 105, 270, 78, 20, "#c49a34", 800, "center")}
+        ${figText(`wt33-right-text-${index}`, text, 40 + index * 105, 298, 78, 12, "#25211d", 700, "center")}
+      `).join("")}
+      ${figText("wt33-plan-title", "选择套餐", 24, 354, 120, 16, "#25211d", 800)}
+      ${figBox("wt33-month", 24, 392, 160, 94, "", "border:1px solid #c8a65f;border-radius:12px;background:#fffaf0;")}
+      ${figText("wt33-month-title", "月度会员", 44, 414, 90, 15, "#25211d", 800)}
+      ${figText("wt33-month-price", "¥38", 44, 444, 90, 18, "#bd8624", 800)}
+      ${figBox("wt33-year", 206, 392, 160, 94, "", "border:1px solid #eadfce;border-radius:12px;background:#fff;")}
+      ${figText("wt33-year-title", "年度会员", 226, 414, 90, 15, "#25211d", 800)}
+      ${figText("wt33-year-price", "¥348", 226, 444, 90, 18, "#bd8624", 800)}
+      ${figBox("wt33-benefit", 24, 516, 342, 130, "", "border-radius:12px;background:#fff;")}
+      ${figText("wt33-benefit-title", "会员权益", 44, 538, 120, 15, "#25211d", 800)}
+      ${figText("wt33-benefit-list", "1. 每月赠送灵石\\n2. 解锁会员专属报告\\n3. 享受AI问答优先通道", 44, 572, 260, 13, "#756d63", 500, "left", "line-height:1.8;")}
+      ${figBox("wt33-submit", 42, 736, 306, 50, "", "border-radius:25px;background:#c49a34;")}
+      ${figButton("wt33-submit-hit", 42, 736, 306, 50, 'data-route="screen-30"')}
+      ${figText("wt33-submit-text", "立即开通 ¥38", 42, 751, 306, 14, "#fff", 800, "center")}
+    `;
+  }
+  if (no === 34) {
+    return `
+      ${sourceMineScreen(screen)}
+      ${figBox("wt34-overlay", 0, 0, 390, 844, "", "background:rgba(0,0,0,.3);")}
+      ${figBox("wt34-sheet", 0, 574, 390, 270, "", "border-radius:22px 22px 0 0;background:#fff;")}
+      ${figText("wt34-title", "分享文本", 0, 602, 390, 18, "#25211d", 800, "center")}
+      ${figText("wt34-close", "×", 334, 600, 28, 24, "#25211d", 400, "center")}
+      ${figBox("wt34-copy", 28, 644, 334, 72, "", "border-radius:10px;background:#fbf7ef;border:1px solid #eadfce;")}
+      ${figText("wt34-copy-text", "推荐你使用问天AI，AI智能和八字分析平台，为你解读命运密码。使用我的邀请码：8R7U58ZW", 44, 658, 280, 13, "#756d63", 500, "left", "line-height:1.45;")}
+      ${["微信好友", "朋友圈", "Chrome", "邮件"].map((text, index) => `
+        ${figBox(`wt34-share-${index}`, 38 + index * 82, 742, 42, 42, "", "border-radius:21px;background:#f5ead4;")}
+        ${figText(`wt34-share-icon-${index}`, index === 0 ? "微" : index === 1 ? "圈" : index === 2 ? "C" : "邮", 38 + index * 82, 755, 42, 14, "#bd8624", 800, "center")}
+        ${figText(`wt34-share-text-${index}`, text, 28 + index * 82, 794, 62, 11, "#756d63", 600, "center")}
+      `).join("")}
+    `;
+  }
+  if (no === 35) {
+    return `
+      ${figBox("wt35-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
+      ${wentianSimpleHeader("wt35", "联系我们")}
+      ${[["电子邮箱", "support@yuetianai.com", "✉"], ["小红书", "问天AI命理小助手", "♡"], ["微信公众号", "悦天AI公众号", "微"], ["X", "关注我们的推特", "𝕏"]].map(([title, desc, icon], index) => {
+        const y = 128 + index * 78;
+        return `
+          ${figBox(`wt35-row-${index}`, 24, y, 342, 56, "", "border-radius:12px;background:#fff;box-shadow:0 6px 16px rgba(70,45,25,.07);")}
+          ${figText(`wt35-icon-${index}`, icon, 42, y + 16, 24, 14, "#bd8624", 800, "center")}
+          ${figText(`wt35-title-${index}`, title, 82, y + 12, 120, 14, "#25211d", 800)}
+          ${figText(`wt35-desc-${index}`, desc, 82, y + 32, 180, 11, "#8d857b", 500)}
+          ${figText(`wt35-arrow-${index}`, "›", 330, y + 17, 20, 18, "#c9bba6", 800, "center")}
+        `;
+      }).join("")}
+    `;
+  }
+  if (no === 36) {
+    return `
+      ${figBox("wt36-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
+      ${wentianSimpleHeader("wt36", "关于我们")}
+      ${figBox("wt36-logo", 158, 126, 74, 74, "", "border-radius:18px;background:#1e1712;")}
+      ${figText("wt36-logo-text", "问天AI", 158, 152, 74, 16, "#d6ad3e", 800, "center")}
+      ${figText("wt36-name", "问天AI", 0, 230, 390, 20, "#25211d", 800, "center")}
+      ${figText("wt36-version", "v1.0.3199", 0, 260, 390, 12, "#8d857b", 600, "center")}
+      ${figText("wt36-desc", "问天AI是一款手机端命理排盘、合盘、抽签与AI解读工具，帮你把复杂命理信息转成可理解、可行动的建议。", 54, 304, 282, 14, "#756d63", 500, "center", "line-height:1.65;")}
+      ${["隐私协议", "用户协议", "检查更新"].map((title, index) => {
+        const y = 466 + index * 70;
+        return `
+          ${figBox(`wt36-row-${index}`, 24, y, 342, 54, "", "border-radius:12px;background:#fff;box-shadow:0 6px 16px rgba(70,45,25,.06);")}
+          ${figText(`wt36-title-${index}`, title, 58, y + 16, 160, 14, "#25211d", 800)}
+          ${figText(`wt36-arrow-${index}`, "›", 330, y + 16, 20, 18, "#c9bba6", 800, "center")}
+        `;
+      }).join("")}
+      ${figText("wt36-copy", "© 2026 YUETIAN AI All Rights Reserved", 0, 742, 390, 11, "#b4ada5", 500, "center")}
+    `;
+  }
+  return "";
+}
+
 function convertedSpecial(screen) {
   if (screen.no === 1) {
     return `
@@ -2110,6 +2504,13 @@ function renderConvertedScreen(no) {
       ${sourceZiweiMingpanScreen()}
       ${convertedFlowHotspots(screen)}
     `, 867, "converted source-screen no-status-shift", false);
+  }
+  const polishedScreen = renderWentianPolishedScreen(screen);
+  if (polishedScreen) {
+    return figPhone(`screen-${screen.no}`, `${String(screen.no).padStart(2, "0")} ${screen.title}`, `
+      ${polishedScreen}
+      ${convertedFlowHotspots(screen)}
+    `, 844, "converted source-screen no-status-shift", false);
   }
   const heading = screen.heading ? figText(`screen-${screen.no}-heading`, screen.heading, 24, 72, 180, 26, "#26211c", 700) : "";
   const badge = screen.badge && screen.no !== 1 ? `
