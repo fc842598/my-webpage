@@ -7,7 +7,7 @@ const reports = [
 
 const profiles = [
   ["谢广周", "普通会员 / 账号信息", "男 / 1990-05-11 / 已保存"],
-  ["晴子阿炳", "AI问天默认档案", "女 / 1995-08-18 / 已保存"]
+  ["命主", "AI问天默认档案", "女 / 1995-08-18 / 已保存"]
 ];
 
 const plans = [
@@ -1625,9 +1625,8 @@ function sourceLanguageSettingsScreen() {
 
 function convertedAi(screen) {
   const base = `
-    ${figBox(`screen-${screen.no}-avatar`, 42, 108, 44, 44, "converted-card", "border-radius:22px;background:#f2e8d6;")}
-    ${figText(`screen-${screen.no}-avatar-text`, "谢", 42, 120, 44, 14, "#b88c33", 700, "center")}
-    ${figText(`screen-${screen.no}-hello`, "你好！我是量子阿炳", 92, 112, 240, 21, "#b88c33", 700)}
+    ${figImage(`screen-${screen.no}-avatar`, "../images/wentian-prototype-assets/xu-banxian.jpg", 42, 108, 44, 44, "border-radius:22px;object-fit:cover;object-position:center 18%;")}
+    ${figText(`screen-${screen.no}-hello`, "你好！我是许半仙", 92, 112, 240, 21, "#b88c33", 700)}
     ${figBox(`screen-${screen.no}-bazi`, 32, 170, 326, 88, "converted-card", "")}
     ${figText(`screen-${screen.no}-bazi-title`, "当前八字", 48, 184, 294, 15, "#26211c", 700)}
     ${figText(`screen-${screen.no}-bazi-desc`, "年 辛未｜月 癸巳｜日 丁亥｜时 辛亥", 48, 212, 294, 12, "#8c8275")}
@@ -1777,9 +1776,9 @@ function renderWentianPolishedScreen(screen) {
     return `
       ${figBox("wt12-bg", 0, 0, 390, 844, "", "background:#f7f7f6;")}
       ${wentianSimpleHeader("wt12", "", "◷")}
-      ${figBox("wt12-avatar", 145, 126, 100, 100, "", "border-radius:50px;background:#222;")}
-      ${figText("wt12-name", "两呼吸", 0, 252, 390, 16, "#25211d", 800, "center")}
-      ${figText("wt12-sub", "写下你的问题", 0, 279, 390, 14, "#8f8a84", 500, "center")}
+      ${figImage("wt12-avatar", "../images/wentian-prototype-assets/xu-banxian.jpg", 145, 126, 100, 100, "border-radius:50px;object-fit:cover;object-position:center 18%;")}
+      ${figText("wt12-name", "许半仙", 0, 252, 390, 16, "#25211d", 800, "center")}
+      ${figText("wt12-sub", "写下你想问的命理问题", 0, 279, 390, 14, "#8f8a84", 500, "center")}
       ${figBox("wt12-input", 36, 356, 318, 92, "", "border-radius:12px;background:#fff;")}
       ${figText("wt12-placeholder", "请输入想问什么？", 56, 386, 220, 14, "#b6b0aa")}
       ${figBox("wt12-send", 314, 400, 32, 32, "", "border-radius:16px;background:#e4e1dd;")}
@@ -1812,7 +1811,7 @@ function renderWentianPolishedScreen(screen) {
       ${wentianSimpleHeader("wt15", "", "◷")}
       ${figBox("wt15-card", 62, 150, 266, 446, "", "border-radius:10px;background:#111;box-shadow:0 16px 36px rgba(0,0,0,.32);")}
       ${figBox("wt15-paper", 92, 184, 206, 290, "", "border:2px solid #462b2b;border-radius:3px;background:#e98aa0;")}
-      ${figText("wt15-paper-title", "朱大仙灵签", 112, 220, 96, 20, "#2b201d", 800)}
+      ${figText("wt15-paper-title", "黄大仙灵签", 112, 220, 96, 20, "#2b201d", 800)}
       ${figText("wt15-poem", "遗定良缘\n乱转涡鱼\n性立盖守\n家奇得靖\n舞烟泛鹤\n燕上晚也", 128, 258, 90, 22, "#2b201d", 800, "center", "line-height:1.22;")}
       ${figBox("wt15-seal", 234, 202, 42, 42, "", "border:2px solid #332;border-radius:21px;")}
       ${figText("wt15-result", "第廿九签", 0, 506, 390, 20, "#d7a941", 800, "center")}
