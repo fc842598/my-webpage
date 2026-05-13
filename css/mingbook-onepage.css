@@ -1126,7 +1126,7 @@ select {
 .fc-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: 1.25fr 1.35fr 1.35fr 1fr;
+  grid-template-rows: repeat(4, minmax(0, 1fr));
   gap: 1px;
   aspect-ratio: 1 / 1.18;
   overflow: hidden;
