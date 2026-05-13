@@ -2396,6 +2396,143 @@ select {
   cursor: pointer;
 }
 
+.mbp-book-cover .mbp-pdf-pack-btn {
+  width: 190px;
+  height: 54px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 10px;
+  padding: 0 18px;
+  background: rgba(241, 212, 125, .08);
+  font-weight: 900;
+}
+
+.mbp-book-cover .mbp-pdf-pack-btn small {
+  display: grid;
+  place-items: center;
+  min-width: 38px;
+  height: 24px;
+  border-radius: 999px;
+  background: rgba(241, 212, 125, .16);
+  color: var(--ivory);
+  font-size: 11px;
+}
+
+.mbp-book-cover .mbp-pdf-pack-btn:disabled {
+  cursor: wait;
+  opacity: .7;
+}
+
+.mbp-pdf-export-host {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 860px;
+  min-height: 100vh;
+  pointer-events: none;
+  transform: translateX(-120vw);
+}
+
+.mbp-pdf-report {
+  width: 794px;
+  padding: 34px;
+  background: #f5efe4;
+  color: #2d2420;
+  font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+}
+
+.mbp-pdf-head {
+  padding-bottom: 18px;
+  border-bottom: 2px solid #d3bea0;
+}
+
+.mbp-pdf-head span {
+  display: block;
+  color: #9a6a18;
+  font-weight: 900;
+  letter-spacing: .12em;
+}
+
+.mbp-pdf-head h1 {
+  margin: 10px 0;
+  color: #2d2420;
+  font: 900 30px/1.25 "Noto Serif SC", "Songti SC", serif;
+  letter-spacing: .02em;
+}
+
+.mbp-pdf-head p,
+.mbp-pdf-section p {
+  color: #5d5149;
+}
+
+.mbp-pdf-section {
+  margin-top: 22px;
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+.mbp-pdf-section h2 {
+  margin: 0 0 14px;
+  color: #2d2420;
+  font: 900 22px/1.25 "Noto Serif SC", "Songti SC", serif;
+}
+
+.mbp-pdf-report .mbp-fc-card {
+  width: 100%;
+  max-width: 690px;
+  margin: 0 auto;
+  box-shadow: none;
+  border: 1px solid #d2c4b5;
+}
+
+.mbp-pdf-report .mbp-chapters {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+}
+
+.mbp-pdf-report .mbp-chapters article {
+  min-height: 0;
+  padding: 18px;
+  border: 1px solid #d8c7a9;
+  border-radius: 10px;
+  background: #fffaf2;
+  color: #2d2420;
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+.mbp-pdf-report .mbp-report-row {
+  display: grid;
+  grid-template-columns: 46px minmax(0, 1fr);
+  gap: 12px;
+}
+
+.mbp-pdf-report .mbp-report-row > span {
+  width: 38px;
+  height: 38px;
+  border-color: #d8c7a9;
+  background: #f2eadc;
+  color: #9a6a18;
+}
+
+.mbp-pdf-report .mbp-chapters h3,
+.mbp-pdf-report .mbp-insight-detail strong {
+  color: #2d2420;
+}
+
+.mbp-pdf-report .mbp-insight-summary,
+.mbp-pdf-report .mbp-insight-detail p,
+.mbp-pdf-report .mbp-chapters p {
+  color: #5d5149;
+}
+
+.mbp-pdf-report .mbp-insight-detail section {
+  border-color: #e0d0b4;
+  background: #fffdf8;
+}
+
 .mbp-chapters {
   display: grid;
   grid-template-columns: repeat(2, 1fr);

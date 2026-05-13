@@ -2,6 +2,7 @@
   const storageKey = 'yt_mingbook_onepage_profile_v1';
   const legacyHistoryKey = 'yt_zw_history_v1';
   const chartHistoryKey = 'ziwei_local_chart_history_v1';
+  const html2PdfUrl = 'https://cdn.jsdelivr.net/npm/html2pdf.js@0.10.1/dist/html2pdf.bundle.min.js';
   const palaceOrder = ['巳', '午', '未', '申', '辰', null, null, '酉', '卯', null, null, '戌', '寅', '丑', '子', '亥'];
   const shichenNames = ['子', '丑', '寅', '卯', '辰', '巳', '午', '未', '申', '酉', '戌', '亥'];
   const fcBranchId = {
@@ -64,6 +65,7 @@
   let formCalMode = state.profile.isLunar ? 'lunar' : 'solar';
   let selectedCity = null;
   let clientRecordsCache = [];
+  let html2PdfPromise = null;
 
   const aiTasks = [
     { module: 'overall', label: '整体批命' },
@@ -1524,6 +1526,122 @@
     target.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
+  function loadHtml2Pdf() {
+    if (window.html2pdf) return Promise.resolve(window.html2pdf);
+    if (html2PdfPromise) return html2PdfPromise;
+    html2PdfPromise = new Promise((resolve, reject) => {
+      const script = document.createElement('script');
+      script.src = html2PdfUrl;
+      script.async = true;
+      script.onload = () => (window.html2pdf ? resolve(window.html2pdf) : reject(new Error('PDF library unavailable')));
+      script.onerror = () => reject(new Error('PDF library failed to load'));
+      document.head.appendChild(script);
+    });
+    return html2PdfPromise;
+  }
+
+  function safePdfFileName(value) {
+    return String(value || '个人命盘解读')
+      .replace(/[\\/:*?"<>|]+/g, '')
+      .replace(/\s+/g, '')
+      .slice(0, 48) || '个人命盘解读';
+  }
+
+  function cleanCloneIds(root) {
+    root.querySelectorAll('[id]').forEach((node) => node.removeAttribute('id'));
+    return root;
+  }
+
+  function buildPdfReportElement() {
+    renderChart();
+    const facts = chartFacts();
+    const name = state.profile.name || (state.profile.gender === 'female' ? '女命' : '男命');
+    const gender = state.profile.gender === 'female' ? '女命' : '男命';
+    const city = state.profile.cityName || state.profile.city || '未填地点';
+    const time = `${dateStr(state.profile)} ${pad2(state.profile.hour)}:${pad2(state.profile.minute)}`;
+    const report = document.createElement('article');
+    report.className = 'mbp-pdf-report';
+    report.innerHTML = `
+      <header class="mbp-pdf-head">
+        <span>阅天 · 紫微命盘深度报告</span>
+        <h1>${escapeHtml(name)}个人命盘解读</h1>
+        <p>${escapeHtml(gender)} · ${escapeHtml(time)} · ${escapeHtml(city)}</p>
+        <p>${escapeHtml(facts.subtitle || '命盘解读')}</p>
+      </header>
+      <section class="mbp-pdf-section">
+        <h2>命盘</h2>
+        <div class="mbp-pdf-chart-slot"></div>
+      </section>
+      <section class="mbp-pdf-section">
+        <h2>命盘解读</h2>
+        <div class="mbp-pdf-chapters-slot"></div>
+      </section>
+    `;
+    const chart = $('#mbpFcCard')?.cloneNode(true);
+    if (chart) {
+      cleanCloneIds(chart);
+      chart.classList.add('mbp-pdf-chart-card');
+      chart.querySelectorAll('button').forEach((button) => button.setAttribute('disabled', ''));
+      report.querySelector('.mbp-pdf-chart-slot')?.appendChild(chart);
+    }
+    const chapters = $('#mbpChapters')?.cloneNode(true);
+    if (chapters) {
+      cleanCloneIds(chapters);
+      chapters.classList.add('mbp-pdf-chapters');
+      report.querySelector('.mbp-pdf-chapters-slot')?.appendChild(chapters);
+    }
+    return report;
+  }
+
+  async function downloadMingbookPdf() {
+    const btn = $('#mbpExportPdf');
+    if (!state.decoded) {
+      setDecodeStatus('请先完成一键批命，再打包深度报告。');
+      $('#mbpDecodeBtn')?.focus({ preventScroll: true });
+      return;
+    }
+    const original = btn?.innerHTML || '';
+    if (btn) {
+      btn.disabled = true;
+      btn.innerHTML = '<span>正在打包…</span><small>PDF</small>';
+    }
+    setDecodeStatus('正在打包深度报告 PDF…');
+    const host = document.createElement('div');
+    host.className = 'mbp-pdf-export-host';
+    const report = buildPdfReportElement();
+    host.appendChild(report);
+    document.body.appendChild(host);
+    try {
+      const html2pdf = await loadHtml2Pdf();
+      const filename = `${safePdfFileName(state.profile.name || '个人命盘解读')}-命盘解读.pdf`;
+      await html2pdf().set({
+        filename,
+        margin: [8, 8, 8, 8],
+        image: { type: 'jpeg', quality: 0.96 },
+        html2canvas: {
+          scale: 2,
+          useCORS: true,
+          backgroundColor: '#f5efe4',
+          windowWidth: 860,
+          scrollX: 0,
+          scrollY: 0,
+        },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+        pagebreak: { mode: ['css', 'legacy'], avoid: ['article', '.mbp-pdf-section', '.mbp-report-row'] },
+      }).from(report).save();
+      setDecodeStatus('PDF 已开始下载。');
+    } catch (error) {
+      console.error(error);
+      setDecodeStatus('PDF 打包失败，请刷新后重试。');
+    } finally {
+      host.remove();
+      if (btn) {
+        btn.disabled = false;
+        btn.innerHTML = original;
+      }
+    }
+  }
+
   function renderChaptersFromAi() {
     setReportGeneratedState(true);
     const facts = chartFacts();
@@ -2104,9 +2222,7 @@
       scrollToReportChapter(button.dataset.reportNav);
     });
 
-    $('#mbpScrollReport')?.addEventListener('click', () => {
-      scrollToReportChapter(0);
-    });
+    $('#mbpExportPdf')?.addEventListener('click', downloadMingbookPdf);
 
     let reportNavTicking = false;
     const queueReportNavSync = () => {
