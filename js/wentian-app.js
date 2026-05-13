@@ -250,22 +250,23 @@ function convertedHeader(screen) {
 
 function convertedBottomNav(active) {
   if (!active) return "";
+  const current = active === "活动" ? "藏宝阁" : active;
   const items = [
-    ["screen-1", "首页", 24, 16, 12],
-    ["screen-25", "档案", 98, 90, 88],
-    ["screen-3", "问天AI", 172, 164, 164],
-    ["screen-13", "藏宝阁", 246, 238, 240],
-    ["screen-31", "我的", 320, 312, 316]
+    ["screen-1", "首页", "◒", 39],
+    ["screen-25", "档案", "▢", 117],
+    ["screen-3", "问天AI", "◐", 195],
+    ["screen-13", "藏宝阁", "♧", 273],
+    ["screen-31", "我的", "○", 351]
   ];
   return `
-    ${items.map(([, label, , , tileX]) => figBox(`converted-bottom-tile-${label}`, tileX, 780, 70, 60, "", "background:#fff;")).join("")}
-    ${items.map(([route, label, iconX, labelX]) => {
-      const on = label === active;
-      const color = on ? "#b88c33" : "#8c8275";
+    ${figBox("converted-bottom-bg", 0, 780, 390, 64, "", "background:#fff;box-shadow:0 -4px 14px rgba(0,0,0,.06);")}
+    ${items.map(([route, label, icon, x]) => {
+      const on = label === current;
+      const color = on ? "#a34d33" : "#79766f";
       return `
-        ${figButton(`converted-bottom-${label}`, labelX - 4, 780, 70, 60, `data-route="${route}"`)}
-        ${figText(`converted-bottom-dot-${label}`, on ? "●" : "○", iconX, 792, 40, 18, color, 400, "center")}
-        ${figText(`converted-bottom-label-${label}`, label, labelX, 817, 56, 10, on ? "#26211c" : color, 400, "center")}
+        ${figButton(`converted-bottom-${label}`, x - 37, 780, 76, 60, `data-route="${route}"`)}
+        ${figText(`converted-bottom-icon-${label}`, icon, x - 16, 790, 32, 22, color, 700, "center")}
+        ${figText(`converted-bottom-label-${label}`, label, x - 28, 817, 56, 12, color, on ? 700 : 400, "center")}
       `;
     }).join("")}
   `;
