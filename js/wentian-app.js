@@ -18,7 +18,7 @@ const plans = [
 
 const convertedScreens = [
   { no: 1, title: "授权书", active: "", cards: [["本人授权问天AI依据输入资料生成排盘、合盘与AI解读。", "签署人：谢广周 / 2026-05-11"]], badge: "已授权" },
-  { no: 2, title: "首页/报告商城", active: "首页", heading: "问天AI", cards: [["你的专属命理报告，立即生成", "排盘、合盘、流年、AI解读", "立即生成", "screen-26"], ["生命曲线预测报告 ¥99", "可编辑报告卡片", "", "screen-27"], ["2026丙午年预测报告 ¥50", "可编辑报告卡片", "", "screen-27"], ["八字与MBTI人格深度解析 ¥58", "可编辑报告卡片", "", "screen-27"]] },
+  { no: 2, title: "首页/报告商城", active: "首页", heading: "问天AI", cards: [["你的专属命理报告，立即生成", "排盘、合盘、流年、AI解读", "立即生成", "screen-26"], ["生命曲线预测报告 ¥99", "基于命盘生成完整报告", "", "screen-27"], ["2026丙午年预测报告 ¥50", "流年趋势与行动建议", "", "screen-27"], ["八字与MBTI人格深度解析 ¥58", "性格模型与命盘交叉分析", "", "screen-27"]] },
   { no: 3, title: "档案列表", active: "档案", list: [["谢｜男｜阳历 2026-05-12", "用于排盘、合盘、AI问答", "screen-25"], ["命主｜女｜阴历八月", "用于排盘、合盘、AI问答", "screen-25"], ["贵王红仪｜VIP", "用于排盘、合盘、AI问答", "screen-25"], ["情侣合盘", "用于排盘、合盘、AI问答", "screen-10"]] },
   { no: 4, title: "AI问天", active: "问天AI", ai: "base" },
   { no: 5, title: "选择档案", active: "问天AI", ai: "modal", modalTitle: "选择档案", modalItems: ["谢｜男｜阳历", "命主｜女｜阴历"], next: "screen-6" },
@@ -335,7 +335,7 @@ function convertedSections(screen) {
     return `
       ${figBox(`screen-${screen.no}-section-${index}`, 42, y, 306, 68, "converted-card", "")}
       ${figText(`screen-${screen.no}-section-title-${index}`, title, 58, y + 14, 274, 15, "#26211c", 700)}
-      ${figText(`screen-${screen.no}-section-desc-${index}`, "这里放置完整长文解读内容。", 58, y + 42, 274, 12, "#8c8275")}
+      ${figText(`screen-${screen.no}-section-desc-${index}`, "结合当前档案生成的命理解读与行动建议。", 58, y + 42, 274, 12, "#8c8275")}
     `;
   }).join("");
 }
@@ -1811,8 +1811,8 @@ function renderWentianPolishedScreen(screen) {
       ${wentianSimpleHeader("wt15", "", "◷")}
       ${figBox("wt15-card", 62, 150, 266, 446, "", "border-radius:10px;background:#111;box-shadow:0 16px 36px rgba(0,0,0,.32);")}
       ${figBox("wt15-paper", 92, 184, 206, 290, "", "border:2px solid #462b2b;border-radius:3px;background:#e98aa0;")}
-      ${figText("wt15-paper-title", "黄大仙灵签", 112, 220, 96, 20, "#2b201d", 800)}
-      ${figText("wt15-poem", "遗定良缘\n乱转涡鱼\n性立盖守\n家奇得靖\n舞烟泛鹤\n燕上晚也", 128, 258, 90, 22, "#2b201d", 800, "center", "line-height:1.22;")}
+      ${figText("wt15-paper-title", "黄大仙灵签", 104, 220, 120, 18, "#2b201d", 800, "center")}
+      ${figText("wt15-poem", "遗定良缘\n乱转涡鱼\n性立盖守\n家奇得靖\n舞烟泛鹤\n燕上晚也", 128, 264, 90, 22, "#2b201d", 800, "center", "line-height:1.22;")}
       ${figBox("wt15-seal", 234, 202, 42, 42, "", "border:2px solid #332;border-radius:21px;")}
       ${figText("wt15-result", "第廿九签", 0, 506, 390, 20, "#d7a941", 800, "center")}
       ${figText("wt15-grade", "【中吉】", 0, 538, 390, 15, "#6fb866", 800, "center")}
