@@ -1451,6 +1451,128 @@
     `;
   }
 
+  function rangeFromDecadal(palace) {
+    const range = palace?.decadal?.range;
+    if (Array.isArray(range) && range.length >= 2) return [Number(range[0]), Number(range[1])];
+    const match = String(range || '').match(/(\d+)/g);
+    return match && match.length >= 2 ? [Number(match[0]), Number(match[1])] : null;
+  }
+
+  function findDecadePalace(chart, age) {
+    return (chart?.palaces || []).find((palace) => {
+      const range = rangeFromDecadal(palace);
+      return range && age >= range[0] && age <= range[1];
+    }) || null;
+  }
+
+  function ganzhiYear(year) {
+    const stems = ['甲', '乙', '丙', '丁', '戊', '己', '庚', '辛', '壬', '癸'];
+    const branches = ['子', '丑', '寅', '卯', '辰', '巳', '午', '未', '申', '酉', '戌', '亥'];
+    const index = ((Number(year) - 1984) % 60 + 60) % 60;
+    return `${stems[index % 10]}${branches[index % 12]}`;
+  }
+
+  function palaceDomain(name = '') {
+    const value = normalizePalaceName(name);
+    if (value.includes('官禄')) return '事业与职位';
+    if (value.includes('财帛')) return '财运与现金流';
+    if (value.includes('田宅')) return '家庭、房产与根基';
+    if (value.includes('夫妻')) return '伴侣与合作关系';
+    if (value.includes('疾厄')) return '健康与消耗';
+    if (value.includes('迁移')) return '外部机会与出行';
+    if (value.includes('交友') || value.includes('仆役')) return '人脉与合作';
+    if (value.includes('福德')) return '心态、休息与长期福分';
+    if (value.includes('父母')) return '长辈、文书与规则';
+    if (value.includes('子女')) return '子女、作品与延伸成果';
+    if (value.includes('兄弟')) return '同辈、团队与资源分配';
+    return '命盘主线与个人节奏';
+  }
+
+  function decadeTheme(domain = '') {
+    if (domain.includes('家庭') || domain.includes('房产')) return '稳住根基';
+    if (domain.includes('事业')) return '定住方向';
+    if (domain.includes('财')) return '稳住现金流';
+    if (domain.includes('伴侣') || domain.includes('合作')) return '稳住关系';
+    if (domain.includes('健康')) return '护住消耗';
+    if (domain.includes('外部')) return '有序外拓';
+    return '稳住主轴';
+  }
+
+  function sectionTextByKeywords(sections, keywords = [], max = 58) {
+    const section = sections.find((item) => keywords.some((keyword) => normalizeText(item.title).includes(keyword) || normalizeText(item.content).includes(keyword)));
+    return section ? trimText(section.content || section.title, max) : '';
+  }
+
+  function renderLuckChapterBlock(data, fallbackText) {
+    const bundle = getChartBundle();
+    const chart = bundle.chart || state.chart;
+    const year = new Date().getFullYear();
+    const currentAge = Math.max(1, Number(fcActiveAge) || (year - Number(state.profile.year || year) + 1));
+    const decadePalace = findDecadePalace(chart, currentAge);
+    const decadeRange = rangeFromDecadal(decadePalace) || [Math.max(1, currentAge - 4), currentAge + 5];
+    const palaceName = decadePalace?.name || '大限宫';
+    const stars = palaceMainLabel(decadePalace);
+    const domain = palaceDomain(palaceName);
+    const theme = decadeTheme(domain);
+    const liunian = fcLiunianSeq?.[currentAge] || {};
+    const yearGz = liunian.yearGanzhi ? `${liunian.yearGanzhi.stem || ''}${liunian.yearGanzhi.branch || ''}` : ganzhiYear(year);
+    const xiaoLianBranch = fcResolveXiaoLianBranch(currentAge);
+    const xiaoLianPalace = (chart?.palaces || []).find((palace) => palace.earthlyBranch === xiaoLianBranch);
+    const yearFocus = xiaoLianPalace?.name ? `${xiaoLianPalace.name} · ${palaceDomain(xiaoLianPalace.name)}` : domain;
+    const sections = aiSections(data);
+    const summary = insightSummary(data, fallbackText || `${palaceName}主${domain}，这十年先稳住根基，再看机会扩张。`, 170);
+    const opportunity = sectionTextByKeywords(sections, ['机会', '优势', '适合'], 46) || `${domain}有推进空间，先抓可落地的资源。`;
+    const risk = sectionTextByKeywords(sections, ['风险', '注意', '留意', '压力'], 46) || '避免急转方向，注意关系拉扯与现金流波动。';
+    const yearPoint = sectionTextByKeywords(sections, ['今年', '流年'], 46) || `${year} ${yearGz}，重点看${yearFocus}。`;
+    const startYear = fcAgeToYear(decadeRange[0]);
+    const endYear = fcAgeToYear(decadeRange[1]);
+    const midAge = Math.round((decadeRange[0] + decadeRange[1]) / 2);
+    const turnYear = fcAgeToYear(Math.min(decadeRange[1], Math.max(decadeRange[0], midAge)));
+    const guardYear = year >= startYear && year <= endYear ? year : startYear;
+    const smoothYear = fcAgeToYear(Math.min(decadeRange[1], Math.max(decadeRange[0], midAge + 2)));
+    const advice = [
+      domain.includes('财') ? '先稳现金流，再谈扩大投入。' : `先把${domain}的基本盘稳住。`,
+      '重大决定多留一天复盘，避免单独拍板。',
+      yearFocus.includes('田宅') ? '房产、家庭、居住安排优先清理。' : '保留合作弹性，给后续转折留空间。',
+    ];
+
+    return `
+      <div class="mbp-luck-hero">
+        <div>
+          <em>当前大限</em>
+          <strong>${escapeHtml(`${decadeRange[0]}-${decadeRange[1]}岁 · ${normalizePalaceName(palaceName)} · ${theme}`)}</strong>
+          <p>${escapeHtml(`大限主星：${stars}；当前流年：${year} ${yearGz}`)}</p>
+        </div>
+        <span>${escapeHtml(`${currentAge}岁`)}</span>
+      </div>
+      <div class="mbp-luck-kv">
+        <section><b>大限宫位</b><strong>${escapeHtml(palaceName)}</strong><p>${escapeHtml(domain)}</p></section>
+        <section><b>重点星曜</b><strong>${escapeHtml(stars)}</strong><p>看十年主轴与发力方式</p></section>
+        <section><b>今年重点</b><strong>${escapeHtml(yearFocus)}</strong><p>${escapeHtml(`${year} ${yearGz}`)}</p></section>
+      </div>
+      <div class="mbp-luck-cards">
+        <section><b>机会</b><p>${escapeHtml(opportunity)}</p></section>
+        <section><b>风险</b><p>${escapeHtml(risk)}</p></section>
+        <section><b>今年重点</b><p>${escapeHtml(yearPoint)}</p></section>
+      </div>
+      <p class="mbp-luck-summary">${escapeHtml(summary)}</p>
+      <div class="mbp-luck-bottom">
+        <section>
+          <h4>行动建议</h4>
+          <ol>${advice.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ol>
+        </section>
+        <section>
+          <h4>时间节奏</h4>
+          <div class="mbp-luck-timing">
+            <span><b>要守</b>${escapeHtml(`${guardYear}年`)}</span>
+            <span><b>转折</b>${escapeHtml(`${turnYear}年`)}</span>
+            <span><b>偏顺</b>${escapeHtml(`${smoothYear}年`)}</span>
+          </div>
+        </section>
+      </div>
+    `;
+  }
+
   function setDecodeStatus(text) {
     const el = $('#mbpDecodeStatus');
     if (el) el.textContent = text;
@@ -1804,7 +1926,7 @@
             <h3>${escapeHtml(item[0])}</h3>
           </div>
             <div class="mbp-report-content">
-              ${index === 2 ? renderCurveChapterBlock() : renderInsightBlock(data, item[0], item[1], {
+              ${index === 1 ? renderLuckChapterBlock(data, item[1]) : index === 2 ? renderCurveChapterBlock() : renderInsightBlock(data, item[0], item[1], {
                 summaryMax: 128,
                 bulletLimit: 0,
                 direct: true,

@@ -2612,6 +2612,35 @@ select {
   background: #fffdf8;
 }
 
+.mbp-pdf-report .mbp-luck-hero,
+.mbp-pdf-report .mbp-luck-kv section,
+.mbp-pdf-report .mbp-luck-cards section,
+.mbp-pdf-report .mbp-luck-bottom section,
+.mbp-pdf-report .mbp-luck-timing span {
+  border-color: #e0d0b4;
+  background: #fffdf8;
+}
+
+.mbp-pdf-report .mbp-luck-hero strong,
+.mbp-pdf-report .mbp-luck-kv strong,
+.mbp-pdf-report .mbp-luck-bottom h4 {
+  color: #2d2420;
+}
+
+.mbp-pdf-report .mbp-luck-hero p,
+.mbp-pdf-report .mbp-luck-kv p,
+.mbp-pdf-report .mbp-luck-cards p,
+.mbp-pdf-report .mbp-luck-summary,
+.mbp-pdf-report .mbp-luck-bottom ol,
+.mbp-pdf-report .mbp-luck-timing span {
+  color: #5d5149;
+}
+
+.mbp-pdf-report .mbp-luck-summary {
+  background: #fffdf8;
+  border-left-color: #c9a961;
+}
+
 .mbp-chapters {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -2687,6 +2716,159 @@ select {
 
 .mbp-report-content .mbp-insight-summary {
   margin-top: -2px;
+}
+
+.mbp-luck-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 18px;
+  align-items: center;
+  padding: 18px 20px;
+  border: 1px solid rgba(241, 212, 125, .18);
+  border-radius: 12px;
+  background:
+    radial-gradient(circle at 92% 12%, rgba(241, 212, 125, .16), transparent 30%),
+    rgba(241, 212, 125, .055);
+}
+
+.mbp-luck-hero em,
+.mbp-luck-kv b,
+.mbp-luck-cards b {
+  display: block;
+  color: var(--gold);
+  font-style: normal;
+  font-weight: 900;
+}
+
+.mbp-luck-hero strong {
+  display: block;
+  margin-top: 7px;
+  color: var(--ivory);
+  font-size: 22px;
+  line-height: 1.35;
+}
+
+.mbp-luck-hero p {
+  margin: 8px 0 0;
+  color: #d4c096;
+  font-size: 14px;
+}
+
+.mbp-luck-hero > span {
+  display: grid;
+  place-items: center;
+  width: 62px;
+  height: 62px;
+  border: 1px solid rgba(241, 212, 125, .24);
+  border-radius: 999px;
+  background: rgba(0, 0, 0, .18);
+  color: var(--gold);
+  font-weight: 900;
+}
+
+.mbp-luck-kv,
+.mbp-luck-cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.mbp-luck-kv section,
+.mbp-luck-cards section,
+.mbp-luck-bottom section {
+  border: 1px solid rgba(241, 212, 125, .14);
+  border-radius: 10px;
+  background: rgba(0, 0, 0, .18);
+}
+
+.mbp-luck-kv section {
+  padding: 13px 14px;
+}
+
+.mbp-luck-kv strong {
+  display: block;
+  margin: 7px 0 4px;
+  color: var(--ivory);
+  font-size: 17px;
+}
+
+.mbp-luck-kv p,
+.mbp-luck-cards p {
+  margin: 0;
+  color: #d4c096;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.mbp-luck-cards section {
+  padding: 14px;
+}
+
+.mbp-luck-cards b {
+  margin-bottom: 7px;
+  font-size: 17px;
+}
+
+.mbp-luck-summary {
+  margin: 14px 0 0;
+  padding: 16px 18px;
+  border-left: 3px solid rgba(241, 212, 125, .6);
+  border-radius: 0 10px 10px 0;
+  background: rgba(241, 212, 125, .045);
+  color: #e7d8ad;
+  font-size: 15px;
+  font-weight: 800;
+  line-height: 1.75;
+}
+
+.mbp-luck-bottom {
+  display: grid;
+  grid-template-columns: 1.1fr .9fr;
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.mbp-luck-bottom section {
+  padding: 15px 16px;
+}
+
+.mbp-luck-bottom h4 {
+  margin: 0 0 10px;
+  color: var(--ivory);
+  font-size: 18px;
+}
+
+.mbp-luck-bottom ol {
+  display: grid;
+  gap: 7px;
+  margin: 0;
+  padding-left: 20px;
+  color: #d4c096;
+  line-height: 1.65;
+}
+
+.mbp-luck-timing {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.mbp-luck-timing span {
+  display: grid;
+  gap: 5px;
+  min-height: 58px;
+  place-items: center;
+  border: 1px solid rgba(241, 212, 125, .14);
+  border-radius: 9px;
+  background: rgba(241, 212, 125, .04);
+  color: #d4c096;
+  font-weight: 900;
+}
+
+.mbp-luck-timing b {
+  color: var(--gold);
+  font-size: 12px;
 }
 
 .mbp-curve-summary {
@@ -3325,8 +3507,20 @@ select {
   }
 
   .mbp-curve-summary,
+  .mbp-luck-hero,
+  .mbp-luck-kv,
+  .mbp-luck-cards,
+  .mbp-luck-bottom,
+  .mbp-luck-timing,
   .mbp-curve-cards {
     grid-template-columns: 1fr;
+  }
+
+  .mbp-luck-hero > span {
+    width: max-content;
+    height: auto;
+    min-height: 34px;
+    padding: 0 12px;
   }
 
   .mbp-curve-chart {
