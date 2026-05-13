@@ -63,7 +63,7 @@ const convertedScreens = [
 const convertedByNo = new Map(convertedScreens.map((screen) => [screen.no, screen]));
 
 const screenFlowHotspots = {
-  1: [[286, 58, 86, 44, "screen-26"], [36, 292, 300, 52, "screen-4"], [48, 435, 154, 220, "screen-2"], [215, 435, 154, 220, "screen-3"], [18, 695, 354, 58, "screen-10"], [18, 763, 354, 58, "screen-13"], [2, 784, 76, 72, "screen-1"], [80, 784, 76, 72, "screen-25"], [158, 784, 76, 72, "screen-3"], [236, 784, 76, 72, "screen-13"], [314, 784, 76, 72, "screen-31"]],
+  1: [[286, 38, 86, 40, "screen-26"], [48, 143, 295, 34, "screen-4"], [18, 200, 318, 74, "screen-2"], [18, 334, 166, 114, "screen-4"], [204, 334, 166, 114, "screen-3"], [18, 459, 354, 48, "screen-10"], [18, 514, 354, 48, "screen-13"], [18, 569, 354, 48, "screen-17"], [18, 624, 354, 48, "screen-23"], [18, 704, 354, 42, "screen-22"], [18, 754, 354, 42, "screen-23"], [2, 794, 76, 73, "screen-1"], [80, 794, 76, 73, "screen-25"], [158, 794, 76, 73, "screen-3"], [236, 794, 76, 73, "screen-13"], [314, 794, 76, 73, "screen-31"]],
   2: [[18, 282, 354, 190, "screen-4"], [18, 487, 354, 190, "screen-4"], [18, 692, 354, 175, "screen-4"]],
   3: [[285, 128, 82, 28, "screen-5"], [16, 164, 358, 84, "screen-5"], [16, 305, 358, 116, "screen-4"], [16, 437, 358, 116, "screen-4"], [16, 570, 358, 160, "screen-4"], [16, 752, 358, 116, "screen-10"], [2, 928, 76, 72, "screen-1"], [80, 928, 76, 72, "screen-25"], [158, 928, 76, 72, "screen-3"], [236, 928, 76, 72, "screen-13"], [314, 928, 76, 72, "screen-31"]],
   4: [[18, 44, 48, 48, "screen-3"], [276, 44, 96, 48, "screen-9"], [300, 104, 58, 34, "screen-5"], [20, 704, 82, 34, "screen-6"], [114, 704, 88, 34, "screen-6"], [16, 755, 358, 48, "screen-6"]],
@@ -641,57 +641,79 @@ function convertedSpecial(screen) {
 function sourceDashboardHomeScreen() {
   return `
     ${figBox("source-1-bg", 0, 0, 390, 867, "", "background:linear-gradient(180deg,#fffdf8 0%,#fbf6ee 58%,#faf5ed 100%);")}
-    ${figBox("source-1-avatar", 18, 38, 54, 54, "", "border-radius:27px;background:#f4ead8;box-shadow:0 5px 16px rgba(188,142,59,.12);")}
-    ${figText("source-1-avatar-icon", "●", 34, 49, 22, 22, "#c58d25", 700, "center")}
-    ${figText("source-1-greet", "谢广周，安好", 82, 38, 190, 27, "#25221f", 800)}
-    ${figText("source-1-date", "2026年三月廿七", 82, 75, 190, 20, "#8d877e", 500)}
-    ${figText("source-1-stone", "灵石 83", 278, 33, 82, 14, "#f6f0e7", 700, "right")}
-    ${figBox("source-1-chart-pill", 286, 70, 86, 40, "", "border-radius:22px;background:#f3eadc;box-shadow:0 8px 18px rgba(190,142,45,.12);")}
-    ${figText("source-1-chart-text", "✦ 排盘", 298, 80, 62, 18, "#bd8624", 800, "center")}
+    ${figBox("source-1-avatar", 18, 34, 44, 44, "", "border-radius:22px;background:#f4ead8;box-shadow:0 5px 14px rgba(188,142,59,.12);")}
+    ${figText("source-1-avatar-icon", "●", 29, 45, 22, 18, "#c58d25", 700, "center")}
+    ${figText("source-1-greet", "谢广周，安好", 78, 34, 175, 19, "#25221f", 800)}
+    ${figText("source-1-date", "2026年三月廿七", 78, 55, 150, 14, "#8d877e", 500)}
+    ${figText("source-1-stone", "灵石 83", 318, 18, 54, 11, "#f6f0e7", 700, "right")}
+    ${figBox("source-1-chart-pill", 292, 42, 80, 32, "", "border-radius:18px;background:#f3eadc;box-shadow:0 7px 16px rgba(190,142,45,.12);")}
+    ${figText("source-1-chart-text", "✦ 排盘", 304, 50, 56, 14, "#bd8624", 800, "center")}
 
-    ${figBox("source-1-mood-card", 18, 128, 354, 220, "converted-card", "border-radius:18px;box-shadow:0 10px 25px rgba(70,45,25,.12);")}
-    ${figText("source-1-mood-label", "今日心情", 42, 174, 120, 22, "#26211c", 700)}
-    ${figText("source-1-mood-score", "73", 134, 162, 72, 52, "#26211c", 800)}
-    ${figText("source-1-mood-unit", "分", 202, 187, 26, 16, "#26211c", 700)}
-    ${figText("source-1-mood-copy", "灵感迸发的一天，\n无论是吸收新知…", 42, 220, 150, 18, "#9a938a", 500, "left", "line-height:1.45;")}
-    ${[["爱情", 62, 238, "#ed7385"], ["财富", 48, 268, "#c58a2c"], ["事业", 78, 298, "#4e9b93"], ["学习", 78, 328, "#4f82a4"], ["人际", 75, 358, "#9e698c"]].map(([label, score, x, color]) => `
-      ${figBox(`source-1-meter-bg-${label}`, x, 160, 10, 68, "", "border-radius:8px;background:#f2efea;")}
-      ${figBox(`source-1-meter-${label}`, x, 188 - Number(score) * 0.38, 10, Number(score) * 0.38, "", `border-radius:8px;background:${color};`)}
-      ${figText(`source-1-meter-score-${label}`, score, x - 10, 236, 30, 20, "#26211c", 700, "center")}
-      ${figText(`source-1-meter-label-${label}`, label, x - 14, 264, 38, 11, "#928b83", 500, "center")}
+    ${figBox("source-1-mood-card", 18, 82, 354, 100, "converted-card", "border-radius:14px;box-shadow:0 9px 22px rgba(70,45,25,.12);")}
+    ${figText("source-1-mood-label", "今日心情", 34, 106, 78, 16, "#26211c", 700)}
+    ${figText("source-1-mood-score", "73", 116, 94, 58, 38, "#26211c", 800)}
+    ${figText("source-1-mood-unit", "分", 166, 113, 20, 12, "#26211c", 700)}
+    ${figText("source-1-mood-copy", "灵感迸发的一天，\\n无论是吸收新知…", 34, 134, 122, 11, "#9a938a", 500, "left", "line-height:1.45;")}
+    ${[["爱情", 62, 190, "#ed7385"], ["财富", 48, 228, "#c58a2c"], ["事业", 78, 266, "#4e9b93"], ["学习", 78, 304, "#4f82a4"], ["人际", 75, 342, "#9e698c"]].map(([label, score, x, color]) => `
+      ${figBox(`source-1-meter-bg-${label}`, x, 91, 8, 50, "", "border-radius:8px;background:#f2efea;")}
+      ${figBox(`source-1-meter-${label}`, x, 116 - Number(score) * 0.28, 8, Number(score) * 0.28, "", `border-radius:8px;background:${color};`)}
+      ${figText(`source-1-meter-score-${label}`, score, x - 9, 147, 26, 13, "#26211c", 700, "center")}
+      ${figText(`source-1-meter-label-${label}`, label, x - 13, 164, 34, 9, "#928b83", 500, "center")}
     `).join("")}
-    ${figBox("source-1-ask", 36, 292, 300, 52, "", "border:1px solid #eadfce;border-radius:26px;background:#fff;")}
-    ${figText("source-1-ask-icon", "⌘", 52, 305, 28, 20, "#b98729", 700, "center")}
-    ${figText("source-1-ask-text", "今日运势如何？事业感情有何指引？", 86, 304, 188, 17, "#8f887f", 500)}
-    ${figBox("source-1-ask-send", 292, 298, 40, 40, "", "border-radius:20px;background:#c08a2c;")}
-    ${figText("source-1-ask-arrow", "↑", 300, 303, 24, 24, "#fff", 800, "center")}
+    ${figBox("source-1-ask", 48, 143, 295, 32, "", "border:1px solid #eadfce;border-radius:18px;background:#fff;")}
+    ${figText("source-1-ask-icon", "⌘", 60, 150, 22, 15, "#b98729", 700, "center")}
+    ${figText("source-1-ask-text", "今日运势如何？事业感情有何指引？", 92, 148, 180, 12, "#8f887f", 500)}
+    ${figBox("source-1-ask-send", 320, 145, 28, 28, "", "border-radius:14px;background:#c08a2c;")}
+    ${figText("source-1-ask-arrow", "↑", 324, 148, 20, 18, "#fff", 800, "center")}
 
-    ${figText("source-1-recommend-title", "为你推荐", 18, 382, 160, 28, "#25221f", 800)}
-    ${figText("source-1-more", "更多〉", 306, 388, 62, 18, "#9a938a", 500, "right")}
-    ${figBox("source-1-master-1", 18, 435, 168, 220, "converted-card", "border-radius:18px;overflow:hidden;box-shadow:0 10px 24px rgba(70,45,25,.14);")}
-    ${figImage("source-1-master-img-1", "../images/wentian-prototype-assets/03-master-1.jpg", 18, 435, 168, 122, "border-radius:18px 18px 0 0;")}
-    ${figText("source-1-master-name-1", "瞎子阿炳", 36, 570, 132, 27, "#25221f", 800)}
-    ${figBox("source-1-chip-1a", 36, 614, 64, 28, "", "border-radius:14px;background:#f8f3ea;border:1px solid #efe4d2;")}
-    ${figText("source-1-chip-1a-text", "八字解析", 42, 621, 52, 12, "#b2822e", 700, "center")}
-    ${figBox("source-1-chip-1b", 106, 614, 64, 28, "", "border-radius:14px;background:#f8f3ea;border:1px solid #efe4d2;")}
-    ${figText("source-1-chip-1b-text", "流年趋势", 112, 621, 52, 12, "#b2822e", 700, "center")}
-    ${figBox("source-1-master-2", 202, 435, 168, 220, "converted-card", "border-radius:18px;overflow:hidden;box-shadow:0 10px 24px rgba(70,45,25,.14);")}
-    ${figImage("source-1-master-img-2", "../images/wentian-prototype-assets/03-master-2.jpg", 202, 435, 168, 122, "border-radius:18px 18px 0 0;")}
-    ${figText("source-1-master-name-2", "紫微瑞神", 220, 570, 132, 27, "#25221f", 800)}
-    ${figBox("source-1-chip-2a", 220, 614, 64, 28, "", "border-radius:14px;background:#f8f3ea;border:1px solid #efe4d2;")}
-    ${figText("source-1-chip-2a-text", "紫微解盘", 226, 621, 52, 12, "#b2822e", 700, "center")}
-    ${figBox("source-1-chip-2b", 290, 614, 64, 28, "", "border-radius:14px;background:#f8f3ea;border:1px solid #efe4d2;")}
-    ${figText("source-1-chip-2b-text", "命宫分析", 296, 621, 52, 12, "#b2822e", 700, "center")}
+    ${figBox("source-1-report-card", 18, 200, 318, 74, "converted-card", "border-radius:14px;box-shadow:0 8px 20px rgba(70,45,25,.12);")}
+    ${figBox("source-1-report-hot", 36, 213, 35, 18, "", "border-radius:6px;background:#fbf1dd;")}
+    ${figText("source-1-report-hot-text", "热门", 43, 217, 22, 9, "#b98729", 700, "center")}
+    ${figText("source-1-report-icon", "▧", 292, 210, 22, 18, "#b98729", 700, "center")}
+    ${figText("source-1-report-title", "万言命书", 36, 236, 110, 18, "#25221f", 800)}
+    ${figText("source-1-report-sub", "通万字的深度报告，涵盖性格逻辑、事业财富…", 36, 258, 220, 10, "#9a938a", 500)}
+    ${figText("source-1-report-tags", "● 事业财运    ● 感情婚姻", 36, 278, 145, 9, "#a98745", 600)}
+    ${figBox("source-1-report-btn", 232, 265, 84, 26, "", "border-radius:14px;background:#c08a2c;")}
+    ${figText("source-1-report-btn-text", "立即解锁 →", 244, 272, 60, 10, "#fff", 700, "center")}
+    ${figBox("source-1-report-next", 346, 200, 44, 74, "", "border-radius:14px 0 0 14px;background:#251f1a;")}
+    ${figText("source-1-report-next-tag", "推荐", 356, 214, 24, 10, "#c08a2c", 700, "center")}
+    ${figText("source-1-report-next-title", "问天", 357, 238, 28, 16, "#c08a2c", 800)}
+    ${figText("source-1-report-dots", "●  ●", 185, 283, 26, 8, "#bdb5aa", 700, "center")}
 
-    ${figText("source-1-more-title", "更多功能", 18, 682, 150, 28, "#25221f", 800)}
-    ${[["合盘分析", "命理相合，缘分几许", "screen-10", 728], ["黄大仙灵签", "求签问卦，指引方向", "screen-13", 792]].map(([title, sub, route, y], index) => `
-      ${figBox(`source-1-feature-${index}`, 18, y, 354, 58, "converted-card", "border-radius:16px;box-shadow:0 7px 18px rgba(70,45,25,.1);")}
-      ${figText(`source-1-feature-title-${index}`, title, 44, y + 12, 180, 21, "#25221f", 800)}
-      ${figText(`source-1-feature-sub-${index}`, sub, 44, y + 36, 200, 13, "#969087", 500)}
-      ${figText(`source-1-feature-icon-${index}`, index === 0 ? "合" : "签", 314, y + 17, 36, 22, "#c08a2c", 800, "center")}
-      ${figButton(`source-1-feature-hit-${index}`, 18, y, 354, 58, `data-route="${route}"`)}
+    ${figText("source-1-recommend-title", "为你推荐", 18, 304, 120, 20, "#25221f", 800)}
+    ${figText("source-1-more", "更多〉", 322, 308, 50, 13, "#9a938a", 500, "right")}
+    ${figBox("source-1-master-1", 18, 334, 166, 114, "converted-card", "border-radius:14px;overflow:hidden;box-shadow:0 9px 22px rgba(70,45,25,.13);")}
+    ${figImage("source-1-master-img-1", "../images/wentian-prototype-assets/03-master-1.jpg", 18, 334, 166, 76, "border-radius:14px 14px 0 0;")}
+    ${figText("source-1-master-name-1", "瞎子阿炳", 32, 417, 132, 18, "#25221f", 800)}
+    ${figBox("source-1-chip-1a", 32, 438, 54, 18, "", "border-radius:9px;background:#f8f3ea;border:1px solid #efe4d2;")}
+    ${figText("source-1-chip-1a-text", "八字解析", 37, 443, 44, 8, "#b2822e", 700, "center")}
+    ${figBox("source-1-chip-1b", 96, 438, 54, 18, "", "border-radius:9px;background:#f8f3ea;border:1px solid #efe4d2;")}
+    ${figText("source-1-chip-1b-text", "流年趋势", 101, 443, 44, 8, "#b2822e", 700, "center")}
+    ${figBox("source-1-master-2", 204, 334, 166, 114, "converted-card", "border-radius:14px;overflow:hidden;box-shadow:0 9px 22px rgba(70,45,25,.13);")}
+    ${figImage("source-1-master-img-2", "../images/wentian-prototype-assets/03-master-2.jpg", 204, 334, 166, 76, "border-radius:14px 14px 0 0;")}
+    ${figText("source-1-master-name-2", "紫微瑞神", 218, 417, 132, 18, "#25221f", 800)}
+    ${figBox("source-1-chip-2a", 218, 438, 54, 18, "", "border-radius:9px;background:#f8f3ea;border:1px solid #efe4d2;")}
+    ${figText("source-1-chip-2a-text", "紫微解盘", 223, 443, 44, 8, "#b2822e", 700, "center")}
+    ${figBox("source-1-chip-2b", 282, 438, 54, 18, "", "border-radius:9px;background:#f8f3ea;border:1px solid #efe4d2;")}
+    ${figText("source-1-chip-2b-text", "命宫分析", 287, 443, 44, 8, "#b2822e", 700, "center")}
+
+    ${[["合盘分析", "命理相合，缘分几许", "合", "screen-10", 459], ["黄大仙灵签", "求签问卦，指引方向", "签", "screen-13", 514], ["六爻占卜", "铜钱起卦，纳甲解卦", "卦", "screen-17", 569], ["万年历", "每日宜忌，趋吉避凶", "历", "screen-23", 624]].map(([title, sub, icon, route, y], index) => `
+      ${figBox(`source-1-feature-${index}`, 18, y, 354, 48, "converted-card", "border-radius:14px;box-shadow:0 7px 18px rgba(70,45,25,.1);")}
+      ${figText(`source-1-feature-title-${index}`, title, 36, y + 11, 150, 15, "#25221f", 800)}
+      ${figText(`source-1-feature-sub-${index}`, sub, 36, y + 29, 180, 10, "#969087", 500)}
+      ${figText(`source-1-feature-icon-${index}`, icon, 304, y + 11, 42, 20, "#c08a2c", 800, "center")}
+      ${figButton(`source-1-feature-hit-${index}`, 18, y, 354, 48, `data-route="${route}"`)}
     `).join("")}
-    ${sourceAppBottomNav("首页", 778)}
+    ${figText("source-1-more-title", "更多功能", 18, 680, 110, 17, "#25221f", 800)}
+    ${[["邀请好友", "邀请好友双方获得奖励", "♣", "screen-22", 704], ["活动中心", "参与活动赢取丰厚奖励", "▰", "screen-23", 754]].map(([title, sub, icon, route, y], index) => `
+      ${figBox(`source-1-extra-${index}`, 18, y, 354, 42, "converted-card", "border-radius:14px;box-shadow:0 7px 18px rgba(70,45,25,.1);")}
+      ${figText(`source-1-extra-title-${index}`, title, 36, y + 9, 150, 13, "#25221f", 800)}
+      ${figText(`source-1-extra-sub-${index}`, sub, 36, y + 25, 190, 9, "#969087", 500)}
+      ${figBox(`source-1-extra-icon-bg-${index}`, 308, y + 8, 36, 26, "", "border-radius:9px;background:#f8f3ea;")}
+      ${figText(`source-1-extra-icon-${index}`, icon, 316, y + 13, 20, 13, "#c08a2c", 800, "center")}
+      ${figButton(`source-1-extra-hit-${index}`, 18, y, 354, 42, `data-route="${route}"`)}
+    `).join("")}
+    ${sourceAppBottomNav("首页", 794)}
   `;
 }
 
@@ -717,7 +739,7 @@ function renderConvertedScreen(no) {
     return figPhone(`screen-${screen.no}`, `${String(screen.no).padStart(2, "0")} 首页`, `
       ${sourceDashboardHomeScreen()}
       ${convertedFlowHotspots(screen)}
-    `, 867, "converted source-screen", true);
+    `, 867, "converted source-screen no-status-shift", false);
   }
   if (screen.no === 2) {
     return figPhone(`screen-${screen.no}`, `${String(screen.no).padStart(2, "0")} ${screen.title}`, `
@@ -793,6 +815,7 @@ function stripScreenshotStatusBar() {
     '[data-node-id$="-battery"]'
   ].join(","));
   statusNodes.forEach((node) => node.remove());
+  if (phone.classList.contains("no-status-shift")) return;
 
   const bottomNodes = [...phone.querySelectorAll('[data-node-id^="source-bottom-"], [data-node-id^="converted-bottom-"], [data-node-id^="bottom-"]')];
   const bottomTop = bottomNodes.reduce((min, node) => {
