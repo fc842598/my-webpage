@@ -16,6 +16,10 @@
 
   var BACKEND = getBackendBase();
   var CHAT_QUOTA_UNLIMITED = true;
+  var SUPABASE_URL = 'https://jmmlijqeexdbxgpfyhgf.supabase.co';
+  var SUPABASE_KEY = 'sb_publishable_Y2W9eDscfJwK1sgSitbmFA_ta5btvaR';
+  var _authClient = null;
+  var _pendingPurchaseAfterLogin = false;
 
   // 本地兜底商品（backend 不可用时使用）
   var PRODUCT = {
@@ -49,6 +53,58 @@
   function hide(id) { var e = document.getElementById(id); if (e) e.style.display = 'none'; }
   function qs(id)   { return document.getElementById(id); }
 
+  function getAuthClient() {
+    if (_authClient) return _authClient;
+    if (!window.supabase || typeof window.supabase.createClient !== 'function') return null;
+    _authClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    return _authClient;
+  }
+
+  async function getAuthSession() {
+    var client = getAuthClient();
+    if (!client) return null;
+    try {
+      var res = await client.auth.getSession();
+      return res && res.data ? res.data.session : null;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  async function getAuthToken() {
+    var session = await getAuthSession();
+    return session && session.access_token ? session.access_token : '';
+  }
+
+  function phoneToEmail(phone) {
+    var digits = String(phone || '').replace(/\D/g, '');
+    if (!digits || digits.length < 6 || digits.length > 20) return '';
+    return 'phone_' + digits + '@yuetianai.local';
+  }
+
+  function getUserLabel(session) {
+    var user = session && session.user;
+    if (!user) return '';
+    if (user.user_metadata && user.user_metadata.phone) return user.user_metadata.phone;
+    return user.email || '已登录';
+  }
+
+  async function requirePurchaseAuth() {
+    var session = await getAuthSession();
+    if (session && session.user) return session;
+    _pendingPurchaseAfterLogin = true;
+    show('pay-modal');
+    renderModal('auth', { mode: 'login' });
+    return null;
+  }
+
+  function requireChartRecord() {
+    if (window._chartRecordId) return true;
+    show('pay-modal');
+    renderModal('needChart');
+    return false;
+  }
+
   // ── 本地 Mock（仅本地开发，后端不可用时降级）─────────────────
   var _mockOrders = {};
 
@@ -71,11 +127,17 @@
   }
 
   // ── API（失败自动降级）──────────────────────────────────────
-  async function tryPost(path, body) {
+  async function tryPost(path, body, options) {
     try {
+      options = options || {};
+      var headers = { 'Content-Type': 'application/json' };
+      if (!options.noAuth) {
+        var token = await getAuthToken();
+        if (token) headers.Authorization = 'Bearer ' + token;
+      }
       var r = await fetch(BACKEND + path, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: headers,
         body: JSON.stringify(body),
       });
       var j = await r.json();
@@ -84,9 +146,15 @@
     } catch (e) { return { ok: false, error: e.message }; }
   }
 
-  async function tryGet(path) {
+  async function tryGet(path, options) {
     try {
-      var r = await fetch(BACKEND + path);
+      options = options || {};
+      var headers = {};
+      if (!options.noAuth) {
+        var token = await getAuthToken();
+        if (token) headers.Authorization = 'Bearer ' + token;
+      }
+      var r = await fetch(BACKEND + path, { headers: headers });
       var j = await r.json();
       if (!r.ok) throw new Error(j.error || 'error');
       return { ok: true, data: j };
@@ -106,7 +174,7 @@
 
   // ── 启动时拉取后端商品（保持价格/描述与 DB 一致）──────────
   async function fetchBackendProduct() {
-    var r = await tryGet('/api/payments/products');
+    var r = await tryGet('/api/payments/products', { noAuth: true });
     if (!r.ok || !r.data.products || !r.data.products.length) return;
     var p = r.data.products.find(function(x){ return x.productKey === PRODUCT.key; });
     if (p) {
@@ -118,6 +186,10 @@
 
   // ── 购买流程 ──────────────────────────────────────────────────
   async function startPurchase() {
+    var session = await requirePurchaseAuth();
+    if (!session) return;
+    if (!requireChartRecord()) return;
+
     clearPaidReload();
     clearExpiryTimer();
     _s.orderNo  = null;
@@ -136,6 +208,15 @@
     });
 
     if (!r1.ok) {
+      if (/登录|登陆|login/i.test(r1.error || '')) {
+        _pendingPurchaseAfterLogin = true;
+        renderModal('auth', { mode: 'login', error: r1.error });
+        return;
+      }
+      if (/排盘|chart/i.test(r1.error || '')) {
+        renderModal('needChart', { error: r1.error });
+        return;
+      }
       if (isLocalDev()) {
         // 本地开发：降级本地 mock
         _s.isMock   = true;
@@ -215,6 +296,72 @@
   }
 
   // ── Modal 渲染 ────────────────────────────────────────────────
+  async function submitAuth(mode) {
+    var client = getAuthClient();
+    if (!client) {
+      renderModal('auth', { mode: mode, error: '登录组件加载失败，请刷新后重试' });
+      return;
+    }
+
+    var phoneInput = qs('pay-auth-phone');
+    var passwordInput = qs('pay-auth-password');
+    var submitBtn = qs('pay-auth-submit');
+    var phone = phoneInput ? phoneInput.value : '';
+    var password = passwordInput ? passwordInput.value : '';
+    var email = phoneToEmail(phone);
+
+    if (!email) {
+      renderModal('auth', { mode: mode, error: '请输入正确手机号' });
+      return;
+    }
+    if (!password || password.length < 6) {
+      renderModal('auth', { mode: mode, error: '密码至少 6 位' });
+      return;
+    }
+
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.textContent = '处理中...';
+    }
+
+    try {
+      if (mode === 'register') {
+        var created = await tryPost('/api/auth/register-phone', {
+          phone: phone,
+          password: password,
+        }, { noAuth: true });
+        if (!created.ok && !/已注册|already|exists/i.test(created.error || '')) {
+          throw new Error(created.error || '注册失败');
+        }
+      }
+
+      var signed = await client.auth.signInWithPassword({ email: email, password: password });
+      if (signed.error) throw signed.error;
+
+      hide('pay-modal');
+      if (_pendingPurchaseAfterLogin) {
+        _pendingPurchaseAfterLogin = false;
+        startPurchase();
+      }
+    } catch (err) {
+      renderModal('auth', { mode: mode, error: err.message || '登录失败' });
+    }
+  }
+
+  async function startGoogleLogin() {
+    var client = getAuthClient();
+    if (!client) {
+      renderModal('auth', { mode: 'login', error: '登录组件加载失败，请刷新后重试' });
+      return;
+    }
+    var redirectUrl = new URL(window.location.href);
+    redirectUrl.hash = '';
+    await client.auth.signInWithOAuth({
+      provider: 'google',
+      options: { redirectTo: redirectUrl.toString() },
+    });
+  }
+
   function renderModal(phase, data) {
     var wrap = qs('pay-modal-content');
     if (!wrap) return;
@@ -223,7 +370,35 @@
     var mockBadge = _s.isMock ? '<span class="pay-mock-badge">模拟模式</span>' : '';
     var body = '';
 
-    if (phase === 'loading') {
+    if (phase === 'auth') {
+      var mode = data.mode === 'register' ? 'register' : 'login';
+      var isRegister = mode === 'register';
+      body =
+        '<div class="pay-auth-box">' +
+          '<div class="pay-auth-title">登录后再购买</div>' +
+          '<div class="pay-auth-subtitle">会员会绑定到你的账号，换设备也能找回。</div>' +
+          (data.error ? '<div class="pay-auth-error">' + data.error + '</div>' : '') +
+          '<div class="pay-auth-tabs">' +
+            '<button class="pay-auth-tab ' + (!isRegister ? 'active' : '') + '" id="pay-auth-tab-login">登录</button>' +
+            '<button class="pay-auth-tab ' + (isRegister ? 'active' : '') + '" id="pay-auth-tab-register">注册</button>' +
+          '</div>' +
+          '<label class="pay-auth-label">手机号</label>' +
+          '<input class="pay-auth-input" id="pay-auth-phone" inputmode="tel" autocomplete="tel" placeholder="输入手机号">' +
+          '<label class="pay-auth-label">密码</label>' +
+          '<input class="pay-auth-input" id="pay-auth-password" type="password" autocomplete="' + (isRegister ? 'new-password' : 'current-password') + '" placeholder="至少 6 位">' +
+          '<button class="pay-auth-submit" id="pay-auth-submit">' + (isRegister ? '注册并登录' : '登录并继续') + '</button>' +
+          '<button class="pay-auth-google" id="pay-auth-google">用 Google 登录</button>' +
+          '<div class="pay-auth-note">手机号登录使用密码，不发验证码。</div>' +
+        '</div>';
+
+    } else if (phase === 'needChart') {
+      body =
+        '<div class="pay-fail-icon">!</div>' +
+        '<div class="pay-fail-title">请先完成排盘</div>' +
+        '<div class="pay-error-msg">' + (data.error || '会员会绑定到当前命盘记录，先排盘后再购买最稳。') + '</div>' +
+        '<button class="pay-retry-btn" id="pm-close-ok">去排盘</button>';
+
+    } else if (phase === 'loading') {
       body = '<div class="pay-spinner"></div><div class="pay-loading-text">正在创建订单…</div>';
 
     } else if (phase === 'pending') {
@@ -318,11 +493,22 @@
 
     var el;
     el = qs('pm-close');    if (el) el.onclick = closeModal;
-    el = qs('pm-close-ok'); if (el) el.onclick = function(){ closeModal(); location.reload(); };
+    el = qs('pm-close-ok'); if (el) el.onclick = phase === 'needChart'
+      ? function(){
+          closeModal();
+          var form = qs('form-section');
+          if (form) form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      : function(){ closeModal(); location.reload(); };
     el = qs('pm-retry');    if (el) el.onclick = startPurchase;
     el = qs('pm-ok');       if (el) el.onclick = doSuccess;
     el = qs('pm-fail');     if (el) el.onclick = doFail;
     el = qs('pm-refresh');  if (el) el.onclick = function(){ if (_s.orderNo) checkStatus(_s.orderNo, true); };
+    el = qs('pay-auth-tab-login');    if (el) el.onclick = function(){ renderModal('auth', { mode: 'login' }); };
+    el = qs('pay-auth-tab-register'); if (el) el.onclick = function(){ renderModal('auth', { mode: 'register' }); };
+    el = qs('pay-auth-submit');       if (el) el.onclick = function(){ submitAuth(data.mode === 'register' ? 'register' : 'login'); };
+    el = qs('pay-auth-google');       if (el) el.onclick = startGoogleLogin;
+    el = qs('pay-auth-password');     if (el) el.onkeydown = function(e){ if (e.key === 'Enter') submitAuth(data.mode === 'register' ? 'register' : 'login'); };
 
     // Render QR code after DOM is ready
     if (phase === 'pending' && !_s.isMock && _s.payUrl && _s.payMethod !== 'h5') {
