@@ -1854,18 +1854,103 @@ function getWentianDisplayChartState() {
   return null;
 }
 
-function getWentianPalaceCell(palace) {
-  if (!palace) return null;
-  const pos = WENTIAN_BRANCH_POSITIONS[palace.earthlyBranch];
-  if (!pos) return null;
-  const major = (palace.majorStars || []).map((s) => s.name + (s.mutagen || "")).filter(Boolean).join("\n") || "—";
-  const minor = (palace.minorStars || []).map((s) => s.name + (s.mutagen || "")).filter(Boolean).slice(0, 3).join(" ");
-  const range = Array.isArray(palace.decadal?.range) ? `${palace.decadal.range[0]}~${palace.decadal.range[1]}` : "";
-  const bottom = palace.name ? `大${palace.name.replace("宫", "").slice(0, 1)}` : "";
-  return [...pos, `${palace.heavenlyStem || ""}${palace.earthlyBranch || ""}`, major, palace.isBodyPalace ? `${palace.name}·身` : palace.name || "", minor, range, bottom, palace.name === "命宫"];
+function getWentianClassicMutagenClass(mutagen = "") {
+  if (String(mutagen).includes("禄")) return "fc-mutagen-lu";
+  if (String(mutagen).includes("权")) return "fc-mutagen-quan";
+  if (String(mutagen).includes("科")) return "fc-mutagen-ke";
+  if (String(mutagen).includes("忌")) return "fc-mutagen-ji";
+  return "";
 }
 
-function sourceZiweiMingpanScreenFromChart(saved) {
+function getWentianClassicStarText(star) {
+  if (!star) return "";
+  if (typeof star === "string") return star;
+  return `${star.name || ""}${star.brightness || ""}`;
+}
+
+function getWentianClassicRange(palace) {
+  const range = palace?.decadal?.range;
+  if (Array.isArray(range)) return `${range[0]}-${range[1]}`;
+  return range || "";
+}
+
+function renderWentianClassicPalaceCell(palace, activeBranch) {
+  if (!palace) return "";
+  const branch = palace.earthlyBranch || palace.branch || "";
+  const pos = WENTIAN_BRANCH_POSITIONS[branch];
+  if (!pos) return "";
+  const [col, row] = pos;
+  const activeIndex = Math.max(0, WENTIAN_SHICHEN.indexOf(activeBranch));
+  const related = [WENTIAN_SHICHEN[(activeIndex + 4) % 12], WENTIAN_SHICHEN[(activeIndex + 8) % 12], WENTIAN_SHICHEN[(activeIndex + 6) % 12]];
+  const isBen = branch === activeBranch;
+  const isRel = !isBen && related.includes(branch);
+  const allStars = [
+    ...(palace.majorStars || []),
+    ...(palace.minorStars || []),
+    ...(palace.adjectiveStars || palace.adjStars || []),
+  ];
+  const mutagenHtml = allStars
+    .filter((star) => star?.mutagen)
+    .map((star) => `<span class="fc-pal-mutagen ${getWentianClassicMutagenClass(star.mutagen)}">${escapeHtml(star.mutagen)}</span>`)
+    .join("");
+  const majorHtml = (palace.majorStars || [])
+    .map((star) => `<div class="fc-major-star">${escapeHtml(getWentianClassicStarText(star))}</div>`)
+    .join("") || `<div class="fc-major-star is-empty">空宫</div>`;
+  const minorHtml = [
+    ...(palace.minorStars || []),
+    ...(palace.adjectiveStars || palace.adjStars || []),
+  ].slice(0, 5).map((star) => `<div class="fc-minor-star">${escapeHtml(getWentianClassicStarText(star))}</div>`).join("");
+  const shenHtml = [palace.changsheng12, palace.boshi12].filter(Boolean).map((item) => `<span>${escapeHtml(item)}</span>`).join("");
+  const palaceName = `${palace.isBodyPalace ? "身宫\n" : ""}${palace.name || ""}`;
+  return `
+    <div class="fc-cell ${isBen ? "fc-ben" : isRel ? "fc-rel" : ""}" style="grid-column:${col + 1};grid-row:${row + 1};">
+      <div class="fc-cell-top">
+        ${mutagenHtml ? `<div class="fc-cell-mutagen">${mutagenHtml}</div>` : ""}
+        <div class="fc-major-list">${majorHtml}</div>
+        <div class="fc-minor-list">${minorHtml}</div>
+      </div>
+      <div class="fc-cell-bottom">
+        <div class="fc-shen-list">${shenHtml}</div>
+        <div class="fc-palace-info">
+          <span class="fc-branch">${escapeHtml(`${palace.heavenlyStem || ""}${branch}`)}</span>
+          <span class="fc-age">${escapeHtml(getWentianClassicRange(palace))}</span>
+          <span class="fc-palace-name">${escapeHtml(palaceName)}</span>
+        </div>
+      </div>
+    </div>`;
+}
+
+function renderWentianClassicCenter(chart, chartData, form) {
+  const pillars = chartData?.sizhu || extractWentianPillars(chart);
+  const genderLabel = form.gender === "female" ? "阴女" : "阳男";
+  const titleName = escapeHtml(form.name || "命主");
+  const dateText = (form.datetime || chartData?.birthDate || chart?.solarDate || "").replace("T", " ").replace(/:00$/, "");
+  const timeIndex = Number(chartData?.timeIndex);
+  const timeName = WENTIAN_SHICHEN[Number.isFinite(timeIndex) ? timeIndex : getWentianTimeIndex(new Date(form.datetime || Date.now()).getHours(), new Date(form.datetime || Date.now()).getMinutes())] || "";
+  const columns = [
+    [pillars.yearStem, pillars.yearBranch, "#886a4a"],
+    [pillars.monthStem, pillars.monthBranch, "#4d7a5b"],
+    [pillars.dayStem, pillars.dayBranch, "#9b4238"],
+    [pillars.hourStem, pillars.hourBranch, "#476885"],
+  ];
+  return `
+    <div class="fc-center-panel" style="grid-column:2 / 4;grid-row:2 / 4;">
+      <div class="fc-center-title">命主</div>
+      <div class="fc-center-meta"><span class="fc-center-name">${titleName}</span><span>${escapeHtml(genderLabel)}</span></div>
+      <div class="fc-center-rows">
+        <div class="fc-center-row"><span class="fc-center-lbl">公历</span><span class="fc-center-val">${escapeHtml(dateText || "—")}</span></div>
+        <div class="fc-center-row"><span class="fc-center-lbl">农历</span><span class="fc-center-val">${escapeHtml(chart?.lunarDate || chart?.chineseDate || "—")}</span></div>
+        <div class="fc-center-row"><span class="fc-center-lbl">时辰</span><span class="fc-center-val">${escapeHtml(timeName ? `${timeName}时` : "—")}</span></div>
+        <div class="fc-center-row"><span class="fc-center-lbl">局数</span><span class="fc-center-val">${escapeHtml(chart?.fiveElementsClass || "—")}</span></div>
+      </div>
+      <div class="fc-sizhu">
+        ${columns.map(([stem, branch, color]) => (stem || branch) ? `<div class="fc-sizhu-col" style="color:${color}"><span>${escapeHtml(stem || "?")}</span><span>${escapeHtml(branch || "?")}</span></div>` : "").join("")}
+      </div>
+      <div class="wentian-fc-note">命宫 ${escapeHtml(chart?.earthlyBranchOfSoulPalace || "—")} · 身宫 ${escapeHtml(chart?.earthlyBranchOfBodyPalace || "—")} · 已接入</div>
+    </div>`;
+}
+
+function renderWentianClassicChart(saved) {
   const chart = saved.chart;
   const form = saved.form || {};
   const chartData = saved.chartData || buildWentianChartPayload(chart, {
@@ -1873,56 +1958,74 @@ function sourceZiweiMingpanScreenFromChart(saved) {
     date: form.datetime ? new Date(form.datetime) : null,
     city: form.city || "",
   });
-  const cellW = 97.5;
-  const cellH = 119;
-  const startY = 106;
-  const cells = (chart.palaces || []).map(getWentianPalaceCell).filter(Boolean);
-  const pillars = chartData.sizhu || extractWentianPillars(chart);
-  const genderText = form.gender === "female" ? "女" : "男";
-  const dateText = (form.datetime || chartData.birthDate || chart.solarDate || "").replace("T", " ").replace(/:00$/, "");
-  const timeName = WENTIAN_SHICHEN[Number(chartData.timeIndex) || getWentianTimeIndex(new Date(form.datetime || Date.now()).getHours(), new Date(form.datetime || Date.now()).getMinutes())] || chart.time || "";
-  const centerInfo = [
-    chart.solarDate || dateText.slice(0, 10),
-    chart.lunarDate || "—",
-    `${timeName}时`,
-    genderText,
-    `${chart.fiveElementsClass || ""} · ${chart.zodiac || ""}`.trim(),
-  ].join("\n");
-  const titleName = escapeHtml(form.name || "命主");
-  const focusPalace = (chart.palaces || []).find((p) => p.name === "命宫");
+  const activeBranch = chart.earthlyBranchOfSoulPalace || (chart.palaces || []).find((p) => p.name === "命宫")?.earthlyBranch || "卯";
+  return `
+    <div class="wentian-native-mingpan" data-node-id="source-27-native-chart">
+      <div class="fc-card">
+        <div class="fc-grid-wrap">
+          <div class="fc-grid">
+            ${(chart.palaces || []).map((palace) => renderWentianClassicPalaceCell(palace, activeBranch)).join("")}
+            ${renderWentianClassicCenter(chart, chartData, form)}
+          </div>
+        </div>
+      </div>
+    </div>`;
+}
+
+function getWentianFallbackChartState() {
+  const palaceRows = [
+    ["癸巳", "天同", "子女", "禄存", "96-105", "大子"],
+    ["甲午", "武曲 天府", "夫妻", "擎羊 左辅", "106-115", "大夫"],
+    ["乙未", "太阳 太阴", "兄弟", "地劫", "116-125", "大兄"],
+    ["丙申", "贪狼", "命宫", "天马 右弼", "6-15", "大命"],
+    ["壬辰", "破军", "财帛", "陀罗", "86-95", "大财"],
+    ["丁酉", "天机 巨门", "父母", "火星 天钺", "16-25", "大父"],
+    ["辛卯", "", "疾厄", "地空", "76-85", "大疾"],
+    ["戊戌", "紫微 天相", "福德", "得 得", "26-35", "大福"],
+    ["庚寅", "廉贞", "迁移", "文昌", "66-75", "大迁"],
+    ["辛丑", "", "仆役", "", "56-65", "大仆"],
+    ["庚子", "七杀", "官禄", "文曲", "46-55", "大官"],
+    ["己亥", "天梁", "田宅", "铃星 天魁", "36-45", "大田"],
+  ];
+  const palaces = palaceRows.map(([stemBranch, majors, name, minors, range, stage]) => ({
+    heavenlyStem: stemBranch.slice(0, -1),
+    earthlyBranch: stemBranch.slice(-1),
+    name,
+    majorStars: majors ? majors.split(/\s+/).map((star) => ({ name: star })) : [],
+    minorStars: minors ? minors.split(/\s+/).map((star) => ({ name: star })) : [],
+    decadal: { range },
+    changsheng12: stage,
+    boshi12: "",
+    isBodyPalace: name === "官禄",
+  }));
+  return {
+    chart: {
+      palaces,
+      solarDate: "2026-05-12",
+      lunarDate: "二〇二六年三月廿六",
+      fiveElementsClass: "火六局",
+      zodiac: "马",
+      earthlyBranchOfSoulPalace: "申",
+      earthlyBranchOfBodyPalace: "子",
+    },
+    chartData: {
+      birthDate: "2026-05-12 15:21",
+      timeIndex: 8,
+      sizhu: { yearStem: "丙", yearBranch: "午", monthStem: "壬", monthBranch: "辰", dayStem: "丙", dayBranch: "戌", hourStem: "丙", hourBranch: "申" },
+    },
+    form: { name: "命主", gender: "male", datetime: "2026-05-12T15:21" },
+  };
+}
+
+function sourceZiweiMingpanScreenFromChart(saved) {
+  const focusPalace = (saved.chart?.palaces || []).find((p) => p.name === "命宫");
   return `
     ${figBox("source-27-bg", 0, 0, 390, 867, "", "background:#fbf7ef;")}
     ${figButton("source-27-back-hit", 18, 40, 96, 54, 'data-action="back"')}
     ${figText("source-27-back", "‹ 返回", 28, 54, 92, 26, "#9f2417", 500)}
     ${figText("source-27-title", "紫微命盘", 0, 58, 390, 25, "#3b3934", 800, "center")}
     ${figText("source-27-more", "•••", 330, 56, 42, 22, "#3b3934", 800, "center")}
-
-    ${figBox("source-27-chart", 0, startY, 390, 476, "", "background:#fffdf9;border-top:1px solid #d8d8cf;border-left:1px solid #d8d8cf;")}
-    ${[1, 2, 3].map((i) => figBox(`source-27-v-${i}`, i * cellW, startY, 1, 476, "", "background:#d8d8cf;")).join("")}
-    ${[1, 2, 3, 4].map((i) => figLine(`source-27-h-${i}`, 0, startY + i * cellH, 390, "#d8d8cf")).join("")}
-    ${figBox("source-27-center", cellW, startY + cellH, cellW * 2, cellH * 2, "", "background:#f3e7d0;border:1px solid #d8d0bd;")}
-    ${figText("source-27-center-title", titleName, cellW, startY + cellH + 28, cellW * 2, 23, "#3b3934", 800, "center")}
-    ${figText("source-27-center-stems", `${pillars.year}  ${pillars.month}  ${pillars.day}  ${pillars.hour}`, cellW + 8, startY + cellH + 66, cellW * 2 - 16, 13, "#4d4942", 500, "center")}
-    ${figLine("source-27-center-line-1", cellW + 18, startY + cellH + 94, cellW * 2 - 36, "#d9cdb8")}
-    ${figText("source-27-center-info-l", "阳历\n农历\n时辰\n性别\n局数/生肖", cellW + 28, startY + cellH + 108, 70, 12, "#8a8379", 400, "left", "line-height:1.55;")}
-    ${figText("source-27-center-info-r", centerInfo, cellW + 72, startY + cellH + 108, 112, 12, "#3f3a35", 500, "right", "line-height:1.55;")}
-    ${figLine("source-27-center-line-2", cellW + 18, startY + cellH + 202, cellW * 2 - 36, "#d9cdb8")}
-    ${figText("source-27-center-extra", `命宫 ${chart.earthlyBranchOfSoulPalace || "—"} · 身宫 ${chart.earthlyBranchOfBodyPalace || "—"} · 已接入`, cellW + 18, startY + cellH + 217, cellW * 2 - 36, 11, "#3f3a35", 600, "center")}
-    ${cells.map(([col, row, gan, main, palace, aux, age, bottom, focus], index) => {
-      const x = col * cellW;
-      const y = startY + row * cellH;
-      const border = focus ? "border:2px solid #aa3b39;" : "";
-      return `
-        ${figBox(`source-27-cell-focus-${index}`, x, y, cellW, cellH, "", border)}
-        ${figText(`source-27-cell-gan-${index}`, gan, x + 8, y + 10, 38, 12, "#77716a", 400)}
-        ${figText(`source-27-cell-palace-${index}`, palace, x + 52, y + 10, 38, 13, "#55504a", 700, "right")}
-        ${figText(`source-27-cell-main-${index}`, main, x + 10, y + 32, 48, 18, "#3c3934", 800, "left", "line-height:1.08;")}
-        ${aux ? figText(`source-27-cell-aux-${index}`, aux, x + 58, y + 42, 32, 11, "#77716a", 400, "right", "line-height:1.25;") : ""}
-        ${figText(`source-27-cell-age-${index}`, age, x + 8, y + 101, 48, 11, "#77716a", 400)}
-        ${figText(`source-27-cell-bottom-${index}`, bottom, x + 58, y + 101, 32, 11, "#77716a", 400, "right")}
-      `;
-    }).join("")}
-
+    ${renderWentianClassicChart(saved)}
     ${figBox("source-27-ai-card", 15, 608, 360, 300, "", "border:1px solid #e0dcd3;border-radius:16px;background:#fff;box-shadow:0 4px 14px rgba(70,45,25,.06);")}
     ${figText("source-27-ai-title", `✦ ${focusPalace?.name || "命盘"} · AI解析`, 34, 630, 220, 22, "#3a3732", 800)}
     ${figText("source-27-ai-close", "×", 334, 624, 26, 30, "#66615b", 500, "center")}
@@ -1937,70 +2040,7 @@ function sourceZiweiMingpanScreenFromChart(saved) {
 }
 
 function sourceZiweiMingpanScreen() {
-  const saved = getWentianDisplayChartState();
-  if (saved) return sourceZiweiMingpanScreenFromChart(saved);
-  const cells = [
-    [0, 0, "癸巳", "天\n同", "子女", "禄存", "96~105", "大子"],
-    [1, 0, "甲午", "武曲\n天府", "夫妻", "擎羊 左辅", "106~115", "大夫"],
-    [2, 0, "乙未", "太阳\n太阴", "兄弟", "地劫", "116~125", "大兄"],
-    [3, 0, "丙申", "贪狼", "命宫", "天马 右弼", "6~15", "大命"],
-    [0, 1, "壬辰", "破军", "财帛", "陀罗", "86~95", "大财"],
-    [3, 1, "丁酉", "天巨\n机门", "父母", "火星 天钺", "16~25", "大父"],
-    [0, 2, "辛卯", "疾厄", "", "地空", "76~85", "大疾"],
-    [3, 2, "戊戌", "紫微\n天相", "福德", "得  得", "26~35", "大福", true],
-    [0, 3, "庚寅", "廉贞", "迁移", "文昌", "66~75", "大迁"],
-    [1, 3, "辛丑", "仆役", "", "", "56~65", "大仆"],
-    [2, 3, "庚子", "七杀", "官禄·身", "文曲", "46~55", "大官"],
-    [3, 3, "己亥", "天梁", "田宅", "铃星 天魁", "36~45", "大田"]
-  ];
-  const cellW = 97.5;
-  const cellH = 119;
-  const startY = 106;
-  return `
-    ${figBox("source-27-bg", 0, 0, 390, 867, "", "background:#fbf7ef;")}
-    ${figButton("source-27-back-hit", 18, 40, 96, 54, 'data-action="back"')}
-    ${figText("source-27-back", "‹ 返回", 28, 54, 92, 26, "#9f2417", 500)}
-    ${figText("source-27-title", "紫微命盘", 0, 58, 390, 25, "#3b3934", 800, "center")}
-    ${figText("source-27-more", "•••", 330, 56, 42, 22, "#3b3934", 800, "center")}
-
-    ${figBox("source-27-chart", 0, startY, 390, 476, "", "background:#fffdf9;border-top:1px solid #d8d8cf;border-left:1px solid #d8d8cf;")}
-    ${[1, 2, 3].map((i) => figBox(`source-27-v-${i}`, i * cellW, startY, 1, 476, "", "background:#d8d8cf;")).join("")}
-    ${[1, 2, 3, 4].map((i) => figLine(`source-27-h-${i}`, 0, startY + i * cellH, 390, "#d8d8cf")).join("")}
-    ${figBox("source-27-center", cellW, startY + cellH, cellW * 2, cellH * 2, "", "background:#f3e7d0;border:1px solid #d8d0bd;")}
-    ${figText("source-27-center-title", "命主", cellW, startY + cellH + 30, cellW * 2, 23, "#3b3934", 800, "center")}
-    ${figText("source-27-center-stems", "丙午  王辰  丙戌  丙申", cellW, startY + cellH + 68, cellW * 2, 14, "#4d4942", 400, "center")}
-    ${figLine("source-27-center-line-1", cellW + 18, startY + cellH + 98, cellW * 2 - 36, "#d9cdb8")}
-    ${figText("source-27-center-info-l", "阳历\n农历\n时辰\n性别\n星座/生肖", cellW + 28, startY + cellH + 112, 80, 12, "#8a8379", 400, "left", "line-height:1.55;")}
-    ${figText("source-27-center-info-r", "2026-5-12\n二〇二六年三月廿六\n申时 (15:00~17:00)\n男\n金牛座 · 马", cellW + 60, startY + cellH + 112, 124, 12, "#3f3a35", 500, "right", "line-height:1.55;")}
-    ${figLine("source-27-center-line-2", cellW + 18, startY + cellH + 202, cellW * 2 - 36, "#d9cdb8")}
-    ${figText("source-27-center-extra-l", "五行局\n命主\n身主", cellW + 28, startY + cellH + 216, 70, 11, "#8a8379", 400, "left", "line-height:1.3;")}
-    ${figText("source-27-center-extra-r", "火六局\n廉贞\n火星", cellW + 106, startY + cellH + 216, 78, 11, "#3f3a35", 500, "right", "line-height:1.3;")}
-    ${cells.map(([col, row, gan, main, palace, aux, age, bottom, focus], index) => {
-      const x = col * cellW;
-      const y = startY + row * cellH;
-      const border = focus ? "border:2px solid #aa3b39;" : "";
-      return `
-        ${figBox(`source-27-cell-focus-${index}`, x, y, cellW, cellH, "", border)}
-        ${figText(`source-27-cell-gan-${index}`, gan, x + 8, y + 10, 36, 12, "#77716a", 400)}
-        ${figText(`source-27-cell-palace-${index}`, palace, x + 60, y + 10, 28, 14, "#55504a", 600, "right")}
-        ${figText(`source-27-cell-main-${index}`, main, x + 10, y + 32, 44, 18, "#3c3934", 800, "left", "line-height:1.08;")}
-        ${aux ? figText(`source-27-cell-aux-${index}`, aux, x + 60, y + 42, 28, 12, "#77716a", 400, "right", "line-height:1.25;") : ""}
-        ${figText(`source-27-cell-age-${index}`, age, x + 8, y + 101, 48, 11, "#77716a", 400)}
-        ${figText(`source-27-cell-bottom-${index}`, bottom, x + 58, y + 101, 32, 11, "#77716a", 400, "right")}
-      `;
-    }).join("")}
-
-    ${figBox("source-27-ai-card", 15, 608, 360, 300, "", "border:1px solid #e0dcd3;border-radius:16px;background:#fff;box-shadow:0 4px 14px rgba(70,45,25,.06);")}
-    ${figText("source-27-ai-title", "✦  福德 · AI解析", 34, 630, 220, 22, "#3a3732", 800)}
-    ${figText("source-27-ai-close", "×", 334, 624, 26, 30, "#66615b", 500, "center")}
-    ${figLine("source-27-ai-line-1", 32, 666, 324, "#dedbd5")}
-    ${figText("source-27-ai-copy", "AI正在凝神分析您【福德】的星象布局，请轻触下方按钮\n开启深度测算...", 32, 684, 322, 16, "#8b857d", 400, "left", "line-height:1.62;")}
-    ${figBox("source-27-ai-button", 36, 739, 318, 44, "", "border-radius:8px;background:#ad3b35;")}
-    ${figButton("source-27-ai-button-hit", 36, 739, 318, 44, 'data-route="screen-4"')}
-    ${figText("source-27-ai-button-text", "☵  向AI提问", 36, 751, 318, 18, "#fff", 700, "center")}
-    ${figLine("source-27-ai-line-2", 32, 816, 324, "#dedbd5")}
-    ${figText("source-27-ai-detail-title", "宫位详情", 32, 836, 120, 15, "#3a3732", 500)}
-  `;
+  return sourceZiweiMingpanScreenFromChart(getWentianDisplayChartState() || getWentianFallbackChartState());
 }
 
 function renderConvertedScreen(no) {

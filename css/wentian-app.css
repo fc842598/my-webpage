@@ -544,6 +544,253 @@ button { cursor: pointer; }
   color: #b33a2f;
 }
 
+.wentian-native-mingpan {
+  position: absolute;
+  left: 0;
+  top: 106px;
+  width: 390px;
+  height: 486px;
+  font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+  color: #2d2420;
+}
+
+.wentian-native-mingpan .fc-card {
+  width: 390px;
+  margin: 0;
+  padding: 0;
+  background: #f0ebe1;
+  border-radius: 0;
+  box-shadow: none;
+  overflow: hidden;
+}
+
+.wentian-native-mingpan .fc-grid-wrap {
+  padding: 0 8px 6px;
+}
+
+.wentian-native-mingpan .fc-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(4, minmax(0, 1fr));
+  gap: 1px;
+  width: 100%;
+  aspect-ratio: 1 / 1.18;
+  overflow: hidden;
+  border: 1px solid #d2c4b5;
+  background: #d2c4b5;
+}
+
+.wentian-native-mingpan .fc-cell,
+.wentian-native-mingpan .fc-center-panel {
+  min-height: 0;
+  overflow: hidden;
+  background: #fdfcf9;
+}
+
+.wentian-native-mingpan .fc-cell {
+  padding: 5px 6px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.wentian-native-mingpan .fc-cell.fc-ben {
+  background: #fae5df;
+}
+
+.wentian-native-mingpan .fc-cell.fc-rel {
+  background: #f4ebd5;
+}
+
+.wentian-native-mingpan .fc-cell-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex: 1;
+  overflow: hidden;
+}
+
+.wentian-native-mingpan .fc-major-list,
+.wentian-native-mingpan .fc-minor-list,
+.wentian-native-mingpan .fc-shen-list,
+.wentian-native-mingpan .fc-palace-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.wentian-native-mingpan .fc-major-star {
+  color: #2d2420;
+  font-size: 11px;
+  font-weight: 900;
+  line-height: 1.25;
+  white-space: nowrap;
+}
+
+.wentian-native-mingpan .fc-major-star.is-empty {
+  color: #b7aea2;
+}
+
+.wentian-native-mingpan .fc-minor-list {
+  align-items: flex-end;
+  gap: 1px;
+}
+
+.wentian-native-mingpan .fc-minor-star {
+  color: #73655c;
+  font-size: 8.5px;
+  line-height: 1.25;
+  white-space: nowrap;
+}
+
+.wentian-native-mingpan .fc-cell-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-top: 2px;
+}
+
+.wentian-native-mingpan .fc-shen-list {
+  color: #8c7e75;
+  font-size: 8px;
+  line-height: 1.3;
+}
+
+.wentian-native-mingpan .fc-palace-info {
+  flex: 1;
+  align-items: center;
+  margin-left: 2px;
+}
+
+.wentian-native-mingpan .fc-branch {
+  color: #4a3f39;
+  font-size: 9.5px;
+  line-height: 1.2;
+}
+
+.wentian-native-mingpan .fc-age {
+  margin: 1px 0;
+  color: #6e615a;
+  font-size: 8.5px;
+  line-height: 1.2;
+}
+
+.wentian-native-mingpan .fc-palace-name {
+  color: #1f1917;
+  font-size: 10.5px;
+  font-weight: 900;
+  line-height: 1.18;
+  text-align: center;
+  white-space: pre-line;
+}
+
+.wentian-native-mingpan .fc-cell-mutagen {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  margin-bottom: 2px;
+}
+
+.wentian-native-mingpan .fc-pal-mutagen {
+  display: inline-block;
+  padding: 1px 3px;
+  border-radius: 3px;
+  font-size: 8px;
+  font-weight: 900;
+  line-height: 1.35;
+}
+
+.wentian-native-mingpan .fc-pal-mutagen.fc-mutagen-lu {
+  color: #2d7a3a;
+  background: #e6f4ea;
+}
+
+.wentian-native-mingpan .fc-pal-mutagen.fc-mutagen-quan {
+  color: #6b3fa0;
+  background: #f0e8f8;
+}
+
+.wentian-native-mingpan .fc-pal-mutagen.fc-mutagen-ke {
+  color: #2d5fa0;
+  background: #e8eef7;
+}
+
+.wentian-native-mingpan .fc-pal-mutagen.fc-mutagen-ji {
+  color: #963d32;
+  background: #fcecea;
+}
+
+.wentian-native-mingpan .fc-center-panel {
+  padding: 9px 8px 7px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.wentian-native-mingpan .fc-center-title {
+  color: #2d2420;
+  font-size: 15px;
+  font-weight: 900;
+  letter-spacing: 4px;
+  text-align: center;
+}
+
+.wentian-native-mingpan .fc-center-meta,
+.wentian-native-mingpan .fc-center-row {
+  display: flex;
+  align-items: center;
+  color: #6e615a;
+  font-size: 8.5px;
+  line-height: 1.25;
+}
+
+.wentian-native-mingpan .fc-center-meta {
+  justify-content: center;
+  gap: 5px;
+}
+
+.wentian-native-mingpan .fc-center-name,
+.wentian-native-mingpan .fc-center-val {
+  color: #4a3f39;
+  font-weight: 800;
+}
+
+.wentian-native-mingpan .fc-center-lbl {
+  width: 36px;
+  flex: 0 0 36px;
+}
+
+.wentian-native-mingpan .fc-center-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.wentian-native-mingpan .fc-sizhu {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 3px;
+}
+
+.wentian-native-mingpan .fc-sizhu-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 10px;
+  font-weight: 900;
+  line-height: 1.3;
+}
+
+.wentian-native-mingpan .wentian-fc-note {
+  margin-top: auto;
+  padding-top: 5px;
+  border-top: 1px solid #e4dcce;
+  color: #6e615a;
+  font-size: 8.5px;
+  font-weight: 700;
+  text-align: center;
+}
+
 .wentian-chat-status {
   position: absolute;
   left: 24px;
