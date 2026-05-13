@@ -718,6 +718,34 @@ function routeFromLocation() {
   return "screen-2";
 }
 
+function stripScreenshotStatusBar() {
+  const phone = view.querySelector(".figma-phone");
+  if (!phone) return;
+  const statusNodes = phone.querySelectorAll([
+    '[data-node-id="status-time"]',
+    '[data-node-id="status-net"]',
+    '[data-node-id$="-time"]',
+    '[data-node-id$="-status"]',
+    '[data-node-id$="-battery"]'
+  ].join(","));
+  if (!statusNodes.length) return;
+  statusNodes.forEach((node) => node.remove());
+
+  const bottomNodes = [...phone.querySelectorAll('[data-node-id^="source-bottom-"], [data-node-id^="converted-bottom-"], [data-node-id^="bottom-"]')];
+  const bottomTop = bottomNodes.reduce((min, node) => {
+    const top = parseFloat(node.style.top);
+    return Number.isFinite(top) ? Math.min(min, top) : min;
+  }, Infinity);
+  const keepBottomAfter = Number.isFinite(bottomTop) ? bottomTop - 8 : Infinity;
+
+  for (const node of phone.querySelectorAll(".fig-text, .fig-box, .fig-line, .fig-img, .fig-click, input")) {
+    if (bottomNodes.includes(node)) continue;
+    const top = parseFloat(node.style.top);
+    if (!Number.isFinite(top) || top >= keepBottomAfter) continue;
+    node.style.top = `${Math.max(0, top - 34)}px`;
+  }
+}
+
 function navigate(route, push = true) {
   route = resolveRoute(route);
   if (/^screen-?\d+$/.test(route)) {
@@ -729,6 +757,7 @@ function navigate(route, push = true) {
     routeKicker.textContent = "Figma Editable Prototype";
     routeTitle.textContent = `${String(screen.no).padStart(2, "0")} ${screen.title}`;
     view.innerHTML = renderConvertedScreen(screen.no);
+    stripScreenshotStatusBar();
     syncActive();
     if (!location.hash.includes("figmacapture=")) location.hash = route;
     window.scrollTo(0, 0);
