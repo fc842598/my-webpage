@@ -1676,7 +1676,7 @@
     const btn = $('#mbpDecodeBtn');
     if (btn) {
       btn.disabled = true;
-      btn.textContent = 'AI 解读中…';
+      btn.textContent = 'AI 批命中…';
     }
     state.decoded = true;
     state.aiResults = {};
@@ -1717,7 +1717,7 @@
     setAllModuleButtonsBusy(false);
     if (btn) {
       btn.disabled = false;
-      btn.textContent = successCount ? '重新一键解读' : '重试一键解读';
+      btn.textContent = successCount ? '重新一键批命' : '重试一键批命';
     }
   }
 
@@ -1726,11 +1726,11 @@
     resetModuleDoneStates();
     updateDecodeProgress(0, -1, '待生成');
     const defaults = {
-      body: ['身宫批命', '点击一键解读后生成。'],
-      marriage: ['婚姻批命', '点击一键解读后生成。'],
-      health: ['健康批命', '点击一键解读后生成。'],
-      wealth: ['财运批命', '点击一键解读后生成。'],
-      career: ['事业批命', '点击一键解读后生成。'],
+      body: ['身宫批命', '点击一键批命后生成。'],
+      marriage: ['婚姻批命', '点击一键批命后生成。'],
+      health: ['健康批命', '点击一键批命后生成。'],
+      wealth: ['财运批命', '点击一键批命后生成。'],
+      career: ['事业批命', '点击一键批命后生成。'],
     };
     Object.entries(defaults).forEach(([key, value]) => {
       const card = document.querySelector(`[data-report="${key}"]`);
@@ -1751,7 +1751,7 @@
     const chapters = $('#mbpChapters');
     if (chapters) {
       chapters.innerHTML = ['命格总览', '大限流年', '人生曲线', '五宫详解', '行动建议'].map((title, index) => `
-        <article id="mbp-chapter-${index}" data-report-chapter="${index}"><span>卷${index + 1}</span><h3>${title}</h3><p>等待一键解读。</p></article>
+        <article id="mbp-chapter-${index}" data-report-chapter="${index}"><span>卷${index + 1}</span><h3>${title}</h3><p>等待一键批命。</p></article>
       `).join('');
     }
     const subtitle = $('#mbpBookSubtitle');
@@ -1768,10 +1768,10 @@
     const btn = $('#mbpDecodeBtn');
     if (btn) {
       btn.disabled = false;
-      btn.textContent = '✦ 一键解读';
+      btn.textContent = '✦ 立即生成五卷命书';
     }
     setAllModuleButtonsBusy(false);
-    setDecodeStatus('接入原站 AI 批命接口，排盘后可一键生成。');
+    setDecodeStatus('排盘后生成五卷命书。');
     requestAnimationFrame(syncReportNav);
   }
 
