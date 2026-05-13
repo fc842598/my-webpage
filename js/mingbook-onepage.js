@@ -1807,7 +1807,195 @@
     return root;
   }
 
+  function pdfPillarLine(pillars = fcBirthPillars) {
+    if (!pillars) return '—';
+    return [
+      pillarText(pillars.yearStem, pillars.yearBranch),
+      pillarText(pillars.monthStem, pillars.monthBranch),
+      pillarText(pillars.dayStem, pillars.dayBranch),
+      pillarText(pillars.hourStem, pillars.hourBranch),
+    ].join(' ');
+  }
+
+  function pdfPalaceAge(palace) {
+    const range = palace?.decadal?.range;
+    if (Array.isArray(range) && range.length >= 2) return `${range[0]}-${range[1]}`;
+    const match = String(range || '').match(/(\d+)/g);
+    return match && match.length >= 2 ? `${match[0]}-${match[1]}` : '';
+  }
+
+  function pdfPalaceMajor(palace) {
+    return (palace?.majorStars || [])
+      .slice(0, 3)
+      .map((star) => `${star.name || ''}${star.brightness || ''}`.trim())
+      .filter(Boolean)
+      .join(' · ') || '空宫';
+  }
+
+  function pdfPalaceMinor(palace) {
+    return allSmallStars(palace || {})
+      .slice(0, 5)
+      .map(starText)
+      .filter(Boolean)
+      .join('、');
+  }
+
+  function buildPdfBasicCards(bundle, generatedAt) {
+    const chart = bundle.chart;
+    const norm = bundle.norm || {};
+    const life = findLifePalace(chart);
+    const body = findBodyPalace(chart);
+    const gender = state.profile.gender === 'female' ? '女命' : '男命';
+    const name = state.profile.name || gender;
+    const city = state.profile.cityName || state.profile.city || '未填地点';
+    const time = `${dateStr(state.profile)} ${pad2(state.profile.hour)}:${pad2(state.profile.minute)}`;
+    const basics = [
+      ['命主', name],
+      ['性别', gender],
+      ['出生资料', time],
+      ['出生地点', city],
+      ['农历', chart.chineseDate || chart.lunarDate || '—'],
+      ['真太阳时', $('#mbpFcTst')?.textContent || '—'],
+      ['排盘时辰', $('#mbpFcShichen')?.textContent || `${shichenLabel(norm)}时`],
+      ['节气四柱', pdfPillarLine()],
+      ['五行局', chart.fiveElementsClass || '—'],
+      ['命主身主', `${chart.soul || '—'} · ${chart.body || '—'}`],
+      ['命宫', `${life?.earthlyBranch || '—'} · ${life?.name || '命宫'}`],
+      ['身宫', `${body?.earthlyBranch || '—'} · ${body?.name || '身宫'}`],
+      ['生成时间', generatedAt],
+    ];
+    return basics.map(([label, value]) => `
+      <div class="mbp-pdf-basic-card">
+        <b>${escapeHtml(label)}</b>
+        <span>${escapeHtml(value)}</span>
+      </div>
+    `).join('');
+  }
+
+  function buildPdfChartGrid(bundle) {
+    const chart = bundle.chart;
+    const palaces = new Map((chart?.palaces || []).map((palace) => [palace.earthlyBranch, palace]));
+    const cells = [
+      ['巳', 1, 1], ['午', 2, 1], ['未', 3, 1], ['申', 4, 1],
+      ['辰', 1, 2], ['酉', 4, 2],
+      ['卯', 1, 3], ['戌', 4, 3],
+      ['寅', 1, 4], ['丑', 2, 4], ['子', 3, 4], ['亥', 4, 4],
+    ];
+    const solar = $('#mbpFcSolar')?.textContent || '';
+    const lunar = $('#mbpFcLunar')?.textContent || '';
+    const tst = $('#mbpFcTst')?.textContent || '';
+    const mutagenText = mutagens(chart).slice(0, 4).join('、') || '—';
+    const cellHtml = cells.map(([branch, column, row]) => {
+      const palace = palaces.get(branch) || {};
+      const tags = [palace.isSoulPalace ? '命宫' : '', palace.isBodyPalace ? '身宫' : ''].filter(Boolean);
+      const minor = pdfPalaceMinor(palace);
+      const stemBranch = `${palace.heavenlyStem || ''}${palace.earthlyBranch || branch}`;
+      const age = pdfPalaceAge(palace);
+      return `
+        <section class="mbp-pdf-palace" style="grid-column:${column};grid-row:${row};">
+          <header>
+            <strong>${escapeHtml(palace.name || branch)}</strong>
+            <span>${escapeHtml(stemBranch)}</span>
+          </header>
+          ${tags.length ? `<em>${escapeHtml(tags.join(' · '))}</em>` : ''}
+          <b>${escapeHtml(pdfPalaceMajor(palace))}</b>
+          <p>${escapeHtml(minor || '—')}</p>
+          <footer><span>${escapeHtml(age || '—')}</span><strong>${escapeHtml(palace.name || '')}</strong></footer>
+        </section>
+      `;
+    }).join('');
+    return `
+      <div class="mbp-pdf-chart-panel">
+        <div class="mbp-pdf-zw-grid">
+          ${cellHtml}
+          <div class="mbp-pdf-chart-center">
+            <h3>紫微排盘</h3>
+            <dl>
+              <div><dt>公历</dt><dd>${escapeHtml(solar || '—')}</dd></div>
+              <div><dt>农历</dt><dd>${escapeHtml(lunar || '—')}</dd></div>
+              <div><dt>真太阳时</dt><dd>${escapeHtml(tst || '—')}</dd></div>
+              <div><dt>四柱</dt><dd>${escapeHtml(pdfPillarLine())}</dd></div>
+              <div><dt>四化</dt><dd>${escapeHtml(mutagenText)}</dd></div>
+            </dl>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  function buildPdfTextCards(data, fallbackTitle, fallbackText, limit = 6) {
+    const sections = aiSections(data).filter((section) => section.content || section.title);
+    const list = sections.length ? sections.slice(0, limit) : [{ title: fallbackTitle, content: fallbackText }];
+    return list.map((section) => `
+      <section class="mbp-pdf-text-card">
+        <strong>${escapeHtml(section.title || fallbackTitle)}</strong>
+        <p>${escapeHtml(cleanAiText(section.content || fallbackText || '等待生成。'))}</p>
+      </section>
+    `).join('');
+  }
+
+  function buildPdfChapter(index, title, innerHtml) {
+    return `
+      <article class="mbp-pdf-chapter">
+        <header class="mbp-pdf-chapter-head">
+          <span>卷${index}</span>
+          <h3>${escapeHtml(title)}</h3>
+        </header>
+        <div class="mbp-pdf-chapter-body">${innerHtml}</div>
+      </article>
+    `;
+  }
+
+  function buildPdfChaptersHtml() {
+    const overall = normalizeAiData(state.aiResults.overall);
+    const luck = normalizeAiData(state.aiResults.current_luck);
+    const overallText = aiCardText(overall);
+    const luckText = aiCardText(luck);
+    const overallCard = normalizeAiData(overall)?.card || {};
+    const specialModules = [
+      ['shengong', '身宫批命'],
+      ['hunyin', '婚姻批命'],
+      ['jiankang', '健康批命'],
+      ['caiyun', '财运批命'],
+      ['shiye', '事业批命'],
+    ];
+    const specialHtml = specialModules.map(([key, title]) => {
+      const data = normalizeAiData(state.aiResults[key]);
+      const generatedTitle = aiCardTitle(data, '');
+      const summary = insightSummary(data, `${title}等待原站 AI 返回。`, 180);
+      const content = generatedTitle && generatedTitle !== title ? `${generatedTitle}：${summary}` : summary;
+      return `
+        <section class="mbp-pdf-text-card">
+          <strong>${escapeHtml(title)}</strong>
+          <p>${escapeHtml(content)}</p>
+        </section>
+      `;
+    }).join('');
+    const actionText = overallCard.risk
+      ? `要留意：${cleanAiText(overallCard.risk)}`
+      : (overallText ? trimText(overallText, 220) : '先看命盘底色，再看大运节奏；重要决策不只问准不准，还要知道何时动、如何动。');
+    return [
+      buildPdfChapter(1, aiCardTitle(overall, '命格总览'), buildPdfTextCards(overall, '命格总览', overallText || '整体批命等待原站 AI 返回。')),
+      buildPdfChapter(2, '大限流年', buildPdfTextCards(luck, '大限流年', luckText || '大限流年等待原站 AI 返回。')),
+      buildPdfChapter(3, '人生曲线', `
+        <section class="mbp-pdf-text-card">
+          <strong>整体走势</strong>
+          <p>人生曲线用于看关键年份、高低点与转折节奏。后续接入原站曲线评分后，这里会自动替换为客户版曲线结论。</p>
+        </section>
+      `),
+      buildPdfChapter(4, '专题批命', specialHtml),
+      buildPdfChapter(5, '行动建议', `
+        <section class="mbp-pdf-text-card">
+          <strong>建议</strong>
+          <p>${escapeHtml(actionText)}</p>
+        </section>
+      `),
+    ].join('');
+  }
+
   function buildPdfReportElement() {
+    const bundle = getChartBundle();
+    if (bundle.error) throw new Error(bundle.error);
     renderChart();
     const facts = chartFacts();
     const name = state.profile.name || (state.profile.gender === 'female' ? '女命' : '男命');
@@ -1836,31 +2024,19 @@
           <li>行动建议</li>
         </ol>
       </header>
-      <section class="mbp-pdf-section">
+      <section class="mbp-pdf-section mbp-pdf-basic-section">
+        <h2>基础资料</h2>
+        <div class="mbp-pdf-basic-grid">${buildPdfBasicCards(bundle, generatedAt)}</div>
+      </section>
+      <section class="mbp-pdf-section mbp-pdf-chart-section">
         <h2>命盘</h2>
-        <div class="mbp-pdf-chart-slot"></div>
+        ${buildPdfChartGrid(bundle)}
       </section>
       <section class="mbp-pdf-section">
         <h2>命盘解读</h2>
-        <div class="mbp-pdf-chapters-slot"></div>
+        <div class="mbp-pdf-chapters-slot">${buildPdfChaptersHtml()}</div>
       </section>
     `;
-    const chart = $('#mbpFcCard')?.cloneNode(true);
-    if (chart) {
-      cleanCloneIds(chart);
-      chart.classList.add('mbp-pdf-chart-card');
-      chart.querySelectorAll('button').forEach((button) => button.setAttribute('disabled', ''));
-      report.querySelector('.mbp-pdf-chart-slot')?.appendChild(chart);
-    }
-    const chapters = $('#mbpChapters')?.cloneNode(true);
-    if (chapters) {
-      cleanCloneIds(chapters);
-      chapters.classList.add('mbp-pdf-chapters');
-      chapters.querySelectorAll('details').forEach((detail) => {
-        detail.open = true;
-      });
-      report.querySelector('.mbp-pdf-chapters-slot')?.appendChild(chapters);
-    }
     return report;
   }
 
@@ -1883,25 +2059,35 @@
     host.className = 'mbp-pdf-export-host';
     const report = buildPdfReportElement();
     host.appendChild(report);
+    document.body.classList.add('is-pdf-exporting');
     document.body.appendChild(host);
     try {
       const html2pdf = await loadHtml2Pdf();
       const profileKey = dateStr(state.profile).replace(/-/g, '');
       const filename = `${safePdfFileName(state.profile.name || '个人命盘')}-${profileKey}-紫微命盘深度报告.pdf`;
+      const pdfWidth = Math.ceil(report.scrollWidth || report.getBoundingClientRect().width || 794);
+      const pdfPageHeight = 1123;
+      const rawPdfHeight = Math.ceil(report.scrollHeight || report.getBoundingClientRect().height || pdfPageHeight);
+      const pdfHeight = Math.ceil((rawPdfHeight + pdfPageHeight) / pdfPageHeight) * pdfPageHeight;
       await html2pdf().set({
         filename,
-        margin: [8, 8, 8, 8],
+        margin: [0, 0, 0, 0],
         image: { type: 'jpeg', quality: 0.96 },
         html2canvas: {
           scale: 2,
           useCORS: true,
           backgroundColor: '#f5efe4',
-          windowWidth: 860,
+          width: pdfWidth,
+          height: pdfHeight,
+          windowWidth: pdfWidth,
+          windowHeight: pdfHeight,
+          x: 0,
+          y: 0,
           scrollX: 0,
           scrollY: 0,
         },
-        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-        pagebreak: { mode: ['css', 'legacy'], avoid: ['article', '.mbp-pdf-section', '.mbp-report-row'] },
+        jsPDF: { unit: 'px', format: [794, pdfPageHeight], orientation: 'portrait' },
+        pagebreak: { mode: ['css', 'legacy'], avoid: ['.mbp-pdf-basic-card', '.mbp-pdf-chart-section'] },
       }).from(report).save();
       setDecodeStatus('PDF 已开始下载。');
       setPdfHint('已生成客户版 PDF，可重新打包', 'ready');
@@ -1910,6 +2096,7 @@
       setDecodeStatus('PDF 打包失败，请刷新后重试。');
       setPdfHint('PDF 打包失败，请检查网络后重试', 'error');
     } finally {
+      document.body.classList.remove('is-pdf-exporting');
       host.remove();
       if (btn) {
         btn.disabled = false;
