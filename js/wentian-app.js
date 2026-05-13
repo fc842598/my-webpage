@@ -728,7 +728,6 @@ function stripScreenshotStatusBar() {
     '[data-node-id$="-status"]',
     '[data-node-id$="-battery"]'
   ].join(","));
-  if (!statusNodes.length) return;
   statusNodes.forEach((node) => node.remove());
 
   const bottomNodes = [...phone.querySelectorAll('[data-node-id^="source-bottom-"], [data-node-id^="converted-bottom-"], [data-node-id^="bottom-"]')];
