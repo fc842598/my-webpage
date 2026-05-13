@@ -1,14 +1,14 @@
 :root {
-  --bg: #f8f3eb;
-  --paper: #fffdf8;
+  --bg: #fff2df;
+  --paper: #fffaf3;
   --card: #ffffff;
-  --ink: #28211a;
-  --muted: #85796b;
-  --line: #eadfce;
-  --gold: #c8a65f;
-  --red: #a73f35;
-  --blue: #145bdc;
-  --shadow: 0 14px 36px rgba(79, 55, 32, 0.12);
+  --ink: #201813;
+  --muted: #857a70;
+  --line: #e7d7bf;
+  --gold: #c2953c;
+  --red: #a94437;
+  --blue: #3269a6;
+  --shadow: 0 14px 36px rgba(68, 45, 25, 0.12);
 }
 
 * { box-sizing: border-box; }
@@ -21,7 +21,7 @@ body {
 
 body {
   margin: 0;
-  background: #faf5ed;
+  background: #fff6ea;
   color: var(--ink);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", sans-serif;
 }
@@ -60,8 +60,8 @@ button { cursor: pointer; }
   width: 38px;
   height: 38px;
   border-radius: 11px;
-  background: #111;
-  color: #f5c84b;
+  background: #1c1410;
+  color: #efc85a;
 }
 
 .rail-nav {
@@ -99,8 +99,8 @@ button { cursor: pointer; }
 
 .rail-nav button.is-active,
 .screen-nav button.is-active {
-  background: #fff8ef;
-  color: #241d17;
+  background: #fff1dc;
+  color: #201813;
 }
 
 .app-main {
@@ -111,7 +111,7 @@ button { cursor: pointer; }
   min-width: 0;
   min-height: 100svh;
   padding: 0;
-  background: #faf5ed;
+  background: #fff6ea;
 }
 
 .topbar {
@@ -347,7 +347,7 @@ button { cursor: pointer; }
   align-content: start;
   gap: 14px;
   padding: 18px;
-  background: #fbf7f1;
+  background: #fff6ea;
 }
 
 .bubble {
@@ -359,7 +359,7 @@ button { cursor: pointer; }
 
 .bubble.user {
   justify-self: end;
-  background: #cfad5c;
+  background: #c5a66b;
   color: white;
 }
 
@@ -403,15 +403,15 @@ button { cursor: pointer; }
   width: 390px;
   height: 844px;
   overflow: hidden;
-  background: #faf5ed;
-  color: #21211f;
+  background: #fff6ea;
+  color: #201813;
   box-shadow: none;
   transform: scale(var(--wentian-phone-scale, 1));
   transform-origin: top center;
 }
 
 .figma-phone.converted {
-  background: #faf5ed;
+  background: #fff6ea;
 }
 
 .figma-phone * {
@@ -449,7 +449,7 @@ button { cursor: pointer; }
 
 .fig-card {
   background: #fff;
-  border: 1px solid #e5decc;
+  border: 1px solid #e7d7bf;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
@@ -463,7 +463,7 @@ button { cursor: pointer; }
 
 .converted-card {
   position: absolute;
-  border: 1px solid #e5dbc7;
+  border: 1px solid #e7d7bf;
   border-radius: 14px;
   background: #fff;
 }
@@ -474,7 +474,7 @@ button { cursor: pointer; }
   height: 40px;
   border: 0;
   background: transparent;
-  color: #26211c;
+  color: #201813;
   font-family: inherit;
   font-size: 16px;
   font-weight: 400;
@@ -483,14 +483,14 @@ button { cursor: pointer; }
 }
 
 .wentian-chart-input::placeholder {
-  color: #928d86;
+  color: #948879;
 }
 
 .wentian-chart-select {
   border-radius: 12px;
   padding: 0 12px;
-  background: #f1eadf;
-  color: #514b44;
+  background: #f7ead8;
+  color: #514238;
   text-align: center;
   text-align-last: center;
 }
@@ -511,7 +511,7 @@ button { cursor: pointer; }
   position: absolute;
   inset: 3px 0;
   border-radius: 14px;
-  background: #eeeeec;
+  background: #efe2d0;
 }
 
 .wentian-chart-toggle span::after {
@@ -522,17 +522,17 @@ button { cursor: pointer; }
   width: 28px;
   height: 28px;
   border-radius: 14px;
-  background: #e0dfdd;
+  background: #e0d4c5;
   transition: transform .16s ease, background .16s ease;
 }
 
 .wentian-chart-toggle input:checked + span {
-  background: #eadfc7;
+  background: #ead9bd;
 }
 
 .wentian-chart-toggle input:checked + span::after {
   transform: translateX(18px);
-  background: #c39a49;
+  background: #c2953c;
 }
 
 .wentian-chart-status {
@@ -540,14 +540,14 @@ button { cursor: pointer; }
   left: 24px;
   top: 672px;
   width: 342px;
-  color: #9d8a62;
+  color: #9b7a3f;
   font-size: 12px;
   line-height: 16px;
   text-align: center;
 }
 
 .wentian-chart-status[data-tone="error"] {
-  color: #b33a2f;
+  color: #a94437;
 }
 
 .wentian-native-mingpan {
@@ -557,14 +557,14 @@ button { cursor: pointer; }
   width: 390px;
   height: 486px;
   font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
-  color: #2d2420;
+  color: #201813;
 }
 
 .wentian-native-mingpan .fc-card {
   width: 390px;
   margin: 0;
   padding: 0;
-  background: #f0ebe1;
+  background: #f6ead9;
   border-radius: 0;
   box-shadow: none;
   overflow: hidden;
@@ -582,15 +582,15 @@ button { cursor: pointer; }
   width: 100%;
   aspect-ratio: 1 / 1.18;
   overflow: hidden;
-  border: 1px solid #d2c4b5;
-  background: #d2c4b5;
+  border: 1px solid #e2cfb8;
+  background: #e2cfb8;
 }
 
 .wentian-native-mingpan .fc-cell,
 .wentian-native-mingpan .fc-center-panel {
   min-height: 0;
   overflow: hidden;
-  background: #fdfcf9;
+  background: #fffaf3;
 }
 
 .wentian-native-mingpan .fc-cell {
@@ -601,11 +601,11 @@ button { cursor: pointer; }
 }
 
 .wentian-native-mingpan .fc-cell.fc-ben {
-  background: #fae5df;
+  background: #fff0e8;
 }
 
 .wentian-native-mingpan .fc-cell.fc-rel {
-  background: #f4ebd5;
+  background: #fff0d6;
 }
 
 .wentian-native-mingpan .fc-cell-top {
@@ -625,7 +625,7 @@ button { cursor: pointer; }
 }
 
 .wentian-native-mingpan .fc-major-star {
-  color: #2d2420;
+  color: #201813;
   font-size: 11px;
   font-weight: 900;
   line-height: 1.25;
@@ -633,7 +633,7 @@ button { cursor: pointer; }
 }
 
 .wentian-native-mingpan .fc-major-star.is-empty {
-  color: #b7aea2;
+  color: #b7ab9d;
 }
 
 .wentian-native-mingpan .fc-minor-list {
@@ -642,7 +642,7 @@ button { cursor: pointer; }
 }
 
 .wentian-native-mingpan .fc-minor-star {
-  color: #73655c;
+  color: #7a6d60;
   font-size: 8.5px;
   line-height: 1.25;
   white-space: nowrap;
@@ -656,7 +656,7 @@ button { cursor: pointer; }
 }
 
 .wentian-native-mingpan .fc-shen-list {
-  color: #8c7e75;
+  color: #8f8173;
   font-size: 8px;
   line-height: 1.3;
 }
@@ -668,20 +668,20 @@ button { cursor: pointer; }
 }
 
 .wentian-native-mingpan .fc-branch {
-  color: #4a3f39;
+  color: #514238;
   font-size: 9.5px;
   line-height: 1.2;
 }
 
 .wentian-native-mingpan .fc-age {
   margin: 1px 0;
-  color: #6e615a;
+  color: #7a6d60;
   font-size: 8.5px;
   line-height: 1.2;
 }
 
 .wentian-native-mingpan .fc-palace-name {
-  color: #1f1917;
+  color: #201813;
   font-size: 10.5px;
   font-weight: 900;
   line-height: 1.18;
@@ -706,7 +706,7 @@ button { cursor: pointer; }
 }
 
 .wentian-native-mingpan .fc-pal-mutagen.fc-mutagen-lu {
-  color: #2d7a3a;
+  color: #2f8c72;
   background: #e6f4ea;
 }
 
@@ -716,12 +716,12 @@ button { cursor: pointer; }
 }
 
 .wentian-native-mingpan .fc-pal-mutagen.fc-mutagen-ke {
-  color: #2d5fa0;
+  color: #3269a6;
   background: #e8eef7;
 }
 
 .wentian-native-mingpan .fc-pal-mutagen.fc-mutagen-ji {
-  color: #963d32;
+  color: #9d3329;
   background: #fcecea;
 }
 
@@ -733,7 +733,7 @@ button { cursor: pointer; }
 }
 
 .wentian-native-mingpan .fc-center-title {
-  color: #2d2420;
+  color: #201813;
   font-size: 15px;
   font-weight: 900;
   letter-spacing: 4px;
@@ -744,7 +744,7 @@ button { cursor: pointer; }
 .wentian-native-mingpan .fc-center-row {
   display: flex;
   align-items: center;
-  color: #6e615a;
+  color: #7a6d60;
   font-size: 8.5px;
   line-height: 1.25;
 }
@@ -756,7 +756,7 @@ button { cursor: pointer; }
 
 .wentian-native-mingpan .fc-center-name,
 .wentian-native-mingpan .fc-center-val {
-  color: #4a3f39;
+  color: #514238;
   font-weight: 800;
 }
 
@@ -790,8 +790,8 @@ button { cursor: pointer; }
 .wentian-native-mingpan .wentian-fc-note {
   margin-top: auto;
   padding-top: 5px;
-  border-top: 1px solid #e4dcce;
-  color: #6e615a;
+  border-top: 1px solid #e7d7bf;
+  color: #7a6d60;
   font-size: 8.5px;
   font-weight: 700;
   text-align: center;
@@ -803,21 +803,21 @@ button { cursor: pointer; }
   top: 420px;
   width: 342px;
   height: 18px;
-  color: #9d8a62;
+  color: #9b7a3f;
   font-size: 12px;
   line-height: 18px;
 }
 
 .wentian-chat-status[data-tone="ok"] {
-  color: #7d8d52;
+  color: #5f8745;
 }
 
 .wentian-chat-status[data-tone="warn"] {
-  color: #b88c33;
+  color: #b78322;
 }
 
 .wentian-chat-status[data-tone="error"] {
-  color: #b33a2f;
+  color: #a94437;
 }
 
 .wentian-chat-log {
@@ -836,7 +836,7 @@ button { cursor: pointer; }
 
 .wentian-chat-log::-webkit-scrollbar-thumb {
   border-radius: 3px;
-  background: rgba(184, 140, 51, .24);
+  background: rgba(194, 149, 60, .24);
 }
 
 .wentian-chat-msg {
@@ -844,10 +844,10 @@ button { cursor: pointer; }
   max-width: 292px;
   margin: 0 0 10px;
   padding: 10px 12px;
-  border: 1px solid #eadfce;
+  border: 1px solid #e7d7bf;
   border-radius: 14px;
   background: #fff;
-  color: #4c453d;
+  color: #514238;
   font-size: 13px;
   line-height: 1.55;
   box-shadow: 0 4px 12px rgba(74, 55, 32, .06);
@@ -855,8 +855,8 @@ button { cursor: pointer; }
 
 .wentian-chat-msg.is-user {
   margin-left: auto;
-  border-color: rgba(184, 140, 51, .26);
-  background: #c39a49;
+  border-color: rgba(194, 149, 60, .26);
+  background: #c2953c;
   color: #fff;
 }
 
@@ -865,8 +865,8 @@ button { cursor: pointer; }
   margin-right: auto;
   margin-left: auto;
   border-color: rgba(179, 58, 47, .18);
-  background: #fff7f2;
-  color: #9c4a3e;
+  background: #fff1ea;
+  color: #a94437;
   text-align: center;
   box-shadow: none;
 }
@@ -880,7 +880,7 @@ button { cursor: pointer; }
   border: 0;
   border-radius: 17px;
   background: #fff;
-  color: #26211c;
+  color: #201813;
   font-family: inherit;
   font-size: 12px;
   font-weight: 500;
@@ -894,10 +894,10 @@ button { cursor: pointer; }
   top: 755px;
   width: 358px;
   height: 48px;
-  border: 1px solid #e5ded3;
+  border: 1px solid #e7d7bf;
   border-radius: 24px;
-  background: #faf8f3;
-  color: #26211c;
+  background: #fffaf3;
+  color: #201813;
   padding: 0 58px 0 18px;
   font-family: inherit;
   font-size: 17px;
@@ -908,11 +908,11 @@ button { cursor: pointer; }
 }
 
 .wentian-chat-field::placeholder {
-  color: #b8b0a7;
+  color: #b7ab9d;
 }
 
 .wentian-chat-field:disabled {
-  color: #9f978f;
+  color: #a79a8d;
 }
 
 .wentian-chat-send {
@@ -923,7 +923,7 @@ button { cursor: pointer; }
   height: 32px;
   border: 0;
   border-radius: 16px;
-  background: #c39a49;
+  background: #c2953c;
   color: #fff;
   font-family: inherit;
   font-size: 16px;
@@ -934,7 +934,7 @@ button { cursor: pointer; }
 }
 
 .wentian-chat-send:disabled {
-  background: #e6dfd0;
+  background: #eadfce;
 }
 
 .wentian-archive-list {
@@ -955,24 +955,24 @@ button { cursor: pointer; }
 
 .wentian-archive-list::-webkit-scrollbar-thumb {
   border-radius: 3px;
-  background: rgba(196, 164, 90, .32);
+  background: rgba(194, 149, 60, .32);
 }
 
 .wentian-archive-option {
   position: relative;
   min-height: 84px;
-  border: 1px solid #e7ddcb;
+  border: 1px solid #e7d7bf;
   border-radius: 15px;
   background: #fff;
-  color: #26211c;
+  color: #201813;
   padding: 0;
   text-align: left;
   box-shadow: 0 4px 12px rgba(70, 45, 25, .05);
 }
 
 .wentian-archive-option.is-selected {
-  border-color: #c5a458;
-  box-shadow: 0 0 0 1px #c5a458 inset, 0 5px 14px rgba(130, 91, 31, .08);
+  border-color: #c2953c;
+  box-shadow: 0 0 0 1px #c2953c inset, 0 5px 14px rgba(130, 91, 31, .08);
 }
 
 .wentian-archive-avatar {
@@ -983,10 +983,10 @@ button { cursor: pointer; }
   place-items: center;
   width: 50px;
   height: 50px;
-  border: 1px solid #e3d5bd;
+  border: 1px solid #e7d3b5;
   border-radius: 25px;
-  background: #f6eddb;
-  color: #b5903d;
+  background: #fff0d6;
+  color: #a47a32;
   font-size: 18px;
   font-weight: 800;
 }
@@ -1006,7 +1006,7 @@ button { cursor: pointer; }
   top: 16px;
   max-width: 50px;
   overflow: hidden;
-  color: #24211d;
+  color: #201813;
   font-size: 19px;
   font-weight: 800;
   line-height: 24px;
@@ -1029,22 +1029,22 @@ button { cursor: pointer; }
 .wentian-archive-badge {
   left: 142px;
   width: 38px;
-  background: #f7efea;
-  color: #9d3b2f;
+  background: #fff1ea;
+  color: #a7372f;
 }
 
 .wentian-archive-gender {
   left: 184px;
   width: 28px;
-  background: #f4f2ef;
-  color: #6f665d;
+  background: #f3ece3;
+  color: #7a6d60;
 }
 
 .wentian-archive-tag {
   left: 216px;
   width: 48px;
-  background: #f5f6ef;
-  color: #8f8a7e;
+  background: #f5efe3;
+  color: #948879;
   font-size: 12px;
   font-weight: 500;
 }
@@ -1054,7 +1054,7 @@ button { cursor: pointer; }
   top: 45px;
   width: 172px;
   overflow: hidden;
-  color: #8a8379;
+  color: #8f8173;
   font-size: 15px;
   line-height: 18px;
   white-space: nowrap;
@@ -1066,7 +1066,7 @@ button { cursor: pointer; }
   top: 65px;
   width: 184px;
   overflow: hidden;
-  color: #aaa196;
+  color: #aca092;
   font-size: 13px;
   line-height: 16px;
   white-space: nowrap;
@@ -1080,7 +1080,7 @@ button { cursor: pointer; }
   place-items: center;
   width: 34px;
   height: 34px;
-  border: 1px solid #d7d2c8;
+  border: 1px solid #e0d4c5;
   border-radius: 18px;
   color: #fff;
   background: #fff;
@@ -1089,8 +1089,8 @@ button { cursor: pointer; }
 }
 
 .wentian-archive-option.is-selected .wentian-archive-check {
-  border-color: #c6a04c;
-  background: #c6a04c;
+  border-color: #c2953c;
+  background: #c2953c;
 }
 
 .wentian-archive-new,
@@ -1107,16 +1107,16 @@ button { cursor: pointer; }
 .wentian-archive-new {
   left: 36px;
   width: 154px;
-  border: 1px solid #c9aa60;
+  border: 1px solid #c5a66b;
   background: #fff;
-  color: #c09a49;
+  color: #c2953c;
 }
 
 .wentian-archive-confirm {
   left: 212px;
   width: 142px;
   border: 0;
-  background: #c5a458;
+  background: #c2953c;
   color: #fff;
   box-shadow: 0 7px 14px rgba(130, 91, 31, .14);
 }
@@ -1125,10 +1125,10 @@ button { cursor: pointer; }
   position: absolute;
   width: 306px;
   height: 34px;
-  border: 1px solid #e5dbc7;
+  border: 1px solid #e7d7bf;
   border-radius: 10px;
   background: #fff;
-  color: #26211c;
+  color: #201813;
   padding: 0 14px;
   font-family: inherit;
   font-size: 13px;
@@ -1136,7 +1136,7 @@ button { cursor: pointer; }
 }
 
 .wentian-language-option.is-selected {
-  border-color: #c5a458;
+  border-color: #c2953c;
   box-shadow: 0 0 0 1px rgba(197, 164, 88, .35) inset;
 }
 
@@ -1147,7 +1147,7 @@ button { cursor: pointer; }
 
 .wentian-language-check {
   float: right;
-  color: #9b742e;
+  color: #9a681c;
   font-weight: 800;
 }
 
@@ -1159,7 +1159,7 @@ button { cursor: pointer; }
   height: 44px;
   border: 0;
   border-radius: 22px;
-  background: #c5a458;
+  background: #c2953c;
   color: #fff;
   font-family: inherit;
   font-size: 13px;
@@ -1169,10 +1169,10 @@ button { cursor: pointer; }
 .wentian-profile-input {
   position: absolute;
   height: 44px;
-  border: 1px solid #e1d7c8;
+  border: 1px solid #e7d7bf;
   border-radius: 10px;
   background: #fff;
-  color: #26211c;
+  color: #201813;
   padding: 0 14px;
   font-family: inherit;
   font-size: 15px;
@@ -1181,11 +1181,11 @@ button { cursor: pointer; }
 }
 
 .wentian-profile-input::placeholder {
-  color: #aaa196;
+  color: #aca092;
 }
 
 .wentian-profile-input:focus {
-  border-color: #c09a49;
+  border-color: #c2953c;
   box-shadow: 0 0 0 2px rgba(192, 154, 73, .12);
 }
 
@@ -1195,25 +1195,25 @@ button { cursor: pointer; }
   top: 645px;
   width: 318px;
   height: 22px;
-  color: #9b742e;
+  color: #9a681c;
   font-size: 13px;
   line-height: 22px;
   text-align: center;
 }
 
 .wentian-profile-status[data-tone="error"] {
-  color: #b33a2f;
+  color: #a94437;
 }
 
 .wentian-profile-status[data-tone="ok"] {
-  color: #7d8d52;
+  color: #5f8745;
 }
 
 .converted-button {
   position: absolute;
   border: 0;
   border-radius: 999px;
-  background: #b88c33;
+  background: #b78322;
   color: #fff;
   font-weight: 600;
   text-align: center;
