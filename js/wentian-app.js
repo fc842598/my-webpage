@@ -653,31 +653,31 @@ function sourceDashboardHomeScreen() {
     ${figText("source-1-mood-label", "今日心情", 34, 106, 78, 16, "#26211c", 700)}
     ${figText("source-1-mood-score", "73", 116, 94, 58, 38, "#26211c", 800)}
     ${figText("source-1-mood-unit", "分", 166, 113, 20, 12, "#26211c", 700)}
-    ${figText("source-1-mood-copy", "灵感迸发的一天，\\n无论是吸收新知…", 34, 134, 122, 11, "#9a938a", 500, "left", "line-height:1.45;")}
-    ${[["爱情", 62, 190, "#ed7385"], ["财富", 48, 228, "#c58a2c"], ["事业", 78, 266, "#4e9b93"], ["学习", 78, 304, "#4f82a4"], ["人际", 75, 342, "#9e698c"]].map(([label, score, x, color]) => `
+    ${figText("source-1-mood-copy", "灵感迸发的一天，\\n无论是吸收新知…", 34, 126, 122, 10, "#9a938a", 500, "left", "line-height:1.35;")}
+    ${[["爱情", 62, 206, "#ed7385"], ["财富", 48, 240, "#c58a2c"], ["事业", 78, 274, "#4e9b93"], ["学习", 78, 308, "#4f82a4"], ["人际", 75, 342, "#9e698c"]].map(([label, score, x, color]) => `
       ${figBox(`source-1-meter-bg-${label}`, x, 91, 8, 50, "", "border-radius:8px;background:#f2efea;")}
       ${figBox(`source-1-meter-${label}`, x, 116 - Number(score) * 0.28, 8, Number(score) * 0.28, "", `border-radius:8px;background:${color};`)}
-      ${figText(`source-1-meter-score-${label}`, score, x - 9, 147, 26, 13, "#26211c", 700, "center")}
-      ${figText(`source-1-meter-label-${label}`, label, x - 13, 164, 34, 9, "#928b83", 500, "center")}
+      ${figText(`source-1-meter-score-${label}`, score, x - 9, 122, 26, 13, "#26211c", 700, "center")}
+      ${figText(`source-1-meter-label-${label}`, label, x - 13, 137, 34, 9, "#928b83", 500, "center")}
     `).join("")}
-    ${figBox("source-1-ask", 48, 143, 295, 32, "", "border:1px solid #eadfce;border-radius:18px;background:#fff;")}
-    ${figText("source-1-ask-icon", "⌘", 60, 150, 22, 15, "#b98729", 700, "center")}
-    ${figText("source-1-ask-text", "今日运势如何？事业感情有何指引？", 92, 148, 180, 12, "#8f887f", 500)}
-    ${figBox("source-1-ask-send", 320, 145, 28, 28, "", "border-radius:14px;background:#c08a2c;")}
-    ${figText("source-1-ask-arrow", "↑", 324, 148, 20, 18, "#fff", 800, "center")}
+    ${figBox("source-1-ask", 48, 153, 295, 24, "", "border:1px solid #eadfce;border-radius:14px;background:#fff;")}
+    ${figText("source-1-ask-icon", "⌘", 60, 158, 22, 12, "#b98729", 700, "center")}
+    ${figText("source-1-ask-text", "今日运势如何？事业感情有何指引？", 92, 157, 180, 10, "#8f887f", 500)}
+    ${figBox("source-1-ask-send", 321, 155, 20, 20, "", "border-radius:10px;background:#c08a2c;")}
+    ${figText("source-1-ask-arrow", "↑", 321, 156, 20, 14, "#fff", 800, "center")}
 
-    ${figBox("source-1-report-card", 18, 200, 318, 74, "converted-card", "border-radius:14px;box-shadow:0 8px 20px rgba(70,45,25,.12);")}
-    ${figBox("source-1-report-hot", 36, 213, 35, 18, "", "border-radius:6px;background:#fbf1dd;")}
-    ${figText("source-1-report-hot-text", "热门", 43, 217, 22, 9, "#b98729", 700, "center")}
-    ${figText("source-1-report-icon", "▧", 292, 210, 22, 18, "#b98729", 700, "center")}
-    ${figText("source-1-report-title", "万言命书", 36, 236, 110, 18, "#25221f", 800)}
-    ${figText("source-1-report-sub", "通万字的深度报告，涵盖性格逻辑、事业财富…", 36, 258, 220, 10, "#9a938a", 500)}
-    ${figText("source-1-report-tags", "● 事业财运    ● 感情婚姻", 36, 278, 145, 9, "#a98745", 600)}
-    ${figBox("source-1-report-btn", 232, 265, 84, 26, "", "border-radius:14px;background:#c08a2c;")}
-    ${figText("source-1-report-btn-text", "立即解锁 →", 244, 272, 60, 10, "#fff", 700, "center")}
-    ${figBox("source-1-report-next", 346, 200, 44, 74, "", "border-radius:14px 0 0 14px;background:#251f1a;")}
-    ${figText("source-1-report-next-tag", "推荐", 356, 214, 24, 10, "#c08a2c", 700, "center")}
-    ${figText("source-1-report-next-title", "问天", 357, 238, 28, 16, "#c08a2c", 800)}
+    ${figBox("source-1-report-card", 18, 198, 318, 78, "converted-card", "border-radius:14px;box-shadow:0 8px 20px rgba(70,45,25,.12);")}
+    ${figBox("source-1-report-hot", 36, 211, 35, 18, "", "border-radius:6px;background:#fbf1dd;")}
+    ${figText("source-1-report-hot-text", "热门", 43, 215, 22, 9, "#b98729", 700, "center")}
+    ${figText("source-1-report-icon", "▧", 292, 208, 22, 18, "#b98729", 700, "center")}
+    ${figText("source-1-report-title", "万言命书", 36, 231, 110, 17, "#25221f", 800)}
+    ${figText("source-1-report-sub", "通万字的深度报告，涵盖性格逻辑、事业财富…", 36, 251, 190, 9, "#9a938a", 500)}
+    ${figText("source-1-report-tags", "● 事业财运    ● 感情婚姻", 36, 270, 145, 9, "#a98745", 600)}
+    ${figBox("source-1-report-btn", 232, 254, 84, 24, "", "border-radius:13px;background:#c08a2c;")}
+    ${figText("source-1-report-btn-text", "立即解锁 →", 244, 260, 60, 9, "#fff", 700, "center")}
+    ${figBox("source-1-report-next", 346, 198, 44, 78, "", "border-radius:14px 0 0 14px;background:#251f1a;")}
+    ${figText("source-1-report-next-tag", "推荐", 356, 212, 24, 10, "#c08a2c", 700, "center")}
+    ${figText("source-1-report-next-title", "问天", 357, 236, 28, 16, "#c08a2c", 800)}
     ${figText("source-1-report-dots", "●  ●", 185, 283, 26, 8, "#bdb5aa", 700, "center")}
 
     ${figText("source-1-recommend-title", "为你推荐", 18, 304, 120, 20, "#25221f", 800)}
