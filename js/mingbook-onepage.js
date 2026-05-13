@@ -1163,7 +1163,6 @@
     const healthProfile = firstProfile(health);
     const wealthProfile = firstProfile(wealth);
     const careerProfile = firstProfile(career);
-    const four = mutagens(chart);
 
     return {
       specials: {
@@ -1193,7 +1192,6 @@
         ['大限流年', `当前页面先接命盘主线，后续可把原版大限流年结论并入这里，形成十年节奏。`],
         ['人生曲线', `把关键年份做成曲线阅读，帮助用户看清高低点和转折位置。`],
         ['五宫详解', `身宫、夫妻、疾厄、财帛、官禄五宫已在上方展开，适合作为深度报告主体。`],
-        ['证据链', `命宫 ${life?.heavenlyStem || ''}${life?.earthlyBranch || ''}；身宫 ${body?.name || '未见'}；四化 ${four.slice(0, 4).join('、') || '未显' }。`],
         ['行动建议', `先看命盘底色，再看大运节奏；重要决策不只问准不准，还要知道何时动、如何动。`],
       ],
       subtitle: `${chart.fiveElementsClass || '五行局'} · 命宫${life?.earthlyBranch || '未见'} · 身宫${body?.earthlyBranch || '未见'}`,
@@ -1393,10 +1391,8 @@
     const { chart } = bundle;
     const life = findLifePalace(chart);
     const body = findBodyPalace(chart);
-    const four = mutagens(chart);
     return {
       subtitle: `${chart.fiveElementsClass || '五行局'} · 命宫${life?.earthlyBranch || '未见'} · 身宫${body?.earthlyBranch || '未见'}`,
-      evidence: `命宫 ${life?.heavenlyStem || ''}${life?.earthlyBranch || ''}；身宫 ${body?.name || '未见'}；四化 ${four.slice(0, 4).join('、') || '未显'}。`,
     };
   }
 
@@ -1475,7 +1471,6 @@
         ['主线', overallText || '整体批命生成后显示'],
         ['走势', luckText || '大限流年生成后显示'],
         ['专项', specialText || '五宫专项生成后显示'],
-        ['依据', overallCard.basis || facts.evidence],
       ];
       decodeList.innerHTML = highlights.map((item) => `
         <p><strong>${escapeHtml(item[0])}</strong>${escapeHtml(trimText(item[1], 48))}</p>
@@ -1486,7 +1481,6 @@
       ['大限流年', luckText || '当前大限流年接口暂未返回，后续继续接原站大限模块。'],
       ['人生曲线', '人生曲线属于原站独立模块，下一步接入原站曲线评分与关键年份。'],
       ['五宫详解', specialBriefText || '五宫专项等待原站 AI 返回。', specialBriefSections],
-      ['证据链', overallCard.basis || facts.evidence],
       ['行动建议', overallCard.risk ? `要留意：${overallCard.risk}` : '先看命盘底色，再看大运节奏；重要决策不只问准不准，还要知道何时动、如何动。'],
     ];
     const chapters = $('#mbpChapters');
@@ -1663,7 +1657,7 @@
     });
     const chapters = $('#mbpChapters');
     if (chapters) {
-      chapters.innerHTML = ['命格总览', '大限流年', '人生曲线', '五宫详解', '证据链', '行动建议'].map((title, index) => `
+      chapters.innerHTML = ['命格总览', '大限流年', '人生曲线', '五宫详解', '行动建议'].map((title, index) => `
         <article><span>卷${index + 1}</span><h3>${title}</h3><p>等待一键解读。</p></article>
       `).join('');
     }
