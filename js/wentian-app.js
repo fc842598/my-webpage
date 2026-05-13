@@ -88,8 +88,8 @@ const screenFlowHotspots = {
   23: [[18, 44, 48, 48, "screen-22"], [50, 680, 290, 58, "screen-22"]],
   24: [[18, 44, 48, 48, "screen-22"]],
   25: [[302, 54, 70, 46, "screen-26"], [18, 129, 354, 95, "screen-27"], [18, 247, 354, 95, "screen-27"], [2, 784, 76, 72, "screen-1"], [80, 784, 76, 72, "screen-25"], [158, 784, 76, 72, "screen-3"], [236, 784, 76, 72, "screen-13"], [314, 784, 76, 72, "screen-31"]],
-  26: [[18, 44, 48, 48, "screen-3"], [42, 742, 306, 56, "screen-27"]],
-  27: [[18, 44, 48, 48, "screen-26"], [42, 742, 306, 56, "screen-33"]],
+  26: [[18, 40, 96, 54, "screen-1"], [22, 706, 346, 58, "screen-27"]],
+  27: [[18, 40, 96, 54, "screen-26"], [36, 792, 318, 58, "screen-4"]],
   28: [[18, 44, 48, 48, "screen-31"], [42, 735, 306, 58, "screen-29"]],
   29: [[18, 44, 48, 48, "screen-31"], [22, 178, 346, 70, "screen-30"], [22, 257, 346, 70, "screen-30"], [22, 336, 346, 70, "screen-30"], [34, 738, 322, 58, "screen-30"]],
   30: [[18, 44, 48, 48, "screen-29"], [42, 735, 306, 58, "screen-31"]],
@@ -737,6 +737,113 @@ function convertedFlowHotspots(screen) {
   ).join("");
 }
 
+function sourceChartFormScreen() {
+  return `
+    ${figBox("source-26-bg", 0, 0, 390, 867, "", "background:#fbf7ef;")}
+    ${figButton("source-26-back-hit", 18, 40, 96, 54, 'data-action="back"')}
+    ${figText("source-26-back", "‹ 返回", 28, 53, 92, 28, "#9f2417", 500)}
+    ${figText("source-26-title", "排盘", 0, 58, 390, 26, "#1f1d1a", 800, "center")}
+
+    ${figText("source-26-heading", "请输入出生信息", 0, 138, 390, 25, "#1f1d1a", 800, "center")}
+    ${figText("source-26-subtitle", "准确的出生时间是算命的根基", 0, 195, 390, 17, "#5f5a52", 400, "center")}
+    ${figBox("source-26-card", 22, 246, 346, 400, "", "border:1px solid #ded9d0;border-radius:16px;background:#fff;box-shadow:0 4px 12px rgba(70,45,25,.03);")}
+    ${figText("source-26-name-label", "姓名", 38, 291, 80, 20, "#3a3834", 400)}
+    ${figText("source-26-name-value", "请输入姓名（选填）", 174, 291, 174, 18, "#3a3834", 400, "right", "white-space:nowrap;")}
+    ${figLine("source-26-line-1", 38, 336, 314, "#dedbd6")}
+    ${figText("source-26-gender-label", "性别", 38, 358, 80, 20, "#3a3834", 400)}
+    ${figBox("source-26-gender-tabs", 242, 340, 110, 42, "", "border-radius:12px;background:#f1eadf;")}
+    ${figBox("source-26-gender-on", 246, 344, 52, 34, "", "border-radius:10px;background:#fff;border:1px solid #eee4d7;")}
+    ${figText("source-26-gender-man", "男", 259, 354, 28, 16, "#9f2417", 700, "center")}
+    ${figText("source-26-gender-woman", "女", 317, 354, 28, 16, "#514b44", 400, "center")}
+    ${figLine("source-26-line-2", 38, 403, 314, "#dedbd6")}
+    ${figText("source-26-type-label", "排盘类型", 38, 425, 110, 20, "#3a3834", 400)}
+    ${figBox("source-26-type-tabs", 216, 407, 136, 42, "", "border-radius:12px;background:#f1eadf;")}
+    ${figText("source-26-type-bazi", "八字", 240, 421, 40, 16, "#514b44", 400, "center")}
+    ${figBox("source-26-type-on", 284, 411, 64, 34, "", "border-radius:10px;background:#fff;border:1px solid #eee4d7;")}
+    ${figText("source-26-type-ziwei", "紫微", 300, 421, 40, 16, "#9f2417", 700, "center")}
+    ${figLine("source-26-line-3", 38, 470, 314, "#dedbd6")}
+    ${figText("source-26-date-label", "出生日期", 38, 492, 110, 20, "#3a3834", 400)}
+    ${figText("source-26-date-value", "2026-05-12 15:21", 146, 492, 178, 18, "#1f1d1a", 400, "right", "white-space:nowrap;")}
+    ${figText("source-26-date-arrow", "›", 332, 484, 20, 30, "#a9a6a0", 700, "center")}
+    ${figLine("source-26-line-4", 38, 537, 314, "#dedbd6")}
+    ${figText("source-26-place-label", "出生地点", 38, 559, 110, 20, "#3a3834", 400)}
+    ${figText("source-26-place-value", "选择出生地点", 190, 559, 140, 18, "#928d86", 400, "right", "white-space:nowrap;")}
+    ${figText("source-26-place-pin", "⌖", 330, 553, 22, 24, "#a9a6a0", 400, "center")}
+    ${figLine("source-26-line-5", 38, 604, 314, "#dedbd6")}
+    ${figText("source-26-solar-label", "使用真太阳时", 38, 626, 140, 20, "#8d8982", 400)}
+    ${figBox("source-26-switch", 306, 622, 42, 22, "", "border-radius:14px;background:#eeeeec;")}
+    ${figBox("source-26-switch-dot", 306, 619, 28, 28, "", "border-radius:14px;background:#e0dfdd;")}
+
+    ${figBox("source-26-submit", 22, 706, 346, 58, "", "border-radius:13px;background:linear-gradient(180deg,#a52705,#be3f2e);box-shadow:0 8px 18px rgba(159,36,23,.18);")}
+    ${figButton("source-26-submit-hit", 22, 706, 346, 58, 'data-route="screen-27"')}
+    ${figText("source-26-submit-text", "◉  开始排盘", 0, 722, 390, 26, "#fff", 700, "center")}
+    ${figBox("source-26-tip", 22, 776, 346, 64, "", "border-radius:12px;background:#f8f1e3;")}
+    ${figText("source-26-tip-icon", "i", 42, 799, 26, 18, "#c8a65f", 800, "center")}
+    ${figText("source-26-tip-text", "如不知时辰，可能会导致推演不准确。可以让\nAI命理师确定时辰", 70, 792, 290, 14, "#6e675d", 400, "left", "line-height:1.45;")}
+  `;
+}
+
+function sourceZiweiMingpanScreen() {
+  const cells = [
+    [0, 0, "癸巳", "天\n同", "子女", "禄存", "96~105", "大子"],
+    [1, 0, "甲午", "武曲\n天府", "夫妻", "擎羊 左辅", "106~115", "大夫"],
+    [2, 0, "乙未", "太阳\n太阴", "兄弟", "地劫", "116~125", "大兄"],
+    [3, 0, "丙申", "贪狼", "命宫", "天马 右弼", "6~15", "大命"],
+    [0, 1, "壬辰", "破军", "财帛", "陀罗", "86~95", "大财"],
+    [3, 1, "丁酉", "天巨\n机门", "父母", "火星 天钺", "16~25", "大父"],
+    [0, 2, "辛卯", "疾厄", "", "地空", "76~85", "大疾"],
+    [3, 2, "戊戌", "紫微\n天相", "福德", "得  得", "26~35", "大福", true],
+    [0, 3, "庚寅", "廉贞", "迁移", "文昌", "66~75", "大迁"],
+    [1, 3, "辛丑", "仆役", "", "", "56~65", "大仆"],
+    [2, 3, "庚子", "七杀", "官禄·身", "文曲", "46~55", "大官"],
+    [3, 3, "己亥", "天梁", "田宅", "铃星 天魁", "36~45", "大田"]
+  ];
+  const cellW = 97.5;
+  const cellH = 112.5;
+  const startY = 120;
+  return `
+    ${figBox("source-27-bg", 0, 0, 390, 867, "", "background:#fbf7ef;")}
+    ${figButton("source-27-back-hit", 18, 40, 96, 54, 'data-action="back"')}
+    ${figText("source-27-back", "‹ 返回", 28, 54, 92, 26, "#9f2417", 500)}
+    ${figText("source-27-title", "紫微命盘", 0, 58, 390, 25, "#3b3934", 800, "center")}
+    ${figText("source-27-more", "•••", 330, 56, 42, 22, "#3b3934", 800, "center")}
+
+    ${figBox("source-27-chart", 0, startY, 390, 450, "", "background:#fffdf9;border-top:1px solid #d8d8cf;border-left:1px solid #d8d8cf;")}
+    ${[1, 2, 3].map((i) => figBox(`source-27-v-${i}`, i * cellW, startY, 1, 450, "", "background:#d8d8cf;")).join("")}
+    ${[1, 2, 3, 4].map((i) => figLine(`source-27-h-${i}`, 0, startY + i * cellH, 390, "#d8d8cf")).join("")}
+    ${figBox("source-27-center", cellW, startY + cellH, cellW * 2, cellH * 2, "", "background:#f3e7d0;border:1px solid #d8d0bd;")}
+    ${figText("source-27-center-title", "命主", cellW, startY + cellH + 36, cellW * 2, 24, "#3b3934", 800, "center")}
+    ${figText("source-27-center-stems", "丙午  王辰  丙戌  丙申", cellW, startY + cellH + 72, cellW * 2, 15, "#4d4942", 400, "center")}
+    ${figLine("source-27-center-line-1", cellW + 18, startY + cellH + 102, cellW * 2 - 36, "#d9cdb8")}
+    ${figText("source-27-center-info-l", "阳历\n农历\n时辰\n性别\n星座/生肖", cellW + 28, startY + cellH + 120, 80, 14, "#8a8379", 400, "left", "line-height:1.62;")}
+    ${figText("source-27-center-info-r", "2026-5-12\n二〇二六年三月廿六\n申时 (15:00~17:00)\n男\n金牛座 · 马", cellW + 115, startY + cellH + 120, 70, 14, "#3f3a35", 500, "right", "line-height:1.62;")}
+    ${figLine("source-27-center-line-2", cellW + 18, startY + cellH + 212, cellW * 2 - 36, "#d9cdb8")}
+    ${cells.map(([col, row, gan, main, palace, aux, age, bottom, focus], index) => {
+      const x = col * cellW;
+      const y = startY + row * cellH;
+      const border = focus ? "border:2px solid #aa3b39;" : "";
+      return `
+        ${figBox(`source-27-cell-focus-${index}`, x, y, cellW, cellH, "", border)}
+        ${figText(`source-27-cell-gan-${index}`, gan, x + 8, y + 10, 36, 12, "#77716a", 400)}
+        ${figText(`source-27-cell-palace-${index}`, palace, x + 60, y + 10, 28, 14, "#55504a", 600, "right")}
+        ${figText(`source-27-cell-main-${index}`, main, x + 10, y + 38, 44, 18, "#3c3934", 800, "left", "line-height:1.08;")}
+        ${aux ? figText(`source-27-cell-aux-${index}`, aux, x + 60, y + 42, 28, 12, "#77716a", 400, "right", "line-height:1.25;") : ""}
+        ${figText(`source-27-cell-age-${index}`, age, x + 8, y + 94, 48, 11, "#77716a", 400)}
+        ${figText(`source-27-cell-bottom-${index}`, bottom, x + 58, y + 94, 32, 11, "#77716a", 400, "right")}
+      `;
+    }).join("")}
+
+    ${figBox("source-27-ai-card", 15, 612, 360, 300, "", "border:1px solid #e0dcd3;border-radius:16px;background:#fff;box-shadow:0 4px 14px rgba(70,45,25,.06);")}
+    ${figText("source-27-ai-title", "✦  福德 · AI解析", 34, 640, 220, 22, "#3a3732", 800)}
+    ${figText("source-27-ai-close", "×", 334, 634, 26, 30, "#66615b", 500, "center")}
+    ${figLine("source-27-ai-line-1", 32, 688, 324, "#dedbd5")}
+    ${figText("source-27-ai-copy", "AI正在凝神分析您【福德】的星象布局，请轻触下方按钮\n开启深度测算...", 32, 712, 322, 18, "#8b857d", 400, "left", "line-height:1.65;")}
+    ${figBox("source-27-ai-button", 36, 792, 318, 58, "", "border-radius:10px;background:#ad3b35;")}
+    ${figButton("source-27-ai-button-hit", 36, 792, 318, 58, 'data-route="screen-4"')}
+    ${figText("source-27-ai-button-text", "☵  向AI提问", 36, 808, 318, 24, "#fff", 700, "center")}
+  `;
+}
+
 function renderConvertedScreen(no) {
   const screen = convertedByNo.get(no) || convertedByNo.get(1);
   if (screen.no === 1) {
@@ -774,6 +881,18 @@ function renderConvertedScreen(no) {
       ${sourceMineScreen(screen)}
       ${convertedFlowHotspots(screen)}
     `, 844, "converted source-screen", true);
+  }
+  if (screen.no === 26) {
+    return figPhone(`screen-${screen.no}`, `${String(screen.no).padStart(2, "0")} ${screen.title}`, `
+      ${sourceChartFormScreen()}
+      ${convertedFlowHotspots(screen)}
+    `, 867, "converted source-screen no-status-shift", true);
+  }
+  if (screen.no === 27) {
+    return figPhone(`screen-${screen.no}`, `${String(screen.no).padStart(2, "0")} ${screen.title}`, `
+      ${sourceZiweiMingpanScreen()}
+      ${convertedFlowHotspots(screen)}
+    `, 867, "converted source-screen no-status-shift", false);
   }
   const heading = screen.heading ? figText(`screen-${screen.no}-heading`, screen.heading, 24, 72, 180, 26, "#26211c", 700) : "";
   const badge = screen.badge && screen.no !== 1 ? `
