@@ -34,6 +34,7 @@
     payUrl:    null,
     payMethod: 'native',
     paidReloadTimer: null,
+    checkingStatus: false,
   };
 
   function isLocalDev() {
@@ -120,6 +121,7 @@
     _s.isMock   = false;
     _s.payUrl   = null;
     _s.payMethod = 'native';
+    _s.checkingStatus = false;
     stopPoll();
     show('pay-modal');
     renderModal('loading');
@@ -229,15 +231,16 @@
         actionArea =
           '<div class="pay-h5-area">' +
             '<a class="pay-h5-btn" href="' + encodeURI(_s.payUrl) + '" target="_blank" rel="noopener">在微信中打开并支付</a>' +
-            '<button class="pay-mock-btn pay-mock-refresh" id="pm-refresh" style="margin-top:8px">↻ 已支付，刷新状态</button>' +
+            '<button class="pay-mock-btn pay-confirm-btn" id="pm-refresh">已支付，确认状态</button>' +
+            '<div class="pay-confirm-line pay-confirm-waiting" id="pay-confirm-line">付款后本页会自动确认</div>' +
           '</div>';
       } else if (_s.payUrl) {
         actionArea =
           '<div class="pay-qr-area">' +
             '<canvas id="pay-qr-canvas"></canvas>' +
             '<div class="pay-qr-hint">微信扫码支付</div>' +
-            '<button class="pay-mock-btn pay-mock-refresh" id="pm-refresh" style="margin-top:10px">我已支付，立即确认</button>' +
-            '<div class="pay-qr-hint">正在自动确认支付状态</div>' +
+            '<button class="pay-mock-btn pay-confirm-btn" id="pm-refresh">我已支付，立即确认</button>' +
+            '<div class="pay-confirm-line pay-confirm-waiting" id="pay-confirm-line">自动确认中，付款后会进入会员状态</div>' +
           '</div>';
       } else {
         // payUrl not ready yet — show refresh only
@@ -261,8 +264,8 @@
         '<div class="pay-success-title">支付成功，已开通会员</div>' +
         '<div class="pay-order-row"><span>订单号</span><code>' + (_s.orderNo || '') + '</code></div>' +
         '<div class="pay-entitlement">✦ 许半仙月度会员已激活<br>每日200次AI命理对话额度已就绪</div>' +
-        '<div class="pay-loading-text" style="margin-top:10px">正在进入会员状态…</div>' +
-        '<button class="pay-retry-btn" id="pm-close-ok" style="margin-top:12px">开始使用</button>';
+        '<div class="pay-success-subtitle">正在刷新页面，进入会员状态…</div>' +
+        '<button class="pay-retry-btn" id="pm-close-ok" style="margin-top:12px">立即进入</button>';
 
     } else if (phase === 'failed') {
       body =
@@ -300,7 +303,7 @@
     el = qs('pm-retry');    if (el) el.onclick = startPurchase;
     el = qs('pm-ok');       if (el) el.onclick = doSuccess;
     el = qs('pm-fail');     if (el) el.onclick = doFail;
-    el = qs('pm-refresh');  if (el) el.onclick = function(){ if (_s.orderNo) checkStatus(_s.orderNo); };
+    el = qs('pm-refresh');  if (el) el.onclick = function(){ if (_s.orderNo) checkStatus(_s.orderNo, true); };
 
     // Render QR code after DOM is ready
     if (phase === 'pending' && !_s.isMock && _s.payUrl && _s.payMethod !== 'h5') {
@@ -317,7 +320,23 @@
     }
   }
 
+  function setConfirmState(state, message, lockButton) {
+    var btn = qs('pm-refresh');
+    var line = qs('pay-confirm-line');
+    if (btn) {
+      btn.disabled = !!lockButton && state === 'checking';
+      btn.textContent = !!lockButton && state === 'checking'
+        ? '正在确认…'
+        : (_s.payMethod === 'h5' ? '已支付，确认状态' : '我已支付，立即确认');
+    }
+    if (line && message) {
+      line.className = 'pay-confirm-line pay-confirm-' + state;
+      line.textContent = message;
+    }
+  }
+
   function handlePaid() {
+    _s.checkingStatus = false;
     stopPoll();
     renderModal('paid');
     updateQuotaDisplay({ isMember: true, dailyLimit: 200, remaining: 200 });
@@ -357,19 +376,30 @@
 
   // ── 状态轮询 ──────────────────────────────────────────────────
   async function checkStatus(orderNo) {
-    var refreshBtn = qs('pm-refresh');
-    if (refreshBtn) refreshBtn.disabled = true;
+    var manual = arguments.length > 1 ? !!arguments[1] : false;
+    if (_s.checkingStatus) return;
+    _s.checkingStatus = true;
+    setConfirmState('checking', manual ? '正在向微信确认支付结果…' : '自动确认中，付款后会进入会员状态', manual);
     var r = await tryGet('/api/payments/order-status?orderNo=' + encodeURIComponent(orderNo));
-    if (refreshBtn) refreshBtn.disabled = false;
-    if (!r.ok) return;
+    _s.checkingStatus = false;
+    if (!r.ok) {
+      setConfirmState('error', '暂时没有确认成功，稍后会自动重试');
+      return;
+    }
     var st = r.data.status;
     if (st === 'paid') { handlePaid(); }
-    else if (st === 'failed' || st === 'closed') { stopPoll(); renderModal(st === 'closed' ? 'error' : 'failed', { error: st === 'closed' ? '订单已过期，请重新下单' : '' }); }
+    else if (st === 'created' || st === 'pending') {
+      setConfirmState('waiting', manual ? '还没查到支付成功，请稍后再确认' : '自动确认中，付款后会进入会员状态');
+    } else if (st === 'failed' || st === 'closed') {
+      stopPoll();
+      renderModal(st === 'closed' ? 'error' : 'failed', { error: st === 'closed' ? '订单已过期，请重新下单' : '' });
+    }
   }
 
   function startPoll(no) {
     stopPoll();
     _s.pollTimer = setInterval(function(){ checkStatus(no); }, 3000);
+    checkStatus(no);
   }
   function stopPoll() {
     if (_s.pollTimer) { clearInterval(_s.pollTimer); _s.pollTimer = null; }
