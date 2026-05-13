@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>阅天 · 紫微命书长页新版</title>
   <link rel="icon" href="../images/logo-mark.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../css/mingbook-onepage.css?v=20260513b">
+  <link rel="stylesheet" href="../css/mingbook-onepage.css?v=20260513k">
   <script src="../js/config.js?v=20260509-vercel-backend"></script>
   <script defer src="../js/cities.js"></script>
   <script defer src="../js/lunarCalendar.js"></script>
@@ -19,7 +19,7 @@
   <script defer src="../src/ziping/validator.js"></script>
   <script defer src="../src/ziping/runtime.js"></script>
   <script defer src="../js/ai-piming.js?v=20260508-backend-base"></script>
-  <script defer src="../js/mingbook-onepage.js?v=20260513a"></script>
+  <script defer src="../js/mingbook-onepage.js?v=20260513k"></script>
 </head>
 <body>
   <header class="mbp-nav">
@@ -37,42 +37,15 @@
 
   <main class="mbp-page">
     <section class="mbp-hero" aria-labelledby="mbpHeroTitle">
-      <aside class="mbp-spine" aria-label="命书目录预览">
-        <div class="mbp-spine-kicker">紫 微 命 书 系 统</div>
-        <div class="mbp-spine-title">紫 微 斗 数</div>
-        <div class="mbp-spine-profile" id="mbpClientPicker">
-          <button class="mbp-client-current" id="mbpClientToggle" type="button" aria-expanded="false">
-            <span class="mbp-profile-mark" id="mbpProfileMark">命</span>
-            <span class="mbp-profile-copy">
-              <strong id="mbpProfileTitle">命 主</strong>
-              <small id="mbpProfileMeta">待排盘 · 命书未启</small>
-            </span>
-            <span class="mbp-client-arrow">⌄</span>
-          </button>
-          <div class="mbp-client-menu" id="mbpClientMenu" hidden>
-            <div class="mbp-client-menu-head">
-              <b>客户盘</b>
-              <small id="mbpClientCount">0 个盘</small>
-            </div>
-            <div class="mbp-client-list" id="mbpClientList"></div>
-            <button class="mbp-client-new" id="mbpClientNew" type="button">+ 新建客户盘</button>
-          </div>
-        </div>
-        <div class="mbp-catalog-title">命 书 目 录 <em>五 卷</em></div>
-        <ol class="mbp-catalog">
-          <li class="is-active"><b>壹</b><span>整体批命</span><i>阅</i></li>
-          <li><b>贰</b><span>大限流年</span></li>
-          <li><b>叁</b><span>人生曲线</span></li>
-          <li><b>肆</b><span>五宫详解</span></li>
-          <li><b>伍</b><span>行动建议</span></li>
-        </ol>
-      </aside>
-
       <div class="mbp-hero-main">
-        <div class="mbp-seal" aria-hidden="true">紫<br>微</div>
-        <h1 id="mbpHeroTitle">紫 微 命 书</h1>
+        <div class="mbp-hero-input">
+          <div class="mbp-input-head">
+            <span>紫 微 命 书</span>
+            <h1 id="mbpHeroTitle">客户输入命盘</h1>
+            <p>选择已有客户盘，或填写出生信息重新排盘。</p>
+          </div>
 
-        <form class="mbp-birth-form" id="mbpBirthForm">
+          <form class="mbp-birth-form" id="mbpBirthForm">
           <div class="mbp-form-card">
             <div class="nf-row">
               <div class="nf-row-left">
@@ -171,19 +144,59 @@
               </button>
             </div>
           </div>
-        </form>
-      </div>
-    </section>
+          </form>
+          <section class="mbp-client-input-card" aria-label="客户盘选择">
+            <div class="mbp-client-input-head">
+              <strong>客户盘</strong>
+              <small>保留多盘切换</small>
+            </div>
+            <div class="mbp-input-client-picker" id="mbpClientPicker">
+              <button class="mbp-client-current" id="mbpClientToggle" type="button" aria-expanded="false">
+                <span class="mbp-profile-mark" id="mbpProfileMark">命</span>
+                <span class="mbp-profile-copy">
+                  <strong id="mbpProfileTitle">命 主</strong>
+                  <small id="mbpProfileMeta">待排盘 · 命书未启</small>
+                </span>
+                <span class="mbp-client-arrow">⌄</span>
+              </button>
+              <div class="mbp-client-menu" id="mbpClientMenu" hidden>
+                <div class="mbp-client-menu-head">
+                  <b>客户盘</b>
+                  <small id="mbpClientCount">0 个盘</small>
+                </div>
+                <div class="mbp-client-list" id="mbpClientList"></div>
+                <button class="mbp-client-new" id="mbpClientNew" type="button">+ 新建客户盘</button>
+              </div>
+            </div>
+          </section>
+          <aside class="mbp-decode-panel mbp-hero-decode">
+            <span>排盘完成后</span>
+            <h3>一键解读全部模块</h3>
+            <button class="mbp-decode-btn" id="mbpDecodeBtn" type="button">✦ 一键解读</button>
+            <div class="mbp-decode-meter" id="mbpDecodeMeter" role="progressbar" aria-label="AI生成进度" aria-valuemin="0" aria-valuemax="7" aria-valuenow="0">
+              <i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+            </div>
+            <div class="mbp-module-actions" aria-label="单独批命入口">
+              <button type="button" data-ai-module="overall">批整体</button>
+              <button type="button" data-ai-module="current_luck">批走势</button>
+              <button type="button" data-ai-module="shengong">批身宫</button>
+              <button type="button" data-ai-module="hunyin">批婚姻</button>
+              <button type="button" data-ai-module="jiankang">批健康</button>
+              <button type="button" data-ai-module="caiyun">批财运</button>
+              <button type="button" data-ai-module="shiye">批事业</button>
+            </div>
+            <div class="mbp-decode-status" id="mbpDecodeStatus">接入原站 AI 批命接口，排盘后可一键生成。</div>
+            <div class="mbp-decode-list" id="mbpDecodeList">
+              <p>整体批命先给主线</p>
+              <p>五大专项直接出结论</p>
+              <p>命书卷轴沉浸阅读</p>
+              <p>深度报告可继续追问</p>
+            </div>
+            <div class="mbp-chart-summary" id="mbpChartSummary"></div>
+          </aside>
+        </div>
 
-    <section class="mbp-flow" id="chart">
-      <div class="mbp-section-head">
-        <span>01 从输入到解读</span>
-        <h2>先排盘，再展开专业判断</h2>
-        <p>新版把输入、命盘、专项批命和报告阅读收进一条路径，用户不用在多个页面里来回找。</p>
-      </div>
-
-      <div class="mbp-chart-stage">
-        <div class="mbp-chart-panel">
+        <div class="mbp-hero-chart" id="chart">
           <div class="fc-card mbp-fc-card" id="mbpFcCard">
             <div class="fc-header">
               <div class="fc-header-title">紫微排盘</div>
@@ -207,8 +220,8 @@
                     <div class="fc-center-row"><span class="fc-center-lbl">农历</span><span class="fc-center-val" id="mbpFcLunar"></span></div>
                     <div class="fc-center-row"><span class="fc-center-lbl">真太阳时</span><span class="fc-center-val" id="mbpFcTst"></span></div>
                     <div class="fc-center-row"><span class="fc-center-lbl">排盘时辰</span><span class="fc-center-val" id="mbpFcShichen"></span></div>
-                    <div class="fc-center-row" style="align-items:flex-start;margin-top:3px">
-                      <span class="fc-center-lbl" style="margin-top:1px">节气四柱</span>
+                    <div class="fc-center-row fc-sizhu-row">
+                      <span class="fc-center-lbl">节气四柱</span>
                       <div class="fc-sizhu" id="mbpFcSizhu"></div>
                     </div>
                   </div>
@@ -259,64 +272,14 @@
             </div>
           </div>
         </div>
-        <aside class="mbp-decode-panel">
-          <span>排盘完成后</span>
-          <h3>一键解读全部模块</h3>
-          <button class="mbp-decode-btn" id="mbpDecodeBtn" type="button">✦ 一键解读</button>
-          <div class="mbp-decode-meter" id="mbpDecodeMeter" role="progressbar" aria-label="AI生成进度" aria-valuemin="0" aria-valuemax="7" aria-valuenow="0">
-            <i></i><i></i><i></i><i></i><i></i><i></i><i></i>
-          </div>
-          <div class="mbp-module-actions" aria-label="单独批命入口">
-            <button type="button" data-ai-module="overall">批整体</button>
-            <button type="button" data-ai-module="current_luck">批走势</button>
-            <button type="button" data-ai-module="shengong">批身宫</button>
-            <button type="button" data-ai-module="hunyin">批婚姻</button>
-            <button type="button" data-ai-module="jiankang">批健康</button>
-            <button type="button" data-ai-module="caiyun">批财运</button>
-            <button type="button" data-ai-module="shiye">批事业</button>
-          </div>
-          <div class="mbp-decode-status" id="mbpDecodeStatus">接入原站 AI 批命接口，排盘后可一键生成。</div>
-          <div class="mbp-decode-list" id="mbpDecodeList">
-            <p>整体批命先给主线</p>
-            <p>五大专项直接出结论</p>
-            <p>命书卷轴沉浸阅读</p>
-            <p>深度报告可继续追问</p>
-          </div>
-          <div class="mbp-chart-summary" id="mbpChartSummary"></div>
-        </aside>
-      </div>
-    </section>
-
-    <section class="mbp-specials" id="specials">
-      <div class="mbp-section-head">
-        <span>02 AI 专项批命矩阵</span>
-        <h2>原网站三大块信息，升级成一页式阅读秩序</h2>
-        <p>保留「专项卡片 + AI 批命」逻辑，让用户一眼知道每一块解决什么问题。</p>
-      </div>
-
-      <div class="mbp-special-grid">
-        <article class="mbp-special-card is-wide" data-report="body">
-          <i>身</i><span>身宫</span><h3>身宫批命</h3><small class="mbp-ai-status" data-status="body">待生成</small><button class="mbp-card-ai-btn" type="button" data-ai-module="shengong">单独批身宫</button><p>点击一键解读后生成。</p>
-        </article>
-        <article class="mbp-special-card" data-report="marriage">
-          <i>婚</i><span>婚姻</span><h3>婚姻批命</h3><small class="mbp-ai-status" data-status="marriage">待生成</small><button class="mbp-card-ai-btn" type="button" data-ai-module="hunyin">单独批婚姻</button><p>点击一键解读后生成。</p>
-        </article>
-        <article class="mbp-special-card" data-report="health">
-          <i>疾</i><span>健康</span><h3>健康批命</h3><small class="mbp-ai-status" data-status="health">待生成</small><button class="mbp-card-ai-btn" type="button" data-ai-module="jiankang">单独批健康</button><p>点击一键解读后生成。</p>
-        </article>
-        <article class="mbp-special-card is-wide" data-report="wealth">
-          <i>财</i><span>财运</span><h3>财运批命</h3><small class="mbp-ai-status" data-status="wealth">待生成</small><button class="mbp-card-ai-btn" type="button" data-ai-module="caiyun">单独批财运</button><p>点击一键解读后生成。</p>
-        </article>
-        <article class="mbp-special-card is-wide" data-report="career">
-          <i>官</i><span>事业</span><h3>事业批命</h3><small class="mbp-ai-status" data-status="career">待生成</small><button class="mbp-card-ai-btn" type="button" data-ai-module="shiye">单独批事业</button><p>点击一键解读后生成。</p>
-        </article>
       </div>
     </section>
 
     <section class="mbp-book" id="report">
       <div class="mbp-section-head">
-        <span>03 命书卷轴报告</span>
-        <h2>从「准」到「专业」：有结构、有判断、有可读性</h2>
+        <span>02 客户命书解读</span>
+        <h2>生成后直接给客户看，一页读懂整份命书</h2>
+        <p>五卷按阅读顺序展开，客户顺着看即可：先看主线，再看走势、五宫和行动建议。</p>
         <div class="mbp-report-pulse" id="mbpReportPulse">
           <span><b id="mbpReportReadyCount">0/7</b> 模块</span>
           <span><b id="mbpReportStateText">待生成</b> 状态</span>
@@ -326,17 +289,35 @@
 
       <div class="mbp-book-layout">
         <aside class="mbp-book-cover">
-          <div>紫 微 命 书</div>
-          <p id="mbpBookSubtitle">命书启卷</p>
+          <div class="mbp-book-kicker">紫 微 命 书 系 统</div>
+          <div class="mbp-book-title">紫 微 斗 数</div>
+          <section class="mbp-book-client">
+            <span class="mbp-book-mark">命</span>
+            <div>
+              <strong>命 主</strong>
+              <p id="mbpBookSubtitle">命书启卷</p>
+            </div>
+          </section>
+          <div class="mbp-book-menu-head">
+            <strong>命书目录</strong>
+            <em>五 卷</em>
+          </div>
+          <ol class="mbp-book-menu" id="mbpBookMenu">
+            <li class="is-active"><button type="button" data-report-nav="0" aria-current="true"><b>壹</b><span>整体批命</span><i>阅</i></button></li>
+            <li><button type="button" data-report-nav="1"><b>贰</b><span>大限流年</span><i>阅</i></button></li>
+            <li><button type="button" data-report-nav="2"><b>叁</b><span>人生曲线</span><i>阅</i></button></li>
+            <li><button type="button" data-report-nav="3"><b>肆</b><span>五宫详解</span><i>阅</i></button></li>
+            <li><button type="button" data-report-nav="4"><b>伍</b><span>行动建议</span><i>阅</i></button></li>
+          </ol>
           <button type="button" id="mbpScrollReport">滚动展卷 ↓</button>
         </aside>
 
         <div class="mbp-chapters" id="mbpChapters">
-          <article><span>卷一</span><h3>命格总览</h3><p>等待一键解读。</p></article>
-          <article><span>卷二</span><h3>大限流年</h3><p>等待一键解读。</p></article>
-          <article><span>卷三</span><h3>人生曲线</h3><p>等待一键解读。</p></article>
-          <article><span>卷四</span><h3>五宫详解</h3><p>等待一键解读。</p></article>
-          <article><span>卷五</span><h3>行动建议</h3><p>等待一键解读。</p></article>
+          <article id="mbp-chapter-0" data-report-chapter="0"><span>卷一</span><h3>命格总览</h3><p>等待一键解读。</p></article>
+          <article id="mbp-chapter-1" data-report-chapter="1"><span>卷二</span><h3>大限流年</h3><p>等待一键解读。</p></article>
+          <article id="mbp-chapter-2" data-report-chapter="2"><span>卷三</span><h3>人生曲线</h3><p>等待一键解读。</p></article>
+          <article id="mbp-chapter-3" data-report-chapter="3"><span>卷四</span><h3>五宫详解</h3><p>等待一键解读。</p></article>
+          <article id="mbp-chapter-4" data-report-chapter="4"><span>卷五</span><h3>行动建议</h3><p>等待一键解读。</p></article>
         </div>
       </div>
     </section>

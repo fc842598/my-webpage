@@ -91,6 +91,52 @@
     }[char]));
   }
 
+  function cleanAiText(value) {
+    return String(value ?? '')
+      .replace(/\r\n?/g, '\n')
+      .replace(/```[\s\S]*?```/g, (block) => block.replace(/```[a-z]*\n?/gi, '').replace(/```/g, ''))
+      .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+      .replace(/`([^`]+)`/g, '$1')
+      .replace(/(^|\n)\s{0,3}#{1,6}\s*/g, '$1')
+      .replace(/(^|\n)\s{0,3}>\s*/g, '$1')
+      .replace(/(^|\n)\s*[-*+]\s+/g, '$1')
+      .replace(/\*\*([^*\n]+)\*\*/g, '$1')
+      .replace(/__([^_\n]+)__/g, '$1')
+      .replace(/\*\*/g, '')
+      .replace(/__/g, '')
+      .replace(/[ \t]+\n/g, '\n')
+      .replace(/\n{3,}/g, '\n\n')
+      .trim();
+  }
+
+  function cleanAiInlineText(value) {
+    return cleanAiText(value).replace(/\s+/g, ' ').trim();
+  }
+
+  function aiTextSectionsFromMarkdown(text, fallbackTitle = '解读') {
+    const raw = String(text || '').replace(/\r\n?/g, '\n').trim();
+    if (!raw) return [];
+    const sections = [];
+    let current = null;
+    raw.split('\n').forEach((line) => {
+      const heading = line.match(/^\s{0,3}#{1,6}\s*(.+?)\s*#*\s*$/);
+      if (heading) {
+        if (current) sections.push(current);
+        current = { title: cleanAiInlineText(heading[1]) || fallbackTitle, lines: [] };
+        return;
+      }
+      if (!current) current = { title: fallbackTitle, lines: [] };
+      current.lines.push(line);
+    });
+    if (current) sections.push(current);
+    return sections
+      .map((section) => ({
+        title: cleanAiInlineText(section.title) || fallbackTitle,
+        content: cleanAiText(section.lines.join('\n')),
+      }))
+      .filter((section) => section.title || section.content);
+  }
+
   function clampNumber(value, min, max, fallback) {
     const number = Number.parseInt(value, 10);
     if (!Number.isFinite(number)) return fallback;
@@ -1242,14 +1288,14 @@
     const card = normalized?.card || {};
     const sections = Array.isArray(card.sections) ? card.sections : [];
     if (sections.length) {
-      return sections.map((section) => [section.title, section.content].filter(Boolean).join('：')).filter(Boolean).join('\n\n');
+      return sections.map((section) => [cleanAiInlineText(section.title), cleanAiText(section.content)].filter(Boolean).join('：')).filter(Boolean).join('\n\n');
     }
     const finalAnswer = parseAiJson(normalized?.finalAnswer) ? '' : normalized?.finalAnswer;
-    return card.body || card.summary || finalAnswer || '';
+    return cleanAiText(card.body || card.summary || finalAnswer || '');
   }
 
   function aiCardTitle(data, fallback) {
-    return normalizeAiData(data)?.card?.title || fallback;
+    return cleanAiInlineText(normalizeAiData(data)?.card?.title) || fallback;
   }
 
   function normalizeText(text) {
@@ -1268,19 +1314,21 @@
     const card = normalized?.card || {};
     const sections = Array.isArray(card.sections) ? card.sections.filter((item) => item?.content || item?.title) : [];
     if (sections.length) return sections.map((item) => ({
-      title: item.title || '解读',
-      content: item.content || '',
+      title: cleanAiInlineText(item.title) || '解读',
+      content: cleanAiText(item.content || ''),
     }));
     const finalAnswer = parseAiJson(normalized?.finalAnswer) ? '' : normalized?.finalAnswer;
     const text = card.body || card.summary || finalAnswer || '';
-    return text ? [{ title: card.title || '解读', content: text }] : [];
+    if (!text) return [];
+    const fallbackTitle = cleanAiInlineText(card.title) || '解读';
+    return aiTextSectionsFromMarkdown(text, fallbackTitle);
   }
 
   function insightSummary(data, fallback = '等待原站 AI 返回。', max = 88) {
     const normalized = normalizeAiData(data);
     const card = normalized?.card || {};
     const finalAnswer = parseAiJson(normalized?.finalAnswer) ? '' : normalized?.finalAnswer;
-    const source = card.summary || aiSections(data)[0]?.content || card.body || finalAnswer || fallback;
+    const source = cleanAiText(card.summary || aiSections(data)[0]?.content || card.body || finalAnswer || fallback);
     return trimText(source, max);
   }
 
@@ -1309,7 +1357,7 @@
   function renderInsightBlock(data, fallbackTitle, fallbackText, options = {}) {
     const sections = aiSections(data);
     const summary = insightSummary(data, fallbackText, options.summaryMax || 88);
-    const bullets = sectionBullets(sections, options.bulletLimit || 3, summary);
+    const bullets = sectionBullets(sections, options.bulletLimit ?? 3, summary);
     const detail = sections.length ? sections : [{ title: fallbackTitle, content: fallbackText }];
     const detailLabel = options.detailLabel || '展开完整解读';
     if (options.direct) {
@@ -1432,6 +1480,50 @@
     aiTasks.forEach((task) => setModuleDone(task.module, false));
   }
 
+  let reportNavLockUntil = 0;
+
+  function setActiveReportNav(index = 0) {
+    const activeIndex = Math.max(0, Math.min(4, Number(index) || 0));
+    document.querySelectorAll('[data-report-nav]').forEach((button) => {
+      const isActive = Number(button.dataset.reportNav) === activeIndex;
+      button.setAttribute('aria-current', isActive ? 'true' : 'false');
+      button.closest('li')?.classList.toggle('is-active', isActive);
+    });
+  }
+
+  function syncReportNav() {
+    if (Date.now() < reportNavLockUntil) return;
+    const chapters = [...document.querySelectorAll('[data-report-chapter]')];
+    if (!chapters.length) return;
+    const anchor = Math.min(220, Math.max(120, window.innerHeight * 0.28));
+    let active = Number(chapters[0].dataset.reportChapter) || 0;
+    let bestDistance = Infinity;
+    chapters.forEach((chapter) => {
+      const rect = chapter.getBoundingClientRect();
+      const isReadable = rect.bottom >= 80 && rect.top <= window.innerHeight - 80;
+      if (!isReadable) return;
+      const distance = Math.abs(rect.top - anchor);
+      if (distance < bestDistance) {
+        bestDistance = distance;
+        active = Number(chapter.dataset.reportChapter) || active;
+      }
+    });
+    const nearBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 24;
+    if (nearBottom) active = Number(chapters[chapters.length - 1].dataset.reportChapter) || active;
+    setActiveReportNav(active);
+  }
+
+  function scrollToReportChapter(index = 0) {
+    const target = document.querySelector(`[data-report-chapter="${Number(index) || 0}"]`);
+    if (!target) {
+      $('#report')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      return;
+    }
+    reportNavLockUntil = Date.now() + 900;
+    setActiveReportNav(index);
+    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
   function renderChaptersFromAi() {
     setReportGeneratedState(true);
     const facts = chartFacts();
@@ -1489,24 +1581,25 @@
       chapters.innerHTML = chaptersData.map((item, index) => {
         const data = index === 0 ? overall : index === 1 ? luck : { card: { title: item[0], body: item[1], sections: item[2] || null } };
         return `
-        <article class="mbp-report-row">
+        <article class="mbp-report-row" id="mbp-chapter-${index}" data-report-chapter="${index}">
           <span>卷${index + 1}</span>
           <div class="mbp-report-title">
             <h3>${escapeHtml(item[0])}</h3>
           </div>
-          <div class="mbp-report-content">
-            ${renderInsightBlock(data, item[0], item[1], {
-              summaryMax: 128,
-              bulletLimit: 3,
-              direct: true,
-            })}
-          </div>
+            <div class="mbp-report-content">
+              ${renderInsightBlock(data, item[0], item[1], {
+                summaryMax: 128,
+                bulletLimit: 0,
+                direct: true,
+              })}
+            </div>
         </article>
       `;
       }).join('');
     }
     const subtitle = $('#mbpBookSubtitle');
     if (subtitle) subtitle.textContent = facts.subtitle;
+    requestAnimationFrame(syncReportNav);
   }
 
   async function callOriginalAi(moduleKey) {
@@ -1658,7 +1751,7 @@
     const chapters = $('#mbpChapters');
     if (chapters) {
       chapters.innerHTML = ['命格总览', '大限流年', '人生曲线', '五宫详解', '行动建议'].map((title, index) => `
-        <article><span>卷${index + 1}</span><h3>${title}</h3><p>等待一键解读。</p></article>
+        <article id="mbp-chapter-${index}" data-report-chapter="${index}"><span>卷${index + 1}</span><h3>${title}</h3><p>等待一键解读。</p></article>
       `).join('');
     }
     const subtitle = $('#mbpBookSubtitle');
@@ -1679,6 +1772,7 @@
     }
     setAllModuleButtonsBusy(false);
     setDecodeStatus('接入原站 AI 批命接口，排盘后可一键生成。');
+    requestAnimationFrame(syncReportNav);
   }
 
   const shichenCandidates = [
@@ -1993,9 +2087,9 @@
       $('#chart')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
 
-    $('#mbpDecodeBtn')?.addEventListener('click', () => {
-      decodeReports();
-      $('#specials')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    $('#mbpDecodeBtn')?.addEventListener('click', async () => {
+      await decodeReports();
+      scrollToReportChapter(0);
     });
 
     document.querySelectorAll('[data-ai-module]').forEach((button) => {
@@ -2004,9 +2098,28 @@
       });
     });
 
-    $('#mbpScrollReport')?.addEventListener('click', () => {
-      $('#report')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    $('#mbpBookMenu')?.addEventListener('click', (event) => {
+      const button = event.target.closest('[data-report-nav]');
+      if (!button) return;
+      scrollToReportChapter(button.dataset.reportNav);
     });
+
+    $('#mbpScrollReport')?.addEventListener('click', () => {
+      scrollToReportChapter(0);
+    });
+
+    let reportNavTicking = false;
+    const queueReportNavSync = () => {
+      if (reportNavTicking) return;
+      reportNavTicking = true;
+      requestAnimationFrame(() => {
+        reportNavTicking = false;
+        syncReportNav();
+      });
+    };
+    window.addEventListener('scroll', queueReportNavSync, { passive: true });
+    window.addEventListener('resize', queueReportNavSync);
+    syncReportNav();
   }
 
   updateForm();
