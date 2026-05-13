@@ -33,6 +33,7 @@
     pollTimer: null,
     payUrl:    null,
     payMethod: 'native',
+    paidReloadTimer: null,
   };
 
   function isLocalDev() {
@@ -114,6 +115,7 @@
 
   // ── 购买流程 ──────────────────────────────────────────────────
   async function startPurchase() {
+    clearPaidReload();
     _s.orderNo  = null;
     _s.isMock   = false;
     _s.payUrl   = null;
@@ -234,6 +236,8 @@
           '<div class="pay-qr-area">' +
             '<canvas id="pay-qr-canvas"></canvas>' +
             '<div class="pay-qr-hint">微信扫码支付</div>' +
+            '<button class="pay-mock-btn pay-mock-refresh" id="pm-refresh" style="margin-top:10px">我已支付，立即确认</button>' +
+            '<div class="pay-qr-hint">正在自动确认支付状态</div>' +
           '</div>';
       } else {
         // payUrl not ready yet — show refresh only
@@ -257,6 +261,7 @@
         '<div class="pay-success-title">支付成功，已开通会员</div>' +
         '<div class="pay-order-row"><span>订单号</span><code>' + (_s.orderNo || '') + '</code></div>' +
         '<div class="pay-entitlement">✦ 许半仙月度会员已激活<br>每日200次AI命理对话额度已就绪</div>' +
+        '<div class="pay-loading-text" style="margin-top:10px">正在进入会员状态…</div>' +
         '<button class="pay-retry-btn" id="pm-close-ok" style="margin-top:12px">开始使用</button>';
 
     } else if (phase === 'failed') {
@@ -303,7 +308,22 @@
     }
   }
 
-  function closeModal() { stopPoll(); hide('pay-modal'); }
+  function closeModal() { stopPoll(); clearPaidReload(); hide('pay-modal'); }
+
+  function clearPaidReload() {
+    if (_s.paidReloadTimer) {
+      clearTimeout(_s.paidReloadTimer);
+      _s.paidReloadTimer = null;
+    }
+  }
+
+  function handlePaid() {
+    stopPoll();
+    renderModal('paid');
+    updateQuotaDisplay({ isMember: true, dailyLimit: 200, remaining: 200 });
+    clearPaidReload();
+    _s.paidReloadTimer = setTimeout(function(){ location.reload(); }, 1500);
+  }
 
   // ── Mock 操作 ─────────────────────────────────────────────────
   async function doSuccess() {
@@ -319,8 +339,7 @@
       // Local mock
       _mockOrders[_s.orderNo] = 'paid';
     }
-    renderModal('paid');
-    updateQuotaDisplay({ isMember: true, dailyLimit: 200, remaining: 200 });
+    handlePaid();
   }
 
   async function doFail() {
@@ -338,10 +357,13 @@
 
   // ── 状态轮询 ──────────────────────────────────────────────────
   async function checkStatus(orderNo) {
+    var refreshBtn = qs('pm-refresh');
+    if (refreshBtn) refreshBtn.disabled = true;
     var r = await tryGet('/api/payments/order-status?orderNo=' + encodeURIComponent(orderNo));
+    if (refreshBtn) refreshBtn.disabled = false;
     if (!r.ok) return;
     var st = r.data.status;
-    if (st === 'paid') { stopPoll(); renderModal('paid'); updateQuotaDisplay({ isMember: true, dailyLimit: 200, remaining: 200 }); }
+    if (st === 'paid') { handlePaid(); }
     else if (st === 'failed' || st === 'closed') { stopPoll(); renderModal(st === 'closed' ? 'error' : 'failed', { error: st === 'closed' ? '订单已过期，请重新下单' : '' }); }
   }
 
