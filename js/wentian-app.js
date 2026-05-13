@@ -1801,7 +1801,77 @@ function sourceBasicInfoScreen() {
     ${figBox("source-39-save", 36, 690, 318, 58, "", "border-radius:29px;background:#c09a49;box-shadow:0 8px 18px rgba(130,91,31,.12);")}
     ${figButton("source-39-save-hit", 36, 690, 318, 58, 'data-action="wentian-profile-save"')}
     ${figText("source-39-save-text", "保存", 36, 709, 318, 18, "#fff", 700, "center")}
-    ${sourceAppBottomNav("我的", 755)}
+  `;
+}
+
+function sourceAccountSettingsScreen() {
+  const rows = [
+    ["♙", "基本信息", "screen-39"],
+    ["▧", "登录方式", "screen-40"],
+    ["⌑", "设置密码", "screen-41"],
+    ["↪", "退出登录", "screen-31"]
+  ];
+  return `
+    ${figBox("source-settings-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
+    ${figButton("source-settings-back-hit", 18, 40, 54, 54, 'data-action="back"')}
+    ${figText("source-settings-back", "‹", 28, 49, 28, 30, "#26211c", 600)}
+    ${figText("source-settings-title", "账户设置", 0, 56, 390, 22, "#1f1d1a", 800, "center")}
+    ${figBox("source-settings-card", 22, 104, 346, 196, "", "border:1px solid #e2d8c8;border-radius:14px;background:#fff;box-shadow:0 6px 16px rgba(74,55,32,.06);")}
+    ${rows.map(([icon, label, route], index) => {
+      const y = 104 + index * 49;
+      const red = index === rows.length - 1;
+      return `
+        ${index ? figLine(`source-settings-line-${index}`, 44, y, 302, "#eee8df") : ""}
+        ${figText(`source-settings-icon-${index}`, icon, 40, y + 18, 24, 14, red ? "#b33a2f" : "#b88c33", 700, "center")}
+        ${figText(`source-settings-label-${index}`, label, 76, y + 16, 180, 16, red ? "#b33a2f" : "#26211c", 700)}
+        ${figText(`source-settings-arrow-${index}`, "›", 326, y + 14, 20, 18, "#aaa196", 700, "center")}
+        ${figButton(`source-settings-hit-${index}`, 22, y, 346, 49, `data-route="${route}"`)}
+      `;
+    }).join("")}
+  `;
+}
+
+function sourceLoginMethodsScreen() {
+  const rows = [
+    ["Apple", "89c6ef44-…-500dd420", "♛"],
+    ["邮箱", "aa159892677…@gmail.com", "✉"],
+    ["手机号", "绑定", "▯"],
+    ["Google", "aa159892677…@gmail.com", "G"]
+  ];
+  return `
+    ${figBox("source-login-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
+    ${figButton("source-login-back-hit", 18, 40, 54, 54, 'data-action="back"')}
+    ${figText("source-login-back", "‹", 28, 49, 28, 30, "#26211c", 600)}
+    ${figText("source-login-title", "登录方式", 0, 56, 390, 22, "#1f1d1a", 800, "center")}
+    ${figBox("source-login-card", 22, 108, 346, 216, "", "border:1px solid #e2d8c8;border-radius:14px;background:#fff;box-shadow:0 6px 16px rgba(74,55,32,.06);")}
+    ${rows.map(([label, value, icon], index) => {
+      const y = 108 + index * 54;
+      return `
+        ${index ? figLine(`source-login-line-${index}`, 44, y, 302, "#eee8df") : ""}
+        ${figText(`source-login-icon-${index}`, icon, 42, y + 19, 24, 13, "#b88c33", 800, "center")}
+        ${figText(`source-login-label-${index}`, label, 76, y + 17, 76, 15, "#26211c", 700)}
+        ${figText(`source-login-value-${index}`, value, 154, y + 18, 164, 12, "#9b9287", 500, "right")}
+        ${figText(`source-login-arrow-${index}`, "›", 328, y + 16, 18, 17, "#aaa196", 700, "center")}
+      `;
+    }).join("")}
+  `;
+}
+
+function sourcePasswordSettingsScreen() {
+  return `
+    ${figBox("source-password-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
+    ${figButton("source-password-back-hit", 18, 40, 54, 54, 'data-action="back"')}
+    ${figText("source-password-back", "‹", 28, 49, 28, 30, "#26211c", 600)}
+    ${figText("source-password-title", "设置密码", 0, 56, 390, 22, "#1f1d1a", 800, "center")}
+    ${figBox("source-password-card", 22, 108, 346, 136, "", "border:1px solid #e2d8c8;border-radius:14px;background:#fff;box-shadow:0 6px 16px rgba(74,55,32,.06);")}
+    ${figText("source-password-new-label", "新密码", 42, 132, 80, 16, "#5f5a52", 500)}
+    <input class="wentian-profile-input" type="password" style="left:132px;top:118px;width:214px" placeholder="请输入" autocomplete="new-password">
+    ${figLine("source-password-line-1", 42, 176, 304, "#e6ded2")}
+    ${figText("source-password-confirm-label", "确认密码", 42, 198, 80, 16, "#5f5a52", 500)}
+    <input class="wentian-profile-input" type="password" style="left:132px;top:184px;width:214px" placeholder="请输入" autocomplete="new-password">
+    ${figBox("source-password-save", 68, 284, 254, 44, "", "border-radius:8px;background:#c09a49;box-shadow:0 8px 18px rgba(130,91,31,.12);")}
+    ${figButton("source-password-save-hit", 68, 284, 254, 44, 'data-route="screen-40"')}
+    ${figText("source-password-save-text", "保存", 68, 296, 254, 14, "#fff", 700, "center")}
   `;
 }
 
@@ -2040,7 +2110,14 @@ function renderWentianPolishedScreen(screen) {
       ${figBox("wt15-paper", 92, 184, 206, 290, "", "border:2px solid #462b2b;border-radius:3px;background:#e98aa0;")}
       ${figText("wt15-paper-title", "黄大仙灵签", 104, 220, 120, 18, "#2b201d", 800, "center")}
       ${figText("wt15-poem", "遗定良缘\n乱转涡鱼\n性立盖守\n家奇得靖\n舞烟泛鹤\n燕上晚也", 128, 264, 90, 22, "#2b201d", 800, "center", "line-height:1.22;")}
-      ${figBox("wt15-seal", 234, 202, 42, 42, "", "border:2px solid #332;border-radius:21px;")}
+      ${figBox("wt15-seal", 234, 202, 42, 42, "", "border:2px solid #332;border-radius:21px;background:rgba(255,255,255,.12);")}
+      ${figText("wt15-seal-text", "灵", 234, 213, 42, 15, "#332", 800, "center")}
+      ${figText("wt15-side-copy", "诚心祈愿\n一签一问", 242, 256, 40, 13, "#4b211f", 800, "center", "line-height:1.45;")}
+      ${[0,1,2,3,4,5,6,7,8].map((idx) => {
+        const x = 238 + (idx % 3) * 12;
+        const y = 418 + Math.floor(idx / 3) * 12;
+        return figBox(`wt15-qr-${idx}`, x, y, 8, 8, "", `background:${idx % 2 ? "#e98aa0" : "#2b201d"};`);
+      }).join("")}
       ${figText("wt15-result", "第廿九签", 0, 506, 390, 20, "#d7a941", 800, "center")}
       ${figText("wt15-grade", "【中吉】", 0, 538, 390, 15, "#6fb866", 800, "center")}
       ${figText("wt15-tip", "点击签面查看详情", 0, 566, 390, 12, "#bbb3aa", 500, "center")}
@@ -2189,7 +2266,6 @@ function renderWentianPolishedScreen(screen) {
       ${figBox("wt28-icon", 170, 332, 50, 36, "", "border-radius:6px;background:#d8d2ca;")}
       ${figBox("wt28-icon-cut", 188, 347, 14, 14, "", "border-radius:7px;background:#fbf7ef;")}
       ${figText("wt28-empty", "暂无可用", 0, 394, 390, 14, "#a19a91", 600, "center")}
-      ${sourceAppBottomNav("我的", 780)}
     `;
   }
   if (no === 29) {
@@ -2761,9 +2837,27 @@ function renderConvertedScreen(no) {
       ${sourceLanguageSettingsScreen()}
     `, 844, "converted source-screen no-status-shift", true);
   }
+  if (screen.no === 32 || screen.no === 38) {
+    return figPhone(`screen-${screen.no}`, `${String(screen.no).padStart(2, "0")} ${screen.title}`, `
+      ${sourceAccountSettingsScreen()}
+      ${convertedFlowHotspots(screen)}
+    `, 844, "converted source-screen no-status-shift", true);
+  }
   if (screen.no === 39) {
     return figPhone(`screen-${screen.no}`, `${String(screen.no).padStart(2, "0")} ${screen.title}`, `
       ${sourceBasicInfoScreen()}
+    `, 844, "converted source-screen no-status-shift", true);
+  }
+  if (screen.no === 40) {
+    return figPhone(`screen-${screen.no}`, `${String(screen.no).padStart(2, "0")} ${screen.title}`, `
+      ${sourceLoginMethodsScreen()}
+      ${convertedFlowHotspots(screen)}
+    `, 844, "converted source-screen no-status-shift", true);
+  }
+  if (screen.no === 41) {
+    return figPhone(`screen-${screen.no}`, `${String(screen.no).padStart(2, "0")} ${screen.title}`, `
+      ${sourcePasswordSettingsScreen()}
+      ${convertedFlowHotspots(screen)}
     `, 844, "converted source-screen no-status-shift", true);
   }
   if (screen.no === 26) {
