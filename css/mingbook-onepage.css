@@ -128,19 +128,7 @@ select {
 
 @media (min-width: 1021px) {
   :root {
-    --mbp-ui-scale: .8;
-  }
-}
-
-@media (min-width: 1600px) {
-  :root {
-    --mbp-ui-scale: .86;
-  }
-}
-
-@media (min-width: 1920px) {
-  :root {
-    --mbp-ui-scale: .9;
+    --mbp-ui-scale: .75;
   }
 }
 
