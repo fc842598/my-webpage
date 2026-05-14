@@ -661,6 +661,18 @@ function sourceArchiveScreen(screen) {
 function sourceAiChatScreen(screen) {
   const activeArchive = getCurrentWentianArchive();
   const active = getWentianArchiveDisplay(activeArchive);
+  const starters = [
+    ["人生主线", "结合我的命盘，先讲我整体的人生主线，这辈子的走法和最该把握的事。"],
+    ["感情婚姻", "结合我的命盘，重点看感情婚姻，什么样的感情路子，容易卡在哪里，何时有缘。"],
+    ["事业方向", "结合我的命盘，重点看事业，我适合往哪个方向发展，怎么做比较顺。"],
+    ["财运投资", "结合我的命盘，重点看财运，我适合怎么赚钱，有没有偏财或投资运。"],
+    ["最近一年", "结合我的命盘和当前流年，告诉我接下来一年最重要的机会和要注意的坑。"],
+    ["何时转运", "结合我的命盘，我现在处于什么运势阶段，什么时候会好转，要怎么熬过去。"],
+    ["健康运势", "结合我的命盘，看一下我的健康运势，有没有什么身体上需要特别留意的。"],
+    ["贵人运", "结合我的命盘，我命中的贵人在哪里，什么时候容易遇到贵人，怎么把握。"],
+    ["子女缘分", "结合我的命盘，看一下我的子女缘分，以及和子女相关的运势如何。"],
+    ["家庭六亲", "结合我的命盘，看一下我和家人的缘分，与父母、兄弟、另一半的关系如何。"]
+  ];
   return `
     ${figBox("source-4-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
     ${figText("source-4-back", "‹", 28, 35, 28, 34, "#26211c", 500)}
@@ -672,18 +684,18 @@ function sourceAiChatScreen(screen) {
     ${figBox("source-4-profile-pill", 286, 92, 72, 34, "", "border-radius:17px;background:#fff;box-shadow:0 4px 12px rgba(70,45,25,.08);")}
     ${figText("source-4-profile-text", `${escapeHtml(active.name)}⌄`, 296, 102, 52, 13, "#26211c", 500, "center")}
     ${figLine("source-4-line-b", 0, 137, 390, "#eee8df")}
-    ${figText("source-4-hello", "你好！我是许半仙", 24, 169, 320, 27, "#c4a45a", 800)}
-    ${figText("source-4-sub", "当前命盘已接入，可直接追问。", 24, 210, 260, 15, "#aaa196")}
-    ${figBox("source-4-bazi", 22, 250, 346, 156, "converted-card", "border-radius:13px;box-shadow:0 6px 18px rgba(74,55,32,.12);")}
-    ${figBox("source-4-mingpan-icon", 166, 282, 58, 58, "", "border-radius:18px;background:#f6efdf;")}
-    ${figText("source-4-mingpan-icon-text", "紫", 166, 297, 58, 25, "#c4a45a", 800, "center")}
-    ${figText("source-4-mingpan-title", "已读取您的紫微命盘", 0, 352, 390, 20, "#26211c", 800, "center")}
-    ${figText("source-4-mingpan-sub", `${escapeHtml(active.name)}的命盘已接入，可直接提问`, 42, 382, 306, 13, "#8f857a", 400, "center")}
+    ${figBox("source-4-context", 22, 154, 346, 42, "", "border:1px solid #eadfce;border-radius:13px;background:#fffaf3;box-shadow:0 5px 14px rgba(70,45,25,.06);")}
+    ${figBox("source-4-context-dot", 40, 170, 8, 8, "", "border-radius:4px;background:#5f8745;")}
+    ${figText("source-4-context-title", "已接入命盘", 58, 163, 100, 13, "#25211d", 800)}
+    ${figText("source-4-context-sub", "可直接提问", 210, 163, 120, 13, "#8f857a", 500, "right")}
     <div id="wentian-chat-status" class="wentian-chat-status">正在接入许半仙…</div>
     <div id="wentian-chat-messages" class="wentian-chat-log" aria-live="polite"></div>
-    <button class="wentian-chat-chip" type="button" style="left:18px" data-wentian-prompt="结合我的命盘，先讲我的个人性格和做事模式。">个人性格</button>
-    <button class="wentian-chat-chip" type="button" style="left:112px" data-wentian-prompt="结合我的命盘，重点看感情建议，我容易卡在哪里？">感情建议</button>
-    <button class="wentian-chat-chip" type="button" style="left:212px" data-wentian-prompt="结合我的命盘，看事业财运接下来怎么走。">事业财运</button>
+    ${figText("source-4-faq-title", "常见问题", 22, 572, 90, 13, "#25211d", 800)}
+    <div class="wentian-chat-starters" aria-label="常见问题">
+      ${starters.map(([label, prompt]) => `
+        <button class="wentian-chat-starter" type="button" data-wentian-prompt="${escapeHtml(prompt)}">${escapeHtml(label)}</button>
+      `).join("")}
+    </div>
     ${figBox("source-4-input-bg", 0, 742, 390, 102, "", "background:#fff;")}
     <input id="wentian-chat-input" class="wentian-chat-field" placeholder="问一问" autocomplete="off">
     <button id="wentian-chat-send" class="wentian-chat-send" type="button" data-action="wentian-chat-send" aria-label="发送">↑</button>
