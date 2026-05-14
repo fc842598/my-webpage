@@ -1854,7 +1854,7 @@ function sourceBasicInfoScreen() {
     ${figText("source-39-phone-label", "手机号", 42, 322, 90, 17, "#5f5a52", 500)}
     <input id="wentian-profile-phone" class="wentian-profile-input" inputmode="tel" style="left:132px;top:305px;width:214px" value="${escapeHtml(profile.phone)}" placeholder="绑定手机号" autocomplete="tel">
 
-    ${figText("source-39-tip", "信息仅保存在当前浏览器，用于原型体验。", 42, 454, 300, 13, "#9b9287")}
+    ${figText("source-39-tip", "信息仅保存在当前浏览器，用于档案管理与问天服务。", 42, 454, 300, 13, "#9b9287")}
     <div id="wentian-profile-status" class="wentian-profile-status"></div>
     ${figBox("source-39-save", 36, 690, 318, 58, "", "border-radius:29px;background:#c09a49;box-shadow:0 8px 18px rgba(130,91,31,.12);")}
     ${figButton("source-39-save-hit", 36, 690, 318, 58, 'data-action="wentian-profile-save"')}
