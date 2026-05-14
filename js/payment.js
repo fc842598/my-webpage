@@ -218,6 +218,99 @@
     }
   }
 
+  function escapeHtml(value) {
+    return String(value == null ? '' : value)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  function formatDateTime(value) {
+    if (!value) return '';
+    try {
+      return new Date(value).toLocaleString('zh-CN', {
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+      });
+    } catch (_) {
+      return '';
+    }
+  }
+
+  async function loadRefundOrders() {
+    var box = qs('pay-refund-list');
+    if (!box) return;
+    box.innerHTML = '<div class="pay-refund-empty">正在加载订单...</div>';
+
+    var r = await tryGet('/api/payments/refunds');
+    if (!r.ok) {
+      box.innerHTML = '<div class="pay-refund-empty">订单加载失败，请稍后重试</div>';
+      return;
+    }
+    renderRefundOrders(r.data.orders || []);
+  }
+
+  function renderRefundOrders(orders) {
+    var box = qs('pay-refund-list');
+    if (!box) return;
+    if (!orders.length) {
+      box.innerHTML = '<div class="pay-refund-empty">暂无可退款订单</div>';
+      return;
+    }
+
+    box.innerHTML = orders.map(function(order) {
+      var status = order.refundRequested
+        ? '已申请退款'
+        : (order.status === 'refunded' ? '已退款' : (order.refundable ? '7天内可退' : order.refundBlockedReason || '不可退款'));
+      var btn = order.refundable
+        ? '<button class="pay-refund-btn" data-refund-order="' + escapeHtml(order.orderNo) + '">申请退款</button>'
+        : '<button class="pay-refund-btn" disabled>' + escapeHtml(status) + '</button>';
+      return (
+        '<div class="pay-refund-item">' +
+          '<div class="pay-refund-main">' +
+            '<div class="pay-refund-name">' + escapeHtml(order.productName || '会员订单') + '</div>' +
+            '<div class="pay-refund-meta">订单 ' + escapeHtml(order.orderNo) + '</div>' +
+            '<div class="pay-refund-meta">支付 ' + formatDateTime(order.paidAt) + ' · 截止 ' + formatDateTime(order.refundDeadline) + '</div>' +
+          '</div>' +
+          '<div class="pay-refund-side">' +
+            '<div class="pay-refund-amount">¥' + escapeHtml(order.amountYuan || '0.00') + '</div>' +
+            btn +
+          '</div>' +
+        '</div>'
+      );
+    }).join('');
+
+    box.querySelectorAll('[data-refund-order]').forEach(function(btn) {
+      btn.onclick = function() { submitRefundRequest(btn.dataset.refundOrder, btn); };
+    });
+  }
+
+  async function submitRefundRequest(orderNo, btn) {
+    if (!orderNo) return;
+    if (!confirm('确认申请退款？提交后我们会按订单记录处理。')) return;
+    if (btn) {
+      btn.disabled = true;
+      btn.textContent = '提交中...';
+    }
+    var r = await tryPost('/api/payments/refunds', {
+      orderNo: orderNo,
+      reason: '用户7天内自助申请退款',
+    });
+    if (!r.ok) {
+      alert(r.error || '退款申请失败');
+      if (btn) {
+        btn.disabled = false;
+        btn.textContent = '申请退款';
+      }
+      return;
+    }
+    loadRefundOrders();
+  }
+
   // ── 购买流程 ──────────────────────────────────────────────────
   async function startPurchase() {
     var session = await requirePurchaseAuth();
@@ -410,7 +503,12 @@
       body =
         '<div class="pay-account-box">' +
           '<div class="pay-account-title">账号已登录</div>' +
-          '<div class="pay-account-user">' + (label || '已登录') + '</div>' +
+          '<div class="pay-account-user">' + escapeHtml(label || '已登录') + '</div>' +
+          '<div class="pay-refund-section">' +
+            '<div class="pay-refund-title">退款申请</div>' +
+            '<div class="pay-refund-note">支付成功后7天内可以自助提交申请。</div>' +
+            '<div class="pay-refund-list" id="pay-refund-list"><div class="pay-refund-empty">正在加载订单...</div></div>' +
+          '</div>' +
           '<button class="pay-auth-submit" id="pay-account-buy">去购买会员</button>' +
           '<button class="pay-auth-google" id="pay-auth-logout">退出登录</button>' +
         '</div>';
@@ -565,6 +663,9 @@
     // Render QR code after DOM is ready
     if (phase === 'pending' && !_s.isMock && _s.payUrl && _s.payMethod !== 'h5') {
       renderQR('pay-qr-canvas', _s.payUrl);
+    }
+    if (phase === 'account') {
+      loadRefundOrders();
     }
   }
 
