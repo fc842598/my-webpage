@@ -1022,6 +1022,38 @@ select {
   padding: 68px 0 0;
 }
 
+.mbp-book {
+  position: relative;
+}
+
+.mbp-book::before {
+  content: "";
+  position: absolute;
+  top: 22px;
+  left: clamp(28px, 7vw, 130px);
+  right: clamp(28px, 7vw, 130px);
+  height: 34px;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, transparent, rgba(241, 212, 125, .42) 18%, rgba(164, 93, 57, .5) 50%, rgba(241, 212, 125, .42) 82%, transparent) 50% 10px / 100% 1px no-repeat,
+    radial-gradient(circle at 50% 10px, rgba(241, 212, 125, .55), rgba(241, 212, 125, .2) 3px, transparent 7px);
+  opacity: .72;
+}
+
+.mbp-book::after {
+  content: "";
+  position: absolute;
+  top: 27px;
+  left: 50%;
+  width: 8px;
+  height: 8px;
+  border: 1px solid rgba(241, 212, 125, .55);
+  background: rgba(13, 10, 8, .95);
+  box-shadow: 0 0 18px rgba(241, 212, 125, .24);
+  transform: translateX(-50%) rotate(45deg);
+  pointer-events: none;
+}
+
 .mbp-section-head {
   max-width: 780px;
   margin-bottom: 28px;
