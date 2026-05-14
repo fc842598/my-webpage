@@ -3990,7 +3990,7 @@ function sourceZiweiMingpanScreenFromChart(saved) {
     ${figText("source-27-title", "紫微命盘", 0, 58, 390, 25, "#3b3934", 800, "center")}
     ${figText("source-27-more", "•••", 330, 56, 42, 22, "#3b3934", 800, "center")}
     ${renderWentianClassicChart(saved)}
-    ${figBox("source-27-ai-card", 15, 608, 360, 300, "", "border:1px solid #e0dcd3;border-radius:16px;background:#fff;box-shadow:0 4px 14px rgba(70,45,25,.06);")}
+    ${figBox("source-27-ai-card", 15, 608, 360, 190, "", "border:1px solid #e0dcd3;border-radius:16px;background:#fff;box-shadow:0 4px 14px rgba(70,45,25,.06);")}
     ${figText("source-27-ai-title", `✦ ${focusPalace?.name || "命盘"} · AI解析`, 34, 630, 220, 22, "#3a3732", 800)}
     ${figText("source-27-ai-close", "×", 334, 624, 26, 30, "#66615b", 500, "center")}
     ${figLine("source-27-ai-line-1", 32, 666, 324, "#dedbd5")}
@@ -3998,8 +3998,6 @@ function sourceZiweiMingpanScreenFromChart(saved) {
     ${figBox("source-27-ai-button", 36, 739, 318, 44, "", "border-radius:8px;background:#ad3b35;")}
     ${figButton("source-27-ai-button-hit", 36, 739, 318, 44, 'data-route="screen-4"')}
     ${figText("source-27-ai-button-text", "☵  向AI提问", 36, 751, 318, 18, "#fff", 700, "center")}
-    ${figLine("source-27-ai-line-2", 32, 816, 324, "#dedbd5")}
-    ${figText("source-27-ai-detail-title", "宫位详情", 32, 836, 120, 15, "#3a3732", 500)}
   `;
 }
 
