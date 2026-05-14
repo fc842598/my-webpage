@@ -81,9 +81,9 @@
 
   const chapterActions = [
     { label: '单独批总局', module: 'overall' },
+    { label: '单独批专题', action: 'specials' },
     { label: '单独批走势', module: 'current_luck' },
     { label: '生成曲线', action: 'curve' },
-    { label: '单独批专题', action: 'specials' },
     { label: '生成建议', module: 'overall' },
   ];
 
@@ -1305,9 +1305,9 @@
       },
       chapters: [
         ['命格总览', `命宫 ${palaceMainLabel(life)}。${lifeProfile ? lifeProfile.trait : '先天底色需要从命宫和三方四正合看。'}`],
+        ['专题批命', `身宫、婚姻、健康、财运、事业五项专题已在上方展开，适合作为深度报告主体。`],
         ['大限流年', `当前页面先接命盘主线，后续可把原版大限流年结论并入这里，形成十年节奏。`],
         ['人生曲线', `把关键年份做成曲线阅读，帮助用户看清高低点和转折位置。`],
-        ['专题批命', `身宫、婚姻、健康、财运、事业五项专题已在上方展开，适合作为深度报告主体。`],
         ['行动建议', `先看命盘底色，再看大运节奏；重要决策不只问准不准，还要知道何时动、如何动。`],
       ],
       subtitle: `${chart.fiveElementsClass || '五行局'} · 命宫${life?.earthlyBranch || '未见'} · 身宫${body?.earthlyBranch || '未见'}`,
@@ -2014,14 +2014,14 @@
       : (overallText ? trimText(overallText, 220) : '先看命盘底色，再看大运节奏；重要决策不只问准不准，还要知道何时动、如何动。');
     return [
       buildPdfChapter(1, aiCardTitle(overall, '命格总览'), buildPdfTextCards(overall, '命格总览', overallText || '整体批命等待原站 AI 返回。')),
-      buildPdfChapter(2, '大限流年', buildPdfTextCards(luck, '大限流年', luckText || '大限流年等待原站 AI 返回。')),
-      buildPdfChapter(3, '人生曲线', `
+      buildPdfChapter(2, '专题批命', specialHtml),
+      buildPdfChapter(3, '大限流年', buildPdfTextCards(luck, '大限流年', luckText || '大限流年等待原站 AI 返回。')),
+      buildPdfChapter(4, '人生曲线', `
         <section class="mbp-pdf-text-card">
           <strong>整体走势</strong>
           <p>人生曲线用于看关键年份、高低点与转折节奏。后续接入原站曲线评分后，这里会自动替换为客户版曲线结论。</p>
         </section>
       `),
-      buildPdfChapter(4, '专题批命', specialHtml),
       buildPdfChapter(5, '行动建议', `
         <section class="mbp-pdf-text-card">
           <strong>建议</strong>
@@ -2056,9 +2056,9 @@
         </div>
         <ol class="mbp-pdf-toc">
           <li>命格总览</li>
+          <li>专题批命</li>
           <li>大限流年</li>
           <li>人生曲线</li>
-          <li>专题批命</li>
           <li>行动建议</li>
         </ol>
       </header>
@@ -2193,17 +2193,18 @@
       `).join('');
     }
     const chaptersData = [
-      [aiCardTitle(overall, '命格总览'), overallText || '整体批命等待原站 AI 返回。'],
-      ['大限流年', luckText || '当前大限流年接口暂未返回，后续继续接原站大限模块。'],
-      ['人生曲线', '人生曲线属于原站独立模块，下一步接入原站曲线评分与关键年份。'],
-      ['专题批命', specialBriefText || '五项专题等待原站 AI 返回。', specialBriefSections],
-      ['行动建议', overallCard.risk ? `要留意：${overallCard.risk}` : '先看命盘底色，再看大运节奏；重要决策不只问准不准，还要知道何时动、如何动。'],
+      [aiCardTitle(overall, '命格总览'), overallText || '整体批命等待原站 AI 返回。', null, 'overall'],
+      ['专题批命', specialBriefText || '五项专题等待原站 AI 返回。', specialBriefSections, 'specials'],
+      ['大限流年', luckText || '当前大限流年接口暂未返回，后续继续接原站大限模块。', null, 'luck'],
+      ['人生曲线', '人生曲线属于原站独立模块，下一步接入原站曲线评分与关键年份。', null, 'curve'],
+      ['行动建议', overallCard.risk ? `要留意：${overallCard.risk}` : '先看命盘底色，再看大运节奏；重要决策不只问准不准，还要知道何时动、如何动。', null, 'advice'],
     ];
     const chapters = $('#mbpChapters');
     if (chapters) {
       chapters.classList.add('is-generated');
       chapters.innerHTML = chaptersData.map((item, index) => {
-        const data = index === 0 ? overall : index === 1 ? luck : { card: { title: item[0], body: item[1], sections: item[2] || null } };
+        const type = item[3] || '';
+        const data = type === 'overall' ? overall : type === 'luck' ? luck : { card: { title: item[0], body: item[1], sections: item[2] || null } };
         return `
         <article class="mbp-report-row" id="mbp-chapter-${index}" data-report-chapter="${index}">
           <span>卷${index + 1}</span>
@@ -2212,7 +2213,7 @@
             ${chapterActionButton(index)}
           </div>
             <div class="mbp-report-content">
-              ${index === 1 ? renderLuckChapterBlock(data, item[1]) : index === 2 ? renderCurveChapterBlock() : renderInsightBlock(data, item[0], item[1], {
+              ${type === 'luck' ? renderLuckChapterBlock(data, item[1]) : type === 'curve' ? renderCurveChapterBlock() : renderInsightBlock(data, item[0], item[1], {
                 summaryMax: 128,
                 bulletLimit: 0,
                 direct: true,
@@ -2367,7 +2368,7 @@
     renderChaptersFromAi();
     updateDecodeProgress(generatedModuleCount(), -1, '曲线已生成');
     setDecodeStatus('人生曲线已生成。');
-    scrollToReportChapter(2);
+    scrollToReportChapter(3);
     return true;
   }
 
@@ -2378,7 +2379,7 @@
       if (await decodeSingleModule(moduleKey)) success += 1;
     }
     setDecodeStatus(success ? `专题批命已完成 ${success}/${modules.length} 项。` : '专题批命生成失败，请稍后重试。');
-    scrollToReportChapter(3);
+    scrollToReportChapter(1);
     return success > 0;
   }
 
@@ -2411,7 +2412,7 @@
     });
     const chapters = $('#mbpChapters');
     if (chapters) {
-      chapters.innerHTML = ['命格总览', '大限流年', '人生曲线', '专题批命', '行动建议'].map((title, index) => `
+      chapters.innerHTML = ['命格总览', '专题批命', '大限流年', '人生曲线', '行动建议'].map((title, index) => `
         <article id="mbp-chapter-${index}" data-report-chapter="${index}"><span>卷${index + 1}</span><h3>${title}</h3><p>等待一键批命。</p>${chapterActionButton(index)}</article>
       `).join('');
     }
