@@ -2604,7 +2604,7 @@ function yangzhaiCompassGrid(id) {
         ${figBox(`${id}-center-left`, x, y, 1, YANGZHAI_CELL_H, "", "background:#d9d9e1;")}
         ${figBox(`${id}-center-right`, x + YANGZHAI_CELL_W - 1, y, 1, YANGZHAI_CELL_H, "", "background:#d9d9e1;")}
         ${figText(`${id}-center-title`, "罗盘方位", x + 0, y + 42, YANGZHAI_CELL_W, 22, "#111114", 700, "center")}
-        ${figImage(`${id}-luopan`, "../images/wentian-prototype-assets/yangzhai-luopan.png", x + 15, y + 82, 96, 96, "object-fit:cover;border-radius:50%;background:#fff;")}
+        ${figImage(`${id}-luopan`, "../images/wentian-prototype-assets/yangzhai-luopan.png", x + 15, y + 82, 96, 96, "object-fit:contain;border-radius:50%;background:transparent;")}
         ${figButton(`${id}-luopan-hit`, x + 0, y + 34, YANGZHAI_CELL_W, 146, 'data-action="yangzhai-luopan-open" aria-label="放大罗盘"', "", "cursor:zoom-in;")}
       `;
     }

@@ -485,8 +485,8 @@ button {
   width: 358px;
   height: 358px;
   border-radius: 50%;
-  background: #fff;
-  object-fit: cover;
+  background: transparent;
+  object-fit: contain;
   box-shadow: 0 18px 44px rgba(0, 0, 0, 0.24);
 }
 
@@ -562,6 +562,9 @@ button {
   left: 34px;
   top: 684px;
   width: 322px;
+  padding: 4px 8px;
+  border-radius: 14px;
+  background: rgba(24, 20, 16, 0.38);
   color: rgba(255, 255, 255, 0.88);
   font-size: 13px;
   font-weight: 600;
