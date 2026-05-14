@@ -537,6 +537,9 @@ select {
 }
 
 .mbp-input-head {
+  min-height: 136px;
+  display: grid;
+  align-content: end;
   margin-bottom: 14px;
 }
 
@@ -548,10 +551,10 @@ select {
 }
 
 .mbp-input-head h1 {
-  margin: 7px 0 0;
-  color: var(--ivory);
-  font: 900 34px/1.18 "Noto Serif SC", "Songti SC", serif;
-  letter-spacing: .06em;
+  margin: 0;
+  color: #d7c592;
+  font: 800 16px/1.5 "Noto Sans SC", "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
+  letter-spacing: 0;
 }
 
 .mbp-input-head p {
