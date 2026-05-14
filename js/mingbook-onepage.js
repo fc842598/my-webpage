@@ -921,6 +921,12 @@
     return fcSequenceStartYear + fcClampAge(age) - 1;
   }
 
+  function fcCurrentVirtualAge() {
+    const curYear = new Date().getFullYear();
+    const baseYear = Number(fcBirthYear) || Number(state.profile.year) || curYear;
+    return fcClampAge(curYear - baseYear + 1);
+  }
+
   function calcXiaoLianBranch(yearBranch, gender, xuAge) {
     const branches = ['子', '丑', '寅', '卯', '辰', '巳', '午', '未', '申', '酉', '戌', '亥'];
     const startMap = { 寅: 4, 午: 4, 戌: 4, 申: 10, 子: 10, 辰: 10, 亥: 1, 卯: 1, 未: 1, 巳: 7, 酉: 7, 丑: 7 };
@@ -940,9 +946,8 @@
   }
 
   function fcBuildYearCards(startYear = fcSequenceStartYear) {
-    const curYear = new Date().getFullYear();
     const maxAge = fcMaxAge();
-    fcActiveAge = fcClampAge(curYear - startYear + 1);
+    fcActiveAge = fcCurrentVirtualAge();
     fcYearCards = [];
     for (let age = 1; age <= maxAge; age += 1) {
       fcYearCards.push({ age, year: startYear + age - 1 });
@@ -1085,7 +1090,15 @@
   }
 
   function fcSwitchTab(tab) {
-    fcActiveTab = tab || '先天卦';
+    const nextTab = tab || '先天卦';
+    const enteringLiunian = nextTab === '流年卦' && fcActiveTab !== '流年卦';
+    fcActiveTab = nextTab;
+    if (enteringLiunian) {
+      fcActiveAge = fcCurrentVirtualAge();
+      fcLoadYearly(fcAgeToYear(fcActiveAge));
+      fcLiunianResult = fcLiunianSeq[fcActiveAge] || null;
+      $('#mbpFcLiunian').textContent = `${fcActiveAge}岁 · ${fcLiunianResult?.name || '—'}`;
+    }
     fcRenderTabs();
     if (fcActiveTab === '流年卦') fcRenderLiunianScroll();
     fcRenderHexagram();
@@ -1283,6 +1296,9 @@
             ${item.age}岁<small>${item.year}年</small>
           </button>
         `).join('');
+        requestAnimationFrame(() => {
+          years.querySelector('.is-active')?.scrollIntoView({ inline: 'center', behavior: 'smooth', block: 'nearest' });
+        });
       } else {
         years.innerHTML = '';
       }
