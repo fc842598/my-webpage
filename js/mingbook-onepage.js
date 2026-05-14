@@ -1736,6 +1736,11 @@
       button.setAttribute('aria-current', isActive ? 'true' : 'false');
       button.closest('li')?.classList.toggle('is-active', isActive);
     });
+    document.querySelectorAll('[data-report-chapter]').forEach((chapter) => {
+      const isActive = Number(chapter.dataset.reportChapter) === activeIndex;
+      chapter.classList.toggle('is-active', isActive);
+      chapter.setAttribute('aria-current', isActive ? 'true' : 'false');
+    });
   }
 
   function syncReportNav() {
