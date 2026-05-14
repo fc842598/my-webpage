@@ -1551,82 +1551,6 @@ select {
   white-space: pre-wrap;
 }
 
-.fc-ziping-footer {
-  margin: 0 14px 20px;
-  padding: 14px;
-  border: 1px solid rgba(116, 92, 54, .25);
-  border-radius: 10px;
-  background: linear-gradient(135deg, #fffdf8, #f6efe4);
-  color: #3d2b22;
-}
-
-.fc-ziping-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 10px;
-}
-
-.fc-ziping-head span {
-  color: #9a6a18;
-  font-size: 13px;
-  font-weight: 900;
-}
-
-.fc-ziping-head strong {
-  color: #2d2420;
-  font-size: 16px;
-  font-weight: 900;
-}
-
-.fc-ziping-pillars {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 8px;
-}
-
-.fc-ziping-pillar {
-  min-width: 0;
-  padding: 10px 6px;
-  border: 1px solid rgba(210, 196, 181, .72);
-  border-radius: 8px;
-  background: rgba(255, 255, 255, .62);
-  text-align: center;
-}
-
-.fc-ziping-pillar small,
-.fc-ziping-pillar span {
-  display: block;
-  color: #8c7e75;
-  font-size: 10px;
-  line-height: 1.2;
-}
-
-.fc-ziping-pillar b {
-  display: block;
-  margin: 5px 0;
-  color: #2d2420;
-  font-size: 18px;
-  font-weight: 900;
-  line-height: 1.1;
-}
-
-.fc-ziping-pillar.is-main {
-  border-color: rgba(150, 61, 50, .28);
-  background: rgba(150, 61, 50, .08);
-}
-
-.fc-ziping-note {
-  margin: 10px 0 0;
-  padding: 10px 12px;
-  border-radius: 8px;
-  background: rgba(255, 255, 255, .58);
-  color: #5f5148;
-  font-size: 12px;
-  line-height: 1.7;
-}
-
 .fc-yearly-row {
   display: flex;
   flex-wrap: wrap;
@@ -3718,10 +3642,6 @@ select {
 
   .mbp-chart-stage {
     padding: 20px;
-  }
-
-  .fc-ziping-pillars {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .mbp-chart-grid {
