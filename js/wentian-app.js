@@ -3875,6 +3875,25 @@ function renderWentianClassicChart(saved) {
     </div>`;
 }
 
+function highlightWentianClassicChart(branch, palaceName = "") {
+  const chart = view.querySelector(".wentian-native-mingpan");
+  if (!chart || !branch) return;
+  const relations = getWentianClassicRelations(branch);
+  chart.querySelectorAll(".fc-cell").forEach((cell) => {
+    const cellBranch = cell.dataset.palaceBranch || "";
+    cell.classList.remove("fc-ben", "fc-rel", "fc-sanhe", "fc-dui");
+    if (cellBranch === branch) {
+      cell.classList.add("fc-ben");
+    } else if (relations.sanhe.includes(cellBranch)) {
+      cell.classList.add("fc-rel", "fc-sanhe");
+    } else if (relations.dui === cellBranch) {
+      cell.classList.add("fc-rel", "fc-dui");
+    }
+  });
+  const title = view.querySelector('[data-node-id="source-27-ai-title"]');
+  if (title) title.textContent = `✦ ${palaceName || branch} · AI解析`;
+}
+
 function getWentianFallbackChartState() {
   const palaceRows = [
     ["癸巳", "天同", "子女", "禄存", "96-105", "大子"],
@@ -4534,6 +4553,10 @@ document.addEventListener("click", (event) => {
   }
   if (earlyAction === "yangzhai-expand") {
     toggleYangzhaiResult(Number(earlyActionTarget.dataset.yangzhaiIndex || 0));
+    return;
+  }
+  if (earlyAction === "wentian-chart-palace") {
+    highlightWentianClassicChart(earlyActionTarget.dataset.palaceBranch || "", earlyActionTarget.dataset.palaceName || "");
     return;
   }
   const routeButton = event.target.closest("[data-route]");
