@@ -405,10 +405,10 @@ select {
   position: relative;
   min-height: 0;
   display: grid;
-  grid-template-columns: minmax(440px, 570px) minmax(650px, 1fr);
-  gap: 28px;
-  align-items: stretch;
-  padding: 26px;
+  grid-template-columns: minmax(420px, 540px) minmax(620px, 1fr);
+  gap: 20px;
+  align-items: start;
+  padding: 20px;
   overflow: visible;
   border: 1px solid rgba(241, 212, 125, .22);
   border-radius: 18px;
@@ -460,7 +460,7 @@ select {
   display: grid;
   align-content: start;
   justify-items: stretch;
-  padding: 24px;
+  padding: 18px;
   border: 1px solid rgba(241, 212, 125, .22);
   border-radius: 16px;
   background:
@@ -537,10 +537,11 @@ select {
 }
 
 .mbp-input-head {
-  min-height: 136px;
   display: grid;
-  align-content: end;
-  margin-bottom: 14px;
+  grid-template-columns: minmax(0, 1fr) minmax(220px, 268px);
+  align-items: end;
+  gap: 12px;
+  margin-bottom: 10px;
 }
 
 .mbp-input-head span {
@@ -553,7 +554,7 @@ select {
 .mbp-input-head h1 {
   margin: 0;
   color: #d7c592;
-  font: 800 16px/1.5 "Noto Sans SC", "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
+  font: 800 15px/1.45 "Noto Sans SC", "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
   letter-spacing: 0;
 }
 
@@ -565,63 +566,74 @@ select {
 
 .mbp-client-input-card {
   position: relative;
-  width: 100%;
-  margin-bottom: 12px;
-  padding: 14px;
-  border: 1px solid rgba(241, 212, 125, .24);
-  border-radius: 14px;
+  width: min(268px, 100%);
+  justify-self: end;
+  margin: 0;
+  padding: 8px;
+  border: 1px solid rgba(241, 212, 125, .22);
+  border-radius: 10px;
   background:
     linear-gradient(135deg, rgba(164, 93, 57, .18), rgba(16, 12, 8, .94)),
     rgba(16, 12, 8, .9);
-  box-shadow: 0 16px 36px rgba(0, 0, 0, .28);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, .22);
 }
 
 .mbp-client-input-head {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 8px;
+  gap: 8px;
+  margin-bottom: 5px;
   color: var(--gold);
+  font-size: 12px;
   font-weight: 900;
 }
 
 .mbp-client-input-head small {
   color: var(--muted);
+  font-size: 11px;
   font-weight: 700;
 }
 
 .mbp-input-client-picker {
   position: relative;
   border: 1px solid rgba(241, 212, 125, .16);
-  border-radius: 12px;
+  border-radius: 9px;
   background: rgba(241, 212, 125, .04);
 }
 
 .mbp-input-client-picker .mbp-client-current {
-  min-height: 70px;
-  grid-template-columns: 48px 1fr 18px;
-  gap: 14px;
-  padding: 12px 14px;
+  min-height: 46px;
+  grid-template-columns: 34px 1fr 14px;
+  gap: 8px;
+  padding: 7px 9px;
 }
 
 .mbp-input-client-picker .mbp-profile-mark {
-  width: 46px;
-  height: 46px;
-  font-size: 22px;
+  width: 32px;
+  height: 32px;
+  font-size: 17px;
 }
 
 .mbp-input-client-picker strong {
   display: block;
+  overflow: hidden;
   color: var(--ivory);
-  font-size: 16px;
+  font-size: 13px;
+  line-height: 1.25;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .mbp-input-client-picker small {
   display: block;
-  margin-top: 4px;
+  overflow: hidden;
+  margin-top: 1px;
   color: var(--muted);
-  font-size: 12px;
+  font-size: 10px;
+  line-height: 1.25;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .mbp-input-client-picker .mbp-client-menu {
@@ -632,9 +644,9 @@ select {
   min-width: 0;
   width: 100%;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
-  padding: 24px;
+  padding: 18px;
   border: 1px solid rgba(241, 212, 125, .22);
   border-radius: 16px;
   background:
@@ -709,7 +721,7 @@ select {
   overflow: visible;
   max-width: 620px;
   margin: 0 auto;
-  padding: 0 18px 14px;
+  padding: 0 16px 12px;
   border: 1px solid rgba(201, 169, 97, .24);
   border-radius: 20px;
   background: rgba(33, 27, 21, .92);
@@ -746,7 +758,7 @@ select {
 
 .mbp-form-card .nf-row {
   position: relative;
-  padding: 12px 0;
+  padding: 9px 0;
 }
 
 .mbp-form-card .nf-row + .nf-row::before {
@@ -775,7 +787,7 @@ select {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-top: 22px;
+  padding-top: 18px;
 }
 
 .nf-row-left,
@@ -793,7 +805,7 @@ select {
 .nf-row-head {
   justify-content: space-between;
   gap: 14px;
-  margin-bottom: 14px;
+  margin-bottom: 10px;
 }
 
 .nf-date-row,
@@ -922,10 +934,10 @@ select {
 }
 
 .nf-muted-line {
-  margin-top: 8px;
+  margin-top: 6px;
   color: #a29482;
   font-size: 14px;
-  line-height: 1.6;
+  line-height: 1.45;
 }
 
 .mbp-ai-inline {
@@ -1272,7 +1284,7 @@ select {
 }
 
 .mbp-fc-card {
-  width: min(560px, 100%);
+  width: min(640px, 100%);
   margin: 0 auto;
   background: #f0ebe1;
   border-radius: 18px;
@@ -4199,6 +4211,22 @@ select {
   .mbp-hero-main h1 {
     font-size: 46px;
     letter-spacing: .12em;
+  }
+
+  .mbp-input-head {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .mbp-input-head h1 {
+    font-size: 15px;
+    line-height: 1.45;
+    letter-spacing: 0;
+  }
+
+  .mbp-client-input-card {
+    width: 100%;
+    justify-self: stretch;
   }
 
   .mbp-hero-copy {
