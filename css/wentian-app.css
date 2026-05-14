@@ -1235,6 +1235,23 @@ button {
   box-shadow: none;
 }
 
+.wentian-chat-msg.is-typing::after {
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  margin-left: 3px;
+  background: #bd8624;
+  content: "";
+  vertical-align: -2px;
+  animation: wentian-type-caret .9s steps(1) infinite;
+}
+
+@keyframes wentian-type-caret {
+  50% {
+    opacity: 0;
+  }
+}
+
 .wentian-chat-chip {
   position: absolute;
   top: 704px;

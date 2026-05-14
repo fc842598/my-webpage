@@ -893,6 +893,7 @@ const wentianXuChat = {
   sessionPromise: null,
   messages: [],
   loading: false,
+  typingTimer: null,
 };
 
 let wentianFallbackChartRecordId = null;
@@ -1751,15 +1752,66 @@ function renderWentianMessages() {
   if (!box) return;
   box.innerHTML = wentianXuChat.messages.map((message) => {
     const role = message.role === "user" ? "user" : message.role === "system" ? "system" : "assistant";
-    return `<div class="wentian-chat-msg is-${role}">${escapeHtml(message.text)}</div>`;
+    return `<div class="wentian-chat-msg is-${role} ${message.typing ? "is-typing" : ""}">${escapeHtml(message.text)}</div>`;
   }).join("");
   box.scrollTop = box.scrollHeight;
 }
 
-function addWentianMessage(role, text) {
-  wentianXuChat.messages.push({ role, text });
+function finishWentianTyping(render = true) {
+  if (wentianXuChat.typingTimer) {
+    clearTimeout(wentianXuChat.typingTimer);
+    wentianXuChat.typingTimer = null;
+  }
+  const typingMessage = wentianXuChat.messages.find((message) => message.typing);
+  if (typingMessage) {
+    typingMessage.text = typingMessage.fullText || typingMessage.text || "";
+    typingMessage.typing = false;
+    delete typingMessage.fullText;
+  }
+  if (render) renderWentianMessages();
+}
+
+function startWentianTyping(message) {
+  if (wentianXuChat.typingTimer) {
+    clearTimeout(wentianXuChat.typingTimer);
+    wentianXuChat.typingTimer = null;
+  }
+  wentianXuChat.messages.forEach((item) => {
+    if (item !== message && item.typing) {
+      item.text = item.fullText || item.text || "";
+      item.typing = false;
+      delete item.fullText;
+    }
+  });
+  const fullText = message.fullText || "";
+  let index = 0;
+  const tick = () => {
+    if (!wentianXuChat.messages.includes(message)) return;
+    if (index >= fullText.length) {
+      message.typing = false;
+      delete message.fullText;
+      wentianXuChat.typingTimer = null;
+      renderWentianMessages();
+      return;
+    }
+    const char = fullText[index];
+    index += 1;
+    message.text = fullText.slice(0, index);
+    renderWentianMessages();
+    const delay = /[。！？!?]/.test(char) ? 120 : /[，、；;：:\n]/.test(char) ? 55 : 18;
+    wentianXuChat.typingTimer = setTimeout(tick, delay);
+  };
+  tick();
+}
+
+function addWentianMessage(role, text, options = {}) {
+  const message = options.typewriter && role === "assistant"
+    ? { role, text: "", fullText: String(text || ""), typing: true }
+    : { role, text };
+  wentianXuChat.messages.push(message);
   if (wentianXuChat.messages.length > 30) wentianXuChat.messages.shift();
   renderWentianMessages();
+  if (message.typing) startWentianTyping(message);
 }
 
 function setWentianChatBusy(busy) {
@@ -1813,6 +1865,7 @@ async function ensureWentianXuSession(options = {}) {
 
 async function sendWentianXuChat(promptText = "") {
   if (wentianXuChat.loading) return;
+  finishWentianTyping(false);
   const input = document.getElementById("wentian-chat-input");
   const message = (promptText || input?.value || "").trim();
   if (!message) return;
@@ -1835,7 +1888,7 @@ async function sendWentianXuChat(promptText = "") {
     if (data.transientState) saveWentianTransientState(data.transientState);
     setWentianQuota(data.quota);
     setWentianChatStatus(data.transientMode ? "临时会话已接入" : "许半仙已连接", data.transientMode ? "warn" : "ok");
-    addWentianMessage("assistant", data.reply || "我看到了，但这轮没有返回内容，请再问一次。");
+    addWentianMessage("assistant", data.reply || "我看到了，但这轮没有返回内容，请再问一次。", { typewriter: true });
   } catch (error) {
     wentianXuChat.messages.pop();
     setWentianChatStatus("发送未完成", "error");
