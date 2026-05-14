@@ -91,7 +91,7 @@ const screenFlowHotspots = {
   22: [[18, 44, 48, 48, "screen-31"], [250, 44, 112, 48, "screen-23"], [42, 735, 306, 62, "screen-24"]],
   23: [[18, 44, 48, 48, "screen-22"], [50, 680, 290, 58, "screen-22"]],
   24: [[18, 44, 48, 48, "screen-22"]],
-  25: [[302, 54, 70, 46, "screen-26"], [18, 129, 354, 95, "screen-27"], [18, 247, 354, 95, "screen-27"], [12, 784, 76, 72, "screen-1"], [109, 784, 76, 72, "screen-25"], [207, 784, 76, 72, "screen-3"], [304, 784, 76, 72, "screen-31"]],
+  25: [[302, 54, 70, 46, "screen-26"], [12, 784, 76, 72, "screen-1"], [109, 784, 76, 72, "screen-25"], [207, 784, 76, 72, "screen-3"], [304, 784, 76, 72, "screen-31"]],
   26: [[18, 40, 96, 54, "screen-1"]],
   27: [[18, 40, 96, 54, "screen-26"], [36, 739, 318, 44, "screen-4"]],
   28: [[18, 44, 48, 48, "screen-31"], [42, 735, 306, 58, "screen-29"]],
@@ -879,6 +879,7 @@ const WENTIAN_UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f
 const WENTIAN_CHART_STORAGE_KEY = "wentian-app-current-chart-v1";
 const WENTIAN_ARCHIVES_STORAGE_KEY = "wentian-app-archives-v1";
 const WENTIAN_SELECTED_ARCHIVE_KEY = "wentian-app-selected-archive-id";
+const WENTIAN_CLIENT_ID_KEY = "ziwei_client_id";
 const WENTIAN_LANGUAGE_STORAGE_KEY = "wentian-app-language-v1";
 const WENTIAN_PROFILE_STORAGE_KEY = "wentian-app-profile-v1";
 const WENTIAN_LANGUAGE_OPTIONS = [
@@ -887,6 +888,8 @@ const WENTIAN_LANGUAGE_OPTIONS = [
   { code: "en", label: "English", htmlLang: "en" },
 ];
 let wentianArchiveDraftId = null;
+let wentianArchiveRemoteLoaded = false;
+let wentianArchiveRemotePromise = null;
 let wentianLanguageDraft = null;
 let wentianChartCalMode = "solar";
 let wentianChartCity = null;
@@ -928,6 +931,19 @@ function getWentianApiBase() {
   const queryBase = qs.get("aiBackendBase") || qs.get("pimingApiBase") || qs.get("apiBase") || "";
   const configBase = window.SITE_CONFIG?.aiBackendBase || "";
   return (queryBase || configBase || "https://ai-piming-backend.vercel.app").replace(/\/+$/, "");
+}
+
+function getWentianClientId() {
+  try {
+    let id = localStorage.getItem(WENTIAN_CLIENT_ID_KEY);
+    if (!isWentianUuid(id)) {
+      id = makeWentianUuid();
+      localStorage.setItem(WENTIAN_CLIENT_ID_KEY, id);
+    }
+    return id;
+  } catch (_err) {
+    return "global";
+  }
 }
 
 function makeWentianUuid() {
@@ -1039,8 +1055,7 @@ function archiveFromChartState(chartState) {
   };
 }
 
-function buildWentianArchiveFromInput({ id, name, gender, datetime, isDefault = false }) {
-  const chartRecordId = makeWentianUuid();
+function buildWentianArchiveFromInput({ id, name, gender, datetime, city = "", chartRecordId = makeWentianUuid(), isDefault = false }) {
   const date = new Date(datetime);
   const dateStr = datetime.slice(0, 10);
   const timeIndex = getWentianTimeIndex(date.getHours(), date.getMinutes());
@@ -1053,7 +1068,7 @@ function buildWentianArchiveFromInput({ id, name, gender, datetime, isDefault = 
       chart = typeof lib.bySolar === "function"
         ? lib.bySolar(dateStr, timeIndex, gender === "female" ? "女" : "男", true)
         : lib.astrolabeBySolarDate(dateStr, timeIndex, gender === "female" ? "女" : "男", true);
-      chartData = buildWentianChartPayload(chart, { gender, date, dateStr, timeIndex, city: "" });
+      chartData = buildWentianChartPayload(chart, { gender, date, dateStr, timeIndex, city });
     }
   } catch (_err) {
     chart = null;
@@ -1074,7 +1089,7 @@ function buildWentianArchiveFromInput({ id, name, gender, datetime, isDefault = 
     chartRecordId,
     chart,
     chartData,
-    form: { archiveId: id, name, gender, type: "ziwei", datetime, useTrueSolar: false, isDefault },
+    form: { archiveId: id, name, gender, type: "ziwei", datetime, city, useTrueSolar: false, isDefault },
     createdAt: new Date().toISOString(),
   };
 }
@@ -1116,13 +1131,120 @@ function normalizeWentianArchive(archive) {
   if (!archive?.chartData) return null;
   const id = archive.id || archive.form?.archiveId || makeWentianArchiveId();
   const chartRecordId = archive.chartRecordId || archive.chartData.chartRecordId || makeWentianUuid();
-  return {
+  const normalized = {
     ...archive,
     id,
     chartRecordId,
     chartData: { ...archive.chartData, chartRecordId },
     form: { ...(archive.form || {}), archiveId: id },
   };
+  const onlyRecordId = Object.keys(normalized.chartData || {}).every((key) => key === "chartRecordId");
+  const raw = normalized.form.remoteRaw || {};
+  const rawDateTime = raw.datetime
+    || (raw.dateStr ? `${raw.dateStr}T${String(raw.cstHour ?? raw.hour ?? 0).padStart(2, "0")}:${String(raw.cstMinute ?? raw.minute ?? 0).padStart(2, "0")}` : "");
+  const datetime = normalized.form.datetime || rawDateTime;
+  if (onlyRecordId && datetime) {
+    return {
+      ...buildWentianArchiveFromInput({
+        id,
+        chartRecordId,
+        name: normalized.form.name || raw.name || "命主",
+        gender: normalized.form.gender || raw.gender || "male",
+        datetime,
+        city: normalized.form.city || raw.city?.name || raw.city || "",
+      }),
+      createdAt: normalized.createdAt,
+      updatedAt: normalized.updatedAt,
+    };
+  }
+  return normalized;
+}
+
+function getWentianArchiveStamp(archive) {
+  const stamp = Date.parse(archive?.updatedAt || archive?.createdAt || "");
+  return Number.isFinite(stamp) ? stamp : 0;
+}
+
+function mergeWentianArchives(localArchives, remoteArchives) {
+  const merged = new Map();
+  const add = (archive) => {
+    const normalized = normalizeWentianArchive(archive);
+    if (!normalized) return;
+    const key = normalized.id || normalized.chartRecordId;
+    const old = merged.get(key);
+    if (!old || getWentianArchiveStamp(normalized) >= getWentianArchiveStamp(old)) {
+      merged.set(key, normalized);
+    }
+  };
+  remoteArchives.forEach(add);
+  localArchives.forEach(add);
+  return Array.from(merged.values())
+    .sort((a, b) => getWentianArchiveStamp(b) - getWentianArchiveStamp(a))
+    .slice(0, 50);
+}
+
+async function fetchWentianRemoteArchives() {
+  const clientId = getWentianClientId();
+  const response = await fetch(`${getWentianApiBase()}/api/wentian/archives?clientId=${encodeURIComponent(clientId)}`, {
+    method: "GET",
+    headers: { "Accept": "application/json" },
+  });
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok || data.error) throw new Error(data.error || "档案读取失败");
+  return data;
+}
+
+async function pushWentianArchivesToRemote(archives) {
+  try {
+    const clientId = getWentianClientId();
+    const syncArchives = archives
+      .map(normalizeWentianArchive)
+      .filter((archive) => archive && !archive.form?.isDefault)
+      .slice(0, 50);
+    if (!syncArchives.length) return;
+    await fetch(`${getWentianApiBase()}/api/wentian/archives`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        clientId,
+        archives: syncArchives,
+        selectedArchiveId: getWentianSelectedArchiveId(archives),
+      }),
+    });
+  } catch (error) {
+    console.info("wentian archive remote sync fallback", error);
+  }
+}
+
+async function hydrateWentianArchivesFromRemote(options = {}) {
+  if (wentianArchiveRemotePromise) return wentianArchiveRemotePromise;
+  if (wentianArchiveRemoteLoaded && !options.force) return null;
+  wentianArchiveRemotePromise = fetchWentianRemoteArchives()
+    .then((data) => {
+      wentianArchiveRemoteLoaded = true;
+      const localArchives = readWentianArchives().map(normalizeWentianArchive).filter(Boolean);
+      const remoteArchives = (Array.isArray(data.archives) ? data.archives : []).map(normalizeWentianArchive).filter(Boolean);
+      const merged = mergeWentianArchives(localArchives, remoteArchives);
+      const before = JSON.stringify(localArchives.map((item) => item.id));
+      const after = JSON.stringify(merged.map((item) => item.id));
+      if (merged.length) writeWentianArchives(merged);
+      if (data.selectedArchiveId && merged.some((item) => item.id === data.selectedArchiveId)) {
+        setWentianSelectedArchiveId(data.selectedArchiveId);
+      }
+      if (merged.length && remoteArchives.length < merged.length) pushWentianArchivesToRemote(merged);
+      if (options.rerender && before !== after && (state.route === "screen-5" || state.route === "screen-25")) {
+        navigate(state.route, false);
+      }
+      return merged;
+    })
+    .catch((error) => {
+      console.info("wentian archive remote load fallback", error);
+      return null;
+    })
+    .finally(() => {
+      wentianArchiveRemotePromise = null;
+    });
+  return wentianArchiveRemotePromise;
 }
 
 function getWentianArchiveList() {
@@ -1141,10 +1263,12 @@ function saveWentianArchiveFromChartState(chartState) {
   if (!archive) return;
   const archives = getWentianArchiveList();
   const index = archives.findIndex((item) => item.id === archive.id || item.chartRecordId === archive.chartRecordId);
-  if (index >= 0) archives[index] = archive;
-  else archives.unshift(archive);
+  const archiveWithStamp = { ...archive, updatedAt: new Date().toISOString() };
+  if (index >= 0) archives[index] = archiveWithStamp;
+  else archives.unshift(archiveWithStamp);
   writeWentianArchives(archives);
-  setWentianSelectedArchiveId(archive.id);
+  setWentianSelectedArchiveId(archiveWithStamp.id);
+  pushWentianArchivesToRemote(archives);
 }
 
 function saveWentianChart(chartState, options = {}) {
@@ -1617,6 +1741,7 @@ function applyWentianArchiveToCurrent(archive) {
   wentianXuChat.sessionId = null;
   wentianXuChat.sessionPromise = null;
   wentianXuChat.messages = [];
+  pushWentianArchivesToRemote(getWentianArchiveList());
   return true;
 }
 
@@ -2058,10 +2183,7 @@ function initWentianChartForm() {
 }
 
 function sourceProfileScreen(screen) {
-  const profiles = [
-    ["谢", "男", "四柱八字", "1991年2月16日 22:58", "辛未 庚寅 丁巳 辛亥", 129, "默认"],
-    ["命主", "男", "四柱八字", "2026年5月12日 15:08", "丙午 癸巳 丙戌 丙申", 247, ""]
-  ];
+  const archives = getWentianArchiveList().slice(0, 5);
   return `
     ${figText("source-25-time", "15:21", 18, 15, 70, 14, "#26211c")}
     ${figText("source-25-status", "◉  0.30  5G  ▮ 33 ⚡", 250, 14, 120, 10, "#26211c", 700, "right")}
@@ -2069,20 +2191,25 @@ function sourceProfileScreen(screen) {
     ${figText("source-25-sub", "管理你的命盘资料", 18, 101, 180, 14, "#8f857a")}
     ${figBox("source-25-add", 296, 56, 76, 38, "", "border-radius:18px;background:#fff;box-shadow:0 5px 14px rgba(80,55,28,.10);")}
     ${figText("source-25-add-text", "+ 添加", 304, 68, 58, 13, "#a47725", 700, "center")}
-    ${profiles.map(([name, gender, tag, date, detail, y, badge], index) => `
+    ${archives.map((archive, index) => {
+      const item = getWentianArchiveDisplay(archive);
+      const y = 129 + index * 105;
+      return `
       ${figBox(`source-25-card-${index}`, 18, y, 354, 95, "converted-card", "border-radius:12px;box-shadow:0 6px 16px rgba(74,55,32,.08);")}
       ${figImage(`source-25-avatar-${index}`, "../images/wentian-prototype-assets/03-profile.jpg", 37, y + 18, 54, 54, "border-radius:27px;")}
-      ${figText(`source-25-name-${index}`, name, 102, y + 20, 58, 16, "#26211c", 800)}
+      ${figText(`source-25-name-${index}`, item.name, 102, y + 20, 58, 16, "#26211c", 800)}
       ${figBox(`source-25-gender-${index}`, 154, y + 17, 28, 18, "", "border-radius:9px;background:#f6ecd7;")}
-      ${figText(`source-25-gender-text-${index}`, gender, 154, y + 21, 28, 10, "#b07a2d", 700, "center")}
+      ${figText(`source-25-gender-text-${index}`, item.gender, 154, y + 21, 28, 10, "#b07a2d", 700, "center")}
       ${figBox(`source-25-tag-${index}`, 188, y + 17, 62, 18, "", "border-radius:9px;background:#f6ecd7;")}
-      ${figText(`source-25-tag-text-${index}`, tag, 188, y + 21, 62, 10, "#b07a2d", 500, "center")}
-      ${badge ? figBox(`source-25-badge-${index}`, 326, y + 17, 36, 20, "", "border-radius:10px;background:#fbf4df;") : ""}
-      ${badge ? figText(`source-25-badge-text-${index}`, badge, 326, y + 21, 36, 10, "#b88c33", 700, "center") : ""}
-      ${figText(`source-25-date-${index}`, date, 102, y + 45, 190, 13, "#8f857a")}
-      ${figText(`source-25-detail-${index}`, detail, 102, y + 67, 210, 13, "#8f857a")}
+      ${figText(`source-25-tag-text-${index}`, item.tag, 188, y + 21, 62, 10, "#b07a2d", 500, "center")}
+      ${item.badge ? figBox(`source-25-badge-${index}`, 326, y + 17, 36, 20, "", "border-radius:10px;background:#fbf4df;") : ""}
+      ${item.badge ? figText(`source-25-badge-text-${index}`, item.badge, 326, y + 21, 36, 10, "#b88c33", 700, "center") : ""}
+      ${figText(`source-25-date-${index}`, item.datetime, 102, y + 45, 190, 13, "#8f857a")}
+      ${figText(`source-25-detail-${index}`, item.pillars, 102, y + 67, 210, 13, "#8f857a")}
       ${figText(`source-25-arrow-${index}`, "›", 338, y + 36, 20, 24, "#aaa196", 500, "center")}
-    `).join("")}
+      ${figButton(`source-25-open-${index}`, 18, y, 354, 95, `data-action="wentian-profile-open" data-archive-id="${escapeHtml(archive.id)}"`)}
+    `;
+    }).join("")}
     ${sourceAppBottomNav("档案", 778)}
   `;
 }
@@ -4213,6 +4340,7 @@ function navigate(route, push = true) {
     fitActivePhoneShell();
     syncActive();
     if (screen.no === 4) window.setTimeout(initWentianXuChat, 0);
+    if (screen.no === 5 || screen.no === 25) window.setTimeout(() => hydrateWentianArchivesFromRemote({ rerender: true }), 0);
     if (screen.no === 26) window.setTimeout(initWentianChartForm, 0);
     if (!location.hash.includes("figmacapture=")) location.hash = route;
     window.scrollTo(0, 0);
@@ -4617,6 +4745,12 @@ document.addEventListener("click", (event) => {
   }
   if (action === "wentian-archive-confirm") {
     confirmWentianArchiveSelection();
+    return;
+  }
+  if (action === "wentian-profile-open") {
+    const id = event.target.closest("[data-archive-id]")?.dataset.archiveId;
+    const archive = getWentianArchiveList().find((item) => item.id === id);
+    if (applyWentianArchiveToCurrent(archive)) navigate("screen-27");
     return;
   }
   if (action === "wentian-language-pick") {
