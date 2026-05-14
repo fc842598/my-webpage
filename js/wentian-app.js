@@ -176,6 +176,8 @@ const routeKicker = document.getElementById("routeKicker");
 const routeTitle = document.getElementById("routeTitle");
 const screenNav = document.getElementById("screenNav");
 let wentianFitRaf = 0;
+const WENTIAN_PHONE_WIDTH = 390;
+const WENTIAN_PHONE_HEIGHT = 844;
 
 function escapeHtml(value) {
   return String(value).replace(/[&<>"']/g, (char) => ({
@@ -3596,10 +3598,19 @@ function fitActivePhoneShell() {
     const wrap = view.querySelector(".phone-wrap");
     const phone = view.querySelector(".figma-phone");
     if (!wrap || !phone) return;
-    const available = Math.max(320, Math.min(window.innerWidth, 430));
-    const scale = Math.min(1, available / 390);
+    const viewport = window.visualViewport;
+    const viewportWidth = viewport?.width || window.innerWidth || document.documentElement.clientWidth || WENTIAN_PHONE_WIDTH;
+    const viewportHeight = viewport?.height || window.innerHeight || document.documentElement.clientHeight || WENTIAN_PHONE_HEIGHT;
+    const desktop = window.matchMedia?.("(min-width: 881px)").matches;
+    const horizontalAvailable = Math.max(320, Math.min(viewportWidth, 430));
+    const verticalChromeSpace = desktop ? 48 : 0;
+    const verticalAvailable = Math.max(560, viewportHeight - verticalChromeSpace);
+    const rawHeight = parseFloat(phone.style.height) || phone.offsetHeight || WENTIAN_PHONE_HEIGHT;
+    const heightBasis = rawHeight <= 900 ? rawHeight : WENTIAN_PHONE_HEIGHT;
+    const widthScale = Math.min(1, horizontalAvailable / WENTIAN_PHONE_WIDTH);
+    const heightScale = Math.min(1, verticalAvailable / heightBasis);
+    const scale = Math.min(widthScale, heightScale);
     phone.style.setProperty("--wentian-phone-scale", String(scale));
-    const rawHeight = parseFloat(phone.style.height) || phone.offsetHeight || 844;
     wrap.style.height = `${Math.ceil(rawHeight * scale)}px`;
   });
 }
@@ -4057,5 +4068,9 @@ function buildScreenNav() {
 
 window.addEventListener("hashchange", () => navigate(routeFromLocation(), false));
 window.addEventListener("resize", fitActivePhoneShell);
+if (window.visualViewport) {
+  window.visualViewport.addEventListener("resize", fitActivePhoneShell);
+  window.visualViewport.addEventListener("scroll", fitActivePhoneShell);
+}
 buildScreenNav();
 navigate(routeFromLocation(), false);
