@@ -67,7 +67,7 @@ const convertedScreens = [
 const convertedByNo = new Map(convertedScreens.map((screen) => [screen.no, screen]));
 
 const screenFlowHotspots = {
-  1: [[286, 24, 86, 52, "screen-26"], [18, 130, 354, 274, "screen-4"], [18, 425, 354, 96, "screen-10"], [18, 534, 354, 96, "screen-13"], [18, 643, 354, 96, "screen-17"], [18, 752, 354, 96, "screen-23"], [18, 861, 354, 96, "screen-42"], [18, 1038, 354, 104, "screen-22"], [18, 1162, 354, 104, "screen-23"], [2, 1298, 76, 83, "screen-1"], [80, 1298, 76, 83, "screen-25"], [158, 1298, 76, 83, "screen-3"], [236, 1298, 76, 83, "screen-13"], [314, 1298, 76, 83, "screen-31"]],
+  1: [[286, 24, 86, 52, "screen-26"], [18, 130, 354, 274, "screen-4"], [18, 425, 354, 96, "screen-10"], [18, 534, 354, 96, "screen-17"], [18, 643, 354, 96, "screen-42"], [18, 820, 354, 104, "screen-22"], [18, 944, 354, 104, "screen-23"], [2, 1080, 76, 83, "screen-1"], [80, 1080, 76, 83, "screen-25"], [158, 1080, 76, 83, "screen-3"], [236, 1080, 76, 83, "screen-13"], [314, 1080, 76, 83, "screen-31"]],
   2: [[18, 282, 354, 190, "screen-4"], [18, 487, 354, 190, "screen-4"], [18, 692, 354, 175, "screen-4"]],
   3: [[285, 128, 82, 28, "screen-5"], [16, 164, 358, 84, "screen-5"], [16, 305, 358, 116, "screen-4"], [2, 761, 76, 72, "screen-1"], [80, 761, 76, 72, "screen-25"], [158, 761, 76, 72, "screen-3"], [236, 761, 76, 72, "screen-13"], [314, 761, 76, 72, "screen-31"]],
   4: [[18, 44, 48, 48, "screen-3"], [276, 44, 96, 48, "screen-9"], [300, 104, 58, 34, "screen-5"]],
@@ -3655,7 +3655,7 @@ function convertedSpecial(screen) {
 
 function sourceDashboardHomeScreen() {
   return `
-    ${figBox("source-1-bg", 0, 0, 390, 1381, "", "background:linear-gradient(180deg,#fffdf8 0%,#fbf7ef 50%,#faf5ed 100%);")}
+    ${figBox("source-1-bg", 0, 0, 390, 1163, "", "background:linear-gradient(180deg,#fffdf8 0%,#fbf7ef 50%,#faf5ed 100%);")}
     ${figBox("source-1-avatar", 18, 24, 44, 44, "", "border-radius:22px;background:#f4ead8;box-shadow:0 6px 16px rgba(188,142,59,.12);")}
     ${figBox("source-1-avatar-head", 33, 36, 12, 12, "", "border-radius:6px;background:#c58d25;")}
     ${figBox("source-1-avatar-body", 27, 52, 24, 13, "", "border-radius:12px 12px 5px 5px;background:#c58d25;")}
@@ -3677,22 +3677,22 @@ function sourceDashboardHomeScreen() {
     ${figBox("source-1-master-go", 278, 357, 72, 36, "", "border-radius:18px;background:#c08a2c;")}
     ${figText("source-1-master-go-text", "去问他", 286, 367, 56, 13, "#fff", 700, "center")}
 
-    ${[["合盘分析", "命理相合，缘分几许", "01-feature-hepan.png", "screen-10", 425], ["黄大仙灵签", "求签问卦，指引方向", "01-feature-qian.png", "screen-13", 534], ["六爻占卜", "铜钱起卦，纳甲解卦", "01-feature-gua.png", "screen-17", 643], ["万年历", "每日宜忌，趋吉避凶", "01-feature-li.png", "screen-23", 752], ["阳宅地脉", "罗盘九宫，安位解读", "01-feature-gua.png", "screen-42", 861]].map(([title, sub, icon, route, y], index) => `
+    ${[["合盘分析", "命理相合，缘分几许", "01-feature-hepan.png", "screen-10", 425], ["六爻占卜", "铜钱起卦，纳甲解卦", "01-feature-gua.png", "screen-17", 534], ["阳宅地脉", "罗盘九宫，安位解读", "01-feature-gua.png", "screen-42", 643]].map(([title, sub, icon, route, y], index) => `
       ${figBox(`source-1-feature-${index}`, 18, y, 354, 96, "converted-card", "border-radius:14px;box-shadow:0 8px 20px rgba(70,45,25,.1);background:#fffdfb;")}
       ${figText(`source-1-feature-title-${index}`, title, 36, y + 30, 150, 21, "#25221f", 800)}
       ${figText(`source-1-feature-sub-${index}`, sub, 36, y + 58, 190, 14, "#969087", 500)}
       ${figImage(`source-1-feature-icon-${index}`, `../images/wentian-prototype-assets/${icon}`, 286, y + 10, 72, 76, "object-fit:contain;")}
       ${figButton(`source-1-feature-hit-${index}`, 18, y, 354, 96, `data-route="${route}"`)}
     `).join("")}
-    ${figText("source-1-more-title", "更多功能", 18, 988, 130, 22, "#25221f", 800)}
-    ${[["邀请好友", "邀请好友双方获得奖励", "01-extra-invite.png", "screen-22", 1038], ["活动中心", "参与活动赢取丰厚奖励", "01-extra-activity.png", "screen-23", 1162]].map(([title, sub, icon, route, y], index) => `
+    ${figText("source-1-more-title", "更多功能", 18, 770, 130, 22, "#25221f", 800)}
+    ${[["邀请好友", "邀请好友双方获得奖励", "01-extra-invite.png", "screen-22", 820], ["活动中心", "参与活动赢取丰厚奖励", "01-extra-activity.png", "screen-23", 944]].map(([title, sub, icon, route, y], index) => `
       ${figBox(`source-1-extra-${index}`, 18, y, 354, 104, "converted-card", "border-radius:14px;box-shadow:0 8px 20px rgba(70,45,25,.1);")}
       ${figText(`source-1-extra-title-${index}`, title, 36, y + 31, 150, 21, "#25221f", 800)}
       ${figText(`source-1-extra-sub-${index}`, sub, 36, y + 61, 210, 14, "#969087", 500)}
       ${figImage(`source-1-extra-icon-${index}`, `../images/wentian-prototype-assets/${icon}`, 300, y + 36, 52, 50, "object-fit:contain;")}
       ${figButton(`source-1-extra-hit-${index}`, 18, y, 354, 104, `data-route="${route}"`)}
     `).join("")}
-    ${sourceAppBottomNav("首页", 1298)}
+    ${sourceAppBottomNav("首页", 1080)}
   `;
 }
 
@@ -3721,7 +3721,6 @@ function sourceChartFormScreen() {
     ${figText("source-26-title", "排盘", 0, 43, 390, 24, "#1f1d1a", 800, "center", "font-family:'Noto Serif SC','Songti SC',serif;")}
 
     ${figText("source-26-heading", "出生信息", 24, 108, 140, 24, "#2b251c", 900, "left", "font-family:'Noto Serif SC','Songti SC',serif;")}
-    ${figText("source-26-subtitle", "复用网站排盘输入：公历/农历、城市、真太阳时", 24, 137, 310, 13, "#8d7d69", 600, "left")}
     <div class="wentian-chart-card">
       <input type="hidden" id="wentian-chart-gender" value="male">
       <input type="hidden" id="wentian-chart-type" value="ziwei">
@@ -3738,14 +3737,6 @@ function sourceChartFormScreen() {
         <div class="wentian-chart-segment">
           <button type="button" data-action="wentian-chart-gender" data-wentian-chart-gender="male">男</button>
           <button type="button" data-action="wentian-chart-gender" data-wentian-chart-gender="female">女</button>
-        </div>
-      </div>
-
-      <div class="wentian-chart-row two">
-        <span class="wentian-chart-label">排盘类型</span>
-        <div class="wentian-chart-segment">
-          <button type="button" data-action="wentian-chart-type" data-wentian-chart-type="ziwei">紫微</button>
-          <button type="button" data-action="wentian-chart-type" data-wentian-chart-type="bazi">八字</button>
         </div>
       </div>
 
@@ -3798,12 +3789,10 @@ function sourceChartFormScreen() {
       <div id="wentian-chart-tst" class="wentian-chart-tst">请先补全出生时间，地点可选。</div>
     </div>
 
-    ${figBox("source-26-submit", 18, 806, 354, 54, "", "border:1px solid #7b3129;border-radius:12px;background:#9e4738;box-shadow:0 10px 20px rgba(123,49,41,.14);")}
-    ${figButton("source-26-submit-hit", 18, 806, 354, 54, 'data-action="wentian-chart-submit"')}
-    ${figText("source-26-submit-text", "开始排盘", 0, 822, 390, 18, "#fffdf6", 800, "center")}
+    ${figBox("source-26-submit", 18, 742, 354, 54, "", "border:1px solid #7b3129;border-radius:12px;background:#9e4738;box-shadow:0 10px 20px rgba(123,49,41,.14);")}
+    ${figButton("source-26-submit-hit", 18, 742, 354, 54, 'data-action="wentian-chart-submit"')}
+    ${figText("source-26-submit-text", "开始排盘", 0, 758, 390, 18, "#fffdf6", 800, "center")}
     <div id="wentian-chart-status" class="wentian-chart-status"></div>
-    ${figBox("source-26-tip", 18, 888, 354, 44, "", "border-radius:12px;background:#fff8e8;")}
-    ${figText("source-26-tip-text", "不知道精确时辰时，先填大概时间；后续可让命理师校正。", 42, 902, 306, 13, "#8d7d69", 600, "center")}
   `;
 }
 
@@ -4024,7 +4013,7 @@ function renderConvertedScreen(no) {
     return figPhone(`screen-${screen.no}`, `${String(screen.no).padStart(2, "0")} 首页`, `
       ${sourceDashboardHomeScreen()}
       ${convertedFlowHotspots(screen)}
-    `, 1381, "converted source-screen no-status-shift", false);
+    `, 1163, "converted source-screen no-status-shift", false);
   }
   if (screen.no === 2) {
     return figPhone(`screen-${screen.no}`, `${String(screen.no).padStart(2, "0")} ${screen.title}`, `

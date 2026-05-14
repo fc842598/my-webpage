@@ -691,7 +691,7 @@ button {
 .wentian-chart-status {
   position: absolute;
   left: 24px;
-  top: 864px;
+  top: 804px;
   width: 342px;
   color: #9b7a3f;
   font-size: 12px;
@@ -706,7 +706,7 @@ button {
 .wentian-chart-card {
   position: absolute;
   left: 18px;
-  top: 150px;
+  top: 142px;
   width: 354px;
   padding: 14px;
   border: 1px solid #e5d6be;
