@@ -108,10 +108,10 @@ const screenFlowHotspots = {
   39: [[18, 44, 48, 48, "screen-38"], [42, 742, 306, 56, "screen-38"]],
   40: [[18, 44, 48, 48, "screen-38"], [20, 236, 350, 56, "screen-41"]],
   41: [[18, 44, 48, 48, "screen-40"], [42, 742, 306, 56, "screen-40"]],
-  42: [[18, 44, 48, 48, "screen-1"], [292, 44, 76, 48, "screen-45"], [24, 575, 158, 48, "screen-44"], [24, 112, 342, 438, "screen-43"]],
-  43: [[18, 44, 48, 48, "screen-42"], [330, 374, 42, 42, "screen-42"], [44, 778, 302, 50, "screen-42"]],
-  44: [[18, 44, 48, 48, "screen-42"], [292, 44, 76, 48, "screen-45"]],
-  45: [[18, 44, 48, 48, "screen-42"]]
+  42: [],
+  43: [],
+  44: [],
+  45: []
 };
 
 const routes = {
@@ -2002,17 +2002,200 @@ function wentianHexLines(id, y, variant = 0) {
   }).join("");
 }
 
-const yangzhaiCells = [
-  ["巽", "东南", "长女位", "长女", "#7f5df2"],
-  ["离", "正南", "二女位", "二女", "#7f5df2"],
-  ["坤", "西南", "母亲位", "母亲", "#7f5df2"],
-  ["震", "正东", "长子位", "长子", "#7f5df2"],
-  ["center", "", "", "", "#7f5df2"],
-  ["兑", "正西", "三女位", "三女", "#7f5df2"],
-  ["艮", "东北", "三子位", "三子", "#7f5df2"],
-  ["坎", "正北", "二子位", "二子", "#7f5df2"],
-  ["乾", "西北", "父亲位", "父亲", "#7f5df2"]
+const YANGZHAI_STORAGE_KEY = "wentian-yangzhai-state-v1";
+const YANGZHAI_PALACES = [
+  { key: "xun", gua: "巽", dir: "东南", role: "长女位", defaultItem: "长女" },
+  { key: "li", gua: "离", dir: "正南", role: "二女位", defaultItem: "二女" },
+  { key: "kun", gua: "坤", dir: "西南", role: "母亲位", defaultItem: "母亲" },
+  { key: "zhen", gua: "震", dir: "正东", role: "长子位", defaultItem: "长子" },
+  { key: "center", gua: "center", dir: "", role: "", defaultItem: "" },
+  { key: "dui", gua: "兑", dir: "正西", role: "三女位", defaultItem: "三女" },
+  { key: "gen", gua: "艮", dir: "东北", role: "三子位", defaultItem: "三子" },
+  { key: "kan", gua: "坎", dir: "正北", role: "二子位", defaultItem: "二子" },
+  { key: "qian", gua: "乾", dir: "西北", role: "父亲位", defaultItem: "父亲" }
 ];
+
+const YANGZHAI_OPTIONS = [
+  { label: "父亲", short: "父", type: "family" },
+  { label: "母亲", short: "母", type: "family" },
+  { label: "长子", short: "长", type: "family" },
+  { label: "长女", short: "长", type: "family" },
+  { label: "二子", short: "二", type: "family" },
+  { label: "二女", short: "二", type: "family" },
+  { label: "三子", short: "三", type: "family" },
+  { label: "三女", short: "三", type: "family" },
+  { label: "厨房", short: "厨", type: "space" },
+  { label: "厕所", short: "厕", type: "space" },
+  { label: "客厅", short: "厅", type: "space" },
+  { label: "清空", short: "×", type: "clear" }
+];
+
+const YANGZHAI_DEFAULT_PLACEMENTS = {
+  xun: "长女",
+  li: "二女",
+  kun: "母亲",
+  zhen: "长子",
+  dui: "三女",
+  gen: "三子",
+  kan: "二子",
+  qian: "父亲"
+};
+const YANGZHAI_RESULT_START_Y = 664;
+const YANGZHAI_RESULT_COLLAPSED_HEIGHT = 142;
+const YANGZHAI_RESULT_EXPANDED_HEIGHT = 220;
+
+function loadYangzhaiState() {
+  try {
+    const raw = typeof localStorage !== "undefined" ? localStorage.getItem(YANGZHAI_STORAGE_KEY) : "";
+    const parsed = raw ? JSON.parse(raw) : null;
+    if (parsed && typeof parsed === "object") {
+      return {
+        placements: { ...(parsed.placements || {}) },
+        activePalace: parsed.activePalace || "xun",
+        pendingItem: parsed.pendingItem || "",
+        expanded: parsed.expanded || {}
+      };
+    }
+  } catch (_) {}
+  return {
+    placements: { ...YANGZHAI_DEFAULT_PLACEMENTS },
+    activePalace: "xun",
+    pendingItem: "",
+    expanded: {}
+  };
+}
+
+let yangzhaiState = loadYangzhaiState();
+
+function saveYangzhaiState() {
+  try {
+    if (typeof localStorage !== "undefined") {
+      localStorage.setItem(YANGZHAI_STORAGE_KEY, JSON.stringify(yangzhaiState));
+    }
+  } catch (_) {}
+}
+
+function getYangzhaiPalace(key) {
+  return YANGZHAI_PALACES.find((item) => item.key === key) || YANGZHAI_PALACES[0];
+}
+
+function getYangzhaiOption(label) {
+  return YANGZHAI_OPTIONS.find((item) => item.label === label) || { label, short: label.slice(0, 1), type: "family" };
+}
+
+function openYangzhaiPicker(key) {
+  const palace = getYangzhaiPalace(key);
+  if (palace.key === "center") return;
+  yangzhaiState.activePalace = palace.key;
+  yangzhaiState.pendingItem = yangzhaiState.placements[palace.key] || "";
+  saveYangzhaiState();
+  navigate("screen-43");
+}
+
+function pickYangzhaiOption(label) {
+  yangzhaiState.pendingItem = label;
+  saveYangzhaiState();
+  navigate("screen-43", false);
+}
+
+function confirmYangzhaiSelection() {
+  const palace = getYangzhaiPalace(yangzhaiState.activePalace);
+  if (yangzhaiState.pendingItem === "清空" || !yangzhaiState.pendingItem) {
+    delete yangzhaiState.placements[palace.key];
+  } else {
+    yangzhaiState.placements[palace.key] = yangzhaiState.pendingItem;
+  }
+  yangzhaiState.pendingItem = "";
+  saveYangzhaiState();
+  navigate("screen-42");
+}
+
+function resetYangzhai() {
+  yangzhaiState.placements = {};
+  yangzhaiState.pendingItem = "";
+  yangzhaiState.expanded = {};
+  saveYangzhaiState();
+  navigate("screen-42", false);
+}
+
+function autoFillYangzhai() {
+  yangzhaiState.placements = { ...YANGZHAI_DEFAULT_PLACEMENTS };
+  yangzhaiState.pendingItem = "";
+  yangzhaiState.expanded = {};
+  saveYangzhaiState();
+  navigate("screen-42", false);
+}
+
+function analyzeYangzhai() {
+  yangzhaiState.expanded = {};
+  saveYangzhaiState();
+  navigate("screen-44");
+}
+
+function toggleYangzhaiResult(index) {
+  yangzhaiState.expanded[index] = !yangzhaiState.expanded[index];
+  saveYangzhaiState();
+  navigate("screen-44", false);
+}
+
+function yangzhaiPalaceAdvice(palaceKey, itemLabel) {
+  const palaceMap = {
+    xun: "东南主生发与学习，宜清爽通风，利人际和成长。",
+    li: "正南主名声与表达，宜明亮有序，忌火气过旺。",
+    kun: "西南主承载与稳定，宜厚重整洁，利家庭凝聚。",
+    zhen: "正东主动能与开创，宜留活动空间，忌杂物压住。",
+    dui: "正西主口才与收成，宜柔和安静，减少争执声。",
+    gen: "东北主积累与定力，宜沉稳，适合读书和长期规划。",
+    kan: "正北主思考与流动，宜静不宜乱，注意湿气。",
+    qian: "西北主权责与决策，宜开阔端正，利事业名望。"
+  };
+  const itemMap = {
+    父亲: "父亲入位重担当与家中主心骨。",
+    母亲: "母亲入位重安稳、包容与家庭照应。",
+    长子: "长子入位重行动力、开创与执行。",
+    长女: "长女入位重条理、审美、学习与人缘。",
+    二子: "二子入位重思考、专注与韧性。",
+    二女: "二女入位重表达、情绪与关系协调。",
+    三子: "三子入位重变化、外缘与机敏。",
+    三女: "三女入位重沟通、才艺与收成。",
+    厨房: "厨房属火，宜看是否与方位火土相冲，保持干净通风。",
+    厕所: "厕所主湿浊，宜加强通风除湿，减少长期堆放。",
+    客厅: "客厅主纳气与家人互动，宜明亮开阔，动线顺畅。"
+  };
+  return `${itemMap[itemLabel] || "此位已安置。"}${palaceMap[palaceKey] || ""}`;
+}
+
+function buildYangzhaiResults() {
+  return YANGZHAI_PALACES
+    .filter((palace) => palace.key !== "center" && yangzhaiState.placements[palace.key])
+    .map((palace) => {
+      const label = yangzhaiState.placements[palace.key];
+      const option = getYangzhaiOption(label);
+      const matched = label === palace.defaultItem;
+      const verb = option.type === "space" ? "在" : "住";
+      const short = option.short;
+      const desc = matched
+        ? `${label}${verb}${palace.gua}(${palace.dir})，与${palace.role}相应。${yangzhaiPalaceAdvice(palace.key, label)}`
+        : `${label}${verb}${palace.gua}(${palace.dir})，当前不属于本位，宜看实际使用强度。${yangzhaiPalaceAdvice(palace.key, label)}`;
+      return {
+        title: `${label}${verb}${palace.gua}(${palace.dir}) - ${palace.role}`,
+        desc,
+        full: `${desc} 如需调整，优先处理采光、通风、整洁与动线；长期睡卧或高频活动的方位，影响会更明显。`,
+        short,
+        matched
+      };
+    });
+}
+
+function getYangzhaiResultHeight() {
+  const results = buildYangzhaiResults();
+  if (!results.length) return 930;
+  let y = YANGZHAI_RESULT_START_Y;
+  results.forEach((_, index) => {
+    y += (yangzhaiState.expanded[index] ? YANGZHAI_RESULT_EXPANDED_HEIGHT : YANGZHAI_RESULT_COLLAPSED_HEIGHT) + 22;
+  });
+  return Math.max(844, y + 110);
+}
 
 function yangzhaiHeader(id, title = "地脉道", right = "教程") {
   return `
@@ -2025,8 +2208,8 @@ function yangzhaiHeader(id, title = "地脉道", right = "教程") {
   `;
 }
 
-function yangzhaiRoomAvatar(id, x, y, label, selected = true) {
-  if (!selected) {
+function yangzhaiRoomAvatar(id, x, y, label) {
+  if (!label) {
     return `
       ${figBox(`${id}-plus`, x + 34, y + 40, 38, 38, "", "border-radius:19px;background:#4a4744;")}
       ${figText(`${id}-plus-text`, "+", x + 34, y + 43, 38, 24, "#fff", 800, "center")}
@@ -2042,29 +2225,31 @@ function yangzhaiRoomAvatar(id, x, y, label, selected = true) {
   `;
 }
 
-function yangzhaiCompassGrid(id, filled = true) {
-  return yangzhaiCells.map(([gua, dir, role, person, color], index) => {
+function yangzhaiCompassGrid(id) {
+  return YANGZHAI_PALACES.map((palace, index) => {
     const col = index % 3;
     const row = Math.floor(index / 3);
     const x = 24 + col * 114;
     const y = 112 + row * 146;
-    if (gua === "center") {
+    if (palace.key === "center") {
       return `
         ${figBox(`${id}-cell-${index}`, x, y, 114, 146, "", "border:1px solid #ddd7ce;background:#fff;")}
-        ${figText(`${id}-center-title`, "罗盘方位", x, y + 24, 114, 19, "#25211d", 800, "center")}
-        ${figBox(`${id}-compass-a`, x + 26, y + 58, 62, 62, "", "border:2px solid #8b6df4;border-radius:31px;background:#fff;")}
-        ${figBox(`${id}-compass-b`, x + 38, y + 70, 38, 38, "", "border:1px solid #c8b7ff;border-radius:19px;background:#f8f5ff;")}
-        ${figText(`${id}-compass-n`, "南", x + 46, y + 64, 22, 12, "#25211d", 700, "center")}
-        ${figText(`${id}-compass-dot`, "◆", x + 47, y + 82, 20, 13, "#a94437", 800, "center")}
+        ${figText(`${id}-center-title`, "罗盘方位", x, y + 28, 114, 19, "#25211d", 800, "center")}
+        ${figBox(`${id}-compass-a`, x + 25, y + 62, 64, 64, "", "border:2px solid #8b6df4;border-radius:32px;background:conic-gradient(from 22deg,#8b6df4 0 10deg,#fff 10deg 22deg,#d9cdfd 22deg 34deg,#fff 34deg 48deg,#8b6df4 48deg 58deg,#fff 58deg 360deg);")}
+        ${figBox(`${id}-compass-b`, x + 34, y + 71, 46, 46, "", "border:1px solid #c8b7ff;border-radius:23px;background:#fff;")}
+        ${figBox(`${id}-compass-c`, x + 44, y + 81, 26, 26, "", "border-radius:13px;background:#f8f5ff;")}
+        ${figText(`${id}-compass-n`, "南", x + 48, y + 73, 18, 14, "#25211d", 800, "center")}
+        ${figText(`${id}-compass-dot`, "◆", x + 47, y + 90, 20, 13, "#a94437", 800, "center")}
       `;
     }
+    const person = yangzhaiState.placements[palace.key] || "";
     return `
       ${figBox(`${id}-cell-${index}`, x, y, 114, 146, "", "border:1px solid #ddd7ce;background:#fff;")}
-      ${figText(`${id}-gua-${index}`, gua, x + 10, y + 12, 24, 18, color, 900)}
-      ${figText(`${id}-dir-${index}`, `(${dir})`, x + 32, y + 13, 42, 12, "#25211d", 600, "left", "white-space:nowrap;")}
-      ${figText(`${id}-role-${index}`, role, x + 75, y + 13, 40, 12, "#25211d", 800, "left", "white-space:nowrap;")}
-      ${yangzhaiRoomAvatar(`${id}-room-${index}`, x, y, person, filled)}
-      ${figButton(`${id}-cell-hit-${index}`, x, y, 114, 146, 'data-route="screen-43"')}
+      ${figText(`${id}-gua-${index}`, palace.gua, x + 10, y + 12, 24, 18, "#7f5df2", 900)}
+      ${figText(`${id}-dir-${index}`, `(${palace.dir})`, x + 32, y + 13, 42, 12, "#25211d", 600, "left", "white-space:nowrap;")}
+      ${figText(`${id}-role-${index}`, palace.role, x + 75, y + 13, 40, 12, "#25211d", 800, "left", "white-space:nowrap;")}
+      ${yangzhaiRoomAvatar(`${id}-room-${index}`, x, y, person)}
+      ${figButton(`${id}-cell-hit-${index}`, x, y, 114, 146, `data-action="yangzhai-open" data-palace="${palace.key}"`)}
     `;
   }).join("");
 }
@@ -2074,13 +2259,15 @@ function sourceYangzhaiCompassScreen() {
     ${figBox("yz42-bg", 0, 0, 390, 844, "", "background:#f8f7fb;")}
     ${yangzhaiHeader("yz42")}
     ${figBox("yz42-grid-bg", 24, 112, 342, 438, "", "background:#fff;box-shadow:0 1px 0 #ddd7ce;")}
-    ${yangzhaiCompassGrid("yz42", true)}
+    ${yangzhaiCompassGrid("yz42")}
     ${figBox("yz42-analyze", 24, 575, 158, 48, "", "border-radius:16px;background:#835cf6;")}
-    ${figButton("yz42-analyze-hit", 24, 575, 158, 48, 'data-route="screen-44"')}
+    ${figButton("yz42-analyze-hit", 24, 575, 158, 48, 'data-action="yangzhai-analyze"')}
     ${figText("yz42-analyze-text", "解读分析", 24, 590, 158, 14, "#fff", 800, "center")}
     ${figBox("yz42-order", 198, 575, 112, 48, "", "border:1px solid #cfc8be;border-radius:16px;background:#fff;")}
+    ${figButton("yz42-order-hit", 198, 575, 112, 48, 'data-action="yangzhai-autofill"')}
     ${figText("yz42-order-text", "长幼有序,天地归位", 198, 591, 112, 11, "#6f665d", 700, "center", "white-space:nowrap;")}
     ${figBox("yz42-reset", 322, 575, 44, 48, "", "border:1px solid #cfc8be;border-radius:16px;background:#fff;")}
+    ${figButton("yz42-reset-hit", 322, 575, 44, 48, 'data-action="yangzhai-reset"')}
     ${figText("yz42-reset-text", "重置", 322, 590, 44, 13, "#6f665d", 700, "center")}
     ${figBox("yz42-tip", 18, 654, 354, 64, "", "border-radius:18px;background:#fff;box-shadow:0 6px 16px rgba(70,45,25,.05);")}
     ${figText("yz42-tip-icon", "!", 36, 674, 18, 18, "#aaa39b", 800, "center")}
@@ -2089,64 +2276,80 @@ function sourceYangzhaiCompassScreen() {
 }
 
 function sourceYangzhaiSelectScreen() {
-  const options = ["父亲", "母亲", "长子", "长女", "二子", "二女", "三子", "三女", "厨房", "厕所", "客厅"];
+  const activePalace = getYangzhaiPalace(yangzhaiState.activePalace);
+  const selected = yangzhaiState.pendingItem || yangzhaiState.placements[activePalace.key] || "";
   return `
     ${sourceYangzhaiCompassScreen()}
     ${figBox("yz43-overlay", 0, 0, 390, 844, "", "background:rgba(0,0,0,.55);")}
     ${figBox("yz43-sheet", 0, 354, 390, 490, "", "border-radius:18px 18px 0 0;background:#fff;box-shadow:0 -12px 30px rgba(0,0,0,.16);")}
-    ${figText("yz43-title", "巽(东南) - 长女位", 24, 386, 220, 20, "#25211d", 800)}
+    ${figText("yz43-title", `${activePalace.gua}(${activePalace.dir}) - ${activePalace.role}`, 24, 386, 220, 20, "#25211d", 800)}
     ${figButton("yz43-close-hit", 328, 374, 42, 42, 'data-route="screen-42"')}
     ${figText("yz43-close", "×", 330, 378, 42, 30, "#5f5a52", 400, "center")}
     ${figLine("yz43-midline", 195, 430, 312, "#eee8df")}
-    ${options.map((label, index) => {
+    ${YANGZHAI_OPTIONS.map((option, index) => {
+      const label = option.label;
       const col = index % 2;
       const row = Math.floor(index / 2);
       const x = col ? 214 : 44;
       const y = 438 + row * 50;
-      const short = label.includes("厨房") ? "厨" : label.includes("厕所") ? "厕" : label.includes("客厅") ? "厅" : label.slice(0, 1);
+      const isSelected = selected === label;
       return `
-        ${figBox(`yz43-avatar-${index}`, x, y, 32, 32, "", "border-radius:16px;background:#f0eee9;border:1px solid #e0d8ce;")}
-        ${figText(`yz43-avatar-text-${index}`, short, x, y + 8, 32, 12, "#6b5a48", 800, "center")}
+        ${figBox(`yz43-avatar-${index}`, x, y, 32, 32, "", `border-radius:16px;background:${option.type === "clear" ? "#fff1ea" : "#f0eee9"};border:1px solid #e0d8ce;`)}
+        ${figText(`yz43-avatar-text-${index}`, option.short, x, y + 8, 32, 12, option.type === "clear" ? "#a94437" : "#6b5a48", 800, "center")}
         ${figText(`yz43-option-${index}`, label, x + 42, y + 7, 72, 14, "#25211d", 700)}
-        ${figBox(`yz43-radio-${index}`, x + 126, y + 7, 20, 20, "", "border:1px solid #b9b2aa;border-radius:10px;background:#fff;")}
+        ${figBox(`yz43-radio-${index}`, x + 126, y + 7, 20, 20, "", `border:1px solid ${isSelected ? "#835cf6" : "#b9b2aa"};border-radius:10px;background:${isSelected ? "#835cf6" : "#fff"};`)}
+        ${isSelected ? figText(`yz43-radio-check-${index}`, "✓", x + 126, y + 10, 20, 10, "#fff", 800, "center") : ""}
+        ${figButton(`yz43-option-hit-${index}`, x, y, 154, 38, `data-action="yangzhai-pick" data-yangzhai-option="${label}"`)}
       `;
     }).join("")}
     ${figBox("yz43-confirm", 44, 778, 302, 50, "", "border-radius:25px;background:#835cf6;box-shadow:0 10px 24px rgba(131,92,246,.28);")}
-    ${figButton("yz43-confirm-hit", 44, 778, 302, 50, 'data-route="screen-42"')}
+    ${figButton("yz43-confirm-hit", 44, 778, 302, 50, 'data-action="yangzhai-confirm"')}
     ${figText("yz43-confirm-text", "确认", 44, 792, 302, 16, "#fff", 800, "center")}
   `;
 }
 
 function sourceYangzhaiResultScreen() {
-  const results = [
-    ["长女住巽(东南) - 长女位", "此局大利未婚女，主婚姻顺遂、学习灵敏。凡事先顺气，再谈进取。"],
-    ["二女住离(正南) - 二女位", "离卦主明，利表达与审美。若心气浮躁，宜减少争执，多守作息。"],
-    ["母亲住坤(西南) - 母亲位", "坤位归母，主安稳包容。此位宜整洁明亮，利家中女主人与家庭凝聚。"],
-    ["长子住震(正东) - 长子位", "震为动，长子在位利行动与开创。忌杂物堆积，防急躁冲动。"],
-    ["二子住坎(正北) - 二子位", "坎位主思考与流动。宜静不宜乱，利读书、专注与长期规划。"],
-    ["父亲住乾(西北) - 父亲位", "乾位归父，主担当与决策。此位宜稳重开阔，利事业名望。"]
-  ];
+  const results = buildYangzhaiResults();
+  const height = getYangzhaiResultHeight();
+  const matchedCount = results.filter((item) => item.matched).length;
   return `
-    ${figBox("yz44-bg", 0, 0, 390, 1210, "", "background:#f8f7fb;")}
+    ${figBox("yz44-bg", 0, 0, 390, height, "", "background:#f8f7fb;")}
     ${yangzhaiHeader("yz44")}
-    ${figBox("yz44-summary", 24, 104, 342, 108, "", "border-radius:16px;background:#fff;box-shadow:0 8px 20px rgba(70,45,25,.08);")}
-    ${figText("yz44-summary-title", "长幼有序，天地归位", 44, 128, 190, 18, "#25211d", 800)}
-    ${figText("yz44-summary-copy", "已按九宫方位完成阳宅地脉分析，优先查看已放置成员与空间。", 44, 160, 260, 13, "#756d63", 500, "left", "line-height:1.45;")}
-    ${figBox("yz44-score", 282, 126, 54, 54, "", "border-radius:27px;background:#f3ecff;")}
-    ${figText("yz44-score-text", "吉", 282, 142, 54, 18, "#835cf6", 900, "center")}
-    ${results.map(([title, desc], index) => {
-      const y = 238 + index * 144;
+    ${figBox("yz44-grid-bg", 24, 112, 342, 438, "", "background:#fff;box-shadow:0 1px 0 #ddd7ce;")}
+    ${yangzhaiCompassGrid("yz44")}
+    ${figBox("yz44-analyze", 24, 575, 158, 48, "", "border-radius:16px;background:#835cf6;")}
+    ${figButton("yz44-analyze-hit", 24, 575, 158, 48, 'data-action="yangzhai-analyze"')}
+    ${figText("yz44-analyze-text", "重新分析", 24, 590, 158, 14, "#fff", 800, "center")}
+    ${figBox("yz44-order", 198, 575, 112, 48, "", "border:1px solid #cfc8be;border-radius:16px;background:#fff;")}
+    ${figButton("yz44-order-hit", 198, 575, 112, 48, 'data-action="yangzhai-autofill"')}
+    ${figText("yz44-order-text", "长幼有序,天地归位", 198, 591, 112, 11, "#6f665d", 700, "center", "white-space:nowrap;")}
+    ${figBox("yz44-reset", 322, 575, 44, 48, "", "border:1px solid #cfc8be;border-radius:16px;background:#fff;")}
+    ${figButton("yz44-reset-hit", 322, 575, 44, 48, 'data-action="yangzhai-reset"')}
+    ${figText("yz44-reset-text", "重置", 322, 590, 44, 13, "#6f665d", 700, "center")}
+    ${figText("yz44-result-title", "解读结果", 24, 636, 120, 16, "#25211d", 900)}
+    ${figText("yz44-result-meta", results.length ? `${results.length}项 · 本位${matchedCount}项` : "尚未排布", 236, 638, 130, 12, "#756d63", 600, "right")}
+    ${!results.length ? `
+      ${figBox("yz44-empty", 24, 674, 342, 132, "", "border-radius:16px;background:#fff;box-shadow:0 7px 18px rgba(70,45,25,.07);")}
+      ${figText("yz44-empty-title", "还没有可解读内容", 0, 714, 390, 16, "#25211d", 800, "center")}
+      ${figText("yz44-empty-copy", "添加父母、子女、厨房、厕所或客厅后再分析。", 0, 746, 390, 12, "#756d63", 500, "center")}
+    ` : ""}
+    ${results.map((item, index) => {
+      let y = YANGZHAI_RESULT_START_Y;
+      for (let i = 0; i < index; i += 1) y += (yangzhaiState.expanded[i] ? YANGZHAI_RESULT_EXPANDED_HEIGHT : YANGZHAI_RESULT_COLLAPSED_HEIGHT) + 22;
+      const expanded = !!yangzhaiState.expanded[index];
+      const cardHeight = expanded ? YANGZHAI_RESULT_EXPANDED_HEIGHT : YANGZHAI_RESULT_COLLAPSED_HEIGHT;
       return `
-        ${figBox(`yz44-card-${index}`, 24, y, 342, 120, "", "border-radius:16px;background:#fff;box-shadow:0 7px 18px rgba(70,45,25,.07);")}
+        ${figBox(`yz44-card-${index}`, 24, y, 342, cardHeight, "", "border-radius:16px;background:#fff;box-shadow:0 7px 18px rgba(70,45,25,.07);")}
         ${figBox(`yz44-avatar-${index}`, 42, y + 24, 34, 34, "", "border-radius:17px;background:#f0eee9;border:1px solid #e0d8ce;")}
-        ${figText(`yz44-avatar-text-${index}`, title.slice(0, 1), 42, y + 32, 34, 12, "#6b5a48", 800, "center")}
-        ${figText(`yz44-title-${index}`, title, 88, y + 22, 230, 16, "#25211d", 800)}
-        ${figText(`yz44-desc-${index}`, desc, 42, y + 66, 270, 13, "#514b45", 500, "left", "line-height:1.5;")}
-        ${figText(`yz44-full-${index}`, "⌄ 全文", 304, y + 88, 48, 12, "#835cf6", 800, "center")}
+        ${figText(`yz44-avatar-text-${index}`, item.short, 42, y + 32, 34, 12, "#6b5a48", 800, "center")}
+        ${figText(`yz44-title-${index}`, item.title, 88, y + 22, 230, 16, "#25211d", 800)}
+        ${figText(`yz44-desc-${index}`, expanded ? item.full : item.desc, 42, y + 66, 278, 13, "#514b45", 500, "left", "line-height:1.5;")}
+        ${figButton(`yz44-full-hit-${index}`, 296, y + cardHeight - 34, 58, 26, `data-action="yangzhai-expand" data-yangzhai-index="${index}"`)}
+        ${figText(`yz44-full-${index}`, expanded ? "收起" : "⌄ 全文", 304, y + cardHeight - 28, 48, 12, "#835cf6", 800, "center")}
       `;
     }).join("")}
-    ${figBox("yz44-tip", 18, 1122, 354, 58, "", "border-radius:18px;background:#fff;")}
-    ${figText("yz44-tip-text", "当前内容仅供娱乐参考，不等于专业测评。", 0, 1142, 390, 12, "#a19a91", 500, "center")}
+    ${figBox("yz44-tip", 18, height - 88, 354, 58, "", "border-radius:18px;background:#fff;")}
+    ${figText("yz44-tip-text", "当前内容仅供娱乐参考，不等于专业测评。", 0, height - 68, 390, 12, "#a19a91", 500, "center")}
   `;
 }
 
@@ -3166,7 +3369,7 @@ function renderConvertedScreen(no) {
   }
   const polishedScreen = renderWentianPolishedScreen(screen);
   if (polishedScreen) {
-    const polishedHeight = screen.no === 8 ? 1280 : screen.no === 20 ? 1072 : screen.no === 24 ? 1180 : screen.no === 44 ? 1210 : 844;
+    const polishedHeight = screen.no === 8 ? 1280 : screen.no === 20 ? 1072 : screen.no === 24 ? 1180 : screen.no === 44 ? getYangzhaiResultHeight() : 844;
     return figPhone(`screen-${screen.no}`, `${String(screen.no).padStart(2, "0")} ${screen.title}`, `
       ${polishedScreen}
       ${convertedFlowHotspots(screen)}
@@ -3605,6 +3808,36 @@ document.addEventListener("click", (event) => {
   const promptButton = event.target.closest("[data-wentian-prompt]");
   if (promptButton) {
     sendWentianXuChat(promptButton.dataset.wentianPrompt || "");
+    return;
+  }
+  const earlyActionTarget = event.target.closest("[data-action]");
+  const earlyAction = earlyActionTarget?.dataset.action;
+  if (earlyAction === "yangzhai-open") {
+    openYangzhaiPicker(earlyActionTarget.dataset.palace || "xun");
+    return;
+  }
+  if (earlyAction === "yangzhai-pick") {
+    pickYangzhaiOption(earlyActionTarget.dataset.yangzhaiOption || "");
+    return;
+  }
+  if (earlyAction === "yangzhai-confirm") {
+    confirmYangzhaiSelection();
+    return;
+  }
+  if (earlyAction === "yangzhai-reset") {
+    resetYangzhai();
+    return;
+  }
+  if (earlyAction === "yangzhai-autofill") {
+    autoFillYangzhai();
+    return;
+  }
+  if (earlyAction === "yangzhai-analyze") {
+    analyzeYangzhai();
+    return;
+  }
+  if (earlyAction === "yangzhai-expand") {
+    toggleYangzhaiResult(Number(earlyActionTarget.dataset.yangzhaiIndex || 0));
     return;
   }
   const routeButton = event.target.closest("[data-route]");
