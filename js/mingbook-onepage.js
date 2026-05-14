@@ -1975,8 +1975,11 @@
     const specialHtml = specialModules.map(([key, title]) => {
       const data = normalizeAiData(state.aiResults[key]);
       const generatedTitle = aiCardTitle(data, '');
-      const summary = insightSummary(data, `${title}等待原站 AI 返回。`, 180);
-      const content = generatedTitle && generatedTitle !== title ? `${generatedTitle}：${summary}` : summary;
+      const fullText = aiCardText(data);
+      const summary = fullText || insightSummary(data, `${title}等待原站 AI 返回。`, 180);
+      const content = generatedTitle && generatedTitle !== title && summary && !summary.startsWith(generatedTitle)
+        ? `${generatedTitle}：${summary}`
+        : summary;
       return `
         <section class="mbp-pdf-text-card">
           <strong>${escapeHtml(title)}</strong>
@@ -2142,10 +2145,13 @@
         const data = normalizeAiData(state.aiResults[key]);
         if (!data) return null;
         const generatedTitle = aiCardTitle(data, '');
-        const summary = insightSummary(data, '', 118);
+        const fullText = aiCardText(data);
+        const summary = fullText || insightSummary(data, '', 180);
         return {
           title,
-          content: generatedTitle && generatedTitle !== title ? `${generatedTitle}：${summary}` : summary,
+          content: generatedTitle && generatedTitle !== title && summary && !summary.startsWith(generatedTitle)
+            ? `${generatedTitle}：${summary}`
+            : summary,
         };
       })
       .filter((item) => item?.content);
