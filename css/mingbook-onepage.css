@@ -480,11 +480,17 @@ select {
   top: clamp(370px, 45%, 560px);
   width: 142px;
   height: 70px;
-  display: grid;
+  display: none;
   place-items: center;
   color: var(--gold);
   pointer-events: none;
   transform: translateX(-50%);
+}
+
+@media (min-width: 1021px) {
+  .is-chart-ready .mbp-hero-bridge {
+    display: grid;
+  }
 }
 
 .mbp-hero-bridge::before {

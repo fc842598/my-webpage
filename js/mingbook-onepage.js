@@ -1294,6 +1294,7 @@
 
   function renderClassicChart(chart, norm) {
     document.body.classList.remove('is-chart-pending');
+    document.body.classList.add('is-chart-ready');
     fcCurrentChart = chart;
     fcCurrentGender = norm.gender || state.profile.gender;
     fcBirthYear = Number(norm.year) || Number(String(norm.dateStr || '').slice(0, 4)) || state.profile.year;
@@ -1361,6 +1362,7 @@
 
   function renderChart() {
     if (!state.chartReady) {
+      document.body.classList.remove('is-chart-ready');
       document.body.classList.add('is-chart-pending');
       fcCurrentChart = null;
       fcXiantianResult = null;
@@ -1383,6 +1385,7 @@
     if (!summary) return;
 
     if (bundle.error) {
+      document.body.classList.remove('is-chart-ready');
       fcCurrentChart = null;
       fcXiantianResult = null;
       fcHoutianResult = null;
