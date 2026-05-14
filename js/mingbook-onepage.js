@@ -1070,6 +1070,15 @@
     if (wrap) wrap.style.display = fcActiveTab === '流年卦' ? 'flex' : 'none';
   }
 
+  function fcSwitchTab(tab) {
+    fcActiveTab = tab || '先天卦';
+    fcRenderTabs();
+    if (fcActiveTab === '流年卦') fcRenderLiunianScroll();
+    fcRenderHexagram();
+    renderZipingFooter();
+    fcRenderHighlight(fcActiveBranch || fcCurrentChart?.earthlyBranchOfSoulPalace || '卯');
+  }
+
   function fcRenderLiunianScroll() {
     const scroll = $('#mbpFcLiunianScroll');
     if (!scroll) return;
@@ -1107,6 +1116,7 @@
       sub.textContent = '';
       lines.innerHTML = '';
       guaciCard.style.display = 'none';
+      renderYijingAssist();
       return;
     }
 
@@ -1127,6 +1137,100 @@
       guaciCard.style.display = guaciText.textContent ? 'block' : 'none';
     } else {
       guaciCard.style.display = 'none';
+    }
+    renderYijingAssist();
+  }
+
+  function fcActiveHexagram() {
+    if (fcActiveTab === '先天卦') return fcXiantianResult;
+    if (fcActiveTab === '后天卦') return fcHoutianResult;
+    return fcLiunianResult;
+  }
+
+  function fcGuaciKey(tab = fcActiveTab) {
+    if (tab === '先天卦') return 'xian';
+    if (tab === '后天卦') return 'hou';
+    return 'liu';
+  }
+
+  function fcGuaciText(result, tab = fcActiveTab) {
+    if (!result?.name) return '';
+    const entry = typeof window.getGuaciEntryByName === 'function'
+      ? window.getGuaciEntryByName(result.name)
+      : (window.GUACI_DATA && window.GUACI_DATA[result.name]);
+    return entry ? (entry[fcGuaciKey(tab)] || '') : '';
+  }
+
+  function yijingAssistSummary(result) {
+    if (!result) return '排盘后，这里会落出先天、后天与流年的辅助判断。';
+    if (fcActiveTab === '先天卦') return `${result.name}落在先天位，主看命盘底色、根气与早年基调。`;
+    if (fcActiveTab === '后天卦') return `${result.name}落在后天位，主看中后段转化、选择与修正方向。`;
+    return `${result.name}落在${fcActiveAge}岁流年位，主看当下应期与这一年的动静。`;
+  }
+
+  function yijingLineHtml(result) {
+    return (result?.lines || []).map((line) => {
+      if (line === 'gap') return '<div class="mbp-yijing-gap"></div>';
+      if (line === 'solid') return '<div class="mbp-yijing-line"></div>';
+      return '<div class="mbp-yijing-line is-broken"><i></i><i></i></div>';
+    }).join('');
+  }
+
+  function renderYijingAssist() {
+    const root = $('#mbpYijingAssist');
+    if (!root) return;
+    const result = fcActiveHexagram();
+    const tabs = $('#mbpYijingTabs');
+    if (tabs) {
+      tabs.querySelectorAll('[data-yijing-tab]').forEach((button) => {
+        const active = button.dataset.yijingTab === fcActiveTab;
+        button.classList.toggle('is-active', active);
+        button.setAttribute('aria-selected', String(active));
+      });
+    }
+
+    const name = $('#mbpYijingName');
+    const summary = $('#mbpYijingSummary');
+    const lines = $('#mbpYijingLines');
+    const meta = $('#mbpYijingMeta');
+    const years = $('#mbpYijingYears');
+    const guaci = $('#mbpYijingGuaci');
+
+    if (name) name.textContent = result?.name || '等待排盘';
+    if (summary) summary.textContent = yijingAssistSummary(result);
+    if (lines) lines.innerHTML = yijingLineHtml(result);
+
+    if (meta) {
+      const pillars = fcBirthPillars
+        ? `${pillarText(fcBirthPillars.yearStem, fcBirthPillars.yearBranch)} · ${pillarText(fcBirthPillars.monthStem, fcBirthPillars.monthBranch)} · ${pillarText(fcBirthPillars.dayStem, fcBirthPillars.dayBranch)} · ${pillarText(fcBirthPillars.hourStem, fcBirthPillars.hourBranch)}`
+        : '四柱待定';
+      const flow = fcActiveTab === '流年卦'
+        ? `${fcAgeToYear(fcActiveAge)}年 · 虚岁${fcActiveAge}`
+        : '本命辅助';
+      meta.innerHTML = [
+        `${fcActiveTab} · ${result?.num ? `#${result.num}` : '未成卦'}`,
+        pillars,
+        flow,
+      ].map((item) => `<span>${escapeHtml(item)}</span>`).join('');
+    }
+
+    if (years) {
+      const showYears = fcActiveTab === '流年卦' && fcYearCards.length;
+      years.hidden = !showYears;
+      if (showYears) {
+        years.innerHTML = fcYearCards.map((item) => `
+          <button type="button" class="${item.age === fcActiveAge ? 'is-active' : ''}" data-yijing-age="${item.age}">
+            ${item.age}岁<small>${item.year}年</small>
+          </button>
+        `).join('');
+      } else {
+        years.innerHTML = '';
+      }
+    }
+
+    if (guaci) {
+      const text = fcGuaciText(result);
+      guaci.textContent = text || (result ? '此卦暂无卦辞数据，可先参考上方命盘与五卷解读。' : '先完成排盘。');
     }
   }
 
@@ -2557,13 +2661,26 @@
 
     document.querySelectorAll('.mbp-fc-card .fc-tab').forEach((button) => {
       button.addEventListener('click', () => {
-        fcActiveTab = button.dataset.tab || '先天卦';
-        fcRenderTabs();
-        if (fcActiveTab === '流年卦') fcRenderLiunianScroll();
-        fcRenderHexagram();
-        renderZipingFooter();
-        fcRenderHighlight(fcActiveBranch || fcCurrentChart?.earthlyBranchOfSoulPalace || '卯');
+        fcSwitchTab(button.dataset.tab || '先天卦');
       });
+    });
+
+    $('#mbpYijingAssist')?.addEventListener('click', (event) => {
+      const tabButton = event.target.closest('[data-yijing-tab]');
+      if (tabButton) {
+        fcSwitchTab(tabButton.dataset.yijingTab || '先天卦');
+        return;
+      }
+      const ageButton = event.target.closest('[data-yijing-age]');
+      if (ageButton) {
+        fcActiveTab = '流年卦';
+        fcRenderTabs();
+        fcSelectYear(ageButton.dataset.yijingAge);
+        return;
+      }
+      if (event.target.closest('[data-yijing-focus]')) {
+        $('#mbpFcCard')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
     });
 
     $('#mbpFcScrollLeft')?.addEventListener('click', () => {
