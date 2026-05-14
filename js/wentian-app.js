@@ -67,7 +67,7 @@ const convertedScreens = [
 const convertedByNo = new Map(convertedScreens.map((screen) => [screen.no, screen]));
 
 const screenFlowHotspots = {
-  1: [[286, 24, 86, 52, "screen-26"], [48, 249, 295, 45, "screen-4"], [18, 342, 318, 157, "screen-2"], [18, 580, 354, 274, "screen-4"], [18, 875, 354, 96, "screen-10"], [18, 984, 354, 96, "screen-13"], [18, 1093, 354, 96, "screen-17"], [18, 1202, 354, 96, "screen-23"], [18, 1311, 354, 96, "screen-42"], [18, 1488, 354, 104, "screen-22"], [18, 1612, 354, 104, "screen-23"], [2, 1748, 76, 83, "screen-1"], [80, 1748, 76, 83, "screen-25"], [158, 1748, 76, 83, "screen-3"], [236, 1748, 76, 83, "screen-13"], [314, 1748, 76, 83, "screen-31"]],
+  1: [[286, 24, 86, 52, "screen-26"], [18, 130, 354, 274, "screen-4"], [18, 425, 354, 96, "screen-10"], [18, 534, 354, 96, "screen-13"], [18, 643, 354, 96, "screen-17"], [18, 752, 354, 96, "screen-23"], [18, 861, 354, 96, "screen-42"], [18, 1038, 354, 104, "screen-22"], [18, 1162, 354, 104, "screen-23"], [2, 1298, 76, 83, "screen-1"], [80, 1298, 76, 83, "screen-25"], [158, 1298, 76, 83, "screen-3"], [236, 1298, 76, 83, "screen-13"], [314, 1298, 76, 83, "screen-31"]],
   2: [[18, 282, 354, 190, "screen-4"], [18, 487, 354, 190, "screen-4"], [18, 692, 354, 175, "screen-4"]],
   3: [[285, 128, 82, 28, "screen-5"], [16, 164, 358, 84, "screen-5"], [16, 305, 358, 116, "screen-4"], [2, 761, 76, 72, "screen-1"], [80, 761, 76, 72, "screen-25"], [158, 761, 76, 72, "screen-3"], [236, 761, 76, 72, "screen-13"], [314, 761, 76, 72, "screen-31"]],
   4: [[18, 44, 48, 48, "screen-3"], [276, 44, 96, 48, "screen-9"], [300, 104, 58, 34, "screen-5"]],
@@ -3342,7 +3342,7 @@ function convertedSpecial(screen) {
 
 function sourceDashboardHomeScreen() {
   return `
-    ${figBox("source-1-bg", 0, 0, 390, 1831, "", "background:linear-gradient(180deg,#fffdf8 0%,#fbf7ef 50%,#faf5ed 100%);")}
+    ${figBox("source-1-bg", 0, 0, 390, 1381, "", "background:linear-gradient(180deg,#fffdf8 0%,#fbf7ef 50%,#faf5ed 100%);")}
     ${figBox("source-1-avatar", 18, 24, 44, 44, "", "border-radius:22px;background:#f4ead8;box-shadow:0 6px 16px rgba(188,142,59,.12);")}
     ${figBox("source-1-avatar-head", 33, 36, 12, 12, "", "border-radius:6px;background:#c58d25;")}
     ${figBox("source-1-avatar-body", 27, 52, 24, 13, "", "border-radius:12px 12px 5px 5px;background:#c58d25;")}
@@ -3351,71 +3351,35 @@ function sourceDashboardHomeScreen() {
     ${figBox("source-1-chart-pill", 294, 32, 78, 32, "", "border-radius:18px;background:#f3eadc;box-shadow:0 7px 16px rgba(190,142,45,.12);")}
     ${figText("source-1-chart-text", "✦ 排盘", 306, 39, 54, 16, "#bd8624", 800, "center")}
 
-    ${figBox("source-1-mood-card", 18, 98, 354, 216, "converted-card", "border-radius:16px;box-shadow:0 10px 24px rgba(70,45,25,.13);")}
-    ${figText("source-1-mood-label", "今日心情", 36, 137, 82, 19, "#26211c", 700)}
-    ${figText("source-1-mood-score", "73", 116, 116, 58, 42, "#26211c", 800)}
-    ${figText("source-1-mood-unit", "分", 164, 144, 20, 13, "#26211c", 700)}
-    ${figBox("source-1-score-swish-a", 116, 161, 78, 7, "", "border-radius:999px;background:#e5bf91;transform:rotate(-12deg);opacity:.9;")}
-    ${figBox("source-1-score-swish-b", 150, 167, 62, 5, "", "border-radius:999px;background:#ead8bd;transform:rotate(-12deg);opacity:.72;")}
-    ${figText("source-1-mood-copy", "灵感迸发的一天，\n无论是吸收新知…", 36, 181, 132, 14, "#9a938a", 500, "left", "line-height:1.35;")}
-    ${[["爱情", 62, 178, "#ed7385"], ["财富", 48, 220, "#c58a2c"], ["事业", 78, 262, "#4e9b93"], ["学习", 78, 304, "#4f82a4"], ["人际", 75, 346, "#9e698c"]].map(([label, score, x, color]) => {
-      const h = 22 + Number(score) * 0.32;
-      return `
-        ${figBox(`source-1-meter-bg-${label}`, x, 119, 8, 60, "", "border-radius:8px;background:#f2efea;")}
-        ${figBox(`source-1-meter-${label}`, x, 178 - h, 8, h, "", `border-radius:8px;background:${color};`)}
-        ${figText(`source-1-meter-score-${label}`, score, x - 10, 197, 28, 16, "#26211c", 700, "center")}
-        ${figText(`source-1-meter-label-${label}`, label, x - 14, 226, 36, 12, "#928b83", 500, "center")}
-      `;
-    }).join("")}
-    ${figBox("source-1-ask", 48, 249, 295, 45, "", "border:1px solid #eadfce;border-radius:22px;background:#fff;")}
-    ${figText("source-1-ask-icon", "♙", 60, 263, 22, 18, "#b98729", 700, "center")}
-    ${figText("source-1-ask-text", "今日运势如何？事业感情有何指\n引？", 84, 258, 220, 15, "#8f887f", 500, "left", "line-height:1.25;")}
-    ${figBox("source-1-ask-send", 315, 254, 36, 36, "", "border-radius:18px;background:#c08a2c;")}
-    ${figText("source-1-ask-arrow", "↑", 315, 260, 36, 24, "#fff", 800, "center")}
+    ${figText("source-1-recommend-title", "为你推荐", 18, 98, 130, 22, "#25221f", 800)}
+    ${figBox("source-1-master-1", 18, 130, 354, 274, "converted-card", "border-radius:16px;overflow:hidden;box-shadow:0 10px 24px rgba(70,45,25,.13);")}
+    ${figImage("source-1-master-img-1", "../images/wentian-prototype-assets/xu-banxian.jpg", 18, 130, 354, 184, "border-radius:16px 16px 0 0;object-fit:cover;object-position:center 20%;")}
+    ${figBox("source-1-master-shade", 18, 258, 354, 56, "", "background:linear-gradient(180deg,rgba(0,0,0,0),rgba(0,0,0,.32));")}
+    ${figText("source-1-master-name-1", "许半仙", 36, 332, 132, 24, "#25221f", 800)}
+    ${figText("source-1-master-desc-1", "紫微命盘专属解析，已接入当前档案", 36, 362, 230, 14, "#91897f", 500)}
+    ${figBox("source-1-chip-1a", 36, 385, 70, 24, "", "border-radius:12px;background:#f8f3ea;border:1px solid #efe4d2;")}
+    ${figText("source-1-chip-1a-text", "紫微命盘", 44, 391, 54, 11, "#b2822e", 700, "center")}
+    ${figBox("source-1-chip-1b", 118, 385, 62, 24, "", "border-radius:12px;background:#f8f3ea;border:1px solid #efe4d2;")}
+    ${figText("source-1-chip-1b-text", "AI解析", 125, 391, 48, 11, "#b2822e", 700, "center")}
+    ${figBox("source-1-master-go", 278, 357, 72, 36, "", "border-radius:18px;background:#c08a2c;")}
+    ${figText("source-1-master-go-text", "去问他", 286, 367, 56, 13, "#fff", 700, "center")}
 
-    ${figBox("source-1-report-card", 18, 342, 318, 157, "converted-card", "border-radius:16px;box-shadow:0 10px 24px rgba(70,45,25,.12);")}
-    ${figBox("source-1-report-hot", 38, 371, 39, 22, "", "border-radius:7px;background:#fbf1dd;")}
-    ${figText("source-1-report-hot-text", "热门", 46, 376, 24, 11, "#b98729", 700, "center")}
-    ${figText("source-1-report-icon", "▧", 292, 362, 22, 20, "#b98729", 700, "center")}
-    ${figText("source-1-report-title", "万言命书", 36, 399, 150, 23, "#25221f", 800)}
-    ${figText("source-1-report-sub", "逾万字的深度报告，涵盖性格逻辑、事业财富…", 36, 431, 250, 13, "#9a938a", 500)}
-    ${figText("source-1-report-tags", "● 事业财运    ● 感情婚姻", 36, 468, 160, 13, "#a98745", 600)}
-    ${figBox("source-1-report-btn", 220, 453, 104, 34, "", "border-radius:18px;background:#c08a2c;")}
-    ${figText("source-1-report-btn-text", "立即解锁 →", 236, 462, 72, 13, "#fff", 700, "center")}
-    ${figBox("source-1-report-next", 348, 342, 42, 157, "", "border-radius:16px 0 0 16px;background:#251f1a;")}
-    ${figText("source-1-report-next-tag", "推荐", 358, 370, 24, 12, "#c08a2c", 700, "center")}
-    ${figText("source-1-report-next-title", "问\n天", 356, 422, 28, 23, "#c08a2c", 800, "center", "line-height:1.05;")}
-    ${figText("source-1-report-dots", "●  ●", 184, 514, 28, 8, "#bdb5aa", 700, "center")}
-
-    ${figText("source-1-recommend-title", "为你推荐", 18, 548, 130, 22, "#25221f", 800)}
-    ${figBox("source-1-master-1", 18, 580, 354, 274, "converted-card", "border-radius:16px;overflow:hidden;box-shadow:0 10px 24px rgba(70,45,25,.13);")}
-    ${figImage("source-1-master-img-1", "../images/wentian-prototype-assets/xu-banxian.jpg", 18, 580, 354, 184, "border-radius:16px 16px 0 0;object-fit:cover;object-position:center 20%;")}
-    ${figBox("source-1-master-shade", 18, 708, 354, 56, "", "background:linear-gradient(180deg,rgba(0,0,0,0),rgba(0,0,0,.32));")}
-    ${figText("source-1-master-name-1", "许半仙", 36, 782, 132, 24, "#25221f", 800)}
-    ${figText("source-1-master-desc-1", "紫微命盘专属解析，已接入当前档案", 36, 812, 230, 14, "#91897f", 500)}
-    ${figBox("source-1-chip-1a", 36, 835, 70, 24, "", "border-radius:12px;background:#f8f3ea;border:1px solid #efe4d2;")}
-    ${figText("source-1-chip-1a-text", "紫微命盘", 44, 841, 54, 11, "#b2822e", 700, "center")}
-    ${figBox("source-1-chip-1b", 118, 835, 62, 24, "", "border-radius:12px;background:#f8f3ea;border:1px solid #efe4d2;")}
-    ${figText("source-1-chip-1b-text", "AI解析", 125, 841, 48, 11, "#b2822e", 700, "center")}
-    ${figBox("source-1-master-go", 278, 807, 72, 36, "", "border-radius:18px;background:#c08a2c;")}
-    ${figText("source-1-master-go-text", "去问他", 286, 817, 56, 13, "#fff", 700, "center")}
-
-    ${[["合盘分析", "命理相合，缘分几许", "01-feature-hepan.png", "screen-10", 875], ["黄大仙灵签", "求签问卦，指引方向", "01-feature-qian.png", "screen-13", 984], ["六爻占卜", "铜钱起卦，纳甲解卦", "01-feature-gua.png", "screen-17", 1093], ["万年历", "每日宜忌，趋吉避凶", "01-feature-li.png", "screen-23", 1202], ["阳宅地脉", "罗盘九宫，安位解读", "01-feature-gua.png", "screen-42", 1311]].map(([title, sub, icon, route, y], index) => `
+    ${[["合盘分析", "命理相合，缘分几许", "01-feature-hepan.png", "screen-10", 425], ["黄大仙灵签", "求签问卦，指引方向", "01-feature-qian.png", "screen-13", 534], ["六爻占卜", "铜钱起卦，纳甲解卦", "01-feature-gua.png", "screen-17", 643], ["万年历", "每日宜忌，趋吉避凶", "01-feature-li.png", "screen-23", 752], ["阳宅地脉", "罗盘九宫，安位解读", "01-feature-gua.png", "screen-42", 861]].map(([title, sub, icon, route, y], index) => `
       ${figBox(`source-1-feature-${index}`, 18, y, 354, 96, "converted-card", "border-radius:14px;box-shadow:0 8px 20px rgba(70,45,25,.1);background:#fffdfb;")}
       ${figText(`source-1-feature-title-${index}`, title, 36, y + 30, 150, 21, "#25221f", 800)}
       ${figText(`source-1-feature-sub-${index}`, sub, 36, y + 58, 190, 14, "#969087", 500)}
       ${figImage(`source-1-feature-icon-${index}`, `../images/wentian-prototype-assets/${icon}`, 286, y + 10, 72, 76, "object-fit:contain;")}
       ${figButton(`source-1-feature-hit-${index}`, 18, y, 354, 96, `data-route="${route}"`)}
     `).join("")}
-    ${figText("source-1-more-title", "更多功能", 18, 1438, 130, 22, "#25221f", 800)}
-    ${[["邀请好友", "邀请好友双方获得奖励", "01-extra-invite.png", "screen-22", 1488], ["活动中心", "参与活动赢取丰厚奖励", "01-extra-activity.png", "screen-23", 1612]].map(([title, sub, icon, route, y], index) => `
+    ${figText("source-1-more-title", "更多功能", 18, 988, 130, 22, "#25221f", 800)}
+    ${[["邀请好友", "邀请好友双方获得奖励", "01-extra-invite.png", "screen-22", 1038], ["活动中心", "参与活动赢取丰厚奖励", "01-extra-activity.png", "screen-23", 1162]].map(([title, sub, icon, route, y], index) => `
       ${figBox(`source-1-extra-${index}`, 18, y, 354, 104, "converted-card", "border-radius:14px;box-shadow:0 8px 20px rgba(70,45,25,.1);")}
       ${figText(`source-1-extra-title-${index}`, title, 36, y + 31, 150, 21, "#25221f", 800)}
       ${figText(`source-1-extra-sub-${index}`, sub, 36, y + 61, 210, 14, "#969087", 500)}
       ${figImage(`source-1-extra-icon-${index}`, `../images/wentian-prototype-assets/${icon}`, 300, y + 36, 52, 50, "object-fit:contain;")}
       ${figButton(`source-1-extra-hit-${index}`, 18, y, 354, 104, `data-route="${route}"`)}
     `).join("")}
-    ${sourceAppBottomNav("首页", 1748)}
+    ${sourceAppBottomNav("首页", 1298)}
   `;
 }
 
@@ -3680,7 +3644,7 @@ function renderConvertedScreen(no) {
     return figPhone(`screen-${screen.no}`, `${String(screen.no).padStart(2, "0")} 首页`, `
       ${sourceDashboardHomeScreen()}
       ${convertedFlowHotspots(screen)}
-    `, 1831, "converted source-screen no-status-shift", false);
+    `, 1381, "converted source-screen no-status-shift", false);
   }
   if (screen.no === 2) {
     return figPhone(`screen-${screen.no}`, `${String(screen.no).padStart(2, "0")} ${screen.title}`, `
