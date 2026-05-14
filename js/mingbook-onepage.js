@@ -1190,6 +1190,51 @@
     }).join('');
   }
 
+  function yijingImageUrl(result) {
+    if (!result?.name) return '';
+    const map = window.YIJING_IMAGE_MAP || window.yijingImageMap || {};
+    const cleanName = String(result.name).replace(/\s+/g, '');
+    return result.image || result.imageUrl || map[result.name] || map[cleanName] || '';
+  }
+
+  function renderYijingArt(result) {
+    const image = $('#mbpYijingImage');
+    const placeholder = $('#mbpYijingImagePlaceholder');
+    const title = $('#mbpYijingImageTitle');
+    const lines = $('#mbpYijingImageLines');
+    const caption = $('#mbpYijingImageCaption');
+    const imageUrl = yijingImageUrl(result);
+
+    if (title) title.textContent = result?.name || '等待排盘';
+    if (lines) lines.innerHTML = yijingLineHtml(result);
+    if (caption) caption.textContent = result?.name
+      ? `${fcActiveTab} · ${result.name}图位`
+      : '排盘后显示当前卦图。';
+
+    if (!image || !placeholder) return;
+    image.alt = result?.name ? `${result.name}易经卦图` : '易经卦图';
+    if (!imageUrl) {
+      image.removeAttribute('src');
+      image.hidden = true;
+      placeholder.classList.remove('is-hidden');
+      return;
+    }
+
+    image.onload = () => {
+      image.hidden = false;
+      placeholder.classList.add('is-hidden');
+    };
+    image.onerror = () => {
+      image.hidden = true;
+      placeholder.classList.remove('is-hidden');
+    };
+    if (image.getAttribute('src') !== imageUrl) image.src = imageUrl;
+    if (image.complete && image.naturalWidth > 0) {
+      image.hidden = false;
+      placeholder.classList.add('is-hidden');
+    }
+  }
+
   function renderYijingAssist() {
     const root = $('#mbpYijingAssist');
     if (!root) return;
@@ -1213,6 +1258,7 @@
     if (name) name.textContent = result?.name || '等待排盘';
     if (summary) summary.textContent = yijingAssistSummary(result);
     if (lines) lines.innerHTML = yijingLineHtml(result);
+    renderYijingArt(result);
 
     if (meta) {
       const pillars = fcBirthPillars
