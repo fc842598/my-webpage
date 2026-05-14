@@ -1207,7 +1207,12 @@
     if (!result?.name) return '';
     const map = window.YIJING_IMAGE_MAP || window.yijingImageMap || {};
     const cleanName = String(result.name).replace(/\s+/g, '');
-    return result.image || result.imageUrl || map[result.name] || map[cleanName] || '';
+    const mapped = result.image || result.imageUrl || map[result.name] || map[cleanName];
+    if (mapped) return mapped;
+    const num = Number(result.num);
+    return Number.isFinite(num) && num > 0
+      ? `../images/yijing-hexagrams/${String(num).padStart(2, '0')}.webp`
+      : '';
   }
 
   function renderYijingArt(result) {
