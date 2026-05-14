@@ -770,7 +770,20 @@
       mark.textContent = '命';
       meta.textContent = '待排盘 · 命书未启';
     }
+    syncBookClientMeta();
     renderClientList();
+  }
+
+  function syncBookClientMeta() {
+    const sourceMark = $('#mbpProfileMark');
+    const sourceTitle = $('#mbpProfileTitle');
+    const sourceMeta = $('#mbpProfileMeta');
+    const bookMark = $('#mbpBookMark');
+    const bookName = $('#mbpBookName');
+    const bookSubtitle = $('#mbpBookSubtitle');
+    if (bookMark && sourceMark) bookMark.textContent = sourceMark.textContent || '命';
+    if (bookName && sourceTitle) bookName.textContent = sourceTitle.textContent || '命 主';
+    if (bookSubtitle && sourceMeta) bookSubtitle.textContent = sourceMeta.textContent || '待排盘 · 命书未启';
   }
 
   function clientLabel(profile) {
@@ -2180,8 +2193,7 @@
       `;
       }).join('');
     }
-    const subtitle = $('#mbpBookSubtitle');
-    if (subtitle) subtitle.textContent = facts.subtitle;
+    syncBookClientMeta();
     requestAnimationFrame(syncReportNav);
   }
 
@@ -2337,8 +2349,7 @@
         <article id="mbp-chapter-${index}" data-report-chapter="${index}"><span>卷${index + 1}</span><h3>${title}</h3><p>等待一键批命。</p></article>
       `).join('');
     }
-    const subtitle = $('#mbpBookSubtitle');
-    if (subtitle) subtitle.textContent = '命书启卷';
+    syncBookClientMeta();
     const decodeList = $('#mbpDecodeList');
     if (decodeList) {
       decodeList.innerHTML = `
