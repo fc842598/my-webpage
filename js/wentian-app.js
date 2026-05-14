@@ -1454,9 +1454,23 @@ function saveWentianTransientState(state) {
   } catch (_err) {}
 }
 
-async function wentianPostJson(path, payload, timeoutMs = 45000) {
+function waitWentian(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+function isWentianRetryableError(error) {
+  const text = `${error?.name || ""} ${error?.message || ""}`.toLowerCase();
+  return /abort|timeout|failed to fetch|network|load failed/.test(text);
+}
+
+function getWentianFriendlyError(error) {
+  if (isWentianRetryableError(error)) return "网络有点慢，许半仙刚才没接上，请再点一次发送。";
+  return error?.message || "许半仙暂时不可用";
+}
+
+async function wentianPostJsonOnce(path, payload, timeoutMs) {
   const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), timeoutMs);
+  const timer = setTimeout(() => controller.abort(new DOMException("request timeout", "TimeoutError")), timeoutMs);
   try {
     const response = await fetch(`${getWentianApiBase()}${path}`, {
       method: "POST",
@@ -1475,6 +1489,21 @@ async function wentianPostJson(path, payload, timeoutMs = 45000) {
   }
 }
 
+async function wentianPostJson(path, payload, timeoutMs = 90000, retries = 1) {
+  let lastError = null;
+  for (let attempt = 0; attempt <= retries; attempt += 1) {
+    try {
+      return await wentianPostJsonOnce(path, payload, timeoutMs);
+    } catch (error) {
+      lastError = error;
+      if (attempt >= retries || !isWentianRetryableError(error)) break;
+      await waitWentian(900 + attempt * 700);
+    }
+  }
+  if (lastError) lastError.userMessage = getWentianFriendlyError(lastError);
+  throw lastError;
+}
+
 function setWentianChatStatus(text, tone = "") {
   const el = document.getElementById("wentian-chat-status");
   if (!el) return;
@@ -1485,8 +1514,8 @@ function setWentianChatStatus(text, tone = "") {
 function setWentianQuota(quota) {
   const el = document.querySelector('[data-node-id="source-4-left"]');
   if (!el || !quota) return;
-  const remaining = Number.isFinite(Number(quota.remaining)) ? quota.remaining : "--";
-  const limit = Number.isFinite(Number(quota.limit)) ? quota.limit : "--";
+  const remaining = quota.remaining === null || quota.remaining === undefined || quota.remaining === "" ? "--" : quota.remaining;
+  const limit = quota.limit === null || quota.limit === undefined || quota.limit === "" ? "--" : quota.limit;
   el.textContent = `◇ 今日 ${remaining}/${limit}`;
 }
 
@@ -1514,17 +1543,18 @@ function setWentianChatBusy(busy) {
   if (send) send.disabled = busy;
 }
 
-async function ensureWentianXuSession() {
+async function ensureWentianXuSession(options = {}) {
+  const silent = !!options.silent;
   if (wentianXuChat.sessionId) return wentianXuChat.sessionId;
   if (wentianXuChat.sessionPromise) return wentianXuChat.sessionPromise;
 
-  setWentianChatStatus("正在接入许半仙…");
+  if (!silent) setWentianChatStatus("正在接入许半仙…");
   const chartData = getWentianChartPayload();
   wentianXuChat.sessionPromise = wentianPostJson("/api/ai/chat/session", {
     chartRecordId: chartData.chartRecordId,
     chartData,
     transientState: loadWentianTransientState(),
-  }, 20000).then((data) => {
+  }, 90000, 1).then((data) => {
     wentianXuChat.sessionId = data.sessionId || `transient:${chartData.chartRecordId}`;
     if (data.transientState) saveWentianTransientState(data.transientState);
     setWentianChatStatus(data.transientMode ? "临时会话已接入" : "许半仙已连接", data.transientMode ? "warn" : "ok");
@@ -1541,8 +1571,12 @@ async function ensureWentianXuSession() {
     }
     return wentianXuChat.sessionId;
   }).catch((error) => {
-    setWentianChatStatus("许半仙暂时未连上", "error");
-    if (!wentianXuChat.messages.length) addWentianMessage("system", `连接失败：${error.message || "后端暂时不可用"}`);
+    if (silent) {
+      setWentianChatStatus("已接入命盘", "ok");
+    } else {
+      setWentianChatStatus("许半仙暂时未连上", "error");
+      if (!wentianXuChat.messages.length) addWentianMessage("system", `连接失败：${getWentianFriendlyError(error)}`);
+    }
     throw error;
   }).finally(() => {
     wentianXuChat.sessionPromise = null;
@@ -1563,21 +1597,22 @@ async function sendWentianXuChat(promptText = "") {
 
   try {
     const chartData = getWentianChartPayload();
-    await ensureWentianXuSession();
     const data = await wentianPostJson("/api/ai/chat/send", {
       chartRecordId: chartData.chartRecordId,
       message,
       chartData,
       transientState: loadWentianTransientState(),
-    }, 60000);
+    }, 120000, 1);
     wentianXuChat.messages.pop();
+    wentianXuChat.sessionId = data.sessionId || wentianXuChat.sessionId || `transient:${chartData.chartRecordId}`;
     if (data.transientState) saveWentianTransientState(data.transientState);
     setWentianQuota(data.quota);
     setWentianChatStatus(data.transientMode ? "临时会话已接入" : "许半仙已连接", data.transientMode ? "warn" : "ok");
     addWentianMessage("assistant", data.reply || "我看到了，但这轮没有返回内容，请再问一次。");
   } catch (error) {
     wentianXuChat.messages.pop();
-    addWentianMessage("system", `发送失败：${error.message || "许半仙暂时不可用"}`);
+    setWentianChatStatus("发送未完成", "error");
+    addWentianMessage("system", getWentianFriendlyError(error));
   } finally {
     setWentianChatBusy(false);
     input?.focus();
@@ -1623,7 +1658,8 @@ function initWentianXuChat() {
   } else {
     renderWentianMessages();
   }
-  ensureWentianXuSession().catch(() => {});
+  setWentianChatStatus("已接入命盘", "ok");
+  ensureWentianXuSession({ silent: true }).catch(() => {});
 }
 
 function setWentianChartStatus(text, tone = "") {
