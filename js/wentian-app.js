@@ -50,7 +50,7 @@ const convertedScreens = [
   { no: 31, title: "我的", active: "我的", mine: true },
   { no: 32, title: "账户设置", active: "我的", list: [["基本信息", "", "screen-39"], ["登录方式", "", "screen-40"], ["设置密码", "", "screen-41"], ["退出登录", "", "screen-31"]] },
   { no: 33, title: "问天会员", active: "我的", cards: [["普通会员", ""], ["会员权益", "会员权益/套餐信息"], ["月度会员 ¥38", "会员权益/套餐信息"], ["年度会员 ¥348", "会员权益/套餐信息"]], button: ["立即开通 ¥38", "screen-30"] },
-  { no: 34, title: "分享应用", active: "我的", modalTitle: "分享应用", modalItems: ["分享文本", "邀请码：8R7U58ZW", "微信好友 / 朋友圈 / 复制链接"], next: "screen-31" },
+  { no: 34, title: "分享问天AI", active: "我的", modalTitle: "分享问天AI", modalItems: ["分享文本", "邀请码：8R7U58ZW", "微信好友 / 朋友圈 / 复制链接"], next: "screen-31" },
   { no: 35, title: "联系我们", active: "我的", list: [["电子邮箱", "", ""], ["小红书", "", ""], ["微信公众号", "", ""], ["X", "", ""]] },
   { no: 36, title: "关于我们", active: "我的", cards: [["问天AI v1.0.3199", "问天AI是一款命理排盘、合盘、抽签与AI解读工具。"], ["隐私协议", ""], ["用户协议", ""], ["检查更新", ""]] },
   { no: 37, title: "语言设置", active: "我的", modalTitle: "语言设置", modalItems: ["简体中文 ✓", "繁體中文", "English"], next: "screen-38" },
@@ -1823,7 +1823,7 @@ function sourceMineScreen(screen) {
       ${figText(`source-31-quick-icon-text-${index}`, icon, x + 17, y + 21, 36, 14, "#b88c33", 800, "center")}
       ${figText(`source-31-quick-label-${index}`, label, x + 62, y + 21, 90, 16, "#26211c", 700)}
     `).join("")}
-    ${[["邀请好友", "0 人", 491], ["兑换礼包", "", 552], ["语言设置", languageLabel, 629], ["分享应用", "", 690], ["联系我们", "", 767]].map(([label, value, y], index) => `
+    ${[["邀请好友", "0 人", 491], ["兑换礼包", "", 552], ["语言设置", languageLabel, 629], ["分享问天AI", "", 690], ["联系我们", "", 767]].map(([label, value, y], index) => `
       ${figBox(`source-31-row-${index}`, 16, y, 358, 61, "converted-card", `border-radius:${index === 0 || index === 2 || index === 4 ? "12px" : "0"};border-bottom:${index === 0 || index === 2 ? "0" : "1px solid #eee8df"};box-shadow:${index === 0 || index === 2 || index === 4 ? "0 5px 14px rgba(74,55,32,.08)" : "none"};`)}
       ${figText(`source-31-row-icon-${index}`, ["♧", "♁", "文", "⌯", "☏"][index], 34, y + 21, 24, 16, "#b88c33", 700, "center")}
       ${figText(`source-31-row-label-${index}`, label, 68, y + 20, 140, 16, "#26211c", 600)}
@@ -2966,7 +2966,7 @@ function renderWentianPolishedScreen(screen) {
       ${figText("wt29-alipay-text", "支付宝", 24, 560, 150, 13, "#bd8624", 800, "center")}
       ${figBox("wt29-card", 196, 548, 150, 42, "", "border:1px solid #eadfce;border-radius:9px;background:#fff;")}
       ${figText("wt29-card-text", "信用卡", 196, 560, 150, 13, "#25211d", 700, "center")}
-      ${figText("wt29-terms", "灵石仅限问天App内使用，充值后不支持退款", 0, 692, 390, 12, "#9e968d", 500, "center")}
+      ${figText("wt29-terms", "灵石仅限问天AI站内使用，充值后不支持退款", 0, 692, 390, 12, "#9e968d", 500, "center")}
       ${figBox("wt29-submit", 42, 736, 306, 50, "", "border-radius:9px;background:#c49a34;")}
       ${figButton("wt29-submit-hit", 42, 736, 306, 50, 'data-route="screen-30"')}
       ${figText("wt29-submit-text", "立即充值 ¥12", 42, 751, 306, 14, "#fff", 800, "center")}
@@ -3107,7 +3107,7 @@ function convertedSpecial(screen) {
       ${figBox("mine-profile", 24, 112, 342, 86, "converted-card", "")}
       ${figText("mine-name", "谢广周", 40, 126, 310, 15, "#26211c", 700)}
       ${figText("mine-meta", "普通会员 / 账号信息", 40, 154, 310, 12, "#8c8275")}
-      ${[["问天会员", "screen-33"], ["灵石充值", "screen-29"], ["我的报告", "screen-27"], ["订单记录", "screen-30"], ["邀请好友", "screen-22"], ["语言设置", "screen-37"], ["分享应用", "screen-34"], ["联系我们", "screen-35"]].map(([label, route], index) => {
+      ${[["问天会员", "screen-33"], ["灵石充值", "screen-29"], ["我的报告", "screen-27"], ["订单记录", "screen-30"], ["邀请好友", "screen-22"], ["语言设置", "screen-37"], ["分享问天AI", "screen-34"], ["联系我们", "screen-35"]].map(([label, route], index) => {
         const y = 224 + index * 54;
         return `
           ${figBox(`mine-row-${index}`, 24, y, 342, 42, "converted-card", "border-radius:8px;")}
@@ -3638,9 +3638,12 @@ function fitActivePhoneShell() {
     const viewportWidth = viewport?.width || window.innerWidth || document.documentElement.clientWidth || WENTIAN_PHONE_WIDTH;
     const viewportHeight = viewport?.height || window.innerHeight || document.documentElement.clientHeight || WENTIAN_PHONE_HEIGHT;
     const desktop = window.matchMedia?.("(min-width: 881px)").matches;
+    const rootStyle = getComputedStyle(document.documentElement);
+    const safeTop = desktop ? 0 : (parseFloat(rootStyle.getPropertyValue("--wentian-safe-top")) || 0);
+    const safeBottom = desktop ? 0 : (parseFloat(rootStyle.getPropertyValue("--wentian-safe-bottom")) || 0);
     const horizontalAvailable = Math.max(320, Math.min(viewportWidth, 430));
     const verticalChromeSpace = desktop ? 48 : 0;
-    const verticalAvailable = Math.max(560, viewportHeight - verticalChromeSpace);
+    const verticalAvailable = Math.max(560, viewportHeight - verticalChromeSpace - safeTop - safeBottom);
     const rawHeight = parseFloat(phone.style.height) || phone.offsetHeight || WENTIAN_PHONE_HEIGHT;
     const heightBasis = rawHeight <= 900 ? rawHeight : WENTIAN_PHONE_HEIGHT;
     const widthScale = Math.min(1, horizontalAvailable / WENTIAN_PHONE_WIDTH);
@@ -3885,7 +3888,7 @@ function renderMine() {
     ${figText("17:155", "›", 344, 730, 22, 28, "#a8a699", 700, "center")}
     ${figLine("17:156", 16, 746, 358)}
     ${figText("17:157", "⌯", 34, 762, 28, 22, "#8c8c80", 700, "center")}
-    ${figText("17:158", "分享应用", 68, 763, 150, 20, "#21211f")}
+    ${figText("17:158", "分享问天AI", 68, 763, 150, 20, "#21211f")}
     ${figText("17:159", "›", 344, 786, 22, 28, "#a8a699", 700, "center")}
     ${figBottomNav("我的")}
   `);
@@ -3934,7 +3937,7 @@ function renderRecharge() {
     ${figBox("17:88", 168, 708, 18, 14, "", "border-radius:2px;background:#0578e0;")}
     ${figBox("17:89", 168, 708, 18, 5, "", "border-radius:1px;background:#f2f2e5;")}
     ${figText("17:90", "信用卡", 198, 708, 58, 17, "#21211f", 500)}
-    ${figText("17:91", "灵石仅限问天App内使用，充值后不支持退款", 52, 746, 286, 13, "#9e998f", 400, "center")}
+    ${figText("17:91", "灵石仅限问天AI站内使用，充值后不支持退款", 52, 746, 286, 13, "#9e998f", 400, "center")}
     ${figText("17:92", "用户协议  |  隐私政策", 130, 770, 130, 13, "#75756e", 400, "center")}
     ${figBox("17:93", 0, 780, 390, 64, "", "background:rgba(251,247,240,.92);")}
     ${figBox("17:94", 18, 790, 354, 44, "", "border-radius:22px;background:#9e6b08;box-shadow:0 3px 12px rgba(0,0,0,.16);")}

@@ -9,6 +9,8 @@
   --red: #a94437;
   --blue: #3269a6;
   --shadow: 0 14px 36px rgba(68, 45, 25, 0.12);
+  --wentian-safe-top: env(safe-area-inset-top, 0px);
+  --wentian-safe-bottom: env(safe-area-inset-bottom, 0px);
 }
 
 * { box-sizing: border-box; }
@@ -19,12 +21,18 @@ body {
   overflow-x: hidden;
 }
 
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
 body {
   margin: 0;
   min-height: 100dvh;
   background: #fff6ea;
   color: var(--ink);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", sans-serif;
+  overscroll-behavior-y: none;
+  -webkit-font-smoothing: antialiased;
 }
 
 button,
@@ -32,13 +40,19 @@ input,
 select,
 textarea { font: inherit; }
 
-button { cursor: pointer; }
+button {
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
 
 .app-shell {
   display: flex;
   justify-content: center;
   width: 100%;
   min-height: 100dvh;
+  padding-top: var(--wentian-safe-top);
+  padding-bottom: var(--wentian-safe-bottom);
 }
 
 .app-rail {
