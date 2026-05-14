@@ -2345,11 +2345,7 @@ function yangzhaiCompassGrid(id) {
       return `
         ${figBox(`${id}-cell-${index}`, x, y, 114, 146, "", "border:1px solid #ddcdb7;background:#fffaf3;")}
         ${figText(`${id}-center-title`, "罗盘方位", x, y + 30, 114, 19, "#201812", 900, "center")}
-        ${figBox(`${id}-compass-a`, x + 25, y + 64, 64, 64, "", "border:2px solid #b98b3a;border-radius:32px;background:conic-gradient(from 18deg,#9f3d2d 0 9deg,#fffaf3 9deg 22deg,#d9b875 22deg 34deg,#fffaf3 34deg 48deg,#9f3d2d 48deg 57deg,#fffaf3 57deg 360deg);box-shadow:0 7px 14px rgba(100,62,25,.08);")}
-        ${figBox(`${id}-compass-b`, x + 34, y + 73, 46, 46, "", "border:1px solid #d6bd85;border-radius:23px;background:#fff;")}
-        ${figBox(`${id}-compass-c`, x + 44, y + 83, 26, 26, "", "border-radius:13px;background:#fff4df;")}
-        ${figText(`${id}-compass-n`, "南", x + 48, y + 75, 18, 14, "#201812", 900, "center")}
-        ${figText(`${id}-compass-dot`, "◆", x + 47, y + 92, 20, 13, "#a94437", 900, "center")}
+        ${figImage(`${id}-luopan`, "../images/wentian-prototype-assets/yangzhai-luopan.png", x + 17, y + 58, 80, 80, "object-fit:cover;border-radius:50%;box-shadow:0 7px 18px rgba(100,62,25,.12);background:#fff;")}
       `;
     }
     const person = yangzhaiState.placements[palace.key] || "";
