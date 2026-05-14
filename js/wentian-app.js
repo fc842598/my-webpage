@@ -2078,15 +2078,28 @@ const YANGZHAI_DEFAULT_PLACEMENTS = {
   kan: ["二子"],
   qian: ["父亲"]
 };
-const YANGZHAI_GRID_X = 28;
-const YANGZHAI_GRID_Y = 153;
-const YANGZHAI_CELL_W = 111.333;
-const YANGZHAI_CELL_H = 146.667;
-const YANGZHAI_ACTION_Y = 640;
-const YANGZHAI_RESULT_TITLE_Y = 720;
-const YANGZHAI_RESULT_START_Y = 760;
+const YANGZHAI_GRID_X = 5;
+const YANGZHAI_GRID_Y = 112;
+const YANGZHAI_CELL_W = 126.667;
+const YANGZHAI_CELL_H = 184;
+const YANGZHAI_GRID_W = YANGZHAI_CELL_W * 3;
+const YANGZHAI_GRID_H = YANGZHAI_CELL_H * 3;
+const YANGZHAI_CELL_HEADER_H = 42;
+const YANGZHAI_ACTION_Y = 686;
+const YANGZHAI_RESULT_TITLE_Y = 764;
+const YANGZHAI_RESULT_START_Y = 804;
 const YANGZHAI_RESULT_COLLAPSED_HEIGHT = 142;
 const YANGZHAI_RESULT_EXPANDED_HEIGHT = 252;
+const YANGZHAI_AVATAR_IMAGES = {
+  父亲: "../images/wentian-prototype-assets/yangzhai-avatar-fuqin.png",
+  母亲: "../images/wentian-prototype-assets/yangzhai-avatar-muqin.png",
+  长子: "../images/wentian-prototype-assets/yangzhai-avatar-changzi.png",
+  长女: "../images/wentian-prototype-assets/yangzhai-avatar-changnv.png",
+  二子: "../images/wentian-prototype-assets/yangzhai-avatar-erzi.png",
+  二女: "../images/wentian-prototype-assets/yangzhai-avatar-ernv.png",
+  三子: "../images/wentian-prototype-assets/yangzhai-avatar-sanzi.png",
+  三女: "../images/wentian-prototype-assets/yangzhai-avatar-sannv.png"
+};
 const YANGZHAI_ROLE_GUA = {
   父亲: "乾",
   母亲: "坤",
@@ -2471,20 +2484,20 @@ function getYangzhaiResultHeight() {
 
 function yangzhaiBg(id, height = 844) {
   return `
-    ${figBox(`${id}-bg`, -720, 0, 1830, height, "", "background:linear-gradient(180deg,#fffaf2 0%,#fff8ee 40%,#f8f0e4 100%);")}
-    ${figBox(`${id}-top-wash`, -720, 0, 1830, 164, "", "background:linear-gradient(135deg,rgba(231,198,137,.34),rgba(255,250,242,0) 72%);")}
+    ${figBox(`${id}-bg`, -720, 0, 1830, height, "", "background:#f7f7fb;")}
+    ${figBox(`${id}-top`, -720, 0, 1830, 104, "", "background:#fff;")}
+    ${figBox(`${id}-header-line`, 0, 103, 390, 1, "", "background:#eeeef4;")}
   `;
 }
 
 function yangzhaiHeader(id, title = "地脉道", right = "教程") {
   return `
-    ${figBox(`${id}-back-bg`, 18, 42, 38, 38, "", "border:1px solid #dbc8ac;border-radius:19px;background:rgba(255,253,247,.86);box-shadow:0 6px 14px rgba(77,49,28,.06);")}
-    ${figButton(`${id}-back-hit`, 10, 38, 54, 54, 'data-action="back"')}
-    ${figText(`${id}-back`, "‹", 28, 47, 18, 24, "#241a12", 800, "center", "line-height:1.1;")}
-    ${figText(`${id}-title`, title, 100, 48, 190, 20, "#211812", 900, "center", "line-height:1.3;")}
-    ${right ? `${figBox(`${id}-tutorial`, 314, 40, 58, 38, "", "border:1px solid #d9c5a8;border-radius:13px;background:rgba(255,251,244,.9);box-shadow:0 7px 16px rgba(81,51,29,.06);")}
+    ${figButton(`${id}-back-hit`, 12, 38, 58, 58, 'data-action="back"')}
+    ${figText(`${id}-back`, "‹", 22, 45, 28, 33, "#1f2227", 500, "center", "line-height:1;")}
+    ${figText(`${id}-title`, title, 100, 47, 190, 24, "#101114", 500, "center", "line-height:1.25;")}
+    ${right ? `${figBox(`${id}-tutorial`, 314, 40, 58, 38, "", "border:1px solid #1f2227;border-radius:13px;background:#fff;")}
     ${figButton(`${id}-tutorial-hit`, 314, 40, 58, 38, 'data-route="screen-45"')}
-    ${figText(`${id}-tutorial-text`, right, 314, 51, 58, 13, "#2c2118", 800, "center")}` : ""}
+    ${figText(`${id}-tutorial-text`, right, 314, 49, 58, 17, "#101114", 500, "center")}` : ""}
   `;
 }
 
@@ -2492,23 +2505,26 @@ function yangzhaiRoomAvatar(id, x, y, labels) {
   const items = normalizeYangzhaiItems(labels);
   if (!items.length) {
     return `
-      ${figBox(`${id}-plus`, x + 39, y + 76, 34, 34, "", "border:1px solid #d7c4ab;border-radius:17px;background:#fffdf8;box-shadow:0 6px 12px rgba(87,56,32,.05);")}
-      ${figText(`${id}-plus-text`, "+", x + 39, y + 79, 34, 18, "#9f3d2d", 900, "center", "line-height:1.25;")}
+      ${figBox(`${id}-plus`, x + 45, y + 70, 36, 36, "", "border:1px solid #d3d0c9;border-radius:18px;background:#fff;")}
+      ${figText(`${id}-plus-text`, "+", x + 45, y + 74, 36, 20, "#9b3d33", 900, "center", "line-height:1.1;")}
     `;
   }
   const label = items[0];
   const option = getYangzhaiOption(label);
   const short = option.short || label.slice(0, 1);
-  const displayLabel = items.length > 1 ? `${label}+${items.length - 1}` : label;
-  const labelSize = displayLabel.length > 4 ? 11 : 13;
+  const displayLabel = items.length > 1 ? `${label}等${items.length}项` : label;
+  const avatarSrc = YANGZHAI_AVATAR_IMAGES[label];
+  const labelSize = displayLabel.length > 5 ? 13 : 16;
   return `
-    ${figBox(`${id}-avatar`, x + 24, y + 67, 34, 34, "", "border:1px solid #dcc39a;border-radius:17px;background:#fff2d7;box-shadow:0 6px 12px rgba(87,56,32,.08);")}
-    ${figText(`${id}-avatar-text`, short, x + 24, y + 75, 34, 15, "#8b6430", 900, "center", "line-height:1.25;")}
-    ${items.length > 1 ? `${figBox(`${id}-count`, x + 53, y + 63, 24, 17, "", "border-radius:8px;background:#ad4939;box-shadow:0 4px 9px rgba(169,68,55,.18);")}
-    ${figText(`${id}-count-text`, `+${items.length - 1}`, x + 53, y + 66, 24, 10, "#fffaf4", 900, "center", "line-height:1.1;")}` : ""}
-    ${figText(`${id}-label`, displayLabel, x + 22, y + 106, 66, labelSize, "#201812", 900)}
-    ${figBox(`${id}-plus`, x + 78, y + 70, 30, 30, "", "border-radius:15px;background:#24201b;box-shadow:0 7px 12px rgba(0,0,0,.18);")}
-    ${figText(`${id}-plus-text`, "+", x + 78, y + 72, 30, 17, "#fff7ea", 900, "center", "line-height:1.2;")}
+    ${avatarSrc
+      ? figImage(`${id}-avatar-img`, avatarSrc, x + 18, y + 62, 38, 38, "border-radius:19px;background:#f1f1ee;object-fit:cover;")
+      : `${figBox(`${id}-avatar`, x + 18, y + 62, 38, 38, "", "border:1px solid #d7d5cf;border-radius:19px;background:#f1f1ee;")}
+         ${figText(`${id}-avatar-text`, short, x + 18, y + 71, 38, 14, "#735122", 900, "center")}`}
+    ${items.length > 1 ? `${figBox(`${id}-count`, x + 47, y + 56, 28, 19, "", "border-radius:10px;background:#b75146;box-shadow:0 3px 6px rgba(128,47,42,.20);")}
+    ${figText(`${id}-count-text`, `+${items.length - 1}`, x + 47, y + 59, 28, 11, "#fff", 900, "center", "line-height:1.1;")}` : ""}
+    ${figText(`${id}-label`, displayLabel, x + 18, y + 106, 88, labelSize, "#111114", 500)}
+    ${figBox(`${id}-plus`, x + 77, y + 61, 38, 38, "", "border-radius:19px;background:#4a4a4a;box-shadow:0 8px 14px rgba(0,0,0,.10);")}
+    ${figText(`${id}-plus-text`, "+", x + 77, y + 66, 38, 23, "#fff", 900, "center", "line-height:1.1;")}
   `;
 }
 
@@ -2520,52 +2536,59 @@ function yangzhaiCompassGrid(id) {
     const y = YANGZHAI_GRID_Y + row * YANGZHAI_CELL_H;
     if (palace.key === "center") {
       return `
-        ${figText(`${id}-center-title`, "罗盘方位", x + 13, y + 38, YANGZHAI_CELL_W - 26, 18, "#25190f", 900, "center")}
-        ${figImage(`${id}-luopan`, "../images/wentian-prototype-assets/yangzhai-luopan.png", x + 18, y + 75, 76, 76, "object-fit:cover;border-radius:50%;border:1px solid #d4c4e6;box-shadow:0 8px 16px rgba(97,62,36,.10);background:#fff;")}
-        ${figButton(`${id}-luopan-hit`, x + 7, y + 28, YANGZHAI_CELL_W - 14, YANGZHAI_CELL_H - 36, 'data-action="yangzhai-luopan-open" aria-label="放大罗盘"', "", "cursor:zoom-in;")}
+        ${figText(`${id}-center-title`, "罗盘方位", x + 0, y + 50, YANGZHAI_CELL_W, 22, "#111114", 700, "center")}
+        ${figImage(`${id}-luopan`, "../images/wentian-prototype-assets/yangzhai-luopan.png", x + 4, y + 92, 115, 115, "object-fit:cover;border-radius:50%;background:#fff;")}
+        ${figButton(`${id}-luopan-hit`, x + 4, y + 50, YANGZHAI_CELL_W - 8, 158, 'data-action="yangzhai-luopan-open" aria-label="放大罗盘"', "", "cursor:zoom-in;")}
       `;
     }
     const items = getYangzhaiPlacementItems(palace.key);
     return `
-      ${figBox(`${id}-cell-top-${index}`, x, y, YANGZHAI_CELL_W, 39, "", `background:${items.length ? "rgba(251,240,220,.82)" : "rgba(251,240,220,.68)"};`)}
-      ${figText(`${id}-gua-${index}`, palace.gua, x + 10, y + 10, 24, 20, "#aa4538", 900, "left", "line-height:1.3;")}
-      ${figText(`${id}-dir-${index}`, `(${palace.dir})`, x + 33, y + 13, 43, 11, "#3c3025", 800, "left", "white-space:nowrap;")}
-      ${figText(`${id}-role-${index}`, palace.role, x + 72, y + 13, 40, 12, "#211812", 900, "right", "white-space:nowrap;")}
+      ${figBox(`${id}-cell-header-line-${index}`, x, y + YANGZHAI_CELL_HEADER_H, YANGZHAI_CELL_W, 1, "", "background:#dedee5;")}
+      ${figText(`${id}-gua-${index}`, palace.gua, x + 12, y + 9, 24, 25, "#815cf6", 900, "left", "line-height:1;")}
+      ${figText(`${id}-dir-${index}`, `(${palace.dir})`, x + 38, y + 13, 39, 14, "#111114", 500, "left", "white-space:nowrap;")}
+      ${figBox(`${id}-sep-${index}`, x + 80, y + 13, 1, 17, "", "background:#dcdce2;")}
+      ${figText(`${id}-role-${index}`, palace.role, x + 85, y + 13, 42, 14, "#111114", 500, "left", "white-space:nowrap;")}
       ${yangzhaiRoomAvatar(`${id}-room-${index}`, x, y, items)}
       ${figButton(`${id}-cell-hit-${index}`, x, y, YANGZHAI_CELL_W, YANGZHAI_CELL_H, `data-action="yangzhai-open" data-palace="${palace.key}"`)}
     `;
   }).join("");
 }
 
+function yangzhaiCompassShell(id) {
+  return `
+    ${figBox(`${id}-grid-surface`, YANGZHAI_GRID_X, YANGZHAI_GRID_Y, YANGZHAI_GRID_W, YANGZHAI_GRID_H, "", "border:1px solid #d9d9e1;background:#fff;overflow:hidden;")}
+    ${figBox(`${id}-line-h1`, YANGZHAI_GRID_X, YANGZHAI_GRID_Y + YANGZHAI_CELL_H, YANGZHAI_GRID_W, 1, "", "background:#d9d9e1;")}
+    ${figBox(`${id}-line-h2`, YANGZHAI_GRID_X, YANGZHAI_GRID_Y + YANGZHAI_CELL_H * 2, YANGZHAI_GRID_W, 1, "", "background:#d9d9e1;")}
+    ${figBox(`${id}-line-v1`, YANGZHAI_GRID_X + YANGZHAI_CELL_W, YANGZHAI_GRID_Y, 1, YANGZHAI_GRID_H, "", "background:#d9d9e1;")}
+    ${figBox(`${id}-line-v2`, YANGZHAI_GRID_X + YANGZHAI_CELL_W * 2, YANGZHAI_GRID_Y, 1, YANGZHAI_GRID_H, "", "background:#d9d9e1;")}
+    ${yangzhaiCompassGrid(id)}
+  `;
+}
+
+function yangzhaiActions(id, primaryText = "解读分析") {
+  return `
+    ${figBox(`${id}-analyze`, 12, YANGZHAI_ACTION_Y, 172, 52, "", "border-radius:18px;background:#805af6;box-shadow:0 10px 18px rgba(126,88,246,.18);")}
+    ${figButton(`${id}-analyze-hit`, 12, YANGZHAI_ACTION_Y, 172, 52, 'data-action="yangzhai-analyze"')}
+    ${figText(`${id}-analyze-text`, primaryText, 12, YANGZHAI_ACTION_Y + 15, 172, 18, "#fff", 500, "center")}
+    ${figBox(`${id}-order`, 198, YANGZHAI_ACTION_Y, 132, 52, "", "border:1px solid #8d8d95;border-radius:18px;background:#fff;")}
+    ${figButton(`${id}-order-hit`, 198, YANGZHAI_ACTION_Y, 132, 52, 'data-action="yangzhai-autofill"')}
+    ${figText(`${id}-order-text`, "长幼有序,天地归位", 198, YANGZHAI_ACTION_Y + 17, 132, 13, "#5c5c64", 500, "center", "white-space:nowrap;")}
+    ${figBox(`${id}-reset`, 340, YANGZHAI_ACTION_Y, 40, 52, "", "border:1px solid #8d8d95;border-radius:18px;background:#fff;")}
+    ${figButton(`${id}-reset-hit`, 340, YANGZHAI_ACTION_Y, 40, 52, 'data-action="yangzhai-reset"')}
+    ${figText(`${id}-reset-text`, "重置", 340, YANGZHAI_ACTION_Y + 17, 40, 15, "#5c5c64", 500, "center")}
+  `;
+}
+
 function sourceYangzhaiCompassScreen() {
-  const occupiedCount = Object.values(yangzhaiState.placements || {}).filter((items) => normalizeYangzhaiItems(items).length).length;
-  const itemCount = Object.values(yangzhaiState.placements || {}).reduce((sum, items) => sum + normalizeYangzhaiItems(items).length, 0);
   return `
     ${yangzhaiBg("yz42")}
     ${yangzhaiHeader("yz42")}
-    ${figBox("yz42-status", 30, 92, 330, 36, "", "border:1px solid #ead7b8;border-radius:18px;background:rgba(255,247,232,.78);")}
-    ${figText("yz42-status-text", `已安 ${occupiedCount} 宫 · ${itemCount} 项`, 49, 102, 292, 12, "#8b6b36", 900, "center")}
-    ${figBox("yz42-grid-shadow", 17, 138, 356, 474, "", "border-radius:24px;background:rgba(244,223,184,.20);box-shadow:0 20px 38px rgba(93,55,31,.12);")}
-    ${figBox("yz42-grid-card", 21, 144, 348, 462, "", "border:1px solid #ddc9aa;border-radius:22px;background:#fffdf8;")}
-    ${figBox("yz42-grid-surface", 28, 153, 334, 440, "", "border:1px solid #eadbc7;border-radius:15px;background:#fffaf1;overflow:hidden;")}
-    ${figBox("yz42-line-h1", 28, 299.667, 334, 1, "", "background:#dfcfb8;")}
-    ${figBox("yz42-line-h2", 28, 446.333, 334, 1, "", "background:#dfcfb8;")}
-    ${figBox("yz42-line-v1", 139.333, 153, 1, 440, "", "background:#dfcfb8;")}
-    ${figBox("yz42-line-v2", 250.667, 153, 1, 440, "", "background:#dfcfb8;")}
-    ${yangzhaiCompassGrid("yz42")}
-    ${figBox("yz42-analyze", 24, YANGZHAI_ACTION_Y, 166, 52, "", "border-radius:18px;background:#b84e39;box-shadow:0 12px 22px rgba(157,62,46,.24);")}
-    ${figButton("yz42-analyze-hit", 24, YANGZHAI_ACTION_Y, 166, 52, 'data-action="yangzhai-analyze"')}
-    ${figText("yz42-analyze-text", "解读分析", 24, YANGZHAI_ACTION_Y + 17, 166, 16, "#fffaf3", 900, "center")}
-    ${figBox("yz42-order", 204, YANGZHAI_ACTION_Y, 104, 52, "", "border:1px solid #d7c4aa;border-radius:17px;background:#fffdf8;box-shadow:0 9px 18px rgba(81,51,29,.06);")}
-    ${figButton("yz42-order-hit", 204, YANGZHAI_ACTION_Y, 104, 52, 'data-action="yangzhai-autofill"')}
-    ${figText("yz42-order-text", "长幼归位", 204, YANGZHAI_ACTION_Y + 12, 104, 13, "#6f4f25", 900, "center")}
-    ${figText("yz42-order-sub", "一键排布", 204, YANGZHAI_ACTION_Y + 30, 104, 10, "#998a78", 600, "center")}
-    ${figBox("yz42-reset", 320, YANGZHAI_ACTION_Y, 46, 52, "", "border:1px solid #d7c4aa;border-radius:17px;background:#fffdf8;box-shadow:0 9px 18px rgba(81,51,29,.06);")}
-    ${figButton("yz42-reset-hit", 320, YANGZHAI_ACTION_Y, 46, 52, 'data-action="yangzhai-reset"')}
-    ${figText("yz42-reset-text", "重置", 320, YANGZHAI_ACTION_Y + 18, 46, 13, "#6f4f25", 900, "center")}
-    ${figBox("yz42-tip", 20, 718, 350, 70, "", "border:1px solid #eadfce;border-radius:20px;background:rgba(255,253,248,.90);box-shadow:0 12px 24px rgba(77,49,28,.06);")}
-    ${figText("yz42-tip-icon", "!", 38, 740, 18, 18, "#b8944e", 900, "center")}
-    ${figText("yz42-tip-text", "已接入海厦《地脉道》阳宅64卦；展开可看原书摘句、现代解读与安位建议。", 66, 735, 272, 12, "#817568", 700, "left", "line-height:1.35;")}
+    ${yangzhaiCompassShell("yz42")}
+    ${yangzhaiActions("yz42")}
+    ${figBox("yz42-tip", 0, 766, 390, 62, "", "background:#fff;border-radius:18px;")}
+    ${figBox("yz42-tip-icon-bg", 18, 786, 18, 18, "", "border-radius:9px;background:#bfc0c5;")}
+    ${figText("yz42-tip-icon", "!", 18, 789, 18, 10, "#fff", 900, "center", "line-height:1;")}
+    ${figText("yz42-tip-text", "当前内容信息仅供娱乐，不等于专业测评，不代表价值评判，无任何现实指导意义，仅供娱乐参考。", 46, 783, 320, 13, "#a3a3aa", 500, "left", "line-height:1.5;")}
   `;
 }
 
@@ -2608,31 +2631,11 @@ function sourceYangzhaiSelectScreen() {
 function sourceYangzhaiResultScreen() {
   const results = buildYangzhaiResults();
   const height = getYangzhaiResultHeight();
-  const hexCount = results.filter((item) => item.kind === "hex").length;
-  const spaceCount = results.filter((item) => item.kind === "space").length;
   return `
     ${yangzhaiBg("yz44", height)}
     ${yangzhaiHeader("yz44")}
-    ${figBox("yz44-status", 30, 92, 330, 36, "", "border:1px solid #ead7b8;border-radius:18px;background:rgba(255,247,232,.78);")}
-    ${figText("yz44-status-text", `${hexCount}条命中 · 64卦库 · ${spaceCount}规则`, 49, 102, 292, 12, "#8b6b36", 900, "center")}
-    ${figBox("yz44-grid-shadow", 17, 138, 356, 474, "", "border-radius:24px;background:rgba(244,223,184,.20);box-shadow:0 20px 38px rgba(93,55,31,.12);")}
-    ${figBox("yz44-grid-card", 21, 144, 348, 462, "", "border:1px solid #ddc9aa;border-radius:22px;background:#fffdf8;")}
-    ${figBox("yz44-grid-surface", 28, 153, 334, 440, "", "border:1px solid #eadbc7;border-radius:15px;background:#fffaf1;overflow:hidden;")}
-    ${figBox("yz44-line-h1", 28, 299.667, 334, 1, "", "background:#dfcfb8;")}
-    ${figBox("yz44-line-h2", 28, 446.333, 334, 1, "", "background:#dfcfb8;")}
-    ${figBox("yz44-line-v1", 139.333, 153, 1, 440, "", "background:#dfcfb8;")}
-    ${figBox("yz44-line-v2", 250.667, 153, 1, 440, "", "background:#dfcfb8;")}
-    ${yangzhaiCompassGrid("yz44")}
-    ${figBox("yz44-analyze", 24, YANGZHAI_ACTION_Y, 166, 52, "", "border-radius:18px;background:#b84e39;box-shadow:0 12px 22px rgba(157,62,46,.24);")}
-    ${figButton("yz44-analyze-hit", 24, YANGZHAI_ACTION_Y, 166, 52, 'data-action="yangzhai-analyze"')}
-    ${figText("yz44-analyze-text", "重新分析", 24, YANGZHAI_ACTION_Y + 17, 166, 16, "#fffaf3", 900, "center")}
-    ${figBox("yz44-order", 204, YANGZHAI_ACTION_Y, 104, 52, "", "border:1px solid #d7c4aa;border-radius:17px;background:#fffdf8;box-shadow:0 9px 18px rgba(81,51,29,.06);")}
-    ${figButton("yz44-order-hit", 204, YANGZHAI_ACTION_Y, 104, 52, 'data-action="yangzhai-autofill"')}
-    ${figText("yz44-order-text", "长幼归位", 204, YANGZHAI_ACTION_Y + 12, 104, 13, "#6f4f25", 900, "center")}
-    ${figText("yz44-order-sub", "一键排布", 204, YANGZHAI_ACTION_Y + 30, 104, 10, "#998a78", 600, "center")}
-    ${figBox("yz44-reset", 320, YANGZHAI_ACTION_Y, 46, 52, "", "border:1px solid #d7c4aa;border-radius:17px;background:#fffdf8;box-shadow:0 9px 18px rgba(81,51,29,.06);")}
-    ${figButton("yz44-reset-hit", 320, YANGZHAI_ACTION_Y, 46, 52, 'data-action="yangzhai-reset"')}
-    ${figText("yz44-reset-text", "重置", 320, YANGZHAI_ACTION_Y + 18, 46, 13, "#6f4f25", 900, "center")}
+    ${yangzhaiCompassShell("yz44")}
+    ${yangzhaiActions("yz44", "重新分析")}
     ${figText("yz44-result-title", "解读结果", 24, YANGZHAI_RESULT_TITLE_Y, 120, 16, "#201812", 900)}
     ${figText("yz44-result-meta", results.length ? `${results.length}条解读` : "尚未排布", 236, YANGZHAI_RESULT_TITLE_Y + 2, 130, 12, "#817568", 700, "right")}
     ${!results.length ? `
