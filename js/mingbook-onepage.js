@@ -61,6 +61,7 @@
     chart: null,
     chartKey: '',
     norm: null,
+    chartReady: hasProfileParams(),
     decoded: false,
     aiResults: {},
   };
@@ -194,7 +195,7 @@
 
   function profileFromParams() {
     const params = new URLSearchParams(location.search);
-    if (!['year', 'month', 'day', 'hour', 'minute', 'gender', 'city'].some((key) => params.has(key))) return null;
+    if (!hasProfileParams()) return null;
     return normalizeProfile({
       year: params.get('year'),
       month: params.get('month'),
@@ -205,6 +206,11 @@
       city: params.get('city'),
       name: params.get('name'),
     });
+  }
+
+  function hasProfileParams() {
+    const params = new URLSearchParams(location.search);
+    return ['year', 'month', 'day', 'hour', 'minute', 'gender', 'city'].some((key) => params.has(key));
   }
 
   function profileFromSaved() {
@@ -855,9 +861,10 @@
     resetAiContent();
   }
 
-  function applyClientProfile(profile) {
+  function applyClientProfile(profile, options = {}) {
     state.profile = normalizeProfile(profile);
     formCalMode = state.profile.isLunar ? 'lunar' : 'solar';
+    state.chartReady = options.chartReady !== false;
     resetForProfileChange();
     saveProfile();
     updateForm();
@@ -1030,25 +1037,32 @@
     cell.onclick = () => fcRenderHighlight(branch);
   }
 
-  function fcClearCells(message) {
+  function fcClearCells(message, usePlaceholder = false) {
     Object.values(fcBranchId).forEach((id) => {
       const cell = document.getElementById(id);
       if (cell) {
-        cell.className = 'fc-cell';
-        cell.innerHTML = '';
+        cell.className = `fc-cell${usePlaceholder ? ' fc-empty-cell' : ''}`;
+        cell.innerHTML = usePlaceholder ? '<span class="fc-empty-mark">***</span>' : '';
+        cell.onclick = null;
       }
     });
     $('#mbpFcName').textContent = '待排盘';
-    $('#mbpFcMeta').textContent = '';
-    $('#mbpFcSolar').textContent = message || '—';
-    $('#mbpFcLunar').textContent = '—';
-    $('#mbpFcTst').textContent = '—';
-    $('#mbpFcShichen').textContent = '—';
+    $('#mbpFcMeta').textContent = usePlaceholder ? '***' : '';
+    $('#mbpFcSolar').textContent = usePlaceholder ? '***' : (message || '—');
+    $('#mbpFcLunar').textContent = usePlaceholder ? '***' : '—';
+    $('#mbpFcTst').textContent = usePlaceholder ? '***' : '—';
+    $('#mbpFcShichen').textContent = usePlaceholder ? '***' : '—';
     $('#mbpFcSizhu').innerHTML = '';
-    $('#mbpFcXiantian').textContent = '—';
-    $('#mbpFcHoutian').textContent = '—';
-    $('#mbpFcLiunian').textContent = '—';
+    $('#mbpFcXiantian').textContent = usePlaceholder ? '***' : '—';
+    $('#mbpFcHoutian').textContent = usePlaceholder ? '***' : '—';
+    $('#mbpFcLiunian').textContent = usePlaceholder ? '***' : '—';
     fcRenderHexagram(null);
+    if (usePlaceholder) {
+      $('#mbpFcHexName').textContent = '***';
+      $('#mbpFcHexSub').textContent = '';
+      $('#mbpFcHexLines').innerHTML = Array.from({ length: 6 }, () => '<div class="fc-yao-solid fc-yao-placeholder"></div>').join('');
+      $('#mbpFcGuaciCard').style.display = 'none';
+    }
     renderZipingFooter(null);
   }
 
@@ -1279,6 +1293,7 @@
   }
 
   function renderClassicChart(chart, norm) {
+    document.body.classList.remove('is-chart-pending');
     fcCurrentChart = chart;
     fcCurrentGender = norm.gender || state.profile.gender;
     fcBirthYear = Number(norm.year) || Number(String(norm.dateStr || '').slice(0, 4)) || state.profile.year;
@@ -1345,6 +1360,23 @@
   }
 
   function renderChart() {
+    if (!state.chartReady) {
+      document.body.classList.add('is-chart-pending');
+      fcCurrentChart = null;
+      fcXiantianResult = null;
+      fcHoutianResult = null;
+      fcLiunianResult = null;
+      fcLiunianSeq = {};
+      fcActiveTab = '先天卦';
+      fcRenderTabs();
+      updateHeroMeta({});
+      fcClearCells('***', true);
+      const summary = $('#mbpChartSummary');
+      if (summary) summary.textContent = '点击开始排盘后显示命盘摘要。';
+      return;
+    }
+
+    document.body.classList.remove('is-chart-pending');
     const bundle = getChartBundle();
     updateHeroMeta(bundle);
     const summary = $('#mbpChartSummary');
@@ -2353,7 +2385,15 @@
     return aiTasks.find((task) => task.module === moduleKey);
   }
 
+  function ensureChartReady() {
+    if (state.chartReady) return true;
+    setDecodeStatus('请先点击开始排盘，再生成命书。');
+    $('#chart')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    return false;
+  }
+
   async function decodeSingleModule(moduleKey, options = {}) {
+    if (!ensureChartReady()) return false;
     const bundle = getChartBundle();
     if (bundle.error) {
       alert(bundle.error);
@@ -2406,6 +2446,7 @@
   }
 
   async function decodeReports() {
+    if (!ensureChartReady()) return;
     const bundle = getChartBundle();
     if (bundle.error) {
       alert(bundle.error);
@@ -2462,6 +2503,7 @@
   }
 
   function generateCurveChapter() {
+    if (!ensureChartReady()) return;
     const bundle = getChartBundle();
     if (bundle.error) {
       alert(bundle.error);
@@ -2651,7 +2693,7 @@
     });
 
     $('#mbpClientNew')?.addEventListener('click', () => {
-      applyClientProfile({ ...defaultProfile, name: '' });
+      applyClientProfile({ ...defaultProfile, name: '' }, { chartReady: false });
       $('#mbpBirthForm')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
     });
 
@@ -2854,6 +2896,7 @@
       showFormError('');
       state.profile = profile;
       formCalMode = profile.isLunar ? 'lunar' : 'solar';
+      state.chartReady = true;
       state.chart = null;
       state.chartKey = '';
       state.decoded = false;
