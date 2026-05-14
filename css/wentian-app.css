@@ -650,6 +650,7 @@ button {
   position: absolute;
   width: 46px;
   height: 28px;
+  cursor: pointer;
 }
 
 .wentian-chart-toggle input {
@@ -663,6 +664,7 @@ button {
   inset: 3px 0;
   border-radius: 14px;
   background: #efe2d0;
+  pointer-events: none;
 }
 
 .wentian-chart-toggle span::after {
@@ -689,7 +691,7 @@ button {
 .wentian-chart-status {
   position: absolute;
   left: 24px;
-  top: 672px;
+  top: 864px;
   width: 342px;
   color: #9b7a3f;
   font-size: 12px;
@@ -699,6 +701,203 @@ button {
 
 .wentian-chart-status[data-tone="error"] {
   color: #a94437;
+}
+
+.wentian-chart-card {
+  position: absolute;
+  left: 18px;
+  top: 150px;
+  width: 354px;
+  padding: 14px;
+  border: 1px solid #e5d6be;
+  border-radius: 18px;
+  background: rgba(255, 253, 247, 0.96);
+  box-shadow: 0 16px 36px rgba(89, 56, 28, 0.08);
+}
+
+.wentian-chart-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 54px;
+  border-bottom: 1px solid #eadfce;
+}
+
+.wentian-chart-row:last-child {
+  border-bottom: 0;
+}
+
+.wentian-chart-row.stack {
+  align-items: stretch;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px 0;
+}
+
+.wentian-chart-row.two {
+  justify-content: space-between;
+}
+
+.wentian-chart-label {
+  flex: 0 0 auto;
+  color: #2b251c;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.wentian-chart-label small {
+  margin-left: 4px;
+  color: #9b8f7f;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.wentian-chart-control,
+.wentian-chart-card input,
+.wentian-chart-card select {
+  min-width: 0;
+  height: 38px;
+  border: 1px solid #e4d6c3;
+  border-radius: 10px;
+  background: #fffaf3;
+  color: #2b251c;
+  font: inherit;
+  font-size: 14px;
+  outline: 0;
+}
+
+.wentian-chart-card input,
+.wentian-chart-card select {
+  padding: 0 10px;
+}
+
+.wentian-chart-card input::placeholder {
+  color: #a99e90;
+}
+
+.wentian-chart-name {
+  flex: 1 1 auto;
+  text-align: right;
+}
+
+.wentian-chart-segment {
+  display: inline-flex;
+  gap: 4px;
+  padding: 3px;
+  border: 1px solid #e3d2b8;
+  border-radius: 12px;
+  background: #f5ebdc;
+}
+
+.wentian-chart-segment button {
+  height: 30px;
+  min-width: 44px;
+  border: 0;
+  border-radius: 9px;
+  background: transparent;
+  color: #7a6a59;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.wentian-chart-segment button.active {
+  background: #9e4738;
+  color: #fffdf6;
+  box-shadow: 0 5px 12px rgba(123, 49, 41, 0.16);
+}
+
+.wentian-chart-date-grid,
+.wentian-chart-time-grid {
+  display: grid;
+  gap: 8px;
+  width: 100%;
+}
+
+.wentian-chart-date-grid {
+  grid-template-columns: 1.4fr 1fr 1fr;
+}
+
+.wentian-chart-time-grid {
+  grid-template-columns: 1fr 1fr;
+}
+
+.wentian-chart-city-wrap {
+  position: relative;
+  width: 100%;
+}
+
+.wentian-chart-city-input {
+  width: 100%;
+  padding-right: 52px !important;
+}
+
+.wentian-chart-city-clear {
+  position: absolute;
+  top: 7px;
+  right: 7px;
+  height: 24px;
+  border: 0;
+  background: transparent;
+  color: #9b8f7f;
+  font-size: 12px;
+}
+
+.wentian-chart-city-dropdown {
+  position: absolute;
+  z-index: 80;
+  left: 0;
+  right: 0;
+  top: 42px;
+  max-height: 156px;
+  overflow-y: auto;
+  border: 1px solid #e1d0b8;
+  border-radius: 12px;
+  background: #fffdf7;
+  box-shadow: 0 16px 34px rgba(65, 43, 23, 0.14);
+}
+
+.wentian-chart-city-item {
+  display: block;
+  width: 100%;
+  padding: 10px 12px;
+  border: 0;
+  border-bottom: 1px solid #f0e6d8;
+  background: transparent;
+  color: #2b251c;
+  font-size: 13px;
+  text-align: left;
+}
+
+.wentian-chart-city-item:last-child {
+  border-bottom: 0;
+}
+
+.wentian-chart-city-item span {
+  color: #9b8f7f;
+  font-size: 11px;
+}
+
+.wentian-chart-preview {
+  min-height: 17px;
+  color: #8d7d69;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.wentian-chart-tst {
+  padding: 10px 12px;
+  border: 1px solid #ecdcc2;
+  border-radius: 12px;
+  background: #fbf2df;
+  color: #7d6a55;
+  font-size: 12px;
+  line-height: 1.55;
+}
+
+.wentian-chart-card .wentian-chart-toggle {
+  position: relative;
+  width: 46px;
+  height: 28px;
 }
 
 .wentian-native-mingpan {

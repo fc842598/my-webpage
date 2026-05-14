@@ -909,6 +909,8 @@ const WENTIAN_LANGUAGE_OPTIONS = [
 ];
 let wentianArchiveDraftId = null;
 let wentianLanguageDraft = null;
+let wentianChartCalMode = "solar";
+let wentianChartCity = null;
 const WENTIAN_BRANCH_POSITIONS = {
   "巳": [0, 0],
   "午": [1, 0],
@@ -924,6 +926,23 @@ const WENTIAN_BRANCH_POSITIONS = {
   "亥": [3, 3],
 };
 const WENTIAN_SHICHEN = ["子", "丑", "寅", "卯", "辰", "巳", "午", "未", "申", "酉", "戌", "亥"];
+
+function getWentianClassicRelations(activeBranch) {
+  const activeIndex = WENTIAN_SHICHEN.indexOf(activeBranch);
+  if (activeIndex < 0) return { sanhe: [], dui: "" };
+  return {
+    sanhe: [WENTIAN_SHICHEN[(activeIndex + 4) % 12], WENTIAN_SHICHEN[(activeIndex + 8) % 12]],
+    dui: WENTIAN_SHICHEN[(activeIndex + 6) % 12],
+  };
+}
+
+function getWentianClassicCellClasses(branch, activeBranch) {
+  const relations = getWentianClassicRelations(activeBranch);
+  if (branch === activeBranch) return "fc-ben";
+  if (relations.sanhe.includes(branch)) return "fc-rel fc-sanhe";
+  if (relations.dui === branch) return "fc-rel fc-dui";
+  return "";
+}
 
 function getWentianApiBase() {
   const qs = new URLSearchParams(location.search);
@@ -1164,6 +1183,214 @@ function formatWentianDateTime(date) {
 function getWentianTimeIndex(hour, minute) {
   if (typeof tstToShichen === "function") return tstToShichen(hour, minute);
   return Math.floor(((hour * 60 + minute + 60) % 1440) / 120);
+}
+
+function padWentianNumber(value) {
+  return String(value).padStart(2, "0");
+}
+
+function getWentianNumber(id) {
+  const value = Number(document.getElementById(id)?.value);
+  return Number.isFinite(value) ? value : 0;
+}
+
+function getWentianCityRows() {
+  try {
+    return typeof CITIES !== "undefined" && Array.isArray(CITIES) ? CITIES : [];
+  } catch (_err) {
+    return [];
+  }
+}
+
+function makeWentianCity(row) {
+  if (!row) return null;
+  return {
+    province: row[0],
+    city: row[1],
+    name: `${row[0]} ${row[1]}`,
+    lon: Number(row[2]),
+    lat: Number(row[3]),
+    tzOffset: Number(row[4] ?? 8),
+  };
+}
+
+function formatWentianCity(city) {
+  if (!city) return "";
+  return city.province === city.city ? `中国-${city.city}` : `${city.province}-${city.city}`;
+}
+
+function findWentianCity(query) {
+  const q = String(query || "").trim().toLowerCase().replace(/\s/g, "");
+  if (!q) return null;
+  const row = getWentianCityRows().find((item) => {
+    const province = String(item[0] || "").toLowerCase();
+    const city = String(item[1] || "").toLowerCase();
+    const text = `${province}${city}${province} ${city}`.replace(/\s/g, "");
+    return text.includes(q) || city.replace(/\s/g, "").includes(q);
+  });
+  return makeWentianCity(row);
+}
+
+function populateWentianChartSelects() {
+  const month = document.getElementById("wentian-chart-month");
+  const day = document.getElementById("wentian-chart-day");
+  const lunarMonth = document.getElementById("wentian-chart-lunar-month");
+  const lunarDay = document.getElementById("wentian-chart-lunar-day");
+  const hour = document.getElementById("wentian-chart-hour");
+  const minute = document.getElementById("wentian-chart-minute");
+  if (month && !month.options.length) {
+    month.innerHTML = Array.from({ length: 12 }, (_, i) => `<option value="${i + 1}">${i + 1}月</option>`).join("");
+  }
+  if (lunarMonth && !lunarMonth.options.length) {
+    lunarMonth.innerHTML = ["正月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"].map((name, i) => `<option value="${i + 1}">${name}</option>`).join("");
+  }
+  if (hour && !hour.options.length) {
+    hour.innerHTML = Array.from({ length: 24 }, (_, i) => `<option value="${i}">${padWentianNumber(i)}时</option>`).join("");
+  }
+  if (minute && !minute.options.length) {
+    minute.innerHTML = Array.from({ length: 60 }, (_, i) => `<option value="${i}">${padWentianNumber(i)}分</option>`).join("");
+  }
+  updateWentianChartDayOptions(day, getWentianNumber("wentian-chart-year"), getWentianNumber("wentian-chart-month"));
+  updateWentianChartDayOptions(lunarDay, 0, 0, 30);
+}
+
+function updateWentianChartDayOptions(dayEl, year, month, forcedMax) {
+  if (!dayEl) return;
+  const previous = Number(dayEl.value) || 1;
+  const max = forcedMax || (year && month ? new Date(year, month, 0).getDate() : 31);
+  dayEl.innerHTML = Array.from({ length: max }, (_, i) => `<option value="${i + 1}">${i + 1}日</option>`).join("");
+  dayEl.value = String(Math.min(previous, max));
+}
+
+function setWentianChartCalendarMode(mode) {
+  wentianChartCalMode = mode === "lunar" ? "lunar" : "solar";
+  const hidden = document.getElementById("wentian-chart-cal");
+  if (hidden) hidden.value = wentianChartCalMode;
+  document.querySelectorAll("[data-wentian-chart-cal]").forEach((btn) => {
+    btn.classList.toggle("active", btn.dataset.wentianChartCal === wentianChartCalMode);
+  });
+  const solar = document.getElementById("wentian-chart-solar-fields");
+  const lunar = document.getElementById("wentian-chart-lunar-fields");
+  if (solar) solar.style.display = wentianChartCalMode === "solar" ? "grid" : "none";
+  if (lunar) lunar.style.display = wentianChartCalMode === "lunar" ? "grid" : "none";
+  updateWentianChartPreview();
+}
+
+function setWentianChartButtonValue(group, value) {
+  const input = document.getElementById(`wentian-chart-${group}`);
+  if (input) input.value = value;
+  document.querySelectorAll(`[data-wentian-chart-${group}]`).forEach((btn) => {
+    btn.classList.toggle("active", btn.dataset[`wentianChart${group[0].toUpperCase()}${group.slice(1)}`] === value);
+  });
+}
+
+function renderWentianChartCityDropdown(query) {
+  const dropdown = document.getElementById("wentian-chart-city-dropdown");
+  if (!dropdown) return;
+  const q = String(query || "").trim().toLowerCase();
+  if (!q) {
+    dropdown.style.display = "none";
+    dropdown.innerHTML = "";
+    return;
+  }
+  const rows = getWentianCityRows()
+    .map((row, index) => ({ row, index }))
+    .filter(({ row }) => `${row[0]}${row[1]} ${row[0]} ${row[1]}`.toLowerCase().includes(q))
+    .slice(0, 8);
+  if (!rows.length) {
+    dropdown.style.display = "none";
+    dropdown.innerHTML = "";
+    return;
+  }
+  dropdown.innerHTML = rows.map(({ row, index }) => `
+    <button type="button" class="wentian-chart-city-item" data-action="wentian-chart-city-pick" data-city-index="${index}">
+      ${escapeHtml(row[0])} · ${escapeHtml(row[1])}<br><span>${Number(row[2]).toFixed(2)}°E / ${Number(row[3]).toFixed(2)}°N</span>
+    </button>
+  `).join("");
+  dropdown.style.display = "block";
+}
+
+function applyWentianChartCity(city) {
+  wentianChartCity = city || null;
+  const input = document.getElementById("wentian-chart-city");
+  const clear = document.getElementById("wentian-chart-city-clear");
+  const selected = document.getElementById("wentian-chart-city-selected");
+  const dropdown = document.getElementById("wentian-chart-city-dropdown");
+  if (input) input.value = city ? `${city.province} · ${city.city}` : "";
+  if (clear) clear.style.display = city ? "" : "none";
+  if (selected) {
+    selected.textContent = city ? `已选：${formatWentianCity(city)} · ${Number(city.lon).toFixed(2)}°E` : "";
+    selected.style.display = city ? "block" : "none";
+  }
+  if (dropdown) dropdown.style.display = "none";
+  updateWentianChartPreview();
+}
+
+function getWentianChartDateParts() {
+  const mode = document.getElementById("wentian-chart-cal")?.value || wentianChartCalMode || "solar";
+  const hour = getWentianNumber("wentian-chart-hour");
+  const minute = getWentianNumber("wentian-chart-minute");
+  let year;
+  let month;
+  let day;
+  let date;
+  let calModeLabel;
+
+  if (mode === "lunar") {
+    year = getWentianNumber("wentian-chart-lunar-year");
+    month = getWentianNumber("wentian-chart-lunar-month");
+    day = getWentianNumber("wentian-chart-lunar-day");
+    if (!year || !month || !day) throw new Error("请填写完整的农历出生年月日");
+    if (typeof lunarToSolar !== "function") throw new Error("农历转换模块未加载，请刷新后重试");
+    const solar = lunarToSolar(year, month, day, !!document.getElementById("wentian-chart-lunar-leap")?.checked);
+    if (!solar) throw new Error("农历日期无效或超出支持范围");
+    date = new Date(solar.getFullYear(), solar.getMonth(), solar.getDate(), hour, minute);
+    calModeLabel = `农历 ${year}年${month}月${day}日`;
+  } else {
+    year = getWentianNumber("wentian-chart-year");
+    month = getWentianNumber("wentian-chart-month");
+    day = getWentianNumber("wentian-chart-day");
+    if (!year || !month || !day) throw new Error("请填写完整的出生年月日");
+    date = new Date(year, month - 1, day, hour, minute);
+    calModeLabel = `公历 ${year}-${padWentianNumber(month)}-${padWentianNumber(day)}`;
+  }
+
+  if (year < 1900 || year > 2030) throw new Error("出生年份请填写 1900-2030");
+  if (Number.isNaN(date.getTime())) throw new Error("出生日期无效");
+  return { mode, date, hour, minute, calModeLabel };
+}
+
+function updateWentianChartPreview() {
+  const preview = document.getElementById("wentian-chart-preview");
+  const tst = document.getElementById("wentian-chart-tst");
+  const hiddenDate = document.getElementById("wentian-chart-date");
+  try {
+    const parts = getWentianChartDateParts();
+    const dateStr = `${parts.date.getFullYear()}-${padWentianNumber(parts.date.getMonth() + 1)}-${padWentianNumber(parts.date.getDate())}`;
+    const timeStr = `${padWentianNumber(parts.hour)}:${padWentianNumber(parts.minute)}`;
+    if (hiddenDate) hiddenDate.value = `${dateStr}T${timeStr}`;
+    if (preview) preview.textContent = `${parts.calModeLabel} · 北京时间 ${timeStr}`;
+    const cityText = document.getElementById("wentian-chart-city")?.value.trim() || "";
+    const city = wentianChartCity || findWentianCity(cityText);
+    if (tst && typeof calcTrueSolarTime === "function") {
+      const result = calcTrueSolarTime({
+        year: parts.date.getFullYear(),
+        month: parts.date.getMonth() + 1,
+        day: parts.date.getDate(),
+        hour: parts.hour,
+        minute: parts.minute,
+        longitude: city?.lon || 116.4,
+        tzOffset: city?.tzOffset ?? 8,
+        cityName: city ? formatWentianCity(city) : "北京（默认）",
+      });
+      const used = document.getElementById("wentian-chart-true-solar")?.checked;
+      const shichen = ["子", "丑", "寅", "卯", "辰", "巳", "午", "未", "申", "酉", "戌", "亥"][getWentianTimeIndex(result.trueSolarHour, result.trueSolarMinute)] || "";
+      tst.textContent = `${used ? "已采用" : "预览"}真太阳时：${padWentianNumber(result.trueSolarHour)}:${padWentianNumber(result.trueSolarMinute)} · ${shichen}时 · ${result.diffStr}`;
+    }
+  } catch (error) {
+    if (preview) preview.textContent = error.message || "";
+    if (tst) tst.textContent = "请先补全出生时间，地点可选。";
+  }
 }
 
 function getWentianIztroLib() {
@@ -1670,12 +1897,17 @@ function setWentianChartStatus(text, tone = "") {
 }
 
 function getWentianChartFormData() {
+  const parts = document.getElementById("wentian-chart-year")
+    ? getWentianChartDateParts()
+    : null;
   const rawDate = document.getElementById("wentian-chart-date")?.value || "";
-  const date = rawDate ? new Date(rawDate) : null;
+  const date = parts?.date || (rawDate ? new Date(rawDate) : null);
   if (!date || Number.isNaN(date.getTime())) throw new Error("请先选择出生日期和时间");
 
   const useTrueSolar = !!document.getElementById("wentian-chart-true-solar")?.checked;
-  const city = (document.getElementById("wentian-chart-city")?.value || "").trim();
+  const cityInput = (document.getElementById("wentian-chart-city")?.value || "").trim();
+  const cityDetail = wentianChartCity || findWentianCity(cityInput);
+  const city = cityDetail ? formatWentianCity(cityDetail) : cityInput;
   let calcHour = date.getHours();
   let calcMinute = date.getMinutes();
   let trueSolarResult = null;
@@ -1687,9 +1919,9 @@ function getWentianChartFormData() {
       day: date.getDate(),
       hour: calcHour,
       minute: calcMinute,
-      longitude: city ? undefined : 116.4,
-      tzOffset: 8,
-      cityName: city || "北京",
+      longitude: cityDetail?.lon || 116.4,
+      tzOffset: cityDetail?.tzOffset ?? 8,
+      cityName: city || "北京（默认）",
     });
     calcHour = trueSolarResult.trueSolarHour;
     calcMinute = trueSolarResult.trueSolarMinute;
@@ -1701,10 +1933,13 @@ function getWentianChartFormData() {
     type: document.getElementById("wentian-chart-type")?.value || "ziwei",
     city,
     date,
-    dateStr: rawDate.slice(0, 10),
+    dateStr: `${date.getFullYear()}-${padWentianNumber(date.getMonth() + 1)}-${padWentianNumber(date.getDate())}`,
     timeIndex: getWentianTimeIndex(calcHour, calcMinute),
     trueSolarResult,
     useTrueSolar,
+    cityDetail,
+    calMode: parts?.mode || "solar",
+    calModeLabel: parts?.calModeLabel,
   };
 }
 
@@ -1732,6 +1967,8 @@ async function submitWentianChartForm() {
         gender: norm.gender,
         type: norm.type,
         city: norm.city,
+        cityDetail: norm.cityDetail,
+        calMode: norm.calMode,
         datetime: document.getElementById("wentian-chart-date")?.value || "",
         useTrueSolar: norm.useTrueSolar,
       },
@@ -1751,18 +1988,41 @@ async function submitWentianChartForm() {
 function initWentianChartForm() {
   const saved = getWentianSavedChart();
   const form = saved?.form || {};
+  const defaultDate = new Date(form.datetime || "2026-05-12T15:21");
+  const date = Number.isNaN(defaultDate.getTime()) ? new Date("2026-05-12T15:21") : defaultDate;
   const name = document.getElementById("wentian-chart-name");
-  const gender = document.getElementById("wentian-chart-gender");
-  const type = document.getElementById("wentian-chart-type");
-  const date = document.getElementById("wentian-chart-date");
-  const city = document.getElementById("wentian-chart-city");
-  const trueSolar = document.getElementById("wentian-chart-true-solar");
   if (name) name.value = form.name || "谢";
-  if (gender) gender.value = form.gender || "male";
-  if (type) type.value = form.type || "ziwei";
-  if (date) date.value = form.datetime || "2026-05-12T15:21";
-  if (city) city.value = form.city || "";
+  populateWentianChartSelects();
+  const hiddenDate = document.getElementById("wentian-chart-date");
+  if (hiddenDate) hiddenDate.value = `${date.getFullYear()}-${padWentianNumber(date.getMonth() + 1)}-${padWentianNumber(date.getDate())}T${padWentianNumber(date.getHours())}:${padWentianNumber(date.getMinutes())}`;
+  const year = document.getElementById("wentian-chart-year");
+  const month = document.getElementById("wentian-chart-month");
+  const day = document.getElementById("wentian-chart-day");
+  const hour = document.getElementById("wentian-chart-hour");
+  const minute = document.getElementById("wentian-chart-minute");
+  if (year) year.value = String(date.getFullYear());
+  if (month) month.value = String(date.getMonth() + 1);
+  updateWentianChartDayOptions(day, date.getFullYear(), date.getMonth() + 1);
+  if (day) day.value = String(date.getDate());
+  if (hour) hour.value = String(date.getHours());
+  if (minute) minute.value = String(date.getMinutes());
+  const lunarYear = document.getElementById("wentian-chart-lunar-year");
+  const lunarMonth = document.getElementById("wentian-chart-lunar-month");
+  const lunarDay = document.getElementById("wentian-chart-lunar-day");
+  if (lunarYear) lunarYear.value = String(date.getFullYear());
+  if (lunarMonth) lunarMonth.value = "1";
+  if (lunarDay) lunarDay.value = "1";
+  setWentianChartButtonValue("gender", form.gender || "male");
+  setWentianChartButtonValue("type", form.type || "ziwei");
+  setWentianChartCalendarMode(form.calMode || "solar");
+  const trueSolar = document.getElementById("wentian-chart-true-solar");
   if (trueSolar) trueSolar.checked = !!form.useTrueSolar;
+  applyWentianChartCity(form.cityDetail || findWentianCity(form.city) || null);
+  if (!wentianChartCity && form.city) {
+    const cityInput = document.getElementById("wentian-chart-city");
+    if (cityInput) cityInput.value = form.city;
+  }
+  updateWentianChartPreview();
   setWentianChartStatus(saved?.chart ? "已接入网站排盘算法，可重新排盘" : "已接入网站排盘算法");
 }
 
@@ -3401,45 +3661,96 @@ function convertedFlowHotspots(screen) {
 
 function sourceChartFormScreen() {
   return `
-    ${figBox("source-26-bg", 0, 0, 390, 867, "", "background:#fbf7ef;")}
-    ${figButton("source-26-back-hit", 18, 40, 96, 54, 'data-action="back"')}
-    ${figText("source-26-back", "‹ 返回", 28, 53, 92, 28, "#9f2417", 500)}
-    ${figText("source-26-title", "排盘", 0, 58, 390, 26, "#1f1d1a", 800, "center")}
+    ${figBox("source-26-bg", 0, 0, 390, 944, "", "background:linear-gradient(180deg,#fffdf8 0%,#fbf7ef 52%,#f6eee2 100%);")}
+    ${figBox("source-26-top", 0, 0, 390, 92, "", "background:#fffdf8;border-bottom:1px solid #eadfce;")}
+    ${figButton("source-26-back-hit", 16, 34, 64, 52, 'data-action="back"')}
+    ${figText("source-26-back", "‹", 26, 42, 24, 24, "#6e6254", 500, "center", "line-height:1;")}
+    ${figText("source-26-title", "排盘", 0, 43, 390, 24, "#1f1d1a", 800, "center", "font-family:'Noto Serif SC','Songti SC',serif;")}
 
-    ${figText("source-26-heading", "请输入出生信息", 0, 118, 390, 25, "#1f1d1a", 800, "center")}
-    ${figText("source-26-subtitle", "准确的出生时间是算命的根基", 0, 157, 390, 17, "#5f5a52", 400, "center")}
-    ${figBox("source-26-card", 22, 198, 346, 383, "", "border:1px solid #ded9d0;border-radius:16px;background:#fff;box-shadow:0 4px 12px rgba(70,45,25,.03);")}
-    ${figText("source-26-name-label", "姓名", 38, 226, 80, 20, "#3a3834", 400)}
-    <input id="wentian-chart-name" class="wentian-chart-input" style="left:160px;top:213px;width:192px" placeholder="请输入姓名（选填）" autocomplete="off">
-    ${figLine("source-26-line-1", 38, 265, 314, "#dedbd6")}
-    ${figText("source-26-gender-label", "性别", 38, 297, 80, 20, "#3a3834", 400)}
-    <select id="wentian-chart-gender" class="wentian-chart-select" style="left:242px;top:283px;width:110px">
-      <option value="male">男</option>
-      <option value="female">女</option>
-    </select>
-    ${figLine("source-26-line-2", 38, 340, 314, "#dedbd6")}
-    ${figText("source-26-type-label", "排盘类型", 38, 371, 110, 20, "#3a3834", 400)}
-    <select id="wentian-chart-type" class="wentian-chart-select" style="left:216px;top:356px;width:136px">
-      <option value="ziwei">紫微</option>
-      <option value="bazi">八字</option>
-    </select>
-    ${figLine("source-26-line-3", 38, 411, 314, "#dedbd6")}
-    ${figText("source-26-date-label", "出生日期", 38, 441, 110, 20, "#3a3834", 400)}
-    <input id="wentian-chart-date" class="wentian-chart-input" type="datetime-local" style="left:158px;top:428px;width:194px" value="2026-05-12T15:21">
-    ${figLine("source-26-line-4", 38, 465, 314, "#dedbd6")}
-    ${figText("source-26-place-label", "出生地点", 38, 489, 110, 20, "#3a3834", 400)}
-    <input id="wentian-chart-city" class="wentian-chart-input" style="left:170px;top:476px;width:182px" placeholder="选择出生地点" autocomplete="off">
-    ${figLine("source-26-line-5", 38, 518, 314, "#dedbd6")}
-    ${figText("source-26-solar-label", "使用真太阳时", 38, 548, 140, 20, "#8d8982", 400)}
-    <label class="wentian-chart-toggle" style="left:306px;top:541px"><input id="wentian-chart-true-solar" type="checkbox"><span></span></label>
+    ${figText("source-26-heading", "出生信息", 24, 108, 140, 24, "#2b251c", 900, "left", "font-family:'Noto Serif SC','Songti SC',serif;")}
+    ${figText("source-26-subtitle", "复用网站排盘输入：公历/农历、城市、真太阳时", 24, 137, 310, 13, "#8d7d69", 600, "left")}
+    <div class="wentian-chart-card">
+      <input type="hidden" id="wentian-chart-gender" value="male">
+      <input type="hidden" id="wentian-chart-type" value="ziwei">
+      <input type="hidden" id="wentian-chart-cal" value="solar">
+      <input type="hidden" id="wentian-chart-date" value="2026-05-12T15:21">
 
-    ${figBox("source-26-submit", 22, 606, 346, 58, "", "border-radius:13px;background:linear-gradient(180deg,#a52705,#be3f2e);box-shadow:0 8px 18px rgba(159,36,23,.18);")}
-    ${figButton("source-26-submit-hit", 22, 606, 346, 58, 'data-action="wentian-chart-submit"')}
-    ${figText("source-26-submit-text", "◉  开始排盘", 0, 622, 390, 26, "#fff", 700, "center")}
+      <div class="wentian-chart-row two">
+        <span class="wentian-chart-label">姓名</span>
+        <input id="wentian-chart-name" class="wentian-chart-name" placeholder="请输入姓名（选填）" autocomplete="off">
+      </div>
+
+      <div class="wentian-chart-row two">
+        <span class="wentian-chart-label">性别</span>
+        <div class="wentian-chart-segment">
+          <button type="button" data-action="wentian-chart-gender" data-wentian-chart-gender="male">男</button>
+          <button type="button" data-action="wentian-chart-gender" data-wentian-chart-gender="female">女</button>
+        </div>
+      </div>
+
+      <div class="wentian-chart-row two">
+        <span class="wentian-chart-label">排盘类型</span>
+        <div class="wentian-chart-segment">
+          <button type="button" data-action="wentian-chart-type" data-wentian-chart-type="ziwei">紫微</button>
+          <button type="button" data-action="wentian-chart-type" data-wentian-chart-type="bazi">八字</button>
+        </div>
+      </div>
+
+      <div class="wentian-chart-row stack">
+        <div class="wentian-chart-row two" style="min-height:34px;border:0">
+          <span class="wentian-chart-label">出生日期<small>必填</small></span>
+          <div class="wentian-chart-segment">
+            <button type="button" data-action="wentian-chart-cal" data-wentian-chart-cal="solar">公历</button>
+            <button type="button" data-action="wentian-chart-cal" data-wentian-chart-cal="lunar">农历</button>
+          </div>
+        </div>
+        <div id="wentian-chart-solar-fields" class="wentian-chart-date-grid">
+          <input id="wentian-chart-year" type="number" min="1900" max="2030" inputmode="numeric" placeholder="年">
+          <select id="wentian-chart-month"></select>
+          <select id="wentian-chart-day"></select>
+        </div>
+        <div id="wentian-chart-lunar-fields" class="wentian-chart-date-grid" style="display:none">
+          <input id="wentian-chart-lunar-year" type="number" min="1900" max="2030" inputmode="numeric" placeholder="农历年">
+          <select id="wentian-chart-lunar-month"></select>
+          <select id="wentian-chart-lunar-day"></select>
+        </div>
+        <label style="display:flex;align-items:center;gap:6px;color:#8d7d69;font-size:12px">
+          <input id="wentian-chart-lunar-leap" type="checkbox" style="width:14px;height:14px"> 闰月
+        </label>
+        <div id="wentian-chart-preview" class="wentian-chart-preview"></div>
+      </div>
+
+      <div class="wentian-chart-row stack">
+        <span class="wentian-chart-label">出生时刻<small>精确到分钟</small></span>
+        <div class="wentian-chart-time-grid">
+          <select id="wentian-chart-hour"></select>
+          <select id="wentian-chart-minute"></select>
+        </div>
+      </div>
+
+      <div class="wentian-chart-row stack">
+        <span class="wentian-chart-label">出生地点<small>影响真太阳时</small></span>
+        <div class="wentian-chart-city-wrap">
+          <input id="wentian-chart-city" class="wentian-chart-city-input" placeholder="搜索城市，如：北京、上海、Tokyo" autocomplete="off">
+          <button type="button" id="wentian-chart-city-clear" class="wentian-chart-city-clear" data-action="wentian-chart-city-clear" style="display:none">清除</button>
+          <div id="wentian-chart-city-dropdown" class="wentian-chart-city-dropdown" style="display:none"></div>
+        </div>
+        <div id="wentian-chart-city-selected" class="wentian-chart-preview" style="display:none"></div>
+      </div>
+
+      <div class="wentian-chart-row two">
+        <span class="wentian-chart-label">采用真太阳时</span>
+        <label class="wentian-chart-toggle"><input id="wentian-chart-true-solar" type="checkbox"><span></span></label>
+      </div>
+      <div id="wentian-chart-tst" class="wentian-chart-tst">请先补全出生时间，地点可选。</div>
+    </div>
+
+    ${figBox("source-26-submit", 18, 806, 354, 54, "", "border:1px solid #7b3129;border-radius:12px;background:#9e4738;box-shadow:0 10px 20px rgba(123,49,41,.14);")}
+    ${figButton("source-26-submit-hit", 18, 806, 354, 54, 'data-action="wentian-chart-submit"')}
+    ${figText("source-26-submit-text", "开始排盘", 0, 822, 390, 18, "#fffdf6", 800, "center")}
     <div id="wentian-chart-status" class="wentian-chart-status"></div>
-    ${figBox("source-26-tip", 22, 692, 346, 68, "", "border-radius:12px;background:#f8f1e3;")}
-    ${figText("source-26-tip-icon", "i", 42, 716, 26, 18, "#c8a65f", 800, "center")}
-    ${figText("source-26-tip-text", "如不知时辰，可能会导致推演不准确。可以让\nAI命理师确定时辰", 70, 708, 290, 15, "#6e675d", 400, "left", "line-height:1.45;")}
+    ${figBox("source-26-tip", 18, 888, 354, 44, "", "border-radius:12px;background:#fff8e8;")}
+    ${figText("source-26-tip-text", "不知道精确时辰时，先填大概时间；后续可让命理师校正。", 42, 902, 306, 13, "#8d7d69", 600, "center")}
   `;
 }
 
@@ -3475,10 +3786,7 @@ function renderWentianClassicPalaceCell(palace, activeBranch) {
   const pos = WENTIAN_BRANCH_POSITIONS[branch];
   if (!pos) return "";
   const [col, row] = pos;
-  const activeIndex = Math.max(0, WENTIAN_SHICHEN.indexOf(activeBranch));
-  const related = [WENTIAN_SHICHEN[(activeIndex + 4) % 12], WENTIAN_SHICHEN[(activeIndex + 8) % 12], WENTIAN_SHICHEN[(activeIndex + 6) % 12]];
-  const isBen = branch === activeBranch;
-  const isRel = !isBen && related.includes(branch);
+  const highlightClass = getWentianClassicCellClasses(branch, activeBranch);
   const allStars = [
     ...(palace.majorStars || []),
     ...(palace.minorStars || []),
@@ -3498,7 +3806,7 @@ function renderWentianClassicPalaceCell(palace, activeBranch) {
   const shenHtml = [palace.changsheng12, palace.boshi12].filter(Boolean).map((item) => `<span>${escapeHtml(item)}</span>`).join("");
   const palaceName = `${palace.isBodyPalace ? "身宫\n" : ""}${palace.name || ""}`;
   return `
-    <div class="fc-cell ${isBen ? "fc-ben" : isRel ? "fc-rel" : ""}" style="grid-column:${col + 1};grid-row:${row + 1};">
+    <div class="fc-cell ${highlightClass}" data-action="wentian-chart-palace" data-palace-branch="${escapeHtml(branch)}" data-palace-name="${escapeHtml(palace.name || branch)}" role="button" style="grid-column:${col + 1};grid-row:${row + 1};">
       <div class="fc-cell-top">
         ${mutagenHtml ? `<div class="fc-cell-mutagen">${mutagenHtml}</div>` : ""}
         <div class="fc-major-list">${majorHtml}</div>
@@ -3722,7 +4030,7 @@ function renderConvertedScreen(no) {
     return figPhone(`screen-${screen.no}`, `${String(screen.no).padStart(2, "0")} ${screen.title}`, `
       ${sourceChartFormScreen()}
       ${convertedFlowHotspots(screen)}
-    `, 867, "converted source-screen no-status-shift", true);
+    `, 944, "converted source-screen no-status-shift", true);
   }
   if (screen.no === 27) {
     return figPhone(`screen-${screen.no}`, `${String(screen.no).padStart(2, "0")} ${screen.title}`, `
@@ -4257,6 +4565,31 @@ document.addEventListener("click", (event) => {
     submitWentianProfileForm();
     return;
   }
+  if (action === "wentian-chart-gender") {
+    const value = event.target.closest("[data-wentian-chart-gender]")?.dataset.wentianChartGender || "male";
+    setWentianChartButtonValue("gender", value);
+    updateWentianChartPreview();
+    return;
+  }
+  if (action === "wentian-chart-type") {
+    const value = event.target.closest("[data-wentian-chart-type]")?.dataset.wentianChartType || "ziwei";
+    setWentianChartButtonValue("type", value);
+    return;
+  }
+  if (action === "wentian-chart-cal") {
+    const value = event.target.closest("[data-wentian-chart-cal]")?.dataset.wentianChartCal || "solar";
+    setWentianChartCalendarMode(value);
+    return;
+  }
+  if (action === "wentian-chart-city-pick") {
+    const index = Number(event.target.closest("[data-city-index]")?.dataset.cityIndex);
+    applyWentianChartCity(makeWentianCity(getWentianCityRows()[index]));
+    return;
+  }
+  if (action === "wentian-chart-city-clear") {
+    applyWentianChartCity(null);
+    return;
+  }
   if (action === "wentian-chat-send") {
     sendWentianXuChat();
     return;
@@ -4279,6 +4612,34 @@ document.addEventListener("click", (event) => {
   if (action === "hexagram") {
     document.getElementById("divineResult").innerHTML = `<div class="panel-title"><h2>地风升</h2></div><p class="muted">升而有序，适合积累资源，等待更好的推进窗口。</p>`;
   }
+});
+
+document.addEventListener("input", (event) => {
+  if (!event.target.closest?.(".wentian-chart-card")) return;
+  if (event.target.id === "wentian-chart-city") {
+    wentianChartCity = null;
+    renderWentianChartCityDropdown(event.target.value);
+  }
+  if (event.target.id === "wentian-chart-year" || event.target.id === "wentian-chart-month") {
+    updateWentianChartDayOptions(
+      document.getElementById("wentian-chart-day"),
+      getWentianNumber("wentian-chart-year"),
+      getWentianNumber("wentian-chart-month")
+    );
+  }
+  updateWentianChartPreview();
+});
+
+document.addEventListener("change", (event) => {
+  if (!event.target.closest?.(".wentian-chart-card")) return;
+  if (event.target.id === "wentian-chart-year" || event.target.id === "wentian-chart-month") {
+    updateWentianChartDayOptions(
+      document.getElementById("wentian-chart-day"),
+      getWentianNumber("wentian-chart-year"),
+      getWentianNumber("wentian-chart-month")
+    );
+  }
+  updateWentianChartPreview();
 });
 
 function buildScreenNav() {
