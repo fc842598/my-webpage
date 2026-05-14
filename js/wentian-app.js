@@ -2384,6 +2384,23 @@ function toggleYangzhaiResult(index) {
   navigate("screen-44", false);
 }
 
+function openYangzhaiLuopanZoom() {
+  const phone = view.querySelector(".figma-phone");
+  if (!phone) return;
+  phone.querySelector("[data-yangzhai-luopan-zoom]")?.remove();
+  phone.insertAdjacentHTML("beforeend", `
+    <div class="yangzhai-luopan-zoom" data-yangzhai-luopan-zoom>
+      <button class="yangzhai-luopan-zoom-bg" type="button" data-action="yangzhai-luopan-close" aria-label="关闭罗盘大图"></button>
+      <img class="yangzhai-luopan-zoom-img" src="../images/wentian-prototype-assets/yangzhai-luopan.png" alt="罗盘大图">
+      <button class="yangzhai-luopan-zoom-close" type="button" data-action="yangzhai-luopan-close" aria-label="关闭罗盘大图">×</button>
+    </div>
+  `);
+}
+
+function closeYangzhaiLuopanZoom() {
+  view.querySelector("[data-yangzhai-luopan-zoom]")?.remove();
+}
+
 function getYangzhaiHex(label, palace) {
   const upper = YANGZHAI_ROLE_GUA[label];
   if (!upper || !palace?.gua) return null;
@@ -2505,6 +2522,7 @@ function yangzhaiCompassGrid(id) {
       return `
         ${figText(`${id}-center-title`, "罗盘方位", x + 13, y + 38, YANGZHAI_CELL_W - 26, 18, "#25190f", 900, "center")}
         ${figImage(`${id}-luopan`, "../images/wentian-prototype-assets/yangzhai-luopan.png", x + 18, y + 75, 76, 76, "object-fit:cover;border-radius:50%;border:1px solid #d4c4e6;box-shadow:0 8px 16px rgba(97,62,36,.10);background:#fff;")}
+        ${figButton(`${id}-luopan-hit`, x + 7, y + 28, YANGZHAI_CELL_W - 14, YANGZHAI_CELL_H - 36, 'data-action="yangzhai-luopan-open" aria-label="放大罗盘"', "", "cursor:zoom-in;")}
       `;
     }
     const items = getYangzhaiPlacementItems(palace.key);
@@ -4116,6 +4134,14 @@ document.addEventListener("click", (event) => {
   const earlyAction = earlyActionTarget?.dataset.action;
   if (earlyAction === "yangzhai-open") {
     openYangzhaiPicker(earlyActionTarget.dataset.palace || "xun");
+    return;
+  }
+  if (earlyAction === "yangzhai-luopan-open") {
+    openYangzhaiLuopanZoom();
+    return;
+  }
+  if (earlyAction === "yangzhai-luopan-close") {
+    closeYangzhaiLuopanZoom();
     return;
   }
   if (earlyAction === "yangzhai-pick") {

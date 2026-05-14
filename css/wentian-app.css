@@ -462,6 +462,51 @@ button {
   object-fit: cover;
 }
 
+.yangzhai-luopan-zoom {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 120;
+  width: 390px;
+  height: 844px;
+}
+
+.yangzhai-luopan-zoom-bg {
+  position: absolute;
+  inset: 0;
+  border: 0;
+  background: rgba(24, 20, 16, 0.52);
+}
+
+.yangzhai-luopan-zoom-img {
+  position: absolute;
+  left: 16px;
+  top: 188px;
+  width: 358px;
+  height: 358px;
+  border-radius: 50%;
+  background: #fff;
+  object-fit: cover;
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.24);
+}
+
+.yangzhai-luopan-zoom-close {
+  position: absolute;
+  left: 169px;
+  top: 564px;
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  border: 3px solid rgba(255, 255, 255, 0.92);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.18);
+  color: #fff;
+  font-size: 42px;
+  font-weight: 300;
+  line-height: 1;
+}
+
 .fig-card {
   background: #fff;
   border: 1px solid #e7d7bf;
