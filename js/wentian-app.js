@@ -2043,6 +2043,108 @@ const YANGZHAI_DEFAULT_PLACEMENTS = {
 const YANGZHAI_RESULT_START_Y = 664;
 const YANGZHAI_RESULT_COLLAPSED_HEIGHT = 142;
 const YANGZHAI_RESULT_EXPANDED_HEIGHT = 220;
+const YANGZHAI_ROLE_GUA = {
+  父亲: "乾",
+  母亲: "坤",
+  长子: "震",
+  长女: "巽",
+  二子: "坎",
+  二女: "离",
+  三子: "艮",
+  三女: "兑"
+};
+const YANGZHAI_SPACE_RULES = {
+  厨房: {
+    meaning: "刀象",
+    preference: "正北或正西较佳",
+    preferredPalaces: ["kan", "dui"],
+    source: "S007",
+    audit: "B-笔记摘要",
+    status: "功能象义可发布；方位偏好后台待原书核"
+  },
+  厕所: {
+    meaning: "是非、口舌、官司",
+    preference: "谨慎口径，只做象义提示",
+    preferredPalaces: [],
+    source: "S007",
+    audit: "B-笔记摘要",
+    status: "谨慎发布，不扩写灾祸断语"
+  },
+  客厅: {
+    meaning: "如客",
+    preference: "坤位较佳",
+    preferredPalaces: ["kun"],
+    source: "S007",
+    audit: "B-笔记摘要",
+    status: "可发布但标注为笔记摘要"
+  }
+};
+const YANGZHAI_HEX_INDEX = {
+  "乾-乾": { no: "1", name: "乾为天", index: "父亲居西北角", audit: "B-笔记摘要可索引", source: "S004,S007" },
+  "坤-坤": { no: "2", name: "坤为地", index: "母亲居西南角", audit: "B-笔记摘要可索引", source: "S004,S007" },
+  "坎-震": { no: "3", name: "水雷屯", index: "二子/次子居正东", audit: "B-笔记摘要可索引", source: "S004,S007" },
+  "艮-坎": { no: "4", name: "山水蒙", index: "三子/少男居正北", audit: "B-笔记摘要可索引", source: "S004,S007" },
+  "坎-乾": { no: "5", name: "水天需", index: "二子/次子居西北角", audit: "B-笔记摘要可索引", source: "S004,S007" },
+  "乾-坎": { no: "6", name: "天水讼", index: "父亲居正北", audit: "B-笔记摘要可索引", source: "S004,S007" },
+  "坤-坎": { no: "7", name: "地水师", index: "母亲居正北", audit: "B-笔记摘要可索引", source: "S004,S007" },
+  "坎-坤": { no: "8", name: "水地比", index: "二子/次子居西南角", audit: "B-笔记摘要可索引", source: "S004,S007" },
+  "巽-乾": { no: "9", name: "风天小畜", index: "长女居西北角", audit: "B-笔记摘要可索引", source: "S004,S007" },
+  "乾-兑": { no: "10", name: "天泽履", index: "父亲居正西", audit: "B-笔记摘要可索引", source: "S004,S007" },
+  "坤-乾": { no: "11", name: "地天泰", index: "母亲居西北角", audit: "B-笔记摘要可索引", source: "S004,S007" },
+  "乾-坤": { no: "12", name: "天地否", index: "父亲居西南角", audit: "B-笔记摘要可索引", source: "S004,S007" },
+  "乾-离": { no: "13", name: "天火同人", index: "父亲居正南", audit: "B-笔记摘要可索引", source: "S004,S007" },
+  "离-乾": { no: "14", name: "火天大有", index: "二女/次女居西北角", audit: "B-笔记摘要可索引", source: "S004,S007" },
+  "坤-艮": { no: "15", name: "地山谦", index: "母亲居东北角", audit: "B-笔记摘要可索引", source: "S004,S007" },
+  "震-坤": { no: "16", name: "雷地豫", index: "长子居西南角", audit: "B-笔记摘要可索引", source: "S004,S007" },
+  "兑-震": { no: "17", name: "泽雷随", index: "少女/三女居正东", audit: "B-笔记摘要可索引", source: "S004,S007" },
+  "艮-巽": { no: "18", name: "山风蛊", index: "三子/少男居东南角", audit: "B-笔记摘要可索引", source: "S004,S007" },
+  "坤-兑": { no: "19", name: "地泽临", index: "母亲居正西", audit: "B-笔记摘要可索引", source: "S004,S007" },
+  "巽-坤": { no: "20", name: "风地观", index: "长女居西南角", audit: "B-笔记摘要可索引", source: "S004,S007" },
+  "离-震": { no: "21", name: "火雷噬嗑", index: "二女/次女居正东", audit: "B-笔记摘要可索引", source: "S004,S007" },
+  "艮-离": { no: "22", name: "山火贲", index: "三子/少男居正南", audit: "B-笔记摘要可索引", source: "S004,S007" },
+  "艮-坤": { no: "23", name: "山地剥", index: "三子/少男居西南角", audit: "B-笔记摘要可索引", source: "S004,S007" },
+  "坤-震": { no: "24", name: "地雷复", index: "母亲居正东", audit: "B-笔记摘要可索引", source: "S004,S007" },
+  "乾-震": { no: "25", name: "天雷无妄", index: "父亲居正东", audit: "B-笔记摘要可索引", source: "S004,S007" },
+  "艮-乾": { no: "26", name: "山天大畜", index: "三子/少男居西北角", audit: "B-笔记摘要可索引", source: "S004,S007" },
+  "艮-震": { no: "27", name: "山雷颐", index: "三子/少男居正东", audit: "B-笔记摘要可索引", source: "S004,S007" },
+  "兑-巽": { no: "28", name: "泽风大过", index: "少女/三女居东南角", audit: "B-笔记摘要可索引", source: "S004,S007" },
+  "坎-坎": { no: "29", name: "坎为水", index: "二子/次子居正北", audit: "B-笔记摘要可索引", source: "S004,S007" },
+  "离-离": { no: "30", name: "离为火", index: "二女/次女居正南", audit: "B-笔记摘要可索引", source: "S004,S007" },
+  "兑-艮": { no: "31", name: "泽山咸", index: "少女/三女居东北角", audit: "B-笔记摘要可索引", source: "S004,S007" },
+  "震-巽": { no: "32", name: "雷风恒", index: "长子居东南角", audit: "B-笔记摘要可索引", source: "S004,S007" },
+  "乾-艮": { no: "33", name: "天山遁", index: "父亲居东北角", audit: "B-笔记摘要可索引", source: "S004,S007" },
+  "震-乾": { no: "34", name: "雷天大壮", index: "长子居西北角", audit: "B-笔记摘要可索引", source: "S004,S007" },
+  "离-坤": { no: "35", name: "火地晋", index: "二女/次女居西南角", audit: "B-笔记摘要可索引", source: "S004,S007" },
+  "坤-离": { no: "36", name: "地火明夷", index: "母亲居正南", audit: "B-笔记摘要可索引", source: "S004,S007" },
+  "巽-离": { no: "37", name: "风火家人", index: "长女居正南", audit: "B-笔记摘要可索引", source: "S004,S007" },
+  "离-兑": { no: "38", name: "火泽睽", index: "二女/次女居正西", audit: "目录确认/正文待核", source: "S004,S007" },
+  "坎-艮": { no: "39", name: "水山蹇", index: "二子/次子居东北角", audit: "目录确认/正文待核", source: "S004,S007" },
+  "震-坎": { no: "40", name: "雷水解", index: "长子居正北", audit: "目录确认/正文待核", source: "S004,S007" },
+  "艮-兑": { no: "41", name: "山泽损", index: "三子/少男居正西", audit: "目录确认/正文待核", source: "S004,S007" },
+  "巽-震": { no: "42", name: "风雷益", index: "长女居正东", audit: "目录确认/正文待核", source: "S004,S007" },
+  "兑-乾": { no: "43", name: "泽天夬", index: "少女/三女居西北角", audit: "目录确认/正文待核", source: "S004,S007" },
+  "乾-巽": { no: "44", name: "天风姤", index: "父亲居东南角", audit: "目录确认/正文待核", source: "S004,S007" },
+  "兑-坤": { no: "45", name: "泽地萃", index: "少女/三女居西南角", audit: "目录确认/正文待核", source: "S004,S007" },
+  "坤-巽": { no: "46", name: "地风升", index: "母亲居东南角", audit: "目录确认/正文待核", source: "S004,S007" },
+  "兑-坎": { no: "47", name: "泽水困", index: "少女/三女居正北", audit: "目录确认/正文待核", source: "S004,S007" },
+  "坎-巽": { no: "48", name: "水风井", index: "二子/次子居东南角", audit: "目录确认/正文待核", source: "S004,S007" },
+  "兑-离": { no: "49", name: "泽火革", index: "少女/三女居正南", audit: "目录确认/正文待核", source: "S004,S007" },
+  "离-巽": { no: "50", name: "火风鼎", index: "二女/次女居东南角", audit: "目录确认/正文待核", source: "S004,S007" },
+  "震-震": { no: "51", name: "震为雷", index: "长子居正东", audit: "目录确认/正文待核", source: "S004,S007" },
+  "艮-艮": { no: "52", name: "艮为山", index: "三子/少男居东北角", audit: "目录确认/正文待核", source: "S004,S007" },
+  "巽-艮": { no: "53", name: "风山渐", index: "长女居东北角", audit: "目录确认/正文待核", source: "S004,S007" },
+  "震-兑": { no: "54", name: "雷泽归妹", index: "长子居正西", audit: "目录确认/正文待核", source: "S004,S007" },
+  "震-离": { no: "55", name: "雷火丰", index: "长子居正南", audit: "目录确认/正文待核", source: "S004,S007" },
+  "离-艮": { no: "56", name: "火山旅", index: "二女/次女居东北角", audit: "目录确认/正文待核", source: "S004,S007" },
+  "巽-巽": { no: "57", name: "巽为风", index: "长女居东南角", audit: "目录确认/正文待核", source: "S004,S007" },
+  "兑-兑": { no: "58", name: "兑为泽", index: "少女/三女居正西", audit: "目录确认/正文待核", source: "S004,S007" },
+  "巽-坎": { no: "59", name: "风水涣", index: "长女居正北", audit: "目录确认/正文待核", source: "S004,S007" },
+  "坎-兑": { no: "60", name: "水泽节", index: "二子/次子居正西", audit: "目录确认/正文待核", source: "S004,S007" },
+  "巽-兑": { no: "61", name: "风泽中孚", index: "长女居正西", audit: "目录确认/正文待核", source: "S004,S007" },
+  "震-艮": { no: "62", name: "雷山小过", index: "长子居东北角", audit: "目录确认/正文待核", source: "S004,S007" },
+  "坎-离": { no: "63", name: "水火既济", index: "二子/次子居正南", audit: "目录确认/正文待核", source: "S004,S007" },
+  "离-坎": { no: "64", name: "未济", index: "二女/次女居正北", audit: "冲突待核", source: "S004,S007,S013" }
+};
 
 function loadYangzhaiState() {
   try {
@@ -2138,31 +2240,10 @@ function toggleYangzhaiResult(index) {
   navigate("screen-44", false);
 }
 
-function yangzhaiPalaceAdvice(palaceKey, itemLabel) {
-  const palaceMap = {
-    xun: "东南主生发与学习，宜清爽通风，利人际和成长。",
-    li: "正南主名声与表达，宜明亮有序，忌火气过旺。",
-    kun: "西南主承载与稳定，宜厚重整洁，利家庭凝聚。",
-    zhen: "正东主动能与开创，宜留活动空间，忌杂物压住。",
-    dui: "正西主口才与收成，宜柔和安静，减少争执声。",
-    gen: "东北主积累与定力，宜沉稳，适合读书和长期规划。",
-    kan: "正北主思考与流动，宜静不宜乱，注意湿气。",
-    qian: "西北主权责与决策，宜开阔端正，利事业名望。"
-  };
-  const itemMap = {
-    父亲: "父亲入位重担当与家中主心骨。",
-    母亲: "母亲入位重安稳、包容与家庭照应。",
-    长子: "长子入位重行动力、开创与执行。",
-    长女: "长女入位重条理、审美、学习与人缘。",
-    二子: "二子入位重思考、专注与韧性。",
-    二女: "二女入位重表达、情绪与关系协调。",
-    三子: "三子入位重变化、外缘与机敏。",
-    三女: "三女入位重沟通、才艺与收成。",
-    厨房: "厨房属火，宜看是否与方位火土相冲，保持干净通风。",
-    厕所: "厕所主湿浊，宜加强通风除湿，减少长期堆放。",
-    客厅: "客厅主纳气与家人互动，宜明亮开阔，动线顺畅。"
-  };
-  return `${itemMap[itemLabel] || "此位已安置。"}${palaceMap[palaceKey] || ""}`;
+function getYangzhaiHex(label, palace) {
+  const upper = YANGZHAI_ROLE_GUA[label];
+  if (!upper || !palace?.gua) return null;
+  return YANGZHAI_HEX_INDEX[`${upper}-${palace.gua}`] || null;
 }
 
 function buildYangzhaiResults() {
@@ -2171,16 +2252,37 @@ function buildYangzhaiResults() {
     .map((palace) => {
       const label = yangzhaiState.placements[palace.key];
       const option = getYangzhaiOption(label);
-      const matched = label === palace.defaultItem;
-      const verb = option.type === "space" ? "在" : "住";
       const short = option.short;
-      const desc = matched
-        ? `${label}${verb}${palace.gua}(${palace.dir})，与${palace.role}相应。${yangzhaiPalaceAdvice(palace.key, label)}`
-        : `${label}${verb}${palace.gua}(${palace.dir})，当前不属于本位，宜看实际使用强度。${yangzhaiPalaceAdvice(palace.key, label)}`;
+      if (option.type === "space") {
+        const rule = YANGZHAI_SPACE_RULES[label] || {};
+        const preferred = (rule.preferredPalaces || []).includes(palace.key);
+        const preference = rule.preferredPalaces?.length
+          ? preferred
+            ? `方位偏好命中：${rule.preference}。`
+            : `方位偏好：${rule.preference}，当前为${palace.dir}，仅作索引参考。`
+          : `${rule.preference || "只做空间象义提示"}。`;
+        const desc = `功能象义：${rule.meaning || "待核"}。${preference}`;
+        return {
+          kind: "space",
+          title: `${label}在${palace.gua}(${palace.dir}) - 功能区象义`,
+          desc,
+          full: `${desc} 来源${rule.source || "待核"}，${rule.audit || "待核"}；${rule.status || "不发布未核断语"}。不扩写疾病、死亡、离散等敏感断语。`,
+          short,
+          matched: preferred
+        };
+      }
+      const hex = getYangzhaiHex(label, palace);
+      const matched = label === palace.defaultItem;
+      const desc = hex
+        ? `64结构：${hex.index}；卦名${hex.name}。${hex.audit}。`
+        : `八宫基础：${label}住${palace.gua}(${palace.dir})，待补结构索引。`;
       return {
-        title: `${label}${verb}${palace.gua}(${palace.dir}) - ${palace.role}`,
+        kind: "hex",
+        title: `${label}住${palace.gua}(${palace.dir}) - ${hex ? hex.name : palace.role}`,
         desc,
-        full: `${desc} 如需调整，优先处理采光、通风、整洁与动线；长期睡卧或高频活动的方位，影响会更明显。`,
+        full: hex
+          ? `${desc} 来源${hex.source}。推导口径：上卦=角色，下卦=方位；前台只发布结构索引，不发布未核吉凶正文。`
+          : `${desc} 来源待核；前台只发布可核索引。`,
         short,
         matched
       };
@@ -2311,7 +2413,8 @@ function sourceYangzhaiSelectScreen() {
 function sourceYangzhaiResultScreen() {
   const results = buildYangzhaiResults();
   const height = getYangzhaiResultHeight();
-  const matchedCount = results.filter((item) => item.matched).length;
+  const hexCount = results.filter((item) => item.kind === "hex").length;
+  const spaceCount = results.filter((item) => item.kind === "space").length;
   return `
     ${figBox("yz44-bg", 0, 0, 390, height, "", "background:#f8f7fb;")}
     ${yangzhaiHeader("yz44")}
@@ -2327,7 +2430,7 @@ function sourceYangzhaiResultScreen() {
     ${figButton("yz44-reset-hit", 322, 575, 44, 48, 'data-action="yangzhai-reset"')}
     ${figText("yz44-reset-text", "重置", 322, 590, 44, 13, "#6f665d", 700, "center")}
     ${figText("yz44-result-title", "解读结果", 24, 636, 120, 16, "#25211d", 900)}
-    ${figText("yz44-result-meta", results.length ? `${results.length}项 · 本位${matchedCount}项` : "尚未排布", 236, 638, 130, 12, "#756d63", 600, "right")}
+    ${figText("yz44-result-meta", results.length ? `${hexCount}索引 · ${spaceCount}规则` : "尚未排布", 236, 638, 130, 12, "#756d63", 600, "right")}
     ${!results.length ? `
       ${figBox("yz44-empty", 24, 674, 342, 132, "", "border-radius:16px;background:#fff;box-shadow:0 7px 18px rgba(70,45,25,.07);")}
       ${figText("yz44-empty-title", "还没有可解读内容", 0, 714, 390, 16, "#25211d", 800, "center")}
@@ -2358,13 +2461,13 @@ function sourceYangzhaiTutorialScreen() {
     ["1", "站在户型中心", "先确定房屋中心点，再按手机罗盘或户型图标出八方。"],
     ["2", "点击方位加号", "把家人、厨房、厕所、客厅放入对应宫位。"],
     ["3", "一键归位", "可用“长幼有序”快速按父母子女关系填入九宫。"],
-    ["4", "解读分析", "系统会按方位、人事与空间组合生成阳宅解读。"]
+    ["4", "解读分析", "按资料库输出八宫基础、功能区象义和64结构索引。"]
   ];
   return `
     ${figBox("yz45-bg", 0, 0, 390, 844, "", "background:#f8f7fb;")}
     ${yangzhaiHeader("yz45", "教程", "")}
     ${figText("yz45-title", "地脉道怎么用", 24, 112, 180, 22, "#25211d", 800)}
-    ${figText("yz45-sub", "按截图链路整理：先定方位，再放人和空间，最后解读。", 24, 148, 300, 13, "#756d63", 500)}
+    ${figText("yz45-sub", "先定方位，再放人和空间；结果只显示可发布索引，不写未核断语。", 24, 148, 300, 13, "#756d63", 500)}
     ${steps.map(([num, title, desc], index) => {
       const y = 204 + index * 112;
       return `
