@@ -61,13 +61,15 @@ const convertedScreens = [
   { no: 42, title: "地脉道", active: "活动" },
   { no: 43, title: "选择方位成员", active: "活动" },
   { no: 44, title: "阳宅解读", active: "活动" },
-  { no: 45, title: "地脉道教程", active: "活动" }
+  { no: 45, title: "地脉道教程", active: "活动" },
+  { no: 46, title: "六壬法", active: "活动" },
+  { no: 47, title: "六壬法教程", active: "活动" }
 ];
 
 const convertedByNo = new Map(convertedScreens.map((screen) => [screen.no, screen]));
 
 const screenFlowHotspots = {
-  1: [[286, 24, 86, 52, "screen-26"], [18, 130, 354, 274, "screen-4"], [18, 425, 354, 96, "screen-10"], [18, 534, 354, 96, "screen-17"], [18, 643, 354, 96, "screen-42"], [18, 820, 354, 104, "screen-22"], [18, 944, 354, 104, "screen-23"], [12, 1080, 76, 83, "screen-1"], [109, 1080, 76, 83, "screen-25"], [207, 1080, 76, 83, "screen-3"], [304, 1080, 76, 83, "screen-31"]],
+  1: [[286, 24, 86, 52, "screen-26"], [18, 130, 354, 274, "screen-4"], [18, 425, 354, 96, "screen-10"], [18, 534, 354, 96, "screen-17"], [18, 643, 354, 96, "screen-42"], [18, 752, 354, 96, "screen-46"], [18, 929, 354, 104, "screen-22"], [18, 1053, 354, 104, "screen-23"], [12, 1189, 76, 83, "screen-1"], [109, 1189, 76, 83, "screen-25"], [207, 1189, 76, 83, "screen-3"], [304, 1189, 76, 83, "screen-31"]],
   2: [[18, 282, 354, 190, "screen-4"], [18, 487, 354, 190, "screen-4"], [18, 692, 354, 175, "screen-4"]],
   3: [[285, 128, 82, 28, "screen-5"], [16, 164, 358, 84, "screen-5"], [16, 305, 358, 116, "screen-4"], [12, 761, 76, 72, "screen-1"], [109, 761, 76, 72, "screen-25"], [207, 761, 76, 72, "screen-3"], [304, 761, 76, 72, "screen-31"]],
   4: [[18, 24, 44, 56, "screen-3"], [334, 24, 38, 56, "screen-9"], [252, 26, 78, 36, "screen-5"]],
@@ -111,7 +113,9 @@ const screenFlowHotspots = {
   42: [],
   43: [],
   44: [],
-  45: []
+  45: [],
+  46: [],
+  47: []
 };
 
 const routes = {
@@ -3198,12 +3202,295 @@ function sourceYangzhaiTutorialScreen() {
   `;
 }
 
+const LIUREN_MONTHS = ["正月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "冬月", "腊月"];
+const LIUREN_HOURS = ["子", "丑", "寅", "卯", "辰", "巳", "午", "未", "申", "酉", "戌", "亥"];
+const LIUREN_PALACES = [
+  { name: "大安", nature: "吉", tone: "good", keys: ["安稳", "守成", "静候"], summary: "主安定、平稳，宜守不宜急。问事多能稳住，先保当前盘面。", advice: "适合确认已有计划、等待消息、修正细节。" },
+  { name: "留连", nature: "凶", tone: "warn", keys: ["迟滞", "牵连", "反复"], summary: "主拖延、反复、被事情缠住。问事不宜急推，先拆开阻点。", advice: "适合催办、补资料、清理旧账；不宜仓促定案。" },
+  { name: "速喜", nature: "吉", tone: "good", keys: ["消息", "喜讯", "快应"], summary: "主喜讯、消息快至、机会临近。问事多有回应，但要快接快办。", advice: "适合联系、发布、见面、确认；好消息来时立刻承接。" },
+  { name: "赤口", nature: "凶", tone: "warn", keys: ["口舌", "冲突", "误会"], summary: "主争执、口舌、误会。问事要先避冲突，话不可说满。", advice: "适合沉默观察、留证据、缓谈判；避免硬碰硬。" },
+  { name: "小吉", nature: "吉", tone: "good", keys: ["小成", "贵人", "顺手"], summary: "主小利、小成、有人帮扶。不是暴涨，但推进顺手。", advice: "适合小步试探、先拿结果、借力推进。" },
+  { name: "空亡", nature: "凶", tone: "warn", keys: ["落空", "虚耗", "暂无"], summary: "主落空、虚耗、信息不实。问事多需重新核对根基。", advice: "适合暂停、查证、换方案；不要把希望压在单一路径。" }
+];
+
+function formatLiurenLunar(lunar) {
+  if (!lunar) return "农历未识别";
+  const month = `${lunar.isLeap ? "闰" : ""}${LIUREN_MONTHS[lunar.month - 1] || `${lunar.month}月`}`;
+  return `${lunar.year}年${month}${lunar.day}日`;
+}
+
+function getLiurenLunar(date) {
+  if (typeof solarToLunar !== "function") throw new Error("农历转换模块未加载，请刷新后重试");
+  const lunar = solarToLunar(date.getFullYear(), date.getMonth() + 1, date.getDate());
+  if (!lunar) throw new Error("当前日期超出农历支持范围");
+  return lunar;
+}
+
+function getLiurenResultByDate(date) {
+  const lunar = getLiurenLunar(date);
+  const hourIndex = getWentianTimeIndex(date.getHours(), date.getMinutes());
+  const hourNumber = hourIndex + 1;
+  const palaceIndex = (lunar.month + lunar.day + hourNumber - 3) % LIUREN_PALACES.length;
+  const palace = LIUREN_PALACES[palaceIndex];
+  return {
+    date,
+    lunar,
+    hourIndex,
+    hourName: LIUREN_HOURS[hourIndex] || "子",
+    hourNumber,
+    palaceIndex,
+    palace,
+    formula: `${lunar.month}月 + ${lunar.day}日 + ${hourNumber}时位`
+  };
+}
+
+function getLiurenInputDate() {
+  const year = getWentianNumber("liuren-year");
+  const month = getWentianNumber("liuren-month");
+  const day = getWentianNumber("liuren-day");
+  const hour = getWentianNumber("liuren-hour");
+  const minute = getWentianNumber("liuren-minute");
+  if (!year || !month || !day) throw new Error("请先补全公历日期");
+  if (year < 1900 || year > 2099) throw new Error("年份请填写 1900-2099");
+  const date = new Date(year, month - 1, day, hour, minute);
+  if (Number.isNaN(date.getTime()) || date.getMonth() !== month - 1 || date.getDate() !== day) throw new Error("日期无效");
+  return date;
+}
+
+function renderLiurenTrack(result) {
+  return LIUREN_PALACES.map((item, index) => `
+    <div class="liuren-track-item ${index === result.palaceIndex ? "is-active" : ""} ${item.tone === "good" ? "is-good" : "is-warn"}">
+      <strong>${item.name}</strong>
+      <span>${item.nature}</span>
+    </div>
+  `).join("");
+}
+
+function renderLiurenResultHtml(result) {
+  const palace = result.palace;
+  const copyText = [
+    `六壬法：${palace.name}（${palace.nature}）`,
+    `公历：${formatWentianDateTime(result.date)}`,
+    `农历：${formatLiurenLunar(result.lunar)} · ${result.hourName}时`,
+    `解读：${palace.summary}`,
+    `建议：${palace.advice}`
+  ].join("\n");
+  return `
+    <article class="liuren-result-card ${palace.tone === "good" ? "is-good" : "is-warn"}">
+      <div class="liuren-result-top">
+        <div>
+          <span class="liuren-kicker">占卜结果</span>
+          <h3>${palace.name}<small>${palace.nature}</small></h3>
+        </div>
+        <div class="liuren-seal">${palace.name.slice(0, 1)}</div>
+      </div>
+      <p class="liuren-summary">${palace.summary}</p>
+      <div class="liuren-tags">${palace.keys.map((key) => `<span>${key}</span>`).join("")}</div>
+      <div class="liuren-detail">
+        <strong>当前课式</strong>
+        <span>${formatLiurenLunar(result.lunar)} · ${result.hourName}时 · ${result.formula}</span>
+      </div>
+      <div class="liuren-detail">
+        <strong>行动建议</strong>
+        <span>${palace.advice}</span>
+      </div>
+      <textarea id="liuren-copy-text" class="liuren-copy-text" readonly>${escapeHtml(copyText)}</textarea>
+    </article>
+  `;
+}
+
+function populateLiurenSelects() {
+  const month = document.getElementById("liuren-month");
+  const day = document.getElementById("liuren-day");
+  const hour = document.getElementById("liuren-hour");
+  const minute = document.getElementById("liuren-minute");
+  if (month && !month.options.length) month.innerHTML = Array.from({ length: 12 }, (_, i) => `<option value="${i + 1}">${i + 1}月</option>`).join("");
+  if (hour && !hour.options.length) hour.innerHTML = Array.from({ length: 24 }, (_, i) => `<option value="${i}">${padWentianNumber(i)}时</option>`).join("");
+  if (minute && !minute.options.length) minute.innerHTML = Array.from({ length: 60 }, (_, i) => `<option value="${i}">${padWentianNumber(i)}分</option>`).join("");
+  updateLiurenDayOptions();
+  if (day && !day.value) day.value = "1";
+}
+
+function updateLiurenDayOptions() {
+  const day = document.getElementById("liuren-day");
+  if (!day) return;
+  const previous = Number(day.value) || 1;
+  const year = getWentianNumber("liuren-year") || new Date().getFullYear();
+  const month = getWentianNumber("liuren-month") || 1;
+  const max = new Date(year, month, 0).getDate();
+  day.innerHTML = Array.from({ length: max }, (_, i) => `<option value="${i + 1}">${i + 1}日</option>`).join("");
+  day.value = String(Math.min(previous, max));
+}
+
+function setLiurenDateTime(date) {
+  populateLiurenSelects();
+  const year = document.getElementById("liuren-year");
+  const month = document.getElementById("liuren-month");
+  const day = document.getElementById("liuren-day");
+  const hour = document.getElementById("liuren-hour");
+  const minute = document.getElementById("liuren-minute");
+  if (year) year.value = String(date.getFullYear());
+  if (month) month.value = String(date.getMonth() + 1);
+  updateLiurenDayOptions();
+  if (day) day.value = String(date.getDate());
+  if (hour) hour.value = String(date.getHours());
+  if (minute) minute.value = String(date.getMinutes());
+  updateLiurenPreview();
+}
+
+function setLiurenStatus(text, tone = "") {
+  const status = document.getElementById("liuren-status");
+  if (!status) return;
+  status.textContent = text || "";
+  status.dataset.tone = tone;
+}
+
+function updateLiurenPreview() {
+  const preview = document.getElementById("liuren-preview");
+  const track = document.getElementById("liuren-track");
+  const resultWrap = document.getElementById("liuren-result");
+  try {
+    const result = getLiurenResultByDate(getLiurenInputDate());
+    if (preview) {
+      preview.innerHTML = `
+        <strong>${result.hourName}时</strong>
+        <span>${formatWentianDateTime(result.date)}</span>
+        <span>${formatLiurenLunar(result.lunar)}</span>
+      `;
+    }
+    if (track) track.innerHTML = renderLiurenTrack(result);
+    if (resultWrap) resultWrap.innerHTML = renderLiurenResultHtml(result);
+    setLiurenStatus("已按农历月日时起课", "ok");
+  } catch (error) {
+    if (preview) preview.innerHTML = "<strong>待起课</strong><span>请补全时间</span>";
+    setLiurenStatus(error.message || "起课失败", "error");
+  }
+}
+
+function initLiurenScreen() {
+  if (!document.querySelector(".liuren-panel")) return;
+  setLiurenDateTime(new Date());
+}
+
+function calculateLiurenFromInputs() {
+  updateLiurenPreview();
+}
+
+function resetLiuren() {
+  setLiurenDateTime(new Date());
+}
+
+async function copyLiurenResult() {
+  const text = document.getElementById("liuren-copy-text")?.value || "";
+  if (!text) return;
+  try {
+    if (!navigator.clipboard?.writeText) throw new Error("clipboard unavailable");
+    await navigator.clipboard.writeText(text);
+    setLiurenStatus("结果已复制", "ok");
+  } catch (_err) {
+    setLiurenStatus("复制受限，可长按结果手动复制", "error");
+  }
+}
+
+function makeLiurenInitialResult(date) {
+  try {
+    return getLiurenResultByDate(date);
+  } catch (_err) {
+    const hourIndex = getWentianTimeIndex(date.getHours(), date.getMinutes());
+    return {
+      date,
+      lunar: { year: date.getFullYear(), month: date.getMonth() + 1, day: date.getDate(), isLeap: false },
+      hourIndex,
+      hourName: LIUREN_HOURS[hourIndex] || "子",
+      hourNumber: hourIndex + 1,
+      palaceIndex: 0,
+      palace: LIUREN_PALACES[0],
+      formula: "待农历换算"
+    };
+  }
+}
+
+function sourceLiurenScreen() {
+  const initial = makeLiurenInitialResult(new Date());
+  return `
+    ${figBox("lr46-bg", 0, 0, 390, 1088, "", "background:linear-gradient(180deg,#fffaf3 0%,#fbf5eb 46%,#fffaf3 100%);")}
+    ${wentianSimpleHeader("lr46", "六壬法", "教程")}
+    ${figButton("lr46-tutorial-hit", 318, 38, 62, 54, 'data-route="screen-47"')}
+    ${figText("lr46-main-title", "小六壬起课", 24, 104, 170, 28, "#201812", 900, "left", "font-family:'Noto Serif SC','Songti SC',serif;")}
+    ${figText("lr46-sub", "按当前农历月、日、时，从大安顺推六宫。", 24, 140, 270, 13, "#817568", 600)}
+    ${figBox("lr46-source", 296, 108, 70, 34, "", "border-radius:17px;background:#fff0d6;border:1px solid #ead9bd;")}
+    ${figText("lr46-source-text", "本地起课", 296, 118, 70, 12, "#9a681c", 800, "center")}
+    <section class="liuren-panel">
+      <div class="liuren-now-card">
+        <div id="liuren-preview" class="liuren-preview">
+          <strong>${initial.hourName}时</strong>
+          <span>${formatWentianDateTime(initial.date)}</span>
+          <span>${formatLiurenLunar(initial.lunar)}</span>
+        </div>
+        <button type="button" class="liuren-now" data-action="liuren-use-now">取当前时间</button>
+      </div>
+      <div class="liuren-form-card">
+        <label><span>公历年份</span><input id="liuren-year" type="number" min="1900" max="2099" inputmode="numeric" value="${initial.date.getFullYear()}"></label>
+        <div class="liuren-grid">
+          <label><span>月份</span><select id="liuren-month"></select></label>
+          <label><span>日期</span><select id="liuren-day"></select></label>
+        </div>
+        <div class="liuren-grid">
+          <label><span>时</span><select id="liuren-hour"></select></label>
+          <label><span>分</span><select id="liuren-minute"></select></label>
+        </div>
+      </div>
+      <div id="liuren-track" class="liuren-track">${renderLiurenTrack(initial)}</div>
+      <div id="liuren-result">${renderLiurenResultHtml(initial)}</div>
+      <div class="liuren-actions">
+        <button type="button" class="primary" data-action="liuren-calc">重新起课</button>
+        <button type="button" data-action="liuren-copy">复制</button>
+        <button type="button" data-action="liuren-reset">现在</button>
+      </div>
+      <p id="liuren-status" class="liuren-status" data-tone="ok">已按农历月日时起课</p>
+    </section>
+  `;
+}
+
+function sourceLiurenTutorialScreen() {
+  const steps = [
+    ["一", "取当下时间", "进入页面会自动读取手机当前公历时间，并换算成农历月日与时辰。"],
+    ["二", "从大安顺推", "农历月份从大安起，接着推农历日期，再推十二时辰。"],
+    ["三", "看落宫吉凶", "落到大安、速喜、小吉为吉；留连、赤口、空亡偏凶。"],
+    ["四", "只作参考", "六壬法适合快速看当下气象，重要决策仍需结合完整命盘与现实信息。"]
+  ];
+  return `
+    ${figBox("lr47-bg", 0, 0, 390, 844, "", "background:linear-gradient(180deg,#fffaf3 0%,#fbf5eb 100%);")}
+    ${wentianSimpleHeader("lr47", "六壬法教程")}
+    ${figText("lr47-main-title", "怎么起课", 24, 112, 150, 24, "#201812", 900, "left", "font-family:'Noto Serif SC','Songti SC',serif;")}
+    ${figText("lr47-sub", "不用输入问题，直接以当前农历时间取象。", 24, 146, 280, 13, "#817568", 600)}
+    ${steps.map(([num, title, desc], index) => {
+      const y = 198 + index * 112;
+      return `
+        ${figBox(`lr47-step-${index}`, 24, y, 342, 88, "", "border:1px solid #eadfce;border-radius:18px;background:#fffdf8;box-shadow:0 10px 24px rgba(70,45,25,.07);")}
+        ${figBox(`lr47-num-${index}`, 44, y + 24, 34, 34, "", "border-radius:17px;background:#9e4738;")}
+        ${figText(`lr47-num-text-${index}`, num, 44, y + 32, 34, 13, "#fffaf3", 900, "center")}
+        ${figText(`lr47-step-title-${index}`, title, 94, y + 20, 180, 15, "#201812", 900)}
+        ${figText(`lr47-step-desc-${index}`, desc, 94, y + 48, 236, 12, "#817568", 600, "left", "line-height:1.45;")}
+      `;
+    }).join("")}
+    ${figBox("lr47-palace", 24, 662, 342, 76, "", "border:1px solid #eadfce;border-radius:18px;background:#fffdf8;")}
+    ${figText("lr47-palace-title", "六宫顺序", 44, 682, 88, 15, "#201812", 900)}
+    ${figText("lr47-palace-list", "大安 → 留连 → 速喜 → 赤口 → 小吉 → 空亡", 44, 710, 290, 13, "#6e6254", 700)}
+    ${figBox("lr47-go", 42, 772, 306, 50, "", "border-radius:25px;background:linear-gradient(180deg,#b74e39,#983323);box-shadow:0 12px 24px rgba(158,61,43,.22);")}
+    ${figButton("lr47-go-hit", 42, 772, 306, 50, 'data-route="screen-46"')}
+    ${figText("lr47-go-text", "开始起课", 42, 786, 306, 16, "#fffaf3", 900, "center")}
+  `;
+}
+
 function renderWentianPolishedScreen(screen) {
   const no = screen.no;
   if (no === 42) return sourceYangzhaiCompassScreen();
   if (no === 43) return sourceYangzhaiSelectScreen();
   if (no === 44) return sourceYangzhaiResultScreen();
   if (no === 45) return sourceYangzhaiTutorialScreen();
+  if (no === 46) return sourceLiurenScreen();
+  if (no === 47) return sourceLiurenTutorialScreen();
   if (no === 8) {
     const paragraphs = [
       ["核心结论", "你的命盘不是单一路线，而是“先观察、后出手”的结构。真正适合你的节奏，是先把信息摸透，再用稳定执行换结果。"],
@@ -3786,7 +4073,7 @@ function convertedSpecial(screen) {
 
 function sourceDashboardHomeScreen() {
   return `
-    ${figBox("source-1-bg", 0, 0, 390, 1163, "", "background:linear-gradient(180deg,#fffdf8 0%,#fbf7ef 50%,#faf5ed 100%);")}
+    ${figBox("source-1-bg", 0, 0, 390, 1272, "", "background:linear-gradient(180deg,#fffdf8 0%,#fbf7ef 50%,#faf5ed 100%);")}
     ${figBox("source-1-avatar", 18, 24, 44, 44, "", "border-radius:22px;background:#f4ead8;box-shadow:0 6px 16px rgba(188,142,59,.12);")}
     ${figBox("source-1-avatar-head", 33, 36, 12, 12, "", "border-radius:6px;background:#c58d25;")}
     ${figBox("source-1-avatar-body", 27, 52, 24, 13, "", "border-radius:12px 12px 5px 5px;background:#c58d25;")}
@@ -3808,22 +4095,22 @@ function sourceDashboardHomeScreen() {
     ${figBox("source-1-master-go", 278, 357, 72, 36, "", "border-radius:18px;background:#c08a2c;")}
     ${figText("source-1-master-go-text", "去问他", 286, 367, 56, 13, "#fff", 700, "center")}
 
-    ${[["合盘分析", "命理相合，缘分几许", "01-feature-hepan.png", "screen-10", 425], ["六爻占卜", "铜钱起卦，纳甲解卦", "01-feature-gua.png", "screen-17", 534], ["阳宅地脉", "罗盘九宫，安位解读", "01-feature-gua.png", "screen-42", 643]].map(([title, sub, icon, route, y], index) => `
+    ${[["合盘分析", "命理相合，缘分几许", "01-feature-hepan.png", "screen-10", 425], ["六爻占卜", "铜钱起卦，纳甲解卦", "01-feature-gua.png", "screen-17", 534], ["阳宅地脉", "罗盘九宫，安位解读", "01-feature-gua.png", "screen-42", 643], ["六壬法", "农历月日时，即刻起课", "01-feature-gua.png", "screen-46", 752]].map(([title, sub, icon, route, y], index) => `
       ${figBox(`source-1-feature-${index}`, 18, y, 354, 96, "converted-card", "border-radius:14px;box-shadow:0 8px 20px rgba(70,45,25,.1);background:#fffdfb;")}
       ${figText(`source-1-feature-title-${index}`, title, 36, y + 30, 150, 21, "#25221f", 800)}
       ${figText(`source-1-feature-sub-${index}`, sub, 36, y + 58, 190, 14, "#969087", 500)}
       ${figImage(`source-1-feature-icon-${index}`, `../images/wentian-prototype-assets/${icon}`, 286, y + 10, 72, 76, "object-fit:contain;")}
       ${figButton(`source-1-feature-hit-${index}`, 18, y, 354, 96, `data-route="${route}"`)}
     `).join("")}
-    ${figText("source-1-more-title", "更多功能", 18, 770, 130, 22, "#25221f", 800)}
-    ${[["邀请好友", "邀请好友双方获得奖励", "01-extra-invite.png", "screen-22", 820], ["活动中心", "参与活动赢取丰厚奖励", "01-extra-activity.png", "screen-23", 944]].map(([title, sub, icon, route, y], index) => `
+    ${figText("source-1-more-title", "更多功能", 18, 879, 130, 22, "#25221f", 800)}
+    ${[["邀请好友", "邀请好友双方获得奖励", "01-extra-invite.png", "screen-22", 929], ["活动中心", "参与活动赢取丰厚奖励", "01-extra-activity.png", "screen-23", 1053]].map(([title, sub, icon, route, y], index) => `
       ${figBox(`source-1-extra-${index}`, 18, y, 354, 104, "converted-card", "border-radius:14px;box-shadow:0 8px 20px rgba(70,45,25,.1);")}
       ${figText(`source-1-extra-title-${index}`, title, 36, y + 31, 150, 21, "#25221f", 800)}
       ${figText(`source-1-extra-sub-${index}`, sub, 36, y + 61, 210, 14, "#969087", 500)}
       ${figImage(`source-1-extra-icon-${index}`, `../images/wentian-prototype-assets/${icon}`, 300, y + 36, 52, 50, "object-fit:contain;")}
       ${figButton(`source-1-extra-hit-${index}`, 18, y, 354, 104, `data-route="${route}"`)}
     `).join("")}
-    ${sourceAppBottomNav("首页", 1080)}
+    ${sourceAppBottomNav("首页", 1189)}
   `;
 }
 
@@ -4142,7 +4429,7 @@ function renderConvertedScreen(no) {
     return figPhone(`screen-${screen.no}`, `${String(screen.no).padStart(2, "0")} 首页`, `
       ${sourceDashboardHomeScreen()}
       ${convertedFlowHotspots(screen)}
-    `, 1163, "converted source-screen no-status-shift", false);
+    `, 1272, "converted source-screen no-status-shift", false);
   }
   if (screen.no === 2) {
     return figPhone(`screen-${screen.no}`, `${String(screen.no).padStart(2, "0")} ${screen.title}`, `
@@ -4230,7 +4517,7 @@ function renderConvertedScreen(no) {
   }
   const polishedScreen = renderWentianPolishedScreen(screen);
   if (polishedScreen) {
-    const polishedHeight = screen.no === 8 ? 1280 : screen.no === 20 ? 1072 : screen.no === 24 ? 1180 : screen.no === 44 ? getYangzhaiResultHeight() : 844;
+    const polishedHeight = screen.no === 8 ? 1280 : screen.no === 20 ? 1072 : screen.no === 24 ? 1180 : screen.no === 44 ? getYangzhaiResultHeight() : screen.no === 46 ? 1088 : 844;
     const wideBgClass = screen.no >= 42 && screen.no <= 45 ? " wide-bg" : "";
     return figPhone(`screen-${screen.no}`, `${String(screen.no).padStart(2, "0")} ${screen.title}`, `
       ${polishedScreen}
@@ -4342,6 +4629,7 @@ function navigate(route, push = true) {
     if (screen.no === 4) window.setTimeout(initWentianXuChat, 0);
     if (screen.no === 5 || screen.no === 25) window.setTimeout(() => hydrateWentianArchivesFromRemote({ rerender: true }), 0);
     if (screen.no === 26) window.setTimeout(initWentianChartForm, 0);
+    if (screen.no === 46) window.setTimeout(initLiurenScreen, 0);
     if (!location.hash.includes("figmacapture=")) location.hash = route;
     window.scrollTo(0, 0);
     return;
@@ -4731,6 +5019,22 @@ document.addEventListener("click", (event) => {
     highlightWentianClassicChart(earlyActionTarget.dataset.palaceBranch || "", earlyActionTarget.dataset.palaceName || "");
     return;
   }
+  if (earlyAction === "liuren-use-now") {
+    setLiurenDateTime(new Date());
+    return;
+  }
+  if (earlyAction === "liuren-calc") {
+    calculateLiurenFromInputs();
+    return;
+  }
+  if (earlyAction === "liuren-reset") {
+    resetLiuren();
+    return;
+  }
+  if (earlyAction === "liuren-copy") {
+    copyLiurenResult();
+    return;
+  }
   const routeButton = event.target.closest("[data-route]");
   if (routeButton) {
     navigate(routeButton.dataset.route);
@@ -4816,6 +5120,11 @@ document.addEventListener("click", (event) => {
 });
 
 document.addEventListener("input", (event) => {
+  if (event.target.closest?.(".liuren-panel")) {
+    if (event.target.id === "liuren-year") updateLiurenDayOptions();
+    updateLiurenPreview();
+    return;
+  }
   if (!event.target.closest?.(".wentian-chart-card")) return;
   if (event.target.id === "wentian-chart-city") {
     wentianChartCity = null;
@@ -4832,6 +5141,11 @@ document.addEventListener("input", (event) => {
 });
 
 document.addEventListener("change", (event) => {
+  if (event.target.closest?.(".liuren-panel")) {
+    if (event.target.id === "liuren-year" || event.target.id === "liuren-month") updateLiurenDayOptions();
+    updateLiurenPreview();
+    return;
+  }
   if (!event.target.closest?.(".wentian-chart-card")) return;
   if (event.target.id === "wentian-chart-year" || event.target.id === "wentian-chart-month") {
     updateWentianChartDayOptions(

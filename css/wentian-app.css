@@ -1654,6 +1654,318 @@ button {
   background: rgba(0, 0, 0, 0.3);
 }
 
+.liuren-panel {
+  position: absolute;
+  left: 18px;
+  top: 178px;
+  width: 354px;
+  color: #201813;
+  font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+}
+
+.liuren-now-card,
+.liuren-form-card,
+.liuren-result-card {
+  border: 1px solid #e7d7bf;
+  border-radius: 18px;
+  background: rgba(255, 253, 248, 0.96);
+  box-shadow: 0 12px 28px rgba(76, 48, 24, 0.08);
+}
+
+.liuren-now-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 78px;
+  padding: 14px;
+}
+
+.liuren-preview {
+  display: grid;
+  gap: 4px;
+}
+
+.liuren-preview strong {
+  color: #9d3329;
+  font-size: 22px;
+  line-height: 1;
+}
+
+.liuren-preview span {
+  color: #817568;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.liuren-now {
+  flex: 0 0 auto;
+  height: 36px;
+  padding: 0 14px;
+  border: 1px solid #ead9bd;
+  border-radius: 18px;
+  background: #fff0d6;
+  color: #9a681c;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.liuren-form-card {
+  display: grid;
+  gap: 12px;
+  margin-top: 12px;
+  padding: 14px;
+}
+
+.liuren-form-card label {
+  display: grid;
+  gap: 7px;
+  color: #6e6254;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.liuren-form-card input,
+.liuren-form-card select {
+  width: 100%;
+  height: 42px;
+  border: 1px solid #e4d6c3;
+  border-radius: 12px;
+  background: #fffaf3;
+  color: #201813;
+  padding: 0 12px;
+  font: inherit;
+  font-size: 15px;
+  outline: 0;
+}
+
+.liuren-form-card input:focus,
+.liuren-form-card select:focus {
+  border-color: #c2953c;
+  box-shadow: 0 0 0 2px rgba(194, 149, 60, 0.13);
+}
+
+.liuren-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.liuren-track {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.liuren-track-item {
+  min-height: 58px;
+  padding: 9px 6px;
+  border: 1px solid #eadfce;
+  border-radius: 14px;
+  background: #fffdf8;
+  text-align: center;
+}
+
+.liuren-track-item strong,
+.liuren-track-item span {
+  display: block;
+}
+
+.liuren-track-item strong {
+  color: #201813;
+  font-size: 15px;
+  line-height: 20px;
+}
+
+.liuren-track-item span {
+  margin-top: 3px;
+  color: #9d9183;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.liuren-track-item.is-active {
+  border-color: #9d3329;
+  background: #fff1ea;
+  box-shadow: 0 8px 18px rgba(157, 51, 41, 0.12);
+}
+
+.liuren-track-item.is-active.is-good {
+  border-color: #5f8745;
+  background: #f5f8ef;
+}
+
+.liuren-track-item.is-active strong {
+  color: #9d3329;
+}
+
+.liuren-track-item.is-active.is-good strong {
+  color: #4f8f5f;
+}
+
+.liuren-result-card {
+  position: relative;
+  margin-top: 12px;
+  padding: 16px;
+}
+
+.liuren-result-card h3,
+.liuren-result-card p {
+  margin: 0;
+}
+
+.liuren-result-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.liuren-kicker {
+  display: block;
+  margin-bottom: 6px;
+  color: #9a681c;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.liuren-result-card h3 {
+  color: #201813;
+  font-size: 30px;
+  line-height: 1;
+}
+
+.liuren-result-card h3 small {
+  display: inline-grid;
+  place-items: center;
+  margin-left: 10px;
+  min-width: 32px;
+  height: 22px;
+  border-radius: 12px;
+  background: #fff0d6;
+  color: #9a681c;
+  font-size: 12px;
+  vertical-align: middle;
+}
+
+.liuren-result-card.is-warn h3 small {
+  background: #fff1ea;
+  color: #a94437;
+}
+
+.liuren-seal {
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 26px;
+  background: #fff0d6;
+  color: #9a681c;
+  font-size: 24px;
+  font-weight: 900;
+}
+
+.liuren-result-card.is-warn .liuren-seal {
+  background: #fff1ea;
+  color: #a94437;
+}
+
+.liuren-summary {
+  margin-top: 16px !important;
+  color: #4c433a;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.65;
+}
+
+.liuren-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.liuren-tags span {
+  padding: 5px 10px;
+  border-radius: 12px;
+  background: #fff7ec;
+  color: #9a681c;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.liuren-detail {
+  display: grid;
+  gap: 5px;
+  margin-top: 14px;
+  padding-top: 13px;
+  border-top: 1px solid #eadfce;
+}
+
+.liuren-detail strong {
+  color: #201813;
+  font-size: 13px;
+}
+
+.liuren-detail span {
+  color: #6e6254;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.55;
+}
+
+.liuren-actions {
+  display: grid;
+  grid-template-columns: 1.6fr 0.8fr 0.8fr;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.liuren-actions button {
+  height: 46px;
+  border: 1px solid #dccbb1;
+  border-radius: 14px;
+  background: #fffdf8;
+  color: #6e6254;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.liuren-actions button.primary {
+  border-color: #7b3129;
+  background: linear-gradient(180deg, #b74e39, #983323);
+  color: #fffaf3;
+  box-shadow: 0 12px 22px rgba(157, 51, 41, 0.16);
+}
+
+.liuren-status {
+  margin: 10px 0 0;
+  color: #9b7a3f;
+  font-size: 12px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.liuren-status[data-tone="ok"] {
+  color: #5f8745;
+}
+
+.liuren-status[data-tone="error"] {
+  color: #a94437;
+}
+
+.liuren-copy-text {
+  position: absolute;
+  left: -9999px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
 @media (min-width: 881px) {
   body {
     background: #fffaf2;
