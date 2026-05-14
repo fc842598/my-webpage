@@ -405,10 +405,10 @@ select {
   position: relative;
   min-height: 0;
   display: grid;
-  grid-template-columns: minmax(420px, 540px) minmax(620px, 1fr);
-  gap: 20px;
-  align-items: start;
-  padding: 20px;
+  grid-template-columns: minmax(420px, 520px) minmax(620px, 1fr);
+  gap: 18px 22px;
+  align-items: stretch;
+  padding: 22px;
   overflow: visible;
   border: 1px solid rgba(241, 212, 125, .22);
   border-radius: 18px;
@@ -454,13 +454,52 @@ select {
   letter-spacing: .16em;
 }
 
+.mbp-hero-topline {
+  grid-column: 1 / -1;
+  min-height: 62px;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 22px;
+  padding: 0 22px;
+  border: 1px solid rgba(241, 212, 125, .24);
+  border-radius: 12px;
+  background:
+    radial-gradient(circle at 7% 0%, rgba(241, 212, 125, .13), transparent 30%),
+    linear-gradient(90deg, rgba(31, 22, 12, .9), rgba(17, 12, 7, .86));
+  box-shadow: inset 0 1px 0 rgba(255, 244, 196, .08);
+}
+
+.mbp-hero-topline strong {
+  color: var(--gold);
+  font-size: 16px;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.mbp-hero-topline h1 {
+  min-width: 0;
+  color: var(--ivory);
+  font: 900 30px/1.15 "Noto Sans SC", "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
+  letter-spacing: 0;
+  white-space: nowrap;
+}
+
+.mbp-hero-topline span {
+  color: var(--gold-2);
+  font-size: 15px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
 .mbp-hero-input {
   min-width: 0;
   width: 100%;
   display: grid;
   align-content: start;
   justify-items: stretch;
-  padding: 18px;
+  gap: 14px;
+  padding: 18px 20px 22px;
   border: 1px solid rgba(241, 212, 125, .22);
   border-radius: 16px;
   background:
@@ -578,6 +617,12 @@ select {
   box-shadow: 0 10px 24px rgba(0, 0, 0, .22);
 }
 
+.mbp-hero-input > .mbp-client-input-card {
+  width: 100%;
+  justify-self: stretch;
+  margin-bottom: 0;
+}
+
 .mbp-client-input-head {
   display: flex;
   justify-content: space-between;
@@ -644,9 +689,11 @@ select {
   min-width: 0;
   width: 100%;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: center;
-  padding: 18px;
+  min-height: 690px;
+  padding: 26px;
+  scroll-margin-top: 76px;
   border: 1px solid rgba(241, 212, 125, .22);
   border-radius: 16px;
   background:
@@ -4189,6 +4236,10 @@ select {
     border-radius: 14px;
   }
 
+  .mbp-hero-chart {
+    min-height: auto;
+  }
+
   .mbp-hero-bridge {
     display: none;
   }
@@ -4212,6 +4263,24 @@ select {
   .mbp-hero-main h1 {
     font-size: 46px;
     letter-spacing: .12em;
+  }
+
+  .mbp-hero-topline {
+    grid-template-columns: 1fr;
+    min-height: auto;
+    gap: 8px;
+    padding: 16px;
+  }
+
+  .mbp-hero-topline h1 {
+    font-size: 22px;
+    line-height: 1.25;
+    letter-spacing: 0;
+    white-space: normal;
+  }
+
+  .mbp-hero-topline span {
+    font-size: 13px;
   }
 
   .mbp-input-head {
