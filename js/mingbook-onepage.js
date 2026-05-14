@@ -79,6 +79,23 @@
     { module: 'shiye', key: 'career', label: '事业批命' },
   ];
 
+  const chapterActions = [
+    { label: '单独批总局', module: 'overall' },
+    { label: '单独批走势', module: 'current_luck' },
+    { label: '生成曲线', action: 'curve' },
+    { label: '单独批专题', action: 'specials' },
+    { label: '生成建议', module: 'overall' },
+  ];
+
+  function chapterActionButton(index) {
+    const action = chapterActions[index];
+    if (!action) return '';
+    const attr = action.module
+      ? `data-report-module="${escapeHtml(action.module)}"`
+      : `data-report-action="${escapeHtml(action.action)}"`;
+    return `<button class="mbp-chapter-ai-btn" type="button" ${attr}>${escapeHtml(action.label)}</button>`;
+  }
+
   const $ = (selector) => document.querySelector(selector);
 
   function pad2(value) {
@@ -2192,6 +2209,7 @@
           <span>卷${index + 1}</span>
           <div class="mbp-report-title">
             <h3>${escapeHtml(item[0])}</h3>
+            ${chapterActionButton(index)}
           </div>
             <div class="mbp-report-content">
               ${index === 1 ? renderLuckChapterBlock(data, item[1]) : index === 2 ? renderCurveChapterBlock() : renderInsightBlock(data, item[0], item[1], {
@@ -2216,7 +2234,7 @@
   }
 
   function setModuleButtonsBusy(moduleKey, busy) {
-    document.querySelectorAll(`[data-ai-module="${moduleKey}"]`).forEach((button) => {
+    document.querySelectorAll(`[data-ai-module="${moduleKey}"], [data-report-module="${moduleKey}"]`).forEach((button) => {
       button.disabled = busy;
       button.classList.toggle('is-running', busy);
     });
@@ -2273,6 +2291,15 @@
     }
   }
 
+  function setDecodeAllButtonsBusy(busy, label = '') {
+    document.querySelectorAll('[data-decode-all]').forEach((button) => {
+      if (!button.dataset.defaultText) button.dataset.defaultText = button.textContent.trim();
+      button.disabled = busy;
+      button.classList.toggle('is-running', busy);
+      button.textContent = busy ? (label || '生成中') : button.dataset.defaultText;
+    });
+  }
+
   async function decodeReports() {
     const bundle = getChartBundle();
     if (bundle.error) {
@@ -2284,6 +2311,7 @@
       btn.disabled = true;
       btn.textContent = 'AI 批命中…';
     }
+    setDecodeAllButtonsBusy(true, '生成中');
     state.decoded = true;
     state.aiResults = {};
     document.body.classList.add('is-decoded');
@@ -2325,6 +2353,33 @@
       btn.disabled = false;
       btn.textContent = successCount ? '重新一键批命' : '重试一键批命';
     }
+    setDecodeAllButtonsBusy(false);
+  }
+
+  function generateCurveChapter() {
+    const bundle = getChartBundle();
+    if (bundle.error) {
+      alert(bundle.error);
+      return false;
+    }
+    state.decoded = true;
+    document.body.classList.add('is-decoded');
+    renderChaptersFromAi();
+    updateDecodeProgress(generatedModuleCount(), -1, '曲线已生成');
+    setDecodeStatus('人生曲线已生成。');
+    scrollToReportChapter(2);
+    return true;
+  }
+
+  async function decodeSpecialChapter() {
+    const modules = ['shengong', 'hunyin', 'jiankang', 'caiyun', 'shiye'];
+    let success = 0;
+    for (const moduleKey of modules) {
+      if (await decodeSingleModule(moduleKey)) success += 1;
+    }
+    setDecodeStatus(success ? `专题批命已完成 ${success}/${modules.length} 项。` : '专题批命生成失败，请稍后重试。');
+    scrollToReportChapter(3);
+    return success > 0;
   }
 
   function resetAiContent() {
@@ -2357,7 +2412,7 @@
     const chapters = $('#mbpChapters');
     if (chapters) {
       chapters.innerHTML = ['命格总览', '大限流年', '人生曲线', '专题批命', '行动建议'].map((title, index) => `
-        <article id="mbp-chapter-${index}" data-report-chapter="${index}"><span>卷${index + 1}</span><h3>${title}</h3><p>等待一键批命。</p></article>
+        <article id="mbp-chapter-${index}" data-report-chapter="${index}"><span>卷${index + 1}</span><h3>${title}</h3><p>等待一键批命。</p>${chapterActionButton(index)}</article>
       `).join('');
     }
     syncBookClientMeta();
@@ -2708,6 +2763,34 @@
       const button = event.target.closest('[data-report-nav]');
       if (!button) return;
       scrollToReportChapter(button.dataset.reportNav);
+    });
+
+    $('#report')?.addEventListener('click', async (event) => {
+      const allButton = event.target.closest('[data-decode-all]');
+      if (allButton) {
+        await decodeReports();
+        scrollToReportChapter(0);
+        return;
+      }
+      const moduleButton = event.target.closest('[data-report-module]');
+      if (moduleButton) {
+        const chapter = moduleButton.closest('[data-report-chapter]');
+        const chapterIndex = Number(chapter?.dataset.reportChapter) || 0;
+        await decodeSingleModule(moduleButton.dataset.reportModule);
+        scrollToReportChapter(chapterIndex);
+        return;
+      }
+      const actionButton = event.target.closest('[data-report-action]');
+      if (!actionButton) return;
+      actionButton.disabled = true;
+      actionButton.classList.add('is-running');
+      try {
+        if (actionButton.dataset.reportAction === 'curve') generateCurveChapter();
+        if (actionButton.dataset.reportAction === 'specials') await decodeSpecialChapter();
+      } finally {
+        actionButton.disabled = false;
+        actionButton.classList.remove('is-running');
+      }
     });
 
     $('#mbpExportPdf')?.addEventListener('click', downloadMingbookPdf);

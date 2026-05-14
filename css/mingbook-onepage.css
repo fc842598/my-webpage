@@ -1159,6 +1159,66 @@ select {
   color: var(--gold);
 }
 
+.mbp-report-action-bar {
+  position: absolute;
+  top: 78px;
+  right: clamp(28px, 6vw, 96px);
+  width: min(410px, 34vw);
+  min-height: 78px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 14px 18px;
+  border: 1px solid rgba(241, 212, 125, .28);
+  border-radius: 16px;
+  background:
+    radial-gradient(circle at 92% 12%, rgba(241, 212, 125, .14), transparent 36%),
+    linear-gradient(135deg, rgba(164, 93, 57, .18), rgba(16, 12, 8, .9));
+  box-shadow: 0 18px 46px rgba(0, 0, 0, .28);
+}
+
+.mbp-report-action-bar span {
+  display: block;
+  color: var(--gold);
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: .16em;
+}
+
+.mbp-report-action-bar strong {
+  display: block;
+  margin-top: 3px;
+  color: var(--ivory);
+  font-size: 17px;
+  line-height: 1.35;
+}
+
+.mbp-report-action-bar button,
+.mbp-chapter-ai-btn {
+  border: 1px solid rgba(255, 232, 190, .28);
+  border-radius: 999px;
+  background: linear-gradient(135deg, #d5bb69, #b96f42);
+  color: #16100b;
+  font-weight: 900;
+  cursor: pointer;
+  box-shadow: 0 10px 26px rgba(0, 0, 0, .22);
+}
+
+.mbp-report-action-bar button {
+  flex: 0 0 auto;
+  min-width: 112px;
+  min-height: 42px;
+  padding: 0 18px;
+  font-size: 15px;
+}
+
+.mbp-report-action-bar button:disabled,
+.mbp-chapter-ai-btn:disabled {
+  opacity: .62;
+  cursor: wait;
+}
+
 .is-decoded .mbp-report-pulse span,
 .mbp-book.is-generated .mbp-report-pulse span {
   border-color: rgba(241, 212, 125, .32);
@@ -3004,7 +3064,7 @@ select {
   position: relative;
   overflow: hidden;
   min-height: 170px;
-  padding: 22px;
+  padding: 22px 156px 22px 22px;
   border: 1px solid rgba(241, 212, 125, .2);
   border-radius: 10px;
   background: rgba(16, 12, 7, .9);
@@ -3068,6 +3128,16 @@ select {
   margin: 0;
   color: var(--muted);
   white-space: pre-line;
+}
+
+.mbp-chapter-ai-btn {
+  position: absolute;
+  right: 24px;
+  bottom: 24px;
+  min-width: 118px;
+  min-height: 36px;
+  padding: 0 16px;
+  font-size: 13px;
 }
 
 .mbp-chapters .mbp-insight-summary {
@@ -3700,6 +3770,12 @@ select {
     display: none;
   }
 
+  .mbp-report-action-bar {
+    position: static;
+    width: 100%;
+    margin: -8px 0 18px;
+  }
+
   .mbp-seal {
     width: 58px;
     height: 58px;
@@ -3904,6 +3980,16 @@ select {
     height: auto;
     padding: 6px 12px;
     border-radius: 999px;
+  }
+
+  .mbp-chapters article {
+    padding-right: 20px;
+  }
+
+  .mbp-chapter-ai-btn {
+    position: static;
+    width: 100%;
+    margin-top: 16px;
   }
 
   .mbp-curve-summary,

@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>阅天 · 紫微命书长页新版</title>
   <link rel="icon" href="../images/logo-mark.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../css/mingbook-onepage.css?v=20260514f">
+  <link rel="stylesheet" href="../css/mingbook-onepage.css?v=20260514g">
   <script src="../js/config.js?v=20260509-vercel-backend"></script>
   <script defer src="../js/cities.js"></script>
   <script defer src="../js/lunarCalendar.js"></script>
@@ -19,7 +19,7 @@
   <script defer src="../src/ziping/validator.js"></script>
   <script defer src="../src/ziping/runtime.js"></script>
   <script defer src="../js/ai-piming.js?v=20260508-backend-base"></script>
-  <script defer src="../js/mingbook-onepage.js?v=20260514d"></script>
+  <script defer src="../js/mingbook-onepage.js?v=20260514g"></script>
 </head>
 <body>
   <header class="mbp-nav">
@@ -279,17 +279,25 @@
     </section>
 
     <section class="mbp-book" id="report">
-      <div class="mbp-section-head">
-        <h2>命盘解读</h2>
-        <p>先看总局，后看身宫、财运、健康、伴侣、及大运流年与命盘建议。</p>
-        <div class="mbp-report-pulse" id="mbpReportPulse">
-          <span><b id="mbpReportReadyCount">0/7</b> 模块</span>
-          <span><b id="mbpReportStateText">待生成</b> 状态</span>
-          <span><b>5</b> 卷报告</span>
+        <div class="mbp-section-head">
+          <h2>命盘解读</h2>
+          <p>先看总局，后看身宫、财运、健康、伴侣、及大运流年与命盘建议。</p>
+          <div class="mbp-report-pulse" id="mbpReportPulse">
+            <span><b id="mbpReportReadyCount">0/7</b> 模块</span>
+            <span><b id="mbpReportStateText">待生成</b> 状态</span>
+            <span><b>5</b> 卷报告</span>
+          </div>
         </div>
-      </div>
 
-      <div class="mbp-book-layout">
+        <div class="mbp-report-action-bar">
+          <div>
+            <span>AI 总批命</span>
+            <strong>一键生成完整五卷</strong>
+          </div>
+          <button type="button" data-decode-all>总批命</button>
+        </div>
+
+        <div class="mbp-book-layout">
         <aside class="mbp-book-cover">
           <div class="mbp-book-kicker">紫 微 命 书 系 统</div>
           <div class="mbp-book-title">紫 微 斗 数</div>
@@ -316,11 +324,11 @@
         </aside>
 
         <div class="mbp-chapters" id="mbpChapters">
-          <article id="mbp-chapter-0" data-report-chapter="0"><span>卷一</span><h3>命格总览</h3><p>等待一键批命。</p></article>
-          <article id="mbp-chapter-1" data-report-chapter="1"><span>卷二</span><h3>大限流年</h3><p>等待一键批命。</p></article>
-          <article id="mbp-chapter-2" data-report-chapter="2"><span>卷三</span><h3>人生曲线</h3><p>等待一键批命。</p></article>
-          <article id="mbp-chapter-3" data-report-chapter="3"><span>卷四</span><h3>专题批命</h3><p>等待一键批命。</p></article>
-          <article id="mbp-chapter-4" data-report-chapter="4"><span>卷五</span><h3>行动建议</h3><p>等待一键批命。</p></article>
+          <article id="mbp-chapter-0" data-report-chapter="0"><span>卷一</span><h3>命格总览</h3><p>等待一键批命。</p><button class="mbp-chapter-ai-btn" type="button" data-report-module="overall">单独批总局</button></article>
+          <article id="mbp-chapter-1" data-report-chapter="1"><span>卷二</span><h3>大限流年</h3><p>等待一键批命。</p><button class="mbp-chapter-ai-btn" type="button" data-report-module="current_luck">单独批走势</button></article>
+          <article id="mbp-chapter-2" data-report-chapter="2"><span>卷三</span><h3>人生曲线</h3><p>等待一键批命。</p><button class="mbp-chapter-ai-btn" type="button" data-report-action="curve">生成曲线</button></article>
+          <article id="mbp-chapter-3" data-report-chapter="3"><span>卷四</span><h3>专题批命</h3><p>等待一键批命。</p><button class="mbp-chapter-ai-btn" type="button" data-report-action="specials">单独批专题</button></article>
+          <article id="mbp-chapter-4" data-report-chapter="4"><span>卷五</span><h3>行动建议</h3><p>等待一键批命。</p><button class="mbp-chapter-ai-btn" type="button" data-report-module="overall">生成建议</button></article>
         </div>
       </div>
     </section>
