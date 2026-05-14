@@ -67,10 +67,10 @@ const convertedScreens = [
 const convertedByNo = new Map(convertedScreens.map((screen) => [screen.no, screen]));
 
 const screenFlowHotspots = {
-  1: [[286, 24, 86, 52, "screen-26"], [18, 130, 354, 274, "screen-4"], [18, 425, 354, 96, "screen-10"], [18, 534, 354, 96, "screen-17"], [18, 643, 354, 96, "screen-42"], [18, 820, 354, 104, "screen-22"], [18, 944, 354, 104, "screen-23"], [2, 1080, 76, 83, "screen-1"], [80, 1080, 76, 83, "screen-25"], [158, 1080, 76, 83, "screen-3"], [236, 1080, 76, 83, "screen-13"], [314, 1080, 76, 83, "screen-31"]],
+  1: [[286, 24, 86, 52, "screen-26"], [18, 130, 354, 274, "screen-4"], [18, 425, 354, 96, "screen-10"], [18, 534, 354, 96, "screen-17"], [18, 643, 354, 96, "screen-42"], [18, 820, 354, 104, "screen-22"], [18, 944, 354, 104, "screen-23"], [12, 1080, 76, 83, "screen-1"], [109, 1080, 76, 83, "screen-25"], [207, 1080, 76, 83, "screen-3"], [304, 1080, 76, 83, "screen-31"]],
   2: [[18, 282, 354, 190, "screen-4"], [18, 487, 354, 190, "screen-4"], [18, 692, 354, 175, "screen-4"]],
-  3: [[285, 128, 82, 28, "screen-5"], [16, 164, 358, 84, "screen-5"], [16, 305, 358, 116, "screen-4"], [2, 761, 76, 72, "screen-1"], [80, 761, 76, 72, "screen-25"], [158, 761, 76, 72, "screen-3"], [236, 761, 76, 72, "screen-13"], [314, 761, 76, 72, "screen-31"]],
-  4: [[18, 44, 48, 48, "screen-3"], [276, 44, 96, 48, "screen-9"], [300, 104, 58, 34, "screen-5"]],
+  3: [[285, 128, 82, 28, "screen-5"], [16, 164, 358, 84, "screen-5"], [16, 305, 358, 116, "screen-4"], [12, 761, 76, 72, "screen-1"], [109, 761, 76, 72, "screen-25"], [207, 761, 76, 72, "screen-3"], [304, 761, 76, 72, "screen-31"]],
+  4: [[18, 24, 44, 56, "screen-3"], [334, 24, 38, 56, "screen-9"], [252, 26, 78, 36, "screen-5"]],
   5: [[320, 116, 48, 48, "screen-4"], [34, 235, 322, 72, "screen-6"], [34, 318, 322, 72, "screen-6"], [48, 748, 294, 52, "screen-6"]],
   6: [[18, 44, 48, 48, "screen-4"], [88, 600, 220, 76, "screen-7"]],
   7: [[18, 44, 48, 48, "screen-4"], [54, 280, 282, 168, "screen-8"]],
@@ -91,13 +91,13 @@ const screenFlowHotspots = {
   22: [[18, 44, 48, 48, "screen-31"], [250, 44, 112, 48, "screen-23"], [42, 735, 306, 62, "screen-24"]],
   23: [[18, 44, 48, 48, "screen-22"], [50, 680, 290, 58, "screen-22"]],
   24: [[18, 44, 48, 48, "screen-22"]],
-  25: [[302, 54, 70, 46, "screen-26"], [18, 129, 354, 95, "screen-27"], [18, 247, 354, 95, "screen-27"], [2, 784, 76, 72, "screen-1"], [80, 784, 76, 72, "screen-25"], [158, 784, 76, 72, "screen-3"], [236, 784, 76, 72, "screen-13"], [314, 784, 76, 72, "screen-31"]],
+  25: [[302, 54, 70, 46, "screen-26"], [18, 129, 354, 95, "screen-27"], [18, 247, 354, 95, "screen-27"], [12, 784, 76, 72, "screen-1"], [109, 784, 76, 72, "screen-25"], [207, 784, 76, 72, "screen-3"], [304, 784, 76, 72, "screen-31"]],
   26: [[18, 40, 96, 54, "screen-1"]],
   27: [[18, 40, 96, 54, "screen-26"], [36, 739, 318, 44, "screen-4"]],
   28: [[18, 44, 48, 48, "screen-31"], [42, 735, 306, 58, "screen-29"]],
   29: [[18, 44, 48, 48, "screen-31"], [22, 178, 346, 70, "screen-30"], [22, 257, 346, 70, "screen-30"], [22, 336, 346, 70, "screen-30"], [34, 738, 322, 58, "screen-30"]],
   30: [[18, 44, 48, 48, "screen-29"], [42, 735, 306, 58, "screen-31"]],
-  31: [[336, 54, 42, 42, "screen-38"], [16, 126, 358, 96, "screen-38"], [16, 240, 111, 75, "screen-29"], [139, 240, 111, 75, "screen-28"], [262, 240, 111, 75, "screen-9"], [16, 330, 174, 60, "screen-33"], [200, 330, 174, 60, "screen-29"], [16, 400, 174, 60, "screen-27"], [200, 400, 174, 60, "screen-30"], [16, 491, 358, 61, "screen-22"], [16, 552, 358, 61, "screen-28"], [16, 629, 358, 61, "screen-37"], [16, 690, 358, 61, "screen-34"], [16, 767, 358, 61, "screen-35"], [2, 762, 76, 72, "screen-1"], [80, 762, 76, 72, "screen-25"], [158, 762, 76, 72, "screen-3"], [236, 762, 76, 72, "screen-13"], [314, 762, 76, 72, "screen-31"]],
+  31: [[336, 54, 42, 42, "screen-38"], [16, 126, 358, 96, "screen-38"], [16, 240, 111, 75, "screen-29"], [139, 240, 111, 75, "screen-28"], [262, 240, 111, 75, "screen-9"], [16, 330, 174, 60, "screen-33"], [200, 330, 174, 60, "screen-29"], [16, 400, 174, 60, "screen-27"], [200, 400, 174, 60, "screen-30"], [16, 491, 358, 61, "screen-22"], [16, 552, 358, 61, "screen-28"], [16, 629, 358, 61, "screen-37"], [16, 690, 358, 61, "screen-34"], [16, 767, 358, 61, "screen-35"], [12, 762, 76, 72, "screen-1"], [109, 762, 76, 72, "screen-25"], [207, 762, 76, 72, "screen-3"], [304, 762, 76, 72, "screen-31"]],
   32: [[18, 44, 48, 48, "screen-31"], [20, 94, 350, 56, "screen-39"], [20, 164, 350, 56, "screen-33"], [20, 236, 350, 56, "screen-40"], [20, 306, 350, 56, "screen-41"], [20, 376, 350, 56, "screen-37"], [20, 452, 350, 56, "screen-34"], [20, 520, 350, 56, "screen-35"], [20, 590, 350, 56, "screen-36"]],
   33: [[18, 44, 48, 48, "screen-31"], [42, 735, 306, 58, "screen-29"]],
   34: [[18, 44, 48, 48, "screen-31"], [42, 735, 306, 58, "screen-22"]],
@@ -442,13 +442,12 @@ function figBottomNav(active) {
     ["home", "◒", "首页"],
     ["archive", "▢", "档案"],
     ["ai", "◐", "问天AI"],
-    ["home", "▣", "藏宝阁"],
     ["mine", "●", "我的"]
   ];
   return `
     ${figBox("bottom-bg", 0, 760, 390, 84, "", "background:#fff;box-shadow:0 -8px 18px rgba(0,0,0,.04);")}
     ${items.map(([route, icon, label], index) => {
-      const left = [18, 95, 178, 259, 333][index];
+      const left = [28, 125, 222, 319][index];
       const color = label === active ? "#b81a05" : "#8c8c80";
       return `
         ${figButton(`bottom-${label}`, left - 8, 760, 58, 66, `data-route="${route}"`)}
@@ -471,13 +470,12 @@ function convertedHeader(screen) {
 
 function convertedBottomNav(active) {
   if (!active) return "";
-  const current = active === "活动" ? "藏宝阁" : active;
+  const current = active === "活动" ? "" : active;
   const items = [
-    ["screen-1", "首页", "◒", 39],
-    ["screen-25", "档案", "▢", 117],
-    ["screen-3", "问天AI", "◐", 195],
-    ["screen-13", "藏宝阁", "♧", 273],
-    ["screen-31", "我的", "○", 351]
+    ["screen-1", "首页", "◒", 49],
+    ["screen-25", "档案", "▢", 146],
+    ["screen-3", "问天AI", "◐", 244],
+    ["screen-31", "我的", "○", 341]
   ];
   return `
     ${figBox("converted-bottom-bg", 0, 780, 390, 64, "", "background:#fff;box-shadow:0 -4px 14px rgba(0,0,0,.06);")}
@@ -609,11 +607,10 @@ function sourceHomeScreen(screen) {
 
 function sourceAppBottomNav(active, y = 778) {
   const items = [
-    ["首页", "◒", 39, "screen-1"],
-    ["档案", "▢", 117, "screen-25"],
-    ["问天AI", "◐", 195, "screen-3"],
-    ["藏宝阁", "♧", 273, "screen-13"],
-    ["我的", "○", 351, "screen-31"]
+    ["首页", "◒", 49, "screen-1"],
+    ["档案", "▢", 146, "screen-25"],
+    ["问天AI", "◐", 244, "screen-3"],
+    ["我的", "○", 341, "screen-31"]
   ];
   return `
     ${figBox("source-bottom-bg", 0, y, 390, 89, "", "background:#fff;box-shadow:0 -4px 14px rgba(0,0,0,.06);")}
@@ -669,44 +666,33 @@ function sourceArchiveScreen(screen) {
 }
 
 function sourceAiChatScreen(screen) {
-  const activeArchive = getCurrentWentianArchive();
-  const active = getWentianArchiveDisplay(activeArchive);
   const starters = [
-    ["人生主线", "结合我的命盘，先讲我整体的人生主线，这辈子的走法和最该把握的事。"],
     ["感情婚姻", "结合我的命盘，重点看感情婚姻，什么样的感情路子，容易卡在哪里，何时有缘。"],
     ["事业方向", "结合我的命盘，重点看事业，我适合往哪个方向发展，怎么做比较顺。"],
     ["财运投资", "结合我的命盘，重点看财运，我适合怎么赚钱，有没有偏财或投资运。"],
     ["最近一年", "结合我的命盘和当前流年，告诉我接下来一年最重要的机会和要注意的坑。"],
     ["何时转运", "结合我的命盘，我现在处于什么运势阶段，什么时候会好转，要怎么熬过去。"],
-    ["健康运势", "结合我的命盘，看一下我的健康运势，有没有什么身体上需要特别留意的。"],
-    ["贵人运", "结合我的命盘，我命中的贵人在哪里，什么时候容易遇到贵人，怎么把握。"],
-    ["子女缘分", "结合我的命盘，看一下我的子女缘分，以及和子女相关的运势如何。"],
     ["家庭六亲", "结合我的命盘，看一下我和家人的缘分，与父母、兄弟、另一半的关系如何。"]
   ];
   return `
     ${figBox("source-4-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
-    ${figText("source-4-back", "‹", 28, 35, 28, 34, "#26211c", 500)}
-    ${figImage("source-4-avatar", "../images/wentian-prototype-assets/xu-banxian.jpg", 58, 31, 34, 34, "border-radius:17px;object-fit:cover;object-position:center 18%;")}
-    ${figText("source-4-name", "许半仙", 100, 39, 130, 16, "#26211c", 800)}
-    ${figText("source-4-record", "◷ 对话记录", 282, 40, 88, 12, "#6f665d", 500, "right")}
-    ${figLine("source-4-line-a", 0, 84, 390, "#eee8df")}
-    ${figText("source-4-left", "◇ 许半仙体系", 18, 101, 150, 12, "#9d8a62")}
-    ${figBox("source-4-profile-pill", 286, 92, 72, 34, "", "border-radius:17px;background:#fff;box-shadow:0 4px 12px rgba(70,45,25,.08);")}
-    ${figText("source-4-profile-text", `${escapeHtml(active.name)}⌄`, 296, 102, 52, 13, "#26211c", 500, "center")}
-    ${figLine("source-4-line-b", 0, 137, 390, "#eee8df")}
-    ${figBox("source-4-context", 22, 154, 346, 42, "", "border:1px solid #eadfce;border-radius:13px;background:#fffaf3;box-shadow:0 5px 14px rgba(70,45,25,.06);")}
-    ${figBox("source-4-context-dot", 40, 170, 8, 8, "", "border-radius:4px;background:#5f8745;")}
-    ${figText("source-4-context-title", "已接入命盘", 58, 163, 100, 13, "#25211d", 800)}
-    ${figText("source-4-context-sub", "可直接提问", 210, 163, 120, 13, "#8f857a", 500, "right")}
+    ${figBox("source-4-header", 0, 0, 390, 88, "", "background:#f8f3ea;box-shadow:0 1px 0 rgba(110,82,38,.08);")}
+    ${figText("source-4-back", "‹", 24, 29, 28, 34, "#26211c", 500)}
+    ${figImage("source-4-avatar", "../images/wentian-prototype-assets/xu-banxian.jpg", 58, 25, 40, 40, "border-radius:20px;object-fit:cover;object-position:center 18%;")}
+    ${figText("source-4-name", "许半仙", 110, 27, 110, 17, "#26211c", 800)}
+    ${figText("source-4-left", "命盘顾问 · 在线", 110, 51, 140, 12, "#8d8377", 500)}
+    ${figBox("source-4-profile-pill", 254, 30, 74, 28, "", "border-radius:14px;background:#fff;box-shadow:0 3px 10px rgba(70,45,25,.08);")}
+    ${figText("source-4-profile-text", "命主⌄", 260, 38, 62, 11, "#26211c", 600, "center")}
+    ${figText("source-4-record", "⋯", 344, 31, 22, 22, "#6f665d", 800, "center")}
     <div id="wentian-chat-status" class="wentian-chat-status">正在接入许半仙…</div>
     <div id="wentian-chat-messages" class="wentian-chat-log" aria-live="polite"></div>
-    ${figText("source-4-faq-title", "常见问题", 22, 572, 90, 13, "#25211d", 800)}
+    ${figText("source-4-faq-title", "常问", 22, 626, 60, 13, "#25211d", 800)}
     <div class="wentian-chat-starters" aria-label="常见问题">
       ${starters.map(([label, prompt]) => `
         <button class="wentian-chat-starter" type="button" data-wentian-prompt="${escapeHtml(prompt)}">${escapeHtml(label)}</button>
       `).join("")}
     </div>
-    ${figBox("source-4-input-bg", 0, 742, 390, 102, "", "background:#fff;")}
+    ${figBox("source-4-input-bg", 0, 742, 390, 102, "", "background:#f7f3ec;box-shadow:0 -1px 0 rgba(110,82,38,.08);")}
     <input id="wentian-chat-input" class="wentian-chat-field" placeholder="问一问" autocomplete="off">
     <button id="wentian-chat-send" class="wentian-chat-send" type="button" data-action="wentian-chat-send" aria-label="发送">↑</button>
     ${figText("source-4-disclaimer", "内容由AI生成，仅供娱乐参考", 0, 812, 390, 10, "#b8b0a7", 400, "center")}
@@ -1827,7 +1813,7 @@ async function ensureWentianXuSession(options = {}) {
   if (wentianXuChat.sessionId) return wentianXuChat.sessionId;
   if (wentianXuChat.sessionPromise) return wentianXuChat.sessionPromise;
 
-  if (!silent) setWentianChatStatus("正在接入许半仙…");
+  if (!silent) setWentianChatStatus("接入中…");
   const chartData = getWentianChartPayload();
   wentianXuChat.sessionPromise = wentianPostJson("/api/ai/chat/session", {
     chartRecordId: chartData.chartRecordId,
@@ -1836,7 +1822,7 @@ async function ensureWentianXuSession(options = {}) {
   }, 90000, 1).then((data) => {
     wentianXuChat.sessionId = data.sessionId || `transient:${chartData.chartRecordId}`;
     if (data.transientState) saveWentianTransientState(data.transientState);
-    setWentianChatStatus(data.transientMode ? "临时会话已接入" : "许半仙已连接", data.transientMode ? "warn" : "ok");
+    setWentianChatStatus(data.transientMode ? "临时会话" : "已连接", data.transientMode ? "warn" : "ok");
     if (!wentianXuChat.messages.length) {
       if (Array.isArray(data.messages) && data.messages.length) {
         wentianXuChat.messages = data.messages.slice(-12).map((item) => ({
@@ -1851,9 +1837,9 @@ async function ensureWentianXuSession(options = {}) {
     return wentianXuChat.sessionId;
   }).catch((error) => {
     if (silent) {
-      setWentianChatStatus("已接入命盘", "ok");
+      setWentianChatStatus("已接入", "ok");
     } else {
-      setWentianChatStatus("许半仙暂时未连上", "error");
+      setWentianChatStatus("暂时未连上", "error");
       if (!wentianXuChat.messages.length) addWentianMessage("system", `连接失败：${getWentianFriendlyError(error)}`);
     }
     throw error;
@@ -1887,7 +1873,7 @@ async function sendWentianXuChat(promptText = "") {
     wentianXuChat.sessionId = data.sessionId || wentianXuChat.sessionId || `transient:${chartData.chartRecordId}`;
     if (data.transientState) saveWentianTransientState(data.transientState);
     setWentianQuota(data.quota);
-    setWentianChatStatus(data.transientMode ? "临时会话已接入" : "许半仙已连接", data.transientMode ? "warn" : "ok");
+    setWentianChatStatus(data.transientMode ? "临时会话" : "已连接", data.transientMode ? "warn" : "ok");
     addWentianMessage("assistant", data.reply || "我看到了，但这轮没有返回内容，请再问一次。", { typewriter: true });
   } catch (error) {
     wentianXuChat.messages.pop();
@@ -1920,7 +1906,7 @@ function initWentianXuChat() {
     const nameEl = document.querySelector('[data-node-id="source-4-bazi-name"]');
     if (nameEl) nameEl.textContent = `${saved.form?.name || "当前"}的八字`;
     const profileEl = document.querySelector('[data-node-id="source-4-profile-text"]');
-    if (profileEl) profileEl.textContent = `${saved.form?.name || "当前"}⌄`;
+    if (profileEl) profileEl.textContent = "命主⌄";
     const footEl = document.querySelector('[data-node-id="source-4-bazi-foot"]');
     if (footEl) footEl.textContent = `日主：${sizhu.dayStem || "—"}    生肖：${saved.chartData?.zodiac || "—"}`;
   }
@@ -1934,11 +1920,11 @@ function initWentianXuChat() {
   };
 
   if (!wentianXuChat.messages.length) {
-    addWentianMessage("assistant", "我是许半仙，已经切到你网站的命盘对话体系。你问一句，我按当前命盘答。");
+    addWentianMessage("assistant", "我在，看命盘直接问。");
   } else {
     renderWentianMessages();
   }
-  setWentianChatStatus("已接入命盘", "ok");
+  setWentianChatStatus("已接入", "ok");
   ensureWentianXuSession({ silent: true }).catch(() => {});
 }
 

@@ -1163,13 +1163,17 @@ button {
 
 .wentian-chat-status {
   position: absolute;
-  left: 24px;
-  top: 208px;
-  width: 342px;
-  height: 18px;
-  color: #9b7a3f;
-  font-size: 12px;
-  line-height: 18px;
+  left: 100px;
+  top: 102px;
+  width: 190px;
+  height: 24px;
+  border-radius: 12px;
+  background: rgba(224, 214, 199, .58);
+  color: #8d8377;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 24px;
+  text-align: center;
 }
 
 .wentian-chat-status[data-tone="ok"] {
@@ -1187,9 +1191,9 @@ button {
 .wentian-chat-log {
   position: absolute;
   left: 22px;
-  top: 232px;
+  top: 136px;
   width: 346px;
-  height: 324px;
+  height: 470px;
   overflow-y: auto;
   padding: 2px 2px 12px;
 }
@@ -1204,6 +1208,7 @@ button {
 }
 
 .wentian-chat-msg {
+  position: relative;
   width: fit-content;
   max-width: 292px;
   margin: 0 0 10px;
@@ -1215,6 +1220,23 @@ button {
   font-size: 13px;
   line-height: 1.55;
   box-shadow: 0 4px 12px rgba(74, 55, 32, .06);
+}
+
+.wentian-chat-msg:not(.is-user):not(.is-system) {
+  margin-left: 38px;
+  border-radius: 4px 14px 14px;
+}
+
+.wentian-chat-msg:not(.is-user):not(.is-system)::before {
+  position: absolute;
+  left: -38px;
+  top: 0;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: url("../images/wentian-prototype-assets/xu-banxian.jpg") center 18% / cover;
+  content: "";
+  box-shadow: 0 2px 7px rgba(70, 45, 25, .12);
 }
 
 .wentian-chat-msg.is-user {
@@ -1272,12 +1294,12 @@ button {
 .wentian-chat-starters {
   position: absolute;
   left: 22px;
-  top: 596px;
+  top: 650px;
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 7px 6px;
   width: 346px;
-  height: 144px;
+  height: 68px;
   overflow: hidden;
   padding: 0 2px;
 }
@@ -1301,9 +1323,9 @@ button {
   top: 755px;
   width: 358px;
   height: 48px;
-  border: 1px solid #e7d7bf;
+  border: 1px solid #ece2d4;
   border-radius: 24px;
-  background: #fffaf3;
+  background: #fff;
   color: #201813;
   padding: 0 58px 0 18px;
   font-family: inherit;
@@ -1330,7 +1352,7 @@ button {
   height: 32px;
   border: 0;
   border-radius: 16px;
-  background: #c2953c;
+  background: #9f7330;
   color: #fff;
   font-family: inherit;
   font-size: 16px;
