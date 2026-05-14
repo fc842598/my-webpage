@@ -704,7 +704,6 @@ function sourceArchiveSelectScreen() {
   const activeId = wentianArchiveDraftId || getWentianSelectedArchiveId(archives);
   const activeArchive = archives.find((item) => item.id === activeId) || archives[0];
   const active = getWentianArchiveDisplay(activeArchive);
-  const activeSizhu = activeArchive?.chartData?.sizhu || {};
   const displayArchives = archives.slice(0, 8);
   return `
     ${figBox("source-5-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
@@ -719,13 +718,6 @@ function sourceArchiveSelectScreen() {
     ${figLine("source-5-line-b", 0, 137, 390, "#eee8df")}
     ${figText("source-5-hello", `你好！我是许半仙`, 24, 205, 320, 27, "#c4a45a", 800)}
     ${figText("source-5-sub", "需要我为您做些什么？", 24, 246, 260, 15, "#aaa196")}
-    ${figBox("source-5-bazi", 22, 302, 346, 156, "converted-card", "border-radius:13px;box-shadow:0 6px 18px rgba(74,55,32,.12);")}
-    ${figText("source-5-bazi-name", `${escapeHtml(active.name)}的八字`, 42, 324, 120, 13, "#8f857a")}
-    ${["年柱", "月柱", "日柱", "时柱"].map((label, index) => figText(`source-5-bazi-label-${index}`, label, 70 + index * 76, 352, 46, 11, "#aaa196", 400, "center")).join("")}
-    ${[activeSizhu.yearStem, activeSizhu.monthStem, activeSizhu.dayStem, activeSizhu.hourStem].map((label, index) => figText(`source-5-bazi-top-${index}`, label || "—", 70 + index * 76, 374, 46, 17, index === 1 ? "#7aa65b" : "#c69a3e", 800, "center")).join("")}
-    ${[activeSizhu.yearBranch, activeSizhu.monthBranch, activeSizhu.dayBranch, activeSizhu.hourBranch].map((label, index) => figText(`source-5-bazi-bottom-${index}`, label || "—", 70 + index * 76, 402, 46, 17, index === 1 ? "#7aa65b" : "#c69a3e", 800, "center")).join("")}
-    ${figLine("source-5-bazi-line", 40, 424, 310, "#e8ded0")}
-    ${figText("source-5-bazi-foot", `日主：${activeSizhu.dayStem || "—"}    生肖：${activeArchive?.chartData?.zodiac || "—"}`, 0, 438, 390, 12, "#8f857a", 500, "center")}
 
     ${figBox("source-5-overlay", 0, 0, 390, 844, "", "background:rgba(0,0,0,.38);")}
     ${figBox("source-5-sheet", 0, 458, 390, 386, "", "border-radius:22px 22px 0 0;background:#fff;box-shadow:0 -12px 30px rgba(0,0,0,.14);")}
