@@ -57,13 +57,17 @@ const convertedScreens = [
   { no: 38, title: "账户设置", active: "我的", list: [["基本信息", "", "screen-39"], ["登录方式", "", "screen-40"], ["设置密码", "", "screen-41"], ["退出登录", "", "screen-31"]] },
   { no: 39, title: "基本信息", active: "我的", form: ["昵称 谢广周", "邮箱 aa1598...@gmail.com", "手机号 绑定"], button: ["保存", "screen-38"] },
   { no: 40, title: "登录方式", active: "我的", list: [["Apple", "", ""], ["邮箱", "", ""], ["手机号", "", ""], ["Google", "", ""]] },
-  { no: 41, title: "设置密码", active: "我的", form: ["新密码", "确认密码"], button: ["保存", "screen-40"] }
+  { no: 41, title: "设置密码", active: "我的", form: ["新密码", "确认密码"], button: ["保存", "screen-40"] },
+  { no: 42, title: "地脉道", active: "活动" },
+  { no: 43, title: "选择方位成员", active: "活动" },
+  { no: 44, title: "阳宅解读", active: "活动" },
+  { no: 45, title: "地脉道教程", active: "活动" }
 ];
 
 const convertedByNo = new Map(convertedScreens.map((screen) => [screen.no, screen]));
 
 const screenFlowHotspots = {
-  1: [[286, 24, 86, 52, "screen-26"], [48, 249, 295, 45, "screen-4"], [18, 342, 318, 157, "screen-2"], [18, 580, 354, 274, "screen-4"], [18, 875, 354, 96, "screen-10"], [18, 984, 354, 96, "screen-13"], [18, 1093, 354, 96, "screen-17"], [18, 1202, 354, 96, "screen-23"], [18, 1378, 354, 104, "screen-22"], [18, 1502, 354, 104, "screen-23"], [2, 1638, 76, 83, "screen-1"], [80, 1638, 76, 83, "screen-25"], [158, 1638, 76, 83, "screen-3"], [236, 1638, 76, 83, "screen-13"], [314, 1638, 76, 83, "screen-31"]],
+  1: [[286, 24, 86, 52, "screen-26"], [48, 249, 295, 45, "screen-4"], [18, 342, 318, 157, "screen-2"], [18, 580, 354, 274, "screen-4"], [18, 875, 354, 96, "screen-10"], [18, 984, 354, 96, "screen-13"], [18, 1093, 354, 96, "screen-17"], [18, 1202, 354, 96, "screen-23"], [18, 1311, 354, 96, "screen-42"], [18, 1488, 354, 104, "screen-22"], [18, 1612, 354, 104, "screen-23"], [2, 1748, 76, 83, "screen-1"], [80, 1748, 76, 83, "screen-25"], [158, 1748, 76, 83, "screen-3"], [236, 1748, 76, 83, "screen-13"], [314, 1748, 76, 83, "screen-31"]],
   2: [[18, 282, 354, 190, "screen-4"], [18, 487, 354, 190, "screen-4"], [18, 692, 354, 175, "screen-4"]],
   3: [[285, 128, 82, 28, "screen-5"], [16, 164, 358, 84, "screen-5"], [16, 305, 358, 116, "screen-4"], [2, 761, 76, 72, "screen-1"], [80, 761, 76, 72, "screen-25"], [158, 761, 76, 72, "screen-3"], [236, 761, 76, 72, "screen-13"], [314, 761, 76, 72, "screen-31"]],
   4: [[18, 44, 48, 48, "screen-3"], [276, 44, 96, 48, "screen-9"], [300, 104, 58, 34, "screen-5"]],
@@ -103,7 +107,11 @@ const screenFlowHotspots = {
   38: [[18, 44, 48, 48, "screen-31"], [20, 150, 350, 56, "screen-39"], [20, 220, 350, 56, "screen-40"], [20, 290, 350, 56, "screen-41"], [20, 360, 350, 56, "screen-37"], [20, 500, 350, 56, "screen-35"], [20, 570, 350, 56, "screen-36"]],
   39: [[18, 44, 48, 48, "screen-38"], [42, 742, 306, 56, "screen-38"]],
   40: [[18, 44, 48, 48, "screen-38"], [20, 236, 350, 56, "screen-41"]],
-  41: [[18, 44, 48, 48, "screen-40"], [42, 742, 306, 56, "screen-40"]]
+  41: [[18, 44, 48, 48, "screen-40"], [42, 742, 306, 56, "screen-40"]],
+  42: [[18, 44, 48, 48, "screen-1"], [292, 44, 76, 48, "screen-45"], [24, 575, 158, 48, "screen-44"], [24, 112, 342, 438, "screen-43"]],
+  43: [[18, 44, 48, 48, "screen-42"], [330, 374, 42, 42, "screen-42"], [44, 778, 302, 50, "screen-42"]],
+  44: [[18, 44, 48, 48, "screen-42"], [292, 44, 76, 48, "screen-45"]],
+  45: [[18, 44, 48, 48, "screen-42"]]
 };
 
 const routes = {
@@ -1994,8 +2002,188 @@ function wentianHexLines(id, y, variant = 0) {
   }).join("");
 }
 
+const yangzhaiCells = [
+  ["巽", "东南", "长女位", "长女", "#7f5df2"],
+  ["离", "正南", "二女位", "二女", "#7f5df2"],
+  ["坤", "西南", "母亲位", "母亲", "#7f5df2"],
+  ["震", "正东", "长子位", "长子", "#7f5df2"],
+  ["center", "", "", "", "#7f5df2"],
+  ["兑", "正西", "三女位", "三女", "#7f5df2"],
+  ["艮", "东北", "三子位", "三子", "#7f5df2"],
+  ["坎", "正北", "二子位", "二子", "#7f5df2"],
+  ["乾", "西北", "父亲位", "父亲", "#7f5df2"]
+];
+
+function yangzhaiHeader(id, title = "地脉道", right = "教程") {
+  return `
+    ${figButton(`${id}-back-hit`, 10, 38, 54, 54, 'data-action="back"')}
+    ${figText(`${id}-back`, "‹", 22, 42, 30, 30, "#25211d", 500)}
+    ${figText(`${id}-title`, title, 62, 50, 266, 18, "#25211d", 800, "center")}
+    ${right ? `${figBox(`${id}-tutorial`, 314, 40, 58, 38, "", "border:1px solid #cfc8be;border-radius:12px;background:#fff;")}
+    ${figButton(`${id}-tutorial-hit`, 314, 40, 58, 38, 'data-route="screen-45"')}
+    ${figText(`${id}-tutorial-text`, right, 314, 50, 58, 13, "#25211d", 700, "center")}` : ""}
+  `;
+}
+
+function yangzhaiRoomAvatar(id, x, y, label, selected = true) {
+  if (!selected) {
+    return `
+      ${figBox(`${id}-plus`, x + 34, y + 40, 38, 38, "", "border-radius:19px;background:#4a4744;")}
+      ${figText(`${id}-plus-text`, "+", x + 34, y + 43, 38, 24, "#fff", 800, "center")}
+    `;
+  }
+  const short = label.includes("厨房") ? "厨" : label.includes("厕所") ? "厕" : label.includes("客厅") ? "厅" : label.slice(0, 1);
+  return `
+    ${figBox(`${id}-avatar`, x + 18, y + 58, 34, 34, "", "border-radius:17px;background:#f3eee5;border:1px solid #e6d8c6;")}
+    ${figText(`${id}-avatar-text`, short, x + 18, y + 66, 34, 13, "#6b5a48", 800, "center")}
+    ${figText(`${id}-label`, label, x + 20, y + 96, 58, 13, "#25211d", 600)}
+    ${figBox(`${id}-plus`, x + 72, y + 62, 32, 32, "", "border-radius:16px;background:#4a4744;")}
+    ${figText(`${id}-plus-text`, "+", x + 72, y + 64, 32, 20, "#fff", 800, "center")}
+  `;
+}
+
+function yangzhaiCompassGrid(id, filled = true) {
+  return yangzhaiCells.map(([gua, dir, role, person, color], index) => {
+    const col = index % 3;
+    const row = Math.floor(index / 3);
+    const x = 24 + col * 114;
+    const y = 112 + row * 146;
+    if (gua === "center") {
+      return `
+        ${figBox(`${id}-cell-${index}`, x, y, 114, 146, "", "border:1px solid #ddd7ce;background:#fff;")}
+        ${figText(`${id}-center-title`, "罗盘方位", x, y + 24, 114, 19, "#25211d", 800, "center")}
+        ${figBox(`${id}-compass-a`, x + 26, y + 58, 62, 62, "", "border:2px solid #8b6df4;border-radius:31px;background:#fff;")}
+        ${figBox(`${id}-compass-b`, x + 38, y + 70, 38, 38, "", "border:1px solid #c8b7ff;border-radius:19px;background:#f8f5ff;")}
+        ${figText(`${id}-compass-n`, "南", x + 46, y + 64, 22, 12, "#25211d", 700, "center")}
+        ${figText(`${id}-compass-dot`, "◆", x + 47, y + 82, 20, 13, "#a94437", 800, "center")}
+      `;
+    }
+    return `
+      ${figBox(`${id}-cell-${index}`, x, y, 114, 146, "", "border:1px solid #ddd7ce;background:#fff;")}
+      ${figText(`${id}-gua-${index}`, gua, x + 10, y + 12, 24, 18, color, 900)}
+      ${figText(`${id}-dir-${index}`, `(${dir})`, x + 32, y + 13, 42, 12, "#25211d", 600, "left", "white-space:nowrap;")}
+      ${figText(`${id}-role-${index}`, role, x + 75, y + 13, 40, 12, "#25211d", 800, "left", "white-space:nowrap;")}
+      ${yangzhaiRoomAvatar(`${id}-room-${index}`, x, y, person, filled)}
+      ${figButton(`${id}-cell-hit-${index}`, x, y, 114, 146, 'data-route="screen-43"')}
+    `;
+  }).join("");
+}
+
+function sourceYangzhaiCompassScreen() {
+  return `
+    ${figBox("yz42-bg", 0, 0, 390, 844, "", "background:#f8f7fb;")}
+    ${yangzhaiHeader("yz42")}
+    ${figBox("yz42-grid-bg", 24, 112, 342, 438, "", "background:#fff;box-shadow:0 1px 0 #ddd7ce;")}
+    ${yangzhaiCompassGrid("yz42", true)}
+    ${figBox("yz42-analyze", 24, 575, 158, 48, "", "border-radius:16px;background:#835cf6;")}
+    ${figButton("yz42-analyze-hit", 24, 575, 158, 48, 'data-route="screen-44"')}
+    ${figText("yz42-analyze-text", "解读分析", 24, 590, 158, 14, "#fff", 800, "center")}
+    ${figBox("yz42-order", 198, 575, 112, 48, "", "border:1px solid #cfc8be;border-radius:16px;background:#fff;")}
+    ${figText("yz42-order-text", "长幼有序,天地归位", 198, 591, 112, 11, "#6f665d", 700, "center", "white-space:nowrap;")}
+    ${figBox("yz42-reset", 322, 575, 44, 48, "", "border:1px solid #cfc8be;border-radius:16px;background:#fff;")}
+    ${figText("yz42-reset-text", "重置", 322, 590, 44, 13, "#6f665d", 700, "center")}
+    ${figBox("yz42-tip", 18, 654, 354, 64, "", "border-radius:18px;background:#fff;box-shadow:0 6px 16px rgba(70,45,25,.05);")}
+    ${figText("yz42-tip-icon", "!", 36, 674, 18, 18, "#aaa39b", 800, "center")}
+    ${figText("yz42-tip-text", "当前内容信息仅供娱乐，不等于专业测评，不代表价值评判，无任何现实指导意义，仅供娱乐参考。", 62, 668, 280, 12, "#a19a91", 500, "left", "line-height:1.45;")}
+  `;
+}
+
+function sourceYangzhaiSelectScreen() {
+  const options = ["父亲", "母亲", "长子", "长女", "二子", "二女", "三子", "三女", "厨房", "厕所", "客厅"];
+  return `
+    ${sourceYangzhaiCompassScreen()}
+    ${figBox("yz43-overlay", 0, 0, 390, 844, "", "background:rgba(0,0,0,.55);")}
+    ${figBox("yz43-sheet", 0, 354, 390, 490, "", "border-radius:18px 18px 0 0;background:#fff;box-shadow:0 -12px 30px rgba(0,0,0,.16);")}
+    ${figText("yz43-title", "巽(东南) - 长女位", 24, 386, 220, 20, "#25211d", 800)}
+    ${figButton("yz43-close-hit", 328, 374, 42, 42, 'data-route="screen-42"')}
+    ${figText("yz43-close", "×", 330, 378, 42, 30, "#5f5a52", 400, "center")}
+    ${figLine("yz43-midline", 195, 430, 312, "#eee8df")}
+    ${options.map((label, index) => {
+      const col = index % 2;
+      const row = Math.floor(index / 2);
+      const x = col ? 214 : 44;
+      const y = 438 + row * 50;
+      const short = label.includes("厨房") ? "厨" : label.includes("厕所") ? "厕" : label.includes("客厅") ? "厅" : label.slice(0, 1);
+      return `
+        ${figBox(`yz43-avatar-${index}`, x, y, 32, 32, "", "border-radius:16px;background:#f0eee9;border:1px solid #e0d8ce;")}
+        ${figText(`yz43-avatar-text-${index}`, short, x, y + 8, 32, 12, "#6b5a48", 800, "center")}
+        ${figText(`yz43-option-${index}`, label, x + 42, y + 7, 72, 14, "#25211d", 700)}
+        ${figBox(`yz43-radio-${index}`, x + 126, y + 7, 20, 20, "", "border:1px solid #b9b2aa;border-radius:10px;background:#fff;")}
+      `;
+    }).join("")}
+    ${figBox("yz43-confirm", 44, 778, 302, 50, "", "border-radius:25px;background:#835cf6;box-shadow:0 10px 24px rgba(131,92,246,.28);")}
+    ${figButton("yz43-confirm-hit", 44, 778, 302, 50, 'data-route="screen-42"')}
+    ${figText("yz43-confirm-text", "确认", 44, 792, 302, 16, "#fff", 800, "center")}
+  `;
+}
+
+function sourceYangzhaiResultScreen() {
+  const results = [
+    ["长女住巽(东南) - 长女位", "此局大利未婚女，主婚姻顺遂、学习灵敏。凡事先顺气，再谈进取。"],
+    ["二女住离(正南) - 二女位", "离卦主明，利表达与审美。若心气浮躁，宜减少争执，多守作息。"],
+    ["母亲住坤(西南) - 母亲位", "坤位归母，主安稳包容。此位宜整洁明亮，利家中女主人与家庭凝聚。"],
+    ["长子住震(正东) - 长子位", "震为动，长子在位利行动与开创。忌杂物堆积，防急躁冲动。"],
+    ["二子住坎(正北) - 二子位", "坎位主思考与流动。宜静不宜乱，利读书、专注与长期规划。"],
+    ["父亲住乾(西北) - 父亲位", "乾位归父，主担当与决策。此位宜稳重开阔，利事业名望。"]
+  ];
+  return `
+    ${figBox("yz44-bg", 0, 0, 390, 1210, "", "background:#f8f7fb;")}
+    ${yangzhaiHeader("yz44")}
+    ${figBox("yz44-summary", 24, 104, 342, 108, "", "border-radius:16px;background:#fff;box-shadow:0 8px 20px rgba(70,45,25,.08);")}
+    ${figText("yz44-summary-title", "长幼有序，天地归位", 44, 128, 190, 18, "#25211d", 800)}
+    ${figText("yz44-summary-copy", "已按九宫方位完成阳宅地脉分析，优先查看已放置成员与空间。", 44, 160, 260, 13, "#756d63", 500, "left", "line-height:1.45;")}
+    ${figBox("yz44-score", 282, 126, 54, 54, "", "border-radius:27px;background:#f3ecff;")}
+    ${figText("yz44-score-text", "吉", 282, 142, 54, 18, "#835cf6", 900, "center")}
+    ${results.map(([title, desc], index) => {
+      const y = 238 + index * 144;
+      return `
+        ${figBox(`yz44-card-${index}`, 24, y, 342, 120, "", "border-radius:16px;background:#fff;box-shadow:0 7px 18px rgba(70,45,25,.07);")}
+        ${figBox(`yz44-avatar-${index}`, 42, y + 24, 34, 34, "", "border-radius:17px;background:#f0eee9;border:1px solid #e0d8ce;")}
+        ${figText(`yz44-avatar-text-${index}`, title.slice(0, 1), 42, y + 32, 34, 12, "#6b5a48", 800, "center")}
+        ${figText(`yz44-title-${index}`, title, 88, y + 22, 230, 16, "#25211d", 800)}
+        ${figText(`yz44-desc-${index}`, desc, 42, y + 66, 270, 13, "#514b45", 500, "left", "line-height:1.5;")}
+        ${figText(`yz44-full-${index}`, "⌄ 全文", 304, y + 88, 48, 12, "#835cf6", 800, "center")}
+      `;
+    }).join("")}
+    ${figBox("yz44-tip", 18, 1122, 354, 58, "", "border-radius:18px;background:#fff;")}
+    ${figText("yz44-tip-text", "当前内容仅供娱乐参考，不等于专业测评。", 0, 1142, 390, 12, "#a19a91", 500, "center")}
+  `;
+}
+
+function sourceYangzhaiTutorialScreen() {
+  const steps = [
+    ["1", "站在户型中心", "先确定房屋中心点，再按手机罗盘或户型图标出八方。"],
+    ["2", "点击方位加号", "把家人、厨房、厕所、客厅放入对应宫位。"],
+    ["3", "一键归位", "可用“长幼有序”快速按父母子女关系填入九宫。"],
+    ["4", "解读分析", "系统会按方位、人事与空间组合生成阳宅解读。"]
+  ];
+  return `
+    ${figBox("yz45-bg", 0, 0, 390, 844, "", "background:#f8f7fb;")}
+    ${yangzhaiHeader("yz45", "教程", "")}
+    ${figText("yz45-title", "地脉道怎么用", 24, 112, 180, 22, "#25211d", 800)}
+    ${figText("yz45-sub", "按截图链路整理：先定方位，再放人和空间，最后解读。", 24, 148, 300, 13, "#756d63", 500)}
+    ${steps.map(([num, title, desc], index) => {
+      const y = 204 + index * 112;
+      return `
+        ${figBox(`yz45-step-${index}`, 24, y, 342, 88, "", "border-radius:16px;background:#fff;box-shadow:0 7px 18px rgba(70,45,25,.07);")}
+        ${figBox(`yz45-num-${index}`, 44, y + 24, 34, 34, "", "border-radius:17px;background:#835cf6;")}
+        ${figText(`yz45-num-text-${index}`, num, 44, y + 33, 34, 12, "#fff", 800, "center")}
+        ${figText(`yz45-step-title-${index}`, title, 94, y + 20, 160, 15, "#25211d", 800)}
+        ${figText(`yz45-step-desc-${index}`, desc, 94, y + 48, 230, 12, "#756d63", 500)}
+      `;
+    }).join("")}
+    ${figBox("yz45-go", 42, 728, 306, 50, "", "border-radius:25px;background:#835cf6;")}
+    ${figButton("yz45-go-hit", 42, 728, 306, 50, 'data-route="screen-42"')}
+    ${figText("yz45-go-text", "开始排布", 42, 743, 306, 14, "#fff", 800, "center")}
+  `;
+}
+
 function renderWentianPolishedScreen(screen) {
   const no = screen.no;
+  if (no === 42) return sourceYangzhaiCompassScreen();
+  if (no === 43) return sourceYangzhaiSelectScreen();
+  if (no === 44) return sourceYangzhaiResultScreen();
+  if (no === 45) return sourceYangzhaiTutorialScreen();
   if (no === 8) {
     const paragraphs = [
       ["核心结论", "你的命盘不是单一路线，而是“先观察、后出手”的结构。真正适合你的节奏，是先把信息摸透，再用稳定执行换结果。"],
@@ -2552,7 +2740,7 @@ function convertedSpecial(screen) {
 
 function sourceDashboardHomeScreen() {
   return `
-    ${figBox("source-1-bg", 0, 0, 390, 1721, "", "background:linear-gradient(180deg,#fffdf8 0%,#fbf7ef 50%,#faf5ed 100%);")}
+    ${figBox("source-1-bg", 0, 0, 390, 1831, "", "background:linear-gradient(180deg,#fffdf8 0%,#fbf7ef 50%,#faf5ed 100%);")}
     ${figBox("source-1-avatar", 18, 24, 44, 44, "", "border-radius:22px;background:#f4ead8;box-shadow:0 6px 16px rgba(188,142,59,.12);")}
     ${figBox("source-1-avatar-head", 33, 36, 12, 12, "", "border-radius:6px;background:#c58d25;")}
     ${figBox("source-1-avatar-body", 27, 52, 24, 13, "", "border-radius:12px 12px 5px 5px;background:#c58d25;")}
@@ -2610,22 +2798,22 @@ function sourceDashboardHomeScreen() {
     ${figBox("source-1-master-go", 278, 807, 72, 36, "", "border-radius:18px;background:#c08a2c;")}
     ${figText("source-1-master-go-text", "去问他", 286, 817, 56, 13, "#fff", 700, "center")}
 
-    ${[["合盘分析", "命理相合，缘分几许", "01-feature-hepan.png", "screen-10", 875], ["黄大仙灵签", "求签问卦，指引方向", "01-feature-qian.png", "screen-13", 984], ["六爻占卜", "铜钱起卦，纳甲解卦", "01-feature-gua.png", "screen-17", 1093], ["万年历", "每日宜忌，趋吉避凶", "01-feature-li.png", "screen-23", 1202]].map(([title, sub, icon, route, y], index) => `
+    ${[["合盘分析", "命理相合，缘分几许", "01-feature-hepan.png", "screen-10", 875], ["黄大仙灵签", "求签问卦，指引方向", "01-feature-qian.png", "screen-13", 984], ["六爻占卜", "铜钱起卦，纳甲解卦", "01-feature-gua.png", "screen-17", 1093], ["万年历", "每日宜忌，趋吉避凶", "01-feature-li.png", "screen-23", 1202], ["阳宅地脉", "罗盘九宫，安位解读", "01-feature-gua.png", "screen-42", 1311]].map(([title, sub, icon, route, y], index) => `
       ${figBox(`source-1-feature-${index}`, 18, y, 354, 96, "converted-card", "border-radius:14px;box-shadow:0 8px 20px rgba(70,45,25,.1);background:#fffdfb;")}
       ${figText(`source-1-feature-title-${index}`, title, 36, y + 30, 150, 21, "#25221f", 800)}
       ${figText(`source-1-feature-sub-${index}`, sub, 36, y + 58, 190, 14, "#969087", 500)}
       ${figImage(`source-1-feature-icon-${index}`, `../images/wentian-prototype-assets/${icon}`, 286, y + 10, 72, 76, "object-fit:contain;")}
       ${figButton(`source-1-feature-hit-${index}`, 18, y, 354, 96, `data-route="${route}"`)}
     `).join("")}
-    ${figText("source-1-more-title", "更多功能", 18, 1328, 130, 22, "#25221f", 800)}
-    ${[["邀请好友", "邀请好友双方获得奖励", "01-extra-invite.png", "screen-22", 1378], ["活动中心", "参与活动赢取丰厚奖励", "01-extra-activity.png", "screen-23", 1502]].map(([title, sub, icon, route, y], index) => `
+    ${figText("source-1-more-title", "更多功能", 18, 1438, 130, 22, "#25221f", 800)}
+    ${[["邀请好友", "邀请好友双方获得奖励", "01-extra-invite.png", "screen-22", 1488], ["活动中心", "参与活动赢取丰厚奖励", "01-extra-activity.png", "screen-23", 1612]].map(([title, sub, icon, route, y], index) => `
       ${figBox(`source-1-extra-${index}`, 18, y, 354, 104, "converted-card", "border-radius:14px;box-shadow:0 8px 20px rgba(70,45,25,.1);")}
       ${figText(`source-1-extra-title-${index}`, title, 36, y + 31, 150, 21, "#25221f", 800)}
       ${figText(`source-1-extra-sub-${index}`, sub, 36, y + 61, 210, 14, "#969087", 500)}
       ${figImage(`source-1-extra-icon-${index}`, `../images/wentian-prototype-assets/${icon}`, 300, y + 36, 52, 50, "object-fit:contain;")}
       ${figButton(`source-1-extra-hit-${index}`, 18, y, 354, 104, `data-route="${route}"`)}
     `).join("")}
-    ${sourceAppBottomNav("首页", 1638)}
+    ${sourceAppBottomNav("首页", 1748)}
   `;
 }
 
@@ -2890,7 +3078,7 @@ function renderConvertedScreen(no) {
     return figPhone(`screen-${screen.no}`, `${String(screen.no).padStart(2, "0")} 首页`, `
       ${sourceDashboardHomeScreen()}
       ${convertedFlowHotspots(screen)}
-    `, 1721, "converted source-screen no-status-shift", false);
+    `, 1831, "converted source-screen no-status-shift", false);
   }
   if (screen.no === 2) {
     return figPhone(`screen-${screen.no}`, `${String(screen.no).padStart(2, "0")} ${screen.title}`, `
@@ -2978,7 +3166,7 @@ function renderConvertedScreen(no) {
   }
   const polishedScreen = renderWentianPolishedScreen(screen);
   if (polishedScreen) {
-    const polishedHeight = screen.no === 8 ? 1280 : screen.no === 20 ? 1072 : screen.no === 24 ? 1180 : 844;
+    const polishedHeight = screen.no === 8 ? 1280 : screen.no === 20 ? 1072 : screen.no === 24 ? 1180 : screen.no === 44 ? 1210 : 844;
     return figPhone(`screen-${screen.no}`, `${String(screen.no).padStart(2, "0")} ${screen.title}`, `
       ${polishedScreen}
       ${convertedFlowHotspots(screen)}
