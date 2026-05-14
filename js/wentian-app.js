@@ -2086,7 +2086,7 @@ const YANGZHAI_ACTION_Y = 640;
 const YANGZHAI_RESULT_TITLE_Y = 720;
 const YANGZHAI_RESULT_START_Y = 760;
 const YANGZHAI_RESULT_COLLAPSED_HEIGHT = 142;
-const YANGZHAI_RESULT_EXPANDED_HEIGHT = 220;
+const YANGZHAI_RESULT_EXPANDED_HEIGHT = 252;
 const YANGZHAI_ROLE_GUA = {
   父亲: "乾",
   母亲: "坤",
@@ -2187,7 +2187,75 @@ const YANGZHAI_HEX_INDEX = {
   "巽-兑": { no: "61", name: "风泽中孚", index: "长女居正西", audit: "目录确认/正文待核", source: "S004,S007" },
   "震-艮": { no: "62", name: "雷山小过", index: "长子居东北角", audit: "目录确认/正文待核", source: "S004,S007" },
   "坎-离": { no: "63", name: "水火既济", index: "二子/次子居正南", audit: "目录确认/正文待核", source: "S004,S007" },
-  "离-坎": { no: "64", name: "未济", index: "二女/次女居正北", audit: "冲突待核", source: "S004,S007,S013" }
+  "离-坎": { no: "64", name: "火水未济", index: "二女/次女居正北", audit: "《地脉道》PDF已核", source: "倪海厦《地脉道》" }
+};
+
+const YANGZHAI_SOURCE_TITLE = "倪海厦《地脉道》阳宅六十四卦";
+const YANGZHAI_HEX_READINGS = {
+  1: { quote: "父居乾位", summary: "父亲归西北，重父位、主事与家中骨架。", advice: "若为本位，宜稳住父亲或主事人的独立空间。" },
+  2: { quote: "地厚能载物", summary: "母亲归西南，重承载、家务与实际掌权。", advice: "已婚母亲或女主人可用，单身者不宜硬套吉凶。" },
+  3: { quote: "次子越位", summary: "二子落震，主次子早动、能力越长兄。", advice: "适合看兄弟排序与家业接班，不宜只断婚恋。" },
+  4: { quote: "蒙蔽之法", summary: "三子落坎，蒙象偏重赌性、迷惘与进退失据。", advice: "先调卧室位置，再看本人是否愿意受劝。" },
+  5: { quote: "智慧成长快速", summary: "二子落乾，聪明刚烈，事业权位容易早显。", advice: "可取其事业上进，婚恋与宗教倾向需谨慎看。" },
+  6: { quote: "官司不断", summary: "父亲落坎，为讼象，主口舌、诉讼与升迁阻滞。", advice: "优先移开父亲卧房，减少水险与是非位刺激。" },
+  7: { quote: "性刚争端", summary: "母亲落坎，师象偏刚，家内争执与纠纷易起。", advice: "母亲卧房不宜居坎，先求家中安静与边界。" },
+  8: { quote: "亲比之意", summary: "二子落坤，依母、助母，事业多居辅佐位。", advice: "可用于判断母子牵连，勿把辅佐位硬断为败。" },
+  9: { quote: "女代父职", summary: "长女落乾，事业心强，常代父职、独立撑局。", advice: "长女若重事业可用；若问婚姻，需合八字同看。" },
+  10: { quote: "进退两难", summary: "父亲落兑，为履象，主事业、官运进退难定。", advice: "先化父亲房位，再看财官是否卡在选择上。" },
+  11: { quote: "安泰舒适", summary: "母亲落乾，为泰象，利夫妻和睦、家局安定。", advice: "已婚女主人可用此局稳家宅与事业。" },
+  12: { quote: "否塞不通", summary: "父亲落坤，为否象，主闭塞、耗财与夫妻失和。", advice: "父亲房不宜压母位，宜回乾位或换静位。" },
+  13: { quote: "主人和", summary: "父亲落离，同人象重人和、合伙与声名。", advice: "可取团队合作，但要兼看对妻位的影响。" },
+  14: { quote: "女承父业", summary: "二女落乾，大有象主女承父业、事业成名。", advice: "若二女事业强，可视作可用局；婚恋另行判断。" },
+  15: { quote: "劳谦之美", summary: "母亲落艮，谦象重贤德、劳心与公平处事。", advice: "适合稳家务与财务，但要防过劳。" },
+  16: { quote: "因禄远行", summary: "长子落坤，豫象主母助、财官与离乡发展。", advice: "可用于长子事业出外线索，需兼顾亲缘距离。" },
+  17: { quote: "全心事业", summary: "三女落震，随象偏事业驱动，婚恋需配命局。", advice: "先看事业与贵人，不把性格标签作绝对断语。" },
+  18: { quote: "图利野心", summary: "三子落巽，蛊象主野心、谋利与考试发挥。", advice: "宜引导到读书、技能与正当竞争。" },
+  19: { quote: "力大居小", summary: "母亲落兑，临象主母权过重、子女反弹。", advice: "母亲宜退一步，让子女位各归其位。" },
+  20: { quote: "女代母职", summary: "长女落坤，观象主静观、掌家与择偶标准高。", advice: "长女不宜长期代母，婚恋需降低家务牵制。" },
+  21: { quote: "少年有成", summary: "二女落震，噬嗑象主刚烈、表达锋利、事业早发。", advice: "利曝光与竞争，需管住口舌和情绪。" },
+  22: { quote: "求外饰之道", summary: "三子落离，贲象主外饰、名声、考试与躁动。", advice: "可取声名考试，避免只重外表不修内实。" },
+  23: { quote: "耗尽之象", summary: "三子落坤，剥象主破耗、伦理失序与身心折损。", advice: "此局不宜久住，优先移位化破耗。" },
+  24: { quote: "代夫出征", summary: "母亲落震，复象主女身担责、武职与代夫行事。", advice: "利公职武职，不利夫妻长期角力。" },
+  25: { quote: "无妄之灾", summary: "父亲落震，无妄象主求财遇险、子位受压。", advice: "父亲不宜占长子位，先解除父子位冲突。" },
+  26: { quote: "代父之职", summary: "三子落乾，大畜象主代父、节俭与积蓄。", advice: "可用来稳家计，但不宜让三子长期扛父责。" },
+  27: { quote: "饮食养身", summary: "三子落震，颐象主养身、早发与健康恢复。", advice: "适合调养、读书与早年发展，注意同父异母象不扩写。" },
+  28: { quote: "身进豪门", summary: "三女落巽，大过象主早婚、嫁贵与性刚。", advice: "婚恋须看年龄差和对方条件，不宜同龄硬配。" },
+  29: { quote: "正北宫有险", summary: "二子归坎，坎象主冒险、官非与婚期延后。", advice: "坎位不宜强住，必要时用既济局化险。" },
+  30: { quote: "迁移外地", summary: "二女归离，离象主明理、外地心与科甲。", advice: "此为出外原文命中项，可看迁移、求学、外地发展。" },
+  31: { quote: "媒妁之言", summary: "三女落艮，咸象主媒合、感应与婚先成后破。", advice: "婚事要看是否过度依赖外力撮合。" },
+  32: { quote: "科甲旺", summary: "长子落巽，恒象主晚婚、信仰心与科甲自由业。", advice: "可取读书教职，婚恋不宜催急。" },
+  33: { quote: "萌生退意", summary: "父亲落艮，遁象主退缩、仕途停滞与家庭无力。", advice: "父亲宜离艮位，重启事业与夫妻沟通。" },
+  34: { quote: "越居父位", summary: "长子落乾，大壮象主责任重、独立自主。", advice: "长子可成一方之主，但不宜压过父位太久。" },
+  35: { quote: "性柔有母爱", summary: "二女落坤，晋象主节省、母爱与晚婚。", advice: "利守成与家务，不宜把人生全部压在照顾上。" },
+  36: { quote: "力求变局", summary: "母亲落离，明夷象主母位受伤、破财与暗害。", advice: "此局宜优先调整母亲卧房，不在前台扩写灾断。" },
+  37: { quote: "与家人和睦", summary: "长女落离，家人象主顾家、科甲与婚期延后。", advice: "可取和睦顾家，防长女承担过多家务。" },
+  38: { quote: "背离家人", summary: "二女落兑，睽象主背离、口舌与官灾象。", advice: "先降冲突，避免让二女长期居兑位。" },
+  39: { quote: "官调他乡", summary: "二子落艮，蹇象利武官、公职、外调与科甲。", advice: "这是出外/他乡原文命中项，适合看公职外派。" },
+  40: { quote: "刚武勇", summary: "长子落坎，解象主刚武、官非与婚缘弱。", advice: "宜移位化是非，不在前台放大凶断。" },
+  41: { quote: "父母烦心", summary: "三子落兑，损象主子女耗心、官运不通、花钱不进。", advice: "三子不宜久居兑位，先管钱与作息。" },
+  42: { quote: "财禄足", summary: "长女落震，益象主祖业财禄、事业强与婚不稳。", advice: "利官运与事业，婚恋需另调长女位。" },
+  43: { quote: "先凶后吉", summary: "三女落乾，夬象主婚延、刚者从武、事业后起。", advice: "可转为武职、专业或独立发展。" },
+  44: { quote: "在外风流", summary: "父亲落巽，姤象主外缘桃花、官司牵连与夫妻失和。", advice: "父亲不宜居巽，宜尽快回乾位或换静位。" },
+  45: { quote: "退居家内", summary: "三女落坤，萃象主修业、代母职，餐饮业较利。", advice: "可取修业与餐饮，不宜长期代母。" },
+  46: { quote: "平步青云", summary: "母亲落巽，升象主官职事业、祖业更新与夫妻竞争。", advice: "利事业上升，但要避免夫妻权力互压。" },
+  47: { quote: "困之于人", summary: "三女落坎，困象主体弱、婚阻与财不守。", advice: "先离坎位，必要时用既济思路化困。" },
+  48: { quote: "从商吉", summary: "二子落巽，井象主从商、婚配复杂，公职多阻。", advice: "适合商路与祖业，不宜硬走公职升迁。" },
+  49: { quote: "天生刚勇", summary: "三女落离，革象主刚勇明理、感情扰动。", advice: "宜把刚勇导向事业与学习，婚恋慢看。" },
+  50: { quote: "大利未婚女", summary: "二女落巽，鼎象主贵夫、果断、官运与科甲。", advice: "未婚二女可用，忌鼠象按原书另核。" },
+  51: { quote: "贵子", summary: "长子归震，震象主贵子、祖业、科甲与官商皆可。", advice: "长子本位，婚前更明显，婚后需看变局。" },
+  52: { quote: "孝子", summary: "三子归艮，艮象主科甲、健康、公职与知进退。", advice: "三子本位，可作为稳定读书与公职局。" },
+  53: { quote: "常思变动", summary: "长女落艮，渐象主工作变动、婚不主动、教职利。", advice: "适合教职公职，婚恋需主动破拖延。" },
+  54: { quote: "离家出走", summary: "长子落兑，归妹象主离家、艺术才艺与诸事阻。", advice: "前台只取离家/才艺线索，不展示原文敏感断语。" },
+  55: { quote: "先成后破", summary: "长子落离，丰象主婚先成后破、考试顺、公职吉。", advice: "利考试公职，婚恋需提前调局。" },
+  56: { quote: "科甲兴旺", summary: "二女落艮，旅象主科甲、外出旅动与婚待时。", advice: "利求学考试，婚缘看未申年份与命局。" },
+  57: { quote: "婚姻幸福", summary: "长女归巽，巽象大利未婚女、婚姻、科甲与健康。", advice: "长女本位，适合作为长女安位优先解。" },
+  58: { quote: "多才艺", summary: "三女归兑，兑象主感情复杂、才艺科甲、公职顺。", advice: "三女本位，宜走才艺、公职与稳态路线。" },
+  59: { quote: "涣局常见", summary: "长女落坎，涣象主心向宗教、诸事涣散与是非。", advice: "长女不宜居坎，宜回巽位化散。" },
+  60: { quote: "财无积余", summary: "二子落兑，节象主财难积、婚缘有条件成局。", advice: "先取节制理财，婚恋需合属相与命局细看。" },
+  61: { quote: "每考必中", summary: "长女落兑，中孚象主科甲、武职与双喜。", advice: "适合考试、公职与武职路线，婚事后成。" },
+  62: { quote: "感情困扰", summary: "长子落艮，小过象主情关、工作失序与过失伤人。", advice: "先离情绪位，恢复工作和作息。" },
+  63: { quote: "财官双美", summary: "二子落离，既济象主财官、考试与化困。", advice: "可用作坎险/困局的化解参考。" },
+  64: { quote: "从武吉", summary: "二女落坎，未济象主刚怒、商路是非，从武可吉。", advice: "二女不宜居坎；若走武职、公职需再合命局。" }
 };
 
 function loadYangzhaiState() {
@@ -2322,6 +2390,15 @@ function getYangzhaiHex(label, palace) {
   return YANGZHAI_HEX_INDEX[`${upper}-${palace.gua}`] || null;
 }
 
+function getYangzhaiHexReading(hex) {
+  if (!hex) return null;
+  return YANGZHAI_HEX_READINGS[Number(hex.no)] || {
+    quote: "原文待核",
+    summary: "已对应到六十四卦索引，正文仍待人工复核。",
+    advice: "仅显示结构，不扩写吉凶。"
+  };
+}
+
 function buildYangzhaiResults() {
   return YANGZHAI_PALACES
     .filter((palace) => palace.key !== "center")
@@ -2348,15 +2425,16 @@ function buildYangzhaiResults() {
       }
       const hex = getYangzhaiHex(label, palace);
       const matched = label === palace.defaultItem;
+      const reading = getYangzhaiHexReading(hex);
       const desc = hex
-        ? `64结构：${hex.index}；卦名${hex.name}。${hex.audit}。`
+        ? `第${hex.no}卦 ${hex.name}：摘句「${reading.quote}」。${reading.summary}`
         : `八宫基础：${label}住${palace.gua}(${palace.dir})，待补结构索引。`;
       return {
         kind: "hex",
         title: `${label}住${palace.gua}(${palace.dir}) - ${hex ? hex.name : palace.role}`,
         desc,
         full: hex
-          ? `${desc} 来源${hex.source}。推导口径：上卦=角色，下卦=方位；前台只发布结构索引，不发布未核吉凶正文。`
+          ? `结构：${hex.index}；上卦=角色(${YANGZHAI_ROLE_GUA[label]})，下卦=方位(${palace.gua})。原书摘句：${reading.quote}。解读：${reading.summary} 建议：${reading.advice} 出处：${YANGZHAI_SOURCE_TITLE}。`
           : `${desc} 来源待核；前台只发布可核索引。`,
         short,
         matched
@@ -2376,9 +2454,8 @@ function getYangzhaiResultHeight() {
 
 function yangzhaiBg(id, height = 844) {
   return `
-    ${figBox(`${id}-bg`, 0, 0, 390, height, "", "background:linear-gradient(180deg,#fffaf2 0%,#fff8ee 40%,#f8f0e4 100%);")}
-    ${figBox(`${id}-top-wash`, 0, 0, 390, 164, "", "background:linear-gradient(135deg,rgba(231,198,137,.34),rgba(255,250,242,0) 72%);")}
-    ${figBox(`${id}-side-wash`, 236, 0, 154, 214, "", "background:linear-gradient(145deg,rgba(172,73,56,.08),rgba(172,73,56,0) 68%);")}
+    ${figBox(`${id}-bg`, -720, 0, 1830, height, "", "background:linear-gradient(180deg,#fffaf2 0%,#fff8ee 40%,#f8f0e4 100%);")}
+    ${figBox(`${id}-top-wash`, -720, 0, 1830, 164, "", "background:linear-gradient(135deg,rgba(231,198,137,.34),rgba(255,250,242,0) 72%);")}
   `;
 }
 
@@ -2470,7 +2547,7 @@ function sourceYangzhaiCompassScreen() {
     ${figText("yz42-reset-text", "重置", 320, YANGZHAI_ACTION_Y + 18, 46, 13, "#6f4f25", 900, "center")}
     ${figBox("yz42-tip", 20, 718, 350, 70, "", "border:1px solid #eadfce;border-radius:20px;background:rgba(255,253,248,.90);box-shadow:0 12px 24px rgba(77,49,28,.06);")}
     ${figText("yz42-tip-icon", "!", 38, 740, 18, 18, "#b8944e", 900, "center")}
-    ${figText("yz42-tip-text", "按资料库只显示可发布索引和功能区象义；不发布未核吉凶断语。", 66, 735, 272, 12, "#817568", 700, "left", "line-height:1.35;")}
+    ${figText("yz42-tip-text", "已接入海厦《地脉道》阳宅64卦；展开可看原书摘句、现代解读与安位建议。", 66, 735, 272, 12, "#817568", 700, "left", "line-height:1.35;")}
   `;
 }
 
@@ -2519,7 +2596,7 @@ function sourceYangzhaiResultScreen() {
     ${yangzhaiBg("yz44", height)}
     ${yangzhaiHeader("yz44")}
     ${figBox("yz44-status", 30, 92, 330, 36, "", "border:1px solid #ead7b8;border-radius:18px;background:rgba(255,247,232,.78);")}
-    ${figText("yz44-status-text", `${hexCount}索引 · ${spaceCount}规则`, 49, 102, 292, 12, "#8b6b36", 900, "center")}
+    ${figText("yz44-status-text", `${hexCount}卦 · ${spaceCount}规则`, 49, 102, 292, 12, "#8b6b36", 900, "center")}
     ${figBox("yz44-grid-shadow", 17, 138, 356, 474, "", "border-radius:24px;background:rgba(244,223,184,.20);box-shadow:0 20px 38px rgba(93,55,31,.12);")}
     ${figBox("yz44-grid-card", 21, 144, 348, 462, "", "border:1px solid #ddc9aa;border-radius:22px;background:#fffdf8;")}
     ${figBox("yz44-grid-surface", 28, 153, 334, 440, "", "border:1px solid #eadbc7;border-radius:15px;background:#fffaf1;overflow:hidden;")}
@@ -2539,7 +2616,7 @@ function sourceYangzhaiResultScreen() {
     ${figButton("yz44-reset-hit", 320, YANGZHAI_ACTION_Y, 46, 52, 'data-action="yangzhai-reset"')}
     ${figText("yz44-reset-text", "重置", 320, YANGZHAI_ACTION_Y + 18, 46, 13, "#6f4f25", 900, "center")}
     ${figText("yz44-result-title", "解读结果", 24, YANGZHAI_RESULT_TITLE_Y, 120, 16, "#201812", 900)}
-    ${figText("yz44-result-meta", results.length ? `${results.length}条内容` : "尚未排布", 236, YANGZHAI_RESULT_TITLE_Y + 2, 130, 12, "#817568", 700, "right")}
+    ${figText("yz44-result-meta", results.length ? `${results.length}条解读` : "尚未排布", 236, YANGZHAI_RESULT_TITLE_Y + 2, 130, 12, "#817568", 700, "right")}
     ${!results.length ? `
       ${figBox("yz44-empty", 24, YANGZHAI_RESULT_START_Y, 342, 132, "", "border:1px solid #eadfce;border-radius:18px;background:#fffdf8;box-shadow:0 10px 24px rgba(70,45,25,.07);")}
       ${figText("yz44-empty-title", "还没有可解读内容", 0, YANGZHAI_RESULT_START_Y + 42, 390, 16, "#201812", 900, "center")}
@@ -2570,13 +2647,13 @@ function sourceYangzhaiTutorialScreen() {
     ["1", "站在户型中心", "先确定房屋中心点，再按手机罗盘或户型图标出八方。"],
     ["2", "点击方位加号", "把家人、厨房、厕所、客厅放入对应宫位。"],
     ["3", "一键归位", "可用“长幼有序”快速按父母子女关系填入九宫。"],
-    ["4", "解读分析", "按资料库输出八宫基础、功能区象义和64结构索引。"]
+    ["4", "解读分析", "按《地脉道》对应64卦，输出摘句、解读和安位建议。"]
   ];
   return `
     ${yangzhaiBg("yz45")}
     ${yangzhaiHeader("yz45", "教程", "")}
     ${figText("yz45-title", "地脉道怎么用", 24, 112, 180, 22, "#201812", 900)}
-    ${figText("yz45-sub", "先定方位，再放人和空间；结果只显示可发布索引，不写未核断语。", 24, 148, 300, 13, "#817568", 600, "left", "line-height:1.5;")}
+    ${figText("yz45-sub", "先定方位，再放人和空间；结果会对应海厦《地脉道》64卦。", 24, 148, 300, 13, "#817568", 600, "left", "line-height:1.5;")}
     ${steps.map(([num, title, desc], index) => {
       const y = 204 + index * 112;
       return `
@@ -3582,10 +3659,11 @@ function renderConvertedScreen(no) {
   const polishedScreen = renderWentianPolishedScreen(screen);
   if (polishedScreen) {
     const polishedHeight = screen.no === 8 ? 1280 : screen.no === 20 ? 1072 : screen.no === 24 ? 1180 : screen.no === 44 ? getYangzhaiResultHeight() : 844;
+    const wideBgClass = screen.no >= 42 && screen.no <= 45 ? " wide-bg" : "";
     return figPhone(`screen-${screen.no}`, `${String(screen.no).padStart(2, "0")} ${screen.title}`, `
       ${polishedScreen}
       ${convertedFlowHotspots(screen)}
-    `, polishedHeight, "converted source-screen no-status-shift", false);
+    `, polishedHeight, `converted source-screen no-status-shift${wideBgClass}`, false);
   }
   const heading = screen.heading ? figText(`screen-${screen.no}-heading`, screen.heading, 24, 72, 180, 26, "#26211c", 700) : "";
   const badge = screen.badge && screen.no !== 1 ? `

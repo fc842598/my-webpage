@@ -1268,33 +1268,43 @@ button {
 
 @media (min-width: 881px) {
   body {
-    background: #f4ecdf;
+    background: #fffaf2;
   }
 
   .app-shell {
     align-items: flex-start;
     padding: 24px 0;
+    background: linear-gradient(180deg, #fffaf2 0%, #fff8ee 42%, #f8f0e4 100%);
   }
 
   .app-main {
-    max-width: 434px;
+    max-width: none;
     min-height: auto;
-    padding: 20px;
-    border: 1px solid #e4d6c0;
-    border-radius: 24px;
-    background: #fff6ea;
-    box-shadow: 0 18px 54px rgba(76, 49, 22, 0.16);
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .view {
+    max-width: none;
+    overflow: visible;
   }
 
   .phone-wrap {
     max-width: 390px;
-    border-radius: 18px;
-    background: #fff6ea;
-    box-shadow: 0 0 0 1px #eadfce;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
   }
 
   .figma-phone {
-    border-radius: 18px;
+    border-radius: 0;
+  }
+
+  .figma-phone.wide-bg {
+    overflow: visible;
   }
 }
 
