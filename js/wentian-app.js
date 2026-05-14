@@ -2190,7 +2190,7 @@ const YANGZHAI_HEX_INDEX = {
   "离-坎": { no: "64", name: "火水未济", index: "二女/次女居正北", audit: "《地脉道》PDF已核", source: "倪海厦《地脉道》" }
 };
 
-const YANGZHAI_SOURCE_TITLE = "倪海厦《地脉道》阳宅六十四卦";
+const YANGZHAI_SOURCE_TITLE = "倪海厦《地脉道》";
 const YANGZHAI_HEX_READINGS = {
   1: { quote: "父居乾位", summary: "父亲归西北，重父位、主事与家中骨架。", advice: "若为本位，宜稳住父亲或主事人的独立空间。" },
   2: { quote: "地厚能载物", summary: "母亲归西南，重承载、家务与实际掌权。", advice: "已婚母亲或女主人可用，单身者不宜硬套吉凶。" },
@@ -2596,7 +2596,7 @@ function sourceYangzhaiResultScreen() {
     ${yangzhaiBg("yz44", height)}
     ${yangzhaiHeader("yz44")}
     ${figBox("yz44-status", 30, 92, 330, 36, "", "border:1px solid #ead7b8;border-radius:18px;background:rgba(255,247,232,.78);")}
-    ${figText("yz44-status-text", `${hexCount}卦 · ${spaceCount}规则`, 49, 102, 292, 12, "#8b6b36", 900, "center")}
+    ${figText("yz44-status-text", `${hexCount}条命中 · 64卦库 · ${spaceCount}规则`, 49, 102, 292, 12, "#8b6b36", 900, "center")}
     ${figBox("yz44-grid-shadow", 17, 138, 356, 474, "", "border-radius:24px;background:rgba(244,223,184,.20);box-shadow:0 20px 38px rgba(93,55,31,.12);")}
     ${figBox("yz44-grid-card", 21, 144, 348, 462, "", "border:1px solid #ddc9aa;border-radius:22px;background:#fffdf8;")}
     ${figBox("yz44-grid-surface", 28, 153, 334, 440, "", "border:1px solid #eadbc7;border-radius:15px;background:#fffaf1;overflow:hidden;")}
