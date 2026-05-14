@@ -2084,7 +2084,7 @@ const YANGZHAI_CELL_W = 126.667;
 const YANGZHAI_CELL_H = 184;
 const YANGZHAI_GRID_W = YANGZHAI_CELL_W * 3;
 const YANGZHAI_GRID_H = YANGZHAI_CELL_H * 3;
-const YANGZHAI_CELL_HEADER_H = 42;
+const YANGZHAI_CELL_HEADER_H = 54;
 const YANGZHAI_ACTION_Y = 686;
 const YANGZHAI_RESULT_TITLE_Y = 764;
 const YANGZHAI_RESULT_START_Y = 804;
@@ -2293,6 +2293,7 @@ function loadYangzhaiState() {
 }
 
 let yangzhaiState = loadYangzhaiState();
+let yangzhaiCompassHandler = null;
 
 function saveYangzhaiState() {
   try {
@@ -2400,18 +2401,79 @@ function toggleYangzhaiResult(index) {
 function openYangzhaiLuopanZoom() {
   const phone = view.querySelector(".figma-phone");
   if (!phone) return;
+  stopYangzhaiCompass();
   phone.querySelector("[data-yangzhai-luopan-zoom]")?.remove();
   phone.insertAdjacentHTML("beforeend", `
-    <div class="yangzhai-luopan-zoom" data-yangzhai-luopan-zoom>
+    <div class="yangzhai-luopan-zoom" data-yangzhai-luopan-zoom style="--yangzhai-heading:0deg;">
       <button class="yangzhai-luopan-zoom-bg" type="button" data-action="yangzhai-luopan-close" aria-label="关闭罗盘大图"></button>
       <img class="yangzhai-luopan-zoom-img" src="../images/wentian-prototype-assets/yangzhai-luopan.png" alt="罗盘大图">
+      <div class="yangzhai-luopan-bearing" aria-hidden="true"><span></span></div>
+      <button class="yangzhai-compass-start" type="button" data-action="yangzhai-compass-start">开启手机指南针</button>
+      <div class="yangzhai-compass-status" data-yangzhai-compass-status aria-live="polite">红箭头默认指北，开启后跟随手机方向</div>
       <button class="yangzhai-luopan-zoom-close" type="button" data-action="yangzhai-luopan-close" aria-label="关闭罗盘大图">×</button>
     </div>
   `);
 }
 
 function closeYangzhaiLuopanZoom() {
+  stopYangzhaiCompass();
   view.querySelector("[data-yangzhai-luopan-zoom]")?.remove();
+}
+
+function setYangzhaiCompassStatus(text, tone = "") {
+  const status = view.querySelector("[data-yangzhai-compass-status]");
+  if (!status) return;
+  status.textContent = text;
+  status.dataset.tone = tone;
+}
+
+function normalizeCompassHeading(value) {
+  if (!Number.isFinite(value)) return null;
+  return ((value % 360) + 360) % 360;
+}
+
+function handleYangzhaiCompassOrientation(event) {
+  const webkitHeading = typeof event.webkitCompassHeading === "number" ? event.webkitCompassHeading : NaN;
+  const alpha = typeof event.alpha === "number" ? event.alpha : NaN;
+  const heading = Number.isFinite(webkitHeading)
+    ? normalizeCompassHeading(webkitHeading)
+    : normalizeCompassHeading(360 - alpha);
+  if (heading === null) return;
+  const overlay = view.querySelector("[data-yangzhai-luopan-zoom]");
+  if (!overlay) return;
+  overlay.style.setProperty("--yangzhai-heading", `${heading}deg`);
+  setYangzhaiCompassStatus(`手机指南针已接入：${Math.round(heading)}°`, "active");
+}
+
+function stopYangzhaiCompass() {
+  if (!yangzhaiCompassHandler) return;
+  window.removeEventListener("deviceorientationabsolute", yangzhaiCompassHandler, true);
+  window.removeEventListener("deviceorientation", yangzhaiCompassHandler, true);
+  yangzhaiCompassHandler = null;
+}
+
+async function startYangzhaiCompass() {
+  if (typeof window === "undefined" || typeof window.DeviceOrientationEvent === "undefined") {
+    setYangzhaiCompassStatus("当前浏览器不支持手机指南针", "warn");
+    return;
+  }
+  try {
+    const orientationApi = window.DeviceOrientationEvent;
+    if (typeof orientationApi.requestPermission === "function") {
+      const permission = await orientationApi.requestPermission();
+      if (permission !== "granted") {
+        setYangzhaiCompassStatus("方向权限未开启，请允许后再试", "warn");
+        return;
+      }
+    }
+    stopYangzhaiCompass();
+    yangzhaiCompassHandler = handleYangzhaiCompassOrientation;
+    window.addEventListener("deviceorientationabsolute", yangzhaiCompassHandler, true);
+    window.addEventListener("deviceorientation", yangzhaiCompassHandler, true);
+    setYangzhaiCompassStatus("正在读取方向，轻轻转动手机校准", "active");
+  } catch (_) {
+    setYangzhaiCompassStatus("指南针启动失败，请用 HTTPS 手机浏览器打开", "warn");
+  }
 }
 
 function getYangzhaiHex(label, palace) {
@@ -2505,8 +2567,8 @@ function yangzhaiRoomAvatar(id, x, y, labels) {
   const items = normalizeYangzhaiItems(labels);
   if (!items.length) {
     return `
-      ${figBox(`${id}-plus`, x + 45, y + 70, 36, 36, "", "border:1px solid #d3d0c9;border-radius:18px;background:#fff;")}
-      ${figText(`${id}-plus-text`, "+", x + 45, y + 74, 36, 20, "#9b3d33", 900, "center", "line-height:1.1;")}
+      ${figBox(`${id}-plus`, x + 45, y + 82, 36, 36, "", "border:1px solid #d3d0c9;border-radius:18px;background:#fff;")}
+      ${figText(`${id}-plus-text`, "+", x + 45, y + 86, 36, 20, "#9b3d33", 900, "center", "line-height:1.1;")}
     `;
   }
   const label = items[0];
@@ -2517,14 +2579,14 @@ function yangzhaiRoomAvatar(id, x, y, labels) {
   const labelSize = displayLabel.length > 5 ? 13 : 16;
   return `
     ${avatarSrc
-      ? figImage(`${id}-avatar-img`, avatarSrc, x + 18, y + 62, 38, 38, "border-radius:19px;background:#f1f1ee;object-fit:cover;")
-      : `${figBox(`${id}-avatar`, x + 18, y + 62, 38, 38, "", "border:1px solid #d7d5cf;border-radius:19px;background:#f1f1ee;")}
-         ${figText(`${id}-avatar-text`, short, x + 18, y + 71, 38, 14, "#735122", 900, "center")}`}
-    ${items.length > 1 ? `${figBox(`${id}-count`, x + 47, y + 56, 28, 19, "", "border-radius:10px;background:#b75146;box-shadow:0 3px 6px rgba(128,47,42,.20);")}
-    ${figText(`${id}-count-text`, `+${items.length - 1}`, x + 47, y + 59, 28, 11, "#fff", 900, "center", "line-height:1.1;")}` : ""}
-    ${figText(`${id}-label`, displayLabel, x + 18, y + 106, 88, labelSize, "#111114", 500)}
-    ${figBox(`${id}-plus`, x + 77, y + 61, 38, 38, "", "border-radius:19px;background:#4a4a4a;box-shadow:0 8px 14px rgba(0,0,0,.10);")}
-    ${figText(`${id}-plus-text`, "+", x + 77, y + 66, 38, 23, "#fff", 900, "center", "line-height:1.1;")}
+      ? figImage(`${id}-avatar-img`, avatarSrc, x + 18, y + 72, 38, 38, "border-radius:19px;background:#f1f1ee;object-fit:cover;")
+      : `${figBox(`${id}-avatar`, x + 18, y + 72, 38, 38, "", "border:1px solid #d7d5cf;border-radius:19px;background:#f1f1ee;")}
+         ${figText(`${id}-avatar-text`, short, x + 18, y + 81, 38, 14, "#735122", 900, "center")}`}
+    ${items.length > 1 ? `${figBox(`${id}-count`, x + 47, y + 66, 28, 19, "", "border-radius:10px;background:#b75146;box-shadow:0 3px 6px rgba(128,47,42,.20);")}
+    ${figText(`${id}-count-text`, `+${items.length - 1}`, x + 47, y + 69, 28, 11, "#fff", 900, "center", "line-height:1.1;")}` : ""}
+    ${figText(`${id}-label`, displayLabel, x + 18, y + 116, 88, labelSize, "#111114", 500)}
+    ${figBox(`${id}-plus`, x + 77, y + 71, 38, 38, "", "border-radius:19px;background:#4a4a4a;box-shadow:0 8px 14px rgba(0,0,0,.10);")}
+    ${figText(`${id}-plus-text`, "+", x + 77, y + 76, 38, 23, "#fff", 900, "center", "line-height:1.1;")}
   `;
 }
 
@@ -2536,18 +2598,22 @@ function yangzhaiCompassGrid(id) {
     const y = YANGZHAI_GRID_Y + row * YANGZHAI_CELL_H;
     if (palace.key === "center") {
       return `
-        ${figText(`${id}-center-title`, "罗盘方位", x + 0, y + 50, YANGZHAI_CELL_W, 22, "#111114", 700, "center")}
-        ${figImage(`${id}-luopan`, "../images/wentian-prototype-assets/yangzhai-luopan.png", x + 4, y + 92, 115, 115, "object-fit:cover;border-radius:50%;background:#fff;")}
-        ${figButton(`${id}-luopan-hit`, x + 4, y + 50, YANGZHAI_CELL_W - 8, 158, 'data-action="yangzhai-luopan-open" aria-label="放大罗盘"', "", "cursor:zoom-in;")}
+        ${figBox(`${id}-center-clear`, x, y, YANGZHAI_CELL_W, YANGZHAI_CELL_H, "", "background:#fff;")}
+        ${figBox(`${id}-center-top`, x, y, YANGZHAI_CELL_W, 1, "", "background:#d9d9e1;")}
+        ${figBox(`${id}-center-bottom`, x, y + YANGZHAI_CELL_H - 1, YANGZHAI_CELL_W, 1, "", "background:#d9d9e1;")}
+        ${figBox(`${id}-center-left`, x, y, 1, YANGZHAI_CELL_H, "", "background:#d9d9e1;")}
+        ${figBox(`${id}-center-right`, x + YANGZHAI_CELL_W - 1, y, 1, YANGZHAI_CELL_H, "", "background:#d9d9e1;")}
+        ${figText(`${id}-center-title`, "罗盘方位", x + 0, y + 42, YANGZHAI_CELL_W, 22, "#111114", 700, "center")}
+        ${figImage(`${id}-luopan`, "../images/wentian-prototype-assets/yangzhai-luopan.png", x + 15, y + 82, 96, 96, "object-fit:cover;border-radius:50%;background:#fff;")}
+        ${figButton(`${id}-luopan-hit`, x + 0, y + 34, YANGZHAI_CELL_W, 146, 'data-action="yangzhai-luopan-open" aria-label="放大罗盘"', "", "cursor:zoom-in;")}
       `;
     }
     const items = getYangzhaiPlacementItems(palace.key);
     return `
       ${figBox(`${id}-cell-header-line-${index}`, x, y + YANGZHAI_CELL_HEADER_H, YANGZHAI_CELL_W, 1, "", "background:#dedee5;")}
-      ${figText(`${id}-gua-${index}`, palace.gua, x + 12, y + 9, 24, 25, "#815cf6", 900, "left", "line-height:1;")}
-      ${figText(`${id}-dir-${index}`, `(${palace.dir})`, x + 38, y + 13, 39, 14, "#111114", 500, "left", "white-space:nowrap;")}
-      ${figBox(`${id}-sep-${index}`, x + 80, y + 13, 1, 17, "", "background:#dcdce2;")}
-      ${figText(`${id}-role-${index}`, palace.role, x + 85, y + 13, 42, 14, "#111114", 500, "left", "white-space:nowrap;")}
+      ${figText(`${id}-gua-${index}`, palace.gua, x + 12, y + 8, 24, 25, "#815cf6", 900, "left", "line-height:1;")}
+      ${figText(`${id}-dir-${index}`, `(${palace.dir})`, x + 39, y + 12, 62, 14, "#111114", 500, "left", "white-space:nowrap;")}
+      ${figText(`${id}-role-${index}`, palace.role, x + 13, y + 34, 100, 13, "#111114", 500, "left", "white-space:nowrap;")}
       ${yangzhaiRoomAvatar(`${id}-room-${index}`, x, y, items)}
       ${figButton(`${id}-cell-hit-${index}`, x, y, YANGZHAI_CELL_W, YANGZHAI_CELL_H, `data-action="yangzhai-open" data-palace="${palace.key}"`)}
     `;
@@ -4145,6 +4211,10 @@ document.addEventListener("click", (event) => {
   }
   if (earlyAction === "yangzhai-luopan-close") {
     closeYangzhaiLuopanZoom();
+    return;
+  }
+  if (earlyAction === "yangzhai-compass-start") {
+    startYangzhaiCompass();
     return;
   }
   if (earlyAction === "yangzhai-pick") {
