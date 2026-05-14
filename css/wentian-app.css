@@ -1225,6 +1225,38 @@ button { cursor: pointer; }
   background: rgba(0, 0, 0, 0.3);
 }
 
+@media (min-width: 881px) {
+  body {
+    background: #f4ecdf;
+  }
+
+  .app-shell {
+    align-items: flex-start;
+    padding: 24px 0;
+  }
+
+  .app-main {
+    max-width: 434px;
+    min-height: auto;
+    padding: 20px;
+    border: 1px solid #e4d6c0;
+    border-radius: 24px;
+    background: #fff6ea;
+    box-shadow: 0 18px 54px rgba(76, 49, 22, 0.16);
+  }
+
+  .phone-wrap {
+    max-width: 390px;
+    border-radius: 18px;
+    background: #fff6ea;
+    box-shadow: 0 0 0 1px #eadfce;
+  }
+
+  .figma-phone {
+    border-radius: 18px;
+  }
+}
+
 @media (max-width: 880px) {
   .app-shell { display: flex; }
   .app-rail { display: none; }
