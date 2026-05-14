@@ -3481,19 +3481,45 @@ function renderWentianPolishedScreen(screen) {
   }
   if (no === 30) {
     return `
-      ${figBox("wt30-bg", 0, 0, 390, 844, "", "background:#f3f4f7;")}
-      ${figBox("wt30-browser", 20, 20, 218, 34, "", "border:2px solid #111;border-radius:8px;background:#fff;")}
-      ${figText("wt30-browser-text", "UniPay", 52, 29, 90, 13, "#222", 700)}
-      ${figText("wt30-icons", "○  ◰", 306, 26, 48, 16, "#111", 700, "center")}
-      ${figBox("wt30-card", 28, 314, 334, 172, "", "border-radius:4px;background:#fff;")}
-      ${figText("wt30-title", "订单信息", 52, 342, 110, 16, "#25211d", 800)}
-      ${figText("wt30-id", "订单号　PAY_20260512_cfa12a1e", 52, 390, 240, 12, "#7d7670")}
-      ${figText("wt30-price-label", "支付金额", 52, 428, 100, 13, "#7d7670")}
-      ${figText("wt30-price", "¥12.00", 226, 424, 90, 20, "#145bdc", 800, "right")}
-      ${figBox("wt30-pay", 52, 512, 286, 42, "", "border-radius:3px;background:#145bdc;")}
-      ${figButton("wt30-pay-hit", 52, 512, 286, 42, 'data-route="screen-31"')}
-      ${figText("wt30-pay-text", "确认支付 ¥12.00", 52, 524, 286, 13, "#fff", 800, "center")}
-      ${figText("wt30-safe", "由支付服务商安全处理支付信息", 0, 578, 390, 11, "#a09a94", 500, "center")}
+      ${figBox("wt30-bg", 0, 0, 390, 844, "", "background:linear-gradient(180deg,#fffdf8 0%,#fbf7ef 56%,#f3eadc 100%);")}
+      ${figButton("wt30-back-hit", 18, 38, 58, 50, 'data-route="screen-29"')}
+      ${figText("wt30-back", "‹", 26, 46, 28, 28, "#2b251f", 600, "center")}
+      ${figText("wt30-page-title", "确认订单", 0, 52, 390, 22, "#201812", 900, "center")}
+      ${figBox("wt30-status-pill", 286, 48, 74, 30, "", "border-radius:15px;background:#f4ead8;border:1px solid #eadbc2;")}
+      ${figText("wt30-status-text", "待支付", 286, 56, 74, 12, "#9a6f22", 800, "center")}
+
+      ${figBox("wt30-hero", 24, 108, 342, 128, "", "border-radius:20px;background:linear-gradient(135deg,#b54c3a 0%,#8e3429 100%);box-shadow:0 16px 34px rgba(131,56,39,.18);")}
+      ${figText("wt30-hero-label", "问天AI订单", 46, 132, 120, 13, "#f7e6cf", 700)}
+      ${figText("wt30-hero-title", "120 灵石充值", 46, 164, 180, 24, "#fffaf3", 900)}
+      ${figText("wt30-hero-sub", "到账后可用于报告解锁和AI问答", 46, 202, 230, 13, "#f2d8bd", 600)}
+      ${figText("wt30-hero-price", "¥12.00", 250, 154, 92, 26, "#fffaf3", 900, "right")}
+
+      ${figText("wt30-section-a", "订单记录", 24, 274, 120, 18, "#201812", 900)}
+      ${figBox("wt30-order-card", 24, 310, 342, 168, "", "border:1px solid #eadfce;border-radius:18px;background:#fffdf8;box-shadow:0 10px 24px rgba(70,45,25,.08);")}
+      ${figText("wt30-order-no-label", "订单号", 44, 334, 80, 13, "#8d8377", 600)}
+      ${figText("wt30-order-no", "PAY_20260512_cfa12a1e", 132, 334, 190, 13, "#2b251f", 800, "right")}
+      ${figLine("wt30-order-line-1", 44, 366, 302, "#efe4d3")}
+      ${figText("wt30-order-product-label", "商品", 44, 390, 80, 13, "#8d8377", 600)}
+      ${figText("wt30-order-product", "120 灵石", 234, 390, 88, 13, "#2b251f", 800, "right")}
+      ${figLine("wt30-order-line-2", 44, 422, 302, "#efe4d3")}
+      ${figText("wt30-order-time-label", "创建时间", 44, 446, 80, 13, "#8d8377", 600)}
+      ${figText("wt30-order-created", "2026-05-12 15:08", 182, 446, 140, 13, "#2b251f", 700, "right")}
+
+      ${figText("wt30-section-b", "支付方式", 24, 516, 120, 18, "#201812", 900)}
+      ${figBox("wt30-method", 24, 552, 342, 72, "", "border:1px solid #d9c8ac;border-radius:18px;background:#fff;box-shadow:0 8px 20px rgba(70,45,25,.06);")}
+      ${figBox("wt30-method-icon", 44, 570, 36, 36, "", "border-radius:12px;background:#f5ead5;")}
+      ${figText("wt30-method-icon-text", "¥", 44, 580, 36, 15, "#b2822e", 900, "center")}
+      ${figText("wt30-method-title", "UniPay 安全支付", 94, 570, 150, 15, "#201812", 900)}
+      ${figText("wt30-method-sub", "支持银行卡 / 钱包支付", 94, 596, 160, 12, "#8d8377", 600)}
+      ${figText("wt30-method-check", "✓", 326, 577, 22, 18, "#b2822e", 900, "center")}
+
+      ${figBox("wt30-summary", 24, 654, 342, 58, "", "border-radius:16px;background:#fff8e8;border:1px solid #eadbc2;")}
+      ${figText("wt30-summary-label", "应付金额", 44, 675, 90, 13, "#7e6f5f", 700)}
+      ${figText("wt30-summary-price", "¥12.00", 246, 669, 94, 22, "#a64032", 900, "right")}
+      ${figBox("wt30-pay", 42, 736, 306, 50, "", "border-radius:25px;background:linear-gradient(180deg,#b74e39,#983323);box-shadow:0 14px 28px rgba(158,61,43,.22);")}
+      ${figButton("wt30-pay-hit", 42, 736, 306, 50, 'data-route="screen-31"')}
+      ${figText("wt30-pay-text", "确认支付 ¥12.00", 42, 751, 306, 14, "#fffaf3", 900, "center")}
+      ${figText("wt30-safe", "支付信息由服务商加密处理", 0, 804, 390, 11, "#a49b91", 600, "center")}
     `;
   }
   if (no === 33) {
