@@ -2031,14 +2031,14 @@ const YANGZHAI_OPTIONS = [
 ];
 
 const YANGZHAI_DEFAULT_PLACEMENTS = {
-  xun: "长女",
-  li: "二女",
-  kun: "母亲",
-  zhen: "长子",
-  dui: "三女",
-  gen: "三子",
-  kan: "二子",
-  qian: "父亲"
+  xun: ["长女"],
+  li: ["二女"],
+  kun: ["母亲"],
+  zhen: ["长子"],
+  dui: ["三女"],
+  gen: ["三子"],
+  kan: ["二子"],
+  qian: ["父亲"]
 };
 const YANGZHAI_RESULT_START_Y = 690;
 const YANGZHAI_RESULT_COLLAPSED_HEIGHT = 142;
@@ -2152,17 +2152,17 @@ function loadYangzhaiState() {
     const parsed = raw ? JSON.parse(raw) : null;
     if (parsed && typeof parsed === "object") {
       return {
-        placements: { ...(parsed.placements || {}) },
+        placements: normalizeYangzhaiPlacements(parsed.placements),
         activePalace: parsed.activePalace || "xun",
-        pendingItem: parsed.pendingItem || "",
+        pendingItems: normalizeYangzhaiItems(parsed.pendingItems || parsed.pendingItem),
         expanded: parsed.expanded || {}
       };
     }
   } catch (_) {}
   return {
-    placements: { ...YANGZHAI_DEFAULT_PLACEMENTS },
+    placements: normalizeYangzhaiPlacements(YANGZHAI_DEFAULT_PLACEMENTS),
     activePalace: "xun",
-    pendingItem: "",
+    pendingItems: [],
     expanded: {}
   };
 }
@@ -2172,6 +2172,8 @@ let yangzhaiState = loadYangzhaiState();
 function saveYangzhaiState() {
   try {
     if (typeof localStorage !== "undefined") {
+      yangzhaiState.placements = normalizeYangzhaiPlacements(yangzhaiState.placements);
+      yangzhaiState.pendingItems = normalizeYangzhaiItems(yangzhaiState.pendingItems);
       localStorage.setItem(YANGZHAI_STORAGE_KEY, JSON.stringify(yangzhaiState));
     }
   } catch (_) {}
@@ -2185,44 +2187,74 @@ function getYangzhaiOption(label) {
   return YANGZHAI_OPTIONS.find((item) => item.label === label) || { label, short: label.slice(0, 1), type: "family" };
 }
 
+function normalizeYangzhaiItems(value) {
+  const rawItems = Array.isArray(value) ? value : (value ? [value] : []);
+  return [...new Set(rawItems.filter((item) => typeof item === "string" && item.trim()))];
+}
+
+function normalizeYangzhaiPlacements(placements = {}) {
+  return Object.entries(placements || {}).reduce((result, [key, value]) => {
+    const items = normalizeYangzhaiItems(value);
+    if (items.length) result[key] = items;
+    return result;
+  }, {});
+}
+
+function getYangzhaiPlacementItems(key) {
+  return normalizeYangzhaiItems(yangzhaiState.placements?.[key]);
+}
+
+function getYangzhaiPendingItems() {
+  return normalizeYangzhaiItems(yangzhaiState.pendingItems);
+}
+
 function openYangzhaiPicker(key) {
   const palace = getYangzhaiPalace(key);
   if (palace.key === "center") return;
   yangzhaiState.activePalace = palace.key;
-  yangzhaiState.pendingItem = yangzhaiState.placements[palace.key] || "";
+  yangzhaiState.pendingItems = getYangzhaiPlacementItems(palace.key);
   saveYangzhaiState();
   navigate("screen-43");
 }
 
 function pickYangzhaiOption(label) {
-  yangzhaiState.pendingItem = label;
+  const option = getYangzhaiOption(label);
+  const selected = getYangzhaiPendingItems();
+  if (option.type === "clear") {
+    yangzhaiState.pendingItems = [];
+  } else {
+    yangzhaiState.pendingItems = selected.includes(label)
+      ? selected.filter((item) => item !== label)
+      : [...selected, label];
+  }
   saveYangzhaiState();
   navigate("screen-43", false);
 }
 
 function confirmYangzhaiSelection() {
   const palace = getYangzhaiPalace(yangzhaiState.activePalace);
-  if (yangzhaiState.pendingItem === "清空" || !yangzhaiState.pendingItem) {
+  const selected = getYangzhaiPendingItems();
+  if (!selected.length) {
     delete yangzhaiState.placements[palace.key];
   } else {
-    yangzhaiState.placements[palace.key] = yangzhaiState.pendingItem;
+    yangzhaiState.placements[palace.key] = selected;
   }
-  yangzhaiState.pendingItem = "";
+  yangzhaiState.pendingItems = [];
   saveYangzhaiState();
   navigate("screen-42");
 }
 
 function resetYangzhai() {
   yangzhaiState.placements = {};
-  yangzhaiState.pendingItem = "";
+  yangzhaiState.pendingItems = [];
   yangzhaiState.expanded = {};
   saveYangzhaiState();
   navigate("screen-42", false);
 }
 
 function autoFillYangzhai() {
-  yangzhaiState.placements = { ...YANGZHAI_DEFAULT_PLACEMENTS };
-  yangzhaiState.pendingItem = "";
+  yangzhaiState.placements = normalizeYangzhaiPlacements(YANGZHAI_DEFAULT_PLACEMENTS);
+  yangzhaiState.pendingItems = [];
   yangzhaiState.expanded = {};
   saveYangzhaiState();
   navigate("screen-42", false);
@@ -2248,9 +2280,8 @@ function getYangzhaiHex(label, palace) {
 
 function buildYangzhaiResults() {
   return YANGZHAI_PALACES
-    .filter((palace) => palace.key !== "center" && yangzhaiState.placements[palace.key])
-    .map((palace) => {
-      const label = yangzhaiState.placements[palace.key];
+    .filter((palace) => palace.key !== "center")
+    .flatMap((palace) => getYangzhaiPlacementItems(palace.key).map((label) => {
       const option = getYangzhaiOption(label);
       const short = option.short;
       if (option.type === "space") {
@@ -2286,7 +2317,7 @@ function buildYangzhaiResults() {
         short,
         matched
       };
-    });
+    }));
 }
 
 function getYangzhaiResultHeight() {
@@ -2318,18 +2349,25 @@ function yangzhaiHeader(id, title = "地脉道", right = "教程") {
   `;
 }
 
-function yangzhaiRoomAvatar(id, x, y, label) {
-  if (!label) {
+function yangzhaiRoomAvatar(id, x, y, labels) {
+  const items = normalizeYangzhaiItems(labels);
+  if (!items.length) {
     return `
       ${figBox(`${id}-plus`, x + 39, y + 58, 36, 36, "", "border:1px solid #d9c8b4;border-radius:18px;background:#fffaf2;box-shadow:0 6px 14px rgba(90,58,30,.08);")}
       ${figText(`${id}-plus-text`, "+", x + 39, y + 59, 36, 22, "#9f3d2d", 800, "center")}
     `;
   }
-  const short = label.includes("厨房") ? "厨" : label.includes("厕所") ? "厕" : label.includes("客厅") ? "厅" : label.slice(0, 1);
+  const label = items[0];
+  const option = getYangzhaiOption(label);
+  const short = option.short || label.slice(0, 1);
+  const displayLabel = items.length > 1 ? `${label}+${items.length - 1}` : label;
+  const labelSize = displayLabel.length > 4 ? 11 : 13;
   return `
     ${figBox(`${id}-avatar`, x + 18, y + 58, 36, 36, "", "border:1px solid #ddc8aa;border-radius:18px;background:linear-gradient(180deg,#fff7e8,#f0e2cc);box-shadow:0 7px 14px rgba(83,52,24,.08);")}
     ${figText(`${id}-avatar-text`, short, x + 18, y + 66, 36, 13, "#7f5b2a", 900, "center")}
-    ${figText(`${id}-label`, label, x + 18, y + 98, 64, 13, "#201812", 800)}
+    ${items.length > 1 ? `${figBox(`${id}-count`, x + 48, y + 55, 23, 16, "", "border-radius:8px;background:#a94437;box-shadow:0 4px 9px rgba(169,68,55,.18);")}
+    ${figText(`${id}-count-text`, `+${items.length - 1}`, x + 48, y + 57, 23, 10, "#fffaf3", 900, "center")}` : ""}
+    ${figText(`${id}-label`, displayLabel, x + 18, y + 98, 74, labelSize, "#201812", 800)}
     ${figBox(`${id}-plus`, x + 75, y + 61, 30, 30, "", "border-radius:15px;background:#2b2620;box-shadow:0 6px 12px rgba(0,0,0,.16);")}
     ${figText(`${id}-plus-text`, "+", x + 75, y + 62, 30, 19, "#fff8ed", 800, "center")}
   `;
@@ -2348,14 +2386,14 @@ function yangzhaiCompassGrid(id) {
         ${figImage(`${id}-luopan`, "../images/wentian-prototype-assets/yangzhai-luopan.png", x + 17, y + 58, 80, 80, "object-fit:cover;border-radius:50%;box-shadow:0 7px 18px rgba(100,62,25,.12);background:#fff;")}
       `;
     }
-    const person = yangzhaiState.placements[palace.key] || "";
+    const items = getYangzhaiPlacementItems(palace.key);
     return `
-      ${figBox(`${id}-cell-${index}`, x, y, 114, 146, "", `border:1px solid #ddcdb7;background:${person ? "#fffdf8" : "#fffaf3"};`)}
+      ${figBox(`${id}-cell-${index}`, x, y, 114, 146, "", `border:1px solid #ddcdb7;background:${items.length ? "#fffdf8" : "#fffaf3"};`)}
       ${figBox(`${id}-cell-top-${index}`, x, y, 114, 40, "", "background:rgba(248,240,226,.72);border-bottom:1px solid #eadfce;")}
       ${figText(`${id}-gua-${index}`, palace.gua, x + 10, y + 11, 24, 18, "#a94437", 900)}
       ${figText(`${id}-dir-${index}`, `(${palace.dir})`, x + 32, y + 13, 42, 12, "#3a2d22", 700, "left", "white-space:nowrap;")}
       ${figText(`${id}-role-${index}`, palace.role, x + 74, y + 13, 40, 12, "#201812", 900, "left", "white-space:nowrap;")}
-      ${yangzhaiRoomAvatar(`${id}-room-${index}`, x, y, person)}
+      ${yangzhaiRoomAvatar(`${id}-room-${index}`, x, y, items)}
       ${figButton(`${id}-cell-hit-${index}`, x, y, 114, 146, `data-action="yangzhai-open" data-palace="${palace.key}"`)}
     `;
   }).join("");
@@ -2386,14 +2424,14 @@ function sourceYangzhaiCompassScreen() {
 
 function sourceYangzhaiSelectScreen() {
   const activePalace = getYangzhaiPalace(yangzhaiState.activePalace);
-  const selected = yangzhaiState.pendingItem || yangzhaiState.placements[activePalace.key] || "";
+  const selectedItems = getYangzhaiPendingItems();
   return `
     ${sourceYangzhaiCompassScreen()}
     ${figBox("yz43-overlay", 0, 0, 390, 844, "", "background:rgba(36,24,14,.52);")}
     ${figBox("yz43-sheet", 0, 334, 390, 510, "", "border-radius:24px 24px 0 0;background:#fffaf3;box-shadow:0 -18px 40px rgba(35,20,10,.22);")}
     ${figBox("yz43-handle", 160, 348, 70, 5, "", "border-radius:4px;background:#e2d4c0;")}
     ${figText("yz43-title", `${activePalace.gua}(${activePalace.dir}) - ${activePalace.role}`, 24, 374, 220, 20, "#201812", 900)}
-    ${figText("yz43-sub", "选择要安入此宫位的家人或空间", 24, 404, 220, 12, "#817568", 600)}
+    ${figText("yz43-sub", "可多选；再次点击取消，清空会移除本宫全部", 24, 404, 252, 12, "#817568", 600)}
     ${figButton("yz43-close-hit", 328, 368, 42, 42, 'data-route="screen-42"')}
     ${figText("yz43-close", "×", 330, 369, 42, 30, "#5f5a52", 500, "center")}
     ${figLine("yz43-midline", 195, 432, 312, "#eadfce")}
@@ -2403,7 +2441,7 @@ function sourceYangzhaiSelectScreen() {
       const row = Math.floor(index / 2);
       const x = col ? 214 : 44;
       const y = 446 + row * 49;
-      const isSelected = selected === label;
+      const isSelected = option.type === "clear" ? !selectedItems.length : selectedItems.includes(label);
       return `
         ${figBox(`yz43-option-bg-${index}`, x - 8, y - 5, 158, 42, "", `border:1px solid ${isSelected ? "#a94437" : "#eadfce"};border-radius:14px;background:${isSelected ? "#fff1e8" : "#fffdf8"};`)}
         ${figBox(`yz43-avatar-${index}`, x, y, 32, 32, "", `border-radius:16px;background:${option.type === "clear" ? "#fff1ea" : "#f2e8d7"};border:1px solid #e0d2bd;`)}
@@ -2416,7 +2454,7 @@ function sourceYangzhaiSelectScreen() {
     }).join("")}
     ${figBox("yz43-confirm", 44, 778, 302, 50, "", "border-radius:25px;background:linear-gradient(180deg,#b74e39,#983323);box-shadow:0 12px 24px rgba(158,61,43,.22);")}
     ${figButton("yz43-confirm-hit", 44, 778, 302, 50, 'data-action="yangzhai-confirm"')}
-    ${figText("yz43-confirm-text", "确认安位", 44, 792, 302, 16, "#fffaf3", 900, "center")}
+    ${figText("yz43-confirm-text", selectedItems.length ? `确认安位 (${selectedItems.length})` : "确认清空", 44, 792, 302, 16, "#fffaf3", 900, "center")}
   `;
 }
 
