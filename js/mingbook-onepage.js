@@ -1937,6 +1937,28 @@
     return section ? trimText(section.content || section.title, max) : '';
   }
 
+  function luckSectionText(sections, sentences, used, titleKeywords = [], textKeywords = [], fallback = '', max = 150) {
+    const titled = sections.find((item) => titleKeywords.some((keyword) => normalizeText(item.title).includes(keyword)));
+    if (titled) return trimText(titled.content || titled.title, max);
+    const found = sentences.find((sentence) => !used.has(sentence) && textKeywords.some((keyword) => sentence.includes(keyword)));
+    const picked = found || sentences.find((sentence) => !used.has(sentence)) || '';
+    if (picked) used.add(picked);
+    return trimText(picked || fallback, max);
+  }
+
+  function renderLuckSummaryParts(parts) {
+    return `
+      <div class="mbp-luck-summary">
+        ${parts.map((part) => `
+          <section>
+            <b>${escapeHtml(part.title)}</b>
+            <p>${highlightInsightText(part.text)}</p>
+          </section>
+        `).join('')}
+      </div>
+    `;
+  }
+
   function renderLuckChapterBlock(data, fallbackText) {
     const bundle = getChartBundle();
     const chart = bundle.chart || state.chart;
@@ -1955,9 +1977,11 @@
     const yearFocus = xiaoLianPalace?.name ? `${xiaoLianPalace.name} · ${palaceDomain(xiaoLianPalace.name)}` : domain;
     const sections = aiSections(data);
     const summary = insightSummary(data, fallbackText || `${palaceName}主${domain}，这十年先稳住根基，再看机会扩张。`, 170);
-    const opportunity = sectionTextByKeywords(sections, ['机会', '优势', '适合'], 46) || `${domain}有推进空间，先抓可落地的资源。`;
-    const risk = sectionTextByKeywords(sections, ['风险', '注意', '留意', '压力'], 46) || '避免急转方向，注意关系拉扯与现金流波动。';
-    const yearPoint = sectionTextByKeywords(sections, ['今年', '流年'], 46) || `${year} ${yearGz}，重点看${yearFocus}。`;
+    const summarySentences = splitReadableSentences(summary);
+    const usedSummarySentences = new Set();
+    const opportunity = luckSectionText(sections, summarySentences, usedSummarySentences, ['机会', '优势', '适合'], ['机会', '适合', '利于', '推进', '学习', '沟通', '合作'], `${domain}有推进空间，先抓可落地的资源。`);
+    const risk = luckSectionText(sections, summarySentences, usedSummarySentences, ['风险', '注意', '留意', '压力'], ['风险', '压力', '注意', '避免', '不宜', '消耗', '拉扯'], '避免急转方向，注意关系拉扯与现金流波动。');
+    const yearPoint = luckSectionText(sections, summarySentences, usedSummarySentences, ['今年', '今年重点'], ['今年', '流年', String(year), yearGz, '重点'], `${year} ${yearGz}，重点看${yearFocus}。`);
     const startYear = fcAgeToYear(decadeRange[0]);
     const endYear = fcAgeToYear(decadeRange[1]);
     const midAge = Math.round((decadeRange[0] + decadeRange[1]) / 2);
@@ -1984,12 +2008,11 @@
         <section><b>重点星曜</b><strong>${escapeHtml(stars)}</strong><p>看十年主轴与发力方式</p></section>
         <section><b>今年重点</b><strong>${escapeHtml(yearFocus)}</strong><p>${escapeHtml(`${year} ${yearGz}`)}</p></section>
       </div>
-      <div class="mbp-luck-cards">
-        <section><b>机会</b><p>${escapeHtml(opportunity)}</p></section>
-        <section><b>风险</b><p>${escapeHtml(risk)}</p></section>
-        <section><b>今年重点</b><p>${escapeHtml(yearPoint)}</p></section>
-      </div>
-      <p class="mbp-luck-summary">${escapeHtml(summary)}</p>
+      ${renderLuckSummaryParts([
+        { title: '机会', text: opportunity },
+        { title: '风险', text: risk },
+        { title: '今年重点', text: yearPoint },
+      ])}
       <div class="mbp-luck-bottom">
         <section>
           <h4>行动建议</h4>

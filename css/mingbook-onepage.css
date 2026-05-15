@@ -3859,7 +3859,7 @@ p.mbp-topic-detail {
 
 .mbp-luck-hero em,
 .mbp-luck-kv b,
-.mbp-luck-cards b {
+.mbp-luck-summary b {
   display: block;
   color: var(--gold);
   font-style: normal;
@@ -3893,7 +3893,7 @@ p.mbp-topic-detail {
 }
 
 .mbp-luck-kv,
-.mbp-luck-cards {
+.mbp-luck-summary {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 12px;
@@ -3901,7 +3901,7 @@ p.mbp-topic-detail {
 }
 
 .mbp-luck-kv section,
-.mbp-luck-cards section,
+.mbp-luck-summary section,
 .mbp-luck-bottom section {
   border: 1px solid rgba(241, 212, 125, .14);
   border-radius: 10px;
@@ -3920,32 +3920,36 @@ p.mbp-topic-detail {
 }
 
 .mbp-luck-kv p,
-.mbp-luck-cards p {
+.mbp-luck-summary p {
   margin: 0;
   color: #d4c096;
   font-size: 13px;
   line-height: 1.6;
 }
 
-.mbp-luck-cards section {
-  padding: 14px;
+.mbp-luck-summary section {
+  padding: 15px 16px;
+  border-left: 3px solid rgba(241, 212, 125, .6);
+  background: rgba(241, 212, 125, .045);
 }
 
-.mbp-luck-cards b {
-  margin-bottom: 7px;
+.mbp-luck-summary b {
+  margin-bottom: 8px;
   font-size: 17px;
 }
 
-.mbp-luck-summary {
-  margin: 14px 0 0;
-  padding: 16px 18px;
-  border-left: 3px solid rgba(241, 212, 125, .6);
-  border-radius: 0 10px 10px 0;
-  background: rgba(241, 212, 125, .045);
+.mbp-luck-summary p {
   color: #e7d8ad;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 800;
-  line-height: 1.75;
+  line-height: 1.72;
+}
+
+.mbp-luck-summary mark {
+  padding: 0 3px;
+  border-radius: 4px;
+  background: rgba(241, 212, 125, .18);
+  color: #fff0b8;
 }
 
 .mbp-luck-bottom {
@@ -4730,7 +4734,7 @@ p.mbp-topic-detail {
   .mbp-curve-summary,
   .mbp-luck-hero,
   .mbp-luck-kv,
-  .mbp-luck-cards,
+  .mbp-luck-summary,
   .mbp-luck-bottom,
   .mbp-luck-timing,
   .mbp-curve-cards {
