@@ -1591,6 +1591,11 @@
     return cleanAiInlineText(normalizeAiData(data)?.card?.title) || fallback;
   }
 
+  function isTechnicalAiTitle(title) {
+    const value = cleanAiInlineText(title);
+    return !value || /^[a-z_]+$/i.test(value) || aiTasks.some((task) => task.module === value);
+  }
+
   function normalizeText(text) {
     return String(text || '').replace(/\s+/g, ' ').trim();
   }
@@ -1645,6 +1650,103 @@
       })
       .filter(Boolean)
       .slice(0, limit);
+  }
+
+  function splitReadableSentences(text) {
+    return cleanAiText(text)
+      .replace(/\n+/g, ' ')
+      .match(/[^。！？；.!?;]+[。！？；.!?;]?/g)
+      ?.map((item) => item.trim())
+      .filter(Boolean) || [];
+  }
+
+  function pickSentence(sentences, keywords, fallbackIndex = 0) {
+    return sentences.find((sentence) => keywords.some((keyword) => sentence.includes(keyword)))
+      || sentences[fallbackIndex]
+      || sentences[0]
+      || '';
+  }
+
+  function highlightInsightText(text) {
+    return escapeHtml(text).replace(
+      /(关键|重点|风险|压力|机会|建议|提醒|注意|不宜|适合|容易|43岁至52岁|33至42岁|53至62岁|43-52岁|33-42岁|53-62岁)/g,
+      '<mark>$1</mark>'
+    );
+  }
+
+  function specialTopicParts(section) {
+    const content = cleanAiText(section?.content || section?.body || '');
+    const sentences = splitReadableSentences(content);
+    const lead = trimText(sentences[0] || content, 90);
+    const focus = trimText(
+      pickSentence(sentences.slice(1), ['关键', '重点', '代表', '方向', '当前', '大限', '机会', '格局'], 0),
+      88
+    );
+    const warning = trimText(
+      pickSentence([...sentences].reverse(), ['风险', '压力', '注意', '避免', '不要', '容易', '不宜', '提醒', '调理'], 0),
+      88
+    );
+    const detail = trimText(
+      sentences.filter((item) => item !== sentences[0] && item !== focus && item !== warning).slice(0, 2).join(''),
+      128
+    );
+    return {
+      title: cleanAiInlineText(section?.title) || '专题批命',
+      lead: lead || '等待专题结论生成。',
+      focus: focus || lead || '先看主线，再看细节。',
+      warning: warning || '稳住节奏，避免被单一事件牵动。',
+      detail,
+    };
+  }
+
+  function renderSpecialTopicSegments(section) {
+    const part = specialTopicParts(section);
+    return `
+      <div class="mbp-topic-segments">
+        <p class="mbp-topic-lead"><b>结论</b><span>${highlightInsightText(part.lead)}</span></p>
+        <div class="mbp-topic-split">
+          <section>
+            <strong>重点</strong>
+            <p>${highlightInsightText(part.focus)}</p>
+          </section>
+          <section>
+            <strong>提醒</strong>
+            <p>${highlightInsightText(part.warning)}</p>
+          </section>
+        </div>
+        ${part.detail ? `<p class="mbp-topic-detail">${highlightInsightText(part.detail)}</p>` : ''}
+      </div>
+    `;
+  }
+
+  function renderSpecialChapterBlock(sections, fallbackText) {
+    const topics = (sections || [])
+      .map((section) => ({ title: section.title, content: cleanAiText(section.content || '') }))
+      .filter((section) => section.content);
+    const list = topics.length ? topics : [{ title: '专题批命', content: fallbackText || '五项专题等待原站 AI 返回。' }];
+    const points = list.slice(0, 3).map((section) => specialTopicParts(section).lead);
+    return `
+      <div class="mbp-special-chapter">
+        <div class="mbp-special-overview">
+          <span>专题总览</span>
+          <strong>先看结论，再看重点和提醒</strong>
+          <ul>
+            ${points.map((point) => `<li>${highlightInsightText(point)}</li>`).join('')}
+          </ul>
+        </div>
+        <div class="mbp-special-topic-grid">
+          ${list.map((section) => `
+            <section class="mbp-special-topic-card">
+              <header>
+                <span>专题</span>
+                <h4>${escapeHtml(section.title || '专题批命')}</h4>
+              </header>
+              ${renderSpecialTopicSegments(section)}
+            </section>
+          `).join('')}
+        </div>
+      </div>
+    `;
   }
 
   function renderInsightBlock(data, fallbackTitle, fallbackText, options = {}) {
@@ -1894,10 +1996,9 @@
     }
     if (title) title.textContent = fallbackTitle;
     if (body) {
-      body.innerHTML = renderInsightBlock(normalized, fallbackTitle, '原站 AI 暂未返回内容，请稍后重试。', {
-        summaryMax: 96,
-        bulletLimit: 2,
-        direct: true,
+      body.innerHTML = renderSpecialTopicSegments({
+        title: fallbackTitle,
+        content: aiCardText(normalized) || insightSummary(normalized, '原站 AI 暂未返回内容，请稍后重试。', 180),
       });
     }
   }
@@ -2205,7 +2306,7 @@
       const generatedTitle = aiCardTitle(data, '');
       const fullText = aiCardText(data);
       const summary = fullText || insightSummary(data, `${title}等待原站 AI 返回。`, 180);
-      const content = generatedTitle && generatedTitle !== title && summary && !summary.startsWith(generatedTitle)
+      const content = generatedTitle && generatedTitle !== title && !isTechnicalAiTitle(generatedTitle) && summary && !summary.startsWith(generatedTitle)
         ? `${generatedTitle}：${summary}`
         : summary;
       return `
@@ -2377,7 +2478,7 @@
         const summary = fullText || insightSummary(data, '', 180);
         return {
           title,
-          content: generatedTitle && generatedTitle !== title && summary && !summary.startsWith(generatedTitle)
+          content: generatedTitle && generatedTitle !== title && !isTechnicalAiTitle(generatedTitle) && summary && !summary.startsWith(generatedTitle)
             ? `${generatedTitle}：${summary}`
             : summary,
         };
@@ -2419,7 +2520,7 @@
             ${chapterActionButton(index)}
           </div>
             <div class="mbp-report-content">
-              ${type === 'luck' ? renderLuckChapterBlock(data, item[1]) : type === 'curve' ? renderCurveChapterBlock() : renderInsightBlock(data, item[0], item[1], {
+              ${type === 'specials' ? renderSpecialChapterBlock(item[2], item[1]) : type === 'luck' ? renderLuckChapterBlock(data, item[1]) : type === 'curve' ? renderCurveChapterBlock() : renderInsightBlock(data, item[0], item[1], {
                 summaryMax: 128,
                 bulletLimit: 0,
                 direct: true,
