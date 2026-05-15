@@ -2443,7 +2443,8 @@ p.mbp-topic-detail {
 }
 
 .mbp-topic-segments mark,
-.mbp-special-overview mark {
+.mbp-special-overview mark,
+.mbp-advice-chapter mark {
   padding: 0 3px;
   border-radius: 4px;
   background: rgba(241, 212, 125, .18);
@@ -2542,15 +2543,117 @@ p.mbp-topic-detail {
   grid-template-columns: 1fr;
 }
 
+.mbp-advice-chapter {
+  display: grid;
+  gap: 16px;
+}
+
+.mbp-advice-risk {
+  display: grid;
+  gap: 10px;
+  padding: 16px 18px;
+  border: 1px solid rgba(241, 212, 125, .18);
+  border-radius: 12px;
+  background:
+    radial-gradient(circle at 8% 0%, rgba(185, 111, 66, .16), transparent 34%),
+    rgba(241, 212, 125, .04);
+}
+
+.mbp-advice-risk span {
+  color: var(--gold);
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.mbp-advice-risk strong {
+  color: var(--ivory);
+  font-size: 18px;
+}
+
+.mbp-advice-risk ul {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.mbp-advice-risk li {
+  display: grid;
+  grid-template-columns: 58px minmax(0, 1fr);
+  gap: 10px;
+  align-items: start;
+  color: #d4c096;
+  line-height: 1.7;
+}
+
+.mbp-advice-risk li b {
+  display: inline-grid;
+  place-items: center;
+  min-height: 26px;
+  padding: 0 10px;
+  border: 1px solid rgba(241, 212, 125, .18);
+  border-radius: 999px;
+  color: var(--gold);
+  font-size: 12px;
+}
+
+.mbp-advice-risk li span {
+  color: #d4c096;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.mbp-advice-steps {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.mbp-advice-steps section {
+  min-width: 0;
+  padding: 15px 16px;
+  border: 1px solid rgba(241, 212, 125, .14);
+  border-radius: 12px;
+  background: rgba(241, 212, 125, .035);
+}
+
+.mbp-advice-steps h4 {
+  margin: 0 0 8px;
+  color: #fff4d6;
+  font-size: 16px;
+}
+
+.mbp-advice-steps p,
+.mbp-advice-note {
+  margin: 0;
+  color: #d4c096;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.8;
+}
+
+.mbp-advice-note {
+  padding: 12px 14px;
+  border-left: 3px solid rgba(241, 212, 125, .48);
+  border-radius: 0 9px 9px 0;
+  background: rgba(241, 212, 125, .045);
+}
+
 @media (max-width: 760px) {
   p.mbp-topic-lead,
   .mbp-topic-split,
-  .mbp-special-topic-grid {
+  .mbp-special-topic-grid,
+  .mbp-advice-steps {
     grid-template-columns: 1fr;
   }
 
   .mbp-topic-lead b {
     width: max-content;
+  }
+
+  .mbp-advice-risk li {
+    grid-template-columns: 1fr;
   }
 }
 

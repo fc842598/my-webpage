@@ -1843,6 +1843,95 @@
     `;
   }
 
+  function adviceRiskSentences(text) {
+    const riskWords = [
+      '风险', '压力', '注意', '提醒', '容易', '不宜', '避免', '波折', '变动', '分离',
+      '冷战', '疾病', '疾厄', '心血管', '血压', '心律', '财务', '现金流', '合同',
+      '口舌', '是非', '官司', '婚姻', '健康', '消耗', '破', '忌', '凶', '不稳',
+    ];
+    return splitReadableSentences(text)
+      .filter((sentence) => sentence.length >= 12 && riskWords.some((word) => sentence.includes(word)))
+      .map((sentence) => trimText(sentence, 110));
+  }
+
+  function actionAdviceData(overall, luck) {
+    const modules = [
+      ['命格', overall],
+      ['大运', luck],
+      ['身宫', state.aiResults.shengong],
+      ['婚姻', state.aiResults.hunyin],
+      ['健康', state.aiResults.jiankang],
+      ['财运', state.aiResults.caiyun],
+      ['事业', state.aiResults.shiye],
+    ];
+    const overallCard = normalizeAiData(overall)?.card || {};
+    const sources = modules
+      .map(([label, data]) => ({ label, text: aiCardText(data) }))
+      .filter((item) => item.text);
+    if (overallCard.risk) sources.unshift({ label: '总览', text: cleanAiText(overallCard.risk) });
+    const seen = new Set();
+    const pushRisk = (label, text) => {
+      const value = trimText(cleanAiText(text), 110);
+      const key = normalizeText(value).slice(0, 54);
+      if (!key || seen.has(key)) return;
+      seen.add(key);
+      risks.push({ label, text: value });
+    };
+    if (overallCard.risk) pushRisk('总览', overallCard.risk);
+    const risks = [];
+    sources.forEach((source) => {
+      adviceRiskSentences(source.text).slice(0, 2).forEach((text) => {
+        pushRisk(source.label, text);
+      });
+    });
+    const fallbackRisk = '命盘里出现的压力、变动与破耗，都先合在一起看；不要只盯单点吉凶，要看哪里最容易牵动情绪、关系、健康和财务。';
+    const summary = risks.length ? risks : [{ label: '总括', text: fallbackRisk }];
+    return {
+      risks: summary.slice(0, 8),
+      steps: [
+        {
+          title: '第一，先改心态',
+          text: '命盘看见风险，不是让人害怕，是提醒先把念头收正。心一正，选择就不偏；一念正，就是走正道。',
+        },
+        {
+          title: '第二，再借居住方位扶正一念',
+          text: '笔记里讲“运操之在自己手中”，居住环境也会牵动人的念头。可以用居住方位、常坐常睡的位置、房间功能，帮助自己把心念从偏处拉回正处。',
+        },
+        {
+          title: '第三，方位上避凶取稳',
+          text: '厨房、厕所这类口舌、是非、刀火之象，尽量不要压在常住的位置；客厅取稳定、承载的位置更好。阳宅调整不是迷信动作，是让环境天天提醒自己走正念、做正事。',
+        },
+      ],
+      note: '方位是外缘，心念是根本；外在位置调顺，是为了让里面那一念更容易正。',
+    };
+  }
+
+  function renderActionAdviceBlock(overall, luck) {
+    const advice = actionAdviceData(overall, luck);
+    return `
+      <div class="mbp-advice-chapter">
+        <section class="mbp-advice-risk">
+          <span>风险总括</span>
+          <strong>先把上面提到的风险收成一张清单</strong>
+          <ul>
+            ${advice.risks.map((item) => `
+              <li><b>${escapeHtml(item.label)}</b><span>${highlightInsightText(item.text)}</span></li>
+            `).join('')}
+          </ul>
+        </section>
+        <div class="mbp-advice-steps">
+          ${advice.steps.map((step) => `
+            <section>
+              <h4>${escapeHtml(step.title)}</h4>
+              <p>${highlightInsightText(step.text)}</p>
+            </section>
+          `).join('')}
+        </div>
+        <p class="mbp-advice-note">${highlightInsightText(advice.note)}</p>
+      </div>
+    `;
+  }
+
   function renderCurveChapterBlock() {
     return `
       <div class="mbp-curve-summary">
@@ -2438,7 +2527,6 @@
     const luck = normalizeAiData(state.aiResults.current_luck);
     const overallText = aiCardText(overall);
     const luckText = aiCardText(luck);
-    const overallCard = normalizeAiData(overall)?.card || {};
     const specialModules = [
       ['shengong', '身宫批命'],
       ['hunyin', '婚姻批命'],
@@ -2461,9 +2549,23 @@
         </section>
       `;
     }).join('');
-    const actionText = overallCard.risk
-      ? `要留意：${cleanAiText(overallCard.risk)}`
-      : (overallText ? trimText(overallText, 220) : '先看命盘底色，再看大运节奏；重要决策不只问准不准，还要知道何时动、如何动。');
+    const advice = actionAdviceData(overall, luck);
+    const adviceHtml = `
+      <section class="mbp-pdf-text-card">
+        <strong>风险总括</strong>
+        <p>${escapeHtml(advice.risks.map((item) => `${item.label}：${item.text}`).join('\n'))}</p>
+      </section>
+      ${advice.steps.map((step) => `
+        <section class="mbp-pdf-text-card">
+          <strong>${escapeHtml(step.title)}</strong>
+          <p>${escapeHtml(step.text)}</p>
+        </section>
+      `).join('')}
+      <section class="mbp-pdf-text-card">
+        <strong>收束</strong>
+        <p>${escapeHtml(advice.note)}</p>
+      </section>
+    `;
     return [
       buildPdfChapter(1, aiCardTitle(overall, '命格总览'), buildPdfTextCards(overall, '命格总览', overallText || '整体批命等待原站 AI 返回。')),
       buildPdfChapter(2, '专题批命', specialHtml),
@@ -2474,12 +2576,7 @@
           <p>人生曲线用于看关键年份、高低点与转折节奏。后续接入原站曲线评分后，这里会自动替换为客户版曲线结论。</p>
         </section>
       `),
-      buildPdfChapter(5, '行动建议', `
-        <section class="mbp-pdf-text-card">
-          <strong>建议</strong>
-          <p>${escapeHtml(actionText)}</p>
-        </section>
-      `),
+      buildPdfChapter(5, '行动建议', adviceHtml),
     ].join('');
   }
 
@@ -2665,7 +2762,7 @@
             ${chapterActionButton(index)}
           </div>
             <div class="mbp-report-content">
-              ${type === 'specials' ? renderSpecialChapterBlock(item[2], item[1]) : type === 'luck' ? renderLuckChapterBlock(data, item[1]) : type === 'curve' ? renderCurveChapterBlock() : renderInsightBlock(data, item[0], item[1], {
+              ${type === 'specials' ? renderSpecialChapterBlock(item[2], item[1]) : type === 'luck' ? renderLuckChapterBlock(data, item[1]) : type === 'curve' ? renderCurveChapterBlock() : type === 'advice' ? renderActionAdviceBlock(overall, luck) : renderInsightBlock(data, item[0], item[1], {
                 summaryMax: 128,
                 bulletLimit: 0,
                 direct: true,
