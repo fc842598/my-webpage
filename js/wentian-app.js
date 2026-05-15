@@ -646,15 +646,15 @@ function sourceArchiveScreen(screen) {
     ${figText("source-3-subtitle", "许半仙已准备好为您解读", 18, 101, 220, 13, "#7f756b")}
     ${figText("source-3-current-title", "当前档案", 18, 136, 120, 15, "#26211c", 800)}
     ${figText("source-3-change", "更换档案 〉", 284, 138, 88, 12, "#9b742e", 500, "right")}
-    ${figBox("source-3-profile", 16, 164, 358, 84, "converted-card", "border-radius:12px;box-shadow:0 6px 18px rgba(90,62,34,.09);")}
-    ${figImage("source-3-profile-avatar", "../images/wentian-prototype-assets/03-profile.jpg", 38, 182, 48, 48, "border-radius:24px;border:1px solid #e4d2a7;")}
-    ${figText("source-3-profile-name", escapeHtml(active.name), 102, 189, 62, 16, "#26211c", 800)}
-    ${figBox("source-3-gender", 128, 186, 30, 18, "", "border-radius:9px;background:#f7ecd5;")}
-    ${figText("source-3-gender-text", active.gender, 128, 190, 30, 10, "#b07a2d", 700, "center")}
-    ${figBox("source-3-profile-tag", 164, 186, 62, 18, "", "border-radius:9px;background:#f7ecd5;")}
-    ${figText("source-3-profile-tag-text", "紫微命盘", 164, 190, 62, 10, "#c3a371", 500, "center")}
-    ${figText("source-3-profile-date", escapeHtml(active.datetime), 102, 215, 170, 12, "#8d8175")}
-    ${figText("source-3-profile-switch", "⇅", 334, 199, 22, 22, "#b5ad9d", 500, "center")}
+    ${figBox("source-3-profile", 16, 164, 358, 104, "converted-card", "border-radius:12px;box-shadow:0 6px 18px rgba(90,62,34,.09);")}
+    ${figImage("source-3-profile-avatar", "../images/wentian-prototype-assets/03-profile.jpg", 38, 192, 48, 48, "border-radius:24px;border:1px solid #e4d2a7;")}
+    ${figText("source-3-profile-name", escapeHtml(active.name), 102, 184, 188, 18, "#26211c", 800)}
+    ${figBox("source-3-gender", 102, 211, 30, 18, "", "border-radius:9px;background:#f7ecd5;")}
+    ${figText("source-3-gender-text", active.gender, 102, 215, 30, 10, "#b07a2d", 700, "center")}
+    ${figBox("source-3-profile-tag", 140, 211, 72, 18, "", "border-radius:9px;background:#f7ecd5;")}
+    ${figText("source-3-profile-tag-text", "紫微命盘", 140, 215, 72, 10, "#c3a371", 500, "center")}
+    ${figText("source-3-profile-date", escapeHtml(active.datetime), 102, 238, 170, 12, "#8d8175")}
+    ${figText("source-3-profile-switch", "⇅", 334, 205, 22, 22, "#b5ad9d", 500, "center")}
     ${figText("source-3-master-title", "命理师", 18, 276, 160, 15, "#26211c", 800)}
     ${masters.map(([name, tag1, tag2, tag3, desc, y], index) => `
       ${figBox(`source-3-master-${index}`, 16, y, 358, 116, "converted-card", "border-radius:17px;background:linear-gradient(110deg,#fff,#f8f4ea);box-shadow:0 7px 20px rgba(92,64,32,.11);")}
