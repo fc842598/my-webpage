@@ -3574,26 +3574,6 @@ p.mbp-topic-detail {
   box-shadow: 0 10px 24px rgba(0, 0, 0, .22);
 }
 
-.mbp-yijing-meta {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 8px;
-}
-
-.mbp-yijing-meta span {
-  min-height: 40px;
-  display: grid;
-  align-items: center;
-  padding: 8px 10px;
-  border: 1px solid rgba(241, 212, 125, .14);
-  border-radius: 8px;
-  background: rgba(241, 212, 125, .045);
-  color: #d8c89d;
-  font-size: 12px;
-  font-weight: 800;
-  line-height: 1.45;
-}
-
 .mbp-yijing-years {
   display: flex;
   gap: 8px;
@@ -3700,21 +3680,6 @@ p.mbp-topic-detail {
   line-height: 1.72;
   white-space: pre-line;
   scrollbar-width: thin;
-}
-
-.mbp-yijing-focus {
-  justify-self: end;
-  min-width: 128px;
-  min-height: 38px;
-  padding: 0 16px;
-  border: 1px solid rgba(241, 212, 125, .28);
-  border-radius: 999px;
-  background: rgba(241, 212, 125, .08);
-  color: var(--gold);
-  font: inherit;
-  font-size: 13px;
-  font-weight: 900;
-  cursor: pointer;
 }
 
 .mbp-yijing-art {
@@ -4630,14 +4595,6 @@ p.mbp-topic-detail {
     grid-template-columns: 1fr;
     gap: 18px;
     padding: 20px;
-  }
-
-  .mbp-yijing-meta {
-    grid-template-columns: 1fr;
-  }
-
-  .mbp-yijing-focus {
-    justify-self: stretch;
   }
 
   .mbp-yijing-master-text {

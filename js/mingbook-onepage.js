@@ -1307,7 +1307,6 @@
     const name = $('#mbpYijingName');
     const summary = $('#mbpYijingSummary');
     const lines = $('#mbpYijingLines');
-    const meta = $('#mbpYijingMeta');
     const years = $('#mbpYijingYears');
     const guaci = $('#mbpYijingGuaci');
     const masterTitle = $('#mbpYijingMasterTitle');
@@ -1319,20 +1318,6 @@
     if (summary) summary.textContent = yijingAssistSummary(result);
     if (lines) lines.innerHTML = yijingLineHtml(result);
     renderYijingArt(result);
-
-    if (meta) {
-      const pillars = fcBirthPillars
-        ? `${pillarText(fcBirthPillars.yearStem, fcBirthPillars.yearBranch)} · ${pillarText(fcBirthPillars.monthStem, fcBirthPillars.monthBranch)} · ${pillarText(fcBirthPillars.dayStem, fcBirthPillars.dayBranch)} · ${pillarText(fcBirthPillars.hourStem, fcBirthPillars.hourBranch)}`
-        : '四柱待定';
-      const flow = fcActiveTab === '流年卦'
-        ? `${fcAgeToYear(fcActiveAge)}年 · 虚岁${fcActiveAge}`
-        : '本命辅助';
-      meta.innerHTML = [
-        `${fcActiveTab} · ${result?.num ? `#${result.num}` : '未成卦'}`,
-        pillars,
-        flow,
-      ].map((item) => `<span>${escapeHtml(item)}</span>`).join('');
-    }
 
     if (years) {
       const showYears = fcActiveTab === '流年卦' && fcYearCards.length;
@@ -3132,9 +3117,6 @@
         fcRenderTabs();
         fcSelectYear(ageButton.dataset.yijingAge);
         return;
-      }
-      if (event.target.closest('[data-yijing-focus]')) {
-        $('#mbpFcCard')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }
     });
 
