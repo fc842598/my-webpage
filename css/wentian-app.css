@@ -2193,6 +2193,117 @@ button {
   text-decoration: none;
 }
 
+.wentian-chart-ai-panel {
+  position: absolute;
+  left: 15px;
+  top: 608px;
+  width: 360px;
+  padding: 20px 16px 18px;
+  border: 1px solid #e0dcd3;
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 8px 22px rgba(70, 45, 25, 0.08);
+}
+
+.wentian-chart-ai-head h2 {
+  margin: 0;
+  color: #201813;
+  font-size: 22px;
+  font-weight: 900;
+  line-height: 1.2;
+}
+
+.wentian-chart-ai-head p {
+  margin: 10px 0 0;
+  color: #817568;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+.wentian-chart-ai-head p.is-error {
+  color: #a64032;
+}
+
+.wentian-chart-ai-actions {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 106px;
+  gap: 10px;
+  margin: 18px 0 14px;
+}
+
+.wentian-chart-ai-actions button {
+  height: 44px;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 900;
+}
+
+.wentian-chart-ai-primary {
+  border: 0;
+  background: #ad3b35;
+  color: #fff;
+}
+
+.wentian-chart-ai-primary:disabled {
+  background: #c7b69e;
+}
+
+.wentian-chart-ai-secondary {
+  border: 1px solid #e2d5c2;
+  background: #fffaf3;
+  color: #8f3d30;
+}
+
+.wentian-chart-ai-list {
+  border-top: 1px solid #eee4d6;
+}
+
+.wentian-chart-ai-chapter {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr);
+  gap: 10px;
+  padding: 14px 0;
+  border-bottom: 1px solid #eee4d6;
+}
+
+.wentian-chart-ai-chapter:last-child {
+  border-bottom: 0;
+  padding-bottom: 2px;
+}
+
+.wentian-chart-ai-chapter > strong {
+  color: #b88c33;
+  font-size: 15px;
+  font-weight: 900;
+  line-height: 1.4;
+}
+
+.wentian-chart-ai-chapter h3 {
+  margin: 0 0 7px;
+  color: #251d18;
+  font-size: 16px;
+  font-weight: 900;
+  line-height: 1.25;
+}
+
+.wentian-chart-ai-chapter p {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+  margin: 0;
+  color: #5f564d;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.55;
+}
+
+.wentian-chart-ai-chapter.is-empty p {
+  color: #9a9085;
+  font-weight: 600;
+}
+
 @media (min-width: 881px) {
   body {
     background: #fffaf2;

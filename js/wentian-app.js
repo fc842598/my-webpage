@@ -892,7 +892,7 @@ const WENTIAN_LANGUAGE_STORAGE_KEY = "wentian-app-language-v1";
 const WENTIAN_PROFILE_STORAGE_KEY = "wentian-app-profile-v1";
 const WENTIAN_MEMBER_PRODUCT_KEY = "monthly_member";
 const WENTIAN_PAYMENT_POLL_MS = 3500;
-const WENTIAN_CHART_AI_STORAGE_KEY = "wentian-app-chart-ai-v1";
+const WENTIAN_CHART_AI_STORAGE_KEY = "wentian-app-chart-ai-v2";
 const WENTIAN_CHART_AI_TASKS = [
   { module: "overall", label: "命格总览" },
   { module: "current_luck", label: "大限流年" },
@@ -901,6 +901,13 @@ const WENTIAN_CHART_AI_TASKS = [
   { module: "jiankang", label: "健康批命" },
   { module: "caiyun", label: "财运批命" },
   { module: "shiye", label: "事业批命" },
+];
+const WENTIAN_CHART_AI_CHAPTERS = [
+  { vol: "卷一", title: "命格总览", modules: ["overall"], placeholder: "等待 AI 批命生成命盘主线、格局底色与关键提醒。" },
+  { vol: "卷二", title: "专题批命", modules: ["shengong", "hunyin", "jiankang"], placeholder: "等待生成身宫、婚姻、健康等专题摘要。" },
+  { vol: "卷三", title: "大限流年", modules: ["current_luck"], placeholder: "等待生成当前大限、流年节奏与时间窗口。" },
+  { vol: "卷四", title: "财运事业", modules: ["caiyun", "shiye"], placeholder: "等待生成财运结构、事业路径与取舍建议。" },
+  { vol: "卷五", title: "行动建议", modules: ["overall"], placeholder: "等待生成可执行的近期提醒和追问方向。" },
 ];
 const WENTIAN_LANGUAGE_OPTIONS = [
   { code: "zh-Hans", label: "简体中文", htmlLang: "zh-CN" },
@@ -1791,6 +1798,42 @@ function getWentianZiweiScreenHeight() {
   const chapters = getWentianChartAiChapters();
   if (!chapters.length) return 867;
   return Math.max(1040, 770 + chapters.length * 112);
+}
+
+function combineWentianAiSummaries(modules, max = 132) {
+  const text = modules
+    .map((moduleKey) => getWentianAiSummary(wentianChartAiState.results[moduleKey], 72))
+    .filter(Boolean)
+    .join(" ");
+  return text.slice(0, max);
+}
+
+function hasWentianChartAiResults() {
+  syncWentianChartAiStateFromStorage();
+  return Object.keys(wentianChartAiState.results || {}).length > 0;
+}
+
+function getWentianChartAiChapters() {
+  syncWentianChartAiStateFromStorage();
+  const results = wentianChartAiState.results || {};
+  return WENTIAN_CHART_AI_CHAPTERS.map((chapter) => {
+    const body = chapter.modules.length === 1
+      ? getWentianAiSummary(results[chapter.modules[0]], 124)
+      : combineWentianAiSummaries(chapter.modules, 124);
+    const title = chapter.modules.length === 1 && results[chapter.modules[0]]
+      ? getWentianAiTitle(results[chapter.modules[0]], chapter.title)
+      : chapter.title;
+    return {
+      ...chapter,
+      title,
+      body: body || chapter.placeholder,
+      ready: chapter.modules.some((moduleKey) => !!results[moduleKey]),
+    };
+  });
+}
+
+function getWentianZiweiScreenHeight() {
+  return hasWentianChartAiResults() || wentianChartAiState.status === "running" ? 1296 : 1168;
 }
 
 async function callWentianChartAiModule(moduleKey, chartData) {
@@ -5061,6 +5104,47 @@ function sourceZiweiAiDecodePanel() {
       ${figLine("source-27-ai-line-0", 32, 760, 324, "#eee4d6")}
       ${figText("source-27-ai-copy", "排盘完成后点左侧按钮，即可生成命格总览、专题批命、大限流年和行动建议。", 34, 784, 310, 15, "#8b857d", 500, "left", "line-height:1.62;")}
     `}
+  `;
+}
+
+function sourceZiweiAiDecodePanel() {
+  syncWentianChartAiStateFromStorage();
+  const chapters = getWentianChartAiChapters();
+  const isRunning = wentianChartAiState.status === "running";
+  const hasResults = hasWentianChartAiResults();
+  const doneCount = Object.keys(wentianChartAiState.results || {}).length;
+  const activeTask = WENTIAN_CHART_AI_TASKS.find((task) => task.module === wentianChartAiState.runningModule);
+  const buttonText = isRunning ? `生成中 ${doneCount}/${WENTIAN_CHART_AI_TASKS.length}` : (hasResults ? "重新AI批命" : "AI批命");
+  const statusText = isRunning
+    ? `正在生成：${activeTask?.label || "AI解读"}`
+    : wentianChartAiState.error
+      ? wentianChartAiState.error
+      : hasResults
+        ? "已生成命书长页同款解读，可继续追问。"
+        : "下方先列出五卷框架，点击 AI批命 后填入具体内容。";
+
+  return `
+    <section class="wentian-chart-ai-panel" data-node-id="source-27-ai-card">
+      <header class="wentian-chart-ai-head">
+        <h2>✦ 命盘 · AI解读</h2>
+        <p class="${wentianChartAiState.error ? "is-error" : ""}">${escapeHtml(statusText)}</p>
+      </header>
+      <div class="wentian-chart-ai-actions">
+        <button type="button" class="wentian-chart-ai-primary" data-action="wentian-chart-ai-decode" ${isRunning ? "disabled" : ""}>${escapeHtml(buttonText)}</button>
+        <button type="button" class="wentian-chart-ai-secondary" data-route="screen-4">追问</button>
+      </div>
+      <div class="wentian-chart-ai-list">
+        ${chapters.map((chapter, index) => `
+          <article class="wentian-chart-ai-chapter ${chapter.ready ? "is-ready" : "is-empty"}" data-node-id="source-27-ai-chapter-${index}">
+            <strong>${escapeHtml(chapter.vol)}</strong>
+            <div>
+              <h3>${escapeHtml(chapter.title)}</h3>
+              <p>${escapeHtml(chapter.body)}</p>
+            </div>
+          </article>
+        `).join("")}
+      </div>
+    </section>
   `;
 }
 
