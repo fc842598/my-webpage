@@ -670,13 +670,61 @@ function sourceArchiveScreen(screen) {
 }
 
 function sourceAiChatScreen(screen) {
-  const starters = [
-    ["感情婚姻", "结合我的命盘，重点看感情婚姻，什么样的感情路子，容易卡在哪里，何时有缘。"],
-    ["事业方向", "结合我的命盘，重点看事业，我适合往哪个方向发展，怎么做比较顺。"],
-    ["财运投资", "结合我的命盘，重点看财运，我适合怎么赚钱，有没有偏财或投资运。"],
-    ["最近一年", "结合我的命盘和当前流年，告诉我接下来一年最重要的机会和要注意的坑。"],
-    ["何时转运", "结合我的命盘，我现在处于什么运势阶段，什么时候会好转，要怎么熬过去。"],
-    ["家庭六亲", "结合我的命盘，看一下我和家人的缘分，与父母、兄弟、另一半的关系如何。"]
+  const faqGroups = [
+    {
+      label: "感情婚姻",
+      items: [
+        ["正缘何时来", "结合我的命盘，重点看正缘什么时候容易出现，对方大概是什么类型。"],
+        ["婚姻走势", "结合我的命盘，重点看我的婚姻走势，容易顺在哪里、卡在哪里。"],
+        ["复合分手", "结合我的命盘，看这段关系适不适合继续，复合或放下哪个更顺。"],
+        ["桃花质量", "结合我的命盘，看我近期桃花质量，哪些人要把握，哪些要避开。"]
+      ]
+    },
+    {
+      label: "事业财运",
+      items: [
+        ["适合行业", "结合我的命盘，重点看我适合什么行业和岗位，靠什么能力起势。"],
+        ["跳槽创业", "结合我的命盘，看我近期适不适合跳槽、转型或创业。"],
+        ["赚钱方式", "结合我的命盘，重点看我适合怎么赚钱，正财、偏财和投资怎么取舍。"],
+        ["升职贵人", "结合我的命盘，看事业贵人在哪里，什么时候容易升职或被看见。"]
+      ]
+    },
+    {
+      label: "近期运势",
+      items: [
+        ["最近一年", "结合我的命盘和当前流年，告诉我接下来一年最重要的机会和要注意的坑。"],
+        ["何时转运", "结合我的命盘，我现在处于什么运势阶段，什么时候会好转，要怎么熬过去。"],
+        ["关键月份", "结合我的命盘，看未来12个月里哪几个月最关键，分别要注意什么。"],
+        ["今年避坑", "结合我的命盘，看今年最容易踩的坑，以及应该怎么避。"]
+      ]
+    },
+    {
+      label: "家庭六亲",
+      items: [
+        ["父母缘分", "结合我的命盘，看我和父母的缘分、助力与需要注意的关系问题。"],
+        ["伴侣相处", "结合我的命盘，看我和伴侣相处中最容易反复的问题和解法。"],
+        ["子女缘分", "结合我的命盘，看一下我的子女缘分，以及和子女相关的运势如何。"],
+        ["家宅压力", "结合我的命盘，看家庭、房产、长辈方面近期有没有压力点。"]
+      ]
+    },
+    {
+      label: "健康状态",
+      items: [
+        ["身体短板", "结合我的命盘，看健康上最需要留意的薄弱点。"],
+        ["压力睡眠", "结合我的命盘，看我近期压力、睡眠和情绪方面要怎么调整。"],
+        ["今年健康", "结合我的命盘和当前流年，看今年健康方面要注意什么。"],
+        ["调养建议", "结合我的命盘，给我一些适合长期坚持的生活调整建议。"]
+      ]
+    },
+    {
+      label: "人生主线",
+      items: [
+        ["一生主线", "结合我的命盘，先讲我整体的人生主线，这辈子的走法和最该把握的事。"],
+        ["性格底色", "结合我的命盘，看我的性格底色、优势短板和做事模式。"],
+        ["贵人小人", "结合我的命盘，看我命中的贵人和小人分别是什么类型。"],
+        ["行动建议", "结合我的命盘，给我接下来最该做的三件事和最不该做的三件事。"]
+      ]
+    }
   ];
   return `
     ${figBox("source-4-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
@@ -690,10 +738,20 @@ function sourceAiChatScreen(screen) {
     ${figText("source-4-record", "⋯", 344, 31, 22, 22, "#6f665d", 800, "center")}
     <div id="wentian-chat-status" class="wentian-chat-status">正在接入许半仙…</div>
     <div id="wentian-chat-messages" class="wentian-chat-log" aria-live="polite"></div>
-    ${figText("source-4-faq-title", "常问", 22, 626, 60, 13, "#25211d", 800)}
-    <div class="wentian-chat-starters" aria-label="常见问题">
-      ${starters.map(([label, prompt]) => `
-        <button class="wentian-chat-starter" type="button" data-wentian-prompt="${escapeHtml(prompt)}">${escapeHtml(label)}</button>
+    ${figText("source-4-faq-title", "常问", 22, 618, 60, 13, "#25211d", 800)}
+    <div class="wentian-chat-starters" aria-label="常见问题分类">
+      ${faqGroups.map((group) => `
+        <details class="wentian-chat-faq-group">
+          <summary class="wentian-chat-faq-summary" data-wentian-faq-toggle>
+            <span>${escapeHtml(group.label)}</span>
+            <small>细问</small>
+          </summary>
+          <div class="wentian-chat-subtopics">
+            ${group.items.map(([label, prompt]) => `
+              <button class="wentian-chat-starter" type="button" data-wentian-prompt="${escapeHtml(prompt)}">${escapeHtml(label)}</button>
+            `).join("")}
+          </div>
+        </details>
       `).join("")}
     </div>
     ${figBox("source-4-input-bg", 0, 742, 390, 102, "", "background:#f7f3ec;box-shadow:0 -1px 0 rgba(110,82,38,.08);")}
@@ -5714,7 +5772,16 @@ function renderPay() {
 document.addEventListener("click", (event) => {
   const promptButton = event.target.closest("[data-wentian-prompt]");
   if (promptButton) {
+    promptButton.closest(".wentian-chat-faq-group")?.removeAttribute("open");
     sendWentianXuChat(promptButton.dataset.wentianPrompt || "");
+    return;
+  }
+  const faqToggle = event.target.closest("[data-wentian-faq-toggle]");
+  if (faqToggle) {
+    const group = faqToggle.closest(".wentian-chat-faq-group");
+    document.querySelectorAll(".wentian-chat-faq-group[open]").forEach((item) => {
+      if (item !== group) item.removeAttribute("open");
+    });
     return;
   }
   const earlyActionTarget = event.target.closest("[data-action]");
