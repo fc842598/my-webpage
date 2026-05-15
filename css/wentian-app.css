@@ -1698,6 +1698,48 @@ button {
   box-shadow: 0 0 0 2px rgba(192, 154, 73, .12);
 }
 
+.wentian-auth-input {
+  position: absolute;
+  height: 44px;
+  border: 1px solid #e7d7bf;
+  border-radius: 12px;
+  background: #fffdf8;
+  color: #201813;
+  padding: 0 14px;
+  font-family: inherit;
+  font-size: 15px;
+  line-height: 44px;
+  outline: 0;
+}
+
+.wentian-auth-input::placeholder {
+  color: #aca092;
+}
+
+.wentian-auth-input:focus {
+  border-color: #c2953c;
+  box-shadow: 0 0 0 2px rgba(192, 154, 73, .12);
+}
+
+.wentian-auth-tab {
+  position: absolute;
+  height: 38px;
+  border: 1px solid #e7d7bf;
+  border-radius: 19px;
+  background: #fbf7ef;
+  color: #8f857a;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.wentian-auth-tab.is-active {
+  border-color: #9f3d2e;
+  background: #fff1ea;
+  color: #9f3d2e;
+  box-shadow: 0 8px 18px rgba(158, 61, 43, .10);
+}
+
 .wentian-profile-status {
   position: absolute;
   left: 36px;
