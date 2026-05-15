@@ -98,10 +98,10 @@ const screenFlowHotspots = {
   27: [[18, 40, 96, 54, "screen-26"], [36, 739, 318, 44, "screen-4"]],
   28: [[18, 44, 48, 48, "screen-31"], [42, 735, 306, 58, "screen-29"]],
   29: [[18, 44, 48, 48, "screen-31"], [22, 178, 346, 70, "screen-30"], [22, 257, 346, 70, "screen-30"], [22, 336, 346, 70, "screen-30"], [34, 738, 322, 58, "screen-30"]],
-  30: [[18, 44, 48, 48, "screen-29"], [42, 735, 306, 58, "screen-31"]],
+  30: [[18, 44, 48, 48, "screen-33"]],
   31: [[336, 54, 42, 42, "screen-38"], [16, 126, 358, 96, "screen-38"], [16, 240, 111, 75, "screen-29"], [139, 240, 111, 75, "screen-28"], [262, 240, 111, 75, "screen-9"], [16, 330, 174, 60, "screen-33"], [200, 330, 174, 60, "screen-29"], [16, 400, 174, 60, "screen-27"], [200, 400, 174, 60, "screen-30"], [16, 491, 358, 61, "screen-22"], [16, 552, 358, 61, "screen-28"], [16, 629, 358, 61, "screen-37"], [16, 690, 358, 61, "screen-34"], [16, 767, 358, 61, "screen-35"], [12, 762, 76, 72, "screen-1"], [109, 762, 76, 72, "screen-25"], [207, 762, 76, 72, "screen-3"], [304, 762, 76, 72, "screen-31"]],
   32: [[18, 44, 48, 48, "screen-31"], [20, 94, 350, 56, "screen-39"], [20, 164, 350, 56, "screen-33"], [20, 236, 350, 56, "screen-40"], [20, 306, 350, 56, "screen-41"], [20, 376, 350, 56, "screen-37"], [20, 452, 350, 56, "screen-34"], [20, 520, 350, 56, "screen-35"], [20, 590, 350, 56, "screen-36"]],
-  33: [[18, 44, 48, 48, "screen-31"], [42, 735, 306, 58, "screen-29"]],
+  33: [[18, 44, 48, 48, "screen-31"]],
   34: [[18, 44, 48, 48, "screen-31"], [42, 735, 306, 58, "screen-22"]],
   35: [[18, 44, 48, 48, "screen-38"]],
   36: [[18, 44, 48, 48, "screen-38"]],
@@ -890,6 +890,8 @@ const WENTIAN_SELECTED_ARCHIVE_KEY = "wentian-app-selected-archive-id";
 const WENTIAN_CLIENT_ID_KEY = "ziwei_client_id";
 const WENTIAN_LANGUAGE_STORAGE_KEY = "wentian-app-language-v1";
 const WENTIAN_PROFILE_STORAGE_KEY = "wentian-app-profile-v1";
+const WENTIAN_MEMBER_PRODUCT_KEY = "monthly_member";
+const WENTIAN_PAYMENT_POLL_MS = 3500;
 const WENTIAN_LANGUAGE_OPTIONS = [
   { code: "zh-Hans", label: "简体中文", htmlLang: "zh-CN" },
   { code: "zh-Hant", label: "繁體中文", htmlLang: "zh-TW" },
@@ -901,6 +903,31 @@ let wentianArchiveRemotePromise = null;
 let wentianLanguageDraft = null;
 let wentianChartCalMode = "solar";
 let wentianChartCity = null;
+let wentianMemberStatusPromise = null;
+let wentianPaymentPollTimer = null;
+const wentianMemberState = {
+  loaded: false,
+  quota: null,
+  product: {
+    productKey: WENTIAN_MEMBER_PRODUCT_KEY,
+    name: "问天会员月卡",
+    description: "许半仙 AI 对话：会员 300次/天、9000次/月；免费用户 100次/天、3000次/月。",
+    amountFen: 1990,
+    amountYuan: "19.90",
+  },
+  mockMode: false,
+};
+const wentianPaymentState = {
+  status: "idle",
+  orderNo: "",
+  payUrl: "",
+  payMethod: "",
+  message: "",
+  error: "",
+  mockMode: false,
+  productName: "问天会员月卡",
+  amountYuan: "19.90",
+};
 const WENTIAN_BRANCH_POSITIONS = {
   "巳": [0, 0],
   "午": [1, 0],
@@ -1843,6 +1870,21 @@ async function wentianPostJson(path, payload, timeoutMs = 90000, retries = 1) {
   throw lastError;
 }
 
+async function wentianFetchJson(path, options = {}) {
+  const method = options.method || (options.body ? "POST" : "GET");
+  const response = await fetch(`${getWentianApiBase()}${path}`, {
+    method,
+    headers: options.body ? { "Content-Type": "application/json" } : { "Accept": "application/json" },
+    body: options.body ? JSON.stringify(options.body) : undefined,
+  });
+  const contentType = String(response.headers.get("content-type") || "");
+  const data = contentType.includes("application/json")
+    ? await response.json()
+    : { error: await response.text() };
+  if (!response.ok || data.error) throw new Error(data.error || `服务异常 ${response.status}`);
+  return data;
+}
+
 function setWentianChatStatus(text, tone = "") {
   const el = document.getElementById("wentian-chat-status");
   if (!el) return;
@@ -1852,9 +1894,12 @@ function setWentianChatStatus(text, tone = "") {
 
 function setWentianQuota(quota) {
   const el = document.querySelector('[data-node-id="source-4-left"]');
+  if (quota) wentianMemberState.quota = { ...(wentianMemberState.quota || {}), ...quota };
   if (!el || !quota) return;
-  const remaining = quota.remaining === null || quota.remaining === undefined || quota.remaining === "" ? "--" : quota.remaining;
-  const limit = quota.limit === null || quota.limit === undefined || quota.limit === "" ? "--" : quota.limit;
+  const remainingValue = quota.dailyRemaining ?? quota.remaining;
+  const limitValue = quota.dailyLimit ?? quota.limit;
+  const remaining = remainingValue === null || remainingValue === undefined || remainingValue === "" ? "--" : remainingValue;
+  const limit = limitValue === null || limitValue === undefined || limitValue === "" ? "--" : limitValue;
   el.textContent = `◇ 今日 ${remaining}/${limit}`;
 }
 
@@ -2105,6 +2150,189 @@ function initWentianXuChat() {
   ensureWentianXuSession({ silent: true }).catch(() => {});
 }
 
+function formatWentianMemberDate(value) {
+  if (!value) return "";
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "";
+  return `${date.getFullYear()}-${padWentianNumber(date.getMonth() + 1)}-${padWentianNumber(date.getDate())}`;
+}
+
+function getWentianQuotaValue(key, fallback = "--") {
+  const quota = wentianMemberState.quota || {};
+  const value = quota[key];
+  return value === null || value === undefined || value === "" ? fallback : value;
+}
+
+function getWentianMemberSnapshot() {
+  const quota = wentianMemberState.quota || {};
+  const product = wentianMemberState.product || {};
+  const isMember = !!quota.isMember;
+  return {
+    isMember,
+    title: isMember ? "问天会员" : "免费版",
+    subtitle: isMember
+      ? `有效期至 ${formatWentianMemberDate(quota.memberExpiresAt) || "本月"}`
+      : "开通后提升对话额度",
+    daily: `${getWentianQuotaValue("dailyRemaining")}/${getWentianQuotaValue("dailyLimit")}`,
+    monthly: `${getWentianQuotaValue("monthlyRemaining")}/${getWentianQuotaValue("monthlyLimit")}`,
+    productName: product.name || "问天会员月卡",
+    amountYuan: product.amountYuan || "19.90",
+    description: product.description || "会员 300次/天、9000次/月；免费 100次/天、3000次/月。",
+  };
+}
+
+async function hydrateWentianMemberStatus(options = {}) {
+  if (wentianMemberStatusPromise && !options.force) return wentianMemberStatusPromise;
+  if (wentianMemberState.loaded && !options.force) return null;
+  const chartRecordId = getWentianChartPayload().chartRecordId;
+  const before = JSON.stringify({
+    quota: wentianMemberState.quota,
+    product: wentianMemberState.product,
+  });
+  wentianMemberStatusPromise = wentianFetchJson(`/api/payments/member-status?chartRecordId=${encodeURIComponent(chartRecordId)}`)
+    .then((data) => {
+      wentianMemberState.loaded = true;
+      if (data.quota) wentianMemberState.quota = data.quota;
+      if (data.product) wentianMemberState.product = data.product;
+      wentianMemberState.mockMode = !!data.mockMode;
+      const after = JSON.stringify({
+        quota: wentianMemberState.quota,
+        product: wentianMemberState.product,
+      });
+      if (options.rerender && before !== after && ["screen-30", "screen-31", "screen-33"].includes(state.route)) {
+        navigate(state.route, false);
+      }
+      return data;
+    })
+    .catch((error) => {
+      console.info("wentian member status fallback", error);
+      return null;
+    })
+    .finally(() => {
+      wentianMemberStatusPromise = null;
+    });
+  return wentianMemberStatusPromise;
+}
+
+function isWentianH5PayPreferred() {
+  return /MicroMessenger|Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent || "");
+}
+
+function stopWentianPaymentPoll() {
+  if (wentianPaymentPollTimer) {
+    clearInterval(wentianPaymentPollTimer);
+    wentianPaymentPollTimer = null;
+  }
+}
+
+function refreshWentianPaymentScreen() {
+  if (state.route === "screen-30") navigate("screen-30", false);
+}
+
+async function checkWentianPaymentStatus() {
+  if (!wentianPaymentState.orderNo) return null;
+  try {
+    const data = await wentianFetchJson(`/api/payments/order-status?orderNo=${encodeURIComponent(wentianPaymentState.orderNo)}`);
+    wentianPaymentState.status = data.status || wentianPaymentState.status;
+    wentianPaymentState.message = data.status === "paid" ? "已开通会员" : "等待微信支付完成";
+    if (data.status === "paid") {
+      stopWentianPaymentPoll();
+      await hydrateWentianMemberStatus({ force: true });
+    }
+    refreshWentianPaymentScreen();
+    return data;
+  } catch (error) {
+    wentianPaymentState.error = error.message || "订单查询失败";
+    refreshWentianPaymentScreen();
+    return null;
+  }
+}
+
+function startWentianPaymentPoll() {
+  stopWentianPaymentPoll();
+  if (!wentianPaymentState.orderNo || wentianPaymentState.mockMode) return;
+  wentianPaymentPollTimer = setInterval(checkWentianPaymentStatus, WENTIAN_PAYMENT_POLL_MS);
+}
+
+async function startWentianMemberPayment() {
+  const product = wentianMemberState.product || {};
+  wentianPaymentState.status = "loading";
+  wentianPaymentState.message = "正在创建微信支付订单...";
+  wentianPaymentState.error = "";
+  wentianPaymentState.productName = product.name || "问天会员月卡";
+  wentianPaymentState.amountYuan = product.amountYuan || "19.90";
+  navigate("screen-30");
+
+  try {
+    const chartRecordId = getWentianChartPayload().chartRecordId;
+    const order = await wentianFetchJson("/api/payments/create-order", {
+      method: "POST",
+      body: { productKey: WENTIAN_MEMBER_PRODUCT_KEY, chartRecordId },
+    });
+    const payMethod = isWentianH5PayPreferred() ? "h5" : "native";
+    const session = await wentianFetchJson("/api/payments/create-session", {
+      method: "POST",
+      body: { orderNo: order.orderNo, payMethod },
+    });
+    wentianPaymentState.status = "pending";
+    wentianPaymentState.orderNo = order.orderNo;
+    wentianPaymentState.payUrl = session.payUrl || "";
+    wentianPaymentState.payMethod = session.payMethod || payMethod;
+    wentianPaymentState.mockMode = !!(order.mockMode || session.mockMode);
+    wentianPaymentState.productName = order.productName || product.name || "问天会员月卡";
+    wentianPaymentState.amountYuan = order.amountYuan || product.amountYuan || "19.90";
+    wentianPaymentState.message = wentianPaymentState.mockMode
+      ? "当前是支付测试模式"
+      : (wentianPaymentState.payMethod === "h5" ? "点击下方按钮打开微信支付" : "请用微信扫码支付");
+    startWentianPaymentPoll();
+    refreshWentianPaymentScreen();
+  } catch (error) {
+    wentianPaymentState.status = "error";
+    wentianPaymentState.error = error.message || "支付订单创建失败";
+    wentianPaymentState.message = "支付服务暂时不可用";
+    refreshWentianPaymentScreen();
+  }
+}
+
+function openWentianPaymentUrl() {
+  if (wentianPaymentState.payUrl) window.location.href = wentianPaymentState.payUrl;
+}
+
+async function completeWentianMockPayment() {
+  if (!wentianPaymentState.orderNo) return;
+  wentianPaymentState.message = "正在确认测试支付...";
+  refreshWentianPaymentScreen();
+  try {
+    const data = await wentianFetchJson("/api/payments/mock/complete", {
+      method: "POST",
+      body: { orderNo: wentianPaymentState.orderNo },
+    });
+    wentianPaymentState.status = data.status || "paid";
+    wentianPaymentState.message = "已开通会员";
+    await hydrateWentianMemberStatus({ force: true });
+  } catch (error) {
+    wentianPaymentState.error = error.message || "测试支付失败";
+  }
+  refreshWentianPaymentScreen();
+}
+
+function initWentianPaymentScreen() {
+  const holder = document.getElementById("wentian-pay-qr");
+  const url = holder?.dataset.payUrl;
+  if (!holder || !url) return;
+  holder.innerHTML = "";
+  if (typeof QRCode === "function") {
+    new QRCode(holder, {
+      text: url,
+      width: 172,
+      height: 172,
+      correctLevel: QRCode.CorrectLevel ? QRCode.CorrectLevel.M : undefined,
+    });
+  } else {
+    holder.innerHTML = `<a href="${escapeHtml(url)}" target="_blank" rel="noopener">打开微信支付链接</a>`;
+  }
+}
+
 function setWentianChartStatus(text, tone = "") {
   const el = document.getElementById("wentian-chart-status");
   if (!el) return;
@@ -2274,9 +2502,90 @@ function sourceProfileScreen(screen) {
   `;
 }
 
+function sourceMembershipScreen() {
+  const member = getWentianMemberSnapshot();
+  const buttonText = member.isMember ? `续费会员 ¥${member.amountYuan}` : `开通会员 ¥${member.amountYuan}`;
+  return `
+    ${figBox("wt33-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
+    ${wentianSimpleHeader("wt33", "问天会员")}
+    ${figBox("wt33-card", 24, 108, 342, 116, "", "border-radius:18px;background:linear-gradient(135deg,#2b2722,#14110d);box-shadow:0 16px 30px rgba(28,20,12,.16);")}
+    ${figText("wt33-card-label", member.title, 52, 136, 130, 20, "#fff", 900)}
+    ${figText("wt33-card-sub", escapeHtml(member.subtitle), 52, 168, 190, 13, "#cfc1a9", 700)}
+    ${figText("wt33-card-price", `¥${member.amountYuan}`, 238, 132, 84, 26, "#f4d293", 900, "right")}
+    ${figText("wt33-card-period", "31天", 260, 170, 64, 12, "#cfc1a9", 700, "right")}
+
+    ${figText("wt33-plan-title", "对话额度", 24, 254, 120, 17, "#25211d", 900)}
+    ${figBox("wt33-free", 24, 292, 342, 72, "", "border:1px solid #eadfce;border-radius:14px;background:#fff;box-shadow:0 6px 16px rgba(70,45,25,.06);")}
+    ${figText("wt33-free-title", "免费用户", 44, 314, 90, 15, "#25211d", 900)}
+    ${figText("wt33-free-quota", "100次/天 · 3000次/月", 174, 314, 160, 14, "#8d8377", 800, "right")}
+    ${figBox("wt33-member", 24, 378, 342, 92, "", "border:1px solid #c8a65f;border-radius:16px;background:#fffaf0;box-shadow:0 10px 24px rgba(130,91,31,.10);")}
+    ${figText("wt33-member-title", "问天会员", 44, 402, 100, 16, "#8f3d30", 900)}
+    ${figText("wt33-member-quota", "300次/天 · 9000次/月", 158, 402, 176, 15, "#8f3d30", 900, "right")}
+    ${figText("wt33-member-desc", "更适合高频追问、复盘命盘、连续做年度规划。", 44, 436, 282, 13, "#756d63", 700)}
+
+    ${figBox("wt33-benefit", 24, 508, 342, 116, "", "border-radius:16px;background:#fff;box-shadow:0 8px 20px rgba(70,45,25,.07);")}
+    ${figText("wt33-benefit-title", "当前额度", 44, 530, 120, 15, "#25211d", 900)}
+    ${figText("wt33-benefit-list", `今日剩余 ${member.daily}<br>本月剩余 ${member.monthly}`, 44, 562, 260, 15, "#756d63", 800, "left", "line-height:1.8;")}
+    ${figBox("wt33-submit", 42, 736, 306, 50, "", "border-radius:25px;background:linear-gradient(180deg,#b74e39,#983323);box-shadow:0 14px 28px rgba(158,61,43,.20);")}
+    ${figButton("wt33-submit-hit", 42, 736, 306, 50, 'data-action="wentian-member-pay"')}
+    ${figText("wt33-submit-text", buttonText, 42, 751, 306, 14, "#fffaf3", 900, "center")}
+  `;
+}
+
+function sourcePaymentScreen() {
+  const stateText = wentianPaymentState.status === "paid"
+    ? "支付成功"
+    : wentianPaymentState.status === "error"
+      ? "支付异常"
+      : wentianPaymentState.status === "loading"
+        ? "创建订单"
+        : "确认订单";
+  const payUrl = wentianPaymentState.payUrl || "";
+  const showQr = payUrl && wentianPaymentState.payMethod !== "h5" && !wentianPaymentState.mockMode;
+  const showOpen = payUrl && wentianPaymentState.payMethod === "h5" && !wentianPaymentState.mockMode;
+  const message = wentianPaymentState.error || wentianPaymentState.message || "问天会员月卡，19.9元/月";
+  return `
+    ${figBox("wt30-bg", 0, 0, 390, 844, "", "background:linear-gradient(180deg,#fffdf8 0%,#fbf7ef 58%,#f3eadc 100%);")}
+    ${figButton("wt30-back-hit", 18, 38, 58, 50, 'data-route="screen-33"')}
+    ${figText("wt30-back", "‹", 26, 46, 28, 28, "#2b251f", 600, "center")}
+    ${figText("wt30-page-title", "会员支付", 0, 52, 390, 22, "#201812", 900, "center")}
+    ${figBox("wt30-status-pill", 286, 48, 74, 30, "", "border-radius:15px;background:#f4ead8;border:1px solid #eadbc2;")}
+    ${figText("wt30-status-text", stateText, 286, 56, 74, 12, "#9a6f22", 800, "center")}
+
+    ${figBox("wt30-hero", 24, 108, 342, 128, "", "border-radius:20px;background:linear-gradient(135deg,#b54c3a 0%,#8e3429 100%);box-shadow:0 16px 34px rgba(131,56,39,.18);")}
+    ${figText("wt30-hero-label", "问天会员月卡", 46, 132, 150, 13, "#f7e6cf", 700)}
+    ${figText("wt30-hero-title", "许半仙 AI 对话", 46, 164, 180, 24, "#fffaf3", 900)}
+    ${figText("wt30-hero-sub", "300次/天 · 9000次/月", 46, 202, 230, 13, "#f2d8bd", 700)}
+    ${figText("wt30-hero-price", `¥${escapeHtml(wentianPaymentState.amountYuan || "19.90")}`, 250, 154, 92, 26, "#fffaf3", 900, "right")}
+
+    ${figBox("wt30-order-card", 24, 270, 342, showQr ? 304 : 190, "", "border:1px solid #eadfce;border-radius:18px;background:#fffdf8;box-shadow:0 10px 24px rgba(70,45,25,.08);")}
+    ${figText("wt30-order-product-label", "商品", 44, 302, 80, 13, "#8d8377", 600)}
+    ${figText("wt30-order-product", escapeHtml(wentianPaymentState.productName || "问天会员月卡"), 164, 302, 160, 13, "#2b251f", 800, "right")}
+    ${figLine("wt30-order-line-1", 44, 334, 302, "#efe4d3")}
+    ${figText("wt30-order-no-label", "订单号", 44, 358, 80, 13, "#8d8377", 600)}
+    ${figText("wt30-order-no", escapeHtml(wentianPaymentState.orderNo || "待创建"), 132, 358, 190, 13, "#2b251f", 800, "right")}
+    ${figLine("wt30-order-line-2", 44, 390, 302, "#efe4d3")}
+    ${figText("wt30-order-tip", escapeHtml(message), 44, 416, 282, 14, wentianPaymentState.error ? "#a64032" : "#756d63", 700, "left", "line-height:1.5;")}
+    ${showQr ? `<div id="wentian-pay-qr" class="wentian-pay-qr" data-pay-url="${escapeHtml(payUrl)}" style="left:109px;top:448px;width:172px;height:172px"></div>` : ""}
+
+    ${showOpen ? figBox("wt30-open", 42, 650, 306, 50, "", "border-radius:25px;background:#16783d;box-shadow:0 12px 24px rgba(22,120,61,.18);") : ""}
+    ${showOpen ? figButton("wt30-open-hit", 42, 650, 306, 50, 'data-action="wentian-pay-open"') : ""}
+    ${showOpen ? figText("wt30-open-text", "打开微信支付", 42, 665, 306, 14, "#fff", 900, "center") : ""}
+    ${wentianPaymentState.mockMode ? figBox("wt30-mock", 42, 650, 306, 50, "", "border-radius:25px;background:#16783d;box-shadow:0 12px 24px rgba(22,120,61,.18);") : ""}
+    ${wentianPaymentState.mockMode ? figButton("wt30-mock-hit", 42, 650, 306, 50, 'data-action="wentian-pay-mock-success"') : ""}
+    ${wentianPaymentState.mockMode ? figText("wt30-mock-text", "模拟支付成功", 42, 665, 306, 14, "#fff", 900, "center") : ""}
+    ${figBox("wt30-pay", 42, 736, 306, 50, "", `border-radius:25px;background:${wentianPaymentState.status === "paid" ? "#7a9a4b" : "linear-gradient(180deg,#b74e39,#983323)"};box-shadow:0 14px 28px rgba(158,61,43,.18);`)}
+    ${figButton("wt30-pay-hit", 42, 736, 306, 50, `data-action="${wentianPaymentState.status === "paid" ? "wentian-pay-done" : (wentianPaymentState.status === "idle" || wentianPaymentState.status === "error" ? "wentian-member-pay" : "wentian-payment-check")}"`)}
+    ${figText("wt30-pay-text", wentianPaymentState.status === "paid" ? "已开通，返回我的" : (wentianPaymentState.status === "pending" ? "刷新支付状态" : `确认支付 ¥${escapeHtml(wentianPaymentState.amountYuan || "19.90")}`), 42, 751, 306, 14, "#fffaf3", 900, "center")}
+    ${figText("wt30-safe", "微信支付完成后会员额度自动刷新", 0, 804, 390, 11, "#a49b91", 600, "center")}
+  `;
+}
+
 function sourceMineScreen(screen) {
   const languageLabel = getWentianLanguageOption().label;
   const profile = getWentianProfile();
+  const member = getWentianMemberSnapshot();
+  const statusText = member.isMember ? member.subtitle : "免费版 · 可升级会员";
   return `
     ${figText("source-31-time", "15:23", 18, 15, 70, 14, "#26211c")}
     ${figText("source-31-status", "◉  30.4  5G  ▮ 33 ⚡", 250, 14, 120, 10, "#26211c", 700, "right")}
@@ -2288,12 +2597,12 @@ function sourceMineScreen(screen) {
     ${figBox("source-31-avatar", 34, 144, 60, 60, "", "border-radius:30px;background:#b88c33;")}
     ${figText("source-31-avatar-icon", "人", 34, 157, 60, 28, "#fff", 700, "center")}
     ${figText("source-31-name", escapeHtml(profile.nickname), 116, 150, 140, 18, "#26211c", 800)}
-    ${figText("source-31-vip", "开通会员享专属权益", 116, 177, 150, 13, "#8f857a")}
+    ${figText("source-31-vip", escapeHtml(statusText), 116, 177, 170, 13, member.isMember ? "#7a9a4b" : "#8f857a")}
     ${figText("source-31-email", escapeHtml(profile.email || "未绑定邮箱"), 116, 197, 200, 12, "#8f857a")}
-    ${[["◇ 灵石", "1", 16], ["▣ 卡券", "0 个", 139], ["☵ 对话", "0 /0", 262]].map(([label, count, x], index) => `
+    ${[["◇ 灵石", "1", 16], ["今 对话", member.daily, 139], ["月 对话", member.monthly, 262]].map(([label, count, x], index) => `
       ${figBox(`source-31-stat-${index}`, x, 240, 111, 75, "converted-card", "border-radius:12px;box-shadow:0 5px 14px rgba(74,55,32,.08);")}
       ${figText(`source-31-stat-label-${index}`, label, x + 14, 253, 80, 12, "#9b742e", 500)}
-      ${figText(`source-31-stat-count-${index}`, count, x + 14, 279, 80, 21, "#b88c33", 800)}
+      ${figText(`source-31-stat-count-${index}`, count, x + 14, 279, 86, 20, "#b88c33", 800)}
     `).join("")}
     ${[["♛", "问天会员", 16, 330], ["◇", "灵石充值", 200, 330], ["▤", "我的报告", 16, 400], ["▦", "订单记录", 200, 400]].map(([icon, label, x, y], index) => `
       ${figBox(`source-31-quick-${index}`, x, y, 174, 60, "converted-card", "border-radius:12px;box-shadow:0 5px 14px rgba(74,55,32,.08);")}
@@ -3547,6 +3856,8 @@ function renderWentianPolishedScreen(screen) {
   if (no === 45) return sourceYangzhaiTutorialScreen();
   if (no === 46) return sourceLiurenScreen();
   if (no === 47) return sourceLiurenTutorialScreen();
+  if (no === 30) return sourcePaymentScreen();
+  if (no === 33) return sourceMembershipScreen();
   if (no === 8) {
     const paragraphs = [
       ["核心结论", "你的命盘不是单一路线，而是“先观察、后出手”的结构。真正适合你的节奏，是先把信息摸透，再用稳定执行换结果。"],
@@ -4684,6 +4995,8 @@ function navigate(route, push = true) {
     syncActive();
     if (screen.no === 4) window.setTimeout(initWentianXuChat, 0);
     if (screen.no === 5 || screen.no === 25) window.setTimeout(() => hydrateWentianArchivesFromRemote({ rerender: true }), 0);
+    if (screen.no === 30) window.setTimeout(initWentianPaymentScreen, 0);
+    if (screen.no === 31 || screen.no === 33) window.setTimeout(() => hydrateWentianMemberStatus({ rerender: true }), 0);
     if (screen.no === 26) window.setTimeout(initWentianChartForm, 0);
     if (screen.no === 46) window.setTimeout(initLiurenScreen, 0);
     if (!location.hash.includes("figmacapture=")) location.hash = route;
@@ -5124,6 +5437,26 @@ document.addEventListener("click", (event) => {
   }
   if (action === "wentian-profile-save") {
     submitWentianProfileForm();
+    return;
+  }
+  if (action === "wentian-member-pay") {
+    startWentianMemberPayment();
+    return;
+  }
+  if (action === "wentian-pay-open") {
+    openWentianPaymentUrl();
+    return;
+  }
+  if (action === "wentian-pay-mock-success") {
+    completeWentianMockPayment();
+    return;
+  }
+  if (action === "wentian-payment-check") {
+    checkWentianPaymentStatus();
+    return;
+  }
+  if (action === "wentian-pay-done") {
+    navigate("screen-31");
     return;
   }
   if (action === "wentian-chart-gender") {
