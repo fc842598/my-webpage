@@ -1854,12 +1854,64 @@ function setWentianQuota(quota) {
   el.textContent = `◇ 今日 ${remaining}/${limit}`;
 }
 
+function splitWentianLongSentence(sentence, maxLength = 58) {
+  const chunks = String(sentence || "").match(/[^，、,]+[，、,]?/g) || [sentence];
+  const groups = [];
+  let current = "";
+  for (const chunk of chunks) {
+    if (current && current.length + chunk.length > maxLength) {
+      groups.push(current.trim());
+      current = "";
+    }
+    current += chunk;
+  }
+  if (current.trim()) groups.push(current.trim());
+  return groups;
+}
+
+function splitWentianReplyParagraphs(text) {
+  const raw = String(text || "").replace(/\r/g, "").trim();
+  if (!raw) return [""];
+  const explicitBlocks = raw.includes("\n")
+    ? raw.split(/\n+/).map((item) => item.trim()).filter(Boolean)
+    : [raw.replace(/\s+/g, " ").trim()];
+  const paragraphs = [];
+
+  for (const block of explicitBlocks) {
+    const sentences = block.match(/[^。！？!?；;]+[。！？!?；;]?/g) || [block];
+    const pieces = sentences.flatMap((sentence) => sentence.length > 76 ? splitWentianLongSentence(sentence) : [sentence.trim()]);
+    let current = "";
+    let sentenceCount = 0;
+    for (const piece of pieces.filter(Boolean)) {
+      const shouldBreak = current && (current.length + piece.length > 70 || sentenceCount >= 1);
+      if (shouldBreak) {
+        paragraphs.push(current.trim());
+        current = "";
+        sentenceCount = 0;
+      }
+      current += piece;
+      sentenceCount += 1;
+    }
+    if (current.trim()) paragraphs.push(current.trim());
+  }
+
+  return paragraphs.length ? paragraphs : [raw];
+}
+
+function renderWentianChatMessageContent(message, role) {
+  const text = String(message.text || "");
+  if (role !== "assistant") return escapeHtml(text);
+  return splitWentianReplyParagraphs(text)
+    .map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`)
+    .join("");
+}
+
 function renderWentianMessages() {
   const box = document.getElementById("wentian-chat-messages");
   if (!box) return;
   box.innerHTML = wentianXuChat.messages.map((message) => {
     const role = message.role === "user" ? "user" : message.role === "system" ? "system" : "assistant";
-    return `<div class="wentian-chat-msg is-${role} ${message.typing ? "is-typing" : ""}">${escapeHtml(message.text)}</div>`;
+    return `<div class="wentian-chat-msg is-${role} ${message.typing ? "is-typing" : ""}">${renderWentianChatMessageContent(message, role)}</div>`;
   }).join("");
   box.scrollTop = box.scrollHeight;
 }

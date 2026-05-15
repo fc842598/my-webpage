@@ -1222,6 +1222,14 @@ button {
   box-shadow: 0 4px 12px rgba(74, 55, 32, .06);
 }
 
+.wentian-chat-msg p {
+  margin: 0 0 9px;
+}
+
+.wentian-chat-msg p:last-child {
+  margin-bottom: 0;
+}
+
 .wentian-chat-msg:not(.is-user):not(.is-system) {
   margin-left: 38px;
   border-radius: 4px 14px 14px;
