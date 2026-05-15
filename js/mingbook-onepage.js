@@ -1188,6 +1188,32 @@
     return entry ? (entry[fcGuaciKey(tab)] || '') : '';
   }
 
+  function fcMasterEntry(result) {
+    if (!result) return null;
+    if (typeof window.getYijingMasterEntry === 'function') {
+      const entry = window.getYijingMasterEntry(result);
+      if (entry) return entry;
+    }
+    const data = window.YIJING_MASTER_DATA || {};
+    const byNum = window.YIJING_MASTER_BY_NUM || {};
+    const cleanName = String(result.name || '').replace(/\s+/g, '');
+    const num = Number(result.num);
+    const numKey = Number.isFinite(num) ? String(num) : '';
+    return data[result.name] || data[cleanName] || (numKey ? (byNum[numKey] || byNum[numKey.padStart(2, '0')]) : null) || null;
+  }
+
+  function yijingMasterLabel(tab = fcActiveTab) {
+    if (tab === '先天卦') return '先天';
+    if (tab === '后天卦') return '后天';
+    return '流年';
+  }
+
+  function yijingMasterText(result, tab = fcActiveTab) {
+    const entry = fcMasterEntry(result);
+    if (!entry) return '';
+    return entry[fcGuaciKey(tab)] || entry.summary || '';
+  }
+
   function yijingAssistSummary(result) {
     if (!result) return '排盘后，这里会落出先天、后天与流年的辅助判断。';
     if (fcActiveTab === '先天卦') return `${result.name}落在先天位，主看命盘底色、根气与早年基调。`;
@@ -1272,6 +1298,10 @@
     const meta = $('#mbpYijingMeta');
     const years = $('#mbpYijingYears');
     const guaci = $('#mbpYijingGuaci');
+    const masterTitle = $('#mbpYijingMasterTitle');
+    const masterSummary = $('#mbpYijingMasterSummary');
+    const masterText = $('#mbpYijingMasterText');
+    const master = fcMasterEntry(result);
 
     if (name) name.textContent = result?.name || '等待排盘';
     if (summary) summary.textContent = yijingAssistSummary(result);
@@ -1312,6 +1342,17 @@
     if (guaci) {
       const text = fcGuaciText(result);
       guaci.textContent = text || (result ? '此卦暂无卦辞数据，可先参考上方命盘与五卷解读。' : '先完成排盘。');
+    }
+
+    if (masterTitle) {
+      masterTitle.textContent = result ? `${yijingMasterLabel()} · ${result.name}` : '等待排盘';
+    }
+    if (masterSummary) {
+      masterSummary.textContent = master?.summary || (result ? '此卦暂无名师总论。' : '排盘后显示讲课式总论。');
+    }
+    if (masterText) {
+      const text = yijingMasterText(result);
+      masterText.textContent = text || (result ? '此卦暂无对应名师解读。' : '排盘后显示对应卦位的逐条讲解。');
     }
   }
 

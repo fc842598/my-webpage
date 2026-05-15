@@ -3524,9 +3524,9 @@ p.mbp-topic-detail {
 }
 
 .mbp-yijing-guaci {
-  min-height: 78px;
+  min-height: 64px;
   margin: 0;
-  padding: 15px 17px;
+  padding: 13px 15px;
   border-left: 3px solid rgba(241, 212, 125, .58);
   border-radius: 0 9px 9px 0;
   background: rgba(241, 212, 125, .05);
@@ -3535,6 +3535,61 @@ p.mbp-topic-detail {
   font-weight: 800;
   line-height: 1.75;
   white-space: pre-wrap;
+}
+
+.mbp-yijing-master {
+  display: grid;
+  gap: 8px;
+  padding: 13px 15px;
+  border: 1px solid rgba(241, 212, 125, .16);
+  border-radius: 9px;
+  background:
+    linear-gradient(135deg, rgba(241, 212, 125, .075), rgba(185, 111, 66, .055)),
+    rgba(0, 0, 0, .12);
+}
+
+.mbp-yijing-master-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.mbp-yijing-master-head span {
+  color: var(--gold);
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0;
+}
+
+.mbp-yijing-master-head strong {
+  color: var(--ivory);
+  font-size: 13px;
+  font-weight: 900;
+  line-height: 1.35;
+  text-align: right;
+}
+
+.mbp-yijing-master-summary {
+  margin: 0;
+  color: #cfbd91;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.65;
+}
+
+.mbp-yijing-master-text {
+  max-height: 132px;
+  overflow: auto;
+  padding: 10px 12px;
+  border-radius: 7px;
+  background: rgba(0, 0, 0, .18);
+  color: #ead8aa;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.72;
+  white-space: pre-line;
+  scrollbar-width: thin;
 }
 
 .mbp-yijing-focus {
@@ -4371,6 +4426,10 @@ p.mbp-topic-detail {
 
   .mbp-yijing-focus {
     justify-self: stretch;
+  }
+
+  .mbp-yijing-master-text {
+    max-height: 220px;
   }
 
   .mbp-yijing-art {
