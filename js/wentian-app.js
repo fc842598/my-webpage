@@ -2448,12 +2448,21 @@ function renderWentianChatMessageContent(message, role) {
     .join("");
 }
 
+function getWentianChatUserAvatarText() {
+  const account = getWentianAuthDisplay();
+  const archive = getCurrentWentianArchive();
+  const display = getWentianArchiveDisplay(archive);
+  const label = account.loggedIn ? account.initial : (display.name || account.initial || "我");
+  return String(label || "我").trim().slice(0, 1) || "我";
+}
+
 function renderWentianMessages() {
   const box = document.getElementById("wentian-chat-messages");
   if (!box) return;
   box.innerHTML = wentianXuChat.messages.map((message) => {
     const role = message.role === "user" ? "user" : message.role === "system" ? "system" : "assistant";
-    return `<div class="wentian-chat-msg is-${role} ${message.typing ? "is-typing" : ""}">${renderWentianChatMessageContent(message, role)}</div>`;
+    const avatar = role === "user" ? ` data-avatar="${escapeHtml(getWentianChatUserAvatarText())}"` : "";
+    return `<div class="wentian-chat-msg is-${role} ${message.typing ? "is-typing" : ""}"${avatar}>${renderWentianChatMessageContent(message, role)}</div>`;
   }).join("");
   box.scrollTop = box.scrollHeight;
 }

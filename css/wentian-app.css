@@ -1248,10 +1248,29 @@ button {
 }
 
 .wentian-chat-msg.is-user {
+  margin-right: 38px;
   margin-left: auto;
   border-color: rgba(194, 149, 60, .26);
-  background: #c2953c;
+  border-radius: 14px 4px 14px 14px;
+  background: linear-gradient(180deg, #c9a14a, #bc8f34);
   color: #fff;
+}
+
+.wentian-chat-msg.is-user::after {
+  position: absolute;
+  right: -38px;
+  top: 0;
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: linear-gradient(180deg, #f1d796, #c2953c);
+  color: #6d4615;
+  content: attr(data-avatar);
+  font-size: 12px;
+  font-weight: 900;
+  box-shadow: 0 2px 7px rgba(70, 45, 25, .14);
 }
 
 .wentian-chat-msg.is-system {
