@@ -708,7 +708,7 @@ function sourceArchiveSelectScreen() {
   const activeId = wentianArchiveDraftId || getWentianSelectedArchiveId(archives);
   const activeArchive = archives.find((item) => item.id === activeId) || archives[0];
   const active = getWentianArchiveDisplay(activeArchive);
-  const displayArchives = archives.slice(0, 8);
+  const displayArchives = archives;
   return `
     ${figBox("source-5-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
     ${figText("source-5-back", "‹", 28, 35, 28, 34, "#26211c", 500)}
@@ -717,19 +717,19 @@ function sourceArchiveSelectScreen() {
     ${figText("source-5-record", "◷ 对话记录", 282, 40, 88, 12, "#6f665d", 500, "right")}
     ${figLine("source-5-line-a", 0, 84, 390, "#eee8df")}
     ${figText("source-5-left", "◇ 剩余 1 条", 18, 101, 150, 12, "#9d8a62")}
-    ${figBox("source-5-profile-pill", 286, 92, 72, 34, "", "border-radius:17px;background:#fff;box-shadow:0 4px 12px rgba(70,45,25,.08);")}
-    ${figText("source-5-profile-text", `${escapeHtml(active.name)}⌄`, 296, 102, 52, 13, "#26211c", 500, "center")}
+    ${figBox("source-5-profile-pill", 258, 92, 110, 34, "", "border-radius:17px;background:#fff;box-shadow:0 4px 12px rgba(70,45,25,.08);")}
+    ${figText("source-5-profile-text", `${escapeHtml(active.name)}⌄`, 268, 102, 90, 13, "#26211c", 500, "center")}
     ${figLine("source-5-line-b", 0, 137, 390, "#eee8df")}
     ${figText("source-5-hello", `你好！我是许半仙`, 24, 205, 320, 27, "#c4a45a", 800)}
     ${figText("source-5-sub", "需要我为您做些什么？", 24, 246, 260, 15, "#aaa196")}
 
     ${figBox("source-5-overlay", 0, 0, 390, 844, "", "background:rgba(0,0,0,.38);")}
-    ${figBox("source-5-sheet", 0, 458, 390, 386, "", "border-radius:22px 22px 0 0;background:#fff;box-shadow:0 -12px 30px rgba(0,0,0,.14);")}
-    ${figBox("source-5-sheet-handle", 160, 472, 70, 5, "", "border-radius:3px;background:#eee9e2;")}
-    ${figText("source-5-sheet-title", "选择档案", 36, 498, 150, 25, "#1f1d1a", 800)}
-    ${figBox("source-5-sheet-count", 304, 498, 58, 30, "", "border-radius:8px;background:#f7f2ec;")}
-    ${figText("source-5-sheet-count-text", "已选 1/1", 304, 507, 58, 11, "#8b8176", 700, "center")}
-    ${figText("source-5-sheet-sub", "最多选择1张", 36, 536, 150, 15, "#8b8176", 400)}
+    ${figBox("source-5-sheet", 0, 334, 390, 510, "", "border-radius:22px 22px 0 0;background:#fff;box-shadow:0 -12px 30px rgba(0,0,0,.14);")}
+    ${figBox("source-5-sheet-handle", 160, 348, 70, 5, "", "border-radius:3px;background:#eee9e2;")}
+    ${figText("source-5-sheet-title", "选择档案", 36, 374, 150, 25, "#1f1d1a", 800)}
+    ${figBox("source-5-sheet-count", 292, 374, 70, 30, "", "border-radius:8px;background:#f7f2ec;")}
+    ${figText("source-5-sheet-count-text", `共 ${archives.length} 张`, 292, 383, 70, 11, "#8b8176", 700, "center")}
+    ${figText("source-5-sheet-sub", "选择一个档案接入对话", 36, 412, 180, 15, "#8b8176", 400)}
     <div class="wentian-archive-list">
     ${displayArchives.map((archive) => {
       const item = getWentianArchiveDisplay(archive);
@@ -737,12 +737,16 @@ function sourceArchiveSelectScreen() {
       return `
         <button class="wentian-archive-option ${selected ? "is-selected" : ""}" type="button" data-action="wentian-archive-pick" data-wentian-archive-option="1" data-archive-id="${escapeHtml(archive.id)}" aria-pressed="${selected ? "true" : "false"}">
           <span class="wentian-archive-avatar">${escapeHtml(item.name.slice(0, 1))}</span>
-          <span class="wentian-archive-name">${escapeHtml(item.name)}</span>
-          ${item.badge ? `<span class="wentian-archive-badge">${escapeHtml(item.badge)}</span>` : ""}
-          <span class="wentian-archive-gender">${item.gender}</span>
-          <span class="wentian-archive-tag">${escapeHtml(item.tag)}</span>
-          <span class="wentian-archive-date">${escapeHtml(item.datetime)}</span>
-          <span class="wentian-archive-pillars">${escapeHtml(item.pillars)}</span>
+          <span class="wentian-archive-main">
+            <span class="wentian-archive-title-row">
+              <span class="wentian-archive-name">${escapeHtml(item.name)}</span>
+              ${item.badge ? `<span class="wentian-archive-badge">${escapeHtml(item.badge)}</span>` : ""}
+              <span class="wentian-archive-gender">${item.gender}</span>
+              <span class="wentian-archive-tag">${escapeHtml(item.tag)}</span>
+            </span>
+            <span class="wentian-archive-date">${escapeHtml(item.datetime)}</span>
+            <span class="wentian-archive-pillars">${escapeHtml(item.pillars)}</span>
+          </span>
           <span class="wentian-archive-check">${selected ? "✓" : ""}</span>
         </button>
       `;
