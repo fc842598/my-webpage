@@ -1567,7 +1567,8 @@
     if (!value || typeof value !== 'string') return null;
     let text = value.trim();
     if (!text) return null;
-    text = text.replace(/^```(?:json)?/i, '').replace(/```$/i, '').trim();
+    text = text.replace(/^\uFEFF/, '').replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/i, '').trim();
+    text = text.replace(/^json\s*/i, '').trim();
     const start = text.indexOf('{');
     const end = text.lastIndexOf('}');
     if (start >= 0 && end > start) text = text.slice(start, end + 1);
@@ -1575,13 +1576,58 @@
     try {
       return JSON.parse(text);
     } catch (_) {
-      return null;
+      try {
+        return JSON.parse(text.replace(/,\s*([}\]])/g, '$1'));
+      } catch (__) {
+        return null;
+      }
     }
+  }
+
+  function decodeJsonFragment(value) {
+    const text = String(value || '').replace(/\r?\n/g, '\\n');
+    try {
+      return JSON.parse(`"${text}"`).trim();
+    } catch (_) {
+      return String(value || '')
+        .replace(/\\n/g, '\n')
+        .replace(/\\"/g, '"')
+        .replace(/\\\\/g, '\\')
+        .trim();
+    }
+  }
+
+  function looseJsonString(source, key) {
+    const match = String(source || '').match(new RegExp(`"${key}"\\s*:\\s*"((?:\\\\.|[^"\\\\])*)"`, 'i'));
+    return match ? decodeJsonFragment(match[1]) : '';
+  }
+
+  function looseAiCard(value) {
+    const text = String(value || '').trim();
+    if (!text || !/[{[]/.test(text) || !/"(title|content|summary|body|sections|profileBadge)"\s*:/.test(text)) return null;
+    const card = {};
+    const title = looseJsonString(text, 'title');
+    const profileBadge = looseJsonString(text, 'profileBadge');
+    const summary = looseJsonString(text, 'summary');
+    const body = looseJsonString(text, 'body') || looseJsonString(text, 'content');
+    const sectionSource = text.match(/"sections"\s*:\s*\[([\s\S]*?)\]\s*[,}]/i)?.[1] || '';
+    const sections = (sectionSource.match(/\{[\s\S]*?\}/g) || [])
+      .map((block) => ({
+        title: looseJsonString(block, 'title') || '解读',
+        content: looseJsonString(block, 'content') || looseJsonString(block, 'body') || looseJsonString(block, 'summary'),
+      }))
+      .filter((section) => section.title || section.content);
+    if (title) card.title = title;
+    if (profileBadge) card.profileBadge = profileBadge;
+    if (summary) card.summary = summary;
+    if (sections.length) card.sections = sections;
+    else if (body) card.body = body;
+    return (card.title || card.summary || card.body || card.sections || card.profileBadge) ? card : null;
   }
 
   function parsedAiCard(value) {
     const parsed = parseAiJson(value);
-    if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) return null;
+    if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) return looseAiCard(value);
     const card = parsed.card && typeof parsed.card === 'object' ? parsed.card : parsed;
     return (card.title || card.summary || card.body || card.content || card.sections || card.profileBadge)
       ? { ...card }
@@ -1592,11 +1638,14 @@
     if (!data) return data;
     if (typeof data === 'string') {
       const parsed = parseAiJson(data);
-      return parsed ? normalizeAiData(parsed) : { card: { body: data } };
+      const loose = parsed ? null : looseAiCard(data);
+      return parsed ? normalizeAiData(parsed) : (loose ? { card: loose } : { card: { body: data } });
     }
-    const parsedRoot = parseAiJson(data.finalAnswer || data.answer || data.result || data.text);
+    const rootText = data.finalAnswer || data.answer || data.result || data.text;
+    const parsedRoot = parseAiJson(rootText);
+    const looseRoot = parsedRoot ? null : looseAiCard(rootText);
     const parsedCard = parseAiJson(data.card);
-    const card = parsedCard || data.card || parsedRoot?.card || parsedRoot || {};
+    const card = parsedCard || data.card || parsedRoot?.card || parsedRoot || looseRoot || {};
     const next = { ...data, ...(parsedRoot?.card ? parsedRoot : {}) };
     if (card && typeof card === 'object' && !Array.isArray(card)) {
       next.card = { ...card };
@@ -1853,8 +1902,8 @@
     const sources = modules
       .map(([label, data]) => ({ label, text: aiCardText(data) }))
       .filter((item) => item.text);
-    if (overallCard.risk) sources.unshift({ label: '总览', text: cleanAiText(overallCard.risk) });
     const seen = new Set();
+    const risks = [];
     const pushRisk = (label, text) => {
       const value = trimText(cleanAiText(text), 110);
       const key = normalizeText(value).slice(0, 54);
@@ -1863,7 +1912,6 @@
       risks.push({ label, text: value });
     };
     if (overallCard.risk) pushRisk('总览', overallCard.risk);
-    const risks = [];
     sources.forEach((source) => {
       adviceRiskSentences(source.text).slice(0, 2).forEach((text) => {
         pushRisk(source.label, text);
