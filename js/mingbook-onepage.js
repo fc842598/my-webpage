@@ -22,6 +22,10 @@
     亥: 'mbp-fc-hai',
   };
   const fcZhi = ['寅', '卯', '辰', '巳', '午', '未', '申', '酉', '戌', '亥', '子', '丑'];
+  const fcDuiGong = {
+    子: '午', 丑: '未', 寅: '申', 卯: '酉', 辰: '戌', 巳: '亥',
+    午: '子', 未: '丑', 申: '寅', 酉: '卯', 戌: '辰', 亥: '巳',
+  };
   let fcActiveTab = '先天卦';
   let fcActiveAge = 1;
   let fcBirthYear = 1990;
@@ -943,6 +947,14 @@
       || fcCurrentChart?.yearEarthlyBranch
       || '';
     return yearBranch ? calcXiaoLianBranch(yearBranch, fcCurrentGender, age) : null;
+  }
+
+  function fcOppositeBranch(branch) {
+    return fcDuiGong[branch] || '';
+  }
+
+  function fcPalaceByBranch(chart, branch) {
+    return branch ? (chart?.palaces || []).find((palace) => palace.earthlyBranch === branch) || null : null;
   }
 
   function fcBuildYearCards(startYear = fcSequenceStartYear) {
@@ -1959,6 +1971,59 @@
     `;
   }
 
+  function palaceViewLabel(palace, branch = '') {
+    const name = normalizePalaceName(palace?.name || '');
+    if (name && branch) return `${name} · ${branch}`;
+    if (name) return name;
+    return branch ? `${branch}宫` : '未定';
+  }
+
+  function palaceStarBrief(palace) {
+    const majors = majorNames(palace).slice(0, 3);
+    if (majors.length) return majors.join('、');
+    const helpers = allSmallStars(palace).map((star) => star.name || star).filter(Boolean).slice(0, 2);
+    return helpers.length ? `辅星：${helpers.join('、')}` : '空宫';
+  }
+
+  function renderXiaoLianYearBlock(info) {
+    const lineText = info.liunian.lineNum
+      ? `${info.liunian.lineType || ''}${info.liunian.lineNum}爻`
+      : (info.liunian.period || '当年应期');
+    const readHint = info.oppositePalace
+      ? `小限看今年落点，对宫看应事对象。${info.oppositeLabel}要优先观察，结合大限背景落到现实安排。`
+      : '先完成排盘后，再显示小限落宫与对宫应事。';
+    return `
+      <div class="mbp-xiaolian-panel">
+        <div class="mbp-xiaolian-head">
+          <span>小流年</span>
+          <strong>${escapeHtml(`${info.year} ${info.yearGz} · ${info.age}岁`)}</strong>
+          <p>大限看十年背景，小流年看当年触发，对宫看外部牵动。</p>
+        </div>
+        <div class="mbp-xiaolian-grid">
+          <section>
+            <b>小限落宫</b>
+            <strong>${escapeHtml(info.xiaoLabel)}</strong>
+            <p>${escapeHtml(`${palaceDomain(info.xiaoPalace?.name || '')} · ${palaceStarBrief(info.xiaoPalace)}`)}</p>
+          </section>
+          <section class="is-opposite">
+            <b>对宫应事</b>
+            <strong>${escapeHtml(info.oppositeLabel)}</strong>
+            <p>${escapeHtml(`${palaceDomain(info.oppositePalace?.name || '')} · ${palaceStarBrief(info.oppositePalace)}`)}</p>
+          </section>
+          <section>
+            <b>流年卦线</b>
+            <strong>${escapeHtml(info.liunian.name || '待排盘')}</strong>
+            <p>${escapeHtml(lineText)}</p>
+          </section>
+        </div>
+        <div class="mbp-xiaolian-callout">
+          <b>读法</b>
+          <p>${escapeHtml(readHint)}</p>
+        </div>
+      </div>
+    `;
+  }
+
   function renderLuckChapterBlock(data, fallbackText) {
     const bundle = getChartBundle();
     const chart = bundle.chart || state.chart;
@@ -1973,8 +2038,14 @@
     const liunian = fcLiunianSeq?.[currentAge] || {};
     const yearGz = liunian.yearGanzhi ? `${liunian.yearGanzhi.stem || ''}${liunian.yearGanzhi.branch || ''}` : ganzhiYear(year);
     const xiaoLianBranch = fcResolveXiaoLianBranch(currentAge);
-    const xiaoLianPalace = (chart?.palaces || []).find((palace) => palace.earthlyBranch === xiaoLianBranch);
-    const yearFocus = xiaoLianPalace?.name ? `${xiaoLianPalace.name} · ${palaceDomain(xiaoLianPalace.name)}` : domain;
+    const xiaoLianPalace = fcPalaceByBranch(chart, xiaoLianBranch);
+    const oppositeBranch = fcOppositeBranch(xiaoLianBranch);
+    const oppositePalace = fcPalaceByBranch(chart, oppositeBranch);
+    const xiaoLabel = palaceViewLabel(xiaoLianPalace, xiaoLianBranch);
+    const oppositeLabel = palaceViewLabel(oppositePalace, oppositeBranch);
+    const yearFocus = oppositePalace?.name
+      ? `小限${normalizePalaceName(xiaoLianPalace?.name || `${xiaoLianBranch}宫`)} · 对宫${normalizePalaceName(oppositePalace.name)}`
+      : (xiaoLianPalace?.name ? `${xiaoLianPalace.name} · ${palaceDomain(xiaoLianPalace.name)}` : domain);
     const sections = aiSections(data);
     const summary = insightSummary(data, fallbackText || `${palaceName}主${domain}，这十年先稳住根基，再看机会扩张。`, 170);
     const summarySentences = splitReadableSentences(summary);
@@ -2013,6 +2084,16 @@
         { title: '风险', text: risk },
         { title: '今年重点', text: yearPoint },
       ])}
+      ${renderXiaoLianYearBlock({
+        age: currentAge,
+        year,
+        yearGz,
+        liunian,
+        xiaoPalace: xiaoLianPalace,
+        xiaoLabel,
+        oppositePalace,
+        oppositeLabel,
+      })}
       <div class="mbp-luck-bottom">
         <section>
           <h4>行动建议</h4>
