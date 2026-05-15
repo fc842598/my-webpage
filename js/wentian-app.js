@@ -95,7 +95,7 @@ const screenFlowHotspots = {
   24: [[18, 44, 48, 48, "screen-22"]],
   25: [[302, 54, 70, 46, "screen-26"], [12, 784, 76, 72, "screen-1"], [109, 784, 76, 72, "screen-25"], [207, 784, 76, 72, "screen-3"], [304, 784, 76, 72, "screen-31"]],
   26: [[18, 40, 96, 54, "screen-1"]],
-  27: [[18, 40, 96, 54, "screen-26"], [36, 739, 318, 44, "screen-4"]],
+  27: [[18, 40, 96, 54, "screen-26"]],
   28: [[18, 44, 48, 48, "screen-31"], [42, 735, 306, 58, "screen-29"]],
   29: [[18, 44, 48, 48, "screen-31"], [22, 178, 346, 70, "screen-30"], [22, 257, 346, 70, "screen-30"], [22, 336, 346, 70, "screen-30"], [34, 738, 322, 58, "screen-30"]],
   30: [[18, 44, 48, 48, "screen-33"]],
@@ -892,6 +892,16 @@ const WENTIAN_LANGUAGE_STORAGE_KEY = "wentian-app-language-v1";
 const WENTIAN_PROFILE_STORAGE_KEY = "wentian-app-profile-v1";
 const WENTIAN_MEMBER_PRODUCT_KEY = "monthly_member";
 const WENTIAN_PAYMENT_POLL_MS = 3500;
+const WENTIAN_CHART_AI_STORAGE_KEY = "wentian-app-chart-ai-v1";
+const WENTIAN_CHART_AI_TASKS = [
+  { module: "overall", label: "命格总览" },
+  { module: "current_luck", label: "大限流年" },
+  { module: "shengong", label: "身宫批命" },
+  { module: "hunyin", label: "婚姻批命" },
+  { module: "jiankang", label: "健康批命" },
+  { module: "caiyun", label: "财运批命" },
+  { module: "shiye", label: "事业批命" },
+];
 const WENTIAN_LANGUAGE_OPTIONS = [
   { code: "zh-Hans", label: "简体中文", htmlLang: "zh-CN" },
   { code: "zh-Hant", label: "繁體中文", htmlLang: "zh-TW" },
@@ -927,6 +937,14 @@ const wentianPaymentState = {
   mockMode: false,
   productName: "问天会员月卡",
   amountYuan: "19.90",
+};
+const wentianChartAiState = {
+  chartRecordId: "",
+  status: "idle",
+  runningModule: "",
+  results: {},
+  error: "",
+  updatedAt: "",
 };
 const WENTIAN_BRANCH_POSITIONS = {
   "巳": [0, 0],
@@ -1599,16 +1617,44 @@ function buildWentianChartPayload(chart, norm) {
   const findPalace = (name) => palacesSummary.find((p) => p.name === name || p.name === `${name}宫`) || null;
   const sizhu = extractWentianPillars(chart);
   const birthDate = norm?.date ? formatWentianDateTime(norm.date) : `${chart?.solarDate || ""} 00:00`;
+  const currentYear = new Date().getFullYear();
+  const birthYear = norm?.date?.getFullYear?.() || Number(String(chart?.solarDate || "").slice(0, 4)) || WENTIAN_XU_CHART_BASE.birthYear;
+  const realCurrentAge = birthYear ? currentYear - birthYear + 1 : 0;
+  const yearMutagens = palacesSummary.flatMap((palace) => [
+    ...(palace.majorStars || []),
+    ...(palace.minorStars || []),
+  ].filter((star) => star?.mutagen).map((star) => ({
+    star: star.name || "",
+    type: star.mutagen || "",
+    palace: palace.name || "",
+  })));
+  const dayunTable = palacesSummary.map((palace) => {
+    const range = String(palace.decadal?.range || "").match(/\d+/g);
+    if (!range || range.length < 2) return null;
+    return {
+      ageStart: Number(range[0]),
+      ageEnd: Number(range[1]),
+      range: `${range[0]}-${range[1]}`,
+      palaceName: palace.name,
+      palaceBranch: palace.branch,
+      palaceStem: palace.stem,
+      majorStars: palace.majorStars,
+    };
+  }).filter(Boolean);
+  const currentDecade = dayunTable.find((item) => realCurrentAge >= item.ageStart && realCurrentAge <= item.ageEnd) || null;
   return {
     ...WENTIAN_XU_CHART_BASE,
     chartRecordId: getWentianChartRecordId(),
     gender: norm?.gender || "male",
     birthDate,
     solarTime: birthDate,
-    birthYear: norm?.date?.getFullYear?.() || Number(String(chart?.solarDate || "").slice(0, 4)) || WENTIAN_XU_CHART_BASE.birthYear,
+    birthYear,
     birthMonth: norm?.date ? norm.date.getMonth() + 1 : WENTIAN_XU_CHART_BASE.birthMonth,
     birthDay: norm?.date?.getDate?.() || WENTIAN_XU_CHART_BASE.birthDay,
     birthHour: norm?.date?.getHours?.() || WENTIAN_XU_CHART_BASE.birthHour,
+    realCurrentAge,
+    activeAge: realCurrentAge || 1,
+    currentYear,
     timeIndex: norm?.timeIndex,
     city: norm?.city || "",
     fiveElementsClass: chart?.fiveElementsClass || WENTIAN_XU_CHART_BASE.fiveElementsClass,
@@ -1624,20 +1670,10 @@ function buildWentianChartPayload(chart, norm) {
     spousePalace: findPalace("夫妻"),
     happinessPalace: findPalace("福德"),
     illnessPalace: findPalace("疾厄"),
+    yearMutagens,
     palacesSummary,
-    dayunTable: palacesSummary.map((palace) => {
-      const range = String(palace.decadal?.range || "").match(/\d+/g);
-      if (!range || range.length < 2) return null;
-      return {
-        ageStart: Number(range[0]),
-        ageEnd: Number(range[1]),
-        range: `${range[0]}-${range[1]}`,
-        palaceName: palace.name,
-        palaceBranch: palace.branch,
-        palaceStem: palace.stem,
-        majorStars: palace.majorStars,
-      };
-    }).filter(Boolean),
+    currentDecade,
+    dayunTable,
     sizhu,
   };
 }
@@ -1647,6 +1683,160 @@ function getWentianChartPayload() {
   const saved = getWentianSavedChart();
   if (saved?.chartData) return { ...saved.chartData, chartRecordId };
   return { ...WENTIAN_XU_CHART_BASE, chartRecordId };
+}
+
+function syncWentianChartAiStateFromStorage() {
+  const chartRecordId = getWentianChartPayload().chartRecordId;
+  if (wentianChartAiState.chartRecordId === chartRecordId) return;
+  Object.assign(wentianChartAiState, {
+    chartRecordId,
+    status: "idle",
+    runningModule: "",
+    results: {},
+    error: "",
+    updatedAt: "",
+  });
+  try {
+    const all = JSON.parse(localStorage.getItem(WENTIAN_CHART_AI_STORAGE_KEY) || "{}");
+    const saved = all?.[chartRecordId];
+    if (saved && typeof saved === "object") {
+      const resultCount = Object.keys(saved.results || {}).length;
+      Object.assign(wentianChartAiState, {
+        chartRecordId,
+        status: saved.status === "running" ? (resultCount ? "done" : "idle") : (saved.status || "done"),
+        runningModule: "",
+        results: saved.results || {},
+        error: saved.error || "",
+        updatedAt: saved.updatedAt || "",
+      });
+    }
+  } catch (_err) {}
+}
+
+function saveWentianChartAiState() {
+  try {
+    const all = JSON.parse(localStorage.getItem(WENTIAN_CHART_AI_STORAGE_KEY) || "{}");
+    all[wentianChartAiState.chartRecordId] = {
+      status: wentianChartAiState.status,
+      results: wentianChartAiState.results,
+      error: wentianChartAiState.error,
+      updatedAt: wentianChartAiState.updatedAt,
+    };
+    localStorage.setItem(WENTIAN_CHART_AI_STORAGE_KEY, JSON.stringify(all));
+  } catch (_err) {}
+}
+
+function resetWentianChartAiState(chartRecordId = "") {
+  Object.assign(wentianChartAiState, {
+    chartRecordId: chartRecordId || getWentianChartPayload().chartRecordId,
+    status: "idle",
+    runningModule: "",
+    results: {},
+    error: "",
+    updatedAt: "",
+  });
+  saveWentianChartAiState();
+}
+
+function normalizeWentianAiText(value) {
+  return String(value || "")
+    .replace(/[#*_`>\-]+/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function getWentianAiCard(data) {
+  return data?.card || data?.data?.card || data?.result?.card || data || {};
+}
+
+function getWentianAiTitle(data, fallback = "AI解读") {
+  const card = getWentianAiCard(data);
+  return normalizeWentianAiText(card.title || card.name || fallback).slice(0, 24) || fallback;
+}
+
+function getWentianAiSummary(data, max = 120) {
+  const card = getWentianAiCard(data);
+  const sections = Array.isArray(card.sections) ? card.sections : [];
+  const sectionText = sections
+    .map((section) => [section.title, section.content || section.body].filter(Boolean).join("："))
+    .filter(Boolean)
+    .join(" ");
+  const points = Array.isArray(card.points) ? card.points.join(" ") : "";
+  const text = normalizeWentianAiText(card.summary || card.body || card.text || sectionText || points || data?.text || data?.content);
+  return (text || "已生成，可继续向许半仙追问细节。").slice(0, max);
+}
+
+function combineWentianAiSummaries(modules, max = 132) {
+  const text = modules
+    .map((moduleKey) => getWentianAiSummary(wentianChartAiState.results[moduleKey], 70))
+    .filter(Boolean)
+    .join(" ");
+  return (text || "等待专题模块生成。").slice(0, max);
+}
+
+function getWentianChartAiChapters() {
+  syncWentianChartAiStateFromStorage();
+  const results = wentianChartAiState.results || {};
+  if (!Object.keys(results).length) return [];
+  return [
+    ["卷一", getWentianAiTitle(results.overall, "命格总览"), getWentianAiSummary(results.overall, 136)],
+    ["卷二", "专题批命", combineWentianAiSummaries(["shengong", "hunyin", "jiankang"], 136)],
+    ["卷三", getWentianAiTitle(results.current_luck, "大限流年"), getWentianAiSummary(results.current_luck, 136)],
+    ["卷四", "财运事业", combineWentianAiSummaries(["caiyun", "shiye"], 136)],
+    ["卷五", "行动建议", getWentianAiSummary(results.overall, 116)],
+  ];
+}
+
+function getWentianZiweiScreenHeight() {
+  const chapters = getWentianChartAiChapters();
+  if (!chapters.length) return 867;
+  return Math.max(1040, 770 + chapters.length * 112);
+}
+
+async function callWentianChartAiModule(moduleKey, chartData) {
+  return wentianPostJson("/api/ai/run", {
+    moduleKey,
+    chartData,
+    extraParams: {},
+  }, 120000, 1);
+}
+
+function refreshWentianChartAiScreen() {
+  if (state.route === "screen-27") navigate("screen-27", false);
+}
+
+async function decodeWentianChartAi() {
+  syncWentianChartAiStateFromStorage();
+  if (wentianChartAiState.status === "running") return;
+  const chartData = getWentianChartPayload();
+  Object.assign(wentianChartAiState, {
+    chartRecordId: chartData.chartRecordId,
+    status: "running",
+    runningModule: "",
+    results: {},
+    error: "",
+    updatedAt: "",
+  });
+  refreshWentianChartAiScreen();
+  let success = 0;
+  for (const task of WENTIAN_CHART_AI_TASKS) {
+    wentianChartAiState.runningModule = task.module;
+    refreshWentianChartAiScreen();
+    try {
+      wentianChartAiState.results[task.module] = await callWentianChartAiModule(task.module, chartData);
+      success += 1;
+      saveWentianChartAiState();
+    } catch (error) {
+      wentianChartAiState.error = error.message || `${task.label}生成失败`;
+    }
+  }
+  Object.assign(wentianChartAiState, {
+    status: success ? "done" : "error",
+    runningModule: "",
+    updatedAt: new Date().toISOString(),
+  });
+  saveWentianChartAiState();
+  refreshWentianChartAiScreen();
 }
 
 function getWentianArchiveDisplay(archive) {
@@ -2400,6 +2590,7 @@ async function submitWentianChartForm() {
       : lib.astrolabeBySolarDate(norm.dateStr, norm.timeIndex, genderText, true);
     resetWentianChartRecordId();
     const chartData = buildWentianChartPayload(chart, norm);
+    resetWentianChartAiState(chartData.chartRecordId);
 
     saveWentianChart({
       archiveId: `archive-${chartData.chartRecordId}`,
@@ -4831,23 +5022,58 @@ function getWentianFallbackChartState() {
   };
 }
 
-function sourceZiweiMingpanScreenFromChart(saved) {
-  const focusPalace = (saved.chart?.palaces || []).find((p) => p.name === "命宫");
+function sourceZiweiAiDecodePanel() {
+  syncWentianChartAiStateFromStorage();
+  const chapters = getWentianChartAiChapters();
+  const isRunning = wentianChartAiState.status === "running";
+  const hasResults = chapters.length > 0;
+  const doneCount = Object.keys(wentianChartAiState.results || {}).length;
+  const activeTask = WENTIAN_CHART_AI_TASKS.find((task) => task.module === wentianChartAiState.runningModule);
+  const panelHeight = hasResults ? 176 + chapters.length * 112 : 214;
+  const buttonText = isRunning ? `生成中 ${doneCount}/${WENTIAN_CHART_AI_TASKS.length}` : (hasResults ? "重新生成命盘解读" : "生成命盘AI解读");
+  const statusText = isRunning
+    ? `正在生成：${activeTask?.label || "AI解读"}`
+    : wentianChartAiState.error
+      ? wentianChartAiState.error
+      : hasResults
+        ? "已接入命书长页同款AI解读"
+        : "调用命书长页手机版解读，生成五卷摘要。";
+
   return `
-    ${figBox("source-27-bg", 0, 0, 390, 867, "", "background:#fbf7ef;")}
+    ${figBox("source-27-ai-card", 15, 608, 360, panelHeight, "", "border:1px solid #e0dcd3;border-radius:16px;background:#fff;box-shadow:0 4px 14px rgba(70,45,25,.06);")}
+    ${figText("source-27-ai-title", "✦ 命盘 · AI解读", 34, 630, 220, 22, "#3a3732", 800)}
+    ${figText("source-27-ai-status", escapeHtml(statusText), 34, 660, 304, 14, wentianChartAiState.error ? "#a64032" : "#8b857d", 600, "left", "line-height:1.45;")}
+    ${figBox("source-27-ai-button", 32, 700, 205, 42, "", `border-radius:8px;background:${isRunning ? "#c7b69e" : "#ad3b35"};`)}
+    ${figButton("source-27-ai-button-hit", 32, 700, 205, 42, `data-action="wentian-chart-ai-decode" ${isRunning ? "disabled" : ""}`)}
+    ${figText("source-27-ai-button-text", escapeHtml(buttonText), 32, 712, 205, 16, "#fff", 800, "center")}
+    ${figBox("source-27-ai-ask", 248, 700, 106, 42, "", "border:1px solid #e2d5c2;border-radius:8px;background:#fffaf3;")}
+    ${figButton("source-27-ai-ask-hit", 248, 700, 106, 42, 'data-route="screen-4"')}
+    ${figText("source-27-ai-ask-text", "追问", 248, 713, 106, 15, "#8f3d30", 800, "center")}
+    ${hasResults ? chapters.map(([vol, title, body], index) => {
+      const y = 770 + index * 112;
+      return `
+        ${figLine(`source-27-ai-line-${index}`, 32, y - 14, 324, "#eee4d6")}
+        ${figText(`source-27-ai-vol-${index}`, vol, 34, y, 42, 16, "#b88c33", 900)}
+        ${figText(`source-27-ai-ch-title-${index}`, escapeHtml(title), 82, y, 240, 16, "#2b251f", 900)}
+        ${figText(`source-27-ai-ch-body-${index}`, escapeHtml(body), 82, y + 28, 244, 13, "#6d6257", 600, "left", "line-height:1.55;")}
+      `;
+    }).join("") : `
+      ${figLine("source-27-ai-line-0", 32, 760, 324, "#eee4d6")}
+      ${figText("source-27-ai-copy", "排盘完成后点左侧按钮，即可生成命格总览、专题批命、大限流年和行动建议。", 34, 784, 310, 15, "#8b857d", 500, "left", "line-height:1.62;")}
+    `}
+  `;
+}
+
+function sourceZiweiMingpanScreenFromChart(saved) {
+  const screenHeight = getWentianZiweiScreenHeight();
+  return `
+    ${figBox("source-27-bg", 0, 0, 390, screenHeight, "", "background:#fbf7ef;")}
     ${figButton("source-27-back-hit", 18, 40, 96, 54, 'data-action="back"')}
     ${figText("source-27-back", "‹ 返回", 28, 54, 92, 26, "#9f2417", 500)}
     ${figText("source-27-title", "紫微命盘", 0, 58, 390, 25, "#3b3934", 800, "center")}
     ${figText("source-27-more", "•••", 330, 56, 42, 22, "#3b3934", 800, "center")}
     ${renderWentianClassicChart(saved)}
-    ${figBox("source-27-ai-card", 15, 608, 360, 190, "", "border:1px solid #e0dcd3;border-radius:16px;background:#fff;box-shadow:0 4px 14px rgba(70,45,25,.06);")}
-    ${figText("source-27-ai-title", `✦ ${focusPalace?.name || "命盘"} · AI解析`, 34, 630, 220, 22, "#3a3732", 800)}
-    ${figText("source-27-ai-close", "×", 334, 624, 26, 30, "#66615b", 500, "center")}
-    ${figLine("source-27-ai-line-1", 32, 666, 324, "#dedbd5")}
-    ${figText("source-27-ai-copy", "命盘已由网站排盘算法生成，并同步给许半仙。\n可继续提问做深度解析。", 32, 684, 322, 16, "#8b857d", 400, "left", "line-height:1.62;")}
-    ${figBox("source-27-ai-button", 36, 739, 318, 44, "", "border-radius:8px;background:#ad3b35;")}
-    ${figButton("source-27-ai-button-hit", 36, 739, 318, 44, 'data-route="screen-4"')}
-    ${figText("source-27-ai-button-text", "☵  向AI提问", 36, 751, 318, 18, "#fff", 700, "center")}
+    ${sourceZiweiAiDecodePanel()}
   `;
 }
 
@@ -4945,7 +5171,7 @@ function renderConvertedScreen(no) {
     return figPhone(`screen-${screen.no}`, `${String(screen.no).padStart(2, "0")} ${screen.title}`, `
       ${sourceZiweiMingpanScreen()}
       ${convertedFlowHotspots(screen)}
-    `, 867, "converted source-screen no-status-shift", false);
+    `, getWentianZiweiScreenHeight(), "converted source-screen no-status-shift", false);
   }
   const polishedScreen = renderWentianPolishedScreen(screen);
   if (polishedScreen) {
@@ -5523,6 +5749,10 @@ document.addEventListener("click", (event) => {
   }
   if (action === "wentian-pay-done") {
     navigate("screen-31");
+    return;
+  }
+  if (action === "wentian-chart-ai-decode") {
+    decodeWentianChartAi();
     return;
   }
   if (action === "wentian-chart-gender") {
