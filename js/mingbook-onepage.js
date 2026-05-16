@@ -76,6 +76,7 @@
   let selectedCity = null;
   let clientRecordsCache = [];
   let html2PdfPromise = null;
+  let inputGuideTimer = null;
 
   const aiTasks = [
     { module: 'overall', label: '整体批命' },
@@ -611,11 +612,32 @@
     }
   }
 
-  function showFormError(message) {
+  function showFormError(message, tone = 'error') {
     const error = $('#mbpFormError');
     if (!error) return;
     error.textContent = message || '';
     error.style.display = message ? 'block' : 'none';
+    error.classList.toggle('is-guide', !!message && tone === 'guide');
+  }
+
+  function guideUserToBirthForm(message) {
+    const form = $('#mbpBirthForm');
+    const formCard = form?.querySelector('.mbp-form-card');
+    const prompt = $('.mbp-input-prompt');
+    setDecodeStatus(message);
+    showFormError(message, 'guide');
+    form?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    formCard?.classList.remove('is-input-guided');
+    prompt?.classList.remove('is-input-guided');
+    void formCard?.offsetWidth;
+    formCard?.classList.add('is-input-guided');
+    prompt?.classList.add('is-input-guided');
+    window.clearTimeout(inputGuideTimer);
+    inputGuideTimer = window.setTimeout(() => {
+      formCard?.classList.remove('is-input-guided');
+      prompt?.classList.remove('is-input-guided');
+    }, 1800);
+    $('#mbpYear')?.focus({ preventScroll: true });
   }
 
   function collectProfileFromForm() {
@@ -3064,12 +3086,7 @@
   function ensureChartReady() {
     if (state.chartReady && state.chartConfirmedKey && state.chartConfirmedKey === profileHistoryKey(state.profile)) return true;
     const message = '请先输入出生信息，并点击“开始排盘”生成命盘后再批命。';
-    setDecodeStatus(message);
-    showFormError(message);
-    window.alert?.(message);
-    $('#mbpBirthForm')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    const nameInput = $('#mbpName');
-    if (nameInput && !nameInput.value.trim()) nameInput.focus({ preventScroll: true });
+    guideUserToBirthForm(message);
     return false;
   }
 
@@ -3077,7 +3094,7 @@
     if (!ensureChartReady()) return false;
     const bundle = getChartBundle();
     if (bundle.error) {
-      alert(bundle.error);
+      guideUserToBirthForm(bundle.error);
       return false;
     }
     const task = taskByModule(moduleKey);
@@ -3131,11 +3148,11 @@
   }
 
   async function decodeReports() {
-    if (!ensureChartReady()) return;
+    if (!ensureChartReady()) return false;
     const bundle = getChartBundle();
     if (bundle.error) {
-      alert(bundle.error);
-      return;
+      guideUserToBirthForm(bundle.error);
+      return false;
     }
     const btn = $('#mbpDecodeBtn');
     if (btn) {
@@ -3189,13 +3206,14 @@
       btn.textContent = successCount ? '重新生成' : '重试生成';
     }
     setDecodeAllButtonsBusy(false);
+    return successCount > 0;
   }
 
   function generateCurveChapter() {
     if (!ensureChartReady()) return;
     const bundle = getChartBundle();
     if (bundle.error) {
-      alert(bundle.error);
+      guideUserToBirthForm(bundle.error);
       return false;
     }
     state.decoded = true;
@@ -3215,7 +3233,7 @@
       if (await decodeSingleModule(moduleKey)) success += 1;
     }
     setDecodeStatus(success ? `专题批命已完成 ${success}/${modules.length} 项。` : '专题批命生成失败，请稍后重试。');
-    scrollToReportChapter(1);
+    if (success) scrollToReportChapter(1);
     return success > 0;
   }
 
@@ -3626,8 +3644,7 @@
     });
 
     $('#mbpDecodeBtn')?.addEventListener('click', async () => {
-      await decodeReports();
-      scrollToReportChapter(0);
+      if (await decodeReports()) scrollToReportChapter(0);
     });
 
     document.querySelectorAll('[data-ai-module]').forEach((button) => {
@@ -3646,16 +3663,14 @@
       if (handleCurvePanelClick(event)) return;
       const allButton = event.target.closest('[data-decode-all]');
       if (allButton) {
-        await decodeReports();
-        scrollToReportChapter(0);
+        if (await decodeReports()) scrollToReportChapter(0);
         return;
       }
       const moduleButton = event.target.closest('[data-report-module]');
       if (moduleButton) {
         const chapter = moduleButton.closest('[data-report-chapter]');
         const chapterIndex = Number(chapter?.dataset.reportChapter) || 0;
-        await decodeSingleModule(moduleButton.dataset.reportModule);
-        scrollToReportChapter(chapterIndex);
+        if (await decodeSingleModule(moduleButton.dataset.reportModule)) scrollToReportChapter(chapterIndex);
         return;
       }
       const actionButton = event.target.closest('[data-report-action]');
