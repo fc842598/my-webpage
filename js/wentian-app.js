@@ -26,8 +26,8 @@ const convertedScreens = [
   { no: 7, title: "AI回复", active: "问天AI", ai: "reply" },
   { no: 8, title: "AI长文解读", active: "问天AI", sections: ["核心结论", "性格优势", "隐性风险", "事业建议", "感情建议", "财运建议", "行动方案"] },
   { no: 9, title: "对话记录", active: "问天AI", modalTitle: "对话记录", modalItems: ["新的对话 15:18", "新的对话 22:06"], next: "screen-7" },
-  { no: 10, title: "合盘类型", cards: [["情侣合盘", "合盘深度解析｜情感契合度｜冲突化解建议"], ["合盘主视觉", ""]], button: ["开始合盘对话", "screen-11"] },
-  { no: 11, title: "选择合盘档案", modalTitle: "选择合盘档案", modalItems: ["谢｜男｜阳历", "命主｜女｜阴历"], next: "screen-25" },
+  { no: 10, title: "合盘类型", active: "首页", cards: [["情侣合盘", "合盘深度解析｜情感契合度｜冲突化解建议"], ["合盘主视觉", ""]], button: ["开始合盘", "screen-11"] },
+  { no: 11, title: "选择合盘档案", active: "首页", modalTitle: "选择合盘档案", modalItems: ["谢｜男｜阳历", "命主｜女｜阴历"], next: "screen-49" },
   { no: 12, title: "随机提问", cards: [["今日适合问什么？", "事业方向 / 感情状态 / 近期机会"], ["换一批问题", ""]], button: ["开始问天", "screen-4"] },
   { no: 13, title: "抽签", active: "活动", cards: [["抽签", "静心默念问题，抽取一支签文。"]], button: ["开始抽签", "screen-14"] },
   { no: 14, title: "抽签中", active: "活动", cards: [["抽签中", "签筒正在摇动，请稍候。"]], button: ["查看结果", "screen-15"] },
@@ -64,7 +64,8 @@ const convertedScreens = [
   { no: 45, title: "地脉道教程", active: "活动" },
   { no: 46, title: "六壬法", active: "活动" },
   { no: 47, title: "六壬法教程", active: "活动" },
-  { no: 48, title: "支付记录", active: "我的" }
+  { no: 48, title: "支付记录", active: "我的" },
+  { no: 49, title: "合盘结果", active: "首页" }
 ];
 
 const convertedByNo = new Map(convertedScreens.map((screen) => [screen.no, screen]));
@@ -80,7 +81,7 @@ const screenFlowHotspots = {
   8: [[18, 44, 48, 48, "screen-7"]],
   9: [[18, 44, 48, 48, "screen-4"], [278, 44, 84, 48, "screen-4"], [20, 118, 350, 72, "screen-7"], [20, 198, 350, 72, "screen-7"], [20, 278, 350, 72, "screen-7"]],
   10: [[18, 44, 48, 48, "screen-1"], [24, 165, 342, 90, "screen-11"], [24, 270, 342, 90, "screen-11"], [24, 375, 342, 90, "screen-11"]],
-  11: [[18, 44, 48, 48, "screen-10"], [20, 120, 350, 88, "screen-12"], [20, 220, 350, 88, "screen-12"], [42, 742, 306, 56, "screen-12"], [220, 708, 108, 44, "screen-12"]],
+  11: [[18, 44, 48, 48, "screen-10"]],
   12: [[18, 44, 48, 48, "screen-4"], [22, 150, 346, 72, "screen-4"], [116, 690, 158, 54, "screen-4"]],
   13: [[18, 44, 48, 48, "screen-1"], [82, 620, 226, 70, "screen-14"]],
   14: [[65, 570, 260, 90, "screen-15"]],
@@ -948,6 +949,7 @@ const WENTIAN_UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f
 const WENTIAN_CHART_STORAGE_KEY = "wentian-app-current-chart-v1";
 const WENTIAN_ARCHIVES_STORAGE_KEY = "wentian-app-archives-v1";
 const WENTIAN_SELECTED_ARCHIVE_KEY = "wentian-app-selected-archive-id";
+const WENTIAN_HEPAN_SELECTION_KEY = "wentian-app-hepan-selected-ids";
 const WENTIAN_CLIENT_ID_KEY = "ziwei_client_id";
 const WENTIAN_LANGUAGE_STORAGE_KEY = "wentian-app-language-v1";
 const WENTIAN_PROFILE_STORAGE_KEY = "wentian-app-profile-v1";
@@ -986,6 +988,7 @@ let wentianArchiveDraftId = null;
 let wentianArchiveRemoteLoaded = false;
 let wentianArchiveRemotePromise = null;
 let wentianLanguageDraft = null;
+let wentianHepanSelectedIds = null;
 let wentianChartCalMode = "solar";
 let wentianChartCity = null;
 let wentianMemberStatusPromise = null;
@@ -1066,6 +1069,28 @@ const WENTIAN_BRANCH_POSITIONS = {
   "亥": [3, 3],
 };
 const WENTIAN_SHICHEN = ["子", "丑", "寅", "卯", "辰", "巳", "午", "未", "申", "酉", "戌", "亥"];
+const WENTIAN_HEPAN_LIUHE = {
+  "子": "丑", "丑": "子",
+  "寅": "亥", "亥": "寅",
+  "卯": "戌", "戌": "卯",
+  "辰": "酉", "酉": "辰",
+  "巳": "申", "申": "巳",
+  "午": "未", "未": "午",
+};
+const WENTIAN_HEPAN_TRIADS = [
+  ["申", "子", "辰"],
+  ["亥", "卯", "未"],
+  ["寅", "午", "戌"],
+  ["巳", "酉", "丑"],
+];
+const WENTIAN_STEM_ELEMENTS = {
+  "甲": "木", "乙": "木",
+  "丙": "火", "丁": "火",
+  "戊": "土", "己": "土",
+  "庚": "金", "辛": "金",
+  "壬": "水", "癸": "水",
+};
+const WENTIAN_ELEMENT_GENERATES = { "木": "火", "火": "土", "土": "金", "金": "水", "水": "木" };
 
 function getWentianClassicRelations(activeBranch) {
   const activeIndex = WENTIAN_SHICHEN.indexOf(activeBranch);
@@ -2348,6 +2373,133 @@ function getWentianArchiveDisplay(archive) {
     pillars: pillars || "辛未 庚寅 丁巳 辛亥",
     tag: "四柱八字",
     badge: form.isDefault ? "默认" : "",
+  };
+}
+
+function clampWentianScore(value) {
+  return Math.max(35, Math.min(96, Math.round(value)));
+}
+
+function getWentianHepanSelectedIds(archives = getWentianArchiveList()) {
+  let hasSavedSelection = true;
+  if (!Array.isArray(wentianHepanSelectedIds)) {
+    try {
+      const raw = localStorage.getItem(WENTIAN_HEPAN_SELECTION_KEY);
+      hasSavedSelection = raw !== null;
+      const saved = raw ? JSON.parse(raw) : [];
+      wentianHepanSelectedIds = Array.isArray(saved) ? saved : [];
+    } catch (_err) {
+      hasSavedSelection = false;
+      wentianHepanSelectedIds = [];
+    }
+  }
+  const archiveIds = archives.map((archive) => archive.id);
+  const selected = wentianHepanSelectedIds.filter((id) => archiveIds.includes(id)).slice(0, 2);
+  if (!hasSavedSelection) {
+    for (const id of archiveIds) {
+      if (selected.length >= 2) break;
+      if (!selected.includes(id)) selected.push(id);
+    }
+  }
+  wentianHepanSelectedIds = selected;
+  return selected;
+}
+
+function saveWentianHepanSelectedIds(ids) {
+  wentianHepanSelectedIds = ids.slice(0, 2);
+  try {
+    localStorage.setItem(WENTIAN_HEPAN_SELECTION_KEY, JSON.stringify(wentianHepanSelectedIds));
+  } catch (_err) {}
+}
+
+function toggleWentianHepanArchive(id) {
+  const archives = getWentianArchiveList();
+  if (!archives.some((archive) => archive.id === id)) return;
+  let ids = getWentianHepanSelectedIds(archives);
+  if (ids.includes(id)) ids = ids.filter((item) => item !== id);
+  else ids = ids.length >= 2 ? [ids[1], id].filter(Boolean) : [...ids, id];
+  saveWentianHepanSelectedIds(ids);
+  navigate("screen-11", false);
+}
+
+function confirmWentianHepanSelection() {
+  const ids = getWentianHepanSelectedIds();
+  if (ids.length < 2) return;
+  saveWentianHepanSelectedIds(ids);
+  navigate("screen-49");
+}
+
+function getWentianHepanBranchScore(a, b) {
+  if (!a || !b) return { score: 0, label: "资料不足" };
+  if (a === b) return { score: 5, label: `${a}${b}同气，容易理解彼此` };
+  if (WENTIAN_HEPAN_LIUHE[a] === b) return { score: 16, label: `${a}${b}六合，吸引力强` };
+  const ai = WENTIAN_SHICHEN.indexOf(a);
+  const bi = WENTIAN_SHICHEN.indexOf(b);
+  if (ai >= 0 && bi >= 0 && Math.abs(ai - bi) === 6) return { score: -18, label: `${a}${b}相冲，需要定规则` };
+  if (WENTIAN_HEPAN_TRIADS.some((group) => group.includes(a) && group.includes(b))) return { score: 11, label: `${a}${b}三合同局，合作感较好` };
+  return { score: 1, label: `${a}${b}平稳，可靠相处养成默契` };
+}
+
+function getWentianElementScore(a, b) {
+  const ea = WENTIAN_STEM_ELEMENTS[a] || "";
+  const eb = WENTIAN_STEM_ELEMENTS[b] || "";
+  if (!ea || !eb) return { score: 0, label: "五行资料不足" };
+  if (ea === eb) return { score: 4, label: `${ea}${eb}同频，价值观接近` };
+  if (WENTIAN_ELEMENT_GENERATES[ea] === eb) return { score: 8, label: `${ea}生${eb}，一方能带动另一方` };
+  if (WENTIAN_ELEMENT_GENERATES[eb] === ea) return { score: 8, label: `${eb}生${ea}，互补支持明显` };
+  return { score: -2, label: `${ea}${eb}节奏不同，适合分工互补` };
+}
+
+function getWentianArchiveSizhu(archive) {
+  return archive?.chartData?.sizhu || {};
+}
+
+function getWentianArchivePalaceBranch(archive, key, fallback = "") {
+  return archive?.chartData?.[key]?.branch || archive?.chartData?.[key]?.earthlyBranch || fallback;
+}
+
+function getWentianHepanResult() {
+  const archives = getWentianArchiveList();
+  const ids = getWentianHepanSelectedIds(archives);
+  const pair = ids.map((id) => archives.find((archive) => archive.id === id)).filter(Boolean);
+  while (pair.length < 2 && archives[pair.length]) pair.push(archives[pair.length]);
+  const [left, right] = pair;
+  const leftDisplay = getWentianArchiveDisplay(left);
+  const rightDisplay = getWentianArchiveDisplay(right);
+  const leftSizhu = getWentianArchiveSizhu(left);
+  const rightSizhu = getWentianArchiveSizhu(right);
+  const day = getWentianHepanBranchScore(leftSizhu.dayBranch, rightSizhu.dayBranch);
+  const year = getWentianHepanBranchScore(leftSizhu.yearBranch, rightSizhu.yearBranch);
+  const hour = getWentianHepanBranchScore(leftSizhu.hourBranch, rightSizhu.hourBranch);
+  const month = getWentianHepanBranchScore(leftSizhu.monthBranch, rightSizhu.monthBranch);
+  const palace = getWentianHepanBranchScore(
+    getWentianArchivePalaceBranch(left, "lifePalace", left?.chart?.earthlyBranchOfSoulPalace),
+    getWentianArchivePalaceBranch(right, "spousePalace", right?.chart?.earthlyBranchOfSoulPalace)
+  );
+  const element = getWentianElementScore(leftSizhu.dayStem, rightSizhu.dayStem);
+  const genderBonus = left?.form?.gender && right?.form?.gender && left.form.gender !== right.form.gender ? 4 : 0;
+  const attraction = clampWentianScore(64 + day.score + palace.score * 0.45 + genderBonus);
+  const communication = clampWentianScore(62 + month.score + hour.score * 0.55 + element.score * 0.4);
+  const stability = clampWentianScore(61 + year.score * 0.7 + palace.score * 0.55);
+  const growth = clampWentianScore(63 + element.score + Math.max(day.score, 0) * 0.35 - Math.min(year.score, 0) * 0.2);
+  const total = clampWentianScore((attraction + communication + stability + growth) / 4);
+  const level = total >= 86 ? "上佳合盘" : total >= 76 ? "稳定相合" : total >= 66 ? "可磨合相合" : "需要慢合";
+  return {
+    left,
+    right,
+    leftDisplay,
+    rightDisplay,
+    total,
+    level,
+    dimensions: [
+      ["缘分吸引", attraction, day.label],
+      ["沟通节奏", communication, hour.label],
+      ["长期稳定", stability, palace.label],
+      ["共同成长", growth, element.label],
+    ],
+    advice: total >= 76
+      ? "适合把关系往长期规划推进，重要事项先定共同目标，再分工执行。"
+      : "先慢下来观察真实相处节奏，把金钱、边界、沟通频率提前说清。",
   };
 }
 
@@ -4164,6 +4316,124 @@ function wentianArchiveMini(id, y, name = "谢", selected = false) {
   `;
 }
 
+function getWentianHepanVisibleArchives(archives, selectedIds) {
+  const visible = [];
+  const add = (archive) => {
+    if (archive && !visible.some((item) => item.id === archive.id)) visible.push(archive);
+  };
+  selectedIds.forEach((id) => add(archives.find((archive) => archive.id === id)));
+  archives.forEach(add);
+  return visible.slice(0, 4);
+}
+
+function sourceHepanTypeScreen() {
+  return `
+    ${figBox("wt10-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
+    ${wentianSimpleHeader("wt10", "选择合盘类型")}
+    ${figBox("wt10-card", 34, 108, 322, 584, "", "border-radius:18px;background:#fff;box-shadow:0 12px 30px rgba(69,45,24,.12);overflow:hidden;")}
+    ${figText("wt10-title", "情侣合盘", 0, 136, 390, 25, "#25211d", 800, "center")}
+    ${["真命盘合参", "情感契合度", "冲突化解建议"].map((text, index) => `
+      ${figBox(`wt10-pill-${index}`, 122, 178 + index * 34, 146, 24, "", "border:1px solid #c8a65f;border-radius:12px;background:#fffaf0;")}
+      ${figText(`wt10-pill-text-${index}`, text, 122, 184 + index * 34, 146, 11, "#7c5d22", 700, "center")}
+    `).join("")}
+    ${figImage("wt10-image", "../images/wentian-prototype-assets/hepan-master.jpg", 34, 320, 322, 278, "object-fit:cover;object-position:center 18%;")}
+    ${figBox("wt10-start-row", 90, 564, 210, 28, "", "border-radius:14px;background:#fbf7ef;")}
+    ${figButton("wt10-start-hit", 90, 564, 210, 28, 'data-route="screen-11"')}
+    ${figText("wt10-start-text", "选择两张档案", 90, 571, 210, 12, "#25211d", 700, "center")}
+    ${figBox("wt10-record-row", 90, 604, 210, 28, "", "border-radius:14px;background:#fbf7ef;")}
+    ${figButton("wt10-record-hit", 90, 604, 210, 28, 'data-route="screen-49"')}
+    ${figText("wt10-record-text", "查看合盘结果", 90, 611, 210, 12, "#25211d", 700, "center")}
+    ${wentianGoldButton("wt10", "开始合盘", "screen-11", 686)}
+  `;
+}
+
+function sourceHepanSelectScreen() {
+  const archives = getWentianArchiveList();
+  const selectedIds = getWentianHepanSelectedIds(archives);
+  const visibleArchives = getWentianHepanVisibleArchives(archives, selectedIds);
+  const ready = selectedIds.length === 2;
+  return `
+    ${figBox("wt11-bg", 0, 0, 390, 944, "", "background:#fbf7ef;")}
+    ${wentianSimpleHeader("wt11", "选择合盘档案")}
+    ${figBox("wt11-hero", 36, 120, 318, 330, "", "border-radius:18px;background:#fff;box-shadow:0 10px 24px rgba(70,45,25,.12);")}
+    ${figText("wt11-title", "情侣合盘", 0, 150, 390, 22, "#25211d", 800, "center")}
+    ${figImage("wt11-img", "../images/wentian-prototype-assets/hepan-master.jpg", 58, 218, 274, 178, "border-radius:0 0 14px 14px;object-fit:cover;object-position:center 18%;opacity:.9;")}
+    ${figBox("wt11-overlay", 0, 0, 390, 944, "", "background:rgba(0,0,0,.32);")}
+    ${figBox("wt11-sheet", 0, 466, 390, 389, "", "border-radius:22px 22px 0 0;background:#fff;")}
+    ${figBox("wt11-handle", 164, 480, 62, 4, "", "border-radius:4px;background:#e3d8c8;")}
+    ${figText("wt11-sheet-title", "选择档案", 28, 506, 160, 17, "#25211d", 800)}
+    ${figText("wt11-step", `已选${selectedIds.length}/2`, 304, 509, 48, 11, ready ? "#9b742e" : "#a79986", 700, "right")}
+    ${visibleArchives.map((archive, index) => {
+      const item = getWentianArchiveDisplay(archive);
+      const selected = selectedIds.includes(archive.id);
+      const y = 548 + index * 74;
+      return `
+        ${figBox(`wt11-row-${index}`, 34, y, 322, 62, "", `border:1px solid ${selected ? "#d0a33c" : "#efe3d0"};border-radius:14px;background:#fff;box-shadow:0 6px 16px rgba(72,48,26,.07);`)}
+        ${figButton(`wt11-row-hit-${index}`, 34, y, 322, 62, `data-action="wentian-hepan-pick" data-archive-id="${escapeHtml(archive.id)}"`)}
+        ${figBox(`wt11-avatar-${index}`, 50, y + 11, 40, 40, "", "border-radius:20px;background:#f5ead4;")}
+        ${figText(`wt11-avatar-text-${index}`, escapeHtml(item.name.slice(0, 1)), 50, y + 23, 40, 12, "#bd8624", 800, "center")}
+        ${figText(`wt11-name-${index}`, escapeHtml(item.name), 106, y + 12, 84, 15, "#25211d", 800)}
+        ${figText(`wt11-meta-${index}`, `${item.gender}　${item.tag}`, 188, y + 14, 102, 11, "#b28b45", 700)}
+        ${figText(`wt11-date-${index}`, escapeHtml(item.datetime), 106, y + 38, 168, 12, "#8d857b")}
+        ${figText(`wt11-check-${index}`, selected ? "✓" : "○", 320, y + 22, 22, 18, selected ? "#bd8624" : "#d8cdbc", 800, "center")}
+      `;
+    }).join("")}
+    ${archives.length > visibleArchives.length ? figText("wt11-more", `还有 ${archives.length - visibleArchives.length} 张档案，可到档案页管理`, 34, 846, 220, 11, "#a79986", 600) : ""}
+    ${figBox("wt11-new", 42, 796, 136, 44, "", "border:1px solid #d6b463;border-radius:10px;background:#fff;")}
+    ${figButton("wt11-new-hit", 42, 796, 136, 44, 'data-route="screen-26"')}
+    ${figText("wt11-new-text", "+ 新建档案", 42, 808, 136, 13, "#9b742e", 700, "center")}
+    ${figBox("wt11-confirm", 212, 796, 136, 44, "", `border-radius:10px;background:#d2a642;opacity:${ready ? "1" : ".45"};`)}
+    ${figButton("wt11-confirm-hit", 212, 796, 136, 44, `data-action="wentian-hepan-confirm" ${ready ? "" : "disabled"}`)}
+    ${figText("wt11-confirm-text", "确定", 212, 808, 136, 13, "#fff", 800, "center")}
+  `;
+}
+
+function sourceHepanResultScreen() {
+  const result = getWentianHepanResult();
+  return `
+    ${figBox("wt49-bg", 0, 0, 390, 1160, "", "background:linear-gradient(180deg,#fffdf8 0%,#fbf7ef 58%,#f3eadc 100%);")}
+    ${wentianSimpleHeader("wt49", "合盘结果")}
+    ${figBox("wt49-score-card", 24, 108, 342, 174, "", "border-radius:22px;background:linear-gradient(135deg,#2b2722,#14110d);box-shadow:0 16px 30px rgba(28,20,12,.16);")}
+    ${figText("wt49-score", String(result.total), 44, 128, 96, 54, "#f4d293", 900, "center", "font-size:54px;line-height:1;")}
+    ${figText("wt49-score-unit", "分", 132, 152, 26, 16, "#f4d293", 900)}
+    ${figText("wt49-level", result.level, 178, 136, 130, 20, "#fffaf3", 900)}
+    ${figText("wt49-sub", "基于双方紫微命盘、四柱日支与宫位关系生成", 178, 170, 140, 13, "#cfc1a9", 700, "left", "line-height:1.5;")}
+    ${figText("wt49-pair", `${escapeHtml(result.leftDisplay.name)} × ${escapeHtml(result.rightDisplay.name)}`, 44, 226, 280, 18, "#fffaf3", 900, "center")}
+
+    ${figBox("wt49-pair-card", 24, 306, 342, 116, "", "border:1px solid #eadfce;border-radius:18px;background:#fff;box-shadow:0 8px 20px rgba(70,45,25,.07);")}
+    ${figText("wt49-left-name", escapeHtml(result.leftDisplay.name), 44, 330, 88, 17, "#25211d", 900)}
+    ${figText("wt49-left-date", escapeHtml(result.leftDisplay.datetime), 44, 360, 122, 12, "#8f8173", 700)}
+    ${figText("wt49-left-pillars", escapeHtml(result.leftDisplay.pillars), 44, 386, 130, 11, "#9b742e", 700)}
+    ${figText("wt49-right-name", escapeHtml(result.rightDisplay.name), 218, 330, 88, 17, "#25211d", 900, "right")}
+    ${figText("wt49-right-date", escapeHtml(result.rightDisplay.datetime), 194, 360, 132, 12, "#8f8173", 700, "right")}
+    ${figText("wt49-right-pillars", escapeHtml(result.rightDisplay.pillars), 190, 386, 136, 11, "#9b742e", 700, "right")}
+    ${figText("wt49-heart", "合", 180, 352, 30, 20, "#b74e39", 900, "center")}
+
+    ${figText("wt49-dim-title", "合盘维度", 24, 454, 120, 17, "#25211d", 900)}
+    ${result.dimensions.map(([label, score, note], index) => {
+      const y = 490 + index * 92;
+      return `
+        ${figBox(`wt49-dim-${index}`, 24, y, 342, 74, "", "border:1px solid #eadfce;border-radius:16px;background:#fffdf8;box-shadow:0 7px 18px rgba(70,45,25,.06);")}
+        ${figText(`wt49-dim-label-${index}`, label, 44, y + 16, 110, 15, "#25211d", 900)}
+        ${figText(`wt49-dim-score-${index}`, `${score}分`, 276, y + 15, 58, 15, score >= 76 ? "#8a6b22" : "#9f3d2e", 900, "right")}
+        ${figBox(`wt49-dim-bar-${index}`, 44, y + 44, 240, 7, "", "border-radius:4px;background:#f0e6d8;")}
+        ${figBox(`wt49-dim-fill-${index}`, 44, y + 44, Math.round(240 * score / 100), 7, "", "border-radius:4px;background:linear-gradient(90deg,#c79b42,#a13d2d);")}
+        ${figText(`wt49-dim-note-${index}`, note, 44, y + 56, 282, 11, "#7a6d60", 700)}
+      `;
+    }).join("")}
+
+    ${figBox("wt49-advice", 24, 882, 342, 96, "", "border-radius:18px;background:#fff1dc;border:1px solid #d6b463;box-shadow:0 8px 20px rgba(130,91,31,.08);")}
+    ${figText("wt49-advice-title", "关系建议", 44, 906, 100, 15, "#8f3d30", 900)}
+    ${figText("wt49-advice-text", result.advice, 44, 934, 284, 13, "#756d63", 800, "left", "line-height:1.55;")}
+    ${figBox("wt49-repick", 42, 1000, 136, 44, "", "border:1px solid #d6b463;border-radius:10px;background:#fff;")}
+    ${figButton("wt49-repick-hit", 42, 1000, 136, 44, 'data-route="screen-11"')}
+    ${figText("wt49-repick-text", "重新选择", 42, 1012, 136, 13, "#9b742e", 800, "center")}
+    ${figBox("wt49-ask", 212, 1000, 136, 44, "", "border-radius:10px;background:#b74e39;")}
+    ${figButton("wt49-ask-hit", 212, 1000, 136, 44, 'data-route="screen-4"')}
+    ${figText("wt49-ask-text", "追问许半仙", 212, 1012, 136, 13, "#fff", 900, "center")}
+  `;
+}
+
 function wentianCoin(id, x, y, active = true) {
   return `
     ${figBox(`${id}-coin`, x, y, 46, 46, "", `border-radius:23px;background:${active ? "linear-gradient(145deg,#d8aa3b,#a47420)" : "linear-gradient(145deg,#c7b8a0,#867968)"};box-shadow:0 8px 16px rgba(93,63,24,.18);`)}
@@ -5283,6 +5553,7 @@ function renderWentianPolishedScreen(screen) {
   if (no === 47) return sourceLiurenTutorialScreen();
   if (no === 30) return sourcePaymentScreen();
   if (no === 33) return sourceMembershipScreen();
+  if (no === 49) return sourceHepanResultScreen();
   if (no === 8) {
     const paragraphs = [
       ["核心结论", "你的命盘不是单一路线，而是“先观察、后出手”的结构。真正适合你的节奏，是先把信息摸透，再用稳定执行换结果。"],
@@ -5347,42 +5618,10 @@ function renderWentianPolishedScreen(screen) {
     `;
   }
   if (no === 10) {
-    return `
-      ${figBox("wt10-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
-      ${wentianSimpleHeader("wt10", "选择合盘类型")}
-      ${figBox("wt10-card", 34, 108, 322, 584, "", "border-radius:18px;background:#fff;box-shadow:0 12px 30px rgba(69,45,24,.12);overflow:hidden;")}
-      ${figText("wt10-title", "情侣合盘", 0, 136, 390, 25, "#25211d", 800, "center")}
-      ${["缘分深浅", "情感契合度", "冲突化解建议"].map((text, index) => `
-        ${figBox(`wt10-pill-${index}`, 122, 178 + index * 34, 146, 24, "", "border:1px solid #c8a65f;border-radius:12px;background:#fffaf0;")}
-        ${figText(`wt10-pill-text-${index}`, text, 122, 184 + index * 34, 146, 11, "#7c5d22", 700, "center")}
-      `).join("")}
-      ${figImage("wt10-image", "../images/wentian-prototype-assets/hepan-master.jpg", 34, 320, 322, 278, "object-fit:cover;object-position:center 18%;")}
-      ${figBox("wt10-start-row", 90, 564, 210, 28, "", "border-radius:14px;background:#fbf7ef;")}
-      ${figText("wt10-start-text", "开启合盘对话", 90, 571, 210, 12, "#25211d", 700, "center")}
-      ${figBox("wt10-record-row", 90, 604, 210, 28, "", "border-radius:14px;background:#fbf7ef;")}
-      ${figText("wt10-record-text", "查看合盘记录", 90, 611, 210, 12, "#25211d", 700, "center")}
-      ${wentianGoldButton("wt10", "开始合盘", "screen-11", 746)}
-    `;
+    return sourceHepanTypeScreen();
   }
   if (no === 11) {
-    return `
-      ${figBox("wt11-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
-      ${wentianSimpleHeader("wt11", "选择合盘档案")}
-      ${figBox("wt11-hero", 36, 120, 318, 330, "", "border-radius:18px;background:#fff;box-shadow:0 10px 24px rgba(70,45,25,.12);")}
-      ${figText("wt11-title", "情侣合盘", 0, 150, 390, 22, "#25211d", 800, "center")}
-      ${figImage("wt11-img", "../images/wentian-prototype-assets/hepan-master.jpg", 58, 218, 274, 178, "border-radius:0 0 14px 14px;object-fit:cover;object-position:center 18%;opacity:.9;")}
-      ${figBox("wt11-overlay", 0, 0, 390, 844, "", "background:rgba(0,0,0,.32);")}
-      ${figBox("wt11-sheet", 0, 486, 390, 358, "", "border-radius:22px 22px 0 0;background:#fff;")}
-      ${figBox("wt11-handle", 164, 500, 62, 4, "", "border-radius:4px;background:#e3d8c8;")}
-      ${figText("wt11-sheet-title", "选择档案", 28, 526, 160, 17, "#25211d", 800)}
-      ${figText("wt11-step", "已选0/2", 304, 529, 48, 11, "#a79986", 600, "right")}
-      ${wentianArchiveMini("wt11-a", 566, "谢", false)}
-      ${wentianArchiveMini("wt11-b", 650, "命主", false)}
-      ${figBox("wt11-new", 42, 746, 136, 44, "", "border:1px solid #d6b463;border-radius:10px;background:#fff;")}
-      ${figText("wt11-new-text", "+ 新建档案", 42, 758, 136, 13, "#9b742e", 700, "center")}
-      ${figBox("wt11-confirm", 212, 746, 136, 44, "", "border-radius:10px;background:#d2a642;opacity:.45;")}
-      ${figText("wt11-confirm-text", "确定", 212, 758, 136, 13, "#fff", 800, "center")}
-    `;
+    return sourceHepanSelectScreen();
   }
   if (no === 12) {
     return `
@@ -6533,7 +6772,7 @@ function renderConvertedScreen(no) {
   }
   const polishedScreen = renderWentianPolishedScreen(screen);
   if (polishedScreen) {
-    const polishedHeight = screen.no === 8 ? 1280 : screen.no === 20 ? 1072 : screen.no === 22 ? 1120 : screen.no === 24 ? 1180 : screen.no === 44 ? getYangzhaiResultHeight() : screen.no === 46 ? 1160 : 844;
+    const polishedHeight = screen.no === 8 ? 1280 : screen.no === 11 ? 944 : screen.no === 20 ? 1072 : screen.no === 22 ? 1120 : screen.no === 24 ? 1180 : screen.no === 44 ? getYangzhaiResultHeight() : screen.no === 46 ? 1160 : screen.no === 49 ? 1160 : 844;
     const wideBgClass = screen.no >= 42 && screen.no <= 45 ? " wide-bg" : "";
     return figPhone(`screen-${screen.no}`, `${String(screen.no).padStart(2, "0")} ${screen.title}`, `
       ${polishedScreen}
@@ -7114,6 +7353,15 @@ document.addEventListener("click", (event) => {
   }
   if (action === "wentian-password-save") {
     submitWentianPasswordForm();
+    return;
+  }
+  if (action === "wentian-hepan-pick") {
+    const option = event.target.closest("[data-archive-id]");
+    if (option?.dataset.archiveId) toggleWentianHepanArchive(option.dataset.archiveId);
+    return;
+  }
+  if (action === "wentian-hepan-confirm") {
+    confirmWentianHepanSelection();
     return;
   }
   if (action === "wentian-share-wechat") {
