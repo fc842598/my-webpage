@@ -956,6 +956,7 @@ const WENTIAN_MEMBER_PRODUCT_KEY = "monthly_member";
 const WENTIAN_PAYMENT_POLL_MS = 3500;
 const WENTIAN_SUPABASE_URL = "https://jmmlijqeexdbxgpfyhgf.supabase.co";
 const WENTIAN_SUPABASE_KEY = "sb_publishable_Y2W9eDscfJwK1sgSitbmFA_ta5btvaR";
+const WENTIAN_GOOGLE_REDIRECT_BRIDGE = "https://fc842598.github.io/my-webpage/pages/wentian-app.html";
 const WENTIAN_CHART_AI_STORAGE_KEY = "wentian-app-chart-ai-v2";
 const WENTIAN_CHART_SPECIAL_MODULES = ["shengong", "hunyin", "jiankang", "caiyun", "shiye"];
 const WENTIAN_CHART_AI_TASKS = [
@@ -2339,6 +2340,11 @@ function replaceWentianUrlRoute(route) {
   window.history.replaceState(null, "", nextUrl);
 }
 
+function getWentianGoogleRedirectUrl() {
+  if (window.location.hostname === "yuetianai.com") return WENTIAN_GOOGLE_REDIRECT_BRIDGE;
+  return new URL(window.location.pathname, window.location.origin).toString();
+}
+
 function getWentianAuthClient() {
   if (wentianAuthClient) return wentianAuthClient;
   if (!window.supabase || typeof window.supabase.createClient !== "function") return null;
@@ -2502,13 +2508,12 @@ async function startWentianGoogleLogin() {
     navigate("screen-40", false);
     return;
   }
-  const redirectUrl = new URL(window.location.pathname, window.location.origin);
   setWentianAuthReturnState({ after: wentianPendingPaymentAfterLogin ? "member-payment" : "account" });
   wentianAuthState.error = "";
   try {
     const { error } = await client.auth.signInWithOAuth({
       provider: "google",
-      options: { redirectTo: redirectUrl.toString() },
+      options: { redirectTo: getWentianGoogleRedirectUrl() },
     });
     if (error) throw error;
   } catch (error) {
