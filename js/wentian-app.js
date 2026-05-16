@@ -2525,19 +2525,200 @@ function setWentianLanguageCode(code) {
 
 function pickWentianLanguage(code) {
   wentianLanguageDraft = getWentianLanguageOption(code).code;
+  rememberWentianTextSource(document.querySelector('[data-node-id="source-37-preview-title"]'), getWentianLanguageOption(wentianLanguageDraft).label);
   for (const row of document.querySelectorAll("[data-wentian-language-option]")) {
     const selected = row.dataset.languageCode === wentianLanguageDraft;
     row.classList.toggle("is-selected", selected);
     row.setAttribute("aria-pressed", selected ? "true" : "false");
     const check = row.querySelector(".wentian-language-check");
-    if (check) check.textContent = selected ? "✓" : "";
+    if (check) rememberWentianTextSource(check, selected ? "✓" : "");
   }
+  applyWentianLanguageText(view, wentianLanguageDraft);
 }
 
 function confirmWentianLanguage() {
   setWentianLanguageCode(wentianLanguageDraft || getWentianLanguageCode());
   wentianLanguageDraft = null;
   navigate(state.stack.pop() || "screen-31", false);
+}
+
+const wentianI18nTextSources = new WeakMap();
+
+const WENTIAN_I18N = {
+  en: {
+    "首页": "Home",
+    "档案": "Files",
+    "问天AI": "Wentian AI",
+    "我的": "Me",
+    "语言设置": "Language",
+    "选择界面显示语言": "Choose display language",
+    "确认后会同步保存到当前浏览器": "Saved to this browser after confirmation",
+    "简体中文": "Simplified Chinese",
+    "繁體中文": "Traditional Chinese",
+    "确定": "Confirm",
+    "账户与偏好设置": "Account and preferences",
+    "登录 / 注册": "Sign In / Register",
+    "未登录 · 支付前需登录": "Not signed in · Sign in before payment",
+    "免费版 · 可升级会员": "Free plan · Upgrade available",
+    "登录后可查看支付记录": "Sign in to view payments",
+    "登录": "Sign In",
+    "账号": "Account",
+    "会员": "Member",
+    "今日次数": "Today",
+    "本月次数": "This Month",
+    "会员状态": "Plan",
+    "免费版": "Free",
+    "已开通": "Active",
+    "问天套餐": "Wentian Plan",
+    "购买次数": "Buy Credits",
+    "我的报告": "My Reports",
+    "订单记录": "Orders",
+    "邀请好友": "Invite Friends",
+    "分享问天AI": "Share Wentian AI",
+    "联系我们": "Contact Us",
+    "账户设置": "Account Settings",
+    "基本信息": "Profile",
+    "登录方式": "Sign-in Methods",
+    "设置密码": "Set Password",
+    "保存本机资料": "Save local profile",
+    "手机号或 Google 登录": "Phone or Google sign-in",
+    "登录后可设置密码": "Sign in to set password",
+    "进入账号登录页": "Open sign-in page",
+    "先登录再同步": "Sign in to sync",
+    "未登录时只保存本机资料；登录后才能同步会员、支付和邀请奖励。": "Local-only before sign-in. Sign in to sync membership, payments, and invite rewards.",
+    "账号安全": "Account Security",
+    "会员、支付记录、邀请奖励会跟随当前登录账号。退出前请确认资料已保存。": "Membership, payments, and invite rewards follow the signed-in account. Confirm your data is saved before signing out.",
+    "昵称、邮箱、手机号": "Nickname, email, phone",
+    "查看当前账号与支付入口": "View account and payment entry",
+    "修改账号登录密码": "Change account password",
+    "退出登录": "Sign Out",
+    "退出当前账号前会再次确认": "Confirm again before signing out",
+    "昵称": "Nickname",
+    "邮箱": "Email",
+    "手机号": "Phone",
+    "账号已登录，信息会用于支付与邀请展示": "Signed in. Info is used for payments and invites.",
+    "未登录，本页先保存本机资料": "Not signed in. Save local profile first.",
+    "保存后用于档案、昵称、邀请展示；登录账号以登录方式页为准。": "Used for files, nickname, and invites. Account identity is managed by sign-in.",
+    "保存信息": "Save",
+    "请输入昵称": "Enter nickname",
+    "请输入邮箱": "Enter email",
+    "绑定手机号": "Bind phone number",
+    "会员、支付记录会绑定到账号": "Membership and payments are linked to your account",
+    "注册": "Register",
+    "密码": "Password",
+    "请输入手机号": "Enter phone number",
+    "至少 6 位": "At least 6 characters",
+    "处理中...": "Processing...",
+    "注册并登录": "Register and sign in",
+    "登录并继续": "Sign in and continue",
+    "用 Google 登录": "Sign in with Google",
+    "手机号登录使用密码，不发验证码。": "Phone sign-in uses password, not SMS codes.",
+    "问天会员": "Wentian Member",
+    "免费账号": "Free Account",
+    "手机号密码": "Phone Password",
+    "未绑定手机号": "No phone bound",
+    "已启用": "Enabled",
+    "可用": "Available",
+    "Google 登录": "Google Sign-in",
+    "当前账号来源": "Current account source",
+    "可继续使用 Google 登录": "Google sign-in remains available",
+    "账号密码": "Account Password",
+    "用于手机号登录和后续安全验证": "For phone sign-in and security checks",
+    "可修改": "Editable",
+    "续费会员": "Renew Membership",
+    "开通会员": "Open Membership",
+    "支付记录": "Payment Records",
+    "登录后设置账号密码": "Sign in to set account password",
+    "密码会绑定到你的问天账号，用于手机号登录、支付记录和会员权益。": "The password is linked to your Wentian account for phone sign-in, payments, and membership.",
+    "新密码": "New Password",
+    "确认密码": "Confirm Password",
+    "再次输入": "Enter again",
+    "安全提示": "Security Tip",
+    "密码仅用于账号登录。设置后可继续使用 Google 或手机号密码登录。": "Password is only for account sign-in. You can still use Google or phone password sign-in.",
+    "保存中...": "Saving...",
+    "保存密码": "Save Password",
+    "确认退出登录？": "Sign out?",
+    "取消": "Cancel",
+    "退出": "Sign Out"
+  },
+  "zh-Hant": {
+    "首页": "首頁",
+    "档案": "檔案",
+    "问天AI": "問天AI",
+    "我的": "我的",
+    "语言设置": "語言設定",
+    "选择界面显示语言": "選擇介面顯示語言",
+    "确认后会同步保存到当前浏览器": "確認後會同步保存到目前瀏覽器",
+    "简体中文": "簡體中文",
+    "确定": "確定",
+    "账户与偏好设置": "帳戶與偏好設定",
+    "账户设置": "帳戶設定",
+    "基本信息": "基本資訊",
+    "登录方式": "登入方式",
+    "设置密码": "設定密碼",
+    "退出登录": "登出",
+    "邀请好友": "邀請好友",
+    "分享问天AI": "分享問天AI",
+    "联系我们": "聯絡我們",
+    "我的报告": "我的報告",
+    "订单记录": "訂單記錄",
+    "购买次数": "購買次數",
+    "免费版": "免費版"
+  }
+};
+
+function translateWentianText(text, code = getWentianLanguageCode(), element = null) {
+  const source = String(text || "").trim();
+  if (!source) return source;
+  const lang = getWentianLanguageOption(code).code;
+  const dict = WENTIAN_I18N[lang];
+  if (!dict) return source;
+  if (lang === "en" && source === "问天AI" && element?.dataset?.nodeId?.startsWith("source-bottom-label-")) return "AI";
+  if (lang === "en") {
+    const people = source.match(/^(\d+)\s*人$/);
+    if (people) return `${people[1]} people`;
+  }
+  return dict[source] || source;
+}
+
+function rememberWentianTextSource(element, source) {
+  if (!element) return;
+  element.textContent = source;
+  if (element.firstChild?.nodeType === Node.TEXT_NODE) {
+    wentianI18nTextSources.set(element.firstChild, source.trim());
+  }
+}
+
+function applyWentianLanguageText(root = view, code = getWentianLanguageCode()) {
+  const option = getWentianLanguageOption(code);
+  document.documentElement.lang = option.htmlLang;
+  document.documentElement.dataset.wentianLanguage = option.code;
+  if (!root || !root.querySelectorAll) return;
+
+  const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+    acceptNode(node) {
+      if (!node.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
+      const tag = node.parentElement?.tagName;
+      if (tag === "SCRIPT" || tag === "STYLE") return NodeFilter.FILTER_REJECT;
+      return NodeFilter.FILTER_ACCEPT;
+    }
+  });
+  const textNodes = [];
+  while (walker.nextNode()) textNodes.push(walker.currentNode);
+  for (const node of textNodes) {
+    const current = node.nodeValue;
+    const source = wentianI18nTextSources.get(node) || current.trim();
+    wentianI18nTextSources.set(node, source);
+    const leading = current.match(/^\s*/)?.[0] || "";
+    const trailing = current.match(/\s*$/)?.[0] || "";
+    node.nodeValue = `${leading}${translateWentianText(source, option.code, node.parentElement)}${trailing}`;
+  }
+
+  for (const element of root.querySelectorAll("[placeholder]")) {
+    const source = element.dataset.wentianI18nPlaceholderSource || element.getAttribute("placeholder") || "";
+    element.dataset.wentianI18nPlaceholderSource = source;
+    element.setAttribute("placeholder", translateWentianText(source, option.code, element));
+  }
 }
 
 function getWentianProfile() {
@@ -6877,10 +7058,11 @@ function navigate(route, push = true) {
     if (push && route !== state.route) state.stack.push(state.route);
     state.route = route;
     if (route !== "screen-38") wentianLogoutConfirmOpen = false;
-    if (routeKicker) routeKicker.textContent = "问天AI";
-    if (routeTitle) routeTitle.textContent = screen.title;
+    if (routeKicker) routeKicker.textContent = translateWentianText("问天AI");
+    if (routeTitle) routeTitle.textContent = translateWentianText(screen.title);
     view.innerHTML = applyWentianColorUpgrade(renderConvertedScreen(screen.no));
     stripScreenshotStatusBar();
+    applyWentianLanguageText(view);
     fitActivePhoneShell();
     syncActive();
     window.setTimeout(initWentianAuth, 0);
