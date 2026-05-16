@@ -2912,7 +2912,7 @@
     const btn = $('#mbpDecodeBtn');
     if (btn) {
       btn.disabled = true;
-      btn.textContent = 'AI 批命中…';
+      btn.textContent = '生成中…';
     }
     setDecodeAllButtonsBusy(true, '生成中');
     state.decoded = true;
@@ -2954,7 +2954,7 @@
     setAllModuleButtonsBusy(false);
     if (btn) {
       btn.disabled = false;
-      btn.textContent = successCount ? '重新一键批命' : '重试一键批命';
+      btn.textContent = successCount ? '重新生成' : '重试生成';
     }
     setDecodeAllButtonsBusy(false);
   }
@@ -3032,7 +3032,7 @@
     const btn = $('#mbpDecodeBtn');
     if (btn) {
       btn.disabled = false;
-      btn.textContent = '✦ 立即生成五卷命书';
+      btn.textContent = '生成命书';
     }
     setAllModuleButtonsBusy(false);
     setDecodeStatus('排盘后生成五卷命书。');
