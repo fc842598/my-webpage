@@ -2864,10 +2864,12 @@ async function hydrateWentianInvite(options = {}) {
 
 function setWentianInviteStatus(text, tone = "") {
   wentianInviteState.status = text || "";
-  const el = document.getElementById("wentian-invite-status");
-  if (!el) return;
-  el.textContent = wentianInviteState.status;
-  el.dataset.tone = tone;
+  ["wentian-invite-status", "wentian-share-status"].forEach((id) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.textContent = wentianInviteState.status;
+    el.dataset.tone = tone;
+  });
 }
 
 function requireWentianInviteAccount() {
@@ -2944,6 +2946,54 @@ async function shareWentianInvite() {
     } catch (_err) {}
   }
   await copyWentianText(text, "分享文案已复制");
+}
+
+function getWentianSharePayload() {
+  const account = getWentianAuthDisplay();
+  const summary = getWentianInviteSnapshot();
+  const appUrl = "https://yuetianai.com/pages/wentian-app.html";
+  const hasInvite = account.loggedIn && isWentianInviteCode(summary.inviteCode);
+  const url = hasInvite ? summary.inviteLink : appUrl;
+  const inviteLine = hasInvite ? `我的邀请码：${summary.inviteCode}` : "登录后可生成专属邀请码。";
+  const text = `推荐你使用问天AI，AI排盘、命盘解读和许半仙问答都在这里。\n${inviteLine}\n${url}`;
+  return {
+    title: "问天AI",
+    text,
+    url,
+    inviteCode: hasInvite ? summary.inviteCode : "",
+    hasInvite,
+  };
+}
+
+async function shareWentianApp(target = "system") {
+  const payload = getWentianSharePayload();
+  if (target === "link") {
+    await copyWentianText(payload.url, "分享链接已复制");
+    return;
+  }
+  if (target === "wechat") {
+    await copyWentianText(payload.text, "已复制，打开微信发送给好友");
+    return;
+  }
+  if (target === "moments") {
+    await copyWentianText(payload.text, "已复制，打开朋友圈粘贴发布");
+    return;
+  }
+  if (target === "mail") {
+    const subject = encodeURIComponent(payload.title);
+    const body = encodeURIComponent(payload.text);
+    window.location.href = `mailto:?subject=${subject}&body=${body}`;
+    setWentianInviteStatus("已打开邮件分享", "ok");
+    return;
+  }
+  if (navigator.share) {
+    try {
+      await navigator.share({ title: payload.title, text: payload.text, url: payload.url });
+      setWentianInviteStatus("已打开系统分享", "ok");
+      return;
+    } catch (_err) {}
+  }
+  await copyWentianText(payload.text, "分享文案已复制");
 }
 
 function bindWentianInviteFromInput() {
@@ -5677,6 +5727,34 @@ function renderWentianPolishedScreen(screen) {
     `;
   }
   if (no === 34) {
+    const payload = getWentianSharePayload();
+    const previewText = escapeHtml(payload.text).replace(/\n/g, "<br>");
+    const shareTargets = [
+      ["微信好友", "微", "wentian-share-wechat"],
+      ["朋友圈", "圈", "wentian-share-moments"],
+      ["系统分享", "享", "wentian-share-system"],
+      ["邮件", "邮", "wentian-share-mail"],
+    ];
+    return `
+      ${sourceMineScreen(screen)}
+      ${figBox("wt34-overlay", 0, 0, 390, 755, "", "background:rgba(0,0,0,.30);")}
+      ${figBox("wt34-sheet", 0, 432, 390, 323, "", "border-radius:22px 22px 0 0;background:#fff;box-shadow:0 -10px 28px rgba(45,31,18,.16);")}
+      ${figText("wt34-title", "分享问天AI", 0, 462, 390, 18, "#25211d", 900, "center")}
+      ${figText("wt34-close", "×", 334, 460, 28, 24, "#25211d", 500, "center")}
+      ${figButton("wt34-close-hit", 322, 450, 52, 46, 'data-route="screen-31"')}
+      ${figBox("wt34-copy", 28, 506, 334, 92, "", "border-radius:12px;background:#fffaf2;border:1px solid #ead9bd;")}
+      ${figText("wt34-copy-text", previewText, 44, 524, 302, 13, "#756d63", 700, "left", "line-height:1.45;")}
+      ${shareTargets.map(([label, icon, action], index) => {
+        const x = 38 + index * 82;
+        return `
+          ${figBox(`wt34-share-${index}`, x, 628, 50, 50, "", "border-radius:25px;background:#f7ebd4;")}
+          ${figButton(`wt34-share-hit-${index}`, x - 7, 620, 64, 78, `data-action="${action}"`)}
+          ${figText(`wt34-share-icon-${index}`, icon, x, 644, 50, 14, "#bd8624", 900, "center")}
+          ${figText(`wt34-share-label-${index}`, label, x - 12, 688, 74, 12, "#756d63", 800, "center")}
+        `;
+      }).join("")}
+      <div id="wentian-share-status" class="wentian-invite-status" style="left:42px;top:724px;width:306px;text-align:center" data-tone="">${escapeHtml(wentianInviteState.status || "")}</div>
+    `;
     const account = getWentianAuthDisplay();
     if (!account.loggedIn) {
       return `
@@ -6902,6 +6980,22 @@ document.addEventListener("click", (event) => {
   }
   if (action === "wentian-order-refresh") {
     hydrateWentianOrders({ force: true, rerender: true });
+    return;
+  }
+  if (action === "wentian-share-wechat") {
+    shareWentianApp("wechat");
+    return;
+  }
+  if (action === "wentian-share-moments") {
+    shareWentianApp("moments");
+    return;
+  }
+  if (action === "wentian-share-system") {
+    shareWentianApp("system");
+    return;
+  }
+  if (action === "wentian-share-mail") {
+    shareWentianApp("mail");
     return;
   }
   if (action === "wentian-invite-copy-code") {
