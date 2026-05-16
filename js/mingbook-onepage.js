@@ -1850,7 +1850,19 @@
     const detailLabel = options.detailLabel || '展开完整解读';
     if (options.direct) {
       const summaryHead = normalizeText(summary).slice(0, 32);
-      const showSummary = !!summaryHead && !detail.some((section) => normalizeText(section.content).startsWith(summaryHead));
+      const hasStructuredDetail = sections.length > 1 || sections.some((section) => {
+        const title = normalizeText(section.title);
+        return title && title !== '解读' && title !== normalizeText(fallbackTitle);
+      });
+      const repeatsDetail = detail.some((section) => {
+        const title = normalizeText(section.title);
+        const content = normalizeText(section.content);
+        const contentHead = content.slice(0, 32);
+        return (title && summary.startsWith(title))
+          || (contentHead && summary.includes(contentHead))
+          || (summaryHead && content.startsWith(summaryHead));
+      });
+      const showSummary = !!summaryHead && !hasStructuredDetail && !repeatsDetail;
       return `
         ${showSummary ? `<p class="mbp-insight-summary">${escapeHtml(summary)}</p>` : ''}
         ${bullets.length ? `<ul class="mbp-insight-points">${bullets.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ul>` : ''}
