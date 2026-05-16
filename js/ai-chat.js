@@ -1,4 +1,4 @@
-/**
+﻿/**
  * js/ai-chat.js — AI半仙 对话面板
  *
  * 记忆策略：A0 基础命盘按需读取，A1/A2/A3/A4 专题结论按问题按需注入。
@@ -703,12 +703,11 @@
     var badgeB = document.getElementById('chat-badge-b');
 
     if (badgeA) {
+      badgeA.textContent = '\u5df2\u8bfb\u76d8';
       if (staleA) {
-        badgeA.textContent = '待刷新';
         badgeA.classList.remove('chat-badge-ok');
         badgeA.classList.add('chat-badge-stale');
       } else {
-        badgeA.textContent = hasA ? '已读入' : '待读取';
         badgeA.classList.toggle('chat-badge-ok', !!hasA);
         badgeA.classList.remove('chat-badge-stale');
       }
