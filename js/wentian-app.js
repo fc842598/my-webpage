@@ -4369,7 +4369,7 @@ function sourceHepanSelectScreen() {
       const y = 548 + index * 74;
       return `
         ${figBox(`wt11-row-${index}`, 34, y, 322, 62, "", `border:1px solid ${selected ? "#d0a33c" : "#efe3d0"};border-radius:14px;background:#fff;box-shadow:0 6px 16px rgba(72,48,26,.07);`)}
-        ${figButton(`wt11-row-hit-${index}`, 34, y, 322, 62, `data-action="wentian-hepan-pick" data-archive-id="${escapeHtml(archive.id)}"`)}
+        ${figButton(`wt11-row-hit-${index}`, 34, y, 322, 62, `data-action="wentian-hepan-pick" data-archive-id="${escapeHtml(archive.id)}" aria-label="选择${escapeHtml(item.name)}"`, "", "z-index:40;")}
         ${figBox(`wt11-avatar-${index}`, 50, y + 11, 40, 40, "", "border-radius:20px;background:#f5ead4;")}
         ${figText(`wt11-avatar-text-${index}`, escapeHtml(item.name.slice(0, 1)), 50, y + 23, 40, 12, "#bd8624", 800, "center")}
         ${figText(`wt11-name-${index}`, escapeHtml(item.name), 106, y + 12, 84, 15, "#25211d", 800)}
