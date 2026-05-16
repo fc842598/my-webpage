@@ -2553,19 +2553,23 @@ select {
 
 .mbp-topic-segments {
   display: grid;
-  gap: 12px;
+  gap: 16px;
 }
 
 p.mbp-topic-lead {
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  gap: 12px;
+  grid-template-columns: 1fr;
+  gap: 10px;
   align-items: start;
   margin: 0;
+  padding: 15px 17px;
+  border: 1px solid rgba(241, 212, 125, .14);
+  border-radius: 11px;
+  background: rgba(241, 212, 125, .045);
   max-width: none;
   color: #ddcca2;
-  font-size: 16px;
-  line-height: 1.75;
+  font-size: 15px;
+  line-height: 1.9;
 }
 
 .mbp-topic-lead b,
@@ -2574,14 +2578,25 @@ p.mbp-topic-lead {
   white-space: nowrap;
 }
 
+.mbp-topic-lead b {
+  width: max-content;
+  font-size: 17px;
+  line-height: 1.2;
+}
+
+.mbp-topic-lead span {
+  display: block;
+  overflow-wrap: anywhere;
+}
+
 .mbp-topic-split {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
+  gap: 14px;
 }
 
 .mbp-topic-split section {
-  padding: 12px 14px;
+  padding: 15px 17px;
   border: 1px solid rgba(241, 212, 125, .14);
   border-radius: 9px;
   background: rgba(241, 212, 125, .045);
@@ -2668,11 +2683,11 @@ p.mbp-topic-detail {
 .mbp-special-topic-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 14px;
+  gap: 20px;
 }
 
 .mbp-special-topic-card {
-  padding: 16px;
+  padding: 22px;
   border: 1px solid rgba(241, 212, 125, .15);
   border-radius: 12px;
   background: rgba(241, 212, 125, .035);
@@ -2682,7 +2697,7 @@ p.mbp-topic-detail {
   display: flex;
   gap: 10px;
   align-items: center;
-  margin-bottom: 12px;
+  margin-bottom: 18px;
 }
 
 .mbp-special-topic-card header span {
