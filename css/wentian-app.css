@@ -1759,6 +1759,52 @@ button {
   box-shadow: 0 8px 18px rgba(158, 61, 43, .10);
 }
 
+.wentian-invite-input {
+  position: absolute;
+  height: 38px;
+  border: 1px solid #e6d7be;
+  border-radius: 19px;
+  background: #fffaf2;
+  color: #25211d;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  outline: 0;
+  padding: 0 16px;
+  text-transform: uppercase;
+  box-sizing: border-box;
+  z-index: 4;
+}
+
+.wentian-invite-input::placeholder {
+  color: #b8a994;
+  letter-spacing: 0;
+}
+
+.wentian-invite-input:focus {
+  border-color: #bd8624;
+  box-shadow: 0 0 0 3px rgba(189, 134, 36, .14);
+}
+
+.wentian-invite-status {
+  position: absolute;
+  min-height: 18px;
+  color: #8f857a;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.35;
+  z-index: 4;
+}
+
+.wentian-invite-status[data-tone="ok"] {
+  color: #5f8745;
+}
+
+.wentian-invite-status[data-tone="error"] {
+  color: #a94437;
+}
+
 .wentian-profile-status {
   position: absolute;
   left: 36px;

@@ -952,6 +952,8 @@ const WENTIAN_CLIENT_ID_KEY = "ziwei_client_id";
 const WENTIAN_LANGUAGE_STORAGE_KEY = "wentian-app-language-v1";
 const WENTIAN_PROFILE_STORAGE_KEY = "wentian-app-profile-v1";
 const WENTIAN_AUTH_RETURN_KEY = "wentian-app-auth-return-v1";
+const WENTIAN_INVITE_PENDING_KEY = "wentian-app-pending-invite-v1";
+const WENTIAN_INVITE_LOCAL_STATUS_KEY = "wentian-app-invite-status-v1";
 const WENTIAN_MEMBER_PRODUCT_KEY = "monthly_member";
 const WENTIAN_PAYMENT_POLL_MS = 3500;
 const WENTIAN_SUPABASE_URL = "https://jmmlijqeexdbxgpfyhgf.supabase.co";
@@ -992,10 +994,18 @@ let wentianAuthClient = null;
 let wentianAuthSession = null;
 let wentianAuthReadyPromise = null;
 let wentianPendingPaymentAfterLogin = false;
+let wentianInviteReadyPromise = null;
 const wentianAuthState = {
   mode: "login",
   error: "",
   loading: false,
+};
+const wentianInviteState = {
+  loaded: false,
+  loading: false,
+  error: "",
+  status: "",
+  summary: null,
 };
 const wentianOrderState = {
   loaded: false,
@@ -1086,6 +1096,107 @@ function getWentianClientId() {
   } catch (_err) {
     return "global";
   }
+}
+
+function normalizeWentianInviteCode(value) {
+  return String(value || "").toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 12);
+}
+
+function isWentianInviteCode(value) {
+  return /^[A-Z0-9]{6,12}$/.test(normalizeWentianInviteCode(value));
+}
+
+function makeWentianInviteCode(seed = getWentianClientId()) {
+  const text = String(seed || "wentian");
+  let hash = 2166136261;
+  for (let i = 0; i < text.length; i += 1) {
+    hash ^= text.charCodeAt(i);
+    hash = Math.imul(hash, 16777619) >>> 0;
+  }
+  return hash.toString(36).toUpperCase().padStart(8, "0").slice(0, 8);
+}
+
+function formatWentianInviteCode(code) {
+  return normalizeWentianInviteCode(code).split("").join(" ");
+}
+
+function getWentianInviteLink(code = getWentianInviteCode()) {
+  return `https://yuetianai.com/pages/wentian-app.html?invite=${encodeURIComponent(normalizeWentianInviteCode(code))}`;
+}
+
+function getWentianInviteCode() {
+  const user = wentianAuthSession?.user;
+  const saved = normalizeWentianInviteCode(user?.user_metadata?.referral_code);
+  return isWentianInviteCode(saved) ? saved : makeWentianInviteCode(user?.id || getWentianClientId());
+}
+
+function getWentianPendingInviteCode() {
+  try {
+    return normalizeWentianInviteCode(localStorage.getItem(WENTIAN_INVITE_PENDING_KEY));
+  } catch (_err) {
+    return "";
+  }
+}
+
+function setWentianPendingInviteCode(code) {
+  const normalized = normalizeWentianInviteCode(code);
+  if (!isWentianInviteCode(normalized)) return "";
+  try {
+    localStorage.setItem(WENTIAN_INVITE_PENDING_KEY, normalized);
+  } catch (_err) {}
+  return normalized;
+}
+
+function clearWentianPendingInviteCode() {
+  try {
+    localStorage.removeItem(WENTIAN_INVITE_PENDING_KEY);
+  } catch (_err) {}
+}
+
+function getWentianInviteCodeFromUrl() {
+  const params = new URLSearchParams(window.location.search);
+  return normalizeWentianInviteCode(params.get("invite") || params.get("ref") || params.get("inviteCode"));
+}
+
+function captureWentianInviteFromUrl() {
+  const code = getWentianInviteCodeFromUrl();
+  if (!isWentianInviteCode(code)) return "";
+  setWentianPendingInviteCode(code);
+  wentianInviteState.status = "已记录好友邀请码，登录/注册后自动绑定。";
+  wentianAuthState.mode = "register";
+  return code;
+}
+
+function getWentianLocalInviteStatus() {
+  try {
+    const raw = localStorage.getItem(WENTIAN_INVITE_LOCAL_STATUS_KEY);
+    return raw ? JSON.parse(raw) : null;
+  } catch (_err) {
+    return null;
+  }
+}
+
+function setWentianLocalInviteStatus(data) {
+  try {
+    localStorage.setItem(WENTIAN_INVITE_LOCAL_STATUS_KEY, JSON.stringify(data || {}));
+  } catch (_err) {}
+}
+
+function getWentianInviteSnapshot() {
+  const fallbackCode = getWentianInviteCode();
+  const fallback = {
+    inviteCode: fallbackCode,
+    inviteLink: getWentianInviteLink(fallbackCode),
+    invitedCount: 0,
+    paidCount: 0,
+    bonusTalks: 0,
+    bonusUsed: 0,
+    bonusRemaining: 0,
+    registerReward: 2,
+    paidReward: 10,
+    records: [],
+  };
+  return { ...fallback, ...(wentianInviteState.summary || {}) };
 }
 
 function makeWentianUuid() {
@@ -2411,7 +2522,7 @@ async function getWentianAuthToken() {
 }
 
 function refreshWentianAuthScreens() {
-  if (["screen-1", "screen-30", "screen-31", "screen-33", "screen-40", "screen-48"].includes(state.route)) {
+  if (["screen-1", "screen-22", "screen-23", "screen-24", "screen-30", "screen-31", "screen-33", "screen-34", "screen-40", "screen-48"].includes(state.route)) {
     navigate(state.route, false);
   }
 }
@@ -2426,6 +2537,11 @@ async function initWentianAuth() {
       wentianAuthSession = session || null;
       wentianMemberState.loaded = false;
       wentianOrderState.loaded = false;
+      wentianInviteState.loaded = false;
+      if (wentianAuthSession?.user) {
+        window.setTimeout(() => bindWentianPendingInvite({ rerender: true }), 80);
+        window.setTimeout(() => hydrateWentianInvite({ force: true, rerender: true }), 160);
+      }
       if (wentianAuthSession && wentianPendingPaymentAfterLogin) {
         wentianPendingPaymentAfterLogin = false;
         window.setTimeout(() => startWentianMemberPayment(), 60);
@@ -2487,6 +2603,9 @@ async function submitWentianAuth(mode = wentianAuthState.mode) {
     wentianAuthState.error = "";
     wentianMemberState.loaded = false;
     wentianOrderState.loaded = false;
+    wentianInviteState.loaded = false;
+    await bindWentianPendingInvite();
+    await hydrateWentianInvite({ force: true });
     if (wentianPendingPaymentAfterLogin) {
       wentianPendingPaymentAfterLogin = false;
       await startWentianMemberPayment();
@@ -2704,6 +2823,132 @@ async function wentianFetchJson(path, options = {}) {
     : { error: await response.text() };
   if (!response.ok || data.error) throw new Error(data.error || `服务异常 ${response.status}`);
   return data;
+}
+
+function refreshWentianInviteScreens() {
+  if (["screen-22", "screen-23", "screen-24", "screen-31", "screen-34", "screen-40"].includes(state.route)) {
+    navigate(state.route, false);
+  }
+}
+
+async function hydrateWentianInvite(options = {}) {
+  if (wentianInviteState.loading && !options.force) return wentianInviteReadyPromise;
+  const session = await getWentianAuthSession();
+  if (!session?.user) {
+    wentianInviteState.loaded = true;
+    wentianInviteState.loading = false;
+    wentianInviteState.error = "";
+    wentianInviteState.summary = null;
+    wentianInviteState.summary = getWentianInviteSnapshot();
+    if (options.rerender) refreshWentianInviteScreens();
+    return wentianInviteState.summary;
+  }
+  wentianInviteState.loading = true;
+  wentianInviteState.error = "";
+  wentianInviteReadyPromise = wentianFetchJson("/api/referrals/summary")
+    .then((data) => {
+      wentianInviteState.loaded = true;
+      wentianInviteState.summary = data;
+      return data;
+    })
+    .catch((error) => {
+      wentianInviteState.error = error.message || "邀请记录读取失败";
+      return getWentianInviteSnapshot();
+    })
+    .finally(() => {
+      wentianInviteState.loading = false;
+      if (options.rerender) refreshWentianInviteScreens();
+    });
+  return wentianInviteReadyPromise;
+}
+
+function setWentianInviteStatus(text, tone = "") {
+  wentianInviteState.status = text || "";
+  const el = document.getElementById("wentian-invite-status");
+  if (!el) return;
+  el.textContent = wentianInviteState.status;
+  el.dataset.tone = tone;
+}
+
+function requireWentianInviteAccount() {
+  if (wentianAuthSession?.user) return true;
+  wentianAuthState.mode = "register";
+  navigate("screen-40");
+  return false;
+}
+
+async function bindWentianInviteCode(code, options = {}) {
+  const normalized = normalizeWentianInviteCode(code);
+  if (!isWentianInviteCode(normalized)) {
+    setWentianInviteStatus("请输入正确的邀请码", "error");
+    return null;
+  }
+  const session = await getWentianAuthSession();
+  if (!session?.user) {
+    setWentianPendingInviteCode(normalized);
+    wentianAuthState.mode = "register";
+    setWentianInviteStatus("已记录邀请码，登录/注册后自动绑定。", "ok");
+    if (options.rerender) navigate("screen-40");
+    return null;
+  }
+  try {
+    const data = await wentianFetchJson("/api/referrals/bind", {
+      method: "POST",
+      body: { inviteCode: normalized },
+    });
+    clearWentianPendingInviteCode();
+    setWentianLocalInviteStatus({ inviteCode: data.inviteCode, boundAt: data.invitedAt || new Date().toISOString() });
+    setWentianInviteStatus(data.message || "邀请码已绑定", "ok");
+    await hydrateWentianInvite({ force: true, rerender: options.rerender });
+    return data;
+  } catch (error) {
+    setWentianInviteStatus(error.message || "邀请码绑定失败", "error");
+    return null;
+  }
+}
+
+async function bindWentianPendingInvite(options = {}) {
+  const code = getWentianPendingInviteCode();
+  if (!isWentianInviteCode(code)) return null;
+  return bindWentianInviteCode(code, options);
+}
+
+async function copyWentianText(text, okText) {
+  try {
+    if (navigator.clipboard?.writeText) {
+      await navigator.clipboard.writeText(text);
+    } else {
+      const input = document.createElement("textarea");
+      input.value = text;
+      input.style.position = "fixed";
+      input.style.opacity = "0";
+      document.body.appendChild(input);
+      input.select();
+      document.execCommand("copy");
+      input.remove();
+    }
+    setWentianInviteStatus(okText || "已复制", "ok");
+  } catch (_err) {
+    setWentianInviteStatus("复制失败，请长按文本手动复制", "error");
+  }
+}
+
+async function shareWentianInvite() {
+  const summary = getWentianInviteSnapshot();
+  const text = `我在用问天AI排盘和问许半仙，注册时填邀请码 ${summary.inviteCode} 可领取体验次数：${summary.inviteLink}`;
+  if (navigator.share) {
+    try {
+      await navigator.share({ title: "问天AI", text, url: summary.inviteLink });
+      setWentianInviteStatus("已打开系统分享", "ok");
+      return;
+    } catch (_err) {}
+  }
+  await copyWentianText(text, "分享文案已复制");
+}
+
+function bindWentianInviteFromInput() {
+  const input = document.getElementById("wentian-invite-bind-input");
+  bindWentianInviteCode(input?.value || "", { rerender: true });
 }
 
 function setWentianChatStatus(text, tone = "") {
@@ -3592,6 +3837,7 @@ function sourceLoginMethodsScreen() {
   const account = getWentianAuthDisplay();
   const member = getWentianMemberSnapshot();
   const isRegister = wentianAuthState.mode === "register";
+  const pendingInviteCode = getWentianPendingInviteCode();
   if (account.loggedIn) {
     return `
       ${figBox("source-login-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
@@ -3631,7 +3877,7 @@ function sourceLoginMethodsScreen() {
     <input id="wentian-auth-phone" class="wentian-auth-input" inputmode="tel" autocomplete="tel" style="left:50px;top:248px;width:290px" placeholder="请输入手机号">
     ${figText("source-login-password-label", "密码", 50, 318, 88, 14, "#6e6254", 800)}
     <input id="wentian-auth-password" class="wentian-auth-input" type="password" autocomplete="${isRegister ? "new-password" : "current-password"}" style="left:50px;top:342px;width:290px" placeholder="至少 6 位">
-    ${wentianAuthState.error ? figText("source-login-error", escapeHtml(wentianAuthState.error), 50, 404, 290, 13, "#a94437", 700, "center", "line-height:1.35;") : ""}
+    ${wentianAuthState.error ? figText("source-login-error", escapeHtml(wentianAuthState.error), 50, 404, 290, 13, "#a94437", 700, "center", "line-height:1.35;") : (pendingInviteCode ? figText("source-login-invite", `已记录邀请码 ${escapeHtml(pendingInviteCode)}，登录后自动绑定`, 50, 404, 290, 13, "#9b742e", 700, "center", "line-height:1.35;") : "")}
     ${figBox("source-login-submit", 50, 442, 290, 46, "", `border-radius:23px;background:${wentianAuthState.loading ? "#d8c7aa" : "linear-gradient(180deg,#b74e39,#983323)"};box-shadow:0 12px 24px rgba(158,61,43,.16);`)}
     ${figButton("source-login-submit-hit", 50, 442, 290, 46, 'data-action="wentian-auth-submit"')}
     ${figText("source-login-submit-text", wentianAuthState.loading ? "处理中..." : (isRegister ? "注册并登录" : "登录并继续"), 50, 456, 290, 14, "#fffaf3", 900, "center")}
@@ -5134,6 +5380,85 @@ function renderWentianPolishedScreen(screen) {
     `;
   }
   if (no === 22) {
+    const invite = getWentianInviteSnapshot();
+    const account = getWentianAuthDisplay();
+    const code = invite.inviteCode;
+    const pendingCode = getWentianPendingInviteCode();
+    const bound = getWentianLocalInviteStatus();
+    const status = wentianInviteState.status || wentianInviteState.error || (pendingCode ? `待绑定邀请码：${pendingCode}` : (bound?.inviteCode ? `已绑定邀请码：${bound.inviteCode}` : ""));
+    const records = (invite.records || []).slice(0, 3);
+    if (!account.loggedIn) {
+      return `
+      ${figBox("wt22-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
+      ${wentianSimpleHeader("wt22", "邀请好友")}
+      ${figBox("wt22-login-card", 16, 112, 358, 178, "", "border-radius:18px;background:linear-gradient(135deg,#d5ad42,#9f741d);box-shadow:0 12px 26px rgba(121,82,18,.18);")}
+      ${figText("wt22-login-title", "登录后生成专属邀请码", 38, 154, 260, 22, "#fff", 900)}
+      ${figText("wt22-login-desc", "邀请好友注册、首付奖励和收益记录都会绑定到你的账号。", 38, 194, 292, 13, "#fff6df", 800, "left", "line-height:1.55;")}
+      ${figBox("wt22-login-btn", 38, 234, 140, 38, "", "border-radius:19px;background:#fff;")}
+      ${figButton("wt22-login-hit", 38, 234, 140, 38, 'data-route="screen-40"')}
+      ${figText("wt22-login-text", "登录 / 注册", 38, 246, 140, 12, "#9b742e", 900, "center")}
+
+      ${figBox("wt22-bind", 16, 320, 358, 148, "", "border-radius:18px;background:#fff;box-shadow:0 8px 20px rgba(70,45,25,.08);")}
+      ${figText("wt22-bind-title", "我有好友邀请码", 38, 346, 140, 15, "#25211d", 900)}
+      ${figText("wt22-bind-desc", "先填在这里也可以；登录/注册后自动绑定。", 38, 372, 286, 12, "#8f867b", 700)}
+      <input id="wentian-invite-bind-input" class="wentian-invite-input" style="left:38px;top:406px;width:200px" value="${escapeHtml(pendingCode || "")}" placeholder="输入邀请码">
+      ${figBox("wt22-bind-btn", 252, 406, 88, 38, "", "border-radius:19px;background:#b74e39;")}
+      ${figButton("wt22-bind-hit", 252, 406, 88, 38, 'data-action="wentian-invite-bind"')}
+      ${figText("wt22-bind-text", "绑定", 252, 418, 88, 12, "#fff", 900, "center")}
+      <div id="wentian-invite-status" class="wentian-invite-status" style="left:38px;top:456px;width:314px" data-tone="${wentianInviteState.error ? "error" : ""}">${escapeHtml(status)}</div>
+
+      ${figBox("wt22-rule", 16, 506, 358, 134, "", "border-radius:18px;background:#fff;box-shadow:0 8px 20px rgba(70,45,25,.07);")}
+      ${figText("wt22-rule-title", "奖励规则", 42, 532, 110, 16, "#25211d", 900)}
+      ${figText("wt22-rule-desc", "好友注册成功：双方各得 2 次对话奖励。<br>好友首次付费：邀请人再得 10 次对话奖励。", 42, 564, 292, 13, "#756d63", 700, "left", "line-height:1.55;")}
+    `;
+    }
+    return `
+      ${figBox("wt22-bg", 0, 0, 390, 1120, "", "background:#fbf7ef;")}
+      ${wentianSimpleHeader("wt22", "邀请好友", "刷新")}
+      ${figButton("wt22-refresh-hit", 318, 38, 62, 54, 'data-action="wentian-invite-refresh"')}
+      ${figBox("wt22-top", 16, 94, 358, 112, "", "border-radius:18px;background:linear-gradient(135deg,#d5ad42,#9f741d);box-shadow:0 12px 26px rgba(121,82,18,.18);")}
+      ${figText("wt22-num", String(invite.invitedCount || 0), 44, 118, 80, 36, "#fff", 900)}
+      ${figText("wt22-num-label", "邀请好友人数", 44, 162, 130, 13, "#fff6df", 800)}
+      ${figText("wt22-reward", `可用奖励 ${Number(invite.bonusRemaining ?? invite.bonusTalks ?? 0)} 次`, 214, 122, 120, 14, "#fff7df", 900, "right")}
+      ${figText("wt22-paid", `首付好友 ${Number(invite.paidCount || 0)} 人`, 214, 158, 120, 12, "#fff1cc", 700, "right")}
+
+      ${figBox("wt22-code", 16, 226, 358, 172, "", "border-radius:18px;background:#fff;box-shadow:0 8px 20px rgba(70,45,25,.08);")}
+      ${figText("wt22-code-title", "我的邀请码", 38, 250, 100, 13, "#8f867b", 800)}
+      ${figText("wt22-code-num", formatWentianInviteCode(code), 38, 282, 314, 24, "#25211d", 900, "center")}
+      ${figBox("wt22-copy-code", 36, 328, 96, 38, "", "border-radius:19px;background:#d0a03a;")}
+      ${figButton("wt22-copy-code-hit", 36, 328, 96, 38, 'data-action="wentian-invite-copy-code"')}
+      ${figText("wt22-copy-code-text", "复制码", 36, 340, 96, 12, "#fff", 900, "center")}
+      ${figBox("wt22-copy-link", 146, 328, 96, 38, "", "border-radius:19px;background:#25211d;")}
+      ${figButton("wt22-copy-link-hit", 146, 328, 96, 38, 'data-action="wentian-invite-copy-link"')}
+      ${figText("wt22-copy-link-text", "复制链接", 146, 340, 96, 12, "#fff", 900, "center")}
+      ${figBox("wt22-share", 256, 328, 96, 38, "", "border-radius:19px;background:#fff7ec;border:1px solid #ead9bd;")}
+      ${figButton("wt22-share-hit", 256, 328, 96, 38, 'data-action="wentian-invite-share"')}
+      ${figText("wt22-share-text", "系统分享", 256, 340, 96, 12, "#9b742e", 900, "center")}
+
+      ${figBox("wt22-bind", 16, 422, 358, 140, "", "border-radius:18px;background:#fff;box-shadow:0 8px 20px rgba(70,45,25,.08);")}
+      ${figText("wt22-bind-title", "绑定好友邀请码", 38, 446, 140, 15, "#25211d", 900)}
+      ${figText("wt22-bind-desc", "收到好友邀请码时填在这里；登录后每个账号只绑定一次。", 38, 472, 286, 12, "#8f867b", 700)}
+      <input id="wentian-invite-bind-input" class="wentian-invite-input" style="left:38px;top:506px;width:200px" value="${escapeHtml(pendingCode || "")}" placeholder="输入邀请码">
+      ${figBox("wt22-bind-btn", 252, 506, 88, 38, "", "border-radius:19px;background:#b74e39;")}
+      ${figButton("wt22-bind-hit", 252, 506, 88, 38, 'data-action="wentian-invite-bind"')}
+      ${figText("wt22-bind-text", "绑定", 252, 518, 88, 12, "#fff", 900, "center")}
+      <div id="wentian-invite-status" class="wentian-invite-status" style="left:38px;top:574px;width:314px" data-tone="${wentianInviteState.error ? "error" : ""}">${escapeHtml(status)}</div>
+
+      ${figBox("wt22-rule", 16, 618, 358, 134, "", "border-radius:18px;background:#fff;box-shadow:0 8px 20px rgba(70,45,25,.07);")}
+      ${figText("wt22-rule-title", "奖励规则", 42, 644, 110, 16, "#25211d", 900)}
+      ${figText("wt22-rule-desc", `好友注册成功：双方各得 ${invite.registerReward || 2} 次对话奖励。<br>好友首次付费：邀请人再得 ${invite.paidReward || 10} 次对话奖励。`, 42, 676, 292, 13, "#756d63", 700, "left", "line-height:1.55;")}
+
+      ${figBox("wt22-record", 16, 780, 358, 244, "", "border-radius:18px;background:#fff;box-shadow:0 8px 20px rgba(70,45,25,.07);")}
+      ${figText("wt22-record-title", "收益记录", 42, 806, 110, 16, "#25211d", 900)}
+      ${wentianInviteState.loading ? figText("wt22-loading", "正在读取邀请记录...", 42, 854, 260, 13, "#8f867b", 700) : records.length ? records.map((item, index) => {
+        const y = 848 + index * 48;
+        return `
+          ${figText(`wt22-record-name-${index}`, escapeHtml(item.label || "好友账号"), 42, y, 138, 13, "#25211d", 800)}
+          ${figText(`wt22-record-date-${index}`, escapeHtml(formatWentianMemberDate(item.joinedAt) || "已注册"), 42, y + 22, 138, 11, "#9a9289", 600)}
+          ${figText(`wt22-record-reward-${index}`, item.paidAt ? `+${invite.paidReward || 10} 次` : `+${invite.registerReward || 2} 次`, 262, y + 4, 72, 13, item.paidAt ? "#b74e39" : "#9b742e", 900, "right")}
+        `;
+      }).join("") : figText("wt22-empty", "暂无邀请记录，复制链接发给好友即可开始。", 42, 866, 272, 13, "#9a9289", 700)}
+    `;
     return `
       ${figBox("wt22-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
       ${wentianSimpleHeader("wt22", "邀请好友")}
@@ -5155,6 +5480,30 @@ function renderWentianPolishedScreen(screen) {
     `;
   }
   if (no === 23) {
+    const invite = getWentianInviteSnapshot();
+    return `
+      ${figBox("wt23-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
+      ${wentianSimpleHeader("wt23", "活动中心", "刷新")}
+      ${figButton("wt23-refresh-hit", 318, 38, 62, 54, 'data-action="wentian-invite-refresh"')}
+      ${figBox("wt23-progress", 16, 104, 358, 104, "", "border-radius:18px;background:linear-gradient(135deg,#d5ad42,#9f741d);box-shadow:0 12px 26px rgba(121,82,18,.16);")}
+      ${figText("wt23-count", `${Number(invite.invitedCount || 0)} 人`, 40, 132, 140, 26, "#fff", 900)}
+      ${figText("wt23-label", `可用奖励 ${Number(invite.bonusRemaining ?? invite.bonusTalks ?? 0)} 次`, 40, 170, 160, 13, "#fff7df", 800)}
+      ${figBox("wt23-go", 254, 132, 82, 42, "", "border-radius:21px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.3);")}
+      ${figButton("wt23-go-hit", 254, 132, 82, 42, 'data-route="screen-22"')}
+      ${figText("wt23-go-text", "去邀请", 254, 146, 82, 12, "#fff", 900, "center")}
+      ${[["邀请好友注册", `双方各得 ${invite.registerReward || 2} 次对话`, "#d8ab3c", "screen-22"], ["好友首次付费", `邀请人再得 ${invite.paidReward || 10} 次对话`, "#f0a229", "screen-22"], ["每日签到", "连续签到功能待开放", "#5fae95", "screen-23"]].map(([title, desc, color, route], index) => {
+        const y = 250 + index * 118;
+        return `
+          ${figBox(`wt23-card-${index}`, 16, y, 358, 94, "", "border-radius:16px;background:#fff;box-shadow:0 8px 20px rgba(70,45,25,.07);")}
+          ${figBox(`wt23-icon-${index}`, 34, y + 18, 52, 52, "", `border-radius:26px;background:${color};`)}
+          ${figText(`wt23-icon-text-${index}`, index === 0 ? "邀" : index === 1 ? "奖" : "签", 34, y + 34, 52, 15, "#fff", 900, "center")}
+          ${figText(`wt23-title-${index}`, title, 104, y + 18, 150, 16, "#25211d", 900)}
+          ${figText(`wt23-desc-${index}`, desc, 104, y + 46, 210, 13, "#756d63", 700)}
+          ${figText(`wt23-arrow-${index}`, "›", 338, y + 34, 20, 20, "#c9bba6", 800, "center")}
+          ${figButton(`wt23-hit-${index}`, 16, y, 358, 94, `data-route="${route}"`)}
+        `;
+      }).join("")}
+    `;
     return `
       ${figBox("wt23-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
       ${wentianSimpleHeader("wt23", "活动中心")}
@@ -5328,6 +5677,42 @@ function renderWentianPolishedScreen(screen) {
     `;
   }
   if (no === 34) {
+    const account = getWentianAuthDisplay();
+    if (!account.loggedIn) {
+      return `
+      ${sourceMineScreen(screen)}
+      ${figBox("wt34-overlay", 0, 0, 390, 844, "", "background:rgba(0,0,0,.3);")}
+      ${figBox("wt34-sheet", 0, 604, 390, 240, "", "border-radius:22px 22px 0 0;background:#fff;")}
+      ${figText("wt34-title", "分享问天AI", 0, 632, 390, 18, "#25211d", 800, "center")}
+      ${figText("wt34-close", "×", 334, 630, 28, 24, "#25211d", 400, "center")}
+      ${figButton("wt34-close-hit", 322, 620, 52, 46, 'data-route="screen-31"')}
+      ${figText("wt34-login-desc", "登录后生成专属邀请链接，好友注册和首付奖励会自动记到你的账号。", 42, 682, 306, 13, "#756d63", 700, "center", "line-height:1.55;")}
+      ${figBox("wt34-login-btn", 78, 748, 234, 46, "", "border-radius:23px;background:#b74e39;")}
+      ${figButton("wt34-login-hit", 78, 748, 234, 46, 'data-route="screen-40"')}
+      ${figText("wt34-login-text", "登录 / 注册", 78, 763, 234, 12, "#fff", 900, "center")}
+    `;
+    }
+    const invite = getWentianInviteSnapshot();
+    const shareText = `推荐你使用问天AI，注册填写邀请码 ${invite.inviteCode} 可领取体验次数。${invite.inviteLink}`;
+    return `
+      ${sourceMineScreen(screen)}
+      ${figBox("wt34-overlay", 0, 0, 390, 844, "", "background:rgba(0,0,0,.3);")}
+      ${figBox("wt34-sheet", 0, 574, 390, 270, "", "border-radius:22px 22px 0 0;background:#fff;")}
+      ${figText("wt34-title", "分享问天AI", 0, 602, 390, 18, "#25211d", 800, "center")}
+      ${figText("wt34-close", "×", 334, 600, 28, 24, "#25211d", 400, "center")}
+      ${figButton("wt34-close-hit", 322, 590, 52, 46, 'data-route="screen-31"')}
+      ${figBox("wt34-copy", 28, 644, 334, 72, "", "border-radius:10px;background:#fbf7ef;border:1px solid #eadfce;")}
+      ${figText("wt34-copy-text", escapeHtml(shareText), 44, 658, 280, 13, "#756d63", 500, "left", "line-height:1.45;")}
+      ${figBox("wt34-copy-code", 38, 742, 92, 46, "", "border-radius:23px;background:#d0a03a;")}
+      ${figButton("wt34-copy-code-hit", 38, 742, 92, 46, 'data-action="wentian-invite-copy-code"')}
+      ${figText("wt34-copy-code-text", "复制码", 38, 757, 92, 12, "#fff", 900, "center")}
+      ${figBox("wt34-copy-link", 150, 742, 92, 46, "", "border-radius:23px;background:#25211d;")}
+      ${figButton("wt34-copy-link-hit", 150, 742, 92, 46, 'data-action="wentian-invite-copy-link"')}
+      ${figText("wt34-copy-link-text", "复制链接", 150, 757, 92, 12, "#fff", 900, "center")}
+      ${figBox("wt34-share-btn", 262, 742, 92, 46, "", "border-radius:23px;background:#fff7ec;border:1px solid #ead9bd;")}
+      ${figButton("wt34-share-hit", 262, 742, 92, 46, 'data-action="wentian-invite-share"')}
+      ${figText("wt34-share-text", "系统分享", 262, 757, 92, 12, "#9b742e", 900, "center")}
+    `;
     return `
       ${sourceMineScreen(screen)}
       ${figBox("wt34-overlay", 0, 0, 390, 844, "", "background:rgba(0,0,0,.3);")}
@@ -5949,7 +6334,7 @@ function renderConvertedScreen(no) {
   }
   const polishedScreen = renderWentianPolishedScreen(screen);
   if (polishedScreen) {
-    const polishedHeight = screen.no === 8 ? 1280 : screen.no === 20 ? 1072 : screen.no === 24 ? 1180 : screen.no === 44 ? getYangzhaiResultHeight() : screen.no === 46 ? 1160 : 844;
+    const polishedHeight = screen.no === 8 ? 1280 : screen.no === 20 ? 1072 : screen.no === 22 ? 1120 : screen.no === 24 ? 1180 : screen.no === 44 ? getYangzhaiResultHeight() : screen.no === 46 ? 1160 : 844;
     const wideBgClass = screen.no >= 42 && screen.no <= 45 ? " wide-bg" : "";
     return figPhone(`screen-${screen.no}`, `${String(screen.no).padStart(2, "0")} ${screen.title}`, `
       ${polishedScreen}
@@ -5986,6 +6371,7 @@ function routeFromLocation() {
   if (hashRoute && !hashRoute.startsWith("figmacapture=") && !hasWentianAuthParams(getWentianUrlParams(location.hash))) return resolveRoute(hashRoute);
   const screen = new URLSearchParams(location.search).get("screen");
   if (screen) return resolveRoute(screen.startsWith("screen") ? screen : `screen-${screen}`);
+  if (isWentianInviteCode(getWentianInviteCodeFromUrl())) return "screen-40";
   return "screen-1";
 }
 
@@ -6063,6 +6449,7 @@ function navigate(route, push = true) {
     if (screen.no === 5 || screen.no === 25) window.setTimeout(() => hydrateWentianArchivesFromRemote({ rerender: true }), 0);
     if (screen.no === 30) window.setTimeout(initWentianPaymentScreen, 0);
     if (screen.no === 1 || screen.no === 31 || screen.no === 33) window.setTimeout(() => hydrateWentianMemberStatus({ rerender: true }), 0);
+    if (screen.no === 22 || screen.no === 23 || screen.no === 24 || screen.no === 31 || screen.no === 34) window.setTimeout(() => hydrateWentianInvite({ rerender: true }), 0);
     if (screen.no === 48) window.setTimeout(() => hydrateWentianOrders({ rerender: true }), 0);
     if (screen.no === 26) window.setTimeout(initWentianChartForm, 0);
     if (screen.no === 46) window.setTimeout(initLiurenScreen, 0);
@@ -6517,6 +6904,29 @@ document.addEventListener("click", (event) => {
     hydrateWentianOrders({ force: true, rerender: true });
     return;
   }
+  if (action === "wentian-invite-copy-code") {
+    if (!requireWentianInviteAccount()) return;
+    copyWentianText(getWentianInviteSnapshot().inviteCode, "邀请码已复制");
+    return;
+  }
+  if (action === "wentian-invite-copy-link") {
+    if (!requireWentianInviteAccount()) return;
+    copyWentianText(getWentianInviteSnapshot().inviteLink, "邀请链接已复制");
+    return;
+  }
+  if (action === "wentian-invite-share") {
+    if (!requireWentianInviteAccount()) return;
+    shareWentianInvite();
+    return;
+  }
+  if (action === "wentian-invite-bind") {
+    bindWentianInviteFromInput();
+    return;
+  }
+  if (action === "wentian-invite-refresh") {
+    hydrateWentianInvite({ force: true, rerender: true });
+    return;
+  }
   if (action === "wentian-archive-pick") {
     const option = event.target.closest("[data-archive-id]");
     if (option?.dataset.archiveId) pickWentianArchive(option.dataset.archiveId);
@@ -6712,6 +7122,7 @@ async function consumeWentianAuthCallback() {
 
 async function bootWentianApp() {
   buildScreenNav();
+  captureWentianInviteFromUrl();
   if (!isWentianAuthCallbackUrl()) {
     navigate(routeFromLocation(), false);
     return;
@@ -6729,6 +7140,9 @@ async function bootWentianApp() {
   if (session?.user) {
     wentianMemberState.loaded = false;
     wentianOrderState.loaded = false;
+    wentianInviteState.loaded = false;
+    await bindWentianPendingInvite();
+    await hydrateWentianInvite({ force: true });
     if (returnState?.after === "member-payment") {
       window.setTimeout(() => startWentianMemberPayment(), 120);
     }
