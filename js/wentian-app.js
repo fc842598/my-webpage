@@ -5359,8 +5359,90 @@ function renderWentianClassicCenter(chart, chartData, form) {
       <div class="fc-sizhu">
         ${columns.map(([stem, branch, color]) => (stem || branch) ? `<div class="fc-sizhu-col" style="color:${color}"><span>${escapeHtml(stem || "?")}</span><span>${escapeHtml(branch || "?")}</span></div>` : "").join("")}
       </div>
+      <div class="fc-time-stepper" aria-label="微调排盘时辰">
+        <button type="button" class="fc-time-step-btn" data-action="wentian-chart-time-step" data-hour-delta="-2">时↑</button>
+        <button type="button" class="fc-time-step-btn" data-action="wentian-chart-time-step" data-hour-delta="2">时↓</button>
+      </div>
       <div class="wentian-fc-note">命宫 ${escapeHtml(chart?.earthlyBranchOfSoulPalace || "—")} · 身宫 ${escapeHtml(chart?.earthlyBranchOfBodyPalace || "—")} · 已接入</div>
     </div>`;
+}
+
+function shiftWentianChartTime(hoursDelta) {
+  const saved = getWentianDisplayChartState() || getWentianFallbackChartState();
+  const baseText = saved?.form?.datetime || saved?.chartData?.birthDate || saved?.chartData?.solarTime || "";
+  const baseDate = new Date(String(baseText).replace(" ", "T"));
+  const lib = getWentianIztroLib();
+  if (!saved?.chart || !Number.isFinite(baseDate.getTime()) || !lib) return;
+
+  const nextDate = new Date(baseDate.getTime() + Number(hoursDelta || 0) * 60 * 60 * 1000);
+  const dateStr = `${nextDate.getFullYear()}-${padWentianNumber(nextDate.getMonth() + 1)}-${padWentianNumber(nextDate.getDate())}`;
+  let calcHour = nextDate.getHours();
+  let calcMinute = nextDate.getMinutes();
+  const cityDetail = saved.form?.cityDetail || null;
+  const useTrueSolar = !!saved.form?.useTrueSolar;
+  let trueSolarResult = null;
+
+  if (useTrueSolar && typeof calcTrueSolarTime === "function") {
+    trueSolarResult = calcTrueSolarTime({
+      year: nextDate.getFullYear(),
+      month: nextDate.getMonth() + 1,
+      day: nextDate.getDate(),
+      hour: calcHour,
+      minute: calcMinute,
+      longitude: cityDetail?.lon || 116.4,
+      tzOffset: cityDetail?.tzOffset ?? 8,
+      cityName: cityDetail ? formatWentianCity(cityDetail) : "北京（默认）",
+    });
+    calcHour = trueSolarResult.trueSolarHour;
+    calcMinute = trueSolarResult.trueSolarMinute;
+  }
+
+  const timeIndex = getWentianTimeIndex(calcHour, calcMinute);
+  const gender = saved.form?.gender || saved.chartData?.gender || "male";
+  const genderText = gender === "female" ? "女" : "男";
+  const chart = typeof lib.bySolar === "function"
+    ? lib.bySolar(dateStr, timeIndex, genderText, true)
+    : lib.astrolabeBySolarDate(dateStr, timeIndex, genderText, true);
+
+  resetWentianChartRecordId();
+  const chartData = buildWentianChartPayload(chart, {
+    gender,
+    date: nextDate,
+    dateStr,
+    timeIndex,
+    trueSolarResult,
+    useTrueSolar,
+    city: saved.form?.city || saved.chartData?.city || "",
+    cityDetail,
+    calMode: saved.form?.calMode || "solar",
+    calModeLabel: `公历 ${dateStr}`,
+  });
+  resetWentianChartAiState(chartData.chartRecordId);
+
+  const archiveId = saved.archiveId || saved.form?.archiveId || `archive-${chartData.chartRecordId}`;
+  saveWentianChart({
+    archiveId,
+    chart,
+    chartData,
+    form: {
+      ...(saved.form || {}),
+      archiveId,
+      name: saved.form?.name || "命主",
+      gender,
+      city: saved.form?.city || saved.chartData?.city || "",
+      cityDetail,
+      calMode: saved.form?.calMode || "solar",
+      datetime: `${dateStr}T${padWentianNumber(nextDate.getHours())}:${padWentianNumber(nextDate.getMinutes())}`,
+      useTrueSolar,
+    },
+    createdAt: saved.createdAt || new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  });
+
+  wentianXuChat.sessionId = null;
+  wentianXuChat.sessionPromise = null;
+  wentianXuChat.messages = [];
+  navigate("screen-27", false);
 }
 
 function renderWentianClassicChart(saved) {
@@ -6162,6 +6244,10 @@ document.addEventListener("click", (event) => {
   }
   if (earlyAction === "wentian-chart-palace") {
     highlightWentianClassicChart(earlyActionTarget.dataset.palaceBranch || "", earlyActionTarget.dataset.palaceName || "");
+    return;
+  }
+  if (earlyAction === "wentian-chart-time-step") {
+    shiftWentianChartTime(Number(earlyActionTarget.dataset.hourDelta || 0));
     return;
   }
   if (earlyAction === "liuren-use-now") {
