@@ -1525,7 +1525,6 @@
     const bundle = getChartBundle();
     updateHeroMeta(bundle);
     const summary = $('#mbpChartSummary');
-    if (!summary) return;
 
     if (bundle.error) {
       document.body.classList.remove('is-chart-ready');
@@ -1535,14 +1534,16 @@
       fcLiunianResult = null;
       fcLiunianSeq = {};
       fcClearCells(bundle.error);
-      summary.textContent = bundle.error;
+      if (summary) summary.textContent = bundle.error;
       return;
     }
 
     const { chart, norm } = bundle;
     renderClassicChart(chart, norm);
     const four = mutagens(chart);
-    summary.innerHTML = `命主身主：<b>${escapeHtml(chart.soul || '—')} · ${escapeHtml(chart.body || '—')}</b><br>四化分布：${escapeHtml(four.slice(0, 4).join('、') || '未读取到明显四化')}`;
+    if (summary) {
+      summary.innerHTML = `命主身主：<b>${escapeHtml(chart.soul || '—')} · ${escapeHtml(chart.body || '—')}</b><br>四化分布：${escapeHtml(four.slice(0, 4).join('、') || '未读取到明显四化')}`;
+    }
   }
 
   function buildReports() {
