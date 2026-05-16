@@ -4131,16 +4131,63 @@ p.mbp-topic-detail {
   font-size: 14px;
 }
 
-.mbp-luck-hero > span {
+.mbp-luck-age-wrap {
+  display: grid;
+  justify-items: center;
+  gap: 10px;
+}
+
+.mbp-luck-age-badge {
   display: grid;
   place-items: center;
-  width: 62px;
-  height: 62px;
+  width: 70px;
+  height: 70px;
   border: 1px solid rgba(241, 212, 125, .24);
   border-radius: 999px;
   background: rgba(0, 0, 0, .18);
   color: var(--gold);
+  font-size: 15px;
   font-weight: 900;
+  text-align: center;
+}
+
+.mbp-luck-age-note {
+  position: relative;
+  width: max-content;
+  max-width: 220px;
+  color: #cdbb90;
+  font-size: 12px;
+  line-height: 1.65;
+}
+
+.mbp-luck-age-note summary {
+  display: inline-grid;
+  place-items: center;
+  min-height: 28px;
+  padding: 0 11px;
+  border: 1px solid rgba(241, 212, 125, .22);
+  border-radius: 999px;
+  color: var(--gold);
+  font-weight: 900;
+  cursor: pointer;
+  list-style: none;
+}
+
+.mbp-luck-age-note summary::-webkit-details-marker {
+  display: none;
+}
+
+.mbp-luck-age-note p {
+  position: absolute;
+  right: 0;
+  z-index: 3;
+  width: 220px;
+  margin: 8px 0 0;
+  padding: 10px 12px;
+  border: 1px solid rgba(241, 212, 125, .18);
+  border-radius: 9px;
+  background: rgba(20, 16, 10, .96);
+  box-shadow: 0 12px 26px rgba(0, 0, 0, .28);
 }
 
 .mbp-luck-kv,
@@ -5116,11 +5163,21 @@ p.mbp-topic-detail {
     grid-template-columns: 1fr;
   }
 
-  .mbp-luck-hero > span {
+  .mbp-luck-age-wrap {
+    justify-items: start;
+  }
+
+  .mbp-luck-age-badge {
     width: max-content;
     height: auto;
     min-height: 34px;
     padding: 0 12px;
+  }
+
+  .mbp-luck-age-note p {
+    left: 0;
+    right: auto;
+    width: min(280px, calc(100vw - 64px));
   }
 
   .mbp-curve-chart {

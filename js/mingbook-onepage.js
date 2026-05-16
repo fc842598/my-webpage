@@ -2200,7 +2200,13 @@
           <strong>${escapeHtml(`${decadeRange[0]}-${decadeRange[1]}岁 · ${normalizePalaceName(palaceName)} · ${theme}`)}</strong>
           <p>${escapeHtml(`大限主星：${stars}；当前流年：${year} ${yearGz}`)}</p>
         </div>
-        <span>${escapeHtml(`${currentAge}岁`)}</span>
+        <div class="mbp-luck-age-wrap">
+          <span class="mbp-luck-age-badge">${escapeHtml(`${currentAge}虚岁`)}</span>
+          <details class="mbp-luck-age-note">
+            <summary>虚岁说明</summary>
+            <p>紫微斗数看当年的小流年、流年宫位时，通常以虚岁定位，不是以身份证或生日后的实岁来定。</p>
+          </details>
+        </div>
       </div>
       <div class="mbp-luck-kv">
         <section><b>大限宫位</b><strong>${escapeHtml(palaceName)}</strong><p>${escapeHtml(domain)}</p></section>
