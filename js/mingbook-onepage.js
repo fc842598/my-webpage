@@ -3180,8 +3180,20 @@
     });
 
     $('#mbpYijingAssist')?.addEventListener('click', (event) => {
+      const helpButton = event.target.closest('[data-yijing-help]');
+      if (helpButton) {
+        const note = $('#mbpYijingHelpNote');
+        const text = helpButton.dataset.yijingHelp || '';
+        if (note) {
+          note.textContent = text;
+          note.hidden = !text;
+        }
+        return;
+      }
       const tabButton = event.target.closest('[data-yijing-tab]');
       if (tabButton) {
+        const note = $('#mbpYijingHelpNote');
+        if (note) note.hidden = true;
         fcSwitchTab(tabButton.dataset.yijingTab || '先天卦');
         return;
       }
