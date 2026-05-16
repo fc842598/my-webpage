@@ -69,6 +69,8 @@
     chartConfirmedKey: '',
     decoded: false,
     aiResults: {},
+    curveGenerated: false,
+    adviceGenerated: false,
   };
   let formCalMode = state.profile.isLunar ? 'lunar' : 'solar';
   let selectedCity = null;
@@ -2459,6 +2461,65 @@
     return aiTasks.filter((task) => state.aiResults[task.module]).length;
   }
 
+  const reportChapterProgressGroups = [
+    { modules: ['overall'] },
+    { modules: ['shengong', 'hunyin', 'jiankang', 'caiyun', 'shiye'] },
+    { modules: ['current_luck'] },
+    { virtual: 'curve' },
+    { virtual: 'advice' },
+  ];
+
+  function reportChapterProgress(group, runningModule, totalDone, totalModules) {
+    if (group.modules) {
+      const done = group.modules.filter((moduleKey) => state.aiResults[moduleKey]).length;
+      const total = group.modules.length;
+      const running = group.modules.includes(runningModule);
+      if (done >= total) return { ratio: 1, state: 'done', text: '完成' };
+      if (running) return { ratio: Math.max(done / total, 0.12), state: 'running', text: total > 1 ? `${done}/${total}` : '生成中' };
+      if (done > 0) return { ratio: done / total, state: 'partial', text: `${done}/${total}` };
+      return { ratio: 0, state: 'pending', text: '等待' };
+    }
+    if (group.virtual === 'curve') {
+      if (state.curveGenerated || totalDone >= totalModules) return { ratio: 1, state: 'done', text: '完成' };
+      if (totalDone > 0 || runningModule) return { ratio: Math.min(.72, Math.max(.18, totalDone / totalModules)), state: 'running', text: '整理中' };
+    }
+    if (group.virtual === 'advice') {
+      if (state.adviceGenerated || totalDone >= totalModules) return { ratio: 1, state: 'done', text: '完成' };
+      if (totalDone > 1 || runningModule) return { ratio: Math.min(.82, Math.max(.12, totalDone / totalModules)), state: 'running', text: '整理中' };
+    }
+    return { ratio: 0, state: 'pending', text: '等待' };
+  }
+
+  function updateBookProgress(done = 0, runningIndex = -1, stateText = '待生成') {
+    const total = aiTasks.length;
+    const safeDone = Math.max(0, Math.min(done, total));
+    const percent = total ? Math.round((safeDone / total) * 100) : 0;
+    const runningModule = aiTasks[runningIndex]?.module || '';
+    const text = $('#mbpBookProgressText');
+    const fill = $('#mbpBookProgressFill');
+    const track = fill?.closest('.mbp-book-progress-track');
+    const hint = $('#mbpBookProgressHint');
+    if (text) text.textContent = `${percent}%`;
+    if (fill) fill.style.width = `${percent}%`;
+    if (track) track.setAttribute('aria-valuenow', String(percent));
+    if (hint) {
+      hint.textContent = percent >= 100
+        ? '五卷命书已生成，可继续查看细节或打包报告。'
+        : (runningModule ? `正在生成：${stateText}` : '等待客户确认排盘后开始生成。');
+    }
+    document.querySelectorAll('[data-report-nav]').forEach((button) => {
+      const index = Number(button.dataset.reportNav) || 0;
+      const item = reportChapterProgress(reportChapterProgressGroups[index] || {}, runningModule, safeDone, total);
+      const row = button.closest('li');
+      row?.classList.toggle('is-done', item.state === 'done');
+      row?.classList.toggle('is-running', item.state === 'running');
+      row?.classList.toggle('is-partial', item.state === 'partial');
+      row?.style.setProperty('--mbp-chapter-progress', `${Math.round(item.ratio * 100)}%`);
+      const stateNode = button.querySelector('[data-report-progress-state]');
+      if (stateNode) stateNode.textContent = item.text;
+    });
+  }
+
   function updateDecodeProgress(done = 0, runningIndex = -1, stateText = '待生成') {
     const total = aiTasks.length;
     const meter = $('#mbpDecodeMeter');
@@ -2474,6 +2535,7 @@
     if (count) count.textContent = `${Math.min(done, total)}/${total}`;
     const label = $('#mbpReportStateText');
     if (label) label.textContent = stateText;
+    updateBookProgress(done, runningIndex, stateText);
   }
 
   function setModuleDone(moduleKey, done) {
@@ -3035,6 +3097,10 @@
         setSpecialStatus(task.key, '已生成', 'done');
       }
       renderChaptersFromAi();
+      if (generatedModuleCount() >= aiTasks.length) {
+        state.curveGenerated = true;
+        state.adviceGenerated = true;
+      }
       updateDecodeProgress(generatedModuleCount(), -1, '已生成');
       setDecodeStatus(`${task.label} 已生成。`);
       if (options.scroll && task.key) {
@@ -3079,6 +3145,8 @@
     setDecodeAllButtonsBusy(true, '生成中');
     state.decoded = true;
     state.aiResults = {};
+    state.curveGenerated = false;
+    state.adviceGenerated = false;
     document.body.classList.add('is-decoded');
     setDecodeStatus('正在调用原站 AI 批命：整体批命');
     setAllModuleButtonsBusy(true);
@@ -3111,6 +3179,8 @@
     }
 
     renderChaptersFromAi();
+    state.curveGenerated = successCount >= aiTasks.length;
+    state.adviceGenerated = successCount >= aiTasks.length;
     setDecodeStatus(successCount ? `已接入原站 AI：完成 ${successCount}/${aiTasks.length} 个模块。` : 'AI 服务暂未连接，请稍后重试。');
     updateDecodeProgress(successCount, -1, successCount ? '已生成' : '生成失败');
     setAllModuleButtonsBusy(false);
@@ -3129,6 +3199,7 @@
       return false;
     }
     state.decoded = true;
+    state.curveGenerated = true;
     document.body.classList.add('is-decoded');
     renderChaptersFromAi();
     updateDecodeProgress(generatedModuleCount(), -1, '曲线已生成');
@@ -3151,6 +3222,8 @@
   function resetAiContent() {
     setReportGeneratedState(false);
     resetModuleDoneStates();
+    state.curveGenerated = false;
+    state.adviceGenerated = false;
     updateDecodeProgress(0, -1, '待生成');
     const defaults = {
       body: ['身宫批命', '点击一键批命后生成。'],

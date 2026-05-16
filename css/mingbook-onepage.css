@@ -2853,6 +2853,8 @@ p.mbp-topic-detail {
   border: 1px solid transparent;
   border-radius: 0;
   color: #8c7b53;
+  --mbp-chapter-progress: 0%;
+  transition: border-color .22s ease, background .22s ease, color .22s ease;
 }
 
 .mbp-book-menu li.is-active {
@@ -2863,12 +2865,13 @@ p.mbp-topic-detail {
 
 .mbp-book-menu button {
   width: 100%;
-  min-height: 46px;
+  min-height: 58px;
   display: grid;
-  grid-template-columns: 28px minmax(0, 1fr);
+  grid-template-columns: 28px minmax(0, 1fr) auto;
+  grid-template-rows: auto auto;
   align-items: center;
-  gap: 8px;
-  padding: 0 8px;
+  gap: 7px 8px;
+  padding: 8px;
   border: 0;
   background: transparent;
   color: inherit;
@@ -2898,6 +2901,50 @@ p.mbp-topic-detail {
   text-overflow: clip;
 }
 
+.mbp-book-menu small {
+  color: #7f704e;
+  font-size: 11px;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.mbp-book-menu li.is-running small,
+.mbp-book-menu li.is-partial small {
+  color: var(--gold-2);
+}
+
+.mbp-book-menu li.is-done small {
+  color: var(--gold);
+}
+
+.mbp-book-menu li.is-running {
+  border-color: rgba(241, 212, 125, .28);
+  background: rgba(241, 212, 125, .055);
+}
+
+.mbp-book-menu li.is-done {
+  color: var(--ivory);
+}
+
+.mbp-book-menu-progress {
+  grid-column: 2 / -1;
+  display: block;
+  height: 4px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(241, 212, 125, .09);
+}
+
+.mbp-book-menu-progress u {
+  display: block;
+  width: var(--mbp-chapter-progress);
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--gold), var(--copper));
+  box-shadow: 0 0 14px rgba(241, 212, 125, .25);
+  transition: width .36s ease;
+}
+
 .mbp-book-menu i {
   display: none;
   place-items: center;
@@ -2911,6 +2958,58 @@ p.mbp-topic-detail {
 
 .mbp-book-menu li:not(.is-active) i {
   visibility: hidden;
+}
+
+.mbp-book-progress {
+  display: grid;
+  gap: 8px;
+  padding: 12px 14px;
+  border: 1px solid rgba(241, 212, 125, .18);
+  background: rgba(241, 212, 125, .045);
+}
+
+.mbp-book-progress-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+}
+
+.mbp-book-progress-top span {
+  color: #b9a780;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: .12em;
+}
+
+.mbp-book-progress-top b {
+  color: var(--gold);
+  font-size: 17px;
+}
+
+.mbp-book-progress-track {
+  height: 8px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(241, 212, 125, .1);
+  box-shadow: inset 0 0 0 1px rgba(241, 212, 125, .06);
+}
+
+.mbp-book-progress-track i {
+  display: block;
+  width: 0%;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #f2d77c, #c97944);
+  box-shadow: 0 0 18px rgba(241, 212, 125, .28);
+  transition: width .42s ease;
+}
+
+.mbp-book-progress p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.5;
 }
 
 .mbp-book-cover > button {
