@@ -65,7 +65,8 @@
     chart: null,
     chartKey: '',
     norm: null,
-    chartReady: hasProfileParams(),
+    chartReady: false,
+    chartConfirmedKey: '',
     decoded: false,
     aiResults: {},
   };
@@ -859,6 +860,9 @@
   function resetForProfileChange() {
     state.chart = null;
     state.chartKey = '';
+    state.norm = null;
+    state.chartReady = false;
+    state.chartConfirmedKey = '';
     state.decoded = false;
     state.aiResults = {};
     document.body.classList.remove('is-decoded');
@@ -868,8 +872,10 @@
   function applyClientProfile(profile, options = {}) {
     state.profile = normalizeProfile(profile);
     formCalMode = state.profile.isLunar ? 'lunar' : 'solar';
-    state.chartReady = options.chartReady !== false;
+    const shouldRenderChart = options.chartReady !== false;
     resetForProfileChange();
+    state.chartReady = shouldRenderChart;
+    state.chartConfirmedKey = shouldRenderChart ? profileHistoryKey(state.profile) : '';
     saveProfile();
     updateForm();
     renderChart();
@@ -2832,9 +2838,14 @@
   }
 
   function ensureChartReady() {
-    if (state.chartReady) return true;
-    setDecodeStatus('请先点击开始排盘，再生成命书。');
-    $('#chart')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    if (state.chartReady && state.chartConfirmedKey && state.chartConfirmedKey === profileHistoryKey(state.profile)) return true;
+    const message = '请先输入出生信息，并点击“开始排盘”生成命盘后再批命。';
+    setDecodeStatus(message);
+    showFormError(message);
+    window.alert?.(message);
+    $('#mbpBirthForm')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    const nameInput = $('#mbpName');
+    if (nameInput && !nameInput.value.trim()) nameInput.focus({ preventScroll: true });
     return false;
   }
 
@@ -3120,6 +3131,15 @@
       renderChart();
     }
 
+    function invalidateChartFromFormEdit() {
+      if (!state.chartReady && !state.chartConfirmedKey && !state.decoded) return;
+      resetForProfileChange();
+      renderChart();
+    }
+
+    $('#mbpBirthForm')?.addEventListener('input', invalidateChartFromFormEdit);
+    $('#mbpBirthForm')?.addEventListener('change', invalidateChartFromFormEdit);
+
     $('#mbpClientToggle')?.addEventListener('click', (event) => {
       event.stopPropagation();
       const menu = $('#mbpClientMenu');
@@ -3187,11 +3207,15 @@
       btn.addEventListener('click', () => {
         $('#mbpGender').value = btn.dataset.v;
         document.querySelectorAll('.nf-gender-btn').forEach((item) => item.classList.toggle('active', item === btn));
+        invalidateChartFromFormEdit();
       });
     });
 
     document.querySelectorAll('.nf-cal-btn').forEach((btn) => {
-      btn.addEventListener('click', () => setCalMode(btn.dataset.cal || 'solar'));
+      btn.addEventListener('click', () => {
+        setCalMode(btn.dataset.cal || 'solar');
+        invalidateChartFromFormEdit();
+      });
     });
 
     ['#mbpYear', '#mbpMonth'].forEach((selector) => {
@@ -3339,13 +3363,15 @@
       showFormError('');
       state.profile = profile;
       formCalMode = profile.isLunar ? 'lunar' : 'solar';
-      state.chartReady = true;
+      resetAiContent();
       state.chart = null;
       state.chartKey = '';
+      state.norm = null;
+      state.chartReady = true;
+      state.chartConfirmedKey = profileHistoryKey(profile);
       state.decoded = false;
       state.aiResults = {};
       document.body.classList.remove('is-decoded');
-      resetAiContent();
       saveProfile();
       saveProfileToHistory(state.profile);
       renderChart();
