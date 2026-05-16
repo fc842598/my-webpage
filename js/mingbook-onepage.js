@@ -933,8 +933,8 @@
 
   function fcCurrentVirtualAge() {
     const curYear = new Date().getFullYear();
-    const baseYear = Number(fcBirthYear) || Number(state.profile.year) || curYear;
-    return fcClampAge(curYear - baseYear + 1);
+    const startYear = Number(fcSequenceStartYear) || Number(fcBirthYear) || Number(state.profile.year) || curYear;
+    return fcClampAge(curYear - startYear + 1);
   }
 
   function calcXiaoLianBranch(yearBranch, gender, xuAge) {
@@ -2213,10 +2213,10 @@
           <p>${escapeHtml(`大限主星：${stars}；当前流年：${year} ${yearGz}`)}</p>
         </div>
         <div class="mbp-luck-age-wrap">
-          <span class="mbp-luck-age-badge">${escapeHtml(`${currentAge}虚岁`)}</span>
+          <span class="mbp-luck-age-badge">${escapeHtml(`${currentAge}岁`)}</span>
           <details class="mbp-luck-age-note">
-            <summary>虚岁说明</summary>
-            <p>紫微斗数看当年的小流年、流年宫位时，通常以虚岁定位，不是以身份证或生日后的实岁来定。</p>
+            <summary>岁数说明</summary>
+            <p>这里直接使用命盘流年序列的岁数，和上方命盘一致，不按身份证年龄另算，也不额外加一岁。</p>
           </details>
         </div>
       </div>
