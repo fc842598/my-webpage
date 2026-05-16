@@ -2543,6 +2543,9 @@ function confirmWentianLanguage() {
 }
 
 const wentianI18nTextSources = new WeakMap();
+let wentianI18nApplying = false;
+let wentianI18nQueued = false;
+let wentianI18nObserver = null;
 
 const WENTIAN_I18N = {
   en: {
@@ -2667,6 +2670,527 @@ const WENTIAN_I18N = {
   }
 };
 
+const WENTIAN_I18N_EN_EXTRA = {
+  "登录/注册，安好": "Sign In",
+  "登录后可支付与同步订单": "Pay & sync orders",
+  "✦ 排盘": "Create Chart",
+  "为你推荐": "Recommended",
+  "邀请好友双方获得奖励": "Invite friends and both earn rewards",
+  "活动中心": "Rewards Center",
+  "许半仙": "Master Xu",
+  "许半仙已准备好为您解读": "Master Xu is ready",
+  "紫微命盘专属解析，已接入当前档案": "Chart linked",
+  "紫微命盘": "Zi Wei Chart",
+  "AI解析": "AI Reading",
+  "去问他": "Ask",
+  "合盘分析": "Match",
+  "命理相合，缘分几许": "Chart affinity",
+  "六爻占卜": "Liuyao",
+  "铜钱起卦，纳甲解卦": "Coin hexagram",
+  "阳宅地脉": "Feng Shui",
+  "罗盘九宫，安位解读": "Compass layout",
+  "六壬法": "Liuren",
+  "农历月日时，即刻起课": "Lunar time casting",
+  "更多功能": "More Tools",
+  "参与活动赢取丰厚奖励": "Join events for rewards",
+  "命理报告": "Destiny Reports",
+  "你的专属命理报告，立即生成": "Generate your personal destiny report",
+  "解锁AI专属命理报告，快速获得可执行建议": "Unlock an AI report with practical guidance",
+  "· 覆盖事业、情感、财富等核心场景": "· Covers career, love, wealth, and other key areas",
+  "· 结合命盘结构输出高价值行动建议": "· Turns chart structure into high-value action advice",
+  "· 下单后自动生成，可在我的报告持续复盘": "· Auto-generated after purchase and saved in My Reports",
+  "八字": "Bazi",
+  "生命健康预测报告(文字版持续更新)": "Life and Health Forecast Report",
+  "基于您的八字信息，系统将计算出横跨121年的生命能量曲线。预见人生的波峰与波谷，在关键节…": "Based on your Bazi, the system calculates a 121-year life energy curve so you can see key rises and dips.",
+  "直接购买": "Buy Now",
+  "立即解锁 →": "Unlock Now →",
+  "2026丙午年预测报告": "2026 Bingwu Year Forecast",
+  "全面八字分析，2026概览、太岁情况、事业发展、财富运势、爱情婚姻、健康关注、风水建议、每…": "Full Bazi analysis covering 2026 overview, Tai Sui, career, wealth, love, health, feng shui, and monthly focus.",
+  "八字与MBTI人格深度解析及运势全面预测": "Bazi and MBTI Personality Report",
+  "融合八字命理学与MBTI四维模型。从五行能量场到潜意识决策模式，为您深度揭示性格底色、原生…": "Combines Bazi and MBTI to reveal personality patterns, decision style, and life direction.",
+  "当前档案": "Current File",
+  "更换档案 〉": "Change File 〉",
+  "男": "Male",
+  "女": "Female",
+  "命理师": "Advisor",
+  "已接入您的紫微命盘，可直接开启对话": "Your Zi Wei chart is connected. You can start chatting.",
+  "命盘顾问 · 在线": "Chart Advisor · Online",
+  "命主⌄": "Owner⌄",
+  "已连接": "Connected",
+  "正在接入许半仙…": "Connecting to Xu Banxian...",
+  "我在，看命盘直接问。": "I am here. Ask about your chart.",
+  "常问": "FAQ",
+  "细问": "Details",
+  "感情婚姻": "Love",
+  "事业财运": "Career",
+  "近期运势": "Recent Luck",
+  "家庭六亲": "Family",
+  "健康状态": "Health",
+  "人生主线": "Life Path",
+  "内容由AI生成，仅供娱乐参考": "AI-generated, for entertainment only",
+  "正缘何时来": "When Love Arrives",
+  "婚姻走势": "Marriage Trend",
+  "复合分手": "Reunion or Separation",
+  "桃花质量": "Romance Quality",
+  "适合行业": "Best Industries",
+  "跳槽创业": "Job Change or Startup",
+  "赚钱方式": "Money Path",
+  "升职贵人": "Promotion Help",
+  "最近一年": "Next Year",
+  "何时转运": "Luck Turning Point",
+  "关键月份": "Key Months",
+  "今年避坑": "Avoid Pitfalls",
+  "父母缘分": "Parents",
+  "伴侣相处": "Partner Dynamics",
+  "子女缘分": "Children",
+  "家宅压力": "Home Pressure",
+  "身体短板": "Weak Spots",
+  "压力睡眠": "Stress and Sleep",
+  "今年健康": "Health This Year",
+  "调养建议": "Wellness Advice",
+  "一生主线": "Life Theme",
+  "性格底色": "Personality Base",
+  "贵人小人": "Helpers and Drainers",
+  "行动建议": "Action Advice",
+  "◷ 对话记录": "Chat History",
+  "◇ 剩余 1 条": "1 remaining",
+  "你好！我是许半仙": "Hello, I am Xu Banxian",
+  "需要我为您做些什么？": "What can I help with?",
+  "选择档案": "Choose File",
+  "共 2 张": "2 files",
+  "选择一个档案接入对话": "Choose a file for this chat",
+  "默认": "Default",
+  "命": "File",
+  "命主": "Owner",
+  "谢": "Xie",
+  "女　四柱八字": "Female · Four Pillars",
+  "男　四柱八字": "Male · Four Pillars",
+  "丙午 壬辰 丙戌 丙申": "Bing Wu · Ren Chen · Bing Xu · Bing Shen",
+  "辛未 庚寅 丁巳 辛亥": "Xin Wei · Geng Yin · Ding Si · Xin Hai",
+  "四柱八字": "Four Pillars",
+  "＋ 新建档案": "+ New File",
+  "+ 新建档案": "+ New File",
+  "AI提问中": "Asking AI",
+  "AI回复": "AI Reply",
+  "当前八字": "Current Bazi",
+  "年 辛未｜月 癸巳｜日 丁亥｜时 辛亥": "Year Xin Wei | Month Gui Si | Day Ding Hai | Hour Xin Hai",
+  "问一问": "Ask",
+  "推算中...": "Calculating...",
+  "请根据我的八字，深度拆解核心性格特质。": "Based on my Bazi, deeply analyze my core personality.",
+  "请根据我的八字拆解性格。": "Please analyze my personality from my Bazi.",
+  "你的八字显示辛未、癸巳、丁亥、辛亥。核心是敏感、洞察力强，适合把直觉转化为决策。": "Your Bazi shows strong sensitivity and insight. Turn intuition into decisions.",
+  "AI长文解读": "Long AI Reading",
+  "已结合紫微命盘、八字与当前档案生成": "Generated from Zi Wei chart, Bazi, and current file",
+  "请根据我的八字，深度拆解我的核心性格特质、事业机会和近期行动重点。": "Please analyze my personality, career chances, and next actions from my Bazi.",
+  "核心结论": "Core Conclusion",
+  "性格优势": "Strengths",
+  "隐性风险": "Hidden Risks",
+  "事业建议": "Career Advice",
+  "感情建议": "Love Advice",
+  "财运建议": "Wealth Advice",
+  "行动方案": "Action Plan",
+  "你的命盘不是单一路线，而是“先观察、后出手”的结构。真正适合你的节奏，是先把信息摸透，再用稳定执行换结果。": "Your chart is not a single straight path. Your best rhythm is to observe first, understand the information, then act steadily.",
+  "思考细密，能抓到别人忽略的线索。遇到复杂问题时，反而比简单重复的任务更能发挥。": "You think carefully and catch details others miss. Complex problems suit you better than repetitive work.",
+  "容易在关键节点想太多，迟迟不愿下注。越重要的事情，越需要把判断拆成小步骤去验证。": "At key moments you may overthink. The bigger the decision, the more you should test it in small steps.",
+  "适合做需要判断、整合、表达的工作。近期不要频繁换方向，先把一个可见成果做厚。": "Work that needs judgment, synthesis, and expression suits you. Do not switch directions too often now.",
+  "关系里要少用试探，多说真实需求。你适合稳定、讲信用、能一起规划生活的人。": "In relationships, test less and state real needs more. Stable, reliable partners suit you.",
+  "财运来自长期积累，不宜追短线。先守现金流，再考虑扩张。": "Wealth comes from long-term accumulation. Protect cash flow before expanding.",
+  "未来三个月，把精力放在一个主目标上，每周复盘一次，删掉消耗型关系和低回报事项。": "For the next three months, focus on one main goal, review weekly, and cut low-return drains.",
+  "继续追问": "Ask Follow-up",
+  "对话记录": "Chat History",
+  "新对话": "New Chat",
+  "新的对话": "New Chat",
+  "根据我的八字拆解核心性格特质": "Analyze core personality from my Bazi",
+  "最近事业机会应该怎么判断": "How should I judge recent career chances?",
+  "命盘追问": "Chart Follow-up",
+  "昨天": "Yesterday",
+  "感情关系里需要注意什么": "What should I watch in relationships?",
+  "仅保留最近 10 条对话": "Only the latest 10 chats are kept",
+  "选择合盘类型": "Choose Compatibility Type",
+  "情侣合盘": "Couple Compatibility",
+  "真命盘合参": "Compare true charts",
+  "情感契合度": "Love fit",
+  "冲突化解建议": "Conflict advice",
+  "选择两张档案": "Choose two files",
+  "查看合盘结果": "View compatibility",
+  "开始合盘": "Start Compatibility",
+  "选择合盘档案": "Choose Compatibility Files",
+  "已选2/2": "Selected 2/2",
+  "写下你想问的命理问题": "Write your question",
+  "请输入想问什么？": "What do you want to ask?",
+  "今日运势如何？": "How is my luck today?",
+  "最近的工作会有好的转机吗？": "Will work improve soon?",
+  "我和TA的感情未来如何发展？": "How will this relationship develop?",
+  "近期的贵人会何时出现？": "When will helpful people appear?",
+  "黄大仙灵签": "Wong Tai Sin Lots",
+  "心中默念所问之事": "Hold your question in mind",
+  "感情、事业、财运皆可问。抽签后可查看签文、解签和 AI 延展。": "Ask about love, career, or wealth. Draw a lot for text, reading, and AI follow-up.",
+  "剩余 1 次": "1 draw left",
+  "感情": "Love",
+  "事业": "Career",
+  "财运": "Wealth",
+  "虔诚抽签": "Draw Lot",
+  "正在为你取签": "Drawing your lot",
+  "已接入当前档案，签文生成后可交给许半仙继续解读。": "Current file is connected. Xu Banxian can explain after the lot appears.",
+  "请稍候": "Please wait",
+  "签文将现": "Lot appearing",
+  "正在抽取第廿九签": "Drawing Lot 29",
+  "遗定良缘": "Destined match",
+  "乱转涡鱼": "Turbid waters",
+  "性立盖守": "Stay steady",
+  "家奇得靖": "Home finds calm",
+  "舞烟泛鹤": "Cranes in mist",
+  "燕上晚也": "Evening swallows",
+  "灵": "Lot",
+  "诚心祈愿": "Sincere wish",
+  "一签一问": "One lot, one question",
+  "第廿九签": "Lot 29",
+  "【中吉】": "Moderate Luck",
+  "点击签面查看详情": "Tap the lot for details",
+  "签文": "Lot Text",
+  "岁岁休言悔，莫道定难改。": "Do not dwell on regret; change is still possible.",
+  "解签": "Reading",
+  "眼前事宜先稳住心神，不急于求成。": "Stay steady first. Do not rush results.",
+  "详情": "Details",
+  "所问之事有转机，但需顺势而行。": "There is a turning point, but move with the timing.",
+  "AI解签": "AI Lot Reading",
+  "请许半仙结合命盘继续解读": "Ask Xu Banxian to read it with your chart",
+  "让 AI 继续解读此签": "Let AI continue this reading",
+  "起卦": "Cast Hexagram",
+  "六爻在线起卦": "Online Liuyao Hexagram",
+  "先定问题，再投铜钱。系统会生成本卦、变卦和 AI 解读入口。": "Set a question, toss coins, then get original and changed hexagrams plus AI reading.",
+  "起卦方式": "Casting Method",
+  "在线起卦": "Online Casting",
+  "手动起卦": "Manual Casting",
+  "起卦时间": "Casting Time",
+  "所问：事业近期是否适合推进新计划？": "Question: Is it suitable to push a new work plan soon?",
+  "点击投掷铜钱": "Tap to toss coins",
+  "一爻": "Line 1",
+  "二爻": "Line 2",
+  "三爻": "Line 3",
+  "四爻": "Line 4",
+  "五爻": "Line 5",
+  "六爻": "Line 6",
+  "阳": "Yang",
+  "阴": "Yin",
+  "投掷 4 次": "Toss 4 times",
+  "投掷 5 次": "Toss 5 times",
+  "地风升": "Earth Wind Sheng",
+  "升而有序，先小后大": "Rise in order, small before big",
+  "事业问卦": "Career Hexagram",
+  "本卦：地风升": "Original: Earth Wind Sheng",
+  "升而有序，适合积累资源，稳步推进。此卦重在“循序”，先把基础铺实，再谈突破。": "Progress step by step. Build resources and foundations before pushing for a breakthrough.",
+  "变卦：风地观": "Changed: Wind Earth Guan",
+  "外部环境正在观察你是否稳定。少解释，多用结果证明判断。": "Others are watching your stability. Explain less; prove with results.",
+  "不要急于换道。先把手头筹码做厚，把一个小成果做成可复用的方法。": "Do not switch tracks too fast. Make one small result repeatable first.",
+  "关系建议": "Relationship Advice",
+  "关系中宜柔和沟通，避免强推。真正有效的推进来自耐心和边界。": "Communicate softly and avoid forcing. Patience and boundaries move things forward.",
+  "行动窗口": "Action Window",
+  "未来三十日适合复盘、签约、修正计划；不宜仓促做高风险扩张。": "The next 30 days suit review, signing, and plan correction; avoid rushed expansion.",
+  "AI解卦": "AI Hexagram Reading",
+  "可让许半仙结合当前命盘继续解读此卦。": "Xu Banxian can read this hexagram with your chart.",
+  "购买完整解读": "Buy Full Reading",
+  "购买完整解读后可查看详细分析。": "Buy the full reading to view detailed analysis.",
+  "卦意": "Hexagram Meaning",
+  "对话次数已用尽": "Chat credits used up",
+  "可通过开通会员或直接购买对话次数继续深度解读。": "Open membership or buy chat credits to continue.",
+  "购买对话包": "Buy Chat Pack",
+  "登录后生成专属邀请码": "Sign in to generate your invite code",
+  "邀请好友注册、首付奖励和收益记录都会绑定到你的账号。": "Friend invites, first-payment rewards, and earnings are linked to your account.",
+  "我有好友邀请码": "I have a friend's invite code",
+  "先填在这里也可以；登录/注册后自动绑定。": "You can enter it here; it binds after sign-in/register.",
+  "绑定": "Bind",
+  "输入邀请码": "Enter invite code",
+  "奖励规则": "Reward Rules",
+  "好友注册成功：双方各得 2 次对话奖励。": "Friend registers: both get 2 chat credits.",
+  "好友首次付费：邀请人再得 10 次对话奖励。": "Friend's first payment: inviter gets 10 more chat credits.",
+  "刷新": "Refresh",
+  "可用奖励 0 次": "Available rewards: 0 credits",
+  "去邀请": "Invite",
+  "邀": "Invite",
+  "邀请好友注册": "Invite friend to register",
+  "双方各得 2 次对话": "Both get 2 chats",
+  "奖": "Reward",
+  "好友首次付费": "Friend first payment",
+  "邀请人再得 10 次对话": "Inviter gets 10 more chats",
+  "签": "Check-in",
+  "每日签到": "Daily Check-in",
+  "连续签到功能待开放": "Streak check-in coming soon",
+  "已邀请好友": "Friends Invited",
+  "累计奖励 0": "Total rewards: 0",
+  "邀请好友注册问天AI，双方都可获得对话次数奖励。": "Invite friends to register; both sides receive chat credits.",
+  "我的邀请码": "My Invite Code",
+  "复制": "Copy",
+  "好友注册时填写邀请码即可绑定邀请关系": "Friends enter the code at registration to bind the invite.",
+  "我的邀请链接": "My Invite Link",
+  "也可以直接分享链接给好友，系统自动识别。": "Share the link and the system will recognize it automatically.",
+  "邀请奖励": "Invite Rewards",
+  "好友注册": "Friend Registers",
+  "可获得：2 次对话": "Reward: 2 chats",
+  "立即到账": "Instant",
+  "邀请满 3 人": "Invite 3 friends",
+  "额外获得：会员体验券": "Extra: membership trial coupon",
+  "阶段奖励": "Milestone Reward",
+  "邀请满 10 人": "Invite 10 friends",
+  "额外获得：高级报告券": "Extra: premium report coupon",
+  "进阶奖励": "Advanced Reward",
+  "好友首次付费奖励": "First Payment Reward",
+  "好友完成首次付费后，邀请人可额外获得 10 次对话。": "After a friend's first payment, the inviter gets 10 extra chats.",
+  "邀请记录": "Invite Records",
+  "暂无邀请记录": "No invite records yet",
+  "管理你的命盘资料": "Manage your chart files",
+  "+ 添加": "+ Add",
+  "出生信息": "Birth Info",
+  "排盘": "Chart",
+  "姓名": "Name",
+  "请输入姓名（选填）": "Enter name (optional)",
+  "年": "Year",
+  "农历年": "Lunar year",
+  "搜索城市，如：北京、上海、Tokyo": "Search city, e.g. Beijing, Shanghai, Tokyo",
+  "性别": "Gender",
+  "出生日期": "Birth Date",
+  "必填": "Required",
+  "出生时刻": "Birth Time",
+  "精确到分钟": "To the minute",
+  "出生地点": "Birth Place",
+  "影响真太阳时": "Affects true solar time",
+  "出生日期必填": "Birth date required",
+  "公历": "Solar",
+  "农历": "Lunar",
+  "闰月": "Leap Month",
+  "出生时刻精确到分钟": "Birth time accurate to the minute",
+  "出生地点影响真太阳时": "Birth location affects true solar time",
+  "采用真太阳时": "Use true solar time",
+  "开始排盘": "Create Chart",
+  "已接入网站排盘算法": "Site chart algorithm connected",
+  "‹ 返回": "‹ Back",
+  "阳男": "Yang Male",
+  "二〇二六年三月廿六": "Lunar Mar 26, 2026",
+  "时辰": "Hour",
+  "申时": "Shen Hour",
+  "局数": "Bureau",
+  "火六局": "Fire Sixth Bureau",
+  "命宫 申 · 身宫 子 · 已接入": "Life Palace Shen · Body Palace Zi · Connected",
+  "紫微命书 · AI总批命": "Zi Wei Book · AI Full Reading",
+  "✦ 命盘 · AI解读": "Chart · AI Reading",
+  "对齐命书长页：总批命、7个模块、五卷报告、人生曲线、五宫详解。": "Matches the long report: full reading, 7 modules, 5 volumes, life curve, and palace details.",
+  "总批命": "Full Reading",
+  "追问": "Follow-up",
+  "长页/PDF": "Long Page/PDF",
+  "整体": "Overall",
+  "大限流年": "Major Luck",
+  "婚姻": "Marriage",
+  "健康": "Health",
+  "模块": "Modules",
+  "待生成": "Pending",
+  "状态": "Status",
+  "卷报告": "volumes",
+  "壹": "I",
+  "贰": "II",
+  "叁": "III",
+  "肆": "IV",
+  "伍": "V",
+  "整体批命": "Overall Reading",
+  "人生曲线": "Life Curve",
+  "五宫详解": "Five Palace Details",
+  "卷一": "Volume 1",
+  "卷二": "Volume 2",
+  "卷三": "Volume 3",
+  "卷四": "Volume 4",
+  "卷五": "Volume 5",
+  "等待 AI 批命生成命盘主线、格局底色与关键提醒。": "Waiting for AI to generate chart theme, structure, and key reminders.",
+  "单独批总局": "Read Overall",
+  "等待生成": "Waiting",
+  "等待生成当前大限、流年节奏与时间窗口。": "Waiting to generate current luck, yearly rhythm, and timing windows.",
+  "单独批走势": "Read Trends",
+  "等待生成客户易懂版人生曲线、低点高点和阶段提醒。": "Waiting to generate an easy life curve, lows, highs, and stage reminders.",
+  "生成曲线": "Generate Curve",
+  "生成后显示人生起伏曲线": "Life ups and downs appear after generation",
+  "对齐命书长页的人生曲线模块，给客户看低点、高点和后势。": "Life curve module for lows, highs, and later trend.",
+  "低点 36岁": "Low: age 36",
+  "高点 44岁": "High: age 44",
+  "后势 56岁": "Later trend: age 56",
+  "等待生成身宫、婚姻、健康、财运、事业五宫详解。": "Waiting to generate body, marriage, health, wealth, and career palace details.",
+  "单独批五宫": "Read Five Palaces",
+  "等待单独批命生成。": "Waiting for module reading.",
+  "生成": "Generate",
+  "等待汇总风险、时机和可执行建议。": "Waiting to summarize risks, timing, and actions.",
+  "生成建议": "Generate Advice",
+  "风险": "Risks",
+  "先把命盘里的压力点收成清单，重大决定不要只看单点吉凶。": "List the chart pressure points first; do not base major decisions on one sign.",
+  "时机": "Timing",
+  "先看大限节奏，再定近期动作，避免逆着时间窗口硬冲。": "Check the luck cycle before acting; avoid pushing against the timing window.",
+  "动作": "Actions",
+  "先稳住基本盘，再把可执行的选择一项项落地。": "Stabilize the base, then execute choices one by one.",
+  "卡券包": "Coupons",
+  "可用的报告券": "Available report coupons",
+  "暂无可用": "None available",
+  "当前可用次数": "Available Credits",
+  "按量购买": "Pay As You Go",
+  "支付后直接增加问天AI对话次数，无需兑换。": "Credits are added after payment. No redemption needed.",
+  "选择购买套餐": "Choose Package",
+  "选择支付方式": "Payment Method",
+  "支付宝": "Alipay",
+  "信用卡": "Credit Card",
+  "按次数购买，仅限问天AI对话使用，支付后自动到账": "Credits are for Wentian AI chat only and arrive after payment.",
+  "立即购买 ¥12": "Buy Now ¥12",
+  "会员支付": "Membership Payment",
+  "确认订单": "Confirm Order",
+  "问天会员月卡": "Wentian Monthly Membership",
+  "许半仙 AI 对话": "Xu Banxian AI Chat",
+  "商品": "Product",
+  "订单号": "Order No.",
+  "待创建": "Pending",
+  "问天会员月卡，19.9元/月": "Wentian monthly membership, ¥19.9/month",
+  "确认支付 ¥19.90": "Pay ¥19.90",
+  "微信支付完成后会员额度自动刷新": "Membership quota refreshes after WeChat Pay completes",
+  "开通后提升对话额度": "Increase chat quota after activation",
+  "31天": "31 days",
+  "对话额度": "Chat Quota",
+  "免费用户": "Free User",
+  "更适合高频追问、复盘命盘、连续做年度规划。": "Better for frequent follow-ups, chart review, and yearly planning.",
+  "当前额度": "Current Quota",
+  "今日剩余 100/100": "Today remaining 100/100",
+  "本月剩余 3000/3000": "This month remaining 3000/3000",
+  "开通会员 ¥19.90": "Open Membership ¥19.90",
+  "推荐你使用问天AI，AI排盘、命盘解读和许半仙问答都在这里。": "I recommend Wentian AI for AI charting, chart readings, and Xu Banxian Q&A.",
+  "登录后可生成专属邀请码。": "Sign in to generate your personal invite code.",
+  "微信好友": "WeChat Friend",
+  "朋友圈": "Moments",
+  "系统分享": "System Share",
+  "邮件": "Email",
+  "电子邮箱": "Email",
+  "小红书": "RED",
+  "问天AI命理小助手": "Wentian AI Assistant",
+  "微信公众号": "WeChat Official Account",
+  "悦天AI公众号": "Yuetian AI Official Account",
+  "关注我们的推特": "Follow us on X",
+  "关于我们": "About Us",
+  "问天AI是一款手机端命理排盘、合盘、抽签与AI解读工具，帮你把复杂命理信息转成可理解、可行动的建议。": "Wentian AI is a mobile tool for charting, compatibility, lots, and AI readings, turning complex destiny data into understandable guidance.",
+  "隐私协议": "Privacy Policy",
+  "用户协议": "Terms of Service",
+  "检查更新": "Check for Updates",
+  "登录/注册": "Sign In / Register",
+  "地脉道": "Earth Meridian",
+  "教程": "Guide",
+  "罗盘方位": "Compass",
+  "解读分析": "Analyze",
+  "长幼有序,天地归位": "Aligned",
+  "重置": "Reset",
+  "当前内容信息仅供娱乐，不等于专业测评，不代表价值评判，无任何现实指导意义，仅供娱乐参考。": "For entertainment only. Not a professional evaluation or real-world guidance.",
+  "重新分析": "Analyze Again",
+  "解读结果": "Reading Results",
+  "8条解读": "8 readings",
+  "可多选；再次点击取消，清空会移除本宫全部": "Multiple choices allowed. Tap again to cancel. Clear removes all items here.",
+  "清空": "Clear",
+  "确认清空": "Confirm Clear",
+  "查看全文⌄": "View Full Text⌄",
+  "长女住巽(东南) - 巽为风": "Eldest Daughter in Xun (Southeast) - Xun Wind",
+  "二女住离(正南) - 离为火": "Second Daughter in Li (South) - Li Fire",
+  "母亲住坤(西南) - 坤为地": "Mother in Kun (Southwest) - Kun Earth",
+  "长子住震(正东) - 震为雷": "Eldest Son in Zhen (East) - Zhen Thunder",
+  "三女住兑(正西) - 兑为泽": "Third Daughter in Dui (West) - Dui Lake",
+  "三子住艮(东北) - 艮为山": "Third Son in Gen (Northeast) - Gen Mountain",
+  "二子住坎(正北) - 坎为水": "Second Son in Kan (North) - Kan Water",
+  "父亲住乾(西北) - 乾为天": "Father in Qian (Northwest) - Qian Heaven",
+  "第57卦 巽为风：摘句「婚姻幸福」。长女归巽，巽象大利未婚女、婚姻、科甲与健康。": "Hexagram 57 Xun Wind: excerpt \"happy marriage\". Eldest daughter in Xun favors unmarried daughters, marriage, study, and health.",
+  "第30卦 离为火：摘句「迁移外地」。二女归离，离象主明理、外地心与科甲。": "Hexagram 30 Li Fire: excerpt \"relocation\". Second daughter in Li points to clarity, travel mindset, and study.",
+  "第2卦 坤为地：摘句「地厚能载物」。母亲归西南，重承载、家务与实际掌权。": "Hexagram 2 Kun Earth: excerpt \"earth carries all\". Mother in southwest emphasizes support, household matters, and practical authority.",
+  "第51卦 震为雷：摘句「贵子」。长子归震，震象主贵子、祖业、科甲与官商皆可。": "Hexagram 51 Zhen Thunder: excerpt \"noble son\". Eldest son in Zhen relates to heirs, family assets, study, office, and business.",
+  "第58卦 兑为泽：摘句「多才艺」。三女归兑，兑象主感情复杂、才艺科甲、公职顺。": "Hexagram 58 Dui Lake: excerpt \"many talents\". Third daughter in Dui points to complex feelings, talent, study, and public roles.",
+  "第52卦 艮为山：摘句「孝子」。三子归艮，艮象主科甲、健康、公职与知进退。": "Hexagram 52 Gen Mountain: excerpt \"filial son\". Third son in Gen points to study, health, public roles, and knowing when to stop.",
+  "第29卦 坎为水：摘句「正北宫有险」。二子归坎，坎象主冒险、官非与婚期延后。": "Hexagram 29 Kan Water: excerpt \"risk in north palace\". Second son in Kan points to risk, disputes, and delayed marriage timing.",
+  "第1卦 乾为天：摘句「父居乾位」。父亲归西北，重父位、主事与家中骨架。": "Hexagram 1 Qian Heaven: excerpt \"father in Qian\". Father in northwest emphasizes the father role, leadership, and family structure.",
+  "当前内容仅供娱乐参考，不等于专业测评。": "For entertainment only, not a professional evaluation.",
+  "地脉道怎么用": "How to Use Earth Meridian",
+  "先定方位，再放人和空间；结果会对应海厦《地脉道》64卦。": "Set directions, then place people and spaces; results map to 64 hexagrams.",
+  "站在户型中心": "Stand at the floor-plan center",
+  "先确定房屋中心点，再按手机罗盘或户型图标出八方。": "Find the home center, then mark eight directions by compass or floor plan.",
+  "点击方位加号": "Tap direction plus",
+  "把家人、厨房、厕所、客厅放入对应宫位。": "Place family members, kitchen, bathroom, and living room in matching palaces.",
+  "一键归位": "Auto Align",
+  "可用“长幼有序”快速按父母子女关系填入九宫。": "Use family order to quickly fill the nine palaces.",
+  "按《地脉道》对应64卦，输出摘句、解读和安位建议。": "Map to 64 hexagrams and output excerpts, readings, and placement advice.",
+  "开始排布": "Start Placement",
+  "小六壬起课": "Xiao Liuren Casting",
+  "先定一念，再看六宫": "Set one thought, then read six palaces",
+  "农历月令起，大安顺推至时辰。": "Start from lunar month and count from Da'an to the hour.",
+  "起课前": "Before Casting",
+  "心里只问一件事，不用输入问题。确认当下时间后点击起课。": "Ask only one question in mind. Confirm current time, then cast.",
+  "当前课时": "Current Time",
+  "午时": "Wu Hour",
+  "2026年三月30日": "Lunar Mar 30, 2026",
+  "重新取时": "Refresh Time",
+  "默念后起课": "Cast After Focusing",
+  "月令": "Month",
+  "速喜": "Quick Joy",
+  "日辰": "Day",
+  "留连": "Lingering",
+  "待起课": "Not Cast",
+  "大安": "Great Peace",
+  "吉": "Good",
+  "凶": "Bad",
+  "赤口": "Red Mouth",
+  "小吉": "Minor Luck",
+  "空亡": "Void",
+  "等待起课": "Waiting to Cast",
+  "先定念待": "Focus First",
+  "念": "Thought",
+  "心里只问一件事，确认当下时间后再起课。不要反复重占同一件事。": "Ask only one thing in mind. Confirm the time before casting. Do not repeat the same question.",
+  "定念": "Focus",
+  "当下": "Now",
+  "一事一占": "One question",
+  "先定念": "Focus First",
+  "待": "Pending",
+  "校准时间": "Calibrate Time",
+  "重新定念": "Refocus",
+  "复制结果": "Copy Result",
+  "已取当下时间，先定念再起课": "Current time loaded. Focus before casting.",
+  "六壬法教程": "Liuren Guide",
+  "怎么起课": "How to Cast",
+  "不用输入问题，直接以当前农历时间取象。": "No text question needed. Read from the current lunar time.",
+  "一": "1",
+  "取当下时间": "Use current time",
+  "进入页面会自动读取手机当前公历时间，并换算成农历月日与时辰。": "The page reads current solar time and converts it to lunar month, day, and hour.",
+  "二": "2",
+  "从大安顺推": "Count from Da'an",
+  "农历月份从大安起，接着推农历日期，再推十二时辰。": "Start lunar month at Da'an, then count day and hour.",
+  "三": "3",
+  "看落宫吉凶": "Read palace luck",
+  "落到大安、速喜、小吉为吉；留连、赤口、空亡偏凶。": "Da'an, Quick Joy, and Minor Luck are good; Lingering, Red Mouth, and Void lean bad.",
+  "四": "4",
+  "只作参考": "Reference only",
+  "六壬法适合快速看当下气象，重要决策仍需结合完整命盘与现实信息。": "Liuren is for quick timing. Important decisions still need chart and real-world context.",
+  "六宫顺序": "Six Palace Order",
+  "大安 → 留连 → 速喜 → 赤口 → 小吉 → 空亡": "Great Peace → Lingering → Quick Joy → Red Mouth → Minor Luck → Void",
+  "开始起课": "Start Casting",
+  "未登录": "Not signed in",
+  "登录后查看支付记录": "Sign in to view payment records",
+  "会员订单、支付状态和退款记录都会绑定到账号。": "Membership orders, payment status, and refunds are linked to your account.",
+  "去登录": "Sign In",
+  "微": "WeChat",
+  "圈": "Moments",
+  "享": "Share",
+  "邮": "Email",
+  "文": "Lang",
+  "登": "Sign"
+};
+
+const WENTIAN_I18N_EN_STEM_BRANCH = {
+  "甲": "Jia", "乙": "Yi", "丙": "Bing", "丁": "Ding", "戊": "Wu", "己": "Ji", "庚": "Geng", "辛": "Xin", "壬": "Ren", "癸": "Gui",
+  "子": "Zi", "丑": "Chou", "寅": "Yin", "卯": "Mao", "辰": "Chen", "巳": "Si", "午": "Wu", "未": "Wei", "申": "Shen", "酉": "You", "戌": "Xu", "亥": "Hai"
+};
+
+const WENTIAN_I18N_EN_TERM_MAP = {
+  "天同": "Tian Tong", "禄存": "Lu Cun", "武曲": "Wu Qu", "天府": "Tian Fu", "擎羊": "Qing Yang", "左辅": "Zuo Fu", "太阳": "Tai Yang", "太阴": "Tai Yin", "地劫": "Di Jie", "贪狼": "Tan Lang", "天马": "Tian Ma", "右弼": "You Bi", "破军": "Po Jun", "陀罗": "Tuo Luo", "天机": "Tian Ji", "巨门": "Ju Men", "火星": "Huo Xing", "天钺": "Tian Yue", "空宫": "Empty Palace", "地空": "Di Kong", "紫微": "Zi Wei", "天相": "Tian Xiang", "廉贞": "Lian Zhen", "文昌": "Wen Chang", "七杀": "Qi Sha", "文曲": "Wen Qu", "天梁": "Tian Liang", "铃星": "Ling Xing", "天魁": "Tian Kui",
+  "子女": "Children", "夫妻": "Spouse", "兄弟": "Siblings", "命宫": "Life Palace", "财帛": "Wealth", "父母": "Parents", "疾厄": "Health", "福德": "Fortune", "迁移": "Travel", "仆役": "Friends", "官禄": "Career", "田宅": "Property", "身宫": "Body Palace", "得": "Gain", "大子": "Children Luck", "大夫": "Spouse Luck", "大兄": "Sibling Luck", "大命": "Life Luck", "大财": "Wealth Luck", "大父": "Parent Luck", "大疾": "Health Luck", "大福": "Fortune Luck", "大迁": "Travel Luck", "大仆": "Friends Luck", "大官": "Career Luck", "大田": "Property Luck",
+  "巽": "SE", "离": "S", "坤": "SW", "震": "E", "兑": "W", "艮": "NE", "坎": "N", "乾": "NW", "东南": "SE", "正南": "S", "西南": "SW", "正东": "E", "正西": "W", "东北": "NE", "正北": "N", "西北": "NW",
+  "长女位": "1st Daughter", "二女位": "2nd Daughter", "母亲位": "Mother", "长子位": "1st Son", "三女位": "3rd Daughter", "三子位": "3rd Son", "二子位": "2nd Son", "父亲位": "Father", "长女": "1st Daughter", "二女": "2nd Daughter", "母亲": "Mother", "长子": "1st Son", "三女": "3rd Daughter", "三子": "3rd Son", "二子": "2nd Son", "父亲": "Father",
+  "厨房": "Kitchen", "厕所": "Bathroom", "客厅": "Living Room", "厨": "Kit.", "厕": "Bath", "厅": "Living", "长": "Eldest", "父": "Father", "母": "Mother"
+};
+
+const WENTIAN_I18N_HAS_HAN_RE = /\p{Script=Han}/u;
+
 function translateWentianText(text, code = getWentianLanguageCode(), element = null) {
   const source = String(text || "").trim();
   if (!source) return source;
@@ -2675,8 +3199,44 @@ function translateWentianText(text, code = getWentianLanguageCode(), element = n
   if (!dict) return source;
   if (lang === "en" && source === "问天AI" && element?.dataset?.nodeId?.startsWith("source-bottom-label-")) return "AI";
   if (lang === "en") {
+    if (source.includes("\n") || source.includes("\\n")) {
+      return source.split(/(?:\\n|\n)+/).map((line) => translateWentianText(line, code, element)).join("\n");
+    }
+    const exact = WENTIAN_I18N_EN_EXTRA[source] || WENTIAN_I18N_EN_TERM_MAP[source];
+    if (exact) return exact;
     const people = source.match(/^(\d+)\s*人$/);
     if (people) return `${people[1]} people`;
+    const month = source.match(/^(\d{1,2})月$/);
+    if (month) return `Month ${month[1]}`;
+    const lunarMonthMap = { "正月": "First Month", "二月": "Second Month", "三月": "Third Month", "四月": "Fourth Month", "五月": "Fifth Month", "六月": "Sixth Month", "七月": "Seventh Month", "八月": "Eighth Month", "九月": "Ninth Month", "十月": "Tenth Month", "十一月": "Eleventh Month", "十二月": "Twelfth Month" };
+    if (lunarMonthMap[source]) return lunarMonthMap[source];
+    const day = source.match(/^(\d{1,2})日$/);
+    if (day) return `Day ${day[1]}`;
+    const hour = source.match(/^(\d{2})时$/);
+    if (hour) return `${hour[1]}:00`;
+    const minute = source.match(/^(\d{2})分$/);
+    if (minute) return `${minute[1]} min`;
+    const credits = source.match(/^(\d+)次$/);
+    if (credits) return `${credits[1]} credits`;
+    const quota = source.match(/^(\d+)次\/天 · (\d+)次\/月$/);
+    if (quota) return `${quota[1]}/day · ${quota[2]}/month`;
+    const directionOnly = source.match(/^\((.+)\)$/);
+    if (directionOnly && WENTIAN_I18N_EN_TERM_MAP[directionOnly[1]]) return "";
+    const palaceLine = source.match(/^(.+)\((.+)\) - (.+)$/);
+    if (palaceLine) {
+      const person = WENTIAN_I18N_EN_TERM_MAP[palaceLine[1]] || palaceLine[1];
+      const direction = WENTIAN_I18N_EN_TERM_MAP[palaceLine[2]] || palaceLine[2];
+      const hexagram = WENTIAN_I18N_EN_TERM_MAP[palaceLine[3]] || palaceLine[3];
+      return `${person} (${direction}) - ${hexagram}`;
+    }
+    const branchHour = source.match(/^([子丑寅卯辰巳午未申酉戌亥])时$/);
+    if (branchHour) return `${WENTIAN_I18N_EN_STEM_BRANCH[branchHour[1]]} Hour`;
+    const stemBranch = source.match(/^[甲乙丙丁戊己庚辛壬癸子丑寅卯辰巳午未申酉戌亥]{1,2}$/);
+    if (stemBranch) return source.split("").map((char) => WENTIAN_I18N_EN_STEM_BRANCH[char] || char).join(" ");
+    const solarTime = source.match(/^公历 (.+) · 北京时间 (.+)$/);
+    if (solarTime) return `Solar ${solarTime[1]} · Beijing time ${solarTime[2]}`;
+    const trueSolar = source.match(/^预览真太阳时：(.+) · (.+) · (.+)分钟$/);
+    if (trueSolar) return `True solar preview: ${trueSolar[1]} · ${translateWentianText(trueSolar[2], "en")} · ${trueSolar[3]} min`;
   }
   return dict[source] || source;
 }
@@ -2690,35 +3250,70 @@ function rememberWentianTextSource(element, source) {
 }
 
 function applyWentianLanguageText(root = view, code = getWentianLanguageCode()) {
+  if (wentianI18nApplying) return;
   const option = getWentianLanguageOption(code);
-  document.documentElement.lang = option.htmlLang;
-  document.documentElement.dataset.wentianLanguage = option.code;
-  if (!root || !root.querySelectorAll) return;
+  wentianI18nApplying = true;
+  try {
+    document.documentElement.lang = option.htmlLang;
+    document.documentElement.dataset.wentianLanguage = option.code;
+    if (!root || !root.querySelectorAll) return;
 
-  const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
-    acceptNode(node) {
-      if (!node.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
-      const tag = node.parentElement?.tagName;
-      if (tag === "SCRIPT" || tag === "STYLE") return NodeFilter.FILTER_REJECT;
-      return NodeFilter.FILTER_ACCEPT;
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+      acceptNode(node) {
+        if (!node.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
+        const tag = node.parentElement?.tagName;
+        if (tag === "SCRIPT" || tag === "STYLE") return NodeFilter.FILTER_REJECT;
+        return NodeFilter.FILTER_ACCEPT;
+      }
+    });
+    const textNodes = [];
+    while (walker.nextNode()) textNodes.push(walker.currentNode);
+    for (const node of textNodes) {
+      const current = node.nodeValue;
+      const trimmed = current.trim();
+      const source = option.code !== "zh-Hans" && WENTIAN_I18N_HAS_HAN_RE.test(trimmed)
+        ? trimmed
+        : wentianI18nTextSources.get(node) || trimmed;
+      wentianI18nTextSources.set(node, source);
+      const leading = current.match(/^\s*/)?.[0] || "";
+      const trailing = current.match(/\s*$/)?.[0] || "";
+      node.nodeValue = `${leading}${translateWentianText(source, option.code, node.parentElement)}${trailing}`;
     }
-  });
-  const textNodes = [];
-  while (walker.nextNode()) textNodes.push(walker.currentNode);
-  for (const node of textNodes) {
-    const current = node.nodeValue;
-    const source = wentianI18nTextSources.get(node) || current.trim();
-    wentianI18nTextSources.set(node, source);
-    const leading = current.match(/^\s*/)?.[0] || "";
-    const trailing = current.match(/\s*$/)?.[0] || "";
-    node.nodeValue = `${leading}${translateWentianText(source, option.code, node.parentElement)}${trailing}`;
-  }
 
-  for (const element of root.querySelectorAll("[placeholder]")) {
-    const source = element.dataset.wentianI18nPlaceholderSource || element.getAttribute("placeholder") || "";
-    element.dataset.wentianI18nPlaceholderSource = source;
-    element.setAttribute("placeholder", translateWentianText(source, option.code, element));
+    for (const element of root.querySelectorAll("[placeholder]")) {
+      const current = element.getAttribute("placeholder") || "";
+      const source = option.code !== "zh-Hans" && WENTIAN_I18N_HAS_HAN_RE.test(current)
+        ? current
+        : element.dataset.wentianI18nPlaceholderSource || current;
+      element.dataset.wentianI18nPlaceholderSource = source;
+      element.setAttribute("placeholder", translateWentianText(source, option.code, element));
+    }
+  } finally {
+    window.setTimeout(() => {
+      wentianI18nApplying = false;
+    }, 0);
   }
+}
+
+function scheduleWentianLanguageApply() {
+  if (wentianI18nApplying || wentianI18nQueued || getWentianLanguageCode() === "zh-Hans") return;
+  wentianI18nQueued = true;
+  window.requestAnimationFrame(() => {
+    wentianI18nQueued = false;
+    applyWentianLanguageText(view);
+  });
+}
+
+function ensureWentianLanguageObserver() {
+  if (wentianI18nObserver || typeof MutationObserver === "undefined" || !view) return;
+  wentianI18nObserver = new MutationObserver(scheduleWentianLanguageApply);
+  wentianI18nObserver.observe(view, {
+    childList: true,
+    subtree: true,
+    characterData: true,
+    attributes: true,
+    attributeFilter: ["placeholder"]
+  });
 }
 
 function getWentianProfile() {
@@ -7063,6 +7658,7 @@ function navigate(route, push = true) {
     view.innerHTML = applyWentianColorUpgrade(renderConvertedScreen(screen.no));
     stripScreenshotStatusBar();
     applyWentianLanguageText(view);
+    ensureWentianLanguageObserver();
     fitActivePhoneShell();
     syncActive();
     window.setTimeout(initWentianAuth, 0);
