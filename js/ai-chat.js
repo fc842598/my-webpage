@@ -15,6 +15,8 @@
   var _sessionId = null;
   var _initialized = false;
   var _loading = false;
+  var _pendingQueue = [];
+  var _composerEnabled = false;
   var _memoryAStale = false;
   var _retryCount = 0;
   var _lastChartRecordId = null;
@@ -76,6 +78,8 @@
     _sessionId = null;
     _initialized = false;
     _loading = false;
+    _pendingQueue = [];
+    _composerEnabled = false;
     _memoryAStale = false;
     _transientMode = false;
   }
@@ -257,8 +261,6 @@
   }
 
   function send() {
-    if (_loading) return;
-
     var input = document.getElementById('chat-input');
     var msg = (input ? input.value : '').trim();
     if (!msg) return;
@@ -277,28 +279,49 @@
       return;
     }
 
-    _loading = true;
-    _setInputEnabled(false);
-    _setStarterEnabled(false);
-    _setRefreshEnabled(false);
     if (input) input.value = '';
+    _syncComposerState();
 
     var doForceRefreshA = _memoryAStale;
     var shouldRestoreInput = true;
     _memoryAStale = false;
 
     _appendMsg('user', msg);
+    if (_loading) {
+      _pendingQueue.push({
+        chartRecordId: window._chartRecordId,
+        message: msg,
+        chartData: chartData,
+        forceRefreshMemoryA: doForceRefreshA || undefined,
+      });
+      _appendMsg('system', '已加入队列，许半仙会按顺序回复。');
+      return;
+    }
+
+    _dispatchSend({
+      chartRecordId: window._chartRecordId,
+      message: msg,
+      chartData: chartData,
+      forceRefreshMemoryA: doForceRefreshA || undefined,
+      shouldRestoreInput: shouldRestoreInput,
+    });
+  }
+
+  function _dispatchSend(payload) {
+    var shouldRestoreInput = payload.shouldRestoreInput !== false;
+    _loading = true;
+    _setRefreshEnabled(false);
     _appendTyping();
 
     fetch(BASE + '/api/ai/chat/send', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        chartRecordId: window._chartRecordId,
-        message: msg,
-        chartData: chartData,
-        forceRefreshMemoryA: doForceRefreshA || undefined,
-        transientState: _loadTransientState(window._chartRecordId),
+        chartRecordId: payload.chartRecordId,
+        message: payload.message,
+        chartData: payload.chartData,
+        forceRefreshMemoryA: payload.forceRefreshMemoryA,
+        transientState: _loadTransientState(payload.chartRecordId),
       }),
     })
       .then(_readJsonResponse)
@@ -329,7 +352,7 @@
       })
       .catch(function (err) {
         _removeTyping();
-        _memoryAStale = doForceRefreshA;
+        _memoryAStale = !!payload.forceRefreshMemoryA;
 
         if (err && err.setupRequired) {
           shouldRestoreInput = false;
@@ -355,7 +378,20 @@
         }
         var inp = document.getElementById('chat-input');
         if (inp && !inp.disabled) inp.focus();
+        _drainPendingQueue();
       });
+  }
+
+  function _drainPendingQueue() {
+    if (_loading || !_pendingQueue.length || !_composerEnabled) return;
+    var next = _pendingQueue.shift();
+    _dispatchSend({
+      chartRecordId: next.chartRecordId,
+      message: next.message,
+      chartData: next.chartData,
+      forceRefreshMemoryA: next.forceRefreshMemoryA,
+      shouldRestoreInput: true,
+    });
   }
 
   function _readJsonResponse(response) {
@@ -569,10 +605,18 @@
   }
 
   function _setInputEnabled(enabled) {
-    var btn = document.getElementById('chat-send-btn');
     var input = document.getElementById('chat-input');
-    if (btn) btn.disabled = !enabled;
-    if (input) input.disabled = !enabled;
+    _composerEnabled = !!enabled;
+    if (input) input.disabled = !_composerEnabled;
+    _syncComposerState();
+  }
+
+  function _syncComposerState() {
+    var input = document.getElementById('chat-input');
+    var btn = document.getElementById('chat-send-btn');
+    var hasText = !!(input && String(input.value || '').trim());
+    if (input) input.disabled = !_composerEnabled;
+    if (btn) btn.disabled = !_composerEnabled || !hasText;
   }
 
   function _setRefreshEnabled(enabled) {
@@ -703,6 +747,7 @@
     if (refreshBtn) refreshBtn.addEventListener('click', rebuildMemoryA);
 
     if (input) {
+      input.addEventListener('input', _syncComposerState);
       input.addEventListener('keydown', function (e) {
         if (e.key === 'Enter' && !e.shiftKey) {
           e.preventDefault();
@@ -717,6 +762,7 @@
         var chatInput = document.getElementById('chat-input');
         if (!chatInput || chatInput.disabled) return;
         chatInput.value = prompt;
+        _syncComposerState();
         chatInput.focus();
       });
     });
