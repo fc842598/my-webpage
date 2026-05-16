@@ -435,14 +435,43 @@ function figStatus(time) {
 }
 
 function figPhone(nodeId, name, body, height = 844, extraClass = "", showHomeIndicator = true) {
+  const phoneBody = withWentianStandardBottomNav(nodeId, body, height);
   return `
     <div class="phone-wrap">
-      <section class="figma-phone ${extraClass}" data-node-id="${nodeId}" data-name="${name}" style="height:${height}px">
-        ${body}
+      <section class="figma-phone ${extraClass}" data-node-id="${nodeId}" data-name="${name}" style="height:${phoneBody.height}px">
+        ${phoneBody.body}
         ${showHomeIndicator ? '<div class="fig-home-indicator"></div>' : ""}
       </section>
     </div>
   `;
+}
+
+function hasWentianBottomNav(body) {
+  return /data-node-id="(?:source-bottom-|converted-bottom-|bottom-)/.test(String(body));
+}
+
+function getWentianBottomNavActive(nodeId) {
+  const match = String(nodeId).match(/^screen-(\d+)$/);
+  const no = match ? Number(match[1]) : 0;
+  if (!no) return "";
+  if (no === 1 || no === 2 || no === 10 || no === 11 || no === 49) return "首页";
+  if (no === 3 || (no >= 25 && no <= 27)) return "档案";
+  if ((no >= 4 && no <= 9) || no === 12) return "问天AI";
+  if ((no >= 28 && no <= 41) || no === 48) return "我的";
+  if ((no >= 13 && no <= 24) || (no >= 42 && no <= 47)) return "首页";
+  return convertedByNo.get(no)?.active || "首页";
+}
+
+function withWentianStandardBottomNav(nodeId, body, height) {
+  const baseHeight = Number(height) || WENTIAN_PHONE_HEIGHT;
+  if (!/^screen-\d+$/.test(String(nodeId)) || hasWentianBottomNav(body)) {
+    return { body, height: baseHeight };
+  }
+  const navY = Math.max(755, Math.round(baseHeight));
+  return {
+    body: `${body}${sourceAppBottomNav(getWentianBottomNavActive(nodeId), navY)}`,
+    height: navY + 89
+  };
 }
 
 function figBottomNav(active) {
@@ -621,14 +650,14 @@ function sourceAppBottomNav(active, y = 778) {
     ["我的", "○", 341, "screen-31"]
   ];
   return `
-    ${figBox("source-bottom-bg", 0, y, 390, 89, "", "background:#fff;box-shadow:0 -4px 14px rgba(0,0,0,.06);")}
+    ${figBox("source-bottom-bg", 0, y, 390, 89, "", "background:#fff;box-shadow:0 -4px 14px rgba(0,0,0,.06);z-index:45;")}
     ${items.map(([label, icon, x, route]) => {
       const on = label === active;
       const color = on ? "#a34d33" : "#79766f";
       return `
-        ${figButton(`source-bottom-hit-${label}`, x - 37, y + 6, 76, 72, `data-route="${route}"`)}
-        ${figText(`source-bottom-icon-${label}`, icon, x - 16, y + 16, 32, 22, color, 700, "center")}
-        ${figText(`source-bottom-label-${label}`, label, x - 28, y + 48, 56, 12, color, on ? 700 : 400, "center")}
+        ${figButton(`source-bottom-hit-${label}`, x - 37, y + 6, 76, 72, `data-route="${route}"`, "", "z-index:50;")}
+        ${figText(`source-bottom-icon-${label}`, icon, x - 16, y + 16, 32, 22, color, 700, "center", "z-index:50;")}
+        ${figText(`source-bottom-label-${label}`, label, x - 28, y + 48, 56, 12, color, on ? 700 : 400, "center", "z-index:50;")}
       `;
     }).join("")}
   `;
@@ -742,7 +771,7 @@ function sourceAiChatScreen(screen) {
     ${figText("source-4-record", "⋯", 344, 31, 22, 22, "#6f665d", 800, "center")}
     <div id="wentian-chat-status" class="wentian-chat-status">正在接入许半仙…</div>
     <div id="wentian-chat-messages" class="wentian-chat-log" aria-live="polite"></div>
-    ${figText("source-4-faq-title", "常问", 22, 584, 60, 13, "#25211d", 800)}
+    ${figText("source-4-faq-title", "常问", 22, 498, 60, 13, "#25211d", 800)}
     <div class="wentian-chat-starters" aria-label="常见问题分类">
       ${faqGroups.map((group) => `
         <details class="wentian-chat-faq-group">
@@ -758,10 +787,10 @@ function sourceAiChatScreen(screen) {
         </details>
       `).join("")}
     </div>
-    ${figBox("source-4-input-bg", 0, 742, 390, 102, "", "background:#f7f3ec;box-shadow:0 -1px 0 rgba(110,82,38,.08);")}
+    ${figBox("source-4-input-bg", 0, 642, 390, 113, "", "background:#f7f3ec;box-shadow:0 -1px 0 rgba(110,82,38,.08);")}
     <input id="wentian-chat-input" class="wentian-chat-field" placeholder="问一问" autocomplete="off">
     <button id="wentian-chat-send" class="wentian-chat-send" type="button" data-action="wentian-chat-send" aria-label="发送">↑</button>
-    ${figText("source-4-disclaimer", "内容由AI生成，仅供娱乐参考", 0, 812, 390, 10, "#b8b0a7", 400, "center")}
+    ${figText("source-4-disclaimer", "内容由AI生成，仅供娱乐参考", 0, 728, 390, 10, "#b8b0a7", 400, "center")}
   `;
 }
 
