@@ -454,44 +454,6 @@ select {
   letter-spacing: .16em;
 }
 
-.mbp-hero-topline {
-  grid-column: 1 / -1;
-  min-height: 62px;
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
-  align-items: center;
-  gap: 22px;
-  padding: 0 22px;
-  border: 1px solid rgba(241, 212, 125, .24);
-  border-radius: 12px;
-  background:
-    radial-gradient(circle at 7% 0%, rgba(241, 212, 125, .13), transparent 30%),
-    linear-gradient(90deg, rgba(31, 22, 12, .9), rgba(17, 12, 7, .86));
-  box-shadow: inset 0 1px 0 rgba(255, 244, 196, .08);
-}
-
-.mbp-hero-topline strong {
-  color: var(--gold);
-  font-size: 16px;
-  font-weight: 900;
-  white-space: nowrap;
-}
-
-.mbp-hero-topline h1 {
-  min-width: 0;
-  color: var(--ivory);
-  font: 900 30px/1.15 "Noto Sans SC", "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
-  letter-spacing: 0;
-  white-space: nowrap;
-}
-
-.mbp-hero-topline span {
-  color: var(--gold-2);
-  font-size: 15px;
-  font-weight: 800;
-  white-space: nowrap;
-}
-
 .mbp-hero-input {
   min-width: 0;
   width: 100%;
@@ -2208,163 +2170,6 @@ select {
   display: none;
 }
 
-.mbp-hero-input .mbp-book-preview-card {
-  position: relative;
-  overflow: hidden;
-  grid-template-columns: 58px minmax(0, 1fr);
-  gap: 12px 15px;
-  align-items: center;
-  min-height: 154px;
-  margin-top: 12px;
-  padding: 18px 18px 16px;
-  border-color: rgba(241, 212, 125, .3);
-  background:
-    radial-gradient(circle at 12% 6%, rgba(241, 212, 125, .2), transparent 30%),
-    radial-gradient(circle at 88% 100%, rgba(178, 96, 58, .24), transparent 36%),
-    linear-gradient(135deg, rgba(36, 26, 16, .94), rgba(9, 7, 5, .96));
-  box-shadow: inset 0 1px 0 rgba(255, 244, 196, .08), 0 18px 42px rgba(0, 0, 0, .28);
-}
-
-.mbp-book-preview-card::before {
-  content: "";
-  position: absolute;
-  inset: 16px 18px;
-  border: 1px solid rgba(241, 212, 125, .1);
-  border-radius: 11px;
-  pointer-events: none;
-}
-
-.mbp-book-preview-card::after {
-  content: "";
-  position: absolute;
-  right: 24px;
-  bottom: -44px;
-  width: 138px;
-  height: 138px;
-  border: 1px solid rgba(241, 212, 125, .09);
-  border-radius: 50%;
-  box-shadow:
-    inset 0 0 0 18px rgba(241, 212, 125, .025),
-    inset 0 0 0 44px rgba(241, 212, 125, .025);
-  pointer-events: none;
-}
-
-.mbp-preview-emblem {
-  position: relative;
-  z-index: 1;
-  display: grid;
-  place-items: center;
-  width: 56px;
-  height: 56px;
-  border: 1px solid rgba(255, 230, 174, .34);
-  border-radius: 12px;
-  background:
-    radial-gradient(circle at 35% 18%, rgba(255, 237, 189, .26), transparent 46%),
-    linear-gradient(135deg, #a95c38, #6f2b23);
-  color: #fff0d6;
-  font: 900 24px/1 "Noto Serif SC", "Songti SC", serif;
-  box-shadow: 0 10px 26px rgba(0, 0, 0, .32), inset 0 1px 0 rgba(255, 244, 196, .24);
-}
-
-.mbp-preview-copy {
-  position: relative;
-  z-index: 1;
-  min-width: 0;
-}
-
-.mbp-preview-copy > span {
-  display: block;
-  color: var(--gold);
-  font-size: 13px;
-  font-weight: 900;
-  letter-spacing: .18em;
-}
-
-.mbp-preview-copy h3 {
-  margin: 6px 0 0;
-  color: var(--ivory);
-  font: 900 21px/1.18 "Noto Serif SC", "Songti SC", serif;
-}
-
-.mbp-preview-copy p {
-  margin: 7px 0 0;
-  color: #b9a780;
-  font-size: 12px;
-  line-height: 1.45;
-}
-
-.mbp-preview-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 7px;
-  margin-top: 12px;
-}
-
-.mbp-preview-tags span {
-  display: inline-flex;
-  align-items: center;
-  min-height: 26px;
-  padding: 0 11px;
-  border: 1px solid rgba(241, 212, 125, .18);
-  border-radius: 999px;
-  background: rgba(241, 212, 125, .06);
-  color: #e0c982;
-  font-size: 12px;
-  font-weight: 900;
-  white-space: nowrap;
-}
-
-.mbp-preview-actions {
-  position: relative;
-  z-index: 1;
-  grid-column: 2;
-  display: flex;
-  gap: 8px;
-  width: min(220px, 100%);
-}
-
-.mbp-preview-sample,
-.mbp-hero-input .mbp-book-preview-card .mbp-decode-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 36px;
-  border-radius: 999px;
-  font-size: 13px;
-  font-weight: 900;
-  text-decoration: none;
-  letter-spacing: 0;
-}
-
-.mbp-preview-sample {
-  border: 1px solid rgba(241, 212, 125, .38);
-  background: rgba(241, 212, 125, .06);
-  color: var(--gold);
-}
-
-.mbp-hero-input .mbp-book-preview-card .mbp-decode-btn {
-  border-color: rgba(255, 232, 190, .3);
-  background: linear-gradient(135deg, #d0b76b, #b2653d);
-  color: #120d07;
-  box-shadow: 0 10px 22px rgba(176, 101, 61, .22), inset 0 1px 0 rgba(255, 246, 214, .42);
-}
-
-.mbp-book-preview-card .mbp-decode-meter {
-  position: relative;
-  z-index: 1;
-  grid-column: 1 / -1;
-  width: 100%;
-  margin: -2px 0 0;
-}
-
-.mbp-book-preview-card .mbp-decode-status {
-  position: relative;
-  z-index: 1;
-  grid-column: 1 / -1;
-  text-align: center;
-}
-
 .mbp-module-actions-hidden {
   display: none;
 }
@@ -3629,7 +3434,6 @@ p.mbp-topic-detail {
 }
 
 /* Temporarily hide helper blocks; keep markup and JS for later restore/delete. */
-.mbp-hero-decode:not(.mbp-book-preview-card),
 .mbp-fc-card .fc-tabs-wrap,
 .mbp-fc-card .fc-liunian-wrap,
 .mbp-fc-card .fc-hexagram-area,
@@ -5201,24 +5005,6 @@ p.mbp-topic-detail {
     letter-spacing: .12em;
   }
 
-  .mbp-hero-topline {
-    grid-template-columns: 1fr;
-    min-height: auto;
-    gap: 8px;
-    padding: 16px;
-  }
-
-  .mbp-hero-topline h1 {
-    font-size: 22px;
-    line-height: 1.25;
-    letter-spacing: 0;
-    white-space: normal;
-  }
-
-  .mbp-hero-topline span {
-    font-size: 13px;
-  }
-
   .mbp-input-head {
     grid-template-columns: 1fr;
     gap: 10px;
@@ -5401,34 +5187,6 @@ p.mbp-topic-detail {
 
   .mbp-hero-input .mbp-hero-decode .mbp-module-actions {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .mbp-hero-input .mbp-book-preview-card {
-    grid-template-columns: 56px minmax(0, 1fr);
-    min-height: 0;
-    gap: 12px;
-    padding: 16px;
-  }
-
-  .mbp-preview-emblem {
-    width: 50px;
-    height: 50px;
-    font-size: 21px;
-  }
-
-  .mbp-preview-copy h3 {
-    font-size: 20px;
-  }
-
-  .mbp-preview-actions {
-    grid-column: 1 / -1;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    width: 100%;
-  }
-
-  .mbp-book-preview-card .mbp-decode-meter,
-  .mbp-book-preview-card .mbp-decode-status {
-    grid-column: 1 / -1;
   }
 
   .mbp-special-grid,

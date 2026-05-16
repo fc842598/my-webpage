@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>阅天 · 紫微命书长页新版</title>
   <link rel="icon" href="../images/logo-mark.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../css/mingbook-onepage.css?v=20260516-reading-badge">
+  <link rel="stylesheet" href="../css/mingbook-onepage.css?v=20260516-hero-trim">
   <script src="../js/config.js?v=20260509-vercel-backend"></script>
   <script defer src="../js/cities.js"></script>
   <script defer src="../js/lunarCalendar.js"></script>
@@ -37,13 +37,8 @@
   </header>
 
   <main class="mbp-page">
-    <section class="mbp-hero" aria-labelledby="mbpHeroTitle">
+    <section class="mbp-hero" aria-label="紫微命书排盘">
       <div class="mbp-hero-main">
-        <div class="mbp-hero-topline">
-          <strong>紫微命书</strong>
-          <h1 id="mbpHeroTitle">填写出生信息，点击开始排盘</h1>
-          <span>排盘后显示成盘入口</span>
-        </div>
         <div class="mbp-hero-input">
           <section class="mbp-client-input-card" aria-label="客户盘选择">
             <div class="mbp-client-input-head">
@@ -170,43 +165,6 @@
             </div>
           </div>
           </form>
-          <aside class="mbp-decode-panel mbp-hero-decode mbp-book-preview-card" aria-label="AI命书预览">
-            <div class="mbp-preview-emblem" aria-hidden="true">命</div>
-            <div class="mbp-preview-copy">
-              <span>AI 命书预览</span>
-              <h3>排盘后生成完整解读</h3>
-              <p>从命格底色到事业财运，把关键判断收成五卷。</p>
-              <div class="mbp-preview-tags" aria-label="命书解读主题">
-                <span>性格底色</span>
-                <span>事业财运</span>
-                <span>感情关系</span>
-              </div>
-            </div>
-            <div class="mbp-preview-actions">
-              <a class="mbp-preview-sample" href="#report">查看样例</a>
-              <button class="mbp-decode-btn" id="mbpDecodeBtn" type="button">生成命书</button>
-            </div>
-            <div class="mbp-decode-meter" id="mbpDecodeMeter" role="progressbar" aria-label="AI生成进度" aria-valuemin="0" aria-valuemax="7" aria-valuenow="0">
-              <i></i><i></i><i></i><i></i><i></i><i></i><i></i>
-            </div>
-            <div class="mbp-module-actions mbp-module-actions-hidden" aria-label="单独批命入口">
-              <button type="button" data-ai-module="overall">整体</button>
-              <button type="button" data-ai-module="current_luck">走势</button>
-              <button type="button" data-ai-module="shengong">身宫</button>
-              <button type="button" data-ai-module="hunyin">婚姻</button>
-              <button type="button" data-ai-module="jiankang">健康</button>
-              <button type="button" data-ai-module="caiyun">财运</button>
-              <button type="button" data-ai-module="shiye">事业</button>
-            </div>
-            <div class="mbp-decode-status" id="mbpDecodeStatus">排盘后生成五卷命书。</div>
-            <div class="mbp-decode-list" id="mbpDecodeList">
-              <p>整体批命先给主线</p>
-              <p>五项专题直接出结论</p>
-              <p>命书卷轴沉浸阅读</p>
-              <p>深度报告可继续追问</p>
-            </div>
-            <div class="mbp-chart-summary" id="mbpChartSummary"></div>
-          </aside>
         </div>
 
         <div class="mbp-hero-bridge" aria-hidden="true"><span>成盘</span></div>
