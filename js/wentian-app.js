@@ -2392,7 +2392,8 @@ function getWentianArchiveDisplay(archive) {
   const chartData = archive?.chartData || {};
   const sizhu = chartData.sizhu || {};
   const name = form.name || "命主";
-  const gender = form.gender === "female" ? "女" : "男";
+  const normalizedGender = normalizeWentianArchiveGender(archive);
+  const gender = normalizedGender === "female" ? "女" : normalizedGender === "male" ? "男" : "未填";
   const datetime = (form.datetime || chartData.birthDate || chartData.solarTime || "").replace("T", " ").replace(/:00$/, "");
   const pillars = [sizhu.year, sizhu.month, sizhu.day, sizhu.hour].filter(Boolean).join(" ");
   return {
@@ -2403,6 +2404,77 @@ function getWentianArchiveDisplay(archive) {
     tag: "四柱八字",
     badge: form.isDefault ? "默认" : "",
   };
+}
+
+function normalizeWentianGenderValue(value) {
+  const text = String(value || "").trim().toLowerCase();
+  if (["male", "m", "man", "boy", "1", "男", "阳男", "陽男", "阴男", "陰男", "阳性", "陽性", "男性"].includes(text)) return "male";
+  if (["female", "f", "woman", "girl", "0", "女", "阴女", "陰女", "阳女", "陽女", "阴性", "陰性", "女性"].includes(text)) return "female";
+  return "";
+}
+
+function normalizeWentianArchiveGender(archive) {
+  return normalizeWentianGenderValue(
+    archive?.form?.gender
+    || archive?.chartData?.gender
+    || archive?.gender
+    || archive?.form?.remoteRaw?.gender
+  );
+}
+
+function getWentianArchivePersonKey(archive) {
+  const form = archive?.form || {};
+  const chartData = archive?.chartData || {};
+  const name = String(form.name || chartData.name || "").trim().replace(/\s+/g, "");
+  const datetime = String(form.datetime || chartData.birthDate || chartData.solarTime || "")
+    .replace("T", " ")
+    .replace(/:00$/, "")
+    .slice(0, 16);
+  const gender = normalizeWentianArchiveGender(archive);
+  return [name, datetime, gender].filter(Boolean).join("|");
+}
+
+function isSameWentianHepanPerson(left, right) {
+  if (!left || !right) return false;
+  if (left === right) return true;
+  const leftIds = [left.id, left.chartRecordId, left.form?.archiveId, left.chartData?.chartRecordId].filter(Boolean);
+  const rightIds = new Set([right.id, right.chartRecordId, right.form?.archiveId, right.chartData?.chartRecordId].filter(Boolean));
+  if (leftIds.some((id) => rightIds.has(id))) return true;
+  const leftKey = getWentianArchivePersonKey(left);
+  const rightKey = getWentianArchivePersonKey(right);
+  return Boolean(leftKey && rightKey && leftKey === rightKey);
+}
+
+function validateWentianHepanPair(left, right) {
+  if (!left || !right) {
+    return { ok: false, code: "missing", message: "请选择一男一女两张不同档案" };
+  }
+  if (isSameWentianHepanPerson(left, right)) {
+    return { ok: false, code: "same-person", message: "同一个人不能和自己合盘" };
+  }
+  const leftGender = normalizeWentianArchiveGender(left);
+  const rightGender = normalizeWentianArchiveGender(right);
+  if (!leftGender || !rightGender) {
+    return { ok: false, code: "missing-gender", message: "档案性别不完整，请先补全后再合盘" };
+  }
+  if (leftGender === rightGender) {
+    return { ok: false, code: "same-gender", message: "情侣合盘仅支持一男一女，男男/女女不能合盘" };
+  }
+  return { ok: true, code: "ok", message: "可开始合盘" };
+}
+
+function getWentianHepanValidation(archives = getWentianArchiveList(), ids = getWentianHepanSelectedIds(archives)) {
+  const pair = ids.map((id) => archives.find((archive) => archive.id === id)).filter(Boolean);
+  return validateWentianHepanPair(pair[0], pair[1]);
+}
+
+function getWentianFirstValidHepanPair(archives) {
+  for (let i = 0; i < archives.length; i += 1) {
+    for (let j = i + 1; j < archives.length; j += 1) {
+      if (validateWentianHepanPair(archives[i], archives[j]).ok) return [archives[i].id, archives[j].id];
+    }
+  }
+  return [];
 }
 
 function clampWentianScore(value) {
@@ -2423,12 +2495,13 @@ function getWentianHepanSelectedIds(archives = getWentianArchiveList()) {
     }
   }
   const archiveIds = archives.map((archive) => archive.id);
-  const selected = wentianHepanSelectedIds.filter((id) => archiveIds.includes(id)).slice(0, 2);
+  const selected = [];
+  for (const id of wentianHepanSelectedIds) {
+    if (archiveIds.includes(id) && !selected.includes(id)) selected.push(id);
+    if (selected.length >= 2) break;
+  }
   if (!hasSavedSelection) {
-    for (const id of archiveIds) {
-      if (selected.length >= 2) break;
-      if (!selected.includes(id)) selected.push(id);
-    }
+    selected.splice(0, selected.length, ...getWentianFirstValidHepanPair(archives));
   }
   wentianHepanSelectedIds = selected;
   return selected;
@@ -2452,8 +2525,13 @@ function toggleWentianHepanArchive(id) {
 }
 
 function confirmWentianHepanSelection() {
-  const ids = getWentianHepanSelectedIds();
-  if (ids.length < 2) return;
+  const archives = getWentianArchiveList();
+  const ids = getWentianHepanSelectedIds(archives);
+  const validation = getWentianHepanValidation(archives, ids);
+  if (!validation.ok) {
+    navigate("screen-11", false);
+    return;
+  }
   saveWentianHepanSelectedIds(ids);
   navigate("screen-49");
 }
@@ -2491,8 +2569,18 @@ function getWentianHepanResult() {
   const archives = getWentianArchiveList();
   const ids = getWentianHepanSelectedIds(archives);
   const pair = ids.map((id) => archives.find((archive) => archive.id === id)).filter(Boolean);
-  while (pair.length < 2 && archives[pair.length]) pair.push(archives[pair.length]);
   const [left, right] = pair;
+  const validation = validateWentianHepanPair(left, right);
+  if (!validation.ok) {
+    return {
+      ok: false,
+      ...validation,
+      left,
+      right,
+      leftDisplay: left ? getWentianArchiveDisplay(left) : null,
+      rightDisplay: right ? getWentianArchiveDisplay(right) : null,
+    };
+  }
   const leftDisplay = getWentianArchiveDisplay(left);
   const rightDisplay = getWentianArchiveDisplay(right);
   const leftSizhu = getWentianArchiveSizhu(left);
@@ -2514,6 +2602,7 @@ function getWentianHepanResult() {
   const total = clampWentianScore((attraction + communication + stability + growth) / 4);
   const level = total >= 86 ? "上佳合盘" : total >= 76 ? "稳定相合" : total >= 66 ? "可磨合相合" : "需要慢合";
   return {
+    ok: true,
     left,
     right,
     leftDisplay,
@@ -5164,7 +5253,13 @@ function sourceHepanSelectScreen() {
   const archives = getWentianArchiveList();
   const selectedIds = getWentianHepanSelectedIds(archives);
   const visibleArchives = getWentianHepanVisibleArchives(archives, selectedIds);
-  const ready = selectedIds.length === 2;
+  const validation = getWentianHepanValidation(archives, selectedIds);
+  const ready = validation.ok;
+  const hint = selectedIds.length >= 2
+    ? validation.message
+    : archives.length < 2
+      ? "至少需要两张档案才能合盘"
+      : "请选择一男一女两张不同档案";
   return `
     ${figBox("wt11-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
     ${wentianSimpleHeader("wt11", "选择合盘档案")}
@@ -5177,9 +5272,9 @@ function sourceHepanSelectScreen() {
     <div class="wentian-hepan-head" data-node-id="wt11-head">
       <div>
         <strong>选择档案</strong>
-        <span>最多选择两张档案进行合盘</span>
+        <span>仅支持一男一女，且不能选择同一个人</span>
       </div>
-      <b class="${ready ? "is-ready" : ""}">已选 ${selectedIds.length}/2</b>
+      <b class="${ready ? "is-ready" : selectedIds.length >= 2 ? "is-error" : ""}">已选 ${selectedIds.length}/2</b>
     </div>
     <div class="wentian-hepan-list" data-node-id="wt11-list">
       ${visibleArchives.map((archive, index) => {
@@ -5201,13 +5296,14 @@ function sourceHepanSelectScreen() {
     <div class="wentian-hepan-footer" data-node-id="wt11-footer">
       <button class="wentian-hepan-secondary" type="button" data-route="screen-26">+ 新建档案</button>
       <button class="wentian-hepan-primary" type="button" data-action="wentian-hepan-confirm" ${ready ? "" : "disabled"}>确定</button>
-      <p>${archives.length > 2 ? `共 ${archives.length} 张档案，可滚动选择` : "选择两张档案后开始合盘"}</p>
+      <p class="${ready ? "is-ready" : selectedIds.length >= 2 ? "is-error" : ""}">${escapeHtml(hint)}</p>
     </div>
   `;
 }
 
 function sourceHepanResultScreen() {
   const result = getWentianHepanResult();
+  if (!result.ok) return sourceHepanInvalidScreen(result);
   return `
     ${figBox("wt49-bg", 0, 0, 390, 1160, "", "background:linear-gradient(180deg,#fffdf8 0%,#fbf7ef 58%,#f3eadc 100%);")}
     ${wentianSimpleHeader("wt49", "合盘结果")}
@@ -5249,6 +5345,26 @@ function sourceHepanResultScreen() {
     ${figBox("wt49-ask", 212, 1000, 136, 44, "", "border-radius:10px;background:#b74e39;")}
     ${figButton("wt49-ask-hit", 212, 1000, 136, 44, 'data-route="screen-4"')}
     ${figText("wt49-ask-text", "追问许半仙", 212, 1012, 136, 13, "#fff", 900, "center")}
+  `;
+}
+
+function sourceHepanInvalidScreen(result) {
+  const message = result?.message || "请选择一男一女两张不同档案";
+  return `
+    ${figBox("wt49-bg", 0, 0, 390, 844, "", "background:linear-gradient(180deg,#fffdf8 0%,#fbf7ef 58%,#f3eadc 100%);")}
+    ${wentianSimpleHeader("wt49", "合盘结果")}
+    ${figBox("wt49-invalid-card", 24, 132, 342, 318, "", "border:1px solid #eadfce;border-radius:22px;background:#fff;box-shadow:0 12px 28px rgba(70,45,25,.1);")}
+    ${figBox("wt49-invalid-icon", 142, 174, 106, 106, "", "border-radius:53px;background:#fff1dc;border:1px solid #e2c27a;")}
+    ${figText("wt49-invalid-icon-text", "合", 142, 204, 106, 38, "#a94437", 900, "center", "font-size:38px;")}
+    ${figText("wt49-invalid-title", "暂不能合盘", 0, 304, 390, 24, "#25211d", 900, "center")}
+    ${figText("wt49-invalid-copy", escapeHtml(message), 56, 346, 278, 15, "#756d63", 800, "center", "line-height:1.6;")}
+    ${figText("wt49-invalid-rule", "规则：必须是一男一女，且两张档案不能属于同一个人。", 56, 394, 278, 12, "#9a8f82", 700, "center", "line-height:1.55;")}
+    ${figBox("wt49-repick", 42, 506, 136, 44, "", "border:1px solid #d6b463;border-radius:10px;background:#fff;")}
+    ${figButton("wt49-repick-hit", 42, 506, 136, 44, 'data-route="screen-11"')}
+    ${figText("wt49-repick-text", "重新选择", 42, 518, 136, 13, "#9b742e", 800, "center")}
+    ${figBox("wt49-new", 212, 506, 136, 44, "", "border-radius:10px;background:#b74e39;")}
+    ${figButton("wt49-new-hit", 212, 506, 136, 44, 'data-route="screen-26"')}
+    ${figText("wt49-new-text", "新建档案", 212, 518, 136, 13, "#fffaf3", 900, "center")}
   `;
 }
 

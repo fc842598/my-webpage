@@ -1686,6 +1686,10 @@ button {
   color: #9b742e;
 }
 
+.wentian-hepan-head b.is-error {
+  color: #a94437;
+}
+
 .wentian-hepan-list {
   position: absolute;
   left: 22px;
@@ -1836,6 +1840,14 @@ button {
   font-weight: 700;
   line-height: 15px;
   text-align: center;
+}
+
+.wentian-hepan-footer p.is-ready {
+  color: #7b8a44;
+}
+
+.wentian-hepan-footer p.is-error {
+  color: #a94437;
 }
 
 .wentian-language-option {
