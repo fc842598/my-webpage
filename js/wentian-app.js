@@ -1000,6 +1000,12 @@ const wentianAuthState = {
   error: "",
   loading: false,
 };
+const wentianPasswordState = {
+  loading: false,
+  status: "",
+  error: "",
+};
+let wentianLogoutConfirmOpen = false;
 const wentianInviteState = {
   loaded: false,
   loading: false,
@@ -2522,7 +2528,7 @@ async function getWentianAuthToken() {
 }
 
 function refreshWentianAuthScreens() {
-  if (["screen-1", "screen-22", "screen-23", "screen-24", "screen-30", "screen-31", "screen-33", "screen-34", "screen-40", "screen-48"].includes(state.route)) {
+  if (["screen-1", "screen-22", "screen-23", "screen-24", "screen-30", "screen-31", "screen-33", "screen-34", "screen-38", "screen-39", "screen-40", "screen-41", "screen-48"].includes(state.route)) {
     navigate(state.route, false);
   }
 }
@@ -2648,7 +2654,64 @@ async function signOutWentianAuth() {
   wentianAuthSession = null;
   wentianMemberState.loaded = false;
   wentianOrderState.loaded = false;
+  wentianLogoutConfirmOpen = false;
   navigate("screen-31", false);
+}
+
+function openWentianLogoutConfirm() {
+  wentianLogoutConfirmOpen = true;
+  navigate("screen-38", false);
+}
+
+function closeWentianLogoutConfirm() {
+  wentianLogoutConfirmOpen = false;
+  navigate("screen-38", false);
+}
+
+function setWentianPasswordStatus(text, tone = "") {
+  wentianPasswordState.status = text || "";
+  wentianPasswordState.error = tone === "error" ? text || "" : "";
+  const el = document.getElementById("wentian-password-status");
+  if (!el) return;
+  el.textContent = text || "";
+  el.dataset.tone = tone;
+}
+
+async function submitWentianPasswordForm() {
+  const password = document.getElementById("wentian-password-new")?.value || "";
+  const confirm = document.getElementById("wentian-password-confirm")?.value || "";
+  if (password.length < 6) {
+    setWentianPasswordStatus("密码至少 6 位", "error");
+    return;
+  }
+  if (password !== confirm) {
+    setWentianPasswordStatus("两次密码不一致", "error");
+    return;
+  }
+  const session = await getWentianAuthSession();
+  if (!session?.user) {
+    wentianAuthState.mode = "register";
+    navigate("screen-40");
+    return;
+  }
+  const client = getWentianAuthClient();
+  if (!client?.auth?.updateUser) {
+    setWentianPasswordStatus("当前登录服务不支持修改密码", "error");
+    return;
+  }
+  wentianPasswordState.loading = true;
+  setWentianPasswordStatus("正在保存...");
+  try {
+    const { error } = await client.auth.updateUser({ password });
+    if (error) throw error;
+    document.getElementById("wentian-password-new").value = "";
+    document.getElementById("wentian-password-confirm").value = "";
+    setWentianPasswordStatus("密码已更新", "ok");
+  } catch (error) {
+    setWentianPasswordStatus(error.message || "密码保存失败", "error");
+  } finally {
+    wentianPasswordState.loading = false;
+  }
 }
 
 function saveWentianProfile(profile) {
@@ -3324,7 +3387,7 @@ async function hydrateWentianMemberStatus(options = {}) {
         quota: wentianMemberState.quota,
         product: wentianMemberState.product,
       });
-      if (options.rerender && before !== after && ["screen-30", "screen-31", "screen-33"].includes(state.route)) {
+      if (options.rerender && before !== after && ["screen-30", "screen-31", "screen-33", "screen-38", "screen-40", "screen-41"].includes(state.route)) {
         navigate(state.route, false);
       }
       return data;
@@ -3830,56 +3893,77 @@ function sourceMineScreen(screen) {
 
 function sourceBasicInfoScreen() {
   const profile = getWentianProfile();
+  const account = getWentianAuthDisplay();
   return `
     ${figBox("source-39-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
     ${figButton("source-39-back-hit", 18, 40, 54, 54, 'data-action="back"')}
-    ${figText("source-39-back", "‹", 28, 49, 28, 30, "#26211c", 600)}
-    ${figText("source-39-title", "基本信息", 0, 56, 390, 22, "#1f1d1a", 800, "center")}
-    ${figBox("source-39-card", 22, 130, 346, 290, "", "border:1px solid #e2d8c8;border-radius:16px;background:#fff;box-shadow:0 6px 16px rgba(74,55,32,.06);")}
+    ${figText("source-39-back", "‹", 28, 49, 28, 30, "#26211c", 700)}
+    ${figText("source-39-title", "基本信息", 0, 56, 390, 22, "#1f1d1a", 900, "center")}
+    ${figBox("source-39-account", 22, 112, 346, 98, "", "border:1px solid #e2d8c8;border-radius:18px;background:#fff;box-shadow:0 8px 18px rgba(74,55,32,.07);")}
+    ${figBox("source-39-avatar", 42, 134, 54, 54, "", "border-radius:27px;background:#b88c33;")}
+    ${figText("source-39-avatar-text", escapeHtml(account.initial), 42, 147, 54, 24, "#fff", 900, "center")}
+    ${figText("source-39-account-name", escapeHtml(account.name), 114, 134, 182, 17, "#201812", 900)}
+    ${figText("source-39-account-sub", account.loggedIn ? "账号已登录，信息会用于支付与邀请展示" : "未登录，本页先保存本机资料", 114, 162, 210, 12, "#8f857a", 700, "left", "line-height:1.35;")}
 
-    ${figText("source-39-name-label", "昵称", 42, 162, 90, 17, "#5f5a52", 500)}
-    <input id="wentian-profile-nickname" class="wentian-profile-input" style="left:132px;top:145px;width:214px" value="${escapeHtml(profile.nickname)}" placeholder="请输入昵称" autocomplete="name">
-    ${figLine("source-39-line-1", 42, 210, 304, "#e6ded2")}
+    ${figBox("source-39-card", 22, 242, 346, 276, "", "border:1px solid #e2d8c8;border-radius:18px;background:#fff;box-shadow:0 6px 16px rgba(74,55,32,.06);")}
+    ${figText("source-39-name-label", "昵称", 42, 274, 78, 16, "#5f5a52", 800)}
+    <input id="wentian-profile-nickname" class="wentian-profile-input" style="left:132px;top:258px;width:214px" value="${escapeHtml(profile.nickname)}" placeholder="请输入昵称" autocomplete="name">
+    ${figLine("source-39-line-1", 42, 323, 304, "#e6ded2")}
+    ${figText("source-39-email-label", "邮箱", 42, 356, 78, 16, "#5f5a52", 800)}
+    <input id="wentian-profile-email" class="wentian-profile-input" type="email" style="left:132px;top:340px;width:214px" value="${escapeHtml(profile.email)}" placeholder="请输入邮箱" autocomplete="email">
+    ${figLine("source-39-line-2", 42, 405, 304, "#e6ded2")}
+    ${figText("source-39-phone-label", "手机号", 42, 438, 78, 16, "#5f5a52", 800)}
+    <input id="wentian-profile-phone" class="wentian-profile-input" inputmode="tel" style="left:132px;top:422px;width:214px" value="${escapeHtml(profile.phone)}" placeholder="绑定手机号" autocomplete="tel">
 
-    ${figText("source-39-email-label", "邮箱", 42, 242, 90, 17, "#5f5a52", 500)}
-    <input id="wentian-profile-email" class="wentian-profile-input" type="email" style="left:132px;top:225px;width:214px" value="${escapeHtml(profile.email)}" placeholder="请输入邮箱" autocomplete="email">
-    ${figLine("source-39-line-2", 42, 290, 304, "#e6ded2")}
-
-    ${figText("source-39-phone-label", "手机号", 42, 322, 90, 17, "#5f5a52", 500)}
-    <input id="wentian-profile-phone" class="wentian-profile-input" inputmode="tel" style="left:132px;top:305px;width:214px" value="${escapeHtml(profile.phone)}" placeholder="绑定手机号" autocomplete="tel">
-
-    ${figText("source-39-tip", "信息仅保存在当前浏览器，用于档案管理与问天服务。", 42, 454, 300, 13, "#9b9287")}
+    ${figText("source-39-tip", "保存后用于档案、昵称、邀请展示；登录账号以登录方式页为准。", 42, 548, 306, 13, "#9b9287", 700, "left", "line-height:1.45;")}
     <div id="wentian-profile-status" class="wentian-profile-status"></div>
-    ${figBox("source-39-save", 36, 690, 318, 58, "", "border-radius:29px;background:#c09a49;box-shadow:0 8px 18px rgba(130,91,31,.12);")}
-    ${figButton("source-39-save-hit", 36, 690, 318, 58, 'data-action="wentian-profile-save"')}
-    ${figText("source-39-save-text", "保存", 36, 709, 318, 18, "#fff", 700, "center")}
+    ${figBox("source-39-save", 36, 696, 318, 52, "", "border-radius:26px;background:#c09a49;box-shadow:0 8px 18px rgba(130,91,31,.12);")}
+    ${figButton("source-39-save-hit", 36, 696, 318, 52, 'data-action="wentian-profile-save"')}
+    ${figText("source-39-save-text", "保存信息", 36, 711, 318, 15, "#fff", 900, "center")}
   `;
 }
 
 function sourceAccountSettingsScreen() {
+  const account = getWentianAuthDisplay();
   const rows = [
-    ["♙", "基本信息", "screen-39"],
-    ["▧", "登录方式", "screen-40"],
-    ["⌑", "设置密码", "screen-41"],
-    ["↪", "退出登录", "screen-31"]
+    ["♙", "基本信息", account.loggedIn ? "昵称、邮箱、手机号" : "保存本机资料", "screen-39", ""],
+    ["▧", "登录方式", account.loggedIn ? "查看当前账号与支付入口" : "手机号或 Google 登录", "screen-40", ""],
+    ["⌑", "设置密码", account.loggedIn ? "修改账号登录密码" : "登录后可设置密码", "screen-41", ""],
+    ["↪", account.loggedIn ? "退出登录" : "登录 / 注册", account.loggedIn ? "退出当前账号前会再次确认" : "进入账号登录页", account.loggedIn ? "" : "screen-40", account.loggedIn ? "wentian-auth-logout-open" : ""]
   ];
   return `
     ${figBox("source-settings-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
     ${figButton("source-settings-back-hit", 18, 40, 54, 54, 'data-action="back"')}
-    ${figText("source-settings-back", "‹", 28, 49, 28, 30, "#26211c", 600)}
-    ${figText("source-settings-title", "账户设置", 0, 56, 390, 22, "#1f1d1a", 800, "center")}
-    ${figBox("source-settings-card", 22, 104, 346, 196, "", "border:1px solid #e2d8c8;border-radius:14px;background:#fff;box-shadow:0 6px 16px rgba(74,55,32,.06);")}
-    ${rows.map(([icon, label, route], index) => {
-      const y = 104 + index * 49;
+    ${figText("source-settings-back", "‹", 28, 49, 28, 30, "#26211c", 700)}
+    ${figText("source-settings-title", "账户设置", 0, 56, 390, 22, "#1f1d1a", 900, "center")}
+    ${figBox("source-settings-card", 22, 112, 346, 320, "", "border:1px solid #e2d8c8;border-radius:18px;background:#fff;box-shadow:0 8px 20px rgba(74,55,32,.07);")}
+    ${rows.map(([icon, label, desc, route, action], index) => {
+      const y = 112 + index * 80;
       const red = index === rows.length - 1;
       return `
         ${index ? figLine(`source-settings-line-${index}`, 44, y, 302, "#eee8df") : ""}
-        ${figText(`source-settings-icon-${index}`, icon, 40, y + 18, 24, 14, red ? "#b33a2f" : "#b88c33", 700, "center")}
-        ${figText(`source-settings-label-${index}`, label, 76, y + 16, 180, 16, red ? "#b33a2f" : "#26211c", 700)}
-        ${figText(`source-settings-arrow-${index}`, "›", 326, y + 14, 20, 18, "#aaa196", 700, "center")}
-        ${figButton(`source-settings-hit-${index}`, 22, y, 346, 49, `data-route="${route}"`)}
+        ${figText(`source-settings-icon-${index}`, icon, 40, y + 29, 24, 14, red ? "#b33a2f" : "#b88c33", 900, "center")}
+        ${figText(`source-settings-label-${index}`, label, 76, y + 20, 180, 17, red && account.loggedIn ? "#b33a2f" : "#26211c", 900)}
+        ${figText(`source-settings-desc-${index}`, desc, 76, y + 48, 220, 12, "#8f857a", 700)}
+        ${figText(`source-settings-arrow-${index}`, "›", 326, y + 30, 20, 18, "#aaa196", 900, "center")}
+        ${figButton(`source-settings-hit-${index}`, 22, y, 346, 80, action ? `data-action="${action}"` : `data-route="${route}"`)}
       `;
     }).join("")}
+    ${figBox("source-settings-note", 24, 466, 342, 94, "", "border-radius:16px;background:#fffaf2;border:1px solid #ead9bd;")}
+    ${figText("source-settings-note-title", account.loggedIn ? "账号安全" : "先登录再同步", 46, 490, 120, 15, "#25211d", 900)}
+    ${figText("source-settings-note-text", account.loggedIn ? "会员、支付记录、邀请奖励会跟随当前登录账号。退出前请确认资料已保存。" : "未登录时只保存本机资料；登录后才能同步会员、支付和邀请奖励。", 46, 520, 286, 13, "#756d63", 700, "left", "line-height:1.45;")}
+    ${wentianLogoutConfirmOpen ? `
+      ${figBox("source-settings-mask", 0, 0, 390, 844, "", "background:rgba(0,0,0,.28);")}
+      ${figBox("source-settings-logout-sheet", 24, 548, 342, 210, "", "border-radius:22px;background:#fff;box-shadow:0 -10px 28px rgba(45,31,18,.16);")}
+      ${figText("source-settings-logout-title", "确认退出登录？", 0, 580, 390, 18, "#25211d", 900, "center")}
+      ${figText("source-settings-logout-desc", "退出后仍可浏览页面，但会员、支付记录和邀请奖励需要重新登录后查看。", 54, 622, 282, 13, "#756d63", 700, "center", "line-height:1.5;")}
+      ${figBox("source-settings-logout-cancel", 48, 690, 132, 44, "", "border-radius:22px;background:#f6f2e9;")}
+      ${figButton("source-settings-logout-cancel-hit", 48, 690, 132, 44, 'data-action="wentian-auth-logout-cancel"')}
+      ${figText("source-settings-logout-cancel-text", "取消", 48, 704, 132, 13, "#756d63", 900, "center")}
+      ${figBox("source-settings-logout-confirm", 210, 690, 132, 44, "", "border-radius:22px;background:#b74e39;")}
+      ${figButton("source-settings-logout-confirm-hit", 210, 690, 132, 44, 'data-action="wentian-auth-logout"')}
+      ${figText("source-settings-logout-confirm-text", "退出", 210, 704, 132, 13, "#fff", 900, "center")}
+    ` : ""}
   `;
 }
 
@@ -3889,28 +3973,46 @@ function sourceLoginMethodsScreen() {
   const isRegister = wentianAuthState.mode === "register";
   const pendingInviteCode = getWentianPendingInviteCode();
   if (account.loggedIn) {
+    const provider = wentianAuthSession?.user?.app_metadata?.provider || "phone";
+    const phone = wentianAuthSession?.user?.user_metadata?.phone || "";
     return `
       ${figBox("source-login-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
       ${figButton("source-login-back-hit", 18, 40, 54, 54, 'data-action="back"')}
-      ${figText("source-login-back", "‹", 28, 49, 28, 30, "#26211c", 600)}
-      ${figText("source-login-title", "账号中心", 0, 56, 390, 22, "#1f1d1a", 800, "center")}
-      ${figBox("source-login-account", 24, 116, 342, 132, "", "border:1px solid #e2d8c8;border-radius:18px;background:#fff;box-shadow:0 8px 18px rgba(74,55,32,.08);")}
-      ${figBox("source-login-avatar", 46, 148, 58, 58, "", "border-radius:29px;background:#b88c33;")}
-      ${figText("source-login-avatar-text", escapeHtml(account.initial), 46, 162, 58, 24, "#fff", 900, "center")}
-      ${figText("source-login-name", escapeHtml(account.name), 122, 148, 164, 18, "#201812", 900)}
-      ${figText("source-login-email", escapeHtml(account.email), 122, 174, 180, 12, "#8f857a", 700)}
-      ${figBox("source-login-member", 122, 202, 86, 24, "", `border-radius:12px;background:${member.isMember ? "#fff0d6" : "#f6f2e9"};`)}
-      ${figText("source-login-member-text", member.isMember ? "问天会员" : "免费账号", 122, 208, 86, 11, member.isMember ? "#9f3d2e" : "#9b742e", 800, "center")}
-      ${figBox("source-login-orders", 24, 278, 342, 58, "", "border-radius:14px;background:#fff;box-shadow:0 6px 16px rgba(74,55,32,.06);")}
-      ${figText("source-login-orders-text", "支付记录", 48, 296, 120, 16, "#26211c", 800)}
-      ${figText("source-login-orders-arrow", "›", 330, 293, 20, 20, "#aaa196", 800, "center")}
-      ${figButton("source-login-orders-hit", 24, 278, 342, 58, 'data-route="screen-48"')}
-      ${figBox("source-login-vip", 24, 350, 342, 58, "", "border-radius:14px;background:#fff;box-shadow:0 6px 16px rgba(74,55,32,.06);")}
-      ${figText("source-login-vip-text", member.isMember ? "续费会员" : "开通会员", 48, 368, 120, 16, "#26211c", 800)}
-      ${figText("source-login-vip-arrow", "›", 330, 365, 20, 20, "#aaa196", 800, "center")}
-      ${figButton("source-login-vip-hit", 24, 350, 342, 58, 'data-route="screen-33"')}
+      ${figText("source-login-back", "‹", 28, 49, 28, 30, "#26211c", 700)}
+      ${figText("source-login-title", "登录方式", 0, 56, 390, 22, "#1f1d1a", 900, "center")}
+      ${figBox("source-login-account", 24, 112, 342, 132, "", "border:1px solid #e2d8c8;border-radius:18px;background:#fff;box-shadow:0 8px 18px rgba(74,55,32,.08);")}
+      ${figBox("source-login-avatar", 46, 144, 58, 58, "", "border-radius:29px;background:#b88c33;")}
+      ${figText("source-login-avatar-text", escapeHtml(account.initial), 46, 158, 58, 24, "#fff", 900, "center")}
+      ${figText("source-login-name", escapeHtml(account.name), 122, 144, 164, 18, "#201812", 900)}
+      ${figText("source-login-email", escapeHtml(account.email), 122, 170, 180, 12, "#8f857a", 700)}
+      ${figBox("source-login-member", 122, 198, 86, 24, "", `border-radius:12px;background:${member.isMember ? "#fff0d6" : "#f6f2e9"};`)}
+      ${figText("source-login-member-text", member.isMember ? "问天会员" : "免费账号", 122, 204, 86, 11, member.isMember ? "#9f3d2e" : "#9b742e", 800, "center")}
+
+      ${figBox("source-login-method-card", 24, 274, 342, 196, "", "border-radius:18px;background:#fff;box-shadow:0 6px 16px rgba(74,55,32,.06);border:1px solid #eadfce;")}
+      ${[["手机号密码", phone || "未绑定手机号", provider === "email" || phone ? "已启用" : "可用", "#5f8745"], ["Google 登录", provider === "google" ? "当前账号来源" : "可继续使用 Google 登录", provider === "google" ? "已启用" : "可用", "#9b742e"], ["账号密码", "用于手机号登录和后续安全验证", "可修改", "#9b742e"]].map(([title, desc, badge, color], index) => {
+        const y = 274 + index * 64;
+        return `
+          ${index ? figLine(`source-login-method-line-${index}`, 46, y, 298, "#eee8df") : ""}
+          ${figText(`source-login-method-title-${index}`, title, 48, y + 18, 120, 15, "#25211d", 900)}
+          ${figText(`source-login-method-desc-${index}`, escapeHtml(desc), 48, y + 40, 210, 11, "#8f857a", 700)}
+          ${figBox(`source-login-method-badge-${index}`, 276, y + 22, 54, 22, "", `border-radius:11px;background:#f6f2e9;`)}
+          ${figText(`source-login-method-badge-text-${index}`, badge, 276, y + 28, 54, 10, color, 900, "center")}
+        `;
+      }).join("")}
+
+      ${figBox("source-login-actions", 24, 502, 342, 134, "", "border-radius:18px;background:#fff;box-shadow:0 6px 16px rgba(74,55,32,.06);border:1px solid #eadfce;")}
+      ${[["设置密码", "screen-41"], [member.isMember ? "续费会员" : "开通会员", "screen-33"], ["支付记录", "screen-48"]].map(([label, route], index) => {
+        const y = 502 + index * 44;
+        return `
+          ${index ? figLine(`source-login-action-line-${index}`, 46, y, 298, "#eee8df") : ""}
+          ${figText(`source-login-action-label-${index}`, label, 48, y + 14, 140, 14, "#25211d", 900)}
+          ${figText(`source-login-action-arrow-${index}`, "›", 330, y + 12, 20, 18, "#aaa196", 900, "center")}
+          ${figButton(`source-login-action-hit-${index}`, 24, y, 342, 44, `data-route="${route}"`)}
+        `;
+      }).join("")}
+
       ${figBox("source-login-logout", 42, 704, 306, 50, "", "border-radius:25px;background:#fff;border:1px solid #e2d8c8;")}
-      ${figButton("source-login-logout-hit", 42, 704, 306, 50, 'data-action="wentian-auth-logout"')}
+      ${figButton("source-login-logout-hit", 42, 704, 306, 50, 'data-action="wentian-auth-logout-open"')}
       ${figText("source-login-logout-text", "退出登录", 42, 719, 306, 14, "#9f3d2e", 900, "center")}
     `;
   }
@@ -3939,20 +4041,42 @@ function sourceLoginMethodsScreen() {
 }
 
 function sourcePasswordSettingsScreen() {
+  const account = getWentianAuthDisplay();
+  if (!account.loggedIn) {
+    return `
+    ${figBox("source-password-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
+    ${figButton("source-password-back-hit", 18, 40, 54, 54, 'data-action="back"')}
+    ${figText("source-password-back", "‹", 28, 49, 28, 30, "#26211c", 700)}
+    ${figText("source-password-title", "设置密码", 0, 56, 390, 22, "#1f1d1a", 900, "center")}
+    ${figBox("source-password-login-card", 24, 136, 342, 178, "", "border-radius:18px;background:#fff;box-shadow:0 8px 18px rgba(74,55,32,.08);border:1px solid #eadfce;")}
+    ${figText("source-password-login-title", "登录后设置账号密码", 48, 172, 190, 18, "#25211d", 900)}
+    ${figText("source-password-login-desc", "密码会绑定到你的问天账号，用于手机号登录、支付记录和会员权益。", 48, 210, 280, 13, "#756d63", 700, "left", "line-height:1.45;")}
+    ${figBox("source-password-login-btn", 48, 260, 150, 38, "", "border-radius:19px;background:#b74e39;")}
+    ${figButton("source-password-login-hit", 48, 260, 150, 38, 'data-route="screen-40"')}
+    ${figText("source-password-login-text", "登录 / 注册", 48, 272, 150, 12, "#fff", 900, "center")}
+  `;
+  }
   return `
     ${figBox("source-password-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
     ${figButton("source-password-back-hit", 18, 40, 54, 54, 'data-action="back"')}
-    ${figText("source-password-back", "‹", 28, 49, 28, 30, "#26211c", 600)}
-    ${figText("source-password-title", "设置密码", 0, 56, 390, 22, "#1f1d1a", 800, "center")}
-    ${figBox("source-password-card", 22, 108, 346, 136, "", "border:1px solid #e2d8c8;border-radius:14px;background:#fff;box-shadow:0 6px 16px rgba(74,55,32,.06);")}
-    ${figText("source-password-new-label", "新密码", 42, 132, 80, 16, "#5f5a52", 500)}
-    <input class="wentian-profile-input" type="password" style="left:132px;top:118px;width:214px" placeholder="请输入" autocomplete="new-password">
-    ${figLine("source-password-line-1", 42, 176, 304, "#e6ded2")}
-    ${figText("source-password-confirm-label", "确认密码", 42, 198, 80, 16, "#5f5a52", 500)}
-    <input class="wentian-profile-input" type="password" style="left:132px;top:184px;width:214px" placeholder="请输入" autocomplete="new-password">
-    ${figBox("source-password-save", 68, 284, 254, 44, "", "border-radius:8px;background:#c09a49;box-shadow:0 8px 18px rgba(130,91,31,.12);")}
-    ${figButton("source-password-save-hit", 68, 284, 254, 44, 'data-route="screen-40"')}
-    ${figText("source-password-save-text", "保存", 68, 296, 254, 14, "#fff", 700, "center")}
+    ${figText("source-password-back", "‹", 28, 49, 28, 30, "#26211c", 700)}
+    ${figText("source-password-title", "设置密码", 0, 56, 390, 22, "#1f1d1a", 900, "center")}
+    ${figBox("source-password-account", 24, 112, 342, 88, "", "border-radius:18px;background:#fff;box-shadow:0 8px 18px rgba(74,55,32,.07);border:1px solid #eadfce;")}
+    ${figText("source-password-account-title", escapeHtml(account.name), 46, 138, 200, 17, "#25211d", 900)}
+    ${figText("source-password-account-sub", escapeHtml(account.email), 46, 166, 260, 12, "#8f857a", 700)}
+    ${figBox("source-password-card", 22, 232, 346, 174, "", "border:1px solid #e2d8c8;border-radius:18px;background:#fff;box-shadow:0 6px 16px rgba(74,55,32,.06);")}
+    ${figText("source-password-new-label", "新密码", 42, 262, 80, 16, "#5f5a52", 800)}
+    <input id="wentian-password-new" class="wentian-profile-input" type="password" style="left:132px;top:246px;width:214px" placeholder="至少 6 位" autocomplete="new-password">
+    ${figLine("source-password-line-1", 42, 326, 304, "#e6ded2")}
+    ${figText("source-password-confirm-label", "确认密码", 42, 360, 80, 16, "#5f5a52", 800)}
+    <input id="wentian-password-confirm" class="wentian-profile-input" type="password" style="left:132px;top:344px;width:214px" placeholder="再次输入" autocomplete="new-password">
+    ${figBox("source-password-tip", 24, 438, 342, 86, "", "border-radius:16px;background:#fffaf2;border:1px solid #ead9bd;")}
+    ${figText("source-password-tip-title", "安全提示", 46, 460, 90, 15, "#25211d", 900)}
+    ${figText("source-password-tip-text", "密码仅用于账号登录。设置后可继续使用 Google 或手机号密码登录。", 46, 490, 286, 13, "#756d63", 700, "left", "line-height:1.45;")}
+    <div id="wentian-password-status" class="wentian-profile-status" style="top:650px">${escapeHtml(wentianPasswordState.status || "")}</div>
+    ${figBox("source-password-save", 42, 704, 306, 50, "", `border-radius:25px;background:${wentianPasswordState.loading ? "#d8c7aa" : "#c09a49"};box-shadow:0 8px 18px rgba(130,91,31,.12);`)}
+    ${figButton("source-password-save-hit", 42, 704, 306, 50, 'data-action="wentian-password-save"')}
+    ${figText("source-password-save-text", wentianPasswordState.loading ? "保存中..." : "保存密码", 42, 719, 306, 14, "#fff", 900, "center")}
   `;
 }
 
@@ -6372,7 +6496,6 @@ function renderConvertedScreen(no) {
   if (screen.no === 32 || screen.no === 38) {
     return figPhone(`screen-${screen.no}`, `${String(screen.no).padStart(2, "0")} ${screen.title}`, `
       ${sourceAccountSettingsScreen()}
-      ${convertedFlowHotspots(screen)}
     `, 844, "converted source-screen no-status-shift", true);
   }
   if (screen.no === 39) {
@@ -6383,13 +6506,11 @@ function renderConvertedScreen(no) {
   if (screen.no === 40) {
     return figPhone(`screen-${screen.no}`, `${String(screen.no).padStart(2, "0")} ${screen.title}`, `
       ${sourceLoginMethodsScreen()}
-      ${convertedFlowHotspots(screen)}
     `, 844, "converted source-screen no-status-shift", true);
   }
   if (screen.no === 41) {
     return figPhone(`screen-${screen.no}`, `${String(screen.no).padStart(2, "0")} ${screen.title}`, `
       ${sourcePasswordSettingsScreen()}
-      ${convertedFlowHotspots(screen)}
     `, 844, "converted source-screen no-status-shift", true);
   }
   if (screen.no === 48) {
@@ -6516,6 +6637,7 @@ function navigate(route, push = true) {
     route = `screen-${screen.no}`;
     if (push && route !== state.route) state.stack.push(state.route);
     state.route = route;
+    if (route !== "screen-38") wentianLogoutConfirmOpen = false;
     if (routeKicker) routeKicker.textContent = "问天AI";
     if (routeTitle) routeTitle.textContent = screen.title;
     view.innerHTML = applyWentianColorUpgrade(renderConvertedScreen(screen.no));
@@ -6526,7 +6648,7 @@ function navigate(route, push = true) {
     if (screen.no === 4) window.setTimeout(initWentianXuChat, 0);
     if (screen.no === 5 || screen.no === 25) window.setTimeout(() => hydrateWentianArchivesFromRemote({ rerender: true }), 0);
     if (screen.no === 30) window.setTimeout(initWentianPaymentScreen, 0);
-    if (screen.no === 1 || screen.no === 31 || screen.no === 33) window.setTimeout(() => hydrateWentianMemberStatus({ rerender: true }), 0);
+    if (screen.no === 1 || screen.no === 31 || screen.no === 33 || screen.no === 38 || screen.no === 40 || screen.no === 41) window.setTimeout(() => hydrateWentianMemberStatus({ rerender: true }), 0);
     if (screen.no === 22 || screen.no === 23 || screen.no === 24 || screen.no === 31 || screen.no === 34) window.setTimeout(() => hydrateWentianInvite({ rerender: true }), 0);
     if (screen.no === 48) window.setTimeout(() => hydrateWentianOrders({ rerender: true }), 0);
     if (screen.no === 26) window.setTimeout(initWentianChartForm, 0);
@@ -6980,6 +7102,18 @@ document.addEventListener("click", (event) => {
   }
   if (action === "wentian-order-refresh") {
     hydrateWentianOrders({ force: true, rerender: true });
+    return;
+  }
+  if (action === "wentian-auth-logout-open") {
+    openWentianLogoutConfirm();
+    return;
+  }
+  if (action === "wentian-auth-logout-cancel") {
+    closeWentianLogoutConfirm();
+    return;
+  }
+  if (action === "wentian-password-save") {
+    submitWentianPasswordForm();
     return;
   }
   if (action === "wentian-share-wechat") {
