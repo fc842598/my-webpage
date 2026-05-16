@@ -565,6 +565,52 @@ select {
   font-size: 14px;
 }
 
+.mbp-input-prompt {
+  position: relative;
+  overflow: hidden;
+  display: grid;
+  gap: 6px;
+  padding: 16px 18px;
+  border: 1px solid rgba(241, 212, 125, .24);
+  border-radius: 12px;
+  background:
+    radial-gradient(circle at 8% 0%, rgba(241, 212, 125, .16), transparent 36%),
+    linear-gradient(135deg, rgba(45, 31, 18, .92), rgba(13, 10, 7, .92));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 244, 196, .09),
+    0 12px 28px rgba(0, 0, 0, .24);
+}
+
+.mbp-input-prompt::after {
+  content: "";
+  position: absolute;
+  left: 18px;
+  right: 18px;
+  bottom: 0;
+  height: 2px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(241, 212, 125, .75), rgba(190, 112, 64, .55), transparent);
+}
+
+.mbp-input-prompt span {
+  color: var(--gold);
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: .22em;
+}
+
+.mbp-input-prompt strong {
+  color: var(--ivory);
+  font: 900 22px/1.18 "Noto Sans SC", "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
+  letter-spacing: .04em;
+}
+
+.mbp-input-prompt small {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+}
+
 .mbp-client-input-card {
   position: relative;
   width: min(268px, 100%);

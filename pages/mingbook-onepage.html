@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>阅天 · 紫微命书长页新版</title>
   <link rel="icon" href="../images/logo-mark.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../css/mingbook-onepage.css?v=20260516-book-progress">
+  <link rel="stylesheet" href="../css/mingbook-onepage.css?v=20260516-input-prompt">
   <script src="../js/config.js?v=20260509-vercel-backend"></script>
   <script defer src="../js/cities.js"></script>
   <script defer src="../js/lunarCalendar.js"></script>
@@ -40,30 +40,11 @@
     <section class="mbp-hero" aria-label="紫微命书排盘">
       <div class="mbp-hero-main">
         <div class="mbp-hero-input">
-          <section class="mbp-client-input-card" aria-label="客户盘选择">
-            <div class="mbp-client-input-head">
-              <strong>当前客户盘</strong>
-              <small>可切换</small>
-            </div>
-            <div class="mbp-input-client-picker" id="mbpClientPicker">
-              <button class="mbp-client-current" id="mbpClientToggle" type="button" aria-expanded="false">
-                <span class="mbp-profile-mark" id="mbpProfileMark">命</span>
-                <span class="mbp-profile-copy">
-                  <strong id="mbpProfileTitle">命 主</strong>
-                  <small id="mbpProfileMeta">待排盘 · 命书未启</small>
-                </span>
-                <span class="mbp-client-arrow">⌄</span>
-              </button>
-              <div class="mbp-client-menu" id="mbpClientMenu" hidden>
-                <div class="mbp-client-menu-head">
-                  <b>客户盘</b>
-                  <small id="mbpClientCount">0 个盘</small>
-                </div>
-                <div class="mbp-client-list" id="mbpClientList"></div>
-                <button class="mbp-client-new" id="mbpClientNew" type="button">+ 新建客户盘</button>
-              </div>
-            </div>
-          </section>
+          <div class="mbp-input-prompt" aria-label="排盘提示">
+            <span>紫微命书</span>
+            <strong>请输入您的信息排盘</strong>
+            <small>填写出生时间与地点，点击开始排盘。</small>
+          </div>
 
           <form class="mbp-birth-form" id="mbpBirthForm">
           <div class="mbp-form-card">
@@ -165,6 +146,31 @@
             </div>
           </div>
           </form>
+
+          <section class="mbp-client-input-card" aria-label="客户盘选择">
+            <div class="mbp-client-input-head">
+              <strong>当前客户盘</strong>
+              <small>可切换</small>
+            </div>
+            <div class="mbp-input-client-picker" id="mbpClientPicker">
+              <button class="mbp-client-current" id="mbpClientToggle" type="button" aria-expanded="false">
+                <span class="mbp-profile-mark" id="mbpProfileMark">命</span>
+                <span class="mbp-profile-copy">
+                  <strong id="mbpProfileTitle">命 主</strong>
+                  <small id="mbpProfileMeta">待排盘 · 命书未启</small>
+                </span>
+                <span class="mbp-client-arrow">⌄</span>
+              </button>
+              <div class="mbp-client-menu" id="mbpClientMenu" hidden>
+                <div class="mbp-client-menu-head">
+                  <b>客户盘</b>
+                  <small id="mbpClientCount">0 个盘</small>
+                </div>
+                <div class="mbp-client-list" id="mbpClientList"></div>
+                <button class="mbp-client-new" id="mbpClientNew" type="button">+ 新建客户盘</button>
+              </div>
+            </div>
+          </section>
         </div>
 
         <div class="mbp-hero-bridge" aria-hidden="true"><span>成盘</span></div>
