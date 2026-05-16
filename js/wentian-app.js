@@ -2812,6 +2812,8 @@ const WENTIAN_I18N_EN_EXTRA = {
   "情感契合度": "Love fit",
   "冲突化解建议": "Conflict advice",
   "选择两张档案": "Choose two files",
+  "最多选择两张档案进行合盘": "Choose up to two files",
+  "选择两张档案后开始合盘": "Choose two files to start",
   "查看合盘结果": "View compatibility",
   "开始合盘": "Start Compatibility",
   "选择合盘档案": "Choose Compatibility Files",
@@ -3206,6 +3208,12 @@ function translateWentianText(text, code = getWentianLanguageCode(), element = n
     if (exact) return exact;
     const people = source.match(/^(\d+)\s*人$/);
     if (people) return `${people[1]} people`;
+    const hepanSelected = source.match(/^已选\s*(\d+)\/2$/);
+    if (hepanSelected) return `Selected ${hepanSelected[1]}/2`;
+    const hepanArchiveCount = source.match(/^共\s*(\d+)\s*张档案，可滚动选择$/);
+    if (hepanArchiveCount) return `${hepanArchiveCount[1]} files · scroll to choose`;
+    const hepanMeta = source.match(/^(男|女)\s*·\s*四柱八字$/);
+    if (hepanMeta) return `${hepanMeta[1] === "男" ? "Male" : "Female"} · Four Pillars`;
     const month = source.match(/^(\d{1,2})月$/);
     if (month) return `Month ${month[1]}`;
     const lunarMonthMap = { "正月": "First Month", "二月": "Second Month", "三月": "Third Month", "四月": "Fourth Month", "五月": "Fifth Month", "六月": "Sixth Month", "七月": "Seventh Month", "八月": "Eighth Month", "九月": "Ninth Month", "十月": "Tenth Month", "十一月": "Eleventh Month", "十二月": "Twelfth Month" };
@@ -5099,7 +5107,7 @@ function getWentianHepanVisibleArchives(archives, selectedIds) {
   };
   selectedIds.forEach((id) => add(archives.find((archive) => archive.id === id)));
   archives.forEach(add);
-  return visible.slice(0, 4);
+  return visible;
 }
 
 function sourceHepanTypeScreen() {
@@ -5129,38 +5137,43 @@ function sourceHepanSelectScreen() {
   const visibleArchives = getWentianHepanVisibleArchives(archives, selectedIds);
   const ready = selectedIds.length === 2;
   return `
-    ${figBox("wt11-bg", 0, 0, 390, 944, "", "background:#fbf7ef;")}
+    ${figBox("wt11-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
     ${wentianSimpleHeader("wt11", "选择合盘档案")}
-    ${figBox("wt11-hero", 36, 120, 318, 330, "", "border-radius:18px;background:#fff;box-shadow:0 10px 24px rgba(70,45,25,.12);")}
-    ${figText("wt11-title", "情侣合盘", 0, 150, 390, 22, "#25211d", 800, "center")}
-    ${figImage("wt11-img", "../images/wentian-prototype-assets/hepan-master.jpg", 58, 218, 274, 178, "border-radius:0 0 14px 14px;object-fit:cover;object-position:center 18%;opacity:.9;")}
-    ${figBox("wt11-overlay", 0, 0, 390, 944, "", "background:rgba(0,0,0,.32);")}
-    ${figBox("wt11-sheet", 0, 466, 390, 389, "", "border-radius:22px 22px 0 0;background:#fff;")}
-    ${figBox("wt11-handle", 164, 480, 62, 4, "", "border-radius:4px;background:#e3d8c8;")}
-    ${figText("wt11-sheet-title", "选择档案", 28, 506, 160, 17, "#25211d", 800)}
-    ${figText("wt11-step", `已选${selectedIds.length}/2`, 304, 509, 48, 11, ready ? "#9b742e" : "#a79986", 700, "right")}
-    ${visibleArchives.map((archive, index) => {
-      const item = getWentianArchiveDisplay(archive);
-      const selected = selectedIds.includes(archive.id);
-      const y = 548 + index * 74;
-      return `
-        ${figBox(`wt11-row-${index}`, 34, y, 322, 62, "", `border:1px solid ${selected ? "#d0a33c" : "#efe3d0"};border-radius:14px;background:#fff;box-shadow:0 6px 16px rgba(72,48,26,.07);`)}
-        ${figButton(`wt11-row-hit-${index}`, 34, y, 322, 62, `data-action="wentian-hepan-pick" data-archive-id="${escapeHtml(archive.id)}" aria-label="选择${escapeHtml(item.name)}"`, "", "z-index:40;")}
-        ${figBox(`wt11-avatar-${index}`, 50, y + 11, 40, 40, "", "border-radius:20px;background:#f5ead4;")}
-        ${figText(`wt11-avatar-text-${index}`, escapeHtml(item.name.slice(0, 1)), 50, y + 23, 40, 12, "#bd8624", 800, "center")}
-        ${figText(`wt11-name-${index}`, escapeHtml(item.name), 106, y + 12, 84, 15, "#25211d", 800)}
-        ${figText(`wt11-meta-${index}`, `${item.gender}　${item.tag}`, 188, y + 14, 102, 11, "#b28b45", 700)}
-        ${figText(`wt11-date-${index}`, escapeHtml(item.datetime), 106, y + 38, 168, 12, "#8d857b")}
-        ${figText(`wt11-check-${index}`, selected ? "✓" : "○", 320, y + 22, 22, 18, selected ? "#bd8624" : "#d8cdbc", 800, "center")}
-      `;
-    }).join("")}
-    ${archives.length > visibleArchives.length ? figText("wt11-more", `还有 ${archives.length - visibleArchives.length} 张档案，可到档案页管理`, 34, 846, 220, 11, "#a79986", 600) : ""}
-    ${figBox("wt11-new", 42, 796, 136, 44, "", "border:1px solid #d6b463;border-radius:10px;background:#fff;")}
-    ${figButton("wt11-new-hit", 42, 796, 136, 44, 'data-route="screen-26"')}
-    ${figText("wt11-new-text", "+ 新建档案", 42, 808, 136, 13, "#9b742e", 700, "center")}
-    ${figBox("wt11-confirm", 212, 796, 136, 44, "", `border-radius:10px;background:#d2a642;opacity:${ready ? "1" : ".45"};`)}
-    ${figButton("wt11-confirm-hit", 212, 796, 136, 44, `data-action="wentian-hepan-confirm" ${ready ? "" : "disabled"}`)}
-    ${figText("wt11-confirm-text", "确定", 212, 808, 136, 13, "#fff", 800, "center")}
+    ${figBox("wt11-hero", 34, 104, 322, 250, "", "border-radius:18px;background:#fff;box-shadow:0 10px 24px rgba(70,45,25,.12);")}
+    ${figText("wt11-title", "情侣合盘", 0, 134, 390, 22, "#25211d", 800, "center")}
+    ${figImage("wt11-img", "../images/wentian-prototype-assets/hepan-master.jpg", 58, 190, 274, 126, "border-radius:12px;object-fit:cover;object-position:center 18%;opacity:.9;")}
+    ${figBox("wt11-overlay", 0, 0, 390, 844, "", "background:rgba(0,0,0,.30);")}
+    ${figBox("wt11-sheet", 0, 332, 390, 512, "", "border-radius:22px 22px 0 0;background:#fff;box-shadow:0 -10px 24px rgba(46,32,18,.12);")}
+    ${figBox("wt11-handle", 164, 346, 62, 4, "", "border-radius:4px;background:#e3d8c8;")}
+    <div class="wentian-hepan-head" data-node-id="wt11-head">
+      <div>
+        <strong>选择档案</strong>
+        <span>最多选择两张档案进行合盘</span>
+      </div>
+      <b class="${ready ? "is-ready" : ""}">已选 ${selectedIds.length}/2</b>
+    </div>
+    <div class="wentian-hepan-list" data-node-id="wt11-list">
+      ${visibleArchives.map((archive, index) => {
+        const item = getWentianArchiveDisplay(archive);
+        const selected = selectedIds.includes(archive.id);
+        return `
+          <button class="wentian-hepan-option ${selected ? "is-selected" : ""}" type="button" data-action="wentian-hepan-pick" data-archive-id="${escapeHtml(archive.id)}" aria-label="选择${escapeHtml(item.name)}">
+            <span class="wentian-hepan-avatar">${escapeHtml(item.name.slice(0, 1))}</span>
+            <span class="wentian-hepan-copy">
+              <strong>${escapeHtml(item.name)}</strong>
+              <em>${escapeHtml(item.gender)} · ${escapeHtml(item.tag)}</em>
+              <small>${escapeHtml(item.datetime)}</small>
+            </span>
+            <span class="wentian-hepan-check">${selected ? "✓" : ""}</span>
+          </button>
+        `;
+      }).join("")}
+    </div>
+    <div class="wentian-hepan-footer" data-node-id="wt11-footer">
+      <button class="wentian-hepan-secondary" type="button" data-route="screen-26">+ 新建档案</button>
+      <button class="wentian-hepan-primary" type="button" data-action="wentian-hepan-confirm" ${ready ? "" : "disabled"}>确定</button>
+      <p>${archives.length > 2 ? `共 ${archives.length} 张档案，可滚动选择` : "选择两张档案后开始合盘"}</p>
+    </div>
   `;
 }
 
@@ -7548,7 +7561,7 @@ function renderConvertedScreen(no) {
   }
   const polishedScreen = renderWentianPolishedScreen(screen);
   if (polishedScreen) {
-    const polishedHeight = screen.no === 8 ? 1280 : screen.no === 11 ? 944 : screen.no === 20 ? 1072 : screen.no === 22 ? 1120 : screen.no === 24 ? 1180 : screen.no === 44 ? getYangzhaiResultHeight() : screen.no === 46 ? 1160 : screen.no === 49 ? 1160 : 844;
+    const polishedHeight = screen.no === 8 ? 1280 : screen.no === 20 ? 1072 : screen.no === 22 ? 1120 : screen.no === 24 ? 1180 : screen.no === 44 ? getYangzhaiResultHeight() : screen.no === 46 ? 1160 : screen.no === 49 ? 1160 : 844;
     const wideBgClass = screen.no >= 42 && screen.no <= 45 ? " wide-bg" : "";
     return figPhone(`screen-${screen.no}`, `${String(screen.no).padStart(2, "0")} ${screen.title}`, `
       ${polishedScreen}
