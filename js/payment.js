@@ -1,4 +1,4 @@
-/**
+﻿/**
  * payment.js — 许半仙月度会员支付
  *
  * 环境自动适配：
@@ -96,13 +96,6 @@
     show('pay-modal');
     renderModal('auth', { mode: 'login' });
     return null;
-  }
-
-  function requireChartRecord() {
-    if (window._chartRecordId) return true;
-    show('pay-modal');
-    renderModal('needChart');
-    return false;
   }
 
   function updateAuthButtons(session) {
@@ -315,7 +308,7 @@
   async function startPurchase() {
     var session = await requirePurchaseAuth();
     if (!session) return;
-    if (!requireChartRecord()) return;
+    
 
     clearPaidReload();
     clearExpiryTimer();
@@ -329,19 +322,15 @@
     show('pay-modal');
     renderModal('loading');
 
-    var r1 = await tryPost('/api/payments/create-order', {
-      productKey:     PRODUCT.key,
-      chartRecordId:  window._chartRecordId || null,
-    });
-
+    var orderPayload = {
+      productKey: PRODUCT.key,
+    };
+    if (window._chartRecordId) orderPayload.chartRecordId = window._chartRecordId;
+    var r1 = await tryPost('/api/payments/create-order', orderPayload);
     if (!r1.ok) {
       if (/登录|登陆|login/i.test(r1.error || '')) {
         _pendingPurchaseAfterLogin = true;
         renderModal('auth', { mode: 'login', error: r1.error });
-        return;
-      }
-      if (/排盘|chart/i.test(r1.error || '')) {
-        renderModal('needChart', { error: r1.error });
         return;
       }
       if (isLocalDev()) {
