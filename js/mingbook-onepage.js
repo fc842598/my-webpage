@@ -79,6 +79,7 @@
   let inputGuideTimer = null;
   let mbpAiHistory = [];
   let mbpAiBusy = false;
+  let mbpAiDraft = {};
   const aiBackendBase = ((window.SITE_CONFIG && window.SITE_CONFIG.aiBackendBase) || 'https://ai-piming-backend-production.up.railway.app').replace(/\/$/, '');
 
   const aiTasks = [
@@ -3624,6 +3625,7 @@
         if (Number.isFinite(month)) $('#mbpLunarMonth').value = month;
         refreshLunarDayOptions();
         if (Number.isFinite(day)) $('#mbpLunarDay').value = day;
+        else if (options.clearMissing) $('#mbpLunarDay').value = '';
         $('#mbpLunarLeap').checked = !!data.isLeap;
         updateLunarLeapState();
       } else {
@@ -3631,13 +3633,25 @@
         if (Number.isFinite(month)) $('#mbpMonth').value = month;
         refreshDayOptions();
         if (Number.isFinite(day)) $('#mbpDay').value = day;
+        else if (options.clearMissing) $('#mbpDay').value = '';
       }
       const hour = aiNumber(data.hour);
       const minute = aiNumber(data.minute);
       if (Number.isFinite(hour)) $('#mbpHour').value = Math.max(0, Math.min(23, hour));
+      else if (options.clearMissing) $('#mbpHour').value = '';
       if (Number.isFinite(minute)) $('#mbpMinute').value = Math.max(0, Math.min(59, minute));
+      else if (options.clearMissing) $('#mbpMinute').value = '';
       setAiGender(data.gender);
+      if (options.clearMissing && !data.gender) {
+        $('#mbpGender').value = '';
+        document.querySelectorAll('.nf-gender-btn').forEach((btn) => btn.classList.remove('active'));
+      }
       setAiCity(data.city);
+      if (options.clearMissing && !data.city) {
+        applySelectedCity(null);
+        const cityInput = $('#mbpCitySearch');
+        if (cityInput) cityInput.value = '';
+      }
       setCalMode(options.keepAiOpen ? 'ai' : calType);
       updateDatePreview();
       showFormError('');
@@ -3681,8 +3695,111 @@
       if (tip) tip.textContent = text;
     }
 
+    function normalizeAiText(text) {
+      return String(text || '')
+        .replace(/[０-９]/g, (char) => String.fromCharCode(char.charCodeAt(0) - 0xfee0))
+        .replace(/[，。；、]/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
+    }
+
+    function chineseNumber(token) {
+      const text = String(token || '').trim();
+      if (!text) return null;
+      if (/^\d+$/.test(text)) return Number(text);
+      const alias = { 正: 1, 冬: 11, 腊: 12, 零: 0, 〇: 0, 一: 1, 二: 2, 两: 2, 三: 3, 四: 4, 五: 5, 六: 6, 七: 7, 八: 8, 九: 9 };
+      if (alias[text] != null) return alias[text];
+      if (text === '十') return 10;
+      const teen = text.match(/^十([一二两三四五六七八九])$/);
+      if (teen) return 10 + alias[teen[1]];
+      const ten = text.match(/^([一二两三四五六七八九])十$/);
+      if (ten) return alias[ten[1]] * 10;
+      const mixed = text.match(/^([一二两三四五六七八九])十([一二两三四五六七八九])$/);
+      if (mixed) return alias[mixed[1]] * 10 + alias[mixed[2]];
+      const early = text.match(/^初([一二两三四五六七八九十])$/);
+      if (early) return chineseNumber(early[1]);
+      const late = text.match(/^廿([一二两三四五六七八九])?$/);
+      if (late) return 20 + (late[1] ? alias[late[1]] : 0);
+      const thirty = text.match(/^三十([一])?$/);
+      if (thirty) return 30 + (thirty[1] ? 1 : 0);
+      return null;
+    }
+
+    function normalizeAiYear(value) {
+      const raw = String(value || '').trim();
+      const year = Number(raw);
+      if (!Number.isFinite(year)) return null;
+      if (raw.length === 2) {
+        const currentTwo = new Date().getFullYear() % 100;
+        return year <= currentTwo ? 2000 + year : 1900 + year;
+      }
+      return year >= 1900 && year <= 2030 ? year : null;
+    }
+
+    function aiDataMissing(data) {
+      const missing = [];
+      if (data.year == null || !(Number(data.year) >= 1900 && Number(data.year) <= 2030)) missing.push('出生年份');
+      if (data.month == null || !(Number(data.month) >= 1 && Number(data.month) <= 12)) missing.push('出生月份');
+      if (data.day == null || !(Number(data.day) >= 1 && Number(data.day) <= 31)) missing.push('具体日期');
+      if (data.hour == null || !(Number(data.hour) >= 0 && Number(data.hour) <= 23)) missing.push('出生时间');
+      if (!data.gender) missing.push('性别');
+      if (!String(data.city || '').trim()) missing.push('出生城市');
+      return missing;
+    }
+
+    function finalizeAiDraft(data) {
+      const out = { ...(data || {}) };
+      if (out.minute == null && out.hour != null) out.minute = 0;
+      out.missing = aiDataMissing(out);
+      out.complete = out.missing.length === 0;
+      return out;
+    }
+
+    function hasAiValue(field, value) {
+      if (value == null || value === '') return false;
+      if (field === 'year') return Number(value) >= 1900 && Number(value) <= 2030;
+      if (field === 'month') return Number(value) >= 1 && Number(value) <= 12;
+      if (field === 'day') return Number(value) >= 1 && Number(value) <= 31;
+      if (field === 'hour') return Number(value) >= 0 && Number(value) <= 23;
+      if (field === 'minute') return Number(value) >= 0 && Number(value) <= 59;
+      if (field === 'gender') return value === 'male' || value === 'female' || value === '男' || value === '女';
+      if (field === 'city') return String(value || '').trim().length > 0;
+      if (field === 'calType') return value === 'solar' || value === 'lunar';
+      return value != null && value !== '';
+    }
+
+    function mergeAiBirthData(base, patch) {
+      const out = { ...(base || {}) };
+      const data = patch || {};
+      ['calType', 'year', 'month', 'day', 'hour', 'minute', 'gender', 'city'].forEach((field) => {
+        if (hasAiValue(field, data[field])) out[field] = field === 'gender' ? (data[field] === '女' ? 'female' : data[field] === '男' ? 'male' : data[field]) : data[field];
+      });
+      if (data.isLeap != null) out.isLeap = !!data.isLeap;
+      if (!out.calType) out.calType = 'solar';
+      return finalizeAiDraft(out);
+    }
+
+    function describeAiKnown(data) {
+      const parts = [];
+      if (data.year) parts.push(`${data.year}年`);
+      if (data.month) parts.push(`${data.month}月`);
+      if (data.day) parts.push(`${data.day}日`);
+      if (data.hour != null) parts.push(`${pad2(data.hour)}:${pad2(data.minute || 0)}`);
+      if (data.gender) parts.push(data.gender === 'female' ? '女' : '男');
+      if (data.city) parts.push(data.city);
+      return parts.join('，');
+    }
+
+    function buildAiReply(data, remoteReply, localHadValue) {
+      if (data.complete) return remoteReply && !/我还差|还需要|可以这样发/.test(remoteReply) ? remoteReply : '已识别完整，已填入表单，请核对后开始排盘。';
+      const known = describeAiKnown(data);
+      const missing = (data.missing || []).slice(0, 4).join('、');
+      if (known || localHadValue) return `已识别：${known || '部分信息'}。还差：${missing}。`;
+      return remoteReply || '我还需要出生年月日、具体时间、性别和出生城市。';
+    }
+
     function normalizeAiHour(hour, raw) {
-      let value = Number(hour);
+      let value = chineseNumber(hour);
       if (!Number.isFinite(value)) return null;
       if (/下午|晚上|夜里|傍晚|晚间|pm/i.test(raw) && value >= 1 && value <= 11) value += 12;
       if (/凌晨|早上|上午|清晨|am/i.test(raw) && value === 12) value = 0;
@@ -3691,40 +3808,51 @@
     }
 
     function localAiBirthFallback(rawText) {
-      const text = String(rawText || '').trim();
+      const text = normalizeAiText(rawText);
       const nums = text.match(/\d{1,4}/g) || [];
-      const yearIndex = nums.findIndex((num) => num.length === 4 && Number(num) >= 1900 && Number(num) <= 2030);
-      const year = yearIndex >= 0 ? Number(nums[yearIndex]) : null;
-      const month = Number(text.match(/(\d{1,2})\s*(?:月|月份)/)?.[1] || (yearIndex >= 0 ? nums[yearIndex + 1] : '')) || null;
-      const day = Number(text.match(/(\d{1,2})\s*(?:日|号)/)?.[1] || (yearIndex >= 0 ? nums[yearIndex + 2] : '')) || null;
-      const timeMatch = text.match(/(?:^|[^\d])(\d{1,2})\s*(?:点|时|:|：)\s*(?:(\d{1,2})\s*分?)?/);
+      const dateParts = text.match(/((?:19|20)?\d{2})\s*[-/.]\s*(\d{1,2})(?:\s*[-/.]\s*(\d{1,2}))?/);
+      const yearToken = dateParts?.[1]
+        || text.match(/((?:19|20)\d{2})\s*年?/)?.[1]
+        || text.match(/(?:^|[^\d])(\d{2})\s*年/)?.[1]
+        || text.match(/(?:^|[^\d])(\d{2})\s*(?:年生|出生|生人)/)?.[1];
+      const year = normalizeAiYear(yearToken);
+      const yearIndex = yearToken ? nums.findIndex((num) => num === yearToken) : -1;
+      const monthToken = dateParts?.[2]
+        || text.match(/(\d{1,2})\s*(?:月|月份)/)?.[1]
+        || text.match(/([正冬腊一二两三四五六七八九十]{1,3})\s*月/)?.[1]
+        || (yearIndex >= 0 ? nums[yearIndex + 1] : null);
+      const dayToken = dateParts?.[3]
+        || text.match(/(\d{1,2})\s*(?:日|号)/)?.[1]
+        || text.match(/(?:月|月份)\s*([初廿一二两三四五六七八九十]{1,3})/)?.[1]
+        || (yearIndex >= 0 ? nums[yearIndex + 2] : null);
+      const month = chineseNumber(monthToken);
+      const day = chineseNumber(dayToken);
+      const timeMatch = text.match(/(?:^|[^\d])(\d{1,2}|[零〇一二两三四五六七八九十]{1,3})\s*(?:点|时|:|：)\s*(?:(半|一刻|三刻)|(\d{1,2})\s*分?|([零〇一二两三四五六七八九十]{1,3})\s*分?)?/);
+      const shichen = text.match(/([子丑寅卯辰巳午未申酉戌亥])时/);
+      const shichenHour = shichen ? { 子: 23, 丑: 1, 寅: 3, 卯: 5, 辰: 7, 巳: 9, 午: 11, 未: 13, 申: 15, 酉: 17, 戌: 19, 亥: 21 }[shichen[1]] : null;
       const hour = timeMatch ? normalizeAiHour(timeMatch[1], text) : null;
-      const minute = timeMatch && timeMatch[2] != null ? Math.max(0, Math.min(59, Number(timeMatch[2]))) : (hour != null ? 0 : null);
-      const gender = /女/.test(text) ? 'female' : (/男/.test(text) ? 'male' : null);
+      let minute = null;
+      if (timeMatch?.[2] === '半') minute = 30;
+      else if (timeMatch?.[2] === '一刻') minute = 15;
+      else if (timeMatch?.[2] === '三刻') minute = 45;
+      else if (timeMatch?.[3] != null) minute = Math.max(0, Math.min(59, Number(timeMatch[3])));
+      else if (timeMatch?.[4] != null) minute = Math.max(0, Math.min(59, chineseNumber(timeMatch[4]) || 0));
+      else if (hour != null || shichenHour != null) minute = 0;
+      const gender = /女|女生|女孩|女命|女士/.test(text) ? 'female' : (/男|男生|男孩|男命|先生/.test(text) ? 'male' : null);
       const city = findCity(text);
       const data = {
         complete: false,
-        calType: /农历|阴历|lunar|yinli/i.test(text) ? 'lunar' : 'solar',
+        calType: /农历|阴历|lunar|yinli/i.test(text) ? 'lunar' : (/公历|阳历|solar/i.test(text) ? 'solar' : null),
         year,
         month,
         day,
-        hour,
+        hour: hour != null ? hour : shichenHour,
         minute,
         gender,
         city: city ? formatCityLabel(city) : '',
         isLeap: /闰/.test(text),
       };
-      const missing = [];
-      if (!(year && month && day)) missing.push('出生年月日');
-      if (hour == null) missing.push('具体时间');
-      if (!gender) missing.push('性别');
-      if (!data.city) missing.push('出生城市');
-      data.complete = !missing.length;
-      data.missing = missing;
-      data.reply = data.complete
-        ? 'AI服务暂时繁忙，已先识别出完整信息，请核对后开始排盘。'
-        : `AI服务暂时繁忙。我先看到了部分信息，还差${missing.slice(0, 2).join('、')}。`;
-      return data;
+      return finalizeAiDraft(data);
     }
 
     async function callMbpAiChat(messages) {
@@ -3755,22 +3883,27 @@
       input.value = '';
       addMbpAiBubble('user', text);
       mbpAiHistory.push({ role: 'user', content: text });
+      const localData = localAiBirthFallback(text);
+      mbpAiDraft = mergeAiBirthData(mbpAiDraft, localData);
       setMbpAiBusy(true);
       setMbpAiTip('正在调用 AI 识别出生信息…');
       const thinking = addMbpAiThinking();
-      let data = null;
+      let remoteData = null;
       try {
-        data = await callMbpAiChat(mbpAiHistory.slice());
+        remoteData = await callMbpAiChat(mbpAiHistory.slice());
       } catch (_) {
-        data = localAiBirthFallback(text);
+        remoteData = null;
       } finally {
         if (thinking) thinking.remove();
         setMbpAiBusy(false);
       }
-      const reply = data?.reply || (data?.complete ? '已识别完整，请核对后开始排盘。' : '还需要补充出生年月日、时间、性别和城市。');
+      const data = mergeAiBirthData(mbpAiDraft, remoteData);
+      mbpAiDraft = data;
+      const localHadValue = describeAiKnown(localData).length > 0;
+      const reply = buildAiReply(data, remoteData?.reply, localHadValue);
       addMbpAiBubble('ai', reply);
       mbpAiHistory.push({ role: 'assistant', content: reply });
-      applyAiBirthData(data, { keepAiOpen: !data?.complete });
+      applyAiBirthData(data, { keepAiOpen: !data?.complete, clearMissing: true });
       setMbpAiTip(data?.complete ? '已填入表单，请核对后点击开始排盘。' : '继续补充缺失信息，AI会结合上文继续识别。');
       if (!data?.complete) $('#mbpAiInput')?.focus();
     }
