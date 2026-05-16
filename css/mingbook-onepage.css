@@ -4108,21 +4108,6 @@ p.mbp-topic-detail {
   box-shadow: 0 0 18px rgba(241, 212, 125, .32);
 }
 
-.mbp-chapters article.is-active::after {
-  content: "阅读中";
-  position: absolute;
-  right: 20px;
-  top: 18px;
-  padding: 5px 11px;
-  border: 1px solid rgba(241, 212, 125, .24);
-  border-radius: 999px;
-  background: rgba(241, 212, 125, .08);
-  color: var(--gold);
-  font-size: 12px;
-  font-weight: 900;
-  letter-spacing: .08em;
-}
-
 .mbp-chapters span {
   color: var(--gold);
   font: 900 16px/1 "Noto Serif SC", "Songti SC", serif;
@@ -4157,6 +4142,32 @@ p.mbp-topic-detail {
   position: absolute;
   right: 24px;
   bottom: 24px;
+}
+
+.mbp-report-actions {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  min-width: 0;
+}
+
+.mbp-reading-badge {
+  display: none;
+  place-items: center;
+  min-height: 34px;
+  padding: 0 12px;
+  border: 1px solid rgba(241, 212, 125, .24);
+  border-radius: 999px;
+  background: rgba(241, 212, 125, .08);
+  color: var(--gold);
+  font: 900 12px/1 "Noto Sans SC", "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
+  letter-spacing: .08em;
+  white-space: nowrap;
+}
+
+.mbp-chapters article.is-active .mbp-reading-badge {
+  display: grid;
 }
 
 .mbp-chapters .mbp-insight-summary {
@@ -4195,9 +4206,12 @@ p.mbp-topic-detail {
   margin: 0;
 }
 
-.mbp-report-title .mbp-chapter-ai-btn {
+.mbp-report-title .mbp-report-actions {
   justify-self: end;
   align-self: start;
+}
+
+.mbp-report-title .mbp-chapter-ai-btn {
   min-height: 40px;
 }
 
@@ -5453,6 +5467,7 @@ p.mbp-topic-detail {
   }
 
   .mbp-chapter-ai-btn,
+  .mbp-report-actions,
   .mbp-chapters article > .mbp-chapter-ai-btn {
     position: static;
     right: auto;
@@ -5461,8 +5476,17 @@ p.mbp-topic-detail {
     margin-top: 16px;
   }
 
+  .mbp-report-actions {
+    justify-content: stretch;
+  }
+
+  .mbp-reading-badge {
+    min-height: 40px;
+  }
+
   .mbp-report-title .mbp-chapter-ai-btn {
     justify-self: stretch;
+    width: 100%;
     margin-top: 0;
   }
 

@@ -99,7 +99,12 @@
     const attr = action.module
       ? `data-report-module="${escapeHtml(action.module)}"`
       : `data-report-action="${escapeHtml(action.action)}"`;
-    return `<button class="mbp-chapter-ai-btn" type="button" ${attr}>${escapeHtml(action.label)}</button>`;
+    return `
+      <div class="mbp-report-actions">
+        <button class="mbp-chapter-ai-btn" type="button" ${attr}>${escapeHtml(action.label)}</button>
+        <span class="mbp-reading-badge">阅读中</span>
+      </div>
+    `;
   }
 
   const $ = (selector) => document.querySelector(selector);
