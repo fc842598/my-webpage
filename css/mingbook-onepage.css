@@ -5850,6 +5850,10 @@ p.mbp-topic-detail {
   word-break: break-word;
 }
 
+.chat-bubble-user::before {
+  content: none;
+}
+
 .chat-bubble-user::after {
   content: "";
   position: absolute;
