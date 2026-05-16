@@ -742,7 +742,7 @@ function sourceAiChatScreen(screen) {
     ${figText("source-4-record", "⋯", 344, 31, 22, 22, "#6f665d", 800, "center")}
     <div id="wentian-chat-status" class="wentian-chat-status">正在接入许半仙…</div>
     <div id="wentian-chat-messages" class="wentian-chat-log" aria-live="polite"></div>
-    ${figText("source-4-faq-title", "常问", 22, 618, 60, 13, "#25211d", 800)}
+    ${figText("source-4-faq-title", "常问", 22, 584, 60, 13, "#25211d", 800)}
     <div class="wentian-chat-starters" aria-label="常见问题分类">
       ${faqGroups.map((group) => `
         <details class="wentian-chat-faq-group">
