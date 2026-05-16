@@ -1984,57 +1984,196 @@
   }
 
   function renderCurveChapterBlock() {
+    const pastItems = curvePastValidationItems();
     return `
-      <div class="mbp-curve-summary">
-        <div>
-          <strong>整体是“先压后升，中年见高点”</strong>
-          <p>36岁前后守住节奏，44岁前后主动扩张，56岁后还有第二波抬升。</p>
+      <div class="mbp-curve-panel" data-curve-panel>
+        <div class="mbp-curve-switch" role="tablist" aria-label="人生曲线视图">
+          <button class="is-active" type="button" role="tab" aria-selected="true" data-curve-view="past">过去验证</button>
+          <button type="button" role="tab" aria-selected="false" data-curve-view="future">未来趋势</button>
         </div>
-        <em>客户易懂版</em>
-      </div>
-      <div class="mbp-curve-chart" aria-label="人生曲线示意">
-        <svg viewBox="0 0 760 210" role="img">
-          <line x1="40" y1="36" x2="730" y2="36"></line>
-          <line x1="40" y1="86" x2="730" y2="86"></line>
-          <line x1="40" y1="136" x2="730" y2="136"></line>
-          <line x1="40" y1="186" x2="730" y2="186"></line>
-          <path class="mbp-curve-fill" d="M42 158 C108 132 168 92 230 88 C302 84 308 162 362 152 C446 134 454 58 526 58 C608 58 622 114 720 82 L720 186 L42 186 Z"></path>
-          <path class="mbp-curve-line" d="M42 158 C108 132 168 92 230 88 C302 84 308 162 362 152 C446 134 454 58 526 58 C608 58 622 114 720 82"></path>
-          <circle class="is-warn" cx="42" cy="158" r="7"></circle>
-          <text class="mbp-curve-label" x="34" y="138">21岁</text>
-          <text class="mbp-curve-note" x="16" y="176">起势</text>
-          <circle cx="230" cy="88" r="7"></circle>
-          <text class="mbp-curve-label" x="210" y="68">29岁</text>
-          <text class="mbp-curve-note" x="190" y="106">事业起势</text>
-          <circle class="is-warn" cx="362" cy="152" r="7"></circle>
-          <text class="mbp-curve-label" x="340" y="132">36岁</text>
-          <text class="mbp-curve-note" x="330" y="170">低谷期</text>
-          <circle cx="526" cy="58" r="7"></circle>
-          <text class="mbp-curve-label" x="506" y="38">44岁</text>
-          <text class="mbp-curve-note" x="492" y="76">高峰期</text>
-          <circle class="is-warn" cx="622" cy="114" r="7"></circle>
-          <text class="mbp-curve-label" x="604" y="96">49岁</text>
-          <text class="mbp-curve-note" x="590" y="132">调整期</text>
-          <circle cx="720" cy="82" r="7"></circle>
-          <text class="mbp-curve-label" x="694" y="62">56岁</text>
-          <text class="mbp-curve-note" x="666" y="100">二次提升</text>
-        </svg>
-      </div>
-      <div class="mbp-curve-cards">
-        <section>
-          <strong>低点</strong>
-          <p><b>36岁</b> 控节奏、稳关系。</p>
-        </section>
-        <section>
-          <strong>高点</strong>
-          <p><b>44岁</b> 扩资源、定方向。</p>
-        </section>
-        <section>
-          <strong>后势</strong>
-          <p><b>56岁</b> 声望与资源回升。</p>
-        </section>
+        <div class="mbp-curve-view is-active" data-curve-pane="past">
+          <div class="mbp-curve-verify-head">
+            <span>先验过去</span>
+            <strong>先看过往是否对得上，再看未来才有底。</strong>
+            <p>下面列出命盘曲线里的已发生节点，客户可以逐项核对真实经历。</p>
+          </div>
+          <div class="mbp-curve-verify-grid">
+            ${pastItems.map((item) => `
+              <section class="mbp-curve-verify-card" data-curve-verify-card>
+                <div class="mbp-curve-verify-top">
+                  <b>${escapeHtml(item.ageLabel)}</b>
+                  <span>${escapeHtml(item.yearLabel)}</span>
+                </div>
+                <strong>${escapeHtml(item.title)}</strong>
+                <p>${escapeHtml(item.body)}</p>
+                <small>${escapeHtml(item.evidence)}</small>
+                <div class="mbp-curve-feedback" aria-label="过往验证反馈">
+                  <button type="button" data-curve-feedback="hit">对得上</button>
+                  <button type="button" data-curve-feedback="weak">不明显</button>
+                  <button type="button" data-curve-feedback="unknown">记不清</button>
+                </div>
+              </section>
+            `).join('')}
+          </div>
+          <p class="mbp-curve-verify-result" data-curve-verify-result>先点几个过往节点，系统会给出这条曲线的参考可信度。</p>
+        </div>
+        <div class="mbp-curve-view" data-curve-pane="future">
+          <div class="mbp-curve-summary">
+            <div>
+              <strong>整体是“先压后升，中年见高点”</strong>
+              <p>36岁前后守住节奏，44岁前后主动扩张，56岁后还有第二波抬升。</p>
+            </div>
+            <em>客户易懂版</em>
+          </div>
+          <div class="mbp-curve-chart" aria-label="人生曲线示意">
+            <svg viewBox="0 0 760 210" role="img">
+              <line x1="40" y1="36" x2="730" y2="36"></line>
+              <line x1="40" y1="86" x2="730" y2="86"></line>
+              <line x1="40" y1="136" x2="730" y2="136"></line>
+              <line x1="40" y1="186" x2="730" y2="186"></line>
+              <path class="mbp-curve-fill" d="M42 158 C108 132 168 92 230 88 C302 84 308 162 362 152 C446 134 454 58 526 58 C608 58 622 114 720 82 L720 186 L42 186 Z"></path>
+              <path class="mbp-curve-line" d="M42 158 C108 132 168 92 230 88 C302 84 308 162 362 152 C446 134 454 58 526 58 C608 58 622 114 720 82"></path>
+              <circle class="is-warn" cx="42" cy="158" r="7"></circle>
+              <text class="mbp-curve-label" x="34" y="138">21岁</text>
+              <text class="mbp-curve-note" x="16" y="176">起势</text>
+              <circle cx="230" cy="88" r="7"></circle>
+              <text class="mbp-curve-label" x="210" y="68">29岁</text>
+              <text class="mbp-curve-note" x="190" y="106">事业起势</text>
+              <circle class="is-warn" cx="362" cy="152" r="7"></circle>
+              <text class="mbp-curve-label" x="340" y="132">36岁</text>
+              <text class="mbp-curve-note" x="330" y="170">低谷期</text>
+              <circle cx="526" cy="58" r="7"></circle>
+              <text class="mbp-curve-label" x="506" y="38">44岁</text>
+              <text class="mbp-curve-note" x="492" y="76">高峰期</text>
+              <circle class="is-warn" cx="622" cy="114" r="7"></circle>
+              <text class="mbp-curve-label" x="604" y="96">49岁</text>
+              <text class="mbp-curve-note" x="590" y="132">调整期</text>
+              <circle cx="720" cy="82" r="7"></circle>
+              <text class="mbp-curve-label" x="694" y="62">56岁</text>
+              <text class="mbp-curve-note" x="666" y="100">二次提升</text>
+            </svg>
+          </div>
+          <div class="mbp-curve-cards">
+            <section>
+              <strong>低点</strong>
+              <p><b>36岁</b> 控节奏、稳关系。</p>
+            </section>
+            <section>
+              <strong>高点</strong>
+              <p><b>44岁</b> 扩资源、定方向。</p>
+            </section>
+            <section>
+              <strong>后势</strong>
+              <p><b>56岁</b> 声望与资源回升。</p>
+            </section>
+          </div>
+        </div>
       </div>
     `;
+  }
+
+  function curvePointTone(age) {
+    if (age <= 24) return '起步期';
+    if (age <= 32) return '发力期';
+    if (age <= 39) return '低谷校验';
+    if (age <= 46) return '高点前奏';
+    if (age <= 52) return '调整期';
+    return '二次抬升';
+  }
+
+  function curvePastValidationItems() {
+    const bundle = getChartBundle();
+    const chart = bundle.chart || state.chart || fcCurrentChart;
+    const currentAge = Math.max(1, fcCurrentVirtualAge());
+    const baseAges = [21, 29, 36, 44, 49, 56];
+    let ages = baseAges.filter((age) => age <= currentAge);
+    if (!ages.length) ages = [Math.max(1, currentAge)];
+    ages = ages.slice(-4);
+    return ages.map((age) => {
+      const year = fcAgeToYear(age);
+      const palace = findDecadePalace(chart, age);
+      const xiaoBranch = fcResolveXiaoLianBranch(age);
+      const xiaoPalace = fcPalaceByBranch(chart, xiaoBranch);
+      const oppositePalace = fcPalaceByBranch(chart, fcOppositeBranch(xiaoBranch));
+      const domain = palaceDomain(palace?.name || xiaoPalace?.name || '');
+      const palaceLabel = palace?.name ? normalizePalaceName(palace.name) : '大限主线';
+      const xiaoLabel = xiaoPalace?.name ? normalizePalaceName(xiaoPalace.name) : (xiaoBranch ? `${xiaoBranch}宫` : '小限落点');
+      const oppositeLabel = oppositePalace?.name ? normalizePalaceName(oppositePalace.name) : '对宫应事';
+      const stars = palaceStarBrief(palace || xiaoPalace);
+      return {
+        ageLabel: `命盘${age}岁`,
+        yearLabel: `${year}年`,
+        title: `${curvePointTone(age)} · ${domain}`,
+        body: `${palaceLabel}牵动${domain}，重点回想这一阶段是否有方向、关系、资源或居住安排的明显变化。`,
+        evidence: `${xiaoLabel}落点，对宫看${oppositeLabel}；星曜线索：${stars}。`,
+      };
+    });
+  }
+
+  function switchCurveView(button) {
+    const panel = button.closest('[data-curve-panel]');
+    if (!panel) return;
+    const view = button.dataset.curveView || 'past';
+    panel.querySelectorAll('[data-curve-view]').forEach((item) => {
+      const active = item.dataset.curveView === view;
+      item.classList.toggle('is-active', active);
+      item.setAttribute('aria-selected', active ? 'true' : 'false');
+    });
+    panel.querySelectorAll('[data-curve-pane]').forEach((pane) => {
+      pane.classList.toggle('is-active', pane.dataset.curvePane === view);
+    });
+  }
+
+  function updateCurveVerificationSummary(panel) {
+    const result = panel.querySelector('[data-curve-verify-result]');
+    if (!result) return;
+    const counts = { hit: 0, weak: 0, unknown: 0 };
+    panel.querySelectorAll('[data-curve-verify-card]').forEach((card) => {
+      const value = card.dataset.curveResult;
+      if (counts[value] !== undefined) counts[value] += 1;
+    });
+    const checked = counts.hit + counts.weak + counts.unknown;
+    result.dataset.tone = '';
+    if (!checked) {
+      result.textContent = '先点几个过往节点，系统会给出这条曲线的参考可信度。';
+      return;
+    }
+    if (counts.hit >= 2) {
+      result.dataset.tone = 'strong';
+      result.textContent = `已有 ${counts.hit} 个过往节点对得上，这条人生曲线可以作为后续趋势参考。`;
+      return;
+    }
+    if (counts.weak > counts.hit) {
+      result.dataset.tone = 'caution';
+      result.textContent = '过往节点不够明显，建议回到宫位和应事领域再校正，不急着看未来。';
+      return;
+    }
+    result.textContent = '已有节点可参考，继续多核对几项，判断会更稳。';
+  }
+
+  function applyCurveFeedback(button) {
+    const card = button.closest('[data-curve-verify-card]');
+    const panel = button.closest('[data-curve-panel]');
+    if (!card || !panel) return;
+    card.dataset.curveResult = button.dataset.curveFeedback || '';
+    card.querySelectorAll('[data-curve-feedback]').forEach((item) => {
+      item.classList.toggle('is-active', item === button);
+    });
+    updateCurveVerificationSummary(panel);
+  }
+
+  function handleCurvePanelClick(event) {
+    const viewButton = event.target.closest('[data-curve-view]');
+    if (viewButton) {
+      switchCurveView(viewButton);
+      return true;
+    }
+    const feedbackButton = event.target.closest('[data-curve-feedback]');
+    if (feedbackButton) {
+      applyCurveFeedback(feedbackButton);
+      return true;
+    }
+    return false;
   }
 
   function rangeFromDecadal(palace) {
@@ -3426,6 +3565,7 @@
     });
 
     $('#report')?.addEventListener('click', async (event) => {
+      if (handleCurvePanelClick(event)) return;
       const allButton = event.target.closest('[data-decode-all]');
       if (allButton) {
         await decodeReports();
