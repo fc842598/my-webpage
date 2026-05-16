@@ -64,6 +64,7 @@
     profile: readInitialProfile(),
     chart: null,
     chartKey: '',
+    chartRecordId: '',
     norm: null,
     chartReady: false,
     chartConfirmedKey: '',
@@ -278,6 +279,18 @@
   function makeLocalId() {
     if (window.crypto?.randomUUID) return window.crypto.randomUUID();
     return `mbp-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 9)}`;
+  }
+
+  function syncChatPanelState() {
+    if (!document.getElementById('aip-panel-chat')) return;
+    if (!state.chartReady || !state.chart || !state.norm) {
+      window._chartRecordId = null;
+      if (typeof window._chatPanelInit === 'function') window._chatPanelInit();
+      return;
+    }
+    state.chartRecordId = state.chartRecordId || makeLocalId();
+    window._chartRecordId = state.chartRecordId;
+    if (typeof window._chatPanelInit === 'function') window._chatPanelInit();
   }
 
   function parseTimeText(value) {
@@ -893,13 +906,18 @@
   function resetForProfileChange() {
     state.chart = null;
     state.chartKey = '';
+    state.chartRecordId = '';
     state.norm = null;
     state.chartReady = false;
     state.chartConfirmedKey = '';
     state.decoded = false;
     state.aiResults = {};
+    window._chart = null;
+    window._chartInputs = null;
+    window._chartRecordId = null;
     document.body.classList.remove('is-decoded');
     resetAiContent();
+    if (typeof window._chatPanelPrepareForNewChart === 'function') window._chatPanelPrepareForNewChart();
   }
 
   function applyClientProfile(profile, options = {}) {
@@ -907,6 +925,7 @@
     formCalMode = state.profile.isLunar ? 'lunar' : 'solar';
     const shouldRenderChart = options.chartReady !== false;
     resetForProfileChange();
+    state.chartRecordId = options.chartRecordId || '';
     state.chartReady = shouldRenderChart;
     state.chartConfirmedKey = shouldRenderChart ? profileHistoryKey(state.profile) : '';
     saveProfile();
@@ -1518,6 +1537,7 @@
       updateHeroMeta({});
       fcClearCells('***', true);
       const summary = $('#mbpChartSummary');
+      syncChatPanelState();
       if (summary) summary.textContent = '点击开始排盘后显示命盘摘要。';
       return;
     }
@@ -1535,16 +1555,20 @@
       fcLiunianResult = null;
       fcLiunianSeq = {};
       fcClearCells(bundle.error);
+      syncChatPanelState();
       if (summary) summary.textContent = bundle.error;
       return;
     }
 
     const { chart, norm } = bundle;
+    state.chartRecordId = state.chartRecordId || makeLocalId();
+    window._chartRecordId = state.chartRecordId;
     renderClassicChart(chart, norm);
     const four = mutagens(chart);
     if (summary) {
       summary.innerHTML = `命主身主：<b>${escapeHtml(chart.soul || '—')} · ${escapeHtml(chart.body || '—')}</b><br>四化分布：${escapeHtml(four.slice(0, 4).join('、') || '未读取到明显四化')}`;
     }
+    syncChatPanelState();
   }
 
   function buildReports() {
@@ -3413,7 +3437,9 @@
       const item = event.target.closest('.mbp-client-item');
       if (!item) return;
       const record = clientRecordsCache[Number(item.dataset.clientIndex)];
-      if (record?.profile) applyClientProfile(record.profile);
+      if (record?.profile) applyClientProfile(record.profile, {
+        chartRecordId: record.id && record.id !== 'current' ? record.id : '',
+      });
     });
 
     $('#mbpClientNew')?.addEventListener('click', () => {
@@ -3929,6 +3955,7 @@
       resetAiContent();
       state.chart = null;
       state.chartKey = '';
+      state.chartRecordId = makeLocalId();
       state.norm = null;
       state.chartReady = true;
       state.chartConfirmedKey = profileHistoryKey(profile);

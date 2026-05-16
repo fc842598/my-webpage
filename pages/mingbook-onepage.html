@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>阅天 · 紫微命书长页新版</title>
   <link rel="icon" href="../images/logo-mark.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../css/mingbook-onepage.css?v=20260516-ai-birth-chat">
+  <link rel="stylesheet" href="../css/mingbook-onepage.css?v=20260516-xubanxian-bottom">
   <script src="../js/config.js?v=20260509-vercel-backend"></script>
   <script defer src="../js/cities.js"></script>
   <script defer src="../js/lunarCalendar.js"></script>
@@ -20,7 +20,8 @@
   <script defer src="../src/ziping/validator.js"></script>
   <script defer src="../src/ziping/runtime.js"></script>
   <script defer src="../js/ai-piming.js?v=20260508-backend-base"></script>
-  <script defer src="../js/mingbook-onepage.js?v=20260516-ai-birth-wide"></script>
+  <script defer src="../js/ai-chat.js?v=20260516-mingbook-xubanxian"></script>
+  <script defer src="../js/mingbook-onepage.js?v=20260516-xubanxian-bottom"></script>
 </head>
 <body>
   <header class="mbp-nav">
@@ -362,6 +363,148 @@
           </div>
           <figcaption id="mbpYijingImageCaption">排盘后显示当前卦图。</figcaption>
         </figure>
+      </section>
+
+      <section class="mbp-xb-section" id="mbpXuChatSection">
+        <div class="mbp-section-head mbp-xb-head">
+          <div>
+            <span>追问 · AI半仙</span>
+            <h2>许半仙随盘对话</h2>
+            <p>排盘后直接追问感情、事业、财运、近一年与命盘细节，不用跳页。</p>
+          </div>
+          <div class="mbp-xb-side-note">命盘未生成时，会先提示客户完成排盘。</div>
+        </div>
+
+        <div class="mbp-xb-shell">
+          <div class="aip-panel" id="aip-panel-chat">
+            <details class="aip-card xb-hero xb-control-drawer" id="xb-control-drawer" open>
+              <summary class="xb-head xb-control-summary">
+                <div class="xb-avatar" aria-hidden="true">仙</div>
+                <div class="xb-identity">
+                  <div class="xb-name-row">
+                    <span class="xb-name">许半仙</span>
+                    <span class="chat-badge xb-status" id="chat-badge-mode">会话待接入</span>
+                  </div>
+                  <div class="xb-mini-tagline">可直接问感情、事业、财运或最近一年</div>
+                </div>
+                <span class="xb-control-hint">状态</span>
+              </summary>
+
+              <div class="xb-control-panel">
+                <div class="xb-tagline">带命盘记忆的 AI 命理顾问，先读底盘，再按你的问题调专题结论。</div>
+                <div class="xb-quota chat-quota-bar" id="chat-quota-bar" style="display:none">
+                  <div class="xb-quota-label">今日剩余</div>
+                  <div class="chat-quota-text xb-quota-value" id="chat-quota-text">-- / 200</div>
+                  <button class="chat-quota-upgrade xb-quota-upgrade" id="chat-quota-upgrade" data-pay-open="shop" style="display:none">开通</button>
+                </div>
+
+                <details class="xb-memory-drawer" id="xb-memory-drawer">
+                  <summary class="xb-memory-summary">
+                    <span class="xb-memory-summary-label">命盘状态</span>
+                    <span class="chat-badge xb-memory-badge" id="chat-badge-a">命盘待读取</span>
+                  </summary>
+                  <div class="xb-memory-panel">
+                    <div class="xb-insight">
+                      <div class="xb-insight-body">
+                        <div class="xb-insight-head">
+                          <span class="xb-insight-dot" aria-hidden="true"></span>
+                          <span class="xb-insight-title">命盘摘要</span>
+                        </div>
+                        <div class="xb-insight-text chat-context-preview" id="chat-context-preview">完成排盘后可在这里查看命盘摘要。</div>
+                      </div>
+                      <button type="button" class="xb-refresh" id="chat-refresh-memory-btn" disabled>
+                        <span class="xb-refresh-icon" aria-hidden="true">↻</span>
+                        <span>重读</span>
+                      </button>
+                    </div>
+
+                    <div class="xb-meta">
+                      <div class="xb-meta-sources chat-memory-sources" id="chat-memory-sources"></div>
+                      <span class="chat-badge xb-meta-b" id="chat-badge-b">未整理</span>
+                    </div>
+
+                    <div class="chat-background-status xb-bg-status" id="chat-background-status" style="display:none"></div>
+                  </div>
+                </details>
+              </div>
+            </details>
+
+            <section class="xb-starters-bar">
+              <div class="xb-starters-kicker">
+                <span class="xb-starters-glyph" aria-hidden="true">✦</span>
+                <span>常用快捷问答</span>
+              </div>
+              <div class="chat-starters xb-starters" id="chat-starters">
+                <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="结合我的命盘，先讲我整个人生主线，这辈子的走法和最该把握的事。">
+                  <span class="xb-starter-icon" aria-hidden="true">◇</span>
+                  <span>先看人生主线</span>
+                </button>
+                <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="结合我的命盘，重点看感情婚姻，什么样的感情路子，容易卡在哪里，何时有缘。">
+                  <span class="xb-starter-icon" aria-hidden="true">♡</span>
+                  <span>问感情婚姻</span>
+                </button>
+                <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="结合我的命盘，重点看事业，我适合往哪个方向发展，怎么做比较顺。">
+                  <span class="xb-starter-icon" aria-hidden="true">✦</span>
+                  <span>问事业方向</span>
+                </button>
+                <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="结合我的命盘，重点看财运，我适合怎么赚钱，有没有偏财或投资运。">
+                  <span class="xb-starter-icon" aria-hidden="true">◈</span>
+                  <span>问财运投资</span>
+                </button>
+                <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="结合我的命盘和当前流年，告诉我接下来一年最重要的机会和要注意的坑。">
+                  <span class="xb-starter-icon" aria-hidden="true">◎</span>
+                  <span>问最近一年</span>
+                </button>
+                <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="结合我的命盘，我现在处于什么运势阶段，什么时候会好转，要怎么熬过去。">
+                  <span class="xb-starter-icon" aria-hidden="true">△</span>
+                  <span>何时转运</span>
+                </button>
+                <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="结合我的命盘，看一下我的健康运势，有没有什么身体上需要特别留意的。">
+                  <span class="xb-starter-icon" aria-hidden="true">○</span>
+                  <span>问健康运势</span>
+                </button>
+                <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="结合我的命盘，我命中的贵人在哪里，什么时候容易遇到贵人，怎么把握。">
+                  <span class="xb-starter-icon" aria-hidden="true">✧</span>
+                  <span>问贵人运</span>
+                </button>
+                <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="结合我的命盘，看一下我的子女缘分，以及和子女相关的运势如何。">
+                  <span class="xb-starter-icon" aria-hidden="true">⊕</span>
+                  <span>问子女缘分</span>
+                </button>
+                <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="结合我的命盘，看一下我和家人的缘分，与父母、兄弟、另一半的关系如何。">
+                  <span class="xb-starter-icon" aria-hidden="true">≋</span>
+                  <span>问家庭六亲</span>
+                </button>
+              </div>
+            </section>
+
+            <div id="chat-loading-bar"></div>
+
+            <section class="aip-card xb-conversation chat-messages" id="chat-messages" aria-live="polite">
+              <div class="chat-sys-msg">请先完成排盘，再使用许半仙。</div>
+            </section>
+
+            <div class="xb-composer">
+              <div class="xb-input-pill">
+                <textarea
+                  id="chat-input"
+                  class="chat-input xb-input"
+                  placeholder="问一个问题…命理、运势、感情、事业都可以"
+                  rows="1"
+                  disabled
+                ></textarea>
+                <button class="chat-send-btn xb-send" id="chat-send-btn" disabled aria-label="发送">
+                  <span aria-hidden="true">↑</span>
+                </button>
+              </div>
+              <div class="xb-composer-hint">
+                <span>Enter 发送</span>
+                <span class="xb-dot" aria-hidden="true">·</span>
+                <span>Shift + Enter 换行</span>
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
     </section>
 
