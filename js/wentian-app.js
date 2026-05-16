@@ -951,6 +951,7 @@ const WENTIAN_SELECTED_ARCHIVE_KEY = "wentian-app-selected-archive-id";
 const WENTIAN_CLIENT_ID_KEY = "ziwei_client_id";
 const WENTIAN_LANGUAGE_STORAGE_KEY = "wentian-app-language-v1";
 const WENTIAN_PROFILE_STORAGE_KEY = "wentian-app-profile-v1";
+const WENTIAN_AUTH_RETURN_KEY = "wentian-app-auth-return-v1";
 const WENTIAN_MEMBER_PRODUCT_KEY = "monthly_member";
 const WENTIAN_PAYMENT_POLL_MS = 3500;
 const WENTIAN_SUPABASE_URL = "https://jmmlijqeexdbxgpfyhgf.supabase.co";
@@ -2284,10 +2285,70 @@ function getWentianProfile() {
   }
 }
 
+function getWentianUrlParams(source) {
+  const raw = String(source || "").replace(/^[?#]/, "");
+  return new URLSearchParams(raw);
+}
+
+function hasWentianAuthParams(params) {
+  return ["access_token", "refresh_token", "code", "error", "error_code", "error_description"].some((key) => params.has(key));
+}
+
+function isWentianAuthCallbackUrl() {
+  return hasWentianAuthParams(getWentianUrlParams(window.location.hash)) || hasWentianAuthParams(getWentianUrlParams(window.location.search));
+}
+
+function getWentianAuthCallbackError() {
+  const hashParams = getWentianUrlParams(window.location.hash);
+  const searchParams = getWentianUrlParams(window.location.search);
+  return hashParams.get("error_description") || searchParams.get("error_description") || hashParams.get("error") || searchParams.get("error") || "";
+}
+
+function clearWentianAuthReturnState() {
+  try {
+    localStorage.removeItem(WENTIAN_AUTH_RETURN_KEY);
+  } catch (_err) {}
+}
+
+function getWentianAuthReturnState() {
+  try {
+    const raw = localStorage.getItem(WENTIAN_AUTH_RETURN_KEY);
+    const saved = raw ? JSON.parse(raw) : null;
+    if (!saved || Date.now() - Number(saved.ts || 0) > 10 * 60 * 1000) {
+      clearWentianAuthReturnState();
+      return null;
+    }
+    return saved;
+  } catch (_err) {
+    clearWentianAuthReturnState();
+    return null;
+  }
+}
+
+function setWentianAuthReturnState(data = {}) {
+  try {
+    localStorage.setItem(WENTIAN_AUTH_RETURN_KEY, JSON.stringify({ ...data, ts: Date.now() }));
+  } catch (_err) {}
+}
+
+function replaceWentianUrlRoute(route) {
+  const params = new URLSearchParams(window.location.search);
+  ["code", "state", "error", "error_code", "error_description", "auth", "screen"].forEach((key) => params.delete(key));
+  const query = params.toString();
+  const nextUrl = `${window.location.pathname}${query ? `?${query}` : ""}#${route}`;
+  window.history.replaceState(null, "", nextUrl);
+}
+
 function getWentianAuthClient() {
   if (wentianAuthClient) return wentianAuthClient;
   if (!window.supabase || typeof window.supabase.createClient !== "function") return null;
-  wentianAuthClient = window.supabase.createClient(WENTIAN_SUPABASE_URL, WENTIAN_SUPABASE_KEY);
+  wentianAuthClient = window.supabase.createClient(WENTIAN_SUPABASE_URL, WENTIAN_SUPABASE_KEY, {
+    auth: {
+      autoRefreshToken: true,
+      detectSessionInUrl: true,
+      persistSession: true,
+    },
+  });
   return wentianAuthClient;
 }
 
@@ -2441,12 +2502,20 @@ async function startWentianGoogleLogin() {
     navigate("screen-40", false);
     return;
   }
-  const redirectUrl = new URL(window.location.href);
-  redirectUrl.hash = "";
-  await client.auth.signInWithOAuth({
-    provider: "google",
-    options: { redirectTo: redirectUrl.toString() },
-  });
+  const redirectUrl = new URL(window.location.pathname, window.location.origin);
+  setWentianAuthReturnState({ after: wentianPendingPaymentAfterLogin ? "member-payment" : "account" });
+  wentianAuthState.error = "";
+  try {
+    const { error } = await client.auth.signInWithOAuth({
+      provider: "google",
+      options: { redirectTo: redirectUrl.toString() },
+    });
+    if (error) throw error;
+  } catch (error) {
+    clearWentianAuthReturnState();
+    wentianAuthState.error = error.message || "Google 登录失败，请稍后重试";
+    navigate("screen-40", false);
+  }
 }
 
 async function signOutWentianAuth() {
@@ -5909,7 +5978,7 @@ function resolveRoute(route) {
 
 function routeFromLocation() {
   const hashRoute = normalizeRoute(location.hash.slice(1));
-  if (hashRoute && !hashRoute.startsWith("figmacapture=")) return resolveRoute(hashRoute);
+  if (hashRoute && !hashRoute.startsWith("figmacapture=") && !hasWentianAuthParams(getWentianUrlParams(location.hash))) return resolveRoute(hashRoute);
   const screen = new URLSearchParams(location.search).get("screen");
   if (screen) return resolveRoute(screen.startsWith("screen") ? screen : `screen-${screen}`);
   return "screen-1";
@@ -5992,7 +6061,7 @@ function navigate(route, push = true) {
     if (screen.no === 48) window.setTimeout(() => hydrateWentianOrders({ rerender: true }), 0);
     if (screen.no === 26) window.setTimeout(initWentianChartForm, 0);
     if (screen.no === 46) window.setTimeout(initLiurenScreen, 0);
-    if (!location.hash.includes("figmacapture=")) location.hash = route;
+    if (!location.hash.includes("figmacapture=") && !hasWentianAuthParams(getWentianUrlParams(location.hash))) location.hash = route;
     window.scrollTo(0, 0);
     return;
   }
@@ -6619,11 +6688,53 @@ function buildScreenNav() {
   `).join("");
 }
 
+async function consumeWentianAuthCallback() {
+  const error = getWentianAuthCallbackError();
+  if (error) {
+    wentianAuthState.error = String(error).replace(/\+/g, " ");
+    return null;
+  }
+  const client = getWentianAuthClient();
+  const code = getWentianUrlParams(window.location.search).get("code");
+  if (client && code && typeof client.auth.exchangeCodeForSession === "function") {
+    const exchanged = await client.auth.exchangeCodeForSession(code);
+    if (exchanged.error) throw exchanged.error;
+    wentianAuthSession = exchanged.data?.session || null;
+    return wentianAuthSession;
+  }
+  return initWentianAuth();
+}
+
+async function bootWentianApp() {
+  buildScreenNav();
+  if (!isWentianAuthCallbackUrl()) {
+    navigate(routeFromLocation(), false);
+    return;
+  }
+  const returnState = getWentianAuthReturnState();
+  let session = null;
+  try {
+    session = await consumeWentianAuthCallback();
+  } catch (error) {
+    wentianAuthState.error = error.message || "Google 登录失败，请稍后重试";
+  }
+  const nextRoute = session?.user ? "screen-31" : "screen-40";
+  replaceWentianUrlRoute(nextRoute);
+  navigate(nextRoute, false);
+  if (session?.user) {
+    wentianMemberState.loaded = false;
+    wentianOrderState.loaded = false;
+    if (returnState?.after === "member-payment") {
+      window.setTimeout(() => startWentianMemberPayment(), 120);
+    }
+  }
+  clearWentianAuthReturnState();
+}
+
 window.addEventListener("hashchange", () => navigate(routeFromLocation(), false));
 window.addEventListener("resize", fitActivePhoneShell);
 if (window.visualViewport) {
   window.visualViewport.addEventListener("resize", fitActivePhoneShell);
   window.visualViewport.addEventListener("scroll", fitActivePhoneShell);
 }
-buildScreenNav();
-navigate(routeFromLocation(), false);
+bootWentianApp();
