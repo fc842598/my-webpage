@@ -627,7 +627,7 @@ function sourceAppBottomNav(active, y = 778) {
       return `
         ${figButton(`source-bottom-hit-${label}`, x - 37, y + 6, 76, 72, `data-route="${route}"`)}
         ${figText(`source-bottom-icon-${label}`, icon, x - 16, y + 16, 32, 22, color, 700, "center")}
-        ${figText(`source-bottom-label-${label}`, label, x - 28, y + 48, 56, 12, color, on ? 700 : 400, "center")}
+        ${figText(`source-bottom-label-${label}`, translateWentianUiText(label), x - 28, y + 48, 56, 12, color, on ? 700 : 400, "center")}
       `;
     }).join("")}
   `;
@@ -977,6 +977,82 @@ const WENTIAN_LANGUAGE_OPTIONS = [
   { code: "zh-Hant", label: "繁體中文", htmlLang: "zh-TW" },
   { code: "en", label: "English", htmlLang: "en" },
 ];
+const WENTIAN_UI_TRANSLATIONS = {
+  "zh-Hant": {
+    "首页": "首頁",
+    "档案": "檔案",
+    "问天AI": "問天AI",
+    "我的": "我的",
+    "账户与偏好设置": "帳戶與偏好設定",
+    "登录 / 注册": "登入 / 註冊",
+    "登录后可查看支付记录": "登入後可查看支付記錄",
+    "账号": "帳號",
+    "登录": "登入",
+    "会员": "會員",
+    "问天会员": "問天會員",
+    "免费版 · 可升级会员": "免費版 · 可升級會員",
+    "未登录 · 支付前需登录": "未登入 · 支付前需登入",
+    "今日次数": "今日次數",
+    "本月次数": "本月次數",
+    "会员状态": "會員狀態",
+    "已开通": "已開通",
+    "免费版": "免費版",
+    "问天套餐": "問天套餐",
+    "购买次数": "購買次數",
+    "我的报告": "我的報告",
+    "订单记录": "訂單記錄",
+    "邀请好友": "邀請好友",
+    "0 人": "0 人",
+    "语言设置": "語言設定",
+    "分享问天AI": "分享問天AI",
+    "联系我们": "聯絡我們",
+    "账户设置": "帳戶設定",
+    "基本信息": "基本資訊",
+    "登录方式": "登入方式",
+    "设置密码": "設定密碼",
+    "退出登录": "登出",
+    "选择界面显示语言": "選擇介面顯示語言",
+    "确认后会同步保存到当前浏览器": "確認後會同步儲存到目前瀏覽器",
+    "确定": "確定",
+  },
+  en: {
+    "首页": "Home",
+    "档案": "Archives",
+    "问天AI": "Wentian AI",
+    "我的": "Mine",
+    "账户与偏好设置": "Account and preferences",
+    "登录 / 注册": "Sign in / Sign up",
+    "登录后可查看支付记录": "Sign in to view payment records",
+    "账号": "Account",
+    "登录": "Sign in",
+    "会员": "Member",
+    "问天会员": "Wentian Member",
+    "免费版 · 可升级会员": "Free plan · Upgrade available",
+    "未登录 · 支付前需登录": "Not signed in · Required before payment",
+    "今日次数": "Today",
+    "本月次数": "This month",
+    "会员状态": "Membership",
+    "已开通": "Active",
+    "免费版": "Free",
+    "问天套餐": "Plans",
+    "购买次数": "Credits",
+    "我的报告": "Reports",
+    "订单记录": "Orders",
+    "邀请好友": "Invite friends",
+    "0 人": "0 people",
+    "语言设置": "Language",
+    "分享问天AI": "Share Wentian AI",
+    "联系我们": "Contact us",
+    "账户设置": "Account settings",
+    "基本信息": "Profile",
+    "登录方式": "Sign-in methods",
+    "设置密码": "Set password",
+    "退出登录": "Sign out",
+    "选择界面显示语言": "Choose display language",
+    "确认后会同步保存到当前浏览器": "Saved to this browser after confirmation",
+    "确定": "Confirm",
+  },
+};
 let wentianArchiveDraftId = null;
 let wentianArchiveRemoteLoaded = false;
 let wentianArchiveRemotePromise = null;
@@ -1990,6 +2066,36 @@ function getWentianLanguageOption(code = getWentianLanguageCode()) {
   return WENTIAN_LANGUAGE_OPTIONS.find((item) => item.code === code) || WENTIAN_LANGUAGE_OPTIONS[0];
 }
 
+function getWentianRenderLanguageCode() {
+  return wentianLanguageDraft || getWentianLanguageCode();
+}
+
+function translateWentianUiText(text, code = getWentianRenderLanguageCode()) {
+  const value = String(text ?? "");
+  return WENTIAN_UI_TRANSLATIONS[code]?.[value] || value;
+}
+
+function applyWentianLanguageToRenderedView(root = view) {
+  const code = getWentianRenderLanguageCode();
+  document.documentElement.lang = getWentianLanguageOption(code).htmlLang;
+  if (!root || code === "zh-Hans") return;
+  const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+    acceptNode(node) {
+      const parent = node.parentElement;
+      if (!parent || ["SCRIPT", "STYLE", "TEXTAREA"].includes(parent.tagName)) return NodeFilter.FILTER_REJECT;
+      return node.nodeValue.trim() ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
+    },
+  });
+  const nodes = [];
+  while (walker.nextNode()) nodes.push(walker.currentNode);
+  nodes.forEach((node) => {
+    const raw = node.nodeValue;
+    const trimmed = raw.trim();
+    const translated = translateWentianUiText(trimmed, code);
+    if (translated !== trimmed) node.nodeValue = raw.replace(trimmed, translated);
+  });
+}
+
 function setWentianLanguageCode(code) {
   const option = getWentianLanguageOption(code);
   try {
@@ -2000,6 +2106,10 @@ function setWentianLanguageCode(code) {
 
 function pickWentianLanguage(code) {
   wentianLanguageDraft = getWentianLanguageOption(code).code;
+  if (state.route === "screen-37") {
+    navigate("screen-37", false);
+    return;
+  }
   for (const row of document.querySelectorAll("[data-wentian-language-option]")) {
     const selected = row.dataset.languageCode === wentianLanguageDraft;
     row.classList.toggle("is-selected", selected);
@@ -3338,15 +3448,15 @@ function sourceLanguageSettingsScreen() {
     ${figBox("source-37-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
     ${figButton("source-37-back-hit", 18, 40, 54, 54, 'data-action="back"')}
     ${figText("source-37-back", "‹", 28, 49, 28, 30, "#26211c", 600)}
-    ${figText("source-37-title", "语言设置", 0, 56, 390, 22, "#1f1d1a", 800, "center")}
-    ${figText("source-37-copy", "选择界面显示语言", 34, 128, 220, 15, "#8f857a")}
+    ${figText("source-37-title", translateWentianUiText("语言设置", activeCode), 0, 56, 390, 22, "#1f1d1a", 800, "center")}
+    ${figText("source-37-copy", translateWentianUiText("选择界面显示语言", activeCode), 34, 128, 260, 15, "#8f857a")}
     ${figBox("source-37-preview", 22, 166, 346, 74, "converted-card", "border-radius:14px;box-shadow:0 6px 16px rgba(74,55,32,.08);")}
     ${figText("source-37-preview-title", getWentianLanguageOption(activeCode).label, 42, 188, 180, 18, "#26211c", 800)}
-    ${figText("source-37-preview-desc", "确认后会同步保存到当前浏览器", 42, 215, 260, 13, "#8f857a")}
+    ${figText("source-37-preview-desc", translateWentianUiText("确认后会同步保存到当前浏览器", activeCode), 42, 215, 288, 13, "#8f857a")}
     ${sourceAppBottomNav("我的", 755)}
     ${figBox("source-37-overlay", 0, 0, 390, 844, "", "background:rgba(0,0,0,.36);")}
     ${figBox("source-37-sheet", 20, 500, 350, 260, "", "border-radius:20px;background:#fff;box-shadow:0 -8px 24px rgba(0,0,0,.14);")}
-    ${figText("source-37-sheet-title", "语言设置", 42, 526, 200, 18, "#26211c", 800)}
+    ${figText("source-37-sheet-title", translateWentianUiText("语言设置", activeCode), 42, 526, 200, 18, "#26211c", 800)}
     ${WENTIAN_LANGUAGE_OPTIONS.map((option, index) => {
       const selected = option.code === activeCode;
       return `
@@ -3356,7 +3466,7 @@ function sourceLanguageSettingsScreen() {
         </button>
       `;
     }).join("")}
-    <button class="wentian-language-confirm" type="button" data-action="wentian-language-confirm">确定</button>
+    <button class="wentian-language-confirm" type="button" data-action="wentian-language-confirm">${translateWentianUiText("确定", activeCode)}</button>
   `;
 }
 
@@ -5683,7 +5793,6 @@ function renderConvertedScreen(no) {
     `, 844, "converted source-screen", true);
   }
   if (screen.no === 37) {
-    wentianLanguageDraft = null;
     return figPhone(`screen-${screen.no}`, `${String(screen.no).padStart(2, "0")} ${screen.title}`, `
       ${sourceLanguageSettingsScreen()}
     `, 844, "converted source-screen no-status-shift", true);
@@ -5828,15 +5937,18 @@ function fitActivePhoneShell() {
 
 function navigate(route, push = true) {
   route = resolveRoute(route);
+  if (state.route === "screen-37" && route !== "screen-37") wentianLanguageDraft = null;
+  if (route === "screen-37" && state.route !== "screen-37") wentianLanguageDraft = getWentianLanguageCode();
   if (/^screen-?\d+$/.test(route)) {
     const no = Number(route.replace(/^screen-?/, ""));
     const screen = convertedByNo.get(no) || convertedByNo.get(2);
     route = `screen-${screen.no}`;
     if (push && route !== state.route) state.stack.push(state.route);
     state.route = route;
-    if (routeKicker) routeKicker.textContent = "问天AI";
-    if (routeTitle) routeTitle.textContent = screen.title;
+    if (routeKicker) routeKicker.textContent = translateWentianUiText("问天AI");
+    if (routeTitle) routeTitle.textContent = translateWentianUiText(screen.title);
     view.innerHTML = applyWentianColorUpgrade(renderConvertedScreen(screen.no));
+    applyWentianLanguageToRenderedView(view);
     stripScreenshotStatusBar();
     fitActivePhoneShell();
     syncActive();
