@@ -1012,9 +1012,41 @@ select {
   background: rgba(201, 169, 97, .05);
 }
 
+.ai-chat-messages {
+  display: grid;
+  gap: 8px;
+  max-height: 176px;
+  overflow-y: auto;
+  padding-right: 2px;
+}
+
 .mbp-ai-inline .ai-msg {
+  width: fit-content;
+  max-width: 92%;
+  padding: 9px 11px;
+  border: 1px solid rgba(201, 169, 97, .15);
+  border-radius: 12px;
+  background: rgba(0, 0, 0, .18);
   color: #c6b7a6;
   font-size: 14px;
+  line-height: 1.55;
+}
+
+.mbp-ai-inline .ai-msg-user {
+  justify-self: end;
+  border-color: rgba(201, 169, 97, .32);
+  background: rgba(201, 169, 97, .12);
+  color: #f0dfb2;
+}
+
+.mbp-ai-inline .ai-msg-thinking {
+  width: fit-content;
+  max-width: 92%;
+  padding: 8px 11px;
+  border-radius: 999px;
+  background: rgba(201, 169, 97, .08);
+  color: #b9a57a;
+  font-size: 13px;
 }
 
 .mbp-ai-inline em {
@@ -1055,10 +1087,16 @@ select {
   width: 72px;
 }
 
+.ai-chat-send:disabled {
+  cursor: wait;
+  opacity: .7;
+}
+
 .ai-chat-tip {
   margin-top: 8px;
   color: #8e7c6b;
   font-size: 13px;
+  line-height: 1.45;
 }
 
 .nf-time-row {

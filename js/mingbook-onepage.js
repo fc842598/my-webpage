@@ -77,6 +77,9 @@
   let clientRecordsCache = [];
   let html2PdfPromise = null;
   let inputGuideTimer = null;
+  let mbpAiHistory = [];
+  let mbpAiBusy = false;
+  const aiBackendBase = ((window.SITE_CONFIG && window.SITE_CONFIG.aiBackendBase) || 'https://ai-piming-backend-production.up.railway.app').replace(/\/$/, '');
 
   const aiTasks = [
     { module: 'overall', label: '整体批命' },
@@ -3578,36 +3581,197 @@
       }
     });
 
-    function applyAiText() {
-      const text = $('#mbpAiInput')?.value || '';
-      const year = text.match(/(19|20)\d{2}/)?.[0];
-      const numbers = [...text.matchAll(/(\d{1,2})\s*(?:月|月份|[\/.-])/g)].map((match) => Number(match[1]));
-      const dayMatch = text.match(/(\d{1,2})\s*(?:日|号)/);
-      const hourMatch = text.match(/(\d{1,2})\s*(?:点|时|:)/);
-      const minuteMatch = text.match(/[:：]\s*(\d{1,2})|(\d{1,2})\s*分/);
-      if (year) $('#mbpYear').value = year;
-      if (numbers[0]) $('#mbpMonth').value = numbers[0];
-      refreshDayOptions();
-      if (dayMatch) $('#mbpDay').value = dayMatch[1];
-      if (/女/.test(text)) {
-        $('#mbpGender').value = 'female';
-        document.querySelectorAll('.nf-gender-btn').forEach((btn) => btn.classList.toggle('active', btn.dataset.v === 'female'));
-      } else if (/男/.test(text)) {
-        $('#mbpGender').value = 'male';
-        document.querySelectorAll('.nf-gender-btn').forEach((btn) => btn.classList.toggle('active', btn.dataset.v === 'male'));
-      }
-      if (hourMatch) {
-        let hour = Number(hourMatch[1]);
-        if (/下午|晚上|夜里/.test(text) && hour < 12) hour += 12;
-        $('#mbpHour').value = Math.min(23, hour);
-      }
-      const minute = Number(minuteMatch?.[1] || minuteMatch?.[2] || 0);
-      $('#mbpMinute').value = Number.isFinite(minute) ? Math.min(59, minute) : 0;
+    function setAiGender(gender) {
+      if (!gender) return;
+      const value = gender === 'female' || gender === '女' ? 'female' : 'male';
+      $('#mbpGender').value = value;
+      document.querySelectorAll('.nf-gender-btn').forEach((btn) => btn.classList.toggle('active', btn.dataset.v === value));
+    }
+
+    function setAiCity(cityName) {
+      const text = String(cityName || '').trim();
+      if (!text) return;
       const city = findCity(text);
-      if (city) applySelectedCity(city);
-      setCalMode('solar');
-      $('#mbpAiTip').textContent = city || year ? '已识别并填入，可检查后排盘。' : '暂未识别完整，请补充年月日、时间、性别、城市。';
+      if (city) {
+        applySelectedCity(city);
+        return;
+      }
+      selectedCity = null;
+      const input = $('#mbpCitySearch');
+      const clear = $('#mbpClearCity');
+      const selected = $('#mbpCitySelected');
+      if (input) input.value = text;
+      if (clear) clear.style.display = '';
+      if (selected) selected.style.display = 'none';
+      updateTrueSolarPreview();
+    }
+
+    function aiNumber(value) {
+      if (value === '' || value == null) return null;
+      const number = Number(value);
+      return Number.isFinite(number) ? number : null;
+    }
+
+    function applyAiBirthData(data, options = {}) {
+      if (!data) return;
+      const calType = data.calType === 'lunar' ? 'lunar' : 'solar';
+      const year = aiNumber(data.year);
+      const month = aiNumber(data.month);
+      const day = aiNumber(data.day);
+      if (calType === 'lunar') {
+        if (Number.isFinite(year)) $('#mbpLunarYear').value = year;
+        if (Number.isFinite(month)) $('#mbpLunarMonth').value = month;
+        refreshLunarDayOptions();
+        if (Number.isFinite(day)) $('#mbpLunarDay').value = day;
+        $('#mbpLunarLeap').checked = !!data.isLeap;
+        updateLunarLeapState();
+      } else {
+        if (Number.isFinite(year)) $('#mbpYear').value = year;
+        if (Number.isFinite(month)) $('#mbpMonth').value = month;
+        refreshDayOptions();
+        if (Number.isFinite(day)) $('#mbpDay').value = day;
+      }
+      const hour = aiNumber(data.hour);
+      const minute = aiNumber(data.minute);
+      if (Number.isFinite(hour)) $('#mbpHour').value = Math.max(0, Math.min(23, hour));
+      if (Number.isFinite(minute)) $('#mbpMinute').value = Math.max(0, Math.min(59, minute));
+      setAiGender(data.gender);
+      setAiCity(data.city);
+      setCalMode(options.keepAiOpen ? 'ai' : calType);
       updateDatePreview();
+      showFormError('');
+    }
+
+    function addMbpAiBubble(role, text) {
+      const list = $('#mbpAiMessages');
+      if (!list) return null;
+      const div = document.createElement('div');
+      div.className = `ai-msg ${role === 'user' ? 'ai-msg-user' : 'ai-msg-ai'}`;
+      div.innerHTML = escapeHtml(text || '').replace(/\n/g, '<br>');
+      list.appendChild(div);
+      list.scrollTop = list.scrollHeight;
+      return div;
+    }
+
+    function addMbpAiThinking() {
+      const list = $('#mbpAiMessages');
+      if (!list) return null;
+      const div = document.createElement('div');
+      div.className = 'ai-msg-thinking';
+      div.textContent = '正在识别…';
+      list.appendChild(div);
+      list.scrollTop = list.scrollHeight;
+      return div;
+    }
+
+    function setMbpAiBusy(on) {
+      mbpAiBusy = !!on;
+      const input = $('#mbpAiInput');
+      const send = $('#mbpAiSend');
+      if (input) input.disabled = mbpAiBusy;
+      if (send) {
+        send.disabled = mbpAiBusy;
+        send.textContent = mbpAiBusy ? '识别中' : '发送';
+      }
+    }
+
+    function setMbpAiTip(text) {
+      const tip = $('#mbpAiTip');
+      if (tip) tip.textContent = text;
+    }
+
+    function normalizeAiHour(hour, raw) {
+      let value = Number(hour);
+      if (!Number.isFinite(value)) return null;
+      if (/下午|晚上|夜里|傍晚|晚间|pm/i.test(raw) && value >= 1 && value <= 11) value += 12;
+      if (/凌晨|早上|上午|清晨|am/i.test(raw) && value === 12) value = 0;
+      if (value === 24) value = 0;
+      return value >= 0 && value <= 23 ? value : null;
+    }
+
+    function localAiBirthFallback(rawText) {
+      const text = String(rawText || '').trim();
+      const nums = text.match(/\d{1,4}/g) || [];
+      const yearIndex = nums.findIndex((num) => num.length === 4 && Number(num) >= 1900 && Number(num) <= 2030);
+      const year = yearIndex >= 0 ? Number(nums[yearIndex]) : null;
+      const month = Number(text.match(/(\d{1,2})\s*(?:月|月份)/)?.[1] || (yearIndex >= 0 ? nums[yearIndex + 1] : '')) || null;
+      const day = Number(text.match(/(\d{1,2})\s*(?:日|号)/)?.[1] || (yearIndex >= 0 ? nums[yearIndex + 2] : '')) || null;
+      const timeMatch = text.match(/(?:^|[^\d])(\d{1,2})\s*(?:点|时|:|：)\s*(?:(\d{1,2})\s*分?)?/);
+      const hour = timeMatch ? normalizeAiHour(timeMatch[1], text) : null;
+      const minute = timeMatch && timeMatch[2] != null ? Math.max(0, Math.min(59, Number(timeMatch[2]))) : (hour != null ? 0 : null);
+      const gender = /女/.test(text) ? 'female' : (/男/.test(text) ? 'male' : null);
+      const city = findCity(text);
+      const data = {
+        complete: false,
+        calType: /农历|阴历|lunar|yinli/i.test(text) ? 'lunar' : 'solar',
+        year,
+        month,
+        day,
+        hour,
+        minute,
+        gender,
+        city: city ? formatCityLabel(city) : '',
+        isLeap: /闰/.test(text),
+      };
+      const missing = [];
+      if (!(year && month && day)) missing.push('出生年月日');
+      if (hour == null) missing.push('具体时间');
+      if (!gender) missing.push('性别');
+      if (!data.city) missing.push('出生城市');
+      data.complete = !missing.length;
+      data.missing = missing;
+      data.reply = data.complete
+        ? 'AI服务暂时繁忙，已先识别出完整信息，请核对后开始排盘。'
+        : `AI服务暂时繁忙。我先看到了部分信息，还差${missing.slice(0, 2).join('、')}。`;
+      return data;
+    }
+
+    async function callMbpAiChat(messages) {
+      if (typeof fetch !== 'function') throw new Error('fetch unavailable');
+      const controller = typeof AbortController === 'function' ? new AbortController() : null;
+      const timer = setTimeout(() => { if (controller) controller.abort(); }, 45000);
+      try {
+        fetch(`${aiBackendBase}/api/ping`).catch(() => {});
+        const response = await fetch(`${aiBackendBase}/api/chat`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ messages }),
+          signal: controller ? controller.signal : undefined,
+        });
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const json = await response.json();
+        if (!json || !json.ok) throw new Error(json?.error || 'AI识别失败');
+        return json.data;
+      } finally {
+        clearTimeout(timer);
+      }
+    }
+
+    async function applyAiText() {
+      const input = $('#mbpAiInput');
+      const text = String(input?.value || '').trim();
+      if (!text || mbpAiBusy) return;
+      input.value = '';
+      addMbpAiBubble('user', text);
+      mbpAiHistory.push({ role: 'user', content: text });
+      setMbpAiBusy(true);
+      setMbpAiTip('正在调用 AI 识别出生信息…');
+      const thinking = addMbpAiThinking();
+      let data = null;
+      try {
+        data = await callMbpAiChat(mbpAiHistory.slice());
+      } catch (_) {
+        data = localAiBirthFallback(text);
+      } finally {
+        if (thinking) thinking.remove();
+        setMbpAiBusy(false);
+      }
+      const reply = data?.reply || (data?.complete ? '已识别完整，请核对后开始排盘。' : '还需要补充出生年月日、时间、性别和城市。');
+      addMbpAiBubble('ai', reply);
+      mbpAiHistory.push({ role: 'assistant', content: reply });
+      applyAiBirthData(data, { keepAiOpen: !data?.complete });
+      setMbpAiTip(data?.complete ? '已填入表单，请核对后点击开始排盘。' : '继续补充缺失信息，AI会结合上文继续识别。');
+      if (!data?.complete) $('#mbpAiInput')?.focus();
     }
 
     $('#mbpAiSend')?.addEventListener('click', applyAiText);
