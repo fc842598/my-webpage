@@ -7450,6 +7450,7 @@ function sourceZiweiAiDecodePanel() {
 
 function sourceZiweiMingpanScreenFromChart(saved) {
   const screenHeight = getWentianZiweiScreenHeight();
+  const bottomNavY = Math.max(755, screenHeight - 89);
   return `
     ${figBox("source-27-bg", 0, 0, 390, screenHeight, "", "background:#fbf7ef;")}
     ${figButton("source-27-back-hit", 18, 40, 96, 54, 'data-action="back"')}
@@ -7458,6 +7459,7 @@ function sourceZiweiMingpanScreenFromChart(saved) {
     ${figText("source-27-more", "•••", 330, 56, 42, 22, "#3b3934", 800, "center")}
     ${renderWentianClassicChart(saved)}
     ${sourceZiweiAiDecodePanel()}
+    ${sourceAppBottomNav("档案", bottomNavY)}
   `;
 }
 
