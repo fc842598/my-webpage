@@ -703,7 +703,7 @@
     var badgeB = document.getElementById('chat-badge-b');
 
     if (badgeA) {
-      badgeA.textContent = '\u5df2\u8bfb\u76d8';
+      badgeA.textContent = staleA ? '需重读' : (hasA ? '已读盘' : '待排盘');
       if (staleA) {
         badgeA.classList.remove('chat-badge-ok');
         badgeA.classList.add('chat-badge-stale');
