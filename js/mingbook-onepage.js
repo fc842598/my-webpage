@@ -84,6 +84,8 @@
   const aiBackendBase = ((window.SITE_CONFIG && window.SITE_CONFIG.aiBackendBase) || 'https://ai-piming-backend-production.up.railway.app').replace(/\/$/, '');
   const desktopSupabaseUrl = 'https://jmmlijqeexdbxgpfyhgf.supabase.co';
   const desktopSupabaseKey = 'sb_publishable_Y2W9eDscfJwK1sgSitbmFA_ta5btvaR';
+  const desktopGoogleRedirectBridge = 'https://fc842598.github.io/my-webpage/pages/mingbook-onepage.html';
+  const desktopAuthUrlKeys = ['code', 'state', 'error', 'error_code', 'error_description'];
   const desktopAuthState = {
     open: false,
     mode: 'login',
@@ -94,6 +96,7 @@
   };
   let desktopAuthClient = null;
   let desktopAuthReadyPromise = null;
+  let desktopAuthListenerAttached = false;
 
   const aiTasks = [
     { module: 'overall', label: '整体批命' },
@@ -275,6 +278,57 @@
     return desktopAuthClient;
   }
 
+  function getDesktopAuthUrlParams(raw) {
+    return new URLSearchParams(String(raw || '').replace(/^[?#]/, ''));
+  }
+
+  function hasDesktopAuthParams(raw) {
+    const params = getDesktopAuthUrlParams(raw);
+    return desktopAuthUrlKeys.some((key) => params.has(key));
+  }
+
+  function isDesktopAuthCallbackUrl() {
+    return hasDesktopAuthParams(window.location.search) || hasDesktopAuthParams(window.location.hash);
+  }
+
+  function getDesktopAuthCallbackValue(key) {
+    const searchValue = getDesktopAuthUrlParams(window.location.search).get(key);
+    if (searchValue) return searchValue;
+    return getDesktopAuthUrlParams(window.location.hash).get(key);
+  }
+
+  function getDesktopAuthCallbackError() {
+    const error = getDesktopAuthCallbackValue('error_description')
+      || getDesktopAuthCallbackValue('error')
+      || getDesktopAuthCallbackValue('error_code');
+    return error ? String(error).replace(/\+/g, ' ') : '';
+  }
+
+  function clearDesktopAuthCallbackUrl() {
+    const params = new URLSearchParams(window.location.search);
+    desktopAuthUrlKeys.forEach((key) => params.delete(key));
+    const query = params.toString();
+    const hash = hasDesktopAuthParams(window.location.hash) ? '' : window.location.hash;
+    window.history.replaceState(null, '', `${window.location.pathname}${query ? `?${query}` : ''}${hash || ''}`);
+  }
+
+  function getDesktopGoogleRedirectUrl() {
+    if (window.location.hostname === 'yuetianai.com') return desktopGoogleRedirectBridge;
+    return new URL(window.location.pathname, window.location.origin).toString();
+  }
+
+  function attachDesktopAuthListener(client) {
+    if (desktopAuthListenerAttached || !client?.auth?.onAuthStateChange) return;
+    desktopAuthListenerAttached = true;
+    client.auth.onAuthStateChange((_event, session) => {
+      desktopAuthState.session = session || null;
+      if (!session?.user) desktopAuthState.quota = null;
+      renderDesktopAuth();
+      updateDesktopQuotaDisplay();
+      if (session?.user && state.chartRecordId) hydrateDesktopMemberStatus({ force: true });
+    });
+  }
+
   function phoneToDesktopAuthEmail(phone) {
     const digits = String(phone || '').replace(/\D/g, '');
     if (!digits || digits.length < 6 || digits.length > 20) return '';
@@ -429,6 +483,8 @@
         submit.textContent = desktopAuthState.loading ? '处理中...' : (isRegister ? '注册并登录' : '登录并继续');
         submit.disabled = desktopAuthState.loading;
       }
+      const google = $('#mbpAuthGoogle');
+      if (google) google.disabled = desktopAuthState.loading;
       const note = $('#mbpAuthNote');
       if (note) note.textContent = isRegister
         ? '注册后会直接登录，同一账号可在电脑端和手机端共用。'
@@ -582,6 +638,44 @@
     }
   }
 
+  async function startDesktopGoogleLogin() {
+    const client = getDesktopAuthClient();
+    if (!client) {
+      setDesktopAuthError('登录组件加载失败，请刷新后重试');
+      return;
+    }
+    desktopAuthState.loading = true;
+    desktopAuthState.error = '';
+    renderDesktopAuth();
+    try {
+      const { error } = await client.auth.signInWithOAuth({
+        provider: 'google',
+        options: { redirectTo: getDesktopGoogleRedirectUrl() },
+      });
+      if (error) throw error;
+    } catch (error) {
+      desktopAuthState.loading = false;
+      setDesktopAuthError(error.message || 'Google 登录失败，请稍后重试');
+      renderDesktopAuth();
+    }
+  }
+
+  async function consumeDesktopAuthCallback() {
+    const error = getDesktopAuthCallbackError();
+    if (error) throw new Error(error);
+    const client = getDesktopAuthClient();
+    if (!client) throw new Error('登录组件加载失败，请刷新后重试');
+    attachDesktopAuthListener(client);
+    const code = getDesktopAuthCallbackValue('code');
+    if (code && typeof client.auth.exchangeCodeForSession === 'function') {
+      const exchanged = await client.auth.exchangeCodeForSession(code);
+      if (exchanged.error) throw exchanged.error;
+      desktopAuthState.session = exchanged.data?.session || null;
+      return desktopAuthState.session;
+    }
+    return getDesktopAuthSession({ force: true });
+  }
+
   async function initDesktopAuth() {
     if (desktopAuthReadyPromise) return desktopAuthReadyPromise;
     const client = getDesktopAuthClient();
@@ -593,16 +687,37 @@
       desktopAuthState.session = data?.session || null;
       renderDesktopAuth();
       if (desktopAuthState.session?.user && state.chartRecordId) hydrateDesktopMemberStatus({ force: true });
-      client.auth.onAuthStateChange((_event, session) => {
-        desktopAuthState.session = session || null;
-        if (!session?.user) desktopAuthState.quota = null;
-        renderDesktopAuth();
-        updateDesktopQuotaDisplay();
-        if (session?.user && state.chartRecordId) hydrateDesktopMemberStatus({ force: true });
-      });
+      attachDesktopAuthListener(client);
       return desktopAuthState.session;
     }).catch(() => null);
     return desktopAuthReadyPromise;
+  }
+
+  async function bootDesktopAuth() {
+    if (!isDesktopAuthCallbackUrl()) {
+      await initDesktopAuth();
+      if (desktopAuthState.session?.user && state.chartRecordId) hydrateDesktopMemberStatus({ force: true });
+      return;
+    }
+    desktopAuthState.open = true;
+    desktopAuthState.loading = true;
+    desktopAuthState.error = '';
+    renderDesktopAuth();
+    try {
+      await consumeDesktopAuthCallback();
+      clearDesktopAuthCallbackUrl();
+      desktopAuthState.open = !desktopAuthState.session?.user;
+      desktopAuthState.error = '';
+      if (desktopAuthState.session?.user && state.chartRecordId) await hydrateDesktopMemberStatus({ force: true });
+      if (typeof window._chatPanelRefresh === 'function' && window._chartRecordId) window._chatPanelRefresh();
+    } catch (error) {
+      clearDesktopAuthCallbackUrl();
+      desktopAuthState.open = true;
+      desktopAuthState.error = error.message || 'Google 登录失败，请稍后重试';
+    } finally {
+      desktopAuthState.loading = false;
+      renderDesktopAuth();
+    }
   }
 
   function indexToHour(index) {
@@ -4497,6 +4612,7 @@
       });
     });
     $('#mbpAuthSubmit')?.addEventListener('click', submitDesktopAuth);
+    $('#mbpAuthGoogle')?.addEventListener('click', startDesktopGoogleLogin);
     $('#mbpAuthPassword')?.addEventListener('keydown', (event) => {
       if (event.key === 'Enter') {
         event.preventDefault();
@@ -4527,10 +4643,6 @@
   renderDesktopAuth();
   bindEvents();
   renderChart();
-  Promise.resolve(initDesktopAuth()).then(() => {
-    if (desktopAuthState.session?.user && state.chartRecordId) {
-      hydrateDesktopMemberStatus({ force: true });
-    }
-  });
+  bootDesktopAuth();
 }());
 

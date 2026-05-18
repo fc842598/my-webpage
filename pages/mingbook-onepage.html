@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>阅天 · 紫微排盘</title>
   <link rel="icon" href="../images/logo-mark.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../css/mingbook-onepage.css?v=20260518-desktop-auth2">
+  <link rel="stylesheet" href="../css/mingbook-onepage.css?v=20260518-desktop-google">
   <script src="../js/config.js?v=20260509-vercel-backend"></script>
   <script defer src="../js/cities.js"></script>
   <script defer src="../js/lunarCalendar.js"></script>
@@ -22,7 +22,7 @@
   <script defer src="../src/ziping/runtime.js"></script>
   <script defer src="../js/ai-piming.js?v=20260508-backend-base"></script>
   <script defer src="../js/ai-chat.js?v=20260518-desktop-auth"></script>
-  <script defer src="../js/mingbook-onepage.js?v=20260518-desktop-auth"></script>
+  <script defer src="../js/mingbook-onepage.js?v=20260518-desktop-google"></script>
 </head>
 <body>
   <header class="mbp-nav">
@@ -544,6 +544,10 @@
         <div class="mbp-auth-error" id="mbpAuthError" hidden></div>
 
         <button type="button" class="mbp-auth-primary" id="mbpAuthSubmit">登录并继续</button>
+        <button type="button" class="mbp-auth-google" id="mbpAuthGoogle">
+          <span aria-hidden="true">G</span>
+          用 Google 登录
+        </button>
         <p class="mbp-auth-note" id="mbpAuthNote">电脑端登录后，账号状态会和手机端保持连通。</p>
       </section>
     </div>

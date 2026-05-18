@@ -302,6 +302,33 @@ select {
   box-shadow: 0 12px 28px rgba(159, 77, 49, .24);
 }
 
+.mbp-auth-google {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 46px;
+  margin-top: 12px;
+  border: 1px solid rgba(241, 212, 125, .2);
+  border-radius: 999px;
+  background: rgba(255, 246, 227, .92);
+  color: #24190f;
+  cursor: pointer;
+  font-weight: 900;
+}
+
+.mbp-auth-google span {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  background: #fff;
+  color: #3568d4;
+  font: 900 15px/1 Arial, sans-serif;
+}
+
 .mbp-auth-primary.is-danger {
   width: auto;
   min-width: 132px;
@@ -312,7 +339,8 @@ select {
 .mbp-auth-primary:disabled,
 .mbp-auth-secondary:disabled,
 .mbp-auth-close:disabled,
-.mbp-auth-trigger:disabled {
+.mbp-auth-trigger:disabled,
+.mbp-auth-google:disabled {
   opacity: .68;
   cursor: wait;
 }
