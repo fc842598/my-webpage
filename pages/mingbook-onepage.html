@@ -5,13 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>阅天 · 紫微排盘</title>
   <link rel="icon" href="../images/logo-mark.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../css/mingbook-onepage.css?v=20260518-yijing-option1">
+  <link rel="stylesheet" href="../css/mingbook-onepage.css?v=20260518-desktop-auth2">
   <script src="../js/config.js?v=20260509-vercel-backend"></script>
   <script defer src="../js/cities.js"></script>
   <script defer src="../js/lunarCalendar.js"></script>
   <script defer src="../js/trueSolarTime.js"></script>
   <script defer src="../js/vendor/lunar-javascript.js"></script>
   <script defer src="../js/vendor/iztro.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
   <script defer src="./guaci-data.js"></script>
   <script defer src="./yijing-master-data.js?v=20260515b"></script>
   <script defer src="../src/ziping/tianji-bazi.js"></script>
@@ -20,8 +21,8 @@
   <script defer src="../src/ziping/validator.js"></script>
   <script defer src="../src/ziping/runtime.js"></script>
   <script defer src="../js/ai-piming.js?v=20260508-backend-base"></script>
-  <script defer src="../js/ai-chat.js?v=20260516-mingbook-xubanxian"></script>
-  <script defer src="../js/mingbook-onepage.js?v=20260516-xubanxian-bottom"></script>
+  <script defer src="../js/ai-chat.js?v=20260518-desktop-auth"></script>
+  <script defer src="../js/mingbook-onepage.js?v=20260518-desktop-auth"></script>
 </head>
 <body>
   <header class="mbp-nav">
@@ -33,7 +34,10 @@
       <a href="../index.html">首页</a>
     </nav>
     <div class="mbp-nav-actions">
-      <a class="mbp-auth-link" href="./wentian-app.html#login">登录/注册</a>
+      <button type="button" class="mbp-auth-trigger" id="mbpAuthTrigger" aria-haspopup="dialog" aria-controls="mbpAuthOverlay" aria-expanded="false">
+        <span class="mbp-auth-trigger-label" id="mbpAuthTriggerLabel">登录/注册</span>
+        <small class="mbp-auth-trigger-meta" id="mbpAuthTriggerMeta">电脑端账号</small>
+      </button>
       <a class="mbp-member" href="./wentian-app.html">手机端入口</a>
     </div>
   </header>
@@ -486,6 +490,64 @@
     </section>
 
   </main>
+
+  <div class="mbp-auth-overlay" id="mbpAuthOverlay" hidden>
+    <div class="mbp-auth-dialog" role="dialog" aria-modal="true" aria-labelledby="mbpAuthTitle">
+      <button type="button" class="mbp-auth-close" id="mbpAuthClose" aria-label="关闭">×</button>
+      <div class="mbp-auth-head">
+        <span>阅天账号</span>
+        <strong id="mbpAuthTitle">电脑端登录</strong>
+        <p>电脑端与手机端账号互通，登录后可同步同一账号状态。</p>
+      </div>
+
+      <section class="mbp-auth-session" id="mbpAuthSessionCard" hidden>
+        <div class="mbp-auth-session-top">
+          <div>
+            <span class="mbp-auth-session-kicker">当前账号</span>
+            <strong id="mbpAuthSessionLabel">已登录</strong>
+            <small id="mbpAuthSessionMeta">电脑端与手机端共用</small>
+          </div>
+          <span class="mbp-auth-session-badge" id="mbpAuthSessionBadge">账号</span>
+        </div>
+        <div class="mbp-auth-session-grid">
+          <div>
+            <span>今日额度</span>
+            <strong id="mbpAuthQuotaDaily">--/--</strong>
+          </div>
+          <div>
+            <span>本月额度</span>
+            <strong id="mbpAuthQuotaMonthly">--/--</strong>
+          </div>
+        </div>
+        <div class="mbp-auth-session-actions">
+          <button type="button" class="mbp-auth-secondary" id="mbpAuthChangeAccount">切换账号</button>
+          <button type="button" class="mbp-auth-primary is-danger" id="mbpAuthLogout">退出登录</button>
+        </div>
+      </section>
+
+      <section class="mbp-auth-form-wrap" id="mbpAuthFormWrap">
+        <div class="mbp-auth-tabs" role="tablist" aria-label="登录方式切换">
+          <button type="button" class="mbp-auth-tab is-active" id="mbpAuthModeLogin" data-auth-mode="login" aria-selected="true">登录</button>
+          <button type="button" class="mbp-auth-tab" id="mbpAuthModeRegister" data-auth-mode="register" aria-selected="false">注册</button>
+        </div>
+
+        <label class="mbp-auth-field">
+          <span id="mbpAuthAccountLabel">手机号 / 邮箱</span>
+          <input type="text" id="mbpAuthAccount" autocomplete="username" placeholder="请输入手机号或邮箱">
+        </label>
+
+        <label class="mbp-auth-field">
+          <span>密码</span>
+          <input type="password" id="mbpAuthPassword" autocomplete="current-password" placeholder="至少 6 位">
+        </label>
+
+        <div class="mbp-auth-error" id="mbpAuthError" hidden></div>
+
+        <button type="button" class="mbp-auth-primary" id="mbpAuthSubmit">登录并继续</button>
+        <p class="mbp-auth-note" id="mbpAuthNote">电脑端登录后，账号状态会和手机端保持连通。</p>
+      </section>
+    </div>
+  </div>
 
   <div class="mbp-shichen-overlay" id="mbpShichenOverlay" hidden>
     <div class="mbp-shichen-modal" role="dialog" aria-modal="true" aria-labelledby="mbpShichenTitle">

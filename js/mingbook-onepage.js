@@ -82,6 +82,18 @@
   let mbpAiBusy = false;
   let mbpAiDraft = {};
   const aiBackendBase = ((window.SITE_CONFIG && window.SITE_CONFIG.aiBackendBase) || 'https://ai-piming-backend-production.up.railway.app').replace(/\/$/, '');
+  const desktopSupabaseUrl = 'https://jmmlijqeexdbxgpfyhgf.supabase.co';
+  const desktopSupabaseKey = 'sb_publishable_Y2W9eDscfJwK1sgSitbmFA_ta5btvaR';
+  const desktopAuthState = {
+    open: false,
+    mode: 'login',
+    loading: false,
+    error: '',
+    session: null,
+    quota: null,
+  };
+  let desktopAuthClient = null;
+  let desktopAuthReadyPromise = null;
 
   const aiTasks = [
     { module: 'overall', label: '整体批命' },
@@ -248,6 +260,349 @@
     } catch (_) {
       return [];
     }
+  }
+
+  function getDesktopAuthClient() {
+    if (desktopAuthClient) return desktopAuthClient;
+    if (!window.supabase || typeof window.supabase.createClient !== 'function') return null;
+    desktopAuthClient = window.supabase.createClient(desktopSupabaseUrl, desktopSupabaseKey, {
+      auth: {
+        autoRefreshToken: true,
+        detectSessionInUrl: false,
+        persistSession: true,
+      },
+    });
+    return desktopAuthClient;
+  }
+
+  function phoneToDesktopAuthEmail(phone) {
+    const digits = String(phone || '').replace(/\D/g, '');
+    if (!digits || digits.length < 6 || digits.length > 20) return '';
+    return `phone_${digits}@yuetianai.local`;
+  }
+
+  function inputToDesktopAuthEmail(value) {
+    const raw = String(value || '').trim();
+    if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(raw)) return raw.toLowerCase();
+    return phoneToDesktopAuthEmail(raw);
+  }
+
+  function getDesktopAuthUserLabel(session = desktopAuthState.session) {
+    const user = session?.user;
+    if (!user) return '';
+    return String(user.user_metadata?.phone || user.email || '已登录').trim();
+  }
+
+  function shortenDesktopAuthLabel(label) {
+    const raw = String(label || '').trim();
+    const digits = raw.replace(/\D/g, '');
+    if (digits.length >= 11) return `${digits.slice(0, 3)}****${digits.slice(-4)}`;
+    if (/@/.test(raw)) {
+      const [name, domain] = raw.split('@');
+      if (name && domain) return `${name.slice(0, 3)}***@${domain}`;
+    }
+    return raw.length > 18 ? `${raw.slice(0, 18)}…` : raw;
+  }
+
+  async function getDesktopAuthSession(options = {}) {
+    if (desktopAuthState.session && !options.force) return desktopAuthState.session;
+    const client = getDesktopAuthClient();
+    if (!client) return null;
+    try {
+      const { data } = await client.auth.getSession();
+      desktopAuthState.session = data?.session || null;
+      return desktopAuthState.session;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  async function getDesktopAuthToken() {
+    const session = await getDesktopAuthSession();
+    return session?.access_token || '';
+  }
+
+  window._getMingbookAuthToken = getDesktopAuthToken;
+
+  function setDesktopAuthError(text) {
+    desktopAuthState.error = text || '';
+    const el = $('#mbpAuthError');
+    if (!el) return;
+    el.textContent = desktopAuthState.error;
+    el.hidden = !desktopAuthState.error;
+  }
+
+  function updateDesktopQuotaDisplay(quota) {
+    if (quota) {
+      desktopAuthState.quota = {
+        ...(desktopAuthState.quota || {}),
+        ...quota,
+      };
+    }
+    const loggedIn = !!desktopAuthState.session?.user;
+    const statusWrap = document.querySelector('#aip-panel-chat .xb-status-hidden');
+    if (statusWrap) statusWrap.hidden = !loggedIn;
+    const quotaBar = $('#chat-quota-bar');
+    if (quotaBar) quotaBar.style.display = loggedIn && desktopAuthState.quota ? 'flex' : 'none';
+    const quotaText = $('#chat-quota-text');
+    if (quotaText) {
+      const remaining = desktopAuthState.quota?.dailyRemaining ?? desktopAuthState.quota?.remaining ?? '--';
+      const limit = desktopAuthState.quota?.dailyLimit ?? desktopAuthState.quota?.limit ?? '--';
+      quotaText.textContent = `${remaining} / ${limit}`;
+    }
+    const upgrade = $('#chat-quota-upgrade');
+    if (upgrade) upgrade.style.display = 'none';
+
+    const daily = $('#mbpAuthQuotaDaily');
+    if (daily) {
+      const remaining = desktopAuthState.quota?.dailyRemaining ?? '--';
+      const limit = desktopAuthState.quota?.dailyLimit ?? '--';
+      daily.textContent = `${remaining}/${limit}`;
+    }
+    const monthly = $('#mbpAuthQuotaMonthly');
+    if (monthly) {
+      const remaining = desktopAuthState.quota?.monthlyRemaining ?? '--';
+      const limit = desktopAuthState.quota?.monthlyLimit ?? '--';
+      monthly.textContent = `${remaining}/${limit}`;
+    }
+    const badge = $('#mbpAuthSessionBadge');
+    if (badge) badge.textContent = desktopAuthState.quota?.isMember ? '会员' : '账号';
+  }
+
+  window._updateQuotaDisplay = updateDesktopQuotaDisplay;
+
+  function renderDesktopAuth() {
+    const loggedIn = !!desktopAuthState.session?.user;
+    const trigger = $('#mbpAuthTrigger');
+    if (trigger) {
+      trigger.classList.toggle('is-logged-in', loggedIn);
+      trigger.setAttribute('aria-expanded', desktopAuthState.open ? 'true' : 'false');
+      trigger.disabled = desktopAuthState.loading;
+    }
+    const triggerLabel = $('#mbpAuthTriggerLabel');
+    if (triggerLabel) triggerLabel.textContent = loggedIn ? shortenDesktopAuthLabel(getDesktopAuthUserLabel()) : '登录/注册';
+    const triggerMeta = $('#mbpAuthTriggerMeta');
+    if (triggerMeta) triggerMeta.textContent = loggedIn ? '电脑端已登录' : '电脑端账号';
+
+    const overlay = $('#mbpAuthOverlay');
+    if (overlay) overlay.hidden = !desktopAuthState.open;
+    document.body.classList.toggle('mbp-auth-open', desktopAuthState.open);
+
+    const sessionCard = $('#mbpAuthSessionCard');
+    const formWrap = $('#mbpAuthFormWrap');
+    if (sessionCard) sessionCard.hidden = !loggedIn;
+    if (formWrap) formWrap.hidden = loggedIn;
+
+    const title = $('#mbpAuthTitle');
+    if (title) title.textContent = loggedIn ? '电脑端账号' : (desktopAuthState.mode === 'register' ? '电脑端注册' : '电脑端登录');
+
+    if (loggedIn) {
+      const label = getDesktopAuthUserLabel();
+      const sessionLabel = $('#mbpAuthSessionLabel');
+      if (sessionLabel) sessionLabel.textContent = shortenDesktopAuthLabel(label) || '已登录';
+      const sessionMeta = $('#mbpAuthSessionMeta');
+      if (sessionMeta) sessionMeta.textContent = '电脑端与手机端共用同一账号状态';
+      updateDesktopQuotaDisplay();
+    } else {
+      const loginTab = $('#mbpAuthModeLogin');
+      const registerTab = $('#mbpAuthModeRegister');
+      const isRegister = desktopAuthState.mode === 'register';
+      if (loginTab) {
+        loginTab.classList.toggle('is-active', !isRegister);
+        loginTab.setAttribute('aria-selected', !isRegister ? 'true' : 'false');
+      }
+      if (registerTab) {
+        registerTab.classList.toggle('is-active', isRegister);
+        registerTab.setAttribute('aria-selected', isRegister ? 'true' : 'false');
+      }
+      const accountLabel = $('#mbpAuthAccountLabel');
+      if (accountLabel) accountLabel.textContent = isRegister ? '手机号' : '手机号 / 邮箱';
+      const accountInput = $('#mbpAuthAccount');
+      if (accountInput) {
+        accountInput.placeholder = isRegister ? '请输入手机号' : '请输入手机号或邮箱';
+        accountInput.autocomplete = isRegister ? 'tel' : 'username';
+      }
+      const passwordInput = $('#mbpAuthPassword');
+      if (passwordInput) passwordInput.autocomplete = isRegister ? 'new-password' : 'current-password';
+      const submit = $('#mbpAuthSubmit');
+      if (submit) {
+        submit.textContent = desktopAuthState.loading ? '处理中...' : (isRegister ? '注册并登录' : '登录并继续');
+        submit.disabled = desktopAuthState.loading;
+      }
+      const note = $('#mbpAuthNote');
+      if (note) note.textContent = isRegister
+        ? '注册后会直接登录，同一账号可在电脑端和手机端共用。'
+        : '电脑端登录后，账号状态会和手机端保持连通。';
+    }
+
+    ['#mbpAuthClose', '#mbpAuthLogout', '#mbpAuthChangeAccount'].forEach((selector) => {
+      const el = $(selector);
+      if (el) el.disabled = desktopAuthState.loading;
+    });
+
+    setDesktopAuthError(desktopAuthState.error);
+  }
+
+  function focusDesktopAuthField() {
+    window.setTimeout(() => {
+      if (desktopAuthState.session?.user) {
+        $('#mbpAuthChangeAccount')?.focus();
+      } else {
+        $('#mbpAuthAccount')?.focus();
+      }
+    }, 24);
+  }
+
+  function openDesktopAuth(mode = 'login') {
+    if (!desktopAuthState.session?.user) desktopAuthState.mode = mode === 'register' ? 'register' : 'login';
+    desktopAuthState.open = true;
+    desktopAuthState.error = '';
+    renderDesktopAuth();
+    focusDesktopAuthField();
+  }
+
+  function closeDesktopAuth() {
+    desktopAuthState.open = false;
+    desktopAuthState.error = '';
+    renderDesktopAuth();
+  }
+
+  async function desktopFetchJson(path, options = {}) {
+    const method = options.method || (options.body ? 'POST' : 'GET');
+    const headers = options.body ? { 'Content-Type': 'application/json' } : { Accept: 'application/json' };
+    if (!options.noAuth) {
+      const token = await getDesktopAuthToken();
+      if (token) headers.Authorization = `Bearer ${token}`;
+    }
+    const response = await fetch(`${aiBackendBase}${path}`, {
+      method,
+      headers,
+      body: options.body ? JSON.stringify(options.body) : undefined,
+    });
+    const text = await response.text();
+    let data = {};
+    try {
+      data = text ? JSON.parse(text) : {};
+    } catch (_) {
+      data = { error: text || `服务异常 ${response.status}` };
+    }
+    if (!response.ok || data.error) throw new Error(data.error || `服务异常 ${response.status}`);
+    return data;
+  }
+
+  async function hydrateDesktopMemberStatus(options = {}) {
+    const session = await getDesktopAuthSession();
+    if (!session?.user || !state.chartRecordId) {
+      if (!session?.user) {
+        desktopAuthState.quota = null;
+        updateDesktopQuotaDisplay();
+      }
+      return null;
+    }
+    try {
+      const data = await desktopFetchJson(`/api/payments/member-status?chartRecordId=${encodeURIComponent(state.chartRecordId)}`);
+      updateDesktopQuotaDisplay(data.quota || null);
+      return data;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  async function submitDesktopAuth() {
+    const client = getDesktopAuthClient();
+    if (!client) {
+      setDesktopAuthError('登录组件加载失败，请刷新后重试');
+      return;
+    }
+    const account = String($('#mbpAuthAccount')?.value || '').trim();
+    const password = String($('#mbpAuthPassword')?.value || '');
+    const email = inputToDesktopAuthEmail(account);
+    const usingEmail = /@/.test(account);
+    if (desktopAuthState.mode === 'register' && usingEmail) {
+      setDesktopAuthError('注册请填写手机号');
+      return;
+    }
+    if (!email) {
+      setDesktopAuthError(desktopAuthState.mode === 'register' ? '请输入正确手机号' : '请输入正确手机号或邮箱');
+      return;
+    }
+    if (password.length < 6) {
+      setDesktopAuthError('密码至少 6 位');
+      return;
+    }
+    desktopAuthState.loading = true;
+    desktopAuthState.error = '';
+    renderDesktopAuth();
+    try {
+      if (desktopAuthState.mode === 'register') {
+        await desktopFetchJson('/api/auth/register-phone', {
+          method: 'POST',
+          body: { phone: account, password },
+          noAuth: true,
+        }).catch((error) => {
+          if (!/已注册|already|exists/i.test(error.message || '')) throw error;
+        });
+      }
+      const signed = await client.auth.signInWithPassword({ email, password });
+      if (signed.error) throw signed.error;
+      desktopAuthState.session = signed.data?.session || null;
+      desktopAuthState.error = '';
+      $('#mbpAuthAccount').value = '';
+      $('#mbpAuthPassword').value = '';
+      closeDesktopAuth();
+      if (state.chartRecordId) await hydrateDesktopMemberStatus({ force: true });
+      if (typeof window._chatPanelRefresh === 'function' && window._chartRecordId) window._chatPanelRefresh();
+    } catch (error) {
+      setDesktopAuthError(error.message || '登录失败');
+    } finally {
+      desktopAuthState.loading = false;
+      renderDesktopAuth();
+    }
+  }
+
+  async function signOutDesktopAuth(options = {}) {
+    const client = getDesktopAuthClient();
+    desktopAuthState.loading = true;
+    renderDesktopAuth();
+    try {
+      if (client?.auth?.signOut) await client.auth.signOut();
+      desktopAuthState.session = null;
+      desktopAuthState.quota = null;
+      desktopAuthState.mode = 'login';
+      desktopAuthState.error = '';
+      desktopAuthState.open = !!options.reopen;
+      updateDesktopQuotaDisplay();
+      if (typeof window._chatPanelRefresh === 'function' && window._chartRecordId) window._chatPanelRefresh();
+    } catch (error) {
+      setDesktopAuthError(error.message || '退出失败');
+    } finally {
+      desktopAuthState.loading = false;
+      renderDesktopAuth();
+      if (options.reopen) focusDesktopAuthField();
+    }
+  }
+
+  async function initDesktopAuth() {
+    if (desktopAuthReadyPromise) return desktopAuthReadyPromise;
+    const client = getDesktopAuthClient();
+    if (!client) {
+      renderDesktopAuth();
+      return null;
+    }
+    desktopAuthReadyPromise = client.auth.getSession().then(({ data }) => {
+      desktopAuthState.session = data?.session || null;
+      renderDesktopAuth();
+      if (desktopAuthState.session?.user && state.chartRecordId) hydrateDesktopMemberStatus({ force: true });
+      client.auth.onAuthStateChange((_event, session) => {
+        desktopAuthState.session = session || null;
+        if (!session?.user) desktopAuthState.quota = null;
+        renderDesktopAuth();
+        updateDesktopQuotaDisplay();
+        if (session?.user && state.chartRecordId) hydrateDesktopMemberStatus({ force: true });
+      });
+      return desktopAuthState.session;
+    }).catch(() => null);
+    return desktopAuthReadyPromise;
   }
 
   function indexToHour(index) {
@@ -4073,6 +4428,7 @@
       saveProfile();
       saveProfileToHistory(state.profile);
       renderChart();
+      if (desktopAuthState.session?.user) hydrateDesktopMemberStatus({ force: true });
       $('#chart')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
 
@@ -4121,6 +4477,35 @@
 
     $('#mbpExportPdf')?.addEventListener('click', downloadMingbookPdf);
 
+    $('#mbpAuthTrigger')?.addEventListener('click', () => {
+      openDesktopAuth(desktopAuthState.session?.user ? desktopAuthState.mode : 'login');
+    });
+    $('#mbpAuthClose')?.addEventListener('click', closeDesktopAuth);
+    $('#mbpAuthOverlay')?.addEventListener('click', (event) => {
+      if (event.target === $('#mbpAuthOverlay') && !desktopAuthState.loading) closeDesktopAuth();
+    });
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && desktopAuthState.open && !desktopAuthState.loading) closeDesktopAuth();
+    });
+    document.querySelectorAll('[data-auth-mode]').forEach((button) => {
+      button.addEventListener('click', () => {
+        if (desktopAuthState.loading) return;
+        desktopAuthState.mode = button.dataset.authMode === 'register' ? 'register' : 'login';
+        desktopAuthState.error = '';
+        renderDesktopAuth();
+        focusDesktopAuthField();
+      });
+    });
+    $('#mbpAuthSubmit')?.addEventListener('click', submitDesktopAuth);
+    $('#mbpAuthPassword')?.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter') {
+        event.preventDefault();
+        submitDesktopAuth();
+      }
+    });
+    $('#mbpAuthChangeAccount')?.addEventListener('click', () => signOutDesktopAuth({ reopen: true }));
+    $('#mbpAuthLogout')?.addEventListener('click', () => signOutDesktopAuth());
+
     let reportNavTicking = false;
     const queueReportNavSync = () => {
       if (reportNavTicking) return;
@@ -4139,7 +4524,13 @@
   }
 
   updateForm();
+  renderDesktopAuth();
   bindEvents();
   renderChart();
+  Promise.resolve(initDesktopAuth()).then(() => {
+    if (desktopAuthState.session?.user && state.chartRecordId) {
+      hydrateDesktopMemberStatus({ force: true });
+    }
+  });
 }());
 

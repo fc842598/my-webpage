@@ -49,6 +49,20 @@
     return (typeof buildChartPayload === 'function') ? buildChartPayload() : null;
   }
 
+  function _withAuthHeaders(baseHeaders) {
+    var headers = Object.assign({}, baseHeaders || {});
+    var getter = typeof window._getMingbookAuthToken === 'function' ? window._getMingbookAuthToken : null;
+    if (!getter) return Promise.resolve(headers);
+    return Promise.resolve(getter())
+      .then(function (token) {
+        if (token) headers.Authorization = 'Bearer ' + token;
+        return headers;
+      })
+      .catch(function () {
+        return headers;
+      });
+  }
+
   function _getTransientKey(chartRecordId) {
     return 'aip-chat-transient:' + chartRecordId;
   }
@@ -209,11 +223,17 @@
       ? (BASE + '/api/ai/chat/session')
       : (BASE + '/api/ai/chat/session?chartRecordId=' + encodeURIComponent(chartRecordId));
 
-    return fetch(url, usePost ? {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(requestBody),
-    } : { method: 'GET' })
+    return _withAuthHeaders(usePost ? { 'Content-Type': 'application/json' } : {})
+      .then(function (headers) {
+        return fetch(url, usePost ? {
+          method: 'POST',
+          headers: headers,
+          body: JSON.stringify(requestBody),
+        } : {
+          method: 'GET',
+          headers: headers,
+        });
+      })
       .then(_readJsonResponse)
       .then(function (data) {
         _sessionId = data.sessionId;
@@ -313,17 +333,20 @@
     _setRefreshEnabled(false);
     _appendTyping();
 
-    fetch(BASE + '/api/ai/chat/send', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        chartRecordId: payload.chartRecordId,
-        message: payload.message,
-        chartData: payload.chartData,
-        forceRefreshMemoryA: payload.forceRefreshMemoryA,
-        transientState: _loadTransientState(payload.chartRecordId),
-      }),
-    })
+    _withAuthHeaders({ 'Content-Type': 'application/json' })
+      .then(function (headers) {
+        return fetch(BASE + '/api/ai/chat/send', {
+          method: 'POST',
+          headers: headers,
+          body: JSON.stringify({
+            chartRecordId: payload.chartRecordId,
+            message: payload.message,
+            chartData: payload.chartData,
+            forceRefreshMemoryA: payload.forceRefreshMemoryA,
+            transientState: _loadTransientState(payload.chartRecordId),
+          }),
+        });
+      })
       .then(_readJsonResponse)
       .then(function (data) {
         _removeTyping();
