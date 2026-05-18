@@ -3474,7 +3474,7 @@ const WENTIAN_I18N_EN_STEM_BRANCH = {
 };
 
 const WENTIAN_I18N_EN_TERM_MAP = {
-  "天同": "Tian Tong", "禄存": "Lu Cun", "武曲": "Wu Qu", "天府": "Tian Fu", "擎羊": "Qing Yang", "左辅": "Zuo Fu", "太阳": "Tai Yang", "太阴": "Tai Yin", "地劫": "Di Jie", "贪狼": "Tan Lang", "天马": "Tian Ma", "右弼": "You Bi", "破军": "Po Jun", "陀罗": "Tuo Luo", "天机": "Tian Ji", "巨门": "Ju Men", "火星": "Huo Xing", "天钺": "Tian Yue", "空宫": "Empty", "地空": "Di Kong", "紫微": "Zi Wei", "天相": "Tian Xiang", "廉贞": "Lian Zhen", "文昌": "Wen Chang", "七杀": "Qi Sha", "文曲": "Wen Qu", "天梁": "Tian Liang", "铃星": "Ling Xing", "天魁": "Tian Kui",
+  "天同": "Tian Tong", "禄存": "Lu Cun", "武曲": "Wu Qu", "天府": "Tian Fu", "擎羊": "Qing Yang", "左辅": "Zuo Fu", "太阳": "Tai Yang", "太阴": "Tai Yin", "地劫": "Di Jie", "贪狼": "Tan Lang", "天马": "Tian Ma", "右弼": "You Bi", "破军": "Po Jun", "陀罗": "Tuo Luo", "天机": "Tian Ji", "巨门": "Ju Men", "火星": "Huo Xing", "天钺": "Tian Yue", "地空": "Di Kong", "紫微": "Zi Wei", "天相": "Tian Xiang", "廉贞": "Lian Zhen", "文昌": "Wen Chang", "七杀": "Qi Sha", "文曲": "Wen Qu", "天梁": "Tian Liang", "铃星": "Ling Xing", "天魁": "Tian Kui",
   "子女": "Children", "夫妻": "Spouse", "兄弟": "Siblings", "命宫": "Life Palace", "财帛": "Wealth", "父母": "Parents", "疾厄": "Health", "福德": "Fortune", "迁移": "Travel", "仆役": "Friends", "官禄": "Career", "田宅": "Property", "身宫": "Body Palace", "得": "Gain", "大子": "D.Child", "大夫": "D.Spouse", "大兄": "D.Sibling", "大命": "D.Life", "大财": "D.Wealth", "大父": "D.Parent", "大疾": "D.Health", "大福": "D.Fortune", "大迁": "D.Travel", "大仆": "D.Friends", "大官": "D.Career", "大田": "D.Property",
   "巽": "SE", "离": "S", "坤": "SW", "震": "E", "兑": "W", "艮": "NE", "坎": "N", "乾": "NW", "东南": "SE", "正南": "S", "西南": "SW", "正东": "E", "正西": "W", "东北": "NE", "正北": "N", "西北": "NW",
   "长女位": "1st Daughter", "二女位": "2nd Daughter", "母亲位": "Mother", "长子位": "1st Son", "三女位": "3rd Daughter", "三子位": "3rd Son", "二子位": "2nd Son", "父亲位": "Father", "长女": "1st Daughter", "二女": "2nd Daughter", "母亲": "Mother", "长子": "1st Son", "三女": "3rd Daughter", "三子": "3rd Son", "二子": "2nd Son", "父亲": "Father",
@@ -8125,7 +8125,7 @@ function renderWentianClassicPalaceCell(palace, activeBranch) {
     .join("");
   const majorHtml = (palace.majorStars || [])
     .map((star) => `<div class="fc-major-star">${escapeHtml(getWentianClassicStarText(star))}</div>`)
-    .join("") || `<div class="fc-major-star is-empty">空宫</div>`;
+    .join("");
   const minorHtml = [
     ...(palace.minorStars || []),
     ...(palace.adjectiveStars || palace.adjStars || []),
