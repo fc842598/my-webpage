@@ -5984,6 +5984,7 @@ function copyLiuyaoResult() {
 }
 
 const YANGZHAI_STORAGE_KEY = "wentian-yangzhai-state-v1";
+const YANGZHAI_STATE_VERSION = 2;
 const YANGZHAI_PALACES = [
   { key: "xun", gua: "巽", dir: "东南", role: "长女位", defaultItem: "长女" },
   { key: "li", gua: "离", dir: "正南", role: "二女位", defaultItem: "二女" },
@@ -6220,16 +6221,24 @@ function loadYangzhaiState() {
     const raw = typeof localStorage !== "undefined" ? localStorage.getItem(YANGZHAI_STORAGE_KEY) : "";
     const parsed = raw ? JSON.parse(raw) : null;
     if (parsed && typeof parsed === "object") {
-      return {
-        placements: normalizeYangzhaiPlacements(parsed.placements),
+      const placements = normalizeYangzhaiPlacements(parsed.placements);
+      const shouldClearLegacyDefault = !parsed.version && isYangzhaiDefaultPlacementSet(placements);
+      const state = {
+        version: YANGZHAI_STATE_VERSION,
+        placements: shouldClearLegacyDefault ? {} : placements,
         activePalace: parsed.activePalace || "xun",
         pendingItems: normalizeYangzhaiItems(parsed.pendingItems || parsed.pendingItem),
         expanded: parsed.expanded || {}
       };
+      if (shouldClearLegacyDefault && typeof localStorage !== "undefined") {
+        localStorage.setItem(YANGZHAI_STORAGE_KEY, JSON.stringify(state));
+      }
+      return state;
     }
   } catch (_) {}
   return {
-    placements: normalizeYangzhaiPlacements(YANGZHAI_DEFAULT_PLACEMENTS),
+    version: YANGZHAI_STATE_VERSION,
+    placements: {},
     activePalace: "xun",
     pendingItems: [],
     expanded: {}
@@ -6268,6 +6277,19 @@ function normalizeYangzhaiPlacements(placements = {}) {
     if (items.length) result[key] = items;
     return result;
   }, {});
+}
+
+function isYangzhaiDefaultPlacementSet(placements = {}) {
+  const current = normalizeYangzhaiPlacements(placements);
+  const defaults = normalizeYangzhaiPlacements(YANGZHAI_DEFAULT_PLACEMENTS);
+  const keys = new Set([...Object.keys(current), ...Object.keys(defaults)]);
+  if (!keys.size) return false;
+  for (const key of keys) {
+    const left = normalizeYangzhaiItems(current[key]).sort().join("|");
+    const right = normalizeYangzhaiItems(defaults[key]).sort().join("|");
+    if (left !== right) return false;
+  }
+  return true;
 }
 
 function getYangzhaiPlacementItems(key) {
