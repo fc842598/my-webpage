@@ -1851,6 +1851,54 @@
     return `${result.name}落在${fcActiveAge}岁流年位，主看当下应期与这一年的动静。`;
   }
 
+  function yijingFirstSentence(text, fallback = '') {
+    const source = String(text || '').replace(/\s+/g, ' ').trim();
+    if (!source) return fallback;
+    const match = source.match(/^(.{12,80}?[。！？；])/);
+    return match ? match[1] : source.slice(0, 72);
+  }
+
+  function yijingQuickRisk(text, result) {
+    const source = String(text || '').replace(/\s+/g, ' ').trim();
+    const risk = source.match(/(忌|怕|防|避|不宜|阻|孤|破|压力|波折|口舌|伤灾|争执)[^。！？；]{4,42}[。！？；]?/);
+    if (risk) return risk[0];
+    if (!result) return '排盘后显示提醒。';
+    if (fcActiveTab === '流年卦') return `${fcActiveAge}岁重点看当年动静，先验证过去，再看未来。`;
+    return `${result.name}要看它落在哪一位，先抓性格、选择和现实压力点。`;
+  }
+
+  function yijingQuickAction(result) {
+    if (!result) return '排盘后显示建议。';
+    if (fcActiveTab === '先天卦') return '先认清底色和优势，再决定哪些方向值得长期投入。';
+    if (fcActiveTab === '后天卦') return '把选择落到现实关系、事业和财务节奏里，不只看字面吉凶。';
+    return '把这一年当作验证点：先对照过去发生的事，再决定后面怎么走。';
+  }
+
+  function renderYijingTextSections(text, fallback = '排盘后显示对应卦位的逐条讲解。') {
+    const source = String(text || '').replace(/\r/g, '').trim();
+    if (!source) {
+      return `<section class="mbp-yijing-paragraph"><h4>完整讲解</h4><p>${escapeHtml(fallback)}</p></section>`;
+    }
+    const normalized = source.replace(/(^|\n)(原句[:：])/g, '\n\n$2');
+    const chunks = normalized.split(/\n{2,}/).map((item) => item.trim()).filter(Boolean);
+    return chunks.map((chunk, index) => {
+      const lines = chunk.split('\n').map((line) => line.trim()).filter(Boolean);
+      const first = lines[0] || '';
+      const isQuote = /^原句[:：]/.test(first);
+      const title = isQuote
+        ? first.replace(/^原句[:：]\s*/, '') || `原句 ${index + 1}`
+        : (index === 0 ? '重点讲解' : `细节 ${index + 1}`);
+      const bodyLines = isQuote ? lines.slice(1) : lines;
+      const body = bodyLines.join('\n').replace(/^讲解[:：]\s*/, '').trim() || first;
+      return `
+        <section class="mbp-yijing-paragraph">
+          <h4>${escapeHtml(title)}</h4>
+          <p>${escapeHtml(body).replace(/\n/g, '<br>')}</p>
+        </section>
+      `;
+    }).join('');
+  }
+
   function yijingLineHtml(result) {
     return (result?.lines || []).map((line) => {
       if (line === 'gap') return '<div class="mbp-yijing-gap"></div>';
@@ -1930,7 +1978,12 @@
     const masterTitle = $('#mbpYijingMasterTitle');
     const masterSummary = $('#mbpYijingMasterSummary');
     const masterText = $('#mbpYijingMasterText');
+    const quickOne = $('#mbpYijingQuickOne');
+    const quickRisk = $('#mbpYijingQuickRisk');
+    const quickAction = $('#mbpYijingQuickAction');
     const master = fcMasterEntry(result);
+    const guaciTextValue = fcGuaciText(result);
+    const masterBody = yijingMasterText(result);
 
     if (name) name.textContent = result?.name || '等待排盘';
     if (summary) summary.textContent = yijingAssistSummary(result);
@@ -1955,8 +2008,21 @@
     }
 
     if (guaci) {
-      const text = fcGuaciText(result);
-      guaci.textContent = text || (result ? '此卦暂无卦辞数据，可先参考上方命盘与五卷解读。' : '先完成排盘。');
+      guaci.textContent = guaciTextValue || (result ? '此卦暂无卦辞数据，可先参考上方命盘与五卷解读。' : '先完成排盘。');
+    }
+
+    if (quickOne) {
+      quickOne.textContent = result
+        ? yijingFirstSentence(master?.summary || guaciTextValue || yijingAssistSummary(result), yijingAssistSummary(result))
+        : '排盘后生成摘要。';
+    }
+    if (quickRisk) {
+      quickRisk.textContent = result
+        ? yijingQuickRisk(masterBody || guaciTextValue || master?.summary, result)
+        : '排盘后显示提醒。';
+    }
+    if (quickAction) {
+      quickAction.textContent = yijingQuickAction(result);
     }
 
     if (masterTitle) {
@@ -1966,8 +2032,10 @@
       masterSummary.textContent = master?.summary || (result ? '此卦暂无名师总论。' : '排盘后显示讲课式总论。');
     }
     if (masterText) {
-      const text = yijingMasterText(result);
-      masterText.textContent = text || (result ? '此卦暂无对应名师解读。' : '排盘后显示对应卦位的逐条讲解。');
+      masterText.innerHTML = renderYijingTextSections(
+        masterBody,
+        result ? '此卦暂无对应名师解读。' : '排盘后显示对应卦位的逐条讲解。'
+      );
     }
   }
 
