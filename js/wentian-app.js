@@ -3352,6 +3352,17 @@ const WENTIAN_I18N_EN_EXTRA = {
   "自下而上成爻，6/9 为动爻，动则成变卦。": "Lines build from bottom to top. 6/9 are moving lines.",
   "所问之事": "Question",
   "一句话写清楚所问": "Write one clear question",
+  "一句话写清楚所问，例如：本月是否推进某个项目？": "Write one clear question, e.g. should I move this project forward this month?",
+  "先写清一件事；空问、乱点、随便试，不起卦。": "Write one clear matter first. Empty, random, or test casts are blocked.",
+  "起卦前会先由大模型按“一事一占”审题。": "AI checks the question by the one-matter rule before casting.",
+  "正在请大模型审题，合格才起卦。": "AI is checking the question. Casting starts only if it passes.",
+  "改好后再次起卦会重新审题。": "The next cast will re-check the revised question.",
+  "请先写清楚要问的一件事。": "Write the one thing you want to ask first.",
+  "一句话只问一件具体事情，再起卦。": "Ask one specific matter in one sentence before casting.",
+  "问题还不够清楚，暂不起卦。": "The question is not clear enough. Casting is blocked.",
+  "审题通过，可以起卦。": "Question approved. You may cast.",
+  "大模型审题暂时没接上，暂不允许起卦。": "AI question check is unavailable, so casting is blocked for now.",
+  "请稍后再试。": "Try again shortly.",
   "起卦方式": "Casting Method",
   "在线投币": "Coin Cast",
   "手动起卦": "Manual",
@@ -3363,6 +3374,7 @@ const WENTIAN_I18N_EN_EXTRA = {
   "一键起完整卦": "Cast All Six",
   "清空重排": "Clear",
   "补全六爻": "Complete Lines",
+  "审题中…": "Checking...",
   "抛币中…": "Casting...",
   "卦已成": "Hexagram Ready",
   "向上滑动抛币": "Swipe Up to Cast",
@@ -6284,7 +6296,9 @@ function wentianHexLines(id, y, variant = 0) {
 }
 
 const LIUYAO_STORAGE_KEY = "wentian-liuyao-state-v1";
-const LIUYAO_DEFAULT_QUESTION = "事业近期是否适合推进新计划？";
+const LIUYAO_SAMPLE_QUESTION = "事业近期是否适合推进新计划？";
+const LIUYAO_DEFAULT_QUESTION = "";
+const LIUYAO_QUESTION_MAX_LENGTH = 120;
 const LIUYAO_VALUES = [7, 8, 9, 6];
 const LIUYAO_TOSS_ANIMATION_MS = 1000;
 const LIUYAO_SWIPE_THRESHOLD = 54;
@@ -6303,6 +6317,7 @@ let liuyaoState = null;
 let liuyaoTossTimer = null;
 let liuyaoTossAnimation = null;
 let liuyaoSwipeStart = null;
+let liuyaoQuestionGateLoading = false;
 
 function normalizeLiuyaoCast(raw) {
   const value = Number(raw?.value);
@@ -6313,13 +6328,33 @@ function normalizeLiuyaoCast(raw) {
   return { value, coins, manual: Boolean(raw?.manual), at: Number(raw?.at) || Date.now() };
 }
 
+function normalizeLiuyaoQuestion(value) {
+  return String(value || "").replace(/\s+/g, " ").trim().slice(0, LIUYAO_QUESTION_MAX_LENGTH);
+}
+
+function normalizeLiuyaoQuestionGate(raw, question) {
+  if (!raw || typeof raw !== "object") return null;
+  const gateQuestion = normalizeLiuyaoQuestion(raw.question || raw.normalizedQuestion || "");
+  if (gateQuestion && gateQuestion !== question) return null;
+  return {
+    question,
+    allowed: raw.allowed === true,
+    reason: normalizeLiuyaoQuestion(raw.reason || ""),
+    suggestion: normalizeLiuyaoQuestion(raw.suggestion || ""),
+    labels: Array.isArray(raw.labels) ? raw.labels.map(normalizeLiuyaoQuestion).filter(Boolean).slice(0, 4) : [],
+    checkedAt: Number(raw.checkedAt) || Date.now(),
+    retryable: raw.retryable === true,
+  };
+}
+
 function makeLiuyaoDefaultState() {
   return {
     recordId: makeWentianUuid(),
     mode: "online",
     question: LIUYAO_DEFAULT_QUESTION,
     createdAt: Date.now(),
-    casts: []
+    casts: [],
+    questionGate: null
   };
 }
 
@@ -6328,12 +6363,16 @@ function getLiuyaoState() {
   try {
     const parsed = JSON.parse(localStorage.getItem(LIUYAO_STORAGE_KEY) || "null");
     if (parsed && typeof parsed === "object") {
+      const casts = Array.isArray(parsed.casts) ? parsed.casts.slice(0, 6).map(normalizeLiuyaoCast) : [];
+      const storedQuestion = normalizeLiuyaoQuestion(parsed.question || LIUYAO_DEFAULT_QUESTION);
+      const question = storedQuestion === LIUYAO_SAMPLE_QUESTION && !casts.filter(Boolean).length ? "" : storedQuestion;
       liuyaoState = {
         recordId: isWentianUuid(parsed.recordId) ? parsed.recordId : makeWentianUuid(),
         mode: parsed.mode === "manual" ? "manual" : "online",
-        question: String(parsed.question || LIUYAO_DEFAULT_QUESTION).slice(0, 80),
+        question,
         createdAt: Number(parsed.createdAt) || Date.now(),
-        casts: Array.isArray(parsed.casts) ? parsed.casts.slice(0, 6).map(normalizeLiuyaoCast) : []
+        casts,
+        questionGate: normalizeLiuyaoQuestionGate(parsed.questionGate, question)
       };
       return liuyaoState;
     }
@@ -6352,7 +6391,23 @@ function saveLiuyaoQuestionFromDom() {
   const input = document.getElementById("liuyao-question");
   if (!input) return;
   const state = getLiuyaoState();
-  state.question = String(input.value || "").slice(0, 80);
+  const nextQuestion = normalizeLiuyaoQuestion(input.value);
+  if (state.question !== nextQuestion) {
+    const hadCasts = getLiuyaoValidCasts(state).length > 0;
+    state.question = nextQuestion;
+    state.questionGate = null;
+    if (hadCasts) {
+      clearLiuyaoTossAnimation();
+      state.recordId = makeWentianUuid();
+      state.createdAt = Date.now();
+      state.casts = [];
+    }
+    const status = document.getElementById("liuyao-question-status");
+    if (status) {
+      status.textContent = "改好后再次起卦会重新审题。";
+      status.dataset.tone = "hint";
+    }
+  }
   saveLiuyaoState();
 }
 
@@ -6396,6 +6451,96 @@ function makeLiuyaoCoinCast() {
   return { value: coins.reduce((sum, coin) => sum + coin, 0), coins, manual: false, at: Date.now() };
 }
 
+function setLiuyaoQuestionGateResult(result) {
+  const state = getLiuyaoState();
+  const question = normalizeLiuyaoQuestion(state.question);
+  state.questionGate = {
+    question,
+    allowed: result?.allowed === true,
+    reason: normalizeLiuyaoQuestion(result?.reason || ""),
+    suggestion: normalizeLiuyaoQuestion(result?.suggestion || ""),
+    labels: Array.isArray(result?.labels) ? result.labels.map(normalizeLiuyaoQuestion).filter(Boolean).slice(0, 4) : [],
+    checkedAt: Date.now(),
+    retryable: result?.retryable === true,
+  };
+  saveLiuyaoState();
+  return state.questionGate;
+}
+
+function getLiuyaoQuestionGateMessage(state = getLiuyaoState()) {
+  if (liuyaoQuestionGateLoading) {
+    return { tone: "loading", text: "正在请大模型审题，合格才起卦。" };
+  }
+  const question = normalizeLiuyaoQuestion(state.question);
+  const gate = normalizeLiuyaoQuestionGate(state.questionGate, question);
+  if (!question) {
+    return { tone: "hint", text: "先写清一件事；空问、乱点、随便试，不起卦。" };
+  }
+  if (!gate) {
+    return { tone: "hint", text: "起卦前会先由大模型按“一事一占”审题。" };
+  }
+  if (gate.allowed) {
+    return { tone: "ok", text: gate.reason || "审题通过，可以起卦。" };
+  }
+  return {
+    tone: "error",
+    text: `${gate.reason || "问题还不够清楚，暂不起卦。"}${gate.suggestion ? ` ${gate.suggestion}` : ""}`,
+  };
+}
+
+function renderLiuyaoQuestionGateStatus(state = getLiuyaoState()) {
+  const status = getLiuyaoQuestionGateMessage(state);
+  return `<p id="liuyao-question-status" class="liuyao-question-status" data-tone="${escapeHtml(status.tone)}">${escapeHtml(status.text)}</p>`;
+}
+
+async function ensureLiuyaoQuestionAllowed() {
+  if (liuyaoQuestionGateLoading) return false;
+  saveLiuyaoQuestionFromDom();
+  const state = getLiuyaoState();
+  const question = normalizeLiuyaoQuestion(state.question);
+  if (!question) {
+    setLiuyaoQuestionGateResult({
+      allowed: false,
+      reason: "请先写清楚要问的一件事。",
+      suggestion: "一句话只问一件具体事情，再起卦。",
+      labels: ["一事一占"],
+    });
+    navigate("screen-17", false);
+    return false;
+  }
+  const cached = normalizeLiuyaoQuestionGate(state.questionGate, question);
+  if (cached?.allowed) return true;
+  if (cached && !cached.retryable) {
+    navigate("screen-17", false);
+    return false;
+  }
+
+  liuyaoQuestionGateLoading = true;
+  navigate("screen-17", false);
+  try {
+    const data = await wentianPostJson("/api/ai/liuyao-question", { question }, 45000, 0);
+    const gate = setLiuyaoQuestionGateResult({
+      allowed: data?.allowed === true,
+      reason: data?.reason || (data?.allowed ? "审题通过，可以起卦。" : "问题还不够清楚，暂不起卦。"),
+      suggestion: data?.suggestion || "",
+      labels: data?.labels || [],
+    });
+    return gate.allowed;
+  } catch (_err) {
+    setLiuyaoQuestionGateResult({
+      allowed: false,
+      reason: "大模型审题暂时没接上，暂不允许起卦。",
+      suggestion: "请稍后再试。",
+      labels: ["审题失败"],
+      retryable: true,
+    });
+    return false;
+  } finally {
+    liuyaoQuestionGateLoading = false;
+    navigate("screen-17", false);
+  }
+}
+
 function prepareLiuyaoOnlineTossState() {
   saveLiuyaoQuestionFromDom();
   const state = getLiuyaoState();
@@ -6422,7 +6567,7 @@ function finishLiuyaoAnimatedToss() {
   navigate(state.casts.length >= 6 ? "screen-20" : "screen-17", false);
 }
 
-function startLiuyaoAnimatedToss() {
+function beginLiuyaoAnimatedToss() {
   if (liuyaoTossAnimation?.active) return false;
   const state = prepareLiuyaoOnlineTossState();
   if (state.casts.length >= 6) return false;
@@ -6439,7 +6584,13 @@ function startLiuyaoAnimatedToss() {
   return true;
 }
 
-function tossLiuyaoLine(all = false) {
+async function startLiuyaoAnimatedToss() {
+  if (!(await ensureLiuyaoQuestionAllowed())) return false;
+  return beginLiuyaoAnimatedToss();
+}
+
+async function tossLiuyaoLine(all = false) {
+  if (!(await ensureLiuyaoQuestionAllowed())) return false;
   clearLiuyaoTossAnimation();
   const state = prepareLiuyaoOnlineTossState();
   do {
@@ -6447,9 +6598,11 @@ function tossLiuyaoLine(all = false) {
   } while (all && state.casts.length < 6);
   saveLiuyaoState();
   navigate(state.casts.length >= 6 ? "screen-20" : "screen-17", false);
+  return true;
 }
 
-function cycleLiuyaoManualLine(index) {
+async function cycleLiuyaoManualLine(index) {
+  if (!(await ensureLiuyaoQuestionAllowed())) return false;
   clearLiuyaoTossAnimation();
   saveLiuyaoQuestionFromDom();
   const state = getLiuyaoState();
@@ -6460,6 +6613,16 @@ function cycleLiuyaoManualLine(index) {
   state.casts[index] = normalizeLiuyaoCast({ value: nextValue, manual: true, at: Date.now() });
   saveLiuyaoState();
   navigate("screen-17", false);
+  return true;
+}
+
+async function showLiuyaoResultIfAllowed() {
+  if (!(await ensureLiuyaoQuestionAllowed())) return false;
+  if (getLiuyaoResult()) {
+    navigate("screen-20", false);
+    return true;
+  }
+  return false;
 }
 
 function getLiuyaoLineType(value) {
@@ -6562,7 +6725,7 @@ function renderLiuyaoCoinRow(state, options = {}) {
   const last = getLiuyaoValidCasts(state).at(-1);
   const tossing = liuyaoTossAnimation?.active && state.mode === "online";
   const progress = getLiuyaoProgress(state);
-  const disabled = state.mode !== "online" || progress >= 6 || options.complete;
+  const disabled = state.mode !== "online" || progress >= 6 || options.complete || options.disabled;
   const coins = tossing ? liuyaoTossAnimation.cast.coins : (last?.coins || [3, 2, 3]);
   const label = tossing
     ? `抛币中，正在定第 ${Math.min(progress + 1, 6)} 爻`
@@ -6597,6 +6760,8 @@ function sourceLiuyaoCastScreen() {
   const progress = getLiuyaoProgress(state);
   const complete = progress === 6 && casts.length >= 6 && casts.every(Boolean);
   const tossing = liuyaoTossAnimation?.active && state.mode === "online";
+  const gateBusy = liuyaoQuestionGateLoading;
+  const actionBusy = tossing || gateBusy;
   return `
     ${figBox("ly17-bg", 0, 0, 390, 1180, "", "background:linear-gradient(180deg,#fffdf8 0%,#fbf7ef 50%,#f3eadc 100%);")}
     ${wentianSimpleHeader("ly17", "六爻占卜")}
@@ -6608,11 +6773,12 @@ function sourceLiuyaoCastScreen() {
           <strong>先定一问，再起六爻</strong>
           <em>自下而上成爻，6/9 为动爻，动则成变卦。</em>
         </div>
-        ${renderLiuyaoCoinRow(state, { complete })}
+        ${renderLiuyaoCoinRow(state, { complete, disabled: gateBusy })}
       </div>
       <label class="liuyao-question-card">
         <span>所问之事</span>
-        <textarea id="liuyao-question" maxlength="80" rows="2" placeholder="一句话写清楚所问">${escapeHtml(getLiuyaoQuestionInputValue(state))}</textarea>
+        <textarea id="liuyao-question" maxlength="${LIUYAO_QUESTION_MAX_LENGTH}" rows="2" placeholder="一句话写清楚所问，例如：本月是否推进某个项目？">${escapeHtml(getLiuyaoQuestionInputValue(state))}</textarea>
+        ${renderLiuyaoQuestionGateStatus(state)}
       </label>
       <div class="liuyao-mode-card">
         <span>起卦方式</span>
@@ -6626,11 +6792,11 @@ function sourceLiuyaoCastScreen() {
           <button type="button" class="primary" data-action="liuyao-show-result">查看卦象解读</button>
           <button type="button" data-action="liuyao-copy">复制卦象</button>
         ` : state.mode === "online" ? `
-          <button type="button" class="primary" data-action="liuyao-toss" ${tossing ? "disabled" : ""}>${tossing ? "抛币中…" : `投第 ${progress + 1} 爻`}</button>
-          <button type="button" data-action="liuyao-toss-all" ${tossing ? "disabled" : ""}>一键起完整卦</button>
+          <button type="button" class="primary" data-action="liuyao-toss" ${actionBusy ? "disabled" : ""}>${gateBusy ? "审题中…" : tossing ? "抛币中…" : `投第 ${progress + 1} 爻`}</button>
+          <button type="button" data-action="liuyao-toss-all" ${actionBusy ? "disabled" : ""}>一键起完整卦</button>
         ` : `
-          <button type="button" class="primary" ${progress === 6 ? 'data-action="liuyao-show-result"' : "disabled"}>${progress === 6 ? "查看卦象解读" : "补全六爻"}</button>
-          <button type="button" data-action="liuyao-reset">清空重排</button>
+          <button type="button" class="primary" ${progress === 6 && !actionBusy ? 'data-action="liuyao-show-result"' : "disabled"}>${gateBusy ? "审题中…" : progress === 6 ? "查看卦象解读" : "补全六爻"}</button>
+          <button type="button" data-action="liuyao-reset" ${gateBusy ? "disabled" : ""}>清空重排</button>
         `}
       </div>
       <div class="liuyao-progress-card">
@@ -6809,6 +6975,7 @@ function copyLiuyaoResult() {
 
 function canUseLiuyaoSwipeCaster(target) {
   if (!target || target.getAttribute("aria-disabled") === "true") return false;
+  if (liuyaoQuestionGateLoading) return false;
   const state = getLiuyaoState();
   return state.mode === "online" && getLiuyaoProgress(state) < 6 && !liuyaoTossAnimation?.active;
 }
@@ -9856,8 +10023,7 @@ document.addEventListener("click", (event) => {
     return;
   }
   if (earlyAction === "liuyao-show-result") {
-    saveLiuyaoQuestionFromDom();
-    if (getLiuyaoResult()) navigate("screen-20", false);
+    showLiuyaoResultIfAllowed();
     return;
   }
   if (earlyAction === "liuyao-reset") {

@@ -3839,6 +3839,26 @@ html[data-wentian-language="en"] .liuren-orbit i {
   box-shadow: 0 0 0 2px rgba(194, 149, 60, .13);
 }
 
+.liuyao-question-status {
+  margin: -1px 2px 0;
+  color: #8f867b;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.45;
+}
+
+.liuyao-question-status[data-tone="ok"] {
+  color: #3e7c55;
+}
+
+.liuyao-question-status[data-tone="error"] {
+  color: #a34436;
+}
+
+.liuyao-question-status[data-tone="loading"] {
+  color: #9a681c;
+}
+
 .liuyao-mode-card {
   display: grid;
   gap: 10px;
