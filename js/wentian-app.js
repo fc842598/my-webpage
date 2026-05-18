@@ -1036,6 +1036,7 @@ const wentianPasswordState = {
   loading: false,
   status: "",
   error: "",
+  tone: "",
 };
 let wentianLogoutConfirmOpen = false;
 const wentianInviteState = {
@@ -2730,6 +2731,7 @@ const WENTIAN_I18N = {
     "昵称": "Nickname",
     "邮箱": "Email",
     "手机号": "Phone",
+    "手机号 / 邮箱": "Phone / Email",
     "账号已登录，信息会用于支付与邀请展示": "Signed in. Info is used for payments and invites.",
     "未登录，本页先保存本机资料": "Not signed in. Save local profile first.",
     "保存后用于档案、昵称、邀请展示；登录账号以登录方式页为准。": "Used for files, nickname, and invites. Account identity is managed by sign-in.",
@@ -2741,6 +2743,9 @@ const WENTIAN_I18N = {
     "注册": "Register",
     "密码": "Password",
     "请输入手机号": "Enter phone number",
+    "请输入手机号或邮箱": "Enter phone number or email",
+    "请输入正确手机号或邮箱": "Enter a valid phone number or email",
+    "注册请填写手机号": "Use a phone number to register",
     "至少 6 位": "At least 6 characters",
     "处理中...": "Processing...",
     "注册并登录": "Register and sign in",
@@ -2757,18 +2762,18 @@ const WENTIAN_I18N = {
     "当前账号来源": "Current account source",
     "可继续使用 Google 登录": "Google sign-in remains available",
     "账号密码": "Account Password",
-    "用于手机号登录和后续安全验证": "For phone sign-in and security checks",
+    "用于邮箱或手机号登录和后续安全验证": "Email/phone sign-in & security",
     "可修改": "Editable",
     "续费会员": "Renew Membership",
     "开通会员": "Open Membership",
     "支付记录": "Payment Records",
     "登录后设置账号密码": "Sign in to set account password",
-    "密码会绑定到你的问天账号，用于手机号登录、支付记录和会员权益。": "The password is linked to your Wentian account for phone sign-in, payments, and membership.",
+    "密码会绑定到你的问天账号，用于邮箱或手机号登录、支付记录和会员权益。": "The password is linked to your Wentian account for email or phone sign-in, payments, and membership.",
     "新密码": "New Password",
     "确认密码": "Confirm Password",
     "再次输入": "Enter again",
     "安全提示": "Security Tip",
-    "密码仅用于账号登录。设置后可继续使用 Google 或手机号密码登录。": "Password is only for account sign-in. You can still use Google or phone password sign-in.",
+    "密码仅用于账号登录。设置后可继续使用 Google、邮箱或手机号密码登录。": "Password is only for account sign-in. You can still use Google, email, or phone password sign-in.",
     "保存中...": "Saving...",
     "保存密码": "Save Password",
     "确认退出登录？": "Sign out?",
@@ -3741,6 +3746,12 @@ function phoneToWentianEmail(phone) {
   return `phone_${digits}@yuetianai.local`;
 }
 
+function inputToWentianAuthEmail(value) {
+  const raw = String(value || "").trim();
+  if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(raw)) return raw.toLowerCase();
+  return phoneToWentianEmail(raw);
+}
+
 function getWentianAuthUserLabel(session = wentianAuthSession) {
   const user = session?.user;
   if (!user) return "";
@@ -3839,9 +3850,15 @@ async function submitWentianAuth(mode = wentianAuthState.mode) {
   }
   const phone = (document.getElementById("wentian-auth-phone")?.value || "").trim();
   const password = document.getElementById("wentian-auth-password")?.value || "";
-  const email = phoneToWentianEmail(phone);
+  const email = inputToWentianAuthEmail(phone);
+  const usingEmail = /@/.test(phone);
+  if (mode === "register" && usingEmail) {
+    wentianAuthState.error = "注册请填写手机号";
+    navigate("screen-40", false);
+    return;
+  }
   if (!email) {
-    wentianAuthState.error = "请输入正确手机号";
+    wentianAuthState.error = mode === "register" ? "请输入正确手机号" : "请输入正确手机号或邮箱";
     navigate("screen-40", false);
     return;
   }
@@ -3931,6 +3948,7 @@ function closeWentianLogoutConfirm() {
 function setWentianPasswordStatus(text, tone = "") {
   wentianPasswordState.status = text || "";
   wentianPasswordState.error = tone === "error" ? text || "" : "";
+  wentianPasswordState.tone = tone || "";
   const el = document.getElementById("wentian-password-status");
   if (!el) return;
   el.textContent = text || "";
@@ -3938,6 +3956,7 @@ function setWentianPasswordStatus(text, tone = "") {
 }
 
 async function submitWentianPasswordForm() {
+  if (wentianPasswordState.loading) return;
   const password = document.getElementById("wentian-password-new")?.value || "";
   const confirm = document.getElementById("wentian-password-confirm")?.value || "";
   if (password.length < 6) {
@@ -5250,7 +5269,7 @@ function sourceLoginMethodsScreen() {
       ${figText("source-login-member-text", member.isMember ? "问天会员" : "免费账号", 122, 204, 86, 11, member.isMember ? "#9f3d2e" : "#9b742e", 800, "center")}
 
       ${figBox("source-login-method-card", 24, 274, 342, 196, "", "border-radius:18px;background:#fff;box-shadow:0 6px 16px rgba(74,55,32,.06);border:1px solid #eadfce;")}
-      ${[["手机号密码", phone || "未绑定手机号", provider === "email" || phone ? "已启用" : "可用", "#5f8745"], ["Google 登录", provider === "google" ? "当前账号来源" : "可继续使用 Google 登录", provider === "google" ? "已启用" : "可用", "#9b742e"], ["账号密码", "用于手机号登录和后续安全验证", "可修改", "#9b742e"]].map(([title, desc, badge, color], index) => {
+      ${[["手机号密码", phone || "未绑定手机号", provider === "email" || phone ? "已启用" : "可用", "#5f8745"], ["Google 登录", provider === "google" ? "当前账号来源" : "可继续使用 Google 登录", provider === "google" ? "已启用" : "可用", "#9b742e"], ["账号密码", "用于邮箱或手机号登录和后续安全验证", "可修改", "#9b742e"]].map(([title, desc, badge, color], index) => {
         const y = 274 + index * 64;
         return `
           ${index ? figLine(`source-login-method-line-${index}`, 46, y, 298, "#eee8df") : ""}
@@ -5258,6 +5277,8 @@ function sourceLoginMethodsScreen() {
           ${figText(`source-login-method-desc-${index}`, escapeHtml(desc), 48, y + 40, 210, 11, "#8f857a", 700)}
           ${figBox(`source-login-method-badge-${index}`, 276, y + 22, 54, 22, "", `border-radius:11px;background:#f6f2e9;`)}
           ${figText(`source-login-method-badge-text-${index}`, badge, 276, y + 28, 54, 10, color, 900, "center")}
+          ${index === 2 ? figText("source-login-method-arrow-2", "›", 336, y + 22, 12, 18, "#aaa196", 900, "center") : ""}
+          ${index === 2 ? figButton("source-login-method-hit-2", 24, y, 342, 64, 'data-route="screen-41" aria-label="设置密码"') : ""}
         `;
       }).join("")}
 
@@ -5286,8 +5307,8 @@ function sourceLoginMethodsScreen() {
     ${figBox("source-login-card", 24, 128, 342, 390, "", "border:1px solid #e2d8c8;border-radius:18px;background:#fff;box-shadow:0 8px 20px rgba(74,55,32,.08);")}
     <button class="wentian-auth-tab ${!isRegister ? "is-active" : ""}" type="button" data-action="wentian-auth-mode" data-auth-mode="login" style="left:50px;top:154px;width:136px">登录</button>
     <button class="wentian-auth-tab ${isRegister ? "is-active" : ""}" type="button" data-action="wentian-auth-mode" data-auth-mode="register" style="left:204px;top:154px;width:136px">注册</button>
-    ${figText("source-login-phone-label", "手机号", 50, 224, 88, 14, "#6e6254", 800)}
-    <input id="wentian-auth-phone" class="wentian-auth-input" inputmode="tel" autocomplete="tel" style="left:50px;top:248px;width:290px" placeholder="请输入手机号">
+    ${figText("source-login-phone-label", isRegister ? "手机号" : "手机号 / 邮箱", 50, 224, 110, 14, "#6e6254", 800)}
+    <input id="wentian-auth-phone" class="wentian-auth-input" inputmode="${isRegister ? "tel" : "email"}" autocomplete="${isRegister ? "tel" : "username"}" style="left:50px;top:248px;width:290px" placeholder="${isRegister ? "请输入手机号" : "请输入手机号或邮箱"}">
     ${figText("source-login-password-label", "密码", 50, 318, 88, 14, "#6e6254", 800)}
     <input id="wentian-auth-password" class="wentian-auth-input" type="password" autocomplete="${isRegister ? "new-password" : "current-password"}" style="left:50px;top:342px;width:290px" placeholder="至少 6 位">
     ${wentianAuthState.error ? figText("source-login-error", escapeHtml(wentianAuthState.error), 50, 404, 290, 13, "#a94437", 700, "center", "line-height:1.35;") : (pendingInviteCode ? figText("source-login-invite", `已记录邀请码 ${escapeHtml(pendingInviteCode)}，登录后自动绑定`, 50, 404, 290, 13, "#9b742e", 700, "center", "line-height:1.35;") : "")}
@@ -5311,7 +5332,7 @@ function sourcePasswordSettingsScreen() {
     ${figText("source-password-title", "设置密码", 0, 56, 390, 22, "#1f1d1a", 900, "center")}
     ${figBox("source-password-login-card", 24, 136, 342, 178, "", "border-radius:18px;background:#fff;box-shadow:0 8px 18px rgba(74,55,32,.08);border:1px solid #eadfce;")}
     ${figText("source-password-login-title", "登录后设置账号密码", 48, 172, 190, 18, "#25211d", 900)}
-    ${figText("source-password-login-desc", "密码会绑定到你的问天账号，用于手机号登录、支付记录和会员权益。", 48, 210, 280, 13, "#756d63", 700, "left", "line-height:1.45;")}
+    ${figText("source-password-login-desc", "密码会绑定到你的问天账号，用于邮箱或手机号登录、支付记录和会员权益。", 48, 210, 280, 13, "#756d63", 700, "left", "line-height:1.45;")}
     ${figBox("source-password-login-btn", 48, 260, 150, 38, "", "border-radius:19px;background:#b74e39;")}
     ${figButton("source-password-login-hit", 48, 260, 150, 38, 'data-route="screen-40"')}
     ${figText("source-password-login-text", "登录 / 注册", 48, 272, 150, 12, "#fff", 900, "center")}
@@ -5333,8 +5354,8 @@ function sourcePasswordSettingsScreen() {
     <input id="wentian-password-confirm" class="wentian-profile-input" type="password" style="left:132px;top:344px;width:214px" placeholder="再次输入" autocomplete="new-password">
     ${figBox("source-password-tip", 24, 438, 342, 86, "", "border-radius:16px;background:#fffaf2;border:1px solid #ead9bd;")}
     ${figText("source-password-tip-title", "安全提示", 46, 460, 90, 15, "#25211d", 900)}
-    ${figText("source-password-tip-text", "密码仅用于账号登录。设置后可继续使用 Google 或手机号密码登录。", 46, 490, 286, 13, "#756d63", 700, "left", "line-height:1.45;")}
-    <div id="wentian-password-status" class="wentian-profile-status" style="top:650px">${escapeHtml(wentianPasswordState.status || "")}</div>
+    ${figText("source-password-tip-text", "密码仅用于账号登录。设置后可继续使用 Google、邮箱或手机号密码登录。", 46, 490, 286, 13, "#756d63", 700, "left", "line-height:1.45;")}
+    <div id="wentian-password-status" class="wentian-profile-status" data-tone="${escapeHtml(wentianPasswordState.tone || "")}" style="top:650px">${escapeHtml(wentianPasswordState.status || "")}</div>
     ${figBox("source-password-save", 42, 704, 306, 50, "", `border-radius:25px;background:${wentianPasswordState.loading ? "#d8c7aa" : "#c09a49"};box-shadow:0 8px 18px rgba(130,91,31,.12);`)}
     ${figButton("source-password-save-hit", 42, 704, 306, 50, 'data-action="wentian-password-save"')}
     ${figText("source-password-save-text", wentianPasswordState.loading ? "保存中..." : "保存密码", 42, 719, 306, 14, "#fff", 900, "center")}
