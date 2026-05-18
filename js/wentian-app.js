@@ -771,7 +771,7 @@ function sourceAiChatScreen(screen) {
     ${figText("source-4-record", "⋯", 344, 31, 22, 22, "#6f665d", 800, "center")}
     <div id="wentian-chat-status" class="wentian-chat-status">正在接入许半仙…</div>
     <div id="wentian-chat-messages" class="wentian-chat-log" aria-live="polite"></div>
-    ${figText("source-4-faq-title", "常问", 22, 498, 60, 13, "#25211d", 800)}
+    ${figText("source-4-faq-title", "常问", 22, 450, 60, 13, "#25211d", 800)}
     <div class="wentian-chat-starters" aria-label="常见问题分类">
       ${faqGroups.map((group) => `
         <details class="wentian-chat-faq-group">
@@ -787,10 +787,10 @@ function sourceAiChatScreen(screen) {
         </details>
       `).join("")}
     </div>
-    ${figBox("source-4-input-bg", 0, 642, 390, 113, "", "background:#f7f3ec;box-shadow:0 -1px 0 rgba(110,82,38,.08);")}
+    ${figBox("source-4-input-bg", 0, 748, 390, 96, "", "background:#f7f3ec;box-shadow:0 -1px 0 rgba(110,82,38,.08);")}
     <input id="wentian-chat-input" class="wentian-chat-field" placeholder="问一问" autocomplete="off">
     <button id="wentian-chat-send" class="wentian-chat-send" type="button" data-action="wentian-chat-send" aria-label="发送">↑</button>
-    ${figText("source-4-disclaimer", "内容由AI生成，仅供娱乐参考", 0, 728, 390, 10, "#b8b0a7", 400, "center")}
+    ${figText("source-4-disclaimer", "内容由AI生成，仅供娱乐参考", 0, 818, 390, 10, "#b8b0a7", 400, "center")}
   `;
 }
 
