@@ -3729,10 +3729,19 @@
 
   function setDecodeAllButtonsBusy(busy, label = '') {
     document.querySelectorAll('[data-decode-all]').forEach((button) => {
-      if (!button.dataset.defaultText) button.dataset.defaultText = button.textContent.trim();
+      if (!button.dataset.defaultText) {
+        button.dataset.defaultText = button.textContent.trim();
+        button.dataset.defaultHtml = button.innerHTML;
+      }
       button.disabled = busy;
       button.classList.toggle('is-running', busy);
-      button.textContent = busy ? (label || '生成中') : button.dataset.defaultText;
+      if (busy) {
+        button.textContent = label || '生成中';
+      } else if (button.dataset.defaultHtml) {
+        button.innerHTML = button.dataset.defaultHtml;
+      } else {
+        button.textContent = button.dataset.defaultText;
+      }
     });
   }
 
