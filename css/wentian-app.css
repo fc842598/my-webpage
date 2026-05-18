@@ -449,6 +449,64 @@ button {
   pointer-events: none;
 }
 
+html[lang="en"] .fig-text {
+  line-height: 1.18;
+}
+
+html[lang="en"] [data-node-id="source-1-recommend-title"] {
+  width: 180px !important;
+  font-size: 20px !important;
+}
+
+html[lang="en"] [data-node-id="source-25-gender-text-0"],
+html[lang="en"] [data-node-id="source-25-gender-text-1"] {
+  font-size: 8px !important;
+}
+
+html[lang="en"] [data-node-id="source-31-stat-count-1"] {
+  font-size: 16px !important;
+}
+
+html[lang="en"] [data-node-id^="yz42-gua-"],
+html[lang="en"] [data-node-id^="yz44-gua-"] {
+  font-size: 9px !important;
+  line-height: 1.05 !important;
+}
+
+html[lang="en"] [data-node-id="wt15-paper"] {
+  left: 82px !important;
+  width: 226px !important;
+}
+
+html[lang="en"] [data-node-id="wt15-paper-title"] {
+  left: 116px !important;
+  width: 128px !important;
+  font-size: 11px !important;
+}
+
+html[lang="en"] [data-node-id="wt15-poem"] {
+  left: 112px !important;
+  top: 254px !important;
+  width: 166px !important;
+  font-size: 11px !important;
+  line-height: 1.35 !important;
+  text-align: left !important;
+}
+
+html[lang="en"] [data-node-id="wt15-side-copy"] {
+  left: 112px !important;
+  top: 414px !important;
+  width: 166px !important;
+  font-size: 10px !important;
+  line-height: 1.25 !important;
+  text-align: center !important;
+}
+
+html[lang="en"] [data-node-id="wt15-seal"],
+html[lang="en"] [data-node-id="wt15-seal-text"] {
+  left: 262px !important;
+}
+
 .fig-click {
   border: 0;
   padding: 0;
@@ -1070,36 +1128,49 @@ button {
 }
 
 html[lang="en"] .wentian-native-mingpan .fc-cell {
-  padding: 4px 4px;
+  padding: 3px 4px;
 }
 
 html[lang="en"] .wentian-native-mingpan .fc-major-star {
-  font-size: 9.5px;
-  line-height: 1.15;
-  max-width: 48px;
+  font-size: 8.6px;
+  line-height: 1.08;
+  max-width: 54px;
   overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  text-overflow: clip;
+  white-space: normal;
+  word-break: keep-all;
 }
 
 html[lang="en"] .wentian-native-mingpan .fc-minor-star,
 html[lang="en"] .wentian-native-mingpan .fc-shen-list span {
-  font-size: 7.5px;
-  line-height: 1.15;
-  max-width: 42px;
+  font-size: 7px;
+  line-height: 1.08;
+  max-width: 46px;
   overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  text-overflow: clip;
+  white-space: normal;
+  word-break: keep-all;
 }
 
 html[lang="en"] .wentian-native-mingpan .fc-pal-mutagen {
   padding: 1px 2px;
-  font-size: 6.5px;
+  font-size: 6px;
   line-height: 1.2;
 }
 
 html[lang="en"] .wentian-native-mingpan .fc-palace-info {
-  font-size: 7.5px;
+  font-size: 7px;
+}
+
+html[lang="en"] .wentian-native-mingpan .fc-palace-name {
+  font-size: 8.8px;
+  line-height: 1.05;
+}
+
+html[lang="en"] .wentian-native-mingpan .fc-branch,
+html[lang="en"] .wentian-native-mingpan .fc-age {
+  font-size: 7px;
+  line-height: 1.05;
 }
 
 .wentian-native-mingpan .fc-pal-mutagen.fc-mutagen-lu {
@@ -1449,6 +1520,20 @@ html[lang="en"] .wentian-native-mingpan .fc-palace-info {
   background: #f7f0e5;
 }
 
+html[lang="en"] .wentian-chat-subtopics {
+  gap: 5px;
+  padding: 7px;
+}
+
+html[lang="en"] .wentian-chat-starter {
+  height: auto;
+  min-height: 30px;
+  padding: 3px 6px;
+  font-size: 9.2px;
+  line-height: 1.12;
+  white-space: normal;
+}
+
 .wentian-chat-field {
   position: absolute;
   left: 16px;
@@ -1680,6 +1765,52 @@ html[lang="en"] .wentian-native-mingpan .fc-palace-info {
   background: #c2953c;
   color: #fff;
   box-shadow: 0 7px 14px rgba(130, 91, 31, .14);
+}
+
+html[lang="en"] .wentian-archive-main {
+  left: 72px;
+  right: 42px;
+  gap: 2px;
+}
+
+html[lang="en"] .wentian-archive-title-row {
+  gap: 3px;
+}
+
+html[lang="en"] .wentian-archive-name {
+  font-size: 15px;
+  line-height: 18px;
+}
+
+html[lang="en"] .wentian-archive-badge,
+html[lang="en"] .wentian-archive-gender,
+html[lang="en"] .wentian-archive-tag {
+  height: 18px;
+  font-size: 10px;
+  line-height: 18px;
+}
+
+html[lang="en"] .wentian-archive-gender {
+  width: 22px;
+}
+
+html[lang="en"] .wentian-archive-tag {
+  width: 38px;
+}
+
+html[lang="en"] .wentian-archive-date {
+  font-size: 13px;
+  line-height: 16px;
+}
+
+html[lang="en"] .wentian-archive-pillars {
+  font-size: 10.5px;
+  line-height: 13px;
+}
+
+html[lang="en"] .wentian-archive-new,
+html[lang="en"] .wentian-archive-confirm {
+  font-size: 15px;
 }
 
 .wentian-hepan-head {
@@ -1949,6 +2080,11 @@ html[lang="en"] .wentian-native-mingpan .fc-palace-info {
 .wentian-profile-input:focus {
   border-color: #c2953c;
   box-shadow: 0 0 0 2px rgba(192, 154, 73, .12);
+}
+
+html[lang="en"] .wentian-profile-input {
+  padding: 0 10px;
+  font-size: 13px;
 }
 
 .wentian-auth-input {
@@ -3606,6 +3742,29 @@ html[data-wentian-language="en"] .liuren-orbit i {
   opacity: .62;
 }
 
+html[lang="en"] .wentian-chart-ai-actions {
+  grid-template-columns: minmax(0, 1fr) 64px 76px;
+  gap: 6px;
+}
+
+html[lang="en"] .wentian-chart-ai-actions button {
+  font-size: 12px;
+  line-height: 1.1;
+}
+
+html[lang="en"] .wentian-chart-ai-modules {
+  gap: 5px;
+}
+
+html[lang="en"] .wentian-chart-ai-modules button {
+  min-height: 34px;
+  height: auto;
+  padding: 3px 4px;
+  font-size: 10px;
+  line-height: 1.08;
+  white-space: normal;
+}
+
 .wentian-chart-ai-pulse {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -3674,6 +3833,25 @@ html[data-wentian-language="en"] .liuren-orbit i {
   line-height: 1.1;
 }
 
+html[lang="en"] .wentian-chart-ai-menu {
+  gap: 5px;
+}
+
+html[lang="en"] .wentian-chart-ai-menu button {
+  height: 58px;
+  padding: 3px;
+}
+
+html[lang="en"] .wentian-chart-ai-menu b {
+  font-size: 10px;
+}
+
+html[lang="en"] .wentian-chart-ai-menu span {
+  margin-top: 4px;
+  font-size: 9px;
+  line-height: 1.05;
+}
+
 .wentian-chart-ai-list {
   display: grid;
   gap: 14px;
@@ -3732,6 +3910,29 @@ html[data-wentian-language="en"] .liuren-orbit i {
   font-family: inherit;
   font-size: 12px;
   font-weight: 900;
+}
+
+html[lang="en"] .wentian-mb-chapter-head {
+  grid-template-columns: 36px minmax(0, 1fr) 86px;
+  gap: 7px;
+}
+
+html[lang="en"] .wentian-mb-chapter-head > span {
+  font-size: 11px;
+}
+
+html[lang="en"] .wentian-mb-chapter-head h3 {
+  font-size: 14px;
+}
+
+html[lang="en"] .wentian-mb-chapter-head button,
+html[lang="en"] .wentian-mb-topic-grid button {
+  height: auto;
+  min-height: 34px;
+  padding: 3px 5px;
+  font-size: 10px;
+  line-height: 1.1;
+  white-space: normal;
 }
 
 .wentian-mb-detail-list {
