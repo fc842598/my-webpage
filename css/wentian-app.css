@@ -2921,6 +2921,293 @@ html[data-wentian-language="en"] .liuren-orbit i {
   height: auto;
 }
 
+.liuren-hand-board.is-revealed img {
+  animation: liurenBoardBreathe 7.2s ease-in-out infinite;
+  transform-origin: 46% 72%;
+}
+
+.liuren-count-motion,
+.liuren-count-motion span {
+  position: absolute;
+  pointer-events: none;
+}
+
+.liuren-count-motion {
+  inset: 0;
+  z-index: 2;
+  --liuren-final-left: 70%;
+  --liuren-final-top: 60%;
+}
+
+.liuren-count-thumb {
+  left: 38.5%;
+  top: 54.8%;
+  width: 22%;
+  height: 6.6%;
+  border: 1px solid rgba(139, 93, 42, .28);
+  border-radius: 999px 54% 54% 999px;
+  background:
+    radial-gradient(ellipse at 84% 46%, rgba(255, 249, 232, .96) 0 16%, transparent 17%),
+    linear-gradient(90deg, rgba(204, 151, 82, .46) 0%, rgba(244, 214, 168, .80) 56%, rgba(255, 242, 211, .92) 100%);
+  box-shadow: 0 10px 18px rgba(91, 55, 22, .14);
+  clip-path: polygon(0 18%, 68% 4%, 100% 22%, 100% 78%, 68% 96%, 0 82%);
+  opacity: 0;
+  transform: translate(-86%, -50%) rotate(-44deg) scaleX(.9);
+  transform-origin: 86% 50%;
+  animation: liurenThumbCount 7.2s cubic-bezier(.45, 0, .2, 1) infinite;
+}
+
+.liuren-count-thumb::before,
+.liuren-count-thumb::after {
+  content: "";
+  position: absolute;
+  top: 18%;
+  width: 1px;
+  height: 64%;
+  border-radius: 999px;
+  background: rgba(121, 80, 36, .22);
+}
+
+.liuren-count-thumb::before {
+  left: 42%;
+}
+
+.liuren-count-thumb::after {
+  display: none;
+}
+
+.liuren-count-thumb i {
+  position: absolute;
+  right: 5.5%;
+  top: 17%;
+  width: 22%;
+  height: 60%;
+  border-radius: 50%;
+  background: rgba(255, 250, 232, .92);
+  box-shadow: inset 0 -2px 4px rgba(158, 108, 54, .10);
+}
+
+.liuren-count-touch {
+  left: 38.5%;
+  top: 54.8%;
+  width: 44px;
+  height: 44px;
+  margin: -22px 0 0 -22px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 247, 190, .88) 0 20%, rgba(224, 165, 48, .28) 21% 54%, transparent 55% 100%);
+  box-shadow: 0 0 22px rgba(207, 151, 38, .34);
+  opacity: 0;
+  animation: liurenTouchCount 7.2s ease-in-out infinite;
+}
+
+.liuren-final-aura {
+  left: var(--liuren-final-left);
+  top: var(--liuren-final-top);
+  width: 78px;
+  height: 78px;
+  margin: -39px 0 0 -39px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 239, 166, .44) 0 24%, rgba(211, 156, 45, .20) 25% 54%, transparent 55% 100%);
+  opacity: .58;
+  animation: liurenFinalAura 2.4s ease-in-out infinite;
+}
+
+@keyframes liurenBoardBreathe {
+  0%,
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+
+  42% {
+    transform: translate(-1px, 1px) rotate(-.25deg);
+  }
+
+  70% {
+    transform: translate(1px, -1px) rotate(.2deg);
+  }
+}
+
+@keyframes liurenThumbCount {
+  0%,
+  7% {
+    left: 31%;
+    top: 65%;
+    opacity: 0;
+    transform: translate(-86%, -50%) rotate(-36deg) scaleX(.5);
+  }
+
+  12%,
+  18% {
+    left: 38.5%;
+    top: 54.8%;
+    opacity: .78;
+    transform: translate(-86%, -50%) rotate(-44deg) scaleX(.9);
+  }
+
+  27%,
+  32% {
+    left: 38.5%;
+    top: 38%;
+    opacity: .82;
+    transform: translate(-86%, -50%) rotate(-70deg) scaleX(1.12);
+  }
+
+  41%,
+  46% {
+    left: 50%;
+    top: 31%;
+    opacity: .82;
+    transform: translate(-86%, -50%) rotate(-67deg) scaleX(1.18);
+  }
+
+  55%,
+  60% {
+    left: 65%;
+    top: 39%;
+    opacity: .82;
+    transform: translate(-86%, -50%) rotate(-48deg) scaleX(1.16);
+  }
+
+  69%,
+  75% {
+    left: 70%;
+    top: 60%;
+    opacity: .82;
+    transform: translate(-86%, -50%) rotate(-8deg) scaleX(.92);
+  }
+
+  84%,
+  90% {
+    left: 51%;
+    top: 55%;
+    opacity: .76;
+    transform: translate(-86%, -50%) rotate(-32deg) scaleX(.92);
+  }
+
+  100% {
+    left: var(--liuren-final-left);
+    top: var(--liuren-final-top);
+    opacity: .76;
+    transform: translate(-86%, -50%) rotate(-8deg) scaleX(.92);
+  }
+}
+
+@keyframes liurenTouchCount {
+  0%,
+  8% {
+    left: 38.5%;
+    top: 54.8%;
+    opacity: 0;
+    transform: scale(.55);
+  }
+
+  13% {
+    left: 38.5%;
+    top: 54.8%;
+    opacity: .9;
+    transform: scale(1);
+  }
+
+  21% {
+    left: 38.5%;
+    top: 38%;
+    opacity: 0;
+    transform: scale(.55);
+  }
+
+  28% {
+    left: 38.5%;
+    top: 38%;
+    opacity: .78;
+    transform: scale(1);
+  }
+
+  35% {
+    left: 50%;
+    top: 31%;
+    opacity: 0;
+    transform: scale(.55);
+  }
+
+  42% {
+    left: 50%;
+    top: 31%;
+    opacity: .78;
+    transform: scale(1);
+  }
+
+  49% {
+    left: 65%;
+    top: 39%;
+    opacity: 0;
+    transform: scale(.55);
+  }
+
+  56% {
+    left: 65%;
+    top: 39%;
+    opacity: .78;
+    transform: scale(1);
+  }
+
+  63% {
+    left: 70%;
+    top: 60%;
+    opacity: 0;
+    transform: scale(.55);
+  }
+
+  70% {
+    left: 70%;
+    top: 60%;
+    opacity: .9;
+    transform: scale(1.08);
+  }
+
+  78% {
+    left: 51%;
+    top: 55%;
+    opacity: 0;
+    transform: scale(.55);
+  }
+
+  85% {
+    left: 51%;
+    top: 55%;
+    opacity: .74;
+    transform: scale(1);
+  }
+
+  100% {
+    left: var(--liuren-final-left);
+    top: var(--liuren-final-top);
+    opacity: .36;
+    transform: scale(1.15);
+  }
+}
+
+@keyframes liurenFinalAura {
+  0%,
+  100% {
+    transform: scale(.92);
+    opacity: .38;
+  }
+
+  50% {
+    transform: scale(1.08);
+    opacity: .74;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .liuren-hand-board.is-revealed img,
+  .liuren-count-thumb,
+  .liuren-count-touch,
+  .liuren-final-aura {
+    animation: none !important;
+  }
+}
+
 .liuren-hand-a11y {
   position: absolute;
   left: -9999px;
