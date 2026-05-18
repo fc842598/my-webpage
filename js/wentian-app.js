@@ -6559,12 +6559,7 @@ async function ensureLiuyaoQuestionAllowed() {
   liuyaoQuestionGateLoading = true;
   navigate("screen-17", false);
   try {
-    let data = null;
-    try {
-      data = await wentianPostJson("/api/ai/liuyao-question", { question }, 45000, 0);
-    } catch (_primaryErr) {
-      data = await reviewLiuyaoQuestionViaChat(question);
-    }
+    const data = await reviewLiuyaoQuestionViaChat(question);
     const gate = setLiuyaoQuestionGateResult({
       allowed: data?.allowed === true,
       reason: data?.reason || (data?.allowed ? "审题通过，可以起卦。" : "问题还不够清楚，暂不起卦。"),
