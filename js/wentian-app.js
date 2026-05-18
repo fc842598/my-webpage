@@ -6302,6 +6302,8 @@ const LIUYAO_QUESTION_MAX_LENGTH = 120;
 const LIUYAO_VALUES = [7, 8, 9, 6];
 const LIUYAO_TOSS_ANIMATION_MS = 1000;
 const LIUYAO_SWIPE_THRESHOLD = 54;
+const LIUYAO_PULL_MAX = 132;
+const LIUYAO_DEFAULT_POWER = 0.62;
 const LIUYAO_TRIGRAM_BY_BITS = {
   "111": { gua: "乾", name: "天", key: "qian" },
   "110": { gua: "兑", name: "泽", key: "dui" },
@@ -6325,7 +6327,10 @@ function normalizeLiuyaoCast(raw) {
   const coins = Array.isArray(raw?.coins) && raw.coins.length === 3
     ? raw.coins.map(Number).map((coin) => coin === 3 ? 3 : 2)
     : value === 6 ? [2, 2, 2] : value === 7 ? [3, 2, 2] : value === 8 ? [3, 3, 2] : [3, 3, 3];
-  return { value, coins, manual: Boolean(raw?.manual), at: Number(raw?.at) || Date.now() };
+  const power = Math.max(0, Math.min(100, Math.round(Number(raw?.power) || 0)));
+  const pull = Math.max(0, Math.min(LIUYAO_PULL_MAX, Math.round(Number(raw?.pull) || 0)));
+  const duration = Math.max(0, Math.min(6000, Math.round(Number(raw?.duration) || 0)));
+  return { value, coins, manual: Boolean(raw?.manual), at: Number(raw?.at) || Date.now(), power, pull, duration };
 }
 
 function normalizeLiuyaoQuestion(value) {
@@ -6437,18 +6442,41 @@ function resetLiuyaoState() {
   navigate("screen-17", false);
 }
 
-function getSecureRandomBit() {
+function getSecureRandomByte() {
   if (window.crypto?.getRandomValues) {
     const bytes = new Uint8Array(1);
     window.crypto.getRandomValues(bytes);
-    return bytes[0] % 2;
+    return bytes[0];
   }
-  return Math.random() >= 0.5 ? 1 : 0;
+  return Math.floor(Math.random() * 256);
 }
 
-function makeLiuyaoCoinCast() {
-  const coins = [0, 1, 2].map(() => getSecureRandomBit() ? 3 : 2);
-  return { value: coins.reduce((sum, coin) => sum + coin, 0), coins, manual: false, at: Date.now() };
+function clampLiuyaoPower(value) {
+  const number = Number(value);
+  if (!Number.isFinite(number)) return LIUYAO_DEFAULT_POWER;
+  return Math.max(0.18, Math.min(1, number));
+}
+
+function makeLiuyaoCoinCast(gesture = {}) {
+  const power = clampLiuyaoPower(gesture.power);
+  const pull = Math.max(0, Math.min(LIUYAO_PULL_MAX, Math.round(Number(gesture.pull) || power * LIUYAO_PULL_MAX)));
+  const duration = Math.max(0, Math.min(6000, Math.round(Number(gesture.duration) || 0)));
+  const deltaX = Math.round(Number(gesture.deltaX) || 0);
+  const seed = Math.round(power * 1000) + pull * 7 + duration * 3 + deltaX * 11;
+  const coins = [0, 1, 2].map((_, index) => {
+    const wobble = ((duration + pull + index * 37) % 9) - 4;
+    const threshold = Math.max(38, Math.min(62, 50 + Math.round((power - 0.5) * 18) + wobble));
+    return ((getSecureRandomByte() + seed + index * 73) % 100) < threshold ? 3 : 2;
+  });
+  return {
+    value: coins.reduce((sum, coin) => sum + coin, 0),
+    coins,
+    manual: false,
+    at: Date.now(),
+    power: Math.round(power * 100),
+    pull,
+    duration,
+  };
 }
 
 function setLiuyaoQuestionGateResult(result) {
@@ -6608,15 +6636,17 @@ function finishLiuyaoAnimatedToss() {
   navigate(state.casts.length >= 6 ? "screen-20" : "screen-17", false);
 }
 
-function beginLiuyaoAnimatedToss() {
+function beginLiuyaoAnimatedToss(gesture = {}) {
   if (liuyaoTossAnimation?.active) return false;
   const state = prepareLiuyaoOnlineTossState();
   if (state.casts.length >= 6) return false;
-  const cast = makeLiuyaoCoinCast();
+  const cast = makeLiuyaoCoinCast(gesture);
   liuyaoTossAnimation = {
     active: true,
     cast,
     lineIndex: state.casts.length,
+    power: cast.power,
+    pull: cast.pull,
     startedAt: Date.now(),
   };
   saveLiuyaoState();
@@ -6625,9 +6655,9 @@ function beginLiuyaoAnimatedToss() {
   return true;
 }
 
-async function startLiuyaoAnimatedToss() {
+async function startLiuyaoAnimatedToss(gesture = {}) {
   if (!(await ensureLiuyaoQuestionAllowed())) return false;
-  return beginLiuyaoAnimatedToss();
+  return beginLiuyaoAnimatedToss(gesture);
 }
 
 async function tossLiuyaoLine(all = false) {
@@ -6635,7 +6665,7 @@ async function tossLiuyaoLine(all = false) {
   clearLiuyaoTossAnimation();
   const state = prepareLiuyaoOnlineTossState();
   do {
-    state.casts.push(makeLiuyaoCoinCast());
+    state.casts.push(makeLiuyaoCoinCast({ power: LIUYAO_DEFAULT_POWER, pull: LIUYAO_PULL_MAX * LIUYAO_DEFAULT_POWER }));
   } while (all && state.casts.length < 6);
   saveLiuyaoState();
   navigate(state.casts.length >= 6 ? "screen-20" : "screen-17", false);
@@ -6768,19 +6798,31 @@ function renderLiuyaoCoinRow(state, options = {}) {
   const progress = getLiuyaoProgress(state);
   const disabled = state.mode !== "online" || progress >= 6 || options.complete || options.disabled;
   const coins = tossing ? liuyaoTossAnimation.cast.coins : (last?.coins || [3, 2, 3]);
+  const powerPercent = tossing ? Math.max(18, Math.min(100, Number(liuyaoTossAnimation.power) || 62)) : 0;
+  const powerRatio = powerPercent ? powerPercent / 100 : 0;
+  const meterRatio = tossing ? powerRatio : (last?.power ? Math.max(0, Math.min(1, last.power / 100)) : 0);
+  const throwY = Math.round(-66 - powerRatio * 74);
   const label = tossing
-    ? `抛币中，正在定第 ${Math.min(progress + 1, 6)} 爻`
+    ? `力度 ${powerPercent}% · 铜钱翻转中`
     : disabled
       ? "卦已成"
-      : `向上滑动抛第 ${progress + 1} 爻`;
+      : `按住铜钱上拉，松手投第 ${progress + 1} 爻`;
+  const forceLabel = tossing
+    ? `本次力度 ${powerPercent}%`
+    : last?.power
+      ? `上次力度 ${last.power}%`
+      : "上拉蓄力";
   return `
     <div class="liuyao-coin-stage ${last ? "has-cast" : ""} ${tossing ? "is-tossing" : ""} ${disabled ? "is-disabled" : ""}"
       data-action="liuyao-swipe-cast"
       role="button"
       tabindex="${disabled ? "-1" : "0"}"
       aria-label="${escapeHtml(label)}"
-      aria-disabled="${disabled ? "true" : "false"}">
+      aria-disabled="${disabled ? "true" : "false"}"
+      style="--pull-y:0px;--drag-rot:0deg;--drag-rot-neg:0deg;--power:${powerRatio.toFixed(2)};--power-fill:${meterRatio.toFixed(2)};--throw-y:${throwY}px;">
       ${coins.map((coin, index) => `<span class="liuyao-coin ${coin === 3 ? "is-yang" : "is-yin"}" style="--d:${index * 0.1}s"><b>${coin === 3 ? "阳" : "阴"}</b></span>`).join("")}
+      <span class="liuyao-power-meter" aria-hidden="true"><i></i></span>
+      <span class="liuyao-force-label">${escapeHtml(forceLabel)}</span>
       <span class="liuyao-swipe-cue">${escapeHtml(label)}</span>
     </div>
   `;
@@ -6833,8 +6875,8 @@ function sourceLiuyaoCastScreen() {
           <button type="button" class="primary" data-action="liuyao-show-result">查看卦象解读</button>
           <button type="button" data-action="liuyao-copy">复制卦象</button>
         ` : state.mode === "online" ? `
-          <button type="button" class="primary" data-action="liuyao-toss" ${actionBusy ? "disabled" : ""}>${gateBusy ? "审题中…" : tossing ? "抛币中…" : `投第 ${progress + 1} 爻`}</button>
-          <button type="button" data-action="liuyao-toss-all" ${actionBusy ? "disabled" : ""}>一键起完整卦</button>
+          <button type="button" class="primary" data-action="liuyao-focus-caster" ${actionBusy ? "disabled" : ""}>${gateBusy ? "审题中…" : tossing ? "抛币中…" : `上拉投第 ${progress + 1} 爻`}</button>
+          <button type="button" data-action="liuyao-reset" ${gateBusy ? "disabled" : ""}>清空重排</button>
         ` : `
           <button type="button" class="primary" ${progress === 6 && !actionBusy ? 'data-action="liuyao-show-result"' : "disabled"}>${gateBusy ? "审题中…" : progress === 6 ? "查看卦象解读" : "补全六爻"}</button>
           <button type="button" data-action="liuyao-reset" ${gateBusy ? "disabled" : ""}>清空重排</button>
@@ -6845,13 +6887,13 @@ function sourceLiuyaoCastScreen() {
           <strong>${complete ? "卦已成" : `已成 ${progress}/6 爻`}</strong>
           <span>${formatWentianDateTime(new Date(state.createdAt || Date.now()))}</span>
         </div>
-        ${tossing ? `<p class="liuyao-casting-status">铜钱正在翻转，1 秒后落入第 ${progress + 1} 爻。</p>` : ""}
+        ${tossing ? `<p class="liuyao-casting-status">本次力度 ${Math.max(18, Math.min(100, Number(liuyaoTossAnimation.power) || 62))}%；铜钱翻转 1 秒后落入第 ${progress + 1} 爻。</p>` : ""}
         ${renderLiuyaoHexStack(lines, { manual: state.mode === "manual", id: "cast" })}
       </div>
       ${state.mode === "manual" ? `
         <p class="liuyao-hint">手动点每一爻切换：少阳 → 少阴 → 老阳 → 老阴。</p>
       ` : `
-        <p class="liuyao-hint">在铜钱区向上滑动超过一段距离即可抛币；落币后按初爻到上爻依次记录。</p>
+        <p class="liuyao-hint">按住上方铜钱区向上拉，力度条过半后松手；力度会参与落币，落币后按初爻到上爻记录。</p>
       `}
     </section>
   `;
@@ -7021,6 +7063,58 @@ function canUseLiuyaoSwipeCaster(target) {
   return state.mode === "online" && getLiuyaoProgress(state) < 6 && !liuyaoTossAnimation?.active;
 }
 
+function getLiuyaoSwipeMetrics(event, start = liuyaoSwipeStart) {
+  if (!start) return { deltaX: 0, deltaY: 0, pull: 0, power: 0, ready: false, duration: 0 };
+  const deltaX = event.clientX - start.x;
+  const deltaY = event.clientY - start.y;
+  const pull = Math.max(0, Math.min(LIUYAO_PULL_MAX, Math.round(-deltaY)));
+  const power = Math.max(0, Math.min(1, pull / LIUYAO_PULL_MAX));
+  return {
+    deltaX,
+    deltaY,
+    pull,
+    power,
+    ready: pull >= LIUYAO_SWIPE_THRESHOLD && pull > Math.abs(deltaX) * 1.15,
+    duration: Date.now() - (start.startedAt || Date.now()),
+  };
+}
+
+function updateLiuyaoSwipeCasterUi(start, metrics) {
+  const target = start?.target;
+  if (!target) return;
+  const progress = getLiuyaoProgress();
+  const powerPercent = Math.round(metrics.power * 100);
+  target.style.setProperty("--pull-y", `${Math.round(-metrics.pull * 0.38)}px`);
+  target.style.setProperty("--power", metrics.power.toFixed(2));
+  target.style.setProperty("--power-fill", Math.min(1, metrics.pull / LIUYAO_SWIPE_THRESHOLD).toFixed(2));
+  target.style.setProperty("--drag-rot", `${Math.round(metrics.power * 420)}deg`);
+  target.style.setProperty("--drag-rot-neg", `${Math.round(metrics.power * -420)}deg`);
+  target.classList.toggle("is-ready", metrics.ready);
+  const cue = target.querySelector(".liuyao-swipe-cue");
+  if (cue) cue.textContent = metrics.ready
+    ? `力度 ${powerPercent}% · 松手投第 ${Math.min(progress + 1, 6)} 爻`
+    : `继续上拉蓄力 · ${powerPercent}%`;
+  const force = target.querySelector(".liuyao-force-label");
+  if (force) force.textContent = `力度 ${powerPercent}%`;
+}
+
+function resetLiuyaoSwipeCasterUi(target) {
+  if (!target) return;
+  const state = getLiuyaoState();
+  const last = getLiuyaoValidCasts(state).at(-1);
+  const progress = getLiuyaoProgress(state);
+  const complete = progress >= 6;
+  target.style.setProperty("--pull-y", "0px");
+  target.style.setProperty("--power", "0");
+  target.style.setProperty("--power-fill", "0");
+  target.style.setProperty("--drag-rot", "0deg");
+  target.style.setProperty("--drag-rot-neg", "0deg");
+  const cue = target.querySelector(".liuyao-swipe-cue");
+  if (cue) cue.textContent = complete ? "卦已成" : `按住铜钱上拉，松手投第 ${progress + 1} 爻`;
+  const force = target.querySelector(".liuyao-force-label");
+  if (force) force.textContent = last?.power ? `上次力度 ${last.power}%` : "上拉蓄力";
+}
+
 function handleLiuyaoSwipePointerDown(event) {
   const target = event.target.closest?.('[data-action="liuyao-swipe-cast"]');
   if (!canUseLiuyaoSwipeCaster(target)) return;
@@ -7029,28 +7123,48 @@ function handleLiuyaoSwipePointerDown(event) {
     x: event.clientX,
     y: event.clientY,
     target,
+    startedAt: Date.now(),
   };
+  target.style.setProperty("--pull-y", "0px");
+  target.style.setProperty("--power", "0");
+  target.style.setProperty("--power-fill", "0");
+  target.style.setProperty("--drag-rot", "0deg");
+  target.style.setProperty("--drag-rot-neg", "0deg");
   target.classList.add("is-dragging");
+  target.classList.remove("is-ready", "is-prompting");
   target.setPointerCapture?.(event.pointerId);
+  updateLiuyaoSwipeCasterUi(liuyaoSwipeStart, getLiuyaoSwipeMetrics(event));
+}
+
+function handleLiuyaoSwipePointerMove(event) {
+  if (!liuyaoSwipeStart || liuyaoSwipeStart.pointerId !== event.pointerId) return;
+  const metrics = getLiuyaoSwipeMetrics(event);
+  updateLiuyaoSwipeCasterUi(liuyaoSwipeStart, metrics);
+  if (metrics.pull > 8) event.preventDefault();
 }
 
 function handleLiuyaoSwipePointerUp(event) {
   if (!liuyaoSwipeStart || liuyaoSwipeStart.pointerId !== event.pointerId) return;
-  const { x, y, target } = liuyaoSwipeStart;
-  const deltaX = event.clientX - x;
-  const deltaY = event.clientY - y;
+  const start = liuyaoSwipeStart;
+  const { target } = start;
+  const metrics = getLiuyaoSwipeMetrics(event, start);
   target.classList.remove("is-dragging");
+  target.classList.remove("is-ready");
   target.releasePointerCapture?.(event.pointerId);
   liuyaoSwipeStart = null;
-  if (deltaY <= -LIUYAO_SWIPE_THRESHOLD && Math.abs(deltaY) > Math.abs(deltaX) * 1.15) {
+  if (metrics.ready) {
     event.preventDefault();
-    startLiuyaoAnimatedToss();
+    startLiuyaoAnimatedToss(metrics);
+  } else {
+    resetLiuyaoSwipeCasterUi(target);
   }
 }
 
 function cancelLiuyaoSwipePointer(event) {
   if (!liuyaoSwipeStart || (event?.pointerId && liuyaoSwipeStart.pointerId !== event.pointerId)) return;
-  liuyaoSwipeStart.target?.classList.remove("is-dragging");
+  const target = liuyaoSwipeStart.target;
+  target?.classList.remove("is-dragging", "is-ready");
+  resetLiuyaoSwipeCasterUi(target);
   liuyaoSwipeStart = null;
 }
 
@@ -10134,6 +10248,7 @@ function renderPay() {
 }
 
 document.addEventListener("pointerdown", handleLiuyaoSwipePointerDown);
+document.addEventListener("pointermove", handleLiuyaoSwipePointerMove);
 document.addEventListener("pointerup", handleLiuyaoSwipePointerUp);
 document.addEventListener("pointercancel", cancelLiuyaoSwipePointer);
 
@@ -10142,7 +10257,7 @@ document.addEventListener("keydown", (event) => {
   if (!target || !canUseLiuyaoSwipeCaster(target)) return;
   if (event.key !== "Enter" && event.key !== " ") return;
   event.preventDefault();
-  startLiuyaoAnimatedToss();
+  startLiuyaoAnimatedToss({ power: LIUYAO_DEFAULT_POWER, pull: LIUYAO_PULL_MAX * LIUYAO_DEFAULT_POWER, duration: 320 });
 });
 
 document.addEventListener("click", (event) => {
@@ -10227,8 +10342,17 @@ document.addEventListener("click", (event) => {
     setLiuyaoMode(earlyActionTarget.dataset.mode || "online");
     return;
   }
+  if (earlyAction === "liuyao-focus-caster") {
+    const caster = document.querySelector('[data-action="liuyao-swipe-cast"]');
+    if (caster) {
+      caster.focus?.();
+      caster.classList.add("is-prompting");
+      setTimeout(() => caster.classList.remove("is-prompting"), 900);
+    }
+    return;
+  }
   if (earlyAction === "liuyao-toss") {
-    startLiuyaoAnimatedToss();
+    startLiuyaoAnimatedToss({ power: LIUYAO_DEFAULT_POWER, pull: LIUYAO_PULL_MAX * LIUYAO_DEFAULT_POWER, duration: 320 });
     return;
   }
   if (earlyAction === "liuyao-toss-all") {
