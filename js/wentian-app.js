@@ -6812,6 +6812,18 @@ function renderLiuyaoCoinRow(state, options = {}) {
     : last?.power
       ? `上次力度 ${last.power}%`
       : "上拉蓄力";
+  const renderCoin = (coin, index) => {
+    const glyphs = coin === 3 ? ["乾", "隆", "通", "宝"] : ["宝", "泉", "通", "宝"];
+    return `
+      <span class="liuyao-coin ${coin === 3 ? "is-yang" : "is-yin"}" style="--d:${index * 0.1}s" aria-label="${coin === 3 ? "阳面铜钱" : "阴面铜钱"}">
+        <i class="coin-glyph is-top">${glyphs[0]}</i>
+        <i class="coin-glyph is-right">${glyphs[1]}</i>
+        <b aria-hidden="true"></b>
+        <i class="coin-glyph is-bottom">${glyphs[2]}</i>
+        <i class="coin-glyph is-left">${glyphs[3]}</i>
+      </span>
+    `;
+  };
   return `
     <div class="liuyao-coin-stage ${last ? "has-cast" : ""} ${tossing ? "is-tossing" : ""} ${disabled ? "is-disabled" : ""}"
       data-action="liuyao-swipe-cast"
@@ -6820,7 +6832,7 @@ function renderLiuyaoCoinRow(state, options = {}) {
       aria-label="${escapeHtml(label)}"
       aria-disabled="${disabled ? "true" : "false"}"
       style="--pull-y:0px;--drag-rot:0deg;--drag-rot-neg:0deg;--power:${powerRatio.toFixed(2)};--power-fill:${meterRatio.toFixed(2)};--throw-y:${throwY}px;">
-      ${coins.map((coin, index) => `<span class="liuyao-coin ${coin === 3 ? "is-yang" : "is-yin"}" style="--d:${index * 0.1}s"><b>${coin === 3 ? "阳" : "阴"}</b></span>`).join("")}
+      ${coins.map(renderCoin).join("")}
       <span class="liuyao-power-meter" aria-hidden="true"><i></i></span>
       <span class="liuyao-force-label">${escapeHtml(forceLabel)}</span>
       <span class="liuyao-swipe-cue">${escapeHtml(label)}</span>
@@ -6845,6 +6857,12 @@ function sourceLiuyaoCastScreen() {
   const tossing = liuyaoTossAnimation?.active && state.mode === "online";
   const gateBusy = liuyaoQuestionGateLoading;
   const actionBusy = tossing || gateBusy;
+  const question = normalizeLiuyaoQuestion(state.question);
+  const gate = normalizeLiuyaoQuestionGate(state.questionGate, question);
+  const questionReady = Boolean(gate?.allowed);
+  const stepOneClass = questionReady ? "is-done" : "is-active";
+  const stepTwoClass = complete || progress > 0 ? "is-done" : (questionReady ? "is-active" : "");
+  const stepThreeClass = complete ? "is-done" : (progress > 0 ? "is-active" : "");
   return `
     ${figBox("ly17-bg", 0, 0, 390, 1180, "", "background:linear-gradient(180deg,#fffdf8 0%,#fbf7ef 50%,#f3eadc 100%);")}
     ${wentianSimpleHeader("ly17", "六爻占卜")}
@@ -6863,10 +6881,15 @@ function sourceLiuyaoCastScreen() {
         ${renderLiuyaoQuestionGateStatus(state)}
       </label>
       ${state.mode === "online" ? `
-        <div class="liuyao-coin-panel">
+        <div class="liuyao-coin-panel ${questionReady ? "is-ready" : "is-waiting"}">
           <div class="liuyao-coin-panel-head">
             <span>在线投币</span>
             <strong>${complete ? "卦已成" : `第 ${progress + 1} 爻`}</strong>
+          </div>
+          <div class="liuyao-flow-steps" aria-label="起卦流程">
+            <span class="${stepOneClass}"><i>1</i>定问</span>
+            <span class="${stepTwoClass}"><i>2</i>蓄力</span>
+            <span class="${stepThreeClass}"><i>3</i>落爻</span>
           </div>
           ${renderLiuyaoCoinRow(state, { complete, disabled: gateBusy })}
         </div>
