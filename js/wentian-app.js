@@ -2834,6 +2834,7 @@ const WENTIAN_I18N_EN_EXTRA = {
   "已接入您的紫微命盘，可直接开启对话": "Your Zi Wei chart is connected. You can start chatting.",
   "命盘顾问 · 在线": "Chart Advisor · Online",
   "命主⌄": "Owner⌄",
+  "已接入": "Connected",
   "已连接": "Connected",
   "正在接入许半仙…": "Connecting to Xu Banxian...",
   "我在，看命盘直接问。": "I am here. Ask about your chart.",
@@ -2931,10 +2932,38 @@ const WENTIAN_I18N_EN_EXTRA = {
   "冲突化解建议": "Conflict advice",
   "选择两张档案": "Choose two files",
   "最多选择两张档案进行合盘": "Choose up to two files",
+  "仅支持一男一女，且不能选择同一个人": "Only one male and one female, not the same person",
   "选择两张档案后开始合盘": "Choose two files to start",
   "查看合盘结果": "View compatibility",
   "开始合盘": "Start Compatibility",
   "选择合盘档案": "Choose Compatibility Files",
+  "请选择一男一女两张不同档案": "Choose one male and one female from two different files",
+  "至少需要两张档案才能合盘": "At least two files are required",
+  "可开始合盘": "Ready to match",
+  "同一个人不能和自己合盘": "A person cannot match with themself",
+  "档案性别不完整，请先补全后再合盘": "Gender is missing. Complete the files before matching",
+  "情侣合盘仅支持一男一女，男男/女女不能合盘": "Couple compatibility only supports one male and one female",
+  "合盘结果": "Compatibility Result",
+  "分": "pts",
+  "上佳合盘": "Excellent",
+  "稳定相合": "Stable",
+  "可磨合相合": "Workable",
+  "需要慢合": "Go Slow",
+  "基于双方紫微命盘、四柱日支与宫位关系生成": "Based on both charts",
+  "合": "Fit",
+  "合盘维度": "Compatibility",
+  "缘分吸引": "Attraction",
+  "沟通节奏": "Communication",
+  "长期稳定": "Stability",
+  "共同成长": "Growth",
+  "资料不足": "Insufficient data",
+  "五行资料不足": "Insufficient element data",
+  "关系建议": "Relationship Advice",
+  "适合把关系往长期规划推进，重要事项先定共同目标，再分工执行。": "Good for long-term planning. Set shared goals first, then divide execution.",
+  "先慢下来观察真实相处节奏，把金钱、边界、沟通频率提前说清。": "Slow down and observe the real rhythm. Clarify money, boundaries, and communication frequency early.",
+  "重新选择": "Choose Again",
+  "追问许半仙": "Ask Xu",
+  "暂不能合盘": "Cannot Match Yet",
   "已选2/2": "Selected 2/2",
   "写下你想问的命理问题": "Write your question",
   "请输入想问什么？": "What do you want to ask?",
@@ -3324,8 +3353,14 @@ function translateWentianText(text, code = getWentianLanguageCode(), element = n
     }
     const exact = WENTIAN_I18N_EN_EXTRA[source] || WENTIAN_I18N_EN_TERM_MAP[source];
     if (exact) return exact;
+    const dropdownName = source.match(/^(.+)⌄$/);
+    if (dropdownName) return `${translateWentianText(dropdownName[1], "en")}⌄`;
+    const pairNames = source.match(/^(.+?)\s*×\s*(.+)$/);
+    if (pairNames) return `${translateWentianText(pairNames[1], "en")} × ${translateWentianText(pairNames[2], "en")}`;
     const people = source.match(/^(\d+)\s*人$/);
     if (people) return `${people[1]} people`;
+    const scorePoints = source.match(/^(\d+)\s*分$/);
+    if (scorePoints) return `${scorePoints[1]} pts`;
     const hepanSelected = source.match(/^已选\s*(\d+)\/2$/);
     if (hepanSelected) return `Selected ${hepanSelected[1]}/2`;
     const hepanArchiveCount = source.match(/^共\s*(\d+)\s*张档案，可滚动选择$/);
@@ -3336,6 +3371,8 @@ function translateWentianText(text, code = getWentianLanguageCode(), element = n
     if (month) return `Month ${month[1]}`;
     const lunarMonthMap = { "正月": "First Month", "二月": "Second Month", "三月": "Third Month", "四月": "Fourth Month", "五月": "Fifth Month", "六月": "Sixth Month", "七月": "Seventh Month", "八月": "Eighth Month", "九月": "Ninth Month", "十月": "Tenth Month", "十一月": "Eleventh Month", "十二月": "Twelfth Month" };
     if (lunarMonthMap[source]) return lunarMonthMap[source];
+    const lunarDate = source.match(/^(\d{4})年(.+?)(\d{1,2})日$/);
+    if (lunarDate && lunarMonthMap[lunarDate[2]]) return `Lunar ${lunarDate[1]} ${lunarMonthMap[lunarDate[2]]} Day ${lunarDate[3]}`;
     const day = source.match(/^(\d{1,2})日$/);
     if (day) return `Day ${day[1]}`;
     const hour = source.match(/^(\d{2})时$/);
@@ -3359,6 +3396,34 @@ function translateWentianText(text, code = getWentianLanguageCode(), element = n
     if (branchHour) return `${WENTIAN_I18N_EN_STEM_BRANCH[branchHour[1]]} Hour`;
     const stemBranch = source.match(/^[甲乙丙丁戊己庚辛壬癸子丑寅卯辰巳午未申酉戌亥]{1,2}$/);
     if (stemBranch) return source.split("").map((char) => WENTIAN_I18N_EN_STEM_BRANCH[char] || char).join(" ");
+    const stemBranchLine = source.match(/^[甲乙丙丁戊己庚辛壬癸子丑寅卯辰巳午未申酉戌亥]{2}(?:\s+[甲乙丙丁戊己庚辛壬癸子丑寅卯辰巳午未申酉戌亥]{2})+$/);
+    if (stemBranchLine) return source.split(/\s+/).map((item) => translateWentianText(item, "en")).join(" · ");
+    const branchPairNote = source.match(/^([甲乙丙丁戊己庚辛壬癸子丑寅卯辰巳午未申酉戌亥])([甲乙丙丁戊己庚辛壬癸子丑寅卯辰巳午未申酉戌亥])(同气，容易理解彼此|六合，吸引力强|相冲，需要定规则|三合同局，合作感较好|平稳，可靠相处养成默契)$/);
+    if (branchPairNote) {
+      const pair = `${translateWentianText(branchPairNote[1], "en")} ${translateWentianText(branchPairNote[2], "en")}`;
+      const notes = {
+        "同气，容易理解彼此": "same energy, easy to understand each other",
+        "六合，吸引力强": "six-harmony, strong attraction",
+        "相冲，需要定规则": "clash, rules are needed",
+        "三合同局，合作感较好": "triad alignment, good teamwork",
+        "平稳，可靠相处养成默契": "steady, reliable rapport can grow"
+      };
+      return `${pair}: ${notes[branchPairNote[3]] || "compatible"}`;
+    }
+    const elementPairNote = source.match(/^([木火土金水])([木火土金水])(同频，价值观接近|节奏不同，适合分工互补)$/);
+    if (elementPairNote) {
+      const elements = { "木": "Wood", "火": "Fire", "土": "Earth", "金": "Metal", "水": "Water" };
+      const note = elementPairNote[3] === "同频，价值观接近"
+        ? "aligned frequency, close values"
+        : "different rhythms, good for complementary roles";
+      return `${elements[elementPairNote[1]]} ${elements[elementPairNote[2]]}: ${note}`;
+    }
+    const elementGenerateNote = source.match(/^([木火土金水])生([木火土金水])，(.+)$/);
+    if (elementGenerateNote) {
+      const elements = { "木": "Wood", "火": "Fire", "土": "Earth", "金": "Metal", "水": "Water" };
+      const note = elementGenerateNote[3] === "一方能带动另一方" ? "one side can motivate the other" : "mutual support is clear";
+      return `${elements[elementGenerateNote[1]]} generates ${elements[elementGenerateNote[2]]}: ${note}`;
+    }
     const solarTime = source.match(/^公历 (.+) · 北京时间 (.+)$/);
     if (solarTime) return `Solar ${solarTime[1]} · Beijing time ${solarTime[2]}`;
     const trueSolar = source.match(/^预览真太阳时：(.+) · (.+) · (.+)分钟$/);
