@@ -5768,9 +5768,9 @@ p.mbp-topic-detail {
 }
 
 .chat-starters {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
+  display: grid;
+  gap: 10px;
+  min-width: 0;
 }
 
 .chat-starter-btn {
@@ -5784,6 +5784,66 @@ p.mbp-topic-detail {
   line-height: 1.2;
   cursor: pointer;
   transition: background .18s, border-color .18s, color .18s, transform .18s;
+}
+
+.xb-starter-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.xb-starter-tab {
+  min-height: 34px;
+  padding: 0 14px;
+  border: 1px solid rgba(201, 169, 97, .15);
+  border-radius: 999px;
+  background: rgba(30, 22, 17, .92);
+  color: #d9c7ac;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: background .18s, border-color .18s, color .18s, transform .18s;
+}
+
+.xb-starter-tab::after {
+  content: "⌄";
+  margin-left: 7px;
+  color: rgba(201, 169, 97, .72);
+  font-size: 12px;
+}
+
+.xb-starter-tab:hover,
+.xb-starter-tab.is-active {
+  border-color: rgba(201, 169, 97, .42);
+  background: rgba(201, 169, 97, .12);
+  color: #fff0c4;
+}
+
+.xb-starter-tab.is-active::after {
+  content: "⌃";
+}
+
+.xb-starter-panels {
+  min-height: 48px;
+  padding: 10px;
+  border: 1px solid rgba(201, 169, 97, .12);
+  border-radius: 18px;
+  background: rgba(9, 7, 5, .28);
+}
+
+.xb-starter-panel {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.xb-starter-panel[hidden] {
+  display: none;
+}
+
+.xb-starter-panel .chat-starter-btn {
+  background: rgba(201, 169, 97, .075);
 }
 
 .chat-starter-btn:hover:not(:disabled) {

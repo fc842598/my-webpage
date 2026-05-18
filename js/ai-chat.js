@@ -630,6 +630,20 @@
     });
   }
 
+  function _activateStarterCategory(category) {
+    if (!category) return;
+    document.querySelectorAll('.xb-starter-tab').forEach(function (tab) {
+      var active = tab.getAttribute('data-starter-category') === category;
+      tab.classList.toggle('is-active', active);
+      tab.setAttribute('aria-selected', active ? 'true' : 'false');
+    });
+    document.querySelectorAll('.xb-starter-panel').forEach(function (panel) {
+      var active = panel.getAttribute('data-starter-panel') === category;
+      panel.classList.toggle('is-active', active);
+      panel.hidden = !active;
+    });
+  }
+
   function _setContextPreview(summary) {
     var el = document.getElementById('chat-context-preview');
     if (!el) return;
@@ -763,6 +777,12 @@
         chatInput.value = prompt;
         _syncComposerState();
         chatInput.focus();
+      });
+    });
+
+    document.querySelectorAll('.xb-starter-tab').forEach(function (tab) {
+      tab.addEventListener('click', function () {
+        _activateStarterCategory(tab.getAttribute('data-starter-category'));
       });
     });
   });

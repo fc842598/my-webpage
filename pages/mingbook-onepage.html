@@ -424,46 +424,58 @@
                 <span>&#24120;&#38382;&#38382;&#39064;</span>
               </div>
               <div class="chat-starters xb-starters" id="chat-starters">
-                <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="&#32467;&#21512;&#25105;&#30340;&#21629;&#30424;&#65292;&#20808;&#30475;&#20154;&#29983;&#20027;&#32447;&#12290;">
-                  <span class="xb-starter-icon" aria-hidden="true">?</span>
-                  <span>&#20808;&#30475;&#20154;&#29983;&#20027;&#32447;</span>
-                </button>
-                <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="&#32467;&#21512;&#25105;&#30340;&#21629;&#30424;&#65292;&#37325;&#28857;&#30475;&#24863;&#24773;&#23130;&#23035;&#12290;">
-                  <span class="xb-starter-icon" aria-hidden="true">?</span>
-                  <span>&#38382;&#24863;&#24773;&#23130;&#23035;</span>
-                </button>
-                <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="&#32467;&#21512;&#25105;&#30340;&#21629;&#30424;&#65292;&#37325;&#28857;&#30475;&#20107;&#19994;&#26041;&#21521;&#12290;">
-                  <span class="xb-starter-icon" aria-hidden="true">?</span>
-                  <span>&#38382;&#20107;&#19994;&#26041;&#21521;</span>
-                </button>
-                <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="&#32467;&#21512;&#25105;&#30340;&#21629;&#30424;&#65292;&#37325;&#28857;&#30475;&#36130;&#36816;&#25237;&#36164;&#12290;">
-                  <span class="xb-starter-icon" aria-hidden="true">?</span>
-                  <span>&#38382;&#36130;&#36816;&#25237;&#36164;</span>
-                </button>
-                <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="&#32467;&#21512;&#25105;&#30340;&#21629;&#30424;&#65292;&#37325;&#28857;&#30475;&#26368;&#36817;&#19968;&#24180;&#12290;">
-                  <span class="xb-starter-icon" aria-hidden="true">?</span>
-                  <span>&#38382;&#26368;&#36817;&#19968;&#24180;</span>
-                </button>
-                <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="&#32467;&#21512;&#25105;&#30340;&#21629;&#30424;&#65292;&#30475;&#30475;&#20309;&#26102;&#36716;&#36816;&#12290;">
-                  <span class="xb-starter-icon" aria-hidden="true">?</span>
-                  <span>&#20309;&#26102;&#36716;&#36816;</span>
-                </button>
-                <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="&#32467;&#21512;&#25105;&#30340;&#21629;&#30424;&#65292;&#30475;&#30475;&#20581;&#24247;&#36816;&#21183;&#12290;">
-                  <span class="xb-starter-icon" aria-hidden="true">?</span>
-                  <span>&#38382;&#20581;&#24247;&#36816;&#21183;</span>
-                </button>
-                <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="&#32467;&#21512;&#25105;&#30340;&#21629;&#30424;&#65292;&#30475;&#30475;&#36149;&#20154;&#36816;&#12290;">
-                  <span class="xb-starter-icon" aria-hidden="true">?</span>
-                  <span>&#38382;&#36149;&#20154;&#36816;</span>
-                </button>
-                <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="&#32467;&#21512;&#25105;&#30340;&#21629;&#30424;&#65292;&#30475;&#30475;&#23376;&#22899;&#32536;&#20998;&#12290;">
-                  <span class="xb-starter-icon" aria-hidden="true">?</span>
-                  <span>&#38382;&#23376;&#22899;&#32536;&#20998;</span>
-                </button>
-                <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="&#32467;&#21512;&#25105;&#30340;&#21629;&#30424;&#65292;&#30475;&#30475;&#23478;&#24237;&#20845;&#20146;&#12290;">
-                  <span class="xb-starter-icon" aria-hidden="true">?</span>
-                  <span>&#38382;&#23478;&#24237;&#20845;&#20146;</span>
-                </button>
+                <div class="xb-starter-tabs" role="tablist" aria-label="&#24120;&#38382;&#38382;&#39064;&#30446;&#24405;">
+                  <button type="button" class="xb-starter-tab is-active" data-starter-category="life" aria-selected="true">&#20154;&#29983;&#20027;&#32447;</button>
+                  <button type="button" class="xb-starter-tab" data-starter-category="love" aria-selected="false">&#24863;&#24773;&#23130;&#23035;</button>
+                  <button type="button" class="xb-starter-tab" data-starter-category="career" aria-selected="false">&#20107;&#19994;&#26041;&#21521;</button>
+                  <button type="button" class="xb-starter-tab" data-starter-category="wealth" aria-selected="false">&#36130;&#36816;&#25237;&#36164;</button>
+                  <button type="button" class="xb-starter-tab" data-starter-category="year" aria-selected="false">&#36817;&#19968;&#24180;</button>
+                  <button type="button" class="xb-starter-tab" data-starter-category="timing" aria-selected="false">&#20309;&#26102;&#36716;&#36816;</button>
+                  <button type="button" class="xb-starter-tab" data-starter-category="health" aria-selected="false">&#20581;&#24247;&#36816;&#21183;</button>
+                  <button type="button" class="xb-starter-tab" data-starter-category="family" aria-selected="false">&#23478;&#24237;&#20154;&#38469;</button>
+                </div>
+                <div class="xb-starter-panels">
+                  <div class="xb-starter-panel is-active" data-starter-panel="life">
+                    <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="&#32467;&#21512;&#25105;&#30340;&#21629;&#30424;&#65292;&#20808;&#30475;&#20154;&#29983;&#20027;&#32447;&#65292;&#35828;&#28165;&#26970;&#25105;&#36825;&#19968;&#29983;&#26368;&#37325;&#35201;&#30340;&#36335;&#24452;&#12290;"><span>&#20808;&#30475;&#20154;&#29983;&#20027;&#32447;</span></button>
+                    <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="&#32467;&#21512;&#25105;&#30340;&#21629;&#30424;&#65292;&#25105;&#30340;&#20248;&#21183;&#21644;&#30701;&#26495;&#21508;&#26159;&#20160;&#20040;&#65311;"><span>&#30475;&#20248;&#21183;&#19982;&#30701;&#26495;</span></button>
+                    <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="&#32467;&#21512;&#25105;&#30340;&#21629;&#30424;&#65292;&#25105;&#36825;&#19968;&#29983;&#21738;&#20960;&#20010;&#38454;&#27573;&#26368;&#37325;&#35201;&#65311;"><span>&#30475;&#20851;&#38190;&#38454;&#27573;</span></button>
+                  </div>
+                  <div class="xb-starter-panel" data-starter-panel="love" hidden>
+                    <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="&#32467;&#21512;&#25105;&#30340;&#21629;&#30424;&#65292;&#37325;&#28857;&#30475;&#24863;&#24773;&#23130;&#23035;&#65292;&#25105;&#30340;&#24863;&#24773;&#27169;&#24335;&#26159;&#20160;&#20040;&#65311;"><span>&#24863;&#24773;&#27169;&#24335;</span></button>
+                    <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="&#32467;&#21512;&#25105;&#30340;&#21629;&#30424;&#65292;&#25105;&#36866;&#21512;&#20160;&#20040;&#26679;&#30340;&#20276;&#20387;&#65311;"><span>&#36866;&#21512;&#20160;&#20040;&#20276;&#20387;</span></button>
+                    <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="&#32467;&#21512;&#25105;&#30340;&#21629;&#30424;&#65292;&#25105;&#36825;&#27573;&#24863;&#24773;&#25110;&#23130;&#23035;&#26368;&#38656;&#35201;&#27880;&#24847;&#20160;&#20040;&#65311;"><span>&#23130;&#23035;&#38656;&#27880;&#24847;</span></button>
+                  </div>
+                  <div class="xb-starter-panel" data-starter-panel="career" hidden>
+                    <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="&#32467;&#21512;&#25105;&#30340;&#21629;&#30424;&#65292;&#37325;&#28857;&#30475;&#20107;&#19994;&#26041;&#21521;&#65292;&#25105;&#36866;&#21512;&#24448;&#21738;&#20010;&#26041;&#21521;&#21457;&#23637;&#65311;"><span>&#20107;&#19994;&#26041;&#21521;</span></button>
+                    <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="&#32467;&#21512;&#25105;&#30340;&#21629;&#30424;&#65292;&#25105;&#36866;&#21512;&#21019;&#19994;&#36824;&#26159;&#19978;&#29677;&#65311;"><span>&#21019;&#19994;&#36824;&#26159;&#19978;&#29677;</span></button>
+                    <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="&#32467;&#21512;&#25105;&#30340;&#21629;&#30424;&#65292;&#25105;&#22312;&#24037;&#20316;&#19978;&#26368;&#23481;&#26131;&#21345;&#22312;&#21738;&#37324;&#65311;"><span>&#24037;&#20316;&#21345;&#28857;</span></button>
+                  </div>
+                  <div class="xb-starter-panel" data-starter-panel="wealth" hidden>
+                    <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="&#32467;&#21512;&#25105;&#30340;&#21629;&#30424;&#65292;&#37325;&#28857;&#30475;&#36130;&#36816;&#25237;&#36164;&#65292;&#25105;&#30340;&#36130;&#20174;&#21738;&#37324;&#26469;&#65311;"><span>&#36130;&#20174;&#21738;&#37324;&#26469;</span></button>
+                    <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="&#32467;&#21512;&#25105;&#30340;&#21629;&#30424;&#65292;&#25105;&#36866;&#21512;&#31283;&#20581;&#27714;&#36130;&#36824;&#26159;&#20027;&#21160;&#25237;&#36164;&#65311;"><span>&#27714;&#36130;&#26041;&#24335;</span></button>
+                    <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="&#32467;&#21512;&#25105;&#30340;&#21629;&#30424;&#65292;&#25105;&#21738;&#20123;&#24180;&#20221;&#36130;&#21153;&#21387;&#21147;&#27604;&#36739;&#22823;&#65311;"><span>&#36130;&#21153;&#21387;&#21147;&#26399;</span></button>
+                  </div>
+                  <div class="xb-starter-panel" data-starter-panel="year" hidden>
+                    <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="&#32467;&#21512;&#25105;&#30340;&#21629;&#30424;&#65292;&#37325;&#28857;&#30475;&#26368;&#36817;&#19968;&#24180;&#30340;&#36816;&#21183;&#21644;&#35201;&#28857;&#12290;"><span>&#26368;&#36817;&#19968;&#24180;&#24635;&#35272;</span></button>
+                    <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="&#32467;&#21512;&#25105;&#30340;&#21629;&#30424;&#65292;&#26368;&#36817;&#19968;&#24180;&#20107;&#19994;&#21644;&#36130;&#36816;&#21738;&#37324;&#35201;&#25235;&#20303;&#65311;"><span>&#36817;&#19968;&#24180;&#20107;&#19994;&#36130;&#36816;</span></button>
+                    <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="&#32467;&#21512;&#25105;&#30340;&#21629;&#30424;&#65292;&#26368;&#36817;&#19968;&#24180;&#26377;&#20160;&#20040;&#38656;&#35201;&#36991;&#20813;&#30340;&#22353;&#65311;"><span>&#36817;&#19968;&#24180;&#36991;&#22353;</span></button>
+                  </div>
+                  <div class="xb-starter-panel" data-starter-panel="timing" hidden>
+                    <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="&#32467;&#21512;&#25105;&#30340;&#21629;&#30424;&#65292;&#30475;&#30475;&#20309;&#26102;&#36716;&#36816;&#65292;&#21738;&#20960;&#24180;&#26368;&#26377;&#26426;&#20250;&#12290;"><span>&#20309;&#26102;&#36716;&#36816;</span></button>
+                    <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="&#32467;&#21512;&#25105;&#30340;&#21629;&#30424;&#65292;&#25105;&#20160;&#20040;&#26102;&#20505;&#36866;&#21512;&#25442;&#24037;&#20316;&#25110;&#36716;&#26041;&#21521;&#65311;"><span>&#20309;&#26102;&#36716;&#26041;&#21521;</span></button>
+                    <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="&#32467;&#21512;&#25105;&#30340;&#21629;&#30424;&#65292;&#25105;&#21738;&#20010;&#24180;&#40836;&#27573;&#26368;&#23481;&#26131;&#36215;&#26469;&#65311;"><span>&#21738;&#27573;&#26368;&#23481;&#26131;&#36215;&#26469;</span></button>
+                  </div>
+                  <div class="xb-starter-panel" data-starter-panel="health" hidden>
+                    <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="&#32467;&#21512;&#25105;&#30340;&#21629;&#30424;&#65292;&#30475;&#30475;&#20581;&#24247;&#36816;&#21183;&#65292;&#25105;&#26368;&#38656;&#35201;&#27880;&#24847;&#21738;&#20123;&#26041;&#38754;&#65311;"><span>&#20581;&#24247;&#27880;&#24847;&#28857;</span></button>
+                    <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="&#32467;&#21512;&#25105;&#30340;&#21629;&#30424;&#65292;&#25105;&#21738;&#20123;&#24180;&#40836;&#27573;&#20581;&#24247;&#21387;&#21147;&#27604;&#36739;&#26126;&#26174;&#65311;"><span>&#20581;&#24247;&#21387;&#21147;&#26399;</span></button>
+                    <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="&#32467;&#21512;&#25105;&#30340;&#21629;&#30424;&#65292;&#25105;&#24179;&#26102;&#35813;&#24590;&#20040;&#35843;&#25972;&#20316;&#24687;&#21644;&#33410;&#22863;&#65311;"><span>&#20316;&#24687;&#33410;&#22863;</span></button>
+                  </div>
+                  <div class="xb-starter-panel" data-starter-panel="family" hidden>
+                    <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="&#32467;&#21512;&#25105;&#30340;&#21629;&#30424;&#65292;&#30475;&#30475;&#36149;&#20154;&#36816;&#21644;&#20154;&#38469;&#21161;&#21147;&#22312;&#21738;&#37324;&#12290;"><span>&#36149;&#20154;&#36816;</span></button>
+                    <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="&#32467;&#21512;&#25105;&#30340;&#21629;&#30424;&#65292;&#30475;&#30475;&#23376;&#22899;&#32536;&#20998;&#21644;&#20146;&#23376;&#20851;&#31995;&#12290;"><span>&#23376;&#22899;&#32536;&#20998;</span></button>
+                    <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="&#32467;&#21512;&#25105;&#30340;&#21629;&#30424;&#65292;&#30475;&#30475;&#23478;&#24237;&#20845;&#20146;&#21644;&#23478;&#20154;&#30456;&#22788;&#35201;&#28857;&#12290;"><span>&#23478;&#24237;&#20845;&#20146;</span></button>
+                  </div>
+                </div>
               </div>
             </section>
           </div>
