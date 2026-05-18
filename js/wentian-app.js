@@ -2805,6 +2805,52 @@ const WENTIAN_I18N_EN_EXTRA = {
   "命理相合，缘分几许": "Chart affinity",
   "六爻占卜": "Liuyao",
   "铜钱起卦，纳甲解卦": "Coin hexagram",
+  "三枚铜钱 · 六次成卦": "Three coins · six casts",
+  "先定一问，再起六爻": "Set one question, then cast",
+  "自下而上成爻，6/9 为动爻，动则成变卦。": "Lines build from bottom to top. 6/9 are moving lines.",
+  "所问之事": "Question",
+  "一句话写清楚所问": "Write one clear question",
+  "起卦方式": "Casting Method",
+  "在线投币": "Coin Cast",
+  "手动起卦": "Manual",
+  "卦已成": "Hexagram Ready",
+  "手动点每一爻切换：少阳 → 少阴 → 老阳 → 老阴。": "Tap each line to cycle: young yang → young yin → old yang → old yin.",
+  "每次投三枚铜钱，按初爻到上爻依次记录。": "Each cast uses three coins, recorded from first line upward.",
+  "查看卦象解读": "Read Hexagram",
+  "复制卦象": "Copy Hexagram",
+  "一键起完整卦": "Cast All Six",
+  "清空重排": "Clear",
+  "补全六爻": "Complete Lines",
+  "三枚铜钱六次成卦": "Three coins, six casts",
+  "本卦": "Original",
+  "变卦": "Changed",
+  "所问": "Question",
+  "本卦判断": "Original Reading",
+  "动爻与变卦": "Moving Lines",
+  "行动建议": "Action Advice",
+  "查看卦义摘要": "View Summary",
+  "追问许半仙": "Ask Master Xu",
+  "重新起卦": "Cast Again",
+  "复制完整卦象": "Copy Full Hexagram",
+  "尚未完成起卦": "Casting Not Complete",
+  "请先投满六爻，或用手动起卦补全六爻。": "Cast six lines first, or complete them manually.",
+  "返回起卦": "Back to Casting",
+  "重来": "Reset",
+  "事业近期是否适合推进新计划？": "Is it a good time to move a new career plan forward?",
+  "初爻": "Line 1",
+  "二爻": "Line 2",
+  "三爻": "Line 3",
+  "四爻": "Line 4",
+  "五爻": "Line 5",
+  "上爻": "Line 6",
+  "少阳": "Young Yang",
+  "少阴": "Young Yin",
+  "老阳": "Old Yang",
+  "老阴": "Old Yin",
+  "未定": "Unset",
+  "无动爻": "No moving lines",
+  "阳": "Yang",
+  "阴": "Yin",
   "阳宅地脉": "Feng Shui",
   "罗盘九宫，安位解读": "Compass layout",
   "六壬法": "Liuren",
@@ -3424,6 +3470,14 @@ function translateWentianText(text, code = getWentianLanguageCode(), element = n
     if (scorePoints) return `${scorePoints[1]} pts`;
     const hepanSelected = source.match(/^已选\s*(\d+)\/2$/);
     if (hepanSelected) return `Selected ${hepanSelected[1]}/2`;
+    const liuyaoProgress = source.match(/^已成\s*(\d+)\/6\s*爻$/);
+    if (liuyaoProgress) return `${liuyaoProgress[1]}/6 lines`;
+    const liuyaoToss = source.match(/^投第\s*(\d+)\s*爻$/);
+    if (liuyaoToss) return `Cast Line ${liuyaoToss[1]}`;
+    const liuyaoLineValue = source.match(/^(6|7|8|9)\s*(少阳|少阴|老阳|老阴)(\s*[○×])?$/);
+    if (liuyaoLineValue) return `${liuyaoLineValue[1]} ${translateWentianText(liuyaoLineValue[2], "en")}${liuyaoLineValue[3] || ""}`;
+    const liuyaoHexNo = source.match(/^(.+)上(.+)下\s*·\s*第(\d+)卦$/);
+    if (liuyaoHexNo) return `${translateWentianText(liuyaoHexNo[1], "en")} over ${translateWentianText(liuyaoHexNo[2], "en")} · Hexagram ${liuyaoHexNo[3]}`;
     const hepanArchiveCount = source.match(/^共\s*(\d+)\s*张档案，可滚动选择$/);
     if (hepanArchiveCount) return `${hepanArchiveCount[1]} files · scroll to choose`;
     const hepanMeta = source.match(/^(男|女)\s*·\s*四柱八字$/);
@@ -5528,6 +5582,393 @@ function wentianHexLines(id, y, variant = 0) {
   }).join("");
 }
 
+const LIUYAO_STORAGE_KEY = "wentian-liuyao-state-v1";
+const LIUYAO_DEFAULT_QUESTION = "事业近期是否适合推进新计划？";
+const LIUYAO_VALUES = [7, 8, 9, 6];
+const LIUYAO_TRIGRAM_BY_BITS = {
+  "111": { gua: "乾", name: "天", key: "qian" },
+  "110": { gua: "兑", name: "泽", key: "dui" },
+  "101": { gua: "离", name: "火", key: "li" },
+  "100": { gua: "震", name: "雷", key: "zhen" },
+  "011": { gua: "巽", name: "风", key: "xun" },
+  "010": { gua: "坎", name: "水", key: "kan" },
+  "001": { gua: "艮", name: "山", key: "gen" },
+  "000": { gua: "坤", name: "地", key: "kun" }
+};
+const LIUYAO_LINE_LABELS = ["初爻", "二爻", "三爻", "四爻", "五爻", "上爻"];
+let liuyaoState = null;
+
+function normalizeLiuyaoCast(raw) {
+  const value = Number(raw?.value);
+  if (!LIUYAO_VALUES.includes(value)) return null;
+  const coins = Array.isArray(raw?.coins) && raw.coins.length === 3
+    ? raw.coins.map(Number).map((coin) => coin === 3 ? 3 : 2)
+    : value === 6 ? [2, 2, 2] : value === 7 ? [3, 2, 2] : value === 8 ? [3, 3, 2] : [3, 3, 3];
+  return { value, coins, manual: Boolean(raw?.manual), at: Number(raw?.at) || Date.now() };
+}
+
+function makeLiuyaoDefaultState() {
+  return {
+    mode: "online",
+    question: LIUYAO_DEFAULT_QUESTION,
+    createdAt: Date.now(),
+    casts: []
+  };
+}
+
+function getLiuyaoState() {
+  if (liuyaoState) return liuyaoState;
+  try {
+    const parsed = JSON.parse(localStorage.getItem(LIUYAO_STORAGE_KEY) || "null");
+    if (parsed && typeof parsed === "object") {
+      liuyaoState = {
+        mode: parsed.mode === "manual" ? "manual" : "online",
+        question: String(parsed.question || LIUYAO_DEFAULT_QUESTION).slice(0, 80),
+        createdAt: Number(parsed.createdAt) || Date.now(),
+        casts: Array.isArray(parsed.casts) ? parsed.casts.slice(0, 6).map(normalizeLiuyaoCast) : []
+      };
+      return liuyaoState;
+    }
+  } catch (_err) {}
+  liuyaoState = makeLiuyaoDefaultState();
+  return liuyaoState;
+}
+
+function saveLiuyaoState() {
+  try {
+    localStorage.setItem(LIUYAO_STORAGE_KEY, JSON.stringify(getLiuyaoState()));
+  } catch (_err) {}
+}
+
+function saveLiuyaoQuestionFromDom() {
+  const input = document.getElementById("liuyao-question");
+  if (!input) return;
+  const state = getLiuyaoState();
+  state.question = String(input.value || "").slice(0, 80);
+  saveLiuyaoState();
+}
+
+function setLiuyaoMode(mode) {
+  saveLiuyaoQuestionFromDom();
+  const state = getLiuyaoState();
+  state.mode = mode === "manual" ? "manual" : "online";
+  if (state.mode === "online") state.casts = state.casts.filter(Boolean);
+  saveLiuyaoState();
+  navigate("screen-17", false);
+}
+
+function resetLiuyaoState() {
+  liuyaoState = makeLiuyaoDefaultState();
+  saveLiuyaoState();
+  navigate("screen-17", false);
+}
+
+function getSecureRandomBit() {
+  if (window.crypto?.getRandomValues) {
+    const bytes = new Uint8Array(1);
+    window.crypto.getRandomValues(bytes);
+    return bytes[0] % 2;
+  }
+  return Math.random() >= 0.5 ? 1 : 0;
+}
+
+function makeLiuyaoCoinCast() {
+  const coins = [0, 1, 2].map(() => getSecureRandomBit() ? 3 : 2);
+  return { value: coins.reduce((sum, coin) => sum + coin, 0), coins, manual: false, at: Date.now() };
+}
+
+function tossLiuyaoLine(all = false) {
+  saveLiuyaoQuestionFromDom();
+  const state = getLiuyaoState();
+  state.mode = "online";
+  state.casts = state.casts.filter(Boolean);
+  if (state.casts.length >= 6) state.casts = [];
+  do {
+    state.casts.push(makeLiuyaoCoinCast());
+  } while (all && state.casts.length < 6);
+  saveLiuyaoState();
+  navigate(state.casts.length >= 6 ? "screen-20" : "screen-17", false);
+}
+
+function cycleLiuyaoManualLine(index) {
+  saveLiuyaoQuestionFromDom();
+  const state = getLiuyaoState();
+  state.mode = "manual";
+  while (state.casts.length < 6) state.casts.push(null);
+  const current = normalizeLiuyaoCast(state.casts[index]);
+  const nextValue = current ? LIUYAO_VALUES[(LIUYAO_VALUES.indexOf(current.value) + 1) % LIUYAO_VALUES.length] : 7;
+  state.casts[index] = normalizeLiuyaoCast({ value: nextValue, manual: true, at: Date.now() });
+  saveLiuyaoState();
+  navigate("screen-17", false);
+}
+
+function getLiuyaoLineType(value) {
+  return {
+    6: { value: 6, name: "老阴", nature: "阴动", broken: true, moving: true, mark: "×", changesTo: "阳", changedBroken: false, coinText: "阴阴阴" },
+    7: { value: 7, name: "少阳", nature: "阳静", broken: false, moving: false, mark: "", changesTo: "阳", changedBroken: false, coinText: "阳阴阴" },
+    8: { value: 8, name: "少阴", nature: "阴静", broken: true, moving: false, mark: "", changesTo: "阴", changedBroken: true, coinText: "阳阳阴" },
+    9: { value: 9, name: "老阳", nature: "阳动", broken: false, moving: true, mark: "○", changesTo: "阴", changedBroken: true, coinText: "阳阳阳" }
+  }[Number(value)] || null;
+}
+
+function getLiuyaoValidCasts(state = getLiuyaoState()) {
+  return state.casts.map(normalizeLiuyaoCast).filter(Boolean);
+}
+
+function getLiuyaoProgress(state = getLiuyaoState()) {
+  return getLiuyaoValidCasts(state).length;
+}
+
+function getLiuyaoHexFromBools(bools) {
+  const lower = LIUYAO_TRIGRAM_BY_BITS[bools.slice(0, 3).map(Boolean).map(Number).join("")];
+  const upper = LIUYAO_TRIGRAM_BY_BITS[bools.slice(3, 6).map(Boolean).map(Number).join("")];
+  const entry = upper && lower ? YANGZHAI_HEX_INDEX[`${upper.gua}-${lower.gua}`] : null;
+  return {
+    upper,
+    lower,
+    no: entry?.no || "",
+    name: entry?.name || `${upper?.name || ""}${lower?.name || ""}`,
+    key: `${upper?.gua || ""}-${lower?.gua || ""}`
+  };
+}
+
+function getLiuyaoResult(state = getLiuyaoState()) {
+  const casts = state.casts.map(normalizeLiuyaoCast);
+  if (casts.length < 6 || casts.some((cast) => !cast)) return null;
+  const lines = casts.map((cast, index) => {
+    const type = getLiuyaoLineType(cast.value);
+    return { ...type, index, label: LIUYAO_LINE_LABELS[index], coins: cast.coins || [], manual: Boolean(cast.manual) };
+  });
+  const originalBools = lines.map((line) => !line.broken);
+  const changedBools = lines.map((line) => line.moving ? !line.changedBroken : !line.broken);
+  const primary = getLiuyaoHexFromBools(originalBools);
+  const changed = getLiuyaoHexFromBools(changedBools);
+  const movingLines = lines.filter((line) => line.moving);
+  return { question: state.question || LIUYAO_DEFAULT_QUESTION, createdAt: state.createdAt, lines, primary, changed, movingLines };
+}
+
+function getLiuyaoHexReading(hex) {
+  if (!hex) return { summary: "本卦资料待补。", xian: "", hou: "", liu: "" };
+  const master = window.getYijingMasterEntryByName?.(hex.name) || window.getYijingMasterEntryByNum?.(hex.no);
+  const guaci = window.getGuaciEntryByName?.(hex.name);
+  return {
+    summary: master?.summary || guaci?.liu || "此卦重在审时度势，先明当前处境，再定进退。",
+    xian: master?.xian || guaci?.xian || "",
+    hou: master?.hou || guaci?.hou || "",
+    liu: master?.liu || guaci?.liu || "",
+    source: master?.source || ""
+  };
+}
+
+function firstReadableSentence(text, fallback = "") {
+  const source = String(text || "").replace(/原句：/g, "").replace(/讲解：/g, "").replace(/\s+/g, " ").trim();
+  return source.split(/[。！？]/).find((part) => part.trim().length >= 6)?.trim() || fallback;
+}
+
+function getLiuyaoTopicAdvice(question, result) {
+  const text = String(question || "");
+  const moving = result.movingLines.length;
+  if (/感情|婚姻|复合|对象|伴侣|爱情/.test(text)) return moving ? "感情看动爻，先处理变化点，不急着逼对方表态。" : "感情无动先守边界，重在稳定沟通，不宜反复试探。";
+  if (/财|钱|投资|生意|收入|合作/.test(text)) return moving ? "财事有变，先控风险和合同，再谈扩张。" : "财事宜稳，先守现金流，少做高杠杆决定。";
+  if (/病|健康|身体|手术/.test(text)) return "健康类问题以现实检查为准，此卦只看节奏：先确认风险，再定行动。";
+  if (/事业|工作|跳槽|项目|计划|职位|考试/.test(text)) return moving ? "事业有变化点，适合小步推进，用结果换空间。" : "事业先稳住主线，少换方向，把一个成果做扎实。";
+  return moving ? "当前局面有变化点，先看动爻，再看变卦走向。" : "当前局面偏静，重看本卦，不宜反复重占同一件事。";
+}
+
+function renderLiuyaoLineVisual(line, prefix) {
+  const lineClass = line?.broken ? "is-yin" : "is-yang";
+  return `<span class="liuyao-line-visual ${lineClass}" data-line="${prefix}">${line?.broken ? "<i></i><i></i>" : "<i></i>"}</span>`;
+}
+
+function renderLiuyaoHexStack(lines, options = {}) {
+  const displayLines = [5, 4, 3, 2, 1, 0].map((index) => lines?.[index] || null);
+  return `
+    <div class="liuyao-hex-stack ${options.compact ? "is-compact" : ""}">
+      ${displayLines.map((line, displayIndex) => {
+        const realIndex = 5 - displayIndex;
+        return `
+          <button class="liuyao-line-row ${line?.moving ? "is-moving" : ""} ${line ? "" : "is-empty"}" type="button" ${options.manual ? `data-action="liuyao-manual-line" data-line-index="${realIndex}"` : ""}>
+            <span class="liuyao-line-label">${LIUYAO_LINE_LABELS[realIndex]}</span>
+            ${line ? renderLiuyaoLineVisual(line, `${options.id || "hex"}-${realIndex}`) : `<span class="liuyao-line-visual is-empty"><i></i></span>`}
+            <span class="liuyao-line-meta">${line ? `${line.value} ${line.name}${line.mark ? ` ${line.mark}` : ""}` : "未定"}</span>
+          </button>
+        `;
+      }).join("")}
+    </div>
+  `;
+}
+
+function renderLiuyaoCoinRow(state) {
+  const last = getLiuyaoValidCasts(state).at(-1);
+  const coins = last?.coins || [3, 2, 3];
+  return `
+    <div class="liuyao-coin-stage ${last ? "has-cast" : ""}" aria-hidden="true">
+      ${coins.map((coin, index) => `<span class="liuyao-coin ${coin === 3 ? "is-yang" : "is-yin"}" style="--d:${index * 0.1}s"><b>${coin === 3 ? "阳" : "阴"}</b></span>`).join("")}
+    </div>
+  `;
+}
+
+function getLiuyaoQuestionInputValue(state) {
+  const question = state.question || LIUYAO_DEFAULT_QUESTION;
+  if (getWentianLanguageCode() === "en" && question === LIUYAO_DEFAULT_QUESTION) {
+    return translateWentianText(question, "en");
+  }
+  return question;
+}
+
+function sourceLiuyaoCastScreen() {
+  const state = getLiuyaoState();
+  const casts = state.casts.map(normalizeLiuyaoCast);
+  const lines = casts.map((cast, index) => cast ? { ...getLiuyaoLineType(cast.value), index, label: LIUYAO_LINE_LABELS[index], coins: cast.coins || [], manual: Boolean(cast.manual) } : null);
+  const progress = getLiuyaoProgress(state);
+  const complete = progress === 6 && casts.length >= 6 && casts.every(Boolean);
+  return `
+    ${figBox("ly17-bg", 0, 0, 390, 1180, "", "background:linear-gradient(180deg,#fffdf8 0%,#fbf7ef 50%,#f3eadc 100%);")}
+    ${wentianSimpleHeader("ly17", "六爻占卜")}
+    <button class="liuyao-top-reset" type="button" data-action="liuyao-reset">重来</button>
+    <section class="liuyao-panel">
+      <div class="liuyao-hero">
+        <div>
+          <span>三枚铜钱 · 六次成卦</span>
+          <strong>先定一问，再起六爻</strong>
+          <em>自下而上成爻，6/9 为动爻，动则成变卦。</em>
+        </div>
+        ${renderLiuyaoCoinRow(state)}
+      </div>
+      <label class="liuyao-question-card">
+        <span>所问之事</span>
+        <textarea id="liuyao-question" maxlength="80" rows="2" placeholder="一句话写清楚所问">${escapeHtml(getLiuyaoQuestionInputValue(state))}</textarea>
+      </label>
+      <div class="liuyao-mode-card">
+        <span>起卦方式</span>
+        <div>
+          <button type="button" class="${state.mode === "online" ? "is-active" : ""}" data-action="liuyao-mode" data-mode="online">在线投币</button>
+          <button type="button" class="${state.mode === "manual" ? "is-active" : ""}" data-action="liuyao-mode" data-mode="manual">手动起卦</button>
+        </div>
+      </div>
+      <div class="liuyao-actions">
+        ${complete ? `
+          <button type="button" class="primary" data-action="liuyao-show-result">查看卦象解读</button>
+          <button type="button" data-action="liuyao-copy">复制卦象</button>
+        ` : state.mode === "online" ? `
+          <button type="button" class="primary" data-action="liuyao-toss">投第 ${progress + 1} 爻</button>
+          <button type="button" data-action="liuyao-toss-all">一键起完整卦</button>
+        ` : `
+          <button type="button" class="primary" ${progress === 6 ? 'data-action="liuyao-show-result"' : "disabled"}>${progress === 6 ? "查看卦象解读" : "补全六爻"}</button>
+          <button type="button" data-action="liuyao-reset">清空重排</button>
+        `}
+      </div>
+      <div class="liuyao-progress-card">
+        <div class="liuyao-progress-head">
+          <strong>${complete ? "卦已成" : `已成 ${progress}/6 爻`}</strong>
+          <span>${formatWentianDateTime(new Date(state.createdAt || Date.now()))}</span>
+        </div>
+        ${renderLiuyaoHexStack(lines, { manual: state.mode === "manual", id: "cast" })}
+      </div>
+      ${state.mode === "manual" ? `
+        <p class="liuyao-hint">手动点每一爻切换：少阳 → 少阴 → 老阳 → 老阴。</p>
+      ` : `
+        <p class="liuyao-hint">每次投三枚铜钱，按初爻到上爻依次记录。</p>
+      `}
+    </section>
+  `;
+}
+
+function sourceLiuyaoResultScreen() {
+  const result = getLiuyaoResult();
+  if (!result) {
+    return `
+      ${figBox("ly20-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
+      ${wentianSimpleHeader("ly20", "六爻结果")}
+      <section class="liuyao-panel">
+        <div class="liuyao-empty-card">
+          <strong>尚未完成起卦</strong>
+          <span>请先投满六爻，或用手动起卦补全六爻。</span>
+          <button type="button" data-route="screen-17">返回起卦</button>
+        </div>
+      </section>
+    `;
+  }
+  const primaryReading = getLiuyaoHexReading(result.primary);
+  const changedReading = getLiuyaoHexReading(result.changed);
+  const movingText = result.movingLines.length
+    ? result.movingLines.map((line) => `${line.label}${line.mark}`).join("、")
+    : "无动爻";
+  const primaryTip = firstReadableSentence(primaryReading.summary, "先看本卦所处局面。");
+  const changedTip = result.movingLines.length
+    ? firstReadableSentence(changedReading.summary, "变卦看后续走向。")
+    : "无动爻时变卦与本卦同体，重在守当前局面。";
+  const actionTip = getLiuyaoTopicAdvice(result.question, result);
+  return `
+    ${figBox("ly20-bg", 0, 0, 390, 1280, "", "background:linear-gradient(180deg,#fffdf8 0%,#fbf7ef 54%,#f3eadc 100%);")}
+    ${wentianSimpleHeader("ly20", result.primary.name)}
+    <section class="liuyao-panel liuyao-result-panel">
+      <div class="liuyao-result-hero">
+        <span>本卦</span>
+        <strong>${escapeHtml(result.primary.name)}</strong>
+        <em>${escapeHtml(result.primary.upper?.name || "")}上${escapeHtml(result.primary.lower?.name || "")}下 · 第${escapeHtml(result.primary.no)}卦</em>
+        <b>${escapeHtml(movingText)}</b>
+      </div>
+      <div class="liuyao-result-pair">
+        <article>
+          <span>本卦</span>
+          <strong>${escapeHtml(result.primary.name)}</strong>
+          ${renderLiuyaoHexStack(result.lines, { compact: true, id: "primary" })}
+        </article>
+        <article>
+          <span>变卦</span>
+          <strong>${escapeHtml(result.changed.name)}</strong>
+          ${renderLiuyaoHexStack(result.lines.map((line) => ({ ...line, broken: line.moving ? line.changedBroken : line.broken, moving: false, value: line.moving ? (line.changedBroken ? 8 : 7) : line.value, name: line.moving ? (line.changedBroken ? "少阴" : "少阳") : line.name })), { compact: true, id: "changed" })}
+        </article>
+      </div>
+      <div class="liuyao-reading-card">
+        <span>所问</span>
+        <strong>${escapeHtml(result.question)}</strong>
+      </div>
+      <div class="liuyao-reading-card">
+        <span>本卦判断</span>
+        <p>${escapeHtml(primaryTip)}</p>
+      </div>
+      <div class="liuyao-reading-card">
+        <span>动爻与变卦</span>
+        <p>${escapeHtml(result.movingLines.length ? `${movingText} 为变化点。${changedTip}` : changedTip)}</p>
+      </div>
+      <div class="liuyao-reading-card is-warm">
+        <span>行动建议</span>
+        <p>${escapeHtml(actionTip)}</p>
+      </div>
+      <details class="liuyao-detail-card">
+        <summary>查看卦义摘要</summary>
+        <p>${escapeHtml(primaryReading.summary)}</p>
+      </details>
+      <div class="liuyao-actions">
+        <button type="button" class="primary" data-route="screen-4">追问许半仙</button>
+        <button type="button" data-action="liuyao-reset">重新起卦</button>
+      </div>
+      <button type="button" class="liuyao-copy-result" data-action="liuyao-copy">复制完整卦象</button>
+    </section>
+  `;
+}
+
+function getLiuyaoCopyText() {
+  const result = getLiuyaoResult();
+  if (!result) return "";
+  const lines = result.lines.map((line) => `${line.label}：${line.value} ${line.name}${line.mark ? ` ${line.mark}` : ""}（${line.nature}）`).join("\n");
+  return [
+    `六爻占卜：${result.primary.name}${result.movingLines.length ? ` 之 ${result.changed.name}` : ""}`,
+    `所问：${result.question}`,
+    `本卦：第${result.primary.no}卦 ${result.primary.name}`,
+    `变卦：第${result.changed.no}卦 ${result.changed.name}`,
+    `动爻：${result.movingLines.length ? result.movingLines.map((line) => line.label).join("、") : "无"}`,
+    lines
+  ].join("\n");
+}
+
+function copyLiuyaoResult() {
+  const text = getLiuyaoCopyText();
+  if (text) copyWentianText(text, "卦象已复制");
+}
+
 const YANGZHAI_STORAGE_KEY = "wentian-yangzhai-state-v1";
 const YANGZHAI_PALACES = [
   { key: "xun", gua: "巽", dir: "东南", role: "长女位", defaultItem: "长女" },
@@ -6638,6 +7079,8 @@ function renderWentianPolishedScreen(screen) {
   if (no === 45) return sourceYangzhaiTutorialScreen();
   if (no === 46) return sourceLiurenScreen();
   if (no === 47) return sourceLiurenTutorialScreen();
+  if (no >= 17 && no <= 19) return sourceLiuyaoCastScreen();
+  if (no === 20) return sourceLiuyaoResultScreen();
   if (no === 30) return sourcePaymentScreen();
   if (no === 33) return sourceMembershipScreen();
   if (no === 49) return sourceHepanResultScreen();
@@ -7862,11 +8305,12 @@ function renderConvertedScreen(no) {
   }
   const polishedScreen = renderWentianPolishedScreen(screen);
   if (polishedScreen) {
-    const polishedHeight = screen.no === 8 ? 1280 : screen.no === 20 ? 1072 : screen.no === 22 ? 1120 : screen.no === 24 ? 1180 : screen.no === 44 ? getYangzhaiResultHeight() : screen.no === 46 ? 1160 : screen.no === 49 ? 1160 : 844;
+    const polishedHeight = screen.no === 8 ? 1280 : screen.no === 17 || screen.no === 18 || screen.no === 19 ? 1180 : screen.no === 20 ? 1280 : screen.no === 22 ? 1120 : screen.no === 24 ? 1180 : screen.no === 44 ? getYangzhaiResultHeight() : screen.no === 46 ? 1160 : screen.no === 49 ? 1160 : 844;
     const wideBgClass = screen.no >= 42 && screen.no <= 45 ? " wide-bg" : "";
+    const customHotspots = screen.no >= 17 && screen.no <= 20 ? "" : convertedFlowHotspots(screen);
     return figPhone(`screen-${screen.no}`, `${String(screen.no).padStart(2, "0")} ${screen.title}`, `
       ${polishedScreen}
-      ${convertedFlowHotspots(screen)}
+      ${customHotspots}
     `, polishedHeight, `converted source-screen no-status-shift${wideBgClass}`, false);
   }
   const heading = screen.heading ? figText(`screen-${screen.no}-heading`, screen.heading, 24, 72, 180, 26, "#26211c", 700) : "";
@@ -8399,6 +8843,35 @@ document.addEventListener("click", (event) => {
     copyLiurenResult();
     return;
   }
+  if (earlyAction === "liuyao-mode") {
+    setLiuyaoMode(earlyActionTarget.dataset.mode || "online");
+    return;
+  }
+  if (earlyAction === "liuyao-toss") {
+    tossLiuyaoLine(false);
+    return;
+  }
+  if (earlyAction === "liuyao-toss-all") {
+    tossLiuyaoLine(true);
+    return;
+  }
+  if (earlyAction === "liuyao-manual-line") {
+    cycleLiuyaoManualLine(Number(earlyActionTarget.dataset.lineIndex || 0));
+    return;
+  }
+  if (earlyAction === "liuyao-show-result") {
+    saveLiuyaoQuestionFromDom();
+    if (getLiuyaoResult()) navigate("screen-20", false);
+    return;
+  }
+  if (earlyAction === "liuyao-reset") {
+    resetLiuyaoState();
+    return;
+  }
+  if (earlyAction === "liuyao-copy") {
+    copyLiuyaoResult();
+    return;
+  }
   const routeButton = event.target.closest("[data-route]");
   if (routeButton) {
     navigate(routeButton.dataset.route);
@@ -8623,6 +9096,10 @@ document.addEventListener("click", (event) => {
 });
 
 document.addEventListener("input", (event) => {
+  if (event.target.closest?.(".liuyao-panel")) {
+    if (event.target.id === "liuyao-question") saveLiuyaoQuestionFromDom();
+    return;
+  }
   if (event.target.closest?.(".liuren-panel")) {
     if (event.target.id === "liuren-year") updateLiurenDayOptions();
     liurenHasStarted = false;
