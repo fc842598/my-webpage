@@ -350,7 +350,7 @@
       if (!session?.user) desktopAuthState.quota = null;
       renderDesktopAuth();
       updateDesktopQuotaDisplay();
-      if (session?.user && state.chartRecordId) hydrateDesktopMemberStatus({ force: true });
+      if (session?.user) hydrateDesktopMemberStatus({ force: true });
     });
   }
 
@@ -539,6 +539,7 @@
     desktopAuthState.open = true;
     desktopAuthState.error = '';
     renderDesktopAuth();
+    if (desktopAuthState.session?.user) hydrateDesktopMemberStatus({ force: true });
     focusDesktopAuthField();
   }
 
@@ -573,7 +574,7 @@
 
   async function hydrateDesktopMemberStatus(options = {}) {
     const session = await getDesktopAuthSession();
-    if (!session?.user || !state.chartRecordId) {
+    if (!session?.user) {
       if (!session?.user) {
         desktopAuthState.quota = null;
         updateDesktopQuotaDisplay();
@@ -581,7 +582,8 @@
       return null;
     }
     try {
-      const data = await desktopFetchJson(`/api/payments/member-status?chartRecordId=${encodeURIComponent(state.chartRecordId)}`);
+      const query = state.chartRecordId ? `?chartRecordId=${encodeURIComponent(state.chartRecordId)}` : '';
+      const data = await desktopFetchJson(`/api/payments/member-status${query}`);
       updateDesktopQuotaDisplay(data.quota || null);
       return data;
     } catch (_) {
@@ -631,7 +633,7 @@
       $('#mbpAuthAccount').value = '';
       $('#mbpAuthPassword').value = '';
       closeDesktopAuth();
-      if (state.chartRecordId) await hydrateDesktopMemberStatus({ force: true });
+      await hydrateDesktopMemberStatus({ force: true });
       if (typeof window._chatPanelRefresh === 'function' && window._chartRecordId) window._chatPanelRefresh();
     } catch (error) {
       setDesktopAuthError(error.message || '登录失败');
@@ -719,7 +721,7 @@
     desktopAuthReadyPromise = client.auth.getSession().then(({ data }) => {
       desktopAuthState.session = data?.session || null;
       renderDesktopAuth();
-      if (desktopAuthState.session?.user && state.chartRecordId) hydrateDesktopMemberStatus({ force: true });
+      if (desktopAuthState.session?.user) hydrateDesktopMemberStatus({ force: true });
       attachDesktopAuthListener(client);
       return desktopAuthState.session;
     }).catch(() => null);
@@ -729,7 +731,7 @@
   async function bootDesktopAuth() {
     if (!isDesktopAuthCallbackUrl()) {
       await initDesktopAuth();
-      if (desktopAuthState.session?.user && state.chartRecordId) hydrateDesktopMemberStatus({ force: true });
+      if (desktopAuthState.session?.user) hydrateDesktopMemberStatus({ force: true });
       return;
     }
     desktopAuthState.open = true;
@@ -741,7 +743,7 @@
       clearDesktopAuthCallbackUrl();
       desktopAuthState.open = !desktopAuthState.session?.user;
       desktopAuthState.error = '';
-      if (desktopAuthState.session?.user && state.chartRecordId) await hydrateDesktopMemberStatus({ force: true });
+      if (desktopAuthState.session?.user) await hydrateDesktopMemberStatus({ force: true });
       if (typeof window._chatPanelRefresh === 'function' && window._chartRecordId) window._chatPanelRefresh();
     } catch (error) {
       clearDesktopAuthCallbackUrl();
