@@ -6493,6 +6493,47 @@ function renderLiuyaoQuestionGateStatus(state = getLiuyaoState()) {
   return `<p id="liuyao-question-status" class="liuyao-question-status" data-tone="${escapeHtml(status.tone)}">${escapeHtml(status.text)}</p>`;
 }
 
+function parseLiuyaoGateJson(text) {
+  const raw = String(text || "").trim();
+  const fenced = raw.match(/```(?:json)?\s*([\s\S]*?)```/i);
+  const source = fenced ? fenced[1] : raw;
+  const start = source.indexOf("{");
+  const end = source.lastIndexOf("}");
+  if (start < 0 || end <= start) return null;
+  try {
+    return JSON.parse(source.slice(start, end + 1));
+  } catch (_err) {
+    return null;
+  }
+}
+
+async function reviewLiuyaoQuestionViaChat(question) {
+  const reviewPrompt = [
+    "你是六爻起卦前的审题员，只判断这个问题是否适合起卦，不解卦。",
+    "标准：一事一占/一问一卦；不疑不占；问题必须具体到对象、阶段、行动或结果；空泛、多问、测试、娱乐、重复乱占、不义之问，都不允许起卦。",
+    `页面样例问题“${LIUYAO_SAMPLE_QUESTION}”不能当成用户真实问题。`,
+    `用户所问：${question}`,
+    '只输出 JSON：{"allowed":true或false,"reason":"一句话原因","suggestion":"不能起卦时的改写建议","labels":["命中的标准"]}',
+  ].join("\n");
+  const reviewRecordId = makeWentianUuid();
+  const data = await wentianPostJson("/api/ai/chat/send", {
+    chartRecordId: reviewRecordId,
+    message: reviewPrompt,
+    displayMessage: "六爻起卦审题",
+    chartData: {
+      chartRecordId: reviewRecordId,
+      chatMode: "liuyao_question_gate",
+      source: "六爻起卦审题",
+    },
+    chatMode: "liuyao_question_gate",
+    divinationContext: { type: "liuyao_question_gate", question },
+    transientState: { messages: [], messageCount: 0 },
+  }, 120000, 0);
+  const parsed = parseLiuyaoGateJson(data?.reply);
+  if (!parsed) throw new Error("chat gate parse failed");
+  return parsed;
+}
+
 async function ensureLiuyaoQuestionAllowed() {
   if (liuyaoQuestionGateLoading) return false;
   saveLiuyaoQuestionFromDom();
@@ -6518,7 +6559,12 @@ async function ensureLiuyaoQuestionAllowed() {
   liuyaoQuestionGateLoading = true;
   navigate("screen-17", false);
   try {
-    const data = await wentianPostJson("/api/ai/liuyao-question", { question }, 45000, 0);
+    let data = null;
+    try {
+      data = await wentianPostJson("/api/ai/liuyao-question", { question }, 45000, 0);
+    } catch (_primaryErr) {
+      data = await reviewLiuyaoQuestionViaChat(question);
+    }
     const gate = setLiuyaoQuestionGateResult({
       allowed: data?.allowed === true,
       reason: data?.reason || (data?.allowed ? "审题通过，可以起卦。" : "问题还不够清楚，暂不起卦。"),
