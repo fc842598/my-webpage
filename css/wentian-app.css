@@ -2858,6 +2858,30 @@ html[data-wentian-language="en"] .liuren-orbit i {
   font-weight: 900;
 }
 
+.liuren-hand-board {
+  position: relative;
+  margin-top: 12px;
+  overflow: hidden;
+  border-radius: 18px;
+  background: #fffaf1;
+  box-shadow: 0 14px 30px rgba(76, 48, 24, .10);
+}
+
+.liuren-hand-board img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.liuren-hand-a11y {
+  position: absolute;
+  left: -9999px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
 .liuren-path {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -2908,7 +2932,7 @@ html[data-wentian-language="en"] .liuren-orbit i {
 }
 
 .liuren-track {
-  display: grid;
+  display: none;
   grid-template-columns: repeat(3, 1fr);
   gap: 8px;
   margin-top: 12px;

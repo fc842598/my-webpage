@@ -7316,15 +7316,14 @@ function renderLiurenPath(result, reveal = true) {
     ["日辰", `${result.lunar.day}日`, LIUREN_PALACES[result.dayPalaceIndex]?.name || "-"],
     ["时辰", `${result.hourName}时`, reveal ? result.palace.name : "待起课"]
   ];
+  const activePalace = reveal ? result.palace.name : "待起课";
   return `
-    <div class="liuren-path">
-      ${items.map(([label, value, palace], index) => `
-        <div class="liuren-path-item ${reveal && index === 2 ? "is-final" : ""}">
-          <span>${label}</span>
-          <strong>${value}</strong>
-          <em>${palace}</em>
-        </div>
-      `).join("")}
+    <div class="liuren-hand-board" aria-label="小六壬掌诀三指六位推演图">
+      <img src="../images/wentian-prototype-assets/liuren-hand-board.png" alt="" aria-hidden="true">
+      <div class="liuren-hand-a11y" aria-live="polite">
+        ${items.map(([label, value, palace]) => `<span>${label}：${value}，${palace}</span>`).join("")}
+        <span>当前落宫：${activePalace}</span>
+      </div>
     </div>
   `;
 }
