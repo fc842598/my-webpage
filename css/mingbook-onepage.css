@@ -1511,20 +1511,20 @@ select {
 }
 
 .fc-sanfang-triangle {
-  stroke: rgba(151, 82, 48, .76);
-  stroke-width: 1.4;
-  filter: drop-shadow(0 0 2px rgba(255, 250, 238, .72));
+  stroke: rgba(151, 82, 48, .3);
+  stroke-width: .95;
+  filter: drop-shadow(0 0 1px rgba(255, 250, 238, .32));
 }
 
 .fc-sanfang-opposite {
-  stroke: rgba(66, 52, 43, .58);
-  stroke-width: 1.2;
+  stroke: rgba(66, 52, 43, .22);
+  stroke-width: .85;
 }
 
 .fc-sanfang-point {
-  fill: rgba(151, 82, 48, .7);
-  stroke: rgba(255, 250, 238, .9);
-  stroke-width: .55;
+  fill: rgba(151, 82, 48, .36);
+  stroke: rgba(255, 250, 238, .55);
+  stroke-width: .4;
   vector-effect: non-scaling-stroke;
 }
 

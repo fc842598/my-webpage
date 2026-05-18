@@ -1049,9 +1049,25 @@
     const gridRect = grid.getBoundingClientRect();
     const cellRect = cell.getBoundingClientRect();
     if (!gridRect.width || !gridRect.height) return null;
+
+    const gridCenterX = gridRect.left + gridRect.width / 2;
+    const gridCenterY = gridRect.top + gridRect.height / 2;
+    const cellCenterX = cellRect.left + cellRect.width / 2;
+    const cellCenterY = cellRect.top + cellRect.height / 2;
+    const dx = gridCenterX - cellCenterX;
+    const dy = gridCenterY - cellCenterY;
+    let x = cellCenterX;
+    let y = cellCenterY;
+
+    if (Math.abs(dx) >= Math.abs(dy)) {
+      x = dx >= 0 ? cellRect.right : cellRect.left;
+    } else {
+      y = dy >= 0 ? cellRect.bottom : cellRect.top;
+    }
+
     return {
-      x: ((cellRect.left + cellRect.width / 2 - gridRect.left) / gridRect.width) * 100,
-      y: ((cellRect.top + cellRect.height / 2 - gridRect.top) / gridRect.height) * 100,
+      x: ((x - gridRect.left) / gridRect.width) * 100,
+      y: ((y - gridRect.top) / gridRect.height) * 100,
     };
   }
 
