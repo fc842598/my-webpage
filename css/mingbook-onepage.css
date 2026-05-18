@@ -3793,10 +3793,10 @@ p.mbp-topic-detail {
 
 .mbp-yijing-assist {
   margin: 34px 0 0;
-  padding: clamp(20px, 2.4vw, 28px);
+  padding: clamp(26px, 2.8vw, 36px);
   display: grid;
-  grid-template-columns: minmax(210px, .55fr) minmax(360px, 1fr) minmax(230px, .58fr);
-  gap: clamp(16px, 2vw, 24px);
+  grid-template-columns: minmax(190px, .48fr) minmax(560px, 1.52fr) minmax(320px, .7fr);
+  gap: clamp(22px, 2.4vw, 34px);
   align-items: center;
   border: 1px solid rgba(241, 212, 125, .24);
   border-radius: 10px;
@@ -3828,27 +3828,27 @@ p.mbp-topic-detail {
   margin: 10px 0 8px;
   color: var(--ivory);
   font-family: "Noto Serif SC", "Songti SC", serif;
-  font-size: clamp(26px, 3vw, 38px);
+  font-size: clamp(34px, 3.2vw, 48px);
   line-height: 1.15;
 }
 
 .mbp-yijing-left p {
-  max-width: 360px;
+  max-width: 240px;
   margin: 0;
   color: #d4c096;
-  font-size: 14px;
-  line-height: 1.7;
+  font-size: 16px;
+  line-height: 1.65;
 }
 
 .mbp-yijing-lines {
-  width: 132px;
+  width: 156px;
   display: grid;
-  gap: 7px;
-  margin-top: 22px;
+  gap: 9px;
+  margin-top: 28px;
 }
 
 .mbp-yijing-line {
-  height: 8px;
+  height: 9px;
   border-radius: 999px;
   background: var(--gold);
   box-shadow: 0 0 16px rgba(241, 212, 125, .12);
@@ -3873,14 +3873,15 @@ p.mbp-topic-detail {
 
 .mbp-yijing-right {
   display: grid;
-  gap: 14px;
+  gap: 16px;
+  align-content: start;
 }
 
 .mbp-yijing-tabs {
   display: inline-grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  width: min(420px, 100%);
-  min-height: 42px;
+  width: min(520px, 100%);
+  min-height: 52px;
   padding: 4px;
   border: 1px solid rgba(241, 212, 125, .22);
   border-radius: 999px;
@@ -3902,7 +3903,7 @@ p.mbp-topic-detail {
   background: transparent;
   color: #d4c096;
   font: inherit;
-  font-size: 14px;
+  font-size: 17px;
   font-weight: 900;
   cursor: pointer;
 }
@@ -3910,12 +3911,12 @@ p.mbp-topic-detail {
 .mbp-yijing-help {
   position: absolute;
   top: 50%;
-  right: 18%;
+  right: 16%;
   z-index: 3;
   display: inline-grid;
   place-items: center;
-  width: 16px;
-  height: 16px;
+  width: 18px;
+  height: 18px;
   padding: 0;
   border: 1px solid rgba(241, 212, 125, .34);
   border-radius: 50%;
@@ -4049,14 +4050,14 @@ p.mbp-topic-detail {
 }
 
 .mbp-yijing-guaci {
-  min-height: 64px;
+  min-height: 70px;
   margin: 0;
-  padding: 13px 15px;
+  padding: 18px 22px;
   border-left: 3px solid rgba(241, 212, 125, .58);
   border-radius: 0 9px 9px 0;
   background: rgba(241, 212, 125, .05);
   color: #e3d2a4;
-  font-size: 14px;
+  font-size: 20px;
   font-weight: 800;
   line-height: 1.75;
   white-space: pre-wrap;
@@ -4064,10 +4065,10 @@ p.mbp-topic-detail {
 
 .mbp-yijing-master {
   display: grid;
-  gap: 8px;
-  padding: 13px 15px;
+  gap: 12px;
+  padding: 22px 24px;
   border: 1px solid rgba(241, 212, 125, .16);
-  border-radius: 9px;
+  border-radius: 12px;
   background:
     linear-gradient(135deg, rgba(241, 212, 125, .075), rgba(185, 111, 66, .055)),
     rgba(0, 0, 0, .12);
@@ -4082,14 +4083,14 @@ p.mbp-topic-detail {
 
 .mbp-yijing-master-head span {
   color: var(--gold);
-  font-size: 12px;
+  font-size: 15px;
   font-weight: 900;
   letter-spacing: 0;
 }
 
 .mbp-yijing-master-head strong {
   color: var(--ivory);
-  font-size: 13px;
+  font-size: 16px;
   font-weight: 900;
   line-height: 1.35;
   text-align: right;
@@ -4098,35 +4099,35 @@ p.mbp-topic-detail {
 .mbp-yijing-master-summary {
   margin: 0;
   color: #cfbd91;
-  font-size: 12px;
+  font-size: 16px;
   font-weight: 700;
-  line-height: 1.65;
+  line-height: 1.7;
 }
 
 .mbp-yijing-master-text {
-  max-height: 132px;
-  overflow: auto;
-  padding: 10px 12px;
-  border-radius: 7px;
-  background: rgba(0, 0, 0, .18);
+  max-height: none;
+  overflow: visible;
+  padding: 0;
+  border-radius: 0;
+  background: transparent;
   color: #ead8aa;
-  font-size: 13px;
-  font-weight: 700;
+  font-size: 18px;
+  font-weight: 800;
   line-height: 1.72;
   white-space: pre-line;
-  scrollbar-width: thin;
 }
 
 .mbp-yijing-art {
   min-width: 0;
   margin: 0;
   display: grid;
-  gap: 10px;
+  gap: 12px;
+  align-content: center;
 }
 
 .mbp-yijing-art-frame {
   position: relative;
-  min-height: 230px;
+  min-height: 260px;
   aspect-ratio: 1.46 / 1;
   overflow: hidden;
   border: 1px solid rgba(241, 212, 125, .22);
