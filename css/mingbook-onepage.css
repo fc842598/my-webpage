@@ -1287,7 +1287,7 @@ select {
 
 .mbp-book-panel {
   position: relative;
-  overflow: hidden;
+  overflow: visible;
   padding: 40px 34px 36px;
   border: 1px solid rgba(241, 212, 125, .2);
   border-radius: 18px;
@@ -1304,6 +1304,7 @@ select {
   content: "";
   position: absolute;
   inset: 0;
+  border-radius: inherit;
   pointer-events: none;
   background:
     linear-gradient(90deg, rgba(241, 212, 125, .035) 1px, transparent 1px),
