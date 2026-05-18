@@ -6056,8 +6056,7 @@ const YANGZHAI_CELL_HEADER_H = 52;
 const YANGZHAI_ACTION_Y = 606;
 const YANGZHAI_RESULT_TITLE_Y = 688;
 const YANGZHAI_RESULT_START_Y = 730;
-const YANGZHAI_RESULT_COLLAPSED_HEIGHT = 112;
-const YANGZHAI_RESULT_EXPANDED_HEIGHT = 232;
+const YANGZHAI_RESULT_CARD_HEIGHT = 232;
 const YANGZHAI_RESULT_GAP = 18;
 const YANGZHAI_AVATAR_IMAGES = {
   父亲: "../images/wentian-prototype-assets/yangzhai-avatar-fuqin.png",
@@ -6382,12 +6381,6 @@ function analyzeYangzhai() {
   navigate("screen-44");
 }
 
-function toggleYangzhaiResult(index) {
-  yangzhaiState.expanded[index] = !yangzhaiState.expanded[index];
-  saveYangzhaiState();
-  navigate("screen-44", false);
-}
-
 function openYangzhaiLuopanZoom() {
   const phone = view.querySelector(".figma-phone");
   if (!phone) return;
@@ -6529,7 +6522,7 @@ function getYangzhaiResultHeight() {
   if (!results.length) return 930;
   let y = YANGZHAI_RESULT_START_Y;
   results.forEach((_, index) => {
-    y += (yangzhaiState.expanded[index] ? YANGZHAI_RESULT_EXPANDED_HEIGHT : YANGZHAI_RESULT_COLLAPSED_HEIGHT) + YANGZHAI_RESULT_GAP;
+    y += YANGZHAI_RESULT_CARD_HEIGHT + YANGZHAI_RESULT_GAP;
   });
   return Math.max(844, y + 110);
 }
@@ -6719,9 +6712,8 @@ function sourceYangzhaiResultScreen() {
     ` : ""}
     ${results.map((item, index) => {
       let y = YANGZHAI_RESULT_START_Y;
-      for (let i = 0; i < index; i += 1) y += (yangzhaiState.expanded[i] ? YANGZHAI_RESULT_EXPANDED_HEIGHT : YANGZHAI_RESULT_COLLAPSED_HEIGHT) + YANGZHAI_RESULT_GAP;
-      const expanded = !!yangzhaiState.expanded[index];
-      const cardHeight = expanded ? YANGZHAI_RESULT_EXPANDED_HEIGHT : YANGZHAI_RESULT_COLLAPSED_HEIGHT;
+      for (let i = 0; i < index; i += 1) y += YANGZHAI_RESULT_CARD_HEIGHT + YANGZHAI_RESULT_GAP;
+      const cardHeight = YANGZHAI_RESULT_CARD_HEIGHT;
       return `
         ${figBox(`yz44-card-${index}`, 20, y, 350, cardHeight, "", "border:1px solid #dcceb8;border-radius:10px;background:#fffdf6;")}
         ${yangzhaiCorner(`yz44-card-${index}-tl`, 26, y + 6)}
@@ -6731,9 +6723,7 @@ function sourceYangzhaiResultScreen() {
         ${figBox(`yz44-avatar-${index}`, 36, y + 22, 34, 34, "", "border:1px solid #dcceb8;border-radius:17px;background:#f2e9da;")}
         ${figText(`yz44-avatar-text-${index}`, item.short, 36, y + 30, 34, 12, "#7b3129", 900, "center", "font-family:'Noto Serif SC','Songti SC',serif;")}
         ${figText(`yz44-title-${index}`, item.title, 84, y + 20, 246, 15, "#2b251c", 900, "left", "font-family:'Noto Sans SC','Microsoft YaHei',sans-serif;")}
-        ${figText(`yz44-desc-${index}`, expanded ? item.full : item.desc, expanded ? 42 : 84, expanded ? y + 66 : y + 48, expanded ? 300 : 246, expanded ? 12 : 11, "#4c433a", 600, "left", "line-height:1.55;")}
-        ${figButton(`yz44-full-hit-${index}`, 280, y + cardHeight - 36, 72, 28, `data-action="yangzhai-expand" data-yangzhai-index="${index}"`)}
-        ${figText(`yz44-full-${index}`, expanded ? "收起" : "查看全文⌄", 280, y + cardHeight - 29, 72, 12, "#7b3129", 900, "right")}
+        ${figText(`yz44-desc-${index}`, item.full, 42, y + 66, 300, 12, "#4c433a", 600, "left", "line-height:1.55;")}
       `;
     }).join("")}
     ${figBox("yz44-tip", 20, height - 74, 350, 44, "", "border-radius:12px;background:#fffdf8;")}
@@ -8876,10 +8866,6 @@ document.addEventListener("click", (event) => {
   }
   if (earlyAction === "yangzhai-analyze") {
     analyzeYangzhai();
-    return;
-  }
-  if (earlyAction === "yangzhai-expand") {
-    toggleYangzhaiResult(Number(earlyActionTarget.dataset.yangzhaiIndex || 0));
     return;
   }
   if (earlyAction === "wentian-chart-palace") {
