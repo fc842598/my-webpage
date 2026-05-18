@@ -76,6 +76,8 @@ select {
 
 .mbp-brand,
 .mbp-nav-links,
+.mbp-nav-actions,
+.mbp-auth-link,
 .mbp-member {
   display: flex;
   align-items: center;
@@ -108,6 +110,20 @@ select {
 .mbp-nav-links a.is-active {
   color: var(--gold);
   background: rgba(241, 212, 125, .1);
+}
+
+.mbp-nav-actions {
+  gap: 12px;
+}
+
+.mbp-auth-link {
+  min-height: 36px;
+  padding: 0 18px;
+  border: 1px solid rgba(241, 212, 125, .2);
+  border-radius: 999px;
+  background: rgba(241, 212, 125, .06);
+  color: var(--gold);
+  font-weight: 800;
 }
 
 .mbp-member {
@@ -5256,6 +5272,16 @@ p.mbp-topic-detail {
 @media (max-width: 1020px) {
   .mbp-nav {
     padding-inline: 20px;
+  }
+
+  .mbp-nav-actions {
+    gap: 8px;
+  }
+
+  .mbp-auth-link,
+  .mbp-member {
+    padding-inline: 14px;
+    font-size: 13px;
   }
 
   .mbp-nav-links {
