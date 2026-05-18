@@ -85,7 +85,21 @@
   const desktopSupabaseUrl = 'https://jmmlijqeexdbxgpfyhgf.supabase.co';
   const desktopSupabaseKey = 'sb_publishable_Y2W9eDscfJwK1sgSitbmFA_ta5btvaR';
   const desktopGoogleRedirectBridge = 'https://fc842598.github.io/my-webpage/pages/mingbook-onepage.html';
-  const desktopAuthUrlKeys = ['code', 'state', 'error', 'error_code', 'error_description'];
+  const desktopAuthUrlKeys = [
+    'code',
+    'state',
+    'error',
+    'error_code',
+    'error_description',
+    'access_token',
+    'refresh_token',
+    'expires_at',
+    'expires_in',
+    'provider_refresh_token',
+    'provider_token',
+    'token_type',
+    'type',
+  ];
   const desktopAuthState = {
     open: false,
     mode: 'login',
@@ -302,6 +316,17 @@
       || getDesktopAuthCallbackValue('error')
       || getDesktopAuthCallbackValue('error_code');
     return error ? String(error).replace(/\+/g, ' ') : '';
+  }
+
+  function getDesktopAuthHashSessionPayload() {
+    const accessToken = getDesktopAuthCallbackValue('access_token');
+    if (!accessToken) return null;
+    const refreshToken = getDesktopAuthCallbackValue('refresh_token');
+    if (!refreshToken) throw new Error('Google 登录信息不完整，请重新登录');
+    return {
+      access_token: accessToken,
+      refresh_token: refreshToken,
+    };
   }
 
   function clearDesktopAuthCallbackUrl() {
@@ -666,6 +691,14 @@
     const client = getDesktopAuthClient();
     if (!client) throw new Error('登录组件加载失败，请刷新后重试');
     attachDesktopAuthListener(client);
+    const hashSession = getDesktopAuthHashSessionPayload();
+    if (hashSession) {
+      if (typeof client.auth.setSession !== 'function') throw new Error('登录组件版本过旧，请刷新后重试');
+      const settled = await client.auth.setSession(hashSession);
+      if (settled.error) throw settled.error;
+      desktopAuthState.session = settled.data?.session || null;
+      return desktopAuthState.session || getDesktopAuthSession({ force: true });
+    }
     const code = getDesktopAuthCallbackValue('code');
     if (code && typeof client.auth.exchangeCodeForSession === 'function') {
       const exchanged = await client.auth.exchangeCodeForSession(code);
