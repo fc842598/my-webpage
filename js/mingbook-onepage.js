@@ -1,4 +1,4 @@
-(function () {
+﻿(function () {
   const storageKey = 'yt_mingbook_onepage_profile_v1';
   const legacyHistoryKey = 'yt_zw_history_v1';
   const chartHistoryKey = 'ziwei_local_chart_history_v1';
@@ -1168,7 +1168,7 @@
     cell.innerHTML = `
       <div class="fc-cell-top">
         ${mutagenHtml ? `<div class="fc-cell-mutagen">${mutagenHtml}</div>` : ''}
-        <div class="fc-major-list">${majorHtml || '<div class="fc-major-star">空宫</div>'}</div>
+        <div class="fc-major-list">${majorHtml}</div>
         <div class="fc-minor-list">${minorHtml}</div>
       </div>
       ${yearlyHtml}
@@ -4108,3 +4108,4 @@
   bindEvents();
   renderChart();
 }());
+
