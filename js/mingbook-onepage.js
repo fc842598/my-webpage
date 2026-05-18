@@ -1878,31 +1878,44 @@
     return `${result.name}落在${fcActiveAge}岁流年位，主看当下应期与这一年的动静。`;
   }
 
-  function yijingFirstSentence(text, fallback = '') {
-    const source = String(text || '').replace(/\s+/g, ' ').trim();
+  function cleanYijingReadingText(text) {
+    return String(text || '')
+      .replace(/白话说，就是把“[^”]+”当作这个卦在现实中的一个应象，结合人、事、时间、地点来判断，不是只读字面。?/g, '')
+      .replace(/这句是看先天底子、出生家庭、性格和早年象。?/g, '')
+      .replace(/这句是看后天走法，也就是中后段人生、职业路线和成败方式。?/g, '')
+      .replace(/这句是看流年应事，重点在这一年容易发生什么、该怎么避。?/g, '')
+      .replace(/讲解[:：]\s*(?=\n|$)/g, '')
+      .replace(/[ \t]{2,}/g, ' ')
+      .replace(/\n{3,}/g, '\n\n')
+      .trim();
+  }
+
+  function yijingReadableSentence(text, fallback = '') {
+    const source = cleanYijingReadingText(text).replace(/\s+/g, ' ').trim();
     if (!source) return fallback;
-    const match = source.match(/^(.{12,80}?[。！？；])/);
-    return match ? match[1] : source.slice(0, 72);
+    const match = source.match(/^(.{14,96}?[。！？；])/);
+    return match ? match[1] : source.slice(0, 88);
   }
 
-  function yijingQuickRisk(text, result) {
-    const source = String(text || '').replace(/\s+/g, ' ').trim();
-    const risk = source.match(/(忌|怕|防|避|不宜|阻|孤|破|压力|波折|口舌|伤灾|争执)[^。！？；]{4,42}[。！？；]?/);
-    if (risk) return risk[0];
-    if (!result) return '排盘后显示提醒。';
-    if (fcActiveTab === '流年卦') return `${fcActiveAge}岁重点看当年动静，先验证过去，再看未来。`;
-    return `${result.name}要看它落在哪一位，先抓性格、选择和现实压力点。`;
-  }
-
-  function yijingQuickAction(result) {
-    if (!result) return '排盘后显示建议。';
-    if (fcActiveTab === '先天卦') return '先认清底色和优势，再决定哪些方向值得长期投入。';
-    if (fcActiveTab === '后天卦') return '把选择落到现实关系、事业和财务节奏里，不只看字面吉凶。';
-    return '把这一年当作验证点：先对照过去发生的事，再决定后面怎么走。';
+  function yijingImageReadingHtml(result, text, summary = '') {
+    if (!result) return '排盘后显示读图要点。';
+    const originalLines = [...String(text || '').matchAll(/原句[:：]\s*([^\n]+)/g)]
+      .map((match) => match[1].trim())
+      .filter(Boolean)
+      .slice(0, 3);
+    const source = cleanYijingReadingText(text || summary);
+    const sentence = yijingReadableSentence(
+      source.replace(/原句[:：]\s*[^\n]+/g, '').replace(/\n/g, ' '),
+      `${result.name}先看图中主象，再看它落在${yijingMasterLabel()}位时被哪类人事触发。`
+    );
+    const lead = originalLines.length
+      ? `图中先取「${originalLines.join('、')}」这些象。`
+      : `图中先看「${result.name}」的主象。`;
+    return `<strong>海厦读图要点</strong>${escapeHtml(lead + sentence)}`;
   }
 
   function renderYijingTextSections(text, fallback = '排盘后显示对应卦位的逐条讲解。') {
-    const source = String(text || '').replace(/\r/g, '').trim();
+    const source = cleanYijingReadingText(String(text || '').replace(/\r/g, ''));
     if (!source) {
       return `<section class="mbp-yijing-paragraph"><h4>完整讲解</h4><p>${escapeHtml(fallback)}</p></section>`;
     }
@@ -1916,14 +1929,15 @@
         ? first.replace(/^原句[:：]\s*/, '') || `原句 ${index + 1}`
         : (index === 0 ? '重点讲解' : `细节 ${index + 1}`);
       const bodyLines = isQuote ? lines.slice(1) : lines;
-      const body = bodyLines.join('\n').replace(/^讲解[:：]\s*/, '').trim() || first;
+      const body = cleanYijingReadingText(bodyLines.join('\n').replace(/^讲解[:：]\s*/, ''));
+      if (!body) return '';
       return `
         <section class="mbp-yijing-paragraph">
           <h4>${escapeHtml(title)}</h4>
           <p>${escapeHtml(body).replace(/\n/g, '<br>')}</p>
         </section>
       `;
-    }).join('');
+    }).filter(Boolean).join('') || `<section class="mbp-yijing-paragraph"><h4>完整讲解</h4><p>${escapeHtml(fallback)}</p></section>`;
   }
 
   function yijingLineHtml(result) {
@@ -2005,9 +2019,7 @@
     const masterTitle = $('#mbpYijingMasterTitle');
     const masterSummary = $('#mbpYijingMasterSummary');
     const masterText = $('#mbpYijingMasterText');
-    const quickOne = $('#mbpYijingQuickOne');
-    const quickRisk = $('#mbpYijingQuickRisk');
-    const quickAction = $('#mbpYijingQuickAction');
+    const imageReading = $('#mbpYijingImageReading');
     const master = fcMasterEntry(result);
     const guaciTextValue = fcGuaciText(result);
     const masterBody = yijingMasterText(result);
@@ -2038,25 +2050,15 @@
       guaci.textContent = guaciTextValue || (result ? '此卦暂无卦辞数据，可先参考上方命盘与五卷解读。' : '先完成排盘。');
     }
 
-    if (quickOne) {
-      quickOne.textContent = result
-        ? yijingFirstSentence(master?.summary || guaciTextValue || yijingAssistSummary(result), yijingAssistSummary(result))
-        : '排盘后生成摘要。';
-    }
-    if (quickRisk) {
-      quickRisk.textContent = result
-        ? yijingQuickRisk(masterBody || guaciTextValue || master?.summary, result)
-        : '排盘后显示提醒。';
-    }
-    if (quickAction) {
-      quickAction.textContent = yijingQuickAction(result);
+    if (imageReading) {
+      imageReading.innerHTML = yijingImageReadingHtml(result, masterBody, master?.summary);
     }
 
     if (masterTitle) {
       masterTitle.textContent = result ? `${yijingMasterLabel()} · ${result.name}` : '等待排盘';
     }
     if (masterSummary) {
-      masterSummary.textContent = master?.summary || (result ? '此卦暂无名师总论。' : '排盘后显示讲课式总论。');
+      masterSummary.textContent = cleanYijingReadingText(master?.summary) || (result ? '此卦暂无名师总论。' : '排盘后显示讲课式总论。');
     }
     if (masterText) {
       masterText.innerHTML = renderYijingTextSections(

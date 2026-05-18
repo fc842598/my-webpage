@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>阅天 · 紫微排盘</title>
   <link rel="icon" href="../images/logo-mark.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../css/mingbook-onepage.css?v=20260518-yijing-option3-oneclick-refine">
+  <link rel="stylesheet" href="../css/mingbook-onepage.css?v=20260518-yijing-clean-reading">
   <script src="../js/config.js?v=20260509-vercel-backend"></script>
   <script defer src="../js/cities.js"></script>
   <script defer src="../js/lunarCalendar.js"></script>
@@ -22,7 +22,7 @@
   <script defer src="../src/ziping/runtime.js"></script>
   <script defer src="../js/ai-piming.js?v=20260508-backend-base"></script>
   <script defer src="../js/ai-chat.js?v=20260518-desktop-auth"></script>
-  <script defer src="../js/mingbook-onepage.js?v=20260518-google-hash-callback"></script>
+  <script defer src="../js/mingbook-onepage.js?v=20260518-yijing-clean-reading-google"></script>
 </head>
 <body>
   <header class="mbp-nav">
@@ -334,12 +334,6 @@
           <h3 id="mbpYijingName">等待排盘</h3>
           <p id="mbpYijingSummary">排盘后，这里会落出先天、后天与流年的辅助判断。</p>
           <div class="mbp-yijing-lines" id="mbpYijingLines"></div>
-          <nav class="mbp-yijing-toc" aria-label="易经解读目录">
-            <span>阅读层级</span>
-            <a href="#mbpYijingGuaci">先看卦辞</a>
-            <a href="#mbpYijingQuick">摘要重点</a>
-            <a href="#mbpYijingMasterText">完整讲解</a>
-          </nav>
         </div>
         <div class="mbp-yijing-right">
           <div class="mbp-yijing-tabs" id="mbpYijingTabs" role="tablist" aria-label="易经推命切换">
@@ -359,20 +353,6 @@
           <p class="mbp-yijing-help-note" id="mbpYijingHelpNote" hidden></p>
           <div class="mbp-yijing-years" id="mbpYijingYears" hidden></div>
           <p class="mbp-yijing-guaci" id="mbpYijingGuaci">先完成排盘。</p>
-          <div class="mbp-yijing-quick" id="mbpYijingQuick" aria-label="易经摘要">
-            <section>
-              <span>一句话</span>
-              <p id="mbpYijingQuickOne">排盘后生成摘要。</p>
-            </section>
-            <section>
-              <span>风险</span>
-              <p id="mbpYijingQuickRisk">排盘后显示提醒。</p>
-            </section>
-            <section>
-              <span>破局</span>
-              <p id="mbpYijingQuickAction">排盘后显示建议。</p>
-            </section>
-          </div>
           <section class="mbp-yijing-master" aria-label="名师解读">
             <div class="mbp-yijing-master-head">
               <span>名师解读</span>
@@ -392,6 +372,7 @@
             </div>
           </div>
           <figcaption id="mbpYijingImageCaption">排盘后显示当前卦图。</figcaption>
+          <div class="mbp-yijing-image-reading" id="mbpYijingImageReading">排盘后显示读图要点。</div>
         </figure>
       </section>
 

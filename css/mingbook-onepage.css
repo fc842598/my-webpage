@@ -4203,38 +4203,6 @@ p.mbp-topic-detail {
   margin-top: 28px;
 }
 
-.mbp-yijing-toc {
-  width: 100%;
-  max-width: 260px;
-  display: grid;
-  gap: 8px;
-  margin-top: 24px;
-  padding-top: 20px;
-  border-top: 1px solid rgba(241, 212, 125, .14);
-}
-
-.mbp-yijing-toc span {
-  color: #a89565;
-  font-size: 12px;
-  font-weight: 900;
-  letter-spacing: 0;
-}
-
-.mbp-yijing-toc a {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  min-height: 36px;
-  padding: 0 12px;
-  border: 1px solid rgba(241, 212, 125, .13);
-  border-radius: 8px;
-  background: rgba(0, 0, 0, .14);
-  color: #ddcf9f;
-  font-size: 13px;
-  font-weight: 900;
-  text-decoration: none;
-}
-
 .mbp-yijing-line {
   height: 9px;
   border-radius: 999px;
@@ -4453,38 +4421,6 @@ p.mbp-topic-detail {
   white-space: pre-wrap;
 }
 
-.mbp-yijing-quick {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 12px;
-}
-
-.mbp-yijing-quick section {
-  min-height: 118px;
-  padding: 18px 18px 16px;
-  border: 1px solid rgba(241, 212, 125, .15);
-  border-radius: 10px;
-  background:
-    linear-gradient(135deg, rgba(241, 212, 125, .07), rgba(185, 111, 66, .035)),
-    rgba(0, 0, 0, .15);
-}
-
-.mbp-yijing-quick span {
-  display: block;
-  margin-bottom: 10px;
-  color: var(--gold);
-  font-size: 14px;
-  font-weight: 900;
-}
-
-.mbp-yijing-quick p {
-  margin: 0;
-  color: #eadcb6;
-  font-size: 16px;
-  font-weight: 850;
-  line-height: 1.62;
-}
-
 .mbp-yijing-master {
   display: grid;
   gap: 14px;
@@ -4670,6 +4606,24 @@ p.mbp-topic-detail {
   font-weight: 800;
   line-height: 1.5;
   text-align: center;
+}
+
+.mbp-yijing-image-reading {
+  padding: 14px 16px;
+  border: 1px solid rgba(241, 212, 125, .14);
+  border-radius: 9px;
+  background: rgba(0, 0, 0, .14);
+  color: #d7c793;
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1.65;
+}
+
+.mbp-yijing-image-reading strong {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--gold);
+  font-size: 13px;
 }
 
 .mbp-chapters {
@@ -5801,14 +5755,6 @@ p.mbp-topic-detail {
   .mbp-yijing-art {
     grid-column: auto;
     grid-row: auto;
-  }
-
-  .mbp-yijing-toc {
-    max-width: none;
-  }
-
-  .mbp-yijing-quick {
-    grid-template-columns: 1fr;
   }
 
   .mbp-yijing-master-text {
