@@ -2873,6 +2873,111 @@ html[data-wentian-language="en"] .liuren-orbit i {
   height: auto;
 }
 
+.liuren-count-motion,
+.liuren-count-motion span {
+  position: absolute;
+  pointer-events: none;
+}
+
+.liuren-count-motion {
+  inset: 0;
+}
+
+.liuren-count-motion::before {
+  content: "";
+  position: absolute;
+  left: 29%;
+  top: 24%;
+  width: 46%;
+  height: 46%;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle, rgba(255, 221, 136, .20) 0 3%, transparent 4% 100%),
+    conic-gradient(from 220deg, transparent 0deg, rgba(211, 158, 64, .18) 86deg, transparent 132deg, transparent 360deg);
+  opacity: .62;
+  mix-blend-mode: multiply;
+  animation: liurenCompassSweep 5.6s linear infinite;
+}
+
+.liuren-flow-dot {
+  z-index: 4;
+  left: 38%;
+  top: 55%;
+  width: 11px;
+  height: 11px;
+  margin: -5px 0 0 -5px;
+  border-radius: 50%;
+  background: #fff8dd;
+  box-shadow:
+    0 0 0 5px rgba(215, 169, 74, .20),
+    0 0 18px rgba(211, 151, 49, .95),
+    0 0 34px rgba(211, 151, 49, .42);
+  animation: liurenFingerTrace 4.8s cubic-bezier(.35, 0, .2, 1) infinite;
+}
+
+.liuren-finger-pulse {
+  z-index: 3;
+  width: 38px;
+  height: 38px;
+  margin: -19px 0 0 -19px;
+  border: 1px solid rgba(218, 165, 72, .64);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 240, 190, .44) 0 22%, rgba(255, 214, 116, .18) 23% 48%, transparent 49% 100%);
+  box-shadow: 0 0 22px rgba(211, 151, 49, .34);
+  opacity: 0;
+  animation: liurenJointPulse 4.8s ease-in-out infinite;
+}
+
+.liuren-finger-pulse-1 {
+  left: 38%;
+  top: 55%;
+  animation-delay: 0s;
+}
+
+.liuren-finger-pulse-2 {
+  left: 38%;
+  top: 37%;
+  animation-delay: .48s;
+}
+
+.liuren-finger-pulse-3 {
+  left: 50%;
+  top: 31%;
+  animation-delay: .96s;
+}
+
+.liuren-finger-pulse-4 {
+  left: 65%;
+  top: 39%;
+  animation-delay: 1.44s;
+}
+
+.liuren-finger-pulse-5 {
+  left: 70%;
+  top: 60%;
+  animation-delay: 1.92s;
+}
+
+.liuren-finger-pulse-6 {
+  left: 51%;
+  top: 55%;
+  animation-delay: 2.40s;
+}
+
+.liuren-final-aura {
+  z-index: 2;
+  left: 70%;
+  top: 60%;
+  width: 82px;
+  height: 82px;
+  margin: -41px 0 0 -41px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 236, 164, .56) 0 20%, rgba(220, 162, 51, .25) 21% 48%, transparent 49% 100%);
+  opacity: .72;
+  filter: blur(.2px);
+  animation: liurenFinalAura 2.2s ease-in-out infinite;
+}
+
 .liuren-hand-a11y {
   position: absolute;
   left: -9999px;
@@ -2880,6 +2985,93 @@ html[data-wentian-language="en"] .liuren-orbit i {
   width: 1px;
   height: 1px;
   overflow: hidden;
+}
+
+@keyframes liurenFingerTrace {
+  0%,
+  10% {
+    left: 38%;
+    top: 55%;
+    transform: scale(.92);
+  }
+
+  22% {
+    left: 38%;
+    top: 37%;
+    transform: scale(1);
+  }
+
+  36% {
+    left: 50%;
+    top: 31%;
+    transform: scale(1.02);
+  }
+
+  50% {
+    left: 65%;
+    top: 39%;
+    transform: scale(1);
+  }
+
+  64%,
+  82% {
+    left: 70%;
+    top: 60%;
+    transform: scale(1.16);
+  }
+
+  100% {
+    left: 38%;
+    top: 55%;
+    transform: scale(.85);
+  }
+}
+
+@keyframes liurenJointPulse {
+  0%,
+  12%,
+  100% {
+    opacity: 0;
+    transform: scale(.58);
+  }
+
+  20% {
+    opacity: .92;
+    transform: scale(1);
+  }
+
+  34% {
+    opacity: 0;
+    transform: scale(1.56);
+  }
+}
+
+@keyframes liurenFinalAura {
+  0%,
+  100% {
+    opacity: .42;
+    transform: scale(.9);
+  }
+
+  50% {
+    opacity: .86;
+    transform: scale(1.08);
+  }
+}
+
+@keyframes liurenCompassSweep {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .liuren-count-motion::before,
+  .liuren-flow-dot,
+  .liuren-finger-pulse,
+  .liuren-final-aura {
+    animation: none !important;
+  }
 }
 
 .liuren-path {

@@ -7318,8 +7318,13 @@ function renderLiurenPath(result, reveal = true) {
   ];
   const activePalace = reveal ? result.palace.name : "待起课";
   return `
-    <div class="liuren-hand-board" aria-label="小六壬掌诀三指六位推演图">
+    <div class="liuren-hand-board ${reveal ? "is-revealed" : "is-idle"}" aria-label="小六壬掌诀三指六位推演图">
       <img src="../images/wentian-prototype-assets/liuren-hand-board.png" alt="" aria-hidden="true">
+      <div class="liuren-count-motion" aria-hidden="true">
+        <span class="liuren-flow-dot"></span>
+        ${LIUREN_PALACES.map((_, index) => `<span class="liuren-finger-pulse liuren-finger-pulse-${index + 1}"></span>`).join("")}
+        <span class="liuren-final-aura"></span>
+      </div>
       <div class="liuren-hand-a11y" aria-live="polite">
         ${items.map(([label, value, palace]) => `<span>${label}：${value}，${palace}</span>`).join("")}
         <span>当前落宫：${activePalace}</span>
