@@ -5149,6 +5149,7 @@ function sourceMineScreen(screen) {
     ${figText("source-31-email", escapeHtml(account.loggedIn ? account.email : "登录后可查看支付记录"), 116, 197, 200, 12, "#8f857a")}
     ${figBox("source-31-login-badge", 286, 148, 58, 24, "", `border-radius:12px;background:${member.isMember ? "#fff0d6" : "#f6f2e9"};`)}
     ${figText("source-31-login-badge-text", member.isMember ? "会员" : (account.loggedIn ? "账号" : "登录"), 286, 154, 58, 11, member.isMember ? "#9f3d2e" : "#9b742e", 800, "center")}
+    ${figButton("source-31-login-hit", 16, 126, 358, 96, 'data-route="screen-40" aria-label="登录 / 注册"', "", "z-index:35;")}
     ${[["今日次数", member.daily, 16], ["本月次数", member.monthly, 139], ["会员状态", member.isMember ? "已开通" : "免费版", 262]].map(([label, count, x], index) => `
       ${figBox(`source-31-stat-${index}`, x, 240, 111, 75, "converted-card", "border-radius:12px;box-shadow:0 5px 14px rgba(74,55,32,.08);")}
       ${figText(`source-31-stat-label-${index}`, label, x + 14, 253, 80, 12, "#9b742e", 500)}
