@@ -1714,6 +1714,58 @@ function getWentianChartDefaultTrueSolar(form = {}) {
   return true;
 }
 
+const WENTIAN_LUNAR_MONTH_NAMES = ["正月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"];
+
+function getWentianLunarMonthName(month) {
+  return WENTIAN_LUNAR_MONTH_NAMES[Number(month) - 1] || `${month}月`;
+}
+
+function getWentianLunarLeapMonth(year) {
+  const VendorLunarYear = globalThis?.LunarYear;
+  if (VendorLunarYear && typeof VendorLunarYear.fromYear === "function") {
+    try {
+      return Math.abs(Number(VendorLunarYear.fromYear(Number(year))?.getLeapMonth?.())) || 0;
+    } catch (_err) {}
+  }
+  return 0;
+}
+
+function getWentianLunarMonthMax(year, month, isLeap = false) {
+  if (typeof lunarToSolar === "function") {
+    for (let day = 30; day >= 28; day--) {
+      if (lunarToSolar(Number(year), Number(month), day, !!isLeap)) return day;
+    }
+  }
+  return 30;
+}
+
+function getWentianNextLunarMonth(year, month) {
+  const y = Number(year);
+  const m = Number(month);
+  return m >= 12 ? { year: y + 1, month: 1 } : { year: y, month: m + 1 };
+}
+
+function formatWentianLunarRuleLabel(year, month, day, isLeap = false) {
+  return `${year}年${isLeap ? "闰" : ""}${getWentianLunarMonthName(month)}${day}日`;
+}
+
+function getWentianLeapMonthRuleInfo(lunar, enabled = true) {
+  if (!enabled || !lunar?.isLeap) return { enabled: !!enabled, applied: false };
+  const next = getWentianNextLunarMonth(lunar.year, lunar.month);
+  let effectiveDay = Number(lunar.day) || 1;
+  if (typeof lunarToSolar === "function") {
+    while (effectiveDay > 1 && !lunarToSolar(next.year, next.month, effectiveDay, false)) effectiveDay--;
+  }
+  return {
+    enabled: true,
+    applied: true,
+    actual: { year: lunar.year, month: lunar.month, day: lunar.day },
+    effective: { year: next.year, month: next.month, day: effectiveDay },
+    actualLabel: formatWentianLunarRuleLabel(lunar.year, lunar.month, lunar.day, true),
+    effectiveLabel: formatWentianLunarRuleLabel(next.year, next.month, effectiveDay, false),
+  };
+}
+
 function renderWentianChartCityDropdown(query) {
   const dropdown = document.getElementById("wentian-chart-city-dropdown");
   if (!dropdown) return;
@@ -1760,11 +1812,14 @@ function getWentianChartDateParts() {
   const mode = document.getElementById("wentian-chart-cal")?.value || wentianChartCalMode || "solar";
   const hour = getWentianNumber("wentian-chart-hour");
   const minute = getWentianNumber("wentian-chart-minute");
+  const autoLeapMonth = document.getElementById("wentian-chart-lunar-leap")?.checked !== false;
   let year;
   let month;
   let day;
   let date;
   let calModeLabel;
+  let lunar = null;
+  let leapMonthRule = { enabled: autoLeapMonth, applied: false };
 
   if (mode === "lunar") {
     year = getWentianNumber("wentian-chart-lunar-year");
@@ -1772,22 +1827,29 @@ function getWentianChartDateParts() {
     day = getWentianNumber("wentian-chart-lunar-day");
     if (!year || !month || !day) throw new Error("请填写完整的农历出生年月日");
     if (typeof lunarToSolar !== "function") throw new Error("农历转换模块未加载，请刷新后重试");
-    const solar = lunarToSolar(year, month, day, !!document.getElementById("wentian-chart-lunar-leap")?.checked);
+    const isLeap = autoLeapMonth && getWentianLunarLeapMonth(year) === month;
+    const solar = lunarToSolar(year, month, day, isLeap);
     if (!solar) throw new Error("农历日期无效或超出支持范围");
     date = new Date(solar.getFullYear(), solar.getMonth(), solar.getDate(), hour, minute);
-    calModeLabel = `农历 ${year}年${month}月${day}日`;
+    lunar = { year, month, day, isLeap, leapMonth: getWentianLunarLeapMonth(year) };
+    leapMonthRule = getWentianLeapMonthRuleInfo(lunar, autoLeapMonth);
+    calModeLabel = `农历 ${formatWentianLunarRuleLabel(year, month, day, isLeap)}`;
   } else {
     year = getWentianNumber("wentian-chart-year");
     month = getWentianNumber("wentian-chart-month");
     day = getWentianNumber("wentian-chart-day");
     if (!year || !month || !day) throw new Error("请填写完整的出生年月日");
     date = new Date(year, month - 1, day, hour, minute);
+    if (typeof solarToLunar === "function") {
+      lunar = solarToLunar(year, month, day);
+      leapMonthRule = getWentianLeapMonthRuleInfo(lunar, autoLeapMonth);
+    }
     calModeLabel = `公历 ${year}-${padWentianNumber(month)}-${padWentianNumber(day)}`;
   }
 
   if (year < 1900 || year > 2030) throw new Error("出生年份请填写 1900-2030");
   if (Number.isNaN(date.getTime())) throw new Error("出生日期无效");
-  return { mode, date, hour, minute, calModeLabel };
+  return { mode, date, hour, minute, calModeLabel, lunar, leapMonthRule, autoLeapMonth };
 }
 
 function updateWentianChartPreview() {
@@ -1799,7 +1861,8 @@ function updateWentianChartPreview() {
     const dateStr = `${parts.date.getFullYear()}-${padWentianNumber(parts.date.getMonth() + 1)}-${padWentianNumber(parts.date.getDate())}`;
     const timeStr = `${padWentianNumber(parts.hour)}:${padWentianNumber(parts.minute)}`;
     if (hiddenDate) hiddenDate.value = `${dateStr}T${timeStr}`;
-    if (preview) preview.textContent = `${parts.calModeLabel} · 北京时间 ${timeStr}`;
+    const leapText = parts.leapMonthRule?.applied ? ` · ${parts.leapMonthRule.actualLabel}按${parts.leapMonthRule.effectiveLabel}排盘` : "";
+    if (preview) preview.textContent = `${parts.calModeLabel} · 北京时间 ${timeStr}${leapText}`;
     const cityText = document.getElementById("wentian-chart-city")?.value.trim() || "";
     const city = wentianChartCity || findWentianCity(cityText);
     if (tst && typeof calcTrueSolarTime === "function") {
@@ -1825,6 +1888,19 @@ function updateWentianChartPreview() {
 
 function getWentianIztroLib() {
   return window.iztro?.astro || window.iztro || null;
+}
+
+function createWentianChartWithLeapRule(lib, norm, genderText) {
+  const leapRule = norm?.leapMonthRule;
+  if (leapRule?.applied) {
+    const lunar = leapRule.effective;
+    const lunarDateStr = `${lunar.year}-${lunar.month}-${lunar.day}`;
+    if (typeof lib.byLunar === "function") return lib.byLunar(lunarDateStr, norm.timeIndex, genderText, false, false);
+    if (typeof lib.astrolabeByLunarDate === "function") return lib.astrolabeByLunarDate(lunarDateStr, norm.timeIndex, genderText, false, false);
+  }
+  return typeof lib.bySolar === "function"
+    ? lib.bySolar(norm.dateStr, norm.timeIndex, genderText, true)
+    : lib.astrolabeBySolarDate(norm.dateStr, norm.timeIndex, genderText, true);
 }
 
 function normalizeWentianStar(star) {
@@ -3173,6 +3249,7 @@ const WENTIAN_I18N_EN_EXTRA = {
   "公历": "Solar",
   "农历": "Lunar",
   "闰月": "Leap Month",
+  "闰月自动识别": "Auto Leap Month",
   "出生时刻精确到分钟": "Birth time accurate to the minute",
   "出生地点影响真太阳时": "Birth location affects true solar time",
   "采用真太阳时": "Use true solar time",
@@ -4880,6 +4957,8 @@ function getWentianChartFormData() {
     cityDetail,
     calMode: parts?.mode || "solar",
     calModeLabel: parts?.calModeLabel,
+    autoLeapMonth: parts?.autoLeapMonth !== false,
+    leapMonthRule: parts?.leapMonthRule || { enabled: true, applied: false },
   };
 }
 
@@ -4891,9 +4970,7 @@ async function submitWentianChartForm() {
     if (!lib) throw new Error("排盘模块未加载，请刷新后重试");
 
     const genderText = norm.gender === "male" ? "男" : "女";
-    const chart = typeof lib.bySolar === "function"
-      ? lib.bySolar(norm.dateStr, norm.timeIndex, genderText, true)
-      : lib.astrolabeBySolarDate(norm.dateStr, norm.timeIndex, genderText, true);
+    const chart = createWentianChartWithLeapRule(lib, norm, genderText);
     resetWentianChartRecordId();
     const chartData = buildWentianChartPayload(chart, norm);
     resetWentianChartAiState(chartData.chartRecordId);
@@ -4910,6 +4987,8 @@ async function submitWentianChartForm() {
         city: norm.city,
         cityDetail: norm.cityDetail,
         calMode: norm.calMode,
+        autoLeapMonth: norm.autoLeapMonth,
+        leapMonthRule: norm.leapMonthRule,
         datetime: document.getElementById("wentian-chart-date")?.value || "",
         useTrueSolar: norm.useTrueSolar,
         trueSolarChoiceSet: true,
@@ -4953,7 +5032,10 @@ function initWentianChartForm() {
   const lunarDay = document.getElementById("wentian-chart-lunar-day");
   if (lunarYear) lunarYear.value = String(date.getFullYear());
   if (lunarMonth) lunarMonth.value = "1";
+  updateWentianChartDayOptions(lunarDay, 0, 0, getWentianLunarMonthMax(lunarYear?.value, lunarMonth?.value, false));
   if (lunarDay) lunarDay.value = "1";
+  const leapAuto = document.getElementById("wentian-chart-lunar-leap");
+  if (leapAuto) leapAuto.checked = form.autoLeapMonth !== false;
   setWentianChartButtonValue("gender", getWentianChartDefaultGender(form));
   setWentianChartButtonValue("type", form.type || "ziwei");
   setWentianChartCalendarMode(form.calMode || "solar");
@@ -7962,7 +8044,7 @@ function sourceChartFormScreen() {
           <select id="wentian-chart-lunar-day"></select>
         </div>
         <label style="display:flex;align-items:center;gap:6px;color:#8d7d69;font-size:12px">
-          <input id="wentian-chart-lunar-leap" type="checkbox" style="width:14px;height:14px"> 闰月
+          <input id="wentian-chart-lunar-leap" type="checkbox" checked style="width:14px;height:14px"> 闰月自动识别
         </label>
         <div id="wentian-chart-preview" class="wentian-chart-preview"></div>
       </div>
@@ -9164,6 +9246,12 @@ document.addEventListener("input", (event) => {
       getWentianNumber("wentian-chart-month")
     );
   }
+  if (event.target.id === "wentian-chart-lunar-year" || event.target.id === "wentian-chart-lunar-month" || event.target.id === "wentian-chart-lunar-leap") {
+    const lunarYear = getWentianNumber("wentian-chart-lunar-year");
+    const lunarMonth = getWentianNumber("wentian-chart-lunar-month");
+    const isLeap = document.getElementById("wentian-chart-lunar-leap")?.checked && getWentianLunarLeapMonth(lunarYear) === lunarMonth;
+    updateWentianChartDayOptions(document.getElementById("wentian-chart-lunar-day"), 0, 0, getWentianLunarMonthMax(lunarYear, lunarMonth, isLeap));
+  }
   updateWentianChartPreview();
 });
 
@@ -9181,6 +9269,12 @@ document.addEventListener("change", (event) => {
       getWentianNumber("wentian-chart-year"),
       getWentianNumber("wentian-chart-month")
     );
+  }
+  if (event.target.id === "wentian-chart-lunar-year" || event.target.id === "wentian-chart-lunar-month" || event.target.id === "wentian-chart-lunar-leap") {
+    const lunarYear = getWentianNumber("wentian-chart-lunar-year");
+    const lunarMonth = getWentianNumber("wentian-chart-lunar-month");
+    const isLeap = document.getElementById("wentian-chart-lunar-leap")?.checked && getWentianLunarLeapMonth(lunarYear) === lunarMonth;
+    updateWentianChartDayOptions(document.getElementById("wentian-chart-lunar-day"), 0, 0, getWentianLunarMonthMax(lunarYear, lunarMonth, isLeap));
   }
   updateWentianChartPreview();
 });
