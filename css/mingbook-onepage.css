@@ -1579,8 +1579,7 @@ select {
   letter-spacing: .12em;
 }
 
-.is-chart-pending .fc-tab,
-.is-chart-pending .fc-center-btn {
+.is-chart-pending .fc-tab {
   pointer-events: none;
 }
 

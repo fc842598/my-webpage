@@ -3480,11 +3480,31 @@
   }
 
   function bindEvents() {
-    function rerenderAfterProfileChange() {
+    function renderChartFromProfile(profile) {
+      showFormError('');
+      state.profile = normalizeProfile(profile);
+      formCalMode = state.profile.isLunar ? 'lunar' : 'solar';
       resetForProfileChange();
+      state.chartRecordId = makeLocalId();
+      state.chartReady = true;
+      state.chartConfirmedKey = profileHistoryKey(state.profile);
       saveProfile();
+      saveProfileToHistory(state.profile);
       updateForm();
       renderChart();
+    }
+
+    function stepChartHour(delta) {
+      const profile = collectProfileFromForm();
+      if (profile.error) {
+        guideUserToBirthForm(profile.error);
+        return;
+      }
+      const currentHour = Number(profile.hour) || 0;
+      renderChartFromProfile({
+        ...profile,
+        hour: (currentHour + delta + 24) % 24,
+      });
     }
 
     function invalidateChartFromFormEdit() {
@@ -3565,12 +3585,10 @@
       $('#mbpFcLiunianScroll')?.scrollBy({ left: 100, behavior: 'smooth' });
     });
     $('#mbpFcTimeUp')?.addEventListener('click', () => {
-      state.profile = normalizeProfile({ ...state.profile, hour: (state.profile.hour + 1) % 24 });
-      rerenderAfterProfileChange();
+      stepChartHour(1);
     });
     $('#mbpFcTimeDown')?.addEventListener('click', () => {
-      state.profile = normalizeProfile({ ...state.profile, hour: (state.profile.hour + 23) % 24 });
-      rerenderAfterProfileChange();
+      stepChartHour(-1);
     });
 
     document.querySelectorAll('.nf-gender-btn').forEach((btn) => {
