@@ -3363,6 +3363,10 @@ const WENTIAN_I18N_EN_EXTRA = {
   "一键起完整卦": "Cast All Six",
   "清空重排": "Clear",
   "补全六爻": "Complete Lines",
+  "抛币中…": "Casting...",
+  "卦已成": "Hexagram Ready",
+  "向上滑动抛币": "Swipe Up to Cast",
+  "在铜钱区向上滑动超过一段距离即可抛币；落币后按初爻到上爻依次记录。": "Swipe up on the coin area to cast. After the coins land, each line is recorded from bottom to top.",
   "三枚铜钱六次成卦": "Three coins, six casts",
   "本卦": "Original",
   "变卦": "Changed",
@@ -4051,6 +4055,12 @@ function translateWentianText(text, code = getWentianLanguageCode(), element = n
     if (liuyaoProgress) return `${liuyaoProgress[1]}/6 lines`;
     const liuyaoToss = source.match(/^投第\s*(\d+)\s*爻$/);
     if (liuyaoToss) return `Cast Line ${liuyaoToss[1]}`;
+    const liuyaoSwipe = source.match(/^向上滑动抛第\s*(\d+)\s*爻$/);
+    if (liuyaoSwipe) return `Swipe up to cast line ${liuyaoSwipe[1]}`;
+    const liuyaoCasting = source.match(/^抛币中，正在定第\s*(\d+)\s*爻$/);
+    if (liuyaoCasting) return `Casting line ${liuyaoCasting[1]}...`;
+    const liuyaoCastingStatus = source.match(/^铜钱正在翻转，1 秒后落入第\s*(\d+)\s*爻。$/);
+    if (liuyaoCastingStatus) return `Coins are turning. Line ${liuyaoCastingStatus[1]} lands after 1 second.`;
     const liuyaoLineValue = source.match(/^(6|7|8|9)\s*(少阳|少阴|老阳|老阴)(\s*[○×])?$/);
     if (liuyaoLineValue) return `${liuyaoLineValue[1]} ${translateWentianText(liuyaoLineValue[2], "en")}${liuyaoLineValue[3] || ""}`;
     const liuyaoHexNo = source.match(/^(.+)上(.+)下\s*·\s*第(\d+)卦$/);
@@ -6276,6 +6286,8 @@ function wentianHexLines(id, y, variant = 0) {
 const LIUYAO_STORAGE_KEY = "wentian-liuyao-state-v1";
 const LIUYAO_DEFAULT_QUESTION = "事业近期是否适合推进新计划？";
 const LIUYAO_VALUES = [7, 8, 9, 6];
+const LIUYAO_TOSS_ANIMATION_MS = 1000;
+const LIUYAO_SWIPE_THRESHOLD = 54;
 const LIUYAO_TRIGRAM_BY_BITS = {
   "111": { gua: "乾", name: "天", key: "qian" },
   "110": { gua: "兑", name: "泽", key: "dui" },
@@ -6288,6 +6300,9 @@ const LIUYAO_TRIGRAM_BY_BITS = {
 };
 const LIUYAO_LINE_LABELS = ["初爻", "二爻", "三爻", "四爻", "五爻", "上爻"];
 let liuyaoState = null;
+let liuyaoTossTimer = null;
+let liuyaoTossAnimation = null;
+let liuyaoSwipeStart = null;
 
 function normalizeLiuyaoCast(raw) {
   const value = Number(raw?.value);
@@ -6341,7 +6356,17 @@ function saveLiuyaoQuestionFromDom() {
   saveLiuyaoState();
 }
 
+function clearLiuyaoTossAnimation() {
+  if (liuyaoTossTimer) {
+    clearTimeout(liuyaoTossTimer);
+    liuyaoTossTimer = null;
+  }
+  liuyaoTossAnimation = null;
+  liuyaoSwipeStart = null;
+}
+
 function setLiuyaoMode(mode) {
+  clearLiuyaoTossAnimation();
   saveLiuyaoQuestionFromDom();
   const state = getLiuyaoState();
   state.mode = mode === "manual" ? "manual" : "online";
@@ -6351,6 +6376,7 @@ function setLiuyaoMode(mode) {
 }
 
 function resetLiuyaoState() {
+  clearLiuyaoTossAnimation();
   liuyaoState = makeLiuyaoDefaultState();
   saveLiuyaoState();
   navigate("screen-17", false);
@@ -6370,7 +6396,7 @@ function makeLiuyaoCoinCast() {
   return { value: coins.reduce((sum, coin) => sum + coin, 0), coins, manual: false, at: Date.now() };
 }
 
-function tossLiuyaoLine(all = false) {
+function prepareLiuyaoOnlineTossState() {
   saveLiuyaoQuestionFromDom();
   const state = getLiuyaoState();
   state.mode = "online";
@@ -6380,6 +6406,42 @@ function tossLiuyaoLine(all = false) {
     state.createdAt = Date.now();
     state.casts = [];
   }
+  return state;
+}
+
+function finishLiuyaoAnimatedToss() {
+  const pending = liuyaoTossAnimation?.cast;
+  liuyaoTossTimer = null;
+  liuyaoTossAnimation = null;
+  if (!pending) return;
+  const state = getLiuyaoState();
+  state.mode = "online";
+  state.casts = state.casts.filter(Boolean);
+  if (state.casts.length < 6) state.casts.push(pending);
+  saveLiuyaoState();
+  navigate(state.casts.length >= 6 ? "screen-20" : "screen-17", false);
+}
+
+function startLiuyaoAnimatedToss() {
+  if (liuyaoTossAnimation?.active) return false;
+  const state = prepareLiuyaoOnlineTossState();
+  if (state.casts.length >= 6) return false;
+  const cast = makeLiuyaoCoinCast();
+  liuyaoTossAnimation = {
+    active: true,
+    cast,
+    lineIndex: state.casts.length,
+    startedAt: Date.now(),
+  };
+  saveLiuyaoState();
+  navigate("screen-17", false);
+  liuyaoTossTimer = setTimeout(finishLiuyaoAnimatedToss, LIUYAO_TOSS_ANIMATION_MS);
+  return true;
+}
+
+function tossLiuyaoLine(all = false) {
+  clearLiuyaoTossAnimation();
+  const state = prepareLiuyaoOnlineTossState();
   do {
     state.casts.push(makeLiuyaoCoinCast());
   } while (all && state.casts.length < 6);
@@ -6388,6 +6450,7 @@ function tossLiuyaoLine(all = false) {
 }
 
 function cycleLiuyaoManualLine(index) {
+  clearLiuyaoTossAnimation();
   saveLiuyaoQuestionFromDom();
   const state = getLiuyaoState();
   state.mode = "manual";
@@ -6495,12 +6558,26 @@ function renderLiuyaoHexStack(lines, options = {}) {
   `;
 }
 
-function renderLiuyaoCoinRow(state) {
+function renderLiuyaoCoinRow(state, options = {}) {
   const last = getLiuyaoValidCasts(state).at(-1);
-  const coins = last?.coins || [3, 2, 3];
+  const tossing = liuyaoTossAnimation?.active && state.mode === "online";
+  const progress = getLiuyaoProgress(state);
+  const disabled = state.mode !== "online" || progress >= 6 || options.complete;
+  const coins = tossing ? liuyaoTossAnimation.cast.coins : (last?.coins || [3, 2, 3]);
+  const label = tossing
+    ? `抛币中，正在定第 ${Math.min(progress + 1, 6)} 爻`
+    : disabled
+      ? "卦已成"
+      : `向上滑动抛第 ${progress + 1} 爻`;
   return `
-    <div class="liuyao-coin-stage ${last ? "has-cast" : ""}" aria-hidden="true">
+    <div class="liuyao-coin-stage ${last ? "has-cast" : ""} ${tossing ? "is-tossing" : ""} ${disabled ? "is-disabled" : ""}"
+      data-action="liuyao-swipe-cast"
+      role="button"
+      tabindex="${disabled ? "-1" : "0"}"
+      aria-label="${escapeHtml(label)}"
+      aria-disabled="${disabled ? "true" : "false"}">
       ${coins.map((coin, index) => `<span class="liuyao-coin ${coin === 3 ? "is-yang" : "is-yin"}" style="--d:${index * 0.1}s"><b>${coin === 3 ? "阳" : "阴"}</b></span>`).join("")}
+      <span class="liuyao-swipe-cue">${escapeHtml(label)}</span>
     </div>
   `;
 }
@@ -6519,6 +6596,7 @@ function sourceLiuyaoCastScreen() {
   const lines = casts.map((cast, index) => cast ? { ...getLiuyaoLineType(cast.value), index, label: LIUYAO_LINE_LABELS[index], coins: cast.coins || [], manual: Boolean(cast.manual) } : null);
   const progress = getLiuyaoProgress(state);
   const complete = progress === 6 && casts.length >= 6 && casts.every(Boolean);
+  const tossing = liuyaoTossAnimation?.active && state.mode === "online";
   return `
     ${figBox("ly17-bg", 0, 0, 390, 1180, "", "background:linear-gradient(180deg,#fffdf8 0%,#fbf7ef 50%,#f3eadc 100%);")}
     ${wentianSimpleHeader("ly17", "六爻占卜")}
@@ -6530,7 +6608,7 @@ function sourceLiuyaoCastScreen() {
           <strong>先定一问，再起六爻</strong>
           <em>自下而上成爻，6/9 为动爻，动则成变卦。</em>
         </div>
-        ${renderLiuyaoCoinRow(state)}
+        ${renderLiuyaoCoinRow(state, { complete })}
       </div>
       <label class="liuyao-question-card">
         <span>所问之事</span>
@@ -6548,8 +6626,8 @@ function sourceLiuyaoCastScreen() {
           <button type="button" class="primary" data-action="liuyao-show-result">查看卦象解读</button>
           <button type="button" data-action="liuyao-copy">复制卦象</button>
         ` : state.mode === "online" ? `
-          <button type="button" class="primary" data-action="liuyao-toss">投第 ${progress + 1} 爻</button>
-          <button type="button" data-action="liuyao-toss-all">一键起完整卦</button>
+          <button type="button" class="primary" data-action="liuyao-toss" ${tossing ? "disabled" : ""}>${tossing ? "抛币中…" : `投第 ${progress + 1} 爻`}</button>
+          <button type="button" data-action="liuyao-toss-all" ${tossing ? "disabled" : ""}>一键起完整卦</button>
         ` : `
           <button type="button" class="primary" ${progress === 6 ? 'data-action="liuyao-show-result"' : "disabled"}>${progress === 6 ? "查看卦象解读" : "补全六爻"}</button>
           <button type="button" data-action="liuyao-reset">清空重排</button>
@@ -6560,12 +6638,13 @@ function sourceLiuyaoCastScreen() {
           <strong>${complete ? "卦已成" : `已成 ${progress}/6 爻`}</strong>
           <span>${formatWentianDateTime(new Date(state.createdAt || Date.now()))}</span>
         </div>
+        ${tossing ? `<p class="liuyao-casting-status">铜钱正在翻转，1 秒后落入第 ${progress + 1} 爻。</p>` : ""}
         ${renderLiuyaoHexStack(lines, { manual: state.mode === "manual", id: "cast" })}
       </div>
       ${state.mode === "manual" ? `
         <p class="liuyao-hint">手动点每一爻切换：少阳 → 少阴 → 老阳 → 老阴。</p>
       ` : `
-        <p class="liuyao-hint">每次投三枚铜钱，按初爻到上爻依次记录。</p>
+        <p class="liuyao-hint">在铜钱区向上滑动超过一段距离即可抛币；落币后按初爻到上爻依次记录。</p>
       `}
     </section>
   `;
@@ -6726,6 +6805,45 @@ function openLiuyaoXuChat() {
 function copyLiuyaoResult() {
   const text = getLiuyaoCopyText();
   if (text) copyWentianText(text, "卦象已复制");
+}
+
+function canUseLiuyaoSwipeCaster(target) {
+  if (!target || target.getAttribute("aria-disabled") === "true") return false;
+  const state = getLiuyaoState();
+  return state.mode === "online" && getLiuyaoProgress(state) < 6 && !liuyaoTossAnimation?.active;
+}
+
+function handleLiuyaoSwipePointerDown(event) {
+  const target = event.target.closest?.('[data-action="liuyao-swipe-cast"]');
+  if (!canUseLiuyaoSwipeCaster(target)) return;
+  liuyaoSwipeStart = {
+    pointerId: event.pointerId,
+    x: event.clientX,
+    y: event.clientY,
+    target,
+  };
+  target.classList.add("is-dragging");
+  target.setPointerCapture?.(event.pointerId);
+}
+
+function handleLiuyaoSwipePointerUp(event) {
+  if (!liuyaoSwipeStart || liuyaoSwipeStart.pointerId !== event.pointerId) return;
+  const { x, y, target } = liuyaoSwipeStart;
+  const deltaX = event.clientX - x;
+  const deltaY = event.clientY - y;
+  target.classList.remove("is-dragging");
+  target.releasePointerCapture?.(event.pointerId);
+  liuyaoSwipeStart = null;
+  if (deltaY <= -LIUYAO_SWIPE_THRESHOLD && Math.abs(deltaY) > Math.abs(deltaX) * 1.15) {
+    event.preventDefault();
+    startLiuyaoAnimatedToss();
+  }
+}
+
+function cancelLiuyaoSwipePointer(event) {
+  if (!liuyaoSwipeStart || (event?.pointerId && liuyaoSwipeStart.pointerId !== event.pointerId)) return;
+  liuyaoSwipeStart.target?.classList.remove("is-dragging");
+  liuyaoSwipeStart = null;
 }
 
 const YANGZHAI_STORAGE_KEY = "wentian-yangzhai-state-v1";
@@ -9631,6 +9749,18 @@ function renderPay() {
   `;
 }
 
+document.addEventListener("pointerdown", handleLiuyaoSwipePointerDown);
+document.addEventListener("pointerup", handleLiuyaoSwipePointerUp);
+document.addEventListener("pointercancel", cancelLiuyaoSwipePointer);
+
+document.addEventListener("keydown", (event) => {
+  const target = event.target.closest?.('[data-action="liuyao-swipe-cast"]');
+  if (!target || !canUseLiuyaoSwipeCaster(target)) return;
+  if (event.key !== "Enter" && event.key !== " ") return;
+  event.preventDefault();
+  startLiuyaoAnimatedToss();
+});
+
 document.addEventListener("click", (event) => {
   const promptButton = event.target.closest("[data-wentian-prompt]");
   if (promptButton) {
@@ -9714,7 +9844,7 @@ document.addEventListener("click", (event) => {
     return;
   }
   if (earlyAction === "liuyao-toss") {
-    tossLiuyaoLine(false);
+    startLiuyaoAnimatedToss();
     return;
   }
   if (earlyAction === "liuyao-toss-all") {
@@ -9744,6 +9874,7 @@ document.addEventListener("click", (event) => {
   }
   const routeButton = event.target.closest("[data-route]");
   if (routeButton) {
+    if (liuyaoTossAnimation?.active && routeButton.dataset.route !== "screen-17") clearLiuyaoTossAnimation();
     if (routeButton.dataset.route === "screen-4") clearWentianXuChatContext();
     navigate(routeButton.dataset.route);
     return;

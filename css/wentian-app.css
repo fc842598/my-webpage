@@ -3679,6 +3679,9 @@ html[data-wentian-language="en"] .liuren-orbit i {
 .liuyao-coin-stage {
   position: relative;
   height: 112px;
+  touch-action: none;
+  user-select: none;
+  cursor: grab;
 }
 
 .liuyao-coin-stage::before {
@@ -3688,6 +3691,16 @@ html[data-wentian-language="en"] .liuren-orbit i {
   border: 1px solid rgba(255, 236, 186, .28);
   border-radius: 999px;
   background: radial-gradient(circle, rgba(255, 232, 170, .13), transparent 66%);
+}
+
+.liuyao-coin-stage.is-dragging::before {
+  border-color: rgba(255, 231, 159, .58);
+  background: radial-gradient(circle, rgba(255, 232, 170, .22), transparent 70%);
+  box-shadow: 0 0 22px rgba(255, 218, 121, .22);
+}
+
+.liuyao-coin-stage.is-disabled {
+  cursor: default;
 }
 
 .liuyao-coin {
@@ -3707,19 +3720,30 @@ html[data-wentian-language="en"] .liuren-orbit i {
   animation-delay: var(--d);
 }
 
+.liuyao-coin-stage.is-tossing .liuyao-coin {
+  animation: liuyaoCoinToss .9s cubic-bezier(.18, .78, .18, 1) both;
+  animation-delay: calc(var(--d) * .35);
+}
+
 .liuyao-coin:nth-child(1) {
   left: 6px;
   top: 16px;
+  --tx: -16px;
+  --rot: 720deg;
 }
 
 .liuyao-coin:nth-child(2) {
   right: 4px;
   top: 34px;
+  --tx: 18px;
+  --rot: -760deg;
 }
 
 .liuyao-coin:nth-child(3) {
   left: 36px;
   bottom: 12px;
+  --tx: 2px;
+  --rot: 680deg;
 }
 
 .liuyao-coin.is-yin {
@@ -3732,6 +3756,39 @@ html[data-wentian-language="en"] .liuren-orbit i {
   border: 2px solid rgba(255, 244, 205, .58);
   border-radius: 50%;
   font-size: 0;
+}
+
+.liuyao-swipe-cue {
+  position: absolute;
+  right: 3px;
+  bottom: -1px;
+  left: 3px;
+  z-index: 2;
+  height: 22px;
+  border-radius: 11px;
+  background: rgba(255, 250, 243, .12);
+  color: #ffe3a0;
+  font-size: 10px;
+  font-weight: 900;
+  line-height: 22px;
+  text-align: center;
+  box-shadow: inset 0 0 0 1px rgba(255, 236, 186, .18);
+}
+
+.liuyao-coin-stage.is-tossing .liuyao-swipe-cue {
+  color: #fffaf3;
+  background: rgba(255, 250, 243, .18);
+}
+
+.liuyao-casting-status {
+  margin: 0 0 10px;
+  padding: 8px 10px;
+  border-radius: 12px;
+  background: #fff4df;
+  color: #9a681c;
+  font-size: 12px;
+  font-weight: 900;
+  text-align: center;
 }
 
 .liuyao-question-card,
@@ -4124,6 +4181,32 @@ html[data-wentian-language="en"] .liuren-orbit i {
 
   45% {
     transform: translateY(-8px) rotateY(180deg);
+  }
+}
+
+@keyframes liuyaoCoinToss {
+  0% {
+    filter: blur(0);
+    opacity: 1;
+    transform: translate(0, 0) rotate(0) scale(1);
+  }
+
+  42% {
+    filter: blur(.2px);
+    opacity: .98;
+    transform: translate(var(--tx), -62px) rotate(var(--rot)) scale(1.12);
+  }
+
+  72% {
+    filter: blur(.4px);
+    opacity: .94;
+    transform: translate(calc(var(--tx) * .35), -16px) rotate(calc(var(--rot) * 1.35)) scale(.96);
+  }
+
+  100% {
+    filter: blur(0);
+    opacity: 1;
+    transform: translate(0, 0) rotate(calc(var(--rot) * 1.55)) scale(1);
   }
 }
 
