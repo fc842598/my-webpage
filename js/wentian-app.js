@@ -703,7 +703,47 @@ function sourceArchiveScreen(screen) {
 }
 
 function sourceAiChatScreen(screen) {
-  const faqGroups = [
+  const chatContext = getWentianXuChatContext();
+  const isLiuyaoChat = chatContext?.type === "liuyao";
+  const liuyaoFaqGroups = [
+    {
+      label: "事情成败",
+      items: [
+        ["能不能成", "就这次占卜看，这件事成败关键在哪里？"],
+        ["最大阻力", "这卦里最大的阻力是什么，我应该先处理哪一处？"],
+        ["是否该继续", "这件事现在该继续推进，还是先停一停？"],
+        ["结果走向", "按本卦和变卦看，后面大概会往哪里走？"]
+      ]
+    },
+    {
+      label: "时间变化",
+      items: [
+        ["什么时候动", "这件事什么时候容易出现变化点？"],
+        ["动爻怎么看", "请重点讲这次动爻代表的变化。"],
+        ["应期提醒", "这卦能看出近期要留意的时间点吗？"],
+        ["下一阶段", "变卦提示下一阶段要怎么走？"]
+      ]
+    },
+    {
+      label: "人事关系",
+      items: [
+        ["对方态度", "从这卦看，对方或关键人现在是什么态度？"],
+        ["贵人阻力", "这件事里谁是助力，谁可能是阻力？"],
+        ["沟通方式", "我接下来应该怎么沟通比较顺？"],
+        ["合作风险", "如果涉及合作，这卦里要防什么风险？"]
+      ]
+    },
+    {
+      label: "行动取舍",
+      items: [
+        ["现在怎么做", "结合这卦，给我三步具体行动建议。"],
+        ["该避什么", "这件事目前最不该做什么？"],
+        ["取舍判断", "如果有两个选择，该按什么原则取舍？"],
+        ["再占提醒", "这件事后面什么情况下才需要再起一卦？"]
+      ]
+    }
+  ];
+  const chartFaqGroups = [
     {
       label: "感情婚姻",
       items: [
@@ -759,19 +799,29 @@ function sourceAiChatScreen(screen) {
       ]
     }
   ];
+  const faqGroups = isLiuyaoChat ? liuyaoFaqGroups : chartFaqGroups;
+  const contextTitle = chatContext?.title || "六爻占卜";
+  const contextSummary = chatContext?.summaryLine || "";
   return `
     ${figBox("source-4-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
     ${figBox("source-4-header", 0, 0, 390, 88, "", "background:#f8f3ea;box-shadow:0 1px 0 rgba(110,82,38,.08);")}
     ${figText("source-4-back", "‹", 24, 29, 28, 34, "#26211c", 500)}
     ${figImage("source-4-avatar", "../images/wentian-prototype-assets/xu-banxian.jpg", 58, 25, 40, 40, "border-radius:20px;object-fit:cover;object-position:center 18%;")}
     ${figText("source-4-name", "许半仙", 110, 27, 110, 17, "#26211c", 800)}
-    ${figText("source-4-left", "命盘顾问 · 在线", 110, 51, 140, 12, "#8d8377", 500)}
+    ${figText("source-4-left", isLiuyaoChat ? "占卜专批 · 在线" : "命盘顾问 · 在线", 110, 51, 140, 12, "#8d8377", 500)}
     ${figBox("source-4-profile-pill", 254, 30, 74, 28, "", "border-radius:14px;background:#fff;box-shadow:0 3px 10px rgba(70,45,25,.08);")}
-    ${figText("source-4-profile-text", "命主⌄", 260, 38, 62, 11, "#26211c", 600, "center")}
+    ${figText("source-4-profile-text", isLiuyaoChat ? "本卦⌄" : "命主⌄", 260, 38, 62, 11, "#26211c", 600, "center")}
     ${figText("source-4-record", "⋯", 344, 31, 22, 22, "#6f665d", 800, "center")}
     <div id="wentian-chat-status" class="wentian-chat-status">正在接入许半仙…</div>
-    <div id="wentian-chat-messages" class="wentian-chat-log" aria-live="polite"></div>
-    ${figText("source-4-faq-title", "常问", 22, 450, 60, 13, "#25211d", 800)}
+    ${isLiuyaoChat ? `
+      <div class="wentian-chat-context-card">
+        <span>本次占问</span>
+        <strong>${escapeHtml(chatContext.question || "所问之事")}</strong>
+        <em>${escapeHtml(contextTitle)}${contextSummary ? ` · ${escapeHtml(contextSummary)}` : ""}</em>
+      </div>
+    ` : ""}
+    <div id="wentian-chat-messages" class="wentian-chat-log ${isLiuyaoChat ? "is-with-context" : ""}" aria-live="polite"></div>
+    ${figText("source-4-faq-title", isLiuyaoChat ? "占卜追问" : "常问", 22, 450, 84, 13, "#25211d", 800)}
     <div class="wentian-chat-starters" aria-label="常见问题分类">
       ${faqGroups.map((group) => `
         <details class="wentian-chat-faq-group">
@@ -788,7 +838,7 @@ function sourceAiChatScreen(screen) {
       `).join("")}
     </div>
     ${figBox("source-4-input-bg", 0, 748, 390, 96, "", "background:#f7f3ec;box-shadow:0 -1px 0 rgba(110,82,38,.08);")}
-    <input id="wentian-chat-input" class="wentian-chat-field" placeholder="问一问" autocomplete="off">
+    <input id="wentian-chat-input" class="wentian-chat-field" placeholder="${isLiuyaoChat ? "追问这卦" : "问一问"}" autocomplete="off">
     <button id="wentian-chat-send" class="wentian-chat-send" type="button" data-action="wentian-chat-send" aria-label="发送">↑</button>
     ${figText("source-4-disclaimer", "内容由AI生成，仅供娱乐参考", 0, 818, 390, 10, "#b8b0a7", 400, "center")}
   `;
@@ -971,6 +1021,7 @@ const wentianXuChat = {
   messages: [],
   loading: false,
   typingTimer: null,
+  context: null,
 };
 
 let wentianFallbackChartRecordId = null;
@@ -983,6 +1034,7 @@ const WENTIAN_CLIENT_ID_KEY = "ziwei_client_id";
 const WENTIAN_LANGUAGE_STORAGE_KEY = "wentian-app-language-v1";
 const WENTIAN_PROFILE_STORAGE_KEY = "wentian-app-profile-v1";
 const WENTIAN_AUTH_RETURN_KEY = "wentian-app-auth-return-v1";
+const WENTIAN_XU_CONTEXT_KEY = "wentian-xubanxian-context-v1";
 const WENTIAN_INVITE_PENDING_KEY = "wentian-app-pending-invite-v1";
 const WENTIAN_INVITE_LOCAL_STATUS_KEY = "wentian-app-invite-status-v1";
 const WENTIAN_MEMBER_PRODUCT_KEY = "monthly_member";
@@ -3369,13 +3421,42 @@ const WENTIAN_I18N_EN_EXTRA = {
   "命理师": "Advisor",
   "已接入您的紫微命盘，可直接开启对话": "Chart linked. Start chatting.",
   "命盘顾问 · 在线": "Chart Advisor · Online",
+  "占卜专批 · 在线": "Divination Reading · Online",
   "命主⌄": "Owner⌄",
+  "本卦⌄": "Original⌄",
   "已接入": "Connected",
   "已连接": "Connected",
+  "占卜已接入": "Divination linked",
+  "接入占卜中…": "Linking divination...",
   "正在接入许半仙…": "Connecting to Xu Banxian...",
   "我在，看命盘直接问。": "I am here. Ask about your chart.",
+  "许半仙正在看卦…": "Xu Banxian is reading the hexagram...",
+  "这次我按六爻占卜来批，不读命盘。你可以继续问成败、应期、动爻或行动取舍。": "I will read this as a Liuyao divination, not a natal chart. Ask about outcome, timing, moving lines, or next steps.",
   "常问": "FAQ",
+  "占卜追问": "Divination Follow-up",
+  "本次占问": "This Casting",
+  "追问这卦": "Ask About This Hexagram",
   "细问": "Details",
+  "事情成败": "Outcome",
+  "能不能成": "Will It Work?",
+  "最大阻力": "Main Blocker",
+  "是否该继续": "Keep Going?",
+  "结果走向": "Likely Outcome",
+  "时间变化": "Timing",
+  "什么时候动": "When It Moves",
+  "动爻怎么看": "Moving Lines",
+  "应期提醒": "Timing Signs",
+  "下一阶段": "Next Stage",
+  "人事关系": "People",
+  "对方态度": "Their Attitude",
+  "贵人阻力": "Help or Block",
+  "沟通方式": "How to Talk",
+  "合作风险": "Cooperation Risk",
+  "行动取舍": "Next Choice",
+  "现在怎么做": "What To Do",
+  "该避什么": "What To Avoid",
+  "取舍判断": "How To Choose",
+  "再占提醒": "Recast Timing",
   "感情婚姻": "Love",
   "事业财运": "Career",
   "近期运势": "Recent Luck",
@@ -4547,26 +4628,107 @@ function confirmWentianArchiveSelection() {
   const archive = archives.find((item) => item.id === id) || archives[0];
   if (!applyWentianArchiveToCurrent(archive)) return;
   wentianArchiveDraftId = null;
+  clearWentianXuChatContext();
   navigate("screen-4");
 }
 
-function getWentianTransientKey() {
-  return `wentian-xubanxian-transient:${getWentianChartRecordId()}`;
+function resetWentianXuChatRuntime() {
+  if (wentianXuChat.typingTimer) {
+    clearTimeout(wentianXuChat.typingTimer);
+    wentianXuChat.typingTimer = null;
+  }
+  wentianXuChat.sessionId = null;
+  wentianXuChat.sessionPromise = null;
+  wentianXuChat.messages = [];
+  wentianXuChat.loading = false;
 }
 
-function loadWentianTransientState() {
+function getWentianXuChatContext() {
+  if (wentianXuChat.context) return wentianXuChat.context;
   try {
-    const raw = sessionStorage.getItem(getWentianTransientKey());
+    const parsed = JSON.parse(sessionStorage.getItem(WENTIAN_XU_CONTEXT_KEY) || "null");
+    if (parsed?.type === "liuyao" && isWentianUuid(parsed.recordId)) {
+      wentianXuChat.context = parsed;
+      return parsed;
+    }
+  } catch (_err) {}
+  return null;
+}
+
+function setWentianXuChatContext(context) {
+  wentianXuChat.context = context || null;
+  try {
+    if (context) sessionStorage.setItem(WENTIAN_XU_CONTEXT_KEY, JSON.stringify(context));
+    else sessionStorage.removeItem(WENTIAN_XU_CONTEXT_KEY);
+  } catch (_err) {}
+  resetWentianXuChatRuntime();
+}
+
+function clearWentianXuChatContext() {
+  if (!getWentianXuChatContext()) return;
+  setWentianXuChatContext(null);
+}
+
+function getWentianXuChatPayload() {
+  const context = getWentianXuChatContext();
+  if (context?.type === "liuyao" && isWentianUuid(context.recordId)) {
+    const divinationChartData = {
+      chartRecordId: context.recordId,
+      chatMode: "liuyao",
+      source: "六爻占卜",
+      divinationContext: context,
+    };
+    return {
+      mode: "liuyao",
+      chartRecordId: context.recordId,
+      chartData: divinationChartData,
+      divinationContext: context,
+    };
+  }
+  const chartData = getWentianChartPayload();
+  return {
+    mode: "chart",
+    chartRecordId: chartData.chartRecordId,
+    chartData,
+    divinationContext: null,
+  };
+}
+
+function buildWentianXuOutboundMessage(message, context) {
+  if (context?.type !== "liuyao") return message;
+  return [
+    "【六爻占卜追问】",
+    "本次不是紫微命盘读盘，请只按六爻占卜专批来断，围绕所问之事、本卦、变卦、动爻和页面初判回答。",
+    `所问之事：${context.question || "未填写"}`,
+    `起卦时间：${context.castAtText || "未记录"}`,
+    `本卦：${context.primaryText || ""}`,
+    `变卦：${context.changedText || ""}`,
+    `动爻：${context.movingText || "无"}`,
+    `六爻：${context.linesText || ""}`,
+    context.advice ? `页面初判：${context.advice}` : "",
+    "回答格式：先断这件事，再讲变化点，再给应对和取舍。不要说“结合命盘”。",
+    "",
+    `我的追问：${message}`,
+  ].filter(Boolean).join("\n");
+}
+
+function getWentianTransientKey(recordId = getWentianXuChatPayload().chartRecordId) {
+  return `wentian-xubanxian-transient:${recordId}`;
+}
+
+function loadWentianTransientState(recordId) {
+  try {
+    const raw = sessionStorage.getItem(getWentianTransientKey(recordId));
     return raw ? JSON.parse(raw) : null;
   } catch (_err) {
     return null;
   }
 }
 
-function saveWentianTransientState(state) {
+function saveWentianTransientState(state, recordId) {
   try {
-    if (state) sessionStorage.setItem(getWentianTransientKey(), JSON.stringify(state));
-    else sessionStorage.removeItem(getWentianTransientKey());
+    if (state) sessionStorage.setItem(getWentianTransientKey(recordId), JSON.stringify(state));
+    else sessionStorage.removeItem(getWentianTransientKey(recordId));
   } catch (_err) {}
 }
 
@@ -4830,6 +4992,7 @@ function setWentianQuota(quota) {
   const el = document.querySelector('[data-node-id="source-4-left"]');
   if (quota) wentianMemberState.quota = { ...(wentianMemberState.quota || {}), ...quota };
   if (!el || !quota) return;
+  if (getWentianXuChatContext()?.type === "liuyao") return;
   const remainingValue = quota.dailyRemaining ?? quota.remaining;
   const limitValue = quota.dailyLimit ?? quota.limit;
   const remaining = remainingValue === null || remainingValue === undefined || remainingValue === "" ? "--" : remainingValue;
@@ -4978,16 +5141,18 @@ async function ensureWentianXuSession(options = {}) {
   if (wentianXuChat.sessionId) return wentianXuChat.sessionId;
   if (wentianXuChat.sessionPromise) return wentianXuChat.sessionPromise;
 
-  if (!silent) setWentianChatStatus("接入中…");
-  const chartData = getWentianChartPayload();
+  const payload = getWentianXuChatPayload();
+  if (!silent) setWentianChatStatus(payload.mode === "liuyao" ? "接入占卜中…" : "接入中…");
   wentianXuChat.sessionPromise = wentianPostJson("/api/ai/chat/session", {
-    chartRecordId: chartData.chartRecordId,
-    chartData,
-    transientState: loadWentianTransientState(),
+    chartRecordId: payload.chartRecordId,
+    chartData: payload.chartData,
+    chatMode: payload.mode,
+    divinationContext: payload.divinationContext,
+    transientState: loadWentianTransientState(payload.chartRecordId),
   }, 90000, 1).then((data) => {
-    wentianXuChat.sessionId = data.sessionId || `transient:${chartData.chartRecordId}`;
-    if (data.transientState) saveWentianTransientState(data.transientState);
-    setWentianChatStatus(data.transientMode ? "临时会话" : "已连接", data.transientMode ? "warn" : "ok");
+    wentianXuChat.sessionId = data.sessionId || `transient:${payload.chartRecordId}`;
+    if (data.transientState) saveWentianTransientState(data.transientState, payload.chartRecordId);
+    setWentianChatStatus(data.transientMode ? "临时会话" : (payload.mode === "liuyao" ? "占卜已接入" : "已连接"), data.transientMode ? "warn" : "ok");
     if (!wentianXuChat.messages.length) {
       if (Array.isArray(data.messages) && data.messages.length) {
         wentianXuChat.messages = data.messages.slice(-12).map((item) => ({
@@ -4995,7 +5160,9 @@ async function ensureWentianXuSession(options = {}) {
           text: item.content || "",
         }));
       } else {
-        addWentianMessage("assistant", "命盘我已经读到了。你可以直接问感情、事业、财运，或者问最近一年怎么走。");
+        addWentianMessage("assistant", payload.mode === "liuyao"
+          ? getLiuyaoXuOpeningMessage(payload.divinationContext)
+          : "命盘我已经读到了。你可以直接问感情、事业、财运，或者问最近一年怎么走。");
       }
       renderWentianMessages();
     }
@@ -5022,23 +5189,27 @@ async function sendWentianXuChat(promptText = "") {
   if (!message) return;
   if (input) input.value = "";
 
+  const payload = getWentianXuChatPayload();
+  const outboundMessage = buildWentianXuOutboundMessage(message, payload.divinationContext);
   addWentianMessage("user", message);
-  addWentianMessage("assistant", "许半仙正在看盘…");
+  addWentianMessage("assistant", payload.mode === "liuyao" ? "许半仙正在看卦…" : "许半仙正在看盘…");
   setWentianChatBusy(true);
 
   try {
-    const chartData = getWentianChartPayload();
     const data = await wentianPostJson("/api/ai/chat/send", {
-      chartRecordId: chartData.chartRecordId,
-      message,
-      chartData,
-      transientState: loadWentianTransientState(),
+      chartRecordId: payload.chartRecordId,
+      message: outboundMessage,
+      displayMessage: message,
+      chartData: payload.chartData,
+      chatMode: payload.mode,
+      divinationContext: payload.divinationContext,
+      transientState: loadWentianTransientState(payload.chartRecordId),
     }, 120000, 1);
     wentianXuChat.messages.pop();
-    wentianXuChat.sessionId = data.sessionId || wentianXuChat.sessionId || `transient:${chartData.chartRecordId}`;
-    if (data.transientState) saveWentianTransientState(data.transientState);
+    wentianXuChat.sessionId = data.sessionId || wentianXuChat.sessionId || `transient:${payload.chartRecordId}`;
+    if (data.transientState) saveWentianTransientState(data.transientState, payload.chartRecordId);
     setWentianQuota(data.quota);
-    setWentianChatStatus(data.transientMode ? "临时会话" : "已连接", data.transientMode ? "warn" : "ok");
+    setWentianChatStatus(data.transientMode ? "临时会话" : (payload.mode === "liuyao" ? "占卜已接入" : "已连接"), data.transientMode ? "warn" : "ok");
     addWentianMessage("assistant", data.reply || "我看到了，但这轮没有返回内容，请再问一次。", { typewriter: true });
   } catch (error) {
     wentianXuChat.messages.pop();
@@ -5055,8 +5226,9 @@ function initWentianXuChat() {
   const send = document.getElementById("wentian-chat-send");
   if (!input || !send) return;
 
+  const payload = getWentianXuChatPayload();
   const saved = getWentianSavedChart();
-  const sizhu = saved?.chartData?.sizhu;
+  const sizhu = payload.mode === "liuyao" ? null : saved?.chartData?.sizhu;
   if (sizhu) {
     const stems = [sizhu.yearStem, sizhu.monthStem, sizhu.dayStem, sizhu.hourStem];
     const branches = [sizhu.yearBranch, sizhu.monthBranch, sizhu.dayBranch, sizhu.hourBranch];
@@ -5085,11 +5257,11 @@ function initWentianXuChat() {
   };
 
   if (!wentianXuChat.messages.length) {
-    addWentianMessage("assistant", "我在，看命盘直接问。");
+    addWentianMessage("assistant", payload.mode === "liuyao" ? getLiuyaoXuOpeningMessage(payload.divinationContext) : "我在，看命盘直接问。");
   } else {
     renderWentianMessages();
   }
-  setWentianChatStatus("已接入", "ok");
+  setWentianChatStatus(payload.mode === "liuyao" ? "占卜已接入" : "已接入", "ok");
   ensureWentianXuSession({ silent: true }).catch(() => {});
 }
 
@@ -6128,6 +6300,7 @@ function normalizeLiuyaoCast(raw) {
 
 function makeLiuyaoDefaultState() {
   return {
+    recordId: makeWentianUuid(),
     mode: "online",
     question: LIUYAO_DEFAULT_QUESTION,
     createdAt: Date.now(),
@@ -6141,6 +6314,7 @@ function getLiuyaoState() {
     const parsed = JSON.parse(localStorage.getItem(LIUYAO_STORAGE_KEY) || "null");
     if (parsed && typeof parsed === "object") {
       liuyaoState = {
+        recordId: isWentianUuid(parsed.recordId) ? parsed.recordId : makeWentianUuid(),
         mode: parsed.mode === "manual" ? "manual" : "online",
         question: String(parsed.question || LIUYAO_DEFAULT_QUESTION).slice(0, 80),
         createdAt: Number(parsed.createdAt) || Date.now(),
@@ -6201,7 +6375,11 @@ function tossLiuyaoLine(all = false) {
   const state = getLiuyaoState();
   state.mode = "online";
   state.casts = state.casts.filter(Boolean);
-  if (state.casts.length >= 6) state.casts = [];
+  if (state.casts.length >= 6) {
+    state.recordId = makeWentianUuid();
+    state.createdAt = Date.now();
+    state.casts = [];
+  }
   do {
     state.casts.push(makeLiuyaoCoinCast());
   } while (all && state.casts.length < 6);
@@ -6263,7 +6441,7 @@ function getLiuyaoResult(state = getLiuyaoState()) {
   const primary = getLiuyaoHexFromBools(originalBools);
   const changed = getLiuyaoHexFromBools(changedBools);
   const movingLines = lines.filter((line) => line.moving);
-  return { question: state.question || LIUYAO_DEFAULT_QUESTION, createdAt: state.createdAt, lines, primary, changed, movingLines };
+  return { recordId: state.recordId || makeWentianUuid(), question: state.question || LIUYAO_DEFAULT_QUESTION, createdAt: state.createdAt, lines, primary, changed, movingLines };
 }
 
 function getLiuyaoHexReading(hex) {
@@ -6461,7 +6639,7 @@ function sourceLiuyaoResultScreen() {
         <p>${escapeHtml(primaryReading.summary)}</p>
       </details>
       <div class="liuyao-actions">
-        <button type="button" class="primary" data-route="screen-4">追问许半仙</button>
+        <button type="button" class="primary" data-action="liuyao-ask-xu">追问许半仙</button>
         <button type="button" data-action="liuyao-reset">重新起卦</button>
       </div>
       <button type="button" class="liuyao-copy-result" data-action="liuyao-copy">复制完整卦象</button>
@@ -6481,6 +6659,68 @@ function getLiuyaoCopyText() {
     `动爻：${result.movingLines.length ? result.movingLines.map((line) => line.label).join("、") : "无"}`,
     lines
   ].join("\n");
+}
+
+function makeLiuyaoXuContext(result = getLiuyaoResult()) {
+  if (!result) return null;
+  const state = getLiuyaoState();
+  if (!isWentianUuid(state.recordId)) {
+    state.recordId = result.recordId || makeWentianUuid();
+    saveLiuyaoState();
+  }
+  const primaryReading = getLiuyaoHexReading(result.primary);
+  const changedReading = getLiuyaoHexReading(result.changed);
+  const movingText = result.movingLines.length
+    ? result.movingLines.map((line) => `${line.label}${line.mark}`).join("、")
+    : "无动爻";
+  const primaryTip = firstReadableSentence(primaryReading.summary, "先看本卦所处局面。");
+  const changedTip = result.movingLines.length
+    ? firstReadableSentence(changedReading.summary, "变卦看后续走向。")
+    : "无动爻时变卦与本卦同体，重在守当前局面。";
+  const advice = getLiuyaoTopicAdvice(result.question, result);
+  const primaryText = `第${result.primary.no || "-"}卦 ${result.primary.name || ""}（${result.primary.upper?.name || ""}上${result.primary.lower?.name || ""}下）`;
+  const changedText = `第${result.changed.no || "-"}卦 ${result.changed.name || ""}（${result.changed.upper?.name || ""}上${result.changed.lower?.name || ""}下）`;
+  const linesText = result.lines
+    .map((line) => `${line.label}:${line.value}${line.name}${line.mark ? line.mark : ""}`)
+    .join("；");
+  return {
+    type: "liuyao",
+    recordId: state.recordId,
+    title: `六爻占卜：${result.primary.name}${result.movingLines.length ? ` 之 ${result.changed.name}` : ""}`,
+    summaryLine: movingText,
+    question: result.question,
+    createdAt: result.createdAt,
+    castAtText: formatWentianDateTime(new Date(result.createdAt || Date.now())),
+    primaryText,
+    changedText,
+    movingText,
+    linesText,
+    primaryTip,
+    changedTip,
+    advice,
+    copyText: getLiuyaoCopyText(),
+  };
+}
+
+function getLiuyaoXuOpeningMessage(context) {
+  if (!context) return "这次我按六爻占卜来批，不读命盘。你可以继续问成败、应期、动爻或行动取舍。";
+  const cleanQuestion = String(context.question || "所问之事").replace(/[？?。.!！]+$/g, "");
+  return [
+    "这次我按六爻占卜专批，不读命盘。",
+    `你刚才占问：「${cleanQuestion}」。`,
+    `卦象：${context.primaryText || "本卦"}${context.changedText ? `，变卦 ${context.changedText}` : ""}，动爻：${context.movingText || "无"}。`,
+    "可以继续问这件事能不能成、什么时候动、该进该退，或具体怎么做。"
+  ].join("\n");
+}
+
+function openLiuyaoXuChat() {
+  const context = makeLiuyaoXuContext();
+  if (!context) {
+    navigate("screen-17", false);
+    return;
+  }
+  setWentianXuChatContext(context);
+  navigate("screen-4");
 }
 
 function copyLiuyaoResult() {
@@ -9488,8 +9728,13 @@ document.addEventListener("click", (event) => {
     copyLiuyaoResult();
     return;
   }
+  if (earlyAction === "liuyao-ask-xu") {
+    openLiuyaoXuChat();
+    return;
+  }
   const routeButton = event.target.closest("[data-route]");
   if (routeButton) {
+    if (routeButton.dataset.route === "screen-4") clearWentianXuChatContext();
     navigate(routeButton.dataset.route);
     return;
   }

@@ -1358,6 +1358,49 @@ html[lang="en"] .wentian-native-mingpan .fc-age {
   color: #a94437;
 }
 
+.wentian-chat-context-card {
+  position: absolute;
+  left: 22px;
+  top: 132px;
+  display: grid;
+  gap: 4px;
+  width: 346px;
+  min-height: 78px;
+  padding: 11px 13px;
+  border: 1px solid rgba(194, 149, 60, .28);
+  border-radius: 16px;
+  background: linear-gradient(135deg, #fffaf1, #f5ead8);
+  box-shadow: 0 7px 18px rgba(112, 79, 39, .08);
+}
+
+.wentian-chat-context-card span {
+  color: #a97925;
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.wentian-chat-context-card strong {
+  display: -webkit-box;
+  overflow: hidden;
+  color: #241d18;
+  font-size: 14px;
+  font-weight: 900;
+  line-height: 1.32;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.wentian-chat-context-card em {
+  overflow: hidden;
+  color: #7d7165;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 1.25;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .wentian-chat-log {
   position: absolute;
   left: 22px;
@@ -1366,6 +1409,11 @@ html[lang="en"] .wentian-native-mingpan .fc-age {
   height: 286px;
   overflow-y: auto;
   padding: 2px 2px 12px;
+}
+
+.wentian-chat-log.is-with-context {
+  top: 224px;
+  height: 198px;
 }
 
 .wentian-chat-log::-webkit-scrollbar {
