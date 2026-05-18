@@ -1713,20 +1713,20 @@ body.mbp-auth-open {
 
 .mbp-report-action-bar {
   position: absolute;
-  top: 34px;
+  top: 40px;
   right: 34px;
-  width: min(640px, 44vw);
-  min-height: 230px;
+  width: min(596px, 38vw);
+  min-height: 186px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 28px;
-  padding: 22px 26px;
+  gap: 22px;
+  padding: 18px 22px;
   border: 1px solid rgba(241, 212, 125, .28);
-  border-radius: 22px;
+  border-radius: 20px;
   background:
-    radial-gradient(circle at 80% 50%, rgba(241, 212, 125, .22), transparent 30%),
-    radial-gradient(circle at 98% 8%, rgba(255, 244, 196, .16), transparent 28%),
+    radial-gradient(circle at 84% 50%, rgba(241, 212, 125, .22), transparent 31%),
+    radial-gradient(circle at 96% 12%, rgba(255, 244, 196, .14), transparent 26%),
     linear-gradient(135deg, rgba(164, 93, 57, .18), rgba(16, 12, 8, .9));
   box-shadow: 0 18px 46px rgba(0, 0, 0, .28);
 }
@@ -1743,7 +1743,7 @@ body.mbp-auth-open {
   display: block;
   margin-top: 3px;
   color: var(--ivory);
-  font-size: 22px;
+  font-size: 20px;
   line-height: 1.35;
 }
 
@@ -1759,29 +1759,60 @@ body.mbp-auth-open {
 }
 
 .mbp-report-action-bar button {
+  position: relative;
+  isolation: isolate;
   flex: 0 0 auto;
   display: grid;
   place-items: center;
   align-content: center;
-  width: 192px;
-  height: 192px;
-  min-width: 192px;
-  min-height: 192px;
+  width: 136px;
+  height: 136px;
+  min-width: 136px;
+  min-height: 136px;
   padding: 0;
   border-radius: 50%;
-  font-size: 20px;
+  background:
+    radial-gradient(circle at 34% 24%, rgba(255, 250, 218, .22), transparent 28%),
+    linear-gradient(145deg, #e0c06b, #bf7a40 82%);
+  font-size: 18px;
   line-height: 1.08;
   text-align: center;
   letter-spacing: .08em;
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, .28),
-    0 24px 54px rgba(185, 111, 66, .36),
-    0 0 0 12px rgba(241, 212, 125, .06);
+    inset 0 -18px 30px rgba(98, 50, 26, .16),
+    0 18px 42px rgba(185, 111, 66, .34),
+    0 0 0 9px rgba(241, 212, 125, .07);
+}
+
+.mbp-report-action-bar button::before {
+  content: "";
+  position: absolute;
+  inset: -7px;
+  z-index: -1;
+  border: 1px solid rgba(241, 212, 125, .46);
+  border-radius: 50%;
+  box-shadow: 0 0 22px rgba(241, 212, 125, .22);
+}
+
+.mbp-report-action-bar button::after {
+  content: "";
+  position: absolute;
+  inset: 8px;
+  border-radius: 50%;
+  border-top: 1px solid rgba(255, 244, 196, .44);
+  pointer-events: none;
 }
 
 .mbp-report-action-bar button span,
 .mbp-report-action-bar button b {
   display: block;
+  color: #1b1209;
+}
+
+.mbp-report-action-bar button span {
+  font-size: 22px;
+  letter-spacing: .08em;
 }
 
 .mbp-report-action-bar button b {
@@ -3337,7 +3368,7 @@ p.mbp-topic-detail {
   display: grid;
   grid-template-columns: 330px 1fr;
   gap: 34px;
-  padding-top: 58px;
+  padding-top: 6px;
 }
 
 .mbp-book-cover {
@@ -5835,15 +5866,15 @@ p.mbp-topic-detail {
   }
 
   .mbp-report-action-bar button {
-    width: 116px;
-    height: 116px;
-    min-width: 116px;
-    min-height: 116px;
+    width: 108px;
+    height: 108px;
+    min-width: 108px;
+    min-height: 108px;
     font-size: 15px;
   }
 
   .mbp-report-action-bar button b {
-    font-size: 21px;
+    font-size: 23px;
   }
 
   .mbp-seal {
