@@ -2,7 +2,7 @@
  * js/ai-piming.js — 前端 AI 批命集成层
  * 调用 AI 批命后端 /api/ai/run，不含任何排盘逻辑，不修改 _chart/_chartInputs 等全局变量
  *
- * 依赖全局变量（由 chart.html 内联脚本维护）：
+ * 依赖全局变量（由命书页脚本维护）：
  *   _chart, _chartInputs, _fcActiveAge, _liunianSeq,
  *   _birthPillarsCache, _xianTianGuaResult, _houTianGuaResult, _liunianGuaResult
  */

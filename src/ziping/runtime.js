@@ -1,6 +1,6 @@
 /**
  * 子平法命卦 — 页面运行时
- * 暴露 window.ZipingRuntime，供 chart.html 调用。
+ * 暴露 window.ZipingRuntime，供命书页调用。
  * 页面只调用 compute()，不感知内部算法细节。
  */
 (function (root) {
