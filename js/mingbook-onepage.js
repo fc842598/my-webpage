@@ -1919,11 +1919,11 @@
   function renderYijingTextSections(text, fallback = '排盘后显示对应卦位的逐条讲解。') {
     const source = cleanYijingReadingText(String(text || '').replace(/\r/g, ''));
     if (!source) {
-      return `<section class="mbp-yijing-paragraph"><h4>完整讲解</h4><p>${escapeHtml(fallback)}</p></section>`;
+      return `<section class="mbp-yijing-paragraph"><p>${escapeHtml(fallback)}</p></section>`;
     }
     const normalized = source.replace(/(^|\n)(原句[:：])/g, '\n\n$2');
     const chunks = normalized.split(/\n{2,}/).map((item) => item.trim()).filter(Boolean);
-    return chunks.map((chunk, index) => {
+    const paragraphs = chunks.map((chunk, index) => {
       const lines = chunk.split('\n').map((line) => line.trim()).filter(Boolean);
       const first = lines[0] || '';
       const isQuote = /^原句[:：]/.test(first);
@@ -1933,13 +1933,11 @@
       const bodyLines = isQuote ? lines.slice(1) : lines;
       const body = cleanYijingReadingText(bodyLines.join('\n').replace(/^讲解[:：]\s*/, ''));
       if (!body) return '';
-      return `
-        <section class="mbp-yijing-paragraph">
-          <h4>${escapeHtml(title)}</h4>
-          <p>${escapeHtml(body).replace(/\n/g, '<br>')}</p>
-        </section>
-      `;
-    }).filter(Boolean).join('') || `<section class="mbp-yijing-paragraph"><h4>完整讲解</h4><p>${escapeHtml(fallback)}</p></section>`;
+      const heading = isQuote || index > 0 ? `<strong>${escapeHtml(title)}</strong>` : '';
+      return `<p>${heading}${escapeHtml(body).replace(/\n/g, '<br>')}</p>`;
+    }).filter(Boolean).join('');
+
+    return `<section class="mbp-yijing-paragraph">${paragraphs || `<p>${escapeHtml(fallback)}</p>`}</section>`;
   }
 
   function yijingLineHtml(result) {

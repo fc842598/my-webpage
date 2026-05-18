@@ -4424,10 +4424,12 @@ p.mbp-topic-detail {
 .mbp-yijing-master {
   display: grid;
   gap: 14px;
-  padding: 0;
-  border: 0;
-  border-radius: 0;
-  background: transparent;
+  padding: 22px 24px;
+  border: 1px solid rgba(241, 212, 125, .16);
+  border-radius: 12px;
+  background:
+    linear-gradient(135deg, rgba(241, 212, 125, .06), rgba(0, 0, 0, .04)),
+    rgba(0, 0, 0, .16);
 }
 
 .mbp-yijing-master-head {
@@ -4454,10 +4456,11 @@ p.mbp-topic-detail {
 
 .mbp-yijing-master-summary {
   margin: 0;
-  padding: 18px 20px;
-  border: 1px solid rgba(241, 212, 125, .13);
-  border-radius: 10px;
-  background: rgba(241, 212, 125, .045);
+  padding: 0 0 14px;
+  border: 0;
+  border-bottom: 1px solid rgba(241, 212, 125, .12);
+  border-radius: 0;
+  background: transparent;
   color: #e5d3a4;
   font-size: 17px;
   font-weight: 850;
@@ -4467,8 +4470,7 @@ p.mbp-topic-detail {
 .mbp-yijing-master-text {
   max-height: none;
   overflow: visible;
-  display: grid;
-  gap: 12px;
+  display: block;
   padding: 0;
   border-radius: 0;
   background: transparent;
@@ -4481,12 +4483,10 @@ p.mbp-topic-detail {
 
 .mbp-yijing-paragraph {
   margin: 0;
-  padding: 18px 20px;
-  border: 1px solid rgba(241, 212, 125, .13);
-  border-radius: 10px;
-  background:
-    linear-gradient(135deg, rgba(241, 212, 125, .055), rgba(0, 0, 0, .02)),
-    rgba(0, 0, 0, .15);
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
 }
 
 .mbp-yijing-paragraph h4 {
@@ -4498,11 +4498,29 @@ p.mbp-topic-detail {
 }
 
 .mbp-yijing-paragraph p {
-  margin: 0;
+  margin: 0 0 16px;
   color: #ead8aa;
   font-size: 16px;
   font-weight: 800;
-  line-height: 1.72;
+  line-height: 1.78;
+}
+
+.mbp-yijing-paragraph p:last-child {
+  margin-bottom: 0;
+}
+
+.mbp-yijing-paragraph p + p {
+  padding-top: 16px;
+  border-top: 1px solid rgba(241, 212, 125, .09);
+}
+
+.mbp-yijing-paragraph strong {
+  display: block;
+  margin: 0 0 6px;
+  color: var(--gold);
+  font-size: 15px;
+  font-weight: 900;
+  line-height: 1.45;
 }
 
 .mbp-yijing-art {
