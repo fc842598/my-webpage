@@ -2929,6 +2929,8 @@ html[data-wentian-language="en"] .liuren-orbit i {
 
 .liuren-count-motion {
   inset: 0;
+  --liuren-final-left: 70%;
+  --liuren-final-top: 60%;
 }
 
 .liuren-count-motion::before {
@@ -2947,75 +2949,123 @@ html[data-wentian-language="en"] .liuren-orbit i {
   animation: liurenCompassSweep 5.6s linear infinite;
 }
 
-.liuren-flow-dot {
+.liuren-press-shadow {
   z-index: 4;
-  left: 38%;
-  top: 55%;
-  width: 11px;
-  height: 11px;
-  margin: -5px 0 0 -5px;
+  left: 38.5%;
+  top: 54.8%;
+  width: 42px;
+  height: 26px;
+  margin: -13px 0 0 -21px;
   border-radius: 50%;
-  background: #fff8dd;
+  background: radial-gradient(ellipse, rgba(236, 190, 89, .46) 0 24%, rgba(205, 146, 47, .18) 25% 58%, transparent 60% 100%);
+  filter: blur(.4px);
+  mix-blend-mode: multiply;
+  opacity: 0;
+  animation: liurenPressTrace 6.4s ease-in-out infinite;
+}
+
+.liuren-moving-thumb {
+  z-index: 8;
+  left: 38.5%;
+  top: 54.8%;
+  width: 38px;
+  height: 72px;
+  border: 1px solid rgba(157, 116, 57, .30);
+  border-radius: 21px 21px 23px 23px / 23px 23px 36px 36px;
+  background:
+    radial-gradient(ellipse at 48% 14%, rgba(255, 252, 238, .98) 0 16%, rgba(242, 220, 181, .96) 17% 42%, rgba(211, 180, 126, .92) 76%, rgba(189, 151, 91, .86) 100%),
+    linear-gradient(90deg, rgba(255, 255, 255, .42), transparent 38%, rgba(129, 84, 39, .16));
   box-shadow:
-    0 0 0 5px rgba(215, 169, 74, .20),
-    0 0 18px rgba(211, 151, 49, .95),
-    0 0 34px rgba(211, 151, 49, .42);
-  animation: liurenFingerTrace 4.8s cubic-bezier(.35, 0, .2, 1) infinite;
+    inset 6px 0 13px rgba(255, 255, 255, .34),
+    inset -6px -6px 13px rgba(122, 84, 42, .18),
+    0 8px 16px rgba(92, 62, 31, .18);
+  opacity: .93;
+  filter: drop-shadow(0 0 12px rgba(225, 178, 82, .16));
+  transform-origin: 50% 12%;
+  animation: liurenThumbCount 6.4s cubic-bezier(.34, 0, .2, 1) infinite;
+}
+
+.liuren-moving-thumb::before {
+  content: "";
+  position: absolute;
+  left: 8px;
+  top: 7px;
+  width: 20px;
+  height: 17px;
+  border: 1px solid rgba(151, 109, 61, .20);
+  border-radius: 15px 15px 12px 12px / 13px 13px 9px 9px;
+  background: linear-gradient(180deg, rgba(255, 250, 235, .94), rgba(235, 203, 169, .72));
+  box-shadow: inset 0 -3px 6px rgba(137, 94, 49, .12);
+}
+
+.liuren-moving-thumb::after {
+  content: "";
+  position: absolute;
+  left: 7px;
+  right: 7px;
+  top: 32px;
+  height: 25px;
+  border-top: 1px solid rgba(137, 94, 49, .18);
+  border-bottom: 1px solid rgba(137, 94, 49, .14);
+  background:
+    linear-gradient(180deg, transparent 0 42%, rgba(137, 94, 49, .12) 43% 46%, transparent 47% 100%),
+    linear-gradient(90deg, transparent 0 28%, rgba(137, 94, 49, .08) 29% 31%, transparent 32% 100%);
+  border-radius: 50%;
 }
 
 .liuren-finger-pulse {
   z-index: 3;
-  width: 38px;
-  height: 38px;
-  margin: -19px 0 0 -19px;
+  width: 46px;
+  height: 46px;
+  margin: -23px 0 0 -23px;
   border: 1px solid rgba(218, 165, 72, .64);
   border-radius: 50%;
   background: radial-gradient(circle, rgba(255, 240, 190, .44) 0 22%, rgba(255, 214, 116, .18) 23% 48%, transparent 49% 100%);
   box-shadow: 0 0 22px rgba(211, 151, 49, .34);
   opacity: 0;
-  animation: liurenJointPulse 4.8s ease-in-out infinite;
+  animation: liurenJointPulse 6.4s ease-in-out infinite;
 }
 
 .liuren-finger-pulse-1 {
-  left: 38%;
-  top: 55%;
+  left: 38.5%;
+  top: 54.8%;
   animation-delay: 0s;
 }
 
 .liuren-finger-pulse-2 {
-  left: 38%;
-  top: 37%;
-  animation-delay: .48s;
+  left: 38.5%;
+  top: 38%;
+  animation-delay: .88s;
 }
 
 .liuren-finger-pulse-3 {
   left: 50%;
   top: 31%;
-  animation-delay: .96s;
+  animation-delay: 1.76s;
 }
 
 .liuren-finger-pulse-4 {
   left: 65%;
   top: 39%;
-  animation-delay: 1.44s;
+  animation-delay: 2.64s;
 }
 
 .liuren-finger-pulse-5 {
   left: 70%;
   top: 60%;
-  animation-delay: 1.92s;
+  animation-delay: 3.52s;
 }
 
 .liuren-finger-pulse-6 {
   left: 51%;
   top: 55%;
-  animation-delay: 2.40s;
+  animation-delay: 4.40s;
 }
 
 .liuren-final-aura {
   z-index: 2;
-  left: 70%;
-  top: 60%;
+  left: var(--liuren-final-left);
+  top: var(--liuren-final-top);
   width: 82px;
   height: 82px;
   margin: -41px 0 0 -41px;
@@ -3035,43 +3085,190 @@ html[data-wentian-language="en"] .liuren-orbit i {
   overflow: hidden;
 }
 
-@keyframes liurenFingerTrace {
+@keyframes liurenThumbCount {
   0%,
+  8% {
+    left: 38.5%;
+    top: 54.8%;
+    transform: translate(-50%, -16%) rotate(-24deg) scale(1);
+  }
+
   10% {
-    left: 38%;
-    top: 55%;
-    transform: scale(.92);
+    left: 38.5%;
+    top: 54.8%;
+    transform: translate(-50%, -10%) rotate(-26deg) scale(.92, .90);
+  }
+
+  16%,
+  20% {
+    left: 38.5%;
+    top: 38%;
+    transform: translate(-50%, -16%) rotate(-15deg) scale(1);
   }
 
   22% {
-    left: 38%;
-    top: 37%;
-    transform: scale(1);
+    left: 38.5%;
+    top: 38%;
+    transform: translate(-50%, -10%) rotate(-17deg) scale(.92, .90);
+  }
+
+  30%,
+  34% {
+    left: 50%;
+    top: 31%;
+    transform: translate(-50%, -16%) rotate(0deg) scale(1);
   }
 
   36% {
     left: 50%;
     top: 31%;
-    transform: scale(1.02);
+    transform: translate(-50%, -10%) rotate(0deg) scale(.92, .90);
+  }
+
+  44%,
+  48% {
+    left: 65%;
+    top: 39%;
+    transform: translate(-50%, -16%) rotate(17deg) scale(1);
   }
 
   50% {
     left: 65%;
     top: 39%;
+    transform: translate(-50%, -10%) rotate(20deg) scale(.92, .90);
+  }
+
+  58%,
+  62% {
+    left: 70%;
+    top: 60%;
+    transform: translate(-50%, -16%) rotate(28deg) scale(1);
+  }
+
+  64% {
+    left: 70%;
+    top: 60%;
+    transform: translate(-50%, -10%) rotate(30deg) scale(.92, .90);
+  }
+
+  72%,
+  76% {
+    left: 51%;
+    top: 55%;
+    transform: translate(-50%, -16%) rotate(4deg) scale(1);
+  }
+
+  78% {
+    left: 51%;
+    top: 55%;
+    transform: translate(-50%, -10%) rotate(4deg) scale(.92, .90);
+  }
+
+  88%,
+  100% {
+    left: var(--liuren-final-left);
+    top: var(--liuren-final-top);
+    transform: translate(-50%, -12%) rotate(24deg) scale(.94, .92);
+  }
+}
+
+@keyframes liurenPressTrace {
+  0%,
+  8% {
+    left: 38.5%;
+    top: 54.8%;
+    opacity: .08;
+    transform: scale(.7);
+  }
+
+  10% {
+    left: 38.5%;
+    top: 54.8%;
+    opacity: .86;
+    transform: scale(1.05);
+  }
+
+  16%,
+  20% {
+    left: 38.5%;
+    top: 38%;
+    opacity: .08;
+    transform: scale(.7);
+  }
+
+  22% {
+    left: 38.5%;
+    top: 38%;
+    opacity: .78;
     transform: scale(1);
   }
 
-  64%,
-  82% {
-    left: 70%;
-    top: 60%;
-    transform: scale(1.16);
+  30%,
+  34% {
+    left: 50%;
+    top: 31%;
+    opacity: .08;
+    transform: scale(.7);
   }
 
-  100% {
-    left: 38%;
+  36% {
+    left: 50%;
+    top: 31%;
+    opacity: .78;
+    transform: scale(1);
+  }
+
+  44%,
+  48% {
+    left: 65%;
+    top: 39%;
+    opacity: .08;
+    transform: scale(.7);
+  }
+
+  50% {
+    left: 65%;
+    top: 39%;
+    opacity: .78;
+    transform: scale(1);
+  }
+
+  58%,
+  62% {
+    left: 70%;
+    top: 60%;
+    opacity: .08;
+    transform: scale(.7);
+  }
+
+  64% {
+    left: 70%;
+    top: 60%;
+    opacity: .86;
+    transform: scale(1.05);
+  }
+
+  72%,
+  76% {
+    left: 51%;
     top: 55%;
-    transform: scale(.85);
+    opacity: .08;
+    transform: scale(.7);
+  }
+
+  78% {
+    left: 51%;
+    top: 55%;
+    opacity: .78;
+    transform: scale(1);
+  }
+
+  88%,
+  100% {
+    left: var(--liuren-final-left);
+    top: var(--liuren-final-top);
+    opacity: .72;
+    transform: scale(1.18);
   }
 }
 
@@ -3115,7 +3312,8 @@ html[data-wentian-language="en"] .liuren-orbit i {
 
 @media (prefers-reduced-motion: reduce) {
   .liuren-count-motion::before,
-  .liuren-flow-dot,
+  .liuren-moving-thumb,
+  .liuren-press-shadow,
   .liuren-finger-pulse,
   .liuren-final-aura {
     animation: none !important;

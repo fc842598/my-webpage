@@ -7490,6 +7490,14 @@ const LIUREN_PALACES = [
   { name: "小吉", nature: "吉", tone: "good", keys: ["小成", "贵人", "顺手"], summary: "主小利、小成、有人帮扶。不是暴涨，但推进顺手。", advice: "适合小步试探、先拿结果、借力推进。" },
   { name: "空亡", nature: "凶", tone: "warn", keys: ["落空", "虚耗", "暂无"], summary: "主落空、虚耗、信息不实。问事多需重新核对根基。", advice: "适合暂停、查证、换方案；不要把希望压在单一路径。" }
 ];
+const LIUREN_HAND_POINTS = [
+  { left: 38.5, top: 54.8 },
+  { left: 38.5, top: 38.0 },
+  { left: 50.0, top: 31.0 },
+  { left: 65.0, top: 39.0 },
+  { left: 70.0, top: 60.0 },
+  { left: 51.0, top: 55.0 }
+];
 let liurenHasStarted = false;
 
 function formatLiurenLunar(lunar) {
@@ -7557,11 +7565,13 @@ function renderLiurenPath(result, reveal = true) {
     ["时辰", `${result.hourName}时`, reveal ? result.palace.name : "待起课"]
   ];
   const activePalace = reveal ? result.palace.name : "待起课";
+  const finalPoint = LIUREN_HAND_POINTS[reveal ? result.palaceIndex : 0] || LIUREN_HAND_POINTS[0];
   return `
     <div class="liuren-hand-board ${reveal ? "is-revealed" : "is-idle"}" aria-label="小六壬掌诀三指六位推演图">
       <img src="../images/wentian-prototype-assets/liuren-hand-board.png" alt="" aria-hidden="true">
-      <div class="liuren-count-motion" aria-hidden="true">
-        <span class="liuren-flow-dot"></span>
+      <div class="liuren-count-motion" style="--liuren-final-left:${finalPoint.left}%;--liuren-final-top:${finalPoint.top}%;" aria-hidden="true">
+        <span class="liuren-press-shadow"></span>
+        <span class="liuren-moving-thumb"></span>
         ${LIUREN_PALACES.map((_, index) => `<span class="liuren-finger-pulse liuren-finger-pulse-${index + 1}"></span>`).join("")}
         <span class="liuren-final-aura"></span>
       </div>
