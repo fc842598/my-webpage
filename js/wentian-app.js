@@ -6856,13 +6856,21 @@ function sourceLiuyaoCastScreen() {
           <strong>先定一问，再起六爻</strong>
           <em>自下而上成爻，6/9 为动爻，动则成变卦。</em>
         </div>
-        ${renderLiuyaoCoinRow(state, { complete, disabled: gateBusy })}
       </div>
       <label class="liuyao-question-card">
         <span>所问之事</span>
         <textarea id="liuyao-question" maxlength="${LIUYAO_QUESTION_MAX_LENGTH}" rows="2" placeholder="一句话写清楚所问，例如：本月是否推进某个项目？">${escapeHtml(getLiuyaoQuestionInputValue(state))}</textarea>
         ${renderLiuyaoQuestionGateStatus(state)}
       </label>
+      ${state.mode === "online" ? `
+        <div class="liuyao-coin-panel">
+          <div class="liuyao-coin-panel-head">
+            <span>在线投币</span>
+            <strong>${complete ? "卦已成" : `第 ${progress + 1} 爻`}</strong>
+          </div>
+          ${renderLiuyaoCoinRow(state, { complete, disabled: gateBusy })}
+        </div>
+      ` : ""}
       <div class="liuyao-mode-card">
         <span>起卦方式</span>
         <div>

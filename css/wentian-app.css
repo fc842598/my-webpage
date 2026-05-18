@@ -3506,11 +3506,7 @@ html[data-wentian-language="en"] .liuren-orbit i {
 }
 
 .liuyao-hero {
-  display: grid;
-  grid-template-columns: 1fr 136px;
-  gap: 12px;
-  align-items: center;
-  min-height: 156px;
+  min-height: 132px;
   padding: 18px;
   border-radius: 22px;
   overflow: hidden;
@@ -3535,7 +3531,7 @@ html[data-wentian-language="en"] .liuren-orbit i {
 .liuyao-hero strong {
   margin-top: 9px;
   color: #fffaf3;
-  font-size: 24px;
+  font-size: 27px;
   line-height: 1.14;
 }
 
@@ -3548,9 +3544,39 @@ html[data-wentian-language="en"] .liuren-orbit i {
   line-height: 1.45;
 }
 
+.liuyao-coin-panel {
+  margin-top: 12px;
+  padding: 14px;
+  border: 1px solid #e7d7bf;
+  border-radius: 20px;
+  background:
+    radial-gradient(circle at 50% 6%, rgba(244, 198, 98, .2), transparent 40%),
+    linear-gradient(180deg, #fff8ea 0%, #f6ead9 100%);
+  box-shadow: 0 16px 30px rgba(76, 48, 24, .1);
+}
+
+.liuyao-coin-panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.liuyao-coin-panel-head span {
+  color: #9a681c;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.liuyao-coin-panel-head strong {
+  color: #201813;
+  font-size: 16px;
+  font-weight: 900;
+}
+
 .liuyao-coin-stage {
   position: relative;
-  height: 124px;
+  height: 176px;
   touch-action: none;
   user-select: none;
   cursor: grab;
@@ -3560,17 +3586,21 @@ html[data-wentian-language="en"] .liuren-orbit i {
 .liuyao-coin-stage::before {
   content: "";
   position: absolute;
-  inset: 8px 0 20px;
-  border: 1px solid rgba(255, 236, 186, .28);
+  inset: 10px 8px 32px;
+  border: 1px solid rgba(156, 107, 39, .18);
   border-radius: 999px;
-  background: radial-gradient(circle, rgba(255, 232, 170, .13), transparent 66%);
+  background:
+    radial-gradient(circle at 50% 44%, rgba(255, 232, 170, .45), transparent 58%),
+    rgba(111, 65, 28, .08);
 }
 
 .liuyao-coin-stage:focus-visible::before,
 .liuyao-coin-stage.is-prompting::before,
 .liuyao-coin-stage.is-dragging::before {
   border-color: rgba(255, 231, 159, .58);
-  background: radial-gradient(circle, rgba(255, 232, 170, .22), transparent 70%);
+  background:
+    radial-gradient(circle at 50% 44%, rgba(255, 232, 170, .62), transparent 62%),
+    rgba(111, 65, 28, .12);
   box-shadow: 0 0 22px rgba(255, 218, 121, .22);
 }
 
@@ -3586,12 +3616,12 @@ html[data-wentian-language="en"] .liuren-orbit i {
   position: absolute;
   display: grid;
   place-items: center;
-  width: 46px;
-  height: 46px;
-  border-radius: 23px;
+  width: 66px;
+  height: 66px;
+  border-radius: 33px;
   overflow: hidden;
   background: linear-gradient(145deg, #e3b85a, #8f5d17);
-  box-shadow: 0 10px 18px rgba(30, 13, 8, .22), inset 0 0 0 4px rgba(255, 244, 205, .28);
+  box-shadow: 0 16px 26px rgba(89, 53, 20, .24), inset 0 0 0 5px rgba(255, 244, 205, .28);
   color: #fff4d5;
   font-size: 13px;
   font-weight: 900;
@@ -3620,23 +3650,24 @@ html[data-wentian-language="en"] .liuren-orbit i {
 }
 
 .liuyao-coin:nth-child(1) {
-  left: 7px;
-  top: 14px;
-  --tx: -16px;
+  left: 48px;
+  top: 28px;
+  --tx: -34px;
   --rot: 720deg;
 }
 
 .liuyao-coin:nth-child(2) {
-  right: 4px;
-  top: 30px;
-  --tx: 18px;
+  right: 42px;
+  top: 34px;
+  --tx: 34px;
   --rot: -760deg;
 }
 
 .liuyao-coin:nth-child(3) {
-  left: 44px;
-  bottom: 30px;
-  --tx: 2px;
+  left: 50%;
+  bottom: 47px;
+  margin-left: -33px;
+  --tx: 0px;
   --rot: 680deg;
 }
 
@@ -3644,25 +3675,25 @@ html[data-wentian-language="en"] .liuren-orbit i {
   background: linear-gradient(145deg, #d9c8ab, #8a7355);
 }
 
-.liuyao-hero .liuyao-coin b {
-  width: 18px;
-  height: 18px;
-  border: 2px solid rgba(255, 244, 205, .58);
+.liuyao-coin-stage .liuyao-coin b {
+  width: 26px;
+  height: 26px;
+  border: 3px solid rgba(255, 244, 205, .58);
   border-radius: 50%;
   font-size: 0;
 }
 
 .liuyao-swipe-cue {
   position: absolute;
-  right: 3px;
-  bottom: 1px;
-  left: 3px;
+  right: 36px;
+  bottom: 5px;
+  left: 36px;
   z-index: 2;
   height: 22px;
   border-radius: 11px;
-  background: rgba(255, 250, 243, .12);
-  color: #ffe3a0;
-  font-size: 10px;
+  background: rgba(150, 92, 28, .13);
+  color: #9a681c;
+  font-size: 11px;
   font-weight: 900;
   line-height: 22px;
   text-align: center;
@@ -3671,14 +3702,14 @@ html[data-wentian-language="en"] .liuren-orbit i {
 
 .liuyao-power-meter {
   position: absolute;
-  right: 8px;
-  bottom: 29px;
-  left: 8px;
-  height: 5px;
+  right: 34px;
+  bottom: 34px;
+  left: 34px;
+  height: 7px;
   overflow: hidden;
   border-radius: 999px;
-  background: rgba(255, 250, 243, .16);
-  box-shadow: inset 0 0 0 1px rgba(255, 236, 186, .13);
+  background: rgba(150, 92, 28, .13);
+  box-shadow: inset 0 0 0 1px rgba(150, 92, 28, .1);
 }
 
 .liuyao-power-meter i {
@@ -3694,13 +3725,13 @@ html[data-wentian-language="en"] .liuren-orbit i {
 
 .liuyao-force-label {
   position: absolute;
-  right: 8px;
-  top: 1px;
+  right: 28px;
+  top: 7px;
   z-index: 2;
-  color: #ffe9b2;
-  font-size: 10px;
+  color: #9a681c;
+  font-size: 12px;
   font-weight: 900;
-  text-shadow: 0 1px 5px rgba(30, 13, 8, .35);
+  text-shadow: none;
 }
 
 .liuyao-coin-stage.is-ready .liuyao-swipe-cue {
