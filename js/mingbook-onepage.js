@@ -1015,6 +1015,78 @@
     return branch ? (chart?.palaces || []).find((palace) => palace.earthlyBranch === branch) || null : null;
   }
 
+  function fcEnsureSanfangLayer() {
+    const grid = $('#mbpChartGrid');
+    if (!grid) return null;
+    let svg = $('#mbpFcSanfangLines');
+    if (!svg) {
+      svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+      svg.id = 'mbpFcSanfangLines';
+      svg.setAttribute('class', 'fc-sanfang-lines is-empty');
+      svg.setAttribute('viewBox', '0 0 100 100');
+      svg.setAttribute('preserveAspectRatio', 'none');
+      svg.setAttribute('aria-hidden', 'true');
+      svg.innerHTML = '<path class="fc-sanfang-opposite"></path><path class="fc-sanfang-triangle"></path><g class="fc-sanfang-points"></g>';
+      grid.prepend(svg);
+    }
+    return svg;
+  }
+
+  function fcClearSanfangLines(svg = $('#mbpFcSanfangLines')) {
+    if (!svg) return;
+    svg.classList.add('is-empty');
+    svg.querySelector('.fc-sanfang-triangle')?.setAttribute('d', '');
+    svg.querySelector('.fc-sanfang-opposite')?.setAttribute('d', '');
+    const points = svg.querySelector('.fc-sanfang-points');
+    if (points) points.innerHTML = '';
+  }
+
+  function fcBranchPoint(branch) {
+    const grid = $('#mbpChartGrid');
+    const cellId = fcBranchId[branch];
+    const cell = cellId ? document.getElementById(cellId) : null;
+    if (!grid || !cell) return null;
+    const gridRect = grid.getBoundingClientRect();
+    const cellRect = cell.getBoundingClientRect();
+    if (!gridRect.width || !gridRect.height) return null;
+    return {
+      x: ((cellRect.left + cellRect.width / 2 - gridRect.left) / gridRect.width) * 100,
+      y: ((cellRect.top + cellRect.height / 2 - gridRect.top) / gridRect.height) * 100,
+    };
+  }
+
+  function fcRenderSanfangLines(activeBranch) {
+    const svg = fcEnsureSanfangLayer();
+    if (!svg || !fcCurrentChart) {
+      fcClearSanfangLines(svg);
+      return;
+    }
+    const activeIndex = fcZhi.indexOf(activeBranch);
+    const oppositeBranch = fcDuiGong[activeBranch];
+    if (activeIndex < 0 || !oppositeBranch) {
+      fcClearSanfangLines(svg);
+      return;
+    }
+    const sanheBranches = [activeBranch, fcZhi[(activeIndex + 4) % 12], fcZhi[(activeIndex + 8) % 12]];
+    const sanhePoints = sanheBranches.map(fcBranchPoint);
+    const oppositePoint = fcBranchPoint(oppositeBranch);
+    if (sanhePoints.some((point) => !point) || !oppositePoint) {
+      fcClearSanfangLines(svg);
+      return;
+    }
+
+    const [p0, p1, p2] = sanhePoints;
+    svg.querySelector('.fc-sanfang-triangle')?.setAttribute('d', `M ${p0.x} ${p0.y} L ${p1.x} ${p1.y} L ${p2.x} ${p2.y} Z`);
+    svg.querySelector('.fc-sanfang-opposite')?.setAttribute('d', `M ${p0.x} ${p0.y} L ${oppositePoint.x} ${oppositePoint.y}`);
+    const points = svg.querySelector('.fc-sanfang-points');
+    if (points) {
+      points.innerHTML = [...sanhePoints, oppositePoint]
+        .map((point) => `<circle class="fc-sanfang-point" cx="${point.x}" cy="${point.y}" r="1.05"></circle>`)
+        .join('');
+    }
+    svg.classList.remove('is-empty');
+  }
+
   function fcBuildYearCards(startYear = fcSequenceStartYear) {
     const maxAge = fcMaxAge();
     fcActiveAge = fcCurrentVirtualAge();
@@ -1121,6 +1193,7 @@
         cell.onclick = null;
       }
     });
+    fcClearSanfangLines();
     $('#mbpFcName').textContent = '待排盘';
     $('#mbpFcMeta').textContent = usePlaceholder ? '***' : '';
     $('#mbpFcSolar').textContent = usePlaceholder ? '***' : (message || '—');
@@ -1145,6 +1218,7 @@
     if (!fcCurrentChart) return;
     fcActiveBranch = activeBranch;
     (fcCurrentChart.palaces || []).forEach((palace) => fcBuildCell(palace, activeBranch));
+    requestAnimationFrame(() => fcRenderSanfangLines(activeBranch));
   }
 
   function fcRenderTabs() {
@@ -4024,6 +4098,9 @@
     };
     window.addEventListener('scroll', queueReportNavSync, { passive: true });
     window.addEventListener('resize', queueReportNavSync);
+    window.addEventListener('resize', () => {
+      requestAnimationFrame(() => fcRenderSanfangLines(fcActiveBranch));
+    });
     syncReportNav();
   }
 

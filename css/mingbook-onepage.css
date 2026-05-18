@@ -1475,6 +1475,7 @@ select {
 }
 
 .fc-grid {
+  position: relative;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-template-rows: repeat(4, minmax(0, 1fr));
@@ -1486,7 +1487,50 @@ select {
   background: #d2c4b5;
 }
 
+.fc-sanfang-lines {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.fc-sanfang-lines.is-empty {
+  display: none;
+}
+
+.fc-sanfang-triangle,
+.fc-sanfang-opposite {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 7 6;
+  vector-effect: non-scaling-stroke;
+}
+
+.fc-sanfang-triangle {
+  stroke: rgba(151, 82, 48, .76);
+  stroke-width: 1.4;
+  filter: drop-shadow(0 0 2px rgba(255, 250, 238, .72));
+}
+
+.fc-sanfang-opposite {
+  stroke: rgba(66, 52, 43, .58);
+  stroke-width: 1.2;
+}
+
+.fc-sanfang-point {
+  fill: rgba(151, 82, 48, .7);
+  stroke: rgba(255, 250, 238, .9);
+  stroke-width: .55;
+  vector-effect: non-scaling-stroke;
+}
+
 .fc-cell {
+  position: relative;
+  z-index: 1;
   min-height: 0;
   overflow: hidden;
   padding: 6px 7px;
@@ -1522,6 +1566,10 @@ select {
   background:
     linear-gradient(135deg, rgba(210, 196, 181, .16), transparent 38%),
     #fdfcf9;
+}
+
+.is-chart-pending .fc-sanfang-lines {
+  display: none;
 }
 
 .is-chart-pending .fc-center-val,
@@ -1566,6 +1614,8 @@ select {
 #mbp-fc-hai { grid-column: 4; grid-row: 4; }
 
 #mbp-fc-center-panel {
+  position: relative;
+  z-index: 1;
   grid-column: 2 / 4;
   grid-row: 2 / 4;
   padding: 12px 10px 9px;
