@@ -821,7 +821,7 @@ function sourceAiChatScreen(screen) {
       </div>
     ` : ""}
     <div id="wentian-chat-messages" class="wentian-chat-log ${isLiuyaoChat ? "is-with-context" : ""}" aria-live="polite"></div>
-    ${figText("source-4-faq-title", isLiuyaoChat ? "占卜追问" : "常问", 22, 450, 84, 13, "#25211d", 800)}
+    ${figText("source-4-faq-title", isLiuyaoChat ? "占卜追问" : "常问", 22, 582, 84, 13, "#25211d", 800)}
     <div class="wentian-chat-starters" aria-label="常见问题分类">
       ${faqGroups.map((group) => `
         <details class="wentian-chat-faq-group">

@@ -1406,14 +1406,14 @@ html[lang="en"] .wentian-native-mingpan .fc-age {
   left: 22px;
   top: 136px;
   width: 346px;
-  height: 286px;
+  height: 418px;
   overflow-y: auto;
-  padding: 2px 2px 12px;
+  padding: 2px 2px 16px;
 }
 
 .wentian-chat-log.is-with-context {
   top: 224px;
-  height: 198px;
+  height: 330px;
 }
 
 .wentian-chat-log::-webkit-scrollbar {
@@ -1539,12 +1539,12 @@ html[lang="en"] .wentian-native-mingpan .fc-age {
 .wentian-chat-starters {
   position: absolute;
   left: 18px;
-  top: 476px;
+  top: 608px;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 7px;
   width: 354px;
-  max-height: 252px;
+  max-height: 128px;
   overflow-y: auto;
   padding: 0 4px 5px;
   scrollbar-width: none;
