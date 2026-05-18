@@ -1606,6 +1606,10 @@ function padWentianNumber(value) {
   return String(value).padStart(2, "0");
 }
 
+function formatWentianDateInputValue(date) {
+  return `${date.getFullYear()}-${padWentianNumber(date.getMonth() + 1)}-${padWentianNumber(date.getDate())}T${padWentianNumber(date.getHours())}:${padWentianNumber(date.getMinutes())}`;
+}
+
 function getWentianNumber(id) {
   const value = Number(document.getElementById(id)?.value);
   return Number.isFinite(value) ? value : 0;
@@ -1852,6 +1856,17 @@ function getWentianChartDateParts() {
   return { mode, date, hour, minute, calModeLabel, lunar, leapMonthRule, autoLeapMonth };
 }
 
+function getWentianSolarLeapRuleInfo(date, autoLeapMonth = true) {
+  if (!date || Number.isNaN(date.getTime()) || typeof solarToLunar !== "function") {
+    return { lunar: null, leapMonthRule: { enabled: autoLeapMonth, applied: false } };
+  }
+  const lunar = solarToLunar(date.getFullYear(), date.getMonth() + 1, date.getDate());
+  return {
+    lunar,
+    leapMonthRule: getWentianLeapMonthRuleInfo(lunar, autoLeapMonth),
+  };
+}
+
 function updateWentianChartPreview() {
   const preview = document.getElementById("wentian-chart-preview");
   const tst = document.getElementById("wentian-chart-tst");
@@ -1901,6 +1916,89 @@ function createWentianChartWithLeapRule(lib, norm, genderText) {
   return typeof lib.bySolar === "function"
     ? lib.bySolar(norm.dateStr, norm.timeIndex, genderText, true)
     : lib.astrolabeBySolarDate(norm.dateStr, norm.timeIndex, genderText, true);
+}
+
+function buildWentianChartNormFromSaved(saved, date) {
+  const form = saved?.form || {};
+  const cityDetail = form.cityDetail || findWentianCity(form.city || "");
+  const city = cityDetail ? formatWentianCity(cityDetail) : (form.city || "");
+  const useTrueSolar = form.useTrueSolar !== false;
+  const autoLeapMonth = form.autoLeapMonth !== false;
+  let calcHour = date.getHours();
+  let calcMinute = date.getMinutes();
+  let trueSolarResult = null;
+  if (useTrueSolar && typeof calcTrueSolarTime === "function") {
+    trueSolarResult = calcTrueSolarTime({
+      year: date.getFullYear(),
+      month: date.getMonth() + 1,
+      day: date.getDate(),
+      hour: calcHour,
+      minute: calcMinute,
+      longitude: cityDetail?.lon || 116.4,
+      tzOffset: cityDetail?.tzOffset ?? 8,
+      cityName: city || "北京（默认）",
+    });
+    calcHour = trueSolarResult.trueSolarHour;
+    calcMinute = trueSolarResult.trueSolarMinute;
+  }
+  const { leapMonthRule } = getWentianSolarLeapRuleInfo(date, autoLeapMonth);
+  const dateStr = `${date.getFullYear()}-${padWentianNumber(date.getMonth() + 1)}-${padWentianNumber(date.getDate())}`;
+  return {
+    name: form.name || saved?.chartData?.name || "",
+    gender: form.gender || saved?.chartData?.gender || "male",
+    type: form.type || "ziwei",
+    city,
+    cityDetail,
+    date,
+    dateStr,
+    timeIndex: getWentianTimeIndex(calcHour, calcMinute),
+    trueSolarResult,
+    useTrueSolar,
+    calMode: "solar",
+    calModeLabel: `公历 ${dateStr}`,
+    autoLeapMonth,
+    leapMonthRule,
+  };
+}
+
+function stepWentianClassicChartTime(hoursDelta) {
+  const saved = getWentianDisplayChartState();
+  if (!saved?.chart) return;
+  const baseDate = new Date(saved.form?.datetime || saved.chartData?.birthDate || Date.now());
+  if (Number.isNaN(baseDate.getTime())) return;
+  const nextDate = new Date(baseDate.getTime());
+  nextDate.setHours(nextDate.getHours() + hoursDelta);
+
+  const lib = getWentianIztroLib();
+  if (!lib) return;
+  const norm = buildWentianChartNormFromSaved(saved, nextDate);
+  const genderText = norm.gender === "male" ? "男" : "女";
+  const chart = createWentianChartWithLeapRule(lib, norm, genderText);
+  const chartData = buildWentianChartPayload(chart, norm);
+  resetWentianChartAiState(chartData.chartRecordId);
+  saveWentianChart({
+    ...saved,
+    chart,
+    chartData,
+    form: {
+      ...(saved.form || {}),
+      archiveId: saved.form?.archiveId || `archive-${chartData.chartRecordId}`,
+      name: norm.name,
+      gender: norm.gender,
+      type: norm.type,
+      city: norm.city,
+      cityDetail: norm.cityDetail,
+      calMode: norm.calMode,
+      calModeLabel: norm.calModeLabel,
+      autoLeapMonth: norm.autoLeapMonth,
+      leapMonthRule: norm.leapMonthRule,
+      datetime: formatWentianDateInputValue(nextDate),
+      useTrueSolar: norm.useTrueSolar,
+      trueSolarChoiceSet: true,
+    },
+    updatedAt: new Date().toISOString(),
+  });
+  navigate("screen-27", false);
 }
 
 function normalizeWentianStar(star) {
@@ -8150,6 +8248,75 @@ function renderWentianClassicPalaceCell(palace, activeBranch) {
     </div>`;
 }
 
+function clearWentianClassicSanfangLines(svg) {
+  if (!svg) return;
+  svg.classList.add("is-empty");
+  svg.querySelector(".fc-sanfang-triangle")?.setAttribute("d", "");
+  svg.querySelector(".fc-sanfang-opposite")?.setAttribute("d", "");
+  const points = svg.querySelector(".fc-sanfang-points");
+  if (points) points.innerHTML = "";
+}
+
+function getWentianClassicBranchPoint(chart, branch) {
+  const grid = chart?.querySelector(".fc-grid");
+  const cell = Array.from(chart?.querySelectorAll(".fc-cell") || []).find((item) => item.dataset.palaceBranch === branch);
+  if (!grid || !cell) return null;
+  const gridRect = grid.getBoundingClientRect();
+  const cellRect = cell.getBoundingClientRect();
+  if (!gridRect.width || !gridRect.height) return null;
+  const gridCenterX = gridRect.left + gridRect.width / 2;
+  const gridCenterY = gridRect.top + gridRect.height / 2;
+  const cellCenterX = cellRect.left + cellRect.width / 2;
+  const cellCenterY = cellRect.top + cellRect.height / 2;
+  const dx = gridCenterX - cellCenterX;
+  const dy = gridCenterY - cellCenterY;
+  let x = cellCenterX;
+  let y = cellCenterY;
+  if (Math.abs(dx) >= Math.abs(dy)) x = dx >= 0 ? cellRect.right : cellRect.left;
+  else y = dy >= 0 ? cellRect.bottom : cellRect.top;
+  return {
+    x: ((x - gridRect.left) / gridRect.width) * 100,
+    y: ((y - gridRect.top) / gridRect.height) * 100,
+  };
+}
+
+function renderWentianClassicSanfangLines(activeBranch) {
+  const chart = view.querySelector(".wentian-native-mingpan");
+  const svg = chart?.querySelector(".fc-sanfang-lines");
+  if (!chart || !svg || !activeBranch) {
+    clearWentianClassicSanfangLines(svg);
+    return;
+  }
+  const relations = getWentianClassicRelations(activeBranch);
+  const sanheBranches = [activeBranch, ...relations.sanhe];
+  const sanhePoints = sanheBranches.map((branch) => getWentianClassicBranchPoint(chart, branch));
+  const oppositePoint = getWentianClassicBranchPoint(chart, relations.dui);
+  if (sanhePoints.some((point) => !point) || !oppositePoint) {
+    clearWentianClassicSanfangLines(svg);
+    return;
+  }
+  const [p0, p1, p2] = sanhePoints;
+  svg.querySelector(".fc-sanfang-triangle")?.setAttribute("d", `M ${p0.x} ${p0.y} L ${p1.x} ${p1.y} L ${p2.x} ${p2.y} Z`);
+  svg.querySelector(".fc-sanfang-opposite")?.setAttribute("d", `M ${p0.x} ${p0.y} L ${oppositePoint.x} ${oppositePoint.y}`);
+  const points = svg.querySelector(".fc-sanfang-points");
+  if (points) {
+    points.innerHTML = [...sanhePoints, oppositePoint]
+      .map((point) => `<circle class="fc-sanfang-point" cx="${point.x}" cy="${point.y}" r="1.15"></circle>`)
+      .join("");
+  }
+  svg.classList.remove("is-empty");
+}
+
+function getWentianClassicDefaultBranch(saved) {
+  const chart = saved?.chart || getWentianDisplayChartState()?.chart;
+  return chart?.earthlyBranchOfSoulPalace || (chart?.palaces || []).find((p) => p.name === "命宫")?.earthlyBranch || "";
+}
+
+function initWentianClassicChartScreen() {
+  const activeBranch = getWentianClassicDefaultBranch(getWentianDisplayChartState());
+  window.requestAnimationFrame(() => renderWentianClassicSanfangLines(activeBranch));
+}
+
 function renderWentianClassicCenter(chart, chartData, form) {
   const pillars = chartData?.sizhu || extractWentianPillars(chart);
   const genderLabel = form.gender === "female" ? "阴女" : "阳男";
@@ -8176,6 +8343,10 @@ function renderWentianClassicCenter(chart, chartData, form) {
       <div class="fc-sizhu">
         ${columns.map(([stem, branch, color]) => (stem || branch) ? `<div class="fc-sizhu-col" style="color:${color}"><span>${escapeHtml(stem || "?")}</span><span>${escapeHtml(branch || "?")}</span></div>` : "").join("")}
       </div>
+      <div class="fc-center-btns" aria-label="切换排盘时辰">
+        <button type="button" class="fc-center-btn" data-action="wentian-chart-time-step" data-hours-delta="-2" aria-label="上一个时辰">时↑</button>
+        <button type="button" class="fc-center-btn" data-action="wentian-chart-time-step" data-hours-delta="2" aria-label="下一个时辰">时↓</button>
+      </div>
       <div class="wentian-fc-note">命宫 ${escapeHtml(chart?.earthlyBranchOfSoulPalace || "—")} · 身宫 ${escapeHtml(chart?.earthlyBranchOfBodyPalace || "—")} · 已接入</div>
     </div>`;
 }
@@ -8194,6 +8365,11 @@ function renderWentianClassicChart(saved) {
       <div class="fc-card">
         <div class="fc-grid-wrap">
           <div class="fc-grid">
+            <svg class="fc-sanfang-lines is-empty" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+              <path class="fc-sanfang-opposite"></path>
+              <path class="fc-sanfang-triangle"></path>
+              <g class="fc-sanfang-points"></g>
+            </svg>
             ${(chart.palaces || []).map((palace) => renderWentianClassicPalaceCell(palace, activeBranch)).join("")}
             ${renderWentianClassicCenter(chart, chartData, form)}
           </div>
@@ -8217,6 +8393,7 @@ function highlightWentianClassicChart(branch, palaceName = "") {
       cell.classList.add("fc-rel", "fc-dui");
     }
   });
+  renderWentianClassicSanfangLines(branch);
   const title = view.querySelector('[data-node-id="source-27-ai-title"]');
   if (title) title.textContent = translateWentianText(`✦ ${palaceName || branch} · AI解析`);
 }
@@ -8559,6 +8736,7 @@ function navigate(route, push = true) {
     if (screen.no === 22 || screen.no === 23 || screen.no === 24 || screen.no === 31 || screen.no === 34) window.setTimeout(() => hydrateWentianInvite({ rerender: true }), 0);
     if (screen.no === 48) window.setTimeout(() => hydrateWentianOrders({ rerender: true }), 0);
     if (screen.no === 26) window.setTimeout(initWentianChartForm, 0);
+    if (screen.no === 27) window.setTimeout(initWentianClassicChartScreen, 0);
     if (screen.no === 46) window.setTimeout(initLiurenScreen, 0);
     if (!location.hash.includes("figmacapture=") && !hasWentianAuthParams(getWentianUrlParams(location.hash))) location.hash = route;
     window.scrollTo(0, 0);
@@ -8952,6 +9130,10 @@ document.addEventListener("click", (event) => {
   }
   if (earlyAction === "wentian-chart-palace") {
     highlightWentianClassicChart(earlyActionTarget.dataset.palaceBranch || "", earlyActionTarget.dataset.palaceName || "");
+    return;
+  }
+  if (earlyAction === "wentian-chart-time-step") {
+    stepWentianClassicChartTime(Number(earlyActionTarget.dataset.hoursDelta) || 0);
     return;
   }
   if (earlyAction === "liuren-use-now") {
