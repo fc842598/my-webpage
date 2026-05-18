@@ -6409,11 +6409,12 @@ function saveLiuyaoQuestionFromDom() {
     }
     const status = document.getElementById("liuyao-question-status");
     if (status) {
-      status.textContent = "改好后再次起卦会重新审题。";
+      status.textContent = "改好后点提交占问，重新审题。";
       status.dataset.tone = "hint";
     }
   }
   saveLiuyaoState();
+  updateLiuyaoQuestionSubmitDom();
 }
 
 function clearLiuyaoTossAnimation() {
@@ -6519,6 +6520,85 @@ function getLiuyaoQuestionGateMessage(state = getLiuyaoState()) {
 function renderLiuyaoQuestionGateStatus(state = getLiuyaoState()) {
   const status = getLiuyaoQuestionGateMessage(state);
   return `<p id="liuyao-question-status" class="liuyao-question-status" data-tone="${escapeHtml(status.tone)}">${escapeHtml(status.text)}</p>`;
+}
+
+function getLiuyaoQuestionSubmitMeta(state = getLiuyaoState()) {
+  const question = normalizeLiuyaoQuestion(state.question);
+  const gate = normalizeLiuyaoQuestionGate(state.questionGate, question);
+  if (liuyaoQuestionGateLoading) {
+    return { label: "审题中…", disabled: true, state: "loading" };
+  }
+  if (gate?.allowed) {
+    return { label: "已通过", disabled: true, state: "approved" };
+  }
+  if (gate && !gate.allowed) {
+    return {
+      label: gate.retryable ? "重新提交" : "修改后提交",
+      disabled: !gate.retryable,
+      state: "rejected",
+    };
+  }
+  return { label: "提交占问", disabled: !question, state: "idle" };
+}
+
+function renderLiuyaoQuestionSubmit(state = getLiuyaoState()) {
+  const meta = getLiuyaoQuestionSubmitMeta(state);
+  return `
+    <button
+      type="button"
+      class="liuyao-question-submit ${meta.state ? `is-${meta.state}` : ""}"
+      data-action="liuyao-submit-question"
+      ${meta.disabled ? "disabled" : ""}
+    >${escapeHtml(meta.label)}</button>
+  `;
+}
+
+function updateLiuyaoQuestionSubmitDom(state = getLiuyaoState()) {
+  const button = document.querySelector('[data-action="liuyao-submit-question"]');
+  const meta = getLiuyaoQuestionSubmitMeta(state);
+  if (button) {
+    button.textContent = meta.label;
+    button.disabled = meta.disabled;
+    ["idle", "loading", "approved", "rejected"].forEach((name) => {
+      button.classList.toggle(`is-${name}`, meta.state === name);
+    });
+  }
+  updateLiuyaoQuestionLockedDom(state);
+}
+
+function updateLiuyaoQuestionLockedDom(state = getLiuyaoState()) {
+  const question = normalizeLiuyaoQuestion(state.question);
+  const ready = Boolean(normalizeLiuyaoQuestionGate(state.questionGate, question)?.allowed);
+  const progress = getLiuyaoProgress(state);
+  const complete = progress >= 6;
+  const lockText = liuyaoQuestionGateLoading ? "审题中，稍候开放" : "提交通过后开放投币";
+  const panel = document.querySelector(".liuyao-coin-panel");
+  if (panel) {
+    panel.classList.toggle("is-ready", ready);
+    panel.classList.toggle("is-waiting", !ready);
+  }
+  const stage = document.querySelector('[data-action="liuyao-swipe-cast"]');
+  if (stage) {
+    const disabled = !ready || liuyaoQuestionGateLoading || complete || state.mode !== "online";
+    stage.classList.toggle("is-disabled", disabled);
+    stage.setAttribute("aria-disabled", disabled ? "true" : "false");
+    stage.setAttribute("tabindex", disabled ? "-1" : "0");
+    stage.setAttribute("aria-label", disabled ? lockText : `按住铜钱上拉，松手投第 ${progress + 1} 爻`);
+    const cue = stage.querySelector(".liuyao-swipe-cue");
+    if (cue) cue.textContent = disabled ? lockText : `按住铜钱上拉，松手投第 ${progress + 1} 爻`;
+    const force = stage.querySelector(".liuyao-force-label");
+    if (force && !ready) force.textContent = "待审题";
+  }
+  const onlineAction = document.querySelector('[data-action="liuyao-focus-caster"]');
+  if (onlineAction) {
+    onlineAction.disabled = !ready || liuyaoQuestionGateLoading || Boolean(liuyaoTossAnimation?.active);
+    onlineAction.textContent = liuyaoQuestionGateLoading ? "审题中…" : (!ready ? "先提交占问" : `上拉投第 ${progress + 1} 爻`);
+  }
+  if (!ready) {
+    document.querySelectorAll('.liuyao-line-row[data-action="liuyao-manual-line"]').forEach((item) => {
+      item.removeAttribute("data-action");
+    });
+  }
 }
 
 function parseLiuyaoGateJson(text) {
@@ -6797,6 +6877,7 @@ function renderLiuyaoCoinRow(state, options = {}) {
   const tossing = liuyaoTossAnimation?.active && state.mode === "online";
   const progress = getLiuyaoProgress(state);
   const disabled = state.mode !== "online" || progress >= 6 || options.complete || options.disabled;
+  const disabledLabel = options.lockText || "卦已成";
   const coins = tossing ? liuyaoTossAnimation.cast.coins : (last?.coins || [3, 2, 3]);
   const powerPercent = tossing ? Math.max(18, Math.min(100, Number(liuyaoTossAnimation.power) || 62)) : 0;
   const powerRatio = powerPercent ? powerPercent / 100 : 0;
@@ -6805,10 +6886,12 @@ function renderLiuyaoCoinRow(state, options = {}) {
   const label = tossing
     ? `力度 ${powerPercent}% · 铜钱翻转中`
     : disabled
-      ? "卦已成"
+      ? disabledLabel
       : `按住铜钱上拉，松手投第 ${progress + 1} 爻`;
   const forceLabel = tossing
     ? `本次力度 ${powerPercent}%`
+    : options.lockText
+      ? "待审题"
     : last?.power
       ? `上次力度 ${last.power}%`
       : "上拉蓄力";
@@ -6860,6 +6943,7 @@ function sourceLiuyaoCastScreen() {
   const question = normalizeLiuyaoQuestion(state.question);
   const gate = normalizeLiuyaoQuestionGate(state.questionGate, question);
   const questionReady = Boolean(gate?.allowed);
+  const questionLockText = gateBusy ? "审题中，稍候开放" : "提交通过后开放投币";
   const stepOneClass = questionReady ? "is-done" : "is-active";
   const stepTwoClass = complete || progress > 0 ? "is-done" : (questionReady ? "is-active" : "");
   const stepThreeClass = complete ? "is-done" : (progress > 0 ? "is-active" : "");
@@ -6875,11 +6959,14 @@ function sourceLiuyaoCastScreen() {
           <em>自下而上成爻，6/9 为动爻，动则成变卦。</em>
         </div>
       </div>
-      <label class="liuyao-question-card">
-        <span>所问之事</span>
+      <div class="liuyao-question-card">
+        <label for="liuyao-question">所问之事</label>
         <textarea id="liuyao-question" maxlength="${LIUYAO_QUESTION_MAX_LENGTH}" rows="2" placeholder="一句话写清楚所问，例如：本月是否推进某个项目？">${escapeHtml(getLiuyaoQuestionInputValue(state))}</textarea>
-        ${renderLiuyaoQuestionGateStatus(state)}
-      </label>
+        <div class="liuyao-question-review-row">
+          ${renderLiuyaoQuestionGateStatus(state)}
+          ${renderLiuyaoQuestionSubmit(state)}
+        </div>
+      </div>
       ${state.mode === "online" ? `
         <div class="liuyao-coin-panel ${questionReady ? "is-ready" : "is-waiting"}">
           <div class="liuyao-coin-panel-head">
@@ -6891,7 +6978,7 @@ function sourceLiuyaoCastScreen() {
             <span class="${stepTwoClass}"><i>2</i>蓄力</span>
             <span class="${stepThreeClass}"><i>3</i>落爻</span>
           </div>
-          ${renderLiuyaoCoinRow(state, { complete, disabled: gateBusy })}
+          ${renderLiuyaoCoinRow(state, { complete, disabled: gateBusy || !questionReady, lockText: questionReady ? "" : questionLockText })}
         </div>
       ` : ""}
       <div class="liuyao-mode-card">
@@ -6906,10 +6993,10 @@ function sourceLiuyaoCastScreen() {
           <button type="button" class="primary" data-action="liuyao-show-result">查看卦象解读</button>
           <button type="button" data-action="liuyao-copy">复制卦象</button>
         ` : state.mode === "online" ? `
-          <button type="button" class="primary" data-action="liuyao-focus-caster" ${actionBusy ? "disabled" : ""}>${gateBusy ? "审题中…" : tossing ? "抛币中…" : `上拉投第 ${progress + 1} 爻`}</button>
+          <button type="button" class="primary" data-action="liuyao-focus-caster" ${actionBusy || !questionReady ? "disabled" : ""}>${gateBusy ? "审题中…" : !questionReady ? "先提交占问" : tossing ? "抛币中…" : `上拉投第 ${progress + 1} 爻`}</button>
           <button type="button" data-action="liuyao-reset" ${gateBusy ? "disabled" : ""}>清空重排</button>
         ` : `
-          <button type="button" class="primary" ${progress === 6 && !actionBusy ? 'data-action="liuyao-show-result"' : "disabled"}>${gateBusy ? "审题中…" : progress === 6 ? "查看卦象解读" : "补全六爻"}</button>
+          <button type="button" class="primary" ${progress === 6 && !actionBusy && questionReady ? 'data-action="liuyao-show-result"' : "disabled"}>${gateBusy ? "审题中…" : !questionReady ? "先提交占问" : progress === 6 ? "查看卦象解读" : "补全六爻"}</button>
           <button type="button" data-action="liuyao-reset" ${gateBusy ? "disabled" : ""}>清空重排</button>
         `}
       </div>
@@ -6919,7 +7006,7 @@ function sourceLiuyaoCastScreen() {
           <span>${formatWentianDateTime(new Date(state.createdAt || Date.now()))}</span>
         </div>
         ${tossing ? `<p class="liuyao-casting-status">本次力度 ${Math.max(18, Math.min(100, Number(liuyaoTossAnimation.power) || 62))}%；铜钱翻转 1 秒后落入第 ${progress + 1} 爻。</p>` : ""}
-        ${renderLiuyaoHexStack(lines, { manual: state.mode === "manual", id: "cast" })}
+        ${renderLiuyaoHexStack(lines, { manual: state.mode === "manual" && questionReady, id: "cast" })}
       </div>
       ${state.mode === "manual" ? `
         <p class="liuyao-hint">手动点每一爻切换：少阳 → 少阴 → 老阳 → 老阴。</p>
@@ -7091,7 +7178,9 @@ function canUseLiuyaoSwipeCaster(target) {
   if (!target || target.getAttribute("aria-disabled") === "true") return false;
   if (liuyaoQuestionGateLoading) return false;
   const state = getLiuyaoState();
-  return state.mode === "online" && getLiuyaoProgress(state) < 6 && !liuyaoTossAnimation?.active;
+  const question = normalizeLiuyaoQuestion(state.question);
+  const gate = normalizeLiuyaoQuestionGate(state.questionGate, question);
+  return Boolean(gate?.allowed) && state.mode === "online" && getLiuyaoProgress(state) < 6 && !liuyaoTossAnimation?.active;
 }
 
 function getLiuyaoSwipeMetrics(event, start = liuyaoSwipeStart) {
@@ -10195,6 +10284,10 @@ document.addEventListener("click", (event) => {
   }
   if (earlyAction === "liuyao-mode") {
     setLiuyaoMode(earlyActionTarget.dataset.mode || "online");
+    return;
+  }
+  if (earlyAction === "liuyao-submit-question") {
+    ensureLiuyaoQuestionAllowed();
     return;
   }
   if (earlyAction === "liuyao-focus-caster") {
