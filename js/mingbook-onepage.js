@@ -1559,14 +1559,8 @@
     const cellCenterY = cellRect.top + cellRect.height / 2;
     const dx = gridCenterX - cellCenterX;
     const dy = gridCenterY - cellCenterY;
-    let x = cellCenterX;
-    let y = cellCenterY;
-
-    if (Math.abs(dx) >= Math.abs(dy)) {
-      x = dx >= 0 ? cellRect.right : cellRect.left;
-    } else {
-      y = dy >= 0 ? cellRect.bottom : cellRect.top;
-    }
+    const x = dx >= 0 ? cellRect.right : cellRect.left;
+    const y = dy >= 0 ? cellRect.bottom : cellRect.top;
 
     return {
       x: ((x - gridRect.left) / gridRect.width) * 100,
