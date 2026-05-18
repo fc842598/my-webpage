@@ -7961,14 +7961,6 @@ const LIUREN_PALACES = [
   { name: "小吉", nature: "吉", tone: "good", keys: ["小成", "贵人", "顺手"], summary: "主小利、小成、有人帮扶。不是暴涨，但推进顺手。", advice: "适合小步试探、先拿结果、借力推进。" },
   { name: "空亡", nature: "凶", tone: "warn", keys: ["落空", "虚耗", "暂无"], summary: "主落空、虚耗、信息不实。问事多需重新核对根基。", advice: "适合暂停、查证、换方案；不要把希望压在单一路径。" }
 ];
-const LIUREN_HAND_POINTS = [
-  { left: 38.5, top: 54.8 },
-  { left: 38.5, top: 38.0 },
-  { left: 50.0, top: 31.0 },
-  { left: 65.0, top: 39.0 },
-  { left: 70.0, top: 60.0 },
-  { left: 51.0, top: 55.0 }
-];
 let liurenHasStarted = false;
 
 function formatLiurenLunar(lunar) {
@@ -8036,195 +8028,18 @@ function renderLiurenPath(result, reveal = true) {
     ["时辰", `${result.hourName}时`, reveal ? result.palace.name : "待起课"]
   ];
   const activePalace = reveal ? result.palace.name : "待起课";
-  const finalPoint = LIUREN_HAND_POINTS[reveal ? result.palaceIndex : 0] || LIUREN_HAND_POINTS[0];
+  const boardSrc = reveal
+    ? "../images/wentian-prototype-assets/liuren-hand-counting.svg"
+    : "../images/wentian-prototype-assets/liuren-hand-board.png";
   return `
     <div class="liuren-hand-board ${reveal ? "is-revealed" : "is-idle"}" aria-label="小六壬掌诀三指六位推演图">
-      <img src="../images/wentian-prototype-assets/liuren-hand-board.png" alt="" aria-hidden="true">
-      <div class="liuren-count-motion" style="--liuren-final-left:${finalPoint.left}%;--liuren-final-top:${finalPoint.top}%;" aria-hidden="true">
-        <span class="liuren-press-shadow"></span>
-        <canvas class="liuren-thumb-canvas" data-final-left="${finalPoint.left}" data-final-top="${finalPoint.top}"></canvas>
-        ${LIUREN_PALACES.map((_, index) => `<span class="liuren-finger-pulse liuren-finger-pulse-${index + 1}"></span>`).join("")}
-        <span class="liuren-final-aura"></span>
-      </div>
+      <img src="${boardSrc}" alt="" aria-hidden="true">
       <div class="liuren-hand-a11y" aria-live="polite">
         ${items.map(([label, value, palace]) => `<span>${label}：${value}，${palace}</span>`).join("")}
         <span>当前落宫：${activePalace}</span>
       </div>
     </div>
   `;
-}
-
-function drawLiurenThumbFrame(canvas, time) {
-  const rect = canvas.getBoundingClientRect();
-  if (!rect.width || !rect.height) return;
-  const ratio = Math.min(window.devicePixelRatio || 1, 2);
-  const width = Math.round(rect.width * ratio);
-  const height = Math.round(rect.height * ratio);
-  if (canvas.width !== width || canvas.height !== height) {
-    canvas.width = width;
-    canvas.height = height;
-  }
-  const ctx = canvas.getContext("2d");
-  if (!ctx) return;
-  ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
-  ctx.clearRect(0, 0, rect.width, rect.height);
-
-  const finalPoint = {
-    left: Number(canvas.dataset.finalLeft) || 70,
-    top: Number(canvas.dataset.finalTop) || 60
-  };
-  const points = LIUREN_HAND_POINTS.map((point) => ({
-    x: rect.width * point.left / 100,
-    y: rect.height * point.top / 100
-  }));
-  const final = {
-    x: rect.width * finalPoint.left / 100,
-    y: rect.height * finalPoint.top / 100
-  };
-  const anchor = { x: rect.width * .305, y: rect.height * .646 };
-  const duration = 6400;
-  const progress = ((time || 0) % duration) / duration;
-  const eased = (value) => value * value * (3 - 2 * value);
-  let target = points[0];
-  let press = 0;
-
-  if (progress < .78) {
-    const step = progress / .78 * points.length;
-    const index = Math.min(points.length - 1, Math.floor(step));
-    const local = step - index;
-    const from = index === 0 ? points[0] : points[index - 1];
-    const to = points[index];
-    const travel = eased(Math.min(local / .58, 1));
-    target = {
-      x: from.x + (to.x - from.x) * travel,
-      y: from.y + (to.y - from.y) * travel
-    };
-    if (local > .56 && local < .88) press = Math.sin((local - .56) / .32 * Math.PI);
-  } else {
-    const local = (progress - .78) / .22;
-    const travel = eased(Math.min(local / .48, 1));
-    const from = points[points.length - 1];
-    target = {
-      x: from.x + (final.x - from.x) * travel,
-      y: from.y + (final.y - from.y) * travel
-    };
-    press = local > .42 ? Math.sin(Math.min((local - .42) / .58, 1) * Math.PI) : 0;
-  }
-
-  const dx = target.x - anchor.x;
-  const dy = target.y - anchor.y;
-  const length = Math.max(42, Math.hypot(dx, dy));
-  const ux = dx / length;
-  const uy = dy / length;
-  const nx = -uy;
-  const ny = ux;
-  const tip = {
-    x: target.x + ux * (4 + press * 5),
-    y: target.y + uy * (4 + press * 5)
-  };
-  const baseOffset = Math.min(44, length * .34);
-  const base = {
-    x: anchor.x + ux * baseOffset,
-    y: anchor.y + uy * baseOffset
-  };
-  const baseWidth = 25 + press * 3;
-  const tipWidth = 25 - press * 2;
-  const curve = Math.min(10, length * .06);
-  const p1 = { x: base.x + nx * baseWidth, y: base.y + ny * baseWidth };
-  const p2 = { x: tip.x + nx * tipWidth, y: tip.y + ny * tipWidth };
-  const p3 = { x: tip.x - nx * tipWidth, y: tip.y - ny * tipWidth };
-  const p4 = { x: base.x - nx * (baseWidth * .86), y: base.y - ny * (baseWidth * .86) };
-  const c1 = { x: anchor.x + ux * (length * .34) + nx * curve, y: anchor.y + uy * (length * .34) + ny * curve };
-  const c2 = { x: anchor.x + ux * (length * .72) + nx * (curve * .55), y: anchor.y + uy * (length * .72) + ny * (curve * .55) };
-  const c3 = { x: anchor.x + ux * (length * .72) - nx * (curve * .55), y: anchor.y + uy * (length * .72) - ny * (curve * .55) };
-  const c4 = { x: anchor.x + ux * (length * .34) - nx * curve, y: anchor.y + uy * (length * .34) - ny * curve };
-
-  ctx.save();
-  ctx.globalAlpha = .26;
-  ctx.translate(anchor.x + ux * 18, anchor.y + uy * 18);
-  ctx.rotate(Math.atan2(uy, ux));
-  ctx.fillStyle = "rgba(211, 160, 75, .62)";
-  ctx.beginPath();
-  ctx.ellipse(0, 0, 30, 17, 0, 0, Math.PI * 2);
-  ctx.fill();
-  ctx.restore();
-
-  ctx.save();
-  ctx.globalAlpha = .98;
-  ctx.shadowColor = "rgba(100, 65, 26, .18)";
-  ctx.shadowBlur = 18;
-  ctx.shadowOffsetY = 8;
-  const fill = ctx.createLinearGradient(base.x, base.y, tip.x, tip.y);
-  fill.addColorStop(0, "rgba(206, 161, 83, .76)");
-  fill.addColorStop(.48, "rgba(246, 214, 156, .94)");
-  fill.addColorStop(1, "rgba(255, 238, 198, .98)");
-  ctx.fillStyle = fill;
-  ctx.strokeStyle = "rgba(128, 85, 34, .38)";
-  ctx.lineWidth = 1.2;
-  ctx.beginPath();
-  ctx.moveTo(p1.x, p1.y);
-  ctx.bezierCurveTo(c1.x, c1.y, c2.x, c2.y, p2.x, p2.y);
-  ctx.quadraticCurveTo(tip.x + ux * 8, tip.y + uy * 8, p3.x, p3.y);
-  ctx.bezierCurveTo(c3.x, c3.y, c4.x, c4.y, p4.x, p4.y);
-  ctx.quadraticCurveTo(base.x - ux * 8, base.y - uy * 8, p1.x, p1.y);
-  ctx.closePath();
-  ctx.fill();
-  ctx.stroke();
-  ctx.restore();
-
-  ctx.save();
-  ctx.globalAlpha = .28 + press * .18;
-  ctx.strokeStyle = "rgba(111, 75, 36, .42)";
-  ctx.lineWidth = 1;
-  [0.42, 0.66].forEach((offset) => {
-    const cx = anchor.x + ux * (length * offset);
-    const cy = anchor.y + uy * (length * offset);
-    ctx.beginPath();
-    ctx.moveTo(cx + nx * 12, cy + ny * 12);
-    ctx.quadraticCurveTo(cx, cy, cx - nx * 12, cy - ny * 12);
-    ctx.stroke();
-  });
-  ctx.restore();
-
-  ctx.save();
-  const nailCenter = { x: tip.x - ux * 19 + nx * 1.5, y: tip.y - uy * 19 + ny * 1.5 };
-  ctx.translate(nailCenter.x, nailCenter.y);
-  ctx.rotate(Math.atan2(uy, ux));
-  ctx.fillStyle = "rgba(255, 246, 225, .86)";
-  ctx.strokeStyle = "rgba(156, 108, 55, .20)";
-  ctx.lineWidth = 1;
-  ctx.beginPath();
-  ctx.ellipse(0, 0, 15, 10, 0, 0, Math.PI * 2);
-  ctx.fill();
-  ctx.stroke();
-  ctx.restore();
-
-  if (press > .02) {
-    ctx.save();
-    ctx.globalAlpha = press;
-    const glow = ctx.createRadialGradient(target.x, target.y, 0, target.x, target.y, 36);
-    glow.addColorStop(0, "rgba(255, 245, 190, .92)");
-    glow.addColorStop(.42, "rgba(225, 168, 55, .36)");
-    glow.addColorStop(1, "rgba(225, 168, 55, 0)");
-    ctx.fillStyle = glow;
-    ctx.beginPath();
-    ctx.arc(target.x, target.y, 36, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.restore();
-  }
-}
-
-function startLiurenThumbAnimations(root = document) {
-  const canvases = root.querySelectorAll?.(".liuren-thumb-canvas") || [];
-  canvases.forEach((canvas) => {
-    if (canvas.__liurenThumbFrame) cancelAnimationFrame(canvas.__liurenThumbFrame);
-    const startedAt = performance.now();
-    const render = (now) => {
-      drawLiurenThumbFrame(canvas, now - startedAt);
-      canvas.__liurenThumbFrame = requestAnimationFrame(render);
-    };
-    canvas.__liurenThumbFrame = requestAnimationFrame(render);
-  });
 }
 
 function renderLiurenResultHtml(result, reveal = true) {
@@ -8341,10 +8156,7 @@ function updateLiurenPreview(options = {}) {
       `;
     }
     if (track) track.innerHTML = renderLiurenTrack(result, reveal);
-    if (path) {
-      path.innerHTML = renderLiurenPath(result, reveal);
-      startLiurenThumbAnimations(path);
-    }
+    if (path) path.innerHTML = renderLiurenPath(result, reveal);
     if (resultWrap) resultWrap.innerHTML = renderLiurenResultHtml(result, reveal);
     if (startText) startText.textContent = reveal ? "重新定念起课" : "默念后起课";
     setLiurenStatus(reveal ? "已按农历月日时起课" : "已取当下时间，先定念再起课", reveal ? "ok" : "");
