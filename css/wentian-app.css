@@ -3759,6 +3759,23 @@ html[data-wentian-language="en"] .liuren-orbit i {
   color: #8f3d30;
 }
 
+.wentian-chart-ai-pdf-status {
+  min-height: 18px;
+  margin: -6px 0 10px;
+  color: #8f8173;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+.wentian-chart-ai-pdf-status.is-ready {
+  color: #8f6421;
+}
+
+.wentian-chart-ai-pdf-status.is-error {
+  color: #a64032;
+}
+
 .wentian-chart-ai-meter {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
@@ -4131,6 +4148,293 @@ html[lang="en"] .wentian-mb-topic-grid button {
   color: #9f3d2e;
   font-size: 13px;
   font-weight: 900;
+}
+
+.wentian-pdf-export-host {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 9999;
+  width: 794px;
+  min-height: 1123px;
+  pointer-events: none;
+}
+
+.wentian-pdf-report {
+  width: 794px;
+  min-height: 1123px;
+  padding: 34px 38px;
+  box-sizing: border-box;
+  background: #fbf7ef;
+  color: #2c211a;
+  font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+}
+
+.wentian-pdf-report *,
+.wentian-pdf-report *::before,
+.wentian-pdf-report *::after {
+  box-sizing: border-box;
+}
+
+.wentian-pdf-head {
+  padding-bottom: 20px;
+  border-bottom: 2px solid #d8c4a2;
+}
+
+.wentian-pdf-head span {
+  display: block;
+  color: #a87928;
+  font-size: 16px;
+  font-weight: 900;
+}
+
+.wentian-pdf-head h1 {
+  margin: 10px 0 8px;
+  color: #201813;
+  font-size: 34px;
+  font-weight: 900;
+  line-height: 1.15;
+}
+
+.wentian-pdf-head p {
+  margin: 0;
+  color: #786b60;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.wentian-pdf-meta {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.wentian-pdf-meta div,
+.wentian-pdf-basic-card,
+.wentian-pdf-text-card {
+  border: 1px solid #eadcc8;
+  border-radius: 12px;
+  background: #fffdf9;
+}
+
+.wentian-pdf-meta div {
+  padding: 12px 14px;
+}
+
+.wentian-pdf-meta b,
+.wentian-pdf-basic-card b,
+.wentian-pdf-text-card strong {
+  display: block;
+  color: #9b6c25;
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.wentian-pdf-meta span {
+  display: block;
+  margin-top: 5px;
+  color: #30251d;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.wentian-pdf-section {
+  margin-top: 24px;
+  break-inside: avoid;
+}
+
+.wentian-pdf-section h2 {
+  margin: 0 0 12px;
+  color: #2c211a;
+  font-size: 22px;
+  font-weight: 900;
+}
+
+.wentian-pdf-basic-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.wentian-pdf-basic-card {
+  min-height: 70px;
+  padding: 12px 14px;
+  break-inside: avoid;
+}
+
+.wentian-pdf-basic-card span {
+  display: block;
+  margin-top: 7px;
+  color: #30251d;
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+.wentian-pdf-chart-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: 132px;
+  border: 2px solid #d2b98b;
+  background: #ead8ba;
+  gap: 1px;
+}
+
+.wentian-pdf-palace,
+.wentian-pdf-center {
+  background: #fffdf9;
+}
+
+.wentian-pdf-palace {
+  display: grid;
+  grid-template-rows: auto auto 1fr auto;
+  gap: 6px;
+  min-width: 0;
+  padding: 10px;
+  break-inside: avoid;
+}
+
+.wentian-pdf-palace:nth-child(odd) {
+  background: #fff7e7;
+}
+
+.wentian-pdf-palace header,
+.wentian-pdf-palace footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.wentian-pdf-palace header strong,
+.wentian-pdf-palace > b,
+.wentian-pdf-palace footer strong {
+  color: #201813;
+  font-size: 13px;
+  font-weight: 900;
+  line-height: 1.2;
+}
+
+.wentian-pdf-palace header span,
+.wentian-pdf-palace footer span {
+  color: #8b7a6a;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.wentian-pdf-palace p {
+  margin: 0;
+  color: #72665a;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.wentian-pdf-center {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 18px;
+  text-align: center;
+}
+
+.wentian-pdf-center h3 {
+  margin: 0 0 8px;
+  color: #201813;
+  font-size: 22px;
+  font-weight: 900;
+}
+
+.wentian-pdf-center p {
+  margin: 0 0 12px;
+  color: #786b60;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.wentian-pdf-center dl {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  text-align: left;
+}
+
+.wentian-pdf-center dl div {
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr);
+  gap: 8px;
+}
+
+.wentian-pdf-center dt {
+  color: #8d7d6d;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.wentian-pdf-center dd {
+  margin: 0;
+  color: #30251d;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.wentian-pdf-chapters {
+  display: grid;
+  gap: 14px;
+}
+
+.wentian-pdf-chapter {
+  padding: 16px;
+  border: 1px solid #e5d4ba;
+  border-radius: 14px;
+  background: #fffdf9;
+  break-inside: avoid;
+}
+
+.wentian-pdf-chapter header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.wentian-pdf-chapter header span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 28px;
+  border-radius: 999px;
+  background: #f3e5ca;
+  color: #9b6c25;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.wentian-pdf-chapter h3 {
+  margin: 0;
+  color: #201813;
+  font-size: 18px;
+  font-weight: 900;
+}
+
+.wentian-pdf-chapter-body {
+  display: grid;
+  gap: 9px;
+}
+
+.wentian-pdf-text-card {
+  padding: 12px 14px;
+  break-inside: avoid;
+}
+
+.wentian-pdf-text-card p {
+  margin: 7px 0 0;
+  white-space: pre-line;
+  color: #5f554d;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.55;
 }
 
 @media (min-width: 881px) {

@@ -991,6 +991,7 @@ const WENTIAN_SUPABASE_URL = "https://jmmlijqeexdbxgpfyhgf.supabase.co";
 const WENTIAN_SUPABASE_KEY = "sb_publishable_Y2W9eDscfJwK1sgSitbmFA_ta5btvaR";
 const WENTIAN_GOOGLE_REDIRECT_BRIDGE = "https://fc842598.github.io/my-webpage/pages/wentian-app.html";
 const WENTIAN_CHART_AI_STORAGE_KEY = "wentian-app-chart-ai-v2";
+const WENTIAN_HTML2PDF_URL = "https://cdn.jsdelivr.net/npm/html2pdf.js@0.10.1/dist/html2pdf.bundle.min.js";
 const WENTIAN_CHART_SPECIAL_MODULES = ["shengong", "hunyin", "jiankang", "caiyun", "shiye"];
 const WENTIAN_CHART_AI_TASKS = [
   { module: "overall", label: "整体批命" },
@@ -1027,6 +1028,7 @@ let wentianAuthSession = null;
 let wentianAuthReadyPromise = null;
 let wentianPendingPaymentAfterLogin = false;
 let wentianInviteReadyPromise = null;
+let wentianHtml2PdfPromise = null;
 const wentianAuthState = {
   mode: "login",
   error: "",
@@ -2554,25 +2556,320 @@ function generateWentianChartCurve() {
   scrollToWentianMobileChapter(2);
 }
 
-function openWentianMingbookOnepage() {
-  const saved = getWentianDisplayChartState() || getWentianSavedChart() || getWentianFallbackChartState();
+function loadWentianHtml2Pdf() {
+  if (window.html2pdf) return Promise.resolve(window.html2pdf);
+  if (wentianHtml2PdfPromise) return wentianHtml2PdfPromise;
+  wentianHtml2PdfPromise = new Promise((resolve, reject) => {
+    const script = document.createElement("script");
+    script.src = WENTIAN_HTML2PDF_URL;
+    script.async = true;
+    script.onload = () => (window.html2pdf ? resolve(window.html2pdf) : reject(new Error("PDF library unavailable")));
+    script.onerror = () => reject(new Error("PDF library failed to load"));
+    document.head.appendChild(script);
+  });
+  return wentianHtml2PdfPromise;
+}
+
+function safeWentianPdfFileName(value) {
+  return String(value || "个人命盘")
+    .replace(/[\\/:*?"<>|]+/g, "")
+    .replace(/\s+/g, "")
+    .slice(0, 48) || "个人命盘";
+}
+
+function formatWentianPdfNow() {
+  const now = new Date();
+  const pad = (value) => String(value).padStart(2, "0");
+  return `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}`;
+}
+
+function getWentianPdfBirthDate(saved) {
   const form = saved?.form || {};
   const chartData = saved?.chartData || {};
-  const rawDatetime = form.datetime || chartData.birthDate || chartData.solarTime || "";
-  const date = new Date(String(rawDatetime).replace(" ", "T"));
-  const fallbackDate = new Date();
-  const safeDate = Number.isNaN(date.getTime()) ? fallbackDate : date;
-  const params = new URLSearchParams({
-    name: form.name || "命主",
-    gender: form.gender || chartData.gender || "male",
-    year: String(safeDate.getFullYear()),
-    month: String(safeDate.getMonth() + 1),
-    day: String(safeDate.getDate()),
-    hour: String(safeDate.getHours()),
-    minute: String(safeDate.getMinutes()),
-    city: form.city || chartData.city || "北京市 东城区",
-  });
-  window.open(`./mingbook-onepage.html?${params.toString()}`, "_blank");
+  const raw = form.datetime || chartData.birthDate || chartData.solarTime || saved?.chart?.solarDate || "";
+  const date = new Date(String(raw).replace(" ", "T"));
+  return Number.isNaN(date.getTime()) ? null : date;
+}
+
+function formatWentianPdfDateKey(saved) {
+  const date = getWentianPdfBirthDate(saved);
+  if (!date) return "chart";
+  const pad = (value) => String(value).padStart(2, "0");
+  return `${date.getFullYear()}${pad(date.getMonth() + 1)}${pad(date.getDate())}`;
+}
+
+function formatWentianPdfBirthText(saved) {
+  const date = getWentianPdfBirthDate(saved);
+  if (!date) return String(saved?.chartData?.birthDate || saved?.chartData?.solarTime || saved?.chart?.solarDate || "未填");
+  const pad = (value) => String(value).padStart(2, "0");
+  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())} ${pad(date.getHours())}:${pad(date.getMinutes())}`;
+}
+
+function getWentianPdfPillars(saved) {
+  const chart = saved?.chart || {};
+  const sizhu = saved?.chartData?.sizhu || extractWentianPillars(chart);
+  const pillar = (key) => sizhu?.[key] || `${sizhu?.[`${key}Stem`] || ""}${sizhu?.[`${key}Branch`] || ""}`;
+  return ["year", "month", "day", "hour"].map(pillar).filter(Boolean).join(" ");
+}
+
+function getWentianPdfShichen(saved) {
+  const chartData = saved?.chartData || {};
+  const birthDate = getWentianPdfBirthDate(saved) || new Date();
+  const timeIndex = Number.isFinite(Number(chartData.timeIndex))
+    ? Number(chartData.timeIndex)
+    : getWentianTimeIndex(birthDate.getHours(), birthDate.getMinutes());
+  return `${WENTIAN_SHICHEN[timeIndex] || ""}时`;
+}
+
+function getWentianPdfStarText(star) {
+  if (!star) return "";
+  if (typeof star === "string") return star;
+  return `${star.name || ""}${star.brightness || ""}`.trim();
+}
+
+function getWentianPdfPalaceStars(palace, key, limit) {
+  return (palace?.[key] || [])
+    .slice(0, limit)
+    .map(getWentianPdfStarText)
+    .filter(Boolean)
+    .join("、");
+}
+
+function getWentianPdfMutagens(saved) {
+  const chartData = saved?.chartData || {};
+  const fromPayload = (chartData.yearMutagens || [])
+    .map((item) => `${item.star || ""}${item.type || ""}`.trim())
+    .filter(Boolean);
+  if (fromPayload.length) return fromPayload.join("、");
+  const fromChart = (saved?.chart?.palaces || []).flatMap((palace) => [
+    ...(palace.majorStars || []),
+    ...(palace.minorStars || []),
+    ...(palace.adjectiveStars || palace.adjStars || []),
+  ].filter((star) => star?.mutagen).map((star) => `${star.name || ""}${star.mutagen || ""}`.trim()));
+  return fromChart.filter(Boolean).join("、") || "未见四化";
+}
+
+function buildWentianPdfBasicCards(saved, generatedAt) {
+  const chart = saved?.chart || {};
+  const form = saved?.form || {};
+  const chartData = saved?.chartData || {};
+  const gender = (form.gender || chartData.gender) === "female" ? "女命" : "男命";
+  const rows = [
+    ["命主", form.name || "命主"],
+    ["性别", gender],
+    ["出生资料", formatWentianPdfBirthText(saved)],
+    ["出生地点", form.city || chartData.city || "未填"],
+    ["农历", chart.lunarDate || chart.chineseDate || "未填"],
+    ["排盘时辰", getWentianPdfShichen(saved)],
+    ["节气四柱", getWentianPdfPillars(saved) || "未排入"],
+    ["五行局", chart.fiveElementsClass || chartData.fiveElementsClass || "未排入"],
+    ["命宫身宫", `${chart.earthlyBranchOfSoulPalace || "未定"} · ${chart.earthlyBranchOfBodyPalace || "未定"}`],
+    ["四化", getWentianPdfMutagens(saved)],
+    ["生成时间", generatedAt],
+  ];
+  return rows.map(([label, value]) => `
+    <div class="wentian-pdf-basic-card">
+      <b>${escapeHtml(label)}</b>
+      <span>${escapeHtml(value)}</span>
+    </div>
+  `).join("");
+}
+
+function buildWentianPdfChartGrid(saved) {
+  const chart = saved?.chart || {};
+  const chartData = saved?.chartData || {};
+  const form = saved?.form || {};
+  const palaces = new Map((chart.palaces || []).map((palace) => [palace.earthlyBranch || palace.branch, palace]));
+  const cells = Object.entries(WENTIAN_BRANCH_POSITIONS).map(([branch, [col, row]]) => {
+    const palace = palaces.get(branch) || {};
+    const major = getWentianPdfPalaceStars(palace, "majorStars", 3) || "主星未显";
+    const minor = [
+      getWentianPdfPalaceStars(palace, "minorStars", 4),
+      getWentianPdfPalaceStars(palace, "adjectiveStars", 3),
+      getWentianPdfPalaceStars(palace, "adjStars", 3),
+    ].filter(Boolean).join("、");
+    const tags = [
+      palace.name || branch,
+      palace.isBodyPalace ? "身宫" : "",
+    ].filter(Boolean);
+    return `
+      <section class="wentian-pdf-palace" style="grid-column:${col + 1};grid-row:${row + 1};">
+        <header>
+          <strong>${escapeHtml(tags.join(" · "))}</strong>
+          <span>${escapeHtml(`${palace.heavenlyStem || palace.stem || ""}${branch}`)}</span>
+        </header>
+        <b>${escapeHtml(major)}</b>
+        <p>${escapeHtml(minor || "辅曜待补")}</p>
+        <footer><span>${escapeHtml(getWentianClassicRange(palace) || "未定")}</span><strong>${escapeHtml(palace.name || branch)}</strong></footer>
+      </section>
+    `;
+  }).join("");
+  return `
+    <div class="wentian-pdf-chart-grid">
+      ${cells}
+      <section class="wentian-pdf-center" style="grid-column:2 / 4;grid-row:2 / 4;">
+        <h3>${escapeHtml(form.name || "命主")}</h3>
+        <p>${escapeHtml(formatWentianPdfBirthText(saved))}</p>
+        <dl>
+          <div><dt>农历</dt><dd>${escapeHtml(chart.lunarDate || chart.chineseDate || "未填")}</dd></div>
+          <div><dt>时辰</dt><dd>${escapeHtml(getWentianPdfShichen(saved))}</dd></div>
+          <div><dt>四柱</dt><dd>${escapeHtml(getWentianPdfPillars(saved) || "未排入")}</dd></div>
+          <div><dt>四化</dt><dd>${escapeHtml(getWentianPdfMutagens(saved))}</dd></div>
+          <div><dt>真太阳时</dt><dd>${escapeHtml(chartData.solarTime || chartData.birthDate || "未填")}</dd></div>
+        </dl>
+      </section>
+    </div>
+  `;
+}
+
+function buildWentianPdfTextCards(sections, fallbackTitle, fallbackText, limit = 5) {
+  const list = (sections || []).filter((section) => section.title || section.content).slice(0, limit);
+  const safeList = list.length ? list : [{ title: fallbackTitle, content: fallbackText }];
+  return safeList.map((section) => `
+    <section class="wentian-pdf-text-card">
+      <strong>${escapeHtml(section.title || fallbackTitle)}</strong>
+      <p>${escapeHtml(cleanWentianAiText(section.content || fallbackText || "等待生成。"))}</p>
+    </section>
+  `).join("");
+}
+
+function buildWentianPdfChapterBody(chapter) {
+  const results = wentianChartAiState.results || {};
+  if (chapter.action === "specials") {
+    const labels = { shengong: "身宫", hunyin: "婚姻", jiankang: "健康", caiyun: "财运", shiye: "事业" };
+    const sections = WENTIAN_CHART_SPECIAL_MODULES.map((moduleKey) => ({
+      title: `${labels[moduleKey] || moduleKey}详解`,
+      content: getWentianAiSummary(results[moduleKey], 260) || "等待单独批命生成。",
+    }));
+    return buildWentianPdfTextCards(sections, "五宫详解", chapter.placeholder, 5);
+  }
+  if (chapter.action === "curve") {
+    return buildWentianPdfTextCards([{
+      title: "人生曲线",
+      content: wentianChartAiState.curveGenerated
+        ? "已生成人生曲线，用于查看关键年份、高低点与阶段节奏。"
+        : "等待生成人生曲线，用于查看关键年份、高低点与阶段节奏。",
+    }], "人生曲线", chapter.placeholder, 1);
+  }
+  if (chapter.action === "advice") {
+    const sections = getWentianAdviceRows().map(([title, content]) => ({ title, content }));
+    return buildWentianPdfTextCards(sections, "行动建议", chapter.placeholder, 3);
+  }
+  const result = chapter.module ? results[chapter.module] : null;
+  return buildWentianPdfTextCards(getWentianAiSections(result), chapter.title, chapter.placeholder, 5);
+}
+
+function buildWentianPdfChapters() {
+  syncWentianChartAiStateFromStorage();
+  return getWentianChartAiChapters().map((chapter, index) => `
+    <article class="wentian-pdf-chapter">
+      <header>
+        <span>卷${index + 1}</span>
+        <h3>${escapeHtml(chapter.title)}</h3>
+      </header>
+      <div class="wentian-pdf-chapter-body">
+        ${buildWentianPdfChapterBody(chapter)}
+      </div>
+    </article>
+  `).join("");
+}
+
+function buildWentianMobilePdfReportElement(saved) {
+  const generatedAt = formatWentianPdfNow();
+  const form = saved?.form || {};
+  const gender = (form.gender || saved?.chartData?.gender) === "female" ? "女命" : "男命";
+  const report = document.createElement("article");
+  report.className = "wentian-pdf-report";
+  report.innerHTML = `
+    <header class="wentian-pdf-head">
+      <span>问天AI · 紫微命盘</span>
+      <h1>${escapeHtml(form.name || "命主")}个人命盘解读</h1>
+      <p>${escapeHtml(gender)} · ${escapeHtml(formatWentianPdfBirthText(saved))} · ${escapeHtml(form.city || saved?.chartData?.city || "未填地点")}</p>
+      <div class="wentian-pdf-meta">
+        <div><b>命盘</b><span>${escapeHtml(saved?.chart?.fiveElementsClass || saved?.chartData?.fiveElementsClass || "紫微命盘")}</span></div>
+        <div><b>模块</b><span>${escapeHtml(`${getWentianGeneratedModuleCount()}/${WENTIAN_CHART_AI_TASKS.length}`)}</span></div>
+        <div><b>导出</b><span>${escapeHtml(generatedAt)}</span></div>
+      </div>
+    </header>
+    <section class="wentian-pdf-section">
+      <h2>基础资料</h2>
+      <div class="wentian-pdf-basic-grid">${buildWentianPdfBasicCards(saved, generatedAt)}</div>
+    </section>
+    <section class="wentian-pdf-section">
+      <h2>命盘</h2>
+      ${buildWentianPdfChartGrid(saved)}
+    </section>
+    <section class="wentian-pdf-section">
+      <h2>命盘解读</h2>
+      <div class="wentian-pdf-chapters">${buildWentianPdfChapters()}</div>
+    </section>
+  `;
+  return report;
+}
+
+function setWentianMobilePdfStatus(message = "", mode = "") {
+  const status = view.querySelector("[data-wentian-pdf-status]");
+  if (!status) return;
+  status.textContent = message ? translateWentianText(message) : "";
+  status.classList.toggle("is-ready", mode === "ready");
+  status.classList.toggle("is-error", mode === "error");
+}
+
+async function downloadWentianMingbookPdf() {
+  const saved = getWentianDisplayChartState() || getWentianSavedChart() || getWentianFallbackChartState();
+  const btn = view.querySelector('[data-action="wentian-open-mingbook-onepage"]');
+  const originalText = btn?.textContent || translateWentianText("下载PDF");
+  if (btn) {
+    btn.disabled = true;
+    btn.textContent = translateWentianText("正在打包PDF…");
+  }
+  setWentianMobilePdfStatus("正在打包PDF…", "ready");
+  const host = document.createElement("div");
+  host.className = "wentian-pdf-export-host";
+  document.body.classList.add("is-wentian-pdf-exporting");
+  try {
+    const report = buildWentianMobilePdfReportElement(saved);
+    host.appendChild(report);
+    document.body.appendChild(host);
+    await new Promise((resolve) => window.requestAnimationFrame(resolve));
+    const html2pdf = await loadWentianHtml2Pdf();
+    const filename = `${safeWentianPdfFileName(saved?.form?.name || "个人命盘")}-${formatWentianPdfDateKey(saved)}-紫微命盘解读.pdf`;
+    const pdfWidth = 794;
+    const pdfPageHeight = 1123;
+    const rawPdfHeight = Math.ceil(report.scrollHeight || report.getBoundingClientRect().height || pdfPageHeight);
+    const pdfHeight = Math.max(pdfPageHeight, Math.ceil(rawPdfHeight / pdfPageHeight) * pdfPageHeight);
+    await html2pdf().set({
+      filename,
+      margin: [0, 0, 0, 0],
+      image: { type: "jpeg", quality: 0.96 },
+      html2canvas: {
+        scale: 2,
+        useCORS: true,
+        backgroundColor: "#fbf7ef",
+        width: pdfWidth,
+        height: pdfHeight,
+        windowWidth: pdfWidth,
+        windowHeight: pdfHeight,
+        x: 0,
+        y: 0,
+        scrollX: 0,
+        scrollY: 0,
+      },
+      jsPDF: { unit: "px", format: [pdfWidth, pdfPageHeight], orientation: "portrait" },
+      pagebreak: { mode: ["css", "legacy"], avoid: [".wentian-pdf-basic-card", ".wentian-pdf-palace", ".wentian-pdf-text-card"] },
+    }).from(report).save();
+    setWentianMobilePdfStatus("PDF已开始下载。", "ready");
+  } catch (error) {
+    console.error(error);
+    setWentianMobilePdfStatus("PDF下载失败，请检查网络后重试。", "error");
+  } finally {
+    document.body.classList.remove("is-wentian-pdf-exporting");
+    host.remove();
+    if (btn) {
+      btn.disabled = false;
+      btn.textContent = originalText;
+    }
+  }
 }
 
 function getWentianArchiveDisplay(archive) {
@@ -3364,9 +3661,13 @@ const WENTIAN_I18N_EN_EXTRA = {
   "紫微命书 · AI总批命": "Zi Wei Book · AI Full Reading",
   "✦ 命盘 · AI解读": "Chart · AI Reading",
   "对齐命书长页：总批命、7个模块、五卷报告、人生曲线、五宫详解。": "Matches the long report: full reading, 7 modules, 5 volumes, life curve, and palace details.",
+  "已接入命书长页同款模块，可单独重批、追问或下载 PDF。": "Long-report modules are connected. Re-run, follow up, or download PDF.",
   "总批命": "Full Reading",
   "追问": "Follow-up",
-  "长页/PDF": "Long Page/PDF",
+  "下载PDF": "Download PDF",
+  "正在打包PDF…": "Packing PDF...",
+  "PDF已开始下载。": "PDF download started.",
+  "PDF下载失败，请检查网络后重试。": "PDF failed. Check network and retry.",
   "整体": "Overall",
   "大限流年": "Major Luck",
   "婚姻": "Marriage",
@@ -8456,7 +8757,7 @@ function sourceZiweiAiDecodePanel() {
     : wentianChartAiState.error
       ? wentianChartAiState.error
       : hasResults
-        ? "已接入命书长页同款模块，可单独重批、追问或打开长页打包 PDF。"
+        ? "已接入命书长页同款模块，可单独重批、追问或下载 PDF。"
         : "对齐命书长页：总批命、7个模块、五卷报告、人生曲线、五宫详解。";
 
   return `
@@ -8469,8 +8770,9 @@ function sourceZiweiAiDecodePanel() {
       <div class="wentian-chart-ai-actions">
         <button type="button" class="wentian-chart-ai-primary" data-action="wentian-chart-ai-decode" ${isRunning ? "disabled" : ""}>${escapeHtml(buttonText)}</button>
         <button type="button" class="wentian-chart-ai-secondary" data-route="screen-4">追问</button>
-        <button type="button" class="wentian-chart-ai-secondary" data-action="wentian-open-mingbook-onepage">长页/PDF</button>
+        <button type="button" class="wentian-chart-ai-secondary" data-action="wentian-open-mingbook-onepage">下载PDF</button>
       </div>
+      <p class="wentian-chart-ai-pdf-status" data-wentian-pdf-status></p>
       <div class="wentian-chart-ai-meter" aria-label="AI生成进度">
         ${WENTIAN_CHART_AI_TASKS.map((task) => `<i class="${wentianChartAiState.results?.[task.module] ? "is-done" : (wentianChartAiState.runningModule === task.module ? "is-running" : "")}"></i>`).join("")}
       </div>
@@ -9353,7 +9655,7 @@ document.addEventListener("click", (event) => {
     return;
   }
   if (action === "wentian-open-mingbook-onepage") {
-    openWentianMingbookOnepage();
+    downloadWentianMingbookPdf();
     return;
   }
   if (action === "wentian-chart-gender") {
