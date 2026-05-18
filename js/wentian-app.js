@@ -3338,6 +3338,57 @@ const WENTIAN_I18N_EN_TERM_MAP = {
   "厨房": "Kitchen", "厕所": "Bathroom", "客厅": "Living Room", "厨": "Kit.", "厕": "Bath", "厅": "Living", "长": "Eldest", "父": "Father", "母": "Mother"
 };
 
+const WENTIAN_I18N_EN_ZIWEI_TERMS = {
+  "禄": "Lu", "权": "Quan", "科": "Ke", "忌": "Ji",
+  "化禄": "Hua Lu", "化权": "Hua Quan", "化科": "Hua Ke", "化忌": "Hua Ji",
+  "阳男": "Yang Male", "阴男": "Yin Male", "阳女": "Yang Female", "阴女": "Yin Female", "早子时": "Early Zi Hour", "晚子时": "Late Zi Hour",
+  "天喜": "Tian Xi", "阴煞": "Yin Sha", "天贵": "Tian Gui", "凤阁": "Feng Ge", "蜚廉": "Fei Lian", "飞廉": "Fei Lian", "年解": "Nian Jie",
+  "天德": "Tian De", "截路": "Jie Lu", "寡宿": "Gua Su", "三台": "San Tai", "台辅": "Tai Fu", "天巫": "Tian Wu", "天福": "Tian Fu",
+  "天伤": "Tian Shang", "天使": "Tian Shi", "天空": "Tian Kong",
+  "天厨": "Tian Chu", "小耗": "Xiao Hao", "华盖": "Hua Gai", "红鸾": "Hong Luan", "解神": "Jie Shen", "天寿": "Tian Shou",
+  "八座": "Ba Zuo", "天官": "Tian Guan", "天刑": "Tian Xing", "天才": "Tian Cai", "天月": "Tian Yue", "恩光": "En Guang",
+  "龙池": "Long Chi", "旬空": "Xun Kong", "天哭": "Tian Ku", "咸池": "Xian Chi", "月德": "Yue De", "天姚": "Tian Yao",
+  "封诰": "Feng Gao", "破碎": "Po Sui", "天虚": "Tian Xu", "孤辰": "Gu Chen", "劫煞": "Jie Sha", "灾煞": "Zai Sha",
+  "天煞": "Tian Sha", "指背": "Zhi Bei", "月煞": "Yue Sha", "亡神": "Wang Shen", "攀鞍": "Pan An", "岁驿": "Sui Yi",
+  "息神": "Xi Shen", "将星": "Jiang Xing", "长生": "Chang Sheng", "沐浴": "Mu Yu", "冠带": "Guan Dai", "临官": "Lin Guan",
+  "帝旺": "Di Wang", "衰": "Shuai", "病": "Bing", "死": "Si", "墓": "Mu", "绝": "Jue", "胎": "Tai", "养": "Yang",
+  "博士": "Bo Shi", "力士": "Li Shi", "青龙": "Qing Long", "将军": "Jiang Jun", "奏书": "Zou Shu", "喜神": "Xi Shen",
+  "病符": "Bing Fu", "大耗": "Da Hao", "伏兵": "Fu Bing", "官府": "Guan Fu", "岁建": "Sui Jian", "晦气": "Hui Qi",
+  "丧门": "Sang Men", "贯索": "Guan Suo", "官符": "Guan Fu", "龙德": "Long De", "白虎": "Bai Hu", "吊客": "Diao Ke",
+  "鼠": "Rat", "牛": "Ox", "虎": "Tiger", "兔": "Rabbit", "龙": "Dragon", "蛇": "Snake", "马": "Horse", "羊": "Goat",
+  "猴": "Monkey", "鸡": "Rooster", "狗": "Dog", "猪": "Pig",
+  "白羊座": "Aries", "金牛座": "Taurus", "双子座": "Gemini", "巨蟹座": "Cancer", "狮子座": "Leo", "处女座": "Virgo",
+  "天秤座": "Libra", "天蝎座": "Scorpio", "射手座": "Sagittarius", "摩羯座": "Capricorn", "水瓶座": "Aquarius", "双鱼座": "Pisces"
+};
+
+const WENTIAN_I18N_EN_BRIGHTNESS = {
+  "庙": "Temple", "旺": "Prosp.", "得": "Gain", "利": "Benef.", "平": "Neutral", "不": "Dim", "陷": "Fallen"
+};
+
+const WENTIAN_I18N_EN_BRIGHTNESS_PINYIN = {
+  "庙": "Miao", "旺": "Wang", "得": "De", "利": "Li", "平": "Ping", "不": "Bu", "陷": "Xian"
+};
+
+const WENTIAN_I18N_EN_ELEMENT_MAP = {
+  "木": "Wood", "火": "Fire", "土": "Earth", "金": "Metal", "水": "Water"
+};
+
+const WENTIAN_I18N_EN_BUREAU_MAP = {
+  "二": "Second", "三": "Third", "四": "Fourth", "五": "Fifth", "六": "Sixth"
+};
+
+const WENTIAN_I18N_EN_LUNAR_MONTH_MAP = {
+  "正月": "First Month", "二月": "Second Month", "三月": "Third Month", "四月": "Fourth Month", "五月": "Fifth Month", "六月": "Sixth Month",
+  "七月": "Seventh Month", "八月": "Eighth Month", "九月": "Ninth Month", "十月": "Tenth Month", "十一月": "Eleventh Month", "十二月": "Twelfth Month",
+  "冬月": "Eleventh Month", "腊月": "Twelfth Month"
+};
+
+const WENTIAN_I18N_EN_LUNAR_DAY_MAP = {
+  "初一": "Day 1", "初二": "Day 2", "初三": "Day 3", "初四": "Day 4", "初五": "Day 5", "初六": "Day 6", "初七": "Day 7", "初八": "Day 8", "初九": "Day 9", "初十": "Day 10",
+  "十一": "Day 11", "十二": "Day 12", "十三": "Day 13", "十四": "Day 14", "十五": "Day 15", "十六": "Day 16", "十七": "Day 17", "十八": "Day 18", "十九": "Day 19", "二十": "Day 20",
+  "廿一": "Day 21", "廿二": "Day 22", "廿三": "Day 23", "廿四": "Day 24", "廿五": "Day 25", "廿六": "Day 26", "廿七": "Day 27", "廿八": "Day 28", "廿九": "Day 29", "三十": "Day 30"
+};
+
 const WENTIAN_I18N_HAS_HAN_RE = /\p{Script=Han}/u;
 
 function translateWentianText(text, code = getWentianLanguageCode(), element = null) {
@@ -3351,8 +3402,18 @@ function translateWentianText(text, code = getWentianLanguageCode(), element = n
     if (source.includes("\n") || source.includes("\\n")) {
       return source.split(/(?:\\n|\n)+/).map((line) => translateWentianText(line, code, element)).join("\n");
     }
-    const exact = WENTIAN_I18N_EN_EXTRA[source] || WENTIAN_I18N_EN_TERM_MAP[source];
+    const exact = WENTIAN_I18N_EN_EXTRA[source] || WENTIAN_I18N_EN_ZIWEI_TERMS[source] || WENTIAN_I18N_EN_TERM_MAP[source];
     if (exact) return exact;
+    if (WENTIAN_I18N_EN_BRIGHTNESS[source]) return WENTIAN_I18N_EN_BRIGHTNESS[source];
+    for (const [suffix, brightness] of Object.entries(WENTIAN_I18N_EN_BRIGHTNESS)) {
+      if (source.length > suffix.length && source.endsWith(suffix)) {
+        const base = source.slice(0, -suffix.length);
+        const translatedBase = WENTIAN_I18N_EN_ZIWEI_TERMS[base] || WENTIAN_I18N_EN_TERM_MAP[base];
+        if (translatedBase) return `${translatedBase.replace(/\s+/g, "")} ${WENTIAN_I18N_EN_BRIGHTNESS_PINYIN[suffix] || brightness}`;
+      }
+    }
+    const palaceAiTitle = source.match(/^✦\s*(.+?)\s*·\s*AI解析$/);
+    if (palaceAiTitle) return `✦ ${translateWentianText(palaceAiTitle[1], "en")} · AI Reading`;
     const dropdownName = source.match(/^(.+)⌄$/);
     if (dropdownName) return `${translateWentianText(dropdownName[1], "en")}⌄`;
     const pairNames = source.match(/^(.+?)\s*×\s*(.+)$/);
@@ -3367,12 +3428,25 @@ function translateWentianText(text, code = getWentianLanguageCode(), element = n
     if (hepanArchiveCount) return `${hepanArchiveCount[1]} files · scroll to choose`;
     const hepanMeta = source.match(/^(男|女)\s*·\s*四柱八字$/);
     if (hepanMeta) return `${hepanMeta[1] === "男" ? "Male" : "Female"} · Four Pillars`;
+    const lifeBodyNote = source.match(/^命宫\s*([子丑寅卯辰巳午未申酉戌亥—-]+)\s*·\s*身宫\s*([子丑寅卯辰巳午未申酉戌亥—-]+)\s*·\s*已接入$/);
+    if (lifeBodyNote) return `Life Palace ${translateWentianText(lifeBodyNote[1], "en")} · Body Palace ${translateWentianText(lifeBodyNote[2], "en")} · Connected`;
+    const palaceBranch = source.match(/^(命宫|身宫)\s*([子丑寅卯辰巳午未申酉戌亥])$/);
+    if (palaceBranch) return `${translateWentianText(palaceBranch[1], "en")} ${translateWentianText(palaceBranch[2], "en")}`;
+    const fiveElementBureau = source.match(/^([木火土金水])([二三四五六])局$/);
+    if (fiveElementBureau) return `${WENTIAN_I18N_EN_ELEMENT_MAP[fiveElementBureau[1]]} ${WENTIAN_I18N_EN_BUREAU_MAP[fiveElementBureau[2]]} Bureau`;
     const month = source.match(/^(\d{1,2})月$/);
     if (month) return `Month ${month[1]}`;
-    const lunarMonthMap = { "正月": "First Month", "二月": "Second Month", "三月": "Third Month", "四月": "Fourth Month", "五月": "Fifth Month", "六月": "Sixth Month", "七月": "Seventh Month", "八月": "Eighth Month", "九月": "Ninth Month", "十月": "Tenth Month", "十一月": "Eleventh Month", "十二月": "Twelfth Month" };
+    const lunarMonthMap = WENTIAN_I18N_EN_LUNAR_MONTH_MAP;
     if (lunarMonthMap[source]) return lunarMonthMap[source];
     const lunarDate = source.match(/^(\d{4})年(.+?)(\d{1,2})日$/);
     if (lunarDate && lunarMonthMap[lunarDate[2]]) return `Lunar ${lunarDate[1]} ${lunarMonthMap[lunarDate[2]]} Day ${lunarDate[3]}`;
+    const chineseLunarDate = source.match(/^([〇零一二三四五六七八九]{4})年(闰)?(.+月)(.+)$/);
+    if (chineseLunarDate && lunarMonthMap[chineseLunarDate[3]] && WENTIAN_I18N_EN_LUNAR_DAY_MAP[chineseLunarDate[4]]) {
+      const digitMap = { "〇": "0", "零": "0", "一": "1", "二": "2", "三": "3", "四": "4", "五": "5", "六": "6", "七": "7", "八": "8", "九": "9" };
+      const year = chineseLunarDate[1].split("").map((char) => digitMap[char] || char).join("");
+      const leap = chineseLunarDate[2] ? "Leap " : "";
+      return `Lunar ${year} ${leap}${lunarMonthMap[chineseLunarDate[3]]} ${WENTIAN_I18N_EN_LUNAR_DAY_MAP[chineseLunarDate[4]]}`;
+    }
     const day = source.match(/^(\d{1,2})日$/);
     if (day) return `Day ${day[1]}`;
     const hour = source.match(/^(\d{2})时$/);
@@ -3412,17 +3486,15 @@ function translateWentianText(text, code = getWentianLanguageCode(), element = n
     }
     const elementPairNote = source.match(/^([木火土金水])([木火土金水])(同频，价值观接近|节奏不同，适合分工互补)$/);
     if (elementPairNote) {
-      const elements = { "木": "Wood", "火": "Fire", "土": "Earth", "金": "Metal", "水": "Water" };
       const note = elementPairNote[3] === "同频，价值观接近"
         ? "aligned frequency, close values"
         : "different rhythms, good for complementary roles";
-      return `${elements[elementPairNote[1]]} ${elements[elementPairNote[2]]}: ${note}`;
+      return `${WENTIAN_I18N_EN_ELEMENT_MAP[elementPairNote[1]]} ${WENTIAN_I18N_EN_ELEMENT_MAP[elementPairNote[2]]}: ${note}`;
     }
     const elementGenerateNote = source.match(/^([木火土金水])生([木火土金水])，(.+)$/);
     if (elementGenerateNote) {
-      const elements = { "木": "Wood", "火": "Fire", "土": "Earth", "金": "Metal", "水": "Water" };
       const note = elementGenerateNote[3] === "一方能带动另一方" ? "one side can motivate the other" : "mutual support is clear";
-      return `${elements[elementGenerateNote[1]]} generates ${elements[elementGenerateNote[2]]}: ${note}`;
+      return `${WENTIAN_I18N_EN_ELEMENT_MAP[elementGenerateNote[1]]} generates ${WENTIAN_I18N_EN_ELEMENT_MAP[elementGenerateNote[2]]}: ${note}`;
     }
     const solarTime = source.match(/^公历 (.+) · 北京时间 (.+)$/);
     if (solarTime) return `Solar ${solarTime[1]} · Beijing time ${solarTime[2]}`;
@@ -7571,7 +7643,7 @@ function highlightWentianClassicChart(branch, palaceName = "") {
     }
   });
   const title = view.querySelector('[data-node-id="source-27-ai-title"]');
-  if (title) title.textContent = `✦ ${palaceName || branch} · AI解析`;
+  if (title) title.textContent = translateWentianText(`✦ ${palaceName || branch} · AI解析`);
 }
 
 function getWentianFallbackChartState() {
