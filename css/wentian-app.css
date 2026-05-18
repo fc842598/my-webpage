@@ -2933,6 +2933,15 @@ html[data-wentian-language="en"] .liuren-orbit i {
   --liuren-final-top: 60%;
 }
 
+.liuren-thumb-canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 8;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
 .liuren-count-motion::before {
   content: "";
   position: absolute;
@@ -2962,55 +2971,6 @@ html[data-wentian-language="en"] .liuren-orbit i {
   mix-blend-mode: multiply;
   opacity: 0;
   animation: liurenPressTrace 6.4s ease-in-out infinite;
-}
-
-.liuren-moving-thumb {
-  z-index: 8;
-  left: 38.5%;
-  top: 54.8%;
-  width: 38px;
-  height: 72px;
-  border: 1px solid rgba(157, 116, 57, .30);
-  border-radius: 21px 21px 23px 23px / 23px 23px 36px 36px;
-  background:
-    radial-gradient(ellipse at 48% 14%, rgba(255, 252, 238, .98) 0 16%, rgba(242, 220, 181, .96) 17% 42%, rgba(211, 180, 126, .92) 76%, rgba(189, 151, 91, .86) 100%),
-    linear-gradient(90deg, rgba(255, 255, 255, .42), transparent 38%, rgba(129, 84, 39, .16));
-  box-shadow:
-    inset 6px 0 13px rgba(255, 255, 255, .34),
-    inset -6px -6px 13px rgba(122, 84, 42, .18),
-    0 8px 16px rgba(92, 62, 31, .18);
-  opacity: .93;
-  filter: drop-shadow(0 0 12px rgba(225, 178, 82, .16));
-  transform-origin: 50% 12%;
-  animation: liurenThumbCount 6.4s cubic-bezier(.34, 0, .2, 1) infinite;
-}
-
-.liuren-moving-thumb::before {
-  content: "";
-  position: absolute;
-  left: 8px;
-  top: 7px;
-  width: 20px;
-  height: 17px;
-  border: 1px solid rgba(151, 109, 61, .20);
-  border-radius: 15px 15px 12px 12px / 13px 13px 9px 9px;
-  background: linear-gradient(180deg, rgba(255, 250, 235, .94), rgba(235, 203, 169, .72));
-  box-shadow: inset 0 -3px 6px rgba(137, 94, 49, .12);
-}
-
-.liuren-moving-thumb::after {
-  content: "";
-  position: absolute;
-  left: 7px;
-  right: 7px;
-  top: 32px;
-  height: 25px;
-  border-top: 1px solid rgba(137, 94, 49, .18);
-  border-bottom: 1px solid rgba(137, 94, 49, .14);
-  background:
-    linear-gradient(180deg, transparent 0 42%, rgba(137, 94, 49, .12) 43% 46%, transparent 47% 100%),
-    linear-gradient(90deg, transparent 0 28%, rgba(137, 94, 49, .08) 29% 31%, transparent 32% 100%);
-  border-radius: 50%;
 }
 
 .liuren-finger-pulse {
@@ -3083,93 +3043,6 @@ html[data-wentian-language="en"] .liuren-orbit i {
   width: 1px;
   height: 1px;
   overflow: hidden;
-}
-
-@keyframes liurenThumbCount {
-  0%,
-  8% {
-    left: 38.5%;
-    top: 54.8%;
-    transform: translate(-50%, -16%) rotate(-24deg) scale(1);
-  }
-
-  10% {
-    left: 38.5%;
-    top: 54.8%;
-    transform: translate(-50%, -10%) rotate(-26deg) scale(.92, .90);
-  }
-
-  16%,
-  20% {
-    left: 38.5%;
-    top: 38%;
-    transform: translate(-50%, -16%) rotate(-15deg) scale(1);
-  }
-
-  22% {
-    left: 38.5%;
-    top: 38%;
-    transform: translate(-50%, -10%) rotate(-17deg) scale(.92, .90);
-  }
-
-  30%,
-  34% {
-    left: 50%;
-    top: 31%;
-    transform: translate(-50%, -16%) rotate(0deg) scale(1);
-  }
-
-  36% {
-    left: 50%;
-    top: 31%;
-    transform: translate(-50%, -10%) rotate(0deg) scale(.92, .90);
-  }
-
-  44%,
-  48% {
-    left: 65%;
-    top: 39%;
-    transform: translate(-50%, -16%) rotate(17deg) scale(1);
-  }
-
-  50% {
-    left: 65%;
-    top: 39%;
-    transform: translate(-50%, -10%) rotate(20deg) scale(.92, .90);
-  }
-
-  58%,
-  62% {
-    left: 70%;
-    top: 60%;
-    transform: translate(-50%, -16%) rotate(28deg) scale(1);
-  }
-
-  64% {
-    left: 70%;
-    top: 60%;
-    transform: translate(-50%, -10%) rotate(30deg) scale(.92, .90);
-  }
-
-  72%,
-  76% {
-    left: 51%;
-    top: 55%;
-    transform: translate(-50%, -16%) rotate(4deg) scale(1);
-  }
-
-  78% {
-    left: 51%;
-    top: 55%;
-    transform: translate(-50%, -10%) rotate(4deg) scale(.92, .90);
-  }
-
-  88%,
-  100% {
-    left: var(--liuren-final-left);
-    top: var(--liuren-final-top);
-    transform: translate(-50%, -12%) rotate(24deg) scale(.94, .92);
-  }
 }
 
 @keyframes liurenPressTrace {
@@ -3312,7 +3185,6 @@ html[data-wentian-language="en"] .liuren-orbit i {
 
 @media (prefers-reduced-motion: reduce) {
   .liuren-count-motion::before,
-  .liuren-moving-thumb,
   .liuren-press-shadow,
   .liuren-finger-pulse,
   .liuren-final-aura {
