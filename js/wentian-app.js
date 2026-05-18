@@ -1402,7 +1402,7 @@ function buildWentianArchiveFromInput({ id, name, gender, datetime, city = "", c
     chartRecordId,
     chart,
     chartData,
-    form: { archiveId: id, name, gender, type: "ziwei", datetime, city, useTrueSolar: false, isDefault },
+    form: { archiveId: id, name, gender, type: "ziwei", datetime, city, useTrueSolar: true, isDefault },
     createdAt: new Date().toISOString(),
   };
 }
@@ -1420,7 +1420,7 @@ function getDefaultWentianArchives() {
         gender: "male",
         type: "ziwei",
         datetime: "1991-02-16T22:58",
-        useTrueSolar: false,
+        useTrueSolar: true,
         isDefault: true,
       },
       createdAt: new Date().toISOString(),
@@ -1698,6 +1698,19 @@ function setWentianChartButtonValue(group, value) {
   document.querySelectorAll(`[data-wentian-chart-${group}]`).forEach((btn) => {
     btn.classList.toggle("active", btn.dataset[`wentianChart${group[0].toUpperCase()}${group.slice(1)}`] === value);
   });
+}
+
+function getWentianChartDefaultGender(form = {}) {
+  return normalizeWentianArchiveGender({
+    form,
+    gender: form.gender,
+    chartData: { gender: form.gender },
+  }) || "male";
+}
+
+function getWentianChartDefaultTrueSolar(form = {}) {
+  if (form.trueSolarChoiceSet && form.useTrueSolar === false) return false;
+  return true;
 }
 
 function renderWentianChartCityDropdown(query) {
@@ -4878,6 +4891,7 @@ async function submitWentianChartForm() {
         calMode: norm.calMode,
         datetime: document.getElementById("wentian-chart-date")?.value || "",
         useTrueSolar: norm.useTrueSolar,
+        trueSolarChoiceSet: true,
       },
       createdAt: new Date().toISOString(),
     });
@@ -4919,11 +4933,11 @@ function initWentianChartForm() {
   if (lunarYear) lunarYear.value = String(date.getFullYear());
   if (lunarMonth) lunarMonth.value = "1";
   if (lunarDay) lunarDay.value = "1";
-  setWentianChartButtonValue("gender", form.gender || "male");
+  setWentianChartButtonValue("gender", getWentianChartDefaultGender(form));
   setWentianChartButtonValue("type", form.type || "ziwei");
   setWentianChartCalendarMode(form.calMode || "solar");
   const trueSolar = document.getElementById("wentian-chart-true-solar");
-  if (trueSolar) trueSolar.checked = !!form.useTrueSolar;
+  if (trueSolar) trueSolar.checked = getWentianChartDefaultTrueSolar(form);
   applyWentianChartCity(form.cityDetail || findWentianCity(form.city) || null);
   if (!wentianChartCity && form.city) {
     const cityInput = document.getElementById("wentian-chart-city");
