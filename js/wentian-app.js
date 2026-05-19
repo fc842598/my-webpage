@@ -6480,18 +6480,18 @@ function sourceLoginMethodsScreen() {
     ${figBox("source-login-card", 24, 128, 342, 390, "", "border:1px solid #e2d8c8;border-radius:18px;background:#fff;box-shadow:0 8px 20px rgba(74,55,32,.08);")}
     <button class="wentian-auth-tab ${!isRegister ? "is-active" : ""}" type="button" data-action="wentian-auth-mode" data-auth-mode="login" style="left:50px;top:154px;width:136px">登录</button>
     <button class="wentian-auth-tab ${isRegister ? "is-active" : ""}" type="button" data-action="wentian-auth-mode" data-auth-mode="register" style="left:204px;top:154px;width:136px">注册</button>
-    ${figText("source-login-phone-label", isRegister ? "手机号" : "手机号 / 邮箱", 50, 224, 110, 14, "#6e6254", 800)}
-    <input id="wentian-auth-phone" class="wentian-auth-input" inputmode="${isRegister ? "tel" : "email"}" autocomplete="${isRegister ? "tel" : "username"}" style="left:50px;top:248px;width:290px" placeholder="${isRegister ? "请输入手机号" : "请输入手机号或邮箱"}">
-    ${figText("source-login-password-label", "密码", 50, 318, 88, 14, "#6e6254", 800)}
-    <input id="wentian-auth-password" class="wentian-auth-input" type="password" autocomplete="${isRegister ? "new-password" : "current-password"}" style="left:50px;top:342px;width:290px" placeholder="至少 6 位">
-    ${wentianAuthState.error ? figText("source-login-error", escapeHtml(wentianAuthState.error), 50, 404, 290, 13, "#a94437", 700, "center", "line-height:1.35;") : (pendingInviteCode ? figText("source-login-invite", `已记录邀请码 ${escapeHtml(pendingInviteCode)}，登录后自动绑定`, 50, 404, 290, 13, "#9b742e", 700, "center", "line-height:1.35;") : "")}
-    ${figBox("source-login-submit", 50, 442, 290, 46, "", `border-radius:23px;background:${wentianAuthState.loading ? "#d8c7aa" : "linear-gradient(180deg,#b74e39,#983323)"};box-shadow:0 12px 24px rgba(158,61,43,.16);`)}
-    ${figButton("source-login-submit-hit", 50, 442, 290, 46, 'data-action="wentian-auth-submit"')}
-    ${figText("source-login-submit-text", wentianAuthState.loading ? "处理中..." : (isRegister ? "注册并登录" : "登录并继续"), 50, 456, 290, 14, "#fffaf3", 900, "center")}
-    ${figBox("source-login-google", 50, 538, 290, 44, "", "border-radius:22px;background:#fff;border:1px solid #e2d8c8;")}
-    ${figButton("source-login-google-hit", 50, 538, 290, 44, 'data-action="wentian-google-login"')}
-    ${figText("source-login-google-text", "用 Google 登录", 50, 551, 290, 13, "#26211c", 800, "center")}
-    ${figText("source-login-note", "手机号登录使用密码，不发验证码。", 0, 604, 390, 12, "#9b9287", 600, "center")}
+    ${figText("source-login-phone-label", isRegister ? "手机号" : "手机号 / 邮箱", 50, 214, 110, 14, "#6e6254", 800)}
+    <input id="wentian-auth-phone" class="wentian-auth-input" inputmode="${isRegister ? "tel" : "email"}" autocomplete="${isRegister ? "tel" : "username"}" style="left:50px;top:238px;width:290px" placeholder="${isRegister ? "请输入手机号" : "请输入手机号或邮箱"}">
+    ${figText("source-login-password-label", "密码", 50, 300, 88, 14, "#6e6254", 800)}
+    <input id="wentian-auth-password" class="wentian-auth-input" type="password" autocomplete="${isRegister ? "new-password" : "current-password"}" style="left:50px;top:324px;width:290px" placeholder="至少 6 位">
+    ${wentianAuthState.error ? figText("source-login-error", escapeHtml(wentianAuthState.error), 50, 384, 290, 13, "#a94437", 700, "center", "line-height:1.35;") : (pendingInviteCode ? figText("source-login-invite", `已记录邀请码 ${escapeHtml(pendingInviteCode)}，登录后自动绑定`, 50, 384, 290, 13, "#9b742e", 700, "center", "line-height:1.35;") : "")}
+    ${figBox("source-login-submit", 50, 410, 290, 46, "", `border-radius:23px;background:${wentianAuthState.loading ? "#d8c7aa" : "linear-gradient(180deg,#b74e39,#983323)"};box-shadow:0 12px 24px rgba(158,61,43,.16);`)}
+    ${figButton("source-login-submit-hit", 50, 410, 290, 46, 'data-action="wentian-auth-submit"')}
+    ${figText("source-login-submit-text", wentianAuthState.loading ? "处理中..." : (isRegister ? "注册并登录" : "登录并继续"), 50, 424, 290, 14, "#fffaf3", 900, "center")}
+    ${figBox("source-login-google", 50, 468, 290, 44, "", "border-radius:22px;background:#fff;border:1px solid #e2d8c8;")}
+    ${figButton("source-login-google-hit", 50, 468, 290, 44, 'data-action="wentian-google-login"')}
+    ${figText("source-login-google-text", "用 Google 登录", 50, 481, 290, 13, "#26211c", 800, "center")}
+    ${figText("source-login-note", "手机号登录使用密码，不发验证码。", 0, 544, 390, 12, "#9b9287", 600, "center")}
   `;
 }
 
