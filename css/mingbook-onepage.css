@@ -2430,6 +2430,43 @@ body.mbp-auth-open {
   flex-shrink: 0;
 }
 
+@media (min-width: 1021px) {
+  .fc-header-title {
+    font-size: 24px;
+  }
+
+  .fc-empty-mark,
+  .fc-major-star,
+  .fc-palace-name,
+  .fc-center-name,
+  .fc-sizhu-col {
+    font-size: 14px;
+  }
+
+  .fc-minor-star,
+  .fc-branch,
+  .fc-center-meta,
+  .fc-center-row,
+  .fc-gua-row,
+  .fc-center-val,
+  .fc-center-btn {
+    font-size: 12px;
+  }
+
+  .fc-shen-list,
+  .fc-pal-mutagen {
+    font-size: 11px;
+  }
+
+  .fc-age {
+    font-size: 12px;
+  }
+
+  .fc-center-title {
+    font-size: 18px;
+  }
+}
+
 .mbp-chart-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
