@@ -9023,12 +9023,12 @@ const LIUREN_PALACES = [
   { name: "空亡", nature: "凶", tone: "warn", keys: ["落空", "虚耗", "暂无"], summary: "主落空、虚耗、信息不实。问事多需重新核对根基。", advice: "适合暂停、查证、换方案；不要把希望压在单一路径。" }
 ];
 const LIUREN_HAND_POINTS = [
-  { left: 39.2, top: 58.0, width: 11.8, height: 14.2 },
-  { left: 38.4, top: 42.0, width: 11.5, height: 13.8 },
-  { left: 50.0, top: 35.0, width: 11.5, height: 13.8 },
-  { left: 62.2, top: 43.8, width: 11.5, height: 13.8 },
-  { left: 68.2, top: 62.4, width: 12.4, height: 14.8 },
-  { left: 50.8, top: 58.0, width: 11.8, height: 14.2 }
+  { left: 39.2, top: 58.0, width: 10.8, height: 13.2 },
+  { left: 38.4, top: 42.0, width: 10.6, height: 13.0 },
+  { left: 50.0, top: 35.0, width: 10.6, height: 13.0 },
+  { left: 62.2, top: 43.8, width: 10.6, height: 13.0 },
+  { left: 68.2, top: 62.4, width: 11.2, height: 13.7 },
+  { left: 50.8, top: 58.0, width: 10.8, height: 13.2 }
 ];
 const LIUREN_HAND_BADGE_COLORS = [
   { accent: "#6f8d6b", glow: "rgba(111,141,107,.25)", soft: "rgba(111,141,107,.10)" },
@@ -9161,54 +9161,6 @@ function renderLiurenPalacePulses(result) {
   }).join("");
 }
 
-function renderLiurenHandBaseSvg() {
-  return `
-    <svg class="liuren-hand-art" viewBox="0 0 786 893" aria-hidden="true" focusable="false">
-      <defs>
-        <linearGradient id="lrPaper" x1="0" x2="0" y1="0" y2="1">
-          <stop offset="0" stop-color="#fffaf0"/>
-          <stop offset=".55" stop-color="#fbf0dc"/>
-          <stop offset="1" stop-color="#fff8ec"/>
-        </linearGradient>
-        <linearGradient id="lrSkin" x1=".2" x2=".8" y1="0" y2="1">
-          <stop offset="0" stop-color="#fff5e5"/>
-          <stop offset=".48" stop-color="#ead7ba"/>
-          <stop offset="1" stop-color="#d7b98e"/>
-        </linearGradient>
-        <linearGradient id="lrSkinSoft" x1=".18" x2=".82" y1="0" y2="1">
-          <stop offset="0" stop-color="#fff8eb"/>
-          <stop offset=".56" stop-color="#ead9bf"/>
-          <stop offset="1" stop-color="#d7b98e"/>
-        </linearGradient>
-        <filter id="lrSoftShadow" x="-20%" y="-18%" width="140%" height="140%">
-          <feDropShadow dx="0" dy="16" stdDeviation="13" flood-color="#6e4822" flood-opacity=".12"/>
-        </filter>
-      </defs>
-      <rect x="8" y="8" width="770" height="877" rx="34" fill="url(#lrPaper)"/>
-      <rect x="14" y="14" width="758" height="865" rx="29" fill="none" stroke="#ddc49a" stroke-width="1.4" opacity=".72"/>
-      <g fill="none" stroke="#dec49a" stroke-linecap="round" opacity=".25">
-        <path d="M70 72h28M70 72v28M688 72h28M716 72v28M70 821v-28M70 821h28M716 821h-28M716 821v-28"/>
-        <circle cx="419" cy="414" r="205"/><circle cx="419" cy="414" r="168"/><circle cx="419" cy="414" r="129"/>
-        <path d="M169 414h502M419 165v503M242 237l354 354M596 237 242 591"/>
-        <path d="M570 169c32-25 66-13 94-34M570 191c38-22 76-7 108-27"/>
-        <path d="M74 660c34 17 66-8 102 9M68 684c38 16 75-8 116 8"/>
-      </g>
-      <g filter="url(#lrSoftShadow)" stroke="#bd9b6d" stroke-width="1.8" stroke-linejoin="round" opacity=".88">
-        <path d="M214 836c-8-70-9-150-5-232 4-82 36-144 91-181 42-28 96-40 164-34 62 6 111 30 146 72 34 41 51 98 51 170 0 70-7 139-22 205Z" fill="url(#lrSkin)"/>
-        <path d="M262 575c12-50 42-86 91-108 42-19 92-24 149-14 47 8 84 27 111 57" fill="none" opacity=".35"/>
-        <path d="M269 654c70-35 151-46 239-32M287 718c69-31 143-41 220-29M318 771c52-18 108-23 167-16" fill="none" stroke="#99734c" stroke-width="1.7" opacity=".34" stroke-linecap="round"/>
-        <path d="M270 570V336c0-36 19-62 47-62 29 0 47 26 47 62v244Z" fill="url(#lrSkinSoft)"/>
-        <path d="M373 580V250c0-38 20-65 48-65s48 27 48 65v330Z" fill="url(#lrSkinSoft)"/>
-        <path d="M480 588V340c0-36 20-62 48-62 29 0 48 26 48 62v254Z" fill="url(#lrSkinSoft)"/>
-        <path d="M142 387c36 16 70 54 93 106 13 30 20 61 22 92 2 32-32 50-57 29-56-49-91-118-98-191-2-27 17-45 40-36Z" fill="url(#lrSkinSoft)"/>
-        <path d="M589 489c25-43 55-79 91-108 23-18 51-5 54 24 7 80-20 159-76 221-22 24-59 10-62-22-4-43-6-80-7-115Z" fill="url(#lrSkinSoft)"/>
-        <path d="M285 352h60M285 431h60M390 282h62M390 389h62M390 496h62M498 365h60M498 448h60" fill="none" stroke="#9b744e" stroke-width="1.4" opacity=".32" stroke-linecap="round"/>
-        <path d="M342 420c27 32 36 72 26 121M468 417c-18 34-20 73-9 117M324 589c48 26 96 32 147 20" fill="none" stroke="#9b744e" stroke-width="1.3" opacity=".25" stroke-linecap="round"/>
-      </g>
-    </svg>
-  `;
-}
-
 function renderLiurenPath(result, reveal = true) {
   const items = [
     ["月令", `${result.lunar.month}月`, LIUREN_PALACES[result.monthPalaceIndex]?.name || "-"],
@@ -9220,7 +9172,7 @@ function renderLiurenPath(result, reveal = true) {
   const finalDelay = Math.min(7.2, Math.max(1.2, visualSequence.length * 0.22 + 0.35));
   return `
     <div class="liuren-hand-board ${reveal ? "is-revealed" : "is-idle"}" style="--liuren-final-delay:${finalDelay.toFixed(2)}s;" aria-label="小六壬掌诀三指六位推演图">
-      ${renderLiurenHandBaseSvg()}
+      <img src="../images/wentian-prototype-assets/liuren-hand-board-base.png" alt="" aria-hidden="true">
       <div class="liuren-palace-layer" aria-hidden="true">${renderLiurenPalaceBadges(result, reveal)}</div>
       ${reveal ? `<div class="liuren-palace-pulses" aria-hidden="true">${renderLiurenPalacePulses(result)}</div>` : ""}
       <div class="liuren-hand-a11y" aria-live="polite">
