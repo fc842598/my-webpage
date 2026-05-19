@@ -6499,6 +6499,7 @@ const LIUYAO_TRIGRAM_BY_BITS = {
   "000": { gua: "坤", name: "地", key: "kun" }
 };
 const LIUYAO_LINE_LABELS = ["初爻", "二爻", "三爻", "四爻", "五爻", "上爻"];
+const LIUYAO_MANUAL_EMPTY_COINS = [null, null, null];
 let liuyaoState = null;
 let liuyaoTossTimer = null;
 let liuyaoTossAnimation = null;
@@ -6527,6 +6528,23 @@ function normalizeLiuyaoCast(raw) {
   return { value, coins, manual: Boolean(raw?.manual), at: Number(raw?.at) || Date.now(), power, pull, duration };
 }
 
+function normalizeLiuyaoCoinFace(value) {
+  const face = Number(value);
+  return face === 3 || face === 2 ? face : null;
+}
+
+function normalizeLiuyaoManualCoins(raw, casts = []) {
+  return Array.from({ length: 6 }, (_, lineIndex) => {
+    const cast = normalizeLiuyaoCast(casts[lineIndex]);
+    const source = Array.isArray(raw?.[lineIndex]) ? raw[lineIndex] : (cast?.manual ? cast.coins : []);
+    return [0, 1, 2].map((coinIndex) => normalizeLiuyaoCoinFace(source?.[coinIndex]));
+  });
+}
+
+function makeLiuyaoManualCoins() {
+  return Array.from({ length: 6 }, () => LIUYAO_MANUAL_EMPTY_COINS.slice());
+}
+
 function normalizeLiuyaoQuestion(value) {
   return String(value || "").replace(/\s+/g, " ").trim().slice(0, LIUYAO_QUESTION_MAX_LENGTH);
 }
@@ -6553,6 +6571,7 @@ function makeLiuyaoDefaultState() {
     question: LIUYAO_DEFAULT_QUESTION,
     createdAt: Date.now(),
     casts: [],
+    manualCoins: makeLiuyaoManualCoins(),
     questionGate: null
   };
 }
@@ -6571,6 +6590,7 @@ function getLiuyaoState() {
         question,
         createdAt: Number(parsed.createdAt) || Date.now(),
         casts,
+        manualCoins: normalizeLiuyaoManualCoins(parsed.manualCoins, casts),
         questionGate: normalizeLiuyaoQuestionGate(parsed.questionGate, question)
       };
       return liuyaoState;
@@ -6674,6 +6694,27 @@ function makeLiuyaoCoinCast(gesture = {}) {
     pull,
     duration,
   };
+}
+
+function getLiuyaoManualCoins(state = getLiuyaoState(), lineIndex = 0) {
+  if (!Array.isArray(state.manualCoins) || state.manualCoins.length < 6) {
+    state.manualCoins = normalizeLiuyaoManualCoins(state.manualCoins, state.casts);
+  }
+  if (!Array.isArray(state.manualCoins[lineIndex])) {
+    state.manualCoins[lineIndex] = LIUYAO_MANUAL_EMPTY_COINS.slice();
+  }
+  return state.manualCoins[lineIndex];
+}
+
+function makeLiuyaoManualCastFromCoins(coins) {
+  const faces = [0, 1, 2].map((index) => normalizeLiuyaoCoinFace(coins?.[index]));
+  if (faces.some((face) => !face)) return null;
+  return normalizeLiuyaoCast({
+    value: faces.reduce((sum, face) => sum + face, 0),
+    coins: faces,
+    manual: true,
+    at: Date.now(),
+  });
 }
 
 function setLiuyaoQuestionGateResult(result) {
@@ -7083,9 +7124,45 @@ async function cycleLiuyaoManualLine(index) {
   const current = normalizeLiuyaoCast(state.casts[index]);
   const nextValue = current ? LIUYAO_VALUES[(LIUYAO_VALUES.indexOf(current.value) + 1) % LIUYAO_VALUES.length] : 7;
   state.casts[index] = normalizeLiuyaoCast({ value: nextValue, manual: true, at: Date.now() });
+  state.manualCoins = normalizeLiuyaoManualCoins(state.manualCoins, state.casts);
   saveLiuyaoState();
   navigate("screen-17", false);
   return true;
+}
+
+async function setLiuyaoManualCoin(lineIndex, coinIndex, face) {
+  if (!(await ensureLiuyaoQuestionAllowed())) return false;
+  const line = Math.max(0, Math.min(5, Math.round(Number(lineIndex) || 0)));
+  const coin = Math.max(0, Math.min(2, Math.round(Number(coinIndex) || 0)));
+  const coinFace = normalizeLiuyaoCoinFace(face);
+  if (!coinFace) return false;
+  clearLiuyaoTossAnimation();
+  setLiuyaoCasterModalOpen(false);
+  saveLiuyaoQuestionFromDom();
+  const state = getLiuyaoState();
+  state.mode = "manual";
+  while (state.casts.length < 6) state.casts.push(null);
+  state.manualCoins = normalizeLiuyaoManualCoins(state.manualCoins, state.casts);
+  const row = getLiuyaoManualCoins(state, line).slice();
+  row[coin] = coinFace;
+  state.manualCoins[line] = row;
+  state.casts[line] = makeLiuyaoManualCastFromCoins(row);
+  saveLiuyaoState();
+  navigate("screen-17", false);
+  return true;
+}
+
+function clearLiuyaoManualLine(lineIndex) {
+  const line = Math.max(0, Math.min(5, Math.round(Number(lineIndex) || 0)));
+  clearLiuyaoTossAnimation();
+  const state = getLiuyaoState();
+  state.mode = "manual";
+  while (state.casts.length < 6) state.casts.push(null);
+  state.manualCoins = normalizeLiuyaoManualCoins(state.manualCoins, state.casts);
+  state.manualCoins[line] = LIUYAO_MANUAL_EMPTY_COINS.slice();
+  state.casts[line] = null;
+  saveLiuyaoState();
+  navigate("screen-17", false);
 }
 
 async function showLiuyaoResultIfAllowed() {
@@ -7350,6 +7427,63 @@ function renderLiuyaoCasterModal(state, options = {}) {
   `;
 }
 
+function renderLiuyaoManualCoinInput(state, options = {}) {
+  const disabled = Boolean(options.disabled);
+  const casts = Array.from({ length: 6 }, (_, index) => normalizeLiuyaoCast(state.casts[index]));
+  const nextIndex = casts.findIndex((cast) => !cast);
+  const activeIndex = nextIndex >= 0 ? nextIndex : 5;
+  const renderFaceButton = (lineIndex, coinIndex, value, current) => `
+    <button
+      type="button"
+      class="${current === value ? "is-active" : ""}"
+      data-action="liuyao-manual-coin"
+      data-line-index="${lineIndex}"
+      data-coin-index="${coinIndex}"
+      data-coin-face="${value}"
+      ${disabled ? "disabled" : ""}
+    >${getLiuyaoCoinFaceLabel(value)}</button>
+  `;
+  return `
+    <div class="liuyao-manual-card ${disabled ? "is-disabled" : ""}">
+      <div class="liuyao-manual-head">
+        <div>
+          <span>真实铜钱录入</span>
+          <strong>按初爻到上爻，逐爻填三枚铜钱</strong>
+        </div>
+        <em>${getLiuyaoProgress(state)}/6</em>
+      </div>
+      <p>现实中每次抛三枚铜钱，把每枚铜钱的正反录到对应爻位；三枚选满后自动生成少阳、少阴、老阳或老阴。</p>
+      <div class="liuyao-manual-lines">
+        ${Array.from({ length: 6 }, (_, lineIndex) => {
+          const coins = getLiuyaoManualCoins(state, lineIndex);
+          const cast = casts[lineIndex];
+          const type = cast ? getLiuyaoLineType(cast.value) : null;
+          return `
+            <div class="liuyao-manual-line ${cast ? "is-complete" : ""} ${lineIndex === activeIndex ? "is-next" : ""}">
+              <div class="liuyao-manual-line-title">
+                <strong>${LIUYAO_LINE_LABELS[lineIndex]}</strong>
+                <span>${type ? `${cast.value} ${type.name}${type.mark ? ` ${type.mark}` : ""}` : "选三枚铜钱"}</span>
+              </div>
+              <div class="liuyao-manual-coins">
+                ${[0, 1, 2].map((coinIndex) => `
+                  <div class="liuyao-manual-coin-pick">
+                    <i>第 ${coinIndex + 1} 枚</i>
+                    <span>
+                      ${renderFaceButton(lineIndex, coinIndex, 3, coins[coinIndex])}
+                      ${renderFaceButton(lineIndex, coinIndex, 2, coins[coinIndex])}
+                    </span>
+                  </div>
+                `).join("")}
+              </div>
+              <button type="button" class="liuyao-manual-clear" data-action="liuyao-manual-clear-line" data-line-index="${lineIndex}" ${disabled || !coins.some(Boolean) ? "disabled" : ""}>重选</button>
+            </div>
+          `;
+        }).join("")}
+      </div>
+    </div>
+  `;
+}
+
 function sourceLiuyaoCastScreen() {
   const state = getLiuyaoState();
   const casts = state.casts.map(normalizeLiuyaoCast);
@@ -7367,7 +7501,7 @@ function sourceLiuyaoCastScreen() {
   const stepTwoClass = complete || progress > 0 ? "is-done" : (questionReady ? "is-active" : "");
   const stepThreeClass = complete ? "is-done" : (progress > 0 ? "is-active" : "");
   return `
-    ${figBox("ly17-bg", 0, 0, 390, 1180, "", "background:linear-gradient(180deg,#fffdf8 0%,#fbf7ef 50%,#f3eadc 100%);")}
+    ${figBox("ly17-bg", 0, 0, 390, 1480, "", "background:linear-gradient(180deg,#fffdf8 0%,#fbf7ef 50%,#f3eadc 100%);")}
     ${wentianSimpleHeader("ly17", "六爻占卜")}
     <button class="liuyao-top-reset" type="button" data-action="liuyao-reset">重来</button>
     <section class="liuyao-panel">
@@ -7407,6 +7541,7 @@ function sourceLiuyaoCastScreen() {
           <button type="button" class="${state.mode === "manual" ? "is-active" : ""}" data-action="liuyao-mode" data-mode="manual">手动起卦</button>
         </div>
       </div>
+      ${state.mode === "manual" ? renderLiuyaoManualCoinInput(state, { disabled: gateBusy || !questionReady }) : ""}
       <div class="liuyao-actions">
         ${complete ? `
           <button type="button" class="primary" data-action="liuyao-show-result">查看卦象解读</button>
@@ -7415,7 +7550,7 @@ function sourceLiuyaoCastScreen() {
           <button type="button" class="primary" data-action="liuyao-open-caster" ${actionBusy || !questionReady ? "disabled" : ""}>${gateBusy ? "审题中…" : !questionReady ? "先提交占问" : tossing ? "抛币中…" : `全屏投第 ${progress + 1} 爻`}</button>
           <button type="button" data-action="liuyao-reset" ${gateBusy ? "disabled" : ""}>清空重排</button>
         ` : `
-          <button type="button" class="primary" ${progress === 6 && !actionBusy && questionReady ? 'data-action="liuyao-show-result"' : "disabled"}>${gateBusy ? "审题中…" : !questionReady ? "先提交占问" : progress === 6 ? "查看卦象解读" : "补全六爻"}</button>
+          <button type="button" class="primary" ${progress === 6 && !actionBusy && questionReady ? 'data-action="liuyao-show-result"' : "disabled"}>${gateBusy ? "审题中…" : !questionReady ? "先提交占问" : progress === 6 ? "查看卦象解读" : "按下方录满六爻"}</button>
           <button type="button" data-action="liuyao-reset" ${gateBusy ? "disabled" : ""}>清空重排</button>
         `}
       </div>
@@ -7425,10 +7560,10 @@ function sourceLiuyaoCastScreen() {
           <span>${formatWentianDateTime(new Date(state.createdAt || Date.now()))}</span>
         </div>
         ${tossing ? `<p class="liuyao-casting-status">本次力度 ${Math.max(18, Math.min(100, Number(liuyaoTossAnimation.power) || 62))}%；铜钱翻转 1 秒后落入第 ${progress + 1} 爻。</p>` : ""}
-        ${renderLiuyaoHexStack(lines, { manual: state.mode === "manual" && questionReady, id: "cast" })}
+        ${renderLiuyaoHexStack(lines, { id: "cast" })}
       </div>
       ${state.mode === "manual" ? `
-        <p class="liuyao-hint">手动点每一爻切换：少阳 → 少阴 → 老阳 → 老阴。</p>
+        <p class="liuyao-hint">手动起卦适合已经用现实铜钱抛过：每爻三枚，正面记 3，反面记 2，系统自动换算爻象。</p>
       ` : `
         <p class="liuyao-hint">按住上方铜钱区向上拉，力度到 18% 左右即可松手；力度会参与落币，落币后按初爻到上爻记录。</p>
       `}
@@ -7715,6 +7850,7 @@ function cancelLiuyaoSwipePointer(event) {
 }
 
 const YANGZHAI_STORAGE_KEY = "wentian-yangzhai-state-v1";
+const YANGZHAI_COMPASS_OFFSET_KEY = "wentian-yangzhai-compass-offset-v1";
 const YANGZHAI_STATE_VERSION = 2;
 const YANGZHAI_PALACES = [
   { key: "xun", gua: "巽", dir: "东南", role: "长女位", defaultItem: "长女" },
@@ -7977,6 +8113,8 @@ function loadYangzhaiState() {
 
 let yangzhaiState = loadYangzhaiState();
 let yangzhaiCompassHandler = null;
+let yangzhaiCompassRawHeading = 0;
+let yangzhaiCompassOffset = loadYangzhaiCompassOffset();
 
 function saveYangzhaiState() {
   try {
@@ -7986,6 +8124,74 @@ function saveYangzhaiState() {
       localStorage.setItem(YANGZHAI_STORAGE_KEY, JSON.stringify(yangzhaiState));
     }
   } catch (_) {}
+}
+
+function normalizeCompassHeading(value) {
+  if (!Number.isFinite(value)) return null;
+  return ((value % 360) + 360) % 360;
+}
+
+function normalizeCompassOffset(value) {
+  const heading = normalizeCompassHeading(value);
+  if (heading === null) return 0;
+  return heading > 180 ? heading - 360 : heading;
+}
+
+function loadYangzhaiCompassOffset() {
+  try {
+    if (typeof localStorage === "undefined") return 0;
+    return normalizeCompassOffset(Number(localStorage.getItem(YANGZHAI_COMPASS_OFFSET_KEY) || 0));
+  } catch (_) {
+    return 0;
+  }
+}
+
+function saveYangzhaiCompassOffset() {
+  try {
+    if (typeof localStorage !== "undefined") {
+      localStorage.setItem(YANGZHAI_COMPASS_OFFSET_KEY, String(yangzhaiCompassOffset));
+    }
+  } catch (_) {}
+}
+
+function getYangzhaiCompassDirectionLabel(heading) {
+  const directions = ["北", "东北", "东", "东南", "南", "西南", "西", "西北"];
+  const normalized = normalizeCompassHeading(heading) || 0;
+  return directions[Math.round(normalized / 45) % directions.length];
+}
+
+function getYangzhaiCompassOffsetLabel() {
+  if (!yangzhaiCompassOffset) return "";
+  return `，已校准${yangzhaiCompassOffset > 0 ? "+" : ""}${Math.round(yangzhaiCompassOffset)}°`;
+}
+
+function applyYangzhaiCompassHeading(rawHeading, tone = "active", messagePrefix = "手机朝向") {
+  const raw = normalizeCompassHeading(rawHeading);
+  if (raw === null) return null;
+  yangzhaiCompassRawHeading = raw;
+  const heading = normalizeCompassHeading(raw + yangzhaiCompassOffset) || 0;
+  const overlay = view.querySelector("[data-yangzhai-luopan-zoom]");
+  if (overlay) {
+    overlay.style.setProperty("--yangzhai-heading", `${heading}deg`);
+    overlay.style.setProperty("--yangzhai-luopan-rotation", `${-heading}deg`);
+  }
+  setYangzhaiCompassStatus(
+    `${messagePrefix}：${Math.round(heading)}° ${getYangzhaiCompassDirectionLabel(heading)}${getYangzhaiCompassOffsetLabel()}`,
+    tone
+  );
+  return heading;
+}
+
+function adjustYangzhaiCompassOffset(delta) {
+  yangzhaiCompassOffset = normalizeCompassOffset(yangzhaiCompassOffset + delta);
+  saveYangzhaiCompassOffset();
+  applyYangzhaiCompassHeading(yangzhaiCompassRawHeading, "active", "已微调");
+}
+
+function resetYangzhaiCompassOffset() {
+  yangzhaiCompassOffset = 0;
+  saveYangzhaiCompassOffset();
+  applyYangzhaiCompassHeading(yangzhaiCompassRawHeading, "active", "已归零");
 }
 
 function getYangzhaiPalace(key) {
@@ -8094,12 +8300,17 @@ function openYangzhaiLuopanZoom() {
   stopYangzhaiCompass();
   phone.querySelector("[data-yangzhai-luopan-zoom]")?.remove();
   phone.insertAdjacentHTML("beforeend", `
-    <div class="yangzhai-luopan-zoom" data-yangzhai-luopan-zoom style="--yangzhai-heading:0deg;">
+    <div class="yangzhai-luopan-zoom" data-yangzhai-luopan-zoom style="--yangzhai-heading:0deg;--yangzhai-luopan-rotation:0deg;">
       <button class="yangzhai-luopan-zoom-bg" type="button" data-action="yangzhai-luopan-close" aria-label="关闭罗盘大图"></button>
       <img class="yangzhai-luopan-zoom-img" src="../images/wentian-prototype-assets/yangzhai-luopan.png" alt="罗盘大图">
       <div class="yangzhai-luopan-bearing" aria-hidden="true"><span></span></div>
       <button class="yangzhai-compass-start" type="button" data-action="yangzhai-compass-start">开启手机指南针</button>
-      <div class="yangzhai-compass-status" data-yangzhai-compass-status aria-live="polite">红箭头默认指北，开启后跟随手机方向</div>
+      <div class="yangzhai-compass-status" data-yangzhai-compass-status aria-live="polite">红箭头固定为手机上边，开启后盘面跟随方向</div>
+      <div class="yangzhai-compass-tools" aria-label="罗盘校准">
+        <button type="button" data-action="yangzhai-compass-adjust" data-delta="-10">左调10°</button>
+        <button type="button" data-action="yangzhai-compass-reset">归零</button>
+        <button type="button" data-action="yangzhai-compass-adjust" data-delta="10">右调10°</button>
+      </div>
       <button class="yangzhai-luopan-zoom-close" type="button" data-action="yangzhai-luopan-close" aria-label="关闭罗盘大图">×</button>
     </div>
   `);
@@ -8117,11 +8328,6 @@ function setYangzhaiCompassStatus(text, tone = "") {
   status.dataset.tone = tone;
 }
 
-function normalizeCompassHeading(value) {
-  if (!Number.isFinite(value)) return null;
-  return ((value % 360) + 360) % 360;
-}
-
 function handleYangzhaiCompassOrientation(event) {
   const webkitHeading = typeof event.webkitCompassHeading === "number" ? event.webkitCompassHeading : NaN;
   const alpha = typeof event.alpha === "number" ? event.alpha : NaN;
@@ -8129,10 +8335,7 @@ function handleYangzhaiCompassOrientation(event) {
     ? normalizeCompassHeading(webkitHeading)
     : normalizeCompassHeading(360 - alpha);
   if (heading === null) return;
-  const overlay = view.querySelector("[data-yangzhai-luopan-zoom]");
-  if (!overlay) return;
-  overlay.style.setProperty("--yangzhai-heading", `${heading}deg`);
-  setYangzhaiCompassStatus(`手机指南针已接入：${Math.round(heading)}°`, "active");
+  applyYangzhaiCompassHeading(heading);
 }
 
 function stopYangzhaiCompass() {
@@ -8160,7 +8363,7 @@ async function startYangzhaiCompass() {
     yangzhaiCompassHandler = handleYangzhaiCompassOrientation;
     window.addEventListener("deviceorientationabsolute", yangzhaiCompassHandler, true);
     window.addEventListener("deviceorientation", yangzhaiCompassHandler, true);
-    setYangzhaiCompassStatus("正在读取方向，轻轻转动手机校准", "active");
+    setYangzhaiCompassStatus("正在读取方向；红箭头固定，盘面会转到当前朝向", "active");
   } catch (_) {
     setYangzhaiCompassStatus("指南针启动失败，请用 HTTPS 手机浏览器打开", "warn");
   }
@@ -10157,7 +10360,7 @@ function renderConvertedScreen(no) {
   }
   const polishedScreen = renderWentianPolishedScreen(screen);
   if (polishedScreen) {
-    const polishedHeight = screen.no === 8 ? 1280 : screen.no === 17 || screen.no === 18 || screen.no === 19 ? 1180 : screen.no === 20 ? 1280 : screen.no === 22 ? 1120 : screen.no === 24 ? 1180 : screen.no === 44 ? getYangzhaiResultHeight() : screen.no === 46 ? LIUREN_SCREEN_HEIGHT : screen.no === 49 ? 1160 : 844;
+    const polishedHeight = screen.no === 8 ? 1280 : screen.no === 17 || screen.no === 18 || screen.no === 19 ? 1480 : screen.no === 20 ? 1280 : screen.no === 22 ? 1120 : screen.no === 24 ? 1180 : screen.no === 44 ? getYangzhaiResultHeight() : screen.no === 46 ? LIUREN_SCREEN_HEIGHT : screen.no === 49 ? 1160 : 844;
     const wideBgClass = screen.no >= 42 && screen.no <= 45 ? " wide-bg" : "";
     const customHotspots = screen.no >= 17 && screen.no <= 20 ? "" : convertedFlowHotspots(screen);
     return figPhone(`screen-${screen.no}`, `${String(screen.no).padStart(2, "0")} ${screen.title}`, `
@@ -10685,6 +10888,14 @@ document.addEventListener("click", (event) => {
     startYangzhaiCompass();
     return;
   }
+  if (earlyAction === "yangzhai-compass-adjust") {
+    adjustYangzhaiCompassOffset(Number(earlyActionTarget.dataset.delta) || 0);
+    return;
+  }
+  if (earlyAction === "yangzhai-compass-reset") {
+    resetYangzhaiCompassOffset();
+    return;
+  }
   if (earlyAction === "yangzhai-pick") {
     pickYangzhaiOption(earlyActionTarget.dataset.yangzhaiOption || "");
     return;
@@ -10752,6 +10963,18 @@ document.addEventListener("click", (event) => {
   }
   if (earlyAction === "liuyao-toss-all") {
     tossLiuyaoLine(true);
+    return;
+  }
+  if (earlyAction === "liuyao-manual-coin") {
+    setLiuyaoManualCoin(
+      Number(earlyActionTarget.dataset.lineIndex || 0),
+      Number(earlyActionTarget.dataset.coinIndex || 0),
+      Number(earlyActionTarget.dataset.coinFace || 0)
+    );
+    return;
+  }
+  if (earlyAction === "liuyao-manual-clear-line") {
+    clearLiuyaoManualLine(Number(earlyActionTarget.dataset.lineIndex || 0));
     return;
   }
   if (earlyAction === "liuyao-manual-line") {
