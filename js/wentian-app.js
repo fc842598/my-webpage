@@ -38,8 +38,8 @@ const convertedScreens = [
   { no: 19, title: "投掷5次", active: "活动", cards: [["已投掷 5 次", "再投一次查看结果。"]], button: ["查看结果", "screen-20"] },
   { no: 20, title: "地风升", active: "活动", sections: ["本卦：地风升", "卦意", "事业建议", "关系建议", "行动窗口"], button: ["购买解读", "screen-21"] },
   { no: 21, title: "购买弹窗", active: "活动", modalTitle: "购买完整解读", modalItems: ["地风升完整卦象 ¥12", "包含本卦、变卦与行动建议"], next: "screen-29" },
-  { no: 22, title: "邀请好友", active: "活动", cards: [["邀请好友", "邀请码：8R7U58ZW"], ["奖励规则", "好友注册后可获得对话次数。"]], button: ["查看活动中心", "screen-23"] },
-  { no: 23, title: "活动中心", active: "活动", cards: [["活动中心", "邀请、签到、次数奖励。"], ["当前进度", "已邀请 0 人"]], button: ["邀请好友", "screen-22"] },
+  { no: 22, title: "邀请好友", active: "活动", cards: [["邀请好友", "复制文案和链接发给好友"], ["奖励规则", "好友注册入账 ¥5，开通会员再入账 ¥10。"]], button: ["查看活动中心", "screen-23"] },
+  { no: 23, title: "活动中心", active: "活动", cards: [["活动中心", "邀请余额、活动记录。"], ["当前进度", "已邀请 0 人"]], button: ["邀请好友", "screen-22"] },
   { no: 24, title: "邀请详情", active: "活动", sections: ["邀请详情", "奖励说明", "到账规则", "常见问题"] },
   { no: 25, title: "档案", active: "档案", list: [["谢广周", "男｜阳历 2026-05-12", "screen-26"], ["查看命盘", "紫微命盘 / 八字", "screen-27"], ["AI问天", "使用当前档案提问", "screen-4"]] },
   { no: 26, title: "排盘表单", active: "档案", form: ["姓名", "性别", "出生日期", "出生地"], button: ["开始排盘", "screen-27"] },
@@ -1195,6 +1195,11 @@ const wentianPaymentState = {
   error: "",
   mockMode: false,
   productName: "问天会员月卡",
+  originalAmountYuan: "19.90",
+  walletAppliedFen: 0,
+  walletAppliedYuan: "0.00",
+  walletBalanceFen: 0,
+  walletBalanceYuan: "0.00",
   amountYuan: "19.90",
 };
 const wentianChartAiState = {
@@ -1303,6 +1308,16 @@ function formatWentianInviteCode(code) {
   return normalizeWentianInviteCode(code).split("").join(" ");
 }
 
+function normalizeWentianFen(value) {
+  const amount = Number(value);
+  if (!Number.isFinite(amount)) return 0;
+  return Math.max(0, Math.floor(amount));
+}
+
+function formatWentianMoneyFromFen(value) {
+  return (normalizeWentianFen(value) / 100).toFixed(2);
+}
+
 function getWentianInviteLink(code = getWentianInviteCode()) {
   return `https://yuetianai.com/pages/wentian-app.html?invite=${encodeURIComponent(normalizeWentianInviteCode(code))}`;
 }
@@ -1375,11 +1390,27 @@ function getWentianInviteSnapshot() {
     bonusTalks: 0,
     bonusUsed: 0,
     bonusRemaining: 0,
-    registerReward: 2,
+    walletBalanceFen: 0,
+    walletBalanceYuan: "0.00",
+    earnedFen: 0,
+    earnedYuan: "0.00",
+    usedFen: 0,
+    usedYuan: "0.00",
+    registerReward: 5,
+    registerRewardFen: 500,
+    registerRewardYuan: "5.00",
     paidReward: 10,
+    paidRewardFen: 1000,
+    paidRewardYuan: "10.00",
     records: [],
   };
   return { ...fallback, ...(wentianInviteState.summary || {}) };
+}
+
+function getWentianInviteShareText(summary = getWentianInviteSnapshot()) {
+  const code = normalizeWentianInviteCode(summary.inviteCode);
+  const link = summary.inviteLink || getWentianInviteLink(code);
+  return `我在用问天AI排盘和问许半仙，打开这个链接就能体验：\n${link}`;
 }
 
 function makeWentianUuid() {
@@ -4073,30 +4104,37 @@ const WENTIAN_I18N_EN_EXTRA = {
   "可通过开通会员或直接购买对话次数继续深度解读。": "Open membership or buy chat credits to continue.",
   "购买对话包": "Buy Chat Pack",
   "登录后生成专属邀请码": "Sign in to generate your invite code",
-  "邀请好友注册、首付奖励和收益记录都会绑定到你的账号。": "Friend invites, first-payment rewards, and earnings are linked to your account.",
+  "邀请余额会绑定到你的账号，可用于抵扣问天会员。": "Invite balance is linked to your account and can offset membership.",
+  "邀请好友注册、会员奖励和收益记录都会绑定到你的账号。": "Friend invites, membership rewards, and earnings are linked to your account.",
   "我有好友邀请码": "I have a friend's invite code",
   "先填在这里也可以；登录/注册后自动绑定。": "You can enter it here; it binds after sign-in/register.",
   "绑定": "Bind",
   "输入邀请码": "Enter invite code",
   "奖励规则": "Reward Rules",
-  "好友注册成功：双方各得 2 次对话奖励。": "Friend registers: both get 2 chat credits.",
-  "好友首次付费：邀请人再得 10 次对话奖励。": "Friend's first payment: inviter gets 10 more chat credits.",
+  "好友注册成功：邀请人入账 ¥5.00。": "Friend registers: inviter gets ¥5.00.",
+  "好友开通会员：邀请人再入账 ¥10.00。": "Friend opens membership: inviter gets another ¥10.00.",
+  "余额可抵扣问天会员。": "Balance can offset Wentian membership.",
   "刷新": "Sync",
-  "可用奖励 0 次": "Available rewards: 0 credits",
+  "可用余额": "Balance",
+  "分享文案": "Share Text",
+  "复制文案": "Copy Text",
+  "会员购买": "Member Purchases",
   "去邀请": "Invite",
   "邀": "I",
   "礼": "G",
   "邀请好友注册": "Friend Sign-up",
-  "双方各得 2 次对话": "Both get 2 chats",
+  "邀请人入账 ¥5.00": "Inviter gets ¥5.00",
   "奖": "R",
-  "好友首次付费": "Friend first payment",
-  "邀请人再得 10 次对话": "Inviter gets 10 more chats",
+  "好友开通会员": "Friend Opens Membership",
+  "邀请人再入账 ¥10.00": "Inviter gets another ¥10.00",
+  "余额抵扣": "Balance Offset",
+  "可用于支付问天会员": "Can pay for Wentian membership",
   "签": "C",
   "每日签到": "Daily Check-in",
   "连续签到功能待开放": "Streak check-in coming soon",
   "已邀请好友": "Friends Invited",
   "累计奖励 0": "Total rewards: 0",
-  "邀请好友注册问天AI，双方都可获得对话次数奖励。": "Invite friends and both get chat credits.",
+  "邀请好友注册问天AI，奖励会入账为可抵扣余额。": "Invite friends; rewards are credited as usable balance.",
   "我的邀请码": "My Invite Code",
   "复制": "Copy",
   "好友注册时填写邀请码即可绑定邀请关系": "Friends enter the code at registration to bind the invite.",
@@ -4104,7 +4142,7 @@ const WENTIAN_I18N_EN_EXTRA = {
   "也可以直接分享链接给好友，系统自动识别。": "Share the link and the system will recognize it automatically.",
   "邀请奖励": "Invite Rewards",
   "好友注册": "Friend Signs Up",
-  "可获得：2 次对话": "Reward: 2 chats",
+  "入账：¥5.00": "Credit: ¥5.00",
   "立即到账": "Instant",
   "邀请满 3 人": "Invite 3 friends",
   "额外获得：会员体验券": "Extra: membership trial coupon",
@@ -4112,8 +4150,8 @@ const WENTIAN_I18N_EN_EXTRA = {
   "邀请满 10 人": "Invite 10 friends",
   "额外获得：高级报告券": "Extra: premium report coupon",
   "进阶奖励": "Advanced Reward",
-  "好友首次付费奖励": "First Payment Reward",
-  "好友完成首次付费后，邀请人可额外获得 10 次对话。": "After a friend's first payment, the inviter gets 10 extra chats.",
+  "好友开通会员奖励": "Membership Reward",
+  "好友开通会员后，邀请人可额外入账 ¥10.00。": "After a friend opens membership, the inviter gets another ¥10.00.",
   "邀请记录": "Invite Records",
   "暂无邀请记录": "No invite records yet",
   "管理你的命盘资料": "Manage your chart files",
@@ -5416,7 +5454,7 @@ async function copyWentianText(text, okText) {
 
 async function shareWentianInvite() {
   const summary = getWentianInviteSnapshot();
-  const text = `我在用问天AI排盘和问许半仙，注册时填邀请码 ${summary.inviteCode} 可领取体验次数：${summary.inviteLink}`;
+  const text = getWentianInviteShareText(summary);
   if (navigator.share) {
     try {
       await navigator.share({ title: "问天AI", text, url: summary.inviteLink });
@@ -5433,8 +5471,9 @@ function getWentianSharePayload() {
   const appUrl = "https://yuetianai.com/pages/wentian-app.html";
   const hasInvite = account.loggedIn && isWentianInviteCode(summary.inviteCode);
   const url = hasInvite ? summary.inviteLink : appUrl;
-  const inviteLine = hasInvite ? `我的邀请码：${summary.inviteCode}` : "登录后可生成专属邀请码。";
-  const text = `推荐你使用问天AI，AI排盘、命盘解读和许半仙问答都在这里。\n${inviteLine}\n${url}`;
+  const text = hasInvite
+    ? getWentianInviteShareText(summary)
+    : `我在用问天AI排盘和问许半仙，打开这个链接就能体验：\n${url}`;
   return {
     title: "问天AI",
     text,
@@ -5448,6 +5487,10 @@ async function shareWentianApp(target = "system") {
   const payload = getWentianSharePayload();
   if (target === "link") {
     await copyWentianText(payload.url, "分享链接已复制");
+    return;
+  }
+  if (target === "text") {
+    await copyWentianText(payload.text, "分享文案已复制");
     return;
   }
   if (target === "wechat") {
@@ -5868,10 +5911,15 @@ async function checkWentianPaymentStatus() {
   try {
     const data = await wentianFetchJson(`/api/payments/order-status?orderNo=${encodeURIComponent(wentianPaymentState.orderNo)}`);
     wentianPaymentState.status = data.status || wentianPaymentState.status;
+    wentianPaymentState.amountYuan = data.payableAmountYuan || data.amountYuan || wentianPaymentState.amountYuan;
+    wentianPaymentState.originalAmountYuan = data.originalAmountYuan || wentianPaymentState.originalAmountYuan;
+    wentianPaymentState.walletAppliedFen = normalizeWentianFen(data.walletAppliedFen ?? wentianPaymentState.walletAppliedFen);
+    wentianPaymentState.walletAppliedYuan = data.walletAppliedYuan || wentianPaymentState.walletAppliedYuan;
     wentianPaymentState.message = data.status === "paid" ? "已开通会员" : "等待微信支付完成";
     if (data.status === "paid") {
       stopWentianPaymentPoll();
       await hydrateWentianMemberStatus({ force: true });
+      await hydrateWentianInvite({ force: true });
     }
     refreshWentianPaymentScreen();
     return data;
@@ -5896,6 +5944,11 @@ async function startWentianMemberPayment() {
   wentianPaymentState.message = "正在创建微信支付订单...";
   wentianPaymentState.error = "";
   wentianPaymentState.productName = product.name || "问天会员月卡";
+  wentianPaymentState.originalAmountYuan = product.amountYuan || "19.90";
+  wentianPaymentState.walletAppliedFen = 0;
+  wentianPaymentState.walletAppliedYuan = "0.00";
+  wentianPaymentState.walletBalanceFen = 0;
+  wentianPaymentState.walletBalanceYuan = "0.00";
   wentianPaymentState.amountYuan = product.amountYuan || "19.90";
   navigate("screen-30");
 
@@ -5905,18 +5958,32 @@ async function startWentianMemberPayment() {
       method: "POST",
       body: { productKey: WENTIAN_MEMBER_PRODUCT_KEY, chartRecordId },
     });
+    wentianPaymentState.status = order.status === "paid" ? "paid" : "loading";
+    wentianPaymentState.orderNo = order.orderNo;
+    wentianPaymentState.productName = order.productName || product.name || "问天会员月卡";
+    wentianPaymentState.originalAmountYuan = order.originalAmountYuan || product.amountYuan || "19.90";
+    wentianPaymentState.walletAppliedFen = normalizeWentianFen(order.walletAppliedFen);
+    wentianPaymentState.walletAppliedYuan = order.walletAppliedYuan || formatWentianMoneyFromFen(order.walletAppliedFen);
+    wentianPaymentState.walletBalanceFen = normalizeWentianFen(order.walletBalanceFen);
+    wentianPaymentState.walletBalanceYuan = order.walletBalanceYuan || formatWentianMoneyFromFen(order.walletBalanceFen);
+    wentianPaymentState.amountYuan = order.payableAmountYuan || order.amountYuan || product.amountYuan || "19.90";
+    wentianPaymentState.mockMode = !!order.mockMode;
+    if (order.status === "paid" || normalizeWentianFen(order.payableAmountFen ?? order.amountFen) <= 0) {
+      wentianPaymentState.message = "邀请余额已抵扣，会员已开通";
+      await hydrateWentianMemberStatus({ force: true });
+      await hydrateWentianInvite({ force: true });
+      refreshWentianPaymentScreen();
+      return;
+    }
     const payMethod = isWentianH5PayPreferred() ? "h5" : "native";
     const session = await wentianFetchJson("/api/payments/create-session", {
       method: "POST",
       body: { orderNo: order.orderNo, payMethod },
     });
     wentianPaymentState.status = "pending";
-    wentianPaymentState.orderNo = order.orderNo;
     wentianPaymentState.payUrl = session.payUrl || "";
     wentianPaymentState.payMethod = session.payMethod || payMethod;
     wentianPaymentState.mockMode = !!(order.mockMode || session.mockMode);
-    wentianPaymentState.productName = order.productName || product.name || "问天会员月卡";
-    wentianPaymentState.amountYuan = order.amountYuan || product.amountYuan || "19.90";
     wentianPaymentState.message = wentianPaymentState.mockMode
       ? "当前是支付测试模式"
       : (wentianPaymentState.payMethod === "h5" ? "点击下方按钮打开微信支付" : "请用微信扫码支付");
@@ -5946,6 +6013,7 @@ async function completeWentianMockPayment() {
     wentianPaymentState.status = data.status || "paid";
     wentianPaymentState.message = "已开通会员";
     await hydrateWentianMemberStatus({ force: true });
+    await hydrateWentianInvite({ force: true });
   } catch (error) {
     wentianPaymentState.error = error.message || "测试支付失败";
   }
@@ -6214,6 +6282,11 @@ function sourcePaymentScreen() {
   const showQr = payUrl && wentianPaymentState.payMethod !== "h5" && !wentianPaymentState.mockMode;
   const showOpen = payUrl && wentianPaymentState.payMethod === "h5" && !wentianPaymentState.mockMode;
   const message = wentianPaymentState.error || wentianPaymentState.message || "问天会员月卡，200次/天，手机/电脑通用";
+  const walletAppliedFen = normalizeWentianFen(wentianPaymentState.walletAppliedFen);
+  const hasWalletApplied = walletAppliedFen > 0;
+  const orderCardHeight = showQr ? (hasWalletApplied ? 342 : 304) : (hasWalletApplied ? 236 : 190);
+  const orderNoY = hasWalletApplied ? 402 : 358;
+  const tipY = hasWalletApplied ? 462 : 416;
   return `
     ${figBox("wt30-bg", 0, 0, 390, 844, "", "background:linear-gradient(180deg,#fffdf8 0%,#fbf7ef 58%,#f3eadc 100%);")}
     ${figButton("wt30-back-hit", 18, 38, 58, 50, 'data-route="screen-33"')}
@@ -6228,15 +6301,18 @@ function sourcePaymentScreen() {
     ${figText("wt30-hero-sub", "200次/天 · 手机/电脑通用", 46, 202, 230, 13, "#f2d8bd", 700)}
     ${figText("wt30-hero-price", `¥${escapeHtml(wentianPaymentState.amountYuan || "19.90")}`, 250, 154, 92, 26, "#fffaf3", 900, "right")}
 
-    ${figBox("wt30-order-card", 24, 270, 342, showQr ? 304 : 190, "", "border:1px solid #eadfce;border-radius:18px;background:#fffdf8;box-shadow:0 10px 24px rgba(70,45,25,.08);")}
+    ${figBox("wt30-order-card", 24, 270, 342, orderCardHeight, "", "border:1px solid #eadfce;border-radius:18px;background:#fffdf8;box-shadow:0 10px 24px rgba(70,45,25,.08);")}
     ${figText("wt30-order-product-label", "商品", 44, 302, 80, 13, "#8d8377", 600)}
     ${figText("wt30-order-product", escapeHtml(wentianPaymentState.productName || "问天会员月卡"), 164, 302, 160, 13, "#2b251f", 800, "right")}
     ${figLine("wt30-order-line-1", 44, 334, 302, "#efe4d3")}
-    ${figText("wt30-order-no-label", "订单号", 44, 358, 80, 13, "#8d8377", 600)}
-    ${figText("wt30-order-no", escapeHtml(wentianPaymentState.orderNo || "待创建"), 132, 358, 190, 13, "#2b251f", 800, "right")}
-    ${figLine("wt30-order-line-2", 44, 390, 302, "#efe4d3")}
-    ${figText("wt30-order-tip", escapeHtml(message), 44, 416, 282, 14, wentianPaymentState.error ? "#a64032" : "#756d63", 700, "left", "line-height:1.5;")}
-    ${showQr ? `<div id="wentian-pay-qr" class="wentian-pay-qr" data-pay-url="${escapeHtml(payUrl)}" style="left:109px;top:448px;width:172px;height:172px"></div>` : ""}
+    ${hasWalletApplied ? figText("wt30-wallet-label", "邀请余额抵扣", 44, 358, 120, 13, "#8d8377", 600) : ""}
+    ${hasWalletApplied ? figText("wt30-wallet-amount", `-¥${escapeHtml(wentianPaymentState.walletAppliedYuan || formatWentianMoneyFromFen(walletAppliedFen))}`, 214, 358, 108, 13, "#9f3d2e", 900, "right") : ""}
+    ${hasWalletApplied ? figLine("wt30-order-line-wallet", 44, 390, 302, "#efe4d3") : ""}
+    ${figText("wt30-order-no-label", "订单号", 44, orderNoY, 80, 13, "#8d8377", 600)}
+    ${figText("wt30-order-no", escapeHtml(wentianPaymentState.orderNo || "待创建"), 132, orderNoY, 190, 13, "#2b251f", 800, "right")}
+    ${figLine("wt30-order-line-2", 44, orderNoY + 32, 302, "#efe4d3")}
+    ${figText("wt30-order-tip", escapeHtml(message), 44, tipY, 282, 14, wentianPaymentState.error ? "#a64032" : "#756d63", 700, "left", "line-height:1.5;")}
+    ${showQr ? `<div id="wentian-pay-qr" class="wentian-pay-qr" data-pay-url="${escapeHtml(payUrl)}" style="left:109px;top:${hasWalletApplied ? 468 : 448}px;width:172px;height:172px"></div>` : ""}
 
     ${showOpen ? figBox("wt30-open", 42, 650, 306, 50, "", "border-radius:25px;background:#16783d;box-shadow:0 12px 24px rgba(22,120,61,.18);") : ""}
     ${showOpen ? figButton("wt30-open-hit", 42, 650, 306, 50, 'data-action="wentian-pay-open"') : ""}
@@ -9837,13 +9913,18 @@ function renderWentianPolishedScreen(screen) {
     const bound = getWentianLocalInviteStatus();
     const status = wentianInviteState.status || wentianInviteState.error || (pendingCode ? `待绑定邀请码：${pendingCode}` : (bound?.inviteCode ? `已绑定邀请码：${bound.inviteCode}` : ""));
     const records = (invite.records || []).slice(0, 3);
+    const walletBalanceYuan = invite.walletBalanceYuan || formatWentianMoneyFromFen(invite.walletBalanceFen);
+    const registerRewardYuan = invite.registerRewardYuan || formatWentianMoneyFromFen(invite.registerRewardFen || 500);
+    const paidRewardYuan = invite.paidRewardYuan || formatWentianMoneyFromFen(invite.paidRewardFen || 1000);
+    const shareText = getWentianInviteShareText(invite);
+    const sharePreview = escapeHtml(shareText).replace(/\n/g, "<br>");
     if (!account.loggedIn) {
       return `
       ${figBox("wt22-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
       ${wentianSimpleHeader("wt22", "邀请好友")}
       ${figBox("wt22-login-card", 16, 112, 358, 178, "", "border-radius:18px;background:linear-gradient(135deg,#d5ad42,#9f741d);box-shadow:0 12px 26px rgba(121,82,18,.18);")}
       ${figText("wt22-login-title", "登录后生成专属邀请码", 38, 154, 260, 22, "#fff", 900)}
-      ${figText("wt22-login-desc", "邀请好友注册、首付奖励和收益记录都会绑定到你的账号。", 38, 194, 292, 13, "#fff6df", 800, "left", "line-height:1.55;")}
+      ${figText("wt22-login-desc", "邀请余额会绑定到你的账号，可用于抵扣问天会员。", 38, 194, 292, 13, "#fff6df", 800, "left", "line-height:1.55;")}
       ${figBox("wt22-login-btn", 38, 234, 140, 38, "", "border-radius:19px;background:#fff;")}
       ${figButton("wt22-login-hit", 38, 234, 140, 38, 'data-route="screen-40"')}
       ${figText("wt22-login-text", "登录 / 注册", 38, 246, 140, 12, "#9b742e", 900, "center")}
@@ -9859,55 +9940,57 @@ function renderWentianPolishedScreen(screen) {
 
       ${figBox("wt22-rule", 16, 506, 358, 134, "", "border-radius:18px;background:#fff;box-shadow:0 8px 20px rgba(70,45,25,.07);")}
       ${figText("wt22-rule-title", "奖励规则", 42, 532, 110, 16, "#25211d", 900)}
-      ${figText("wt22-rule-desc", "好友注册成功：双方各得 2 次对话奖励。<br>好友首次付费：邀请人再得 10 次对话奖励。", 42, 564, 292, 13, "#756d63", 700, "left", "line-height:1.55;")}
+      ${figText("wt22-rule-desc", `好友注册成功：邀请人入账 ¥${registerRewardYuan}。<br>好友开通会员：邀请人再入账 ¥${paidRewardYuan}。<br>余额可抵扣问天会员。`, 42, 556, 292, 13, "#756d63", 700, "left", "line-height:1.55;")}
     `;
     }
     return `
-      ${figBox("wt22-bg", 0, 0, 390, 1120, "", "background:#fbf7ef;")}
+      ${figBox("wt22-bg", 0, 0, 390, 1100, "", "background:#fbf7ef;")}
       ${wentianSimpleHeader("wt22", "邀请好友", "刷新")}
       ${figButton("wt22-refresh-hit", 318, 38, 62, 54, 'data-action="wentian-invite-refresh"')}
       ${figBox("wt22-top", 16, 94, 358, 112, "", "border-radius:18px;background:linear-gradient(135deg,#d5ad42,#9f741d);box-shadow:0 12px 26px rgba(121,82,18,.18);")}
-      ${figText("wt22-num", String(invite.invitedCount || 0), 44, 118, 80, 36, "#fff", 900)}
-      ${figText("wt22-num-label", "邀请好友人数", 44, 162, 130, 13, "#fff6df", 800)}
-      ${figText("wt22-reward", `可用奖励 ${Number(invite.bonusRemaining ?? invite.bonusTalks ?? 0)} 次`, 214, 122, 120, 14, "#fff7df", 900, "right")}
-      ${figText("wt22-paid", `首付好友 ${Number(invite.paidCount || 0)} 人`, 214, 158, 120, 12, "#fff1cc", 700, "right")}
+      ${figText("wt22-wallet-label", "可用余额", 44, 118, 96, 13, "#fff6df", 800)}
+      ${figText("wt22-wallet", `¥${walletBalanceYuan}`, 44, 140, 150, 32, "#fff", 900)}
+      ${figText("wt22-invited", `邀请注册 ${Number(invite.invitedCount || 0)} 人`, 214, 124, 120, 13, "#fff7df", 900, "right")}
+      ${figText("wt22-paid", `会员购买 ${Number(invite.paidCount || 0)} 人`, 214, 160, 120, 12, "#fff1cc", 700, "right")}
 
-      ${figBox("wt22-code", 16, 226, 358, 172, "", "border-radius:18px;background:#fff;box-shadow:0 8px 20px rgba(70,45,25,.08);")}
-      ${figText("wt22-code-title", "我的邀请码", 38, 250, 100, 13, "#8f867b", 800)}
-      ${figText("wt22-code-num", formatWentianInviteCode(code), 38, 282, 314, 24, "#25211d", 900, "center")}
-      ${figBox("wt22-copy-code", 36, 328, 96, 38, "", "border-radius:19px;background:#d0a03a;")}
-      ${figButton("wt22-copy-code-hit", 36, 328, 96, 38, 'data-action="wentian-invite-copy-code"')}
-      ${figText("wt22-copy-code-text", "复制码", 36, 340, 96, 12, "#fff", 900, "center")}
-      ${figBox("wt22-copy-link", 146, 328, 96, 38, "", "border-radius:19px;background:#25211d;")}
-      ${figButton("wt22-copy-link-hit", 146, 328, 96, 38, 'data-action="wentian-invite-copy-link"')}
-      ${figText("wt22-copy-link-text", "复制链接", 146, 340, 96, 12, "#fff", 900, "center")}
-      ${figBox("wt22-share", 256, 328, 96, 38, "", "border-radius:19px;background:#fff7ec;border:1px solid #ead9bd;")}
-      ${figButton("wt22-share-hit", 256, 328, 96, 38, 'data-action="wentian-invite-share"')}
-      ${figText("wt22-share-text", "系统分享", 256, 340, 96, 12, "#9b742e", 900, "center")}
+      ${figBox("wt22-share-card", 16, 226, 358, 236, "", "border-radius:18px;background:#fff;box-shadow:0 8px 20px rgba(70,45,25,.08);")}
+      ${figText("wt22-share-title", "分享文案", 38, 250, 100, 14, "#25211d", 900)}
+      ${figBox("wt22-share-preview", 36, 280, 318, 100, "", "border-radius:12px;background:#fff8ec;border:1px solid #ead9bd;")}
+      ${figText("wt22-share-copy", sharePreview, 52, 294, 286, 13, "#756d63", 700, "left", "line-height:1.45;")}
+      ${figBox("wt22-copy-text", 36, 412, 96, 38, "", "border-radius:19px;background:#d0a03a;")}
+      ${figButton("wt22-copy-text-hit", 36, 412, 96, 38, 'data-action="wentian-invite-copy-text"')}
+      ${figText("wt22-copy-text-label", "复制文案", 36, 424, 96, 12, "#fff", 900, "center")}
+      ${figBox("wt22-copy-link", 146, 412, 96, 38, "", "border-radius:19px;background:#25211d;")}
+      ${figButton("wt22-copy-link-hit", 146, 412, 96, 38, 'data-action="wentian-invite-copy-link"')}
+      ${figText("wt22-copy-link-text", "复制链接", 146, 424, 96, 12, "#fff", 900, "center")}
+      ${figBox("wt22-share", 256, 412, 96, 38, "", "border-radius:19px;background:#fff7ec;border:1px solid #ead9bd;")}
+      ${figButton("wt22-share-hit", 256, 412, 96, 38, 'data-action="wentian-invite-share"')}
+      ${figText("wt22-share-text", "系统分享", 256, 424, 96, 12, "#9b742e", 900, "center")}
 
-      ${figBox("wt22-bind", 16, 422, 358, 140, "", "border-radius:18px;background:#fff;box-shadow:0 8px 20px rgba(70,45,25,.08);")}
-      ${figText("wt22-bind-title", "绑定好友邀请码", 38, 446, 140, 15, "#25211d", 900)}
-      ${figText("wt22-bind-desc", "收到好友邀请码时填在这里；登录后每个账号只绑定一次。", 38, 472, 286, 12, "#8f867b", 700)}
-      <input id="wentian-invite-bind-input" class="wentian-invite-input" style="left:38px;top:506px;width:200px" value="${escapeHtml(pendingCode || "")}" placeholder="输入邀请码">
-      ${figBox("wt22-bind-btn", 252, 506, 88, 38, "", "border-radius:19px;background:#b74e39;")}
-      ${figButton("wt22-bind-hit", 252, 506, 88, 38, 'data-action="wentian-invite-bind"')}
-      ${figText("wt22-bind-text", "绑定", 252, 518, 88, 12, "#fff", 900, "center")}
-      <div id="wentian-invite-status" class="wentian-invite-status" style="left:38px;top:574px;width:314px" data-tone="${wentianInviteState.error ? "error" : ""}">${escapeHtml(status)}</div>
+      ${figBox("wt22-bind", 16, 486, 358, 140, "", "border-radius:18px;background:#fff;box-shadow:0 8px 20px rgba(70,45,25,.08);")}
+      ${figText("wt22-bind-title", "绑定好友邀请码", 38, 510, 140, 15, "#25211d", 900)}
+      ${figText("wt22-bind-desc", "收到好友邀请码时填在这里；登录后每个账号只绑定一次。", 38, 536, 286, 12, "#8f867b", 700)}
+      <input id="wentian-invite-bind-input" class="wentian-invite-input" style="left:38px;top:570px;width:200px" value="${escapeHtml(pendingCode || "")}" placeholder="输入邀请码">
+      ${figBox("wt22-bind-btn", 252, 570, 88, 38, "", "border-radius:19px;background:#b74e39;")}
+      ${figButton("wt22-bind-hit", 252, 570, 88, 38, 'data-action="wentian-invite-bind"')}
+      ${figText("wt22-bind-text", "绑定", 252, 582, 88, 12, "#fff", 900, "center")}
+      <div id="wentian-invite-status" class="wentian-invite-status" style="left:38px;top:636px;width:314px" data-tone="${wentianInviteState.error ? "error" : ""}">${escapeHtml(status)}</div>
 
-      ${figBox("wt22-rule", 16, 618, 358, 134, "", "border-radius:18px;background:#fff;box-shadow:0 8px 20px rgba(70,45,25,.07);")}
-      ${figText("wt22-rule-title", "奖励规则", 42, 644, 110, 16, "#25211d", 900)}
-      ${figText("wt22-rule-desc", `好友注册成功：双方各得 ${invite.registerReward || 2} 次对话奖励。<br>好友首次付费：邀请人再得 ${invite.paidReward || 10} 次对话奖励。`, 42, 676, 292, 13, "#756d63", 700, "left", "line-height:1.55;")}
+      ${figBox("wt22-rule", 16, 672, 358, 128, "", "border-radius:18px;background:#fff;box-shadow:0 8px 20px rgba(70,45,25,.07);")}
+      ${figText("wt22-rule-title", "奖励规则", 42, 698, 110, 16, "#25211d", 900)}
+      ${figText("wt22-rule-desc", `好友注册成功：邀请人入账 ¥${registerRewardYuan}。<br>好友开通会员：邀请人再入账 ¥${paidRewardYuan}。<br>余额可抵扣问天会员。`, 42, 730, 292, 13, "#756d63", 700, "left", "line-height:1.55;")}
 
-      ${figBox("wt22-record", 16, 780, 358, 244, "", "border-radius:18px;background:#fff;box-shadow:0 8px 20px rgba(70,45,25,.07);")}
-      ${figText("wt22-record-title", "收益记录", 42, 806, 110, 16, "#25211d", 900)}
-      ${wentianInviteState.loading ? figText("wt22-loading", "正在读取邀请记录...", 42, 854, 260, 13, "#8f867b", 700) : records.length ? records.map((item, index) => {
-        const y = 848 + index * 48;
+      ${figBox("wt22-record", 16, 828, 358, 220, "", "border-radius:18px;background:#fff;box-shadow:0 8px 20px rgba(70,45,25,.07);")}
+      ${figText("wt22-record-title", "收益记录", 42, 854, 110, 16, "#25211d", 900)}
+      ${wentianInviteState.loading ? figText("wt22-loading", "正在读取邀请记录...", 42, 906, 260, 13, "#8f867b", 700) : records.length ? records.map((item, index) => {
+        const y = 896 + index * 44;
+        const rewardFen = normalizeWentianFen(item.rewardFen || ((invite.registerRewardFen || 500) + (item.paidAt ? (invite.paidRewardFen || 1000) : 0)));
         return `
           ${figText(`wt22-record-name-${index}`, escapeHtml(item.label || "好友账号"), 42, y, 138, 13, "#25211d", 800)}
           ${figText(`wt22-record-date-${index}`, escapeHtml(formatWentianMemberDate(item.joinedAt) || "已注册"), 42, y + 22, 138, 11, "#9a9289", 600)}
-          ${figText(`wt22-record-reward-${index}`, item.paidAt ? `+${invite.paidReward || 10} 次` : `+${invite.registerReward || 2} 次`, 262, y + 4, 72, 13, item.paidAt ? "#b74e39" : "#9b742e", 900, "right")}
+          ${figText(`wt22-record-reward-${index}`, `+¥${formatWentianMoneyFromFen(rewardFen)}`, 248, y + 4, 86, 13, item.paidAt ? "#b74e39" : "#9b742e", 900, "right")}
         `;
-      }).join("") : figText("wt22-empty", "暂无邀请记录，复制链接发给好友即可开始。", 42, 866, 272, 13, "#9a9289", 700)}
+      }).join("") : figText("wt22-empty", "暂无邀请记录，复制文案发给好友即可开始。", 42, 914, 272, 13, "#9a9289", 700)}
     `;
     return `
       ${figBox("wt22-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
@@ -9923,7 +10006,7 @@ function renderWentianPolishedScreen(screen) {
         return `
           ${figBox(`wt22-rule-${index}`, 16, y, 358, 94, "", "border-radius:12px;background:#fff;box-shadow:0 8px 20px rgba(70,45,25,.07);")}
           ${figText(`wt22-rule-title-${index}`, title, 42, y + 20, 110, 15, "#25211d", 800)}
-          ${figText(`wt22-rule-desc-${index}`, "好友注册后双方可获得对话次数奖励，完成付费后可继续返利。", 42, y + 50, 278, 13, "#756d63", 500, "left", "line-height:1.45;")}
+          ${figText(`wt22-rule-desc-${index}`, "好友注册入账 ¥5，开通会员再入账 ¥10，可抵扣会员。", 42, y + 50, 278, 13, "#756d63", 500, "left", "line-height:1.45;")}
         `;
       }).join("")}
       ${sourceAppBottomNav("藏宝阁", 780)}
@@ -9931,17 +10014,20 @@ function renderWentianPolishedScreen(screen) {
   }
   if (no === 23) {
     const invite = getWentianInviteSnapshot();
+    const walletBalanceYuan = invite.walletBalanceYuan || formatWentianMoneyFromFen(invite.walletBalanceFen);
+    const registerRewardYuan = invite.registerRewardYuan || formatWentianMoneyFromFen(invite.registerRewardFen || 500);
+    const paidRewardYuan = invite.paidRewardYuan || formatWentianMoneyFromFen(invite.paidRewardFen || 1000);
     return `
       ${figBox("wt23-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
       ${wentianSimpleHeader("wt23", "活动中心", "刷新")}
       ${figButton("wt23-refresh-hit", 318, 38, 62, 54, 'data-action="wentian-invite-refresh"')}
       ${figBox("wt23-progress", 16, 104, 358, 104, "", "border-radius:18px;background:linear-gradient(135deg,#d5ad42,#9f741d);box-shadow:0 12px 26px rgba(121,82,18,.16);")}
-      ${figText("wt23-count", `${Number(invite.invitedCount || 0)} 人`, 40, 132, 140, 26, "#fff", 900)}
-      ${figText("wt23-label", `可用奖励 ${Number(invite.bonusRemaining ?? invite.bonusTalks ?? 0)} 次`, 40, 170, 160, 13, "#fff7df", 800)}
+      ${figText("wt23-count", `¥${walletBalanceYuan}`, 40, 132, 140, 26, "#fff", 900)}
+      ${figText("wt23-label", `可用邀请余额 · 已邀 ${Number(invite.invitedCount || 0)} 人`, 40, 170, 190, 13, "#fff7df", 800)}
       ${figBox("wt23-go", 254, 132, 82, 42, "", "border-radius:21px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.3);")}
       ${figButton("wt23-go-hit", 254, 132, 82, 42, 'data-route="screen-22"')}
       ${figText("wt23-go-text", "去邀请", 254, 146, 82, 12, "#fff", 900, "center")}
-      ${[["邀请好友注册", `双方各得 ${invite.registerReward || 2} 次对话`, "#d8ab3c", "screen-22"], ["好友首次付费", `邀请人再得 ${invite.paidReward || 10} 次对话`, "#f0a229", "screen-22"], ["每日签到", "连续签到功能待开放", "#5fae95", "screen-23"]].map(([title, desc, color, route], index) => {
+      ${[["邀请好友注册", `邀请人入账 ¥${registerRewardYuan}`, "#d8ab3c", "screen-22"], ["好友开通会员", `邀请人再入账 ¥${paidRewardYuan}`, "#f0a229", "screen-22"], ["余额抵扣", "可用于支付问天会员", "#5fae95", "screen-33"]].map(([title, desc, color, route], index) => {
         const y = 250 + index * 118;
         return `
           ${figBox(`wt23-card-${index}`, 16, y, 358, 94, "", "border-radius:16px;background:#fff;box-shadow:0 8px 20px rgba(70,45,25,.07);")}
@@ -9957,7 +10043,7 @@ function renderWentianPolishedScreen(screen) {
     return `
       ${figBox("wt23-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
       ${wentianSimpleHeader("wt23", "活动中心")}
-      ${[["邀请好友注册", "邀请好友注册，双方均可获得对话次数奖励", "#d8ab3c"], ["邀请好友首次付费", "好友首次付费后，邀请人可获得额外次数", "#f0a229"], ["每日签到", "连续签到获取体验次数奖励", "#5fae95"]].map(([title, desc, color], index) => {
+      ${[["邀请好友注册", "好友注册后邀请人入账 ¥5", "#d8ab3c"], ["好友开通会员", "好友开通会员后邀请人再入账 ¥10", "#f0a229"], ["余额抵扣", "邀请余额可用于支付问天会员", "#5fae95"]].map(([title, desc, color], index) => {
         const y = 112 + index * 118;
         return `
           ${figBox(`wt23-card-${index}`, 16, y, 358, 94, "", "border-radius:12px;background:#fff;box-shadow:0 8px 20px rgba(70,45,25,.07);")}
@@ -9979,7 +10065,7 @@ function renderWentianPolishedScreen(screen) {
       ${figText("wt24-hero-label", "已邀请好友", 54, 168, 120, 13, "#fff7df", 700)}
       ${figBox("wt24-hero-badge", 246, 126, 82, 34, "", "border-radius:17px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.28);")}
       ${figText("wt24-hero-badge-text", "累计奖励 0", 246, 136, 82, 11, "#fff", 800, "center")}
-      ${figText("wt24-hero-copy", "邀请好友注册问天AI，双方都可获得对话次数奖励。", 54, 190, 250, 12, "#fff5dc", 600)}
+      ${figText("wt24-hero-copy", "邀请好友注册问天AI，奖励会入账为可抵扣余额。", 54, 190, 250, 12, "#fff5dc", 600)}
 
       ${figBox("wt24-code-card", 24, 240, 342, 130, "", "border-radius:14px;background:#fff;box-shadow:0 8px 20px rgba(70,45,25,.08);")}
       ${figText("wt24-code-title", "我的邀请码", 44, 262, 110, 14, "#7f766b", 700)}
@@ -9998,7 +10084,7 @@ function renderWentianPolishedScreen(screen) {
 
       ${figBox("wt24-reward", 24, 556, 342, 288, "", "border-radius:14px;background:#fff;box-shadow:0 8px 20px rgba(70,45,25,.08);")}
       ${figText("wt24-reward-title", "邀请奖励", 44, 580, 120, 16, "#25211d", 800)}
-      ${[["好友注册", "可获得：2 次对话", "立即到账"], ["邀请满 3 人", "额外获得：会员体验券", "阶段奖励"], ["邀请满 10 人", "额外获得：高级报告券", "进阶奖励"]].map(([title, desc, tag], index) => {
+      ${[["好友注册", "入账：¥5.00", "立即到账"], ["好友开通会员", "再入账：¥10.00", "会员奖励"], ["余额用途", "可抵扣问天会员", "支付抵扣"]].map(([title, desc, tag], index) => {
         const y = 620 + index * 66;
         return `
           ${figBox(`wt24-reward-dot-${index}`, 44, y + 8, 9, 9, "", "border-radius:5px;background:#d0a03a;")}
@@ -10010,8 +10096,8 @@ function renderWentianPolishedScreen(screen) {
       }).join("")}
 
       ${figBox("wt24-pay", 24, 868, 342, 118, "", "border-radius:14px;background:#fff;box-shadow:0 8px 20px rgba(70,45,25,.08);")}
-      ${figText("wt24-pay-title", "好友首次付费奖励", 44, 892, 150, 16, "#25211d", 800)}
-      ${figText("wt24-pay-desc", "好友完成首次付费后，邀请人可额外获得 10 次对话。", 44, 926, 238, 13, "#756d63", 500, "left", "line-height:1.45;")}
+      ${figText("wt24-pay-title", "好友开通会员奖励", 44, 892, 150, 16, "#25211d", 800)}
+      ${figText("wt24-pay-desc", "好友开通会员后，邀请人可额外入账 ¥10.00。", 44, 926, 238, 13, "#756d63", 500, "left", "line-height:1.45;")}
       ${figBox("wt24-pay-badge", 284, 906, 52, 52, "", "border-radius:26px;background:#fff0d6;")}
       ${figText("wt24-pay-badge-text", "+10", 284, 922, 52, 16, "#bd8624", 900, "center")}
 
@@ -10130,10 +10216,9 @@ function renderWentianPolishedScreen(screen) {
     const payload = getWentianSharePayload();
     const previewText = escapeHtml(payload.text).replace(/\n/g, "<br>");
     const shareTargets = [
-      ["微信好友", "微", "wentian-share-wechat"],
-      ["朋友圈", "圈", "wentian-share-moments"],
-      ["系统分享", "享", "wentian-share-system"],
-      ["邮件", "邮", "wentian-share-mail"],
+      ["复制文案", "wentian-share-text", "#d0a03a", "#fff"],
+      ["复制链接", "wentian-share-link", "#25211d", "#fff"],
+      ["系统分享", "wentian-share-system", "#fff7ec", "#9b742e"],
     ];
     return `
       ${sourceMineScreen(screen)}
@@ -10142,15 +10227,15 @@ function renderWentianPolishedScreen(screen) {
       ${figText("wt34-title", "分享问天AI", 0, 462, 390, 18, "#25211d", 900, "center")}
       ${figText("wt34-close", "×", 334, 460, 28, 24, "#25211d", 500, "center")}
       ${figButton("wt34-close-hit", 322, 450, 52, 46, 'data-route="screen-31"')}
-      ${figBox("wt34-copy", 28, 506, 334, 92, "", "border-radius:12px;background:#fffaf2;border:1px solid #ead9bd;")}
-      ${figText("wt34-copy-text", previewText, 44, 524, 302, 13, "#756d63", 700, "left", "line-height:1.45;")}
-      ${shareTargets.map(([label, icon, action], index) => {
-        const x = 38 + index * 82;
+      ${figText("wt34-copy-label", "文案和链接", 44, 500, 120, 13, "#8f867b", 800)}
+      ${figBox("wt34-copy", 28, 526, 334, 92, "", "border-radius:12px;background:#fffaf2;border:1px solid #ead9bd;")}
+      ${figText("wt34-copy-text", previewText, 44, 544, 302, 13, "#756d63", 700, "left", "line-height:1.45;")}
+      ${shareTargets.map(([label, action, bg, color], index) => {
+        const x = 38 + index * 110;
         return `
-          ${figBox(`wt34-share-${index}`, x, 628, 50, 50, "", "border-radius:25px;background:#f7ebd4;")}
-          ${figButton(`wt34-share-hit-${index}`, x - 7, 620, 64, 78, `data-action="${action}"`)}
-          ${figText(`wt34-share-icon-${index}`, icon, x, 644, 50, 14, "#bd8624", 900, "center")}
-          ${figText(`wt34-share-label-${index}`, label, x - 12, 688, 74, 12, "#756d63", 800, "center")}
+          ${figBox(`wt34-share-${index}`, x, 646, 96, 42, "", `border-radius:21px;background:${bg};border:${index === 2 ? "1px solid #ead9bd" : "0"};`)}
+          ${figButton(`wt34-share-hit-${index}`, x, 646, 96, 42, `data-action="${action}"`)}
+          ${figText(`wt34-share-label-${index}`, label, x, 659, 96, 12, color, 900, "center")}
         `;
       }).join("")}
       <div id="wentian-share-status" class="wentian-invite-status" style="left:42px;top:724px;width:306px;text-align:center" data-tone="">${escapeHtml(wentianInviteState.status || "")}</div>
@@ -10164,14 +10249,14 @@ function renderWentianPolishedScreen(screen) {
       ${figText("wt34-title", "分享问天AI", 0, 632, 390, 18, "#25211d", 800, "center")}
       ${figText("wt34-close", "×", 334, 630, 28, 24, "#25211d", 400, "center")}
       ${figButton("wt34-close-hit", 322, 620, 52, 46, 'data-route="screen-31"')}
-      ${figText("wt34-login-desc", "登录后生成专属邀请链接，好友注册和首付奖励会自动记到你的账号。", 42, 682, 306, 13, "#756d63", 700, "center", "line-height:1.55;")}
+      ${figText("wt34-login-desc", "登录后生成专属邀请链接，好友注册和会员奖励会自动记到你的账号。", 42, 682, 306, 13, "#756d63", 700, "center", "line-height:1.55;")}
       ${figBox("wt34-login-btn", 78, 748, 234, 46, "", "border-radius:23px;background:#b74e39;")}
       ${figButton("wt34-login-hit", 78, 748, 234, 46, 'data-route="screen-40"')}
       ${figText("wt34-login-text", "登录 / 注册", 78, 763, 234, 12, "#fff", 900, "center")}
     `;
     }
     const invite = getWentianInviteSnapshot();
-    const shareText = `推荐你使用问天AI，注册填写邀请码 ${invite.inviteCode} 可领取体验次数。${invite.inviteLink}`;
+    const shareText = getWentianInviteShareText(invite);
     return `
       ${sourceMineScreen(screen)}
       ${figBox("wt34-overlay", 0, 0, 390, 844, "", "background:rgba(0,0,0,.3);")}
@@ -11606,6 +11691,14 @@ document.addEventListener("click", (event) => {
     shareWentianApp("system");
     return;
   }
+  if (action === "wentian-share-text") {
+    shareWentianApp("text");
+    return;
+  }
+  if (action === "wentian-share-link") {
+    shareWentianApp("link");
+    return;
+  }
   if (action === "wentian-share-mail") {
     shareWentianApp("mail");
     return;
@@ -11613,6 +11706,11 @@ document.addEventListener("click", (event) => {
   if (action === "wentian-invite-copy-code") {
     if (!requireWentianInviteAccount()) return;
     copyWentianText(getWentianInviteSnapshot().inviteCode, "邀请码已复制");
+    return;
+  }
+  if (action === "wentian-invite-copy-text") {
+    if (!requireWentianInviteAccount()) return;
+    copyWentianText(getWentianInviteShareText(), "分享文案已复制");
     return;
   }
   if (action === "wentian-invite-copy-link") {
