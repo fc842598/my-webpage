@@ -1441,6 +1441,32 @@ function getWentianSavedChart() {
   }
 }
 
+function hasWentianCompletedChartState(chartState) {
+  if (!chartState?.chartData) return false;
+  if (chartState.form?.isDefault) return false;
+  if (chartState.chart || chartState.form?.datetime || chartState.createdAt || chartState.updatedAt) return true;
+  const birthDate = chartState.chartData.birthDate || chartState.chartData.solarTime || "";
+  return Boolean(birthDate && birthDate !== WENTIAN_XU_CHART_BASE.birthDate);
+}
+
+function getWentianStoredChatArchive() {
+  const archives = readWentianArchives().map(normalizeWentianArchive).filter(hasWentianCompletedChartState);
+  if (!archives.length) return null;
+  const selectedId = getWentianSelectedArchiveId(archives);
+  return archives.find((item) => item.id === selectedId) || archives[0];
+}
+
+function ensureWentianChartBeforeDirectChat() {
+  if (hasWentianCompletedChartState(getWentianSavedChart())) return true;
+  const archive = getWentianStoredChatArchive();
+  return archive ? applyWentianArchiveToCurrent(archive) : false;
+}
+
+function openWentianDirectXuChat() {
+  clearWentianXuChatContext();
+  navigate(ensureWentianChartBeforeDirectChat() ? "screen-4" : "screen-26");
+}
+
 function readWentianArchives() {
   try {
     const raw = localStorage.getItem(WENTIAN_ARCHIVES_STORAGE_KEY);
@@ -11465,10 +11491,14 @@ document.addEventListener("click", (event) => {
   }
   const routeButton = event.target.closest("[data-route]");
   if (routeButton) {
-    if (routeButton.dataset.route !== "screen-17") setLiuyaoCasterModalOpen(false);
-    if (liuyaoTossAnimation?.active && routeButton.dataset.route !== "screen-17") clearLiuyaoTossAnimation();
-    if (routeButton.dataset.route === "screen-4") clearWentianXuChatContext();
-    navigate(routeButton.dataset.route);
+    const route = routeButton.dataset.route;
+    if (route !== "screen-17") setLiuyaoCasterModalOpen(false);
+    if (liuyaoTossAnimation?.active && route !== "screen-17") clearLiuyaoTossAnimation();
+    if (route === "screen-4") {
+      openWentianDirectXuChat();
+      return;
+    }
+    navigate(route);
     return;
   }
   const action = event.target.closest("[data-action]")?.dataset.action;
