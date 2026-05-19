@@ -71,7 +71,7 @@ const convertedScreens = [
 const convertedByNo = new Map(convertedScreens.map((screen) => [screen.no, screen]));
 
 const screenFlowHotspots = {
-  1: [[286, 24, 86, 52, "screen-26"], [18, 130, 354, 274, "screen-4"], [18, 425, 354, 96, "screen-10"], [18, 534, 354, 96, "screen-17"], [18, 643, 354, 96, "screen-42"], [18, 752, 354, 96, "screen-46"], [18, 929, 354, 104, "screen-22"], [18, 1053, 354, 104, "screen-23"], [12, 1189, 76, 83, "screen-1"], [109, 1189, 76, 83, "screen-25"], [207, 1189, 76, 83, "screen-3"], [304, 1189, 76, 83, "screen-31"]],
+  1: [[286, 24, 86, 52, "screen-26"], [18, 130, 354, 274, "screen-4"], [18, 425, 354, 96, "hepan"], [18, 534, 354, 96, "screen-17"], [18, 643, 354, 96, "screen-42"], [18, 752, 354, 96, "screen-46"], [18, 929, 354, 104, "screen-22"], [18, 1053, 354, 104, "screen-23"], [12, 1189, 76, 83, "screen-1"], [109, 1189, 76, 83, "screen-25"], [207, 1189, 76, 83, "screen-3"], [304, 1189, 76, 83, "screen-31"]],
   2: [[18, 282, 354, 190, "screen-4"], [18, 487, 354, 190, "screen-4"], [18, 692, 354, 175, "screen-4"]],
   3: [[285, 128, 82, 28, "screen-5"], [16, 164, 358, 84, "screen-5"], [16, 305, 358, 116, "screen-4"], [12, 761, 76, 72, "screen-1"], [109, 761, 76, 72, "screen-25"], [207, 761, 76, 72, "screen-3"], [304, 761, 76, 72, "screen-31"]],
   4: [[18, 24, 44, 56, "screen-3"], [334, 24, 38, 56, "screen-9"], [252, 26, 78, 36, "screen-5"]],
@@ -81,7 +81,7 @@ const screenFlowHotspots = {
   8: [[18, 44, 48, 48, "screen-7"]],
   9: [[18, 44, 48, 48, "screen-4"], [278, 44, 84, 48, "screen-4"], [20, 118, 350, 72, "screen-7"], [20, 198, 350, 72, "screen-7"], [20, 278, 350, 72, "screen-7"]],
   10: [[18, 44, 48, 48, "screen-1"], [24, 165, 342, 90, "screen-11"], [24, 270, 342, 90, "screen-11"], [24, 375, 342, 90, "screen-11"]],
-  11: [[18, 44, 48, 48, "screen-10"]],
+  11: [[18, 44, 48, 48, "screen-1"]],
   12: [[18, 44, 48, 48, "screen-4"], [22, 150, 346, 72, "screen-4"], [116, 690, 158, 54, "screen-4"]],
   13: [[18, 44, 48, 48, "screen-1"], [82, 620, 226, 70, "screen-14"]],
   14: [[65, 570, 260, 90, "screen-15"]],
@@ -3006,6 +3006,21 @@ function validateWentianHepanPair(left, right) {
 function getWentianHepanValidation(archives = getWentianArchiveList(), ids = getWentianHepanSelectedIds(archives)) {
   const pair = ids.map((id) => archives.find((archive) => archive.id === id)).filter(Boolean);
   return validateWentianHepanPair(pair[0], pair[1]);
+}
+
+function getWentianHepanEntryRoute() {
+  const archives = getWentianArchiveList();
+  let savedIds = null;
+  try {
+    const raw = localStorage.getItem(WENTIAN_HEPAN_SELECTION_KEY);
+    savedIds = raw ? JSON.parse(raw) : null;
+  } catch (_err) {
+    savedIds = null;
+  }
+  if (!Array.isArray(savedIds) || savedIds.length < 2) return "screen-11";
+  const archiveIds = new Set(archives.map((archive) => archive.id));
+  const ids = savedIds.filter((id) => archiveIds.has(id)).slice(0, 2);
+  return getWentianHepanValidation(archives, ids).ok ? "screen-49" : "screen-11";
 }
 
 function getWentianFirstValidHepanPair(archives) {
@@ -9186,7 +9201,7 @@ function sourceDashboardHomeScreen() {
     ${figBox("source-1-master-go", 278, 356, 72, 38, "", "border-radius:19px;background:#c08a2c;")}
     ${figText("source-1-master-go-text", "去问他", 286, 367, 56, 13, "#fff", 700, "center")}
 
-    ${[["合盘分析", "命理相合，缘分几许", "01-feature-hepan.png", "screen-10", 438], ["六爻占卜", "铜钱起卦，纳甲解卦", "01-feature-gua.png", "screen-17", 547], ["阳宅地脉", "罗盘九宫，安位解读", "01-feature-gua.png", "screen-42", 656], ["六壬法", "农历月日时，即刻起课", "01-feature-gua.png", "screen-46", 765]].map(([title, sub, icon, route, y], index) => `
+    ${[["合盘分析", "命理相合，缘分几许", "01-feature-hepan.png", "hepan", 438], ["六爻占卜", "铜钱起卦，纳甲解卦", "01-feature-gua.png", "screen-17", 547], ["阳宅地脉", "罗盘九宫，安位解读", "01-feature-gua.png", "screen-42", 656], ["六壬法", "农历月日时，即刻起课", "01-feature-gua.png", "screen-46", 765]].map(([title, sub, icon, route, y], index) => `
       ${figBox(`source-1-feature-${index}`, 18, y, 354, 96, "converted-card", "border-radius:14px;box-shadow:0 8px 20px rgba(70,45,25,.1);background:#fffdfb;")}
       ${figText(`source-1-feature-title-${index}`, title, 36, y + 30, 150, 21, "#25221f", 800)}
       ${figText(`source-1-feature-sub-${index}`, sub, 36, y + 58, 190, 14, "#969087", 500)}
@@ -9771,6 +9786,7 @@ function normalizeRoute(route) {
 
 function resolveRoute(route) {
   const clean = normalizeRoute(route).replace(/^#/, "");
+  if (clean === "hepan" || clean === "10" || clean === "screen-10") return getWentianHepanEntryRoute();
   return routeAliases[clean] || clean || "screen-1";
 }
 
