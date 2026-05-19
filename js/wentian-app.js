@@ -3815,6 +3815,13 @@ const WENTIAN_I18N_EN_EXTRA = {
   "在线投币": "Coin Cast",
   "手动起卦": "Manual",
   "卦已成": "Hexagram Ready",
+  "真实铜钱录入": "Real Coin Entry",
+  "待录入": "Pending",
+  "可直接选结果，也可逐枚点正反": "Pick a result directly, or tap each coin face.",
+  "快捷记录当前爻": "Quick record current line",
+  "重选当前爻": "Redo Current Line",
+  "重选": "Redo",
+  "现实中每次抛三枚铜钱后，只录当前这一爻；可直接选结果，也可逐枚点正反。": "After tossing three real coins, record only the current line. Pick the result directly or tap each coin face.",
   "手动点每一爻切换：少阳 → 少阴 → 老阳 → 老阴。": "Tap each line to cycle: young yang → young yin → old yang → old yin.",
   "每次投三枚铜钱，按初爻到上爻依次记录。": "Each cast uses three coins, recorded from first line upward.",
   "查看卦象解读": "Read Hexagram",
@@ -4537,6 +4544,15 @@ function translateWentianText(text, code = getWentianLanguageCode(), element = n
     if (liuyaoCastingStatus) return `Coins are turning. Line ${liuyaoCastingStatus[1]} lands after 1 second.`;
     const liuyaoLineValue = source.match(/^(6|7|8|9)\s*(少阳|少阴|老阳|老阴)(\s*[○×])?$/);
     if (liuyaoLineValue) return `${liuyaoLineValue[1]} ${translateWentianText(liuyaoLineValue[2], "en")}${liuyaoLineValue[3] || ""}`;
+    const liuyaoNowLine = source.match(/^现在录(.+)$/);
+    if (liuyaoNowLine) return `Recording ${translateWentianText(liuyaoNowLine[1], "en")}`;
+    const liuyaoFixLine = source.match(/^(.+)已录，可修正$/);
+    if (liuyaoFixLine) return `${translateWentianText(liuyaoFixLine[1], "en")} recorded. You can edit it.`;
+    const liuyaoCoinFaces = source.match(/^([6789])\s*·\s*([正反]{3})(?:\s*·\s*([○×])动)?$/);
+    if (liuyaoCoinFaces) {
+      const faces = liuyaoCoinFaces[2].split("").map((face) => face === "正" ? "H" : "T").join("");
+      return `${liuyaoCoinFaces[1]} · ${faces}${liuyaoCoinFaces[3] ? ` · moving ${liuyaoCoinFaces[3]}` : ""}`;
+    }
     const liuyaoHexNo = source.match(/^(.+)上(.+)下\s*·\s*第(\d+)卦$/);
     if (liuyaoHexNo) return `${translateWentianText(liuyaoHexNo[1], "en")} over ${translateWentianText(liuyaoHexNo[2], "en")} · Hexagram ${liuyaoHexNo[3]}`;
     const hepanArchiveCount = source.match(/^共\s*(\d+)\s*张档案，可滚动选择$/);
@@ -6978,6 +6994,16 @@ function setLiuyaoCasterModalOpen(open) {
   if (!liuyaoCastModalOpen) lockLiuyaoCasterScroll(false);
 }
 
+function refreshLiuyaoCastScreen(options = {}) {
+  const scrollTop = options.preserveScroll ? (window.scrollY || document.documentElement.scrollTop || 0) : 0;
+  navigate("screen-17", false);
+  if (options.preserveScroll) {
+    const restore = () => window.scrollTo(0, scrollTop);
+    window.requestAnimationFrame(restore);
+    window.setTimeout(restore, 0);
+  }
+}
+
 function normalizeLiuyaoCast(raw) {
   const value = Number(raw?.value);
   if (!LIUYAO_VALUES.includes(value)) return null;
@@ -7110,7 +7136,7 @@ function setLiuyaoMode(mode) {
   state.mode = mode === "manual" ? "manual" : "online";
   if (state.mode === "online") state.casts = state.casts.filter(Boolean);
   saveLiuyaoState();
-  navigate("screen-17", false);
+  refreshLiuyaoCastScreen({ preserveScroll: true });
 }
 
 function resetLiuyaoState() {
@@ -7177,6 +7203,15 @@ function makeLiuyaoManualCastFromCoins(coins) {
     manual: true,
     at: Date.now(),
   });
+}
+
+function getLiuyaoManualCoinsForValue(value) {
+  return ({
+    6: [2, 2, 2],
+    7: [3, 2, 2],
+    8: [3, 3, 2],
+    9: [3, 3, 3],
+  })[Number(value)]?.slice() || [3, 2, 2];
 }
 
 function setLiuyaoQuestionGateResult(result) {
@@ -7588,7 +7623,27 @@ async function cycleLiuyaoManualLine(index) {
   state.casts[index] = normalizeLiuyaoCast({ value: nextValue, manual: true, at: Date.now() });
   state.manualCoins = normalizeLiuyaoManualCoins(state.manualCoins, state.casts);
   saveLiuyaoState();
-  navigate("screen-17", false);
+  refreshLiuyaoCastScreen({ preserveScroll: true });
+  return true;
+}
+
+async function setLiuyaoManualValue(lineIndex, value) {
+  if (!(await ensureLiuyaoQuestionAllowed())) return false;
+  const line = Math.max(0, Math.min(5, Math.round(Number(lineIndex) || 0)));
+  const lineValue = Number(value);
+  if (!LIUYAO_VALUES.includes(lineValue)) return false;
+  clearLiuyaoTossAnimation();
+  setLiuyaoCasterModalOpen(false);
+  saveLiuyaoQuestionFromDom();
+  const state = getLiuyaoState();
+  state.mode = "manual";
+  while (state.casts.length < 6) state.casts.push(null);
+  state.manualCoins = normalizeLiuyaoManualCoins(state.manualCoins, state.casts);
+  const coins = getLiuyaoManualCoinsForValue(lineValue);
+  state.manualCoins[line] = coins;
+  state.casts[line] = normalizeLiuyaoCast({ value: lineValue, coins, manual: true, at: Date.now() });
+  saveLiuyaoState();
+  refreshLiuyaoCastScreen({ preserveScroll: true });
   return true;
 }
 
@@ -7610,7 +7665,7 @@ async function setLiuyaoManualCoin(lineIndex, coinIndex, face) {
   state.manualCoins[line] = row;
   state.casts[line] = makeLiuyaoManualCastFromCoins(row);
   saveLiuyaoState();
-  navigate("screen-17", false);
+  refreshLiuyaoCastScreen({ preserveScroll: true });
   return true;
 }
 
@@ -7624,7 +7679,7 @@ function clearLiuyaoManualLine(lineIndex) {
   state.manualCoins[line] = LIUYAO_MANUAL_EMPTY_COINS.slice();
   state.casts[line] = null;
   saveLiuyaoState();
-  navigate("screen-17", false);
+  refreshLiuyaoCastScreen({ preserveScroll: true });
 }
 
 async function showLiuyaoResultIfAllowed() {
@@ -7894,6 +7949,9 @@ function renderLiuyaoManualCoinInput(state, options = {}) {
   const casts = Array.from({ length: 6 }, (_, index) => normalizeLiuyaoCast(state.casts[index]));
   const nextIndex = casts.findIndex((cast) => !cast);
   const activeIndex = nextIndex >= 0 ? nextIndex : 5;
+  const activeCoins = getLiuyaoManualCoins(state, activeIndex);
+  const activeCast = casts[activeIndex];
+  const activeType = activeCast ? getLiuyaoLineType(activeCast.value) : null;
   const renderFaceButton = (lineIndex, coinIndex, value, current) => `
     <button
       type="button"
@@ -7905,40 +7963,63 @@ function renderLiuyaoManualCoinInput(state, options = {}) {
       ${disabled ? "disabled" : ""}
     >${getLiuyaoCoinFaceLabel(value)}</button>
   `;
+  const renderValueButton = (value) => {
+    const type = getLiuyaoLineType(value);
+    const coins = getLiuyaoManualCoinsForValue(value);
+    return `
+      <button
+        type="button"
+        class="liuyao-manual-value ${activeCast?.value === value ? "is-active" : ""}"
+        data-action="liuyao-manual-value"
+        data-line-index="${activeIndex}"
+        data-line-value="${value}"
+        ${disabled ? "disabled" : ""}
+      >
+        <strong>${escapeHtml(type.name)}</strong>
+        <span>${value} · ${coins.map(getLiuyaoCoinFaceLabel).join("")}${type.mark ? ` · ${type.mark}动` : ""}</span>
+      </button>
+    `;
+  };
   return `
     <div class="liuyao-manual-card ${disabled ? "is-disabled" : ""}">
       <div class="liuyao-manual-head">
         <div>
           <span>真实铜钱录入</span>
-          <strong>按初爻到上爻，逐爻填三枚铜钱</strong>
+          <strong>${activeCast ? `${LIUYAO_LINE_LABELS[activeIndex]}已录，可修正` : `现在录${LIUYAO_LINE_LABELS[activeIndex]}`}</strong>
         </div>
         <em>${getLiuyaoProgress(state)}/6</em>
       </div>
-      <p>现实中每次抛三枚铜钱，把每枚铜钱的正反录到对应爻位；三枚选满后自动生成少阳、少阴、老阳或老阴。</p>
-      <div class="liuyao-manual-lines">
-        ${Array.from({ length: 6 }, (_, lineIndex) => {
-          const coins = getLiuyaoManualCoins(state, lineIndex);
-          const cast = casts[lineIndex];
+      <p>现实中每次抛三枚铜钱后，只录当前这一爻；可直接选结果，也可逐枚点正反。</p>
+      <div class="liuyao-manual-current ${activeCast ? "is-complete" : ""}">
+        <div class="liuyao-manual-line-title">
+          <strong>${LIUYAO_LINE_LABELS[activeIndex]}</strong>
+          <span>${activeType ? `${activeCast.value} ${activeType.name}${activeType.mark ? ` ${activeType.mark}` : ""}` : "待录入"}</span>
+        </div>
+        <div class="liuyao-manual-values" aria-label="快捷记录当前爻">
+          ${LIUYAO_VALUES.map(renderValueButton).join("")}
+        </div>
+        <div class="liuyao-manual-coins">
+          ${[0, 1, 2].map((coinIndex) => `
+            <div class="liuyao-manual-coin-pick">
+              <i>第 ${coinIndex + 1} 枚</i>
+              <span>
+                ${renderFaceButton(activeIndex, coinIndex, 3, activeCoins[coinIndex])}
+                ${renderFaceButton(activeIndex, coinIndex, 2, activeCoins[coinIndex])}
+              </span>
+            </div>
+          `).join("")}
+        </div>
+        <button type="button" class="liuyao-manual-clear" data-action="liuyao-manual-clear-line" data-line-index="${activeIndex}" ${disabled || !activeCoins.some(Boolean) ? "disabled" : ""}>重选当前爻</button>
+      </div>
+      <div class="liuyao-manual-summary" aria-label="六爻录入进度">
+        ${casts.map((cast, lineIndex) => {
           const type = cast ? getLiuyaoLineType(cast.value) : null;
           return `
-            <div class="liuyao-manual-line ${cast ? "is-complete" : ""} ${lineIndex === activeIndex ? "is-next" : ""}">
-              <div class="liuyao-manual-line-title">
-                <strong>${LIUYAO_LINE_LABELS[lineIndex]}</strong>
-                <span>${type ? `${cast.value} ${type.name}${type.mark ? ` ${type.mark}` : ""}` : "选三枚铜钱"}</span>
-              </div>
-              <div class="liuyao-manual-coins">
-                ${[0, 1, 2].map((coinIndex) => `
-                  <div class="liuyao-manual-coin-pick">
-                    <i>第 ${coinIndex + 1} 枚</i>
-                    <span>
-                      ${renderFaceButton(lineIndex, coinIndex, 3, coins[coinIndex])}
-                      ${renderFaceButton(lineIndex, coinIndex, 2, coins[coinIndex])}
-                    </span>
-                  </div>
-                `).join("")}
-              </div>
-              <button type="button" class="liuyao-manual-clear" data-action="liuyao-manual-clear-line" data-line-index="${lineIndex}" ${disabled || !coins.some(Boolean) ? "disabled" : ""}>重选</button>
-            </div>
+            <span class="${cast ? "is-complete" : ""} ${lineIndex === activeIndex ? "is-current" : ""}">
+              <b>${LIUYAO_LINE_LABELS[lineIndex]}</b>
+              <em>${type ? `${cast.value} ${type.name}` : "未录"}</em>
+              ${cast && !disabled ? `<button type="button" data-action="liuyao-manual-clear-line" data-line-index="${lineIndex}">重选</button>` : ""}
+            </span>
           `;
         }).join("")}
       </div>
@@ -11608,6 +11689,13 @@ document.addEventListener("click", (event) => {
   }
   if (earlyAction === "liuyao-toss-all") {
     tossLiuyaoLine(true);
+    return;
+  }
+  if (earlyAction === "liuyao-manual-value") {
+    setLiuyaoManualValue(
+      Number(earlyActionTarget.dataset.lineIndex || 0),
+      Number(earlyActionTarget.dataset.lineValue || 0)
+    );
     return;
   }
   if (earlyAction === "liuyao-manual-coin") {

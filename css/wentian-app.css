@@ -4537,6 +4537,20 @@ html[data-wentian-language="en"] .liuren-orbit i {
   gap: 10px;
 }
 
+.liuyao-manual-current {
+  display: grid;
+  gap: 12px;
+  padding: 12px;
+  border: 1px solid rgba(194, 149, 60, .45);
+  border-radius: 16px;
+  background: #fffaf3;
+  box-shadow: inset 0 0 0 2px rgba(194, 149, 60, .08);
+}
+
+.liuyao-manual-current.is-complete {
+  background: #fffdf8;
+}
+
 .liuyao-manual-line {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
@@ -4574,6 +4588,48 @@ html[data-wentian-language="en"] .liuren-orbit i {
   color: #8f8173;
   font-size: 12px;
   font-weight: 900;
+}
+
+.liuyao-manual-values {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.liuyao-manual-value {
+  min-height: 54px;
+  padding: 8px;
+  border: 1px solid #ead9bd;
+  border-radius: 13px;
+  background: #fffdf8;
+  color: #201813;
+  text-align: left;
+}
+
+.liuyao-manual-value strong,
+.liuyao-manual-value span {
+  display: block;
+}
+
+.liuyao-manual-value strong {
+  font-size: 15px;
+  font-weight: 900;
+  line-height: 1.2;
+}
+
+.liuyao-manual-value span {
+  margin-top: 4px;
+  color: #8f8173;
+  font-size: 11px;
+  font-weight: 900;
+  line-height: 1.15;
+}
+
+.liuyao-manual-value.is-active {
+  border-color: #c2953c;
+  background: #fff1cf;
+  color: #8b5d1d;
+  box-shadow: inset 0 0 0 1px rgba(194, 149, 60, .16);
 }
 
 .liuyao-manual-coins {
@@ -4622,8 +4678,10 @@ html[data-wentian-language="en"] .liuren-orbit i {
 
 .liuyao-manual-clear {
   align-self: end;
-  width: 48px;
+  width: auto;
+  min-width: 48px;
   height: 30px;
+  padding: 0 10px;
   border: 1px solid #ead9bd;
   border-radius: 10px;
   background: #f6efe4;
@@ -4634,6 +4692,60 @@ html[data-wentian-language="en"] .liuren-orbit i {
 
 .liuyao-manual-card button:disabled {
   opacity: .48;
+}
+
+.liuyao-manual-summary {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.liuyao-manual-summary span {
+  min-width: 0;
+  padding: 8px;
+  border: 1px solid #eadfce;
+  border-radius: 12px;
+  background: #fffdf8;
+}
+
+.liuyao-manual-summary span.is-current {
+  border-color: rgba(194, 149, 60, .66);
+  background: #fff6df;
+}
+
+.liuyao-manual-summary span.is-complete {
+  background: #f6fbf5;
+}
+
+.liuyao-manual-summary b,
+.liuyao-manual-summary em {
+  display: block;
+}
+
+.liuyao-manual-summary b {
+  color: #201813;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.liuyao-manual-summary em {
+  margin-top: 3px;
+  color: #8f8173;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 800;
+}
+
+.liuyao-manual-summary button {
+  margin-top: 7px;
+  width: 100%;
+  height: 28px;
+  border: 1px solid #d9c59f;
+  border-radius: 9px;
+  background: #fffaf3;
+  color: #8b5d1d;
+  font-size: 11px;
+  font-weight: 900;
 }
 
 .liuyao-progress-card {
