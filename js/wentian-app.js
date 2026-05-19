@@ -71,7 +71,7 @@ const convertedScreens = [
 const convertedByNo = new Map(convertedScreens.map((screen) => [screen.no, screen]));
 
 const screenFlowHotspots = {
-  1: [[286, 24, 86, 52, "screen-26"], [18, 130, 354, 274, "screen-4"], [18, 425, 354, 96, "hepan"], [18, 534, 354, 96, "screen-17"], [18, 643, 354, 96, "screen-42"], [18, 752, 354, 96, "screen-46"], [18, 929, 354, 104, "screen-22"], [18, 1053, 354, 104, "screen-23"], [12, 1189, 76, 83, "screen-1"], [109, 1189, 76, 83, "screen-25"], [207, 1189, 76, 83, "screen-3"], [304, 1189, 76, 83, "screen-31"]],
+  1: [[286, 24, 86, 52, "screen-26"], [18, 130, 354, 274, "screen-4"], [18, 425, 354, 96, "hepan"], [18, 534, 354, 96, "screen-17"], [18, 643, 354, 96, "screen-42"], [18, 752, 354, 96, "screen-46"], [12, 897, 76, 83, "screen-1"], [109, 897, 76, 83, "screen-25"], [207, 897, 76, 83, "screen-3"], [304, 897, 76, 83, "screen-31"]],
   2: [[18, 282, 354, 190, "screen-4"], [18, 487, 354, 190, "screen-4"], [18, 692, 354, 175, "screen-4"]],
   3: [[285, 128, 82, 28, "screen-5"], [16, 164, 358, 84, "screen-5"], [16, 305, 358, 116, "screen-4"], [12, 761, 76, 72, "screen-1"], [109, 761, 76, 72, "screen-25"], [207, 761, 76, 72, "screen-3"], [304, 761, 76, 72, "screen-31"]],
   4: [[18, 24, 44, 56, "screen-3"], [334, 24, 38, 56, "screen-9"], [252, 26, 78, 36, "screen-5"]],
@@ -101,7 +101,7 @@ const screenFlowHotspots = {
   28: [[18, 44, 48, 48, "screen-31"], [42, 735, 306, 58, "screen-33"]],
   29: [[18, 44, 48, 48, "screen-31"], [22, 178, 346, 70, "screen-30"], [22, 257, 346, 70, "screen-30"], [22, 336, 346, 70, "screen-30"], [34, 738, 322, 58, "screen-30"]],
   30: [[18, 44, 48, 48, "screen-33"]],
-  31: [[336, 54, 42, 42, "screen-38"], [16, 126, 358, 96, "screen-40"], [16, 240, 111, 75, "screen-33"], [139, 240, 111, 75, "screen-33"], [262, 240, 111, 75, "screen-9"], [16, 330, 174, 60, "screen-33"], [200, 330, 174, 60, "screen-29"], [16, 400, 174, 60, "screen-27"], [200, 400, 174, 60, "screen-48"], [16, 491, 358, 61, "screen-22"], [16, 552, 358, 61, "screen-37"], [16, 629, 358, 61, "screen-34"], [16, 690, 358, 61, "screen-35"], [12, 762, 76, 72, "screen-1"], [109, 762, 76, 72, "screen-25"], [207, 762, 76, 72, "screen-3"], [304, 762, 76, 72, "screen-31"]],
+  31: [[336, 54, 42, 42, "screen-38"], [16, 126, 358, 96, "screen-40"], [16, 240, 111, 75, "screen-33"], [139, 240, 111, 75, "screen-33"], [262, 240, 111, 75, "screen-9"], [16, 330, 174, 60, "screen-33"], [200, 330, 174, 60, "screen-29"], [16, 400, 174, 60, "screen-27"], [200, 400, 174, 60, "screen-48"], [16, 491, 174, 66, "screen-22"], [200, 491, 174, 66, "screen-23"], [16, 566, 358, 61, "screen-37"], [16, 627, 358, 61, "screen-34"], [16, 688, 358, 61, "screen-35"], [12, 762, 76, 72, "screen-1"], [109, 762, 76, 72, "screen-25"], [207, 762, 76, 72, "screen-3"], [304, 762, 76, 72, "screen-31"]],
   32: [[18, 44, 48, 48, "screen-31"], [20, 94, 350, 56, "screen-39"], [20, 164, 350, 56, "screen-33"], [20, 236, 350, 56, "screen-40"], [20, 306, 350, 56, "screen-41"], [20, 376, 350, 56, "screen-37"], [20, 452, 350, 56, "screen-34"], [20, 520, 350, 56, "screen-35"], [20, 590, 350, 56, "screen-36"]],
   33: [[18, 44, 48, 48, "screen-31"]],
   34: [[18, 44, 48, 48, "screen-31"], [42, 735, 306, 58, "screen-22"]],
@@ -3620,6 +3620,9 @@ const WENTIAN_I18N = {
     "我的报告": "My Reports",
     "订单记录": "Orders",
     "邀请好友": "Invite Friends",
+    "活动中心": "Rewards Center",
+    "双方获得奖励": "Both earn rewards",
+    "任务与活动奖励": "Tasks and rewards",
     "分享问天AI": "Share Wentian AI",
     "联系我们": "Contact Us",
     "账户设置": "Account Settings",
@@ -3708,6 +3711,9 @@ const WENTIAN_I18N = {
     "设置密码": "設定密碼",
     "退出登录": "登出",
     "邀请好友": "邀請好友",
+    "活动中心": "活動中心",
+    "双方获得奖励": "雙方獲得獎勵",
+    "任务与活动奖励": "任務與活動獎勵",
     "分享问天AI": "分享問天AI",
     "联系我们": "聯絡我們",
     "我的报告": "我的報告",
@@ -6319,9 +6325,17 @@ function sourceMineScreen(screen) {
       ${figText(`source-31-quick-icon-text-${index}`, icon, x + 17, y + 21, 36, 14, "#b88c33", 800, "center")}
       ${figText(`source-31-quick-label-${index}`, label, x + 62, y + 21, 90, 16, "#26211c", 700)}
     `).join("")}
-    ${[["邀请好友", "0 人", 491], ["语言设置", languageLabel, 552], ["分享问天AI", "", 629], ["联系我们", "", 690]].map(([label, value, y], index) => `
+    ${[["♧", "邀请好友", "双方获得奖励", "screen-22", 16], ["▣", "活动中心", "任务与活动奖励", "screen-23", 200]].map(([icon, title, sub, route, x], index) => `
+      ${figBox(`source-31-more-${index}`, x, 491, 174, 66, "converted-card", "border-radius:12px;box-shadow:0 5px 14px rgba(74,55,32,.08);")}
+      ${figBox(`source-31-more-icon-${index}`, x + 14, 508, 32, 32, "", "border-radius:10px;background:#f6f2e9;")}
+      ${figText(`source-31-more-icon-text-${index}`, icon, x + 14, 516, 32, 12, "#b88c33", 900, "center")}
+      ${figText(`source-31-more-title-${index}`, title, x + 56, 505, 86, 15, "#26211c", 800)}
+      ${figText(`source-31-more-sub-${index}`, sub, x + 56, 529, 92, 11, "#8f857a", 600, "left", "white-space:nowrap;overflow:hidden;text-overflow:ellipsis;")}
+      ${figText(`source-31-more-arrow-${index}`, "›", x + 150, 513, 14, 18, "#aaa196", 600, "center")}
+    `).join("")}
+    ${[["语言设置", languageLabel, 566], ["分享问天AI", "", 627], ["联系我们", "", 688]].map(([label, value, y], index) => `
       ${figBox(`source-31-row-${index}`, 16, y, 358, 61, "converted-card", "border-radius:12px;box-shadow:0 5px 14px rgba(74,55,32,.08);")}
-      ${figText(`source-31-row-icon-${index}`, ["♧", "文", "⌯", "☏"][index], 34, y + 21, 24, 16, "#b88c33", 700, "center")}
+      ${figText(`source-31-row-icon-${index}`, ["文", "⌯", "☏"][index], 34, y + 21, 24, 16, "#b88c33", 700, "center")}
       ${figText(`source-31-row-label-${index}`, label, 68, y + 20, 140, 16, "#26211c", 600)}
       ${value ? figText(`source-31-row-value-${index}`, value, 274, y + 21, 60, 13, "#9b742e", 500, "right") : ""}
       ${figText(`source-31-row-arrow-${index}`, "›", 342, y + 18, 16, 20, "#aaa196", 500, "center")}
@@ -10170,7 +10184,7 @@ function sourceDashboardHomeScreen() {
   const member = getWentianMemberSnapshot();
   const memberLabel = member.isMember ? "会员" : (account.loggedIn ? "账号" : "登录/注册");
   return `
-    ${figBox("source-1-bg", 0, 0, 390, 1272, "", "background:linear-gradient(180deg,#fffdf8 0%,#fbf7ef 50%,#faf5ed 100%);")}
+    ${figBox("source-1-bg", 0, 0, 390, 986, "", "background:linear-gradient(180deg,#fffdf8 0%,#fbf7ef 50%,#faf5ed 100%);")}
     ${figBox("source-1-avatar", 18, 24, 44, 44, "", "border-radius:22px;background:#f4ead8;box-shadow:0 6px 16px rgba(188,142,59,.12);")}
     ${figBox("source-1-avatar-head", 33, 36, 12, 12, "", "border-radius:6px;background:#c58d25;")}
     ${figBox("source-1-avatar-body", 27, 52, 24, 13, "", "border-radius:12px 12px 5px 5px;background:#c58d25;")}
@@ -10203,15 +10217,7 @@ function sourceDashboardHomeScreen() {
       ${figImage(`source-1-feature-icon-${index}`, `../images/wentian-prototype-assets/${icon}`, 286, y + 10, 72, 76, "object-fit:contain;")}
       ${figButton(`source-1-feature-hit-${index}`, 18, y, 354, 96, `data-route="${route}"`)}
     `).join("")}
-    ${figText("source-1-more-title", "更多功能", 18, 892, 130, 22, "#25221f", 800)}
-    ${[["邀请好友", "邀请好友双方获得奖励", "01-extra-invite.png", "screen-22", 942], ["活动中心", "参与活动赢取丰厚奖励", "01-extra-activity.png", "screen-23", 1066]].map(([title, sub, icon, route, y], index) => `
-      ${figBox(`source-1-extra-${index}`, 18, y, 354, 104, "converted-card", "border-radius:14px;box-shadow:0 8px 20px rgba(70,45,25,.1);")}
-      ${figText(`source-1-extra-title-${index}`, title, 36, y + 31, 150, 21, "#25221f", 800)}
-      ${figText(`source-1-extra-sub-${index}`, sub, 36, y + 61, 210, 14, "#969087", 500)}
-      ${figImage(`source-1-extra-icon-${index}`, `../images/wentian-prototype-assets/${icon}`, 300, y + 36, 52, 50, "object-fit:contain;")}
-      ${figButton(`source-1-extra-hit-${index}`, 18, y, 354, 104, `data-route="${route}"`)}
-    `).join("")}
-    ${sourceAppBottomNav("首页", 1189)}
+    ${sourceAppBottomNav("首页", 897)}
   `;
 }
 
@@ -10660,7 +10666,7 @@ function renderConvertedScreen(no) {
     return figPhone(`screen-${screen.no}`, `${String(screen.no).padStart(2, "0")} 首页`, `
       ${sourceDashboardHomeScreen()}
       ${convertedFlowHotspots(screen)}
-    `, 1272, "converted source-screen no-status-shift", false);
+    `, 986, "converted source-screen no-status-shift", false);
   }
   if (screen.no === 2) {
     return figPhone(`screen-${screen.no}`, `${String(screen.no).padStart(2, "0")} ${screen.title}`, `
