@@ -3342,14 +3342,14 @@ const WENTIAN_I18N_EN_EXTRA = {
   "一句话写清楚所问": "Write one clear question",
   "一句话写清楚所问，例如：本月是否推进某个项目？": "Write one clear question, e.g. should I move this project forward this month?",
   "先写清一件事；空问、乱点、随便试，不起卦。": "Write one clear matter first. Empty, random, or test casts are blocked.",
-  "起卦前会先由大模型按“一事一占”审题。": "AI checks the question by the one-matter rule before casting.",
-  "正在请大模型审题，合格才起卦。": "AI is checking the question. Casting starts only if it passes.",
+  "起卦前会先按“一事一占”审题。": "The question is checked by the one-matter rule before casting.",
+  "正在审题，合格才起卦。": "Checking the question. Casting starts only if it passes.",
   "改好后再次起卦会重新审题。": "The next cast will re-check the revised question.",
   "请先写清楚要问的一件事。": "Write the one thing you want to ask first.",
   "一句话只问一件具体事情，再起卦。": "Ask one specific matter in one sentence before casting.",
   "问题还不够清楚，暂不起卦。": "The question is not clear enough. Casting is blocked.",
   "审题通过，可以起卦。": "Question approved. You may cast.",
-  "大模型审题暂时没接上，暂不允许起卦。": "AI question check is unavailable, so casting is blocked for now.",
+  "审题服务暂时没接上，已改用本地规则判断。": "Remote question check is unavailable, so local rules are used.",
   "请稍后再试。": "Try again shortly.",
   "起卦方式": "Casting Method",
   "在线投币": "Coin Cast",
@@ -6499,7 +6499,7 @@ function setLiuyaoQuestionGateResult(result) {
 
 function getLiuyaoQuestionGateMessage(state = getLiuyaoState()) {
   if (liuyaoQuestionGateLoading) {
-    return { tone: "loading", text: "正在请大模型审题，合格才起卦。" };
+    return { tone: "loading", text: "正在审题，合格才起卦。" };
   }
   const question = normalizeLiuyaoQuestion(state.question);
   const gate = normalizeLiuyaoQuestionGate(state.questionGate, question);
@@ -6507,7 +6507,7 @@ function getLiuyaoQuestionGateMessage(state = getLiuyaoState()) {
     return { tone: "hint", text: "先写清一件事；空问、乱点、随便试，不起卦。" };
   }
   if (!gate) {
-    return { tone: "hint", text: "起卦前会先由大模型按“一事一占”审题。" };
+    return { tone: "hint", text: "起卦前会先按“一事一占”审题。" };
   }
   if (gate.allowed) {
     return { tone: "ok", text: gate.reason || "审题通过，可以起卦。" };
@@ -6616,6 +6616,103 @@ function parseLiuyaoGateJson(text) {
   }
 }
 
+function shouldUseRemoteLiuyaoQuestionGate() {
+  return window.SITE_CONFIG?.liuyaoQuestionGateMode === "remote";
+}
+
+function firstLiuyaoMatch(text, patterns) {
+  for (const pattern of patterns) {
+    const match = text.match(pattern);
+    if (match) return match[1] || match[0];
+  }
+  return "";
+}
+
+function reviewLiuyaoQuestionLocally(question) {
+  const text = normalizeLiuyaoQuestion(question);
+  const compact = text.replace(/\s+/g, "");
+  if (!compact) {
+    return {
+      allowed: false,
+      reason: "请先写清楚要问的一件事。",
+      suggestion: "一句话只问一件具体事情，再起卦。",
+      labels: ["一事一占"],
+      retryable: true,
+    };
+  }
+  if (compact === LIUYAO_SAMPLE_QUESTION) {
+    return {
+      allowed: false,
+      reason: "样例问题不能直接起卦。",
+      suggestion: "请改成你自己当前要问的一件具体事。",
+      labels: ["样例问题"],
+      retryable: true,
+    };
+  }
+  if (compact.length < 6 || /^(测|测试|试试|随便|玩玩|娱乐|看看)$/.test(compact)) {
+    return {
+      allowed: false,
+      reason: "问题太短或像测试，不起卦。",
+      suggestion: "补上对象、时间和想看的结果。",
+      labels: ["问题过短"],
+      retryable: true,
+    };
+  }
+  if (/运势怎么样|整体运势|随便看看|帮我算算|什么都问|都可以/.test(compact)) {
+    return {
+      allowed: false,
+      reason: "问题太泛，暂不起卦。",
+      suggestion: "改成一件具体事，例如某次考试、某个项目或某段关系。",
+      labels: ["问题过泛"],
+      retryable: true,
+    };
+  }
+  const decisionCount = (compact.match(/能不能|能否|是否|会不会|可不可以|要不要|该不该|适不适合|有没有/g) || []).length;
+  if (decisionCount > 1 || /同时|另外|还有|顺便|以及|和.*都|或者.*还是/.test(compact)) {
+    return {
+      allowed: false,
+      reason: "一个问题里像是放了多件事，暂不起卦。",
+      suggestion: "拆成一个对象、一个时间、一个结果来问。",
+      labels: ["多事同占"],
+      retryable: true,
+    };
+  }
+  const time = firstLiuyaoMatch(compact, [
+    /(今天|明天|后天|本周|这周|下周|本月|这个月|下月|今年|近期|现在|当前|月底|年底)/,
+    /(\d{1,2}月\d{0,2}日?|\d{4}年|\d{1,2}号)/,
+  ]);
+  const object = firstLiuyaoMatch(compact, [
+    /(?:，|,|。|；|;)([\u4e00-\u9fa5A-Za-z0-9]{1,12}(?:考试|面试|考编|考公|考证|项目|工作|职位|offer|订单|合同|合作|生意|投资|房子|车|婚事|感情|复合|手术|治疗))/,
+    /(摩托车考试|驾照考试|科目[一二三四]考试|公务员考试|编制考试|证书考试)/,
+    /([\u4e00-\u9fa5A-Za-z0-9]{1,12}(?:考试|面试|考编|考公|考证|项目|工作|职位|offer|订单|合同|合作|生意|投资|房子|车|婚事|感情|复合|手术|治疗))/,
+    /(摩托车|驾照|公职|事业|财运|婚恋|对象|客户|学校|公司|岗位|证书)/,
+  ]);
+  const outcome = firstLiuyaoMatch(compact, [
+    /(能不能过|能否通过|是否通过|能过吗|能不能成|能否成功|会不会成|能不能上岸|能不能录取)/,
+    /(推进|通过|上岸|录取|成交|签约|复合|结婚|离职|入职|转岗|买入|卖出|获批|成功)/,
+  ]);
+  const labels = [];
+  if (object) labels.push(`对象（${object}）`);
+  if (time) labels.push(`时间（${time}）`);
+  if (outcome) labels.push(`结果（${outcome}）`);
+  const hasQuestionIntent = /(吗|么|能不能|能否|是否|会不会|可不可以|要不要|该不该|适不适合|有没有)/.test(compact);
+  if ((object && outcome) || (time && outcome && hasQuestionIntent) || (object && time && hasQuestionIntent)) {
+    return {
+      allowed: true,
+      reason: `问题具体到${labels.join("、") || "对象和结果"}，符合一事一占原则。`,
+      suggestion: "",
+      labels: ["本地审题", "一事一占"],
+    };
+  }
+  return {
+    allowed: false,
+    reason: "问题还不够具体，暂不起卦。",
+    suggestion: "建议补上对象、时间和想看的结果。",
+    labels: ["缺少要素"],
+    retryable: true,
+  };
+}
+
 async function reviewLiuyaoQuestionViaChat(question) {
   const reviewPrompt = [
     "你是六爻起卦前的审题员，只判断这个问题是否适合起卦，不解卦。",
@@ -6664,6 +6761,11 @@ async function ensureLiuyaoQuestionAllowed() {
     navigate("screen-17", false);
     return false;
   }
+  if (!shouldUseRemoteLiuyaoQuestionGate()) {
+    const localGate = setLiuyaoQuestionGateResult(reviewLiuyaoQuestionLocally(question));
+    navigate("screen-17", false);
+    return localGate.allowed;
+  }
 
   liuyaoQuestionGateLoading = true;
   navigate("screen-17", false);
@@ -6677,14 +6779,8 @@ async function ensureLiuyaoQuestionAllowed() {
     });
     return gate.allowed;
   } catch (_err) {
-    setLiuyaoQuestionGateResult({
-      allowed: false,
-      reason: "大模型审题暂时没接上，暂不允许起卦。",
-      suggestion: "请稍后再试。",
-      labels: ["审题失败"],
-      retryable: true,
-    });
-    return false;
+    const localGate = setLiuyaoQuestionGateResult(reviewLiuyaoQuestionLocally(question));
+    return localGate.allowed;
   } finally {
     liuyaoQuestionGateLoading = false;
     navigate("screen-17", false);

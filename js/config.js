@@ -31,6 +31,11 @@ const SITE_CONFIG = {
   // ── AI 后端地址 ───────────────────────────────────────────
   // 迁移 Vercel 后只需要替换这一处，例如：https://xxx.vercel.app
   aiBackendBase: "https://ai-piming-backend.vercel.app",
+
+  // ── 六爻审题方式 ─────────────────────────────────────────
+  // local：前端本地按“一事一占”判断，国内直连不依赖 Vercel/OpenAI
+  // remote：走 AI 后端审题，适合后端已放到国内可稳定访问时使用
+  liuyaoQuestionGateMode: "local",
 };
 
 window.SITE_CONFIG = SITE_CONFIG;
