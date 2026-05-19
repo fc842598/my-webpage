@@ -3269,6 +3269,16 @@ function getWentianArchivePersonKey(archive) {
   return [name, datetime, gender].filter(Boolean).join("|");
 }
 
+function getWentianArchiveIdentityKey(archive) {
+  const form = archive?.form || {};
+  const chartData = archive?.chartData || {};
+  const name = String(form.name || chartData.name || "").trim().replace(/\s+/g, "");
+  const gender = normalizeWentianArchiveGender(archive);
+  const genericNames = new Set(["命主", "默认", "客户", "男命", "女命"]);
+  if (!name || !gender || genericNames.has(name)) return "";
+  return `${name}|${gender}`;
+}
+
 function isSameWentianHepanPerson(left, right) {
   if (!left || !right) return false;
   if (left === right) return true;
@@ -3277,7 +3287,10 @@ function isSameWentianHepanPerson(left, right) {
   if (leftIds.some((id) => rightIds.has(id))) return true;
   const leftKey = getWentianArchivePersonKey(left);
   const rightKey = getWentianArchivePersonKey(right);
-  return Boolean(leftKey && rightKey && leftKey === rightKey);
+  if (leftKey && rightKey && leftKey === rightKey) return true;
+  const leftIdentityKey = getWentianArchiveIdentityKey(left);
+  const rightIdentityKey = getWentianArchiveIdentityKey(right);
+  return Boolean(leftIdentityKey && rightIdentityKey && leftIdentityKey === rightIdentityKey);
 }
 
 function validateWentianHepanPair(left, right) {
