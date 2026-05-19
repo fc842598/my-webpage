@@ -3228,11 +3228,15 @@
     const total = aiTasks.length || 7;
     const safeDone = Math.max(0, Math.min(done, total));
     const degrees = total ? (safeDone / total) * 360 : 0;
-    const isRunning = runningIndex >= 0 && safeDone < total;
+    const isGenerating = runningIndex >= 0 && safeDone < total;
     const isComplete = safeDone >= total;
     document.querySelectorAll('[data-decode-all]').forEach((button) => {
+      const isRunning = button.classList.contains('is-running') && isGenerating;
+      const hasProgress = safeDone > 0 || isRunning || isComplete;
       button.style.setProperty('--decode-progress', `${degrees}deg`);
-      button.classList.toggle('has-progress', safeDone > 0 || isRunning);
+      button.dataset.decodeDone = String(safeDone);
+      button.dataset.decodeTotal = String(total);
+      button.classList.toggle('has-progress', hasProgress);
       button.classList.toggle('is-complete', isComplete);
       button.setAttribute('aria-label', `${stateText}，已完成 ${safeDone}/${total} 个模块`);
       const progressLabel = button.querySelector('[data-decode-progress-label]');
@@ -3850,6 +3854,23 @@
         const sub = button.querySelector('[data-decode-sub]');
         if (main) main.textContent = '生成';
         if (sub) sub.textContent = '中';
+      } else {
+        const done = Number(button.dataset.decodeDone) || 0;
+        const total = Number(button.dataset.decodeTotal) || aiTasks.length || 7;
+        const main = button.querySelector('[data-decode-main]');
+        const sub = button.querySelector('[data-decode-sub]');
+        if (!done) {
+          button.style.setProperty('--decode-progress', '0deg');
+          button.classList.remove('has-progress', 'is-complete');
+          button.setAttribute('aria-label', '总批命');
+          if (main) main.textContent = '总批';
+          if (sub) sub.textContent = '命';
+          const progressLabel = button.querySelector('[data-decode-progress-label]');
+          if (progressLabel) progressLabel.textContent = `0/${total}`;
+        } else if (done < total) {
+          if (main) main.textContent = '总批';
+          if (sub) sub.textContent = '命';
+        }
       }
     });
   }

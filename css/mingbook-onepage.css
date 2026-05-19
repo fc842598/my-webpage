@@ -1832,7 +1832,9 @@ body.mbp-auth-open {
   -webkit-mask: radial-gradient(circle, transparent 0 58%, #000 60% 72%, transparent 74% 100%);
   mask: radial-gradient(circle, transparent 0 58%, #000 60% 72%, transparent 74% 100%);
   filter: drop-shadow(0 0 9px rgba(241, 212, 125, .28));
-  transition: background .42s ease, filter .42s ease;
+  opacity: 0;
+  visibility: hidden;
+  transition: background .42s ease, filter .42s ease, opacity .24s ease, visibility .24s ease;
   pointer-events: none;
 }
 
@@ -1846,6 +1848,16 @@ body.mbp-auth-open {
 
 .mbp-report-action-bar button.is-running {
   opacity: 1;
+}
+
+.mbp-report-action-bar button.has-progress .mbp-decode-progress-ring,
+.mbp-report-action-bar button.has-progress .mbp-decode-progress-label,
+.mbp-report-action-bar button.is-running .mbp-decode-progress-ring,
+.mbp-report-action-bar button.is-running .mbp-decode-progress-label,
+.mbp-report-action-bar button.is-complete .mbp-decode-progress-ring,
+.mbp-report-action-bar button.is-complete .mbp-decode-progress-label {
+  opacity: 1;
+  visibility: visible;
 }
 
 .mbp-report-action-bar button.is-running .mbp-decode-progress-ring {
@@ -1886,7 +1898,8 @@ body.mbp-auth-open {
   font-weight: 900;
   letter-spacing: .05em;
   line-height: 1;
-  opacity: .86;
+  opacity: 0;
+  visibility: hidden;
 }
 
 .mbp-report-action-bar button:disabled,
