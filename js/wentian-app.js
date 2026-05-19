@@ -2461,6 +2461,23 @@ function getWentianGeneratedModuleCount() {
   return WENTIAN_CHART_AI_TASKS.filter((task) => !!wentianChartAiState.results?.[task.module]).length;
 }
 
+function getWentianChartAiPdfReadiness() {
+  syncWentianChartAiStateFromStorage();
+  const doneCount = getWentianGeneratedModuleCount();
+  const missingModules = WENTIAN_CHART_AI_TASKS.length - doneCount;
+  const curveReady = !!wentianChartAiState.curveGenerated;
+  const ready = missingModules <= 0 && curveReady && wentianChartAiState.status !== "running";
+  const missingParts = [];
+  if (missingModules > 0) missingParts.push(`${missingModules}个模块`);
+  if (!curveReady) missingParts.push("人生曲线");
+  if (wentianChartAiState.status === "running") missingParts.push("当前生成任务");
+  return {
+    ready,
+    doneCount,
+    missingText: missingParts.join("、"),
+  };
+}
+
 function getWentianAiTask(moduleKey) {
   return WENTIAN_CHART_AI_TASKS.find((task) => task.module === moduleKey);
 }
@@ -2970,6 +2987,11 @@ async function downloadWentianMingbookPdf() {
   const saved = getWentianDisplayChartState() || getWentianSavedChart() || getWentianFallbackChartState();
   const btn = view.querySelector('[data-action="wentian-open-mingbook-onepage"]');
   const originalText = btn?.textContent || translateWentianText("下载PDF");
+  const pdfReadiness = getWentianChartAiPdfReadiness();
+  if (!pdfReadiness.ready) {
+    setWentianMobilePdfStatus(`命盘解读完成后才能下载PDF，还差${pdfReadiness.missingText || "解读内容"}。`, "error");
+    return;
+  }
   if (btn) {
     btn.disabled = true;
     btn.textContent = translateWentianText("正在打包PDF…");
@@ -4195,6 +4217,8 @@ const WENTIAN_I18N_EN_EXTRA = {
   "总批命": "Full Reading",
   "追问": "Follow-up",
   "下载PDF": "Download PDF",
+  "待完成": "Complete first",
+  "命盘解读已完成，可下载PDF。": "Chart reading complete. PDF is ready.",
   "正在打包PDF…": "Packing PDF...",
   "PDF已开始下载。": "PDF download started.",
   "PDF下载失败，请检查网络后重试。": "PDF failed. Check network and retry.",
@@ -4550,6 +4574,17 @@ function translateWentianText(text, code = getWentianLanguageCode(), element = n
     if (dailyQuota) return `${dailyQuota[1]}/day`;
     const quota = source.match(/^(\d+)次\/天 · (\d+)次\/月$/);
     if (quota) return `${quota[1]}/day · ${quota[2]}/month`;
+    const pdfPending = source.match(/^命盘解读完成后才能下载PDF，还差(.+)。$/);
+    if (pdfPending) {
+      const missing = pdfPending[1].split("、").map((item) => {
+        const modules = item.match(/^(\d+)个模块$/);
+        if (modules) return `${modules[1]} modules`;
+        if (item === "人生曲线") return "life curve";
+        if (item === "当前生成任务") return "current generation";
+        return item;
+      }).join(", ");
+      return `PDF is available after the full chart reading. Missing: ${missing}.`;
+    }
     const directionOnly = source.match(/^\((.+)\)$/);
     if (directionOnly && WENTIAN_I18N_EN_TERM_MAP[directionOnly[1]]) return "";
     const palaceLine = source.match(/^(.+)\((.+)\) - (.+)$/);
@@ -10798,6 +10833,7 @@ function sourceZiweiAiDecodePanel() {
   const isRunning = wentianChartAiState.status === "running";
   const hasResults = hasWentianChartAiResults();
   const doneCount = getWentianGeneratedModuleCount();
+  const pdfReadiness = getWentianChartAiPdfReadiness();
   const activeTask = WENTIAN_CHART_AI_TASKS.find((task) => task.module === wentianChartAiState.runningModule);
   const buttonText = isRunning ? `生成中 ${doneCount}/${WENTIAN_CHART_AI_TASKS.length}` : (hasResults ? "重新总批命" : "总批命");
   const statusText = isRunning
@@ -10818,9 +10854,9 @@ function sourceZiweiAiDecodePanel() {
       <div class="wentian-chart-ai-actions">
         <button type="button" class="wentian-chart-ai-primary" data-action="wentian-chart-ai-decode" ${isRunning ? "disabled" : ""}>${escapeHtml(buttonText)}</button>
         <button type="button" class="wentian-chart-ai-secondary" data-route="screen-4">追问</button>
-        <button type="button" class="wentian-chart-ai-secondary" data-action="wentian-open-mingbook-onepage">下载PDF</button>
+        <button type="button" class="wentian-chart-ai-secondary" data-action="wentian-open-mingbook-onepage" ${pdfReadiness.ready ? "" : "disabled"}>${escapeHtml(pdfReadiness.ready ? "下载PDF" : "待完成")}</button>
       </div>
-      <p class="wentian-chart-ai-pdf-status" data-wentian-pdf-status></p>
+      <p class="wentian-chart-ai-pdf-status" data-wentian-pdf-status>${escapeHtml(pdfReadiness.ready ? "命盘解读已完成，可下载PDF。" : `命盘解读完成后才能下载PDF，还差${pdfReadiness.missingText || "解读内容"}。`)}</p>
       <div class="wentian-chart-ai-meter" aria-label="AI生成进度">
         ${WENTIAN_CHART_AI_TASKS.map((task) => `<i class="${wentianChartAiState.results?.[task.module] ? "is-done" : (wentianChartAiState.runningModule === task.module ? "is-running" : "")}"></i>`).join("")}
       </div>

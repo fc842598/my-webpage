@@ -5152,6 +5152,12 @@ html[data-wentian-language="en"] .liuren-orbit i {
   color: #8f3d30;
 }
 
+.wentian-chart-ai-secondary:disabled {
+  border-color: #eadfce;
+  background: #f5efe6;
+  color: #9a8d7f;
+}
+
 .wentian-chart-ai-pdf-status {
   min-height: 18px;
   margin: -6px 0 10px;
