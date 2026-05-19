@@ -7209,7 +7209,9 @@ function firstLiuyaoMatch(text, patterns) {
 
 function reviewLiuyaoQuestionLocally(question) {
   const text = normalizeLiuyaoQuestion(question);
-  const compact = text.replace(/\s+/g, "");
+  const compact = text
+    .replace(/\s+/g, "")
+    .replace(/(?:那)?(?:要|该)?怎么问[？?。!！]*$/g, "");
   if (!compact) {
     return {
       allowed: false,
@@ -7246,6 +7248,27 @@ function reviewLiuyaoQuestionLocally(question) {
       retryable: true,
     };
   }
+  const hasQuestionIntent = /(吗|么|能不能|能否|是否|会不会|可不可以|要不要|该不该|适不适合|有没有)/.test(compact);
+  const businessObject = firstLiuyaoMatch(compact, [
+    /((?:我这个|我的|这个|该)?(?:网站|项目|产品|店铺|公司|创业|生意|账号|课程|服务|App|APP|app|小程序|自媒体|直播间))/,
+  ]);
+  const businessTime = firstLiuyaoMatch(compact, [
+    /(未来一年|接下来一年|一年内|未来\d{1,2}个?月|接下来\d{1,2}个?月|今年|明年|下半年|上半年|近期|现在|当前)/,
+  ]);
+  const businessOutcome = firstLiuyaoMatch(compact, [
+    /(做成功|做起来|做成|成功|赚到钱|赚钱|盈利|营收|变现|回本|起量|卖得动|成交)/,
+  ]);
+  const multiObjectHint = /同时|另外|还有|顺便|以及|或者.*还是|和.*都/.test(compact);
+  if (businessObject && businessOutcome && hasQuestionIntent && !multiObjectHint) {
+    const labels = [`对象（${businessObject}）`, `结果（${businessOutcome}）`];
+    if (businessTime) labels.splice(1, 0, `时间（${businessTime}）`);
+    return {
+      allowed: true,
+      reason: `问题具体到${labels.join("、")}，符合一事一占原则。`,
+      suggestion: "",
+      labels: ["本地审题", "项目成败"],
+    };
+  }
   const decisionCount = (compact.match(/能不能|能否|是否|会不会|可不可以|要不要|该不该|适不适合|有没有/g) || []).length;
   if (decisionCount > 1 || /同时|另外|还有|顺便|以及|和.*都|或者.*还是/.test(compact)) {
     return {
@@ -7257,24 +7280,23 @@ function reviewLiuyaoQuestionLocally(question) {
     };
   }
   const time = firstLiuyaoMatch(compact, [
-    /(今天|明天|后天|本周|这周|下周|本月|这个月|下月|今年|近期|现在|当前|月底|年底)/,
+    /(今天|明天|后天|本周|这周|下周|本月|这个月|下月|今年|明年|未来一年|接下来一年|一年内|近期|现在|当前|月底|年底)/,
     /(\d{1,2}月\d{0,2}日?|\d{4}年|\d{1,2}号)/,
   ]);
   const object = firstLiuyaoMatch(compact, [
-    /(?:，|,|。|；|;)([\u4e00-\u9fa5A-Za-z0-9]{1,12}(?:考试|面试|考编|考公|考证|项目|工作|职位|offer|订单|合同|合作|生意|投资|房子|车|婚事|感情|复合|手术|治疗))/,
+    /(?:，|,|。|；|;)([\u4e00-\u9fa5A-Za-z0-9]{1,12}(?:考试|面试|考编|考公|考证|项目|网站|产品|店铺|公司|工作|职位|offer|订单|合同|合作|生意|创业|投资|房子|车|婚事|感情|复合|手术|治疗))/,
     /(摩托车考试|驾照考试|科目[一二三四]考试|公务员考试|编制考试|证书考试)/,
-    /([\u4e00-\u9fa5A-Za-z0-9]{1,12}(?:考试|面试|考编|考公|考证|项目|工作|职位|offer|订单|合同|合作|生意|投资|房子|车|婚事|感情|复合|手术|治疗))/,
-    /(摩托车|驾照|公职|事业|财运|婚恋|对象|客户|学校|公司|岗位|证书)/,
+    /([\u4e00-\u9fa5A-Za-z0-9]{1,12}(?:考试|面试|考编|考公|考证|项目|网站|产品|店铺|公司|工作|职位|offer|订单|合同|合作|生意|创业|投资|房子|车|婚事|感情|复合|手术|治疗))/,
+    /(摩托车|驾照|公职|事业|财运|婚恋|对象|客户|学校|公司|岗位|证书|网站|项目|产品|店铺|创业|生意|App|APP|app|小程序|自媒体|直播间)/,
   ]);
   const outcome = firstLiuyaoMatch(compact, [
-    /(能不能过|能否通过|是否通过|能过吗|能不能成|能否成功|会不会成|能不能上岸|能不能录取)/,
-    /(推进|通过|上岸|录取|成交|签约|复合|结婚|离职|入职|转岗|买入|卖出|获批|成功)/,
+    /(能不能过|能否通过|是否通过|能过吗|能不能成|能否成功|会不会成|能不能上岸|能不能录取|能不能赚钱|能否盈利|会不会赚钱)/,
+    /(推进|通过|上岸|录取|成交|签约|复合|结婚|离职|入职|转岗|买入|卖出|获批|成功|做起来|赚钱|盈利|营收|变现|回本)/,
   ]);
   const labels = [];
   if (object) labels.push(`对象（${object}）`);
   if (time) labels.push(`时间（${time}）`);
   if (outcome) labels.push(`结果（${outcome}）`);
-  const hasQuestionIntent = /(吗|么|能不能|能否|是否|会不会|可不可以|要不要|该不该|适不适合|有没有)/.test(compact);
   if ((object && outcome) || (time && outcome && hasQuestionIntent) || (object && time && hasQuestionIntent)) {
     return {
       allowed: true,
@@ -7296,6 +7318,7 @@ async function reviewLiuyaoQuestionViaChat(question) {
   const reviewPrompt = [
     "你是六爻起卦前的审题员，只判断这个问题是否适合起卦，不解卦。",
     "标准：一事一占/一问一卦；不疑不占；问题必须具体到对象、阶段、行动或结果；空泛、多问、测试、娱乐、重复乱占、不义之问，都不允许起卦。",
+    "同一个项目/网站/店铺下，同时问能否做起来、能否赚钱、未来一年是否盈利，视为同一件项目成败问题，可以通过。",
     `页面样例问题“${LIUYAO_SAMPLE_QUESTION}”不能当成用户真实问题。`,
     `用户所问：${question}`,
     '只输出 JSON：{"allowed":true或false,"reason":"一句话原因","suggestion":"不能起卦时的改写建议","labels":["命中的标准"]}',
