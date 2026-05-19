@@ -9475,23 +9475,6 @@ function sourceLiurenScreen() {
     ${figButton("lr46-tutorial-hit", 318, 38, 62, 54, 'data-route="screen-47"')}
     <section class="liuren-panel">
       <div class="liuren-hero-card">
-        <div class="liuren-finger-scene" aria-hidden="true">
-          <div class="liuren-orbit">
-            ${LIUREN_PALACES.map((palace, index) => `<i style="--r:${index * 60}deg;--rr:${index * -60}deg;--d:${(index * 0.18).toFixed(2)}s">${palace.name}</i>`).join("")}
-          </div>
-          <div class="liuren-hand">
-            <span class="liuren-finger liuren-finger-little"></span>
-            <span class="liuren-finger liuren-finger-ring"></span>
-            <span class="liuren-finger liuren-finger-middle"></span>
-            <span class="liuren-finger liuren-finger-index"></span>
-            <span class="liuren-palm"></span>
-            <span class="liuren-thumb"></span>
-            <span class="liuren-wrist"></span>
-          </div>
-          <span class="liuren-touch liuren-touch-one"></span>
-          <span class="liuren-touch liuren-touch-two"></span>
-          <span class="liuren-count-spark"></span>
-        </div>
         <div class="liuren-hero-shade"></div>
         <div class="liuren-hero-copy">
           <span>小六壬起课</span>
