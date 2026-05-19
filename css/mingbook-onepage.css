@@ -1915,20 +1915,20 @@ body.mbp-auth-open {
 }
 
 .fc-sanfang-triangle {
-  stroke: rgba(151, 82, 48, .3);
-  stroke-width: .95;
+  stroke: rgba(151, 82, 48, .24);
+  stroke-width: .8;
   filter: drop-shadow(0 0 1px rgba(255, 250, 238, .32));
 }
 
 .fc-sanfang-opposite {
-  stroke: rgba(66, 52, 43, .22);
-  stroke-width: .85;
+  stroke: rgba(66, 52, 43, .18);
+  stroke-width: .75;
 }
 
 .fc-sanfang-point {
-  fill: rgba(151, 82, 48, .36);
-  stroke: rgba(255, 250, 238, .55);
-  stroke-width: .4;
+  fill: rgba(151, 82, 48, .3);
+  stroke: rgba(255, 250, 238, .48);
+  stroke-width: .35;
   vector-effect: non-scaling-stroke;
 }
 
