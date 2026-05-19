@@ -10618,19 +10618,11 @@ function getWentianClassicBranchPoint(chart, branch) {
   const gridRect = grid.getBoundingClientRect();
   const cellRect = cell.getBoundingClientRect();
   if (!gridRect.width || !gridRect.height) return null;
-  const gridCenterX = gridRect.left + gridRect.width / 2;
-  const gridCenterY = gridRect.top + gridRect.height / 2;
   const cellCenterX = cellRect.left + cellRect.width / 2;
   const cellCenterY = cellRect.top + cellRect.height / 2;
-  const dx = gridCenterX - cellCenterX;
-  const dy = gridCenterY - cellCenterY;
-  let x = cellCenterX;
-  let y = cellCenterY;
-  if (Math.abs(dx) >= Math.abs(dy)) x = dx >= 0 ? cellRect.right : cellRect.left;
-  else y = dy >= 0 ? cellRect.bottom : cellRect.top;
   return {
-    x: ((x - gridRect.left) / gridRect.width) * 100,
-    y: ((y - gridRect.top) / gridRect.height) * 100,
+    x: ((cellCenterX - gridRect.left) / gridRect.width) * 100,
+    y: ((cellCenterY - gridRect.top) / gridRect.height) * 100,
   };
 }
 
@@ -10662,12 +10654,15 @@ function renderWentianClassicSanfangLines(activeBranch) {
 }
 
 function getWentianClassicDefaultBranch(saved) {
-  const chart = saved?.chart || getWentianDisplayChartState()?.chart;
+  const chart = saved?.chart || getWentianDisplayChartState()?.chart || getWentianFallbackChartState()?.chart;
   return chart?.earthlyBranchOfSoulPalace || (chart?.palaces || []).find((p) => p.name === "命宫")?.earthlyBranch || "";
 }
 
 function initWentianClassicChartScreen() {
-  const activeBranch = getWentianClassicDefaultBranch(getWentianDisplayChartState());
+  const activeBranch =
+    getWentianClassicDefaultBranch(getWentianDisplayChartState()) ||
+    view.querySelector(".wentian-native-mingpan .fc-cell.fc-ben")?.dataset.palaceBranch ||
+    "";
   window.requestAnimationFrame(() => renderWentianClassicSanfangLines(activeBranch));
 }
 
