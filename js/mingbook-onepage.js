@@ -1546,7 +1546,7 @@
     if (points) points.innerHTML = '';
   }
 
-  function fcBranchRect(branch) {
+  function fcBranchPoint(branch) {
     const grid = $('#mbpChartGrid');
     const cellId = fcBranchId[branch];
     const cell = cellId ? document.getElementById(cellId) : null;
@@ -1554,59 +1554,10 @@
     const gridRect = grid.getBoundingClientRect();
     const cellRect = cell.getBoundingClientRect();
     if (!gridRect.width || !gridRect.height) return null;
-    const left = ((cellRect.left - gridRect.left) / gridRect.width) * 100;
-    const right = ((cellRect.right - gridRect.left) / gridRect.width) * 100;
-    const top = ((cellRect.top - gridRect.top) / gridRect.height) * 100;
-    const bottom = ((cellRect.bottom - gridRect.top) / gridRect.height) * 100;
     return {
-      left,
-      right,
-      top,
-      bottom,
-      cx: (left + right) / 2,
-      cy: (top + bottom) / 2,
+      x: ((cellRect.left + cellRect.width / 2 - gridRect.left) / gridRect.width) * 100,
+      y: ((cellRect.top + cellRect.height / 2 - gridRect.top) / gridRect.height) * 100,
     };
-  }
-
-  function fcLineEdgePoint(fromRect, toRect) {
-    if (!fromRect || !toRect) return null;
-    const dx = toRect.cx - fromRect.cx;
-    const dy = toRect.cy - fromRect.cy;
-    const candidates = [];
-    if (dx > 0) candidates.push((fromRect.right - fromRect.cx) / dx);
-    if (dx < 0) candidates.push((fromRect.left - fromRect.cx) / dx);
-    if (dy > 0) candidates.push((fromRect.bottom - fromRect.cy) / dy);
-    if (dy < 0) candidates.push((fromRect.top - fromRect.cy) / dy);
-    const t = candidates
-      .filter((value) => Number.isFinite(value) && value > 0)
-      .sort((a, b) => a - b)[0] || 0;
-    return {
-      x: Math.min(fromRect.right, Math.max(fromRect.left, fromRect.cx + dx * t)),
-      y: Math.min(fromRect.bottom, Math.max(fromRect.top, fromRect.cy + dy * t)),
-    };
-  }
-
-  function fcSanfangSegment(fromBranch, toBranch, rects) {
-    const fromRect = rects[fromBranch];
-    const toRect = rects[toBranch];
-    const start = fcLineEdgePoint(fromRect, toRect);
-    const end = fcLineEdgePoint(toRect, fromRect);
-    if (!start || !end) return null;
-    return {
-      path: `M ${start.x} ${start.y} L ${end.x} ${end.y}`,
-      points: [start, end],
-    };
-  }
-
-  function fcUniqueLinePoints(points) {
-    const seen = new Set();
-    return points.filter((point) => {
-      if (!point) return false;
-      const key = `${point.x.toFixed(2)}:${point.y.toFixed(2)}`;
-      if (seen.has(key)) return false;
-      seen.add(key);
-      return true;
-    });
   }
 
   function fcRenderSanfangLines(activeBranch) {
@@ -1622,34 +1573,20 @@
       return;
     }
     const sanheBranches = [activeBranch, fcZhi[(activeIndex + 4) % 12], fcZhi[(activeIndex + 8) % 12]];
-    const relatedBranches = [...new Set([...sanheBranches, oppositeBranch])];
-    const rects = relatedBranches.reduce((map, branch) => {
-      map[branch] = fcBranchRect(branch);
-      return map;
-    }, {});
-    if (relatedBranches.some((branch) => !rects[branch])) {
+    const sanhePoints = sanheBranches.map(fcBranchPoint);
+    const oppositePoint = fcBranchPoint(oppositeBranch);
+    if (sanhePoints.some((point) => !point) || !oppositePoint) {
       fcClearSanfangLines(svg);
       return;
     }
 
-    const triangleSegments = [
-      fcSanfangSegment(sanheBranches[0], sanheBranches[1], rects),
-      fcSanfangSegment(sanheBranches[1], sanheBranches[2], rects),
-      fcSanfangSegment(sanheBranches[2], sanheBranches[0], rects),
-    ].filter(Boolean);
-    const oppositeSegment = fcSanfangSegment(activeBranch, oppositeBranch, rects);
-    const trianglePath = triangleSegments.map((segment) => segment.path).join(' ');
-    const oppositePath = oppositeSegment?.path || '';
-    svg.querySelector('.fc-sanfang-triangle')?.setAttribute('d', trianglePath);
-    svg.querySelector('.fc-sanfang-opposite')?.setAttribute('d', oppositePath);
+    const [p0, p1, p2] = sanhePoints;
+    svg.querySelector('.fc-sanfang-triangle')?.setAttribute('d', `M ${p0.x} ${p0.y} L ${p1.x} ${p1.y} L ${p2.x} ${p2.y} Z`);
+    svg.querySelector('.fc-sanfang-opposite')?.setAttribute('d', `M ${p0.x} ${p0.y} L ${oppositePoint.x} ${oppositePoint.y}`);
     const points = svg.querySelector('.fc-sanfang-points');
     if (points) {
-      const linePoints = fcUniqueLinePoints([
-        ...triangleSegments.flatMap((segment) => segment.points),
-        ...(oppositeSegment?.points || []),
-      ]);
-      points.innerHTML = linePoints
-        .map((point) => `<circle class="fc-sanfang-point" cx="${point.x}" cy="${point.y}" r="1.35"></circle>`)
+      points.innerHTML = [...sanhePoints, oppositePoint]
+        .map((point) => `<circle class="fc-sanfang-point" cx="${point.x}" cy="${point.y}" r="1.05"></circle>`)
         .join('');
     }
     svg.classList.remove('is-empty');
