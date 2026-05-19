@@ -183,7 +183,10 @@ const view = document.getElementById("view");
 const routeKicker = document.getElementById("routeKicker");
 const routeTitle = document.getElementById("routeTitle");
 const screenNav = document.getElementById("screenNav");
-let wentianFitRaf = 0;
+let wentianFitObserver = null;
+let wentianFitTimers = [];
+let wentianFitLoop = 0;
+let wentianFitLoopUntil = 0;
 const WENTIAN_PHONE_WIDTH = 390;
 const WENTIAN_PHONE_HEIGHT = 844;
 
@@ -9801,30 +9804,50 @@ function stripScreenshotStatusBar() {
 }
 
 function fitActivePhoneShell() {
-  if (wentianFitRaf) window.cancelAnimationFrame(wentianFitRaf);
-  wentianFitRaf = window.requestAnimationFrame(() => {
-    wentianFitRaf = 0;
-    const wrap = view.querySelector(".phone-wrap");
-    const phone = view.querySelector(".figma-phone");
-    if (!wrap || !phone) return;
-    const viewport = window.visualViewport;
-    const viewportWidth = viewport?.width || window.innerWidth || document.documentElement.clientWidth || WENTIAN_PHONE_WIDTH;
-    const viewportHeight = viewport?.height || window.innerHeight || document.documentElement.clientHeight || WENTIAN_PHONE_HEIGHT;
-    const desktop = window.matchMedia?.("(min-width: 881px)").matches;
-    const rootStyle = getComputedStyle(document.documentElement);
-    const safeTop = desktop ? 0 : (parseFloat(rootStyle.getPropertyValue("--wentian-safe-top")) || 0);
-    const safeBottom = desktop ? 0 : (parseFloat(rootStyle.getPropertyValue("--wentian-safe-bottom")) || 0);
-    const horizontalAvailable = Math.max(320, Math.min(viewportWidth, 430));
-    const verticalChromeSpace = desktop ? 48 : 0;
-    const verticalAvailable = Math.max(560, viewportHeight - verticalChromeSpace - safeTop - safeBottom);
-    const rawHeight = parseFloat(phone.style.height) || phone.offsetHeight || WENTIAN_PHONE_HEIGHT;
-    const heightBasis = rawHeight <= 900 ? rawHeight : WENTIAN_PHONE_HEIGHT;
-    const widthScale = Math.min(1, horizontalAvailable / WENTIAN_PHONE_WIDTH);
-    const heightScale = Math.min(1, verticalAvailable / heightBasis);
-    const scale = Math.min(widthScale, heightScale);
-    phone.style.setProperty("--wentian-phone-scale", String(scale));
-    wrap.style.height = `${Math.ceil(rawHeight * scale)}px`;
+  const wrap = view.querySelector(".phone-wrap");
+  const phone = view.querySelector(".figma-phone");
+  if (!wrap || !phone) return;
+  const viewport = window.visualViewport;
+  const viewportWidth = viewport?.width || window.innerWidth || document.documentElement.clientWidth || WENTIAN_PHONE_WIDTH;
+  const viewportHeight = viewport?.height || window.innerHeight || document.documentElement.clientHeight || WENTIAN_PHONE_HEIGHT;
+  const desktop = window.matchMedia?.("(min-width: 881px)").matches;
+  const rootStyle = getComputedStyle(document.documentElement);
+  const safeTop = desktop ? 0 : (parseFloat(rootStyle.getPropertyValue("--wentian-safe-top")) || 0);
+  const safeBottom = desktop ? 0 : (parseFloat(rootStyle.getPropertyValue("--wentian-safe-bottom")) || 0);
+  const horizontalAvailable = desktop ? Math.max(320, Math.min(viewportWidth, 430)) : viewportWidth;
+  const verticalChromeSpace = desktop ? 48 : 0;
+  const verticalAvailable = Math.max(560, viewportHeight - verticalChromeSpace - safeTop - safeBottom);
+  const rawHeight = parseFloat(phone.style.height) || phone.offsetHeight || WENTIAN_PHONE_HEIGHT;
+  const heightBasis = rawHeight <= 900 ? rawHeight : WENTIAN_PHONE_HEIGHT;
+  const widthScale = desktop ? Math.min(1, horizontalAvailable / WENTIAN_PHONE_WIDTH) : Math.max(0.82, horizontalAvailable / WENTIAN_PHONE_WIDTH);
+  const heightScale = desktop ? Math.min(1, verticalAvailable / heightBasis) : widthScale;
+  const scale = desktop ? Math.min(widthScale, heightScale) : widthScale;
+  phone.style.setProperty("--wentian-phone-scale", String(scale));
+  wrap.style.height = `${Math.ceil(rawHeight * scale)}px`;
+}
+
+function scheduleWentianPhoneFit() {
+  wentianFitTimers.forEach((timer) => window.clearTimeout(timer));
+  wentianFitTimers = [];
+  if (wentianFitLoop) window.clearInterval(wentianFitLoop);
+  wentianFitLoopUntil = Date.now() + 7000;
+  fitActivePhoneShell();
+  [80, 220, 520, 1100, 2200, 3600, 5600].forEach((delay) => {
+    wentianFitTimers.push(window.setTimeout(fitActivePhoneShell, delay));
   });
+  wentianFitLoop = window.setInterval(() => {
+    fitActivePhoneShell();
+    if (Date.now() >= wentianFitLoopUntil) {
+      window.clearInterval(wentianFitLoop);
+      wentianFitLoop = 0;
+    }
+  }, 280);
+}
+
+function ensureWentianPhoneFitObserver() {
+  if (wentianFitObserver || typeof MutationObserver === "undefined" || !view) return;
+  wentianFitObserver = new MutationObserver(() => scheduleWentianPhoneFit());
+  wentianFitObserver.observe(view, { childList: true });
 }
 
 function navigate(route, push = true) {
@@ -9842,7 +9865,7 @@ function navigate(route, push = true) {
     stripScreenshotStatusBar();
     applyWentianLanguageText(view);
     ensureWentianLanguageObserver();
-    fitActivePhoneShell();
+    scheduleWentianPhoneFit();
     syncActive();
     window.setTimeout(initWentianAuth, 0);
     if (screen.no === 4) window.setTimeout(initWentianXuChat, 0);
@@ -10670,4 +10693,5 @@ if (window.visualViewport) {
   window.visualViewport.addEventListener("resize", fitActivePhoneShell);
   window.visualViewport.addEventListener("scroll", fitActivePhoneShell);
 }
+ensureWentianPhoneFitObserver();
 bootWentianApp();
