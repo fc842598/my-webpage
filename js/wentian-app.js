@@ -1090,15 +1090,13 @@ const WENTIAN_CHART_STORAGE_KEY = "wentian-app-current-chart-v1";
 const WENTIAN_ARCHIVES_STORAGE_KEY = "wentian-app-archives-v1";
 const WENTIAN_SELECTED_ARCHIVE_KEY = "wentian-app-selected-archive-id";
 const WENTIAN_HEPAN_SELECTION_KEY = "wentian-app-hepan-selected-ids";
-const WENTIAN_HEPAN_LEGAL_AGE_BY_GENDER = { male: 22, female: 20 };
-const WENTIAN_HEPAN_MAX_AGE_GAP = 25;
 const WENTIAN_HEPAN_AI_RULES = [
-  "情侣合盘只处理现实中可成立的成年异性关系。",
-  "必须是一男一女，男男/女女不输出情侣合盘。",
-  "双方都必须达到大陆法定婚龄：男满22周岁，女满20周岁。",
+  "海厦《天纪06》合盘提到母子格、父女格、兄弟格、朋友格；格局先看命盘宫位/星曜对应，不按现实年龄硬猜。",
+  "页面主判：一方夫妻宫所在地支落到另一张盘哪一宫，就先按那一宫立格，例如落兄弟宫为兄弟格，落朋友/仆役宫为朋友格。",
+  "星曜佐证：参考父母宫星入对方命宫、命宫星入对方父母宫、兄弟宫星入对方命宫、朋友宫星入对方命宫等合参规则。",
+  "情侣/夫妻格才谈婚恋推进；兄弟格、朋友格、父母格等只谈相处、边界、扶持与互动，不输出暧昧或婚恋判断。",
   "出生日期在未来、生日缺失、同一人重复选择，均不能合盘。",
-  `双方年龄差超过${WENTIAN_HEPAN_MAX_AGE_GAP}周岁时，不按情侣合盘输出，只提示关系前提不合理。`,
-  "不满足规则时，不得继续给出合盘分数、婚恋建议或暧昧判断。",
+  "追问时必须围绕两张盘和本次合盘格局回答，不要退回单人命盘读盘。",
 ].join("\n");
 const WENTIAN_CLIENT_ID_KEY = "ziwei_client_id";
 const WENTIAN_LANGUAGE_STORAGE_KEY = "wentian-app-language-v1";
@@ -3062,12 +3060,201 @@ function getWentianArchiveAgeInfo(archive, now = new Date()) {
   return { ok: true, code: "ok", birthDate, age };
 }
 
-function getWentianHepanLegalAge(gender) {
-  return WENTIAN_HEPAN_LEGAL_AGE_BY_GENDER[gender] || 0;
-}
-
 function getWentianHepanPersonLabel(archive) {
   return getWentianArchiveDisplay(archive).name || "该档案";
+}
+
+const WENTIAN_HEPAN_RELATION_PROFILES = {
+  couple: {
+    label: "夫妻格",
+    title: "情侣合盘",
+    scope: "夫妻宫对应",
+    score: 14,
+    dimensions: ["缘分吸引", "沟通节奏", "长期稳定", "共同成长"],
+    adviceHigh: "适合把关系往长期规划推进，重要事项先定共同目标，再分工执行。",
+    adviceLow: "先慢下来观察真实相处节奏，把金钱、边界、沟通频率提前说清。",
+  },
+  parent: {
+    label: "父母格",
+    title: "父母合盘",
+    scope: "父母宫对应",
+    score: 6,
+    dimensions: ["长幼牵引", "沟通节奏", "边界稳定", "共同成长"],
+    adviceHigh: "这类合盘重在照顾与承接，适合把期待、责任和边界先说清楚。",
+    adviceLow: "先减少控制和投射，避免把亲缘式牵引误当成婚恋推进力。",
+  },
+  sibling: {
+    label: "兄弟格",
+    title: "兄弟合盘",
+    scope: "兄弟宫对应",
+    score: 7,
+    dimensions: ["同气默契", "沟通节奏", "边界稳定", "共同成长"],
+    adviceHigh: "这类合盘容易像手足同伴，适合互相扶持，但资源和边界要讲明。",
+    adviceLow: "先把比较心和旧账放下，遇到利益、时间和承诺问题要明说。",
+  },
+  friend: {
+    label: "朋友格",
+    title: "朋友合盘",
+    scope: "朋友宫对应",
+    score: 8,
+    dimensions: ["同道默契", "沟通节奏", "信任稳定", "共同成长"],
+    adviceHigh: "适合长期合作或互相借力，先定目标，再分清角色和收益。",
+    adviceLow: "先观察信用、执行力和利益边界，不要只凭感觉推进。",
+  },
+  child: {
+    label: "子女格",
+    title: "子女合盘",
+    scope: "子女宫对应",
+    score: 4,
+    dimensions: ["照顾牵引", "沟通节奏", "责任稳定", "共同成长"],
+    adviceHigh: "这类合盘照顾感强，适合先把责任感和独立空间分开。",
+    adviceLow: "不要把保护欲当成关系质量，先看对方是否能独立承担。",
+  },
+  life: {
+    label: "命宫格",
+    title: "命宫合盘",
+    scope: "命宫对应",
+    score: 10,
+    dimensions: ["命宫牵引", "沟通节奏", "长期稳定", "共同成长"],
+    adviceHigh: "双方牵引力明显，适合先看价值观与长期目标是否同向。",
+    adviceLow: "吸引不等于稳定，先把现实节奏和边界对齐。",
+  },
+  other: {
+    label: "关系格",
+    title: "关系合盘",
+    scope: "宫位对应",
+    score: 2,
+    dimensions: ["关系牵引", "沟通节奏", "长期稳定", "共同成长"],
+    adviceHigh: "可以继续观察相处节奏，先把共同目标和边界说清。",
+    adviceLow: "先慢下来，不急着下结论，用现实互动验证盘面提示。",
+  },
+};
+
+function getWentianHepanProfile(type) {
+  return WENTIAN_HEPAN_RELATION_PROFILES[type] || WENTIAN_HEPAN_RELATION_PROFILES.other;
+}
+
+function getWentianPalaceName(palace) {
+  return String(palace?.name || palace?.palaceName || "");
+}
+
+function formatWentianPalaceLabel(name) {
+  const text = String(name || "");
+  if (!text) return "宫位";
+  return text.endsWith("宫") ? text : `${text}宫`;
+}
+
+function getWentianPalaceBranch(palace) {
+  return palace?.branch || palace?.earthlyBranch || palace?.palaceBranch || "";
+}
+
+function getWentianPalaceStars(palace) {
+  const collect = (items) => (Array.isArray(items) ? items : []).map((star) => (
+    typeof star === "string" ? star : star?.name
+  )).filter(Boolean);
+  return [...new Set([...collect(palace?.majorStars), ...collect(palace?.minorStars)])];
+}
+
+function getWentianArchivePalaces(archive) {
+  return archive?.chartData?.palacesSummary || archive?.chartData?.palaces || [];
+}
+
+function findWentianArchivePalace(archive, labels = []) {
+  const normalized = labels.map((label) => String(label || "").replace(/宫$/, ""));
+  return getWentianArchivePalaces(archive).find((palace) => {
+    const name = getWentianPalaceName(palace).replace(/宫$/, "");
+    return normalized.some((label) => name.includes(label));
+  }) || null;
+}
+
+function findWentianArchivePalaceByBranch(archive, branch) {
+  if (!branch) return null;
+  return getWentianArchivePalaces(archive).find((palace) => getWentianPalaceBranch(palace) === branch) || null;
+}
+
+function getWentianHepanTypeFromPalaceName(name) {
+  if (name.includes("夫妻")) return "couple";
+  if (name.includes("父母")) return "parent";
+  if (name.includes("兄弟")) return "sibling";
+  if (name.includes("仆役") || name.includes("朋友") || name.includes("交友")) return "friend";
+  if (name.includes("子女")) return "child";
+  if (name.includes("命")) return "life";
+  return "other";
+}
+
+function getWentianHepanLanding(sourceArchive, targetArchive, sourceInfo, targetInfo) {
+  const sourceSpouse = findWentianArchivePalace(sourceArchive, ["夫妻"]);
+  const branch = getWentianPalaceBranch(sourceSpouse);
+  const targetPalace = findWentianArchivePalaceByBranch(targetArchive, branch);
+  if (!sourceSpouse || !targetPalace) return null;
+  const type = getWentianHepanTypeFromPalaceName(getWentianPalaceName(targetPalace));
+  const profile = getWentianHepanProfile(type);
+  const sourcePalaceName = formatWentianPalaceLabel(getWentianPalaceName(sourceSpouse));
+  const targetPalaceName = formatWentianPalaceLabel(getWentianPalaceName(targetPalace));
+  return {
+    sourceName: sourceInfo.label,
+    targetName: targetInfo.label,
+    sourcePalace: sourcePalaceName,
+    targetPalace: targetPalaceName,
+    branch,
+    type,
+    label: profile.label,
+    scope: profile.scope,
+    score: profile.score,
+    evidence: `${sourceInfo.label}夫妻宫落${targetInfo.label}${targetPalaceName}，按${profile.label}看`,
+  };
+}
+
+function getWentianHepanStarMatches(sourceArchive, targetArchive, sourceInfo, targetInfo) {
+  const rules = [
+    { source: ["父母"], target: ["命"], label: "母子格" },
+    { source: ["命"], target: ["父母"], label: "父女格" },
+    { source: ["兄弟"], target: ["命"], label: "兄弟格" },
+    { source: ["仆役", "朋友", "交友"], target: ["命"], label: "朋友格" },
+  ];
+  return rules.map((rule) => {
+    const sourcePalace = findWentianArchivePalace(sourceArchive, rule.source);
+    const targetPalace = findWentianArchivePalace(targetArchive, rule.target);
+    const sourceStars = getWentianPalaceStars(sourcePalace);
+    const targetStars = getWentianPalaceStars(targetPalace);
+    const overlap = sourceStars.filter((star) => targetStars.includes(star));
+    if (!overlap.length) return null;
+    return `${sourceInfo.label}${formatWentianPalaceLabel(getWentianPalaceName(sourcePalace))}星曜${overlap.join("、")}入${targetInfo.label}${formatWentianPalaceLabel(getWentianPalaceName(targetPalace))}，可作${rule.label}佐证`;
+  }).filter(Boolean);
+}
+
+function getWentianHepanRelationship(left, right, ageInfos = []) {
+  const [leftInfo, rightInfo] = ageInfos;
+  const safeLeft = leftInfo || { label: getWentianHepanPersonLabel(left), gender: normalizeWentianArchiveGender(left), age: null };
+  const safeRight = rightInfo || { label: getWentianHepanPersonLabel(right), gender: normalizeWentianArchiveGender(right), age: null };
+  const landings = [
+    getWentianHepanLanding(left, right, safeLeft, safeRight),
+    getWentianHepanLanding(right, left, safeRight, safeLeft),
+  ].filter(Boolean);
+  const preferred = landings.find((item) => item.type !== "other") || landings[0] || null;
+  const type = preferred?.type || "other";
+  const profile = getWentianHepanProfile(type);
+  const starEvidence = [
+    ...getWentianHepanStarMatches(left, right, safeLeft, safeRight),
+    ...getWentianHepanStarMatches(right, left, safeRight, safeLeft),
+  ];
+  const evidence = [...new Set([
+    ...landings.map((item) => item.evidence),
+    ...starEvidence,
+  ])];
+  return {
+    type,
+    label: preferred?.label || profile.label,
+    title: profile.title,
+    scope: profile.scope,
+    score: preferred?.score ?? profile.score,
+    dimensions: profile.dimensions,
+    adviceHigh: profile.adviceHigh,
+    adviceLow: profile.adviceLow,
+    evidence,
+    landings,
+    starEvidence,
+  };
 }
 
 function getWentianArchivePersonKey(archive) {
@@ -3095,7 +3282,7 @@ function isSameWentianHepanPerson(left, right) {
 
 function validateWentianHepanPair(left, right) {
   if (!left || !right) {
-    return { ok: false, code: "missing", message: "请选择一男一女两张不同档案" };
+    return { ok: false, code: "missing", message: "请选择两张不同档案" };
   }
   if (isSameWentianHepanPerson(left, right)) {
     return { ok: false, code: "same-person", message: "同一个人不能和自己合盘" };
@@ -3105,12 +3292,9 @@ function validateWentianHepanPair(left, right) {
   if (!leftGender || !rightGender) {
     return { ok: false, code: "missing-gender", message: "档案性别不完整，请先补全后再合盘" };
   }
-  if (leftGender === rightGender) {
-    return { ok: false, code: "same-gender", message: "情侣合盘仅支持一男一女，男男/女女不能合盘" };
-  }
   const people = [
-    { archive: left, gender: leftGender, label: getWentianHepanPersonLabel(left) },
-    { archive: right, gender: rightGender, label: getWentianHepanPersonLabel(right) },
+    { side: "left", archive: left, gender: leftGender, label: getWentianHepanPersonLabel(left) },
+    { side: "right", archive: right, gender: rightGender, label: getWentianHepanPersonLabel(right) },
   ];
   const ageInfos = people.map((person) => ({ ...person, ...getWentianArchiveAgeInfo(person.archive) }));
   const missingBirth = ageInfos.find((item) => item.code === "missing-birth");
@@ -3119,27 +3303,10 @@ function validateWentianHepanPair(left, right) {
   }
   const futureBirth = ageInfos.find((item) => item.code === "future-birth");
   if (futureBirth) {
-    return { ok: false, code: "future-birth", message: `${futureBirth.label}出生日期在未来，不能做情侣合盘` };
+    return { ok: false, code: "future-birth", message: `${futureBirth.label}出生日期在未来，不能合盘` };
   }
-  const underLegalAge = ageInfos.find((item) => item.age < getWentianHepanLegalAge(item.gender));
-  if (underLegalAge) {
-    const legalAge = getWentianHepanLegalAge(underLegalAge.gender);
-    const role = underLegalAge.gender === "male" ? "男方" : "女方";
-    return {
-      ok: false,
-      code: "under-legal-age",
-      message: `${underLegalAge.label}未满${role}法定婚龄${legalAge}周岁，暂不能做情侣合盘`,
-    };
-  }
-  const ageGap = Math.abs(ageInfos[0].age - ageInfos[1].age);
-  if (ageGap > WENTIAN_HEPAN_MAX_AGE_GAP) {
-    return {
-      ok: false,
-      code: "age-gap",
-      message: `双方年龄相差${ageGap}岁，超过${WENTIAN_HEPAN_MAX_AGE_GAP}岁，不适合按情侣合盘输出`,
-    };
-  }
-  return { ok: true, code: "ok", message: "可开始合盘" };
+  const relationship = getWentianHepanRelationship(left, right, ageInfos);
+  return { ok: true, code: "ok", message: `可开始${relationship.label}`, relationship, ageInfos };
 }
 
 function getWentianHepanValidation(archives = getWentianArchiveList(), ids = getWentianHepanSelectedIds(archives)) {
@@ -3229,6 +3396,11 @@ function getWentianArchivePalaceBranch(archive, key, fallback = "") {
   return archive?.chartData?.[key]?.branch || archive?.chartData?.[key]?.earthlyBranch || fallback;
 }
 
+function getWentianHepanPalaceScore(relation) {
+  const label = relation?.evidence?.[0] || "宫位对应资料不足";
+  return { score: relation?.score || 0, label };
+}
+
 function getWentianHepanResult() {
   const archives = getWentianArchiveList();
   const ids = getWentianHepanSelectedIds(archives);
@@ -3247,18 +3419,16 @@ function getWentianHepanResult() {
   }
   const leftDisplay = getWentianArchiveDisplay(left);
   const rightDisplay = getWentianArchiveDisplay(right);
+  const relationship = validation.relationship || getWentianHepanRelationship(left, right, validation.ageInfos);
   const leftSizhu = getWentianArchiveSizhu(left);
   const rightSizhu = getWentianArchiveSizhu(right);
   const day = getWentianHepanBranchScore(leftSizhu.dayBranch, rightSizhu.dayBranch);
   const year = getWentianHepanBranchScore(leftSizhu.yearBranch, rightSizhu.yearBranch);
   const hour = getWentianHepanBranchScore(leftSizhu.hourBranch, rightSizhu.hourBranch);
   const month = getWentianHepanBranchScore(leftSizhu.monthBranch, rightSizhu.monthBranch);
-  const palace = getWentianHepanBranchScore(
-    getWentianArchivePalaceBranch(left, "lifePalace", left?.chart?.earthlyBranchOfSoulPalace),
-    getWentianArchivePalaceBranch(right, "spousePalace", right?.chart?.earthlyBranchOfSoulPalace)
-  );
+  const palace = getWentianHepanPalaceScore(relationship);
   const element = getWentianElementScore(leftSizhu.dayStem, rightSizhu.dayStem);
-  const genderBonus = left?.form?.gender && right?.form?.gender && left.form.gender !== right.form.gender ? 4 : 0;
+  const genderBonus = relationship.type === "couple" ? 4 : relationship.type === "sibling" ? 3 : 1;
   const attraction = clampWentianScore(64 + day.score + palace.score * 0.45 + genderBonus);
   const communication = clampWentianScore(62 + month.score + hour.score * 0.55 + element.score * 0.4);
   const stability = clampWentianScore(61 + year.score * 0.7 + palace.score * 0.55);
@@ -3271,17 +3441,52 @@ function getWentianHepanResult() {
     right,
     leftDisplay,
     rightDisplay,
+    relationship,
+    relationLabel: relationship.label,
+    relationTitle: relationship.title,
+    relationScope: relationship.scope,
+    relationEvidence: relationship.evidence,
+    relationLandings: relationship.landings,
     total,
     level,
     dimensions: [
-      ["缘分吸引", attraction, day.label],
-      ["沟通节奏", communication, hour.label],
-      ["长期稳定", stability, palace.label],
-      ["共同成长", growth, element.label],
+      [relationship.dimensions[0], attraction, day.label],
+      [relationship.dimensions[1], communication, hour.label],
+      [relationship.dimensions[2], stability, palace.label],
+      [relationship.dimensions[3], growth, element.label],
     ],
     advice: total >= 76
-      ? "适合把关系往长期规划推进，重要事项先定共同目标，再分工执行。"
-      : "先慢下来观察真实相处节奏，把金钱、边界、沟通频率提前说清。",
+      ? relationship.adviceHigh
+      : relationship.adviceLow,
+  };
+}
+
+function makeWentianPalaceSnapshot(palace) {
+  if (!palace) return null;
+  return {
+    name: getWentianPalaceName(palace),
+    branch: getWentianPalaceBranch(palace),
+    majorStars: getWentianPalaceStars({ majorStars: palace.majorStars }),
+    minorStars: getWentianPalaceStars({ minorStars: palace.minorStars }),
+  };
+}
+
+function makeWentianHepanChartSnapshot(archive, display, age) {
+  const palaces = getWentianArchivePalaces(archive).map(makeWentianPalaceSnapshot).filter(Boolean);
+  return {
+    name: display.name,
+    gender: display.gender,
+    datetime: display.datetime,
+    age,
+    pillars: display.pillars,
+    sizhu: getWentianArchiveSizhu(archive),
+    lifePalace: makeWentianPalaceSnapshot(findWentianArchivePalace(archive, ["命"])),
+    spousePalace: makeWentianPalaceSnapshot(findWentianArchivePalace(archive, ["夫妻"])),
+    parentsPalace: makeWentianPalaceSnapshot(findWentianArchivePalace(archive, ["父母"])),
+    siblingsPalace: makeWentianPalaceSnapshot(findWentianArchivePalace(archive, ["兄弟"])),
+    friendsPalace: makeWentianPalaceSnapshot(findWentianArchivePalace(archive, ["仆役", "朋友", "交友"])),
+    childrenPalace: makeWentianPalaceSnapshot(findWentianArchivePalace(archive, ["子女"])),
+    palaces,
   };
 }
 
@@ -3289,12 +3494,18 @@ function makeWentianHepanXuContext(result = getWentianHepanResult()) {
   if (!result?.ok) return null;
   const leftAge = getWentianArchiveAgeInfo(result.left).age;
   const rightAge = getWentianArchiveAgeInfo(result.right).age;
+  const leftChart = makeWentianHepanChartSnapshot(result.left, result.leftDisplay, leftAge);
+  const rightChart = makeWentianHepanChartSnapshot(result.right, result.rightDisplay, rightAge);
   return {
     type: "hepan",
     recordId: makeWentianUuid(),
-    title: "情侣合盘",
+    title: result.relationTitle || "关系合盘",
     question: `${result.leftDisplay.name} × ${result.rightDisplay.name}`,
-    summaryLine: `${result.total}分 · ${result.level}`,
+    summaryLine: `${result.relationLabel || "关系合盘"} · ${result.total}分 · ${result.level}`,
+    relationLabel: result.relationLabel,
+    relationScope: result.relationScope,
+    relationEvidence: result.relationEvidence,
+    relationLandings: result.relationLandings,
     rules: WENTIAN_HEPAN_AI_RULES,
     left: {
       name: result.leftDisplay.name,
@@ -3302,6 +3513,7 @@ function makeWentianHepanXuContext(result = getWentianHepanResult()) {
       datetime: result.leftDisplay.datetime,
       age: leftAge,
       pillars: result.leftDisplay.pillars,
+      chart: leftChart,
     },
     right: {
       name: result.rightDisplay.name,
@@ -3309,6 +3521,7 @@ function makeWentianHepanXuContext(result = getWentianHepanResult()) {
       datetime: result.rightDisplay.datetime,
       age: rightAge,
       pillars: result.rightDisplay.pillars,
+      chart: rightChart,
     },
     score: result.total,
     level: result.level,
@@ -3319,7 +3532,7 @@ function makeWentianHepanXuContext(result = getWentianHepanResult()) {
 }
 
 function getHepanXuOpeningMessage(context) {
-  if (!context) return "这次我按情侣合盘来批，先看双方现实条件是否成立，再看吸引、冲突和长期节奏。";
+  if (!context) return "这次我按关系合盘来批，先辨关系类型，再看互动、冲突和长期节奏。";
   return `这次合盘已接入：${context.question}，${context.summaryLine}。你可以继续问相处节奏、冲突点、是否适合长期推进。`;
 }
 
@@ -4886,9 +5099,16 @@ function getWentianXuChatPayload() {
     const hepanChartData = {
       chartRecordId: context.recordId,
       chatMode: "hepan",
-      source: "情侣合盘",
+      source: context.title || "关系合盘",
       hepanContext: context,
       hepanRules: WENTIAN_HEPAN_AI_RULES,
+      hepanRelationship: {
+        label: context.relationLabel,
+        scope: context.relationScope,
+        evidence: context.relationEvidence || [],
+      },
+      leftChart: context.left?.chart,
+      rightChart: context.right?.chart,
     };
     return {
       mode: "hepan",
@@ -4923,16 +5143,20 @@ function getWentianXuChatPayload() {
 function buildWentianXuOutboundMessage(message, context) {
   if (context?.type === "hepan") {
     return [
-      "【情侣合盘追问】",
-      "本次不是单人命盘读盘，请只围绕本次情侣合盘回答。",
+      "【关系合盘追问】",
+      `本次不是单人命盘读盘，请只围绕本次${context.relationLabel || "关系合盘"}回答。`,
       "合盘前置规则：",
       context.rules || WENTIAN_HEPAN_AI_RULES,
+      `关系类型：${context.relationLabel || ""}，${context.relationScope || ""}`,
+      `宫位落点：${(context.relationEvidence || []).join("；")}`,
       `对象A：${context.left?.name || ""}，${context.left?.gender || ""}，${context.left?.datetime || ""}，${context.left?.age ?? ""}岁，四柱：${context.left?.pillars || ""}`,
+      `对象A命盘摘要：${JSON.stringify(context.left?.chart || {})}`,
       `对象B：${context.right?.name || ""}，${context.right?.gender || ""}，${context.right?.datetime || ""}，${context.right?.age ?? ""}岁，四柱：${context.right?.pillars || ""}`,
+      `对象B命盘摘要：${JSON.stringify(context.right?.chart || {})}`,
       `页面合盘：${context.score || ""}分，${context.level || ""}`,
       `维度：${(context.dimensions || []).map(([label, score, note]) => `${label}${score}分：${note}`).join("；")}`,
       context.advice ? `页面建议：${context.advice}` : "",
-      "回答要求：先判断关系前提是否成立，再讲吸引点、冲突点、长期节奏和可执行建议。不要给未成年人、同性或年龄差过大的关系输出情侣合盘判断。",
+      "回答要求：先判断关系前提是否成立，再按关系类型讲互动点、冲突点、长期节奏和可执行建议。非情侣关系不得输出婚恋、暧昧、结婚或同居判断。",
       "",
       `我的追问：${message}`,
     ].filter(Boolean).join("\n");
@@ -6422,7 +6646,7 @@ function sourceHepanSelectScreen() {
     ? validation.message
     : archives.length < 2
       ? "至少需要两张档案才能合盘"
-      : "请选择一男一女两张不同档案";
+      : "请选择两张不同档案，按夫妻宫落点定格";
   return `
     ${figBox("wt11-bg", 0, 0, 390, 844, "", "background:linear-gradient(180deg,#fff8ec 0%,#f4e5d2 42%,#fffdf9 100%);")}
     ${figBox("wt11-top-glow", 0, 0, 390, 336, "", "background:radial-gradient(circle at 50% 8%,rgba(212,171,88,.34),rgba(212,171,88,0) 44%),linear-gradient(180deg,#fff4df 0%,rgba(255,244,223,0) 100%);")}
@@ -6430,10 +6654,10 @@ function sourceHepanSelectScreen() {
     ${figBox("wt11-hero", 24, 108, 342, 178, "", "border-radius:24px;background:linear-gradient(135deg,#3a1915 0%,#7a3327 48%,#c7973d 100%);box-shadow:0 18px 34px rgba(98,52,30,.22);overflow:hidden;")}
     ${figImage("wt11-img", "../images/wentian-prototype-assets/hepan-master.jpg", 198, 118, 142, 126, "border-radius:18px;object-fit:cover;object-position:center 18%;opacity:.78;")}
     ${figBox("wt11-img-shade", 174, 108, 190, 178, "", "background:linear-gradient(90deg,rgba(58,25,21,.78) 0%,rgba(58,25,21,.24) 48%,rgba(58,25,21,0) 100%);")}
-    ${figText("wt11-eyebrow", "成年异性 · 关系合盘", 46, 134, 160, 13, "#f4d293", 900)}
-    ${figText("wt11-title", "情侣合盘", 46, 162, 144, 30, "#fffaf3", 900, "left", "font-size:30px;line-height:1;")}
-    ${figText("wt11-copy", "先确认两张档案，再看吸引、冲突与长期节奏。", 46, 206, 160, 13, "rgba(255,250,243,.86)", 700, "left", "line-height:1.45;")}
-    ${["一男一女", "成年", "非本人"].map((text, index) => `
+    ${figText("wt11-eyebrow", "海厦合参 · 宫位定格", 46, 134, 160, 13, "#f4d293", 900)}
+    ${figText("wt11-title", "关系合盘", 46, 162, 144, 30, "#fffaf3", 900, "left", "font-size:30px;line-height:1;")}
+    ${figText("wt11-copy", "看一方夫妻宫落到另一盘哪一宫，再交给合盘半仙。", 46, 206, 170, 13, "rgba(255,250,243,.86)", 700, "left", "line-height:1.45;")}
+    ${["夫妻", "父母", "兄弟", "朋友"].map((text, index) => `
       ${figBox(`wt11-rule-${index}`, 46 + index * 72, 246, 62, 22, "", "border-radius:11px;background:rgba(255,250,243,.15);border:1px solid rgba(255,250,243,.28);")}
       ${figText(`wt11-rule-text-${index}`, text, 46 + index * 72, 251, 62, 10, "#fff7df", 800, "center")}
     `).join("")}
@@ -6442,7 +6666,7 @@ function sourceHepanSelectScreen() {
     <div class="wentian-hepan-head" data-node-id="wt11-head">
       <div>
         <strong>选择档案</strong>
-        <span>仅限成年异性情侣；年龄不合理会拦截</span>
+        <span>自动识别夫妻宫落点与星曜佐证</span>
       </div>
       <b class="${ready ? "is-ready" : selectedIds.length >= 2 ? "is-error" : ""}">已选 ${selectedIds.length}/2</b>
     </div>
@@ -6480,8 +6704,8 @@ function sourceHepanResultScreen() {
     ${figBox("wt49-score-card", 24, 108, 342, 174, "", "border-radius:22px;background:linear-gradient(135deg,#2b2722,#14110d);box-shadow:0 16px 30px rgba(28,20,12,.16);")}
     ${figText("wt49-score", String(result.total), 44, 128, 96, 54, "#f4d293", 900, "center", "font-size:54px;line-height:1;")}
     ${figText("wt49-score-unit", "分", 132, 152, 26, 16, "#f4d293", 900)}
-    ${figText("wt49-level", result.level, 178, 136, 130, 20, "#fffaf3", 900)}
-    ${figText("wt49-sub", "基于双方紫微命盘、四柱日支与宫位关系生成", 178, 170, 140, 13, "#cfc1a9", 700, "left", "line-height:1.5;")}
+    ${figText("wt49-level", result.relationLabel || result.level, 178, 136, 130, 20, "#fffaf3", 900)}
+    ${figText("wt49-sub", `${escapeHtml(result.level)} · 夫妻宫落点合参`, 178, 170, 140, 13, "#cfc1a9", 700, "left", "line-height:1.5;")}
     ${figText("wt49-pair", `${escapeHtml(result.leftDisplay.name)} × ${escapeHtml(result.rightDisplay.name)}`, 44, 226, 280, 18, "#fffaf3", 900, "center")}
 
     ${figBox("wt49-pair-card", 24, 306, 342, 116, "", "border:1px solid #eadfce;border-radius:18px;background:#fff;box-shadow:0 8px 20px rgba(70,45,25,.07);")}
@@ -6491,7 +6715,7 @@ function sourceHepanResultScreen() {
     ${figText("wt49-right-name", escapeHtml(result.rightDisplay.name), 218, 330, 88, 17, "#25211d", 900, "right")}
     ${figText("wt49-right-date", escapeHtml(result.rightDisplay.datetime), 194, 360, 132, 12, "#8f8173", 700, "right")}
     ${figText("wt49-right-pillars", escapeHtml(result.rightDisplay.pillars), 190, 386, 136, 11, "#9b742e", 700, "right")}
-    ${figText("wt49-heart", "合", 180, 352, 30, 20, "#b74e39", 900, "center")}
+    ${figText("wt49-heart", "格", 180, 352, 30, 20, "#b74e39", 900, "center")}
 
     ${figText("wt49-dim-title", "合盘维度", 24, 454, 120, 17, "#25211d", 900)}
     ${result.dimensions.map(([label, score, note], index) => {
@@ -6514,12 +6738,12 @@ function sourceHepanResultScreen() {
     ${figText("wt49-repick-text", "重新选择", 42, 1012, 136, 13, "#9b742e", 800, "center")}
     ${figBox("wt49-ask", 212, 1000, 136, 44, "", "border-radius:10px;background:#b74e39;")}
     ${figButton("wt49-ask-hit", 212, 1000, 136, 44, 'data-action="wentian-hepan-ask-xu"')}
-    ${figText("wt49-ask-text", "追问许半仙", 212, 1012, 136, 13, "#fff", 900, "center")}
+    ${figText("wt49-ask-text", "追问合盘半仙", 212, 1012, 136, 13, "#fff", 900, "center")}
   `;
 }
 
 function sourceHepanInvalidScreen(result) {
-  const message = result?.message || "请选择一男一女两张不同档案";
+  const message = result?.message || "请选择两张不同档案";
   return `
     ${figBox("wt49-bg", 0, 0, 390, 844, "", "background:linear-gradient(180deg,#fffdf8 0%,#fbf7ef 58%,#f3eadc 100%);")}
     ${wentianSimpleHeader("wt49", "合盘结果")}
@@ -6528,7 +6752,7 @@ function sourceHepanInvalidScreen(result) {
     ${figText("wt49-invalid-icon-text", "合", 142, 204, 106, 38, "#a94437", 900, "center", "font-size:38px;")}
     ${figText("wt49-invalid-title", "暂不能合盘", 0, 304, 390, 24, "#25211d", 900, "center")}
     ${figText("wt49-invalid-copy", escapeHtml(message), 56, 346, 278, 15, "#756d63", 800, "center", "line-height:1.6;")}
-    ${figText("wt49-invalid-rule", "规则：一男一女、不同本人、达到法定婚龄，且年龄差不能过大。", 56, 394, 278, 12, "#9a8f82", 700, "center", "line-height:1.55;")}
+    ${figText("wt49-invalid-rule", "规则：先选两张不同档案，再按夫妻宫落点与星曜对应定格。", 56, 394, 278, 12, "#9a8f82", 700, "center", "line-height:1.55;")}
     ${figBox("wt49-repick", 42, 506, 136, 44, "", "border:1px solid #d6b463;border-radius:10px;background:#fff;")}
     ${figButton("wt49-repick-hit", 42, 506, 136, 44, 'data-route="screen-11"')}
     ${figText("wt49-repick-text", "重新选择", 42, 518, 136, 13, "#9b742e", 800, "center")}
