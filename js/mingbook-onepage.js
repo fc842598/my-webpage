@@ -3220,6 +3220,26 @@
     });
   }
 
+  function updateDecodeAllButtonProgress(done = 0, runningIndex = -1, stateText = '待生成') {
+    const total = aiTasks.length || 7;
+    const safeDone = Math.max(0, Math.min(done, total));
+    const degrees = total ? (safeDone / total) * 360 : 0;
+    const isRunning = runningIndex >= 0 && safeDone < total;
+    const isComplete = safeDone >= total;
+    document.querySelectorAll('[data-decode-all]').forEach((button) => {
+      button.style.setProperty('--decode-progress', `${degrees}deg`);
+      button.classList.toggle('has-progress', safeDone > 0 || isRunning);
+      button.classList.toggle('is-complete', isComplete);
+      button.setAttribute('aria-label', `${stateText}，已完成 ${safeDone}/${total} 个模块`);
+      const progressLabel = button.querySelector('[data-decode-progress-label]');
+      if (progressLabel) progressLabel.textContent = `${safeDone}/${total}`;
+      const main = button.querySelector('[data-decode-main]');
+      const sub = button.querySelector('[data-decode-sub]');
+      if (main) main.textContent = isRunning ? '生成' : (isComplete ? '已完' : '总批');
+      if (sub) sub.textContent = isRunning ? '中' : (isComplete ? '成' : '命');
+    });
+  }
+
   function updateDecodeProgress(done = 0, runningIndex = -1, stateText = '待生成') {
     const total = aiTasks.length;
     const meter = $('#mbpDecodeMeter');
@@ -3235,6 +3255,7 @@
     if (count) count.textContent = `${Math.min(done, total)}/${total}`;
     const label = $('#mbpReportStateText');
     if (label) label.textContent = stateText;
+    updateDecodeAllButtonProgress(done, runningIndex, stateText);
     updateBookProgress(done, runningIndex, stateText);
   }
 
@@ -3818,18 +3839,13 @@
 
   function setDecodeAllButtonsBusy(busy, label = '') {
     document.querySelectorAll('[data-decode-all]').forEach((button) => {
-      if (!button.dataset.defaultText) {
-        button.dataset.defaultText = button.textContent.trim();
-        button.dataset.defaultHtml = button.innerHTML;
-      }
       button.disabled = busy;
       button.classList.toggle('is-running', busy);
       if (busy) {
-        button.textContent = label || '生成中';
-      } else if (button.dataset.defaultHtml) {
-        button.innerHTML = button.dataset.defaultHtml;
-      } else {
-        button.textContent = button.dataset.defaultText;
+        const main = button.querySelector('[data-decode-main]');
+        const sub = button.querySelector('[data-decode-sub]');
+        if (main) main.textContent = '生成';
+        if (sub) sub.textContent = '中';
       }
     });
   }
