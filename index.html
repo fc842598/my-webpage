@@ -965,6 +965,7 @@
     }
 
     .section::before {
+      display: none;
       top: 82px;
       z-index: 1;
       width: min(900px, calc(100vw - 240px));
@@ -972,10 +973,6 @@
       background: linear-gradient(90deg, transparent, rgba(56,214,245,.34), rgba(245,217,148,.24), transparent);
       transform-origin: center;
       animation: section-scan 6.2s ease-in-out infinite;
-    }
-
-    #triad::before {
-      display: none;
     }
 
     .section::after {
