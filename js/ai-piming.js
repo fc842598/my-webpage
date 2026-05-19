@@ -240,7 +240,7 @@ function buildChartPayload() {
     yearMutagens:      _yearMutagens(chart),
     palacesSummary:    _palaceSummary(chart.palaces),
 
-    // 当前大限流年（供 current_luck 使用）
+    // 当前大限 / 小限流年（供 current_luck、xiaoxian_liunian 使用）
     activeAge,
     currentYear,
     currentDecade,
@@ -645,7 +645,15 @@ function _aipRenderResult(moduleKey, data) {
       const dxBody = document.getElementById('aip-dx-body');
       if (dxBody) { dxBody.textContent = text; dxBody.style.whiteSpace = 'pre-wrap'; }
       const dxTtl  = document.getElementById('aip-dx-ttl');
-      if (dxTtl) dxTtl.textContent = 'AI 大限流年解读';
+      if (dxTtl) dxTtl.textContent = 'AI 大限解读';
+      break;
+    }
+    case 'xiaoxian_liunian': {
+      const text   = data.finalAnswer || '';
+      const dxBody = document.getElementById('aip-dx-body');
+      if (dxBody) { dxBody.textContent = text; dxBody.style.whiteSpace = 'pre-wrap'; }
+      const dxTtl  = document.getElementById('aip-dx-ttl');
+      if (dxTtl) dxTtl.textContent = 'AI 小限流年解读';
       break;
     }
     case 'shengong': {

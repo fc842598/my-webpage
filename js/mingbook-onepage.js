@@ -114,7 +114,8 @@
 
   const aiTasks = [
     { module: 'overall', label: '整体批命' },
-    { module: 'current_luck', label: '大限流年' },
+    { module: 'current_luck', label: '大限' },
+    { module: 'xiaoxian_liunian', label: '小限流年' },
     { module: 'shengong', key: 'body', label: '身宫批命' },
     { module: 'hunyin', key: 'marriage', label: '婚姻批命' },
     { module: 'jiankang', key: 'health', label: '健康批命' },
@@ -125,7 +126,8 @@
   const chapterActions = [
     { label: '单独批总局', module: 'overall' },
     { label: '单独批专题', action: 'specials' },
-    { label: '单独批走势', module: 'current_luck' },
+    { label: '单独批大限', module: 'current_luck' },
+    { label: '单独批小限', module: 'xiaoxian_liunian' },
     { label: '生成曲线', action: 'curve' },
     { label: '生成建议', module: 'overall' },
   ];
@@ -2042,7 +2044,7 @@
       if (guaciTextValue) {
         guaci.innerHTML = `<span class="mbp-yijing-source-label">古籍原文</span>${escapeHtml(guaciTextValue)}`;
       } else {
-        guaci.textContent = result ? '此卦暂无卦辞数据，可先参考上方命盘与五卷解读。' : '先完成排盘。';
+        guaci.textContent = result ? '此卦暂无卦辞数据，可先参考上方命盘与六卷解读。' : '先完成排盘。';
       }
     }
 
@@ -2267,7 +2269,8 @@
       chapters: [
         ['命格总览', `命宫 ${palaceMainLabel(life)}。${lifeProfile ? lifeProfile.trait : '先天底色需要从命宫和三方四正合看。'}`],
         ['专题批命', `身宫、婚姻、健康、财运、事业五项专题已在上方展开，适合作为深度报告主体。`],
-        ['大限流年', `当前页面先接命盘主线，后续可把原版大限流年结论并入这里，形成十年节奏。`],
+        ['大限', `当前页面先接命盘主线，后续可把原版大限结论并入这里，形成十年节奏。`],
+        ['小限流年', `小限流年单独成卷，看当年触发、对宫应事与流年卦象。`],
         ['人生曲线', `把关键年份做成曲线阅读，帮助用户看清高低点和转折位置。`],
         ['行动建议', `先看命盘底色，再看大运节奏；重要决策不只问准不准，还要知道何时动、如何动。`],
       ],
@@ -2617,10 +2620,11 @@
       .map((sentence) => trimText(sentence, 110));
   }
 
-  function actionAdviceData(overall, luck) {
+  function actionAdviceData(overall, luck, xiaoLian) {
     const modules = [
       ['命格', overall],
-      ['大运', luck],
+      ['大限', luck],
+      ['小限流年', xiaoLian],
       ['身宫', state.aiResults.shengong],
       ['婚姻', state.aiResults.hunyin],
       ['健康', state.aiResults.jiankang],
@@ -2668,8 +2672,8 @@
     };
   }
 
-  function renderActionAdviceBlock(overall, luck) {
-    const advice = actionAdviceData(overall, luck);
+  function renderActionAdviceBlock(overall, luck, xiaoLian) {
+    const advice = actionAdviceData(overall, luck, xiaoLian);
     return `
       <div class="mbp-advice-chapter">
         <section class="mbp-advice-risk">
@@ -2975,6 +2979,50 @@
     return helpers.length ? `辅星：${helpers.join('、')}` : '空宫';
   }
 
+  function currentLuckViewInfo() {
+    const bundle = getChartBundle();
+    const chart = bundle.chart || state.chart;
+    const year = new Date().getFullYear();
+    const currentAge = Math.max(1, Number(fcActiveAge) || (year - Number(state.profile.year || year) + 1));
+    const decadePalace = findDecadePalace(chart, currentAge);
+    const decadeRange = rangeFromDecadal(decadePalace) || [Math.max(1, currentAge - 4), currentAge + 5];
+    const palaceName = decadePalace?.name || '大限宫';
+    const stars = palaceMainLabel(decadePalace);
+    const domain = palaceDomain(palaceName);
+    const theme = decadeTheme(domain);
+    const liunian = fcLiunianSeq?.[currentAge] || {};
+    const yearGz = liunian.yearGanzhi ? `${liunian.yearGanzhi.stem || ''}${liunian.yearGanzhi.branch || ''}` : ganzhiYear(year);
+    const xiaoLianBranch = fcResolveXiaoLianBranch(currentAge);
+    const xiaoLianPalace = fcPalaceByBranch(chart, xiaoLianBranch);
+    const oppositeBranch = fcOppositeBranch(xiaoLianBranch);
+    const oppositePalace = fcPalaceByBranch(chart, oppositeBranch);
+    const xiaoLabel = palaceViewLabel(xiaoLianPalace, xiaoLianBranch);
+    const oppositeLabel = palaceViewLabel(oppositePalace, oppositeBranch);
+    const yearFocus = oppositePalace?.name
+      ? `小限${normalizePalaceName(xiaoLianPalace?.name || `${xiaoLianBranch}宫`)} · 对宫${normalizePalaceName(oppositePalace.name)}`
+      : (xiaoLianPalace?.name ? `${xiaoLianPalace.name} · ${palaceDomain(xiaoLianPalace.name)}` : domain);
+    return {
+      chart,
+      year,
+      currentAge,
+      decadePalace,
+      decadeRange,
+      palaceName,
+      stars,
+      domain,
+      theme,
+      liunian,
+      yearGz,
+      xiaoLianBranch,
+      xiaoLianPalace,
+      oppositeBranch,
+      oppositePalace,
+      xiaoLabel,
+      oppositeLabel,
+      yearFocus,
+    };
+  }
+
   function renderXiaoLianYearBlock(info) {
     const lineText = info.liunian.lineNum
       ? `${info.liunian.lineType || ''}${info.liunian.lineNum}爻`
@@ -3015,34 +3063,23 @@
   }
 
   function renderLuckChapterBlock(data, fallbackText) {
-    const bundle = getChartBundle();
-    const chart = bundle.chart || state.chart;
-    const year = new Date().getFullYear();
-    const currentAge = Math.max(1, Number(fcActiveAge) || (year - Number(state.profile.year || year) + 1));
-    const decadePalace = findDecadePalace(chart, currentAge);
-    const decadeRange = rangeFromDecadal(decadePalace) || [Math.max(1, currentAge - 4), currentAge + 5];
-    const palaceName = decadePalace?.name || '大限宫';
-    const stars = palaceMainLabel(decadePalace);
-    const domain = palaceDomain(palaceName);
-    const theme = decadeTheme(domain);
-    const liunian = fcLiunianSeq?.[currentAge] || {};
-    const yearGz = liunian.yearGanzhi ? `${liunian.yearGanzhi.stem || ''}${liunian.yearGanzhi.branch || ''}` : ganzhiYear(year);
-    const xiaoLianBranch = fcResolveXiaoLianBranch(currentAge);
-    const xiaoLianPalace = fcPalaceByBranch(chart, xiaoLianBranch);
-    const oppositeBranch = fcOppositeBranch(xiaoLianBranch);
-    const oppositePalace = fcPalaceByBranch(chart, oppositeBranch);
-    const xiaoLabel = palaceViewLabel(xiaoLianPalace, xiaoLianBranch);
-    const oppositeLabel = palaceViewLabel(oppositePalace, oppositeBranch);
-    const yearFocus = oppositePalace?.name
-      ? `小限${normalizePalaceName(xiaoLianPalace?.name || `${xiaoLianBranch}宫`)} · 对宫${normalizePalaceName(oppositePalace.name)}`
-      : (xiaoLianPalace?.name ? `${xiaoLianPalace.name} · ${palaceDomain(xiaoLianPalace.name)}` : domain);
+    const {
+      year,
+      currentAge,
+      decadeRange,
+      palaceName,
+      stars,
+      domain,
+      theme,
+      yearGz,
+    } = currentLuckViewInfo();
     const sections = aiSections(data);
     const summary = insightSummary(data, fallbackText || `${palaceName}主${domain}，这十年先稳住根基，再看机会扩张。`, 170);
     const summarySentences = splitReadableSentences(summary);
     const usedSummarySentences = new Set();
     const opportunity = luckSectionText(sections, summarySentences, usedSummarySentences, ['机会', '优势', '适合'], ['机会', '适合', '利于', '推进', '学习', '沟通', '合作'], `${domain}有推进空间，先抓可落地的资源。`);
     const risk = luckSectionText(sections, summarySentences, usedSummarySentences, ['风险', '注意', '留意', '压力'], ['风险', '压力', '注意', '避免', '不宜', '消耗', '拉扯'], '避免急转方向，注意关系拉扯与现金流波动。');
-    const yearPoint = luckSectionText(sections, summarySentences, usedSummarySentences, ['今年', '今年重点'], ['今年', '流年', String(year), yearGz, '重点'], `${year} ${yearGz}，重点看${yearFocus}。`);
+    const stagePoint = luckSectionText(sections, summarySentences, usedSummarySentences, ['阶段', '主轴', '节奏'], ['大限', '十年', '阶段', '主轴', '节奏'], `${decadeRange[0]}-${decadeRange[1]}岁重点看${domain}，今年处在${year} ${yearGz}。`);
     const startYear = fcAgeToYear(decadeRange[0]);
     const endYear = fcAgeToYear(decadeRange[1]);
     const midAge = Math.round((decadeRange[0] + decadeRange[1]) / 2);
@@ -3073,23 +3110,13 @@
       <div class="mbp-luck-kv">
         <section><b>大限宫位</b><strong>${escapeHtml(palaceName)}</strong><p>${escapeHtml(domain)}</p></section>
         <section><b>重点星曜</b><strong>${escapeHtml(stars)}</strong><p>看十年主轴与发力方式</p></section>
-        <section><b>今年重点</b><strong>${escapeHtml(yearFocus)}</strong><p>${escapeHtml(`${year} ${yearGz}`)}</p></section>
+        <section><b>阶段位置</b><strong>${escapeHtml(`${currentAge}岁`)}</strong><p>${escapeHtml(`${year} ${yearGz}`)}</p></section>
       </div>
       ${renderLuckSummaryParts([
         { title: '机会', text: opportunity },
         { title: '风险', text: risk },
-        { title: '今年重点', text: yearPoint },
+        { title: '阶段重点', text: stagePoint },
       ])}
-      ${renderXiaoLianYearBlock({
-        age: currentAge,
-        year,
-        yearGz,
-        liunian,
-        xiaoPalace: xiaoLianPalace,
-        xiaoLabel,
-        oppositePalace,
-        oppositeLabel,
-      })}
       <div class="mbp-luck-bottom">
         <section>
           <h4>行动建议</h4>
@@ -3104,6 +3131,55 @@
           </div>
         </section>
       </div>
+    `;
+  }
+
+  function renderXiaoLianChapterBlock(data, fallbackText) {
+    const info = currentLuckViewInfo();
+    const sections = aiSections(data);
+    const summary = insightSummary(data, fallbackText || `${info.year} ${info.yearGz}，小限落${info.xiaoLabel}，对宫看${info.oppositeLabel}。`, 170);
+    const summarySentences = splitReadableSentences(summary);
+    const usedSummarySentences = new Set();
+    const xiaoPoint = luckSectionText(
+      sections,
+      summarySentences,
+      usedSummarySentences,
+      ['小限', '落宫'],
+      ['小限', '落宫', info.xiaoLabel],
+      `小限落${info.xiaoLabel}，先看今年触发点。`
+    );
+    const oppositePoint = luckSectionText(
+      sections,
+      summarySentences,
+      usedSummarySentences,
+      ['对宫', '应事'],
+      ['对宫', '应事', info.oppositeLabel],
+      `对宫${info.oppositeLabel}，主外部牵动和现实应事。`
+    );
+    const guaPoint = luckSectionText(
+      sections,
+      summarySentences,
+      usedSummarySentences,
+      ['流年卦', '卦象'],
+      ['流年卦', '卦象', info.liunian.name || ''].filter(Boolean),
+      `${info.liunian.name || '流年卦象'}看当年应期，配合小限宫位落到具体事。`
+    );
+    return `
+      ${renderXiaoLianYearBlock({
+        age: info.currentAge,
+        year: info.year,
+        yearGz: info.yearGz,
+        liunian: info.liunian,
+        xiaoPalace: info.xiaoLianPalace,
+        xiaoLabel: info.xiaoLabel,
+        oppositePalace: info.oppositePalace,
+        oppositeLabel: info.oppositeLabel,
+      })}
+      ${renderLuckSummaryParts([
+        { title: '小限落点', text: xiaoPoint },
+        { title: '对宫应事', text: oppositePoint },
+        { title: '流年卦象', text: guaPoint },
+      ])}
     `;
   }
 
@@ -3169,6 +3245,7 @@
     { modules: ['overall'] },
     { modules: ['shengong', 'hunyin', 'jiankang', 'caiyun', 'shiye'] },
     { modules: ['current_luck'] },
+    { modules: ['xiaoxian_liunian'] },
     { virtual: 'curve' },
     { virtual: 'advice' },
   ];
@@ -3208,7 +3285,7 @@
     if (track) track.setAttribute('aria-valuenow', String(percent));
     if (hint) {
       hint.textContent = percent >= 100
-        ? '五卷命书已生成，可继续查看细节或打包报告。'
+        ? '六卷命书已生成，可继续查看细节或打包报告。'
         : (runningModule ? `正在生成：${stateText}` : '等待客户确认排盘后开始生成。');
     }
     document.querySelectorAll('[data-report-nav]').forEach((button) => {
@@ -3225,7 +3302,7 @@
   }
 
   function updateDecodeAllButtonProgress(done = 0, runningIndex = -1, stateText = '待生成') {
-    const total = aiTasks.length || 7;
+    const total = aiTasks.length || 8;
     const safeDone = Math.max(0, Math.min(done, total));
     const degrees = total ? (safeDone / total) * 360 : 0;
     const isGenerating = runningIndex >= 0 && safeDone < total;
@@ -3517,8 +3594,10 @@
   function buildPdfChaptersHtml() {
     const overall = normalizeAiData(state.aiResults.overall);
     const luck = normalizeAiData(state.aiResults.current_luck);
+    const xiaoLian = normalizeAiData(state.aiResults.xiaoxian_liunian);
     const overallText = aiCardText(overall);
     const luckText = aiCardText(luck);
+    const xiaoText = aiCardText(xiaoLian);
     const specialModules = [
       ['shengong', '身宫批命'],
       ['hunyin', '婚姻批命'],
@@ -3541,7 +3620,7 @@
         </section>
       `;
     }).join('');
-    const advice = actionAdviceData(overall, luck);
+    const advice = actionAdviceData(overall, luck, xiaoLian);
     const adviceHtml = `
       <section class="mbp-pdf-text-card">
         <strong>风险总括</strong>
@@ -3561,14 +3640,15 @@
     return [
       buildPdfChapter(1, aiCardTitle(overall, '命格总览'), buildPdfTextCards(overall, '命格总览', overallText || '整体批命等待原站 AI 返回。')),
       buildPdfChapter(2, '专题批命', specialHtml),
-      buildPdfChapter(3, '大限流年', buildPdfTextCards(luck, '大限流年', luckText || '大限流年等待原站 AI 返回。')),
-      buildPdfChapter(4, '人生曲线', `
+      buildPdfChapter(3, '大限', buildPdfTextCards(luck, '大限', luckText || '大限等待原站 AI 返回。')),
+      buildPdfChapter(4, '小限流年', buildPdfTextCards(xiaoLian, '小限流年', xiaoText || '小限流年等待原站 AI 返回。')),
+      buildPdfChapter(5, '人生曲线', `
         <section class="mbp-pdf-text-card">
           <strong>整体走势</strong>
           <p>人生曲线用于看关键年份、高低点与转折节奏。后续接入原站曲线评分后，这里会自动替换为客户版曲线结论。</p>
         </section>
       `),
-      buildPdfChapter(5, '行动建议', adviceHtml),
+      buildPdfChapter(6, '行动建议', adviceHtml),
     ].join('');
   }
 
@@ -3598,7 +3678,8 @@
         <ol class="mbp-pdf-toc">
           <li>命格总览</li>
           <li>专题批命</li>
-          <li>大限流年</li>
+          <li>大限</li>
+          <li>小限流年</li>
           <li>人生曲线</li>
           <li>行动建议</li>
         </ol>
@@ -3623,7 +3704,7 @@
     const btn = $('#mbpExportPdf');
     if (!pdfReportReady()) {
       setDecodeStatus('请先完成一键批命，再打包深度报告。');
-      setPdfHint('先生成五卷命书，再下载客户版 PDF', 'error');
+      setPdfHint('先生成六卷命书，再下载客户版 PDF', 'error');
       $('#mbpDecodeBtn')?.focus({ preventScroll: true });
       return;
     }
@@ -3632,7 +3713,7 @@
       btn.disabled = true;
       btn.innerHTML = '<span>正在打包…</span><small>PDF</small>';
     }
-    setPdfHint('正在整理命盘、五卷解读与目录…', 'ready');
+    setPdfHint('正在整理命盘、六卷解读与目录…', 'ready');
     setDecodeStatus('正在打包深度报告 PDF…');
     const host = document.createElement('div');
     host.className = 'mbp-pdf-export-host';
@@ -3689,8 +3770,10 @@
     const facts = chartFacts();
     const overall = normalizeAiData(state.aiResults.overall);
     const luck = normalizeAiData(state.aiResults.current_luck);
+    const xiaoLian = normalizeAiData(state.aiResults.xiaoxian_liunian);
     const overallText = aiCardText(overall);
     const luckText = aiCardText(luck);
+    const xiaoText = aiCardText(xiaoLian);
     const specialModules = [
       ['shengong', '身宫批命'],
       ['hunyin', '婚姻批命'],
@@ -3726,7 +3809,8 @@
     if (decodeList) {
       const highlights = [
         ['主线', overallText || '整体批命生成后显示'],
-        ['走势', luckText || '大限流年生成后显示'],
+        ['大限', luckText || '大限生成后显示'],
+        ['小限', xiaoText || '小限流年生成后显示'],
         ['专题', specialText || '五项专题生成后显示'],
       ];
       decodeList.innerHTML = highlights.map((item) => `
@@ -3736,7 +3820,8 @@
     const chaptersData = [
       [aiCardTitle(overall, '命格总览'), overallText || '整体批命等待原站 AI 返回。', null, 'overall'],
       ['专题批命', specialBriefText || '五项专题等待原站 AI 返回。', specialBriefSections, 'specials'],
-      ['大限流年', luckText || '当前大限流年接口暂未返回，后续继续接原站大限模块。', null, 'luck'],
+      ['大限', luckText || '当前大限接口暂未返回，后续继续接原站大限模块。', null, 'luck'],
+      ['小限流年', xiaoText || '当前小限流年接口暂未返回，后续接入小限流年模块。', null, 'xiaoxian'],
       ['人生曲线', '人生曲线属于原站独立模块，下一步接入原站曲线评分与关键年份。', null, 'curve'],
       ['行动建议', overallCard.risk ? `要留意：${overallCard.risk}` : '先看命盘底色，再看大运节奏；重要决策不只问准不准，还要知道何时动、如何动。', null, 'advice'],
     ];
@@ -3745,7 +3830,7 @@
       chapters.classList.add('is-generated');
       chapters.innerHTML = chaptersData.map((item, index) => {
         const type = item[3] || '';
-        const data = type === 'overall' ? overall : type === 'luck' ? luck : { card: { title: item[0], body: item[1], sections: item[2] || null } };
+        const data = type === 'overall' ? overall : type === 'luck' ? luck : type === 'xiaoxian' ? xiaoLian : { card: { title: item[0], body: item[1], sections: item[2] || null } };
         return `
         <article class="mbp-report-row" id="mbp-chapter-${index}" data-report-chapter="${index}">
           <span>卷${index + 1}</span>
@@ -3754,7 +3839,7 @@
             ${chapterActionButton(index)}
           </div>
             <div class="mbp-report-content">
-              ${type === 'specials' ? renderSpecialChapterBlock(item[2], item[1]) : type === 'luck' ? renderLuckChapterBlock(data, item[1]) : type === 'curve' ? renderCurveChapterBlock() : type === 'advice' ? renderActionAdviceBlock(overall, luck) : renderInsightBlock(data, item[0], item[1], {
+              ${type === 'specials' ? renderSpecialChapterBlock(item[2], item[1]) : type === 'luck' ? renderLuckChapterBlock(data, item[1]) : type === 'xiaoxian' ? renderXiaoLianChapterBlock(data, item[1]) : type === 'curve' ? renderCurveChapterBlock() : type === 'advice' ? renderActionAdviceBlock(overall, luck, xiaoLian) : renderInsightBlock(data, item[0], item[1], {
                 summaryMax: 128,
                 bulletLimit: 0,
                 direct: true,
@@ -3856,7 +3941,7 @@
         if (sub) sub.textContent = '中';
       } else {
         const done = Number(button.dataset.decodeDone) || 0;
-        const total = Number(button.dataset.decodeTotal) || aiTasks.length || 7;
+        const total = Number(button.dataset.decodeTotal) || aiTasks.length || 8;
         const main = button.querySelector('[data-decode-main]');
         const sub = button.querySelector('[data-decode-sub]');
         if (!done) {
@@ -3996,7 +4081,7 @@
     });
     const chapters = $('#mbpChapters');
     if (chapters) {
-      chapters.innerHTML = ['命格总览', '专题批命', '大限流年', '人生曲线', '行动建议'].map((title, index) => `
+      chapters.innerHTML = ['命格总览', '专题批命', '大限', '小限流年', '人生曲线', '行动建议'].map((title, index) => `
         <article id="mbp-chapter-${index}" data-report-chapter="${index}"><span>卷${index + 1}</span><h3>${title}</h3><p>等待一键批命。</p>${chapterActionButton(index)}</article>
       `).join('');
     }
@@ -4016,7 +4101,7 @@
       btn.textContent = '生成命书';
     }
     setAllModuleButtonsBusy(false);
-    setDecodeStatus('排盘后生成五卷命书。');
+    setDecodeStatus('排盘后生成六卷命书。');
     requestAnimationFrame(syncReportNav);
   }
 
