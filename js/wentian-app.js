@@ -1095,10 +1095,12 @@ const WENTIAN_HEPAN_AI_RULES = [
   "海厦《天纪06》合盘提到母子格、父女格、兄弟格、朋友格；格局先看命盘宫位/星曜对应，不按现实年龄硬猜。",
   "页面主判：一方夫妻宫所在地支落到另一张盘哪一宫，就先按那一宫立格，例如落兄弟宫为兄弟格，落朋友/仆役宫为朋友格。",
   "星曜佐证：参考父母宫星入对方命宫、命宫星入对方父母宫、兄弟宫星入对方命宫、朋友宫星入对方命宫等合参规则。",
-  "情侣/夫妻格才谈婚恋推进；兄弟格、朋友格、父母格等只谈相处、边界、扶持与互动，不输出暧昧或婚恋判断。",
+  "前置校验：情侣合盘必须一男一女；男未满22周岁、女未满20周岁，或双方年龄相差达到15岁及以上，均不能合盘。",
   "出生日期在未来、生日缺失、同一人重复选择，均不能合盘。",
   "追问时必须围绕两张盘和本次合盘格局回答，不要退回单人命盘读盘。",
 ].join("\n");
+const WENTIAN_HEPAN_MAX_AGE_GAP = 15;
+const WENTIAN_HEPAN_LEGAL_AGE = { male: 22, female: 20 };
 const WENTIAN_CLIENT_ID_KEY = "ziwei_client_id";
 const WENTIAN_LANGUAGE_STORAGE_KEY = "wentian-app-language-v1";
 const WENTIAN_PROFILE_STORAGE_KEY = "wentian-app-profile-v1";
@@ -3103,6 +3105,10 @@ function getWentianArchiveAgeInfo(archive, now = new Date()) {
   return { ok: true, code: "ok", birthDate, age };
 }
 
+function getWentianHepanLegalAge(gender) {
+  return WENTIAN_HEPAN_LEGAL_AGE[gender] || 22;
+}
+
 function getWentianHepanPersonLabel(archive) {
   return getWentianArchiveDisplay(archive).name || "该档案";
 }
@@ -3124,7 +3130,7 @@ const WENTIAN_HEPAN_RELATION_PROFILES = {
     score: 6,
     dimensions: ["长幼牵引", "沟通节奏", "边界稳定", "共同成长"],
     adviceHigh: "这类合盘重在照顾与承接，适合把期待、责任和边界先说清楚。",
-    adviceLow: "先减少控制和投射，避免把亲缘式牵引误当成婚恋推进力。",
+    adviceLow: "先减少控制和投射，把照顾、责任和个人边界分开看。",
   },
   sibling: {
     label: "兄弟格",
@@ -3350,6 +3356,14 @@ function validateWentianHepanPair(left, right) {
   const futureBirth = ageInfos.find((item) => item.code === "future-birth");
   if (futureBirth) {
     return { ok: false, code: "future-birth", message: `${futureBirth.label}出生日期在未来，不能合盘` };
+  }
+  const underage = ageInfos.find((item) => Number(item.age) < getWentianHepanLegalAge(item.gender));
+  if (underage) {
+    return { ok: false, code: "under-legal-age", message: `${underage.label}未满法定婚龄（男22周岁、女20周岁），不能合盘` };
+  }
+  const ageGap = Math.abs(Number(ageInfos[0].age) - Number(ageInfos[1].age));
+  if (ageGap >= WENTIAN_HEPAN_MAX_AGE_GAP) {
+    return { ok: false, code: "age-gap-too-large", message: `双方年龄相差${ageGap}岁，达到${WENTIAN_HEPAN_MAX_AGE_GAP}岁及以上，不能合盘` };
   }
   const relationship = getWentianHepanRelationship(left, right, ageInfos);
   return { ok: true, code: "ok", message: `可开始${relationship.label}`, relationship, ageInfos };
@@ -5324,7 +5338,7 @@ function buildWentianXuOutboundMessage(message, context) {
       `页面合盘：${context.score || ""}分，${context.level || ""}`,
       `维度：${(context.dimensions || []).map(([label, score, note]) => `${label}${score}分：${note}`).join("；")}`,
       context.advice ? `页面建议：${context.advice}` : "",
-      "回答要求：先判断关系前提是否成立，再按关系类型讲互动点、冲突点、长期节奏和可执行建议。非情侣关系不得输出婚恋、暧昧、结婚或同居判断。",
+      "回答要求：先判断关系前提是否成立，再按本次格局讲互动点、冲突点、长期节奏和可执行建议。不要按现实身份硬改格局。",
       "",
       `我的追问：${message}`,
     ].filter(Boolean).join("\n");
