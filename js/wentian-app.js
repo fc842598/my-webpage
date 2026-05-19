@@ -3008,44 +3008,17 @@ function getWentianHepanValidation(archives = getWentianArchiveList(), ids = get
   return validateWentianHepanPair(pair[0], pair[1]);
 }
 
-function getWentianHepanEntryRoute() {
-  const archives = getWentianArchiveList();
-  let savedIds = null;
-  try {
-    const raw = localStorage.getItem(WENTIAN_HEPAN_SELECTION_KEY);
-    savedIds = raw ? JSON.parse(raw) : null;
-  } catch (_err) {
-    savedIds = null;
-  }
-  if (!Array.isArray(savedIds) || savedIds.length < 2) return "screen-11";
-  const archiveIds = new Set(archives.map((archive) => archive.id));
-  const ids = savedIds.filter((id) => archiveIds.has(id)).slice(0, 2);
-  return getWentianHepanValidation(archives, ids).ok ? "screen-49" : "screen-11";
-}
-
-function getWentianFirstValidHepanPair(archives) {
-  for (let i = 0; i < archives.length; i += 1) {
-    for (let j = i + 1; j < archives.length; j += 1) {
-      if (validateWentianHepanPair(archives[i], archives[j]).ok) return [archives[i].id, archives[j].id];
-    }
-  }
-  return [];
-}
-
 function clampWentianScore(value) {
   return Math.max(35, Math.min(96, Math.round(value)));
 }
 
 function getWentianHepanSelectedIds(archives = getWentianArchiveList()) {
-  let hasSavedSelection = true;
   if (!Array.isArray(wentianHepanSelectedIds)) {
     try {
       const raw = localStorage.getItem(WENTIAN_HEPAN_SELECTION_KEY);
-      hasSavedSelection = raw !== null;
       const saved = raw ? JSON.parse(raw) : [];
       wentianHepanSelectedIds = Array.isArray(saved) ? saved : [];
     } catch (_err) {
-      hasSavedSelection = false;
       wentianHepanSelectedIds = [];
     }
   }
@@ -3054,9 +3027,6 @@ function getWentianHepanSelectedIds(archives = getWentianArchiveList()) {
   for (const id of wentianHepanSelectedIds) {
     if (archiveIds.includes(id) && !selected.includes(id)) selected.push(id);
     if (selected.length >= 2) break;
-  }
-  if (!hasSavedSelection) {
-    selected.splice(0, selected.length, ...getWentianFirstValidHepanPair(archives));
   }
   wentianHepanSelectedIds = selected;
   return selected;
@@ -9786,7 +9756,7 @@ function normalizeRoute(route) {
 
 function resolveRoute(route) {
   const clean = normalizeRoute(route).replace(/^#/, "");
-  if (clean === "hepan" || clean === "10" || clean === "screen-10") return getWentianHepanEntryRoute();
+  if (clean === "hepan" || clean === "10" || clean === "screen-10") return "screen-11";
   return routeAliases[clean] || clean || "screen-1";
 }
 
