@@ -2948,95 +2948,222 @@ html[data-wentian-language="en"] .liuren-orbit i {
   height: auto;
 }
 
+.liuren-hand-board::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 18% 27% at 30% 39%, rgba(255, 250, 242, .90) 0 38%, rgba(255, 250, 242, .40) 58%, transparent 76%),
+    radial-gradient(ellipse 20% 28% at 72% 39%, rgba(255, 250, 242, .90) 0 38%, rgba(255, 250, 242, .40) 58%, transparent 76%),
+    radial-gradient(ellipse 30% 13% at 50% 24%, rgba(255, 250, 242, .82) 0 40%, rgba(255, 250, 242, .32) 60%, transparent 78%);
+}
+
 .liuren-hand-board.is-revealed img {
   animation: liurenBoardBreathe 7.2s ease-in-out infinite;
   transform-origin: 46% 72%;
 }
 
-.liuren-count-motion,
-.liuren-count-motion span {
+.liuren-palace-layer,
+.liuren-palace-pulses,
+.liuren-palace-button,
+.liuren-palace-pulse {
   position: absolute;
   pointer-events: none;
 }
 
-.liuren-count-motion {
+.liuren-palace-layer,
+.liuren-palace-pulses {
   inset: 0;
+}
+
+.liuren-palace-layer {
   z-index: 2;
-  --liuren-final-left: 70%;
-  --liuren-final-top: 60%;
 }
 
-.liuren-count-thumb {
-  left: 38.5%;
-  top: 54.8%;
-  width: 22%;
-  height: 6.6%;
-  border: 1px solid rgba(139, 93, 42, .28);
-  border-radius: 999px 54% 54% 999px;
+.liuren-palace-pulses {
+  z-index: 3;
+}
+
+.liuren-palace-button,
+.liuren-palace-pulse {
+  left: var(--x);
+  top: var(--y);
+  display: grid;
+  place-items: center;
+  width: var(--badge-width);
+  height: var(--badge-height);
+  min-width: 40px;
+  min-height: 54px;
+  padding: 5px 4px 4px;
+  border: 1px solid rgba(186, 151, 92, .50);
+  border-radius: 999px 999px 18px 18px;
   background:
-    radial-gradient(ellipse at 84% 46%, rgba(255, 249, 232, .96) 0 16%, transparent 17%),
-    linear-gradient(90deg, rgba(204, 151, 82, .46) 0%, rgba(244, 214, 168, .80) 56%, rgba(255, 242, 211, .92) 100%);
-  box-shadow: 0 10px 18px rgba(91, 55, 22, .14);
-  clip-path: polygon(0 18%, 68% 4%, 100% 22%, 100% 78%, 68% 96%, 0 82%);
-  opacity: 0;
-  transform: translate(-86%, -50%) rotate(-44deg) scaleX(.9);
-  transform-origin: 86% 50%;
-  animation: liurenThumbCount 7.2s cubic-bezier(.45, 0, .2, 1) infinite;
+    radial-gradient(circle at 50% 11%, rgba(255, 255, 255, .92) 0 16%, transparent 17%),
+    linear-gradient(180deg, #fff8e8 0%, #f6ead2 56%, #fffaf2 100%);
+  box-shadow: inset 0 2px 6px rgba(255, 255, 255, .74), inset 0 -6px 12px rgba(122, 82, 38, .08), 0 5px 12px rgba(73, 47, 25, .10);
+  color: #211914;
+  isolation: isolate;
+  overflow: visible;
+  text-align: center;
+  transform: translate(-50%, -50%);
 }
 
-.liuren-count-thumb::before,
-.liuren-count-thumb::after {
+.liuren-palace-button::before,
+.liuren-palace-button::after,
+.liuren-palace-pulse::after {
   content: "";
   position: absolute;
-  top: 18%;
-  width: 1px;
-  height: 64%;
-  border-radius: 999px;
-  background: rgba(121, 80, 36, .22);
+  pointer-events: none;
 }
 
-.liuren-count-thumb::before {
-  left: 42%;
+.liuren-palace-button::before {
+  inset: 6px;
+  z-index: -1;
+  border: 1px solid rgba(159, 125, 70, .23);
+  border-radius: inherit;
 }
 
-.liuren-count-thumb::after {
-  display: none;
-}
-
-.liuren-count-thumb i {
-  position: absolute;
-  right: 5.5%;
-  top: 17%;
-  width: 22%;
-  height: 60%;
-  border-radius: 50%;
-  background: rgba(255, 250, 232, .92);
-  box-shadow: inset 0 -2px 4px rgba(158, 108, 54, .10);
-}
-
-.liuren-count-touch {
-  left: 38.5%;
-  top: 54.8%;
-  width: 44px;
-  height: 44px;
-  margin: -22px 0 0 -22px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(255, 247, 190, .88) 0 20%, rgba(224, 165, 48, .28) 21% 54%, transparent 55% 100%);
-  box-shadow: 0 0 22px rgba(207, 151, 38, .34);
+.liuren-palace-button::after {
+  inset: -10px -9px -12px;
+  z-index: -2;
+  border-radius: 999px 999px 22px 22px;
   opacity: 0;
-  animation: liurenTouchCount 7.2s ease-in-out infinite;
 }
 
-.liuren-final-aura {
-  left: var(--liuren-final-left);
-  top: var(--liuren-final-top);
-  width: 78px;
-  height: 78px;
-  margin: -39px 0 0 -39px;
+.liuren-palace-button i,
+.liuren-palace-pulse i {
+  display: grid;
+  place-items: center;
+  width: 21px;
+  height: 20px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(255, 239, 166, .44) 0 24%, rgba(211, 156, 45, .20) 25% 54%, transparent 55% 100%);
-  opacity: .58;
-  animation: liurenFinalAura 2.4s ease-in-out infinite;
+  background: rgba(215, 180, 109, .34);
+  color: #6f5423;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.liuren-palace-button strong,
+.liuren-palace-button em,
+.liuren-palace-pulse strong,
+.liuren-palace-pulse em {
+  display: block;
+  line-height: 1.04;
+}
+
+.liuren-palace-button strong,
+.liuren-palace-pulse strong {
+  margin-top: 2px;
+  font-size: 17px;
+  font-weight: 900;
+}
+
+.liuren-palace-button em,
+.liuren-palace-pulse em {
+  margin-top: 1px;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 900;
+}
+
+.liuren-hand-board.is-color .liuren-palace-button,
+.liuren-hand-board.is-color .liuren-palace-pulse {
+  border-color: var(--badge-accent);
+  background:
+    radial-gradient(circle at 50% 11%, rgba(255, 255, 255, .92) 0 16%, transparent 17%),
+    linear-gradient(180deg, var(--badge-fill) 0%, #fffaf2 48%, var(--badge-fill-strong) 100%);
+  box-shadow: inset 0 2px 7px rgba(255, 255, 255, .74), inset 0 -7px 12px rgba(65, 43, 17, .07), 0 0 0 5px var(--badge-soft), 0 7px 18px var(--badge-glow);
+  color: var(--badge-ink);
+}
+
+.liuren-hand-board.is-color .liuren-palace-button i,
+.liuren-hand-board.is-color .liuren-palace-pulse i {
+  background: rgba(255, 255, 255, .52);
+  color: var(--badge-accent);
+}
+
+.liuren-hand-board.is-revealed .liuren-palace-button {
+  animation: liurenBadgeSettle 3.2s ease-in-out infinite;
+  animation-delay: calc(var(--badge-order) * .08s);
+}
+
+.liuren-hand-board.is-revealed .liuren-palace-button.is-final {
+  border-width: 2px;
+  animation: liurenFinalBadge 2.35s ease-in-out var(--liuren-final-delay) infinite;
+}
+
+.liuren-hand-board.is-plain .liuren-palace-button.is-final {
+  border-color: #c0902d;
+  background:
+    radial-gradient(circle at 50% 11%, rgba(255, 255, 255, .96) 0 16%, transparent 17%),
+    linear-gradient(180deg, #fff4d6 0%, #f5dfaa 54%, #fff9ec 100%);
+  box-shadow: inset 0 2px 8px rgba(255, 255, 255, .78), inset 0 -8px 14px rgba(154, 104, 28, .10), 0 0 0 5px rgba(216, 166, 64, .14), 0 10px 24px rgba(192, 144, 45, .22);
+}
+
+.liuren-hand-board.is-color .liuren-palace-button.is-final {
+  box-shadow: inset 0 2px 8px rgba(255, 255, 255, .76), inset 0 -8px 14px rgba(65, 43, 17, .08), 0 0 0 7px var(--badge-soft), 0 10px 26px var(--badge-glow);
+}
+
+.liuren-hand-board.is-revealed .liuren-palace-button.is-final::after {
+  background: radial-gradient(ellipse, var(--badge-glow) 0 34%, transparent 68%);
+  animation: liurenFinalBadgeAura 2.35s ease-in-out var(--liuren-final-delay) infinite;
+}
+
+.liuren-hand-board.is-plain .liuren-palace-button.is-final::after {
+  background: radial-gradient(ellipse, rgba(230, 180, 72, .36) 0 34%, transparent 68%);
+}
+
+.liuren-palace-pulse {
+  z-index: 4;
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(.86);
+  animation: liurenBadgePulse .62s ease-out var(--pulse-delay) 1 both;
+}
+
+.liuren-hand-board.is-plain .liuren-palace-pulse {
+  border-color: #cf9b38;
+  background:
+    radial-gradient(circle at 50% 11%, rgba(255, 255, 255, .95) 0 16%, transparent 17%),
+    linear-gradient(180deg, #fff5d8 0%, #f2d99e 62%, #fff8e6 100%);
+  box-shadow: 0 0 0 6px rgba(220, 169, 62, .16), 0 0 22px rgba(212, 156, 47, .30);
+}
+
+.liuren-motion-mode {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 5;
+  display: flex;
+  gap: 2px;
+  padding: 3px;
+  border: 1px solid rgba(189, 158, 110, .42);
+  border-radius: 999px;
+  background: rgba(255, 252, 244, .88);
+  box-shadow: 0 8px 18px rgba(76, 48, 24, .08);
+  pointer-events: auto;
+}
+
+.liuren-motion-mode button {
+  min-width: 42px;
+  height: 26px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: #8a7358;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.liuren-motion-mode button.is-active {
+  background: #9e4738;
+  color: #fffaf3;
+  box-shadow: 0 5px 12px rgba(158, 71, 56, .16);
 }
 
 @keyframes liurenBoardBreathe {
@@ -3054,184 +3181,73 @@ html[data-wentian-language="en"] .liuren-orbit i {
   }
 }
 
-@keyframes liurenThumbCount {
-  0%,
-  7% {
-    left: 31%;
-    top: 65%;
-    opacity: 0;
-    transform: translate(-86%, -50%) rotate(-36deg) scaleX(.5);
-  }
-
-  12%,
-  18% {
-    left: 38.5%;
-    top: 54.8%;
-    opacity: .78;
-    transform: translate(-86%, -50%) rotate(-44deg) scaleX(.9);
-  }
-
-  27%,
-  32% {
-    left: 38.5%;
-    top: 38%;
-    opacity: .82;
-    transform: translate(-86%, -50%) rotate(-70deg) scaleX(1.12);
-  }
-
-  41%,
-  46% {
-    left: 50%;
-    top: 31%;
-    opacity: .82;
-    transform: translate(-86%, -50%) rotate(-67deg) scaleX(1.18);
-  }
-
-  55%,
-  60% {
-    left: 65%;
-    top: 39%;
-    opacity: .82;
-    transform: translate(-86%, -50%) rotate(-48deg) scaleX(1.16);
-  }
-
-  69%,
-  75% {
-    left: 70%;
-    top: 60%;
-    opacity: .82;
-    transform: translate(-86%, -50%) rotate(-8deg) scaleX(.92);
-  }
-
-  84%,
-  90% {
-    left: 51%;
-    top: 55%;
-    opacity: .76;
-    transform: translate(-86%, -50%) rotate(-32deg) scaleX(.92);
-  }
-
-  100% {
-    left: var(--liuren-final-left);
-    top: var(--liuren-final-top);
-    opacity: .76;
-    transform: translate(-86%, -50%) rotate(-8deg) scaleX(.92);
-  }
-}
-
-@keyframes liurenTouchCount {
-  0%,
-  8% {
-    left: 38.5%;
-    top: 54.8%;
-    opacity: 0;
-    transform: scale(.55);
-  }
-
-  13% {
-    left: 38.5%;
-    top: 54.8%;
-    opacity: .9;
-    transform: scale(1);
-  }
-
-  21% {
-    left: 38.5%;
-    top: 38%;
-    opacity: 0;
-    transform: scale(.55);
-  }
-
-  28% {
-    left: 38.5%;
-    top: 38%;
-    opacity: .78;
-    transform: scale(1);
-  }
-
-  35% {
-    left: 50%;
-    top: 31%;
-    opacity: 0;
-    transform: scale(.55);
-  }
-
-  42% {
-    left: 50%;
-    top: 31%;
-    opacity: .78;
-    transform: scale(1);
-  }
-
-  49% {
-    left: 65%;
-    top: 39%;
-    opacity: 0;
-    transform: scale(.55);
-  }
-
-  56% {
-    left: 65%;
-    top: 39%;
-    opacity: .78;
-    transform: scale(1);
-  }
-
-  63% {
-    left: 70%;
-    top: 60%;
-    opacity: 0;
-    transform: scale(.55);
-  }
-
-  70% {
-    left: 70%;
-    top: 60%;
-    opacity: .9;
-    transform: scale(1.08);
-  }
-
-  78% {
-    left: 51%;
-    top: 55%;
-    opacity: 0;
-    transform: scale(.55);
-  }
-
-  85% {
-    left: 51%;
-    top: 55%;
-    opacity: .74;
-    transform: scale(1);
-  }
-
-  100% {
-    left: var(--liuren-final-left);
-    top: var(--liuren-final-top);
-    opacity: .36;
-    transform: scale(1.15);
-  }
-}
-
-@keyframes liurenFinalAura {
+@keyframes liurenBadgeSettle {
   0%,
   100% {
-    transform: scale(.92);
-    opacity: .38;
+    transform: translate(-50%, -50%);
   }
 
   50% {
-    transform: scale(1.08);
-    opacity: .74;
+    transform: translate(-50%, -50%) scale(1.025);
+  }
+}
+
+@keyframes liurenBadgePulse {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(.82);
+  }
+
+  34% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.12);
+  }
+
+  72% {
+    opacity: .78;
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1.18);
+  }
+}
+
+@keyframes liurenFinalBadge {
+  0%,
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  50% {
+    transform: translate(-50%, -50%) scale(1.06);
+  }
+}
+
+@keyframes liurenFinalBadgeAura {
+  0%,
+  100% {
+    opacity: 0;
+    transform: scale(.86);
+  }
+
+  50% {
+    opacity: .86;
+    transform: scale(1.12);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .liuren-hand-board.is-revealed img,
-  .liuren-count-thumb,
-  .liuren-count-touch,
-  .liuren-final-aura {
+  .liuren-palace-button,
+  .liuren-palace-button::after,
+  .liuren-palace-pulse {
     animation: none !important;
+  }
+
+  .liuren-palace-pulse {
+    display: none;
   }
 }
 

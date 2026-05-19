@@ -9023,16 +9023,25 @@ const LIUREN_PALACES = [
   { name: "空亡", nature: "凶", tone: "warn", keys: ["落空", "虚耗", "暂无"], summary: "主落空、虚耗、信息不实。问事多需重新核对根基。", advice: "适合暂停、查证、换方案；不要把希望压在单一路径。" }
 ];
 const LIUREN_HAND_POINTS = [
-  { left: 38.5, top: 54.8 },
-  { left: 38.5, top: 38.0 },
-  { left: 50.0, top: 31.0 },
-  { left: 65.0, top: 39.0 },
-  { left: 70.0, top: 60.0 },
-  { left: 51.0, top: 55.0 }
+  { left: 38.5, top: 54.8, width: 13.0, height: 15.8 },
+  { left: 38.5, top: 38.0, width: 12.8, height: 15.4 },
+  { left: 50.0, top: 31.0, width: 12.8, height: 15.4 },
+  { left: 65.0, top: 39.0, width: 12.8, height: 15.4 },
+  { left: 70.0, top: 60.0, width: 14.6, height: 16.6 },
+  { left: 51.0, top: 55.0, width: 13.0, height: 15.8 }
+];
+const LIUREN_HAND_BADGE_COLORS = [
+  { fill: "#edf7ed", fillStrong: "#d7ead8", accent: "#4f8d65", ink: "#20382a", glow: "rgba(79,141,101,.34)", soft: "rgba(79,141,101,.16)" },
+  { fill: "#f2eff9", fillStrong: "#ded6ef", accent: "#7766aa", ink: "#31284f", glow: "rgba(119,102,170,.32)", soft: "rgba(119,102,170,.14)" },
+  { fill: "#fff3cc", fillStrong: "#f5cf68", accent: "#c78a1d", ink: "#4c3009", glow: "rgba(218,154,34,.38)", soft: "rgba(218,154,34,.18)" },
+  { fill: "#ffe6de", fillStrong: "#e89a88", accent: "#b7513f", ink: "#4b2018", glow: "rgba(183,81,63,.34)", soft: "rgba(183,81,63,.16)" },
+  { fill: "#fff1bd", fillStrong: "#e9b93e", accent: "#bd8620", ink: "#422d08", glow: "rgba(233,185,62,.44)", soft: "rgba(233,185,62,.20)" },
+  { fill: "#eaf3f7", fillStrong: "#c6dce8", accent: "#5b8497", ink: "#203845", glow: "rgba(91,132,151,.32)", soft: "rgba(91,132,151,.14)" }
 ];
 const LIUREN_SCREEN_HEIGHT = 1900;
 let liurenHasStarted = false;
 let liurenXuRecordId = null;
+let liurenMotionMode = "color";
 
 function formatLiurenDayName(day) {
   const names = ["初一", "初二", "初三", "初四", "初五", "初六", "初七", "初八", "初九", "初十", "十一", "十二", "十三", "十四", "十五", "十六", "十七", "十八", "十九", "二十", "廿一", "廿二", "廿三", "廿四", "廿五", "廿六", "廿七", "廿八", "廿九", "三十"];
@@ -9103,6 +9112,85 @@ function renderLiurenTrack(result, reveal = true) {
   `).join("");
 }
 
+function normalizeLiurenMotionMode(mode) {
+  return mode === "plain" ? "plain" : "color";
+}
+
+function getLiurenHandBadgeStyle(index, order = index) {
+  const point = LIUREN_HAND_POINTS[index] || LIUREN_HAND_POINTS[0];
+  const color = LIUREN_HAND_BADGE_COLORS[index] || LIUREN_HAND_BADGE_COLORS[0];
+  return [
+    `--x:${point.left}%`,
+    `--y:${point.top}%`,
+    `--badge-width:${point.width}%`,
+    `--badge-height:${point.height}%`,
+    `--badge-order:${order}`,
+    `--badge-fill:${color.fill}`,
+    `--badge-fill-strong:${color.fillStrong}`,
+    `--badge-accent:${color.accent}`,
+    `--badge-ink:${color.ink}`,
+    `--badge-glow:${color.glow}`,
+    `--badge-soft:${color.soft}`
+  ].join(";");
+}
+
+function getLiurenVisualSequence(result) {
+  const sequence = [];
+  const pushWalk = (fromIndex, steps, includeStart = true) => {
+    if (includeStart) sequence.push(fromIndex % LIUREN_PALACES.length);
+    for (let step = 1; step <= steps; step += 1) {
+      sequence.push((fromIndex + step) % LIUREN_PALACES.length);
+    }
+  };
+  pushWalk(0, Math.max(0, result.lunar.month - 1), true);
+  pushWalk(result.monthPalaceIndex, Math.max(0, result.lunar.day - 1), true);
+  pushWalk(result.dayPalaceIndex, Math.max(0, result.hourNumber - 1), true);
+  if (sequence[sequence.length - 1] !== result.palaceIndex) sequence.push(result.palaceIndex);
+  return sequence;
+}
+
+function renderLiurenPalaceBadges(result, reveal = true) {
+  const finalIndex = reveal ? result.palaceIndex : -1;
+  return LIUREN_PALACES.map((palace, index) => `
+    <span class="liuren-palace-button ${palace.tone === "good" ? "is-good" : "is-warn"} ${index === finalIndex ? "is-final" : ""}" style="${getLiurenHandBadgeStyle(index)}">
+      <i>${index + 1}</i>
+      <strong>${palace.name}</strong>
+      <em>${palace.nature}</em>
+    </span>
+  `).join("");
+}
+
+function renderLiurenPalacePulses(result) {
+  return getLiurenVisualSequence(result).map((index, order) => {
+    const palace = LIUREN_PALACES[index] || LIUREN_PALACES[0];
+    return `
+      <span class="liuren-palace-pulse ${palace.tone === "good" ? "is-good" : "is-warn"}" style="${getLiurenHandBadgeStyle(index, order)};--pulse-delay:${(order * 0.22).toFixed(2)}s;">
+        <i>${index + 1}</i>
+        <strong>${palace.name}</strong>
+        <em>${palace.nature}</em>
+      </span>
+    `;
+  }).join("");
+}
+
+function renderLiurenMotionModeControls() {
+  return `
+    <div class="liuren-motion-mode" role="group" aria-label="推算动效样式">
+      ${[
+        ["plain", "素雅"],
+        ["color", "彩色"]
+      ].map(([mode, label]) => `
+        <button type="button" data-action="liuren-motion-mode" data-mode="${mode}" class="${liurenMotionMode === mode ? "is-active" : ""}" aria-pressed="${liurenMotionMode === mode ? "true" : "false"}">${label}</button>
+      `).join("")}
+    </div>
+  `;
+}
+
+function setLiurenMotionMode(mode) {
+  liurenMotionMode = normalizeLiurenMotionMode(mode);
+  updateLiurenPreview({ reveal: liurenHasStarted });
+}
+
 function renderLiurenPath(result, reveal = true) {
   const items = [
     ["月令", `${result.lunar.month}月`, LIUREN_PALACES[result.monthPalaceIndex]?.name || "-"],
@@ -9110,16 +9198,15 @@ function renderLiurenPath(result, reveal = true) {
     ["时辰", `${result.hourName}时`, reveal ? result.palace.name : "待起课"]
   ];
   const activePalace = reveal ? result.palace.name : "待起课";
-  const finalPoint = LIUREN_HAND_POINTS[reveal ? result.palaceIndex : 0] || LIUREN_HAND_POINTS[0];
+  const motionMode = normalizeLiurenMotionMode(liurenMotionMode);
+  const visualSequence = reveal ? getLiurenVisualSequence(result) : [];
+  const finalDelay = Math.min(7.2, Math.max(1.2, visualSequence.length * 0.22 + 0.35));
   return `
-    <div class="liuren-hand-board ${reveal ? "is-revealed" : "is-idle"}" aria-label="小六壬掌诀三指六位推演图">
-      <img src="../images/wentian-prototype-assets/liuren-hand-board-clean.png" alt="" aria-hidden="true">
-      ${reveal ? `
-      <div class="liuren-count-motion" style="--liuren-final-left:${finalPoint.left}%;--liuren-final-top:${finalPoint.top}%;" aria-hidden="true">
-        <span class="liuren-count-thumb"><i></i></span>
-        <span class="liuren-count-touch"></span>
-        <span class="liuren-final-aura"></span>
-      </div>` : ""}
+    <div class="liuren-hand-board ${reveal ? "is-revealed" : "is-idle"} is-${motionMode}" style="--liuren-final-delay:${finalDelay.toFixed(2)}s;" aria-label="小六壬掌诀三指六位推演图">
+      <img src="../images/wentian-prototype-assets/liuren-hand-board-base.png" alt="" aria-hidden="true">
+      <div class="liuren-palace-layer" aria-hidden="true">${renderLiurenPalaceBadges(result, reveal)}</div>
+      ${reveal ? `<div class="liuren-palace-pulses" aria-hidden="true">${renderLiurenPalacePulses(result)}</div>` : ""}
+      ${renderLiurenMotionModeControls()}
       <div class="liuren-hand-a11y" aria-live="polite">
         ${items.map(([label, value, palace]) => `<span>${label}：${value}，${palace}</span>`).join("")}
         <span>当前落宫：${activePalace}</span>
@@ -11393,6 +11480,10 @@ document.addEventListener("click", (event) => {
   }
   if (earlyAction === "liuren-calc") {
     calculateLiurenFromInputs();
+    return;
+  }
+  if (earlyAction === "liuren-motion-mode") {
+    setLiurenMotionMode(earlyActionTarget.dataset.mode || "color");
     return;
   }
   if (earlyAction === "liuren-reset") {
