@@ -1636,7 +1636,9 @@
     const isBen = branch === activeBranch;
     const isRel = !isBen && related.includes(branch);
     const isXiaoLian = fcActiveTab === '流年卦' && branch === fcXiaoLianBranch;
-    cell.className = `fc-cell${isBen ? ' fc-ben' : isRel ? ' fc-rel' : ''}${isXiaoLian ? ' fc-xiaolian' : ''}`;
+    const smallStars = allSmallStars(palace);
+    const densityClass = `${smallStars.length >= 7 ? ' fc-compact-stars' : ''}${smallStars.length >= 10 ? ' fc-crowded-stars' : ''}`;
+    cell.className = `fc-cell${isBen ? ' fc-ben' : isRel ? ' fc-rel' : ''}${isXiaoLian ? ' fc-xiaolian' : ''}${densityClass}`;
 
     const allStarsForMutagen = [
       ...(palace.majorStars || []),
@@ -1651,7 +1653,7 @@
     const majorHtml = (palace.majorStars || [])
       .map((star) => `<div class="fc-major-star">${escapeHtml((star.name || '') + (star.brightness || ''))}</div>`)
       .join('');
-    const minorHtml = allSmallStars(palace)
+    const minorHtml = smallStars
       .map((star) => `<div class="fc-minor-star">${escapeHtml(starText(star))}</div>`)
       .join('');
     const shenHtml = [palace.changsheng12, palace.boshi12].filter(Boolean)

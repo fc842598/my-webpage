@@ -2071,6 +2071,37 @@ body.mbp-auth-open {
   white-space: nowrap;
 }
 
+.fc-cell.fc-compact-stars {
+  padding: 5px 6px;
+}
+
+.fc-cell.fc-compact-stars .fc-cell-top {
+  gap: 4px;
+  overflow: visible;
+}
+
+.fc-cell.fc-compact-stars .fc-minor-list {
+  gap: 0;
+}
+
+.fc-cell.fc-compact-stars .fc-minor-star {
+  font-size: 9.5px;
+  line-height: 1.08;
+}
+
+.fc-cell.fc-crowded-stars .fc-minor-list {
+  display: grid;
+  grid-template-columns: repeat(2, max-content);
+  align-content: start;
+  justify-content: end;
+  column-gap: 3px;
+  row-gap: 0;
+}
+
+.fc-cell.fc-crowded-stars .fc-minor-star {
+  font-size: 8.5px;
+}
+
 .fc-cell-bottom {
   display: flex;
   justify-content: space-between;
@@ -2461,6 +2492,15 @@ body.mbp-auth-open {
 
   .fc-age {
     font-size: 12px;
+  }
+
+  .fc-cell.fc-compact-stars .fc-minor-star {
+    font-size: 11px;
+    line-height: 1.08;
+  }
+
+  .fc-cell.fc-crowded-stars .fc-minor-star {
+    font-size: 10px;
   }
 
   .fc-center-title {
