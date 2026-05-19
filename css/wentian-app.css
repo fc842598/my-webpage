@@ -2724,8 +2724,7 @@ html[data-wentian-language="en"] .liuren-hero-copy em {
 }
 
 .liuren-hand-board.is-revealed .liuren-palace-button {
-  animation: liurenBadgeSettle 3.4s ease-in-out infinite;
-  animation-delay: calc(var(--badge-order) * .08s);
+  transition: border-color .16s ease, box-shadow .16s ease, background .16s ease, transform .16s ease;
 }
 
 .liuren-hand-board.is-revealed .liuren-palace-button i {
@@ -2737,12 +2736,6 @@ html[data-wentian-language="en"] .liuren-hero-copy em {
 }
 
 .liuren-hand-board.is-revealed .liuren-palace-button.is-final {
-  border-color: #bd8b28;
-  border-width: 2px;
-  background:
-    radial-gradient(circle at 50% 11%, rgba(255, 255, 255, .96) 0 16%, transparent 17%),
-    linear-gradient(180deg, #fff5d7 0%, #f0c86e 100%);
-  box-shadow: inset 0 2px 7px rgba(255, 255, 255, .68), inset 0 -8px 13px rgba(116, 76, 22, .09), 0 0 0 4px rgba(211, 164, 60, .12), 0 7px 14px rgba(160, 111, 30, .15);
   animation: liurenFinalBadge 2.35s ease-in-out var(--liuren-final-delay) infinite;
 }
 
@@ -2756,13 +2749,16 @@ html[data-wentian-language="en"] .liuren-hero-copy em {
   display: block;
   min-width: 38px;
   min-height: 51px;
-  border: 1px solid var(--badge-accent);
+  border: 2px solid var(--badge-accent);
   border-radius: 999px 999px 18px 18px;
-  background: radial-gradient(ellipse, var(--badge-glow) 0 26%, transparent 70%);
-  box-shadow: 0 0 0 6px var(--badge-soft), 0 0 18px var(--badge-glow);
+  background:
+    radial-gradient(circle at 50% 13%, rgba(255, 255, 255, .98) 0 15%, transparent 16%),
+    linear-gradient(180deg, rgba(255, 244, 207, .94) 0%, rgba(242, 191, 76, .64) 100%),
+    radial-gradient(ellipse, var(--badge-glow) 0 36%, transparent 72%);
+  box-shadow: 0 0 0 6px var(--badge-soft), 0 0 22px var(--badge-glow), inset 0 2px 7px rgba(255, 255, 255, .70);
   opacity: 0;
-  transform: translate(-50%, -50%) scale(.86);
-  animation: liurenBadgePulse .58s ease-out var(--pulse-delay) 1 both;
+  transform: translate(-50%, -50%) scale(.90);
+  animation: liurenBadgePulse var(--liuren-step-duration, .2s) linear var(--pulse-delay) 1 both;
 }
 
 @keyframes liurenBoardBreathe {
@@ -2780,46 +2776,45 @@ html[data-wentian-language="en"] .liuren-hero-copy em {
   }
 }
 
-@keyframes liurenBadgeSettle {
-  0%,
-  100% {
-    transform: translate(-50%, -50%);
-  }
-
-  50% {
-    transform: translate(-50%, -50%) scale(1.025);
-  }
-}
-
 @keyframes liurenBadgePulse {
   0% {
     opacity: 0;
-    transform: translate(-50%, -50%) scale(.82);
+    transform: translate(-50%, -50%) scale(.90);
   }
 
-  34% {
+  18% {
     opacity: 1;
-    transform: translate(-50%, -50%) scale(1.12);
+    transform: translate(-50%, -50%) scale(1.08);
   }
 
   72% {
-    opacity: .78;
-    transform: translate(-50%, -50%) scale(1);
+    opacity: .95;
+    transform: translate(-50%, -50%) scale(1.03);
   }
 
   100% {
     opacity: 0;
-    transform: translate(-50%, -50%) scale(1.18);
+    transform: translate(-50%, -50%) scale(.98);
   }
 }
 
 @keyframes liurenFinalBadge {
   0%,
   100% {
+    border-color: #bd8b28;
+    background:
+      radial-gradient(circle at 50% 11%, rgba(255, 255, 255, .96) 0 16%, transparent 17%),
+      linear-gradient(180deg, #fff5d7 0%, #f0c86e 100%);
+    box-shadow: inset 0 2px 7px rgba(255, 255, 255, .68), inset 0 -8px 13px rgba(116, 76, 22, .09), 0 0 0 4px rgba(211, 164, 60, .12), 0 7px 14px rgba(160, 111, 30, .15);
     transform: translate(-50%, -50%) scale(1);
   }
 
   50% {
+    border-color: #d8a23a;
+    background:
+      radial-gradient(circle at 50% 11%, rgba(255, 255, 255, .98) 0 16%, transparent 17%),
+      linear-gradient(180deg, #fff8df 0%, #efc15f 100%);
+    box-shadow: inset 0 2px 8px rgba(255, 255, 255, .72), inset 0 -8px 13px rgba(116, 76, 22, .10), 0 0 0 6px rgba(211, 164, 60, .16), 0 9px 18px rgba(160, 111, 30, .18);
     transform: translate(-50%, -50%) scale(1.06);
   }
 }

@@ -9038,6 +9038,7 @@ const LIUREN_HAND_BADGE_COLORS = [
   { accent: "#c39531", glow: "rgba(195,149,49,.32)", soft: "rgba(195,149,49,.14)" },
   { accent: "#6f91a1", glow: "rgba(111,145,161,.23)", soft: "rgba(111,145,161,.10)" }
 ];
+const LIUREN_FLASH_INTERVAL_SECONDS = 0.2;
 const LIUREN_SCREEN_HEIGHT = 1900;
 let liurenHasStarted = false;
 let liurenXuRecordId = null;
@@ -9156,7 +9157,7 @@ function renderLiurenPalacePulses(result) {
   return getLiurenVisualSequence(result).map((index, order) => {
     const palace = LIUREN_PALACES[index] || LIUREN_PALACES[0];
     return `
-      <span class="liuren-palace-pulse ${palace.tone === "good" ? "is-good" : "is-warn"}" style="${getLiurenHandBadgeStyle(index, order)};--pulse-delay:${(order * 0.22).toFixed(2)}s;"></span>
+      <span class="liuren-palace-pulse ${palace.tone === "good" ? "is-good" : "is-warn"}" style="${getLiurenHandBadgeStyle(index, order)};--pulse-delay:${(order * LIUREN_FLASH_INTERVAL_SECONDS).toFixed(2)}s;"></span>
     `;
   }).join("");
 }
@@ -9169,9 +9170,9 @@ function renderLiurenPath(result, reveal = true) {
   ];
   const activePalace = reveal ? result.palace.name : "待起课";
   const visualSequence = reveal ? getLiurenVisualSequence(result) : [];
-  const finalDelay = Math.min(7.2, Math.max(1.2, visualSequence.length * 0.22 + 0.35));
+  const finalDelay = reveal ? visualSequence.length * LIUREN_FLASH_INTERVAL_SECONDS + 0.1 : 0;
   return `
-    <div class="liuren-hand-board ${reveal ? "is-revealed" : "is-idle"}" style="--liuren-final-delay:${finalDelay.toFixed(2)}s;" aria-label="小六壬掌诀三指六位推演图">
+    <div class="liuren-hand-board ${reveal ? "is-revealed" : "is-idle"}" style="--liuren-step-duration:${LIUREN_FLASH_INTERVAL_SECONDS.toFixed(2)}s;--liuren-final-delay:${finalDelay.toFixed(2)}s;" aria-label="小六壬掌诀三指六位推演图">
       <img src="../images/wentian-prototype-assets/liuren-hand-board-base.png" alt="" aria-hidden="true">
       <div class="liuren-palace-layer" aria-hidden="true">${renderLiurenPalaceBadges(result, reveal)}</div>
       ${reveal ? `<div class="liuren-palace-pulses" aria-hidden="true">${renderLiurenPalacePulses(result)}</div>` : ""}
