@@ -1713,15 +1713,16 @@ body.mbp-auth-open {
 
 .mbp-report-action-bar {
   position: absolute;
-  top: 40px;
-  right: 34px;
-  width: min(596px, 38vw);
-  min-height: 186px;
+  top: 52px;
+  right: 52px;
+  width: min(540px, 34vw);
+  min-height: 156px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 22px;
-  padding: 18px 22px;
+  gap: 24px;
+  overflow: hidden;
+  padding: 18px 34px 18px 28px;
   border: 1px solid rgba(241, 212, 125, .28);
   border-radius: 20px;
   background:
@@ -1743,7 +1744,7 @@ body.mbp-auth-open {
   display: block;
   margin-top: 3px;
   color: var(--ivory);
-  font-size: 20px;
+  font-size: 19px;
   line-height: 1.35;
 }
 
@@ -1765,10 +1766,10 @@ body.mbp-auth-open {
   display: grid;
   place-items: center;
   align-content: center;
-  width: 136px;
-  height: 136px;
-  min-width: 136px;
-  min-height: 136px;
+  width: 118px;
+  height: 118px;
+  min-width: 118px;
+  min-height: 118px;
   padding: 0;
   border-radius: 50%;
   background:
@@ -1788,7 +1789,7 @@ body.mbp-auth-open {
 .mbp-report-action-bar button::before {
   content: "";
   position: absolute;
-  inset: -7px;
+  inset: -5px;
   z-index: -1;
   border: 1px solid rgba(241, 212, 125, .46);
   border-radius: 50%;
@@ -1811,12 +1812,12 @@ body.mbp-auth-open {
 }
 
 .mbp-report-action-bar button span {
-  font-size: 22px;
+  font-size: 20px;
   letter-spacing: .08em;
 }
 
 .mbp-report-action-bar button b {
-  font-size: 32px;
+  font-size: 29px;
 }
 
 .mbp-report-action-bar button:disabled,
