@@ -3292,6 +3292,9 @@ function validateWentianHepanPair(left, right) {
   if (!leftGender || !rightGender) {
     return { ok: false, code: "missing-gender", message: "档案性别不完整，请先补全后再合盘" };
   }
+  if (leftGender === rightGender) {
+    return { ok: false, code: "same-gender", message: "情侣合盘仅支持一男一女，男男/女女不能合盘" };
+  }
   const people = [
     { side: "left", archive: left, gender: leftGender, label: getWentianHepanPersonLabel(left) },
     { side: "right", archive: right, gender: rightGender, label: getWentianHepanPersonLabel(right) },
