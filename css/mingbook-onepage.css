@@ -1600,6 +1600,7 @@ body.mbp-auth-open {
 
 .mbp-book {
   position: relative;
+  scroll-margin-top: 86px;
 }
 
 .mbp-book-panel {
@@ -4187,6 +4188,7 @@ p.mbp-topic-detail {
 .mbp-yijing-assist {
   margin: 34px 0 0;
   padding: clamp(26px, 2.8vw, 36px);
+  scroll-margin-top: 86px;
   display: grid;
   grid-template-columns: minmax(260px, .42fr) minmax(0, 1.58fr);
   grid-template-rows: auto 1fr;
@@ -6201,6 +6203,7 @@ p.mbp-topic-detail {
 .mbp-xb-section {
   margin-top: 28px;
   padding: 30px;
+  scroll-margin-top: 86px;
   border: 1px solid rgba(241, 212, 125, .2);
   border-radius: 22px;
   background:
