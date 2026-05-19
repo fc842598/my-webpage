@@ -4255,16 +4255,20 @@ p.mbp-topic-detail {
 }
 
 .mbp-yijing-kicker {
-  color: var(--gold);
-  font-size: 12px;
+  display: block;
+  color: var(--ivory);
+  font-family: "Noto Serif SC", "Songti SC", serif;
+  font-size: clamp(38px, 3vw, 48px);
   font-weight: 900;
+  line-height: 1.12;
+  white-space: nowrap;
 }
 
 .mbp-yijing-left h3 {
-  margin: 10px 0 8px;
-  color: var(--ivory);
+  margin: 14px 0 8px;
+  color: var(--gold);
   font-family: "Noto Serif SC", "Songti SC", serif;
-  font-size: clamp(32px, 3vw, 44px);
+  font-size: clamp(26px, 2.2vw, 34px);
   line-height: 1.15;
 }
 
