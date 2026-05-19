@@ -2746,9 +2746,11 @@ html[data-wentian-language="en"] .liuren-hero-copy em {
 
 .liuren-palace-pulse {
   z-index: 4;
-  display: block;
+  display: grid;
+  place-items: center;
   min-width: 38px;
   min-height: 51px;
+  padding: 4px 3px 3px;
   border: 2px solid var(--badge-accent);
   border-radius: 999px 999px 18px 18px;
   background:
@@ -2756,9 +2758,45 @@ html[data-wentian-language="en"] .liuren-hero-copy em {
     linear-gradient(180deg, rgba(255, 244, 207, .94) 0%, rgba(242, 191, 76, .64) 100%),
     radial-gradient(ellipse, var(--badge-glow) 0 36%, transparent 72%);
   box-shadow: 0 0 0 6px var(--badge-soft), 0 0 22px var(--badge-glow), inset 0 2px 7px rgba(255, 255, 255, .70);
+  color: #251b14;
   opacity: 0;
+  text-align: center;
   transform: translate(-50%, -50%) scale(.90);
-  animation: liurenBadgePulse var(--liuren-step-duration, .2s) linear var(--pulse-delay) 1 both;
+  animation: liurenBadgePulse calc(var(--liuren-step-duration, .2s) + .10s) linear var(--pulse-delay) 1 both;
+}
+
+.liuren-palace-pulse i {
+  display: grid;
+  place-items: center;
+  width: 17px;
+  height: 17px;
+  border-radius: 50%;
+  background: rgba(255, 247, 219, .88);
+  color: var(--badge-accent);
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.liuren-palace-pulse strong,
+.liuren-palace-pulse em {
+  display: block;
+  line-height: 1.04;
+}
+
+.liuren-palace-pulse strong {
+  margin-top: 2px;
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.liuren-palace-pulse em {
+  margin-top: 1px;
+  color: #665546;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 900;
 }
 
 @keyframes liurenBoardBreathe {

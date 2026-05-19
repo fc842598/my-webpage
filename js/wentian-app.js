@@ -9224,7 +9224,11 @@ function renderLiurenPalacePulses(result) {
   return getLiurenVisualSequence(result).map((index, order) => {
     const palace = LIUREN_PALACES[index] || LIUREN_PALACES[0];
     return `
-      <span class="liuren-palace-pulse ${palace.tone === "good" ? "is-good" : "is-warn"}" style="${getLiurenHandBadgeStyle(index, order)};--pulse-delay:${(order * LIUREN_FLASH_INTERVAL_SECONDS).toFixed(2)}s;"></span>
+      <span class="liuren-palace-pulse ${palace.tone === "good" ? "is-good" : "is-warn"}" style="${getLiurenHandBadgeStyle(index, order)};--pulse-delay:${(order * LIUREN_FLASH_INTERVAL_SECONDS).toFixed(2)}s;">
+        <i>${index + 1}</i>
+        <strong>${palace.name}</strong>
+        <em>${palace.nature}</em>
+      </span>
     `;
   }).join("");
 }
