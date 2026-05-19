@@ -708,6 +708,7 @@ function sourceArchiveScreen(screen) {
 function sourceAiChatScreen(screen) {
   const chatContext = getWentianXuChatContext();
   const isLiuyaoChat = chatContext?.type === "liuyao";
+  const isHepanChat = chatContext?.type === "hepan";
   const liuyaoFaqGroups = [
     {
       label: "事情成败",
@@ -743,6 +744,26 @@ function sourceAiChatScreen(screen) {
         ["该避什么", "这件事目前最不该做什么？"],
         ["取舍判断", "如果有两个选择，该按什么原则取舍？"],
         ["再占提醒", "这件事后面什么情况下才需要再起一卦？"]
+      ]
+    }
+  ];
+  const hepanFaqGroups = [
+    {
+      label: "相处判断",
+      items: [
+        ["适不适合", "就这次合盘看，这段关系适不适合长期推进，关键依据是什么？"],
+        ["吸引在哪", "双方最容易互相吸引的点是什么，应该怎么放大？"],
+        ["卡点在哪", "这段关系最容易卡在什么问题上，怎么提前处理？"],
+        ["推进节奏", "如果继续发展，接下来三个月适合怎么推进？"]
+      ]
+    },
+    {
+      label: "冲突化解",
+      items: [
+        ["沟通方式", "双方沟通最容易误会在哪里，应该怎么说比较顺？"],
+        ["边界问题", "这段关系里最需要提前讲清楚的边界是什么？"],
+        ["现实压力", "现实层面的钱、时间、家人或距离，哪个最要注意？"],
+        ["行动建议", "给我三条具体的相处建议，按优先级排序。"]
       ]
     }
   ];
@@ -802,8 +823,8 @@ function sourceAiChatScreen(screen) {
       ]
     }
   ];
-  const faqGroups = isLiuyaoChat ? liuyaoFaqGroups : chartFaqGroups;
-  const contextTitle = chatContext?.title || "六爻占卜";
+  const faqGroups = isLiuyaoChat ? liuyaoFaqGroups : isHepanChat ? hepanFaqGroups : chartFaqGroups;
+  const contextTitle = chatContext?.title || (isHepanChat ? "情侣合盘" : "六爻占卜");
   const contextSummary = chatContext?.summaryLine || "";
   return `
     ${figBox("source-4-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
@@ -811,20 +832,20 @@ function sourceAiChatScreen(screen) {
     ${figText("source-4-back", "‹", 24, 29, 28, 34, "#26211c", 500)}
     ${figImage("source-4-avatar", "../images/wentian-prototype-assets/xu-banxian.jpg", 58, 25, 40, 40, "border-radius:20px;object-fit:cover;object-position:center 18%;")}
     ${figText("source-4-name", "许半仙", 110, 27, 110, 17, "#26211c", 800)}
-    ${figText("source-4-left", isLiuyaoChat ? "占卜专批 · 在线" : "命盘顾问 · 在线", 110, 51, 140, 12, "#8d8377", 500)}
+    ${figText("source-4-left", isLiuyaoChat ? "占卜专批 · 在线" : isHepanChat ? "合盘专批 · 在线" : "命盘顾问 · 在线", 110, 51, 140, 12, "#8d8377", 500)}
     ${figBox("source-4-profile-pill", 254, 30, 74, 28, "", "border-radius:14px;background:#fff;box-shadow:0 3px 10px rgba(70,45,25,.08);")}
-    ${figText("source-4-profile-text", isLiuyaoChat ? "本卦⌄" : "命主⌄", 260, 38, 62, 11, "#26211c", 600, "center")}
+    ${figText("source-4-profile-text", isLiuyaoChat ? "本卦⌄" : isHepanChat ? "合盘⌄" : "命主⌄", 260, 38, 62, 11, "#26211c", 600, "center")}
     ${figText("source-4-record", "⋯", 344, 31, 22, 22, "#6f665d", 800, "center")}
     <div id="wentian-chat-status" class="wentian-chat-status">正在接入许半仙…</div>
-    ${isLiuyaoChat ? `
+    ${chatContext ? `
       <div class="wentian-chat-context-card">
-        <span>本次占问</span>
-        <strong>${escapeHtml(chatContext.question || "所问之事")}</strong>
+        <span>${isHepanChat ? "本次合盘" : "本次占问"}</span>
+        <strong>${escapeHtml(chatContext.question || (isHepanChat ? "双方关系" : "所问之事"))}</strong>
         <em>${escapeHtml(contextTitle)}${contextSummary ? ` · ${escapeHtml(contextSummary)}` : ""}</em>
       </div>
     ` : ""}
-    <div id="wentian-chat-messages" class="wentian-chat-log ${isLiuyaoChat ? "is-with-context" : ""}" aria-live="polite"></div>
-    ${figText("source-4-faq-title", isLiuyaoChat ? "占卜追问" : "常问", 22, 582, 84, 13, "#25211d", 800)}
+    <div id="wentian-chat-messages" class="wentian-chat-log ${chatContext ? "is-with-context" : ""}" aria-live="polite"></div>
+    ${figText("source-4-faq-title", isLiuyaoChat ? "占卜追问" : isHepanChat ? "合盘追问" : "常问", 22, 582, 84, 13, "#25211d", 800)}
     <div class="wentian-chat-starters" aria-label="常见问题分类">
       ${faqGroups.map((group) => `
         <details class="wentian-chat-faq-group">
@@ -841,7 +862,7 @@ function sourceAiChatScreen(screen) {
       `).join("")}
     </div>
     ${figBox("source-4-input-bg", 0, 748, 390, 96, "", "background:#f7f3ec;box-shadow:0 -1px 0 rgba(110,82,38,.08);")}
-    <input id="wentian-chat-input" class="wentian-chat-field" placeholder="${isLiuyaoChat ? "追问这卦" : "问一问"}" autocomplete="off">
+    <input id="wentian-chat-input" class="wentian-chat-field" placeholder="${isLiuyaoChat ? "追问这卦" : isHepanChat ? "追问合盘" : "问一问"}" autocomplete="off">
     <button id="wentian-chat-send" class="wentian-chat-send" type="button" data-action="wentian-chat-send" aria-label="发送">↑</button>
     ${figText("source-4-disclaimer", "内容由AI生成，仅供娱乐参考", 0, 818, 390, 10, "#b8b0a7", 400, "center")}
   `;
@@ -1033,6 +1054,16 @@ const WENTIAN_CHART_STORAGE_KEY = "wentian-app-current-chart-v1";
 const WENTIAN_ARCHIVES_STORAGE_KEY = "wentian-app-archives-v1";
 const WENTIAN_SELECTED_ARCHIVE_KEY = "wentian-app-selected-archive-id";
 const WENTIAN_HEPAN_SELECTION_KEY = "wentian-app-hepan-selected-ids";
+const WENTIAN_HEPAN_LEGAL_AGE_BY_GENDER = { male: 22, female: 20 };
+const WENTIAN_HEPAN_MAX_AGE_GAP = 25;
+const WENTIAN_HEPAN_AI_RULES = [
+  "情侣合盘只处理现实中可成立的成年异性关系。",
+  "必须是一男一女，男男/女女不输出情侣合盘。",
+  "双方都必须达到大陆法定婚龄：男满22周岁，女满20周岁。",
+  "出生日期在未来、生日缺失、同一人重复选择，均不能合盘。",
+  `双方年龄差超过${WENTIAN_HEPAN_MAX_AGE_GAP}周岁时，不按情侣合盘输出，只提示关系前提不合理。`,
+  "不满足规则时，不得继续给出合盘分数、婚恋建议或暧昧判断。",
+].join("\n");
 const WENTIAN_CLIENT_ID_KEY = "ziwei_client_id";
 const WENTIAN_LANGUAGE_STORAGE_KEY = "wentian-app-language-v1";
 const WENTIAN_PROFILE_STORAGE_KEY = "wentian-app-profile-v1";
@@ -2962,6 +2993,47 @@ function normalizeWentianArchiveGender(archive) {
   );
 }
 
+function parseWentianArchiveBirthDate(archive) {
+  const form = archive?.form || {};
+  const chartData = archive?.chartData || {};
+  const raw = [
+    form.datetime,
+    form.remoteRaw?.datetime,
+    form.remoteRaw?.dateStr,
+    chartData.birthDate,
+    chartData.solarTime,
+  ].find(Boolean);
+  const match = String(raw || "").match(/(\d{4})[-/.年](\d{1,2})[-/.月](\d{1,2})/);
+  if (!match) return null;
+  const year = Number(match[1]);
+  const month = Number(match[2]);
+  const day = Number(match[3]);
+  if (!year || month < 1 || month > 12 || day < 1 || day > 31) return null;
+  const date = new Date(year, month - 1, day, 12, 0, 0, 0);
+  if (date.getFullYear() !== year || date.getMonth() !== month - 1 || date.getDate() !== day) return null;
+  return date;
+}
+
+function getWentianArchiveAgeInfo(archive, now = new Date()) {
+  const birthDate = parseWentianArchiveBirthDate(archive);
+  if (!birthDate) return { ok: false, code: "missing-birth", birthDate: null, age: null };
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 12, 0, 0, 0);
+  if (birthDate.getTime() > today.getTime()) return { ok: false, code: "future-birth", birthDate, age: null };
+  let age = today.getFullYear() - birthDate.getFullYear();
+  const hadBirthday = today.getMonth() > birthDate.getMonth()
+    || (today.getMonth() === birthDate.getMonth() && today.getDate() >= birthDate.getDate());
+  if (!hadBirthday) age -= 1;
+  return { ok: true, code: "ok", birthDate, age };
+}
+
+function getWentianHepanLegalAge(gender) {
+  return WENTIAN_HEPAN_LEGAL_AGE_BY_GENDER[gender] || 0;
+}
+
+function getWentianHepanPersonLabel(archive) {
+  return getWentianArchiveDisplay(archive).name || "该档案";
+}
+
 function getWentianArchivePersonKey(archive) {
   const form = archive?.form || {};
   const chartData = archive?.chartData || {};
@@ -2999,6 +3071,37 @@ function validateWentianHepanPair(left, right) {
   }
   if (leftGender === rightGender) {
     return { ok: false, code: "same-gender", message: "情侣合盘仅支持一男一女，男男/女女不能合盘" };
+  }
+  const people = [
+    { archive: left, gender: leftGender, label: getWentianHepanPersonLabel(left) },
+    { archive: right, gender: rightGender, label: getWentianHepanPersonLabel(right) },
+  ];
+  const ageInfos = people.map((person) => ({ ...person, ...getWentianArchiveAgeInfo(person.archive) }));
+  const missingBirth = ageInfos.find((item) => item.code === "missing-birth");
+  if (missingBirth) {
+    return { ok: false, code: "missing-birth", message: `${missingBirth.label}出生日期不完整，请先补全后再合盘` };
+  }
+  const futureBirth = ageInfos.find((item) => item.code === "future-birth");
+  if (futureBirth) {
+    return { ok: false, code: "future-birth", message: `${futureBirth.label}出生日期在未来，不能做情侣合盘` };
+  }
+  const underLegalAge = ageInfos.find((item) => item.age < getWentianHepanLegalAge(item.gender));
+  if (underLegalAge) {
+    const legalAge = getWentianHepanLegalAge(underLegalAge.gender);
+    const role = underLegalAge.gender === "male" ? "男方" : "女方";
+    return {
+      ok: false,
+      code: "under-legal-age",
+      message: `${underLegalAge.label}未满${role}法定婚龄${legalAge}周岁，暂不能做情侣合盘`,
+    };
+  }
+  const ageGap = Math.abs(ageInfos[0].age - ageInfos[1].age);
+  if (ageGap > WENTIAN_HEPAN_MAX_AGE_GAP) {
+    return {
+      ok: false,
+      code: "age-gap",
+      message: `双方年龄相差${ageGap}岁，超过${WENTIAN_HEPAN_MAX_AGE_GAP}岁，不适合按情侣合盘输出`,
+    };
   }
   return { ok: true, code: "ok", message: "可开始合盘" };
 }
@@ -3144,6 +3247,54 @@ function getWentianHepanResult() {
       ? "适合把关系往长期规划推进，重要事项先定共同目标，再分工执行。"
       : "先慢下来观察真实相处节奏，把金钱、边界、沟通频率提前说清。",
   };
+}
+
+function makeWentianHepanXuContext(result = getWentianHepanResult()) {
+  if (!result?.ok) return null;
+  const leftAge = getWentianArchiveAgeInfo(result.left).age;
+  const rightAge = getWentianArchiveAgeInfo(result.right).age;
+  return {
+    type: "hepan",
+    recordId: makeWentianUuid(),
+    title: "情侣合盘",
+    question: `${result.leftDisplay.name} × ${result.rightDisplay.name}`,
+    summaryLine: `${result.total}分 · ${result.level}`,
+    rules: WENTIAN_HEPAN_AI_RULES,
+    left: {
+      name: result.leftDisplay.name,
+      gender: result.leftDisplay.gender,
+      datetime: result.leftDisplay.datetime,
+      age: leftAge,
+      pillars: result.leftDisplay.pillars,
+    },
+    right: {
+      name: result.rightDisplay.name,
+      gender: result.rightDisplay.gender,
+      datetime: result.rightDisplay.datetime,
+      age: rightAge,
+      pillars: result.rightDisplay.pillars,
+    },
+    score: result.total,
+    level: result.level,
+    dimensions: result.dimensions,
+    advice: result.advice,
+    createdAt: Date.now(),
+  };
+}
+
+function getHepanXuOpeningMessage(context) {
+  if (!context) return "这次我按情侣合盘来批，先看双方现实条件是否成立，再看吸引、冲突和长期节奏。";
+  return `这次合盘已接入：${context.question}，${context.summaryLine}。你可以继续问相处节奏、冲突点、是否适合长期推进。`;
+}
+
+function openWentianHepanXuChat() {
+  const context = makeWentianHepanXuContext();
+  if (!context) {
+    navigate("screen-11");
+    return;
+  }
+  setWentianXuChatContext(context);
+  navigate("screen-4");
 }
 
 function getWentianLanguageCode() {
@@ -4657,7 +4808,7 @@ function getWentianXuChatContext() {
   if (wentianXuChat.context) return wentianXuChat.context;
   try {
     const parsed = JSON.parse(sessionStorage.getItem(WENTIAN_XU_CONTEXT_KEY) || "null");
-    if (parsed?.type === "liuyao" && isWentianUuid(parsed.recordId)) {
+    if ((parsed?.type === "liuyao" || parsed?.type === "hepan") && isWentianUuid(parsed.recordId)) {
       wentianXuChat.context = parsed;
       return parsed;
     }
@@ -4695,6 +4846,21 @@ function getWentianXuChatPayload() {
       divinationContext: context,
     };
   }
+  if (context?.type === "hepan" && isWentianUuid(context.recordId)) {
+    const hepanChartData = {
+      chartRecordId: context.recordId,
+      chatMode: "hepan",
+      source: "情侣合盘",
+      hepanContext: context,
+      hepanRules: WENTIAN_HEPAN_AI_RULES,
+    };
+    return {
+      mode: "hepan",
+      chartRecordId: context.recordId,
+      chartData: hepanChartData,
+      divinationContext: context,
+    };
+  }
   const chartData = getWentianChartPayload();
   return {
     mode: "chart",
@@ -4705,6 +4871,22 @@ function getWentianXuChatPayload() {
 }
 
 function buildWentianXuOutboundMessage(message, context) {
+  if (context?.type === "hepan") {
+    return [
+      "【情侣合盘追问】",
+      "本次不是单人命盘读盘，请只围绕本次情侣合盘回答。",
+      "合盘前置规则：",
+      context.rules || WENTIAN_HEPAN_AI_RULES,
+      `对象A：${context.left?.name || ""}，${context.left?.gender || ""}，${context.left?.datetime || ""}，${context.left?.age ?? ""}岁，四柱：${context.left?.pillars || ""}`,
+      `对象B：${context.right?.name || ""}，${context.right?.gender || ""}，${context.right?.datetime || ""}，${context.right?.age ?? ""}岁，四柱：${context.right?.pillars || ""}`,
+      `页面合盘：${context.score || ""}分，${context.level || ""}`,
+      `维度：${(context.dimensions || []).map(([label, score, note]) => `${label}${score}分：${note}`).join("；")}`,
+      context.advice ? `页面建议：${context.advice}` : "",
+      "回答要求：先判断关系前提是否成立，再讲吸引点、冲突点、长期节奏和可执行建议。不要给未成年人、同性或年龄差过大的关系输出情侣合盘判断。",
+      "",
+      `我的追问：${message}`,
+    ].filter(Boolean).join("\n");
+  }
   if (context?.type !== "liuyao") return message;
   return [
     "【六爻占卜追问】",
@@ -5152,7 +5334,7 @@ async function ensureWentianXuSession(options = {}) {
   if (wentianXuChat.sessionPromise) return wentianXuChat.sessionPromise;
 
   const payload = getWentianXuChatPayload();
-  if (!silent) setWentianChatStatus(payload.mode === "liuyao" ? "接入占卜中…" : "接入中…");
+  if (!silent) setWentianChatStatus(payload.mode === "liuyao" ? "接入占卜中…" : payload.mode === "hepan" ? "接入合盘中…" : "接入中…");
   wentianXuChat.sessionPromise = wentianPostJson("/api/ai/chat/session", {
     chartRecordId: payload.chartRecordId,
     chartData: payload.chartData,
@@ -5162,7 +5344,7 @@ async function ensureWentianXuSession(options = {}) {
   }, 90000, 1).then((data) => {
     wentianXuChat.sessionId = data.sessionId || `transient:${payload.chartRecordId}`;
     if (data.transientState) saveWentianTransientState(data.transientState, payload.chartRecordId);
-    setWentianChatStatus(data.transientMode ? "临时会话" : (payload.mode === "liuyao" ? "占卜已接入" : "已连接"), data.transientMode ? "warn" : "ok");
+    setWentianChatStatus(data.transientMode ? "临时会话" : (payload.mode === "liuyao" ? "占卜已接入" : payload.mode === "hepan" ? "合盘已接入" : "已连接"), data.transientMode ? "warn" : "ok");
     if (!wentianXuChat.messages.length) {
       if (Array.isArray(data.messages) && data.messages.length) {
         wentianXuChat.messages = data.messages.slice(-12).map((item) => ({
@@ -5172,7 +5354,9 @@ async function ensureWentianXuSession(options = {}) {
       } else {
         addWentianMessage("assistant", payload.mode === "liuyao"
           ? getLiuyaoXuOpeningMessage(payload.divinationContext)
-          : "命盘我已经读到了。你可以直接问感情、事业、财运，或者问最近一年怎么走。");
+          : payload.mode === "hepan"
+            ? getHepanXuOpeningMessage(payload.divinationContext)
+            : "命盘我已经读到了。你可以直接问感情、事业、财运，或者问最近一年怎么走。");
       }
       renderWentianMessages();
     }
@@ -5202,7 +5386,7 @@ async function sendWentianXuChat(promptText = "") {
   const payload = getWentianXuChatPayload();
   const outboundMessage = buildWentianXuOutboundMessage(message, payload.divinationContext);
   addWentianMessage("user", message);
-  addWentianMessage("assistant", payload.mode === "liuyao" ? "许半仙正在看卦…" : "许半仙正在看盘…");
+  addWentianMessage("assistant", payload.mode === "liuyao" ? "许半仙正在看卦…" : payload.mode === "hepan" ? "许半仙正在看合盘…" : "许半仙正在看盘…");
   setWentianChatBusy(true);
 
   try {
@@ -5219,7 +5403,7 @@ async function sendWentianXuChat(promptText = "") {
     wentianXuChat.sessionId = data.sessionId || wentianXuChat.sessionId || `transient:${payload.chartRecordId}`;
     if (data.transientState) saveWentianTransientState(data.transientState, payload.chartRecordId);
     setWentianQuota(data.quota);
-    setWentianChatStatus(data.transientMode ? "临时会话" : (payload.mode === "liuyao" ? "占卜已接入" : "已连接"), data.transientMode ? "warn" : "ok");
+    setWentianChatStatus(data.transientMode ? "临时会话" : (payload.mode === "liuyao" ? "占卜已接入" : payload.mode === "hepan" ? "合盘已接入" : "已连接"), data.transientMode ? "warn" : "ok");
     addWentianMessage("assistant", data.reply || "我看到了，但这轮没有返回内容，请再问一次。", { typewriter: true });
   } catch (error) {
     wentianXuChat.messages.pop();
@@ -5267,11 +5451,15 @@ function initWentianXuChat() {
   };
 
   if (!wentianXuChat.messages.length) {
-    addWentianMessage("assistant", payload.mode === "liuyao" ? getLiuyaoXuOpeningMessage(payload.divinationContext) : "我在，看命盘直接问。");
+    addWentianMessage("assistant", payload.mode === "liuyao"
+      ? getLiuyaoXuOpeningMessage(payload.divinationContext)
+      : payload.mode === "hepan"
+        ? getHepanXuOpeningMessage(payload.divinationContext)
+        : "我在，看命盘直接问。");
   } else {
     renderWentianMessages();
   }
-  setWentianChatStatus(payload.mode === "liuyao" ? "占卜已接入" : "已接入", "ok");
+  setWentianChatStatus(payload.mode === "liuyao" ? "占卜已接入" : payload.mode === "hepan" ? "合盘已接入" : "已接入", "ok");
   ensureWentianXuSession({ silent: true }).catch(() => {});
 }
 
@@ -6164,7 +6352,7 @@ function sourceHepanSelectScreen() {
     <div class="wentian-hepan-head" data-node-id="wt11-head">
       <div>
         <strong>选择档案</strong>
-        <span>仅支持一男一女，且不能选择同一个人</span>
+        <span>仅限成年异性情侣；年龄不合理会拦截</span>
       </div>
       <b class="${ready ? "is-ready" : selectedIds.length >= 2 ? "is-error" : ""}">已选 ${selectedIds.length}/2</b>
     </div>
@@ -6235,7 +6423,7 @@ function sourceHepanResultScreen() {
     ${figButton("wt49-repick-hit", 42, 1000, 136, 44, 'data-route="screen-11"')}
     ${figText("wt49-repick-text", "重新选择", 42, 1012, 136, 13, "#9b742e", 800, "center")}
     ${figBox("wt49-ask", 212, 1000, 136, 44, "", "border-radius:10px;background:#b74e39;")}
-    ${figButton("wt49-ask-hit", 212, 1000, 136, 44, 'data-route="screen-4"')}
+    ${figButton("wt49-ask-hit", 212, 1000, 136, 44, 'data-action="wentian-hepan-ask-xu"')}
     ${figText("wt49-ask-text", "追问许半仙", 212, 1012, 136, 13, "#fff", 900, "center")}
   `;
 }
@@ -6250,7 +6438,7 @@ function sourceHepanInvalidScreen(result) {
     ${figText("wt49-invalid-icon-text", "合", 142, 204, 106, 38, "#a94437", 900, "center", "font-size:38px;")}
     ${figText("wt49-invalid-title", "暂不能合盘", 0, 304, 390, 24, "#25211d", 900, "center")}
     ${figText("wt49-invalid-copy", escapeHtml(message), 56, 346, 278, 15, "#756d63", 800, "center", "line-height:1.6;")}
-    ${figText("wt49-invalid-rule", "规则：必须是一男一女，且两张档案不能属于同一个人。", 56, 394, 278, 12, "#9a8f82", 700, "center", "line-height:1.55;")}
+    ${figText("wt49-invalid-rule", "规则：一男一女、不同本人、达到法定婚龄，且年龄差不能过大。", 56, 394, 278, 12, "#9a8f82", 700, "center", "line-height:1.55;")}
     ${figBox("wt49-repick", 42, 506, 136, 44, "", "border:1px solid #d6b463;border-radius:10px;background:#fff;")}
     ${figButton("wt49-repick-hit", 42, 506, 136, 44, 'data-route="screen-11"')}
     ${figText("wt49-repick-text", "重新选择", 42, 518, 136, 13, "#9b742e", 800, "center")}
@@ -10641,6 +10829,10 @@ document.addEventListener("click", (event) => {
   }
   if (action === "wentian-hepan-confirm") {
     confirmWentianHepanSelection();
+    return;
+  }
+  if (action === "wentian-hepan-ask-xu") {
+    openWentianHepanXuChat();
     return;
   }
   if (action === "wentian-share-wechat") {
