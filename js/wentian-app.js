@@ -7415,11 +7415,11 @@ function prepareLiuyaoOnlineTossState() {
   return state;
 }
 
-function focusLiuyaoCasterModal() {
+function focusLiuyaoCasterModal(options = {}) {
   window.setTimeout(() => {
     const modal = document.querySelector(".liuyao-caster-modal");
     const caster = modal?.querySelector('[data-action="liuyao-swipe-cast"]');
-    modal?.scrollIntoView?.({ block: "start", behavior: "smooth" });
+    if (options.scroll !== false) modal?.scrollIntoView?.({ block: "start", behavior: "smooth" });
     caster?.focus?.({ preventScroll: true });
     if (modal) window.setTimeout(() => lockLiuyaoCasterScroll(liuyaoCastModalOpen), 180);
   }, 0);
@@ -7438,6 +7438,27 @@ function closeLiuyaoCasterModal() {
   navigate("screen-17", false);
 }
 
+function refreshLiuyaoCasterModalDom(options = {}) {
+  const modal = document.querySelector(".liuyao-caster-modal");
+  if (!modal || state.route !== "screen-17") return false;
+  const current = getLiuyaoState();
+  const html = renderLiuyaoCasterModal(current, { complete: getLiuyaoProgress(current) >= 6 });
+  if (!html) {
+    modal.remove();
+    return true;
+  }
+  const template = document.createElement("template");
+  template.innerHTML = html.trim();
+  const next = template.content.firstElementChild;
+  if (!next) return false;
+  modal.replaceWith(next);
+  lockLiuyaoCasterScroll(liuyaoCastModalOpen);
+  if (options.focus) {
+    next.querySelector('[data-action="liuyao-swipe-cast"]')?.focus?.({ preventScroll: true });
+  }
+  return true;
+}
+
 function finishLiuyaoAnimatedToss() {
   const pending = liuyaoTossAnimation?.cast;
   liuyaoTossTimer = null;
@@ -7450,8 +7471,14 @@ function finishLiuyaoAnimatedToss() {
   saveLiuyaoState();
   const complete = state.casts.length >= 6;
   setLiuyaoCasterModalOpen(!complete);
-  navigate(complete ? "screen-20" : "screen-17", false);
-  if (!complete) focusLiuyaoCasterModal();
+  if (complete) {
+    navigate("screen-20", false);
+    return;
+  }
+  if (!refreshLiuyaoCasterModalDom({ focus: true })) {
+    navigate("screen-17", false);
+    focusLiuyaoCasterModal();
+  }
 }
 
 function beginLiuyaoAnimatedToss(gesture = {}) {
@@ -7469,8 +7496,12 @@ function beginLiuyaoAnimatedToss(gesture = {}) {
     startedAt: Date.now(),
   };
   saveLiuyaoState();
-  navigate("screen-17", false);
-  focusLiuyaoCasterModal();
+  if (!refreshLiuyaoCasterModalDom({ focus: true })) {
+    navigate("screen-17", false);
+    focusLiuyaoCasterModal();
+  } else {
+    focusLiuyaoCasterModal({ scroll: false });
+  }
   liuyaoTossTimer = setTimeout(finishLiuyaoAnimatedToss, LIUYAO_TOSS_ANIMATION_MS);
   return true;
 }
