@@ -6304,8 +6304,9 @@ const LIUYAO_DEFAULT_QUESTION = "";
 const LIUYAO_QUESTION_MAX_LENGTH = 120;
 const LIUYAO_VALUES = [7, 8, 9, 6];
 const LIUYAO_TOSS_ANIMATION_MS = 1000;
-const LIUYAO_SWIPE_THRESHOLD = 54;
 const LIUYAO_PULL_MAX = 132;
+const LIUYAO_READY_POWER = 0.18;
+const LIUYAO_SWIPE_THRESHOLD = Math.round(LIUYAO_PULL_MAX * LIUYAO_READY_POWER);
 const LIUYAO_DEFAULT_POWER = 0.62;
 const LIUYAO_TRIGRAM_BY_BITS = {
   "111": { gua: "乾", name: "天", key: "qian" },
@@ -7014,7 +7015,7 @@ function sourceLiuyaoCastScreen() {
       ${state.mode === "manual" ? `
         <p class="liuyao-hint">手动点每一爻切换：少阳 → 少阴 → 老阳 → 老阴。</p>
       ` : `
-        <p class="liuyao-hint">按住上方铜钱区向上拉，力度条过半后松手；力度会参与落币，落币后按初爻到上爻记录。</p>
+        <p class="liuyao-hint">按住上方铜钱区向上拉，力度到 18% 左右即可松手；力度会参与落币，落币后按初爻到上爻记录。</p>
       `}
     </section>
   `;
@@ -7192,12 +7193,14 @@ function getLiuyaoSwipeMetrics(event, start = liuyaoSwipeStart) {
   const deltaY = event.clientY - start.y;
   const pull = Math.max(0, Math.min(LIUYAO_PULL_MAX, Math.round(-deltaY)));
   const power = Math.max(0, Math.min(1, pull / LIUYAO_PULL_MAX));
+  const powerPercent = Math.round(power * 100);
+  const horizontalTolerance = Math.max(34, pull * 1.35);
   return {
     deltaX,
     deltaY,
     pull,
     power,
-    ready: pull >= LIUYAO_SWIPE_THRESHOLD && pull > Math.abs(deltaX) * 1.15,
+    ready: powerPercent >= Math.round(LIUYAO_READY_POWER * 100) && Math.abs(deltaX) <= horizontalTolerance,
     duration: Date.now() - (start.startedAt || Date.now()),
   };
 }
@@ -7205,6 +7208,7 @@ function getLiuyaoSwipeMetrics(event, start = liuyaoSwipeStart) {
 function updateLiuyaoSwipeCasterUi(start, metrics) {
   const target = start?.target;
   if (!target) return;
+  if (!start.lastMetrics || metrics.pull >= start.lastMetrics.pull) start.lastMetrics = metrics;
   const progress = getLiuyaoProgress();
   const powerPercent = Math.round(metrics.power * 100);
   target.style.setProperty("--pull-y", `${Math.round(-metrics.pull * 0.38)}px`);
@@ -7270,7 +7274,10 @@ function handleLiuyaoSwipePointerUp(event) {
   if (!liuyaoSwipeStart || liuyaoSwipeStart.pointerId !== event.pointerId) return;
   const start = liuyaoSwipeStart;
   const { target } = start;
-  const metrics = getLiuyaoSwipeMetrics(event, start);
+  const releaseMetrics = getLiuyaoSwipeMetrics(event, start);
+  const metrics = start.lastMetrics && start.lastMetrics.pull > releaseMetrics.pull
+    ? { ...releaseMetrics, ...start.lastMetrics, duration: releaseMetrics.duration }
+    : releaseMetrics;
   target.classList.remove("is-dragging");
   target.classList.remove("is-ready");
   target.releasePointerCapture?.(event.pointerId);
