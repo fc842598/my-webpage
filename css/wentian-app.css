@@ -3293,6 +3293,110 @@ html[data-wentian-language="en"] .liuren-orbit i {
   background: #fff7ec;
 }
 
+.liuren-process-card {
+  margin-top: 12px;
+  padding: 14px 16px;
+  border: 1px solid #eadfce;
+  border-radius: 18px;
+  background: rgba(255, 253, 248, .97);
+  box-shadow: 0 12px 24px rgba(76, 48, 24, .08);
+}
+
+.liuren-process-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #efe3d0;
+}
+
+.liuren-process-head span,
+.liuren-process-step span {
+  display: block;
+  color: #9a681c;
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.liuren-process-head strong {
+  display: block;
+  margin-top: 4px;
+  color: #201813;
+  font-size: 17px;
+  line-height: 1.35;
+}
+
+.liuren-process-head em {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  min-width: 44px;
+  height: 34px;
+  padding: 0 12px;
+  border-radius: 17px;
+  background: #fff1d9;
+  color: #9a681c;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 900;
+}
+
+.liuren-process-list {
+  display: grid;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.liuren-process-step {
+  display: grid;
+  grid-template-columns: 26px minmax(0, 1fr);
+  gap: 10px;
+  align-items: start;
+}
+
+.liuren-process-step i {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 12px;
+  background: #f3eadc;
+  color: #9a681c;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 900;
+}
+
+.liuren-process-step strong,
+.liuren-process-step em {
+  display: block;
+}
+
+.liuren-process-step strong {
+  margin-top: 3px;
+  color: #302722;
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.liuren-process-step em {
+  margin-top: 2px;
+  color: #6e6254;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 800;
+}
+
+.liuren-process-step.is-final i,
+.liuren-process-step.is-final em {
+  color: #a94437;
+}
+
+.liuren-process-step.is-final i {
+  background: #fff1ea;
+}
+
 .liuren-track {
   display: none;
   grid-template-columns: repeat(3, 1fr);

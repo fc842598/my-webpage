@@ -9030,14 +9030,25 @@ const LIUREN_HAND_POINTS = [
   { left: 70.0, top: 60.0 },
   { left: 51.0, top: 55.0 }
 ];
-const LIUREN_SCREEN_HEIGHT = 1500;
+const LIUREN_SCREEN_HEIGHT = 1900;
 let liurenHasStarted = false;
 let liurenXuRecordId = null;
+
+function formatLiurenDayName(day) {
+  const names = ["初一", "初二", "初三", "初四", "初五", "初六", "初七", "初八", "初九", "初十", "十一", "十二", "十三", "十四", "十五", "十六", "十七", "十八", "十九", "二十", "廿一", "廿二", "廿三", "廿四", "廿五", "廿六", "廿七", "廿八", "廿九", "三十"];
+  return names[day - 1] || `${day}日`;
+}
 
 function formatLiurenLunar(lunar) {
   if (!lunar) return "农历未识别";
   const month = `${lunar.isLeap ? "闰" : ""}${LIUREN_MONTHS[lunar.month - 1] || `${lunar.month}月`}`;
   return `${lunar.year}年${month}${lunar.day}日`;
+}
+
+function formatLiurenLunarBrief(lunar, hourName) {
+  if (!lunar) return "农历未识别";
+  const month = `${lunar.isLeap ? "闰" : ""}${LIUREN_MONTHS[lunar.month - 1] || `${lunar.month}月`}`;
+  return `${month} ${formatLiurenDayName(lunar.day)} ${hourName}时`;
 }
 
 function getLiurenLunar(date) {
@@ -9117,6 +9128,54 @@ function renderLiurenPath(result, reveal = true) {
   `;
 }
 
+function getLiurenProcessRows(result) {
+  const monthPalace = LIUREN_PALACES[result.monthPalaceIndex]?.name || "-";
+  const dayPalace = LIUREN_PALACES[result.dayPalaceIndex]?.name || "-";
+  return [
+    { label: "月令步数", from: "大安", steps: Math.max(0, result.lunar.month - 1), to: monthPalace, final: false },
+    { label: "日令步数", from: monthPalace, steps: Math.max(0, result.lunar.day - 1), to: dayPalace, final: false },
+    { label: "时令步数", from: dayPalace, steps: Math.max(0, result.hourNumber - 1), to: result.palace.name, final: true }
+  ];
+}
+
+function getLiurenProcessLines(result) {
+  return getLiurenProcessRows(result).map((row) => {
+    const action = row.steps > 0 ? `从${row.from}开始走 ${row.steps} 步` : `从${row.from}起，原位不动`;
+    return `${row.label}：${action} → ${row.final ? "最终到达" : "到达"}：${row.to}`;
+  });
+}
+
+function renderLiurenProcess(result, reveal = true) {
+  if (!reveal) return "";
+  const rows = getLiurenProcessRows(result);
+  return `
+    <article class="liuren-process-card" aria-label="六壬推算过程">
+      <div class="liuren-process-head">
+        <div>
+          <span>推算过程</span>
+          <strong>传统农历日期：${formatLiurenLunarBrief(result.lunar, result.hourName)}</strong>
+        </div>
+        <em>${result.palace.name}</em>
+      </div>
+      <div class="liuren-process-list">
+        ${rows.map((row, index) => {
+          const action = row.steps > 0 ? `从${row.from}开始走 ${row.steps} 步` : `从${row.from}起，原位不动`;
+          return `
+            <div class="liuren-process-step ${row.final ? "is-final" : ""}">
+              <i>${index + 1}</i>
+              <div>
+                <span>${row.label}</span>
+                <strong>${action}</strong>
+                <em>${row.final ? "最终到达" : "到达"}：${row.to}</em>
+              </div>
+            </div>
+          `;
+        }).join("")}
+      </div>
+    </article>
+  `;
+}
+
 function renderLiurenResultHtml(result, reveal = true) {
   if (!reveal) {
     return `
@@ -9139,7 +9198,7 @@ function renderLiurenResultHtml(result, reveal = true) {
     `六壬法：${palace.name}（${palace.nature}）`,
     `公历：${formatWentianDateTime(result.date)}`,
     `农历：${formatLiurenLunar(result.lunar)} · ${result.hourName}时`,
-    `顺推：${result.formula}`,
+    ...getLiurenProcessLines(result),
     `解读：${palace.summary}`,
     `建议：${palace.advice}`
   ].join("\n");
@@ -9217,6 +9276,7 @@ function updateLiurenPreview(options = {}) {
   const preview = document.getElementById("liuren-preview");
   const track = document.getElementById("liuren-track");
   const path = document.getElementById("liuren-path");
+  const process = document.getElementById("liuren-process");
   const resultWrap = document.getElementById("liuren-result");
   const startText = document.querySelector("[data-liuren-start-text]");
   const reveal = options.reveal ?? liurenHasStarted;
@@ -9232,6 +9292,7 @@ function updateLiurenPreview(options = {}) {
     }
     if (track) track.innerHTML = renderLiurenTrack(result, reveal);
     if (path) path.innerHTML = renderLiurenPath(result, reveal);
+    if (process) process.innerHTML = renderLiurenProcess(result, reveal);
     if (resultWrap) resultWrap.innerHTML = renderLiurenResultHtml(result, reveal);
     if (startText) startText.textContent = reveal ? "重新定念起课" : "默念后起课";
     const askButton = document.querySelector('[data-action="liuren-ask-xu"]');
@@ -9242,6 +9303,7 @@ function updateLiurenPreview(options = {}) {
     setLiurenStatus(reveal ? "已按农历月日时起课" : "已取当下时间，先定念再起课", reveal ? "ok" : "");
   } catch (error) {
     if (preview) preview.innerHTML = "<span>当前课时</span><strong>待起课</strong><em>请补全时间</em>";
+    if (process) process.innerHTML = "";
     setLiurenStatus(error.message || "起课失败", "error");
   }
 }
@@ -9299,6 +9361,7 @@ function makeLiurenXuContext() {
     hourNumber: result.hourNumber,
     monthPalace,
     dayPalace,
+    processLines: getLiurenProcessLines(result),
     palaceIndex: result.palaceIndex,
     palaceName: result.palace.name,
     nature: result.palace.nature,
@@ -9396,6 +9459,7 @@ function sourceLiurenScreen() {
       </div>
       <button type="button" class="liuren-start" data-action="liuren-calc"><span data-liuren-start-text>默念后起课</span></button>
       <div id="liuren-path">${renderLiurenPath(initial, false)}</div>
+      <div id="liuren-process">${renderLiurenProcess(initial, false)}</div>
       <div id="liuren-track" class="liuren-track">${renderLiurenTrack(initial, false)}</div>
       <div id="liuren-result">${renderLiurenResultHtml(initial, false)}</div>
       <details class="liuren-form-card">
