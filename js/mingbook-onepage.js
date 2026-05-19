@@ -1591,8 +1591,22 @@
     const toRect = rects[toBranch];
     const start = fcLineEdgePoint(fromRect, toRect);
     const end = fcLineEdgePoint(toRect, fromRect);
-    if (!start || !end) return '';
-    return `M ${start.x} ${start.y} L ${end.x} ${end.y}`;
+    if (!start || !end) return null;
+    return {
+      path: `M ${start.x} ${start.y} L ${end.x} ${end.y}`,
+      points: [start, end],
+    };
+  }
+
+  function fcUniqueLinePoints(points) {
+    const seen = new Set();
+    return points.filter((point) => {
+      if (!point) return false;
+      const key = `${point.x.toFixed(2)}:${point.y.toFixed(2)}`;
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
   }
 
   function fcRenderSanfangLines(activeBranch) {
@@ -1618,16 +1632,26 @@
       return;
     }
 
-    const trianglePath = [
+    const triangleSegments = [
       fcSanfangSegment(sanheBranches[0], sanheBranches[1], rects),
       fcSanfangSegment(sanheBranches[1], sanheBranches[2], rects),
       fcSanfangSegment(sanheBranches[2], sanheBranches[0], rects),
-    ].filter(Boolean).join(' ');
-    const oppositePath = fcSanfangSegment(activeBranch, oppositeBranch, rects);
+    ].filter(Boolean);
+    const oppositeSegment = fcSanfangSegment(activeBranch, oppositeBranch, rects);
+    const trianglePath = triangleSegments.map((segment) => segment.path).join(' ');
+    const oppositePath = oppositeSegment?.path || '';
     svg.querySelector('.fc-sanfang-triangle')?.setAttribute('d', trianglePath);
     svg.querySelector('.fc-sanfang-opposite')?.setAttribute('d', oppositePath);
     const points = svg.querySelector('.fc-sanfang-points');
-    if (points) points.innerHTML = '';
+    if (points) {
+      const linePoints = fcUniqueLinePoints([
+        ...triangleSegments.flatMap((segment) => segment.points),
+        ...(oppositeSegment?.points || []),
+      ]);
+      points.innerHTML = linePoints
+        .map((point) => `<circle class="fc-sanfang-point" cx="${point.x}" cy="${point.y}" r="1.35"></circle>`)
+        .join('');
+    }
     svg.classList.remove('is-empty');
   }
 
