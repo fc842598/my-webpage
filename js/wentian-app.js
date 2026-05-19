@@ -9088,7 +9088,7 @@ function renderLiurenPath(result, reveal = true) {
   const finalPoint = LIUREN_HAND_POINTS[reveal ? result.palaceIndex : 0] || LIUREN_HAND_POINTS[0];
   return `
     <div class="liuren-hand-board ${reveal ? "is-revealed" : "is-idle"}" aria-label="小六壬掌诀三指六位推演图">
-      <img src="../images/wentian-prototype-assets/liuren-hand-board.png" alt="" aria-hidden="true">
+      <img src="../images/wentian-prototype-assets/liuren-hand-board-clean.png" alt="" aria-hidden="true">
       ${reveal ? `
       <div class="liuren-count-motion" style="--liuren-final-left:${finalPoint.left}%;--liuren-final-top:${finalPoint.top}%;" aria-hidden="true">
         <span class="liuren-count-thumb"><i></i></span>
