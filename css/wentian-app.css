@@ -3501,6 +3501,14 @@ html[data-wentian-language="en"] .liuren-orbit i {
   box-shadow: 0 12px 22px rgba(157, 51, 41, 0.16);
 }
 
+.liuren-actions .liuren-ask-xu {
+  grid-column: 1 / -1;
+}
+
+.liuren-actions button:disabled {
+  opacity: .54;
+}
+
 .liuren-status {
   margin: 10px 0 0;
   color: #9b7a3f;

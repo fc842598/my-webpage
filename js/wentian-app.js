@@ -709,6 +709,7 @@ function sourceAiChatScreen(screen) {
   const chatContext = getWentianXuChatContext();
   const isLiuyaoChat = chatContext?.type === "liuyao";
   const isHepanChat = chatContext?.type === "hepan";
+  const isLiurenChat = chatContext?.type === "liuren";
   const liuyaoFaqGroups = [
     {
       label: "事情成败",
@@ -764,6 +765,35 @@ function sourceAiChatScreen(screen) {
         ["边界问题", "这段关系里最需要提前讲清楚的边界是什么？"],
         ["现实压力", "现实层面的钱、时间、家人或距离，哪个最要注意？"],
         ["行动建议", "给我三条具体的相处建议，按优先级排序。"]
+      ]
+    }
+  ];
+  const liurenFaqGroups = [
+    {
+      label: "成败快慢",
+      items: [
+        ["能不能成", "就这次六壬课看，这件事成败怎么断？"],
+        ["快还是慢", "这课看应事快慢如何，接下来要等还是要动？"],
+        ["当前阻力", "当前最大的阻力在哪里，先处理哪一处？"],
+        ["结果走向", "按这个落宫看，后面大概会往哪里走？"]
+      ]
+    },
+    {
+      label: "行动取舍",
+      items: [
+        ["现在怎么做", "按这次六壬课，给我一句最该做的行动建议。"],
+        ["该不该催", "这件事现在适不适合主动催、主动联系？"],
+        ["该避什么", "这课里最需要避开的动作是什么？"],
+        ["再起课吗", "这件事什么情况下才需要重新起课？"]
+      ]
+    },
+    {
+      label: "人事消息",
+      items: [
+        ["对方态度", "从这次六壬课看，对方或关键人现在是什么态度？"],
+        ["消息何来", "这课看消息会不会来，来自哪类人或哪种渠道？"],
+        ["贵人阻力", "这件事里更像有人帮，还是有人卡？"],
+        ["沟通提醒", "接下来沟通上要注意什么？"]
       ]
     }
   ];
@@ -823,29 +853,35 @@ function sourceAiChatScreen(screen) {
       ]
     }
   ];
-  const faqGroups = isLiuyaoChat ? liuyaoFaqGroups : isHepanChat ? hepanFaqGroups : chartFaqGroups;
-  const contextTitle = chatContext?.title || (isHepanChat ? "情侣合盘" : "六爻占卜");
+  const faqGroups = isLiuyaoChat ? liuyaoFaqGroups : isHepanChat ? hepanFaqGroups : isLiurenChat ? liurenFaqGroups : chartFaqGroups;
+  const contextTitle = chatContext?.title || (isHepanChat ? "情侣合盘" : isLiurenChat ? "六壬课" : "六爻占卜");
   const contextSummary = chatContext?.summaryLine || "";
+  const profileText = isLiuyaoChat ? "本卦⌄" : isHepanChat ? "合盘⌄" : isLiurenChat ? "本课⌄" : "命主⌄";
+  const chatRoleText = isLiuyaoChat ? "占卜专批 · 在线" : isHepanChat ? "合盘专批 · 在线" : isLiurenChat ? "六壬专批 · 在线" : "命盘顾问 · 在线";
+  const contextLabel = isHepanChat ? "本次合盘" : isLiurenChat ? "本次六壬课" : "本次占问";
+  const contextQuestion = chatContext?.question || (isHepanChat ? "双方关系" : isLiurenChat ? "所念之事" : "所问之事");
+  const faqTitle = isLiuyaoChat ? "占卜追问" : isHepanChat ? "合盘追问" : isLiurenChat ? "六壬追问" : "常问";
+  const inputPlaceholder = isLiuyaoChat ? "追问这卦" : isHepanChat ? "追问合盘" : isLiurenChat ? "追问此课" : "问一问";
   return `
     ${figBox("source-4-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
     ${figBox("source-4-header", 0, 0, 390, 88, "", "background:#f8f3ea;box-shadow:0 1px 0 rgba(110,82,38,.08);")}
     ${figText("source-4-back", "‹", 24, 29, 28, 34, "#26211c", 500)}
     ${figImage("source-4-avatar", "../images/wentian-prototype-assets/xu-banxian.jpg", 58, 25, 40, 40, "border-radius:20px;object-fit:cover;object-position:center 18%;")}
     ${figText("source-4-name", "许半仙", 110, 27, 110, 17, "#26211c", 800)}
-    ${figText("source-4-left", isLiuyaoChat ? "占卜专批 · 在线" : isHepanChat ? "合盘专批 · 在线" : "命盘顾问 · 在线", 110, 51, 140, 12, "#8d8377", 500)}
+    ${figText("source-4-left", chatRoleText, 110, 51, 140, 12, "#8d8377", 500)}
     ${figBox("source-4-profile-pill", 254, 30, 74, 28, "", "border-radius:14px;background:#fff;box-shadow:0 3px 10px rgba(70,45,25,.08);")}
-    ${figText("source-4-profile-text", isLiuyaoChat ? "本卦⌄" : isHepanChat ? "合盘⌄" : "命主⌄", 260, 38, 62, 11, "#26211c", 600, "center")}
+    ${figText("source-4-profile-text", profileText, 260, 38, 62, 11, "#26211c", 600, "center")}
     ${figText("source-4-record", "⋯", 344, 31, 22, 22, "#6f665d", 800, "center")}
     <div id="wentian-chat-status" class="wentian-chat-status">正在接入许半仙…</div>
     ${chatContext ? `
       <div class="wentian-chat-context-card">
-        <span>${isHepanChat ? "本次合盘" : "本次占问"}</span>
-        <strong>${escapeHtml(chatContext.question || (isHepanChat ? "双方关系" : "所问之事"))}</strong>
+        <span>${contextLabel}</span>
+        <strong>${escapeHtml(contextQuestion)}</strong>
         <em>${escapeHtml(contextTitle)}${contextSummary ? ` · ${escapeHtml(contextSummary)}` : ""}</em>
       </div>
     ` : ""}
     <div id="wentian-chat-messages" class="wentian-chat-log ${chatContext ? "is-with-context" : ""}" aria-live="polite"></div>
-    ${figText("source-4-faq-title", isLiuyaoChat ? "占卜追问" : isHepanChat ? "合盘追问" : "常问", 22, 582, 84, 13, "#25211d", 800)}
+    ${figText("source-4-faq-title", faqTitle, 22, 582, 84, 13, "#25211d", 800)}
     <div class="wentian-chat-starters" aria-label="常见问题分类">
       ${faqGroups.map((group) => `
         <details class="wentian-chat-faq-group">
@@ -862,7 +898,7 @@ function sourceAiChatScreen(screen) {
       `).join("")}
     </div>
     ${figBox("source-4-input-bg", 0, 748, 390, 96, "", "background:#f7f3ec;box-shadow:0 -1px 0 rgba(110,82,38,.08);")}
-    <input id="wentian-chat-input" class="wentian-chat-field" placeholder="${isLiuyaoChat ? "追问这卦" : isHepanChat ? "追问合盘" : "问一问"}" autocomplete="off">
+    <input id="wentian-chat-input" class="wentian-chat-field" placeholder="${inputPlaceholder}" autocomplete="off">
     <button id="wentian-chat-send" class="wentian-chat-send" type="button" data-action="wentian-chat-send" aria-label="发送">↑</button>
     ${figText("source-4-disclaimer", "内容由AI生成，仅供娱乐参考", 0, 818, 390, 10, "#b8b0a7", 400, "center")}
   `;
@@ -4861,6 +4897,20 @@ function getWentianXuChatPayload() {
       divinationContext: context,
     };
   }
+  if (context?.type === "liuren" && isWentianUuid(context.recordId)) {
+    const liurenChartData = {
+      chartRecordId: context.recordId,
+      chatMode: "liuren",
+      source: "六壬法",
+      divinationContext: context,
+    };
+    return {
+      mode: "liuren",
+      chartRecordId: context.recordId,
+      chartData: liurenChartData,
+      divinationContext: context,
+    };
+  }
   const chartData = getWentianChartPayload();
   return {
     mode: "chart",
@@ -4883,6 +4933,25 @@ function buildWentianXuOutboundMessage(message, context) {
       `维度：${(context.dimensions || []).map(([label, score, note]) => `${label}${score}分：${note}`).join("；")}`,
       context.advice ? `页面建议：${context.advice}` : "",
       "回答要求：先判断关系前提是否成立，再讲吸引点、冲突点、长期节奏和可执行建议。不要给未成年人、同性或年龄差过大的关系输出情侣合盘判断。",
+      "",
+      `我的追问：${message}`,
+    ].filter(Boolean).join("\n");
+  }
+  if (context?.type === "liuren") {
+    return [
+      "【六壬法追问】",
+      "本次不是紫微命盘，也不是六爻纳甲，请只按小六壬当下课式回答。",
+      "如果用户没有说清具体事情，先请他补一句所问之事；但仍可按当前落宫给方向。",
+      `起课时间：${context.castAtText || "未记录"}`,
+      `农历课时：${context.lunarText || ""} · ${context.hourName || ""}时`,
+      `顺推路径：${context.formula || ""}`,
+      `月令落宫：${context.monthPalace || ""}`,
+      `日辰落宫：${context.dayPalace || ""}`,
+      `时辰落宫：${context.palaceName || ""}（${context.nature || ""}）`,
+      `关键词：${(context.keys || []).join("、")}`,
+      context.summary ? `页面初判：${context.summary}` : "",
+      context.advice ? `页面建议：${context.advice}` : "",
+      "回答要求：先一句话断核心结果，再讲成败快慢、阻力和下一步。不要长篇，不要说“结合命盘”。",
       "",
       `我的追问：${message}`,
     ].filter(Boolean).join("\n");
@@ -5328,13 +5397,23 @@ function setWentianChatBusy(busy) {
   if (send) send.disabled = busy;
 }
 
+function getWentianXuModeText(mode, phase = "ready") {
+  const map = {
+    liuyao: { connecting: "接入占卜中…", ready: "占卜已接入", typing: "许半仙正在看卦…" },
+    hepan: { connecting: "接入合盘中…", ready: "合盘已接入", typing: "许半仙正在看合盘…" },
+    liuren: { connecting: "接入六壬中…", ready: "六壬已接入", typing: "许半仙正在看课…" },
+    chart: { connecting: "接入中…", ready: "已连接", typing: "许半仙正在看盘…" },
+  };
+  return (map[mode] || map.chart)[phase] || map.chart[phase] || "";
+}
+
 async function ensureWentianXuSession(options = {}) {
   const silent = !!options.silent;
   if (wentianXuChat.sessionId) return wentianXuChat.sessionId;
   if (wentianXuChat.sessionPromise) return wentianXuChat.sessionPromise;
 
   const payload = getWentianXuChatPayload();
-  if (!silent) setWentianChatStatus(payload.mode === "liuyao" ? "接入占卜中…" : payload.mode === "hepan" ? "接入合盘中…" : "接入中…");
+  if (!silent) setWentianChatStatus(getWentianXuModeText(payload.mode, "connecting"));
   wentianXuChat.sessionPromise = wentianPostJson("/api/ai/chat/session", {
     chartRecordId: payload.chartRecordId,
     chartData: payload.chartData,
@@ -5344,7 +5423,7 @@ async function ensureWentianXuSession(options = {}) {
   }, 90000, 1).then((data) => {
     wentianXuChat.sessionId = data.sessionId || `transient:${payload.chartRecordId}`;
     if (data.transientState) saveWentianTransientState(data.transientState, payload.chartRecordId);
-    setWentianChatStatus(data.transientMode ? "临时会话" : (payload.mode === "liuyao" ? "占卜已接入" : payload.mode === "hepan" ? "合盘已接入" : "已连接"), data.transientMode ? "warn" : "ok");
+    setWentianChatStatus(data.transientMode ? "临时会话" : getWentianXuModeText(payload.mode, "ready"), data.transientMode ? "warn" : "ok");
     if (!wentianXuChat.messages.length) {
       if (Array.isArray(data.messages) && data.messages.length) {
         wentianXuChat.messages = data.messages.slice(-12).map((item) => ({
@@ -5356,7 +5435,9 @@ async function ensureWentianXuSession(options = {}) {
           ? getLiuyaoXuOpeningMessage(payload.divinationContext)
           : payload.mode === "hepan"
             ? getHepanXuOpeningMessage(payload.divinationContext)
-            : "命盘我已经读到了。你可以直接问感情、事业、财运，或者问最近一年怎么走。");
+            : payload.mode === "liuren"
+              ? getLiurenXuOpeningMessage(payload.divinationContext)
+              : "命盘我已经读到了。你可以直接问感情、事业、财运，或者问最近一年怎么走。");
       }
       renderWentianMessages();
     }
@@ -5386,7 +5467,7 @@ async function sendWentianXuChat(promptText = "") {
   const payload = getWentianXuChatPayload();
   const outboundMessage = buildWentianXuOutboundMessage(message, payload.divinationContext);
   addWentianMessage("user", message);
-  addWentianMessage("assistant", payload.mode === "liuyao" ? "许半仙正在看卦…" : payload.mode === "hepan" ? "许半仙正在看合盘…" : "许半仙正在看盘…");
+  addWentianMessage("assistant", getWentianXuModeText(payload.mode, "typing"));
   setWentianChatBusy(true);
 
   try {
@@ -5403,7 +5484,7 @@ async function sendWentianXuChat(promptText = "") {
     wentianXuChat.sessionId = data.sessionId || wentianXuChat.sessionId || `transient:${payload.chartRecordId}`;
     if (data.transientState) saveWentianTransientState(data.transientState, payload.chartRecordId);
     setWentianQuota(data.quota);
-    setWentianChatStatus(data.transientMode ? "临时会话" : (payload.mode === "liuyao" ? "占卜已接入" : payload.mode === "hepan" ? "合盘已接入" : "已连接"), data.transientMode ? "warn" : "ok");
+    setWentianChatStatus(data.transientMode ? "临时会话" : getWentianXuModeText(payload.mode, "ready"), data.transientMode ? "warn" : "ok");
     addWentianMessage("assistant", data.reply || "我看到了，但这轮没有返回内容，请再问一次。", { typewriter: true });
   } catch (error) {
     wentianXuChat.messages.pop();
@@ -5422,7 +5503,7 @@ function initWentianXuChat() {
 
   const payload = getWentianXuChatPayload();
   const saved = getWentianSavedChart();
-  const sizhu = payload.mode === "liuyao" ? null : saved?.chartData?.sizhu;
+  const sizhu = payload.mode === "chart" ? saved?.chartData?.sizhu : null;
   if (sizhu) {
     const stems = [sizhu.yearStem, sizhu.monthStem, sizhu.dayStem, sizhu.hourStem];
     const branches = [sizhu.yearBranch, sizhu.monthBranch, sizhu.dayBranch, sizhu.hourBranch];
@@ -5455,11 +5536,13 @@ function initWentianXuChat() {
       ? getLiuyaoXuOpeningMessage(payload.divinationContext)
       : payload.mode === "hepan"
         ? getHepanXuOpeningMessage(payload.divinationContext)
-        : "我在，看命盘直接问。");
+        : payload.mode === "liuren"
+          ? getLiurenXuOpeningMessage(payload.divinationContext)
+          : "我在，看命盘直接问。");
   } else {
     renderWentianMessages();
   }
-  setWentianChatStatus(payload.mode === "liuyao" ? "占卜已接入" : payload.mode === "hepan" ? "合盘已接入" : "已接入", "ok");
+  setWentianChatStatus(getWentianXuModeText(payload.mode, "ready"), "ok");
   ensureWentianXuSession({ silent: true }).catch(() => {});
 }
 
@@ -8689,6 +8772,7 @@ const LIUREN_HAND_POINTS = [
 ];
 const LIUREN_SCREEN_HEIGHT = 1500;
 let liurenHasStarted = false;
+let liurenXuRecordId = null;
 
 function formatLiurenLunar(lunar) {
   if (!lunar) return "农历未识别";
@@ -8890,6 +8974,11 @@ function updateLiurenPreview(options = {}) {
     if (path) path.innerHTML = renderLiurenPath(result, reveal);
     if (resultWrap) resultWrap.innerHTML = renderLiurenResultHtml(result, reveal);
     if (startText) startText.textContent = reveal ? "重新定念起课" : "默念后起课";
+    const askButton = document.querySelector('[data-action="liuren-ask-xu"]');
+    if (askButton) {
+      askButton.disabled = !reveal;
+      askButton.textContent = reveal ? "追问许半仙" : "起课后问许半仙";
+    }
     setLiurenStatus(reveal ? "已按农历月日时起课" : "已取当下时间，先定念再起课", reveal ? "ok" : "");
   } catch (error) {
     if (preview) preview.innerHTML = "<span>当前课时</span><strong>待起课</strong><em>请补全时间</em>";
@@ -8900,16 +8989,19 @@ function updateLiurenPreview(options = {}) {
 function initLiurenScreen() {
   if (!document.querySelector(".liuren-panel")) return;
   liurenHasStarted = false;
+  liurenXuRecordId = null;
   setLiurenDateTime(new Date(), { reveal: false });
 }
 
 function calculateLiurenFromInputs() {
   liurenHasStarted = true;
+  liurenXuRecordId = makeWentianUuid();
   updateLiurenPreview({ reveal: true });
 }
 
 function resetLiuren() {
   liurenHasStarted = false;
+  liurenXuRecordId = null;
   setLiurenDateTime(new Date(), { reveal: false });
 }
 
@@ -8923,6 +9015,58 @@ async function copyLiurenResult() {
   } catch (_err) {
     setLiurenStatus("复制受限，可长按结果手动复制", "error");
   }
+}
+
+function makeLiurenXuContext() {
+  if (!liurenHasStarted) return null;
+  const result = getLiurenResultByDate(getLiurenInputDate());
+  const recordId = liurenXuRecordId || makeWentianUuid();
+  liurenXuRecordId = recordId;
+  const monthPalace = LIUREN_PALACES[result.monthPalaceIndex]?.name || "";
+  const dayPalace = LIUREN_PALACES[result.dayPalaceIndex]?.name || "";
+  const lunarText = formatLiurenLunar(result.lunar);
+  const castAtText = formatWentianDateTime(result.date);
+  return {
+    type: "liuren",
+    recordId,
+    title: `六壬法：${result.palace.name}`,
+    question: "默念之事",
+    summaryLine: `${result.palace.name} · ${result.palace.nature}`,
+    createdAt: result.date.getTime(),
+    castAtText,
+    lunarText,
+    hourName: result.hourName,
+    hourNumber: result.hourNumber,
+    monthPalace,
+    dayPalace,
+    palaceIndex: result.palaceIndex,
+    palaceName: result.palace.name,
+    nature: result.palace.nature,
+    keys: result.palace.keys,
+    summary: result.palace.summary,
+    advice: result.palace.advice,
+    formula: result.formula,
+    copyText: document.getElementById("liuren-copy-text")?.value || "",
+  };
+}
+
+function getLiurenXuOpeningMessage(context) {
+  if (!context) return "这次我按小六壬来批，不读命盘。你先把所问之事说清楚，我按当前课式看成败、快慢和下一步。";
+  return [
+    "这次我按小六壬专批，不读命盘。",
+    `当前课落「${context.palaceName}」，${context.nature}；${context.summary}`,
+    "你可以直接说具体事情，我按这个课看成败、快慢、阻力和该怎么做。"
+  ].join("\n");
+}
+
+function openLiurenXuChat() {
+  const context = makeLiurenXuContext();
+  if (!context) {
+    setLiurenStatus("先定念起课，再追问许半仙", "error");
+    return;
+  }
+  setWentianXuChatContext(context);
+  navigate("screen-4");
 }
 
 function makeLiurenInitialResult(date) {
@@ -9007,6 +9151,7 @@ function sourceLiurenScreen() {
         </div>
       </details>
       <div class="liuren-actions">
+        <button type="button" class="primary liuren-ask-xu" data-action="liuren-ask-xu" disabled>起课后问许半仙</button>
         <button type="button" class="primary" data-action="liuren-reset">重新定念</button>
         <button type="button" data-action="liuren-copy">复制结果</button>
       </div>
@@ -10926,6 +11071,7 @@ document.addEventListener("click", (event) => {
   }
   if (earlyAction === "liuren-use-now") {
     liurenHasStarted = false;
+    liurenXuRecordId = null;
     setLiurenDateTime(new Date(), { reveal: false });
     return;
   }
@@ -10939,6 +11085,10 @@ document.addEventListener("click", (event) => {
   }
   if (earlyAction === "liuren-copy") {
     copyLiurenResult();
+    return;
+  }
+  if (earlyAction === "liuren-ask-xu") {
+    openLiurenXuChat();
     return;
   }
   if (earlyAction === "liuyao-mode") {
@@ -11239,6 +11389,7 @@ document.addEventListener("input", (event) => {
   if (event.target.closest?.(".liuren-panel")) {
     if (event.target.id === "liuren-year") updateLiurenDayOptions();
     liurenHasStarted = false;
+    liurenXuRecordId = null;
     updateLiurenPreview({ reveal: false });
     return;
   }
@@ -11267,6 +11418,7 @@ document.addEventListener("change", (event) => {
   if (event.target.closest?.(".liuren-panel")) {
     if (event.target.id === "liuren-year" || event.target.id === "liuren-month") updateLiurenDayOptions();
     liurenHasStarted = false;
+    liurenXuRecordId = null;
     updateLiurenPreview({ reveal: false });
     return;
   }
