@@ -1773,43 +1773,59 @@ body.mbp-auth-open {
   min-height: 118px;
   padding: 0;
   border-radius: 50%;
+  overflow: hidden;
   background:
-    radial-gradient(circle at 34% 24%, rgba(255, 250, 218, .22), transparent 28%),
+    radial-gradient(circle at 30% 22%, rgba(255, 252, 222, .54), transparent 24%),
+    radial-gradient(circle at 68% 18%, rgba(255, 246, 198, .52) 0 2px, transparent 4px),
+    radial-gradient(circle at 78% 68%, rgba(255, 236, 170, .42) 0 1px, transparent 3px),
     linear-gradient(145deg, #e0c06b, #bf7a40 82%);
   font-size: 18px;
   line-height: 1.08;
   text-align: center;
   letter-spacing: .08em;
+  animation: mbpDecodeOrbGlow 2.8s ease-in-out infinite;
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, .28),
     inset 0 -18px 30px rgba(98, 50, 26, .16),
-    0 18px 42px rgba(185, 111, 66, .34),
-    0 0 0 9px rgba(241, 212, 125, .07);
+    0 18px 42px rgba(185, 111, 66, .38),
+    0 0 0 9px rgba(241, 212, 125, .08),
+    0 0 30px rgba(241, 212, 125, .32);
 }
 
 .mbp-report-action-bar button::before {
   content: "";
   position: absolute;
-  inset: -5px;
-  z-index: -1;
-  border: 1px solid rgba(241, 212, 125, .46);
+  inset: 3px;
+  z-index: 0;
   border-radius: 50%;
-  box-shadow: 0 0 22px rgba(241, 212, 125, .22);
+  background: conic-gradient(from 0deg, transparent 0 14%, rgba(255, 246, 196, .95) 20%, transparent 30%, transparent 54%, rgba(255, 218, 122, .76) 63%, transparent 74%, transparent);
+  opacity: .9;
+  -webkit-mask: radial-gradient(circle, transparent 0 62%, #000 64% 100%);
+  mask: radial-gradient(circle, transparent 0 62%, #000 64% 100%);
+  mix-blend-mode: screen;
+  animation: mbpDecodeOrbSpin 5.2s linear infinite;
 }
 
 .mbp-report-action-bar button::after {
   content: "";
   position: absolute;
-  inset: 8px;
+  inset: -18%;
+  z-index: 1;
   border-radius: 50%;
-  border-top: 1px solid rgba(255, 244, 196, .44);
+  background: linear-gradient(115deg, transparent 34%, rgba(255, 255, 255, .68) 47%, rgba(255, 230, 154, .34) 53%, transparent 66%);
+  transform: translateX(-120%) rotate(18deg);
+  mix-blend-mode: screen;
+  animation: mbpDecodeOrbShine 2.6s ease-in-out infinite;
   pointer-events: none;
 }
 
 .mbp-report-action-bar button span,
 .mbp-report-action-bar button b {
+  position: relative;
+  z-index: 2;
   display: block;
   color: #1b1209;
+  text-shadow: 0 1px 0 rgba(255, 244, 196, .36);
 }
 
 .mbp-report-action-bar button span {
@@ -1825,6 +1841,69 @@ body.mbp-auth-open {
 .mbp-chapter-ai-btn:disabled {
   opacity: .62;
   cursor: wait;
+}
+
+.mbp-report-action-bar button:disabled {
+  animation: none;
+}
+
+.mbp-report-action-bar button:disabled::before,
+.mbp-report-action-bar button:disabled::after {
+  animation: none;
+}
+
+@keyframes mbpDecodeOrbGlow {
+  0%,
+  100% {
+    filter: brightness(1);
+    transform: scale(1);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, .28),
+      inset 0 -18px 30px rgba(98, 50, 26, .16),
+      0 18px 42px rgba(185, 111, 66, .38),
+      0 0 0 9px rgba(241, 212, 125, .08),
+      0 0 30px rgba(241, 212, 125, .32);
+  }
+  50% {
+    filter: brightness(1.16);
+    transform: scale(1.035);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, .4),
+      inset 0 -18px 30px rgba(98, 50, 26, .12),
+      0 20px 48px rgba(185, 111, 66, .48),
+      0 0 0 12px rgba(241, 212, 125, .11),
+      0 0 46px rgba(255, 225, 142, .54);
+  }
+}
+
+@keyframes mbpDecodeOrbSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes mbpDecodeOrbShine {
+  0%,
+  34% {
+    opacity: 0;
+    transform: translateX(-120%) rotate(18deg);
+  }
+  48% {
+    opacity: .95;
+  }
+  72%,
+  100% {
+    opacity: 0;
+    transform: translateX(120%) rotate(18deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mbp-report-action-bar button,
+  .mbp-report-action-bar button::before,
+  .mbp-report-action-bar button::after {
+    animation: none;
+  }
 }
 
 .is-decoded .mbp-report-pulse span,
