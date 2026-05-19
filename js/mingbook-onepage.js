@@ -2039,7 +2039,11 @@
     }
 
     if (guaci) {
-      guaci.textContent = guaciTextValue || (result ? '此卦暂无卦辞数据，可先参考上方命盘与五卷解读。' : '先完成排盘。');
+      if (guaciTextValue) {
+        guaci.innerHTML = `<span class="mbp-yijing-source-label">古籍原文</span>${escapeHtml(guaciTextValue)}`;
+      } else {
+        guaci.textContent = result ? '此卦暂无卦辞数据，可先参考上方命盘与五卷解读。' : '先完成排盘。';
+      }
     }
 
     if (imageReading) {

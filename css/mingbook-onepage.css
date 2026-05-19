@@ -1763,6 +1763,7 @@ body.mbp-auth-open {
 .mbp-report-action-bar button {
   position: relative;
   isolation: isolate;
+  --decode-progress: 0deg;
   flex: 0 0 auto;
   display: grid;
   place-items: center;
@@ -1819,10 +1820,48 @@ body.mbp-auth-open {
   pointer-events: none;
 }
 
-.mbp-report-action-bar button span,
-.mbp-report-action-bar button b {
-  position: relative;
+.mbp-decode-progress-ring {
+  position: absolute;
+  inset: 5px;
   z-index: 2;
+  border-radius: 50%;
+  background:
+    conic-gradient(from -90deg,
+      rgba(255, 246, 196, .98) 0 var(--decode-progress, 0deg),
+      rgba(87, 61, 31, .38) var(--decode-progress, 0deg) 360deg);
+  -webkit-mask: radial-gradient(circle, transparent 0 58%, #000 60% 72%, transparent 74% 100%);
+  mask: radial-gradient(circle, transparent 0 58%, #000 60% 72%, transparent 74% 100%);
+  filter: drop-shadow(0 0 9px rgba(241, 212, 125, .28));
+  transition: background .42s ease, filter .42s ease;
+  pointer-events: none;
+}
+
+.mbp-decode-progress-ring::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: repeating-conic-gradient(from -90deg, rgba(39, 27, 13, .68) 0 1.6deg, transparent 1.6deg 51.428deg);
+}
+
+.mbp-report-action-bar button.is-running {
+  opacity: 1;
+}
+
+.mbp-report-action-bar button.is-running .mbp-decode-progress-ring {
+  filter: drop-shadow(0 0 14px rgba(255, 225, 142, .5));
+  animation: mbpDecodeProgressBreath 1.35s ease-in-out infinite;
+}
+
+.mbp-report-action-bar button.is-complete .mbp-decode-progress-ring {
+  filter: drop-shadow(0 0 18px rgba(255, 225, 142, .62));
+}
+
+.mbp-report-action-bar button span,
+.mbp-report-action-bar button b,
+.mbp-decode-progress-label {
+  position: relative;
+  z-index: 3;
   display: block;
   color: #1b1209;
   text-shadow: 0 1px 0 rgba(255, 244, 196, .36);
@@ -1837,6 +1876,19 @@ body.mbp-auth-open {
   font-size: 29px;
 }
 
+.mbp-decode-progress-label {
+  position: absolute;
+  left: 50%;
+  bottom: 17px;
+  transform: translateX(-50%);
+  font-style: normal;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: .05em;
+  line-height: 1;
+  opacity: .86;
+}
+
 .mbp-report-action-bar button:disabled,
 .mbp-chapter-ai-btn:disabled {
   opacity: .62;
@@ -1845,6 +1897,10 @@ body.mbp-auth-open {
 
 .mbp-report-action-bar button:disabled {
   animation: none;
+}
+
+.mbp-report-action-bar button.is-running:disabled {
+  opacity: 1;
 }
 
 .mbp-report-action-bar button:disabled::before,
@@ -1898,10 +1954,21 @@ body.mbp-auth-open {
   }
 }
 
+@keyframes mbpDecodeProgressBreath {
+  0%,
+  100% {
+    opacity: .82;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .mbp-report-action-bar button,
   .mbp-report-action-bar button::before,
-  .mbp-report-action-bar button::after {
+  .mbp-report-action-bar button::after,
+  .mbp-report-action-bar button.is-running .mbp-decode-progress-ring {
     animation: none;
   }
 }
@@ -4595,6 +4662,19 @@ p.mbp-topic-detail {
   white-space: pre-wrap;
 }
 
+.mbp-yijing-source-label {
+  display: inline-block;
+  margin-right: 12px;
+  padding: 3px 8px;
+  border: 1px solid rgba(241, 212, 125, .3);
+  border-radius: 999px;
+  color: var(--gold);
+  font-size: 13px;
+  font-weight: 900;
+  line-height: 1.2;
+  vertical-align: 2px;
+}
+
 .mbp-yijing-master {
   display: grid;
   gap: 14px;
@@ -6013,6 +6093,11 @@ p.mbp-topic-detail {
 
   .mbp-report-action-bar button b {
     font-size: 23px;
+  }
+
+  .mbp-decode-progress-label {
+    bottom: 14px;
+    font-size: 10px;
   }
 
   .mbp-seal {
