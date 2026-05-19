@@ -8061,6 +8061,7 @@ const LIUREN_HAND_POINTS = [
   { left: 70.0, top: 60.0 },
   { left: 51.0, top: 55.0 }
 ];
+const LIUREN_SCREEN_HEIGHT = 1500;
 let liurenHasStarted = false;
 
 function formatLiurenLunar(lunar) {
@@ -8321,7 +8322,7 @@ function makeLiurenInitialResult(date) {
 function sourceLiurenScreen() {
   const initial = makeLiurenInitialResult(new Date());
   return `
-    ${figBox("lr46-bg", 0, 0, 390, 1160, "", "background:linear-gradient(180deg,#fffaf3 0%,#fbf5eb 46%,#fffaf3 100%);")}
+    ${figBox("lr46-bg", 0, 0, 390, LIUREN_SCREEN_HEIGHT, "", "background:linear-gradient(180deg,#fffaf3 0%,#fbf5eb 46%,#fffaf3 100%);")}
     ${wentianSimpleHeader("lr46", "六壬法", "教程")}
     ${figButton("lr46-tutorial-hit", 318, 38, 62, 54, 'data-route="screen-47"')}
     <section class="liuren-panel">
@@ -9733,7 +9734,7 @@ function renderConvertedScreen(no) {
   }
   const polishedScreen = renderWentianPolishedScreen(screen);
   if (polishedScreen) {
-    const polishedHeight = screen.no === 8 ? 1280 : screen.no === 17 || screen.no === 18 || screen.no === 19 ? 1180 : screen.no === 20 ? 1280 : screen.no === 22 ? 1120 : screen.no === 24 ? 1180 : screen.no === 44 ? getYangzhaiResultHeight() : screen.no === 46 ? 1160 : screen.no === 49 ? 1160 : 844;
+    const polishedHeight = screen.no === 8 ? 1280 : screen.no === 17 || screen.no === 18 || screen.no === 19 ? 1180 : screen.no === 20 ? 1280 : screen.no === 22 ? 1120 : screen.no === 24 ? 1180 : screen.no === 44 ? getYangzhaiResultHeight() : screen.no === 46 ? LIUREN_SCREEN_HEIGHT : screen.no === 49 ? 1160 : 844;
     const wideBgClass = screen.no >= 42 && screen.no <= 45 ? " wide-bg" : "";
     const customHotspots = screen.no >= 17 && screen.no <= 20 ? "" : convertedFlowHotspots(screen);
     return figPhone(`screen-${screen.no}`, `${String(screen.no).padStart(2, "0")} ${screen.title}`, `
