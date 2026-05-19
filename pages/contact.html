@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>联系我们 · 阅天</title>
+  <link rel="icon" href="../images/logo-mark.svg" type="image/svg+xml">
+  <style>
+    :root {
+      --bg: #030201;
+      --panel: #0d0a05;
+      --gold: #c9a961;
+      --ivory: #f4e5c5;
+      --text: #b8a77d;
+      --muted: #887958;
+      --line: rgba(201, 169, 97, .22);
+      --red: #a6402f;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 50% 0, rgba(201, 169, 97, .12), transparent 32%),
+        linear-gradient(180deg, rgba(3, 2, 1, .92), #030201 44%),
+        var(--bg);
+      font-family: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
+      line-height: 1.8;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .nav {
+      border-bottom: 1px solid var(--line);
+      background: rgba(3, 2, 1, .9);
+    }
+
+    .nav-inner,
+    .wrap {
+      width: min(920px, calc(100vw - 40px));
+      margin: 0 auto;
+    }
+
+    .nav-inner {
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .brand {
+      color: var(--ivory);
+      font: 800 22px/1 "Noto Serif SC", "Songti SC", serif;
+      letter-spacing: .18em;
+    }
+
+    .nav-link {
+      color: var(--gold);
+      font-size: 14px;
+    }
+
+    .wrap {
+      padding: 72px 0 88px;
+    }
+
+    h1 {
+      margin: 0;
+      color: var(--ivory);
+      font: 800 clamp(34px, 5vw, 56px)/1.25 "Noto Serif SC", "Songti SC", serif;
+      letter-spacing: .04em;
+    }
+
+    .lead {
+      max-width: 720px;
+      margin: 18px 0 0;
+      color: var(--gold);
+      font-size: 16px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+      margin-top: 36px;
+    }
+
+    .card {
+      min-height: 170px;
+      padding: 24px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: rgba(13, 10, 5, .72);
+    }
+
+    .card h2 {
+      margin: 0 0 10px;
+      color: var(--ivory);
+      font: 800 22px/1.35 "Noto Serif SC", "Songti SC", serif;
+    }
+
+    .card p {
+      margin: 0;
+      font-size: 15px;
+    }
+
+    .card strong {
+      color: var(--ivory);
+    }
+
+    .footer {
+      margin-top: 34px;
+      padding-top: 24px;
+      border-top: 1px solid rgba(201, 169, 97, .12);
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    @media (max-width: 720px) {
+      .grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header class="nav">
+    <div class="nav-inner">
+      <a class="brand" href="../index.html">阅天</a>
+      <a class="nav-link" href="../index.html">返回首页</a>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <h1>联系我们</h1>
+    <p class="lead">排盘、账号、会员、隐私资料删除，统一从这里联系。</p>
+
+    <div class="grid">
+      <section class="card">
+        <h2>客服邮箱</h2>
+        <p><strong>support@yuetianai.com</strong></p>
+        <p>请尽量写清楚问题、页面、账号手机号或邮箱，便于定位处理。</p>
+      </section>
+
+      <section class="card">
+        <h2>账号与隐私</h2>
+        <p>账号资料查询、删除、撤回授权、隐私政策咨询，请在邮件标题注明“隐私请求”。</p>
+      </section>
+
+      <section class="card">
+        <h2>服务主体</h2>
+        <p>雷州市客路镇阅天工作室（个体工商户）</p>
+        <p>备案号：粤ICP备2026055337号</p>
+      </section>
+
+      <section class="card">
+        <h2>常用入口</h2>
+        <p><a href="./mingbook-onepage.html">免费排盘</a> · <a href="./privacy.html">隐私政策</a> · <a href="../index.html">返回首页</a></p>
+      </section>
+    </div>
+
+    <div class="footer">
+      工作日会尽量及时处理，复杂账号或支付问题可能需要核对更多信息。
+    </div>
+  </main>
+</body>
+</html>
