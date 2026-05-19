@@ -3352,7 +3352,7 @@ function toggleWentianHepanArchive(id) {
   if (ids.includes(id)) ids = ids.filter((item) => item !== id);
   else ids = ids.length >= 2 ? [ids[1], id].filter(Boolean) : [...ids, id];
   saveWentianHepanSelectedIds(ids);
-  navigate("screen-11", false);
+  if (!refreshWentianHepanSelectionView(archives, ids)) navigate("screen-11", false);
 }
 
 function confirmWentianHepanSelection() {
@@ -6606,13 +6606,39 @@ function wentianArchiveMini(id, y, name = "谢", selected = false) {
 }
 
 function getWentianHepanVisibleArchives(archives, selectedIds) {
-  const visible = [];
-  const add = (archive) => {
-    if (archive && !visible.some((item) => item.id === archive.id)) visible.push(archive);
-  };
-  selectedIds.forEach((id) => add(archives.find((archive) => archive.id === id)));
-  archives.forEach(add);
-  return visible;
+  return archives.filter(Boolean);
+}
+
+function getWentianHepanHint(archives, selectedIds, validation) {
+  if (selectedIds.length >= 2) return validation.message;
+  if (archives.length < 2) return "至少需要两张档案才能合盘";
+  return "请选择两张不同档案，按夫妻宫落点定格";
+}
+
+function refreshWentianHepanSelectionView(archives, selectedIds) {
+  const list = document.querySelector(".wentian-hepan-list");
+  const headCount = document.querySelector('[data-node-id="wt11-head"] b');
+  const primary = document.querySelector(".wentian-hepan-primary");
+  const hintNode = document.querySelector(".wentian-hepan-footer p");
+  if (!list || !headCount || !primary || !hintNode) return false;
+  const validation = getWentianHepanValidation(archives, selectedIds);
+  const ready = validation.ok;
+  const hint = getWentianHepanHint(archives, selectedIds, validation);
+  headCount.textContent = `已选 ${selectedIds.length}/2`;
+  headCount.classList.toggle("is-ready", ready);
+  headCount.classList.toggle("is-error", !ready && selectedIds.length >= 2);
+  primary.disabled = !ready;
+  hintNode.textContent = hint;
+  hintNode.classList.toggle("is-ready", ready);
+  hintNode.classList.toggle("is-error", !ready && selectedIds.length >= 2);
+  list.querySelectorAll(".wentian-hepan-option").forEach((option) => {
+    const selected = selectedIds.includes(option.dataset.archiveId);
+    option.classList.toggle("is-selected", selected);
+    option.setAttribute("aria-pressed", selected ? "true" : "false");
+    const check = option.querySelector(".wentian-hepan-check");
+    if (check) check.textContent = selected ? "✓" : "";
+  });
+  return true;
 }
 
 function sourceHepanTypeScreen() {
@@ -6642,11 +6668,7 @@ function sourceHepanSelectScreen() {
   const visibleArchives = getWentianHepanVisibleArchives(archives, selectedIds);
   const validation = getWentianHepanValidation(archives, selectedIds);
   const ready = validation.ok;
-  const hint = selectedIds.length >= 2
-    ? validation.message
-    : archives.length < 2
-      ? "至少需要两张档案才能合盘"
-      : "请选择两张不同档案，按夫妻宫落点定格";
+  const hint = getWentianHepanHint(archives, selectedIds, validation);
   return `
     ${figBox("wt11-bg", 0, 0, 390, 844, "", "background:linear-gradient(180deg,#fff8ec 0%,#f4e5d2 42%,#fffdf9 100%);")}
     ${figBox("wt11-top-glow", 0, 0, 390, 336, "", "background:radial-gradient(circle at 50% 8%,rgba(212,171,88,.34),rgba(212,171,88,0) 44%),linear-gradient(180deg,#fff4df 0%,rgba(255,244,223,0) 100%);")}
@@ -6675,7 +6697,7 @@ function sourceHepanSelectScreen() {
         const item = getWentianArchiveDisplay(archive);
         const selected = selectedIds.includes(archive.id);
         return `
-          <button class="wentian-hepan-option ${selected ? "is-selected" : ""}" type="button" data-action="wentian-hepan-pick" data-archive-id="${escapeHtml(archive.id)}" aria-label="选择${escapeHtml(item.name)}">
+          <button class="wentian-hepan-option ${selected ? "is-selected" : ""}" type="button" data-action="wentian-hepan-pick" data-archive-id="${escapeHtml(archive.id)}" aria-pressed="${selected ? "true" : "false"}" aria-label="选择${escapeHtml(item.name)}">
             <span class="wentian-hepan-avatar">${escapeHtml(item.name.slice(0, 1))}</span>
             <span class="wentian-hepan-copy">
               <strong>${escapeHtml(item.name)}</strong>
