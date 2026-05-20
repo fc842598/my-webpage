@@ -71,9 +71,9 @@ const convertedScreens = [
 const convertedByNo = new Map(convertedScreens.map((screen) => [screen.no, screen]));
 
 const screenFlowHotspots = {
-  1: [[286, 24, 86, 52, "screen-26"], [18, 130, 354, 274, "screen-4"], [18, 425, 354, 96, "hepan"], [18, 534, 354, 96, "screen-17"], [18, 643, 354, 96, "screen-42"], [18, 752, 354, 96, "screen-46"], [12, 897, 76, 83, "screen-1"], [109, 897, 76, 83, "screen-25"], [207, 897, 76, 83, "screen-3"], [304, 897, 76, 83, "screen-31"]],
+  1: [[286, 24, 86, 52, "screen-26"], [18, 130, 354, 274, "screen-5"], [18, 425, 354, 96, "hepan"], [18, 534, 354, 96, "screen-17"], [18, 643, 354, 96, "screen-42"], [18, 752, 354, 96, "screen-46"], [12, 897, 76, 83, "screen-1"], [109, 897, 76, 83, "screen-25"], [207, 897, 76, 83, "screen-3"], [304, 897, 76, 83, "screen-31"]],
   2: [[18, 282, 354, 190, "screen-4"], [18, 487, 354, 190, "screen-4"], [18, 692, 354, 175, "screen-4"]],
-  3: [[285, 128, 82, 28, "screen-5"], [16, 164, 358, 84, "screen-5"], [16, 305, 358, 116, "screen-4"], [12, 761, 76, 72, "screen-1"], [109, 761, 76, 72, "screen-25"], [207, 761, 76, 72, "screen-3"], [304, 761, 76, 72, "screen-31"]],
+  3: [[285, 128, 82, 28, "screen-5"], [16, 164, 358, 84, "screen-5"], [16, 305, 358, 116, "screen-5"], [12, 761, 76, 72, "screen-1"], [109, 761, 76, 72, "screen-25"], [207, 761, 76, 72, "screen-3"], [304, 761, 76, 72, "screen-31"]],
   4: [[18, 24, 44, 56, "screen-3"], [334, 24, 38, 56, "screen-9"], [252, 26, 78, 36, "screen-5"]],
   5: [[320, 116, 48, 48, "screen-4"], [34, 235, 322, 72, "screen-6"], [34, 318, 322, 72, "screen-6"], [48, 748, 294, 52, "screen-6"]],
   6: [[18, 44, 48, 48, "screen-4"], [88, 600, 220, 76, "screen-7"]],
@@ -925,30 +925,25 @@ function sourceAiChatScreen(screen) {
 function sourceArchiveSelectScreen() {
   const archives = getWentianArchiveList();
   const activeId = wentianArchiveDraftId || getWentianSelectedArchiveId(archives);
-  const activeArchive = archives.find((item) => item.id === activeId) || archives[0];
-  const active = getWentianArchiveDisplay(activeArchive);
   const displayArchives = archives;
   return `
     ${figBox("source-5-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
-    ${figText("source-5-back", "‹", 28, 35, 28, 34, "#26211c", 500)}
-    ${figImage("source-5-avatar", "../images/wentian-prototype-assets/xu-banxian.jpg", 58, 31, 34, 34, "border-radius:17px;object-fit:cover;object-position:center 18%;")}
-    ${figText("source-5-name", "许半仙", 100, 39, 130, 16, "#26211c", 800)}
-    ${figText("source-5-record", "◷ 对话记录", 282, 40, 88, 12, "#6f665d", 500, "right")}
-    ${figLine("source-5-line-a", 0, 84, 390, "#eee8df")}
-    ${figText("source-5-left", "◇ 剩余 1 条", 18, 101, 150, 12, "#9d8a62")}
-    ${figBox("source-5-profile-pill", 258, 92, 110, 34, "", "border-radius:17px;background:#fff;box-shadow:0 4px 12px rgba(70,45,25,.08);")}
-    ${figText("source-5-profile-text", `${escapeHtml(active.name)}⌄`, 268, 102, 90, 13, "#26211c", 500, "center")}
-    ${figLine("source-5-line-b", 0, 137, 390, "#eee8df")}
-    ${figText("source-5-hello", `你好！我是许半仙`, 24, 205, 320, 27, "#c4a45a", 800)}
-    ${figText("source-5-sub", "需要我为您做些什么？", 24, 246, 260, 15, "#aaa196")}
+    ${figBox("source-5-header", 0, 0, 390, 88, "", "background:#fffdf8;border-bottom:1px solid #eadfce;")}
+    ${figButton("source-5-back-hit", 16, 28, 64, 54, 'data-action="back"')}
+    ${figText("source-5-back", "‹", 28, 37, 28, 34, "#26211c", 500)}
+    ${figText("source-5-title", "选择档案", 0, 42, 390, 22, "#1f1d1a", 800, "center")}
+    ${figBox("source-5-count", 300, 32, 66, 32, "", "border-radius:14px;background:#f7f2ec;")}
+    ${figText("source-5-count-text", `共 ${archives.length} 张`, 300, 42, 66, 11, "#8b8176", 700, "center")}
 
-    ${figBox("source-5-overlay", 0, 0, 390, 844, "", "background:rgba(0,0,0,.38);")}
-    ${figBox("source-5-sheet", 0, 334, 390, 510, "", "border-radius:22px 22px 0 0;background:#fff;box-shadow:0 -12px 30px rgba(0,0,0,.14);")}
-    ${figBox("source-5-sheet-handle", 160, 348, 70, 5, "", "border-radius:3px;background:#eee9e2;")}
-    ${figText("source-5-sheet-title", "选择档案", 36, 374, 150, 25, "#1f1d1a", 800)}
-    ${figBox("source-5-sheet-count", 292, 374, 70, 30, "", "border-radius:8px;background:#f7f2ec;")}
-    ${figText("source-5-sheet-count-text", `共 ${archives.length} 张`, 292, 383, 70, 11, "#8b8176", 700, "center")}
-    ${figText("source-5-sheet-sub", "选择一个档案接入对话", 36, 412, 180, 15, "#8b8176", 400)}
+    ${figBox("source-5-intro", 24, 108, 342, 82, "", "border-radius:18px;background:linear-gradient(135deg,#fff,#f8f1e5);box-shadow:0 10px 24px rgba(70,45,25,.09);")}
+    ${figImage("source-5-avatar", "../images/wentian-prototype-assets/xu-banxian.jpg", 44, 126, 46, 46, "border-radius:23px;object-fit:cover;object-position:center 18%;")}
+    ${figText("source-5-name", "许半仙", 106, 124, 120, 18, "#26211c", 900)}
+    ${figText("source-5-sub", "选择一个档案接入对话", 106, 150, 210, 14, "#8b8176", 600)}
+
+    ${figBox("source-5-sheet", 18, 214, 354, 532, "", "border:1px solid #eadfce;border-radius:20px;background:#fffaf3;box-shadow:0 12px 28px rgba(70,45,25,.08);")}
+    ${figText("source-5-sheet-title", "请确认命盘", 42, 240, 150, 22, "#1f1d1a", 900)}
+    ${figText("source-5-sheet-sub", "确认后再进入许半仙对话", 42, 270, 210, 13, "#8b8176", 600)}
+    <button class="wentian-archive-new-mini" type="button" data-route="screen-26">＋ 新建</button>
     <div class="wentian-archive-list">
     ${displayArchives.map((archive) => {
       const item = getWentianArchiveDisplay(archive);
@@ -972,7 +967,7 @@ function sourceArchiveSelectScreen() {
     }).join("")}
     </div>
     ${figLine("source-5-sheet-line", 24, 750, 342, "#eee8df")}
-    <button class="wentian-archive-new" type="button" data-route="screen-26">＋ 新建档案</button>
+    <button class="wentian-archive-exit" type="button" data-action="wentian-archive-cancel">退出选盘</button>
     <button class="wentian-archive-confirm" type="button" data-action="wentian-archive-confirm">确定</button>
   `;
 }
@@ -3750,7 +3745,13 @@ const WENTIAN_I18N = {
     "我的报告": "我的報告",
     "订单记录": "訂單記錄",
     "购买次数": "購買次數",
-    "免费版": "免費版"
+    "免费版": "免費版",
+    "选择档案": "選擇檔案",
+    "选择一个档案接入对话": "選擇一個檔案接入對話",
+    "请确认命盘": "請確認命盤",
+    "确认后再进入许半仙对话": "確認後再進入許半仙對話",
+    "退出选盘": "退出選盤",
+    "＋ 新建": "＋ 新建"
   }
 };
 
@@ -3936,6 +3937,10 @@ const WENTIAN_I18N_EN_EXTRA = {
   "选择档案": "Choose File",
   "共 2 张": "2 files",
   "选择一个档案接入对话": "Choose a file for this chat",
+  "请确认命盘": "Confirm Chart",
+  "确认后再进入许半仙对话": "Confirm before entering chat",
+  "退出选盘": "Exit",
+  "＋ 新建": "+ New",
   "默认": "Default",
   "命": "File",
   "命主": "Owner",
@@ -5077,6 +5082,11 @@ function confirmWentianArchiveSelection() {
   wentianArchiveDraftId = null;
   clearWentianXuChatContext();
   navigate("screen-4");
+}
+
+function cancelWentianArchiveSelection() {
+  wentianArchiveDraftId = null;
+  navigate(state.stack.pop() || "screen-1", false);
 }
 
 function resetWentianXuChatRuntime() {
@@ -11735,6 +11745,10 @@ document.addEventListener("click", (event) => {
   }
   if (action === "wentian-archive-confirm") {
     confirmWentianArchiveSelection();
+    return;
+  }
+  if (action === "wentian-archive-cancel") {
+    cancelWentianArchiveSelection();
     return;
   }
   if (action === "wentian-profile-open") {
