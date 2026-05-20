@@ -4500,19 +4500,15 @@ html[data-wentian-language="en"] .liuren-hero-copy em {
   color: #9a681c;
 }
 
-.liuyao-hint {
-  margin: 10px 4px 0;
-  color: #8f8173;
-  font-size: 12px;
-  font-weight: 700;
-  line-height: 1.45;
-}
-
 .liuyao-actions {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 10px;
   margin-top: 14px;
+}
+
+.liuyao-actions.is-single {
+  grid-template-columns: 1fr;
 }
 
 .liuyao-actions button,

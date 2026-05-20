@@ -7204,7 +7204,7 @@ function updateLiuyaoQuestionLockedDom(state = getLiuyaoState()) {
   const onlineAction = document.querySelector('[data-action="liuyao-open-caster"]');
   if (onlineAction) {
     onlineAction.disabled = !ready || liuyaoQuestionGateLoading || Boolean(liuyaoTossAnimation?.active);
-    onlineAction.textContent = liuyaoQuestionGateLoading ? "审题中…" : (!ready ? "先提交占问" : `全屏投第 ${progress + 1} 爻`);
+    onlineAction.textContent = liuyaoQuestionGateLoading ? "审题中…" : (!ready ? "提交通过后开放投币" : `全屏投第 ${progress + 1} 爻`);
   }
   if (!ready) {
     document.querySelectorAll('.liuyao-line-row[data-action="liuyao-manual-line"]').forEach((item) => {
@@ -7978,15 +7978,15 @@ function sourceLiuyaoCastScreen() {
         </div>
       </div>
       ${state.mode === "manual" ? renderLiuyaoManualCoinInput(state, { disabled: gateBusy || !questionReady }) : ""}
-      <div class="liuyao-actions">
+      <div class="liuyao-actions ${!complete && !questionReady && !gateBusy ? "is-single" : ""}">
         ${complete ? `
           <button type="button" class="primary" data-action="liuyao-show-result">查看卦象解读</button>
           <button type="button" data-action="liuyao-copy">复制卦象</button>
         ` : state.mode === "online" ? `
-          <button type="button" class="primary" data-action="liuyao-open-caster" ${actionBusy || !questionReady ? "disabled" : ""}>${gateBusy ? "审题中…" : !questionReady ? "先提交占问" : tossing ? "抛币中…" : `全屏投第 ${progress + 1} 爻`}</button>
+          ${gateBusy || questionReady ? `<button type="button" class="primary" data-action="liuyao-open-caster" ${actionBusy || !questionReady ? "disabled" : ""}>${gateBusy ? "审题中…" : tossing ? "抛币中…" : `全屏投第 ${progress + 1} 爻`}</button>` : ""}
           <button type="button" data-action="liuyao-reset" ${gateBusy ? "disabled" : ""}>清空重排</button>
         ` : `
-          <button type="button" class="primary" ${progress === 6 && !actionBusy && questionReady ? 'data-action="liuyao-show-result"' : "disabled"}>${gateBusy ? "审题中…" : !questionReady ? "先提交占问" : progress === 6 ? "查看卦象解读" : "按下方录满六爻"}</button>
+          ${gateBusy || questionReady ? `<button type="button" class="primary" ${progress === 6 && !actionBusy && questionReady ? 'data-action="liuyao-show-result"' : "disabled"}>${gateBusy ? "审题中…" : progress === 6 ? "查看卦象解读" : "按下方录满六爻"}</button>` : ""}
           <button type="button" data-action="liuyao-reset" ${gateBusy ? "disabled" : ""}>清空重排</button>
         `}
       </div>
@@ -7998,11 +7998,6 @@ function sourceLiuyaoCastScreen() {
         ${tossing ? `<p class="liuyao-casting-status">本次力度 ${Math.max(18, Math.min(100, Number(liuyaoTossAnimation.power) || 62))}%；铜钱翻转 1 秒后落入第 ${progress + 1} 爻。</p>` : ""}
         ${renderLiuyaoHexStack(lines, { id: "cast" })}
       </div>
-      ${state.mode === "manual" ? `
-        <p class="liuyao-hint">手动起卦适合已经用现实铜钱抛过：每爻三枚，正面记 3，反面记 2，系统自动换算爻象。</p>
-      ` : `
-        <p class="liuyao-hint">按住上方铜钱区向上拉，力度到 18% 左右即可松手；力度会参与落币，落币后按初爻到上爻记录。</p>
-      `}
       ${renderLiuyaoCasterModal(state, { complete, disabled: gateBusy || !questionReady, lockText: questionReady ? "" : questionLockText })}
       ${renderLiuyaoResetConfirm()}
     </section>
