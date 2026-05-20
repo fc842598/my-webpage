@@ -4949,6 +4949,52 @@ html[data-wentian-language="en"] .liuren-hero-copy em {
   line-height: 1.15;
 }
 
+.liuyao-result-card-title {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+  margin: 5px 0 10px;
+}
+
+.liuyao-result-card-title > strong {
+  min-width: 0;
+  color: #201813;
+  font-size: 18px;
+  font-weight: 900;
+  line-height: 1.15;
+}
+
+.liuyao-mini-hex {
+  display: grid;
+  flex: 0 0 44px;
+  gap: 3px;
+  padding-top: 1px;
+}
+
+.liuyao-mini-hex i {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 7px;
+  align-items: center;
+  height: 3px;
+}
+
+.liuyao-mini-hex i.is-yin {
+  grid-template-columns: 1fr 1fr;
+}
+
+.liuyao-mini-hex b {
+  display: block;
+  height: 3px;
+  border-radius: 999px;
+  background: #211a15;
+}
+
+.liuyao-mini-hex i.is-moving b {
+  background: #a94a3b;
+}
+
 .liuyao-hex-image {
   display: block;
   width: 100%;

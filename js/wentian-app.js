@@ -7945,6 +7945,22 @@ function renderLiuyaoHexImage(hex, label) {
   return `<img class="liuyao-hex-image" src="${src}" alt="${escapeHtml(alt)}" loading="lazy">`;
 }
 
+function renderLiuyaoMiniHex(lines, options = {}) {
+  const displayLines = [5, 4, 3, 2, 1, 0].map((index) => lines?.[index] || null);
+  return `
+    <span class="liuyao-mini-hex" aria-label="${escapeHtml(options.label || "六爻卦象")}" title="${escapeHtml(options.label || "六爻卦象")}">
+      ${displayLines.map((line) => {
+        const broken = options.changed && line ? line.changedBroken : line?.broken;
+        return `
+          <i class="${broken ? "is-yin" : "is-yang"} ${line?.moving ? "is-moving" : ""}">
+            <b></b>${broken ? "<b></b>" : ""}
+          </i>
+        `;
+      }).join("")}
+    </span>
+  `;
+}
+
 function firstReadableSentence(text, fallback = "") {
   const source = String(text || "").replace(/原句：/g, "").replace(/讲解：/g, "").replace(/\s+/g, " ").trim();
   return source.split(/[。！？]/).find((part) => part.trim().length >= 6)?.trim() || fallback;
@@ -8367,13 +8383,19 @@ function sourceLiuyaoResultScreen() {
       <div class="liuyao-result-pair">
         <article class="is-image-card">
           <span>本卦</span>
-          <strong>${escapeHtml(result.primary.name)}</strong>
+          <div class="liuyao-result-card-title">
+            <strong>${escapeHtml(result.primary.name)}</strong>
+            ${renderLiuyaoMiniHex(result.lines, { label: `本卦六爻：${result.primary.name}` })}
+          </div>
           ${renderLiuyaoHexImage(result.primary, "本卦")}
           <em>${escapeHtml(formatLiuyaoHexMeta(result.primary))}</em>
         </article>
         <article class="is-image-card">
           <span>变卦</span>
-          <strong>${escapeHtml(result.changed.name)}</strong>
+          <div class="liuyao-result-card-title">
+            <strong>${escapeHtml(result.changed.name)}</strong>
+            ${renderLiuyaoMiniHex(result.lines, { changed: true, label: `变卦六爻：${result.changed.name}` })}
+          </div>
           ${renderLiuyaoHexImage(result.changed, "变卦")}
           <em>${escapeHtml(formatLiuyaoHexMeta(result.changed))}</em>
         </article>
