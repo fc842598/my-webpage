@@ -4538,6 +4538,7 @@ html[data-wentian-language="en"] .liuren-hero-copy em {
 }
 
 .liuyao-manual-current-actions .liuyao-manual-clear,
+.liuyao-manual-current-actions .liuyao-manual-confirm,
 .liuyao-manual-undo {
   width: auto;
   height: 34px;
@@ -4547,6 +4548,20 @@ html[data-wentian-language="en"] .liuren-hero-copy em {
   color: #8f8173;
   font-size: 12px;
   font-weight: 900;
+}
+
+.liuyao-manual-current-actions .liuyao-manual-confirm {
+  border-color: #c2953c;
+  background: #c79a39;
+  color: #fffaf3;
+  box-shadow: 0 8px 16px rgba(194, 149, 60, .18);
+}
+
+.liuyao-manual-current-actions .liuyao-manual-confirm:disabled {
+  border-color: #ead9bd;
+  background: #f6efe4;
+  color: #b9afa3;
+  box-shadow: none;
 }
 
 .liuyao-manual-history {

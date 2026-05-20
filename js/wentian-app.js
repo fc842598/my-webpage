@@ -3972,7 +3972,7 @@ const WENTIAN_I18N_EN_EXTRA = {
   "正在接入许半仙…": "Connecting to Xu Banxian...",
   "我在，看命盘直接问。": "I am here. Ask about your chart.",
   "许半仙正在看卦…": "Xu Banxian is reading the hexagram...",
-  "这次我按六爻占卜来批，不读命盘。你可以继续问成败、应期、动爻或行动取舍。": "I will read this as a Liuyao divination, not a natal chart. Ask about outcome, timing, moving lines, or next steps.",
+  "我按这卦看这件事。你可以继续问成败、应期、动爻或行动取舍。": "I will read this hexagram for this matter. Ask about outcome, timing, moving lines, or next steps.",
   "常问": "FAQ",
   "占卜追问": "Divination Follow-up",
   "本次占问": "This Casting",
@@ -5316,7 +5316,7 @@ function buildWentianXuOutboundMessage(message, context) {
   if (context?.type === "liuren") {
     return [
       "【六壬法追问】",
-      "本次不是紫微命盘，也不是六爻纳甲，请只按小六壬当下课式回答。",
+      "请按小六壬当下课式回答，不要提紫微、命盘或六爻纳甲。",
       "如果用户没有说清具体事情，先请他补一句所问之事；但仍可按当前落宫给方向。",
       `起课时间：${context.castAtText || "未记录"}`,
       `农历课时：${context.lunarText || ""} · ${context.hourName || ""}时`,
@@ -5335,7 +5335,7 @@ function buildWentianXuOutboundMessage(message, context) {
   if (context?.type !== "liuyao") return message;
   return [
     "【六爻占卜追问】",
-    "本次不是紫微命盘读盘，请只按六爻占卜专批来断，围绕所问之事、本卦、变卦、动爻和页面初判回答。",
+    "请按六爻占卜专批来断，围绕所问之事、本卦、变卦、动爻和页面初判回答；不要提紫微或命盘。",
     `所问之事：${context.question || "未填写"}`,
     `起卦时间：${context.castAtText || "未记录"}`,
     `本卦：${context.primaryText || ""}`,
@@ -7797,7 +7797,26 @@ async function setLiuyaoManualCoin(lineIndex, coinIndex, face) {
   const row = getLiuyaoManualCoins(state, line).slice();
   row[coin] = coinFace;
   state.manualCoins[line] = row;
-  state.casts[line] = makeLiuyaoManualCastFromCoins(row);
+  state.casts[line] = null;
+  saveLiuyaoState();
+  navigateLiuyaoCastPreservingScroll();
+  return true;
+}
+
+async function confirmLiuyaoManualLine(lineIndex) {
+  if (!(await ensureLiuyaoQuestionAllowed())) return false;
+  const line = Math.max(0, Math.min(5, Math.round(Number(lineIndex) || 0)));
+  clearLiuyaoTossAnimation();
+  setLiuyaoCasterModalOpen(false);
+  saveLiuyaoQuestionFromDom();
+  const state = getLiuyaoState();
+  state.mode = "manual";
+  while (state.casts.length < 6) state.casts.push(null);
+  state.manualCoins = normalizeLiuyaoManualCoins(state.manualCoins, state.casts);
+  const cast = makeLiuyaoManualCastFromCoins(getLiuyaoManualCoins(state, line));
+  if (!cast) return false;
+  state.casts[line] = cast;
+  state.manualCoins[line] = cast.coins.slice();
   saveLiuyaoState();
   navigateLiuyaoCastPreservingScroll();
   return true;
@@ -8143,6 +8162,8 @@ function renderLiuyaoManualCoinInput(state, options = {}) {
   const activeIndex = complete ? -1 : nextIndex;
   const currentIndex = activeIndex >= 0 ? activeIndex : 5;
   const currentCoins = activeIndex >= 0 ? getLiuyaoManualCoins(state, currentIndex) : [];
+  const currentCoinCount = currentCoins.filter(Boolean).length;
+  const currentCast = makeLiuyaoManualCastFromCoins(currentCoins);
   const completedRows = casts
     .map((cast, lineIndex) => ({ cast, lineIndex, type: cast ? getLiuyaoLineType(cast.value) : null }))
     .filter((item) => item.cast && item.type);
@@ -8166,7 +8187,7 @@ function renderLiuyaoManualCoinInput(state, options = {}) {
         </div>
         <em>${getLiuyaoProgress(state)}/6</em>
       </div>
-      <p>每次只录当前这一爻：现实中抛三枚铜钱，再按结果点正反；三枚录满后自动进入下一爻。</p>
+      <p>每次只录当前这一爻：现实中抛三枚铜钱，再按结果点正反；三枚录满后点确认进入下一爻。</p>
       ${complete ? `
         <div class="liuyao-manual-done">
           <strong>六爻已录完</strong>
@@ -8180,9 +8201,9 @@ function renderLiuyaoManualCoinInput(state, options = {}) {
               <strong>${LIUYAO_LINE_LABELS[currentIndex]}</strong>
               <span>第 ${currentIndex + 1}/6 爻</span>
             </div>
-            <em>${currentCoins.filter(Boolean).length}/3</em>
+            <em>${currentCoinCount}/3</em>
           </div>
-          <div class="liuyao-manual-status">${currentCoins.filter(Boolean).length >= 3 ? "本爻已成，准备进入下一爻。" : "抛三枚铜钱后，依次录入第 1、2、3 枚。"}</div>
+          <div class="liuyao-manual-status">${currentCoinCount >= 3 ? `本爻已成：${currentCast?.value || ""} ${currentCast ? getLiuyaoLineType(currentCast.value).name : ""}。确认后进入下一爻。` : "抛三枚铜钱后，依次录入第 1、2、3 枚。"}</div>
           <div class="liuyao-manual-coins">
             ${[0, 1, 2].map((coinIndex) => `
               <div class="liuyao-manual-coin-pick">
@@ -8196,7 +8217,7 @@ function renderLiuyaoManualCoinInput(state, options = {}) {
           </div>
           <div class="liuyao-manual-current-actions">
             <button type="button" class="liuyao-manual-clear" data-action="liuyao-manual-clear-line" data-line-index="${currentIndex}" ${disabled || !currentCoins.some(Boolean) ? "disabled" : ""}>清空本爻</button>
-            <button type="button" class="liuyao-manual-undo" data-action="liuyao-manual-clear-last" ${disabled || !completedRows.length ? "disabled" : ""}>重录上一爻</button>
+            <button type="button" class="liuyao-manual-confirm" data-action="liuyao-manual-confirm-line" data-line-index="${currentIndex}" ${disabled || !currentCast ? "disabled" : ""}>${currentIndex >= 5 ? "确认成卦" : "确认本爻"}</button>
           </div>
         </div>
       `}
@@ -8225,6 +8246,9 @@ function sourceLiuyaoCastScreen() {
   const gate = normalizeLiuyaoQuestionGate(state.questionGate, question);
   const questionReady = Boolean(gate?.allowed);
   const questionLockText = gateBusy ? "审题中，稍候开放" : "提交通过后开放投币";
+  const manualPendingCast = state.mode === "manual" && progress < 6
+    ? makeLiuyaoManualCastFromCoins(getLiuyaoManualCoins(state, progress))
+    : null;
   const screenHeight = getLiuyaoCastScreenHeight();
   return `
     ${figBox("ly17-bg", 0, 0, 390, screenHeight, "", "background:linear-gradient(180deg,#fffdf8 0%,#fbf7ef 50%,#f3eadc 100%);")}
@@ -8267,7 +8291,7 @@ function sourceLiuyaoCastScreen() {
           ${gateBusy || questionReady ? `<button type="button" class="primary" data-action="liuyao-open-caster" ${actionBusy || !questionReady ? "disabled" : ""}>${gateBusy ? "审题中…" : tossing ? "抛币中…" : `全屏投第 ${progress + 1} 爻`}</button>` : ""}
           <button type="button" data-action="liuyao-reset" ${gateBusy ? "disabled" : ""}>清空重排</button>
         ` : `
-          ${gateBusy || questionReady ? `<button type="button" class="primary" ${progress === 6 && !actionBusy && questionReady ? 'data-action="liuyao-show-result"' : "disabled"}>${gateBusy ? "审题中…" : progress === 6 ? "查看卦象解读" : "按下方录满六爻"}</button>` : ""}
+          ${gateBusy || questionReady ? `<button type="button" class="primary" ${progress === 6 && !actionBusy && questionReady ? 'data-action="liuyao-show-result"' : "disabled"}>${gateBusy ? "审题中…" : progress === 6 ? "查看卦象解读" : manualPendingCast ? "先确认本爻" : "按下方录满六爻"}</button>` : ""}
           <button type="button" data-action="liuyao-reset" ${gateBusy ? "disabled" : ""}>清空重排</button>
         `}
       </div>
@@ -8396,10 +8420,10 @@ function makeLiuyaoXuContext(result = getLiuyaoResult()) {
 }
 
 function getLiuyaoXuOpeningMessage(context) {
-  if (!context) return "这次我按六爻占卜来批，不读命盘。你可以继续问成败、应期、动爻或行动取舍。";
+  if (!context) return "我按这卦看这件事。你可以继续问成败、应期、动爻或行动取舍。";
   const cleanQuestion = String(context.question || "所问之事").replace(/[？?。.!！]+$/g, "");
   return [
-    "这次我按六爻占卜专批，不读命盘。",
+    "我按这卦看这件事。",
     `你刚才占问：「${cleanQuestion}」。`,
     `卦象：${context.primaryText || "本卦"}${context.changedText ? `，变卦 ${context.changedText}` : ""}，动爻：${context.movingText || "无"}。`,
     "可以继续问这件事能不能成、什么时候动、该进该退，或具体怎么做。"
@@ -9783,9 +9807,9 @@ function makeLiurenXuContext() {
 }
 
 function getLiurenXuOpeningMessage(context) {
-  if (!context) return "这次我按小六壬来批，不读命盘。你先把所问之事说清楚，我按当前课式看成败、快慢和下一步。";
+  if (!context) return "我按这课看当下这件事。你先把所问之事说清楚，我看成败、快慢和下一步。";
   return [
-    "这次我按小六壬专批，不读命盘。",
+    "我按这课看当下这件事。",
     `当前课落「${context.palaceName}」，${context.nature}；${context.summary}`,
     "你可以直接说具体事情，我按这个课看成败、快慢、阻力和该怎么做。"
   ].join("\n");
@@ -11831,6 +11855,10 @@ document.addEventListener("click", (event) => {
       Number(earlyActionTarget.dataset.coinIndex || 0),
       Number(earlyActionTarget.dataset.coinFace || 0)
     );
+    return;
+  }
+  if (earlyAction === "liuyao-manual-confirm-line") {
+    confirmLiuyaoManualLine(Number(earlyActionTarget.dataset.lineIndex || 0));
     return;
   }
   if (earlyAction === "liuyao-manual-clear-line") {
