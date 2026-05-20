@@ -71,9 +71,9 @@ const convertedScreens = [
 const convertedByNo = new Map(convertedScreens.map((screen) => [screen.no, screen]));
 
 const screenFlowHotspots = {
-  1: [[286, 24, 86, 52, "screen-26"], [18, 130, 354, 274, "screen-4"], [18, 425, 354, 96, "hepan"], [18, 534, 354, 96, "screen-17"], [18, 643, 354, 96, "screen-42"], [18, 752, 354, 96, "screen-46"], [12, 897, 76, 83, "screen-1"], [109, 897, 76, 83, "screen-25"], [207, 897, 76, 83, "screen-3"], [304, 897, 76, 83, "screen-31"]],
+  1: [[286, 24, 86, 52, "screen-26"], [18, 130, 354, 274, "xu-entry"], [18, 425, 354, 96, "hepan"], [18, 534, 354, 96, "screen-17"], [18, 643, 354, 96, "screen-42"], [18, 752, 354, 96, "screen-46"], [12, 897, 76, 83, "screen-1"], [109, 897, 76, 83, "screen-25"], [207, 897, 76, 83, "screen-3"], [304, 897, 76, 83, "screen-31"]],
   2: [[18, 282, 354, 190, "screen-4"], [18, 487, 354, 190, "screen-4"], [18, 692, 354, 175, "screen-4"]],
-  3: [[285, 128, 82, 28, "screen-5"], [16, 164, 358, 84, "screen-5"], [16, 305, 358, 116, "screen-4"], [12, 761, 76, 72, "screen-1"], [109, 761, 76, 72, "screen-25"], [207, 761, 76, 72, "screen-3"], [304, 761, 76, 72, "screen-31"]],
+  3: [[285, 128, 82, 28, "screen-5"], [16, 164, 358, 84, "screen-5"], [16, 305, 358, 116, "xu-entry"], [12, 761, 76, 72, "screen-1"], [109, 761, 76, 72, "screen-25"], [207, 761, 76, 72, "screen-3"], [304, 761, 76, 72, "screen-31"]],
   4: [[18, 24, 44, 56, "screen-3"], [334, 24, 38, 56, "screen-9"], [252, 26, 78, 36, "screen-5"]],
   5: [[320, 116, 48, 48, "screen-4"], [34, 235, 322, 72, "screen-6"], [34, 318, 322, 72, "screen-6"], [48, 748, 294, 52, "screen-6"]],
   6: [[18, 44, 48, 48, "screen-4"], [88, 600, 220, 76, "screen-7"]],
@@ -669,14 +669,16 @@ function sourceAppBottomNav(active, y = 778) {
 function sourceArchiveScreen(screen) {
   const activeArchive = getCurrentWentianArchive();
   const active = getWentianArchiveDisplay(activeArchive);
+  const xuEntryRoute = getWentianXuEntryRoute();
+  const xuHasChart = xuEntryRoute === "screen-4";
   const masters = [
-    ["许半仙", "紫微命盘", "AI解析", "", "已接入您的紫微命盘，可直接开启对话", 305]
+    ["许半仙", "紫微命盘", "AI解析", "", xuHasChart ? "已接入您的紫微命盘，可直接开启对话" : "先排盘或选择档案，再开启专属对话", 305]
   ];
   return `
     ${figText("source-3-time", "15:17", 18, 16, 70, 14, "#26211c")}
     ${figText("source-3-status", "◉  0.00  5G  ▮ 31 ⚡", 250, 14, 120, 10, "#26211c", 700, "right")}
     ${figText("source-3-title", "问天AI", 18, 62, 160, 29, "#26211c", 800)}
-    ${figText("source-3-subtitle", "许半仙已准备好为您解读", 18, 101, 220, 13, "#7f756b")}
+    ${figText("source-3-subtitle", xuHasChart ? "许半仙已准备好为您解读" : "先排盘，再让许半仙解读", 18, 101, 220, 13, "#7f756b")}
     ${figText("source-3-current-title", "当前档案", 18, 136, 120, 15, "#26211c", 800)}
     ${figText("source-3-change", "更换档案 〉", 284, 138, 88, 12, "#9b742e", 500, "right")}
     ${figBox("source-3-profile", 16, 164, 358, 104, "converted-card", "border-radius:12px;box-shadow:0 6px 18px rgba(90,62,34,.09);")}
@@ -1723,6 +1725,27 @@ function getWentianArchiveList() {
   }
   writeWentianArchives(archives);
   return archives;
+}
+
+function isWentianUserArchive(archive) {
+  return !!archive?.chartData && archive.form?.isDefault !== true;
+}
+
+function getWentianUserArchiveList() {
+  return readWentianArchives()
+    .map(normalizeWentianArchive)
+    .filter(isWentianUserArchive);
+}
+
+function getWentianXuEntryRoute() {
+  if (isWentianUserArchive(archiveFromChartState(getWentianSavedChart()))) return "screen-4";
+  return getWentianUserArchiveList().length ? "screen-25" : "screen-26";
+}
+
+function openWentianXuEntry() {
+  const route = getWentianXuEntryRoute();
+  if (route === "screen-4") clearWentianXuChatContext();
+  navigate(route);
 }
 
 function saveWentianArchiveFromChartState(chartState) {
@@ -3786,11 +3809,15 @@ const WENTIAN_I18N_EN_EXTRA = {
   "活动中心": "Rewards Center",
   "许半仙": "Master Xu",
   "许半仙已准备好为您解读": "Master Xu is ready",
+  "先排盘，再让许半仙解读": "Create a chart before asking Master Xu",
   "紫微命盘专属解析，已接入当前档案": "Chart linked",
   "紫微命盘专属解析，已接入档案": "Zi Wei chart linked",
+  "先排盘或选择档案，再问许半仙": "Create or choose a chart before asking Master Xu",
   "紫微命盘": "Zi Wei Chart",
   "AI解析": "AI Reading",
   "去问他": "Ask",
+  "选档案": "Choose",
+  "先排盘": "Chart",
   "合盘分析": "Match",
   "命理相合，缘分几许": "Chart affinity",
   "六爻占卜": "Liuyao",
@@ -3891,6 +3918,7 @@ const WENTIAN_I18N_EN_EXTRA = {
   "女": "Female",
   "命理师": "Advisor",
   "已接入您的紫微命盘，可直接开启对话": "Chart linked. Start chatting.",
+  "先排盘或选择档案，再开启专属对话": "Create or choose a chart to start a dedicated chat.",
   "命盘顾问 · 在线": "Chart Advisor · Online",
   "占卜专批 · 在线": "Divination Reading · Online",
   "命主⌄": "Owner⌄",
@@ -10511,6 +10539,9 @@ function sourceDashboardHomeScreen() {
   const account = getWentianAuthDisplay();
   const member = getWentianMemberSnapshot();
   const memberLabel = member.isMember ? "会员" : (account.loggedIn ? "账号" : "登录/注册");
+  const xuEntryRoute = getWentianXuEntryRoute();
+  const xuDesc = xuEntryRoute === "screen-4" ? "紫微命盘专属解析，已接入档案" : "先排盘或选择档案，再问许半仙";
+  const xuCta = xuEntryRoute === "screen-4" ? "去问他" : (xuEntryRoute === "screen-25" ? "选档案" : "先排盘");
   return `
     ${figBox("source-1-bg", 0, 0, 390, 986, "", "background:linear-gradient(180deg,#fffdf8 0%,#fbf7ef 50%,#faf5ed 100%);")}
     ${figBox("source-1-avatar", 18, 24, 44, 44, "", "border-radius:22px;background:#f4ead8;box-shadow:0 6px 16px rgba(188,142,59,.12);")}
@@ -10530,13 +10561,13 @@ function sourceDashboardHomeScreen() {
     ${figImage("source-1-master-img-1", "../images/wentian-prototype-assets/xu-banxian.jpg", 18, 130, 354, 170, "border-radius:16px 16px 0 0;object-fit:cover;object-position:center 20%;")}
     ${figBox("source-1-master-shade", 18, 252, 354, 48, "", "background:linear-gradient(180deg,rgba(0,0,0,0),rgba(0,0,0,.24));")}
     ${figText("source-1-master-name-1", "许半仙", 36, 322, 132, 24, "#25221f", 800)}
-    ${figText("source-1-master-desc-1", "紫微命盘专属解析，已接入档案", 36, 352, 214, 14, "#91897f", 500, "left", "white-space:nowrap;overflow:hidden;text-overflow:ellipsis;")}
+    ${figText("source-1-master-desc-1", xuDesc, 36, 352, 214, 14, "#91897f", 500, "left", "white-space:nowrap;overflow:hidden;text-overflow:ellipsis;")}
     ${figBox("source-1-chip-1a", 36, 380, 70, 24, "", "border-radius:12px;background:#f8f3ea;border:1px solid #efe4d2;")}
     ${figText("source-1-chip-1a-text", "紫微命盘", 44, 386, 54, 11, "#b2822e", 700, "center")}
     ${figBox("source-1-chip-1b", 118, 380, 62, 24, "", "border-radius:12px;background:#f8f3ea;border:1px solid #efe4d2;")}
     ${figText("source-1-chip-1b-text", "AI解析", 125, 386, 48, 11, "#b2822e", 700, "center")}
     ${figBox("source-1-master-go", 278, 356, 72, 38, "", "border-radius:19px;background:#c08a2c;")}
-    ${figText("source-1-master-go-text", "去问他", 286, 367, 56, 13, "#fff", 700, "center")}
+    ${figText("source-1-master-go-text", xuCta, 286, 367, 56, 13, "#fff", 700, "center")}
 
     ${[["合盘分析", "命理相合，缘分几许", "01-feature-hepan.png", "hepan", 438], ["六爻占卜", "铜钱起卦，纳甲解卦", "01-feature-gua.png", "screen-17", 547], ["阳宅地脉", "罗盘九宫，安位解读", "01-feature-gua.png", "screen-42", 656], ["六壬法", "农历月日时，即刻起课", "01-feature-gua.png", "screen-46", 765]].map(([title, sub, icon, route, y], index) => `
       ${figBox(`source-1-feature-${index}`, 18, y, 354, 96, "converted-card", "border-radius:14px;box-shadow:0 8px 20px rgba(70,45,25,.1);background:#fffdfb;")}
@@ -10561,7 +10592,16 @@ function convertedButton(screen) {
 
 function convertedFlowHotspots(screen) {
   return (screenFlowHotspots[screen.no] || []).map(([x, y, w, h, route], index) =>
-    figButton(`screen-${screen.no}-flow-${index}`, x, y, w, h, `data-route="${route}"`, "flow-hotspot", "z-index:30;")
+    figButton(
+      `screen-${screen.no}-flow-${index}`,
+      x,
+      y,
+      w,
+      h,
+      route === "xu-entry" ? 'data-action="wentian-xu-entry"' : `data-route="${route}"`,
+      "flow-hotspot",
+      "z-index:30;"
+    )
   ).join("");
 }
 
@@ -11728,6 +11768,10 @@ document.addEventListener("click", (event) => {
   }
   if (earlyAction === "liuyao-ask-xu") {
     openLiuyaoXuChat();
+    return;
+  }
+  if (earlyAction === "wentian-xu-entry") {
+    openWentianXuEntry();
     return;
   }
   const routeButton = event.target.closest("[data-route]");
