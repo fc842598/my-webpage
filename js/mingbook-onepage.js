@@ -70,6 +70,10 @@
     chartConfirmedKey: '',
     decoded: false,
     aiResults: {},
+    luckAiResults: {},
+    selectedLuckRangeKey: '',
+    luckRunningKey: '',
+    batchDecoding: false,
     curveGenerated: false,
     adviceGenerated: false,
   };
@@ -114,7 +118,7 @@
 
   const aiTasks = [
     { module: 'overall', label: '整体批命' },
-    { module: 'current_luck', label: '大限' },
+    { module: 'current_luck', label: '十年大限解读' },
     { module: 'xiaoxian_liunian', label: '小限流年' },
     { module: 'shengong', key: 'body', label: '身宫批命' },
     { module: 'hunyin', key: 'marriage', label: '婚姻批命' },
@@ -126,7 +130,7 @@
   const chapterActions = [
     { label: '单独批总局', module: 'overall' },
     { label: '单独批专题', action: 'specials' },
-    { label: '单独批大限', module: 'current_luck' },
+    { label: '批选中十年', module: 'current_luck' },
     { label: '单独批小限', module: 'xiaoxian_liunian' },
     { label: '生成曲线', action: 'curve' },
     { label: '生成建议', module: 'overall' },
@@ -141,7 +145,7 @@
     return `
       <div class="mbp-report-actions">
         <button class="mbp-chapter-ai-btn" type="button" ${attr}>${escapeHtml(action.label)}</button>
-        <span class="mbp-reading-badge">阅读中</span>
+        <span class="mbp-reading-badge">生成中</span>
       </div>
     `;
   }
@@ -1438,6 +1442,10 @@
     state.chartConfirmedKey = '';
     state.decoded = false;
     state.aiResults = {};
+    state.luckAiResults = {};
+    state.selectedLuckRangeKey = '';
+    state.luckRunningKey = '';
+    state.batchDecoding = false;
     window._chart = null;
     window._chartInputs = null;
     window._chartRecordId = null;
@@ -2374,7 +2382,7 @@
       chapters: [
         ['命格总览', `命宫 ${palaceMainLabel(life)}。${lifeProfile ? lifeProfile.trait : '先天底色需要从命宫和三方四正合看。'}`],
         ['专题批命', `身宫、婚姻、健康、财运、事业五项专题已在上方展开，适合作为深度报告主体。`],
-        ['大限', `当前页面先接命盘主线，后续可把原版大限结论并入这里，形成十年节奏。`],
+        ['十年大限解读', `十年为一个大限，先看当前十年，再按用户选择批前后阶段。`],
         ['小限流年', `小限流年单独成卷，看当年触发、对宫应事与流年卦象。`],
         ['人生曲线', `把关键年份做成曲线阅读，帮助用户看清高低点和转折位置。`],
         ['行动建议', `先看命盘底色，再看大运节奏；重要决策不只问准不准，还要知道何时动、如何动。`],
@@ -2782,7 +2790,7 @@
   function actionAdviceData(overall, luck, xiaoLian) {
     const modules = [
       ['命格', overall],
-      ['大限', luck],
+      ['十年大限', luck],
       ['小限流年', xiaoLian],
       ['身宫', state.aiResults.shengong],
       ['婚姻', state.aiResults.hunyin],
@@ -3064,6 +3072,111 @@
     }) || null;
   }
 
+  function decadeRangeKey(item) {
+    if (!item) return '';
+    return `${item.start}-${item.end}-${item.branch || item.palaceName || ''}`;
+  }
+
+  function decadeItemsForChart(chart, currentAge = fcCurrentVirtualAge()) {
+    return (chart?.palaces || [])
+      .map((palace, index) => {
+        const range = rangeFromDecadal(palace);
+        if (!range) return null;
+        const [start, end] = range;
+        const palaceName = normalizePalaceName(palace?.name || '大限宫');
+        const branch = palace?.earthlyBranch || '';
+        const stars = palaceMainLabel(palace);
+        const domain = palaceDomain(palaceName);
+        const item = {
+          index,
+          palace,
+          start,
+          end,
+          range,
+          rangeLabel: `${start}-${end}岁`,
+          palaceName,
+          branch,
+          stars,
+          domain,
+          theme: decadeTheme(domain),
+          isCurrent: currentAge >= start && currentAge <= end,
+        };
+        item.key = decadeRangeKey(item);
+        return item;
+      })
+      .filter(Boolean)
+      .sort((a, b) => a.start - b.start);
+  }
+
+  function selectedLuckInfo(options = {}) {
+    const bundle = getChartBundle();
+    const chart = bundle.chart || state.chart;
+    const currentAge = Math.max(1, fcCurrentVirtualAge());
+    const items = decadeItemsForChart(chart, currentAge);
+    const current = items.find((item) => item.isCurrent) || items[0] || null;
+    const selectedKey = options.forceCurrent ? current?.key : (state.selectedLuckRangeKey || current?.key);
+    const selected = items.find((item) => item.key === selectedKey) || current || items[0] || null;
+    if (selected && !options.readonly && (!state.selectedLuckRangeKey || options.forceCurrent || !items.some((item) => item.key === state.selectedLuckRangeKey))) {
+      state.selectedLuckRangeKey = selected.key;
+    }
+    return { chart, items, current, selected, currentAge };
+  }
+
+  function decadePayload(item) {
+    if (!item) return {};
+    const palace = item.palace || {};
+    const majorStars = (palace.majorStars || []).map((star) => ({
+      name: star.name || '',
+      brightness: star.brightness || '',
+      mutagen: star.mutagen || null,
+    }));
+    return {
+      rangeKey: item.key,
+      rangeLabel: item.rangeLabel,
+      ageStart: item.start,
+      ageEnd: item.end,
+      palaceName: item.palaceName,
+      palaceBranch: item.branch,
+      palaceStem: palace?.decadal?.heavenlyStem || '',
+      domain: item.domain,
+      theme: item.theme,
+      majorStars,
+      minorStars: (palace.minorStars || []).map((star) => star.name || star).filter(Boolean),
+      helperStars: allSmallStars(palace).map((star) => star.name || star).filter(Boolean),
+    };
+  }
+
+  function currentLuckExtraParams(options = {}) {
+    const info = selectedLuckInfo({ forceCurrent: options.forceCurrentLuck });
+    const selectedDayun = decadePayload(info.selected);
+    return {
+      activeAge: info.currentAge,
+      selectedDayun,
+      decadeData: selectedDayun,
+    };
+  }
+
+  function luckDataForSelected(info = selectedLuckInfo({ readonly: true })) {
+    if (!info.selected) return null;
+    return normalizeAiData(state.luckAiResults[info.selected.key] || (info.selected.key === info.current?.key ? state.aiResults.current_luck : null));
+  }
+
+  function storeAiResult(moduleKey, data, options = {}) {
+    if (moduleKey !== 'current_luck') {
+      state.aiResults[moduleKey] = data;
+      return true;
+    }
+    const info = selectedLuckInfo({ forceCurrent: options.forceCurrentLuck });
+    if (!info.selected) {
+      state.aiResults.current_luck = data;
+      return true;
+    }
+    state.luckAiResults[info.selected.key] = data;
+    const isCurrent = info.selected.key === info.current?.key;
+    if (isCurrent) state.aiResults.current_luck = data;
+    return isCurrent;
+  }
+
   function ganzhiYear(year) {
     const stems = ['甲', '乙', '丙', '丁', '戊', '己', '庚', '辛', '壬', '癸'];
     const branches = ['子', '丑', '寅', '卯', '辰', '巳', '午', '未', '申', '酉', '戌', '亥'];
@@ -3139,16 +3252,16 @@
   }
 
   function currentLuckViewInfo() {
-    const bundle = getChartBundle();
-    const chart = bundle.chart || state.chart;
+    const luckInfo = selectedLuckInfo();
+    const chart = luckInfo.chart;
     const year = new Date().getFullYear();
-    const currentAge = Math.max(1, Number(fcActiveAge) || (year - Number(state.profile.year || year) + 1));
-    const decadePalace = findDecadePalace(chart, currentAge);
-    const decadeRange = rangeFromDecadal(decadePalace) || [Math.max(1, currentAge - 4), currentAge + 5];
-    const palaceName = decadePalace?.name || '大限宫';
-    const stars = palaceMainLabel(decadePalace);
-    const domain = palaceDomain(palaceName);
-    const theme = decadeTheme(domain);
+    const currentAge = luckInfo.currentAge;
+    const decadePalace = luckInfo.selected?.palace || findDecadePalace(chart, currentAge);
+    const decadeRange = luckInfo.selected?.range || rangeFromDecadal(decadePalace) || [Math.max(1, currentAge - 4), currentAge + 5];
+    const palaceName = luckInfo.selected?.palaceName || decadePalace?.name || '大限宫';
+    const stars = luckInfo.selected?.stars || palaceMainLabel(decadePalace);
+    const domain = luckInfo.selected?.domain || palaceDomain(palaceName);
+    const theme = luckInfo.selected?.theme || decadeTheme(domain);
     const liunian = fcLiunianSeq?.[currentAge] || {};
     const yearGz = liunian.yearGanzhi ? `${liunian.yearGanzhi.stem || ''}${liunian.yearGanzhi.branch || ''}` : ganzhiYear(year);
     const xiaoLianBranch = fcResolveXiaoLianBranch(currentAge);
@@ -3179,6 +3292,9 @@
       xiaoLabel,
       oppositeLabel,
       yearFocus,
+      decadeItems: luckInfo.items,
+      currentDecade: luckInfo.current,
+      selectedDecade: luckInfo.selected,
     };
   }
 
@@ -3221,80 +3337,77 @@
     `;
   }
 
-  function renderLuckChapterBlock(data, fallbackText) {
-    const {
-      year,
-      currentAge,
-      decadeRange,
-      palaceName,
-      stars,
-      domain,
-      theme,
-      yearGz,
-      yearFocus,
-    } = currentLuckViewInfo();
-    const sections = aiSections(data);
-    const summary = insightSummary(data, fallbackText || `${palaceName}主${domain}，这十年先稳住根基，再看机会扩张。`, 170);
-    const summarySentences = splitReadableSentences(summary);
-    const usedSummarySentences = new Set();
-    const opportunity = luckSectionText(sections, summarySentences, usedSummarySentences, ['机会', '优势', '适合'], ['机会', '适合', '利于', '推进', '学习', '沟通', '合作'], `${domain}有推进空间，先抓可落地的资源。`);
-    const risk = luckSectionText(sections, summarySentences, usedSummarySentences, ['风险', '注意', '留意', '压力'], ['风险', '压力', '注意', '避免', '不宜', '消耗', '拉扯'], '避免急转方向，注意关系拉扯与现金流波动。');
-    const stagePoint = luckSectionText(sections, summarySentences, usedSummarySentences, ['阶段', '主轴', '节奏'], ['大限', '十年', '阶段', '主轴', '节奏'], `${decadeRange[0]}-${decadeRange[1]}岁重点看${domain}，今年处在${year} ${yearGz}。`);
-    const startYear = fcAgeToYear(decadeRange[0]);
-    const endYear = fcAgeToYear(decadeRange[1]);
-    const midAge = Math.round((decadeRange[0] + decadeRange[1]) / 2);
-    const turnYear = fcAgeToYear(Math.min(decadeRange[1], Math.max(decadeRange[0], midAge)));
-    const guardYear = year >= startYear && year <= endYear ? year : startYear;
-    const smoothYear = fcAgeToYear(Math.min(decadeRange[1], Math.max(decadeRange[0], midAge + 2)));
-    const advice = [
-      domain.includes('财') ? '先稳现金流，再谈扩大投入。' : `先把${domain}的基本盘稳住。`,
-      '重大决定多留一天复盘，避免单独拍板。',
-      yearFocus.includes('田宅') ? '房产、家庭、居住安排优先清理。' : '保留合作弹性，给后续转折留空间。',
-    ];
-
+  function renderLuckDecadeRail(info) {
+    const selectedKey = info.selectedDecade?.key || '';
+    const currentKey = info.currentDecade?.key || '';
     return `
-      <div class="mbp-luck-hero">
-        <div>
-          <em>当前大限</em>
-          <strong>${escapeHtml(`${decadeRange[0]}-${decadeRange[1]}岁 · ${normalizePalaceName(palaceName)} · ${theme}`)}</strong>
-          <p>${escapeHtml(`大限主星：${stars}；当前流年：${year} ${yearGz}`)}</p>
-        </div>
-        <div class="mbp-luck-age-wrap">
-          <span class="mbp-luck-age-badge">${escapeHtml(`${currentAge}岁`)}</span>
-          <details class="mbp-luck-age-note">
-            <summary>岁数说明</summary>
-            <p>这里直接使用命盘流年序列的岁数，和上方命盘一致，不按身份证年龄另算，也不额外加一岁。</p>
-          </details>
-        </div>
-      </div>
-      <div class="mbp-luck-kv">
-        <section><b>大限宫位</b><strong>${escapeHtml(palaceName)}</strong><p>${escapeHtml(domain)}</p></section>
-        <section><b>重点星曜</b><strong>${escapeHtml(stars)}</strong><p>看十年主轴与发力方式</p></section>
-        <section><b>阶段位置</b><strong>${escapeHtml(`${currentAge}岁`)}</strong><p>${escapeHtml(`${year} ${yearGz}`)}</p></section>
-      </div>
-      ${renderLuckSummaryParts([
-        { title: '机会', text: opportunity },
-        { title: '风险', text: risk },
-        { title: '阶段重点', text: stagePoint },
-      ])}
-      <div class="mbp-luck-bottom">
-        <section>
-          <h4>行动建议</h4>
-          <ol>${advice.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ol>
-        </section>
-        <section>
-          <h4>时间节奏</h4>
-          <div class="mbp-luck-timing">
-            <span><b>要守</b>${escapeHtml(`${guardYear}年`)}</span>
-            <span><b>转折</b>${escapeHtml(`${turnYear}年`)}</span>
-            <span><b>偏顺</b>${escapeHtml(`${smoothYear}年`)}</span>
-          </div>
-        </section>
+      <div class="mbp-decade-rail" data-luck-decade-rail aria-label="十年大限选择">
+        ${info.decadeItems.map((item) => `
+          <button type="button" class="${item.key === selectedKey ? 'is-active' : ''}${item.key === currentKey ? ' is-current' : ''}" data-luck-decade="${escapeHtml(item.key)}" ${item.key === currentKey ? 'data-luck-current="true"' : ''}>
+            <span>${escapeHtml(item.rangeLabel)}</span>
+            <strong>${escapeHtml(item.palaceName)}</strong>
+            <em>${item.key === currentKey ? '当前十年' : escapeHtml(item.domain)}</em>
+          </button>
+        `).join('')}
       </div>
     `;
   }
 
+  function renderLuckReading(data, fallbackText, info) {
+    const hasContent = hasAiRenderableContent(data);
+    const sections = hasContent ? aiSections(data) : [];
+    const rawText = hasContent ? aiCardText(data) : cleanAiText(fallbackText || '');
+    const paragraphs = sections.length
+      ? sections.map((section) => ({
+        title: cleanAiInlineText(section.title),
+        content: cleanAiText(section.content),
+      })).filter((section) => section.content || section.title)
+      : rawText.split(/\n{2,}/).map((content) => ({ title: '', content: cleanAiText(content) })).filter((section) => section.content);
+    const selected = info.selectedDecade;
+    const placeholder = `${selected?.rangeLabel || '当前十年'} · ${selected?.palaceName || '大限宫'}。点击“批选中十年”，按后台大限提示词生成这一段整体解盘。`;
+    return `
+      <div class="mbp-luck-reading">
+        <div class="mbp-luck-reading-head">
+          <span>${selected?.key === info.currentDecade?.key ? '当前十年' : '选中十年'}</span>
+          <strong>${escapeHtml(`${selected?.rangeLabel || ''} · ${selected?.palaceName || '大限宫'} · ${selected?.theme || '十年主轴'}`)}</strong>
+          <p>${escapeHtml(`主星：${selected?.stars || '待排盘'}；领域：${selected?.domain || '命盘主线'}`)}</p>
+        </div>
+        <div class="mbp-luck-reading-body">
+          ${paragraphs.length ? paragraphs.map((section) => `
+            <section>
+              ${section.title && section.title !== '解读' ? `<b>${escapeHtml(section.title)}</b>` : ''}
+              <p>${highlightInsightText(section.content || section.title)}</p>
+            </section>
+          `).join('') : `<p class="mbp-luck-placeholder">${escapeHtml(placeholder)}</p>`}
+        </div>
+      </div>
+    `;
+  }
+
+  function renderLuckChapterBlock(_data, fallbackText) {
+    const info = currentLuckViewInfo();
+    const selectedData = luckDataForSelected({
+      selected: info.selectedDecade,
+      current: info.currentDecade,
+    });
+    requestAnimationFrame(() => {
+      const target = document.querySelector('[data-luck-current="true"]');
+      target?.scrollIntoView({ inline: 'center', block: 'nearest' });
+    });
+    return `
+      ${renderLuckDecadeRail(info)}
+      ${renderLuckReading(selectedData, fallbackText, info)}
+    `;
+  }
+
+  function renderPendingChapterBlock(text) {
+    return `<p class="mbp-luck-placeholder">${escapeHtml(text)}</p>`;
+  }
+
   function renderXiaoLianChapterBlock(data, fallbackText) {
+    if (!hasAiRenderableContent(data)) {
+      return renderPendingChapterBlock(fallbackText || '点击“单独批小限”后生成小限流年解读。');
+    }
     const info = currentLuckViewInfo();
     const sections = aiSections(data);
     const summary = insightSummary(data, fallbackText || `${info.year} ${info.yearGz}，小限落${info.xiaoLabel}，对宫看${info.oppositeLabel}。`, 170);
@@ -3422,11 +3535,11 @@
     }
     if (group.virtual === 'curve') {
       if (state.curveGenerated || totalDone >= totalModules) return { ratio: 1, state: 'done', text: '完成' };
-      if (totalDone > 0 || runningModule) return { ratio: Math.min(.72, Math.max(.18, totalDone / totalModules)), state: 'running', text: '整理中' };
+      if (state.batchDecoding && (totalDone > 0 || runningModule)) return { ratio: Math.min(.72, Math.max(.18, totalDone / totalModules)), state: 'running', text: '整理中' };
     }
     if (group.virtual === 'advice') {
       if (state.adviceGenerated || totalDone >= totalModules) return { ratio: 1, state: 'done', text: '完成' };
-      if (totalDone > 1 || runningModule) return { ratio: Math.min(.82, Math.max(.12, totalDone / totalModules)), state: 'running', text: '整理中' };
+      if (state.batchDecoding && (totalDone > 1 || runningModule)) return { ratio: Math.min(.82, Math.max(.12, totalDone / totalModules)), state: 'running', text: '整理中' };
     }
     return { ratio: 0, state: 'pending', text: '等待' };
   }
@@ -3456,6 +3569,10 @@
       row?.classList.toggle('is-running', item.state === 'running');
       row?.classList.toggle('is-partial', item.state === 'partial');
       row?.style.setProperty('--mbp-chapter-progress', `${Math.round(item.ratio * 100)}%`);
+      const article = document.querySelector(`[data-report-chapter="${index}"]`);
+      article?.classList.toggle('is-running', item.state === 'running');
+      article?.classList.toggle('is-done', item.state === 'done');
+      article?.classList.toggle('is-partial', item.state === 'partial');
       const stateNode = button.querySelector('[data-report-progress-state]');
       if (stateNode) stateNode.textContent = item.text;
     });
@@ -3800,7 +3917,7 @@
     return [
       buildPdfChapter(1, aiCardTitle(overall, '命格总览'), buildPdfTextCards(overall, '命格总览', overallText || '整体批命等待原站 AI 返回。')),
       buildPdfChapter(2, '专题批命', specialHtml),
-      buildPdfChapter(3, '大限', buildPdfTextCards(luck, '大限', luckText || '大限等待原站 AI 返回。')),
+      buildPdfChapter(3, '十年大限解读', buildPdfTextCards(luck, '十年大限解读', luckText || '十年大限等待原站 AI 返回。')),
       buildPdfChapter(4, '小限流年', buildPdfTextCards(xiaoLian, '小限流年', xiaoText || '小限流年等待原站 AI 返回。')),
       buildPdfChapter(5, '人生曲线', `
         <section class="mbp-pdf-text-card">
@@ -3838,7 +3955,7 @@
         <ol class="mbp-pdf-toc">
           <li>命格总览</li>
           <li>专题批命</li>
-          <li>大限</li>
+          <li>十年大限解读</li>
           <li>小限流年</li>
           <li>人生曲线</li>
           <li>行动建议</li>
@@ -3929,7 +4046,8 @@
     setReportGeneratedState(true);
     const facts = chartFacts();
     const overall = normalizeAiData(state.aiResults.overall);
-    const luck = normalizeAiData(state.aiResults.current_luck);
+    const luckInfo = selectedLuckInfo({ readonly: true });
+    const luck = luckDataForSelected(luckInfo) || normalizeAiData(state.aiResults.current_luck);
     const xiaoLian = normalizeAiData(state.aiResults.xiaoxian_liunian);
     const overallText = aiCardText(overall);
     const luckText = aiCardText(luck);
@@ -3969,7 +4087,7 @@
     if (decodeList) {
       const highlights = [
         ['主线', overallText || '整体批命生成后显示'],
-        ['大限', luckText || '大限生成后显示'],
+        ['十年', luckText || '十年大限生成后显示'],
         ['小限', xiaoText || '小限流年生成后显示'],
         ['专题', specialText || '五项专题生成后显示'],
       ];
@@ -3980,8 +4098,8 @@
     const chaptersData = [
       [aiCardTitle(overall, '命格总览'), overallText || '整体批命等待原站 AI 返回。', null, 'overall'],
       ['专题批命', specialBriefText || '五项专题等待原站 AI 返回。', specialBriefSections, 'specials'],
-      ['大限', luckText || '当前大限接口暂未返回，后续继续接原站大限模块。', null, 'luck'],
-      ['小限流年', xiaoText || '当前小限流年接口暂未返回，后续接入小限流年模块。', null, 'xiaoxian'],
+      ['十年大限解读', luckText || '选择十年大限后，点击“批选中十年”生成整体解盘。', null, 'luck'],
+      ['小限流年', xiaoText || '点击“单独批小限”后生成小限流年解读。', null, 'xiaoxian'],
       ['人生曲线', '人生曲线属于原站独立模块，下一步接入原站曲线评分与关键年份。', null, 'curve'],
       ['行动建议', overallCard.risk ? `要留意：${overallCard.risk}` : '先看命盘底色，再看大运节奏；重要决策不只问准不准，还要知道何时动、如何动。', null, 'advice'],
     ];
@@ -3999,7 +4117,7 @@
             ${chapterActionButton(index)}
           </div>
             <div class="mbp-report-content">
-              ${type === 'specials' ? renderSpecialChapterBlock(item[2], item[1]) : type === 'luck' ? renderLuckChapterBlock(data, item[1]) : type === 'xiaoxian' ? renderXiaoLianChapterBlock(data, item[1]) : type === 'curve' ? renderCurveChapterBlock() : type === 'advice' ? renderActionAdviceBlock(overall, luck, xiaoLian) : renderInsightBlock(data, item[0], item[1], {
+              ${type === 'specials' ? renderSpecialChapterBlock(item[2], item[1]) : type === 'luck' ? renderLuckChapterBlock(data, item[1]) : type === 'xiaoxian' ? renderXiaoLianChapterBlock(data, item[1]) : type === 'curve' ? (state.curveGenerated ? renderCurveChapterBlock() : renderPendingChapterBlock('点击“生成曲线”后生成。')) : type === 'advice' ? (state.adviceGenerated ? renderActionAdviceBlock(overall, luck, xiaoLian) : renderPendingChapterBlock('点击“生成建议”后生成。')) : renderInsightBlock(data, item[0], item[1], {
                 summaryMax: 128,
                 bulletLimit: 0,
                 direct: true,
@@ -4013,11 +4131,13 @@
     requestAnimationFrame(syncReportNav);
   }
 
-  async function callOriginalAi(moduleKey) {
+  async function callOriginalAi(moduleKey, options = {}) {
     if (typeof window._aipCallBackend !== 'function') {
       throw new Error('原站 AI 批命脚本未加载');
     }
-    return normalizeAiData(await window._aipCallBackend(moduleKey));
+    const backendModule = moduleKey === 'current_luck' ? 'daxian' : moduleKey;
+    const extraParams = moduleKey === 'current_luck' ? currentLuckExtraParams(options) : {};
+    return normalizeAiData(await window._aipCallBackend(backendModule, extraParams));
   }
 
   function setModuleButtonsBusy(moduleKey, busy) {
@@ -4058,21 +4178,21 @@
     setModuleButtonsBusy(task.module, true);
     setDecodeStatus(`正在单独批命：${task.label}`);
     try {
-      const data = await callOriginalAi(task.module);
+      const data = await callOriginalAi(task.module, options);
       if (!hasAiRenderableContent(data)) {
         throw new Error('AI 已返回，但没有可展示正文，请重试');
       }
-      state.aiResults[task.module] = data;
-      setModuleDone(task.module, true);
+      const countsAsModule = storeAiResult(task.module, data, options);
+      setModuleDone(task.module, countsAsModule || task.module !== 'current_luck');
       if (task.key) {
         renderSpecialAi(task.key, data, task.label);
         setSpecialStatus(task.key, '已生成', 'done');
       }
-      renderChaptersFromAi();
       if (generatedModuleCount() >= aiTasks.length) {
         state.curveGenerated = true;
         state.adviceGenerated = true;
       }
+      renderChaptersFromAi();
       updateDecodeProgress(generatedModuleCount(), -1, '已生成');
       setDecodeStatus(`${task.label} 已生成。`);
       if (options.scroll && task.key) {
@@ -4082,7 +4202,7 @@
     } catch (error) {
       const message = friendlyAiError(error);
       const errorData = aiErrorData(task, message);
-      state.aiResults[task.module] = errorData;
+      storeAiResult(task.module, errorData, options);
       if (task.key) {
         renderSpecialAi(task.key, errorData, task.label);
         setSpecialStatus(task.key, message, 'error');
@@ -4141,8 +4261,12 @@
     setDecodeAllButtonsBusy(true, '生成中');
     state.decoded = true;
     state.aiResults = {};
+    state.luckAiResults = {};
+    state.selectedLuckRangeKey = '';
+    state.luckRunningKey = '';
     state.curveGenerated = false;
     state.adviceGenerated = false;
+    state.batchDecoding = true;
     document.body.classList.add('is-decoded');
     setDecodeStatus('正在调用原站 AI 批命：整体批命');
     setAllModuleButtonsBusy(true);
@@ -4155,11 +4279,12 @@
       if (task.key) setSpecialStatus(task.key, '正在生成…', 'running');
       setDecodeStatus(`正在调用原站 AI 批命：${task.label}`);
       try {
-        const data = await callOriginalAi(task.module);
+        const taskOptions = task.module === 'current_luck' ? { forceCurrentLuck: true } : {};
+        const data = await callOriginalAi(task.module, taskOptions);
         if (!hasAiRenderableContent(data)) {
           throw new Error('AI 已返回，但没有可展示正文，请重试');
         }
-        state.aiResults[task.module] = data;
+        storeAiResult(task.module, data, taskOptions);
         successCount = generatedModuleCount();
         setModuleDone(task.module, true);
         if (task.key) {
@@ -4171,7 +4296,8 @@
       } catch (error) {
         const message = friendlyAiError(error);
         const errorData = aiErrorData(task, message);
-        state.aiResults[task.module] = errorData;
+        const taskOptions = task.module === 'current_luck' ? { forceCurrentLuck: true } : {};
+        storeAiResult(task.module, errorData, taskOptions);
         if (task.key) {
           renderSpecialAi(task.key, errorData, task.label);
           setSpecialStatus(task.key, message, 'error');
@@ -4182,9 +4308,10 @@
     }
 
     successCount = generatedModuleCount();
-    renderChaptersFromAi();
+    state.batchDecoding = false;
     state.curveGenerated = successCount >= aiTasks.length;
     state.adviceGenerated = successCount >= aiTasks.length;
+    renderChaptersFromAi();
     setDecodeStatus(successCount ? `已接入原站 AI：完成 ${successCount}/${aiTasks.length} 个模块。` : 'AI 服务暂未连接，请稍后重试。');
     updateDecodeProgress(successCount, -1, successCount ? '已生成' : '生成失败');
     setAllModuleButtonsBusy(false);
@@ -4227,6 +4354,7 @@
   function resetAiContent() {
     setReportGeneratedState(false);
     resetModuleDoneStates();
+    state.batchDecoding = false;
     state.curveGenerated = false;
     state.adviceGenerated = false;
     updateDecodeProgress(0, -1, '待生成');
@@ -4255,7 +4383,7 @@
     });
     const chapters = $('#mbpChapters');
     if (chapters) {
-      chapters.innerHTML = ['命格总览', '专题批命', '大限', '小限流年', '人生曲线', '行动建议'].map((title, index) => `
+      chapters.innerHTML = ['命格总览', '专题批命', '十年大限解读', '小限流年', '人生曲线', '行动建议'].map((title, index) => `
         <article id="mbp-chapter-${index}" data-report-chapter="${index}"><span>卷${index + 1}</span><h3>${title}</h3><p>等待一键批命。</p>${chapterActionButton(index)}</article>
       `).join('');
     }
@@ -4937,6 +5065,10 @@
       state.chartConfirmedKey = profileHistoryKey(profile);
       state.decoded = false;
       state.aiResults = {};
+      state.luckAiResults = {};
+      state.selectedLuckRangeKey = '';
+      state.luckRunningKey = '';
+      state.batchDecoding = false;
       document.body.classList.remove('is-decoded');
       saveProfile();
       saveProfileToHistory(state.profile);
@@ -4968,10 +5100,18 @@
         if (await decodeReports()) scrollToReportChapter(0);
         return;
       }
+      const decadeButton = event.target.closest('[data-luck-decade]');
+      if (decadeButton) {
+        state.selectedLuckRangeKey = decadeButton.dataset.luckDecade || '';
+        renderChaptersFromAi();
+        scrollToReportChapter(2);
+        return;
+      }
       const moduleButton = event.target.closest('[data-report-module]');
       if (moduleButton) {
         const chapter = moduleButton.closest('[data-report-chapter]');
         const chapterIndex = Number(chapter?.dataset.reportChapter) || 0;
+        scrollToReportChapter(chapterIndex);
         if (await decodeSingleModule(moduleButton.dataset.reportModule)) scrollToReportChapter(chapterIndex);
         return;
       }

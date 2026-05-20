@@ -5014,7 +5014,7 @@ p.mbp-topic-detail {
   white-space: nowrap;
 }
 
-.mbp-chapters article.is-active .mbp-reading-badge {
+.mbp-chapters article.is-running .mbp-reading-badge {
   display: grid;
 }
 
@@ -5076,6 +5076,131 @@ p.mbp-topic-detail {
 
 .mbp-report-content .mbp-insight-summary {
   margin-top: -2px;
+}
+
+.mbp-decade-rail {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(132px, 1fr);
+  gap: 10px;
+  margin-bottom: 14px;
+  padding: 3px 2px 8px;
+  overflow-x: auto;
+  scroll-snap-type: x proximity;
+  scrollbar-color: rgba(241, 212, 125, .34) transparent;
+}
+
+.mbp-decade-rail button {
+  display: grid;
+  gap: 4px;
+  min-height: 78px;
+  padding: 12px 14px;
+  border: 1px solid rgba(241, 212, 125, .16);
+  border-radius: 10px;
+  background: rgba(0, 0, 0, .2);
+  color: #cdbb90;
+  text-align: left;
+  cursor: pointer;
+  scroll-snap-align: center;
+  transition: border-color .18s ease, background .18s ease, transform .18s ease;
+}
+
+.mbp-decade-rail button:hover,
+.mbp-decade-rail button.is-active {
+  border-color: rgba(241, 212, 125, .54);
+  background: rgba(241, 212, 125, .08);
+  transform: translateY(-1px);
+}
+
+.mbp-decade-rail button.is-current {
+  background: linear-gradient(135deg, rgba(241, 212, 125, .22), rgba(179, 112, 65, .16));
+}
+
+.mbp-decade-rail span,
+.mbp-decade-rail em {
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 900;
+}
+
+.mbp-decade-rail strong {
+  color: var(--ivory);
+  font-size: 18px;
+  line-height: 1.2;
+}
+
+.mbp-luck-reading {
+  display: grid;
+  gap: 14px;
+}
+
+.mbp-luck-reading-head {
+  padding: 18px 20px;
+  border: 1px solid rgba(241, 212, 125, .2);
+  border-radius: 12px;
+  background:
+    radial-gradient(circle at 88% 20%, rgba(241, 212, 125, .13), transparent 32%),
+    rgba(241, 212, 125, .055);
+}
+
+.mbp-luck-reading-head span {
+  display: block;
+  color: var(--gold);
+  font-weight: 900;
+}
+
+.mbp-luck-reading-head strong {
+  display: block;
+  margin-top: 7px;
+  color: var(--ivory);
+  font-size: 22px;
+  line-height: 1.35;
+}
+
+.mbp-luck-reading-head p {
+  margin: 8px 0 0;
+  color: #d4c096;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.mbp-luck-reading-body {
+  display: grid;
+  gap: 10px;
+  padding: 18px 20px;
+  border: 1px solid rgba(241, 212, 125, .14);
+  border-radius: 12px;
+  background: rgba(0, 0, 0, .18);
+}
+
+.mbp-luck-reading-body section {
+  display: grid;
+  gap: 6px;
+}
+
+.mbp-luck-reading-body b {
+  color: var(--gold);
+  font-weight: 900;
+}
+
+.mbp-luck-reading-body p {
+  margin: 0;
+  color: #eadbb4;
+  font-size: 16px;
+  font-weight: 800;
+  line-height: 1.9;
+  white-space: pre-line;
+}
+
+.mbp-luck-reading-body mark {
+  padding: 0 3px;
+  border-radius: 4px;
+  background: rgba(241, 212, 125, .18);
+  color: #fff0b8;
+}
+
+.mbp-luck-placeholder {
+  color: #cdbb90 !important;
 }
 
 .mbp-luck-hero {
