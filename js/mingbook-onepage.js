@@ -2600,7 +2600,7 @@
       return sections.map((section) => [cleanAiInlineText(section.title), cleanAiText(section.content)].filter(Boolean).join('：')).filter(Boolean).join('\n\n');
     }
     const finalAnswer = parseAiJson(normalized?.finalAnswer) ? '' : normalized?.finalAnswer;
-    return cleanAiText(card.body || card.summary || finalAnswer || '');
+    return cleanAiText(card.body || card.summary || card.content || card.text || finalAnswer || '');
   }
 
   function hasAiRenderableContent(data) {
@@ -2647,7 +2647,7 @@
       content: cleanAiText(item.content || ''),
     }));
     const finalAnswer = parseAiJson(normalized?.finalAnswer) ? '' : normalized?.finalAnswer;
-    const text = card.body || card.summary || finalAnswer || '';
+    const text = card.body || card.summary || card.content || card.text || finalAnswer || '';
     if (!text) return [];
     const fallbackTitle = cleanAiInlineText(card.title) || '解读';
     return aiTextSectionsFromMarkdown(text, fallbackTitle);
@@ -2657,7 +2657,7 @@
     const normalized = normalizeAiData(data);
     const card = normalized?.card || {};
     const finalAnswer = parseAiJson(normalized?.finalAnswer) ? '' : normalized?.finalAnswer;
-    const source = cleanAiText(card.summary || aiSections(data)[0]?.content || card.body || finalAnswer || fallback);
+    const source = cleanAiText(card.summary || aiSections(data)[0]?.content || card.body || card.content || card.text || finalAnswer || fallback);
     return trimText(source, max);
   }
 
