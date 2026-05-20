@@ -3154,6 +3154,60 @@
     };
   }
 
+  function palacePayload(palace) {
+    if (!palace) return {};
+    return {
+      name: normalizePalaceName(palace.name || ''),
+      branch: palace.earthlyBranch || '',
+      heavenlyStem: palace.heavenlyStem || '',
+      majorStars: (palace.majorStars || []).map((star) => ({
+        name: star.name || '',
+        brightness: star.brightness || '',
+        mutagen: star.mutagen || null,
+      })),
+      minorStars: (palace.minorStars || []).map((star) => star.name || star).filter(Boolean),
+      helperStars: allSmallStars(palace).map((star) => star.name || star).filter(Boolean),
+    };
+  }
+
+  function xiaoLianExtraParams() {
+    const luckInfo = selectedLuckInfo({ forceCurrent: true, readonly: true });
+    const chart = luckInfo.chart;
+    const currentAge = Math.max(1, luckInfo.currentAge || fcCurrentVirtualAge());
+    const selectedDayun = decadePayload(luckInfo.current || luckInfo.selected);
+    const liunian = fcLiunianSeq?.[currentAge] || {};
+    const year = fcAgeToYear(currentAge) || new Date().getFullYear();
+    const yearGz = liunian.yearGanzhi ? `${liunian.yearGanzhi.stem || ''}${liunian.yearGanzhi.branch || ''}` : ganzhiYear(year);
+    const xiaoLianBranch = fcResolveXiaoLianBranch(currentAge);
+    const xiaoLianPalace = fcPalaceByBranch(chart, xiaoLianBranch);
+    const oppositeBranch = fcOppositeBranch(xiaoLianBranch);
+    const oppositePalace = fcPalaceByBranch(chart, oppositeBranch);
+    const selectedYear = {
+      age: currentAge,
+      solarYear: year,
+      yearGanzhi: yearGz,
+      xiaolianBranch: xiaoLianBranch || '',
+      xiaolianPalaceName: normalizePalaceName(xiaoLianPalace?.name || ''),
+      xiaolianPalace: palacePayload(xiaoLianPalace),
+      oppositeBranch: oppositeBranch || '',
+      oppositePalaceName: normalizePalaceName(oppositePalace?.name || ''),
+      oppositePalace: palacePayload(oppositePalace),
+      liunianGuaName: liunian.name || '',
+      liunianGuaPeriod: liunian.period || '',
+      lineNum: liunian.lineNum || '',
+      lineType: liunian.lineType || '',
+      tianjiLineNum: liunian.lineNum || '',
+      tianjiLineType: liunian.lineType || '',
+    };
+    return {
+      activeAge: currentAge,
+      selectedDayun,
+      decadeData: selectedDayun,
+      selectedYear,
+      liunianData: selectedYear,
+    };
+  }
+
   function luckDataForSelected(info = selectedLuckInfo({ readonly: true })) {
     if (!info.selected) return null;
     return normalizeAiData(state.luckAiResults[info.selected.key] || (info.selected.key === info.current?.key ? state.aiResults.current_luck : null));
@@ -3249,6 +3303,15 @@
     return helpers.length ? `辅星：${helpers.join('、')}` : '空宫';
   }
 
+  function formatGuaLine(lineType, lineNum) {
+    const numberMap = ['', '初', '二', '三', '四', '五', '上'];
+    const typeMap = { yang: '阳', yin: '阴' };
+    const num = Number(lineNum);
+    const label = Number.isFinite(num) ? (numberMap[num] || `${num}`) : '';
+    const type = typeMap[String(lineType || '').toLowerCase()] || lineType || '';
+    return label ? `${label}爻${type ? ` · ${type}` : ''}` : '当年应期';
+  }
+
   function currentLuckViewInfo() {
     const luckInfo = selectedLuckInfo();
     const chart = luckInfo.chart;
@@ -3298,7 +3361,7 @@
 
   function renderXiaoLianYearBlock(info) {
     const lineText = info.liunian.lineNum
-      ? `${info.liunian.lineType || ''}${info.liunian.lineNum}爻`
+      ? formatGuaLine(info.liunian.lineType, info.liunian.lineNum)
       : (info.liunian.period || '当年应期');
     const readHint = info.oppositePalace
       ? `小限看今年落点，对宫看应事对象。${info.oppositeLabel}要优先观察，结合大限背景落到现实安排。`
@@ -4133,8 +4196,12 @@
     if (typeof window._aipCallBackend !== 'function') {
       throw new Error('原站 AI 批命脚本未加载');
     }
-    const backendModule = moduleKey === 'current_luck' ? 'daxian' : moduleKey;
-    const extraParams = moduleKey === 'current_luck' ? currentLuckExtraParams(options) : {};
+    const backendModule = moduleKey === 'current_luck'
+      ? 'daxian'
+      : (moduleKey === 'xiaoxian_liunian' ? 'liunian' : moduleKey);
+    const extraParams = moduleKey === 'current_luck'
+      ? currentLuckExtraParams(options)
+      : (moduleKey === 'xiaoxian_liunian' ? xiaoLianExtraParams(options) : {});
     return normalizeAiData(await window._aipCallBackend(backendModule, extraParams));
   }
 
