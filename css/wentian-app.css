@@ -1436,11 +1436,21 @@ html[lang="en"] .wentian-native-mingpan .fc-age {
   height: 418px;
   overflow-y: auto;
   padding: 2px 2px 16px;
+  transition: height .18s ease;
 }
 
 .wentian-chat-log.is-with-context {
   top: 224px;
   height: 330px;
+}
+
+.wentian-chat-log.is-starters-collapsed {
+  height: 594px;
+  padding-bottom: 24px;
+}
+
+.wentian-chat-log.is-with-context.is-starters-collapsed {
+  height: 506px;
 }
 
 .wentian-chat-log::-webkit-scrollbar {
@@ -1628,6 +1638,19 @@ html[lang="en"] .wentian-native-mingpan .fc-age {
   scrollbar-width: thin;
   -webkit-overflow-scrolling: touch;
   touch-action: pan-y;
+  transition: opacity .18s ease, transform .18s ease, visibility .18s ease;
+}
+
+[data-node-id="source-4-faq-title"] {
+  transition: opacity .18s ease, transform .18s ease, visibility .18s ease;
+}
+
+.wentian-chat-starters.is-collapsed,
+[data-node-id="source-4-faq-title"].is-collapsed {
+  visibility: hidden;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(12px);
 }
 
 .wentian-chat-starters::-webkit-scrollbar {

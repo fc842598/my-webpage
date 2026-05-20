@@ -1086,6 +1086,7 @@ const wentianXuChat = {
   loading: false,
   typingTimer: null,
   context: null,
+  startersExpanded: true,
 };
 
 let wentianFallbackChartRecordId = null;
@@ -5207,6 +5208,7 @@ function resetWentianXuChatRuntime() {
   wentianXuChat.sessionPromise = null;
   wentianXuChat.messages = [];
   wentianXuChat.loading = false;
+  wentianXuChat.startersExpanded = true;
 }
 
 function getWentianXuChatContext() {
@@ -5723,6 +5725,21 @@ function renderWentianMessages() {
   box.scrollTop = box.scrollHeight;
 }
 
+function setWentianChatStartersExpanded(expanded) {
+  wentianXuChat.startersExpanded = !!expanded;
+  const collapsed = !wentianXuChat.startersExpanded;
+  const starters = document.querySelector(".wentian-chat-starters");
+  const title = document.querySelector('[data-node-id="source-4-faq-title"]');
+  const log = document.getElementById("wentian-chat-messages");
+  starters?.classList.toggle("is-collapsed", collapsed);
+  title?.classList.toggle("is-collapsed", collapsed);
+  log?.classList.toggle("is-starters-collapsed", collapsed);
+  if (collapsed) {
+    document.querySelectorAll(".wentian-chat-faq-group[open]").forEach((item) => item.removeAttribute("open"));
+  }
+  if (log) log.scrollTop = log.scrollHeight;
+}
+
 function finishWentianTyping(render = true) {
   if (wentianXuChat.typingTimer) {
     clearTimeout(wentianXuChat.typingTimer);
@@ -5776,6 +5793,7 @@ function addWentianMessage(role, text, options = {}) {
     : { role, text, thinking: !!(options.thinking && role === "assistant") };
   wentianXuChat.messages.push(message);
   if (wentianXuChat.messages.length > 30) wentianXuChat.messages.shift();
+  if (message.typing || message.thinking) setWentianChatStartersExpanded(false);
   renderWentianMessages();
   if (message.typing) startWentianTyping(message);
 }
@@ -5960,6 +5978,8 @@ function initWentianXuChat() {
   }
 
   send.onclick = () => sendWentianXuChat();
+  input.addEventListener("pointerdown", () => setWentianChatStartersExpanded(true));
+  input.addEventListener("focus", () => setWentianChatStartersExpanded(true));
   input.addEventListener("input", () => resizeWentianChatInput(input));
   input.onkeydown = (event) => {
     if (event.key === "Enter" && !event.shiftKey && !event.isComposing && shouldAutoFocusWentianChatInput()) {
@@ -5981,6 +6001,7 @@ function initWentianXuChat() {
     renderWentianMessages();
   }
   setWentianChatStatus(getWentianXuModeText(payload.mode, "ready"), "ok");
+  setWentianChatStartersExpanded(wentianXuChat.startersExpanded !== false);
   ensureWentianXuSession({ silent: true }).catch(() => {});
 }
 
