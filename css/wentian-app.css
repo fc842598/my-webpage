@@ -2373,6 +2373,33 @@ html[lang="en"] .wentian-archive-confirm {
   box-shadow: 0 0 0 2px rgba(192, 154, 73, .12);
 }
 
+.wentian-archive-search-input {
+  position: absolute;
+  z-index: 70;
+  border: 0;
+  background: transparent;
+  color: #201813;
+  padding: 0;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  outline: 0;
+}
+
+.wentian-archive-search-input::placeholder {
+  color: #ada59d;
+}
+
+.wentian-profile-list-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.wentian-profile-list-layer .fig-click {
+  pointer-events: auto;
+}
+
 html[lang="en"] .wentian-profile-input {
   padding: 0 10px;
   font-size: 13px;

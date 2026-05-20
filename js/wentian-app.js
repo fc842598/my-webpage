@@ -1168,6 +1168,7 @@ const WENTIAN_LANGUAGE_OPTIONS = [
   { code: "en", label: "English", htmlLang: "en" },
 ];
 let wentianArchiveDraftId = null;
+let wentianProfileSearchQuery = "";
 let wentianArchiveRemoteLoaded = false;
 let wentianArchiveRemotePromise = null;
 let wentianLanguageDraft = null;
@@ -6342,11 +6343,36 @@ function getWentianArchiveInitial(name) {
   })[first] || "#";
 }
 
-function sourceProfileScreen(screen) {
-  const archives = getWentianArchiveList().slice(0, 6);
+function getWentianProfileSearchText(archive) {
+  const item = getWentianArchiveDisplay(archive);
+  return [
+    item.name,
+    item.gender,
+    item.datetime,
+    item.pillars,
+    getWentianArchiveInitial(item.name)
+  ].join(" ").toLowerCase();
+}
+
+function getWentianProfileVisibleArchives(archives, query = "") {
+  const keyword = String(query || "").trim().toLowerCase();
+  const list = keyword
+    ? archives.filter((archive) => getWentianProfileSearchText(archive).includes(keyword))
+    : archives;
+  return list.slice(0, 6);
+}
+
+function renderWentianProfileRows(archives = getWentianArchiveList(), query = wentianProfileSearchQuery) {
+  const visibleArchives = getWentianProfileVisibleArchives(archives, query);
   let y = 296;
   let lastInitial = "";
-  const rows = archives.map((archive, index) => {
+  if (!visibleArchives.length) {
+    return `
+      ${figText("source-25-empty-title", "暂无匹配档案", 0, 330, 390, 18, "#6e6254", 900, "center")}
+      ${figText("source-25-empty-sub", "换个姓名再试试", 0, 362, 390, 13, "#a79b8e", 700, "center")}
+    `;
+  }
+  return visibleArchives.map((archive, index) => {
     const item = getWentianArchiveDisplay(archive);
     const initial = getWentianArchiveInitial(item.name);
     const group = initial !== lastInitial ? figText(`source-25-group-${index}`, initial, 18, y + 6, 24, 14, "#aaa198", 600) : "";
@@ -6369,6 +6395,10 @@ function sourceProfileScreen(screen) {
       ${figButton(`source-25-open-${index}`, 0, rowY, 352, 76, `data-action="wentian-profile-open" data-archive-id="${escapeHtml(archive.id)}"`)}
     `;
   }).join("");
+}
+
+function sourceProfileScreen(screen) {
+  const rows = renderWentianProfileRows(getWentianArchiveList(), wentianProfileSearchQuery);
   return `
     ${figBox("source-25-bg", 0, 0, 390, 867, "", "background:linear-gradient(180deg,#fbf6eb 0%,#fffdf8 36%,#fffdf8 100%);")}
     ${figText("source-25-time", "15:21", 18, 15, 70, 14, "#26211c")}
@@ -6381,14 +6411,15 @@ function sourceProfileScreen(screen) {
     ${figText("source-25-tab-active-text", "· 个人案例 ·", 118, 130, 154, 16, "#fff", 900, "center")}
     ${figBox("source-25-search", 18, 188, 260, 48, "", "border-radius:24px;background:#fff;box-shadow:0 6px 14px rgba(90,62,34,.06);")}
     ${figText("source-25-search-icon", "⌕", 34, 197, 32, 25, "#201813", 700, "center")}
-    ${figText("source-25-search-text", "请输入姓名", 72, 204, 120, 14, "#ada59d", 600)}
+    <input id="wentian-profile-search" class="wentian-archive-search-input" style="left:72px;top:188px;width:188px;height:48px" value="${escapeHtml(wentianProfileSearchQuery)}" placeholder="请输入姓名" autocomplete="off" inputmode="search">
     ${figBox("source-25-filter", 294, 188, 78, 48, "", "border-radius:24px;background:#604236;box-shadow:0 8px 16px rgba(86,54,37,.16);")}
     ${figText("source-25-filter-text", "筛选", 294, 202, 78, 17, "#fffaf3", 900, "center")}
+    ${figButton("source-25-filter-hit", 294, 188, 78, 48, 'data-action="wentian-profile-search-focus" aria-label="筛选档案"')}
     ${figText("source-25-all", "全部", 18, 262, 60, 18, "#bf8732", 900)}
     ${figBox("source-25-add-mini", 338, 252, 28, 28, "", "border:1px solid #dad1c6;border-radius:14px;background:#fffdf9;")}
     ${figText("source-25-add-plus", "+", 338, 257, 28, 14, "#201813", 800, "center")}
     ${figButton("source-25-add-hit", 330, 248, 44, 44, 'data-route="screen-26" aria-label="添加档案"')}
-    ${rows}
+    <div id="wentian-profile-list" class="wentian-profile-list-layer">${rows}</div>
     ${figBox("source-25-index", 354, 496, 26, 224, "", "border-radius:14px;background:rgba(255,255,255,.9);box-shadow:0 7px 18px rgba(73,55,34,.14);")}
     ${figText("source-25-index-text", "A\nC\nF\nH\nJ\nL\nM\nS\nX\nZ\n#", 354, 509, 26, 10, "#6f6860", 700, "center", "line-height:1.62;")}
     ${sourceAppBottomNav("档案", 778)}
@@ -12036,6 +12067,12 @@ document.addEventListener("click", (event) => {
     cancelWentianArchiveSelection();
     return;
   }
+  if (action === "wentian-profile-search-focus") {
+    const input = document.getElementById("wentian-profile-search");
+    input?.focus();
+    input?.select?.();
+    return;
+  }
   if (action === "wentian-profile-open") {
     const id = event.target.closest("[data-archive-id]")?.dataset.archiveId;
     const archive = getWentianArchiveList().find((item) => item.id === id);
@@ -12155,6 +12192,12 @@ document.addEventListener("click", (event) => {
 });
 
 document.addEventListener("input", (event) => {
+  if (event.target.id === "wentian-profile-search") {
+    wentianProfileSearchQuery = event.target.value || "";
+    const list = document.getElementById("wentian-profile-list");
+    if (list) list.innerHTML = renderWentianProfileRows(getWentianArchiveList(), wentianProfileSearchQuery);
+    return;
+  }
   if (event.target.closest?.(".liuyao-panel")) {
     if (event.target.id === "liuyao-question") saveLiuyaoQuestionFromDom();
     return;
