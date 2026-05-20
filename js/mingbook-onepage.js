@@ -3598,6 +3598,42 @@
     `;
   }
 
+  function renderXiaoLianReading(data, fallbackText, info) {
+    const hasContent = hasAiRenderableContent(data);
+    const sections = hasContent ? aiSections(data) : [];
+    const rawText = hasContent ? aiCardText(data) : cleanAiText(fallbackText || '');
+    const paragraphs = sections.length
+      ? sections.map((section) => ({
+        title: cleanAiInlineText(section.title),
+        content: cleanAiText(section.content),
+      })).filter((section) => section.content || section.title)
+      : rawText.split(/\n{2,}/).map((content) => ({ title: '', content: cleanAiText(content) })).filter((section) => section.content);
+    const selected = info.selected || {};
+    const yearText = `${selected.year || ''} ${selected.yearGz || ''}`.trim();
+    const title = selected.age
+      ? `${selected.age}岁 · ${yearText || '流年'} · ${selected.liunian?.name || '流年卦'}`
+      : '小限流年';
+    const meta = `小限：${selected.xiaoLabel || '未定'}；对宫：${selected.oppositeLabel || '未定'}`;
+    const placeholder = '选择上方 1-100 岁，再点“单独批小限”生成这一年的小限流年解读。';
+    return `
+      <div class="mbp-luck-reading">
+        <div class="mbp-luck-reading-head">
+          <span>${selected.isCurrent ? '当前小流年' : '选中小流年'}</span>
+          <strong>${escapeHtml(title)}</strong>
+          <p>${escapeHtml(meta)}</p>
+        </div>
+        <div class="mbp-luck-reading-body">
+          ${paragraphs.length ? paragraphs.map((section) => `
+            <section>
+              ${section.title && section.title !== '解读' ? `<b>${escapeHtml(section.title)}</b>` : ''}
+              <p>${highlightInsightText(section.content || section.title)}</p>
+            </section>
+          `).join('') : `<p class="mbp-luck-placeholder">${escapeHtml(placeholder)}</p>`}
+        </div>
+      </div>
+    `;
+  }
+
   function renderLuckChapterBlock(_data, fallbackText) {
     const info = currentLuckViewInfo();
     const selectedData = luckDataForSelected({
@@ -3622,65 +3658,13 @@
     const info = selectedXiaoLianInfo();
     const selected = info.selected || {};
     const selectedData = xiaoLianDataForSelected(info) || (selected.isCurrent ? normalizeAiData(data) : null);
-    const hasContent = hasAiRenderableContent(selectedData);
     requestAnimationFrame(() => {
       const target = document.querySelector('[data-xiaolian-age].is-active') || document.querySelector('[data-xiaolian-current="true"]');
       target?.scrollIntoView({ inline: 'center', block: 'nearest' });
     });
-    const header = `
-      ${renderXiaoLianAgeRail(info)}
-      ${renderXiaoLianYearBlock({
-        age: selected.age,
-        year: selected.year,
-        yearGz: selected.yearGz,
-        liunian: selected.liunian || {},
-        xiaoPalace: selected.xiaoLianPalace,
-        xiaoLabel: selected.xiaoLabel,
-        oppositePalace: selected.oppositePalace,
-        oppositeLabel: selected.oppositeLabel,
-      })}
-    `;
-    if (!hasContent) {
-      return `
-        ${header}
-        ${renderPendingChapterBlock('选择上方 1-100 岁，再点“单独批小限”生成这一年的小限流年解读。')}
-      `;
-    }
-    const sections = aiSections(selectedData);
-    const summary = insightSummary(selectedData, fallbackText || `${selected.year} ${selected.yearGz}，小限落${selected.xiaoLabel}，对宫看${selected.oppositeLabel}。`, 170);
-    const summarySentences = splitReadableSentences(summary);
-    const usedSummarySentences = new Set();
-    const xiaoPoint = luckSectionText(
-      sections,
-      summarySentences,
-      usedSummarySentences,
-      ['小限', '落宫'],
-      ['小限', '落宫', selected.xiaoLabel],
-      `小限落${selected.xiaoLabel}，先看今年触发点。`
-    );
-    const oppositePoint = luckSectionText(
-      sections,
-      summarySentences,
-      usedSummarySentences,
-      ['对宫', '应事'],
-      ['对宫', '应事', selected.oppositeLabel],
-      `对宫${selected.oppositeLabel}，主外部牵动和现实应事。`
-    );
-    const guaPoint = luckSectionText(
-      sections,
-      summarySentences,
-      usedSummarySentences,
-      ['流年卦', '卦象'],
-      ['流年卦', '卦象', selected.liunian?.name || ''].filter(Boolean),
-      `${selected.liunian?.name || '流年卦象'}看当年应期，配合小限宫位落到具体事。`
-    );
     return `
-      ${header}
-      ${renderLuckSummaryParts([
-        { title: '小限落点', text: xiaoPoint },
-        { title: '对宫应事', text: oppositePoint },
-        { title: '流年卦象', text: guaPoint },
-      ])}
+      ${renderXiaoLianAgeRail(info)}
+      ${renderXiaoLianReading(selectedData, fallbackText, info)}
     `;
   }
 
