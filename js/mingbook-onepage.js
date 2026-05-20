@@ -1421,6 +1421,25 @@
     if (bookMark && sourceMark) bookMark.textContent = sourceMark.textContent || '命';
     if (bookName && sourceTitle) bookName.textContent = sourceTitle.textContent || '命 主';
     if (bookSubtitle && sourceMeta) bookSubtitle.textContent = sourceMeta.textContent || '待排盘 · 命书未启';
+    syncXuClientMeta();
+  }
+
+  function syncXuClientMeta() {
+    const sourceMark = $('#mbpProfileMark');
+    const sourceTitle = $('#mbpProfileTitle');
+    const sourceMeta = $('#mbpProfileMeta');
+    const xuMark = $('#mbpXuProfileMark');
+    const xuTitle = $('#mbpXuProfileTitle');
+    const xuMeta = $('#mbpXuProfileMeta');
+    const xuStatus = $('#mbpXuProfileStatus');
+    if (xuMark && sourceMark) xuMark.textContent = sourceMark.textContent || '命';
+    if (xuTitle && sourceTitle) xuTitle.textContent = sourceTitle.textContent || '命 主';
+    if (xuMeta && sourceMeta) {
+      xuMeta.textContent = state.chartReady
+        ? `${sourceMeta.textContent || '当前命盘'} · 全页共用`
+        : '先排盘，再让许半仙读这一张';
+    }
+    if (xuStatus) xuStatus.textContent = state.chartReady ? '当前命盘' : '待排盘';
   }
 
   function clientLabel(profile) {
@@ -1431,14 +1450,11 @@
     return `${profile.year}-${pad2(profile.month)}-${pad2(profile.day)} ${pad2(profile.hour)}:${pad2(profile.minute)} · ${profile.cityName || profile.city || '未填地点'}`;
   }
 
-  function renderClientList() {
-    const listEl = $('#mbpClientList');
-    const countEl = $('#mbpClientCount');
+  function renderClientListInto(listEl, countEl, emptyText) {
     if (!listEl) return;
-    clientRecordsCache = loadCustomerRecords();
     if (countEl) countEl.textContent = `${clientRecordsCache.length} 个盘`;
     if (!clientRecordsCache.length) {
-      listEl.innerHTML = '<div class="mbp-client-empty">暂无客户盘，排盘后会自动保存。</div>';
+      listEl.innerHTML = `<div class="mbp-client-empty">${escapeHtml(emptyText)}</div>`;
       return;
     }
     const activeKey = profileHistoryKey(state.profile);
@@ -1459,11 +1475,45 @@
     }).join('');
   }
 
+  function renderClientList() {
+    clientRecordsCache = loadCustomerRecords();
+    renderClientListInto($('#mbpClientList'), $('#mbpClientCount'), '暂无客户盘，排盘后会自动保存。');
+    renderClientListInto($('#mbpXuClientList'), $('#mbpXuClientCount'), '暂无命盘，先排盘后会自动保存。');
+  }
+
   function closeClientMenu() {
-    const menu = $('#mbpClientMenu');
-    const toggle = $('#mbpClientToggle');
-    if (menu) menu.hidden = true;
-    if (toggle) toggle.setAttribute('aria-expanded', 'false');
+    [
+      ['#mbpClientMenu', '#mbpClientToggle'],
+      ['#mbpXuClientMenu', '#mbpXuClientToggle'],
+    ].forEach(([menuSelector, toggleSelector]) => {
+      const menu = $(menuSelector);
+      const toggle = $(toggleSelector);
+      if (menu) menu.hidden = true;
+      if (toggle) toggle.setAttribute('aria-expanded', 'false');
+    });
+  }
+
+  function toggleClientMenu(menuSelector, toggleSelector) {
+    const menu = $(menuSelector);
+    const toggle = $(toggleSelector);
+    if (!menu || !toggle) return;
+    const nextOpen = menu.hidden;
+    closeClientMenu();
+    renderClientList();
+    menu.hidden = !nextOpen;
+    toggle.setAttribute('aria-expanded', String(nextOpen));
+  }
+
+  function selectClientRecordByIndex(index) {
+    const record = clientRecordsCache[Number(index)];
+    if (record?.profile) applyClientProfile(record.profile, {
+      chartRecordId: record.id && record.id !== 'current' ? record.id : '',
+    });
+  }
+
+  function startNewClientProfile() {
+    applyClientProfile({ ...defaultProfile, name: '' }, { chartReady: false });
+    $('#mbpBirthForm')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 
   function resetForProfileChange() {
@@ -4754,31 +4804,36 @@
 
     $('#mbpClientToggle')?.addEventListener('click', (event) => {
       event.stopPropagation();
-      const menu = $('#mbpClientMenu');
-      const toggle = $('#mbpClientToggle');
-      if (!menu || !toggle) return;
-      const nextOpen = menu.hidden;
-      renderClientList();
-      menu.hidden = !nextOpen;
-      toggle.setAttribute('aria-expanded', String(nextOpen));
+      toggleClientMenu('#mbpClientMenu', '#mbpClientToggle');
+    });
+
+    $('#mbpXuClientToggle')?.addEventListener('click', (event) => {
+      event.stopPropagation();
+      toggleClientMenu('#mbpXuClientMenu', '#mbpXuClientToggle');
     });
 
     $('#mbpClientList')?.addEventListener('click', (event) => {
       const item = event.target.closest('.mbp-client-item');
       if (!item) return;
-      const record = clientRecordsCache[Number(item.dataset.clientIndex)];
-      if (record?.profile) applyClientProfile(record.profile, {
-        chartRecordId: record.id && record.id !== 'current' ? record.id : '',
-      });
+      selectClientRecordByIndex(item.dataset.clientIndex);
+    });
+
+    $('#mbpXuClientList')?.addEventListener('click', (event) => {
+      const item = event.target.closest('.mbp-client-item');
+      if (!item) return;
+      selectClientRecordByIndex(item.dataset.clientIndex);
     });
 
     $('#mbpClientNew')?.addEventListener('click', () => {
-      applyClientProfile({ ...defaultProfile, name: '' }, { chartReady: false });
-      $('#mbpBirthForm')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      startNewClientProfile();
+    });
+
+    $('#mbpXuClientNew')?.addEventListener('click', () => {
+      startNewClientProfile();
     });
 
     document.addEventListener('click', (event) => {
-      if (!event.target.closest('#mbpClientPicker')) closeClientMenu();
+      if (!event.target.closest('#mbpClientPicker') && !event.target.closest('#mbpXuClientPicker')) closeClientMenu();
     });
 
     document.querySelectorAll('.mbp-fc-card .fc-tab').forEach((button) => {
