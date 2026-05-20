@@ -924,7 +924,7 @@ function sourceAiChatScreen(screen) {
       `).join("")}
     </div>
     ${figBox("source-4-input-bg", 0, 748, 390, 96, "", "background:#f7f3ec;box-shadow:0 -1px 0 rgba(110,82,38,.08);")}
-    <input id="wentian-chat-input" class="wentian-chat-field" placeholder="${inputPlaceholder}" autocomplete="off">
+    <textarea id="wentian-chat-input" class="wentian-chat-field" rows="1" placeholder="${inputPlaceholder}" autocomplete="off"></textarea>
     <button id="wentian-chat-send" class="wentian-chat-send" type="button" data-action="wentian-chat-send" aria-label="发送">↑</button>
     ${figText("source-4-disclaimer", "内容由AI生成，仅供娱乐参考", 0, 818, 390, 10, "#b8b0a7", 400, "center")}
   `;
@@ -5535,6 +5535,17 @@ function setWentianChatStatus(text, tone = "") {
   el.dataset.tone = tone;
 }
 
+function resizeWentianChatInput(input) {
+  if (!input) return 0;
+  const minHeight = 48;
+  const maxHeight = 118;
+  input.style.height = `${minHeight}px`;
+  const nextHeight = Math.max(minHeight, Math.min(maxHeight, input.scrollHeight || minHeight));
+  input.style.height = `${nextHeight}px`;
+  input.style.overflowY = input.scrollHeight > maxHeight ? "auto" : "hidden";
+  return nextHeight - minHeight;
+}
+
 function syncWentianChatFaqLayout() {
   const phone = document.querySelector('.figma-phone[data-node-id="screen-4"]');
   const starters = document.querySelector(".wentian-chat-starters");
@@ -5552,13 +5563,17 @@ function syncWentianChatFaqLayout() {
   starters.classList.toggle("is-expanded", Boolean(openGroup));
   starters.style.maxHeight = openGroup ? "none" : "";
   const listHeight = openGroup ? Math.ceil(starters.scrollHeight) : baseListHeight;
-  const extra = openGroup ? Math.max(0, listHeight - baseListHeight + 18) : 0;
+  const faqExtra = openGroup ? Math.max(0, listHeight - baseListHeight + 18) : 0;
+  const inputExtra = resizeWentianChatInput(input);
+  const fieldHeight = 48 + inputExtra;
+  const totalExtra = faqExtra + inputExtra;
 
-  phone.style.height = `${basePhoneHeight + extra}px`;
-  inputBg.style.top = `${basePositions.inputBg + extra}px`;
-  input.style.top = `${basePositions.input + extra}px`;
-  send.style.top = `${basePositions.send + extra}px`;
-  disclaimer.style.top = `${basePositions.disclaimer + extra}px`;
+  phone.style.height = `${basePhoneHeight + totalExtra}px`;
+  inputBg.style.top = `${basePositions.inputBg + faqExtra}px`;
+  inputBg.style.height = `${96 + inputExtra}px`;
+  input.style.top = `${basePositions.input + faqExtra}px`;
+  send.style.top = `${basePositions.input + faqExtra + fieldHeight - 40}px`;
+  disclaimer.style.top = `${basePositions.disclaimer + totalExtra}px`;
   scheduleWentianPhoneFit();
 }
 
@@ -5775,7 +5790,10 @@ async function sendWentianXuChat(promptText = "") {
   const input = document.getElementById("wentian-chat-input");
   const message = (promptText || input?.value || "").trim();
   if (!message) return;
-  if (input) input.value = "";
+  if (input) {
+    input.value = "";
+    syncWentianChatFaqLayout();
+  }
 
   const payload = getWentianXuChatPayload();
   const outboundMessage = buildWentianXuOutboundMessage(message, payload.divinationContext);
@@ -5839,8 +5857,9 @@ function initWentianXuChat() {
   }
 
   send.onclick = () => sendWentianXuChat();
+  input.addEventListener("input", syncWentianChatFaqLayout);
   input.onkeydown = (event) => {
-    if (event.key === "Enter") {
+    if (event.key === "Enter" && (event.metaKey || event.ctrlKey)) {
       event.preventDefault();
       sendWentianXuChat();
     }

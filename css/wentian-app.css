@@ -1796,16 +1796,20 @@ html[lang="en"] .wentian-chat-starter {
   top: 762px;
   width: 358px;
   height: 48px;
+  min-height: 48px;
+  max-height: 118px;
   border: 1px solid #ece2d4;
   border-radius: 24px;
   background: #fff;
   color: #201813;
-  padding: 0 58px 0 18px;
+  padding: 12px 58px 12px 18px;
   font-family: inherit;
   font-size: 17px;
   font-weight: 500;
-  line-height: 48px;
+  line-height: 24px;
   outline: 0;
+  overflow: hidden;
+  resize: none;
   box-shadow: 0 3px 9px rgba(0, 0, 0, .08);
 }
 
