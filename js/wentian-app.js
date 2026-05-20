@@ -11676,6 +11676,10 @@ document.addEventListener("click", (event) => {
     document.querySelectorAll(".wentian-chat-faq-group[open]").forEach((item) => {
       if (item !== group) item.removeAttribute("open");
     });
+    window.setTimeout(() => {
+      if (!group?.open) return;
+      group.closest(".wentian-chat-starters")?.scrollTo({ top: 0, behavior: "smooth" });
+    }, 0);
     return;
   }
   const earlyActionTarget = event.target.closest("[data-action]");
