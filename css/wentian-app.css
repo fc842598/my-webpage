@@ -4696,6 +4696,58 @@ html[data-wentian-language="en"] .liuren-hero-copy em {
   font-weight: 700;
 }
 
+.liuyao-progress-result {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 8px;
+  margin: 0 0 12px;
+  padding: 10px;
+  border: 1px solid rgba(226, 207, 176, .78);
+  border-radius: 14px;
+  background: #fffaf0;
+}
+
+.liuyao-progress-result div {
+  min-width: 0;
+}
+
+.liuyao-progress-result span {
+  display: block;
+  color: #9a681c;
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.liuyao-progress-result strong {
+  display: block;
+  overflow: hidden;
+  color: #201813;
+  font-size: 17px;
+  font-weight: 900;
+  line-height: 1.2;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.liuyao-progress-result em {
+  display: block;
+  overflow: hidden;
+  margin-top: 3px;
+  color: #8f8173;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 800;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.liuyao-progress-result b {
+  grid-column: 1 / -1;
+  color: #a4493c;
+  font-size: 12px;
+  font-weight: 900;
+}
+
 .liuyao-hex-stack {
   display: grid;
   gap: 8px;

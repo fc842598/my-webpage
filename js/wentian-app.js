@@ -8247,6 +8247,10 @@ function sourceLiuyaoCastScreen() {
   const manualPendingCast = state.mode === "manual" && progress < 6
     ? makeLiuyaoManualCastFromCoins(getLiuyaoManualCoins(state, progress))
     : null;
+  const completeResult = complete ? getLiuyaoResult(state) : null;
+  const completeMovingText = completeResult?.movingLines?.length
+    ? completeResult.movingLines.map((line) => `${line.label}${line.mark}`).join("、")
+    : "无动爻";
   const screenHeight = getLiuyaoCastScreenHeight();
   const casterOptions = { complete, disabled: gateBusy || !questionReady, lockText: questionReady ? "" : questionLockText };
   if (state.mode === "online" && liuyaoCastModalOpen && !complete) {
@@ -8304,6 +8308,21 @@ function sourceLiuyaoCastScreen() {
           <strong>${complete ? "卦已成" : `已成 ${progress}/6 爻`}</strong>
           <span>${formatWentianDateTime(new Date(state.createdAt || Date.now()))}</span>
         </div>
+        ${completeResult ? `
+          <div class="liuyao-progress-result">
+            <div>
+              <span>本卦</span>
+              <strong>${escapeHtml(completeResult.primary?.name || "本卦")}</strong>
+              <em>${escapeHtml(formatLiuyaoHexMeta(completeResult.primary))}</em>
+            </div>
+            <div>
+              <span>变卦</span>
+              <strong>${escapeHtml(completeResult.changed?.name || "变卦")}</strong>
+              <em>${escapeHtml(formatLiuyaoHexMeta(completeResult.changed))}</em>
+            </div>
+            <b>动爻：${escapeHtml(completeMovingText)}</b>
+          </div>
+        ` : ""}
         ${tossing ? `<p class="liuyao-casting-status">本次力度 ${Math.max(18, Math.min(100, Number(liuyaoTossAnimation.power) || 62))}%；铜钱翻转 1 秒后落入第 ${progress + 1} 爻。</p>` : ""}
         ${renderLiuyaoHexStack(lines, { id: "cast" })}
       </div>
