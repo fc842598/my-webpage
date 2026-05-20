@@ -1680,36 +1680,34 @@ body.mbp-auth-open {
 .mbp-title-seal {
   position: relative;
   flex: 0 0 auto;
-  display: inline-grid;
-  place-items: center;
-  width: 42px;
-  height: 42px;
-  margin-top: 2px;
-  border: 1px solid rgba(241, 212, 125, .78);
-  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  min-height: 30px;
+  margin-top: 4px;
+  padding: 0 12px;
+  border: 1px solid rgba(241, 212, 125, .58);
+  border-radius: 999px;
   background:
-    linear-gradient(145deg, rgba(77, 39, 21, .96), rgba(18, 12, 8, .96)),
-    rgba(12, 8, 5, .96);
+    linear-gradient(135deg, rgba(241, 212, 125, .16), rgba(38, 24, 13, .96)),
+    rgba(12, 8, 5, .92);
   color: var(--gold);
-  font-family: "Noto Serif SC", "Songti SC", serif;
-  font-size: 15px;
+  font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+  font-size: 14px;
   font-weight: 900;
   line-height: 1;
   letter-spacing: 0;
   text-shadow: 0 0 10px rgba(241, 212, 125, .2);
   box-shadow:
-    inset 0 0 0 1px rgba(255, 244, 196, .1),
-    inset 0 0 18px rgba(241, 212, 125, .08),
-    0 10px 24px rgba(0, 0, 0, .22);
-  transform: translateY(-1px) rotate(-2deg);
+    inset 0 1px 0 rgba(255, 245, 205, .16),
+    0 8px 18px rgba(0, 0, 0, .18);
 }
 
 .mbp-title-seal::before {
   content: "";
   position: absolute;
-  inset: 4px;
-  border: 1px solid rgba(241, 212, 125, .36);
-  border-radius: 5px;
+  inset: 3px 5px;
+  border: 1px solid rgba(241, 212, 125, .16);
+  border-radius: inherit;
   pointer-events: none;
 }
 .mbp-section-head span {
@@ -6238,9 +6236,9 @@ p.mbp-topic-detail {
   }
 
   .mbp-title-seal {
-    width: 36px;
-    height: 36px;
-    font-size: 13px;
+    min-height: 28px;
+    padding-inline: 10px;
+    font-size: 12px;
   }
 
   .mbp-yijing-kicker {
