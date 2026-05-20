@@ -7872,6 +7872,27 @@ function getLiuyaoHexReading(hex) {
   };
 }
 
+function getYijingHexagramImageSrc(no) {
+  const index = Number(no);
+  if (!Number.isInteger(index) || index < 1 || index > 64) return "";
+  return `../images/yijing-hexagrams/${String(index).padStart(2, "0")}.webp`;
+}
+
+function formatLiuyaoHexMeta(hex) {
+  const noText = hex?.no ? `第${hex.no}卦` : "卦象";
+  const upper = hex?.upper?.name || "";
+  const lower = hex?.lower?.name || "";
+  const guaText = upper || lower ? ` · ${upper}上${lower}下` : "";
+  return `${noText}${guaText}`;
+}
+
+function renderLiuyaoHexImage(hex, label) {
+  const src = getYijingHexagramImageSrc(hex?.no);
+  if (!src) return "";
+  const alt = `${label}：${formatLiuyaoHexMeta(hex)} ${hex?.name || ""}`;
+  return `<img class="liuyao-hex-image" src="${src}" alt="${escapeHtml(alt)}" loading="lazy">`;
+}
+
 function firstReadableSentence(text, fallback = "") {
   const source = String(text || "").replace(/原句：/g, "").replace(/讲解：/g, "").replace(/\s+/g, " ").trim();
   return source.split(/[。！？]/).find((part) => part.trim().length >= 6)?.trim() || fallback;
@@ -8230,58 +8251,37 @@ function sourceLiuyaoResultScreen() {
       </section>
     `;
   }
-  const primaryReading = getLiuyaoHexReading(result.primary);
-  const changedReading = getLiuyaoHexReading(result.changed);
   const movingText = result.movingLines.length
     ? result.movingLines.map((line) => `${line.label}${line.mark}`).join("、")
     : "无动爻";
-  const primaryTip = firstReadableSentence(primaryReading.summary, "先看本卦所处局面。");
-  const changedTip = result.movingLines.length
-    ? firstReadableSentence(changedReading.summary, "变卦看后续走向。")
-    : "无动爻时变卦与本卦同体，重在守当前局面。";
-  const actionTip = getLiuyaoTopicAdvice(result.question, result);
   return `
-    ${figBox("ly20-bg", 0, 0, 390, 1280, "", "background:linear-gradient(180deg,#fffdf8 0%,#fbf7ef 54%,#f3eadc 100%);")}
+    ${figBox("ly20-bg", 0, 0, 390, 940, "", "background:linear-gradient(180deg,#fffdf8 0%,#fbf7ef 54%,#f3eadc 100%);")}
     ${wentianSimpleHeader("ly20", result.primary.name)}
     <section class="liuyao-panel liuyao-result-panel">
       <div class="liuyao-result-hero">
         <span>本卦</span>
         <strong>${escapeHtml(result.primary.name)}</strong>
-        <em>${escapeHtml(result.primary.upper?.name || "")}上${escapeHtml(result.primary.lower?.name || "")}下 · 第${escapeHtml(result.primary.no)}卦</em>
+        <em>${escapeHtml(formatLiuyaoHexMeta(result.primary))}</em>
         <b>${escapeHtml(movingText)}</b>
       </div>
       <div class="liuyao-result-pair">
-        <article>
+        <article class="is-image-card">
           <span>本卦</span>
           <strong>${escapeHtml(result.primary.name)}</strong>
-          ${renderLiuyaoHexStack(result.lines, { compact: true, id: "primary" })}
+          ${renderLiuyaoHexImage(result.primary, "本卦")}
+          <em>${escapeHtml(formatLiuyaoHexMeta(result.primary))}</em>
         </article>
-        <article>
+        <article class="is-image-card">
           <span>变卦</span>
           <strong>${escapeHtml(result.changed.name)}</strong>
-          ${renderLiuyaoHexStack(result.lines.map((line) => ({ ...line, broken: line.moving ? line.changedBroken : line.broken, moving: false, value: line.moving ? (line.changedBroken ? 8 : 7) : line.value, name: line.moving ? (line.changedBroken ? "少阴" : "少阳") : line.name })), { compact: true, id: "changed" })}
+          ${renderLiuyaoHexImage(result.changed, "变卦")}
+          <em>${escapeHtml(formatLiuyaoHexMeta(result.changed))}</em>
         </article>
       </div>
       <div class="liuyao-reading-card">
         <span>所问</span>
         <strong>${escapeHtml(result.question)}</strong>
       </div>
-      <div class="liuyao-reading-card">
-        <span>本卦判断</span>
-        <p>${escapeHtml(primaryTip)}</p>
-      </div>
-      <div class="liuyao-reading-card">
-        <span>动爻与变卦</span>
-        <p>${escapeHtml(result.movingLines.length ? `${movingText} 为变化点。${changedTip}` : changedTip)}</p>
-      </div>
-      <div class="liuyao-reading-card is-warm">
-        <span>行动建议</span>
-        <p>${escapeHtml(actionTip)}</p>
-      </div>
-      <details class="liuyao-detail-card">
-        <summary>查看卦义摘要</summary>
-        <p>${escapeHtml(primaryReading.summary)}</p>
-      </details>
       <div class="liuyao-actions">
         <button type="button" class="primary" data-action="liuyao-ask-xu">追问许半仙</button>
         <button type="button" data-action="liuyao-reset">重新起卦</button>
