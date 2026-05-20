@@ -10286,7 +10286,7 @@ function renderWentianPolishedScreen(screen) {
           ${figText(`wt36-arrow-${index}`, "›", 330, y + 16, 20, 18, "#c9bba6", 800, "center")}
         `;
       }).join("")}
-      ${figText("wt36-copy", "© 2026 YUETIAN AI All Rights Reserved", 0, 742, 390, 11, "#b4ada5", 500, "center")}
+      ${figText("wt36-copy", "粤ICP备2026055337号　© 2026 阅天AI Copyright, All Rights Reserved. Powered By 阅天工作室　", 18, 736, 354, 9, "#b4ada5", 500, "center")}
     `;
   }
   return "";
