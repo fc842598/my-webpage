@@ -5267,6 +5267,18 @@ p.mbp-topic-detail {
   color: #cdbb90 !important;
 }
 
+.mbp-luck-empty-action {
+  display: grid;
+  justify-items: start;
+  gap: 14px;
+}
+
+.mbp-luck-empty-action .mbp-chapter-ai-btn {
+  position: static;
+  min-width: 146px;
+  margin: 0;
+}
+
 .mbp-luck-hero {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;

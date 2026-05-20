@@ -3617,10 +3617,19 @@
     `;
   }
 
-  function renderLuckReading(data, fallbackText, info) {
+  function renderReadingActionPrompt(text, moduleKey, label) {
+    return `
+      <div class="mbp-luck-empty-action">
+        <p class="mbp-luck-placeholder">${escapeHtml(text)}</p>
+        <button class="mbp-chapter-ai-btn" type="button" data-report-module="${escapeHtml(moduleKey)}">${escapeHtml(label)}</button>
+      </div>
+    `;
+  }
+
+  function renderLuckReading(data, _fallbackText, info) {
     const hasContent = hasAiRenderableContent(data);
     const sections = hasContent ? aiSections(data) : [];
-    const rawText = hasContent ? aiCardText(data) : cleanAiText(fallbackText || '');
+    const rawText = hasContent ? aiCardText(data) : '';
     const paragraphs = sections.length
       ? sections.map((section) => ({
         title: cleanAiInlineText(section.title),
@@ -3642,16 +3651,16 @@
               ${section.title && section.title !== '解读' ? `<b>${escapeHtml(section.title)}</b>` : ''}
               <p>${highlightInsightText(section.content || section.title)}</p>
             </section>
-          `).join('') : `<p class="mbp-luck-placeholder">${escapeHtml(placeholder)}</p>`}
+          `).join('') : renderReadingActionPrompt(placeholder, 'current_luck', '批选中十年')}
         </div>
       </div>
     `;
   }
 
-  function renderXiaoLianReading(data, fallbackText, info) {
+  function renderXiaoLianReading(data, _fallbackText, info) {
     const hasContent = hasAiRenderableContent(data);
     const sections = hasContent ? aiSections(data) : [];
-    const rawText = hasContent ? aiCardText(data) : cleanAiText(fallbackText || '');
+    const rawText = hasContent ? aiCardText(data) : '';
     const paragraphs = sections.length
       ? sections.map((section) => ({
         title: cleanAiInlineText(section.title),
@@ -3678,7 +3687,7 @@
               ${section.title && section.title !== '解读' ? `<b>${escapeHtml(section.title)}</b>` : ''}
               <p>${highlightInsightText(section.content || section.title)}</p>
             </section>
-          `).join('') : `<p class="mbp-luck-placeholder">${escapeHtml(placeholder)}</p>`}
+          `).join('') : renderReadingActionPrompt(placeholder, 'xiaoxian_liunian', '单独批小限')}
         </div>
       </div>
     `;
