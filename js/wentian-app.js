@@ -9449,6 +9449,7 @@ const LIUREN_FLASH_INTERVAL_SECONDS = 0.2;
 const LIUREN_SCREEN_HEIGHT = 1900;
 let liurenHasStarted = false;
 let liurenXuRecordId = null;
+let liurenActiveDate = null;
 
 function formatLiurenDayName(day) {
   const names = ["初一", "初二", "初三", "初四", "初五", "初六", "初七", "初八", "初九", "初十", "十一", "十二", "十三", "十四", "十五", "十六", "十七", "十八", "十九", "二十", "廿一", "廿二", "廿三", "廿四", "廿五", "廿六", "廿七", "廿八", "廿九", "三十"];
@@ -9497,6 +9498,9 @@ function getLiurenResultByDate(date) {
 }
 
 function getLiurenInputDate() {
+  if (!document.getElementById("liuren-year")) {
+    return new Date((liurenActiveDate || new Date()).getTime());
+  }
   const year = getWentianNumber("liuren-year");
   const month = getWentianNumber("liuren-month");
   const day = getWentianNumber("liuren-day");
@@ -9717,6 +9721,7 @@ function updateLiurenDayOptions() {
 }
 
 function setLiurenDateTime(date, options = {}) {
+  liurenActiveDate = new Date(date.getTime());
   populateLiurenSelects();
   const year = document.getElementById("liuren-year");
   const month = document.getElementById("liuren-month");
@@ -9912,22 +9917,9 @@ function sourceLiurenScreen() {
       <div id="liuren-process">${renderLiurenProcess(initial, false)}</div>
       <div id="liuren-track" class="liuren-track">${renderLiurenTrack(initial, false)}</div>
       <div id="liuren-result">${renderLiurenResultHtml(initial, false)}</div>
-      <details class="liuren-form-card">
-        <summary>校准时间</summary>
-        <label><span>公历年份</span><input id="liuren-year" type="number" min="1900" max="2099" inputmode="numeric" value="${initial.date.getFullYear()}"></label>
-        <div class="liuren-grid">
-          <label><span>月份</span><select id="liuren-month"></select></label>
-          <label><span>日期</span><select id="liuren-day"></select></label>
-        </div>
-        <div class="liuren-grid">
-          <label><span>时</span><select id="liuren-hour"></select></label>
-          <label><span>分</span><select id="liuren-minute"></select></label>
-        </div>
-      </details>
       <div class="liuren-actions">
         <button type="button" class="primary liuren-ask-xu" data-action="liuren-ask-xu" disabled>起课后问许半仙</button>
-        <button type="button" class="primary" data-action="liuren-reset">重新定念</button>
-        <button type="button" data-action="liuren-copy">复制结果</button>
+        <button type="button" class="primary liuren-reset-action" data-action="liuren-reset">重新定念</button>
       </div>
       <p id="liuren-status" class="liuren-status">已取当下时间，先定念再起课</p>
     </section>
