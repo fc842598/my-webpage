@@ -3750,6 +3750,26 @@
     { modules: ['life_curve'] },
     { modules: ['action_advice'] },
   ];
+  const reportChapterTotal = reportChapterProgressGroups.length;
+
+  function reportChapterDoneCount() {
+    return reportChapterProgressGroups.filter((group) => {
+      const modules = group.modules || [];
+      return modules.length && modules.every((moduleKey) => moduleHasRenderable(moduleKey));
+    }).length;
+  }
+
+  function reportChapterProgressValue(runningModule = '') {
+    return reportChapterProgressGroups.reduce((sum, group) => {
+      const modules = group.modules || [];
+      if (!modules.length) return sum;
+      const done = modules.filter((moduleKey) => moduleHasRenderable(moduleKey)).length;
+      if (done >= modules.length) return sum + 1;
+      if (runningModule && modules.includes(runningModule)) return sum + Math.max(done / modules.length, 0.12);
+      if (done > 0) return sum + (done / modules.length);
+      return sum;
+    }, 0);
+  }
 
   function reportChapterProgress(group, runningModule, totalDone, totalModules) {
     if (group.modules) {
@@ -3765,10 +3785,11 @@
   }
 
   function updateBookProgress(done = 0, runningIndex = -1, stateText = '待生成') {
-    const total = aiTasks.length;
-    const safeDone = Math.max(0, Math.min(done, total));
-    const percent = total ? Math.round((safeDone / total) * 100) : 0;
+    const total = reportChapterTotal;
     const runningModule = aiTasks[runningIndex]?.module || '';
+    const safeDone = reportChapterDoneCount();
+    const progressValue = Math.max(0, Math.min(reportChapterProgressValue(runningModule), total));
+    const percent = total ? Math.round((progressValue / total) * 100) : 0;
     const text = $('#mbpBookProgressText');
     const fill = $('#mbpBookProgressFill');
     const track = fill?.closest('.mbp-book-progress-track');
@@ -3799,20 +3820,22 @@
   }
 
   function updateDecodeAllButtonProgress(done = 0, runningIndex = -1, stateText = '待生成') {
-    const total = aiTasks.length || 8;
-    const safeDone = Math.max(0, Math.min(done, total));
-    const degrees = total ? (safeDone / total) * 360 : 0;
+    const total = reportChapterTotal || 6;
+    const runningModule = aiTasks[runningIndex]?.module || '';
+    const safeDone = Math.max(0, Math.min(reportChapterDoneCount(), total));
+    const progressValue = Math.max(0, Math.min(reportChapterProgressValue(runningModule), total));
+    const degrees = total ? (progressValue / total) * 360 : 0;
     const isGenerating = runningIndex >= 0 && safeDone < total;
     const isComplete = safeDone >= total;
     document.querySelectorAll('[data-decode-all]').forEach((button) => {
       const isRunning = button.classList.contains('is-running') && isGenerating;
-      const hasProgress = safeDone > 0 || isRunning || isComplete;
+      const hasProgress = progressValue > 0 || isRunning || isComplete;
       button.style.setProperty('--decode-progress', `${degrees}deg`);
       button.dataset.decodeDone = String(safeDone);
       button.dataset.decodeTotal = String(total);
       button.classList.toggle('has-progress', hasProgress);
       button.classList.toggle('is-complete', isComplete);
-      button.setAttribute('aria-label', `${stateText}，已完成 ${safeDone}/${total} 个模块`);
+      button.setAttribute('aria-label', `${stateText}，已完成 ${safeDone}/${total} 卷`);
       const progressLabel = button.querySelector('[data-decode-progress-label]');
       if (progressLabel) progressLabel.textContent = `${safeDone}/${total}`;
       const main = button.querySelector('[data-decode-main]');
@@ -3833,8 +3856,6 @@
         bar.classList.toggle('is-running', index === runningIndex && index >= done);
       });
     }
-    const count = $('#mbpReportReadyCount');
-    if (count) count.textContent = `${Math.min(done, total)}/${total}`;
     const label = $('#mbpReportStateText');
     if (label) label.textContent = stateText;
     updateDecodeAllButtonProgress(done, runningIndex, stateText);
@@ -4457,7 +4478,7 @@
         if (sub) sub.textContent = '中';
       } else {
         const done = Number(button.dataset.decodeDone) || 0;
-        const total = Number(button.dataset.decodeTotal) || aiTasks.length || 8;
+        const total = Number(button.dataset.decodeTotal) || reportChapterTotal || 6;
         const main = button.querySelector('[data-decode-main]');
         const sub = button.querySelector('[data-decode-sub]');
         if (!done) {
@@ -4547,7 +4568,7 @@
     state.curveGenerated = successCount >= aiTasks.length;
     state.adviceGenerated = successCount >= aiTasks.length;
     renderChaptersFromAi();
-    setDecodeStatus(successCount ? `已接入原站 AI：完成 ${successCount}/${aiTasks.length} 个模块。` : 'AI 服务暂未连接，请稍后重试。');
+    setDecodeStatus(successCount ? `已接入原站 AI：完成 ${reportChapterDoneCount()}/${reportChapterTotal} 卷。` : 'AI 服务暂未连接，请稍后重试。');
     updateDecodeProgress(successCount, -1, successCount ? '已生成' : '生成失败');
     setAllModuleButtonsBusy(false);
     if (btn) {

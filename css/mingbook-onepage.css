@@ -1884,7 +1884,7 @@ body.mbp-auth-open {
   position: absolute;
   inset: 0;
   border-radius: inherit;
-  background: repeating-conic-gradient(from -90deg, rgba(39, 27, 13, .68) 0 1.6deg, transparent 1.6deg 51.428deg);
+  background: repeating-conic-gradient(from -90deg, rgba(39, 27, 13, .72) 0 1.8deg, transparent 1.8deg 60deg);
 }
 
 .mbp-report-action-bar button.is-running {
