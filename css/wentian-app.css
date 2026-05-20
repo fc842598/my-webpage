@@ -3477,7 +3477,7 @@ html[data-wentian-language="en"] .liuren-hero-copy em {
   align-items: center;
 }
 
-.liuyao-caster-head button {
+.liuyao-caster-head > button {
   width: 38px;
   height: 38px;
   border: 0;
@@ -3513,6 +3513,27 @@ html[data-wentian-language="en"] .liuren-hero-copy em {
   font-size: 12px;
   font-style: normal;
   font-weight: 900;
+}
+
+.liuyao-caster-actions {
+  display: grid;
+  gap: 6px;
+  justify-items: end;
+}
+
+.liuyao-caster-reset {
+  height: 28px;
+  padding: 0 11px;
+  border: 1px solid #dcc8a7;
+  border-radius: 999px;
+  background: rgba(255, 253, 248, .88);
+  color: #8b5d1d;
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.liuyao-caster-reset:disabled {
+  opacity: .48;
 }
 
 .liuyao-caster-body {
@@ -3909,6 +3930,11 @@ html[data-wentian-language="en"] .liuren-hero-copy em {
   text-shadow: none;
 }
 
+.liuyao-coin-stage.is-modal .liuyao-force-label {
+  right: auto;
+  left: 28px;
+}
+
 .liuyao-coin-stage.is-ready .liuyao-swipe-cue {
   color: #3b2314;
   background: rgba(255, 226, 145, .92);
@@ -3986,6 +4012,62 @@ html[data-wentian-language="en"] .liuren-hero-copy em {
   font-size: 12px;
   font-weight: 900;
   text-align: center;
+}
+
+.liuyao-reset-confirm {
+  position: fixed;
+  inset: 0;
+  z-index: 160;
+  display: grid;
+  place-items: start center;
+  padding: calc(160px + var(--wentian-safe-top)) 24px 24px;
+  background: rgba(32, 24, 19, .38);
+}
+
+.liuyao-reset-confirm-card {
+  width: min(310px, 100%);
+  padding: 20px;
+  border: 1px solid #e7d7bf;
+  border-radius: 22px;
+  background: #fffdf8;
+  box-shadow: 0 22px 46px rgba(54, 32, 14, .22);
+}
+
+.liuyao-reset-confirm-card strong {
+  display: block;
+  color: #201813;
+  font-size: 18px;
+  font-weight: 900;
+}
+
+.liuyao-reset-confirm-card p {
+  margin: 8px 0 16px;
+  color: #756b60;
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1.55;
+}
+
+.liuyao-reset-confirm-card div {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.liuyao-reset-confirm-card button {
+  height: 42px;
+  border: 1px solid #e0cfb5;
+  border-radius: 999px;
+  background: #fffaf3;
+  color: #806124;
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.liuyao-reset-confirm-card button.primary {
+  border-color: #a54635;
+  background: #a54635;
+  color: #fffaf3;
 }
 
 .liuyao-question-card,

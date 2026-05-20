@@ -6862,6 +6862,7 @@ let liuyaoTossAnimation = null;
 let liuyaoSwipeStart = null;
 let liuyaoQuestionGateLoading = false;
 let liuyaoCastModalOpen = false;
+let liuyaoResetConfirmOpen = false;
 
 function lockLiuyaoCasterScroll(locked) {
   document.body?.classList.toggle("liuyao-caster-open", Boolean(locked));
@@ -6869,7 +6870,10 @@ function lockLiuyaoCasterScroll(locked) {
 
 function setLiuyaoCasterModalOpen(open) {
   liuyaoCastModalOpen = Boolean(open);
-  if (!liuyaoCastModalOpen) lockLiuyaoCasterScroll(false);
+  if (!liuyaoCastModalOpen) {
+    liuyaoResetConfirmOpen = false;
+    lockLiuyaoCasterScroll(false);
+  }
 }
 
 function normalizeLiuyaoCast(raw) {
@@ -7009,10 +7013,25 @@ function setLiuyaoMode(mode) {
 
 function resetLiuyaoState() {
   clearLiuyaoTossAnimation();
+  liuyaoResetConfirmOpen = false;
   setLiuyaoCasterModalOpen(false);
   liuyaoState = makeLiuyaoDefaultState();
   saveLiuyaoState();
   navigate("screen-17", false);
+}
+
+function requestLiuyaoReset() {
+  liuyaoResetConfirmOpen = true;
+  navigate("screen-17", false);
+}
+
+function cancelLiuyaoReset() {
+  liuyaoResetConfirmOpen = false;
+  navigate("screen-17", false);
+}
+
+function confirmLiuyaoReset() {
+  resetLiuyaoState();
 }
 
 function getSecureRandomByte() {
@@ -7821,7 +7840,10 @@ function renderLiuyaoCasterModal(state, options = {}) {
           <span>在线投币</span>
           <strong>${escapeHtml(tossing ? `第 ${progress + 1} 爻落地中` : `投第 ${progress + 1} 爻`)}</strong>
         </div>
-        <em>${escapeHtml(tossing ? "铜钱翻转" : "上拉松手")}</em>
+        <div class="liuyao-caster-actions">
+          <button class="liuyao-caster-reset" type="button" data-action="liuyao-reset" ${tossing ? "disabled" : ""}>清空重来</button>
+          <em>${escapeHtml(tossing ? "铜钱翻转" : "上拉松手")}</em>
+        </div>
       </div>
       <div class="liuyao-caster-body">
         ${renderLiuyaoCoinRow(state, { ...options, complete, modal: true })}
@@ -7832,6 +7854,22 @@ function renderLiuyaoCasterModal(state, options = {}) {
           <strong>${escapeHtml(last ? `${last.coins.map(getLiuyaoCoinFaceLabel).join(" ")} · ${getLiuyaoLineType(last.value).name}` : "等待第一个落爻")}</strong>
         </div>
         ${renderLiuyaoHexStack(lines, { id: "cast-modal", compact: true, landingIndex })}
+      </div>
+    </div>
+  `;
+}
+
+function renderLiuyaoResetConfirm() {
+  if (!liuyaoResetConfirmOpen) return "";
+  return `
+    <div class="liuyao-reset-confirm" role="dialog" aria-modal="true" aria-label="确认清空重来">
+      <div class="liuyao-reset-confirm-card">
+        <strong>清空重来？</strong>
+        <p>当前已投的爻会清空，回到重新起卦。</p>
+        <div>
+          <button type="button" data-action="liuyao-reset-cancel">取消</button>
+          <button type="button" class="primary" data-action="liuyao-reset-confirm">确认清空</button>
+        </div>
       </div>
     </div>
   `;
@@ -7966,6 +8004,7 @@ function sourceLiuyaoCastScreen() {
         <p class="liuyao-hint">按住上方铜钱区向上拉，力度到 18% 左右即可松手；力度会参与落币，落币后按初爻到上爻记录。</p>
       `}
       ${renderLiuyaoCasterModal(state, { complete, disabled: gateBusy || !questionReady, lockText: questionReady ? "" : questionLockText })}
+      ${renderLiuyaoResetConfirm()}
     </section>
   `;
 }
@@ -11550,7 +11589,15 @@ document.addEventListener("click", (event) => {
     return;
   }
   if (earlyAction === "liuyao-reset") {
-    resetLiuyaoState();
+    requestLiuyaoReset();
+    return;
+  }
+  if (earlyAction === "liuyao-reset-cancel") {
+    cancelLiuyaoReset();
+    return;
+  }
+  if (earlyAction === "liuyao-reset-confirm") {
+    confirmLiuyaoReset();
     return;
   }
   if (earlyAction === "liuyao-copy") {
