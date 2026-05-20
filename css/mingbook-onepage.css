@@ -6857,6 +6857,23 @@ p.mbp-topic-detail {
   padding-left: 56px;
 }
 
+.chat-msg-user::after {
+  content: "我";
+  flex: 0 0 28px;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: linear-gradient(180deg, #e3c183 0%, #b87946 100%);
+  border: 1px solid rgba(233, 207, 154, .4);
+  color: #2a1a0d;
+  font-size: 13px;
+  font-weight: 800;
+  box-shadow: 0 8px 18px rgba(163, 115, 39, .2);
+}
+
 .chat-msg-user .chat-sender {
   display: none;
 }
