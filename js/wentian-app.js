@@ -95,7 +95,7 @@ const screenFlowHotspots = {
   22: [[18, 44, 48, 48, "screen-31"], [250, 44, 112, 48, "screen-23"], [42, 735, 306, 62, "screen-24"]],
   23: [[18, 44, 48, 48, "screen-22"], [50, 680, 290, 58, "screen-22"]],
   24: [[18, 44, 48, 48, "screen-22"]],
-  25: [[302, 54, 70, 46, "screen-26"], [12, 784, 76, 72, "screen-1"], [109, 784, 76, 72, "screen-25"], [207, 784, 76, 72, "screen-3"], [304, 784, 76, 72, "screen-31"]],
+  25: [[330, 248, 44, 44, "screen-26"], [12, 784, 76, 72, "screen-1"], [109, 784, 76, 72, "screen-25"], [207, 784, 76, 72, "screen-3"], [304, 784, 76, 72, "screen-31"]],
   26: [[18, 40, 96, 54, "screen-1"]],
   27: [[18, 40, 96, 54, "screen-26"]],
   28: [[18, 44, 48, 48, "screen-31"], [42, 735, 306, 58, "screen-33"]],
@@ -3726,7 +3726,15 @@ const WENTIAN_I18N = {
     "保存密码": "Save Password",
     "确认退出登录？": "Sign out?",
     "取消": "Cancel",
-    "退出": "Sign Out"
+    "退出": "Sign Out",
+    "排盘记录": "Chart Records",
+    "个人案例": "Personal Cases",
+    "· 个人案例 ·": "· Personal ·",
+    "典藏案例": "Classic Cases",
+    "请输入姓名": "Enter name",
+    "筛选": "Filter",
+    "全部": "All",
+    "阳历": "Solar"
   },
   "zh-Hant": {
     "首页": "首頁",
@@ -3763,7 +3771,15 @@ const WENTIAN_I18N = {
     "查看": "查看",
     "本课": "本課",
     "合盘": "合盤",
-    "＋ 新建": "＋ 新建"
+    "＋ 新建": "＋ 新建",
+    "排盘记录": "排盤記錄",
+    "个人案例": "個人案例",
+    "· 个人案例 ·": "· 個人案例 ·",
+    "典藏案例": "典藏案例",
+    "请输入姓名": "請輸入姓名",
+    "筛选": "篩選",
+    "全部": "全部",
+    "阳历": "陽曆"
   }
 };
 
@@ -4482,10 +4498,16 @@ function translateWentianText(text, code = getWentianLanguageCode(), element = n
   const dict = WENTIAN_I18N[lang];
   if (!dict) return source;
   if (lang === "en" && source === "阅天AI" && element?.dataset?.nodeId?.startsWith("source-bottom-label-")) return "AI";
+  if (lang === "zh-Hant") {
+    const solarLabel = source.match(/^阳历:(.+)$/);
+    if (solarLabel) return `陽曆:${solarLabel[1]}`;
+  }
   if (lang === "en") {
     if (source.includes("\n") || source.includes("\\n")) {
       return source.split(/(?:\\n|\n)+/).map((line) => translateWentianText(line, code, element)).join("\n");
     }
+    const archiveSolarDate = source.match(/^阳历:(.+)$/);
+    if (archiveSolarDate) return `Solar: ${archiveSolarDate[1]}`;
     const exact = WENTIAN_I18N_EN_EXTRA[source] || WENTIAN_I18N_EN_ZIWEI_TERMS[source] || WENTIAN_I18N_EN_TERM_MAP[source];
     if (exact) return exact;
     if (WENTIAN_I18N_EN_BRIGHTNESS[source]) return WENTIAN_I18N_EN_BRIGHTNESS[source];
@@ -6237,34 +6259,68 @@ function initWentianChartForm() {
   setWentianChartStatus(saved?.chart ? "已接入网站排盘算法，可重新排盘" : "已接入网站排盘算法");
 }
 
+function getWentianArchiveInitial(name) {
+  const first = String(name || "").trim().charAt(0).toUpperCase();
+  if (/^[A-Z]$/.test(first)) return first;
+  return ({
+    "陈": "C", "程": "C", "付": "F", "傅": "F", "黄": "H", "胡": "H", "何": "H", "谢": "X",
+    "肖": "X", "许": "X", "李": "L", "林": "L", "刘": "L", "王": "W", "张": "Z", "赵": "Z",
+    "周": "Z", "朱": "Z", "杨": "Y", "吴": "W", "徐": "X", "孙": "S", "马": "M"
+  })[first] || "#";
+}
+
 function sourceProfileScreen(screen) {
-  const archives = getWentianArchiveList().slice(0, 5);
+  const archives = getWentianArchiveList().slice(0, 6);
+  let y = 296;
+  let lastInitial = "";
+  const rows = archives.map((archive, index) => {
+    const item = getWentianArchiveDisplay(archive);
+    const initial = getWentianArchiveInitial(item.name);
+    const group = initial !== lastInitial ? figText(`source-25-group-${index}`, initial, 18, y + 6, 24, 14, "#aaa198", 600) : "";
+    if (initial !== lastInitial) {
+      lastInitial = initial;
+      y += 30;
+    }
+    const rowY = y;
+    y += 78;
+    return `
+      ${group}
+      ${figBox(`source-25-row-line-${index}`, 88, rowY + 76, 258, 1, "", "background:#eee5d8;")}
+      ${figBox(`source-25-avatar-${index}`, 18, rowY + 8, 54, 54, "", "border-radius:27px;background:linear-gradient(180deg,#d9ab73,#c88f56);box-shadow:0 5px 12px rgba(151,102,45,.14);")}
+      ${figText(`source-25-avatar-text-${index}`, item.name.slice(0, 1) || "命", 18, rowY + 23, 54, 18, "#fffaf3", 900, "center")}
+      ${figText(`source-25-name-${index}`, escapeHtml(item.name), 90, rowY + 7, 112, 17, "#201813", 900)}
+      ${figText(`source-25-gender-text-${index}`, item.gender, 204, rowY + 10, 28, 13, "#9c938a", 700)}
+      ${figText(`source-25-date-${index}`, `阳历:${escapeHtml(item.datetime.split(" ")[0] || item.datetime)}`, 90, rowY + 34, 174, 13, "#8f8780", 700)}
+      ${figText(`source-25-detail-${index}`, escapeHtml(item.pillars), 90, rowY + 56, 208, 12, "#b08a4b", 600)}
+      ${figText(`source-25-arrow-${index}`, "›", 330, rowY + 27, 20, 20, "#b4aaa0", 600, "center")}
+      ${figButton(`source-25-open-${index}`, 0, rowY, 352, 76, `data-action="wentian-profile-open" data-archive-id="${escapeHtml(archive.id)}"`)}
+    `;
+  }).join("");
   return `
+    ${figBox("source-25-bg", 0, 0, 390, 867, "", "background:linear-gradient(180deg,#fbf6eb 0%,#fffdf8 36%,#fffdf8 100%);")}
     ${figText("source-25-time", "15:21", 18, 15, 70, 14, "#26211c")}
     ${figText("source-25-status", "◉  0.30  5G  ▮ 33 ⚡", 250, 14, 120, 10, "#26211c", 700, "right")}
-    ${figText("source-25-title", "档案", 18, 58, 150, 30, "#26211c", 800)}
-    ${figText("source-25-sub", "管理你的命盘资料", 18, 101, 180, 14, "#8f857a")}
-    ${figBox("source-25-add", 296, 56, 76, 38, "", "border-radius:18px;background:#fff;box-shadow:0 5px 14px rgba(80,55,28,.10);")}
-    ${figText("source-25-add-text", "+ 添加", 304, 68, 58, 13, "#a47725", 700, "center")}
-    ${archives.map((archive, index) => {
-      const item = getWentianArchiveDisplay(archive);
-      const y = 129 + index * 105;
-      return `
-      ${figBox(`source-25-card-${index}`, 18, y, 354, 95, "converted-card", "border-radius:12px;box-shadow:0 6px 16px rgba(74,55,32,.08);")}
-      ${figImage(`source-25-avatar-${index}`, "../images/wentian-prototype-assets/03-profile.jpg", 37, y + 18, 54, 54, "border-radius:27px;")}
-      ${figText(`source-25-name-${index}`, item.name, 102, y + 20, 58, 16, "#26211c", 800)}
-      ${figBox(`source-25-gender-${index}`, 154, y + 17, 28, 18, "", "border-radius:9px;background:#f6ecd7;")}
-      ${figText(`source-25-gender-text-${index}`, item.gender, 154, y + 21, 28, 10, "#b07a2d", 700, "center")}
-      ${figBox(`source-25-tag-${index}`, 188, y + 17, 62, 18, "", "border-radius:9px;background:#f6ecd7;")}
-      ${figText(`source-25-tag-text-${index}`, item.tag, 188, y + 21, 62, 10, "#b07a2d", 500, "center")}
-      ${item.badge ? figBox(`source-25-badge-${index}`, 326, y + 17, 36, 20, "", "border-radius:10px;background:#fbf4df;") : ""}
-      ${item.badge ? figText(`source-25-badge-text-${index}`, item.badge, 326, y + 21, 36, 10, "#b88c33", 700, "center") : ""}
-      ${figText(`source-25-date-${index}`, item.datetime, 102, y + 45, 190, 13, "#8f857a")}
-      ${figText(`source-25-detail-${index}`, item.pillars, 102, y + 67, 210, 13, "#8f857a")}
-      ${figText(`source-25-arrow-${index}`, "›", 338, y + 36, 20, 24, "#aaa196", 500, "center")}
-      ${figButton(`source-25-open-${index}`, 18, y, 354, 95, `data-action="wentian-profile-open" data-archive-id="${escapeHtml(archive.id)}"`)}
-    `;
-    }).join("")}
+    ${figText("source-25-back", "‹", 20, 56, 28, 30, "#201813", 700)}
+    ${figText("source-25-title", "排盘记录", 0, 60, 390, 24, "#201813", 900, "center")}
+    ${figText("source-25-menu", "☰", 334, 61, 34, 22, "#201813", 800, "center")}
+    ${figBox("source-25-tabs", 56, 110, 278, 58, "", "border-radius:29px;background:rgba(255,255,255,.88);box-shadow:0 9px 20px rgba(107,75,42,.08);")}
+    ${figBox("source-25-tab-active", 64, 118, 140, 42, "", "border-radius:23px;background:#604236;")}
+    ${figText("source-25-tab-active-text", "· 个人案例 ·", 64, 130, 140, 16, "#fff", 900, "center")}
+    ${figText("source-25-tab-classic", "典藏案例", 222, 131, 88, 14, "#91867c", 800, "center")}
+    ${figBox("source-25-vip", 302, 103, 34, 20, "", "border-radius:7px;background:#ffb985;")}
+    ${figText("source-25-vip-text", "VIP", 302, 108, 34, 10, "#fffaf3", 900, "center")}
+    ${figBox("source-25-search", 18, 188, 260, 48, "", "border-radius:24px;background:#fff;box-shadow:0 6px 14px rgba(90,62,34,.06);")}
+    ${figText("source-25-search-icon", "⌕", 34, 197, 32, 25, "#201813", 700, "center")}
+    ${figText("source-25-search-text", "请输入姓名", 72, 204, 120, 14, "#ada59d", 600)}
+    ${figBox("source-25-filter", 294, 188, 78, 48, "", "border-radius:24px;background:#604236;box-shadow:0 8px 16px rgba(86,54,37,.16);")}
+    ${figText("source-25-filter-text", "筛选", 294, 202, 78, 17, "#fffaf3", 900, "center")}
+    ${figText("source-25-all", "全部", 18, 262, 60, 18, "#bf8732", 900)}
+    ${figBox("source-25-add-mini", 338, 252, 28, 28, "", "border:1px solid #dad1c6;border-radius:14px;background:#fffdf9;")}
+    ${figText("source-25-add-plus", "+", 338, 257, 28, 14, "#201813", 800, "center")}
+    ${figButton("source-25-add-hit", 330, 248, 44, 44, 'data-route="screen-26" aria-label="添加档案"')}
+    ${rows}
+    ${figBox("source-25-index", 354, 496, 26, 224, "", "border-radius:14px;background:rgba(255,255,255,.9);box-shadow:0 7px 18px rgba(73,55,34,.14);")}
+    ${figText("source-25-index-text", "A\nC\nF\nH\nJ\nL\nM\nS\nX\nZ\n#", 354, 509, 26, 10, "#6f6860", 700, "center", "line-height:1.62;")}
     ${sourceAppBottomNav("档案", 778)}
   `;
 }
