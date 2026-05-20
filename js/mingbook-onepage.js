@@ -1861,10 +1861,39 @@
     return '流年';
   }
 
+  function yijingRoleLabels(tab = fcActiveTab) {
+    if (tab === '先天卦') return ['先天卦', '先天'];
+    if (tab === '后天卦') return ['后天卦', '后天'];
+    return ['流年卦', '流年', '值年卦', '值年'];
+  }
+
+  function yijingExtractRoleText(text, tab = fcActiveTab) {
+    const source = String(text || '').replace(/\r/g, '').trim();
+    if (!source) return '';
+    const labels = ['先天卦', '先天', '后天卦', '后天', '流年卦', '流年', '值年卦', '值年'];
+    const pattern = new RegExp(`(?:^|[\\s；;。])(${labels.join('|')})[：:]`, 'g');
+    const matches = [];
+    let match;
+    while ((match = pattern.exec(source))) {
+      const label = match[1];
+      const labelStart = match.index + match[0].lastIndexOf(label);
+      matches.push({ label, labelStart, contentStart: pattern.lastIndex });
+    }
+    const targets = yijingRoleLabels(tab);
+    const currentIndex = matches.findIndex((item) => targets.includes(item.label));
+    if (currentIndex < 0) return '';
+    const current = matches[currentIndex];
+    const next = matches[currentIndex + 1];
+    return source
+      .slice(current.contentStart, next ? next.labelStart : source.length)
+      .replace(/^[\s，,；;。]+/, '')
+      .trim();
+  }
+
   function yijingMasterText(result, tab = fcActiveTab) {
     const entry = fcMasterEntry(result);
     if (!entry) return '';
-    return entry[fcGuaciKey(tab)] || entry.summary || '';
+    return entry[fcGuaciKey(tab)] || yijingExtractRoleText(entry.summary, tab) || '';
   }
 
   function yijingAssistSummary(result) {
@@ -1884,6 +1913,61 @@
       .replace(/[ \t]{2,}/g, ' ')
       .replace(/\n{3,}/g, '\n\n')
       .trim();
+  }
+
+  function escapeRegExp(text) {
+    return String(text || '').replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  }
+
+  function stripYijingRolePrefix(text, tab = fcActiveTab, result = null) {
+    const labels = yijingRoleLabels(tab);
+    let next = cleanYijingReadingText(text);
+    next = next.replace(new RegExp(`^(${labels.map(escapeRegExp).join('|')})[：:]\\s*`), '');
+    if (result?.name) {
+      next = next.replace(new RegExp(`^${escapeRegExp(result.name)}(?:卦)?[：:，,。\\s]*`), '');
+    }
+    return next.trim();
+  }
+
+  function yijingCompareText(text) {
+    return cleanYijingReadingText(text).replace(/[^\u4e00-\u9fa5A-Za-z0-9]/g, '');
+  }
+
+  function stripRepeatedYijingOriginal(text, original) {
+    let next = cleanYijingReadingText(text);
+    const source = cleanYijingReadingText(original);
+    if (!next || !source) return next;
+
+    const exact = source.split(/\s+/).map(escapeRegExp).join('\\s*');
+    const exactPattern = new RegExp(`^${exact}[\\s，,。；;、]*`);
+    const exactRemoved = next.replace(exactPattern, '').trim();
+    if (exactRemoved !== next) return exactRemoved;
+
+    const sourceHead = yijingCompareText(source);
+    const nextHead = yijingCompareText(next);
+    let overlap = 0;
+    while (overlap < sourceHead.length && overlap < nextHead.length && sourceHead[overlap] === nextHead[overlap]) {
+      overlap += 1;
+    }
+    if (overlap >= 8) {
+      return next.replace(/^.{8,180}?[。！？；;]/, '').trim();
+    }
+    return next;
+  }
+
+  function yijingDisplayMasterText(text, original, result, tab = fcActiveTab) {
+    const withoutLabel = stripYijingRolePrefix(text, tab, result);
+    const withoutOriginal = stripRepeatedYijingOriginal(withoutLabel, original);
+    return withoutOriginal || withoutLabel;
+  }
+
+  function yijingDetailWithoutLead(text, lead) {
+    const source = cleanYijingReadingText(text);
+    const head = cleanYijingReadingText(lead);
+    if (!source || !head) return source;
+    const exact = head.split(/\s+/).map(escapeRegExp).join('\\s*');
+    const next = source.replace(new RegExp(`^${exact}[\\s，,。；;、]*`), '').trim();
+    return next || source;
   }
 
   function yijingReadableSentence(text, fallback = '') {
@@ -2014,9 +2098,11 @@
     const masterSummary = $('#mbpYijingMasterSummary');
     const masterText = $('#mbpYijingMasterText');
     const imageReading = $('#mbpYijingImageReading');
-    const master = fcMasterEntry(result);
     const guaciTextValue = fcGuaciText(result);
-    const masterBody = yijingMasterText(result);
+    const masterRawBody = yijingMasterText(result);
+    const masterBody = yijingDisplayMasterText(masterRawBody, guaciTextValue, result);
+    const masterLead = yijingReadableSentence(masterBody);
+    const masterDetail = yijingDetailWithoutLead(masterBody, masterLead);
 
     if (name) name.textContent = result?.name || '等待排盘';
     if (summary) summary.textContent = yijingAssistSummary(result);
@@ -2049,18 +2135,18 @@
     }
 
     if (imageReading) {
-      imageReading.innerHTML = yijingImageReadingHtml(result, masterBody, master?.summary);
+      imageReading.innerHTML = yijingImageReadingHtml(result, masterBody);
     }
 
     if (masterTitle) {
       masterTitle.textContent = result ? `${yijingMasterLabel()} · ${result.name}` : '等待排盘';
     }
     if (masterSummary) {
-      masterSummary.textContent = cleanYijingReadingText(master?.summary) || (result ? '此卦暂无名师总论。' : '排盘后显示讲课式总论。');
+      masterSummary.textContent = masterLead || (result ? '此卦暂无名师总论。' : '排盘后显示讲课式总论。');
     }
     if (masterText) {
       masterText.innerHTML = renderYijingTextSections(
-        masterBody,
+        masterDetail,
         result ? '此卦暂无对应名师解读。' : '排盘后显示对应卦位的逐条讲解。'
       );
     }
