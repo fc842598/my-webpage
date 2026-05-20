@@ -2459,6 +2459,43 @@
       : null;
   }
 
+  function hasPlainAiPayload(value) {
+    if (!value || typeof value !== 'object' || Array.isArray(value)) return false;
+    if (value.card || value.finalAnswer || value.answer || value.text) return true;
+    if (typeof value.result === 'string' && value.result.trim()) return true;
+    return Boolean(value.title || value.summary || value.body || value.content || value.sections || value.profileBadge);
+  }
+
+  function unwrapAiEnvelope(data, depth = 0) {
+    if (!data || typeof data !== 'object' || Array.isArray(data) || depth > 4 || hasPlainAiPayload(data)) return data;
+    const envelopeKeys = ['data', 'result', 'payload', 'output', 'response'];
+    for (const key of envelopeKeys) {
+      const value = data[key];
+      if (!value) continue;
+      if (typeof value === 'string') {
+        const parsed = parseAiJson(value);
+        const loose = parsed ? null : looseAiCard(value);
+        if (!parsed && !loose && !value.trim()) continue;
+        const unwrapped = parsed && typeof parsed === 'object' && !Array.isArray(parsed)
+          ? unwrapAiEnvelope(parsed, depth + 1)
+          : (loose ? { card: loose } : { finalAnswer: value });
+        return { ...data, ...unwrapped };
+      }
+      if (typeof value === 'object' && !Array.isArray(value)) {
+        const unwrapped = unwrapAiEnvelope(value, depth + 1);
+        if (unwrapped !== value || hasPlainAiPayload(unwrapped)) {
+          return {
+            ...data,
+            ...unwrapped,
+            meta: data.meta || unwrapped.meta,
+            backendSteps: data.backendSteps || unwrapped.backendSteps,
+          };
+        }
+      }
+    }
+    return data;
+  }
+
   function normalizeAiData(data) {
     if (!data) return data;
     if (typeof data === 'string') {
@@ -2466,6 +2503,8 @@
       const loose = parsed ? null : looseAiCard(data);
       return parsed ? normalizeAiData(parsed) : (loose ? { card: loose } : { card: { body: data } });
     }
+    const unwrapped = unwrapAiEnvelope(data);
+    if (unwrapped !== data) return normalizeAiData(unwrapped);
     const rootText = data.finalAnswer || data.answer || data.result || data.text;
     const parsedRoot = parseAiJson(rootText);
     const looseRoot = parsedRoot ? null : looseAiCard(rootText);
@@ -2497,6 +2536,21 @@
     }
     const finalAnswer = parseAiJson(normalized?.finalAnswer) ? '' : normalized?.finalAnswer;
     return cleanAiText(card.body || card.summary || finalAnswer || '');
+  }
+
+  function hasAiRenderableContent(data) {
+    if (!data || data._error) return false;
+    return Boolean(aiCardText(data));
+  }
+
+  function aiErrorData(task, message) {
+    return {
+      _error: true,
+      card: {
+        title: task?.label || '批命结果',
+        body: `生成失败：${message}`,
+      },
+    };
   }
 
   function aiCardTitle(data, fallback) {
@@ -3177,6 +3231,7 @@
       domain,
       theme,
       yearGz,
+      yearFocus,
     } = currentLuckViewInfo();
     const sections = aiSections(data);
     const summary = insightSummary(data, fallbackText || `${palaceName}主${domain}，这十年先稳住根基，再看机会扩张。`, 170);
@@ -3343,7 +3398,7 @@
   }
 
   function generatedModuleCount() {
-    return aiTasks.filter((task) => state.aiResults[task.module]).length;
+    return aiTasks.filter((task) => hasAiRenderableContent(state.aiResults[task.module])).length;
   }
 
   const reportChapterProgressGroups = [
@@ -3357,7 +3412,7 @@
 
   function reportChapterProgress(group, runningModule, totalDone, totalModules) {
     if (group.modules) {
-      const done = group.modules.filter((moduleKey) => state.aiResults[moduleKey]).length;
+      const done = group.modules.filter((moduleKey) => hasAiRenderableContent(state.aiResults[moduleKey])).length;
       const total = group.modules.length;
       const running = group.modules.includes(runningModule);
       if (done >= total) return { ratio: 1, state: 'done', text: '完成' };
@@ -4004,6 +4059,9 @@
     setDecodeStatus(`正在单独批命：${task.label}`);
     try {
       const data = await callOriginalAi(task.module);
+      if (!hasAiRenderableContent(data)) {
+        throw new Error('AI 已返回，但没有可展示正文，请重试');
+      }
       state.aiResults[task.module] = data;
       setModuleDone(task.module, true);
       if (task.key) {
@@ -4023,10 +4081,13 @@
       return true;
     } catch (error) {
       const message = friendlyAiError(error);
+      const errorData = aiErrorData(task, message);
+      state.aiResults[task.module] = errorData;
       if (task.key) {
-        renderSpecialAi(task.key, { card: { title: task.label, body: `⚠ ${message}` } }, task.label);
+        renderSpecialAi(task.key, errorData, task.label);
         setSpecialStatus(task.key, message, 'error');
       }
+      renderChaptersFromAi();
       updateDecodeProgress(generatedModuleCount(), -1, '生成失败');
       setDecodeStatus(`${task.label} 失败：${message}`);
       return false;
@@ -4095,8 +4156,11 @@
       setDecodeStatus(`正在调用原站 AI 批命：${task.label}`);
       try {
         const data = await callOriginalAi(task.module);
+        if (!hasAiRenderableContent(data)) {
+          throw new Error('AI 已返回，但没有可展示正文，请重试');
+        }
         state.aiResults[task.module] = data;
-        successCount += 1;
+        successCount = generatedModuleCount();
         setModuleDone(task.module, true);
         if (task.key) {
           renderSpecialAi(task.key, data, task.label);
@@ -4106,13 +4170,18 @@
         updateDecodeProgress(successCount, index, task.label);
       } catch (error) {
         const message = friendlyAiError(error);
+        const errorData = aiErrorData(task, message);
+        state.aiResults[task.module] = errorData;
         if (task.key) {
-          renderSpecialAi(task.key, { card: { title: task.label, body: `⚠ ${message}` } }, task.label);
+          renderSpecialAi(task.key, errorData, task.label);
           setSpecialStatus(task.key, message, 'error');
         }
+        renderChaptersFromAi();
+        updateDecodeProgress(successCount, index, '生成失败');
       }
     }
 
+    successCount = generatedModuleCount();
     renderChaptersFromAi();
     state.curveGenerated = successCount >= aiTasks.length;
     state.adviceGenerated = successCount >= aiTasks.length;
