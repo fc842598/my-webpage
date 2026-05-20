@@ -2970,7 +2970,6 @@
               <strong>整体是“先压后升，中年见高点”</strong>
               <p>36岁前后守住节奏，44岁前后主动扩张，56岁后还有第二波抬升。</p>
             </div>
-            <em>客户易懂版</em>
           </div>
           <div class="mbp-curve-chart" aria-label="人生曲线示意">
             <svg viewBox="0 0 760 210" role="img">
