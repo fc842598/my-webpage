@@ -5782,6 +5782,24 @@ function setWentianChatBusy(busy) {
   if (send) send.disabled = busy;
 }
 
+function shouldAutoFocusWentianChatInput() {
+  const coarsePointer = window.matchMedia?.("(pointer: coarse)")?.matches === true;
+  return !coarsePointer && window.innerWidth >= 768;
+}
+
+function settleWentianChatInputFocus(input) {
+  if (!input) return;
+  if (!shouldAutoFocusWentianChatInput()) {
+    input.blur();
+    return;
+  }
+  try {
+    input.focus({ preventScroll: true });
+  } catch (_err) {
+    input.focus();
+  }
+}
+
 function getWentianXuModeText(mode, phase = "ready") {
   const map = {
     liuyao: { connecting: "接入占卜中…", ready: "占卜已接入", typing: "许半仙正在看卦…" },
@@ -5847,7 +5865,10 @@ async function sendWentianXuChat(promptText = "") {
   const input = document.getElementById("wentian-chat-input");
   const message = (promptText || input?.value || "").trim();
   if (!message) return;
-  if (input) input.value = "";
+  if (input) {
+    input.value = "";
+    if (!shouldAutoFocusWentianChatInput()) input.blur();
+  }
 
   const payload = getWentianXuChatPayload();
   const outboundMessage = buildWentianXuOutboundMessage(message, payload.divinationContext);
@@ -5877,7 +5898,7 @@ async function sendWentianXuChat(promptText = "") {
     addWentianMessage("system", getWentianFriendlyError(error));
   } finally {
     setWentianChatBusy(false);
-    input?.focus();
+    settleWentianChatInputFocus(input);
   }
 }
 
