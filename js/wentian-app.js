@@ -7907,9 +7907,6 @@ function sourceLiuyaoCastScreen() {
   const gate = normalizeLiuyaoQuestionGate(state.questionGate, question);
   const questionReady = Boolean(gate?.allowed);
   const questionLockText = gateBusy ? "审题中，稍候开放" : "提交通过后开放投币";
-  const stepOneClass = questionReady ? "is-done" : "is-active";
-  const stepTwoClass = complete || progress > 0 ? "is-done" : (questionReady ? "is-active" : "");
-  const stepThreeClass = complete ? "is-done" : (progress > 0 ? "is-active" : "");
   return `
     ${figBox("ly17-bg", 0, 0, 390, 1480, "", "background:linear-gradient(180deg,#fffdf8 0%,#fbf7ef 50%,#f3eadc 100%);")}
     ${wentianSimpleHeader("ly17", "六爻占卜")}
@@ -7917,9 +7914,7 @@ function sourceLiuyaoCastScreen() {
     <section class="liuyao-panel">
       <div class="liuyao-question-card liuyao-ask-card">
         <div class="liuyao-ask-head">
-          <span>三枚铜钱 · 六次成卦</span>
           <strong>先定一问，再起六爻</strong>
-          <em>自下而上成爻，6/9 为动爻，动则成变卦。</em>
         </div>
         <label for="liuyao-question">所问之事</label>
         <textarea id="liuyao-question" maxlength="${LIUYAO_QUESTION_MAX_LENGTH}" rows="2" placeholder="一句话写清楚所问，例如：本月是否推进某个项目？">${escapeHtml(getLiuyaoQuestionInputValue(state))}</textarea>
@@ -7933,11 +7928,6 @@ function sourceLiuyaoCastScreen() {
           <div class="liuyao-coin-panel-head">
             <span>在线投币</span>
             <strong>${complete ? "卦已成" : `第 ${progress + 1} 爻`}</strong>
-          </div>
-          <div class="liuyao-flow-steps" aria-label="起卦流程">
-            <span class="${stepOneClass}"><i>1</i>定问</span>
-            <span class="${stepTwoClass}"><i>2</i>蓄力</span>
-            <span class="${stepThreeClass}"><i>3</i>落爻</span>
           </div>
           ${renderLiuyaoCoinSummary(state, { complete, disabled: gateBusy || !questionReady, lockText: questionReady ? "" : questionLockText })}
         </div>

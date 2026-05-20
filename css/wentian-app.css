@@ -3386,51 +3386,6 @@ html[data-wentian-language="en"] .liuren-hero-copy em {
   font-weight: 900;
 }
 
-.liuyao-flow-steps {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 7px;
-  margin-bottom: 12px;
-}
-
-.liuyao-flow-steps span {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 5px;
-  height: 28px;
-  border: 1px solid rgba(154, 104, 28, .16);
-  border-radius: 999px;
-  background: rgba(255, 253, 248, .72);
-  color: #8d7d6c;
-  font-size: 11px;
-  font-weight: 900;
-}
-
-.liuyao-flow-steps i {
-  display: grid;
-  place-items: center;
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  background: rgba(154, 104, 28, .1);
-  color: inherit;
-  font-style: normal;
-  font-size: 10px;
-}
-
-.liuyao-flow-steps span.is-active {
-  border-color: rgba(194, 149, 60, .45);
-  background: #fff2d8;
-  color: #9a681c;
-}
-
-.liuyao-flow-steps span.is-done {
-  border-color: rgba(63, 124, 85, .28);
-  background: #edf6ed;
-  color: #3f7c55;
-}
-
 .liuyao-coin-summary {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
@@ -4061,39 +4016,18 @@ html[data-wentian-language="en"] .liuren-hero-copy em {
 }
 
 .liuyao-ask-head {
-  display: grid;
-  gap: 5px;
   margin: 0 -14px 2px;
-  padding: 14px 18px 12px;
+  padding: 18px;
   background:
     radial-gradient(circle at 84% 14%, rgba(255, 220, 132, .24) 0 19%, transparent 20%),
     linear-gradient(135deg, #201713 0%, #6d2b22 56%, #b9822e 100%);
 }
 
-.liuyao-question-card .liuyao-ask-head span,
-.liuyao-question-card .liuyao-ask-head strong,
-.liuyao-question-card .liuyao-ask-head em {
-  display: block;
-}
-
-.liuyao-question-card .liuyao-ask-head span {
-  color: #f1c46b;
-  font-size: 12px;
-  font-weight: 900;
-}
-
 .liuyao-question-card .liuyao-ask-head strong {
+  display: block;
   color: #fffaf3;
   font-size: 24px;
   line-height: 1.12;
-}
-
-.liuyao-question-card .liuyao-ask-head em {
-  color: #eadcc7;
-  font-size: 12px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: 1.35;
 }
 
 .liuyao-question-card label,
