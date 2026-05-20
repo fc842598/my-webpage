@@ -7187,6 +7187,13 @@ function getLiuyaoState() {
   return liuyaoState;
 }
 
+function formatLiuyaoMovingLineText(movingLines, prefix = "") {
+  const lines = Array.isArray(movingLines) ? movingLines : [];
+  const labels = lines.map((line) => line?.label).filter(Boolean);
+  const text = labels.length ? labels.join("、") : "无";
+  return `${prefix}${text}`;
+}
+
 function saveLiuyaoState() {
   try {
     localStorage.setItem(LIUYAO_STORAGE_KEY, JSON.stringify(getLiuyaoState()));
@@ -8248,9 +8255,7 @@ function sourceLiuyaoCastScreen() {
     ? makeLiuyaoManualCastFromCoins(getLiuyaoManualCoins(state, progress))
     : null;
   const completeResult = complete ? getLiuyaoResult(state) : null;
-  const completeMovingText = completeResult?.movingLines?.length
-    ? completeResult.movingLines.map((line) => `${line.label}${line.mark}`).join("、")
-    : "无动爻";
+  const completeMovingText = completeResult ? formatLiuyaoMovingLineText(completeResult.movingLines) : "无";
   const screenHeight = getLiuyaoCastScreenHeight();
   const casterOptions = { complete, disabled: gateBusy || !questionReady, lockText: questionReady ? "" : questionLockText };
   if (state.mode === "online" && liuyaoCastModalOpen && !complete) {
@@ -8347,9 +8352,7 @@ function sourceLiuyaoResultScreen() {
       </section>
     `;
   }
-  const heroCueText = result.movingLines.length
-    ? `${result.movingLines.length}处变化`
-    : "卦象稳定";
+  const heroCueText = formatLiuyaoMovingLineText(result.movingLines, "动爻：");
   const screenHeight = getLiuyaoResultScreenHeight();
   return `
     ${figBox("ly20-bg", 0, 0, 390, screenHeight, "", "background:linear-gradient(180deg,#fffdf8 0%,#fbf7ef 54%,#f3eadc 100%);")}
@@ -8404,9 +8407,7 @@ function makeLiuyaoXuContext(result = getLiuyaoResult()) {
   }
   const primaryReading = getLiuyaoHexReading(result.primary);
   const changedReading = getLiuyaoHexReading(result.changed);
-  const movingText = result.movingLines.length
-    ? result.movingLines.map((line) => `${line.label}${line.mark}`).join("、")
-    : "无动爻";
+  const movingText = formatLiuyaoMovingLineText(result.movingLines);
   const primaryTip = firstReadableSentence(primaryReading.summary, "先看本卦所处局面。");
   const changedTip = result.movingLines.length
     ? firstReadableSentence(changedReading.summary, "变卦看后续走向。")
