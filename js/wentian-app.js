@@ -856,9 +856,11 @@ function sourceAiChatScreen(screen) {
     }
   ];
   const faqGroups = isLiuyaoChat ? liuyaoFaqGroups : isHepanChat ? hepanFaqGroups : isLiurenChat ? liurenFaqGroups : chartFaqGroups;
+  const activeArchive = chatContext ? null : getCurrentWentianArchive();
+  const activeProfile = activeArchive ? getWentianArchiveDisplay(activeArchive) : null;
   const contextTitle = chatContext?.title || (isHepanChat ? "情侣合盘" : isLiurenChat ? "六壬课" : "六爻占卜");
   const contextSummary = chatContext?.summaryLine || "";
-  const profileText = isLiuyaoChat ? "本卦⌄" : isHepanChat ? "合盘⌄" : isLiurenChat ? "本课⌄" : "命主⌄";
+  const profileText = isLiuyaoChat ? "本卦⌄" : isHepanChat ? "合盘⌄" : isLiurenChat ? "本课⌄" : `${activeProfile?.name || "命主"}⌄`;
   const chatRoleText = isLiuyaoChat ? "占卜专批 · 在线" : isHepanChat ? "合盘专批 · 在线" : isLiurenChat ? "六壬专批 · 在线" : "命盘顾问 · 在线";
   const contextLabel = isHepanChat ? "本次合盘" : isLiurenChat ? "本次六壬课" : "本次占问";
   const contextQuestion = chatContext?.question || (isHepanChat ? "双方关系" : isLiurenChat ? "所念之事" : "所问之事");
@@ -2154,6 +2156,8 @@ function stepWentianClassicChartTime(hoursDelta) {
   resetWentianChartAiState(chartData.chartRecordId);
   saveWentianChart({
     ...saved,
+    archiveId: saved.archiveId || saved.form?.archiveId || `archive-${chartData.chartRecordId}`,
+    chartRecordId: chartData.chartRecordId,
     chart,
     chartData,
     form: {
@@ -2303,9 +2307,31 @@ function buildWentianChartPayload(chart, norm) {
 }
 
 function getWentianChartPayload() {
-  const chartRecordId = getWentianChartRecordId();
   const saved = getWentianSavedChart();
-  if (saved?.chartData) return { ...saved.chartData, chartRecordId };
+  if (saved?.chartData) {
+    const form = saved.form || {};
+    const chartRecordId = saved.chartRecordId || saved.chartData.chartRecordId || getWentianChartRecordId();
+    const archiveId = saved.archiveId || form.archiveId || `archive-${chartRecordId}`;
+    const selectedProfile = {
+      archiveId,
+      chartRecordId,
+      name: form.name || saved.chartData.name || "命主",
+      gender: form.gender || saved.chartData.gender || "",
+      datetime: form.datetime || saved.chartData.birthDate || saved.chartData.solarTime || "",
+      city: form.city || saved.chartData.city || "",
+      type: form.type || "ziwei",
+    };
+    return {
+      ...saved.chartData,
+      chartRecordId,
+      archiveId,
+      selectedArchiveId: archiveId,
+      selectedArchiveName: selectedProfile.name,
+      selectedProfile,
+      form: selectedProfile,
+    };
+  }
+  const chartRecordId = getWentianChartRecordId();
   return { ...WENTIAN_XU_CHART_BASE, chartRecordId };
 }
 
@@ -5140,14 +5166,13 @@ function applyWentianArchiveToCurrent(archive) {
   setWentianSelectedArchiveId(archive.id);
   saveWentianChart({
     archiveId: archive.id,
+    chartRecordId,
     chart: archive.chart || null,
     chartData: { ...archive.chartData, chartRecordId },
     form: { ...(archive.form || {}), archiveId: archive.id },
     createdAt: archive.createdAt || new Date().toISOString(),
   }, { upsertArchive: false });
-  wentianXuChat.sessionId = null;
-  wentianXuChat.sessionPromise = null;
-  wentianXuChat.messages = [];
+  resetWentianXuChatRuntime();
   pushWentianArchivesToRemote(getWentianArchiveList());
   return true;
 }
@@ -5878,7 +5903,7 @@ function initWentianXuChat() {
     const nameEl = document.querySelector('[data-node-id="source-4-bazi-name"]');
     if (nameEl) nameEl.textContent = `${saved.form?.name || "当前"}的八字`;
     const profileEl = document.querySelector('[data-node-id="source-4-profile-text"]');
-    if (profileEl) profileEl.textContent = "命主⌄";
+    if (profileEl) profileEl.textContent = `${saved.form?.name || saved.chartData?.selectedArchiveName || "命主"}⌄`;
     const footEl = document.querySelector('[data-node-id="source-4-bazi-foot"]');
     if (footEl) footEl.textContent = `日主：${sizhu.dayStem || "—"}    生肖：${saved.chartData?.zodiac || "—"}`;
   }
@@ -6214,6 +6239,7 @@ async function submitWentianChartForm() {
 
     saveWentianChart({
       archiveId: `archive-${chartData.chartRecordId}`,
+      chartRecordId: chartData.chartRecordId,
       chart,
       chartData,
       form: {
