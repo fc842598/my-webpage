@@ -4909,7 +4909,8 @@ html[data-wentian-language="en"] .liuren-hero-copy em {
   border-radius: 999px;
   background: rgba(255, 250, 243, .14);
   color: #ffe4a5;
-  font-size: 12px;
+  font-size: 13px;
+  font-weight: 900;
   text-align: center;
 }
 

@@ -8347,9 +8347,9 @@ function sourceLiuyaoResultScreen() {
       </section>
     `;
   }
-  const movingText = result.movingLines.length
-    ? result.movingLines.map((line) => `${line.label}${line.mark}`).join("、")
-    : "无动爻";
+  const heroCueText = result.movingLines.length
+    ? `${result.movingLines.length}处变化`
+    : "卦象稳定";
   const screenHeight = getLiuyaoResultScreenHeight();
   return `
     ${figBox("ly20-bg", 0, 0, 390, screenHeight, "", "background:linear-gradient(180deg,#fffdf8 0%,#fbf7ef 54%,#f3eadc 100%);")}
@@ -8359,7 +8359,7 @@ function sourceLiuyaoResultScreen() {
         <span>本卦</span>
         <strong>${escapeHtml(result.primary.name)}</strong>
         <em>${escapeHtml(formatLiuyaoHexMeta(result.primary))}</em>
-        <b>${escapeHtml(movingText)}</b>
+        <b>${escapeHtml(heroCueText)}</b>
       </div>
       <div class="liuyao-result-pair">
         <article class="is-image-card">
