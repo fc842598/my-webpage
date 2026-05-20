@@ -42,7 +42,7 @@
   let fcCurrentChart = null;
   let fcCurrentGender = 'male';
   let fcBirthPillars = null;
-  const defaultProfile = { name: '', year: 1990, month: 8, day: 16, hour: 12, minute: 0, gender: 'male', city: '北京市 东城区', cityName: '北京市 东城区' };
+  const defaultProfile = { name: '', year: 1991, month: 2, day: 16, hour: 22, minute: 8, gender: 'male', city: '广东 深圳', cityName: '广东 深圳' };
   const starProfiles = {
     紫微: { trait: '主星稳重，有掌控局面和整合资源的能力', career: '适合管理、统筹、品牌和资源型岗位', wealth: '财运重在长期配置，不宜频繁追涨杀跌', love: '感情里要减少控制感，多给对方空间' },
     天府: { trait: '格局厚实，重秩序、信用与长期积累', career: '适合组织管理、财务、法务、运营与稳定体系', wealth: '守财能力强，越长期越能看出优势', love: '重承诺，也需要被稳定回应' },
@@ -265,10 +265,24 @@
   function profileFromSaved() {
     try {
       const raw = localStorage.getItem(storageKey);
-      return raw ? normalizeProfile(JSON.parse(raw)) : null;
+      const profile = raw ? normalizeProfile(JSON.parse(raw)) : null;
+      return isLegacyDefaultProfile(profile) ? null : profile;
     } catch (_) {
       return null;
     }
+  }
+
+  function isLegacyDefaultProfile(profile) {
+    if (!profile) return false;
+    const city = String(profile.city || profile.cityName || '');
+    return !profile.name
+      && profile.gender === 'male'
+      && Number(profile.year) === 1990
+      && Number(profile.month) === 8
+      && Number(profile.day) === 16
+      && Number(profile.hour) === 12
+      && Number(profile.minute) === 0
+      && /北京|东城/.test(city);
   }
 
   function readJsonList(key) {
@@ -731,6 +745,10 @@
   }
 
   async function bootDesktopAuth() {
+    if (!getDesktopAuthClient()) {
+      renderDesktopAuth();
+      return null;
+    }
     if (!isDesktopAuthCallbackUrl()) {
       await initDesktopAuth();
       if (desktopAuthState.session?.user) hydrateDesktopMemberStatus({ force: true });
@@ -756,6 +774,7 @@
       renderDesktopAuth();
     }
   }
+  window.mbpBootDesktopAuth = bootDesktopAuth;
 
   function indexToHour(index) {
     const idx = clampNumber(index, 0, 11, 6);
