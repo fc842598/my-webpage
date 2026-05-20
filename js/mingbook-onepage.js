@@ -128,6 +128,8 @@
     { module: 'jiankang', key: 'health', label: '健康批命' },
     { module: 'caiyun', key: 'wealth', label: '财运批命' },
     { module: 'shiye', key: 'career', label: '事业批命' },
+    { module: 'life_curve', label: '人生曲线' },
+    { module: 'action_advice', label: '行动建议' },
   ];
 
   const chapterActions = [
@@ -135,8 +137,8 @@
     { label: '单独批专题', action: 'specials' },
     { label: '批选中十年', module: 'current_luck' },
     { label: '单独批小限', module: 'xiaoxian_liunian' },
-    { label: '生成曲线', action: 'curve' },
-    { label: '生成建议', module: 'overall' },
+    { label: '生成曲线', module: 'life_curve' },
+    { label: '生成建议', module: 'action_advice' },
   ];
 
   function chapterActionButton(index) {
@@ -3790,8 +3792,8 @@
     { modules: ['shengong', 'hunyin', 'jiankang', 'caiyun', 'shiye'] },
     { modules: ['current_luck'] },
     { modules: ['xiaoxian_liunian'] },
-    { virtual: 'curve' },
-    { virtual: 'advice' },
+    { modules: ['life_curve'] },
+    { modules: ['action_advice'] },
   ];
 
   function reportChapterProgress(group, runningModule, totalDone, totalModules) {
@@ -3803,14 +3805,6 @@
       if (running) return { ratio: Math.max(done / total, 0.12), state: 'running', text: total > 1 ? `${done}/${total}` : '生成中' };
       if (done > 0) return { ratio: done / total, state: 'partial', text: `${done}/${total}` };
       return { ratio: 0, state: 'pending', text: '等待' };
-    }
-    if (group.virtual === 'curve') {
-      if (state.curveGenerated || totalDone >= totalModules) return { ratio: 1, state: 'done', text: '完成' };
-      if (state.batchDecoding && (totalDone > 0 || runningModule)) return { ratio: Math.min(.72, Math.max(.18, totalDone / totalModules)), state: 'running', text: '整理中' };
-    }
-    if (group.virtual === 'advice') {
-      if (state.adviceGenerated || totalDone >= totalModules) return { ratio: 1, state: 'done', text: '完成' };
-      if (state.batchDecoding && (totalDone > 1 || runningModule)) return { ratio: Math.min(.82, Math.max(.12, totalDone / totalModules)), state: 'running', text: '整理中' };
     }
     return { ratio: 0, state: 'pending', text: '等待' };
   }
@@ -4320,9 +4314,13 @@
     const luckInfo = selectedLuckInfo({ readonly: true });
     const luck = luckDataForSelected(luckInfo) || normalizeAiData(state.aiResults.current_luck);
     const xiaoLian = normalizeAiData(state.aiResults.xiaoxian_liunian);
+    const lifeCurve = normalizeAiData(state.aiResults.life_curve);
+    const actionAdvice = normalizeAiData(state.aiResults.action_advice);
     const overallText = aiCardText(overall);
     const luckText = aiCardText(luck);
     const xiaoText = aiCardText(xiaoLian);
+    const curveText = aiCardText(lifeCurve);
+    const adviceText = aiCardText(actionAdvice);
     const specialModules = [
       ['shengong', '身宫批命'],
       ['hunyin', '婚姻批命'],
@@ -4353,14 +4351,13 @@
     const specialBriefText = specialBriefSections
       .map((section) => `${section.title}：${section.content}`)
       .join('\n\n');
-    const overallCard = normalizeAiData(overall)?.card || {};
     const decodeList = $('#mbpDecodeList');
     if (decodeList) {
       const highlights = [
         ['主线', overallText || '整体批命生成后显示'],
         ['十年', luckText || '十年大限生成后显示'],
         ['小限', xiaoText || '小限流年生成后显示'],
-        ['专题', specialText || '五项专题生成后显示'],
+        ['建议', adviceText || curveText || specialText || '曲线与建议生成后显示'],
       ];
       decodeList.innerHTML = highlights.map((item) => `
         <p><strong>${escapeHtml(item[0])}</strong>${escapeHtml(trimText(item[1], 48))}</p>
@@ -4371,15 +4368,15 @@
       ['专题批命', specialBriefText || '五项专题等待原站 AI 返回。', specialBriefSections, 'specials'],
       ['十年大限解读', luckText || '选择十年大限后，点击“批选中十年”生成整体解盘。', null, 'luck'],
       ['小限流年', xiaoText || '点击“单独批小限”后生成小限流年解读。', null, 'xiaoxian'],
-      ['人生曲线', '人生曲线属于原站独立模块，下一步接入原站曲线评分与关键年份。', null, 'curve'],
-      ['行动建议', overallCard.risk ? `要留意：${overallCard.risk}` : '先看命盘底色，再看大运节奏；重要决策不只问准不准，还要知道何时动、如何动。', null, 'advice'],
+      [aiCardTitle(lifeCurve, '人生曲线'), curveText || '点击“生成曲线”后生成。', null, 'life_curve'],
+      [aiCardTitle(actionAdvice, '行动建议'), adviceText || '点击“生成建议”后生成。', null, 'action_advice'],
     ];
     const chapters = $('#mbpChapters');
     if (chapters) {
       chapters.classList.add('is-generated');
       chapters.innerHTML = chaptersData.map((item, index) => {
         const type = item[3] || '';
-        const data = type === 'overall' ? overall : type === 'luck' ? luck : type === 'xiaoxian' ? xiaoLian : { card: { title: item[0], body: item[1], sections: item[2] || null } };
+        const data = type === 'overall' ? overall : type === 'luck' ? luck : type === 'xiaoxian' ? xiaoLian : type === 'life_curve' ? lifeCurve : type === 'action_advice' ? actionAdvice : { card: { title: item[0], body: item[1], sections: item[2] || null } };
         return `
         <article class="mbp-report-row" id="mbp-chapter-${index}" data-report-chapter="${index}">
           <span>卷${index + 1}</span>
@@ -4388,7 +4385,7 @@
             ${chapterActionButton(index)}
           </div>
             <div class="mbp-report-content">
-              ${type === 'specials' ? renderSpecialChapterBlock(item[2], item[1]) : type === 'luck' ? renderLuckChapterBlock(data, item[1]) : type === 'xiaoxian' ? renderXiaoLianChapterBlock(data, item[1]) : type === 'curve' ? (state.curveGenerated ? renderCurveChapterBlock() : renderPendingChapterBlock('点击“生成曲线”后生成。')) : type === 'advice' ? (state.adviceGenerated ? renderActionAdviceBlock(overall, luck, xiaoLian) : renderPendingChapterBlock('点击“生成建议”后生成。')) : renderInsightBlock(data, item[0], item[1], {
+              ${type === 'specials' ? renderSpecialChapterBlock(item[2], item[1]) : type === 'luck' ? renderLuckChapterBlock(data, item[1]) : type === 'xiaoxian' ? renderXiaoLianChapterBlock(data, item[1]) : (type === 'life_curve' || type === 'action_advice') && !moduleHasRenderable(type) ? renderPendingChapterBlock(item[1]) : renderInsightBlock(data, item[0], item[1], {
                 summaryMax: 128,
                 bulletLimit: 0,
                 direct: true,
@@ -5416,7 +5413,7 @@
       actionButton.disabled = true;
       actionButton.classList.add('is-running');
       try {
-        if (actionButton.dataset.reportAction === 'curve') generateCurveChapter();
+        if (actionButton.dataset.reportAction === 'curve') await decodeSingleModule('life_curve');
         if (actionButton.dataset.reportAction === 'specials') await decodeSpecialChapter();
       } finally {
         actionButton.disabled = false;
