@@ -34,8 +34,8 @@ const SITE_CONFIG = {
 
   // ── 六爻审题方式 ─────────────────────────────────────────
   // local：前端本地按“一事一占”判断，国内直连不依赖 Vercel/OpenAI
-  // remote：走 AI 后端审题，适合后端已放到国内可稳定访问时使用
-  liuyaoQuestionGateMode: "local",
+  // remote：走 AI 后端审题，由后台提示词调用大模型判断
+  liuyaoQuestionGateMode: "remote",
 };
 
 window.SITE_CONFIG = SITE_CONFIG;

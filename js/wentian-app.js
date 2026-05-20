@@ -467,7 +467,7 @@ function getWentianBottomNavActive(nodeId) {
 
 function withWentianStandardBottomNav(nodeId, body, height) {
   const baseHeight = Number(height) || WENTIAN_PHONE_HEIGHT;
-  if (!/^screen-\d+$/.test(String(nodeId)) || hasWentianBottomNav(body)) {
+  if (!/^screen-\d+$/.test(String(nodeId)) || hasWentianBottomNav(body) || /class="liuyao-caster-modal"/.test(String(body))) {
     return { body, height: baseHeight };
   }
   const navY = Math.max(755, Math.round(baseHeight));
@@ -7080,6 +7080,7 @@ const LIUYAO_TRIGRAM_BY_BITS = {
 
 function getLiuyaoCastScreenHeight() {
   const state = getLiuyaoState();
+  if (state.mode === "online" && liuyaoCastModalOpen) return 844;
   return state.mode === "manual" ? 1480 : 1024;
 }
 const LIUYAO_LINE_LABELS = ["初爻", "二爻", "三爻", "四爻", "五爻", "上爻"];
@@ -7584,28 +7585,12 @@ function reviewLiuyaoQuestionLocally(question) {
 }
 
 async function reviewLiuyaoQuestionViaChat(question) {
-  const reviewPrompt = [
-    "你是六爻起卦前的审题员，只判断这个问题是否适合起卦，不解卦。",
-    "标准：一事一占/一问一卦；不疑不占；问题必须具体到对象、阶段、行动或结果；空泛、多问、测试、娱乐、重复乱占、不义之问，都不允许起卦。",
-    "同一个项目/网站/店铺下，同时问能否做起来、能否赚钱、未来一年是否盈利，视为同一件项目成败问题，可以通过。",
-    `页面样例问题“${LIUYAO_SAMPLE_QUESTION}”不能当成用户真实问题。`,
-    `用户所问：${question}`,
-    '只输出 JSON：{"allowed":true或false,"reason":"一句话原因","suggestion":"不能起卦时的改写建议","labels":["命中的标准"]}',
-  ].join("\n");
-  const reviewRecordId = makeWentianUuid();
-  const data = await wentianPostJson("/api/ai/chat/send", {
-    chartRecordId: reviewRecordId,
-    message: reviewPrompt,
-    displayMessage: "六爻起卦审题",
-    chartData: {
-      chartRecordId: reviewRecordId,
-      chatMode: "liuyao_question_gate",
-      source: "六爻起卦审题",
-    },
+  const data = await wentianPostJson("/api/ai/liuyao-question", {
+    question,
     chatMode: "liuyao_question_gate",
     divinationContext: { type: "liuyao_question_gate", question },
-    transientState: { messages: [], messageCount: 0 },
-  }, 120000, 0);
+  }, 60000, 0);
+  if (typeof data?.allowed === "boolean") return data;
   const parsed = parseLiuyaoGateJson(data?.reply);
   if (!parsed) throw new Error("chat gate parse failed");
   return parsed;
@@ -8294,9 +8279,9 @@ function sourceLiuyaoCastScreen() {
         ${tossing ? `<p class="liuyao-casting-status">本次力度 ${Math.max(18, Math.min(100, Number(liuyaoTossAnimation.power) || 62))}%；铜钱翻转 1 秒后落入第 ${progress + 1} 爻。</p>` : ""}
         ${renderLiuyaoHexStack(lines, { id: "cast" })}
       </div>
-      ${renderLiuyaoCasterModal(state, { complete, disabled: gateBusy || !questionReady, lockText: questionReady ? "" : questionLockText })}
-      ${renderLiuyaoResetConfirm()}
     </section>
+    ${renderLiuyaoCasterModal(state, { complete, disabled: gateBusy || !questionReady, lockText: questionReady ? "" : questionLockText })}
+    ${renderLiuyaoResetConfirm()}
   `;
 }
 
