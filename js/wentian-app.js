@@ -7065,6 +7065,11 @@ const LIUYAO_TRIGRAM_BY_BITS = {
   "001": { gua: "艮", name: "山", key: "gen" },
   "000": { gua: "坤", name: "地", key: "kun" }
 };
+
+function getLiuyaoCastScreenHeight() {
+  const state = getLiuyaoState();
+  return state.mode === "manual" ? 1480 : 1024;
+}
 const LIUYAO_LINE_LABELS = ["初爻", "二爻", "三爻", "四爻", "五爻", "上爻"];
 const LIUYAO_MANUAL_EMPTY_COINS = [null, null, null];
 let liuyaoState = null;
@@ -8223,8 +8228,9 @@ function sourceLiuyaoCastScreen() {
   const gate = normalizeLiuyaoQuestionGate(state.questionGate, question);
   const questionReady = Boolean(gate?.allowed);
   const questionLockText = gateBusy ? "审题中，稍候开放" : "提交通过后开放投币";
+  const screenHeight = getLiuyaoCastScreenHeight();
   return `
-    ${figBox("ly17-bg", 0, 0, 390, 1480, "", "background:linear-gradient(180deg,#fffdf8 0%,#fbf7ef 50%,#f3eadc 100%);")}
+    ${figBox("ly17-bg", 0, 0, 390, screenHeight, "", "background:linear-gradient(180deg,#fffdf8 0%,#fbf7ef 50%,#f3eadc 100%);")}
     ${wentianSimpleHeader("ly17", "六爻占卜")}
     <button class="liuyao-top-reset" type="button" data-action="liuyao-reset">重来</button>
     <section class="liuyao-panel">
@@ -11210,7 +11216,7 @@ function renderConvertedScreen(no) {
   }
   const polishedScreen = renderWentianPolishedScreen(screen);
   if (polishedScreen) {
-    const polishedHeight = screen.no === 8 ? 1280 : screen.no === 17 || screen.no === 18 || screen.no === 19 ? 1480 : screen.no === 20 ? 1280 : screen.no === 22 ? 1120 : screen.no === 24 ? 1180 : screen.no === 44 ? getYangzhaiResultHeight() : screen.no === 46 ? LIUREN_SCREEN_HEIGHT : screen.no === 49 ? 1160 : 844;
+    const polishedHeight = screen.no === 8 ? 1280 : screen.no === 17 ? getLiuyaoCastScreenHeight() : screen.no === 18 || screen.no === 19 ? 1480 : screen.no === 20 ? 1280 : screen.no === 22 ? 1120 : screen.no === 24 ? 1180 : screen.no === 44 ? getYangzhaiResultHeight() : screen.no === 46 ? LIUREN_SCREEN_HEIGHT : screen.no === 49 ? 1160 : 844;
     const wideBgClass = screen.no >= 42 && screen.no <= 45 ? " wide-bg" : "";
     const customHotspots = screen.no >= 17 && screen.no <= 20 ? "" : convertedFlowHotspots(screen);
     return figPhone(`screen-${screen.no}`, `${String(screen.no).padStart(2, "0")} ${screen.title}`, `
