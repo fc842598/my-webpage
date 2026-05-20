@@ -5366,8 +5366,8 @@ html[data-wentian-language="en"] .liuren-hero-copy em {
 
 .wentian-chart-ai-meter {
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 6px;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 4px;
   margin: 0 0 12px;
 }
 
@@ -5387,20 +5387,24 @@ html[data-wentian-language="en"] .liuren-hero-copy em {
 
 .wentian-chart-ai-modules {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 8px;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 6px;
   margin-bottom: 14px;
 }
 
 .wentian-chart-ai-modules button {
-  height: 34px;
+  min-height: 32px;
+  height: auto;
+  padding: 4px 3px;
   border: 1px solid #e5d8c6;
   border-radius: 9px;
   background: #fff;
   color: #725d48;
   font-family: inherit;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 900;
+  line-height: 1.12;
+  white-space: normal;
 }
 
 .wentian-chart-ai-modules button.is-ready {
@@ -5463,14 +5467,14 @@ html[lang="en"] .wentian-chart-ai-modules button {
 
 .wentian-chart-ai-menu {
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 7px;
   margin-bottom: 16px;
 }
 
 .wentian-chart-ai-menu button {
   min-width: 0;
-  height: 56px;
+  height: 48px;
   border: 1px solid #eadbc7;
   border-radius: 10px;
   background: #fff;
@@ -5542,8 +5546,8 @@ html[lang="en"] .wentian-chart-ai-menu span {
 
 .wentian-mb-chapter-head {
   display: grid;
-  grid-template-columns: 42px minmax(0, 1fr) 82px;
-  gap: 10px;
+  grid-template-columns: 38px minmax(0, 1fr) 78px;
+  gap: 8px;
   align-items: start;
   margin-bottom: 12px;
 }
@@ -5573,14 +5577,18 @@ html[lang="en"] .wentian-chart-ai-menu span {
 
 .wentian-mb-chapter-head button,
 .wentian-mb-topic-grid button {
-  height: 32px;
+  min-height: 32px;
+  height: auto;
+  padding: 5px 6px;
   border: 1px solid #d8c7ad;
   border-radius: 9px;
   background: #fffaf3;
   color: #8f3d30;
   font-family: inherit;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 900;
+  line-height: 1.12;
+  white-space: normal;
 }
 
 html[lang="en"] .wentian-mb-chapter-head {
@@ -5661,6 +5669,35 @@ html[lang="en"] .wentian-mb-topic-grid button {
 
 .wentian-mb-topic-grid section.is-ready {
   background: #fff4dd;
+}
+
+.wentian-mb-year-meta {
+  display: grid;
+  gap: 5px;
+  margin-bottom: 9px;
+  padding: 11px 12px;
+  border-radius: 12px;
+  background: #fff7e6;
+}
+
+.wentian-mb-year-meta span {
+  color: #b88c33;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.wentian-mb-year-meta b {
+  color: #251d18;
+  font-size: 15px;
+  font-weight: 900;
+}
+
+.wentian-mb-year-meta p {
+  margin: 0;
+  color: #74695e;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.45;
 }
 
 .wentian-mb-curve {
