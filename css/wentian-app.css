@@ -2912,6 +2912,8 @@ html[data-wentian-language="en"] .liuren-hero-copy em {
   opacity: 0;
   text-align: center;
   transform: translate(-50%, -50%) scale(.90);
+  backface-visibility: hidden;
+  will-change: opacity, transform;
   animation: liurenBadgePulse calc(var(--liuren-step-duration, .2s) + .10s) linear var(--pulse-delay) 1 both;
 }
 
@@ -3017,19 +3019,6 @@ html[data-wentian-language="en"] .liuren-hero-copy em {
   50% {
     opacity: .86;
     transform: scale(1.12);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .liuren-hand-board.is-revealed img,
-  .liuren-palace-button,
-  .liuren-palace-button::after,
-  .liuren-palace-pulse {
-    animation: none !important;
-  }
-
-  .liuren-palace-pulse {
-    display: none;
   }
 }
 
