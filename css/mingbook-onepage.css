@@ -5138,6 +5138,18 @@ p.mbp-topic-detail {
   line-height: 1.2;
 }
 
+.mbp-xiaolian-age-rail {
+  grid-auto-columns: minmax(82px, 100px);
+  margin-bottom: 14px;
+}
+
+.mbp-xiaolian-age-rail strong {
+  overflow: hidden;
+  font-size: 12px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
 .mbp-luck-reading {
   display: grid;
   gap: 14px;

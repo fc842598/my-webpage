@@ -32,6 +32,7 @@
   let fcSequenceStartYear = 1990;
   let fcZipingMaxAge = 100;
   const decadeDisplayMaxStartAge = 100;
+  const xiaoLianDisplayMaxAge = 100;
   let fcActiveBranch = '';
   let fcYearCards = [];
   let fcYearlyMap = {};
@@ -72,7 +73,9 @@
     decoded: false,
     aiResults: {},
     luckAiResults: {},
+    xiaoLianAiResults: {},
     selectedLuckRangeKey: '',
+    selectedXiaoLianAge: '',
     batchDecoding: false,
     curveGenerated: false,
     adviceGenerated: false,
@@ -1443,7 +1446,9 @@
     state.decoded = false;
     state.aiResults = {};
     state.luckAiResults = {};
+    state.xiaoLianAiResults = {};
     state.selectedLuckRangeKey = '';
+    state.selectedXiaoLianAge = '';
     state.batchDecoding = false;
     window._chart = null;
     window._chartInputs = null;
@@ -1510,6 +1515,19 @@
   function fcClampAge(age) {
     const num = Math.floor(Number(age) || 1);
     return Math.max(1, Math.min(fcMaxAge(), num));
+  }
+
+  function xiaoLianMaxAge() {
+    return xiaoLianDisplayMaxAge;
+  }
+
+  function clampXiaoLianAge(age) {
+    const num = Math.floor(Number(age) || 1);
+    return Math.max(1, Math.min(xiaoLianMaxAge(), num));
+  }
+
+  function xiaoLianAgeToYear(age) {
+    return fcSequenceStartYear + clampXiaoLianAge(age) - 1;
   }
 
   function fcAgeToYear(age) {
@@ -3178,37 +3196,81 @@
     };
   }
 
-  function xiaoLianExtraParams() {
-    const luckInfo = selectedLuckInfo({ forceCurrent: true, readonly: true });
-    const chart = luckInfo.chart;
-    const currentAge = Math.max(1, luckInfo.currentAge || fcCurrentVirtualAge());
-    const selectedDayun = decadePayload(luckInfo.current || luckInfo.selected);
-    const liunian = fcLiunianSeq?.[currentAge] || {};
-    const year = fcAgeToYear(currentAge) || new Date().getFullYear();
+  function xiaoLianAgeKey(age) {
+    return String(clampXiaoLianAge(age));
+  }
+
+  function xiaoLianInfoForAge(chart, age, currentAge = fcCurrentVirtualAge()) {
+    const safeAge = clampXiaoLianAge(age);
+    const liunian = fcLiunianSeq?.[safeAge] || {};
+    const year = xiaoLianAgeToYear(safeAge) || new Date().getFullYear();
     const yearGz = liunian.yearGanzhi ? `${liunian.yearGanzhi.stem || ''}${liunian.yearGanzhi.branch || ''}` : ganzhiYear(year);
-    const xiaoLianBranch = fcResolveXiaoLianBranch(currentAge);
+    const xiaoLianBranch = fcResolveXiaoLianBranch(safeAge);
     const xiaoLianPalace = fcPalaceByBranch(chart, xiaoLianBranch);
     const oppositeBranch = fcOppositeBranch(xiaoLianBranch);
     const oppositePalace = fcPalaceByBranch(chart, oppositeBranch);
+    const xiaoLabel = palaceViewLabel(xiaoLianPalace, xiaoLianBranch);
+    const oppositeLabel = palaceViewLabel(oppositePalace, oppositeBranch);
+    const decadeItems = decadeItemsForChart(chart, safeAge);
+    const decade = decadeItems.find((item) => safeAge >= item.start && safeAge <= item.end) || null;
+    return {
+      key: xiaoLianAgeKey(safeAge),
+      age: safeAge,
+      year,
+      yearGz,
+      liunian,
+      xiaoLianBranch,
+      xiaoLianPalace,
+      oppositeBranch,
+      oppositePalace,
+      xiaoLabel,
+      oppositeLabel,
+      decade,
+      isCurrent: safeAge === currentAge,
+    };
+  }
+
+  function xiaoLianAgeItems(chart, currentAge = fcCurrentVirtualAge()) {
+    return Array.from({ length: xiaoLianMaxAge() }, (_, index) => xiaoLianInfoForAge(chart, index + 1, currentAge));
+  }
+
+  function selectedXiaoLianInfo(options = {}) {
+    const bundle = getChartBundle();
+    const chart = bundle.chart || state.chart;
+    const currentAge = clampXiaoLianAge(fcCurrentVirtualAge());
+    const items = xiaoLianAgeItems(chart, currentAge);
+    const selectedAge = options.forceCurrentXiaoLian ? currentAge : clampXiaoLianAge(state.selectedXiaoLianAge || currentAge);
+    const current = items.find((item) => item.age === currentAge) || items[0] || null;
+    const selected = items.find((item) => item.age === selectedAge) || current || items[0] || null;
+    if (selected && !options.readonly && (!state.selectedXiaoLianAge || options.forceCurrentXiaoLian || !items.some((item) => item.age === Number(state.selectedXiaoLianAge)))) {
+      state.selectedXiaoLianAge = selected.age;
+    }
+    return { chart, items, current, selected, currentAge, selectedDecade: selected?.decade || null, currentDecade: current?.decade || null };
+  }
+
+  function xiaoLianExtraParams(options = {}) {
+    const info = selectedXiaoLianInfo({ forceCurrentXiaoLian: options.forceCurrentXiaoLian, readonly: true });
+    const selected = info.selected || {};
+    const selectedDayun = decadePayload(info.selectedDecade || info.currentDecade);
     const selectedYear = {
-      age: currentAge,
-      solarYear: year,
-      yearGanzhi: yearGz,
-      xiaolianBranch: xiaoLianBranch || '',
-      xiaolianPalaceName: normalizePalaceName(xiaoLianPalace?.name || ''),
-      xiaolianPalace: palacePayload(xiaoLianPalace),
-      oppositeBranch: oppositeBranch || '',
-      oppositePalaceName: normalizePalaceName(oppositePalace?.name || ''),
-      oppositePalace: palacePayload(oppositePalace),
-      liunianGuaName: liunian.name || '',
-      liunianGuaPeriod: liunian.period || '',
-      lineNum: liunian.lineNum || '',
-      lineType: liunian.lineType || '',
-      tianjiLineNum: liunian.lineNum || '',
-      tianjiLineType: liunian.lineType || '',
+      age: selected.age,
+      solarYear: selected.year,
+      yearGanzhi: selected.yearGz,
+      xiaolianBranch: selected.xiaoLianBranch || '',
+      xiaolianPalaceName: normalizePalaceName(selected.xiaoLianPalace?.name || ''),
+      xiaolianPalace: palacePayload(selected.xiaoLianPalace),
+      oppositeBranch: selected.oppositeBranch || '',
+      oppositePalaceName: normalizePalaceName(selected.oppositePalace?.name || ''),
+      oppositePalace: palacePayload(selected.oppositePalace),
+      liunianGuaName: selected.liunian?.name || '',
+      liunianGuaPeriod: selected.liunian?.period || '',
+      lineNum: selected.liunian?.lineNum || '',
+      lineType: selected.liunian?.lineType || '',
+      tianjiLineNum: selected.liunian?.lineNum || '',
+      tianjiLineType: selected.liunian?.lineType || '',
     };
     return {
-      activeAge: currentAge,
+      activeAge: selected.age,
       selectedDayun,
       decadeData: selectedDayun,
       selectedYear,
@@ -3221,7 +3283,36 @@
     return normalizeAiData(state.luckAiResults[info.selected.key] || (info.selected.key === info.current?.key ? state.aiResults.current_luck : null));
   }
 
+  function xiaoLianDataForSelected(info = selectedXiaoLianInfo({ readonly: true })) {
+    if (!info.selected) return null;
+    return normalizeAiData(state.xiaoLianAiResults[info.selected.key] || (info.selected.isCurrent ? state.aiResults.xiaoxian_liunian : null));
+  }
+
+  function hasAnyLuckResult() {
+    return hasAiRenderableContent(state.aiResults.current_luck) || Object.values(state.luckAiResults || {}).some(hasAiRenderableContent);
+  }
+
+  function hasAnyXiaoLianResult() {
+    return hasAiRenderableContent(state.aiResults.xiaoxian_liunian) || Object.values(state.xiaoLianAiResults || {}).some(hasAiRenderableContent);
+  }
+
+  function moduleHasRenderable(moduleKey) {
+    if (moduleKey === 'current_luck') return hasAnyLuckResult();
+    if (moduleKey === 'xiaoxian_liunian') return hasAnyXiaoLianResult();
+    return hasAiRenderableContent(state.aiResults[moduleKey]);
+  }
+
   function storeAiResult(moduleKey, data, options = {}) {
+    if (moduleKey === 'xiaoxian_liunian') {
+      const info = selectedXiaoLianInfo({ forceCurrentXiaoLian: options.forceCurrentXiaoLian });
+      if (!info.selected) {
+        state.aiResults.xiaoxian_liunian = data;
+        return true;
+      }
+      state.xiaoLianAiResults[info.selected.key] = data;
+      if (info.selected.isCurrent) state.aiResults.xiaoxian_liunian = data;
+      return hasAnyXiaoLianResult();
+    }
     if (moduleKey !== 'current_luck') {
       state.aiResults[moduleKey] = data;
       return true;
@@ -3234,7 +3325,7 @@
     state.luckAiResults[info.selected.key] = data;
     const isCurrent = info.selected.key === info.current?.key;
     if (isCurrent) state.aiResults.current_luck = data;
-    return isCurrent;
+    return hasAnyLuckResult();
   }
 
   function ganzhiYear(year) {
@@ -3406,6 +3497,21 @@
     `;
   }
 
+  function renderXiaoLianAgeRail(info) {
+    const selectedAge = info.selected?.age || info.currentAge;
+    return `
+      <div class="mbp-decade-rail mbp-xiaolian-age-rail" data-xiaolian-age-rail aria-label="小限流年年龄选择">
+        ${info.items.map((item) => `
+          <button type="button" class="${item.age === selectedAge ? 'is-active' : ''}${item.isCurrent ? ' is-current' : ''}" data-xiaolian-age="${item.age}" ${item.isCurrent ? 'data-xiaolian-current="true"' : ''} title="${escapeHtml(`${item.age}岁 · ${item.year} ${item.yearGz} · ${item.xiaoLabel}`)}">
+            <span>${item.age}岁</span>
+            <strong>${escapeHtml(item.xiaoLabel)}</strong>
+            ${item.isCurrent ? '<em>当前</em>' : ''}
+          </button>
+        `).join('')}
+      </div>
+    `;
+  }
+
   function renderLuckDecadeRail(info) {
     const selectedKey = info.selectedDecade?.key || '';
     const currentKey = info.currentDecade?.key || '';
@@ -3474,12 +3580,35 @@
   }
 
   function renderXiaoLianChapterBlock(data, fallbackText) {
-    if (!hasAiRenderableContent(data)) {
-      return renderPendingChapterBlock(fallbackText || '点击“单独批小限”后生成小限流年解读。');
+    const info = selectedXiaoLianInfo();
+    const selected = info.selected || {};
+    const selectedData = xiaoLianDataForSelected(info) || (selected.isCurrent ? normalizeAiData(data) : null);
+    const hasContent = hasAiRenderableContent(selectedData);
+    requestAnimationFrame(() => {
+      const target = document.querySelector('[data-xiaolian-age].is-active') || document.querySelector('[data-xiaolian-current="true"]');
+      target?.scrollIntoView({ inline: 'center', block: 'nearest' });
+    });
+    const header = `
+      ${renderXiaoLianAgeRail(info)}
+      ${renderXiaoLianYearBlock({
+        age: selected.age,
+        year: selected.year,
+        yearGz: selected.yearGz,
+        liunian: selected.liunian || {},
+        xiaoPalace: selected.xiaoLianPalace,
+        xiaoLabel: selected.xiaoLabel,
+        oppositePalace: selected.oppositePalace,
+        oppositeLabel: selected.oppositeLabel,
+      })}
+    `;
+    if (!hasContent) {
+      return `
+        ${header}
+        ${renderPendingChapterBlock('选择上方 1-100 岁，再点“单独批小限”生成这一年的小限流年解读。')}
+      `;
     }
-    const info = currentLuckViewInfo();
-    const sections = aiSections(data);
-    const summary = insightSummary(data, fallbackText || `${info.year} ${info.yearGz}，小限落${info.xiaoLabel}，对宫看${info.oppositeLabel}。`, 170);
+    const sections = aiSections(selectedData);
+    const summary = insightSummary(selectedData, fallbackText || `${selected.year} ${selected.yearGz}，小限落${selected.xiaoLabel}，对宫看${selected.oppositeLabel}。`, 170);
     const summarySentences = splitReadableSentences(summary);
     const usedSummarySentences = new Set();
     const xiaoPoint = luckSectionText(
@@ -3487,36 +3616,27 @@
       summarySentences,
       usedSummarySentences,
       ['小限', '落宫'],
-      ['小限', '落宫', info.xiaoLabel],
-      `小限落${info.xiaoLabel}，先看今年触发点。`
+      ['小限', '落宫', selected.xiaoLabel],
+      `小限落${selected.xiaoLabel}，先看今年触发点。`
     );
     const oppositePoint = luckSectionText(
       sections,
       summarySentences,
       usedSummarySentences,
       ['对宫', '应事'],
-      ['对宫', '应事', info.oppositeLabel],
-      `对宫${info.oppositeLabel}，主外部牵动和现实应事。`
+      ['对宫', '应事', selected.oppositeLabel],
+      `对宫${selected.oppositeLabel}，主外部牵动和现实应事。`
     );
     const guaPoint = luckSectionText(
       sections,
       summarySentences,
       usedSummarySentences,
       ['流年卦', '卦象'],
-      ['流年卦', '卦象', info.liunian.name || ''].filter(Boolean),
-      `${info.liunian.name || '流年卦象'}看当年应期，配合小限宫位落到具体事。`
+      ['流年卦', '卦象', selected.liunian?.name || ''].filter(Boolean),
+      `${selected.liunian?.name || '流年卦象'}看当年应期，配合小限宫位落到具体事。`
     );
     return `
-      ${renderXiaoLianYearBlock({
-        age: info.currentAge,
-        year: info.year,
-        yearGz: info.yearGz,
-        liunian: info.liunian,
-        xiaoPalace: info.xiaoLianPalace,
-        xiaoLabel: info.xiaoLabel,
-        oppositePalace: info.oppositePalace,
-        oppositeLabel: info.oppositeLabel,
-      })}
+      ${header}
       ${renderLuckSummaryParts([
         { title: '小限落点', text: xiaoPoint },
         { title: '对宫应事', text: oppositePoint },
@@ -3580,7 +3700,7 @@
   }
 
   function generatedModuleCount() {
-    return aiTasks.filter((task) => hasAiRenderableContent(state.aiResults[task.module])).length;
+    return aiTasks.filter((task) => moduleHasRenderable(task.module)).length;
   }
 
   const reportChapterProgressGroups = [
@@ -3594,7 +3714,7 @@
 
   function reportChapterProgress(group, runningModule, totalDone, totalModules) {
     if (group.modules) {
-      const done = group.modules.filter((moduleKey) => hasAiRenderableContent(state.aiResults[moduleKey])).length;
+      const done = group.modules.filter((moduleKey) => moduleHasRenderable(moduleKey)).length;
       const total = group.modules.length;
       const running = group.modules.includes(runningModule);
       if (done >= total) return { ratio: 1, state: 'done', text: '完成' };
@@ -4256,8 +4376,8 @@
         throw new Error('AI 已返回，但没有可展示正文，请重试');
       }
       const countsAsModule = storeAiResult(task.module, data, options);
-      const moduleDone = task.module === 'current_luck'
-        ? countsAsModule || hasAiRenderableContent(state.aiResults.current_luck)
+      const moduleDone = task.module === 'current_luck' || task.module === 'xiaoxian_liunian'
+        ? countsAsModule || moduleHasRenderable(task.module)
         : true;
       setModuleDone(task.module, moduleDone);
       if (task.key) {
@@ -4338,7 +4458,9 @@
     state.decoded = true;
     state.aiResults = {};
     state.luckAiResults = {};
+    state.xiaoLianAiResults = {};
     state.selectedLuckRangeKey = '';
+    state.selectedXiaoLianAge = '';
     state.curveGenerated = false;
     state.adviceGenerated = false;
     state.batchDecoding = true;
@@ -4354,7 +4476,9 @@
       if (task.key) setSpecialStatus(task.key, '正在生成…', 'running');
       setDecodeStatus(`正在调用原站 AI 批命：${task.label}`);
       try {
-        const taskOptions = task.module === 'current_luck' ? { forceCurrentLuck: true } : {};
+        const taskOptions = task.module === 'current_luck'
+          ? { forceCurrentLuck: true }
+          : (task.module === 'xiaoxian_liunian' ? { forceCurrentXiaoLian: true } : {});
         const data = await callOriginalAi(task.module, taskOptions);
         if (!hasAiRenderableContent(data)) {
           throw new Error('AI 已返回，但没有可展示正文，请重试');
@@ -4371,7 +4495,9 @@
       } catch (error) {
         const message = friendlyAiError(error);
         const errorData = aiErrorData(task, message);
-        const taskOptions = task.module === 'current_luck' ? { forceCurrentLuck: true } : {};
+        const taskOptions = task.module === 'current_luck'
+          ? { forceCurrentLuck: true }
+          : (task.module === 'xiaoxian_liunian' ? { forceCurrentXiaoLian: true } : {});
         storeAiResult(task.module, errorData, taskOptions);
         if (task.key) {
           renderSpecialAi(task.key, errorData, task.label);
@@ -5141,7 +5267,9 @@
       state.decoded = false;
       state.aiResults = {};
       state.luckAiResults = {};
+      state.xiaoLianAiResults = {};
       state.selectedLuckRangeKey = '';
+      state.selectedXiaoLianAge = '';
       state.batchDecoding = false;
       document.body.classList.remove('is-decoded');
       saveProfile();
@@ -5179,6 +5307,13 @@
         state.selectedLuckRangeKey = decadeButton.dataset.luckDecade || '';
         renderChaptersFromAi();
         scrollToReportChapter(2);
+        return;
+      }
+      const xiaoLianAgeButton = event.target.closest('[data-xiaolian-age]');
+      if (xiaoLianAgeButton) {
+        state.selectedXiaoLianAge = clampXiaoLianAge(xiaoLianAgeButton.dataset.xiaolianAge);
+        renderChaptersFromAi();
+        scrollToReportChapter(3);
         return;
       }
       const moduleButton = event.target.closest('[data-report-module]');
