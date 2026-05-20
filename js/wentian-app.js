@@ -7814,6 +7814,23 @@ function clearLiuyaoManualLine(lineIndex) {
   navigateLiuyaoCastPreservingScroll();
 }
 
+function clearLastLiuyaoManualLine() {
+  clearLiuyaoTossAnimation();
+  const state = getLiuyaoState();
+  state.mode = "manual";
+  while (state.casts.length < 6) state.casts.push(null);
+  state.manualCoins = normalizeLiuyaoManualCoins(state.manualCoins, state.casts);
+  for (let line = 5; line >= 0; line -= 1) {
+    if (normalizeLiuyaoCast(state.casts[line])) {
+      state.manualCoins[line] = LIUYAO_MANUAL_EMPTY_COINS.slice();
+      state.casts[line] = null;
+      saveLiuyaoState();
+      navigateLiuyaoCastPreservingScroll();
+      return;
+    }
+  }
+}
+
 async function showLiuyaoResultIfAllowed() {
   if (!(await ensureLiuyaoQuestionAllowed())) return false;
   if (getLiuyaoResult()) {
@@ -8120,7 +8137,13 @@ function renderLiuyaoManualCoinInput(state, options = {}) {
   const disabled = Boolean(options.disabled);
   const casts = Array.from({ length: 6 }, (_, index) => normalizeLiuyaoCast(state.casts[index]));
   const nextIndex = casts.findIndex((cast) => !cast);
-  const activeIndex = nextIndex >= 0 ? nextIndex : 5;
+  const complete = nextIndex < 0 && casts.every(Boolean);
+  const activeIndex = complete ? -1 : nextIndex;
+  const currentIndex = activeIndex >= 0 ? activeIndex : 5;
+  const currentCoins = activeIndex >= 0 ? getLiuyaoManualCoins(state, currentIndex) : [];
+  const completedRows = casts
+    .map((cast, lineIndex) => ({ cast, lineIndex, type: cast ? getLiuyaoLineType(cast.value) : null }))
+    .filter((item) => item.cast && item.type);
   const renderFaceButton = (lineIndex, coinIndex, value, current) => `
     <button
       type="button"
@@ -8141,34 +8164,48 @@ function renderLiuyaoManualCoinInput(state, options = {}) {
         </div>
         <em>${getLiuyaoProgress(state)}/6</em>
       </div>
-      <p>现实中每次抛三枚铜钱，把每枚铜钱的正反录到对应爻位；三枚选满后自动生成少阳、少阴、老阳或老阴。</p>
-      <div class="liuyao-manual-lines">
-        ${Array.from({ length: 6 }, (_, lineIndex) => {
-          const coins = getLiuyaoManualCoins(state, lineIndex);
-          const cast = casts[lineIndex];
-          const type = cast ? getLiuyaoLineType(cast.value) : null;
-          return `
-            <div class="liuyao-manual-line ${cast ? "is-complete" : ""} ${lineIndex === activeIndex ? "is-next" : ""}">
-              <div class="liuyao-manual-line-title">
-                <strong>${LIUYAO_LINE_LABELS[lineIndex]}</strong>
-                <span>${type ? `${cast.value} ${type.name}${type.mark ? ` ${type.mark}` : ""}` : "选三枚铜钱"}</span>
-              </div>
-              <div class="liuyao-manual-coins">
-                ${[0, 1, 2].map((coinIndex) => `
-                  <div class="liuyao-manual-coin-pick">
-                    <i>第 ${coinIndex + 1} 枚</i>
-                    <span>
-                      ${renderFaceButton(lineIndex, coinIndex, 3, coins[coinIndex])}
-                      ${renderFaceButton(lineIndex, coinIndex, 2, coins[coinIndex])}
-                    </span>
-                  </div>
-                `).join("")}
-              </div>
-              <button type="button" class="liuyao-manual-clear" data-action="liuyao-manual-clear-line" data-line-index="${lineIndex}" ${disabled || !coins.some(Boolean) ? "disabled" : ""}>重选</button>
+      <p>每次只录当前这一爻：现实中抛三枚铜钱，再按结果点正反；三枚录满后自动进入下一爻。</p>
+      ${complete ? `
+        <div class="liuyao-manual-done">
+          <strong>六爻已录完</strong>
+          <span>可以查看卦象解读，或重录上一爻。</span>
+          <button type="button" class="liuyao-manual-undo" data-action="liuyao-manual-clear-last" ${disabled ? "disabled" : ""}>重录上一爻</button>
+        </div>
+      ` : `
+        <div class="liuyao-manual-current">
+          <div class="liuyao-manual-current-head">
+            <div>
+              <strong>${LIUYAO_LINE_LABELS[currentIndex]}</strong>
+              <span>第 ${currentIndex + 1}/6 爻</span>
             </div>
-          `;
-        }).join("")}
-      </div>
+            <em>${currentCoins.filter(Boolean).length}/3</em>
+          </div>
+          <div class="liuyao-manual-status">${currentCoins.filter(Boolean).length >= 3 ? "本爻已成，准备进入下一爻。" : "抛三枚铜钱后，依次录入第 1、2、3 枚。"}</div>
+          <div class="liuyao-manual-coins">
+            ${[0, 1, 2].map((coinIndex) => `
+              <div class="liuyao-manual-coin-pick">
+                <i>第 ${coinIndex + 1} 枚</i>
+                <span>
+                  ${renderFaceButton(currentIndex, coinIndex, 3, currentCoins[coinIndex])}
+                  ${renderFaceButton(currentIndex, coinIndex, 2, currentCoins[coinIndex])}
+                </span>
+              </div>
+            `).join("")}
+          </div>
+          <div class="liuyao-manual-current-actions">
+            <button type="button" class="liuyao-manual-clear" data-action="liuyao-manual-clear-line" data-line-index="${currentIndex}" ${disabled || !currentCoins.some(Boolean) ? "disabled" : ""}>清空本爻</button>
+            <button type="button" class="liuyao-manual-undo" data-action="liuyao-manual-clear-last" ${disabled || !completedRows.length ? "disabled" : ""}>重录上一爻</button>
+          </div>
+        </div>
+      `}
+      ${completedRows.length ? `
+        <div class="liuyao-manual-history">
+          <span>已录入</span>
+          <div>
+            ${completedRows.map(({ cast, lineIndex, type }) => `<i>${LIUYAO_LINE_LABELS[lineIndex]} ${cast.value}${type.name}${type.mark ? type.mark : ""}</i>`).join("")}
+          </div>
+        </div>
+      ` : ""}
     </div>
   `;
 }
@@ -11795,6 +11832,10 @@ document.addEventListener("click", (event) => {
   }
   if (earlyAction === "liuyao-manual-clear-line") {
     clearLiuyaoManualLine(Number(earlyActionTarget.dataset.lineIndex || 0));
+    return;
+  }
+  if (earlyAction === "liuyao-manual-clear-last") {
+    clearLastLiuyaoManualLine();
     return;
   }
   if (earlyAction === "liuyao-manual-line") {

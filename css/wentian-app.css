@@ -4455,6 +4455,114 @@ html[data-wentian-language="en"] .liuren-hero-copy em {
   background: #fffdf8;
 }
 
+.liuyao-manual-current,
+.liuyao-manual-done {
+  display: grid;
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid rgba(231, 215, 191, .96);
+  border-radius: 16px;
+  background: #fffaf3;
+}
+
+.liuyao-manual-current-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.liuyao-manual-current-head strong,
+.liuyao-manual-done strong {
+  display: block;
+  color: #201813;
+  font-size: 20px;
+  font-weight: 900;
+  line-height: 1.15;
+}
+
+.liuyao-manual-current-head span,
+.liuyao-manual-done span {
+  display: block;
+  margin-top: 3px;
+  color: #8f8173;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.liuyao-manual-current-head em {
+  display: grid;
+  place-items: center;
+  min-width: 44px;
+  height: 32px;
+  border: 1px solid rgba(194, 149, 60, .34);
+  border-radius: 999px;
+  background: #fff3d8;
+  color: #9a681c;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 900;
+}
+
+.liuyao-manual-status {
+  color: #756d63;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.45;
+}
+
+.liuyao-manual-current .liuyao-manual-coin-pick button {
+  height: 38px;
+  border-radius: 12px;
+  font-size: 15px;
+}
+
+.liuyao-manual-current-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.liuyao-manual-current-actions .liuyao-manual-clear,
+.liuyao-manual-undo {
+  width: auto;
+  height: 34px;
+  border: 1px solid #ead9bd;
+  border-radius: 12px;
+  background: #f6efe4;
+  color: #8f8173;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.liuyao-manual-history {
+  display: grid;
+  gap: 8px;
+  padding-top: 2px;
+}
+
+.liuyao-manual-history > span {
+  color: #9a681c;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.liuyao-manual-history > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.liuyao-manual-history i {
+  padding: 6px 8px;
+  border-radius: 999px;
+  background: #f6efe4;
+  color: #786b5f;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 900;
+}
+
 .liuyao-manual-line-title {
   display: flex;
   align-items: baseline;
