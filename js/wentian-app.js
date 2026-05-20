@@ -5535,6 +5535,33 @@ function setWentianChatStatus(text, tone = "") {
   el.dataset.tone = tone;
 }
 
+function syncWentianChatFaqLayout() {
+  const phone = document.querySelector('.figma-phone[data-node-id="screen-4"]');
+  const starters = document.querySelector(".wentian-chat-starters");
+  const inputBg = document.querySelector('[data-node-id="source-4-input-bg"]');
+  const input = document.getElementById("wentian-chat-input");
+  const send = document.getElementById("wentian-chat-send");
+  const disclaimer = document.querySelector('[data-node-id="source-4-disclaimer"]');
+  if (!phone || !starters || !inputBg || !input || !send || !disclaimer) return;
+
+  const openGroup = starters.querySelector(".wentian-chat-faq-group[open]");
+  const baseListHeight = 128;
+  const basePhoneHeight = 844;
+  const basePositions = { inputBg: 748, input: 762, send: 770, disclaimer: 818 };
+
+  starters.classList.toggle("is-expanded", Boolean(openGroup));
+  starters.style.maxHeight = openGroup ? "none" : "";
+  const listHeight = openGroup ? Math.ceil(starters.scrollHeight) : baseListHeight;
+  const extra = openGroup ? Math.max(0, listHeight - baseListHeight + 18) : 0;
+
+  phone.style.height = `${basePhoneHeight + extra}px`;
+  inputBg.style.top = `${basePositions.inputBg + extra}px`;
+  input.style.top = `${basePositions.input + extra}px`;
+  send.style.top = `${basePositions.send + extra}px`;
+  disclaimer.style.top = `${basePositions.disclaimer + extra}px`;
+  scheduleWentianPhoneFit();
+}
+
 function setWentianQuota(quota) {
   const el = document.querySelector('[data-node-id="source-4-left"]');
   if (quota) wentianMemberState.quota = { ...(wentianMemberState.quota || {}), ...quota };
@@ -5831,6 +5858,7 @@ function initWentianXuChat() {
     renderWentianMessages();
   }
   setWentianChatStatus(getWentianXuModeText(payload.mode, "ready"), "ok");
+  syncWentianChatFaqLayout();
   ensureWentianXuSession({ silent: true }).catch(() => {});
 }
 
@@ -11497,6 +11525,7 @@ document.addEventListener("click", (event) => {
   const promptButton = event.target.closest("[data-wentian-prompt]");
   if (promptButton) {
     promptButton.closest(".wentian-chat-faq-group")?.removeAttribute("open");
+    window.setTimeout(syncWentianChatFaqLayout, 0);
     sendWentianXuChat(promptButton.dataset.wentianPrompt || "");
     return;
   }
@@ -11506,6 +11535,7 @@ document.addEventListener("click", (event) => {
     document.querySelectorAll(".wentian-chat-faq-group[open]").forEach((item) => {
       if (item !== group) item.removeAttribute("open");
     });
+    window.setTimeout(syncWentianChatFaqLayout, 0);
     return;
   }
   const earlyActionTarget = event.target.closest("[data-action]");
