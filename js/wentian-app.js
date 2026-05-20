@@ -1497,6 +1497,49 @@ function getWentianSelectedArchiveId(archives) {
   return archives[0]?.id || "";
 }
 
+function setWentianChartRecordId(id) {
+  if (!id) return "";
+  try {
+    localStorage.setItem("wentian-xubanxian-chart-record-id", id);
+  } catch (_err) {
+    wentianFallbackChartRecordId = id;
+  }
+  return id;
+}
+
+function normalizeWentianArchiveNameKey(value) {
+  return String(value || "命主").trim().replace(/\s+/g, "");
+}
+
+function normalizeWentianArchiveDateTimeKey(value) {
+  const source = String(value || "").trim().replace("T", " ").replace(/:00$/, "");
+  const match = source.match(/(\d{4})[-/.年](\d{1,2})[-/.月](\d{1,2})(?:日)?(?:\s+|T)?(\d{1,2})?(?::|时)?(\d{1,2})?/);
+  if (!match) return source.slice(0, 16);
+  const [, year, month, day, hour = "0", minute = "0"] = match;
+  return [
+    year,
+    String(month).padStart(2, "0"),
+    String(day).padStart(2, "0"),
+  ].join("-") + ` ${String(hour).padStart(2, "0")}:${String(minute).padStart(2, "0")}`;
+}
+
+function getWentianArchiveDuplicateKey(archive) {
+  const form = archive?.form || {};
+  const chartData = archive?.chartData || {};
+  const raw = form.remoteRaw || {};
+  const rawDateTime = raw.datetime
+    || (raw.dateStr ? `${raw.dateStr}T${String(raw.cstHour ?? raw.hour ?? 0).padStart(2, "0")}:${String(raw.cstMinute ?? raw.minute ?? 0).padStart(2, "0")}` : "");
+  const nameKey = normalizeWentianArchiveNameKey(form.name || raw.name || chartData.name || "命主");
+  const datetimeKey = normalizeWentianArchiveDateTimeKey(form.datetime || rawDateTime || chartData.birthDate || chartData.solarTime || "");
+  return nameKey && datetimeKey ? `${nameKey}|${datetimeKey}` : "";
+}
+
+function findWentianArchiveDuplicate(archives, archive) {
+  const key = getWentianArchiveDuplicateKey(archive);
+  if (!key) return null;
+  return archives.find((item) => getWentianArchiveDuplicateKey(item) === key) || null;
+}
+
 function archiveFromChartState(chartState) {
   if (!chartState?.chartData) return null;
   const chartRecordId = chartState.chartData.chartRecordId || getWentianChartRecordId();
@@ -1627,7 +1670,7 @@ function mergeWentianArchives(localArchives, remoteArchives) {
   const add = (archive) => {
     const normalized = normalizeWentianArchive(archive);
     if (!normalized) return;
-    const key = normalized.id || normalized.chartRecordId;
+    const key = getWentianArchiveDuplicateKey(normalized) || normalized.id || normalized.chartRecordId;
     const old = merged.get(key);
     if (!old || getWentianArchiveStamp(normalized) >= getWentianArchiveStamp(old)) {
       merged.set(key, normalized);
@@ -1708,24 +1751,37 @@ function getWentianArchiveList() {
   let archives = readWentianArchives().map(normalizeWentianArchive).filter(Boolean);
   const currentArchive = archiveFromChartState(getWentianSavedChart());
   if (!archives.length) archives = getDefaultWentianArchives();
-  if (currentArchive && !archives.some((item) => item.id === currentArchive.id)) {
+  if (currentArchive && !archives.some((item) => item.id === currentArchive.id || getWentianArchiveDuplicateKey(item) === getWentianArchiveDuplicateKey(currentArchive))) {
     archives.unshift(currentArchive);
   }
-  writeWentianArchives(archives);
-  return archives;
+  const merged = mergeWentianArchives(archives, []);
+  writeWentianArchives(merged);
+  return merged;
 }
 
 function saveWentianArchiveFromChartState(chartState) {
   const archive = archiveFromChartState(chartState);
   if (!archive) return;
   const archives = getWentianArchiveList();
-  const index = archives.findIndex((item) => item.id === archive.id || item.chartRecordId === archive.chartRecordId);
-  const archiveWithStamp = { ...archive, updatedAt: new Date().toISOString() };
+  const archiveKey = getWentianArchiveDuplicateKey(archive);
+  const index = archives.findIndex((item) => item.id === archive.id || item.chartRecordId === archive.chartRecordId || (archiveKey && getWentianArchiveDuplicateKey(item) === archiveKey));
+  const old = index >= 0 ? archives[index] : null;
+  const stableId = old?.id || archive.id;
+  const stableRecordId = old?.chartRecordId || archive.chartRecordId;
+  const archiveWithStamp = {
+    ...archive,
+    id: stableId,
+    chartRecordId: stableRecordId,
+    chartData: { ...archive.chartData, chartRecordId: stableRecordId },
+    form: { ...(archive.form || {}), archiveId: stableId },
+    updatedAt: new Date().toISOString(),
+  };
   if (index >= 0) archives[index] = archiveWithStamp;
   else archives.unshift(archiveWithStamp);
-  writeWentianArchives(archives);
+  const merged = mergeWentianArchives(archives, []);
+  writeWentianArchives(merged);
   setWentianSelectedArchiveId(archiveWithStamp.id);
-  pushWentianArchivesToRemote(archives);
+  pushWentianArchivesToRemote(merged);
 }
 
 function saveWentianChart(chartState, options = {}) {
@@ -6180,16 +6236,23 @@ async function submitWentianChartForm() {
 
     const genderText = norm.gender === "male" ? "男" : "女";
     const chart = createWentianChartWithLeapRule(lib, norm, genderText);
-    resetWentianChartRecordId();
+    const datetimeValue = document.getElementById("wentian-chart-date")?.value || "";
+    const duplicateArchive = findWentianArchiveDuplicate(getWentianArchiveList(), {
+      form: { name: norm.name || "命主", datetime: datetimeValue },
+    });
+    const chartRecordId = duplicateArchive?.chartRecordId || duplicateArchive?.chartData?.chartRecordId || resetWentianChartRecordId();
+    if (duplicateArchive) setWentianChartRecordId(chartRecordId);
     const chartData = buildWentianChartPayload(chart, norm);
+    chartData.chartRecordId = chartRecordId;
     resetWentianChartAiState(chartData.chartRecordId);
+    const archiveId = duplicateArchive?.id || `archive-${chartData.chartRecordId}`;
 
     saveWentianChart({
-      archiveId: `archive-${chartData.chartRecordId}`,
+      archiveId,
       chart,
       chartData,
       form: {
-        archiveId: `archive-${chartData.chartRecordId}`,
+        archiveId,
         name: norm.name,
         gender: norm.gender,
         type: norm.type,
@@ -6198,7 +6261,7 @@ async function submitWentianChartForm() {
         calMode: norm.calMode,
         autoLeapMonth: norm.autoLeapMonth,
         leapMonthRule: norm.leapMonthRule,
-        datetime: document.getElementById("wentian-chart-date")?.value || "",
+        datetime: datetimeValue,
         useTrueSolar: norm.useTrueSolar,
         trueSolarChoiceSet: true,
       },
