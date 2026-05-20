@@ -9616,14 +9616,14 @@ function renderLiurenProcess(result, reveal = true) {
   if (!reveal) return "";
   const rows = getLiurenProcessRows(result);
   return `
-    <article class="liuren-process-card" aria-label="六壬推算过程">
-      <div class="liuren-process-head">
+    <details class="liuren-process-card">
+      <summary class="liuren-process-head" aria-label="查看六壬推算过程">
         <div>
           <span>推算过程</span>
           <strong>传统农历日期：${formatLiurenLunarBrief(result.lunar, result.hourName)}</strong>
         </div>
         <em>${result.palace.name}</em>
-      </div>
+      </summary>
       <div class="liuren-process-list">
         ${rows.map((row, index) => {
           const action = row.steps > 0 ? `从${row.from}开始走 ${row.steps} 步` : `从${row.from}起，原位不动`;
@@ -9639,7 +9639,7 @@ function renderLiurenProcess(result, reveal = true) {
           `;
         }).join("")}
       </div>
-    </article>
+    </details>
   `;
 }
 
