@@ -22,7 +22,7 @@
   <script defer src="../src/ziping/runtime.js"></script>
   <script defer src="../js/ai-piming.js?v=20260508-backend-base"></script>
   <script defer src="../js/ai-chat.js?v=20260518-desktop-auth"></script>
-  <script defer src="../js/mingbook-onepage.js?v=20260520-default-profile-unblocked"></script>
+  <script defer src="../js/mingbook-onepage.js?v=20260520-ai-decode-render-fix"></script>
 </head>
 <body>
   <header class="mbp-nav">
@@ -438,59 +438,67 @@
             </div>
             <section class="xb-starters-bar xb-starters-bar-bottom">
               <div class="xb-starters-kicker">
-                <span>&#24120;&#38382;&#38382;&#39064;</span>
+                <span>常见问题</span>
               </div>
               <div class="chat-starters xb-starters" id="chat-starters">
-                <div class="xb-starter-tabs" role="tablist" aria-label="&#24120;&#38382;&#38382;&#39064;&#30446;&#24405;">
-                  <button type="button" class="xb-starter-tab is-active" data-starter-category="life" aria-selected="true">&#20154;&#29983;&#20027;&#32447;</button>
-                  <button type="button" class="xb-starter-tab" data-starter-category="love" aria-selected="false">&#24863;&#24773;&#23130;&#23035;</button>
-                  <button type="button" class="xb-starter-tab" data-starter-category="career" aria-selected="false">&#20107;&#19994;&#26041;&#21521;</button>
-                  <button type="button" class="xb-starter-tab" data-starter-category="wealth" aria-selected="false">&#36130;&#36816;&#25237;&#36164;</button>
-                  <button type="button" class="xb-starter-tab" data-starter-category="year" aria-selected="false">&#36817;&#19968;&#24180;</button>
-                  <button type="button" class="xb-starter-tab" data-starter-category="timing" aria-selected="false">&#20309;&#26102;&#36716;&#36816;</button>
-                  <button type="button" class="xb-starter-tab" data-starter-category="health" aria-selected="false">&#20581;&#24247;&#36816;&#21183;</button>
-                  <button type="button" class="xb-starter-tab" data-starter-category="family" aria-selected="false">&#23478;&#24237;&#20154;&#38469;</button>
+                <div class="xb-starter-tabs" role="tablist" aria-label="常见问题目录">
+                  <button type="button" class="xb-starter-tab is-active" data-starter-category="life" aria-selected="true">人生主线</button>
+                  <button type="button" class="xb-starter-tab" data-starter-category="love" aria-selected="false">正缘婚姻</button>
+                  <button type="button" class="xb-starter-tab" data-starter-category="career" aria-selected="false">事业工作</button>
+                  <button type="button" class="xb-starter-tab" data-starter-category="wealth" aria-selected="false">财运赚钱</button>
+                  <button type="button" class="xb-starter-tab" data-starter-category="year" aria-selected="false">今年运势</button>
+                  <button type="button" class="xb-starter-tab" data-starter-category="timing" aria-selected="false">转运节点</button>
+                  <button type="button" class="xb-starter-tab" data-starter-category="health" aria-selected="false">健康身体</button>
+                  <button type="button" class="xb-starter-tab" data-starter-category="family" aria-selected="false">家庭人际</button>
                 </div>
                 <div class="xb-starter-panels">
                   <div class="xb-starter-panel is-active" data-starter-panel="life">
-                    <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="&#32467;&#21512;&#25105;&#30340;&#21629;&#30424;&#65292;&#20808;&#30475;&#20154;&#29983;&#20027;&#32447;&#65292;&#35828;&#28165;&#26970;&#25105;&#36825;&#19968;&#29983;&#26368;&#37325;&#35201;&#30340;&#36335;&#24452;&#12290;"><span>&#20808;&#30475;&#20154;&#29983;&#20027;&#32447;</span></button>
-                    <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="&#32467;&#21512;&#25105;&#30340;&#21629;&#30424;&#65292;&#25105;&#30340;&#20248;&#21183;&#21644;&#30701;&#26495;&#21508;&#26159;&#20160;&#20040;&#65311;"><span>&#30475;&#20248;&#21183;&#19982;&#30701;&#26495;</span></button>
-                    <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="&#32467;&#21512;&#25105;&#30340;&#21629;&#30424;&#65292;&#25105;&#36825;&#19968;&#29983;&#21738;&#20960;&#20010;&#38454;&#27573;&#26368;&#37325;&#35201;&#65311;"><span>&#30475;&#20851;&#38190;&#38454;&#27573;</span></button>
+                    <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="结合我的命盘，直接说我这辈子最重要的主线是什么，适合走什么路。"><span>我这辈子怎么走</span></button>
+                    <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="结合我的命盘，看我最容易靠什么起势，真正的优势在哪里。"><span>我靠什么起势</span></button>
+                    <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="结合我的命盘，看我最大的短板和最容易反复出问题的地方。"><span>命里最大短板</span></button>
+                    <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="结合我的命盘，给我接下来最该先做的三件事。"><span>接下来先做什么</span></button>
                   </div>
                   <div class="xb-starter-panel" data-starter-panel="love" hidden>
-                    <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="&#32467;&#21512;&#25105;&#30340;&#21629;&#30424;&#65292;&#37325;&#28857;&#30475;&#24863;&#24773;&#23130;&#23035;&#65292;&#25105;&#30340;&#24863;&#24773;&#27169;&#24335;&#26159;&#20160;&#20040;&#65311;"><span>&#24863;&#24773;&#27169;&#24335;</span></button>
-                    <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="&#32467;&#21512;&#25105;&#30340;&#21629;&#30424;&#65292;&#25105;&#36866;&#21512;&#20160;&#20040;&#26679;&#30340;&#20276;&#20387;&#65311;"><span>&#36866;&#21512;&#20160;&#20040;&#20276;&#20387;</span></button>
-                    <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="&#32467;&#21512;&#25105;&#30340;&#21629;&#30424;&#65292;&#25105;&#36825;&#27573;&#24863;&#24773;&#25110;&#23130;&#23035;&#26368;&#38656;&#35201;&#27880;&#24847;&#20160;&#20040;&#65311;"><span>&#23130;&#23035;&#38656;&#27880;&#24847;</span></button>
+                    <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="结合我的命盘，看我的正缘什么时候容易出现，对方大概是什么类型。"><span>正缘什么时候来</span></button>
+                    <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="结合我的命盘，看这段关系能不能继续，适合推进还是放下。"><span>这段关系能不能成</span></button>
+                    <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="结合我的命盘，看我适合什么样的伴侣，什么类型的人不适合我。"><span>适合什么伴侣</span></button>
+                    <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="结合我的命盘，看婚姻里最容易出问题的点，以及怎么避开。"><span>婚姻最该避什么</span></button>
                   </div>
                   <div class="xb-starter-panel" data-starter-panel="career" hidden>
-                    <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="&#32467;&#21512;&#25105;&#30340;&#21629;&#30424;&#65292;&#37325;&#28857;&#30475;&#20107;&#19994;&#26041;&#21521;&#65292;&#25105;&#36866;&#21512;&#24448;&#21738;&#20010;&#26041;&#21521;&#21457;&#23637;&#65311;"><span>&#20107;&#19994;&#26041;&#21521;</span></button>
-                    <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="&#32467;&#21512;&#25105;&#30340;&#21629;&#30424;&#65292;&#25105;&#36866;&#21512;&#21019;&#19994;&#36824;&#26159;&#19978;&#29677;&#65311;"><span>&#21019;&#19994;&#36824;&#26159;&#19978;&#29677;</span></button>
-                    <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="&#32467;&#21512;&#25105;&#30340;&#21629;&#30424;&#65292;&#25105;&#22312;&#24037;&#20316;&#19978;&#26368;&#23481;&#26131;&#21345;&#22312;&#21738;&#37324;&#65311;"><span>&#24037;&#20316;&#21345;&#28857;</span></button>
+                    <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="结合我的命盘，看我适合什么行业和岗位，靠什么能力发展。"><span>适合什么工作</span></button>
+                    <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="结合我的命盘，看我现在适不适合换工作、转岗或换方向。"><span>要不要换工作</span></button>
+                    <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="结合我的命盘，看我适合创业还是上班，创业要注意什么。"><span>能不能创业</span></button>
+                    <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="结合我的命盘，看事业什么时候容易起来，哪几年最关键。"><span>事业何时起来</span></button>
                   </div>
                   <div class="xb-starter-panel" data-starter-panel="wealth" hidden>
-                    <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="&#32467;&#21512;&#25105;&#30340;&#21629;&#30424;&#65292;&#37325;&#28857;&#30475;&#36130;&#36816;&#25237;&#36164;&#65292;&#25105;&#30340;&#36130;&#20174;&#21738;&#37324;&#26469;&#65311;"><span>&#36130;&#20174;&#21738;&#37324;&#26469;</span></button>
-                    <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="&#32467;&#21512;&#25105;&#30340;&#21629;&#30424;&#65292;&#25105;&#36866;&#21512;&#31283;&#20581;&#27714;&#36130;&#36824;&#26159;&#20027;&#21160;&#25237;&#36164;&#65311;"><span>&#27714;&#36130;&#26041;&#24335;</span></button>
-                    <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="&#32467;&#21512;&#25105;&#30340;&#21629;&#30424;&#65292;&#25105;&#21738;&#20123;&#24180;&#20221;&#36130;&#21153;&#21387;&#21147;&#27604;&#36739;&#22823;&#65311;"><span>&#36130;&#21153;&#21387;&#21147;&#26399;</span></button>
+                    <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="结合我的命盘，看我的财从哪里来，适合靠什么赚钱。"><span>财从哪里来</span></button>
+                    <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="结合我的命盘和今年流年，看今年财运怎么样，能不能赚钱。"><span>今年能不能赚钱</span></button>
+                    <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="结合我的命盘，看我适不适合投资、合伙或做副业，风险在哪里。"><span>适合投资吗</span></button>
+                    <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="结合我的命盘，看哪几年财运比较好，哪几年要守财。"><span>哪几年财运好</span></button>
                   </div>
                   <div class="xb-starter-panel" data-starter-panel="year" hidden>
-                    <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="&#32467;&#21512;&#25105;&#30340;&#21629;&#30424;&#65292;&#37325;&#28857;&#30475;&#26368;&#36817;&#19968;&#24180;&#30340;&#36816;&#21183;&#21644;&#35201;&#28857;&#12290;"><span>&#26368;&#36817;&#19968;&#24180;&#24635;&#35272;</span></button>
-                    <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="&#32467;&#21512;&#25105;&#30340;&#21629;&#30424;&#65292;&#26368;&#36817;&#19968;&#24180;&#20107;&#19994;&#21644;&#36130;&#36816;&#21738;&#37324;&#35201;&#25235;&#20303;&#65311;"><span>&#36817;&#19968;&#24180;&#20107;&#19994;&#36130;&#36816;</span></button>
-                    <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="&#32467;&#21512;&#25105;&#30340;&#21629;&#30424;&#65292;&#26368;&#36817;&#19968;&#24180;&#26377;&#20160;&#20040;&#38656;&#35201;&#36991;&#20813;&#30340;&#22353;&#65311;"><span>&#36817;&#19968;&#24180;&#36991;&#22353;</span></button>
+                    <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="结合我的命盘和当前流年，看今年整体运势怎么走。"><span>今年整体怎么走</span></button>
+                    <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="结合我的命盘，看今年最该抓住的机会是什么。"><span>今年最该抓什么</span></button>
+                    <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="结合我的命盘，看今年最容易踩什么坑，怎么避开。"><span>今年最该避什么</span></button>
+                    <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="结合我的命盘，看未来12个月每个阶段的重点和提醒。"><span>未来12个月重点</span></button>
                   </div>
                   <div class="xb-starter-panel" data-starter-panel="timing" hidden>
-                    <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="&#32467;&#21512;&#25105;&#30340;&#21629;&#30424;&#65292;&#30475;&#30475;&#20309;&#26102;&#36716;&#36816;&#65292;&#21738;&#20960;&#24180;&#26368;&#26377;&#26426;&#20250;&#12290;"><span>&#20309;&#26102;&#36716;&#36816;</span></button>
-                    <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="&#32467;&#21512;&#25105;&#30340;&#21629;&#30424;&#65292;&#25105;&#20160;&#20040;&#26102;&#20505;&#36866;&#21512;&#25442;&#24037;&#20316;&#25110;&#36716;&#26041;&#21521;&#65311;"><span>&#20309;&#26102;&#36716;&#26041;&#21521;</span></button>
-                    <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="&#32467;&#21512;&#25105;&#30340;&#21629;&#30424;&#65292;&#25105;&#21738;&#20010;&#24180;&#40836;&#27573;&#26368;&#23481;&#26131;&#36215;&#26469;&#65311;"><span>&#21738;&#27573;&#26368;&#23481;&#26131;&#36215;&#26469;</span></button>
+                    <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="结合我的命盘，看我什么时候转运，什么时候会明显好起来。"><span>什么时候转运</span></button>
+                    <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="结合我的命盘，看我现在这段低谷什么时候过去，应该怎么熬。"><span>低谷什么时候过</span></button>
+                    <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="结合我的命盘，看我下一个大限怎么样，会往哪里变。"><span>下个大限怎么样</span></button>
+                    <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="结合我的命盘，看未来哪些年份最关键，哪些年要主动争取。"><span>哪几年最关键</span></button>
                   </div>
                   <div class="xb-starter-panel" data-starter-panel="health" hidden>
-                    <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="&#32467;&#21512;&#25105;&#30340;&#21629;&#30424;&#65292;&#30475;&#30475;&#20581;&#24247;&#36816;&#21183;&#65292;&#25105;&#26368;&#38656;&#35201;&#27880;&#24847;&#21738;&#20123;&#26041;&#38754;&#65311;"><span>&#20581;&#24247;&#27880;&#24847;&#28857;</span></button>
-                    <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="&#32467;&#21512;&#25105;&#30340;&#21629;&#30424;&#65292;&#25105;&#21738;&#20123;&#24180;&#40836;&#27573;&#20581;&#24247;&#21387;&#21147;&#27604;&#36739;&#26126;&#26174;&#65311;"><span>&#20581;&#24247;&#21387;&#21147;&#26399;</span></button>
-                    <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="&#32467;&#21512;&#25105;&#30340;&#21629;&#30424;&#65292;&#25105;&#24179;&#26102;&#35813;&#24590;&#20040;&#35843;&#25972;&#20316;&#24687;&#21644;&#33410;&#22863;&#65311;"><span>&#20316;&#24687;&#33410;&#22863;</span></button>
+                    <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="结合我的命盘，看身体最该注意哪里，哪些习惯要改。"><span>身体哪里要注意</span></button>
+                    <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="结合我的命盘和今年流年，看今年健康方面有什么风险。"><span>今年健康风险</span></button>
+                    <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="结合我的命盘，看睡眠、情绪和压力该怎么调整。"><span>睡眠情绪怎么调</span></button>
+                    <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="结合我的命盘，给我适合长期坚持的养运和生活建议。"><span>怎么养运</span></button>
                   </div>
                   <div class="xb-starter-panel" data-starter-panel="family" hidden>
-                    <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="&#32467;&#21512;&#25105;&#30340;&#21629;&#30424;&#65292;&#30475;&#30475;&#36149;&#20154;&#36816;&#21644;&#20154;&#38469;&#21161;&#21147;&#22312;&#21738;&#37324;&#12290;"><span>&#36149;&#20154;&#36816;</span></button>
-                    <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="&#32467;&#21512;&#25105;&#30340;&#21629;&#30424;&#65292;&#30475;&#30475;&#23376;&#22899;&#32536;&#20998;&#21644;&#20146;&#23376;&#20851;&#31995;&#12290;"><span>&#23376;&#22899;&#32536;&#20998;</span></button>
-                    <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="&#32467;&#21512;&#25105;&#30340;&#21629;&#30424;&#65292;&#30475;&#30475;&#23478;&#24237;&#20845;&#20146;&#21644;&#23478;&#20154;&#30456;&#22788;&#35201;&#28857;&#12290;"><span>&#23478;&#24237;&#20845;&#20146;</span></button>
+                    <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="结合我的命盘，看我的贵人在哪里，什么人最能帮我。"><span>贵人在哪里</span></button>
+                    <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="结合我的命盘，看我近期要防什么小人、口舌或人际消耗。"><span>小人要防谁</span></button>
+                    <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="结合我的命盘，看父母、长辈、房子和家宅近期怎么走。"><span>父母家宅怎么走</span></button>
+                    <button type="button" class="chat-starter-btn xb-starter" data-chat-prompt="结合我的命盘，看子女缘分、亲子关系和孩子相关运势。"><span>子女缘分怎么看</span></button>
                   </div>
                 </div>
               </div>
