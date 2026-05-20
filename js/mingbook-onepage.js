@@ -72,7 +72,6 @@
     aiResults: {},
     luckAiResults: {},
     selectedLuckRangeKey: '',
-    luckRunningKey: '',
     batchDecoding: false,
     curveGenerated: false,
     adviceGenerated: false,
@@ -1444,7 +1443,6 @@
     state.aiResults = {};
     state.luckAiResults = {};
     state.selectedLuckRangeKey = '';
-    state.luckRunningKey = '';
     state.batchDecoding = false;
     window._chart = null;
     window._chartInputs = null;
@@ -4183,7 +4181,10 @@
         throw new Error('AI 已返回，但没有可展示正文，请重试');
       }
       const countsAsModule = storeAiResult(task.module, data, options);
-      setModuleDone(task.module, countsAsModule || task.module !== 'current_luck');
+      const moduleDone = task.module === 'current_luck'
+        ? countsAsModule || hasAiRenderableContent(state.aiResults.current_luck)
+        : true;
+      setModuleDone(task.module, moduleDone);
       if (task.key) {
         renderSpecialAi(task.key, data, task.label);
         setSpecialStatus(task.key, '已生成', 'done');
@@ -4263,7 +4264,6 @@
     state.aiResults = {};
     state.luckAiResults = {};
     state.selectedLuckRangeKey = '';
-    state.luckRunningKey = '';
     state.curveGenerated = false;
     state.adviceGenerated = false;
     state.batchDecoding = true;
@@ -5067,7 +5067,6 @@
       state.aiResults = {};
       state.luckAiResults = {};
       state.selectedLuckRangeKey = '';
-      state.luckRunningKey = '';
       state.batchDecoding = false;
       document.body.classList.remove('is-decoded');
       saveProfile();
