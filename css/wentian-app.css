@@ -1386,6 +1386,11 @@ html[lang="en"] .wentian-native-mingpan .fc-age {
   -webkit-tap-highlight-color: transparent;
 }
 
+.wentian-chat-profile-tag.is-context {
+  cursor: default;
+  pointer-events: none;
+}
+
 .wentian-chat-profile-tag::after {
   position: absolute;
   right: -7px;
@@ -1403,6 +1408,15 @@ html[lang="en"] .wentian-native-mingpan .fc-age {
 .wentian-chat-profile-tag:active {
   transform: translateY(1px);
   box-shadow: 0 5px 12px rgba(122, 82, 25, .10), inset 0 0 0 1px rgba(255, 255, 255, .62);
+}
+
+.wentian-chat-profile-tag.is-context:active {
+  transform: none;
+  box-shadow: 0 8px 18px rgba(122, 82, 25, .12), inset 0 0 0 1px rgba(255, 255, 255, .62);
+}
+
+.wentian-chat-profile-tag.is-context .wentian-chat-profile-copy {
+  margin-right: auto;
 }
 
 .wentian-chat-profile-tag:focus-visible {

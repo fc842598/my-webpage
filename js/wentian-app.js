@@ -710,6 +710,7 @@ function sourceAiChatScreen(screen) {
   const isLiuyaoChat = chatContext?.type === "liuyao";
   const isHepanChat = chatContext?.type === "hepan";
   const isLiurenChat = chatContext?.type === "liuren";
+  const isContextChat = isLiuyaoChat || isHepanChat || isLiurenChat;
   const liuyaoFaqGroups = [
     {
       label: "事情成败",
@@ -874,9 +875,27 @@ function sourceAiChatScreen(screen) {
   const faqGroups = isLiuyaoChat ? liuyaoFaqGroups : isHepanChat ? hepanFaqGroups : isLiurenChat ? liurenFaqGroups : chartFaqGroups;
   const contextTitle = chatContext?.title || (isHepanChat ? "情侣合盘" : isLiurenChat ? "六壬课" : "六爻占卜");
   const contextSummary = chatContext?.summaryLine || "";
-  const profileText = isLiuyaoChat ? "本卦" : isHepanChat ? "合盘" : isLiurenChat ? "本课" : "命主";
+  const profileText = isLiuyaoChat ? "六爻" : isHepanChat ? "合盘" : isLiurenChat ? "六壬" : "命主";
   const profileIcon = isLiuyaoChat ? "卦" : isHepanChat ? "合" : isLiurenChat ? "课" : "命";
-  const profileSub = isLiuyaoChat || isHepanChat || isLiurenChat ? "查看" : "切换";
+  const profileSub = isLiuyaoChat || isLiurenChat ? "占卜" : isHepanChat ? "专批" : "切换";
+  const profileTag = isContextChat ? `
+    <div class="wentian-chat-profile-tag is-context" aria-label="${escapeHtml(profileText)}专批">
+      <span class="wentian-chat-profile-seal" data-node-id="source-4-profile-icon" data-profile-icon="${profileIcon}" aria-hidden="true"></span>
+      <span class="wentian-chat-profile-copy">
+        <b data-node-id="source-4-profile-text">${profileText}</b>
+        <small data-node-id="source-4-profile-sub">${profileSub}</small>
+      </span>
+    </div>
+  ` : `
+    <button class="wentian-chat-profile-tag" type="button" data-route="screen-5" aria-label="切换命盘">
+      <span class="wentian-chat-profile-seal" data-node-id="source-4-profile-icon" data-profile-icon="${profileIcon}" aria-hidden="true"></span>
+      <span class="wentian-chat-profile-copy">
+        <b data-node-id="source-4-profile-text">${profileText}</b>
+        <small data-node-id="source-4-profile-sub">${profileSub}</small>
+      </span>
+      <span class="wentian-chat-profile-caret">⌄</span>
+    </button>
+  `;
   const chatRoleText = isLiuyaoChat ? "占卜专批 · 在线" : isHepanChat ? "合盘专批 · 在线" : isLiurenChat ? "六壬专批 · 在线" : "命盘顾问 · 在线";
   const contextLabel = isHepanChat ? "本次合盘" : isLiurenChat ? "本次六壬课" : "本次占问";
   const contextQuestion = chatContext?.question || (isHepanChat ? "双方关系" : isLiurenChat ? "所念之事" : "所问之事");
@@ -889,14 +908,7 @@ function sourceAiChatScreen(screen) {
     ${figImage("source-4-avatar", "../images/wentian-prototype-assets/xu-banxian.jpg", 58, 25, 40, 40, "border-radius:20px;object-fit:cover;object-position:center 18%;")}
     ${figText("source-4-name", "许半仙", 110, 27, 110, 17, "#26211c", 800)}
     ${figText("source-4-left", chatRoleText, 110, 51, 140, 12, "#8d8377", 500)}
-    <button class="wentian-chat-profile-tag" type="button" data-route="screen-5" aria-label="切换命盘">
-      <span class="wentian-chat-profile-seal" data-node-id="source-4-profile-icon" data-profile-icon="${profileIcon}" aria-hidden="true"></span>
-      <span class="wentian-chat-profile-copy">
-        <b data-node-id="source-4-profile-text">${profileText}</b>
-        <small data-node-id="source-4-profile-sub">${profileSub}</small>
-      </span>
-      <span class="wentian-chat-profile-caret">⌄</span>
-    </button>
+    ${profileTag}
     ${figText("source-4-record", "⋯", 344, 31, 22, 22, "#6f665d", 800, "center")}
     <div id="wentian-chat-status" class="wentian-chat-status">正在接入许半仙…</div>
     ${chatContext ? `
@@ -5197,7 +5209,7 @@ function getWentianXuChatContext() {
   if (wentianXuChat.context) return wentianXuChat.context;
   try {
     const parsed = JSON.parse(sessionStorage.getItem(WENTIAN_XU_CONTEXT_KEY) || "null");
-    if ((parsed?.type === "liuyao" || parsed?.type === "hepan") && isWentianUuid(parsed.recordId)) {
+    if ((parsed?.type === "liuyao" || parsed?.type === "hepan" || parsed?.type === "liuren") && isWentianUuid(parsed.recordId)) {
       wentianXuChat.context = parsed;
       return parsed;
     }
@@ -5659,7 +5671,7 @@ function setWentianQuota(quota) {
   const el = document.querySelector('[data-node-id="source-4-left"]');
   if (quota) wentianMemberState.quota = { ...(wentianMemberState.quota || {}), ...quota };
   if (!el || !quota) return;
-  if (getWentianXuChatContext()?.type === "liuyao") return;
+  if (getWentianXuChatContext()) return;
   const remainingValue = quota.dailyRemaining ?? quota.remaining;
   const limitValue = quota.dailyLimit ?? quota.limit;
   const remaining = remainingValue === null || remainingValue === undefined || remainingValue === "" ? "--" : remainingValue;
