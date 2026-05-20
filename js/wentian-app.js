@@ -7211,6 +7211,15 @@ function clearLiuyaoTossAnimation() {
   liuyaoSwipeStart = null;
 }
 
+function navigateLiuyaoCastPreservingScroll() {
+  const scrollX = window.scrollX || document.documentElement.scrollLeft || 0;
+  const scrollY = window.scrollY || document.documentElement.scrollTop || 0;
+  navigate("screen-17", false);
+  window.scrollTo(scrollX, scrollY);
+  window.setTimeout(() => window.scrollTo(scrollX, scrollY), 0);
+  window.setTimeout(() => window.scrollTo(scrollX, scrollY), 80);
+}
+
 function setLiuyaoMode(mode) {
   clearLiuyaoTossAnimation();
   setLiuyaoCasterModalOpen(false);
@@ -7766,7 +7775,7 @@ async function cycleLiuyaoManualLine(index) {
   state.casts[index] = normalizeLiuyaoCast({ value: nextValue, manual: true, at: Date.now() });
   state.manualCoins = normalizeLiuyaoManualCoins(state.manualCoins, state.casts);
   saveLiuyaoState();
-  navigate("screen-17", false);
+  navigateLiuyaoCastPreservingScroll();
   return true;
 }
 
@@ -7788,7 +7797,7 @@ async function setLiuyaoManualCoin(lineIndex, coinIndex, face) {
   state.manualCoins[line] = row;
   state.casts[line] = makeLiuyaoManualCastFromCoins(row);
   saveLiuyaoState();
-  navigate("screen-17", false);
+  navigateLiuyaoCastPreservingScroll();
   return true;
 }
 
@@ -7802,7 +7811,7 @@ function clearLiuyaoManualLine(lineIndex) {
   state.manualCoins[line] = LIUYAO_MANUAL_EMPTY_COINS.slice();
   state.casts[line] = null;
   saveLiuyaoState();
-  navigate("screen-17", false);
+  navigateLiuyaoCastPreservingScroll();
 }
 
 async function showLiuyaoResultIfAllowed() {
