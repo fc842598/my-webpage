@@ -7979,6 +7979,13 @@ function sourceLiuyaoCastScreen() {
           ${renderLiuyaoQuestionSubmit(state)}
         </div>
       </div>
+      <div class="liuyao-mode-card">
+        <span>起卦方式</span>
+        <div>
+          <button type="button" class="${state.mode === "online" ? "is-active" : ""}" data-action="liuyao-mode" data-mode="online">在线投币</button>
+          <button type="button" class="${state.mode === "manual" ? "is-active" : ""}" data-action="liuyao-mode" data-mode="manual">手动起卦</button>
+        </div>
+      </div>
       ${state.mode === "online" ? `
         <div class="liuyao-coin-panel ${questionReady ? "is-ready" : "is-waiting"}">
           <div class="liuyao-coin-panel-head">
@@ -7988,13 +7995,6 @@ function sourceLiuyaoCastScreen() {
           ${renderLiuyaoCoinSummary(state, { complete, disabled: gateBusy || !questionReady, lockText: questionReady ? "" : questionLockText })}
         </div>
       ` : ""}
-      <div class="liuyao-mode-card">
-        <span>起卦方式</span>
-        <div>
-          <button type="button" class="${state.mode === "online" ? "is-active" : ""}" data-action="liuyao-mode" data-mode="online">在线投币</button>
-          <button type="button" class="${state.mode === "manual" ? "is-active" : ""}" data-action="liuyao-mode" data-mode="manual">手动起卦</button>
-        </div>
-      </div>
       ${state.mode === "manual" ? renderLiuyaoManualCoinInput(state, { disabled: gateBusy || !questionReady }) : ""}
       <div class="liuyao-actions ${!complete && !questionReady && !gateBusy ? "is-single" : ""}">
         ${complete ? `
