@@ -467,7 +467,7 @@ function getWentianBottomNavActive(nodeId) {
 
 function withWentianStandardBottomNav(nodeId, body, height) {
   const baseHeight = Number(height) || WENTIAN_PHONE_HEIGHT;
-  if (!/^screen-\d+$/.test(String(nodeId)) || hasWentianBottomNav(body) || /class="liuyao-caster-modal"/.test(String(body))) {
+  if (!/^screen-\d+$/.test(String(nodeId)) || hasWentianBottomNav(body) || /class="liuyao-caster-modal"/.test(String(body)) || /liuyao-result-panel/.test(String(body))) {
     return { body, height: baseHeight };
   }
   const navY = Math.max(755, Math.round(baseHeight));
@@ -8350,8 +8350,9 @@ function sourceLiuyaoResultScreen() {
   const movingText = result.movingLines.length
     ? result.movingLines.map((line) => `${line.label}${line.mark}`).join("、")
     : "无动爻";
+  const screenHeight = getLiuyaoResultScreenHeight();
   return `
-    ${figBox("ly20-bg", 0, 0, 390, 940, "", "background:linear-gradient(180deg,#fffdf8 0%,#fbf7ef 54%,#f3eadc 100%);")}
+    ${figBox("ly20-bg", 0, 0, 390, screenHeight, "", "background:linear-gradient(180deg,#fffdf8 0%,#fbf7ef 54%,#f3eadc 100%);")}
     ${wentianSimpleHeader("ly20", result.primary.name)}
     <section class="liuyao-panel liuyao-result-panel">
       <div class="liuyao-result-hero">
@@ -8384,6 +8385,14 @@ function sourceLiuyaoResultScreen() {
       </div>
     </section>
   `;
+}
+
+function getLiuyaoResultScreenHeight() {
+  const result = getLiuyaoResult();
+  if (!result) return 844;
+  const questionLength = Array.from(result.question || "").length;
+  const extraLines = Math.max(0, Math.ceil((questionLength - 24) / 20));
+  return Math.min(860, 660 + extraLines * 22);
 }
 
 function makeLiuyaoXuContext(result = getLiuyaoResult()) {
@@ -11239,7 +11248,7 @@ function renderConvertedScreen(no) {
   }
   const polishedScreen = renderWentianPolishedScreen(screen);
   if (polishedScreen) {
-    const polishedHeight = screen.no === 8 ? 1280 : screen.no === 17 ? getLiuyaoCastScreenHeight() : screen.no === 18 || screen.no === 19 ? 1480 : screen.no === 20 ? 1280 : screen.no === 22 ? 1120 : screen.no === 24 ? 1180 : screen.no === 44 ? getYangzhaiResultHeight() : screen.no === 46 ? LIUREN_SCREEN_HEIGHT : screen.no === 49 ? 1160 : 844;
+    const polishedHeight = screen.no === 8 ? 1280 : screen.no === 17 ? getLiuyaoCastScreenHeight() : screen.no === 18 || screen.no === 19 ? 1480 : screen.no === 20 ? getLiuyaoResultScreenHeight() : screen.no === 22 ? 1120 : screen.no === 24 ? 1180 : screen.no === 44 ? getYangzhaiResultHeight() : screen.no === 46 ? LIUREN_SCREEN_HEIGHT : screen.no === 49 ? 1160 : 844;
     const wideBgClass = screen.no >= 42 && screen.no <= 45 ? " wide-bg" : "";
     const customHotspots = screen.no >= 17 && screen.no <= 20 ? "" : convertedFlowHotspots(screen);
     return figPhone(`screen-${screen.no}`, `${String(screen.no).padStart(2, "0")} ${screen.title}`, `
