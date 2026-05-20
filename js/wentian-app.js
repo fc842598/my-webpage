@@ -6376,12 +6376,9 @@ function sourceProfileScreen(screen) {
     ${figText("source-25-back", "‹", 20, 56, 28, 30, "#201813", 700)}
     ${figText("source-25-title", "排盘记录", 0, 60, 390, 24, "#201813", 900, "center")}
     ${figText("source-25-menu", "☰", 334, 61, 34, 22, "#201813", 800, "center")}
-    ${figBox("source-25-tabs", 56, 110, 278, 58, "", "border-radius:29px;background:rgba(255,255,255,.88);box-shadow:0 9px 20px rgba(107,75,42,.08);")}
-    ${figBox("source-25-tab-active", 64, 118, 140, 42, "", "border-radius:23px;background:#604236;")}
-    ${figText("source-25-tab-active-text", "· 个人案例 ·", 64, 130, 140, 16, "#fff", 900, "center")}
-    ${figText("source-25-tab-classic", "典藏案例", 222, 131, 88, 14, "#91867c", 800, "center")}
-    ${figBox("source-25-vip", 302, 103, 34, 20, "", "border-radius:7px;background:#ffb985;")}
-    ${figText("source-25-vip-text", "VIP", 302, 108, 34, 10, "#fffaf3", 900, "center")}
+    ${figBox("source-25-tabs", 110, 110, 170, 58, "", "border-radius:29px;background:rgba(255,255,255,.88);box-shadow:0 9px 20px rgba(107,75,42,.08);")}
+    ${figBox("source-25-tab-active", 118, 118, 154, 42, "", "border-radius:23px;background:#604236;")}
+    ${figText("source-25-tab-active-text", "· 个人案例 ·", 118, 130, 154, 16, "#fff", 900, "center")}
     ${figBox("source-25-search", 18, 188, 260, 48, "", "border-radius:24px;background:#fff;box-shadow:0 6px 14px rgba(90,62,34,.06);")}
     ${figText("source-25-search-icon", "⌕", 34, 197, 32, 25, "#201813", 700, "center")}
     ${figText("source-25-search-text", "请输入姓名", 72, 204, 120, 14, "#ada59d", 600)}
