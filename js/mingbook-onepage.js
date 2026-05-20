@@ -31,6 +31,7 @@
   let fcBirthYear = 1990;
   let fcSequenceStartYear = 1990;
   let fcZipingMaxAge = 100;
+  const decadeDisplayMaxStartAge = 100;
   let fcActiveBranch = '';
   let fcYearCards = [];
   let fcYearlyMap = {};
@@ -1696,7 +1697,8 @@
     const yearlyHtml = yearlyMutagen || yearlyStars ? `<div class="fc-yearly-row">${yearlyMutagen}${yearlyStars}</div>` : '';
     const xiaoLianHtml = isXiaoLian ? `<div class="fc-xiaolian-badge">${fcActiveAge}岁</div>` : '';
     const stemBranch = `${palace.heavenlyStem || ''}${palace.earthlyBranch || ''}`;
-    const ageStr = palace.decadal?.range ? `${palace.decadal.range[0]}–${palace.decadal.range[1]}` : '';
+    const ageRange = rangeFromDecadal(palace);
+    const ageStr = shouldDisplayDecadeRange(ageRange) ? `${ageRange[0]}–${ageRange[1]}` : '';
     const palaceName = `${palace.isBodyPalace ? '身宫\n' : ''}${palace.name || ''}`;
 
     cell.innerHTML = `
@@ -3063,6 +3065,11 @@
     return match && match.length >= 2 ? [Number(match[0]), Number(match[1])] : null;
   }
 
+  function shouldDisplayDecadeRange(range) {
+    const start = Number(range?.[0]);
+    return Number.isFinite(start) && start <= decadeDisplayMaxStartAge;
+  }
+
   function findDecadePalace(chart, age) {
     return (chart?.palaces || []).find((palace) => {
       const range = rangeFromDecadal(palace);
@@ -3081,6 +3088,7 @@
         const range = rangeFromDecadal(palace);
         if (!range) return null;
         const [start, end] = range;
+        if (!shouldDisplayDecadeRange(range)) return null;
         const palaceName = normalizePalaceName(palace?.name || '大限宫');
         const branch = palace?.earthlyBranch || '';
         const stars = palaceMainLabel(palace);
