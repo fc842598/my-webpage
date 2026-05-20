@@ -5693,6 +5693,11 @@ function splitWentianReplyParagraphs(text) {
 function renderWentianChatMessageContent(message, role) {
   const text = String(message.text || "");
   if (role !== "assistant") return escapeHtml(text);
+  if (message.thinking) {
+    let thinkingText = text.replace(/\.+$/, "");
+    while (thinkingText.endsWith("\u2026")) thinkingText = thinkingText.slice(0, -1);
+    return `<span class="wentian-thinking-text">${escapeHtml(thinkingText)}</span><span class="wentian-thinking-dots" aria-hidden="true"><i></i><i></i><i></i></span>`;
+  }
   return splitWentianReplyParagraphs(text)
     .map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`)
     .join("");
@@ -5712,7 +5717,8 @@ function renderWentianMessages() {
   box.innerHTML = wentianXuChat.messages.map((message) => {
     const role = message.role === "user" ? "user" : message.role === "system" ? "system" : "assistant";
     const avatar = role === "user" ? ` data-avatar="${escapeHtml(getWentianChatUserAvatarText())}"` : "";
-    return `<div class="wentian-chat-msg is-${role} ${message.typing ? "is-typing" : ""}"${avatar}>${renderWentianChatMessageContent(message, role)}</div>`;
+    const stateClass = [message.typing ? "is-typing" : "", message.thinking ? "is-thinking" : ""].filter(Boolean).join(" ");
+    return `<div class="wentian-chat-msg is-${role} ${stateClass}"${avatar}>${renderWentianChatMessageContent(message, role)}</div>`;
   }).join("");
   box.scrollTop = box.scrollHeight;
 }
@@ -5767,7 +5773,7 @@ function startWentianTyping(message) {
 function addWentianMessage(role, text, options = {}) {
   const message = options.typewriter && role === "assistant"
     ? { role, text: "", fullText: String(text || ""), typing: true }
-    : { role, text };
+    : { role, text, thinking: !!(options.thinking && role === "assistant") };
   wentianXuChat.messages.push(message);
   if (wentianXuChat.messages.length > 30) wentianXuChat.messages.shift();
   renderWentianMessages();
@@ -5897,7 +5903,7 @@ async function sendWentianXuChat(promptText = "") {
   const payload = getWentianXuChatPayload();
   const outboundMessage = buildWentianXuOutboundMessage(message, payload.divinationContext);
   addWentianMessage("user", message);
-  addWentianMessage("assistant", getWentianXuModeText(payload.mode, "typing"));
+  addWentianMessage("assistant", getWentianXuModeText(payload.mode, "typing"), { thinking: true });
   setWentianChatBusy(true);
 
   try {
