@@ -1097,7 +1097,7 @@ function _aipRenderResult(moduleKey, data) {
         const decadeData  = _dlxBuildDecadePayload();
         const liunianData = _dlxBuildLiunianPayload();
         const t0 = Date.now();
-        const data = await _aipCallBackend('liunian', { decadeData, liunianData });
+        const data = await _aipCallBackend('liunian_year', { decadeData, liunianData });
         const card = data.card || {};
         const durationMs = data.meta?.durationMs || (Date.now() - t0);
         _notifyDone('AI\u6d41\u5e74\u6279\u547d', '\u6d41\u5e74\u6279\u547d\u5df2\u751f\u6210\u3002', 'yuetian-aip-liunian');
