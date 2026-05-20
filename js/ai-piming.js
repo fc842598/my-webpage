@@ -1054,7 +1054,7 @@ function _aipRenderResult(moduleKey, data) {
       try {
         const decadeData = _dlxBuildDecadePayload();
         const t0 = Date.now();
-        const data = await _aipCallBackend('daxian', { decadeData });
+        const data = await _aipCallBackend('current_luck', { selectedDayun: decadeData, decadeData });
         const card = data.card || {};
         const durationMs = data.meta?.durationMs || (Date.now() - t0);
         _notifyDone('AI\u5927\u9650\u6279\u547d', '\u5927\u9650\u6279\u547d\u5df2\u751f\u6210\u3002', 'yuetian-aip-daxian');

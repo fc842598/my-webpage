@@ -5081,25 +5081,26 @@ p.mbp-topic-detail {
 .mbp-decade-rail {
   display: grid;
   grid-auto-flow: column;
-  grid-auto-columns: minmax(132px, 1fr);
-  gap: 10px;
-  margin-bottom: 14px;
-  padding: 3px 2px 8px;
+  grid-auto-columns: minmax(96px, 118px);
+  gap: 8px;
+  margin-bottom: 12px;
+  padding: 2px 2px 7px;
   overflow-x: auto;
   scroll-snap-type: x proximity;
   scrollbar-color: rgba(241, 212, 125, .34) transparent;
 }
 
 .mbp-decade-rail button {
+  position: relative;
   display: grid;
-  gap: 4px;
-  min-height: 78px;
-  padding: 12px 14px;
+  gap: 2px;
+  min-height: 50px;
+  padding: 8px 10px;
   border: 1px solid rgba(241, 212, 125, .16);
-  border-radius: 10px;
+  border-radius: 999px;
   background: rgba(0, 0, 0, .2);
   color: #cdbb90;
-  text-align: left;
+  text-align: center;
   cursor: pointer;
   scroll-snap-align: center;
   transition: border-color .18s ease, background .18s ease, transform .18s ease;
@@ -5118,14 +5119,22 @@ p.mbp-topic-detail {
 
 .mbp-decade-rail span,
 .mbp-decade-rail em {
-  font-size: 12px;
+  font-size: 11px;
   font-style: normal;
   font-weight: 900;
+  line-height: 1.15;
+}
+
+.mbp-decade-rail em {
+  position: absolute;
+  right: 8px;
+  top: 6px;
+  color: var(--gold);
 }
 
 .mbp-decade-rail strong {
   color: var(--ivory);
-  font-size: 18px;
+  font-size: 14px;
   line-height: 1.2;
 }
 

@@ -3404,10 +3404,10 @@
     return `
       <div class="mbp-decade-rail" data-luck-decade-rail aria-label="十年大限选择">
         ${info.decadeItems.map((item) => `
-          <button type="button" class="${item.key === selectedKey ? 'is-active' : ''}${item.key === currentKey ? ' is-current' : ''}" data-luck-decade="${escapeHtml(item.key)}" ${item.key === currentKey ? 'data-luck-current="true"' : ''}>
+          <button type="button" class="${item.key === selectedKey ? 'is-active' : ''}${item.key === currentKey ? ' is-current' : ''}" data-luck-decade="${escapeHtml(item.key)}" ${item.key === currentKey ? 'data-luck-current="true"' : ''} title="${escapeHtml(`${item.rangeLabel} · ${item.palaceName} · ${item.domain}`)}">
             <span>${escapeHtml(item.rangeLabel)}</span>
             <strong>${escapeHtml(item.palaceName)}</strong>
-            <em>${item.key === currentKey ? '当前十年' : escapeHtml(item.domain)}</em>
+            ${item.key === currentKey ? '<em>当前</em>' : ''}
           </button>
         `).join('')}
       </div>
@@ -3452,7 +3452,7 @@
       current: info.currentDecade,
     });
     requestAnimationFrame(() => {
-      const target = document.querySelector('[data-luck-current="true"]');
+      const target = document.querySelector('[data-luck-decade].is-active') || document.querySelector('[data-luck-current="true"]');
       target?.scrollIntoView({ inline: 'center', block: 'nearest' });
     });
     return `
@@ -4197,7 +4197,7 @@
       throw new Error('原站 AI 批命脚本未加载');
     }
     const backendModule = moduleKey === 'current_luck'
-      ? 'daxian'
+      ? 'current_luck'
       : (moduleKey === 'xiaoxian_liunian' ? 'liunian' : moduleKey);
     const extraParams = moduleKey === 'current_luck'
       ? currentLuckExtraParams(options)
