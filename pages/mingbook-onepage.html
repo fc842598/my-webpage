@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>阅天 · 紫微排盘</title>
   <link rel="icon" href="../images/logo-mark.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../css/mingbook-onepage.css?v=20260520-title-seal-slim">
+  <link rel="stylesheet" href="../css/mingbook-onepage.css?v=20260520-title-seal-slim-yijing-xu-compact">
   <script src="../js/config.js?v=20260509-vercel-backend"></script>
   <script defer src="../js/cities.js"></script>
   <script defer src="../js/lunarCalendar.js"></script>
@@ -21,8 +21,8 @@
   <script defer src="../src/ziping/validator.js"></script>
   <script defer src="../src/ziping/runtime.js"></script>
   <script defer src="../js/ai-piming.js?v=20260520-liunian-year-key"></script>
-  <script defer src="../js/ai-chat.js?v=20260518-desktop-auth"></script>
-  <script defer src="../js/mingbook-onepage.js?v=20260520-selected-luck-empty-state-report-ai-extra-modules"></script>
+  <script defer src="../js/ai-chat.js?v=20260520-xu-compact-read-tag"></script>
+  <script defer src="../js/mingbook-onepage.js?v=20260520-report-ai-yijing-xu-compact"></script>
 </head>
 <body>
   <header class="mbp-nav">
@@ -345,8 +345,6 @@
             <span class="mbp-title-seal" aria-label="辅助模块">辅</span>
           </div>
           <h3 id="mbpYijingName">等待排盘</h3>
-          <p id="mbpYijingSummary">排盘后，这里会落出先天、后天与流年的辅助判断。</p>
-          <div class="mbp-yijing-lines" id="mbpYijingLines"></div>
         </div>
         <div class="mbp-yijing-right">
           <div class="mbp-yijing-tabs" id="mbpYijingTabs" role="tablist" aria-label="易经推命切换">
@@ -384,8 +382,7 @@
               <div class="mbp-yijing-art-lines" id="mbpYijingImageLines"></div>
             </div>
           </div>
-          <figcaption id="mbpYijingImageCaption">排盘后显示当前卦图。</figcaption>
-          <div class="mbp-yijing-image-reading" id="mbpYijingImageReading">排盘后显示读图要点。</div>
+          <div class="mbp-yijing-lines mbp-yijing-art-mini-lines" id="mbpYijingLines" aria-hidden="true"></div>
         </figure>
       </section>
 
@@ -419,7 +416,7 @@
         </div>
         <div class="mbp-xb-shell">
           <div class="aip-panel" id="aip-panel-chat">
-            <div class="aip-card xb-hero xb-status-card">
+            <div class="aip-card xb-hero xb-status-card" hidden aria-hidden="true">
               <div class="xb-status-strip">
                 <span class="chat-badge xb-read-pill" id="chat-badge-a">&#24453;&#25490;&#30424;</span>
               </div>

@@ -4481,23 +4481,23 @@ p.mbp-topic-detail {
 }
 
 .mbp-yijing-lines {
-  width: 168px;
+  width: 72px;
   display: grid;
-  gap: 9px;
-  margin-top: 28px;
+  gap: 4px;
+  margin: 0 auto;
 }
 
 .mbp-yijing-line {
-  height: 9px;
+  height: 4px;
   border-radius: 999px;
   background: var(--gold);
-  box-shadow: 0 0 16px rgba(241, 212, 125, .12);
+  box-shadow: 0 0 10px rgba(241, 212, 125, .10);
 }
 
 .mbp-yijing-line.is-broken {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 16px;
+  gap: 7px;
   background: transparent;
   box-shadow: none;
 }
@@ -4508,7 +4508,7 @@ p.mbp-topic-detail {
 }
 
 .mbp-yijing-gap {
-  height: 2px;
+  height: 1px;
 }
 
 .mbp-yijing-right {
@@ -4839,6 +4839,11 @@ p.mbp-topic-detail {
   display: grid;
   gap: 12px;
   align-content: start;
+}
+
+.mbp-yijing-art-mini-lines {
+  justify-self: center;
+  opacity: .92;
 }
 
 .mbp-yijing-art-frame {
@@ -7036,9 +7041,27 @@ p.mbp-topic-detail {
   grid-column: 2;
   grid-row: 1;
   margin: 0 0 4px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   color: #c9a878;
   font-size: 12px;
   letter-spacing: .04em;
+}
+
+.chat-sender-read-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3px 9px;
+  border: 1px solid rgba(201, 169, 97, .42);
+  border-radius: 999px;
+  background: rgba(201, 169, 97, .10);
+  color: #d9c27f;
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: 0;
 }
 
 .chat-bubble {

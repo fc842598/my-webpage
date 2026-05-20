@@ -254,16 +254,12 @@
           _renderMessages(data.messages || []);
         }
 
-        if (data.memoryAJustBuilt && !quietGreeting) {
-          _appendMsg('system', '许半仙已读入你的基础命盘，可以开始发问。');
-        }
-
         if (data.transientMode) {
           _appendMsg('system', '当前是临时会话模式：你现在可以继续聊，但在补聊天表 SQL 前，这段对话不会正式落库。');
         }
 
         if ((!data.messages || data.messages.length === 0) && !quietGreeting) {
-          _appendMsg('assistant', '你好，我是许半仙。基础命盘已读入，你可以直接问感情、事业、财运或最近一年。');
+          _appendMsg('assistant', '您好，我是许半仙。基础命盘已读入，您可以直接问您关心的感情、事业、财运或最近一年等相关话题。');
         }
 
         _setInputEnabled(true);
@@ -571,7 +567,7 @@
 
     if (sender === 'assistant') {
       div.innerHTML =
-        '<span class="chat-sender">许半仙</span>' +
+        '<span class="chat-sender">许半仙<span class="chat-sender-read-pill">已读盘</span></span>' +
         '<span class="chat-bubble"></span>';
     } else if (sender === 'user') {
       div.innerHTML =
@@ -604,7 +600,7 @@
     div.id = 'chat-typing';
     div.className = 'chat-msg chat-msg-assistant';
     div.innerHTML =
-      '<span class="chat-sender">许半仙</span>' +
+      '<span class="chat-sender">许半仙<span class="chat-sender-read-pill">已读盘</span></span>' +
       '<span class="chat-bubble">' +
       '<span class="chat-typing-dots"><span></span><span></span><span></span></span>' +
       '</span>';
