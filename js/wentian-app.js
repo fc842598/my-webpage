@@ -7,7 +7,7 @@ const reports = [
 
 const profiles = [
   ["谢广周", "普通会员 / 账号信息", "男 / 1990-05-11 / 已保存"],
-  ["命主", "AI问天默认档案", "女 / 1995-08-18 / 已保存"]
+  ["命主", "AI阅天默认档案", "女 / 1995-08-18 / 已保存"]
 ];
 
 const plans = [
@@ -17,18 +17,18 @@ const plans = [
 ];
 
 const convertedScreens = [
-  { no: 1, title: "授权书", active: "", cards: [["本人授权问天AI依据输入资料生成排盘、合盘与AI解读。", "签署人：谢广周 / 2026-05-11"]], badge: "已授权" },
-  { no: 2, title: "首页/报告商城", active: "首页", heading: "问天AI", cards: [["你的专属命理报告，立即生成", "排盘、合盘、流年、AI解读", "立即生成", "screen-26"], ["生命曲线预测报告 ¥99", "基于命盘生成完整报告", "", "screen-27"], ["2026丙午年预测报告 ¥50", "流年趋势与行动建议", "", "screen-27"], ["八字与MBTI人格深度解析 ¥58", "性格模型与命盘交叉分析", "", "screen-27"]] },
+  { no: 1, title: "授权书", active: "", cards: [["本人授权阅天AI依据输入资料生成排盘、合盘与AI解读。", "签署人：谢广周 / 2026-05-11"]], badge: "已授权" },
+  { no: 2, title: "首页/报告商城", active: "首页", heading: "阅天AI", cards: [["你的专属命理报告，立即生成", "排盘、合盘、流年、AI解读", "立即生成", "screen-26"], ["生命曲线预测报告 ¥99", "基于命盘生成完整报告", "", "screen-27"], ["2026丙午年预测报告 ¥50", "流年趋势与行动建议", "", "screen-27"], ["八字与MBTI人格深度解析 ¥58", "性格模型与命盘交叉分析", "", "screen-27"]] },
   { no: 3, title: "档案列表", active: "档案", list: [["谢｜男｜阳历 2026-05-12", "用于排盘、合盘、AI问答", "screen-25"], ["命主｜女｜阴历八月", "用于排盘、合盘、AI问答", "screen-25"], ["贵王红仪｜VIP", "用于排盘、合盘、AI问答", "screen-25"], ["情侣合盘", "用于排盘、合盘、AI问答", "screen-10"]] },
-  { no: 4, title: "AI问天", active: "问天AI", ai: "base" },
-  { no: 5, title: "选择档案", active: "问天AI", ai: "modal", modalTitle: "选择档案", modalItems: ["谢｜男｜阳历", "命主｜女｜阴历"], next: "screen-6" },
-  { no: 6, title: "AI提问中", active: "问天AI", ai: "asking" },
-  { no: 7, title: "AI回复", active: "问天AI", ai: "reply" },
-  { no: 8, title: "AI长文解读", active: "问天AI", sections: ["核心结论", "性格优势", "隐性风险", "事业建议", "感情建议", "财运建议", "行动方案"] },
-  { no: 9, title: "对话记录", active: "问天AI", modalTitle: "对话记录", modalItems: ["新的对话 15:18", "新的对话 22:06"], next: "screen-7" },
+  { no: 4, title: "AI阅天", active: "阅天AI", ai: "base" },
+  { no: 5, title: "选择档案", active: "阅天AI", ai: "modal", modalTitle: "选择档案", modalItems: ["谢｜男｜阳历", "命主｜女｜阴历"], next: "screen-6" },
+  { no: 6, title: "AI提问中", active: "阅天AI", ai: "asking" },
+  { no: 7, title: "AI回复", active: "阅天AI", ai: "reply" },
+  { no: 8, title: "AI长文解读", active: "阅天AI", sections: ["核心结论", "性格优势", "隐性风险", "事业建议", "感情建议", "财运建议", "行动方案"] },
+  { no: 9, title: "对话记录", active: "阅天AI", modalTitle: "对话记录", modalItems: ["新的对话 15:18", "新的对话 22:06"], next: "screen-7" },
   { no: 10, title: "合盘类型", active: "首页", cards: [["情侣合盘", "合盘深度解析｜情感契合度｜冲突化解建议"], ["合盘主视觉", ""]], button: ["开始合盘", "screen-11"] },
   { no: 11, title: "选择合盘档案", active: "首页", modalTitle: "选择合盘档案", modalItems: ["谢｜男｜阳历", "命主｜女｜阴历"], next: "screen-49" },
-  { no: 12, title: "随机提问", cards: [["今日适合问什么？", "事业方向 / 感情状态 / 近期机会"], ["换一批问题", ""]], button: ["开始问天", "screen-4"] },
+  { no: 12, title: "随机提问", cards: [["今日适合问什么？", "事业方向 / 感情状态 / 近期机会"], ["换一批问题", ""]], button: ["开始阅天", "screen-4"] },
   { no: 13, title: "抽签", active: "活动", cards: [["抽签", "静心默念问题，抽取一支签文。"]], button: ["开始抽签", "screen-14"] },
   { no: 14, title: "抽签中", active: "活动", cards: [["抽签中", "签筒正在摇动，请稍候。"]], button: ["查看结果", "screen-15"] },
   { no: 15, title: "抽签结果", active: "活动", cards: [["上上签", "当前所问宜稳中推进，先定边界，再谈扩张。"]], button: ["查看签文详情", "screen-16"] },
@@ -41,7 +41,7 @@ const convertedScreens = [
   { no: 22, title: "邀请好友", active: "活动", cards: [["邀请好友", "邀请码：8R7U58ZW"], ["奖励规则", "好友注册后可获得对话次数。"]], button: ["查看活动中心", "screen-23"] },
   { no: 23, title: "活动中心", active: "活动", cards: [["活动中心", "邀请、签到、次数奖励。"], ["当前进度", "已邀请 0 人"]], button: ["邀请好友", "screen-22"] },
   { no: 24, title: "邀请详情", active: "活动", sections: ["邀请详情", "奖励说明", "到账规则", "常见问题"] },
-  { no: 25, title: "档案", active: "档案", list: [["谢广周", "男｜阳历 2026-05-12", "screen-26"], ["查看命盘", "紫微命盘 / 八字", "screen-27"], ["AI问天", "使用当前档案提问", "screen-4"]] },
+  { no: 25, title: "档案", active: "档案", list: [["谢广周", "男｜阳历 2026-05-12", "screen-26"], ["查看命盘", "紫微命盘 / 八字", "screen-27"], ["AI阅天", "使用当前档案提问", "screen-4"]] },
   { no: 26, title: "排盘表单", active: "档案", form: ["姓名", "性别", "出生日期", "出生地"], button: ["开始排盘", "screen-27"] },
   { no: 27, title: "紫微命盘", active: "档案", chart: true, button: ["购买解读", "screen-21"] },
   { no: 28, title: "卡券包", active: "我的", cards: [["卡券包", "暂无可用卡券"], ["报告券", "购买套餐后自动发放。"]] },
@@ -49,10 +49,10 @@ const convertedScreens = [
   { no: 30, title: "支付页", active: "我的", cards: [["订单信息", "支付金额 ¥12.00"]], button: ["确认支付 ¥12.00", "screen-31"] },
   { no: 31, title: "我的", active: "我的", mine: true },
   { no: 32, title: "账户设置", active: "我的", list: [["基本信息", "", "screen-39"], ["登录方式", "", "screen-40"], ["设置密码", "", "screen-41"], ["退出登录", "", "screen-31"]] },
-  { no: 33, title: "问天会员", active: "我的", cards: [["普通会员", ""], ["会员权益", "会员权益/套餐信息"], ["月度会员 ¥38", "会员权益/套餐信息"], ["年度会员 ¥348", "会员权益/套餐信息"]], button: ["立即开通 ¥38", "screen-30"] },
-  { no: 34, title: "分享问天AI", active: "我的", modalTitle: "分享问天AI", modalItems: ["分享文本", "邀请码：8R7U58ZW", "微信好友 / 朋友圈 / 复制链接"], next: "screen-31" },
+  { no: 33, title: "阅天会员", active: "我的", cards: [["普通会员", ""], ["会员权益", "会员权益/套餐信息"], ["月度会员 ¥38", "会员权益/套餐信息"], ["年度会员 ¥348", "会员权益/套餐信息"]], button: ["立即开通 ¥38", "screen-30"] },
+  { no: 34, title: "分享阅天AI", active: "我的", modalTitle: "分享阅天AI", modalItems: ["分享文本", "邀请码：8R7U58ZW", "微信好友 / 朋友圈 / 复制链接"], next: "screen-31" },
   { no: 35, title: "联系我们", active: "我的", list: [["电子邮箱", "", ""], ["小红书", "", ""], ["微信公众号", "", ""], ["X", "", ""]] },
-  { no: 36, title: "关于我们", active: "我的", cards: [["问天AI v1.0.3199", "问天AI是一款命理排盘、合盘、抽签与AI解读工具。"], ["隐私协议", ""], ["用户协议", ""], ["检查更新", ""]] },
+  { no: 36, title: "关于我们", active: "我的", cards: [["阅天AI v1.0.3199", "阅天AI是一款命理排盘、合盘、抽签与AI解读工具。"], ["隐私协议", ""], ["用户协议", ""], ["检查更新", ""]] },
   { no: 37, title: "语言设置", active: "我的", modalTitle: "语言设置", modalItems: ["简体中文 ✓", "繁體中文", "English"], next: "screen-38" },
   { no: 38, title: "账户设置", active: "我的", list: [["基本信息", "", "screen-39"], ["登录方式", "", "screen-40"], ["设置密码", "", "screen-41"], ["退出登录", "", "screen-31"]] },
   { no: 39, title: "基本信息", active: "我的", form: ["昵称 谢广周", "邮箱 aa1598...@gmail.com", "手机号 绑定"], button: ["保存", "screen-38"] },
@@ -121,8 +121,8 @@ const screenFlowHotspots = {
 };
 
 const routes = {
-  home: ["问天AI", "命理报告", renderHome],
-  ai: ["问天AI", "AI问天", renderAI],
+  home: ["阅天AI", "命理报告", renderHome],
+  ai: ["阅天AI", "AI阅天", renderAI],
   archive: ["个人档案", "档案列表", renderArchive],
   divine: ["占问工具", "抽签与起卦", renderDivine],
   mine: ["账户中心", "我的", renderMine],
@@ -459,7 +459,7 @@ function getWentianBottomNavActive(nodeId) {
   if (!no) return "";
   if (no === 1 || no === 2 || no === 10 || no === 11 || no === 49) return "首页";
   if (no === 3 || (no >= 25 && no <= 27)) return "档案";
-  if ((no >= 4 && no <= 9) || no === 12) return "问天AI";
+  if ((no >= 4 && no <= 9) || no === 12) return "阅天AI";
   if ((no >= 28 && no <= 41) || no === 48) return "我的";
   if ((no >= 13 && no <= 24) || (no >= 42 && no <= 47)) return "首页";
   return convertedByNo.get(no)?.active || "首页";
@@ -481,7 +481,7 @@ function figBottomNav(active) {
   const items = [
     ["home", "◒", "首页"],
     ["archive", "▢", "档案"],
-    ["ai", "◐", "问天AI"],
+    ["ai", "◐", "阅天AI"],
     ["mine", "●", "我的"]
   ];
   return `
@@ -514,7 +514,7 @@ function convertedBottomNav(active) {
   const items = [
     ["screen-1", "首页", "◒", 49],
     ["screen-25", "档案", "▢", 146],
-    ["screen-3", "问天AI", "◐", 244],
+    ["screen-3", "阅天AI", "◐", 244],
     ["screen-31", "我的", "○", 341]
   ];
   return `
@@ -649,7 +649,7 @@ function sourceAppBottomNav(active, y = 778) {
   const items = [
     ["首页", "◒", 49, "screen-1"],
     ["档案", "▢", 146, "screen-25"],
-    ["问天AI", "◐", 244, "screen-3"],
+    ["阅天AI", "◐", 244, "screen-3"],
     ["我的", "○", 341, "screen-31"]
   ];
   return `
@@ -675,7 +675,7 @@ function sourceArchiveScreen(screen) {
   return `
     ${figText("source-3-time", "15:17", 18, 16, 70, 14, "#26211c")}
     ${figText("source-3-status", "◉  0.00  5G  ▮ 31 ⚡", 250, 14, 120, 10, "#26211c", 700, "right")}
-    ${figText("source-3-title", "问天AI", 18, 62, 160, 29, "#26211c", 800)}
+    ${figText("source-3-title", "阅天AI", 18, 62, 160, 29, "#26211c", 800)}
     ${figText("source-3-subtitle", "许半仙已准备好为您解读", 18, 101, 220, 13, "#7f756b")}
     ${figText("source-3-current-title", "当前档案", 18, 136, 120, 15, "#26211c", 800)}
     ${figText("source-3-change", "更换档案 〉", 284, 138, 88, 12, "#9b742e", 500, "right")}
@@ -701,7 +701,7 @@ function sourceArchiveScreen(screen) {
       ${tag3 ? figText(`source-3-pill-c-text-${index}`, tag3, 252, y + 58, 82, 10, "#b88c33", 600, "center") : ""}
       ${figText(`source-3-master-desc-${index}`, desc, 112, y + 82, 232, 13, "#9a9086", 400, "left", "line-height:1.5;")}
     `).join("")}
-    ${sourceAppBottomNav("问天AI", 755)}
+    ${sourceAppBottomNav("阅天AI", 755)}
   `;
 }
 
@@ -1197,7 +1197,7 @@ const wentianMemberState = {
   quota: null,
   product: {
     productKey: WENTIAN_MEMBER_PRODUCT_KEY,
-    name: "问天会员月卡",
+    name: "阅天会员月卡",
     description: "许半仙 AI 对话：会员 300次/天、9000次/月；免费用户 100次/天、3000次/月。",
     amountFen: 1990,
     amountYuan: "19.90",
@@ -1212,7 +1212,7 @@ const wentianPaymentState = {
   message: "",
   error: "",
   mockMode: false,
-  productName: "问天会员月卡",
+  productName: "阅天会员月卡",
   amountYuan: "19.90",
 };
 const wentianChartAiState = {
@@ -2920,7 +2920,7 @@ function buildWentianMobilePdfReportElement(saved) {
   report.className = "wentian-pdf-report";
   report.innerHTML = `
     <header class="wentian-pdf-head">
-      <span>问天AI · 紫微命盘</span>
+      <span>阅天AI · 紫微命盘</span>
       <h1>${escapeHtml(form.name || "命主")}个人命盘解读</h1>
       <p>${escapeHtml(gender)} · ${escapeHtml(formatWentianPdfBirthText(saved))} · ${escapeHtml(form.city || saved?.chartData?.city || "未填地点")}</p>
       <div class="wentian-pdf-meta">
@@ -3625,7 +3625,7 @@ const WENTIAN_I18N = {
   en: {
     "首页": "Home",
     "档案": "Files",
-    "问天AI": "Wentian AI",
+    "阅天AI": "Yuetian AI",
     "我的": "Me",
     "语言设置": "Language",
     "选择界面显示语言": "Choose display language",
@@ -3646,7 +3646,7 @@ const WENTIAN_I18N = {
     "会员状态": "Plan",
     "免费版": "Free",
     "已开通": "Active",
-    "问天套餐": "Wentian Plan",
+    "阅天套餐": "Yuetian Plan",
     "购买次数": "Buy Credits",
     "我的报告": "My Reports",
     "订单记录": "Orders",
@@ -3654,7 +3654,7 @@ const WENTIAN_I18N = {
     "活动中心": "Rewards Center",
     "双方获得奖励": "Both earn rewards",
     "任务与活动奖励": "Tasks and rewards",
-    "分享问天AI": "Share Wentian AI",
+    "分享阅天AI": "Share Yuetian AI",
     "联系我们": "Contact Us",
     "账户设置": "Account Settings",
     "基本信息": "Profile",
@@ -3697,7 +3697,7 @@ const WENTIAN_I18N = {
     "登录并继续": "Sign in and continue",
     "用 Google 登录": "Sign in with Google",
     "手机号登录使用密码，不发验证码。": "Phone sign-in uses password, not SMS codes.",
-    "问天会员": "Wentian Member",
+    "阅天会员": "Yuetian Member",
     "免费账号": "Free Account",
     "手机号密码": "Phone Password",
     "未绑定手机号": "No phone bound",
@@ -3713,7 +3713,7 @@ const WENTIAN_I18N = {
     "开通会员": "Open Membership",
     "支付记录": "Payment Records",
     "登录后设置账号密码": "Sign in to set account password",
-    "密码会绑定到你的问天账号，用于邮箱或手机号登录、支付记录和会员权益。": "The password is linked to your Wentian account for email or phone sign-in, payments, and membership.",
+    "密码会绑定到你的阅天账号，用于邮箱或手机号登录、支付记录和会员权益。": "The password is linked to your Yuetian account for email or phone sign-in, payments, and membership.",
     "新密码": "New Password",
     "确认密码": "Confirm Password",
     "再次输入": "Enter again",
@@ -3728,7 +3728,7 @@ const WENTIAN_I18N = {
   "zh-Hant": {
     "首页": "首頁",
     "档案": "檔案",
-    "问天AI": "問天AI",
+    "阅天AI": "閱天AI",
     "我的": "我的",
     "语言设置": "語言設定",
     "选择界面显示语言": "選擇介面顯示語言",
@@ -3745,7 +3745,7 @@ const WENTIAN_I18N = {
     "活动中心": "活動中心",
     "双方获得奖励": "雙方獲得獎勵",
     "任务与活动奖励": "任務與活動獎勵",
-    "分享问天AI": "分享問天AI",
+    "分享阅天AI": "分享閱天AI",
     "联系我们": "聯絡我們",
     "我的报告": "我的報告",
     "订单记录": "訂單記錄",
@@ -4126,7 +4126,7 @@ const WENTIAN_I18N_EN_EXTRA = {
   "连续签到功能待开放": "Streak check-in coming soon",
   "已邀请好友": "Friends Invited",
   "累计奖励 0": "Total rewards: 0",
-  "邀请好友注册问天AI，双方都可获得对话次数奖励。": "Invite friends and both get chat credits.",
+  "邀请好友注册阅天AI，双方都可获得对话次数奖励。": "Invite friends and both get chat credits.",
   "我的邀请码": "My Invite Code",
   "复制": "Copy",
   "好友注册时填写邀请码即可绑定邀请关系": "Friends enter the code at registration to bind the invite.",
@@ -4240,21 +4240,21 @@ const WENTIAN_I18N_EN_EXTRA = {
   "暂无可用": "None available",
   "当前可用次数": "Available Credits",
   "按量购买": "Credits",
-  "支付后直接增加问天AI对话次数，无需兑换。": "Credits are added after payment. No redemption needed.",
+  "支付后直接增加阅天AI对话次数，无需兑换。": "Credits are added after payment. No redemption needed.",
   "选择购买套餐": "Choose Package",
   "选择支付方式": "Payment Method",
   "支付宝": "Alipay",
   "信用卡": "Credit Card",
-  "按次数购买，仅限问天AI对话使用，支付后自动到账": "Credits are for Wentian AI chat only and arrive after payment.",
+  "按次数购买，仅限阅天AI对话使用，支付后自动到账": "Credits are for Yuetian AI chat only and arrive after payment.",
   "立即购买 ¥12": "Buy Now ¥12",
   "会员支付": "Payment",
   "确认订单": "Confirm Order",
-  "问天会员月卡": "Monthly Member",
+  "阅天会员月卡": "Monthly Member",
   "许半仙 AI 对话": "AI Chat",
   "商品": "Product",
   "订单号": "Order No.",
   "待创建": "Pending",
-  "问天会员月卡，19.9元/月": "Wentian monthly membership, ¥19.9/month",
+  "阅天会员月卡，19.9元/月": "Yuetian monthly membership, ¥19.9/month",
   "确认支付 ¥19.90": "Pay ¥19.90",
   "微信支付完成后会员额度自动刷新": "Membership quota refreshes after WeChat Pay completes",
   "开通后提升对话额度": "Increase chat quota after activation",
@@ -4266,7 +4266,7 @@ const WENTIAN_I18N_EN_EXTRA = {
   "今日剩余 100/100": "Today remaining 100/100",
   "本月剩余 3000/3000": "This month remaining 3000/3000",
   "开通会员 ¥19.90": "Open Membership ¥19.90",
-  "推荐你使用问天AI，AI排盘、命盘解读和许半仙问答都在这里。": "I recommend Wentian AI for AI charting, chart readings, and Xu Banxian Q&A.",
+  "推荐你使用阅天AI，AI排盘、命盘解读和许半仙问答都在这里。": "I recommend Yuetian AI for AI charting, chart readings, and Xu Banxian Q&A.",
   "登录后可生成专属邀请码。": "Sign in to generate your personal invite code.",
   "微信好友": "WeChat Friend",
   "朋友圈": "Moments",
@@ -4274,12 +4274,12 @@ const WENTIAN_I18N_EN_EXTRA = {
   "邮件": "Email",
   "电子邮箱": "Email",
   "小红书": "RED",
-  "问天AI命理小助手": "Wentian AI Assistant",
+  "阅天AI命理小助手": "Yuetian AI Assistant",
   "微信公众号": "WeChat",
   "悦天AI公众号": "Yuetian AI",
   "关注我们的推特": "Follow us on X",
   "关于我们": "About Us",
-  "问天AI是一款手机端命理排盘、合盘、抽签与AI解读工具，帮你把复杂命理信息转成可理解、可行动的建议。": "Wentian AI is a mobile tool for charting, compatibility, lots, and AI readings, turning complex destiny data into understandable guidance.",
+  "阅天AI是一款手机端命理排盘、合盘、抽签与AI解读工具，帮你把复杂命理信息转成可理解、可行动的建议。": "Yuetian AI is a mobile tool for charting, compatibility, lots, and AI readings, turning complex destiny data into understandable guidance.",
   "隐私协议": "Privacy Policy",
   "用户协议": "Terms of Service",
   "检查更新": "Check for Updates",
@@ -4461,7 +4461,7 @@ function translateWentianText(text, code = getWentianLanguageCode(), element = n
   const lang = getWentianLanguageOption(code).code;
   const dict = WENTIAN_I18N[lang];
   if (!dict) return source;
-  if (lang === "en" && source === "问天AI" && element?.dataset?.nodeId?.startsWith("source-bottom-label-")) return "AI";
+  if (lang === "en" && source === "阅天AI" && element?.dataset?.nodeId?.startsWith("source-bottom-label-")) return "AI";
   if (lang === "en") {
     if (source.includes("\n") || source.includes("\\n")) {
       return source.split(/(?:\\n|\n)+/).map((line) => translateWentianText(line, code, element)).join("\n");
@@ -5439,10 +5439,10 @@ async function copyWentianText(text, okText) {
 
 async function shareWentianInvite() {
   const summary = getWentianInviteSnapshot();
-  const text = `我在用问天AI排盘和问许半仙，注册时填邀请码 ${summary.inviteCode} 可领取体验次数：${summary.inviteLink}`;
+  const text = `我在用阅天AI排盘和问许半仙，注册时填邀请码 ${summary.inviteCode} 可领取体验次数：${summary.inviteLink}`;
   if (navigator.share) {
     try {
-      await navigator.share({ title: "问天AI", text, url: summary.inviteLink });
+      await navigator.share({ title: "阅天AI", text, url: summary.inviteLink });
       setWentianInviteStatus("已打开系统分享", "ok");
       return;
     } catch (_err) {}
@@ -5457,9 +5457,9 @@ function getWentianSharePayload() {
   const hasInvite = account.loggedIn && isWentianInviteCode(summary.inviteCode);
   const url = hasInvite ? summary.inviteLink : appUrl;
   const inviteLine = hasInvite ? `我的邀请码：${summary.inviteCode}` : "登录后可生成专属邀请码。";
-  const text = `推荐你使用问天AI，AI排盘、命盘解读和许半仙问答都在这里。\n${inviteLine}\n${url}`;
+  const text = `推荐你使用阅天AI，AI排盘、命盘解读和许半仙问答都在这里。\n${inviteLine}\n${url}`;
   return {
-    title: "问天AI",
+    title: "阅天AI",
     text,
     url,
     inviteCode: hasInvite ? summary.inviteCode : "",
@@ -5826,13 +5826,13 @@ function getWentianMemberSnapshot() {
   const isMember = !!quota.isMember;
   return {
     isMember,
-    title: isMember ? "问天会员" : "免费版",
+    title: isMember ? "阅天会员" : "免费版",
     subtitle: isMember
       ? `有效期至 ${formatWentianMemberDate(quota.memberExpiresAt) || "本月"}`
       : "开通后提升对话额度",
     daily: `${getWentianQuotaValue("dailyRemaining")}/${getWentianQuotaValue("dailyLimit")}`,
     monthly: `${getWentianQuotaValue("monthlyRemaining")}/${getWentianQuotaValue("monthlyLimit")}`,
-    productName: product.name || "问天会员月卡",
+    productName: product.name || "阅天会员月卡",
     amountYuan: product.amountYuan || "19.90",
     description: product.description || "会员 300次/天、9000次/月；免费 100次/天、3000次/月。",
   };
@@ -5918,7 +5918,7 @@ async function startWentianMemberPayment() {
   wentianPaymentState.status = "loading";
   wentianPaymentState.message = "正在创建微信支付订单...";
   wentianPaymentState.error = "";
-  wentianPaymentState.productName = product.name || "问天会员月卡";
+  wentianPaymentState.productName = product.name || "阅天会员月卡";
   wentianPaymentState.amountYuan = product.amountYuan || "19.90";
   navigate("screen-30");
 
@@ -5938,7 +5938,7 @@ async function startWentianMemberPayment() {
     wentianPaymentState.payUrl = session.payUrl || "";
     wentianPaymentState.payMethod = session.payMethod || payMethod;
     wentianPaymentState.mockMode = !!(order.mockMode || session.mockMode);
-    wentianPaymentState.productName = order.productName || product.name || "问天会员月卡";
+    wentianPaymentState.productName = order.productName || product.name || "阅天会员月卡";
     wentianPaymentState.amountYuan = order.amountYuan || product.amountYuan || "19.90";
     wentianPaymentState.message = wentianPaymentState.mockMode
       ? "当前是支付测试模式"
@@ -6200,7 +6200,7 @@ function sourceMembershipScreen() {
   const buttonText = member.isMember ? `续费会员 ¥${member.amountYuan}` : `开通会员 ¥${member.amountYuan}`;
   return `
     ${figBox("wt33-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
-    ${wentianSimpleHeader("wt33", "问天会员")}
+    ${wentianSimpleHeader("wt33", "阅天会员")}
     ${figBox("wt33-card", 24, 108, 342, 116, "", "border-radius:18px;background:linear-gradient(135deg,#2b2722,#14110d);box-shadow:0 16px 30px rgba(28,20,12,.16);")}
     ${figText("wt33-card-label", member.title, 52, 136, 130, 20, "#fff", 900)}
     ${figText("wt33-card-sub", escapeHtml(member.subtitle), 52, 168, 190, 13, "#cfc1a9", 700)}
@@ -6212,7 +6212,7 @@ function sourceMembershipScreen() {
     ${figText("wt33-free-title", "免费用户", 44, 314, 90, 15, "#25211d", 900)}
     ${figText("wt33-free-quota", "100次/天 · 3000次/月", 174, 314, 160, 14, "#8d8377", 800, "right")}
     ${figBox("wt33-member", 24, 378, 342, 92, "", "border:1px solid #c8a65f;border-radius:16px;background:#fffaf0;box-shadow:0 10px 24px rgba(130,91,31,.10);")}
-    ${figText("wt33-member-title", "问天会员", 44, 402, 100, 16, "#8f3d30", 900)}
+    ${figText("wt33-member-title", "阅天会员", 44, 402, 100, 16, "#8f3d30", 900)}
     ${figText("wt33-member-quota", "300次/天 · 9000次/月", 158, 402, 176, 15, "#8f3d30", 900, "right")}
     ${figText("wt33-member-desc", "更适合高频追问、复盘命盘、连续做年度规划。", 44, 436, 282, 13, "#756d63", 700)}
 
@@ -6236,7 +6236,7 @@ function sourcePaymentScreen() {
   const payUrl = wentianPaymentState.payUrl || "";
   const showQr = payUrl && wentianPaymentState.payMethod !== "h5" && !wentianPaymentState.mockMode;
   const showOpen = payUrl && wentianPaymentState.payMethod === "h5" && !wentianPaymentState.mockMode;
-  const message = wentianPaymentState.error || wentianPaymentState.message || "问天会员月卡，19.9元/月";
+  const message = wentianPaymentState.error || wentianPaymentState.message || "阅天会员月卡，19.9元/月";
   return `
     ${figBox("wt30-bg", 0, 0, 390, 844, "", "background:linear-gradient(180deg,#fffdf8 0%,#fbf7ef 58%,#f3eadc 100%);")}
     ${figButton("wt30-back-hit", 18, 38, 58, 50, 'data-route="screen-33"')}
@@ -6246,14 +6246,14 @@ function sourcePaymentScreen() {
     ${figText("wt30-status-text", stateText, 286, 56, 74, 12, "#9a6f22", 800, "center")}
 
     ${figBox("wt30-hero", 24, 108, 342, 128, "", "border-radius:20px;background:linear-gradient(135deg,#b54c3a 0%,#8e3429 100%);box-shadow:0 16px 34px rgba(131,56,39,.18);")}
-    ${figText("wt30-hero-label", "问天会员月卡", 46, 132, 150, 13, "#f7e6cf", 700)}
+    ${figText("wt30-hero-label", "阅天会员月卡", 46, 132, 150, 13, "#f7e6cf", 700)}
     ${figText("wt30-hero-title", "许半仙 AI 对话", 46, 164, 180, 24, "#fffaf3", 900)}
     ${figText("wt30-hero-sub", "300次/天 · 9000次/月", 46, 202, 230, 13, "#f2d8bd", 700)}
     ${figText("wt30-hero-price", `¥${escapeHtml(wentianPaymentState.amountYuan || "19.90")}`, 250, 154, 92, 26, "#fffaf3", 900, "right")}
 
     ${figBox("wt30-order-card", 24, 270, 342, showQr ? 304 : 190, "", "border:1px solid #eadfce;border-radius:18px;background:#fffdf8;box-shadow:0 10px 24px rgba(70,45,25,.08);")}
     ${figText("wt30-order-product-label", "商品", 44, 302, 80, 13, "#8d8377", 600)}
-    ${figText("wt30-order-product", escapeHtml(wentianPaymentState.productName || "问天会员月卡"), 164, 302, 160, 13, "#2b251f", 800, "right")}
+    ${figText("wt30-order-product", escapeHtml(wentianPaymentState.productName || "阅天会员月卡"), 164, 302, 160, 13, "#2b251f", 800, "right")}
     ${figLine("wt30-order-line-1", 44, 334, 302, "#efe4d3")}
     ${figText("wt30-order-no-label", "订单号", 44, 358, 80, 13, "#8d8377", 600)}
     ${figText("wt30-order-no", escapeHtml(wentianPaymentState.orderNo || "待创建"), 132, 358, 190, 13, "#2b251f", 800, "right")}
@@ -6302,7 +6302,7 @@ function sourceOrderRecordsScreen() {
             const paidAt = formatWentianMemberDate(order.paidAt || order.createdAt) || "未完成";
             return `
               ${figBox(`wt48-order-${index}`, 24, y, 342, 76, "", "border:1px solid #eadfce;border-radius:16px;background:#fffdf8;box-shadow:0 7px 16px rgba(70,45,25,.06);")}
-              ${figText(`wt48-order-name-${index}`, escapeHtml(order.productName || "问天会员"), 44, y + 16, 156, 15, "#201812", 900)}
+              ${figText(`wt48-order-name-${index}`, escapeHtml(order.productName || "阅天会员"), 44, y + 16, 156, 15, "#201812", 900)}
               ${figText(`wt48-order-date-${index}`, escapeHtml(paidAt), 44, y + 44, 112, 12, "#8f857a", 700)}
               ${figText(`wt48-order-status-${index}`, escapeHtml(status), 192, y + 18, 62, 12, order.status === "paid" ? "#5f8745" : "#9b742e", 900, "right")}
               ${figText(`wt48-order-amount-${index}`, `¥${escapeHtml(order.amountYuan || "0.00")}`, 264, y + 18, 78, 17, "#9f3d2e", 900, "right")}
@@ -6350,7 +6350,7 @@ function sourceMineScreen(screen) {
       ${figText(`source-31-stat-label-${index}`, label, x + 14, 253, 80, 12, "#9b742e", 500)}
       ${figText(`source-31-stat-count-${index}`, count, x + 14, 279, 86, 20, "#b88c33", 800)}
     `).join("")}
-    ${[["♛", "问天套餐", 16, 330], ["＋", "购买次数", 200, 330], ["▤", "我的报告", 16, 400], ["▦", "订单记录", 200, 400]].map(([icon, label, x, y], index) => `
+    ${[["♛", "阅天套餐", 16, 330], ["＋", "购买次数", 200, 330], ["▤", "我的报告", 16, 400], ["▦", "订单记录", 200, 400]].map(([icon, label, x, y], index) => `
       ${figBox(`source-31-quick-${index}`, x, y, 174, 60, "converted-card", "border-radius:12px;box-shadow:0 5px 14px rgba(74,55,32,.08);")}
       ${figBox(`source-31-quick-icon-${index}`, x + 17, y + 12, 36, 36, "", "border-radius:10px;background:#f6f2e9;")}
       ${figText(`source-31-quick-icon-text-${index}`, icon, x + 17, y + 21, 36, 14, "#b88c33", 800, "center")}
@@ -6364,7 +6364,7 @@ function sourceMineScreen(screen) {
       ${figText(`source-31-more-sub-${index}`, sub, x + 56, 529, 92, 11, "#8f857a", 600, "left", "white-space:nowrap;overflow:hidden;text-overflow:ellipsis;")}
       ${figText(`source-31-more-arrow-${index}`, "›", x + 150, 513, 14, 18, "#aaa196", 600, "center")}
     `).join("")}
-    ${[["语言设置", languageLabel, 566], ["分享问天AI", "", 627], ["联系我们", "", 688]].map(([label, value, y], index) => `
+    ${[["语言设置", languageLabel, 566], ["分享阅天AI", "", 627], ["联系我们", "", 688]].map(([label, value, y], index) => `
       ${figBox(`source-31-row-${index}`, 16, y, 358, 61, "converted-card", "border-radius:12px;box-shadow:0 5px 14px rgba(74,55,32,.08);")}
       ${figText(`source-31-row-icon-${index}`, ["文", "⌯", "☏"][index], 34, y + 21, 24, 16, "#b88c33", 700, "center")}
       ${figText(`source-31-row-label-${index}`, label, 68, y + 20, 140, 16, "#26211c", 600)}
@@ -6470,7 +6470,7 @@ function sourceLoginMethodsScreen() {
       ${figText("source-login-name", escapeHtml(account.name), 122, 144, 164, 18, "#201812", 900)}
       ${figText("source-login-email", escapeHtml(account.email), 122, 170, 180, 12, "#8f857a", 700)}
       ${figBox("source-login-member", 122, 198, 86, 24, "", `border-radius:12px;background:${member.isMember ? "#fff0d6" : "#f6f2e9"};`)}
-      ${figText("source-login-member-text", member.isMember ? "问天会员" : "免费账号", 122, 204, 86, 11, member.isMember ? "#9f3d2e" : "#9b742e", 800, "center")}
+      ${figText("source-login-member-text", member.isMember ? "阅天会员" : "免费账号", 122, 204, 86, 11, member.isMember ? "#9f3d2e" : "#9b742e", 800, "center")}
 
       ${figBox("source-login-method-card", 24, 274, 342, 196, "", "border-radius:18px;background:#fff;box-shadow:0 6px 16px rgba(74,55,32,.06);border:1px solid #eadfce;")}
       ${[["手机号密码", phone || "未绑定手机号", provider === "email" || phone ? "已启用" : "可用", "#5f8745"], ["Google 登录", provider === "google" ? "当前账号来源" : "可继续使用 Google 登录", provider === "google" ? "已启用" : "可用", "#9b742e"], ["账号密码", "用于邮箱或手机号登录和后续安全验证", "可修改", "#9b742e"]].map(([title, desc, badge, color], index) => {
@@ -6536,7 +6536,7 @@ function sourcePasswordSettingsScreen() {
     ${figText("source-password-title", "设置密码", 0, 56, 390, 22, "#1f1d1a", 900, "center")}
     ${figBox("source-password-login-card", 24, 136, 342, 178, "", "border-radius:18px;background:#fff;box-shadow:0 8px 18px rgba(74,55,32,.08);border:1px solid #eadfce;")}
     ${figText("source-password-login-title", "登录后设置账号密码", 48, 172, 190, 18, "#25211d", 900)}
-    ${figText("source-password-login-desc", "密码会绑定到你的问天账号，用于邮箱或手机号登录、支付记录和会员权益。", 48, 210, 280, 13, "#756d63", 700, "left", "line-height:1.45;")}
+    ${figText("source-password-login-desc", "密码会绑定到你的阅天账号，用于邮箱或手机号登录、支付记录和会员权益。", 48, 210, 280, 13, "#756d63", 700, "left", "line-height:1.45;")}
     ${figBox("source-password-login-btn", 48, 260, 150, 38, "", "border-radius:19px;background:#b74e39;")}
     ${figButton("source-password-login-hit", 48, 260, 150, 38, 'data-route="screen-40"')}
     ${figText("source-password-login-text", "登录 / 注册", 48, 272, 150, 12, "#fff", 900, "center")}
@@ -10066,7 +10066,7 @@ function renderWentianPolishedScreen(screen) {
       ${figText("wt24-hero-label", "已邀请好友", 54, 168, 120, 13, "#fff7df", 700)}
       ${figBox("wt24-hero-badge", 246, 126, 82, 34, "", "border-radius:17px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.28);")}
       ${figText("wt24-hero-badge-text", "累计奖励 0", 246, 136, 82, 11, "#fff", 800, "center")}
-      ${figText("wt24-hero-copy", "邀请好友注册问天AI，双方都可获得对话次数奖励。", 54, 190, 250, 12, "#fff5dc", 600)}
+      ${figText("wt24-hero-copy", "邀请好友注册阅天AI，双方都可获得对话次数奖励。", 54, 190, 250, 12, "#fff5dc", 600)}
 
       ${figBox("wt24-code-card", 24, 240, 342, 130, "", "border-radius:14px;background:#fff;box-shadow:0 8px 20px rgba(70,45,25,.08);")}
       ${figText("wt24-code-title", "我的邀请码", 44, 262, 110, 14, "#7f766b", 700)}
@@ -10125,7 +10125,7 @@ function renderWentianPolishedScreen(screen) {
       ${figBox("wt29-balance", 24, 118, 342, 106, "", "border-radius:14px;background:linear-gradient(135deg,#2b2620,#16130f);box-shadow:0 12px 26px rgba(25,18,12,.18);")}
       ${figText("wt29-balance-label", "当前可用次数", 48, 146, 130, 15, "#c9b887", 700)}
       ${figText("wt29-balance-num", "按量购买", 48, 172, 120, 30, "#fff", 800)}
-      ${figText("wt29-note", "支付后直接增加问天AI对话次数，无需兑换。", 48, 202, 250, 12, "#a69b8d")}
+      ${figText("wt29-note", "支付后直接增加阅天AI对话次数，无需兑换。", 48, 202, 250, 12, "#a69b8d")}
       ${figText("wt29-select", "选择购买套餐", 24, 254, 130, 16, "#25211d", 800)}
       ${[["10次", "¥12", 24, 290], ["30次", "¥28", 118, 290], ["80次", "¥58", 212, 290], ["150次", "¥98", 24, 388]].map(([count, price, x, y], index) => `
         ${figBox(`wt29-plan-${index}`, x, y, index === 3 ? 342 : 82, 74, "", `border:1px solid ${index === 0 ? "#c8a65f" : "#eadfce"};border-radius:10px;background:#fff;`)}
@@ -10137,7 +10137,7 @@ function renderWentianPolishedScreen(screen) {
       ${figText("wt29-alipay-text", "支付宝", 24, 560, 150, 13, "#bd8624", 800, "center")}
       ${figBox("wt29-card", 196, 548, 150, 42, "", "border:1px solid #eadfce;border-radius:9px;background:#fff;")}
       ${figText("wt29-card-text", "信用卡", 196, 560, 150, 13, "#25211d", 700, "center")}
-      ${figText("wt29-terms", "按次数购买，仅限问天AI对话使用，支付后自动到账", 0, 692, 390, 12, "#9e968d", 500, "center")}
+      ${figText("wt29-terms", "按次数购买，仅限阅天AI对话使用，支付后自动到账", 0, 692, 390, 12, "#9e968d", 500, "center")}
       ${figBox("wt29-submit", 42, 736, 306, 50, "", "border-radius:9px;background:#c49a34;")}
       ${figButton("wt29-submit-hit", 42, 736, 306, 50, 'data-route="screen-30"')}
       ${figText("wt29-submit-text", "立即购买 ¥12", 42, 751, 306, 14, "#fff", 800, "center")}
@@ -10153,7 +10153,7 @@ function renderWentianPolishedScreen(screen) {
       ${figText("wt30-status-text", "待支付", 286, 56, 74, 12, "#9a6f22", 800, "center")}
 
       ${figBox("wt30-hero", 24, 108, 342, 128, "", "border-radius:20px;background:linear-gradient(135deg,#b54c3a 0%,#8e3429 100%);box-shadow:0 16px 34px rgba(131,56,39,.18);")}
-      ${figText("wt30-hero-label", "问天AI订单", 46, 132, 120, 13, "#f7e6cf", 700)}
+      ${figText("wt30-hero-label", "阅天AI订单", 46, 132, 120, 13, "#f7e6cf", 700)}
       ${figText("wt30-hero-title", "10次对话套餐", 46, 164, 180, 24, "#fffaf3", 900)}
       ${figText("wt30-hero-sub", "支付后自动增加可用对话次数", 46, 202, 230, 13, "#f2d8bd", 600)}
       ${figText("wt30-hero-price", "¥12.00", 250, 154, 92, 26, "#fffaf3", 900, "right")}
@@ -10189,7 +10189,7 @@ function renderWentianPolishedScreen(screen) {
   if (no === 33) {
     return `
       ${figBox("wt33-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
-      ${wentianSimpleHeader("wt33", "问天会员")}
+      ${wentianSimpleHeader("wt33", "阅天会员")}
       ${figBox("wt33-card", 24, 108, 342, 110, "", "border-radius:14px;background:linear-gradient(135deg,#2b2722,#14110d);")}
       ${figText("wt33-card-title", "普通会员", 52, 138, 120, 19, "#fff", 800)}
       ${figText("wt33-card-sub", "开通后享专属权益", 52, 170, 160, 13, "#c7bda8", 600)}
@@ -10226,7 +10226,7 @@ function renderWentianPolishedScreen(screen) {
       ${sourceMineScreen(screen)}
       ${figBox("wt34-overlay", 0, 0, 390, 755, "", "background:rgba(0,0,0,.30);")}
       ${figBox("wt34-sheet", 0, 432, 390, 323, "", "border-radius:22px 22px 0 0;background:#fff;box-shadow:0 -10px 28px rgba(45,31,18,.16);")}
-      ${figText("wt34-title", "分享问天AI", 0, 462, 390, 18, "#25211d", 900, "center")}
+      ${figText("wt34-title", "分享阅天AI", 0, 462, 390, 18, "#25211d", 900, "center")}
       ${figText("wt34-close", "×", 334, 460, 28, 24, "#25211d", 500, "center")}
       ${figButton("wt34-close-hit", 322, 450, 52, 46, 'data-route="screen-31"')}
       ${figBox("wt34-copy", 28, 506, 334, 92, "", "border-radius:12px;background:#fffaf2;border:1px solid #ead9bd;")}
@@ -10248,7 +10248,7 @@ function renderWentianPolishedScreen(screen) {
       ${sourceMineScreen(screen)}
       ${figBox("wt34-overlay", 0, 0, 390, 844, "", "background:rgba(0,0,0,.3);")}
       ${figBox("wt34-sheet", 0, 604, 390, 240, "", "border-radius:22px 22px 0 0;background:#fff;")}
-      ${figText("wt34-title", "分享问天AI", 0, 632, 390, 18, "#25211d", 800, "center")}
+      ${figText("wt34-title", "分享阅天AI", 0, 632, 390, 18, "#25211d", 800, "center")}
       ${figText("wt34-close", "×", 334, 630, 28, 24, "#25211d", 400, "center")}
       ${figButton("wt34-close-hit", 322, 620, 52, 46, 'data-route="screen-31"')}
       ${figText("wt34-login-desc", "登录后生成专属邀请链接，好友注册和首付奖励会自动记到你的账号。", 42, 682, 306, 13, "#756d63", 700, "center", "line-height:1.55;")}
@@ -10258,12 +10258,12 @@ function renderWentianPolishedScreen(screen) {
     `;
     }
     const invite = getWentianInviteSnapshot();
-    const shareText = `推荐你使用问天AI，注册填写邀请码 ${invite.inviteCode} 可领取体验次数。${invite.inviteLink}`;
+    const shareText = `推荐你使用阅天AI，注册填写邀请码 ${invite.inviteCode} 可领取体验次数。${invite.inviteLink}`;
     return `
       ${sourceMineScreen(screen)}
       ${figBox("wt34-overlay", 0, 0, 390, 844, "", "background:rgba(0,0,0,.3);")}
       ${figBox("wt34-sheet", 0, 574, 390, 270, "", "border-radius:22px 22px 0 0;background:#fff;")}
-      ${figText("wt34-title", "分享问天AI", 0, 602, 390, 18, "#25211d", 800, "center")}
+      ${figText("wt34-title", "分享阅天AI", 0, 602, 390, 18, "#25211d", 800, "center")}
       ${figText("wt34-close", "×", 334, 600, 28, 24, "#25211d", 400, "center")}
       ${figButton("wt34-close-hit", 322, 590, 52, 46, 'data-route="screen-31"')}
       ${figBox("wt34-copy", 28, 644, 334, 72, "", "border-radius:10px;background:#fbf7ef;border:1px solid #eadfce;")}
@@ -10285,7 +10285,7 @@ function renderWentianPolishedScreen(screen) {
       ${figText("wt34-title", "分享文本", 0, 602, 390, 18, "#25211d", 800, "center")}
       ${figText("wt34-close", "×", 334, 600, 28, 24, "#25211d", 400, "center")}
       ${figBox("wt34-copy", 28, 644, 334, 72, "", "border-radius:10px;background:#fbf7ef;border:1px solid #eadfce;")}
-      ${figText("wt34-copy-text", "推荐你使用问天AI，AI智能和八字分析平台，为你解读命运密码。使用我的邀请码：8R7U58ZW", 44, 658, 280, 13, "#756d63", 500, "left", "line-height:1.45;")}
+      ${figText("wt34-copy-text", "推荐你使用阅天AI，AI智能和八字分析平台，为你解读命运密码。使用我的邀请码：8R7U58ZW", 44, 658, 280, 13, "#756d63", 500, "left", "line-height:1.45;")}
       ${["微信好友", "朋友圈", "Chrome", "邮件"].map((text, index) => `
         ${figBox(`wt34-share-${index}`, 38 + index * 82, 742, 42, 42, "", "border-radius:21px;background:#f5ead4;")}
         ${figText(`wt34-share-icon-${index}`, index === 0 ? "微" : index === 1 ? "圈" : index === 2 ? "C" : "邮", 38 + index * 82, 755, 42, 14, "#bd8624", 800, "center")}
@@ -10297,7 +10297,7 @@ function renderWentianPolishedScreen(screen) {
     return `
       ${figBox("wt35-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
       ${wentianSimpleHeader("wt35", "联系我们")}
-      ${[["电子邮箱", "support@yuetianai.com", "✉"], ["小红书", "问天AI命理小助手", "♡"], ["微信公众号", "悦天AI公众号", "微"], ["X", "关注我们的推特", "𝕏"]].map(([title, desc, icon], index) => {
+      ${[["电子邮箱", "support@yuetianai.com", "✉"], ["小红书", "阅天AI命理小助手", "♡"], ["微信公众号", "悦天AI公众号", "微"], ["X", "关注我们的推特", "𝕏"]].map(([title, desc, icon], index) => {
         const y = 128 + index * 78;
         return `
           ${figBox(`wt35-row-${index}`, 24, y, 342, 56, "", "border-radius:12px;background:#fff;box-shadow:0 6px 16px rgba(70,45,25,.07);")}
@@ -10314,10 +10314,10 @@ function renderWentianPolishedScreen(screen) {
       ${figBox("wt36-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
       ${wentianSimpleHeader("wt36", "关于我们")}
       ${figBox("wt36-logo", 158, 126, 74, 74, "", "border-radius:18px;background:#1e1712;")}
-      ${figText("wt36-logo-text", "问天AI", 158, 152, 74, 16, "#d6ad3e", 800, "center")}
-      ${figText("wt36-name", "问天AI", 0, 230, 390, 20, "#25211d", 800, "center")}
+      ${figText("wt36-logo-text", "阅天AI", 158, 152, 74, 16, "#d6ad3e", 800, "center")}
+      ${figText("wt36-name", "阅天AI", 0, 230, 390, 20, "#25211d", 800, "center")}
       ${figText("wt36-version", "v1.0.3199", 0, 260, 390, 12, "#8d857b", 600, "center")}
-      ${figText("wt36-desc", "问天AI是一款手机端命理排盘、合盘、抽签与AI解读工具，帮你把复杂命理信息转成可理解、可行动的建议。", 54, 304, 282, 14, "#756d63", 500, "center", "line-height:1.65;")}
+      ${figText("wt36-desc", "阅天AI是一款手机端命理排盘、合盘、抽签与AI解读工具，帮你把复杂命理信息转成可理解、可行动的建议。", 54, 304, 282, 14, "#756d63", 500, "center", "line-height:1.65;")}
       ${["隐私协议", "用户协议", "检查更新"].map((title, index) => {
         const y = 466 + index * 70;
         return `
@@ -10336,7 +10336,7 @@ function convertedSpecial(screen) {
   if (screen.no === 1) {
     return `
       ${figText("screen-1-hero-title", "授权书", 0, 92, 390, 22, "#26211c", 700, "center")}
-      ${figText("screen-1-auth-copy", "本人授权问天AI依据输入资料生成排盘、合盘\\n与AI解读。\\n\\n签署人：谢广周 / 2026-05-11", 42, 150, 306, 15, "#26211c", 400, "left", "line-height:1.35;")}
+      ${figText("screen-1-auth-copy", "本人授权阅天AI依据输入资料生成排盘、合盘\\n与AI解读。\\n\\n签署人：谢广周 / 2026-05-11", 42, 150, 306, 15, "#26211c", 400, "left", "line-height:1.35;")}
       ${figBox("screen-1-seal", 226, 520, 90, 90, "", "border-radius:45px;background:#a13824;")}
       ${figText("screen-1-seal-text", "已授权", 228, 552, 86, 18, "#fff", 700, "center")}
     `;
@@ -10368,7 +10368,7 @@ function convertedSpecial(screen) {
       ${figBox("mine-profile", 24, 112, 342, 86, "converted-card", "")}
       ${figText("mine-name", "谢广周", 40, 126, 310, 15, "#26211c", 700)}
       ${figText("mine-meta", "普通会员 / 账号信息", 40, 154, 310, 12, "#8c8275")}
-      ${[["问天套餐", "screen-33"], ["购买次数", "screen-29"], ["我的报告", "screen-27"], ["订单记录", "screen-48"], ["邀请好友", "screen-22"], ["语言设置", "screen-37"], ["分享问天AI", "screen-34"], ["联系我们", "screen-35"]].map(([label, route], index) => {
+      ${[["阅天套餐", "screen-33"], ["购买次数", "screen-29"], ["我的报告", "screen-27"], ["订单记录", "screen-48"], ["邀请好友", "screen-22"], ["语言设置", "screen-37"], ["分享阅天AI", "screen-34"], ["联系我们", "screen-35"]].map(([label, route], index) => {
         const y = 224 + index * 54;
         return `
           ${figBox(`mine-row-${index}`, 24, y, 342, 42, "converted-card", "border-radius:8px;")}
@@ -11098,7 +11098,7 @@ function navigate(route, push = true) {
     if (push && route !== state.route) state.stack.push(state.route);
     state.route = route;
     if (route !== "screen-38") wentianLogoutConfirmOpen = false;
-    if (routeKicker) routeKicker.textContent = translateWentianText("问天AI");
+    if (routeKicker) routeKicker.textContent = translateWentianText("阅天AI");
     if (routeTitle) routeTitle.textContent = translateWentianText(screen.title);
     view.innerHTML = applyWentianColorUpgrade(renderConvertedScreen(screen.no));
     stripScreenshotStatusBar();
@@ -11176,7 +11176,7 @@ function renderHome() {
 }
 
 function renderAI() {
-  return figPhone("17:3", "Hi-Fi 01 AI问天", `
+  return figPhone("17:3", "Hi-Fi 01 AI阅天", `
     ${figStatus("15:17")}
     ${figButton("17:6-hit", 14, 54, 54, 62, 'data-route="home"')}
     ${figText("17:6", "‹", 28, 66, 26, 42, "#21211f", 700, "center")}
@@ -11238,7 +11238,7 @@ function renderArchive() {
               <h3>${name}</h3>
               <p>${meta}</p>
               <p>${detail}</p>
-              <button class="ghost-btn" type="button" data-route="ai">问天咨询</button>
+              <button class="ghost-btn" type="button" data-route="ai">阅天咨询</button>
             </article>
           `).join("")}
         </div>
@@ -11248,7 +11248,7 @@ function renderArchive() {
         <div class="stack">
           <button class="choice-btn" type="button" data-route="chart">排盘表单</button>
           <button class="choice-btn" type="button" data-route="report">紫微命盘</button>
-          <button class="choice-btn" type="button" data-route="ai">AI问天</button>
+          <button class="choice-btn" type="button" data-route="ai">AI阅天</button>
         </div>
       </section>
     </div>
@@ -11305,7 +11305,7 @@ function renderMine() {
     ${figText("17:125", "/0", 306, 353, 34, 15, "#75756e")}
     ${figBox("17:126", 16, 394, 172, 62, "fig-card", "border-radius:15px;")}
     ${figText("17:128", "♛", 43, 414, 24, 20, "#ba8f38", 700, "center")}
-    ${figText("17:129", "问天会员", 88, 414, 88, 21, "#21211f", 500)}
+    ${figText("17:129", "阅天会员", 88, 414, 88, 21, "#21211f", 500)}
     ${figBox("17:130", 202, 394, 172, 62, "fig-card", "border-radius:15px;")}
     ${figButton("17:130-hit", 202, 394, 172, 62, 'data-route="recharge"')}
     ${figText("17:132", "◇", 229, 414, 24, 20, "#ba8f38", 700, "center")}
@@ -11334,7 +11334,7 @@ function renderMine() {
     ${figText("17:155", "›", 344, 730, 22, 28, "#a8a699", 700, "center")}
     ${figLine("17:156", 16, 746, 358)}
     ${figText("17:157", "⌯", 34, 762, 28, 22, "#8c8c80", 700, "center")}
-    ${figText("17:158", "分享问天AI", 68, 763, 150, 20, "#21211f")}
+    ${figText("17:158", "分享阅天AI", 68, 763, 150, 20, "#21211f")}
     ${figText("17:159", "›", 344, 786, 22, 28, "#a8a699", 700, "center")}
     ${figBottomNav("我的")}
   `);
@@ -11351,7 +11351,7 @@ function renderRecharge() {
     ${figText("17:56", "◇", 61, 190, 36, 32, "#ba8f38", 700, "center")}
     ${figText("17:57", "直接购买对话次数", 120, 174, 150, 22, "#b8b2a8", 700)}
     ${figText("17:58", "按量付费", 122, 214, 120, 36, "#ba8f38", 700)}
-    ${figText("17:59", "支付后自动增加问天AI可用次数", 50, 264, 260, 15, "#948f85")}
+    ${figText("17:59", "支付后自动增加阅天AI可用次数", 50, 264, 260, 15, "#948f85")}
     ${figText("17:60", "选择购买套餐", 22, 344, 220, 25, "#21211f", 700)}
     ${figBox("17:61", 22, 392, 108, 86, "fig-card", "border:1.6px solid #ba8f38;border-radius:14px;")}
     ${figText("17:62", "◇", 46, 415, 29, 25, "#ba8f38", 700, "center")}
@@ -11383,7 +11383,7 @@ function renderRecharge() {
     ${figBox("17:88", 168, 708, 18, 14, "", "border-radius:2px;background:#0578e0;")}
     ${figBox("17:89", 168, 708, 18, 5, "", "border-radius:1px;background:#f2f2e5;")}
     ${figText("17:90", "信用卡", 198, 708, 58, 17, "#21211f", 500)}
-    ${figText("17:91", "按次数购买，仅限问天AI对话使用", 52, 746, 286, 13, "#9e998f", 400, "center")}
+    ${figText("17:91", "按次数购买，仅限阅天AI对话使用", 52, 746, 286, 13, "#9e998f", 400, "center")}
     ${figText("17:92", "用户协议  |  隐私政策", 130, 770, 130, 13, "#75756e", 400, "center")}
     ${figBox("17:93", 0, 780, 390, 64, "", "background:rgba(251,247,240,.92);")}
     ${figBox("17:94", 18, 790, 354, 44, "", "border-radius:22px;background:#9e6b08;box-shadow:0 3px 12px rgba(0,0,0,.16);")}
@@ -11427,7 +11427,7 @@ function renderReport() {
       <section class="panel">
         <div class="panel-title"><h2>紫微命盘</h2><span class="tag">已生成</span></div>
         <p class="muted">命宫、财帛、事业、夫妻、迁移等宫位信息已整理。</p>
-        <button class="primary-btn" type="button" data-route="ai">继续问天</button>
+        <button class="primary-btn" type="button" data-route="ai">继续阅天</button>
       </section>
       <section class="panel">
         <div class="panel-title"><h2>报告摘要</h2></div>
