@@ -434,6 +434,27 @@
     el.hidden = !desktopAuthState.error;
   }
 
+  function getDesktopQuotaPlanName(quota = desktopAuthState.quota) {
+    return quota?.isMember ? '会员版' : '免费版';
+  }
+
+  function getDesktopQuotaLabelName(quota = desktopAuthState.quota) {
+    return quota?.isMember ? '会员' : '免费';
+  }
+
+  function getDesktopQuotaSharedText(quota = desktopAuthState.quota) {
+    const plan = getDesktopQuotaPlanName(quota);
+    const dailyLimit = quota?.baseDailyLimit ?? quota?.dailyLimit ?? quota?.limit ?? '--';
+    const monthlyLimit = quota?.baseMonthlyLimit ?? quota?.monthlyLimit ?? '--';
+    return `${plan}额度与手机端共用：${dailyLimit}次/天 · ${monthlyLimit}次/月`;
+  }
+
+  function setDesktopQuotaLabel(valueSelector, text) {
+    const value = $(valueSelector);
+    const label = value?.previousElementSibling;
+    if (label) label.textContent = text;
+  }
+
   function updateDesktopQuotaDisplay(quota) {
     if (quota) {
       desktopAuthState.quota = {
@@ -455,20 +476,29 @@
     const upgrade = $('#chat-quota-upgrade');
     if (upgrade) upgrade.style.display = 'none';
 
+    const planName = getDesktopQuotaPlanName();
+    const labelName = getDesktopQuotaLabelName();
     const daily = $('#mbpAuthQuotaDaily');
     if (daily) {
       const remaining = desktopAuthState.quota?.dailyRemaining ?? '--';
       const limit = desktopAuthState.quota?.dailyLimit ?? '--';
       daily.textContent = `${remaining}/${limit}`;
     }
+    setDesktopQuotaLabel('#mbpAuthQuotaDaily', `今日${labelName}额度`);
     const monthly = $('#mbpAuthQuotaMonthly');
     if (monthly) {
       const remaining = desktopAuthState.quota?.monthlyRemaining ?? '--';
       const limit = desktopAuthState.quota?.monthlyLimit ?? '--';
       monthly.textContent = `${remaining}/${limit}`;
     }
+    setDesktopQuotaLabel('#mbpAuthQuotaMonthly', `本月${labelName}额度`);
     const badge = $('#mbpAuthSessionBadge');
-    if (badge) badge.textContent = desktopAuthState.quota?.isMember ? '会员' : '账号';
+    if (badge) badge.textContent = planName;
+
+    const title = $('#mbpAuthTitle');
+    if (title && loggedIn) title.textContent = `${planName}账号`;
+    const sessionMeta = $('#mbpAuthSessionMeta');
+    if (sessionMeta && loggedIn) sessionMeta.textContent = getDesktopQuotaSharedText();
   }
 
   window._updateQuotaDisplay = updateDesktopQuotaDisplay;
@@ -496,14 +526,14 @@
     if (formWrap) formWrap.hidden = loggedIn;
 
     const title = $('#mbpAuthTitle');
-    if (title) title.textContent = loggedIn ? '电脑端账号' : (desktopAuthState.mode === 'register' ? '电脑端注册' : '电脑端登录');
+    if (title) title.textContent = loggedIn ? `${getDesktopQuotaPlanName()}账号` : (desktopAuthState.mode === 'register' ? '电脑端注册' : '电脑端登录');
 
     if (loggedIn) {
       const label = getDesktopAuthUserLabel();
       const sessionLabel = $('#mbpAuthSessionLabel');
       if (sessionLabel) sessionLabel.textContent = shortenDesktopAuthLabel(label) || '已登录';
       const sessionMeta = $('#mbpAuthSessionMeta');
-      if (sessionMeta) sessionMeta.textContent = '电脑端与手机端共用同一账号状态';
+      if (sessionMeta) sessionMeta.textContent = getDesktopQuotaSharedText();
       updateDesktopQuotaDisplay();
     } else {
       const loginTab = $('#mbpAuthModeLogin');
