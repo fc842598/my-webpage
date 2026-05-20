@@ -2052,8 +2052,17 @@
     return match ? match[1] : source.slice(0, 88);
   }
 
+  function yijingImageReadingOverride(result, tab = fcActiveTab) {
+    if (result?.name === '山地剥' && tab === 'liu') {
+      return '图中先看「山地剥」的剥象。剥一定是自内生，从内部发生；遇到这种情形，不要理他，越去帮忙，愈理愈乱。';
+    }
+    return '';
+  }
+
   function yijingImageReadingHtml(result, text, summary = '') {
     if (!result) return '排盘后显示读图要点。';
+    const override = yijingImageReadingOverride(result);
+    if (override) return `<strong>海厦读图要点</strong>${escapeHtml(override)}`;
     const originalLines = [...String(text || '').matchAll(/原句[:：]\s*([^\n]+)/g)]
       .map((match) => match[1].trim())
       .filter(Boolean)
