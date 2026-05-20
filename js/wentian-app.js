@@ -7915,14 +7915,12 @@ function sourceLiuyaoCastScreen() {
     ${wentianSimpleHeader("ly17", "六爻占卜")}
     <button class="liuyao-top-reset" type="button" data-action="liuyao-reset">重来</button>
     <section class="liuyao-panel">
-      <div class="liuyao-hero">
-        <div>
+      <div class="liuyao-question-card liuyao-ask-card">
+        <div class="liuyao-ask-head">
           <span>三枚铜钱 · 六次成卦</span>
           <strong>先定一问，再起六爻</strong>
           <em>自下而上成爻，6/9 为动爻，动则成变卦。</em>
         </div>
-      </div>
-      <div class="liuyao-question-card">
         <label for="liuyao-question">所问之事</label>
         <textarea id="liuyao-question" maxlength="${LIUYAO_QUESTION_MAX_LENGTH}" rows="2" placeholder="一句话写清楚所问，例如：本月是否推进某个项目？">${escapeHtml(getLiuyaoQuestionInputValue(state))}</textarea>
         <div class="liuyao-question-review-row">

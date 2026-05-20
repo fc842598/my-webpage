@@ -4052,6 +4052,50 @@ html[data-wentian-language="en"] .liuren-hero-copy em {
   padding: 14px;
 }
 
+.liuyao-question-card.liuyao-ask-card {
+  gap: 8px;
+  margin-top: 0;
+  padding: 0 14px 14px;
+  overflow: hidden;
+  border-radius: 20px;
+}
+
+.liuyao-ask-head {
+  display: grid;
+  gap: 5px;
+  margin: 0 -14px 2px;
+  padding: 14px 18px 12px;
+  background:
+    radial-gradient(circle at 84% 14%, rgba(255, 220, 132, .24) 0 19%, transparent 20%),
+    linear-gradient(135deg, #201713 0%, #6d2b22 56%, #b9822e 100%);
+}
+
+.liuyao-question-card .liuyao-ask-head span,
+.liuyao-question-card .liuyao-ask-head strong,
+.liuyao-question-card .liuyao-ask-head em {
+  display: block;
+}
+
+.liuyao-question-card .liuyao-ask-head span {
+  color: #f1c46b;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.liuyao-question-card .liuyao-ask-head strong {
+  color: #fffaf3;
+  font-size: 24px;
+  line-height: 1.12;
+}
+
+.liuyao-question-card .liuyao-ask-head em {
+  color: #eadcc7;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
 .liuyao-question-card label,
 .liuyao-question-card span,
 .liuyao-mode-card > span,
@@ -4075,6 +4119,10 @@ html[data-wentian-language="en"] .liuren-hero-copy em {
   font-size: 14px;
   font-weight: 700;
   line-height: 1.45;
+}
+
+.liuyao-question-card.liuyao-ask-card textarea {
+  min-height: 50px;
 }
 
 .liuyao-question-card textarea:focus {
