@@ -1358,6 +1358,112 @@ html[lang="en"] .wentian-native-mingpan .fc-age {
   text-align: center;
 }
 
+.wentian-chat-profile-tag {
+  position: absolute;
+  left: 248px;
+  top: 22px;
+  z-index: 36;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 88px;
+  height: 44px;
+  padding: 0 10px 0 8px;
+  border: 1px solid rgba(194, 149, 60, .34);
+  border-radius: 15px 11px 11px 15px;
+  background: linear-gradient(135deg, #fffdf8 0%, #fff4dc 100%);
+  color: #4f3620;
+  font-family: inherit;
+  text-align: left;
+  box-shadow: 0 8px 18px rgba(122, 82, 25, .12), inset 0 0 0 1px rgba(255, 255, 255, .62);
+  cursor: pointer;
+  appearance: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.wentian-chat-profile-tag::after {
+  position: absolute;
+  right: -7px;
+  top: 15px;
+  width: 13px;
+  height: 13px;
+  border-top: 1px solid rgba(194, 149, 60, .34);
+  border-right: 1px solid rgba(194, 149, 60, .34);
+  background: #fff4dc;
+  content: "";
+  transform: rotate(45deg);
+  box-shadow: 4px -4px 10px rgba(122, 82, 25, .06);
+}
+
+.wentian-chat-profile-tag:active {
+  transform: translateY(1px);
+  box-shadow: 0 5px 12px rgba(122, 82, 25, .10), inset 0 0 0 1px rgba(255, 255, 255, .62);
+}
+
+.wentian-chat-profile-tag:focus-visible {
+  outline: 2px solid rgba(194, 149, 60, .62);
+  outline-offset: 3px;
+}
+
+.wentian-chat-profile-seal {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  flex: 0 0 auto;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: linear-gradient(180deg, #cf9d33, #a87925);
+  color: #fffaf0;
+  font-size: 12px;
+  font-weight: 900;
+  line-height: 1;
+  box-shadow: 0 3px 8px rgba(151, 105, 31, .18);
+}
+
+.wentian-chat-profile-seal::before {
+  content: attr(data-profile-icon);
+}
+
+.wentian-chat-profile-copy {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  min-width: 0;
+  line-height: 1;
+}
+
+.wentian-chat-profile-copy b {
+  overflow: hidden;
+  color: #201813;
+  font-size: 12px;
+  font-weight: 900;
+  line-height: 15px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.wentian-chat-profile-copy small {
+  margin-top: 2px;
+  color: #a47a32;
+  font-size: 9px;
+  font-weight: 800;
+  line-height: 10px;
+  white-space: nowrap;
+}
+
+.wentian-chat-profile-caret {
+  position: relative;
+  z-index: 1;
+  margin-left: auto;
+  color: #8d6a30;
+  font-size: 11px;
+  font-weight: 900;
+  line-height: 1;
+}
+
 .wentian-chat-status {
   position: absolute;
   left: 100px;

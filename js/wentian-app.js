@@ -874,7 +874,9 @@ function sourceAiChatScreen(screen) {
   const faqGroups = isLiuyaoChat ? liuyaoFaqGroups : isHepanChat ? hepanFaqGroups : isLiurenChat ? liurenFaqGroups : chartFaqGroups;
   const contextTitle = chatContext?.title || (isHepanChat ? "情侣合盘" : isLiurenChat ? "六壬课" : "六爻占卜");
   const contextSummary = chatContext?.summaryLine || "";
-  const profileText = isLiuyaoChat ? "本卦⌄" : isHepanChat ? "合盘⌄" : isLiurenChat ? "本课⌄" : "命主⌄";
+  const profileText = isLiuyaoChat ? "本卦" : isHepanChat ? "合盘" : isLiurenChat ? "本课" : "命主";
+  const profileIcon = isLiuyaoChat ? "卦" : isHepanChat ? "合" : isLiurenChat ? "课" : "命";
+  const profileSub = isLiuyaoChat || isHepanChat || isLiurenChat ? "查看" : "切换";
   const chatRoleText = isLiuyaoChat ? "占卜专批 · 在线" : isHepanChat ? "合盘专批 · 在线" : isLiurenChat ? "六壬专批 · 在线" : "命盘顾问 · 在线";
   const contextLabel = isHepanChat ? "本次合盘" : isLiurenChat ? "本次六壬课" : "本次占问";
   const contextQuestion = chatContext?.question || (isHepanChat ? "双方关系" : isLiurenChat ? "所念之事" : "所问之事");
@@ -887,8 +889,14 @@ function sourceAiChatScreen(screen) {
     ${figImage("source-4-avatar", "../images/wentian-prototype-assets/xu-banxian.jpg", 58, 25, 40, 40, "border-radius:20px;object-fit:cover;object-position:center 18%;")}
     ${figText("source-4-name", "许半仙", 110, 27, 110, 17, "#26211c", 800)}
     ${figText("source-4-left", chatRoleText, 110, 51, 140, 12, "#8d8377", 500)}
-    ${figBox("source-4-profile-pill", 254, 30, 74, 28, "", "border-radius:14px;background:#fff;box-shadow:0 3px 10px rgba(70,45,25,.08);")}
-    ${figText("source-4-profile-text", profileText, 260, 38, 62, 11, "#26211c", 600, "center")}
+    <button class="wentian-chat-profile-tag" type="button" data-route="screen-5" aria-label="切换命盘">
+      <span class="wentian-chat-profile-seal" data-node-id="source-4-profile-icon" data-profile-icon="${profileIcon}" aria-hidden="true"></span>
+      <span class="wentian-chat-profile-copy">
+        <b data-node-id="source-4-profile-text">${profileText}</b>
+        <small data-node-id="source-4-profile-sub">${profileSub}</small>
+      </span>
+      <span class="wentian-chat-profile-caret">⌄</span>
+    </button>
     ${figText("source-4-record", "⋯", 344, 31, 22, 22, "#6f665d", 800, "center")}
     <div id="wentian-chat-status" class="wentian-chat-status">正在接入许半仙…</div>
     ${chatContext ? `
@@ -3751,6 +3759,10 @@ const WENTIAN_I18N = {
     "请确认命盘": "請確認命盤",
     "确认后再进入许半仙对话": "確認後再進入許半仙對話",
     "退出选盘": "退出選盤",
+    "切换": "切換",
+    "查看": "查看",
+    "本课": "本課",
+    "合盘": "合盤",
     "＋ 新建": "＋ 新建"
   }
 };
@@ -3866,6 +3878,9 @@ const WENTIAN_I18N_EN_EXTRA = {
   "占卜专批 · 在线": "Divination Reading · Online",
   "命主⌄": "Owner⌄",
   "本卦⌄": "Original⌄",
+  "切换": "Switch",
+  "查看": "View",
+  "本课": "Case",
   "已接入": "Connected",
   "已连接": "Connected",
   "占卜已接入": "Divination linked",
@@ -5789,7 +5804,9 @@ function initWentianXuChat() {
     const nameEl = document.querySelector('[data-node-id="source-4-bazi-name"]');
     if (nameEl) nameEl.textContent = `${saved.form?.name || "当前"}的八字`;
     const profileEl = document.querySelector('[data-node-id="source-4-profile-text"]');
-    if (profileEl) profileEl.textContent = "命主⌄";
+    if (profileEl) profileEl.textContent = "命主";
+    const profileSubEl = document.querySelector('[data-node-id="source-4-profile-sub"]');
+    if (profileSubEl) profileSubEl.textContent = "切换";
     const footEl = document.querySelector('[data-node-id="source-4-bazi-foot"]');
     if (footEl) footEl.textContent = `日主：${sizhu.dayStem || "—"}    生肖：${saved.chartData?.zodiac || "—"}`;
   }
