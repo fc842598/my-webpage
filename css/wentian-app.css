@@ -4785,8 +4785,7 @@ html[data-wentian-language="en"] .liuren-hero-copy em {
 }
 
 .liuyao-actions button,
-.liuyao-empty-card button,
-.liuyao-copy-result {
+.liuyao-empty-card button {
   height: 48px;
   border: 1px solid #dccbb1;
   border-radius: 15px;
@@ -4986,12 +4985,6 @@ html[data-wentian-language="en"] .liuren-hero-copy em {
 
 .liuyao-detail-card[open] summary::after {
   content: "⌃";
-}
-
-.liuyao-copy-result {
-  width: 100%;
-  margin-top: 10px;
-  color: #9a681c;
 }
 
 .liuyao-empty-card {

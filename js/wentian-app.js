@@ -3892,7 +3892,6 @@ const WENTIAN_I18N_EN_EXTRA = {
   "手动点每一爻切换：少阳 → 少阴 → 老阳 → 老阴。": "Tap each line to cycle: young yang → young yin → old yang → old yin.",
   "每次投三枚铜钱，按初爻到上爻依次记录。": "Each cast uses three coins, recorded from first line upward.",
   "查看卦象解读": "Read Hexagram",
-  "复制卦象": "Copy Hexagram",
   "一键起完整卦": "Cast All Six",
   "清空重排": "Clear",
   "补全六爻": "Complete Lines",
@@ -3911,7 +3910,6 @@ const WENTIAN_I18N_EN_EXTRA = {
   "查看卦义摘要": "View Summary",
   "追问许半仙": "Ask Master Xu",
   "重新起卦": "Cast Again",
-  "复制完整卦象": "Copy Full Hexagram",
   "尚未完成起卦": "Casting Not Complete",
   "请先投满六爻，或用手动起卦补全六爻。": "Cast six lines first, or complete them manually.",
   "返回起卦": "Back to Casting",
@@ -8290,10 +8288,9 @@ function sourceLiuyaoCastScreen() {
         </div>
       ` : ""}
       ${state.mode === "manual" ? renderLiuyaoManualCoinInput(state, { disabled: gateBusy || !questionReady }) : ""}
-      <div class="liuyao-actions ${!complete && !questionReady && !gateBusy ? "is-single" : ""}">
+      <div class="liuyao-actions ${complete || (!complete && !questionReady && !gateBusy) ? "is-single" : ""}">
         ${complete ? `
           <button type="button" class="primary" data-action="liuyao-show-result">查看卦象解读</button>
-          <button type="button" data-action="liuyao-copy">复制卦象</button>
         ` : state.mode === "online" ? `
           ${gateBusy || questionReady ? `<button type="button" class="primary" data-action="liuyao-open-caster" ${actionBusy || !questionReady ? "disabled" : ""}>${gateBusy ? "审题中…" : tossing ? "抛币中…" : `全屏投第 ${progress + 1} 爻`}</button>` : ""}
           <button type="button" data-action="liuyao-reset" ${gateBusy ? "disabled" : ""}>清空重排</button>
@@ -8366,23 +8363,8 @@ function sourceLiuyaoResultScreen() {
         <button type="button" class="primary" data-action="liuyao-ask-xu">追问许半仙</button>
         <button type="button" data-action="liuyao-reset">重新起卦</button>
       </div>
-      <button type="button" class="liuyao-copy-result" data-action="liuyao-copy">复制完整卦象</button>
     </section>
   `;
-}
-
-function getLiuyaoCopyText() {
-  const result = getLiuyaoResult();
-  if (!result) return "";
-  const lines = result.lines.map((line) => `${line.label}：${line.value} ${line.name}${line.mark ? ` ${line.mark}` : ""}（${line.nature}）`).join("\n");
-  return [
-    `六爻占卜：${result.primary.name}${result.movingLines.length ? ` 之 ${result.changed.name}` : ""}`,
-    `所问：${result.question}`,
-    `本卦：第${result.primary.no}卦 ${result.primary.name}`,
-    `变卦：第${result.changed.no}卦 ${result.changed.name}`,
-    `动爻：${result.movingLines.length ? result.movingLines.map((line) => line.label).join("、") : "无"}`,
-    lines
-  ].join("\n");
 }
 
 function makeLiuyaoXuContext(result = getLiuyaoResult()) {
@@ -8422,7 +8404,6 @@ function makeLiuyaoXuContext(result = getLiuyaoResult()) {
     primaryTip,
     changedTip,
     advice,
-    copyText: getLiuyaoCopyText(),
   };
 }
 
@@ -8445,11 +8426,6 @@ function openLiuyaoXuChat() {
   }
   setWentianXuChatContext(context);
   navigate("screen-4");
-}
-
-function copyLiuyaoResult() {
-  const text = getLiuyaoCopyText();
-  if (text) copyWentianText(text, "卦象已复制");
 }
 
 function canUseLiuyaoSwipeCaster(target) {
@@ -11894,10 +11870,6 @@ document.addEventListener("click", (event) => {
   }
   if (earlyAction === "liuyao-reset-confirm") {
     confirmLiuyaoReset();
-    return;
-  }
-  if (earlyAction === "liuyao-copy") {
-    copyLiuyaoResult();
     return;
   }
   if (earlyAction === "liuyao-ask-xu") {
