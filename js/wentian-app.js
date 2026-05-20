@@ -902,7 +902,7 @@ function sourceAiChatScreen(screen) {
       `).join("")}
     </div>
     ${figBox("source-4-input-bg", 0, 748, 390, 96, "", "background:#f7f3ec;box-shadow:0 -1px 0 rgba(110,82,38,.08);")}
-    <input id="wentian-chat-input" class="wentian-chat-field" placeholder="${inputPlaceholder}" autocomplete="off">
+    <textarea id="wentian-chat-input" class="wentian-chat-field" rows="1" placeholder="${inputPlaceholder}" autocomplete="off"></textarea>
     <button id="wentian-chat-send" class="wentian-chat-send" type="button" data-action="wentian-chat-send" aria-label="发送">↑</button>
     ${figText("source-4-disclaimer", "内容由AI生成，仅供娱乐参考", 0, 818, 390, 10, "#b8b0a7", 400, "center")}
   `;
@@ -5800,6 +5800,29 @@ function settleWentianChatInputFocus(input) {
   }
 }
 
+function resizeWentianChatInput(input = document.getElementById("wentian-chat-input")) {
+  if (!input) return;
+  const minHeight = 48;
+  const maxHeight = 116;
+  const bottom = 810;
+  input.style.height = `${minHeight}px`;
+  const nextHeight = Math.max(minHeight, Math.min(maxHeight, input.scrollHeight || minHeight));
+  const top = bottom - nextHeight;
+  input.style.height = `${nextHeight}px`;
+  input.style.top = `${top}px`;
+  input.style.overflowY = input.scrollHeight > maxHeight ? "auto" : "hidden";
+
+  const send = document.getElementById("wentian-chat-send");
+  if (send) send.style.top = `${top + nextHeight - 40}px`;
+
+  const inputBg = document.querySelector('[data-node-id="source-4-input-bg"]');
+  if (inputBg) {
+    const bgTop = Math.max(650, top - 14);
+    inputBg.style.top = `${bgTop}px`;
+    inputBg.style.height = `${844 - bgTop}px`;
+  }
+}
+
 function getWentianXuModeText(mode, phase = "ready") {
   const map = {
     liuyao: { connecting: "接入占卜中…", ready: "占卜已接入", typing: "许半仙正在看卦…" },
@@ -5867,6 +5890,7 @@ async function sendWentianXuChat(promptText = "") {
   if (!message) return;
   if (input) {
     input.value = "";
+    resizeWentianChatInput(input);
     if (!shouldAutoFocusWentianChatInput()) input.blur();
   }
 
@@ -5930,12 +5954,14 @@ function initWentianXuChat() {
   }
 
   send.onclick = () => sendWentianXuChat();
+  input.addEventListener("input", () => resizeWentianChatInput(input));
   input.onkeydown = (event) => {
-    if (event.key === "Enter") {
+    if (event.key === "Enter" && !event.shiftKey && !event.isComposing && shouldAutoFocusWentianChatInput()) {
       event.preventDefault();
       sendWentianXuChat();
     }
   };
+  resizeWentianChatInput(input);
 
   if (!wentianXuChat.messages.length) {
     addWentianMessage("assistant", payload.mode === "liuyao"

@@ -1690,17 +1690,23 @@ html[lang="en"] .wentian-chat-starter {
   left: 16px;
   top: 762px;
   width: 358px;
-  height: 48px;
+  min-height: 48px;
+  max-height: 116px;
   border: 1px solid #ece2d4;
   border-radius: 24px;
   background: #fff;
   color: #201813;
-  padding: 0 58px 0 18px;
+  box-sizing: border-box;
+  padding: 12px 58px 12px 18px;
   font-family: inherit;
   font-size: 17px;
   font-weight: 500;
-  line-height: 48px;
+  line-height: 1.35;
   outline: 0;
+  overflow-y: auto;
+  resize: none;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
   box-shadow: 0 3px 9px rgba(0, 0, 0, .08);
 }
 
