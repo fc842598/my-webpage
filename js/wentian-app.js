@@ -8250,6 +8250,13 @@ function sourceLiuyaoCastScreen() {
     ? makeLiuyaoManualCastFromCoins(getLiuyaoManualCoins(state, progress))
     : null;
   const screenHeight = getLiuyaoCastScreenHeight();
+  const casterOptions = { complete, disabled: gateBusy || !questionReady, lockText: questionReady ? "" : questionLockText };
+  if (state.mode === "online" && liuyaoCastModalOpen && !complete) {
+    return `
+      ${renderLiuyaoCasterModal(state, casterOptions)}
+      ${renderLiuyaoResetConfirm()}
+    `;
+  }
   return `
     ${figBox("ly17-bg", 0, 0, 390, screenHeight, "", "background:linear-gradient(180deg,#fffdf8 0%,#fbf7ef 50%,#f3eadc 100%);")}
     ${wentianSimpleHeader("ly17", "六爻占卜")}
@@ -8304,7 +8311,7 @@ function sourceLiuyaoCastScreen() {
         ${renderLiuyaoHexStack(lines, { id: "cast" })}
       </div>
     </section>
-    ${renderLiuyaoCasterModal(state, { complete, disabled: gateBusy || !questionReady, lockText: questionReady ? "" : questionLockText })}
+    ${renderLiuyaoCasterModal(state, casterOptions)}
     ${renderLiuyaoResetConfirm()}
   `;
 }
