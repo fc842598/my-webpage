@@ -11535,7 +11535,11 @@ function fitActivePhoneShell() {
   const scale = desktop
     ? Math.min(widthScale, heightScale)
     : (viewportWidth <= 520 ? widthScale : Math.max(0.78, Math.min(widthScale, heightScale)));
+  const edgeFit = !desktop && viewportWidth <= 520;
   phone.style.setProperty("--wentian-phone-scale", String(scale));
+  phone.style.transform = `scale(${scale})`;
+  phone.style.transformOrigin = edgeFit ? "top left" : "top center";
+  wrap.style.justifyContent = edgeFit ? "flex-start" : "center";
   wrap.style.height = `${Math.ceil(rawHeight * scale)}px`;
 }
 
