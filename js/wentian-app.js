@@ -8304,13 +8304,13 @@ function sourceLiuyaoCastScreen() {
     `;
   }
   return `
-    ${figBox("ly17-bg", 0, 0, 390, screenHeight, "", "background:linear-gradient(180deg,#fffdf8 0%,#fbf7ef 50%,#f3eadc 100%);")}
+    ${figBox("ly17-bg", 0, 0, 390, screenHeight, "", "background:linear-gradient(180deg,#fff6e8 0%,#fff6e8 26%,#fbf3e6 62%,#f3eadc 100%);")}
     ${wentianSimpleHeader("ly17", "六爻占卜")}
     <button class="liuyao-top-reset" type="button" data-action="liuyao-reset">重来</button>
     <section class="liuyao-panel">
       <div class="liuyao-question-card liuyao-ask-card">
         <div class="liuyao-ask-head">
-          <strong>先定一问，再起六爻</strong>
+          <strong>先定一件事</strong>
         </div>
         <label for="liuyao-question">所问之事</label>
         <textarea id="liuyao-question" maxlength="${LIUYAO_QUESTION_MAX_LENGTH}" rows="2" placeholder="一句话写清楚所问，例如：本月是否推进某个项目？">${escapeHtml(getLiuyaoQuestionInputValue(state))}</textarea>

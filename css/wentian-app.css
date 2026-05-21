@@ -4859,6 +4859,183 @@ html[data-wentian-language="en"] .liuren-hero-copy em {
   opacity: .55;
 }
 
+.figma-phone[data-node-id="screen-17"] .liuyao-top-reset {
+  top: 43px;
+  right: 24px;
+  width: 56px;
+  height: 32px;
+  padding: 0;
+  border-color: #eadbc4;
+  border-radius: 16px;
+  background: #fff2d9;
+  color: #9b6b22;
+}
+
+.figma-phone[data-node-id="screen-17"] .liuyao-panel {
+  left: 16px;
+  top: 90px;
+  width: 358px;
+}
+
+.figma-phone[data-node-id="screen-17"] .liuyao-question-card,
+.figma-phone[data-node-id="screen-17"] .liuyao-mode-card,
+.figma-phone[data-node-id="screen-17"] .liuyao-progress-card {
+  border-color: #eadbc4;
+  background: rgba(255, 253, 248, .98);
+  box-shadow: 0 10px 24px rgba(92, 51, 28, .07);
+}
+
+.figma-phone[data-node-id="screen-17"] .liuyao-question-card.liuyao-ask-card {
+  min-height: 250px;
+  padding: 0 18px 16px;
+  border-radius: 22px;
+}
+
+.figma-phone[data-node-id="screen-17"] .liuyao-ask-head {
+  position: relative;
+  min-height: 86px;
+  margin: 0 -18px 14px;
+  padding: 38px 22px 0;
+  background:
+    radial-gradient(circle at 85% 8%, rgba(185, 130, 46, .58) 0 0, rgba(185, 130, 46, .58) 43px, transparent 44px),
+    linear-gradient(135deg, #201713 0%, #6d2b22 62%, #b9822e 100%);
+}
+
+.figma-phone[data-node-id="screen-17"] .liuyao-ask-head::before {
+  content: "六爻起卦前";
+  position: absolute;
+  left: 22px;
+  top: 18px;
+  color: #f1c46b;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.figma-phone[data-node-id="screen-17"] .liuyao-ask-head::after {
+  content: "问题具体\A卦才有方向";
+  position: absolute;
+  right: 20px;
+  top: 35px;
+  width: 90px;
+  color: #f6e2bf;
+  font-size: 11px;
+  font-weight: 900;
+  line-height: 1.35;
+  text-align: right;
+  white-space: pre;
+}
+
+.figma-phone[data-node-id="screen-17"] .liuyao-question-card .liuyao-ask-head strong {
+  position: relative;
+  z-index: 1;
+  font-size: 28px;
+  line-height: 1.15;
+}
+
+.figma-phone[data-node-id="screen-17"] .liuyao-question-card label {
+  margin-top: 0;
+}
+
+.figma-phone[data-node-id="screen-17"] .liuyao-question-card textarea {
+  min-height: 66px;
+  border-radius: 16px;
+  padding: 15px 16px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.figma-phone[data-node-id="screen-17"] .liuyao-question-review-row {
+  align-items: center;
+  margin-top: 0;
+}
+
+.figma-phone[data-node-id="screen-17"] .liuyao-question-submit {
+  height: 36px;
+  border-color: #d9bf83;
+  background: #fff3d8;
+}
+
+.figma-phone[data-node-id="screen-17"] .liuyao-mode-card {
+  gap: 11px;
+  margin-top: 14px;
+  padding: 16px 18px;
+  border-radius: 20px;
+}
+
+.figma-phone[data-node-id="screen-17"] .liuyao-mode-card button {
+  height: 34px;
+  border-radius: 17px;
+}
+
+.figma-phone[data-node-id="screen-17"] .liuyao-coin-panel {
+  margin-top: 14px;
+  padding: 16px 18px 18px;
+  border-color: #eadbc4;
+  border-radius: 22px;
+  background:
+    radial-gradient(ellipse at 50% 20%, rgba(255, 253, 248, .44), transparent 52%),
+    linear-gradient(180deg, #fff8ea 0%, #f4e5cf 100%);
+  box-shadow: 0 12px 24px rgba(92, 51, 28, .08);
+}
+
+.figma-phone[data-node-id="screen-17"] .liuyao-coin-panel-head {
+  margin-bottom: 12px;
+}
+
+.figma-phone[data-node-id="screen-17"] .liuyao-coin-panel-head strong {
+  font-size: 18px;
+}
+
+.figma-phone[data-node-id="screen-17"] .liuyao-coin-summary {
+  min-height: 76px;
+  border-color: rgba(227, 202, 160, .65);
+  border-radius: 18px;
+  background: rgba(255, 253, 248, .78);
+}
+
+.figma-phone[data-node-id="screen-17"] .liuyao-coin-summary strong {
+  font-size: 18px;
+}
+
+.figma-phone[data-node-id="screen-17"] .liuyao-coin-summary em {
+  max-width: 176px;
+}
+
+.figma-phone[data-node-id="screen-17"] .liuyao-coin-summary button {
+  min-width: 112px;
+  height: 34px;
+  border-color: #d9bf83;
+}
+
+.figma-phone[data-node-id="screen-17"] .liuyao-actions {
+  margin-top: 16px;
+}
+
+.figma-phone[data-node-id="screen-17"] .liuyao-actions button {
+  height: 46px;
+  border-radius: 16px;
+}
+
+.figma-phone[data-node-id="screen-17"] .liuyao-progress-card {
+  min-height: 324px;
+  margin-top: 16px;
+  padding: 18px;
+  border-radius: 20px;
+}
+
+.figma-phone[data-node-id="screen-17"] .liuyao-progress-head {
+  margin-bottom: 16px;
+}
+
+.figma-phone[data-node-id="screen-17"] .liuyao-progress-head strong {
+  color: #241b14;
+  font-size: 20px;
+}
+
+.figma-phone[data-node-id="screen-17"] .liuyao-line-visual i {
+  background: #e6d8c8;
+}
+
 .liuyao-result-panel {
   top: 96px;
 }
