@@ -4631,8 +4631,6 @@ const WENTIAN_I18N_EN_EXTRA = {
   "方位校准": "Direction",
   "东南西北": "E S W N",
   "点此安位": "Tap to place",
-  "放大罗盘": "Zoom Compass",
-  "放大方位": "Zoom Directions",
   "解读分析": "Analyze",
   "长幼归位": "Auto Align",
   "长幼有序,天地归位": "Aligned",
@@ -8764,7 +8762,6 @@ function cancelLiuyaoSwipePointer(event) {
 }
 
 const YANGZHAI_STORAGE_KEY = "wentian-yangzhai-state-v1";
-const YANGZHAI_COMPASS_OFFSET_KEY = "wentian-yangzhai-compass-offset-v1";
 const YANGZHAI_STATE_VERSION = 2;
 const YANGZHAI_PALACES = [
   { key: "xun", gua: "巽", dir: "东南", role: "长女位", defaultItem: "长女" },
@@ -9030,12 +9027,8 @@ function loadYangzhaiState() {
 
 let yangzhaiState = loadYangzhaiState();
 let yangzhaiCompassHandler = null;
-let yangzhaiCompassRawHeading = 0;
-let yangzhaiCompassOffset = loadYangzhaiCompassOffset();
 let yangzhaiCompassSmoothedHeading = null;
 let yangzhaiCompassLastAppliedAt = 0;
-let yangzhaiCompassControlBlockUntil = 0;
-let yangzhaiCompassSuppressPickerOnceUntil = 0;
 const YANGZHAI_COMPASS_MIN_DELTA = 1.4;
 const YANGZHAI_COMPASS_MIN_INTERVAL = 80;
 const YANGZHAI_COMPASS_SMOOTHING = 0.18;
@@ -9053,12 +9046,6 @@ function saveYangzhaiState() {
 function normalizeCompassHeading(value) {
   if (!Number.isFinite(value)) return null;
   return ((value % 360) + 360) % 360;
-}
-
-function normalizeCompassOffset(value) {
-  const heading = normalizeCompassHeading(value);
-  if (heading === null) return 0;
-  return heading > 180 ? heading - 360 : heading;
 }
 
 function getCompassDeltaDegrees(from, to) {
@@ -9087,85 +9074,26 @@ function resetYangzhaiCompassSmoothing() {
   yangzhaiCompassLastAppliedAt = 0;
 }
 
-function blockYangzhaiCompassControlClick(ms = 1500, suppressNextPicker = false) {
-  yangzhaiCompassControlBlockUntil = Date.now() + ms;
-  if (suppressNextPicker) {
-    yangzhaiCompassSuppressPickerOnceUntil = Date.now() + 12000;
-  }
-}
-
-function isYangzhaiCompassControlBlockingPicker() {
-  const now = Date.now();
-  if (now < yangzhaiCompassControlBlockUntil) return true;
-  if (now < yangzhaiCompassSuppressPickerOnceUntil) {
-    yangzhaiCompassSuppressPickerOnceUntil = 0;
-    return true;
-  }
-  yangzhaiCompassSuppressPickerOnceUntil = 0;
-  return false;
-}
-
-function guardYangzhaiCompassControlEvent(event, ms = 1500, suppressNextPicker = false) {
-  event.preventDefault();
-  event.stopPropagation();
-  blockYangzhaiCompassControlClick(ms, suppressNextPicker);
-}
-
-function loadYangzhaiCompassOffset() {
-  try {
-    if (typeof localStorage === "undefined") return 0;
-    return normalizeCompassOffset(Number(localStorage.getItem(YANGZHAI_COMPASS_OFFSET_KEY) || 0));
-  } catch (_) {
-    return 0;
-  }
-}
-
-function saveYangzhaiCompassOffset() {
-  try {
-    if (typeof localStorage !== "undefined") {
-      localStorage.setItem(YANGZHAI_COMPASS_OFFSET_KEY, String(yangzhaiCompassOffset));
-    }
-  } catch (_) {}
-}
-
 function getYangzhaiCompassDirectionLabel(heading) {
   const directions = ["北", "东北", "东", "东南", "南", "西南", "西", "西北"];
   const normalized = normalizeCompassHeading(heading) || 0;
   return directions[Math.round(normalized / 45) % directions.length];
 }
 
-function getYangzhaiCompassOffsetLabel() {
-  if (!yangzhaiCompassOffset) return "";
-  return `，已校准${yangzhaiCompassOffset > 0 ? "+" : ""}${Math.round(yangzhaiCompassOffset)}°`;
-}
-
-function applyYangzhaiCompassHeading(rawHeading, tone = "active", messagePrefix = "手机朝向") {
+function applyYangzhaiCompassHeading(rawHeading, tone = "active") {
   const raw = normalizeCompassHeading(rawHeading);
   if (raw === null) return null;
-  yangzhaiCompassRawHeading = raw;
-  const heading = normalizeCompassHeading(raw + yangzhaiCompassOffset) || 0;
-  const overlay = view.querySelector("[data-yangzhai-luopan-zoom]");
-  if (overlay) {
-    overlay.style.setProperty("--yangzhai-heading", `${heading}deg`);
-    overlay.style.setProperty("--yangzhai-luopan-rotation", `${-heading}deg`);
-  }
+  const heading = raw;
+  view.querySelectorAll("[data-yangzhai-compass-cross]").forEach((cross) => {
+    cross.style.setProperty("--yangzhai-heading", `${heading}deg`);
+    cross.style.setProperty("--yangzhai-luopan-rotation", `${-heading}deg`);
+    cross.classList.add("is-compass-active");
+  });
   setYangzhaiCompassStatus(
-    `${messagePrefix}：${Math.round(heading)}° ${getYangzhaiCompassDirectionLabel(heading)}${getYangzhaiCompassOffsetLabel()}`,
+    `${Math.round(heading)}° ${getYangzhaiCompassDirectionLabel(heading)}`,
     tone
   );
   return heading;
-}
-
-function adjustYangzhaiCompassOffset(delta) {
-  yangzhaiCompassOffset = normalizeCompassOffset(yangzhaiCompassOffset + delta);
-  saveYangzhaiCompassOffset();
-  applyYangzhaiCompassHeading(yangzhaiCompassRawHeading, "active", "已微调");
-}
-
-function resetYangzhaiCompassOffset() {
-  yangzhaiCompassOffset = 0;
-  saveYangzhaiCompassOffset();
-  applyYangzhaiCompassHeading(yangzhaiCompassRawHeading, "active", "已归零");
 }
 
 function getYangzhaiPalace(key) {
@@ -9211,10 +9139,6 @@ function getYangzhaiPendingItems() {
 }
 
 function openYangzhaiPicker(key) {
-  if (isYangzhaiCompassControlBlockingPicker()) {
-    setYangzhaiCompassStatus("指南针已开启；再点宫位加号即可安位", "active");
-    return;
-  }
   const palace = getYangzhaiPalace(key);
   if (palace.key === "center") return;
   yangzhaiState.activePalace = palace.key;
@@ -9272,32 +9196,6 @@ function analyzeYangzhai() {
   navigate("screen-44");
 }
 
-function openYangzhaiLuopanZoom() {
-  const phone = view.querySelector(".figma-phone");
-  if (!phone) return;
-  stopYangzhaiCompass();
-  phone.querySelector("[data-yangzhai-luopan-zoom]")?.remove();
-  phone.insertAdjacentHTML("beforeend", `
-    <div class="yangzhai-luopan-zoom" data-yangzhai-luopan-zoom style="--yangzhai-heading:0deg;--yangzhai-luopan-rotation:0deg;">
-      <div class="yangzhai-luopan-zoom-halo" aria-hidden="true"></div>
-      ${yangzhaiDirectionCross("yangzhai-zoom-cross", 39, 152, 312, false, "zoom")}
-      <button class="yangzhai-compass-start" type="button" data-action="yangzhai-compass-start">开启手机指南针</button>
-      <div class="yangzhai-compass-status" data-yangzhai-compass-status aria-live="polite">开启后十字盘会跟随手机方向</div>
-      <div class="yangzhai-compass-tools" aria-label="方位校准">
-        <button type="button" data-action="yangzhai-compass-adjust" data-delta="-10">左调10°</button>
-        <button type="button" data-action="yangzhai-compass-reset">归零</button>
-        <button type="button" data-action="yangzhai-compass-adjust" data-delta="10">右调10°</button>
-      </div>
-      <button class="yangzhai-luopan-zoom-close" type="button" data-action="yangzhai-luopan-close" aria-label="关闭方位十字">×</button>
-    </div>
-  `);
-}
-
-function closeYangzhaiLuopanZoom() {
-  stopYangzhaiCompass();
-  view.querySelector("[data-yangzhai-luopan-zoom]")?.remove();
-}
-
 function setYangzhaiCompassStatus(text, tone = "") {
   const status = view.querySelector("[data-yangzhai-compass-status]");
   if (!status) return;
@@ -9329,18 +9227,16 @@ function stopYangzhaiCompass() {
 }
 
 async function startYangzhaiCompass() {
-  blockYangzhaiCompassControlClick(3000, true);
   if (typeof window === "undefined" || typeof window.DeviceOrientationEvent === "undefined") {
-    setYangzhaiCompassStatus("当前浏览器不支持手机指南针", "warn");
+    setYangzhaiCompassStatus("不支持", "warn");
     return;
   }
   try {
     const orientationApi = window.DeviceOrientationEvent;
     if (typeof orientationApi.requestPermission === "function") {
       const permission = await orientationApi.requestPermission();
-      blockYangzhaiCompassControlClick(1500);
       if (permission !== "granted") {
-        setYangzhaiCompassStatus("方向权限未开启，请允许后再试", "warn");
+        setYangzhaiCompassStatus("未授权", "warn");
         return;
       }
     }
@@ -9348,9 +9244,9 @@ async function startYangzhaiCompass() {
     yangzhaiCompassHandler = handleYangzhaiCompassOrientation;
     window.addEventListener("deviceorientationabsolute", yangzhaiCompassHandler, true);
     window.addEventListener("deviceorientation", yangzhaiCompassHandler, true);
-    setYangzhaiCompassStatus("正在读取方向；十字盘会平滑校准到当前朝向", "active");
+    setYangzhaiCompassStatus("读取中", "active");
   } catch (_) {
-    setYangzhaiCompassStatus("指南针启动失败，请用 HTTPS 手机浏览器打开", "warn");
+    setYangzhaiCompassStatus("启动失败", "warn");
   }
 }
 
@@ -9502,9 +9398,9 @@ function getYangzhaiGridMetrics(compact = false) {
   };
 }
 
-function yangzhaiDirectionCross(id, x, y, size, compact = false, variant = "inline") {
+function yangzhaiDirectionCross(id, x, y, size, compact = false, variant = "inline", attrs = "") {
   return `
-    <div class="yangzhai-direction-cross is-${variant}${compact ? " is-compact" : ""}" data-node-id="${id}" style="left:${x}px;top:${y}px;width:${size}px;height:${size}px;">
+    <div class="yangzhai-direction-cross is-${variant}${compact ? " is-compact" : ""}" data-node-id="${id}" ${attrs} style="left:${x}px;top:${y}px;width:${size}px;height:${size}px;">
       <span class="yz-cross-ring"></span>
       <span class="yz-cross-line yz-cross-line-ns"></span>
       <span class="yz-cross-line yz-cross-line-ew"></span>
@@ -9525,15 +9421,16 @@ function yangzhaiCompassGrid(id, compact = false) {
     const x = metrics.x + col * metrics.cellW;
     const y = metrics.y + row * metrics.cellH;
     if (palace.key === "center") {
-      const crossSize = compact ? 64 : 88;
+      const crossSize = compact ? 64 : 82;
       const crossX = x + (metrics.cellW - crossSize) / 2;
-      const crossY = y + (compact ? 18 : 22);
+      const crossY = y + (compact ? 18 : 24);
       return `
         ${figBox(`${id}-center-clear`, x, y, metrics.cellW, metrics.cellH, "", "border:1px solid #eadbc6;background:#fffdf7;")}
-        ${yangzhaiDirectionCross(`${id}-center-cross`, crossX, crossY, crossSize, compact)}
-        ${compact ? "" : `${figBox(`${id}-zoom-pill`, x + 21, y + 116, 74, 28, "", "border:1px solid #ead2a9;border-radius:14px;background:#fff2df;")}
-        ${figText(`${id}-zoom-text`, "放大方位", x + 21, y + 123, 74, 11, "#8a5a22", 700, "center", "line-height:1.15;")}`}
-        ${figButton(`${id}-luopan-hit`, x, y + (compact ? 18 : 16), metrics.cellW, compact ? 82 : metrics.cellH, 'data-action="yangzhai-luopan-open" aria-label="放大方位"', "", "cursor:zoom-in;")}
+        ${yangzhaiDirectionCross(`${id}-center-cross`, crossX, crossY, crossSize, compact, "inline", 'data-yangzhai-compass-cross')}
+        ${compact ? "" : `${figBox(`${id}-compass-pill`, x + 24, y + 114, 70, 28, "", "border:1px solid #ead2a9;border-radius:14px;background:#fff8e9;")}
+        ${figText(`${id}-compass-text`, "开指南针", x + 24, y + 121, 70, 11, "#8a5a22", 700, "center", "line-height:1.15;")}
+        <div class="yangzhai-inline-compass-status" data-node-id="${id}-compass-note" data-yangzhai-compass-status style="left:${x + 10}px;top:${y + 145}px;width:${metrics.cellW - 20}px;">未开启</div>
+        ${figButton(`${id}-compass-hit`, x + 24, y + 114, 70, 28, 'data-action="yangzhai-compass-start" aria-label="开启手机指南针"', "", "cursor:pointer;")}`}
       `;
     }
     const items = getYangzhaiPlacementItems(palace.key);
@@ -12071,28 +11968,10 @@ document.addEventListener("click", (event) => {
     openYangzhaiPicker(earlyActionTarget.dataset.palace || "xun");
     return;
   }
-  if (earlyAction === "yangzhai-luopan-open") {
-    openYangzhaiLuopanZoom();
-    return;
-  }
-  if (earlyAction === "yangzhai-luopan-close") {
-    guardYangzhaiCompassControlEvent(event);
-    closeYangzhaiLuopanZoom();
-    return;
-  }
   if (earlyAction === "yangzhai-compass-start") {
-    guardYangzhaiCompassControlEvent(event, 3000, true);
+    event.preventDefault();
+    event.stopPropagation();
     startYangzhaiCompass();
-    return;
-  }
-  if (earlyAction === "yangzhai-compass-adjust") {
-    guardYangzhaiCompassControlEvent(event);
-    adjustYangzhaiCompassOffset(Number(earlyActionTarget.dataset.delta) || 0);
-    return;
-  }
-  if (earlyAction === "yangzhai-compass-reset") {
-    guardYangzhaiCompassControlEvent(event);
-    resetYangzhaiCompassOffset();
     return;
   }
   if (earlyAction === "yangzhai-pick") {

@@ -615,139 +615,36 @@ html[lang="en"] [data-node-id="wt15-seal-text"] {
   left: calc(50% - 11px);
 }
 
-.yangzhai-direction-cross.is-zoom {
-  opacity: 0.56;
+.yangzhai-direction-cross[data-yangzhai-compass-cross] {
   transform: rotate(var(--yangzhai-luopan-rotation, 0deg));
   transform-origin: center;
   transition: transform 0.24s ease-out;
 }
 
-.yangzhai-direction-cross.is-zoom .yz-dir {
-  width: 38px;
-  height: 24px;
-  font-size: 18px;
-  line-height: 24px;
+.yangzhai-direction-cross[data-yangzhai-compass-cross].is-compass-active {
+  border-color: rgba(169, 68, 55, 0.5);
+  box-shadow: inset 0 0 0 8px rgba(255, 255, 255, 0.42), 0 9px 20px rgba(98, 58, 28, 0.12);
 }
 
-.yangzhai-direction-cross.is-zoom .yz-cross-line {
-  background: linear-gradient(90deg, rgba(178, 145, 91, 0), rgba(178, 145, 91, 0.44), rgba(178, 145, 91, 0));
-}
-
-.yangzhai-direction-cross.is-zoom .yz-cross-line-ns {
-  background: linear-gradient(180deg, rgba(178, 145, 91, 0), rgba(178, 145, 91, 0.44), rgba(178, 145, 91, 0));
-}
-
-.yangzhai-direction-cross.is-zoom .yz-cross-dot {
-  width: 7%;
-  height: 7%;
-  background: rgba(178, 145, 91, 0.42);
-  box-shadow: 0 0 0 4px rgba(255, 250, 243, 0.6);
-}
-
-.yangzhai-direction-cross.is-zoom .yz-n,
-.yangzhai-direction-cross.is-zoom .yz-s {
-  left: calc(50% - 19px);
-}
-
-.yangzhai-luopan-zoom {
+.yangzhai-inline-compass-status {
   position: absolute;
-  left: 0;
-  top: 0;
-  z-index: 70;
-  width: 390px;
-  height: 844px;
-  pointer-events: none;
-}
-
-.yangzhai-luopan-zoom-halo {
-  position: absolute;
-  left: -76px;
-  top: 116px;
-  width: 542px;
-  height: 542px;
-  border-radius: 50%;
-  background: rgba(224, 202, 166, 0.14);
-}
-
-.yangzhai-compass-start {
-  position: absolute;
-  left: 122px;
-  top: 98px;
-  width: 146px;
-  height: 34px;
-  border: 1px solid rgba(169, 68, 55, 0.32);
-  border-radius: 17px;
-  background: rgba(255, 253, 248, 0.94);
-  color: #8a3d32;
-  font-size: 13px;
-  font-weight: 700;
-  box-shadow: 0 8px 20px rgba(98, 58, 28, 0.14);
-  pointer-events: auto;
-}
-
-.yangzhai-compass-status {
-  position: absolute;
-  left: 38px;
-  top: 586px;
-  width: 314px;
-  padding: 4px 8px;
-  border-radius: 14px;
-  background: rgba(255, 253, 248, 0.84);
   color: #7a6a58;
-  font-size: 12px;
-  font-weight: 600;
-  line-height: 1.45;
+  font-size: 9px;
+  font-weight: 700;
+  line-height: 1.2;
+  overflow: hidden;
   text-align: center;
-  box-shadow: 0 8px 18px rgba(98, 58, 28, 0.08);
+  text-overflow: ellipsis;
+  white-space: nowrap;
   pointer-events: none;
 }
 
-.yangzhai-compass-status[data-tone="active"] {
+.yangzhai-inline-compass-status[data-tone="active"] {
   color: #8a3d32;
 }
 
-.yangzhai-compass-status[data-tone="warn"] {
+.yangzhai-inline-compass-status[data-tone="warn"] {
   color: #a94437;
-}
-
-.yangzhai-compass-tools {
-  position: absolute;
-  left: 48px;
-  top: 628px;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
-  width: 294px;
-  pointer-events: auto;
-}
-
-.yangzhai-compass-tools button {
-  height: 30px;
-  border: 1px solid rgba(217, 197, 168, 0.88);
-  border-radius: 15px;
-  background: rgba(255, 253, 248, 0.84);
-  color: #806448;
-  font-size: 12px;
-  font-weight: 700;
-}
-
-.yangzhai-luopan-zoom-close {
-  position: absolute;
-  left: 326px;
-  top: 98px;
-  display: grid;
-  place-items: center;
-  width: 34px;
-  height: 34px;
-  border: 1px solid rgba(217, 197, 168, 0.88);
-  border-radius: 50%;
-  background: rgba(255, 253, 248, 0.94);
-  color: #8a3d32;
-  font-size: 24px;
-  font-weight: 500;
-  line-height: 1;
-  box-shadow: 0 8px 20px rgba(98, 58, 28, 0.14);
-  pointer-events: auto;
 }
 
 .fig-card {
