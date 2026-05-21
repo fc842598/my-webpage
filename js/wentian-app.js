@@ -73,7 +73,7 @@ const convertedByNo = new Map(convertedScreens.map((screen) => [screen.no, scree
 const screenFlowHotspots = {
   1: [[286, 24, 86, 52, "screen-26"], [18, 130, 354, 274, "screen-5"], [18, 425, 354, 96, "hepan"], [18, 534, 354, 96, "screen-17"], [18, 643, 354, 96, "screen-42"], [18, 752, 354, 96, "screen-46"], [12, 897, 76, 83, "screen-1"], [109, 897, 76, 83, "screen-25"], [207, 897, 76, 83, "screen-3"], [304, 897, 76, 83, "screen-31"]],
   2: [[18, 282, 354, 190, "screen-4"], [18, 487, 354, 190, "screen-4"], [18, 692, 354, 175, "screen-4"]],
-  3: [[285, 128, 82, 28, "screen-5"], [16, 164, 358, 84, "screen-5"], [16, 305, 358, 116, "screen-5"], [12, 761, 76, 72, "screen-1"], [109, 761, 76, 72, "screen-25"], [207, 761, 76, 72, "screen-3"], [304, 761, 76, 72, "screen-31"]],
+  3: [[288, 170, 62, 30, "screen-5"], [112, 244, 104, 30, "screen-4"], [226, 244, 104, 30, "screen-27"], [166, 440, 82, 36, "screen-4"], [258, 440, 84, 36, "screen-9"], [12, 761, 76, 72, "screen-1"], [109, 761, 76, 72, "screen-25"], [207, 761, 76, 72, "screen-3"], [304, 761, 76, 72, "screen-31"]],
   4: [[18, 24, 44, 56, "screen-3"], [334, 24, 38, 56, "screen-9"], [252, 26, 78, 36, "screen-5"]],
   5: [[320, 116, 48, 48, "screen-4"], [34, 235, 322, 72, "screen-6"], [34, 318, 322, 72, "screen-6"], [48, 748, 294, 52, "screen-6"]],
   6: [[18, 44, 48, 48, "screen-4"], [88, 600, 220, 76, "screen-7"]],
@@ -666,42 +666,65 @@ function sourceAppBottomNav(active, y = 778) {
   `;
 }
 
+function sourceArchiveBottomNav(y = 755) {
+  const navItems = [
+    ["首页", "../images/wentian-prototype-assets/nav-home.svg", 49, "screen-1", false],
+    ["档案", "../images/wentian-prototype-assets/nav-archive.svg", 146, "screen-25", false],
+    ["阅天AI", "../images/wentian-prototype-assets/nav-ai.svg", 244, "screen-3", true],
+    ["我的", "../images/wentian-prototype-assets/nav-mine.svg", 341, "screen-31", false]
+  ];
+  return `
+    ${figBox("source-bottom-bg", 0, y, 390, 89, "", "background:rgb(255,253,248);box-shadow:0 -4px 16px rgba(107,75,42,.08);z-index:45;")}
+    ${figBox("source-bottom-active-bg", 206, y + 8, 76, 48, "", "border-radius:24px;background:#fff0e9;z-index:46;")}
+    ${navItems.map(([label, icon, x, route, active]) => `
+      ${figButton(`source-bottom-hit-${label}`, x - 37, y + 6, 76, 72, `data-route="${route}" aria-label="${label}"`, "", "z-index:52;")}
+      ${active
+        ? figImage(`source-bottom-icon-${label}`, icon, x - 34, y + 3, 68, 68, "z-index:49;pointer-events:none;")
+        : figImage(`source-bottom-icon-${label}`, icon, x - 17, y + 13, 34, 34, "z-index:49;pointer-events:none;")}
+      ${figText(`source-bottom-label-${label}`, label, x - 28, y + 49, 56, 12, active ? "#a33129" : "#8c857b", active ? 700 : 500, "center", "line-height:1.2;z-index:50;")}
+    `).join("")}
+    ${figBox("source-bottom-active-line", 235, y + 72, 18, 3, "", "border-radius:2px;background:#a33129;z-index:50;")}
+    ${figBox("source-bottom-home-indicator", 137, y + 77, 116, 4, "", "border-radius:2px;background:rgba(43,33,25,.16);opacity:.18;z-index:50;")}
+  `;
+}
+
 function sourceArchiveScreen(screen) {
   const activeArchive = getCurrentWentianArchive();
   const active = getWentianArchiveDisplay(activeArchive);
-  const masters = [
-    ["许半仙", "紫微命盘", "AI解析", "", "已接入您的紫微命盘，可直接开启对话", 305]
-  ];
+  const birthLine = `${active.gender} · 阳历 ${active.datetime || "2026-05-12 15:21"}`;
   return `
-    ${figText("source-3-time", "15:17", 18, 16, 70, 14, "#26211c")}
-    ${figText("source-3-status", "◉  0.00  5G  ▮ 31 ⚡", 250, 14, 120, 10, "#26211c", 700, "right")}
-    ${figText("source-3-title", "阅天AI", 18, 62, 160, 29, "#26211c", 800)}
-    ${figText("source-3-subtitle", "许半仙已准备好为您解读", 18, 101, 220, 13, "#7f756b")}
-    ${figText("source-3-current-title", "当前档案", 18, 136, 120, 15, "#26211c", 800)}
-    ${figText("source-3-change", "更换档案 〉", 284, 138, 88, 12, "#9b742e", 500, "right")}
-    ${figBox("source-3-profile", 16, 164, 358, 104, "converted-card", "border-radius:12px;box-shadow:0 6px 18px rgba(90,62,34,.09);")}
-    ${figImage("source-3-profile-avatar", "../images/wentian-prototype-assets/03-profile.jpg", 38, 192, 48, 48, "border-radius:24px;border:1px solid #e4d2a7;")}
-    ${figText("source-3-profile-name", escapeHtml(active.name), 102, 184, 188, 18, "#26211c", 800)}
-    ${figBox("source-3-gender", 102, 211, 30, 18, "", "border-radius:9px;background:#f7ecd5;")}
-    ${figText("source-3-gender-text", active.gender, 102, 215, 30, 10, "#b07a2d", 700, "center")}
-    ${figBox("source-3-profile-tag", 140, 211, 72, 18, "", "border-radius:9px;background:#f7ecd5;")}
-    ${figText("source-3-profile-tag-text", "紫微命盘", 140, 215, 72, 10, "#c3a371", 500, "center")}
-    ${figText("source-3-profile-date", escapeHtml(active.datetime), 102, 238, 170, 12, "#8d8175")}
-    ${figText("source-3-profile-switch", "⇅", 334, 205, 22, 22, "#b5ad9d", 500, "center")}
-    ${figText("source-3-master-title", "命理师", 18, 276, 160, 15, "#26211c", 800)}
-    ${masters.map(([name, tag1, tag2, tag3, desc, y], index) => `
-      ${figBox(`source-3-master-${index}`, 16, y, 358, 116, "converted-card", "border-radius:17px;background:linear-gradient(110deg,#fff,#f8f4ea);box-shadow:0 7px 20px rgba(92,64,32,.11);")}
-      ${figImage(`source-3-master-avatar-${index}`, "../images/wentian-prototype-assets/xu-banxian.jpg", 34, y + 20, 62, 62, "border-radius:31px;object-fit:cover;object-position:center 18%;")}
-      ${figText(`source-3-master-name-${index}`, name, 112, y + 24, 194, 17, "#26211c", 800)}
-      ${figBox(`source-3-pill-a-${index}`, 112, y + 54, 62, 18, "", "border-radius:9px;background:#f7ecd8;")}
-      ${figText(`source-3-pill-a-text-${index}`, tag1, 112, y + 58, 62, 10, "#b88c33", 600, "center")}
-      ${figBox(`source-3-pill-b-${index}`, 184, y + 54, 62, 18, "", "border-radius:9px;background:#f7ecd8;")}
-      ${figText(`source-3-pill-b-text-${index}`, tag2, 184, y + 58, 62, 10, "#b88c33", 600, "center")}
-      ${tag3 ? figBox(`source-3-pill-c-${index}`, 252, y + 54, 82, 18, "", "border-radius:9px;background:#f7ecd8;") : ""}
-      ${tag3 ? figText(`source-3-pill-c-text-${index}`, tag3, 252, y + 58, 82, 10, "#b88c33", 600, "center") : ""}
-      ${figText(`source-3-master-desc-${index}`, desc, 112, y + 82, 232, 13, "#9a9086", 400, "left", "line-height:1.5;")}
-    `).join("")}
-    ${sourceAppBottomNav("阅天AI", 755)}
+    ${figBox("source-3-bg", 0, 0, 390, 844, "", "background:#fbf3e6;")}
+    ${figBox("source-3-top-warm-bg", 0, 0, 390, 270, "", "background:#fff6e8;")}
+    ${figText("source-3-title", "阅天AI", 18, 58, 150, 27, "#241b14", 800, "left", "line-height:1.2;")}
+    ${figText("source-3-subtitle", "许半仙已准备好为您解读", 18, 98, 230, 13, "#766b61", 500, "left", "line-height:1.35;")}
+    ${figBox("source-3-profile", 16, 128, 358, 142, "converted-card", "border:1px solid #eadbc4;border-radius:18px;background:rgb(255,253,248);box-shadow:0 6px 18px rgba(91,52,29,.05);")}
+    ${figBox("source-3-selected-ribbon", 28, 140, 72, 24, "", "border-radius:12px;background:#9f3d2e;")}
+    ${figText("source-3-selected-text", "当前使用", 28, 147, 72, 10, "#fffaf3", 700, "center", "line-height:1.2;")}
+    ${figImage("source-3-profile-avatar", "../images/wentian-prototype-assets/03-profile.jpg", 36, 170, 58, 58, "border-radius:28px;object-fit:cover;border:1px solid #eadbc4;")}
+    ${figText("source-3-profile-name", escapeHtml(active.name), 112, 170, 128, 20, "#241b14", 800, "left", "line-height:1.2;")}
+    ${figText("source-3-profile-tag-text", "紫微命盘档案", 112, 199, 120, 12, "#9b6b22", 700, "left", "line-height:1.2;")}
+    ${figText("source-3-profile-date", escapeHtml(birthLine), 112, 224, 210, 12, "#766b61", 500, "left", "line-height:1.35;")}
+    ${figBox("source-3-profile-switch-bg", 288, 170, 62, 30, "", "border-radius:15px;background:#fff2d9;")}
+    ${figText("source-3-profile-switch", "切换", 288, 179, 62, 11, "#9b6b22", 700, "center", "line-height:1.2;")}
+    ${figText("source-3-profile-switch-caret", "›", 340, 179, 10, 14, "#9b6b22", 700, "center", "line-height:1.2;")}
+    ${figBox("source-3-profile-ask", 112, 244, 104, 30, "", "border-radius:15px;background:#9f3d2e;")}
+    ${figText("source-3-profile-ask-text", "问许半仙", 112, 252, 104, 11, "#fffaf3", 700, "center", "line-height:1.2;")}
+    ${figBox("source-3-profile-chart", 226, 244, 104, 30, "", "border-radius:15px;background:#fff2d9;")}
+    ${figText("source-3-profile-chart-text", "看命盘", 226, 252, 104, 11, "#7c6d5f", 700, "center", "line-height:1.2;")}
+    ${figText("source-3-master-title", "命理师", 18, 294, 100, 15, "#9b6b22", 700, "left", "line-height:1.2;")}
+    ${figBox("source-3-master-0", 16, 318, 358, 180, "converted-card", "border:1px solid #eadbc4;border-radius:20px;background:rgb(255,253,248);box-shadow:0 6px 18px rgba(91,52,29,.05);")}
+    ${figImage("source-3-master-avatar-0", "../images/wentian-prototype-assets/xu-banxian.jpg", 34, 340, 112, 112, "border-radius:24px;object-fit:cover;object-position:center 18%;")}
+    ${figBox("source-3-master-shade", 34, 412, 112, 40, "", "border-radius:0 0 24px 24px;background:rgba(32,17,13,.34);")}
+    ${figText("source-3-master-name-0", "许半仙", 166, 342, 120, 21, "#241b14", 800, "left", "line-height:1.2;")}
+    ${figBox("source-3-online-dot", 246, 378, 7, 7, "", "border-radius:4px;background:#5f8745;")}
+    ${figText("source-3-master-status-0", "在线 · 已接入当前档案", 166, 374, 170, 12, "#5f8745", 600, "left", "line-height:1.2;")}
+    ${figText("source-3-master-desc-0", "紫微命盘专属解析，当前档案\n可直接追问。", 166, 402, 176, 13, "#766b61", 500, "left", "line-height:1.35;")}
+    ${figBox("source-3-master-ask", 166, 440, 82, 36, "", "border-radius:18px;background:#9f3d2e;")}
+    ${figText("source-3-master-ask-text", "去问他", 166, 450, 82, 12, "#fffaf3", 700, "center", "line-height:1.2;")}
+    ${figText("source-3-master-ask-caret", "›", 232, 449, 10, 14, "#fffaf3", 700, "center", "line-height:1.2;")}
+    ${figBox("source-3-master-record", 258, 440, 84, 36, "", "border-radius:18px;background:#fff2d9;")}
+    ${figText("source-3-master-record-text", "看记录", 258, 450, 84, 12, "#9b6b22", 700, "center", "line-height:1.2;")}
+    ${sourceArchiveBottomNav(755)}
   `;
 }
 
