@@ -200,9 +200,14 @@ function buildChartPayload() {
   } : null;
 
   // 人生曲线数据（如果已生成）
-  const lifeCurveScores = window._fcLifeCurveData?.scores || [];
-  const peakAges   = lifeCurveScores.filter(i => (i.score || 0) >= 75).map(i => i.age);
-  const valleyAges = lifeCurveScores.filter(i => (i.score || 0) <= 35).map(i => i.age);
+  const lifeCurveState = window._fcLifeCurveData || {};
+  const lifeCurveScores = lifeCurveState.scores || [];
+  const peakAges   = Array.isArray(lifeCurveState.peakAges) && lifeCurveState.peakAges.length
+    ? lifeCurveState.peakAges
+    : lifeCurveScores.filter(i => (i.score || 0) >= 75).map(i => i.age);
+  const valleyAges = Array.isArray(lifeCurveState.valleyAges) && lifeCurveState.valleyAges.length
+    ? lifeCurveState.valleyAges
+    : lifeCurveScores.filter(i => (i.score || 0) <= 35).map(i => i.age);
 
   const currentYear = new Date().getFullYear();
   const birthYear = norm.year || 1990;

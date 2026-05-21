@@ -1574,6 +1574,7 @@
     state.selectedLuckRangeKey = '';
     state.selectedXiaoLianAge = '';
     state.batchDecoding = false;
+    clearLifeCurveData();
     window._chart = null;
     window._chartInputs = null;
     window._chartRecordId = null;
@@ -3020,19 +3021,391 @@
     `;
   }
 
-  function renderCurveChapterBlock() {
-    const pastItems = curvePastValidationItems();
+  function curveClamp(value, min, max) {
+    return Math.max(min, Math.min(max, value));
+  }
+
+  function curveSafeNumber(value, fallback = 0) {
+    const num = Number(value);
+    return Number.isFinite(num) ? num : fallback;
+  }
+
+  function curveStarScore(star) {
+    const name = typeof star === 'string' ? star : (star?.name || '');
+    if (!name) return 0;
+    const major = {
+      紫微: 9, 天府: 8, 武曲: 6, 天相: 6, 太阳: 5, 太阴: 5, 天梁: 4, 天同: 3,
+      天机: 3, 贪狼: 2, 廉贞: 1, 巨门: -4, 七杀: -3, 破军: -4,
+      左辅: 5, 右弼: 5, 文昌: 5, 文曲: 5, 天魁: 6, 天钺: 6, 禄存: 7,
+      擎羊: -8, 陀罗: -7, 火星: -7, 铃星: -7, 地空: -8, 地劫: -8,
+      天刑: -5, 天哭: -5, 天虚: -5, 天姚: -3,
+    };
+    let score = major[name] || 0;
+    const mutagen = star?.mutagen || '';
+    if (mutagen === '化禄') score += 10;
+    if (mutagen === '化权') score += 7;
+    if (mutagen === '化科') score += 6;
+    if (mutagen === '化忌') score -= 12;
+    const brightness = star?.brightness || '';
+    if (/庙|旺/.test(brightness)) score += 2;
+    if (/陷|弱/.test(brightness)) score -= 3;
+    return score;
+  }
+
+  function curvePalaceScore(palace) {
+    if (!palace) return 0;
+    const stars = allReadableStars(palace);
+    if (!stars.length) return -2;
+    const raw = stars.reduce((sum, star) => sum + curveStarScore(star), 0);
+    return curveClamp(raw, -26, 26);
+  }
+
+  function curveGuaScore(liunian) {
+    const name = String(liunian?.name || '');
+    const good = ['泰', '大有', '晋', '升', '鼎', '益', '观', '需', '小畜', '家人', '中孚', '谦', '恒', '节', '临', '比', '既济'];
+    const hard = ['否', '蹇', '坎', '困', '蛊', '剥', '噬嗑', '讼', '师', '夬', '未济', '遁', '旅', '涣'];
+    let score = 0;
+    if (good.some((item) => name.includes(item))) score += 5;
+    if (hard.some((item) => name.includes(item))) score -= 6;
+    if (liunian?.lineType === 'yang') score += 1;
+    if (liunian?.lineType === 'yin') score -= 1;
+    return score;
+  }
+
+  function curveScoreBand(score) {
+    const value = curveSafeNumber(score, 50);
+    if (value >= 78) return '高峰段';
+    if (value >= 66) return '上升段';
+    if (value >= 48) return '平稳段';
+    if (value >= 36) return '调整段';
+    return '低位段';
+  }
+
+  function curvePointTone(age, score) {
+    const band = curveScoreBand(score);
+    if (band === '高峰段') return '高点';
+    if (band === '低位段') return '低点';
+    if (age <= 24) return '起步';
+    if (age <= 44) return '中段';
+    if (age <= 64) return '转折';
+    return '后势';
+  }
+
+  function buildLifeCurvePoint(chart, age, currentAge) {
+    const info = xiaoLianInfoForAge(chart, age, currentAge);
+    const decade = info.decade || decadeItemsForChart(chart, age).find((item) => age >= item.start && age <= item.end) || null;
+    const domain = decade?.domain || palaceDomain(info.xiaoLianPalace?.name || '');
+    const decadeScore = 55 + (curvePalaceScore(decade?.palace) * 0.62);
+    const xiaoScore = curvePalaceScore(info.xiaoLianPalace) * 0.46;
+    const oppositeScore = curvePalaceScore(info.oppositePalace) * 0.28;
+    const guaScore = curveGuaScore(info.liunian);
+    const ageWave = Math.sin(age / 4.8) * 2.8 + Math.cos(age / 8.5) * 2.2;
+    const rawScore = curveClamp(Math.round(decadeScore + xiaoScore + oppositeScore + guaScore + ageWave), 12, 94);
+    const xiaoName = normalizePalaceName(info.xiaoLianPalace?.name || info.xiaoLabel || '');
+    const oppositeName = normalizePalaceName(info.oppositePalace?.name || info.oppositeLabel || '');
+    return {
+      age,
+      year: info.year,
+      score: rawScore,
+      rawScore,
+      domain,
+      decadeRange: decade?.rangeLabel || '',
+      decadePalace: decade?.palaceName || '',
+      xiaoLianPalace: xiaoName,
+      oppositePalace: oppositeName,
+      liunianGuaName: info.liunian?.name || '',
+      summary: `${curveScoreBand(rawScore)}，${domain}受${xiaoName || '小限'}牵动，对宫看${oppositeName || '外部应事'}。`,
+    };
+  }
+
+  function smoothLifeCurveScores(points) {
+    return points.map((point, index) => {
+      const prev = points[index - 1] || point;
+      const next = points[index + 1] || point;
+      const score = curveClamp(Math.round((prev.rawScore * 0.18) + (point.rawScore * 0.64) + (next.rawScore * 0.18)), 10, 96);
+      return {
+        ...point,
+        score,
+        summary: `${curveScoreBand(score)}，${point.domain}受${point.xiaoLianPalace || '小限'}牵动，对宫看${point.oppositePalace || '外部应事'}。`,
+      };
+    });
+  }
+
+  function normalizeLifeCurveAmplitude(points) {
+    if (!points.length) return [];
+    const values = points.map((point) => point.score);
+    const min = Math.min(...values);
+    const max = Math.max(...values);
+    const span = Math.max(1, max - min);
+    const targetMin = 28;
+    const targetMax = 88;
+    return points.map((point) => {
+      const score = curveClamp(Math.round(targetMin + ((point.score - min) / span) * (targetMax - targetMin)), 18, 94);
+      return {
+        ...point,
+        score,
+        summary: `${curveScoreBand(score)}，${point.domain}受${point.xiaoLianPalace || '小限'}牵动，对宫看${point.oppositePalace || '外部应事'}。`,
+      };
+    });
+  }
+
+  function localCurveExtrema(points, type = 'peak') {
+    const compare = type === 'peak'
+      ? (point, prev, next) => point.score >= prev.score && point.score >= next.score
+      : (point, prev, next) => point.score <= prev.score && point.score <= next.score;
+    return points
+      .filter((point, index) => index > 0 && index < points.length - 1 && compare(point, points[index - 1], points[index + 1]))
+      .sort((a, b) => type === 'peak' ? b.score - a.score : a.score - b.score);
+  }
+
+  function clearLifeCurveData() {
+    window._fcLifeCurveData = null;
+    window._fcLifeCurveMode = '';
+    window._fcLifeCurveCriticalYear = null;
+  }
+
+  function ensureLifeCurveData(options = {}) {
+    const key = profileHistoryKey(state.profile);
+    const existing = window._fcLifeCurveData;
+    if (!options.force && existing?.profileKey === key && Array.isArray(existing.scores) && existing.scores.length) return existing;
+    const bundle = getChartBundle();
+    const chart = bundle.chart || state.chart || fcCurrentChart;
+    if (!chart) return { profileKey: key, scores: [], decades: [], peakAges: [], valleyAges: [] };
+    const currentAge = clampXiaoLianAge(fcCurrentVirtualAge());
+    const maxAge = xiaoLianMaxAge();
+    const rawPoints = Array.from({ length: maxAge }, (_, index) => buildLifeCurvePoint(chart, index + 1, currentAge));
+    const scores = normalizeLifeCurveAmplitude(smoothLifeCurveScores(rawPoints));
+    const peaks = localCurveExtrema(scores, 'peak').slice(0, 6);
+    const valleys = localCurveExtrema(scores, 'valley').slice(0, 6);
+    const current = scores.find((point) => point.age === currentAge) || scores[0] || null;
+    const decades = decadeItemsForChart(chart, currentAge).map((item) => ({
+      range: item.rangeLabel,
+      start: item.start,
+      end: item.end,
+      palace: item.palaceName,
+      branch: item.branch,
+      domain: item.domain,
+      summary: `${item.rangeLabel}走${item.palaceName}，主看${item.domain}。`,
+    }));
+    const data = {
+      profileKey: key,
+      mode: 'age_score_1_100',
+      generatedAt: new Date().toISOString(),
+      currentAge,
+      current,
+      scores,
+      decades,
+      peakAges: peaks.map((point) => point.age),
+      valleyAges: valleys.map((point) => point.age),
+    };
+    window._fcLifeCurveData = data;
+    window._fcLifeCurveMode = data.mode;
+    window._fcLifeCurveCriticalYear = null;
+    return data;
+  }
+
+  function curveDataFromAi(data) {
+    const card = normalizeAiData(data)?.card || {};
+    const list = Array.isArray(card.scores)
+      ? card.scores
+      : (Array.isArray(card.lifeCurveData) ? card.lifeCurveData : (Array.isArray(card.curveScores) ? card.curveScores : []));
+    const scores = list
+      .map((item) => ({
+        ...item,
+        age: Math.floor(curveSafeNumber(item?.age, 0)),
+        year: Math.floor(curveSafeNumber(item?.year, 0)) || fcAgeToYear(item?.age),
+        score: curveClamp(Math.round(curveSafeNumber(item?.score ?? item?.finalScore, 50)), 0, 100),
+        summary: cleanAiText(item?.summary || item?.reason || ''),
+      }))
+      .filter((item) => item.age >= 1 && item.age <= xiaoLianMaxAge());
+    if (!scores.length) return null;
+    scores.sort((a, b) => a.age - b.age);
+    const currentAge = clampXiaoLianAge(fcCurrentVirtualAge());
+    return {
+      profileKey: profileHistoryKey(state.profile),
+      mode: 'backend_scores',
+      currentAge,
+      current: scores.find((point) => point.age === currentAge) || null,
+      scores,
+      peakAges: localCurveExtrema(scores, 'peak').slice(0, 6).map((point) => point.age),
+      valleyAges: localCurveExtrema(scores, 'valley').slice(0, 6).map((point) => point.age),
+    };
+  }
+
+  function curveDataForRender(data) {
+    const fromAi = curveDataFromAi(data);
+    if (fromAi?.scores?.length) return fromAi;
+    return ensureLifeCurveData();
+  }
+
+  function mapCurvePoints(scores, width = 760, height = 250) {
+    const left = 46;
+    const right = 24;
+    const top = 24;
+    const bottom = 34;
+    const minAge = scores[0]?.age || 1;
+    const maxAge = scores[scores.length - 1]?.age || xiaoLianMaxAge();
+    const span = Math.max(1, maxAge - minAge);
+    return scores.map((point) => ({
+      ...point,
+      x: left + ((point.age - minAge) / span) * (width - left - right),
+      y: top + ((100 - point.score) / 100) * (height - top - bottom),
+    }));
+  }
+
+  function smoothSvgPath(mapped) {
+    if (!mapped.length) return '';
+    if (mapped.length === 1) return `M ${mapped[0].x.toFixed(1)} ${mapped[0].y.toFixed(1)}`;
+    const parts = [`M ${mapped[0].x.toFixed(1)} ${mapped[0].y.toFixed(1)}`];
+    for (let index = 1; index < mapped.length - 1; index += 1) {
+      const midX = (mapped[index].x + mapped[index + 1].x) / 2;
+      const midY = (mapped[index].y + mapped[index + 1].y) / 2;
+      parts.push(`Q ${mapped[index].x.toFixed(1)} ${mapped[index].y.toFixed(1)} ${midX.toFixed(1)} ${midY.toFixed(1)}`);
+    }
+    const last = mapped[mapped.length - 1];
+    parts.push(`T ${last.x.toFixed(1)} ${last.y.toFixed(1)}`);
+    return parts.join(' ');
+  }
+
+  function curveRenderMarkers(curve, mapped) {
+    const byAge = new Map(mapped.map((point) => [point.age, point]));
+    const currentAge = curve.currentAge || fcCurrentVirtualAge();
+    const focusEndAge = Math.min(84, currentAge + 40);
+    const future = mapped.filter((point) => point.age >= currentAge && point.age <= focusEndAge);
+    const allFuture = mapped.filter((point) => point.age >= currentAge);
+    const past = mapped.filter((point) => point.age <= currentAge);
+    const candidates = [
+      { point: byAge.get(currentAge), label: '当前', type: 'current' },
+      { point: [...future].sort((a, b) => b.score - a.score)[0] || [...allFuture].sort((a, b) => b.score - a.score)[0] || [...mapped].sort((a, b) => b.score - a.score)[0], label: '高点', type: 'peak' },
+      { point: [...future].sort((a, b) => a.score - b.score)[0] || [...allFuture].sort((a, b) => a.score - b.score)[0] || [...mapped].sort((a, b) => a.score - b.score)[0], label: '低点', type: 'valley' },
+      { point: [...past].sort((a, b) => b.score - a.score)[0], label: '已验高点', type: 'peak' },
+      { point: [...past].sort((a, b) => a.score - b.score)[0], label: '已验低点', type: 'valley' },
+    ];
+    const seen = new Set();
+    return candidates
+      .filter((item) => item.point && !seen.has(item.point.age) && seen.add(item.point.age))
+      .slice(0, 5);
+  }
+
+  function renderLifeCurveSvg(curve) {
+    const scores = curve?.scores || [];
+    if (!scores.length) return '';
+    const width = 760;
+    const height = 250;
+    const bottomY = 216;
+    const mapped = mapCurvePoints(scores, width, height);
+    const path = smoothSvgPath(mapped);
+    const first = mapped[0];
+    const last = mapped[mapped.length - 1];
+    const areaPath = `${path} L ${last.x.toFixed(1)} ${bottomY} L ${first.x.toFixed(1)} ${bottomY} Z`;
+    const markers = curveRenderMarkers(curve, mapped);
+    const tickAges = [1, 20, 40, 60, 80, 100].filter((age) => age >= scores[0].age && age <= scores[scores.length - 1].age);
+    const scoreLines = [80, 60, 40, 20];
+    return `
+      <div class="mbp-curve-chart" aria-label="人生曲线">
+        <svg viewBox="0 0 ${width} ${height}" role="img">
+          ${scoreLines.map((score) => {
+            const y = 24 + ((100 - score) / 100) * (height - 24 - 34);
+            return `<line x1="46" y1="${y.toFixed(1)}" x2="736" y2="${y.toFixed(1)}"></line><text class="mbp-curve-axis" x="12" y="${(y + 4).toFixed(1)}">${score}</text>`;
+          }).join('')}
+          ${tickAges.map((age) => {
+            const x = 46 + ((age - scores[0].age) / Math.max(1, scores[scores.length - 1].age - scores[0].age)) * (width - 46 - 24);
+            return `<text class="mbp-curve-axis" x="${x.toFixed(1)}" y="238" text-anchor="middle">${age}岁</text>`;
+          }).join('')}
+          <path class="mbp-curve-fill" d="${areaPath}"></path>
+          <path class="mbp-curve-line" d="${path}"></path>
+          ${markers.map(({ point, label, type }) => {
+            const anchor = point.x > 660 ? 'end' : (point.x < 90 ? 'start' : 'middle');
+            const labelY = Math.max(16, point.y - 14);
+            return `
+              <circle class="mbp-curve-marker ${type === 'valley' ? 'is-warn' : ''} ${type === 'current' ? 'is-current' : ''}" cx="${point.x.toFixed(1)}" cy="${point.y.toFixed(1)}" r="${type === 'current' ? 8 : 6}"></circle>
+              <text class="mbp-curve-label" x="${point.x.toFixed(1)}" y="${labelY.toFixed(1)}" text-anchor="${anchor}">${point.age}岁</text>
+              <text class="mbp-curve-note" x="${point.x.toFixed(1)}" y="${(labelY + 16).toFixed(1)}" text-anchor="${anchor}">${escapeHtml(label)} ${point.score}分</text>
+            `;
+          }).join('')}
+        </svg>
+      </div>
+    `;
+  }
+
+  function renderCurveCards(curve) {
+    const points = curve?.scores || [];
+    if (!points.length) return '';
+    const currentAge = curve.currentAge || fcCurrentVirtualAge();
+    const current = points.find((point) => point.age === currentAge) || points[0];
+    const focusEndAge = Math.min(84, currentAge + 40);
+    const future = points.filter((point) => point.age >= currentAge && point.age <= focusEndAge);
+    const allFuture = points.filter((point) => point.age >= currentAge);
+    const futureSource = future.length ? future : (allFuture.length ? allFuture : points);
+    const high = [...futureSource].sort((a, b) => b.score - a.score)[0];
+    const low = [...futureSource].sort((a, b) => a.score - b.score)[0];
+    const rows = [
+      { title: '当前', point: current },
+      { title: '低点', point: low },
+      { title: '高点', point: high },
+    ];
+    return `
+      <div class="mbp-curve-cards">
+        ${rows.map(({ title, point }) => `
+          <section>
+            <strong>${escapeHtml(title)}</strong>
+            <p><b>${point.age}岁 · ${point.score}分</b>${escapeHtml(point.summary || `${curveScoreBand(point.score)}，重点看${point.domain || '命盘主线'}。`)}</p>
+          </section>
+        `).join('')}
+      </div>
+    `;
+  }
+
+  function renderCurveAiSections(data, fallbackText) {
+    const sections = hasAiRenderableContent(data) ? aiSections(data) : [];
+    if (!sections.length) return `<p class="mbp-luck-placeholder">${escapeHtml(fallbackText || '点击“生成曲线”后，后台提示词会结合这条曲线生成说明。')}</p>`;
+    return `
+      <div class="mbp-curve-ai-sections">
+        ${sections.slice(0, 4).map((section) => `
+          <section>
+            ${section.title ? `<b>${escapeHtml(cleanAiInlineText(section.title))}</b>` : ''}
+            <p>${highlightInsightText(cleanAiText(section.content))}</p>
+          </section>
+        `).join('')}
+      </div>
+    `;
+  }
+
+  function renderCurveChapterBlock(data, fallbackText) {
+    const curve = curveDataForRender(data);
+    const points = curve?.scores || [];
+    if (!points.length) return renderPendingChapterBlock(fallbackText || '点击“生成曲线”后生成。');
+    const current = curve.current || points.find((point) => point.age === (curve.currentAge || fcCurrentVirtualAge())) || points[0];
+    const focusEndAge = Math.min(84, current.age + 40);
+    const future = points.filter((point) => point.age >= current.age && point.age <= focusEndAge);
+    const allFuture = points.filter((point) => point.age >= current.age);
+    const futureSource = future.length ? future : (allFuture.length ? allFuture : points);
+    const nextPeak = [...futureSource].sort((a, b) => b.score - a.score)[0] || current;
+    const nextValley = [...futureSource].sort((a, b) => a.score - b.score)[0] || current;
+    const pastItems = curvePastValidationItems(curve);
     return `
       <div class="mbp-curve-panel" data-curve-panel>
         <div class="mbp-curve-switch" role="tablist" aria-label="人生曲线视图">
-          <button class="is-active" type="button" role="tab" aria-selected="true" data-curve-view="past">过去验证</button>
-          <button type="button" role="tab" aria-selected="false" data-curve-view="future">未来趋势</button>
+          <button class="is-active" type="button" role="tab" aria-selected="true" data-curve-view="future">曲线走势</button>
+          <button type="button" role="tab" aria-selected="false" data-curve-view="past">过去验证</button>
         </div>
-        <div class="mbp-curve-view is-active" data-curve-pane="past">
+        <div class="mbp-curve-view is-active" data-curve-pane="future">
+          <div class="mbp-curve-summary">
+            <div>
+              <strong>${escapeHtml(`${current.age}岁在${curveScoreBand(current.score)}，后面高点看${nextPeak.age}岁，低点看${nextValley.age}岁。`)}</strong>
+              <p>${escapeHtml(`曲线按命盘大限底色、小限落宫、对宫应事和流年卦逐岁评分；后台提示词负责把曲线翻成命书说明。`)}</p>
+            </div>
+            <em>1-100岁逐岁评分</em>
+          </div>
+          ${renderLifeCurveSvg(curve)}
+          ${renderCurveCards(curve)}
+          ${renderCurveAiSections(data, fallbackText)}
+        </div>
+        <div class="mbp-curve-view" data-curve-pane="past">
           <div class="mbp-curve-verify-head">
             <span>先验过去</span>
-            <strong>先看过往是否对得上，再看未来才有底。</strong>
-            <p>下面列出命盘曲线里的已发生节点，客户可以逐项核对真实经历。</p>
+            <strong>先看过往节点是否对得上，再看未来走势。</strong>
+            <p>这些节点来自同一条逐岁评分曲线，不是固定模板。</p>
           </div>
           <div class="mbp-curve-verify-grid">
             ${pastItems.map((item) => `
@@ -3054,94 +3427,31 @@
           </div>
           <p class="mbp-curve-verify-result" data-curve-verify-result>先点几个过往节点，系统会给出这条曲线的参考可信度。</p>
         </div>
-        <div class="mbp-curve-view" data-curve-pane="future">
-          <div class="mbp-curve-summary">
-            <div>
-              <strong>整体是“先压后升，中年见高点”</strong>
-              <p>36岁前后守住节奏，44岁前后主动扩张，56岁后还有第二波抬升。</p>
-            </div>
-          </div>
-          <div class="mbp-curve-chart" aria-label="人生曲线示意">
-            <svg viewBox="0 0 760 210" role="img">
-              <line x1="40" y1="36" x2="730" y2="36"></line>
-              <line x1="40" y1="86" x2="730" y2="86"></line>
-              <line x1="40" y1="136" x2="730" y2="136"></line>
-              <line x1="40" y1="186" x2="730" y2="186"></line>
-              <path class="mbp-curve-fill" d="M42 158 C108 132 168 92 230 88 C302 84 308 162 362 152 C446 134 454 58 526 58 C608 58 622 114 720 82 L720 186 L42 186 Z"></path>
-              <path class="mbp-curve-line" d="M42 158 C108 132 168 92 230 88 C302 84 308 162 362 152 C446 134 454 58 526 58 C608 58 622 114 720 82"></path>
-              <circle class="is-warn" cx="42" cy="158" r="7"></circle>
-              <text class="mbp-curve-label" x="34" y="138">21岁</text>
-              <text class="mbp-curve-note" x="16" y="176">起势</text>
-              <circle cx="230" cy="88" r="7"></circle>
-              <text class="mbp-curve-label" x="210" y="68">29岁</text>
-              <text class="mbp-curve-note" x="190" y="106">事业起势</text>
-              <circle class="is-warn" cx="362" cy="152" r="7"></circle>
-              <text class="mbp-curve-label" x="340" y="132">36岁</text>
-              <text class="mbp-curve-note" x="330" y="170">低谷期</text>
-              <circle cx="526" cy="58" r="7"></circle>
-              <text class="mbp-curve-label" x="506" y="38">44岁</text>
-              <text class="mbp-curve-note" x="492" y="76">高峰期</text>
-              <circle class="is-warn" cx="622" cy="114" r="7"></circle>
-              <text class="mbp-curve-label" x="604" y="96">49岁</text>
-              <text class="mbp-curve-note" x="590" y="132">调整期</text>
-              <circle cx="720" cy="82" r="7"></circle>
-              <text class="mbp-curve-label" x="694" y="62">56岁</text>
-              <text class="mbp-curve-note" x="666" y="100">二次提升</text>
-            </svg>
-          </div>
-          <div class="mbp-curve-cards">
-            <section>
-              <strong>低点</strong>
-              <p><b>36岁</b> 控节奏、稳关系。</p>
-            </section>
-            <section>
-              <strong>高点</strong>
-              <p><b>44岁</b> 扩资源、定方向。</p>
-            </section>
-            <section>
-              <strong>后势</strong>
-              <p><b>56岁</b> 声望与资源回升。</p>
-            </section>
-          </div>
-        </div>
       </div>
     `;
   }
 
-  function curvePointTone(age) {
-    if (age <= 24) return '起步期';
-    if (age <= 32) return '发力期';
-    if (age <= 39) return '低谷校验';
-    if (age <= 46) return '高点前奏';
-    if (age <= 52) return '调整期';
-    return '二次抬升';
-  }
-
-  function curvePastValidationItems() {
-    const bundle = getChartBundle();
-    const chart = bundle.chart || state.chart || fcCurrentChart;
-    const currentAge = Math.max(1, fcCurrentVirtualAge());
-    const baseAges = [21, 29, 36, 44, 49, 56];
-    let ages = baseAges.filter((age) => age <= currentAge);
-    if (!ages.length) ages = [Math.max(1, currentAge)];
-    ages = ages.slice(-4);
-    return ages.map((age) => {
-      const year = fcAgeToYear(age);
-      const palace = findDecadePalace(chart, age);
-      const xiaoBranch = fcResolveXiaoLianBranch(age);
-      const xiaoPalace = fcPalaceByBranch(chart, xiaoBranch);
-      const oppositePalace = fcPalaceByBranch(chart, fcOppositeBranch(xiaoBranch));
-      const domain = palaceDomain(palace?.name || xiaoPalace?.name || '');
-      const palaceLabel = palace?.name ? normalizePalaceName(palace.name) : '大限主线';
-      const xiaoLabel = xiaoPalace?.name ? normalizePalaceName(xiaoPalace.name) : (xiaoBranch ? `${xiaoBranch}宫` : '小限落点');
-      const oppositeLabel = oppositePalace?.name ? normalizePalaceName(oppositePalace.name) : '对宫应事';
-      const stars = palaceStarBrief(palace || xiaoPalace);
+  function curvePastValidationItems(curve = ensureLifeCurveData()) {
+    const points = (curve?.scores || []).filter((point) => point.age <= (curve.currentAge || fcCurrentVirtualAge()));
+    const source = points.length ? points : (curve?.scores || []);
+    if (!source.length) return [];
+    const extrema = [
+      ...localCurveExtrema(source, 'peak').slice(0, 3),
+      ...localCurveExtrema(source, 'valley').slice(0, 3),
+      source[source.length - 1],
+    ]
+      .filter(Boolean)
+      .sort((a, b) => a.age - b.age);
+    const seen = new Set();
+    const picked = extrema.filter((point) => !seen.has(point.age) && seen.add(point.age)).slice(-4);
+    return picked.map((point) => {
+      const tone = curvePointTone(point.age, point.score);
       return {
-        ageLabel: `命盘${age}岁`,
-        yearLabel: `${year}年`,
-        title: `${curvePointTone(age)} · ${domain}`,
-        body: `${palaceLabel}牵动${domain}，重点回想这一阶段是否有方向、关系、资源或居住安排的明显变化。`,
-        evidence: `${xiaoLabel}落点，对宫看${oppositeLabel}；星曜线索：${stars}。`,
+        ageLabel: `${point.age}岁`,
+        yearLabel: `${point.year || fcAgeToYear(point.age)}年`,
+        title: `${tone} · ${curveScoreBand(point.score)} · ${point.score}分`,
+        body: `${point.decadePalace || '大限主线'}牵动${point.domain || '命盘主线'}，回想这一阶段是否有方向、关系、资源或居住安排的明显变化。`,
+        evidence: `${point.xiaoLianPalace || '小限落点'}落点，对宫看${point.oppositePalace || '对宫应事'}；流年卦：${point.liunianGuaName || '未显'}。`,
       };
     });
   }
@@ -4463,7 +4773,7 @@
             ${chapterActionButton(index)}
           </div>
             <div class="mbp-report-content">
-              ${type === 'specials' ? renderSpecialChapterBlock(item[2], item[1]) : type === 'luck' ? renderLuckChapterBlock(data, item[1]) : type === 'xiaoxian' ? renderXiaoLianChapterBlock(data, item[1]) : (type === 'life_curve' || type === 'action_advice') && !moduleHasRenderable(type) ? renderPendingChapterBlock(item[1]) : renderInsightBlock(data, item[0], item[1], {
+              ${type === 'specials' ? renderSpecialChapterBlock(item[2], item[1]) : type === 'luck' ? renderLuckChapterBlock(data, item[1]) : type === 'xiaoxian' ? renderXiaoLianChapterBlock(data, item[1]) : type === 'life_curve' ? ((state.curveGenerated || moduleHasRenderable(type) || window._fcLifeCurveData?.scores?.length) ? renderCurveChapterBlock(data, item[1]) : renderPendingChapterBlock(item[1])) : type === 'action_advice' && !moduleHasRenderable(type) ? renderPendingChapterBlock(item[1]) : renderInsightBlock(data, item[0], item[1], {
                 summaryMax: 128,
                 bulletLimit: 0,
                 direct: true,
@@ -4484,12 +4794,20 @@
     if (typeof window._aipCallBackend !== 'function') {
       throw new Error('原站 AI 批命脚本未加载');
     }
+    if (moduleKey === 'life_curve') {
+      ensureLifeCurveData({ force: true });
+    }
     const backendModule = moduleKey === 'current_luck'
       ? 'current_luck'
       : (moduleKey === 'xiaoxian_liunian' ? 'xiaoxian_liunian' : moduleKey);
     const extraParams = moduleKey === 'current_luck'
       ? currentLuckExtraParams(options)
-      : (moduleKey === 'xiaoxian_liunian' ? xiaoLianExtraParams(options) : {});
+      : (moduleKey === 'xiaoxian_liunian' ? xiaoLianExtraParams(options) : (moduleKey === 'life_curve' ? {
+        currentStage: window._fcLifeCurveData?.current?.summary || '',
+        currentAge: window._fcLifeCurveData?.currentAge || fcCurrentVirtualAge(),
+        peakAges: window._fcLifeCurveData?.peakAges || [],
+        valleyAges: window._fcLifeCurveData?.valleyAges || [],
+      } : {}));
     return normalizeAiData(await window._aipCallBackend(backendModule, extraParams));
   }
 
@@ -4531,6 +4849,10 @@
     setModuleButtonsBusy(task.module, true);
     setDecodeStatus(`正在单独批命：${task.label}`);
     try {
+      if (task.module === 'life_curve') {
+        state.curveGenerated = true;
+        ensureLifeCurveData({ force: true });
+      }
       const data = await callOriginalAi(task.module, options);
       if (!hasAiRenderableContent(data)) {
         throw new Error('AI 已返回，但没有可展示正文，请重试');
@@ -4544,6 +4866,8 @@
         renderSpecialAi(task.key, data, task.label);
         setSpecialStatus(task.key, '已生成', 'done');
       }
+      if (task.module === 'life_curve') state.curveGenerated = true;
+      if (task.module === 'action_advice') state.adviceGenerated = true;
       if (generatedModuleCount() >= aiTasks.length) {
         state.curveGenerated = true;
         state.adviceGenerated = true;
@@ -4616,6 +4940,7 @@
     state.aiResults = {};
     state.luckAiResults = {};
     state.xiaoLianAiResults = {};
+    clearLifeCurveData();
     state.selectedLuckRangeKey = '';
     state.selectedXiaoLianAge = '';
     state.curveGenerated = false;
@@ -4636,6 +4961,10 @@
         const taskOptions = task.module === 'current_luck'
           ? { forceCurrentLuck: true }
           : (task.module === 'xiaoxian_liunian' ? { forceCurrentXiaoLian: true } : {});
+        if (task.module === 'life_curve') {
+          state.curveGenerated = true;
+          ensureLifeCurveData({ force: true });
+        }
         const data = await callOriginalAi(task.module, taskOptions);
         if (!hasAiRenderableContent(data)) {
           throw new Error('AI 已返回，但没有可展示正文，请重试');
@@ -4647,6 +4976,8 @@
           renderSpecialAi(task.key, data, task.label);
           setSpecialStatus(task.key, '已生成', 'done');
         }
+        if (task.module === 'life_curve') state.curveGenerated = true;
+        if (task.module === 'action_advice') state.adviceGenerated = true;
         renderChaptersFromAi();
         updateDecodeProgress(successCount, index, task.label);
       } catch (error) {
@@ -4690,6 +5021,7 @@
     }
     state.decoded = true;
     state.curveGenerated = true;
+    ensureLifeCurveData({ force: true });
     document.body.classList.add('is-decoded');
     renderChaptersFromAi();
     updateDecodeProgress(generatedModuleCount(), -1, '曲线已生成');
@@ -4713,6 +5045,7 @@
     state.batchDecoding = false;
     state.curveGenerated = false;
     state.adviceGenerated = false;
+    clearLifeCurveData();
     updateDecodeProgress(0, -1, '待生成');
     const defaults = {
       body: ['身宫批命', '点击一键批命后生成。'],
