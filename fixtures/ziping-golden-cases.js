@@ -460,8 +460,8 @@ const ZIPING_GOLDEN_CASES = [
         { age: 9, guaName: '风地观', period: '先天' },
         { age: 10, guaName: '风山渐', period: '先天' },
         // 后天阴爻 line6（爻6在泽山咸中为阴爻）：首年直接翻，不取本卦
-        // 若"后天阴爻首年取本卦"bug 重现，age61 会变成 泽山咸 而非 天山遁
-        { age: 61, guaName: '天山遁', period: '后天', lineNum: 6 },
+        // 若"后天阴爻首年取本卦"bug 重现，age61 会变成 泽山咸 而非 天山遯
+        { age: 61, guaName: '天山遯', period: '后天', lineNum: 6 },
         { age: 62, guaName: '天火同人', period: '后天', lineNum: 6 },
         { age: 63, guaName: '乾为天',   period: '后天', lineNum: 6 },
         { age: 66, guaName: '山泽损',   period: '后天', lineNum: 6 },
@@ -501,7 +501,7 @@ const ZIPING_GOLDEN_CASES = [
       xiantian: { name: '天地否', num: 12, upper: 1, lower: 8 },
       houtian:  { name: '山天大畜', num: 26, upper: 7, lower: 1 },
       spotChecks: [
-        { age: 1, guaName: '天山遁', period: '先天' },
+        { age: 1, guaName: '天山遯', period: '先天' },
         { age: 2, guaName: '风山渐', period: '先天' },
         { age: 3, guaName: '艮为山', period: '先天' },
         { age: 4, guaName: '地山谦', period: '先天' },

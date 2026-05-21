@@ -366,5 +366,121 @@
       "kan-wei-shui"
     ],
     "notes": "female lower-six three-zizun kan-wei-shui; combo/hour branch consistent"
+  },
+  {
+    "id": "1995-12-14-1900-f",
+    "calendar": "solar",
+    "birth": "1995-12-14 19:00",
+    "location": "Beijing",
+    "gender": "female",
+    "civilSlot": "戌",
+    "comboSelected": "戌(19~21)",
+    "genderText": "阴女",
+    "wuxing": "待补",
+    "lunar": "乙亥年十月廿三",
+    "pillars": {
+      "raw": "四柱 : 乙亥 戊子 己卯 甲戌",
+      "year": "乙亥",
+      "month": "戊子",
+      "day": "己卯",
+      "hour": "甲戌"
+    },
+    "xiantian": "地山谦",
+    "yuanTangLine": "待复核",
+    "houtian": "艮为山",
+    "coverageTags": [
+      "female",
+      "lower-six",
+      "xu-pocket",
+      "di-shan-qian"
+    ],
+    "notes": "Tianji desktop spot-check; female xu ordinary pocket maps xian 地山谦 to houtian 艮为山"
+  },
+  {
+    "id": "1981-05-12-0700-f",
+    "calendar": "solar",
+    "birth": "1981-05-12 07:00",
+    "location": "Beijing",
+    "gender": "female",
+    "civilSlot": "辰",
+    "comboSelected": "辰(7~9)",
+    "genderText": "阴女",
+    "wuxing": "待补",
+    "lunar": "辛酉年四月初九",
+    "pillars": {
+      "raw": "四柱 : 辛酉 癸巳 庚寅 庚辰",
+      "year": "辛酉",
+      "month": "癸巳",
+      "day": "庚寅",
+      "hour": "庚辰"
+    },
+    "xiantian": "山雷颐",
+    "yuanTangLine": "待复核",
+    "houtian": "泽山咸",
+    "coverageTags": [
+      "female",
+      "upper-six",
+      "chen-pocket",
+      "shan-lei-yi"
+    ],
+    "notes": "Tianji desktop spot-check; female chen ordinary pocket maps xian 山雷颐 to houtian 泽山咸"
+  },
+  {
+    "id": "1990-05-10-1900-f",
+    "calendar": "solar",
+    "birth": "1990-05-10 19:00",
+    "location": "Beijing",
+    "gender": "female",
+    "civilSlot": "戌",
+    "comboSelected": "戌(19~21)",
+    "genderText": "阳女",
+    "wuxing": "待补",
+    "lunar": "庚午年四月十六",
+    "pillars": {
+      "raw": "四柱 : 庚午 辛巳 乙亥 丙戌",
+      "year": "庚午",
+      "month": "辛巳",
+      "day": "乙亥",
+      "hour": "丙戌"
+    },
+    "xiantian": "风雷益",
+    "yuanTangLine": "待复核",
+    "houtian": "火风鼎",
+    "coverageTags": [
+      "female",
+      "lower-six",
+      "xu-pocket",
+      "feng-lei-yi"
+    ],
+    "notes": "Tianji desktop spot-check; female xu ordinary pocket maps xian 风雷益 to houtian 火风鼎"
+  },
+  {
+    "id": "1976-07-17-0700-m",
+    "calendar": "solar",
+    "birth": "1976-07-17 07:00",
+    "location": "Beijing",
+    "gender": "male",
+    "civilSlot": "辰",
+    "comboSelected": "辰(7~9)",
+    "genderText": "阳男",
+    "wuxing": "待补",
+    "lunar": "丙辰年六月廿一",
+    "pillars": {
+      "raw": "四柱 : 丙辰 乙未 庚午 庚辰",
+      "year": "丙辰",
+      "month": "乙未",
+      "day": "庚午",
+      "hour": "庚辰"
+    },
+    "xiantian": "雷地豫",
+    "yuanTangLine": "待复核",
+    "houtian": "山雷颐",
+    "coverageTags": [
+      "male",
+      "upper-six",
+      "chen-pocket",
+      "lei-di-yu"
+    ],
+    "notes": "Tianji desktop spot-check; male chen ordinary pocket maps xian 雷地豫 to houtian 山雷颐"
   }
 ]
