@@ -572,6 +572,110 @@
     return null;
   }
 
+  function trigramFromDisplayLines(lines) {
+    for (let n = 1; n <= 8; n++) {
+      const t = T().TRIGRAM_LINES[n];
+      if (t[0] === lines[0] && t[1] === lines[1] && t[2] === lines[2]) return n;
+    }
+    return null;
+  }
+
+  function displayLines6(gua) {
+    if (!gua) return null;
+    return [...T().TRIGRAM_LINES[gua.upper], ...T().TRIGRAM_LINES[gua.lower]];
+  }
+
+  function buildGuaFromDisplayLines(lines, isYangPerson) {
+    if (!Array.isArray(lines) || lines.length !== 6) return null;
+    const upper = trigramFromDisplayLines(lines.slice(0, 3));
+    const lower = trigramFromDisplayLines(lines.slice(3, 6));
+    if (!upper || !lower) return null;
+    return buildGua(upper, lower, isYangPerson);
+  }
+
+  function flipDisplayLines(gua, indexes) {
+    const lines = displayLines6(gua);
+    if (!lines) return null;
+    indexes.forEach(index => {
+      if (index < 0 || index > 5) return;
+      lines[index] = lines[index] === 'solid' ? 'broken' : 'solid';
+    });
+    return buildGuaFromDisplayLines(lines, gua.isYangPerson);
+  }
+
+  function activeDisplayLineIndex(tianjiLineNum) {
+    const n = Number(tianjiLineNum);
+    if (!Number.isFinite(n)) return null;
+    const line = ((Math.trunc(n) % 6) + 6) % 6;
+    return line === 0 ? 5 : line - 1;
+  }
+
+  // ── 月卦 / 日卦（天纪软件“月,日卦”窗口）───────────────────────
+  // 天纪软件用流年卦当前爻继续细分：一年拆 12 月，一月拆 5 段。
+  // 实测口径：月卦先翻当前爻，再按“单翻 / 双翻”固定爻序推进；
+  // 日卦则以每月主爻为排除点，逆序翻其余五爻。
+  function buildMonthDayGuaMap(yearGua, tianjiLineNum) {
+    const firstActive = activeDisplayLineIndex(tianjiLineNum);
+    if (!yearGua || firstActive === null) return { months: [], days: [] };
+
+    const months = [];
+    const days = [];
+    let current = flipDisplayLines(yearGua, [firstActive]);
+    if (!current) return { months, days };
+
+    function pushMonth(gua, month, activeLineIndex) {
+      const row = {
+        month,
+        name: gua.name,
+        num: gua.num,
+        upper: gua.upper,
+        lower: gua.lower,
+        lines: gua.lines,
+        isYangPerson: gua.isYangPerson,
+        activeLineIndex,
+      };
+      months.push(row);
+      for (let segment = 1; segment <= 5; segment++) {
+        const dayLineIndex = (activeLineIndex - segment + 6) % 6;
+        const dayGua = flipDisplayLines(gua, [dayLineIndex]);
+        if (!dayGua) continue;
+        days.push({
+          month,
+          segment,
+          name: dayGua.name,
+          num: dayGua.num,
+          upper: dayGua.upper,
+          lower: dayGua.lower,
+          lines: dayGua.lines,
+          isYangPerson: dayGua.isYangPerson,
+          activeLineIndex: dayLineIndex,
+        });
+      }
+    }
+
+    pushMonth(current, 1, firstActive);
+    let k = (firstActive + 3) % 6;
+    let singleStep = true;
+
+    while (months.length < 12) {
+      let monthActive;
+      if (singleStep) {
+        monthActive = k;
+        current = flipDisplayLines(current, [k]);
+        singleStep = false;
+      } else {
+        monthActive = (k + 2) % 6;
+        current = flipDisplayLines(current, [k, monthActive]);
+        k = (k + 5) % 6;
+        singleStep = true;
+      }
+      if (!current) break;
+      pushMonth(current, months.length + 1, monthActive);
+    }
+
+    return { months, days };
+  }
+
   // ── 翻转六爻卦中第 lineNum 爻 ─────────────────────────────────
   function flipHex(gua, lineNum) {
     const newUpper = lineNum >= 4 ? flipTrigram(gua.upper, lineNum - 3) : gua.upper;
@@ -1017,6 +1121,7 @@
     calcXiaoLian,
     getLingType,
     computeHouTian,
+    buildMonthDayGuaMap,
     buildGua,
   };
 
