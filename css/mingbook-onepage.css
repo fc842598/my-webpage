@@ -3408,6 +3408,174 @@ p.mbp-topic-detail {
   grid-template-columns: 1fr;
 }
 
+.mbp-special-reading {
+  display: grid;
+  gap: 28px;
+}
+
+.mbp-special-reading-overview {
+  position: relative;
+  display: grid;
+  gap: 14px;
+  padding: 28px 32px;
+  overflow: hidden;
+  border: 1px solid rgba(216, 185, 99, .26);
+  border-radius: 14px;
+  background: rgba(29, 22, 13, .74);
+}
+
+.mbp-special-reading-overview::after {
+  content: "";
+  position: absolute;
+  right: 34px;
+  top: 28px;
+  width: 132px;
+  height: 132px;
+  border: 1px solid rgba(216, 185, 99, .12);
+  border-radius: 999px;
+  box-shadow:
+    0 0 0 24px rgba(216, 185, 99, .05),
+    0 0 0 50px rgba(216, 185, 99, .035);
+  pointer-events: none;
+}
+
+.mbp-special-reading-overview span {
+  color: var(--gold);
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.mbp-special-reading-overview strong {
+  position: relative;
+  z-index: 1;
+  color: #fff1c8;
+  font-size: 24px;
+  line-height: 1.35;
+}
+
+.mbp-special-reading-overview p {
+  position: relative;
+  z-index: 1;
+  max-width: 760px;
+  color: #d9c9a5;
+  font-size: 16px;
+  font-weight: 800;
+  line-height: 1.82;
+}
+
+.mbp-special-reading-list {
+  display: grid;
+  gap: 38px;
+}
+
+.mbp-special-reading-item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(230px, 30%);
+  gap: 38px;
+  align-items: start;
+}
+
+.mbp-special-reading-main,
+.mbp-special-reading-note {
+  border: 1px solid rgba(216, 185, 99, .2);
+  border-radius: 14px;
+  background: rgba(18, 14, 9, .86);
+}
+
+.mbp-special-reading-main {
+  padding: 30px 34px;
+}
+
+.mbp-special-reading-main header {
+  display: flex;
+  align-items: center;
+  gap: 26px;
+  margin-bottom: 28px;
+}
+
+.mbp-special-reading-no {
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  border: 1px solid rgba(216, 185, 99, .56);
+  border-radius: 12px;
+  background:
+    linear-gradient(180deg, rgba(216, 185, 99, .13), rgba(92, 68, 28, .24)),
+    #241b0f;
+  box-shadow:
+    inset 0 0 0 6px rgba(8, 6, 4, .46),
+    inset 0 0 0 7px rgba(216, 185, 99, .18);
+  color: #e6cc7a;
+  font: 900 20px/1 "Noto Serif SC", "Songti SC", serif;
+}
+
+.mbp-special-reading-main h4 {
+  margin: 0;
+  color: #fff2c9;
+  font: 900 28px/1.25 "Noto Serif SC", "Songti SC", serif;
+}
+
+.mbp-special-reading-lead,
+.mbp-special-reading-detail,
+.mbp-special-reading-note p {
+  margin: 0;
+  max-width: none;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.mbp-special-reading-lead {
+  color: #f1e4c3;
+  font-size: 18px;
+  font-weight: 900;
+  line-height: 1.9;
+}
+
+.mbp-special-reading-detail {
+  margin-top: 24px;
+  color: #d2c3a1;
+  font-size: 16px;
+  line-height: 1.9;
+}
+
+.mbp-special-reading-note {
+  padding: 28px 30px;
+  background: rgba(33, 24, 14, .88);
+}
+
+.mbp-special-reading-note strong {
+  display: block;
+  color: #dfc46f;
+  font-size: 22px;
+  line-height: 1.35;
+}
+
+.mbp-special-reading-note p {
+  margin-top: 26px;
+  color: #e1d0a5;
+  font-size: 16px;
+  font-weight: 800;
+  line-height: 1.75;
+}
+
+.mbp-special-reading-note small {
+  display: block;
+  margin-top: 26px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(216, 185, 99, .16);
+  color: #8e826b;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.mbp-special-reading mark {
+  padding: 0 3px;
+  border-radius: 4px;
+  background: rgba(216, 185, 99, .16);
+  color: #fff1bd;
+}
+
 .mbp-advice-chapter {
   display: grid;
   gap: 16px;
@@ -3519,6 +3687,57 @@ p.mbp-topic-detail {
 
   .mbp-advice-risk li {
     grid-template-columns: 1fr;
+  }
+
+  .mbp-special-reading-overview {
+    padding: 22px 20px;
+  }
+
+  .mbp-special-reading-overview::after {
+    right: -28px;
+    top: -22px;
+    opacity: .7;
+  }
+
+  .mbp-special-reading-overview strong {
+    font-size: 21px;
+  }
+
+  .mbp-special-reading-item {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .mbp-special-reading-main {
+    padding: 22px 20px;
+  }
+
+  .mbp-special-reading-main header {
+    gap: 16px;
+    margin-bottom: 22px;
+  }
+
+  .mbp-special-reading-no {
+    width: 54px;
+    height: 54px;
+    font-size: 18px;
+  }
+
+  .mbp-special-reading-main h4 {
+    font-size: 24px;
+  }
+
+  .mbp-special-reading-lead {
+    font-size: 16px;
+  }
+
+  .mbp-special-reading-detail,
+  .mbp-special-reading-note p {
+    font-size: 15px;
+  }
+
+  .mbp-special-reading-note {
+    padding: 22px 20px;
   }
 }
 
