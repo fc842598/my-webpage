@@ -88,7 +88,7 @@
   let mbpAiHistory = [];
   let mbpAiBusy = false;
   let mbpAiDraft = {};
-  const aiBackendBase = ((window.SITE_CONFIG && window.SITE_CONFIG.aiBackendBase) || 'https://ai-piming-backend-production.up.railway.app').replace(/\/$/, '');
+  const aiBackendBase = ((window.SITE_CONFIG && window.SITE_CONFIG.aiBackendBase) || 'https://ai-piming-backend.vercel.app').replace(/\/$/, '');
   const desktopSupabaseUrl = 'https://jmmlijqeexdbxgpfyhgf.supabase.co';
   const desktopSupabaseKey = 'sb_publishable_Y2W9eDscfJwK1sgSitbmFA_ta5btvaR';
   const desktopGoogleRedirectBridge = 'https://fc842598.github.io/my-webpage/pages/mingbook-onepage.html';

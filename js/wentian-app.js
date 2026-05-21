@@ -5317,7 +5317,7 @@ function submitWentianProfileForm() {
     return;
   }
   saveWentianProfile({ nickname, email, phone });
-  setWentianProfileStatus("已保存", "ok");
+  setWentianProfileStatus("已保存到本机", "ok");
   window.setTimeout(() => navigate(state.stack.pop() || "screen-31", false), 260);
 }
 
@@ -11445,8 +11445,8 @@ function fitActivePhoneShell() {
   const rawHeight = parseFloat(phone.style.height) || phone.offsetHeight || WENTIAN_PHONE_HEIGHT;
   const heightBasis = rawHeight <= 900 ? rawHeight : WENTIAN_PHONE_HEIGHT;
   const widthScale = desktop ? Math.min(1, horizontalAvailable / WENTIAN_PHONE_WIDTH) : Math.max(0.82, horizontalAvailable / WENTIAN_PHONE_WIDTH);
-  const heightScale = desktop ? Math.min(1, verticalAvailable / heightBasis) : widthScale;
-  const scale = desktop ? Math.min(widthScale, heightScale) : widthScale;
+  const heightScale = Math.min(1, verticalAvailable / heightBasis);
+  const scale = desktop ? Math.min(widthScale, heightScale) : Math.max(0.78, Math.min(widthScale, heightScale));
   phone.style.setProperty("--wentian-phone-scale", String(scale));
   wrap.style.height = `${Math.ceil(rawHeight * scale)}px`;
 }

@@ -445,7 +445,7 @@ body.mbp-auth-open {
 
 @media (min-width: 1021px) {
   :root {
-    --mbp-ui-scale: .75;
+    --mbp-ui-scale: .9;
   }
 }
 
