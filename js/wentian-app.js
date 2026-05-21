@@ -5853,6 +5853,10 @@ function setWentianChatStatus(text, tone = "") {
   el.dataset.tone = tone;
 }
 
+function isWentianMobileKeyboardViewport() {
+  return window.matchMedia?.("(max-width: 880px), (pointer: coarse)")?.matches || false;
+}
+
 function resizeWentianChatInput(input) {
   if (!input) return 0;
   const minHeight = 48;
@@ -6111,6 +6115,7 @@ async function sendWentianXuChat(promptText = "") {
   if (input) {
     input.value = "";
     syncWentianChatFaqLayout();
+    if (isWentianMobileKeyboardViewport()) input.blur();
   }
 
   const payload = getWentianXuChatPayload();
@@ -6141,7 +6146,7 @@ async function sendWentianXuChat(promptText = "") {
     addWentianMessage("system", getWentianFriendlyError(error));
   } finally {
     setWentianChatBusy(false);
-    input?.focus();
+    if (!isWentianMobileKeyboardViewport()) input?.focus();
   }
 }
 
