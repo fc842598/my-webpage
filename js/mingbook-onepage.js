@@ -141,9 +141,19 @@
     { label: '生成建议', module: 'action_advice' },
   ];
 
+  function isCurrentLuckSelection() {
+    try {
+      const info = selectedLuckInfo({ readonly: true });
+      return !!info.selected && !!info.current && info.selected.key === info.current.key;
+    } catch (_) {
+      return false;
+    }
+  }
+
   function chapterActionButton(index) {
     const action = chapterActions[index];
     if (!action) return '';
+    if (action.module === 'current_luck' && isCurrentLuckSelection()) return '';
     const attr = action.module
       ? `data-report-module="${escapeHtml(action.module)}"`
       : `data-report-action="${escapeHtml(action.action)}"`;
@@ -3615,6 +3625,14 @@
     `;
   }
 
+  function renderReadingPassivePrompt(text) {
+    return `
+      <div class="mbp-luck-empty-action">
+        <p class="mbp-luck-placeholder">${escapeHtml(text)}</p>
+      </div>
+    `;
+  }
+
   function renderLuckReading(data, _fallbackText, info) {
     const hasContent = hasAiRenderableContent(data);
     const sections = hasContent ? aiSections(data) : [];
@@ -3626,7 +3644,10 @@
       })).filter((section) => section.content || section.title)
       : rawText.split(/\n{2,}/).map((content) => ({ title: '', content: cleanAiText(content) })).filter((section) => section.content);
     const selected = info.selectedDecade;
-    const placeholder = `${selected?.rangeLabel || '当前十年'} · ${selected?.palaceName || '大限宫'}。点击“批选中十年”，按后台大限提示词生成这一段整体解盘。`;
+    const isCurrentSelected = !!selected && selected.key === info.currentDecade?.key;
+    const placeholder = isCurrentSelected
+      ? `${selected?.rangeLabel || '当前十年'} · ${selected?.palaceName || '大限宫'}。当前十年会随“总批命”自动生成，不需要单独点击。`
+      : `${selected?.rangeLabel || '选中十年'} · ${selected?.palaceName || '大限宫'}。点击“批选中十年”，按后台大限提示词生成这一段整体解盘。`;
     return `
       <div class="mbp-luck-reading">
         <div class="mbp-luck-reading-head">
@@ -3640,7 +3661,7 @@
               ${section.title && section.title !== '解读' ? `<b>${escapeHtml(section.title)}</b>` : ''}
               <p>${highlightInsightText(section.content || section.title)}</p>
             </section>
-          `).join('') : renderReadingActionPrompt(placeholder, 'current_luck', '批选中十年')}
+          `).join('') : (isCurrentSelected ? renderReadingPassivePrompt(placeholder) : renderReadingActionPrompt(placeholder, 'current_luck', '批选中十年'))}
         </div>
       </div>
     `;
