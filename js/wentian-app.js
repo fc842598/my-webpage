@@ -9032,6 +9032,13 @@ let yangzhaiState = loadYangzhaiState();
 let yangzhaiCompassHandler = null;
 let yangzhaiCompassRawHeading = 0;
 let yangzhaiCompassOffset = loadYangzhaiCompassOffset();
+let yangzhaiCompassSmoothedHeading = null;
+let yangzhaiCompassLastAppliedAt = 0;
+let yangzhaiCompassControlBlockUntil = 0;
+let yangzhaiCompassSuppressPickerOnceUntil = 0;
+const YANGZHAI_COMPASS_MIN_DELTA = 1.4;
+const YANGZHAI_COMPASS_MIN_INTERVAL = 80;
+const YANGZHAI_COMPASS_SMOOTHING = 0.18;
 
 function saveYangzhaiState() {
   try {
@@ -9052,6 +9059,56 @@ function normalizeCompassOffset(value) {
   const heading = normalizeCompassHeading(value);
   if (heading === null) return 0;
   return heading > 180 ? heading - 360 : heading;
+}
+
+function getCompassDeltaDegrees(from, to) {
+  const start = normalizeCompassHeading(from) || 0;
+  const end = normalizeCompassHeading(to) || 0;
+  return ((end - start + 540) % 360) - 180;
+}
+
+function smoothYangzhaiCompassHeading(rawHeading) {
+  const raw = normalizeCompassHeading(rawHeading);
+  if (raw === null) return null;
+  if (yangzhaiCompassSmoothedHeading === null) {
+    yangzhaiCompassSmoothedHeading = raw;
+    return raw;
+  }
+  const delta = getCompassDeltaDegrees(yangzhaiCompassSmoothedHeading, raw);
+  if (Math.abs(delta) < YANGZHAI_COMPASS_MIN_DELTA) return null;
+  yangzhaiCompassSmoothedHeading = normalizeCompassHeading(
+    yangzhaiCompassSmoothedHeading + delta * YANGZHAI_COMPASS_SMOOTHING
+  );
+  return yangzhaiCompassSmoothedHeading;
+}
+
+function resetYangzhaiCompassSmoothing() {
+  yangzhaiCompassSmoothedHeading = null;
+  yangzhaiCompassLastAppliedAt = 0;
+}
+
+function blockYangzhaiCompassControlClick(ms = 1500, suppressNextPicker = false) {
+  yangzhaiCompassControlBlockUntil = Date.now() + ms;
+  if (suppressNextPicker) {
+    yangzhaiCompassSuppressPickerOnceUntil = Date.now() + 12000;
+  }
+}
+
+function isYangzhaiCompassControlBlockingPicker() {
+  const now = Date.now();
+  if (now < yangzhaiCompassControlBlockUntil) return true;
+  if (now < yangzhaiCompassSuppressPickerOnceUntil) {
+    yangzhaiCompassSuppressPickerOnceUntil = 0;
+    return true;
+  }
+  yangzhaiCompassSuppressPickerOnceUntil = 0;
+  return false;
+}
+
+function guardYangzhaiCompassControlEvent(event, ms = 1500, suppressNextPicker = false) {
+  event.preventDefault();
+  event.stopPropagation();
+  blockYangzhaiCompassControlClick(ms, suppressNextPicker);
 }
 
 function loadYangzhaiCompassOffset() {
@@ -9154,6 +9211,10 @@ function getYangzhaiPendingItems() {
 }
 
 function openYangzhaiPicker(key) {
+  if (isYangzhaiCompassControlBlockingPicker()) {
+    setYangzhaiCompassStatus("指南针已开启；再点宫位加号即可安位", "active");
+    return;
+  }
   const palace = getYangzhaiPalace(key);
   if (palace.key === "center") return;
   yangzhaiState.activePalace = palace.key;
@@ -9220,9 +9281,8 @@ function openYangzhaiLuopanZoom() {
     <div class="yangzhai-luopan-zoom" data-yangzhai-luopan-zoom style="--yangzhai-heading:0deg;--yangzhai-luopan-rotation:0deg;">
       <div class="yangzhai-luopan-zoom-halo" aria-hidden="true"></div>
       ${yangzhaiDirectionCross("yangzhai-zoom-cross", 39, 152, 312, false, "zoom")}
-      <div class="yangzhai-luopan-bearing" aria-hidden="true"><span></span></div>
       <button class="yangzhai-compass-start" type="button" data-action="yangzhai-compass-start">开启手机指南针</button>
-      <div class="yangzhai-compass-status" data-yangzhai-compass-status aria-live="polite">十字盘不遮挡加号；开启后随手机方向校准</div>
+      <div class="yangzhai-compass-status" data-yangzhai-compass-status aria-live="polite">开启后十字盘会跟随手机方向</div>
       <div class="yangzhai-compass-tools" aria-label="方位校准">
         <button type="button" data-action="yangzhai-compass-adjust" data-delta="-10">左调10°</button>
         <button type="button" data-action="yangzhai-compass-reset">归零</button>
@@ -9252,10 +9312,16 @@ function handleYangzhaiCompassOrientation(event) {
     ? normalizeCompassHeading(webkitHeading)
     : normalizeCompassHeading(360 - alpha);
   if (heading === null) return;
-  applyYangzhaiCompassHeading(heading);
+  const now = Date.now();
+  if (now - yangzhaiCompassLastAppliedAt < YANGZHAI_COMPASS_MIN_INTERVAL) return;
+  const smoothed = smoothYangzhaiCompassHeading(heading);
+  if (smoothed === null) return;
+  yangzhaiCompassLastAppliedAt = now;
+  applyYangzhaiCompassHeading(smoothed);
 }
 
 function stopYangzhaiCompass() {
+  resetYangzhaiCompassSmoothing();
   if (!yangzhaiCompassHandler) return;
   window.removeEventListener("deviceorientationabsolute", yangzhaiCompassHandler, true);
   window.removeEventListener("deviceorientation", yangzhaiCompassHandler, true);
@@ -9263,6 +9329,7 @@ function stopYangzhaiCompass() {
 }
 
 async function startYangzhaiCompass() {
+  blockYangzhaiCompassControlClick(3000, true);
   if (typeof window === "undefined" || typeof window.DeviceOrientationEvent === "undefined") {
     setYangzhaiCompassStatus("当前浏览器不支持手机指南针", "warn");
     return;
@@ -9271,6 +9338,7 @@ async function startYangzhaiCompass() {
     const orientationApi = window.DeviceOrientationEvent;
     if (typeof orientationApi.requestPermission === "function") {
       const permission = await orientationApi.requestPermission();
+      blockYangzhaiCompassControlClick(1500);
       if (permission !== "granted") {
         setYangzhaiCompassStatus("方向权限未开启，请允许后再试", "warn");
         return;
@@ -9280,7 +9348,7 @@ async function startYangzhaiCompass() {
     yangzhaiCompassHandler = handleYangzhaiCompassOrientation;
     window.addEventListener("deviceorientationabsolute", yangzhaiCompassHandler, true);
     window.addEventListener("deviceorientation", yangzhaiCompassHandler, true);
-    setYangzhaiCompassStatus("正在读取方向；红箭头固定，十字盘会转到当前朝向", "active");
+    setYangzhaiCompassStatus("正在读取方向；十字盘会平滑校准到当前朝向", "active");
   } catch (_) {
     setYangzhaiCompassStatus("指南针启动失败，请用 HTTPS 手机浏览器打开", "warn");
   }
@@ -12008,18 +12076,22 @@ document.addEventListener("click", (event) => {
     return;
   }
   if (earlyAction === "yangzhai-luopan-close") {
+    guardYangzhaiCompassControlEvent(event);
     closeYangzhaiLuopanZoom();
     return;
   }
   if (earlyAction === "yangzhai-compass-start") {
+    guardYangzhaiCompassControlEvent(event, 3000, true);
     startYangzhaiCompass();
     return;
   }
   if (earlyAction === "yangzhai-compass-adjust") {
+    guardYangzhaiCompassControlEvent(event);
     adjustYangzhaiCompassOffset(Number(earlyActionTarget.dataset.delta) || 0);
     return;
   }
   if (earlyAction === "yangzhai-compass-reset") {
+    guardYangzhaiCompassControlEvent(event);
     resetYangzhaiCompassOffset();
     return;
   }
