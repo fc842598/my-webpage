@@ -4152,7 +4152,7 @@ const WENTIAN_I18N_EN_EXTRA = {
   "阳": "Yang",
   "阴": "Yin",
   "阳宅地脉": "Feng Shui",
-  "罗盘九宫，安位解读": "Compass layout",
+  "方位九宫，安位解读": "Direction layout",
   "六壬法": "Liuren",
   "农历月日时，即刻起课": "Lunar time casting",
   "更多功能": "More Tools",
@@ -4628,8 +4628,11 @@ const WENTIAN_I18N_EN_EXTRA = {
   "九宫安位": "Nine-Palace Placement",
   "逐格点击加号安位": "Tap each plus to place items",
   "罗盘方位": "Compass",
+  "方位校准": "Direction",
+  "东南西北": "E S W N",
   "点此安位": "Tap to place",
   "放大罗盘": "Zoom Compass",
+  "放大方位": "Zoom Directions",
   "解读分析": "Analyze",
   "长幼归位": "Auto Align",
   "长幼有序,天地归位": "Aligned",
@@ -4683,7 +4686,7 @@ const WENTIAN_I18N_EN_EXTRA = {
   "地脉道怎么用": "How It Works",
   "先定方位，再放人和空间；结果会对应海厦《地脉道》64卦。": "Set directions, then place people and spaces; results map to 64 hexagrams.",
   "站在户型中心": "Stand at the floor-plan center",
-  "先确定房屋中心点，再按手机罗盘或户型图标出八方。": "Find the home center, then mark eight directions by compass or floor plan.",
+  "先确定房屋中心点，再按手机指南针或户型图标出八方。": "Find the home center, then mark eight directions by phone compass or floor plan.",
   "点击方位加号": "Tap direction plus",
   "把家人、厨房、厕所、客厅放入对应宫位。": "Place family members, kitchen, bathroom, and living room in matching palaces.",
   "一键归位": "Auto Align",
@@ -4703,7 +4706,7 @@ const WENTIAN_I18N_EN_EXTRA = {
   "核心只有三步": "Only Three Core Steps",
   "定位、安位、解读。页面里的加号就是每个宫位的入口。": "Locate, place, and read. Each plus sign opens that palace.",
   "定中宫": "Set Center",
-  "站在户型中心，以罗盘或户型图确认八方。": "Stand at the floor-plan center and confirm the eight directions.",
+  "站在户型中心，以手机指南针或户型图确认八方。": "Stand at the floor-plan center and confirm the eight directions.",
   "安人事": "Place People",
   "点方位加号，放入父母子女、厨房、厕所、客厅。": "Tap a direction plus, then place family members, kitchen, bathroom, or living room.",
   "看重点": "Read Focus",
@@ -9218,17 +9221,17 @@ function openYangzhaiLuopanZoom() {
   phone.querySelector("[data-yangzhai-luopan-zoom]")?.remove();
   phone.insertAdjacentHTML("beforeend", `
     <div class="yangzhai-luopan-zoom" data-yangzhai-luopan-zoom style="--yangzhai-heading:0deg;--yangzhai-luopan-rotation:0deg;">
-      <button class="yangzhai-luopan-zoom-bg" type="button" data-action="yangzhai-luopan-close" aria-label="关闭罗盘大图"></button>
-      <img class="yangzhai-luopan-zoom-img" src="../images/wentian-prototype-assets/yangzhai-luopan.png" alt="罗盘大图">
+      <div class="yangzhai-luopan-zoom-halo" aria-hidden="true"></div>
+      ${yangzhaiDirectionCross("yangzhai-zoom-cross", 39, 152, 312, false, "zoom")}
       <div class="yangzhai-luopan-bearing" aria-hidden="true"><span></span></div>
       <button class="yangzhai-compass-start" type="button" data-action="yangzhai-compass-start">开启手机指南针</button>
-      <div class="yangzhai-compass-status" data-yangzhai-compass-status aria-live="polite">红箭头固定为手机上边，开启后盘面跟随方向</div>
-      <div class="yangzhai-compass-tools" aria-label="罗盘校准">
+      <div class="yangzhai-compass-status" data-yangzhai-compass-status aria-live="polite">十字盘不遮挡加号；开启后随手机方向校准</div>
+      <div class="yangzhai-compass-tools" aria-label="方位校准">
         <button type="button" data-action="yangzhai-compass-adjust" data-delta="-10">左调10°</button>
         <button type="button" data-action="yangzhai-compass-reset">归零</button>
         <button type="button" data-action="yangzhai-compass-adjust" data-delta="10">右调10°</button>
       </div>
-      <button class="yangzhai-luopan-zoom-close" type="button" data-action="yangzhai-luopan-close" aria-label="关闭罗盘大图">×</button>
+      <button class="yangzhai-luopan-zoom-close" type="button" data-action="yangzhai-luopan-close" aria-label="关闭方位十字">×</button>
     </div>
   `);
 }
@@ -9280,7 +9283,7 @@ async function startYangzhaiCompass() {
     yangzhaiCompassHandler = handleYangzhaiCompassOrientation;
     window.addEventListener("deviceorientationabsolute", yangzhaiCompassHandler, true);
     window.addEventListener("deviceorientation", yangzhaiCompassHandler, true);
-    setYangzhaiCompassStatus("正在读取方向；红箭头固定，盘面会转到当前朝向", "active");
+    setYangzhaiCompassStatus("正在读取方向；红箭头固定，十字盘会转到当前朝向", "active");
   } catch (_) {
     setYangzhaiCompassStatus("指南针启动失败，请用 HTTPS 手机浏览器打开", "warn");
   }
@@ -9434,6 +9437,21 @@ function getYangzhaiGridMetrics(compact = false) {
   };
 }
 
+function yangzhaiDirectionCross(id, x, y, size, compact = false, variant = "inline") {
+  return `
+    <div class="yangzhai-direction-cross is-${variant}${compact ? " is-compact" : ""}" data-node-id="${id}" style="left:${x}px;top:${y}px;width:${size}px;height:${size}px;">
+      <span class="yz-cross-ring"></span>
+      <span class="yz-cross-line yz-cross-line-ns"></span>
+      <span class="yz-cross-line yz-cross-line-ew"></span>
+      <span class="yz-cross-dot"></span>
+      <span class="yz-dir yz-n">北</span>
+      <span class="yz-dir yz-e">东</span>
+      <span class="yz-dir yz-s">南</span>
+      <span class="yz-dir yz-w">西</span>
+    </div>
+  `;
+}
+
 function yangzhaiCompassGrid(id, compact = false) {
   const metrics = getYangzhaiGridMetrics(compact);
   return YANGZHAI_PALACES.map((palace, index) => {
@@ -9442,13 +9460,15 @@ function yangzhaiCompassGrid(id, compact = false) {
     const x = metrics.x + col * metrics.cellW;
     const y = metrics.y + row * metrics.cellH;
     if (palace.key === "center") {
+      const crossSize = compact ? 64 : 88;
+      const crossX = x + (metrics.cellW - crossSize) / 2;
+      const crossY = y + (compact ? 18 : 22);
       return `
         ${figBox(`${id}-center-clear`, x, y, metrics.cellW, metrics.cellH, "", "border:1px solid #eadbc6;background:#fffdf7;")}
-        ${figText(`${id}-center-title`, "罗盘方位", x, y + (compact ? 14 : 28), metrics.cellW, compact ? 14 : 16, "#241811", 700, "center", "font-family:'Noto Serif SC','Songti SC',serif;")}
-        ${figImage(`${id}-luopan`, "../images/wentian-prototype-assets/yangzhai-luopan.png", x + (compact ? 31 : 16), y + (compact ? 38 : 66), compact ? 54 : 84, compact ? 54 : 84, "object-fit:contain;border-radius:50%;background:transparent;")}
-        ${compact ? "" : `${figBox(`${id}-zoom-pill`, x + 21, y + 124, 74, 28, "", "border:1px solid #ead2a9;border-radius:14px;background:#fff2df;")}
-        ${figText(`${id}-zoom-text`, "放大罗盘", x + 21, y + 131, 74, 11, "#8a5a22", 700, "center", "line-height:1.15;")}`}
-        ${figButton(`${id}-luopan-hit`, x, y + (compact ? 24 : 28), metrics.cellW, compact ? 70 : 128, 'data-action="yangzhai-luopan-open" aria-label="放大罗盘"', "", "cursor:zoom-in;")}
+        ${yangzhaiDirectionCross(`${id}-center-cross`, crossX, crossY, crossSize, compact)}
+        ${compact ? "" : `${figBox(`${id}-zoom-pill`, x + 21, y + 116, 74, 28, "", "border:1px solid #ead2a9;border-radius:14px;background:#fff2df;")}
+        ${figText(`${id}-zoom-text`, "放大方位", x + 21, y + 123, 74, 11, "#8a5a22", 700, "center", "line-height:1.15;")}`}
+        ${figButton(`${id}-luopan-hit`, x, y + (compact ? 18 : 16), metrics.cellW, compact ? 82 : metrics.cellH, 'data-action="yangzhai-luopan-open" aria-label="放大方位"', "", "z-index:85;cursor:zoom-in;")}
       `;
     }
     const items = getYangzhaiPlacementItems(palace.key);
@@ -9457,7 +9477,7 @@ function yangzhaiCompassGrid(id, compact = false) {
       ${figText(`${id}-dir-${index}`, `(${palace.dir})`, x + (compact ? 42 : 43), y + (compact ? 12 : 15), 62, compact ? 9 : 10, "#2d241c", 700, "left", "white-space:nowrap;font-family:'Noto Sans SC','Microsoft YaHei',sans-serif;")}
       ${figText(`${id}-role-${index}`, palace.role, x + 13, y + (compact ? 34 : 39), 84, compact ? 10 : 12, "#55493d", 500, "left", "white-space:nowrap;font-family:'Noto Sans SC','Microsoft YaHei',sans-serif;")}
       ${yangzhaiRoomAvatar(`${id}-room-${index}`, x, y, items, compact)}
-      ${figButton(`${id}-cell-hit-${index}`, x, y, metrics.cellW, metrics.cellH, `data-action="yangzhai-open" data-palace="${palace.key}"`)}
+      ${figButton(`${id}-cell-hit-${index}`, x, y, metrics.cellW, metrics.cellH, `data-action="yangzhai-open" data-palace="${palace.key}"`, "", "z-index:85;")}
     `;
   }).join("");
 }
@@ -9586,7 +9606,7 @@ function sourceYangzhaiResultScreen() {
 
 function sourceYangzhaiTutorialScreen() {
   const steps = [
-    ["01", "定中宫", "站在户型中心，以罗盘或户型图确认八方。"],
+    ["01", "定中宫", "站在户型中心，以手机指南针或户型图确认八方。"],
     ["02", "安人事", "点方位加号，放入父母子女、厨房、厕所、客厅。"],
     ["03", "看重点", "系统按卦位生成摘要，先读偏旺、相合、需调整。"],
     ["04", "可重排", "不确定时可清空、长幼归位，再重新解读。"]
@@ -9598,7 +9618,7 @@ function sourceYangzhaiTutorialScreen() {
     ${figText("yz45-sub", "先定中宫，再分八方，最后把家人与空间放入宫位。", 24, 164, 318, 13, "#817568", 700, "left", "line-height:1.55;")}
     ${figBox("yz45-intro", 24, 228, 342, 136, "", "border:1px solid #ead8b8;border-radius:22px;background:#fffdf8;box-shadow:0 12px 28px rgba(70,45,25,.07);")}
     ${figBox("yz45-intro-disc", 46, 254, 86, 86, "", "border:1px solid #dcc39c;border-radius:43px;background:#f4e4c6;")}
-    ${figImage("yz45-intro-luopan", "../images/wentian-prototype-assets/yangzhai-luopan.png", 67, 275, 44, 44, "object-fit:contain;border-radius:50%;")}
+    ${yangzhaiDirectionCross("yz45-intro-cross", 62, 270, 54, true)}
     ${figText("yz45-intro-title", "核心只有三步", 150, 262, 168, 20, "#201812", 900, "left", "font-family:'Noto Serif SC','Songti SC',serif;")}
     ${figText("yz45-intro-copy", "定位、安位、解读。页面里的加号就是每个宫位的入口。", 150, 300, 170, 13, "#6f6254", 700, "left", "line-height:1.55;")}
     ${steps.map(([num, title, desc], index) => {
@@ -10914,7 +10934,7 @@ function sourceDashboardHomeScreen() {
     ${figBox("source-1-master-go", 278, 356, 72, 38, "", "border-radius:19px;background:#c08a2c;")}
     ${figText("source-1-master-go-text", "去问他", 286, 367, 56, 13, "#fff", 700, "center")}
 
-    ${[["合盘分析", "命理相合，缘分几许", "01-feature-hepan.png", "hepan", 438], ["六爻占卜", "铜钱起卦，纳甲解卦", "01-feature-gua.png", "screen-17", 547], ["阳宅地脉", "罗盘九宫，安位解读", "01-feature-gua.png", "screen-42", 656], ["六壬法", "农历月日时，即刻起课", "01-feature-gua.png", "screen-46", 765]].map(([title, sub, icon, route, y], index) => `
+    ${[["合盘分析", "命理相合，缘分几许", "01-feature-hepan.png", "hepan", 438], ["六爻占卜", "铜钱起卦，纳甲解卦", "01-feature-gua.png", "screen-17", 547], ["阳宅地脉", "方位九宫，安位解读", "01-feature-gua.png", "screen-42", 656], ["六壬法", "农历月日时，即刻起课", "01-feature-gua.png", "screen-46", 765]].map(([title, sub, icon, route, y], index) => `
       ${figBox(`source-1-feature-${index}`, 18, y, 354, 96, "converted-card", "border-radius:14px;box-shadow:0 8px 20px rgba(70,45,25,.1);background:#fffdfb;")}
       ${figText(`source-1-feature-title-${index}`, title, 36, y + 30, 150, 21, "#25221f", 800)}
       ${figText(`source-1-feature-sub-${index}`, sub, 36, y + 58, 190, 14, "#969087", 500)}
