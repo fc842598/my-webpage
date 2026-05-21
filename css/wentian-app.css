@@ -616,10 +616,10 @@ html[lang="en"] [data-node-id="wt15-seal-text"] {
 }
 
 .yangzhai-direction-cross.is-zoom {
-  opacity: 0.76;
+  opacity: 0.56;
   transform: rotate(var(--yangzhai-luopan-rotation, 0deg));
   transform-origin: center;
-  transition: transform 0.18s ease-out;
+  transition: transform 0.24s ease-out;
 }
 
 .yangzhai-direction-cross.is-zoom .yz-dir {
@@ -627,6 +627,21 @@ html[lang="en"] [data-node-id="wt15-seal-text"] {
   height: 24px;
   font-size: 18px;
   line-height: 24px;
+}
+
+.yangzhai-direction-cross.is-zoom .yz-cross-line {
+  background: linear-gradient(90deg, rgba(178, 145, 91, 0), rgba(178, 145, 91, 0.44), rgba(178, 145, 91, 0));
+}
+
+.yangzhai-direction-cross.is-zoom .yz-cross-line-ns {
+  background: linear-gradient(180deg, rgba(178, 145, 91, 0), rgba(178, 145, 91, 0.44), rgba(178, 145, 91, 0));
+}
+
+.yangzhai-direction-cross.is-zoom .yz-cross-dot {
+  width: 7%;
+  height: 7%;
+  background: rgba(178, 145, 91, 0.42);
+  box-shadow: 0 0 0 4px rgba(255, 250, 243, 0.6);
 }
 
 .yangzhai-direction-cross.is-zoom .yz-n,
@@ -651,57 +666,7 @@ html[lang="en"] [data-node-id="wt15-seal-text"] {
   width: 542px;
   height: 542px;
   border-radius: 50%;
-  background: rgba(224, 202, 166, 0.28);
-}
-
-.yangzhai-luopan-bearing {
-  position: absolute;
-  left: 39px;
-  top: 152px;
-  width: 312px;
-  height: 312px;
-  border-radius: 50%;
-  pointer-events: none;
-}
-
-.yangzhai-luopan-bearing::before {
-  position: absolute;
-  left: 50%;
-  top: 22px;
-  width: 4px;
-  height: 126px;
-  border-radius: 999px;
-  background: #d72424;
-  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.82), 0 4px 12px rgba(124, 0, 0, 0.28);
-  content: "";
-  transform: translateX(-50%);
-}
-
-.yangzhai-luopan-bearing::after {
-  position: absolute;
-  left: 50%;
-  top: 12px;
-  width: 0;
-  height: 0;
-  border-right: 9px solid transparent;
-  border-bottom: 18px solid #d72424;
-  border-left: 9px solid transparent;
-  content: "";
-  filter: drop-shadow(0 2px 4px rgba(124, 0, 0, 0.32));
-  transform: translateX(-50%);
-}
-
-.yangzhai-luopan-bearing span {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 16px;
-  height: 16px;
-  border: 3px solid #fff;
-  border-radius: 50%;
-  background: #d72424;
-  box-shadow: 0 3px 9px rgba(124, 0, 0, 0.28);
-  transform: translate(-50%, -50%);
+  background: rgba(224, 202, 166, 0.14);
 }
 
 .yangzhai-compass-start {
