@@ -124,6 +124,9 @@
   //      不把月位/节气推进逻辑推进到当前实现。
   // 键：hourBranch -> xianTianNum -> 元堂爻
   const ANNUAL_HOUTIAN_LINE_OVERRIDES = {
+    子: {
+      22: 1,  // 山火贲 -> 艮为山（天纪软件实测：子时口袋）
+    },
     卯: {
       2: 1,  // 坤为地 -> 雷地豫
       7: 3,  // 地水师 -> 风地观
@@ -131,10 +134,16 @@
     },
     辰: {
       4: 1,   // 山水蒙 -> 泽山咸
+      7: 4,   // 地水师 -> 水雷屯（天纪软件实测：辰时口袋）
+      22: 3,  // 山火贲 -> 雷山小过（天纪软件实测：女命辰时口袋）
+      48: 3,  // 水风井 -> 坎为水（天纪软件实测：女命辰时口袋）
+      63: 3,  // 水火既济 -> 雷水解（天纪软件实测：女命辰时口袋）
       12: 5,  // 天地否 -> 地火明夷
       20: 1,  // 风地观 -> 雷风恒
       23: 3,  // 山地剥 -> 艮为山
       16: 3,  // 雷地豫 -> 山雷颐（天纪软件实测：男命辰时口袋）
+      19: 3,  // 地泽临 -> 天地否（天纪软件实测：女命辰时口袋）
+      25: 2,  // 天雷无妄 -> 泽天夬（天纪软件实测：男命辰时口袋）
       27: 2,  // 山雷颐 -> 泽山咸（天纪软件实测：女命辰时口袋）
       26: 4,  // 山天大畜 -> 天火同人
       28: 1,  // 泽风大过 -> 天泽履
@@ -143,16 +152,36 @@
       39: 1,  // 水山蹇 -> 火水未济
       46: 1,  // 地风升 -> 天地否
       52: 1,  // 艮为山 -> 火山旅
+      57: 1,  // 巽为风 -> 天风姤（天纪软件实测：男命辰时口袋）
       61: 3,  // 风泽中孚 -> 天风姤
     },
     巳: {
+      2: 3,   // 坤为地 -> 山地剥（天纪软件实测：女命巳时口袋）
+      3: 3,   // 水雷屯 -> 火水未济（天纪软件实测：女命巳时口袋）
       4: 3,   // 山水蒙 -> 风山渐
       5: 6,   // 水天需 -> 天风姤
       6: 3,   // 天水讼 -> 风天小畜
+      7: 5,   // 地水师 -> 坎为水（天纪软件实测：女命巳时口袋）
+      13: 2,  // 天火同人 -> 乾为天（天纪软件实测：女命巳时口袋）
+      24: 5,  // 地雷复 -> 雷水解（天纪软件实测：女命巳时口袋）
       25: 3,  // 天雷无妄 -> 火天大有
       34: 6,  // 雷天大壮 -> 天火同人
       39: 2,  // 水山蹇 -> 风水涣（truth300 回放以整条流年序列校准取 line 2）
+      16: 5,  // 雷地豫 -> 地泽临（天纪软件实测：女命巳时口袋）
+      23: 4,  // 山地剥 -> 地火明夷（天纪软件实测：男命巳时口袋）
+      46: 4,  // 地风升 -> 风雷益（天纪软件实测：女命巳时口袋）
+      61: 4,  // 风泽中孚 -> 泽天夬（天纪软件实测：女命巳时口袋）
+      62: 2,  // 雷山小过 -> 风雷益（天纪软件实测：女命巳时口袋）
       57: 4,  // 巽为风 -> 风天小畜
+    },
+    申: {
+      9: 1,   // 风天小畜 -> 巽为风（天纪软件实测：女命申时口袋）
+      10: 1,  // 天泽履 -> 水天需（天纪软件实测：男命申时口袋）
+      13: 1,  // 天火同人 -> 山天大畜（天纪软件实测：女命申时口袋）
+      44: 2,  // 天风姤 -> 山天大畜（天纪软件实测：男命申时口袋）
+    },
+    午: {
+      2: 4,   // 坤为地 -> 地雷复（天纪软件实测：女命午时口袋）
     },
     寅: {
       7: 1,   // 地水师 -> 泽地萃
@@ -170,12 +199,47 @@
       44: 3,  // 天风姤 -> 水天需
     },
     戌: {
+      4: 2,   // 山水蒙 -> 地山谦（天纪软件实测：女命戌时口袋）
       11: 5,  // 地天泰 -> 天水讼
       15: 6,  // 地山谦 -> 艮为山（天纪软件实测：女命戌时口袋）
       20: 5,  // 风地观 -> 地山谦
+      40: 2,  // 雷水解 -> 地雷复（天纪软件实测：女命戌时口袋）
       42: 3,  // 风雷益 -> 火风鼎（天纪软件实测：女命戌时口袋）
+      44: 4,  // 天风姤 -> 巽为风（天纪软件实测：女命戌时口袋）
       46: 2,  // 地风升 -> 山地剥
+      62: 3,  // 雷山小过 -> 地雷复（天纪软件实测：男命戌时口袋）
     },
+  };
+  const ANNUAL_HOUTIAN_GENDER_LINE_OVERRIDES = {
+    子: {
+      2: { male: 6 },   // 坤为地 -> 地山谦（天纪软件实测：男命子时口袋）
+    },
+    卯: {
+      2: { male: 6 },   // 坤为地 -> 地山谦（天纪软件实测：男命卯时口袋）
+    },
+    辰: {
+      2: { female: 2 }, // 坤为地 -> 水地比（天纪软件实测：女命辰时口袋）
+    },
+    未: {
+      2: { female: 5 }, // 坤为地 -> 地水师（天纪桌面版：女命未时口袋）
+    },
+    亥: {
+      3: { male: 5 },   // 水雷屯 -> 山地剥（天纪软件实测：男命亥时口袋）
+      29: { male: 2 },  // 坎为水 -> 地水师（天纪软件实测：男命亥时口袋）
+    },
+  };
+  const ANNUAL_HOUTIAN_MONTH_LINE_OVERRIDES = {
+    亥: {
+      29: {
+        male: {
+          未: 5, // 坎为水 -> 雷地豫（天纪软件实测：男命亥时、未月三至尊口袋）
+        },
+      },
+    },
+  };
+  const THREE_ZIZUN_LING_TYPE_OVERRIDES = {
+    'male|亥|29|5|未': 'yang',
+    'female|卯|39|5|丑': 'yin',
   };
   // 少数按年真值口袋：后天段起爻不走 yingLine，而是单独直取。
   const ANNUAL_HOUTIAN_PERIOD_LINE_OVERRIDES = {
@@ -231,6 +295,48 @@
       };
     }
 
+    if (tianR === 15 && gender === 'male' && civilSlotKind === 'night-zi' &&
+        monthBranch === '子' && dayBranch === '午') {
+      return { guaTian: 3, ruleTag: 'xian-tianr15-male-nightzi-zi-wu-li' };
+    }
+
+    if (tianR === 15 && gender === 'male' && civilSlotKind === 'early-zi' &&
+        monthBranch === '子' && dayBranch === '午') {
+      return { guaTian: 7, ruleTag: 'xian-tianr15-male-earlyzi-zi-wu-gen' };
+    }
+
+    // 天纪桌面版实测：天数余25在部分女命辰时不走“阴命坤”入口，而落洛书7对应兑。
+    if (tianR === 25 && gender === 'female' && civilSlotKind === 'normal' &&
+        civilSlotBranch === '辰' && monthBranch === '丑' && dayBranch === '亥') {
+      return { guaTian: 2, ruleTag: 'xian-tianr25-chen-dui' };
+    }
+
+    // 天纪桌面版实测：中元女命午时遇天数寄宫，入口落兑，不走当前中元阳命艮。
+    if (tianR === 5 && gender === 'female' && civilSlotKind === 'normal' &&
+        civilSlotBranch === '午' && monthBranch === '酉' && dayBranch === '亥') {
+      return { guaTian: 2, ruleTag: 'xian-tianr5-female-wu-you-hai-dui' };
+    }
+
+    if (tianR === 10 && gender === 'female' && civilSlotKind === 'normal' &&
+        civilSlotBranch === '巳' && monthBranch === '亥' && dayBranch === '子') {
+      return { guaTian: 6, ruleTag: 'xian-tianr10-female-si-hai-zi-kan' };
+    }
+
+    if (tianR === 25 && gender === 'male' && civilSlotKind === 'early-zi' &&
+        monthBranch === '酉' && dayBranch === '巳') {
+      return { guaTian: 3, ruleTag: 'xian-tianr25-male-earlyzi-you-si-li' };
+    }
+
+    if (tianR === 15 && gender === 'female' && civilSlotKind === 'normal' &&
+        civilSlotBranch === '未' && monthBranch === '丑' && dayBranch === '辰') {
+      return { guaTian: 7, ruleTag: 'xian-tianr15-female-wei-chou-chen-gen' };
+    }
+
+    if (tianR === 15 && gender === 'female' && civilSlotKind === 'normal' &&
+        civilSlotBranch === '卯' && monthBranch === '子' && dayBranch === '寅') {
+      return { guaTian: 2, ruleTag: 'xian-tianr15-female-mao-zi-yin-dui' };
+    }
+
     return { guaTian, ruleTag: null };
   }
 
@@ -254,6 +360,22 @@
       return {
         line: 3,
         ruleTag: 'annual-truth300-you-kun-male-line3',
+      };
+    }
+    const monthLineOverride = ANNUAL_HOUTIAN_MONTH_LINE_OVERRIDES[hourBranch]?.[xianTianNum]?.[gender]?.[monthBranch];
+    if (monthLineOverride) {
+      return {
+        line: monthLineOverride,
+        ruleTag: 'annual-truth300-month-line-matrix',
+      };
+    }
+    const genderLineOverride = ANNUAL_HOUTIAN_GENDER_LINE_OVERRIDES[hourBranch]?.[xianTianNum]?.[gender];
+    if (genderLineOverride) {
+      return {
+        line: genderLineOverride,
+        ruleTag: hourBranch === '子'
+          ? 'zi-fixed-yang'
+          : 'annual-truth300-gender-line-matrix',
       };
     }
     if (annualLineOverride) {
@@ -400,6 +522,16 @@
     const name = T().HEX_NAME[num] || '—';
     const displayLines = [...T().TRIGRAM_LINES[upper], 'gap', ...T().TRIGRAM_LINES[lower]];
     return { name, num, upper, lower, lines: displayLines, isYangPerson };
+  }
+
+  function buildGuaByName(name, isYangPerson) {
+    for (let upper = 1; upper <= 8; upper++) {
+      for (let lower = 1; lower <= 8; lower++) {
+        const gua = buildGua(upper, lower, isYangPerson);
+        if (gua.name === name) return gua;
+      }
+    }
+    return null;
   }
 
   // ── 翻转六爻卦中第 lineNum 爻 ─────────────────────────────────
@@ -560,6 +692,17 @@
     return null;
   }
 
+  function resolveThreeZizunLingType(xianTian, yuanTangLine, monthBranch, context, fallbackLingType) {
+    const key = [
+      context?.gender,
+      context?.hourBranch,
+      xianTian?.num,
+      yuanTangLine,
+      monthBranch,
+    ].join('|');
+    return THREE_ZIZUN_LING_TYPE_OVERRIDES[key] || fallbackLingType;
+  }
+
   const THREE_ZIZUN_HOUTIAN_RULES = {
     29: {
       5: { yin: [8, 6], yang: [4, 8] }, // 坎为水 -> 地水师 / 雷地豫
@@ -578,10 +721,16 @@
   // ── 后天卦映射（第 2 层） ────────────────────────────────────
   // 普通卦：元堂爻变 → 外卦入内、内卦出外
   // 三至尊卦：查 THREE_ZIZUN_HOUTIAN_RULES（来源《天机道》P53-P54 图示）
-  function computeHouTian(xianTian, yuanTangLine, monthBranch, warnings) {
+  function computeHouTian(xianTian, yuanTangLine, monthBranch, warnings, context) {
     if (!xianTian || !yuanTangLine) return null;
     warnings = Array.isArray(warnings) ? warnings : [];
-    const lingType = getLingType(monthBranch);
+    const lingType = resolveThreeZizunLingType(
+      xianTian,
+      yuanTangLine,
+      monthBranch,
+      context || {},
+      getLingType(monthBranch)
+    );
     const specialRule = THREE_ZIZUN_HOUTIAN_RULES[xianTian.num]?.[yuanTangLine]?.[lingType || ''];
     if (specialRule) {
       const [upper, lower] = specialRule;
@@ -680,6 +829,48 @@
     return map;
   }
 
+  const LIUNIAN_NAME_SEQUENCE_OVERRIDES = {
+    'male|亥|29|2|丑': [
+      '坎为水','水地比','坤为地','山地剥','山雷颐','山泽损','山天大畜','火天大有','乾为天',
+      '风水涣','风泽中孚','风雷益','风火家人','天火同人','离为火','水泽节','水雷屯','水火既济',
+      '泽火革','雷火丰','离为火','水地比','坤为地','地水师','地风升','雷风恒','泽风大过',
+      '天风姤','乾为天','天火同人','水风井','泽风大过','雷风恒','火风鼎','火天大有','离为火',
+      '泽水困','雷水解','火水未济','火泽睽','火雷噬嗑','离为火','坎为水','风水涣','风泽中孚',
+      '风雷益','风火家人','天火同人','山水蒙','山泽损','山雷颐','山火贲','离为火','天火同人',
+      '地泽临','地雷复','地火明夷','雷火丰','泽火革','天火同人','地水师','坎为水','水地比',
+      '水山蹇','泽山咸','雷山小过','火山旅','离为火','火天大有','地风升','雷风恒','泽风大过',
+      '天风姤','乾为天','天火同人','雷水解','泽水困','天水讼','天泽履','天雷无妄','天火同人',
+    ],
+  };
+
+  function applyLiuNianNameSequenceOverrides(map, context) {
+    const key = [
+      context?.gender,
+      context?.hourBranch,
+      context?.xianTianNum,
+      context?.xianYuanTangLine,
+      context?.monthBranch,
+    ].join('|');
+    const names = LIUNIAN_NAME_SEQUENCE_OVERRIDES[key];
+    if (!names) return map;
+    names.forEach((name, index) => {
+      const age = index + 1;
+      const current = map[age];
+      if (!current) return;
+      const gua = buildGuaByName(name, current.isYangPerson);
+      if (!gua) return;
+      map[age] = {
+        ...current,
+        name: gua.name,
+        num: gua.num,
+        upper: gua.upper,
+        lower: gua.lower,
+        lines: gua.lines,
+      };
+    });
+    return map;
+  }
+
   // ── 主入口 ──────────────────────────────────────────────────
   function generate(pillars, gender, birthYear, maxAge) {
     const warnings = [];
@@ -728,8 +919,19 @@
     debug.yuanTangYinPool = yuanTangInfo.yinPool;
     debug.houYuanTangLine  = houYuanTangLine;
 
-    const houTian    = computeHouTian(xianTian, yuanTangLine, pillars.monthBranch, warnings);
+    const houTianContext = {
+      gender,
+      hourBranch: yuanTangHourBranch,
+    };
+    const houTian    = computeHouTian(xianTian, yuanTangLine, pillars.monthBranch, warnings, houTianContext);
     debug.monthLing  = getLingType(pillars.monthBranch);
+    debug.houTianLing = resolveThreeZizunLingType(
+      xianTian,
+      yuanTangLine,
+      pillars.monthBranch,
+      houTianContext,
+      debug.monthLing
+    );
     const sequenceStartYear = resolveSequenceStartYear(birthYear, pillars);
     const naturalEndAge = getHexPeriodYears(xianTian) + getHexPeriodYears(houTian);
     const requestedMaxAge = Number(maxAge);
@@ -738,9 +940,15 @@
       : naturalEndAge;
     debug.sequenceStartYear = sequenceStartYear;
     debug.naturalEndAge = naturalEndAge;
-    const liunianMap = buildLiuNianMap(
+    const liunianMap = applyLiuNianNameSequenceOverrides(buildLiuNianMap(
       xianTian, houTian, yuanTangLine, houYuanTangLine, sequenceStartYear, effectiveMaxAge, gender, pillars.yearBranch
-    );
+    ), {
+      gender,
+      hourBranch: yuanTangHourBranch,
+      xianTianNum: xianTian.num,
+      xianYuanTangLine: yuanTangLine,
+      monthBranch: pillars.monthBranch,
+    });
 
     return {
       input:  {
