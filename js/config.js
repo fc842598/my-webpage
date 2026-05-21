@@ -32,9 +32,8 @@ const SITE_CONFIG = {
   // 迁移 Vercel 后只需要替换这一处，例如：https://xxx.vercel.app
   aiBackendBase: "https://ai-piming-backend.vercel.app",
 
-  // ── 六爻审题方式 ─────────────────────────────────────────
-  // local：前端本地按“一事一占”判断，国内直连不依赖 Vercel/OpenAI
-  // remote：走 AI 后端审题，由后台提示词调用大模型判断
+  // ── 六爻审题 ───────────────────────────────────────────
+  // 固定走 AI 后端审题，由后台提示词调用大模型判断
   liuyaoQuestionGateMode: "remote",
 };
 

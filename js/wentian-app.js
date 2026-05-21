@@ -4054,7 +4054,7 @@ const WENTIAN_I18N_EN_EXTRA = {
   "一句话只问一件具体事情，再起卦。": "Ask one specific matter in one sentence before casting.",
   "问题还不够清楚，暂不起卦。": "The question is not clear enough. Casting is blocked.",
   "审题通过，可以起卦。": "Question approved. You may cast.",
-  "审题服务暂时没接上，已改用本地规则判断。": "Remote question check is unavailable, so local rules are used.",
+  "审题服务暂时没接上，请稍后再试。": "Remote question check is unavailable. Please try again later.",
   "请稍后再试。": "Try again shortly.",
   "起卦方式": "Casting Method",
   "在线投币": "Coin Cast",
@@ -7683,125 +7683,6 @@ function parseLiuyaoGateJson(text) {
   }
 }
 
-function shouldUseRemoteLiuyaoQuestionGate() {
-  return window.SITE_CONFIG?.liuyaoQuestionGateMode === "remote";
-}
-
-function firstLiuyaoMatch(text, patterns) {
-  for (const pattern of patterns) {
-    const match = text.match(pattern);
-    if (match) return match[1] || match[0];
-  }
-  return "";
-}
-
-function reviewLiuyaoQuestionLocally(question) {
-  const text = normalizeLiuyaoQuestion(question);
-  const compact = text
-    .replace(/\s+/g, "")
-    .replace(/(?:那)?(?:要|该)?怎么问[？?。!！]*$/g, "");
-  if (!compact) {
-    return {
-      allowed: false,
-      reason: "请先写清楚要问的一件事。",
-      suggestion: "一句话只问一件具体事情，再起卦。",
-      labels: ["一事一占"],
-      retryable: true,
-    };
-  }
-  if (compact === LIUYAO_SAMPLE_QUESTION) {
-    return {
-      allowed: false,
-      reason: "样例问题不能直接起卦。",
-      suggestion: "请改成你自己当前要问的一件具体事。",
-      labels: ["样例问题"],
-      retryable: true,
-    };
-  }
-  if (compact.length < 6 || /^(测|测试|试试|随便|玩玩|娱乐|看看)$/.test(compact)) {
-    return {
-      allowed: false,
-      reason: "问题太短或像测试，不起卦。",
-      suggestion: "补上对象、时间和想看的结果。",
-      labels: ["问题过短"],
-      retryable: true,
-    };
-  }
-  if (/运势怎么样|整体运势|随便看看|帮我算算|什么都问|都可以/.test(compact)) {
-    return {
-      allowed: false,
-      reason: "问题太泛，暂不起卦。",
-      suggestion: "改成一件具体事，例如某次考试、某个项目或某段关系。",
-      labels: ["问题过泛"],
-      retryable: true,
-    };
-  }
-  const hasQuestionIntent = /(吗|么|能不能|能否|是否|会不会|可不可以|要不要|该不该|适不适合|有没有)/.test(compact);
-  const businessObject = firstLiuyaoMatch(compact, [
-    /((?:我这个|我的|这个|该)?(?:网站|项目|产品|店铺|公司|创业|生意|账号|课程|服务|App|APP|app|小程序|自媒体|直播间))/,
-  ]);
-  const businessTime = firstLiuyaoMatch(compact, [
-    /(未来一年|接下来一年|一年内|未来\d{1,2}个?月|接下来\d{1,2}个?月|今年|明年|下半年|上半年|近期|现在|当前)/,
-  ]);
-  const businessOutcome = firstLiuyaoMatch(compact, [
-    /(做成功|做起来|做成|成功|赚到钱|赚钱|盈利|营收|变现|回本|起量|卖得动|成交)/,
-  ]);
-  const multiObjectHint = /同时|另外|还有|顺便|以及|或者.*还是|和.*都/.test(compact);
-  if (businessObject && businessOutcome && hasQuestionIntent && !multiObjectHint) {
-    const labels = [`对象（${businessObject}）`, `结果（${businessOutcome}）`];
-    if (businessTime) labels.splice(1, 0, `时间（${businessTime}）`);
-    return {
-      allowed: true,
-      reason: `问题具体到${labels.join("、")}，符合一事一占原则。`,
-      suggestion: "",
-      labels: ["本地审题", "项目成败"],
-    };
-  }
-  const decisionCount = (compact.match(/能不能|能否|是否|会不会|可不可以|要不要|该不该|适不适合|有没有/g) || []).length;
-  if (decisionCount > 1 || /同时|另外|还有|顺便|以及|和.*都|或者.*还是/.test(compact)) {
-    return {
-      allowed: false,
-      reason: "一个问题里像是放了多件事，暂不起卦。",
-      suggestion: "拆成一个对象、一个时间、一个结果来问。",
-      labels: ["多事同占"],
-      retryable: true,
-    };
-  }
-  const time = firstLiuyaoMatch(compact, [
-    /(今天|明天|后天|本周|这周|下周|本月|这个月|下月|今年|明年|未来一年|接下来一年|一年内|近期|现在|当前|月底|年底)/,
-    /(\d{1,2}月\d{0,2}日?|\d{4}年|\d{1,2}号)/,
-  ]);
-  const object = firstLiuyaoMatch(compact, [
-    /(?:，|,|。|；|;)([\u4e00-\u9fa5A-Za-z0-9]{1,12}(?:考试|面试|考编|考公|考证|项目|网站|产品|店铺|公司|工作|职位|offer|订单|合同|合作|生意|创业|投资|房子|车|婚事|感情|复合|手术|治疗))/,
-    /(摩托车考试|驾照考试|科目[一二三四]考试|公务员考试|编制考试|证书考试)/,
-    /([\u4e00-\u9fa5A-Za-z0-9]{1,12}(?:考试|面试|考编|考公|考证|项目|网站|产品|店铺|公司|工作|职位|offer|订单|合同|合作|生意|创业|投资|房子|车|婚事|感情|复合|手术|治疗))/,
-    /(摩托车|驾照|公职|事业|财运|婚恋|对象|客户|学校|公司|岗位|证书|网站|项目|产品|店铺|创业|生意|App|APP|app|小程序|自媒体|直播间)/,
-  ]);
-  const outcome = firstLiuyaoMatch(compact, [
-    /(能不能过|能否通过|是否通过|能过吗|能不能成|能否成功|会不会成|能不能上岸|能不能录取|能不能赚钱|能否盈利|会不会赚钱)/,
-    /(推进|通过|上岸|录取|成交|签约|复合|结婚|离职|入职|转岗|买入|卖出|获批|成功|做起来|赚钱|盈利|营收|变现|回本)/,
-  ]);
-  const labels = [];
-  if (object) labels.push(`对象（${object}）`);
-  if (time) labels.push(`时间（${time}）`);
-  if (outcome) labels.push(`结果（${outcome}）`);
-  if ((object && outcome) || (time && outcome && hasQuestionIntent) || (object && time && hasQuestionIntent)) {
-    return {
-      allowed: true,
-      reason: `问题具体到${labels.join("、") || "对象和结果"}，符合一事一占原则。`,
-      suggestion: "",
-      labels: ["本地审题", "一事一占"],
-    };
-  }
-  return {
-    allowed: false,
-    reason: "问题还不够具体，暂不起卦。",
-    suggestion: "建议补上对象、时间和想看的结果。",
-    labels: ["缺少要素"],
-    retryable: true,
-  };
-}
-
 async function reviewLiuyaoQuestionViaChat(question) {
   const data = await wentianPostJson("/api/ai/liuyao-question", {
     question,
@@ -7835,12 +7716,6 @@ async function ensureLiuyaoQuestionAllowed() {
     navigate("screen-17", false);
     return false;
   }
-  if (!shouldUseRemoteLiuyaoQuestionGate()) {
-    const localGate = setLiuyaoQuestionGateResult(reviewLiuyaoQuestionLocally(question));
-    navigate("screen-17", false);
-    return localGate.allowed;
-  }
-
   liuyaoQuestionGateLoading = true;
   navigate("screen-17", false);
   try {
@@ -7853,8 +7728,14 @@ async function ensureLiuyaoQuestionAllowed() {
     });
     return gate.allowed;
   } catch (_err) {
-    const localGate = setLiuyaoQuestionGateResult(reviewLiuyaoQuestionLocally(question));
-    return localGate.allowed;
+    setLiuyaoQuestionGateResult({
+      allowed: false,
+      reason: "审题服务暂时没接上，请稍后再试。",
+      suggestion: "",
+      labels: ["后台审题失败"],
+      retryable: true,
+    });
+    return false;
   } finally {
     liuyaoQuestionGateLoading = false;
     navigate("screen-17", false);
