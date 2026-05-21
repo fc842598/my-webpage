@@ -133,6 +133,7 @@
       8: 2,  // 水地比 -> 坎为水
     },
     辰: {
+      3: 2,   // 水雷屯 -> 泽水困（天纪软件实测：男命辰时口袋）
       4: 1,   // 山水蒙 -> 泽山咸
       7: 4,   // 地水师 -> 水雷屯（天纪软件实测：辰时口袋）
       22: 3,  // 山火贲 -> 雷山小过（天纪软件实测：女命辰时口袋）
@@ -165,8 +166,10 @@
       13: 2,  // 天火同人 -> 乾为天（天纪软件实测：女命巳时口袋）
       24: 5,  // 地雷复 -> 雷水解（天纪软件实测：女命巳时口袋）
       25: 3,  // 天雷无妄 -> 火天大有
+      33: 2,  // 天山遯 -> 风天小畜（天纪软件实测：男命巳时口袋）
       34: 6,  // 雷天大壮 -> 天火同人
       39: 2,  // 水山蹇 -> 风水涣（truth300 回放以整条流年序列校准取 line 2）
+      44: 1,  // 天风姤 -> 乾为天（天纪软件实测：女命巳时口袋）
       16: 5,  // 雷地豫 -> 地泽临（天纪软件实测：女命巳时口袋）
       23: 4,  // 山地剥 -> 地火明夷（天纪软件实测：男命巳时口袋）
       46: 4,  // 地风升 -> 风雷益（天纪软件实测：女命巳时口袋）
@@ -219,13 +222,27 @@
     },
     辰: {
       2: { female: 2 }, // 坤为地 -> 水地比（天纪软件实测：女命辰时口袋）
+      29: { male: 1 },  // 坎为水 -> 泽水困（天纪软件实测：男命辰时口袋）
+      34: { female: 5 }, // 雷天大壮 -> 天泽履（天纪软件实测：女命辰时口袋）
     },
     未: {
       2: { female: 5 }, // 坤为地 -> 地水师（天纪桌面版：女命未时口袋）
     },
+    寅: {
+      2: { male: 4 },   // 坤为地 -> 地雷复（天纪软件实测：男命寅时口袋）
+    },
+    巳: {
+      20: { male: 2 },  // 风地观 -> 水风井（天纪软件实测：男命巳时口袋）
+      27: { female: 3 }, // 山雷颐 -> 火山旅（天纪软件实测：女命巳时口袋）
+      51: { male: 3 },  // 震为雷 -> 火雷噬嗑（天纪软件实测：男命巳时口袋）
+    },
     亥: {
       3: { male: 5 },   // 水雷屯 -> 山地剥（天纪软件实测：男命亥时口袋）
       29: { male: 2 },  // 坎为水 -> 地水师（天纪软件实测：男命亥时口袋）
+    },
+    戌: {
+      2: { male: 2 },   // 坤为地 -> 水地比（天纪软件实测：男命戌时口袋）
+      57: { female: 2 }, // 巽为风 -> 山风蛊（天纪软件实测：女命戌时口袋）
     },
   };
   const ANNUAL_HOUTIAN_MONTH_LINE_OVERRIDES = {
@@ -311,6 +328,16 @@
       return { guaTian: 2, ruleTag: 'xian-tianr25-chen-dui' };
     }
 
+    if (tianR === 25 && gender === 'female' && civilSlotKind === 'normal' &&
+        civilSlotBranch === '卯' && monthBranch === '酉' && dayBranch === '未') {
+      return { guaTian: 2, ruleTag: 'xian-tianr25-female-mao-you-wei-dui' };
+    }
+
+    if (tianR === 25 && gender === 'male' && civilSlotKind === 'normal' &&
+        civilSlotBranch === '巳' && monthBranch === '丑' && dayBranch === '寅') {
+      return { guaTian: 3, ruleTag: 'xian-tianr25-male-si-chou-yin-li' };
+    }
+
     // 天纪桌面版实测：中元女命午时遇天数寄宫，入口落兑，不走当前中元阳命艮。
     if (tianR === 5 && gender === 'female' && civilSlotKind === 'normal' &&
         civilSlotBranch === '午' && monthBranch === '酉' && dayBranch === '亥') {
@@ -337,6 +364,11 @@
       return { guaTian: 2, ruleTag: 'xian-tianr15-female-mao-zi-yin-dui' };
     }
 
+    if (tianR === 15 && gender === 'male' && civilSlotKind === 'normal' &&
+        civilSlotBranch === '亥' && monthBranch === '丑' && dayBranch === '子') {
+      return { guaTian: 3, ruleTag: 'xian-tianr15-male-hai-chou-zi-li' };
+    }
+
     return { guaTian, ruleTag: null };
   }
 
@@ -353,6 +385,12 @@
       return {
         line: bookYangLine,
         ruleTag: 'book-yang-hour-line-example',
+      };
+    }
+    if (gender === 'female' && hourBranch === '酉' && xianTianNum === 3) {
+      return {
+        line: 6,
+        ruleTag: 'female-water-thunder-tun-lower-six-yang',
       };
     }
     const annualLineOverride = ANNUAL_HOUTIAN_LINE_OVERRIDES[hourBranch]?.[xianTianNum];
