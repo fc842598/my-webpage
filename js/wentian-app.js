@@ -220,6 +220,52 @@ function figLine(id, x, y, w, color = "#e5decc") {
   return `<div class="fig-line" data-node-id="${id}" style="left:${x}px;top:${y}px;width:${w}px;height:1px;background:${color};"></div>`;
 }
 
+function figSvg(id, x, y, w, h, viewBox, body, style = "") {
+  return `<svg data-node-id="${id}" viewBox="${viewBox}" aria-hidden="true" focusable="false" style="position:absolute;left:${x}px;top:${y}px;width:${w}px;height:${h}px;overflow:visible;${style}">${body}</svg>`;
+}
+
+function wentianBottomNavIcon(kind, id, x, y, color, active = false, zIndex = 50) {
+  const line = `fill="none" stroke="${color}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"`;
+  const dot = `fill="${color}" stroke="none"`;
+  const halo = active
+    ? `<circle cx="20" cy="20" r="16" fill="#fff2d9" stroke="#d19b43" stroke-width="1.2"></circle>`
+    : "";
+  const bodies = {
+    home: `
+      ${halo}
+      <circle cx="20" cy="20" r="12.5" ${line}></circle>
+      <circle cx="20" cy="20" r="4.2" ${line}></circle>
+      <path d="M20 6.5v5M20 28.5v5M6.5 20h5M28.5 20h5" ${line}></path>
+      <path d="M11.8 28.2 28.2 11.8" ${line}></path>
+      <circle cx="29" cy="27" r="1.3" ${dot}></circle>
+    `,
+    archive: `
+      ${halo}
+      <path d="M13 9.5h15.5l2 2V31H13c-2 0-3.5-1.4-3.5-3.5V13c0-2.1 1.4-3.5 3.5-3.5Z" ${line}></path>
+      <path d="M28.5 9.5v6H31" ${line}></path>
+      <path d="M14.5 17.5h9M14.5 22.5h11M14.5 27.5h7" ${line}></path>
+      <path d="M10 13.2c2.8 1.4 5.6 1.4 8.4 0" ${line}></path>
+    `,
+    ai: `
+      ${halo}
+      <circle cx="20" cy="20" r="10.5" ${line}></circle>
+      <path d="M20 7.5c6.5 3.2 7.1 8.7.9 12.4-6.2 3.8-5.7 9.2 1.1 12.6" ${line}></path>
+      <path d="M20 7.5c-6.5 3.2-7.1 8.7-.9 12.4 6.2 3.8 5.7 9.2-1.1 12.6" ${line}></path>
+      <circle cx="20" cy="13.2" r="1.7" ${dot}></circle>
+      <circle cx="20" cy="26.8" r="1.7" ${dot}></circle>
+      <path d="M10.4 20h19.2" ${line}></path>
+    `,
+    mine: `
+      ${halo}
+      <path d="M20 9.2c3.4 0 6.1 2.7 6.1 6s-2.7 6-6.1 6-6.1-2.7-6.1-6 2.7-6 6.1-6Z" ${line}></path>
+      <path d="M10.8 31.5c2.1-5.4 5.2-8 9.2-8s7.1 2.6 9.2 8" ${line}></path>
+      <path d="M11.8 31.5h16.4" ${line}></path>
+      <circle cx="27.8" cy="9.8" r="1.2" ${dot}></circle>
+    `
+  };
+  return figSvg(id, x, y, 34, 34, "0 0 40 40", bodies[kind] || bodies.home, `z-index:${zIndex};filter:${active ? "drop-shadow(0 7px 10px rgba(163,49,41,.16))" : "none"};`);
+}
+
 const WENTIAN_COLOR_UPGRADE = {
   "#111": "#1c1410",
   "#14110d": "#1c1410",
@@ -479,20 +525,22 @@ function withWentianStandardBottomNav(nodeId, body, height) {
 
 function figBottomNav(active) {
   const items = [
-    ["home", "◒", "首页"],
-    ["archive", "▢", "档案"],
-    ["ai", "◐", "阅天AI"],
-    ["mine", "●", "我的"]
+    ["home", "home", "首页"],
+    ["archive", "archive", "档案"],
+    ["ai", "ai", "阅天AI"],
+    ["mine", "mine", "我的"]
   ];
   return `
     ${figBox("bottom-bg", 0, 760, 390, 84, "", "background:#fff;box-shadow:0 -8px 18px rgba(0,0,0,.04);")}
-    ${items.map(([route, icon, label], index) => {
+    ${items.map(([route, iconKind, label], index) => {
       const left = [28, 125, 222, 319][index];
-      const color = label === active ? "#b81a05" : "#8c8c80";
+      const on = label === active;
+      const color = on ? "#a33129" : "#8c857b";
       return `
         ${figButton(`bottom-${label}`, left - 8, 760, 58, 66, `data-route="${route}"`)}
-        ${figText(`bottom-icon-${label}`, icon, left, 769, 34, 30, color, 700, "center")}
-        ${figText(`bottom-label-${label}`, label, left - 9, 807, 50, 15, color, 500, "center")}
+        ${wentianBottomNavIcon(iconKind, `bottom-icon-${label}`, left, 768, color, on, 2)}
+        ${figText(`bottom-label-${label}`, label, left - 9, 807, 50, 15, color, on ? 800 : 500, "center", "z-index:3;")}
+        ${on ? figBox(`bottom-active-${label}`, left + 8, 826, 18, 3, "", `border-radius:999px;background:${color};opacity:.72;z-index:3;`) : ""}
       `;
     }).join("")}
   `;
@@ -512,20 +560,21 @@ function convertedBottomNav(active) {
   if (!active) return "";
   const current = active === "活动" ? "" : active;
   const items = [
-    ["screen-1", "首页", "◒", 49],
-    ["screen-25", "档案", "▢", 146],
-    ["screen-3", "阅天AI", "◐", 244],
-    ["screen-31", "我的", "○", 341]
+    ["screen-1", "首页", "home", 49],
+    ["screen-25", "档案", "archive", 146],
+    ["screen-3", "阅天AI", "ai", 244],
+    ["screen-31", "我的", "mine", 341]
   ];
   return `
     ${figBox("converted-bottom-bg", 0, 780, 390, 64, "", "background:#fff;box-shadow:0 -4px 14px rgba(0,0,0,.06);")}
-    ${items.map(([route, label, icon, x]) => {
+    ${items.map(([route, label, iconKind, x]) => {
       const on = label === current;
-      const color = on ? "#a34d33" : "#79766f";
+      const color = on ? "#a33129" : "#8c857b";
       return `
         ${figButton(`converted-bottom-${label}`, x - 37, 780, 76, 60, `data-route="${route}"`)}
-        ${figText(`converted-bottom-icon-${label}`, icon, x - 16, 790, 32, 22, color, 700, "center")}
-        ${figText(`converted-bottom-label-${label}`, label, x - 28, 817, 56, 12, color, on ? 700 : 400, "center")}
+        ${wentianBottomNavIcon(iconKind, `converted-bottom-icon-${label}`, x - 17, 786, color, on, 2)}
+        ${figText(`converted-bottom-label-${label}`, label, x - 28, 817, 56, 12, color, on ? 800 : 500, "center", "z-index:3;")}
+        ${on ? figBox(`converted-bottom-active-${label}`, x - 9, 835, 18, 3, "", `border-radius:999px;background:${color};opacity:.72;z-index:3;`) : ""}
       `;
     }).join("")}
   `;
@@ -647,20 +696,21 @@ function sourceHomeScreen(screen) {
 
 function sourceAppBottomNav(active, y = 778) {
   const items = [
-    ["首页", "◒", 49, "screen-1"],
-    ["档案", "▢", 146, "screen-25"],
-    ["阅天AI", "◐", 244, "screen-3"],
-    ["我的", "○", 341, "screen-31"]
+    ["首页", "home", 49, "screen-1"],
+    ["档案", "archive", 146, "screen-25"],
+    ["阅天AI", "ai", 244, "screen-3"],
+    ["我的", "mine", 341, "screen-31"]
   ];
   return `
-    ${figBox("source-bottom-bg", 0, y, 390, 89, "", "background:#fff;box-shadow:0 -4px 14px rgba(0,0,0,.06);z-index:45;")}
-    ${items.map(([label, icon, x, route]) => {
+    ${figBox("source-bottom-bg", 0, y, 390, 89, "", "background:linear-gradient(180deg,rgba(255,255,255,.98),rgba(255,250,241,.98));box-shadow:0 -4px 14px rgba(62,38,18,.07);z-index:45;")}
+    ${items.map(([label, iconKind, x, route]) => {
       const on = label === active;
-      const color = on ? "#a34d33" : "#79766f";
+      const color = on ? "#a33129" : "#8c857b";
       return `
-        ${figButton(`source-bottom-hit-${label}`, x - 37, y + 6, 76, 72, `data-route="${route}"`, "", "z-index:50;")}
-        ${figText(`source-bottom-icon-${label}`, icon, x - 16, y + 16, 32, 22, color, 700, "center", "z-index:50;")}
-        ${figText(`source-bottom-label-${label}`, label, x - 28, y + 48, 56, 12, color, on ? 700 : 400, "center", "z-index:50;")}
+        ${figButton(`source-bottom-hit-${label}`, x - 37, y + 6, 76, 72, `data-route="${route}"`, "", "z-index:55;")}
+        ${wentianBottomNavIcon(iconKind, `source-bottom-icon-${label}`, x - 17, y + 13, color, on, 50)}
+        ${figText(`source-bottom-label-${label}`, label, x - 28, y + 50, 56, 12, color, on ? 800 : 500, "center", "z-index:50;")}
+        ${on ? figBox(`source-bottom-active-${label}`, x - 9, y + 72, 18, 3, "", `border-radius:999px;background:${color};opacity:.72;z-index:50;`) : ""}
       `;
     }).join("")}
   `;
