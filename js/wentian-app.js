@@ -11524,7 +11524,8 @@ function fitActivePhoneShell() {
   const rootStyle = getComputedStyle(document.documentElement);
   const safeTop = desktop ? 0 : (parseFloat(rootStyle.getPropertyValue("--wentian-safe-top")) || 0);
   const safeBottom = desktop ? 0 : (parseFloat(rootStyle.getPropertyValue("--wentian-safe-bottom")) || 0);
-  const horizontalAvailable = desktop ? Math.max(320, Math.min(viewportWidth, 430)) : viewportWidth;
+  const renderedWidth = view.getBoundingClientRect?.().width || wrap.getBoundingClientRect?.().width || viewportWidth;
+  const horizontalAvailable = desktop ? Math.max(320, Math.min(viewportWidth, 430)) : renderedWidth;
   const verticalChromeSpace = desktop ? 48 : 0;
   const verticalAvailable = Math.max(560, viewportHeight - verticalChromeSpace - safeTop - safeBottom);
   const rawHeight = parseFloat(phone.style.height) || phone.offsetHeight || WENTIAN_PHONE_HEIGHT;
