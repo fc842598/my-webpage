@@ -11408,9 +11408,11 @@ function fitActivePhoneShell() {
   const verticalAvailable = Math.max(560, viewportHeight - verticalChromeSpace - safeTop - safeBottom);
   const rawHeight = parseFloat(phone.style.height) || phone.offsetHeight || WENTIAN_PHONE_HEIGHT;
   const heightBasis = rawHeight <= 900 ? rawHeight : WENTIAN_PHONE_HEIGHT;
-  const widthScale = desktop ? Math.min(1, horizontalAvailable / WENTIAN_PHONE_WIDTH) : Math.max(0.82, horizontalAvailable / WENTIAN_PHONE_WIDTH);
+  const widthScale = desktop ? Math.min(1, horizontalAvailable / WENTIAN_PHONE_WIDTH) : Math.max(0.78, horizontalAvailable / WENTIAN_PHONE_WIDTH);
   const heightScale = Math.min(1, verticalAvailable / heightBasis);
-  const scale = desktop ? Math.min(widthScale, heightScale) : Math.max(0.78, Math.min(widthScale, heightScale));
+  const scale = desktop
+    ? Math.min(widthScale, heightScale)
+    : (viewportWidth <= 520 ? widthScale : Math.max(0.78, Math.min(widthScale, heightScale)));
   phone.style.setProperty("--wentian-phone-scale", String(scale));
   wrap.style.height = `${Math.ceil(rawHeight * scale)}px`;
 }

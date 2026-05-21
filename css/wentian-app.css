@@ -409,7 +409,7 @@ button {
 
 .phone-wrap {
   display: flex;
-  justify-content: flex-start;
+  justify-content: center;
   width: 100%;
   max-width: none;
   overflow: visible;
@@ -426,7 +426,7 @@ button {
   color: #201813;
   box-shadow: none;
   transform: scale(var(--wentian-phone-scale, 1));
-  transform-origin: top left;
+  transform-origin: top center;
 }
 
 .figma-phone.converted {
