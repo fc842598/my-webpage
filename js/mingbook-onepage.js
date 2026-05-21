@@ -4486,7 +4486,7 @@
     }
     const backendModule = moduleKey === 'current_luck'
       ? 'current_luck'
-      : (moduleKey === 'xiaoxian_liunian' ? 'liunian_year' : moduleKey);
+      : (moduleKey === 'xiaoxian_liunian' ? 'xiaoxian_liunian' : moduleKey);
     const extraParams = moduleKey === 'current_luck'
       ? currentLuckExtraParams(options)
       : (moduleKey === 'xiaoxian_liunian' ? xiaoLianExtraParams(options) : {});
