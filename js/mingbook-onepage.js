@@ -3777,6 +3777,15 @@
     `;
   }
 
+  function centerActiveReportRails() {
+    document.querySelectorAll('[data-luck-decade-rail], [data-xiaolian-age-rail]').forEach((rail) => {
+      const active = rail.querySelector('.is-active') || rail.querySelector('.is-current');
+      if (!active) return;
+      const left = active.offsetLeft - ((rail.clientWidth - active.clientWidth) / 2);
+      rail.scrollTo({ left: Math.max(0, left), behavior: 'auto' });
+    });
+  }
+
   function setDecodeStatus(text) {
     const el = $('#mbpDecodeStatus');
     if (el) el.textContent = text;
@@ -4465,7 +4474,10 @@
       }).join('');
     }
     syncBookClientMeta();
-    requestAnimationFrame(syncReportNav);
+    requestAnimationFrame(() => {
+      syncReportNav();
+      centerActiveReportRails();
+    });
   }
 
   async function callOriginalAi(moduleKey, options = {}) {
