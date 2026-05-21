@@ -9465,7 +9465,7 @@ function yangzhaiCompassGrid(id, compact = false) {
         ${yangzhaiDirectionCross(`${id}-center-cross`, crossX, crossY, crossSize, compact)}
         ${compact ? "" : `${figBox(`${id}-zoom-pill`, x + 21, y + 116, 74, 28, "", "border:1px solid #ead2a9;border-radius:14px;background:#fff2df;")}
         ${figText(`${id}-zoom-text`, "放大方位", x + 21, y + 123, 74, 11, "#8a5a22", 700, "center", "line-height:1.15;")}`}
-        ${figButton(`${id}-luopan-hit`, x, y + (compact ? 18 : 16), metrics.cellW, compact ? 82 : metrics.cellH, 'data-action="yangzhai-luopan-open" aria-label="放大方位"', "", "z-index:85;cursor:zoom-in;")}
+        ${figButton(`${id}-luopan-hit`, x, y + (compact ? 18 : 16), metrics.cellW, compact ? 82 : metrics.cellH, 'data-action="yangzhai-luopan-open" aria-label="放大方位"', "", "cursor:zoom-in;")}
       `;
     }
     const items = getYangzhaiPlacementItems(palace.key);
@@ -9474,7 +9474,7 @@ function yangzhaiCompassGrid(id, compact = false) {
       ${figText(`${id}-dir-${index}`, `(${palace.dir})`, x + (compact ? 42 : 43), y + (compact ? 12 : 15), 62, compact ? 9 : 10, "#2d241c", 700, "left", "white-space:nowrap;font-family:'Noto Sans SC','Microsoft YaHei',sans-serif;")}
       ${figText(`${id}-role-${index}`, palace.role, x + 13, y + (compact ? 34 : 39), 84, compact ? 10 : 12, "#55493d", 500, "left", "white-space:nowrap;font-family:'Noto Sans SC','Microsoft YaHei',sans-serif;")}
       ${yangzhaiRoomAvatar(`${id}-room-${index}`, x, y, items, compact)}
-      ${figButton(`${id}-cell-hit-${index}`, x, y, metrics.cellW, metrics.cellH, `data-action="yangzhai-open" data-palace="${palace.key}"`, "", "z-index:85;")}
+      ${figButton(`${id}-cell-hit-${index}`, x, y, metrics.cellW, metrics.cellH, `data-action="yangzhai-open" data-palace="${palace.key}"`)}
     `;
   }).join("");
 }
