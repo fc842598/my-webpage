@@ -4698,6 +4698,19 @@ const WENTIAN_I18N_EN_EXTRA = {
   "父母、子女、厨房、厕所、客厅、清空全部保留。": "Parents, children, kitchen, bathroom, living room, and clear are all preserved.",
   "返回九宫后点解读，生成阳宅结果。": "Return to the grid and tap analyze to generate the home reading.",
   "开始安位": "Start Placement",
+  "3分钟排出宅盘": "Build a Home Chart in 3 Minutes",
+  "先定中宫，再分八方，最后把家人与空间放入宫位。": "Find the center first, mark the eight directions, then place family members and spaces.",
+  "核心只有三步": "Only Three Core Steps",
+  "定位、安位、解读。页面里的加号就是每个宫位的入口。": "Locate, place, and read. Each plus sign opens that palace.",
+  "定中宫": "Set Center",
+  "站在户型中心，以罗盘或户型图确认八方。": "Stand at the floor-plan center and confirm the eight directions.",
+  "安人事": "Place People",
+  "点方位加号，放入父母子女、厨房、厕所、客厅。": "Tap a direction plus, then place family members, kitchen, bathroom, or living room.",
+  "看重点": "Read Focus",
+  "系统按卦位生成摘要，先读偏旺、相合、需调整。": "The system summarizes by palace: over-strong, aligned, or needs adjustment.",
+  "可重排": "Rearrange",
+  "不确定时可清空、长幼归位，再重新解读。": "If unsure, clear, auto-align, and read again.",
+  "开始排宅盘": "Start Home Chart",
   "小六壬起课": "Xiao Liuren Casting",
   "先定一念，再看六宫": "Set one thought, then read six palaces",
   "农历月令起，大安顺推至时辰。": "Start from lunar month and count from Da'an to the hour.",
@@ -9573,33 +9586,34 @@ function sourceYangzhaiResultScreen() {
 
 function sourceYangzhaiTutorialScreen() {
   const steps = [
-    ["1", "站在户型中心", "先确定房屋中心点，再按手机罗盘或户型图标出八方。"],
-    ["2", "点击方位加号", "每个宫位都可点，进入选择成员或空间。"],
-    ["3", "选择并确认", "父母、子女、厨房、厕所、客厅、清空全部保留。"],
-    ["4", "解读分析", "返回九宫后点解读，生成阳宅结果。"]
+    ["01", "定中宫", "站在户型中心，以罗盘或户型图确认八方。"],
+    ["02", "安人事", "点方位加号，放入父母子女、厨房、厕所、客厅。"],
+    ["03", "看重点", "系统按卦位生成摘要，先读偏旺、相合、需调整。"],
+    ["04", "可重排", "不确定时可清空、长幼归位，再重新解读。"]
   ];
   return `
     ${yangzhaiBg("yz45")}
     ${yangzhaiHeader("yz45", "教程", "")}
-    ${figText("yz45-title", "地脉道怎么用", 24, 112, 180, 22, "#201812", 900)}
-    ${figText("yz45-sub", "保留原流程：定方位、点加号、选成员/空间、再解读。", 24, 148, 310, 13, "#817568", 600, "left", "line-height:1.5;")}
-    ${figBox("yz45-intro", 24, 204, 342, 104, "", "border:1px solid #eadfce;border-radius:18px;background:#fffdf8;box-shadow:0 10px 24px rgba(70,45,25,.07);")}
-    ${figImage("yz45-intro-luopan", "../images/wentian-prototype-assets/yangzhai-luopan.png", 44, 224, 60, 60, "object-fit:contain;border-radius:50%;")}
-    ${figText("yz45-intro-title", "核心功能不变", 122, 226, 150, 17, "#201812", 900, "left", "font-family:'Noto Serif SC','Songti SC',serif;")}
-    ${figText("yz45-intro-copy", "样式升级不改变九宫、选项、按钮和结果逻辑。", 122, 256, 206, 12, "#817568", 600, "left", "line-height:1.45;")}
+    ${figText("yz45-title", "3分钟排出宅盘", 24, 120, 248, 28, "#201812", 900, "left", "line-height:1.1;font-family:'Noto Serif SC','Songti SC',serif;")}
+    ${figText("yz45-sub", "先定中宫，再分八方，最后把家人与空间放入宫位。", 24, 164, 318, 13, "#817568", 700, "left", "line-height:1.55;")}
+    ${figBox("yz45-intro", 24, 228, 342, 136, "", "border:1px solid #ead8b8;border-radius:22px;background:#fffdf8;box-shadow:0 12px 28px rgba(70,45,25,.07);")}
+    ${figBox("yz45-intro-disc", 46, 254, 86, 86, "", "border:1px solid #dcc39c;border-radius:43px;background:#f4e4c6;")}
+    ${figImage("yz45-intro-luopan", "../images/wentian-prototype-assets/yangzhai-luopan.png", 67, 275, 44, 44, "object-fit:contain;border-radius:50%;")}
+    ${figText("yz45-intro-title", "核心只有三步", 150, 262, 168, 20, "#201812", 900, "left", "font-family:'Noto Serif SC','Songti SC',serif;")}
+    ${figText("yz45-intro-copy", "定位、安位、解读。页面里的加号就是每个宫位的入口。", 150, 300, 170, 13, "#6f6254", 700, "left", "line-height:1.55;")}
     ${steps.map(([num, title, desc], index) => {
-      const y = 342 + index * 82;
+      const y = 400 + index * 78;
       return `
-        ${figBox(`yz45-step-${index}`, 24, y, 342, 66, "", "border:1px solid #eadfce;border-radius:16px;background:#fffdf8;box-shadow:0 8px 18px rgba(70,45,25,.05);")}
-        ${figBox(`yz45-num-${index}`, 44, y + 16, 34, 34, "", "border-radius:17px;background:linear-gradient(180deg,#b74e39,#983323);")}
-        ${figText(`yz45-num-text-${index}`, num, 44, y + 25, 34, 12, "#fffaf3", 900, "center")}
-        ${figText(`yz45-step-title-${index}`, title, 94, y + 14, 160, 15, "#201812", 900)}
-        ${figText(`yz45-step-desc-${index}`, desc, 94, y + 38, 230, 12, "#817568", 600, "left", "line-height:1.35;")}
+        ${figBox(`yz45-step-${index}`, 24, y, 342, 66, "", "border:1px solid #ead8b8;border-radius:20px;background:#fffdf8;box-shadow:0 8px 18px rgba(70,45,25,.04);")}
+        ${figText(`yz45-num-text-${index}`, num, 42, y + 21, 42, 16, "#a2493d", 900, "center", "font-family:'Noto Sans SC','Microsoft YaHei',sans-serif;")}
+        ${figBox(`yz45-step-line-${index}`, 94, y + 18, 1, 30, "", "background:#ead2ad;")}
+        ${figText(`yz45-step-title-${index}`, title, 112, y + 20, 66, 17, "#201812", 900, "left", "font-family:'Noto Serif SC','Songti SC',serif;")}
+        ${figText(`yz45-step-desc-${index}`, desc, 190, y + 16, 144, 12, "#6f6254", 700, "left", "line-height:1.45;font-family:'Noto Sans SC','Microsoft YaHei',sans-serif;")}
       `;
     }).join("")}
-    ${figBox("yz45-go", 42, 728, 306, 50, "", "border-radius:25px;background:linear-gradient(180deg,#b74e39,#983323);box-shadow:0 12px 24px rgba(158,61,43,.22);")}
-    ${figButton("yz45-go-hit", 42, 728, 306, 50, 'data-route="screen-42"')}
-    ${figText("yz45-go-text", "开始安位", 42, 743, 306, 14, "#fffaf3", 900, "center")}
+    ${figBox("yz45-go", 42, 748, 306, 58, "", "border-radius:29px;background:linear-gradient(180deg,#b74e39,#983323);box-shadow:0 14px 26px rgba(158,61,43,.22);")}
+    ${figButton("yz45-go-hit", 42, 748, 306, 58, 'data-route="screen-42"')}
+    ${figText("yz45-go-text", "开始排宅盘", 42, 767, 306, 17, "#fffaf3", 900, "center")}
   `;
 }
 
