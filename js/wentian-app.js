@@ -5151,9 +5151,11 @@ function getWentianAuthUserLabel(session = wentianAuthSession) {
 }
 
 function getWentianAuthDisplay() {
-  const label = getWentianAuthUserLabel();
   const profile = getWentianProfile();
-  if (!wentianAuthSession?.user) {
+  const session = wentianAuthSession?.user ? wentianAuthSession : readWentianStoredSession();
+  if (session?.user && !wentianAuthSession) wentianAuthSession = session;
+  const label = getWentianAuthUserLabel(session);
+  if (!session?.user) {
     return {
       loggedIn: false,
       name: "登录/注册",
@@ -5263,21 +5265,60 @@ function setWentianProfileStatus(text, tone = "") {
   el.dataset.tone = tone;
 }
 
-function submitWentianProfileForm() {
+function collectWentianProfileForm() {
   const nickname = (document.getElementById("wentian-profile-nickname")?.value || "").trim();
   const email = (document.getElementById("wentian-profile-email")?.value || "").trim();
   const phone = (document.getElementById("wentian-profile-phone")?.value || "").trim();
   if (!nickname) {
-    setWentianProfileStatus("请填写昵称", "error");
-    return;
+    return { error: "请填写昵称" };
   }
   if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    setWentianProfileStatus("邮箱格式不正确", "error");
+    return { error: "邮箱格式不正确" };
+  }
+  return { nickname, email, phone };
+}
+
+function submitWentianProfileForm() {
+  const profile = collectWentianProfileForm();
+  if (profile.error) {
+    setWentianProfileStatus(profile.error, "error");
     return;
   }
-  saveWentianProfile({ nickname, email, phone });
-  setWentianProfileStatus("已保存到本机", "ok");
-  window.setTimeout(() => navigate(state.stack.pop() || "screen-31", false), 260);
+  saveWentianProfile(profile);
+  setWentianProfileStatus(wentianAuthSession?.user ? "已保存到本机，可点下方同步到账号" : "已保存到本机", "ok");
+}
+
+async function syncWentianProfileToAccount() {
+  const profile = collectWentianProfileForm();
+  if (profile.error) {
+    setWentianProfileStatus(profile.error, "error");
+    return;
+  }
+  saveWentianProfile(profile);
+  const client = getWentianAuthClient();
+  const session = await getWentianAuthSession();
+  if (!client || !session?.user) {
+    setWentianProfileStatus("请先登录，再同步到账号", "error");
+    return;
+  }
+  setWentianProfileStatus("正在同步到账号...", "");
+  try {
+    const nextMetadata = {
+      ...(session.user.user_metadata || {}),
+      nickname: profile.nickname,
+      display_name: profile.nickname,
+      profile_email: profile.email,
+      phone: profile.phone || session.user.user_metadata?.phone || "",
+    };
+    const { data, error } = await client.auth.updateUser({ data: nextMetadata });
+    if (error) throw error;
+    if (data?.user) {
+      setWentianAuthSession({ ...session, user: data.user });
+    }
+    setWentianProfileStatus("已同步到账号，换设备登录后可带出资料", "ok");
+  } catch (error) {
+    setWentianProfileStatus(error.message || "同步失败，请稍后重试", "error");
+  }
 }
 
 function getCurrentWentianArchive() {
@@ -6765,7 +6806,7 @@ function sourceBasicInfoScreen() {
     ${figBox("source-39-avatar", 42, 134, 54, 54, "", "border-radius:27px;background:#b88c33;")}
     ${figText("source-39-avatar-text", escapeHtml(account.initial), 42, 147, 54, 24, "#fff", 900, "center")}
     ${figText("source-39-account-name", escapeHtml(account.name), 114, 134, 182, 17, "#201812", 900)}
-    ${figText("source-39-account-sub", account.loggedIn ? "账号已登录，信息会用于支付与邀请展示" : "未登录，本页先保存本机资料", 114, 162, 210, 12, "#8f857a", 700, "left", "line-height:1.35;")}
+    ${figText("source-39-account-sub", account.loggedIn ? "先保存本机，再手动同步到账号" : "未登录，本页只保存本机资料", 114, 162, 210, 12, "#8f857a", 700, "left", "line-height:1.35;")}
 
     ${figBox("source-39-card", 22, 242, 346, 276, "", "border:1px solid #e2d8c8;border-radius:18px;background:#fff;box-shadow:0 6px 16px rgba(74,55,32,.06);")}
     ${figText("source-39-name-label", "昵称", 42, 274, 78, 16, "#5f5a52", 800)}
@@ -6777,11 +6818,16 @@ function sourceBasicInfoScreen() {
     ${figText("source-39-phone-label", "手机号", 42, 438, 78, 16, "#5f5a52", 800)}
     <input id="wentian-profile-phone" class="wentian-profile-input" inputmode="tel" style="left:132px;top:422px;width:214px" value="${escapeHtml(profile.phone)}" placeholder="绑定手机号" autocomplete="tel">
 
-    ${figText("source-39-tip", "保存后用于档案、昵称、邀请展示；登录账号以登录方式页为准。", 42, 548, 306, 13, "#9b9287", 700, "left", "line-height:1.45;")}
+    ${figText("source-39-tip", account.loggedIn ? "保存只写本机；点同步到账号后，换设备登录才会带出资料。" : "未登录时只保存在当前浏览器；换设备、清缓存后不会自动带出。", 42, 548, 306, 13, "#9b9287", 700, "left", "line-height:1.45;")}
     <div id="wentian-profile-status" class="wentian-profile-status"></div>
-    ${figBox("source-39-save", 36, 696, 318, 52, "", "border-radius:26px;background:#c09a49;box-shadow:0 8px 18px rgba(130,91,31,.12);")}
-    ${figButton("source-39-save-hit", 36, 696, 318, 52, 'data-action="wentian-profile-save"')}
-    ${figText("source-39-save-text", "保存信息", 36, 711, 318, 15, "#fff", 900, "center")}
+    ${figBox("source-39-save", 36, account.loggedIn ? 660 : 696, 318, 52, "", "border-radius:26px;background:#c09a49;box-shadow:0 8px 18px rgba(130,91,31,.12);")}
+    ${figButton("source-39-save-hit", 36, account.loggedIn ? 660 : 696, 318, 52, 'data-action="wentian-profile-save"')}
+    ${figText("source-39-save-text", "保存到本机", 36, account.loggedIn ? 675 : 711, 318, 15, "#fff", 900, "center")}
+    ${account.loggedIn ? `
+      ${figBox("source-39-sync", 36, 728, 318, 52, "", "border-radius:26px;background:#25211d;box-shadow:0 8px 18px rgba(42,33,22,.12);")}
+      ${figButton("source-39-sync-hit", 36, 728, 318, 52, 'data-action="wentian-profile-sync"')}
+      ${figText("source-39-sync-text", "同步到账号", 36, 743, 318, 15, "#fffaf3", 900, "center")}
+    ` : ""}
   `;
 }
 
@@ -12122,6 +12168,10 @@ document.addEventListener("click", (event) => {
   }
   if (action === "wentian-profile-save") {
     submitWentianProfileForm();
+    return;
+  }
+  if (action === "wentian-profile-sync") {
+    syncWentianProfileToAccount();
     return;
   }
   if (action === "wentian-member-pay") {
