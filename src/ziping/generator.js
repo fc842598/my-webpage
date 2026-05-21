@@ -106,6 +106,19 @@
   };
   const FEMALE_HAI_QIAN_YIN_HALF_MONTHS = new Set(['丑', '寅', '卯', '辰', '巳', '午']);
 
+  // 《天机道》P47：阳爻起时法图例。
+  // 地山谦为“一阳爻元堂卦例”，卯时落六二，不是简单按阳爻池取模。
+  const BOOK_YANG_HOUR_LINE_EXAMPLES = {
+    15: { // 地山谦
+      子: 3,
+      丑: 3,
+      寅: 1,
+      卯: 2,
+      辰: 4,
+      巳: 5,
+    },
+  };
+
   // ── 按年真值池校准：剩余后天卦口袋的元堂直取表 ───────────────
   // 目标：只收“按年主链”里 truth300 暴露出来的少数时段残口，
   //      不把月位/节气推进逻辑推进到当前实现。
@@ -225,6 +238,13 @@
     const civilSlotBranch = context?.civilSlotBranch || hourBranch;
     const civilSlotKind = context?.civilSlotKind || 'normal';
     const isNativeHai = civilSlotBranch === '亥' && civilSlotKind === 'normal';
+    const bookYangLine = BOOK_YANG_HOUR_LINE_EXAMPLES[xianTianNum]?.[hourBranch];
+    if (bookYangLine) {
+      return {
+        line: bookYangLine,
+        ruleTag: 'book-yang-hour-line-example',
+      };
+    }
     const annualLineOverride = ANNUAL_HOUTIAN_LINE_OVERRIDES[hourBranch]?.[xianTianNum];
     if (hourBranch === '酉' && xianTianNum === 2 && gender === 'male') {
       return {

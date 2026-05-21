@@ -686,6 +686,57 @@ const ZIPING_GOLDEN_CASES = [
     },
   },
 
+  // ── Verified：天纪软件实抓，地山谦一阳爻卯时落六二 ────────────
+  {
+    id: 'verified-tianji-1990-02-16-mao-female',
+    description: '天纪软件实抓：庚午 戊寅 壬子 癸卯，女，1990-02-16 卯时',
+    source: 'professional-tool',
+    verified: true,
+    input: {
+      pillars: {
+        yearStem:'庚', yearBranch:'午',
+        monthStem:'戊', monthBranch:'寅',
+        dayStem:'壬', dayBranch:'子',
+        hourStem:'癸', hourBranch:'卯',
+        _tianji: { timeSlot:'卯', timeSlotBranch:'卯', timeSlotKind:'normal' },
+      },
+      gender: 'female',
+      birthYear: 1990,
+    },
+    expected: {
+      debug: {
+        tian: 18,
+        di: 32,
+        tianRemainder: 18,
+        diRemainder: 2,
+        guaTian: 7,
+        guaDi: 8,
+        yuanTangLine: 2,
+        houYuanTangLine: 5,
+      },
+      xiantian: { name: '地山谦', num: 15, upper: 8, lower: 7 },
+      houtian:  { name: '风地观', num: 20, upper: 5, lower: 8 },
+      spotChecks: [
+        { age: 36, guaName: '地泽临', period: '先天' },
+        { age: 37, guaName: '雷泽归妹', period: '先天' },
+        { age: 38, guaName: '兑为泽', period: '先天' },
+        { age: 39, guaName: '天泽履', period: '先天' },
+        { age: 40, guaName: '山地剥', period: '后天' },
+        { age: 41, guaName: '山水蒙', period: '后天' },
+        { age: 42, guaName: '风水涣', period: '后天' },
+        { age: 43, guaName: '坎为水', period: '后天' },
+        { age: 44, guaName: '水泽节', period: '后天' },
+        { age: 45, guaName: '水雷屯', period: '后天' },
+        { age: 46, guaName: '水火既济', period: '后天' },
+        { age: 47, guaName: '泽火革', period: '后天' },
+        { age: 48, guaName: '雷火丰', period: '后天' },
+        { age: 49, guaName: '风地观', period: '后天' },
+        { age: 50, guaName: '风山渐', period: '后天' },
+        { age: 51, guaName: '水山蹇', period: '后天' },
+      ],
+    },
+  },
+
   // ── Case 4：待专业工具核对 ─────────────────────────────────
   // 填入步骤：
   //   1. 用专业排盘工具（万年历Pro / 海厦学员工具）输入四柱
