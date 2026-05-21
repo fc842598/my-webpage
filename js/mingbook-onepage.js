@@ -2800,31 +2800,79 @@
     `;
   }
 
+  function specialTopicTag(title) {
+    const text = normalizeText(title);
+    if (text.includes('身宫')) return '行动模式';
+    if (text.includes('婚姻') || text.includes('夫妻')) return '关系模式';
+    if (text.includes('健康') || text.includes('疾厄')) return '身体节律';
+    if (text.includes('财') || text.includes('财帛')) return '钱财路径';
+    if (text.includes('事业') || text.includes('官禄')) return '职业上升';
+    return '专题提醒';
+  }
+
+  function specialReportParts(section) {
+    const title = cleanAiInlineText(section?.title) || '专题批命';
+    const content = cleanAiText(section?.content || section?.body || '');
+    const sentences = splitReadableSentences(content);
+    const noteSource = pickSentence(
+      [...sentences].reverse(),
+      ['提醒', '注意', '不要', '避免', '不宜', '风险', '压力', '容易', '忌'],
+      Math.max(sentences.length - 1, 0)
+    );
+    const leadSentences = sentences.slice(0, 2).join('');
+    const lead = trimText(leadSentences || content, 260);
+    const note = trimText(noteSource || '重点看完正文，再看这条提醒。', 220);
+    const bodySentences = sentences.filter((item) => item !== noteSource && !leadSentences.includes(item));
+    const detail = trimText(
+      (bodySentences.length ? bodySentences.join('') : content.replace(leadSentences, '').replace(noteSource, '')).trim(),
+      1200
+    );
+    return {
+      title,
+      tag: specialTopicTag(title),
+      lead: lead || '等待专题结论生成。',
+      detail: detail || trimText(content, 260) || '专题正文生成后显示。',
+      note,
+    };
+  }
+
+  function renderSpecialReportTopic(section, index) {
+    const part = specialReportParts(section);
+    const number = String(index + 1).padStart(2, '0');
+    return `
+      <section class="mbp-special-reading-item">
+        <div class="mbp-special-reading-main">
+          <header>
+            <span class="mbp-special-reading-no">${number}</span>
+            <h4>${escapeHtml(part.title)}</h4>
+          </header>
+          <p class="mbp-special-reading-lead">${highlightInsightText(part.lead)}</p>
+          <p class="mbp-special-reading-detail">${highlightInsightText(part.detail)}</p>
+        </div>
+        <aside class="mbp-special-reading-note">
+          <strong>${escapeHtml(part.tag)}</strong>
+          <p>${highlightInsightText(part.note)}</p>
+          <small>重点看完正文，再看这条提醒。</small>
+        </aside>
+      </section>
+    `;
+  }
+
   function renderSpecialChapterBlock(sections, fallbackText) {
     const topics = (sections || [])
       .map((section) => ({ title: section.title, content: cleanAiText(section.content || '') }))
       .filter((section) => section.content);
     const list = topics.length ? topics : [{ title: '专题批命', content: fallbackText || '五项专题等待原站 AI 返回。' }];
-    const points = list.slice(0, 3).map((section) => specialTopicParts(section).lead);
+    const overview = list.slice(0, 2).map((section) => specialReportParts(section).lead).join(' ');
     return `
-      <div class="mbp-special-chapter">
-        <div class="mbp-special-overview">
+      <div class="mbp-special-chapter mbp-special-reading">
+        <div class="mbp-special-reading-overview">
           <span>专题总览</span>
-          <strong>先看结论，再看重点和提醒</strong>
-          <ul>
-            ${points.map((point) => `<li>${highlightInsightText(point)}</li>`).join('')}
-          </ul>
+          <strong>先看结论，再读五个专题</strong>
+          <p>${highlightInsightText(trimText(overview || fallbackText || '专题批命生成后显示。', 260))}</p>
         </div>
-        <div class="mbp-special-topic-grid">
-          ${list.map((section) => `
-            <section class="mbp-special-topic-card">
-              <header>
-                <span>专题</span>
-                <h4>${escapeHtml(section.title || '专题批命')}</h4>
-              </header>
-              ${renderSpecialTopicSegments(section)}
-            </section>
-          `).join('')}
+        <div class="mbp-special-reading-list">
+          ${list.map(renderSpecialReportTopic).join('')}
         </div>
       </div>
     `;
@@ -3709,10 +3757,6 @@
       selected: info.selectedDecade,
       current: info.currentDecade,
     });
-    requestAnimationFrame(() => {
-      const target = document.querySelector('[data-luck-decade].is-active') || document.querySelector('[data-luck-current="true"]');
-      target?.scrollIntoView({ inline: 'center', block: 'nearest' });
-    });
     return `
       ${renderLuckDecadeRail(info)}
       ${renderLuckReading(selectedData, fallbackText, info)}
@@ -3727,10 +3771,6 @@
     const info = selectedXiaoLianInfo();
     const selected = info.selected || {};
     const selectedData = xiaoLianDataForSelected(info) || (selected.isCurrent ? normalizeAiData(data) : null);
-    requestAnimationFrame(() => {
-      const target = document.querySelector('[data-xiaolian-age].is-active') || document.querySelector('[data-xiaolian-current="true"]');
-      target?.scrollIntoView({ inline: 'center', block: 'nearest' });
-    });
     return `
       ${renderXiaoLianAgeRail(info)}
       ${renderXiaoLianReading(selectedData, fallbackText, info)}
@@ -4499,9 +4539,6 @@
       renderChaptersFromAi();
       updateDecodeProgress(generatedModuleCount(), -1, '已生成');
       setDecodeStatus(`${task.label} 已生成。`);
-      if (options.scroll && task.key) {
-        document.querySelector(`[data-report="${task.key}"]`)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }
       return true;
     } catch (error) {
       const message = friendlyAiError(error);
@@ -4645,7 +4682,6 @@
     renderChaptersFromAi();
     updateDecodeProgress(generatedModuleCount(), -1, '曲线已生成');
     setDecodeStatus('人生曲线已生成。');
-    scrollToReportChapter(3);
     return true;
   }
 
@@ -4656,7 +4692,6 @@
       if (await decodeSingleModule(moduleKey)) success += 1;
     }
     setDecodeStatus(success ? `专题批命已完成 ${success}/${modules.length} 项。` : '专题批命生成失败，请稍后重试。');
-    if (success) scrollToReportChapter(1);
     return success > 0;
   }
 
@@ -5392,9 +5427,7 @@
       $('#chart')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
 
-    $('#mbpDecodeBtn')?.addEventListener('click', async () => {
-      if (await decodeReports()) scrollToReportChapter(0);
-    });
+    $('#mbpDecodeBtn')?.addEventListener('click', decodeReports);
 
     document.querySelectorAll('[data-ai-module]').forEach((button) => {
       button.addEventListener('click', () => {
@@ -5412,29 +5445,24 @@
       if (handleCurvePanelClick(event)) return;
       const allButton = event.target.closest('[data-decode-all]');
       if (allButton) {
-        if (await decodeReports()) scrollToReportChapter(0);
+        await decodeReports();
         return;
       }
       const decadeButton = event.target.closest('[data-luck-decade]');
       if (decadeButton) {
         state.selectedLuckRangeKey = decadeButton.dataset.luckDecade || '';
         renderChaptersFromAi();
-        scrollToReportChapter(2);
         return;
       }
       const xiaoLianAgeButton = event.target.closest('[data-xiaolian-age]');
       if (xiaoLianAgeButton) {
         state.selectedXiaoLianAge = clampXiaoLianAge(xiaoLianAgeButton.dataset.xiaolianAge);
         renderChaptersFromAi();
-        scrollToReportChapter(3);
         return;
       }
       const moduleButton = event.target.closest('[data-report-module]');
       if (moduleButton) {
-        const chapter = moduleButton.closest('[data-report-chapter]');
-        const chapterIndex = Number(chapter?.dataset.reportChapter) || 0;
-        scrollToReportChapter(chapterIndex);
-        if (await decodeSingleModule(moduleButton.dataset.reportModule)) scrollToReportChapter(chapterIndex);
+        await decodeSingleModule(moduleButton.dataset.reportModule);
         return;
       }
       const actionButton = event.target.closest('[data-report-action]');

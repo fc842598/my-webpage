@@ -21,6 +21,8 @@
   var _retryCount = 0;
   var _lastChartRecordId = null;
   var _transientMode = false;
+  var _chatPinnedToBottom = true;
+  var _chatScrollBound = false;
 
   window._chatPanelInit = init;
   window._chatPanelRefresh = refresh;
@@ -396,7 +398,7 @@
           _setRefreshEnabled(true);
         }
         var inp = document.getElementById('chat-input');
-        if (inp && !inp.disabled) inp.focus();
+        if (inp && !inp.disabled) inp.focus({ preventScroll: true });
         _drainPendingQueue();
       });
   }
@@ -496,13 +498,13 @@
   // ── UI 渲染 ──────────────────────────────────────────────────────────────────
 
   function _renderMessages(messages) {
-    var box = document.getElementById('chat-messages');
+    var box = _getChatBox();
     if (!box) return;
     box.innerHTML = '';
     for (var i = 0; i < messages.length; i++) {
       _appendMsg(messages[i].sender, messages[i].content, messages[i].createdAt, { instant: true });
     }
-    _scrollToBottom();
+    _scrollToBottom(true, true);
   }
 
   function _formatChatTime(createdAt) {
@@ -523,7 +525,7 @@
     return TYPEWRITER_BASE_MS;
   }
 
-  function _typeAssistantBubble(bubble, content) {
+  function _typeAssistantBubble(bubble, content, keepPinned) {
     var chars = Array.from(String(content || ''));
     var total = chars.length;
     if (!bubble) return Promise.resolve();
@@ -542,7 +544,7 @@
       function tick() {
         index = Math.min(total, index + step);
         bubble.innerHTML = _esc(chars.slice(0, index).join(''));
-        _scrollToBottom();
+        _scrollToBottom(keepPinned);
 
         if (index >= total) {
           bubble.classList.remove('chat-bubble-typing');
@@ -559,8 +561,9 @@
 
   function _appendMsg(sender, content, createdAt, options) {
     options = options || {};
-    var box = document.getElementById('chat-messages');
+    var box = _getChatBox();
     if (!box) return Promise.resolve();
+    var keepPinned = options.forceScroll || (_chatPinnedToBottom && _isChatPinnedToBottom(box));
 
     var div = document.createElement('div');
     div.className = 'chat-msg chat-msg-' + sender;
@@ -577,14 +580,14 @@
     }
 
     box.appendChild(div);
-    _scrollToBottom();
+    _scrollToBottom(keepPinned);
 
     if (sender === 'assistant') {
       var bubble = div.querySelector('.chat-bubble');
       if (bubble) {
         var shouldAnimate = !options.instant && options.animate !== false;
         if (shouldAnimate) {
-          return _typeAssistantBubble(bubble, content);
+          return _typeAssistantBubble(bubble, content, keepPinned);
         }
         bubble.innerHTML = _esc(content);
       }
@@ -594,8 +597,9 @@
   }
 
   function _appendTyping() {
-    var box = document.getElementById('chat-messages');
+    var box = _getChatBox();
     if (!box) return;
+    var keepPinned = _chatPinnedToBottom && _isChatPinnedToBottom(box);
     var div = document.createElement('div');
     div.id = 'chat-typing';
     div.className = 'chat-msg chat-msg-assistant';
@@ -605,7 +609,7 @@
       '<span class="chat-typing-dots"><span></span><span></span><span></span></span>' +
       '</span>';
     box.appendChild(div);
-    _scrollToBottom();
+    _scrollToBottom(keepPinned);
   }
 
   function _removeTyping() {
@@ -614,7 +618,7 @@
   }
 
   function _setMsgArea(html) {
-    var box = document.getElementById('chat-messages');
+    var box = _getChatBox();
     if (box) box.innerHTML = html;
   }
 
@@ -752,10 +756,31 @@
     }
   }
 
-  function _scrollToBottom() {
+  function _getChatBox() {
     var box = document.getElementById('chat-messages');
+    if (box && !_chatScrollBound) {
+      _chatScrollBound = true;
+      box.addEventListener('scroll', function () {
+        _chatPinnedToBottom = _isChatPinnedToBottom(box);
+      }, { passive: true });
+    }
+    return box;
+  }
+
+  function _isChatPinnedToBottom(box) {
+    if (!box) return false;
+    return box.scrollHeight - box.scrollTop - box.clientHeight < 80;
+  }
+
+  function _scrollToBottom(shouldScroll, force) {
+    if (!shouldScroll) return;
+    var box = _getChatBox();
     if (box) {
-      requestAnimationFrame(function () { box.scrollTop = box.scrollHeight; });
+      requestAnimationFrame(function () {
+        if (!force && !_chatPinnedToBottom) return;
+        box.scrollTop = box.scrollHeight;
+        _chatPinnedToBottom = true;
+      });
     }
   }
 

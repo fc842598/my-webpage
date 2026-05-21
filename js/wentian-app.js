@@ -4152,7 +4152,7 @@ const WENTIAN_I18N_EN_EXTRA = {
   "阳": "Yang",
   "阴": "Yin",
   "阳宅地脉": "Feng Shui",
-  "罗盘九宫，安位解读": "Compass layout",
+  "方位九宫，安位解读": "Direction layout",
   "六壬法": "Liuren",
   "农历月日时，即刻起课": "Lunar time casting",
   "更多功能": "More Tools",
@@ -4628,8 +4628,11 @@ const WENTIAN_I18N_EN_EXTRA = {
   "九宫安位": "Nine-Palace Placement",
   "逐格点击加号安位": "Tap each plus to place items",
   "罗盘方位": "Compass",
+  "方位校准": "Direction",
+  "东南西北": "E S W N",
   "点此安位": "Tap to place",
   "放大罗盘": "Zoom Compass",
+  "放大方位": "Zoom Directions",
   "解读分析": "Analyze",
   "长幼归位": "Auto Align",
   "长幼有序,天地归位": "Aligned",
@@ -4683,7 +4686,7 @@ const WENTIAN_I18N_EN_EXTRA = {
   "地脉道怎么用": "How It Works",
   "先定方位，再放人和空间；结果会对应海厦《地脉道》64卦。": "Set directions, then place people and spaces; results map to 64 hexagrams.",
   "站在户型中心": "Stand at the floor-plan center",
-  "先确定房屋中心点，再按手机罗盘或户型图标出八方。": "Find the home center, then mark eight directions by compass or floor plan.",
+  "先确定房屋中心点，再按手机指南针或户型图标出八方。": "Find the home center, then mark eight directions by phone compass or floor plan.",
   "点击方位加号": "Tap direction plus",
   "把家人、厨房、厕所、客厅放入对应宫位。": "Place family members, kitchen, bathroom, and living room in matching palaces.",
   "一键归位": "Auto Align",
@@ -4698,6 +4701,19 @@ const WENTIAN_I18N_EN_EXTRA = {
   "父母、子女、厨房、厕所、客厅、清空全部保留。": "Parents, children, kitchen, bathroom, living room, and clear are all preserved.",
   "返回九宫后点解读，生成阳宅结果。": "Return to the grid and tap analyze to generate the home reading.",
   "开始安位": "Start Placement",
+  "3分钟排出宅盘": "Build a Home Chart in 3 Minutes",
+  "先定中宫，再分八方，最后把家人与空间放入宫位。": "Find the center first, mark the eight directions, then place family members and spaces.",
+  "核心只有三步": "Only Three Core Steps",
+  "定位、安位、解读。页面里的加号就是每个宫位的入口。": "Locate, place, and read. Each plus sign opens that palace.",
+  "定中宫": "Set Center",
+  "站在户型中心，以手机指南针或户型图确认八方。": "Stand at the floor-plan center and confirm the eight directions.",
+  "安人事": "Place People",
+  "点方位加号，放入父母子女、厨房、厕所、客厅。": "Tap a direction plus, then place family members, kitchen, bathroom, or living room.",
+  "看重点": "Read Focus",
+  "系统按卦位生成摘要，先读偏旺、相合、需调整。": "The system summarizes by palace: over-strong, aligned, or needs adjustment.",
+  "可重排": "Rearrange",
+  "不确定时可清空、长幼归位，再重新解读。": "If unsure, clear, auto-align, and read again.",
+  "开始排宅盘": "Start Home Chart",
   "小六壬起课": "Xiao Liuren Casting",
   "先定一念，再看六宫": "Set one thought, then read six palaces",
   "农历月令起，大安顺推至时辰。": "Start from lunar month and count from Da'an to the hour.",
@@ -5853,6 +5869,10 @@ function setWentianChatStatus(text, tone = "") {
   el.dataset.tone = tone;
 }
 
+function isWentianMobileKeyboardViewport() {
+  return window.matchMedia?.("(max-width: 880px), (pointer: coarse)")?.matches || false;
+}
+
 function resizeWentianChatInput(input) {
   if (!input) return 0;
   const minHeight = 48;
@@ -6111,6 +6131,7 @@ async function sendWentianXuChat(promptText = "") {
   if (input) {
     input.value = "";
     syncWentianChatFaqLayout();
+    if (isWentianMobileKeyboardViewport()) input.blur();
   }
 
   const payload = getWentianXuChatPayload();
@@ -6141,7 +6162,7 @@ async function sendWentianXuChat(promptText = "") {
     addWentianMessage("system", getWentianFriendlyError(error));
   } finally {
     setWentianChatBusy(false);
-    input?.focus();
+    if (!isWentianMobileKeyboardViewport()) input?.focus();
   }
 }
 
@@ -7184,24 +7205,21 @@ function sourceHepanSelectScreen() {
   const hint = getWentianHepanHint(archives, selectedIds, validation);
   return `
     ${figBox("wt11-bg", 0, 0, 390, 844, "", "background:linear-gradient(180deg,#fff8ec 0%,#f4e5d2 42%,#fffdf9 100%);")}
-    ${figBox("wt11-top-glow", 0, 0, 390, 336, "", "background:radial-gradient(circle at 50% 8%,rgba(212,171,88,.34),rgba(212,171,88,0) 44%),linear-gradient(180deg,#fff4df 0%,rgba(255,244,223,0) 100%);")}
+    ${figBox("wt11-top-glow", 0, 0, 390, 238, "", "background:radial-gradient(circle at 50% 6%,rgba(212,171,88,.22),rgba(212,171,88,0) 46%),linear-gradient(180deg,#fff4df 0%,rgba(255,244,223,0) 100%);")}
     ${wentianSimpleHeader("wt11", "选择合盘档案")}
-    ${figBox("wt11-hero", 24, 108, 342, 178, "", "border-radius:24px;background:linear-gradient(135deg,#3a1915 0%,#7a3327 48%,#c7973d 100%);box-shadow:0 18px 34px rgba(98,52,30,.22);overflow:hidden;")}
-    ${figImage("wt11-img", "../images/wentian-prototype-assets/hepan-master.jpg", 198, 118, 142, 126, "border-radius:18px;object-fit:cover;object-position:center 18%;opacity:.78;")}
-    ${figBox("wt11-img-shade", 174, 108, 190, 178, "", "background:linear-gradient(90deg,rgba(58,25,21,.78) 0%,rgba(58,25,21,.24) 48%,rgba(58,25,21,0) 100%);")}
-    ${figText("wt11-eyebrow", "海厦合参 · 宫位定格", 46, 134, 160, 13, "#f4d293", 900)}
-    ${figText("wt11-title", "关系合盘", 46, 162, 144, 30, "#fffaf3", 900, "left", "font-size:30px;line-height:1;")}
-    ${figText("wt11-copy", "看一方夫妻宫落到另一盘哪一宫，再交给合盘半仙。", 46, 206, 170, 13, "rgba(255,250,243,.86)", 700, "left", "line-height:1.45;")}
-    ${["夫妻", "父母", "兄弟", "朋友"].map((text, index) => `
-      ${figBox(`wt11-rule-${index}`, 46 + index * 72, 246, 62, 22, "", "border-radius:11px;background:rgba(255,250,243,.15);border:1px solid rgba(255,250,243,.28);")}
-      ${figText(`wt11-rule-text-${index}`, text, 46 + index * 72, 251, 62, 10, "#fff7df", 800, "center")}
-    `).join("")}
-    ${figBox("wt11-sheet", 0, 306, 390, 538, "", "border-radius:28px 28px 0 0;background:#fffdfb;box-shadow:0 -12px 30px rgba(75,48,24,.14);")}
-    ${figBox("wt11-handle", 164, 320, 62, 5, "", "border-radius:5px;background:#e2d4bf;")}
+    ${figBox("wt11-summary", 24, 110, 342, 88, "", "border:1px solid #ead8bd;border-radius:20px;background:#fffdf8;box-shadow:0 14px 28px rgba(92,50,29,.08);")}
+    ${figBox("wt11-summary-mark", 44, 132, 44, 44, "", "border-radius:22px;background:#fff0df;border:1px solid #ead2ad;")}
+    ${figText("wt11-summary-mark-text", "合", 44, 143, 44, 17, "#a94437", 900, "center", "font-family:'Noto Serif SC','Songti SC',serif;")}
+    ${figText("wt11-summary-title", "选两张档案", 104, 128, 132, 20, "#241811", 900, "left", "font-family:'Noto Serif SC','Songti SC',serif;")}
+    ${figText("wt11-summary-copy", "用于关系合盘", 104, 158, 120, 13, "#8d806f", 700, "left")}
+    ${figBox("wt11-count-pill", 276, 132, 64, 30, "", "border-radius:15px;background:#fff3df;border:1px solid #ead2ad;")}
+    ${figText("wt11-count-text", "2人", 276, 140, 64, 12, "#9b742e", 900, "center")}
+    ${figBox("wt11-sheet", 0, 220, 390, 624, "", "border-radius:28px 28px 0 0;background:#fffdfb;box-shadow:0 -12px 30px rgba(75,48,24,.14);")}
+    ${figBox("wt11-handle", 164, 234, 62, 5, "", "border-radius:5px;background:#e2d4bf;")}
     <div class="wentian-hepan-head" data-node-id="wt11-head">
       <div>
-        <strong>选择档案</strong>
-        <span>自动识别夫妻宫落点与星曜佐证</span>
+        <strong>档案</strong>
+        <span>点选两人</span>
       </div>
       <b class="${ready ? "is-ready" : selectedIds.length >= 2 ? "is-error" : ""}">已选 ${selectedIds.length}/2</b>
     </div>
@@ -9200,17 +9218,17 @@ function openYangzhaiLuopanZoom() {
   phone.querySelector("[data-yangzhai-luopan-zoom]")?.remove();
   phone.insertAdjacentHTML("beforeend", `
     <div class="yangzhai-luopan-zoom" data-yangzhai-luopan-zoom style="--yangzhai-heading:0deg;--yangzhai-luopan-rotation:0deg;">
-      <button class="yangzhai-luopan-zoom-bg" type="button" data-action="yangzhai-luopan-close" aria-label="关闭罗盘大图"></button>
-      <img class="yangzhai-luopan-zoom-img" src="../images/wentian-prototype-assets/yangzhai-luopan.png" alt="罗盘大图">
+      <div class="yangzhai-luopan-zoom-halo" aria-hidden="true"></div>
+      ${yangzhaiDirectionCross("yangzhai-zoom-cross", 39, 152, 312, false, "zoom")}
       <div class="yangzhai-luopan-bearing" aria-hidden="true"><span></span></div>
       <button class="yangzhai-compass-start" type="button" data-action="yangzhai-compass-start">开启手机指南针</button>
-      <div class="yangzhai-compass-status" data-yangzhai-compass-status aria-live="polite">红箭头固定为手机上边，开启后盘面跟随方向</div>
-      <div class="yangzhai-compass-tools" aria-label="罗盘校准">
+      <div class="yangzhai-compass-status" data-yangzhai-compass-status aria-live="polite">十字盘不遮挡加号；开启后随手机方向校准</div>
+      <div class="yangzhai-compass-tools" aria-label="方位校准">
         <button type="button" data-action="yangzhai-compass-adjust" data-delta="-10">左调10°</button>
         <button type="button" data-action="yangzhai-compass-reset">归零</button>
         <button type="button" data-action="yangzhai-compass-adjust" data-delta="10">右调10°</button>
       </div>
-      <button class="yangzhai-luopan-zoom-close" type="button" data-action="yangzhai-luopan-close" aria-label="关闭罗盘大图">×</button>
+      <button class="yangzhai-luopan-zoom-close" type="button" data-action="yangzhai-luopan-close" aria-label="关闭方位十字">×</button>
     </div>
   `);
 }
@@ -9262,7 +9280,7 @@ async function startYangzhaiCompass() {
     yangzhaiCompassHandler = handleYangzhaiCompassOrientation;
     window.addEventListener("deviceorientationabsolute", yangzhaiCompassHandler, true);
     window.addEventListener("deviceorientation", yangzhaiCompassHandler, true);
-    setYangzhaiCompassStatus("正在读取方向；红箭头固定，盘面会转到当前朝向", "active");
+    setYangzhaiCompassStatus("正在读取方向；红箭头固定，十字盘会转到当前朝向", "active");
   } catch (_) {
     setYangzhaiCompassStatus("指南针启动失败，请用 HTTPS 手机浏览器打开", "warn");
   }
@@ -9416,6 +9434,21 @@ function getYangzhaiGridMetrics(compact = false) {
   };
 }
 
+function yangzhaiDirectionCross(id, x, y, size, compact = false, variant = "inline") {
+  return `
+    <div class="yangzhai-direction-cross is-${variant}${compact ? " is-compact" : ""}" data-node-id="${id}" style="left:${x}px;top:${y}px;width:${size}px;height:${size}px;">
+      <span class="yz-cross-ring"></span>
+      <span class="yz-cross-line yz-cross-line-ns"></span>
+      <span class="yz-cross-line yz-cross-line-ew"></span>
+      <span class="yz-cross-dot"></span>
+      <span class="yz-dir yz-n">北</span>
+      <span class="yz-dir yz-e">东</span>
+      <span class="yz-dir yz-s">南</span>
+      <span class="yz-dir yz-w">西</span>
+    </div>
+  `;
+}
+
 function yangzhaiCompassGrid(id, compact = false) {
   const metrics = getYangzhaiGridMetrics(compact);
   return YANGZHAI_PALACES.map((palace, index) => {
@@ -9424,23 +9457,24 @@ function yangzhaiCompassGrid(id, compact = false) {
     const x = metrics.x + col * metrics.cellW;
     const y = metrics.y + row * metrics.cellH;
     if (palace.key === "center") {
+      const crossSize = compact ? 64 : 88;
+      const crossX = x + (metrics.cellW - crossSize) / 2;
+      const crossY = y + (compact ? 18 : 22);
       return `
         ${figBox(`${id}-center-clear`, x, y, metrics.cellW, metrics.cellH, "", "border:1px solid #eadbc6;background:#fffdf7;")}
-        ${figText(`${id}-center-title`, "罗盘方位", x, y + (compact ? 14 : 28), metrics.cellW, compact ? 14 : 16, "#241811", 700, "center", "font-family:'Noto Serif SC','Songti SC',serif;")}
-        ${figImage(`${id}-luopan`, "../images/wentian-prototype-assets/yangzhai-luopan.png", x + (compact ? 31 : 16), y + (compact ? 38 : 66), compact ? 54 : 84, compact ? 54 : 84, "object-fit:contain;border-radius:50%;background:transparent;")}
-        ${compact ? "" : `${figBox(`${id}-zoom-pill`, x + 21, y + 124, 74, 28, "", "border:1px solid #ead2a9;border-radius:14px;background:#fff2df;")}
-        ${figText(`${id}-zoom-text`, "放大罗盘", x + 21, y + 131, 74, 11, "#8a5a22", 700, "center", "line-height:1.15;")}`}
-        ${figButton(`${id}-luopan-hit`, x, y + (compact ? 24 : 28), metrics.cellW, compact ? 70 : 128, 'data-action="yangzhai-luopan-open" aria-label="放大罗盘"', "", "cursor:zoom-in;")}
+        ${yangzhaiDirectionCross(`${id}-center-cross`, crossX, crossY, crossSize, compact)}
+        ${compact ? "" : `${figBox(`${id}-zoom-pill`, x + 21, y + 116, 74, 28, "", "border:1px solid #ead2a9;border-radius:14px;background:#fff2df;")}
+        ${figText(`${id}-zoom-text`, "放大方位", x + 21, y + 123, 74, 11, "#8a5a22", 700, "center", "line-height:1.15;")}`}
+        ${figButton(`${id}-luopan-hit`, x, y + (compact ? 18 : 16), metrics.cellW, compact ? 82 : metrics.cellH, 'data-action="yangzhai-luopan-open" aria-label="放大方位"', "", "z-index:85;cursor:zoom-in;")}
       `;
     }
     const items = getYangzhaiPlacementItems(palace.key);
     return `
-      ${figBox(`${id}-cell-header-line-${index}`, x, y + (compact ? 50 : YANGZHAI_CELL_HEADER_H), metrics.cellW, 1, "", "background:#eadbc6;")}
       ${figText(`${id}-gua-${index}`, palace.gua, x + 12, y + (compact ? 8 : 10), 30, compact ? 23 : 26, "#9f4032", 900, "left", "line-height:1;font-family:'Noto Serif SC','Songti SC',serif;")}
       ${figText(`${id}-dir-${index}`, `(${palace.dir})`, x + (compact ? 42 : 43), y + (compact ? 12 : 15), 62, compact ? 9 : 10, "#2d241c", 700, "left", "white-space:nowrap;font-family:'Noto Sans SC','Microsoft YaHei',sans-serif;")}
       ${figText(`${id}-role-${index}`, palace.role, x + 13, y + (compact ? 34 : 39), 84, compact ? 10 : 12, "#55493d", 500, "left", "white-space:nowrap;font-family:'Noto Sans SC','Microsoft YaHei',sans-serif;")}
       ${yangzhaiRoomAvatar(`${id}-room-${index}`, x, y, items, compact)}
-      ${figButton(`${id}-cell-hit-${index}`, x, y, metrics.cellW, metrics.cellH, `data-action="yangzhai-open" data-palace="${palace.key}"`)}
+      ${figButton(`${id}-cell-hit-${index}`, x, y, metrics.cellW, metrics.cellH, `data-action="yangzhai-open" data-palace="${palace.key}"`, "", "z-index:85;")}
     `;
   }).join("");
 }
@@ -9569,33 +9603,34 @@ function sourceYangzhaiResultScreen() {
 
 function sourceYangzhaiTutorialScreen() {
   const steps = [
-    ["1", "站在户型中心", "先确定房屋中心点，再按手机罗盘或户型图标出八方。"],
-    ["2", "点击方位加号", "每个宫位都可点，进入选择成员或空间。"],
-    ["3", "选择并确认", "父母、子女、厨房、厕所、客厅、清空全部保留。"],
-    ["4", "解读分析", "返回九宫后点解读，生成阳宅结果。"]
+    ["01", "定中宫", "站在户型中心，以手机指南针或户型图确认八方。"],
+    ["02", "安人事", "点方位加号，放入父母子女、厨房、厕所、客厅。"],
+    ["03", "看重点", "系统按卦位生成摘要，先读偏旺、相合、需调整。"],
+    ["04", "可重排", "不确定时可清空、长幼归位，再重新解读。"]
   ];
   return `
     ${yangzhaiBg("yz45")}
     ${yangzhaiHeader("yz45", "教程", "")}
-    ${figText("yz45-title", "地脉道怎么用", 24, 112, 180, 22, "#201812", 900)}
-    ${figText("yz45-sub", "保留原流程：定方位、点加号、选成员/空间、再解读。", 24, 148, 310, 13, "#817568", 600, "left", "line-height:1.5;")}
-    ${figBox("yz45-intro", 24, 204, 342, 104, "", "border:1px solid #eadfce;border-radius:18px;background:#fffdf8;box-shadow:0 10px 24px rgba(70,45,25,.07);")}
-    ${figImage("yz45-intro-luopan", "../images/wentian-prototype-assets/yangzhai-luopan.png", 44, 224, 60, 60, "object-fit:contain;border-radius:50%;")}
-    ${figText("yz45-intro-title", "核心功能不变", 122, 226, 150, 17, "#201812", 900, "left", "font-family:'Noto Serif SC','Songti SC',serif;")}
-    ${figText("yz45-intro-copy", "样式升级不改变九宫、选项、按钮和结果逻辑。", 122, 256, 206, 12, "#817568", 600, "left", "line-height:1.45;")}
+    ${figText("yz45-title", "3分钟排出宅盘", 24, 120, 248, 28, "#201812", 900, "left", "line-height:1.1;font-family:'Noto Serif SC','Songti SC',serif;")}
+    ${figText("yz45-sub", "先定中宫，再分八方，最后把家人与空间放入宫位。", 24, 164, 318, 13, "#817568", 700, "left", "line-height:1.55;")}
+    ${figBox("yz45-intro", 24, 228, 342, 136, "", "border:1px solid #ead8b8;border-radius:22px;background:#fffdf8;box-shadow:0 12px 28px rgba(70,45,25,.07);")}
+    ${figBox("yz45-intro-disc", 46, 254, 86, 86, "", "border:1px solid #dcc39c;border-radius:43px;background:#f4e4c6;")}
+    ${yangzhaiDirectionCross("yz45-intro-cross", 62, 270, 54, true)}
+    ${figText("yz45-intro-title", "核心只有三步", 150, 262, 168, 20, "#201812", 900, "left", "font-family:'Noto Serif SC','Songti SC',serif;")}
+    ${figText("yz45-intro-copy", "定位、安位、解读。页面里的加号就是每个宫位的入口。", 150, 300, 170, 13, "#6f6254", 700, "left", "line-height:1.55;")}
     ${steps.map(([num, title, desc], index) => {
-      const y = 342 + index * 82;
+      const y = 400 + index * 78;
       return `
-        ${figBox(`yz45-step-${index}`, 24, y, 342, 66, "", "border:1px solid #eadfce;border-radius:16px;background:#fffdf8;box-shadow:0 8px 18px rgba(70,45,25,.05);")}
-        ${figBox(`yz45-num-${index}`, 44, y + 16, 34, 34, "", "border-radius:17px;background:linear-gradient(180deg,#b74e39,#983323);")}
-        ${figText(`yz45-num-text-${index}`, num, 44, y + 25, 34, 12, "#fffaf3", 900, "center")}
-        ${figText(`yz45-step-title-${index}`, title, 94, y + 14, 160, 15, "#201812", 900)}
-        ${figText(`yz45-step-desc-${index}`, desc, 94, y + 38, 230, 12, "#817568", 600, "left", "line-height:1.35;")}
+        ${figBox(`yz45-step-${index}`, 24, y, 342, 66, "", "border:1px solid #ead8b8;border-radius:20px;background:#fffdf8;box-shadow:0 8px 18px rgba(70,45,25,.04);")}
+        ${figText(`yz45-num-text-${index}`, num, 42, y + 21, 42, 16, "#a2493d", 900, "center", "font-family:'Noto Sans SC','Microsoft YaHei',sans-serif;")}
+        ${figBox(`yz45-step-line-${index}`, 94, y + 18, 1, 30, "", "background:#ead2ad;")}
+        ${figText(`yz45-step-title-${index}`, title, 112, y + 20, 66, 17, "#201812", 900, "left", "font-family:'Noto Serif SC','Songti SC',serif;")}
+        ${figText(`yz45-step-desc-${index}`, desc, 190, y + 16, 144, 12, "#6f6254", 700, "left", "line-height:1.45;font-family:'Noto Sans SC','Microsoft YaHei',sans-serif;")}
       `;
     }).join("")}
-    ${figBox("yz45-go", 42, 728, 306, 50, "", "border-radius:25px;background:linear-gradient(180deg,#b74e39,#983323);box-shadow:0 12px 24px rgba(158,61,43,.22);")}
-    ${figButton("yz45-go-hit", 42, 728, 306, 50, 'data-route="screen-42"')}
-    ${figText("yz45-go-text", "开始安位", 42, 743, 306, 14, "#fffaf3", 900, "center")}
+    ${figBox("yz45-go", 42, 748, 306, 58, "", "border-radius:29px;background:linear-gradient(180deg,#b74e39,#983323);box-shadow:0 14px 26px rgba(158,61,43,.22);")}
+    ${figButton("yz45-go-hit", 42, 748, 306, 58, 'data-route="screen-42"')}
+    ${figText("yz45-go-text", "开始排宅盘", 42, 767, 306, 17, "#fffaf3", 900, "center")}
   `;
 }
 
@@ -10896,7 +10931,7 @@ function sourceDashboardHomeScreen() {
     ${figBox("source-1-master-go", 278, 356, 72, 38, "", "border-radius:19px;background:#c08a2c;")}
     ${figText("source-1-master-go-text", "去问他", 286, 367, 56, 13, "#fff", 700, "center")}
 
-    ${[["合盘分析", "命理相合，缘分几许", "01-feature-hepan.png", "hepan", 438], ["六爻占卜", "铜钱起卦，纳甲解卦", "01-feature-gua.png", "screen-17", 547], ["阳宅地脉", "罗盘九宫，安位解读", "01-feature-gua.png", "screen-42", 656], ["六壬法", "农历月日时，即刻起课", "01-feature-gua.png", "screen-46", 765]].map(([title, sub, icon, route, y], index) => `
+    ${[["合盘分析", "命理相合，缘分几许", "01-feature-hepan.png", "hepan", 438], ["六爻占卜", "铜钱起卦，纳甲解卦", "01-feature-gua.png", "screen-17", 547], ["阳宅地脉", "方位九宫，安位解读", "01-feature-gua.png", "screen-42", 656], ["六壬法", "农历月日时，即刻起课", "01-feature-gua.png", "screen-46", 765]].map(([title, sub, icon, route, y], index) => `
       ${figBox(`source-1-feature-${index}`, 18, y, 354, 96, "converted-card", "border-radius:14px;box-shadow:0 8px 20px rgba(70,45,25,.1);background:#fffdfb;")}
       ${figText(`source-1-feature-title-${index}`, title, 36, y + 30, 150, 21, "#25221f", 800)}
       ${figText(`source-1-feature-sub-${index}`, sub, 36, y + 58, 190, 14, "#969087", 500)}
@@ -11525,17 +11560,22 @@ function fitActivePhoneShell() {
   const rootStyle = getComputedStyle(document.documentElement);
   const safeTop = desktop ? 0 : (parseFloat(rootStyle.getPropertyValue("--wentian-safe-top")) || 0);
   const safeBottom = desktop ? 0 : (parseFloat(rootStyle.getPropertyValue("--wentian-safe-bottom")) || 0);
-  const horizontalAvailable = desktop ? Math.max(320, Math.min(viewportWidth, 430)) : viewportWidth;
+  const renderedWidth = view.getBoundingClientRect?.().width || wrap.getBoundingClientRect?.().width || viewportWidth;
+  const horizontalAvailable = desktop ? Math.max(320, Math.min(viewportWidth, 430)) : Math.min(viewportWidth, renderedWidth);
   const verticalChromeSpace = desktop ? 48 : 0;
   const verticalAvailable = Math.max(560, viewportHeight - verticalChromeSpace - safeTop - safeBottom);
   const rawHeight = parseFloat(phone.style.height) || phone.offsetHeight || WENTIAN_PHONE_HEIGHT;
   const heightBasis = rawHeight <= 900 ? rawHeight : WENTIAN_PHONE_HEIGHT;
-  const widthScale = desktop ? Math.min(1, horizontalAvailable / WENTIAN_PHONE_WIDTH) : Math.max(0.78, horizontalAvailable / WENTIAN_PHONE_WIDTH);
+  const widthScale = Math.max(0.78, Math.min(1, horizontalAvailable / WENTIAN_PHONE_WIDTH));
   const heightScale = Math.min(1, verticalAvailable / heightBasis);
   const scale = desktop
     ? Math.min(widthScale, heightScale)
-    : (viewportWidth <= 520 ? widthScale : Math.max(0.78, Math.min(widthScale, heightScale)));
+    : widthScale;
+  const edgeFit = !desktop && horizontalAvailable <= WENTIAN_PHONE_WIDTH;
   phone.style.setProperty("--wentian-phone-scale", String(scale));
+  phone.style.transform = `scale(${scale})`;
+  phone.style.transformOrigin = edgeFit ? "top left" : "top center";
+  wrap.style.justifyContent = edgeFit ? "flex-start" : "center";
   wrap.style.height = `${Math.ceil(rawHeight * scale)}px`;
 }
 

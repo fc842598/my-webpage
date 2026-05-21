@@ -532,43 +532,134 @@ html[lang="en"] [data-node-id="wt15-seal-text"] {
   object-fit: cover;
 }
 
-.yangzhai-luopan-zoom {
+.yangzhai-direction-cross {
   position: absolute;
-  left: 0;
-  top: 0;
-  z-index: 120;
-  width: 390px;
-  height: 844px;
-}
-
-.yangzhai-luopan-zoom-bg {
-  position: absolute;
-  inset: 0;
-  border: 0;
-  background: rgba(24, 20, 16, 0.52);
-}
-
-.yangzhai-luopan-zoom-img {
-  position: absolute;
-  left: 16px;
-  top: 188px;
-  width: 358px;
-  height: 358px;
+  display: block;
+  border: 1px solid rgba(205, 174, 126, 0.78);
   border-radius: 50%;
-  background: transparent;
-  object-fit: contain;
-  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.24);
+  background:
+    radial-gradient(circle at 50% 50%, rgba(255, 253, 248, 0.96) 0 18%, rgba(255, 246, 231, 0.82) 19% 44%, rgba(222, 194, 150, 0.18) 45% 100%);
+  box-shadow: inset 0 0 0 8px rgba(255, 255, 255, 0.34), 0 8px 18px rgba(98, 58, 28, 0.08);
+  color: #8a5a22;
+  pointer-events: none;
+}
+
+.yangzhai-direction-cross .yz-cross-ring,
+.yangzhai-direction-cross .yz-cross-line,
+.yangzhai-direction-cross .yz-cross-dot,
+.yangzhai-direction-cross .yz-dir {
+  position: absolute;
+  display: block;
+}
+
+.yangzhai-direction-cross .yz-cross-ring {
+  inset: 18%;
+  border: 1px solid rgba(194, 159, 103, 0.45);
+  border-radius: 50%;
+}
+
+.yangzhai-direction-cross .yz-cross-line {
+  background: linear-gradient(90deg, rgba(165, 74, 58, 0), rgba(165, 74, 58, 0.72), rgba(165, 74, 58, 0));
+}
+
+.yangzhai-direction-cross .yz-cross-line-ns {
+  left: calc(50% - 1px);
+  top: 15%;
+  bottom: 15%;
+  width: 2px;
+  background: linear-gradient(180deg, rgba(165, 74, 58, 0), rgba(165, 74, 58, 0.74), rgba(165, 74, 58, 0));
+}
+
+.yangzhai-direction-cross .yz-cross-line-ew {
+  top: calc(50% - 1px);
+  left: 15%;
+  right: 15%;
+  height: 2px;
+}
+
+.yangzhai-direction-cross .yz-cross-dot {
+  left: 50%;
+  top: 50%;
+  width: 9%;
+  height: 9%;
+  border-radius: 50%;
+  background: #a94437;
+  box-shadow: 0 0 0 4px rgba(255, 250, 243, 0.92);
+  transform: translate(-50%, -50%);
+}
+
+.yangzhai-direction-cross .yz-dir {
+  width: 28px;
+  height: 18px;
+  font-size: 13px;
+  font-weight: 900;
+  line-height: 18px;
+  text-align: center;
+  text-shadow: 0 1px 0 rgba(255, 253, 248, 0.9);
+}
+
+.yangzhai-direction-cross .yz-n { left: calc(50% - 14px); top: 5%; }
+.yangzhai-direction-cross .yz-e { right: 4%; top: calc(50% - 9px); }
+.yangzhai-direction-cross .yz-s { left: calc(50% - 14px); bottom: 5%; }
+.yangzhai-direction-cross .yz-w { left: 4%; top: calc(50% - 9px); }
+
+.yangzhai-direction-cross.is-compact .yz-dir {
+  width: 22px;
+  height: 14px;
+  font-size: 10px;
+  line-height: 14px;
+}
+
+.yangzhai-direction-cross.is-compact .yz-n,
+.yangzhai-direction-cross.is-compact .yz-s {
+  left: calc(50% - 11px);
+}
+
+.yangzhai-direction-cross.is-zoom {
+  opacity: 0.76;
   transform: rotate(var(--yangzhai-luopan-rotation, 0deg));
   transform-origin: center;
   transition: transform 0.18s ease-out;
 }
 
+.yangzhai-direction-cross.is-zoom .yz-dir {
+  width: 38px;
+  height: 24px;
+  font-size: 18px;
+  line-height: 24px;
+}
+
+.yangzhai-direction-cross.is-zoom .yz-n,
+.yangzhai-direction-cross.is-zoom .yz-s {
+  left: calc(50% - 19px);
+}
+
+.yangzhai-luopan-zoom {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 70;
+  width: 390px;
+  height: 844px;
+  pointer-events: none;
+}
+
+.yangzhai-luopan-zoom-halo {
+  position: absolute;
+  left: -76px;
+  top: 116px;
+  width: 542px;
+  height: 542px;
+  border-radius: 50%;
+  background: rgba(224, 202, 166, 0.28);
+}
+
 .yangzhai-luopan-bearing {
   position: absolute;
-  left: 16px;
-  top: 188px;
-  width: 358px;
-  height: 358px;
+  left: 39px;
+  top: 152px;
+  width: 312px;
+  height: 312px;
   border-radius: 50%;
   pointer-events: none;
 }
@@ -576,9 +667,9 @@ html[lang="en"] [data-node-id="wt15-seal-text"] {
 .yangzhai-luopan-bearing::before {
   position: absolute;
   left: 50%;
-  top: 18px;
+  top: 22px;
   width: 4px;
-  height: 162px;
+  height: 126px;
   border-radius: 999px;
   background: #d72424;
   box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.82), 0 4px 12px rgba(124, 0, 0, 0.28);
@@ -589,7 +680,7 @@ html[lang="en"] [data-node-id="wt15-seal-text"] {
 .yangzhai-luopan-bearing::after {
   position: absolute;
   left: 50%;
-  top: 8px;
+  top: 12px;
   width: 0;
   height: 0;
   border-right: 9px solid transparent;
@@ -615,80 +706,83 @@ html[lang="en"] [data-node-id="wt15-seal-text"] {
 
 .yangzhai-compass-start {
   position: absolute;
-  left: 78px;
-  top: 630px;
-  width: 234px;
-  height: 42px;
-  border: 1px solid rgba(255, 255, 255, 0.78);
-  border-radius: 21px;
-  background: rgba(255, 255, 255, 0.9);
-  color: #24201d;
-  font-size: 15px;
+  left: 122px;
+  top: 98px;
+  width: 146px;
+  height: 34px;
+  border: 1px solid rgba(169, 68, 55, 0.32);
+  border-radius: 17px;
+  background: rgba(255, 253, 248, 0.94);
+  color: #8a3d32;
+  font-size: 13px;
   font-weight: 700;
-  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.18);
+  box-shadow: 0 8px 20px rgba(98, 58, 28, 0.14);
+  pointer-events: auto;
 }
 
 .yangzhai-compass-status {
   position: absolute;
-  left: 34px;
-  top: 684px;
-  width: 322px;
+  left: 38px;
+  top: 586px;
+  width: 314px;
   padding: 4px 8px;
   border-radius: 14px;
-  background: rgba(24, 20, 16, 0.38);
-  color: rgba(255, 255, 255, 0.88);
-  font-size: 13px;
+  background: rgba(255, 253, 248, 0.84);
+  color: #7a6a58;
+  font-size: 12px;
   font-weight: 600;
   line-height: 1.45;
   text-align: center;
-  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.52);
+  box-shadow: 0 8px 18px rgba(98, 58, 28, 0.08);
+  pointer-events: none;
 }
 
 .yangzhai-compass-status[data-tone="active"] {
-  color: #fff6df;
+  color: #8a3d32;
 }
 
 .yangzhai-compass-status[data-tone="warn"] {
-  color: #ffd0c8;
+  color: #a94437;
 }
 
 .yangzhai-compass-tools {
   position: absolute;
-  left: 34px;
-  top: 728px;
+  left: 48px;
+  top: 628px;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 8px;
-  width: 322px;
+  width: 294px;
+  pointer-events: auto;
 }
 
 .yangzhai-compass-tools button {
-  height: 34px;
-  border: 1px solid rgba(255, 255, 255, 0.58);
-  border-radius: 17px;
-  background: rgba(255, 255, 255, 0.22);
-  color: rgba(255, 255, 255, 0.94);
-  font-size: 13px;
+  height: 30px;
+  border: 1px solid rgba(217, 197, 168, 0.88);
+  border-radius: 15px;
+  background: rgba(255, 253, 248, 0.84);
+  color: #806448;
+  font-size: 12px;
   font-weight: 700;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.42);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22);
 }
 
 .yangzhai-luopan-zoom-close {
   position: absolute;
-  left: 169px;
-  top: 564px;
+  left: 326px;
+  top: 98px;
   display: grid;
   place-items: center;
-  width: 52px;
-  height: 52px;
-  border: 3px solid rgba(255, 255, 255, 0.92);
+  width: 34px;
+  height: 34px;
+  border: 1px solid rgba(217, 197, 168, 0.88);
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.18);
-  color: #fff;
-  font-size: 42px;
-  font-weight: 300;
+  background: rgba(255, 253, 248, 0.94);
+  color: #8a3d32;
+  font-size: 24px;
+  font-weight: 500;
   line-height: 1;
+  box-shadow: 0 8px 20px rgba(98, 58, 28, 0.14);
+  pointer-events: auto;
 }
 
 .fig-card {
@@ -2111,7 +2205,7 @@ html[lang="en"] .wentian-archive-confirm {
 .wentian-hepan-head {
   position: absolute;
   left: 24px;
-  top: 348px;
+  top: 260px;
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
@@ -2152,9 +2246,9 @@ html[lang="en"] .wentian-archive-confirm {
 .wentian-hepan-list {
   position: absolute;
   left: 22px;
-  top: 402px;
+  top: 310px;
   width: 346px;
-  height: 292px;
+  height: 382px;
   overflow-y: auto;
   padding: 0 2px 10px;
   scrollbar-width: none;
