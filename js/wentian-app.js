@@ -9435,7 +9435,6 @@ function yangzhaiCompassGrid(id, compact = false) {
     }
     const items = getYangzhaiPlacementItems(palace.key);
     return `
-      ${figBox(`${id}-cell-header-line-${index}`, x, y + (compact ? 50 : YANGZHAI_CELL_HEADER_H), metrics.cellW, 1, "", "background:#eadbc6;")}
       ${figText(`${id}-gua-${index}`, palace.gua, x + 12, y + (compact ? 8 : 10), 30, compact ? 23 : 26, "#9f4032", 900, "left", "line-height:1;font-family:'Noto Serif SC','Songti SC',serif;")}
       ${figText(`${id}-dir-${index}`, `(${palace.dir})`, x + (compact ? 42 : 43), y + (compact ? 12 : 15), 62, compact ? 9 : 10, "#2d241c", 700, "left", "white-space:nowrap;font-family:'Noto Sans SC','Microsoft YaHei',sans-serif;")}
       ${figText(`${id}-role-${index}`, palace.role, x + 13, y + (compact ? 34 : 39), 84, compact ? 10 : 12, "#55493d", 500, "left", "white-space:nowrap;font-family:'Noto Sans SC','Microsoft YaHei',sans-serif;")}
