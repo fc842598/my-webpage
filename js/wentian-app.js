@@ -11544,17 +11544,17 @@ function fitActivePhoneShell() {
   const safeTop = desktop ? 0 : (parseFloat(rootStyle.getPropertyValue("--wentian-safe-top")) || 0);
   const safeBottom = desktop ? 0 : (parseFloat(rootStyle.getPropertyValue("--wentian-safe-bottom")) || 0);
   const renderedWidth = view.getBoundingClientRect?.().width || wrap.getBoundingClientRect?.().width || viewportWidth;
-  const horizontalAvailable = desktop ? Math.max(320, Math.min(viewportWidth, 430)) : renderedWidth;
+  const horizontalAvailable = desktop ? Math.max(320, Math.min(viewportWidth, 430)) : Math.min(viewportWidth, renderedWidth);
   const verticalChromeSpace = desktop ? 48 : 0;
   const verticalAvailable = Math.max(560, viewportHeight - verticalChromeSpace - safeTop - safeBottom);
   const rawHeight = parseFloat(phone.style.height) || phone.offsetHeight || WENTIAN_PHONE_HEIGHT;
   const heightBasis = rawHeight <= 900 ? rawHeight : WENTIAN_PHONE_HEIGHT;
-  const widthScale = desktop ? Math.min(1, horizontalAvailable / WENTIAN_PHONE_WIDTH) : Math.max(0.78, horizontalAvailable / WENTIAN_PHONE_WIDTH);
+  const widthScale = Math.max(0.78, Math.min(1, horizontalAvailable / WENTIAN_PHONE_WIDTH));
   const heightScale = Math.min(1, verticalAvailable / heightBasis);
   const scale = desktop
     ? Math.min(widthScale, heightScale)
-    : (viewportWidth <= 520 ? widthScale : Math.max(0.78, Math.min(widthScale, heightScale)));
-  const edgeFit = !desktop && viewportWidth <= 520;
+    : widthScale;
+  const edgeFit = !desktop && horizontalAvailable <= WENTIAN_PHONE_WIDTH;
   phone.style.setProperty("--wentian-phone-scale", String(scale));
   phone.style.transform = `scale(${scale})`;
   phone.style.transformOrigin = edgeFit ? "top left" : "top center";
