@@ -1144,7 +1144,7 @@ const WENTIAN_SUPABASE_URL = "https://jmmlijqeexdbxgpfyhgf.supabase.co";
 const WENTIAN_SUPABASE_KEY = "sb_publishable_Y2W9eDscfJwK1sgSitbmFA_ta5btvaR";
 const WENTIAN_GOOGLE_REDIRECT_BRIDGE = "https://fc842598.github.io/my-webpage/pages/wentian-app.html";
 const WENTIAN_CHART_AI_STORAGE_KEY = "wentian-app-chart-ai-v2";
-const WENTIAN_HTML2PDF_URL = "https://cdn.jsdelivr.net/npm/html2pdf.js@0.10.1/dist/html2pdf.bundle.min.js";
+const WENTIAN_HTML2PDF_URL = "../vendor/html2pdf/html2pdf.bundle.min.js?v=20260521-local-vendor";
 const WENTIAN_CHART_SPECIAL_MODULES = ["shengong", "hunyin", "jiankang", "caiyun", "shiye"];
 const WENTIAN_CHART_AI_TASKS = [
   { module: "overall", label: "整体批命" },

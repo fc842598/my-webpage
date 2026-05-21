@@ -2,7 +2,7 @@
   const storageKey = 'yt_mingbook_onepage_profile_v1';
   const legacyHistoryKey = 'yt_zw_history_v1';
   const chartHistoryKey = 'ziwei_local_chart_history_v1';
-  const html2PdfUrl = 'https://cdn.jsdelivr.net/npm/html2pdf.js@0.10.1/dist/html2pdf.bundle.min.js';
+  const html2PdfUrl = '../vendor/html2pdf/html2pdf.bundle.min.js?v=20260521-local-vendor';
   const palaceOrder = ['巳', '午', '未', '申', '辰', null, null, '酉', '卯', null, null, '戌', '寅', '丑', '子', '亥'];
   const shichenNames = ['子', '丑', '寅', '卯', '辰', '巳', '午', '未', '申', '酉', '戌', '亥'];
   const stemElements = { 甲: '木', 乙: '木', 丙: '火', 丁: '火', 戊: '土', 己: '土', 庚: '金', 辛: '金', 壬: '水', 癸: '水' };
