@@ -445,7 +445,7 @@ body.mbp-auth-open {
 
 @media (min-width: 1021px) {
   :root {
-    --mbp-ui-scale: .9;
+    --mbp-ui-scale: .85;
   }
 }
 
@@ -6165,6 +6165,94 @@ p.mbp-topic-detail {
 .is-decoded .mbp-special-card p,
 .is-decoded .mbp-chapters p {
   color: #ddcca2;
+}
+
+@media (min-width: 1021px) {
+  .mbp-auth-trigger-meta,
+  .mbp-book-menu small,
+  .mbp-yijing-years small,
+  .mbp-yijing-art-placeholder span,
+  .mbp-xb-profile-copy small,
+  .mbp-xb-profile-copy em,
+  .chat-badge,
+  .chat-sender-read-pill {
+    font-size: 12px;
+  }
+
+  .chat-memory-source {
+    font-size: 12.5px;
+  }
+
+  .mbp-auth-head span,
+  .mbp-auth-session-kicker,
+  .mbp-auth-session-badge,
+  .mbp-auth-session-grid span,
+  .mbp-spine-profile small,
+  .mbp-client-empty,
+  .mbp-catalog-title em,
+  .mbp-path-strip b,
+  .mbp-report-action-bar span,
+  .mbp-decode-progress-label,
+  .mbp-module-actions button,
+  .mbp-special-topic-card header span,
+  .mbp-advice-risk li b,
+  .mbp-book-client p,
+  .mbp-book-menu-head em,
+  .mbp-book-progress-top span,
+  .mbp-book-progress p,
+  .mbp-yijing-help,
+  .mbp-yijing-help::after,
+  .mbp-yijing-help-note,
+  .mbp-yijing-years button,
+  .mbp-yijing-art figcaption,
+  .mbp-decade-rail span,
+  .mbp-decade-rail em,
+  .mbp-xiaolian-age-rail strong,
+  .mbp-luck-age-note,
+  .mbp-luck-timing b,
+  .mbp-curve-verify-head span,
+  .mbp-curve-note,
+  .chat-background-status,
+  .xb-starter-tab::after,
+  .chat-sender,
+  .chat-sys-msg,
+  #aip-panel-chat .xb-read-pill,
+  #aip-panel-chat .xb-starters-kicker,
+  #aip-panel-chat .xb-composer-hint {
+    font-size: 13px;
+  }
+
+  .mbp-auth-field span,
+  .mbp-auth-error,
+  .mbp-auth-note,
+  .mbp-auth-session-top small,
+  .mbp-spine-kicker,
+  .mbp-client-item b,
+  .mbp-path-strip span,
+  .mbp-report-pulse span,
+  .mbp-special-card span,
+  .mbp-ai-status,
+  .mbp-special-overview span,
+  .mbp-advice-risk span,
+  .is-decoded .mbp-special-card .mbp-insight-points li,
+  .mbp-book-kicker,
+  .mbp-book-cover .mbp-pdf-pack-btn small,
+  .mbp-yijing-source-label,
+  .mbp-yijing-image-reading,
+  .mbp-yijing-image-reading strong,
+  .mbp-chapter-ai-btn,
+  .mbp-luck-kv p,
+  .mbp-luck-summary p,
+  .mbp-xiaolian-grid b,
+  .mbp-xiaolian-grid p,
+  .mbp-curve-label,
+  .mbp-footer,
+  .chat-starter-btn,
+  .xb-starter-tab,
+  .chat-msg-assistant::before,
+  .chat-msg-user::after {
+    font-size: 14px;
+  }
 }
 
 @media (max-width: 1020px) {
