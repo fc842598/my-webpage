@@ -6713,6 +6713,7 @@ function sourceMineScreen(screen) {
     ${figText("source-31-sub", "账户与偏好设置", 18, 101, 180, 14, "#8f857a")}
     ${figBox("source-31-gear", 338, 56, 38, 38, "", "border-radius:19px;background:#fff;box-shadow:0 5px 14px rgba(80,55,28,.10);")}
     ${figText("source-31-gear-text", "⚙", 338, 64, 38, 18, "#b88c33", 700, "center")}
+    ${figButton("source-31-gear-hit", 336, 54, 42, 42, 'data-route="screen-38" aria-label="账户设置"', "", "z-index:36;")}
     ${figBox("source-31-profile", 16, 126, 358, 96, "converted-card", "border-radius:12px;box-shadow:0 6px 16px rgba(74,55,32,.08);")}
     ${figBox("source-31-avatar", 34, 144, 60, 60, "", "border-radius:30px;background:#b88c33;")}
     ${figText("source-31-avatar-icon", escapeHtml(account.initial), 34, 157, 60, 28, "#fff", 700, "center")}
