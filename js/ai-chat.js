@@ -39,9 +39,9 @@
     try {
       var qsBase = new URLSearchParams(location.search).get('aiBackendBase') || '';
       var cfgBase = window.SITE_CONFIG && window.SITE_CONFIG.aiBackendBase;
-      return (qsBase || cfgBase || 'https://ai-piming-backend-production.up.railway.app').replace(/\/$/, '');
+      return (qsBase || cfgBase || 'https://api.yuetianai.com').replace(/\/$/, '');
     } catch (_) {
-      return 'https://ai-piming-backend-production.up.railway.app';
+      return 'https://api.yuetianai.com';
     }
   }
 

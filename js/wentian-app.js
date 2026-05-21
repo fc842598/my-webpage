@@ -1185,14 +1185,16 @@ const WENTIAN_CLIENT_ID_KEY = "ziwei_client_id";
 const WENTIAN_LANGUAGE_STORAGE_KEY = "wentian-app-language-v1";
 const WENTIAN_PROFILE_STORAGE_KEY = "wentian-app-profile-v1";
 const WENTIAN_AUTH_RETURN_KEY = "wentian-app-auth-return-v1";
+const WENTIAN_AUTH_SESSION_KEY = "wentian-app-auth-session-v1";
+const WENTIAN_AUTH_REFRESH_SKEW_MS = 60 * 1000;
 const WENTIAN_XU_CONTEXT_KEY = "wentian-xubanxian-context-v1";
 const WENTIAN_INVITE_PENDING_KEY = "wentian-app-pending-invite-v1";
 const WENTIAN_INVITE_LOCAL_STATUS_KEY = "wentian-app-invite-status-v1";
 const WENTIAN_MEMBER_PRODUCT_KEY = "monthly_member";
 const WENTIAN_PAYMENT_POLL_MS = 3500;
-const WENTIAN_SUPABASE_URL = "https://jmmlijqeexdbxgpfyhgf.supabase.co";
-const WENTIAN_SUPABASE_KEY = "sb_publishable_Y2W9eDscfJwK1sgSitbmFA_ta5btvaR";
 const WENTIAN_GOOGLE_REDIRECT_BRIDGE = "https://fc842598.github.io/my-webpage/pages/wentian-app.html";
+const WENTIAN_GOOGLE_ENABLED = new URLSearchParams(window.location.search).get("overseasAuth") === "1"
+  || !/^(www\.)?yuetianai\.com$/i.test(window.location.hostname);
 const WENTIAN_CHART_AI_STORAGE_KEY = "wentian-app-chart-ai-v2";
 const WENTIAN_HTML2PDF_URL = "../vendor/html2pdf/html2pdf.bundle.min.js?v=20260521-local-vendor";
 const WENTIAN_CHART_SPECIAL_MODULES = ["shengong", "hunyin", "jiankang", "caiyun", "shiye"];
@@ -1231,7 +1233,6 @@ let wentianChartCalMode = "solar";
 let wentianChartCity = null;
 let wentianMemberStatusPromise = null;
 let wentianPaymentPollTimer = null;
-let wentianAuthClient = null;
 let wentianAuthSession = null;
 let wentianAuthReadyPromise = null;
 let wentianPendingPaymentAfterLogin = false;
@@ -1353,7 +1354,7 @@ function getWentianApiBase() {
   const qs = new URLSearchParams(location.search);
   const queryBase = qs.get("aiBackendBase") || qs.get("pimingApiBase") || qs.get("apiBase") || "";
   const configBase = window.SITE_CONFIG?.aiBackendBase || "";
-  return (queryBase || configBase || "https://ai-piming-backend.vercel.app").replace(/\/+$/, "");
+  return (queryBase || configBase || "https://api.yuetianai.com").replace(/\/+$/, "");
 }
 
 function getWentianClientId() {
@@ -5035,6 +5036,29 @@ function getWentianAuthCallbackError() {
   return hashParams.get("error_description") || searchParams.get("error_description") || hashParams.get("error") || searchParams.get("error") || "";
 }
 
+function getWentianAuthCallbackValue(key) {
+  const hashValue = getWentianUrlParams(window.location.hash).get(key);
+  if (hashValue) return hashValue;
+  return getWentianUrlParams(window.location.search).get(key);
+}
+
+function buildWentianAuthSessionFromCallback() {
+  const accessToken = getWentianAuthCallbackValue("access_token");
+  const refreshToken = getWentianAuthCallbackValue("refresh_token");
+  if (!accessToken || !refreshToken) return null;
+  const expiresIn = Number(getWentianAuthCallbackValue("expires_in") || 3600);
+  const expiresAt = Number(getWentianAuthCallbackValue("expires_at"))
+    || Math.floor(Date.now() / 1000) + (Number.isFinite(expiresIn) ? expiresIn : 3600);
+  return {
+    access_token: accessToken,
+    refresh_token: refreshToken,
+    expires_at: expiresAt,
+    expires_in: Number.isFinite(expiresIn) ? expiresIn : null,
+    token_type: getWentianAuthCallbackValue("token_type") || "bearer",
+    user: null,
+  };
+}
+
 function clearWentianAuthReturnState() {
   try {
     localStorage.removeItem(WENTIAN_AUTH_RETURN_KEY);
@@ -5075,17 +5099,37 @@ function getWentianGoogleRedirectUrl() {
   return new URL(window.location.pathname, window.location.origin).toString();
 }
 
-function getWentianAuthClient() {
-  if (wentianAuthClient) return wentianAuthClient;
-  if (!window.supabase || typeof window.supabase.createClient !== "function") return null;
-  wentianAuthClient = window.supabase.createClient(WENTIAN_SUPABASE_URL, WENTIAN_SUPABASE_KEY, {
-    auth: {
-      autoRefreshToken: true,
-      detectSessionInUrl: true,
-      persistSession: true,
-    },
-  });
-  return wentianAuthClient;
+function readWentianStoredSession() {
+  try {
+    const raw = localStorage.getItem(WENTIAN_AUTH_SESSION_KEY);
+    const session = raw ? JSON.parse(raw) : null;
+    return session?.access_token && session?.user ? session : null;
+  } catch (_err) {
+    return null;
+  }
+}
+
+function saveWentianAuthSession(session) {
+  try {
+    if (session?.access_token && session?.refresh_token) {
+      localStorage.setItem(WENTIAN_AUTH_SESSION_KEY, JSON.stringify(session));
+    } else {
+      localStorage.removeItem(WENTIAN_AUTH_SESSION_KEY);
+    }
+  } catch (_err) {}
+}
+
+function setWentianAuthSession(session) {
+  wentianAuthSession = session || null;
+  saveWentianAuthSession(session);
+  wentianMemberState.loaded = false;
+  wentianOrderState.loaded = false;
+  wentianInviteState.loaded = false;
+}
+
+function isWentianSessionExpiring(session) {
+  if (!session?.expires_at) return false;
+  return Date.now() >= (Number(session.expires_at) * 1000) - WENTIAN_AUTH_REFRESH_SKEW_MS;
 }
 
 function phoneToWentianEmail(phone) {
@@ -5129,14 +5173,25 @@ function getWentianAuthDisplay() {
 }
 
 async function getWentianAuthSession(options = {}) {
-  if (wentianAuthSession && !options.force) return wentianAuthSession;
-  const client = getWentianAuthClient();
-  if (!client) return null;
+  const current = wentianAuthSession || readWentianStoredSession();
+  if (current && !options.force && !isWentianSessionExpiring(current)) {
+    wentianAuthSession = current;
+    return current;
+  }
+  if (!current?.refresh_token) {
+    wentianAuthSession = current || null;
+    return wentianAuthSession;
+  }
   try {
-    const { data } = await client.auth.getSession();
-    wentianAuthSession = data?.session || null;
+    const data = await wentianFetchJson("/api/auth/refresh", {
+      method: "POST",
+      body: { refreshToken: current.refresh_token },
+      noAuth: true,
+    });
+    setWentianAuthSession(data?.session || null);
     return wentianAuthSession;
   } catch (_err) {
+    setWentianAuthSession(null);
     return null;
   }
 }
@@ -5154,26 +5209,12 @@ function refreshWentianAuthScreens() {
 
 async function initWentianAuth() {
   if (wentianAuthReadyPromise) return wentianAuthReadyPromise;
-  const client = getWentianAuthClient();
-  if (!client) return null;
-  wentianAuthReadyPromise = client.auth.getSession().then(({ data }) => {
-    wentianAuthSession = data?.session || null;
-    client.auth.onAuthStateChange((_event, session) => {
-      wentianAuthSession = session || null;
-      wentianMemberState.loaded = false;
-      wentianOrderState.loaded = false;
-      wentianInviteState.loaded = false;
-      if (wentianAuthSession?.user) {
-        window.setTimeout(() => bindWentianPendingInvite({ rerender: true }), 80);
-        window.setTimeout(() => hydrateWentianInvite({ force: true, rerender: true }), 160);
-      }
-      if (wentianAuthSession && wentianPendingPaymentAfterLogin) {
-        wentianPendingPaymentAfterLogin = false;
-        window.setTimeout(() => startWentianMemberPayment(), 60);
-      } else {
-        refreshWentianAuthScreens();
-      }
-    });
+  wentianAuthReadyPromise = getWentianAuthSession().then((session) => {
+    setWentianAuthSession(session || null);
+    if (wentianAuthSession?.user) {
+      window.setTimeout(() => bindWentianPendingInvite({ rerender: true }), 80);
+      window.setTimeout(() => hydrateWentianInvite({ force: true, rerender: true }), 160);
+    }
     return wentianAuthSession;
   }).catch(() => null);
   return wentianAuthReadyPromise;
@@ -5187,100 +5228,6 @@ async function requireWentianAuth() {
   wentianPendingPaymentAfterLogin = true;
   navigate("screen-40");
   return null;
-}
-
-async function submitWentianAuth(mode = wentianAuthState.mode) {
-  const client = getWentianAuthClient();
-  if (!client) {
-    wentianAuthState.error = "登录组件加载失败，请刷新后重试";
-    navigate("screen-40", false);
-    return;
-  }
-  const phone = (document.getElementById("wentian-auth-phone")?.value || "").trim();
-  const password = document.getElementById("wentian-auth-password")?.value || "";
-  const email = inputToWentianAuthEmail(phone);
-  const usingEmail = /@/.test(phone);
-  if (mode === "register" && usingEmail) {
-    wentianAuthState.error = "注册请填写手机号";
-    navigate("screen-40", false);
-    return;
-  }
-  if (!email) {
-    wentianAuthState.error = mode === "register" ? "请输入正确手机号" : "请输入正确手机号或邮箱";
-    navigate("screen-40", false);
-    return;
-  }
-  if (password.length < 6) {
-    wentianAuthState.error = "密码至少 6 位";
-    navigate("screen-40", false);
-    return;
-  }
-  wentianAuthState.loading = true;
-  wentianAuthState.error = "";
-  navigate("screen-40", false);
-  try {
-    if (mode === "register") {
-      await wentianFetchJson("/api/auth/register-phone", {
-        method: "POST",
-        body: { phone, password },
-        noAuth: true,
-      }).catch((error) => {
-        if (!/已注册|already|exists/i.test(error.message || "")) throw error;
-      });
-    }
-    const signed = await client.auth.signInWithPassword({ email, password });
-    if (signed.error) throw signed.error;
-    wentianAuthSession = signed.data?.session || null;
-    wentianAuthState.error = "";
-    wentianMemberState.loaded = false;
-    wentianOrderState.loaded = false;
-    wentianInviteState.loaded = false;
-    await bindWentianPendingInvite();
-    await hydrateWentianInvite({ force: true });
-    if (wentianPendingPaymentAfterLogin) {
-      wentianPendingPaymentAfterLogin = false;
-      await startWentianMemberPayment();
-      return;
-    }
-    navigate("screen-31");
-  } catch (error) {
-    wentianAuthState.error = error.message || "登录失败";
-    navigate("screen-40", false);
-  } finally {
-    wentianAuthState.loading = false;
-  }
-}
-
-async function startWentianGoogleLogin() {
-  const client = getWentianAuthClient();
-  if (!client) {
-    wentianAuthState.error = "登录组件加载失败，请刷新后重试";
-    navigate("screen-40", false);
-    return;
-  }
-  setWentianAuthReturnState({ after: wentianPendingPaymentAfterLogin ? "member-payment" : "account" });
-  wentianAuthState.error = "";
-  try {
-    const { error } = await client.auth.signInWithOAuth({
-      provider: "google",
-      options: { redirectTo: getWentianGoogleRedirectUrl() },
-    });
-    if (error) throw error;
-  } catch (error) {
-    clearWentianAuthReturnState();
-    wentianAuthState.error = error.message || "Google 登录失败，请稍后重试";
-    navigate("screen-40", false);
-  }
-}
-
-async function signOutWentianAuth() {
-  const client = getWentianAuthClient();
-  if (client) await client.auth.signOut();
-  wentianAuthSession = null;
-  wentianMemberState.loaded = false;
-  wentianOrderState.loaded = false;
-  wentianLogoutConfirmOpen = false;
-  navigate("screen-31", false);
 }
 
 function openWentianLogoutConfirm() {
@@ -5301,44 +5248,6 @@ function setWentianPasswordStatus(text, tone = "") {
   if (!el) return;
   el.textContent = text || "";
   el.dataset.tone = tone;
-}
-
-async function submitWentianPasswordForm() {
-  if (wentianPasswordState.loading) return;
-  const password = document.getElementById("wentian-password-new")?.value || "";
-  const confirm = document.getElementById("wentian-password-confirm")?.value || "";
-  if (password.length < 6) {
-    setWentianPasswordStatus("密码至少 6 位", "error");
-    return;
-  }
-  if (password !== confirm) {
-    setWentianPasswordStatus("两次密码不一致", "error");
-    return;
-  }
-  const session = await getWentianAuthSession();
-  if (!session?.user) {
-    wentianAuthState.mode = "register";
-    navigate("screen-40");
-    return;
-  }
-  const client = getWentianAuthClient();
-  if (!client?.auth?.updateUser) {
-    setWentianPasswordStatus("当前登录服务不支持修改密码", "error");
-    return;
-  }
-  wentianPasswordState.loading = true;
-  setWentianPasswordStatus("正在保存...");
-  try {
-    const { error } = await client.auth.updateUser({ password });
-    if (error) throw error;
-    document.getElementById("wentian-password-new").value = "";
-    document.getElementById("wentian-password-confirm").value = "";
-    setWentianPasswordStatus("密码已更新", "ok");
-  } catch (error) {
-    setWentianPasswordStatus(error.message || "密码保存失败", "error");
-  } finally {
-    wentianPasswordState.loading = false;
-  }
 }
 
 function saveWentianProfile(profile) {
@@ -5659,7 +5568,9 @@ async function wentianPostJson(path, payload, timeoutMs = 90000, retries = 1) {
 async function wentianFetchJson(path, options = {}) {
   const method = options.method || (options.body ? "POST" : "GET");
   const headers = options.body ? { "Content-Type": "application/json" } : { "Accept": "application/json" };
-  if (!options.noAuth) {
+  if (options.authToken) {
+    headers.Authorization = `Bearer ${options.authToken}`;
+  } else if (!options.noAuth) {
     const token = await getWentianAuthToken();
     if (token) headers.Authorization = `Bearer ${token}`;
   }
@@ -6985,9 +6896,11 @@ function sourceLoginMethodsScreen() {
     ${figBox("source-login-submit", 50, 442, 290, 46, "", `border-radius:23px;background:${wentianAuthState.loading ? "#d8c7aa" : "linear-gradient(180deg,#b74e39,#983323)"};box-shadow:0 12px 24px rgba(158,61,43,.16);`)}
     ${figButton("source-login-submit-hit", 50, 442, 290, 46, 'data-action="wentian-auth-submit"')}
     ${figText("source-login-submit-text", wentianAuthState.loading ? "处理中..." : (isRegister ? "注册并登录" : "登录并继续"), 50, 456, 290, 14, "#fffaf3", 900, "center")}
-    ${figBox("source-login-google", 50, 538, 290, 44, "", "border-radius:22px;background:#fff;border:1px solid #e2d8c8;")}
-    ${figButton("source-login-google-hit", 50, 538, 290, 44, 'data-action="wentian-google-login"')}
-    ${figText("source-login-google-text", "用 Google 登录", 50, 551, 290, 13, "#26211c", 800, "center")}
+    ${WENTIAN_GOOGLE_ENABLED ? `
+      ${figBox("source-login-google", 50, 538, 290, 44, "", "border-radius:22px;background:#fff;border:1px solid #e2d8c8;")}
+      ${figButton("source-login-google-hit", 50, 538, 290, 44, 'data-action="wentian-google-login"')}
+      ${figText("source-login-google-text", "用 Google 登录", 50, 551, 290, 13, "#26211c", 800, "center")}
+    ` : ""}
     ${figText("source-login-note", "手机号登录使用密码，不发验证码。", 0, 604, 390, 12, "#9b9287", 600, "center")}
   `;
 }
@@ -12380,18 +12293,156 @@ function buildScreenNav() {
   `).join("");
 }
 
+async function submitWentianAuth(mode = wentianAuthState.mode) {
+  const phone = (document.getElementById("wentian-auth-phone")?.value || "").trim();
+  const password = document.getElementById("wentian-auth-password")?.value || "";
+  const email = inputToWentianAuthEmail(phone);
+  const usingEmail = /@/.test(phone);
+  if (mode === "register" && usingEmail) {
+    wentianAuthState.error = "注册请填写手机号";
+    navigate("screen-40", false);
+    return;
+  }
+  if (!email) {
+    wentianAuthState.error = mode === "register" ? "请输入正确手机号" : "请输入正确手机号或邮箱";
+    navigate("screen-40", false);
+    return;
+  }
+  if (password.length < 6) {
+    wentianAuthState.error = "密码至少 6 位";
+    navigate("screen-40", false);
+    return;
+  }
+  wentianAuthState.loading = true;
+  wentianAuthState.error = "";
+  navigate("screen-40", false);
+  try {
+    let data = null;
+    if (mode === "register") {
+      data = await wentianFetchJson("/api/auth/register-phone", {
+        method: "POST",
+        body: { phone, password },
+        noAuth: true,
+      }).catch((error) => {
+        if (!/已注册|already|exists/i.test(error.message || "")) throw error;
+        return null;
+      });
+    }
+    if (!data?.session) {
+      data = await wentianFetchJson("/api/auth/password-login", {
+        method: "POST",
+        body: { account: email || phone, password },
+        noAuth: true,
+      });
+    }
+    setWentianAuthSession(data?.session || null);
+    wentianAuthState.error = "";
+    await bindWentianPendingInvite();
+    await hydrateWentianInvite({ force: true });
+    if (wentianPendingPaymentAfterLogin) {
+      wentianPendingPaymentAfterLogin = false;
+      await startWentianMemberPayment();
+      return;
+    }
+    navigate("screen-31");
+  } catch (error) {
+    wentianAuthState.error = error.message || "登录失败";
+    navigate("screen-40", false);
+  } finally {
+    wentianAuthState.loading = false;
+  }
+}
+
+async function startWentianGoogleLogin() {
+  if (!WENTIAN_GOOGLE_ENABLED) {
+    wentianAuthState.error = "国内主站请使用手机号或邮箱登录";
+    navigate("screen-40", false);
+    return;
+  }
+  setWentianAuthReturnState({ after: wentianPendingPaymentAfterLogin ? "member-payment" : "account" });
+  wentianAuthState.error = "";
+  try {
+    const data = await wentianFetchJson("/api/auth/oauth-url", {
+      method: "POST",
+      body: {
+        provider: "google",
+        redirectTo: getWentianGoogleRedirectUrl(),
+      },
+      noAuth: true,
+    });
+    if (!data?.url) throw new Error("Google 登录地址生成失败");
+    window.location.href = data.url;
+  } catch (error) {
+    clearWentianAuthReturnState();
+    wentianAuthState.error = error.message || "Google 登录失败，请稍后重试";
+    navigate("screen-40", false);
+  }
+}
+
+async function signOutWentianAuth() {
+  setWentianAuthSession(null);
+  wentianLogoutConfirmOpen = false;
+  navigate("screen-31", false);
+}
+
+async function submitWentianPasswordForm() {
+  if (wentianPasswordState.loading) return;
+  const password = document.getElementById("wentian-password-new")?.value || "";
+  const confirm = document.getElementById("wentian-password-confirm")?.value || "";
+  if (password.length < 6) {
+    setWentianPasswordStatus("密码至少 6 位", "error");
+    return;
+  }
+  if (password !== confirm) {
+    setWentianPasswordStatus("两次密码不一致", "error");
+    return;
+  }
+  const session = await getWentianAuthSession();
+  if (!session?.user) {
+    wentianAuthState.mode = "register";
+    navigate("screen-40");
+    return;
+  }
+  wentianPasswordState.loading = true;
+  setWentianPasswordStatus("正在保存...");
+  try {
+    await wentianFetchJson("/api/auth/password", {
+      method: "POST",
+      body: { password },
+    });
+    document.getElementById("wentian-password-new").value = "";
+    document.getElementById("wentian-password-confirm").value = "";
+    setWentianPasswordStatus("密码已更新", "ok");
+  } catch (error) {
+    setWentianPasswordStatus(error.message || "密码保存失败", "error");
+  } finally {
+    wentianPasswordState.loading = false;
+  }
+}
+
 async function consumeWentianAuthCallback() {
   const error = getWentianAuthCallbackError();
   if (error) {
     wentianAuthState.error = String(error).replace(/\+/g, " ");
     return null;
   }
-  const client = getWentianAuthClient();
-  const code = getWentianUrlParams(window.location.search).get("code");
-  if (client && code && typeof client.auth.exchangeCodeForSession === "function") {
-    const exchanged = await client.auth.exchangeCodeForSession(code);
-    if (exchanged.error) throw exchanged.error;
-    wentianAuthSession = exchanged.data?.session || null;
+  const callbackSession = buildWentianAuthSessionFromCallback();
+  if (callbackSession) {
+    const data = await wentianFetchJson("/api/auth/session", {
+      authToken: callbackSession.access_token,
+    });
+    setWentianAuthSession({ ...callbackSession, user: data?.user || null });
+    if (!wentianAuthSession?.user) throw new Error("Google 登录失败，请重试");
+    return wentianAuthSession;
+  }
+  const code = getWentianAuthCallbackValue("code");
+  if (code) {
+    const data = await wentianFetchJson("/api/auth/exchange-code", {
+      method: "POST",
+      body: { code },
+      noAuth: true,
+    });
+    setWentianAuthSession(data?.session || null);
     return wentianAuthSession;
   }
   return initWentianAuth();

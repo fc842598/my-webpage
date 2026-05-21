@@ -29,8 +29,8 @@ const SITE_CONFIG = {
   serviceNoticeUrl: "#faq",
 
   // ── AI 后端地址 ───────────────────────────────────────────
-  // 迁移 Vercel 后只需要替换这一处，例如：https://xxx.vercel.app
-  aiBackendBase: "https://ai-piming-backend.vercel.app",
+  // API 统一走自定义域名，后续只需要替换这一处
+  aiBackendBase: "https://api.yuetianai.com",
 
   // ── 六爻审题 ───────────────────────────────────────────
   // 固定走 AI 后端审题，由后台提示词调用大模型判断

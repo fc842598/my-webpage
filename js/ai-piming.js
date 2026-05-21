@@ -13,9 +13,9 @@ const AI_BACKEND_BASE = (() => {
   try {
     const qsBase = new URLSearchParams(location.search).get('aiBackendBase') || '';
     const cfgBase = window.SITE_CONFIG && window.SITE_CONFIG.aiBackendBase;
-    return (qsBase || cfgBase || 'https://ai-piming-backend.vercel.app').replace(/\/$/, '');
+    return (qsBase || cfgBase || 'https://api.yuetianai.com').replace(/\/$/, '');
   } catch (_err) {
-    return 'https://ai-piming-backend.vercel.app';
+    return 'https://api.yuetianai.com';
   }
 })();
 

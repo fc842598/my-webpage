@@ -88,10 +88,12 @@
   let mbpAiHistory = [];
   let mbpAiBusy = false;
   let mbpAiDraft = {};
-  const aiBackendBase = ((window.SITE_CONFIG && window.SITE_CONFIG.aiBackendBase) || 'https://ai-piming-backend.vercel.app').replace(/\/$/, '');
-  const desktopSupabaseUrl = 'https://jmmlijqeexdbxgpfyhgf.supabase.co';
-  const desktopSupabaseKey = 'sb_publishable_Y2W9eDscfJwK1sgSitbmFA_ta5btvaR';
+  const aiBackendBase = ((window.SITE_CONFIG && window.SITE_CONFIG.aiBackendBase) || 'https://api.yuetianai.com').replace(/\/$/, '');
+  const desktopAuthStorageKey = 'yt_mingbook_auth_session_v1';
+  const desktopAuthRefreshSkewMs = 60 * 1000;
   const desktopGoogleRedirectBridge = 'https://fc842598.github.io/my-webpage/pages/mingbook-onepage.html';
+  const desktopGoogleEnabled = new URLSearchParams(window.location.search).get('overseasAuth') === '1'
+    || !/^(www\.)?yuetianai\.com$/i.test(window.location.hostname);
   const desktopAuthUrlKeys = [
     'code',
     'state',
@@ -115,9 +117,7 @@
     session: null,
     quota: null,
   };
-  let desktopAuthClient = null;
   let desktopAuthReadyPromise = null;
-  let desktopAuthListenerAttached = false;
 
   const aiTasks = [
     { module: 'overall', label: '整体批命' },
@@ -304,17 +304,38 @@
     }
   }
 
-  function getDesktopAuthClient() {
-    if (desktopAuthClient) return desktopAuthClient;
-    if (!window.supabase || typeof window.supabase.createClient !== 'function') return null;
-    desktopAuthClient = window.supabase.createClient(desktopSupabaseUrl, desktopSupabaseKey, {
-      auth: {
-        autoRefreshToken: true,
-        detectSessionInUrl: false,
-        persistSession: true,
-      },
-    });
-    return desktopAuthClient;
+  function readDesktopStoredSession() {
+    try {
+      const raw = localStorage.getItem(desktopAuthStorageKey);
+      const session = raw ? JSON.parse(raw) : null;
+      return session?.access_token && session?.user ? session : null;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  function saveDesktopAuthSession(session) {
+    try {
+      if (session?.access_token && session?.refresh_token) {
+        localStorage.setItem(desktopAuthStorageKey, JSON.stringify(session));
+      } else {
+        localStorage.removeItem(desktopAuthStorageKey);
+      }
+    } catch (_) {}
+  }
+
+  function setDesktopAuthSession(session) {
+    desktopAuthState.session = session || null;
+    if (!session?.user) desktopAuthState.quota = null;
+    saveDesktopAuthSession(session);
+    renderDesktopAuth();
+    updateDesktopQuotaDisplay();
+    if (session?.user) hydrateDesktopMemberStatus({ force: true });
+  }
+
+  function isDesktopSessionExpiring(session) {
+    if (!session?.expires_at) return false;
+    return Date.now() >= (Number(session.expires_at) * 1000) - desktopAuthRefreshSkewMs;
   }
 
   function getDesktopAuthUrlParams(raw) {
@@ -343,14 +364,20 @@
     return error ? String(error).replace(/\+/g, ' ') : '';
   }
 
-  function getDesktopAuthHashSessionPayload() {
+  function buildDesktopAuthSessionFromCallback() {
     const accessToken = getDesktopAuthCallbackValue('access_token');
-    if (!accessToken) return null;
     const refreshToken = getDesktopAuthCallbackValue('refresh_token');
-    if (!refreshToken) throw new Error('Google 登录信息不完整，请重新登录');
+    if (!accessToken || !refreshToken) return null;
+    const expiresIn = Number(getDesktopAuthCallbackValue('expires_in') || 3600);
+    const expiresAt = Number(getDesktopAuthCallbackValue('expires_at'))
+      || Math.floor(Date.now() / 1000) + (Number.isFinite(expiresIn) ? expiresIn : 3600);
     return {
       access_token: accessToken,
       refresh_token: refreshToken,
+      expires_at: expiresAt,
+      expires_in: Number.isFinite(expiresIn) ? expiresIn : null,
+      token_type: getDesktopAuthCallbackValue('token_type') || 'bearer',
+      user: null,
     };
   }
 
@@ -365,18 +392,6 @@
   function getDesktopGoogleRedirectUrl() {
     if (window.location.hostname === 'yuetianai.com') return desktopGoogleRedirectBridge;
     return new URL(window.location.pathname, window.location.origin).toString();
-  }
-
-  function attachDesktopAuthListener(client) {
-    if (desktopAuthListenerAttached || !client?.auth?.onAuthStateChange) return;
-    desktopAuthListenerAttached = true;
-    client.auth.onAuthStateChange((_event, session) => {
-      desktopAuthState.session = session || null;
-      if (!session?.user) desktopAuthState.quota = null;
-      renderDesktopAuth();
-      updateDesktopQuotaDisplay();
-      if (session?.user) hydrateDesktopMemberStatus({ force: true });
-    });
   }
 
   function phoneToDesktopAuthEmail(phone) {
@@ -409,14 +424,27 @@
   }
 
   async function getDesktopAuthSession(options = {}) {
-    if (desktopAuthState.session && !options.force) return desktopAuthState.session;
-    const client = getDesktopAuthClient();
-    if (!client) return null;
-    try {
-      const { data } = await client.auth.getSession();
-      desktopAuthState.session = data?.session || null;
+    const current = desktopAuthState.session || readDesktopStoredSession();
+    if (current && !options.force && !isDesktopSessionExpiring(current)) {
+      desktopAuthState.session = current;
+      return current;
+    }
+    if (!current?.refresh_token) {
+      desktopAuthState.session = current || null;
       return desktopAuthState.session;
-    } catch (_) {
+    }
+    try {
+      const data = await desktopFetchJson('/api/auth/refresh', {
+        method: 'POST',
+        body: { refreshToken: current.refresh_token },
+        noAuth: true,
+      });
+      desktopAuthState.session = data?.session || null;
+      saveDesktopAuthSession(desktopAuthState.session);
+      return desktopAuthState.session;
+    } catch (err) {
+      desktopAuthState.session = null;
+      saveDesktopAuthSession(null);
       return null;
     }
   }
@@ -564,7 +592,10 @@
         submit.disabled = desktopAuthState.loading;
       }
       const google = $('#mbpAuthGoogle');
-      if (google) google.disabled = desktopAuthState.loading;
+      if (google) {
+        google.hidden = !desktopGoogleEnabled;
+        google.disabled = desktopAuthState.loading || !desktopGoogleEnabled;
+      }
       const note = $('#mbpAuthNote');
       if (note) note.textContent = isRegister
         ? '注册后会直接登录，同一账号可在电脑端和手机端共用。'
@@ -607,7 +638,9 @@
   async function desktopFetchJson(path, options = {}) {
     const method = options.method || (options.body ? 'POST' : 'GET');
     const headers = options.body ? { 'Content-Type': 'application/json' } : { Accept: 'application/json' };
-    if (!options.noAuth) {
+    if (options.authToken) {
+      headers.Authorization = `Bearer ${options.authToken}`;
+    } else if (!options.noAuth) {
       const token = await getDesktopAuthToken();
       if (token) headers.Authorization = `Bearer ${token}`;
     }
@@ -647,11 +680,6 @@
   }
 
   async function submitDesktopAuth() {
-    const client = getDesktopAuthClient();
-    if (!client) {
-      setDesktopAuthError('登录组件加载失败，请刷新后重试');
-      return;
-    }
     const account = String($('#mbpAuthAccount')?.value || '').trim();
     const password = String($('#mbpAuthPassword')?.value || '');
     const email = inputToDesktopAuthEmail(account);
@@ -672,18 +700,26 @@
     desktopAuthState.error = '';
     renderDesktopAuth();
     try {
+      let data = null;
       if (desktopAuthState.mode === 'register') {
-        await desktopFetchJson('/api/auth/register-phone', {
+        data = await desktopFetchJson('/api/auth/register-phone', {
           method: 'POST',
           body: { phone: account, password },
           noAuth: true,
         }).catch((error) => {
           if (!/已注册|already|exists/i.test(error.message || '')) throw error;
+          return null;
         });
       }
-      const signed = await client.auth.signInWithPassword({ email, password });
-      if (signed.error) throw signed.error;
-      desktopAuthState.session = signed.data?.session || null;
+      if (!data?.session) {
+        data = await desktopFetchJson('/api/auth/password-login', {
+          method: 'POST',
+          body: { account: email || account, password },
+          noAuth: true,
+        });
+      }
+      desktopAuthState.session = data?.session || null;
+      saveDesktopAuthSession(desktopAuthState.session);
       desktopAuthState.error = '';
       $('#mbpAuthAccount').value = '';
       $('#mbpAuthPassword').value = '';
@@ -699,12 +735,11 @@
   }
 
   async function signOutDesktopAuth(options = {}) {
-    const client = getDesktopAuthClient();
     desktopAuthState.loading = true;
     renderDesktopAuth();
     try {
-      if (client?.auth?.signOut) await client.auth.signOut();
       desktopAuthState.session = null;
+      saveDesktopAuthSession(null);
       desktopAuthState.quota = null;
       desktopAuthState.mode = 'login';
       desktopAuthState.error = '';
@@ -721,20 +756,24 @@
   }
 
   async function startDesktopGoogleLogin() {
-    const client = getDesktopAuthClient();
-    if (!client) {
-      setDesktopAuthError('登录组件加载失败，请刷新后重试');
+    if (!desktopGoogleEnabled) {
+      setDesktopAuthError('国内主站请使用手机号或邮箱登录');
       return;
     }
     desktopAuthState.loading = true;
     desktopAuthState.error = '';
     renderDesktopAuth();
     try {
-      const { error } = await client.auth.signInWithOAuth({
-        provider: 'google',
-        options: { redirectTo: getDesktopGoogleRedirectUrl() },
+      const data = await desktopFetchJson('/api/auth/oauth-url', {
+        method: 'POST',
+        body: {
+          provider: 'google',
+          redirectTo: getDesktopGoogleRedirectUrl(),
+        },
+        noAuth: true,
       });
-      if (error) throw error;
+      if (!data?.url) throw new Error('Google 登录地址生成失败');
+      window.location.href = data.url;
     } catch (error) {
       desktopAuthState.loading = false;
       setDesktopAuthError(error.message || 'Google 登录失败，请稍后重试');
@@ -745,22 +784,25 @@
   async function consumeDesktopAuthCallback() {
     const error = getDesktopAuthCallbackError();
     if (error) throw new Error(error);
-    const client = getDesktopAuthClient();
-    if (!client) throw new Error('登录组件加载失败，请刷新后重试');
-    attachDesktopAuthListener(client);
-    const hashSession = getDesktopAuthHashSessionPayload();
-    if (hashSession) {
-      if (typeof client.auth.setSession !== 'function') throw new Error('登录组件版本过旧，请刷新后重试');
-      const settled = await client.auth.setSession(hashSession);
-      if (settled.error) throw settled.error;
-      desktopAuthState.session = settled.data?.session || null;
-      return desktopAuthState.session || getDesktopAuthSession({ force: true });
+    const callbackSession = buildDesktopAuthSessionFromCallback();
+    if (callbackSession) {
+      const data = await desktopFetchJson('/api/auth/session', {
+        authToken: callbackSession.access_token,
+      });
+      desktopAuthState.session = { ...callbackSession, user: data?.user || null };
+      if (!desktopAuthState.session.user) throw new Error('Google 登录失败，请重试');
+      saveDesktopAuthSession(desktopAuthState.session);
+      return desktopAuthState.session;
     }
     const code = getDesktopAuthCallbackValue('code');
-    if (code && typeof client.auth.exchangeCodeForSession === 'function') {
-      const exchanged = await client.auth.exchangeCodeForSession(code);
-      if (exchanged.error) throw exchanged.error;
-      desktopAuthState.session = exchanged.data?.session || null;
+    if (code) {
+      const data = await desktopFetchJson('/api/auth/exchange-code', {
+        method: 'POST',
+        body: { code },
+        noAuth: true,
+      });
+      desktopAuthState.session = data?.session || null;
+      saveDesktopAuthSession(desktopAuthState.session);
       return desktopAuthState.session;
     }
     return getDesktopAuthSession({ force: true });
@@ -768,26 +810,16 @@
 
   async function initDesktopAuth() {
     if (desktopAuthReadyPromise) return desktopAuthReadyPromise;
-    const client = getDesktopAuthClient();
-    if (!client) {
-      renderDesktopAuth();
-      return null;
-    }
-    desktopAuthReadyPromise = client.auth.getSession().then(({ data }) => {
-      desktopAuthState.session = data?.session || null;
+    desktopAuthReadyPromise = getDesktopAuthSession().then((session) => {
+      desktopAuthState.session = session || null;
       renderDesktopAuth();
       if (desktopAuthState.session?.user) hydrateDesktopMemberStatus({ force: true });
-      attachDesktopAuthListener(client);
       return desktopAuthState.session;
     }).catch(() => null);
     return desktopAuthReadyPromise;
   }
 
   async function bootDesktopAuth() {
-    if (!getDesktopAuthClient()) {
-      renderDesktopAuth();
-      return null;
-    }
     if (!isDesktopAuthCallbackUrl()) {
       await initDesktopAuth();
       if (desktopAuthState.session?.user) hydrateDesktopMemberStatus({ force: true });
