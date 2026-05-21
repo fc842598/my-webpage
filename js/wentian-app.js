@@ -7205,24 +7205,21 @@ function sourceHepanSelectScreen() {
   const hint = getWentianHepanHint(archives, selectedIds, validation);
   return `
     ${figBox("wt11-bg", 0, 0, 390, 844, "", "background:linear-gradient(180deg,#fff8ec 0%,#f4e5d2 42%,#fffdf9 100%);")}
-    ${figBox("wt11-top-glow", 0, 0, 390, 336, "", "background:radial-gradient(circle at 50% 8%,rgba(212,171,88,.34),rgba(212,171,88,0) 44%),linear-gradient(180deg,#fff4df 0%,rgba(255,244,223,0) 100%);")}
+    ${figBox("wt11-top-glow", 0, 0, 390, 238, "", "background:radial-gradient(circle at 50% 6%,rgba(212,171,88,.22),rgba(212,171,88,0) 46%),linear-gradient(180deg,#fff4df 0%,rgba(255,244,223,0) 100%);")}
     ${wentianSimpleHeader("wt11", "选择合盘档案")}
-    ${figBox("wt11-hero", 24, 108, 342, 178, "", "border-radius:24px;background:linear-gradient(135deg,#3a1915 0%,#7a3327 48%,#c7973d 100%);box-shadow:0 18px 34px rgba(98,52,30,.22);overflow:hidden;")}
-    ${figImage("wt11-img", "../images/wentian-prototype-assets/hepan-master.jpg", 198, 118, 142, 126, "border-radius:18px;object-fit:cover;object-position:center 18%;opacity:.78;")}
-    ${figBox("wt11-img-shade", 174, 108, 190, 178, "", "background:linear-gradient(90deg,rgba(58,25,21,.78) 0%,rgba(58,25,21,.24) 48%,rgba(58,25,21,0) 100%);")}
-    ${figText("wt11-eyebrow", "海厦合参 · 宫位定格", 46, 134, 160, 13, "#f4d293", 900)}
-    ${figText("wt11-title", "关系合盘", 46, 162, 144, 30, "#fffaf3", 900, "left", "font-size:30px;line-height:1;")}
-    ${figText("wt11-copy", "看一方夫妻宫落到另一盘哪一宫，再交给合盘半仙。", 46, 206, 170, 13, "rgba(255,250,243,.86)", 700, "left", "line-height:1.45;")}
-    ${["夫妻", "父母", "兄弟", "朋友"].map((text, index) => `
-      ${figBox(`wt11-rule-${index}`, 46 + index * 72, 246, 62, 22, "", "border-radius:11px;background:rgba(255,250,243,.15);border:1px solid rgba(255,250,243,.28);")}
-      ${figText(`wt11-rule-text-${index}`, text, 46 + index * 72, 251, 62, 10, "#fff7df", 800, "center")}
-    `).join("")}
-    ${figBox("wt11-sheet", 0, 306, 390, 538, "", "border-radius:28px 28px 0 0;background:#fffdfb;box-shadow:0 -12px 30px rgba(75,48,24,.14);")}
-    ${figBox("wt11-handle", 164, 320, 62, 5, "", "border-radius:5px;background:#e2d4bf;")}
+    ${figBox("wt11-summary", 24, 110, 342, 88, "", "border:1px solid #ead8bd;border-radius:20px;background:#fffdf8;box-shadow:0 14px 28px rgba(92,50,29,.08);")}
+    ${figBox("wt11-summary-mark", 44, 132, 44, 44, "", "border-radius:22px;background:#fff0df;border:1px solid #ead2ad;")}
+    ${figText("wt11-summary-mark-text", "合", 44, 143, 44, 17, "#a94437", 900, "center", "font-family:'Noto Serif SC','Songti SC',serif;")}
+    ${figText("wt11-summary-title", "选两张档案", 104, 128, 132, 20, "#241811", 900, "left", "font-family:'Noto Serif SC','Songti SC',serif;")}
+    ${figText("wt11-summary-copy", "用于关系合盘", 104, 158, 120, 13, "#8d806f", 700, "left")}
+    ${figBox("wt11-count-pill", 276, 132, 64, 30, "", "border-radius:15px;background:#fff3df;border:1px solid #ead2ad;")}
+    ${figText("wt11-count-text", "2人", 276, 140, 64, 12, "#9b742e", 900, "center")}
+    ${figBox("wt11-sheet", 0, 220, 390, 624, "", "border-radius:28px 28px 0 0;background:#fffdfb;box-shadow:0 -12px 30px rgba(75,48,24,.14);")}
+    ${figBox("wt11-handle", 164, 234, 62, 5, "", "border-radius:5px;background:#e2d4bf;")}
     <div class="wentian-hepan-head" data-node-id="wt11-head">
       <div>
-        <strong>选择档案</strong>
-        <span>自动识别夫妻宫落点与星曜佐证</span>
+        <strong>档案</strong>
+        <span>点选两人</span>
       </div>
       <b class="${ready ? "is-ready" : selectedIds.length >= 2 ? "is-error" : ""}">已选 ${selectedIds.length}/2</b>
     </div>
