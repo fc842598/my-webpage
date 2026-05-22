@@ -6282,8 +6282,12 @@ async function hydrateWentianMemberStatus(options = {}) {
   return wentianMemberStatusPromise;
 }
 
-function isWentianH5PayPreferred() {
+function isWentianMobilePayDevice() {
   return /MicroMessenger|Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent || "");
+}
+
+function getWentianPayMethod() {
+  return "native";
 }
 
 function stopWentianPaymentPoll() {
@@ -6339,7 +6343,7 @@ async function startWentianMemberPayment() {
       method: "POST",
       body: { productKey: WENTIAN_MEMBER_PRODUCT_KEY, chartRecordId },
     });
-    const payMethod = isWentianH5PayPreferred() ? "h5" : "native";
+    const payMethod = getWentianPayMethod();
     const session = await wentianFetchJson("/api/payments/create-session", {
       method: "POST",
       body: { orderNo: order.orderNo, payMethod },
@@ -6353,7 +6357,7 @@ async function startWentianMemberPayment() {
     wentianPaymentState.amountYuan = order.amountYuan || product.amountYuan || "19.90";
     wentianPaymentState.message = wentianPaymentState.mockMode
       ? "当前是支付测试模式"
-      : (wentianPaymentState.payMethod === "h5" ? "点击下方按钮打开微信支付" : "请用微信扫码支付");
+      : (wentianPaymentState.payMethod === "h5" ? "点击下方按钮打开微信支付" : "请用微信扫码支付；手机端可截图后微信识别。");
     startWentianPaymentPoll();
     refreshWentianPaymentScreen();
   } catch (error) {
@@ -6366,6 +6370,28 @@ async function startWentianMemberPayment() {
 
 function openWentianPaymentUrl() {
   if (wentianPaymentState.payUrl) window.location.href = wentianPaymentState.payUrl;
+}
+
+async function copyWentianPaymentUrl() {
+  if (!wentianPaymentState.payUrl) return;
+  try {
+    if (navigator.clipboard?.writeText) {
+      await navigator.clipboard.writeText(wentianPaymentState.payUrl);
+    } else {
+      const input = document.createElement("textarea");
+      input.value = wentianPaymentState.payUrl;
+      input.style.position = "fixed";
+      input.style.opacity = "0";
+      document.body.appendChild(input);
+      input.select();
+      document.execCommand("copy");
+      input.remove();
+    }
+    wentianPaymentState.message = "支付链接已复制，可打开微信粘贴或识别。";
+  } catch (_err) {
+    wentianPaymentState.message = "复制失败，请截图二维码后用微信扫一扫识别。";
+  }
+  refreshWentianPaymentScreen();
 }
 
 async function completeWentianMockPayment() {
@@ -6715,7 +6741,9 @@ function sourcePaymentScreen() {
   const payUrl = wentianPaymentState.payUrl || "";
   const showQr = payUrl && wentianPaymentState.payMethod !== "h5" && !wentianPaymentState.mockMode;
   const showOpen = payUrl && wentianPaymentState.payMethod === "h5" && !wentianPaymentState.mockMode;
+  const showNativeAssist = showQr && isWentianMobilePayDevice();
   const message = wentianPaymentState.error || wentianPaymentState.message || "阅天会员月卡，19.9元/月";
+  const orderCardHeight = showQr ? 438 : 190;
   return `
     ${figBox("wt30-bg", 0, 0, 390, 844, "", "background:linear-gradient(180deg,#fffdf8 0%,#fbf7ef 58%,#f3eadc 100%);")}
     ${figButton("wt30-back-hit", 18, 38, 58, 50, 'data-route="screen-33"')}
@@ -6730,7 +6758,7 @@ function sourcePaymentScreen() {
     ${figText("wt30-hero-sub", "300次/天 · 9000次/月", 46, 202, 230, 13, "#f2d8bd", 700)}
     ${figText("wt30-hero-price", `¥${escapeHtml(wentianPaymentState.amountYuan || "19.90")}`, 250, 154, 92, 26, "#fffaf3", 900, "right")}
 
-    ${figBox("wt30-order-card", 24, 270, 342, showQr ? 304 : 190, "", "border:1px solid #eadfce;border-radius:18px;background:#fffdf8;box-shadow:0 10px 24px rgba(70,45,25,.08);")}
+    ${figBox("wt30-order-card", 24, 270, 342, orderCardHeight, "", "border:1px solid #eadfce;border-radius:18px;background:#fffdf8;box-shadow:0 10px 24px rgba(70,45,25,.08);")}
     ${figText("wt30-order-product-label", "商品", 44, 302, 80, 13, "#8d8377", 600)}
     ${figText("wt30-order-product", escapeHtml(wentianPaymentState.productName || "阅天会员月卡"), 164, 302, 160, 13, "#2b251f", 800, "right")}
     ${figLine("wt30-order-line-1", 44, 334, 302, "#efe4d3")}
@@ -6739,6 +6767,13 @@ function sourcePaymentScreen() {
     ${figLine("wt30-order-line-2", 44, 390, 302, "#efe4d3")}
     ${figText("wt30-order-tip", escapeHtml(message), 44, 416, 282, 14, wentianPaymentState.error ? "#a64032" : "#756d63", 700, "left", "line-height:1.5;")}
     ${showQr ? `<div id="wentian-pay-qr" class="wentian-pay-qr" data-pay-url="${escapeHtml(payUrl)}" style="left:109px;top:448px;width:172px;height:172px"></div>` : ""}
+    ${showQr ? figText("wt30-qr-tip", showNativeAssist ? "点打开微信支付；不跳转时截图后用微信扫一扫识别。" : "请用微信扫描二维码，支付后刷新状态。", 46, 626, 298, 12, "#8d8377", 700, "center", "line-height:1.45;") : ""}
+    ${showNativeAssist ? figBox("wt30-native-open", 42, 662, 146, 40, "", "border-radius:20px;background:#16783d;box-shadow:0 10px 20px rgba(22,120,61,.16);") : ""}
+    ${showNativeAssist ? figButton("wt30-native-open-hit", 42, 662, 146, 40, 'data-action="wentian-pay-open"') : ""}
+    ${showNativeAssist ? figText("wt30-native-open-text", "打开微信", 42, 675, 146, 12, "#fff", 900, "center") : ""}
+    ${showNativeAssist ? figBox("wt30-copy", 202, 662, 146, 40, "", "border-radius:20px;background:#fff5df;border:1px solid #ead8b8;") : ""}
+    ${showNativeAssist ? figButton("wt30-copy-hit", 202, 662, 146, 40, 'data-action="wentian-pay-copy"') : ""}
+    ${showNativeAssist ? figText("wt30-copy-text", "复制链接", 202, 675, 146, 12, "#8b6425", 900, "center") : ""}
 
     ${showOpen ? figBox("wt30-open", 42, 650, 306, 50, "", "border-radius:25px;background:#16783d;box-shadow:0 12px 24px rgba(22,120,61,.18);") : ""}
     ${showOpen ? figButton("wt30-open-hit", 42, 650, 306, 50, 'data-action="wentian-pay-open"') : ""}
@@ -12295,6 +12330,10 @@ document.addEventListener("click", (event) => {
   }
   if (action === "wentian-pay-open") {
     openWentianPaymentUrl();
+    return;
+  }
+  if (action === "wentian-pay-copy") {
+    copyWentianPaymentUrl();
     return;
   }
   if (action === "wentian-pay-mock-success") {
