@@ -9551,6 +9551,7 @@ function sourceYangzhaiSelectScreen() {
   return `
     ${sourceYangzhaiCompassScreen()}
     ${figBox("yz43-overlay", 0, 0, 390, 844, "", "background:rgba(33,22,15,.50);backdrop-filter:blur(1px);")}
+    ${figButton("yz43-top-back-hit", 0, 0, 96, 110, 'data-route="screen-42" aria-label="返回地脉道"')}
     ${figBox("yz43-sheet", 0, 306, 390, 538, "", "border-radius:28px 28px 0 0;background:#fffaf3;box-shadow:0 -20px 44px rgba(35,20,10,.24);")}
     ${figBox("yz43-handle", 160, 322, 70, 5, "", "border-radius:4px;background:#dfcfb8;")}
     ${figText("yz43-title", "选择方位成员", 24, 352, 142, 20, "#201812", 900, "left", "font-family:'Noto Serif SC','Songti SC',serif;")}
@@ -12167,6 +12168,10 @@ document.addEventListener("click", (event) => {
   const action = event.target.closest("[data-action]")?.dataset.action;
   if (action === "back") {
     setLiuyaoCasterModalOpen(false);
+    if (state.route === "screen-43") {
+      navigate("screen-42", false);
+      return;
+    }
     navigate(state.stack.pop() || "home", false);
     return;
   }
