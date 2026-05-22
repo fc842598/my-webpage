@@ -11764,10 +11764,13 @@ function fitActivePhoneShell() {
     ? Math.min(widthScale, heightScale)
     : widthScale;
   const edgeFit = !desktop && horizontalAvailable <= WENTIAN_PHONE_WIDTH;
+  const layoutWidth = Math.ceil(WENTIAN_PHONE_WIDTH * scale);
   phone.style.setProperty("--wentian-phone-scale", String(scale));
   phone.style.transform = `scale(${scale})`;
   phone.style.transformOrigin = edgeFit ? "top left" : "top center";
+  wrap.style.setProperty("--wentian-phone-layout-width", `${layoutWidth}px`);
   wrap.style.justifyContent = edgeFit ? "flex-start" : "center";
+  wrap.style.overflow = desktop ? "visible" : "hidden";
   wrap.style.height = `${Math.ceil(rawHeight * scale)}px`;
 }
 
