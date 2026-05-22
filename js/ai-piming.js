@@ -309,6 +309,7 @@ async function _aipCallBackend(moduleKey, extraParams = {}) {
     throw new Error(_aipFriendlyError(err));
   }
 }
+window._aipCallBackend = _aipCallBackend;
 
 function _aipSetEl(id, text) {
   const el = document.getElementById(id);

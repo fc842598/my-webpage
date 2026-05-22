@@ -5423,6 +5423,97 @@ p.mbp-topic-detail {
   line-height: 1.65;
 }
 
+.mbp-yijing-timing-actions {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.mbp-yijing-timing-actions button {
+  min-height: 36px;
+  padding: 0 14px;
+  border: 1px solid rgba(241, 212, 125, .32);
+  border-radius: 8px;
+  background: linear-gradient(135deg, rgba(232, 198, 111, .94), rgba(191, 116, 64, .9));
+  color: #160f08;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 950;
+}
+
+.mbp-yijing-timing-actions button:disabled {
+  cursor: wait;
+  opacity: .62;
+}
+
+.mbp-yijing-timing-reading,
+.mbp-yijing-timing-error {
+  grid-column: 1 / -1;
+}
+
+.mbp-yijing-timing-reading {
+  display: grid;
+  gap: 10px;
+  margin-top: 2px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(241, 212, 125, .14);
+}
+
+.mbp-yijing-timing-badge {
+  width: fit-content;
+  padding: 4px 10px;
+  border: 1px solid rgba(241, 212, 125, .24);
+  border-radius: 999px;
+  color: var(--gold);
+  font-size: 12px;
+  font-weight: 950;
+  line-height: 1.35;
+}
+
+.mbp-yijing-timing-reading-item {
+  padding: 10px 12px;
+  border: 1px solid rgba(241, 212, 125, .11);
+  border-radius: 8px;
+  background: rgba(0, 0, 0, .12);
+}
+
+.mbp-yijing-timing-reading-item span {
+  display: block;
+  margin-bottom: 4px;
+  color: #e7cf86;
+  font-size: 13px;
+  font-weight: 950;
+  line-height: 1.35;
+}
+
+.mbp-yijing-timing-reading-item p,
+.mbp-yijing-timing-risk,
+.mbp-yijing-timing-error {
+  margin: 0;
+  color: #e2d2a6;
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1.7;
+}
+
+.mbp-yijing-timing-risk,
+.mbp-yijing-timing-error {
+  padding: 10px 12px;
+  border-radius: 8px;
+}
+
+.mbp-yijing-timing-risk {
+  border: 1px solid rgba(241, 212, 125, .16);
+  background: rgba(241, 212, 125, .06);
+  color: #f1d47d;
+}
+
+.mbp-yijing-timing-error {
+  border: 1px solid rgba(255, 120, 92, .22);
+  background: rgba(255, 120, 92, .07);
+  color: #f1a184;
+}
+
 .mbp-yijing-art {
   min-width: 0;
   margin: 0;
@@ -7064,6 +7155,11 @@ p.mbp-topic-detail {
 
   .mbp-yijing-timing-panel {
     grid-template-columns: 1fr;
+  }
+
+  .mbp-yijing-timing-actions,
+  .mbp-yijing-timing-actions button {
+    width: 100%;
   }
 
   .mbp-spine {

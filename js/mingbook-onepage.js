@@ -45,6 +45,10 @@
   let fcCurrentGender = 'male';
   let fcBirthPillars = null;
   let yijingTimingOpen = false;
+  let yijingTimingAiBusy = false;
+  let yijingTimingAiResult = null;
+  let yijingTimingAiError = '';
+  let yijingTimingAiKey = '';
   const defaultProfile = { name: '', year: 1991, month: 2, day: 16, hour: 22, minute: 8, gender: 'male', city: '广东 深圳', cityName: '广东 深圳' };
   const starProfiles = {
     紫微: { trait: '主星稳重，有掌控局面和整合资源的能力', career: '适合管理、统筹、品牌和资源型岗位', wealth: '财运重在长期配置，不宜频繁追涨杀跌', love: '感情里要减少控制感，多给对方空间' },
@@ -2568,21 +2572,123 @@
     const cycleDay = Math.min(30, Math.max(1, dayOfMonth));
     const segment = Math.min(5, Math.max(1, Math.ceil(cycleDay / 6)));
     const dayInSegment = ((cycleDay - 1) % 6) + 1;
+    const segmentStartDay = ((segment - 1) * 6) + 1;
+    const segmentEndDay = segment * 6;
     const month = Math.min(map.months.length, Math.max(1, monthIndex + 1));
     const monthGua = map.months[month - 1] || map.months[0];
     const dayGua = map.days?.find((item) => item.month === month && item.segment === segment)
       || map.days?.find((item) => item.month === month)
       || null;
+    const sixDayRangeLabel = `${year}年${month}月${segmentStartDay}日至${month}月${segmentEndDay}日`;
 
     return {
       year,
       month,
       segment,
       dayInSegment,
+      segmentStartDay,
+      segmentEndDay,
+      sixDayRangeLabel,
       isCurrentYear,
       monthGua,
       dayGua,
     };
+  }
+
+  function yijingTimingGuaPayload(row) {
+    if (!row) return null;
+    const originalText = fcGuaciText(row, '流年卦');
+    const teacherRaw = yijingMasterText(row, '流年卦');
+    return {
+      name: row.name || '',
+      period: row.period || '',
+      lineNum: row.tianjiLineNum || row.lineNum || row.yuanTangLine || row.activeLineNum || '',
+      activeLineIndex: row.activeLineIndex,
+      lineName: yijingTimingLineName(row.activeLineIndex),
+      lineType: yijingTimingLineType(row),
+      originalText,
+      teacherText: yijingDisplayMasterText(teacherRaw, originalText, row),
+    };
+  }
+
+  function yijingTimingPayload(result, info) {
+    return {
+      age: fcActiveAge,
+      solarYear: info.year,
+      isCurrentYear: info.isCurrentYear,
+      yearGua: yijingTimingGuaPayload(result),
+      monthGua: yijingTimingGuaPayload(info.monthGua),
+      sixDayGua: yijingTimingGuaPayload(info.dayGua),
+      sixDayRange: {
+        month: info.month,
+        segment: info.segment,
+        startDay: info.segmentStartDay,
+        endDay: info.segmentEndDay,
+        label: info.sixDayRangeLabel,
+      },
+      todayLine: {
+        dayInSegment: info.dayInSegment,
+        lineName: info.dayGua ? yijingTimingLineName(info.dayGua.activeLineIndex) : '',
+        lineType: info.dayGua ? yijingTimingLineType(info.dayGua) : '',
+      },
+      instruction: '流年主卦定全年总调，流月卦定本月应事，六日卦定六日动向，今日爻位只作当天落点。',
+    };
+  }
+
+  function yijingTimingKeyFromPayload(payload) {
+    return [
+      payload?.age,
+      payload?.solarYear,
+      payload?.yearGua?.name,
+      payload?.monthGua?.name,
+      payload?.sixDayGua?.name,
+      payload?.sixDayRange?.label,
+      payload?.todayLine?.dayInSegment,
+    ].join('|');
+  }
+
+  function renderYijingTimingAiResult(data) {
+    const card = normalizeAiData(data || {}).card || {};
+    const sections = Array.isArray(card.sections) ? card.sections.filter((item) => String(item?.content || '').trim()) : [];
+    if (!sections.length && !card.body && !card.summary && !card.risk) return '';
+    const sectionHtml = sections.length
+      ? sections.map((item) => `
+          <div class="mbp-yijing-timing-reading-item">
+            <span>${escapeHtml(item.title || '应期')}</span>
+            <p>${escapeHtml(item.content || '')}</p>
+          </div>
+        `).join('')
+      : `<div class="mbp-yijing-timing-reading-item"><p>${escapeHtml(card.body || card.summary || '')}</p></div>`;
+    const risk = card.risk ? `<div class="mbp-yijing-timing-risk">${escapeHtml(card.risk)}</div>` : '';
+    return `
+      <div class="mbp-yijing-timing-reading">
+        ${card.profileBadge ? `<div class="mbp-yijing-timing-badge">${escapeHtml(card.profileBadge)}</div>` : ''}
+        ${sectionHtml}
+        ${risk}
+      </div>
+    `;
+  }
+
+  async function generateYijingTimingReading(result) {
+    const info = resolveYijingTiming(result);
+    if (!info) return;
+    const payload = yijingTimingPayload(result, info);
+    const key = yijingTimingKeyFromPayload(payload);
+    yijingTimingOpen = true;
+    yijingTimingAiBusy = true;
+    yijingTimingAiError = '';
+    yijingTimingAiKey = key;
+    renderYijingAssist();
+    try {
+      const data = await callOriginalAi('yijing_timing', { yijingTiming: payload });
+      yijingTimingAiResult = data;
+      yijingTimingAiKey = key;
+    } catch (err) {
+      yijingTimingAiError = err?.message || '生成失败，请稍后重试';
+    } finally {
+      yijingTimingAiBusy = false;
+      renderYijingAssist();
+    }
   }
 
   function renderYijingTiming(result) {
@@ -2603,6 +2709,19 @@
     const note = info.isCurrentYear
       ? '月卦以节气为界，当前日期落入此月序与六日段。'
       : '该流年不在当前年份，默认列正月第一段，供查看流月与六日结构。';
+    const payload = yijingTimingPayload(result, info);
+    const timingKey = yijingTimingKeyFromPayload(payload);
+    if (yijingTimingAiKey && yijingTimingAiKey !== timingKey) {
+      yijingTimingAiResult = null;
+      yijingTimingAiError = '';
+      yijingTimingAiKey = '';
+    }
+    const aiResultHtml = yijingTimingAiResult && yijingTimingAiKey === timingKey
+      ? renderYijingTimingAiResult(yijingTimingAiResult)
+      : '';
+    const aiErrorHtml = yijingTimingAiError
+      ? `<div class="mbp-yijing-timing-error">${escapeHtml(yijingTimingAiError)}</div>`
+      : '';
 
     box.innerHTML = `
       <button class="mbp-yijing-timing-toggle" type="button" data-yijing-timing-toggle aria-expanded="${expanded ? 'true' : 'false'}">
@@ -2617,13 +2736,18 @@
         </div>
         <div class="mbp-yijing-timing-item">
           <span>六日卦</span>
-          <strong>第${yijingTimingNumberName(info.segment)}段 · ${escapeHtml(dayName)}</strong>
+          <strong>${escapeHtml(info.sixDayRangeLabel)} · ${escapeHtml(dayName)}</strong>
         </div>
         <div class="mbp-yijing-timing-item">
           <span>今日爻位</span>
           <strong>${info.isCurrentYear ? `第${yijingTimingNumberName(info.dayInSegment)}日 · ${escapeHtml(dayLine)}` : '非当前年不定今日'}</strong>
         </div>
         <p>上方流年卦「${escapeHtml(yearName)}」是本年主卦；这里显示它往下推出的流月卦与六日卦。${escapeHtml(note)} 六日卦每卦管六日，只作流年应期细分。</p>
+        <div class="mbp-yijing-timing-actions">
+          <button type="button" data-yijing-timing-ai ${yijingTimingAiBusy ? 'disabled' : ''}>${yijingTimingAiBusy ? '生成中…' : (aiResultHtml ? '重新生成应期解读' : '生成应期解读')}</button>
+        </div>
+        ${aiErrorHtml}
+        ${aiResultHtml}
       </div>
     `;
   }
@@ -5228,7 +5352,9 @@
         currentAge: window._fcLifeCurveData?.currentAge || fcCurrentVirtualAge(),
         peakAges: window._fcLifeCurveData?.peakAges || [],
         valleyAges: window._fcLifeCurveData?.valleyAges || [],
-      } : {}));
+      } : (moduleKey === 'yijing_timing' ? {
+        yijingTiming: options.yijingTiming || {},
+      } : {})));
     return normalizeAiData(await window._aipCallBackend(backendModule, extraParams));
   }
 
@@ -5683,6 +5809,13 @@
       if (timingButton) {
         yijingTimingOpen = !yijingTimingOpen;
         renderYijingAssist();
+        return;
+      }
+
+      const timingAiButton = event.target.closest('[data-yijing-timing-ai]');
+      if (timingAiButton) {
+        const result = fcActiveHexagram();
+        generateYijingTimingReading(result);
         return;
       }
 
