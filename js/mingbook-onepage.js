@@ -2596,6 +2596,7 @@
     }
 
     const expanded = yijingTimingOpen;
+    const yearName = result?.name || '流年卦';
     const monthName = info.monthGua?.name || '—';
     const dayName = info.dayGua?.name || '—';
     const dayLine = info.dayGua ? `${yijingTimingLineName(info.dayGua.activeLineIndex)} · ${yijingTimingLineType(info.dayGua)}` : '—';
@@ -2605,8 +2606,8 @@
 
     box.innerHTML = `
       <button class="mbp-yijing-timing-toggle" type="button" data-yijing-timing-toggle aria-expanded="${expanded ? 'true' : 'false'}">
-        <span>本年应期</span>
-        <strong>${escapeHtml(monthName)} · ${escapeHtml(dayName)}</strong>
+        <span>流年细分</span>
+        <strong>${escapeHtml(yearName)} → ${escapeHtml(monthName)} → ${escapeHtml(dayName)}</strong>
         <i>${expanded ? '收起' : '展开'}</i>
       </button>
       <div class="mbp-yijing-timing-panel" ${expanded ? '' : 'hidden'}>
@@ -2622,7 +2623,7 @@
           <span>今日爻位</span>
           <strong>${info.isCurrentYear ? `第${yijingTimingNumberName(info.dayInSegment)}日 · ${escapeHtml(dayLine)}` : '非当前年不定今日'}</strong>
         </div>
-        <p>${escapeHtml(note)} 六日卦每卦管六日，只作流年应期细分。</p>
+        <p>上方流年卦「${escapeHtml(yearName)}」是本年主卦；这里显示它往下推出的流月卦与六日卦。${escapeHtml(note)} 六日卦每卦管六日，只作流年应期细分。</p>
       </div>
     `;
   }
