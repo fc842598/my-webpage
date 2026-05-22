@@ -2545,6 +2545,7 @@
     }
 
     const name = $('#mbpYijingName');
+    const meta = $('#mbpYijingMeta');
     const lines = $('#mbpYijingLines');
     const years = $('#mbpYijingYears');
     const guaci = $('#mbpYijingGuaci');
@@ -2558,6 +2559,15 @@
     const masterDetail = yijingDetailWithoutLead(masterBody, masterLead);
 
     if (name) name.textContent = result?.name || '等待排盘';
+    if (meta) {
+      if (!result) {
+        meta.textContent = '先完成排盘';
+      } else if (fcActiveTab === '流年卦') {
+        meta.textContent = `流年 · ${fcAgeToYear(fcActiveAge)}年 · ${fcActiveAge}岁`;
+      } else {
+        meta.textContent = `${yijingMasterLabel()} · ${result.num ? `第${result.num}卦` : '本命卦'}`;
+      }
+    }
     if (lines) lines.innerHTML = yijingLineHtml(result);
     renderYijingArt(result);
 

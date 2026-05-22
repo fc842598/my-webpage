@@ -4901,9 +4901,9 @@ p.mbp-topic-detail {
   padding: clamp(26px, 2.8vw, 36px);
   scroll-margin-top: 86px;
   display: grid;
-  grid-template-columns: minmax(260px, .42fr) minmax(0, 1.58fr);
-  grid-template-rows: auto 1fr;
-  gap: clamp(18px, 2vw, 28px) clamp(28px, 3vw, 44px);
+  grid-template-columns: minmax(290px, .42fr) minmax(0, 1.58fr);
+  grid-template-rows: auto;
+  gap: clamp(18px, 2vw, 28px) clamp(30px, 3vw, 46px);
   align-items: start;
   border: 1px solid rgba(241, 212, 125, .24);
   border-radius: 10px;
@@ -4920,35 +4920,39 @@ p.mbp-topic-detail {
 
 .mbp-yijing-left {
   display: grid;
+  gap: clamp(20px, 2vw, 28px);
   align-content: start;
-  justify-items: start;
-  padding: 6px 0 0;
+  justify-items: stretch;
+  padding: 4px 0 0;
 }
 
 .mbp-yijing-kicker {
   display: block;
   color: var(--ivory);
   font-family: "Noto Serif SC", "Songti SC", serif;
-  font-size: clamp(38px, 3vw, 48px);
+  font-size: clamp(36px, 2.8vw, 48px);
   font-weight: 900;
-  line-height: 1.12;
+  line-height: 1.08;
   white-space: nowrap;
 }
 
 .mbp-yijing-left h3 {
-  margin: 14px 0 8px;
+  margin: 0;
   color: var(--gold);
   font-family: "Noto Serif SC", "Songti SC", serif;
-  font-size: clamp(26px, 2.2vw, 34px);
+  font-size: clamp(30px, 2.4vw, 42px);
   line-height: 1.15;
+  text-align: center;
 }
 
 .mbp-yijing-left p {
-  max-width: 250px;
-  margin: 0;
+  max-width: none;
+  margin: 8px 0 0;
   color: #d4c096;
-  font-size: 16px;
-  line-height: 1.65;
+  font-size: 15px;
+  font-weight: 900;
+  line-height: 1.45;
+  text-align: center;
 }
 
 .mbp-yijing-lines {
@@ -4985,7 +4989,7 @@ p.mbp-topic-detail {
 .mbp-yijing-right {
   display: grid;
   grid-column: 2;
-  grid-row: 1 / span 2;
+  grid-row: 1;
   gap: 18px;
   align-content: start;
 }
@@ -5303,18 +5307,36 @@ p.mbp-topic-detail {
 }
 
 .mbp-yijing-art {
-  grid-column: 1;
-  grid-row: 2;
   min-width: 0;
   margin: 0;
+  padding: 18px;
   display: grid;
-  gap: 12px;
+  gap: 16px;
   align-content: start;
+  border: 1px solid rgba(241, 212, 125, .25);
+  border-radius: 8px;
+  background:
+    radial-gradient(circle at 50% 14%, rgba(241, 212, 125, .07), transparent 42%),
+    linear-gradient(180deg, rgba(241, 212, 125, .045), rgba(0, 0, 0, .08) 40%),
+    rgba(8, 5, 3, .36);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 245, 205, .035),
+    0 20px 44px rgba(0, 0, 0, .20);
 }
 
 .mbp-yijing-art-mini-lines {
   justify-self: center;
-  opacity: .92;
+  width: 120px;
+  gap: 7px;
+  opacity: .96;
+}
+
+.mbp-yijing-art-mini-lines .mbp-yijing-line {
+  height: 6px;
+}
+
+.mbp-yijing-art-mini-lines .mbp-yijing-line.is-broken {
+  gap: 14px;
 }
 
 .mbp-yijing-art-frame {
@@ -5322,19 +5344,21 @@ p.mbp-topic-detail {
   min-height: 205px;
   aspect-ratio: 1.46 / 1;
   overflow: hidden;
-  border: 1px solid rgba(241, 212, 125, .22);
-  border-radius: 8px;
-  background:
-    linear-gradient(135deg, rgba(255, 252, 237, .98), rgba(226, 213, 181, .92)),
-    repeating-linear-gradient(90deg, rgba(52, 38, 26, .06) 0 1px, transparent 1px 24px);
-  box-shadow: inset 0 0 0 1px rgba(65, 43, 25, .08), 0 16px 32px rgba(0, 0, 0, .18);
+  padding: 10px;
+  border: 1px solid rgba(241, 212, 125, .32);
+  border-radius: 0;
+  background: #080503;
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 245, 205, .05),
+    0 16px 32px rgba(0, 0, 0, .18);
 }
 
 .mbp-yijing-art-frame img {
   width: 100%;
   height: 100%;
   display: block;
-  object-fit: contain;
+  object-fit: cover;
+  border: 2px solid rgba(255, 248, 224, .9);
   background: #fffbf0;
 }
 
@@ -5402,11 +5426,10 @@ p.mbp-topic-detail {
 }
 
 .mbp-yijing-art figcaption {
-  min-height: 18px;
-  color: #bca976;
-  font-size: 12px;
-  font-weight: 800;
-  line-height: 1.5;
+  min-height: 0;
+  padding: 16px 0 15px;
+  border-top: 1px solid rgba(241, 212, 125, .15);
+  border-bottom: 1px solid rgba(241, 212, 125, .13);
   text-align: center;
 }
 
@@ -6874,6 +6897,16 @@ p.mbp-topic-detail {
   .mbp-yijing-kicker {
     font-size: clamp(30px, 9vw, 38px);
   }
+
+  .mbp-yijing-tabs [data-yijing-tab] {
+    padding-right: 26px;
+  }
+
+  .mbp-yijing-help {
+    right: 8px;
+    transform: translateY(-50%);
+  }
+
   .mbp-yijing-right,
   .mbp-yijing-art {
     grid-column: auto;
