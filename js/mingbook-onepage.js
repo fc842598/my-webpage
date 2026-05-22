@@ -502,7 +502,25 @@
     const plan = getDesktopQuotaPlanName(quota);
     const dailyLimit = quota?.baseDailyLimit ?? quota?.dailyLimit ?? quota?.limit ?? '--';
     const monthlyLimit = quota?.baseMonthlyLimit ?? quota?.monthlyLimit ?? '--';
-    return `${plan}额度与手机端共用：${dailyLimit}次/天 · ${monthlyLimit}次/月`;
+    const expiresText = getDesktopMemberExpiresText(quota);
+    return `${plan}额度与手机端共用：${dailyLimit}次/天 · ${monthlyLimit}次/月${expiresText ? ` · ${expiresText}` : ''}`;
+  }
+
+  function formatDesktopMemberDate(value) {
+    if (!value) return '';
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return '';
+    return `${date.getFullYear()}-${pad2(date.getMonth() + 1)}-${pad2(date.getDate())}`;
+  }
+
+  function getDesktopMemberExpiresAt(quota = desktopAuthState.quota) {
+    return quota?.memberExpiresAt || quota?.member_expires_at || quota?.expiresAt || quota?.expires_at || '';
+  }
+
+  function getDesktopMemberExpiresText(quota = desktopAuthState.quota) {
+    if (!quota?.isMember) return '';
+    const dateText = formatDesktopMemberDate(getDesktopMemberExpiresAt(quota));
+    return dateText ? `有效期至 ${dateText}` : '';
   }
 
   function getDesktopMemberProduct() {
@@ -516,11 +534,12 @@
   function updateDesktopMemberEntry() {
     const isMember = !!desktopAuthState.quota?.isMember;
     const product = getDesktopMemberProduct();
+    const expiresText = getDesktopMemberExpiresText();
     const label = $('#mbpMemberPayLabel');
     const meta = $('#mbpMemberPayMeta');
     const trigger = $('#mbpMemberPayTrigger');
-    if (label) label.textContent = isMember ? '续费会员' : '会员支付';
-    if (meta) meta.textContent = isMember ? '已开通' : `¥${product.amountYuan || '19.90'}`;
+    if (label) label.textContent = isMember ? 'VIP已开通' : '会员支付';
+    if (meta) meta.textContent = isMember ? (expiresText ? expiresText.replace('有效期', '') : '会员有效') : `¥${product.amountYuan || '19.90'}`;
     if (trigger) {
       trigger.classList.toggle('is-member', isMember);
       trigger.disabled = desktopPaymentState.loading;
@@ -546,6 +565,12 @@
       };
     }
     const loggedIn = !!desktopAuthState.session?.user;
+    const authTrigger = $('#mbpAuthTrigger');
+    if (authTrigger) authTrigger.classList.toggle('is-member', loggedIn && !!desktopAuthState.quota?.isMember);
+    const authTriggerMeta = $('#mbpAuthTriggerMeta');
+    if (authTriggerMeta && loggedIn) {
+      authTriggerMeta.textContent = desktopAuthState.quota?.isMember ? 'VIP已开通' : '电脑端已登录';
+    }
     const statusWrap = document.querySelector('#aip-panel-chat .xb-status-hidden');
     if (statusWrap) statusWrap.hidden = !loggedIn;
     const quotaBar = $('#chat-quota-bar');
@@ -592,13 +617,18 @@
     const trigger = $('#mbpAuthTrigger');
     if (trigger) {
       trigger.classList.toggle('is-logged-in', loggedIn);
+      trigger.classList.toggle('is-member', loggedIn && !!desktopAuthState.quota?.isMember);
       trigger.setAttribute('aria-expanded', desktopAuthState.open ? 'true' : 'false');
       trigger.disabled = desktopAuthState.loading;
     }
     const triggerLabel = $('#mbpAuthTriggerLabel');
     if (triggerLabel) triggerLabel.textContent = loggedIn ? shortenDesktopAuthLabel(getDesktopAuthUserLabel()) : '登录/注册';
     const triggerMeta = $('#mbpAuthTriggerMeta');
-    if (triggerMeta) triggerMeta.textContent = loggedIn ? '电脑端已登录' : '电脑端账号';
+    if (triggerMeta) {
+      triggerMeta.textContent = loggedIn
+        ? (desktopAuthState.quota?.isMember ? 'VIP已开通' : '电脑端已登录')
+        : '电脑端账号';
+    }
 
     const overlay = $('#mbpAuthOverlay');
     if (overlay) overlay.hidden = !desktopAuthState.open;

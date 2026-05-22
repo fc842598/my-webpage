@@ -140,6 +140,16 @@ select {
   background: rgba(241, 212, 125, .1);
 }
 
+.mbp-auth-trigger.is-member {
+  border-color: rgba(241, 212, 125, .45);
+  background: linear-gradient(135deg, rgba(241, 212, 125, .18), rgba(93, 123, 67, .2));
+}
+
+.mbp-auth-trigger.is-member .mbp-auth-trigger-meta {
+  color: #f1d47d;
+  font-weight: 900;
+}
+
 .mbp-auth-trigger-label {
   font-weight: 800;
   line-height: 1.1;
@@ -164,7 +174,7 @@ select {
 .mbp-member-pay-trigger {
   display: flex;
   min-height: 36px;
-  min-width: 116px;
+  min-width: 140px;
   padding: 6px 16px;
   border: 1px solid rgba(241, 212, 125, .34);
   border-radius: 999px;
