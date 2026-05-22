@@ -22,7 +22,7 @@
   <script defer src="../src/ziping/runtime.js"></script>
   <script defer src="../js/ai-piming.js?v=20260522-yijing-ai-timing"></script>
   <script defer src="../js/ai-chat.js?v=20260521-no-auto-jump"></script>
-  <script defer src="../js/mingbook-onepage.js?v=20260522-refund-ticket"></script>
+  <script defer src="../js/mingbook-onepage.js?v=20260522-daily-paid-plan"></script>
 </head>
 <body>
   <header class="mbp-nav">
@@ -38,8 +38,8 @@
     </nav>
     <div class="mbp-nav-actions">
       <button type="button" class="mbp-member-pay-trigger" id="mbpMemberPayTrigger">
-        <span id="mbpMemberPayLabel">会员支付</span>
-        <small id="mbpMemberPayMeta">开通月卡</small>
+        <span id="mbpMemberPayLabel">套餐支付</span>
+        <small id="mbpMemberPayMeta">开通付费版</small>
       </button>
       <button type="button" class="mbp-auth-trigger" id="mbpAuthTrigger" aria-haspopup="dialog" aria-controls="mbpAuthOverlay" aria-expanded="false">
         <span class="mbp-auth-trigger-label" id="mbpAuthTriggerLabel">登录/注册</span>
@@ -566,12 +566,12 @@
             <strong id="mbpAuthQuotaDaily">--/--</strong>
           </div>
           <div>
-            <span>本月额度</span>
+            <span>每日额度</span>
             <strong id="mbpAuthQuotaMonthly">--/--</strong>
           </div>
         </div>
         <div class="mbp-auth-session-actions">
-          <button type="button" class="mbp-auth-primary" id="mbpAuthMemberPay">开通会员</button>
+          <button type="button" class="mbp-auth-primary" id="mbpAuthMemberPay">开通付费版</button>
           <button type="button" class="mbp-auth-secondary" id="mbpAuthChangeAccount">切换账号</button>
           <button type="button" class="mbp-auth-primary is-danger" id="mbpAuthLogout">退出登录</button>
         </div>
@@ -609,21 +609,21 @@
     <div class="mbp-pay-dialog" role="dialog" aria-modal="true" aria-labelledby="mbpPayTitle">
       <button type="button" class="mbp-pay-close" id="mbpPayClose" aria-label="关闭">×</button>
       <div class="mbp-pay-head">
-        <span>阅天会员</span>
-        <strong id="mbpPayTitle">会员支付</strong>
-        <p id="mbpPayMessage">登录后可开通会员，电脑端与手机端权益共用。</p>
+        <span>阅天套餐</span>
+        <strong id="mbpPayTitle">套餐支付</strong>
+        <p id="mbpPayMessage">登录后可开通付费版，电脑端与手机端权益共用。</p>
       </div>
       <div class="mbp-pay-product">
         <div>
-          <b id="mbpPayProductName">阅天会员月卡</b>
-          <small id="mbpPayProductDesc">会员额度与手机端共用。</small>
+          <b id="mbpPayProductName">阅天AI付费版</b>
+          <small id="mbpPayProductDesc">付费用户 100次/天；免费用户 30次/天。按日刷新，不设月额度。</small>
         </div>
         <strong id="mbpPayAmount">¥19.90</strong>
       </div>
       <div class="mbp-pay-benefits">
-        <span>许半仙 AI 对话会员额度</span>
+        <span>许半仙 AI 对话付费额度</span>
         <span>命盘长页与手机端同账号共用</span>
-        <span>支付成功后自动刷新会员状态</span>
+        <span>支付成功后自动刷新付费状态</span>
       </div>
       <div class="mbp-pay-methods" id="mbpPayMethods" aria-label="选择支付方式">
         <button type="button" class="mbp-pay-method is-active" data-provider="wechat">微信支付</button>

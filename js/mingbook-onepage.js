@@ -123,12 +123,16 @@
     quota: null,
   };
   const desktopMemberProductKey = 'monthly_member';
+  const desktopFreeDailyLimit = 30;
+  const desktopPaidDailyLimit = 100;
+  const desktopPaidProductName = '阅天AI付费版';
+  const desktopPaidProductDesc = '许半仙 AI 对话：付费用户 100次/天；免费用户 30次/天。按日刷新，不设月额度。';
   const desktopPaymentPollMs = 3000;
   const desktopPaymentState = {
     open: false,
     loading: false,
     status: 'idle',
-    message: '登录后可开通会员，电脑端与手机端权益共用。',
+    message: '登录后可开通付费版，电脑端与手机端权益共用。',
     error: '',
     product: null,
     providers: [],
@@ -513,19 +517,18 @@
   }
 
   function getDesktopQuotaPlanName(quota = desktopAuthState.quota) {
-    return quota?.isMember ? '会员版' : '免费版';
+    return quota?.isMember ? '付费版' : '免费版';
   }
 
   function getDesktopQuotaLabelName(quota = desktopAuthState.quota) {
-    return quota?.isMember ? '会员' : '免费';
+    return quota?.isMember ? '付费' : '免费';
   }
 
   function getDesktopQuotaSharedText(quota = desktopAuthState.quota) {
     const plan = getDesktopQuotaPlanName(quota);
-    const dailyLimit = quota?.baseDailyLimit ?? quota?.dailyLimit ?? quota?.limit ?? '--';
-    const monthlyLimit = quota?.baseMonthlyLimit ?? quota?.monthlyLimit ?? '--';
+    const dailyLimit = quota?.baseDailyLimit ?? quota?.dailyLimit ?? quota?.limit ?? (quota?.isMember ? desktopPaidDailyLimit : desktopFreeDailyLimit);
     const expiresText = getDesktopMemberExpiresText(quota);
-    return `${plan}额度与手机端共用：${dailyLimit}次/天 · ${monthlyLimit}次/月${expiresText ? ` · ${expiresText}` : ''}`;
+    return `${plan}额度与手机端共用：${dailyLimit}次/天，按日刷新${expiresText ? ` · ${expiresText}` : ''}`;
   }
 
   function formatDesktopMemberDate(value) {
@@ -547,9 +550,33 @@
 
   function getDesktopMemberProduct() {
     return desktopPaymentState.product || {
-      name: '阅天会员月卡',
-      description: '会员额度与手机端共用。',
+      name: desktopPaidProductName,
+      description: desktopPaidProductDesc,
       amountYuan: '19.90',
+    };
+  }
+
+  function normalizeDesktopQuota(quota) {
+    if (!quota) return quota;
+    if (quota.testingUnlimited) return quota;
+    const isMember = !!quota.isMember;
+    const baseLimit = isMember ? desktopPaidDailyLimit : desktopFreeDailyLimit;
+    const used = Number(quota.dailyUsed ?? quota.used ?? 0) || 0;
+    const bonusRemaining = Math.max(0, Number(quota.referralBonus?.remaining || 0));
+    const dailyLimit = baseLimit + bonusRemaining;
+    const dailyRemaining = Math.max(0, dailyLimit - used);
+    return {
+      ...quota,
+      dailyLimit,
+      limit: dailyLimit,
+      baseDailyLimit: baseLimit,
+      dailyRemaining,
+      remaining: dailyRemaining,
+      monthlyLimit: null,
+      baseMonthlyLimit: null,
+      monthlyRemaining: null,
+      baseMonthlyRemaining: null,
+      monthlyUsed: null,
     };
   }
 
@@ -587,7 +614,7 @@
     const label = $('#mbpMemberPayLabel');
     const meta = $('#mbpMemberPayMeta');
     const trigger = $('#mbpMemberPayTrigger');
-    if (label) label.textContent = isMember ? 'VIP已开通' : '会员支付';
+    if (label) label.textContent = isMember ? '付费版已开通' : '套餐支付';
     if (meta) meta.textContent = isMember ? (expiresText ? expiresText.replace('有效期', '') : '会员有效') : `¥${product.amountYuan || '19.90'}`;
     if (trigger) {
       trigger.classList.toggle('is-member', isMember);
@@ -595,7 +622,7 @@
     }
     const authPay = $('#mbpAuthMemberPay');
     if (authPay) {
-      authPay.textContent = isMember ? `续费会员 ¥${product.amountYuan || '19.90'}` : `开通会员 ¥${product.amountYuan || '19.90'}`;
+      authPay.textContent = isMember ? `续费付费版 ¥${product.amountYuan || '19.90'}` : `开通付费版 ¥${product.amountYuan || '19.90'}`;
       authPay.disabled = desktopAuthState.loading || desktopPaymentState.loading;
     }
   }
@@ -610,7 +637,7 @@
     if (quota) {
       desktopAuthState.quota = {
         ...(desktopAuthState.quota || {}),
-        ...quota,
+        ...normalizeDesktopQuota(quota),
       };
     }
     const loggedIn = !!desktopAuthState.session?.user;
@@ -644,11 +671,10 @@
     setDesktopQuotaLabel('#mbpAuthQuotaDaily', `今日${labelName}额度`);
     const monthly = $('#mbpAuthQuotaMonthly');
     if (monthly) {
-      const remaining = desktopAuthState.quota?.monthlyRemaining ?? '--';
-      const limit = desktopAuthState.quota?.monthlyLimit ?? '--';
-      monthly.textContent = `${remaining}/${limit}`;
+      const limit = desktopAuthState.quota?.dailyLimit ?? desktopAuthState.quota?.limit ?? (desktopAuthState.quota?.isMember ? desktopPaidDailyLimit : desktopFreeDailyLimit);
+      monthly.textContent = `${limit}次/天`;
     }
-    setDesktopQuotaLabel('#mbpAuthQuotaMonthly', `本月${labelName}额度`);
+    setDesktopQuotaLabel('#mbpAuthQuotaMonthly', `每日${labelName}额度`);
     const badge = $('#mbpAuthSessionBadge');
     if (badge) badge.textContent = planName;
 
@@ -852,13 +878,13 @@
 
     const product = getDesktopMemberProduct();
     const title = $('#mbpPayTitle');
-    if (title) title.textContent = desktopAuthState.quota?.isMember ? '续费会员' : '会员支付';
+    if (title) title.textContent = desktopAuthState.quota?.isMember ? '续费付费版' : '套餐支付';
     const message = $('#mbpPayMessage');
-    if (message) message.textContent = desktopPaymentState.message || '登录后可开通会员，电脑端与手机端权益共用。';
+    if (message) message.textContent = desktopPaymentState.message || '登录后可开通付费版，电脑端与手机端权益共用。';
     const productName = $('#mbpPayProductName');
-    if (productName) productName.textContent = product.name || '阅天会员月卡';
+    if (productName) productName.textContent = product.name || desktopPaidProductName;
     const desc = $('#mbpPayProductDesc');
-    if (desc) desc.textContent = product.description || '会员额度与手机端共用。';
+    if (desc) desc.textContent = product.description || desktopPaidProductDesc;
     const amount = $('#mbpPayAmount');
     if (amount) amount.textContent = `¥${product.amountYuan || '19.90'}`;
     document.querySelectorAll('.mbp-pay-method').forEach((button) => {
@@ -911,7 +937,7 @@
     try {
       const data = await desktopFetchJson(`/api/payments/order-status?orderNo=${encodeURIComponent(desktopPaymentState.orderNo)}`);
       desktopPaymentState.status = data.status || desktopPaymentState.status;
-      desktopPaymentState.message = data.status === 'paid' ? '已开通会员' : `等待${getDesktopPaymentProviderLabel()}完成`;
+      desktopPaymentState.message = data.status === 'paid' ? '已开通付费版' : `等待${getDesktopPaymentProviderLabel()}完成`;
       if (data.status === 'paid') {
         stopDesktopPaymentPoll();
         await hydrateDesktopMemberStatus({ force: true });
@@ -942,7 +968,7 @@
     desktopPaymentState.error = '';
     desktopPaymentState.message = desktopPaymentState.status === 'pending'
       ? desktopPaymentState.message
-      : '会员支付会绑定当前登录账号，电脑端与手机端权益共用。';
+      : '付费版会绑定当前登录账号，电脑端与手机端权益共用。';
     renderDesktopPayment();
     await hydrateDesktopMemberStatus({ force: true });
     if (desktopPaymentState.status === 'pending') startDesktopPaymentPoll();
@@ -991,8 +1017,8 @@
       desktopPaymentState.mockMode = !!(order.mockMode || sessionData.mockMode);
       desktopPaymentState.product = {
         ...(desktopPaymentState.product || {}),
-        name: order.productName || desktopPaymentState.product?.name || '阅天会员月卡',
-        description: order.description || desktopPaymentState.product?.description || '会员额度与手机端共用。',
+        name: order.productName || desktopPaymentState.product?.name || desktopPaidProductName,
+        description: order.description || desktopPaymentState.product?.description || desktopPaidProductDesc,
         amountYuan: order.amountYuan || desktopPaymentState.product?.amountYuan || '19.90',
       };
       desktopPaymentState.message = desktopPaymentState.mockMode
@@ -1024,7 +1050,7 @@
         body: { orderNo: desktopPaymentState.orderNo },
       });
       desktopPaymentState.status = data.status || 'paid';
-      desktopPaymentState.message = '已开通会员';
+      desktopPaymentState.message = '已开通付费版';
       await hydrateDesktopMemberStatus({ force: true });
     } catch (error) {
       desktopPaymentState.error = error.message || '测试支付失败';
@@ -6697,7 +6723,7 @@
         if (!meta.enabled || desktopPaymentState.status === 'pending') return;
         desktopPaymentState.provider = provider;
         desktopPaymentState.error = '';
-        desktopPaymentState.message = '会员支付会绑定当前登录账号，电脑端与手机端权益共用。';
+        desktopPaymentState.message = '付费版会绑定当前登录账号，电脑端与手机端权益共用。';
         renderDesktopPayment();
       });
     });
