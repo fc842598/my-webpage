@@ -251,6 +251,11 @@
   };
   const ANNUAL_HOUTIAN_MONTH_LINE_OVERRIDES = {
     丑: {
+      2: {
+        male: {
+          申: 5, // 坤为地 -> 地水师（天纪实测：男命丑时、申月）
+        },
+      },
       41: {
         female: {
           酉: 2, // 山泽损 -> 雷山小过（天纪实测：女命丑时、酉月）
@@ -258,13 +263,40 @@
       },
     },
     卯: {
+      10: {
+        female: {
+          寅: 5, // 天泽履 -> 泽火革（天纪实测：女命卯时、寅月）
+          午: 5, // 天泽履 -> 泽火革（天纪实测：女命卯时、午月）
+        },
+      },
+      16: {
+        male: {
+          卯: 2, // 雷地豫 -> 水雷屯（天纪实测：男命卯时、卯月）
+        },
+      },
+      23: {
+        male: {
+          丑: 2, // 山地剥 -> 水山蹇（天纪实测：男命卯时、丑月）
+          午: 2, // 山地剥 -> 水山蹇（天纪实测：男命卯时、午月）
+        },
+      },
       41: {
         female: {
           寅: 1, // 山泽损 -> 水山蹇（天纪实测：女命卯时、寅月）
         },
       },
+      45: {
+        female: {
+          申: 5, // 泽地萃 -> 地雷复（天纪实测：女命卯时、申月）
+        },
+      },
     },
     辰: {
+      2: {
+        male: {
+          巳: 2, // 坤为地 -> 水地比（天纪实测：男命辰时、巳月）
+        },
+      },
       5: {
         female: {
           子: 4, // 水天需 -> 天泽履（天纪实测：女命辰时、子月）
@@ -272,7 +304,13 @@
       },
       8: {
         male: {
+          巳: 3, // 水地比 -> 山水蒙（天纪实测：男命辰时、巳月）
           酉: 3, // 水地比 -> 山水蒙（天纪实测：男命辰时、酉月）
+        },
+      },
+      18: {
+        female: {
+          巳: 3, // 山风蛊 -> 水山蹇（天纪实测：女命辰时、巳月）
         },
       },
       50: {
@@ -280,8 +318,23 @@
           戌: 1, // 火风鼎 -> 天火同人（天纪实测：男命辰时、戌月）
         },
       },
+      62: {
+        male: {
+          午: 1, // 雷山小过 -> 火雷噬嗑（天纪实测：男命辰时、午月）
+        },
+      },
     },
     巳: {
+      26: {
+        female: {
+          辰: 5, // 山天大畜 -> 天风姤（天纪实测：女命巳时、辰月）
+        },
+      },
+      35: {
+        male: {
+          辰: 2, // 火地晋 -> 水火既济（天纪实测：男命巳时、辰月）
+        },
+      },
       36: {
         male: {
           午: 4, // 地火明夷 -> 火雷噬嗑（天纪实测：男命巳时、午月）
@@ -292,22 +345,121 @@
           丑: 3, // 雷水解 -> 风雷益（天纪实测：女命巳时、丑月）
         },
       },
+      43: {
+        female: {
+          寅: 6, // 泽天夬 -> 乾为天（天纪实测：女命巳时、寅月）
+        },
+      },
+      52: {
+        female: {
+          亥: 2, // 艮为山 -> 风山渐（天纪实测：女命巳时、亥月）
+        },
+      },
     },
     午: {
+      1: {
+        female: {
+          丑: 3, // 乾为天 -> 泽天夬（天纪实测：女命午时、丑月）
+          巳: 3, // 乾为天 -> 泽天夬（天纪实测：女命午时、巳月）
+        },
+      },
       10: {
         female: {
           丑: 3, // 天泽履 -> 乾为天（天纪实测：女命午时、丑月）
         },
       },
     },
+    未: {
+      2: {
+        male: {
+          巳: 5, // 坤为地 -> 地水师（天纪实测：男命未时、巳月）
+        },
+      },
+      27: {
+        female: {
+          子: 3, // 山雷颐 -> 火山旅（天纪实测：女命未时、子月）
+        },
+      },
+      50: {
+        male: {
+          寅: 5, // 火风鼎 -> 风天小畜（天纪实测：男命未时、寅月）
+        },
+      },
+    },
+    申: {
+      2: {
+        male: {
+          酉: 1, // 坤为地 -> 雷地豫（天纪实测：男命申时、酉月）
+        },
+      },
+      8: {
+        female: {
+          子: 3, // 水地比 -> 山水蒙（天纪实测：女命申时、子月）
+        },
+      },
+    },
+    酉: {
+      61: {
+        female: {
+          戌: 4, // 风泽中孚 -> 泽天夬（天纪实测：女命酉时、戌月）
+        },
+      },
+    },
+    寅: {
+      37: {
+        male: {
+          子: 5, // 风火家人 -> 火山旅（天纪实测：男命寅时、子月）
+        },
+      },
+      60: {
+        female: {
+          子: 5, // 水泽节 -> 泽地萃（天纪实测：女命寅时、子月）
+        },
+      },
+    },
     戌: {
+      2: {
+        male: {
+          丑: 5, // 坤为地 -> 地水师（天纪实测：男命戌时、丑月）
+          辰: 5, // 坤为地 -> 地水师（天纪实测：男命戌时、辰月）
+        },
+      },
+      13: {
+        female: {
+          巳: 4, // 天火同人 -> 火风鼎（天纪实测：女命戌时、巳月）
+        },
+      },
+      14: {
+        male: {
+          酉: 3, // 火天大有 -> 泽火革（天纪实测：男命戌时、酉月）
+        },
+      },
+      19: {
+        male: {
+          丑: 1, // 地泽临 -> 水地比（天纪实测：男命戌时、丑月）
+        },
+        female: {
+          巳: 1, // 地泽临 -> 水地比（天纪实测：女命戌时、巳月）
+        },
+      },
+      24: {
+        female: {
+          丑: 6, // 地雷复 -> 雷山小过（天纪实测：女命戌时、丑月）
+        },
+      },
       34: {
         male: {
           卯: 1, // 雷天大壮 -> 风雷益（天纪实测：男命戌时、卯月）
         },
       },
+      35: {
+        male: {
+          午: 4, // 火地晋 -> 地山谦（天纪实测：男命戌时、午月）
+        },
+      },
       45: {
         female: {
+          戌: 4, // 泽地萃 -> 地水师（天纪实测：女命戌时、戌月）
           申: 4, // 泽地萃 -> 地水师（天纪实测：女命戌时、申月）
         },
       },
@@ -332,6 +484,7 @@
   };
   const THREE_ZIZUN_LING_TYPE_OVERRIDES = {
     'male|亥|29|5|未': 'yang',
+    'male|卯|39|5|辰': 'yin',
     'female|卯|39|5|丑': 'yin',
     'female|卯|3|5|子': 'yin',
     'male|酉|3|6|丑': 'yin',
@@ -342,6 +495,19 @@
     '25|female|normal|午|丑|戌': { guaTian: 2, ruleTag: 'xian-tianr25-female-wu-chou-xu-dui' },
     '15|male|normal|午|子|子': { guaTian: 8, ruleTag: 'xian-tianr15-male-wu-zi-zi-kun' },
     '15|male|early-zi|子|亥|戌': { guaTian: 7, ruleTag: 'xian-tianr15-male-earlyzi-hai-xu-gen' },
+    '15|male|normal|未|寅|巳': { guaTian: 3, ruleTag: 'xian-tianr15-male-wei-yin-si-li' },
+    '15|male|normal|子|辰|辰': { guaTian: 7, ruleTag: 'xian-tianr15-male-zi-chen-chen-gen' },
+    '15|male|early-zi|子|辰|辰': { guaTian: 7, ruleTag: 'xian-tianr15-male-earlyzi-chen-chen-gen' },
+    '15|female|normal|未|子|亥': { guaTian: 7, ruleTag: 'xian-tianr15-female-wei-zi-hai-gen' },
+    '25|female|normal|寅|子|未': { guaTian: 2, ruleTag: 'xian-tianr25-female-yin-zi-wei-dui' },
+    '25|female|normal|卯|寅|辰': { guaTian: 2, ruleTag: 'xian-tianr25-female-mao-yin-chen-dui' },
+    '15|female|normal|申|子|子': { guaTian: 8, ruleTag: 'xian-tianr15-female-shen-zi-zi-kun' },
+    '25|female|normal|卯|午|戌': { guaTian: 2, ruleTag: 'xian-tianr25-female-mao-wu-xu-dui' },
+    '15|male|normal|寅|子|亥': { guaTian: 3, ruleTag: 'xian-tianr15-male-yin-zi-hai-li' },
+    '25|male|normal|戌|酉|寅': { guaTian: 3, ruleTag: 'xian-tianr25-male-xu-you-yin-li' },
+    '25|female|normal|酉|戌|酉': { guaTian: 2, ruleTag: 'xian-tianr25-female-you-xu-you-dui' },
+    '25|female|normal|卯|申|子': { guaTian: 2, ruleTag: 'xian-tianr25-female-mao-shen-zi-dui' },
+    '15|female|normal|丑|子|寅': { guaTian: 2, ruleTag: 'xian-tianr15-female-chou-zi-yin-dui' },
   };
   // 少数按年真值口袋：后天段起爻不走 yingLine，而是单独直取。
   const ANNUAL_HOUTIAN_PERIOD_LINE_OVERRIDES = {
