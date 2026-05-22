@@ -210,8 +210,8 @@ function figBox(id, x, y, w, h, className = "", style = "", attrs = "") {
   return `<div class="fig-box ${className}" data-node-id="${id}" ${attrs} style="left:${x}px;top:${y}px;width:${w}px;height:${h}px;${style}"></div>`;
 }
 
-function figImage(id, src, x, y, w, h, style = "") {
-  return `<img class="fig-img" data-node-id="${id}" src="${src}" alt="" style="left:${x}px;top:${y}px;width:${w}px;height:${h}px;${style}">`;
+function figImage(id, src, x, y, w, h, style = "", attrs = "") {
+  return `<img class="fig-img" data-node-id="${id}" src="${src}" alt="" ${attrs} style="left:${x}px;top:${y}px;width:${w}px;height:${h}px;${style}">`;
 }
 
 function figButton(id, x, y, w, h, attrs, className = "", style = "") {
@@ -732,7 +732,7 @@ function sourceArchiveScreen(screen) {
     ${figText("source-3-current-title", "当前档案", 18, 136, 120, 15, "#26211c", 800)}
     ${figText("source-3-change", "更换档案 〉", 284, 138, 88, 12, "#9b742e", 500, "right")}
     ${figBox("source-3-profile", 16, 164, 358, 104, "converted-card", "border-radius:12px;box-shadow:0 6px 18px rgba(90,62,34,.09);")}
-    ${figImage("source-3-profile-avatar", "../images/wentian-prototype-assets/03-profile.jpg", 38, 192, 48, 48, "border-radius:24px;border:1px solid #e4d2a7;")}
+    ${figImage("source-3-profile-avatar", "../images/wentian-prototype-assets/03-profile.jpg", 38, 192, 48, 48, "border-radius:24px;border:1px solid #e4d2a7;object-fit:cover;", "loading=\"eager\" decoding=\"async\" onerror=\"this.onerror=null;this.src='../images/wentian-prototype-assets/xu-banxian.jpg';\"")}
     ${figText("source-3-profile-name", escapeHtml(active.name), 102, 184, 188, 18, "#26211c", 800)}
     ${figBox("source-3-gender", 102, 211, 30, 18, "", "border-radius:9px;background:#f7ecd5;")}
     ${figText("source-3-gender-text", active.gender, 102, 215, 30, 10, "#b07a2d", 700, "center")}
@@ -954,7 +954,7 @@ function sourceAiChatScreen(screen) {
   const faqTitle = isLiuyaoChat ? "占卜追问" : isHepanChat ? "合盘追问" : isLiurenChat ? "六壬追问" : "常问";
   const inputPlaceholder = isLiuyaoChat ? "追问这卦" : isHepanChat ? "追问合盘" : isLiurenChat ? "追问此课" : "问一问";
   return `
-    ${figBox("source-4-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
+    ${figBox("source-4-bg", 0, 0, 390, 892, "", "background:#fbf7ef;")}
     ${figBox("source-4-header", 0, 0, 390, 88, "", "background:#f8f3ea;box-shadow:0 1px 0 rgba(110,82,38,.08);")}
     ${figText("source-4-back", "‹", 24, 29, 28, 34, "#26211c", 500)}
     ${figImage("source-4-avatar", "../images/wentian-prototype-assets/xu-banxian.jpg", 58, 25, 40, 40, "border-radius:20px;object-fit:cover;object-position:center 18%;")}
@@ -987,10 +987,10 @@ function sourceAiChatScreen(screen) {
         </details>
       `).join("")}
     </div>
-    ${figBox("source-4-input-bg", 0, 748, 390, 96, "", "background:#f7f3ec;box-shadow:0 -1px 0 rgba(110,82,38,.08);")}
+    ${figBox("source-4-input-bg", 0, 790, 390, 102, "", "background:#f7f3ec;box-shadow:0 -1px 0 rgba(110,82,38,.08);")}
     <textarea id="wentian-chat-input" class="wentian-chat-field" rows="1" placeholder="${inputPlaceholder}" autocomplete="off"></textarea>
     <button id="wentian-chat-send" class="wentian-chat-send" type="button" data-action="wentian-chat-send" aria-label="发送">↑</button>
-    ${figText("source-4-disclaimer", "内容由AI生成，仅供娱乐参考", 0, 818, 390, 10, "#b8b0a7", 400, "center")}
+    ${figText("source-4-disclaimer", "内容由AI生成，仅供娱乐参考", 0, 862, 390, 10, "#b8b0a7", 400, "center")}
   `;
 }
 
@@ -6010,9 +6010,9 @@ function syncWentianChatFaqLayout() {
   if (!phone || !starters || !inputBg || !input || !send || !disclaimer) return;
 
   const openGroup = starters.querySelector(".wentian-chat-faq-group[open]");
-  const baseListHeight = 128;
-  const basePhoneHeight = 844;
-  const basePositions = { inputBg: 748, input: 762, send: 770, disclaimer: 818 };
+  const baseListHeight = 160;
+  const basePhoneHeight = 892;
+  const basePositions = { inputBg: 790, input: 804, send: 812, disclaimer: 862 };
 
   starters.classList.toggle("is-expanded", Boolean(openGroup));
   starters.style.maxHeight = openGroup ? "none" : "";
@@ -6024,7 +6024,7 @@ function syncWentianChatFaqLayout() {
 
   phone.style.height = `${basePhoneHeight + totalExtra}px`;
   inputBg.style.top = `${basePositions.inputBg + faqExtra}px`;
-  inputBg.style.height = `${96 + inputExtra}px`;
+  inputBg.style.height = `${102 + inputExtra}px`;
   input.style.top = `${basePositions.input + faqExtra}px`;
   send.style.top = `${basePositions.input + faqExtra + fieldHeight - 40}px`;
   disclaimer.style.top = `${basePositions.disclaimer + totalExtra}px`;
@@ -7563,12 +7563,12 @@ function sourceLanguageSettingsScreen() {
     ${figText("source-37-preview-desc", "确认后会同步保存到当前浏览器", 42, 215, 260, 13, "#8f857a")}
     ${sourceAppBottomNav("我的", 755)}
     ${figBox("source-37-overlay", 0, 0, 390, 844, "", "background:rgba(0,0,0,.36);")}
-    ${figBox("source-37-sheet", 20, 500, 350, 260, "", "border-radius:20px;background:#fff;box-shadow:0 -8px 24px rgba(0,0,0,.14);")}
-    ${figText("source-37-sheet-title", "语言设置", 42, 526, 200, 18, "#26211c", 800)}
+    ${figBox("source-37-sheet", 20, 462, 350, 252, "", "border-radius:20px;background:#fff;box-shadow:0 -8px 24px rgba(0,0,0,.14);")}
+    ${figText("source-37-sheet-title", "语言设置", 42, 488, 200, 18, "#26211c", 800)}
     ${WENTIAN_LANGUAGE_OPTIONS.map((option, index) => {
       const selected = option.code === activeCode;
       return `
-        <button class="wentian-language-option ${selected ? "is-selected" : ""}" type="button" data-action="wentian-language-pick" data-wentian-language-option="1" data-language-code="${option.code}" aria-pressed="${selected ? "true" : "false"}" style="left:42px;top:${570 + index * 42}px">
+        <button class="wentian-language-option ${selected ? "is-selected" : ""}" type="button" data-action="wentian-language-pick" data-wentian-language-option="1" data-language-code="${option.code}" aria-pressed="${selected ? "true" : "false"}" style="left:42px;top:${532 + index * 42}px">
           <span class="wentian-language-label">${option.label}</span>
           <span class="wentian-language-check">${selected ? "✓" : ""}</span>
         </button>
@@ -10329,7 +10329,7 @@ function renderLiurenPath(result, reveal = true) {
   const finalDelay = reveal ? visualSequence.length * LIUREN_FLASH_INTERVAL_SECONDS + 0.1 : 0;
   return `
     <div class="liuren-hand-board ${reveal ? "is-revealed" : "is-idle"}" style="--liuren-step-duration:${LIUREN_FLASH_INTERVAL_SECONDS.toFixed(2)}s;--liuren-final-delay:${finalDelay.toFixed(2)}s;" aria-label="小六壬掌诀三指六位推演图">
-      <img src="../images/wentian-prototype-assets/liuren-hand-board-base.png" alt="" aria-hidden="true">
+      <img src="../images/wentian-prototype-assets/liuren-hand-board-base.png" alt="" aria-hidden="true" loading="eager" decoding="sync" fetchpriority="high" onerror="this.onerror=null;this.src='../images/wentian-prototype-assets/liuren-hand-board.png';">
       <div class="liuren-palace-layer" aria-hidden="true">${renderLiurenPalaceBadges(result, reveal)}</div>
       ${reveal ? `<div class="liuren-palace-pulses" aria-hidden="true">${renderLiurenPalacePulses(result)}</div>` : ""}
       <div class="liuren-hand-a11y" aria-live="polite">
@@ -11442,15 +11442,17 @@ function sourceDashboardHomeScreen() {
   const account = getWentianAuthDisplay();
   const member = getWentianMemberSnapshot();
   const memberLabel = member.isMember ? "会员" : (account.loggedIn ? "账号" : "登录/注册");
+  const accountGreet = account.loggedIn ? `${account.name}，安好` : "登录/注册";
+  const accountSub = account.loggedIn ? account.sub : "登录后支付查订单";
   return `
     ${figBox("source-1-bg", 0, 0, 390, 986, "", "background:linear-gradient(180deg,#fffdf8 0%,#fbf7ef 50%,#faf5ed 100%);")}
     ${figBox("source-1-avatar", 18, 24, 44, 44, "", "border-radius:22px;background:#f4ead8;box-shadow:0 6px 16px rgba(188,142,59,.12);")}
     ${figBox("source-1-avatar-head", 33, 36, 12, 12, "", "border-radius:6px;background:#c58d25;")}
     ${figBox("source-1-avatar-body", 27, 52, 24, 13, "", "border-radius:12px 12px 5px 5px;background:#c58d25;")}
-    ${figText("source-1-greet", `${escapeHtml(account.name)}，安好`, 78, 28, 148, 20, "#25221f", 800, "left", "white-space:nowrap;overflow:hidden;text-overflow:ellipsis;")}
-    ${figText("source-1-date", escapeHtml(account.sub), 78, 53, 150, 14, "#8d877e", 500, "left", "white-space:nowrap;overflow:hidden;text-overflow:ellipsis;")}
+    ${figText("source-1-greet", escapeHtml(accountGreet), 78, 28, 128, 20, "#25221f", 800, "left", "white-space:nowrap;overflow:hidden;text-overflow:ellipsis;")}
+    ${figText("source-1-date", escapeHtml(accountSub), 78, 53, 130, 14, "#8d877e", 500, "left", "white-space:nowrap;")}
     ${figBox("source-1-login-pill", 212, 32, 72, 26, "", `border-radius:14px;background:${member.isMember ? "#fff1d8" : "#f3eadc"};`)}
-    ${figText("source-1-login-pill-text", memberLabel, 212, 39, 72, 11, member.isMember ? "#9f3d2e" : "#bd8624", 800, "center")}
+    ${figText("source-1-login-pill-text", memberLabel, 212, 39, 72, 11, member.isMember ? "#9f3d2e" : "#bd8624", 800, "center", "white-space:nowrap;")}
     ${figButton("source-1-login-hit", 18, 20, 266, 56, 'data-action="wentian-login-open"')}
     ${figBox("source-1-chart-pill", 294, 32, 78, 32, "", "border-radius:18px;background:#f3eadc;box-shadow:0 7px 16px rgba(190,142,45,.12);")}
     ${figText("source-1-chart-text", "✦ 排盘", 306, 39, 54, 16, "#bd8624", 800, "center")}
@@ -12019,7 +12021,7 @@ function renderConvertedScreen(no) {
   }
   const polishedScreen = renderWentianPolishedScreen(screen);
   if (polishedScreen) {
-    const polishedHeight = screen.no === 8 ? 1280 : screen.no === 17 ? getLiuyaoCastScreenHeight() : screen.no === 18 || screen.no === 19 ? 1480 : screen.no === 20 ? getLiuyaoResultScreenHeight() : screen.no === 22 ? 1120 : screen.no === 24 ? 1180 : screen.no === 44 ? getYangzhaiResultHeight() : screen.no === 46 ? LIUREN_SCREEN_HEIGHT : screen.no === 49 ? 1160 : 844;
+    const polishedHeight = screen.no === 4 ? 892 : screen.no === 8 ? 1280 : screen.no === 17 ? getLiuyaoCastScreenHeight() : screen.no === 18 || screen.no === 19 ? 1480 : screen.no === 20 ? getLiuyaoResultScreenHeight() : screen.no === 22 ? 1120 : screen.no === 24 ? 1180 : screen.no === 44 ? getYangzhaiResultHeight() : screen.no === 46 ? LIUREN_SCREEN_HEIGHT : screen.no === 49 ? 1160 : 844;
     const wideBgClass = screen.no >= 42 && screen.no <= 45 ? " wide-bg" : "";
     const customHotspots = screen.no >= 17 && screen.no <= 20 ? "" : convertedFlowHotspots(screen);
     return figPhone(`screen-${screen.no}`, `${String(screen.no).padStart(2, "0")} ${screen.title}`, `
