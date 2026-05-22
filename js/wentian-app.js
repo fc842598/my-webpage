@@ -1175,12 +1175,16 @@ const WENTIAN_CHART_STORAGE_KEY = "wentian-app-current-chart-v1";
 const WENTIAN_ARCHIVES_STORAGE_KEY = "wentian-app-archives-v1";
 const WENTIAN_SELECTED_ARCHIVE_KEY = "wentian-app-selected-archive-id";
 const WENTIAN_HEPAN_SELECTION_KEY = "wentian-app-hepan-selected-ids";
+const WENTIAN_HEPAN_MIN_AGE = 18;
+const WENTIAN_HEPAN_MAX_AGE_GAP = 15;
 const WENTIAN_HEPAN_AI_RULES = [
   "海厦《天纪06》合盘提到母子格、父女格、兄弟格、朋友格；格局先看命盘宫位/星曜对应，不按现实年龄硬猜。",
   "页面主判：一方夫妻宫所在地支落到另一张盘哪一宫，就先按那一宫立格，例如落兄弟宫为兄弟格，落朋友/仆役宫为朋友格。",
   "星曜佐证：参考父母宫星入对方命宫、命宫星入对方父母宫、兄弟宫星入对方命宫、朋友宫星入对方命宫等合参规则。",
   "情侣/夫妻格才谈婚恋推进；兄弟格、朋友格、父母格等只谈相处、边界、扶持与互动，不输出暧昧或婚恋判断。",
   "出生日期在未来、生日缺失、同一人重复选择，均不能合盘。",
+  "情侣合盘只允许一男一女；男男/女女不能合盘。",
+  `任一方未满${WENTIAN_HEPAN_MIN_AGE}岁不能合盘；双方年龄相差超过${WENTIAN_HEPAN_MAX_AGE_GAP}岁不能合盘。`,
   "追问时必须围绕两张盘和本次合盘格局回答，不要退回单人命盘读盘。",
 ].join("\n");
 const WENTIAN_CLIENT_ID_KEY = "ziwei_client_id";
@@ -3647,6 +3651,17 @@ function validateWentianHepanPair(left, right) {
   if (futureBirth) {
     return { ok: false, code: "future-birth", message: `${futureBirth.label}出生日期在未来，不能合盘` };
   }
+  if (leftGender === rightGender) {
+    return { ok: false, code: "same-gender", message: "情侣合盘仅支持一男一女，男男/女女不能合盘" };
+  }
+  const hasMinor = ageInfos.some((item) => Number.isFinite(item.age) && item.age < WENTIAN_HEPAN_MIN_AGE);
+  if (hasMinor) {
+    return { ok: false, code: "minor", message: `未满${WENTIAN_HEPAN_MIN_AGE}岁，不能合盘` };
+  }
+  const ageGap = Math.abs(Number(ageInfos[0]?.age) - Number(ageInfos[1]?.age));
+  if (Number.isFinite(ageGap) && ageGap > WENTIAN_HEPAN_MAX_AGE_GAP) {
+    return { ok: false, code: "age-gap", message: `双方年龄相差超过${WENTIAN_HEPAN_MAX_AGE_GAP}岁，不能合盘` };
+  }
   const relationship = getWentianHepanRelationship(left, right, ageInfos);
   return { ok: true, code: "ok", message: `可开始${relationship.label}`, relationship, ageInfos };
 }
@@ -4343,6 +4358,9 @@ const WENTIAN_I18N_EN_EXTRA = {
   "同一个人不能和自己合盘": "A person cannot match with themself",
   "档案性别不完整，请先补全后再合盘": "Gender is missing. Complete the files before matching",
   "情侣合盘仅支持一男一女，男男/女女不能合盘": "Couple compatibility only supports one male and one female",
+  "未满18岁，不能合盘": "Minors under 18 cannot match",
+  "双方年龄相差超过15岁，不能合盘": "Age gap over 15 years is not allowed",
+  "规则：仅支持一男一女，未满18岁不合盘，年龄差超过15岁不合盘。": "Rule: one male and one female only, both must be adults, and age gap over 15 years is not allowed.",
   "合盘结果": "Compatibility Result",
   "分": "pts",
   "上佳合盘": "Excellent",
@@ -5904,8 +5922,8 @@ async function shareWentianApp(target = "system") {
 
 async function handleWentianContactAction(action) {
   if (action === "wentian-contact-email") {
-    await copyWentianContactText("support@yuetianai.com", "邮箱已复制，可直接发邮件联系");
-    window.location.href = "mailto:support@yuetianai.com?subject=%E9%98%85%E5%A4%A9AI%E5%92%A8%E8%AF%A2";
+    await copyWentianContactText("842598522@qq.com", "邮箱已复制，可直接发邮件联系");
+    window.location.href = "mailto:842598522@qq.com?subject=%E9%98%85%E5%A4%A9AI%E5%92%A8%E8%AF%A2";
     return;
   }
   if (action === "wentian-contact-xiaohongshu") {
@@ -7562,7 +7580,7 @@ function getWentianHepanVisibleArchives(archives, selectedIds) {
 function getWentianHepanHint(archives, selectedIds, validation) {
   if (selectedIds.length >= 2) return validation.message;
   if (archives.length < 2) return "至少需要两张档案才能合盘";
-  return "请选择两张不同档案，按夫妻宫落点定格";
+  return "请选择一男一女两张不同档案";
 }
 
 function refreshWentianHepanSelectionView(archives, selectedIds) {
@@ -7721,7 +7739,7 @@ function sourceHepanInvalidScreen(result) {
     ${figText("wt49-invalid-icon-text", "合", 142, 204, 106, 38, "#a94437", 900, "center", "font-size:38px;")}
     ${figText("wt49-invalid-title", "暂不能合盘", 0, 304, 390, 24, "#25211d", 900, "center")}
     ${figText("wt49-invalid-copy", escapeHtml(message), 56, 346, 278, 15, "#756d63", 800, "center", "line-height:1.6;")}
-    ${figText("wt49-invalid-rule", "规则：先选两张不同档案，再按夫妻宫落点与星曜对应定格。", 56, 394, 278, 12, "#9a8f82", 700, "center", "line-height:1.55;")}
+    ${figText("wt49-invalid-rule", "规则：仅支持一男一女，未满18岁不合盘，年龄差超过15岁不合盘。", 56, 394, 278, 12, "#9a8f82", 700, "center", "line-height:1.55;")}
     ${figBox("wt49-repick", 42, 506, 136, 44, "", "border:1px solid #d6b463;border-radius:10px;background:#fff;")}
     ${figButton("wt49-repick-hit", 42, 506, 136, 44, 'data-route="screen-11"')}
     ${figText("wt49-repick-text", "重新选择", 42, 518, 136, 13, "#9b742e", 800, "center")}
@@ -11248,11 +11266,9 @@ function renderWentianPolishedScreen(screen) {
   }
   if (no === 35) {
     const contacts = [
-      ["电子邮箱", "support@yuetianai.com", "✉", "wentian-contact-email"],
-      ["小红书", "阅天AI命理小助手", "♡", "wentian-contact-xiaohongshu"],
-      ["微信公众号", "悦天AI公众号", "微", "wentian-contact-wechat"],
-      ["X", "关注我们的推特", "𝕏", "wentian-contact-x"],
+      ["电子邮箱", "842598522@qq.com", "✉", "wentian-contact-email"],
     ];
+    const contactStatusTop = 128 + contacts.length * 78 + 16;
     return `
       ${figBox("wt35-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
       ${wentianSimpleHeader("wt35", "联系我们")}
@@ -11267,7 +11283,7 @@ function renderWentianPolishedScreen(screen) {
           ${figButton(`wt35-hit-${index}`, 24, y, 342, 56, `data-action="${action}" aria-label="${title}"`)}
         `;
       }).join("")}
-      <div id="wentian-contact-status" class="wentian-invite-status" style="left:34px;top:456px;width:322px;text-align:center" data-tone=""></div>
+      <div id="wentian-contact-status" class="wentian-invite-status" style="left:34px;top:${contactStatusTop}px;width:322px;text-align:center" data-tone=""></div>
     `;
   }
   if (no === 36) {
