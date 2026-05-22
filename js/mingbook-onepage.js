@@ -44,6 +44,7 @@
   let fcCurrentChart = null;
   let fcCurrentGender = 'male';
   let fcBirthPillars = null;
+  let yijingTimingOpen = false;
   const defaultProfile = { name: '', year: 1991, month: 2, day: 16, hour: 22, minute: 8, gender: 'male', city: '广东 深圳', cityName: '广东 深圳' };
   const starProfiles = {
     紫微: { trait: '主星稳重，有掌控局面和整合资源的能力', career: '适合管理、统筹、品牌和资源型岗位', wealth: '财运重在长期配置，不宜频繁追涨杀跌', love: '感情里要减少控制感，多给对方空间' },
@@ -2531,6 +2532,101 @@
     }
   }
 
+  function yijingTimingLineName(index) {
+    const labels = ['一爻', '二爻', '三爻', '四爻', '五爻', '上爻'];
+    return labels[index] || '应爻';
+  }
+
+  function yijingTimingNumberName(num) {
+    const labels = ['', '一', '二', '三', '四', '五', '六', '七', '八', '九', '十', '十一', '十二'];
+    return labels[num] || String(num);
+  }
+
+  function yijingTimingMonthName(num) {
+    return num === 1 ? '正' : yijingTimingNumberName(num);
+  }
+
+  function yijingTimingLineType(row) {
+    const line = row?.lines?.[row.activeLineIndex];
+    if (line === 'solid') return '阳爻';
+    if (line === 'broken') return '阴爻';
+    return '爻位';
+  }
+
+  function resolveYijingTiming(result) {
+    const buildMap = window.ZipingGenerator?.buildMonthDayGuaMap;
+    if (fcActiveTab !== '流年卦' || !result || typeof buildMap !== 'function') return null;
+    const lineNum = result.tianjiLineNum || result.lineNum || result.yuanTangLine || result.activeLineNum;
+    const map = buildMap(result, lineNum);
+    if (!map?.months?.length) return null;
+
+    const year = fcAgeToYear(fcActiveAge);
+    const now = new Date();
+    const isCurrentYear = Number(year) === now.getFullYear();
+    const monthIndex = isCurrentYear ? now.getMonth() : 0;
+    const dayOfMonth = isCurrentYear ? now.getDate() : 1;
+    const cycleDay = Math.min(30, Math.max(1, dayOfMonth));
+    const segment = Math.min(5, Math.max(1, Math.ceil(cycleDay / 6)));
+    const dayInSegment = ((cycleDay - 1) % 6) + 1;
+    const month = Math.min(map.months.length, Math.max(1, monthIndex + 1));
+    const monthGua = map.months[month - 1] || map.months[0];
+    const dayGua = map.days?.find((item) => item.month === month && item.segment === segment)
+      || map.days?.find((item) => item.month === month)
+      || null;
+
+    return {
+      year,
+      month,
+      segment,
+      dayInSegment,
+      isCurrentYear,
+      monthGua,
+      dayGua,
+    };
+  }
+
+  function renderYijingTiming(result) {
+    const box = $('#mbpYijingTiming');
+    if (!box) return;
+    const info = resolveYijingTiming(result);
+    box.hidden = !info;
+    if (!info) {
+      box.innerHTML = '';
+      return;
+    }
+
+    const expanded = yijingTimingOpen;
+    const monthName = info.monthGua?.name || '—';
+    const dayName = info.dayGua?.name || '—';
+    const dayLine = info.dayGua ? `${yijingTimingLineName(info.dayGua.activeLineIndex)} · ${yijingTimingLineType(info.dayGua)}` : '—';
+    const note = info.isCurrentYear
+      ? '月卦以节气为界，当前日期落入此月序与六日段。'
+      : '该流年不在当前年份，默认列正月第一段，供查看流月与六日结构。';
+
+    box.innerHTML = `
+      <button class="mbp-yijing-timing-toggle" type="button" data-yijing-timing-toggle aria-expanded="${expanded ? 'true' : 'false'}">
+        <span>本年应期</span>
+        <strong>${escapeHtml(monthName)} · ${escapeHtml(dayName)}</strong>
+        <i>${expanded ? '收起' : '展开'}</i>
+      </button>
+      <div class="mbp-yijing-timing-panel" ${expanded ? '' : 'hidden'}>
+        <div class="mbp-yijing-timing-item">
+          <span>流月卦</span>
+          <strong>${yijingTimingMonthName(info.month)}月序 · ${escapeHtml(monthName)}</strong>
+        </div>
+        <div class="mbp-yijing-timing-item">
+          <span>六日卦</span>
+          <strong>第${yijingTimingNumberName(info.segment)}段 · ${escapeHtml(dayName)}</strong>
+        </div>
+        <div class="mbp-yijing-timing-item">
+          <span>今日爻位</span>
+          <strong>${info.isCurrentYear ? `第${yijingTimingNumberName(info.dayInSegment)}日 · ${escapeHtml(dayLine)}` : '非当前年不定今日'}</strong>
+        </div>
+        <p>${escapeHtml(note)} 六日卦每卦管六日，只作流年应期细分。</p>
+      </div>
+    `;
+  }
+
   function renderYijingAssist() {
     const root = $('#mbpYijingAssist');
     if (!root) return;
@@ -2608,6 +2704,7 @@
         result ? '此卦暂无对应名师解读。' : '排盘后显示对应卦位的逐条讲解。'
       );
     }
+    renderYijingTiming(result);
   }
 
   function pillarText(stem, branch) {
@@ -5581,6 +5678,13 @@
     });
 
     $('#mbpYijingAssist')?.addEventListener('click', (event) => {
+      const timingButton = event.target.closest('[data-yijing-timing-toggle]');
+      if (timingButton) {
+        yijingTimingOpen = !yijingTimingOpen;
+        renderYijingAssist();
+        return;
+      }
+
       const helpButton = event.target.closest('[data-yijing-help]');
       if (helpButton) {
         const note = $('#mbpYijingHelpNote');
