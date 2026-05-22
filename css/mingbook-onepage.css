@@ -5001,7 +5001,7 @@ p.mbp-topic-detail {
   display: grid;
   grid-template-columns: minmax(390px, .52fr) minmax(0, 1.48fr);
   grid-template-rows: auto;
-  gap: clamp(18px, 2vw, 28px) clamp(96px, 9vw, 142px);
+  gap: clamp(18px, 2vw, 28px);
   align-items: start;
   border: 1px solid rgba(241, 212, 125, .24);
   border-radius: 10px;
