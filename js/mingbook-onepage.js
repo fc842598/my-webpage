@@ -3922,7 +3922,7 @@
           <section>
             <b>小限落宫</b>
             <strong>${escapeHtml(info.xiaoLabel)}</strong>
-            <p>${escapeHtml(`${palaceDomain(info.xiaoPalace?.name || '')} · ${palaceStarBrief(info.xiaoPalace)}`)}</p>
+            <p>${escapeHtml(`${palaceDomain(info.xiaoLianPalace?.name || '')} · ${palaceStarBrief(info.xiaoLianPalace)}`)}</p>
           </section>
           <section class="is-opposite">
             <b>对宫应事</b>

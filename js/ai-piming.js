@@ -107,12 +107,14 @@ function _yearMutagens(chart) {
  * 构建发往后端 /api/ai/run 的 chartData 对象
  * extraParams 会原样透传，由后端 buildStructuredContext 按 moduleKey 使用
  */
-function buildChartPayload() {
+function buildChartPayload(extraParams = {}) {
   if (!window._chart || !window._chartInputs) return null;
   const chart  = window._chart;
   const inputs = window._chartInputs;
   const norm   = inputs.norm || {};
   const pillars = window._birthPillarsCache || null;
+  const selectedYearParam = extraParams?.selectedYear || extraParams?.liunianData || {};
+  const requestedAge = Number(extraParams?.activeAge ?? selectedYearParam?.age);
 
   const lifePalace  = _findPalaceByName(chart, ['命宫', '命']);
   const bodyPalaceDetail = (chart?.palaces || []).find(p => p.isBodyPalace) || null;
@@ -124,7 +126,9 @@ function buildChartPayload() {
   const illnessPalace = _findPalaceByName(chart, ['疾厄宫', '疾厄']);
 
   // 当前大限：找包含 _fcActiveAge 的 decadal.range 的宫
-  const activeAge = window._fcActiveAge || 1;
+  const activeAge = Number.isFinite(requestedAge) && requestedAge > 0
+    ? Math.floor(requestedAge)
+    : (window._fcActiveAge || 1);
   let currentDecade = null;
   (chart.palaces || []).forEach(p => {
     const range = p?.decadal?.range;
@@ -143,10 +147,21 @@ function buildChartPayload() {
 
   // 流年信息
   const liunianEntry = (window._liunianSeq || {})[activeAge] || null;
-  const currentLiunian = liunianEntry ? {
+  const currentLiunianBase = liunianEntry ? {
     name: liunianEntry.name || '', branch: liunianEntry.branch || '',
     period: liunianEntry.period || '', xiaoLian: liunianEntry.xiaoLian || '',
   } : null;
+  const selectedYearMatchesActive = Number(selectedYearParam?.age) === Number(activeAge);
+  const currentLiunian = selectedYearMatchesActive
+    ? { ...(currentLiunianBase || {}), ...selectedYearParam }
+    : currentLiunianBase;
+  const currentXiaolian = selectedYearMatchesActive && (selectedYearParam.xiaolianBranch || selectedYearParam.xiaoLianBranch)
+    ? {
+      branch: selectedYearParam.xiaolianBranch || selectedYearParam.xiaoLianBranch || '',
+      palaceName: selectedYearParam.xiaolianPalaceName || selectedYearParam.xiaoLianPalaceName || '',
+      palace: selectedYearParam.xiaolianPalace || null,
+    }
+    : (liunianEntry?.xiaoLian ? { branch: liunianEntry.xiaoLian } : null);
 
   // 全量大运表（供后端按任意年龄查表，不让 AI 自己推算）
   const dayunTable = (chart.palaces || [])
@@ -252,9 +267,7 @@ function buildChartPayload() {
     currentLiunian,
     dayunTable,
     liunianTable,
-    currentXiaolian: liunianEntry?.xiaoLian
-      ? { branch: liunianEntry.xiaoLian }
-      : null,
+    currentXiaolian,
     liunianGua: window._liunianGuaResult
       ? { name: window._liunianGuaResult.name || '', period: window._liunianGuaResult.period || '' }
       : null,
@@ -273,7 +286,7 @@ function buildChartPayload() {
 
 // ── 调用后端 ──────────────────────────────────────────────────────────────────
 async function _aipCallBackend(moduleKey, extraParams = {}) {
-  const chartData = buildChartPayload();
+  const chartData = buildChartPayload(extraParams);
   if (!chartData) throw new Error('\u8bf7\u5148\u5b8c\u6210\u6392\u76d8');
 
   try {
