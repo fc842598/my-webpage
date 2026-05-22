@@ -117,7 +117,23 @@
     session: null,
     quota: null,
   };
+  const desktopMemberProductKey = 'monthly_member';
+  const desktopPaymentPollMs = 3000;
+  const desktopPaymentState = {
+    open: false,
+    loading: false,
+    status: 'idle',
+    message: '登录后可开通会员，电脑端与手机端权益共用。',
+    error: '',
+    product: null,
+    orderNo: '',
+    payUrl: '',
+    payMethod: '',
+    mockMode: false,
+  };
   let desktopAuthReadyPromise = null;
+  let desktopPaymentPollTimer = null;
+  let desktopPendingPaymentAfterLogin = false;
 
   const aiTasks = [
     { module: 'overall', label: '整体批命' },
@@ -489,6 +505,33 @@
     return `${plan}额度与手机端共用：${dailyLimit}次/天 · ${monthlyLimit}次/月`;
   }
 
+  function getDesktopMemberProduct() {
+    return desktopPaymentState.product || {
+      name: '阅天会员月卡',
+      description: '会员额度与手机端共用。',
+      amountYuan: '19.90',
+    };
+  }
+
+  function updateDesktopMemberEntry() {
+    const isMember = !!desktopAuthState.quota?.isMember;
+    const product = getDesktopMemberProduct();
+    const label = $('#mbpMemberPayLabel');
+    const meta = $('#mbpMemberPayMeta');
+    const trigger = $('#mbpMemberPayTrigger');
+    if (label) label.textContent = isMember ? '续费会员' : '会员支付';
+    if (meta) meta.textContent = isMember ? '已开通' : `¥${product.amountYuan || '19.90'}`;
+    if (trigger) {
+      trigger.classList.toggle('is-member', isMember);
+      trigger.disabled = desktopPaymentState.loading;
+    }
+    const authPay = $('#mbpAuthMemberPay');
+    if (authPay) {
+      authPay.textContent = isMember ? `续费会员 ¥${product.amountYuan || '19.90'}` : `开通会员 ¥${product.amountYuan || '19.90'}`;
+      authPay.disabled = desktopAuthState.loading || desktopPaymentState.loading;
+    }
+  }
+
   function setDesktopQuotaLabel(valueSelector, text) {
     const value = $(valueSelector);
     const label = value?.previousElementSibling;
@@ -539,6 +582,7 @@
     if (title && loggedIn) title.textContent = `${planName}账号`;
     const sessionMeta = $('#mbpAuthSessionMeta');
     if (sessionMeta && loggedIn) sessionMeta.textContent = getDesktopQuotaSharedText();
+    updateDesktopMemberEntry();
   }
 
   window._updateQuotaDisplay = updateDesktopQuotaDisplay;
@@ -617,6 +661,7 @@
       if (el) el.disabled = desktopAuthState.loading;
     });
 
+    updateDesktopMemberEntry();
     setDesktopAuthError(desktopAuthState.error);
   }
 
@@ -683,10 +728,239 @@
       const query = state.chartRecordId ? `?chartRecordId=${encodeURIComponent(state.chartRecordId)}` : '';
       const data = await desktopFetchJson(`/api/payments/member-status${query}`);
       updateDesktopQuotaDisplay(data.quota || null);
+      if (data.product) desktopPaymentState.product = data.product;
+      desktopPaymentState.mockMode = !!data.mockMode;
+      updateDesktopMemberEntry();
+      renderDesktopPayment();
       return data;
     } catch (_) {
       return null;
     }
+  }
+
+  function isDesktopH5PayPreferred() {
+    return /MicroMessenger|Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent || '');
+  }
+
+  function stopDesktopPaymentPoll() {
+    if (desktopPaymentPollTimer) {
+      clearInterval(desktopPaymentPollTimer);
+      desktopPaymentPollTimer = null;
+    }
+  }
+
+  function renderDesktopPaymentQr() {
+    const holder = $('#mbpPayQr');
+    if (!holder || holder.hidden || !desktopPaymentState.payUrl) return;
+    holder.innerHTML = '';
+    if (typeof QRCode === 'function') {
+      new QRCode(holder, {
+        text: desktopPaymentState.payUrl,
+        width: 172,
+        height: 172,
+        correctLevel: QRCode.CorrectLevel ? QRCode.CorrectLevel.M : undefined,
+      });
+      return;
+    }
+    holder.innerHTML = `<a href="${escapeHtml(desktopPaymentState.payUrl)}" target="_blank" rel="noopener">打开微信支付链接</a>`;
+  }
+
+  function renderDesktopPayment() {
+    const overlay = $('#mbpPayOverlay');
+    if (overlay) overlay.hidden = !desktopPaymentState.open;
+    document.body.classList.toggle('mbp-pay-open', desktopPaymentState.open);
+
+    const product = getDesktopMemberProduct();
+    const title = $('#mbpPayTitle');
+    if (title) title.textContent = desktopAuthState.quota?.isMember ? '续费会员' : '会员支付';
+    const message = $('#mbpPayMessage');
+    if (message) message.textContent = desktopPaymentState.message || '登录后可开通会员，电脑端与手机端权益共用。';
+    const productName = $('#mbpPayProductName');
+    if (productName) productName.textContent = product.name || '阅天会员月卡';
+    const desc = $('#mbpPayProductDesc');
+    if (desc) desc.textContent = product.description || '会员额度与手机端共用。';
+    const amount = $('#mbpPayAmount');
+    if (amount) amount.textContent = `¥${product.amountYuan || '19.90'}`;
+
+    const isPending = desktopPaymentState.status === 'pending';
+    const isPaid = desktopPaymentState.status === 'paid';
+    const showQr = isPending && desktopPaymentState.payUrl && desktopPaymentState.payMethod !== 'h5' && !desktopPaymentState.mockMode;
+    const qr = $('#mbpPayQr');
+    if (qr) qr.hidden = !showQr;
+    const openLink = $('#mbpPayOpenLink');
+    if (openLink) {
+      openLink.hidden = !(isPending && desktopPaymentState.payUrl && desktopPaymentState.payMethod === 'h5' && !desktopPaymentState.mockMode);
+      openLink.href = desktopPaymentState.payUrl || '#';
+    }
+    const error = $('#mbpPayError');
+    if (error) {
+      error.textContent = desktopPaymentState.error || '';
+      error.hidden = !desktopPaymentState.error;
+    }
+
+    const primary = $('#mbpPayPrimary');
+    if (primary) {
+      primary.disabled = desktopPaymentState.loading;
+      if (desktopPaymentState.loading) primary.textContent = '处理中...';
+      else if (isPaid) primary.textContent = '已开通，关闭';
+      else if (desktopPaymentState.mockMode && desktopPaymentState.orderNo) primary.textContent = '模拟支付成功';
+      else if (isPending && desktopPaymentState.payMethod === 'h5') primary.textContent = '打开微信支付';
+      else if (isPending) primary.textContent = '我已支付，刷新状态';
+      else primary.textContent = `创建微信支付订单 ¥${product.amountYuan || '19.90'}`;
+    }
+    const refresh = $('#mbpPayRefresh');
+    if (refresh) {
+      refresh.hidden = !desktopPaymentState.orderNo || isPaid;
+      refresh.disabled = desktopPaymentState.loading;
+    }
+
+    updateDesktopMemberEntry();
+    if (showQr) window.setTimeout(renderDesktopPaymentQr, 0);
+  }
+
+  async function checkDesktopPaymentStatus() {
+    if (!desktopPaymentState.orderNo) return null;
+    try {
+      const data = await desktopFetchJson(`/api/payments/order-status?orderNo=${encodeURIComponent(desktopPaymentState.orderNo)}`);
+      desktopPaymentState.status = data.status || desktopPaymentState.status;
+      desktopPaymentState.message = data.status === 'paid' ? '已开通会员' : '等待微信支付完成';
+      if (data.status === 'paid') {
+        stopDesktopPaymentPoll();
+        await hydrateDesktopMemberStatus({ force: true });
+      }
+      renderDesktopPayment();
+      return data;
+    } catch (error) {
+      desktopPaymentState.error = error.message || '订单查询失败';
+      renderDesktopPayment();
+      return null;
+    }
+  }
+
+  function startDesktopPaymentPoll() {
+    stopDesktopPaymentPoll();
+    if (!desktopPaymentState.orderNo || desktopPaymentState.mockMode) return;
+    desktopPaymentPollTimer = setInterval(checkDesktopPaymentStatus, desktopPaymentPollMs);
+  }
+
+  async function openDesktopMemberPayment(options = {}) {
+    const session = await getDesktopAuthSession();
+    if (!session?.user) {
+      desktopPendingPaymentAfterLogin = true;
+      openDesktopAuth('login');
+      return;
+    }
+    desktopPaymentState.open = true;
+    desktopPaymentState.error = '';
+    desktopPaymentState.message = desktopPaymentState.status === 'pending'
+      ? desktopPaymentState.message
+      : '会员支付会绑定当前登录账号，电脑端与手机端权益共用。';
+    renderDesktopPayment();
+    await hydrateDesktopMemberStatus({ force: true });
+    if (desktopPaymentState.status === 'pending') startDesktopPaymentPoll();
+    if (options.create) await startDesktopMemberPayment();
+  }
+
+  function closeDesktopPayment() {
+    desktopPaymentState.open = false;
+    desktopPaymentState.error = '';
+    stopDesktopPaymentPoll();
+    renderDesktopPayment();
+  }
+
+  async function startDesktopMemberPayment() {
+    const session = await getDesktopAuthSession();
+    if (!session?.user) {
+      desktopPendingPaymentAfterLogin = true;
+      closeDesktopPayment();
+      openDesktopAuth('login');
+      return;
+    }
+    desktopPaymentState.open = true;
+    desktopPaymentState.loading = true;
+    desktopPaymentState.status = 'loading';
+    desktopPaymentState.error = '';
+    desktopPaymentState.message = '正在创建微信支付订单...';
+    desktopPaymentState.orderNo = '';
+    desktopPaymentState.payUrl = '';
+    desktopPaymentState.payMethod = '';
+    renderDesktopPayment();
+    try {
+      const order = await desktopFetchJson('/api/payments/create-order', {
+        method: 'POST',
+        body: { productKey: desktopMemberProductKey, chartRecordId: state.chartRecordId || '' },
+      });
+      const payMethod = isDesktopH5PayPreferred() ? 'h5' : 'native';
+      const sessionData = await desktopFetchJson('/api/payments/create-session', {
+        method: 'POST',
+        body: { orderNo: order.orderNo, payMethod },
+      });
+      desktopPaymentState.status = 'pending';
+      desktopPaymentState.orderNo = order.orderNo || '';
+      desktopPaymentState.payUrl = sessionData.payUrl || sessionData.qrUrl || '';
+      desktopPaymentState.payMethod = sessionData.payMethod || payMethod;
+      desktopPaymentState.mockMode = !!(order.mockMode || sessionData.mockMode);
+      desktopPaymentState.product = {
+        ...(desktopPaymentState.product || {}),
+        name: order.productName || desktopPaymentState.product?.name || '阅天会员月卡',
+        description: order.description || desktopPaymentState.product?.description || '会员额度与手机端共用。',
+        amountYuan: order.amountYuan || desktopPaymentState.product?.amountYuan || '19.90',
+      };
+      desktopPaymentState.message = desktopPaymentState.mockMode
+        ? '当前是支付测试模式'
+        : (desktopPaymentState.payMethod === 'h5' ? '点击下方按钮打开微信支付' : '请用微信扫码支付');
+      startDesktopPaymentPoll();
+    } catch (error) {
+      desktopPaymentState.status = 'error';
+      desktopPaymentState.error = error.message || '支付订单创建失败';
+      desktopPaymentState.message = '支付服务暂时不可用';
+    } finally {
+      desktopPaymentState.loading = false;
+      renderDesktopPayment();
+    }
+  }
+
+  function openDesktopPaymentUrl() {
+    if (desktopPaymentState.payUrl) window.location.href = desktopPaymentState.payUrl;
+  }
+
+  async function completeDesktopMockPayment() {
+    if (!desktopPaymentState.orderNo) return;
+    desktopPaymentState.loading = true;
+    desktopPaymentState.message = '正在确认测试支付...';
+    renderDesktopPayment();
+    try {
+      const data = await desktopFetchJson('/api/payments/mock/complete', {
+        method: 'POST',
+        body: { orderNo: desktopPaymentState.orderNo },
+      });
+      desktopPaymentState.status = data.status || 'paid';
+      desktopPaymentState.message = '已开通会员';
+      await hydrateDesktopMemberStatus({ force: true });
+    } catch (error) {
+      desktopPaymentState.error = error.message || '测试支付失败';
+    } finally {
+      desktopPaymentState.loading = false;
+      renderDesktopPayment();
+    }
+  }
+
+  async function handleDesktopPayPrimary() {
+    if (desktopPaymentState.loading) return;
+    if (desktopPaymentState.status === 'paid') {
+      closeDesktopPayment();
+      return;
+    }
+    if (desktopPaymentState.mockMode && desktopPaymentState.orderNo) {
+      await completeDesktopMockPayment();
+      return;
+    }
+    if (desktopPaymentState.status === 'pending') {
+      if (desktopPaymentState.payMethod === 'h5') openDesktopPaymentUrl();
+      else await checkDesktopPaymentStatus();
+      return;
+    }
+    await startDesktopMemberPayment();
   }
 
   async function submitDesktopAuth() {
@@ -735,6 +1009,10 @@
       $('#mbpAuthPassword').value = '';
       closeDesktopAuth();
       await hydrateDesktopMemberStatus({ force: true });
+      if (desktopPendingPaymentAfterLogin) {
+        desktopPendingPaymentAfterLogin = false;
+        window.setTimeout(() => openDesktopMemberPayment(), 0);
+      }
       if (typeof window._chatPanelRefresh === 'function' && window._chartRecordId) window._chatPanelRefresh();
     } catch (error) {
       setDesktopAuthError(error.message || '登录失败');
@@ -754,6 +1032,11 @@
       desktopAuthState.mode = 'login';
       desktopAuthState.error = '';
       desktopAuthState.open = !!options.reopen;
+      stopDesktopPaymentPoll();
+      desktopPaymentState.open = false;
+      desktopPaymentState.status = 'idle';
+      desktopPaymentState.orderNo = '';
+      desktopPaymentState.payUrl = '';
       updateDesktopQuotaDisplay();
       if (typeof window._chatPanelRefresh === 'function' && window._chartRecordId) window._chatPanelRefresh();
     } catch (error) {
@@ -5828,12 +6111,18 @@
     $('#mbpAuthTrigger')?.addEventListener('click', () => {
       openDesktopAuth(desktopAuthState.session?.user ? desktopAuthState.mode : 'login');
     });
+    $('#mbpMemberPayTrigger')?.addEventListener('click', () => openDesktopMemberPayment());
     $('#mbpAuthClose')?.addEventListener('click', closeDesktopAuth);
     $('#mbpAuthOverlay')?.addEventListener('click', (event) => {
       if (event.target === $('#mbpAuthOverlay') && !desktopAuthState.loading) closeDesktopAuth();
     });
+    $('#mbpPayClose')?.addEventListener('click', closeDesktopPayment);
+    $('#mbpPayOverlay')?.addEventListener('click', (event) => {
+      if (event.target === $('#mbpPayOverlay') && !desktopPaymentState.loading) closeDesktopPayment();
+    });
     document.addEventListener('keydown', (event) => {
       if (event.key === 'Escape' && desktopAuthState.open && !desktopAuthState.loading) closeDesktopAuth();
+      if (event.key === 'Escape' && desktopPaymentState.open && !desktopPaymentState.loading) closeDesktopPayment();
     });
     document.querySelectorAll('[data-auth-mode]').forEach((button) => {
       button.addEventListener('click', () => {
@@ -5846,6 +6135,16 @@
     });
     $('#mbpAuthSubmit')?.addEventListener('click', submitDesktopAuth);
     $('#mbpAuthGoogle')?.addEventListener('click', startDesktopGoogleLogin);
+    $('#mbpAuthMemberPay')?.addEventListener('click', () => {
+      closeDesktopAuth();
+      openDesktopMemberPayment();
+    });
+    $('#mbpPayPrimary')?.addEventListener('click', handleDesktopPayPrimary);
+    $('#mbpPayRefresh')?.addEventListener('click', checkDesktopPaymentStatus);
+    $('#mbpPayOpenLink')?.addEventListener('click', () => {
+      desktopPaymentState.message = '微信支付已打开，支付完成后请返回刷新状态。';
+      renderDesktopPayment();
+    });
     $('#mbpAuthPassword')?.addEventListener('keydown', (event) => {
       if (event.key === 'Enter') {
         event.preventDefault();
@@ -5874,6 +6173,7 @@
 
   updateForm();
   renderDesktopAuth();
+  renderDesktopPayment();
   bindEvents();
   renderChart();
   bootDesktopAuth();
