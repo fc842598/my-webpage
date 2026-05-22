@@ -101,7 +101,7 @@ const screenFlowHotspots = {
   28: [[18, 44, 48, 48, "screen-31"], [42, 735, 306, 58, "screen-33"]],
   29: [[18, 44, 48, 48, "screen-31"], [22, 178, 346, 70, "screen-30"], [22, 257, 346, 70, "screen-30"], [22, 336, 346, 70, "screen-30"], [34, 738, 322, 58, "screen-30"]],
   30: [[18, 44, 48, 48, "screen-33"]],
-  31: [[336, 54, 42, 42, "screen-38"], [16, 126, 358, 96, "screen-40"], [16, 240, 111, 75, "screen-33"], [139, 240, 111, 75, "screen-33"], [262, 240, 111, 75, "screen-9"], [16, 330, 174, 60, "screen-33"], [200, 330, 174, 60, "screen-29"], [16, 400, 174, 60, "screen-27"], [200, 400, 174, 60, "screen-48"], [16, 491, 174, 66, "screen-22"], [200, 491, 174, 66, "screen-23"], [16, 566, 358, 61, "screen-37"], [16, 627, 358, 61, "screen-34"], [16, 688, 358, 61, "screen-35"], [12, 762, 76, 72, "screen-1"], [109, 762, 76, 72, "screen-25"], [207, 762, 76, 72, "screen-3"], [304, 762, 76, 72, "screen-31"]],
+  31: [[336, 54, 42, 42, "screen-38"], [16, 126, 358, 96, "screen-40"], [16, 240, 111, 75, "screen-33"], [139, 240, 111, 75, "screen-33"], [262, 240, 111, 75, "screen-9"], [16, 330, 174, 60, "screen-33"], [200, 330, 174, 60, "screen-27"], [16, 400, 174, 60, "screen-48"], [200, 400, 174, 60, "screen-22"], [16, 491, 358, 61, "screen-37"], [16, 552, 358, 61, "screen-34"], [16, 613, 358, 61, "screen-35"], [12, 762, 76, 72, "screen-1"], [109, 762, 76, 72, "screen-25"], [207, 762, 76, 72, "screen-3"], [304, 762, 76, 72, "screen-31"]],
   32: [[18, 44, 48, 48, "screen-31"], [20, 94, 350, 56, "screen-39"], [20, 164, 350, 56, "screen-33"], [20, 236, 350, 56, "screen-40"], [20, 306, 350, 56, "screen-41"], [20, 376, 350, 56, "screen-37"], [20, 452, 350, 56, "screen-34"], [20, 520, 350, 56, "screen-35"], [20, 590, 350, 56, "screen-36"]],
   33: [[18, 44, 48, 48, "screen-31"]],
   34: [[18, 44, 48, 48, "screen-31"], [42, 735, 306, 58, "screen-22"]],
@@ -7255,21 +7255,13 @@ function sourceMineScreen(screen) {
       ${figText(`source-31-stat-label-${index}`, label, x + 14, 253, 80, 12, "#9b742e", 500)}
       ${figText(`source-31-stat-count-${index}`, count, x + 14, 279, 86, 20, "#b88c33", 800)}
     `).join("")}
-    ${[["♛", "阅天套餐", 16, 330], ["＋", "购买次数", 200, 330], ["▤", "我的报告", 16, 400], ["▦", "订单记录", 200, 400]].map(([icon, label, x, y], index) => `
+    ${[["♛", "阅天套餐", 16, 330], ["▤", "我的报告", 200, 330], ["▦", "订单记录", 16, 400], ["♧", "邀请好友", 200, 400]].map(([icon, label, x, y], index) => `
       ${figBox(`source-31-quick-${index}`, x, y, 174, 60, "converted-card", "border-radius:12px;box-shadow:0 5px 14px rgba(74,55,32,.08);")}
       ${figBox(`source-31-quick-icon-${index}`, x + 17, y + 12, 36, 36, "", "border-radius:10px;background:#f6f2e9;")}
       ${figText(`source-31-quick-icon-text-${index}`, icon, x + 17, y + 21, 36, 14, "#b88c33", 800, "center")}
       ${figText(`source-31-quick-label-${index}`, label, x + 62, y + 21, 90, 16, "#26211c", 700)}
     `).join("")}
-    ${[["♧", "邀请好友", "双方获得奖励", "screen-22", 16], ["▣", "活动中心", "任务与活动奖励", "screen-23", 200]].map(([icon, title, sub, route, x], index) => `
-      ${figBox(`source-31-more-${index}`, x, 491, 174, 66, "converted-card", "border-radius:12px;box-shadow:0 5px 14px rgba(74,55,32,.08);")}
-      ${figBox(`source-31-more-icon-${index}`, x + 14, 508, 32, 32, "", "border-radius:10px;background:#f6f2e9;")}
-      ${figText(`source-31-more-icon-text-${index}`, icon, x + 14, 516, 32, 12, "#b88c33", 900, "center")}
-      ${figText(`source-31-more-title-${index}`, title, x + 56, 505, 86, 15, "#26211c", 800)}
-      ${figText(`source-31-more-sub-${index}`, sub, x + 56, 529, 92, 11, "#8f857a", 600, "left", "white-space:nowrap;overflow:hidden;text-overflow:ellipsis;")}
-      ${figText(`source-31-more-arrow-${index}`, "›", x + 150, 513, 14, 18, "#aaa196", 600, "center")}
-    `).join("")}
-    ${[["语言设置", languageLabel, 566], ["分享阅天AI", "", 627], ["联系我们", "", 688]].map(([label, value, y], index) => `
+    ${[["语言设置", languageLabel, 491], ["分享阅天AI", "", 552], ["联系我们", "", 613]].map(([label, value, y], index) => `
       ${figBox(`source-31-row-${index}`, 16, y, 358, 61, "converted-card", "border-radius:12px;box-shadow:0 5px 14px rgba(74,55,32,.08);")}
       ${figText(`source-31-row-icon-${index}`, ["文", "⌯", "☏"][index], 34, y + 21, 24, 16, "#b88c33", 700, "center")}
       ${figText(`source-31-row-label-${index}`, label, 68, y + 20, 140, 16, "#26211c", 600)}
