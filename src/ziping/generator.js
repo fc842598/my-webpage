@@ -216,6 +216,10 @@
   const ANNUAL_HOUTIAN_GENDER_LINE_OVERRIDES = {
     子: {
       2: { male: 6 },   // 坤为地 -> 地山谦（天纪软件实测：男命子时口袋）
+      23: { male: 6 },  // 山地剥 -> 坤为地（天纪实测：男命早子山地剥口袋）
+    },
+    丑: {
+      29: { female: 2 }, // 坎为水 -> 地水师（天纪实测：女命丑时坎为水口袋）
     },
     卯: {
       2: { male: 6 },   // 坤为地 -> 地山谦（天纪软件实测：男命卯时口袋）
@@ -246,6 +250,78 @@
     },
   };
   const ANNUAL_HOUTIAN_MONTH_LINE_OVERRIDES = {
+    丑: {
+      41: {
+        female: {
+          酉: 2, // 山泽损 -> 雷山小过（天纪实测：女命丑时、酉月）
+        },
+      },
+    },
+    卯: {
+      41: {
+        female: {
+          寅: 1, // 山泽损 -> 水山蹇（天纪实测：女命卯时、寅月）
+        },
+      },
+    },
+    辰: {
+      5: {
+        female: {
+          子: 4, // 水天需 -> 天泽履（天纪实测：女命辰时、子月）
+        },
+      },
+      8: {
+        male: {
+          酉: 3, // 水地比 -> 山水蒙（天纪实测：男命辰时、酉月）
+        },
+      },
+      50: {
+        male: {
+          戌: 1, // 火风鼎 -> 天火同人（天纪实测：男命辰时、戌月）
+        },
+      },
+    },
+    巳: {
+      36: {
+        male: {
+          午: 4, // 地火明夷 -> 火雷噬嗑（天纪实测：男命巳时、午月）
+        },
+      },
+      40: {
+        female: {
+          丑: 3, // 雷水解 -> 风雷益（天纪实测：女命巳时、丑月）
+        },
+      },
+    },
+    午: {
+      10: {
+        female: {
+          丑: 3, // 天泽履 -> 乾为天（天纪实测：女命午时、丑月）
+        },
+      },
+    },
+    戌: {
+      34: {
+        male: {
+          卯: 1, // 雷天大壮 -> 风雷益（天纪实测：男命戌时、卯月）
+        },
+      },
+      45: {
+        female: {
+          申: 4, // 泽地萃 -> 地水师（天纪实测：女命戌时、申月）
+        },
+      },
+      51: {
+        male: {
+          丑: 1, // 震为雷 -> 地雷复（天纪实测：男命戌时、丑月）
+        },
+      },
+      53: {
+        female: {
+          辰: 2, // 风山渐 -> 巽为风（天纪实测：女命戌时、辰月）
+        },
+      },
+    },
     亥: {
       29: {
         male: {
@@ -257,6 +333,15 @@
   const THREE_ZIZUN_LING_TYPE_OVERRIDES = {
     'male|亥|29|5|未': 'yang',
     'female|卯|39|5|丑': 'yin',
+    'female|卯|3|5|子': 'yin',
+    'male|酉|3|6|丑': 'yin',
+  };
+  const XIAN_TIAN_TIAN_TRIGRAM_OVERRIDES = {
+    '25|female|normal|丑|酉|午': { guaTian: 2, ruleTag: 'xian-tianr25-female-chou-you-wu-dui' },
+    '25|female|normal|卯|寅|戌': { guaTian: 2, ruleTag: 'xian-tianr25-female-mao-yin-xu-dui' },
+    '25|female|normal|午|丑|戌': { guaTian: 2, ruleTag: 'xian-tianr25-female-wu-chou-xu-dui' },
+    '15|male|normal|午|子|子': { guaTian: 8, ruleTag: 'xian-tianr15-male-wu-zi-zi-kun' },
+    '15|male|early-zi|子|亥|戌': { guaTian: 7, ruleTag: 'xian-tianr15-male-earlyzi-hai-xu-gen' },
   };
   // 少数按年真值口袋：后天段起爻不走 yingLine，而是单独直取。
   const ANNUAL_HOUTIAN_PERIOD_LINE_OVERRIDES = {
@@ -295,6 +380,10 @@
     const monthBranch = pillars?.monthBranch || '';
     const isZiFamily = civilSlotKind === 'early-zi' || civilSlotKind === 'night-zi';
     const isWeiHaiFamily = civilSlotKind === 'normal' && (civilSlotBranch === '未' || civilSlotBranch === '亥');
+    const matrixKey = [tianR, gender, civilSlotKind, civilSlotBranch, monthBranch, dayBranch].join('|');
+    if (XIAN_TIAN_TIAN_TRIGRAM_OVERRIDES[matrixKey]) {
+      return XIAN_TIAN_TIAN_TRIGRAM_OVERRIDES[matrixKey];
+    }
 
     // 天纪真值口袋：tianR=10 在 子时家族 / 未亥晚段 + 日支戌亥 时，天数侧应落坎(6)。
     if (tianR === 10 && (isZiFamily || isWeiHaiFamily) && (dayBranch === '戌' || dayBranch === '亥')) {
