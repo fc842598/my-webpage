@@ -5666,9 +5666,9 @@ p.mbp-topic-detail {
 }
 
 .mbp-yijing-art-frame:has(> img:not([hidden])) {
-  width: calc(100% + clamp(80px, 8vw, 126px));
-  margin-left: clamp(18px, 1.8vw, 28px);
-  margin-right: clamp(-168px, -10vw, -96px);
+  width: 100%;
+  margin-left: 0;
+  margin-right: 0;
 }
 
 .mbp-yijing-art-frame img {
