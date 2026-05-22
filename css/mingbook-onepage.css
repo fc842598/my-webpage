@@ -606,6 +606,34 @@ select {
   background: var(--gold);
 }
 
+.mbp-pay-methods {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.mbp-pay-method {
+  min-height: 42px;
+  border: 1px solid rgba(241, 212, 125, .18);
+  border-radius: 12px;
+  background: rgba(241, 212, 125, .06);
+  color: #d3bc90;
+  cursor: pointer;
+  font-weight: 900;
+}
+
+.mbp-pay-method.is-active {
+  border-color: rgba(241, 212, 125, .48);
+  background: rgba(241, 212, 125, .16);
+  color: var(--ivory);
+}
+
+.mbp-pay-method:disabled {
+  opacity: .48;
+  cursor: not-allowed;
+}
+
 .mbp-pay-qr {
   display: grid;
   place-items: center;

@@ -131,6 +131,8 @@
     message: '登录后可开通会员，电脑端与手机端权益共用。',
     error: '',
     product: null,
+    providers: [],
+    provider: 'wechat',
     orderNo: '',
     payUrl: '',
     payMethod: '',
@@ -536,6 +538,33 @@
     };
   }
 
+  function getDesktopPaymentProviders() {
+    const list = Array.isArray(desktopPaymentState.providers) ? desktopPaymentState.providers : [];
+    const byKey = new Map(list.map((item) => [item.provider, item]));
+    return [
+      { provider: 'wechat', label: '微信支付', enabled: true, ...(byKey.get('wechat') || {}) },
+      { provider: 'alipay', label: '支付宝', enabled: false, ...(byKey.get('alipay') || {}) },
+    ];
+  }
+
+  function getDesktopPaymentProviderMeta(provider = desktopPaymentState.provider) {
+    return getDesktopPaymentProviders().find((item) => item.provider === provider) || getDesktopPaymentProviders()[0];
+  }
+
+  function getDesktopPaymentProviderLabel() {
+    return getDesktopPaymentProviderMeta().label || (desktopPaymentState.provider === 'alipay' ? '支付宝' : '微信支付');
+  }
+
+  function getDesktopPaymentProviderAppLabel() {
+    return getDesktopPaymentProviderLabel().replace(/支付$/, '');
+  }
+
+  function setDesktopPaymentProviders(providers) {
+    if (Array.isArray(providers)) desktopPaymentState.providers = providers;
+    const current = getDesktopPaymentProviderMeta(desktopPaymentState.provider);
+    if (!current?.enabled) desktopPaymentState.provider = 'wechat';
+  }
+
   function updateDesktopMemberEntry() {
     const isMember = !!desktopAuthState.quota?.isMember;
     const product = getDesktopMemberProduct();
@@ -764,6 +793,7 @@
       const data = await desktopFetchJson(`/api/payments/member-status${query}`);
       updateDesktopQuotaDisplay(data.quota || null);
       if (data.product) desktopPaymentState.product = data.product;
+      setDesktopPaymentProviders(data.providers);
       desktopPaymentState.mockMode = !!data.mockMode;
       updateDesktopMemberEntry();
       renderDesktopPayment();
@@ -797,7 +827,7 @@
       });
       return;
     }
-    holder.innerHTML = `<a href="${escapeHtml(desktopPaymentState.payUrl)}" target="_blank" rel="noopener">打开微信支付链接</a>`;
+    holder.innerHTML = `<a href="${escapeHtml(desktopPaymentState.payUrl)}" target="_blank" rel="noopener">打开${escapeHtml(getDesktopPaymentProviderLabel())}链接</a>`;
   }
 
   function renderDesktopPayment() {
@@ -816,6 +846,13 @@
     if (desc) desc.textContent = product.description || '会员额度与手机端共用。';
     const amount = $('#mbpPayAmount');
     if (amount) amount.textContent = `¥${product.amountYuan || '19.90'}`;
+    document.querySelectorAll('.mbp-pay-method').forEach((button) => {
+      const provider = button.dataset.provider || 'wechat';
+      const meta = getDesktopPaymentProviderMeta(provider);
+      button.classList.toggle('is-active', desktopPaymentState.provider === provider);
+      button.disabled = desktopPaymentState.loading || desktopPaymentState.status === 'pending' || !meta.enabled;
+      button.textContent = meta.enabled ? (meta.label || button.textContent) : `${meta.label || button.textContent}配置中`;
+    });
 
     const isPending = desktopPaymentState.status === 'pending';
     const isPaid = desktopPaymentState.status === 'paid';
@@ -826,6 +863,7 @@
     if (openLink) {
       openLink.hidden = !(isPending && desktopPaymentState.payUrl && desktopPaymentState.payMethod === 'h5' && !desktopPaymentState.mockMode);
       openLink.href = desktopPaymentState.payUrl || '#';
+      openLink.textContent = `打开${getDesktopPaymentProviderLabel()}`;
     }
     const error = $('#mbpPayError');
     if (error) {
@@ -839,9 +877,9 @@
       if (desktopPaymentState.loading) primary.textContent = '处理中...';
       else if (isPaid) primary.textContent = '已开通，关闭';
       else if (desktopPaymentState.mockMode && desktopPaymentState.orderNo) primary.textContent = '模拟支付成功';
-      else if (isPending && desktopPaymentState.payMethod === 'h5') primary.textContent = '打开微信支付';
+      else if (isPending && desktopPaymentState.payMethod === 'h5') primary.textContent = `打开${getDesktopPaymentProviderLabel()}`;
       else if (isPending) primary.textContent = '我已支付，刷新状态';
-      else primary.textContent = `创建微信支付订单 ¥${product.amountYuan || '19.90'}`;
+      else primary.textContent = `创建${getDesktopPaymentProviderLabel()}订单 ¥${product.amountYuan || '19.90'}`;
     }
     const refresh = $('#mbpPayRefresh');
     if (refresh) {
@@ -858,7 +896,7 @@
     try {
       const data = await desktopFetchJson(`/api/payments/order-status?orderNo=${encodeURIComponent(desktopPaymentState.orderNo)}`);
       desktopPaymentState.status = data.status || desktopPaymentState.status;
-      desktopPaymentState.message = data.status === 'paid' ? '已开通会员' : '等待微信支付完成';
+      desktopPaymentState.message = data.status === 'paid' ? '已开通会员' : `等待${getDesktopPaymentProviderLabel()}完成`;
       if (data.status === 'paid') {
         stopDesktopPaymentPoll();
         await hydrateDesktopMemberStatus({ force: true });
@@ -915,7 +953,7 @@
     desktopPaymentState.loading = true;
     desktopPaymentState.status = 'loading';
     desktopPaymentState.error = '';
-    desktopPaymentState.message = '正在创建微信支付订单...';
+    desktopPaymentState.message = `正在创建${getDesktopPaymentProviderLabel()}订单...`;
     desktopPaymentState.orderNo = '';
     desktopPaymentState.payUrl = '';
     desktopPaymentState.payMethod = '';
@@ -923,7 +961,7 @@
     try {
       const order = await desktopFetchJson('/api/payments/create-order', {
         method: 'POST',
-        body: { productKey: desktopMemberProductKey, chartRecordId: state.chartRecordId || '' },
+        body: { productKey: desktopMemberProductKey, chartRecordId: state.chartRecordId || '', provider: desktopPaymentState.provider },
       });
       const payMethod = isDesktopH5PayPreferred() ? 'h5' : 'native';
       const sessionData = await desktopFetchJson('/api/payments/create-session', {
@@ -934,6 +972,7 @@
       desktopPaymentState.orderNo = order.orderNo || '';
       desktopPaymentState.payUrl = sessionData.payUrl || sessionData.qrUrl || '';
       desktopPaymentState.payMethod = sessionData.payMethod || payMethod;
+      desktopPaymentState.provider = sessionData.provider || order.provider || desktopPaymentState.provider;
       desktopPaymentState.mockMode = !!(order.mockMode || sessionData.mockMode);
       desktopPaymentState.product = {
         ...(desktopPaymentState.product || {}),
@@ -943,7 +982,7 @@
       };
       desktopPaymentState.message = desktopPaymentState.mockMode
         ? '当前是支付测试模式'
-        : (desktopPaymentState.payMethod === 'h5' ? '点击下方按钮打开微信支付' : '请用微信扫码支付');
+        : (desktopPaymentState.payMethod === 'h5' ? `点击下方按钮打开${getDesktopPaymentProviderLabel()}` : `请用${getDesktopPaymentProviderAppLabel()}扫码支付`);
       startDesktopPaymentPoll();
     } catch (error) {
       desktopPaymentState.status = 'error';
@@ -6398,6 +6437,17 @@
     $('#mbpPayOverlay')?.addEventListener('click', (event) => {
       if (event.target === $('#mbpPayOverlay') && !desktopPaymentState.loading) closeDesktopPayment();
     });
+    document.querySelectorAll('.mbp-pay-method').forEach((button) => {
+      button.addEventListener('click', () => {
+        const provider = button.dataset.provider || 'wechat';
+        const meta = getDesktopPaymentProviderMeta(provider);
+        if (!meta.enabled || desktopPaymentState.status === 'pending') return;
+        desktopPaymentState.provider = provider;
+        desktopPaymentState.error = '';
+        desktopPaymentState.message = '会员支付会绑定当前登录账号，电脑端与手机端权益共用。';
+        renderDesktopPayment();
+      });
+    });
     document.addEventListener('keydown', (event) => {
       if (event.key === 'Escape' && desktopAuthState.open && !desktopAuthState.loading) closeDesktopAuth();
       if (event.key === 'Escape' && desktopPaymentState.open && !desktopPaymentState.loading) closeDesktopPayment();
@@ -6420,7 +6470,7 @@
     $('#mbpPayPrimary')?.addEventListener('click', handleDesktopPayPrimary);
     $('#mbpPayRefresh')?.addEventListener('click', checkDesktopPaymentStatus);
     $('#mbpPayOpenLink')?.addEventListener('click', () => {
-      desktopPaymentState.message = '微信支付已打开，支付完成后请返回刷新状态。';
+      desktopPaymentState.message = `${getDesktopPaymentProviderLabel()}已打开，支付完成后请返回刷新状态。`;
       renderDesktopPayment();
     });
     $('#mbpAuthPassword')?.addEventListener('keydown', (event) => {

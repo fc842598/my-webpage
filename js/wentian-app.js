@@ -1273,6 +1273,7 @@ const wentianMemberState = {
     amountFen: 1990,
     amountYuan: "19.90",
   },
+  providers: [],
   mockMode: false,
 };
 const wentianPaymentState = {
@@ -1283,6 +1284,7 @@ const wentianPaymentState = {
   message: "",
   error: "",
   mockMode: false,
+  provider: "wechat",
   productName: "阅天会员月卡",
   amountYuan: "19.90",
 };
@@ -6249,6 +6251,27 @@ function getWentianMemberSnapshot() {
   };
 }
 
+function getWentianPaymentProviders() {
+  const list = Array.isArray(wentianMemberState.providers) ? wentianMemberState.providers : [];
+  const byKey = new Map(list.map((item) => [item.provider, item]));
+  return [
+    { provider: "wechat", label: "微信支付", enabled: true, ...(byKey.get("wechat") || {}) },
+    { provider: "alipay", label: "支付宝", enabled: false, ...(byKey.get("alipay") || {}) },
+  ];
+}
+
+function getWentianPaymentProviderMeta(provider = wentianPaymentState.provider) {
+  return getWentianPaymentProviders().find((item) => item.provider === provider) || getWentianPaymentProviders()[0];
+}
+
+function getWentianPaymentProviderLabel() {
+  return getWentianPaymentProviderMeta().label || (wentianPaymentState.provider === "alipay" ? "支付宝" : "微信支付");
+}
+
+function getWentianPaymentProviderAppLabel() {
+  return getWentianPaymentProviderLabel().replace(/支付$/, "");
+}
+
 async function hydrateWentianMemberStatus(options = {}) {
   if (wentianMemberStatusPromise && !options.force) return wentianMemberStatusPromise;
   if (wentianMemberState.loaded && !options.force) return null;
@@ -6262,6 +6285,8 @@ async function hydrateWentianMemberStatus(options = {}) {
       wentianMemberState.loaded = true;
       if (data.quota) wentianMemberState.quota = data.quota;
       if (data.product) wentianMemberState.product = data.product;
+      if (Array.isArray(data.providers)) wentianMemberState.providers = data.providers;
+      if (!getWentianPaymentProviderMeta(wentianPaymentState.provider)?.enabled) wentianPaymentState.provider = "wechat";
       wentianMemberState.mockMode = !!data.mockMode;
       const after = JSON.stringify({
         quota: wentianMemberState.quota,
@@ -6283,6 +6308,7 @@ async function hydrateWentianMemberStatus(options = {}) {
 }
 
 function getWentianPayMethod() {
+  if (wentianPaymentState.provider === "alipay" && isWentianMobilePayDevice()) return "h5";
   return "native";
 }
 
@@ -6302,7 +6328,7 @@ async function checkWentianPaymentStatus() {
   try {
     const data = await wentianFetchJson(`/api/payments/order-status?orderNo=${encodeURIComponent(wentianPaymentState.orderNo)}`);
     wentianPaymentState.status = data.status || wentianPaymentState.status;
-    wentianPaymentState.message = data.status === "paid" ? "已开通会员" : "等待微信支付完成";
+    wentianPaymentState.message = data.status === "paid" ? "已开通会员" : `等待${getWentianPaymentProviderLabel()}完成`;
     if (data.status === "paid") {
       stopWentianPaymentPoll();
       await hydrateWentianMemberStatus({ force: true });
@@ -6327,7 +6353,7 @@ async function startWentianMemberPayment() {
   if (!session?.user) return;
   const product = wentianMemberState.product || {};
   wentianPaymentState.status = "loading";
-  wentianPaymentState.message = "正在创建微信支付订单...";
+  wentianPaymentState.message = `正在创建${getWentianPaymentProviderLabel()}订单...`;
   wentianPaymentState.error = "";
   wentianPaymentState.productName = product.name || "阅天会员月卡";
   wentianPaymentState.amountYuan = product.amountYuan || "19.90";
@@ -6337,7 +6363,7 @@ async function startWentianMemberPayment() {
     const chartRecordId = getWentianChartPayload().chartRecordId;
     const order = await wentianFetchJson("/api/payments/create-order", {
       method: "POST",
-      body: { productKey: WENTIAN_MEMBER_PRODUCT_KEY, chartRecordId },
+      body: { productKey: WENTIAN_MEMBER_PRODUCT_KEY, chartRecordId, provider: wentianPaymentState.provider },
     });
     const payMethod = getWentianPayMethod();
     const session = await wentianFetchJson("/api/payments/create-session", {
@@ -6348,12 +6374,13 @@ async function startWentianMemberPayment() {
     wentianPaymentState.orderNo = order.orderNo;
     wentianPaymentState.payUrl = session.payUrl || "";
     wentianPaymentState.payMethod = session.payMethod || payMethod;
+    wentianPaymentState.provider = session.provider || order.provider || wentianPaymentState.provider;
     wentianPaymentState.mockMode = !!(order.mockMode || session.mockMode);
     wentianPaymentState.productName = order.productName || product.name || "阅天会员月卡";
     wentianPaymentState.amountYuan = order.amountYuan || product.amountYuan || "19.90";
     wentianPaymentState.message = wentianPaymentState.mockMode
       ? "当前是支付测试模式"
-      : (wentianPaymentState.payMethod === "h5" ? "点击下方按钮打开微信支付" : "请用另一台手机微信扫码支付。");
+      : (wentianPaymentState.payMethod === "h5" ? `点击下方按钮打开${getWentianPaymentProviderLabel()}` : `请用另一台手机${getWentianPaymentProviderAppLabel()}扫码支付。`);
     startWentianPaymentPoll();
     refreshWentianPaymentScreen();
   } catch (error) {
@@ -6677,6 +6704,20 @@ function sourceProfileScreen(screen) {
 function sourceMembershipScreen() {
   const member = getWentianMemberSnapshot();
   const buttonText = member.isMember ? `续费会员 ¥${member.amountYuan}` : `开通会员 ¥${member.amountYuan}`;
+  const providers = getWentianPaymentProviders();
+  const methodButtons = providers.map((item, index) => {
+    const x = index === 0 ? 42 : 202;
+    const active = wentianPaymentState.provider === item.provider;
+    const disabled = !item.enabled;
+    const bg = active ? "#fff3d9" : "#fffdf8";
+    const border = active ? "#c8a65f" : "#eadfce";
+    const text = disabled ? `${item.label}配置中` : item.label;
+    return `
+      ${figBox(`wt33-pay-method-${item.provider}`, x, 660, 146, 42, "", `border:1px solid ${border};border-radius:21px;background:${bg};`)}
+      ${figButton(`wt33-pay-method-hit-${item.provider}`, x, 660, 146, 42, disabled ? "" : `data-action="wentian-pay-provider" data-provider="${item.provider}"`)}
+      ${figText(`wt33-pay-method-text-${item.provider}`, text, x, 673, 146, 12, disabled ? "#b4aaa0" : (active ? "#8f3d30" : "#756d63"), 900, "center")}
+    `;
+  }).join("");
   return `
     ${figBox("wt33-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
     ${wentianSimpleHeader("wt33", "阅天会员")}
@@ -6698,6 +6739,8 @@ function sourceMembershipScreen() {
     ${figBox("wt33-benefit", 24, 508, 342, 116, "", "border-radius:16px;background:#fff;box-shadow:0 8px 20px rgba(70,45,25,.07);")}
     ${figText("wt33-benefit-title", "当前额度", 44, 530, 120, 15, "#25211d", 900)}
     ${figText("wt33-benefit-list", `今日剩余 ${member.daily}<br>本月剩余 ${member.monthly}`, 44, 562, 260, 15, "#756d63", 800, "left", "line-height:1.8;")}
+    ${figText("wt33-pay-method-title", "支付方式", 42, 636, 120, 13, "#756d63", 800)}
+    ${methodButtons}
     ${figBox("wt33-submit", 42, 736, 306, 50, "", "border-radius:25px;background:linear-gradient(180deg,#b74e39,#983323);box-shadow:0 14px 28px rgba(158,61,43,.20);")}
     ${figButton("wt33-submit-hit", 42, 736, 306, 50, 'data-action="wentian-member-pay"')}
     ${figText("wt33-submit-text", buttonText, 42, 751, 306, 14, "#fffaf3", 900, "center")}
@@ -6740,18 +6783,18 @@ function sourcePaymentScreen() {
     ${figLine("wt30-order-line-2", 44, 390, 302, "#efe4d3")}
     ${figText("wt30-order-tip", escapeHtml(message), 44, 416, 282, 14, wentianPaymentState.error ? "#a64032" : "#756d63", 700, "left", "line-height:1.5;")}
     ${showQr ? `<div id="wentian-pay-qr" class="wentian-pay-qr" data-pay-url="${escapeHtml(payUrl)}" style="left:109px;top:448px;width:172px;height:172px"></div>` : ""}
-    ${showQr ? figText("wt30-qr-tip", "请用另一台手机打开微信扫一扫；同一台手机截图识别通常无法支付。", 46, 626, 298, 12, "#8d8377", 700, "center", "line-height:1.45;") : ""}
+    ${showQr ? figText("wt30-qr-tip", `请用另一台手机打开${getWentianPaymentProviderAppLabel()}扫一扫；同一台手机截图识别通常无法支付。`, 46, 626, 298, 12, "#8d8377", 700, "center", "line-height:1.45;") : ""}
 
     ${showOpen ? figBox("wt30-open", 42, 650, 306, 50, "", "border-radius:25px;background:#16783d;box-shadow:0 12px 24px rgba(22,120,61,.18);") : ""}
     ${showOpen ? figButton("wt30-open-hit", 42, 650, 306, 50, 'data-action="wentian-pay-open"') : ""}
-    ${showOpen ? figText("wt30-open-text", "打开微信支付", 42, 665, 306, 14, "#fff", 900, "center") : ""}
+    ${showOpen ? figText("wt30-open-text", `打开${getWentianPaymentProviderLabel()}`, 42, 665, 306, 14, "#fff", 900, "center") : ""}
     ${wentianPaymentState.mockMode ? figBox("wt30-mock", 42, 650, 306, 50, "", "border-radius:25px;background:#16783d;box-shadow:0 12px 24px rgba(22,120,61,.18);") : ""}
     ${wentianPaymentState.mockMode ? figButton("wt30-mock-hit", 42, 650, 306, 50, 'data-action="wentian-pay-mock-success"') : ""}
     ${wentianPaymentState.mockMode ? figText("wt30-mock-text", "模拟支付成功", 42, 665, 306, 14, "#fff", 900, "center") : ""}
     ${figBox("wt30-pay", 42, 736, 306, 50, "", `border-radius:25px;background:${wentianPaymentState.status === "paid" ? "#7a9a4b" : "linear-gradient(180deg,#b74e39,#983323)"};box-shadow:0 14px 28px rgba(158,61,43,.18);`)}
     ${figButton("wt30-pay-hit", 42, 736, 306, 50, `data-action="${wentianPaymentState.status === "paid" ? "wentian-pay-done" : (wentianPaymentState.status === "idle" || wentianPaymentState.status === "error" ? "wentian-member-pay" : "wentian-payment-check")}"`)}
     ${figText("wt30-pay-text", wentianPaymentState.status === "paid" ? "已开通，返回我的" : (wentianPaymentState.status === "pending" ? "刷新支付状态" : `确认支付 ¥${escapeHtml(wentianPaymentState.amountYuan || "19.90")}`), 42, 751, 306, 14, "#fffaf3", 900, "center")}
-    ${figText("wt30-safe", "微信支付完成后会员额度自动刷新", 0, 804, 390, 11, "#a49b91", 600, "center")}
+    ${figText("wt30-safe", `${getWentianPaymentProviderLabel()}完成后会员额度自动刷新`, 0, 804, 390, 11, "#a49b91", 600, "center")}
   `;
 }
 
@@ -12312,6 +12355,13 @@ document.addEventListener("click", (event) => {
   }
   if (action === "wentian-member-pay") {
     startWentianMemberPayment();
+    return;
+  }
+  if (action === "wentian-pay-provider") {
+    const provider = event.target.closest("[data-provider]")?.dataset.provider || "wechat";
+    const meta = getWentianPaymentProviderMeta(provider);
+    if (meta.enabled) wentianPaymentState.provider = provider;
+    navigate(state.route, false);
     return;
   }
   if (action === "wentian-pay-open") {

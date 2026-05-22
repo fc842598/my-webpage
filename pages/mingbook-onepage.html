@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>阅天 · 紫微排盘</title>
   <link rel="icon" href="../images/logo-mark.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../css/mingbook-onepage.css?v=20260522-yijing-ai-timing">
+  <link rel="stylesheet" href="../css/mingbook-onepage.css?v=20260522-yijing-alipay-pay">
   <script src="../js/config.js?v=20260521-api-domain-auth-proxy"></script>
   <script defer src="../js/cities.js"></script>
   <script defer src="../js/lunarCalendar.js"></script>
@@ -22,7 +22,7 @@
   <script defer src="../src/ziping/runtime.js"></script>
   <script defer src="../js/ai-piming.js?v=20260522-yijing-ai-timing"></script>
   <script defer src="../js/ai-chat.js?v=20260521-no-auto-jump"></script>
-  <script defer src="../js/mingbook-onepage.js?v=20260522-yijing-ai-timing"></script>
+  <script defer src="../js/mingbook-onepage.js?v=20260522-yijing-alipay-pay"></script>
 </head>
 <body>
   <header class="mbp-nav">
@@ -625,11 +625,15 @@
         <span>命盘长页与手机端同账号共用</span>
         <span>支付成功后自动刷新会员状态</span>
       </div>
+      <div class="mbp-pay-methods" id="mbpPayMethods" aria-label="选择支付方式">
+        <button type="button" class="mbp-pay-method is-active" data-provider="wechat">微信支付</button>
+        <button type="button" class="mbp-pay-method" data-provider="alipay">支付宝</button>
+      </div>
       <div class="mbp-pay-qr" id="mbpPayQr" hidden></div>
-      <a class="mbp-pay-open-link" id="mbpPayOpenLink" href="#" target="_blank" rel="noopener" hidden>打开微信支付</a>
+      <a class="mbp-pay-open-link" id="mbpPayOpenLink" href="#" target="_blank" rel="noopener" hidden>打开支付</a>
       <div class="mbp-pay-error" id="mbpPayError" hidden></div>
       <div class="mbp-pay-actions">
-        <button type="button" class="mbp-pay-primary" id="mbpPayPrimary">创建微信支付订单</button>
+        <button type="button" class="mbp-pay-primary" id="mbpPayPrimary">创建支付订单</button>
         <button type="button" class="mbp-pay-secondary" id="mbpPayRefresh">刷新支付状态</button>
       </div>
     </div>
