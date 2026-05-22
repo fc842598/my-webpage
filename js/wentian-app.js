@@ -13,7 +13,7 @@ const profiles = [
 const plans = [
   ["免费版", "30次/天", "每日自动刷新"],
   ["付费版", "100次/天", "适合连续追问复盘"],
-  ["计费规则", "按日算", "不再计算本月额度"]
+  ["计费规则", "按日算", "只按每日额度"]
 ];
 
 const convertedScreens = [
@@ -38,8 +38,7 @@ const convertedScreens = [
   { no: 19, title: "投掷5次", active: "活动", cards: [["已投掷 5 次", "再投一次查看结果。"]], button: ["查看结果", "screen-20"] },
   { no: 20, title: "地风升", active: "活动", sections: ["本卦：地风升", "卦意", "事业建议", "关系建议", "行动窗口"], button: ["购买解读", "screen-21"] },
   { no: 21, title: "购买弹窗", active: "活动", modalTitle: "购买完整解读", modalItems: ["地风升完整卦象 ¥12", "包含本卦、变卦与行动建议"], next: "screen-29" },
-  { no: 22, title: "邀请好友", active: "活动", cards: [["邀请好友", "邀请码：8R7U58ZW"], ["奖励规则", "好友注册后可获得对话次数。"]], button: ["查看活动中心", "screen-23"] },
-  { no: 23, title: "活动中心", active: "活动", cards: [["活动中心", "邀请、签到、次数奖励。"], ["当前进度", "已邀请 0 人"]], button: ["邀请好友", "screen-22"] },
+  { no: 22, title: "邀请好友", active: "活动", cards: [["邀请好友", "邀请码：8R7U58ZW"], ["奖励规则", "好友注册后可获得对话次数。"]], button: ["查看邀请详情", "screen-24"] },
   { no: 24, title: "邀请详情", active: "活动", sections: ["邀请详情", "奖励说明", "到账规则", "常见问题"] },
   { no: 25, title: "档案", active: "档案", list: [["谢广周", "男｜阳历 2026-05-12", "screen-26"], ["查看命盘", "紫微命盘 / 八字", "screen-27"], ["AI阅天", "使用当前档案提问", "screen-4"]] },
   { no: 26, title: "排盘表单", active: "档案", form: ["姓名", "性别", "出生日期", "出生地"], button: ["开始排盘", "screen-27"] },
@@ -49,7 +48,7 @@ const convertedScreens = [
   { no: 30, title: "支付页", active: "我的", cards: [["订单信息", "支付金额 ¥19.90"]], button: ["确认支付 ¥19.90", "screen-31"] },
   { no: 31, title: "我的", active: "我的", mine: true },
   { no: 32, title: "账户设置", active: "我的", list: [["基本信息", "", "screen-39"], ["登录方式", "", "screen-40"], ["设置密码", "", "screen-41"], ["退出登录", "", "screen-31"]] },
-  { no: 33, title: "阅天套餐", active: "我的", cards: [["免费版", ""], ["付费版", "100次/天"], ["付费版 ¥19.90", "31天有效"]], button: ["立即开通 ¥19.90", "screen-30"] },
+  { no: 33, title: "阅天套餐", active: "我的", cards: [["免费版", ""], ["付费版", "100次/天"], ["付费版 ¥19.90", "按日刷新"]], button: ["立即开通 ¥19.90", "screen-30"] },
   { no: 34, title: "分享阅天AI", active: "我的", modalTitle: "分享阅天AI", modalItems: ["分享文本", "邀请码：8R7U58ZW", "微信好友 / 朋友圈 / 复制链接"], next: "screen-31" },
   { no: 35, title: "联系我们", active: "我的", list: [["电子邮箱", "", ""], ["小红书", "", ""], ["微信公众号", "", ""], ["X", "", ""]] },
   { no: 36, title: "关于我们", active: "我的", cards: [["阅天AI v1.0.3199", "阅天AI是一款命理排盘、合盘、抽签与AI解读工具。"], ["隐私协议", ""], ["用户协议", ""], ["检查更新", ""]] },
@@ -92,8 +91,7 @@ const screenFlowHotspots = {
   19: [[18, 44, 48, 48, "screen-18"], [70, 610, 250, 72, "screen-20"]],
   20: [[18, 44, 48, 48, "screen-19"], [42, 742, 306, 56, "screen-21"]],
   21: [[316, 175, 48, 48, "screen-20"], [50, 705, 290, 58, "screen-29"]],
-  22: [[18, 44, 48, 48, "screen-31"], [250, 44, 112, 48, "screen-23"], [42, 735, 306, 62, "screen-24"]],
-  23: [[18, 44, 48, 48, "screen-22"], [50, 680, 290, 58, "screen-22"]],
+  22: [[18, 44, 48, 48, "screen-31"], [42, 735, 306, 62, "screen-24"]],
   24: [[18, 44, 48, 48, "screen-22"]],
   25: [[330, 248, 44, 44, "screen-26"], [12, 784, 76, 72, "screen-1"], [109, 784, 76, 72, "screen-25"], [207, 784, 76, 72, "screen-3"], [304, 784, 76, 72, "screen-31"]],
   26: [[18, 40, 96, 54, "screen-1"]],
@@ -179,7 +177,7 @@ const state = {
   stack: []
 };
 
-const mineBackFallbackRoutes = new Set(["screen-22", "screen-23", "screen-34", "screen-35", "screen-37"]);
+const mineBackFallbackRoutes = new Set(["screen-22", "screen-34", "screen-35", "screen-37"]);
 
 const view = document.getElementById("view");
 const routeKicker = document.getElementById("routeKicker");
@@ -3973,18 +3971,15 @@ const WENTIAN_I18N = {
     "账号": "Account",
     "会员": "Member",
     "今日次数": "Today",
-    "本月次数": "This Month",
     "每日额度": "Daily Quota",
     "会员状态": "Plan",
     "套餐状态": "Plan",
     "免费版": "Free",
     "已开通": "Active",
     "阅天套餐": "Yuetian Plan",
-    "购买次数": "Buy Credits",
     "我的报告": "My Reports",
     "订单记录": "Orders",
     "邀请好友": "Invite Friends",
-    "活动中心": "Rewards Center",
     "双方获得奖励": "Both earn rewards",
     "任务与活动奖励": "Tasks and rewards",
     "分享阅天AI": "Share Yuetian AI",
@@ -4086,14 +4081,12 @@ const WENTIAN_I18N = {
     "设置密码": "設定密碼",
     "退出登录": "登出",
     "邀请好友": "邀請好友",
-    "活动中心": "活動中心",
     "双方获得奖励": "雙方獲得獎勵",
     "任务与活动奖励": "任務與活動獎勵",
     "分享阅天AI": "分享閱天AI",
     "联系我们": "聯絡我們",
     "我的报告": "我的報告",
     "订单记录": "訂單記錄",
-    "购买次数": "購買次數",
     "每日额度": "每日額度",
     "套餐状态": "套餐狀態",
     "付费版": "付費版",
@@ -4125,7 +4118,6 @@ const WENTIAN_I18N_EN_EXTRA = {
   "✦ 排盘": "Create Chart",
   "为你推荐": "Recommended",
   "邀请好友双方获得奖励": "Invite friends and both earn rewards",
-  "活动中心": "Rewards Center",
   "许半仙": "Master Xu",
   "许半仙已准备好为您解读": "Master Xu is ready",
   "紫微命盘专属解析，已接入当前档案": "Chart linked",
@@ -4655,15 +4647,14 @@ const WENTIAN_I18N_EN_EXTRA = {
   "微信支付完成后会员额度自动刷新": "Membership quota refreshes after WeChat Pay completes",
   "微信支付完成后付费额度自动刷新": "Paid quota refreshes after WeChat Pay completes",
   "开通后提升对话额度": "Increase chat quota after activation",
-  "31天": "31 days",
-  "31天有效": "Valid 31 days",
   "对话额度": "Chat Quota",
   "免费用户": "Free User",
   "付费用户": "Paid User",
   "30次/天": "30/day",
   "100次/天": "100/day",
-  "每日刷新额度，不再计算本月次数。": "Quota resets daily; no monthly quota.",
-  "每日自动刷新，不累计到本月。": "Resets daily; no monthly accumulation.",
+  "按日刷新": "Resets daily",
+  "每日额度自动刷新。": "Daily quota resets automatically.",
+  "每日自动刷新。": "Resets daily.",
   "只按每日额度计算：免费 30次/天，付费 100次/天。": "Daily only: free 30/day, paid 100/day.",
   "免费用户 30次/天，付费用户 100次/天；每日刷新，不设月额度。": "Free 30/day, paid 100/day; resets daily with no monthly quota.",
   "开通付费版": "Open Paid Plan",
@@ -4672,7 +4663,6 @@ const WENTIAN_I18N_EN_EXTRA = {
   "当前额度": "Current Quota",
   "每日额度 100次/天": "Daily quota 100/day",
   "今日剩余 100/100": "Today remaining 100/100",
-  "本月剩余 3000/3000": "This month remaining 3000/3000",
   "开通会员 ¥19.90": "Open Membership ¥19.90",
   "开通付费版 ¥19.90": "Open Paid Plan ¥19.90",
   "推荐你使用阅天AI，AI排盘、命盘解读和许半仙问答都在这里。": "I recommend Yuetian AI for AI charting, chart readings, and Xu Banxian Q&A.",
@@ -5330,7 +5320,7 @@ async function getWentianAuthToken() {
 }
 
 function refreshWentianAuthScreens() {
-  if (["screen-1", "screen-22", "screen-23", "screen-24", "screen-30", "screen-31", "screen-33", "screen-34", "screen-38", "screen-39", "screen-40", "screen-41", "screen-48"].includes(state.route)) {
+  if (["screen-1", "screen-22", "screen-24", "screen-30", "screen-31", "screen-33", "screen-34", "screen-38", "screen-39", "screen-40", "screen-41", "screen-48"].includes(state.route)) {
     navigate(state.route, false);
   }
 }
@@ -5755,7 +5745,7 @@ async function wentianFetchJson(path, options = {}) {
 }
 
 function refreshWentianInviteScreens() {
-  if (["screen-22", "screen-23", "screen-24", "screen-31", "screen-34", "screen-40"].includes(state.route)) {
+  if (["screen-22", "screen-24", "screen-31", "screen-34", "screen-40"].includes(state.route)) {
     navigate(state.route, false);
   }
 }
@@ -7181,7 +7171,7 @@ function sourceMembershipScreen() {
     ${figText("wt33-card-label", "付费版", 52, 136, 130, 20, "#fff", 900)}
     ${figText("wt33-card-sub", member.isMember ? escapeHtml(member.subtitle) : "100次/天，按日刷新", 52, 168, 190, 13, "#cfc1a9", 700)}
     ${figText("wt33-card-price", `¥${member.amountYuan}`, 238, 132, 84, 26, "#f4d293", 900, "right")}
-    ${figText("wt33-card-period", "31天有效", 246, 170, 78, 12, "#cfc1a9", 700, "right")}
+    ${figText("wt33-card-period", "按日刷新", 246, 170, 78, 12, "#cfc1a9", 700, "right")}
 
     ${figText("wt33-plan-title", "对话额度", 24, 254, 120, 17, "#25211d", 900)}
     ${figBox("wt33-free", 24, 292, 342, 72, "", "border:1px solid #eadfce;border-radius:14px;background:#fff;box-shadow:0 6px 16px rgba(70,45,25,.06);")}
@@ -7190,7 +7180,7 @@ function sourceMembershipScreen() {
     ${figBox("wt33-member", 24, 378, 342, 92, "", "border:1px solid #c8a65f;border-radius:16px;background:#fffaf0;box-shadow:0 10px 24px rgba(130,91,31,.10);")}
     ${figText("wt33-member-title", "付费用户", 44, 402, 100, 16, "#8f3d30", 900)}
     ${figText("wt33-member-quota", "100次/天", 174, 402, 160, 15, "#8f3d30", 900, "right")}
-    ${figText("wt33-member-desc", "每日刷新额度，不再计算本月次数。", 44, 436, 282, 13, "#756d63", 700)}
+    ${figText("wt33-member-desc", "每日额度自动刷新。", 44, 436, 282, 13, "#756d63", 700)}
 
     ${figBox("wt33-benefit", 24, 508, 342, 116, "", "border-radius:16px;background:#fff;box-shadow:0 8px 20px rgba(70,45,25,.07);")}
     ${figText("wt33-benefit-title", "当前额度", 44, 530, 120, 15, "#25211d", 900)}
@@ -11049,47 +11039,6 @@ function renderWentianPolishedScreen(screen) {
       ${sourceAppBottomNav("藏宝阁", 780)}
     `;
   }
-  if (no === 23) {
-    const invite = getWentianInviteSnapshot();
-    return `
-      ${figBox("wt23-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
-      ${wentianSimpleHeader("wt23", "活动中心", "刷新")}
-      ${figButton("wt23-refresh-hit", 318, 38, 62, 54, 'data-action="wentian-invite-refresh"')}
-      ${figBox("wt23-progress", 16, 104, 358, 104, "", "border-radius:18px;background:linear-gradient(135deg,#d5ad42,#9f741d);box-shadow:0 12px 26px rgba(121,82,18,.16);")}
-      ${figText("wt23-count", `${Number(invite.invitedCount || 0)} 人`, 40, 132, 140, 26, "#fff", 900)}
-      ${figText("wt23-label", `可用奖励 ${Number(invite.bonusRemaining ?? invite.bonusTalks ?? 0)} 次`, 40, 170, 160, 13, "#fff7df", 800)}
-      ${figBox("wt23-go", 254, 132, 82, 42, "", "border-radius:21px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.3);")}
-      ${figButton("wt23-go-hit", 254, 132, 82, 42, 'data-route="screen-22"')}
-      ${figText("wt23-go-text", "去邀请", 254, 146, 82, 12, "#fff", 900, "center")}
-      ${[["邀请好友注册", `双方各得 ${invite.registerReward || 2} 次对话`, "#d8ab3c", "screen-22"], ["好友首次付费", `邀请人再得 ${invite.paidReward || 10} 次对话`, "#f0a229", "screen-22"], ["每日签到", "连续签到功能待开放", "#5fae95", "screen-23"]].map(([title, desc, color, route], index) => {
-        const y = 250 + index * 118;
-        return `
-          ${figBox(`wt23-card-${index}`, 16, y, 358, 94, "", "border-radius:16px;background:#fff;box-shadow:0 8px 20px rgba(70,45,25,.07);")}
-          ${figBox(`wt23-icon-${index}`, 34, y + 18, 52, 52, "", `border-radius:26px;background:${color};`)}
-          ${figText(`wt23-icon-text-${index}`, index === 0 ? "邀" : index === 1 ? "奖" : "签", 34, y + 34, 52, 15, "#fff", 900, "center")}
-          ${figText(`wt23-title-${index}`, title, 104, y + 18, 150, 16, "#25211d", 900)}
-          ${figText(`wt23-desc-${index}`, desc, 104, y + 46, 210, 13, "#756d63", 700)}
-          ${figText(`wt23-arrow-${index}`, "›", 338, y + 34, 20, 20, "#c9bba6", 800, "center")}
-          ${figButton(`wt23-hit-${index}`, 16, y, 358, 94, `data-route="${route}"`)}
-        `;
-      }).join("")}
-    `;
-    return `
-      ${figBox("wt23-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
-      ${wentianSimpleHeader("wt23", "活动中心")}
-      ${[["邀请好友注册", "邀请好友注册，双方均可获得对话次数奖励", "#d8ab3c"], ["邀请好友首次付费", "好友首次付费后，邀请人可获得额外次数", "#f0a229"], ["每日签到", "连续签到获取体验次数奖励", "#5fae95"]].map(([title, desc, color], index) => {
-        const y = 112 + index * 118;
-        return `
-          ${figBox(`wt23-card-${index}`, 16, y, 358, 94, "", "border-radius:12px;background:#fff;box-shadow:0 8px 20px rgba(70,45,25,.07);")}
-          ${figBox(`wt23-icon-${index}`, 34, y + 18, 52, 52, "", `border-radius:26px;background:${color};`)}
-          ${figText(`wt23-icon-text-${index}`, index === 0 ? "礼" : index === 1 ? "奖" : "签", 34, y + 34, 52, 15, "#fff", 800, "center")}
-          ${figText(`wt23-title-${index}`, title, 104, y + 18, 150, 16, "#25211d", 800)}
-          ${figText(`wt23-desc-${index}`, desc, 104, y + 46, 210, 13, "#756d63", 500)}
-          ${figText(`wt23-arrow-${index}`, "›", 338, y + 34, 20, 20, "#c9bba6", 800, "center")}
-        `;
-      }).join("")}
-    `;
-  }
   if (no === 24) {
     return `
       ${figBox("wt24-bg", 0, 0, 390, 1180, "", "background:#fbf7ef;")}
@@ -11165,7 +11114,7 @@ function renderWentianPolishedScreen(screen) {
       ${figBox("wt29-free", 24, 312, 342, 78, "", "border:1px solid #eadfce;border-radius:14px;background:#fff;box-shadow:0 6px 16px rgba(70,45,25,.06);")}
       ${figText("wt29-free-title", "免费用户", 44, 336, 90, 15, "#25211d", 900)}
       ${figText("wt29-free-quota", "30次/天", 220, 336, 100, 15, "#8d8377", 900, "right")}
-      ${figText("wt29-free-desc", "每日自动刷新，不累计到本月。", 44, 362, 240, 12, "#8d8377", 700)}
+      ${figText("wt29-free-desc", "每日自动刷新。", 44, 362, 240, 12, "#8d8377", 700)}
       ${figBox("wt29-paid", 24, 410, 342, 104, "", "border:1px solid #c8a65f;border-radius:16px;background:#fffaf0;box-shadow:0 10px 24px rgba(130,91,31,.10);")}
       ${figText("wt29-paid-title", "付费用户", 44, 436, 90, 16, "#8f3d30", 900)}
       ${figText("wt29-paid-quota", "100次/天", 220, 436, 100, 16, "#8f3d30", 900, "right")}
@@ -11492,7 +11441,7 @@ function convertedButton(screen) {
   `;
 }
 
-const sourceScreenOwnHotspotNos = new Set([22, 23, 24, 29, 34, 35]);
+const sourceScreenOwnHotspotNos = new Set([22, 24, 29, 34, 35]);
 
 function convertedFlowHotspots(screen) {
   if (sourceScreenOwnHotspotNos.has(screen.no)) return "";
@@ -12052,6 +12001,7 @@ function normalizeRoute(route) {
 function resolveRoute(route) {
   const clean = normalizeRoute(route).replace(/^#/, "");
   if (clean === "hepan" || clean === "10" || clean === "screen-10") return "screen-11";
+  if (clean === "23" || clean === "screen-23") return "screen-22";
   return routeAliases[clean] || clean || "screen-1";
 }
 
@@ -12416,7 +12366,7 @@ function renderRecharge() {
     ${figBox("17:61", 22, 392, 346, 86, "fig-card", "border:1.6px solid #ba8f38;border-radius:14px;")}
     ${figText("17:62", "免费用户", 46, 416, 90, 18, "#75756e", 700)}
     ${figText("17:63", "30次/天", 248, 416, 84, 18, "#ba8f38", 700, "right")}
-    ${figText("17:64", "每日刷新，不累计到本月。", 46, 448, 220, 14, "#75756e", 700)}
+    ${figText("17:64", "每日自动刷新。", 46, 448, 220, 14, "#75756e", 700)}
     ${figBox("17:77", 22, 500, 346, 94, "fig-card", "border-radius:14px;")}
     ${figText("17:78", "付费用户", 46, 523, 90, 20, "#21211f", 700)}
     ${figText("17:79", "100次/天", 238, 523, 96, 20, "#ba8f38", 700, "right")}
