@@ -179,6 +179,8 @@ const state = {
   stack: []
 };
 
+const mineBackFallbackRoutes = new Set(["screen-22", "screen-23", "screen-34", "screen-35", "screen-37"]);
+
 const view = document.getElementById("view");
 const routeKicker = document.getElementById("routeKicker");
 const routeTitle = document.getElementById("routeTitle");
@@ -5776,23 +5778,52 @@ async function bindWentianPendingInvite(options = {}) {
   return bindWentianInviteCode(code, options);
 }
 
-async function copyWentianText(text, okText) {
+async function writeWentianClipboardText(text) {
+  if (navigator.clipboard?.writeText) {
+    await navigator.clipboard.writeText(text);
+    return true;
+  }
+  const input = document.createElement("textarea");
+  input.value = text;
+  input.style.position = "fixed";
+  input.style.opacity = "0";
+  input.style.pointerEvents = "none";
+  document.body.appendChild(input);
+  input.focus();
+  input.select();
+  const copied = document.execCommand("copy");
+  input.remove();
+  return copied;
+}
+
+async function copyWentianText(text, okText, failText = "复制失败，请长按文本手动复制", failTone = "error") {
   try {
-    if (navigator.clipboard?.writeText) {
-      await navigator.clipboard.writeText(text);
-    } else {
-      const input = document.createElement("textarea");
-      input.value = text;
-      input.style.position = "fixed";
-      input.style.opacity = "0";
-      document.body.appendChild(input);
-      input.select();
-      document.execCommand("copy");
-      input.remove();
-    }
+    const copied = await writeWentianClipboardText(text);
+    if (!copied) throw new Error("copy failed");
     setWentianInviteStatus(okText || "已复制", "ok");
+    return true;
   } catch (_err) {
-    setWentianInviteStatus("复制失败，请长按文本手动复制", "error");
+    setWentianInviteStatus(failText, failTone);
+    return false;
+  }
+}
+
+function setWentianContactStatus(text, tone = "") {
+  const el = document.getElementById("wentian-contact-status");
+  if (!el) return;
+  el.textContent = text || "";
+  el.dataset.tone = tone;
+}
+
+async function copyWentianContactText(text, okText) {
+  try {
+    const copied = await writeWentianClipboardText(text);
+    if (!copied) throw new Error("copy failed");
+    setWentianContactStatus(okText || "已复制", "ok");
+    return true;
+  } catch (_err) {
+    setWentianContactStatus("已显示联系信息，请长按本页文字复制", "ok");
+    return false;
   }
 }
 
@@ -5833,11 +5864,11 @@ async function shareWentianApp(target = "system") {
     return;
   }
   if (target === "wechat") {
-    await copyWentianText(payload.text, "已复制，打开微信发送给好友");
+    await copyWentianText(payload.text, "已复制，打开微信发送给好友", "浏览器限制自动复制，请长按上方文案后发给微信好友", "ok");
     return;
   }
   if (target === "moments") {
-    await copyWentianText(payload.text, "已复制，打开朋友圈粘贴发布");
+    await copyWentianText(payload.text, "已复制，打开朋友圈粘贴发布", "浏览器限制自动复制，请长按上方文案后发到朋友圈", "ok");
     return;
   }
   if (target === "mail") {
@@ -5854,7 +5885,26 @@ async function shareWentianApp(target = "system") {
       return;
     } catch (_err) {}
   }
-  await copyWentianText(payload.text, "分享文案已复制");
+  await copyWentianText(payload.text, "分享文案已复制", "浏览器未开放系统分享，请长按上方文案复制", "ok");
+}
+
+async function handleWentianContactAction(action) {
+  if (action === "wentian-contact-email") {
+    await copyWentianContactText("support@yuetianai.com", "邮箱已复制，可直接发邮件联系");
+    window.location.href = "mailto:support@yuetianai.com?subject=%E9%98%85%E5%A4%A9AI%E5%92%A8%E8%AF%A2";
+    return;
+  }
+  if (action === "wentian-contact-xiaohongshu") {
+    await copyWentianContactText("阅天AI命理小助手", "小红书名称已复制，打开小红书搜索即可");
+    return;
+  }
+  if (action === "wentian-contact-wechat") {
+    await copyWentianContactText("悦天AI公众号", "公众号名称已复制，打开微信搜索即可");
+    return;
+  }
+  if (action === "wentian-contact-x") {
+    await copyWentianContactText("阅天AI yuetianai.com", "X 联系信息已复制");
+  }
 }
 
 function bindWentianInviteFromInput() {
@@ -7123,6 +7173,7 @@ function sourceLanguageSettingsScreen() {
       `;
     }).join("")}
     <button class="wentian-language-confirm" type="button" data-action="wentian-language-confirm">确定</button>
+    ${figButton("source-37-back-top-hit", 18, 40, 54, 54, 'data-action="back" aria-label="返回我的"', "", "z-index:90;")}
   `;
 }
 
@@ -10874,10 +10925,16 @@ function renderWentianPolishedScreen(screen) {
     `;
   }
   if (no === 35) {
+    const contacts = [
+      ["电子邮箱", "support@yuetianai.com", "✉", "wentian-contact-email"],
+      ["小红书", "阅天AI命理小助手", "♡", "wentian-contact-xiaohongshu"],
+      ["微信公众号", "悦天AI公众号", "微", "wentian-contact-wechat"],
+      ["X", "关注我们的推特", "𝕏", "wentian-contact-x"],
+    ];
     return `
       ${figBox("wt35-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
       ${wentianSimpleHeader("wt35", "联系我们")}
-      ${[["电子邮箱", "support@yuetianai.com", "✉"], ["小红书", "阅天AI命理小助手", "♡"], ["微信公众号", "悦天AI公众号", "微"], ["X", "关注我们的推特", "𝕏"]].map(([title, desc, icon], index) => {
+      ${contacts.map(([title, desc, icon, action], index) => {
         const y = 128 + index * 78;
         return `
           ${figBox(`wt35-row-${index}`, 24, y, 342, 56, "", "border-radius:12px;background:#fff;box-shadow:0 6px 16px rgba(70,45,25,.07);")}
@@ -10885,8 +10942,10 @@ function renderWentianPolishedScreen(screen) {
           ${figText(`wt35-title-${index}`, title, 82, y + 12, 120, 14, "#25211d", 800)}
           ${figText(`wt35-desc-${index}`, desc, 82, y + 32, 180, 11, "#8d857b", 500)}
           ${figText(`wt35-arrow-${index}`, "›", 330, y + 17, 20, 18, "#c9bba6", 800, "center")}
+          ${figButton(`wt35-hit-${index}`, 24, y, 342, 56, `data-action="${action}" aria-label="${title}"`)}
         `;
       }).join("")}
+      <div id="wentian-contact-status" class="wentian-invite-status" style="left:34px;top:456px;width:322px;text-align:center" data-tone=""></div>
     `;
   }
   if (no === 36) {
@@ -11025,7 +11084,10 @@ function convertedButton(screen) {
   `;
 }
 
+const sourceScreenOwnHotspotNos = new Set([22, 23, 24, 34, 35]);
+
 function convertedFlowHotspots(screen) {
+  if (sourceScreenOwnHotspotNos.has(screen.no)) return "";
   return (screenFlowHotspots[screen.no] || []).map(([x, y, w, h, route], index) =>
     figButton(`screen-${screen.no}-flow-${index}`, x, y, w, h, `data-route="${route}"`, "flow-hotspot", "z-index:30;")
   ).join("");
@@ -12215,7 +12277,8 @@ document.addEventListener("click", (event) => {
       navigate("screen-42", false);
       return;
     }
-    navigate(state.stack.pop() || "home", false);
+    const previousRoute = state.stack.pop();
+    navigate(previousRoute || (mineBackFallbackRoutes.has(state.route) ? "screen-31" : "home"), false);
     return;
   }
   if (action === "wentian-login-open") {
@@ -12286,6 +12349,10 @@ document.addEventListener("click", (event) => {
   }
   if (action === "wentian-share-mail") {
     shareWentianApp("mail");
+    return;
+  }
+  if (action?.startsWith("wentian-contact-")) {
+    handleWentianContactAction(action);
     return;
   }
   if (action === "wentian-invite-copy-code") {
