@@ -9495,9 +9495,9 @@ function yangzhaiCompassGrid(id, compact = false) {
     }
     const items = getYangzhaiPlacementItems(palace.key);
     return `
-      ${figText(`${id}-gua-${index}`, palace.gua, x + 12, y + (compact ? 8 : 10), 30, compact ? 23 : 26, "#9f4032", 900, "left", "line-height:1;font-family:'Noto Serif SC','Songti SC',serif;")}
-      ${figText(`${id}-dir-${index}`, `(${palace.dir})`, x + (compact ? 42 : 43), y + (compact ? 12 : 15), 62, compact ? 9 : 10, "#2d241c", 700, "left", "white-space:nowrap;font-family:'Noto Sans SC','Microsoft YaHei',sans-serif;")}
-      ${figText(`${id}-role-${index}`, palace.role, x + 13, y + (compact ? 34 : 39), 84, compact ? 10 : 12, "#55493d", 500, "left", "white-space:nowrap;font-family:'Noto Sans SC','Microsoft YaHei',sans-serif;")}
+      ${figText(`${id}-dir-${index}`, palace.dir, x + 13, y + (compact ? 9 : 11), 58, compact ? 14 : 17, "#201812", 900, "left", "white-space:nowrap;font-family:'Noto Sans SC','Microsoft YaHei',sans-serif;")}
+      ${figText(`${id}-role-${index}`, palace.role, x + 13, y + (compact ? 31 : 36), 84, compact ? 9 : 11, "#55493d", 700, "left", "white-space:nowrap;font-family:'Noto Sans SC','Microsoft YaHei',sans-serif;")}
+      ${figText(`${id}-gua-${index}`, palace.gua, x + 86, y + (compact ? 12 : 15), 16, compact ? 10 : 12, "#9f4032", 800, "right", "line-height:1;font-family:'Noto Serif SC','Songti SC',serif;")}
       ${yangzhaiRoomAvatar(`${id}-room-${index}`, x, y, items, compact)}
       ${figButton(`${id}-cell-hit-${index}`, x, y, metrics.cellW, metrics.cellH, `data-action="yangzhai-open" data-palace="${palace.key}"`)}
     `;
