@@ -5579,10 +5579,10 @@ p.mbp-topic-detail {
 .mbp-yijing-art-frame {
   position: relative;
   z-index: 2;
-  width: calc(100% + clamp(34px, 4.6vw, 78px));
+  width: 100%;
   min-height: 205px;
-  margin-left: clamp(8px, 1vw, 14px);
-  margin-right: clamp(-92px, -5.4vw, -42px);
+  margin-left: 0;
+  margin-right: 0;
   aspect-ratio: 1.46 / 1;
   overflow: hidden;
   padding: 10px;
@@ -5593,6 +5593,12 @@ p.mbp-topic-detail {
     inset 0 0 0 1px rgba(255, 245, 205, .05),
     0 18px 38px rgba(0, 0, 0, .26),
     0 0 0 1px rgba(241, 212, 125, .08);
+}
+
+.mbp-yijing-art-frame:has(> img:not([hidden])) {
+  width: calc(100% + clamp(34px, 4.6vw, 78px));
+  margin-left: clamp(8px, 1vw, 14px);
+  margin-right: clamp(-92px, -5.4vw, -42px);
 }
 
 .mbp-yijing-art-frame img {
@@ -7168,6 +7174,12 @@ p.mbp-topic-detail {
   .mbp-yijing-art-frame {
     width: 100%;
     min-height: 210px;
+    margin-right: 0;
+    margin-left: 0;
+  }
+
+  .mbp-yijing-art-frame:has(> img:not([hidden])) {
+    width: 100%;
     margin-right: 0;
     margin-left: 0;
   }
