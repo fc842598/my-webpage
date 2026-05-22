@@ -7751,16 +7751,65 @@ function parseLiuyaoGateJson(text) {
   }
 }
 
+function reviewLiuyaoQuestionLocally(question) {
+  const normalizedQuestion = normalizeLiuyaoQuestion(question);
+  const compact = normalizedQuestion.replace(/[\s，。！？、,.!?；;：“”"'（）()【】\[\]]+/g, "");
+  const fail = (reason, suggestion, labels = ["一事一占"]) => ({
+    allowed: false,
+    normalizedQuestion,
+    reason,
+    suggestion,
+    labels,
+  });
+
+  if (!normalizedQuestion) {
+    return fail("请先写清楚要问的一件事。", "一句话只问一件具体事情，再起卦。");
+  }
+  if (/^(随便|随机|娱乐|玩玩|试试|测试|乱点|看看|不知道|无所谓|都行|随便玩玩|随便看看|随机看看|测一下|测测|试一下|试试看|占着玩|测着玩)$/.test(compact)) {
+    return fail("这个问题太随意，暂不起卦。", "请写清楚具体对象和想看的结果。", ["问题太散"]);
+  }
+  if (/^(事业|财运|感情|婚姻|健康|工作|学业|运势|赚钱|求财|桃花|考试|合作|项目|网站)(怎么样|如何|好吗|看看|测测|测一下)?$/.test(compact)) {
+    return fail("问题还太泛，暂不起卦。", "请具体到一件事，例如“这个项目本月能不能推进”。", ["问题太泛"]);
+  }
+  if ((normalizedQuestion.match(/[？?]/g) || []).length > 1 || /同时|另外|还有|顺便|以及/.test(normalizedQuestion)) {
+    return fail("一次只问一件事。", "请先删到一个核心问题，再提交。", ["一事一占"]);
+  }
+
+  const hasSpecificSubject = /(我|我们|本人|自己|这个|这件|该|现在|本月|今年|最近|网站|项目|公司|店|生意|工作|客户|合作|合同|订单|产品|账号|平台|考试|offer|面试|房子|投资|资金|对方|他|她|TA|孩子|家人|父母|伴侣|对象|老板|同事|合伙人)/i.test(normalizedQuestion);
+  const hasOutcome = /(能不能|能否|是否|可否|会不会|要不要|该不该|适不适合|可以吗|成不成|有没有|何时|多久|结果|赚钱|盈利|回本|成交|签约|通过|录取|复合|结婚|分手|离职|跳槽|搬家|买|卖|租|开店|上线|发布|推进|合作|投资|到账|怀孕|好转)/i.test(normalizedQuestion);
+  const hasQuestionCue = /[？?]|吗|呢|如何|怎样|怎么样|能|该|是否|可否|会不会|要不要/.test(normalizedQuestion);
+
+  if (compact.length < 8 || !hasSpecificSubject || !hasOutcome || !hasQuestionCue) {
+    return fail("问题还不够具体，暂不起卦。", "请写清对象、事件和想看的结果。", ["问题不具体"]);
+  }
+  return {
+    allowed: true,
+    normalizedQuestion,
+    reason: "问题具体到对象、事件和结果，符合一事一占原则。",
+    suggestion: "",
+    labels: ["一事一占"],
+  };
+}
+
 async function reviewLiuyaoQuestionViaChat(question) {
-  const data = await wentianPostJson("/api/ai/liuyao-question", {
-    question,
-    chatMode: "liuyao_question_gate",
-    divinationContext: { type: "liuyao_question_gate", question },
-  }, 60000, 0);
-  if (typeof data?.allowed === "boolean") return data;
-  const parsed = parseLiuyaoGateJson(data?.reply);
-  if (!parsed) throw new Error("chat gate parse failed");
-  return parsed;
+  const localGate = reviewLiuyaoQuestionLocally(question);
+  if (String(window.SITE_CONFIG?.liuyaoQuestionGateMode || "remote").toLowerCase() === "local") {
+    return localGate;
+  }
+  if (!localGate.allowed) return localGate;
+  try {
+    const data = await wentianPostJson("/api/ai/liuyao-question", {
+      question,
+      chatMode: "liuyao_question_gate",
+      divinationContext: { type: "liuyao_question_gate", question },
+    }, 6000, 0);
+    if (typeof data?.allowed === "boolean") return data;
+    const parsed = parseLiuyaoGateJson(data?.reply);
+    if (!parsed) throw new Error("chat gate parse failed");
+    return parsed;
+  } catch (_err) {
+    return localGate;
+  }
 }
 
 async function ensureLiuyaoQuestionAllowed() {
@@ -7796,14 +7845,8 @@ async function ensureLiuyaoQuestionAllowed() {
     });
     return gate.allowed;
   } catch (_err) {
-    setLiuyaoQuestionGateResult({
-      allowed: false,
-      reason: "审题服务暂时没接上，请稍后再试。",
-      suggestion: "",
-      labels: ["后台审题失败"],
-      retryable: true,
-    });
-    return false;
+    const gate = setLiuyaoQuestionGateResult(reviewLiuyaoQuestionLocally(question));
+    return gate.allowed;
   } finally {
     liuyaoQuestionGateLoading = false;
     navigate("screen-17", false);
