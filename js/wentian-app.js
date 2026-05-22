@@ -8840,7 +8840,7 @@ function cancelLiuyaoSwipePointer(event) {
 }
 
 const YANGZHAI_STORAGE_KEY = "wentian-yangzhai-state-v1";
-const YANGZHAI_STATE_VERSION = 2;
+const YANGZHAI_STATE_VERSION = 3;
 const YANGZHAI_PALACES = [
   { key: "xun", gua: "巽", dir: "东南", role: "长女位", defaultItem: "长女" },
   { key: "li", gua: "离", dir: "正南", role: "二女位", defaultItem: "二女" },
@@ -8856,12 +8856,12 @@ const YANGZHAI_PALACES = [
 const YANGZHAI_OPTIONS = [
   { label: "父亲", short: "父", type: "family" },
   { label: "母亲", short: "母", type: "family" },
-  { label: "长子", short: "长", type: "family" },
-  { label: "长女", short: "长", type: "family" },
-  { label: "二子", short: "二", type: "family" },
-  { label: "二女", short: "二", type: "family" },
-  { label: "三子", short: "三", type: "family" },
-  { label: "三女", short: "三", type: "family" },
+  { label: "长子", short: "长子", type: "family" },
+  { label: "长女", short: "长女", type: "family" },
+  { label: "二子", short: "二子", type: "family" },
+  { label: "二女", short: "二女", type: "family" },
+  { label: "三子", short: "三子", type: "family" },
+  { label: "三女", short: "三女", type: "family" },
   { label: "厨房", short: "厨", type: "space" },
   { label: "厕所", short: "厕", type: "space" },
   { label: "客厅", short: "厅", type: "space" },
@@ -9076,16 +9076,17 @@ function loadYangzhaiState() {
     const raw = typeof localStorage !== "undefined" ? localStorage.getItem(YANGZHAI_STORAGE_KEY) : "";
     const parsed = raw ? JSON.parse(raw) : null;
     if (parsed && typeof parsed === "object") {
-      const placements = normalizeYangzhaiPlacements(parsed.placements);
+      const shouldResetForBlankDefault = Number(parsed.version || 0) < YANGZHAI_STATE_VERSION;
+      const placements = shouldResetForBlankDefault ? {} : normalizeYangzhaiPlacements(parsed.placements);
       const shouldClearLegacyDefault = !parsed.version && isYangzhaiDefaultPlacementSet(placements);
       const state = {
         version: YANGZHAI_STATE_VERSION,
-        placements: shouldClearLegacyDefault ? {} : placements,
-        activePalace: parsed.activePalace || "xun",
-        pendingItems: normalizeYangzhaiItems(parsed.pendingItems || parsed.pendingItem),
-        expanded: parsed.expanded || {}
+        placements: shouldClearLegacyDefault || shouldResetForBlankDefault ? {} : placements,
+        activePalace: shouldResetForBlankDefault ? "xun" : parsed.activePalace || "xun",
+        pendingItems: shouldResetForBlankDefault ? [] : normalizeYangzhaiItems(parsed.pendingItems || parsed.pendingItem),
+        expanded: shouldResetForBlankDefault ? {} : parsed.expanded || {}
       };
-      if (shouldClearLegacyDefault && typeof localStorage !== "undefined") {
+      if ((shouldClearLegacyDefault || shouldResetForBlankDefault) && typeof localStorage !== "undefined") {
         localStorage.setItem(YANGZHAI_STORAGE_KEY, JSON.stringify(state));
       }
       return state;
@@ -9344,6 +9345,16 @@ function getYangzhaiReadingText(reading) {
   return reading?.original || reading?.summary || reading?.quote || "原文待核。";
 }
 
+function formatYangzhaiReadingText(text) {
+  return String(text || "")
+    .replace(/\s+/g, "")
+    .replace(/([：:])(?=[一二三四五六七八九十]、)/g, "$1\n")
+    .replace(/。(?=[一二三四五六七八九十]、)/g, "。\n")
+    .replace(/([，,])(?=[一二三四五六七八九十]、)/g, "$1\n")
+    .replace(/。(?=\S)/g, "。\n")
+    .trim();
+}
+
 function buildYangzhaiResults() {
   return YANGZHAI_PALACES
     .filter((palace) => palace.key !== "center")
@@ -9353,7 +9364,7 @@ function buildYangzhaiResults() {
       if (option.type === "space") {
         const rule = YANGZHAI_SPACE_RULES[label] || {};
         const preferred = (rule.preferredPalaces || []).includes(palace.key);
-        const desc = `${rule.original || `${rule.meaning || "待核"}${rule.preference || ""}`} 当前：${palace.gua}宫(${palace.dir})。`;
+        const desc = `${formatYangzhaiReadingText(rule.original || `${rule.meaning || "待核"}${rule.preference || ""}`)}\n当前：${palace.gua}宫(${palace.dir})。`;
         return {
           kind: "space",
           title: `${label}在${palace.gua}(${palace.dir}) - 功能区象义`,
@@ -9366,9 +9377,9 @@ function buildYangzhaiResults() {
       const hex = getYangzhaiHex(label, palace);
       const matched = label === palace.defaultItem;
       const reading = getYangzhaiHexReading(hex);
-      const originalText = getYangzhaiReadingText(reading);
+      const originalText = formatYangzhaiReadingText(getYangzhaiReadingText(reading));
       const desc = hex
-        ? `第${hex.no}卦 ${hex.name}：${originalText}`
+        ? `第${hex.no}卦 ${hex.name}：\n${originalText}`
         : `八宫基础：${label}住${palace.gua}(${palace.dir})，待补结构索引。`;
       return {
         kind: "hex",
@@ -9384,8 +9395,9 @@ function buildYangzhaiResults() {
 }
 
 function getYangzhaiResultCardHeight(item) {
-  const textLength = item?.desc?.length || 0;
-  const descLines = Math.max(4, Math.ceil(textLength / 24));
+  const descLines = Math.max(4, String(item?.desc || "").split("\n").reduce((sum, line) => {
+    return sum + Math.max(1, Math.ceil(line.length / 24));
+  }, 0));
   return Math.max(YANGZHAI_RESULT_CARD_HEIGHT, 104 + descLines * 19);
 }
 
@@ -9587,20 +9599,21 @@ function sourceYangzhaiSelectScreen() {
       const row = Math.floor(index / 2);
       const x = col ? 214 : 44;
       const y = 426 + row * 48;
-      const isSelected = option.type === "clear" ? !selectedItems.length : selectedItems.includes(label);
+      const isSelected = option.type !== "clear" && selectedItems.includes(label);
+      const shortSize = option.short.length > 1 ? 10 : 12;
       return `
         ${figBox(`yz43-option-bg-${index}`, x - 8, y - 5, 158, 42, "", `border:1px solid ${isSelected ? "#a94437" : "#eadfce"};border-radius:14px;background:${isSelected ? "#fff1e8" : "#fffdf8"};box-shadow:${isSelected ? "0 8px 18px rgba(155,62,43,.10)" : "0 6px 16px rgba(70,45,25,.04)"};`)}
         ${figBox(`yz43-avatar-${index}`, x, y, 32, 32, "", `border-radius:16px;background:${option.type === "clear" ? "#fff1ea" : "#f2e8d7"};border:1px solid #e0d2bd;`)}
-        ${figText(`yz43-avatar-text-${index}`, option.short, x, y + 8, 32, 12, option.type === "clear" ? "#a94437" : "#7f5b2a", 900, "center")}
+        ${figText(`yz43-avatar-text-${index}`, option.short, x, y + (option.short.length > 1 ? 9 : 8), 32, shortSize, option.type === "clear" ? "#a94437" : "#7f5b2a", 900, "center")}
         ${figText(`yz43-option-${index}`, label, x + 42, y + 7, 72, 14, "#201812", 800)}
         ${figBox(`yz43-radio-${index}`, x + 120, y + 7, 20, 20, "", `border:1px solid ${isSelected ? "#a94437" : "#c9bba9"};border-radius:10px;background:${isSelected ? "#a94437" : "#fffdf8"};`)}
         ${isSelected ? figText(`yz43-radio-check-${index}`, "✓", x + 120, y + 10, 20, 10, "#fffaf3", 900, "center") : ""}
         ${figButton(`yz43-option-hit-${index}`, x - 8, y - 5, 158, 42, `data-action="yangzhai-pick" data-yangzhai-option="${label}"`)}
       `;
     }).join("")}
-    ${figBox("yz43-confirm", 44, 778, 302, 50, "", "border-radius:25px;background:linear-gradient(180deg,#b74e39,#983323);box-shadow:0 12px 24px rgba(158,61,43,.22);")}
-    ${figButton("yz43-confirm-hit", 44, 778, 302, 50, 'data-action="yangzhai-confirm"')}
-    ${figText("yz43-confirm-text", selectedItems.length ? `确认本宫安位 (${selectedItems.length})` : "确认清空", 44, 792, 302, 16, "#fffaf3", 900, "center")}
+    ${figBox("yz43-confirm", 44, 718, 302, 50, "", "border-radius:25px;background:linear-gradient(180deg,#b74e39,#983323);box-shadow:0 12px 24px rgba(158,61,43,.22);")}
+    ${figButton("yz43-confirm-hit", 44, 718, 302, 50, 'data-action="yangzhai-confirm"')}
+    ${figText("yz43-confirm-text", selectedItems.length ? `确认本宫安位 (${selectedItems.length})` : "确认清空", 44, 732, 302, 16, "#fffaf3", 900, "center")}
   `;
 }
 
@@ -9630,6 +9643,7 @@ function sourceYangzhaiResultScreen() {
       }
       const cardHeight = getYangzhaiResultCardHeight(item);
       const tag = getYangzhaiResultTag(item);
+      const shortSize = String(item.short || "").length > 1 ? 10 : 12;
       return `
         ${figBox(`yz44-card-${index}`, 20, y, 350, cardHeight, "", "border:1px solid #dcceb8;border-radius:14px;background:#fffdf8;box-shadow:0 10px 22px rgba(70,45,25,.06);")}
         ${yangzhaiCorner(`yz44-card-${index}-tl`, 26, y + 6)}
@@ -9637,7 +9651,7 @@ function sourceYangzhaiResultScreen() {
         ${yangzhaiCorner(`yz44-card-${index}-bl`, 26, y + cardHeight - 6, false, true)}
         ${yangzhaiCorner(`yz44-card-${index}-br`, 364, y + cardHeight - 6, true, true)}
         ${figBox(`yz44-avatar-${index}`, 36, y + 22, 36, 36, "", "border:1px solid #dcceb8;border-radius:18px;background:#f2e9da;")}
-        ${figText(`yz44-avatar-text-${index}`, item.short, 36, y + 31, 36, 12, "#7b3129", 900, "center", "font-family:'Noto Serif SC','Songti SC',serif;")}
+        ${figText(`yz44-avatar-text-${index}`, item.short, 36, y + (shortSize < 12 ? 32 : 31), 36, shortSize, "#7b3129", 900, "center", "font-family:'Noto Serif SC','Songti SC',serif;")}
         ${figText(`yz44-title-${index}`, item.title, 84, y + 20, 214, 15, "#2b251c", 900, "left", "font-family:'Noto Sans SC','Microsoft YaHei',sans-serif;")}
         ${figBox(`yz44-tag-${index}`, 250, y + 48, 82, 26, "", "border:1px solid #ead9bd;border-radius:13px;background:#fff1dc;")}
         ${figText(`yz44-tag-text-${index}`, tag, 250, y + 55, 82, 11, "#8a5a22", 800, "center", "line-height:1.1;")}
