@@ -45,7 +45,9 @@
     if (hour >= 7 && hour <= 8) return { index: 4, name: '辰', branch: '辰', kind: 'normal' };
     if (hour >= 9 && hour <= 10) return { index: 5, name: '巳', branch: '巳', kind: 'normal' };
     if (hour >= 11 && hour <= 12) return { index: 6, name: '午', branch: '午', kind: 'normal' };
-    if (hour >= 13 && hour <= 14) return { index: 7, name: '未', branch: '未', kind: 'normal' };
+    // 天纪桌面版实测：下拉框显示“未(13~15)”，但四柱时柱按亥时起干支；
+    // 元堂仍保留未时口袋，所以这里把显示/元堂 branch 与四柱 pillarBranch 分开。
+    if (hour >= 13 && hour <= 14) return { index: 7, name: '未', branch: '未', pillarBranch: '亥', kind: 'normal' };
     if (hour >= 15 && hour <= 16) return { index: 8, name: '申', branch: '申', kind: 'normal' };
     if (hour >= 17 && hour <= 18) return { index: 9, name: '酉', branch: '酉', kind: 'normal' };
     if (hour >= 19 && hour <= 20) return { index: 10, name: '戌', branch: '戌', kind: 'normal' };
@@ -82,7 +84,8 @@
       hourDayStem = splitGanzhi(solarDay.next(1).getLunar().getDayInGanZhi()).stem;
     }
 
-    const hourPillar = buildHourPillar(hourDayStem, slot.branch);
+    const hourPillarBranch = slot.pillarBranch || slot.branch;
+    const hourPillar = buildHourPillar(hourDayStem, hourPillarBranch);
     const yearParts = splitGanzhi(yearPillar);
     const monthParts = splitGanzhi(monthPillar);
     const dayParts = splitGanzhi(dayPillar);
@@ -104,6 +107,7 @@
         hourPillar,
         timeSlot: slot.name,
         timeSlotBranch: slot.branch,
+        hourPillarBranch,
         timeSlotKind: slot.kind,
         timeSlotIndex: slot.index,
         civilHour: current.hour,
