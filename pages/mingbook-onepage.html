@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>阅天 · 紫微排盘</title>
   <link rel="icon" href="../images/logo-mark.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../css/mingbook-onepage.css?v=20260522-yijing-alipay-pay">
+  <link rel="stylesheet" href="../css/mingbook-onepage.css?v=20260522-refund-ticket">
   <script src="../js/config.js?v=20260521-api-domain-auth-proxy"></script>
   <script defer src="../js/cities.js"></script>
   <script defer src="../js/lunarCalendar.js"></script>
@@ -22,7 +22,7 @@
   <script defer src="../src/ziping/runtime.js"></script>
   <script defer src="../js/ai-piming.js?v=20260522-yijing-ai-timing"></script>
   <script defer src="../js/ai-chat.js?v=20260521-no-auto-jump"></script>
-  <script defer src="../js/mingbook-onepage.js?v=20260522-yijing-alipay-pay"></script>
+  <script defer src="../js/mingbook-onepage.js?v=20260522-refund-ticket"></script>
 </head>
 <body>
   <header class="mbp-nav">
@@ -635,6 +635,54 @@
       <div class="mbp-pay-actions">
         <button type="button" class="mbp-pay-primary" id="mbpPayPrimary">创建支付订单</button>
         <button type="button" class="mbp-pay-secondary" id="mbpPayRefresh">刷新支付状态</button>
+      </div>
+      <button type="button" class="mbp-ticket-link" id="mbpRefundTicketOpen">支付问题 / 退款工单</button>
+    </div>
+  </div>
+
+  <div class="mbp-ticket-overlay" id="mbpRefundTicketOverlay" hidden>
+    <div class="mbp-ticket-dialog" role="dialog" aria-modal="true" aria-labelledby="mbpRefundTicketTitle">
+      <button type="button" class="mbp-pay-close" id="mbpRefundTicketClose" aria-label="关闭">×</button>
+      <div class="mbp-pay-head">
+        <span>售后工单</span>
+        <strong id="mbpRefundTicketTitle">退款申请工单</strong>
+        <p id="mbpRefundTicketMessage">退款需上传当时支付截图，后台审核后进入对应支付渠道处理，7个工作日内完成。</p>
+      </div>
+      <div class="mbp-ticket-grid">
+        <label>
+          <span>支付订单</span>
+          <select id="mbpRefundTicketOrder"></select>
+        </label>
+        <label>
+          <span>支付渠道</span>
+          <select id="mbpRefundTicketProvider">
+            <option value="wechat">微信支付</option>
+            <option value="alipay">支付宝</option>
+            <option value="paypal">PayPal</option>
+          </select>
+        </label>
+        <label>
+          <span>支付日期</span>
+          <input type="date" id="mbpRefundTicketPaidDate">
+        </label>
+        <label>
+          <span>联系方式</span>
+          <input type="text" id="mbpRefundTicketContact" placeholder="手机号或邮箱">
+        </label>
+      </div>
+      <label class="mbp-ticket-field">
+        <span>支付截图</span>
+        <input type="file" id="mbpRefundTicketScreenshot" accept="image/png,image/jpeg,image/webp">
+        <small id="mbpRefundTicketFileName">请上传当时支付成功截图。</small>
+      </label>
+      <label class="mbp-ticket-field">
+        <span>补充说明</span>
+        <textarea id="mbpRefundTicketNote" rows="3" maxlength="500" placeholder="可填写退款原因或当时支付情况"></textarea>
+      </label>
+      <div class="mbp-pay-error" id="mbpRefundTicketError" hidden></div>
+      <div class="mbp-pay-actions">
+        <button type="button" class="mbp-pay-primary" id="mbpRefundTicketSubmit">提交工单</button>
+        <button type="button" class="mbp-pay-secondary" id="mbpRefundTicketReload">刷新订单</button>
       </div>
     </div>
   </div>

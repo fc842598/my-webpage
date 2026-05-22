@@ -1265,6 +1265,19 @@ const wentianOrderState = {
   orders: [],
   error: "",
 };
+const wentianRefundTicketState = {
+  open: false,
+  loading: false,
+  orderNo: "",
+  paymentProvider: "wechat",
+  paidDate: "",
+  contact: "",
+  note: "",
+  screenshotDataUrl: "",
+  screenshotName: "",
+  message: "退款需上传当时支付截图，后台审核后进入对应支付渠道处理，7个工作日内完成。",
+  error: "",
+};
 const wentianMemberState = {
   loaded: false,
   quota: null,
@@ -6544,6 +6557,263 @@ async function hydrateWentianOrders(options = {}) {
   return wentianOrderState.orders;
 }
 
+function formatWentianDateInput(value) {
+  if (!value) return "";
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "";
+  const cn = new Date(date.getTime() + 8 * 60 * 60 * 1000);
+  return cn.toISOString().slice(0, 10);
+}
+
+function getWentianRefundContactDefault() {
+  const user = wentianAuthSession?.user || {};
+  return user.user_metadata?.phone || user.email || "";
+}
+
+function getWentianRefundSelectedOrder() {
+  return (wentianOrderState.orders || []).find((order) => order.orderNo === wentianRefundTicketState.orderNo) || null;
+}
+
+function syncWentianRefundTicketFromOrder(order = getWentianRefundSelectedOrder()) {
+  if (!order) return;
+  wentianRefundTicketState.orderNo = order.orderNo || "";
+  wentianRefundTicketState.paymentProvider = ["wechat", "alipay", "paypal"].includes(order.provider) ? order.provider : wentianRefundTicketState.paymentProvider;
+  wentianRefundTicketState.paidDate = formatWentianDateInput(order.paidAt || order.createdAt) || wentianRefundTicketState.paidDate;
+}
+
+function ensureWentianRefundTicketModal() {
+  let modal = document.getElementById("wentian-refund-ticket-modal");
+  if (modal) return modal;
+  modal = document.createElement("div");
+  modal.id = "wentian-refund-ticket-modal";
+  modal.className = "wentian-refund-modal";
+  modal.hidden = true;
+  modal.innerHTML = `
+    <div class="wentian-refund-sheet" role="dialog" aria-modal="true" aria-labelledby="wentian-refund-title">
+      <button class="wentian-refund-close" type="button" data-wentian-refund-close aria-label="关闭">×</button>
+      <div class="wentian-refund-kicker">售后工单</div>
+      <div class="wentian-refund-title" id="wentian-refund-title">退款申请工单</div>
+      <div class="wentian-refund-message" id="wentian-refund-message"></div>
+      <label class="wentian-refund-field">
+        <span>支付订单</span>
+        <select id="wentian-refund-order"></select>
+      </label>
+      <div class="wentian-refund-grid">
+        <label class="wentian-refund-field">
+          <span>支付渠道</span>
+          <select id="wentian-refund-provider">
+            <option value="wechat">微信支付</option>
+            <option value="alipay">支付宝</option>
+            <option value="paypal">PayPal</option>
+          </select>
+        </label>
+        <label class="wentian-refund-field">
+          <span>支付日期</span>
+          <input id="wentian-refund-paid-date" type="date">
+        </label>
+      </div>
+      <label class="wentian-refund-field">
+        <span>联系方式</span>
+        <input id="wentian-refund-contact" type="text" placeholder="手机号或邮箱">
+      </label>
+      <label class="wentian-refund-field">
+        <span>支付截图</span>
+        <input id="wentian-refund-screenshot" type="file" accept="image/png,image/jpeg,image/webp">
+        <small id="wentian-refund-file">请上传当时支付成功截图。</small>
+      </label>
+      <label class="wentian-refund-field">
+        <span>补充说明</span>
+        <textarea id="wentian-refund-note" rows="3" maxlength="500" placeholder="可填写退款原因或当时支付情况"></textarea>
+      </label>
+      <div class="wentian-refund-error" id="wentian-refund-error" hidden></div>
+      <button class="wentian-refund-submit" id="wentian-refund-submit" type="button">提交工单</button>
+    </div>
+  `;
+  document.body.appendChild(modal);
+  modal.addEventListener("click", (event) => {
+    if (event.target === modal || event.target.closest("[data-wentian-refund-close]")) closeWentianRefundTicket();
+  });
+  modal.querySelector("#wentian-refund-order")?.addEventListener("change", (event) => {
+    wentianRefundTicketState.orderNo = event.target.value || "";
+    syncWentianRefundTicketFromOrder();
+    wentianRefundTicketState.error = "";
+    renderWentianRefundTicketModal();
+  });
+  modal.querySelector("#wentian-refund-provider")?.addEventListener("change", (event) => {
+    wentianRefundTicketState.paymentProvider = event.target.value || "wechat";
+  });
+  modal.querySelector("#wentian-refund-paid-date")?.addEventListener("input", (event) => {
+    wentianRefundTicketState.paidDate = event.target.value || "";
+  });
+  modal.querySelector("#wentian-refund-contact")?.addEventListener("input", (event) => {
+    wentianRefundTicketState.contact = event.target.value || "";
+  });
+  modal.querySelector("#wentian-refund-note")?.addEventListener("input", (event) => {
+    wentianRefundTicketState.note = event.target.value || "";
+  });
+  modal.querySelector("#wentian-refund-screenshot")?.addEventListener("change", (event) => {
+    const file = event.target.files?.[0] || null;
+    if (file) handleWentianRefundScreenshot(file);
+  });
+  modal.querySelector("#wentian-refund-submit")?.addEventListener("click", submitWentianRefundTicket);
+  return modal;
+}
+
+function renderWentianRefundTicketModal() {
+  const modal = ensureWentianRefundTicketModal();
+  modal.hidden = !wentianRefundTicketState.open;
+  document.body.classList.toggle("wentian-refund-open", wentianRefundTicketState.open);
+  const orders = wentianOrderState.orders || [];
+  const orderSelect = modal.querySelector("#wentian-refund-order");
+  if (orderSelect) {
+    orderSelect.innerHTML = orders.length
+      ? orders.map((order) => {
+        const disabled = order.canSubmitTicket ? "" : " disabled";
+        const tag = order.ticketNo ? " · 工单处理中" : "";
+        return `<option value="${escapeHtml(order.orderNo)}"${disabled}>${escapeHtml(order.productName || "会员订单")} · ¥${escapeHtml(order.amountYuan || "")}${tag}</option>`;
+      }).join("")
+      : '<option value="">暂无可提交工单的订单</option>';
+    orderSelect.value = wentianRefundTicketState.orderNo || "";
+  }
+  const provider = modal.querySelector("#wentian-refund-provider");
+  if (provider) provider.value = wentianRefundTicketState.paymentProvider || "wechat";
+  const paidDate = modal.querySelector("#wentian-refund-paid-date");
+  if (paidDate) paidDate.value = wentianRefundTicketState.paidDate || "";
+  const contact = modal.querySelector("#wentian-refund-contact");
+  if (contact) contact.value = wentianRefundTicketState.contact || "";
+  const note = modal.querySelector("#wentian-refund-note");
+  if (note) note.value = wentianRefundTicketState.note || "";
+  const msg = modal.querySelector("#wentian-refund-message");
+  if (msg) msg.textContent = wentianRefundTicketState.message;
+  const file = modal.querySelector("#wentian-refund-file");
+  if (file) file.textContent = wentianRefundTicketState.screenshotName ? `已选择：${wentianRefundTicketState.screenshotName}` : "请上传当时支付成功截图。";
+  const error = modal.querySelector("#wentian-refund-error");
+  if (error) {
+    error.hidden = !wentianRefundTicketState.error;
+    error.textContent = wentianRefundTicketState.error || "";
+  }
+  const submit = modal.querySelector("#wentian-refund-submit");
+  if (submit) {
+    const order = getWentianRefundSelectedOrder();
+    submit.disabled = wentianRefundTicketState.loading || !order?.canSubmitTicket;
+    submit.textContent = wentianRefundTicketState.loading ? "提交中..." : "提交工单";
+  }
+}
+
+async function openWentianRefundTicket() {
+  const session = await getWentianAuthSession();
+  if (!session?.user) {
+    wentianAuthState.mode = "login";
+    navigate("screen-40");
+    return;
+  }
+  wentianRefundTicketState.open = true;
+  wentianRefundTicketState.error = "";
+  wentianRefundTicketState.message = "退款需上传当时支付截图，后台审核后进入对应支付渠道处理，7个工作日内完成。";
+  if (!wentianRefundTicketState.contact) wentianRefundTicketState.contact = getWentianRefundContactDefault();
+  renderWentianRefundTicketModal();
+  await hydrateWentianOrders({ force: true });
+  const first = (wentianOrderState.orders || []).find((order) => order.canSubmitTicket) || wentianOrderState.orders[0] || null;
+  if (!wentianRefundTicketState.orderNo && first) syncWentianRefundTicketFromOrder(first);
+  if (!wentianOrderState.orders.length) wentianRefundTicketState.error = "当前账号暂无已支付订单。";
+  renderWentianRefundTicketModal();
+}
+
+function closeWentianRefundTicket() {
+  wentianRefundTicketState.open = false;
+  wentianRefundTicketState.error = "";
+  renderWentianRefundTicketModal();
+}
+
+function readWentianImageAsDataUrl(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(String(reader.result || ""));
+    reader.onerror = () => reject(new Error("截图读取失败"));
+    reader.readAsDataURL(file);
+  });
+}
+
+async function compressWentianRefundScreenshot(file) {
+  if (!file || !/^image\/(png|jpeg|jpg|webp)$/i.test(file.type || "")) throw new Error("请上传 PNG/JPG/WebP 支付截图");
+  const rawUrl = await readWentianImageAsDataUrl(file);
+  const image = await new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => resolve(img);
+    img.onerror = () => reject(new Error("截图无法识别"));
+    img.src = rawUrl;
+  });
+  const maxSide = 1280;
+  const scale = Math.min(1, maxSide / Math.max(image.width || maxSide, image.height || maxSide));
+  const canvas = document.createElement("canvas");
+  canvas.width = Math.max(1, Math.round((image.width || maxSide) * scale));
+  canvas.height = Math.max(1, Math.round((image.height || maxSide) * scale));
+  canvas.getContext("2d").drawImage(image, 0, 0, canvas.width, canvas.height);
+  const dataUrl = canvas.toDataURL("image/jpeg", .78);
+  if (dataUrl.length > 2.8 * 1024 * 1024) throw new Error("截图仍然过大，请裁剪后再上传");
+  return dataUrl;
+}
+
+async function handleWentianRefundScreenshot(file) {
+  wentianRefundTicketState.loading = true;
+  wentianRefundTicketState.error = "";
+  wentianRefundTicketState.screenshotName = file?.name || "";
+  renderWentianRefundTicketModal();
+  try {
+    wentianRefundTicketState.screenshotDataUrl = await compressWentianRefundScreenshot(file);
+  } catch (error) {
+    wentianRefundTicketState.screenshotDataUrl = "";
+    wentianRefundTicketState.screenshotName = "";
+    wentianRefundTicketState.error = error.message || "截图处理失败";
+  } finally {
+    wentianRefundTicketState.loading = false;
+    renderWentianRefundTicketModal();
+  }
+}
+
+async function submitWentianRefundTicket() {
+  if (wentianRefundTicketState.loading) return;
+  const order = getWentianRefundSelectedOrder();
+  if (!order?.canSubmitTicket) {
+    wentianRefundTicketState.error = order?.ticketBlockedReason || "当前订单不能提交工单";
+    renderWentianRefundTicketModal();
+    return;
+  }
+  if (!wentianRefundTicketState.screenshotDataUrl) {
+    wentianRefundTicketState.error = "请先上传当时支付截图";
+    renderWentianRefundTicketModal();
+    return;
+  }
+  wentianRefundTicketState.loading = true;
+  wentianRefundTicketState.error = "";
+  renderWentianRefundTicketModal();
+  try {
+    const data = await wentianFetchJson("/api/payments/refunds", {
+      method: "POST",
+      body: {
+        orderNo: wentianRefundTicketState.orderNo,
+        paymentProvider: wentianRefundTicketState.paymentProvider,
+        paidDate: wentianRefundTicketState.paidDate,
+        contact: wentianRefundTicketState.contact,
+        note: wentianRefundTicketState.note,
+        screenshotName: wentianRefundTicketState.screenshotName,
+        screenshotDataUrl: wentianRefundTicketState.screenshotDataUrl,
+      },
+    });
+    wentianRefundTicketState.message = data.message || "工单已提交，7个工作日内处理完成。";
+    wentianRefundTicketState.screenshotDataUrl = "";
+    wentianRefundTicketState.screenshotName = "";
+    const input = document.getElementById("wentian-refund-screenshot");
+    if (input) input.value = "";
+    await hydrateWentianOrders({ force: true });
+  } catch (error) {
+    wentianRefundTicketState.error = error.message || "工单提交失败";
+  } finally {
+    wentianRefundTicketState.loading = false;
+    renderWentianRefundTicketModal();
+  }
+}
+
 function initWentianPaymentScreen() {
   const holder = document.getElementById("wentian-pay-qr");
   const url = holder?.dataset.payUrl;
@@ -6950,6 +7220,9 @@ function sourceOrderRecordsScreen() {
     ${wentianSimpleHeader("wt48", "支付记录", "刷新")}
     ${figButton("wt48-refresh-hit", 318, 38, 62, 54, 'data-action="wentian-order-refresh"')}
     ${figText("wt48-sub", account.loggedIn ? escapeHtml(account.email) : "未登录", 24, 96, 300, 13, "#8f857a", 700)}
+    ${account.loggedIn ? figBox("wt48-ticket", 274, 92, 92, 30, "", "border:1px solid #eadfce;border-radius:15px;background:#fffdf8;") : ""}
+    ${account.loggedIn ? figText("wt48-ticket-text", "退款工单", 274, 100, 92, 11, "#8f6a28", 900, "center") : ""}
+    ${account.loggedIn ? figButton("wt48-ticket-hit", 274, 92, 92, 30, 'data-action="wentian-refund-ticket"') : ""}
     ${body}
   `;
 }
@@ -12368,6 +12641,10 @@ document.addEventListener("click", (event) => {
   }
   if (action === "wentian-order-refresh") {
     hydrateWentianOrders({ force: true, rerender: true });
+    return;
+  }
+  if (action === "wentian-refund-ticket") {
+    openWentianRefundTicket();
     return;
   }
   if (action === "wentian-auth-logout-open") {

@@ -138,6 +138,21 @@
     payMethod: '',
     mockMode: false,
   };
+  const desktopRefundTicketState = {
+    open: false,
+    loading: false,
+    loaded: false,
+    orders: [],
+    orderNo: '',
+    paymentProvider: 'wechat',
+    paidDate: '',
+    contact: '',
+    note: '',
+    screenshotDataUrl: '',
+    screenshotName: '',
+    message: '退款需上传当时支付截图，后台审核后进入对应支付渠道处理，7个工作日内完成。',
+    error: '',
+  };
   let desktopAuthReadyPromise = null;
   let desktopPaymentPollTimer = null;
   let desktopPendingPaymentAfterLogin = false;
@@ -1037,6 +1052,212 @@
     await startDesktopMemberPayment();
   }
 
+  function getDesktopRefundContactDefault() {
+    const user = desktopAuthState.session?.user || {};
+    return user.user_metadata?.phone || user.email || '';
+  }
+
+  function formatDateInput(value) {
+    if (!value) return '';
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return '';
+    const cn = new Date(date.getTime() + 8 * 60 * 60 * 1000);
+    return cn.toISOString().slice(0, 10);
+  }
+
+  function getDesktopRefundSelectedOrder() {
+    return desktopRefundTicketState.orders.find((order) => order.orderNo === desktopRefundTicketState.orderNo) || null;
+  }
+
+  function syncDesktopRefundTicketFromOrder(order = getDesktopRefundSelectedOrder()) {
+    if (!order) return;
+    desktopRefundTicketState.orderNo = order.orderNo || '';
+    desktopRefundTicketState.paymentProvider = ['wechat', 'alipay', 'paypal'].includes(order.provider) ? order.provider : desktopRefundTicketState.paymentProvider;
+    desktopRefundTicketState.paidDate = formatDateInput(order.paidAt || order.createdAt) || desktopRefundTicketState.paidDate;
+  }
+
+  function renderDesktopRefundTicket() {
+    const overlay = $('#mbpRefundTicketOverlay');
+    if (overlay) overlay.hidden = !desktopRefundTicketState.open;
+    document.body.classList.toggle('mbp-ticket-open', desktopRefundTicketState.open);
+
+    const message = $('#mbpRefundTicketMessage');
+    if (message) message.textContent = desktopRefundTicketState.message;
+
+    const orderSelect = $('#mbpRefundTicketOrder');
+    if (orderSelect) {
+      const orders = desktopRefundTicketState.orders || [];
+      orderSelect.innerHTML = orders.length
+        ? orders.map((order) => {
+          const disabled = order.canSubmitTicket ? '' : ' disabled';
+          const ticketText = order.ticketNo ? ` · ${order.ticketStatus === 'done' ? '已完成' : '工单处理中'}` : '';
+          return `<option value="${escapeHtml(order.orderNo)}"${disabled}>${escapeHtml(order.productName || '会员订单')} · ¥${escapeHtml(order.amountYuan || '')}${ticketText}</option>`;
+        }).join('')
+        : '<option value="">暂无可提交工单的订单</option>';
+      orderSelect.value = desktopRefundTicketState.orderNo || '';
+    }
+
+    const provider = $('#mbpRefundTicketProvider');
+    if (provider) provider.value = desktopRefundTicketState.paymentProvider || 'wechat';
+    const paidDate = $('#mbpRefundTicketPaidDate');
+    if (paidDate) paidDate.value = desktopRefundTicketState.paidDate || '';
+    const contact = $('#mbpRefundTicketContact');
+    if (contact) contact.value = desktopRefundTicketState.contact || '';
+    const note = $('#mbpRefundTicketNote');
+    if (note) note.value = desktopRefundTicketState.note || '';
+    const fileName = $('#mbpRefundTicketFileName');
+    if (fileName) fileName.textContent = desktopRefundTicketState.screenshotName
+      ? `已选择：${desktopRefundTicketState.screenshotName}`
+      : '请上传当时支付成功截图。';
+
+    const error = $('#mbpRefundTicketError');
+    if (error) {
+      const text = desktopRefundTicketState.error || '';
+      error.hidden = !text;
+      error.textContent = text;
+    }
+
+    const submit = $('#mbpRefundTicketSubmit');
+    if (submit) {
+      const order = getDesktopRefundSelectedOrder();
+      submit.disabled = desktopRefundTicketState.loading || !order?.canSubmitTicket;
+      submit.textContent = desktopRefundTicketState.loading ? '提交中...' : '提交工单';
+    }
+    const reload = $('#mbpRefundTicketReload');
+    if (reload) reload.disabled = desktopRefundTicketState.loading;
+  }
+
+  async function loadDesktopRefundOrders() {
+    desktopRefundTicketState.loading = true;
+    desktopRefundTicketState.error = '';
+    renderDesktopRefundTicket();
+    try {
+      const data = await desktopFetchJson('/api/payments/refunds');
+      desktopRefundTicketState.orders = Array.isArray(data.orders) ? data.orders : [];
+      desktopRefundTicketState.loaded = true;
+      const first = desktopRefundTicketState.orders.find((order) => order.canSubmitTicket) || desktopRefundTicketState.orders[0] || null;
+      if (!desktopRefundTicketState.orderNo && first) syncDesktopRefundTicketFromOrder(first);
+      if (!desktopRefundTicketState.contact) desktopRefundTicketState.contact = getDesktopRefundContactDefault();
+      if (!desktopRefundTicketState.orders.length) desktopRefundTicketState.error = '当前账号暂无已支付订单。';
+    } catch (error) {
+      desktopRefundTicketState.error = error.message || '订单读取失败';
+    } finally {
+      desktopRefundTicketState.loading = false;
+      renderDesktopRefundTicket();
+    }
+  }
+
+  async function openDesktopRefundTicket() {
+    const session = await getDesktopAuthSession();
+    if (!session?.user) {
+      closeDesktopPayment();
+      openDesktopAuth('login');
+      return;
+    }
+    desktopRefundTicketState.open = true;
+    desktopRefundTicketState.error = '';
+    desktopRefundTicketState.message = '退款需上传当时支付截图，后台审核后进入对应支付渠道处理，7个工作日内完成。';
+    if (!desktopRefundTicketState.contact) desktopRefundTicketState.contact = getDesktopRefundContactDefault();
+    renderDesktopRefundTicket();
+    await loadDesktopRefundOrders();
+  }
+
+  function closeDesktopRefundTicket() {
+    desktopRefundTicketState.open = false;
+    desktopRefundTicketState.error = '';
+    renderDesktopRefundTicket();
+  }
+
+  function readImageAsDataUrl(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(String(reader.result || ''));
+      reader.onerror = () => reject(new Error('截图读取失败'));
+      reader.readAsDataURL(file);
+    });
+  }
+
+  async function compressRefundScreenshot(file) {
+    if (!file || !/^image\/(png|jpeg|jpg|webp)$/i.test(file.type || '')) throw new Error('请上传 PNG/JPG/WebP 支付截图');
+    const rawUrl = await readImageAsDataUrl(file);
+    const image = await new Promise((resolve, reject) => {
+      const img = new Image();
+      img.onload = () => resolve(img);
+      img.onerror = () => reject(new Error('截图无法识别'));
+      img.src = rawUrl;
+    });
+    const maxSide = 1280;
+    const scale = Math.min(1, maxSide / Math.max(image.width || maxSide, image.height || maxSide));
+    const canvas = document.createElement('canvas');
+    canvas.width = Math.max(1, Math.round((image.width || maxSide) * scale));
+    canvas.height = Math.max(1, Math.round((image.height || maxSide) * scale));
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+    const dataUrl = canvas.toDataURL('image/jpeg', .78);
+    if (dataUrl.length > 2.8 * 1024 * 1024) throw new Error('截图仍然过大，请裁剪后再上传');
+    return dataUrl;
+  }
+
+  async function handleDesktopRefundScreenshot(file) {
+    desktopRefundTicketState.loading = true;
+    desktopRefundTicketState.error = '';
+    desktopRefundTicketState.screenshotName = file?.name || '';
+    renderDesktopRefundTicket();
+    try {
+      desktopRefundTicketState.screenshotDataUrl = await compressRefundScreenshot(file);
+    } catch (error) {
+      desktopRefundTicketState.screenshotDataUrl = '';
+      desktopRefundTicketState.screenshotName = '';
+      desktopRefundTicketState.error = error.message || '截图处理失败';
+    } finally {
+      desktopRefundTicketState.loading = false;
+      renderDesktopRefundTicket();
+    }
+  }
+
+  async function submitDesktopRefundTicket() {
+    if (desktopRefundTicketState.loading) return;
+    const order = getDesktopRefundSelectedOrder();
+    if (!order?.canSubmitTicket) {
+      desktopRefundTicketState.error = order?.ticketBlockedReason || '当前订单不能提交工单';
+      renderDesktopRefundTicket();
+      return;
+    }
+    if (!desktopRefundTicketState.screenshotDataUrl) {
+      desktopRefundTicketState.error = '请先上传当时支付截图';
+      renderDesktopRefundTicket();
+      return;
+    }
+    desktopRefundTicketState.loading = true;
+    desktopRefundTicketState.error = '';
+    renderDesktopRefundTicket();
+    try {
+      const data = await desktopFetchJson('/api/payments/refunds', {
+        method: 'POST',
+        body: {
+          orderNo: desktopRefundTicketState.orderNo,
+          paymentProvider: desktopRefundTicketState.paymentProvider,
+          paidDate: desktopRefundTicketState.paidDate,
+          contact: desktopRefundTicketState.contact,
+          note: desktopRefundTicketState.note,
+          screenshotName: desktopRefundTicketState.screenshotName,
+          screenshotDataUrl: desktopRefundTicketState.screenshotDataUrl,
+        },
+      });
+      desktopRefundTicketState.message = data.message || '工单已提交，7个工作日内处理完成。';
+      desktopRefundTicketState.screenshotDataUrl = '';
+      desktopRefundTicketState.screenshotName = '';
+      const screenshotInput = $('#mbpRefundTicketScreenshot');
+      if (screenshotInput) screenshotInput.value = '';
+      await loadDesktopRefundOrders();
+    } catch (error) {
+      desktopRefundTicketState.error = error.message || '工单提交失败';
+    } finally {
+      desktopRefundTicketState.loading = false;
+      renderDesktopRefundTicket();
+    }
+  }
+
   async function submitDesktopAuth() {
     const account = String($('#mbpAuthAccount')?.value || '').trim();
     const password = String($('#mbpAuthPassword')?.value || '');
@@ -1111,6 +1332,9 @@
       desktopPaymentState.status = 'idle';
       desktopPaymentState.orderNo = '';
       desktopPaymentState.payUrl = '';
+      desktopRefundTicketState.open = false;
+      desktopRefundTicketState.orders = [];
+      desktopRefundTicketState.loaded = false;
       updateDesktopQuotaDisplay();
       if (typeof window._chatPanelRefresh === 'function' && window._chartRecordId) window._chatPanelRefresh();
     } catch (error) {
@@ -6437,6 +6661,35 @@
     $('#mbpPayOverlay')?.addEventListener('click', (event) => {
       if (event.target === $('#mbpPayOverlay') && !desktopPaymentState.loading) closeDesktopPayment();
     });
+    $('#mbpRefundTicketOpen')?.addEventListener('click', openDesktopRefundTicket);
+    $('#mbpRefundTicketClose')?.addEventListener('click', closeDesktopRefundTicket);
+    $('#mbpRefundTicketOverlay')?.addEventListener('click', (event) => {
+      if (event.target === $('#mbpRefundTicketOverlay') && !desktopRefundTicketState.loading) closeDesktopRefundTicket();
+    });
+    $('#mbpRefundTicketReload')?.addEventListener('click', loadDesktopRefundOrders);
+    $('#mbpRefundTicketSubmit')?.addEventListener('click', submitDesktopRefundTicket);
+    $('#mbpRefundTicketOrder')?.addEventListener('change', (event) => {
+      desktopRefundTicketState.orderNo = event.target.value || '';
+      syncDesktopRefundTicketFromOrder();
+      desktopRefundTicketState.error = '';
+      renderDesktopRefundTicket();
+    });
+    $('#mbpRefundTicketProvider')?.addEventListener('change', (event) => {
+      desktopRefundTicketState.paymentProvider = event.target.value || 'wechat';
+    });
+    $('#mbpRefundTicketPaidDate')?.addEventListener('input', (event) => {
+      desktopRefundTicketState.paidDate = event.target.value || '';
+    });
+    $('#mbpRefundTicketContact')?.addEventListener('input', (event) => {
+      desktopRefundTicketState.contact = event.target.value || '';
+    });
+    $('#mbpRefundTicketNote')?.addEventListener('input', (event) => {
+      desktopRefundTicketState.note = event.target.value || '';
+    });
+    $('#mbpRefundTicketScreenshot')?.addEventListener('change', (event) => {
+      const file = event.target.files?.[0] || null;
+      if (file) handleDesktopRefundScreenshot(file);
+    });
     document.querySelectorAll('.mbp-pay-method').forEach((button) => {
       button.addEventListener('click', () => {
         const provider = button.dataset.provider || 'wechat';
@@ -6451,6 +6704,7 @@
     document.addEventListener('keydown', (event) => {
       if (event.key === 'Escape' && desktopAuthState.open && !desktopAuthState.loading) closeDesktopAuth();
       if (event.key === 'Escape' && desktopPaymentState.open && !desktopPaymentState.loading) closeDesktopPayment();
+      if (event.key === 'Escape' && desktopRefundTicketState.open && !desktopRefundTicketState.loading) closeDesktopRefundTicket();
     });
     document.querySelectorAll('[data-auth-mode]').forEach((button) => {
       button.addEventListener('click', () => {

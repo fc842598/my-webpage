@@ -485,7 +485,8 @@ select {
   padding: 0 20px;
 }
 
-.mbp-pay-overlay {
+.mbp-pay-overlay,
+.mbp-ticket-overlay {
   position: fixed;
   inset: 0;
   z-index: 90;
@@ -496,7 +497,8 @@ select {
   backdrop-filter: blur(10px);
 }
 
-.mbp-pay-dialog {
+.mbp-pay-dialog,
+.mbp-ticket-dialog {
   position: relative;
   width: min(520px, calc(100vw - 32px));
   max-height: calc(100vh - 48px);
@@ -508,6 +510,10 @@ select {
     radial-gradient(circle at 100% 0, rgba(241, 212, 125, .14), transparent 30%),
     linear-gradient(180deg, rgba(32, 24, 16, .98), rgba(13, 9, 6, .98));
   box-shadow: 0 28px 90px rgba(0, 0, 0, .48);
+}
+
+.mbp-ticket-dialog {
+  width: min(620px, calc(100vw - 32px));
 }
 
 .mbp-pay-close {
@@ -712,8 +718,72 @@ select {
   cursor: wait;
 }
 
+.mbp-ticket-link {
+  display: block;
+  margin: 12px auto 0;
+  border: 0;
+  background: transparent;
+  color: #9d8a66;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.mbp-ticket-link:hover {
+  color: var(--gold);
+}
+
+.mbp-ticket-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.mbp-ticket-grid label,
+.mbp-ticket-field {
+  display: grid;
+  gap: 7px;
+  color: #bba77c;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.mbp-ticket-grid select,
+.mbp-ticket-grid input,
+.mbp-ticket-field input,
+.mbp-ticket-field textarea {
+  width: 100%;
+  border: 1px solid rgba(241, 212, 125, .18);
+  border-radius: 12px;
+  background: rgba(0, 0, 0, .18);
+  color: var(--ivory);
+  font: inherit;
+  font-size: 14px;
+  padding: 12px 13px;
+  outline: 0;
+}
+
+.mbp-ticket-grid select:focus,
+.mbp-ticket-grid input:focus,
+.mbp-ticket-field input:focus,
+.mbp-ticket-field textarea:focus {
+  border-color: rgba(241, 212, 125, .42);
+}
+
+.mbp-ticket-field {
+  margin-top: 14px;
+}
+
+.mbp-ticket-field small {
+  color: #9d8a66;
+  font-size: 12px;
+  font-weight: 700;
+}
+
 body.mbp-auth-open,
-body.mbp-pay-open {
+body.mbp-pay-open,
+body.mbp-ticket-open {
   overflow: hidden;
 }
 
@@ -7113,6 +7183,10 @@ p.mbp-topic-detail {
 
   .mbp-pay-actions {
     flex-direction: column;
+  }
+
+  .mbp-ticket-grid {
+    grid-template-columns: 1fr;
   }
 
   .mbp-pay-secondary {
