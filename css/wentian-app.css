@@ -5290,6 +5290,148 @@ html[data-wentian-language="en"] .liuren-hero-copy em {
   color: #a64032;
 }
 
+.wentian-chart-param-panel {
+  display: grid;
+  gap: 12px;
+  margin: 16px 0 16px;
+  padding: 13px 12px;
+  border: 1px solid #eadfce;
+  border-radius: 14px;
+  background: #fffaf3;
+}
+
+.wentian-param-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.wentian-param-head span {
+  color: #b88c33;
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.wentian-param-head b {
+  color: #251d18;
+  font-size: 16px;
+  font-weight: 900;
+}
+
+.wentian-param-kv,
+.wentian-param-flow {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 7px;
+}
+
+.wentian-param-kv div,
+.wentian-param-flow div {
+  min-width: 0;
+  padding: 8px 9px;
+  border-radius: 9px;
+  background: #f7efe3;
+}
+
+.wentian-param-kv span,
+.wentian-param-flow span,
+.wentian-param-pillars span {
+  display: block;
+  margin-bottom: 4px;
+  color: #9b8061;
+  font-size: 10px;
+  font-weight: 900;
+}
+
+.wentian-param-kv b,
+.wentian-param-flow b,
+.wentian-param-pillars b {
+  display: block;
+  min-width: 0;
+  color: #30241c;
+  font-size: 12px;
+  font-weight: 900;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.wentian-param-pillars {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 7px;
+}
+
+.wentian-param-pillars div {
+  min-width: 0;
+  padding: 8px 5px;
+  border: 1px solid #eadfce;
+  border-radius: 9px;
+  background: #fff;
+  text-align: center;
+}
+
+.wentian-param-details {
+  border-top: 1px solid #eadfce;
+  padding-top: 10px;
+}
+
+.wentian-param-details summary {
+  cursor: pointer;
+  color: #7e3b2f;
+  font-size: 13px;
+  font-weight: 900;
+  line-height: 1.4;
+}
+
+.wentian-param-palace-list {
+  display: grid;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.wentian-param-palace-line {
+  display: grid;
+  grid-template-columns: 50px minmax(0, 1fr);
+  column-gap: 8px;
+  row-gap: 3px;
+  padding: 9px 10px;
+  border-radius: 10px;
+  background: #f8f1e8;
+}
+
+.wentian-param-palace-line b {
+  grid-row: span 3;
+  color: #a06c20;
+  font-size: 12px;
+  font-weight: 900;
+  line-height: 1.35;
+}
+
+.wentian-param-palace-line span {
+  color: #8a7a69;
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1.3;
+}
+
+.wentian-param-palace-line strong {
+  color: #251d18;
+  font-size: 13px;
+  font-weight: 900;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.wentian-param-palace-line em {
+  color: #74685c;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
 .wentian-chart-ai-actions {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 72px 88px;
