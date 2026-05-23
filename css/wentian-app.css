@@ -5250,11 +5250,17 @@ html[data-wentian-language="en"] .liuren-hero-copy em {
   text-decoration: none;
 }
 
-.wentian-chart-ai-panel {
+.wentian-chart-content-stack {
   position: absolute;
   left: 15px;
   top: 608px;
   width: 360px;
+  display: grid;
+  gap: 14px;
+}
+
+.wentian-chart-ai-panel {
+  width: 100%;
   padding: 20px 16px 22px;
   border: 1px solid #e0dcd3;
   border-radius: 18px;
@@ -5292,12 +5298,13 @@ html[data-wentian-language="en"] .liuren-hero-copy em {
 
 .wentian-chart-param-panel {
   display: grid;
-  gap: 12px;
-  margin: 16px 0 16px;
-  padding: 13px 12px;
+  gap: 11px;
+  margin: 0;
+  padding: 14px 12px;
   border: 1px solid #eadfce;
   border-radius: 14px;
-  background: #fffaf3;
+  background: linear-gradient(180deg, #fff 0%, #fffaf3 100%);
+  box-shadow: 0 8px 18px rgba(70, 45, 25, 0.06);
 }
 
 .wentian-param-head {
@@ -5332,6 +5339,10 @@ html[data-wentian-language="en"] .liuren-hero-copy em {
   padding: 8px 9px;
   border-radius: 9px;
   background: #f7efe3;
+}
+
+.wentian-param-flow div:first-child {
+  grid-column: 1 / -1;
 }
 
 .wentian-param-kv span,
@@ -5373,7 +5384,14 @@ html[data-wentian-language="en"] .liuren-hero-copy em {
 
 .wentian-param-details {
   border-top: 1px solid #eadfce;
-  padding-top: 10px;
+  padding-top: 9px;
+}
+
+.wentian-param-summary-title {
+  color: #7e3b2f;
+  font-size: 13px;
+  font-weight: 900;
+  line-height: 1.4;
 }
 
 .wentian-param-details summary {
@@ -5386,8 +5404,18 @@ html[data-wentian-language="en"] .liuren-hero-copy em {
 
 .wentian-param-palace-list {
   display: grid;
-  gap: 8px;
-  margin-top: 10px;
+  gap: 7px;
+  margin-top: 8px;
+}
+
+.wentian-param-palace-details .wentian-param-palace-list {
+  max-height: 360px;
+  overflow-y: auto;
+  padding-right: 2px;
+}
+
+.wentian-param-palace-details .wentian-param-palace-list::-webkit-scrollbar {
+  width: 0;
 }
 
 .wentian-param-palace-line {
@@ -5395,7 +5423,7 @@ html[data-wentian-language="en"] .liuren-hero-copy em {
   grid-template-columns: 50px minmax(0, 1fr);
   column-gap: 8px;
   row-gap: 3px;
-  padding: 9px 10px;
+  padding: 8px 10px;
   border-radius: 10px;
   background: #f8f1e8;
 }

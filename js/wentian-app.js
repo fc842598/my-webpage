@@ -2773,11 +2773,11 @@ function getWentianChartAiChapters() {
 function getWentianZiweiScreenHeight() {
   syncWentianChartAiStateFromStorage();
   const count = getWentianGeneratedModuleCount();
-  if (wentianChartAiState.status === "running") return 5520;
-  if (count >= 8) return 5860;
-  if (count >= 4) return 5680;
-  if (count > 0) return 5540;
-  return 5420;
+  if (wentianChartAiState.status === "running") return 4560;
+  if (count >= 8) return 4820;
+  if (count >= 4) return 4660;
+  if (count > 0) return 4520;
+  return 4360;
 }
 
 function normalizeWentianAiStarList(stars) {
@@ -2819,17 +2819,17 @@ function getWentianAiCurrentDecade(chartData = {}) {
     const start = Number(row.ageStart || row.start || 0);
     const end = Number(row.ageEnd || row.end || 0);
     return activeAge && start && end && activeAge >= start && activeAge <= end;
-  }) || (hasCurrent ? current : null) || dayunTable[0] || {};
+  }) || (hasCurrent ? current : null) || {};
   const rangeText = String(item.rangeLabel || item.range || current.range || "").match(/\d+/g) || [];
   const ageStart = Number(item.ageStart || item.start || rangeText[0] || 0);
   const ageEnd = Number(item.ageEnd || item.end || rangeText[1] || 0);
   const branch = item.palaceBranch || item.branch || current.branch || "";
   const palace = getWentianAiPalaceByBranch(chartData, branch);
-  const palaceName = item.palaceName || item.palace || palace?.name || current.palace || "大限宫";
+  const palaceName = item.palaceName || item.palace || palace?.name || current.palace || "";
   const majorStars = normalizeWentianAiStarList(item.majorStars?.length ? item.majorStars : (palace?.majorStars || current.majorStars));
   return {
-    rangeKey: `${ageStart || "now"}-${ageEnd || "now"}-${branch || palaceName}`,
-    rangeLabel: ageStart && ageEnd ? `${ageStart}-${ageEnd}岁` : (item.rangeLabel || item.range || current.range || "当前十年"),
+    rangeKey: ageStart && ageEnd ? `${ageStart}-${ageEnd}-${branch || palaceName}` : "",
+    rangeLabel: ageStart && ageEnd ? `${ageStart}-${ageEnd}岁` : (item.rangeLabel || item.range || current.range || ""),
     ageStart,
     ageEnd,
     palaceName,
@@ -11971,7 +11971,19 @@ function renderWentianParamPillar(label, value) {
   return `<div><span>${escapeHtml(label)}</span><b>${escapeHtml(formatWentianParamValue(value))}</b></div>`;
 }
 
-function renderWentianParamPalaceLine(label, palace) {
+function getWentianParamPalaceName(palace) {
+  return String(palace?.name || palace?.palaceName || "").replace(/宫$/, "");
+}
+
+function formatWentianParamMutagens(palace) {
+  const list = [
+    ...(palace?.majorStars || []),
+    ...(palace?.minorStars || []),
+  ].filter((star) => star?.mutagen).map((star) => `${star.name || ""}${star.mutagen || ""}`).filter(Boolean);
+  return list.length ? list.join("、") : "";
+}
+
+function renderWentianParamPalaceLine(label, palace, options = {}) {
   if (!palace) {
     return `
       <div class="wentian-param-palace-line">
@@ -11979,19 +11991,20 @@ function renderWentianParamPalaceLine(label, palace) {
         <span>未取到宫位</span>
       </div>`;
   }
-  const palaceLabel = [palace.name, palace.stem ? `${palace.stem}${palace.branch || ""}` : palace.branch].filter(Boolean).join(" · ");
-  const minor = [
-    formatWentianParamStars(palace.minorStars, 6) !== "空宫" ? `辅星：${formatWentianParamStars(palace.minorStars, 6)}` : "",
-    palace.decadal?.range ? `大限：${palace.decadal.range}` : "",
-    palace.changsheng12 || "",
-    palace.boshi12 || "",
-  ].filter(Boolean).join("　");
+  const palaceName = getWentianParamPalaceName(palace);
+  const stemBranch = palace.stem ? `${palace.stem}${palace.branch || ""}` : palace.branch;
+  const mutagens = formatWentianParamMutagens(palace);
+  const meta = [
+    options.showRange !== false && palace.decadal?.range ? `大限 ${palace.decadal.range}` : "",
+    mutagens ? `四化 ${mutagens}` : "",
+    options.showAux ? formatWentianParamStars(palace.minorStars, 3) : "",
+  ].filter((item) => item && item !== "空宫").join("　");
   return `
     <div class="wentian-param-palace-line">
       <b>${escapeHtml(label)}</b>
-      <span>${escapeHtml(palaceLabel || "—")}</span>
-      <strong>${escapeHtml(formatWentianParamStars(palace.majorStars, 4))}</strong>
-      <em>${escapeHtml(minor || "辅星与大限待补")}</em>
+      <span>${escapeHtml([palaceName, stemBranch].filter(Boolean).join(" · ") || "—")}</span>
+      <strong>${escapeHtml(formatWentianParamStars(palace.majorStars, 3))}</strong>
+      ${meta ? `<em>${escapeHtml(meta)}</em>` : ""}
     </div>`;
 }
 
@@ -12007,11 +12020,10 @@ function renderWentianMobileChartParams(saved) {
   const bodyPalace = ctx.findPalaceByBranch(ctx.bodyBranch) || chartData.bodyPalaceDetail || ctx.palaces.find((palace) => palace.isBodyPalace);
   const relations = getWentianClassicRelations(ctx.lifeBranch);
   const sanfangPalaces = [
-    ["命宫", lifePalace],
-    ["三合一", ctx.findPalaceByBranch(relations.sanhe?.[0])],
-    ["三合二", ctx.findPalaceByBranch(relations.sanhe?.[1])],
-    ["对宫", ctx.findPalaceByBranch(relations.dui)],
-  ];
+    ctx.findPalaceByBranch(relations.sanhe?.[0]),
+    ctx.findPalaceByBranch(relations.sanhe?.[1]),
+    ctx.findPalaceByBranch(relations.dui),
+  ].filter(Boolean);
   const currentDecade = getWentianAiCurrentDecade(chartData);
   const currentYear = getWentianAiCurrentYear(chartData);
   const mutagens = (chartData.yearMutagens || []).map((item) => `${item.palace || ""}${item.star || ""}${item.type || ""}`).filter(Boolean);
@@ -12023,18 +12035,16 @@ function renderWentianMobileChartParams(saved) {
   return `
     <section class="wentian-chart-param-panel" data-node-id="source-27-param-panel">
       <div class="wentian-param-head">
-        <span>电脑端参数已接入</span>
-        <b>命盘参数</b>
+        <span>核心结构</span>
+        <b>命盘速览</b>
       </div>
       <div class="wentian-param-kv">
         ${renderWentianParamPair("命主", form.name || "命主")}
         ${renderWentianParamPair("性别", genderText)}
         ${renderWentianParamPair("公历", chartData.birthDate || chart.solarDate || form.datetime)}
         ${renderWentianParamPair("农历", chart.lunarDate || chart.chineseDate || chartData.lunarDate)}
-        ${renderWentianParamPair("时辰", timeName ? `${timeName}时` : chartData.birthHour ? `${chartData.birthHour}点` : "")}
-        ${renderWentianParamPair("出生地", form.city || chartData.city)}
         ${renderWentianParamPair("五行局", chartData.fiveElementsClass || chart.fiveElementsClass)}
-        ${renderWentianParamPair("生肖", chartData.zodiac || chart.zodiac)}
+        ${renderWentianParamPair("时辰", timeName ? `${timeName}时` : chartData.birthHour ? `${chartData.birthHour}点` : "")}
       </div>
       <div class="wentian-param-pillars">
         ${renderWentianParamPillar("年柱", sizhu.year || `${sizhu.yearStem || ""}${sizhu.yearBranch || ""}`)}
@@ -12042,27 +12052,32 @@ function renderWentianMobileChartParams(saved) {
         ${renderWentianParamPillar("日柱", sizhu.day || `${sizhu.dayStem || ""}${sizhu.dayBranch || ""}`)}
         ${renderWentianParamPillar("时柱", sizhu.hour || `${sizhu.hourStem || ""}${sizhu.hourBranch || ""}`)}
       </div>
-      <details class="wentian-param-details" open>
-        <summary>命身宫与三方四正</summary>
+      <div class="wentian-param-details">
+        <div class="wentian-param-summary-title">命身宫</div>
         <div class="wentian-param-palace-list">
           ${renderWentianParamPalaceLine("命宫", lifePalace)}
           ${renderWentianParamPalaceLine("身宫", bodyPalace)}
-          ${sanfangPalaces.map(([label, palace]) => renderWentianParamPalaceLine(label, palace)).join("")}
         </div>
-      </details>
-      <details class="wentian-param-details" open>
-        <summary>生年四化与当前运限</summary>
+      </div>
+      <div class="wentian-param-details">
+        <div class="wentian-param-summary-title">三方四正</div>
+        <div class="wentian-param-palace-list">
+          ${sanfangPalaces.map((palace, index) => renderWentianParamPalaceLine(index === sanfangPalaces.length - 1 ? "对宫" : getWentianParamPalaceName(palace), palace)).join("")}
+        </div>
+      </div>
+      <div class="wentian-param-details">
+        <div class="wentian-param-summary-title">四化与运限</div>
         <div class="wentian-param-flow">
           ${renderWentianParamPair("生年四化", mutagens.length ? mutagens.join("、") : "暂无明显四化")}
-          ${renderWentianParamPair("当前大限", [currentDecade.rangeLabel, currentDecade.palaceName, formatWentianParamStars(currentDecade.majorStars, 3)].filter(Boolean))}
+          ${renderWentianParamPair("当前大限", currentDecade.rangeLabel ? [currentDecade.rangeLabel, currentDecade.palaceName, formatWentianParamStars(currentDecade.majorStars, 2)].filter(Boolean) : "未进入当前大限")}
           ${renderWentianParamPair("当前流年", [currentYear.solarYear ? `${currentYear.solarYear}年` : "", currentYear.age ? `虚岁${currentYear.age}` : "", currentYear.yearGanzhi, currentYear.liunianGuaName].filter(Boolean))}
-          ${renderWentianParamPair("小限落宫", [currentYear.xiaolianPalaceName, currentYear.oppositePalaceName ? `对宫${currentYear.oppositePalaceName}` : ""].filter(Boolean))}
+          ${renderWentianParamPair("小限", [currentYear.xiaolianPalaceName, currentYear.oppositePalaceName ? `对宫${currentYear.oppositePalaceName}` : ""].filter(Boolean))}
         </div>
-      </details>
-      <details class="wentian-param-details" open>
-        <summary>十二宫完整参数</summary>
+      </div>
+      <details class="wentian-param-details wentian-param-palace-details">
+        <summary>展开十二宫明细</summary>
         <div class="wentian-param-palace-list">
-          ${[...orderedPalaces, ...remainingPalaces].map((palace) => renderWentianParamPalaceLine(palace.name || palace.branch || "宫位", palace)).join("")}
+          ${[...orderedPalaces, ...remainingPalaces].map((palace) => renderWentianParamPalaceLine(getWentianParamPalaceName(palace) || palace.branch || "宫位", palace, { showAux: false })).join("")}
         </div>
       </details>
     </section>
@@ -12092,7 +12107,6 @@ function sourceZiweiAiDecodePanel(saved) {
         <h2>✦ 命盘 · AI解读</h2>
         <p class="${wentianChartAiState.error ? "is-error" : ""}">${escapeHtml(statusText)}</p>
       </header>
-      ${renderWentianMobileChartParams(saved)}
       <div class="wentian-chart-ai-actions">
         <button type="button" class="wentian-chart-ai-primary" data-action="wentian-chart-ai-decode" ${isRunning ? "disabled" : ""}>${escapeHtml(buttonText)}</button>
         <button type="button" class="wentian-chart-ai-secondary" data-route="screen-4">追问</button>
@@ -12136,7 +12150,10 @@ function sourceZiweiMingpanScreenFromChart(saved) {
     ${figText("source-27-title", "紫微命盘", 0, 58, 390, 25, "#3b3934", 800, "center")}
     ${figText("source-27-more", "•••", 330, 56, 42, 22, "#3b3934", 800, "center")}
     ${renderWentianClassicChart(saved)}
-    ${sourceZiweiAiDecodePanel(saved)}
+    <div class="wentian-chart-content-stack">
+      ${renderWentianMobileChartParams(saved)}
+      ${sourceZiweiAiDecodePanel(saved)}
+    </div>
     ${sourceAppBottomNav("档案", bottomNavY)}
   `;
 }
