@@ -1038,30 +1038,39 @@ html[lang="en"] [data-node-id="wt15-seal-text"] {
   display: none;
 }
 
-.wentian-native-mingpan .fc-sanfang-triangle,
-.wentian-native-mingpan .fc-sanfang-opposite {
+.wentian-native-mingpan .fc-sanfang-line {
   fill: none;
   stroke-linecap: round;
   stroke-linejoin: round;
-  stroke-dasharray: 7 5;
   vector-effect: non-scaling-stroke;
 }
 
-.wentian-native-mingpan .fc-sanfang-triangle {
-  stroke: rgba(157, 93, 42, .58);
-  stroke-width: 1.05;
+.wentian-native-mingpan .fc-sanfang-line-sanhe {
+  stroke: rgba(198, 144, 48, .62);
+  stroke-width: 1.35;
 }
 
-.wentian-native-mingpan .fc-sanfang-opposite {
+.wentian-native-mingpan .fc-sanfang-line-triangle {
+  stroke: rgba(128, 91, 170, .38);
+  stroke-width: 1.1;
+  stroke-dasharray: 5 4;
+}
+
+.wentian-native-mingpan .fc-sanfang-line-opposite {
   stroke: rgba(60, 139, 119, .52);
-  stroke-width: 1;
+  stroke-width: 1.15;
+  stroke-dasharray: 7 4;
 }
 
 .wentian-native-mingpan .fc-sanfang-point {
-  fill: rgba(157, 93, 42, .62);
+  fill: rgba(198, 144, 48, .76);
   stroke: rgba(255, 250, 238, .7);
   stroke-width: .4;
   vector-effect: non-scaling-stroke;
+}
+
+.wentian-native-mingpan .fc-sanfang-point.is-opposite {
+  fill: rgba(60, 139, 119, .72);
 }
 
 .wentian-native-mingpan .fc-cell-top {

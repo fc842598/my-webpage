@@ -11603,62 +11603,183 @@ function renderWentianClassicPalaceCell(palace, activeBranch) {
     </div>`;
 }
 
+const WENTIAN_CLASSIC_BRANCH_SIDES = {
+  "巳": "NW",
+  "午": "N",
+  "未": "N",
+  "申": "NE",
+  "辰": "W",
+  "卯": "W",
+  "酉": "E",
+  "戌": "E",
+  "寅": "SW",
+  "丑": "S",
+  "子": "S",
+  "亥": "SE",
+};
+
 function clearWentianClassicSanfangLines(svg) {
   if (!svg) return;
   svg.classList.add("is-empty");
-  svg.querySelector(".fc-sanfang-triangle")?.setAttribute("d", "");
-  svg.querySelector(".fc-sanfang-opposite")?.setAttribute("d", "");
-  const points = svg.querySelector(".fc-sanfang-points");
-  if (points) points.innerHTML = "";
+  while (svg.firstChild) svg.removeChild(svg.firstChild);
 }
 
-function getWentianClassicBranchPoint(chart, branch) {
-  const grid = chart?.querySelector(".fc-grid");
+function getWentianClassicBranchPort(chart, branch, gridRect) {
   const cell = Array.from(chart?.querySelectorAll(".fc-cell") || []).find((item) => item.dataset.palaceBranch === branch);
-  if (!grid || !cell) return null;
-  const gridRect = grid.getBoundingClientRect();
+  const side = WENTIAN_CLASSIC_BRANCH_SIDES[branch];
+  if (!cell || !side || !gridRect) return null;
   const cellRect = cell.getBoundingClientRect();
-  if (!gridRect.width || !gridRect.height) return null;
-  const gridCenterX = gridRect.left + gridRect.width / 2;
-  const gridCenterY = gridRect.top + gridRect.height / 2;
-  const cellCenterX = cellRect.left + cellRect.width / 2;
-  const cellCenterY = cellRect.top + cellRect.height / 2;
-  const dx = gridCenterX - cellCenterX;
-  const dy = gridCenterY - cellCenterY;
-  let x = cellCenterX;
-  let y = cellCenterY;
-  if (Math.abs(dx) >= Math.abs(dy)) x = dx >= 0 ? cellRect.right : cellRect.left;
-  else y = dy >= 0 ? cellRect.bottom : cellRect.top;
-  return {
-    x: ((x - gridRect.left) / gridRect.width) * 100,
-    y: ((y - gridRect.top) / gridRect.height) * 100,
+  const x0 = cellRect.left - gridRect.left;
+  const y0 = cellRect.top - gridRect.top;
+  const x1 = x0 + cellRect.width;
+  const y1 = y0 + cellRect.height;
+  const xm = (x0 + x1) / 2;
+  const ym = (y0 + y1) / 2;
+  const edgePoints = {
+    N: { x: xm, y: y1 },
+    S: { x: xm, y: y0 },
+    W: { x: x1, y: ym },
+    E: { x: x0, y: ym },
+    NW: { x: x1, y: y1 },
+    NE: { x: x0, y: y1 },
+    SW: { x: x1, y: y0 },
+    SE: { x: x0, y: y0 },
   };
+  return { ...edgePoints[side], side };
+}
+
+function getWentianClassicCorridor(chart, gridRect) {
+  const center = chart?.querySelector(".fc-center-panel");
+  if (!center || !gridRect?.width || !gridRect?.height) return null;
+  const rect = center.getBoundingClientRect();
+  const corridor = {
+    top: rect.top - gridRect.top,
+    bottom: rect.bottom - gridRect.top,
+    left: rect.left - gridRect.left,
+    right: rect.right - gridRect.left,
+  };
+  if (corridor.right <= corridor.left || corridor.bottom <= corridor.top) return null;
+  return corridor;
+}
+
+function clampWentianClassicUnit(value) {
+  if (value < 0) return 0;
+  if (value > 1) return 1;
+  return value;
+}
+
+function getWentianClassicPerimParam(port, corr) {
+  const width = corr.right - corr.left;
+  const height = corr.bottom - corr.top;
+  switch (port.side) {
+    case "NW": return 0;
+    case "N": return clampWentianClassicUnit((port.x - corr.left) / width);
+    case "NE": return 1;
+    case "E": return 1 + clampWentianClassicUnit((port.y - corr.top) / height);
+    case "SE": return 2;
+    case "S": return 2 + clampWentianClassicUnit((corr.right - port.x) / width);
+    case "SW": return 3;
+    case "W": return 3 + clampWentianClassicUnit((corr.bottom - port.y) / height);
+    default: return 0;
+  }
+}
+
+function getWentianClassicPerimPoint(param, corr) {
+  const width = corr.right - corr.left;
+  const height = corr.bottom - corr.top;
+  const p = ((param % 4) + 4) % 4;
+  if (p <= 1) return { x: corr.left + p * width, y: corr.top };
+  if (p <= 2) return { x: corr.right, y: corr.top + (p - 1) * height };
+  if (p <= 3) return { x: corr.right - (p - 2) * width, y: corr.bottom };
+  return { x: corr.left, y: corr.bottom - (p - 3) * height };
+}
+
+function routeWentianClassicSanfangPoints(portA, portB, corr) {
+  const paramA = getWentianClassicPerimParam(portA, corr);
+  const paramB = getWentianClassicPerimParam(portB, corr);
+  const cwDistance = ((paramB - paramA) % 4 + 4) % 4;
+  const ccwDistance = ((paramA - paramB) % 4 + 4) % 4;
+
+  function getCorners(start, distance) {
+    const corners = [];
+    const end = start + distance;
+    for (let corner = Math.ceil(start + 1e-6); corner <= end - 1e-6; corner += 1) {
+      corners.push(getWentianClassicPerimPoint(corner, corr));
+    }
+    return corners;
+  }
+
+  const snapA = getWentianClassicPerimPoint(paramA, corr);
+  const snapB = getWentianClassicPerimPoint(paramB, corr);
+  const via = cwDistance <= ccwDistance
+    ? getCorners(paramA, cwDistance)
+    : getCorners(paramB, ccwDistance).reverse();
+  const isNear = (a, b) => Math.abs(a.x - b.x) < 2 && Math.abs(a.y - b.y) < 2;
+  const points = [portA];
+  if (!isNear(snapA, portA)) points.push(snapA);
+  via.forEach((point) => {
+    if (!isNear(point, points[points.length - 1])) points.push(point);
+  });
+  if (!isNear(snapB, points[points.length - 1])) points.push(snapB);
+  if (!isNear(portB, points[points.length - 1])) points.push(portB);
+  return points;
+}
+
+function formatWentianClassicPolylinePoints(points) {
+  return points.map((point) => `${point.x.toFixed(1)},${point.y.toFixed(1)}`).join(" ");
+}
+
+function appendWentianClassicPolyline(svg, points, className) {
+  if (!points || points.length < 2) return;
+  const line = document.createElementNS("http://www.w3.org/2000/svg", "polyline");
+  line.setAttribute("class", `fc-sanfang-line ${className}`);
+  line.setAttribute("points", formatWentianClassicPolylinePoints(points));
+  svg.appendChild(line);
+}
+
+function appendWentianClassicPoint(svg, point, className) {
+  if (!point) return;
+  const dot = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+  dot.setAttribute("class", `fc-sanfang-point ${className}`);
+  dot.setAttribute("cx", point.x.toFixed(1));
+  dot.setAttribute("cy", point.y.toFixed(1));
+  dot.setAttribute("r", "2.2");
+  svg.appendChild(dot);
 }
 
 function renderWentianClassicSanfangLines(activeBranch) {
   const chart = view.querySelector(".wentian-native-mingpan");
   const svg = chart?.querySelector(".fc-sanfang-lines");
-  if (!chart || !svg || !activeBranch) {
+  const grid = chart?.querySelector(".fc-grid");
+  if (!chart || !svg || !grid || !activeBranch) {
+    clearWentianClassicSanfangLines(svg);
+    return;
+  }
+  const gridRect = grid.getBoundingClientRect();
+  const corridor = getWentianClassicCorridor(chart, gridRect);
+  if (!gridRect.width || !gridRect.height || !corridor) {
     clearWentianClassicSanfangLines(svg);
     return;
   }
   const relations = getWentianClassicRelations(activeBranch);
-  const sanheBranches = [activeBranch, ...relations.sanhe];
-  const sanhePoints = sanheBranches.map((branch) => getWentianClassicBranchPoint(chart, branch));
-  const oppositePoint = getWentianClassicBranchPoint(chart, relations.dui);
-  if (sanhePoints.some((point) => !point) || !oppositePoint) {
+  const selfPoint = getWentianClassicBranchPort(chart, activeBranch, gridRect);
+  const sanhePoints = relations.sanhe.map((branch) => getWentianClassicBranchPort(chart, branch, gridRect));
+  const oppositePoint = getWentianClassicBranchPort(chart, relations.dui, gridRect);
+  if (!selfPoint || sanhePoints.some((point) => !point) || !oppositePoint) {
     clearWentianClassicSanfangLines(svg);
     return;
   }
-  const [p0, p1, p2] = sanhePoints;
-  svg.querySelector(".fc-sanfang-triangle")?.setAttribute("d", `M ${p0.x} ${p0.y} L ${p1.x} ${p1.y} L ${p2.x} ${p2.y} Z`);
-  svg.querySelector(".fc-sanfang-opposite")?.setAttribute("d", `M ${p0.x} ${p0.y} L ${oppositePoint.x} ${oppositePoint.y}`);
-  const points = svg.querySelector(".fc-sanfang-points");
-  if (points) {
-    points.innerHTML = [...sanhePoints, oppositePoint]
-      .map((point) => `<circle class="fc-sanfang-point" cx="${point.x}" cy="${point.y}" r="1.15"></circle>`)
-      .join("");
-  }
+
+  clearWentianClassicSanfangLines(svg);
+  svg.setAttribute("viewBox", `0 0 ${gridRect.width.toFixed(1)} ${gridRect.height.toFixed(1)}`);
+  svg.setAttribute("preserveAspectRatio", "none");
+  appendWentianClassicPolyline(svg, routeWentianClassicSanfangPoints(selfPoint, sanhePoints[0], corridor), "fc-sanfang-line-sanhe");
+  appendWentianClassicPolyline(svg, routeWentianClassicSanfangPoints(selfPoint, sanhePoints[1], corridor), "fc-sanfang-line-sanhe");
+  appendWentianClassicPolyline(svg, routeWentianClassicSanfangPoints(sanhePoints[0], sanhePoints[1], corridor), "fc-sanfang-line-triangle");
+  appendWentianClassicPolyline(svg, routeWentianClassicSanfangPoints(selfPoint, oppositePoint, corridor), "fc-sanfang-line-opposite");
+  appendWentianClassicPoint(svg, selfPoint, "is-self");
+  sanhePoints.forEach((point) => appendWentianClassicPoint(svg, point, "is-sanhe"));
+  appendWentianClassicPoint(svg, oppositePoint, "is-opposite");
   svg.classList.remove("is-empty");
 }
 
@@ -11668,8 +11789,12 @@ function getWentianClassicDefaultBranch(saved) {
 }
 
 function initWentianClassicChartScreen() {
-  const activeBranch = getWentianClassicDefaultBranch(getWentianDisplayChartState());
-  window.requestAnimationFrame(() => renderWentianClassicSanfangLines(activeBranch));
+  window.requestAnimationFrame(() => {
+    const activeBranch = getWentianClassicDefaultBranch(getWentianDisplayChartState())
+      || view.querySelector(".wentian-native-mingpan .fc-cell.fc-ben")?.dataset.palaceBranch
+      || "";
+    renderWentianClassicSanfangLines(activeBranch);
+  });
 }
 
 function renderWentianClassicCenter(chart, chartData, form) {
