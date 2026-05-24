@@ -8014,6 +8014,7 @@ function getWentianChartFormData() {
     cityScope,
     calMode: parts?.mode || "solar",
     calModeLabel: parts?.calModeLabel,
+    lunarInput: parts?.mode === "lunar" ? parts.lunar : null,
     autoLeapMonth: parts?.autoLeapMonth !== false,
     leapMonthRule: parts?.leapMonthRule || { enabled: true, applied: false },
   };
@@ -8055,6 +8056,8 @@ async function submitWentianChartForm() {
         cityDetail: norm.cityDetail,
         cityScope: norm.cityScope,
         calMode: norm.calMode,
+        calModeLabel: norm.calModeLabel,
+        lunarInput: norm.lunarInput,
         autoLeapMonth: norm.autoLeapMonth,
         leapMonthRule: norm.leapMonthRule,
         datetime: datetimeValue,
@@ -8099,10 +8102,19 @@ function initWentianChartForm() {
   const lunarYear = document.getElementById("wentian-chart-lunar-year");
   const lunarMonth = document.getElementById("wentian-chart-lunar-month");
   const lunarDay = document.getElementById("wentian-chart-lunar-day");
-  if (lunarYear) lunarYear.value = String(date.getFullYear());
-  if (lunarMonth) lunarMonth.value = "1";
-  updateWentianChartDayOptions(lunarDay, 0, 0, getWentianLunarMonthMax(lunarYear?.value, lunarMonth?.value, false));
-  if (lunarDay) lunarDay.value = "1";
+  const savedLunar = form.lunarInput || form.lunar || null;
+  const derivedLunar = typeof solarToLunar === "function"
+    ? solarToLunar(date.getFullYear(), date.getMonth() + 1, date.getDate())
+    : null;
+  const lunarSource = form.calMode === "lunar" && savedLunar?.year ? savedLunar : derivedLunar;
+  const lunarSourceYear = Number(lunarSource?.year) || date.getFullYear();
+  const lunarSourceMonth = Number(lunarSource?.month) || 1;
+  const lunarSourceDay = Number(lunarSource?.day) || 1;
+  const lunarSourceIsLeap = !!lunarSource?.isLeap;
+  if (lunarYear) lunarYear.value = String(lunarSourceYear);
+  if (lunarMonth) lunarMonth.value = String(lunarSourceMonth);
+  updateWentianChartDayOptions(lunarDay, 0, 0, getWentianLunarMonthMax(lunarSourceYear, lunarSourceMonth, lunarSourceIsLeap));
+  if (lunarDay) lunarDay.value = String(Math.min(lunarSourceDay, Number(lunarDay.options.length) || lunarSourceDay));
   const leapAuto = document.getElementById("wentian-chart-lunar-leap");
   if (leapAuto) leapAuto.checked = form.autoLeapMonth !== false;
   setWentianChartButtonValue("gender", getWentianChartDefaultGender(form));
