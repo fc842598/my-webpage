@@ -6940,7 +6940,7 @@ p.mbp-topic-detail {
 }
 
 .mbp-shichen-modal {
-  width: min(880px, 100%);
+  width: min(540px, 100%);
   max-height: min(720px, 90vh);
   overflow: auto;
   border: 1px solid rgba(241, 212, 125, .26);
@@ -7029,7 +7029,7 @@ p.mbp-topic-detail {
 .mbp-whorl-guide {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 12px;
+  gap: 8px;
 }
 
 .mbp-whorl-card {
@@ -7172,7 +7172,7 @@ p.mbp-topic-detail {
   padding: 0;
   overflow: hidden;
   border-color: rgba(205, 168, 96, .72);
-  background: #fff8ed url("../images/shichen-whorl-guide.png") 0 0 / 300% 100% no-repeat;
+  background: #fff8ed url("../images/shichen-whorl-guide.jpg") 0 0 / 300% 100% no-repeat;
 }
 
 .mbp-whorl-card:nth-child(2) {
@@ -7192,7 +7192,7 @@ p.mbp-topic-detail {
 
 .mbp-whorl-card:has(input:checked) {
   border-color: #c13228;
-  background: #fff8ed url("../images/shichen-whorl-guide.png") 0 0 / 300% 100% no-repeat;
+  background: #fff8ed url("../images/shichen-whorl-guide.jpg") 0 0 / 300% 100% no-repeat;
   box-shadow: 0 0 0 2px rgba(193, 50, 40, .24), 0 12px 28px rgba(159, 91, 53, .18);
 }
 
@@ -7238,8 +7238,8 @@ p.mbp-topic-detail {
 }
 
 .mbp-whorl-dot {
-  width: 10px;
-  height: 10px;
+  width: 8px;
+  height: 8px;
   background: #ff2b22;
   border: 2px solid #fff0cf;
   box-shadow: 0 0 12px rgba(255, 43, 34, .8), 0 0 24px rgba(255, 43, 34, .45);
@@ -7248,8 +7248,8 @@ p.mbp-topic-detail {
 }
 
 .mbp-whorl-pulse {
-  width: 34px;
-  height: 34px;
+  width: 28px;
+  height: 28px;
   border: 2px solid rgba(255, 43, 34, .86);
   box-shadow: 0 0 18px rgba(255, 43, 34, .42);
   animation: mbpWhorlRingPulse 1.35s ease-out infinite;
@@ -7261,9 +7261,9 @@ p.mbp-topic-detail {
   z-index: 3;
   display: grid;
   justify-items: center;
-  min-width: 94px;
-  padding: 6px 9px 7px;
-  border-radius: 9px;
+  min-width: 76px;
+  padding: 5px 7px 6px;
+  border-radius: 8px;
   background: rgba(182, 37, 31, .96);
   box-shadow: 0 8px 18px rgba(79, 43, 19, .22);
   color: #fff8ea;
@@ -7275,9 +7275,9 @@ p.mbp-topic-detail {
   content: "";
   position: absolute;
   left: 50%;
-  bottom: -9px;
-  width: 14px;
-  height: 14px;
+  bottom: -7px;
+  width: 11px;
+  height: 11px;
   background: inherit;
   transform: translateX(-50%) rotate(45deg);
 }
@@ -7291,14 +7291,14 @@ p.mbp-topic-detail {
 }
 
 .mbp-whorl-tag b {
-  font-size: clamp(10px, 1.8vw, 15px);
+  font-size: clamp(9px, 1.25vw, 12px);
   font-weight: 900;
 }
 
 .mbp-whorl-tag small {
-  margin-top: 3px;
+  margin-top: 2px;
   color: #ffe3bf;
-  font-size: clamp(8px, 1.2vw, 10px);
+  font-size: clamp(7px, .9vw, 8px);
   font-weight: 800;
 }
 
