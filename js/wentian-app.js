@@ -7346,23 +7346,26 @@ function sourceMineScreen(screen) {
     ${figBox("source-31-login-badge", 258, 148, 86, 24, "", `border-radius:12px;background:${member.isMember ? "#fff0d6" : "#f6f2e9"};`)}
     ${figText("source-31-login-badge-text", member.isMember ? "付费版" : (account.loggedIn ? "账号" : "登录/注册"), 258, 154, 86, 11, member.isMember ? "#9f3d2e" : "#9b742e", 800, "center")}
     ${figButton("source-31-login-hit", 16, 126, 358, 96, 'data-route="screen-40" aria-label="登录 / 注册"', "", "z-index:35;")}
-    ${[["今日次数", member.daily, 16], ["每日额度", member.dailyLimit, 139], ["套餐状态", member.isMember ? "付费版" : "免费版", 262]].map(([label, count, x], index) => `
+    ${[["今日次数", member.daily, 16, "screen-33"], ["每日额度", member.dailyLimit, 139, "screen-33"], ["套餐状态", member.isMember ? "付费版" : "免费版", 262, "screen-9"]].map(([label, count, x, route], index) => `
       ${figBox(`source-31-stat-${index}`, x, 240, 111, 75, "converted-card", "border-radius:12px;box-shadow:0 5px 14px rgba(74,55,32,.08);")}
       ${figText(`source-31-stat-label-${index}`, label, x + 14, 253, 80, 12, "#9b742e", 500)}
       ${figText(`source-31-stat-count-${index}`, count, x + 14, 279, 86, 20, "#b88c33", 800)}
+      ${figButton(`source-31-stat-hit-${index}`, x, 240, 111, 75, `data-route="${route}" aria-label="${label}"`, "", "z-index:37;")}
     `).join("")}
-    ${[["♛", "阅天套餐", 16, 330], ["▤", "我的报告", 200, 330], ["▦", "订单记录", 16, 400], ["♧", "邀请好友", 200, 400]].map(([icon, label, x, y], index) => `
+    ${[["♛", "阅天套餐", 16, 330, "screen-33"], ["▤", "我的报告", 200, 330, "screen-27"], ["▦", "订单记录", 16, 400, "screen-48"], ["♧", "邀请好友", 200, 400, "screen-22"]].map(([icon, label, x, y, route], index) => `
       ${figBox(`source-31-quick-${index}`, x, y, 174, 60, "converted-card", "border-radius:12px;box-shadow:0 5px 14px rgba(74,55,32,.08);")}
       ${figBox(`source-31-quick-icon-${index}`, x + 17, y + 12, 36, 36, "", "border-radius:10px;background:#f6f2e9;")}
       ${figText(`source-31-quick-icon-text-${index}`, icon, x + 17, y + 21, 36, 14, "#b88c33", 800, "center")}
       ${figText(`source-31-quick-label-${index}`, label, x + 62, y + 21, 90, 16, "#26211c", 700)}
+      ${figButton(`source-31-quick-hit-${index}`, x, y, 174, 60, `data-route="${route}" aria-label="${label}"`, "", "z-index:37;")}
     `).join("")}
-    ${[["语言设置", languageLabel, 491], ["分享阅天AI", "", 552], ["联系我们", "", 613]].map(([label, value, y], index) => `
+    ${[["语言设置", languageLabel, 491, "screen-37"], ["分享阅天AI", "", 552, "screen-34"], ["联系我们", "", 613, "screen-35"]].map(([label, value, y, route], index) => `
       ${figBox(`source-31-row-${index}`, 16, y, 358, 61, "converted-card", "border-radius:12px;box-shadow:0 5px 14px rgba(74,55,32,.08);")}
       ${figText(`source-31-row-icon-${index}`, ["文", "⌯", "☏"][index], 34, y + 21, 24, 16, "#b88c33", 700, "center")}
       ${figText(`source-31-row-label-${index}`, label, 68, y + 20, 140, 16, "#26211c", 600)}
       ${value ? figText(`source-31-row-value-${index}`, value, 274, y + 21, 60, 13, "#9b742e", 500, "right") : ""}
       ${figText(`source-31-row-arrow-${index}`, "›", 342, y + 18, 16, 20, "#aaa196", 500, "center")}
+      ${figButton(`source-31-row-hit-${index}`, 16, y, 358, 61, `data-route="${route}" aria-label="${label}"`, "", "z-index:37;")}
     `).join("")}
     ${sourceAppBottomNav("我的", 755)}
   `;
