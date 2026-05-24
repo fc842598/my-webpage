@@ -414,42 +414,37 @@
       place-items: center;
       cursor: default;
       background:
-        radial-gradient(circle, rgba(201,169,97,.18), rgba(201,169,97,.03) 58%, transparent 70%),
+        linear-gradient(135deg, rgba(240,215,155,.07), transparent 48%),
         rgba(5,4,2,.88);
     }
 
-    .luopan {
-      width: 104px;
-      height: 104px;
-      position: relative;
-      border: 1px solid rgba(201,169,97,.50);
-      border-radius: 50%;
-      box-shadow: 0 0 34px rgba(201,169,97,.12), inset 0 0 0 18px rgba(201,169,97,.035);
+    .center-marker {
+      width: min(82%, 142px);
+      min-height: 112px;
+      display: grid;
+      align-content: center;
+      gap: 8px;
+      padding: 16px 14px;
+      border: 1px solid rgba(201,169,97,.30);
+      border-radius: 8px;
+      color: #9d8c68;
+      background: rgba(201,169,97,.045);
+      text-align: center;
     }
 
-    .luopan::before,
-    .luopan::after {
-      content: "";
-      position: absolute;
-      inset: 50% auto auto 50%;
-      background: rgba(240,215,155,.56);
-      transform: translate(-50%, -50%);
+    .center-marker strong {
+      color: var(--ivory);
+      font-family: "Noto Serif SC", "Songti SC", serif;
+      font-size: 23px;
+      line-height: 1.1;
     }
 
-    .luopan::before { width: 84px; height: 1px; }
-    .luopan::after { width: 1px; height: 84px; }
-
-    .luopan span {
-      position: absolute;
-      color: var(--gold-soft);
+    .center-marker span {
+      color: #8f805f;
       font-size: 12px;
-      font-weight: 900;
+      font-weight: 800;
+      line-height: 1.55;
     }
-
-    .luopan .n { top: 6px; left: 50%; transform: translateX(-50%); }
-    .luopan .s { bottom: 6px; left: 50%; transform: translateX(-50%); }
-    .luopan .e { right: 8px; top: 50%; transform: translateY(-50%); }
-    .luopan .w { left: 8px; top: 50%; transform: translateY(-50%); }
 
     .grid-actions {
       display: flex;
@@ -745,7 +740,7 @@
         <section class="workbench" id="workbench" aria-label="阳宅九宫工作台">
           <aside class="guide-panel">
             <h2 class="guide-title">怎么用</h2>
-            <div class="guide-step"><b>一</b><div><strong>点宫位</strong><span>选择任意八方宫位，右侧会切换对应选项。</span></div></div>
+            <div class="guide-step"><b>一</b><div><strong>先定北向</strong><span>电脑端按已确认的户型方向排布，不做指南针。</span></div></div>
             <div class="guide-step"><b>二</b><div><strong>放成员/空间</strong><span>可多选父母子女，也可放入厨房、厕所、客厅。</span></div></div>
             <div class="guide-step"><b>三</b><div><strong>生成解读</strong><span>点击解读后，下面输出本次安位的卦象摘要。</span></div></div>
             <div class="note-box">当前内容仅供娱乐参考，不等于专业测评或现实指导。电脑端只做更清晰的排布与阅读。</div>
@@ -754,7 +749,7 @@
           <section class="grid-panel">
             <div class="section-head">
               <h2>九宫安位</h2>
-              <p>逐格点击安位</p>
+              <p>按户型方向安位</p>
             </div>
             <div class="palace-grid" id="palaceGrid" aria-label="九宫方位"></div>
             <div class="grid-actions">
@@ -945,7 +940,10 @@
         grid.innerHTML = palaces.map((palace) => {
           if (palace.key === "center") {
             return `<div class="palace-cell center-cell" aria-label="中宫定位">
-              <div class="luopan" aria-hidden="true"><span class="n">北</span><span class="e">东</span><span class="s">南</span><span class="w">西</span></div>
+              <div class="center-marker" aria-hidden="true">
+                <strong>中宫</strong>
+                <span>以户型中心为准<br>确认北向后再安位</span>
+              </div>
             </div>`;
           }
           const items = getItems(palace.key);
