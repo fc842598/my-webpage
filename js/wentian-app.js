@@ -4542,7 +4542,7 @@ function loadWentianHepanAiCache(key) {
   try {
     const raw = sessionStorage.getItem(WENTIAN_HEPAN_AI_CACHE_KEY);
     const parsed = raw ? JSON.parse(raw) : null;
-    if (parsed?.key === key && parsed.card) return parsed.card;
+    if (parsed?.key === key && parsed.card) return normalizeWentianHepanAiCard({ card: parsed.card });
   } catch (_err) {}
   return null;
 }
@@ -4562,19 +4562,79 @@ function clearWentianHepanAiCache(key) {
   } catch (_err) {}
 }
 
+function parseWentianHepanJsonBlock(value) {
+  if (!value || typeof value !== "string") return null;
+  const text = cleanWentianAiText(value);
+  const direct = parseWentianAiJson(text);
+  if (direct) return direct;
+  const start = text.indexOf("{");
+  const end = text.lastIndexOf("}");
+  if (start >= 0 && end > start) {
+    try {
+      return JSON.parse(text.slice(start, end + 1));
+    } catch (_err) {}
+  }
+  return null;
+}
+
+function isWentianHepanAiCardLike(value) {
+  return !!(value && typeof value === "object" && !Array.isArray(value) && (
+    value.title ||
+    value.profileBadge ||
+    value.tag ||
+    Array.isArray(value.sections) ||
+    value.risk ||
+    value.warning ||
+    value.summary ||
+    value.body ||
+    value.content
+  ));
+}
+
+function unwrapWentianHepanAiCard(value) {
+  let card = typeof value === "string" ? parseWentianHepanJsonBlock(value) : value;
+  if (!card || typeof card !== "object" || Array.isArray(card)) return null;
+  if (card.card && isWentianHepanAiCardLike(card.card)) card = card.card;
+
+  const bodyParsed = parseWentianHepanJsonBlock(card.body || card.summary || card.content || card.text || card.finalAnswer);
+  const bodyCard = bodyParsed?.card && isWentianHepanAiCardLike(bodyParsed.card) ? bodyParsed.card : bodyParsed;
+  if (isWentianHepanAiCardLike(bodyCard)) return bodyCard;
+
+  const sections = Array.isArray(card.sections) ? card.sections : [];
+  if (sections.length <= 2) {
+    for (const section of sections) {
+      const nested = parseWentianHepanJsonBlock(section?.content || section?.body || section?.text || "");
+      const nestedCard = nested?.card && isWentianHepanAiCardLike(nested.card) ? nested.card : nested;
+      if (isWentianHepanAiCardLike(nestedCard)) return nestedCard;
+    }
+  }
+  return card;
+}
+
 function normalizeWentianHepanAiCard(data) {
-  const card = data?.card || data?.result?.card || data?.aiCard || null;
+  const normalized = normalizeWentianAiData(data);
+  const candidates = [
+    data?.card,
+    data?.result?.card,
+    data?.aiCard,
+    normalized?.card,
+    normalized,
+    data?.finalAnswer,
+    data?.content,
+    data?.text,
+  ];
+  const card = candidates.map(unwrapWentianHepanAiCard).find(isWentianHepanAiCardLike) || null;
   if (!card || typeof card !== "object") return null;
   const sections = (Array.isArray(card.sections) ? card.sections : [])
     .map((item) => ({
-      title: String(item?.title || "").trim(),
-      content: String(item?.content || "").trim(),
+      title: trimWentianAiText(item?.title || "判定", 14),
+      content: trimWentianAiText(item?.content || item?.body || item?.text || "", 190),
     }))
-    .filter((item) => item.title || item.content)
+    .filter((item) => item.content)
     .slice(0, 4);
-  const title = String(card.title || "").trim();
-  const profileBadge = String(card.profileBadge || card.tag || "").trim();
-  const risk = String(card.risk || card.warning || "").trim();
+  const title = trimWentianAiText(card.title || "", 18);
+  const profileBadge = trimWentianAiText(card.profileBadge || card.tag || "", 20);
+  const risk = trimWentianAiText(card.risk || card.warning || "", 90);
   if (!title && !profileBadge && !sections.length && !risk) return null;
   return { title, profileBadge, sections, risk };
 }

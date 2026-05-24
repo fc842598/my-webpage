@@ -2954,6 +2954,8 @@ html[lang="en"] .wentian-archive-confirm {
   font-size: 13px;
   font-weight: 800;
   line-height: 1.55;
+  word-break: break-word;
+  overflow-wrap: anywhere;
 }
 
 .wentian-hepan-ai-sections {
@@ -2971,6 +2973,13 @@ html[lang="en"] .wentian-archive-confirm {
   margin-bottom: 4px;
   color: #201813;
   font-size: 13px;
+}
+
+.wentian-hepan-ai-sections p {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 5;
 }
 
 .wentian-hepan-ai-risk {
@@ -3135,7 +3144,7 @@ html[lang="en"] .wentian-archive-confirm {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 12px;
-  padding-bottom: 112px;
+  padding-bottom: 150px;
 }
 
 .wentian-hepan-result-actions button {
