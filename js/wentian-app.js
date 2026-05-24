@@ -1174,6 +1174,7 @@ const WENTIAN_CHART_STORAGE_KEY = "wentian-app-current-chart-v1";
 const WENTIAN_ARCHIVES_STORAGE_KEY = "wentian-app-archives-v1";
 const WENTIAN_SELECTED_ARCHIVE_KEY = "wentian-app-selected-archive-id";
 const WENTIAN_HEPAN_SELECTION_KEY = "wentian-app-hepan-selected-ids";
+const WENTIAN_HEPAN_AI_CACHE_KEY = "wentian-app-hepan-ai-judge-v1";
 const WENTIAN_HEPAN_MIN_AGE = 18;
 const WENTIAN_HEPAN_MAX_AGE_GAP = 15;
 const WENTIAN_HEPAN_AI_RULES = [
@@ -1241,6 +1242,7 @@ let wentianLanguageDraft = null;
 let wentianHepanSelectedIds = null;
 let wentianHepanTimeEditId = "";
 let wentianHepanTimeEditError = "";
+let wentianHepanAiState = { key: "", loading: false, card: null, error: "", promise: null };
 let wentianMobileYijingTab = "xiantian";
 let wentianChartCalMode = "solar";
 let wentianChartCity = null;
@@ -1416,6 +1418,16 @@ function makeWentianInviteCode(seed = getWentianClientId()) {
     hash = Math.imul(hash, 16777619) >>> 0;
   }
   return hash.toString(36).toUpperCase().padStart(8, "0").slice(0, 8);
+}
+
+function makeWentianShortHash(seed) {
+  const text = String(seed || "wentian");
+  let hash = 2166136261;
+  for (let i = 0; i < text.length; i += 1) {
+    hash ^= text.charCodeAt(i);
+    hash = Math.imul(hash, 16777619) >>> 0;
+  }
+  return hash.toString(36).toUpperCase().padStart(8, "0").slice(0, 10);
 }
 
 function formatWentianInviteCode(code) {
@@ -4069,6 +4081,167 @@ function makeWentianHepanXuContext(result = getWentianHepanResult()) {
     advice: result.advice,
     createdAt: Date.now(),
   };
+}
+
+function getWentianHepanAiKey(result) {
+  if (!result?.ok) return "";
+  return makeWentianShortHash(JSON.stringify({
+    left: {
+      id: result.left?.id,
+      record: result.left?.chartRecordId,
+      datetime: result.left?.form?.datetime,
+      updatedAt: result.left?.updatedAt,
+    },
+    right: {
+      id: result.right?.id,
+      record: result.right?.chartRecordId,
+      datetime: result.right?.form?.datetime,
+      updatedAt: result.right?.updatedAt,
+    },
+    relation: result.relationLabel,
+    evidence: result.relationEvidence,
+    dimensions: result.dimensions,
+  }));
+}
+
+function loadWentianHepanAiCache(key) {
+  if (!key) return null;
+  try {
+    const raw = sessionStorage.getItem(WENTIAN_HEPAN_AI_CACHE_KEY);
+    const parsed = raw ? JSON.parse(raw) : null;
+    if (parsed?.key === key && parsed.card) return parsed.card;
+  } catch (_err) {}
+  return null;
+}
+
+function saveWentianHepanAiCache(key, card) {
+  if (!key || !card) return;
+  try {
+    sessionStorage.setItem(WENTIAN_HEPAN_AI_CACHE_KEY, JSON.stringify({ key, card, savedAt: Date.now() }));
+  } catch (_err) {}
+}
+
+function clearWentianHepanAiCache(key) {
+  try {
+    const raw = sessionStorage.getItem(WENTIAN_HEPAN_AI_CACHE_KEY);
+    const parsed = raw ? JSON.parse(raw) : null;
+    if (!key || parsed?.key === key) sessionStorage.removeItem(WENTIAN_HEPAN_AI_CACHE_KEY);
+  } catch (_err) {}
+}
+
+function normalizeWentianHepanAiCard(data) {
+  const card = data?.card || data?.result?.card || data?.aiCard || null;
+  if (!card || typeof card !== "object") return null;
+  const sections = (Array.isArray(card.sections) ? card.sections : [])
+    .map((item) => ({
+      title: String(item?.title || "").trim(),
+      content: String(item?.content || "").trim(),
+    }))
+    .filter((item) => item.title || item.content)
+    .slice(0, 4);
+  const title = String(card.title || "").trim();
+  const profileBadge = String(card.profileBadge || card.tag || "").trim();
+  const risk = String(card.risk || card.warning || "").trim();
+  if (!title && !profileBadge && !sections.length && !risk) return null;
+  return { title, profileBadge, sections, risk };
+}
+
+function makeWentianHepanAiPayload(result) {
+  const context = makeWentianHepanXuContext(result);
+  if (!context) return null;
+  const chartData = {
+    chartRecordId: context.recordId,
+    chatMode: "hepan",
+    source: "手机端合盘结果页",
+    hepanContext: {
+      ...context,
+      pageIntent: "screen-49 自动大模型判定",
+      aiPageInstructions: [
+        "必须先定关系主格，再写证据，不得把分数当作主结论。",
+        "必须同时参考 A 到 B、B 到 A 的宫位落点、星曜佐证与双方四柱。",
+        "非夫妻格只讲相处边界和互动方式，不输出婚恋推进结论。",
+      ],
+    },
+    hepanRules: WENTIAN_HEPAN_AI_RULES,
+    hepanRelationship: {
+      label: result.relationLabel,
+      title: result.relationTitle,
+      scope: result.relationScope,
+      evidence: result.relationEvidence || [],
+      landings: result.relationLandings || [],
+    },
+    leftChart: context.left?.chart,
+    rightChart: context.right?.chart,
+    score: result.total,
+    level: result.level,
+    dimensions: result.dimensions,
+    advice: result.advice,
+  };
+  return { moduleKey: "hepan_overall", chartData, extraParams: { source: "wentian-screen-49" } };
+}
+
+function getWentianHepanAiViewState(result) {
+  const key = getWentianHepanAiKey(result);
+  if (!key) return { key: "", loading: false, card: null, error: "" };
+  if (wentianHepanAiState.key === key) return wentianHepanAiState;
+  const cached = loadWentianHepanAiCache(key);
+  return { key, loading: false, card: cached, error: "", promise: null };
+}
+
+function refreshWentianHepanAiPanel() {
+  const panel = document.getElementById("wentian-hepan-ai-panel");
+  if (!panel || state.route !== "screen-49") return;
+  const result = getWentianHepanResult();
+  if (!result.ok) return;
+  panel.innerHTML = renderWentianHepanAiPanel(result);
+  applyWentianLanguageText(panel, getWentianLanguageCode(), { force: true });
+  stabilizeWentianLanguageText(panel);
+  scheduleWentianPhoneFit();
+}
+
+async function requestWentianHepanAiJudgement(result, key) {
+  const payload = makeWentianHepanAiPayload(result);
+  if (!payload) throw new Error("合盘资料不足");
+  const data = await wentianPostJson("/api/ai/run", payload, 90000, 0);
+  const card = normalizeWentianHepanAiCard(data);
+  if (!card) throw new Error("大模型结果解析失败");
+  if (wentianHepanAiState.key === key) {
+    wentianHepanAiState = { key, loading: false, card, error: "", promise: null };
+    saveWentianHepanAiCache(key, card);
+    refreshWentianHepanAiPanel();
+  }
+}
+
+function initWentianHepanAiJudgement(options = {}) {
+  const result = getWentianHepanResult();
+  if (!result.ok) return;
+  const key = getWentianHepanAiKey(result);
+  if (!key) return;
+  if (options.force) clearWentianHepanAiCache(key);
+  const cached = options.force ? null : loadWentianHepanAiCache(key);
+  if (cached) {
+    wentianHepanAiState = { key, loading: false, card: cached, error: "", promise: null };
+    refreshWentianHepanAiPanel();
+    return;
+  }
+  if (wentianHepanAiState.key === key && (wentianHepanAiState.loading || wentianHepanAiState.card)) {
+    refreshWentianHepanAiPanel();
+    return;
+  }
+  wentianHepanAiState = { key, loading: true, card: null, error: "", promise: null };
+  refreshWentianHepanAiPanel();
+  const promise = requestWentianHepanAiJudgement(result, key).catch((error) => {
+    if (wentianHepanAiState.key !== key) return;
+    wentianHepanAiState = {
+      key,
+      loading: false,
+      card: null,
+      error: error?.userMessage || error?.message || "大模型暂时未接通",
+      promise: null,
+    };
+    refreshWentianHepanAiPanel();
+  });
+  wentianHepanAiState.promise = promise;
 }
 
 function getHepanXuOpeningMessage(context) {
@@ -8044,11 +8217,25 @@ function formatWentianHepanReportText(text, fallback = "资料不足，建议结
   return clean || fallback;
 }
 
+function getWentianHepanRelationReading(result) {
+  const type = result?.relationship?.type || "other";
+  const map = {
+    couple: "夫妻格才看婚恋推进；这类盘面重点看承诺、现实节奏和长期分工。",
+    parent: "父母格照顾感强，容易一方带着另一方走；重点不是甜不甜，而是边界是否清楚。",
+    sibling: "兄弟格更像同伴手足，讲义气、能互帮，也容易平辈较劲。",
+    friend: "朋友格重在同道、合作和陪伴，适合先看信用、目标和边界。",
+    child: "子女格有保护与牵引感，容易一方多承担；要看对方是否能独立回应。",
+    life: "命宫格牵引明显，容易互相看见；还要用现实相处验证稳定性。",
+    other: "当前更像关系格，需要用更多互动和盘面证据继续校准。",
+  };
+  return map[type] || map.other;
+}
+
 function getWentianHepanReportSummary(result) {
   const strongest = result.dimensions.slice().sort((a, b) => Number(b[1]) - Number(a[1]))[0] || result.dimensions[0];
   const weakest = result.dimensions.slice().sort((a, b) => Number(a[1]) - Number(b[1]))[0] || result.dimensions[0];
   return {
-    core: `${result.leftDisplay.name} 与 ${result.rightDisplay.name} 当前合盘为「${result.level}」，总分 ${result.total}。关系主格偏向「${result.relationTitle || result.relationLabel}」，先看真实互动节奏，再决定推进深度。`,
+    core: `${result.leftDisplay.name} 与 ${result.rightDisplay.name} 本地初判为「${result.relationLabel || result.relationTitle}」。${getWentianHepanRelationReading(result)}`,
     advantage: strongest ? `${strongest[0]}较突出：${strongest[2]}` : "双方有继续观察和磨合的空间。",
     warning: weakest ? `${weakest[0]}需要留意：${weakest[2]}` : "先把边界、节奏和现实安排说清楚。",
   };
@@ -8075,19 +8262,71 @@ function renderWentianHepanEvidence(result) {
   return evidence.map((item) => `<li>${escapeHtml(item)}</li>`).join("");
 }
 
+function renderWentianHepanAiPanel(result) {
+  const ai = getWentianHepanAiViewState(result);
+  if (ai.card) {
+    const sections = ai.card.sections.length ? ai.card.sections : [
+      { title: "关系定格", content: ai.card.profileBadge || result.relationLabel || "大模型已完成双盘复核。" },
+    ];
+    return `
+      <section class="wentian-hepan-ai-card is-ready">
+        <header>
+          <span>大模型判定</span>
+          <b>已接入</b>
+        </header>
+        <strong>${escapeHtml(ai.card.title || result.relationTitle || "关系合盘")}</strong>
+        <em>${escapeHtml(ai.card.profileBadge || result.relationLabel || "双盘合参")}</em>
+        <div class="wentian-hepan-ai-sections">
+          ${sections.map((item) => `
+            <article>
+              <span>${escapeHtml(item.title || "判定")}</span>
+              <p>${escapeHtml(formatWentianHepanReportText(item.content))}</p>
+            </article>
+          `).join("")}
+        </div>
+        ${ai.card.risk ? `<p class="wentian-hepan-ai-risk"><span>避开误区</span>${escapeHtml(ai.card.risk)}</p>` : ""}
+      </section>
+    `;
+  }
+  if (ai.error) {
+    return `
+      <section class="wentian-hepan-ai-card is-error">
+        <header>
+          <span>大模型判定</span>
+          <b>规则兜底</b>
+        </header>
+        <strong>暂未接通大模型</strong>
+        <p>当前先按本地宫位落点、星曜佐证和四柱合参展示。${escapeHtml(ai.error)}</p>
+        <button type="button" data-action="wentian-hepan-ai-retry">重新判定</button>
+      </section>
+    `;
+  }
+  return `
+    <section class="wentian-hepan-ai-card is-loading">
+      <header>
+        <span>大模型判定</span>
+        <b>复核中</b>
+      </header>
+      <strong>正在读取双盘</strong>
+      <p>先看夫妻宫落点，再看星曜佐证与四柱合参，完成后会替换为最终判定。</p>
+      <div class="wentian-hepan-ai-loading"><i></i><i></i><i></i></div>
+    </section>
+  `;
+}
+
 function sourceHepanResultScreen() {
   const result = getWentianHepanResult();
   if (!result.ok) return sourceHepanInvalidScreen(result);
   const summary = getWentianHepanReportSummary(result);
   return `
-    ${figBox("wt49-bg", 0, 0, 390, 1320, "", "background:linear-gradient(180deg,#fffdf8 0%,#fbf7ef 58%,#f3eadc 100%);")}
+    ${figBox("wt49-bg", 0, 0, 390, 1860, "", "background:linear-gradient(180deg,#fffdf8 0%,#fbf7ef 58%,#f3eadc 100%);")}
     ${wentianSimpleHeader("wt49", "合盘结果")}
     <section class="wentian-hepan-result-panel">
       <div class="wentian-hepan-result-hero">
-        <span>已生成合盘报告</span>
-        <strong>${escapeHtml(result.total)}</strong>
-        <em>${escapeHtml(result.level)}</em>
-        <p>${escapeHtml(result.leftDisplay.name)} × ${escapeHtml(result.rightDisplay.name)}</p>
+        <span>关系主格 · 本地初判</span>
+        <strong>${escapeHtml(result.relationLabel || "关系格")}</strong>
+        <em>${escapeHtml(result.relationTitle || "关系合盘")}</em>
+        <p>${escapeHtml(result.leftDisplay.name)} × ${escapeHtml(result.rightDisplay.name)} · 参考 ${escapeHtml(result.total)}分</p>
       </div>
 
       <div class="wentian-hepan-result-pair">
@@ -8106,31 +8345,35 @@ function sourceHepanResultScreen() {
         </article>
       </div>
 
+      <div id="wentian-hepan-ai-panel">
+        ${renderWentianHepanAiPanel(result)}
+      </div>
+
       <div class="wentian-hepan-report-card">
-        <span>${escapeHtml(result.relationLabel || "关系格局")}</span>
-        <strong>${escapeHtml(result.relationTitle || "关系合盘")}</strong>
+        <span>判定逻辑</span>
+        <strong>先定格局，再看证据</strong>
         <p>${escapeHtml(summary.core)}</p>
       </div>
 
       <div class="wentian-hepan-result-grid">
         <article>
-          <span>优势</span>
+          <span>可用优势</span>
           <p>${escapeHtml(formatWentianHepanReportText(summary.advantage))}</p>
         </article>
         <article>
-          <span>提醒</span>
+          <span>关键提醒</span>
           <p>${escapeHtml(formatWentianHepanReportText(summary.warning))}</p>
         </article>
       </div>
 
       <div class="wentian-hepan-result-card">
-        <h3>合盘维度</h3>
-        ${renderWentianHepanDimensionRows(result)}
+        <h3>盘面依据</h3>
+        <ul>${renderWentianHepanEvidence(result)}</ul>
       </div>
 
       <div class="wentian-hepan-result-card">
-        <h3>盘面依据</h3>
-        <ul>${renderWentianHepanEvidence(result)}</ul>
+        <h3>本地合参</h3>
+        ${renderWentianHepanDimensionRows(result)}
       </div>
 
       <div class="wentian-hepan-advice-card">
@@ -12904,7 +13147,7 @@ function renderConvertedScreen(no) {
   }
   const polishedScreen = renderWentianPolishedScreen(screen);
   if (polishedScreen) {
-    const polishedHeight = screen.no === 4 ? 892 : screen.no === 8 ? 1280 : screen.no === 17 ? getLiuyaoCastScreenHeight() : screen.no === 18 || screen.no === 19 ? 1480 : screen.no === 20 ? getLiuyaoResultScreenHeight() : screen.no === 22 ? 1120 : screen.no === 24 ? 1180 : screen.no === 44 ? getYangzhaiResultHeight() : screen.no === 46 ? LIUREN_SCREEN_HEIGHT : screen.no === 49 ? 1320 : 844;
+    const polishedHeight = screen.no === 4 ? 892 : screen.no === 8 ? 1280 : screen.no === 17 ? getLiuyaoCastScreenHeight() : screen.no === 18 || screen.no === 19 ? 1480 : screen.no === 20 ? getLiuyaoResultScreenHeight() : screen.no === 22 ? 1120 : screen.no === 24 ? 1180 : screen.no === 44 ? getYangzhaiResultHeight() : screen.no === 46 ? LIUREN_SCREEN_HEIGHT : screen.no === 49 ? 1860 : 844;
     const wideBgClass = screen.no >= 42 && screen.no <= 45 ? " wide-bg" : "";
     const customHotspots = screen.no >= 17 && screen.no <= 20 ? "" : convertedFlowHotspots(screen);
     return figPhone(`screen-${screen.no}`, `${String(screen.no).padStart(2, "0")} ${screen.title}`, `
@@ -13061,6 +13304,7 @@ function navigate(route, push = true) {
     if (screen.no === 26) window.setTimeout(initWentianChartForm, 0);
     if (screen.no === 27) window.setTimeout(initWentianClassicChartScreen, 0);
     if (screen.no === 46) window.setTimeout(initLiurenScreen, 0);
+    if (screen.no === 49) window.setTimeout(initWentianHepanAiJudgement, 0);
     if (!location.hash.includes("figmacapture=") && !hasWentianAuthParams(getWentianUrlParams(location.hash))) location.hash = route;
     window.scrollTo(0, 0);
     return;
@@ -13641,6 +13885,10 @@ document.addEventListener("click", (event) => {
   }
   if (action === "wentian-hepan-ask-xu") {
     openWentianHepanXuChat();
+    return;
+  }
+  if (action === "wentian-hepan-ai-retry") {
+    initWentianHepanAiJudgement({ force: true });
     return;
   }
   if (action === "wentian-share-wechat") {

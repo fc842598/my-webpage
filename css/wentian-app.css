@@ -2535,6 +2535,7 @@ html[lang="en"] .wentian-archive-confirm {
 }
 
 .wentian-hepan-result-pair article,
+.wentian-hepan-ai-card,
 .wentian-hepan-report-card,
 .wentian-hepan-result-card,
 .wentian-hepan-result-grid article,
@@ -2596,6 +2597,7 @@ html[lang="en"] .wentian-archive-confirm {
 }
 
 .wentian-hepan-report-card,
+.wentian-hepan-ai-card,
 .wentian-hepan-result-card,
 .wentian-hepan-advice-card {
   padding: 15px 16px;
@@ -2616,6 +2618,142 @@ html[lang="en"] .wentian-archive-confirm {
   font-size: 21px;
   font-weight: 900;
   line-height: 1.2;
+}
+
+.wentian-hepan-ai-card {
+  display: grid;
+  gap: 10px;
+  border-color: #d9b66a;
+  background:
+    linear-gradient(180deg, rgba(255, 248, 237, .92), #fffdf8);
+}
+
+.wentian-hepan-ai-card header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.wentian-hepan-ai-card header span,
+.wentian-hepan-ai-card header b,
+.wentian-hepan-ai-card em,
+.wentian-hepan-ai-sections article span,
+.wentian-hepan-ai-risk span {
+  font-style: normal;
+  font-weight: 900;
+}
+
+.wentian-hepan-ai-card header span {
+  color: #a47726;
+  font-size: 12px;
+}
+
+.wentian-hepan-ai-card header b {
+  flex: 0 0 auto;
+  min-width: 54px;
+  border-radius: 999px;
+  padding: 5px 9px;
+  background: #fff1dc;
+  color: #9b742e;
+  font-size: 11px;
+  text-align: center;
+}
+
+.wentian-hepan-ai-card > strong {
+  display: block;
+  color: #201813;
+  font-size: 20px;
+  font-weight: 900;
+  line-height: 1.25;
+}
+
+.wentian-hepan-ai-card em {
+  display: block;
+  color: #8f3d30;
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+.wentian-hepan-ai-card > p,
+.wentian-hepan-ai-sections p,
+.wentian-hepan-ai-risk {
+  margin: 0;
+  color: #695f55;
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1.55;
+}
+
+.wentian-hepan-ai-sections {
+  display: grid;
+  gap: 8px;
+}
+
+.wentian-hepan-ai-sections article {
+  border-top: 1px solid #f0e3d0;
+  padding-top: 9px;
+}
+
+.wentian-hepan-ai-sections article span {
+  display: block;
+  margin-bottom: 4px;
+  color: #201813;
+  font-size: 13px;
+}
+
+.wentian-hepan-ai-risk {
+  border-radius: 13px;
+  padding: 10px 11px;
+  background: rgba(169, 68, 55, .08);
+}
+
+.wentian-hepan-ai-risk span {
+  display: block;
+  margin-bottom: 3px;
+  color: #a94437;
+  font-size: 12px;
+}
+
+.wentian-hepan-ai-card.is-loading {
+  border-color: #eadfce;
+}
+
+.wentian-hepan-ai-loading {
+  display: grid;
+  gap: 6px;
+}
+
+.wentian-hepan-ai-loading i {
+  display: block;
+  height: 8px;
+  border-radius: 8px;
+  background: linear-gradient(90deg, #eadfce, #fff8ed, #eadfce);
+}
+
+.wentian-hepan-ai-loading i:nth-child(2) {
+  width: 82%;
+}
+
+.wentian-hepan-ai-loading i:nth-child(3) {
+  width: 64%;
+}
+
+.wentian-hepan-ai-card.is-error {
+  border-color: rgba(169, 68, 55, .28);
+  background: #fff8f4;
+}
+
+.wentian-hepan-ai-card.is-error button {
+  justify-self: start;
+  height: 34px;
+  border: 1px solid #d6b463;
+  border-radius: 17px;
+  padding: 0 14px;
+  background: #fff;
+  color: #9b742e;
+  font-size: 12px;
+  font-weight: 900;
 }
 
 .wentian-hepan-report-card p,
