@@ -1242,7 +1242,7 @@ const WENTIAN_CHART_STORAGE_KEY = "wentian-app-current-chart-v1";
 const WENTIAN_ARCHIVES_STORAGE_KEY = "wentian-app-archives-v1";
 const WENTIAN_SELECTED_ARCHIVE_KEY = "wentian-app-selected-archive-id";
 const WENTIAN_HEPAN_SELECTION_KEY = "wentian-app-hepan-selected-ids";
-const WENTIAN_HEPAN_AI_CACHE_KEY = "wentian-app-hepan-ai-judge-v1";
+const WENTIAN_HEPAN_AI_CACHE_KEY = "wentian-app-hepan-ai-judge-v2";
 const WENTIAN_HEPAN_MIN_AGE = 18;
 const WENTIAN_HEPAN_MAX_AGE_GAP = 15;
 const WENTIAN_HEPAN_AI_RULES = [
@@ -4651,9 +4651,21 @@ function makeWentianHepanAiPayload(result) {
       pageIntent: "screen-49 自动大模型判定",
       aiPageInstructions: [
         "必须先定关系主格，再写证据，不得把分数当作主结论。",
+        "输出必须围绕三段报告：女方夫妻宫解读、男方夫妻宫解读、双盘合参解读。",
+        "女方与男方夫妻宫解读必须分别读取各自夫妻宫的地支、主星、辅曜、四化，以及夫妻宫落到对方哪一宫。",
         "必须同时参考 A 到 B、B 到 A 的宫位落点、星曜佐证与双方四柱。",
         "非夫妻格只讲相处边界和互动方式，不输出婚恋推进结论。",
       ],
+      aiOutputContract: {
+        title: "关系合盘：一句话结论",
+        profileBadge: "关系格 · 夫妻宫合参",
+        sections: [
+          { title: "女方夫妻宫", content: "只解读女方夫妻宫信息与落对方宫位。" },
+          { title: "男方夫妻宫", content: "只解读男方夫妻宫信息与落对方宫位。" },
+          { title: "双盘合参解读", content: "综合两张命盘与本次关系格，给最终盘面解读。" },
+        ],
+        risk: "一句避坑提醒",
+      },
     },
     hepanRules: WENTIAN_HEPAN_AI_RULES,
     hepanRelationship: {
@@ -8911,12 +8923,98 @@ function renderWentianHepanEvidence(result) {
   return evidence.map((item) => `<li>${escapeHtml(item)}</li>`).join("");
 }
 
+function getWentianHepanPersonByGender(result, gender) {
+  const entries = [
+    { archive: result.left, display: result.leftDisplay, side: "left" },
+    { archive: result.right, display: result.rightDisplay, side: "right" },
+  ].filter((item) => item.archive);
+  const target = gender === "female" ? "女" : "男";
+  return entries.find((item) => normalizeWentianArchiveGender(item.archive) === gender)
+    || entries.find((item) => String(item.display?.gender || "").includes(target))
+    || entries[gender === "female" ? 0 : 1]
+    || entries[0]
+    || null;
+}
+
+function findWentianHepanLandingForPerson(result, person) {
+  const name = person?.display?.name || getWentianHepanPersonLabel(person?.archive);
+  return (result.relationLandings || []).find((item) => item.sourceName === name)
+    || (result.relationLandings || []).find((item) => String(item.sourceName || "").includes(name))
+    || null;
+}
+
+function describeWentianHepanSpousePalace(result, person, roleLabel) {
+  if (!person?.archive) return `${roleLabel}夫妻宫资料不足，需先补全命盘。`;
+  const archive = person.archive;
+  const display = person.display || getWentianArchiveDisplay(archive);
+  const palace = findWentianArchivePalace(archive, ["夫妻"]) || archive.chartData?.spousePalace;
+  if (!palace) return `${display.name || roleLabel}暂未取到夫妻宫，先按四柱与已知宫位合参。`;
+  const palaceName = formatWentianPalaceLabel(getWentianPalaceName(palace) || "夫妻");
+  const branch = getWentianPalaceBranch(palace);
+  const majorStars = formatWentianParamStars(palace.majorStars, 4);
+  const minorStars = formatWentianParamStars(palace.minorStars, 4);
+  const mutagens = formatWentianParamMutagens(palace);
+  const landing = findWentianHepanLandingForPerson(result, person);
+  const parts = [
+    `${display.name || roleLabel}${palaceName}${branch ? `落${branch}` : ""}，主星为${majorStars}。`,
+    minorStars && minorStars !== "空宫" ? `辅曜见${minorStars}，看相处细节、吸引点与压力来源。` : "辅曜不重，先看主星组合与落宫关系。",
+    mutagens ? `四化见${mutagens}，这是关系里容易反复被触发的主题。` : "",
+    landing ? `${landing.evidence}，所以这段关系不能只看单人择偶标准，还要看对方命盘承接到哪一宫。` : "目前先按夫妻宫本宫信息判断择偶倾向，再结合对方命盘复核。",
+  ].filter(Boolean);
+  return parts.join("");
+}
+
+function describeWentianHepanCombinedChart(result) {
+  const evidence = (result.relationEvidence || []).slice(0, 2).join("；");
+  const dims = (result.dimensions || [])
+    .slice(0, 2)
+    .map(([label, score, note]) => `${label}${score}分，${note}`)
+    .join("；");
+  return [
+    `${result.leftDisplay.name}与${result.rightDisplay.name}本地初判为「${result.relationLabel || result.relationTitle || "关系格"}」，参考${result.total}分。`,
+    evidence ? `盘面证据：${evidence}。` : "",
+    dims ? `合参重点：${dims}。` : "",
+    result.advice ? `落地建议：${result.advice}` : "",
+  ].filter(Boolean).join("");
+}
+
+function findWentianHepanAiSection(card, keywords) {
+  const sections = Array.isArray(card?.sections) ? card.sections : [];
+  const lowerKeywords = keywords.map((item) => String(item || "").toLowerCase()).filter(Boolean);
+  return sections.find((section) => {
+    const title = String(section?.title || "").toLowerCase();
+    return lowerKeywords.some((keyword) => title.includes(keyword));
+  }) || null;
+}
+
+function buildWentianHepanAiSections(result, card) {
+  const female = getWentianHepanPersonByGender(result, "female");
+  const male = getWentianHepanPersonByGender(result, "male");
+  const femaleName = female?.display?.name || "女方";
+  const maleName = male?.display?.name || "男方";
+  const femaleAi = findWentianHepanAiSection(card, ["女方", "女命", "女性", femaleName]);
+  const maleAi = findWentianHepanAiSection(card, ["男方", "男命", "男性", maleName]);
+  const combinedAi = findWentianHepanAiSection(card, ["双盘", "合参", "命盘", "综合"]);
+  return [
+    {
+      title: `女方夫妻宫：${femaleName}`,
+      content: femaleAi?.content || describeWentianHepanSpousePalace(result, female, "女方"),
+    },
+    {
+      title: `男方夫妻宫：${maleName}`,
+      content: maleAi?.content || describeWentianHepanSpousePalace(result, male, "男方"),
+    },
+    {
+      title: "双盘合参解读",
+      content: combinedAi?.content || describeWentianHepanCombinedChart(result),
+    },
+  ];
+}
+
 function renderWentianHepanAiPanel(result) {
   const ai = getWentianHepanAiViewState(result);
   if (ai.card) {
-    const sections = ai.card.sections.length ? ai.card.sections : [
-      { title: "关系定格", content: ai.card.profileBadge || result.relationLabel || "大模型已完成双盘复核。" },
-    ];
+    const sections = buildWentianHepanAiSections(result, ai.card);
     return `
       <section class="wentian-hepan-ai-card is-ready">
         <header>
@@ -8924,7 +9022,7 @@ function renderWentianHepanAiPanel(result) {
           <b>已接入</b>
         </header>
         <strong>${escapeHtml(ai.card.title || result.relationTitle || "关系合盘")}</strong>
-        <em>${escapeHtml(ai.card.profileBadge || result.relationLabel || "双盘合参")}</em>
+        <em>${escapeHtml(ai.card.profileBadge || `${result.relationLabel || "关系格"} · 夫妻宫合参`)}</em>
         <div class="wentian-hepan-ai-sections">
           ${sections.map((item) => `
             <article>
