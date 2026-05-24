@@ -1656,6 +1656,14 @@
     return `${profile.year}-${pad2(profile.month)}-${pad2(profile.day)}`;
   }
 
+  function dateStrWithDayShift(profile, dayShift = 0) {
+    const offset = Number(dayShift) || 0;
+    if (!offset) return dateStr(profile);
+    const date = new Date(Number(profile.year), Number(profile.month) - 1, Number(profile.day));
+    date.setDate(date.getDate() + offset);
+    return `${date.getFullYear()}-${pad2(date.getMonth() + 1)}-${pad2(date.getDate())}`;
+  }
+
   function daysInMonth(year, month) {
     return new Date(year, month, 0).getDate();
   }
@@ -1966,7 +1974,10 @@
     });
     const zoneText = formatTimeZoneLabel(tst.timeZone, tst.tzOffset);
     if (selectedCity && $('#mbpCityTz')) $('#mbpCityTz').textContent = zoneText;
-    display.innerHTML = `当地法定时 ${pad2(time.hour)}:${pad2(time.minute)} ${escapeHtml(zoneText)} · 真太阳时 <b>${pad2(tst.trueSolarHour)}:${pad2(tst.trueSolarMinute)}</b> · ${escapeHtml(tst.diffStr)}`;
+    const trueSolarDate = dateStrWithDayShift(date, tst.dayShift);
+    const trueSolarTime = `${pad2(tst.trueSolarHour)}:${pad2(tst.trueSolarMinute)}`;
+    const trueSolarDisplay = tst.dayShift ? `${trueSolarDate} ${trueSolarTime}` : trueSolarTime;
+    display.innerHTML = `当地法定时 ${pad2(time.hour)}:${pad2(time.minute)} ${escapeHtml(zoneText)} · 真太阳时 <b>${escapeHtml(trueSolarDisplay)}</b> · ${escapeHtml(tst.diffStr)}`;
     if (badge) {
       badge.textContent = tst.isEstimated ? '默认北京估算' : `${formatCityLabel(selectedCity)} ${zoneText}`;
       badge.style.display = '';
@@ -2047,18 +2058,22 @@
       })
       : null;
     const timeStr = `${pad2(profile.hour)}:${pad2(profile.minute)}`;
-    const trueSolarTimeStr = tstResult ? `${dateStr(profile)} ${pad2(tstResult.trueSolarHour)}:${pad2(tstResult.trueSolarMinute)}` : '';
+    const localDateStr = dateStr(profile);
+    const trueSolarDateStr = tstResult ? dateStrWithDayShift(profile, tstResult.dayShift) : localDateStr;
+    const trueSolarTimeStr = tstResult ? `${trueSolarDateStr} ${pad2(tstResult.trueSolarHour)}:${pad2(tstResult.trueSolarMinute)}` : '';
     const birthTimeZone = profile.cityTimeZone || tstResult?.timeZone || '';
     const timeIdx = typeof window.tstToShichen === 'function' && tstResult
       ? window.tstToShichen(tstResult.trueSolarHour, tstResult.trueSolarMinute)
       : localShichenIndex(profile.hour, profile.minute);
     return {
       ...profile,
-      dateStr: dateStr(profile),
+      dateStr: trueSolarDateStr,
+      localDateStr,
+      trueSolarDateStr,
       cstHour: profile.hour,
       cstMinute: profile.minute,
       timeStr,
-      localTimeStr: `${dateStr(profile)} ${timeStr}`,
+      localTimeStr: `${localDateStr} ${timeStr}`,
       solarTimeStr: trueSolarTimeStr,
       trueSolarTimeStr,
       birthTimeZone,

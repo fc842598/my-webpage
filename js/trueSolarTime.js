@@ -285,7 +285,10 @@ function calcTrueSolarTime({ year, month, day, hour, minute = 0, longitude, tzOf
 
   const pad = n => String(n).padStart(2, '0');
   const localStr = `${year}-${pad(month)}-${pad(day)} ${pad(hour)}:${pad(minute || 0)}`;
-  const tstStr = `${year}-${pad(month)}-${pad(day)} ${pad(tstHour)}:${pad(tstMin)}`;
+  const tstDate = new Date(date.getTime());
+  tstDate.setDate(tstDate.getDate() + dayShift);
+  const trueSolarDate = `${tstDate.getFullYear()}-${pad(tstDate.getMonth() + 1)}-${pad(tstDate.getDate())}`;
+  const tstStr = `${trueSolarDate} ${pad(tstHour)}:${pad(tstMin)}`;
 
   return {
     trueSolarHour: tstHour,
@@ -299,6 +302,7 @@ function calcTrueSolarTime({ year, month, day, hour, minute = 0, longitude, tzOf
     cstStr: localStr,
     localStr,
     tstStr,
+    trueSolarDate,
     dayShift,
     diffStr,
     cityName: cityName || '北京（默认）',

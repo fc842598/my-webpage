@@ -2049,6 +2049,16 @@ function padWentianNumber(value) {
   return String(value).padStart(2, "0");
 }
 
+function formatWentianDateOnly(date) {
+  return `${date.getFullYear()}-${padWentianNumber(date.getMonth() + 1)}-${padWentianNumber(date.getDate())}`;
+}
+
+function formatWentianTrueSolarDate(date, trueSolarResult) {
+  const shifted = new Date(date.getTime());
+  shifted.setDate(shifted.getDate() + (Number(trueSolarResult?.dayShift) || 0));
+  return formatWentianDateOnly(shifted);
+}
+
 function formatWentianDateInputValue(date) {
   return `${date.getFullYear()}-${padWentianNumber(date.getMonth() + 1)}-${padWentianNumber(date.getDate())}T${padWentianNumber(date.getHours())}:${padWentianNumber(date.getMinutes())}`;
 }
@@ -2454,7 +2464,10 @@ function updateWentianChartPreview() {
       const used = document.getElementById("wentian-chart-true-solar")?.checked;
       const shichen = ["子", "丑", "寅", "卯", "辰", "巳", "午", "未", "申", "酉", "戌", "亥"][getWentianTimeIndex(result.trueSolarHour, result.trueSolarMinute)] || "";
       updateWentianSelectedCityText(result.tzOffset);
-      tst.textContent = `${used ? "已采用" : "预览"}真太阳时：${padWentianNumber(result.trueSolarHour)}:${padWentianNumber(result.trueSolarMinute)} · ${formatWentianTzOffset(result.tzOffset)} · ${shichen}时 · ${result.diffStr}`;
+      const trueSolarDate = formatWentianTrueSolarDate(parts.date, result);
+      const trueSolarClock = `${padWentianNumber(result.trueSolarHour)}:${padWentianNumber(result.trueSolarMinute)}`;
+      const trueSolarDisplay = result.dayShift ? `${trueSolarDate} ${trueSolarClock}` : trueSolarClock;
+      tst.textContent = `${used ? "已采用" : "预览"}真太阳时：${trueSolarDisplay} · ${formatWentianTzOffset(result.tzOffset)} · ${shichen}时 · ${result.diffStr}`;
     }
   } catch (error) {
     if (preview) preview.textContent = error.message || "";
@@ -2505,7 +2518,8 @@ function buildWentianChartNormFromSaved(saved, date) {
     calcMinute = trueSolarResult.trueSolarMinute;
   }
   const { leapMonthRule } = getWentianSolarLeapRuleInfo(date, autoLeapMonth);
-  const dateStr = `${date.getFullYear()}-${padWentianNumber(date.getMonth() + 1)}-${padWentianNumber(date.getDate())}`;
+  const localDateStr = formatWentianDateOnly(date);
+  const dateStr = trueSolarResult ? formatWentianTrueSolarDate(date, trueSolarResult) : localDateStr;
   return {
     name: form.name || saved?.chartData?.name || "",
     gender: form.gender || saved?.chartData?.gender || "male",
@@ -2515,6 +2529,7 @@ function buildWentianChartNormFromSaved(saved, date) {
     cityScope,
     date,
     dateStr,
+    localDateStr,
     timeIndex: getWentianTimeIndex(calcHour, calcMinute),
     trueSolarResult,
     useTrueSolar,
@@ -2633,6 +2648,7 @@ function buildWentianChartPayload(chart, norm) {
   const trueSolarTime = norm?.trueSolarResult
     ? `${norm.dateStr || String(birthDate).slice(0, 10)} ${padWentianNumber(norm.trueSolarResult.trueSolarHour)}:${padWentianNumber(norm.trueSolarResult.trueSolarMinute)}`
     : "";
+  const effectiveSolarTime = trueSolarTime || birthDate;
   const currentYear = new Date().getFullYear();
   const birthYear = norm?.date?.getFullYear?.() || Number(String(chart?.solarDate || "").slice(0, 4)) || WENTIAN_XU_CHART_BASE.birthYear;
   const realCurrentAge = birthYear ? currentYear - birthYear + 1 : 0;
@@ -2663,7 +2679,7 @@ function buildWentianChartPayload(chart, norm) {
     chartRecordId: getWentianChartRecordId(),
     gender: norm?.gender || "male",
     birthDate,
-    solarTime: birthDate,
+    solarTime: effectiveSolarTime,
     localTime: birthDate,
     trueSolarTime,
     trueSolarDiff: norm?.trueSolarResult?.diffStr || "",
@@ -7600,7 +7616,8 @@ function getWentianChartFormData() {
     type: document.getElementById("wentian-chart-type")?.value || "ziwei",
     city,
     date,
-    dateStr: `${date.getFullYear()}-${padWentianNumber(date.getMonth() + 1)}-${padWentianNumber(date.getDate())}`,
+    dateStr: trueSolarResult ? formatWentianTrueSolarDate(date, trueSolarResult) : formatWentianDateOnly(date),
+    localDateStr: formatWentianDateOnly(date),
     timeIndex: getWentianTimeIndex(calcHour, calcMinute),
     trueSolarResult,
     useTrueSolar,
