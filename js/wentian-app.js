@@ -12957,43 +12957,70 @@ function convertedSpecial(screen) {
 }
 
 function sourceDashboardHomeScreen() {
-  const account = getWentianAuthDisplay();
-  const member = getWentianMemberSnapshot();
-  const memberLabel = member.isMember ? "会员" : (account.loggedIn ? "账号" : "登录/注册");
-  const accountGreet = account.loggedIn ? `${account.name}，安好` : "登录/注册";
-  const accountSub = account.loggedIn ? account.sub : "登录后支付查订单";
-  return `
-    ${figBox("source-1-bg", 0, 0, 390, 1044, "", "background:linear-gradient(180deg,#fffdf8 0%,#fbf7ef 50%,#faf5ed 100%);")}
-    ${figBox("source-1-avatar", 18, 24, 44, 44, "", "border-radius:22px;background:#f4ead8;box-shadow:0 6px 16px rgba(188,142,59,.12);")}
-    ${figBox("source-1-avatar-head", 33, 36, 12, 12, "", "border-radius:6px;background:#c58d25;")}
-    ${figBox("source-1-avatar-body", 27, 52, 24, 13, "", "border-radius:12px 12px 5px 5px;background:#c58d25;")}
-    ${figText("source-1-greet", escapeHtml(accountGreet), 78, 28, 128, 20, "#25221f", 800, "left", "white-space:nowrap;overflow:hidden;text-overflow:ellipsis;")}
-    ${figText("source-1-date", escapeHtml(accountSub), 78, 53, 130, 14, "#8d877e", 500, "left", "white-space:nowrap;")}
-    ${figBox("source-1-login-pill", 212, 32, 72, 26, "", `border-radius:14px;background:${member.isMember ? "#fff1d8" : "#f3eadc"};`)}
-    ${figText("source-1-login-pill-text", memberLabel, 212, 39, 72, 11, member.isMember ? "#9f3d2e" : "#bd8624", 800, "center", "white-space:nowrap;")}
-    ${figButton("source-1-login-hit", 18, 20, 266, 56, 'data-action="wentian-login-open"')}
-    ${figText("source-1-recommend-title", "为你推荐", 18, 98, 130, 22, "#25221f", 800)}
-    ${figBox("source-1-master-1", 18, 130, 354, 288, "converted-card", "border-radius:16px;overflow:hidden;box-shadow:0 10px 24px rgba(70,45,25,.13);")}
-    ${figImage("source-1-master-img-1", "../images/wentian-prototype-assets/xu-banxian.jpg", 18, 130, 354, 170, "border-radius:16px 16px 0 0;object-fit:cover;object-position:center 20%;")}
-    ${figBox("source-1-master-shade", 18, 252, 354, 48, "", "background:linear-gradient(180deg,rgba(0,0,0,0),rgba(0,0,0,.24));")}
-    ${figText("source-1-master-name-1", "许半仙", 36, 322, 132, 24, "#25221f", 800)}
-    ${figText("source-1-master-desc-1", "紫微命盘专属解析，已接入档案", 36, 352, 214, 14, "#91897f", 500, "left", "white-space:nowrap;overflow:hidden;text-overflow:ellipsis;")}
-    ${figBox("source-1-chip-1a", 36, 380, 70, 24, "", "border-radius:12px;background:#f8f3ea;border:1px solid #efe4d2;")}
-    ${figText("source-1-chip-1a-text", "紫微命盘", 44, 386, 54, 11, "#b2822e", 700, "center")}
-    ${figBox("source-1-chip-1b", 118, 380, 62, 24, "", "border-radius:12px;background:#f8f3ea;border:1px solid #efe4d2;")}
-    ${figText("source-1-chip-1b-text", "AI解析", 125, 386, 48, 11, "#b2822e", 700, "center")}
-    ${figBox("source-1-master-go", 278, 356, 72, 38, "", "border-radius:19px;background:#c08a2c;")}
-    ${figText("source-1-master-go-text", "去问他", 286, 367, 56, 13, "#fff", 700, "center")}
+  {
+    const dashboardAccount = getWentianAuthDisplay();
+    const dashboardMember = getWentianMemberSnapshot();
+    const dashboardArchive = getCurrentWentianArchive();
+    const dashboardArchiveDisplay = getWentianArchiveDisplay(dashboardArchive);
+    const dashboardArchiveName = dashboardArchive ? dashboardArchiveDisplay.name : "未建档";
+    const dashboardArchiveMeta = dashboardArchive
+      ? [dashboardArchiveDisplay.gender, dashboardArchiveDisplay.datetime].filter(Boolean).join(" · ")
+      : "先建立命盘档案";
+    const dashboardMemberLabel = dashboardMember.isMember ? "会员" : dashboardMember.daily;
+    const dashboardLoginLabel = dashboardAccount.loggedIn ? "账户" : "登录";
+    const dashboardFeatures = [
+      ["紫微斗数", "排盘 · AI细读", "01-feature-hepan.png", "screen-26", 18, 400],
+      ["合盘分析", "双方命盘合参", "01-feature-hepan.png", "hepan", 201, 400],
+      ["六爻占卜", "铜钱起卦", "01-feature-gua.png", "screen-17", 18, 516],
+      ["阳宅地脉", "方位九宫", "01-feature-li.png", "screen-42", 201, 516],
+    ];
+    return `
+      ${figBox("source-1-bg", 0, 0, 390, 844, "", "background:linear-gradient(180deg,#fffdf8 0%,#fbf7ef 50%,#fff6ea 100%);")}
+      ${figText("source-1-brand", "阅天AI", 18, 26, 96, 23, "#25221f", 900)}
+      ${figText("source-1-brand-sub", "专业AI命理工作台", 18, 54, 150, 13, "#8d877e", 700)}
+      ${figBox("source-1-login-pill", 256, 28, 116, 34, "", "border-radius:17px;background:#fffdf8;border:1px solid #eadfce;box-shadow:0 6px 14px rgba(70,45,25,.06);")}
+      ${figText("source-1-login-pill-text", `${dashboardLoginLabel} · ${dashboardMemberLabel}`, 266, 38, 96, 12, dashboardMember.isMember ? "#9f3d2e" : "#9a681c", 900, "center", "white-space:nowrap;overflow:hidden;text-overflow:ellipsis;")}
+      ${figButton("source-1-login-hit", 250, 22, 128, 48, 'data-action="wentian-login-open"', "", "z-index:35;")}
 
-    ${[["紫微斗数排盘", "建立命盘档案，接入AI解读", "01-feature-hepan.png", "screen-26", 438], ["合盘分析", "命理相合，缘分几许", "01-feature-hepan.png", "hepan", 535], ["六爻占卜", "铜钱起卦，纳甲解卦", "01-feature-gua.png", "screen-17", 632], ["阳宅地脉", "方位九宫，安位解读", "01-feature-gua.png", "screen-42", 729], ["六壬法", "农历月日时，即刻起课", "01-feature-gua.png", "screen-46", 826]].map(([title, sub, icon, route, y], index) => `
-      ${figBox(`source-1-feature-${index}`, 18, y, 354, 96, "converted-card", "border-radius:14px;box-shadow:0 8px 20px rgba(70,45,25,.1);background:#fffdfb;")}
-      ${figText(`source-1-feature-title-${index}`, title, 36, y + 30, 150, 21, "#25221f", 800)}
-      ${figText(`source-1-feature-sub-${index}`, sub, 36, y + 58, 190, 14, "#969087", 500)}
-      ${figImage(`source-1-feature-icon-${index}`, `../images/wentian-prototype-assets/${icon}`, 286, y + 10, 72, 76, "object-fit:contain;")}
-      ${figButton(`source-1-feature-hit-${index}`, 18, y, 354, 96, `data-route="${route}"`)}
-    `).join("")}
-    ${sourceAppBottomNav("首页", 950)}
-  `;
+      ${figBox("source-1-hero", 18, 92, 354, 184, "", "border-radius:22px;background:linear-gradient(135deg,#2b1d16 0%,#8f3d30 58%,#c48b25 100%);overflow:hidden;box-shadow:0 16px 34px rgba(96,53,24,.18);")}
+      ${figBox("source-1-hero-shine", 218, 84, 170, 170, "", "border-radius:85px;background:rgba(255,232,178,.16);")}
+      ${figImage("source-1-hero-master", "../images/wentian-prototype-assets/xu-banxian.jpg", 254, 110, 98, 116, "border-radius:18px;object-fit:cover;object-position:center 18%;box-shadow:0 10px 24px rgba(0,0,0,.18);")}
+      ${figText("source-1-hero-kicker", "许半仙已在线", 36, 118, 118, 12, "#f6d783", 900)}
+      ${figText("source-1-hero-title", "先建命盘", 36, 144, 150, 25, "#fffaf3", 900, "left", "white-space:nowrap;")}
+      ${figText("source-1-hero-copy", "再交给许半仙细读\n排盘、合盘、占卜从一个档案开始。", 36, 176, 202, 12, "rgba(255,250,243,.86)", 700, "left", "line-height:1.45;")}
+      ${figBox("source-1-hero-primary", 36, 226, 112, 34, "", "border-radius:17px;background:#fffaf3;")}
+      ${figText("source-1-hero-primary-text", "开始排盘", 36, 236, 112, 12, "#8f3d30", 900, "center")}
+      ${figButton("source-1-hero-primary-hit", 36, 226, 112, 34, 'data-route="screen-26"', "", "z-index:35;")}
+      ${figBox("source-1-hero-secondary", 158, 226, 92, 34, "", "border-radius:17px;background:rgba(255,250,243,.16);border:1px solid rgba(255,250,243,.36);")}
+      ${figText("source-1-hero-secondary-text", "去问他", 158, 236, 92, 12, "#fffaf3", 900, "center")}
+      ${figButton("source-1-hero-secondary-hit", 158, 226, 92, 34, 'data-route="screen-5"', "", "z-index:35;")}
+
+      ${figBox("source-1-archive", 18, 294, 354, 70, "", "border-radius:18px;background:#fffdf8;border:1px solid #eadfce;box-shadow:0 8px 20px rgba(70,45,25,.07);")}
+      ${figBox("source-1-archive-mark", 36, 313, 32, 32, "", "border-radius:16px;background:#fff0d6;")}
+      ${figText("source-1-archive-mark-text", "命", 36, 322, 32, 12, "#a37018", 900, "center")}
+      ${figText("source-1-archive-title", escapeHtml(dashboardArchiveName), 82, 308, 148, 18, "#25221f", 900, "left", "white-space:nowrap;overflow:hidden;text-overflow:ellipsis;")}
+      ${figText("source-1-archive-meta", escapeHtml(dashboardArchiveMeta || "当前档案"), 82, 335, 178, 12, "#8d877e", 700, "left", "white-space:nowrap;overflow:hidden;text-overflow:ellipsis;")}
+      ${figBox("source-1-archive-action", 282, 313, 68, 30, "", "border-radius:15px;background:#fff1dc;border:1px solid #ead2a2;")}
+      ${figText("source-1-archive-action-text", "换档案", 282, 322, 68, 11, "#9a681c", 900, "center")}
+      ${figButton("source-1-archive-hit", 18, 294, 354, 70, 'data-route="screen-25"', "", "z-index:35;")}
+
+      ${figText("source-1-section-title", "常用入口", 18, 380, 110, 17, "#25221f", 900)}
+      ${figText("source-1-section-more", "一屏开始", 286, 382, 80, 12, "#9a681c", 900, "right")}
+      ${dashboardFeatures.map(([title, sub, icon, route, x, y], index) => `
+        ${figBox(`source-1-feature-${index}`, x, y, 171, 104, "", "border-radius:18px;background:#fffdf8;border:1px solid #eadfce;box-shadow:0 8px 20px rgba(70,45,25,.07);overflow:hidden;")}
+        ${figText(`source-1-feature-title-${index}`, title, x + 16, y + 20, 92, 18, "#25221f", 900, "left", "white-space:nowrap;")}
+        ${figText(`source-1-feature-sub-${index}`, sub, x + 16, y + 49, 96, 12, "#8d877e", 700, "left", "white-space:nowrap;")}
+        ${figImage(`source-1-feature-icon-${index}`, `../images/wentian-prototype-assets/${icon}`, x + 112, y + 18, 50, 58, "object-fit:contain;opacity:.86;")}
+        ${figButton(`source-1-feature-hit-${index}`, x, y, 171, 104, `data-route="${route}"`, "", "z-index:35;")}
+      `).join("")}
+      ${figBox("source-1-liuren", 18, 636, 354, 82, "", "border-radius:18px;background:#fffdf8;border:1px solid #eadfce;box-shadow:0 8px 20px rgba(70,45,25,.07);overflow:hidden;")}
+      ${figText("source-1-liuren-title", "六壬法", 36, 657, 100, 20, "#25221f", 900)}
+      ${figText("source-1-liuren-sub", "农历月日时，即刻起课", 36, 685, 172, 13, "#8d877e", 700)}
+      ${figImage("source-1-liuren-icon", "../images/wentian-prototype-assets/01-feature-qian.png", 284, 644, 70, 68, "object-fit:contain;opacity:.9;")}
+      ${figButton("source-1-liuren-hit", 18, 636, 354, 82, 'data-route="screen-46"', "", "z-index:35;")}
+      ${sourceAppBottomNav("首页", 755)}
+    `;
+  }
 }
 
 function convertedButton(screen) {
@@ -13006,7 +13033,7 @@ function convertedButton(screen) {
   `;
 }
 
-const sourceScreenOwnHotspotNos = new Set([4, 22, 24, 29, 34, 35]);
+const sourceScreenOwnHotspotNos = new Set([1, 4, 22, 24, 29, 34, 35]);
 
 function convertedFlowHotspots(screen) {
   if (sourceScreenOwnHotspotNos.has(screen.no)) return "";
@@ -13947,7 +13974,7 @@ function renderConvertedScreen(no) {
     return figPhone(`screen-${screen.no}`, `${String(screen.no).padStart(2, "0")} 首页`, `
       ${sourceDashboardHomeScreen()}
       ${convertedFlowHotspots(screen)}
-    `, 1044, "converted source-screen no-status-shift", false);
+    `, 844, "converted source-screen no-status-shift", false);
   }
   if (screen.no === 2) {
     return figPhone(`screen-${screen.no}`, `${String(screen.no).padStart(2, "0")} ${screen.title}`, `
