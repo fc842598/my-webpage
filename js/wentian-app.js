@@ -1971,6 +1971,30 @@ function formatWentianTimeZoneLabel(timeZone, tzOffset) {
   return timeZone ? `${timeZone} · ${offsetText}` : offsetText;
 }
 
+function formatWentianCityTimeZoneLabelForForm(city) {
+  if (!city) return "";
+  const timeZone = city.timeZone || (typeof getBirthTimeZoneId === "function" ? getBirthTimeZoneId(city) : "");
+  if (timeZone && typeof calcTrueSolarTime === "function") {
+    try {
+      const parts = getWentianChartDateParts();
+      const result = calcTrueSolarTime({
+        year: parts.date.getFullYear(),
+        month: parts.date.getMonth() + 1,
+        day: parts.date.getDate(),
+        hour: parts.hour,
+        minute: parts.minute,
+        longitude: city.lon,
+        tzOffset: city.tzOffset,
+        timeZone,
+        cityName: formatWentianCity(city),
+      });
+      return formatWentianTimeZoneLabel(result.timeZone || timeZone, result.tzOffset);
+    } catch (_err) {}
+    return `${timeZone} · 按出生日期校正`;
+  }
+  return formatWentianTzOffset(city.tzOffset);
+}
+
 function formatWentianGeoCoord(value, axis) {
   const number = Number(value);
   if (!Number.isFinite(number)) return "--";
@@ -2177,7 +2201,7 @@ function renderWentianChartCityDropdown(query) {
     const city = makeWentianCity(row);
     return `
     <button type="button" class="wentian-chart-city-item" data-action="wentian-chart-city-pick" data-city-index="${index}">
-      ${escapeHtml(formatWentianCity(city))}<br><span>${escapeHtml(city.timeZone || formatWentianTzOffset(city.tzOffset))} · ${escapeHtml(formatWentianGeoCoord(row[2], "lon"))} / ${escapeHtml(formatWentianGeoCoord(row[3], "lat"))}</span>
+      ${escapeHtml(formatWentianCity(city))}<br><span>${escapeHtml(formatWentianCityTimeZoneLabelForForm(city))} · ${escapeHtml(formatWentianGeoCoord(row[2], "lon"))} / ${escapeHtml(formatWentianGeoCoord(row[3], "lat"))}</span>
     </button>
   `;
   }).join("");
@@ -2206,7 +2230,7 @@ function applyWentianChartCity(city, options = {}) {
   if (input) input.value = city ? `${city.province} · ${city.city}` : "";
   if (clear) clear.style.display = city ? "" : "none";
   if (selected) {
-    selected.textContent = city ? `已选：${formatWentianCity(city)} · 按出生日期校正 · ${formatWentianGeoCoord(city.lon, "lon")}` : "";
+    selected.textContent = city ? `已选：${formatWentianCity(city)} · ${formatWentianCityTimeZoneLabelForForm(city)} · ${formatWentianGeoCoord(city.lon, "lon")}` : "";
     selected.style.display = city ? "block" : "none";
   }
   if (dropdown) dropdown.style.display = "none";

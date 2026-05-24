@@ -1731,6 +1731,33 @@
     return timeZone ? `${timeZone} · ${offsetText}` : offsetText;
   }
 
+  function formatCityTimeZoneLabelForForm(city) {
+    if (!city) return '';
+    const timeZone = city.timeZone || (typeof getBirthTimeZoneId === 'function' ? getBirthTimeZoneId(city) : '');
+    if (timeZone && typeof window.calcTrueSolarTime === 'function') {
+      const date = solarFromForm();
+      if (!date.error) {
+        const time = formTime();
+        try {
+          const tst = window.calcTrueSolarTime({
+            year: date.year,
+            month: date.month,
+            day: date.day,
+            hour: time.hour,
+            minute: time.minute,
+            longitude: city.lon,
+            tzOffset: city.tzOffset,
+            timeZone,
+            cityName: city.city || '',
+          });
+          return formatTimeZoneLabel(tst.timeZone || timeZone, tst.tzOffset);
+        } catch (_) {}
+      }
+      return `${timeZone} · 按出生日期校正`;
+    }
+    return formatTzOffset(city.tzOffset);
+  }
+
   function formatGeoCoord(value, axis) {
     const number = Number(value);
     if (!Number.isFinite(number)) return '--';
@@ -1808,8 +1835,7 @@
     if (selected) selected.style.display = city ? '' : 'none';
     if (city) {
       $('#mbpCitySelectedName').textContent = formatCityLabel(city);
-      const timeZone = city.timeZone || (typeof getBirthTimeZoneId === 'function' ? getBirthTimeZoneId(city) : '');
-      $('#mbpCityTz').textContent = timeZone ? `${timeZone} · 按出生日期校正` : formatTzOffset(city.tzOffset);
+      $('#mbpCityTz').textContent = formatCityTimeZoneLabelForForm(city);
       $('#mbpCityLon').textContent = formatGeoCoord(city.lon, 'lon');
       $('#mbpCityLat').textContent = formatGeoCoord(city.lat, 'lat');
     }
@@ -6370,7 +6396,7 @@
         return `
         <div class="nf-city-item" data-index="${index}">
           <b>${escapeHtml(formatCityLabel(city))}</b>
-          <span>${escapeHtml(formatTimeZoneLabel(city.timeZone, row[4]))} · ${escapeHtml(formatGeoCoord(row[2], 'lon'))}, ${escapeHtml(formatGeoCoord(row[3], 'lat'))}</span>
+          <span>${escapeHtml(formatCityTimeZoneLabelForForm(city))} · ${escapeHtml(formatGeoCoord(row[2], 'lon'))}, ${escapeHtml(formatGeoCoord(row[3], 'lat'))}</span>
         </div>
       `;
       }).join('');
