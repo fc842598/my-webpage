@@ -1351,6 +1351,13 @@ const WENTIAN_BRANCH_POSITIONS = {
   "亥": [3, 3],
 };
 const WENTIAN_SHICHEN = ["子", "丑", "寅", "卯", "辰", "巳", "午", "未", "申", "酉", "戌", "亥"];
+const WENTIAN_TIANGAN = ["甲", "乙", "丙", "丁", "戊", "己", "庚", "辛", "壬", "癸"];
+const WENTIAN_XIAOLIAN_START = {
+  "寅": 4, "午": 4, "戌": 4,
+  "申": 10, "子": 10, "辰": 10,
+  "亥": 1, "卯": 1, "未": 1,
+  "巳": 7, "酉": 7, "丑": 7,
+};
 const WENTIAN_HEPAN_LIUHE = {
   "子": "丑", "丑": "子",
   "寅": "亥", "亥": "寅",
@@ -1940,6 +1947,24 @@ function setWentianArchiveEditId(id) {
     if (id) sessionStorage.setItem("wentian-edit-archive-id", id);
     else sessionStorage.removeItem("wentian-edit-archive-id");
   } catch (_err) {}
+}
+
+function getWentianYearGanzhi(year) {
+  const n = Number(year);
+  if (!Number.isFinite(n) || n <= 0) return { stem: "", branch: "", text: "" };
+  const stem = WENTIAN_TIANGAN[((n - 4) % 10 + 10) % 10] || "";
+  const branch = WENTIAN_SHICHEN[((n - 4) % 12 + 12) % 12] || "";
+  return { stem, branch, text: `${stem}${branch}` };
+}
+
+function getWentianXiaolianBranch(birthYearBranch, gender, age) {
+  const branch = String(birthYearBranch || "").trim();
+  const start = WENTIAN_XIAOLIAN_START[branch];
+  const xuAge = Number(age);
+  if (!Number.isFinite(xuAge) || xuAge <= 0) return "";
+  const direction = gender === "female" ? -1 : 1;
+  const startIndex = Number.isFinite(start) ? start : 2;
+  return WENTIAN_SHICHEN[((startIndex + direction * (xuAge - 1)) % 12 + 12) % 12] || "";
 }
 
 function getWentianArchiveEditReturnRoute() {
@@ -2640,9 +2665,84 @@ function extractWentianPillars(chart) {
   };
 }
 
+function buildWentianLiunianTimingFields(chartData = {}) {
+  const palacesSummary = Array.isArray(chartData.palacesSummary) ? chartData.palacesSummary : [];
+  const findPalaceByBranch = (branch) => palacesSummary.find((p) => p?.branch === branch || p?.earthlyBranch === branch) || null;
+  const currentYear = Number(chartData.currentYear || new Date().getFullYear());
+  const birthYear = Number(chartData.birthYear || String(chartData.birthDate || chartData.solarTime || "").slice(0, 4));
+  const realCurrentAge = Number(chartData.realCurrentAge || (birthYear ? currentYear - birthYear + 1 : 0));
+  const activeAge = Number(chartData.activeAge || realCurrentAge || 0);
+  const gender = chartData.gender || "male";
+  const sizhu = chartData.sizhu || {};
+  const birthYearBranch = sizhu.yearBranch || chartData.yearBranch || getWentianYearGanzhi(birthYear).branch;
+  const liunianTable = Array.from({ length: 120 }, (_, index) => {
+    const age = index + 1;
+    const solarYear = birthYear ? birthYear + age - 1 : "";
+    const yearGanzhi = getWentianYearGanzhi(solarYear);
+    const xiaolianBranch = getWentianXiaolianBranch(birthYearBranch, gender, age);
+    return {
+      age,
+      solarYear,
+      yearGanzhi: yearGanzhi.text,
+      xiaoLianBranch: xiaolianBranch,
+      xiaolianBranch,
+      liunianGuaName: "流年小限",
+      liunianGuaPeriod: solarYear ? String(solarYear) : "",
+    };
+  });
+  const currentLiunianRow = liunianTable.find((item) => item.age === activeAge)
+    || liunianTable.find((item) => item.solarYear === currentYear)
+    || null;
+  const currentXiaolianBranch = currentLiunianRow?.xiaolianBranch || "";
+  const currentXiaolianPalace = findPalaceByBranch(currentXiaolianBranch);
+  const oppositeIndex = WENTIAN_SHICHEN.indexOf(currentXiaolianBranch);
+  const oppositeBranch = oppositeIndex >= 0 ? WENTIAN_SHICHEN[(oppositeIndex + 6) % 12] : "";
+  const oppositePalace = findPalaceByBranch(oppositeBranch);
+  const currentYearGanzhi = getWentianYearGanzhi(currentYear);
+  return {
+    currentYear,
+    realCurrentAge,
+    activeAge: activeAge || realCurrentAge || 1,
+    currentLiunian: {
+      name: "流年小限",
+      branch: currentYearGanzhi.branch,
+      period: String(currentYear || ""),
+      solarYear: currentYear || "",
+      yearGanzhi: currentYearGanzhi.text,
+      age: activeAge || realCurrentAge || "",
+      xiaoLian: currentXiaolianBranch,
+      xiaoLianBranch: currentXiaolianBranch,
+      xiaolianBranch: currentXiaolianBranch,
+      xiaolianPalaceName: currentXiaolianPalace?.name || "",
+      xiaolianPalace: currentXiaolianPalace || {},
+      oppositeBranch,
+      oppositePalaceName: oppositePalace?.name || "",
+      oppositePalace: oppositePalace || {},
+    },
+    currentXiaolian: {
+      branch: currentXiaolianBranch,
+      palaceName: currentXiaolianPalace?.name || "",
+      palace: currentXiaolianPalace || {},
+      oppositeBranch,
+      oppositePalaceName: oppositePalace?.name || "",
+      oppositePalace: oppositePalace || {},
+    },
+    liunianTable,
+  };
+}
+
+function applyWentianLiunianTimingFields(chartData = {}) {
+  if (!chartData || typeof chartData !== "object") return chartData;
+  return {
+    ...chartData,
+    ...buildWentianLiunianTimingFields(chartData),
+  };
+}
+
 function buildWentianChartPayload(chart, norm) {
   const palacesSummary = (chart?.palaces || []).map(normalizeWentianPalace).filter(Boolean);
   const findPalace = (name) => palacesSummary.find((p) => p.name === name || p.name === `${name}宫`) || null;
+  const findPalaceByBranch = (branch) => palacesSummary.find((p) => p.branch === branch) || null;
   const sizhu = extractWentianPillars(chart);
   const birthDate = norm?.date ? formatWentianDateTime(norm.date) : `${chart?.solarDate || ""} 00:00`;
   const trueSolarTime = norm?.trueSolarResult
@@ -2674,10 +2774,36 @@ function buildWentianChartPayload(chart, norm) {
     };
   }).filter(Boolean);
   const currentDecade = dayunTable.find((item) => realCurrentAge >= item.ageStart && realCurrentAge <= item.ageEnd) || null;
+  const gender = norm?.gender || "male";
+  const currentYearGanzhi = getWentianYearGanzhi(currentYear);
+  const birthYearBranch = sizhu.yearBranch || getWentianYearGanzhi(birthYear).branch;
+  const liunianTable = Array.from({ length: 120 }, (_, index) => {
+    const age = index + 1;
+    const solarYear = birthYear + age - 1;
+    const yearGanzhi = getWentianYearGanzhi(solarYear);
+    const xiaolianBranch = getWentianXiaolianBranch(birthYearBranch, gender, age);
+    return {
+      age,
+      solarYear,
+      yearGanzhi: yearGanzhi.text,
+      xiaoLianBranch: xiaolianBranch,
+      xiaolianBranch,
+      liunianGuaName: "流年小限",
+      liunianGuaPeriod: String(solarYear),
+    };
+  });
+  const currentLiunianRow = liunianTable.find((item) => item.age === realCurrentAge)
+    || liunianTable.find((item) => item.solarYear === currentYear)
+    || null;
+  const currentXiaolianBranch = currentLiunianRow?.xiaolianBranch || "";
+  const currentXiaolianPalace = findPalaceByBranch(currentXiaolianBranch);
+  const oppositeIndex = WENTIAN_SHICHEN.indexOf(currentXiaolianBranch);
+  const oppositeBranch = oppositeIndex >= 0 ? WENTIAN_SHICHEN[(oppositeIndex + 6) % 12] : "";
+  const oppositePalace = findPalaceByBranch(oppositeBranch);
   return {
     ...WENTIAN_XU_CHART_BASE,
     chartRecordId: getWentianChartRecordId(),
-    gender: norm?.gender || "male",
+    gender,
     birthDate,
     solarTime: effectiveSolarTime,
     localTime: birthDate,
@@ -2713,7 +2839,32 @@ function buildWentianChartPayload(chart, norm) {
     yearMutagens,
     palacesSummary,
     currentDecade,
+    currentLiunian: {
+      name: "流年小限",
+      branch: currentYearGanzhi.branch,
+      period: String(currentYear),
+      solarYear: currentYear,
+      yearGanzhi: currentYearGanzhi.text,
+      age: realCurrentAge,
+      xiaoLian: currentXiaolianBranch,
+      xiaoLianBranch: currentXiaolianBranch,
+      xiaolianBranch: currentXiaolianBranch,
+      xiaolianPalaceName: currentXiaolianPalace?.name || "",
+      xiaolianPalace: currentXiaolianPalace || {},
+      oppositeBranch,
+      oppositePalaceName: oppositePalace?.name || "",
+      oppositePalace: oppositePalace || {},
+    },
+    currentXiaolian: {
+      branch: currentXiaolianBranch,
+      palaceName: currentXiaolianPalace?.name || "",
+      palace: currentXiaolianPalace || {},
+      oppositeBranch,
+      oppositePalaceName: oppositePalace?.name || "",
+      oppositePalace: oppositePalace || {},
+    },
     dayunTable,
+    liunianTable,
     sizhu,
   };
 }
@@ -2726,7 +2877,7 @@ function getWentianChartPayload() {
   const chartRecordId = isWentianUuid(rawRecordId) ? rawRecordId : getWentianChartRecordId();
   if (isWentianUuid(chartRecordId)) setWentianChartRecordId(chartRecordId);
   if (source?.chartData) {
-    return {
+    return applyWentianLiunianTimingFields({
       ...source.chartData,
       chartRecordId,
       archiveId: source.archiveId || form.archiveId || source.id || source.chartData.archiveId || "",
@@ -2737,9 +2888,9 @@ function getWentianChartPayload() {
         datetime: form.datetime || source.chartData.birthDate || source.chartData.solarTime || "",
         city: form.city || source.chartData.city || "",
       },
-    };
+    });
   }
-  return { ...WENTIAN_XU_CHART_BASE, chartRecordId };
+  return applyWentianLiunianTimingFields({ ...WENTIAN_XU_CHART_BASE, chartRecordId });
 }
 
 function syncWentianChartAiStateFromStorage() {
@@ -3224,19 +3375,20 @@ function getWentianBackendAiModule(moduleKey) {
 }
 
 function buildWentianChartAiPayload(moduleKey, chartData = {}) {
-  const extraParams = getWentianChartAiExtraParams(moduleKey, chartData);
-  const selectedYear = extraParams.selectedYear || getWentianAiCurrentYear(chartData);
-  const selectedDayun = extraParams.selectedDayun || getWentianAiCurrentDecade(chartData);
+  const normalizedChartData = applyWentianLiunianTimingFields(chartData);
+  const extraParams = getWentianChartAiExtraParams(moduleKey, normalizedChartData);
+  const selectedYear = extraParams.selectedYear || getWentianAiCurrentYear(normalizedChartData);
+  const selectedDayun = extraParams.selectedDayun || getWentianAiCurrentDecade(normalizedChartData);
   const aiChartData = {
-    ...chartData,
-    currentDecade: Object.keys(selectedDayun).length ? selectedDayun : chartData.currentDecade,
-    currentLiunian: Object.keys(selectedYear).length ? { ...(chartData.currentLiunian || {}), ...selectedYear } : chartData.currentLiunian,
+    ...normalizedChartData,
+    currentDecade: Object.keys(selectedDayun).length ? selectedDayun : normalizedChartData.currentDecade,
+    currentLiunian: Object.keys(selectedYear).length ? { ...(normalizedChartData.currentLiunian || {}), ...selectedYear } : normalizedChartData.currentLiunian,
     currentXiaolian: selectedYear.xiaolianBranch
-      ? { ...(chartData.currentXiaolian || {}), branch: selectedYear.xiaolianBranch, palaceName: selectedYear.xiaolianPalaceName }
-      : chartData.currentXiaolian,
-    liunianTable: Array.isArray(chartData.liunianTable) && chartData.liunianTable.length
-      ? chartData.liunianTable
-      : (selectedYear.age ? [selectedYear] : chartData.liunianTable),
+      ? { ...(normalizedChartData.currentXiaolian || {}), branch: selectedYear.xiaolianBranch, palaceName: selectedYear.xiaolianPalaceName }
+      : normalizedChartData.currentXiaolian,
+    liunianTable: Array.isArray(normalizedChartData.liunianTable) && normalizedChartData.liunianTable.length
+      ? normalizedChartData.liunianTable
+      : (selectedYear.age ? [selectedYear] : normalizedChartData.liunianTable),
   };
   return {
     moduleKey: getWentianBackendAiModule(moduleKey),
