@@ -1843,7 +1843,7 @@ async function hydrateWentianArchivesFromRemote(options = {}) {
       }
       if (merged.length && remoteArchives.length < merged.length) pushWentianArchivesToRemote(merged);
       if (options.rerender && before !== after && (state.route === "screen-5" || state.route === "screen-25")) {
-        navigate(state.route, false);
+        navigatePreservingScroll(state.route, false);
       }
       return merged;
     })
@@ -5760,7 +5760,7 @@ async function getWentianAuthToken() {
 
 function refreshWentianAuthScreens() {
   if (["screen-1", "screen-22", "screen-24", "screen-30", "screen-31", "screen-33", "screen-34", "screen-38", "screen-39", "screen-40", "screen-41", "screen-48"].includes(state.route)) {
-    navigate(state.route, false);
+    navigatePreservingScroll(state.route, false);
   }
 }
 
@@ -6187,20 +6187,33 @@ async function wentianFetchJson(path, options = {}) {
 
 function refreshWentianInviteScreens() {
   if (["screen-22", "screen-24", "screen-31", "screen-34", "screen-40"].includes(state.route)) {
-    navigate(state.route, false);
+    navigatePreservingScroll(state.route, false);
   }
 }
 
 async function hydrateWentianInvite(options = {}) {
   if (wentianInviteState.loading && !options.force) return wentianInviteReadyPromise;
+  if (wentianInviteState.loaded && !options.force) return wentianInviteState.summary || getWentianInviteSnapshot();
+  const before = JSON.stringify({
+    loaded: wentianInviteState.loaded,
+    error: wentianInviteState.error,
+    summary: wentianInviteState.summary,
+  });
+  const refreshIfChanged = () => {
+    const after = JSON.stringify({
+      loaded: wentianInviteState.loaded,
+      error: wentianInviteState.error,
+      summary: wentianInviteState.summary,
+    });
+    if (options.rerender && before !== after) refreshWentianInviteScreens();
+  };
   const session = await getWentianAuthSession();
   if (!session?.user) {
     wentianInviteState.loaded = true;
     wentianInviteState.loading = false;
     wentianInviteState.error = "";
-    wentianInviteState.summary = null;
     wentianInviteState.summary = getWentianInviteSnapshot();
-    if (options.rerender) refreshWentianInviteScreens();
+    refreshIfChanged();
     return wentianInviteState.summary;
   }
   wentianInviteState.loading = true;
@@ -6212,12 +6225,13 @@ async function hydrateWentianInvite(options = {}) {
       return data;
     })
     .catch((error) => {
+      wentianInviteState.loaded = true;
       wentianInviteState.error = error.message || "邀请记录读取失败";
       return getWentianInviteSnapshot();
     })
     .finally(() => {
       wentianInviteState.loading = false;
-      if (options.rerender) refreshWentianInviteScreens();
+      refreshIfChanged();
     });
   return wentianInviteReadyPromise;
 }
@@ -6871,7 +6885,7 @@ async function hydrateWentianMemberStatus(options = {}) {
         product: wentianMemberState.product,
       });
       if (options.rerender && before !== after && ["screen-30", "screen-31", "screen-33", "screen-38", "screen-40", "screen-41"].includes(state.route)) {
-        navigate(state.route, false);
+        navigatePreservingScroll(state.route, false);
       }
       return data;
     })
@@ -7054,7 +7068,7 @@ async function hydrateWentianOrders(options = {}) {
   if (wentianOrderState.loaded && !options.force) return null;
   wentianOrderState.loading = true;
   wentianOrderState.error = "";
-  if (options.rerender && state.route === "screen-48") navigate("screen-48", false);
+  if (options.rerender && state.route === "screen-48") navigatePreservingScroll("screen-48", false);
   try {
     const data = await wentianFetchJson("/api/payments/refunds");
     wentianOrderState.orders = Array.isArray(data.orders) ? data.orders : [];
@@ -7063,7 +7077,7 @@ async function hydrateWentianOrders(options = {}) {
     wentianOrderState.error = error.message || "订单读取失败";
   } finally {
     wentianOrderState.loading = false;
-    if (options.rerender && state.route === "screen-48") navigate("screen-48", false);
+    if (options.rerender && state.route === "screen-48") navigatePreservingScroll("screen-48", false);
   }
   return wentianOrderState.orders;
 }
