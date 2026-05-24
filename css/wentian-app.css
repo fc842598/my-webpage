@@ -4073,8 +4073,12 @@ html[data-wentian-language="en"] .liuren-hero-copy em {
   right: 24px;
   top: 45px;
   z-index: 5;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-width: 86px;
   height: 32px;
-  padding: 0 12px;
+  padding: 0 10px;
   border: 1px solid #ead9bd;
   border-radius: 16px;
   background: #fff8ec;
@@ -4082,6 +4086,23 @@ html[data-wentian-language="en"] .liuren-hero-copy em {
   font: inherit;
   font-size: 12px;
   font-weight: 900;
+}
+
+.liuyao-top-reset span,
+.liuyao-top-reset em {
+  display: block;
+  font-style: normal;
+  line-height: 1;
+}
+
+.liuyao-top-reset span {
+  color: #6a4b23;
+}
+
+.liuyao-top-reset em {
+  padding-left: 7px;
+  border-left: 1px solid #e5d4b9;
+  color: #a67a34;
 }
 
 .liuyao-panel {
@@ -4096,6 +4117,81 @@ html[data-wentian-language="en"] .liuren-hero-copy em {
 .liuyao-panel button,
 .liuyao-panel textarea {
   font-family: inherit;
+}
+
+.liuyao-flow-panel {
+  display: grid;
+  gap: 14px;
+  padding-bottom: 104px;
+}
+
+.liuyao-flow-hero {
+  min-height: 168px;
+  padding: 22px 22px 18px;
+  border: 1px solid #b88935;
+  border-radius: 24px;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 88% 16%, rgba(217, 179, 106, .16) 0 20%, transparent 21%),
+    linear-gradient(145deg, #201813 0%, #24180f 62%, #3a2717 100%);
+  box-shadow: 0 18px 36px rgba(69, 45, 21, .16);
+}
+
+.liuyao-flow-hero span,
+.liuyao-flow-hero strong,
+.liuyao-flow-hero em {
+  display: block;
+}
+
+.liuyao-flow-hero span {
+  color: #d8b265;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0;
+}
+
+.liuyao-flow-hero strong {
+  margin-top: 18px;
+  color: #fffaf3;
+  font-size: 26px;
+  font-weight: 900;
+  line-height: 1.18;
+}
+
+.liuyao-flow-hero em {
+  margin-top: 13px;
+  color: #e2d2bc;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 1.48;
+}
+
+.liuyao-flow-steps {
+  display: grid;
+  grid-template-columns: 58px 1fr 58px 1fr 58px;
+  align-items: center;
+  min-height: 50px;
+  padding: 0 18px;
+  border: 1px solid #e2d2b8;
+  border-radius: 18px;
+  background: rgba(255, 253, 248, .95);
+}
+
+.liuyao-flow-steps span {
+  color: #9a805a;
+  font-size: 13px;
+  font-weight: 900;
+  text-align: center;
+}
+
+.liuyao-flow-steps span.is-active {
+  color: #231a12;
+}
+
+.liuyao-flow-steps i {
+  height: 1px;
+  background: #d8c4a3;
 }
 
 .liuyao-hero {
@@ -4138,14 +4234,12 @@ html[data-wentian-language="en"] .liuren-hero-copy em {
 }
 
 .liuyao-coin-panel {
-  margin-top: 12px;
-  padding: 14px 14px 16px;
-  border: 1px solid #e7d7bf;
+  margin-top: 0;
+  padding: 18px 16px 16px;
+  border: 1px solid #dcc9a9;
   border-radius: 20px;
-  background:
-    radial-gradient(circle at 50% 6%, rgba(244, 198, 98, .22), transparent 42%),
-    linear-gradient(180deg, #fff8ea 0%, #f4e5cf 100%);
-  box-shadow: 0 16px 30px rgba(76, 48, 24, .1);
+  background: #fffdf8;
+  box-shadow: 0 12px 28px rgba(76, 48, 24, .08);
 }
 
 .liuyao-coin-panel-head {
@@ -4156,14 +4250,14 @@ html[data-wentian-language="en"] .liuren-hero-copy em {
 }
 
 .liuyao-coin-panel-head span {
-  color: #9a681c;
-  font-size: 12px;
+  color: #231a12;
+  font-size: 16px;
   font-weight: 900;
 }
 
 .liuyao-coin-panel-head strong {
-  color: #201813;
-  font-size: 16px;
+  color: #9a805a;
+  font-size: 12px;
   font-weight: 900;
 }
 
@@ -4175,7 +4269,7 @@ html[data-wentian-language="en"] .liuren-hero-copy em {
   padding: 12px;
   border: 1px solid rgba(194, 149, 60, .22);
   border-radius: 16px;
-  background: rgba(255, 253, 248, .72);
+  background: #fbf5eb;
 }
 
 .liuyao-coin-summary > div {
@@ -4189,7 +4283,7 @@ html[data-wentian-language="en"] .liuren-hero-copy em {
 }
 
 .liuyao-coin-summary span {
-  color: #9a681c;
+  color: #8b6428;
   font-size: 12px;
   font-weight: 900;
 }
@@ -4204,7 +4298,7 @@ html[data-wentian-language="en"] .liuren-hero-copy em {
 .liuyao-coin-summary em {
   margin-top: 4px;
   overflow: hidden;
-  color: #756d63;
+  color: #8a7454;
   font-size: 12px;
   font-style: normal;
   font-weight: 800;
@@ -4219,18 +4313,21 @@ html[data-wentian-language="en"] .liuren-hero-copy em {
 }
 
 .liuyao-coin-summary button {
-  min-width: 86px;
+  min-width: 96px;
   height: 38px;
-  border: 1px solid #d9bf83;
+  border: 1px solid #231a12;
   border-radius: 999px;
-  background: #fff4db;
-  color: #8b5d1d;
+  background: #231a12;
+  color: #fffaf3;
   font-size: 13px;
   font-weight: 900;
 }
 
 .liuyao-coin-summary button:disabled {
   opacity: .55;
+  border-color: #e0d2bb;
+  background: #e7d9c1;
+  color: #846c49;
 }
 
 .liuyao-caster-modal {
@@ -4854,6 +4951,7 @@ html[data-wentian-language="en"] .liuren-hero-copy em {
 .liuyao-question-card,
 .liuyao-mode-card,
 .liuyao-progress-card,
+.liuyao-result-preview,
 .liuyao-reading-card,
 .liuyao-detail-card,
 .liuyao-empty-card {
@@ -4871,11 +4969,12 @@ html[data-wentian-language="en"] .liuren-hero-copy em {
 }
 
 .liuyao-question-card.liuyao-ask-card {
-  gap: 8px;
+  gap: 10px;
   margin-top: 0;
-  padding: 0 14px 14px;
-  overflow: hidden;
-  border-radius: 20px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
 }
 
 .liuyao-ask-head {
@@ -4903,23 +5002,47 @@ html[data-wentian-language="en"] .liuren-hero-copy em {
   font-weight: 900;
 }
 
+.liuyao-section-title {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.liuyao-section-title label,
+.liuyao-section-title span {
+  color: #231a12;
+  font-size: 17px;
+  font-weight: 900;
+}
+
+.liuyao-section-title > span,
+.liuyao-section-title em {
+  color: #9a805a;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 800;
+  line-height: 1.2;
+  text-align: right;
+}
+
 .liuyao-question-card textarea {
   width: 100%;
-  min-height: 54px;
+  min-height: 126px;
   resize: none;
-  border: 1px solid #e7d7bf;
-  border-radius: 14px;
+  border: 1px solid #dcc9a9;
+  border-radius: 18px;
   outline: 0;
-  background: #fffaf3;
+  background: #fffdf8;
   color: #201813;
-  padding: 12px;
+  padding: 16px;
   font-size: 14px;
   font-weight: 700;
   line-height: 1.45;
 }
 
 .liuyao-question-card.liuyao-ask-card textarea {
-  min-height: 50px;
+  min-height: 126px;
 }
 
 .liuyao-question-card textarea:focus {
@@ -4928,7 +5051,7 @@ html[data-wentian-language="en"] .liuren-hero-copy em {
 }
 
 .liuyao-question-status {
-  margin: -1px 2px 0;
+  margin: 0 2px;
   color: #8f867b;
   font-size: 12px;
   font-weight: 800;
@@ -4959,16 +5082,32 @@ html[data-wentian-language="en"] .liuren-hero-copy em {
   min-width: 0;
 }
 
-.liuyao-question-submit {
-  min-width: 96px;
-  height: 34px;
-  border: 1px solid rgba(194, 149, 60, .42);
+.liuyao-question-rule {
+  justify-self: center;
+  min-width: 260px;
+  margin-top: -58px;
+  padding: 8px 14px;
   border-radius: 999px;
-  background: #fff3d8;
-  color: #9a681c;
+  background: #f7efe1;
+  color: #8b6428;
   font-size: 12px;
   font-weight: 900;
-  box-shadow: 0 6px 14px rgba(154, 104, 28, .1);
+  line-height: 1.15;
+  text-align: center;
+  pointer-events: none;
+}
+
+.liuyao-question-submit {
+  width: 100%;
+  min-width: 0;
+  height: 54px;
+  border: 1px solid #231a12;
+  border-radius: 18px;
+  background: #231a12;
+  color: #fffaf3;
+  font-size: 16px;
+  font-weight: 900;
+  box-shadow: 0 12px 22px rgba(35, 26, 18, .14);
 }
 
 .liuyao-question-submit.is-approved {
@@ -4991,15 +5130,14 @@ html[data-wentian-language="en"] .liuren-hero-copy em {
 .liuyao-question-suggestions {
   display: grid;
   gap: 8px;
-  padding: 10px;
-  border: 1px solid rgba(224, 201, 140, .68);
-  border-radius: 14px;
-  background: #fff7e7;
+  padding: 0;
+  border: 0;
+  background: transparent;
 }
 
 .liuyao-question-suggestions > span {
-  color: #9a681c;
-  font-size: 12px;
+  color: #231a12;
+  font-size: 15px;
   font-weight: 900;
 }
 
@@ -5011,44 +5149,51 @@ html[data-wentian-language="en"] .liuren-hero-copy em {
 
 .liuyao-question-suggestions button {
   min-height: 34px;
-  padding: 7px 8px;
+  padding: 8px 10px;
   border: 1px solid #ead9bd;
-  border-radius: 10px;
+  border-radius: 17px;
   background: #fffdf8;
-  color: #5f554c;
+  color: #745731;
   font-size: 11px;
   font-weight: 900;
   line-height: 1.25;
-  text-align: left;
+  text-align: center;
 }
 
 .liuyao-mode-card {
   display: grid;
   gap: 10px;
-  margin-top: 12px;
-  padding: 14px;
+  margin-top: 2px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
 }
 
-.liuyao-mode-card div {
+.liuyao-mode-card > div:not(.liuyao-section-title) {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 10px;
+  gap: 0;
+  padding: 4px;
+  border-radius: 23px;
+  background: #eee3d1;
 }
 
 .liuyao-mode-card button {
   height: 38px;
-  border: 1px solid #ead9bd;
+  border: 1px solid transparent;
   border-radius: 19px;
-  background: #f6efe4;
-  color: #817568;
+  background: transparent;
+  color: #8a7454;
   font-size: 13px;
   font-weight: 900;
 }
 
 .liuyao-mode-card button.is-active {
-  background: #fff2d8;
-  color: #9a681c;
-  border-color: #c99a3b;
+  background: #fffdf8;
+  color: #231a12;
+  border-color: #d7c4a3;
+  box-shadow: 0 3px 8px rgba(69, 45, 21, .08);
 }
 
 .liuyao-manual-card {
@@ -5345,14 +5490,16 @@ html[data-wentian-language="en"] .liuren-hero-copy em {
 }
 
 .liuyao-progress-card {
-  margin-top: 12px;
-  padding: 14px;
+  margin-top: 0;
+  padding: 16px;
+  border-radius: 20px;
 }
 
 .liuyao-progress-head {
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
   align-items: baseline;
-  justify-content: space-between;
+  gap: 10px;
   margin-bottom: 12px;
 }
 
@@ -5364,8 +5511,15 @@ html[data-wentian-language="en"] .liuren-hero-copy em {
 
 .liuyao-progress-head span {
   color: #8f8173;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 700;
+}
+
+.liuyao-progress-head em {
+  color: #8b6428;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 900;
 }
 
 .liuyao-progress-result {
@@ -5422,14 +5576,14 @@ html[data-wentian-language="en"] .liuren-hero-copy em {
 
 .liuyao-hex-stack {
   display: grid;
-  gap: 8px;
+  gap: 7px;
 }
 
 .liuyao-line-row {
   display: grid;
-  grid-template-columns: 42px 1fr 78px;
+  grid-template-columns: 42px 1fr 54px;
   align-items: center;
-  min-height: 34px;
+  min-height: 28px;
   padding: 0;
   border: 0;
   background: transparent;
@@ -5457,7 +5611,7 @@ html[data-wentian-language="en"] .liuren-hero-copy em {
   grid-template-columns: 1fr;
   gap: 0;
   align-items: center;
-  min-width: 124px;
+  min-width: 154px;
   height: 10px;
 }
 
@@ -5495,6 +5649,51 @@ html[data-wentian-language="en"] .liuren-hero-copy em {
 .liuyao-line-row.is-landing .liuyao-line-meta,
 .liuyao-line-row.is-new .liuyao-line-meta {
   color: #9a681c;
+}
+
+.liuyao-result-preview {
+  display: grid;
+  gap: 10px;
+  min-height: 120px;
+  padding: 18px 20px;
+  border-color: #b88935;
+  border-radius: 20px;
+  background: #241b13;
+  box-shadow: 0 16px 30px rgba(69, 45, 21, .14);
+}
+
+.liuyao-result-preview strong {
+  color: #fffaf3;
+  font-size: 17px;
+  font-weight: 900;
+  line-height: 1.25;
+}
+
+.liuyao-result-preview p {
+  margin: 0;
+  color: #ddcdb7;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+.liuyao-result-preview::after {
+  content: "";
+  width: 82px;
+  height: 2px;
+  border-radius: 2px;
+  background: #b88935;
+}
+
+.liuyao-result-preview button {
+  height: 42px;
+  margin-top: 2px;
+  border: 1px solid #d9b36a;
+  border-radius: 999px;
+  background: #d9b36a;
+  color: #241b13;
+  font-size: 14px;
+  font-weight: 900;
 }
 
 .liuyao-actions {
