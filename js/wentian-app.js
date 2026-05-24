@@ -1239,6 +1239,7 @@ let wentianArchiveRemoteLoaded = false;
 let wentianArchiveRemotePromise = null;
 let wentianLanguageDraft = null;
 let wentianHepanSelectedIds = null;
+let wentianMobileYijingTab = "xiantian";
 let wentianChartCalMode = "solar";
 let wentianChartCity = null;
 let wentianMemberStatusPromise = null;
@@ -2775,11 +2776,12 @@ function getWentianChartAiChapters() {
 function getWentianZiweiScreenHeight() {
   syncWentianChartAiStateFromStorage();
   const count = getWentianGeneratedModuleCount();
-  if (wentianChartAiState.status === "running") return 4560;
-  if (count >= 8) return 4820;
-  if (count >= 4) return 4660;
-  if (count > 0) return 4520;
-  return 4360;
+  const yijingHeight = 880;
+  if (wentianChartAiState.status === "running") return 4560 + yijingHeight;
+  if (count >= 8) return 4820 + yijingHeight;
+  if (count >= 4) return 4660 + yijingHeight;
+  if (count > 0) return 4520 + yijingHeight;
+  return 4360 + yijingHeight;
 }
 
 function normalizeWentianAiStarList(stars) {
@@ -12309,6 +12311,147 @@ function renderWentianMobileChartParams(saved) {
   `;
 }
 
+function normalizeWentianYijingResult(result) {
+  if (!result) return null;
+  const no = Number(result.no || result.num || result.index || 0);
+  return {
+    ...result,
+    no: Number.isInteger(no) && no > 0 ? no : "",
+    num: Number.isInteger(no) && no > 0 ? no : (result.num || ""),
+    name: result.name || result.gua || result.hexagram || "卦象待定",
+    lines: Array.isArray(result.lines) ? result.lines : [],
+  };
+}
+
+function getWentianYijingContext(saved) {
+  const ctx = getWentianMobileParamContext(saved);
+  const chartData = ctx.chartData || {};
+  const form = ctx.form || {};
+  const sizhu = chartData.sizhu || extractWentianPillars(ctx.chart);
+  const gender = form.gender || chartData.gender || "male";
+  const birthDate = String(form.datetime || chartData.birthDate || "").slice(0, 10);
+  const birthYear = chartData.birthYear || Number(birthDate.slice(0, 4)) || new Date().getFullYear();
+  const fallbackAge = birthYear ? new Date().getFullYear() - Number(birthYear) + 1 : 1;
+  const activeAge = Math.max(1, Number(chartData.activeAge || chartData.realCurrentAge || fallbackAge || 1));
+  let zipingResult = null;
+  if (window.ZipingRuntime && sizhu?.yearStem && sizhu?.monthStem && sizhu?.dayStem && sizhu?.hourStem) {
+    try {
+      zipingResult = window.ZipingRuntime.compute(sizhu, gender, birthYear);
+    } catch (error) {
+      console.warn("wentian yijing compute failed", error);
+    }
+  }
+  const liunianMap = zipingResult?.liunianMap || {};
+  const liunian = liunianMap[activeAge] || liunianMap[String(activeAge)] || null;
+  const currentYear = getWentianAiCurrentYear(chartData);
+  const fallbackLiunian = currentYear.liunianGuaName ? {
+    name: currentYear.liunianGuaName,
+    period: currentYear.liunianGuaPeriod || String(currentYear.solarYear || ""),
+  } : null;
+  return {
+    activeAge,
+    currentYear: currentYear.solarYear || new Date().getFullYear(),
+    results: {
+      xiantian: normalizeWentianYijingResult(zipingResult?.xiantian),
+      houtian: normalizeWentianYijingResult(zipingResult?.houtian),
+      liunian: normalizeWentianYijingResult(liunian || fallbackLiunian),
+    },
+  };
+}
+
+function getWentianYijingActiveKey() {
+  return ["xiantian", "houtian", "liunian"].includes(wentianMobileYijingTab) ? wentianMobileYijingTab : "xiantian";
+}
+
+function getWentianYijingTabMeta(key) {
+  const meta = {
+    xiantian: { label: "先天", title: "先天卦", sourceKey: "xian", note: "看前半生与命中本象" },
+    houtian: { label: "后天", title: "后天卦", sourceKey: "hou", note: "看后半生与人生转化" },
+    liunian: { label: "流年", title: "流年卦", sourceKey: "liu", note: "看当年应期与动静" },
+  };
+  return meta[key] || meta.xiantian;
+}
+
+function getWentianYijingReading(result, key) {
+  if (!result) return { original: "", masterTitle: "等待排盘", summary: "请先完成排盘，或稍后重新进入命盘。", detail: "排盘后显示对应卦位讲解。" };
+  const meta = getWentianYijingTabMeta(key);
+  const master = window.getYijingMasterEntry?.(result)
+    || window.getYijingMasterEntryByName?.(result.name)
+    || window.getYijingMasterEntryByNum?.(result.no || result.num);
+  const guaci = window.getGuaciEntryByName?.(result.name);
+  const original = guaci?.[meta.sourceKey] || guaci?.liu || "";
+  const detail = master?.[meta.sourceKey] || master?.summary || original || "此卦资料待补，可先结合命盘主线看取象。";
+  return {
+    original,
+    masterTitle: `${meta.title} · ${result.name || "卦象"}`,
+    summary: firstReadableSentence(detail, `${result.name || "此卦"}重在审时度势，先看命盘本象，再定进退。`),
+    detail: trimWentianAiText(detail, 220),
+  };
+}
+
+function renderWentianYijingLines(result) {
+  if (!result?.lines?.length) return `<div class="wentian-yijing-empty-lines">卦</div>`;
+  return result.lines.map((line) => {
+    if (line === "gap") return `<i class="is-gap"></i>`;
+    if (line === "solid") return `<i></i>`;
+    return `<i class="is-broken"><b></b><b></b></i>`;
+  }).join("");
+}
+
+function renderWentianMobileYijingPanel(saved) {
+  const ctx = getWentianYijingContext(saved);
+  const activeKey = getWentianYijingActiveKey();
+  const result = ctx.results[activeKey] || ctx.results.xiantian || ctx.results.houtian || ctx.results.liunian;
+  const meta = getWentianYijingTabMeta(activeKey);
+  const reading = getWentianYijingReading(result, activeKey);
+  const imageSrc = getYijingHexagramImageSrc(result?.no || result?.num);
+  const tabRows = [
+    ["xiantian", ctx.results.xiantian],
+    ["houtian", ctx.results.houtian],
+    ["liunian", ctx.results.liunian],
+  ];
+  return `
+    <section class="wentian-yijing-panel" data-node-id="source-27-yijing-panel">
+      <header class="wentian-yijing-head">
+        <span>易经推命</span>
+        <h2>先天 · 后天 · 流年卦</h2>
+        <p>补齐电脑端同款易经辅助解读，跟当前紫微命盘一起看。</p>
+      </header>
+      <div class="wentian-yijing-tabs" role="tablist" aria-label="易经推命切换">
+        ${tabRows.map(([key, item]) => {
+          const itemMeta = getWentianYijingTabMeta(key);
+          return `<button type="button" class="${key === activeKey ? "is-active" : ""}" data-action="wentian-yijing-tab" data-yijing-tab="${key}">
+            <span>${escapeHtml(itemMeta.label)}</span>
+            <b>${escapeHtml(item?.name || "待算")}</b>
+          </button>`;
+        }).join("")}
+      </div>
+      <article class="wentian-yijing-card">
+        <div class="wentian-yijing-art">
+          ${imageSrc ? `<img src="${imageSrc}" alt="${escapeHtml(`${meta.title} ${result?.name || ""}`)}" loading="lazy">` : `<div class="wentian-yijing-lines">${renderWentianYijingLines(result)}</div>`}
+        </div>
+        <div class="wentian-yijing-main">
+          <span>${escapeHtml(meta.note)}</span>
+          <h3>${escapeHtml(result?.name || "等待排盘")}</h3>
+          <p>${escapeHtml(result?.no ? `第${result.no}卦` : (activeKey === "liunian" ? `${ctx.activeAge}岁 · ${ctx.currentYear}年` : "本命卦"))}</p>
+        </div>
+      </article>
+      <section class="wentian-yijing-reading">
+        <span>古籍原文</span>
+        <p>${escapeHtml(reading.original || "当前卦辞资料待补，先看下方名师讲解。")}</p>
+      </section>
+      <section class="wentian-yijing-master">
+        <div>
+          <span>名师讲解</span>
+          <strong>${escapeHtml(reading.masterTitle)}</strong>
+        </div>
+        <p>${escapeHtml(reading.summary)}</p>
+        <em>${escapeHtml(reading.detail)}</em>
+      </section>
+    </section>
+  `;
+}
+
 function sourceZiweiAiDecodePanel(saved) {
   syncWentianChartAiStateFromStorage();
   const chapters = getWentianChartAiChapters();
@@ -12378,6 +12521,7 @@ function sourceZiweiMingpanScreenFromChart(saved) {
     <div class="wentian-chart-content-stack">
       ${renderWentianMobileChartParams(saved)}
       ${sourceZiweiAiDecodePanel(saved)}
+      ${renderWentianMobileYijingPanel(saved)}
     </div>
     ${sourceAppBottomNav("档案", bottomNavY)}
   `;
@@ -13346,6 +13490,11 @@ document.addEventListener("click", (event) => {
   if (action === "wentian-chart-ai-jump") {
     const index = Number(event.target.closest("[data-report-index]")?.dataset.reportIndex || 0);
     scrollToWentianMobileChapter(index);
+    return;
+  }
+  if (action === "wentian-yijing-tab") {
+    wentianMobileYijingTab = event.target.closest("[data-yijing-tab]")?.dataset.yijingTab || "xiantian";
+    navigate("screen-27", false);
     return;
   }
   if (action === "wentian-open-mingbook-onepage") {
