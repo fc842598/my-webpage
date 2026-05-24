@@ -2284,6 +2284,286 @@ html[lang="en"] .wentian-archive-confirm {
   color: #a94437;
 }
 
+.wentian-hepan-result-panel {
+  position: absolute;
+  left: 24px;
+  top: 96px;
+  display: grid;
+  gap: 12px;
+  width: 342px;
+  color: #201813;
+  font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+}
+
+.wentian-hepan-result-panel button {
+  font-family: inherit;
+}
+
+.wentian-hepan-result-hero {
+  min-height: 156px;
+  padding: 18px;
+  border-radius: 22px;
+  background:
+    radial-gradient(circle at 84% 18%, rgba(244, 210, 147, .22) 0 18%, transparent 19%),
+    linear-gradient(135deg, #251912 0%, #6e3026 54%, #b9852f 100%);
+  box-shadow: 0 16px 32px rgba(77, 43, 22, .18);
+}
+
+.wentian-hepan-result-hero span,
+.wentian-hepan-result-hero strong,
+.wentian-hepan-result-hero em,
+.wentian-hepan-result-hero p {
+  display: block;
+}
+
+.wentian-hepan-result-hero span {
+  color: #f4d293;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.wentian-hepan-result-hero strong {
+  margin-top: 8px;
+  color: #fffaf3;
+  font-size: 44px;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.wentian-hepan-result-hero em {
+  margin-top: 6px;
+  color: #fff4df;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 900;
+}
+
+.wentian-hepan-result-hero p {
+  margin: 12px 0 0;
+  color: #eadcc7;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.wentian-hepan-result-pair {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 34px minmax(0, 1fr);
+  gap: 8px;
+  align-items: center;
+}
+
+.wentian-hepan-result-pair article,
+.wentian-hepan-report-card,
+.wentian-hepan-result-card,
+.wentian-hepan-result-grid article,
+.wentian-hepan-advice-card {
+  border: 1px solid #eadfce;
+  background: #fffdf8;
+  box-shadow: 0 8px 20px rgba(70, 45, 25, .06);
+}
+
+.wentian-hepan-result-pair article {
+  min-width: 0;
+  min-height: 98px;
+  padding: 12px;
+  border-radius: 16px;
+}
+
+.wentian-hepan-result-pair b {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 17px;
+  background: #fff1dc;
+  color: #a94437;
+  font-size: 15px;
+  font-weight: 900;
+}
+
+.wentian-hepan-result-pair span,
+.wentian-hepan-result-pair strong,
+.wentian-hepan-result-pair em,
+.wentian-hepan-result-pair small {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.wentian-hepan-result-pair span {
+  color: #a47726;
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.wentian-hepan-result-pair strong {
+  margin-top: 5px;
+  color: #201813;
+  font-size: 17px;
+  font-weight: 900;
+}
+
+.wentian-hepan-result-pair em,
+.wentian-hepan-result-pair small {
+  margin-top: 5px;
+  color: #807568;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 800;
+}
+
+.wentian-hepan-report-card,
+.wentian-hepan-result-card,
+.wentian-hepan-advice-card {
+  padding: 15px 16px;
+  border-radius: 18px;
+}
+
+.wentian-hepan-report-card span,
+.wentian-hepan-advice-card span {
+  color: #a47726;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.wentian-hepan-report-card strong {
+  display: block;
+  margin-top: 6px;
+  color: #201813;
+  font-size: 21px;
+  font-weight: 900;
+  line-height: 1.2;
+}
+
+.wentian-hepan-report-card p,
+.wentian-hepan-advice-card p,
+.wentian-hepan-result-grid p {
+  margin: 8px 0 0;
+  color: #695f55;
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1.55;
+}
+
+.wentian-hepan-result-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.wentian-hepan-result-grid article {
+  min-height: 132px;
+  padding: 13px;
+  border-radius: 16px;
+}
+
+.wentian-hepan-result-grid span {
+  color: #8f3d30;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.wentian-hepan-result-card h3 {
+  margin: 0 0 10px;
+  color: #201813;
+  font-size: 17px;
+  font-weight: 900;
+}
+
+.wentian-hepan-result-dim {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 36px;
+  gap: 10px;
+  min-height: 54px;
+  padding: 9px 0 12px;
+  border-top: 1px solid #f0e3d0;
+}
+
+.wentian-hepan-result-dim:first-of-type {
+  border-top: 0;
+}
+
+.wentian-hepan-result-dim strong,
+.wentian-hepan-result-dim span,
+.wentian-hepan-result-dim b {
+  display: block;
+}
+
+.wentian-hepan-result-dim strong {
+  color: #201813;
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.wentian-hepan-result-dim span {
+  margin-top: 4px;
+  color: #7d7166;
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+.wentian-hepan-result-dim b {
+  color: #a47726;
+  font-size: 18px;
+  font-weight: 900;
+  text-align: right;
+}
+
+.wentian-hepan-result-dim i {
+  position: absolute;
+  left: 0;
+  right: 46px;
+  bottom: 0;
+  height: 5px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #b74e39 var(--hepan-score), #eadfce var(--hepan-score));
+}
+
+.wentian-hepan-result-card ul {
+  margin: 0;
+  padding-left: 18px;
+  color: #695f55;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.55;
+}
+
+.wentian-hepan-result-card li + li {
+  margin-top: 6px;
+}
+
+.wentian-hepan-advice-card {
+  border-color: #d6b463;
+  background: #fff1dc;
+}
+
+.wentian-hepan-result-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  padding-bottom: 112px;
+}
+
+.wentian-hepan-result-actions button {
+  height: 46px;
+  border: 1px solid #d6b463;
+  border-radius: 13px;
+  background: #fff;
+  color: #9b742e;
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.wentian-hepan-result-actions button.primary {
+  border-color: transparent;
+  background: linear-gradient(180deg, #b74e39, #983323);
+  color: #fffaf3;
+  box-shadow: 0 10px 20px rgba(157, 51, 41, .16);
+}
+
 .wentian-language-option {
   position: absolute;
   width: 306px;

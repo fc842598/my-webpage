@@ -3862,13 +3862,13 @@ function makeWentianHepanXuContext(result = getWentianHepanResult()) {
   return {
     type: "hepan",
     recordId: makeWentianUuid(),
-    title: "AI合盘判定",
+    title: "合盘结果深批",
     question: `${result.leftDisplay.name} × ${result.rightDisplay.name}`,
-    summaryLine: "待AI读取两张命盘后判定格局",
-    relationLabel: "待AI判定",
-    relationScope: "由AI合参夫妻宫、命宫、关键宫位与星曜后输出",
-    relationEvidence: [],
-    relationLandings: [],
+    summaryLine: `${result.level} · ${result.total}分 · ${result.relationTitle || result.relationLabel}`,
+    relationLabel: result.relationLabel,
+    relationScope: result.relationScope,
+    relationEvidence: result.relationEvidence || [],
+    relationLandings: result.relationLandings || [],
     rules: WENTIAN_HEPAN_AI_RULES,
     left: {
       name: result.leftDisplay.name,
@@ -3886,10 +3886,10 @@ function makeWentianHepanXuContext(result = getWentianHepanResult()) {
       pillars: result.rightDisplay.pillars,
       chart: rightChart,
     },
-    score: "",
-    level: "待AI判定",
-    dimensions: [],
-    advice: "",
+    score: result.total,
+    level: result.level,
+    dimensions: result.dimensions,
+    advice: result.advice,
     createdAt: Date.now(),
   };
 }
@@ -7824,54 +7824,110 @@ function sourceHepanSelectScreen() {
   `;
 }
 
+function formatWentianHepanReportText(text, fallback = "资料不足，建议结合双方命盘继续细看。") {
+  const clean = String(text || "").replace(/\s+/g, " ").trim();
+  return clean || fallback;
+}
+
+function getWentianHepanReportSummary(result) {
+  const strongest = result.dimensions.slice().sort((a, b) => Number(b[1]) - Number(a[1]))[0] || result.dimensions[0];
+  const weakest = result.dimensions.slice().sort((a, b) => Number(a[1]) - Number(b[1]))[0] || result.dimensions[0];
+  return {
+    core: `${result.leftDisplay.name} 与 ${result.rightDisplay.name} 当前合盘为「${result.level}」，总分 ${result.total}。关系主格偏向「${result.relationTitle || result.relationLabel}」，先看真实互动节奏，再决定推进深度。`,
+    advantage: strongest ? `${strongest[0]}较突出：${strongest[2]}` : "双方有继续观察和磨合的空间。",
+    warning: weakest ? `${weakest[0]}需要留意：${weakest[2]}` : "先把边界、节奏和现实安排说清楚。",
+  };
+}
+
+function renderWentianHepanDimensionRows(result) {
+  return result.dimensions.map(([label, score, note]) => `
+    <div class="wentian-hepan-result-dim">
+      <div>
+        <strong>${escapeHtml(label)}</strong>
+        <span>${escapeHtml(note)}</span>
+      </div>
+      <b>${escapeHtml(score)}</b>
+      <i style="--hepan-score:${Math.max(0, Math.min(100, Number(score) || 0))}%"></i>
+    </div>
+  `).join("");
+}
+
+function renderWentianHepanEvidence(result) {
+  const evidence = (result.relationEvidence || []).slice(0, 3);
+  if (!evidence.length) {
+    return `<li>已按双方四柱、日主五行与关键宫位做基础合参。</li>`;
+  }
+  return evidence.map((item) => `<li>${escapeHtml(item)}</li>`).join("");
+}
+
 function sourceHepanResultScreen() {
   const result = getWentianHepanResult();
   if (!result.ok) return sourceHepanInvalidScreen(result);
-  const flow = [
-    ["1", "资料校验", "已确认双方档案、性别、年龄与出生资料可用于合盘"],
-    ["2", "命盘读取", "AI 将读取双方紫微命盘、夫妻宫、命宫与关键宫位星曜"],
-    ["3", "合盘定格", "由 AI 合参后输出关系格局、互动重点与可执行建议"]
-  ];
+  const summary = getWentianHepanReportSummary(result);
   return `
-    ${figBox("wt49-bg", 0, 0, 390, 944, "", "background:linear-gradient(180deg,#fffdf8 0%,#fbf7ef 58%,#f3eadc 100%);")}
+    ${figBox("wt49-bg", 0, 0, 390, 1320, "", "background:linear-gradient(180deg,#fffdf8 0%,#fbf7ef 58%,#f3eadc 100%);")}
     ${wentianSimpleHeader("wt49", "合盘结果")}
-    ${figBox("wt49-score-card", 24, 108, 342, 184, "", "border-radius:22px;background:linear-gradient(135deg,#2b2722,#14110d);box-shadow:0 16px 30px rgba(28,20,12,.16);")}
-    ${figBox("wt49-status-pill", 44, 132, 112, 30, "", "border:1px solid rgba(244,210,147,.42);border-radius:15px;background:rgba(244,210,147,.10);")}
-    ${figText("wt49-status-pill-text", "待AI合盘", 44, 140, 112, 12, "#f4d293", 900, "center")}
-    ${figText("wt49-level", "真正合盘判定", 44, 176, 180, 28, "#fffaf3", 900, "left", "font-size:27px;line-height:1;")}
-    ${figText("wt49-sub", "不预设具体格局、不预设分数。先让AI读取两张命盘，再输出关系格局。", 44, 218, 284, 13, "#d9cab3", 700, "left", "line-height:1.55;")}
-    ${figText("wt49-pair", `${escapeHtml(result.leftDisplay.name)} × ${escapeHtml(result.rightDisplay.name)}`, 44, 258, 280, 18, "#fffaf3", 900, "center")}
+    <section class="wentian-hepan-result-panel">
+      <div class="wentian-hepan-result-hero">
+        <span>已生成合盘报告</span>
+        <strong>${escapeHtml(result.total)}</strong>
+        <em>${escapeHtml(result.level)}</em>
+        <p>${escapeHtml(result.leftDisplay.name)} × ${escapeHtml(result.rightDisplay.name)}</p>
+      </div>
 
-    ${figBox("wt49-pair-card", 24, 318, 342, 126, "", "border:1px solid #eadfce;border-radius:18px;background:#fff;box-shadow:0 8px 20px rgba(70,45,25,.07);")}
-    ${figText("wt49-left-name", escapeHtml(result.leftDisplay.name), 44, 342, 88, 17, "#25211d", 900)}
-    ${figText("wt49-left-date", escapeHtml(result.leftDisplay.datetime), 44, 372, 122, 12, "#8f8173", 700)}
-    ${figText("wt49-left-pillars", escapeHtml(result.leftDisplay.pillars), 44, 398, 130, 11, "#9b742e", 700)}
-    ${figText("wt49-right-name", escapeHtml(result.rightDisplay.name), 218, 342, 88, 17, "#25211d", 900, "right")}
-    ${figText("wt49-right-date", escapeHtml(result.rightDisplay.datetime), 194, 372, 132, 12, "#8f8173", 700, "right")}
-    ${figText("wt49-right-pillars", escapeHtml(result.rightDisplay.pillars), 190, 398, 136, 11, "#9b742e", 700, "right")}
-    ${figText("wt49-heart", "合", 180, 365, 30, 20, "#b74e39", 900, "center")}
+      <div class="wentian-hepan-result-pair">
+        <article>
+          <span>${escapeHtml(result.leftDisplay.gender || "档案")}</span>
+          <strong>${escapeHtml(result.leftDisplay.name)}</strong>
+          <em>${escapeHtml(result.leftDisplay.datetime)}</em>
+          <small>${escapeHtml(result.leftDisplay.pillars)}</small>
+        </article>
+        <b>合</b>
+        <article>
+          <span>${escapeHtml(result.rightDisplay.gender || "档案")}</span>
+          <strong>${escapeHtml(result.rightDisplay.name)}</strong>
+          <em>${escapeHtml(result.rightDisplay.datetime)}</em>
+          <small>${escapeHtml(result.rightDisplay.pillars)}</small>
+        </article>
+      </div>
 
-    ${figText("wt49-dim-title", "合盘流程", 24, 476, 120, 17, "#25211d", 900)}
-    ${flow.map(([step, title, note], index) => {
-      const y = 512 + index * 92;
-      return `
-        ${figBox(`wt49-dim-${index}`, 24, y, 342, 74, "", "border:1px solid #eadfce;border-radius:16px;background:#fffdf8;box-shadow:0 7px 18px rgba(70,45,25,.06);")}
-        ${figBox(`wt49-flow-step-${index}`, 44, y + 17, 34, 34, "", "border-radius:17px;background:#fff1dc;border:1px solid #d6b463;")}
-        ${figText(`wt49-flow-step-text-${index}`, step, 44, y + 26, 34, 12, "#9b742e", 900, "center")}
-        ${figText(`wt49-dim-label-${index}`, title, 94, y + 15, 160, 15, "#25211d", 900)}
-        ${figText(`wt49-dim-note-${index}`, note, 94, y + 42, 224, 12, "#7a6d60", 700, "left", "line-height:1.45;")}
-      `;
-    }).join("")}
+      <div class="wentian-hepan-report-card">
+        <span>${escapeHtml(result.relationLabel || "关系格局")}</span>
+        <strong>${escapeHtml(result.relationTitle || "关系合盘")}</strong>
+        <p>${escapeHtml(summary.core)}</p>
+      </div>
 
-    ${figBox("wt49-advice", 24, 804, 342, 72, "", "border-radius:18px;background:#fff1dc;border:1px solid #d6b463;box-shadow:0 8px 20px rgba(130,91,31,.08);")}
-    ${figText("wt49-advice-title", "输出原则", 44, 824, 100, 15, "#8f3d30", 900)}
-    ${figText("wt49-advice-text", "先定关系格局，再讲互动、冲突、长期节奏和行动建议；非情侣格不输出婚恋判断。", 44, 850, 284, 12, "#756d63", 800, "left", "line-height:1.45;")}
-    ${figBox("wt49-repick", 42, 900, 136, 44, "", "border:1px solid #d6b463;border-radius:10px;background:#fff;")}
-    ${figButton("wt49-repick-hit", 42, 900, 136, 44, 'data-route="screen-11"')}
-    ${figText("wt49-repick-text", "重新选择", 42, 912, 136, 13, "#9b742e", 800, "center")}
-    ${figBox("wt49-ask", 212, 900, 136, 44, "", "border-radius:10px;background:#b74e39;")}
-    ${figButton("wt49-ask-hit", 212, 900, 136, 44, 'data-action="wentian-hepan-ask-xu"')}
-    ${figText("wt49-ask-text", "开始AI合盘", 212, 912, 136, 13, "#fff", 900, "center")}
+      <div class="wentian-hepan-result-grid">
+        <article>
+          <span>优势</span>
+          <p>${escapeHtml(formatWentianHepanReportText(summary.advantage))}</p>
+        </article>
+        <article>
+          <span>提醒</span>
+          <p>${escapeHtml(formatWentianHepanReportText(summary.warning))}</p>
+        </article>
+      </div>
+
+      <div class="wentian-hepan-result-card">
+        <h3>合盘维度</h3>
+        ${renderWentianHepanDimensionRows(result)}
+      </div>
+
+      <div class="wentian-hepan-result-card">
+        <h3>盘面依据</h3>
+        <ul>${renderWentianHepanEvidence(result)}</ul>
+      </div>
+
+      <div class="wentian-hepan-advice-card">
+        <span>行动建议</span>
+        <p>${escapeHtml(formatWentianHepanReportText(result.advice))}</p>
+      </div>
+
+      <div class="wentian-hepan-result-actions">
+        <button type="button" data-route="screen-11">重新选择</button>
+        <button type="button" class="primary" data-action="wentian-hepan-ask-xu">问许半仙深批</button>
+      </div>
+    </section>
   `;
 }
 
@@ -12628,7 +12684,7 @@ function renderConvertedScreen(no) {
   }
   const polishedScreen = renderWentianPolishedScreen(screen);
   if (polishedScreen) {
-    const polishedHeight = screen.no === 4 ? 892 : screen.no === 8 ? 1280 : screen.no === 17 ? getLiuyaoCastScreenHeight() : screen.no === 18 || screen.no === 19 ? 1480 : screen.no === 20 ? getLiuyaoResultScreenHeight() : screen.no === 22 ? 1120 : screen.no === 24 ? 1180 : screen.no === 44 ? getYangzhaiResultHeight() : screen.no === 46 ? LIUREN_SCREEN_HEIGHT : screen.no === 49 ? 1160 : 844;
+    const polishedHeight = screen.no === 4 ? 892 : screen.no === 8 ? 1280 : screen.no === 17 ? getLiuyaoCastScreenHeight() : screen.no === 18 || screen.no === 19 ? 1480 : screen.no === 20 ? getLiuyaoResultScreenHeight() : screen.no === 22 ? 1120 : screen.no === 24 ? 1180 : screen.no === 44 ? getYangzhaiResultHeight() : screen.no === 46 ? LIUREN_SCREEN_HEIGHT : screen.no === 49 ? 1320 : 844;
     const wideBgClass = screen.no >= 42 && screen.no <= 45 ? " wide-bg" : "";
     const customHotspots = screen.no >= 17 && screen.no <= 20 ? "" : convertedFlowHotspots(screen);
     return figPhone(`screen-${screen.no}`, `${String(screen.no).padStart(2, "0")} ${screen.title}`, `
