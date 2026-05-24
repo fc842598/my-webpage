@@ -113,8 +113,7 @@
   const desktopAuthStorageKey = 'yt_mingbook_auth_session_v1';
   const desktopAuthRefreshSkewMs = 60 * 1000;
   const desktopGoogleRedirectBridge = 'https://fc842598.github.io/my-webpage/pages/mingbook-onepage.html';
-  const desktopGoogleEnabled = new URLSearchParams(window.location.search).get('overseasAuth') === '1'
-    || !/^(www\.)?yuetianai\.com$/i.test(window.location.hostname);
+  const desktopGoogleEnabled = true;
   const desktopAuthUrlKeys = [
     'code',
     'state',

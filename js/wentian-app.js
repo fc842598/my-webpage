@@ -1272,8 +1272,7 @@ const WENTIAN_PAID_PRODUCT_NAME = "阅天AI付费版";
 const WENTIAN_PAID_PRODUCT_DESC = "许半仙 AI 对话：付费用户 100次/天；免费用户 30次/天。按日刷新，不设月额度。";
 const WENTIAN_PAYMENT_POLL_MS = 3500;
 const WENTIAN_GOOGLE_REDIRECT_BRIDGE = "https://fc842598.github.io/my-webpage/pages/wentian-app.html";
-const WENTIAN_GOOGLE_ENABLED = new URLSearchParams(window.location.search).get("overseasAuth") === "1"
-  || !/^(www\.)?yuetianai\.com$/i.test(window.location.hostname);
+const WENTIAN_GOOGLE_ENABLED = true;
 const WENTIAN_CHART_AI_STORAGE_KEY = "wentian-app-chart-ai-v2";
 const WENTIAN_HTML2PDF_URL = "../vendor/html2pdf/html2pdf.bundle.min.js?v=20260521-local-vendor";
 const WENTIAN_CHART_SPECIAL_MODULES = ["shengong", "hunyin", "jiankang", "caiyun", "shiye"];
@@ -4908,6 +4907,7 @@ const WENTIAN_I18N = {
     "注册并登录": "Register and sign in",
     "登录并继续": "Sign in and continue",
     "用 Google 登录": "Sign in with Google",
+    "海外用户 Google 登录": "Overseas Google sign-in",
     "手机号登录使用密码，不发验证码。": "Phone sign-in uses password, not SMS codes.",
     "阅天会员": "Yuetian Member",
     "付费版": "Paid",
@@ -8626,7 +8626,7 @@ function sourceLoginMethodsScreen() {
     ${WENTIAN_GOOGLE_ENABLED ? `
       ${figBox("source-login-google", 50, 538, 290, 44, "", "border-radius:22px;background:#fff;border:1px solid #e2d8c8;")}
       ${figButton("source-login-google-hit", 50, 538, 290, 44, 'data-action="wentian-google-login"')}
-      ${figText("source-login-google-text", "用 Google 登录", 50, 551, 290, 13, "#26211c", 800, "center")}
+      ${figText("source-login-google-text", "海外用户 Google 登录", 50, 551, 290, 13, "#26211c", 800, "center")}
     ` : ""}
     ${figText("source-login-note", "手机号登录使用密码，不发验证码。", 0, 604, 390, 12, "#9b9287", 600, "center")}
   `;
