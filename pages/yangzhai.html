@@ -210,9 +210,11 @@
 
     .workbench {
       display: grid;
-      grid-template-columns: 270px minmax(480px, 1fr) 326px;
-      gap: 22px;
-      padding: 24px;
+      grid-template-columns: minmax(170px, 220px) minmax(450px, 560px) minmax(230px, 288px);
+      align-items: stretch;
+      justify-content: center;
+      gap: 18px;
+      padding: 18px;
       border-radius: 8px;
       scroll-margin-top: 96px;
     }
@@ -220,13 +222,16 @@
     .guide-panel,
     .grid-panel,
     .picker-panel {
-      min-height: 620px;
+      min-width: 0;
+      min-height: 0;
       border: 1px solid var(--line-soft);
+      border-radius: 8px;
       background: rgba(4, 3, 2, .48);
+      overflow: hidden;
     }
 
     .guide-panel {
-      padding: 24px 22px;
+      padding: 20px 18px;
     }
 
     .guide-title,
@@ -234,23 +239,23 @@
       margin: 0 0 18px;
       color: var(--ivory);
       font-family: "Noto Serif SC", "Songti SC", serif;
-      font-size: 22px;
+      font-size: 20px;
       letter-spacing: 0;
     }
 
     .guide-step {
       display: grid;
-      grid-template-columns: 34px 1fr;
-      gap: 12px;
-      padding: 16px 0;
+      grid-template-columns: 30px 1fr;
+      gap: 10px;
+      padding: 14px 0;
       border-top: 1px solid rgba(201,169,97,.12);
     }
 
     .guide-step:first-of-type { border-top: 0; }
 
     .guide-step b {
-      width: 34px;
-      height: 34px;
+      width: 30px;
+      height: 30px;
       display: grid;
       place-items: center;
       border: 1px solid rgba(201,169,97,.42);
@@ -262,20 +267,20 @@
     .guide-step strong {
       display: block;
       color: var(--ivory);
-      font-size: 15px;
+      font-size: 14px;
     }
 
     .guide-step span {
       display: block;
       margin-top: 4px;
       color: #91805c;
-      font-size: 13px;
+      font-size: 12px;
       line-height: 1.6;
     }
 
     .note-box {
-      margin-top: 16px;
-      padding: 14px 15px;
+      margin-top: 12px;
+      padding: 12px;
       border: 1px solid rgba(166,64,47,.44);
       color: #bda681;
       background: rgba(70, 24, 16, .22);
@@ -284,7 +289,7 @@
     }
 
     .grid-panel {
-      padding: 24px;
+      padding: 20px;
       background:
         linear-gradient(180deg, rgba(10, 7, 3, .72), rgba(4, 3, 2, .80)),
         radial-gradient(circle at 50% 42%, rgba(201,169,97,.12), transparent 42%);
@@ -295,22 +300,26 @@
       align-items: flex-end;
       justify-content: space-between;
       gap: 20px;
-      margin-bottom: 20px;
+      margin-bottom: 16px;
     }
 
-    .section-head h2 { font-size: 26px; }
+    .section-head h2 { font-size: 24px; }
 
     .palace-grid {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
+      aspect-ratio: 1 / 1;
       border: 1px solid rgba(201,169,97,.42);
       background: rgba(2, 1, 0, .72);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.035);
     }
 
     .palace-cell {
-      min-height: 158px;
+      min-height: 0;
       position: relative;
-      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      padding: 15px;
       border-right: 1px solid rgba(201,169,97,.22);
       border-bottom: 1px solid rgba(201,169,97,.22);
       background:
@@ -319,6 +328,7 @@
       cursor: pointer;
       color: inherit;
       text-align: left;
+      overflow: hidden;
       transition: background .2s ease, box-shadow .2s ease, transform .2s ease;
     }
 
@@ -333,7 +343,11 @@
       box-shadow: inset 0 0 0 1px rgba(240,215,155,.32);
     }
 
-    .palace-cell.is-active { transform: translateY(-1px); }
+    .palace-cell.is-active {
+      z-index: 1;
+      transform: none;
+      box-shadow: inset 0 0 0 2px rgba(240,215,155,.54), 0 0 22px rgba(201,169,97,.08);
+    }
 
     .palace-top {
       display: flex;
@@ -345,14 +359,14 @@
     .palace-dir {
       color: var(--ivory);
       font-family: "Noto Serif SC", "Songti SC", serif;
-      font-size: 24px;
+      font-size: 23px;
       font-weight: 900;
     }
 
     .palace-gua {
       color: var(--red);
       font-family: "Noto Serif SC", "Songti SC", serif;
-      font-size: 20px;
+      font-size: 19px;
       font-weight: 900;
     }
 
@@ -367,7 +381,8 @@
       display: flex;
       flex-wrap: wrap;
       gap: 6px;
-      margin-top: 24px;
+      margin-top: auto;
+      padding-top: 16px;
     }
 
     .item-pill,
@@ -375,21 +390,22 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      min-height: 25px;
-      padding: 0 10px;
+      min-height: 23px;
+      padding: 0 8px;
       border: 1px solid rgba(201,169,97,.34);
       border-radius: 999px;
       color: var(--gold-soft);
       background: rgba(201,169,97,.08);
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 900;
       white-space: nowrap;
     }
 
     .add-hint {
-      margin-top: 28px;
+      margin-top: auto;
+      padding-top: 18px;
       color: #756845;
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 800;
     }
 
@@ -403,8 +419,8 @@
     }
 
     .luopan {
-      width: 112px;
-      height: 112px;
+      width: 104px;
+      height: 104px;
       position: relative;
       border: 1px solid rgba(201,169,97,.50);
       border-radius: 50%;
@@ -438,73 +454,143 @@
     .grid-actions {
       display: flex;
       flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 20px;
+      gap: 8px;
+      margin-top: 16px;
     }
 
     .picker-panel {
-      padding: 24px 20px;
+      padding: 20px 18px;
+      display: flex;
+      flex-direction: column;
     }
 
     .active-card {
-      padding: 16px;
+      padding: 14px;
       border: 1px solid rgba(201,169,97,.24);
-      background: rgba(201,169,97,.055);
+      border-radius: 8px;
+      background:
+        linear-gradient(135deg, rgba(201,169,97,.08), transparent 52%),
+        rgba(201,169,97,.045);
     }
 
     .active-meta {
       display: flex;
+      align-items: center;
       justify-content: space-between;
       gap: 12px;
       color: var(--gold-soft);
       font-weight: 900;
+      line-height: 1.35;
     }
 
     .active-card p {
-      margin: 10px 0 0;
+      margin: 8px 0 0;
       color: #9a8a66;
-      font-size: 13px;
-      line-height: 1.65;
+      font-size: 12px;
+      line-height: 1.6;
     }
 
     .option-grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 10px;
-      margin-top: 18px;
+      gap: 8px;
+      margin-top: 14px;
     }
 
     .option-btn {
-      min-height: 46px;
-      padding: 8px 10px;
+      min-height: 40px;
+      padding: 7px 9px 7px 11px;
       border: 1px solid rgba(201,169,97,.24);
       border-radius: 6px;
       color: #d6c291;
       background: rgba(6,5,3,.78);
       cursor: pointer;
       font-weight: 900;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      text-align: left;
+      overflow: hidden;
     }
 
-    .option-btn:hover,
+    .option-btn:hover {
+      border-color: rgba(240,215,155,.56);
+      color: var(--ivory);
+      background: rgba(25,18,8,.82);
+    }
+
     .option-btn.is-selected {
       border-color: rgba(240,215,155,.72);
-      color: #170e05;
-      background: linear-gradient(180deg, #ecd08a, #bd8733);
+      color: var(--ivory);
+      background:
+        linear-gradient(180deg, rgba(201,169,97,.22), rgba(117,86,37,.16)),
+        rgba(18,12,5,.86);
+      box-shadow: inset 0 0 0 1px rgba(240,215,155,.18);
     }
 
     .option-btn.is-clear {
+      grid-column: 1 / -1;
+      justify-content: center;
+      min-height: 38px;
       border-color: rgba(166,64,47,.45);
       color: #f0c7b7;
       background: rgba(76, 25, 17, .45);
     }
 
+    .option-main {
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-size: 14px;
+      line-height: 1.2;
+    }
+
+    .option-btn::after {
+      content: "";
+      width: 8px;
+      height: 8px;
+      flex: 0 0 8px;
+      border-radius: 50%;
+      background: rgba(201,169,97,.28);
+    }
+
+    .option-btn.is-selected::after {
+      content: "✓";
+      width: 22px;
+      height: 22px;
+      flex-basis: 22px;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(240,215,155,.76);
+      border-radius: 50%;
+      color: #170e05;
+      background: linear-gradient(180deg, #ecd08a, #bd8733);
+      font-size: 12px;
+      line-height: 1;
+    }
+
+    .option-btn.is-clear::after { display: none; }
+
     .picked-list {
-      min-height: 58px;
-      margin-top: 18px;
-      padding: 14px;
+      min-height: 50px;
+      margin-top: 14px;
+      padding: 12px;
       border: 1px solid rgba(201,169,97,.16);
+      border-radius: 8px;
       color: #8d7e5c;
       font-size: 13px;
+      display: flex;
+      flex-wrap: wrap;
+      align-content: flex-start;
+      gap: 6px;
+    }
+
+    .picked-list.is-empty {
+      display: grid;
+      align-items: center;
+      color: #776a4d;
     }
 
     .result-panel {
@@ -849,14 +935,16 @@
         activeName.textContent = `${palace.gua}宫 · ${palace.dir}`;
         activeRole.textContent = palace.role;
         activeHint.textContent = `建议本位：${palace.defaultItem || "先定方位"}。可多选，再次点击取消。`;
+        pickedList.classList.toggle("is-empty", !selected.length);
         pickedList.innerHTML = selected.length
           ? selected.map((item) => `<span class="item-pill">${escapeHtml(item)}</span>`).join(" ")
           : "当前宫位尚未安位";
         optionGrid.innerHTML = options.map((option) => {
-          const selectedClass = option.type !== "clear" && selected.includes(option.label) ? " is-selected" : "";
-          const clearClass = option.type === "clear" ? " is-clear" : "";
-          return `<button class="option-btn${selectedClass}${clearClass}" type="button" data-option="${option.label}">
-            ${escapeHtml(option.short)} · ${escapeHtml(option.label)}
+          const isSelected = option.type !== "clear" && selected.includes(option.label);
+          const selectedClass = isSelected ? " is-selected" : "";
+          const typeClass = ` is-${option.type}`;
+          return `<button class="option-btn${selectedClass}${typeClass}" type="button" data-option="${option.label}" aria-pressed="${isSelected}">
+            <span class="option-main">${escapeHtml(option.label)}</span>
           </button>`;
         }).join("");
       }
