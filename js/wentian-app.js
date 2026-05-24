@@ -926,7 +926,8 @@ function sourceAiChatScreen(screen) {
   const faqGroups = isLiuyaoChat ? liuyaoFaqGroups : isHepanChat ? hepanFaqGroups : isLiurenChat ? liurenFaqGroups : chartFaqGroups;
   const contextTitle = chatContext?.title || (isHepanChat ? "情侣合盘" : isLiurenChat ? "六壬课" : "六爻占卜");
   const contextSummary = chatContext?.summaryLine || "";
-  const profileText = isLiuyaoChat ? "六爻" : isHepanChat ? "合盘" : isLiurenChat ? "六壬" : "命主";
+  const chartArchiveDisplay = isContextChat ? null : getWentianArchiveDisplay(getCurrentWentianArchive());
+  const profileText = isLiuyaoChat ? "六爻" : isHepanChat ? "合盘" : isLiurenChat ? "六壬" : (chartArchiveDisplay?.name || getWentianArchiveDisplay(null).name);
   const profileIcon = isLiuyaoChat ? "卦" : isHepanChat ? "合" : isLiurenChat ? "课" : "命";
   const profileSub = isLiuyaoChat || isLiurenChat ? "占卜" : isHepanChat ? "专批" : "切换";
   const profileTag = isContextChat ? `
@@ -1162,6 +1163,7 @@ const WENTIAN_XU_CHART_BASE = {
 const wentianXuChat = {
   sessionId: null,
   sessionPromise: null,
+  payloadKey: "",
   messages: [],
   loading: false,
   typingTimer: null,
@@ -2569,9 +2571,26 @@ function buildWentianChartPayload(chart, norm) {
 }
 
 function getWentianChartPayload() {
-  const chartRecordId = getWentianChartRecordId();
   const saved = getWentianSavedChart();
-  if (saved?.chartData) return { ...saved.chartData, chartRecordId };
+  const source = saved?.chartData ? saved : getCurrentWentianArchive();
+  const form = source?.form || {};
+  const rawRecordId = source?.chartData?.chartRecordId || source?.chartRecordId || form.chartRecordId || "";
+  const chartRecordId = isWentianUuid(rawRecordId) ? rawRecordId : getWentianChartRecordId();
+  if (isWentianUuid(chartRecordId)) setWentianChartRecordId(chartRecordId);
+  if (source?.chartData) {
+    return {
+      ...source.chartData,
+      chartRecordId,
+      archiveId: source.archiveId || form.archiveId || source.id || source.chartData.archiveId || "",
+      name: source.chartData.name || form.name || "",
+      profile: {
+        name: form.name || source.chartData.name || "",
+        gender: form.gender || source.chartData.gender || "",
+        datetime: form.datetime || source.chartData.birthDate || source.chartData.solarTime || "",
+        city: form.city || source.chartData.city || "",
+      },
+    };
+  }
   return { ...WENTIAN_XU_CHART_BASE, chartRecordId };
 }
 
@@ -5924,9 +5943,7 @@ function applyWentianArchiveToCurrent(archive) {
     form: { ...(archive.form || {}), archiveId: archive.id },
     createdAt: archive.createdAt || new Date().toISOString(),
   }, { upsertArchive: false });
-  wentianXuChat.sessionId = null;
-  wentianXuChat.sessionPromise = null;
-  wentianXuChat.messages = [];
+  resetWentianXuChatRuntime();
   pushWentianArchivesToRemote(getWentianArchiveList());
   return true;
 }
@@ -5964,6 +5981,7 @@ function resetWentianXuChatRuntime() {
   }
   wentianXuChat.sessionId = null;
   wentianXuChat.sessionPromise = null;
+  wentianXuChat.payloadKey = "";
   wentianXuChat.messages = [];
   wentianXuChat.loading = false;
 }
@@ -6053,6 +6071,19 @@ function getWentianXuChatPayload() {
     chartData,
     divinationContext: null,
   };
+}
+
+function getWentianXuPayloadKey(payload) {
+  if (!payload) return "";
+  const contextRecordId = payload.divinationContext?.recordId || "";
+  return [payload.mode || "chart", payload.chartRecordId || "", contextRecordId].join("|");
+}
+
+function ensureWentianXuPayloadRuntime(payload = getWentianXuChatPayload()) {
+  const payloadKey = getWentianXuPayloadKey(payload);
+  if (wentianXuChat.payloadKey && wentianXuChat.payloadKey !== payloadKey) resetWentianXuChatRuntime();
+  wentianXuChat.payloadKey = payloadKey;
+  return payloadKey;
 }
 
 function buildWentianXuOutboundMessage(message, context) {
@@ -6661,10 +6692,13 @@ function getWentianXuModeText(mode, phase = "ready") {
 
 async function ensureWentianXuSession(options = {}) {
   const silent = !!options.silent;
+  const payload = getWentianXuChatPayload();
+  const payloadKey = getWentianXuPayloadKey(payload);
+  if (wentianXuChat.payloadKey && wentianXuChat.payloadKey !== payloadKey) resetWentianXuChatRuntime();
+  wentianXuChat.payloadKey = payloadKey;
   if (wentianXuChat.sessionId) return wentianXuChat.sessionId;
   if (wentianXuChat.sessionPromise) return wentianXuChat.sessionPromise;
 
-  const payload = getWentianXuChatPayload();
   if (!silent) setWentianChatStatus(getWentianXuModeText(payload.mode, "connecting"));
   wentianXuChat.sessionPromise = wentianPostJson("/api/ai/chat/session", {
     chartRecordId: payload.chartRecordId,
@@ -6721,6 +6755,7 @@ async function sendWentianXuChat(promptText = "") {
   }
 
   const payload = getWentianXuChatPayload();
+  ensureWentianXuPayloadRuntime(payload);
   const outboundMessage = buildWentianXuOutboundMessage(message, payload.divinationContext);
   addWentianMessage("user", message);
   addWentianMessage("assistant", getWentianXuModeText(payload.mode, "typing"));
@@ -6758,7 +6793,9 @@ function initWentianXuChat() {
   if (!input || !send) return;
 
   const payload = getWentianXuChatPayload();
+  ensureWentianXuPayloadRuntime(payload);
   const saved = getWentianSavedChart();
+  const archiveDisplay = payload.mode === "chart" ? getWentianArchiveDisplay(getCurrentWentianArchive()) : null;
   const sizhu = payload.mode === "chart" ? saved?.chartData?.sizhu : null;
   if (sizhu) {
     const stems = [sizhu.yearStem, sizhu.monthStem, sizhu.dayStem, sizhu.hourStem];
@@ -6771,10 +6808,11 @@ function initWentianXuChat() {
       const el = document.querySelector(`[data-node-id="source-4-bazi-bottom-${index}"]`);
       if (el) el.textContent = text || "—";
     });
+    const archiveName = archiveDisplay?.name || saved.form?.name || payload.chartData?.name || "";
     const nameEl = document.querySelector('[data-node-id="source-4-bazi-name"]');
-    if (nameEl) nameEl.textContent = `${saved.form?.name || "当前"}的八字`;
+    if (nameEl) nameEl.textContent = `${archiveName || "当前"}的八字`;
     const profileEl = document.querySelector('[data-node-id="source-4-profile-text"]');
-    if (profileEl) profileEl.textContent = "命主";
+    if (profileEl && archiveName) profileEl.textContent = archiveName;
     const profileSubEl = document.querySelector('[data-node-id="source-4-profile-sub"]');
     if (profileSubEl) profileSubEl.textContent = "切换";
     const footEl = document.querySelector('[data-node-id="source-4-bazi-foot"]');
@@ -7481,9 +7519,7 @@ async function submitWentianChartForm() {
       createdAt: new Date().toISOString(),
     });
 
-    wentianXuChat.sessionId = null;
-    wentianXuChat.sessionPromise = null;
-    wentianXuChat.messages = [];
+    resetWentianXuChatRuntime();
     setWentianChartStatus("已生成命盘");
     navigate("screen-27");
   } catch (error) {
