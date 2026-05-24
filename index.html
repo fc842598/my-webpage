@@ -987,6 +987,12 @@
       text-align: center;
     }
 
+    #steps .section-title {
+      position: relative;
+      z-index: 3;
+      margin-bottom: 58px;
+    }
+
     .section-title h2 {
       margin: 0;
       color: var(--ivory);
@@ -997,6 +1003,15 @@
       margin: 14px 0 0;
       color: #93825c;
       font-size: 16px;
+    }
+
+    #steps .section-title p {
+      display: inline-block;
+      padding: 0 28px;
+      color: #c9b77e;
+      font-weight: 600;
+      text-shadow: 0 2px 12px rgba(0, 0, 0, .95);
+      background: linear-gradient(90deg, transparent, rgba(3, 2, 1, .88) 18%, rgba(3, 2, 1, .88) 82%, transparent);
     }
 
     .seal {
@@ -1139,7 +1154,7 @@
     .rail {
       position: absolute;
       left: 50%;
-      top: 30px;
+      top: 56px;
       bottom: 80px;
       width: 1px;
       background: rgba(201, 169, 97, .34);
@@ -1561,7 +1576,7 @@
 
       .steps { height: 518px; }
       .steps::before { inset: -52px -90px -82px; }
-      .rail { top: 22px; bottom: 60px; }
+      .rail { top: 42px; bottom: 60px; }
       .rail::after { left: -33px; bottom: -44px; width: 68px; height: 68px; }
       .node { left: calc(50% - 7px); width: 14px; height: 14px; }
       .node:nth-of-type(1) { top: 42px !important; }
