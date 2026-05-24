@@ -8963,12 +8963,44 @@ function renderWentianHepanAiPanel(result) {
   `;
 }
 
+const WENTIAN_HEPAN_RESULT_SCREEN_HEIGHT = 2840;
+
+function renderWentianHepanChartCard(archive, display, label, nodeId) {
+  const item = display || (archive ? getWentianArchiveDisplay(archive) : {});
+  const chartHtml = renderWentianClassicChart(archive, { readonly: true, nodeId });
+  return `
+    <article class="wentian-hepan-chart-card">
+      <header>
+        <div>
+          <span>${escapeHtml(label)}</span>
+          <strong>${escapeHtml(item.name || "命主")}</strong>
+        </div>
+        <em>${escapeHtml([item.gender, item.datetime].filter(Boolean).join(" · ") || "命盘资料")}</em>
+      </header>
+      ${chartHtml || `<div class="wentian-hepan-chart-empty">此档案暂缺完整命盘，先按四柱与宫位摘要合参：${escapeHtml(item.pillars || "资料不足")}</div>`}
+    </article>
+  `;
+}
+
+function renderWentianHepanChartCompare(result) {
+  return `
+    <section class="wentian-hepan-chart-section" aria-label="双方命盘">
+      <div class="wentian-hepan-section-head">
+        <span>双方命盘</span>
+        <b>核对夫妻宫、命宫与落宫证据</b>
+      </div>
+      ${renderWentianHepanChartCard(result.left, result.leftDisplay, "对象一命盘", "hepan-left-native-chart")}
+      ${renderWentianHepanChartCard(result.right, result.rightDisplay, "对象二命盘", "hepan-right-native-chart")}
+    </section>
+  `;
+}
+
 function sourceHepanResultScreen() {
   const result = getWentianHepanResult();
   if (!result.ok) return sourceHepanInvalidScreen(result);
   const summary = getWentianHepanReportSummary(result);
   return `
-    ${figBox("wt49-bg", 0, 0, 390, 1860, "", "background:linear-gradient(180deg,#fffdf8 0%,#fbf7ef 58%,#f3eadc 100%);")}
+    ${figBox("wt49-bg", 0, 0, 390, WENTIAN_HEPAN_RESULT_SCREEN_HEIGHT, "", "background:linear-gradient(180deg,#fffdf8 0%,#fbf7ef 58%,#f3eadc 100%);")}
     ${wentianSimpleHeader("wt49", "合盘结果")}
     <section class="wentian-hepan-result-panel">
       <div class="wentian-hepan-result-hero">
@@ -8993,6 +9025,8 @@ function sourceHepanResultScreen() {
           <small>${escapeHtml(result.rightDisplay.pillars)}</small>
         </article>
       </div>
+
+      ${renderWentianHepanChartCompare(result)}
 
       <div id="wentian-hepan-ai-panel">
         ${renderWentianHepanAiPanel(result)}
@@ -12974,13 +13008,14 @@ function getWentianClassicRange(palace) {
   return range || "";
 }
 
-function renderWentianClassicPalaceCell(palace, activeBranch) {
+function renderWentianClassicPalaceCell(palace, activeBranch, options = {}) {
   if (!palace) return "";
   const branch = palace.earthlyBranch || palace.branch || "";
   const pos = WENTIAN_BRANCH_POSITIONS[branch];
   if (!pos) return "";
   const [col, row] = pos;
   const highlightClass = getWentianClassicCellClasses(branch, activeBranch);
+  const readonly = !!options.readonly;
   const allStars = [
     ...(palace.majorStars || []),
     ...(palace.minorStars || []),
@@ -12999,8 +13034,11 @@ function renderWentianClassicPalaceCell(palace, activeBranch) {
   ].slice(0, 5).map((star) => `<div class="fc-minor-star">${escapeHtml(getWentianClassicStarText(star))}</div>`).join("");
   const shenHtml = [palace.changsheng12, palace.boshi12].filter(Boolean).map((item) => `<span>${escapeHtml(item)}</span>`).join("");
   const palaceName = `${palace.isBodyPalace ? "身宫\n" : ""}${palace.name || ""}`;
+  const cellAttrs = readonly
+    ? `data-palace-branch="${escapeHtml(branch)}" data-palace-name="${escapeHtml(palace.name || branch)}"`
+    : `data-action="wentian-chart-palace" data-palace-branch="${escapeHtml(branch)}" data-palace-name="${escapeHtml(palace.name || branch)}" role="button"`;
   return `
-    <div class="fc-cell ${highlightClass}" data-action="wentian-chart-palace" data-palace-branch="${escapeHtml(branch)}" data-palace-name="${escapeHtml(palace.name || branch)}" role="button" style="grid-column:${col + 1};grid-row:${row + 1};">
+    <div class="fc-cell ${highlightClass}${readonly ? " is-readonly" : ""}" ${cellAttrs} style="grid-column:${col + 1};grid-row:${row + 1};">
       <div class="fc-cell-top">
         ${mutagenHtml ? `<div class="fc-cell-mutagen">${mutagenHtml}</div>` : ""}
         <div class="fc-major-list">${majorHtml}</div>
@@ -13211,7 +13249,7 @@ function initWentianClassicChartScreen() {
   });
 }
 
-function renderWentianClassicCenter(chart, chartData, form) {
+function renderWentianClassicCenter(chart, chartData, form, options = {}) {
   const pillars = chartData?.sizhu || extractWentianPillars(chart);
   const genderLabel = form.gender === "female" ? "阴女" : "阳男";
   const titleName = escapeHtml(form.name || "命主");
@@ -13237,25 +13275,76 @@ function renderWentianClassicCenter(chart, chartData, form) {
       <div class="fc-sizhu">
         ${columns.map(([stem, branch, color]) => (stem || branch) ? `<div class="fc-sizhu-col" style="color:${color}"><span>${escapeHtml(stem || "?")}</span><span>${escapeHtml(branch || "?")}</span></div>` : "").join("")}
       </div>
-      <div class="fc-center-btns" aria-label="切换排盘时辰">
+      ${options.readonly ? "" : `<div class="fc-center-btns" aria-label="切换排盘时辰">
         <button type="button" class="fc-center-btn" data-action="wentian-chart-time-step" data-hours-delta="-2" aria-label="上一个时辰">时↑</button>
         <button type="button" class="fc-center-btn" data-action="wentian-chart-time-step" data-hours-delta="2" aria-label="下一个时辰">时↓</button>
-      </div>
+      </div>`}
       <div class="wentian-fc-note">命宫 ${escapeHtml(chart?.earthlyBranchOfSoulPalace || "—")} · 身宫 ${escapeHtml(chart?.earthlyBranchOfBodyPalace || "—")} · 已接入</div>
     </div>`;
 }
 
-function renderWentianClassicChart(saved) {
-  const chart = saved.chart;
-  const form = saved.form || {};
-  const chartData = saved.chartData || buildWentianChartPayload(chart, {
+function normalizeWentianClassicChartPalace(palace) {
+  if (!palace) return null;
+  const branch = palace.earthlyBranch || palace.branch || "";
+  if (!branch) return null;
+  return {
+    ...palace,
+    name: palace.name || palace.palaceName || "",
+    earthlyBranch: branch,
+    heavenlyStem: palace.heavenlyStem || palace.stem || "",
+    majorStars: (palace.majorStars || []).map(normalizeWentianStar).filter(Boolean),
+    minorStars: (palace.minorStars || []).map(normalizeWentianStar).filter(Boolean),
+    decadal: palace.decadal || (palace.range ? { range: palace.range } : null),
+    changsheng12: palace.changsheng12 || "",
+    boshi12: palace.boshi12 || "",
+    isBodyPalace: !!palace.isBodyPalace,
+  };
+}
+
+function getWentianClassicChartRenderState(saved) {
+  const source = saved || {};
+  const chartData = source.chartData || {};
+  const chart = source.chart || {};
+  const chartPalaces = Array.isArray(chart.palaces) ? chart.palaces : [];
+  const summaryPalaces = Array.isArray(chartData.palacesSummary) ? chartData.palacesSummary : [];
+  const palaces = (chartPalaces.length ? chartPalaces : summaryPalaces)
+    .map(normalizeWentianClassicChartPalace)
+    .filter(Boolean);
+  if (!palaces.length) return source;
+  const lifePalace = chartData.lifePalace || palaces.find((palace) => String(palace.name || "").replace(/宫$/, "") === "命") || {};
+  const bodyPalace = chartData.bodyPalaceDetail || palaces.find((palace) => palace.isBodyPalace) || {};
+  const dateText = chartData.birthDate || chartData.solarTime || source.form?.datetime || "";
+  return {
+    ...source,
+    chartData,
+    chart: {
+      ...chart,
+      palaces,
+      solarDate: chart.solarDate || String(dateText).slice(0, 10),
+      lunarDate: chart.lunarDate || chart.chineseDate || chartData.lunarDate || chartData.chineseDate || "",
+      chineseDate: chart.chineseDate || chartData.chineseDate || "",
+      fiveElementsClass: chart.fiveElementsClass || chartData.fiveElementsClass || "",
+      zodiac: chart.zodiac || chartData.zodiac || "",
+      earthlyBranchOfSoulPalace: chart.earthlyBranchOfSoulPalace || lifePalace.branch || lifePalace.earthlyBranch || "",
+      earthlyBranchOfBodyPalace: chart.earthlyBranchOfBodyPalace || bodyPalace.branch || bodyPalace.earthlyBranch || "",
+    },
+  };
+}
+
+function renderWentianClassicChart(saved, options = {}) {
+  const source = getWentianClassicChartRenderState(saved);
+  const chart = source.chart || {};
+  if (!Array.isArray(chart.palaces) || !chart.palaces.length) return "";
+  const form = source.form || {};
+  const chartData = source.chartData || buildWentianChartPayload(chart, {
     gender: form.gender || "male",
     date: form.datetime ? new Date(form.datetime) : null,
     city: form.city || "",
   });
   const activeBranch = chart.earthlyBranchOfSoulPalace || (chart.palaces || []).find((p) => p.name === "命宫")?.earthlyBranch || "卯";
+  const nodeId = options.nodeId || "source-27-native-chart";
   return `
-    <div class="wentian-native-mingpan" data-node-id="source-27-native-chart">
+    <div class="wentian-native-mingpan${options.readonly ? " is-readonly" : ""}" data-node-id="${escapeHtml(nodeId)}">
       <div class="fc-card">
         <div class="fc-grid-wrap">
           <div class="fc-grid">
@@ -13264,8 +13353,8 @@ function renderWentianClassicChart(saved) {
               <path class="fc-sanfang-triangle"></path>
               <g class="fc-sanfang-points"></g>
             </svg>
-            ${(chart.palaces || []).map((palace) => renderWentianClassicPalaceCell(palace, activeBranch)).join("")}
-            ${renderWentianClassicCenter(chart, chartData, form)}
+            ${(chart.palaces || []).map((palace) => renderWentianClassicPalaceCell(palace, activeBranch, options)).join("")}
+            ${renderWentianClassicCenter(chart, chartData, form, options)}
           </div>
         </div>
       </div>
@@ -13814,7 +13903,7 @@ function renderConvertedScreen(no) {
   }
   const polishedScreen = renderWentianPolishedScreen(screen);
   if (polishedScreen) {
-    const polishedHeight = screen.no === 4 ? 892 : screen.no === 8 ? 1280 : screen.no === 17 ? getLiuyaoCastScreenHeight() : screen.no === 18 || screen.no === 19 ? 1480 : screen.no === 20 ? getLiuyaoResultScreenHeight() : screen.no === 22 ? 1120 : screen.no === 24 ? 1180 : screen.no === 44 ? getYangzhaiResultHeight() : screen.no === 46 ? LIUREN_SCREEN_HEIGHT : screen.no === 49 ? 1860 : 844;
+    const polishedHeight = screen.no === 4 ? 892 : screen.no === 8 ? 1280 : screen.no === 17 ? getLiuyaoCastScreenHeight() : screen.no === 18 || screen.no === 19 ? 1480 : screen.no === 20 ? getLiuyaoResultScreenHeight() : screen.no === 22 ? 1120 : screen.no === 24 ? 1180 : screen.no === 44 ? getYangzhaiResultHeight() : screen.no === 46 ? LIUREN_SCREEN_HEIGHT : screen.no === 49 ? WENTIAN_HEPAN_RESULT_SCREEN_HEIGHT : 844;
     const wideBgClass = screen.no >= 42 && screen.no <= 45 ? " wide-bg" : "";
     const customHotspots = screen.no >= 17 && screen.no <= 20 ? "" : convertedFlowHotspots(screen);
     return figPhone(`screen-${screen.no}`, `${String(screen.no).padStart(2, "0")} ${screen.title}`, `

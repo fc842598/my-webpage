@@ -2806,6 +2806,7 @@ html[lang="en"] .wentian-archive-confirm {
 }
 
 .wentian-hepan-result-pair article,
+.wentian-hepan-chart-card,
 .wentian-hepan-ai-card,
 .wentian-hepan-report-card,
 .wentian-hepan-result-card,
@@ -2865,6 +2866,118 @@ html[lang="en"] .wentian-archive-confirm {
   font-size: 11px;
   font-style: normal;
   font-weight: 800;
+}
+
+.wentian-hepan-chart-section {
+  display: grid;
+  gap: 12px;
+}
+
+.wentian-hepan-section-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 2px 2px 0;
+}
+
+.wentian-hepan-section-head span,
+.wentian-hepan-section-head b,
+.wentian-hepan-chart-card header span,
+.wentian-hepan-chart-card header strong,
+.wentian-hepan-chart-card header em {
+  display: block;
+  font-style: normal;
+  font-weight: 900;
+}
+
+.wentian-hepan-section-head span {
+  color: #201813;
+  font-size: 18px;
+}
+
+.wentian-hepan-section-head b {
+  color: #9a8f82;
+  font-size: 11px;
+  text-align: right;
+}
+
+.wentian-hepan-chart-card {
+  overflow: hidden;
+  padding: 12px;
+  border-radius: 18px;
+}
+
+.wentian-hepan-chart-card header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  min-width: 0;
+}
+
+.wentian-hepan-chart-card header div {
+  min-width: 0;
+}
+
+.wentian-hepan-chart-card header span {
+  color: #a47726;
+  font-size: 12px;
+}
+
+.wentian-hepan-chart-card header strong {
+  margin-top: 4px;
+  overflow: hidden;
+  color: #201813;
+  font-size: 18px;
+  line-height: 1.2;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.wentian-hepan-chart-card header em {
+  flex: 0 0 auto;
+  max-width: 156px;
+  margin-top: 2px;
+  color: #807568;
+  font-size: 11px;
+  line-height: 1.35;
+  text-align: right;
+}
+
+.wentian-hepan-chart-card .wentian-native-mingpan {
+  position: relative;
+  left: auto;
+  top: auto;
+  width: calc(100% + 24px);
+  height: auto;
+  margin: 12px -12px -12px;
+}
+
+.wentian-hepan-chart-card .wentian-native-mingpan .fc-card {
+  width: 100%;
+  border-top: 1px solid #eadfce;
+  background: #f6ead9;
+}
+
+.wentian-hepan-chart-card .wentian-native-mingpan .fc-cell {
+  cursor: default;
+}
+
+.wentian-hepan-chart-card .wentian-native-mingpan .fc-cell.is-readonly {
+  transform: none;
+}
+
+.wentian-hepan-chart-empty {
+  margin-top: 12px;
+  border: 1px solid #f0e3d0;
+  border-radius: 14px;
+  padding: 12px;
+  background: #fffaf3;
+  color: #7d7166;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.55;
 }
 
 .wentian-hepan-report-card,
@@ -2979,10 +3092,12 @@ html[lang="en"] .wentian-archive-confirm {
   display: -webkit-box;
   overflow: hidden;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 5;
+  -webkit-line-clamp: 3;
 }
 
 .wentian-hepan-ai-risk {
+  max-height: 82px;
+  overflow: hidden;
   border-radius: 13px;
   padding: 10px 11px;
   background: rgba(169, 68, 55, .08);
