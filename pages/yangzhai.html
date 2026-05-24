@@ -383,6 +383,9 @@
       gap: 5px;
       margin-top: auto;
       padding-top: 12px;
+      max-height: 58px;
+      align-content: flex-end;
+      overflow: hidden;
     }
 
     .item-pill,
@@ -390,6 +393,8 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
+      max-width: 100%;
+      min-width: 0;
       min-height: 24px;
       padding: 0 8px;
       border: 1px solid rgba(201,169,97,.34);
@@ -398,7 +403,20 @@
       background: rgba(201,169,97,.08);
       font-size: 14px;
       font-weight: 900;
+      line-height: 1.15;
+      overflow: hidden;
+      text-overflow: ellipsis;
       white-space: nowrap;
+    }
+
+    .palace-items .item-pill {
+      max-width: calc(50% - 3px);
+    }
+
+    .item-pill.is-more {
+      flex: 0 0 auto;
+      color: var(--ivory);
+      background: rgba(201,169,97,.16);
     }
 
     .add-hint {
@@ -457,6 +475,8 @@
       padding: 16px 14px;
       display: flex;
       flex-direction: column;
+      min-width: 0;
+      overflow: hidden;
     }
 
     .active-card {
@@ -493,6 +513,7 @@
     }
 
     .option-btn {
+      min-width: 0;
       min-height: 36px;
       padding: 6px 8px 6px 10px;
       border: 1px solid rgba(201,169,97,.24);
@@ -570,6 +591,7 @@
 
     .picked-list {
       min-height: 44px;
+      max-height: 116px;
       margin-top: 12px;
       padding: 10px;
       border: 1px solid rgba(201,169,97,.16);
@@ -580,6 +602,13 @@
       flex-wrap: wrap;
       align-content: flex-start;
       gap: 6px;
+      overflow: auto;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(201,169,97,.46) rgba(201,169,97,.08);
+    }
+
+    .picked-list .item-pill {
+      max-width: calc(50% - 3px);
     }
 
     .picked-list.is-empty {
@@ -947,8 +976,10 @@
             </div>`;
           }
           const items = getItems(palace.key);
+          const visibleItems = items.slice(0, 3);
+          const hiddenCount = items.length - visibleItems.length;
           const pills = items.length
-            ? items.map((item) => `<span class="item-pill">${escapeHtml(item)}</span>`).join("")
+            ? `${visibleItems.map((item) => `<span class="item-pill" title="${escapeHtml(item)}">${escapeHtml(item)}</span>`).join("")}${hiddenCount > 0 ? `<span class="item-pill is-more">+${hiddenCount}</span>` : ""}`
             : `<div class="add-hint">+ 点此安位</div>`;
           return `<button class="palace-cell${state.active === palace.key ? " is-active" : ""}" type="button" data-palace="${palace.key}">
             <div class="palace-top"><span class="palace-dir">${palace.dir}</span><span class="palace-gua">${palace.gua}</span></div>
