@@ -5144,6 +5144,38 @@ function ensureWentianLanguageObserver() {
   });
 }
 
+function getWentianRouteFromClickPoint(event) {
+  const routeTargets = Array.from(document.querySelectorAll("[data-route]"));
+  const hitTargets = routeTargets.map((element, index) => {
+    const rect = element.getBoundingClientRect();
+    const style = window.getComputedStyle(element);
+    const visible = rect.width > 0 && rect.height > 0 && style.display !== "none" && style.visibility !== "hidden";
+    const inside = event.clientX >= rect.left && event.clientX <= rect.right && event.clientY >= rect.top && event.clientY <= rect.bottom;
+    return visible && inside ? { element, index, z: Number.parseInt(style.zIndex, 10) || 0 } : null;
+  }).filter(Boolean).sort((a, b) => b.z - a.z || b.index - a.index);
+  if (hitTargets[0]?.element?.dataset.route) return hitTargets[0].element.dataset.route;
+
+  const phone = event.target.closest?.(".figma-phone") || view?.querySelector?.(".figma-phone");
+  if (!phone) return "";
+  const phoneRect = phone.getBoundingClientRect();
+  if (
+    event.clientX < phoneRect.left ||
+    event.clientX > phoneRect.right ||
+    event.clientY < phoneRect.top ||
+    event.clientY > phoneRect.bottom
+  ) return "";
+  const scale = phoneRect.width ? phoneRect.width / WENTIAN_PHONE_WIDTH : 1;
+  const x = (event.clientX - phoneRect.left) / (scale || 1);
+  const y = (event.clientY - phoneRect.top) / (scale || 1);
+  const screenNo = Number(String(state.route || "").replace("screen-", ""));
+  const hotspots = screenFlowHotspots[screenNo] || [];
+  for (let index = hotspots.length - 1; index >= 0; index -= 1) {
+    const [left, top, width, height, route] = hotspots[index];
+    if (x >= left && x <= left + width && y >= top && y <= top + height) return route;
+  }
+  return "";
+}
+
 function getWentianProfile() {
   const defaults = {
     nickname: "谢广周",
@@ -12926,11 +12958,12 @@ document.addEventListener("click", (event) => {
     return;
   }
   const routeButton = event.target.closest("[data-route]");
-  if (routeButton) {
-    if (routeButton.dataset.route !== "screen-17") setLiuyaoCasterModalOpen(false);
-    if (liuyaoTossAnimation?.active && routeButton.dataset.route !== "screen-17") clearLiuyaoTossAnimation();
-    if (routeButton.dataset.route === "screen-4") clearWentianXuChatContext();
-    navigate(routeButton.dataset.route);
+  const clickRoute = routeButton?.dataset.route || (!earlyActionTarget ? getWentianRouteFromClickPoint(event) : "");
+  if (clickRoute) {
+    if (clickRoute !== "screen-17") setLiuyaoCasterModalOpen(false);
+    if (liuyaoTossAnimation?.active && clickRoute !== "screen-17") clearLiuyaoTossAnimation();
+    if (clickRoute === "screen-4") clearWentianXuChatContext();
+    navigate(clickRoute);
     return;
   }
   const action = event.target.closest("[data-action]")?.dataset.action;
