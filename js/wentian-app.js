@@ -187,6 +187,7 @@ let wentianFitObserver = null;
 let wentianFitTimers = [];
 let wentianFitLoop = 0;
 let wentianFitLoopUntil = 0;
+let wentianPointerRouteSuppressUntil = 0;
 const WENTIAN_PHONE_WIDTH = 390;
 const WENTIAN_PHONE_HEIGHT = 844;
 
@@ -5174,6 +5175,26 @@ function getWentianRouteFromClickPoint(event) {
     if (x >= left && x <= left + width && y >= top && y <= top + height) return route;
   }
   return "";
+}
+
+function navigateWentianClickRoute(route) {
+  if (!route) return;
+  if (route !== "screen-17") setLiuyaoCasterModalOpen(false);
+  if (liuyaoTossAnimation?.active && route !== "screen-17") clearLiuyaoTossAnimation();
+  if (route === "screen-4") clearWentianXuChatContext();
+  navigate(route);
+}
+
+function handleWentianRoutePointerCapture(event) {
+  if (event.pointerType === "mouse" && event.button !== 0) return;
+  if (event.target.closest?.("input, textarea, select, [contenteditable='true']")) return;
+  if (event.target.closest?.("[data-action]")) return;
+  const route = event.target.closest?.("[data-route]")?.dataset.route || getWentianRouteFromClickPoint(event);
+  if (!route) return;
+  wentianPointerRouteSuppressUntil = Date.now() + 350;
+  event.preventDefault();
+  event.stopPropagation();
+  navigateWentianClickRoute(route);
 }
 
 function getWentianProfile() {
@@ -12797,6 +12818,7 @@ function renderPay() {
   `;
 }
 
+document.addEventListener("pointerup", handleWentianRoutePointerCapture, true);
 document.addEventListener("pointerdown", handleLiuyaoSwipePointerDown);
 document.addEventListener("pointermove", handleLiuyaoSwipePointerMove);
 document.addEventListener("pointerup", handleLiuyaoSwipePointerUp);
@@ -12811,6 +12833,11 @@ document.addEventListener("keydown", (event) => {
 });
 
 document.addEventListener("click", (event) => {
+  if (Date.now() < wentianPointerRouteSuppressUntil) {
+    event.preventDefault();
+    event.stopPropagation();
+    return;
+  }
   const promptButton = event.target.closest("[data-wentian-prompt]");
   if (promptButton) {
     promptButton.closest(".wentian-chat-faq-group")?.removeAttribute("open");
@@ -12960,10 +12987,7 @@ document.addEventListener("click", (event) => {
   const routeButton = event.target.closest("[data-route]");
   const clickRoute = routeButton?.dataset.route || (!earlyActionTarget ? getWentianRouteFromClickPoint(event) : "");
   if (clickRoute) {
-    if (clickRoute !== "screen-17") setLiuyaoCasterModalOpen(false);
-    if (liuyaoTossAnimation?.active && clickRoute !== "screen-17") clearLiuyaoTossAnimation();
-    if (clickRoute === "screen-4") clearWentianXuChatContext();
-    navigate(clickRoute);
+    navigateWentianClickRoute(clickRoute);
     return;
   }
   const action = event.target.closest("[data-action]")?.dataset.action;
