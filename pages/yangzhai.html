@@ -628,6 +628,7 @@
       color: #a99870;
       font-size: 13px;
       line-height: 1.75;
+      white-space: pre-line;
     }
 
     .result-top {
@@ -636,6 +637,13 @@
       justify-content: space-between;
       gap: 12px;
       margin-bottom: 12px;
+    }
+
+    .result-source {
+      margin-top: 14px;
+      color: #756845;
+      font-size: 12px;
+      font-weight: 800;
     }
 
     .empty-state {
@@ -812,9 +820,11 @@
     </footer>
   </div>
 
+  <script src="../js/yangzhai-desktop-data.js"></script>
   <script>
     (() => {
       const STORAGE_KEY = "yuetian-yangzhai-desktop-v1";
+      const desktopData = window.YUETIAN_YANGZHAI_DESKTOP_DATA || {};
       const palaces = [
         { key: "xun", gua: "巽", dir: "东南", role: "长女位", defaultItem: "长女" },
         { key: "li", gua: "离", dir: "正南", role: "二女位", defaultItem: "二女" },
@@ -853,7 +863,7 @@
         qian: ["父亲"]
       };
 
-      const roleGua = { 父亲: "乾", 母亲: "坤", 长子: "震", 长女: "巽", 二子: "坎", 二女: "离", 三子: "艮", 三女: "兑" };
+      const roleGua = desktopData.roleGua || { 父亲: "乾", 母亲: "坤", 长子: "震", 长女: "巽", 二子: "坎", 二女: "离", 三子: "艮", 三女: "兑" };
       const hexPairs = {
         "乾-乾": ["1", "乾为天", "父亲居西北角"], "坤-坤": ["2", "坤为地", "母亲居西南角"], "坎-震": ["3", "水雷屯", "二子居正东"], "艮-坎": ["4", "山水蒙", "三子居正北"],
         "坎-乾": ["5", "水天需", "二子居西北角"], "乾-坎": ["6", "天水讼", "父亲居正北"], "坤-坎": ["7", "地水师", "母亲居正北"], "坎-坤": ["8", "水地比", "二子居西南角"],
@@ -873,11 +883,14 @@
         "巽-兑": ["61", "风泽中孚", "长女居正西"], "震-艮": ["62", "雷山小过", "长子居东北角"], "坎-离": ["63", "水火既济", "二子居正南"], "离-坎": ["64", "火水未济", "二女居正北"]
       };
 
-      const spaceRules = {
+      const spaceRules = desktopData.spaceRules || {
         厨房: { preferredPalaces: ["kan", "dui"], text: "厨房为刀象，手机端逻辑保留为坎位或兑位更适配。" },
         厕所: { preferredPalaces: [], text: "厕所主是非、口舌、官司、破财，宜避开重要主位。" },
         客厅: { preferredPalaces: ["kun"], text: "客厅如客人，手机端逻辑保留为坤位更适配。" }
       };
+      const hexIndex = desktopData.hexIndex || {};
+      const hexReadings = desktopData.hexReadings || {};
+      const sourceTitle = desktopData.sourceTitle || "倪海厦《地脉道》";
 
       const grid = document.getElementById("palaceGrid");
       const optionGrid = document.getElementById("optionGrid");
@@ -909,6 +922,24 @@
       const getOption = (label) => options.find((item) => item.label === label) || { label, short: label.slice(0, 1), type: "family" };
       const getItems = (key) => Array.isArray(state.placements[key]) ? state.placements[key] : [];
       const escapeHtml = (value) => String(value).replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[char]));
+      const formatReadingText = (text) => String(text || "")
+        .replace(/\s+/g, "")
+        .replace(/([：:])(?=[一二三四五六七八九十]、)/g, "$1\n")
+        .replace(/。(?=[一二三四五六七八九十]、)/g, "。\n")
+        .replace(/([，,])(?=[一二三四五六七八九十]、)/g, "$1\n")
+        .replace(/。(?=\S)/g, "。\n")
+        .trim();
+      const getHexEntry = (label, palace) => {
+        const upper = roleGua[label];
+        if (!upper || !palace?.gua) return null;
+        const key = `${upper}-${palace.gua}`;
+        const indexed = hexIndex[key];
+        if (indexed) return indexed;
+        const legacy = hexPairs[key];
+        return legacy ? { no: legacy[0], name: legacy[1], index: legacy[2] } : null;
+      };
+      const getHexReading = (hex) => hex ? (hexReadings[Number(hex.no)] || null) : null;
+      const getReadingText = (reading) => reading?.original || reading?.summary || reading?.quote || "";
 
       function renderGrid() {
         grid.innerHTML = palaces.map((palace) => {
@@ -957,21 +988,23 @@
             if (option.type === "space") {
               const rule = spaceRules[label] || {};
               const matched = (rule.preferredPalaces || []).includes(palace.key);
+              const text = formatReadingText(rule.original || `${rule.meaning || ""}${rule.preference || ""}`) || "空间象义待补。";
               return {
                 tag: matched ? "方位适配" : "位置待调",
                 title: `${label}在${palace.gua}宫 · ${palace.dir}`,
-                body: `${rule.text || "空间象义待补。"} 当前落在${palace.dir}，建议结合户型动线一起看。`
+                body: `${text}\n当前：${palace.gua}宫(${palace.dir})。`,
+                source: rule.source || sourceTitle
               };
             }
-            const upper = roleGua[label];
-            const hex = hexPairs[`${upper}-${palace.gua}`];
+            const hex = getHexEntry(label, palace);
             const matched = label === palace.defaultItem;
+            const reading = getHexReading(hex);
+            const originalText = formatReadingText(getReadingText(reading));
             return {
               tag: matched ? "本位相合" : "卦象解读",
-              title: hex ? `${label}住${palace.gua}宫 · 第${hex[0]}卦 ${hex[1]}` : `${label}住${palace.gua}宫`,
-              body: hex
-                ? `结构：${hex[2]}。上卦为角色「${upper}」，下卦为方位「${palace.gua}」。${matched ? "长幼归位，先读稳定与承接。" : "此处先读错位后的卦象变化，再看家庭身份是否相应。"}`
-                : `已安位到${palace.dir}，该组合暂无索引。`
+              title: hex ? `${label}住${palace.gua}宫 · 第${hex.no}卦 ${hex.name}` : `${label}住${palace.gua}宫`,
+              body: hex ? (originalText || "原文待核。") : `已安位到${palace.dir}，该组合暂无索引。`,
+              source: reading?.source || sourceTitle
             };
           }));
       }
@@ -984,6 +1017,7 @@
               <div class="result-top"><span class="result-tag">${escapeHtml(item.tag)}</span></div>
               <h3>${escapeHtml(item.title)}</h3>
               <p>${escapeHtml(item.body)}</p>
+              <div class="result-source">${escapeHtml(item.source || sourceTitle)}</div>
             </article>`).join("")
           : `<div class="empty-state">先在九宫中安位，再点击「解读分析」。</div>`;
       }
