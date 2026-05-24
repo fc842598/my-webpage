@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>阅天 · 紫微排盘</title>
   <link rel="icon" href="../images/logo-mark.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../css/mingbook-onepage.css?v=20260524-shichen-guide">
+  <link rel="stylesheet" href="../css/mingbook-onepage.css?v=20260524-shichen-overlay">
   <script src="../js/config.js?v=20260521-api-domain-auth-proxy"></script>
   <script defer src="../js/cities.js"></script>
   <script defer src="../js/lunarCalendar.js"></script>
@@ -709,28 +709,33 @@
           <div class="mbp-shichen-rule">天纪口诀：中左取子午卯酉，偏右取寅申巳亥，多旋取辰戌丑未。</div>
           <div class="mbp-whorl-guide" aria-label="头旋位置示意">
             <label class="mbp-whorl-card">
-              <input type="radio" name="mbpWhorl" value="center-left" data-label="单旋中左：子午卯酉">
+              <input type="radio" name="mbpWhorl" value="center-left" data-label="单旋中左：子午卯酉" aria-label="居中或偏左，子午卯酉">
               <span class="mbp-whorl-visual mbp-whorl-center-left" aria-hidden="true">
-                <span class="mbp-whorl-head"><i></i></span>
+                <span class="mbp-whorl-pulse"></span>
+                <span class="mbp-whorl-dot"></span>
+                <span class="mbp-whorl-tag"><b>居中/偏左</b><small>旋在中线附近或左侧</small></span>
               </span>
-              <b>中 / 偏左</b>
-              <small>子午卯酉</small>
+              <span class="mbp-whorl-text">居中 / 偏左，子午卯酉</span>
             </label>
             <label class="mbp-whorl-card">
-              <input type="radio" name="mbpWhorl" value="right" data-label="单旋偏右：寅申巳亥">
+              <input type="radio" name="mbpWhorl" value="right" data-label="单旋偏右：寅申巳亥" aria-label="偏右，寅申巳亥">
               <span class="mbp-whorl-visual mbp-whorl-right" aria-hidden="true">
-                <span class="mbp-whorl-head"><i></i></span>
+                <span class="mbp-whorl-pulse"></span>
+                <span class="mbp-whorl-dot"></span>
+                <span class="mbp-whorl-tag"><b>偏右</b><small>旋在线右侧</small></span>
               </span>
-              <b>偏右</b>
-              <small>寅申巳亥</small>
+              <span class="mbp-whorl-text">偏右，寅申巳亥</span>
             </label>
             <label class="mbp-whorl-card">
-              <input type="radio" name="mbpWhorl" value="double" data-label="两个以上：辰戌丑未">
+              <input type="radio" name="mbpWhorl" value="double" data-label="两个以上：辰戌丑未" aria-label="两个以上，辰戌丑未">
               <span class="mbp-whorl-visual mbp-whorl-double" aria-hidden="true">
-                <span class="mbp-whorl-head"><i></i><i></i></span>
+                <span class="mbp-whorl-pulse"></span>
+                <span class="mbp-whorl-dot"></span>
+                <span class="mbp-whorl-pulse mbp-whorl-pulse-alt"></span>
+                <span class="mbp-whorl-dot mbp-whorl-dot-alt"></span>
+                <span class="mbp-whorl-tag"><b>两个以上</b><small>多处旋心</small></span>
               </span>
-              <b>两个以上</b>
-              <small>辰戌丑未</small>
+              <span class="mbp-whorl-text">两个以上，辰戌丑未</span>
             </label>
           </div>
         </div>
