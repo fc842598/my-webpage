@@ -2213,18 +2213,20 @@ html[lang="en"] .wentian-archive-confirm {
 
 .wentian-hepan-option {
   position: relative;
-  display: block;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
   width: 100%;
-  min-height: 72px;
-  margin: 0 0 10px;
-  padding: 0;
+  min-height: 126px;
+  margin: 0 0 12px;
+  padding: 12px;
   border: 1px solid #efe3d0;
-  border-radius: 14px;
+  border-radius: 18px;
   background: #fff;
   color: #25211d;
   font-family: inherit;
   text-align: left;
-  box-shadow: 0 6px 16px rgba(72, 48, 26, .07);
+  box-shadow: 0 10px 22px rgba(72, 48, 26, .08);
   overflow: hidden;
 }
 
@@ -2235,12 +2237,12 @@ html[lang="en"] .wentian-archive-confirm {
 
 .wentian-hepan-select {
   display: grid;
-  grid-template-columns: 48px minmax(0, 1fr);
+  grid-template-columns: 48px minmax(0, 1fr) 48px;
   gap: 12px;
   align-items: center;
   width: 100%;
-  min-height: 72px;
-  padding: 10px 142px 10px 12px;
+  min-height: 58px;
+  padding: 0;
   border: 0;
   background: transparent;
   color: inherit;
@@ -2299,69 +2301,75 @@ html[lang="en"] .wentian-archive-confirm {
 }
 
 .wentian-hepan-check {
-  position: absolute;
-  top: 50%;
-  right: 12px;
-  transform: translateY(-50%);
   display: grid;
   place-items: center;
-  width: 24px;
-  height: 24px;
+  justify-self: end;
+  width: 44px;
+  height: 44px;
   border: 1px solid #d8cdbc;
-  border-radius: 13px;
+  border-radius: 22px;
+  background: #fffdf9;
   color: #bd8624;
-  font-size: 18px;
+  font-size: 22px;
   font-weight: 900;
+  box-shadow: inset 0 0 0 4px rgba(247, 236, 213, .58);
 }
 
 .wentian-hepan-option.is-selected .wentian-hepan-check {
-  border-color: transparent;
+  border-color: #c6962e;
+  background: #c6962e;
+  color: #fff;
+  box-shadow: 0 6px 12px rgba(160, 112, 32, .18);
+}
+
+.wentian-hepan-tools {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding-left: 56px;
 }
 
 .wentian-hepan-edit-time {
-  position: absolute;
-  right: 44px;
-  bottom: 8px;
-  z-index: 4;
-  min-width: 74px;
-  height: 24px;
-  padding: 0 8px;
+  position: static;
+  min-width: 100px;
+  height: 42px;
+  padding: 0 14px;
   border: 1px solid #ead2ad;
-  border-radius: 12px;
+  border-radius: 21px;
   background: #fff8ed;
   color: #9b742e;
   font-family: inherit;
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 900;
   line-height: 1;
-  box-shadow: 0 4px 10px rgba(146, 104, 42, .08);
+  box-shadow: 0 6px 12px rgba(146, 104, 42, .08);
 }
 
 .wentian-hepan-actions {
-  position: absolute;
-  top: 8px;
-  right: 42px;
-  z-index: 4;
+  position: static;
   display: flex;
-  gap: 4px;
+  flex: 0 0 auto;
+  gap: 8px;
 }
 
 .wentian-hepan-action {
-  height: 24px;
-  min-width: 34px;
-  padding: 0 8px;
+  height: 42px;
+  min-width: 56px;
+  padding: 0 12px;
   border: 1px solid #ead2ad;
-  border-radius: 12px;
+  border-radius: 21px;
   background: #fffaf2;
   color: #9b742e;
   font-family: inherit;
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 900;
   line-height: 1;
-  box-shadow: 0 4px 10px rgba(146, 104, 42, .07);
+  box-shadow: 0 6px 12px rgba(146, 104, 42, .07);
 }
 
 .wentian-hepan-action.danger {
+  order: -1;
   color: #a94437;
 }
 
@@ -2369,6 +2377,7 @@ html[lang="en"] .wentian-archive-confirm {
   border-color: #c85a4a;
   background: #fff1ee;
   color: #b53a2e;
+  min-width: 78px;
 }
 
 .wentian-hepan-time-mask {

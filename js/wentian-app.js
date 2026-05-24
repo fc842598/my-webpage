@@ -8437,13 +8437,15 @@ function sourceHepanSelectScreen() {
                 <em>${escapeHtml(item.gender)} · ${escapeHtml(item.tag)}</em>
                 <small>${escapeHtml(item.datetime)}</small>
               </span>
+              <span class="wentian-hepan-check" aria-hidden="true">${selected ? "✓" : ""}</span>
             </button>
-            <span class="wentian-hepan-actions">
-              <button class="wentian-hepan-action" type="button" data-action="wentian-archive-edit" data-archive-id="${escapeHtml(archive.id)}" aria-label="编辑${escapeHtml(item.name)}">编辑</button>
-              <button class="wentian-hepan-action danger ${confirmingDelete ? "is-confirming" : ""}" type="button" data-action="wentian-archive-delete" data-archive-id="${escapeHtml(archive.id)}" aria-label="删除${escapeHtml(item.name)}">${confirmingDelete ? "确认" : "删除"}</button>
-            </span>
-            <button class="wentian-hepan-edit-time" type="button" data-action="wentian-hepan-edit-time" data-archive-id="${escapeHtml(archive.id)}" aria-label="编辑${escapeHtml(item.name)}命盘时间">改时间</button>
-            <span class="wentian-hepan-check">${selected ? "✓" : ""}</span>
+            <div class="wentian-hepan-tools" role="group" aria-label="${escapeHtml(item.name)}档案操作">
+              <button class="wentian-hepan-edit-time" type="button" data-action="wentian-hepan-edit-time" data-archive-id="${escapeHtml(archive.id)}" aria-label="编辑${escapeHtml(item.name)}命盘时间">改时间</button>
+              <span class="wentian-hepan-actions">
+                <button class="wentian-hepan-action" type="button" data-action="wentian-archive-edit" data-archive-id="${escapeHtml(archive.id)}" aria-label="编辑${escapeHtml(item.name)}">编辑</button>
+                <button class="wentian-hepan-action danger ${confirmingDelete ? "is-confirming" : ""}" type="button" data-action="wentian-archive-delete" data-archive-id="${escapeHtml(archive.id)}" aria-label="删除${escapeHtml(item.name)}">${confirmingDelete ? "确认删除" : "删除"}</button>
+              </span>
+            </div>
           </div>
         `;
       }).join("")}
