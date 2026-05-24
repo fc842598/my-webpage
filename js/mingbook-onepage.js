@@ -1809,7 +1809,7 @@
     if (city) {
       $('#mbpCitySelectedName').textContent = formatCityLabel(city);
       const timeZone = city.timeZone || (typeof getBirthTimeZoneId === 'function' ? getBirthTimeZoneId(city) : '');
-      $('#mbpCityTz').textContent = formatTimeZoneLabel(timeZone, city.tzOffset);
+      $('#mbpCityTz').textContent = timeZone ? `${timeZone} · 按出生日期校正` : formatTzOffset(city.tzOffset);
       $('#mbpCityLon').textContent = formatGeoCoord(city.lon, 'lon');
       $('#mbpCityLat').textContent = formatGeoCoord(city.lat, 'lat');
     }
@@ -1939,6 +1939,7 @@
       cityName: selectedCity ? selectedCity.city : '',
     });
     const zoneText = formatTimeZoneLabel(tst.timeZone, tst.tzOffset);
+    if (selectedCity && $('#mbpCityTz')) $('#mbpCityTz').textContent = zoneText;
     display.innerHTML = `当地法定时 ${pad2(time.hour)}:${pad2(time.minute)} ${escapeHtml(zoneText)} · 真太阳时 <b>${pad2(tst.trueSolarHour)}:${pad2(tst.trueSolarMinute)}</b> · ${escapeHtml(tst.diffStr)}`;
     if (badge) {
       badge.textContent = tst.isEstimated ? '默认北京估算' : `${formatCityLabel(selectedCity)} ${zoneText}`;

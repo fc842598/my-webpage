@@ -1959,6 +1959,15 @@ function formatWentianTimeZoneLabel(timeZone, tzOffset) {
   return timeZone ? `${timeZone} · ${offsetText}` : offsetText;
 }
 
+function formatWentianGeoCoord(value, axis) {
+  const number = Number(value);
+  if (!Number.isFinite(number)) return "--";
+  const dir = axis === "lat"
+    ? (number >= 0 ? "N" : "S")
+    : (number >= 0 ? "E" : "W");
+  return `${Math.abs(number).toFixed(2)}°${dir}`;
+}
+
 function wentianCityMatchesQuery(row, q, compact) {
   const province = String(row[0] || "").toLowerCase();
   const city = String(row[1] || "").toLowerCase();
@@ -2156,11 +2165,19 @@ function renderWentianChartCityDropdown(query) {
     const city = makeWentianCity(row);
     return `
     <button type="button" class="wentian-chart-city-item" data-action="wentian-chart-city-pick" data-city-index="${index}">
-      ${escapeHtml(formatWentianCity(city))}<br><span>${escapeHtml(formatWentianTimeZoneLabel(city.timeZone, city.tzOffset))} · ${Number(row[2]).toFixed(2)}°E / ${Number(row[3]).toFixed(2)}°N</span>
+      ${escapeHtml(formatWentianCity(city))}<br><span>${escapeHtml(city.timeZone || formatWentianTzOffset(city.tzOffset))} · ${escapeHtml(formatWentianGeoCoord(row[2], "lon"))} / ${escapeHtml(formatWentianGeoCoord(row[3], "lat"))}</span>
     </button>
   `;
   }).join("");
   dropdown.style.display = "block";
+}
+
+function updateWentianSelectedCityText(tzOffset) {
+  const selected = document.getElementById("wentian-chart-city-selected");
+  if (!selected || !wentianChartCity) return;
+  const offset = Number.isFinite(Number(tzOffset)) ? Number(tzOffset) : wentianChartCity.tzOffset;
+  selected.textContent = `已选：${formatWentianCity(wentianChartCity)} · ${formatWentianTzOffset(offset)} · ${formatWentianGeoCoord(wentianChartCity.lon, "lon")}`;
+  selected.style.display = "block";
 }
 
 function applyWentianChartCity(city, options = {}) {
@@ -2177,7 +2194,7 @@ function applyWentianChartCity(city, options = {}) {
   if (input) input.value = city ? `${city.province} · ${city.city}` : "";
   if (clear) clear.style.display = city ? "" : "none";
   if (selected) {
-    selected.textContent = city ? `已选：${formatWentianCity(city)} · ${formatWentianTzOffset(city.tzOffset)} · ${Number(city.lon).toFixed(2)}°E` : "";
+    selected.textContent = city ? `已选：${formatWentianCity(city)} · 按出生日期校正 · ${formatWentianGeoCoord(city.lon, "lon")}` : "";
     selected.style.display = city ? "block" : "none";
   }
   if (dropdown) dropdown.style.display = "none";
@@ -2266,6 +2283,7 @@ function updateWentianChartPreview() {
       });
       const used = document.getElementById("wentian-chart-true-solar")?.checked;
       const shichen = ["子", "丑", "寅", "卯", "辰", "巳", "午", "未", "申", "酉", "戌", "亥"][getWentianTimeIndex(result.trueSolarHour, result.trueSolarMinute)] || "";
+      updateWentianSelectedCityText(result.tzOffset);
       tst.textContent = `${used ? "已采用" : "预览"}真太阳时：${padWentianNumber(result.trueSolarHour)}:${padWentianNumber(result.trueSolarMinute)} · ${formatWentianTzOffset(result.tzOffset)} · ${shichen}时 · ${result.diffStr}`;
     }
   } catch (error) {
