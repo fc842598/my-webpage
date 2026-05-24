@@ -13071,7 +13071,7 @@ function renderConvertedScreen(no) {
     return figPhone(`screen-${screen.no}`, `${String(screen.no).padStart(2, "0")} 首页`, `
       ${sourceDashboardHomeScreen()}
       ${convertedFlowHotspots(screen)}
-    `, 986, "converted source-screen no-status-shift", false);
+    `, 1044, "converted source-screen no-status-shift", false);
   }
   if (screen.no === 2) {
     return figPhone(`screen-${screen.no}`, `${String(screen.no).padStart(2, "0")} ${screen.title}`, `
