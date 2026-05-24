@@ -1637,13 +1637,18 @@ function setWentianSelectedArchiveId(id) {
   } catch (_err) {}
 }
 
-function getWentianSelectedArchiveId(archives) {
+function getWentianStoredSelectedArchiveId() {
   let selectedId = "";
   try {
     selectedId = localStorage.getItem(WENTIAN_SELECTED_ARCHIVE_KEY) || "";
   } catch (_err) {}
+  return selectedId;
+}
+
+function getWentianSelectedArchiveId(archives) {
+  const selectedId = getWentianStoredSelectedArchiveId();
   if (archives.some((item) => item.id === selectedId)) return selectedId;
-  return archives[0]?.id || "";
+  return archives.find((item) => item?.form?.isDefault)?.id || archives[0]?.id || "";
 }
 
 function setWentianChartRecordId(id) {
@@ -1814,6 +1819,19 @@ function getWentianArchiveStamp(archive) {
   return Number.isFinite(stamp) ? stamp : 0;
 }
 
+function sortWentianArchivesByDefault(archives, selectedId = "") {
+  return (Array.isArray(archives) ? archives : [])
+    .map((archive, index) => ({ archive, index }))
+    .sort((left, right) => {
+      const leftRank = left.archive?.id === selectedId ? 0 : left.archive?.form?.isDefault ? 1 : 2;
+      const rightRank = right.archive?.id === selectedId ? 0 : right.archive?.form?.isDefault ? 1 : 2;
+      return leftRank - rightRank
+        || getWentianArchiveStamp(right.archive) - getWentianArchiveStamp(left.archive)
+        || left.index - right.index;
+    })
+    .map((item) => item.archive);
+}
+
 function mergeWentianArchives(localArchives, remoteArchives) {
   const merged = new Map();
   const add = (archive) => {
@@ -1872,12 +1890,16 @@ async function hydrateWentianArchivesFromRemote(options = {}) {
       wentianArchiveRemoteLoaded = true;
       const localArchives = readWentianArchives().map(normalizeWentianArchive).filter(Boolean);
       const remoteArchives = (Array.isArray(data.archives) ? data.archives : []).map(normalizeWentianArchive).filter(Boolean);
-      const merged = mergeWentianArchives(localArchives, remoteArchives);
+      const rawMerged = mergeWentianArchives(localArchives, remoteArchives);
+      const remoteSelectedId = data.selectedArchiveId && rawMerged.some((item) => item.id === data.selectedArchiveId)
+        ? data.selectedArchiveId
+        : getWentianSelectedArchiveId(rawMerged);
+      const merged = sortWentianArchivesByDefault(rawMerged, remoteSelectedId);
       const before = JSON.stringify(localArchives.map((item) => item.id));
       const after = JSON.stringify(merged.map((item) => item.id));
       if (merged.length) writeWentianArchives(merged);
-      if (data.selectedArchiveId && merged.some((item) => item.id === data.selectedArchiveId)) {
-        setWentianSelectedArchiveId(data.selectedArchiveId);
+      if (remoteSelectedId) {
+        setWentianSelectedArchiveId(remoteSelectedId);
       }
       if (merged.length && remoteArchives.length < merged.length) pushWentianArchivesToRemote(merged);
       if (options.rerender && before !== after && (state.route === "screen-5" || state.route === "screen-25")) {
@@ -1904,8 +1926,11 @@ function getWentianArchiveList() {
     archives.unshift(currentArchive);
   }
   const merged = mergeWentianArchives(archives, []);
-  writeWentianArchives(merged);
-  return merged;
+  const selectedId = getWentianSelectedArchiveId(merged);
+  const sorted = sortWentianArchivesByDefault(merged, selectedId);
+  writeWentianArchives(sorted);
+  if (selectedId) setWentianSelectedArchiveId(selectedId);
+  return sorted;
 }
 
 function saveWentianArchiveFromChartState(chartState) {
@@ -1927,7 +1952,7 @@ function saveWentianArchiveFromChartState(chartState) {
   };
   if (index >= 0) archives[index] = archiveWithStamp;
   else archives.unshift(archiveWithStamp);
-  const merged = mergeWentianArchives(archives, []);
+  const merged = sortWentianArchivesByDefault(mergeWentianArchives(archives, []), archiveWithStamp.id);
   writeWentianArchives(merged);
   setWentianSelectedArchiveId(archiveWithStamp.id);
   pushWentianArchivesToRemote(merged);
@@ -3824,7 +3849,7 @@ function getWentianArchiveDisplay(archive) {
     datetime,
     pillars: pillars || "辛未 庚寅 丁巳 辛亥",
     tag: "四柱八字",
-    badge: form.isDefault ? "默认" : "",
+    badge: archive?.id === getWentianStoredSelectedArchiveId() ? "默认" : "",
   };
 }
 
