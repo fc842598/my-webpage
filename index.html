@@ -1030,11 +1030,12 @@
     }
 
     .triad-card {
-      height: 194px;
+      min-height: 204px;
+      height: auto;
       display: grid;
-      grid-template-columns: 126px 1fr 210px;
+      grid-template-columns: 124px minmax(0, 1fr) 220px;
       align-items: center;
-      padding: 0 56px;
+      padding: 30px 34px 72px;
       position: relative;
       overflow: hidden;
       border: 1px solid rgba(201, 169, 97, .48);
@@ -1126,6 +1127,40 @@
       border: 1px solid rgba(201, 169, 97, .48);
       border-radius: 999px;
       color: var(--gold-soft);
+    }
+
+    .triad-entry-tag {
+      position: absolute;
+      left: 158px;
+      bottom: 24px;
+      z-index: 3;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 128px;
+      height: 40px;
+      padding: 0 20px;
+      border: 1px solid rgba(241, 212, 125, .86);
+      border-radius: 999px;
+      color: #170e05;
+      background: linear-gradient(180deg, #efd178, #bd8733);
+      box-shadow: 0 12px 24px rgba(0, 0, 0, .24), inset 0 1px 0 rgba(255, 255, 255, .26);
+      font-size: 14px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .triad-card:nth-child(2) .triad-entry-tag {
+      min-width: 172px;
+      color: #f4dfad;
+      border-color: rgba(218, 181, 91, .46);
+      background: rgba(28, 18, 10, .88);
+    }
+
+    .triad-card:nth-child(3) .triad-entry-tag {
+      color: #fff0cf;
+      border-color: rgba(183, 78, 57, .82);
+      background: linear-gradient(180deg, #9b3e2f, #64241d);
     }
 
     .steps {
@@ -2204,6 +2239,10 @@
         padding: 1px 7px;
       }
 
+      .triad-entry-tag {
+        display: none;
+      }
+
       .steps {
         gap: 8px;
       }
@@ -2447,6 +2486,7 @@
                 <li>十二宫</li>
                 <li>星曜格局</li>
               </ul>
+              <a class="triad-entry-tag" href="pages/mingbook-onepage.html">进入排盘</a>
             </article>
 
             <article class="triad-card">
@@ -2461,6 +2501,7 @@
                 <li>流年</li>
                 <li>运势</li>
               </ul>
+              <a class="triad-entry-tag" href="pages/mingbook-onepage.html#mbpXuChatSection">进入许半仙对话</a>
             </article>
 
             <article class="triad-card">
@@ -2476,6 +2517,7 @@
                 <li>长女住东南</li>
                 <li>长辈住东北</li>
               </ul>
+              <a class="triad-entry-tag" href="pages/wentian-app.html#screen-42">进入阳宅</a>
             </article>
           </div>
         </div>
