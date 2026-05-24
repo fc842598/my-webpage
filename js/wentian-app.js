@@ -8631,13 +8631,18 @@ function clearLiuyaoTossAnimation() {
   liuyaoSwipeStart = null;
 }
 
-function navigateLiuyaoCastPreservingScroll() {
+function navigatePreservingScroll(route, push = false) {
   const scrollX = window.scrollX || document.documentElement.scrollLeft || 0;
   const scrollY = window.scrollY || document.documentElement.scrollTop || 0;
-  navigate("screen-17", false);
+  navigate(route, push);
   window.scrollTo(scrollX, scrollY);
   window.setTimeout(() => window.scrollTo(scrollX, scrollY), 0);
   window.setTimeout(() => window.scrollTo(scrollX, scrollY), 80);
+  window.setTimeout(() => window.scrollTo(scrollX, scrollY), 220);
+}
+
+function navigateLiuyaoCastPreservingScroll() {
+  navigatePreservingScroll("screen-17", false);
 }
 
 function setLiuyaoMode(mode) {
@@ -14041,7 +14046,7 @@ document.addEventListener("click", (event) => {
   }
   if (action === "wentian-yijing-tab") {
     wentianMobileYijingTab = event.target.closest("[data-yijing-tab]")?.dataset.yijingTab || "xiantian";
-    navigate("screen-27", false);
+    navigatePreservingScroll("screen-27", false);
     return;
   }
   if (action === "wentian-open-mingbook-onepage") {
