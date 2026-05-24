@@ -3923,6 +3923,7 @@ function setWentianLanguageCode(code) {
     localStorage.setItem(WENTIAN_LANGUAGE_STORAGE_KEY, option.code);
   } catch (_err) {}
   document.documentElement.lang = option.htmlLang;
+  document.documentElement.dataset.wentianLanguage = option.code;
 }
 
 function pickWentianLanguage(code) {
@@ -3947,6 +3948,8 @@ function confirmWentianLanguage() {
 const wentianI18nTextSources = new WeakMap();
 let wentianI18nApplying = false;
 let wentianI18nQueued = false;
+let wentianI18nPendingRoot = null;
+let wentianI18nPendingCode = "";
 let wentianI18nObserver = null;
 
 const WENTIAN_I18N = {
@@ -5051,8 +5054,27 @@ function rememberWentianTextSource(element, source) {
   }
 }
 
-function applyWentianLanguageText(root = view, code = getWentianLanguageCode()) {
-  if (wentianI18nApplying) return;
+function queueWentianLanguageApply(root = view, code = getWentianLanguageCode()) {
+  wentianI18nPendingRoot = root || view;
+  wentianI18nPendingCode = code || getWentianLanguageCode();
+  if (wentianI18nQueued) return;
+  wentianI18nQueued = true;
+  window.setTimeout(() => {
+    wentianI18nQueued = false;
+    const nextRoot = wentianI18nPendingRoot || view;
+    const nextCode = wentianI18nPendingCode || getWentianLanguageCode();
+    wentianI18nPendingRoot = null;
+    wentianI18nPendingCode = "";
+    applyWentianLanguageText(nextRoot, nextCode);
+  }, 0);
+}
+
+function applyWentianLanguageText(root = view, code = getWentianLanguageCode(), options = {}) {
+  if (wentianI18nApplying && !options.force) {
+    queueWentianLanguageApply(root, code);
+    return;
+  }
+  const wasApplying = wentianI18nApplying;
   const option = getWentianLanguageOption(code);
   wentianI18nApplying = true;
   try {
@@ -5092,18 +5114,22 @@ function applyWentianLanguageText(root = view, code = getWentianLanguageCode()) 
     }
   } finally {
     window.setTimeout(() => {
-      wentianI18nApplying = false;
+      if (!wasApplying || options.force) wentianI18nApplying = false;
+      if (wentianI18nPendingRoot) queueWentianLanguageApply(wentianI18nPendingRoot, wentianI18nPendingCode);
     }, 0);
   }
 }
 
-function scheduleWentianLanguageApply() {
-  if (wentianI18nApplying || wentianI18nQueued || getWentianLanguageCode() === "zh-Hans") return;
-  wentianI18nQueued = true;
-  window.requestAnimationFrame(() => {
-    wentianI18nQueued = false;
-    applyWentianLanguageText(view);
+function stabilizeWentianLanguageText(root = view) {
+  if (getWentianLanguageCode() === "zh-Hans") return;
+  [0, 60, 180, 420, 900].forEach((delay) => {
+    window.setTimeout(() => applyWentianLanguageText(root, getWentianLanguageCode(), { force: true }), delay);
   });
+}
+
+function scheduleWentianLanguageApply() {
+  if (getWentianLanguageCode() === "zh-Hans") return;
+  queueWentianLanguageApply(view);
 }
 
 function ensureWentianLanguageObserver() {
@@ -12401,7 +12427,8 @@ function navigate(route, push = true) {
     if (routeTitle) routeTitle.textContent = translateWentianText(screen.title);
     view.innerHTML = applyWentianColorUpgrade(renderConvertedScreen(screen.no));
     stripScreenshotStatusBar();
-    applyWentianLanguageText(view);
+    applyWentianLanguageText(view, getWentianLanguageCode(), { force: true });
+    stabilizeWentianLanguageText(view);
     ensureWentianLanguageObserver();
     scheduleWentianPhoneFit();
     syncActive();
