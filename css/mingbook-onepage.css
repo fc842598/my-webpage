@@ -94,11 +94,11 @@ select {
 }
 
 .mbp-leaf {
-  width: 30px;
-  height: 42px;
-  background: url("../images/logo-mark.svg") center / contain no-repeat;
-  filter: drop-shadow(0 0 10px rgba(241, 212, 125, .2));
-  flex: 0 0 auto;
+  width: 17px;
+  height: 24px;
+  border-radius: 100% 0 100% 0;
+  background: linear-gradient(135deg, #fff0a8, #6f5223);
+  transform: rotate(-35deg);
 }
 
 .mbp-nav-links {
@@ -8473,8 +8473,8 @@ p.mbp-topic-detail {
   }
 
   .mbp-leaf {
-    width: 20px;
-    height: 28px;
+    width: 12px;
+    height: 18px;
   }
 
   .mbp-nav-actions {
