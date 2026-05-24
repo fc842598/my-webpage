@@ -1800,7 +1800,7 @@ body.mbp-ticket-open {
 }
 
 .nf-city-scope {
-  display: grid;
+  display: none;
   grid-template-columns: minmax(0, 1fr) minmax(86px, .58fr);
   gap: 6px;
   margin: 0 0 8px;
