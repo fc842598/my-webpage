@@ -1936,6 +1936,27 @@ async function pushWentianArchivesToRemote(archives) {
   }
 }
 
+async function deleteWentianArchiveFromRemote(archive) {
+  try {
+    const clientId = getWentianClientId();
+    const archiveId = archive?.id || archive?.form?.archiveId || "";
+    const chartRecordId = archive?.chartRecordId || archive?.chartData?.chartRecordId || "";
+    if (!archiveId && !chartRecordId) return;
+    await fetch(`${getWentianApiBase()}/api/wentian/archives`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        clientId,
+        action: "delete",
+        archiveId,
+        chartRecordId,
+      }),
+    });
+  } catch (error) {
+    console.info("wentian archive remote delete fallback", error);
+  }
+}
+
 async function hydrateWentianArchivesFromRemote(options = {}) {
   if (wentianArchiveRemotePromise) return wentianArchiveRemotePromise;
   if (wentianArchiveRemoteLoaded && !options.force) return null;
@@ -2124,6 +2145,7 @@ async function deleteWentianArchive(id) {
   }
 
   wentianArchiveDeleteConfirmId = "";
+  await deleteWentianArchiveFromRemote(target);
   await pushWentianArchivesToRemote(nextArchives);
   navigatePreservingScroll(state.route, false);
   return true;
