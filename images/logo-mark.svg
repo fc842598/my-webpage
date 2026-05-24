@@ -1,33 +1,46 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="22 12 86 102" role="img" aria-label="阅天">
   <defs>
-    <linearGradient id="leaf-gold" x1="25" y1="4" x2="7" y2="27" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#f6e89a"/>
-      <stop offset="45%" stop-color="#c9a961"/>
-      <stop offset="100%" stop-color="#6e4e10"/>
+    <linearGradient id="yt-gold" x1="27" y1="18" x2="101" y2="112" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#fff3b8"/>
+      <stop offset=".28" stop-color="#d8b45c"/>
+      <stop offset=".62" stop-color="#b78936"/>
+      <stop offset="1" stop-color="#f5ddb0"/>
     </linearGradient>
-    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
-      <feGaussianBlur in="SourceGraphic" stdDeviation="1.2" result="blur"/>
-      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    <linearGradient id="yt-edge" x1="36" y1="18" x2="89" y2="116" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#fff8dc"/>
+      <stop offset=".48" stop-color="#c79a3c"/>
+      <stop offset="1" stop-color="#7d5522"/>
+    </linearGradient>
+    <filter id="yt-shadow" x="-28%" y="-24%" width="156%" height="154%">
+      <feDropShadow dx="0" dy="3" stdDeviation="2.4" flood-color="#000000" flood-opacity=".42"/>
+      <feDropShadow dx="0" dy="0" stdDeviation="1.5" flood-color="#e3b85d" flood-opacity=".3"/>
     </filter>
   </defs>
-  <!-- 叶片主体：底左→顶右，外侧弧度饱满，内侧收窄 -->
-  <path
-    d="M7 27
-       C 4 20, 7 12, 14 7
-       Q 19 3, 25 4
-       C 24 9, 21 14, 16 18
-       Q 12 22, 7 27 Z"
-    fill="url(#leaf-gold)"
-    filter="url(#glow)"
-  />
-  <!-- 中央叶脉 -->
-  <path
-    d="M 7 27 Q 15 17 25 4"
-    stroke="rgba(255,248,210,0.35)"
-    stroke-width="0.9"
-    stroke-linecap="round"
-    fill="none"
-  />
-  <!-- 叶尖高光 -->
-  <circle cx="24.5" cy="4.5" r="1.2" fill="rgba(255,245,180,0.55)"/>
+
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round" filter="url(#yt-shadow)">
+    <path d="M31 33 V106" stroke="url(#yt-edge)" stroke-width="8.4"/>
+    <path d="M50 26 H88 Q98 26 98 36 V83" stroke="url(#yt-edge)" stroke-width="8.4"/>
+    <path d="M43 83 H88" stroke="url(#yt-edge)" stroke-width="7.6"/>
+    <path d="M42 30 L32 20" stroke="url(#yt-edge)" stroke-width="6.2"/>
+    <circle cx="39" cy="21" r="5.7" fill="url(#yt-gold)" stroke="rgba(255,248,220,.48)" stroke-width="1.2"/>
+  </g>
+
+  <g filter="url(#yt-shadow)">
+    <text x="63" y="63"
+      text-anchor="middle"
+      font-family="Noto Serif SC, Songti SC, SimSun, serif"
+      font-size="44"
+      font-weight="900"
+      letter-spacing="-3"
+      fill="url(#yt-gold)">阅</text>
+    <text x="64" y="105"
+      text-anchor="middle"
+      font-family="Noto Serif SC, Songti SC, SimSun, serif"
+      font-size="47"
+      font-weight="900"
+      letter-spacing="-3"
+      fill="url(#yt-gold)">天</text>
+  </g>
+
+  <path d="M48 72 H80 M52 90 H76" stroke="#f6dc8e" stroke-width="3" stroke-linecap="round" opacity=".72"/>
 </svg>
