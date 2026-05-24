@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>阅天 · 紫微排盘</title>
   <link rel="icon" href="../images/logo-mark.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../css/mingbook-onepage.css?v=20260524-city-copy-short">
+  <link rel="stylesheet" href="../css/mingbook-onepage.css?v=20260524-shichen-guide">
   <script src="../js/config.js?v=20260521-api-domain-auth-proxy"></script>
   <script defer src="../js/cities.js"></script>
   <script defer src="../js/lunarCalendar.js"></script>
@@ -22,7 +22,7 @@
   <script defer src="../src/ziping/runtime.js"></script>
   <script defer src="../js/ai-piming.js?v=20260522-yijing-ai-timing"></script>
   <script defer src="../js/ai-chat.js?v=20260521-no-auto-jump"></script>
-  <script defer src="../js/mingbook-onepage.js?v=20260524-city-copy-short"></script>
+  <script defer src="../js/mingbook-onepage.js?v=20260524-shichen-guide"></script>
 </head>
 <body>
   <header class="mbp-nav">
@@ -699,16 +699,40 @@
         <button type="button" id="mbpShichenClose" aria-label="关闭">×</button>
       </div>
       <div class="mbp-shichen-questions" id="mbpShichenQuestions">
-        <p>描述大概出生时间 + 头旋位置，系统按原版天纪规则给候选时辰。</p>
+        <p>先说大概出生时段，再看后脑头旋位置，系统按天纪规则给候选时辰。</p>
         <label class="mbp-shichen-field">
           <span>① 大概什么时候出生的？</span>
           <input type="text" id="mbpVagueTime" placeholder="如：晚上、天亮前、吃早饭时、日落后" autocomplete="off">
         </label>
-        <div class="mbp-shichen-field">
+        <div class="mbp-shichen-field mbp-shichen-field-whorl">
           <span>② 头旋位置（从后面看）</span>
-          <label><input type="radio" name="mbpWhorl" value="center-left"> 单个，居中或偏左：子午卯酉</label>
-          <label><input type="radio" name="mbpWhorl" value="right"> 单个，偏右：寅申巳亥</label>
-          <label><input type="radio" name="mbpWhorl" value="double"> 两个或多个：辰戌丑未</label>
+          <div class="mbp-shichen-rule">天纪口诀：中左取子午卯酉，偏右取寅申巳亥，多旋取辰戌丑未。</div>
+          <div class="mbp-whorl-guide" aria-label="头旋位置示意">
+            <label class="mbp-whorl-card">
+              <input type="radio" name="mbpWhorl" value="center-left" data-label="单旋中左：子午卯酉">
+              <span class="mbp-whorl-visual mbp-whorl-center-left" aria-hidden="true">
+                <span class="mbp-whorl-head"><i></i></span>
+              </span>
+              <b>中 / 偏左</b>
+              <small>子午卯酉</small>
+            </label>
+            <label class="mbp-whorl-card">
+              <input type="radio" name="mbpWhorl" value="right" data-label="单旋偏右：寅申巳亥">
+              <span class="mbp-whorl-visual mbp-whorl-right" aria-hidden="true">
+                <span class="mbp-whorl-head"><i></i></span>
+              </span>
+              <b>偏右</b>
+              <small>寅申巳亥</small>
+            </label>
+            <label class="mbp-whorl-card">
+              <input type="radio" name="mbpWhorl" value="double" data-label="两个以上：辰戌丑未">
+              <span class="mbp-whorl-visual mbp-whorl-double" aria-hidden="true">
+                <span class="mbp-whorl-head"><i></i><i></i></span>
+              </span>
+              <b>两个以上</b>
+              <small>辰戌丑未</small>
+            </label>
+          </div>
         </div>
         <button class="mbp-shichen-primary" id="mbpShichenCalc" type="button">AI 推算时辰 →</button>
       </div>

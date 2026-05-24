@@ -6165,7 +6165,8 @@
     const reason = $('#mbpShichenResultReason');
     const list = $('#mbpShichenCandidates');
     const vague = normalizeText($('#mbpVagueTime')?.value) || '未填写大概时间';
-    const whorl = document.querySelector('input[name="mbpWhorl"]:checked')?.parentElement?.textContent?.trim() || '未选择头旋';
+    const whorlInput = document.querySelector('input[name="mbpWhorl"]:checked');
+    const whorl = whorlInput?.dataset?.label || '未选择头旋';
     if (title) title.textContent = `推荐 ${picks.map((item) => item.name).join(' / ')}`;
     if (reason) reason.textContent = `依据：${vague}；${whorl}。可先采用最接近的时辰排盘，后续再核对人生事件。`;
     if (list) {
