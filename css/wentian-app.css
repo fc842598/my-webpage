@@ -2058,6 +2058,11 @@ html[lang="en"] .wentian-chat-starter {
   color: #a94437;
 }
 
+.wentian-archive-action.cancel {
+  color: #7d7164;
+  background: #fffdf8;
+}
+
 .wentian-archive-action.is-confirming {
   border-color: #c85a4a;
   background: #fff1ee;
@@ -2371,6 +2376,11 @@ html[lang="en"] .wentian-archive-confirm {
 .wentian-hepan-action.danger {
   order: -1;
   color: #a94437;
+}
+
+.wentian-hepan-action.cancel {
+  color: #7d7164;
+  background: #fffdf8;
 }
 
 .wentian-hepan-action.is-confirming {

@@ -1038,8 +1038,13 @@ function sourceArchiveSelectScreen() {
             <span class="wentian-archive-check" aria-hidden="true">${selected ? "✓" : ""}</span>
           </button>
           <span class="wentian-archive-actions" role="group" aria-label="${escapeHtml(item.name)}档案操作">
-            <button class="wentian-archive-action" type="button" data-action="wentian-archive-edit" data-archive-id="${escapeHtml(archive.id)}">编辑</button>
-            <button class="wentian-archive-action danger ${confirmingDelete ? "is-confirming" : ""}" type="button" data-action="wentian-archive-delete" data-archive-id="${escapeHtml(archive.id)}">${confirmingDelete ? "确认删除" : "删除"}</button>
+            ${confirmingDelete ? `
+              <button class="wentian-archive-action danger is-confirming" type="button" data-action="wentian-archive-delete" data-archive-id="${escapeHtml(archive.id)}">确认删除</button>
+              <button class="wentian-archive-action cancel" type="button" data-action="wentian-archive-delete-cancel" data-archive-id="${escapeHtml(archive.id)}">取消</button>
+            ` : `
+              <button class="wentian-archive-action" type="button" data-action="wentian-archive-edit" data-archive-id="${escapeHtml(archive.id)}">编辑</button>
+              <button class="wentian-archive-action danger" type="button" data-action="wentian-archive-delete" data-archive-id="${escapeHtml(archive.id)}">删除</button>
+            `}
           </span>
         </div>
       `;
@@ -2052,6 +2057,11 @@ function requestWentianArchiveDelete(id) {
     return;
   }
   wentianArchiveDeleteConfirmId = id;
+  navigatePreservingScroll(state.route, false);
+}
+
+function cancelWentianArchiveDelete() {
+  wentianArchiveDeleteConfirmId = "";
   navigatePreservingScroll(state.route, false);
 }
 
@@ -7937,6 +7947,21 @@ function renderWentianProfileRows(archives = getWentianArchiveList(), query = we
     }
     const rowY = y;
     y += 78;
+    const actionControls = confirmingDelete ? `
+      ${figBox(`source-25-delete-confirm-${index}`, 244, rowY + 10, 68, 24, "", "border:1px solid #c85a4a;border-radius:12px;background:#fff1ee;z-index:71;")}
+      ${figText(`source-25-delete-confirm-text-${index}`, "确认删除", 244, rowY + 17, 68, 10, "#b53a2e", 900, "center", "z-index:72;")}
+      ${figButton(`source-25-delete-confirm-hit-${index}`, 243, rowY + 8, 70, 28, `data-action="wentian-archive-delete" data-archive-id="${escapeHtml(archive.id)}" aria-label="确认删除${escapeHtml(item.name)}"`, "", "z-index:73;")}
+      ${figBox(`source-25-delete-cancel-${index}`, 318, rowY + 10, 36, 24, "", "border:1px solid #ead8bd;border-radius:12px;background:#fffaf2;z-index:71;")}
+      ${figText(`source-25-delete-cancel-text-${index}`, "取消", 318, rowY + 17, 36, 10, "#9b742e", 900, "center", "z-index:72;")}
+      ${figButton(`source-25-delete-cancel-hit-${index}`, 317, rowY + 8, 38, 28, `data-action="wentian-archive-delete-cancel" data-archive-id="${escapeHtml(archive.id)}" aria-label="取消删除${escapeHtml(item.name)}"`, "", "z-index:73;")}
+    ` : `
+      ${figBox(`source-25-edit-${index}`, 270, rowY + 10, 36, 24, "", "border:1px solid #ead8bd;border-radius:12px;background:#fffaf2;z-index:71;")}
+      ${figText(`source-25-edit-text-${index}`, "改", 270, rowY + 17, 36, 10, "#9b742e", 900, "center", "z-index:72;")}
+      ${figButton(`source-25-edit-hit-${index}`, 269, rowY + 8, 38, 28, `data-action="wentian-archive-edit" data-archive-id="${escapeHtml(archive.id)}" aria-label="编辑${escapeHtml(item.name)}"`, "", "z-index:73;")}
+      ${figBox(`source-25-delete-${index}`, 312, rowY + 10, 40, 24, "", "border:1px solid #ead8bd;border-radius:12px;background:#fffaf2;z-index:71;")}
+      ${figText(`source-25-delete-text-${index}`, "删", 312, rowY + 17, 40, 10, "#9b742e", 900, "center", "z-index:72;")}
+      ${figButton(`source-25-delete-hit-${index}`, 311, rowY + 8, 42, 28, `data-action="wentian-archive-delete" data-archive-id="${escapeHtml(archive.id)}" aria-label="删除${escapeHtml(item.name)}"`, "", "z-index:73;")}
+    `;
     return `
       ${group}
       ${figBox(`source-25-row-line-${index}`, 88, rowY + 76, 258, 1, "", "background:#eee5d8;")}
@@ -7946,12 +7971,7 @@ function renderWentianProfileRows(archives = getWentianArchiveList(), query = we
       ${figText(`source-25-gender-text-${index}`, item.gender, 204, rowY + 10, 28, 13, "#9c938a", 700)}
       ${figText(`source-25-date-${index}`, `阳历:${escapeHtml(item.datetime.split(" ")[0] || item.datetime)}`, 90, rowY + 34, 174, 13, "#8f8780", 700)}
       ${figText(`source-25-detail-${index}`, escapeHtml(item.pillars), 90, rowY + 56, 176, 12, "#b08a4b", 600)}
-      ${figBox(`source-25-edit-${index}`, 270, rowY + 10, 36, 24, "", "border:1px solid #ead8bd;border-radius:12px;background:#fffaf2;z-index:71;")}
-      ${figText(`source-25-edit-text-${index}`, "改", 270, rowY + 17, 36, 10, "#9b742e", 900, "center", "z-index:72;")}
-      ${figButton(`source-25-edit-hit-${index}`, 269, rowY + 8, 38, 28, `data-action="wentian-archive-edit" data-archive-id="${escapeHtml(archive.id)}" aria-label="编辑${escapeHtml(item.name)}"`, "", "z-index:73;")}
-      ${figBox(`source-25-delete-${index}`, 312, rowY + 10, 40, 24, "", `border:1px solid ${confirmingDelete ? "#c85a4a" : "#ead8bd"};border-radius:12px;background:${confirmingDelete ? "#fff1ee" : "#fffaf2"};z-index:71;`)}
-      ${figText(`source-25-delete-text-${index}`, confirmingDelete ? "确认" : "删", 312, rowY + 17, 40, 10, confirmingDelete ? "#b53a2e" : "#9b742e", 900, "center", "z-index:72;")}
-      ${figButton(`source-25-delete-hit-${index}`, 311, rowY + 8, 42, 28, `data-action="wentian-archive-delete" data-archive-id="${escapeHtml(archive.id)}" aria-label="删除${escapeHtml(item.name)}"`, "", "z-index:73;")}
+      ${actionControls}
       ${figButton(`source-25-open-${index}`, 0, rowY, 264, 76, `data-action="wentian-profile-open" data-archive-id="${escapeHtml(archive.id)}"`)}
     `;
   }).join("");
@@ -8597,8 +8617,13 @@ function sourceHepanSelectScreen() {
             <div class="wentian-hepan-tools" role="group" aria-label="${escapeHtml(item.name)}档案操作">
               <button class="wentian-hepan-edit-time" type="button" data-action="wentian-hepan-edit-time" data-archive-id="${escapeHtml(archive.id)}" aria-label="编辑${escapeHtml(item.name)}命盘时间">改时间</button>
               <span class="wentian-hepan-actions">
-                <button class="wentian-hepan-action" type="button" data-action="wentian-archive-edit" data-archive-id="${escapeHtml(archive.id)}" aria-label="编辑${escapeHtml(item.name)}">编辑</button>
-                <button class="wentian-hepan-action danger ${confirmingDelete ? "is-confirming" : ""}" type="button" data-action="wentian-archive-delete" data-archive-id="${escapeHtml(archive.id)}" aria-label="删除${escapeHtml(item.name)}">${confirmingDelete ? "确认删除" : "删除"}</button>
+                ${confirmingDelete ? `
+                  <button class="wentian-hepan-action danger is-confirming" type="button" data-action="wentian-archive-delete" data-archive-id="${escapeHtml(archive.id)}" aria-label="确认删除${escapeHtml(item.name)}">确认删除</button>
+                  <button class="wentian-hepan-action cancel" type="button" data-action="wentian-archive-delete-cancel" data-archive-id="${escapeHtml(archive.id)}" aria-label="取消删除${escapeHtml(item.name)}">取消</button>
+                ` : `
+                  <button class="wentian-hepan-action" type="button" data-action="wentian-archive-edit" data-archive-id="${escapeHtml(archive.id)}" aria-label="编辑${escapeHtml(item.name)}">编辑</button>
+                  <button class="wentian-hepan-action danger" type="button" data-action="wentian-archive-delete" data-archive-id="${escapeHtml(archive.id)}" aria-label="删除${escapeHtml(item.name)}">删除</button>
+                `}
               </span>
             </div>
           </div>
@@ -14380,6 +14405,10 @@ document.addEventListener("click", (event) => {
   if (action === "wentian-archive-delete") {
     const id = event.target.closest("[data-archive-id]")?.dataset.archiveId;
     if (id) requestWentianArchiveDelete(id);
+    return;
+  }
+  if (action === "wentian-archive-delete-cancel") {
+    cancelWentianArchiveDelete();
     return;
   }
   if (action === "wentian-profile-search-focus") {
