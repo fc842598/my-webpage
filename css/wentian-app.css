@@ -2961,10 +2961,11 @@ html[lang="en"] .wentian-archive-confirm {
 }
 
 .wentian-hepan-chart-card .wentian-native-mingpan .fc-cell {
-  cursor: default;
+  cursor: pointer;
 }
 
 .wentian-hepan-chart-card .wentian-native-mingpan .fc-cell.is-readonly {
+  cursor: default;
   transform: none;
 }
 
