@@ -169,6 +169,90 @@
   let desktopAuthReadyPromise = null;
   let desktopPaymentPollTimer = null;
   let desktopPendingPaymentAfterLogin = false;
+  const desktopLiuyaoLineLabels = ['初爻', '二爻', '三爻', '四爻', '五爻', '上爻'];
+  const desktopLiuyaoTrigrams = {
+    111: { gua: '乾', name: '天' },
+    110: { gua: '兑', name: '泽' },
+    101: { gua: '离', name: '火' },
+    100: { gua: '震', name: '雷' },
+    '011': { gua: '巽', name: '风' },
+    '010': { gua: '坎', name: '水' },
+    '001': { gua: '艮', name: '山' },
+    '000': { gua: '坤', name: '地' },
+  };
+  const desktopLiuyaoHexMap = {
+    '乾-乾': { no: '1', name: '乾为天' },
+    '坤-坤': { no: '2', name: '坤为地' },
+    '坎-震': { no: '3', name: '水雷屯' },
+    '艮-坎': { no: '4', name: '山水蒙' },
+    '坎-乾': { no: '5', name: '水天需' },
+    '乾-坎': { no: '6', name: '天水讼' },
+    '坤-坎': { no: '7', name: '地水师' },
+    '坎-坤': { no: '8', name: '水地比' },
+    '巽-乾': { no: '9', name: '风天小畜' },
+    '乾-兑': { no: '10', name: '天泽履' },
+    '坤-乾': { no: '11', name: '地天泰' },
+    '乾-坤': { no: '12', name: '天地否' },
+    '乾-离': { no: '13', name: '天火同人' },
+    '离-乾': { no: '14', name: '火天大有' },
+    '坤-艮': { no: '15', name: '地山谦' },
+    '震-坤': { no: '16', name: '雷地豫' },
+    '兑-震': { no: '17', name: '泽雷随' },
+    '艮-巽': { no: '18', name: '山风蛊' },
+    '坤-兑': { no: '19', name: '地泽临' },
+    '巽-坤': { no: '20', name: '风地观' },
+    '离-震': { no: '21', name: '火雷噬嗑' },
+    '艮-离': { no: '22', name: '山火贲' },
+    '艮-坤': { no: '23', name: '山地剥' },
+    '坤-震': { no: '24', name: '地雷复' },
+    '乾-震': { no: '25', name: '天雷无妄' },
+    '艮-乾': { no: '26', name: '山天大畜' },
+    '艮-震': { no: '27', name: '山雷颐' },
+    '兑-巽': { no: '28', name: '泽风大过' },
+    '坎-坎': { no: '29', name: '坎为水' },
+    '离-离': { no: '30', name: '离为火' },
+    '兑-艮': { no: '31', name: '泽山咸' },
+    '震-巽': { no: '32', name: '雷风恒' },
+    '乾-艮': { no: '33', name: '天山遁' },
+    '震-乾': { no: '34', name: '雷天大壮' },
+    '离-坤': { no: '35', name: '火地晋' },
+    '坤-离': { no: '36', name: '地火明夷' },
+    '巽-离': { no: '37', name: '风火家人' },
+    '离-兑': { no: '38', name: '火泽睽' },
+    '坎-艮': { no: '39', name: '水山蹇' },
+    '震-坎': { no: '40', name: '雷水解' },
+    '艮-兑': { no: '41', name: '山泽损' },
+    '巽-震': { no: '42', name: '风雷益' },
+    '兑-乾': { no: '43', name: '泽天夬' },
+    '乾-巽': { no: '44', name: '天风姤' },
+    '兑-坤': { no: '45', name: '泽地萃' },
+    '坤-巽': { no: '46', name: '地风升' },
+    '兑-坎': { no: '47', name: '泽水困' },
+    '坎-巽': { no: '48', name: '水风井' },
+    '兑-离': { no: '49', name: '泽火革' },
+    '离-巽': { no: '50', name: '火风鼎' },
+    '震-震': { no: '51', name: '震为雷' },
+    '艮-艮': { no: '52', name: '艮为山' },
+    '巽-艮': { no: '53', name: '风山渐' },
+    '震-兑': { no: '54', name: '雷泽归妹' },
+    '震-离': { no: '55', name: '雷火丰' },
+    '离-艮': { no: '56', name: '火山旅' },
+    '巽-巽': { no: '57', name: '巽为风' },
+    '兑-兑': { no: '58', name: '兑为泽' },
+    '巽-坎': { no: '59', name: '风水涣' },
+    '坎-兑': { no: '60', name: '水泽节' },
+    '巽-兑': { no: '61', name: '风泽中孚' },
+    '震-艮': { no: '62', name: '雷山小过' },
+    '坎-离': { no: '63', name: '水火既济' },
+    '离-坎': { no: '64', name: '火水未济' },
+  };
+  const desktopLiuyaoState = {
+    open: false,
+    question: '',
+    casts: [],
+    lastCoins: [],
+    error: '',
+  };
 
   const aiTasks = [
     { module: 'overall', label: '整体批命' },
@@ -6245,6 +6329,202 @@
     closeShichenModal();
   }
 
+  function desktopLiuyaoLineType(value) {
+    return {
+      6: { name: '老阴', broken: true, moving: true },
+      7: { name: '少阳', broken: false, moving: false },
+      8: { name: '少阴', broken: true, moving: false },
+      9: { name: '老阳', broken: false, moving: true },
+    }[Number(value)] || null;
+  }
+
+  function makeDesktopLiuyaoCast() {
+    const coins = Array.from({ length: 3 }, () => (Math.random() < 0.5 ? 2 : 3));
+    const value = coins.reduce((sum, coin) => sum + coin, 0);
+    const type = desktopLiuyaoLineType(value);
+    return { value, coins, ...type };
+  }
+
+  function desktopLiuyaoQuestion() {
+    const text = String($('#mbpLiuyaoQuestion')?.value || desktopLiuyaoState.question || '').trim();
+    desktopLiuyaoState.question = text;
+    return text;
+  }
+
+  function desktopLiuyaoBit(cast, changed = false) {
+    const value = Number(cast?.value);
+    if (changed && value === 6) return '1';
+    if (changed && value === 9) return '0';
+    return value === 7 || value === 9 ? '1' : '0';
+  }
+
+  function resolveDesktopLiuyaoHex(casts, changed = false) {
+    if (!casts || casts.length !== 6 || casts.some((cast) => !cast)) return null;
+    const lowerBits = casts.slice(0, 3).map((cast) => desktopLiuyaoBit(cast, changed)).join('');
+    const upperBits = casts.slice(3, 6).map((cast) => desktopLiuyaoBit(cast, changed)).join('');
+    const lower = desktopLiuyaoTrigrams[lowerBits];
+    const upper = desktopLiuyaoTrigrams[upperBits];
+    const entry = upper && lower ? desktopLiuyaoHexMap[`${upper.gua}-${lower.gua}`] : null;
+    return {
+      no: entry?.no || '',
+      name: entry?.name || `${upper?.name || ''}${lower?.name || ''}`,
+      upper,
+      lower,
+    };
+  }
+
+  function getDesktopLiuyaoResult() {
+    const casts = desktopLiuyaoState.casts;
+    if (casts.length !== 6 || casts.some((cast) => !cast)) return null;
+    return {
+      question: desktopLiuyaoState.question,
+      primary: resolveDesktopLiuyaoHex(casts, false),
+      changed: resolveDesktopLiuyaoHex(casts, true),
+      movingLines: casts
+        .map((cast, index) => ({ ...cast, index, label: desktopLiuyaoLineLabels[index] }))
+        .filter((line) => line.moving),
+    };
+  }
+
+  function renderDesktopLiuyaoCoins() {
+    const coins = $('#mbpLiuyaoCoins');
+    if (!coins) return;
+    const values = desktopLiuyaoState.lastCoins.length ? desktopLiuyaoState.lastCoins : [null, null, null];
+    coins.innerHTML = values.map((coin) => {
+      const label = coin === 3 ? '阳' : coin === 2 ? '阴' : '待';
+      return `<span class="mbp-liuyao-coin">${escapeHtml(label)}</span>`;
+    }).join('');
+  }
+
+  function renderDesktopLiuyaoStack() {
+    const stack = $('#mbpLiuyaoStack');
+    if (!stack) return;
+    stack.innerHTML = Array.from({ length: 6 }, (_, row) => {
+      const index = 5 - row;
+      const cast = desktopLiuyaoState.casts[index];
+      const type = cast ? desktopLiuyaoLineType(cast.value) : null;
+      const lineClass = [
+        'mbp-liuyao-line',
+        !cast ? 'is-empty' : '',
+        type?.broken ? 'is-yin' : '',
+        type?.moving ? 'is-moving' : '',
+      ].filter(Boolean).join(' ');
+      const segments = type?.broken ? '<i></i><i></i>' : '<i></i>';
+      const text = type ? `${type.name}${type.moving ? '动' : '静'}` : '待投';
+      return `
+        <div class="mbp-liuyao-line-row">
+          <span>${escapeHtml(desktopLiuyaoLineLabels[index])}</span>
+          <span class="${lineClass}">${segments}</span>
+          <span>${escapeHtml(text)}</span>
+        </div>
+      `;
+    }).join('');
+  }
+
+  function renderDesktopLiuyaoResult() {
+    const box = $('#mbpLiuyaoResult');
+    if (!box) return;
+    const result = getDesktopLiuyaoResult();
+    if (!result) {
+      box.innerHTML = '<p class="mbp-liuyao-note">按初爻到上爻投满六次，这里显示本卦、动爻、变卦。</p>';
+      return;
+    }
+    const movingText = result.movingLines.length
+      ? result.movingLines.map((line) => `${line.label}${line.name}`).join('、')
+      : '无动爻';
+    const changedText = result.movingLines.length ? result.changed?.name : '同本卦';
+    const questionText = result.question
+      ? `${result.question}${/[。！？!?]$/.test(result.question) ? '' : '。'}`
+      : '未填写。';
+    const card = (label, title, sub) => `
+      <article class="mbp-liuyao-result-card">
+        <span>${escapeHtml(label)}</span>
+        <strong>${escapeHtml(title || '待定')}</strong>
+        <small>${escapeHtml(sub || '')}</small>
+      </article>
+    `;
+    box.innerHTML = `
+      <div class="mbp-liuyao-result-grid">
+        ${card('本卦', result.primary?.name, `第${result.primary?.no || '-'}卦 · 上${result.primary?.upper?.name || ''}下${result.primary?.lower?.name || ''}`)}
+        ${card('变卦', changedText, result.movingLines.length ? `第${result.changed?.no || '-'}卦 · 看事情转向` : '没有动爻，先按本卦判断')}
+        ${card('动爻', movingText, '动爻看变化，应期与关键转折')}
+      </div>
+      <p class="mbp-liuyao-note">问事：${escapeHtml(questionText)}先看本卦定当前，动爻看变化，变卦看趋势。</p>
+    `;
+  }
+
+  function renderDesktopLiuyao() {
+    const count = desktopLiuyaoState.casts.length;
+    const status = $('#mbpLiuyaoStatus');
+    const toss = $('#mbpLiuyaoToss');
+    if (status) {
+      status.classList.toggle('is-error', Boolean(desktopLiuyaoState.error));
+      status.textContent = desktopLiuyaoState.error
+        || (count >= 6 ? '已成卦，可看本卦、动爻、变卦。' : `已成 ${count}/6 爻，下一步投${desktopLiuyaoLineLabels[count]}。`);
+    }
+    if (toss) {
+      toss.disabled = count >= 6;
+      toss.textContent = count >= 6 ? '已成卦' : `投第 ${count + 1} 爻`;
+    }
+    renderDesktopLiuyaoCoins();
+    renderDesktopLiuyaoStack();
+    renderDesktopLiuyaoResult();
+  }
+
+  function openDesktopLiuyao(event) {
+    if (event) event.preventDefault();
+    desktopLiuyaoState.open = true;
+    desktopLiuyaoState.error = '';
+    const overlay = $('#mbpLiuyaoOverlay');
+    if (overlay) overlay.hidden = false;
+    renderDesktopLiuyao();
+    setTimeout(() => $('#mbpLiuyaoQuestion')?.focus(), 0);
+  }
+
+  function closeDesktopLiuyao() {
+    desktopLiuyaoState.open = false;
+    const overlay = $('#mbpLiuyaoOverlay');
+    if (overlay) overlay.hidden = true;
+  }
+
+  function resetDesktopLiuyao() {
+    desktopLiuyaoQuestion();
+    desktopLiuyaoState.casts = [];
+    desktopLiuyaoState.lastCoins = [];
+    desktopLiuyaoState.error = '';
+    renderDesktopLiuyao();
+  }
+
+  function ensureDesktopLiuyaoQuestion() {
+    if (desktopLiuyaoQuestion()) {
+      desktopLiuyaoState.error = '';
+      return true;
+    }
+    desktopLiuyaoState.error = '先写清楚一件事，再起卦。';
+    renderDesktopLiuyao();
+    $('#mbpLiuyaoQuestion')?.focus();
+    return false;
+  }
+
+  function tossDesktopLiuyaoLine() {
+    if (!ensureDesktopLiuyaoQuestion()) return;
+    if (desktopLiuyaoState.casts.length >= 6) return;
+    const cast = makeDesktopLiuyaoCast();
+    desktopLiuyaoState.casts.push(cast);
+    desktopLiuyaoState.lastCoins = cast.coins;
+    renderDesktopLiuyao();
+  }
+
+  function autoDesktopLiuyao() {
+    if (!ensureDesktopLiuyaoQuestion()) return;
+    while (desktopLiuyaoState.casts.length < 6) {
+      const cast = makeDesktopLiuyaoCast();
+      desktopLiuyaoState.casts.push(cast);
+      desktopLiuyaoState.lastCoins = cast.coins;
+    }
+    renderDesktopLiuyao();
+  }
+
   function saveProfile() {
     try {
       localStorage.setItem(storageKey, JSON.stringify(state.profile));
@@ -6438,6 +6718,32 @@
       const button = event.target.closest('[data-shichen-hour]');
       if (button) applyShichenCandidate(button);
     });
+
+    document.querySelectorAll('[data-liuyao-open]').forEach((button) => {
+      button.addEventListener('click', openDesktopLiuyao);
+    });
+    $('#mbpLiuyaoClose')?.addEventListener('click', closeDesktopLiuyao);
+    $('#mbpLiuyaoOverlay')?.addEventListener('click', (event) => {
+      if (event.target === $('#mbpLiuyaoOverlay')) closeDesktopLiuyao();
+    });
+    $('#mbpLiuyaoQuestion')?.addEventListener('input', () => {
+      desktopLiuyaoState.question = $('#mbpLiuyaoQuestion')?.value || '';
+      desktopLiuyaoState.error = '';
+      renderDesktopLiuyao();
+    });
+    document.querySelectorAll('[data-liuyao-question]').forEach((button) => {
+      button.addEventListener('click', () => {
+        const textarea = $('#mbpLiuyaoQuestion');
+        if (textarea) textarea.value = button.dataset.liuyaoQuestion || '';
+        desktopLiuyaoState.question = textarea?.value || '';
+        desktopLiuyaoState.error = '';
+        renderDesktopLiuyao();
+        textarea?.focus();
+      });
+    });
+    $('#mbpLiuyaoToss')?.addEventListener('click', tossDesktopLiuyaoLine);
+    $('#mbpLiuyaoAuto')?.addEventListener('click', autoDesktopLiuyao);
+    $('#mbpLiuyaoReset')?.addEventListener('click', resetDesktopLiuyao);
 
     document.querySelectorAll('[data-city-scope]').forEach((btn) => {
       btn.addEventListener('click', () => {
@@ -6993,6 +7299,7 @@
       if (event.key === 'Escape' && desktopAuthState.open && !desktopAuthState.loading) closeDesktopAuth();
       if (event.key === 'Escape' && desktopPaymentState.open && !desktopPaymentState.loading) closeDesktopPayment();
       if (event.key === 'Escape' && desktopRefundTicketState.open && !desktopRefundTicketState.loading) closeDesktopRefundTicket();
+      if (event.key === 'Escape' && desktopLiuyaoState.open) closeDesktopLiuyao();
     });
     document.querySelectorAll('[data-auth-mode]').forEach((button) => {
       button.addEventListener('click', () => {
