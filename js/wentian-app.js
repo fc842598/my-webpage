@@ -1015,7 +1015,7 @@ function sourceArchiveSelectScreen() {
     ${figBox("source-5-sheet", 18, 214, 354, 532, "", "border:1px solid #eadfce;border-radius:20px;background:#fffaf3;box-shadow:0 12px 28px rgba(70,45,25,.08);")}
     ${figText("source-5-sheet-title", "请确认命盘", 42, 240, 150, 22, "#1f1d1a", 900)}
     ${figText("source-5-sheet-sub", "确认后再进入许半仙对话", 42, 270, 210, 13, "#8b8176", 600)}
-    <button class="wentian-archive-new-mini" type="button" data-route="screen-26">＋ 新建</button>
+    <button class="wentian-archive-new-mini" type="button" data-action="wentian-archive-new">＋ 新建</button>
     <div class="wentian-archive-list">
     ${displayArchives.map((archive) => {
       const item = getWentianArchiveDisplay(archive);
@@ -1942,6 +1942,28 @@ function setWentianArchiveEditId(id) {
   } catch (_err) {}
 }
 
+function getWentianArchiveEditReturnRoute() {
+  try {
+    const route = sessionStorage.getItem("wentian-edit-archive-return") || "";
+    return /^screen-\d+$/.test(route) ? route : "";
+  } catch (_err) {
+    return "";
+  }
+}
+
+function setWentianArchiveEditReturnRoute(route) {
+  try {
+    const safeRoute = /^screen-\d+$/.test(String(route || "")) ? String(route) : "";
+    if (safeRoute) sessionStorage.setItem("wentian-edit-archive-return", safeRoute);
+    else sessionStorage.removeItem("wentian-edit-archive-return");
+  } catch (_err) {}
+}
+
+function clearWentianArchiveEditContext() {
+  setWentianArchiveEditId("");
+  setWentianArchiveEditReturnRoute("");
+}
+
 function findWentianArchiveById(id, archives = getWentianArchiveList()) {
   return archives.find((archive) => archive.id === id) || null;
 }
@@ -1951,6 +1973,7 @@ function editWentianArchive(id) {
   if (!archive) return;
   wentianArchiveDeleteConfirmId = "";
   setWentianArchiveEditId(archive.id);
+  setWentianArchiveEditReturnRoute(state.route);
   applyWentianArchiveToCurrent(archive);
   navigate("screen-26");
 }
@@ -1964,7 +1987,7 @@ async function deleteWentianArchive(id) {
   const selectedIds = getWentianHepanSelectedIds(nextArchives).filter((item) => item !== id);
   saveWentianHepanSelectedIds(selectedIds);
   if (wentianArchiveDraftId === id) wentianArchiveDraftId = nextArchives[0]?.id || null;
-  if (getWentianArchiveEditId() === id) setWentianArchiveEditId("");
+  if (getWentianArchiveEditId() === id) clearWentianArchiveEditContext();
 
   const saved = getWentianSavedChart();
   const savedId = saved?.archiveId || saved?.form?.archiveId || "";
@@ -2008,7 +2031,7 @@ function requestWentianArchiveDelete(id) {
 
 function startWentianArchiveCreate() {
   wentianArchiveDeleteConfirmId = "";
-  setWentianArchiveEditId("");
+  clearWentianArchiveEditContext();
   navigate("screen-26");
 }
 
@@ -5696,7 +5719,7 @@ function navigateWentianClickRoute(route) {
   if (route === "screen-4") clearWentianXuChatContext();
   if (route === "screen-26") {
     wentianArchiveDeleteConfirmId = "";
-    setWentianArchiveEditId("");
+    clearWentianArchiveEditContext();
   }
   navigate(route);
 }
@@ -7635,11 +7658,12 @@ async function submitWentianChartForm() {
       createdAt: editingArchive?.createdAt || duplicateArchive?.createdAt || new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     });
-    setWentianArchiveEditId("");
+    const editReturnRoute = editingArchive ? getWentianArchiveEditReturnRoute() : "";
+    clearWentianArchiveEditContext();
 
     resetWentianXuChatRuntime();
-    setWentianChartStatus("已生成命盘");
-    navigate("screen-27");
+    setWentianChartStatus(editingArchive ? "已保存修改" : "已生成命盘");
+    navigate(editingArchive && editReturnRoute ? editReturnRoute : "screen-27", false);
   } catch (error) {
     setWentianChartStatus(error.message || "排盘失败，请检查出生信息", "error");
   }
@@ -12410,14 +12434,18 @@ function convertedFlowHotspots(screen) {
 }
 
 function sourceChartFormScreen() {
+  const isEditingArchive = !!getWentianArchiveEditId();
+  const title = isEditingArchive ? "编辑命盘" : "排盘";
+  const heading = isEditingArchive ? "修改出生信息" : "出生信息";
+  const submitText = isEditingArchive ? "保存修改" : "开始排盘";
   return `
     ${figBox("source-26-bg", 0, 0, 390, 944, "", "background:linear-gradient(180deg,#fffdf8 0%,#fbf7ef 52%,#f6eee2 100%);")}
     ${figBox("source-26-top", 0, 0, 390, 92, "", "background:#fffdf8;border-bottom:1px solid #eadfce;")}
-    ${figButton("source-26-back-hit", 16, 34, 64, 52, 'data-action="back"')}
+    ${figButton("source-26-back-hit", 16, 34, 64, 52, 'data-action="back"', "", "z-index:70;")}
     ${figText("source-26-back", "‹", 26, 42, 24, 24, "#6e6254", 500, "center", "line-height:1;")}
-    ${figText("source-26-title", "排盘", 0, 43, 390, 24, "#1f1d1a", 800, "center", "font-family:'Noto Serif SC','Songti SC',serif;")}
+    ${figText("source-26-title", title, 0, 43, 390, 24, "#1f1d1a", 800, "center", "font-family:'Noto Serif SC','Songti SC',serif;")}
 
-    ${figText("source-26-heading", "出生信息", 24, 108, 140, 24, "#2b251c", 900, "left", "font-family:'Noto Serif SC','Songti SC',serif;")}
+    ${figText("source-26-heading", heading, 24, 108, 160, 24, "#2b251c", 900, "left", "font-family:'Noto Serif SC','Songti SC',serif;")}
     <div class="wentian-chart-card">
       <input type="hidden" id="wentian-chart-gender" value="male">
       <input type="hidden" id="wentian-chart-type" value="ziwei">
@@ -12492,8 +12520,8 @@ function sourceChartFormScreen() {
     </div>
 
     ${figBox("source-26-submit", 18, 742, 354, 54, "", "border:1px solid #7b3129;border-radius:12px;background:#9e4738;box-shadow:0 10px 20px rgba(123,49,41,.14);")}
-    ${figButton("source-26-submit-hit", 18, 742, 354, 54, 'data-action="wentian-chart-submit"')}
-    ${figText("source-26-submit-text", "开始排盘", 0, 758, 390, 18, "#fffdf6", 800, "center")}
+    ${figButton("source-26-submit-hit", 18, 742, 354, 54, 'data-action="wentian-chart-submit"', "", "z-index:70;")}
+    ${figText("source-26-submit-text", submitText, 0, 758, 390, 18, "#fffdf6", 800, "center")}
     <div id="wentian-chart-status" class="wentian-chart-status"></div>
   `;
 }
@@ -14031,6 +14059,7 @@ document.addEventListener("click", (event) => {
       return;
     }
     const previousRoute = state.stack.pop();
+    if (state.route === "screen-26") clearWentianArchiveEditContext();
     navigate(previousRoute || (mineBackFallbackRoutes.has(state.route) ? "screen-31" : "home"), false);
     return;
   }
