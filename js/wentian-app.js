@@ -1244,6 +1244,7 @@ let wentianHepanTimeEditError = "";
 let wentianMobileYijingTab = "xiantian";
 let wentianChartCalMode = "solar";
 let wentianChartCity = null;
+let wentianChartCityScope = "china";
 let wentianMemberStatusPromise = null;
 let wentianPaymentPollTimer = null;
 let wentianAuthSession = null;
@@ -1921,7 +1922,7 @@ function getWentianCityRows() {
 
 function makeWentianCity(row) {
   if (!row) return null;
-  return {
+  const city = {
     province: row[0],
     city: row[1],
     name: `${row[0]} ${row[1]}`,
@@ -1929,6 +1930,14 @@ function makeWentianCity(row) {
     lat: Number(row[3]),
     tzOffset: Number(row[4] ?? 8),
   };
+  city.timeZone = typeof getBirthTimeZoneId === "function" ? getBirthTimeZoneId(city) : "";
+  return city;
+}
+
+function isWentianChinaCity(city) {
+  if (typeof isChinaBirthPlace === "function") return isChinaBirthPlace(city);
+  const region = String(Array.isArray(city) ? city[0] : city?.province || "").trim();
+  return /^(北京|上海|天津|重庆|河北|山西|辽宁|吉林|黑龙江|江苏|浙江|安徽|福建|江西|山东|河南|湖北|湖南|广东|海南|四川|贵州|云南|陕西|甘肃|青海|内蒙古|广西|西藏|宁夏|新疆|香港|澳门|台湾)$/.test(region);
 }
 
 function formatWentianCity(city) {
@@ -1936,16 +1945,71 @@ function formatWentianCity(city) {
   return city.province === city.city ? `中国-${city.city}` : `${city.province}-${city.city}`;
 }
 
-function findWentianCity(query) {
-  const q = String(query || "").trim().toLowerCase().replace(/\s/g, "");
-  if (!q) return null;
-  const row = getWentianCityRows().find((item) => {
-    const province = String(item[0] || "").toLowerCase();
-    const city = String(item[1] || "").toLowerCase();
-    const text = `${province}${city}${province} ${city}`.replace(/\s/g, "");
-    return text.includes(q) || city.replace(/\s/g, "").includes(q);
+function formatWentianTzOffset(tzOffset) {
+  const value = Number.isFinite(Number(tzOffset)) ? Number(tzOffset) : 8;
+  const sign = value >= 0 ? "+" : "-";
+  const abs = Math.abs(value);
+  const hour = Math.floor(abs);
+  const minutes = Math.round((abs - hour) * 60);
+  return minutes ? `UTC${sign}${hour}:${String(minutes).padStart(2, "0")}` : `UTC${sign}${hour}`;
+}
+
+function formatWentianTimeZoneLabel(timeZone, tzOffset) {
+  const offsetText = formatWentianTzOffset(tzOffset);
+  return timeZone ? `${timeZone} · ${offsetText}` : offsetText;
+}
+
+function wentianCityMatchesQuery(row, q, compact) {
+  const province = String(row[0] || "").toLowerCase();
+  const city = String(row[1] || "").toLowerCase();
+  const text = `${province}${city} ${province} ${city}`;
+  const rowCompact = `${province}${city}`.replace(/\s/g, "");
+  const cityCompact = city.replace(/\s/g, "");
+  return text.includes(q)
+    || text.replace(/\s/g, "").includes(compact)
+    || compact.includes(rowCompact)
+    || (cityCompact.length >= 2 && compact.includes(cityCompact));
+}
+
+function findWentianCityRows(query, scope = "all", limit = 8) {
+  const q = String(query || "").trim().toLowerCase();
+  if (!q) return [];
+  const compact = q.replace(/\s|·|-/g, "");
+  return getWentianCityRows()
+    .map((row, index) => ({ row, index }))
+    .filter(({ row }) => (scope !== "china" || isWentianChinaCity(row)) && wentianCityMatchesQuery(row, q, compact))
+    .slice(0, limit);
+}
+
+function findWentianCity(query, scope = "all") {
+  const found = findWentianCityRows(query, scope, 1);
+  return makeWentianCity(found?.[0]?.row);
+}
+
+function syncWentianChartCityScopeUi() {
+  document.querySelectorAll("[data-wentian-city-scope]").forEach((btn) => {
+    btn.classList.toggle("active", btn.dataset.wentianCityScope === wentianChartCityScope);
   });
-  return makeWentianCity(row);
+  const input = document.getElementById("wentian-chart-city");
+  if (input) {
+    input.placeholder = wentianChartCityScope === "global"
+      ? "搜索国家/城市，如：Singapore、Tokyo"
+      : "搜索城市，如：北京、上海、深圳";
+  }
+  const note = document.getElementById("wentian-chart-city-note");
+  if (note) {
+    note.textContent = wentianChartCityScope === "global"
+      ? "当地法定时 + 经度校正；海外农历按中国农历口径。"
+      : "北京时间 UTC+8 + 经度校正。";
+  }
+}
+
+function setWentianChartCityScope(scope, options = {}) {
+  wentianChartCityScope = scope === "global" ? "global" : "china";
+  syncWentianChartCityScopeUi();
+  if (!options.keepSelected && wentianChartCity && wentianChartCityScope === "china" && !isWentianChinaCity(wentianChartCity)) {
+    applyWentianChartCity(null, { preserveScope: true });
+  }
 }
 
 function populateWentianChartSelects() {
@@ -2075,25 +2139,37 @@ function renderWentianChartCityDropdown(query) {
     dropdown.innerHTML = "";
     return;
   }
-  const rows = getWentianCityRows()
-    .map((row, index) => ({ row, index }))
-    .filter(({ row }) => `${row[0]}${row[1]} ${row[0]} ${row[1]}`.toLowerCase().includes(q))
-    .slice(0, 8);
+  let rows = findWentianCityRows(q, wentianChartCityScope, 8);
+  if (!rows.length && wentianChartCityScope === "china") {
+    const globalRows = findWentianCityRows(q, "global", 8);
+    if (globalRows.length) {
+      setWentianChartCityScope("global", { keepSelected: true });
+      rows = globalRows;
+    }
+  }
   if (!rows.length) {
     dropdown.style.display = "none";
     dropdown.innerHTML = "";
     return;
   }
-  dropdown.innerHTML = rows.map(({ row, index }) => `
+  dropdown.innerHTML = rows.map(({ row, index }) => {
+    const city = makeWentianCity(row);
+    return `
     <button type="button" class="wentian-chart-city-item" data-action="wentian-chart-city-pick" data-city-index="${index}">
-      ${escapeHtml(row[0])} · ${escapeHtml(row[1])}<br><span>${Number(row[2]).toFixed(2)}°E / ${Number(row[3]).toFixed(2)}°N</span>
+      ${escapeHtml(formatWentianCity(city))}<br><span>${escapeHtml(formatWentianTimeZoneLabel(city.timeZone, city.tzOffset))} · ${Number(row[2]).toFixed(2)}°E / ${Number(row[3]).toFixed(2)}°N</span>
     </button>
-  `).join("");
+  `;
+  }).join("");
   dropdown.style.display = "block";
 }
 
-function applyWentianChartCity(city) {
+function applyWentianChartCity(city, options = {}) {
   wentianChartCity = city || null;
+  if (city && !options.preserveScope) {
+    setWentianChartCityScope(isWentianChinaCity(city) ? "china" : "global", { keepSelected: true });
+  } else {
+    syncWentianChartCityScopeUi();
+  }
   const input = document.getElementById("wentian-chart-city");
   const clear = document.getElementById("wentian-chart-city-clear");
   const selected = document.getElementById("wentian-chart-city-selected");
@@ -2101,7 +2177,7 @@ function applyWentianChartCity(city) {
   if (input) input.value = city ? `${city.province} · ${city.city}` : "";
   if (clear) clear.style.display = city ? "" : "none";
   if (selected) {
-    selected.textContent = city ? `已选：${formatWentianCity(city)} · ${Number(city.lon).toFixed(2)}°E` : "";
+    selected.textContent = city ? `已选：${formatWentianCity(city)} · ${formatWentianTzOffset(city.tzOffset)} · ${Number(city.lon).toFixed(2)}°E` : "";
     selected.style.display = city ? "block" : "none";
   }
   if (dropdown) dropdown.style.display = "none";
@@ -2133,7 +2209,7 @@ function getWentianChartDateParts() {
     date = new Date(solar.getFullYear(), solar.getMonth(), solar.getDate(), hour, minute);
     lunar = { year, month, day, isLeap, leapMonth: getWentianLunarLeapMonth(year) };
     leapMonthRule = getWentianLeapMonthRuleInfo(lunar, autoLeapMonth);
-    calModeLabel = `农历 ${formatWentianLunarRuleLabel(year, month, day, isLeap)}`;
+    calModeLabel = `${wentianChartCityScope === "global" ? "中国农历口径" : "农历"} ${formatWentianLunarRuleLabel(year, month, day, isLeap)}`;
   } else {
     year = getWentianNumber("wentian-chart-year");
     month = getWentianNumber("wentian-chart-month");
@@ -2173,7 +2249,7 @@ function updateWentianChartPreview() {
     const timeStr = `${padWentianNumber(parts.hour)}:${padWentianNumber(parts.minute)}`;
     if (hiddenDate) hiddenDate.value = `${dateStr}T${timeStr}`;
     const leapText = parts.leapMonthRule?.applied ? ` · ${parts.leapMonthRule.actualLabel}按${parts.leapMonthRule.effectiveLabel}排盘` : "";
-    if (preview) preview.textContent = `${parts.calModeLabel} · 北京时间 ${timeStr}${leapText}`;
+    if (preview) preview.textContent = `${parts.calModeLabel} · 当地法定时 ${timeStr}${leapText}`;
     const cityText = document.getElementById("wentian-chart-city")?.value.trim() || "";
     const city = wentianChartCity || findWentianCity(cityText);
     if (tst && typeof calcTrueSolarTime === "function") {
@@ -2185,11 +2261,12 @@ function updateWentianChartPreview() {
         minute: parts.minute,
         longitude: city?.lon || 116.4,
         tzOffset: city?.tzOffset ?? 8,
+        timeZone: city?.timeZone || (city && typeof getBirthTimeZoneId === "function" ? getBirthTimeZoneId(city) : "Asia/Shanghai"),
         cityName: city ? formatWentianCity(city) : "北京（默认）",
       });
       const used = document.getElementById("wentian-chart-true-solar")?.checked;
       const shichen = ["子", "丑", "寅", "卯", "辰", "巳", "午", "未", "申", "酉", "戌", "亥"][getWentianTimeIndex(result.trueSolarHour, result.trueSolarMinute)] || "";
-      tst.textContent = `${used ? "已采用" : "预览"}真太阳时：${padWentianNumber(result.trueSolarHour)}:${padWentianNumber(result.trueSolarMinute)} · ${shichen}时 · ${result.diffStr}`;
+      tst.textContent = `${used ? "已采用" : "预览"}真太阳时：${padWentianNumber(result.trueSolarHour)}:${padWentianNumber(result.trueSolarMinute)} · ${formatWentianTzOffset(result.tzOffset)} · ${shichen}时 · ${result.diffStr}`;
     }
   } catch (error) {
     if (preview) preview.textContent = error.message || "";
@@ -2218,6 +2295,7 @@ function buildWentianChartNormFromSaved(saved, date) {
   const form = saved?.form || {};
   const cityDetail = form.cityDetail || findWentianCity(form.city || "");
   const city = cityDetail ? formatWentianCity(cityDetail) : (form.city || "");
+  const cityScope = form.cityScope || (cityDetail && !isWentianChinaCity(cityDetail) ? "global" : "china");
   const useTrueSolar = form.useTrueSolar !== false;
   const autoLeapMonth = form.autoLeapMonth !== false;
   let calcHour = date.getHours();
@@ -2232,6 +2310,7 @@ function buildWentianChartNormFromSaved(saved, date) {
       minute: calcMinute,
       longitude: cityDetail?.lon || 116.4,
       tzOffset: cityDetail?.tzOffset ?? 8,
+      timeZone: cityDetail?.timeZone || (cityDetail && typeof getBirthTimeZoneId === "function" ? getBirthTimeZoneId(cityDetail) : "Asia/Shanghai"),
       cityName: city || "北京（默认）",
     });
     calcHour = trueSolarResult.trueSolarHour;
@@ -2245,6 +2324,7 @@ function buildWentianChartNormFromSaved(saved, date) {
     type: form.type || "ziwei",
     city,
     cityDetail,
+    cityScope,
     date,
     dateStr,
     timeIndex: getWentianTimeIndex(calcHour, calcMinute),
@@ -2284,6 +2364,7 @@ function stepWentianClassicChartTime(hoursDelta) {
       type: norm.type,
       city: norm.city,
       cityDetail: norm.cityDetail,
+      cityScope: norm.cityScope,
       calMode: norm.calMode,
       calModeLabel: norm.calModeLabel,
       autoLeapMonth: norm.autoLeapMonth,
@@ -2361,6 +2442,9 @@ function buildWentianChartPayload(chart, norm) {
   const findPalace = (name) => palacesSummary.find((p) => p.name === name || p.name === `${name}宫`) || null;
   const sizhu = extractWentianPillars(chart);
   const birthDate = norm?.date ? formatWentianDateTime(norm.date) : `${chart?.solarDate || ""} 00:00`;
+  const trueSolarTime = norm?.trueSolarResult
+    ? `${norm.dateStr || String(birthDate).slice(0, 10)} ${padWentianNumber(norm.trueSolarResult.trueSolarHour)}:${padWentianNumber(norm.trueSolarResult.trueSolarMinute)}`
+    : "";
   const currentYear = new Date().getFullYear();
   const birthYear = norm?.date?.getFullYear?.() || Number(String(chart?.solarDate || "").slice(0, 4)) || WENTIAN_XU_CHART_BASE.birthYear;
   const realCurrentAge = birthYear ? currentYear - birthYear + 1 : 0;
@@ -2392,6 +2476,14 @@ function buildWentianChartPayload(chart, norm) {
     gender: norm?.gender || "male",
     birthDate,
     solarTime: birthDate,
+    localTime: birthDate,
+    trueSolarTime,
+    trueSolarDiff: norm?.trueSolarResult?.diffStr || "",
+    birthTimeZone: norm?.trueSolarResult?.timeZone || norm?.cityDetail?.timeZone || "",
+    cityDetail: norm?.cityDetail || null,
+    cityScope: norm?.cityScope || "china",
+    calMode: norm?.calMode || "solar",
+    calModeLabel: norm?.calModeLabel || "",
     birthYear,
     birthMonth: norm?.date ? norm.date.getMonth() + 1 : WENTIAN_XU_CHART_BASE.birthMonth,
     birthDay: norm?.date?.getDate?.() || WENTIAN_XU_CHART_BASE.birthDay,
@@ -4596,6 +4688,11 @@ const WENTIAN_I18N_EN_EXTRA = {
   "年": "Year",
   "农历年": "Lunar year",
   "搜索城市，如：北京、上海、Tokyo": "Search city, e.g. Beijing, Shanghai, Tokyo",
+  "搜索城市，如：北京、上海、深圳": "Search city, e.g. Beijing, Shanghai, Shenzhen",
+  "中国": "China",
+  "全球": "Global",
+  "北京时间 UTC+8 + 经度校正。": "Beijing time UTC+8 + longitude correction.",
+  "当地法定时 + 经度校正；海外农历按中国农历口径。": "Local legal time + longitude correction; overseas lunar uses Chinese lunar basis.",
   "性别": "Gender",
   "出生日期": "Birth Date",
   "必填": "Required",
@@ -5111,10 +5208,10 @@ function translateWentianText(text, code = getWentianLanguageCode(), element = n
       const note = elementGenerateNote[3] === "一方能带动另一方" ? "one side can motivate the other" : "mutual support is clear";
       return `${WENTIAN_I18N_EN_ELEMENT_MAP[elementGenerateNote[1]]} generates ${WENTIAN_I18N_EN_ELEMENT_MAP[elementGenerateNote[2]]}: ${note}`;
     }
-    const solarTime = source.match(/^公历 (.+) · 北京时间 (.+)$/);
-    if (solarTime) return `Solar ${solarTime[1]} · Beijing time ${solarTime[2]}`;
-    const trueSolar = source.match(/^预览真太阳时：(.+) · (.+) · (.+)分钟$/);
-    if (trueSolar) return `True solar preview: ${trueSolar[1]} · ${translateWentianText(trueSolar[2], "en")} · ${trueSolar[3]} min`;
+    const solarTime = source.match(/^公历 (.+) · (?:北京时间|当地法定时) (.+)$/);
+    if (solarTime) return `Solar ${solarTime[1]} · local legal time ${solarTime[2]}`;
+    const trueSolar = source.match(/^(预览|已采用)真太阳时：(.+) · (.+) · ([子丑寅卯辰巳午未申酉戌亥]时) · (.+)$/);
+    if (trueSolar) return `True solar ${trueSolar[1] === "已采用" ? "used" : "preview"}: ${trueSolar[2]} · ${trueSolar[3]} · ${translateWentianText(trueSolar[4], "en")} · ${trueSolar[5]}`;
   }
   return dict[source] || source;
 }
@@ -7073,6 +7170,7 @@ function getWentianChartFormData() {
   const cityInput = (document.getElementById("wentian-chart-city")?.value || "").trim();
   const cityDetail = wentianChartCity || findWentianCity(cityInput);
   const city = cityDetail ? formatWentianCity(cityDetail) : cityInput;
+  const cityScope = wentianChartCityScope || (cityDetail && !isWentianChinaCity(cityDetail) ? "global" : "china");
   let calcHour = date.getHours();
   let calcMinute = date.getMinutes();
   let trueSolarResult = null;
@@ -7086,6 +7184,7 @@ function getWentianChartFormData() {
       minute: calcMinute,
       longitude: cityDetail?.lon || 116.4,
       tzOffset: cityDetail?.tzOffset ?? 8,
+      timeZone: cityDetail?.timeZone || (cityDetail && typeof getBirthTimeZoneId === "function" ? getBirthTimeZoneId(cityDetail) : "Asia/Shanghai"),
       cityName: city || "北京（默认）",
     });
     calcHour = trueSolarResult.trueSolarHour;
@@ -7103,6 +7202,7 @@ function getWentianChartFormData() {
     trueSolarResult,
     useTrueSolar,
     cityDetail,
+    cityScope,
     calMode: parts?.mode || "solar",
     calModeLabel: parts?.calModeLabel,
     autoLeapMonth: parts?.autoLeapMonth !== false,
@@ -7141,6 +7241,7 @@ async function submitWentianChartForm() {
         type: norm.type,
         city: norm.city,
         cityDetail: norm.cityDetail,
+        cityScope: norm.cityScope,
         calMode: norm.calMode,
         autoLeapMonth: norm.autoLeapMonth,
         leapMonthRule: norm.leapMonthRule,
@@ -7196,6 +7297,7 @@ function initWentianChartForm() {
   setWentianChartCalendarMode(form.calMode || "solar");
   const trueSolar = document.getElementById("wentian-chart-true-solar");
   if (trueSolar) trueSolar.checked = getWentianChartDefaultTrueSolar(form);
+  setWentianChartCityScope(form.cityScope || (form.cityDetail && !isWentianChinaCity(form.cityDetail) ? "global" : "china"), { keepSelected: true });
   applyWentianChartCity(form.cityDetail || findWentianCity(form.city) || null);
   if (!wentianChartCity && form.city) {
     const cityInput = document.getElementById("wentian-chart-city");
@@ -11890,8 +11992,13 @@ function sourceChartFormScreen() {
 
       <div class="wentian-chart-row stack">
         <span class="wentian-chart-label">出生地点<small>影响真太阳时</small></span>
+        <div class="wentian-chart-city-scope" role="group" aria-label="出生地点范围">
+          <button type="button" class="active" data-action="wentian-chart-city-scope" data-wentian-city-scope="china">中国</button>
+          <button type="button" data-action="wentian-chart-city-scope" data-wentian-city-scope="global">全球</button>
+        </div>
+        <div id="wentian-chart-city-note" class="wentian-chart-city-note">北京时间 UTC+8 + 经度校正。</div>
         <div class="wentian-chart-city-wrap">
-          <input id="wentian-chart-city" class="wentian-chart-city-input" placeholder="搜索城市，如：北京、上海、Tokyo" autocomplete="off">
+          <input id="wentian-chart-city" class="wentian-chart-city-input" placeholder="搜索城市，如：北京、上海、深圳" autocomplete="off">
           <button type="button" id="wentian-chart-city-clear" class="wentian-chart-city-clear" data-action="wentian-chart-city-clear" style="display:none">清除</button>
           <div id="wentian-chart-city-dropdown" class="wentian-chart-city-dropdown" style="display:none"></div>
         </div>
@@ -13679,6 +13786,13 @@ document.addEventListener("click", (event) => {
   if (action === "wentian-chart-cal") {
     const value = event.target.closest("[data-wentian-chart-cal]")?.dataset.wentianChartCal || "solar";
     setWentianChartCalendarMode(value);
+    return;
+  }
+  if (action === "wentian-chart-city-scope") {
+    const value = event.target.closest("[data-wentian-city-scope]")?.dataset.wentianCityScope || "china";
+    setWentianChartCityScope(value);
+    renderWentianChartCityDropdown(document.getElementById("wentian-chart-city")?.value || "");
+    updateWentianChartPreview();
     return;
   }
   if (action === "wentian-chart-city-pick") {

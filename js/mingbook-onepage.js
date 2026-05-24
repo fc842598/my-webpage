@@ -286,6 +286,13 @@
   function normalizeProfile(input = {}) {
     const cityObj = input.city && typeof input.city === 'object' ? input.city : null;
     const cityName = String(input.cityName || cityObj?.name || cityObj?.cityName || input.city || defaultProfile.city).trim() || defaultProfile.city;
+    const cityTimeZone = String(
+      input.cityTimeZone
+      || input.timeZone
+      || cityObj?.timeZone
+      || cityObj?.tzid
+      || (cityObj && typeof getBirthTimeZoneId === 'function' ? getBirthTimeZoneId(cityObj) : '')
+    ).trim();
     return {
       name: String(input.name || '').trim(),
       year: clampNumber(input.year, 1900, 2030, defaultProfile.year),
@@ -301,6 +308,7 @@
       cityLon: Number.isFinite(Number(input.cityLon ?? cityObj?.lon)) ? Number(input.cityLon ?? cityObj?.lon) : null,
       cityLat: Number.isFinite(Number(input.cityLat ?? cityObj?.lat)) ? Number(input.cityLat ?? cityObj?.lat) : null,
       cityTz: Number.isFinite(Number(input.cityTz ?? cityObj?.tzOffset)) ? Number(input.cityTz ?? cityObj?.tzOffset) : 8,
+      cityTimeZone,
       cityScope: input.cityScope === 'global' || cityObj?.scope === 'global' || (cityObj && !isChinaCity(cityObj)) ? 'global' : defaultCityScope,
       isLunar: !!input.isLunar,
       lunarYear: input.lunarYear ? clampNumber(input.lunarYear, 1900, 2030, input.lunarYear) : null,
@@ -1542,6 +1550,7 @@
       cityLon: source.cityLon ?? cityObj?.lon,
       cityLat: source.cityLat ?? cityObj?.lat,
       cityTz: source.cityTz ?? cityObj?.tzOffset,
+      cityTimeZone: source.cityTimeZone || source.timeZone || cityObj?.timeZone,
       cityScope: source.cityScope,
       isLunar: source.calMode === 'lunar' || source.isLunar,
       lunarYear: source.lunarYear,
@@ -1576,6 +1585,7 @@
       lon: profile.cityLon,
       lat: profile.cityLat,
       tzOffset: profile.cityTz ?? 8,
+      timeZone: profile.cityTimeZone || '',
       scope: profile.cityScope || defaultCityScope,
     };
   }
@@ -1599,6 +1609,7 @@
       cityLon: profile.cityLon,
       cityLat: profile.cityLat,
       cityTz: profile.cityTz ?? 8,
+      cityTimeZone: profile.cityTimeZone || '',
       cityScope: profile.cityScope || defaultCityScope,
       lunarYear: profile.lunarYear,
       lunarMonth: profile.lunarMonth,
@@ -1686,13 +1697,16 @@
   }
 
   function isChinaCity(city) {
+    if (typeof isChinaBirthPlace === 'function') return isChinaBirthPlace(city);
     const province = String(Array.isArray(city) ? city[0] : city?.province || '').trim();
     return chinaCityRegions.has(province);
   }
 
   function cityFromRow(row) {
     if (!row) return null;
-    return { province: row[0], city: row[1], name: `${row[0]} ${row[1]}`, lon: Number(row[2]), lat: Number(row[3]), tzOffset: Number(row[4] ?? 8) };
+    const city = { province: row[0], city: row[1], name: `${row[0]} ${row[1]}`, lon: Number(row[2]), lat: Number(row[3]), tzOffset: Number(row[4] ?? 8) };
+    city.timeZone = typeof getBirthTimeZoneId === 'function' ? getBirthTimeZoneId(city) : '';
+    return city;
   }
 
   function formatCityLabel(city) {
@@ -1710,6 +1724,11 @@
     const hour = Math.floor(abs);
     const minutes = Math.round((abs - hour) * 60);
     return minutes ? `UTC${sign}${hour}:${String(minutes).padStart(2, '0')}` : `UTC${sign}${hour}`;
+  }
+
+  function formatTimeZoneLabel(timeZone, tzOffset) {
+    const offsetText = formatTzOffset(tzOffset);
+    return timeZone ? `${timeZone} · ${offsetText}` : offsetText;
   }
 
   function formatGeoCoord(value, axis) {
@@ -1761,7 +1780,7 @@
     const note = $('#mbpCityScopeNote');
     if (note) {
       note.textContent = cityScope === 'global'
-        ? '全球出生地按当地法定区时，再按经度校正真太阳时。'
+        ? '全球出生地按当地法定时间与 IANA 历史时区，再按经度校正真太阳时。农历默认按中国农历口径，越南等地建议填公历出生证时间。'
         : '默认中国出生地，含港澳台，按北京时间 UTC+8 校正当地真太阳时。';
     }
   }
@@ -1789,7 +1808,8 @@
     if (selected) selected.style.display = city ? '' : 'none';
     if (city) {
       $('#mbpCitySelectedName').textContent = formatCityLabel(city);
-      $('#mbpCityTz').textContent = formatTzOffset(city.tzOffset);
+      const timeZone = city.timeZone || (typeof getBirthTimeZoneId === 'function' ? getBirthTimeZoneId(city) : '');
+      $('#mbpCityTz').textContent = formatTimeZoneLabel(timeZone, city.tzOffset);
       $('#mbpCityLon').textContent = formatGeoCoord(city.lon, 'lon');
       $('#mbpCityLat').textContent = formatGeoCoord(city.lat, 'lat');
     }
@@ -1818,6 +1838,8 @@
       const solar = lunarToSolar(lunarYear, lunarMonth, lunarDay, lunarLeap);
       if (!solar) return { error: '农历日期无效或超出支持范围' };
       const lunarObj = { year: lunarYear, month: lunarMonth, day: lunarDay, isLeap: lunarLeap };
+      const lunarPrefix = cityScope === 'global' ? '中国农历口径' : '农历';
+      const lunarText = typeof formatLunarDate === 'function' ? formatLunarDate(lunarObj) : `${lunarYear}年${lunarMonth}月${lunarDay}日`;
       return {
         year: solar.getFullYear(),
         month: solar.getMonth() + 1,
@@ -1827,8 +1849,8 @@
         lunarMonth,
         lunarDay,
         lunarLeap,
-        lunarLabel: typeof formatLunarDate === 'function' ? formatLunarDate(lunarObj) : `${lunarYear}年${lunarMonth}月${lunarDay}日`,
-        calModeLabel: `农历 ${typeof formatLunarDate === 'function' ? formatLunarDate(lunarObj) : `${lunarYear}年${lunarMonth}月${lunarDay}日`}（公历 ${solar.getFullYear()}-${pad2(solar.getMonth() + 1)}-${pad2(solar.getDate())}）`,
+        lunarLabel: lunarText,
+        calModeLabel: `${lunarPrefix} ${lunarText}（公历 ${solar.getFullYear()}-${pad2(solar.getMonth() + 1)}-${pad2(solar.getDate())}）`,
       };
     }
     const year = Number($('#mbpYear')?.value);
@@ -1852,10 +1874,10 @@
     if (data.error) {
       preview.textContent = '';
     } else if (data.isLunar) {
-      preview.textContent = `公历: ${data.year}-${pad2(data.month)}-${pad2(data.day)}`;
+      preview.textContent = `公历: ${data.year}-${pad2(data.month)}-${pad2(data.day)}${cityScope === 'global' ? ' · 中国农历口径' : ''}`;
     } else if (typeof solarToLunar === 'function') {
       const lunar = solarToLunar(data.year, data.month, data.day);
-      preview.textContent = lunar ? `农历: ${typeof formatLunarDate === 'function' ? formatLunarDate(lunar) : ''}` : '';
+      preview.textContent = lunar ? `${cityScope === 'global' ? '中国农历参考' : '农历'}: ${typeof formatLunarDate === 'function' ? formatLunarDate(lunar) : ''}` : '';
     } else {
       preview.textContent = '';
     }
@@ -1913,12 +1935,13 @@
       minute: time.minute,
       longitude: selectedCity?.lon,
       tzOffset: selectedCity?.tzOffset ?? 8,
+      timeZone: selectedCity?.timeZone || (selectedCity && typeof getBirthTimeZoneId === 'function' ? getBirthTimeZoneId(selectedCity) : 'Asia/Shanghai'),
       cityName: selectedCity ? selectedCity.city : '',
     });
-    const zoneText = selectedCity ? formatTzOffset(tst.tzOffset) : 'UTC+8';
-    display.innerHTML = `区时 ${pad2(time.hour)}:${pad2(time.minute)} ${escapeHtml(zoneText)} · 真太阳时 <b>${pad2(tst.trueSolarHour)}:${pad2(tst.trueSolarMinute)}</b> · ${escapeHtml(tst.diffStr)}`;
+    const zoneText = formatTimeZoneLabel(tst.timeZone, tst.tzOffset);
+    display.innerHTML = `当地法定时 ${pad2(time.hour)}:${pad2(time.minute)} ${escapeHtml(zoneText)} · 真太阳时 <b>${pad2(tst.trueSolarHour)}:${pad2(tst.trueSolarMinute)}</b> · ${escapeHtml(tst.diffStr)}`;
     if (badge) {
-      badge.textContent = tst.isEstimated ? '默认北京估算' : `${formatCityLabel(selectedCity)} ${formatTzOffset(tst.tzOffset)}`;
+      badge.textContent = tst.isEstimated ? '默认北京估算' : `${formatCityLabel(selectedCity)} ${zoneText}`;
       badge.style.display = '';
     }
     if (shichen) {
@@ -1972,6 +1995,7 @@
       cityLon: selectedCity?.lon,
       cityLat: selectedCity?.lat,
       cityTz: selectedCity?.tzOffset ?? 8,
+      cityTimeZone: selectedCity?.timeZone || (selectedCity && typeof getBirthTimeZoneId === 'function' ? getBirthTimeZoneId(selectedCity) : ''),
       cityScope,
     });
   }
@@ -1991,9 +2015,13 @@
         minute: profile.minute,
         longitude: profile.cityLon,
         tzOffset: profile.cityTz ?? 8,
+        timeZone: profile.cityTimeZone || '',
         cityName: profile.cityName || profile.city,
       })
       : null;
+    const timeStr = `${pad2(profile.hour)}:${pad2(profile.minute)}`;
+    const trueSolarTimeStr = tstResult ? `${dateStr(profile)} ${pad2(tstResult.trueSolarHour)}:${pad2(tstResult.trueSolarMinute)}` : '';
+    const birthTimeZone = profile.cityTimeZone || tstResult?.timeZone || '';
     const timeIdx = typeof window.tstToShichen === 'function' && tstResult
       ? window.tstToShichen(tstResult.trueSolarHour, tstResult.trueSolarMinute)
       : localShichenIndex(profile.hour, profile.minute);
@@ -2002,9 +2030,22 @@
       dateStr: dateStr(profile),
       cstHour: profile.hour,
       cstMinute: profile.minute,
+      timeStr,
+      localTimeStr: `${dateStr(profile)} ${timeStr}`,
+      solarTimeStr: trueSolarTimeStr,
+      trueSolarTimeStr,
+      birthTimeZone,
       timeIdx,
       tstResult,
-      cityDetail: profile.cityLon ? { name: profile.city, lon: profile.cityLon, lat: profile.cityLat, tzOffset: profile.cityTz ?? 8, scope: profile.cityScope || defaultCityScope } : null,
+      cityDetail: profile.cityLon ? {
+        name: profile.city,
+        lon: profile.cityLon,
+        lat: profile.cityLat,
+        tzOffset: tstResult?.tzOffset ?? profile.cityTz ?? 8,
+        tzOffsetMinutes: tstResult?.tzOffsetMinutes,
+        timeZone: birthTimeZone,
+        scope: profile.cityScope || defaultCityScope,
+      } : null,
     };
   }
 
@@ -2013,7 +2054,7 @@
   }
 
   function profileKey(profile) {
-    return [profile.year, profile.month, profile.day, profile.hour, profile.minute, profile.gender, profile.city, profile.cityLon, profile.isLunar].join('|');
+    return [profile.year, profile.month, profile.day, profile.hour, profile.minute, profile.gender, profile.city, profile.cityLon, profile.cityTimeZone, profile.isLunar].join('|');
   }
 
   function getChartBundle() {
@@ -2118,7 +2159,7 @@
     $('#mbpLunarLeap').checked = !!profile.lunarLeap;
     $('#mbpHour').value = profile.hour;
     $('#mbpMinute').value = profile.minute;
-    selectedCity = profile.cityLon ? { province: profile.cityProvince || profile.city, city: profile.cityShort || profile.city, name: profile.city, lon: profile.cityLon, lat: profile.cityLat, tzOffset: profile.cityTz ?? 8 } : findCity(profile.city);
+    selectedCity = profile.cityLon ? { province: profile.cityProvince || profile.city, city: profile.cityShort || profile.city, name: profile.city, lon: profile.cityLon, lat: profile.cityLat, tzOffset: profile.cityTz ?? 8, timeZone: profile.cityTimeZone || '' } : findCity(profile.city);
     setCityScope(profile.cityScope || (selectedCity && !isChinaCity(selectedCity) ? 'global' : defaultCityScope), { keepSelected: true });
     applySelectedCity(selectedCity);
     if (!selectedCity) {
@@ -6323,12 +6364,15 @@
         dropdown.style.display = 'none';
         return;
       }
-      dropdown.innerHTML = results.map((row, index) => `
+      dropdown.innerHTML = results.map((row, index) => {
+        const city = cityFromRow(row);
+        return `
         <div class="nf-city-item" data-index="${index}">
-          <b>${escapeHtml(formatCityLabel(cityFromRow(row)))}</b>
-          <span>${escapeHtml(formatTzOffset(row[4]))} · ${escapeHtml(formatGeoCoord(row[2], 'lon'))}, ${escapeHtml(formatGeoCoord(row[3], 'lat'))}</span>
+          <b>${escapeHtml(formatCityLabel(city))}</b>
+          <span>${escapeHtml(formatTimeZoneLabel(city.timeZone, row[4]))} · ${escapeHtml(formatGeoCoord(row[2], 'lon'))}, ${escapeHtml(formatGeoCoord(row[3], 'lat'))}</span>
         </div>
-      `).join('');
+      `;
+      }).join('');
       dropdown._mbpResults = results;
       dropdown.style.display = 'block';
       updateTrueSolarPreview();

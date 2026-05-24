@@ -5,11 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>阅天 · 紫微排盘</title>
   <link rel="icon" href="../images/logo-mark.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../css/mingbook-onepage.css?v=20260522-mobileA-tight">
+  <link rel="stylesheet" href="../css/mingbook-onepage.css?v=20260524-global-birth-time">
   <script src="../js/config.js?v=20260521-api-domain-auth-proxy"></script>
   <script defer src="../js/cities.js"></script>
   <script defer src="../js/lunarCalendar.js"></script>
-  <script defer src="../js/trueSolarTime.js"></script>
+  <script defer src="../js/trueSolarTime.js?v=20260524-global-birth-time"></script>
   <script defer src="../js/vendor/lunar-javascript.js"></script>
   <script defer src="../js/vendor/iztro.min.js"></script>
   <script defer src="../vendor/qrcodejs/qrcode.min.js?v=20260521-local-vendor"></script>
@@ -22,7 +22,7 @@
   <script defer src="../src/ziping/runtime.js"></script>
   <script defer src="../js/ai-piming.js?v=20260522-yijing-ai-timing"></script>
   <script defer src="../js/ai-chat.js?v=20260521-no-auto-jump"></script>
-  <script defer src="../js/mingbook-onepage.js?v=20260522-daily-paid-plan"></script>
+  <script defer src="../js/mingbook-onepage.js?v=20260524-global-birth-time"></script>
 </head>
 <body>
   <header class="mbp-nav">
@@ -136,7 +136,7 @@
                 <button type="button" class="nf-city-scope-btn active" data-city-scope="china">中国（含港澳台）</button>
                 <button type="button" class="nf-city-scope-btn" data-city-scope="global">全球</button>
               </div>
-              <div id="mbpCityScopeNote" class="nf-city-note">默认中国出生地，按北京时间 UTC+8 校正当地真太阳时。</div>
+              <div id="mbpCityScopeNote" class="nf-city-note">默认中国出生地，含港澳台，按北京时间 UTC+8 校正当地真太阳时。</div>
               <div class="nf-city-search-wrap">
                 <input type="text" id="mbpCitySearch" placeholder="搜索城市，如：北京、香港、台北" class="nf-select" autocomplete="off">
                 <button type="button" id="mbpClearCity" class="nf-clear-city" style="display:none">清除</button>

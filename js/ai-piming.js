@@ -240,6 +240,10 @@ function buildChartPayload(extraParams = {}) {
     realCurrentAge,
     isLunar:         norm.isLunar || false,
     city:            norm.city || '',
+    birthTimeZone:   norm.birthTimeZone || norm.cityDetail?.timeZone || '',
+    trueSolarTime:   norm.trueSolarTimeStr || norm.solarTimeStr || '',
+    trueSolarDiff:   norm.tstResult?.diffStr || '',
+    cityDetail:      norm.cityDetail || null,
 
     // 命盘基本信息
     fiveElementsClass: chart.fiveElementsClass || '',
