@@ -1023,23 +1023,24 @@ function sourceArchiveSelectScreen() {
       const confirmingDelete = wentianArchiveDeleteConfirmId === archive.id;
       return `
         <div class="wentian-archive-option ${selected ? "is-selected" : ""}" data-wentian-archive-option="1" data-archive-id="${escapeHtml(archive.id)}" aria-pressed="${selected ? "true" : "false"}">
-          <button class="wentian-archive-pick" type="button" data-action="wentian-archive-pick" data-archive-id="${escapeHtml(archive.id)}" aria-label="选择${escapeHtml(item.name)}"></button>
-          <span class="wentian-archive-avatar">${escapeHtml(item.name.slice(0, 1))}</span>
-          <span class="wentian-archive-main">
-            <span class="wentian-archive-title-row">
-              <span class="wentian-archive-name">${escapeHtml(item.name)}</span>
-              ${item.badge ? `<span class="wentian-archive-badge">${escapeHtml(item.badge)}</span>` : ""}
-              <span class="wentian-archive-gender">${item.gender}</span>
-              <span class="wentian-archive-tag">${escapeHtml(item.tag)}</span>
+          <button class="wentian-archive-pick" type="button" data-action="wentian-archive-pick" data-archive-id="${escapeHtml(archive.id)}" aria-pressed="${selected ? "true" : "false"}" aria-label="选择${escapeHtml(item.name)}">
+            <span class="wentian-archive-avatar">${escapeHtml(item.name.slice(0, 1))}</span>
+            <span class="wentian-archive-main">
+              <span class="wentian-archive-title-row">
+                <span class="wentian-archive-name">${escapeHtml(item.name)}</span>
+                ${item.badge ? `<span class="wentian-archive-badge">${escapeHtml(item.badge)}</span>` : ""}
+                <span class="wentian-archive-gender">${item.gender}</span>
+                <span class="wentian-archive-tag">${escapeHtml(item.tag)}</span>
+              </span>
+              <span class="wentian-archive-date">${escapeHtml(item.datetime)}</span>
+              <span class="wentian-archive-pillars">${escapeHtml(item.pillars)}</span>
             </span>
-            <span class="wentian-archive-date">${escapeHtml(item.datetime)}</span>
-            <span class="wentian-archive-pillars">${escapeHtml(item.pillars)}</span>
-          </span>
-          <span class="wentian-archive-actions">
+            <span class="wentian-archive-check" aria-hidden="true">${selected ? "✓" : ""}</span>
+          </button>
+          <span class="wentian-archive-actions" role="group" aria-label="${escapeHtml(item.name)}档案操作">
             <button class="wentian-archive-action" type="button" data-action="wentian-archive-edit" data-archive-id="${escapeHtml(archive.id)}">编辑</button>
-            <button class="wentian-archive-action danger ${confirmingDelete ? "is-confirming" : ""}" type="button" data-action="wentian-archive-delete" data-archive-id="${escapeHtml(archive.id)}">${confirmingDelete ? "确认" : "删除"}</button>
+            <button class="wentian-archive-action danger ${confirmingDelete ? "is-confirming" : ""}" type="button" data-action="wentian-archive-delete" data-archive-id="${escapeHtml(archive.id)}">${confirmingDelete ? "确认删除" : "删除"}</button>
           </span>
-          <span class="wentian-archive-check">${selected ? "✓" : ""}</span>
         </div>
       `;
     }).join("")}
@@ -6258,6 +6259,8 @@ function pickWentianArchive(id) {
     const selected = row.dataset.archiveId === id;
     row.classList.toggle("is-selected", selected);
     row.setAttribute("aria-pressed", selected ? "true" : "false");
+    const pick = row.querySelector(".wentian-archive-pick");
+    if (pick) pick.setAttribute("aria-pressed", selected ? "true" : "false");
     const check = row.querySelector(".wentian-archive-check");
     if (check) check.textContent = selected ? "✓" : "";
   }
@@ -13495,7 +13498,6 @@ function renderConvertedScreen(no) {
     `, 844, "converted source-screen no-status-shift", true);
   }
   if (screen.no === 5) {
-    wentianArchiveDraftId = null;
     return figPhone(`screen-${screen.no}`, `${String(screen.no).padStart(2, "0")} ${screen.title}`, `
       ${sourceArchiveSelectScreen()}
     `, 844, "converted source-screen no-status-shift", true);
