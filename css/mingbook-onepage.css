@@ -952,6 +952,7 @@ body.mbp-ticket-open {
 }
 
 .mbp-client-item,
+.mbp-client-save,
 .mbp-client-new {
   width: 100%;
   border: 1px solid rgba(241, 212, 125, .18);
@@ -963,18 +964,28 @@ body.mbp-ticket-open {
 }
 
 .mbp-client-item {
-  display: grid;
-  grid-template-columns: 34px 1fr;
-  gap: 10px;
-  align-items: center;
-  padding: 10px;
-  text-align: left;
+  overflow: hidden;
 }
 
 .mbp-client-item:hover,
 .mbp-client-item.is-active {
   border-color: rgba(241, 212, 125, .42);
   background: rgba(241, 212, 125, .1);
+}
+
+.mbp-client-select {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr);
+  gap: 10px;
+  align-items: center;
+  padding: 10px;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
 }
 
 .mbp-client-mini {
@@ -988,16 +999,59 @@ body.mbp-ticket-open {
   font-weight: 900;
 }
 
+.mbp-client-copy {
+  min-width: 0;
+}
+
 .mbp-client-item b {
   display: block;
+  overflow: hidden;
   color: var(--ivory);
   font-size: 13px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .mbp-client-item small {
   display: block;
+  overflow: hidden;
   margin-top: 2px;
   line-height: 1.35;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mbp-client-tools {
+  display: flex;
+  gap: 6px;
+  padding: 0 10px 10px 54px;
+}
+
+.mbp-client-tool {
+  height: 24px;
+  min-width: 42px;
+  padding: 0 8px;
+  border: 1px solid rgba(241, 212, 125, .22);
+  border-radius: 999px;
+  background: rgba(241, 212, 125, .08);
+  color: var(--gold);
+  font-size: 11px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.mbp-client-tool:hover {
+  border-color: rgba(241, 212, 125, .5);
+}
+
+.mbp-client-tool.danger {
+  border-color: rgba(173, 70, 46, .38);
+  color: #f0a48b;
+}
+
+.mbp-client-tool.is-confirming {
+  background: rgba(113, 32, 20, .34);
+  color: #ffd2c4;
 }
 
 .mbp-client-empty {
@@ -1007,11 +1061,23 @@ body.mbp-ticket-open {
   text-align: center;
 }
 
-.mbp-client-new {
+.mbp-client-menu-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
   margin-top: 10px;
+}
+
+.mbp-client-save,
+.mbp-client-new {
   padding: 9px 10px;
   color: var(--gold);
   font-weight: 900;
+}
+
+.mbp-client-save {
+  background: linear-gradient(180deg, rgba(241, 212, 125, .2), rgba(174, 120, 45, .14));
+  color: var(--ivory);
 }
 
 .mbp-catalog-title {

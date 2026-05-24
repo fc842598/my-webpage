@@ -2,6 +2,7 @@
   const storageKey = 'yt_mingbook_onepage_profile_v1';
   const legacyHistoryKey = 'yt_zw_history_v1';
   const chartHistoryKey = 'ziwei_local_chart_history_v1';
+  const customerClientIdKey = 'ziwei_client_id';
   const html2PdfUrl = '../vendor/html2pdf/html2pdf.bundle.min.js?v=20260521-local-vendor';
   const palaceOrder = ['巳', '午', '未', '申', '辰', null, null, '酉', '卯', null, null, '戌', '寅', '丑', '子', '亥'];
   const shichenNames = ['子', '丑', '寅', '卯', '辰', '巳', '午', '未', '申', '酉', '戌', '亥'];
@@ -97,6 +98,12 @@
   let cityDeleteArmed = false;
   let cityScope = state.profile.cityScope || defaultCityScope;
   let clientRecordsCache = [];
+  let clientRemoteLoaded = false;
+  let clientRemoteSyncing = false;
+  let clientRemoteMessage = '';
+  let clientRemotePromise = null;
+  let editingClientRecordId = '';
+  let deleteConfirmClientId = '';
   let html2PdfPromise = null;
   let inputGuideTimer = null;
   let mbpAiHistory = [];
@@ -1675,10 +1682,14 @@
     };
   }
 
-  function profileToRecord(profile) {
+  function profileToRecord(profile, options = {}) {
+    const savedAt = options.savedAt || options.createdAt || new Date().toISOString();
+    const id = options.id || makeLocalId();
     return {
-      id: makeLocalId(),
-      savedAt: new Date().toISOString(),
+      id,
+      chartRecordId: options.chartRecordId || id,
+      savedAt,
+      updatedAt: options.updatedAt || savedAt,
       name: profile.name || '',
       gender: profile.gender,
       year: profile.year,
@@ -1703,9 +1714,134 @@
     };
   }
 
+  function readCustomerHistoryRecords() {
+    return readJsonList(chartHistoryKey).filter(Boolean);
+  }
+
+  function writeCustomerHistoryRecords(records) {
+    try {
+      localStorage.setItem(chartHistoryKey, JSON.stringify(records.slice(0, 50)));
+    } catch (_) {}
+  }
+
+  function getCustomerClientId() {
+    try {
+      let id = localStorage.getItem(customerClientIdKey);
+      if (!id) {
+        id = makeLocalId();
+        localStorage.setItem(customerClientIdKey, id);
+      }
+      return id;
+    } catch (_) {
+      return makeLocalId();
+    }
+  }
+
+  function profileDateTimeValue(profile) {
+    return `${dateStr(profile)}T${pad2(profile.hour)}:${pad2(profile.minute)}`;
+  }
+
+  function customerRecordToArchive(record) {
+    const profile = record?.profile ? normalizeProfile(record.profile) : recordToProfile(record);
+    const id = String(record?.id && record.id !== 'current' ? record.id : record?.chartRecordId || makeLocalId());
+    const chartRecordId = String(record?.chartRecordId || id);
+    const datetime = profileDateTimeValue(profile);
+    const savedAt = record?.savedAt || record?.createdAt || new Date().toISOString();
+    const updatedAt = record?.updatedAt || savedAt;
+    const city = cityRecordFromProfile(profile);
+    return {
+      id,
+      chartRecordId,
+      chart: null,
+      chartData: {
+        chartRecordId,
+        name: profile.name || '',
+        gender: profile.gender,
+        birthDate: datetime.replace('T', ' '),
+        solarTime: datetime.replace('T', ' '),
+        city: profile.cityName || profile.city || '',
+      },
+      form: {
+        archiveId: id,
+        name: profile.name || '',
+        gender: profile.gender,
+        type: 'ziwei',
+        datetime,
+        city: profile.cityName || profile.city || '',
+        cityDetail: city,
+        useTrueSolar: true,
+        remoteRaw: profileToRecord(profile, { id, chartRecordId, savedAt, updatedAt }),
+      },
+      createdAt: savedAt,
+      updatedAt,
+    };
+  }
+
+  function archiveToCustomerRecord(archive) {
+    if (!archive) return null;
+    const form = archive.form || {};
+    const raw = form.remoteRaw || {};
+    const datetime = form.datetime || raw.datetime || (raw.dateStr ? `${raw.dateStr}T${pad2(raw.cstHour ?? raw.hour ?? 0)}:${pad2(raw.cstMinute ?? raw.minute ?? 0)}` : '');
+    const [datePart = '', timePart = ''] = String(datetime || '').replace(' ', 'T').split('T');
+    const [year, month, day] = datePart.split('-').map((part) => Number.parseInt(part, 10));
+    const time = parseTimeText(timePart);
+    const formCity = form.cityDetail || form.city || raw.city;
+    const formCityName = form.cityDetail?.name
+      || (form.city && typeof form.city === 'object' ? form.city.name : form.city)
+      || raw.cityName
+      || (raw.city && typeof raw.city === 'object' ? raw.city.name : raw.city);
+    const profile = normalizeProfile({
+      ...raw,
+      name: form.name || raw.name || '',
+      gender: form.gender || raw.gender || 'male',
+      year: raw.year || year,
+      month: raw.month || month,
+      day: raw.day || day,
+      hour: raw.cstHour ?? raw.hour ?? time.hour,
+      minute: raw.cstMinute ?? raw.minute ?? time.minute,
+      city: formCity,
+      cityName: formCityName,
+      cityProvince: form.cityDetail?.province || raw.cityProvince,
+      cityShort: form.cityDetail?.city || raw.cityShort,
+      cityLon: form.cityDetail?.lon ?? raw.cityLon,
+      cityLat: form.cityDetail?.lat ?? raw.cityLat,
+      cityTz: form.cityDetail?.tzOffset ?? raw.cityTz,
+      cityTimeZone: form.cityDetail?.timeZone || raw.cityTimeZone,
+      cityScope: form.cityDetail?.scope || raw.cityScope,
+    });
+    const id = archive.id || form.archiveId || archive.chartRecordId || makeLocalId();
+    const chartRecordId = archive.chartRecordId || archive.chartData?.chartRecordId || id;
+    return profileToRecord(profile, {
+      id,
+      chartRecordId,
+      savedAt: archive.createdAt || raw.savedAt || new Date().toISOString(),
+      updatedAt: archive.updatedAt || raw.updatedAt || archive.createdAt || new Date().toISOString(),
+    });
+  }
+
+  function customerRecordStamp(record) {
+    const stamp = Date.parse(record?.updatedAt || record?.savedAt || record?.createdAt || '');
+    return Number.isFinite(stamp) ? stamp : 0;
+  }
+
+  function mergeCustomerRecords(localRecords, remoteRecords) {
+    const merged = new Map();
+    [...remoteRecords, ...localRecords].forEach((record) => {
+      if (!record) return;
+      const profile = recordToProfile(record);
+      const key = profileHistoryKey(profile);
+      if (!key) return;
+      const old = merged.get(key);
+      if (!old || customerRecordStamp(record) >= customerRecordStamp(old)) merged.set(key, record);
+    });
+    return Array.from(merged.values())
+      .sort((a, b) => customerRecordStamp(b) - customerRecordStamp(a))
+      .slice(0, 50);
+  }
+
   function loadCustomerRecords() {
     const records = [
-      ...readJsonList(chartHistoryKey),
+      ...readCustomerHistoryRecords(),
       ...readJsonList(legacyHistoryKey),
     ];
     const current = { ...profileToRecord(state.profile), id: 'current', savedAt: new Date().toISOString() };
@@ -1722,15 +1858,122 @@
       .slice(0, 50);
   }
 
-  function saveProfileToHistory(profile) {
-    const record = profileToRecord(profile);
+  function saveProfileToHistory(profile, options = {}) {
     const key = profileHistoryKey(profile);
-    const list = readJsonList(chartHistoryKey)
-      .filter((item) => profileHistoryKey(recordToProfile(item)) !== key)
+    const records = readCustomerHistoryRecords();
+    const old = records.find((item) => (options.id && item.id === options.id) || profileHistoryKey(recordToProfile(item)) === key) || null;
+    const id = old?.id || options.id || state.chartRecordId || makeLocalId();
+    const chartRecordId = old?.chartRecordId || options.chartRecordId || state.chartRecordId || id;
+    const record = profileToRecord(profile, {
+      id,
+      chartRecordId,
+      savedAt: old?.savedAt || new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    });
+    const list = records
+      .filter((item) => item.id !== id && profileHistoryKey(recordToProfile(item)) !== key)
       .slice(0, 49);
+    writeCustomerHistoryRecords([record, ...list]);
+    editingClientRecordId = record.id;
+    state.chartRecordId = chartRecordId;
+    pushCustomerRecordsToRemote();
+    return record;
+  }
+
+  async function fetchCustomerRemoteArchives() {
+    const clientId = getCustomerClientId();
+    const response = await fetch(`${aiBackendBase}/api/wentian/archives?clientId=${encodeURIComponent(clientId)}`, {
+      method: 'GET',
+      headers: { Accept: 'application/json' },
+    });
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok || data.error) throw new Error(data.error || '客户盘读取失败');
+    return data;
+  }
+
+  async function pushCustomerRecordsToRemote(records = readCustomerHistoryRecords()) {
+    const archives = records
+      .map(customerRecordToArchive)
+      .filter(Boolean)
+      .slice(0, 50);
+    if (!archives.length) return null;
+    clientRemoteSyncing = true;
+    clientRemoteMessage = '同步中';
+    renderClientList();
     try {
-      localStorage.setItem(chartHistoryKey, JSON.stringify([record, ...list]));
-    } catch (_) {}
+      const clientId = getCustomerClientId();
+      const response = await fetch(`${aiBackendBase}/api/wentian/archives`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          clientId,
+          archives,
+          selectedArchiveId: editingClientRecordId || archives[0]?.id || '',
+        }),
+      });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok || data.error) throw new Error(data.error || '客户盘同步失败');
+      clientRemoteLoaded = true;
+      clientRemoteMessage = '已同步';
+      return data;
+    } catch (error) {
+      clientRemoteMessage = '本地已保存';
+      console.info('mingbook client remote sync fallback', error);
+      return null;
+    } finally {
+      clientRemoteSyncing = false;
+      renderClientList();
+    }
+  }
+
+  async function deleteCustomerRecordFromRemote(record) {
+    try {
+      const archive = customerRecordToArchive(record);
+      const response = await fetch(`${aiBackendBase}/api/wentian/archives`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          clientId: getCustomerClientId(),
+          action: 'delete',
+          archiveId: archive.id,
+          chartRecordId: archive.chartRecordId,
+        }),
+      });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok || data.error) throw new Error(data.error || '客户盘删除失败');
+    } catch (error) {
+      console.info('mingbook client remote delete fallback', error);
+    }
+  }
+
+  async function hydrateCustomerRecordsFromRemote(options = {}) {
+    if (clientRemotePromise) return clientRemotePromise;
+    if (clientRemoteLoaded && !options.force) return null;
+    clientRemotePromise = fetchCustomerRemoteArchives()
+      .then((data) => {
+        const remoteRecords = (Array.isArray(data.archives) ? data.archives : [])
+          .map(archiveToCustomerRecord)
+          .filter(Boolean);
+        if (remoteRecords.length) {
+          const merged = mergeCustomerRecords(readCustomerHistoryRecords(), remoteRecords);
+          writeCustomerHistoryRecords(merged);
+        }
+        clientRemoteLoaded = true;
+        clientRemoteMessage = remoteRecords.length ? '已同步' : '云端暂无';
+        if (options.rerender) renderClientList();
+        return remoteRecords;
+      })
+      .catch((error) => {
+        clientRemoteMessage = '本地记录';
+        console.info('mingbook client remote load fallback', error);
+        if (options.rerender) renderClientList();
+        return null;
+      })
+      .finally(() => {
+        clientRemotePromise = null;
+        clientRemoteSyncing = false;
+      });
+    return clientRemotePromise;
   }
 
   function readInitialProfile() {
@@ -2421,7 +2664,8 @@
 
   function renderClientListInto(listEl, countEl, emptyText) {
     if (!listEl) return;
-    if (countEl) countEl.textContent = `${clientRecordsCache.length} 个盘`;
+    const remoteText = clientRemoteSyncing ? '同步中' : (clientRemoteMessage || (clientRemoteLoaded ? '已同步' : '本地'));
+    if (countEl) countEl.textContent = `${clientRecordsCache.length} 个盘 · ${remoteText}`;
     if (!clientRecordsCache.length) {
       listEl.innerHTML = `<div class="mbp-client-empty">${escapeHtml(emptyText)}</div>`;
       return;
@@ -2432,14 +2676,24 @@
       const label = clientLabel(profile);
       const mark = (label || '命').slice(-1);
       const isActive = profileHistoryKey(profile) === activeKey;
+      const isCurrent = item.id === 'current';
+      const confirming = deleteConfirmClientId === item.id;
       return `
-        <button class="mbp-client-item ${isActive ? 'is-active' : ''}" type="button" data-client-index="${index}">
-          <span class="mbp-client-mini">${escapeHtml(mark)}</span>
-          <span>
-            <b>${escapeHtml(label)}</b>
-            <small>${escapeHtml(clientSubline(profile))}</small>
+        <div class="mbp-client-item ${isActive ? 'is-active' : ''}" data-client-id="${escapeHtml(item.id)}">
+          <button class="mbp-client-select" type="button" data-client-index="${index}" aria-label="选择${escapeHtml(label)}">
+            <span class="mbp-client-mini">${escapeHtml(mark)}</span>
+            <span class="mbp-client-copy">
+              <b>${escapeHtml(label)}</b>
+              <small>${escapeHtml(clientSubline(profile))}</small>
+            </span>
+          </button>
+          <span class="mbp-client-tools" role="group" aria-label="${escapeHtml(label)}操作">
+            ${isCurrent ? `<button class="mbp-client-tool" type="button" data-client-action="save" data-client-id="${escapeHtml(item.id)}">保存</button>` : `
+              <button class="mbp-client-tool" type="button" data-client-action="edit" data-client-id="${escapeHtml(item.id)}">编辑</button>
+              <button class="mbp-client-tool danger ${confirming ? 'is-confirming' : ''}" type="button" data-client-action="delete" data-client-id="${escapeHtml(item.id)}">${confirming ? '确认删' : '删除'}</button>
+            `}
           </span>
-        </button>
+        </div>
       `;
     }).join('');
   }
@@ -2480,7 +2734,86 @@
     });
   }
 
+  function findClientRecordById(id) {
+    return clientRecordsCache.find((record) => record.id === id) || null;
+  }
+
+  function editClientRecord(id) {
+    const record = findClientRecordById(id);
+    if (!record?.profile) return;
+    editingClientRecordId = record.id === 'current' ? '' : record.id;
+    deleteConfirmClientId = '';
+    applyClientProfile(record.profile, {
+      chartRecordId: record.id && record.id !== 'current' ? record.id : '',
+      chartReady: false,
+    });
+    $('#mbpBirthForm')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
+  function saveCurrentClientRecord() {
+    const profile = collectProfileFromForm();
+    if (profile.error) {
+      guideUserToBirthForm(profile.error);
+      return;
+    }
+    state.profile = normalizeProfile(profile);
+    const record = saveProfileToHistory(state.profile, { id: editingClientRecordId || state.chartRecordId || '' });
+    editingClientRecordId = record.id;
+    deleteConfirmClientId = '';
+    saveProfile();
+    updateForm();
+    renderChart();
+    closeClientMenu();
+    clientRemoteMessage = '保存中';
+    renderClientList();
+  }
+
+  async function deleteClientRecord(id) {
+    const record = findClientRecordById(id);
+    if (!record || id === 'current') return;
+    const targetKey = profileHistoryKey(record.profile);
+    const removeMatch = (item) => item.id === id || profileHistoryKey(recordToProfile(item)) === targetKey;
+    writeCustomerHistoryRecords(readCustomerHistoryRecords().filter((item) => !removeMatch(item)));
+    try {
+      localStorage.setItem(legacyHistoryKey, JSON.stringify(readJsonList(legacyHistoryKey).filter((item) => !removeMatch(item))));
+    } catch (_) {}
+    if (editingClientRecordId === id) editingClientRecordId = '';
+    if (state.chartRecordId === id) state.chartRecordId = '';
+    deleteConfirmClientId = '';
+    await deleteCustomerRecordFromRemote(record);
+    await pushCustomerRecordsToRemote();
+    renderClientList();
+  }
+
+  function requestClientRecordDelete(id) {
+    if (!id || id === 'current') return;
+    if (deleteConfirmClientId === id) {
+      deleteClientRecord(id);
+      return;
+    }
+    deleteConfirmClientId = id;
+    renderClientList();
+  }
+
+  function handleClientListClick(event) {
+    const actionButton = event.target.closest('[data-client-action]');
+    if (actionButton) {
+      event.stopPropagation();
+      const id = actionButton.dataset.clientId || actionButton.closest('[data-client-id]')?.dataset.clientId || '';
+      if (actionButton.dataset.clientAction === 'save') saveCurrentClientRecord();
+      if (actionButton.dataset.clientAction === 'edit') editClientRecord(id);
+      if (actionButton.dataset.clientAction === 'delete') requestClientRecordDelete(id);
+      return;
+    }
+    const item = event.target.closest('.mbp-client-select');
+    if (!item) return;
+    deleteConfirmClientId = '';
+    selectClientRecordByIndex(item.dataset.clientIndex);
+  }
+
   function startNewClientProfile() {
+    editingClientRecordId = '';
+    deleteConfirmClientId = '';
     applyClientProfile({ ...defaultProfile, name: '' }, { chartReady: false });
     $('#mbpBirthForm')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
@@ -6537,11 +6870,11 @@
       state.profile = normalizeProfile(profile);
       formCalMode = state.profile.isLunar ? 'lunar' : 'solar';
       resetForProfileChange();
-      state.chartRecordId = makeLocalId();
+      state.chartRecordId = editingClientRecordId || makeLocalId();
       state.chartReady = true;
       state.chartConfirmedKey = profileHistoryKey(state.profile);
       saveProfile();
-      saveProfileToHistory(state.profile);
+      saveProfileToHistory(state.profile, { id: editingClientRecordId || state.chartRecordId });
       updateForm();
       renderChart();
     }
@@ -6579,16 +6912,15 @@
     });
 
     $('#mbpClientList')?.addEventListener('click', (event) => {
-      const item = event.target.closest('.mbp-client-item');
-      if (!item) return;
-      selectClientRecordByIndex(item.dataset.clientIndex);
+      handleClientListClick(event);
     });
 
     $('#mbpXuClientList')?.addEventListener('click', (event) => {
-      const item = event.target.closest('.mbp-client-item');
-      if (!item) return;
-      selectClientRecordByIndex(item.dataset.clientIndex);
+      handleClientListClick(event);
     });
+
+    $('#mbpClientSave')?.addEventListener('click', saveCurrentClientRecord);
+    $('#mbpXuClientSave')?.addEventListener('click', saveCurrentClientRecord);
 
     $('#mbpClientNew')?.addEventListener('click', () => {
       startNewClientProfile();
@@ -7171,7 +7503,7 @@
       resetAiContent();
       state.chart = null;
       state.chartKey = '';
-      state.chartRecordId = makeLocalId();
+      state.chartRecordId = editingClientRecordId || makeLocalId();
       state.norm = null;
       state.chartReady = true;
       state.chartConfirmedKey = profileHistoryKey(profile);
@@ -7184,7 +7516,7 @@
       state.batchDecoding = false;
       document.body.classList.remove('is-decoded');
       saveProfile();
-      saveProfileToHistory(state.profile);
+      saveProfileToHistory(state.profile, { id: editingClientRecordId || state.chartRecordId });
       renderChart();
       if (desktopAuthState.session?.user) hydrateDesktopMemberStatus({ force: true });
       $('#chart')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -7354,5 +7686,6 @@
   bindEvents();
   renderChart();
   bootDesktopAuth();
+  hydrateCustomerRecordsFromRemote({ rerender: true });
 }());
 
