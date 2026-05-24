@@ -6914,6 +6914,7 @@ async function sendWentianXuChat(promptText = "") {
   setWentianChatBusy(true);
 
   try {
+    await ensureWentianXuSession({ silent: false });
     const data = await wentianPostJson("/api/ai/chat/send", {
       chartRecordId: payload.chartRecordId,
       message: outboundMessage,
@@ -6922,7 +6923,7 @@ async function sendWentianXuChat(promptText = "") {
       chatMode: payload.mode,
       divinationContext: payload.divinationContext,
       transientState: loadWentianTransientState(payload.chartRecordId),
-    }, 120000, 1);
+    }, 70000, 0);
     wentianXuChat.messages.pop();
     wentianXuChat.sessionId = data.sessionId || wentianXuChat.sessionId || `transient:${payload.chartRecordId}`;
     if (data.transientState) saveWentianTransientState(data.transientState, payload.chartRecordId);
