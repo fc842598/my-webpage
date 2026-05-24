@@ -1092,6 +1092,7 @@ function sourceArchiveSelectScreen() {
               <button class="wentian-archive-action danger is-confirming" type="button" data-action="wentian-archive-delete" data-archive-id="${escapeHtml(archive.id)}">确认删除</button>
               <button class="wentian-archive-action cancel" type="button" data-action="wentian-archive-delete-cancel" data-archive-id="${escapeHtml(archive.id)}">取消</button>
             ` : `
+              ${selected ? "" : `<button class="wentian-archive-action default" type="button" data-action="wentian-archive-default" data-archive-id="${escapeHtml(archive.id)}">设默认</button>`}
               <button class="wentian-archive-action" type="button" data-action="wentian-archive-edit" data-archive-id="${escapeHtml(archive.id)}">编辑</button>
               <button class="wentian-archive-action danger" type="button" data-action="wentian-archive-delete" data-archive-id="${escapeHtml(archive.id)}">删除</button>
             `}
@@ -4848,6 +4849,7 @@ const WENTIAN_I18N = {
     "个人案例": "Personal Cases",
     "· 个人案例 ·": "· Personal ·",
     "典藏案例": "Classic Cases",
+    "设默认": "Set Default",
     "请输入姓名": "Enter name",
     "筛选": "Filter",
     "全部": "All",
@@ -4894,6 +4896,7 @@ const WENTIAN_I18N = {
     "个人案例": "個人案例",
     "· 个人案例 ·": "· 個人案例 ·",
     "典藏案例": "典藏案例",
+    "设默认": "設預設",
     "请输入姓名": "請輸入姓名",
     "筛选": "篩選",
     "全部": "全部",
@@ -6339,6 +6342,15 @@ function applyWentianArchiveToCurrent(archive) {
   resetWentianXuChatRuntime();
   pushWentianArchivesToRemote(getWentianArchiveList());
   return true;
+}
+
+function setWentianArchiveAsDefault(id) {
+  const archive = findWentianArchiveById(id);
+  if (!archive || archive.id === getWentianStoredSelectedArchiveId()) return;
+  wentianArchiveDeleteConfirmId = "";
+  wentianArchiveDraftId = null;
+  if (!applyWentianArchiveToCurrent(archive)) return;
+  navigatePreservingScroll(state.route, false);
 }
 
 function pickWentianArchive(id) {
@@ -8079,6 +8091,7 @@ function renderWentianProfileRows(archives = getWentianArchiveList(), query = we
     const item = getWentianArchiveDisplay(archive);
     const initial = getWentianArchiveInitial(item.name);
     const confirmingDelete = wentianArchiveDeleteConfirmId === archive.id;
+    const isDefaultArchive = archive.id === getWentianStoredSelectedArchiveId();
     const group = initial !== lastInitial ? figText(`source-25-group-${index}`, initial, 18, y + 6, 24, 14, "#aaa198", 600) : "";
     if (initial !== lastInitial) {
       lastInitial = initial;
@@ -8093,13 +8106,23 @@ function renderWentianProfileRows(archives = getWentianArchiveList(), query = we
       ${figBox(`source-25-delete-cancel-${index}`, 318, rowY + 10, 36, 24, "", "border:1px solid #ead8bd;border-radius:12px;background:#fffaf2;z-index:71;")}
       ${figText(`source-25-delete-cancel-text-${index}`, "取消", 318, rowY + 17, 36, 10, "#9b742e", 900, "center", "z-index:72;")}
       ${figButton(`source-25-delete-cancel-hit-${index}`, 317, rowY + 8, 38, 28, `data-action="wentian-archive-delete-cancel" data-archive-id="${escapeHtml(archive.id)}" aria-label="取消删除${escapeHtml(item.name)}"`, "", "z-index:73;")}
-    ` : `
+    ` : isDefaultArchive ? `
       ${figBox(`source-25-edit-${index}`, 270, rowY + 10, 36, 24, "", "border:1px solid #ead8bd;border-radius:12px;background:#fffaf2;z-index:71;")}
       ${figText(`source-25-edit-text-${index}`, "改", 270, rowY + 17, 36, 10, "#9b742e", 900, "center", "z-index:72;")}
       ${figButton(`source-25-edit-hit-${index}`, 269, rowY + 8, 38, 28, `data-action="wentian-archive-edit" data-archive-id="${escapeHtml(archive.id)}" aria-label="编辑${escapeHtml(item.name)}"`, "", "z-index:73;")}
       ${figBox(`source-25-delete-${index}`, 312, rowY + 10, 40, 24, "", "border:1px solid #ead8bd;border-radius:12px;background:#fffaf2;z-index:71;")}
       ${figText(`source-25-delete-text-${index}`, "删", 312, rowY + 17, 40, 10, "#9b742e", 900, "center", "z-index:72;")}
       ${figButton(`source-25-delete-hit-${index}`, 311, rowY + 8, 42, 28, `data-action="wentian-archive-delete" data-archive-id="${escapeHtml(archive.id)}" aria-label="删除${escapeHtml(item.name)}"`, "", "z-index:73;")}
+    ` : `
+      ${figBox(`source-25-default-${index}`, 236, rowY + 10, 42, 24, "", "border:1px solid #d5c493;border-radius:12px;background:#fffdf5;z-index:71;")}
+      ${figText(`source-25-default-text-${index}`, "默认", 236, rowY + 17, 42, 10, "#7b8a44", 900, "center", "z-index:72;")}
+      ${figButton(`source-25-default-hit-${index}`, 235, rowY + 8, 44, 28, `data-action="wentian-archive-default" data-archive-id="${escapeHtml(archive.id)}" aria-label="设${escapeHtml(item.name)}为默认命盘"`, "", "z-index:73;")}
+      ${figBox(`source-25-edit-${index}`, 282, rowY + 10, 32, 24, "", "border:1px solid #ead8bd;border-radius:12px;background:#fffaf2;z-index:71;")}
+      ${figText(`source-25-edit-text-${index}`, "改", 282, rowY + 17, 32, 10, "#9b742e", 900, "center", "z-index:72;")}
+      ${figButton(`source-25-edit-hit-${index}`, 281, rowY + 8, 34, 28, `data-action="wentian-archive-edit" data-archive-id="${escapeHtml(archive.id)}" aria-label="编辑${escapeHtml(item.name)}"`, "", "z-index:73;")}
+      ${figBox(`source-25-delete-${index}`, 320, rowY + 10, 34, 24, "", "border:1px solid #ead8bd;border-radius:12px;background:#fffaf2;z-index:71;")}
+      ${figText(`source-25-delete-text-${index}`, "删", 320, rowY + 17, 34, 10, "#9b742e", 900, "center", "z-index:72;")}
+      ${figButton(`source-25-delete-hit-${index}`, 319, rowY + 8, 36, 28, `data-action="wentian-archive-delete" data-archive-id="${escapeHtml(archive.id)}" aria-label="删除${escapeHtml(item.name)}"`, "", "z-index:73;")}
     `;
     return `
       ${group}
@@ -14534,6 +14557,11 @@ document.addEventListener("click", (event) => {
   }
   if (action === "wentian-archive-new") {
     startWentianArchiveCreate();
+    return;
+  }
+  if (action === "wentian-archive-default") {
+    const id = event.target.closest("[data-archive-id]")?.dataset.archiveId;
+    if (id) setWentianArchiveAsDefault(id);
     return;
   }
   if (action === "wentian-archive-edit") {

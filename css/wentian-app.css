@@ -2223,6 +2223,13 @@ html[lang="en"] .wentian-chat-starter {
   color: #a94437;
 }
 
+.wentian-archive-action.default {
+  min-width: 70px;
+  border-color: #d5c493;
+  background: #fffdf5;
+  color: #7b8a44;
+}
+
 .wentian-archive-action.cancel {
   color: #7d7164;
   background: #fffdf8;
