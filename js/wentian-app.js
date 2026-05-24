@@ -5724,6 +5724,8 @@ function buildWentianXuOutboundMessage(message, context) {
     `变卦：${context.changedText || ""}`,
     `动爻：${context.movingText || "无"}`,
     `六爻：${context.linesText || ""}`,
+    context.primaryOriginalText ? `本卦原文：${context.primaryOriginalText}` : "",
+    context.changedOriginalText ? `变卦原文：${context.changedOriginalText}` : "",
     context.advice ? `页面初判：${context.advice}` : "",
     "回答格式：先断这件事，再讲变化点，再给应对和取舍。不要说“结合命盘”。",
     "",
@@ -7918,6 +7920,26 @@ const LIUYAO_STORAGE_KEY = "wentian-liuyao-state-v1";
 const LIUYAO_SAMPLE_QUESTION = "事业近期是否适合推进新计划？";
 const LIUYAO_DEFAULT_QUESTION = "";
 const LIUYAO_QUESTION_MAX_LENGTH = 120;
+const LIUYAO_QUESTION_SUGGESTIONS = [
+  "这个项目本月能不能继续推进并见到效果？",
+  "这笔合作近期能不能谈成？",
+  "我现在要不要换工作方向？",
+  "这段关系接下来适不适合主动沟通？"
+];
+const LIUYAO_ZHOUYI_ORIGINALS = {
+  15: {
+    gua: "谦：亨，君子有终。",
+    xiang: "象曰：地中有山，谦；君子以裒多益寡，称物平施。"
+  },
+  20: {
+    gua: "观：盥而不荐，有孚颙若。",
+    xiang: "象曰：风行地上，观；先王以省方，观民设教。"
+  },
+  46: {
+    gua: "升：元亨。用见大人，勿恤。南征吉。",
+    xiang: "象曰：地中生木，升；君子以顺德，积小以高大。"
+  }
+};
 const LIUYAO_VALUES = [7, 8, 9, 6];
 const LIUYAO_TOSS_ANIMATION_MS = 1000;
 const LIUYAO_PULL_MAX = 132;
@@ -8265,6 +8287,68 @@ function renderLiuyaoQuestionSubmit(state = getLiuyaoState()) {
       ${meta.disabled ? "disabled" : ""}
     >${escapeHtml(meta.label)}</button>
   `;
+}
+
+function getLiuyaoQuestionSuggestions(state = getLiuyaoState()) {
+  const question = normalizeLiuyaoQuestion(state.question);
+  const gate = normalizeLiuyaoQuestionGate(state.questionGate, question);
+  if (gate?.allowed || liuyaoQuestionGateLoading) return [];
+  if (/网站|项目|计划|产品|上线|发布/.test(question)) {
+    return [
+      "这个项目本月能不能继续推进并见到效果？",
+      "这个网站近期能不能带来真实客户？",
+      "现在要不要先收缩计划、只做一个核心功能？"
+    ];
+  }
+  if (/合作|客户|合同|订单/.test(question)) {
+    return [
+      "这笔合作近期能不能谈成？",
+      "这个客户本周会不会继续推进？",
+      "这份合同现在适不适合签？"
+    ];
+  }
+  if (/感情|婚姻|复合|对象|伴侣/.test(question)) {
+    return [
+      "这段关系接下来适不适合主动沟通？",
+      "对方近期会不会回应我？",
+      "这段感情还值不值得继续推进？"
+    ];
+  }
+  return LIUYAO_QUESTION_SUGGESTIONS;
+}
+
+function renderLiuyaoQuestionSuggestions(state = getLiuyaoState()) {
+  const suggestions = getLiuyaoQuestionSuggestions(state).slice(0, 4);
+  if (!suggestions.length) return "";
+  return `
+    <div class="liuyao-question-suggestions">
+      <span>不知道怎么写？选一个再改</span>
+      <div>
+        ${suggestions.map((item) => `
+          <button type="button" data-action="liuyao-question-suggestion" data-question="${escapeHtml(encodeURIComponent(item))}">${escapeHtml(item)}</button>
+        `).join("")}
+      </div>
+    </div>
+  `;
+}
+
+function applyLiuyaoQuestionSuggestion(value) {
+  const text = normalizeLiuyaoQuestion(value);
+  if (!text) return;
+  clearLiuyaoTossAnimation();
+  const state = getLiuyaoState();
+  const hadCasts = getLiuyaoValidCasts(state).length > 0;
+  state.question = text;
+  state.questionGate = null;
+  if (hadCasts) {
+    state.recordId = makeWentianUuid();
+    state.createdAt = Date.now();
+    state.casts = [];
+    state.manualCoins = makeLiuyaoManualCoins();
+  }
+  saveLiuyaoState();
+  navigate("screen-17", false);
+  window.setTimeout(() => document.getElementById("liuyao-question")?.focus?.(), 0);
 }
 
 function updateLiuyaoQuestionSubmitDom(state = getLiuyaoState()) {
@@ -8707,6 +8791,24 @@ function getLiuyaoHexReading(hex) {
   };
 }
 
+function getLiuyaoZhouyiOriginal(hex) {
+  const original = LIUYAO_ZHOUYI_ORIGINALS[Number(hex?.no)];
+  if (original) {
+    return {
+      label: "周易原文",
+      text: [original.gua, original.xiang].filter(Boolean).join("\n"),
+      source: "《周易》卦辞、象辞"
+    };
+  }
+  const reading = getLiuyaoHexReading(hex);
+  const fallback = firstReadableSentence(reading.liu || reading.summary, "");
+  return {
+    label: "卦辞摘录",
+    text: fallback ? compactLiuyaoOriginalText(fallback) : "此卦卦辞待补录，先按卦象结构与动爻取用。",
+    source: formatLiuyaoOriginalSource(reading.source)
+  };
+}
+
 function getYijingHexagramImageSrc(no) {
   const index = Number(no);
   if (!Number.isInteger(index) || index < 1 || index > 64) return "";
@@ -8728,6 +8830,17 @@ function renderLiuyaoHexImage(hex, label) {
   return `<img class="liuyao-hex-image" src="${src}" alt="${escapeHtml(alt)}" loading="lazy">`;
 }
 
+function renderLiuyaoOriginalExcerpt(hex) {
+  const original = getLiuyaoZhouyiOriginal(hex);
+  return `
+    <div class="liuyao-original-quote">
+      <b>${escapeHtml(original.label)}</b>
+      <p>${escapeHtml(original.text)}</p>
+      <small>${escapeHtml(original.source)}</small>
+    </div>
+  `;
+}
+
 function renderLiuyaoMiniHex(lines, options = {}) {
   const displayLines = [5, 4, 3, 2, 1, 0].map((index) => lines?.[index] || null);
   return `
@@ -8747,6 +8860,18 @@ function renderLiuyaoMiniHex(lines, options = {}) {
 function firstReadableSentence(text, fallback = "") {
   const source = String(text || "").replace(/原句：/g, "").replace(/讲解：/g, "").replace(/\s+/g, " ").trim();
   return source.split(/[。！？]/).find((part) => part.trim().length >= 6)?.trim() || fallback;
+}
+
+function compactLiuyaoOriginalText(text, maxLength = 56) {
+  const chars = Array.from(String(text || "").replace(/\s+/g, " ").trim());
+  if (chars.length <= maxLength) return chars.join("");
+  return `${chars.slice(0, maxLength).join("")}…`;
+}
+
+function formatLiuyaoOriginalSource(source) {
+  const clean = String(source || "").trim();
+  if (!clean || /^output[\\/]/i.test(clean)) return "本地卦辞资料";
+  return clean;
 }
 
 function getLiuyaoTopicAdvice(question, result) {
@@ -9078,6 +9203,7 @@ function sourceLiuyaoCastScreen() {
           ${renderLiuyaoQuestionGateStatus(state)}
           ${renderLiuyaoQuestionSubmit(state)}
         </div>
+        ${renderLiuyaoQuestionSuggestions(state)}
       </div>
       <div class="liuyao-mode-card">
         <span>起卦方式</span>
@@ -9153,6 +9279,8 @@ function sourceLiuyaoResultScreen() {
   }
   const heroCueText = formatLiuyaoMovingLineText(result.movingLines, "动爻：");
   const screenHeight = getLiuyaoResultScreenHeight();
+  const primaryOriginal = getLiuyaoZhouyiOriginal(result.primary);
+  const changedOriginal = getLiuyaoZhouyiOriginal(result.changed);
   return `
     ${figBox("ly20-bg", 0, 0, 390, screenHeight, "", "background:linear-gradient(180deg,#fffdf8 0%,#fbf7ef 54%,#f3eadc 100%);")}
     ${wentianSimpleHeader("ly20", result.primary.name)}
@@ -9171,6 +9299,7 @@ function sourceLiuyaoResultScreen() {
             ${renderLiuyaoMiniHex(result.lines, { label: `本卦六爻：${result.primary.name}` })}
           </div>
           ${renderLiuyaoHexImage(result.primary, "本卦")}
+          ${renderLiuyaoOriginalExcerpt(result.primary)}
           <em>${escapeHtml(formatLiuyaoHexMeta(result.primary))}</em>
         </article>
         <article class="is-image-card">
@@ -9180,6 +9309,7 @@ function sourceLiuyaoResultScreen() {
             ${renderLiuyaoMiniHex(result.lines, { changed: true, label: `变卦六爻：${result.changed.name}` })}
           </div>
           ${renderLiuyaoHexImage(result.changed, "变卦")}
+          ${renderLiuyaoOriginalExcerpt(result.changed)}
           <em>${escapeHtml(formatLiuyaoHexMeta(result.changed))}</em>
         </article>
       </div>
@@ -9187,8 +9317,13 @@ function sourceLiuyaoResultScreen() {
         <span>所问</span>
         <strong>${escapeHtml(result.question)}</strong>
       </div>
+      <div class="liuyao-ai-card">
+        <span>AI解卦</span>
+        <strong>许半仙按本卦、变卦、动爻继续断</strong>
+        <p>本卦原文：${escapeHtml(primaryOriginal.text.split("\n")[0] || result.primary.name)}${result.changed.name !== result.primary.name ? `<br>变卦原文：${escapeHtml(changedOriginal.text.split("\n")[0] || result.changed.name)}` : ""}</p>
+        <button type="button" class="primary" data-action="liuyao-ask-xu">开始AI解卦</button>
+      </div>
       <div class="liuyao-actions">
-        <button type="button" class="primary" data-action="liuyao-ask-xu">追问许半仙</button>
         <button type="button" data-action="liuyao-reset">重新起卦</button>
       </div>
     </section>
@@ -9200,7 +9335,7 @@ function getLiuyaoResultScreenHeight() {
   if (!result) return 844;
   const questionLength = Array.from(result.question || "").length;
   const extraLines = Math.max(0, Math.ceil((questionLength - 24) / 20));
-  return Math.min(860, 660 + extraLines * 22);
+  return Math.min(1320, 1120 + extraLines * 22);
 }
 
 function makeLiuyaoXuContext(result = getLiuyaoResult()) {
@@ -9212,6 +9347,8 @@ function makeLiuyaoXuContext(result = getLiuyaoResult()) {
   }
   const primaryReading = getLiuyaoHexReading(result.primary);
   const changedReading = getLiuyaoHexReading(result.changed);
+  const primaryOriginal = getLiuyaoZhouyiOriginal(result.primary);
+  const changedOriginal = getLiuyaoZhouyiOriginal(result.changed);
   const movingText = formatLiuyaoMovingLineText(result.movingLines);
   const primaryTip = firstReadableSentence(primaryReading.summary, "先看本卦所处局面。");
   const changedTip = result.movingLines.length
@@ -9235,6 +9372,8 @@ function makeLiuyaoXuContext(result = getLiuyaoResult()) {
     changedText,
     movingText,
     linesText,
+    primaryOriginalText: primaryOriginal.text,
+    changedOriginalText: changedOriginal.text,
     primaryTip,
     changedTip,
     advice,
@@ -12926,6 +13065,14 @@ document.addEventListener("click", (event) => {
   }
   if (earlyAction === "liuyao-submit-question") {
     ensureLiuyaoQuestionAllowed();
+    return;
+  }
+  if (earlyAction === "liuyao-question-suggestion") {
+    try {
+      applyLiuyaoQuestionSuggestion(decodeURIComponent(earlyActionTarget.dataset.question || ""));
+    } catch (_err) {
+      applyLiuyaoQuestionSuggestion(earlyActionTarget.textContent || "");
+    }
     return;
   }
   if (earlyAction === "liuyao-open-caster" || earlyAction === "liuyao-focus-caster") {
