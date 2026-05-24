@@ -11413,7 +11413,7 @@ function buildYangzhaiResults() {
           kind: "space",
           title: `${label}在${palace.gua}(${palace.dir}) - 功能区象义`,
           desc,
-          full: `${desc} 出处：${rule.source || "待核"}。`,
+          full: desc,
           short,
           matched: preferred
         };
@@ -11430,8 +11430,8 @@ function buildYangzhaiResults() {
         title: `${label}住${palace.gua}(${palace.dir}) - ${hex ? hex.name : palace.role}`,
         desc,
         full: hex
-          ? `结构：${hex.index}；上卦=角色(${YANGZHAI_ROLE_GUA[label]})，下卦=方位(${palace.gua})。原文摘录：${originalText} 出处：${reading.source || YANGZHAI_SOURCE_TITLE}。`
-          : `${desc} 来源待核；前台只发布可核索引。`,
+          ? `结构：${hex.index}；上卦=角色(${YANGZHAI_ROLE_GUA[label]})，下卦=方位(${palace.gua})。原文摘录：${originalText}`
+          : desc,
         short,
         matched
       };
@@ -11672,7 +11672,6 @@ function sourceYangzhaiResultScreen() {
     ${figText("yz44-head-meta", results.length ? `已生成 ${results.length} 条解读` : "尚未排布", 226, 111, 142, 12, "#9f4032", 700, "right", "font-family:'Noto Sans SC','Microsoft YaHei',sans-serif;")}
     ${yangzhaiCompassShell("yz44", true)}
     ${yangzhaiActions("yz44", "重新分析", YANGZHAI_RESULT_ACTION_Y)}
-    ${figText("yz44-result-source", YANGZHAI_SOURCE_TITLE, 22, YANGZHAI_RESULT_TITLE_Y, 152, 15, "#9b7340", 800, "left", "font-family:'Noto Sans SC','Microsoft YaHei',sans-serif;")}
     ${figText("yz44-result-title", "解读结果", 246, YANGZHAI_RESULT_TITLE_Y - 1, 122, 17, "#2b251c", 900, "right", "font-family:'Noto Serif SC','Songti SC',serif;")}
     ${!results.length ? `
       ${figBox("yz44-empty", 20, YANGZHAI_RESULT_START_Y, 350, 118, "", "border:1px solid #dcceb8;border-radius:14px;background:#fffdf8;box-shadow:0 10px 22px rgba(70,45,25,.06);")}

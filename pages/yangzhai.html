@@ -663,13 +663,6 @@
       margin-bottom: 12px;
     }
 
-    .result-source {
-      margin-top: 12px;
-      color: #756845;
-      font-size: 14px;
-      font-weight: 800;
-    }
-
     .empty-state {
       padding: 28px;
       border: 1px dashed rgba(201,169,97,.28);
@@ -1046,7 +1039,6 @@
               <div class="result-top"><span class="result-tag">${escapeHtml(item.tag)}</span></div>
               <h3>${escapeHtml(item.title)}</h3>
               <p>${escapeHtml(item.body)}</p>
-              <div class="result-source">${escapeHtml(item.source || sourceTitle)}</div>
             </article>`).join("")
           : `<div class="empty-state">先在九宫中安位，再点击「解读分析」。</div>`;
       }
