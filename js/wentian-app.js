@@ -70,7 +70,7 @@ const convertedScreens = [
 const convertedByNo = new Map(convertedScreens.map((screen) => [screen.no, screen]));
 
 const screenFlowHotspots = {
-  1: [[286, 24, 86, 52, "screen-26"], [18, 130, 354, 274, "screen-5"], [18, 425, 354, 96, "hepan"], [18, 534, 354, 96, "screen-17"], [18, 643, 354, 96, "screen-42"], [18, 752, 354, 96, "screen-46"], [12, 897, 76, 83, "screen-1"], [109, 897, 76, 83, "screen-25"], [207, 897, 76, 83, "screen-3"], [304, 897, 76, 83, "screen-31"]],
+  1: [[18, 130, 354, 274, "screen-5"], [18, 438, 354, 96, "screen-26"], [18, 535, 354, 96, "hepan"], [18, 632, 354, 96, "screen-17"], [18, 729, 354, 96, "screen-42"], [18, 826, 354, 96, "screen-46"], [12, 950, 76, 83, "screen-1"], [109, 950, 76, 83, "screen-25"], [207, 950, 76, 83, "screen-3"], [304, 950, 76, 83, "screen-31"]],
   2: [[18, 282, 354, 190, "screen-4"], [18, 487, 354, 190, "screen-4"], [18, 692, 354, 175, "screen-4"]],
   3: [[285, 128, 82, 28, "screen-5"], [16, 164, 358, 84, "screen-5"], [16, 305, 358, 116, "screen-5"], [12, 761, 76, 72, "screen-1"], [109, 761, 76, 72, "screen-25"], [207, 761, 76, 72, "screen-3"], [304, 761, 76, 72, "screen-31"]],
   4: [[18, 24, 44, 56, "screen-3"], [334, 24, 38, 56, "screen-9"], [252, 26, 78, 36, "screen-5"]],
@@ -1178,7 +1178,8 @@ const WENTIAN_HEPAN_MIN_AGE = 18;
 const WENTIAN_HEPAN_MAX_AGE_GAP = 15;
 const WENTIAN_HEPAN_AI_RULES = [
   "海厦《天纪06》合盘提到母子格、父女格、兄弟格、朋友格；格局先看命盘宫位/星曜对应，不按现实年龄硬猜。",
-  "页面主判：一方夫妻宫所在地支落到另一张盘哪一宫，就先按那一宫立格，例如落兄弟宫为兄弟格，落朋友/仆役宫为朋友格。",
+  "AI主判：必须读取双方完整命盘后再判格，不直接沿用页面预设，不因某个单点落宫就硬输出兄弟格。",
+  "合盘参考：一方夫妻宫所在地支落到另一张盘哪一宫，可作为证据之一，例如落兄弟宫只代表平辈/同伴倾向，还要合参星曜与双方盘面。",
   "星曜佐证：参考父母宫星入对方命宫、命宫星入对方父母宫、兄弟宫星入对方命宫、朋友宫星入对方命宫等合参规则。",
   "情侣/夫妻格才谈婚恋推进；兄弟格、朋友格、父母格等只谈相处、边界、扶持与互动，不输出暧昧或婚恋判断。",
   "出生日期在未来、生日缺失、同一人重复选择，均不能合盘。",
@@ -3666,7 +3667,7 @@ function validateWentianHepanPair(left, right) {
     return { ok: false, code: "age-gap", message: `双方年龄相差超过${WENTIAN_HEPAN_MAX_AGE_GAP}岁，不能合盘` };
   }
   const relationship = getWentianHepanRelationship(left, right, ageInfos);
-  return { ok: true, code: "ok", message: `可开始${relationship.label}`, relationship, ageInfos };
+  return { ok: true, code: "ok", message: "可开始合盘", relationship, ageInfos };
 }
 
 function getWentianHepanValidation(archives = getWentianArchiveList(), ids = getWentianHepanSelectedIds(archives)) {
@@ -3859,13 +3860,13 @@ function makeWentianHepanXuContext(result = getWentianHepanResult()) {
   return {
     type: "hepan",
     recordId: makeWentianUuid(),
-    title: result.relationTitle || "关系合盘",
+    title: "AI合盘判定",
     question: `${result.leftDisplay.name} × ${result.rightDisplay.name}`,
-    summaryLine: `${result.relationLabel || "关系合盘"} · ${result.total}分 · ${result.level}`,
-    relationLabel: result.relationLabel,
-    relationScope: result.relationScope,
-    relationEvidence: result.relationEvidence,
-    relationLandings: result.relationLandings,
+    summaryLine: "待AI读取两张命盘后判定格局",
+    relationLabel: "待AI判定",
+    relationScope: "由AI合参夫妻宫、命宫、关键宫位与星曜后输出",
+    relationEvidence: [],
+    relationLandings: [],
     rules: WENTIAN_HEPAN_AI_RULES,
     left: {
       name: result.leftDisplay.name,
@@ -3883,17 +3884,17 @@ function makeWentianHepanXuContext(result = getWentianHepanResult()) {
       pillars: result.rightDisplay.pillars,
       chart: rightChart,
     },
-    score: result.total,
-    level: result.level,
-    dimensions: result.dimensions,
-    advice: result.advice,
+    score: "",
+    level: "待AI判定",
+    dimensions: [],
+    advice: "",
     createdAt: Date.now(),
   };
 }
 
 function getHepanXuOpeningMessage(context) {
   if (!context) return "这次我按关系合盘来批，先辨关系类型，再看互动、冲突和长期节奏。";
-  return `这次合盘已接入：${context.question}，${context.summaryLine}。你可以继续问相处节奏、冲突点、是否适合长期推进。`;
+  return `这次合盘已接入：${context.question}。我会先读双方命盘，再判关系格局、互动重点、冲突点和长期节奏。`;
 }
 
 function openWentianHepanXuChat() {
@@ -4358,6 +4359,8 @@ const WENTIAN_I18N_EN_EXTRA = {
   "最多选择两张档案进行合盘": "Choose up to two files",
   "仅支持一男一女，且不能选择同一个人": "Only one male and one female, not the same person",
   "选择两张档案后开始合盘": "Choose two files to start",
+  "请选择两个盘": "Choose two charts",
+  "还差一个盘还没选": "One more chart is needed",
   "查看合盘结果": "View compatibility",
   "开始合盘": "Start Compatibility",
   "选择合盘档案": "Choose Compatibility Files",
@@ -7714,7 +7717,8 @@ function getWentianHepanVisibleArchives(archives, selectedIds) {
 function getWentianHepanHint(archives, selectedIds, validation) {
   if (selectedIds.length >= 2) return validation.message;
   if (archives.length < 2) return "至少需要两张档案才能合盘";
-  return "请选择一男一女两张不同档案";
+  if (selectedIds.length === 1) return "还差一个盘还没选";
+  return "请选择两个盘";
 }
 
 function refreshWentianHepanSelectionView(archives, selectedIds) {
@@ -7819,47 +7823,51 @@ function sourceHepanSelectScreen() {
 function sourceHepanResultScreen() {
   const result = getWentianHepanResult();
   if (!result.ok) return sourceHepanInvalidScreen(result);
+  const flow = [
+    ["1", "资料校验", "已确认双方档案、性别、年龄与出生资料可用于合盘"],
+    ["2", "命盘读取", "AI 将读取双方紫微命盘、夫妻宫、命宫与关键宫位星曜"],
+    ["3", "合盘定格", "由 AI 合参后输出关系格局、互动重点与可执行建议"]
+  ];
   return `
-    ${figBox("wt49-bg", 0, 0, 390, 1160, "", "background:linear-gradient(180deg,#fffdf8 0%,#fbf7ef 58%,#f3eadc 100%);")}
+    ${figBox("wt49-bg", 0, 0, 390, 944, "", "background:linear-gradient(180deg,#fffdf8 0%,#fbf7ef 58%,#f3eadc 100%);")}
     ${wentianSimpleHeader("wt49", "合盘结果")}
-    ${figBox("wt49-score-card", 24, 108, 342, 174, "", "border-radius:22px;background:linear-gradient(135deg,#2b2722,#14110d);box-shadow:0 16px 30px rgba(28,20,12,.16);")}
-    ${figText("wt49-score", String(result.total), 44, 128, 96, 54, "#f4d293", 900, "center", "font-size:54px;line-height:1;")}
-    ${figText("wt49-score-unit", "分", 132, 152, 26, 16, "#f4d293", 900)}
-    ${figText("wt49-level", result.relationLabel || result.level, 178, 136, 130, 20, "#fffaf3", 900)}
-    ${figText("wt49-sub", `${escapeHtml(result.level)} · 夫妻宫落点合参`, 178, 170, 140, 13, "#cfc1a9", 700, "left", "line-height:1.5;")}
-    ${figText("wt49-pair", `${escapeHtml(result.leftDisplay.name)} × ${escapeHtml(result.rightDisplay.name)}`, 44, 226, 280, 18, "#fffaf3", 900, "center")}
+    ${figBox("wt49-score-card", 24, 108, 342, 184, "", "border-radius:22px;background:linear-gradient(135deg,#2b2722,#14110d);box-shadow:0 16px 30px rgba(28,20,12,.16);")}
+    ${figBox("wt49-status-pill", 44, 132, 112, 30, "", "border:1px solid rgba(244,210,147,.42);border-radius:15px;background:rgba(244,210,147,.10);")}
+    ${figText("wt49-status-pill-text", "待AI合盘", 44, 140, 112, 12, "#f4d293", 900, "center")}
+    ${figText("wt49-level", "真正合盘判定", 44, 176, 180, 28, "#fffaf3", 900, "left", "font-size:27px;line-height:1;")}
+    ${figText("wt49-sub", "不预设具体格局、不预设分数。先让AI读取两张命盘，再输出关系格局。", 44, 218, 284, 13, "#d9cab3", 700, "left", "line-height:1.55;")}
+    ${figText("wt49-pair", `${escapeHtml(result.leftDisplay.name)} × ${escapeHtml(result.rightDisplay.name)}`, 44, 258, 280, 18, "#fffaf3", 900, "center")}
 
-    ${figBox("wt49-pair-card", 24, 306, 342, 116, "", "border:1px solid #eadfce;border-radius:18px;background:#fff;box-shadow:0 8px 20px rgba(70,45,25,.07);")}
-    ${figText("wt49-left-name", escapeHtml(result.leftDisplay.name), 44, 330, 88, 17, "#25211d", 900)}
-    ${figText("wt49-left-date", escapeHtml(result.leftDisplay.datetime), 44, 360, 122, 12, "#8f8173", 700)}
-    ${figText("wt49-left-pillars", escapeHtml(result.leftDisplay.pillars), 44, 386, 130, 11, "#9b742e", 700)}
-    ${figText("wt49-right-name", escapeHtml(result.rightDisplay.name), 218, 330, 88, 17, "#25211d", 900, "right")}
-    ${figText("wt49-right-date", escapeHtml(result.rightDisplay.datetime), 194, 360, 132, 12, "#8f8173", 700, "right")}
-    ${figText("wt49-right-pillars", escapeHtml(result.rightDisplay.pillars), 190, 386, 136, 11, "#9b742e", 700, "right")}
-    ${figText("wt49-heart", "格", 180, 352, 30, 20, "#b74e39", 900, "center")}
+    ${figBox("wt49-pair-card", 24, 318, 342, 126, "", "border:1px solid #eadfce;border-radius:18px;background:#fff;box-shadow:0 8px 20px rgba(70,45,25,.07);")}
+    ${figText("wt49-left-name", escapeHtml(result.leftDisplay.name), 44, 342, 88, 17, "#25211d", 900)}
+    ${figText("wt49-left-date", escapeHtml(result.leftDisplay.datetime), 44, 372, 122, 12, "#8f8173", 700)}
+    ${figText("wt49-left-pillars", escapeHtml(result.leftDisplay.pillars), 44, 398, 130, 11, "#9b742e", 700)}
+    ${figText("wt49-right-name", escapeHtml(result.rightDisplay.name), 218, 342, 88, 17, "#25211d", 900, "right")}
+    ${figText("wt49-right-date", escapeHtml(result.rightDisplay.datetime), 194, 372, 132, 12, "#8f8173", 700, "right")}
+    ${figText("wt49-right-pillars", escapeHtml(result.rightDisplay.pillars), 190, 398, 136, 11, "#9b742e", 700, "right")}
+    ${figText("wt49-heart", "合", 180, 365, 30, 20, "#b74e39", 900, "center")}
 
-    ${figText("wt49-dim-title", "合盘维度", 24, 454, 120, 17, "#25211d", 900)}
-    ${result.dimensions.map(([label, score, note], index) => {
-      const y = 490 + index * 92;
+    ${figText("wt49-dim-title", "合盘流程", 24, 476, 120, 17, "#25211d", 900)}
+    ${flow.map(([step, title, note], index) => {
+      const y = 512 + index * 92;
       return `
         ${figBox(`wt49-dim-${index}`, 24, y, 342, 74, "", "border:1px solid #eadfce;border-radius:16px;background:#fffdf8;box-shadow:0 7px 18px rgba(70,45,25,.06);")}
-        ${figText(`wt49-dim-label-${index}`, label, 44, y + 16, 110, 15, "#25211d", 900)}
-        ${figText(`wt49-dim-score-${index}`, `${score}分`, 276, y + 15, 58, 15, score >= 76 ? "#8a6b22" : "#9f3d2e", 900, "right")}
-        ${figBox(`wt49-dim-bar-${index}`, 44, y + 44, 240, 7, "", "border-radius:4px;background:#f0e6d8;")}
-        ${figBox(`wt49-dim-fill-${index}`, 44, y + 44, Math.round(240 * score / 100), 7, "", "border-radius:4px;background:linear-gradient(90deg,#c79b42,#a13d2d);")}
-        ${figText(`wt49-dim-note-${index}`, note, 44, y + 56, 282, 11, "#7a6d60", 700)}
+        ${figBox(`wt49-flow-step-${index}`, 44, y + 17, 34, 34, "", "border-radius:17px;background:#fff1dc;border:1px solid #d6b463;")}
+        ${figText(`wt49-flow-step-text-${index}`, step, 44, y + 26, 34, 12, "#9b742e", 900, "center")}
+        ${figText(`wt49-dim-label-${index}`, title, 94, y + 15, 160, 15, "#25211d", 900)}
+        ${figText(`wt49-dim-note-${index}`, note, 94, y + 42, 224, 12, "#7a6d60", 700, "left", "line-height:1.45;")}
       `;
     }).join("")}
 
-    ${figBox("wt49-advice", 24, 882, 342, 96, "", "border-radius:18px;background:#fff1dc;border:1px solid #d6b463;box-shadow:0 8px 20px rgba(130,91,31,.08);")}
-    ${figText("wt49-advice-title", "关系建议", 44, 906, 100, 15, "#8f3d30", 900)}
-    ${figText("wt49-advice-text", result.advice, 44, 934, 284, 13, "#756d63", 800, "left", "line-height:1.55;")}
-    ${figBox("wt49-repick", 42, 1000, 136, 44, "", "border:1px solid #d6b463;border-radius:10px;background:#fff;")}
-    ${figButton("wt49-repick-hit", 42, 1000, 136, 44, 'data-route="screen-11"')}
-    ${figText("wt49-repick-text", "重新选择", 42, 1012, 136, 13, "#9b742e", 800, "center")}
-    ${figBox("wt49-ask", 212, 1000, 136, 44, "", "border-radius:10px;background:#b74e39;")}
-    ${figButton("wt49-ask-hit", 212, 1000, 136, 44, 'data-action="wentian-hepan-ask-xu"')}
-    ${figText("wt49-ask-text", "追问合盘半仙", 212, 1012, 136, 13, "#fff", 900, "center")}
+    ${figBox("wt49-advice", 24, 804, 342, 72, "", "border-radius:18px;background:#fff1dc;border:1px solid #d6b463;box-shadow:0 8px 20px rgba(130,91,31,.08);")}
+    ${figText("wt49-advice-title", "输出原则", 44, 824, 100, 15, "#8f3d30", 900)}
+    ${figText("wt49-advice-text", "先定关系格局，再讲互动、冲突、长期节奏和行动建议；非情侣格不输出婚恋判断。", 44, 850, 284, 12, "#756d63", 800, "left", "line-height:1.45;")}
+    ${figBox("wt49-repick", 42, 900, 136, 44, "", "border:1px solid #d6b463;border-radius:10px;background:#fff;")}
+    ${figButton("wt49-repick-hit", 42, 900, 136, 44, 'data-route="screen-11"')}
+    ${figText("wt49-repick-text", "重新选择", 42, 912, 136, 13, "#9b742e", 800, "center")}
+    ${figBox("wt49-ask", 212, 900, 136, 44, "", "border-radius:10px;background:#b74e39;")}
+    ${figButton("wt49-ask-hit", 212, 900, 136, 44, 'data-action="wentian-hepan-ask-xu"')}
+    ${figText("wt49-ask-text", "开始AI合盘", 212, 912, 136, 13, "#fff", 900, "center")}
   `;
 }
 
@@ -11476,7 +11484,7 @@ function sourceDashboardHomeScreen() {
   const accountGreet = account.loggedIn ? `${account.name}，安好` : "登录/注册";
   const accountSub = account.loggedIn ? account.sub : "登录后支付查订单";
   return `
-    ${figBox("source-1-bg", 0, 0, 390, 986, "", "background:linear-gradient(180deg,#fffdf8 0%,#fbf7ef 50%,#faf5ed 100%);")}
+    ${figBox("source-1-bg", 0, 0, 390, 1044, "", "background:linear-gradient(180deg,#fffdf8 0%,#fbf7ef 50%,#faf5ed 100%);")}
     ${figBox("source-1-avatar", 18, 24, 44, 44, "", "border-radius:22px;background:#f4ead8;box-shadow:0 6px 16px rgba(188,142,59,.12);")}
     ${figBox("source-1-avatar-head", 33, 36, 12, 12, "", "border-radius:6px;background:#c58d25;")}
     ${figBox("source-1-avatar-body", 27, 52, 24, 13, "", "border-radius:12px 12px 5px 5px;background:#c58d25;")}
@@ -11485,10 +11493,6 @@ function sourceDashboardHomeScreen() {
     ${figBox("source-1-login-pill", 212, 32, 72, 26, "", `border-radius:14px;background:${member.isMember ? "#fff1d8" : "#f3eadc"};`)}
     ${figText("source-1-login-pill-text", memberLabel, 212, 39, 72, 11, member.isMember ? "#9f3d2e" : "#bd8624", 800, "center", "white-space:nowrap;")}
     ${figButton("source-1-login-hit", 18, 20, 266, 56, 'data-action="wentian-login-open"')}
-    ${figBox("source-1-chart-pill", 294, 32, 78, 32, "", "border-radius:18px;background:#f3eadc;box-shadow:0 7px 16px rgba(190,142,45,.12);")}
-    ${figText("source-1-chart-text", "✦ 排盘", 306, 39, 54, 16, "#bd8624", 800, "center")}
-    ${figButton("source-1-chart-hit", 294, 32, 78, 32, 'data-route="screen-26" aria-label="排盘"')}
-
     ${figText("source-1-recommend-title", "为你推荐", 18, 98, 130, 22, "#25221f", 800)}
     ${figBox("source-1-master-1", 18, 130, 354, 288, "converted-card", "border-radius:16px;overflow:hidden;box-shadow:0 10px 24px rgba(70,45,25,.13);")}
     ${figImage("source-1-master-img-1", "../images/wentian-prototype-assets/xu-banxian.jpg", 18, 130, 354, 170, "border-radius:16px 16px 0 0;object-fit:cover;object-position:center 20%;")}
@@ -11502,14 +11506,14 @@ function sourceDashboardHomeScreen() {
     ${figBox("source-1-master-go", 278, 356, 72, 38, "", "border-radius:19px;background:#c08a2c;")}
     ${figText("source-1-master-go-text", "去问他", 286, 367, 56, 13, "#fff", 700, "center")}
 
-    ${[["合盘分析", "命理相合，缘分几许", "01-feature-hepan.png", "hepan", 438], ["六爻占卜", "铜钱起卦，纳甲解卦", "01-feature-gua.png", "screen-17", 547], ["阳宅地脉", "方位九宫，安位解读", "01-feature-gua.png", "screen-42", 656], ["六壬法", "农历月日时，即刻起课", "01-feature-gua.png", "screen-46", 765]].map(([title, sub, icon, route, y], index) => `
+    ${[["紫微斗数排盘", "建立命盘档案，接入AI解读", "01-feature-hepan.png", "screen-26", 438], ["合盘分析", "命理相合，缘分几许", "01-feature-hepan.png", "hepan", 535], ["六爻占卜", "铜钱起卦，纳甲解卦", "01-feature-gua.png", "screen-17", 632], ["阳宅地脉", "方位九宫，安位解读", "01-feature-gua.png", "screen-42", 729], ["六壬法", "农历月日时，即刻起课", "01-feature-gua.png", "screen-46", 826]].map(([title, sub, icon, route, y], index) => `
       ${figBox(`source-1-feature-${index}`, 18, y, 354, 96, "converted-card", "border-radius:14px;box-shadow:0 8px 20px rgba(70,45,25,.1);background:#fffdfb;")}
       ${figText(`source-1-feature-title-${index}`, title, 36, y + 30, 150, 21, "#25221f", 800)}
       ${figText(`source-1-feature-sub-${index}`, sub, 36, y + 58, 190, 14, "#969087", 500)}
       ${figImage(`source-1-feature-icon-${index}`, `../images/wentian-prototype-assets/${icon}`, 286, y + 10, 72, 76, "object-fit:contain;")}
       ${figButton(`source-1-feature-hit-${index}`, 18, y, 354, 96, `data-route="${route}"`)}
     `).join("")}
-    ${sourceAppBottomNav("首页", 897)}
+    ${sourceAppBottomNav("首页", 950)}
   `;
 }
 

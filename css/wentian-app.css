@@ -2222,10 +2222,10 @@ html[lang="en"] .wentian-archive-confirm {
 .wentian-hepan-footer {
   position: absolute;
   left: 22px;
-  top: 720px;
+  top: 704px;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 12px;
+  gap: 10px 12px;
   width: 346px;
 }
 
@@ -2258,19 +2258,29 @@ html[lang="en"] .wentian-archive-confirm {
 
 .wentian-hepan-footer p {
   grid-column: 1 / -1;
+  grid-row: 1;
   margin: 0;
-  color: #a79986;
-  font-size: 11px;
-  font-weight: 700;
-  line-height: 15px;
+  min-height: 34px;
+  border: 1px solid #ead8bd;
+  border-radius: 17px;
+  padding: 8px 12px;
+  background: #fff8ed;
+  color: #8d6c2c;
+  font-size: 12px;
+  font-weight: 900;
+  line-height: 16px;
   text-align: center;
 }
 
 .wentian-hepan-footer p.is-ready {
+  border-color: rgba(123, 138, 68, .32);
+  background: rgba(123, 138, 68, .08);
   color: #7b8a44;
 }
 
 .wentian-hepan-footer p.is-error {
+  border-color: rgba(169, 68, 55, .32);
+  background: rgba(169, 68, 55, .08);
   color: #a94437;
 }
 
