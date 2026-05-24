@@ -703,15 +703,15 @@ function sourceAppBottomNav(active, y = 778) {
     ["我的", "mine", 341, "screen-31"]
   ];
   return `
-    ${figBox("source-bottom-bg", 0, y, 390, 89, "", "background:linear-gradient(180deg,rgba(255,255,255,.98),rgba(255,250,241,.98));box-shadow:0 -4px 14px rgba(62,38,18,.07);z-index:45;")}
+    ${figBox("source-bottom-bg", 0, y, 390, 89, "", "background:linear-gradient(180deg,rgba(255,255,255,.98),rgba(255,250,241,.98));box-shadow:0 -4px 14px rgba(62,38,18,.07);z-index:90;")}
     ${items.map(([label, iconKind, x, route]) => {
       const on = label === active;
       const color = on ? "#a33129" : "#8c857b";
       return `
-        ${figButton(`source-bottom-hit-${label}`, x - 37, y + 6, 76, 72, `data-route="${route}"`, "", "z-index:55;")}
-        ${wentianBottomNavIcon(iconKind, `source-bottom-icon-${label}`, x - 17, y + 13, color, on, 50)}
-        ${figText(`source-bottom-label-${label}`, label, x - 28, y + 50, 56, 12, color, on ? 800 : 500, "center", "z-index:50;")}
-        ${on ? figBox(`source-bottom-active-${label}`, x - 9, y + 72, 18, 3, "", `border-radius:999px;background:${color};opacity:.72;z-index:50;`) : ""}
+        ${figButton(`source-bottom-hit-${label}`, x - 37, y + 6, 76, 72, `data-route="${route}"`, "", "z-index:110;")}
+        ${wentianBottomNavIcon(iconKind, `source-bottom-icon-${label}`, x - 17, y + 13, color, on, 100)}
+        ${figText(`source-bottom-label-${label}`, label, x - 28, y + 50, 56, 12, color, on ? 800 : 500, "center", "z-index:100;")}
+        ${on ? figBox(`source-bottom-active-${label}`, x - 9, y + 72, 18, 3, "", `border-radius:999px;background:${color};opacity:.72;z-index:100;`) : ""}
       `;
     }).join("")}
   `;
@@ -8184,29 +8184,29 @@ function renderWentianProfileRows(archives = getWentianArchiveList(), query = we
     const rowY = y;
     y += 78;
     const actionControls = confirmingDelete ? `
-      ${figBox(`source-25-delete-confirm-${index}`, 244, rowY + 10, 68, 24, "", "border:1px solid #c85a4a;border-radius:12px;background:#fff1ee;z-index:71;")}
-      ${figText(`source-25-delete-confirm-text-${index}`, "确认删除", 244, rowY + 17, 68, 10, "#b53a2e", 900, "center", "z-index:72;")}
-      ${figButton(`source-25-delete-confirm-hit-${index}`, 243, rowY + 8, 70, 28, `data-action="wentian-archive-delete" data-archive-id="${escapeHtml(archive.id)}" aria-label="确认删除${escapeHtml(item.name)}"`, "", "z-index:73;")}
-      ${figBox(`source-25-delete-cancel-${index}`, 318, rowY + 10, 36, 24, "", "border:1px solid #ead8bd;border-radius:12px;background:#fffaf2;z-index:71;")}
-      ${figText(`source-25-delete-cancel-text-${index}`, "取消", 318, rowY + 17, 36, 10, "#9b742e", 900, "center", "z-index:72;")}
-      ${figButton(`source-25-delete-cancel-hit-${index}`, 317, rowY + 8, 38, 28, `data-action="wentian-archive-delete-cancel" data-archive-id="${escapeHtml(archive.id)}" aria-label="取消删除${escapeHtml(item.name)}"`, "", "z-index:73;")}
+      ${figBox(`source-25-delete-confirm-${index}`, 244, rowY + 10, 68, 24, "", "border:1px solid #c85a4a;border-radius:12px;background:#fff1ee;z-index:31;")}
+      ${figText(`source-25-delete-confirm-text-${index}`, "确认删除", 244, rowY + 17, 68, 10, "#b53a2e", 900, "center", "z-index:32;")}
+      ${figButton(`source-25-delete-confirm-hit-${index}`, 243, rowY + 8, 70, 28, `data-action="wentian-archive-delete" data-archive-id="${escapeHtml(archive.id)}" aria-label="确认删除${escapeHtml(item.name)}"`, "", "z-index:33;")}
+      ${figBox(`source-25-delete-cancel-${index}`, 318, rowY + 10, 36, 24, "", "border:1px solid #ead8bd;border-radius:12px;background:#fffaf2;z-index:31;")}
+      ${figText(`source-25-delete-cancel-text-${index}`, "取消", 318, rowY + 17, 36, 10, "#9b742e", 900, "center", "z-index:32;")}
+      ${figButton(`source-25-delete-cancel-hit-${index}`, 317, rowY + 8, 38, 28, `data-action="wentian-archive-delete-cancel" data-archive-id="${escapeHtml(archive.id)}" aria-label="取消删除${escapeHtml(item.name)}"`, "", "z-index:33;")}
     ` : isDefaultArchive ? `
-      ${figBox(`source-25-edit-${index}`, 270, rowY + 10, 36, 24, "", "border:1px solid #ead8bd;border-radius:12px;background:#fffaf2;z-index:71;")}
-      ${figText(`source-25-edit-text-${index}`, "改", 270, rowY + 17, 36, 10, "#9b742e", 900, "center", "z-index:72;")}
-      ${figButton(`source-25-edit-hit-${index}`, 269, rowY + 8, 38, 28, `data-action="wentian-archive-edit" data-archive-id="${escapeHtml(archive.id)}" aria-label="编辑${escapeHtml(item.name)}"`, "", "z-index:73;")}
-      ${figBox(`source-25-delete-${index}`, 312, rowY + 10, 40, 24, "", "border:1px solid #ead8bd;border-radius:12px;background:#fffaf2;z-index:71;")}
-      ${figText(`source-25-delete-text-${index}`, "删", 312, rowY + 17, 40, 10, "#9b742e", 900, "center", "z-index:72;")}
-      ${figButton(`source-25-delete-hit-${index}`, 311, rowY + 8, 42, 28, `data-action="wentian-archive-delete" data-archive-id="${escapeHtml(archive.id)}" aria-label="删除${escapeHtml(item.name)}"`, "", "z-index:73;")}
+      ${figBox(`source-25-edit-${index}`, 270, rowY + 10, 36, 24, "", "border:1px solid #ead8bd;border-radius:12px;background:#fffaf2;z-index:31;")}
+      ${figText(`source-25-edit-text-${index}`, "改", 270, rowY + 17, 36, 10, "#9b742e", 900, "center", "z-index:32;")}
+      ${figButton(`source-25-edit-hit-${index}`, 269, rowY + 8, 38, 28, `data-action="wentian-archive-edit" data-archive-id="${escapeHtml(archive.id)}" aria-label="编辑${escapeHtml(item.name)}"`, "", "z-index:33;")}
+      ${figBox(`source-25-delete-${index}`, 312, rowY + 10, 40, 24, "", "border:1px solid #ead8bd;border-radius:12px;background:#fffaf2;z-index:31;")}
+      ${figText(`source-25-delete-text-${index}`, "删", 312, rowY + 17, 40, 10, "#9b742e", 900, "center", "z-index:32;")}
+      ${figButton(`source-25-delete-hit-${index}`, 311, rowY + 8, 42, 28, `data-action="wentian-archive-delete" data-archive-id="${escapeHtml(archive.id)}" aria-label="删除${escapeHtml(item.name)}"`, "", "z-index:33;")}
     ` : `
-      ${figBox(`source-25-default-${index}`, 236, rowY + 10, 42, 24, "", "border:1px solid #d5c493;border-radius:12px;background:#fffdf5;z-index:71;")}
-      ${figText(`source-25-default-text-${index}`, "默认", 236, rowY + 17, 42, 10, "#7b8a44", 900, "center", "z-index:72;")}
-      ${figButton(`source-25-default-hit-${index}`, 235, rowY + 8, 44, 28, `data-action="wentian-archive-default" data-archive-id="${escapeHtml(archive.id)}" aria-label="设${escapeHtml(item.name)}为默认命盘"`, "", "z-index:73;")}
-      ${figBox(`source-25-edit-${index}`, 282, rowY + 10, 32, 24, "", "border:1px solid #ead8bd;border-radius:12px;background:#fffaf2;z-index:71;")}
-      ${figText(`source-25-edit-text-${index}`, "改", 282, rowY + 17, 32, 10, "#9b742e", 900, "center", "z-index:72;")}
-      ${figButton(`source-25-edit-hit-${index}`, 281, rowY + 8, 34, 28, `data-action="wentian-archive-edit" data-archive-id="${escapeHtml(archive.id)}" aria-label="编辑${escapeHtml(item.name)}"`, "", "z-index:73;")}
-      ${figBox(`source-25-delete-${index}`, 320, rowY + 10, 34, 24, "", "border:1px solid #ead8bd;border-radius:12px;background:#fffaf2;z-index:71;")}
-      ${figText(`source-25-delete-text-${index}`, "删", 320, rowY + 17, 34, 10, "#9b742e", 900, "center", "z-index:72;")}
-      ${figButton(`source-25-delete-hit-${index}`, 319, rowY + 8, 36, 28, `data-action="wentian-archive-delete" data-archive-id="${escapeHtml(archive.id)}" aria-label="删除${escapeHtml(item.name)}"`, "", "z-index:73;")}
+      ${figBox(`source-25-default-${index}`, 236, rowY + 10, 42, 24, "", "border:1px solid #d5c493;border-radius:12px;background:#fffdf5;z-index:31;")}
+      ${figText(`source-25-default-text-${index}`, "默认", 236, rowY + 17, 42, 10, "#7b8a44", 900, "center", "z-index:32;")}
+      ${figButton(`source-25-default-hit-${index}`, 235, rowY + 8, 44, 28, `data-action="wentian-archive-default" data-archive-id="${escapeHtml(archive.id)}" aria-label="设${escapeHtml(item.name)}为默认命盘"`, "", "z-index:33;")}
+      ${figBox(`source-25-edit-${index}`, 282, rowY + 10, 32, 24, "", "border:1px solid #ead8bd;border-radius:12px;background:#fffaf2;z-index:31;")}
+      ${figText(`source-25-edit-text-${index}`, "改", 282, rowY + 17, 32, 10, "#9b742e", 900, "center", "z-index:32;")}
+      ${figButton(`source-25-edit-hit-${index}`, 281, rowY + 8, 34, 28, `data-action="wentian-archive-edit" data-archive-id="${escapeHtml(archive.id)}" aria-label="编辑${escapeHtml(item.name)}"`, "", "z-index:33;")}
+      ${figBox(`source-25-delete-${index}`, 320, rowY + 10, 34, 24, "", "border:1px solid #ead8bd;border-radius:12px;background:#fffaf2;z-index:31;")}
+      ${figText(`source-25-delete-text-${index}`, "删", 320, rowY + 17, 34, 10, "#9b742e", 900, "center", "z-index:32;")}
+      ${figButton(`source-25-delete-hit-${index}`, 319, rowY + 8, 36, 28, `data-action="wentian-archive-delete" data-archive-id="${escapeHtml(archive.id)}" aria-label="删除${escapeHtml(item.name)}"`, "", "z-index:33;")}
     `;
     return `
       ${group}
