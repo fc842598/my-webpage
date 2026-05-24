@@ -1020,8 +1020,10 @@ function sourceArchiveSelectScreen() {
     ${displayArchives.map((archive) => {
       const item = getWentianArchiveDisplay(archive);
       const selected = archive.id === activeId;
+      const confirmingDelete = wentianArchiveDeleteConfirmId === archive.id;
       return `
-        <button class="wentian-archive-option ${selected ? "is-selected" : ""}" type="button" data-action="wentian-archive-pick" data-wentian-archive-option="1" data-archive-id="${escapeHtml(archive.id)}" aria-pressed="${selected ? "true" : "false"}">
+        <div class="wentian-archive-option ${selected ? "is-selected" : ""}" data-wentian-archive-option="1" data-archive-id="${escapeHtml(archive.id)}" aria-pressed="${selected ? "true" : "false"}">
+          <button class="wentian-archive-pick" type="button" data-action="wentian-archive-pick" data-archive-id="${escapeHtml(archive.id)}" aria-label="选择${escapeHtml(item.name)}"></button>
           <span class="wentian-archive-avatar">${escapeHtml(item.name.slice(0, 1))}</span>
           <span class="wentian-archive-main">
             <span class="wentian-archive-title-row">
@@ -1033,8 +1035,12 @@ function sourceArchiveSelectScreen() {
             <span class="wentian-archive-date">${escapeHtml(item.datetime)}</span>
             <span class="wentian-archive-pillars">${escapeHtml(item.pillars)}</span>
           </span>
+          <span class="wentian-archive-actions">
+            <button class="wentian-archive-action" type="button" data-action="wentian-archive-edit" data-archive-id="${escapeHtml(archive.id)}">编辑</button>
+            <button class="wentian-archive-action danger ${confirmingDelete ? "is-confirming" : ""}" type="button" data-action="wentian-archive-delete" data-archive-id="${escapeHtml(archive.id)}">${confirmingDelete ? "确认" : "删除"}</button>
+          </span>
           <span class="wentian-archive-check">${selected ? "✓" : ""}</span>
-        </button>
+        </div>
       `;
     }).join("")}
     </div>
@@ -1240,6 +1246,7 @@ let wentianArchiveDraftId = null;
 let wentianProfileSearchQuery = "";
 let wentianArchiveRemoteLoaded = false;
 let wentianArchiveRemotePromise = null;
+let wentianArchiveDeleteConfirmId = "";
 let wentianLanguageDraft = null;
 let wentianHepanSelectedIds = null;
 let wentianHepanTimeEditId = "";
@@ -1584,10 +1591,27 @@ function readWentianArchives() {
   }
 }
 
+function hasStoredWentianArchives() {
+  try {
+    return localStorage.getItem(WENTIAN_ARCHIVES_STORAGE_KEY) !== null;
+  } catch (_err) {
+    return false;
+  }
+}
+
 function writeWentianArchives(archives) {
   try {
     localStorage.setItem(WENTIAN_ARCHIVES_STORAGE_KEY, JSON.stringify(archives));
   } catch (_err) {}
+}
+
+function clearWentianSavedChart() {
+  try {
+    localStorage.removeItem(WENTIAN_CHART_STORAGE_KEY);
+    localStorage.removeItem(WENTIAN_SELECTED_ARCHIVE_KEY);
+    localStorage.removeItem("wentian-xubanxian-chart-record-id");
+  } catch (_err) {}
+  wentianFallbackChartRecordId = "";
 }
 
 function makeWentianArchiveId(prefix = "archive") {
@@ -1813,7 +1837,6 @@ async function pushWentianArchivesToRemote(archives) {
       .map(normalizeWentianArchive)
       .filter((archive) => archive && !archive.form?.isDefault)
       .slice(0, 50);
-    if (!syncArchives.length) return;
     await fetch(`${getWentianApiBase()}/api/wentian/archives`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -1860,9 +1883,10 @@ async function hydrateWentianArchivesFromRemote(options = {}) {
 }
 
 function getWentianArchiveList() {
+  const hasStoredArchives = hasStoredWentianArchives();
   let archives = readWentianArchives().map(normalizeWentianArchive).filter(Boolean);
   const currentArchive = archiveFromChartState(getWentianSavedChart());
-  if (!archives.length) archives = getDefaultWentianArchives();
+  if (!archives.length && !hasStoredArchives) archives = getDefaultWentianArchives();
   if (currentArchive && !archives.some((item) => item.id === currentArchive.id || getWentianArchiveDuplicateKey(item) === getWentianArchiveDuplicateKey(currentArchive))) {
     archives.unshift(currentArchive);
   }
@@ -1901,6 +1925,91 @@ function saveWentianChart(chartState, options = {}) {
     localStorage.setItem(WENTIAN_CHART_STORAGE_KEY, JSON.stringify(chartState));
   } catch (_err) {}
   if (options.upsertArchive !== false) saveWentianArchiveFromChartState(chartState);
+}
+
+function getWentianArchiveEditId() {
+  try {
+    return sessionStorage.getItem("wentian-edit-archive-id") || "";
+  } catch (_err) {
+    return "";
+  }
+}
+
+function setWentianArchiveEditId(id) {
+  try {
+    if (id) sessionStorage.setItem("wentian-edit-archive-id", id);
+    else sessionStorage.removeItem("wentian-edit-archive-id");
+  } catch (_err) {}
+}
+
+function findWentianArchiveById(id, archives = getWentianArchiveList()) {
+  return archives.find((archive) => archive.id === id) || null;
+}
+
+function editWentianArchive(id) {
+  const archive = findWentianArchiveById(id);
+  if (!archive) return;
+  wentianArchiveDeleteConfirmId = "";
+  setWentianArchiveEditId(archive.id);
+  applyWentianArchiveToCurrent(archive);
+  navigate("screen-26");
+}
+
+async function deleteWentianArchive(id) {
+  const archives = getWentianArchiveList();
+  const target = findWentianArchiveById(id, archives);
+  if (!target) return false;
+  const nextArchives = archives.filter((archive) => archive.id !== id);
+  writeWentianArchives(nextArchives);
+  const selectedIds = getWentianHepanSelectedIds(nextArchives).filter((item) => item !== id);
+  saveWentianHepanSelectedIds(selectedIds);
+  if (wentianArchiveDraftId === id) wentianArchiveDraftId = nextArchives[0]?.id || null;
+  if (getWentianArchiveEditId() === id) setWentianArchiveEditId("");
+
+  const saved = getWentianSavedChart();
+  const savedId = saved?.archiveId || saved?.form?.archiveId || "";
+  if (savedId === id) {
+    const replacement = nextArchives[0] || null;
+    if (replacement) {
+      setWentianSelectedArchiveId(replacement.id);
+      const chartRecordId = replacement.chartRecordId || replacement.chartData?.chartRecordId || makeWentianUuid();
+      saveWentianChart({
+        archiveId: replacement.id,
+        chart: replacement.chart || null,
+        chartData: { ...replacement.chartData, chartRecordId },
+        form: { ...(replacement.form || {}), archiveId: replacement.id },
+        createdAt: replacement.createdAt || new Date().toISOString(),
+      }, { upsertArchive: false });
+      setWentianChartRecordId(chartRecordId);
+    } else {
+      clearWentianSavedChart();
+    }
+  } else if (nextArchives.length) {
+    setWentianSelectedArchiveId(getWentianSelectedArchiveId(nextArchives));
+  } else {
+    clearWentianSavedChart();
+  }
+
+  wentianArchiveDeleteConfirmId = "";
+  await pushWentianArchivesToRemote(nextArchives);
+  navigatePreservingScroll(state.route, false);
+  return true;
+}
+
+function requestWentianArchiveDelete(id) {
+  if (!id) return;
+  if (wentianArchiveDeleteConfirmId === id) {
+    void deleteWentianArchive(id);
+    return;
+  }
+  wentianArchiveDeleteConfirmId = id;
+  navigatePreservingScroll(state.route, false);
+}
+
+function startWentianArchiveCreate() {
+  wentianArchiveDeleteConfirmId = "";
+  setWentianArchiveEditId("");
+  navigate("screen-26");
 }
 
 function formatWentianDateTime(date) {
@@ -5585,6 +5694,10 @@ function navigateWentianClickRoute(route) {
   if (route !== "screen-17") setLiuyaoCasterModalOpen(false);
   if (liuyaoTossAnimation?.active && route !== "screen-17") clearLiuyaoTossAnimation();
   if (route === "screen-4") clearWentianXuChatContext();
+  if (route === "screen-26") {
+    wentianArchiveDeleteConfirmId = "";
+    setWentianArchiveEditId("");
+  }
   navigate(route);
 }
 
@@ -7487,15 +7600,18 @@ async function submitWentianChartForm() {
     const genderText = norm.gender === "male" ? "男" : "女";
     const chart = createWentianChartWithLeapRule(lib, norm, genderText);
     const datetimeValue = document.getElementById("wentian-chart-date")?.value || "";
-    const duplicateArchive = findWentianArchiveDuplicate(getWentianArchiveList(), {
+    const editingArchiveId = getWentianArchiveEditId();
+    const existingArchives = getWentianArchiveList();
+    const editingArchive = editingArchiveId ? findWentianArchiveById(editingArchiveId, existingArchives) : null;
+    const duplicateArchive = editingArchive ? null : findWentianArchiveDuplicate(existingArchives, {
       form: { name: norm.name || "命主", datetime: datetimeValue },
     });
-    const chartRecordId = duplicateArchive?.chartRecordId || duplicateArchive?.chartData?.chartRecordId || resetWentianChartRecordId();
-    if (duplicateArchive) setWentianChartRecordId(chartRecordId);
+    const chartRecordId = editingArchive?.chartRecordId || editingArchive?.chartData?.chartRecordId || duplicateArchive?.chartRecordId || duplicateArchive?.chartData?.chartRecordId || resetWentianChartRecordId();
+    if (editingArchive || duplicateArchive) setWentianChartRecordId(chartRecordId);
     const chartData = buildWentianChartPayload(chart, norm);
     chartData.chartRecordId = chartRecordId;
     resetWentianChartAiState(chartData.chartRecordId);
-    const archiveId = duplicateArchive?.id || `archive-${chartData.chartRecordId}`;
+    const archiveId = editingArchive?.id || duplicateArchive?.id || `archive-${chartData.chartRecordId}`;
 
     saveWentianChart({
       archiveId,
@@ -7516,8 +7632,10 @@ async function submitWentianChartForm() {
         useTrueSolar: norm.useTrueSolar,
         trueSolarChoiceSet: true,
       },
-      createdAt: new Date().toISOString(),
+      createdAt: editingArchive?.createdAt || duplicateArchive?.createdAt || new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
     });
+    setWentianArchiveEditId("");
 
     resetWentianXuChatRuntime();
     setWentianChartStatus("已生成命盘");
@@ -7614,6 +7732,7 @@ function renderWentianProfileRows(archives = getWentianArchiveList(), query = we
   return visibleArchives.map((archive, index) => {
     const item = getWentianArchiveDisplay(archive);
     const initial = getWentianArchiveInitial(item.name);
+    const confirmingDelete = wentianArchiveDeleteConfirmId === archive.id;
     const group = initial !== lastInitial ? figText(`source-25-group-${index}`, initial, 18, y + 6, 24, 14, "#aaa198", 600) : "";
     if (initial !== lastInitial) {
       lastInitial = initial;
@@ -7629,9 +7748,14 @@ function renderWentianProfileRows(archives = getWentianArchiveList(), query = we
       ${figText(`source-25-name-${index}`, escapeHtml(item.name), 90, rowY + 7, 112, 17, "#201813", 900)}
       ${figText(`source-25-gender-text-${index}`, item.gender, 204, rowY + 10, 28, 13, "#9c938a", 700)}
       ${figText(`source-25-date-${index}`, `阳历:${escapeHtml(item.datetime.split(" ")[0] || item.datetime)}`, 90, rowY + 34, 174, 13, "#8f8780", 700)}
-      ${figText(`source-25-detail-${index}`, escapeHtml(item.pillars), 90, rowY + 56, 208, 12, "#b08a4b", 600)}
-      ${figText(`source-25-arrow-${index}`, "›", 330, rowY + 27, 20, 20, "#b4aaa0", 600, "center")}
-      ${figButton(`source-25-open-${index}`, 0, rowY, 352, 76, `data-action="wentian-profile-open" data-archive-id="${escapeHtml(archive.id)}"`)}
+      ${figText(`source-25-detail-${index}`, escapeHtml(item.pillars), 90, rowY + 56, 176, 12, "#b08a4b", 600)}
+      ${figBox(`source-25-edit-${index}`, 270, rowY + 10, 36, 24, "", "border:1px solid #ead8bd;border-radius:12px;background:#fffaf2;z-index:71;")}
+      ${figText(`source-25-edit-text-${index}`, "改", 270, rowY + 17, 36, 10, "#9b742e", 900, "center", "z-index:72;")}
+      ${figButton(`source-25-edit-hit-${index}`, 269, rowY + 8, 38, 28, `data-action="wentian-archive-edit" data-archive-id="${escapeHtml(archive.id)}" aria-label="编辑${escapeHtml(item.name)}"`, "", "z-index:73;")}
+      ${figBox(`source-25-delete-${index}`, 312, rowY + 10, 40, 24, "", `border:1px solid ${confirmingDelete ? "#c85a4a" : "#ead8bd"};border-radius:12px;background:${confirmingDelete ? "#fff1ee" : "#fffaf2"};z-index:71;`)}
+      ${figText(`source-25-delete-text-${index}`, confirmingDelete ? "确认" : "删", 312, rowY + 17, 40, 10, confirmingDelete ? "#b53a2e" : "#9b742e", 900, "center", "z-index:72;")}
+      ${figButton(`source-25-delete-hit-${index}`, 311, rowY + 8, 42, 28, `data-action="wentian-archive-delete" data-archive-id="${escapeHtml(archive.id)}" aria-label="删除${escapeHtml(item.name)}"`, "", "z-index:73;")}
+      ${figButton(`source-25-open-${index}`, 0, rowY, 264, 76, `data-action="wentian-profile-open" data-archive-id="${escapeHtml(archive.id)}"`)}
     `;
   }).join("");
 }
@@ -8261,6 +8385,7 @@ function sourceHepanSelectScreen() {
       ${visibleArchives.map((archive, index) => {
         const item = getWentianArchiveDisplay(archive);
         const selected = selectedIds.includes(archive.id);
+        const confirmingDelete = wentianArchiveDeleteConfirmId === archive.id;
         return `
           <div class="wentian-hepan-option ${selected ? "is-selected" : ""}" data-archive-id="${escapeHtml(archive.id)}">
             <button class="wentian-hepan-select" type="button" data-action="wentian-hepan-pick" data-archive-id="${escapeHtml(archive.id)}" aria-pressed="${selected ? "true" : "false"}" aria-label="选择${escapeHtml(item.name)}">
@@ -8271,6 +8396,10 @@ function sourceHepanSelectScreen() {
                 <small>${escapeHtml(item.datetime)}</small>
               </span>
             </button>
+            <span class="wentian-hepan-actions">
+              <button class="wentian-hepan-action" type="button" data-action="wentian-archive-edit" data-archive-id="${escapeHtml(archive.id)}" aria-label="编辑${escapeHtml(item.name)}">编辑</button>
+              <button class="wentian-hepan-action danger ${confirmingDelete ? "is-confirming" : ""}" type="button" data-action="wentian-archive-delete" data-archive-id="${escapeHtml(archive.id)}" aria-label="删除${escapeHtml(item.name)}">${confirmingDelete ? "确认" : "删除"}</button>
+            </span>
             <button class="wentian-hepan-edit-time" type="button" data-action="wentian-hepan-edit-time" data-archive-id="${escapeHtml(archive.id)}" aria-label="编辑${escapeHtml(item.name)}命盘时间">改时间</button>
             <span class="wentian-hepan-check">${selected ? "✓" : ""}</span>
           </div>
@@ -14034,6 +14163,20 @@ document.addEventListener("click", (event) => {
   }
   if (action === "wentian-archive-cancel") {
     cancelWentianArchiveSelection();
+    return;
+  }
+  if (action === "wentian-archive-new") {
+    startWentianArchiveCreate();
+    return;
+  }
+  if (action === "wentian-archive-edit") {
+    const id = event.target.closest("[data-archive-id]")?.dataset.archiveId;
+    if (id) editWentianArchive(id);
+    return;
+  }
+  if (action === "wentian-archive-delete") {
+    const id = event.target.closest("[data-archive-id]")?.dataset.archiveId;
+    if (id) requestWentianArchiveDelete(id);
     return;
   }
   if (action === "wentian-profile-search-focus") {
