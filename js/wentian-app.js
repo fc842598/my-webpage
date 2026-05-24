@@ -1239,6 +1239,8 @@ let wentianArchiveRemoteLoaded = false;
 let wentianArchiveRemotePromise = null;
 let wentianLanguageDraft = null;
 let wentianHepanSelectedIds = null;
+let wentianHepanTimeEditId = "";
+let wentianHepanTimeEditError = "";
 let wentianMobileYijingTab = "xiantian";
 let wentianChartCalMode = "solar";
 let wentianChartCity = null;
@@ -3716,6 +3718,71 @@ function toggleWentianHepanArchive(id) {
   else ids = ids.length >= 2 ? [ids[1], id].filter(Boolean) : [...ids, id];
   saveWentianHepanSelectedIds(ids);
   if (!refreshWentianHepanSelectionView(archives, ids)) navigate("screen-11", false);
+}
+
+function getWentianArchiveDateInputValue(archive) {
+  const form = archive?.form || {};
+  const raw = form.remoteRaw || {};
+  const rawDateTime = raw.datetime
+    || (raw.dateStr ? `${raw.dateStr}T${String(raw.cstHour ?? raw.hour ?? 0).padStart(2, "0")}:${String(raw.cstMinute ?? raw.minute ?? 0).padStart(2, "0")}` : "");
+  const source = form.datetime || rawDateTime || archive?.chartData?.birthDate || archive?.chartData?.solarTime || "";
+  const date = new Date(String(source).trim().replace(" ", "T"));
+  return Number.isNaN(date.getTime()) ? "" : formatWentianDateInputValue(date);
+}
+
+function openWentianHepanTimeEdit(id) {
+  const archives = getWentianArchiveList();
+  if (!archives.some((archive) => archive.id === id)) return;
+  wentianHepanTimeEditId = id;
+  wentianHepanTimeEditError = "";
+  navigate("screen-11", false);
+}
+
+function closeWentianHepanTimeEdit() {
+  wentianHepanTimeEditId = "";
+  wentianHepanTimeEditError = "";
+  navigate("screen-11", false);
+}
+
+function saveWentianHepanTimeEdit() {
+  const archives = getWentianArchiveList();
+  const archive = archives.find((item) => item.id === wentianHepanTimeEditId);
+  const value = document.getElementById("wentian-hepan-edit-datetime")?.value || "";
+  const date = value ? new Date(value) : null;
+  if (!archive || !date || Number.isNaN(date.getTime())) {
+    wentianHepanTimeEditError = "请填写有效出生时间";
+    navigate("screen-11", false);
+    return;
+  }
+  if (date.getTime() > Date.now()) {
+    wentianHepanTimeEditError = "出生时间不能在未来";
+    navigate("screen-11", false);
+    return;
+  }
+
+  const form = archive.form || {};
+  const raw = form.remoteRaw || {};
+  const display = getWentianArchiveDisplay(archive);
+  const rawCity = form.city || raw.city?.name || raw.city || "";
+  const updated = buildWentianArchiveFromInput({
+    id: archive.id,
+    name: form.name || raw.name || archive.chartData?.name || display.name || "命主",
+    gender: normalizeWentianArchiveGender(archive) || form.gender || raw.gender || "male",
+    datetime: value,
+    city: typeof rawCity === "string" ? rawCity : rawCity?.name || "",
+    chartRecordId: makeWentianUuid(),
+    isDefault: Boolean(form.isDefault),
+  });
+  updated.createdAt = archive.createdAt || updated.createdAt;
+  updated.updatedAt = new Date().toISOString();
+
+  const nextArchives = archives.map((item) => (item.id === archive.id ? updated : item));
+  writeWentianArchives(nextArchives);
+  saveWentianHepanSelectedIds(getWentianHepanSelectedIds(nextArchives));
+  pushWentianArchivesToRemote(nextArchives);
+  wentianHepanTimeEditId = "";
+  wentianHepanTimeEditError = "";
+  navigate("screen-11", false);
 }
 
 function confirmWentianHepanSelection() {
@@ -7744,11 +7811,35 @@ function refreshWentianHepanSelectionView(archives, selectedIds) {
   list.querySelectorAll(".wentian-hepan-option").forEach((option) => {
     const selected = selectedIds.includes(option.dataset.archiveId);
     option.classList.toggle("is-selected", selected);
-    option.setAttribute("aria-pressed", selected ? "true" : "false");
+    const select = option.querySelector(".wentian-hepan-select");
+    if (select) select.setAttribute("aria-pressed", selected ? "true" : "false");
     const check = option.querySelector(".wentian-hepan-check");
     if (check) check.textContent = selected ? "✓" : "";
   });
   return true;
+}
+
+function renderWentianHepanTimeEditSheet(archives) {
+  const archive = archives.find((item) => item.id === wentianHepanTimeEditId);
+  if (!archive) return "";
+  const item = getWentianArchiveDisplay(archive);
+  const value = getWentianArchiveDateInputValue(archive);
+  return `
+    <div class="wentian-hepan-time-mask" data-action="wentian-hepan-edit-cancel"></div>
+    <section class="wentian-hepan-time-sheet" aria-label="编辑命盘时间">
+      <div class="wentian-hepan-time-handle"></div>
+      <strong>编辑命盘时间</strong>
+      <p>${escapeHtml(item.name)} · ${escapeHtml(item.gender)} · ${escapeHtml(item.tag)}</p>
+      <label for="wentian-hepan-edit-datetime">出生日期时间</label>
+      <input id="wentian-hepan-edit-datetime" type="datetime-local" value="${escapeHtml(value)}">
+      <em>保存后会重新排盘，并刷新合盘结果。</em>
+      ${wentianHepanTimeEditError ? `<b>${escapeHtml(wentianHepanTimeEditError)}</b>` : ""}
+      <div class="wentian-hepan-time-actions">
+        <button type="button" data-action="wentian-hepan-edit-cancel">取消</button>
+        <button type="button" class="primary" data-action="wentian-hepan-edit-save">保存时间</button>
+      </div>
+    </section>
+  `;
 }
 
 function sourceHepanTypeScreen() {
@@ -7804,15 +7895,18 @@ function sourceHepanSelectScreen() {
         const item = getWentianArchiveDisplay(archive);
         const selected = selectedIds.includes(archive.id);
         return `
-          <button class="wentian-hepan-option ${selected ? "is-selected" : ""}" type="button" data-action="wentian-hepan-pick" data-archive-id="${escapeHtml(archive.id)}" aria-pressed="${selected ? "true" : "false"}" aria-label="选择${escapeHtml(item.name)}">
-            <span class="wentian-hepan-avatar">${escapeHtml(item.name.slice(0, 1))}</span>
-            <span class="wentian-hepan-copy">
-              <strong>${escapeHtml(item.name)}</strong>
-              <em>${escapeHtml(item.gender)} · ${escapeHtml(item.tag)}</em>
-              <small>${escapeHtml(item.datetime)}</small>
-            </span>
+          <div class="wentian-hepan-option ${selected ? "is-selected" : ""}" data-archive-id="${escapeHtml(archive.id)}">
+            <button class="wentian-hepan-select" type="button" data-action="wentian-hepan-pick" data-archive-id="${escapeHtml(archive.id)}" aria-pressed="${selected ? "true" : "false"}" aria-label="选择${escapeHtml(item.name)}">
+              <span class="wentian-hepan-avatar">${escapeHtml(item.name.slice(0, 1))}</span>
+              <span class="wentian-hepan-copy">
+                <strong>${escapeHtml(item.name)}</strong>
+                <em>${escapeHtml(item.gender)} · ${escapeHtml(item.tag)}</em>
+                <small>${escapeHtml(item.datetime)}</small>
+              </span>
+            </button>
+            <button class="wentian-hepan-edit-time" type="button" data-action="wentian-hepan-edit-time" data-archive-id="${escapeHtml(archive.id)}" aria-label="编辑${escapeHtml(item.name)}命盘时间">改时间</button>
             <span class="wentian-hepan-check">${selected ? "✓" : ""}</span>
-          </button>
+          </div>
         `;
       }).join("")}
     </div>
@@ -7821,6 +7915,7 @@ function sourceHepanSelectScreen() {
       <button class="wentian-hepan-primary" type="button" data-action="wentian-hepan-confirm" ${ready ? "" : "disabled"}>确定</button>
       <p class="${ready ? "is-ready" : selectedIds.length >= 2 ? "is-error" : ""}">${escapeHtml(hint)}</p>
     </div>
+    ${renderWentianHepanTimeEditSheet(archives)}
   `;
 }
 
@@ -13395,6 +13490,19 @@ document.addEventListener("click", (event) => {
   }
   if (action === "wentian-password-save") {
     submitWentianPasswordForm();
+    return;
+  }
+  if (action === "wentian-hepan-edit-time") {
+    const option = event.target.closest("[data-archive-id]");
+    if (option?.dataset.archiveId) openWentianHepanTimeEdit(option.dataset.archiveId);
+    return;
+  }
+  if (action === "wentian-hepan-edit-cancel") {
+    closeWentianHepanTimeEdit();
+    return;
+  }
+  if (action === "wentian-hepan-edit-save") {
+    saveWentianHepanTimeEdit();
     return;
   }
   if (action === "wentian-hepan-pick") {
