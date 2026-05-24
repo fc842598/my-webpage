@@ -6725,7 +6725,12 @@
     const values = desktopLiuyaoState.lastCoins.length ? desktopLiuyaoState.lastCoins : [null, null, null];
     coins.innerHTML = values.map((coin) => {
       const label = coin === 3 ? '阳' : coin === 2 ? '阴' : '待';
-      return `<span class="mbp-liuyao-coin">${escapeHtml(label)}</span>`;
+      const className = [
+        'mbp-liuyao-coin',
+        coin === 2 ? 'is-yin' : '',
+        coin == null ? 'is-waiting' : '',
+      ].filter(Boolean).join(' ');
+      return `<span class="${className}">${escapeHtml(label)}</span>`;
     }).join('');
   }
 
@@ -6763,14 +6768,19 @@
       return;
     }
     const movingText = result.movingLines.length
-      ? result.movingLines.map((line) => `${line.label}${line.name}`).join('、')
+      ? `${result.movingLines.map((line) => line.label.replace('爻', '')).join('、')}爻动`
       : '无动爻';
+    const movingDetail = result.movingLines.length > 3
+      ? `${result.movingLines.length}个动爻，变化较重，先看本卦再看变卦`
+      : result.movingLines.length
+        ? result.movingLines.map((line) => `${line.label}${line.name}`).join('、')
+        : '动爻看变化，应期与关键转折';
     const changedText = result.movingLines.length ? result.changed?.name : '同本卦';
     const questionText = result.question
       ? `${result.question}${/[。！？!?]$/.test(result.question) ? '' : '。'}`
       : '未填写。';
-    const card = (label, title, sub) => `
-      <article class="mbp-liuyao-result-card">
+    const card = (label, title, sub, type = '') => `
+      <article class="mbp-liuyao-result-card ${type}">
         <span>${escapeHtml(label)}</span>
         <strong>${escapeHtml(title || '待定')}</strong>
         <small>${escapeHtml(sub || '')}</small>
@@ -6778,12 +6788,27 @@
     `;
     box.innerHTML = `
       <div class="mbp-liuyao-result-grid">
-        ${card('本卦', result.primary?.name, `第${result.primary?.no || '-'}卦 · 上${result.primary?.upper?.name || ''}下${result.primary?.lower?.name || ''}`)}
+        ${card('本卦', result.primary?.name, `第${result.primary?.no || '-'}卦 · 上${result.primary?.upper?.name || ''}下${result.primary?.lower?.name || ''}`, 'is-primary')}
         ${card('变卦', changedText, result.movingLines.length ? `第${result.changed?.no || '-'}卦 · 看事情转向` : '没有动爻，先按本卦判断')}
-        ${card('动爻', movingText, '动爻看变化，应期与关键转折')}
+        ${card('动爻', movingText, movingDetail, result.movingLines.length ? 'is-moving' : '')}
       </div>
       <p class="mbp-liuyao-note">问事：${escapeHtml(questionText)}先看本卦定当前，动爻看变化，变卦看趋势。</p>
     `;
+  }
+
+  function syncDesktopLiuyaoProgress(count) {
+    const progressText = $('#mbpLiuyaoProgressText');
+    const progressBar = $('#mbpLiuyaoProgressBar');
+    if (progressText) progressText.textContent = `${count} / 6`;
+    if (progressBar) progressBar.style.width = `${Math.min(100, Math.max(0, count / 6 * 100))}%`;
+    const hasQuestion = Boolean(String($('#mbpLiuyaoQuestion')?.value || desktopLiuyaoState.question || '').trim());
+    document.querySelectorAll('[data-liuyao-step]').forEach((step) => {
+      const key = step.dataset.liuyaoStep;
+      step.classList.toggle('is-active',
+        (key === 'question' && !hasQuestion)
+        || (key === 'cast' && hasQuestion && count < 6)
+        || (key === 'read' && count >= 6));
+    });
   }
 
   function renderDesktopLiuyao() {
@@ -6799,6 +6824,7 @@
       toss.disabled = count >= 6;
       toss.textContent = count >= 6 ? '已成卦' : `投第 ${count + 1} 爻`;
     }
+    syncDesktopLiuyaoProgress(count);
     renderDesktopLiuyaoCoins();
     renderDesktopLiuyaoStack();
     renderDesktopLiuyaoResult();
