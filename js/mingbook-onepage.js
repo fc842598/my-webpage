@@ -94,6 +94,7 @@
   };
   let formCalMode = state.profile.isLunar ? 'lunar' : 'solar';
   let selectedCity = null;
+  let cityDeleteArmed = false;
   let cityScope = state.profile.cityScope || defaultCityScope;
   let clientRecordsCache = [];
   let html2PdfPromise = null;
@@ -1813,6 +1814,59 @@
     return cityFromRow(found?.[0]);
   }
 
+  function findCitySuggestionRows(query, scope = cityScope, limit = 12) {
+    let results = findCityRows(query, scope, limit);
+    if (!results.length && scope === 'china') {
+      const globalResults = findCityRows(query, 'global', limit);
+      if (globalResults.length) {
+        setCityScope('global', { keepSelected: true });
+        results = globalResults;
+      }
+    }
+    return results;
+  }
+
+  function resetCityDeleteArmed(input = $('#mbpCitySearch')) {
+    cityDeleteArmed = false;
+    input?.classList.remove('is-delete-armed');
+  }
+
+  function cityInputFullySelected(input) {
+    return !!input?.value && input.selectionStart === 0 && input.selectionEnd === input.value.length;
+  }
+
+  function armCityDeletion(input) {
+    if (!input?.value) return;
+    cityDeleteArmed = true;
+    input.classList.add('is-delete-armed');
+    window.requestAnimationFrame(() => {
+      input.focus();
+      input.setSelectionRange(0, input.value.length);
+    });
+  }
+
+  function clearCityField() {
+    const input = $('#mbpCitySearch');
+    applySelectedCity(null);
+    if (input) input.value = '';
+    $('#mbpCityDropdown').style.display = 'none';
+    resetCityDeleteArmed(input);
+    updateTrueSolarPreview();
+  }
+
+  function applyFirstCitySuggestion(options = {}) {
+    if (selectedCity) return selectedCity;
+    const input = $('#mbpCitySearch');
+    const query = String(input?.value || '').trim();
+    if (!query) return null;
+    const row = findCitySuggestionRows(query, cityScope, 1)[0];
+    if (!row) return null;
+    const city = cityFromRow(row);
+    applySelectedCity(city);
+    if (options.hideDropdown !== false) $('#mbpCityDropdown').style.display = 'none';
+    return city;
+  }
+
   function syncCityScopeUi() {
     document.querySelectorAll('[data-city-scope]').forEach((btn) => {
       btn.classList.toggle('active', btn.dataset.cityScope === cityScope);
@@ -1847,6 +1901,7 @@
     const input = $('#mbpCitySearch');
     const clear = $('#mbpClearCity');
     const selected = $('#mbpCitySelected');
+    resetCityDeleteArmed(input);
     if (input) input.value = city ? `${city.province} · ${city.city}` : '';
     if (clear) clear.style.display = city ? '' : 'none';
     if (selected) selected.style.display = city ? '' : 'none';
@@ -2029,6 +2084,7 @@
     const date = solarFromForm();
     if (date.error) return { error: date.error };
     const time = formTime();
+    applyFirstCitySuggestion({ hideDropdown: true });
     const cityText = selectedCity ? formatCityLabel(selectedCity) : String($('#mbpCitySearch')?.value || defaultProfile.city).trim();
     return normalizeProfile({
       ...date,
@@ -6396,6 +6452,7 @@
       const input = $('#mbpCitySearch');
       const dropdown = $('#mbpCityDropdown');
       const q = input.value.trim().toLowerCase();
+      resetCityDeleteArmed(input);
       selectedCity = null;
       $('#mbpClearCity').style.display = q ? '' : 'none';
       $('#mbpCitySelected').style.display = 'none';
@@ -6404,14 +6461,7 @@
         updateTrueSolarPreview();
         return;
       }
-      let results = findCityRows(q, cityScope, 12);
-      if (!results.length && cityScope === 'china') {
-        const globalResults = findCityRows(q, 'global', 12);
-        if (globalResults.length) {
-          setCityScope('global', { keepSelected: true });
-          results = globalResults;
-        }
-      }
+      const results = findCitySuggestionRows(q, cityScope, 12);
       if (!results.length) {
         dropdown.style.display = 'none';
         return;
@@ -6430,6 +6480,25 @@
       updateTrueSolarPreview();
     });
 
+    $('#mbpCitySearch')?.addEventListener('keydown', (event) => {
+      const input = event.currentTarget;
+      const dropdown = $('#mbpCityDropdown');
+      if ((event.key === 'Backspace' || event.key === 'Delete') && selectedCity && input.value) {
+        event.preventDefault();
+        if (cityDeleteArmed || cityInputFullySelected(input)) {
+          clearCityField();
+          return;
+        }
+        if (dropdown) dropdown.style.display = 'none';
+        armCityDeletion(input);
+        return;
+      }
+      if (event.key === 'Enter') {
+        const city = applyFirstCitySuggestion({ hideDropdown: true });
+        if (city) event.preventDefault();
+      }
+    });
+
     $('#mbpCityDropdown')?.addEventListener('click', (event) => {
       const item = event.target.closest('.nf-city-item');
       if (!item) return;
@@ -6439,13 +6508,12 @@
     });
 
     $('#mbpClearCity')?.addEventListener('click', () => {
-      applySelectedCity(null);
-      $('#mbpCitySearch').value = '';
-      $('#mbpCityDropdown').style.display = 'none';
+      clearCityField();
     });
 
     document.addEventListener('click', (event) => {
-      if (!event.target.closest('#mbpCitySearch') && !event.target.closest('#mbpCityDropdown')) {
+      if (!event.target.closest('#mbpCitySearch') && !event.target.closest('#mbpCityDropdown') && !event.target.closest('#mbpClearCity')) {
+        applyFirstCitySuggestion({ hideDropdown: true });
         const dropdown = $('#mbpCityDropdown');
         if (dropdown) dropdown.style.display = 'none';
       }
