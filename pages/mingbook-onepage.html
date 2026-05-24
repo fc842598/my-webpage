@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>阅天 · 紫微排盘</title>
   <link rel="icon" href="../images/logo-mark.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../css/mingbook-onepage.css?v=20260524-hide-city-scope">
+  <link rel="stylesheet" href="../css/mingbook-onepage.css?v=20260524-city-copy-short">
   <script src="../js/config.js?v=20260521-api-domain-auth-proxy"></script>
   <script defer src="../js/cities.js"></script>
   <script defer src="../js/lunarCalendar.js"></script>
@@ -22,7 +22,7 @@
   <script defer src="../src/ziping/runtime.js"></script>
   <script defer src="../js/ai-piming.js?v=20260522-yijing-ai-timing"></script>
   <script defer src="../js/ai-chat.js?v=20260521-no-auto-jump"></script>
-  <script defer src="../js/mingbook-onepage.js?v=20260524-global-birth-time"></script>
+  <script defer src="../js/mingbook-onepage.js?v=20260524-city-copy-short"></script>
 </head>
 <body>
   <header class="mbp-nav">
@@ -136,15 +136,15 @@
                 <button type="button" class="nf-city-scope-btn active" data-city-scope="china">中国（含港澳台）</button>
                 <button type="button" class="nf-city-scope-btn" data-city-scope="global">全球</button>
               </div>
-              <div id="mbpCityScopeNote" class="nf-city-note">默认中国出生地，含港澳台，按北京时间 UTC+8 校正当地真太阳时。</div>
+              <div id="mbpCityScopeNote" class="nf-city-note">填出生证时间，系统按出生地自动校正真太阳时。</div>
               <div class="nf-city-search-wrap">
                 <input type="text" id="mbpCitySearch" placeholder="搜索城市，如：北京、香港、台北" class="nf-select" autocomplete="off">
                 <button type="button" id="mbpClearCity" class="nf-clear-city" style="display:none">清除</button>
               </div>
               <div id="mbpCityDropdown" class="nf-city-dropdown" style="display:none"></div>
               <div id="mbpCitySelected" class="nf-city-selected" style="display:none">
-                <span class="nf-city-selected-main">已选: <span id="mbpCitySelectedName"></span></span>
-                <span class="nf-city-selected-meta"><span id="mbpCityTz"></span> · <span id="mbpCityLon"></span>, <span id="mbpCityLat"></span></span>
+                <span class="nf-city-selected-main">已选：<span id="mbpCitySelectedName"></span></span>
+                <span class="nf-city-selected-meta"><span id="mbpCityTz"></span></span>
               </div>
             </div>
 

@@ -1725,6 +1725,18 @@
     return `${city.province} · ${city.city}`;
   }
 
+  function stripCityEnglishSuffix(value) {
+    return String(value || '').replace(/\s+[A-Za-z][A-Za-z\s.'()-]*$/g, '').trim();
+  }
+
+  function formatSelectedCityLabel(city) {
+    if (!city) return '';
+    const province = stripCityEnglishSuffix(city.province);
+    const cityName = stripCityEnglishSuffix(city.city);
+    if (isChinaCity(city)) return province && province !== cityName ? `${province} ${cityName}` : cityName;
+    return cityName || province;
+  }
+
   function formatTzOffset(tzOffset) {
     const value = Number.isFinite(Number(tzOffset)) ? Number(tzOffset) : 8;
     const sign = value >= 0 ? '+' : '-';
@@ -1734,9 +1746,8 @@
     return minutes ? `UTC${sign}${hour}:${String(minutes).padStart(2, '0')}` : `UTC${sign}${hour}`;
   }
 
-  function formatTimeZoneLabel(timeZone, tzOffset) {
-    const offsetText = formatTzOffset(tzOffset);
-    return timeZone ? `${timeZone} · ${offsetText}` : offsetText;
+  function formatLocalTimeLabel(tzOffset) {
+    return `当地时间 ${formatTzOffset(tzOffset)}`;
   }
 
   function formatCityTimeZoneLabelForForm(city) {
@@ -1758,12 +1769,12 @@
             timeZone,
             cityName: city.city || '',
           });
-          return formatTimeZoneLabel(tst.timeZone || timeZone, tst.tzOffset);
+          return formatLocalTimeLabel(tst.tzOffset);
         } catch (_) {}
       }
-      return `${timeZone} · 按出生日期校正`;
+      return '按出生日期校正';
     }
-    return formatTzOffset(city.tzOffset);
+    return formatLocalTimeLabel(city.tzOffset);
   }
 
   function formatGeoCoord(value, axis) {
@@ -1814,9 +1825,7 @@
     }
     const note = $('#mbpCityScopeNote');
     if (note) {
-      note.textContent = cityScope === 'global'
-        ? '全球出生地按当地法定时间与 IANA 历史时区，再按经度校正真太阳时。农历默认按中国农历口径，越南等地建议填公历出生证时间。'
-        : '默认中国出生地，含港澳台，按北京时间 UTC+8 校正当地真太阳时。';
+      note.textContent = '填出生证时间，系统按出生地自动校正真太阳时。';
     }
   }
 
@@ -1842,10 +1851,10 @@
     if (clear) clear.style.display = city ? '' : 'none';
     if (selected) selected.style.display = city ? '' : 'none';
     if (city) {
-      $('#mbpCitySelectedName').textContent = formatCityLabel(city);
+      $('#mbpCitySelectedName').textContent = formatSelectedCityLabel(city);
       $('#mbpCityTz').textContent = formatCityTimeZoneLabelForForm(city);
-      $('#mbpCityLon').textContent = formatGeoCoord(city.lon, 'lon');
-      $('#mbpCityLat').textContent = formatGeoCoord(city.lat, 'lat');
+      if ($('#mbpCityLon')) $('#mbpCityLon').textContent = formatGeoCoord(city.lon, 'lon');
+      if ($('#mbpCityLat')) $('#mbpCityLat').textContent = formatGeoCoord(city.lat, 'lat');
     }
     updateTrueSolarPreview();
   }
@@ -1972,14 +1981,14 @@
       timeZone: selectedCity?.timeZone || (selectedCity && typeof getBirthTimeZoneId === 'function' ? getBirthTimeZoneId(selectedCity) : 'Asia/Shanghai'),
       cityName: selectedCity ? selectedCity.city : '',
     });
-    const zoneText = formatTimeZoneLabel(tst.timeZone, tst.tzOffset);
-    if (selectedCity && $('#mbpCityTz')) $('#mbpCityTz').textContent = zoneText;
+    const localTimeText = formatLocalTimeLabel(tst.tzOffset);
+    if (selectedCity && $('#mbpCityTz')) $('#mbpCityTz').textContent = localTimeText;
     const trueSolarDate = dateStrWithDayShift(date, tst.dayShift);
     const trueSolarTime = `${pad2(tst.trueSolarHour)}:${pad2(tst.trueSolarMinute)}`;
     const trueSolarDisplay = tst.dayShift ? `${trueSolarDate} ${trueSolarTime}` : trueSolarTime;
-    display.innerHTML = `当地法定时 ${pad2(time.hour)}:${pad2(time.minute)} ${escapeHtml(zoneText)} · 真太阳时 <b>${escapeHtml(trueSolarDisplay)}</b> · ${escapeHtml(tst.diffStr)}`;
+    display.innerHTML = `出生证时间 ${pad2(time.hour)}:${pad2(time.minute)} ${escapeHtml(formatTzOffset(tst.tzOffset))} · 真太阳时 <b>${escapeHtml(trueSolarDisplay)}</b> · ${escapeHtml(tst.diffStr)}`;
     if (badge) {
-      badge.textContent = tst.isEstimated ? '默认北京估算' : `${formatCityLabel(selectedCity)} ${zoneText}`;
+      badge.textContent = tst.isEstimated ? '默认北京估算' : `${formatSelectedCityLabel(selectedCity)} · ${formatTzOffset(tst.tzOffset)}`;
       badge.style.display = '';
     }
     if (shichen) {
