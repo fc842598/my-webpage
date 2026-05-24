@@ -150,17 +150,6 @@
       opacity: .72;
     }
 
-    .hero {
-      min-height: 360px;
-      display: grid;
-      grid-template-columns: 1.05fr .95fr;
-      gap: 34px;
-      align-items: stretch;
-      margin-bottom: 28px;
-    }
-
-    .hero-copy,
-    .hero-plate,
     .workbench,
     .result-panel {
       border: 1px solid var(--line);
@@ -168,65 +157,6 @@
         linear-gradient(180deg, rgba(18, 13, 7, .94), rgba(7, 5, 3, .96)),
         rgba(7, 5, 3, .96);
       box-shadow: 0 22px 60px rgba(0, 0, 0, .28);
-    }
-
-    .hero-copy {
-      position: relative;
-      overflow: hidden;
-      min-height: 360px;
-      padding: 48px 52px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      border-radius: 8px;
-    }
-
-    .hero-copy::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      z-index: 0;
-      background:
-        linear-gradient(90deg, rgba(3,2,1,.95), rgba(3,2,1,.66) 46%, rgba(3,2,1,.30)),
-        url("../images/home2/triad-di-bg.webp") center / cover no-repeat;
-      opacity: .62;
-    }
-
-    .hero-copy > * { position: relative; z-index: 1; }
-
-    .eyebrow {
-      width: fit-content;
-      margin-bottom: 18px;
-      padding: 4px 12px;
-      border: 1px solid rgba(201,169,97,.38);
-      border-radius: 999px;
-      color: var(--gold-soft);
-      background: rgba(9,7,4,.72);
-      font-size: 12px;
-      font-weight: 900;
-    }
-
-    h1 {
-      margin: 0;
-      color: var(--ivory);
-      font-family: "Noto Serif SC", "Songti SC", serif;
-      font-size: 46px;
-      line-height: 1.22;
-      letter-spacing: 0;
-    }
-
-    .hero-copy p {
-      max-width: 540px;
-      margin: 22px 0 0;
-      color: #c9b98b;
-      font-size: 16px;
-      line-height: 1.9;
-    }
-
-    .hero-actions {
-      display: flex;
-      gap: 12px;
-      margin-top: 30px;
     }
 
     .ghost-btn,
@@ -265,23 +195,6 @@
     .ghost-btn:hover,
     .danger-btn:hover { transform: translateY(-1px); }
 
-    .hero-plate {
-      min-height: 360px;
-      padding: 30px;
-      border-radius: 8px;
-      display: grid;
-      grid-template-rows: auto 1fr;
-      gap: 20px;
-    }
-
-    .plate-title {
-      display: flex;
-      align-items: flex-end;
-      justify-content: space-between;
-      gap: 20px;
-    }
-
-    .plate-title h2,
     .section-head h2 {
       margin: 0;
       color: var(--ivory);
@@ -289,48 +202,10 @@
       letter-spacing: 0;
     }
 
-    .plate-title h2 { font-size: 26px; }
-    .plate-title span,
     .section-head p {
       color: var(--muted);
       font-size: 13px;
       font-weight: 800;
-    }
-
-    .flow-list {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 10px;
-      align-content: end;
-    }
-
-    .flow-item {
-      min-height: 194px;
-      padding: 18px 16px;
-      border: 1px solid var(--line-soft);
-      background: linear-gradient(180deg, rgba(240,215,155,.06), rgba(240,215,155,.015));
-    }
-
-    .flow-item b {
-      display: block;
-      color: var(--gold-soft);
-      font-size: 22px;
-      font-family: "Noto Serif SC", "Songti SC", serif;
-    }
-
-    .flow-item strong {
-      display: block;
-      margin-top: 18px;
-      color: var(--ivory);
-      font-size: 16px;
-    }
-
-    .flow-item span {
-      display: block;
-      margin-top: 10px;
-      color: #9d8c68;
-      font-size: 13px;
-      line-height: 1.65;
     }
 
     .workbench {
@@ -728,7 +603,6 @@
     @media (max-width: 1180px) {
       .container { width: calc(100vw - 56px); }
       .links { display: none; }
-      .hero,
       .workbench { grid-template-columns: 1fr; }
       .guide-panel,
       .grid-panel,
@@ -743,10 +617,6 @@
       .leaf { width: 18px; height: 18px; }
       .nav .cta { height: 34px; min-width: 96px; padding: 0 13px; font-size: 12px; }
       .yangzhai-main { padding-top: 80px; }
-      .hero-copy { padding: 30px 22px; }
-      h1 { font-size: 31px; }
-      .hero { gap: 14px; }
-      .flow-list { grid-template-columns: 1fr 1fr; }
       .workbench,
       .grid-panel,
       .result-panel { padding: 14px; }
@@ -778,31 +648,6 @@
 
     <main class="yangzhai-main">
       <div class="container">
-        <section class="hero" aria-labelledby="yangzhai-title">
-          <div class="hero-copy">
-            <div class="eyebrow">阳宅地脉 · 电脑端工作台</div>
-            <h1 id="yangzhai-title">九宫安位<br>把家宅变成可读的盘</h1>
-            <p>参考手机端「地脉道」流程，电脑端改成大屏工作台：先定中宫，再按八方放入家人与空间，最后生成对应卦位摘要。</p>
-            <div class="hero-actions">
-              <button class="gold-btn" type="button" data-action="autofill-analyze">长幼归位并解读</button>
-              <button class="ghost-btn" type="button" data-scroll="#workbench">手动安位</button>
-            </div>
-          </div>
-
-          <aside class="hero-plate" aria-label="阳宅流程">
-            <div class="plate-title">
-              <h2>三步排宅盘</h2>
-              <span>定位 · 安位 · 解读</span>
-            </div>
-            <div class="flow-list">
-              <div class="flow-item"><b>01</b><strong>定中宫</strong><span>以户型中心为准，先确认东南西北与八方。</span></div>
-              <div class="flow-item"><b>02</b><strong>安人事</strong><span>父母子女、厨房、厕所、客厅放入对应宫位。</span></div>
-              <div class="flow-item"><b>03</b><strong>看卦位</strong><span>角色为上卦，方位为下卦，对应六十四卦。</span></div>
-              <div class="flow-item"><b>04</b><strong>可重排</strong><span>不确定时清空、归位，再重新生成解读。</span></div>
-            </div>
-          </aside>
-        </section>
-
         <section class="workbench" id="workbench" aria-label="阳宅九宫工作台">
           <aside class="guide-panel">
             <h2 class="guide-title">怎么用</h2>
