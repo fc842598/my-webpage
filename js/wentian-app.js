@@ -4651,7 +4651,7 @@ function makeWentianHepanAiPayload(result) {
       pageIntent: "screen-49 自动大模型判定",
       aiPageInstructions: [
         "必须先定关系主格，再写证据，不得把分数当作主结论。",
-        "输出必须围绕三段报告：女方夫妻宫解读、男方夫妻宫解读、双盘合参解读。",
+        "输出必须围绕三段报告，且 sections 标题固定为：女方夫妻宫、男方夫妻宫、双盘合参解读。",
         "女方与男方夫妻宫解读必须分别读取各自夫妻宫的地支、主星、辅曜、四化，以及夫妻宫落到对方哪一宫。",
         "必须同时参考 A 到 B、B 到 A 的宫位落点、星曜佐证与双方四柱。",
         "非夫妻格只讲相处边界和互动方式，不输出婚恋推进结论。",
@@ -9009,15 +9009,18 @@ function buildWentianHepanAiSections(result, card) {
   const combinedAi = findWentianHepanAiSection(card, ["双盘", "合参", "命盘", "综合"]);
   return [
     {
-      title: `女方夫妻宫：${femaleName}`,
+      title: "女方夫妻宫",
+      subtitle: `按女方夫妻宫读 · ${femaleName}`,
       content: femaleAi?.content || describeWentianHepanSpousePalace(result, female, "女方"),
     },
     {
-      title: `男方夫妻宫：${maleName}`,
+      title: "男方夫妻宫",
+      subtitle: `按男方夫妻宫读 · ${maleName}`,
       content: maleAi?.content || describeWentianHepanSpousePalace(result, male, "男方"),
     },
     {
       title: "双盘合参解读",
+      subtitle: "综合两张命盘判断",
       content: combinedAi?.content || describeWentianHepanCombinedChart(result),
     },
   ];
@@ -9039,6 +9042,7 @@ function renderWentianHepanAiPanel(result) {
           ${sections.map((item) => `
             <article>
               <span>${escapeHtml(item.title || "判定")}</span>
+              ${item.subtitle ? `<small>${escapeHtml(item.subtitle)}</small>` : ""}
               <p>${escapeHtml(formatWentianHepanReportText(item.content))}</p>
             </article>
           `).join("")}

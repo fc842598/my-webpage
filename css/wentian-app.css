@@ -3024,6 +3024,7 @@ html[lang="en"] .wentian-archive-confirm {
 .wentian-hepan-ai-card header b,
 .wentian-hepan-ai-card em,
 .wentian-hepan-ai-sections article span,
+.wentian-hepan-ai-sections article small,
 .wentian-hepan-ai-risk span {
   font-style: normal;
   font-weight: 900;
@@ -3089,11 +3090,19 @@ html[lang="en"] .wentian-archive-confirm {
   font-size: 13px;
 }
 
+.wentian-hepan-ai-sections article small {
+  display: block;
+  margin-bottom: 5px;
+  color: #a47726;
+  font-size: 11px;
+  line-height: 1.25;
+}
+
 .wentian-hepan-ai-sections p {
   display: -webkit-box;
   overflow: hidden;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 4;
 }
 
 .wentian-hepan-ai-risk {
