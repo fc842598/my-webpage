@@ -1,8 +1,8 @@
 /**
  * True Solar Time Calculator
- * Calculates the difference between True Solar Time (真太阳时) and China Standard Time
+ * Calculates the difference between True Solar Time (真太阳时) and local standard time
  *
- * Formula: TST = CST + 4 * (longitude - 120) minutes + EoT
+ * Formula: TST = local standard time + 4 * (longitude - timezone standard meridian) minutes + EoT
  * Where EoT = Equation of Time (均时差)
  */
 
@@ -33,9 +33,10 @@ function calcEquationOfTime(date) {
  * @returns {object} { trueSolarHour, trueSolarMinute, localHour, localMinute, diffMinutes, isEstimated, displayStr, diffStr }
  */
 function calcTrueSolarTime({year, month, day, hour, minute = 0, longitude, tzOffset, cityName}) {
-  const isEstimated = !longitude;
-  const lon = longitude || 116.4; // Default Beijing
-  const tz  = (tzOffset !== undefined && tzOffset !== null) ? tzOffset : 8;
+  const hasLongitude = Number.isFinite(Number(longitude));
+  const isEstimated = !hasLongitude;
+  const lon = hasLongitude ? Number(longitude) : 116.4; // Default Beijing
+  const tz  = Number.isFinite(Number(tzOffset)) ? Number(tzOffset) : 8;
 
   const date = new Date(year, month - 1, day, hour, minute);
   const eot = calcEquationOfTime(date);
@@ -43,18 +44,18 @@ function calcTrueSolarTime({year, month, day, hour, minute = 0, longitude, tzOff
   // Longitude correction from the timezone's standard meridian (tzOffset * 15°)
   const lonCorrection = 4 * (lon - tz * 15);
 
-  // Total offset from CST in minutes
+  // Total offset from the selected location's legal/standard clock time in minutes
   const totalOffsetMin = lonCorrection + eot;
 
   // Compute true solar time
-  const cstTotalMin = hour * 60 + minute;
-  let tstTotalMin = cstTotalMin + totalOffsetMin;
+  const localTotalMin = hour * 60 + minute;
+  let tstTotalMin = Math.round(localTotalMin + totalOffsetMin);
 
   // Normalize to 0-1440
   tstTotalMin = ((tstTotalMin % 1440) + 1440) % 1440;
 
   const tstHour = Math.floor(tstTotalMin / 60);
-  const tstMin  = Math.round(tstTotalMin % 60);
+  const tstMin  = tstTotalMin % 60;
 
   // Format diff
   const absOff = Math.abs(Math.round(totalOffsetMin));

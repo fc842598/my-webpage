@@ -132,14 +132,19 @@
                 <span class="nf-label">出生地点</span>
                 <span class="nf-hint">（影响真太阳时）</span>
               </div>
+              <div class="nf-city-scope" role="group" aria-label="出生地点范围">
+                <button type="button" class="nf-city-scope-btn active" data-city-scope="china">中国（含港澳台）</button>
+                <button type="button" class="nf-city-scope-btn" data-city-scope="global">全球</button>
+              </div>
+              <div id="mbpCityScopeNote" class="nf-city-note">默认中国出生地，按北京时间 UTC+8 校正当地真太阳时。</div>
               <div class="nf-city-search-wrap">
-                <input type="text" id="mbpCitySearch" placeholder="搜索城市，如：北京、Tokyo、London" class="nf-select" autocomplete="off">
+                <input type="text" id="mbpCitySearch" placeholder="搜索城市，如：北京、香港、台北" class="nf-select" autocomplete="off">
                 <button type="button" id="mbpClearCity" class="nf-clear-city" style="display:none">清除</button>
               </div>
               <div id="mbpCityDropdown" class="nf-city-dropdown" style="display:none"></div>
               <div id="mbpCitySelected" class="nf-city-selected" style="display:none">
-                已选: <span id="mbpCitySelectedName"></span>
-                <span>(<span id="mbpCityLon"></span>°E, <span id="mbpCityLat"></span>°N)</span>
+                <span class="nf-city-selected-main">已选: <span id="mbpCitySelectedName"></span></span>
+                <span class="nf-city-selected-meta"><span id="mbpCityTz"></span> · <span id="mbpCityLon"></span>, <span id="mbpCityLat"></span></span>
               </div>
             </div>
 

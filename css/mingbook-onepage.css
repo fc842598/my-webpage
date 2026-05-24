@@ -1799,6 +1799,43 @@ body.mbp-ticket-open {
   font-size: 14px;
 }
 
+.nf-city-scope {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(86px, .58fr);
+  gap: 6px;
+  margin: 0 0 8px;
+  padding: 4px;
+  border: 1px solid rgba(201, 169, 97, .22);
+  border-radius: 999px;
+  background: #110d09;
+}
+
+.nf-city-scope-btn {
+  min-width: 0;
+  min-height: 34px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: #a29482;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.nf-city-scope-btn.active {
+  background: linear-gradient(135deg, #d9b85d, #b88838);
+  color: #170f08;
+  box-shadow: 0 8px 18px rgba(201, 169, 97, .16);
+}
+
+.nf-city-note {
+  margin: -1px 2px 9px;
+  color: rgba(162, 148, 130, .9);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
 .nf-city-search-wrap {
   position: relative;
 }
@@ -1832,10 +1869,17 @@ body.mbp-ticket-open {
 }
 
 .nf-city-item {
+  display: grid;
+  gap: 3px;
   padding: 10px 16px;
   border-bottom: 1px solid rgba(201, 169, 97, .08);
   color: #c6b7a6;
   cursor: pointer;
+}
+
+.nf-city-item span {
+  color: #8e8173;
+  font-size: 12px;
 }
 
 .nf-city-item:hover {
@@ -1844,13 +1888,16 @@ body.mbp-ticket-open {
 }
 
 .nf-city-selected {
+  display: grid;
+  gap: 3px;
   margin-top: 10px;
   color: #dec48c;
   font-size: 15px;
 }
 
-.nf-city-selected span:last-child {
+.nf-city-selected-meta {
   color: #a29482;
+  font-size: 13px;
 }
 
 .nf-error {

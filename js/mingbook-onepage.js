@@ -50,6 +50,13 @@
   let yijingTimingAiError = '';
   let yijingTimingAiKey = '';
   const defaultProfile = { name: '', year: 1991, month: 2, day: 16, hour: 22, minute: 8, gender: 'male', city: '广东 深圳', cityName: '广东 深圳' };
+  const defaultCityScope = 'china';
+  const chinaCityRegions = new Set([
+    '北京', '上海', '天津', '重庆',
+    '河北', '山西', '辽宁', '吉林', '黑龙江', '江苏', '浙江', '安徽', '福建', '江西', '山东',
+    '河南', '湖北', '湖南', '广东', '海南', '四川', '贵州', '云南', '陕西', '甘肃', '青海',
+    '内蒙古', '广西', '西藏', '宁夏', '新疆', '香港', '澳门', '台湾',
+  ]);
   const starProfiles = {
     紫微: { trait: '主星稳重，有掌控局面和整合资源的能力', career: '适合管理、统筹、品牌和资源型岗位', wealth: '财运重在长期配置，不宜频繁追涨杀跌', love: '感情里要减少控制感，多给对方空间' },
     天府: { trait: '格局厚实，重秩序、信用与长期积累', career: '适合组织管理、财务、法务、运营与稳定体系', wealth: '守财能力强，越长期越能看出优势', love: '重承诺，也需要被稳定回应' },
@@ -87,6 +94,7 @@
   };
   let formCalMode = state.profile.isLunar ? 'lunar' : 'solar';
   let selectedCity = null;
+  let cityScope = state.profile.cityScope || defaultCityScope;
   let clientRecordsCache = [];
   let html2PdfPromise = null;
   let inputGuideTimer = null;
@@ -293,6 +301,7 @@
       cityLon: Number.isFinite(Number(input.cityLon ?? cityObj?.lon)) ? Number(input.cityLon ?? cityObj?.lon) : null,
       cityLat: Number.isFinite(Number(input.cityLat ?? cityObj?.lat)) ? Number(input.cityLat ?? cityObj?.lat) : null,
       cityTz: Number.isFinite(Number(input.cityTz ?? cityObj?.tzOffset)) ? Number(input.cityTz ?? cityObj?.tzOffset) : 8,
+      cityScope: input.cityScope === 'global' || cityObj?.scope === 'global' || (cityObj && !isChinaCity(cityObj)) ? 'global' : defaultCityScope,
       isLunar: !!input.isLunar,
       lunarYear: input.lunarYear ? clampNumber(input.lunarYear, 1900, 2030, input.lunarYear) : null,
       lunarMonth: input.lunarMonth ? clampNumber(input.lunarMonth, 1, 12, input.lunarMonth) : null,
@@ -1533,6 +1542,7 @@
       cityLon: source.cityLon ?? cityObj?.lon,
       cityLat: source.cityLat ?? cityObj?.lat,
       cityTz: source.cityTz ?? cityObj?.tzOffset,
+      cityScope: source.cityScope,
       isLunar: source.calMode === 'lunar' || source.isLunar,
       lunarYear: source.lunarYear,
       lunarMonth: source.lunarMonth,
@@ -1566,6 +1576,7 @@
       lon: profile.cityLon,
       lat: profile.cityLat,
       tzOffset: profile.cityTz ?? 8,
+      scope: profile.cityScope || defaultCityScope,
     };
   }
 
@@ -1588,6 +1599,7 @@
       cityLon: profile.cityLon,
       cityLat: profile.cityLat,
       cityTz: profile.cityTz ?? 8,
+      cityScope: profile.cityScope || defaultCityScope,
       lunarYear: profile.lunarYear,
       lunarMonth: profile.lunarMonth,
       lunarDay: profile.lunarDay,
@@ -1668,9 +1680,14 @@
     setOptions($('#mbpLunarDay'), labels.map((label, index) => [index + 1, label]), '日');
   }
 
-  function formatCityLabel(city) {
-    if (!city) return '';
-    return city.province === city.city ? `中国-${city.city}` : `${city.province}-${city.city}`;
+  function getCityList() {
+    const list = typeof CITIES !== 'undefined' ? CITIES : (window.CITIES || globalThis.CITIES);
+    return Array.isArray(list) ? list : [];
+  }
+
+  function isChinaCity(city) {
+    const province = String(Array.isArray(city) ? city[0] : city?.province || '').trim();
+    return chinaCityRegions.has(province);
   }
 
   function cityFromRow(row) {
@@ -1678,37 +1695,103 @@
     return { province: row[0], city: row[1], name: `${row[0]} ${row[1]}`, lon: Number(row[2]), lat: Number(row[3]), tzOffset: Number(row[4] ?? 8) };
   }
 
-  function findCity(query) {
-    const q = String(query || '').trim().toLowerCase();
-    const list = typeof CITIES !== 'undefined' ? CITIES : (window.CITIES || globalThis.CITIES);
-    if (!q || !Array.isArray(list)) return null;
-    const compact = q.replace(/\s|·|-/g, '');
-    const found = list.find((row) => {
-      const province = String(row[0]).toLowerCase();
-      const city = String(row[1]).toLowerCase();
-      const text = `${province}${city} ${province} ${city}`;
-      const rowCompact = `${province}${city}`.replace(/\s/g, '');
-      const cityCompact = city.replace(/\s/g, '');
-      return text.includes(q)
-        || text.replace(/\s/g, '').includes(compact)
-        || compact.includes(rowCompact)
-        || (cityCompact.length >= 2 && compact.includes(cityCompact));
-    });
-    return cityFromRow(found);
+  function formatCityLabel(city) {
+    if (!city) return '';
+    if (isChinaCity(city)) {
+      return city.province === city.city ? `中国 · ${city.city}` : `中国 · ${city.province} ${city.city}`;
+    }
+    return `${city.province} · ${city.city}`;
   }
 
-  function applySelectedCity(city) {
+  function formatTzOffset(tzOffset) {
+    const value = Number.isFinite(Number(tzOffset)) ? Number(tzOffset) : 8;
+    const sign = value >= 0 ? '+' : '-';
+    const abs = Math.abs(value);
+    const hour = Math.floor(abs);
+    const minutes = Math.round((abs - hour) * 60);
+    return minutes ? `UTC${sign}${hour}:${String(minutes).padStart(2, '0')}` : `UTC${sign}${hour}`;
+  }
+
+  function formatGeoCoord(value, axis) {
+    const number = Number(value);
+    if (!Number.isFinite(number)) return '--';
+    const dir = axis === 'lat'
+      ? (number >= 0 ? 'N' : 'S')
+      : (number >= 0 ? 'E' : 'W');
+    return `${Math.abs(number).toFixed(2)}°${dir}`;
+  }
+
+  function cityMatchesQuery(row, q, compact) {
+    const province = String(row[0]).toLowerCase();
+    const city = String(row[1]).toLowerCase();
+    const text = `${province}${city} ${province} ${city}`;
+    const rowCompact = `${province}${city}`.replace(/\s/g, '');
+    const cityCompact = city.replace(/\s/g, '');
+    return text.includes(q)
+      || text.replace(/\s/g, '').includes(compact)
+      || compact.includes(rowCompact)
+      || (cityCompact.length >= 2 && compact.includes(cityCompact));
+  }
+
+  function findCityRows(query, scope = 'all', limit = 12) {
+    const q = String(query || '').trim().toLowerCase();
+    const list = getCityList();
+    if (!q || !Array.isArray(list)) return [];
+    const compact = q.replace(/\s|·|-/g, '');
+    return list
+      .filter((row) => (scope !== 'china' || isChinaCity(row)) && cityMatchesQuery(row, q, compact))
+      .slice(0, limit);
+  }
+
+  function findCity(query, scope = 'all') {
+    const found = findCityRows(query, scope, 1);
+    return cityFromRow(found?.[0]);
+  }
+
+  function syncCityScopeUi() {
+    document.querySelectorAll('[data-city-scope]').forEach((btn) => {
+      btn.classList.toggle('active', btn.dataset.cityScope === cityScope);
+    });
+    const input = $('#mbpCitySearch');
+    if (input) {
+      input.placeholder = cityScope === 'global'
+        ? '搜索国家/城市，如：Singapore、Tokyo、London'
+        : '搜索城市，如：北京、香港、台北';
+    }
+    const note = $('#mbpCityScopeNote');
+    if (note) {
+      note.textContent = cityScope === 'global'
+        ? '全球出生地按当地法定区时，再按经度校正真太阳时。'
+        : '默认中国出生地，含港澳台，按北京时间 UTC+8 校正当地真太阳时。';
+    }
+  }
+
+  function setCityScope(scope, options = {}) {
+    cityScope = scope === 'global' ? 'global' : defaultCityScope;
+    syncCityScopeUi();
+    if (!options.keepSelected && selectedCity && cityScope === 'china' && !isChinaCity(selectedCity)) {
+      applySelectedCity(null, { preserveScope: true });
+    }
+  }
+
+  function applySelectedCity(city, options = {}) {
     selectedCity = city || null;
+    if (city && !options.preserveScope) {
+      setCityScope(isChinaCity(city) ? defaultCityScope : 'global', { keepSelected: true });
+    } else {
+      syncCityScopeUi();
+    }
     const input = $('#mbpCitySearch');
     const clear = $('#mbpClearCity');
     const selected = $('#mbpCitySelected');
     if (input) input.value = city ? `${city.province} · ${city.city}` : '';
     if (clear) clear.style.display = city ? '' : 'none';
-    if (selected) selected.style.display = city ? 'block' : 'none';
+    if (selected) selected.style.display = city ? '' : 'none';
     if (city) {
       $('#mbpCitySelectedName').textContent = formatCityLabel(city);
-      $('#mbpCityLon').textContent = Number(city.lon).toFixed(2);
-      $('#mbpCityLat').textContent = Number(city.lat).toFixed(2);
+      $('#mbpCityTz').textContent = formatTzOffset(city.tzOffset);
+      $('#mbpCityLon').textContent = formatGeoCoord(city.lon, 'lon');
+      $('#mbpCityLat').textContent = formatGeoCoord(city.lat, 'lat');
     }
     updateTrueSolarPreview();
   }
@@ -1832,9 +1915,10 @@
       tzOffset: selectedCity?.tzOffset ?? 8,
       cityName: selectedCity ? selectedCity.city : '',
     });
-    display.innerHTML = `区时 ${pad2(time.hour)}:${pad2(time.minute)} · 真太阳时 <b>${pad2(tst.trueSolarHour)}:${pad2(tst.trueSolarMinute)}</b> · ${escapeHtml(tst.diffStr)}`;
+    const zoneText = selectedCity ? formatTzOffset(tst.tzOffset) : 'UTC+8';
+    display.innerHTML = `区时 ${pad2(time.hour)}:${pad2(time.minute)} ${escapeHtml(zoneText)} · 真太阳时 <b>${pad2(tst.trueSolarHour)}:${pad2(tst.trueSolarMinute)}</b> · ${escapeHtml(tst.diffStr)}`;
     if (badge) {
-      badge.textContent = tst.isEstimated ? '默认估算' : formatCityLabel(selectedCity);
+      badge.textContent = tst.isEstimated ? '默认北京估算' : `${formatCityLabel(selectedCity)} ${formatTzOffset(tst.tzOffset)}`;
       badge.style.display = '';
     }
     if (shichen) {
@@ -1888,6 +1972,7 @@
       cityLon: selectedCity?.lon,
       cityLat: selectedCity?.lat,
       cityTz: selectedCity?.tzOffset ?? 8,
+      cityScope,
     });
   }
 
@@ -1919,7 +2004,7 @@
       cstMinute: profile.minute,
       timeIdx,
       tstResult,
-      cityDetail: profile.cityLon ? { name: profile.city, lon: profile.cityLon, lat: profile.cityLat, tzOffset: profile.cityTz ?? 8 } : null,
+      cityDetail: profile.cityLon ? { name: profile.city, lon: profile.cityLon, lat: profile.cityLat, tzOffset: profile.cityTz ?? 8, scope: profile.cityScope || defaultCityScope } : null,
     };
   }
 
@@ -2034,6 +2119,7 @@
     $('#mbpHour').value = profile.hour;
     $('#mbpMinute').value = profile.minute;
     selectedCity = profile.cityLon ? { province: profile.cityProvince || profile.city, city: profile.cityShort || profile.city, name: profile.city, lon: profile.cityLon, lat: profile.cityLat, tzOffset: profile.cityTz ?? 8 } : findCity(profile.city);
+    setCityScope(profile.cityScope || (selectedCity && !isChinaCity(selectedCity) ? 'global' : defaultCityScope), { keepSelected: true });
     applySelectedCity(selectedCity);
     if (!selectedCity) {
       $('#mbpCitySearch').value = profile.city || '';
@@ -6204,36 +6290,48 @@
       if (button) applyShichenCandidate(button);
     });
 
+    document.querySelectorAll('[data-city-scope]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        setCityScope(btn.dataset.cityScope);
+        $('#mbpCityDropdown').style.display = 'none';
+        updateTrueSolarPreview();
+      });
+    });
+    syncCityScopeUi();
+
     $('#mbpCitySearch')?.addEventListener('input', () => {
       const input = $('#mbpCitySearch');
       const dropdown = $('#mbpCityDropdown');
       const q = input.value.trim().toLowerCase();
-      const list = typeof CITIES !== 'undefined' ? CITIES : (window.CITIES || globalThis.CITIES || []);
       selectedCity = null;
       $('#mbpClearCity').style.display = q ? '' : 'none';
       $('#mbpCitySelected').style.display = 'none';
-      if (!q || !Array.isArray(list)) {
+      if (!q) {
         dropdown.style.display = 'none';
         updateTrueSolarPreview();
         return;
       }
-      const compact = q.replace(/\s|·|-/g, '');
-      const results = list.filter((row) => {
-        const text = `${row[0]}${row[1]} ${row[0]} ${row[1]}`.toLowerCase();
-        return text.includes(q) || text.replace(/\s/g, '').includes(compact);
-      }).slice(0, 12);
+      let results = findCityRows(q, cityScope, 12);
+      if (!results.length && cityScope === 'china') {
+        const globalResults = findCityRows(q, 'global', 12);
+        if (globalResults.length) {
+          setCityScope('global', { keepSelected: true });
+          results = globalResults;
+        }
+      }
       if (!results.length) {
         dropdown.style.display = 'none';
         return;
       }
       dropdown.innerHTML = results.map((row, index) => `
         <div class="nf-city-item" data-index="${index}">
-          <b>${escapeHtml(row[0])} · ${escapeHtml(row[1])}</b>
-          <span>${Number(row[2]).toFixed(2)}°E, ${Number(row[3]).toFixed(2)}°N</span>
+          <b>${escapeHtml(formatCityLabel(cityFromRow(row)))}</b>
+          <span>${escapeHtml(formatTzOffset(row[4]))} · ${escapeHtml(formatGeoCoord(row[2], 'lon'))}, ${escapeHtml(formatGeoCoord(row[3], 'lat'))}</span>
         </div>
       `).join('');
       dropdown._mbpResults = results;
       dropdown.style.display = 'block';
+      updateTrueSolarPreview();
     });
 
     $('#mbpCityDropdown')?.addEventListener('click', (event) => {
@@ -6267,7 +6365,7 @@
     function setAiCity(cityName) {
       const text = String(cityName || '').trim();
       if (!text) return;
-      const city = findCity(text);
+      const city = findCity(text, 'global');
       if (city) {
         applySelectedCity(city);
         return;
