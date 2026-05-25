@@ -2481,11 +2481,34 @@ body.mbp-ticket-open {
   }
 }
 
+@keyframes mbpSmallBtnSpin {
+  to {
+    transform: translateY(-50%) rotate(360deg);
+  }
+}
+
+@keyframes mbpSmallBtnShine {
+  0%,
+  28% {
+    opacity: 0;
+    transform: translateX(-64%) rotate(8deg);
+  }
+  48% {
+    opacity: .95;
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(64%) rotate(8deg);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .mbp-report-action-bar button,
   .mbp-report-action-bar button::before,
   .mbp-report-action-bar button::after,
-  .mbp-report-action-bar button.is-running .mbp-decode-progress-ring {
+  .mbp-report-action-bar button.is-running .mbp-decode-progress-ring,
+  .mbp-chapter-ai-btn.is-running::before,
+  .mbp-chapter-ai-btn.is-running::after {
     animation: none;
   }
 }
@@ -6522,10 +6545,61 @@ p.mbp-topic-detail {
 }
 
 .mbp-chapter-ai-btn {
+  position: relative;
+  isolation: isolate;
   min-width: 118px;
   min-height: 36px;
   padding: 0 16px;
+  overflow: hidden;
   font-size: 13px;
+}
+
+.mbp-chapter-ai-btn::before,
+.mbp-chapter-ai-btn::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+  opacity: 0;
+}
+
+.mbp-chapter-ai-btn::before {
+  left: 14px;
+  top: 50%;
+  z-index: 2;
+  width: 13px;
+  height: 13px;
+  border: 2px solid rgba(26, 16, 8, .24);
+  border-top-color: rgba(26, 16, 8, .9);
+  border-radius: 999px;
+  transform: translateY(-50%);
+}
+
+.mbp-chapter-ai-btn::after {
+  inset: -30% -45%;
+  z-index: 1;
+  background: linear-gradient(110deg, transparent 35%, rgba(255, 248, 209, .55) 50%, transparent 66%);
+  transform: translateX(-64%) rotate(8deg);
+}
+
+.mbp-chapter-ai-btn.is-running {
+  padding-left: 36px;
+  opacity: 1;
+  background:
+    radial-gradient(circle at 28% 22%, rgba(255, 249, 214, .45), transparent 24%),
+    linear-gradient(135deg, #e0c16b, #bf7a40);
+  box-shadow:
+    0 12px 30px rgba(0, 0, 0, .28),
+    0 0 22px rgba(241, 212, 125, .25);
+}
+
+.mbp-chapter-ai-btn.is-running::before {
+  opacity: 1;
+  animation: mbpSmallBtnSpin .72s linear infinite;
+}
+
+.mbp-chapter-ai-btn.is-running::after {
+  opacity: 1;
+  animation: mbpSmallBtnShine 1.18s ease-in-out infinite;
 }
 
 .mbp-chapters article > .mbp-chapter-ai-btn {
