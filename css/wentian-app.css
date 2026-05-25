@@ -870,41 +870,6 @@ html[lang="en"] [data-node-id="wt15-seal-text"] {
   grid-template-columns: 1fr 1fr;
 }
 
-.wentian-chart-city-scope {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 4px;
-  width: 100%;
-  padding: 3px;
-  border: 1px solid #e3d2b8;
-  border-radius: 12px;
-  background: #f5ebdc;
-}
-
-.wentian-chart-city-scope button {
-  height: 27px;
-  border: 0;
-  border-radius: 9px;
-  background: transparent;
-  color: #7a6a59;
-  font-size: 13px;
-  font-weight: 800;
-}
-
-.wentian-chart-city-scope button.active {
-  background: #9e4738;
-  color: #fffdf6;
-  box-shadow: 0 5px 12px rgba(123, 49, 41, 0.16);
-}
-
-.wentian-chart-city-note {
-  width: 100%;
-  margin-top: -2px;
-  color: #8d7d69;
-  font-size: 10.5px;
-  line-height: 1.35;
-}
-
 .wentian-chart-city-wrap {
   position: relative;
   width: 100%;

@@ -13515,11 +13515,6 @@ function sourceChartFormScreen() {
 
       <div class="wentian-chart-row stack">
         <span class="wentian-chart-label">出生地点<small>影响真太阳时</small></span>
-        <div class="wentian-chart-city-scope" role="group" aria-label="出生地点范围">
-          <button type="button" class="active" data-action="wentian-chart-city-scope" data-wentian-city-scope="china">中国</button>
-          <button type="button" data-action="wentian-chart-city-scope" data-wentian-city-scope="global">全球</button>
-        </div>
-        <div id="wentian-chart-city-note" class="wentian-chart-city-note">北京时间 UTC+8 + 经度校正。</div>
         <div class="wentian-chart-city-wrap">
           <input id="wentian-chart-city" class="wentian-chart-city-input" placeholder="搜索城市，如：北京、上海、深圳" autocomplete="off">
           <button type="button" id="wentian-chart-city-clear" class="wentian-chart-city-clear" data-action="wentian-chart-city-clear" style="display:none">清除</button>
