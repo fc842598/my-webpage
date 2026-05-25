@@ -4992,6 +4992,7 @@ function refreshWentianHepanAiPanel() {
   panel.innerHTML = renderWentianHepanAiPanel(result);
   applyWentianLanguageText(panel, getWentianLanguageCode(), { force: true });
   stabilizeWentianLanguageText(panel);
+  compactWentianHepanResultLayout();
   scheduleWentianPhoneFit();
 }
 
@@ -9718,6 +9719,18 @@ function renderWentianHepanAiPanel(result) {
   `;
 }
 
+function renderWentianHepanXuEntry(result) {
+  const names = [result?.leftDisplay?.name, result?.rightDisplay?.name].filter(Boolean).join(" × ") || "双方命盘";
+  return `
+    <section class="wentian-hepan-xu-card">
+      <span>下一步</span>
+      <strong>进入合盘许半仙</strong>
+      <p>带上${escapeHtml(names)}的完整命盘、夫妻宫依据和本页合盘结论继续追问。</p>
+      <button type="button" data-action="wentian-hepan-ask-xu">进入合盘许半仙</button>
+    </section>
+  `;
+}
+
 const WENTIAN_HEPAN_RESULT_SCREEN_HEIGHT = 2840;
 
 function getWentianHepanChartFocusBranch(archive) {
@@ -9831,9 +9844,11 @@ function sourceHepanResultScreen() {
         <p>${escapeHtml(formatWentianHepanReportText(result.advice))}</p>
       </div>
 
+      ${renderWentianHepanXuEntry(result)}
+
       <div class="wentian-hepan-result-actions">
         <button type="button" data-route="screen-11">重新选择</button>
-        <button type="button" class="primary" data-action="wentian-hepan-ask-xu">问许半仙深批</button>
+        <button type="button" class="primary" data-action="wentian-hepan-ask-xu">进入合盘许半仙</button>
       </div>
     </section>
   `;
@@ -14819,6 +14834,28 @@ function scheduleWentianZiweiScreenLayout() {
   [120, 360, 900, 1800, 3200].forEach((delay) => window.setTimeout(refit, delay));
 }
 
+function compactWentianHepanResultLayout() {
+  const phone = view.querySelector('.figma-phone[data-node-id="screen-49"]');
+  if (!phone) return false;
+  const panel = phone.querySelector(".wentian-hepan-result-panel");
+  const bg = phone.querySelector('[data-node-id="wt49-bg"]');
+  if (!panel || !bg) return false;
+  const panelTop = Number.parseFloat(getComputedStyle(panel).top) || panel.offsetTop || 0;
+  const panelBottom = Math.ceil(panelTop + panel.offsetHeight);
+  const nextHeight = Math.max(WENTIAN_PHONE_HEIGHT, panelBottom + 32);
+  phone.style.height = `${nextHeight}px`;
+  bg.style.height = `${nextHeight}px`;
+  return true;
+}
+
+function scheduleWentianHepanResultLayout() {
+  const refit = () => {
+    if (compactWentianHepanResultLayout()) fitActivePhoneShell();
+  };
+  refit();
+  [120, 360, 900, 1800, 3200].forEach((delay) => window.setTimeout(refit, delay));
+}
+
 function fitActivePhoneShell() {
   const wrap = view.querySelector(".phone-wrap");
   const phone = view.querySelector(".figma-phone");
@@ -14892,9 +14929,11 @@ function navigate(route, push = true) {
     applyWentianLanguageText(view, getWentianLanguageCode(), { force: true });
     stabilizeWentianLanguageText(view);
     if (screen.no === 27) compactWentianZiweiScreenLayout();
+    if (screen.no === 49) compactWentianHepanResultLayout();
     ensureWentianLanguageObserver();
     scheduleWentianPhoneFit();
     if (screen.no === 27) scheduleWentianZiweiScreenLayout();
+    if (screen.no === 49) scheduleWentianHepanResultLayout();
     syncActive();
     window.setTimeout(initWentianAuth, 0);
     if (screen.no === 4) window.setTimeout(initWentianXuChat, 0);

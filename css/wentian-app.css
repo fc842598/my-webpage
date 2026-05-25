@@ -2815,7 +2815,8 @@ html[lang="en"] .wentian-archive-confirm {
 .wentian-hepan-report-card,
 .wentian-hepan-result-card,
 .wentian-hepan-result-grid article,
-.wentian-hepan-advice-card {
+.wentian-hepan-advice-card,
+.wentian-hepan-xu-card {
   border: 1px solid #eadfce;
   background: #fffdf8;
   box-shadow: 0 8px 20px rgba(70, 45, 25, .06);
@@ -2988,7 +2989,8 @@ html[lang="en"] .wentian-archive-confirm {
 .wentian-hepan-report-card,
 .wentian-hepan-ai-card,
 .wentian-hepan-result-card,
-.wentian-hepan-advice-card {
+.wentian-hepan-advice-card,
+.wentian-hepan-xu-card {
   padding: 15px 16px;
   border-radius: 18px;
 }
@@ -3269,11 +3271,57 @@ html[lang="en"] .wentian-archive-confirm {
   background: #fff1dc;
 }
 
+.wentian-hepan-xu-card {
+  display: grid;
+  gap: 10px;
+  border-color: #d6b463;
+  background:
+    radial-gradient(circle at 86% 18%, rgba(255, 241, 220, .18), transparent 28%),
+    linear-gradient(135deg, #241a14 0%, #6d2f25 58%, #b9852f 100%);
+  box-shadow: 0 14px 28px rgba(77, 43, 22, .16);
+}
+
+.wentian-hepan-xu-card span,
+.wentian-hepan-xu-card strong {
+  display: block;
+  font-weight: 900;
+}
+
+.wentian-hepan-xu-card span {
+  color: #f4d293;
+  font-size: 12px;
+}
+
+.wentian-hepan-xu-card strong {
+  color: #fffaf3;
+  font-size: 23px;
+  line-height: 1.18;
+}
+
+.wentian-hepan-xu-card p {
+  margin: 0;
+  color: #eadcc7;
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1.5;
+}
+
+.wentian-hepan-xu-card button {
+  min-height: 48px;
+  border: 0;
+  border-radius: 13px;
+  background: #fffaf3;
+  color: #8f3d30;
+  font-size: 15px;
+  font-weight: 900;
+  box-shadow: 0 10px 20px rgba(24, 15, 10, .16);
+}
+
 .wentian-hepan-result-actions {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 12px;
-  padding-bottom: 150px;
+  padding-bottom: 56px;
 }
 
 .wentian-hepan-result-actions button {
