@@ -3792,7 +3792,7 @@ async function callWentianChartAiModule(moduleKey, chartData) {
 }
 
 function refreshWentianChartAiScreen() {
-  if (state.route === "screen-27") navigate("screen-27", false);
+  if (state.route === "screen-27") navigatePreservingScroll("screen-27", false);
 }
 
 function scrollToWentianMobileChapter(index) {
@@ -3836,7 +3836,6 @@ async function decodeWentianChartAiModules(moduleKeys, options = {}) {
   });
   saveWentianChartAiState();
   refreshWentianChartAiScreen();
-  if (Number.isInteger(options.scrollIndex)) scrollToWentianMobileChapter(options.scrollIndex);
   return success;
 }
 
@@ -3849,19 +3848,11 @@ async function decodeWentianChartAi() {
 async function decodeWentianChartAiModule(moduleKey) {
   const task = getWentianAiTask(moduleKey);
   if (!task) return 0;
-  const indexMap = {
-    overall: 0,
-    current_luck: 2,
-    xiaoxian_liunian: 3,
-    life_curve: 4,
-    action_advice: 5,
-  };
-  const scrollIndex = indexMap[moduleKey] ?? (WENTIAN_CHART_SPECIAL_MODULES.includes(moduleKey) ? 1 : 0);
-  return decodeWentianChartAiModules([moduleKey], { scrollIndex });
+  return decodeWentianChartAiModules([moduleKey]);
 }
 
 async function decodeWentianChartAiSpecials() {
-  return decodeWentianChartAiModules(WENTIAN_CHART_SPECIAL_MODULES, { scrollIndex: 1 });
+  return decodeWentianChartAiModules(WENTIAN_CHART_SPECIAL_MODULES);
 }
 
 async function decodeWentianChartAiAdvice() {
