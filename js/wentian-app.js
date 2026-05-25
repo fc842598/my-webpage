@@ -1244,6 +1244,7 @@ let wentianFallbackChartRecordId = null;
 const WENTIAN_UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 const WENTIAN_CHART_STORAGE_KEY = "wentian-app-current-chart-v1";
 const WENTIAN_ARCHIVES_STORAGE_KEY = "wentian-app-archives-v1";
+const WENTIAN_ARCHIVE_TOMBSTONES_KEY = "wentian-app-archive-tombstones-v1";
 const WENTIAN_SELECTED_ARCHIVE_KEY = "wentian-app-selected-archive-id";
 const WENTIAN_HEPAN_SELECTION_KEY = "wentian-app-hepan-selected-ids";
 const WENTIAN_HEPAN_AI_CACHE_KEY = "wentian-app-hepan-ai-judge-v2";
@@ -1884,6 +1885,64 @@ function getWentianArchiveStamp(archive) {
   return Number.isFinite(stamp) ? stamp : 0;
 }
 
+function readWentianArchiveTombstones() {
+  try {
+    const raw = localStorage.getItem(WENTIAN_ARCHIVE_TOMBSTONES_KEY);
+    const list = raw ? JSON.parse(raw) : [];
+    return Array.isArray(list) ? list : [];
+  } catch (_err) {
+    return [];
+  }
+}
+
+function writeWentianArchiveTombstones(tombstones) {
+  try {
+    localStorage.setItem(WENTIAN_ARCHIVE_TOMBSTONES_KEY, JSON.stringify(tombstones.slice(-120)));
+  } catch (_err) {}
+}
+
+function getWentianArchiveTombstoneKeys(archive) {
+  if (!archive) return [];
+  return [
+    archive.id,
+    archive.form?.archiveId,
+    archive.chartRecordId,
+    archive.chartData?.chartRecordId,
+    getWentianArchiveDuplicateKey(archive),
+  ].filter(Boolean);
+}
+
+function isWentianArchiveTombstoned(archive, tombstones = readWentianArchiveTombstones()) {
+  const keys = new Set(getWentianArchiveTombstoneKeys(archive));
+  if (!keys.size) return false;
+  return tombstones.some((item) => getWentianArchiveTombstoneKeys(item).some((key) => keys.has(key)));
+}
+
+function rememberWentianArchiveTombstone(archive) {
+  if (!archive) return;
+  const tombstones = readWentianArchiveTombstones()
+    .filter((item) => !isWentianArchiveTombstoned(archive, [item]));
+  tombstones.push({
+    id: archive.id || "",
+    chartRecordId: archive.chartRecordId || archive.chartData?.chartRecordId || "",
+    form: {
+      archiveId: archive.form?.archiveId || archive.id || "",
+      name: archive.form?.name || "",
+      gender: archive.form?.gender || "",
+      datetime: archive.form?.datetime || archive.chartData?.birthDate || archive.chartData?.solarTime || "",
+    },
+    deletedAt: new Date().toISOString(),
+  });
+  writeWentianArchiveTombstones(tombstones);
+}
+
+function forgetWentianArchiveTombstone(archive) {
+  if (!archive) return;
+  const tombstones = readWentianArchiveTombstones()
+    .filter((item) => !isWentianArchiveTombstoned(archive, [item]));
+  writeWentianArchiveTombstones(tombstones);
+}
+
 function sortWentianArchivesByDefault(archives, selectedId = "") {
   return (Array.isArray(archives) ? archives : [])
     .map((archive, index) => ({ archive, index }))
@@ -1899,9 +1958,11 @@ function sortWentianArchivesByDefault(archives, selectedId = "") {
 
 function mergeWentianArchives(localArchives, remoteArchives) {
   const merged = new Map();
+  const tombstones = readWentianArchiveTombstones();
   const add = (archive) => {
     const normalized = normalizeWentianArchive(archive);
     if (!normalized) return;
+    if (isWentianArchiveTombstoned(normalized, tombstones)) return;
     const key = getWentianArchiveDuplicateKey(normalized) || normalized.id || normalized.chartRecordId;
     const old = merged.get(key);
     if (!old || getWentianArchiveStamp(normalized) >= getWentianArchiveStamp(old)) {
@@ -1950,9 +2011,10 @@ function showWentianArchiveSyncError(message) {
 }
 
 function getWentianRemoteArchiveIds(archives) {
+  const tombstones = readWentianArchiveTombstones();
   return (Array.isArray(archives) ? archives : [])
     .map(normalizeWentianArchive)
-    .filter((archive) => archive && !archive.form?.isDefault)
+    .filter((archive) => archive && !archive.form?.isDefault && !isWentianArchiveTombstoned(archive, tombstones))
     .map((archive) => archive.id)
     .sort();
 }
@@ -2052,7 +2114,7 @@ async function hydrateWentianArchivesFromRemote(options = {}) {
       const merged = sortWentianArchivesByDefault(rawMerged, remoteSelectedId);
       const before = JSON.stringify(localArchives.map((item) => item.id));
       const after = JSON.stringify(merged.map((item) => item.id));
-      if (merged.length) writeWentianArchives(merged);
+      writeWentianArchives(merged);
       if (remoteSelectedId) {
         setWentianSelectedArchiveId(remoteSelectedId);
       }
@@ -2080,7 +2142,7 @@ function getWentianArchiveList() {
   let archives = readWentianArchives().map(normalizeWentianArchive).filter(Boolean);
   const currentArchive = archiveFromChartState(getWentianSavedChart());
   if (!archives.length && !hasStoredArchives) archives = getDefaultWentianArchives();
-  if (currentArchive && !archives.some((item) => item.id === currentArchive.id || getWentianArchiveDuplicateKey(item) === getWentianArchiveDuplicateKey(currentArchive))) {
+  if (currentArchive && !isWentianArchiveTombstoned(currentArchive) && !archives.some((item) => item.id === currentArchive.id || getWentianArchiveDuplicateKey(item) === getWentianArchiveDuplicateKey(currentArchive))) {
     archives.unshift(currentArchive);
   }
   const merged = mergeWentianArchives(archives, []);
@@ -2094,6 +2156,7 @@ function getWentianArchiveList() {
 function saveWentianArchiveFromChartState(chartState) {
   const archive = archiveFromChartState(chartState);
   if (!archive) return;
+  forgetWentianArchiveTombstone(archive);
   const archives = getWentianArchiveList();
   const archiveKey = getWentianArchiveDuplicateKey(archive);
   const index = archives.findIndex((item) => item.id === archive.id || item.chartRecordId === archive.chartRecordId || (archiveKey && getWentianArchiveDuplicateKey(item) === archiveKey));
@@ -2196,11 +2259,8 @@ async function deleteWentianArchive(id) {
   const archives = getWentianArchiveList();
   const target = findWentianArchiveById(id, archives);
   if (!target) return false;
-  const previousSelectedId = getWentianStoredSelectedArchiveId();
-  const previousHepanIds = getWentianHepanSelectedIds(archives);
-  const previousDraftId = wentianArchiveDraftId;
-  const previousSavedChart = getWentianSavedChart();
   const nextArchives = archives.filter((archive) => archive.id !== id);
+  rememberWentianArchiveTombstone(target);
   writeWentianArchives(nextArchives);
   const selectedIds = getWentianHepanSelectedIds(nextArchives).filter((item) => item !== id);
   saveWentianHepanSelectedIds(selectedIds);
@@ -2236,19 +2296,12 @@ async function deleteWentianArchive(id) {
     await deleteWentianArchiveFromRemote(target, { throwOnError: true, verify: true });
     await pushWentianArchivesToRemote(nextArchives, { throwOnError: true, verify: true });
     setWentianArchiveStatus("档案已删除并同步", "ok");
-    navigatePreservingScroll(state.route, false);
-    return true;
   } catch (error) {
-    writeWentianArchives(archives);
-    saveWentianHepanSelectedIds(previousHepanIds);
-    wentianArchiveDraftId = previousDraftId;
-    if (previousSavedChart) saveWentianChart(previousSavedChart, { upsertArchive: false });
-    else clearWentianSavedChart();
-    if (previousSelectedId) setWentianSelectedArchiveId(previousSelectedId);
-    setWentianArchiveStatus(error.message || "删除失败，已恢复本机档案", "error");
-    navigatePreservingScroll(state.route, false);
-    return false;
+    console.info("wentian archive remote delete delayed", error);
+    setWentianArchiveStatus("已从本机删除，云端同步稍后重试", "ok");
   }
+  navigatePreservingScroll(state.route, false);
+  return true;
 }
 
 function requestWentianArchiveDelete(id) {
