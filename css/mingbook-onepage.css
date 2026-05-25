@@ -5112,7 +5112,7 @@ p.mbp-topic-detail {
   padding: clamp(26px, 2.8vw, 36px);
   scroll-margin-top: 86px;
   display: grid;
-  grid-template-columns: minmax(390px, .52fr) minmax(0, 1.48fr);
+  grid-template-columns: minmax(330px, 430px) minmax(0, 1fr);
   grid-template-rows: auto;
   gap: clamp(18px, 2vw, 28px);
   align-items: start;
@@ -5133,7 +5133,7 @@ p.mbp-topic-detail {
   position: relative;
   z-index: 2;
   display: grid;
-  gap: clamp(20px, 2vw, 28px);
+  gap: clamp(16px, 1.45vw, 22px);
   align-content: start;
   justify-items: stretch;
   padding: 4px 0 0;
@@ -6299,9 +6299,9 @@ p.mbp-topic-detail {
 .mbp-yijing-art {
   min-width: 0;
   margin: 0;
-  padding: 18px;
+  padding: 14px;
   display: grid;
-  gap: 16px;
+  gap: 13px;
   align-content: start;
   overflow: visible;
   border: 1px solid rgba(241, 212, 125, .25);
@@ -6317,24 +6317,24 @@ p.mbp-topic-detail {
 
 .mbp-yijing-art-mini-lines {
   justify-self: center;
-  width: 120px;
-  gap: 7px;
+  width: 104px;
+  gap: 6px;
   opacity: .96;
 }
 
 .mbp-yijing-art-mini-lines .mbp-yijing-line {
-  height: 6px;
+  height: 5px;
 }
 
 .mbp-yijing-art-mini-lines .mbp-yijing-line.is-broken {
-  gap: 14px;
+  gap: 12px;
 }
 
 .mbp-yijing-art-frame {
   position: relative;
   z-index: 2;
   width: 100%;
-  min-height: 205px;
+  min-height: 0;
   margin-left: 0;
   margin-right: 0;
   aspect-ratio: 1.46 / 1;
@@ -6429,7 +6429,7 @@ p.mbp-topic-detail {
 
 .mbp-yijing-art figcaption {
   min-height: 0;
-  padding: 16px 0 15px;
+  padding: 14px 0 13px;
   border-top: 1px solid rgba(241, 212, 125, .15);
   border-bottom: 1px solid rgba(241, 212, 125, .13);
   text-align: center;
