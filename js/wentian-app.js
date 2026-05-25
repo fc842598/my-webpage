@@ -1304,7 +1304,9 @@ const WENTIAN_LANGUAGE_OPTIONS = [
 let wentianArchiveDraftId = null;
 let wentianProfileSearchQuery = "";
 let wentianArchiveRemoteLoaded = false;
+let wentianArchiveRemoteLoadedScope = "";
 let wentianArchiveRemotePromise = null;
+let wentianArchiveRemotePromiseScope = "";
 let wentianArchiveDeleteConfirmId = "";
 let wentianLanguageDraft = null;
 let wentianHepanSelectedIds = null;
@@ -1475,6 +1477,11 @@ function getWentianClientId() {
   } catch (_err) {
     return "global";
   }
+}
+
+function getWentianArchiveRemoteScope() {
+  const userId = wentianAuthSession?.user?.id || readWentianStoredSession()?.user?.id || "";
+  return userId ? `account:${userId}` : `client:${getWentianClientId()}`;
 }
 
 function normalizeWentianInviteCode(value) {
@@ -1907,7 +1914,7 @@ async function fetchWentianRemoteArchives() {
   const clientId = getWentianClientId();
   const response = await fetch(`${getWentianApiBase()}/api/wentian/archives?clientId=${encodeURIComponent(clientId)}`, {
     method: "GET",
-    headers: { "Accept": "application/json" },
+    headers: { "Accept": "application/json", ...(await getWentianAuthHeaders()) },
   });
   const data = await response.json().catch(() => ({}));
   if (!response.ok || data.error) throw new Error(data.error || "档案读取失败");
@@ -1923,7 +1930,7 @@ async function pushWentianArchivesToRemote(archives) {
       .slice(0, 50);
     await fetch(`${getWentianApiBase()}/api/wentian/archives`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", ...(await getWentianAuthHeaders()) },
       body: JSON.stringify({
         clientId,
         archives: syncArchives,
@@ -1943,7 +1950,7 @@ async function deleteWentianArchiveFromRemote(archive) {
     if (!archiveId && !chartRecordId) return;
     await fetch(`${getWentianApiBase()}/api/wentian/archives`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", ...(await getWentianAuthHeaders()) },
       body: JSON.stringify({
         clientId,
         action: "delete",
@@ -1957,11 +1964,15 @@ async function deleteWentianArchiveFromRemote(archive) {
 }
 
 async function hydrateWentianArchivesFromRemote(options = {}) {
-  if (wentianArchiveRemotePromise) return wentianArchiveRemotePromise;
-  if (wentianArchiveRemoteLoaded && !options.force) return null;
+  const scope = getWentianArchiveRemoteScope();
+  if (wentianArchiveRemotePromise && wentianArchiveRemotePromiseScope === scope) return wentianArchiveRemotePromise;
+  if (wentianArchiveRemoteLoaded && wentianArchiveRemoteLoadedScope === scope && !options.force) return null;
+  wentianArchiveRemotePromiseScope = scope;
   wentianArchiveRemotePromise = fetchWentianRemoteArchives()
     .then((data) => {
+      if (scope !== getWentianArchiveRemoteScope()) return null;
       wentianArchiveRemoteLoaded = true;
+      wentianArchiveRemoteLoadedScope = scope;
       const localArchives = readWentianArchives().map(normalizeWentianArchive).filter(Boolean);
       const remoteArchives = (Array.isArray(data.archives) ? data.archives : []).map(normalizeWentianArchive).filter(Boolean);
       const rawMerged = mergeWentianArchives(localArchives, remoteArchives);
@@ -1986,7 +1997,10 @@ async function hydrateWentianArchivesFromRemote(options = {}) {
       return null;
     })
     .finally(() => {
-      wentianArchiveRemotePromise = null;
+      if (wentianArchiveRemotePromiseScope === scope) {
+        wentianArchiveRemotePromise = null;
+        wentianArchiveRemotePromiseScope = "";
+      }
     });
   return wentianArchiveRemotePromise;
 }
@@ -6300,15 +6314,20 @@ function handleWentianRoutePointerCapture(event) {
 }
 
 function getWentianProfile() {
+  const meta = wentianAuthSession?.user?.user_metadata || readWentianStoredSession()?.user?.user_metadata || {};
   const defaults = {
     nickname: "谢广周",
-    email: "aa15989267747@gmail.com",
-    phone: "",
+    email: meta.profile_email || "",
+    phone: meta.phone || "",
   };
   try {
     const raw = localStorage.getItem(WENTIAN_PROFILE_STORAGE_KEY);
     const saved = raw ? JSON.parse(raw) : null;
-    return { ...defaults, ...(saved || {}) };
+    const local = { ...defaults, ...(saved || {}) };
+    return {
+      ...local,
+      nickname: saved?.nickname ? local.nickname : (meta.nickname || meta.display_name || local.nickname),
+    };
   } catch (_err) {
     return defaults;
   }
@@ -6417,11 +6436,24 @@ function saveWentianAuthSession(session) {
 }
 
 function setWentianAuthSession(session) {
+  const previousUserId = wentianAuthSession?.user?.id || "";
+  const nextUserId = session?.user?.id || "";
   wentianAuthSession = session || null;
   saveWentianAuthSession(session);
   wentianMemberState.loaded = false;
   wentianOrderState.loaded = false;
   wentianInviteState.loaded = false;
+  if (previousUserId !== nextUserId) {
+    wentianArchiveRemoteLoaded = false;
+    wentianArchiveRemoteLoadedScope = "";
+    if (nextUserId && typeof window !== "undefined") {
+      window.setTimeout(() => {
+        if ((wentianAuthSession?.user?.id || "") === nextUserId) {
+          hydrateWentianArchivesFromRemote({ force: true, rerender: true });
+        }
+      }, 0);
+    }
+  }
 }
 
 function isWentianSessionExpiring(session) {
@@ -6498,6 +6530,11 @@ async function getWentianAuthSession(options = {}) {
 async function getWentianAuthToken() {
   const session = await getWentianAuthSession();
   return session?.access_token || "";
+}
+
+async function getWentianAuthHeaders() {
+  const token = await getWentianAuthToken();
+  return token ? { Authorization: `Bearer ${token}` } : {};
 }
 
 function refreshWentianAuthScreens() {
@@ -6592,23 +6629,17 @@ async function syncWentianProfileToAccount() {
     return;
   }
   saveWentianProfile(profile);
-  const client = getWentianAuthClient();
   const session = await getWentianAuthSession();
-  if (!client || !session?.user) {
+  if (!session?.user) {
     setWentianProfileStatus("请先登录，再同步到账号", "error");
     return;
   }
   setWentianProfileStatus("正在同步到账号...", "");
   try {
-    const nextMetadata = {
-      ...(session.user.user_metadata || {}),
-      nickname: profile.nickname,
-      display_name: profile.nickname,
-      profile_email: profile.email,
-      phone: profile.phone || session.user.user_metadata?.phone || "",
-    };
-    const { data, error } = await client.auth.updateUser({ data: nextMetadata });
-    if (error) throw error;
+    const data = await wentianFetchJson("/api/auth/profile", {
+      method: "POST",
+      body: { profile },
+    });
     if (data?.user) {
       setWentianAuthSession({ ...session, user: data.user });
     }
