@@ -4346,7 +4346,7 @@ function saveWentianHepanTimeEdit() {
     gender: normalizeWentianArchiveGender(archive) || form.gender || raw.gender || "male",
     datetime: value,
     city: typeof rawCity === "string" ? rawCity : rawCity?.name || "",
-    chartRecordId: makeWentianUuid(),
+    chartRecordId: archive.chartRecordId || archive.chartData?.chartRecordId || makeWentianUuid(),
     isDefault: Boolean(form.isDefault),
   });
   updated.createdAt = archive.createdAt || updated.createdAt;
