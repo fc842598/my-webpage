@@ -3248,6 +3248,43 @@ function normalizeWentianAiText(value) {
   return cleanWentianAiText(value).replace(/\s+/g, " ").trim();
 }
 
+function hasWentianHanText(value) {
+  return WENTIAN_I18N_HAS_HAN_RE.test(String(value || ""));
+}
+
+function isWentianEnglishMode() {
+  return getWentianLanguageCode() === "en";
+}
+
+function getWentianEnglishAiLanguageNotice(title = "AI Reading") {
+  return {
+    title: "Regenerate in English",
+    content: `${title || "This reading"} was generated in Chinese. Tap the button for this module again to create a clean English reading.`,
+  };
+}
+
+function isWentianAiResultChinese(data) {
+  if (!data) return false;
+  const normalized = normalizeWentianAiData(data);
+  const card = normalized?.card || {};
+  const texts = [
+    card.title,
+    card.name,
+    card.summary,
+    card.body,
+    card.text,
+    normalized?.finalAnswer,
+    normalized?.content,
+  ];
+  if (Array.isArray(card.points)) texts.push(...card.points);
+  if (Array.isArray(card.sections)) {
+    for (const section of card.sections) {
+      texts.push(section?.title, section?.content, section?.body, section?.summary);
+    }
+  }
+  return texts.some(hasWentianHanText);
+}
+
 function normalizeWentianAiData(data) {
   if (!data) return null;
   const root = parseWentianAiJson(data) || data;
@@ -3285,10 +3322,14 @@ function trimWentianAiText(text, max = 120) {
 function getWentianAiTitle(data, fallback = "AI解读") {
   const card = getWentianAiCard(data);
   const title = normalizeWentianAiText(card.title || card.name);
+  if (isWentianEnglishMode() && hasWentianHanText(title)) return fallback;
   return (title && !/^[a-z_]+$/i.test(title) ? title : fallback).slice(0, 24) || fallback;
 }
 
 function getWentianAiSections(data) {
+  if (isWentianEnglishMode() && isWentianAiResultChinese(data)) {
+    return [getWentianEnglishAiLanguageNotice(getWentianAiTitle(data, "AI Reading"))];
+  }
   const normalized = normalizeWentianAiData(data);
   const card = normalized?.card || {};
   const sections = Array.isArray(card.sections) ? card.sections : [];
@@ -3308,6 +3349,9 @@ function getWentianAiSections(data) {
 
 function getWentianAiSummary(data, max = 120) {
   if (!data) return "";
+  if (isWentianEnglishMode() && isWentianAiResultChinese(data)) {
+    return trimWentianAiText("Chinese reading saved. Regenerate this module in English.", max);
+  }
   const card = getWentianAiCard(data);
   const sections = getWentianAiSections(data);
   const sectionText = sections.map((section) => [section.title, section.content].filter(Boolean).join("：")).join(" ");
@@ -3639,13 +3683,39 @@ function getWentianBackendAiModule(moduleKey) {
   return moduleKey === "xiaoxian_liunian" ? "liunian_year" : moduleKey;
 }
 
+function getWentianAiLanguageParams() {
+  const code = getWentianLanguageCode();
+  if (code === "en") {
+    return {
+      responseLanguage: "en",
+      responseLanguageName: "English",
+      responseLanguageInstruction: "Return all titles, summaries, sections, and final answers in natural English. Do not output Chinese.",
+    };
+  }
+  if (code === "zh-Hant") {
+    return {
+      responseLanguage: "zh-Hant",
+      responseLanguageName: "Traditional Chinese",
+      responseLanguageInstruction: "Return all titles, summaries, sections, and final answers in Traditional Chinese.",
+    };
+  }
+  return {
+    responseLanguage: "zh-Hans",
+    responseLanguageName: "Simplified Chinese",
+    responseLanguageInstruction: "Return all titles, summaries, sections, and final answers in Simplified Chinese.",
+  };
+}
+
 function buildWentianChartAiPayload(moduleKey, chartData = {}) {
   const normalizedChartData = applyWentianLiunianTimingFields(chartData);
-  const extraParams = getWentianChartAiExtraParams(moduleKey, normalizedChartData);
+  const languageParams = getWentianAiLanguageParams();
+  const extraParams = { ...getWentianChartAiExtraParams(moduleKey, normalizedChartData), ...languageParams };
   const selectedYear = extraParams.selectedYear || getWentianAiCurrentYear(normalizedChartData);
   const selectedDayun = extraParams.selectedDayun || getWentianAiCurrentDecade(normalizedChartData);
   const aiChartData = {
     ...normalizedChartData,
+    responseLanguage: languageParams.responseLanguage,
+    responseLanguageInstruction: languageParams.responseLanguageInstruction,
     currentDecade: Object.keys(selectedDayun).length ? selectedDayun : normalizedChartData.currentDecade,
     currentLiunian: Object.keys(selectedYear).length ? { ...(normalizedChartData.currentLiunian || {}), ...selectedYear } : normalizedChartData.currentLiunian,
     currentXiaolian: selectedYear.xiaolianBranch
@@ -6115,6 +6185,14 @@ const WENTIAN_I18N_EN_PINYIN_FALLBACK = {
   "遇": "Yu", "事": "Shi", "与": "Yu", "愿": "Yuan", "违": "Wei", "动": "Dong", "则": "Ze", "得": "De", "咎": "Jiu"
 };
 
+Object.assign(WENTIAN_I18N_EN_EXTRA, {
+  "\u91cd\u65b0\u603b\u6279\u547d": "Rerun Full Reading",
+  "\u603b\u6279\u547d": "Run Full Reading",
+  "\u751f\u6210\u4e2d": "Generating",
+  "\u5df2\u751f\u6210": "Ready",
+  "\u5f85\u751f\u6210": "Waiting"
+});
+
 const WENTIAN_I18N_EN_LUNAR_MONTH_MAP = {
   "正月": "First Month", "二月": "Second Month", "三月": "Third Month", "四月": "Fourth Month", "五月": "Fifth Month", "六月": "Sixth Month",
   "七月": "Seventh Month", "八月": "Eighth Month", "九月": "Ninth Month", "十月": "Tenth Month", "十一月": "Eleventh Month", "十二月": "Twelfth Month",
@@ -6179,14 +6257,17 @@ function translateWentianHanRunToEnglish(run) {
       continue;
     }
     const char = run[index];
-    words.push(WENTIAN_I18N_EN_PINYIN_FALLBACK[char] || "Han");
+    const fallback = WENTIAN_I18N_EN_PINYIN_FALLBACK[char];
+    if (fallback) words.push(fallback);
     index += 1;
   }
-  return words.filter(Boolean).join(" ");
+  return words.filter(Boolean).join(" ").trim() || "Text";
 }
 
 function translateWentianUnknownChineseToEnglish(source) {
   if (!WENTIAN_I18N_HAS_HAN_RE.test(source)) return source;
+  const hanCount = (source.match(/\p{Script=Han}/gu) || []).length;
+  if (hanCount > 12) return "This Chinese text has not been translated yet.";
   return source
     .replace(/\p{Script=Han}+/gu, (run) => translateWentianHanRunToEnglish(run))
     .replace(/、/g, ", ")
