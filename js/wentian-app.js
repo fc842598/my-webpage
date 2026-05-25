@@ -6095,6 +6095,26 @@ const WENTIAN_I18N_EN_BUREAU_MAP = {
   "二": "Second", "三": "Third", "四": "Fourth", "五": "Fifth", "六": "Sixth"
 };
 
+const WENTIAN_I18N_EN_FALLBACK_TERMS = {
+  "四化": "Transformations", "运限": "Luck Cycles", "大限": "Decade", "小限": "Minor Limit", "流年": "Annual",
+  "命": "Life", "身": "Body", "宫": "Palace", "岁": "age", "年": "year", "月": "month", "日": "day", "时": "hour",
+  "对宫": "Opposite Palace", "网站": "website", "到底": "actually", "能不能": "can or cannot",
+  "第": "No.", "卦": "Hexagram", "上": "over", "下": "under", "之": "to", "问": "question", "占": "cast",
+  "天": "Heaven", "地": "Earth", "水": "Water", "火": "Fire", "风": "Wind", "雷": "Thunder", "山": "Mountain", "泽": "Lake",
+  "讼": "Song", "需": "Xu", "履": "Lu", "夬": "Guai", "小畜": "Xiao Chu", "同人": "Tong Ren",
+  "真实铜钱录入": "Real coin entry", "已通过": "Passed", "问题具体到对象": "The question has a specific subject",
+  "符合一事一占原则": "Matches the one-question-one-cast rule", "结果": "Outcome", "赚钱": "make money"
+};
+
+const WENTIAN_I18N_EN_PINYIN_FALLBACK = {
+  "陈": "Chen", "谢": "Xie", "许": "Xu", "广": "Guang", "周": "Zhou", "小": "Xiao", "姐": "Jie", "半": "Ban", "仙": "Xian",
+  "我": "Wo", "这": "Zhe", "个": "Ge", "网": "Wang", "站": "Zhan", "到": "Dao", "底": "Di", "能": "Neng", "不": "Bu", "赚": "Zhuan", "钱": "Qian",
+  "如": "Ru", "果": "Guo", "你": "Ni", "的": "De", "是": "Shi", "那": "Na", "就": "Jiu", "用": "Yong", "了": "Le", "可": "Ke", "哪": "Na",
+  "有": "You", "么": "Me", "惨": "Can", "先": "Xian", "看": "Kan", "前": "Qian", "生": "Sheng", "本": "Ben", "象": "Xiang",
+  "口": "Kou", "舌": "She", "非": "Fei", "总": "Zong", "断": "Duan", "祸": "Huo", "皆": "Jie", "曰": "Yue", "无": "Wu", "遮": "Zhe", "拦": "Lan",
+  "遇": "Yu", "事": "Shi", "与": "Yu", "愿": "Yuan", "违": "Wei", "动": "Dong", "则": "Ze", "得": "De", "咎": "Jiu"
+};
+
 const WENTIAN_I18N_EN_LUNAR_MONTH_MAP = {
   "正月": "First Month", "二月": "Second Month", "三月": "Third Month", "四月": "Fourth Month", "五月": "Fifth Month", "六月": "Sixth Month",
   "七月": "Seventh Month", "八月": "Eighth Month", "九月": "Ninth Month", "十月": "Tenth Month", "十一月": "Eleventh Month", "十二月": "Twelfth Month",
@@ -6129,6 +6149,59 @@ function convertWentianTextToTraditional(source) {
   return [...output].map((char) => WENTIAN_I18N_ZH_HANT_CHAR_MAP[char] || char).join("");
 }
 
+function getWentianEnglishTerm(text) {
+  return WENTIAN_I18N_EN_EXTRA[text]
+    || WENTIAN_I18N_EN_ZIWEI_TERMS[text]
+    || WENTIAN_I18N_EN_TERM_MAP[text]
+    || WENTIAN_I18N_EN_BRIGHTNESS_PINYIN[text]
+    || WENTIAN_I18N_EN_STEM_BRANCH[text]
+    || WENTIAN_I18N_EN_FALLBACK_TERMS[text]
+    || "";
+}
+
+function translateWentianHanRunToEnglish(run) {
+  const exact = getWentianEnglishTerm(run);
+  if (exact) return exact;
+  const termKeys = Object.keys({
+    ...WENTIAN_I18N_EN_FALLBACK_TERMS,
+    ...WENTIAN_I18N_EN_TERM_MAP,
+    ...WENTIAN_I18N_EN_ZIWEI_TERMS,
+    ...WENTIAN_I18N_EN_STEM_BRANCH,
+    ...WENTIAN_I18N_EN_BRIGHTNESS_PINYIN
+  }).filter((key) => key && key.length <= 8).sort((a, b) => b.length - a.length);
+  const words = [];
+  let index = 0;
+  while (index < run.length) {
+    const key = termKeys.find((item) => run.startsWith(item, index));
+    if (key) {
+      words.push(getWentianEnglishTerm(key));
+      index += key.length;
+      continue;
+    }
+    const char = run[index];
+    words.push(WENTIAN_I18N_EN_PINYIN_FALLBACK[char] || "Han");
+    index += 1;
+  }
+  return words.filter(Boolean).join(" ");
+}
+
+function translateWentianUnknownChineseToEnglish(source) {
+  if (!WENTIAN_I18N_HAS_HAN_RE.test(source)) return source;
+  return source
+    .replace(/\p{Script=Han}+/gu, (run) => translateWentianHanRunToEnglish(run))
+    .replace(/、/g, ", ")
+    .replace(/，/g, ", ")
+    .replace(/；/g, "; ")
+    .replace(/：/g, ": ")
+    .replace(/。/g, ". ")
+    .replace(/（/g, " (")
+    .replace(/）/g, ") ")
+    .replace(/(\d)(age)/g, "$1 $2")
+    .replace(/No\.\s*(\d+)\s*Hexagram/g, "Hexagram $1")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
 function translateWentianText(text, code = getWentianLanguageCode(), element = null) {
   const source = String(text || "").trim();
   if (!source) return source;
@@ -6150,7 +6223,7 @@ function translateWentianText(text, code = getWentianLanguageCode(), element = n
     }
     const archiveSolarDate = source.match(/^阳历:(.+)$/);
     if (archiveSolarDate) return `Solar: ${archiveSolarDate[1]}`;
-    const exact = WENTIAN_I18N_EN_EXTRA[source] || WENTIAN_I18N_EN_ZIWEI_TERMS[source] || WENTIAN_I18N_EN_TERM_MAP[source];
+    const exact = getWentianEnglishTerm(source);
     if (exact) return exact;
     const loginQuota = source.match(/^登录\s*·\s*(\d+)\/(\d+)$/);
     if (loginQuota) return `Sign In · ${loginQuota[1]}/${loginQuota[2]}`;
@@ -6296,7 +6369,7 @@ function translateWentianText(text, code = getWentianLanguageCode(), element = n
     const trueSolar = source.match(/^(预览|已采用)真太阳时：(.+) · (.+) · ([子丑寅卯辰巳午未申酉戌亥]时) · (.+)$/);
     if (trueSolar) return `True solar ${trueSolar[1] === "已采用" ? "used" : "preview"}: ${trueSolar[2]} · ${trueSolar[3]} · ${translateWentianText(trueSolar[4], "en")} · ${trueSolar[5]}`;
   }
-  return dict[source] || source;
+  return dict[source] || (lang === "en" ? translateWentianUnknownChineseToEnglish(source) : source);
 }
 
 function rememberWentianTextSource(element, source) {
@@ -6364,6 +6437,32 @@ function applyWentianLanguageText(root = view, code = getWentianLanguageCode(), 
         : element.dataset.wentianI18nPlaceholderSource || current;
       element.dataset.wentianI18nPlaceholderSource = source;
       element.setAttribute("placeholder", translateWentianText(source, option.code, element));
+    }
+
+    for (const element of root.querySelectorAll("[aria-label], [title]")) {
+      for (const attr of ["aria-label", "title"]) {
+        const current = element.getAttribute(attr) || "";
+        if (!current) continue;
+        const key = attr === "aria-label" ? "wentianI18nAriaLabelSource" : "wentianI18nTitleSource";
+        const source = option.code !== "zh-Hans" && WENTIAN_I18N_HAS_HAN_RE.test(current)
+          ? current
+          : element.dataset[key] || current;
+        element.dataset[key] = source;
+        element.setAttribute(attr, translateWentianText(source, option.code, element));
+      }
+    }
+
+    for (const element of root.querySelectorAll("input, textarea")) {
+      const type = String(element.getAttribute("type") || "text").toLowerCase();
+      if (!["text", "search"].includes(type) && element.tagName !== "TEXTAREA") continue;
+      const current = element.value || "";
+      if (!current.trim()) continue;
+      const source = option.code !== "zh-Hans" && WENTIAN_I18N_HAS_HAN_RE.test(current)
+        ? current
+        : element.dataset.wentianI18nValueSource || current;
+      element.dataset.wentianI18nValueSource = source;
+      const translated = translateWentianText(source, option.code, element);
+      if (translated !== current) element.value = translated;
     }
   } finally {
     window.setTimeout(() => {
