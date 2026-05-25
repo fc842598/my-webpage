@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>阅天 · 紫微排盘</title>
   <link rel="icon" href="../images/logo-mark.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../css/mingbook-onepage.css?v=20260524-yijing-liuyao-polish2">
+  <link rel="stylesheet" href="../css/mingbook-onepage.css?v=20260525-liuyao-standalone">
   <script src="../js/config.js?v=20260521-api-domain-auth-proxy"></script>
   <script defer src="../js/cities.js"></script>
   <script defer src="../js/lunarCalendar.js"></script>
@@ -34,7 +34,7 @@
       <a href="../index.html">首页</a>
       <a href="#report">命盘解读</a>
       <a href="#mbpYijingAssist">易经辅助解读</a>
-      <a href="#mbpDesktopLiuyao" data-liuyao-open>六爻占卜</a>
+      <a href="./liuyao.html">六爻占卜</a>
       <a href="#mbpXuChatSection">许半仙对话解读</a>
     </nav>
     <div class="mbp-nav-actions">
@@ -391,18 +391,6 @@
               <button type="button" class="mbp-yijing-help" data-yijing-help="当年事情看流年卦，主应期、动静与吉凶。" data-tip="当年事情看流年卦，主应期、动静与吉凶。" aria-label="流年说明">解</button>
             </span>
           </div>
-          <button class="mbp-liuyao-entry" id="mbpDesktopLiuyao" type="button" data-liuyao-open aria-label="打开六爻占卜">
-            <span class="mbp-liuyao-entry-copy">
-              <em>问事卦</em>
-              <strong>六爻占卜</strong>
-              <small>先定问题，六次投币，看本卦、动爻、变卦。</small>
-            </span>
-            <span class="mbp-liuyao-entry-visual" aria-hidden="true">
-              <i></i><i></i><i></i>
-              <b><u></u><u></u><u></u><u></u><u></u><u></u></b>
-            </span>
-            <span class="mbp-liuyao-entry-action">开始占卜</span>
-          </button>
           <p class="mbp-yijing-help-note" id="mbpYijingHelpNote" hidden></p>
           <div class="mbp-yijing-years" id="mbpYijingYears" hidden></div>
           <p class="mbp-yijing-guaci" id="mbpYijingGuaci">先完成排盘。</p>
@@ -711,51 +699,6 @@
       <div class="mbp-pay-actions">
         <button type="button" class="mbp-pay-primary" id="mbpRefundTicketSubmit">提交工单</button>
         <button type="button" class="mbp-pay-secondary" id="mbpRefundTicketReload">刷新订单</button>
-      </div>
-    </div>
-  </div>
-
-  <div class="mbp-liuyao-overlay" id="mbpLiuyaoOverlay" hidden>
-    <div class="mbp-liuyao-modal" role="dialog" aria-modal="true" aria-labelledby="mbpLiuyaoTitle">
-      <button type="button" class="mbp-liuyao-close" id="mbpLiuyaoClose" aria-label="关闭">×</button>
-      <div class="mbp-liuyao-head">
-        <span>六爻占卜</span>
-        <strong id="mbpLiuyaoTitle">一事一问，六次成卦</strong>
-        <p>先写清楚问题，再按初爻到上爻投掷铜钱；系统生成本卦、变卦与动爻。</p>
-        <div class="mbp-liuyao-steps" id="mbpLiuyaoSteps" aria-label="占卜步骤">
-          <span data-liuyao-step="question">1 定事</span>
-          <span data-liuyao-step="cast">2 起卦</span>
-          <span data-liuyao-step="read">3 看卦</span>
-        </div>
-      </div>
-      <div class="mbp-liuyao-body">
-        <section class="mbp-liuyao-ask">
-          <label>
-            <span>所问之事</span>
-            <textarea id="mbpLiuyaoQuestion" maxlength="120" rows="4" placeholder="例如：我现在是否适合推进这个合作？本月能不能见到明确结果？"></textarea>
-          </label>
-          <div class="mbp-liuyao-suggestions" aria-label="常见问法">
-            <button type="button" data-liuyao-question="我现在是否适合推进这个合作？">合作能不能推</button>
-            <button type="button" data-liuyao-question="这段感情未来三个月会不会有结果？">感情有没有结果</button>
-            <button type="button" data-liuyao-question="我近期是否适合换工作或换方向？">工作要不要换</button>
-          </div>
-          <p class="mbp-liuyao-status" id="mbpLiuyaoStatus">先定一件事，再开始投币。</p>
-          <div class="mbp-liuyao-actions">
-            <button type="button" class="mbp-liuyao-primary" id="mbpLiuyaoToss">投第 1 爻</button>
-            <button type="button" class="mbp-liuyao-secondary" id="mbpLiuyaoAuto">一键成卦</button>
-            <button type="button" class="mbp-liuyao-secondary" id="mbpLiuyaoReset">重来</button>
-          </div>
-        </section>
-        <section class="mbp-liuyao-cast" aria-label="起卦结果">
-          <div class="mbp-liuyao-cast-head">
-            <span>起卦进度</span>
-            <strong id="mbpLiuyaoProgressText">0 / 6</strong>
-            <i><u id="mbpLiuyaoProgressBar"></u></i>
-          </div>
-          <div class="mbp-liuyao-coins" id="mbpLiuyaoCoins"></div>
-          <div class="mbp-liuyao-stack" id="mbpLiuyaoStack"></div>
-          <div class="mbp-liuyao-result" id="mbpLiuyaoResult"></div>
-        </section>
       </div>
     </div>
   </div>

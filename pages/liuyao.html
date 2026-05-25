@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>阅天 · 六爻占卜</title>
+  <meta name="description" content="阅天电脑端六爻占卜，一事一问，六次成卦，看本卦、动爻与变卦。">
+  <link rel="icon" href="../images/logo-mark.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../css/mingbook-onepage.css?v=20260525-liuyao-standalone">
+  <link rel="stylesheet" href="../css/liuyao.css?v=20260525-desktop">
+  <script defer src="../js/liuyao-page.js?v=20260525-desktop"></script>
+</head>
+<body class="liuyao-page">
+  <header class="mbp-nav">
+    <a class="mbp-brand" href="../index.html" aria-label="阅天首页">
+      <span class="mbp-leaf" aria-hidden="true"></span>
+      <span>阅天</span>
+    </a>
+    <nav class="mbp-nav-links" aria-label="主导航">
+      <a href="../index.html">首页</a>
+      <a href="./mingbook-onepage.html">命盘解读</a>
+      <a href="./mingbook-onepage.html#mbpYijingAssist">易经辅助解读</a>
+      <a href="./liuyao.html" class="is-active">六爻占卜</a>
+      <a href="./mingbook-onepage.html#mbpXuChatSection">许半仙对话解读</a>
+    </nav>
+    <div class="mbp-nav-actions">
+      <a class="mbp-member" href="./mingbook-onepage.html">立即排盘</a>
+    </div>
+  </header>
+
+  <main class="liuyao-shell">
+    <section class="liuyao-hero" aria-labelledby="liuyaoPageTitle">
+      <div>
+        <span class="liuyao-eyebrow">六爻问事 · 电脑端</span>
+        <h1 id="liuyaoPageTitle">一事一问，六次成卦</h1>
+        <p>先把问题写清楚，再按初爻到上爻投掷铜钱。页面会整理本卦、动爻、变卦，方便后续解读。</p>
+      </div>
+      <div class="liuyao-hero-mark" aria-hidden="true">
+        <span></span><span></span><span></span>
+        <i><b></b><b></b><b></b><b></b><b></b><b></b></i>
+      </div>
+    </section>
+
+    <section class="liuyao-workbench" aria-label="六爻占卜工作台">
+      <div class="mbp-liuyao-overlay" id="mbpLiuyaoOverlay">
+        <div class="mbp-liuyao-modal" role="region" aria-labelledby="mbpLiuyaoTitle">
+          <div class="mbp-liuyao-head">
+            <span>六爻占卜</span>
+            <strong id="mbpLiuyaoTitle">先定问题，再成六爻</strong>
+            <p>不要一次问多个方向。一个问题对应一卦，越具体，后面越好判断。</p>
+            <div class="mbp-liuyao-steps" id="mbpLiuyaoSteps" aria-label="占卜步骤">
+              <span data-liuyao-step="question">1 定事</span>
+              <span data-liuyao-step="cast">2 起卦</span>
+              <span data-liuyao-step="read">3 看卦</span>
+            </div>
+          </div>
+          <div class="mbp-liuyao-body">
+            <section class="mbp-liuyao-ask">
+              <label>
+                <span>所问之事</span>
+                <textarea id="mbpLiuyaoQuestion" maxlength="120" rows="4" placeholder="例如：我现在是否适合推进这个合作？本月能不能见到明确结果？"></textarea>
+              </label>
+              <div class="mbp-liuyao-suggestions" aria-label="常见问法">
+                <button type="button" data-liuyao-question="我现在是否适合推进这个合作？">合作能不能推</button>
+                <button type="button" data-liuyao-question="这段感情未来三个月会不会有结果？">感情有没有结果</button>
+                <button type="button" data-liuyao-question="我近期是否适合换工作或换方向？">工作要不要换</button>
+              </div>
+              <p class="mbp-liuyao-status" id="mbpLiuyaoStatus">先定一件事，再开始投币。</p>
+              <div class="mbp-liuyao-actions">
+                <button type="button" class="mbp-liuyao-primary" id="mbpLiuyaoToss">投第 1 爻</button>
+                <button type="button" class="mbp-liuyao-secondary" id="mbpLiuyaoAuto">一键成卦</button>
+                <button type="button" class="mbp-liuyao-secondary" id="mbpLiuyaoReset">重来</button>
+              </div>
+            </section>
+            <section class="mbp-liuyao-cast" aria-label="起卦结果">
+              <div class="mbp-liuyao-cast-head">
+                <span>起卦进度</span>
+                <strong id="mbpLiuyaoProgressText">0 / 6</strong>
+                <i><u id="mbpLiuyaoProgressBar"></u></i>
+              </div>
+              <div class="mbp-liuyao-coins" id="mbpLiuyaoCoins"></div>
+              <div class="mbp-liuyao-stack" id="mbpLiuyaoStack"></div>
+              <div class="mbp-liuyao-result" id="mbpLiuyaoResult"></div>
+            </section>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
