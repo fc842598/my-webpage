@@ -2,6 +2,7 @@
   const storageKey = 'yt_mingbook_onepage_profile_v1';
   const legacyHistoryKey = 'yt_zw_history_v1';
   const chartHistoryKey = 'ziwei_local_chart_history_v1';
+  const customerTombstonesKey = 'ziwei_customer_chart_tombstones_v1';
   const customerClientIdKey = 'ziwei_client_id';
   const html2PdfUrl = '../vendor/html2pdf/html2pdf.bundle.min.js?v=20260521-local-vendor';
   const palaceOrder = ['巳', '午', '未', '申', '辰', null, null, '酉', '卯', null, null, '戌', '寅', '丑', '子', '亥'];
@@ -1723,6 +1724,65 @@
     } catch (_) {}
   }
 
+  function customerRecordIdentityKeys(record) {
+    if (!record) return [];
+    const profile = record.profile ? normalizeProfile(record.profile) : recordToProfile(record);
+    return [
+      record.id,
+      record.chartRecordId,
+      record.chartData?.chartRecordId,
+      record.form?.archiveId,
+      record.form?.remoteRaw?.id,
+      record.form?.remoteRaw?.chartRecordId,
+      record.raw?.id,
+      record.raw?.chartRecordId,
+      profileHistoryKey(profile),
+    ].filter(Boolean).map(String);
+  }
+
+  function readCustomerTombstones() {
+    try {
+      const raw = localStorage.getItem(customerTombstonesKey);
+      const list = raw ? JSON.parse(raw) : [];
+      return Array.isArray(list) ? list : [];
+    } catch (_) {
+      return [];
+    }
+  }
+
+  function writeCustomerTombstones(tombstones) {
+    try {
+      localStorage.setItem(customerTombstonesKey, JSON.stringify(tombstones.slice(-120)));
+    } catch (_) {}
+  }
+
+  function isCustomerRecordTombstoned(record, tombstones = readCustomerTombstones()) {
+    const keys = new Set(customerRecordIdentityKeys(record));
+    if (!keys.size) return false;
+    return tombstones.some((item) => customerRecordIdentityKeys(item).some((key) => keys.has(key)));
+  }
+
+  function rememberCustomerTombstone(record) {
+    if (!record) return;
+    const profile = record.profile ? normalizeProfile(record.profile) : recordToProfile(record);
+    const tombstones = readCustomerTombstones()
+      .filter((item) => !isCustomerRecordTombstoned(record, [item]));
+    tombstones.push({
+      id: record.id || '',
+      chartRecordId: record.chartRecordId || record.chartData?.chartRecordId || '',
+      profile,
+      deletedAt: new Date().toISOString(),
+    });
+    writeCustomerTombstones(tombstones);
+  }
+
+  function forgetCustomerTombstone(record) {
+    if (!record) return;
+    const tombstones = readCustomerTombstones()
+      .filter((item) => !isCustomerRecordTombstoned(record, [item]));
+    writeCustomerTombstones(tombstones);
+  }
+
   function getCustomerClientId() {
     try {
       let id = localStorage.getItem(customerClientIdKey);
@@ -1825,8 +1885,10 @@
 
   function mergeCustomerRecords(localRecords, remoteRecords) {
     const merged = new Map();
+    const tombstones = readCustomerTombstones();
     [...remoteRecords, ...localRecords].forEach((record) => {
       if (!record) return;
+      if (isCustomerRecordTombstoned(record, tombstones)) return;
       const profile = recordToProfile(record);
       const key = profileHistoryKey(profile);
       if (!key) return;
@@ -1842,8 +1904,8 @@
     const records = [
       ...readCustomerHistoryRecords(),
       ...readJsonList(legacyHistoryKey),
-    ];
-    const current = { ...profileToRecord(state.profile), id: 'current', savedAt: new Date().toISOString() };
+    ].filter((record) => !isCustomerRecordTombstoned(record));
+    const current = { ...profileToRecord(state.profile), id: 'current', chartRecordId: '', savedAt: new Date().toISOString() };
     const seen = new Set();
     return [current, ...records]
       .map((record) => {
@@ -1851,7 +1913,14 @@
         const key = profileHistoryKey(profile);
         if (seen.has(key)) return null;
         seen.add(key);
-        return { id: record.id || key, savedAt: record.savedAt || record.created_at || '', profile };
+        return {
+          ...record,
+          id: record.id || record.form?.archiveId || key,
+          chartRecordId: record.chartRecordId || record.chartData?.chartRecordId || record.form?.remoteRaw?.chartRecordId || '',
+          savedAt: record.savedAt || record.createdAt || record.created_at || '',
+          updatedAt: record.updatedAt || record.createdAt || record.savedAt || '',
+          profile,
+        };
       })
       .filter(Boolean)
       .slice(0, 50);
@@ -1860,7 +1929,10 @@
   function saveProfileToHistory(profile, options = {}) {
     const key = profileHistoryKey(profile);
     const records = readCustomerHistoryRecords();
-    const old = records.find((item) => (options.id && item.id === options.id) || profileHistoryKey(recordToProfile(item)) === key) || null;
+    const targetIds = new Set([options.id, options.chartRecordId, state.chartRecordId].filter(Boolean).map(String));
+    const old = records.find((item) => targetIds.has(String(item.id || ''))
+      || targetIds.has(String(item.chartRecordId || ''))
+      || profileHistoryKey(recordToProfile(item)) === key) || null;
     const id = old?.id || options.id || state.chartRecordId || makeLocalId();
     const chartRecordId = old?.chartRecordId || options.chartRecordId || state.chartRecordId || id;
     const record = profileToRecord(profile, {
@@ -1869,8 +1941,9 @@
       savedAt: old?.savedAt || new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     });
+    forgetCustomerTombstone(record);
     const list = records
-      .filter((item) => item.id !== id && profileHistoryKey(recordToProfile(item)) !== key)
+      .filter((item) => item.id !== id && item.chartRecordId !== chartRecordId && profileHistoryKey(recordToProfile(item)) !== key)
       .slice(0, 49);
     writeCustomerHistoryRecords([record, ...list]);
     editingClientRecordId = record.id;
@@ -1895,7 +1968,6 @@
       .map(customerRecordToArchive)
       .filter(Boolean)
       .slice(0, 50);
-    if (!archives.length) return null;
     clientRemoteSyncing = true;
     clientRemoteMessage = '同步中';
     renderClientList();
@@ -1907,13 +1979,13 @@
         body: JSON.stringify({
           clientId,
           archives,
-          selectedArchiveId: editingClientRecordId || archives[0]?.id || '',
+          selectedArchiveId: archives.some((archive) => archive.id === editingClientRecordId) ? editingClientRecordId : (archives[0]?.id || ''),
         }),
       });
       const data = await response.json().catch(() => ({}));
       if (!response.ok || data.error) throw new Error(data.error || '客户盘同步失败');
       clientRemoteLoaded = true;
-      clientRemoteMessage = '已同步';
+      clientRemoteMessage = archives.length ? '已同步' : '已清空';
       return data;
     } catch (error) {
       clientRemoteMessage = '本地已保存';
@@ -1953,12 +2025,14 @@
         const remoteRecords = (Array.isArray(data.archives) ? data.archives : [])
           .map(archiveToCustomerRecord)
           .filter(Boolean);
+        let merged = readCustomerHistoryRecords().filter((record) => !isCustomerRecordTombstoned(record));
         if (remoteRecords.length) {
-          const merged = mergeCustomerRecords(readCustomerHistoryRecords(), remoteRecords);
+          merged = mergeCustomerRecords(merged, remoteRecords);
           writeCustomerHistoryRecords(merged);
+          if (merged.length < remoteRecords.length) void pushCustomerRecordsToRemote(merged);
         }
         clientRemoteLoaded = true;
-        clientRemoteMessage = remoteRecords.length ? '已同步' : '云端暂无';
+        clientRemoteMessage = remoteRecords.length ? (merged.length < remoteRecords.length ? '已清理' : '已同步') : '云端暂无';
         if (options.rerender) renderClientList();
         return remoteRecords;
       })
@@ -2706,7 +2780,8 @@
   function renderClientListInto(listEl, countEl, emptyText) {
     if (!listEl) return;
     const remoteText = clientRemoteSyncing ? '同步中' : (clientRemoteMessage || (clientRemoteLoaded ? '已同步' : '本地'));
-    if (countEl) countEl.textContent = `${clientRecordsCache.length} 个盘 · ${remoteText}`;
+    const savedCount = clientRecordsCache.filter((item) => item.id !== 'current').length;
+    if (countEl) countEl.textContent = `${savedCount} 个盘 · ${remoteText}`;
     if (!clientRecordsCache.length) {
       listEl.innerHTML = `<div class="mbp-client-empty">${escapeHtml(emptyText)}</div>`;
       return;
@@ -2771,7 +2846,7 @@
   function selectClientRecordByIndex(index) {
     const record = clientRecordsCache[Number(index)];
     if (record?.profile) applyClientProfile(record.profile, {
-      chartRecordId: record.id && record.id !== 'current' ? record.id : '',
+      chartRecordId: record.id && record.id !== 'current' ? (record.chartRecordId || record.id) : '',
     });
   }
 
@@ -2785,7 +2860,7 @@
     editingClientRecordId = record.id === 'current' ? '' : record.id;
     deleteConfirmClientId = '';
     applyClientProfile(record.profile, {
-      chartRecordId: record.id && record.id !== 'current' ? record.id : '',
+      chartRecordId: record.id && record.id !== 'current' ? (record.chartRecordId || record.id) : '',
       chartReady: false,
     });
     $('#mbpBirthForm')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -2813,16 +2888,21 @@
     const record = findClientRecordById(id);
     if (!record || id === 'current') return;
     const targetKey = profileHistoryKey(record.profile);
-    const removeMatch = (item) => item.id === id || profileHistoryKey(recordToProfile(item)) === targetKey;
+    const targetIds = new Set(customerRecordIdentityKeys(record));
+    const removeMatch = (item) => customerRecordIdentityKeys(item).some((key) => targetIds.has(key))
+      || profileHistoryKey(recordToProfile(item)) === targetKey;
+    rememberCustomerTombstone(record);
     writeCustomerHistoryRecords(readCustomerHistoryRecords().filter((item) => !removeMatch(item)));
     try {
       localStorage.setItem(legacyHistoryKey, JSON.stringify(readJsonList(legacyHistoryKey).filter((item) => !removeMatch(item))));
     } catch (_) {}
-    if (editingClientRecordId === id) editingClientRecordId = '';
-    if (state.chartRecordId === id) state.chartRecordId = '';
+    if (targetIds.has(editingClientRecordId)) editingClientRecordId = '';
+    if (targetIds.has(state.chartRecordId)) state.chartRecordId = '';
+    clientRemoteMessage = '删除中';
     deleteConfirmClientId = '';
+    renderClientList();
     await deleteCustomerRecordFromRemote(record);
-    await pushCustomerRecordsToRemote();
+    await pushCustomerRecordsToRemote(readCustomerHistoryRecords());
     renderClientList();
   }
 
