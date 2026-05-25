@@ -108,7 +108,7 @@ const screenFlowHotspots = {
   37: [[18, 44, 48, 48, "screen-38"], [20, 145, 350, 56, "screen-38"]],
   38: [[18, 44, 48, 48, "screen-31"], [20, 150, 350, 56, "screen-39"], [20, 220, 350, 56, "screen-40"], [20, 290, 350, 56, "screen-41"], [20, 360, 350, 56, "screen-37"], [20, 500, 350, 56, "screen-35"], [20, 570, 350, 56, "screen-36"]],
   39: [[18, 44, 48, 48, "screen-38"], [42, 742, 306, 56, "screen-38"]],
-  40: [[18, 44, 48, 48, "screen-38"], [20, 236, 350, 56, "screen-41"]],
+  40: [[18, 44, 48, 48, "screen-38"]],
   41: [[18, 44, 48, 48, "screen-40"], [42, 742, 306, 56, "screen-40"]],
   42: [],
   43: [],
@@ -15205,6 +15205,7 @@ document.addEventListener("click", (event) => {
     event.stopPropagation();
     return;
   }
+  if (event.target.closest?.("input, textarea, select, [contenteditable='true']")) return;
   const promptButton = event.target.closest("[data-wentian-prompt]");
   if (promptButton) {
     promptButton.closest(".wentian-chat-faq-group")?.removeAttribute("open");
