@@ -14457,7 +14457,6 @@ function sourceZiweiMingpanScreenFromChart(saved) {
     ${figText("source-27-more", "•••", 330, 56, 42, 22, "#3b3934", 800, "center")}
     ${renderWentianClassicChart(saved)}
     <div class="wentian-chart-content-stack">
-      ${renderWentianMobileChartParams(saved)}
       ${sourceZiweiAiDecodePanel(saved)}
       ${renderWentianMobileYijingPanel(saved)}
     </div>
