@@ -5729,6 +5729,166 @@ const WENTIAN_I18N_EN_EXTRA = {
   "登": "Sign"
 };
 
+Object.assign(WENTIAN_I18N_EN_EXTRA, {
+  "专业AI命理工作台": "Professional AI Destiny Workspace",
+  "许半仙已在线": "Master Xu is online",
+  "先建命盘": "Create a chart first",
+  "再交给许半仙细读\n排盘、合盘、占卜从一个档案开始。": "Then let Master Xu read it.\nCharts, compatibility, and divination all start from one file.",
+  "再交给许半仙细读": "Then let Master Xu read it.",
+  "排盘、合盘、占卜从一个档案开始。": "Charts, compatibility, and divination all start from one file.",
+  "换档案": "Change File",
+  "常用入口": "Quick Access",
+  "一屏开始": "Start Here",
+  "紫微斗数": "Zi Wei",
+  "排盘 · AI细读": "Chart · AI Reading",
+  "双方命盘合参": "Two-chart match",
+  "铜钱起卦": "Coin casting",
+  "方位九宫": "Nine-palace layout",
+  "这辈子怎么走": "Life Direction",
+  "靠什么起势": "What Builds Momentum",
+  "最大短板": "Biggest Weakness",
+  "先做什么": "First Step",
+  "这段能成吗": "Can This Work?",
+  "适合伴侣": "Suitable Partner",
+  "婚姻避坑": "Marriage Pitfalls",
+  "事业工作": "Career & Work",
+  "适合工作": "Best Work",
+  "要换工作吗": "Change Jobs?",
+  "能创业吗": "Start a Business?",
+  "事业何时起": "Career Timing",
+  "财运赚钱": "Money & Wealth",
+  "财从哪里来": "Money Source",
+  "今年能赚钱吗": "Can I Earn This Year?",
+  "适合投资吗": "Good for Investing?",
+  "哪年财运好": "Best Wealth Years",
+  "今年运势": "This Year",
+  "今年怎么走": "This Year's Path",
+  "今年抓什么": "What to Focus On",
+  "今年避什么": "What to Avoid",
+  "12个月重点": "12-Month Focus",
+  "转运节点": "Luck Turning Point",
+  "低谷何时过": "When the Low Passes",
+  "下个大限": "Next Decade Luck",
+  "关键年份": "Key Years",
+  "健康身体": "Health",
+  "身体注意": "Health Watch",
+  "睡眠情绪": "Sleep & Mood",
+  "怎么养运": "How to Restore Luck",
+  "家庭人际": "Family & People",
+  "贵人在哪": "Where Help Comes From",
+  "防什么人": "Who to Watch",
+  "父母家宅": "Parents & Home",
+  "编辑": "Edit",
+  "删除": "Delete",
+  "改": "Edit",
+  "删": "Del",
+  "回到底部": "Back to Bottom",
+  "清除": "Clear",
+  "改时间": "Edit Time",
+  "点选两人": "Pick Two People",
+  "选两张档案": "Choose Two Files",
+  "用于关系合盘": "For relationship matching",
+  "未起卦": "Not Cast",
+  "01 审题": "01 Question Check",
+  "把问题说清楚，卦才有方向": "Make the question clear so the hexagram has direction",
+  "只问一件事。时间、对象、选择要具体；空问、乱点、随便试，不起卦。": "Ask one thing only. Time, people, and choice must be specific; empty or random tests are blocked.",
+  "审题": "Question Check",
+  "解卦": "Reading",
+  "建议写具体一点": "Write it more specifically",
+  "一卦一问 · 不同时问感情和事业": "One hexagram, one question · do not mix love and career",
+  "提交占问": "Submit Question",
+  "可选示例": "Examples",
+  "这个项目本月能不能继续推进并见到效果？": "Can this project keep moving this month and show results?",
+  "这笔合作近期能不能谈成？": "Can this cooperation close soon?",
+  "我现在要不要换工作方向？": "Should I change my work direction now?",
+  "这段关系接下来适不适合主动沟通？": "Should I communicate proactively in this relationship?",
+  "第 1 爻 · 待投": "Line 1 · Waiting",
+  "第 1 爻待投": "Line 1 waiting",
+  "三枚铜钱待落地": "Three coins waiting to land",
+  "提交占问通过后，进入全屏投币。": "After the question passes, full-screen coin casting opens.",
+  "待投铜钱": "Coins Waiting",
+  "正": "Heads",
+  "反": "Tails",
+  "提交通过后开放投币": "Casting opens after approval",
+  "六爻进度": "Line Progress",
+  "完成 6 爻后输出": "Output after 6 lines",
+  "本卦 / 变卦 / 动爻 / 古籍摘录 / 许半仙 AI 解卦": "Original / Changed / Moving lines / Classic excerpt / Master Xu AI reading",
+  "例如：我现在是否应该继续推进这个合作？本月能不能见到明确结果？": "Example: Should I keep pushing this cooperation now? Can I see clear results this month?",
+  "六爻结果": "Liuyao Result",
+  "核心结构": "Core Structure",
+  "命盘速览": "Chart Overview",
+  "五行局": "Five-Element Bureau",
+  "年柱": "Year Pillar",
+  "月柱": "Month Pillar",
+  "日柱": "Day Pillar",
+  "时柱": "Hour Pillar",
+  "命身宫": "Life & Body Palaces",
+  "三方四正": "Triad & Opposition",
+  "对宫": "Opposite Palace",
+  "四化与运限": "Transformations & Luck Cycles",
+  "生年四化": "Birth-year Transformations",
+  "当前大限": "Current Decade Luck",
+  "当前流年": "Current Year",
+  "当前小流年": "Current Minor Year",
+  "小限": "Minor Limit",
+  "未进入当前大限": "Not in current decade luck",
+  "暂无明显四化": "No major transformations",
+  "展开十二宫明细": "Expand 12 Palace Details",
+  "易经推命": "Yijing Destiny Reading",
+  "先天 · 后天 · 流年卦": "Innate · Acquired · Annual Hexagrams",
+  "先天": "Innate",
+  "后天": "Acquired",
+  "流年": "Annual",
+  "看前半生与命中本象": "Read early-life pattern and natal image",
+  "水天需": "Water over Heaven Xu",
+  "天泽履": "Heaven over Lake Lü",
+  "泽天夬": "Lake over Heaven Guai",
+  "先天卦 · 水天需": "Innate Hexagram · Water over Heaven Xu",
+  "古籍原文": "Classic Text",
+  "名师讲解": "Master Commentary",
+  "补齐电脑端同款易经辅助解读，跟当前紫微命盘一起看。": "Adds the desktop Yijing assistant reading to read alongside the current Zi Wei chart.",
+  "父先离世母养成，攀龙附凤居于尾五岁之前有凶事，廿日大人入土中（墓）": "Father may depart early and mother raises the child; before age five there may be a family loss, shown by the grave image.",
+  "如果你算这个人的先天卦，是水天需，天跑到水下面去了，父先丧失，爸爸先走，母独养成，这是先天卦": "In this innate hexagram, Water over Heaven Xu, heaven falls beneath water: the father image weakens first and the mother raises the child.",
+  "如果你算这个人的先天卦，是水天需，天跑到水下面去了，父先丧失，爸爸先走，母独养成，这是先天卦。所以这个小孩子一排出来先天卦是水天需，马上要看他父亲，懂不懂，糟糕，人中那么多，哪里破格，八字拿出来一看，再一看阳宅，厨房在西北角。攀龙附凤，居于尾，五岁之前，有凶事。二十日大人入土中。墓啊，本身就是日入草下地中，这句话，临床是这样子，他爸爸过世了，只剩下他妈妈，带着他，妈妈养他比较辛苦，后来就跟另外一个人结婚，第二个有钱啊，对他跟自己孩子一样…": "In this innate hexagram, Water over Heaven Xu, heaven is below water, so the father image weakens first and the mother raises the child. When this appears, first check the father line, then compare the Bazi and home layout. If the kitchen is in the northwest, the classical image points to an early family loss before age five and a later change in the mother's household.",
+  "先天卦": "Innate Hexagram",
+  "财帛 · 对宫福德": "Wealth · Opposite Fortune",
+  "小限 财帛；对宫 福德": "Minor limit: Wealth; opposite: Fortune",
+  "今日剩余 30/30 · 每日额度 30次/天": "Today remaining 30/30 · Daily quota 30/day",
+  "适合连续追问、复盘命盘、做阶段规划。": "Good for continuous follow-ups, chart review, and stage planning.",
+  "按日刷新，不设月额度": "Resets daily, no monthly quota",
+  "未登录 · 可注册新账号": "Not signed in · New account available",
+  "登录 / 注册后可查看支付记录": "Sign in / register to view payment records",
+  "100次/天，按日刷新": "100/day, resets daily",
+  "Member, 支付记录会绑定到账号": "Member, payment records are linked to your account",
+  "今日剩余 30/30": "Today remaining 30/30",
+  "每日额度 30次/天": "Daily quota 30/day",
+  "保存到本机": "Save Locally",
+  "未登录，本页只保存本机资料": "Not signed in; this page saves locally only",
+  "未登录时只保存在当前浏览器；换设备、清缓存后不会自动带出。": "When not signed in, data stays in this browser only. It will not follow you after switching devices or clearing cache.",
+  "北": "N",
+  "东": "E",
+  "南": "S",
+  "西": "W",
+  "开指南针": "Open Compass",
+  "未开启": "Off",
+  "还没有可解读内容": "No readable content yet",
+  "添加父母、子女、厨房、厕所或客厅后再分析。": "Add parents, children, kitchen, bathroom, or living room before analyzing.",
+  "月令：4月，赤口": "Month: 4 · Red Mouth",
+  "日辰：9日，空亡": "Day: 9 · Void",
+  "时辰：辰时，待起课": "Hour: Chen · Not Cast",
+  "当前落宫：待起课": "Current Palace: Not Cast",
+  "起课后问许半仙": "Ask Master Xu after casting",
+  "请选择两张不同档案": "Choose two different files",
+  "新建档案": "New File",
+  "粤ICP备2026055337号　© 2026 阅天AI Copyright, All Rights Reserved. Powered By 阅天工作室": "Yue ICP 2026055337 · © 2026 Yuetian AI. All Rights Reserved. Powered by Yuetian Studio",
+  "时↑": "Hour ↑",
+  "时↓": "Hour ↓",
+  "第5卦": "Hexagram 5",
+  "流年小限": "Annual Minor Limit",
+  "命": "Life",
+  "空宫": "Empty Palace"
+});
+
 const WENTIAN_I18N_EN_STEM_BRANCH = {
   "甲": "Jia", "乙": "Yi", "丙": "Bing", "丁": "Ding", "戊": "Wu", "己": "Ji", "庚": "Geng", "辛": "Xin", "壬": "Ren", "癸": "Gui",
   "子": "Zi", "丑": "Chou", "寅": "Yin", "卯": "Mao", "辰": "Chen", "巳": "Si", "午": "Wu", "未": "Wei", "申": "Shen", "酉": "You", "戌": "Xu", "亥": "Hai"
@@ -5814,6 +5974,31 @@ function translateWentianText(text, code = getWentianLanguageCode(), element = n
     if (archiveSolarDate) return `Solar: ${archiveSolarDate[1]}`;
     const exact = WENTIAN_I18N_EN_EXTRA[source] || WENTIAN_I18N_EN_ZIWEI_TERMS[source] || WENTIAN_I18N_EN_TERM_MAP[source];
     if (exact) return exact;
+    const loginQuota = source.match(/^登录\s*·\s*(\d+)\/(\d+)$/);
+    if (loginQuota) return `Sign In · ${loginQuota[1]}/${loginQuota[2]}`;
+    const genderDate = source.match(/^(男|女)\s*·\s*(.+)$/);
+    if (genderDate) return `${genderDate[1] === "男" ? "M" : "F"} · ${translateWentianText(genderDate[2], "en")}`;
+    const palaceStemBranch = source.match(/^(.+?)\s*·\s*([甲乙丙丁戊己庚辛壬癸][子丑寅卯辰巳午未申酉戌亥])$/);
+    if (palaceStemBranch) return `${translateWentianText(palaceStemBranch[1], "en")} · ${translateWentianText(palaceStemBranch[2], "en")}`;
+    const decadeRange = source.match(/^大限\s*(\d+)-(\d+)$/);
+    if (decadeRange) return `Decade ${decadeRange[1]}-${decadeRange[2]}`;
+    const annualMinorLimit = source.match(/^(\d{4})年\s*·\s*虚岁(\d+)\s*·\s*([甲乙丙丁戊己庚辛壬癸][子丑寅卯辰巳午未申酉戌亥])\s*·\s*流年小限$/);
+    if (annualMinorLimit) return `${annualMinorLimit[1]} · nominal age ${annualMinorLimit[2]} · ${translateWentianText(annualMinorLimit[3], "en")} · Annual Minor Limit`;
+    const ageYear = source.match(/^(\d+)岁\s*·\s*(\d{4})年$/);
+    if (ageYear) return `Age ${ageYear[1]} · ${ageYear[2]}`;
+    if (source.includes("分钟")) return source.replace(/分钟/g, " min");
+    const chineseNameList = source.match(/^[\p{Script=Han}、]+$/u);
+    if (chineseNameList && source.includes("、")) {
+      return source.split("、").map((item) => translateWentianText(item, "en")).join(", ");
+    }
+    const liurenMonth = source.match(/^月令：(\d+)月，(.+)$/);
+    if (liurenMonth) return `Month: ${liurenMonth[1]} · ${translateWentianText(liurenMonth[2], "en")}`;
+    const liurenDay = source.match(/^日辰：(\d+)日，(.+)$/);
+    if (liurenDay) return `Day: ${liurenDay[1]} · ${translateWentianText(liurenDay[2], "en")}`;
+    const liurenHourState = source.match(/^时辰：([子丑寅卯辰巳午未申酉戌亥])时，(.+)$/);
+    if (liurenHourState) return `Hour: ${translateWentianText(`${liurenHourState[1]}时`, "en")} · ${translateWentianText(liurenHourState[2], "en")}`;
+    const liurenCurrentPalace = source.match(/^当前落宫：(.+)$/);
+    if (liurenCurrentPalace) return `Current Palace: ${translateWentianText(liurenCurrentPalace[1], "en")}`;
     if (WENTIAN_I18N_EN_BRIGHTNESS[source]) return WENTIAN_I18N_EN_BRIGHTNESS[source];
     for (const [suffix, brightness] of Object.entries(WENTIAN_I18N_EN_BRIGHTNESS)) {
       if (source.length > suffix.length && source.endsWith(suffix)) {
