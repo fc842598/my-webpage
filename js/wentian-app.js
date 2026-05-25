@@ -1918,6 +1918,22 @@ function isWentianArchiveTombstoned(archive, tombstones = readWentianArchiveTomb
   return tombstones.some((item) => getWentianArchiveTombstoneKeys(item).some((key) => keys.has(key)));
 }
 
+function isWentianSeedArchive(archive) {
+  const id = archive?.id || archive?.form?.archiveId || "";
+  return id === "default-xie" || id === "default-mingzhu";
+}
+
+function markWentianArchiveDefault(archives, selectedId = "") {
+  return (Array.isArray(archives) ? archives : []).map((archive) => ({
+    ...archive,
+    form: {
+      ...(archive.form || {}),
+      archiveId: archive.id || archive.form?.archiveId || "",
+      isDefault: Boolean(selectedId && archive.id === selectedId),
+    },
+  }));
+}
+
 function rememberWentianArchiveTombstone(archive) {
   if (!archive) return;
   const tombstones = readWentianArchiveTombstones()
@@ -2014,7 +2030,7 @@ function getWentianRemoteArchiveIds(archives) {
   const tombstones = readWentianArchiveTombstones();
   return (Array.isArray(archives) ? archives : [])
     .map(normalizeWentianArchive)
-    .filter((archive) => archive && !archive.form?.isDefault && !isWentianArchiveTombstoned(archive, tombstones))
+    .filter((archive) => archive && !isWentianSeedArchive(archive) && !isWentianArchiveTombstoned(archive, tombstones))
     .map((archive) => archive.id)
     .sort();
 }
@@ -2036,7 +2052,7 @@ async function pushWentianArchivesToRemote(archives, options = {}) {
     const clientId = getWentianClientId();
     const syncArchives = archives
       .map(normalizeWentianArchive)
-      .filter((archive) => archive && !archive.form?.isDefault)
+      .filter((archive) => archive && !isWentianSeedArchive(archive))
       .slice(0, 50);
     const response = await fetch(`${getWentianApiBase()}/api/wentian/archives`, {
       method: "POST",
@@ -2108,10 +2124,13 @@ async function hydrateWentianArchivesFromRemote(options = {}) {
       const localArchives = readWentianArchives().map(normalizeWentianArchive).filter(Boolean);
       const remoteArchives = (Array.isArray(data.archives) ? data.archives : []).map(normalizeWentianArchive).filter(Boolean);
       const rawMerged = mergeWentianArchives(localArchives, remoteArchives);
-      const remoteSelectedId = data.selectedArchiveId && rawMerged.some((item) => item.id === data.selectedArchiveId)
+      const localSelectedId = getWentianStoredSelectedArchiveId();
+      const remoteSelectedId = localSelectedId && rawMerged.some((item) => item.id === localSelectedId)
+        ? localSelectedId
+        : data.selectedArchiveId && rawMerged.some((item) => item.id === data.selectedArchiveId)
         ? data.selectedArchiveId
         : getWentianSelectedArchiveId(rawMerged);
-      const merged = sortWentianArchivesByDefault(rawMerged, remoteSelectedId);
+      const merged = markWentianArchiveDefault(sortWentianArchivesByDefault(rawMerged, remoteSelectedId), remoteSelectedId);
       const before = JSON.stringify(localArchives.map((item) => item.id));
       const after = JSON.stringify(merged.map((item) => item.id));
       writeWentianArchives(merged);
@@ -2147,7 +2166,7 @@ function getWentianArchiveList() {
   }
   const merged = mergeWentianArchives(archives, []);
   const selectedId = getWentianSelectedArchiveId(merged);
-  const sorted = sortWentianArchivesByDefault(merged, selectedId);
+  const sorted = markWentianArchiveDefault(sortWentianArchivesByDefault(merged, selectedId), selectedId);
   writeWentianArchives(sorted);
   if (selectedId) setWentianSelectedArchiveId(selectedId);
   return sorted;
@@ -2292,6 +2311,8 @@ async function deleteWentianArchive(id) {
   }
 
   wentianArchiveDeleteConfirmId = "";
+  setWentianArchiveStatus("档案已删除，正在同步", "ok");
+  navigatePreservingScroll(state.route, false);
   try {
     await deleteWentianArchiveFromRemote(target, { throwOnError: true, verify: true });
     await pushWentianArchivesToRemote(nextArchives, { throwOnError: true, verify: true });
@@ -2300,7 +2321,7 @@ async function deleteWentianArchive(id) {
     console.info("wentian archive remote delete delayed", error);
     setWentianArchiveStatus("已从本机删除，云端同步稍后重试", "ok");
   }
-  navigatePreservingScroll(state.route, false);
+  refreshWentianArchiveStatusView();
   return true;
 }
 
@@ -7037,7 +7058,11 @@ function setWentianArchiveAsDefault(id) {
   if (!archive || archive.id === getWentianStoredSelectedArchiveId()) return;
   wentianArchiveDeleteConfirmId = "";
   wentianArchiveDraftId = null;
-  if (!applyWentianArchiveToCurrent(archive)) return;
+  setWentianSelectedArchiveId(archive.id);
+  const archives = markWentianArchiveDefault(sortWentianArchivesByDefault(getWentianArchiveList(), archive.id), archive.id);
+  writeWentianArchives(archives);
+  const selectedArchive = archives.find((item) => item.id === archive.id) || archive;
+  if (!applyWentianArchiveToCurrent(selectedArchive)) return;
   navigatePreservingScroll(state.route, false);
 }
 
@@ -8801,28 +8826,31 @@ function renderWentianProfileRows(archives = getWentianArchiveList(), query = we
     const rowY = y;
     y += 78;
     const actionControls = confirmingDelete ? `
-      ${figBox(`source-25-delete-confirm-${index}`, 244, rowY + 10, 68, 24, "", "border:1px solid #c85a4a;border-radius:12px;background:#fff1ee;z-index:31;")}
-      ${figText(`source-25-delete-confirm-text-${index}`, "确认删除", 244, rowY + 17, 68, 10, "#b53a2e", 900, "center", "z-index:32;")}
-      ${figButton(`source-25-delete-confirm-hit-${index}`, 243, rowY + 8, 70, 28, `data-action="wentian-archive-delete" data-archive-id="${escapeHtml(archive.id)}" aria-label="确认删除${escapeHtml(item.name)}"`, "", "z-index:33;")}
-      ${figBox(`source-25-delete-cancel-${index}`, 318, rowY + 10, 36, 24, "", "border:1px solid #ead8bd;border-radius:12px;background:#fffaf2;z-index:31;")}
-      ${figText(`source-25-delete-cancel-text-${index}`, "取消", 318, rowY + 17, 36, 10, "#9b742e", 900, "center", "z-index:32;")}
-      ${figButton(`source-25-delete-cancel-hit-${index}`, 317, rowY + 8, 38, 28, `data-action="wentian-archive-delete-cancel" data-archive-id="${escapeHtml(archive.id)}" aria-label="取消删除${escapeHtml(item.name)}"`, "", "z-index:33;")}
+      ${figBox(`source-25-delete-confirm-${index}`, 218, rowY + 8, 86, 30, "", "border:1px solid #c85a4a;border-radius:15px;background:#fff1ee;z-index:31;")}
+      ${figText(`source-25-delete-confirm-text-${index}`, "确认删除", 218, rowY + 17, 86, 11, "#b53a2e", 900, "center", "z-index:32;")}
+      ${figButton(`source-25-delete-confirm-hit-${index}`, 212, rowY - 2, 96, 48, `data-action="wentian-archive-delete" data-archive-id="${escapeHtml(archive.id)}" aria-label="确认删除${escapeHtml(item.name)}"`, "", "z-index:33;")}
+      ${figBox(`source-25-delete-cancel-${index}`, 312, rowY + 8, 44, 30, "", "border:1px solid #ead8bd;border-radius:15px;background:#fffaf2;z-index:31;")}
+      ${figText(`source-25-delete-cancel-text-${index}`, "取消", 312, rowY + 17, 44, 11, "#9b742e", 900, "center", "z-index:32;")}
+      ${figButton(`source-25-delete-cancel-hit-${index}`, 310, rowY - 2, 50, 48, `data-action="wentian-archive-delete-cancel" data-archive-id="${escapeHtml(archive.id)}" aria-label="取消删除${escapeHtml(item.name)}"`, "", "z-index:33;")}
     ` : isDefaultArchive ? `
-      ${figBox(`source-25-default-${index}`, 236, rowY + 10, 42, 24, "", "border:1px solid #d5c493;border-radius:12px;background:#fffdf5;z-index:31;")}
-      ${figText(`source-25-default-text-${index}`, "默认", 236, rowY + 17, 42, 10, "#7b8a44", 900, "center", "z-index:32;")}
-      ${figBox(`source-25-edit-${index}`, 282, rowY + 10, 32, 24, "", "border:1px solid #ead8bd;border-radius:12px;background:#fffaf2;z-index:31;")}
-      ${figText(`source-25-edit-text-${index}`, "改", 282, rowY + 17, 32, 10, "#9b742e", 900, "center", "z-index:32;")}
-      ${figButton(`source-25-edit-hit-${index}`, 281, rowY + 8, 34, 28, `data-action="wentian-archive-edit" data-archive-id="${escapeHtml(archive.id)}" aria-label="编辑${escapeHtml(item.name)}"`, "", "z-index:33;")}
-      ${figBox(`source-25-delete-${index}`, 320, rowY + 10, 34, 24, "", "border:1px solid #ead8bd;border-radius:12px;background:#fffaf2;z-index:31;")}
-      ${figText(`source-25-delete-text-${index}`, "删", 320, rowY + 17, 34, 10, "#9b742e", 900, "center", "z-index:32;")}
-      ${figButton(`source-25-delete-hit-${index}`, 319, rowY + 8, 36, 28, `data-action="wentian-archive-delete" data-archive-id="${escapeHtml(archive.id)}" aria-label="删除${escapeHtml(item.name)}"`, "", "z-index:33;")}
+      ${figBox(`source-25-default-${index}`, 232, rowY + 8, 46, 30, "", "border:1px solid #d5c493;border-radius:15px;background:#fffdf5;z-index:31;")}
+      ${figText(`source-25-default-text-${index}`, "默认", 232, rowY + 17, 46, 11, "#7b8a44", 900, "center", "z-index:32;")}
+      ${figBox(`source-25-edit-${index}`, 284, rowY + 8, 36, 30, "", "border:1px solid #ead8bd;border-radius:15px;background:#fffaf2;z-index:31;")}
+      ${figText(`source-25-edit-text-${index}`, "改", 284, rowY + 17, 36, 11, "#9b742e", 900, "center", "z-index:32;")}
+      ${figButton(`source-25-edit-hit-${index}`, 278, rowY - 2, 48, 48, `data-action="wentian-archive-edit" data-archive-id="${escapeHtml(archive.id)}" aria-label="编辑${escapeHtml(item.name)}"`, "", "z-index:33;")}
+      ${figBox(`source-25-delete-${index}`, 328, rowY + 8, 36, 30, "", "border:1px solid #ead8bd;border-radius:15px;background:#fffaf2;z-index:31;")}
+      ${figText(`source-25-delete-text-${index}`, "删", 328, rowY + 17, 36, 11, "#9b742e", 900, "center", "z-index:32;")}
+      ${figButton(`source-25-delete-hit-${index}`, 322, rowY - 2, 48, 48, `data-action="wentian-archive-delete" data-archive-id="${escapeHtml(archive.id)}" aria-label="删除${escapeHtml(item.name)}"`, "", "z-index:33;")}
     ` : `
-      ${figBox(`source-25-edit-${index}`, 282, rowY + 10, 32, 24, "", "border:1px solid #ead8bd;border-radius:12px;background:#fffaf2;z-index:31;")}
-      ${figText(`source-25-edit-text-${index}`, "改", 282, rowY + 17, 32, 10, "#9b742e", 900, "center", "z-index:32;")}
-      ${figButton(`source-25-edit-hit-${index}`, 281, rowY + 8, 34, 28, `data-action="wentian-archive-edit" data-archive-id="${escapeHtml(archive.id)}" aria-label="编辑${escapeHtml(item.name)}"`, "", "z-index:33;")}
-      ${figBox(`source-25-delete-${index}`, 320, rowY + 10, 34, 24, "", "border:1px solid #ead8bd;border-radius:12px;background:#fffaf2;z-index:31;")}
-      ${figText(`source-25-delete-text-${index}`, "删", 320, rowY + 17, 34, 10, "#9b742e", 900, "center", "z-index:32;")}
-      ${figButton(`source-25-delete-hit-${index}`, 319, rowY + 8, 36, 28, `data-action="wentian-archive-delete" data-archive-id="${escapeHtml(archive.id)}" aria-label="删除${escapeHtml(item.name)}"`, "", "z-index:33;")}
+      ${figBox(`source-25-set-default-${index}`, 230, rowY + 8, 48, 30, "", "border:1px solid #d5c493;border-radius:15px;background:#fffdf5;z-index:31;")}
+      ${figText(`source-25-set-default-text-${index}`, "设主", 230, rowY + 17, 48, 11, "#7b8a44", 900, "center", "z-index:32;")}
+      ${figButton(`source-25-set-default-hit-${index}`, 222, rowY - 2, 56, 48, `data-action="wentian-archive-default" data-archive-id="${escapeHtml(archive.id)}" aria-label="设为默认${escapeHtml(item.name)}"`, "", "z-index:33;")}
+      ${figBox(`source-25-edit-${index}`, 284, rowY + 8, 36, 30, "", "border:1px solid #ead8bd;border-radius:15px;background:#fffaf2;z-index:31;")}
+      ${figText(`source-25-edit-text-${index}`, "改", 284, rowY + 17, 36, 11, "#9b742e", 900, "center", "z-index:32;")}
+      ${figButton(`source-25-edit-hit-${index}`, 278, rowY - 2, 48, 48, `data-action="wentian-archive-edit" data-archive-id="${escapeHtml(archive.id)}" aria-label="编辑${escapeHtml(item.name)}"`, "", "z-index:33;")}
+      ${figBox(`source-25-delete-${index}`, 328, rowY + 8, 36, 30, "", "border:1px solid #ead8bd;border-radius:15px;background:#fffaf2;z-index:31;")}
+      ${figText(`source-25-delete-text-${index}`, "删", 328, rowY + 17, 36, 11, "#9b742e", 900, "center", "z-index:32;")}
+      ${figButton(`source-25-delete-hit-${index}`, 322, rowY - 2, 48, 48, `data-action="wentian-archive-delete" data-archive-id="${escapeHtml(archive.id)}" aria-label="删除${escapeHtml(item.name)}"`, "", "z-index:33;")}
     `;
     return `
       ${group}
@@ -8834,7 +8862,7 @@ function renderWentianProfileRows(archives = getWentianArchiveList(), query = we
       ${figText(`source-25-date-${index}`, `阳历:${escapeHtml(item.datetime.split(" ")[0] || item.datetime)}`, 90, rowY + 34, 174, 13, "#8f8780", 700)}
       ${figText(`source-25-detail-${index}`, escapeHtml(item.pillars), 90, rowY + 56, 176, 12, "#b08a4b", 600)}
       ${actionControls}
-      ${figButton(`source-25-open-${index}`, 0, rowY, 264, 76, `data-action="wentian-profile-open" data-archive-id="${escapeHtml(archive.id)}"`)}
+      ${figButton(`source-25-open-${index}`, 0, rowY, 222, 76, `data-action="wentian-profile-open" data-archive-id="${escapeHtml(archive.id)}"`)}
     `;
   }).join("");
 }
