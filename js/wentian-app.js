@@ -8634,7 +8634,9 @@ function sourceProfileScreen(screen) {
     ${figBox("source-25-bg", 0, 0, 390, 867, "", "background:linear-gradient(180deg,#fbf6eb 0%,#fffdf8 36%,#fffdf8 100%);")}
     ${figText("source-25-time", "15:21", 18, 15, 70, 14, "#26211c")}
     ${figText("source-25-status", "◉  0.30  5G  ▮ 33 ⚡", 250, 14, 120, 10, "#26211c", 700, "right")}
-    ${figText("source-25-back", "‹", 20, 56, 28, 30, "#201813", 700)}
+    ${figBox("source-25-back-bg", 18, 46, 56, 56, "", "border:1px solid #eadfce;border-radius:18px;background:rgba(255,253,248,.92);box-shadow:0 8px 18px rgba(74,55,32,.08);")}
+    ${figText("source-25-back", "‹", 18, 56, 56, 28, "#201813", 900, "center", "line-height:1;")}
+    ${figButton("source-25-back-hit", 12, 40, 68, 68, 'data-action="back" aria-label="返回"', "", "z-index:80;")}
     ${figText("source-25-title", "排盘记录", 0, 60, 390, 24, "#201813", 900, "center")}
     ${figText("source-25-menu", "☰", 334, 61, 34, 22, "#201813", 800, "center")}
     ${figBox("source-25-tabs", 110, 110, 170, 58, "", "border-radius:29px;background:rgba(255,255,255,.88);box-shadow:0 9px 20px rgba(107,75,42,.08);")}
