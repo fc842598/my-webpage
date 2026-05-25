@@ -2368,10 +2368,16 @@ function getWentianCityRows() {
 
 function makeWentianCity(row) {
   if (!row) return null;
+  const parentCity = String(row[5] || "").trim();
+  const fullName = String(row[6] || "").trim();
+  const adminCode = String(row[7] || "").trim();
   const city = {
     province: row[0],
     city: row[1],
-    name: `${row[0]} ${row[1]}`,
+    parentCity,
+    fullName,
+    adminCode,
+    name: fullName || `${row[0]} ${parentCity ? `${parentCity} ` : ""}${row[1]}`,
     lon: Number(row[2]),
     lat: Number(row[3]),
     tzOffset: Number(row[4] ?? 8),
@@ -2386,8 +2392,18 @@ function isWentianChinaCity(city) {
   return /^(北京|上海|天津|重庆|河北|山西|辽宁|吉林|黑龙江|江苏|浙江|安徽|福建|江西|山东|河南|湖北|湖南|广东|海南|四川|贵州|云南|陕西|甘肃|青海|内蒙古|广西|西藏|宁夏|新疆|香港|澳门|台湾)$/.test(region);
 }
 
+function formatWentianChinaCityPath(city) {
+  const province = String(city?.province || "").trim();
+  const parentCity = String(city?.parentCity || "").trim();
+  const cityName = String(city?.city || "").trim();
+  return [province, parentCity && parentCity !== province && parentCity !== cityName ? parentCity : "", cityName && cityName !== province ? cityName : ""]
+    .filter(Boolean)
+    .join("-");
+}
+
 function formatWentianCity(city) {
   if (!city) return "";
+  if (isWentianChinaCity(city)) return `中国-${formatWentianChinaCityPath(city)}`;
   return city.province === city.city ? `中国-${city.city}` : `${city.province}-${city.city}`;
 }
 
@@ -2439,15 +2455,32 @@ function formatWentianGeoCoord(value, axis) {
 }
 
 function wentianCityMatchesQuery(row, q, compact) {
+  const parts = row.map((value) => String(value || "").toLowerCase()).filter(Boolean);
   const province = String(row[0] || "").toLowerCase();
   const city = String(row[1] || "").toLowerCase();
-  const text = `${province}${city} ${province} ${city}`;
-  const rowCompact = `${province}${city}`.replace(/\s/g, "");
+  const parentCity = String(row[5] || "").toLowerCase();
+  const text = parts.join(" ");
+  const rowCompact = `${province}${parentCity}${city}`.replace(/\s/g, "");
+  const compactText = parts.join("").replace(/\s|·|-/g, "");
   const cityCompact = city.replace(/\s/g, "");
   return text.includes(q)
-    || text.replace(/\s/g, "").includes(compact)
+    || compactText.includes(compact)
     || compact.includes(rowCompact)
     || (cityCompact.length >= 2 && compact.includes(cityCompact));
+}
+
+function wentianCityRowSearchRank(row, q, compact) {
+  const province = String(row[0] || "").toLowerCase().replace(/\s/g, "");
+  const city = String(row[1] || "").toLowerCase().replace(/\s/g, "");
+  const parentCity = String(row[5] || "").toLowerCase().replace(/\s/g, "");
+  const fullPath = `${province}${parentCity}${city}`;
+  if (city === compact) return 0;
+  if (fullPath === compact) return 1;
+  if (city.includes(compact)) return 2;
+  if (fullPath.endsWith(compact)) return 3;
+  if (fullPath.includes(compact)) return 4;
+  if (q && String(row[6] || "").toLowerCase().includes(q)) return 5;
+  return 9;
 }
 
 function findWentianCityRows(query, scope = "all", limit = 8) {
@@ -2457,6 +2490,7 @@ function findWentianCityRows(query, scope = "all", limit = 8) {
   return getWentianCityRows()
     .map((row, index) => ({ row, index }))
     .filter(({ row }) => (scope !== "china" || isWentianChinaCity(row)) && wentianCityMatchesQuery(row, q, compact))
+    .sort((a, b) => wentianCityRowSearchRank(a.row, q, compact) - wentianCityRowSearchRank(b.row, q, compact) || a.index - b.index)
     .slice(0, limit);
 }
 
@@ -2473,7 +2507,7 @@ function syncWentianChartCityScopeUi() {
   if (input) {
     input.placeholder = wentianChartCityScope === "global"
       ? "搜索国家/城市，如：Singapore、Tokyo"
-      : "搜索城市，如：北京、上海、深圳";
+      : "搜索出生地，如：广东廉江、朝阳区、上海";
   }
   const note = document.getElementById("wentian-chart-city-note");
   if (note) {
