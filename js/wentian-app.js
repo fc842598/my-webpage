@@ -14567,22 +14567,13 @@ function sourceZiweiAiDecodePanel(saved) {
   const isRunning = wentianChartAiState.status === "running";
   const hasResults = hasWentianChartAiResults();
   const doneCount = getWentianGeneratedModuleCount();
-  const activeTask = WENTIAN_CHART_AI_TASKS.find((task) => task.module === wentianChartAiState.runningModule);
   const buttonText = isRunning ? `生成中 ${doneCount}/${WENTIAN_CHART_AI_TASKS.length}` : (hasResults ? "重新总批命" : "总批命");
-  const statusText = isRunning
-    ? `正在生成：${activeTask?.label || "AI解读"}`
-    : wentianChartAiState.error
-      ? wentianChartAiState.error
-      : hasResults
-        ? "已接入电脑端同款核心解读，可单独重批、追问或下载 PDF。"
-        : "对齐电脑端六卷：总局、专题、大限、小限、曲线、建议。";
 
   return `
     <section class="wentian-chart-ai-panel" data-node-id="source-27-ai-card">
       <header class="wentian-chart-ai-head">
-        <span>紫微命书 · AI总批命</span>
         <h2>✦ 命盘 · AI解读</h2>
-        <p class="${wentianChartAiState.error ? "is-error" : ""}">${escapeHtml(statusText)}</p>
+        ${wentianChartAiState.error ? `<p class="is-error">${escapeHtml(wentianChartAiState.error)}</p>` : ""}
       </header>
       <div class="wentian-chart-ai-actions">
         <button type="button" class="wentian-chart-ai-primary" data-action="wentian-chart-ai-decode" ${isRunning ? "disabled" : ""}>${escapeHtml(buttonText)}</button>
@@ -14590,16 +14581,7 @@ function sourceZiweiAiDecodePanel(saved) {
         <button type="button" class="wentian-chart-ai-secondary" data-action="wentian-open-mingbook-onepage">下载PDF</button>
       </div>
       <p class="wentian-chart-ai-pdf-status" data-wentian-pdf-status></p>
-      <div class="wentian-chart-ai-meter" aria-label="AI生成进度">
-        ${WENTIAN_CHART_AI_TASKS.map((task) => `<i class="${wentianChartAiState.results?.[task.module] ? "is-done" : (wentianChartAiState.runningModule === task.module ? "is-running" : "")}"></i>`).join("")}
-      </div>
-      <div class="wentian-chart-ai-modules" aria-label="单独批命入口">
-        ${WENTIAN_CHART_AI_TASKS.map((task) => `
-          <button type="button" class="${wentianChartAiState.results?.[task.module] ? "is-ready" : ""}" data-action="wentian-chart-ai-module" data-ai-module="${escapeHtml(task.module)}" ${isRunning ? "disabled" : ""}>${escapeHtml(task.label.replace("批命", ""))}</button>
-        `).join("")}
-      </div>
       <div class="wentian-chart-ai-pulse">
-        <span><b>${doneCount}/${WENTIAN_CHART_AI_TASKS.length}</b> 模块</span>
         <span><b>${hasResults ? "已生成" : (isRunning ? "生成中" : "待生成")}</b> 状态</span>
         <span><b>6</b> 卷报告</span>
       </div>

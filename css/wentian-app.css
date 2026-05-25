@@ -7148,7 +7148,7 @@ html[lang="en"] .wentian-chart-ai-modules button {
 
 .wentian-chart-ai-pulse {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 8px;
   margin-bottom: 14px;
 }
