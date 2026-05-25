@@ -14789,6 +14789,36 @@ function stripScreenshotStatusBar() {
   }
 }
 
+function compactWentianZiweiScreenLayout() {
+  const phone = view.querySelector('.figma-phone[data-node-id="screen-27"]');
+  if (!phone) return false;
+  const stack = phone.querySelector(".wentian-chart-content-stack");
+  const bg = phone.querySelector('[data-node-id="source-27-bg"]');
+  const navBg = phone.querySelector('[data-node-id="source-bottom-bg"]');
+  if (!stack || !bg || !navBg) return false;
+  const stackTop = Number.parseFloat(getComputedStyle(stack).top) || stack.offsetTop || 0;
+  const stackBottom = Math.ceil(stackTop + stack.offsetHeight);
+  const navY = Math.max(755, stackBottom + 28);
+  const currentNavY = Number.parseFloat(navBg.style.top) || navY;
+  const delta = navY - currentNavY;
+  for (const node of phone.querySelectorAll('[data-node-id^="source-bottom-"]')) {
+    const top = Number.parseFloat(node.style.top);
+    if (Number.isFinite(top)) node.style.top = `${Math.round(top + delta)}px`;
+  }
+  const nextHeight = navY + 89;
+  phone.style.height = `${nextHeight}px`;
+  bg.style.height = `${nextHeight}px`;
+  return true;
+}
+
+function scheduleWentianZiweiScreenLayout() {
+  const refit = () => {
+    if (compactWentianZiweiScreenLayout()) fitActivePhoneShell();
+  };
+  refit();
+  [120, 360, 900, 1800, 3200].forEach((delay) => window.setTimeout(refit, delay));
+}
+
 function fitActivePhoneShell() {
   const wrap = view.querySelector(".phone-wrap");
   const phone = view.querySelector(".figma-phone");
@@ -14861,8 +14891,10 @@ function navigate(route, push = true) {
     stripScreenshotStatusBar();
     applyWentianLanguageText(view, getWentianLanguageCode(), { force: true });
     stabilizeWentianLanguageText(view);
+    if (screen.no === 27) compactWentianZiweiScreenLayout();
     ensureWentianLanguageObserver();
     scheduleWentianPhoneFit();
+    if (screen.no === 27) scheduleWentianZiweiScreenLayout();
     syncActive();
     window.setTimeout(initWentianAuth, 0);
     if (screen.no === 4) window.setTimeout(initWentianXuChat, 0);
