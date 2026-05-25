@@ -1048,6 +1048,9 @@ function sourceArchiveSelectScreen() {
   const archives = getWentianArchiveList();
   const activeId = wentianArchiveDraftId || getWentianSelectedArchiveId(archives);
   const displayArchives = archives;
+  const archiveStatus = wentianArchiveStatus.text
+    ? `<div id="wentian-archive-status" class="wentian-invite-status" style="left:42px;top:286px;width:306px;text-align:center" data-tone="${escapeHtml(wentianArchiveStatus.tone || "")}">${escapeHtml(wentianArchiveStatus.text)}</div>`
+    : "";
   return `
     ${figBox("source-5-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
     ${figBox("source-5-header", 0, 0, 390, 88, "", "background:#fffdf8;border-bottom:1px solid #eadfce;")}
@@ -1066,6 +1069,7 @@ function sourceArchiveSelectScreen() {
     ${figText("source-5-sheet-title", "请确认命盘", 42, 240, 150, 22, "#1f1d1a", 900)}
     ${figText("source-5-sheet-sub", "确认后再进入许半仙对话", 42, 270, 210, 13, "#8b8176", 600)}
     <button class="wentian-archive-new-mini" type="button" data-action="wentian-archive-new">＋ 新建</button>
+    ${archiveStatus}
     <div class="wentian-archive-list">
     ${displayArchives.map((archive) => {
       const item = getWentianArchiveDisplay(archive);
@@ -1308,6 +1312,7 @@ let wentianArchiveRemoteLoadedScope = "";
 let wentianArchiveRemotePromise = null;
 let wentianArchiveRemotePromiseScope = "";
 let wentianArchiveDeleteConfirmId = "";
+let wentianArchiveStatus = { text: "", tone: "" };
 let wentianLanguageDraft = null;
 let wentianHepanSelectedIds = null;
 let wentianHepanTimeEditId = "";
@@ -1921,14 +1926,57 @@ async function fetchWentianRemoteArchives() {
   return data;
 }
 
-async function pushWentianArchivesToRemote(archives) {
+async function parseWentianArchiveResponse(response, fallbackMessage) {
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok || data.error) throw new Error(data.error || fallbackMessage || `服务异常 ${response.status}`);
+  return data;
+}
+
+function setWentianArchiveStatus(text = "", tone = "") {
+  wentianArchiveStatus = { text, tone };
+}
+
+function refreshWentianArchiveStatusView() {
+  if (state.route === "screen-26") {
+    setWentianChartStatus(wentianArchiveStatus.text, wentianArchiveStatus.tone);
+  } else if (state.route === "screen-5" || state.route === "screen-25") {
+    navigatePreservingScroll(state.route, false);
+  }
+}
+
+function showWentianArchiveSyncError(message) {
+  setWentianArchiveStatus(message || "档案云端同步失败，请检查网络后重试", "error");
+  refreshWentianArchiveStatusView();
+}
+
+function getWentianRemoteArchiveIds(archives) {
+  return (Array.isArray(archives) ? archives : [])
+    .map(normalizeWentianArchive)
+    .filter((archive) => archive && !archive.form?.isDefault)
+    .map((archive) => archive.id)
+    .sort();
+}
+
+async function verifyWentianRemoteArchives(expectedArchives, selectedArchiveId = "") {
+  const data = await fetchWentianRemoteArchives();
+  const expectedIds = getWentianRemoteArchiveIds(expectedArchives);
+  const remoteIds = getWentianRemoteArchiveIds(data.archives);
+  const sameIds = JSON.stringify(expectedIds) === JSON.stringify(remoteIds);
+  if (!sameIds) throw new Error("档案云端保存未生效，请稍后重试");
+  if (selectedArchiveId && expectedIds.includes(selectedArchiveId) && data.selectedArchiveId !== selectedArchiveId) {
+    throw new Error("默认档案云端保存未生效，请稍后重试");
+  }
+  return data;
+}
+
+async function pushWentianArchivesToRemote(archives, options = {}) {
   try {
     const clientId = getWentianClientId();
     const syncArchives = archives
       .map(normalizeWentianArchive)
       .filter((archive) => archive && !archive.form?.isDefault)
       .slice(0, 50);
-    await fetch(`${getWentianApiBase()}/api/wentian/archives`, {
+    const response = await fetch(`${getWentianApiBase()}/api/wentian/archives`, {
       method: "POST",
       headers: { "Content-Type": "application/json", ...(await getWentianAuthHeaders()) },
       body: JSON.stringify({
@@ -1937,18 +1985,28 @@ async function pushWentianArchivesToRemote(archives) {
         selectedArchiveId: getWentianSelectedArchiveId(archives),
       }),
     });
+    const data = await parseWentianArchiveResponse(response, "档案云端保存失败");
+    if (options.verify) await verifyWentianRemoteArchives(syncArchives, getWentianSelectedArchiveId(archives));
+    if (options.statusOnError) {
+      setWentianArchiveStatus("", "");
+      refreshWentianArchiveStatusView();
+    }
+    return data;
   } catch (error) {
     console.info("wentian archive remote sync fallback", error);
+    if (options.statusOnError) showWentianArchiveSyncError(error.message || "档案已保存本机，云端同步失败");
+    if (options.throwOnError) throw error;
+    return null;
   }
 }
 
-async function deleteWentianArchiveFromRemote(archive) {
+async function deleteWentianArchiveFromRemote(archive, options = {}) {
   try {
     const clientId = getWentianClientId();
     const archiveId = archive?.id || archive?.form?.archiveId || "";
     const chartRecordId = archive?.chartRecordId || archive?.chartData?.chartRecordId || "";
     if (!archiveId && !chartRecordId) return;
-    await fetch(`${getWentianApiBase()}/api/wentian/archives`, {
+    const response = await fetch(`${getWentianApiBase()}/api/wentian/archives`, {
       method: "POST",
       headers: { "Content-Type": "application/json", ...(await getWentianAuthHeaders()) },
       body: JSON.stringify({
@@ -1958,8 +2016,20 @@ async function deleteWentianArchiveFromRemote(archive) {
         chartRecordId,
       }),
     });
+    const data = await parseWentianArchiveResponse(response, "档案云端删除失败");
+    if (options.verify) {
+      const fresh = await fetchWentianRemoteArchives();
+      const remaining = (Array.isArray(fresh.archives) ? fresh.archives : []).map(normalizeWentianArchive).filter(Boolean);
+      if (remaining.some((item) => (archiveId && item.id === archiveId) || (chartRecordId && item.chartRecordId === chartRecordId))) {
+        throw new Error("档案云端删除未生效，请稍后重试");
+      }
+    }
+    return data;
   } catch (error) {
     console.info("wentian archive remote delete fallback", error);
+    if (options.statusOnError) showWentianArchiveSyncError(error.message || "档案删除失败，请检查网络后重试");
+    if (options.throwOnError) throw error;
+    return null;
   }
 }
 
@@ -2043,7 +2113,7 @@ function saveWentianArchiveFromChartState(chartState) {
   const merged = sortWentianArchivesByDefault(mergeWentianArchives(archives, []), archiveWithStamp.id);
   writeWentianArchives(merged);
   setWentianSelectedArchiveId(archiveWithStamp.id);
-  pushWentianArchivesToRemote(merged);
+  void pushWentianArchivesToRemote(merged, { statusOnError: true, verify: true });
 }
 
 function saveWentianChart(chartState, options = {}) {
@@ -2126,6 +2196,10 @@ async function deleteWentianArchive(id) {
   const archives = getWentianArchiveList();
   const target = findWentianArchiveById(id, archives);
   if (!target) return false;
+  const previousSelectedId = getWentianStoredSelectedArchiveId();
+  const previousHepanIds = getWentianHepanSelectedIds(archives);
+  const previousDraftId = wentianArchiveDraftId;
+  const previousSavedChart = getWentianSavedChart();
   const nextArchives = archives.filter((archive) => archive.id !== id);
   writeWentianArchives(nextArchives);
   const selectedIds = getWentianHepanSelectedIds(nextArchives).filter((item) => item !== id);
@@ -2158,10 +2232,23 @@ async function deleteWentianArchive(id) {
   }
 
   wentianArchiveDeleteConfirmId = "";
-  await deleteWentianArchiveFromRemote(target);
-  await pushWentianArchivesToRemote(nextArchives);
-  navigatePreservingScroll(state.route, false);
-  return true;
+  try {
+    await deleteWentianArchiveFromRemote(target, { throwOnError: true, verify: true });
+    await pushWentianArchivesToRemote(nextArchives, { throwOnError: true, verify: true });
+    setWentianArchiveStatus("档案已删除并同步", "ok");
+    navigatePreservingScroll(state.route, false);
+    return true;
+  } catch (error) {
+    writeWentianArchives(archives);
+    saveWentianHepanSelectedIds(previousHepanIds);
+    wentianArchiveDraftId = previousDraftId;
+    if (previousSavedChart) saveWentianChart(previousSavedChart, { upsertArchive: false });
+    else clearWentianSavedChart();
+    if (previousSelectedId) setWentianSelectedArchiveId(previousSelectedId);
+    setWentianArchiveStatus(error.message || "删除失败，已恢复本机档案", "error");
+    navigatePreservingScroll(state.route, false);
+    return false;
+  }
 }
 
 function requestWentianArchiveDelete(id) {
@@ -6674,7 +6761,7 @@ function applyWentianArchiveToCurrent(archive) {
     createdAt: archive.createdAt || new Date().toISOString(),
   }, { upsertArchive: false });
   resetWentianXuChatRuntime();
-  pushWentianArchivesToRemote(getWentianArchiveList());
+  void pushWentianArchivesToRemote(getWentianArchiveList(), { statusOnError: true, verify: true });
   return true;
 }
 
@@ -8487,6 +8574,9 @@ function renderWentianProfileRows(archives = getWentianArchiveList(), query = we
 
 function sourceProfileScreen(screen) {
   const rows = renderWentianProfileRows(getWentianArchiveList(), wentianProfileSearchQuery);
+  const archiveStatus = wentianArchiveStatus.text
+    ? figText("source-25-archive-status", escapeHtml(wentianArchiveStatus.text), 76, 284, 238, 12, wentianArchiveStatus.tone === "error" ? "#a94437" : "#5f8745", 800, "center")
+    : "";
   return `
     ${figBox("source-25-bg", 0, 0, 390, 867, "", "background:linear-gradient(180deg,#fbf6eb 0%,#fffdf8 36%,#fffdf8 100%);")}
     ${figText("source-25-time", "15:21", 18, 15, 70, 14, "#26211c")}
@@ -8504,6 +8594,7 @@ function sourceProfileScreen(screen) {
     ${figText("source-25-filter-text", "筛选", 294, 202, 78, 17, "#fffaf3", 900, "center")}
     ${figButton("source-25-filter-hit", 294, 188, 78, 48, 'data-action="wentian-profile-search-focus" aria-label="筛选档案"')}
     ${figText("source-25-all", "全部", 18, 262, 60, 18, "#bf8732", 900)}
+    ${archiveStatus}
     ${figBox("source-25-add-mini", 338, 252, 28, 28, "", "border:1px solid #dad1c6;border-radius:14px;background:#fffdf9;")}
     ${figText("source-25-add-plus", "+", 338, 257, 28, 14, "#201813", 800, "center")}
     ${figButton("source-25-add-hit", 330, 248, 44, 44, 'data-route="screen-26" aria-label="添加档案"')}
