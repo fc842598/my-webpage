@@ -465,6 +465,25 @@ html[lang="en"] .fig-text {
   line-height: 1.18;
 }
 
+html[lang="en"] [data-node-id="source-1-brand-sub"] {
+  width: 174px !important;
+  font-size: 11px !important;
+  line-height: 1.15 !important;
+}
+
+html[lang="en"] [data-node-id="source-1-hero-title"] {
+  width: 174px !important;
+  font-size: 24px !important;
+}
+
+html[lang="en"] [data-node-id^="source-1-feature-title-"] {
+  font-size: 17px !important;
+}
+
+html[lang="en"] [data-node-id^="source-1-feature-sub-"] {
+  font-size: 11px !important;
+}
+
 html[lang="en"] [data-node-id="source-1-recommend-title"] {
   width: 180px !important;
   font-size: 20px !important;
@@ -4559,6 +4578,16 @@ html[data-wentian-language="en"] .liuren-hero-copy em {
   color: #231a12;
 }
 
+html[lang="en"] .liuyao-flow-steps {
+  grid-template-columns: 72px minmax(8px, 1fr) 48px minmax(8px, 1fr) 58px;
+  padding: 0 12px;
+}
+
+html[lang="en"] .liuyao-flow-steps span {
+  font-size: 10.5px;
+  line-height: 1.12;
+}
+
 .liuyao-flow-steps i {
   height: 1px;
   background: #d8c4a3;
@@ -4675,6 +4704,10 @@ html[data-wentian-language="en"] .liuren-hero-copy em {
   line-height: 1.35;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+html[lang="en"] .liuyao-coin-summary em {
+  white-space: normal;
 }
 
 .liuyao-coin-summary .liuyao-coin-face-strip {
@@ -7245,16 +7278,18 @@ html[lang="en"] .wentian-chart-ai-menu span {
 }
 
 html[lang="en"] .wentian-mb-chapter-head {
-  grid-template-columns: 36px minmax(0, 1fr) 86px;
+  grid-template-columns: 32px minmax(0, 1fr) 82px;
   gap: 7px;
 }
 
 html[lang="en"] .wentian-mb-chapter-head > span {
-  font-size: 11px;
+  font-size: 10px;
+  line-height: 1.2;
 }
 
 html[lang="en"] .wentian-mb-chapter-head h3 {
-  font-size: 14px;
+  font-size: 13px;
+  line-height: 1.15;
 }
 
 html[lang="en"] .wentian-mb-chapter-head button,
@@ -7312,6 +7347,10 @@ html[lang="en"] .wentian-mb-topic-grid button {
   gap: 8px;
   align-items: center;
   padding: 10px;
+}
+
+html[lang="en"] .wentian-mb-topic-grid section {
+  grid-template-columns: 56px minmax(0, 1fr) 54px;
 }
 
 .wentian-mb-topic-grid span {
@@ -7420,6 +7459,10 @@ html[lang="en"] .wentian-mb-topic-grid button {
   grid-template-columns: 42px minmax(0, 1fr);
   gap: 9px;
   padding: 11px 12px;
+}
+
+html[lang="en"] .wentian-mb-advice section {
+  grid-template-columns: 56px minmax(0, 1fr);
 }
 
 .wentian-mb-advice b {
