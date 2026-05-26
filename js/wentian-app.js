@@ -1320,6 +1320,7 @@ let wentianHepanTimeEditId = "";
 let wentianHepanTimeEditError = "";
 let wentianHepanAiState = { key: "", loading: false, card: null, error: "", promise: null };
 let wentianMobileYijingTab = "xiantian";
+let wentianMobileLuckDecadeKey = "";
 let wentianChartCalMode = "solar";
 let wentianChartCity = null;
 let wentianChartCityScope = "china";
@@ -1399,6 +1400,7 @@ const wentianChartAiState = {
   status: "idle",
   runningModule: "",
   results: {},
+  luckDecadeKey: "",
   curveGenerated: false,
   error: "",
   updatedAt: "",
@@ -3235,10 +3237,12 @@ function syncWentianChartAiStateFromStorage() {
         status: saved.status === "running" ? (resultCount ? "done" : "idle") : (saved.status || "done"),
         runningModule: "",
         results: saved.results || {},
+        luckDecadeKey: saved.luckDecadeKey || "",
         curveGenerated: !!saved.curveGenerated,
         error: saved.error || "",
         updatedAt: saved.updatedAt || "",
       });
+      if (saved.luckDecadeKey && !wentianMobileLuckDecadeKey) wentianMobileLuckDecadeKey = saved.luckDecadeKey;
     }
   } catch (_err) {}
 }
@@ -3249,6 +3253,7 @@ function saveWentianChartAiState() {
     all[wentianChartAiState.chartRecordId] = {
       status: wentianChartAiState.status,
       results: wentianChartAiState.results,
+      luckDecadeKey: wentianChartAiState.luckDecadeKey,
       curveGenerated: !!wentianChartAiState.curveGenerated,
       error: wentianChartAiState.error,
       updatedAt: wentianChartAiState.updatedAt,
@@ -3263,6 +3268,7 @@ function resetWentianChartAiState(chartRecordId = "") {
     status: "idle",
     runningModule: "",
     results: {},
+    luckDecadeKey: "",
     curveGenerated: false,
     error: "",
     updatedAt: "",
@@ -3662,6 +3668,173 @@ function renderWentianSpecialReading(actionAttr, actionLabel) {
   `;
 }
 
+function getWentianDecadeDomain(name = "") {
+  const value = String(name || "");
+  if (value.includes("官禄")) return "事业与职位";
+  if (value.includes("财帛")) return "财运与现金流";
+  if (value.includes("田宅")) return "家庭、房产与根基";
+  if (value.includes("夫妻")) return "伴侣与合作关系";
+  if (value.includes("疾厄")) return "健康与消耗";
+  if (value.includes("迁移")) return "外部机会与出行";
+  if (value.includes("交友") || value.includes("仆役")) return "人脉与合作";
+  if (value.includes("福德")) return "心态、休息与长期福分";
+  if (value.includes("父母")) return "长辈、文书与规则";
+  if (value.includes("子女")) return "子女、作品与延伸成果";
+  if (value.includes("兄弟")) return "同辈、团队与资源分配";
+  return "命盘主线与个人节奏";
+}
+
+function getWentianDecadeTheme(domain = "") {
+  if (domain.includes("家庭") || domain.includes("房产")) return "稳住根基";
+  if (domain.includes("事业")) return "定住方向";
+  if (domain.includes("财")) return "稳住现金流";
+  if (domain.includes("伴侣") || domain.includes("合作")) return "稳住关系";
+  if (domain.includes("健康")) return "护住消耗";
+  if (domain.includes("外部")) return "有序外拓";
+  return "稳住主轴";
+}
+
+function formatWentianDecadeStars(stars) {
+  const names = normalizeWentianAiStarList(stars).map((star) => [star.name, star.brightness].filter(Boolean).join("")).filter(Boolean);
+  return names.slice(0, 3).join("、") || "待排盘";
+}
+
+function getWentianDecadeItems(chartData = {}) {
+  const activeAge = Number(chartData.activeAge || chartData.realCurrentAge || 0);
+  const current = getWentianAiCurrentDecade(chartData);
+  const rows = Array.isArray(chartData.dayunTable) && chartData.dayunTable.length ? chartData.dayunTable : (current.rangeLabel ? [current] : []);
+  return rows.map((row) => {
+    const rangeText = String(row.rangeLabel || row.range || "").match(/\d+/g) || [];
+    const ageStart = Number(row.ageStart || row.start || rangeText[0] || 0);
+    const ageEnd = Number(row.ageEnd || row.end || rangeText[1] || 0);
+    const palaceBranch = row.palaceBranch || row.branch || "";
+    const palace = getWentianAiPalaceByBranch(chartData, palaceBranch);
+    const palaceName = row.palaceName || row.palace || palace?.name || "";
+    const majorStars = normalizeWentianAiStarList(row.majorStars?.length ? row.majorStars : palace?.majorStars);
+    const domain = getWentianDecadeDomain(palaceName);
+    const key = ageStart && ageEnd ? `${ageStart}-${ageEnd}-${palaceBranch || palaceName}` : (row.rangeKey || `${row.rangeLabel || row.range || palaceName}`);
+    return {
+      key,
+      rangeLabel: ageStart && ageEnd ? `${ageStart}-${ageEnd}岁` : (row.rangeLabel || row.range || "选中十年"),
+      ageStart,
+      ageEnd,
+      palaceName: palaceName || "大限宫",
+      palaceBranch,
+      palaceStem: row.palaceStem || row.stem || palace?.stem || "",
+      majorStars,
+      minorStars: normalizeWentianAiStarList(palace?.minorStars),
+      domain,
+      theme: getWentianDecadeTheme(domain),
+      isCurrent: !!(activeAge && ageStart && ageEnd && activeAge >= ageStart && activeAge <= ageEnd),
+    };
+  }).filter((item) => item.key);
+}
+
+function getWentianSelectedDecade(chartData = {}) {
+  const items = getWentianDecadeItems(chartData);
+  const current = items.find((item) => item.isCurrent) || items[0] || getWentianAiCurrentDecade(chartData);
+  const selected = items.find((item) => item.key === wentianMobileLuckDecadeKey) || current;
+  return {
+    ...selected,
+    items,
+    currentKey: current?.key || "",
+  };
+}
+
+function getWentianLuckReadingGroups(data) {
+  const sections = getWentianAiSections(data);
+  const wanted = [
+    { title: "大运主题", keys: ["主题", "总论", "大运"] },
+    { title: "宜走方向", keys: ["方向", "建议", "适合", "行动"] },
+    { title: "阶段提醒", keys: ["提醒", "风险", "注意", "压力"] },
+  ];
+  if (!sections.length) return [];
+  if (sections.length === 1) {
+    const lines = splitWentianReadingParagraphs(sections[0].content || sections[0].title, 52);
+    const per = Math.max(1, Math.ceil(lines.length / 3));
+    return wanted.map((item, index) => ({
+      title: item.title,
+      content: lines.slice(index * per, (index + 1) * per).join(" "),
+    })).filter((item) => item.content);
+  }
+  const used = new Set();
+  const groups = wanted.map((item) => {
+    const found = sections.find((section, index) => {
+      if (used.has(index)) return false;
+      const text = `${section.title || ""} ${section.content || ""}`;
+      return item.keys.some((key) => text.includes(key));
+    });
+    const index = found ? sections.indexOf(found) : -1;
+    if (index >= 0) used.add(index);
+    return {
+      title: found?.title || item.title,
+      content: found?.content || "",
+    };
+  });
+  sections.forEach((section, index) => {
+    if (!used.has(index) && section.content) groups.push({ title: section.title || "补充解读", content: section.content });
+  });
+  return groups.filter((item) => item.content || item.title).slice(0, 5);
+}
+
+function renderWentianLuckReading(data, fallback, actionAttr, actionLabel) {
+  const chartData = getWentianChartPayload();
+  const selected = getWentianSelectedDecade(chartData);
+  const resultMatches = !!data && (!wentianChartAiState.luckDecadeKey || wentianChartAiState.luckDecadeKey === selected.key);
+  const groups = resultMatches ? getWentianLuckReadingGroups(data) : [];
+  const starText = formatWentianDecadeStars(selected.majorStars);
+  const readyLabel = selected.key === selected.currentKey
+    ? (resultMatches && groups.length ? "重批当前十年" : "批当前十年")
+    : (resultMatches && groups.length ? "重批选中十年" : "批选中十年");
+  const metrics = [
+    ["主轴", selected.theme || "稳住主轴"],
+    ["机会", selected.domain?.replace("与", "") || "阶段机会"],
+    ["提醒", selected.minorStars?.length ? formatWentianDecadeStars(selected.minorStars).slice(0, 8) : "避空转"],
+  ];
+  return `
+    <div class="wentian-mb-luck-hero">
+      <span>十年大限</span>
+      <h3>当前十年<br>展开读</h3>
+      <b>以电脑端选中大限为准</b>
+      <p>先选十年，再读宫位、主星、流年节奏和现实动作，手机端不只看一段摘要。</p>
+    </div>
+    <div class="wentian-mb-luck-rail" aria-label="十年大限选择">
+      ${(selected.items || []).map((item) => `
+        <button type="button" class="${item.key === selected.key ? "is-active" : ""}${item.key === selected.currentKey ? " is-current" : ""}" data-action="wentian-chart-ai-luck-pick" data-luck-decade-key="${escapeHtml(item.key)}">
+          <span>${escapeHtml(item.rangeLabel)}</span>
+          <strong>${escapeHtml(item.palaceName)}</strong>
+          ${item.key === selected.currentKey ? "<em>当前</em>" : ""}
+        </button>
+      `).join("")}
+    </div>
+    <section class="wentian-mb-luck-summary">
+      <span>${selected.key === selected.currentKey ? "当前十年" : "选中十年"}</span>
+      <h4>${escapeHtml(`${selected.rangeLabel || "当前十年"} · ${selected.palaceName || "大限宫"} · ${selected.theme || "稳住主轴"}`)}</h4>
+      <p>${escapeHtml(`主星：${starText}；领域：${selected.domain || "命盘主线"}。大限看十年背景，流年再落到具体触发点。`)}</p>
+    </section>
+    <div class="wentian-mb-luck-metrics">
+      ${metrics.map(([label, value]) => `<section><b>${escapeHtml(label)}</b><strong>${escapeHtml(value)}</strong></section>`).join("")}
+    </div>
+    <div class="wentian-mb-luck-list">
+      ${groups.length ? groups.map((group, index) => `
+        <section class="${index === 2 ? "is-warn" : ""}">
+          <header><span>${String(index + 1).padStart(2, "0")}</span><h4>${escapeHtml(group.title || "解读")}</h4></header>
+          ${renderWentianReadingParagraphs(group.content, fallback)}
+        </section>
+      `).join("") : `
+        <section>
+          <header><span>01</span><h4>等待生成</h4></header>
+          ${renderWentianReadingParagraphs(`${selected.rangeLabel || "当前十年"} · ${selected.palaceName || "大限宫"}。点击下方按钮，按电脑端大限逻辑生成这一段完整解盘。`, fallback)}
+        </section>
+      `}
+    </div>
+    <div class="wentian-mb-luck-actions">
+      <button type="button" data-action="wentian-chart-ai-luck-current">回到当前</button>
+      <button type="button" ${actionAttr}>${escapeHtml(readyLabel)}</button>
+    </div>
+  `;
+}
+
 function renderWentianXiaoLianDetail(data, fallback) {
   const year = getWentianAiCurrentYear(getWentianChartPayload());
   const meta = [
@@ -3754,6 +3927,13 @@ function renderWentianMobileChapter(chapter, index) {
     return `
       <article class="wentian-mb-chapter wentian-mb-special-chapter ${chapter.ready ? "is-ready" : "is-empty"}" data-wentian-report-chapter="${index}">
         ${renderWentianSpecialReading(`data-action="wentian-chart-ai-specials"`, chapter.ready ? "重批专题" : chapter.actionLabel)}
+      </article>
+    `;
+  }
+  if (chapter.module === "current_luck") {
+    return `
+      <article class="wentian-mb-chapter wentian-mb-luck-chapter ${chapter.ready ? "is-ready" : "is-empty"}" data-wentian-report-chapter="${index}">
+        ${renderWentianLuckReading(result, chapter.placeholder, actionAttr, chapter.ready ? "重批当前十年" : chapter.actionLabel)}
       </article>
     `;
   }
@@ -3904,7 +4084,9 @@ function getWentianAiCurrentYear(chartData = {}) {
 }
 
 function getWentianChartAiExtraParams(moduleKey, chartData = {}) {
-  const selectedDayun = getWentianAiCurrentDecade(chartData);
+  const selectedDayun = moduleKey === "current_luck"
+    ? getWentianSelectedDecade(chartData)
+    : getWentianAiCurrentDecade(chartData);
   const selectedYear = getWentianAiCurrentYear(chartData);
   if (moduleKey === "current_luck") {
     return { activeAge: chartData.activeAge || chartData.realCurrentAge || "", selectedDayun, decadeData: selectedDayun };
@@ -4006,6 +4188,7 @@ async function decodeWentianChartAiModules(moduleKeys, options = {}) {
     status: "running",
     runningModule: "",
     results: options.reset ? {} : { ...(wentianChartAiState.results || {}) },
+    luckDecadeKey: moduleKeys.includes("current_luck") ? (getWentianSelectedDecade(chartData).key || "") : wentianChartAiState.luckDecadeKey,
     curveGenerated: options.reset ? false : !!wentianChartAiState.curveGenerated,
     error: "",
     updatedAt: "",
@@ -4036,6 +4219,7 @@ async function decodeWentianChartAiModules(moduleKeys, options = {}) {
 }
 
 async function decodeWentianChartAi() {
+  wentianMobileLuckDecadeKey = "";
   return decodeWentianChartAiModules(WENTIAN_CHART_AI_TASKS.map((task) => task.module), {
     reset: true,
   });
@@ -15993,6 +16177,17 @@ document.addEventListener("click", (event) => {
   }
   if (action === "wentian-chart-ai-specials") {
     decodeWentianChartAiSpecials();
+    return;
+  }
+  if (action === "wentian-chart-ai-luck-pick") {
+    wentianMobileLuckDecadeKey = event.target.closest("[data-luck-decade-key]")?.dataset.luckDecadeKey || "";
+    navigatePreservingScroll("screen-27", false);
+    return;
+  }
+  if (action === "wentian-chart-ai-luck-current") {
+    const current = getWentianSelectedDecade(getWentianChartPayload());
+    wentianMobileLuckDecadeKey = current.currentKey || "";
+    navigatePreservingScroll("screen-27", false);
     return;
   }
   if (action === "wentian-chart-ai-curve") {

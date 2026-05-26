@@ -7766,6 +7766,290 @@ html[lang="en"] .wentian-chart-ai-menu span {
   font-weight: 900;
 }
 
+.wentian-mb-luck-chapter,
+.wentian-mb-luck-chapter.is-ready {
+  display: grid;
+  gap: 12px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.wentian-mb-luck-hero {
+  position: relative;
+  overflow: hidden;
+  padding: 22px 18px 20px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, #22150f 0%, #57261d 58%, #b77f28 100%);
+  box-shadow: 0 14px 30px rgba(74, 43, 20, .22);
+}
+
+.wentian-mb-luck-hero::before {
+  content: "叁";
+  position: absolute;
+  right: 18px;
+  top: 12px;
+  color: rgba(255, 244, 216, .13);
+  font-size: 72px;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.wentian-mb-luck-hero span,
+.wentian-mb-luck-hero h3,
+.wentian-mb-luck-hero b,
+.wentian-mb-luck-hero p {
+  position: relative;
+}
+
+.wentian-mb-luck-hero span {
+  display: block;
+  color: #f4d293;
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.wentian-mb-luck-hero h3 {
+  max-width: 242px;
+  margin: 10px 0 0;
+  color: #fffaf3;
+  font-size: 37px;
+  font-weight: 900;
+  line-height: 1.02;
+}
+
+.wentian-mb-luck-hero b {
+  display: inline-flex;
+  max-width: 100%;
+  margin-top: 13px;
+  border: 1px solid rgba(244, 210, 147, .45);
+  border-radius: 999px;
+  padding: 7px 11px;
+  background: rgba(255, 250, 243, .08);
+  color: #ffe7b0;
+  font-size: 14px;
+  font-weight: 900;
+  line-height: 1.2;
+}
+
+.wentian-mb-luck-hero p {
+  margin: 15px 0 0;
+  color: #fff0d5;
+  font-size: 16px;
+  font-weight: 900;
+  line-height: 1.55;
+}
+
+.wentian-mb-luck-rail {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 76px;
+  gap: 7px;
+  padding-bottom: 2px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.wentian-mb-luck-rail::-webkit-scrollbar {
+  display: none;
+}
+
+.wentian-mb-luck-rail button {
+  display: grid;
+  place-items: center;
+  min-height: 66px;
+  border: 1px solid #e2ca8e;
+  border-radius: 16px;
+  padding: 8px 6px;
+  background: #fffdf8;
+  color: #6b4b1c;
+  font-family: inherit;
+  text-align: center;
+  box-shadow: 0 7px 16px rgba(80, 51, 25, .05);
+}
+
+.wentian-mb-luck-rail button.is-active {
+  border-color: #251812;
+  background: linear-gradient(180deg, #4a3a1c, #211812);
+  color: #fff6db;
+  box-shadow:
+    0 9px 22px rgba(52, 31, 15, .18),
+    inset 0 0 0 1px rgba(255, 238, 177, .22);
+}
+
+.wentian-mb-luck-rail span,
+.wentian-mb-luck-rail strong,
+.wentian-mb-luck-rail em {
+  display: block;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  font-weight: 900;
+}
+
+.wentian-mb-luck-rail span {
+  font-size: 14px;
+  line-height: 1.05;
+}
+
+.wentian-mb-luck-rail strong {
+  font-size: 15px;
+  line-height: 1.15;
+}
+
+.wentian-mb-luck-rail em {
+  border-radius: 999px;
+  padding: 2px 7px;
+  background: #fff2d8;
+  color: #8a6325;
+  font-size: 14px;
+  font-style: normal;
+  line-height: 1.1;
+}
+
+.wentian-mb-luck-summary {
+  border: 1px solid #d0aa63;
+  border-radius: 16px;
+  padding: 16px;
+  background: linear-gradient(180deg, #fffdf9, #fff7e7);
+  box-shadow: 0 8px 20px rgba(83, 54, 26, .07);
+}
+
+.wentian-mb-luck-summary span {
+  display: block;
+  color: #a27625;
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.wentian-mb-luck-summary h4 {
+  margin: 7px 0 0;
+  color: #211812;
+  font-size: 27px;
+  font-weight: 900;
+  line-height: 1.15;
+}
+
+.wentian-mb-luck-summary p {
+  margin: 10px 0 0;
+  color: #6f6254;
+  font-size: 14px;
+  font-weight: 900;
+  line-height: 1.55;
+}
+
+.wentian-mb-luck-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.wentian-mb-luck-metrics section {
+  min-width: 0;
+  border: 1px solid #e3cf9f;
+  border-radius: 12px;
+  padding: 10px;
+  background: #fffdf9;
+}
+
+.wentian-mb-luck-metrics b,
+.wentian-mb-luck-metrics strong {
+  display: block;
+  overflow-wrap: anywhere;
+}
+
+.wentian-mb-luck-metrics b {
+  color: #9b742e;
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.wentian-mb-luck-metrics strong {
+  margin-top: 5px;
+  color: #211812;
+  font-size: 17px;
+  font-weight: 900;
+  line-height: 1.15;
+}
+
+.wentian-mb-luck-list {
+  display: grid;
+  gap: 10px;
+}
+
+.wentian-mb-luck-list > section {
+  border: 1px solid #e3cf9f;
+  border-radius: 16px;
+  padding: 15px 16px 14px;
+  background: #fffdf9;
+  box-shadow: 0 8px 20px rgba(83, 54, 26, .07);
+}
+
+.wentian-mb-luck-list > section.is-warn {
+  border-color: #c2953c;
+  background: #2a1811;
+}
+
+.wentian-mb-luck-list header {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-bottom: 10px;
+}
+
+.wentian-mb-luck-list header span {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 28px;
+  border-radius: 10px;
+  background: #251812;
+  color: #f4d293;
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.wentian-mb-luck-list h4 {
+  margin: 0;
+  color: #211812;
+  font-size: 22px;
+  font-weight: 900;
+  line-height: 1.15;
+}
+
+.wentian-mb-luck-list > section.is-warn h4 {
+  color: #f4d293;
+}
+
+.wentian-mb-luck-list > section.is-warn .wentian-mb-reading-lines p {
+  color: #fff4df;
+  font-weight: 900;
+}
+
+.wentian-mb-luck-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.wentian-mb-luck-actions button {
+  min-height: 44px;
+  border: 1px solid #d8c7ad;
+  border-radius: 13px;
+  padding: 0 12px;
+  background: #fffaf3;
+  color: #8f3d30;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.wentian-mb-luck-actions button:last-child {
+  border-color: #251812;
+  background: #251812;
+  color: #ffe7b0;
+}
+
 .wentian-mb-chapter-head {
   display: grid;
   grid-template-columns: 38px minmax(0, 1fr) 78px;
