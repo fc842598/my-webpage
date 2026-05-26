@@ -64,6 +64,16 @@
     rgba(9, 6, 4, .76);
 }
 
+.liuyao-page .mbp-liuyao-status.is-ok {
+  border-color: rgba(125, 187, 130, .32);
+  color: #bfe6b9;
+}
+
+.liuyao-page .mbp-liuyao-status.is-loading {
+  border-color: rgba(241, 212, 125, .32);
+  color: #f1d47d;
+}
+
 .liuyao-page .mbp-liuyao-result-card strong {
   letter-spacing: 0;
 }
