@@ -750,6 +750,471 @@
       .option-grid { grid-template-columns: 1fr 1fr; }
       .footer-grid { grid-template-columns: 1fr; gap: 26px; }
     }
+
+    /* Desktop visual upgrade: keep the original interactions, improve the reading surface. */
+    @media (min-width: 901px) {
+      :root { --container: 980px; }
+
+      body {
+        background:
+          radial-gradient(circle at 50% 170px, rgba(201, 169, 97, .10), transparent 28%),
+          linear-gradient(90deg, rgba(0,0,0,.38), transparent 18%, transparent 82%, rgba(0,0,0,.42)),
+          #030201;
+      }
+
+      .page {
+        background:
+          linear-gradient(90deg, rgba(1,1,0,.96), rgba(6,5,3,.94) 22%, rgba(6,5,3,.94) 78%, rgba(1,1,0,.96)),
+          radial-gradient(circle at 50% 260px, rgba(201,169,97,.08), transparent 34%);
+      }
+
+      .nav {
+        height: 58px;
+        background: rgba(2, 1, 0, .86);
+        border-bottom-color: rgba(201,169,97,.30);
+      }
+
+      .brand {
+        color: var(--gold-soft);
+        font-size: 24px;
+      }
+
+      .links {
+        gap: 46px;
+        color: var(--ivory);
+        font-size: 13px;
+      }
+
+      .cta {
+        min-width: 120px;
+        height: 32px;
+        border-radius: 4px;
+        box-shadow: none;
+      }
+
+      .yangzhai-main {
+        padding: 72px 0 56px;
+      }
+
+      .yangzhai-main::before {
+        background:
+          linear-gradient(90deg, transparent 0 49.9%, rgba(201,169,97,.09) 50%, transparent 50.1%),
+          radial-gradient(circle at 50% 260px, rgba(201,169,97,.08), transparent 32%);
+        opacity: .70;
+      }
+
+      .workbench,
+      .result-panel {
+        border-color: rgba(201,169,97,.48);
+        background: linear-gradient(180deg, rgba(10,8,5,.90), rgba(3,2,1,.96));
+        box-shadow: none;
+      }
+
+      .workbench {
+        grid-template-columns: 216px 448px 226px;
+        gap: 10px;
+        justify-content: center;
+        padding: 14px;
+        border-radius: 5px;
+      }
+
+      .guide-panel,
+      .grid-panel,
+      .picker-panel {
+        border-color: rgba(201,169,97,.38);
+        border-radius: 5px;
+        background: rgba(3,3,1,.70);
+      }
+
+      .guide-panel {
+        display: flex;
+        flex-direction: column;
+        padding: 26px 16px 18px;
+      }
+
+      .guide-title,
+      .picker-title {
+        margin-bottom: 24px;
+        color: var(--gold-soft);
+        font-size: 24px;
+        text-align: center;
+      }
+
+      .guide-title::after,
+      .picker-title::after,
+      .result-panel .section-head h2::before,
+      .result-panel .section-head h2::after {
+        content: "";
+        display: block;
+        width: 96px;
+        height: 1px;
+        margin: 10px auto 0;
+        background: rgba(201,169,97,.24);
+      }
+
+      .guide-step {
+        grid-template-columns: 24px 1fr;
+        gap: 12px;
+        padding: 18px 8px 0;
+        border-top: 0;
+      }
+
+      .guide-step b {
+        width: 20px;
+        height: 20px;
+        color: var(--gold-soft);
+        font-size: 12px;
+      }
+
+      .guide-step strong {
+        color: var(--gold-soft);
+        font-size: 14px;
+      }
+
+      .guide-step span {
+        color: var(--text);
+        font-size: 12px;
+        line-height: 1.7;
+      }
+
+      .note-box {
+        margin-top: auto;
+        padding: 15px 16px;
+        border-color: rgba(201,169,97,.48);
+        border-radius: 4px;
+        color: var(--ivory);
+        background: rgba(201,169,97,.045);
+        font-size: 12px;
+        line-height: 1.65;
+      }
+
+      .grid-panel {
+        padding: 24px 12px 18px;
+        background:
+          radial-gradient(circle at 50% 49%, rgba(201,169,97,.09), transparent 38%),
+          rgba(3,3,1,.72);
+      }
+
+      .grid-panel .section-head {
+        display: block;
+        margin-bottom: 18px;
+        text-align: center;
+      }
+
+      .grid-panel .section-head h2 {
+        color: var(--gold-soft);
+        font-size: 28px;
+      }
+
+      .grid-panel .section-head p {
+        margin: -2px 0 0;
+        color: var(--ivory);
+        font-size: 14px;
+      }
+
+      .palace-grid {
+        width: 402px;
+        margin: 0 auto;
+        border-color: rgba(201,169,97,.55);
+        background: rgba(2,1,0,.76);
+      }
+
+      .palace-cell {
+        min-height: 134px;
+        padding: 24px 20px 16px;
+        border-color: rgba(201,169,97,.36);
+        background: rgba(5,5,2,.72);
+      }
+
+      .palace-cell:hover {
+        background: rgba(13,10,5,.88);
+      }
+
+      .palace-cell.is-active {
+        box-shadow: inset 0 0 0 2px rgba(73,154,255,.95);
+      }
+
+      .palace-top {
+        align-items: flex-start;
+      }
+
+      .palace-dir {
+        color: var(--ivory);
+        font-size: 24px;
+        line-height: 1.12;
+      }
+
+      .palace-gua {
+        color: var(--red);
+        font-size: 15px;
+        line-height: 1.1;
+      }
+
+      .palace-role {
+        margin-top: 12px;
+        color: #a99b75;
+        font-size: 15px;
+        line-height: 1.2;
+      }
+
+      .palace-items {
+        margin-top: auto;
+        padding-top: 16px;
+        max-height: none;
+      }
+
+      .palace-items .item-pill {
+        min-width: 72px;
+        max-width: 100%;
+        min-height: 24px;
+        border-radius: 4px;
+        font-size: 13px;
+      }
+
+      .add-hint {
+        color: #9b8f69;
+        font-size: 17px;
+      }
+
+      .center-cell {
+        padding: 14px;
+      }
+
+      .center-marker {
+        width: 100%;
+        min-height: 100%;
+        border: 0;
+        background: transparent;
+      }
+
+      .center-marker strong {
+        font-size: 21px;
+      }
+
+      .center-marker span {
+        font-size: 13px;
+        line-height: 1.55;
+      }
+
+      .grid-actions {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 14px;
+        margin: 28px 6px 0;
+      }
+
+      .gold-btn,
+      .ghost-btn,
+      .danger-btn {
+        width: 100%;
+        height: 44px;
+        border-radius: 4px;
+        font-size: 14px;
+      }
+
+      .ghost-btn {
+        color: var(--ivory);
+        background: rgba(8,6,3,.74);
+      }
+
+      .danger-btn {
+        color: var(--ivory);
+        background: rgba(8,6,3,.74);
+        border-color: rgba(201,169,97,.40);
+      }
+
+      .picker-panel {
+        padding: 26px 12px 16px;
+      }
+
+      .active-card {
+        padding: 14px 12px;
+        border-color: rgba(201,169,97,.42);
+        border-radius: 4px;
+        background: rgba(8,6,3,.70);
+      }
+
+      .active-meta {
+        display: grid;
+        justify-items: center;
+        gap: 6px;
+        font-size: 16px;
+      }
+
+      .active-card p {
+        margin-top: 22px;
+        padding-left: 8px;
+        font-size: 12px;
+        line-height: 1.6;
+      }
+
+      .option-grid {
+        gap: 12px 8px;
+        margin-top: 14px;
+      }
+
+      .option-btn {
+        min-height: 32px;
+        border-radius: 4px;
+        background: rgba(6,5,3,.72);
+      }
+
+      .option-btn.is-selected {
+        color: #120b03;
+        background: linear-gradient(180deg, #d9bf78, #b58d45);
+      }
+
+      .option-btn.is-selected::after {
+        color: #120b03;
+        background: rgba(0,0,0,.72);
+        border: 0;
+      }
+
+      .option-btn.is-clear {
+        min-height: 34px;
+        color: #f0d6c9;
+        background: rgba(87,24,15,.72);
+      }
+
+      .picked-list {
+        margin-top: 12px;
+        min-height: 46px;
+        max-height: 96px;
+        border: 0;
+        border-top: 1px solid rgba(201,169,97,.22);
+        border-radius: 0;
+        justify-content: center;
+      }
+
+      .picked-list::before {
+        content: "已选成员";
+        width: 100%;
+        color: var(--ivory);
+        text-align: center;
+        font-size: 12px;
+        font-weight: 800;
+      }
+
+      .result-panel {
+        margin-top: 14px;
+        padding: 28px 18px 32px;
+        border-radius: 5px;
+      }
+
+      .result-panel .section-head {
+        display: block;
+        margin-bottom: 28px;
+        text-align: center;
+      }
+
+      .result-panel .section-head h2 {
+        color: var(--gold-soft);
+        font-size: 30px;
+        letter-spacing: .08em;
+      }
+
+      .result-panel .section-head p {
+        margin: 8px 0 0;
+        color: var(--ivory);
+        font-size: 14px;
+      }
+
+      .result-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px 14px;
+      }
+
+      .result-card {
+        position: relative;
+        min-height: 240px;
+        display: grid;
+        grid-template-columns: 42px minmax(0, 1fr);
+        column-gap: 18px;
+        padding: 34px 28px 30px 24px;
+        border-color: rgba(201,169,97,.36);
+        border-radius: 4px;
+        background: rgba(5,5,2,.74);
+      }
+
+      .result-number {
+        grid-row: 1 / span 3;
+        color: var(--gold-soft);
+        font-family: Inter, "Noto Sans SC", sans-serif;
+        font-size: 34px;
+        font-weight: 800;
+        line-height: 1;
+      }
+
+      .result-top {
+        margin: 0 0 12px;
+      }
+
+      .result-tag {
+        min-height: 22px;
+        padding: 0 10px;
+        border-radius: 4px;
+        font-size: 12px;
+      }
+
+      .result-card h3 {
+        margin: 0;
+        font-family: "Noto Serif SC", "Songti SC", serif;
+        font-size: 17px;
+        line-height: 1.45;
+      }
+
+      .result-card p {
+        margin: 12px 0 0;
+        color: var(--text);
+        font-size: 13px;
+        line-height: 1.82;
+      }
+
+      .empty-state {
+        grid-column: 1 / -1;
+      }
+
+      .footer {
+        padding: 38px 0 30px;
+        background: #020201;
+      }
+
+      .footer-grid {
+        grid-template-columns: 1.3fr .85fr 1fr .85fr;
+        gap: 54px;
+      }
+
+      .footer a,
+      .footer p {
+        font-size: 13px;
+      }
+
+      .copyright {
+        margin-top: 34px;
+        padding-top: 18px;
+        border-top: 1px solid rgba(201,169,97,.18);
+        text-align: center;
+        font-size: 12px;
+      }
+    }
+
+    @media (max-width: 900px) {
+      .workbench { gap: 14px; }
+      .guide-panel,
+      .grid-panel,
+      .picker-panel { overflow: visible; }
+      .result-card { min-height: 0; }
+    }
+
+    @media (max-width: 640px) {
+      .result-card {
+        padding: 14px;
+      }
+
+      .result-number {
+        display: none;
+      }
+    }
   </style>
 </head>
 <body>
@@ -1048,7 +1513,8 @@
         const results = state.analyzed ? buildResults() : [];
         resultMeta.textContent = results.length ? `已生成 ${results.length} 条` : "尚未生成";
         resultGrid.innerHTML = results.length
-          ? results.map((item) => `<article class="result-card">
+          ? results.map((item, index) => `<article class="result-card">
+              <div class="result-number" aria-hidden="true">${index + 1}</div>
               <div class="result-top"><span class="result-tag">${escapeHtml(item.tag)}</span></div>
               <h3>${escapeHtml(item.title)}</h3>
               <p>${escapeHtml(item.body)}</p>
