@@ -3281,6 +3281,59 @@ function parseWentianAiJson(value) {
   }
 }
 
+function decodeWentianAiJsonString(value) {
+  const text = String(value || "");
+  if (!text) return "";
+  try {
+    return JSON.parse(`"${text.replace(/\\/g, "\\\\").replace(/"/g, '\\"')}"`);
+  } catch (_err) {
+    return text
+      .replace(/\\"/g, '"')
+      .replace(/\\n/g, "\n")
+      .replace(/\\r/g, "\r")
+      .replace(/\\t/g, "\t");
+  }
+}
+
+function getWentianLooseJsonField(text, key) {
+  const match = String(text || "").match(new RegExp(`"${key}"\\s*:\\s*"((?:\\\\.|[^"\\\\])*)"`));
+  return match ? cleanWentianAiText(decodeWentianAiJsonString(match[1])) : "";
+}
+
+function parseWentianAiLooseJson(value) {
+  const parsed = parseWentianAiJson(value);
+  if (parsed) return parsed;
+  const text = String(value || "").trim();
+  if (!text || !text.includes('"sections"')) return null;
+  const sections = [];
+  const sectionRe = /\{\s*"title"\s*:\s*"((?:\\.|[^"\\])*)"\s*,\s*"content"\s*:\s*"((?:\\.|[^"\\])*)"\s*\}/g;
+  let sectionMatch;
+  while ((sectionMatch = sectionRe.exec(text))) {
+    sections.push({
+      title: cleanWentianAiText(decodeWentianAiJsonString(sectionMatch[1])),
+      content: cleanWentianAiText(decodeWentianAiJsonString(sectionMatch[2])),
+    });
+  }
+  const evidence = {};
+  const evidenceBody = text.match(/"evidence"\s*:\s*\{([\s\S]*?)(?:\}\s*,\s*"risk"|\}\s*$)/)?.[1] || "";
+  const evidenceRe = /"((?:\\.|[^"\\])*)"\s*:\s*\[([^\]]*)\]/g;
+  let evidenceMatch;
+  while ((evidenceMatch = evidenceRe.exec(evidenceBody))) {
+    const label = cleanWentianAiText(decodeWentianAiJsonString(evidenceMatch[1]));
+    const items = [];
+    for (const itemMatch of evidenceMatch[2].matchAll(/"((?:\\.|[^"\\])*)"/g)) {
+      const item = cleanWentianAiText(decodeWentianAiJsonString(itemMatch[1])).replace(/^\[|\]$/g, "").replace(/\]/g, " ");
+      if (item) items.push(item);
+    }
+    if (label && items.length) evidence[label] = items;
+  }
+  const title = getWentianLooseJsonField(text, "title");
+  const profileBadge = getWentianLooseJsonField(text, "profileBadge");
+  const risk = getWentianLooseJsonField(text, "risk");
+  if (!title && !profileBadge && !sections.length && !risk && !Object.keys(evidence).length) return null;
+  return { title, profileBadge, sections, evidence, risk };
+}
+
 function cleanWentianAiText(value) {
   return String(value || "")
     .replace(/\r\n?/g, "\n")
@@ -3342,13 +3395,13 @@ function isWentianAiResultChinese(data) {
 
 function normalizeWentianAiData(data) {
   if (!data) return null;
-  const root = parseWentianAiJson(data) || data;
+  const root = parseWentianAiLooseJson(data) || data;
   if (!root || typeof root !== "object" || Array.isArray(root)) {
     return { card: { body: cleanWentianAiText(root) } };
   }
-  const parsedRoot = parseWentianAiJson(root.finalAnswer) || parseWentianAiJson(root.content) || null;
+  const parsedRoot = parseWentianAiLooseJson(root.finalAnswer) || parseWentianAiLooseJson(root.content) || null;
   const next = { ...root, ...(parsedRoot && typeof parsedRoot === "object" && !Array.isArray(parsedRoot) ? parsedRoot : {}) };
-  const nestedCard = parseWentianAiJson(next.card) || next.card || next.data?.card || next.result?.card || parsedRoot?.card || null;
+  const nestedCard = parseWentianAiLooseJson(next.card) || next.card || next.data?.card || next.result?.card || parsedRoot?.card || null;
   if (nestedCard && typeof nestedCard === "object" && !Array.isArray(nestedCard)) {
     next.card = { ...nestedCard };
   } else if (typeof nestedCard === "string") {
@@ -3356,9 +3409,13 @@ function normalizeWentianAiData(data) {
   } else if (!next.card) {
     next.card = {};
   }
-  const bodyCard = parseWentianAiJson(next.card.body || next.card.summary || next.card.content);
+  const bodyCard = parseWentianAiLooseJson(next.card.body || next.card.summary || next.card.content);
   if (bodyCard && typeof bodyCard === "object" && !Array.isArray(bodyCard)) {
     next.card = { ...next.card, ...(bodyCard.card || bodyCard) };
+  }
+  if (Array.isArray(next.card.sections) && next.card.sections.length === 1) {
+    const sectionCard = parseWentianAiLooseJson(next.card.sections[0]?.content);
+    if (sectionCard && sectionCard.sections?.length) next.card = { ...next.card, ...sectionCard };
   }
   return next;
 }
@@ -3449,6 +3506,73 @@ function renderWentianAiDetailSections(data, fallback, options = {}) {
           <p>${escapeHtml(trimWentianAiText(section.content || fallback, max))}</p>
         </section>
       `).join("")}
+    </div>
+  `;
+}
+
+function getWentianAiEvidenceMap(data) {
+  const normalized = normalizeWentianAiData(data);
+  const card = normalized?.card || {};
+  const evidence = card.evidence || normalized?.evidence || {};
+  return evidence && typeof evidence === "object" && !Array.isArray(evidence) ? evidence : {};
+}
+
+function renderWentianOverallEvidenceTags(items) {
+  return `
+    <div class="wentian-mb-overall-tags">
+      ${(items || []).slice(0, 4).map((item) => `<i>${escapeHtml(item)}</i>`).join("")}
+    </div>
+  `;
+}
+
+function renderWentianOverallReading(data, fallback, actionAttr, actionLabel) {
+  const sections = getWentianAiSections(data).slice(0, 5);
+  if (!sections.length) {
+    return `
+      <div class="wentian-mb-overall-empty">
+        <p>${escapeHtml(fallback)}</p>
+        <button type="button" ${actionAttr}>${escapeHtml(actionLabel)}</button>
+      </div>
+    `;
+  }
+  const card = getWentianAiCard(data);
+  const evidence = getWentianAiEvidenceMap(data);
+  const title = getWentianAiTitle(data, "整体批命");
+  const badge = normalizeWentianAiText(card.profileBadge || "贪狼坐命，武官星入局");
+  const summarySection = sections.find((section) => /总断|总结|总论/.test(section.title));
+  const summary = trimWentianAiText(summarySection?.content || getWentianAiSummary(data, 150), 132);
+  const risk = trimWentianAiText(card.risk || "迁移化忌冲命，外部阻力重，异地发展需稳扎稳打，不宜草率。", 92);
+  const quicks = [
+    ["实干开创", "命盘主线"],
+    ["七杀执行", "优势核心"],
+    ["迁移化忌", "风险关键"],
+  ];
+  return `
+    <div class="wentian-mb-overall-hero">
+      <span>整体批命</span>
+      <h3>${escapeHtml(title)}</h3>
+      <b>${escapeHtml(badge)}</b>
+      <p>${escapeHtml(summary)}</p>
+      <button type="button" ${actionAttr}>${escapeHtml(actionLabel)}</button>
+    </div>
+    <div class="wentian-mb-overall-quick">
+      ${quicks.map(([main, sub]) => `<section><strong>${escapeHtml(main)}</strong><span>${escapeHtml(sub)}</span></section>`).join("")}
+    </div>
+    <div class="wentian-mb-overall-sections">
+      ${sections.map((section, index) => {
+        const tags = evidence[section.title] || [];
+        return `
+          <section>
+            <header><span>${String(index + 1).padStart(2, "0")}</span><h4>${escapeHtml(section.title || "解读")}</h4></header>
+            <p>${escapeHtml(section.content || fallback)}</p>
+            ${renderWentianOverallEvidenceTags(tags)}
+          </section>
+        `;
+      }).join("")}
+    </div>
+    <div class="wentian-mb-overall-risk">
+      <strong>迁移化忌冲命</strong>
+      <p>${escapeHtml(risk.replace(/^迁移化忌冲命[，,：:\s]*/, ""))}</p>
     </div>
   `;
 }
@@ -3556,6 +3680,16 @@ function renderWentianMobileChapter(chapter, index) {
   const results = wentianChartAiState.results || {};
   const result = chapter.module ? results[chapter.module] : null;
   const subtitle = chapter.module && result ? getWentianAiTitle(result, chapter.title) : (chapter.body || chapter.placeholder);
+  const actionAttr = chapter.module
+    ? `data-action="wentian-chart-ai-module" data-ai-module="${escapeHtml(chapter.module)}"`
+    : `data-action="wentian-chart-ai-${escapeHtml(chapter.action)}"`;
+  if (chapter.module === "overall") {
+    return `
+      <article class="wentian-mb-chapter wentian-mb-overall-chapter ${chapter.ready ? "is-ready" : "is-empty"}" data-wentian-report-chapter="${index}">
+        ${renderWentianOverallReading(result, chapter.placeholder, actionAttr, chapter.ready ? "重批" : chapter.actionLabel)}
+      </article>
+    `;
+  }
   let body = "";
   if (chapter.action === "specials") {
     body = renderWentianSpecialDetail();
@@ -3568,9 +3702,6 @@ function renderWentianMobileChapter(chapter, index) {
   } else {
     body = renderWentianAiDetailSections(result, chapter.placeholder);
   }
-  const actionAttr = chapter.module
-    ? `data-action="wentian-chart-ai-module" data-ai-module="${escapeHtml(chapter.module)}"`
-    : `data-action="wentian-chart-ai-${escapeHtml(chapter.action)}"`;
   return `
     <article class="wentian-mb-chapter ${chapter.ready ? "is-ready" : "is-empty"}" data-wentian-report-chapter="${index}">
       <div class="wentian-mb-chapter-head">
