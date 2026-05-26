@@ -2,7 +2,14 @@
   const $ = (selector) => document.querySelector(selector);
   const CLIENT_ID_KEY = 'ziwei_client_id';
   const AUTH_SESSION_KEY = 'wentian-app-auth-session-v1';
+  const XU_CONTEXT_KEY = 'wentian-xubanxian-context-v1';
   const LIUYAO_DAILY_LIMIT = 3;
+  const LIUYAO_TOSS_ANIMATION_MS = 980;
+  const LIUYAO_PULL_MAX = 132;
+  const LIUYAO_READY_POWER = 0.18;
+  const LIUYAO_DEFAULT_POWER = 0.62;
+  const LIUYAO_VALUES = [7, 8, 9, 6];
+  const LIUYAO_MANUAL_EMPTY_COINS = [null, null, null];
   const lineLabels = ['初爻', '二爻', '三爻', '四爻', '五爻', '上爻'];
   const trigrams = {
     111: { gua: '乾', name: '天' },
@@ -35,7 +42,9 @@
   const hexMap = Object.fromEntries(hexPairs.map(([key, name], index) => [key, { no: String(index + 1), name }]));
   const state = {
     question: '',
+    mode: 'online',
     casts: [],
+    manualCoins: Array.from({ length: 6 }, () => LIUYAO_MANUAL_EMPTY_COINS.slice()),
     lastCoins: [],
     error: '',
     statusTone: '',
@@ -43,6 +52,8 @@
     gateLoading: false,
     quotaLoading: false,
     quota: { limit: LIUYAO_DAILY_LIMIT, used: 0, remaining: LIUYAO_DAILY_LIMIT },
+    tossAnimation: null,
+    drag: null,
   };
 
   function escapeHtml(value) {
@@ -57,17 +68,55 @@
 
   function lineType(value) {
     return {
-      6: { name: '老阴', broken: true, moving: true },
-      7: { name: '少阳', broken: false, moving: false },
-      8: { name: '少阴', broken: true, moving: false },
-      9: { name: '老阳', broken: false, moving: true },
+      6: { value: 6, name: '老阴', nature: '阴动', broken: true, moving: true, mark: '×', changesTo: '阳', changedBroken: false, coinText: '反反反' },
+      7: { value: 7, name: '少阳', nature: '阳静', broken: false, moving: false, mark: '', changesTo: '阳', changedBroken: false, coinText: '正反反' },
+      8: { value: 8, name: '少阴', nature: '阴静', broken: true, moving: false, mark: '', changesTo: '阴', changedBroken: true, coinText: '正正反' },
+      9: { value: 9, name: '老阳', nature: '阳动', broken: false, moving: true, mark: '○', changesTo: '阴', changedBroken: true, coinText: '正正正' },
     }[Number(value)] || null;
   }
 
-  function makeCast() {
+  function makeCast(options = {}) {
     const coins = Array.from({ length: 3 }, () => (Math.random() < 0.5 ? 2 : 3));
     const value = coins.reduce((sum, coin) => sum + coin, 0);
-    return { value, coins, ...lineType(value) };
+    return {
+      value,
+      coins,
+      manual: Boolean(options.manual),
+      power: Math.round(Number(options.power || LIUYAO_DEFAULT_POWER) * 100),
+      at: Date.now(),
+      ...lineType(value),
+    };
+  }
+
+  function makeCastFromCoins(coins, options = {}) {
+    const faces = [0, 1, 2].map((index) => Number(coins?.[index]));
+    if (faces.some((coin) => coin !== 2 && coin !== 3)) return null;
+    const value = faces.reduce((sum, coin) => sum + coin, 0);
+    return {
+      value,
+      coins: faces,
+      manual: Boolean(options.manual),
+      power: Math.round(Number(options.power || LIUYAO_DEFAULT_POWER) * 100),
+      at: Date.now(),
+      ...lineType(value),
+    };
+  }
+
+  function getCoinFaceLabel(coin) {
+    return Number(coin) === 3 ? '正' : '反';
+  }
+
+  function getProgress() {
+    return state.casts.filter(Boolean).length;
+  }
+
+  function ensureManualRows() {
+    if (!Array.isArray(state.manualCoins) || state.manualCoins.length < 6) {
+      state.manualCoins = Array.from({ length: 6 }, () => LIUYAO_MANUAL_EMPTY_COINS.slice());
+    }
+    for (let i = 0; i < 6; i += 1) {
+      if (!Array.isArray(state.manualCoins[i])) state.manualCoins[i] = LIUYAO_MANUAL_EMPTY_COINS.slice();
+    }
   }
 
   function questionText() {
@@ -298,29 +347,116 @@
   function getResult() {
     const casts = state.casts;
     if (casts.length !== 6 || casts.some((cast) => !cast)) return null;
+    const lines = casts.map((cast, index) => ({ ...lineType(cast.value), ...cast, index, label: lineLabels[index] }));
     return {
       question: state.question,
+      createdAt: Date.now(),
+      lines,
       primary: resolveHex(casts, false),
       changed: resolveHex(casts, true),
-      movingLines: casts
-        .map((cast, index) => ({ ...cast, index, label: lineLabels[index] }))
-        .filter((line) => line.moving),
+      movingLines: lines.filter((line) => line.moving),
     };
+  }
+
+  function formatHexMeta(hex) {
+    const noText = hex?.no ? `第${hex.no}卦` : '卦象';
+    const upper = hex?.upper?.name || '';
+    const lower = hex?.lower?.name || '';
+    return `${noText}${upper || lower ? ` · ${upper}上${lower}下` : ''}`;
+  }
+
+  function formatMovingText(movingLines, prefix = '') {
+    const lines = Array.isArray(movingLines) ? movingLines : [];
+    if (!lines.length) return `${prefix}无动爻`;
+    return `${prefix}${lines.map((line) => line.label).join('、')}动`;
+  }
+
+  function getHexReading(hex) {
+    if (!hex) return { summary: '本卦资料待补。', xian: '', hou: '', liu: '', source: '' };
+    const master = window.getYijingMasterEntryByName?.(hex.name) || window.getYijingMasterEntryByNum?.(hex.no);
+    const guaci = window.getGuaciEntryByName?.(hex.name);
+    return {
+      summary: master?.summary || guaci?.liu || '此卦重在审时度势，先明当前处境，再定进退。',
+      xian: master?.xian || guaci?.xian || '',
+      hou: master?.hou || guaci?.hou || '',
+      liu: master?.liu || guaci?.liu || '',
+      source: master?.source || '',
+    };
+  }
+
+  function getZhouyiOriginal(hex) {
+    const reading = getHexReading(hex);
+    const fallback = firstReadableSentence(reading.liu || reading.summary, '');
+    return {
+      label: '卦辞摘录',
+      text: fallback ? compactText(fallback, 72) : '此卦卦辞待补录，先按卦象结构与动爻取用。',
+      source: formatOriginalSource(reading.source),
+    };
+  }
+
+  function firstReadableSentence(text, fallback = '') {
+    const source = String(text || '').replace(/原句：/g, '').replace(/讲解：/g, '').replace(/\s+/g, ' ').trim();
+    return source.split(/[。！？；]/).find((part) => part.trim().length >= 6)?.trim() || fallback;
+  }
+
+  function compactText(text, maxLength = 72) {
+    const chars = Array.from(String(text || '').replace(/\s+/g, ' ').trim());
+    if (chars.length <= maxLength) return chars.join('');
+    return `${chars.slice(0, maxLength).join('')}…`;
+  }
+
+  function formatOriginalSource(source) {
+    const clean = String(source || '').trim();
+    if (!clean || /^output[\\/]/i.test(clean)) return '本地卦辞资料';
+    return clean;
+  }
+
+  function getHexImageSrc(no) {
+    const index = Number(no);
+    if (!Number.isInteger(index) || index < 1 || index > 64) return '';
+    return `../images/yijing-hexagrams/${String(index).padStart(2, '0')}.webp`;
   }
 
   function renderCoins() {
     const coins = $('#mbpLiuyaoCoins');
     if (!coins) return;
-    const values = state.lastCoins.length ? state.lastCoins : [null, null, null];
-    coins.innerHTML = values.map((coin) => {
-      const label = coin === 3 ? '阳' : coin === 2 ? '阴' : '待';
-      const className = [
-        'mbp-liuyao-coin',
-        coin === 2 ? 'is-yin' : '',
-        coin == null ? 'is-waiting' : '',
-      ].filter(Boolean).join(' ');
-      return `<span class="${className}">${escapeHtml(label)}</span>`;
-    }).join('');
+    const last = state.casts.filter(Boolean).at(-1);
+    const animating = state.tossAnimation?.active;
+    const values = animating ? state.tossAnimation.cast.coins : (state.lastCoins.length ? state.lastCoins : [3, 2, 3]);
+    const progress = getProgress();
+    const disabled = state.mode !== 'online' || state.gateLoading || progress >= 6;
+    const power = animating ? Math.max(18, Math.min(100, Number(state.tossAnimation.power) || 62)) : 0;
+    const pull = state.drag?.pull || 0;
+    const ready = state.drag?.ready;
+    const label = animating
+      ? `铜钱翻转中，落入${lineLabels[progress] || '本爻'}`
+      : disabled
+        ? (progress >= 6 ? '六爻已成' : '提交通过后开放投币')
+        : `按住上拉，松手投${lineLabels[progress] || '本爻'}`;
+    coins.innerHTML = `
+      <div class="mbp-liuyao-coin-stage ${animating ? 'is-tossing' : ''} ${disabled ? 'is-disabled' : ''} ${state.drag ? 'is-dragging' : ''} ${ready ? 'is-ready' : ''}"
+        id="mbpLiuyaoCoinStage"
+        role="button"
+        tabindex="${disabled ? '-1' : '0'}"
+        aria-disabled="${disabled ? 'true' : 'false'}"
+        aria-label="${escapeHtml(label)}"
+        style="--pull-y:${-pull}px;--drag-rot:${Math.round(pull / 5)}deg;--drag-rot-neg:${Math.round(-pull / 5)}deg;--power:${(power / 100).toFixed(2)};--throw-y:${Math.round(-66 - power * .72)}px;">
+        ${values.map((coin, index) => `
+          <span class="mbp-liuyao-coin-token ${coin === 3 ? 'is-head' : 'is-tail'}" style="--d:${index * .1}s">
+            <span class="mbp-liuyao-coin ${coin === 3 ? 'is-yang' : 'is-yin'}">
+              <i>阅</i><b></b><i>天</i>
+            </span>
+            <em>${escapeHtml(animating || last || state.lastCoins.length ? getCoinFaceLabel(coin) : '待')}</em>
+          </span>
+        `).join('')}
+        <span class="mbp-liuyao-power"><i></i></span>
+        <strong>${escapeHtml(label)}</strong>
+      </div>
+      <div class="mbp-liuyao-coin-faces">
+        <span>${last ? `第 ${progress} 爻` : '待投铜钱'}</span>
+        ${values.map((coin, index) => `<em class="${coin === 3 ? 'is-head' : 'is-tail'}">${index + 1} ${escapeHtml(animating || last || state.lastCoins.length ? getCoinFaceLabel(coin) : '待')}</em>`).join('')}
+      </div>
+    `;
   }
 
   function renderStack() {
@@ -337,9 +473,9 @@
         type?.moving ? 'is-moving' : '',
       ].filter(Boolean).join(' ');
       const segments = type?.broken ? '<i></i><i></i>' : '<i></i>';
-      const text = type ? `${type.name}${type.moving ? '动' : '静'}` : '待投';
+      const text = type ? `${type.value} ${type.name}${type.mark ? ` ${type.mark}` : ''}` : '未定';
       return `
-        <div class="mbp-liuyao-line-row">
+        <div class="mbp-liuyao-line-row ${type?.moving ? 'is-moving' : ''}">
           <span>${escapeHtml(lineLabels[index])}</span>
           <span class="${lineClass}">${segments}</span>
           <span>${escapeHtml(text)}</span>
@@ -353,35 +489,152 @@
     if (!box) return;
     const result = getResult();
     if (!result) {
-      box.innerHTML = '<p class="mbp-liuyao-note">按初爻到上爻投满六次，这里显示本卦、动爻、变卦。</p>';
+      box.innerHTML = '<p class="mbp-liuyao-note">完成 6 爻后输出：本卦、变卦、动爻、古籍摘录和许半仙 AI 解卦入口。</p>';
       return;
     }
-    const movingText = result.movingLines.length
-      ? `${result.movingLines.map((line) => line.label.replace('爻', '')).join('、')}爻动`
-      : '无动爻';
-    const movingDetail = result.movingLines.length > 3
-      ? `${result.movingLines.length}个动爻，变化较重，先看本卦再看变卦`
-      : result.movingLines.length
-        ? result.movingLines.map((line) => `${line.label}${line.name}`).join('、')
-        : '动爻看变化，应期与关键转折';
-    const changedText = result.movingLines.length ? result.changed?.name : '同本卦';
+    const movingText = formatMovingText(result.movingLines);
     const text = result.question
       ? `${result.question}${/[。！？!?]$/.test(result.question) ? '' : '。'}`
       : '未填写。';
-    const card = (label, title, sub, type = '') => `
-      <article class="mbp-liuyao-result-card ${type}">
+    const primaryOriginal = getZhouyiOriginal(result.primary);
+    const changedOriginal = getZhouyiOriginal(result.changed);
+    const image = (hex, label) => {
+      const src = getHexImageSrc(hex?.no);
+      return src ? `<img class="mbp-liuyao-hex-image" src="${escapeHtml(src)}" alt="${escapeHtml(`${label} ${hex?.name || ''}`)}" loading="lazy">` : '';
+    };
+    const miniHex = (changed = false) => `
+      <span class="mbp-liuyao-minihex" aria-hidden="true">
+        ${[5, 4, 3, 2, 1, 0].map((index) => {
+          const line = result.lines[index];
+          const broken = changed && line?.moving ? line.changedBroken : line?.broken;
+          return `<i class="${broken ? 'is-yin' : 'is-yang'} ${line?.moving ? 'is-moving' : ''}"><b></b>${broken ? '<b></b>' : ''}</i>`;
+        }).join('')}
+      </span>
+    `;
+    const original = (item) => `
+      <div class="mbp-liuyao-original">
+        <b>${escapeHtml(item.label)}</b>
+        <p>${escapeHtml(item.text)}</p>
+        <small>${escapeHtml(item.source)}</small>
+      </div>
+    `;
+    const pairCard = (label, hex, originalItem, changed = false) => `
+      <article class="mbp-liuyao-hex-card">
         <span>${escapeHtml(label)}</span>
-        <strong>${escapeHtml(title || '待定')}</strong>
-        <small>${escapeHtml(sub || '')}</small>
+        <div>
+          <strong>${escapeHtml(hex?.name || label)}</strong>
+          ${miniHex(changed)}
+        </div>
+        ${image(hex, label)}
+        ${original(originalItem)}
+        <em>${escapeHtml(formatHexMeta(hex))}</em>
       </article>
     `;
     box.innerHTML = `
-      <div class="mbp-liuyao-result-grid">
-        ${card('本卦', result.primary?.name, `第${result.primary?.no || '-'}卦 · 上${result.primary?.upper?.name || ''}下${result.primary?.lower?.name || ''}`, 'is-primary')}
-        ${card('变卦', changedText, result.movingLines.length ? `第${result.changed?.no || '-'}卦 · 看事情转向` : '没有动爻，先按本卦判断')}
-        ${card('动爻', movingText, movingDetail, result.movingLines.length ? 'is-moving' : '')}
+      <section class="mbp-liuyao-result-hero">
+        <span>本卦</span>
+        <strong>${escapeHtml(result.primary?.name || '本卦')}</strong>
+        <em>${escapeHtml(formatHexMeta(result.primary))}</em>
+        <b>${escapeHtml(movingText)}</b>
+      </section>
+      <div class="mbp-liuyao-result-pair">
+        ${pairCard('本卦', result.primary, primaryOriginal, false)}
+        ${pairCard('变卦', result.changed, changedOriginal, true)}
       </div>
-      <p class="mbp-liuyao-note">问事：${escapeHtml(text)}先看本卦定当前，动爻看变化，变卦看趋势。</p>
+      <article class="mbp-liuyao-reading-card">
+        <span>所问之事</span>
+        <strong>${escapeHtml(text)}</strong>
+      </article>
+      <article class="mbp-liuyao-reading-card is-lines">
+        <span>六爻明细</span>
+        <div>
+          ${result.lines.map((line) => `<em>${escapeHtml(`${line.label} ${line.value}${line.name}${line.mark ? ` ${line.mark}` : ''} · ${line.coins.map(getCoinFaceLabel).join(' ')}`)}</em>`).join('')}
+        </div>
+      </article>
+      <article class="mbp-liuyao-ai-card">
+        <span>AI 解卦</span>
+        <strong>交给许半仙，按本卦、变卦、动爻继续细断</strong>
+        <p>本卦：${escapeHtml(primaryOriginal.text)}${result.changed?.name !== result.primary?.name ? `<br>变卦：${escapeHtml(changedOriginal.text)}` : ''}</p>
+        <button type="button" id="mbpLiuyaoAskXu">开始 AI 解卦</button>
+      </article>
+    `;
+  }
+
+  function renderModePanel() {
+    const panel = $('#mbpLiuyaoModePanel');
+    if (!panel) return;
+    const progress = getProgress();
+    const disabled = state.gateLoading || (normalizeQuota(state.quota).remaining <= 0 && !normalizeGate(state.questionGate, state.question)?.allowed);
+    if (state.mode !== 'manual') {
+      panel.innerHTML = `
+        <div class="mbp-liuyao-online-card">
+          <strong>动态投币</strong>
+          <span>点击“投第 ${Math.min(progress + 1, 6)} 爻”，或按住右侧铜钱上拉松手，铜钱翻转后落爻。</span>
+        </div>
+      `;
+      return;
+    }
+    ensureManualRows();
+    while (state.casts.length < 6) state.casts.push(null);
+    const activeIndex = state.casts.findIndex((cast) => !cast);
+    const complete = activeIndex < 0;
+    const currentIndex = complete ? 5 : activeIndex;
+    const currentCoins = complete ? [] : state.manualCoins[currentIndex];
+    const currentCast = complete ? null : makeCastFromCoins(currentCoins, { manual: true });
+    const renderFaceButton = (lineIndex, coinIndex, value, current) => `
+      <button type="button"
+        class="${current === value ? 'is-active' : ''}"
+        data-manual-coin="${value}"
+        data-line-index="${lineIndex}"
+        data-coin-index="${coinIndex}"
+        ${disabled ? 'disabled' : ''}>${escapeHtml(getCoinFaceLabel(value))}</button>
+    `;
+    panel.innerHTML = `
+      <div class="mbp-liuyao-manual-card ${disabled ? 'is-disabled' : ''}">
+        <div class="mbp-liuyao-manual-head">
+          <div>
+            <span>真实铜钱录入</span>
+            <strong>按初爻到上爻，逐爻填三枚铜钱</strong>
+          </div>
+          <em>${progress}/6</em>
+        </div>
+        ${complete ? `
+          <div class="mbp-liuyao-manual-done">
+            <strong>六爻已录完</strong>
+            <span>可看本卦、变卦、动爻和许半仙解卦。</span>
+            <button type="button" data-manual-clear-last ${disabled ? 'disabled' : ''}>重录上一爻</button>
+          </div>
+        ` : `
+          <div class="mbp-liuyao-manual-current">
+            <div>
+              <strong>${escapeHtml(lineLabels[currentIndex])}</strong>
+              <em>${currentCoins.filter(Boolean).length}/3</em>
+            </div>
+            <p>${currentCast ? `本爻已成：${currentCast.value} ${currentCast.name}。确认后进入下一爻。` : '现实中投三枚铜钱后，依次录入第 1、2、3 枚。'}</p>
+            <div class="mbp-liuyao-manual-coins">
+              ${[0, 1, 2].map((coinIndex) => `
+                <div>
+                  <i>第 ${coinIndex + 1} 枚</i>
+                  <span>
+                    ${renderFaceButton(currentIndex, coinIndex, 3, currentCoins[coinIndex])}
+                    ${renderFaceButton(currentIndex, coinIndex, 2, currentCoins[coinIndex])}
+                  </span>
+                </div>
+              `).join('')}
+            </div>
+            <div class="mbp-liuyao-manual-actions">
+              <button type="button" data-manual-clear-line="${currentIndex}" ${disabled || !currentCoins.some(Boolean) ? 'disabled' : ''}>清空本爻</button>
+              <button type="button" data-manual-confirm="${currentIndex}" ${disabled || !currentCast ? 'disabled' : ''}>${currentIndex >= 5 ? '确认成卦' : '确认本爻'}</button>
+            </div>
+          </div>
+        `}
+        ${progress ? `
+          <div class="mbp-liuyao-manual-history">
+            <span>已录入</span>
+            <div>${state.casts.map((cast, index) => cast ? `<i>${escapeHtml(`${lineLabels[index]} ${cast.value}${cast.name}${cast.mark || ''}`)}</i>` : '').join('')}</div>
+          </div>
+        ` : ''}
+      </div>
     `;
   }
 
@@ -401,7 +654,7 @@
   }
 
   function render() {
-    const count = state.casts.length;
+    const count = getProgress();
     const status = $('#mbpLiuyaoStatus');
     const toss = $('#mbpLiuyaoToss');
     const auto = $('#mbpLiuyaoAuto');
@@ -416,19 +669,23 @@
       if (exhausted) status.textContent = '今日六爻占卜已满 3 次，明天再起卦。';
     }
     if (toss) {
-      toss.disabled = state.gateLoading || exhausted || count >= 6;
-      toss.textContent = state.gateLoading ? '审题中…' : count >= 6 ? '已成卦' : `投第 ${count + 1} 爻`;
+      toss.disabled = state.mode !== 'online' || state.gateLoading || state.tossAnimation?.active || exhausted || count >= 6;
+      toss.textContent = state.gateLoading ? '审题中…' : state.mode !== 'online' ? '手动录入中' : count >= 6 ? '已成卦' : `投第 ${count + 1} 爻`;
       if (exhausted) toss.textContent = '今日已满';
     }
     if (auto) {
-      auto.disabled = state.gateLoading || exhausted || count >= 6;
+      auto.disabled = state.mode !== 'online' || state.gateLoading || state.tossAnimation?.active || exhausted || count >= 6;
     }
+    document.querySelectorAll('[data-liuyao-mode]').forEach((button) => {
+      button.classList.toggle('is-active', button.dataset.liuyaoMode === state.mode);
+    });
     if (quota) {
       const daily = normalizeQuota(state.quota);
       quota.textContent = state.quotaLoading ? '今日次数确认中…' : `今日已占 ${daily.used}/${daily.limit}`;
       quota.classList.toggle('is-empty', daily.remaining <= 0);
     }
     syncProgress(count);
+    renderModePanel();
     renderCoins();
     renderStack();
     renderResult();
@@ -437,11 +694,14 @@
   function reset() {
     questionText();
     state.casts = [];
+    state.manualCoins = Array.from({ length: 6 }, () => LIUYAO_MANUAL_EMPTY_COINS.slice());
     state.lastCoins = [];
     state.error = '';
     state.statusTone = '';
     state.questionGate = null;
     state.gateLoading = false;
+    state.tossAnimation = null;
+    state.drag = null;
     render();
   }
 
@@ -494,23 +754,143 @@
     }
   }
 
-  async function tossLine() {
+  function placeNextCast(cast) {
+    const index = state.casts.findIndex((item) => !item);
+    if (index >= 0) state.casts[index] = cast;
+    else state.casts.push(cast);
+    state.casts = state.casts.slice(0, 6);
+    state.lastCoins = cast.coins;
+    return index >= 0 ? index : state.casts.length - 1;
+  }
+
+  async function tossLine(power = LIUYAO_DEFAULT_POWER) {
+    if (state.tossAnimation?.active) return;
     if (!await ensureQuestionAllowed()) return;
-    if (state.casts.length >= 6) return;
-    const cast = makeCast();
-    state.casts.push(cast);
+    if (getProgress() >= 6) return;
+    state.mode = 'online';
+    const cast = makeCast({ power });
+    const lineIndex = state.casts.findIndex((item) => !item);
+    state.tossAnimation = {
+      active: true,
+      cast,
+      lineIndex: lineIndex >= 0 ? lineIndex : getProgress(),
+      power: Math.round(power * 100),
+    };
     state.lastCoins = cast.coins;
     render();
+    window.setTimeout(() => {
+      if (!state.tossAnimation?.active) return;
+      placeNextCast(cast);
+      state.tossAnimation = null;
+      state.drag = null;
+      render();
+    }, LIUYAO_TOSS_ANIMATION_MS);
   }
 
   async function autoCast() {
     if (!await ensureQuestionAllowed()) return;
-    while (state.casts.length < 6) {
+    state.mode = 'online';
+    while (getProgress() < 6) {
       const cast = makeCast();
-      state.casts.push(cast);
-      state.lastCoins = cast.coins;
+      placeNextCast(cast);
     }
     render();
+  }
+
+  function setMode(mode) {
+    if (mode !== 'manual' && mode !== 'online') return;
+    state.mode = mode;
+    state.error = '';
+    state.statusTone = '';
+    render();
+  }
+
+  async function setManualCoin(lineIndex, coinIndex, face) {
+    if (!await ensureQuestionAllowed()) return;
+    ensureManualRows();
+    const line = Math.max(0, Math.min(5, Math.round(Number(lineIndex) || 0)));
+    const coin = Math.max(0, Math.min(2, Math.round(Number(coinIndex) || 0)));
+    const value = Number(face) === 2 ? 2 : 3;
+    state.mode = 'manual';
+    while (state.casts.length < 6) state.casts.push(null);
+    state.manualCoins[line][coin] = value;
+    state.casts[line] = null;
+    state.lastCoins = state.manualCoins[line].filter(Boolean);
+    render();
+  }
+
+  async function confirmManualLine(lineIndex) {
+    if (!await ensureQuestionAllowed()) return;
+    ensureManualRows();
+    const line = Math.max(0, Math.min(5, Math.round(Number(lineIndex) || 0)));
+    const cast = makeCastFromCoins(state.manualCoins[line], { manual: true });
+    if (!cast) return;
+    state.mode = 'manual';
+    while (state.casts.length < 6) state.casts.push(null);
+    state.casts[line] = cast;
+    state.manualCoins[line] = cast.coins.slice();
+    state.lastCoins = cast.coins;
+    state.error = line >= 5 ? '六爻已成，可看本卦、动爻、变卦。' : `已录入${lineLabels[line]}，继续录${lineLabels[line + 1]}。`;
+    state.statusTone = 'ok';
+    render();
+  }
+
+  function clearManualLine(lineIndex) {
+    ensureManualRows();
+    const line = Math.max(0, Math.min(5, Math.round(Number(lineIndex) || 0)));
+    state.mode = 'manual';
+    while (state.casts.length < 6) state.casts.push(null);
+    state.manualCoins[line] = LIUYAO_MANUAL_EMPTY_COINS.slice();
+    state.casts[line] = null;
+    state.lastCoins = [];
+    render();
+  }
+
+  function clearLastManualLine() {
+    ensureManualRows();
+    state.mode = 'manual';
+    while (state.casts.length < 6) state.casts.push(null);
+    for (let line = 5; line >= 0; line -= 1) {
+      if (state.casts[line]) {
+        state.manualCoins[line] = LIUYAO_MANUAL_EMPTY_COINS.slice();
+        state.casts[line] = null;
+        state.lastCoins = [];
+        render();
+        return;
+      }
+    }
+  }
+
+  function openXuChat() {
+    const result = getResult();
+    if (!result) return;
+    const primaryReading = getHexReading(result.primary);
+    const changedReading = getHexReading(result.changed);
+    const primaryOriginal = getZhouyiOriginal(result.primary);
+    const changedOriginal = getZhouyiOriginal(result.changed);
+    const movingText = formatMovingText(result.movingLines);
+    const context = {
+      type: 'liuyao',
+      recordId: makeUuid(),
+      title: `六爻占卜：${result.primary?.name || '本卦'}${result.movingLines.length ? ` 之 ${result.changed?.name || '变卦'}` : ''}`,
+      summaryLine: movingText,
+      question: result.question,
+      createdAt: Date.now(),
+      castAtText: new Date().toLocaleString('zh-CN', { hour12: false }),
+      primaryText: `${formatHexMeta(result.primary)} ${result.primary?.name || ''}`,
+      changedText: `${formatHexMeta(result.changed)} ${result.changed?.name || ''}`,
+      movingText,
+      linesText: result.lines.map((line) => `${line.label}:${line.value}${line.name}${line.mark || ''}`).join('；'),
+      primaryOriginalText: primaryOriginal.text,
+      changedOriginalText: changedOriginal.text,
+      primaryTip: firstReadableSentence(primaryReading.summary, '先看本卦所处局面。'),
+      changedTip: result.movingLines.length ? firstReadableSentence(changedReading.summary, '变卦看后续走向。') : '无动爻时变卦与本卦同体，重在守当前局面。',
+      advice: '先看本卦定当前，动爻看变化，变卦看趋势。',
+    };
+    try {
+      sessionStorage.setItem(XU_CONTEXT_KEY, JSON.stringify(context));
+    } catch (_err) {}
+    window.location.href = './wentian-app.html#screen-4';
   }
 
   function bindEvents() {
@@ -518,6 +898,7 @@
       const nextQuestion = normalizeQuestion($('#mbpLiuyaoQuestion')?.value || '');
       if (state.question !== nextQuestion && state.casts.length) {
         state.casts = [];
+        state.manualCoins = Array.from({ length: 6 }, () => LIUYAO_MANUAL_EMPTY_COINS.slice());
         state.lastCoins = [];
       }
       state.question = nextQuestion;
@@ -532,6 +913,7 @@
         if (textarea) textarea.value = button.dataset.liuyaoQuestion || '';
         if (state.casts.length) {
           state.casts = [];
+          state.manualCoins = Array.from({ length: 6 }, () => LIUYAO_MANUAL_EMPTY_COINS.slice());
           state.lastCoins = [];
         }
         state.question = normalizeQuestion(textarea?.value || '');
@@ -545,6 +927,63 @@
     $('#mbpLiuyaoToss')?.addEventListener('click', tossLine);
     $('#mbpLiuyaoAuto')?.addEventListener('click', autoCast);
     $('#mbpLiuyaoReset')?.addEventListener('click', reset);
+    document.addEventListener('click', (event) => {
+      const modeButton = event.target.closest('[data-liuyao-mode]');
+      if (modeButton) {
+        setMode(modeButton.dataset.liuyaoMode);
+        return;
+      }
+      const manualCoin = event.target.closest('[data-manual-coin]');
+      if (manualCoin) {
+        setManualCoin(manualCoin.dataset.lineIndex, manualCoin.dataset.coinIndex, manualCoin.dataset.manualCoin);
+        return;
+      }
+      const manualConfirm = event.target.closest('[data-manual-confirm]');
+      if (manualConfirm) {
+        confirmManualLine(manualConfirm.dataset.manualConfirm);
+        return;
+      }
+      const manualClearLine = event.target.closest('[data-manual-clear-line]');
+      if (manualClearLine) {
+        clearManualLine(manualClearLine.dataset.manualClearLine);
+        return;
+      }
+      if (event.target.closest('[data-manual-clear-last]')) {
+        clearLastManualLine();
+        return;
+      }
+      if (event.target.closest('#mbpLiuyaoAskXu')) {
+        openXuChat();
+      }
+    });
+    document.addEventListener('pointerdown', (event) => {
+      const stage = event.target.closest('#mbpLiuyaoCoinStage');
+      if (!stage || stage.getAttribute('aria-disabled') === 'true' || state.tossAnimation?.active) return;
+      state.drag = { id: event.pointerId, startX: event.clientX, startY: event.clientY, pull: 0, ready: false };
+      stage.setPointerCapture?.(event.pointerId);
+      renderCoins();
+    });
+    document.addEventListener('pointermove', (event) => {
+      if (!state.drag || state.drag.id !== event.pointerId) return;
+      const pull = Math.max(0, Math.min(LIUYAO_PULL_MAX, Math.round(state.drag.startY - event.clientY)));
+      state.drag.pull = pull;
+      state.drag.ready = pull >= Math.round(LIUYAO_PULL_MAX * LIUYAO_READY_POWER);
+      renderCoins();
+    });
+    document.addEventListener('pointerup', (event) => {
+      if (!state.drag || state.drag.id !== event.pointerId) return;
+      const power = Math.max(LIUYAO_READY_POWER, Math.min(1, state.drag.pull / LIUYAO_PULL_MAX));
+      const shouldToss = state.drag.ready;
+      state.drag = null;
+      if (shouldToss) tossLine(power);
+      else renderCoins();
+    });
+    document.addEventListener('keydown', (event) => {
+      if (event.target?.id === 'mbpLiuyaoCoinStage' && (event.key === 'Enter' || event.key === ' ')) {
+        event.preventDefault();
+        tossLine();
+      }
+    });
   }
 
   document.addEventListener('DOMContentLoaded', () => {
