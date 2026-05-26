@@ -1,5 +1,8 @@
 (function () {
   const $ = (selector) => document.querySelector(selector);
+  const CLIENT_ID_KEY = 'ziwei_client_id';
+  const AUTH_SESSION_KEY = 'wentian-app-auth-session-v1';
+  const LIUYAO_DAILY_LIMIT = 3;
   const lineLabels = ['初爻', '二爻', '三爻', '四爻', '五爻', '上爻'];
   const trigrams = {
     111: { gua: '乾', name: '天' },
@@ -38,6 +41,8 @@
     statusTone: '',
     questionGate: null,
     gateLoading: false,
+    quotaLoading: false,
+    quota: { limit: LIUYAO_DAILY_LIMIT, used: 0, remaining: LIUYAO_DAILY_LIMIT },
   };
 
   function escapeHtml(value) {
@@ -82,6 +87,43 @@
     return (queryBase || configBase || 'https://api.yuetianai.com').replace(/\/+$/, '');
   }
 
+  function makeUuid() {
+    if (window.crypto?.randomUUID) return window.crypto.randomUUID();
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (char) => {
+      const value = Math.random() * 16 | 0;
+      return (char === 'x' ? value : (value & 0x3 | 0x8)).toString(16);
+    });
+  }
+
+  function getClientId() {
+    try {
+      let id = localStorage.getItem(CLIENT_ID_KEY);
+      if (!/^[a-zA-Z0-9:_-]{16,96}$/.test(String(id || ''))) {
+        id = makeUuid();
+        localStorage.setItem(CLIENT_ID_KEY, id);
+      }
+      return id;
+    } catch (_err) {
+      return 'anonymous';
+    }
+  }
+
+  function getStoredAuthToken() {
+    try {
+      const session = JSON.parse(localStorage.getItem(AUTH_SESSION_KEY) || 'null');
+      return session?.access_token || '';
+    } catch (_err) {
+      return '';
+    }
+  }
+
+  function normalizeQuota(raw) {
+    const limit = Math.max(1, Number(raw?.limit || raw?.dailyLimit || LIUYAO_DAILY_LIMIT));
+    const used = Math.max(0, Number(raw?.used ?? raw?.dailyUsed ?? 0));
+    const remaining = Math.max(0, Number(raw?.remaining ?? raw?.dailyRemaining ?? (limit - used)));
+    return { limit, used, remaining, date: String(raw?.date || ''), exhausted: remaining <= 0 };
+  }
+
   function normalizeGate(raw, question = state.question) {
     if (!raw || typeof raw !== 'object') return null;
     const gateQuestion = normalizeQuestion(raw.question || '');
@@ -92,6 +134,7 @@
       reason: normalizeQuestion(raw.reason || (raw.allowed ? '审题通过，可以起卦。' : '问题还不够清楚，暂不起卦。')).slice(0, 80),
       suggestion: normalizeQuestion(raw.suggestion || '').slice(0, 100),
       labels: Array.isArray(raw.labels) ? raw.labels.map(normalizeQuestion).filter(Boolean).slice(0, 4) : [],
+      quota: normalizeQuota(raw.quota || state.quota),
       checkedAt: Date.now(),
     };
   }
@@ -154,13 +197,17 @@
     const controller = new AbortController();
     const timer = window.setTimeout(() => controller.abort(), 8000);
     try {
+      const headers = { 'Content-Type': 'application/json' };
+      const token = getStoredAuthToken();
+      if (token) headers.Authorization = `Bearer ${token}`;
       const response = await fetch(`${getAiBackendBase()}/api/ai/liuyao-question`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers,
         body: JSON.stringify({
           question,
+          clientId: getClientId(),
           chatMode: 'liuyao_question_gate',
-          divinationContext: { type: 'liuyao_question_gate', question },
+          divinationContext: { type: 'liuyao_question_gate', question, clientId: getClientId() },
         }),
         signal: controller.signal,
       });
@@ -184,7 +231,45 @@
       if (!parsed) throw new Error('gate parse failed');
       return parsed;
     } catch (_err) {
-      return localGate;
+      return {
+        allowed: false,
+        normalizedQuestion: question,
+        reason: '后台暂时不可用，无法确认今日次数，先不起卦。',
+        suggestion: '请稍后再试。',
+        labels: ['次数未确认'],
+        quota: state.quota,
+      };
+    }
+  }
+
+  async function refreshQuota() {
+    if (state.quotaLoading) return;
+    state.quotaLoading = true;
+    render();
+    const controller = new AbortController();
+    const timer = window.setTimeout(() => controller.abort(), 8000);
+    try {
+      const headers = { 'Content-Type': 'application/json' };
+      const token = getStoredAuthToken();
+      if (token) headers.Authorization = `Bearer ${token}`;
+      const response = await fetch(`${getAiBackendBase()}/api/ai/liuyao-question`, {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({
+          action: 'quota',
+          clientId: getClientId(),
+          divinationContext: { type: 'liuyao_quota', clientId: getClientId() },
+        }),
+        signal: controller.signal,
+      });
+      const data = await response.json();
+      if (data?.quota) state.quota = normalizeQuota(data.quota);
+    } catch (_err) {
+      // Keep the last known quota label; the server still enforces the hard limit.
+    } finally {
+      window.clearTimeout(timer);
+      state.quotaLoading = false;
+      render();
     }
   }
 
@@ -320,19 +405,28 @@
     const status = $('#mbpLiuyaoStatus');
     const toss = $('#mbpLiuyaoToss');
     const auto = $('#mbpLiuyaoAuto');
+    const quota = $('#mbpLiuyaoQuota');
+    const exhausted = normalizeQuota(state.quota).exhausted && !normalizeGate(state.questionGate, state.question)?.allowed;
     if (status) {
-      status.classList.toggle('is-error', Boolean(state.error) && !['ok', 'loading'].includes(state.statusTone));
+      status.classList.toggle('is-error', exhausted || (Boolean(state.error) && !['ok', 'loading'].includes(state.statusTone)));
       status.classList.toggle('is-ok', state.statusTone === 'ok');
       status.classList.toggle('is-loading', state.statusTone === 'loading');
       status.textContent = state.error
         || (count >= 6 ? '已成卦，可看本卦、动爻、变卦。' : `已成 ${count}/6 爻，下一步投${lineLabels[count]}。`);
+      if (exhausted) status.textContent = '今日六爻占卜已满 3 次，明天再起卦。';
     }
     if (toss) {
-      toss.disabled = state.gateLoading || count >= 6;
+      toss.disabled = state.gateLoading || exhausted || count >= 6;
       toss.textContent = state.gateLoading ? '审题中…' : count >= 6 ? '已成卦' : `投第 ${count + 1} 爻`;
+      if (exhausted) toss.textContent = '今日已满';
     }
     if (auto) {
-      auto.disabled = state.gateLoading || count >= 6;
+      auto.disabled = state.gateLoading || exhausted || count >= 6;
+    }
+    if (quota) {
+      const daily = normalizeQuota(state.quota);
+      quota.textContent = state.quotaLoading ? '今日次数确认中…' : `今日已占 ${daily.used}/${daily.limit}`;
+      quota.classList.toggle('is-empty', daily.remaining <= 0);
     }
     syncProgress(count);
     renderCoins();
@@ -366,6 +460,12 @@
       $('#mbpLiuyaoQuestion')?.focus();
       return false;
     }
+    if (normalizeQuota(state.quota).remaining <= 0) {
+      state.error = '今日六爻占卜已满 3 次，明天再起卦。';
+      state.statusTone = '';
+      render();
+      return false;
+    }
 
     state.gateLoading = true;
     state.error = '正在接入后台审题，合格后才起卦。';
@@ -374,6 +474,7 @@
     try {
       const gate = normalizeGate(await reviewQuestion(question), question);
       state.questionGate = gate;
+      if (gate?.quota) state.quota = normalizeQuota(gate.quota);
       if (gate?.allowed) {
         state.error = gate.reason || '审题通过，可以起卦。';
         state.statusTone = 'ok';
@@ -449,5 +550,6 @@
   document.addEventListener('DOMContentLoaded', () => {
     bindEvents();
     render();
+    refreshQuota();
   });
 }());

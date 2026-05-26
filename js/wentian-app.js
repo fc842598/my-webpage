@@ -9901,6 +9901,7 @@ const LIUYAO_STORAGE_KEY = "wentian-liuyao-state-v1";
 const LIUYAO_SAMPLE_QUESTION = "事业近期是否适合推进新计划？";
 const LIUYAO_DEFAULT_QUESTION = "";
 const LIUYAO_QUESTION_MAX_LENGTH = 120;
+const LIUYAO_DAILY_LIMIT = 3;
 const LIUYAO_QUESTION_SUGGESTIONS = [
   "这个项目本月能不能继续推进并见到效果？",
   "这笔合作近期能不能谈成？",
@@ -9950,6 +9951,7 @@ let liuyaoTossTimer = null;
 let liuyaoTossAnimation = null;
 let liuyaoSwipeStart = null;
 let liuyaoQuestionGateLoading = false;
+let liuyaoQuotaLoading = false;
 let liuyaoCastModalOpen = false;
 let liuyaoResetConfirmOpen = false;
 
@@ -9998,6 +10000,30 @@ function normalizeLiuyaoQuestion(value) {
   return String(value || "").replace(/\s+/g, " ").trim().slice(0, LIUYAO_QUESTION_MAX_LENGTH);
 }
 
+function normalizeLiuyaoQuota(raw) {
+  const limit = Math.max(1, Number(raw?.limit || raw?.dailyLimit || LIUYAO_DAILY_LIMIT));
+  const used = Math.max(0, Number(raw?.used ?? raw?.dailyUsed ?? 0));
+  const remaining = Math.max(0, Number(raw?.remaining ?? raw?.dailyRemaining ?? (limit - used)));
+  return {
+    limit,
+    used,
+    remaining,
+    date: String(raw?.date || ""),
+    exhausted: remaining <= 0,
+    checkedAt: Number(raw?.checkedAt) || Date.now(),
+  };
+}
+
+function mergeLiuyaoQuota(currentRaw, nextRaw) {
+  const next = normalizeLiuyaoQuota(nextRaw);
+  if (!currentRaw) return next;
+  const current = normalizeLiuyaoQuota(currentRaw);
+  const sameKnownDate = current.date && next.date && current.date === next.date;
+  const sameUnknownDate = !current.date && !next.date;
+  if ((sameKnownDate || sameUnknownDate) && next.used < current.used) return current;
+  return next;
+}
+
 function normalizeLiuyaoQuestionGate(raw, question) {
   if (!raw || typeof raw !== "object") return null;
   const gateQuestion = normalizeLiuyaoQuestion(raw.question || raw.normalizedQuestion || "");
@@ -10008,6 +10034,7 @@ function normalizeLiuyaoQuestionGate(raw, question) {
     reason: normalizeLiuyaoQuestion(raw.reason || ""),
     suggestion: normalizeLiuyaoQuestion(raw.suggestion || ""),
     labels: Array.isArray(raw.labels) ? raw.labels.map(normalizeLiuyaoQuestion).filter(Boolean).slice(0, 4) : [],
+    quota: raw.quota ? normalizeLiuyaoQuota(raw.quota) : null,
     checkedAt: Number(raw.checkedAt) || Date.now(),
     retryable: raw.retryable === true,
   };
@@ -10021,7 +10048,8 @@ function makeLiuyaoDefaultState() {
     createdAt: Date.now(),
     casts: [],
     manualCoins: makeLiuyaoManualCoins(),
-    questionGate: null
+    questionGate: null,
+    quota: null,
   };
 }
 
@@ -10040,7 +10068,8 @@ function getLiuyaoState() {
         createdAt: Number(parsed.createdAt) || Date.now(),
         casts,
         manualCoins: normalizeLiuyaoManualCoins(parsed.manualCoins, casts),
-        questionGate: normalizeLiuyaoQuestionGate(parsed.questionGate, question)
+        questionGate: normalizeLiuyaoQuestionGate(parsed.questionGate, question),
+        quota: parsed.quota ? normalizeLiuyaoQuota(parsed.quota) : null,
       };
       return liuyaoState;
     }
@@ -10125,7 +10154,9 @@ function resetLiuyaoState() {
   clearLiuyaoTossAnimation();
   liuyaoResetConfirmOpen = false;
   setLiuyaoCasterModalOpen(false);
+  const quota = getLiuyaoState().quota || null;
   liuyaoState = makeLiuyaoDefaultState();
+  liuyaoState.quota = quota;
   saveLiuyaoState();
   navigate("screen-17", false);
 }
@@ -10205,17 +10236,39 @@ function makeLiuyaoManualCastFromCoins(coins) {
 function setLiuyaoQuestionGateResult(result) {
   const state = getLiuyaoState();
   const question = normalizeLiuyaoQuestion(state.question);
+  if (result?.quota) state.quota = mergeLiuyaoQuota(state.quota, result.quota);
   state.questionGate = {
     question,
     allowed: result?.allowed === true,
     reason: normalizeLiuyaoQuestion(result?.reason || ""),
     suggestion: normalizeLiuyaoQuestion(result?.suggestion || ""),
     labels: Array.isArray(result?.labels) ? result.labels.map(normalizeLiuyaoQuestion).filter(Boolean).slice(0, 4) : [],
+    quota: state.quota,
     checkedAt: Date.now(),
     retryable: result?.retryable === true,
   };
   saveLiuyaoState();
   return state.questionGate;
+}
+
+function getLiuyaoQuota(state = getLiuyaoState()) {
+  return normalizeLiuyaoQuota(state.quota || state.questionGate?.quota || {
+    limit: LIUYAO_DAILY_LIMIT,
+    used: 0,
+    remaining: LIUYAO_DAILY_LIMIT,
+  });
+}
+
+function isLiuyaoQuotaExhausted(state = getLiuyaoState()) {
+  const question = normalizeLiuyaoQuestion(state.question);
+  const gate = normalizeLiuyaoQuestionGate(state.questionGate, question);
+  return !gate?.allowed && getLiuyaoQuota(state).remaining <= 0;
+}
+
+function renderLiuyaoQuotaBadge(state = getLiuyaoState()) {
+  const quota = getLiuyaoQuota(state);
+  const text = liuyaoQuotaLoading ? "今日次数确认中" : `今日已占 ${quota.used}/${quota.limit}`;
+  return `<span class="liuyao-quota-badge ${quota.remaining <= 0 ? "is-empty" : ""}">${escapeHtml(text)}</span>`;
 }
 
 function getLiuyaoQuestionGateMessage(state = getLiuyaoState()) {
@@ -10224,6 +10277,9 @@ function getLiuyaoQuestionGateMessage(state = getLiuyaoState()) {
   }
   const question = normalizeLiuyaoQuestion(state.question);
   const gate = normalizeLiuyaoQuestionGate(state.questionGate, question);
+  if (!gate?.allowed && getLiuyaoQuota(state).remaining <= 0) {
+    return { tone: "error", text: "今日六爻占卜已满 3 次，明天再起卦。" };
+  }
   if (!question) {
     return { tone: "hint", text: "先写清一件事；空问、乱点、随便试，不起卦。" };
   }
@@ -10249,6 +10305,9 @@ function getLiuyaoQuestionSubmitMeta(state = getLiuyaoState()) {
   const gate = normalizeLiuyaoQuestionGate(state.questionGate, question);
   if (liuyaoQuestionGateLoading) {
     return { label: "审题中…", disabled: true, state: "loading" };
+  }
+  if (!gate?.allowed && getLiuyaoQuota(state).remaining <= 0) {
+    return { label: "今日已满", disabled: true, state: "rejected" };
   }
   if (gate?.allowed) {
     return { label: "已通过", disabled: true, state: "approved" };
@@ -10357,6 +10416,8 @@ function updateLiuyaoQuestionLockedDom(state = getLiuyaoState()) {
   const complete = progress >= 6;
   const lockText = liuyaoQuestionGateLoading ? "审题中，稍候开放" : "提交通过后开放投币";
   const panel = document.querySelector(".liuyao-coin-panel");
+  const quotaBadge = document.querySelector(".liuyao-quota-badge");
+  if (quotaBadge) quotaBadge.outerHTML = renderLiuyaoQuotaBadge(state);
   if (panel) {
     panel.classList.toggle("is-ready", ready);
     panel.classList.toggle("is-waiting", !ready);
@@ -10448,16 +10509,53 @@ async function reviewLiuyaoQuestionViaChat(question) {
   try {
     const data = await wentianPostJson("/api/ai/liuyao-question", {
       question,
+      clientId: getWentianClientId(),
       chatMode: "liuyao_question_gate",
-      divinationContext: { type: "liuyao_question_gate", question },
+      divinationContext: { type: "liuyao_question_gate", question, clientId: getWentianClientId(), recordId: getLiuyaoState().recordId },
     }, 6000, 0);
     if (typeof data?.allowed === "boolean") return data;
     const parsed = parseLiuyaoGateJson(data?.reply);
     if (!parsed) throw new Error("chat gate parse failed");
     return parsed;
   } catch (_err) {
-    return localGate;
+    return {
+      allowed: false,
+      normalizedQuestion: question,
+      reason: "后台暂时不可用，无法确认今日次数，先不起卦。",
+      suggestion: "请稍后再试。",
+      labels: ["次数未确认"],
+      quota: getLiuyaoState().quota,
+    };
   }
+}
+
+async function refreshLiuyaoQuota() {
+  if (liuyaoQuotaLoading) return;
+  const liuyao = getLiuyaoState();
+  const quota = liuyao.quota ? normalizeLiuyaoQuota(liuyao.quota) : null;
+  if (quota?.checkedAt && Date.now() - quota.checkedAt < 120000) return;
+  liuyaoQuotaLoading = true;
+  try {
+    const data = await wentianPostJson("/api/ai/liuyao-question", {
+      action: "quota",
+      clientId: getWentianClientId(),
+      divinationContext: { type: "liuyao_quota", clientId: getWentianClientId() },
+    }, 6000, 0);
+    if (data?.quota) {
+      liuyao.quota = mergeLiuyaoQuota(liuyao.quota, data.quota);
+      saveLiuyaoState();
+      if (state.route === "screen-17") navigate("screen-17", false);
+    }
+  } catch (_err) {
+    // The submit path still checks the server before allowing a new divination.
+  } finally {
+    liuyaoQuotaLoading = false;
+    if (state.route === "screen-17") navigate("screen-17", false);
+  }
+}
+
+function queueLiuyaoQuotaRefresh() {
+  window.setTimeout(refreshLiuyaoQuota, 0);
 }
 
 async function ensureLiuyaoQuestionAllowed() {
@@ -10471,6 +10569,17 @@ async function ensureLiuyaoQuestionAllowed() {
       reason: "请先写清楚要问的一件事。",
       suggestion: "一句话只问一件具体事情，再起卦。",
       labels: ["一事一占"],
+    });
+    navigate("screen-17", false);
+    return false;
+  }
+  if (isLiuyaoQuotaExhausted(state)) {
+    setLiuyaoQuestionGateResult({
+      allowed: false,
+      reason: "今日六爻占卜已满 3 次，明天再起卦。",
+      suggestion: "手机端和电脑端共用每日 3 次额度。",
+      labels: ["今日已满"],
+      quota: state.quota,
     });
     navigate("screen-17", false);
     return false;
@@ -10490,6 +10599,8 @@ async function ensureLiuyaoQuestionAllowed() {
       reason: data?.reason || (data?.allowed ? "审题通过，可以起卦。" : "问题还不够清楚，暂不起卦。"),
       suggestion: data?.suggestion || "",
       labels: data?.labels || [],
+      quota: data?.quota,
+      retryable: data?.retryable === true,
     });
     return gate.allowed;
   } catch (_err) {
@@ -11153,6 +11264,7 @@ function renderLiuyaoManualCoinInput(state, options = {}) {
 
 function sourceLiuyaoCastScreen() {
   const state = getLiuyaoState();
+  queueLiuyaoQuotaRefresh();
   const casts = state.casts.map(normalizeLiuyaoCast);
   const lines = getLiuyaoCastLines(state);
   const progress = getLiuyaoProgress(state);
@@ -11162,13 +11274,14 @@ function sourceLiuyaoCastScreen() {
   const question = normalizeLiuyaoQuestion(state.question);
   const gate = normalizeLiuyaoQuestionGate(state.questionGate, question);
   const questionReady = Boolean(gate?.allowed);
-  const questionLockText = gateBusy ? "审题中，稍候开放" : "提交通过后开放投币";
+  const quotaEmpty = isLiuyaoQuotaExhausted(state);
+  const questionLockText = quotaEmpty ? "今日已满，明天再占" : gateBusy ? "审题中，稍候开放" : "提交通过后开放投币";
   const completeResult = complete ? getLiuyaoResult(state) : null;
   const completeMovingText = completeResult ? formatLiuyaoMovingLineText(completeResult.movingLines) : "无";
   const screenHeight = getLiuyaoCastScreenHeight();
   const casterOptions = { complete, disabled: gateBusy || !questionReady, lockText: questionReady ? "" : questionLockText };
   const flowStep = complete ? "result" : (questionReady || progress > 0 ? "cast" : "ask");
-  const statusText = complete ? "卦已成" : gateBusy ? "审题中" : questionReady ? "可起卦" : "未起卦";
+  const statusText = complete ? "卦已成" : quotaEmpty ? "今日已满" : gateBusy ? "审题中" : questionReady ? "可起卦" : "未起卦";
   if (state.mode === "online" && liuyaoCastModalOpen && !complete) {
     return `
       ${renderLiuyaoCasterModal(state, casterOptions)}
@@ -11195,7 +11308,7 @@ function sourceLiuyaoCastScreen() {
       <div class="liuyao-question-card liuyao-ask-card">
         <div class="liuyao-section-title">
           <label for="liuyao-question">所问之事</label>
-          <span>建议写具体一点</span>
+          ${renderLiuyaoQuotaBadge(state)}
         </div>
         <textarea id="liuyao-question" maxlength="${LIUYAO_QUESTION_MAX_LENGTH}" rows="3" placeholder="例如：我现在是否应该继续推进这个合作？本月能不能见到明确结果？">${escapeHtml(getLiuyaoQuestionInputValue(state))}</textarea>
         <div class="liuyao-question-rule">一卦一问 · 不同时问感情和事业</div>

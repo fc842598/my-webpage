@@ -5497,6 +5497,27 @@ html[lang="en"] .liuyao-coin-summary em {
   text-align: right;
 }
 
+.liuyao-quota-badge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 26px;
+  padding: 4px 10px;
+  border: 1px solid #e1d1b6;
+  border-radius: 999px;
+  background: #fffaf1;
+  color: #8b6428;
+  font-size: 12px;
+  font-weight: 900;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.liuyao-quota-badge.is-empty {
+  border-color: #efc9bd;
+  background: #fff3ee;
+  color: #a34436;
+}
+
 .liuyao-question-card textarea {
   width: 100%;
   min-height: 126px;
