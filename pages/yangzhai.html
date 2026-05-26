@@ -1215,6 +1215,279 @@
         display: none;
       }
     }
+
+    .result-edit-btn {
+      display: none;
+    }
+
+    .result-grid.is-reading {
+      display: block;
+    }
+
+    .reading-shell {
+      display: grid;
+      gap: 14px;
+    }
+
+    .reading-tabs,
+    .reading-chips {
+      display: flex;
+      gap: 10px;
+      max-width: 100%;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(201,169,97,.50) rgba(201,169,97,.08);
+    }
+
+    .reading-tab,
+    .reading-chip,
+    .reading-row {
+      border: 1px solid rgba(201,169,97,.34);
+      color: var(--gold-soft);
+      background: rgba(7,5,2,.72);
+      cursor: pointer;
+      font-weight: 900;
+    }
+
+    .reading-tab,
+    .reading-chip {
+      min-height: 34px;
+      flex: 0 0 auto;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 0 14px;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+
+    .reading-tab b {
+      color: inherit;
+      font-size: 12px;
+    }
+
+    .reading-tab.is-active,
+    .reading-chip.is-active,
+    .item-pill.is-current {
+      border-color: rgba(240,215,155,.88);
+      color: #150e04;
+      background: linear-gradient(180deg, #efd178, #bd8733);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.22);
+    }
+
+    .reading-card {
+      padding: 18px;
+      border: 1px solid rgba(201,169,97,.34);
+      border-radius: 6px;
+      background:
+        linear-gradient(135deg, rgba(201,169,97,.075), transparent 38%),
+        rgba(5,4,2,.76);
+    }
+
+    .reading-card h3 {
+      margin: 10px 0 12px;
+      color: var(--ivory);
+      font-family: "Noto Serif SC", "Songti SC", serif;
+      font-size: 22px;
+      line-height: 1.45;
+    }
+
+    .reading-card h3 span {
+      display: inline-flex;
+      margin-right: 8px;
+      color: var(--gold-soft);
+      font-family: Inter, "Noto Sans SC", sans-serif;
+      font-size: 26px;
+      vertical-align: -1px;
+    }
+
+    .reading-source {
+      color: #8f805f;
+      font-size: 12px;
+      font-weight: 800;
+      text-align: right;
+    }
+
+    .reading-body {
+      display: grid;
+      gap: 10px;
+    }
+
+    .reading-body p {
+      margin: 0;
+      color: var(--text);
+      font-size: 14px;
+      line-height: 1.82;
+    }
+
+    .reading-more {
+      display: grid;
+      gap: 9px;
+    }
+
+    .reading-row {
+      width: 100%;
+      min-height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 10px 14px;
+      border-radius: 6px;
+      text-align: left;
+    }
+
+    .reading-row strong {
+      min-width: 0;
+      color: var(--ivory);
+      font-size: 14px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .reading-row span {
+      flex: 0 0 auto;
+      color: #9d8c68;
+      font-size: 12px;
+    }
+
+    .reading-overflow-note {
+      padding: 12px 14px;
+      border: 1px dashed rgba(201,169,97,.34);
+      border-radius: 6px;
+      color: #bcae84;
+      background: rgba(201,169,97,.045);
+      font-size: 13px;
+      line-height: 1.65;
+    }
+
+    .reading-overflow-note b {
+      color: var(--gold-soft);
+    }
+
+    @media (min-width: 901px) {
+      .yangzhai-main .container.is-reading {
+        width: min(1500px, calc(100vw - 96px));
+        display: grid;
+        grid-template-columns: 430px minmax(0, 1fr);
+        align-items: start;
+        gap: 14px;
+      }
+
+      .container.is-reading .workbench {
+        grid-template-columns: 1fr;
+        padding: 12px;
+      }
+
+      .container.is-reading .guide-panel,
+      .container.is-reading .picker-panel {
+        display: none;
+      }
+
+      .container.is-reading .grid-panel {
+        padding: 18px 12px 16px;
+      }
+
+      .container.is-reading .grid-panel .section-head {
+        margin-bottom: 14px;
+      }
+
+      .container.is-reading .grid-panel .section-head h2 {
+        font-size: 24px;
+      }
+
+      .container.is-reading .palace-grid {
+        width: min(100%, 390px);
+      }
+
+      .container.is-reading .palace-cell {
+        min-height: 134px;
+        padding: 14px 12px 10px;
+      }
+
+      .container.is-reading .palace-dir {
+        font-size: 21px;
+      }
+
+      .container.is-reading .palace-role {
+        margin-top: 6px;
+        font-size: 13px;
+      }
+
+      .container.is-reading .palace-items {
+        gap: 4px;
+        padding-top: 6px;
+      }
+
+      .container.is-reading .palace-items .item-pill {
+        min-width: 0;
+        max-width: 100%;
+        min-height: 21px;
+        padding: 0 6px;
+        font-size: 11px;
+      }
+
+      .container.is-reading .grid-actions {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin: 16px 0 0;
+      }
+
+      .container.is-reading .grid-actions .gold-btn {
+        grid-column: 1 / -1;
+      }
+
+      .container.is-reading .result-panel {
+        margin-top: 0;
+        min-height: 100%;
+        padding: 22px 24px 24px;
+      }
+
+      .container.is-reading .result-panel .section-head {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 16px;
+        text-align: left;
+      }
+
+      .container.is-reading .result-panel .section-head h2 {
+        font-size: 26px;
+        letter-spacing: 0;
+      }
+
+      .container.is-reading .result-panel .section-head h2::before,
+      .container.is-reading .result-panel .section-head h2::after {
+        display: none;
+      }
+
+      .container.is-reading .result-panel .section-head p {
+        margin-top: 4px;
+      }
+
+      .container.is-reading .result-edit-btn {
+        width: auto;
+        min-width: 94px;
+        display: inline-flex;
+      }
+
+      .container.is-reading .reading-card {
+        padding: 24px 26px;
+      }
+
+      .container.is-reading .reading-card h3 {
+        font-size: 26px;
+      }
+
+      .container.is-reading .reading-body p {
+        font-size: 16px;
+        line-height: 1.86;
+      }
+    }
   </style>
 </head>
 <body>
@@ -1236,7 +1509,7 @@
     </header>
 
     <main class="yangzhai-main">
-      <div class="container">
+      <div class="container" id="yangzhaiContainer">
         <section class="workbench" id="workbench" aria-label="阳宅九宫工作台">
           <aside class="guide-panel">
             <h2 class="guide-title">怎么用</h2>
@@ -1272,8 +1545,11 @@
 
         <section class="result-panel" id="results" aria-labelledby="result-title">
           <div class="section-head">
-            <h2 id="result-title">解读结果</h2>
-            <p id="resultMeta">尚未生成</p>
+            <div>
+              <h2 id="result-title">解读结果</h2>
+              <p id="resultMeta">尚未生成</p>
+            </div>
+            <button class="ghost-btn result-edit-btn" type="button" data-action="edit">继续安位</button>
           </div>
           <div id="resultGrid" class="result-grid">
             <div class="empty-state">先在九宫中安位，再点击「解读分析」。</div>
@@ -1395,16 +1671,24 @@
       const activeHint = document.getElementById("activePalaceHint");
       const resultGrid = document.getElementById("resultGrid");
       const resultMeta = document.getElementById("resultMeta");
+      const workbench = document.getElementById("workbench");
+      const yangzhaiContainer = document.getElementById("yangzhaiContainer");
+      const circleNumbers = ["", "①", "②", "③", "④", "⑤", "⑥", "⑦", "⑧", "⑨", "⑩", "⑪", "⑫"];
 
       const loadState = () => {
         try {
           const raw = localStorage.getItem(STORAGE_KEY);
           if (raw) {
             const parsed = JSON.parse(raw);
-            return { placements: parsed.placements || {}, active: parsed.active || "xun", analyzed: Boolean(parsed.analyzed) };
+            return {
+              placements: parsed.placements || {},
+              active: parsed.active || "xun",
+              analyzed: Boolean(parsed.analyzed),
+              activeResult: Number.isFinite(parsed.activeResult) ? parsed.activeResult : 0
+            };
           }
         } catch (_) {}
-        return { placements: {}, active: "xun", analyzed: false };
+        return { placements: {}, active: "xun", analyzed: false, activeResult: 0 };
       };
 
       let state = loadState();
@@ -1416,6 +1700,7 @@
       const getPalace = (key) => palaces.find((palace) => palace.key === key) || palaces[0];
       const getOption = (label) => options.find((item) => item.label === label) || { label, short: label.slice(0, 1), type: "family" };
       const getItems = (key) => Array.isArray(state.placements[key]) ? state.placements[key] : [];
+      const formatIndex = (index) => circleNumbers[index] || `${index}.`;
       const escapeHtml = (value) => String(value).replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[char]));
       const formatReadingText = (text) => String(text || "")
         .replace(/\s+/g, "")
@@ -1437,6 +1722,8 @@
       const getReadingText = (reading) => reading?.original || reading?.summary || reading?.quote || "";
 
       function renderGrid() {
+        const readingItems = state.analyzed ? buildResults() : [];
+        const indexedItems = new Map(readingItems.map((item, index) => [`${item.palaceKey}::${item.label}`, index]));
         grid.innerHTML = palaces.map((palace) => {
           if (palace.key === "center") {
             return `<div class="palace-cell center-cell" aria-label="中宫定位">
@@ -1447,10 +1734,20 @@
             </div>`;
           }
           const items = getItems(palace.key);
-          const visibleItems = items.slice(0, 3);
+          const currentResult = readingItems[state.activeResult];
+          const currentItem = currentResult?.palaceKey === palace.key ? currentResult.label : "";
+          const visibleItems = items.length > 3 && currentItem && !items.slice(0, 3).includes(currentItem)
+            ? [...items.slice(0, 2), currentItem]
+            : items.slice(0, 3);
           const hiddenCount = items.length - visibleItems.length;
           const pills = items.length
-            ? `${visibleItems.map((item) => `<span class="item-pill" title="${escapeHtml(item)}">${escapeHtml(item)}</span>`).join("")}${hiddenCount > 0 ? `<span class="item-pill is-more">+${hiddenCount}</span>` : ""}`
+            ? `${visibleItems.map((item) => {
+                const resultIndex = indexedItems.get(`${palace.key}::${item}`);
+                const isCurrent = resultIndex === state.activeResult;
+                const resultAttr = resultIndex === undefined ? "" : ` data-result-index="${resultIndex}"`;
+                const pillText = resultIndex === undefined ? item : `${formatIndex(resultIndex + 1)}${item}`;
+                return `<span class="item-pill${isCurrent ? " is-current" : ""}" title="${escapeHtml(item)}"${resultAttr}>${escapeHtml(pillText)}</span>`;
+              }).join("")}${hiddenCount > 0 ? `<span class="item-pill is-more">+${hiddenCount}</span>` : ""}`
             : `<div class="add-hint">+ 点此安位</div>`;
           return `<button class="palace-cell${state.active === palace.key ? " is-active" : ""}" type="button" data-palace="${palace.key}">
             <div class="palace-top"><span class="palace-dir">${palace.dir}</span><span class="palace-gua">${palace.gua}</span></div>
@@ -1481,58 +1778,149 @@
       }
 
       function buildResults() {
-        return palaces
+        const results = [];
+        palaces
           .filter((palace) => palace.key !== "center")
-          .flatMap((palace) => getItems(palace.key).map((label) => {
+          .forEach((palace) => getItems(palace.key).forEach((label) => {
             const option = getOption(label);
+            const number = results.length + 1;
+            const base = {
+              number,
+              palaceKey: palace.key,
+              palaceTitle: `${palace.gua}宫 · ${palace.dir}`,
+              palaceRole: palace.role,
+              label
+            };
             if (option.type === "space") {
               const rule = spaceRules[label] || {};
               const matched = (rule.preferredPalaces || []).includes(palace.key);
               const text = formatReadingText(rule.original || `${rule.meaning || ""}${rule.preference || ""}`) || "空间象义待补。";
-              return {
+              results.push({
+                ...base,
                 tag: matched ? "方位适配" : "位置待调",
                 title: `${label}在${palace.gua}宫 · ${palace.dir}`,
                 body: `${text}\n当前：${palace.gua}宫(${palace.dir})。`,
                 source: rule.source || sourceTitle
-              };
+              });
+              return;
             }
             const hex = getHexEntry(label, palace);
             const matched = label === palace.defaultItem;
             const reading = getHexReading(hex);
             const originalText = formatReadingText(getReadingText(reading));
-            return {
+            results.push({
+              ...base,
               tag: matched ? "本位相合" : "卦象解读",
               title: hex ? `${label}住${palace.gua}宫 · 第${hex.no}卦 ${hex.name}` : `${label}住${palace.gua}宫`,
               body: hex ? (originalText || "原文待核。") : `已安位到${palace.dir}，该组合暂无索引。`,
               source: reading?.source || sourceTitle
-            };
+            });
           }));
+        return results;
+      }
+
+      function setActiveResultFromPalace(preferredKey = state.active) {
+        const results = buildResults();
+        const index = results.findIndex((item) => item.palaceKey === preferredKey);
+        state.activeResult = index >= 0 ? index : 0;
+        return results.length;
+      }
+
+      function setActiveResultAt(index = 0) {
+        const results = buildResults();
+        const result = results[index] || results[0];
+        state.activeResult = result ? results.indexOf(result) : 0;
+        if (result) state.active = result.palaceKey;
+        return results.length;
       }
 
       function renderResults() {
         const results = state.analyzed ? buildResults() : [];
-        resultMeta.textContent = results.length ? `已生成 ${results.length} 条` : "尚未生成";
-        resultGrid.innerHTML = results.length
-          ? results.map((item, index) => `<article class="result-card">
-              <div class="result-number" aria-hidden="true">${index + 1}</div>
-              <div class="result-top"><span class="result-tag">${escapeHtml(item.tag)}</span></div>
-              <h3>${escapeHtml(item.title)}</h3>
-              <p>${escapeHtml(item.body)}</p>
-            </article>`).join("")
-          : `<div class="empty-state">先在九宫中安位，再点击「解读分析」。</div>`;
+        const hasResults = results.length > 0;
+        resultGrid.classList.toggle("is-reading", hasResults);
+        if (!hasResults) {
+          resultMeta.textContent = "尚未生成";
+          resultGrid.innerHTML = `<div class="empty-state">先在九宫中安位，再点击「解读分析」。</div>`;
+          return 0;
+        }
+
+        const maxIndex = results.length - 1;
+        const activeIndex = Math.min(Math.max(Number(state.activeResult) || 0, 0), maxIndex);
+        if (state.activeResult !== activeIndex) state.activeResult = activeIndex;
+        const active = results[activeIndex];
+        const groups = results.reduce((list, item, index) => {
+          let group = list.find((entry) => entry.key === item.palaceKey);
+          if (!group) {
+            group = { key: item.palaceKey, title: item.palaceTitle, role: item.palaceRole, items: [] };
+            list.push(group);
+          }
+          group.items.push({ item, index });
+          return list;
+        }, []);
+        const activeGroup = groups.find((group) => group.key === active.palaceKey) || groups[0];
+        const bodyHtml = active.body.split("\n")
+          .map((line) => line.trim())
+          .filter(Boolean)
+          .map((line) => `<p>${escapeHtml(line)}</p>`)
+          .join("");
+        const tabsHtml = groups.map((group) => `<button class="reading-tab${group.key === active.palaceKey ? " is-active" : ""}" type="button" data-result-index="${group.items[0].index}">
+            <span>${escapeHtml(group.title)}</span><b>${group.items.length}项</b>
+          </button>`).join("");
+        const chipsHtml = activeGroup.items.map(({ item, index }) => `<button class="reading-chip${index === activeIndex ? " is-active" : ""}" type="button" data-result-index="${index}">
+            ${formatIndex(item.number)}${escapeHtml(item.label)}
+          </button>`).join("");
+        const rowsHtml = activeGroup.items
+          .filter(({ index }) => index !== activeIndex)
+          .map(({ item, index }) => `<button class="reading-row" type="button" data-result-index="${index}">
+              <strong>${formatIndex(item.number)} ${escapeHtml(item.title)}</strong>
+              <span>${escapeHtml(item.tag)} · 点击查看</span>
+            </button>`)
+          .join("");
+
+        resultMeta.textContent = `${active.palaceTitle} · 当前第 ${active.number}/${results.length} 条`;
+        resultGrid.innerHTML = `<div class="reading-shell">
+          <div class="reading-tabs" aria-label="解读宫位组">${tabsHtml}</div>
+          <div class="reading-chips" aria-label="当前宫位条目">${chipsHtml}</div>
+          <article class="reading-card">
+            <div class="result-top">
+              <span class="result-tag">${escapeHtml(active.tag)}</span>
+              <span class="reading-source">${escapeHtml(active.source)}</span>
+            </div>
+            <h3><span aria-hidden="true">${formatIndex(active.number)}</span>${escapeHtml(active.title)}</h3>
+            <div class="reading-body">${bodyHtml}</div>
+          </article>
+          ${rowsHtml ? `<div class="reading-more">${rowsHtml}</div>` : ""}
+          <div class="reading-overflow-note"><b>多选处理：</b>同一宫 2-3 项直接显示编号；超过 5 项时，九宫只露前三个并显示 +N，右侧只展开当前这一条。</div>
+        </div>`;
+        return results.length;
       }
 
       function render() {
         renderGrid();
         renderPicker();
-        renderResults();
+        const resultCount = renderResults();
+        const isReading = state.analyzed && resultCount > 0;
+        workbench.classList.toggle("is-reading", isReading);
+        yangzhaiContainer.classList.toggle("is-reading", isReading);
         save();
       }
 
       grid.addEventListener("click", (event) => {
+        const resultPill = event.target.closest("[data-result-index]");
+        if (resultPill && state.analyzed) {
+          const index = Number(resultPill.dataset.resultIndex);
+          const result = buildResults()[index];
+          if (result) {
+            state.activeResult = index;
+            state.active = result.palaceKey;
+            render();
+          }
+          return;
+        }
         const cell = event.target.closest("[data-palace]");
         if (!cell) return;
         state.active = cell.dataset.palace;
+        if (state.analyzed) setActiveResultFromPalace(state.active);
         render();
       });
 
@@ -1552,6 +1940,18 @@
         }
         if (!getItems(state.active).length) delete state.placements[state.active];
         state.analyzed = false;
+        state.activeResult = 0;
+        render();
+      });
+
+      resultGrid.addEventListener("click", (event) => {
+        const target = event.target.closest("[data-result-index]");
+        if (!target) return;
+        const index = Number(target.dataset.resultIndex);
+        const result = buildResults()[index];
+        if (!result) return;
+        state.activeResult = index;
+        state.active = result.palaceKey;
         render();
       });
 
@@ -1561,19 +1961,27 @@
         if (action === "autofill") {
           state.placements = JSON.parse(JSON.stringify(defaultPlacements));
           state.analyzed = false;
+          state.activeResult = 0;
         }
         if (action === "autofill-analyze") {
           state.placements = JSON.parse(JSON.stringify(defaultPlacements));
           state.analyzed = true;
+          setActiveResultAt(0);
           document.getElementById("workbench")?.scrollIntoView({ behavior: "smooth", block: "start" });
         }
         if (action === "reset") {
           state.placements = {};
           state.analyzed = false;
+          state.activeResult = 0;
+        }
+        if (action === "edit") {
+          state.analyzed = false;
+          document.getElementById("workbench")?.scrollIntoView({ behavior: "smooth", block: "start" });
         }
         if (action === "analyze") {
           state.analyzed = true;
-          document.getElementById("results")?.scrollIntoView({ behavior: "smooth", block: "start" });
+          setActiveResultAt(0);
+          document.getElementById("workbench")?.scrollIntoView({ behavior: "smooth", block: "start" });
         }
         render();
       });
