@@ -7549,6 +7549,223 @@ html[lang="en"] .wentian-chart-ai-menu span {
   line-height: 1.6;
 }
 
+.wentian-mb-special-chapter,
+.wentian-mb-special-chapter.is-ready {
+  display: grid;
+  gap: 12px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.wentian-mb-special-hero {
+  position: relative;
+  overflow: hidden;
+  padding: 22px 18px 20px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, #22150f 0%, #57261d 58%, #b77f28 100%);
+  box-shadow: 0 14px 30px rgba(74, 43, 20, .22);
+}
+
+.wentian-mb-special-hero::before {
+  content: "贰";
+  position: absolute;
+  right: 18px;
+  top: 12px;
+  color: rgba(255, 244, 216, .13);
+  font-size: 72px;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.wentian-mb-special-hero span,
+.wentian-mb-special-hero h3,
+.wentian-mb-special-hero b,
+.wentian-mb-special-hero p,
+.wentian-mb-special-hero button {
+  position: relative;
+}
+
+.wentian-mb-special-hero span {
+  display: block;
+  color: #f4d293;
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.wentian-mb-special-hero h3 {
+  max-width: 232px;
+  margin: 10px 0 0;
+  color: #fffaf3;
+  font-size: 37px;
+  font-weight: 900;
+  line-height: 1.02;
+}
+
+.wentian-mb-special-hero b {
+  display: inline-flex;
+  max-width: 100%;
+  margin-top: 13px;
+  border: 1px solid rgba(244, 210, 147, .45);
+  border-radius: 999px;
+  padding: 7px 11px;
+  background: rgba(255, 250, 243, .08);
+  color: #ffe7b0;
+  font-size: 14px;
+  font-weight: 900;
+  line-height: 1.2;
+}
+
+.wentian-mb-special-hero p {
+  margin: 15px 0 0;
+  color: #fff0d5;
+  font-size: 16px;
+  font-weight: 900;
+  line-height: 1.55;
+}
+
+.wentian-mb-special-hero button {
+  min-height: 44px;
+  margin-top: 14px;
+  border: 1px solid rgba(244, 210, 147, .48);
+  border-radius: 14px;
+  padding: 0 14px;
+  background: rgba(255, 250, 243, .1);
+  color: #ffe7b0;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.wentian-mb-special-tabs {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.wentian-mb-special-tabs span {
+  display: grid;
+  place-items: center;
+  min-height: 42px;
+  border: 1px solid #e2ca8e;
+  border-radius: 12px;
+  background: #fffdf8;
+  color: #8a6325;
+  font-size: 14px;
+  font-weight: 900;
+  line-height: 1.15;
+  text-align: center;
+  box-shadow: 0 7px 16px rgba(80, 51, 25, .05);
+}
+
+.wentian-mb-special-list {
+  display: grid;
+  gap: 10px;
+}
+
+.wentian-mb-special-list > section {
+  position: relative;
+  border: 1px solid #e3cf9f;
+  border-radius: 16px;
+  padding: 15px 16px 14px;
+  background: #fffdf9;
+  box-shadow: 0 8px 20px rgba(83, 54, 26, .07);
+}
+
+.wentian-mb-special-list > section:nth-child(4) {
+  border-color: #d0aa63;
+  background: linear-gradient(180deg, #fffdf9, #fff7e7);
+}
+
+.wentian-mb-special-list header {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr) auto;
+  gap: 9px;
+  align-items: start;
+  margin-bottom: 10px;
+}
+
+.wentian-mb-special-list header > span {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 28px;
+  border-radius: 10px;
+  background: #251812;
+  color: #f4d293;
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.wentian-mb-special-list b {
+  display: block;
+  color: #9b742e;
+  font-size: 14px;
+  font-weight: 900;
+  line-height: 1.1;
+}
+
+.wentian-mb-special-list h4 {
+  margin: 4px 0 0;
+  color: #211812;
+  font-size: 22px;
+  font-weight: 900;
+  line-height: 1.15;
+}
+
+.wentian-mb-special-list em {
+  justify-self: end;
+  border: 1px solid #e1c585;
+  border-radius: 999px;
+  padding: 5px 8px;
+  background: #fff2d8;
+  color: #76551f;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 900;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.wentian-mb-reading-lines {
+  display: grid;
+  gap: 8px;
+}
+
+.wentian-mb-reading-lines p {
+  margin: 0;
+  color: #44382e;
+  font-size: 16px;
+  font-weight: 800;
+  line-height: 1.7;
+}
+
+.wentian-mb-special-list aside {
+  margin-top: 11px;
+  border: 1px solid #e1c585;
+  border-radius: 13px;
+  padding: 10px 11px;
+  background: #fff2d8;
+  color: #6e4b1d;
+  font-size: 14px;
+  font-weight: 900;
+  line-height: 1.55;
+}
+
+.wentian-mb-special-list > section > button {
+  min-height: 44px;
+  margin-top: 11px;
+  border: 1px solid #d8c7ad;
+  border-radius: 13px;
+  padding: 0 14px;
+  background: #fffaf3;
+  color: #8f3d30;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 900;
+}
+
 .wentian-mb-chapter-head {
   display: grid;
   grid-template-columns: 38px minmax(0, 1fr) 78px;

@@ -3525,6 +3525,40 @@ function renderWentianOverallEvidenceTags(items) {
   `;
 }
 
+function splitWentianReadingParagraphs(value, max = 48) {
+  const text = normalizeWentianAiText(value);
+  if (!text) return [];
+  const sentences = text.match(/[^。！？；.!?;]+[。！？；.!?;]?/g)?.map((item) => item.trim()).filter(Boolean) || [text];
+  const paragraphs = [];
+  for (const sentence of sentences) {
+    if (sentence.length <= max) {
+      paragraphs.push(sentence);
+      continue;
+    }
+    const chunks = sentence.match(/[^，,、]+[，,、]?/g)?.map((item) => item.trim()).filter(Boolean) || [sentence];
+    let current = "";
+    for (const chunk of chunks) {
+      if (!current || current.length + chunk.length <= max) {
+        current += chunk;
+      } else {
+        paragraphs.push(current);
+        current = chunk;
+      }
+    }
+    if (current) paragraphs.push(current);
+  }
+  return paragraphs;
+}
+
+function renderWentianReadingParagraphs(value, fallback = "") {
+  const paragraphs = splitWentianReadingParagraphs(value || fallback);
+  return `
+    <div class="wentian-mb-reading-lines">
+      ${(paragraphs.length ? paragraphs : [fallback]).map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`).join("")}
+    </div>
+  `;
+}
+
 function renderWentianOverallReading(data, fallback, actionAttr, actionLabel) {
   const sections = getWentianAiSections(data).slice(0, 5);
   if (!sections.length) {
@@ -3577,24 +3611,50 @@ function renderWentianOverallReading(data, fallback, actionAttr, actionLabel) {
   `;
 }
 
-function renderWentianSpecialDetail() {
+function renderWentianSpecialReading(actionAttr, actionLabel) {
   const results = wentianChartAiState.results || {};
-  const labels = {
-    shengong: "身宫",
-    hunyin: "婚姻",
-    jiankang: "健康",
-    caiyun: "财运",
-    shiye: "事业",
+  const meta = {
+    shengong: { no: "01", label: "身宫", key: "事业牵引" },
+    hunyin: { no: "02", label: "婚姻", key: "稳中有冲" },
+    jiankang: { no: "03", label: "健康", key: "肠胃波动" },
+    caiyun: { no: "04", label: "财运", key: "变动求财" },
+    shiye: { no: "05", label: "事业", key: "独立主导" },
   };
+  const readyCount = WENTIAN_CHART_SPECIAL_MODULES.filter((moduleKey) => !!results[moduleKey]).length;
   return `
-    <div class="wentian-mb-topic-grid">
+    <div class="wentian-mb-special-hero">
+      <span>专题批命</span>
+      <h3>五项专题<br>合参</h3>
+      <b>身宫 · 婚姻 · 健康 · 财运 · 事业</b>
+      <p>把分散专题合成一卷看：先看安身方向，再看关系、身体、财路和事业压力。</p>
+      <button type="button" ${actionAttr}>${escapeHtml(readyCount ? "重批专题" : actionLabel)}</button>
+    </div>
+    <div class="wentian-mb-special-tabs">
+      ${WENTIAN_CHART_SPECIAL_MODULES.map((moduleKey) => `<span>${escapeHtml(meta[moduleKey]?.label || moduleKey)}</span>`).join("")}
+    </div>
+    <div class="wentian-mb-special-list">
       ${WENTIAN_CHART_SPECIAL_MODULES.map((moduleKey) => {
-        const body = getWentianAiSummary(results[moduleKey], 120) || "等待单独批命生成。";
+        const item = meta[moduleKey] || { no: "00", label: moduleKey, key: "专题" };
+        const data = results[moduleKey];
+        const card = getWentianAiCard(data);
+        const sections = getWentianAiSections(data);
+        const body = sections[0]?.content || card.body || card.summary || card.text || "";
+        const title = data ? getWentianAiTitle(data, item.label) : item.label;
+        const tip = trimWentianAiText(card.tip || "", 160);
+        const buttonText = data ? "重批" : "生成";
         return `
-          <section class="${results[moduleKey] ? "is-ready" : ""}">
-            <span>${escapeHtml(labels[moduleKey] || moduleKey)}</span>
-            <p>${escapeHtml(body)}</p>
-            <button type="button" data-action="wentian-chart-ai-module" data-ai-module="${escapeHtml(moduleKey)}">${results[moduleKey] ? "重批" : "生成"}</button>
+          <section class="${data ? "is-ready" : "is-empty"}">
+            <header>
+              <span>${escapeHtml(item.no)}</span>
+              <div>
+                <b>${escapeHtml(item.label)}</b>
+                <h4>${escapeHtml(title)}</h4>
+              </div>
+              <em>${escapeHtml(item.key)}</em>
+            </header>
+            ${renderWentianReadingParagraphs(body, "等待单独批命生成。")}
+            ${tip ? `<aside>${escapeHtml(tip)}</aside>` : ""}
+            <button type="button" data-action="wentian-chart-ai-module" data-ai-module="${escapeHtml(moduleKey)}">${escapeHtml(buttonText)}</button>
           </section>
         `;
       }).join("")}
@@ -3690,10 +3750,15 @@ function renderWentianMobileChapter(chapter, index) {
       </article>
     `;
   }
-  let body = "";
   if (chapter.action === "specials") {
-    body = renderWentianSpecialDetail();
-  } else if (chapter.module === "life_curve") {
+    return `
+      <article class="wentian-mb-chapter wentian-mb-special-chapter ${chapter.ready ? "is-ready" : "is-empty"}" data-wentian-report-chapter="${index}">
+        ${renderWentianSpecialReading(`data-action="wentian-chart-ai-specials"`, chapter.ready ? "重批专题" : chapter.actionLabel)}
+      </article>
+    `;
+  }
+  let body = "";
+  if (chapter.module === "life_curve") {
     body = renderWentianCurveDetail(result, chapter.placeholder);
   } else if (chapter.module === "action_advice") {
     body = renderWentianAdviceDetail(result, chapter.placeholder);
