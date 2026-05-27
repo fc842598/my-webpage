@@ -230,6 +230,9 @@
       transition: color .2s ease;
     }
 
+    .link-text-full { display: inline; }
+    .link-text-short { display: none; }
+
     .links a:hover { color: var(--gold-soft); }
 
     .cta {
@@ -1692,11 +1695,11 @@
       .links {
         display: flex;
         align-items: center;
-        gap: 12px;
+        gap: 8px;
         flex: 1 1 auto;
         overflow-x: auto;
         overflow-y: hidden;
-        padding: 0 8px;
+        padding: 0 2px;
         margin-right: 12px;
         scrollbar-width: none;
       }
@@ -1704,21 +1707,28 @@
       .links a {
         flex: 0 0 auto;
         white-space: nowrap;
-        min-height: 44px;
-        padding: 0 12px;
-        border-radius: 10px;
-        font-size: 13px;
-        line-height: 44px;
+        min-height: 34px;
+        padding: 0 10px;
+        border: 1px solid rgba(201, 169, 97, .22);
+        border-radius: 999px;
+        font-size: 11px;
+        line-height: 34px;
+      }
+      .links a:hover {
+        background: rgba(201, 169, 97, .12);
       }
       .brand { font-size: 23px; }
       .brand .leaf { width: 24px; height: 14px; }
       .nav .cta {
-        height: 38px;
-        margin-left: 0;
-        padding: 0 16px;
-        border-radius: 8px;
-        font-size: 14px;
-        box-shadow: 0 12px 34px rgba(166, 71, 50, .34);
+        display: none;
+      }
+
+      .link-text-full {
+        display: none;
+      }
+
+      .link-text-short {
+        display: inline;
       }
 
       .mobile-floating-cta {
@@ -2063,6 +2073,18 @@
         line-height: 44px;
         min-height: 44px;
       }
+
+      .links {
+        margin-right: 8px;
+      }
+
+      .links a {
+        min-height: 30px;
+        line-height: 30px;
+        padding: 0 8px;
+        font-size: 10px;
+      }
+
       .section-title h2 { font-size: 27px; }
       .footer-grid { grid-template-columns: 1fr; }
     }
@@ -2406,9 +2428,9 @@
           <span>阅 天</span>
         </a>
         <nav class="links" aria-label="主导航">
-          <a href="index.html">首页</a>
-          <a href="pages/liuyao.html">六爻占卜</a>
-          <a href="pages/yangzhai.html">阳宅居住方位</a>
+          <a href="index.html"><span class="link-text-full">首页</span><span class="link-text-short">首页</span></a>
+          <a href="pages/liuyao.html"><span class="link-text-full">六爻占卜</span><span class="link-text-short">六爻</span></a>
+          <a href="pages/yangzhai.html"><span class="link-text-full">阳宅居住方位</span><span class="link-text-short">阳宅方位</span></a>
         </nav>
         <a class="cta" href="pages/mingbook-onepage.html">立即排盘</a>
       </div>
