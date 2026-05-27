@@ -1322,6 +1322,7 @@ let wentianHepanAiState = { key: "", loading: false, card: null, error: "", prom
 let wentianMobileYijingTab = "xiantian";
 let wentianMobileLuckDecadeKey = "";
 let wentianMobileXiaoLianAge = "";
+let wentianMobileCurveView = "future";
 let wentianChartCalMode = "solar";
 let wentianChartCity = null;
 let wentianChartCityScope = "china";
@@ -4053,28 +4054,413 @@ function renderWentianXiaoLianReading(data, fallback, actionAttr) {
   `;
 }
 
-function renderWentianCurveDetail(data, fallback) {
-  const sections = getWentianAiSections(data);
-  const ready = sections.length > 0;
-  const summary = getWentianAiSummary(data, 150);
+function curveWentianClamp(value, min, max) {
+  return Math.max(min, Math.min(max, value));
+}
+
+function curveWentianSafeNumber(value, fallback = 0) {
+  const num = Number(value);
+  return Number.isFinite(num) ? num : fallback;
+}
+
+function getWentianCurveStarScore(star) {
+  const name = typeof star === "string" ? star : (star?.name || "");
+  if (!name) return 0;
+  const major = {
+    紫微: 9, 天府: 8, 武曲: 6, 天相: 6, 太阳: 5, 太阴: 5, 天梁: 4, 天同: 3,
+    天机: 3, 贪狼: 2, 廉贞: 1, 巨门: -4, 七杀: -3, 破军: -4,
+    左辅: 5, 右弼: 5, 文昌: 5, 文曲: 5, 天魁: 6, 天钺: 6, 禄存: 7,
+    擎羊: -8, 陀罗: -7, 火星: -7, 铃星: -7, 地空: -8, 地劫: -8,
+    天刑: -5, 天哭: -5, 天虚: -5, 天姚: -3,
+  };
+  let score = major[name] || 0;
+  const mutagen = star?.mutagen || "";
+  if (mutagen === "化禄") score += 10;
+  if (mutagen === "化权") score += 7;
+  if (mutagen === "化科") score += 6;
+  if (mutagen === "化忌") score -= 12;
+  const brightness = star?.brightness || "";
+  if (/庙|旺/.test(brightness)) score += 2;
+  if (/陷|弱/.test(brightness)) score -= 3;
+  return score;
+}
+
+function getWentianCurvePalaceScore(palace) {
+  if (!palace) return 0;
+  const stars = [
+    ...normalizeWentianAiStarList(palace.majorStars),
+    ...normalizeWentianAiStarList(palace.minorStars),
+  ];
+  if (!stars.length) return -2;
+  return curveWentianClamp(stars.reduce((sum, star) => sum + getWentianCurveStarScore(star), 0), -26, 26);
+}
+
+function getWentianCurveGuaScore(item = {}) {
+  const name = String(item.liunianGuaName || item.name || "");
+  const good = ["泰", "大有", "晋", "升", "鼎", "益", "观", "需", "小畜", "家人", "中孚", "谦", "恒", "节", "临", "比", "既济"];
+  const hard = ["否", "蹇", "坎", "困", "蛊", "剥", "噬嗑", "讼", "师", "夬", "未济", "遁", "旅", "涣"];
+  let score = 0;
+  if (good.some((word) => name.includes(word))) score += 5;
+  if (hard.some((word) => name.includes(word))) score -= 6;
+  if (item.lineType === "yang") score += 1;
+  if (item.lineType === "yin") score -= 1;
+  return score;
+}
+
+function getWentianCurveScoreBand(score) {
+  const value = curveWentianSafeNumber(score, 50);
+  if (value >= 78) return "高峰段";
+  if (value >= 66) return "上升段";
+  if (value >= 48) return "平稳段";
+  if (value >= 36) return "调整段";
+  return "低位段";
+}
+
+function getWentianCurvePointTone(age, score) {
+  const band = getWentianCurveScoreBand(score);
+  if (band === "高峰段") return "高点";
+  if (band === "低位段") return "低点";
+  if (age <= 24) return "起步";
+  if (age <= 44) return "中段";
+  if (age <= 64) return "转折";
+  return "后势";
+}
+
+function getWentianCurveDataFromAi(data, chartData = {}) {
+  const card = getWentianAiCard(data);
+  const list = Array.isArray(card.scores)
+    ? card.scores
+    : (Array.isArray(card.lifeCurveData) ? card.lifeCurveData : (Array.isArray(card.curveScores) ? card.curveScores : []));
+  const scores = list.map((item) => {
+    const age = Math.floor(curveWentianSafeNumber(item?.age, 0));
+    const year = Math.floor(curveWentianSafeNumber(item?.year, 0));
+    const score = curveWentianClamp(Math.round(curveWentianSafeNumber(item?.score ?? item?.finalScore, 50)), 0, 100);
+    return {
+      ...item,
+      age,
+      year: year || (chartData.birthYear ? Number(chartData.birthYear) + age - 1 : ""),
+      score,
+      summary: cleanWentianAiText(item?.summary || item?.reason || ""),
+    };
+  }).filter((item) => item.age >= 1 && item.age <= 120).sort((a, b) => a.age - b.age);
+  if (!scores.length) return null;
+  const currentAge = Number(chartData.activeAge || chartData.realCurrentAge || 0) || scores[0]?.age || 1;
+  return {
+    mode: "backend_scores",
+    currentAge,
+    current: scores.find((point) => point.age === currentAge) || scores[0],
+    scores,
+    peakAges: getWentianCurveExtrema(scores, "peak").slice(0, 6).map((point) => point.age),
+    valleyAges: getWentianCurveExtrema(scores, "valley").slice(0, 6).map((point) => point.age),
+  };
+}
+
+function getWentianCurveExtrema(points, type = "peak") {
+  const compare = type === "peak"
+    ? (point, prev, next) => point.score >= prev.score && point.score >= next.score
+    : (point, prev, next) => point.score <= prev.score && point.score <= next.score;
+  return (points || [])
+    .filter((point, index) => index > 0 && index < points.length - 1 && compare(point, points[index - 1], points[index + 1]))
+    .sort((a, b) => type === "peak" ? b.score - a.score : a.score - b.score);
+}
+
+function normalizeWentianCurveScores(points) {
+  if (!points.length) return [];
+  const smoothed = points.map((point, index) => {
+    const prev = points[index - 1] || point;
+    const next = points[index + 1] || point;
+    return {
+      ...point,
+      rawScore: point.score,
+      score: curveWentianClamp(Math.round((prev.score * 0.18) + (point.score * 0.64) + (next.score * 0.18)), 10, 96),
+    };
+  });
+  const values = smoothed.map((point) => point.score);
+  const min = Math.min(...values);
+  const max = Math.max(...values);
+  const span = Math.max(1, max - min);
+  return smoothed.map((point) => {
+    const score = curveWentianClamp(Math.round(28 + ((point.score - min) / span) * 60), 18, 94);
+    return {
+      ...point,
+      score,
+      summary: `${getWentianCurveScoreBand(score)}，${point.domain || "命盘主线"}受${point.xiaoLianPalace || "小限"}牵动，对宫看${point.oppositePalace || "外部应事"}。`,
+    };
+  });
+}
+
+function buildWentianLifeCurveData(chartData = {}, data = null) {
+  const fromAi = getWentianCurveDataFromAi(data, chartData);
+  if (fromAi?.scores?.length) return fromAi;
+  const activeAge = Number(chartData.activeAge || chartData.realCurrentAge || 1) || 1;
+  const xiaoItems = getWentianXiaoLianItems(chartData);
+  const decades = getWentianDecadeItems(chartData);
+  const maxAge = Math.max(100, ...xiaoItems.map((item) => Number(item.age || 0)));
+  const raw = Array.from({ length: Math.min(120, maxAge) }, (_, index) => {
+    const age = index + 1;
+    const item = xiaoItems.find((entry) => Number(entry.age) === age) || xiaoItems[index] || {};
+    const decade = decades.find((entry) => age >= Number(entry.ageStart || 0) && age <= Number(entry.ageEnd || 0)) || decades[0] || {};
+    const xiaoScore = getWentianCurvePalaceScore(item.xiaolianPalace) * 0.46;
+    const oppositeScore = getWentianCurvePalaceScore(item.oppositePalace) * 0.28;
+    const decadeScore = 55 + (getWentianCurvePalaceScore(decade) * 0.62);
+    const guaScore = getWentianCurveGuaScore(item);
+    const ageWave = Math.sin(age / 4.8) * 2.8 + Math.cos(age / 8.5) * 2.2;
+    const score = curveWentianClamp(Math.round(decadeScore + xiaoScore + oppositeScore + guaScore + ageWave), 12, 94);
+    const domain = decade.domain || getWentianXiaoLianDomain(item.xiaolianPalaceName);
+    return {
+      age,
+      year: item.solarYear || (chartData.birthYear ? Number(chartData.birthYear) + age - 1 : ""),
+      score,
+      domain,
+      decadeRange: decade.rangeLabel || "",
+      decadePalace: decade.palaceName || "",
+      xiaoLianPalace: item.xiaolianPalaceName || "",
+      oppositePalace: item.oppositePalaceName || "",
+      liunianGuaName: item.liunianGuaName || "",
+    };
+  });
+  const scores = normalizeWentianCurveScores(raw);
+  const peaks = getWentianCurveExtrema(scores, "peak").slice(0, 6);
+  const valleys = getWentianCurveExtrema(scores, "valley").slice(0, 6);
+  const current = scores.find((point) => point.age === activeAge) || scores[0] || null;
+  return {
+    mode: "local_chart_scores",
+    currentAge: activeAge,
+    current,
+    scores,
+    peakAges: peaks.map((point) => point.age),
+    valleyAges: valleys.map((point) => point.age),
+  };
+}
+
+function getWentianCurveFocusPoints(curve = {}) {
+  const points = curve.scores || [];
+  const currentAge = Number(curve.currentAge || 0);
+  const current = curve.current || points.find((point) => point.age === currentAge) || points[0] || {};
+  const focusEndAge = Math.min(84, Number(current.age || currentAge || 1) + 40);
+  const future = points.filter((point) => point.age >= Number(current.age || currentAge || 1) && point.age <= focusEndAge);
+  const source = future.length ? future : points;
+  const high = [...source].sort((a, b) => b.score - a.score)[0] || current;
+  const low = [...source].sort((a, b) => a.score - b.score)[0] || current;
+  return { current, high, low };
+}
+
+function mapWentianCurvePoints(points, width = 330, height = 218) {
+  const left = 32;
+  const right = 12;
+  const top = 22;
+  const bottom = 28;
+  const minAge = points[0]?.age || 1;
+  const maxAge = points[points.length - 1]?.age || 100;
+  const span = Math.max(1, maxAge - minAge);
+  return points.map((point) => ({
+    ...point,
+    x: left + ((point.age - minAge) / span) * (width - left - right),
+    y: top + ((100 - point.score) / 100) * (height - top - bottom),
+  }));
+}
+
+function getWentianSmoothCurvePath(mapped) {
+  if (!mapped.length) return "";
+  if (mapped.length === 1) return `M ${mapped[0].x.toFixed(1)} ${mapped[0].y.toFixed(1)}`;
+  const parts = [`M ${mapped[0].x.toFixed(1)} ${mapped[0].y.toFixed(1)}`];
+  for (let index = 1; index < mapped.length - 1; index += 1) {
+    const midX = (mapped[index].x + mapped[index + 1].x) / 2;
+    const midY = (mapped[index].y + mapped[index + 1].y) / 2;
+    parts.push(`Q ${mapped[index].x.toFixed(1)} ${mapped[index].y.toFixed(1)} ${midX.toFixed(1)} ${midY.toFixed(1)}`);
+  }
+  const last = mapped[mapped.length - 1];
+  parts.push(`T ${last.x.toFixed(1)} ${last.y.toFixed(1)}`);
+  return parts.join(" ");
+}
+
+function renderWentianLifeCurveSvg(curve = {}) {
+  const scores = curve.scores || [];
+  if (!scores.length) return "";
+  const width = 330;
+  const height = 218;
+  const bottomY = 194;
+  const mapped = mapWentianCurvePoints(scores, width, height);
+  const path = getWentianSmoothCurvePath(mapped);
+  const first = mapped[0];
+  const last = mapped[mapped.length - 1];
+  const areaPath = `${path} L ${last.x.toFixed(1)} ${bottomY} L ${first.x.toFixed(1)} ${bottomY} Z`;
+  const { current, high, low } = getWentianCurveFocusPoints(curve);
+  const markers = [
+    { point: mapped.find((point) => point.age === current.age), label: `${current.age || ""}岁`, type: "current" },
+    { point: mapped.find((point) => point.age === low.age), label: `${low.age || ""}岁`, type: "low" },
+    { point: mapped.find((point) => point.age === high.age), label: `${high.age || ""}岁`, type: "high" },
+  ].filter((item, index, arr) => item.point && arr.findIndex((entry) => entry.point?.age === item.point.age) === index);
   return `
-    <div class="wentian-mb-curve">
-      <div>
-        <strong>${ready ? escapeHtml(getWentianAiTitle(data, "人生曲线")) : "生成后显示人生起伏曲线"}</strong>
-        <p>${escapeHtml(ready ? summary : (fallback || "对齐电脑端人生曲线模块，给客户看低点、高点和后势。"))}</p>
-      </div>
-      <svg viewBox="0 0 300 108" aria-hidden="true">
-        <path class="area" d="M12 82 C46 64 74 38 104 36 C138 34 146 82 174 72 C212 58 214 22 244 22 C266 22 276 54 288 42 L288 98 L12 98 Z"></path>
-        <path class="line" d="M12 82 C46 64 74 38 104 36 C138 34 146 82 174 72 C212 58 214 22 244 22 C266 22 276 54 288 42"></path>
-        <circle cx="104" cy="36" r="4"></circle>
-        <circle class="warn" cx="174" cy="72" r="4"></circle>
-        <circle cx="244" cy="22" r="4"></circle>
-      </svg>
-      <div class="wentian-mb-curve-kv">
-        <span>低点 36岁</span><span>高点 44岁</span><span>后势 56岁</span>
-      </div>
+    <svg viewBox="0 0 ${width} ${height}" role="img" aria-label="人生曲线">
+      ${[80, 60, 40, 20].map((score) => {
+        const y = 22 + ((100 - score) / 100) * (height - 22 - 28);
+        return `<line class="grid" x1="32" y1="${y.toFixed(1)}" x2="318" y2="${y.toFixed(1)}"></line><text class="axis" x="4" y="${(y + 4).toFixed(1)}">${score}</text>`;
+      }).join("")}
+      <path class="area" d="${areaPath}"></path>
+      <path class="line" d="${path}"></path>
+      ${markers.map(({ point, label, type }) => {
+        const y = type === "low" ? point.y + 24 : Math.max(14, point.y - 18);
+        return `
+          <circle class="${type === "current" ? "current" : type === "low" ? "warn" : ""}" cx="${point.x.toFixed(1)}" cy="${point.y.toFixed(1)}" r="${type === "current" ? 7 : 6}"></circle>
+          <text class="label" x="${point.x.toFixed(1)}" y="${y.toFixed(1)}" text-anchor="middle">${escapeHtml(label)}</text>
+        `;
+      }).join("")}
+      ${[1, 30, 50, 100].map((age) => {
+        const x = 32 + ((age - scores[0].age) / Math.max(1, scores[scores.length - 1].age - scores[0].age)) * (width - 32 - 12);
+        return `<text class="axis" x="${x.toFixed(1)}" y="212" text-anchor="middle">${age}岁</text>`;
+      }).join("")}
+    </svg>
+  `;
+}
+
+function getWentianCurveReadingGroups(data, curve) {
+  const sections = getWentianAiSections(data);
+  const wanted = [
+    { title: "曲线主轴", keys: ["主轴", "走势", "曲线", "当前"] },
+    { title: "高低点提醒", keys: ["高点", "低点", "提醒", "转折"] },
+    { title: "行动节奏", keys: ["行动", "建议", "节奏", "方向"] },
+  ];
+  if (sections.length) {
+    const used = new Set();
+    return wanted.map((item) => {
+      const found = sections.find((section, index) => {
+        if (used.has(index)) return false;
+        const text = `${section.title || ""} ${section.content || ""}`;
+        return item.keys.some((key) => text.includes(key));
+      }) || sections.find((_section, index) => !used.has(index));
+      const index = found ? sections.indexOf(found) : -1;
+      if (index >= 0) used.add(index);
+      return { title: found?.title || item.title, content: found?.content || "" };
+    }).filter((item) => item.content).slice(0, 3);
+  }
+  const { current, high, low } = getWentianCurveFocusPoints(curve);
+  return [
+    {
+      title: "曲线主轴",
+      content: `${current.age || "当前"}岁在${getWentianCurveScoreBand(current.score)}，主线看${current.domain || "命盘主线"}。先把基本盘收稳，再看后续上升窗口。`,
+    },
+    {
+      title: "高低点提醒",
+      content: `${low.age || ""}岁附近是低位提醒，适合处理旧账、成本和边界。${high.age || ""}岁附近是高点窗口，适合推进项目、资质和资源布局。`,
+    },
+    {
+      title: "行动节奏",
+      content: "曲线不是断吉凶，而是提示节奏：低位先修系统，高位再扩张成果。不要只看一个年份，要看连续三到五年的坡度。",
+    },
+  ];
+}
+
+function renderWentianCurveTags(items) {
+  return `<div class="wentian-mb-curve-tags">${(items || []).filter(Boolean).slice(0, 3).map((item) => `<i>${escapeHtml(item)}</i>`).join("")}</div>`;
+}
+
+function getWentianCurvePastValidationItems(curve = {}, chartData = {}) {
+  const points = (curve.scores || []).filter((point) => point.age <= Number(curve.currentAge || chartData.activeAge || 1));
+  const source = points.length >= 3 ? points : (curve.scores || []);
+  if (!source.length) return [];
+  const extrema = [
+    ...getWentianCurveExtrema(source, "peak").slice(0, 3),
+    ...getWentianCurveExtrema(source, "valley").slice(0, 3),
+    source[source.length - 1],
+  ].filter(Boolean).sort((a, b) => a.age - b.age);
+  const seen = new Set();
+  return extrema.filter((point) => !seen.has(point.age) && seen.add(point.age)).slice(-3).map((point) => ({
+    ageLabel: `${point.age}岁`,
+    yearLabel: point.year ? `${point.year}年` : "",
+    title: `${getWentianCurvePointTone(point.age, point.score)} · ${getWentianCurveScoreBand(point.score)} · ${point.score}分`,
+    body: `${point.decadePalace || "大限主线"}牵动${point.domain || "命盘主线"}，回想这一阶段是否有方向、关系、资源或居住安排的明显变化。`,
+  }));
+}
+
+function renderWentianCurveTabs(activeView) {
+  return `
+    <div class="wentian-mb-curve-tabs" role="tablist" aria-label="人生曲线视图">
+      ${[
+        ["future", "曲线走势"],
+        ["past", "过去验证"],
+      ].map(([key, label]) => `
+        <button type="button" class="${activeView === key ? "is-active" : ""}" role="tab" aria-selected="${activeView === key ? "true" : "false"}" data-action="wentian-chart-ai-curve-view" data-curve-view="${key}">${escapeHtml(label)}</button>
+      `).join("")}
     </div>
-    ${ready ? renderWentianAiDetailSections(data, fallback, { limit: 3, max: 230 }) : ""}
+  `;
+}
+
+function renderWentianCurveReading(data, fallback, actionAttr, actionLabel) {
+  const chartData = getWentianChartPayload();
+  const curve = buildWentianLifeCurveData(chartData, data);
+  const activeView = wentianMobileCurveView === "past" ? "past" : "future";
+  const { current, high, low } = getWentianCurveFocusPoints(curve);
+  const ready = !!data && getWentianAiSections(data).length > 0;
+  const groups = getWentianCurveReadingGroups(data, curve);
+  const primaryLabel = ready ? "重批曲线" : actionLabel;
+  const secondaryView = activeView === "past" ? "future" : "past";
+  const secondaryLabel = activeView === "past" ? "曲线走势" : "过去验证";
+  const summaryTitle = `${current.age || "当前"}岁 · ${getWentianCurveScoreBand(current.score)}。未来先看${low.age || "低点"}岁调整，再看${high.age || "高点"}岁上升。`;
+  const summaryText = `当前 ${current.score || "--"} 分，主线在${current.domain || "命盘主线"}。先稳现金流、住处和长期项目，后面上升窗口才接得住。`;
+  return `
+    <div class="wentian-mb-curve-hero">
+      <span>人生曲线</span>
+      <h3>看高低点<br>与转折</h3>
+      <b>曲线走势 · 过去验证</b>
+      <p>按电脑端曲线模块：用大限、小限、对宫和流年卦做逐岁评分，再把节点翻成可读的阶段提醒。</p>
+    </div>
+    ${renderWentianCurveTabs(activeView)}
+    ${activeView === "past" ? `
+      <section class="wentian-mb-curve-verify">
+        <h4>过去验证</h4>
+        <p>先看过往节点是否对得上，再看未来走势。验证结果只辅助判断，不占用曲线阅读区。</p>
+        <div class="wentian-mb-curve-verify-grid">
+          ${getWentianCurvePastValidationItems(curve, chartData).map((item) => `
+            <section data-curve-verify-card>
+              <div><b>${escapeHtml(item.ageLabel)}</b><span>${escapeHtml(item.yearLabel)}</span></div>
+              <strong>${escapeHtml(item.title)}</strong>
+              <p>${escapeHtml(item.body)}</p>
+              <nav aria-label="过往验证反馈">
+                ${["对得上", "不明显", "记不清"].map((label) => `<button type="button" data-action="wentian-chart-ai-curve-feedback" data-curve-feedback="${escapeHtml(label)}">${escapeHtml(label)}</button>`).join("")}
+              </nav>
+            </section>
+          `).join("")}
+        </div>
+        <p class="wentian-mb-curve-result" data-curve-verify-result>先点几个过往节点，系统会给出这条曲线的参考可信度。</p>
+      </section>
+    ` : `
+      <section class="wentian-mb-curve-summary">
+        <span>当前节点</span>
+        <h4>${escapeHtml(summaryTitle)}</h4>
+        <p>${escapeHtml(summaryText)}</p>
+      </section>
+      <section class="wentian-mb-curve-chart">
+        <header><b>逐岁评分曲线</b><span>1-100岁</span></header>
+        ${renderWentianLifeCurveSvg(curve)}
+      </section>
+      <div class="wentian-mb-curve-nodes">
+        ${[
+          ["当前", current],
+          ["低点", low],
+          ["高点", high],
+        ].map(([label, point]) => `
+          <section>
+            <b>${escapeHtml(label)}</b>
+            <div><strong>${escapeHtml(`${point.age || "--"}岁 · ${getWentianCurveScoreBand(point.score)}`)}</strong><p>${escapeHtml(point.summary || "等待曲线生成。")}</p></div>
+            <em>${escapeHtml(point.score ? `${point.score}分` : "--")}</em>
+          </section>
+        `).join("")}
+      </div>
+      <div class="wentian-mb-curve-list">
+        ${groups.map((group, index) => `
+          <section>
+            <header><span>${String(index + 1).padStart(2, "0")}</span><h4>${escapeHtml(group.title)}</h4></header>
+            ${renderWentianReadingParagraphs(group.content, fallback)}
+            ${renderWentianCurveTags(index === 0 ? [getWentianCurveScoreBand(current.score), current.domain, "先稳后升"] : index === 1 ? [`${low.age || ""}岁低点`, `${high.age || ""}岁高点`, "窗口期"] : ["修系统", "看坡度", "三到五年"])}
+          </section>
+        `).join("")}
+      </div>
+    `}
+    <div class="wentian-mb-curve-actions">
+      <button type="button" data-action="wentian-chart-ai-curve-view" data-curve-view="${secondaryView}">${escapeHtml(secondaryLabel)}</button>
+      <button type="button" ${actionAttr}>${escapeHtml(primaryLabel)}</button>
+    </div>
   `;
 }
 
@@ -4144,10 +4530,15 @@ function renderWentianMobileChapter(chapter, index) {
       </article>
     `;
   }
-  let body = "";
   if (chapter.module === "life_curve") {
-    body = renderWentianCurveDetail(result, chapter.placeholder);
-  } else if (chapter.module === "action_advice") {
+    return `
+      <article class="wentian-mb-chapter wentian-mb-curve-chapter ${chapter.ready ? "is-ready" : "is-empty"}" data-wentian-report-chapter="${index}">
+        ${renderWentianCurveReading(result, chapter.placeholder, actionAttr, chapter.ready ? "重批曲线" : chapter.actionLabel)}
+      </article>
+    `;
+  }
+  let body = "";
+  if (chapter.module === "action_advice") {
     body = renderWentianAdviceDetail(result, chapter.placeholder);
   } else {
     body = renderWentianAiDetailSections(result, chapter.placeholder);
@@ -4308,12 +4699,25 @@ function getWentianChartAiExtraParams(moduleKey, chartData = {}) {
     };
   }
   if (moduleKey === "life_curve" || moduleKey === "action_advice") {
+    const curve = moduleKey === "life_curve" ? buildWentianLifeCurveData(chartData) : null;
     return {
       activeAge: chartData.activeAge || chartData.realCurrentAge || "",
       selectedDayun,
       decadeData: selectedDayun,
       selectedYear,
       liunianData: selectedYear,
+      ...(curve ? {
+        currentStage: curve.current?.summary || "",
+        currentAge: curve.currentAge || chartData.activeAge || chartData.realCurrentAge || "",
+        peakAges: curve.peakAges || [],
+        valleyAges: curve.valleyAges || [],
+        curveScores: (curve.scores || []).map((point) => ({
+          age: point.age,
+          year: point.year,
+          score: point.score,
+          summary: point.summary,
+        })),
+      } : {}),
     };
   }
   return {};
@@ -16408,6 +16812,27 @@ document.addEventListener("click", (event) => {
     const current = getWentianSelectedXiaoLianYear(getWentianChartPayload());
     wentianMobileXiaoLianAge = current.currentKey || "";
     navigatePreservingScroll("screen-27", false);
+    return;
+  }
+  if (action === "wentian-chart-ai-curve-view") {
+    wentianMobileCurveView = event.target.closest("[data-curve-view]")?.dataset.curveView || "future";
+    navigatePreservingScroll("screen-27", false);
+    return;
+  }
+  if (action === "wentian-chart-ai-curve-feedback") {
+    const card = event.target.closest("[data-curve-verify-card]");
+    if (!card) return;
+    card.querySelectorAll("[data-curve-feedback]").forEach((button) => button.classList.toggle("is-active", button === event.target.closest("[data-curve-feedback]")));
+    const panel = event.target.closest(".wentian-mb-curve-verify");
+    const selectedCount = panel?.querySelectorAll("[data-curve-feedback].is-active").length || 0;
+    const hitCount = [...(panel?.querySelectorAll("[data-curve-feedback].is-active") || [])].filter((button) => button.dataset.curveFeedback === "对得上").length;
+    const result = panel?.querySelector("[data-curve-verify-result]");
+    if (result) {
+      result.textContent = selectedCount
+        ? (hitCount ? `已有 ${hitCount} 个过往节点对得上，这条曲线可作为后续趋势参考。` : "已记录反馈；如果多数节点不明显，建议只把曲线当作辅助参考。")
+        : "先点几个过往节点，系统会给出这条曲线的参考可信度。";
+      result.dataset.tone = hitCount ? "strong" : "caution";
+    }
     return;
   }
   if (action === "wentian-chart-ai-curve") {
