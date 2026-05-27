@@ -212,10 +212,9 @@
 
     .workbench {
       display: grid;
-      grid-template-columns: 150px 360px 200px;
+      grid-template-columns: minmax(0, 1fr) 292px;
       align-items: stretch;
-      justify-content: center;
-      gap: 11px;
+      gap: 12px;
       padding: 12px;
       border-radius: 8px;
       scroll-margin-top: 80px;
@@ -292,6 +291,8 @@
     }
 
     .grid-panel {
+      display: flex;
+      flex-direction: column;
       padding: 14px;
       background:
         linear-gradient(180deg, rgba(10, 7, 3, .72), rgba(4, 3, 2, .80)),
@@ -486,6 +487,20 @@
       flex-direction: column;
       min-width: 0;
       overflow: hidden;
+      position: relative;
+    }
+
+    .picker-stage,
+    .locator-stage {
+      min-height: 0;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .picker-stage[hidden],
+    .locator-stage[hidden] {
+      display: none !important;
     }
 
     .active-card {
@@ -625,6 +640,189 @@
       display: grid;
       align-items: center;
       color: #776a4d;
+    }
+
+    .locator-head p {
+      margin: -4px 0 0;
+      color: #93835f;
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    .locator-current {
+      margin-top: 12px;
+      padding: 14px;
+      border: 1px solid rgba(240,215,155,.24);
+      border-radius: 8px;
+      background:
+        linear-gradient(135deg, rgba(201,169,97,.14), transparent 54%),
+        rgba(9,7,3,.86);
+    }
+
+    .locator-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--gold-soft);
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .locator-kicker b {
+      width: 22px;
+      height: 22px;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(240,215,155,.54);
+      border-radius: 50%;
+      color: #190f04;
+      background: linear-gradient(180deg, #efd178, #bd8733);
+      font-size: 12px;
+    }
+
+    .locator-current h3 {
+      margin: 10px 0 8px;
+      color: var(--ivory);
+      font-family: "Noto Serif SC", "Songti SC", serif;
+      font-size: 20px;
+      line-height: 1.45;
+    }
+
+    .locator-current p {
+      margin: 0;
+      color: #9f8f69;
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    .locator-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 12px;
+    }
+
+    .locator-meta span,
+    .reading-palace-chip {
+      display: inline-flex;
+      align-items: center;
+      min-height: 24px;
+      padding: 0 8px;
+      border: 1px solid rgba(201,169,97,.26);
+      border-radius: 999px;
+      color: #d9c89f;
+      background: rgba(201,169,97,.08);
+      font-size: 12px;
+      font-weight: 800;
+      line-height: 1.2;
+    }
+
+    .locator-map {
+      display: grid;
+      grid-template-columns: 1fr 112px;
+      gap: 12px;
+      align-items: start;
+      margin-top: 14px;
+    }
+
+    .locator-mini-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 4px;
+    }
+
+    .locator-mini-cell {
+      aspect-ratio: 1 / 1;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(201,169,97,.18);
+      border-radius: 5px;
+      color: #756845;
+      background: rgba(255,255,255,.02);
+      font-size: 11px;
+      font-weight: 900;
+    }
+
+    .locator-mini-cell.is-active {
+      border-color: rgba(240,215,155,.76);
+      color: #160d04;
+      background: linear-gradient(180deg, #efd178, #bd8733);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.24);
+    }
+
+    .locator-list {
+      display: grid;
+      gap: 8px;
+      min-height: 0;
+      margin-top: 12px;
+      padding-right: 2px;
+      overflow: auto;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(201,169,97,.46) rgba(201,169,97,.08);
+    }
+
+    .locator-item {
+      width: 100%;
+      display: grid;
+      grid-template-columns: 30px minmax(0, 1fr);
+      gap: 10px;
+      align-items: center;
+      padding: 10px 11px;
+      border: 1px solid rgba(201,169,97,.22);
+      border-radius: 8px;
+      color: #d5c18d;
+      background: rgba(7,5,2,.72);
+      cursor: pointer;
+      text-align: left;
+      transition: border-color .2s ease, background .2s ease, transform .2s ease;
+    }
+
+    .locator-item:hover {
+      border-color: rgba(240,215,155,.52);
+      background: rgba(19,14,6,.88);
+      transform: translateY(-1px);
+    }
+
+    .locator-item.is-active {
+      border-color: rgba(240,215,155,.84);
+      background:
+        linear-gradient(180deg, rgba(201,169,97,.22), rgba(117,86,37,.12)),
+        rgba(18,12,5,.92);
+      box-shadow: inset 0 0 0 1px rgba(240,215,155,.12);
+    }
+
+    .locator-index {
+      width: 30px;
+      height: 30px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      color: #1a1004;
+      background: linear-gradient(180deg, #efd178, #bd8733);
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .locator-copy {
+      min-width: 0;
+      display: grid;
+      gap: 2px;
+    }
+
+    .locator-copy strong {
+      min-width: 0;
+      color: var(--ivory);
+      font-size: 14px;
+      line-height: 1.45;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .locator-copy span {
+      color: #988966;
+      font-size: 12px;
+      line-height: 1.4;
     }
 
     .result-panel {
@@ -811,9 +1009,8 @@
       }
 
       .workbench {
-        grid-template-columns: 216px 448px 226px;
+        grid-template-columns: minmax(0, 1fr) 320px;
         gap: 10px;
-        justify-content: center;
         padding: 14px;
         border-radius: 5px;
       }
@@ -1224,6 +1421,56 @@
       display: block;
     }
 
+    .reading-list {
+      display: grid;
+      gap: 14px;
+    }
+
+    .reading-card {
+      scroll-margin-top: 90px;
+    }
+
+    .reading-card.is-active {
+      border-color: rgba(240,215,155,.82);
+      box-shadow: inset 0 0 0 1px rgba(240,215,155,.12), 0 0 0 1px rgba(240,215,155,.08);
+      background:
+        linear-gradient(135deg, rgba(201,169,97,.16), transparent 38%),
+        rgba(8,6,3,.84);
+    }
+
+    .reading-card-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 10px;
+    }
+
+    .reading-card-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .reading-card-jump {
+      min-width: 42px;
+      height: 34px;
+      border: 1px solid rgba(201,169,97,.30);
+      border-radius: 999px;
+      color: var(--gold-soft);
+      background: rgba(201,169,97,.08);
+      font-size: 13px;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .reading-card-jump.is-active {
+      border-color: rgba(240,215,155,.82);
+      color: #190f04;
+      background: linear-gradient(180deg, #efd178, #bd8733);
+    }
+
     .reading-shell {
       display: grid;
       gap: 14px;
@@ -1369,26 +1616,13 @@
     }
 
     @media (min-width: 901px) {
-      .yangzhai-main .container.is-reading {
-        width: min(1500px, calc(100vw - 96px));
-        display: grid;
-        grid-template-columns: 430px minmax(0, 1fr);
-        align-items: start;
-        gap: 14px;
-      }
-
       .container.is-reading .workbench {
-        grid-template-columns: 1fr;
-        padding: 12px;
-      }
-
-      .container.is-reading .guide-panel,
-      .container.is-reading .picker-panel {
-        display: none;
+        grid-template-columns: minmax(0, 1fr) 320px;
+        padding: 14px;
       }
 
       .container.is-reading .grid-panel {
-        padding: 18px 12px 16px;
+        padding: 18px 16px 16px;
       }
 
       .container.is-reading .grid-panel .section-head {
@@ -1400,7 +1634,7 @@
       }
 
       .container.is-reading .palace-grid {
-        width: min(100%, 390px);
+        width: min(100%, 612px);
       }
 
       .container.is-reading .palace-cell {
@@ -1423,26 +1657,26 @@
       }
 
       .container.is-reading .palace-items .item-pill {
-        min-width: 0;
-        max-width: 100%;
-        min-height: 21px;
-        padding: 0 6px;
-        font-size: 11px;
+        max-width: calc(50% - 3px);
+      }
+
+      .container.is-reading .picker-panel {
+        display: flex;
+      }
+
+      .container.is-reading .locator-current h3 {
+        font-size: 22px;
+      }
+
+      .container.is-reading .locator-list {
+        max-height: 464px;
       }
 
       .container.is-reading .grid-actions {
-        grid-template-columns: 1fr 1fr;
-        gap: 10px;
         margin: 16px 0 0;
       }
 
-      .container.is-reading .grid-actions .gold-btn {
-        grid-column: 1 / -1;
-      }
-
       .container.is-reading .result-panel {
-        margin-top: 0;
-        min-height: 100%;
         padding: 22px 24px 24px;
       }
 
@@ -1487,6 +1721,10 @@
         font-size: 16px;
         line-height: 1.86;
       }
+
+      .container.is-reading .reading-card-head {
+        margin-bottom: 12px;
+      }
     }
   </style>
 </head>
@@ -1511,14 +1749,6 @@
     <main class="yangzhai-main">
       <div class="container" id="yangzhaiContainer">
         <section class="workbench" id="workbench" aria-label="阳宅九宫工作台">
-          <aside class="guide-panel">
-            <h2 class="guide-title">怎么用</h2>
-            <div class="guide-step"><b>一</b><div><strong>确认方向</strong><span>先按户型图确认方位，再开始九宫安位。</span></div></div>
-            <div class="guide-step"><b>二</b><div><strong>放成员/空间</strong><span>可多选父母子女，也可放入厨房、厕所、客厅。</span></div></div>
-            <div class="guide-step"><b>三</b><div><strong>生成解读</strong><span>点击解读后，下面输出本次安位的卦象摘要。</span></div></div>
-            <div class="note-box">当前内容仅供娱乐参考，不等于专业测评或现实指导。请结合实际户型理性参考。</div>
-          </aside>
-
           <section class="grid-panel">
             <div class="section-head">
               <h2>九宫安位</h2>
@@ -1533,13 +1763,23 @@
           </section>
 
           <aside class="picker-panel">
-            <h2 class="picker-title">选择方位成员</h2>
-            <div class="active-card">
-              <div class="active-meta"><span id="activePalaceName">巽宫 · 东南</span><span id="activePalaceRole">长女位</span></div>
-              <p id="activePalaceHint">点击下方选项，把成员或空间放入当前宫位。</p>
+            <div class="picker-stage" id="pickerStage">
+              <h2 class="picker-title">选择方位成员</h2>
+              <div class="active-card">
+                <div class="active-meta"><span id="activePalaceName">巽宫 · 东南</span><span id="activePalaceRole">长女位</span></div>
+                <p id="activePalaceHint">点击下方选项，把成员或空间放入当前宫位。</p>
+              </div>
+              <div class="option-grid" id="optionGrid" aria-label="安位选项"></div>
+              <div class="picked-list" id="pickedList">当前宫位尚未安位</div>
             </div>
-            <div class="option-grid" id="optionGrid" aria-label="安位选项"></div>
-            <div class="picked-list" id="pickedList">当前宫位尚未安位</div>
+            <div class="locator-stage" id="locatorStage" hidden>
+              <div class="locator-head">
+                <h2 class="picker-title">解读定位</h2>
+                <p>点编号，下面会自动跳到对应解读。</p>
+              </div>
+              <div class="locator-current" id="locatorCurrent"></div>
+              <div class="locator-list" id="locatorQueue" aria-label="解读定位队列"></div>
+            </div>
           </aside>
         </section>
 
@@ -1671,8 +1911,13 @@
       const activeHint = document.getElementById("activePalaceHint");
       const resultGrid = document.getElementById("resultGrid");
       const resultMeta = document.getElementById("resultMeta");
+      const resultsPanel = document.getElementById("results");
       const workbench = document.getElementById("workbench");
       const yangzhaiContainer = document.getElementById("yangzhaiContainer");
+      const pickerStage = document.getElementById("pickerStage");
+      const locatorStage = document.getElementById("locatorStage");
+      const locatorCurrent = document.getElementById("locatorCurrent");
+      const locatorQueue = document.getElementById("locatorQueue");
       const circleNumbers = ["", "①", "②", "③", "④", "⑤", "⑥", "⑦", "⑧", "⑨", "⑩", "⑪", "⑫"];
 
       const loadState = () => {
@@ -1692,6 +1937,7 @@
       };
 
       let state = loadState();
+      let pendingResultScroll = null;
 
       const save = () => {
         try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (_) {}
@@ -1720,6 +1966,33 @@
       };
       const getHexReading = (hex) => hex ? (hexReadings[Number(hex.no)] || null) : null;
       const getReadingText = (reading) => reading?.original || reading?.summary || reading?.quote || "";
+      const getResultCardId = (index) => `reading-card-${index}`;
+
+      function buildLocatorMiniGrid(activePalaceKey) {
+        return `<div class="locator-mini-grid" aria-hidden="true">${palaces.map((palace) => {
+          const isCenter = palace.key === "center";
+          const isActive = palace.key === activePalaceKey;
+          const label = isCenter ? "中" : palace.dir;
+          return `<div class="locator-mini-cell${isActive ? " is-active" : ""}${isCenter ? " is-center" : ""}">${escapeHtml(label)}</div>`;
+        }).join("")}</div>`;
+      }
+
+      function scrollResultCardIntoView(index, behavior = "smooth") {
+        const card = document.getElementById(getResultCardId(index));
+        if (!card) return;
+        card.scrollIntoView({ behavior, block: "start" });
+      }
+
+      function activateResult(index, { scroll = false } = {}) {
+        const results = buildResults();
+        const result = results[index];
+        if (!result) return false;
+        state.activeResult = index;
+        state.active = result.palaceKey;
+        pendingResultScroll = scroll ? index : null;
+        render();
+        return true;
+      }
 
       function renderGrid() {
         const readingItems = state.analyzed ? buildResults() : [];
@@ -1758,6 +2031,14 @@
       }
 
       function renderPicker() {
+        const readingItems = state.analyzed ? buildResults() : [];
+        const hasReading = readingItems.length > 0;
+        pickerStage.hidden = hasReading;
+        locatorStage.hidden = !hasReading;
+        if (hasReading) {
+          renderLocator(readingItems);
+          return;
+        }
         const palace = getPalace(state.active);
         const selected = getItems(palace.key);
         activeName.textContent = `${palace.gua}宫 · ${palace.dir}`;
@@ -1775,6 +2056,39 @@
             <span class="option-main">${escapeHtml(option.label)}</span>
           </button>`;
         }).join("");
+      }
+
+      function renderLocator(results) {
+        const maxIndex = results.length - 1;
+        const activeIndex = Math.min(Math.max(Number(state.activeResult) || 0, 0), maxIndex);
+        if (state.activeResult !== activeIndex) state.activeResult = activeIndex;
+        const active = results[activeIndex];
+        locatorCurrent.innerHTML = `
+          <div class="locator-kicker"><b>${formatIndex(active.number)}</b><span>当前定位</span></div>
+          <h3>${escapeHtml(active.title)}</h3>
+          <p>九宫里会同步高亮同编号，点右侧任一条，下面正文会自动滚到对应卡片。</p>
+          <div class="locator-meta">
+            <span>${escapeHtml(active.palaceTitle)}</span>
+            <span>${escapeHtml(active.palaceRole)}</span>
+            <span>第 ${active.number} / ${results.length} 条</span>
+          </div>
+          <div class="locator-map">
+            <div class="locator-copy">
+              <strong>${escapeHtml(active.label)}</strong>
+              <span>${escapeHtml(active.tag)} · ${escapeHtml(active.source)}</span>
+            </div>
+            ${buildLocatorMiniGrid(active.palaceKey)}
+          </div>
+        `;
+        locatorQueue.innerHTML = results.map((item, index) => `
+          <button class="locator-item${index === activeIndex ? " is-active" : ""}" type="button" data-result-index="${index}">
+            <span class="locator-index">${formatIndex(item.number)}</span>
+            <span class="locator-copy">
+              <strong>${escapeHtml(item.label)}</strong>
+              <span>${escapeHtml(item.palaceTitle)} · ${escapeHtml(item.palaceRole)}</span>
+            </span>
+          </button>
+        `).join("");
       }
 
       function buildResults() {
@@ -1848,50 +2162,30 @@
         const activeIndex = Math.min(Math.max(Number(state.activeResult) || 0, 0), maxIndex);
         if (state.activeResult !== activeIndex) state.activeResult = activeIndex;
         const active = results[activeIndex];
-        const groups = results.reduce((list, item, index) => {
-          let group = list.find((entry) => entry.key === item.palaceKey);
-          if (!group) {
-            group = { key: item.palaceKey, title: item.palaceTitle, role: item.palaceRole, items: [] };
-            list.push(group);
-          }
-          group.items.push({ item, index });
-          return list;
-        }, []);
-        const activeGroup = groups.find((group) => group.key === active.palaceKey) || groups[0];
-        const bodyHtml = active.body.split("\n")
-          .map((line) => line.trim())
-          .filter(Boolean)
-          .map((line) => `<p>${escapeHtml(line)}</p>`)
-          .join("");
-        const tabsHtml = groups.map((group) => `<button class="reading-tab${group.key === active.palaceKey ? " is-active" : ""}" type="button" data-result-index="${group.items[0].index}">
-            <span>${escapeHtml(group.title)}</span><b>${group.items.length}项</b>
-          </button>`).join("");
-        const chipsHtml = activeGroup.items.map(({ item, index }) => `<button class="reading-chip${index === activeIndex ? " is-active" : ""}" type="button" data-result-index="${index}">
-            ${formatIndex(item.number)}${escapeHtml(item.label)}
-          </button>`).join("");
-        const rowsHtml = activeGroup.items
-          .filter(({ index }) => index !== activeIndex)
-          .map(({ item, index }) => `<button class="reading-row" type="button" data-result-index="${index}">
-              <strong>${formatIndex(item.number)} ${escapeHtml(item.title)}</strong>
-              <span>${escapeHtml(item.tag)} · 点击查看</span>
-            </button>`)
-          .join("");
-
-        resultMeta.textContent = `${active.palaceTitle} · 当前第 ${active.number}/${results.length} 条`;
-        resultGrid.innerHTML = `<div class="reading-shell">
-          <div class="reading-tabs" aria-label="解读宫位组">${tabsHtml}</div>
-          <div class="reading-chips" aria-label="当前宫位条目">${chipsHtml}</div>
-          <article class="reading-card">
-            <div class="result-top">
-              <span class="result-tag">${escapeHtml(active.tag)}</span>
-              <span class="reading-source">${escapeHtml(active.source)}</span>
+        resultMeta.textContent = `已生成 ${results.length} 条解读 · 当前定位 ${formatIndex(active.number)}${active.label}`;
+        resultGrid.innerHTML = `<div class="reading-list">${results.map((item, index) => {
+          const bodyHtml = item.body.split("\n")
+            .map((line) => line.trim())
+            .filter(Boolean)
+            .map((line) => `<p>${escapeHtml(line)}</p>`)
+            .join("");
+          return `<article class="reading-card${index === activeIndex ? " is-active" : ""}" id="${getResultCardId(index)}" data-result-card-index="${index}" tabindex="-1">
+            <div class="reading-card-head">
+              <div class="reading-card-meta">
+                <span class="result-tag">${escapeHtml(item.tag)}</span>
+                <span class="reading-palace-chip">${escapeHtml(item.palaceTitle)}</span>
+                <span class="reading-palace-chip">${escapeHtml(item.palaceRole)}</span>
+              </div>
+              <button class="reading-card-jump${index === activeIndex ? " is-active" : ""}" type="button" data-result-index="${index}">${formatIndex(item.number)}</button>
             </div>
-            <h3><span aria-hidden="true">${formatIndex(active.number)}</span>${escapeHtml(active.title)}</h3>
+            <h3><span aria-hidden="true">${formatIndex(item.number)}</span>${escapeHtml(item.title)}</h3>
             <div class="reading-body">${bodyHtml}</div>
-          </article>
-          ${rowsHtml ? `<div class="reading-more">${rowsHtml}</div>` : ""}
-          <div class="reading-overflow-note"><b>多选处理：</b>同一宫 2-3 项直接显示编号；超过 5 项时，九宫只露前三个并显示 +N，右侧只展开当前这一条。</div>
-        </div>`;
+            <div class="result-top">
+              <span class="reading-palace-chip">${escapeHtml(item.label)}</span>
+              <span class="reading-source">${escapeHtml(item.source)}</span>
+            </div>
+          </article>`;
+        }).join("")}</div>`;
         return results.length;
       }
 
@@ -1903,24 +2197,29 @@
         workbench.classList.toggle("is-reading", isReading);
         yangzhaiContainer.classList.toggle("is-reading", isReading);
         save();
+        if (pendingResultScroll !== null && isReading) {
+          const targetIndex = pendingResultScroll;
+          pendingResultScroll = null;
+          requestAnimationFrame(() => scrollResultCardIntoView(targetIndex));
+        } else if (!isReading) {
+          pendingResultScroll = null;
+        }
       }
 
       grid.addEventListener("click", (event) => {
         const resultPill = event.target.closest("[data-result-index]");
         if (resultPill && state.analyzed) {
           const index = Number(resultPill.dataset.resultIndex);
-          const result = buildResults()[index];
-          if (result) {
-            state.activeResult = index;
-            state.active = result.palaceKey;
-            render();
-          }
+          activateResult(index, { scroll: true });
           return;
         }
         const cell = event.target.closest("[data-palace]");
         if (!cell) return;
         state.active = cell.dataset.palace;
-        if (state.analyzed) setActiveResultFromPalace(state.active);
+        if (state.analyzed) {
+          setActiveResultFromPalace(state.active);
+          pendingResultScroll = state.activeResult;
+        }
         render();
       });
 
@@ -1941,18 +2240,22 @@
         if (!getItems(state.active).length) delete state.placements[state.active];
         state.analyzed = false;
         state.activeResult = 0;
+        pendingResultScroll = null;
         render();
       });
 
       resultGrid.addEventListener("click", (event) => {
+        const target = event.target.closest("[data-result-index], [data-result-card-index]");
+        if (!target) return;
+        const index = Number(target.dataset.resultIndex ?? target.dataset.resultCardIndex);
+        activateResult(index);
+      });
+
+      locatorQueue.addEventListener("click", (event) => {
         const target = event.target.closest("[data-result-index]");
         if (!target) return;
         const index = Number(target.dataset.resultIndex);
-        const result = buildResults()[index];
-        if (!result) return;
-        state.activeResult = index;
-        state.active = result.palaceKey;
-        render();
+        activateResult(index, { scroll: true });
       });
 
       document.addEventListener("click", (event) => {
@@ -1962,26 +2265,35 @@
           state.placements = JSON.parse(JSON.stringify(defaultPlacements));
           state.analyzed = false;
           state.activeResult = 0;
+          pendingResultScroll = null;
         }
         if (action === "autofill-analyze") {
           state.placements = JSON.parse(JSON.stringify(defaultPlacements));
           state.analyzed = true;
           setActiveResultAt(0);
-          document.getElementById("workbench")?.scrollIntoView({ behavior: "smooth", block: "start" });
+          pendingResultScroll = state.activeResult;
+          render();
+          resultsPanel?.scrollIntoView({ behavior: "smooth", block: "start" });
+          return;
         }
         if (action === "reset") {
           state.placements = {};
           state.analyzed = false;
           state.activeResult = 0;
+          pendingResultScroll = null;
         }
         if (action === "edit") {
           state.analyzed = false;
+          pendingResultScroll = null;
           document.getElementById("workbench")?.scrollIntoView({ behavior: "smooth", block: "start" });
         }
         if (action === "analyze") {
           state.analyzed = true;
-          setActiveResultAt(0);
-          document.getElementById("workbench")?.scrollIntoView({ behavior: "smooth", block: "start" });
+          setActiveResultFromPalace(state.active);
+          pendingResultScroll = state.activeResult;
+          render();
+          resultsPanel?.scrollIntoView({ behavior: "smooth", block: "start" });
+          return;
         }
         render();
       });
