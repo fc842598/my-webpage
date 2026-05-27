@@ -4962,12 +4962,22 @@
     `;
   }
 
-  function renderCurveAiSections(data, fallbackText) {
-    const sections = hasAiRenderableContent(data) ? aiSections(data) : [];
-    if (!sections.length) return `<p class="mbp-luck-placeholder">${escapeHtml(fallbackText || '点击“生成曲线”后，后台提示词会结合这条曲线生成说明。')}</p>`;
+  function isCurvePastSection(section) {
+    return /过去验证|先验过去|过往节点/.test(cleanAiInlineText(section?.title || ''));
+  }
+
+  function renderCurveAiSections(data, fallbackText, options = {}) {
+    const allSections = hasAiRenderableContent(data) ? aiSections(data) : [];
+    const sections = options.onlyPast
+      ? allSections.filter(isCurvePastSection)
+      : allSections.filter((section) => !isCurvePastSection(section));
+    if (!sections.length) {
+      return options.emptyHtml ?? `<p class="mbp-luck-placeholder">${escapeHtml(fallbackText || '点击“生成曲线”后，后台提示词会结合这条曲线生成说明。')}</p>`;
+    }
+    const limit = options.limit || (options.onlyPast ? 1 : 4);
     return `
-      <div class="mbp-curve-ai-sections">
-        ${sections.slice(0, 4).map((section) => `
+      <div class="mbp-curve-ai-sections${options.onlyPast ? ' is-past' : ''}">
+        ${sections.slice(0, limit).map((section) => `
           <section>
             ${section.title ? `<b>${escapeHtml(cleanAiInlineText(section.title))}</b>` : ''}
             <p>${highlightInsightText(cleanAiText(section.content))}</p>
@@ -5013,6 +5023,7 @@
             <strong>先看过往节点是否对得上，再看未来走势。</strong>
             <p>这些节点来自同一条逐岁评分曲线，不是固定模板。</p>
           </div>
+          ${renderCurveAiSections(data, '', { onlyPast: true, emptyHtml: '' })}
           <div class="mbp-curve-verify-grid">
             ${pastItems.map((item) => `
               <section class="mbp-curve-verify-card" data-curve-verify-card>
@@ -5051,15 +5062,47 @@
     const seen = new Set();
     const picked = extrema.filter((point) => !seen.has(point.age) && seen.add(point.age)).slice(-4);
     return picked.map((point) => {
-      const tone = curvePointTone(point.age, point.score);
+      const event = curvePastValidationEvent(point);
       return {
         ageLabel: `${point.age}岁`,
         yearLabel: `${point.year || fcAgeToYear(point.age)}年`,
-        title: `${tone} · ${curveScoreBand(point.score)} · ${point.score}分`,
-        body: `${point.decadePalace || '大限主线'}牵动${point.domain || '命盘主线'}，回想这一阶段是否有方向、关系、资源或居住安排的明显变化。`,
+        title: `${event.title} · ${curveScoreBand(point.score)} · ${point.score}分`,
+        body: event.recall,
         evidence: `${point.xiaoLianPalace || '小限落点'}落点，对宫看${point.oppositePalace || '对宫应事'}；流年卦：${point.liunianGuaName || '未显'}。`,
       };
     });
+  }
+
+  function curvePastValidationEvent(point) {
+    const names = [point.decadePalace, point.xiaoLianPalace, point.oppositePalace].map((name) => normalizePalaceName(name || ''));
+    const score = curveSafeNumber(point.score, 50);
+    const good = score >= 66;
+    const hard = score <= 44;
+    const has = (...targets) => names.some((name) => targets.includes(name));
+    if (has('夫妻', '福德')) {
+      return good
+        ? { title: '婚缘成局年', recall: '可回想：这一年是否确定关系、结婚、同居、订婚、关系公开，或关系正式稳定。' }
+        : { title: hard ? '关系承压年' : '关系定调年', recall: hard ? '可回想：这一年是否冷战、分开、异地，或关系压力明显加重。' : '可回想：这一年关系是否进入更明确的阶段，态度、名分或相处模式是否定下来。' };
+    }
+    if (has('财帛', '田宅')) {
+      return good
+        ? { title: '财运起势年', recall: '可回想：这一年是否收入上升、项目进账、置业、扩店，或开始掌握更大资源。' }
+        : { title: hard ? '财路承压年' : '钱财调整年', recall: hard ? '可回想：这一年是否破财、投资失手、收入下滑，或资金周转明显卡住。' : '可回想：这一年钱财、房产或资源安排是否有调整。' };
+    }
+    if (has('官禄', '迁移', '命')) {
+      return good
+        ? { title: '事业抬头年', recall: '可回想：这一年是否升职、换平台、创业启动、考试证照顺利，或开始掌权带团队。' }
+        : { title: hard ? '事业受阻年' : '事业换挡年', recall: hard ? '可回想：这一年是否岗位变动、项目停摆、上级压力，或工作推进明显受卡。' : '可回想：这一年事业方向、工作地点或角色责任是否有明显变化。' };
+    }
+    if (has('疾厄') || (has('福德', '命') && hard)) {
+      return {
+        title: hard ? '身心耗损年' : '状态调整年',
+        recall: hard ? '可回想：这一年是否病痛、旧疾反复、过劳，或睡眠情绪明显下滑。' : '可回想：这一年身体状态、作息或心理压力是否需要重新调整。',
+      };
+    }
+    return good
+      ? { title: '走运抬头年', recall: '可回想：这一年是否机会变多、贵人出现、状态转顺，或某件重要事情开始成形。' }
+      : { title: hard ? '运势收缩年' : '阶段调整年', recall: hard ? '可回想：这一年是否压力变大、计划停顿、人事反复，或明显感觉不易展开。' : '可回想：这一年生活节奏、方向选择或重要关系是否出现调整。' };
   }
 
   function switchCurveView(button) {

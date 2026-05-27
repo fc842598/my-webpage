@@ -7517,6 +7517,17 @@ p.mbp-topic-detail {
   color: #d4c096;
   font-size: 15px;
   line-height: 1.8;
+  white-space: pre-line;
+}
+
+.mbp-curve-ai-sections.is-past {
+  margin-top: 14px;
+  margin-bottom: 14px;
+}
+
+.mbp-curve-ai-sections.is-past section {
+  border-color: rgba(241, 212, 125, .22);
+  background: linear-gradient(135deg, rgba(241, 212, 125, .08), rgba(0, 0, 0, .16));
 }
 
 .mbp-pdf-report .mbp-curve-summary strong,
