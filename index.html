@@ -1689,7 +1689,27 @@
         backdrop-filter: blur(18px);
       }
       .nav .container { justify-content: space-between; }
-      .links { display: none; }
+      .links {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex: 1 1 auto;
+        overflow-x: auto;
+        overflow-y: hidden;
+        padding: 0 8px;
+        margin-right: 12px;
+        scrollbar-width: none;
+      }
+      .links::-webkit-scrollbar { display: none; }
+      .links a {
+        flex: 0 0 auto;
+        white-space: nowrap;
+        min-height: 44px;
+        padding: 0 12px;
+        border-radius: 10px;
+        font-size: 13px;
+        line-height: 44px;
+      }
       .brand { font-size: 23px; }
       .brand .leaf { width: 24px; height: 14px; }
       .nav .cta {
@@ -2021,6 +2041,12 @@
       }
       .footer-brand { grid-column: 1 / -1; }
       .copyright { margin-top: 28px; }
+      .footer a,
+      .footer p {
+        min-height: 44px;
+        display: inline-flex;
+        align-items: center;
+      }
     }
 
     @media (max-width: 520px) {
@@ -2031,6 +2057,12 @@
       .destiny-wheel { width: min(70vw, 264px); }
       .mobile-quick-panel { gap: 8px; }
       .mobile-quick-panel a { padding: 13px 8px; }
+      .mobile-quick-panel span { font-size: 12px; }
+      .links a {
+        font-size: 12px;
+        line-height: 44px;
+        min-height: 44px;
+      }
       .section-title h2 { font-size: 27px; }
       .footer-grid { grid-template-columns: 1fr; }
     }
@@ -2074,7 +2106,7 @@
       }
 
       .nav .cta {
-        height: 32px;
+        height: 44px;
         padding: 0 13px;
         border-radius: 7px;
         font-size: 12px;
