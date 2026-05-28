@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>阅天 · 阳宅地脉</title>
-  <meta name="description" content="阅天阳宅地脉工作台：九宫安位、长幼归位、方位解读。">
+  <meta name="description" content="阅天阳宅九宫安位：确认朝向，放入家人和空间，生成家宅解读。">
   <link rel="icon" href="../images/logo-mark.svg" type="image/svg+xml">
   <meta name="theme-color" content="#030201">
   <style>
@@ -135,6 +135,20 @@
       box-shadow: 0 14px 32px rgba(201, 169, 97, .24);
     }
 
+    .cta:disabled,
+    .gold-btn:disabled,
+    .ghost-btn:disabled,
+    .danger-btn:disabled {
+      opacity: .42;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    body.is-modal-open {
+      overflow: hidden;
+    }
+
     .yangzhai-main {
       padding: 80px 0 54px;
       position: relative;
@@ -210,6 +224,139 @@
       font-weight: 800;
     }
 
+    .intro-panel {
+      margin-bottom: 14px;
+      padding: 20px 22px 18px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background:
+        linear-gradient(135deg, rgba(201,169,97,.10), transparent 42%),
+        linear-gradient(180deg, rgba(14, 10, 6, .92), rgba(7, 5, 3, .94));
+      box-shadow: 0 18px 44px rgba(0, 0, 0, .18);
+    }
+
+    .intro-kicker {
+      display: inline-flex;
+      align-items: center;
+      min-height: 28px;
+      margin-bottom: 10px;
+      padding: 0 12px;
+      border: 1px solid rgba(201,169,97,.26);
+      border-radius: 999px;
+      color: var(--gold-soft);
+      background: rgba(201,169,97,.08);
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .intro-copy h1 {
+      margin: 0;
+      color: var(--ivory);
+      font-family: "Noto Serif SC", "Songti SC", serif;
+      font-size: 28px;
+      line-height: 1.28;
+      letter-spacing: 0;
+    }
+
+    .intro-copy p {
+      margin: 10px 0 0;
+      max-width: 760px;
+      color: #cdbf98;
+      font-size: 15px;
+      font-weight: 700;
+      line-height: 1.75;
+    }
+
+    .intro-steps {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .intro-step {
+      min-width: 0;
+      padding: 14px 14px 12px;
+      border: 1px solid rgba(201,169,97,.18);
+      border-radius: 8px;
+      background: rgba(8, 6, 3, .42);
+    }
+
+    .intro-step strong {
+      display: block;
+      color: var(--ivory);
+      font-size: 15px;
+      line-height: 1.3;
+    }
+
+    .intro-step span {
+      display: block;
+      margin-top: 6px;
+      color: #a99770;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 1.6;
+    }
+
+    .intro-toolbar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 16px;
+      flex-wrap: wrap;
+    }
+
+    .intro-toolbar .ghost-btn {
+      width: auto;
+      min-width: 148px;
+      height: 38px;
+      padding: 0 18px;
+      border-radius: 999px;
+    }
+
+    .subtle-link,
+    .text-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 0;
+      border: 0;
+      color: var(--gold-soft);
+      background: transparent;
+      font-size: 13px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .subtle-link:hover,
+    .text-link:hover {
+      color: var(--ivory);
+    }
+
+    .intro-support {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px solid rgba(201,169,97,.12);
+    }
+
+    .intro-support strong {
+      display: block;
+      color: var(--ivory);
+      font-size: 14px;
+    }
+
+    .intro-support p {
+      margin: 4px 0 0;
+      color: #9b8b68;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 1.65;
+    }
+
     .workbench {
       display: grid;
       grid-template-columns: minmax(0, 1fr) 292px;
@@ -243,6 +390,14 @@
       font-size: 16px;
       line-height: 1.3;
       letter-spacing: 0;
+    }
+
+    .picker-lead {
+      margin: -6px 0 14px;
+      color: #b4a37a;
+      font-size: 12px;
+      font-weight: 800;
+      line-height: 1.65;
     }
 
     .guide-step {
@@ -310,6 +465,18 @@
     .section-head h2 {
       font-size: 18px;
       line-height: 1.25;
+    }
+
+    .section-head-copy {
+      min-width: 0;
+    }
+
+    .section-head-copy p {
+      margin: 4px 0 0;
+    }
+
+    .section-help {
+      margin-top: 8px;
     }
 
     .palace-grid {
@@ -907,6 +1074,108 @@
 
     .footer a:hover { color: var(--gold-soft); }
 
+    .direction-modal[hidden] {
+      display: none;
+    }
+
+    .direction-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 40;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      background: rgba(0, 0, 0, .56);
+      backdrop-filter: blur(10px);
+    }
+
+    .direction-dialog {
+      width: min(560px, calc(100vw - 32px));
+      position: relative;
+      padding: 22px 22px 18px;
+      border: 1px solid rgba(201,169,97,.32);
+      border-radius: 12px;
+      background:
+        linear-gradient(135deg, rgba(201,169,97,.12), transparent 46%),
+        linear-gradient(180deg, rgba(14, 10, 6, .98), rgba(6, 4, 2, .98));
+      box-shadow: 0 24px 80px rgba(0, 0, 0, .46);
+    }
+
+    .direction-kicker {
+      display: inline-flex;
+      align-items: center;
+      min-height: 28px;
+      padding: 0 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(201,169,97,.20);
+      color: var(--gold-soft);
+      background: rgba(201,169,97,.08);
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .direction-dialog h2 {
+      margin: 12px 0 0;
+      color: var(--ivory);
+      font-family: "Noto Serif SC", "Songti SC", serif;
+      font-size: 26px;
+      line-height: 1.28;
+      letter-spacing: 0;
+    }
+
+    .direction-dialog > p {
+      margin: 10px 0 0;
+      color: #ccb98d;
+      font-size: 14px;
+      font-weight: 700;
+      line-height: 1.7;
+    }
+
+    .direction-list {
+      margin: 18px 0 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 10px;
+    }
+
+    .direction-list li {
+      padding: 12px 14px;
+      border: 1px solid rgba(201,169,97,.14);
+      border-radius: 8px;
+      background: rgba(8, 6, 3, .52);
+    }
+
+    .direction-list strong {
+      display: block;
+      color: var(--ivory);
+      font-size: 14px;
+    }
+
+    .direction-list span {
+      display: block;
+      margin-top: 6px;
+      color: #aa9870;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 1.65;
+    }
+
+    .direction-close {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      width: 36px;
+      height: 36px;
+      border: 1px solid rgba(201,169,97,.18);
+      border-radius: 999px;
+      color: var(--gold-soft);
+      background: rgba(8,6,3,.58);
+      font-size: 18px;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
     .copyright {
       margin-top: 34px;
       color: #6d6045;
@@ -922,6 +1191,8 @@
     @media (max-width: 900px) {
       .container { width: calc(100vw - 56px); }
       .links { display: none; }
+      .intro-steps { grid-template-columns: 1fr; }
+      .intro-support { align-items: flex-start; flex-direction: column; }
       .workbench { grid-template-columns: 1fr; }
       .guide-panel,
       .grid-panel,
@@ -936,6 +1207,9 @@
       .leaf { width: 18px; height: 18px; }
       .nav .cta { height: 34px; min-width: 104px; padding: 0 13px; font-size: 14px; }
       .yangzhai-main { padding-top: 80px; }
+      .intro-panel { padding: 16px 14px; }
+      .intro-copy h1 { font-size: 22px; }
+      .intro-copy p { font-size: 14px; }
       .workbench,
       .grid-panel,
       .result-panel { padding: 14px; }
@@ -947,6 +1221,8 @@
       .palace-grid { min-width: 0; }
       .option-grid { grid-template-columns: 1fr 1fr; }
       .footer-grid { grid-template-columns: 1fr; gap: 26px; }
+      .direction-dialog { padding: 18px 16px 16px; }
+      .direction-dialog h2 { font-size: 22px; }
     }
 
     /* Desktop visual upgrade: keep the original interactions, improve the reading surface. */
@@ -992,6 +1268,26 @@
 
       .yangzhai-main {
         padding: 72px 0 56px;
+      }
+
+      .intro-panel {
+        padding: 24px 26px 20px;
+        margin-bottom: 16px;
+        border-color: rgba(201,169,97,.44);
+        box-shadow: none;
+      }
+
+      .intro-copy h1 {
+        font-size: 34px;
+      }
+
+      .intro-copy p {
+        max-width: 820px;
+      }
+
+      .intro-step {
+        padding: 16px 16px 14px;
+        border-radius: 4px;
       }
 
       .yangzhai-main::before {
@@ -1107,6 +1403,10 @@
         margin: -2px 0 0;
         color: var(--ivory);
         font-size: 14px;
+      }
+
+      .section-help {
+        justify-content: center;
       }
 
       .palace-grid {
@@ -1732,42 +2032,78 @@
   <div class="page">
     <header class="nav">
       <div class="container">
-        <a class="brand" href="../index.html" aria-label="阅天首页">
+        <a class="brand" href="./yangzhai.html" aria-label="阳宅安位首页">
           <span class="leaf" aria-hidden="true"></span>
           <span>阅 天</span>
         </a>
-        <nav class="links" aria-label="主导航">
-          <a href="../index.html">首页</a>
-          <a href="../index.html#triad">天地人三才</a>
-          <a href="../index.html#steps">阅天排盘六步</a>
-          <a href="../index.html#knowledge">阅天帮你看什么</a>
+        <nav class="links" aria-label="阳宅导航">
+          <a href="#workbench">九宫安位</a>
+          <a href="#directionGuide">朝向判断</a>
+          <a href="#startPlacement">安位步骤</a>
         </nav>
-        <a class="cta" href="mingbook-onepage.html">立即排盘</a>
+        <a class="cta" href="#workbench">开始安位</a>
       </div>
     </header>
 
     <main class="yangzhai-main">
       <div class="container" id="yangzhaiContainer">
+        <section class="intro-panel" id="yangzhaiIntro" aria-label="阳宅九宫安位介绍">
+          <div class="intro-copy">
+            <span class="intro-kicker">阳宅九宫安位</span>
+            <h1>按房屋朝向，把家人与空间放进九宫，快速看家宅气场与需要调整的方位。</h1>
+            <p>它用九宫方位帮你看父母子女、厨房厕所、客厅安位是否合适。先定朝向，再安位，最后生成家宅解读。</p>
+          </div>
+          <div class="intro-steps" id="startPlacement" aria-label="使用步骤">
+            <div class="intro-step">
+              <strong>1 确认房屋朝向</strong>
+              <span>先判断北向，再对照东南西北，把九宫方向和户型对应起来。</span>
+            </div>
+            <div class="intro-step">
+              <strong>2 放入家人与空间</strong>
+              <span>点击九宫里的方位，再放入父母、子女、厨房、厕所或客厅。</span>
+            </div>
+            <div class="intro-step">
+              <strong>3 生成家宅解读</strong>
+              <span>看整体定位，再逐条看每个方位的提醒和需要调整的地方。</span>
+            </div>
+          </div>
+          <div class="intro-toolbar">
+            <button class="ghost-btn" type="button" data-action="open-direction-help">不会确定朝向？</button>
+            <a class="subtle-link" href="../index.html">返回阅天首页</a>
+          </div>
+          <div class="intro-support" id="directionGuide">
+            <div>
+              <strong>朝向判断先看什么？</strong>
+              <p>先看户型图有没有北向标记；没有的话，用手机指南针先找北，再回到九宫安位。</p>
+            </div>
+            <button class="text-link" type="button" data-action="open-direction-help">打开 30 秒教程</button>
+          </div>
+        </section>
+
         <section class="workbench" id="workbench" aria-label="阳宅九宫工作台">
           <section class="grid-panel">
             <div class="section-head">
-              <h2>九宫安位</h2>
-              <p>按户型方向安位</p>
+              <div class="section-head-copy">
+                <h2>九宫安位</h2>
+                <p>先确定房屋朝向，再点九宫方位放入家人或空间。</p>
+                <button class="text-link section-help" type="button" data-action="open-direction-help">不会确定朝向？</button>
+              </div>
             </div>
             <div class="palace-grid" id="palaceGrid" aria-label="九宫方位"></div>
             <div class="grid-actions">
-              <button class="gold-btn" type="button" data-action="analyze">解读分析</button>
-              <button class="ghost-btn" type="button" data-action="autofill">长幼归位</button>
+              <button class="gold-btn" type="button" data-action="analyze">生成家宅解读</button>
+              <button class="ghost-btn" type="button" data-action="autofill">一键按长幼安位</button>
               <button class="danger-btn" type="button" data-action="reset">重置</button>
             </div>
           </section>
 
           <aside class="picker-panel">
             <div class="picker-stage" id="pickerStage">
-              <h2 class="picker-title">选择方位成员</h2>
+              <h2 class="picker-title">给当前方位放成员/空间</h2>
+              <p class="picker-lead">先点左侧九宫里的方位，再选择这个方位对应的家人或空间。</p>
               <div class="active-card">
                 <div class="active-meta"><span id="activePalaceName">巽宫 · 东南</span><span id="activePalaceRole">长女位</span></div>
-                <p id="activePalaceHint">点击下方选项，把成员或空间放入当前宫位。</p>
+                <p id="activePalaceHint">先点左侧九宫里的方位，再点下方成员或空间放进去。</p>
               </div>
               <div class="option-grid" id="optionGrid" aria-label="安位选项"></div>
               <div class="picked-list" id="pickedList">当前宫位尚未安位</div>
@@ -1792,7 +2128,7 @@
             <button class="ghost-btn result-edit-btn" type="button" data-action="edit">继续安位</button>
           </div>
           <div id="resultGrid" class="result-grid">
-            <div class="empty-state">先在九宫中安位，再点击「解读分析」。</div>
+            <div class="empty-state">先选方位，再放入家人或空间，最后点击「生成家宅解读」。</div>
           </div>
         </section>
       </div>
@@ -1802,26 +2138,27 @@
       <div class="container">
         <div class="footer-grid">
           <div class="footer-brand">
-            <a class="brand" href="../index.html">
+            <a class="brand" href="./yangzhai.html">
               <span class="leaf" aria-hidden="true"></span>
               <span>阅 天</span>
             </a>
-            <p style="margin-top:22px">知时定用 · 顺势而为</p>
+            <p style="margin-top:22px">把家人与空间安进九宫，再看家宅重点。</p>
           </div>
           <div>
-            <h4>产品</h4>
-            <a href="mingbook-onepage.html">大运流年</a>
-            <a href="mingbook-onepage.html">命盘解析</a>
+            <h4>阳宅工具</h4>
+            <a href="#workbench">九宫安位</a>
+            <a href="#results">生成家宅解读</a>
+            <a href="#directionGuide">朝向判断</a>
           </div>
           <div>
-            <h4>看盘重点</h4>
-            <a href="../index.html#knowledge">命盘底色</a>
-            <a href="../index.html#knowledge">星曜格局</a>
-            <a href="../index.html#knowledge">大运流年</a>
-            <a href="../index.html#knowledge">行动建议</a>
+            <h4>操作说明</h4>
+            <a href="#startPlacement">三步开始安位</a>
+            <a href="#workbench">一键按长幼安位</a>
+            <a href="#results">查看方位解读</a>
           </div>
           <div>
-            <h4>关于我们</h4>
+            <h4>帮助</h4>
+            <a href="../index.html">返回阅天首页</a>
             <a href="privacy.html">隐私政策</a>
             <a href="contact.html">联系我们</a>
           </div>
@@ -1829,6 +2166,20 @@
         <div class="copyright" style="margin-top:8px"><a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener">粤ICP备2026055337号</a>　© 2026 阅天AI Copyright, All Rights Reserved. Powered By 阅天工作室　</div>
       </div>
     </footer>
+
+    <div class="direction-modal" id="directionModal" hidden>
+      <div class="direction-dialog" role="dialog" aria-modal="true" aria-labelledby="directionHelpTitle">
+        <button class="direction-close" type="button" data-action="close-direction-help" aria-label="关闭朝向教程">×</button>
+        <span class="direction-kicker">朝向判断 · 30 秒看懂</span>
+        <h2 id="directionHelpTitle">不会确定朝向？先这样看</h2>
+        <p>不用先懂风水。先把房屋的北向定出来，再把九宫里的东南西北和户型对应起来就行。</p>
+        <ol class="direction-list">
+          <li><strong>1 先看户型图</strong><span>如果图上本来就标了北，直接按图上的北去对应九宫方向。</span></li>
+          <li><strong>2 没标北就用手机指南针</strong><span>站在屋内中间附近，看手机指南针，先找北，再顺着分出东南西北。</span></li>
+          <li><strong>3 先粗定，再细调</strong><span>先把父母、子女、厨房、厕所放进去看结果；不确定时可重置或一键按长幼安位再对照。</span></li>
+        </ol>
+      </div>
+    </div>
   </div>
 
   <script src="../js/yangzhai-desktop-data.js"></script>
@@ -1911,6 +2262,7 @@
       const activeHint = document.getElementById("activePalaceHint");
       const resultGrid = document.getElementById("resultGrid");
       const resultMeta = document.getElementById("resultMeta");
+      const analyzeButton = document.querySelector('[data-action="analyze"]');
       const resultsPanel = document.getElementById("results");
       const workbench = document.getElementById("workbench");
       const yangzhaiContainer = document.getElementById("yangzhaiContainer");
@@ -1918,6 +2270,8 @@
       const locatorStage = document.getElementById("locatorStage");
       const locatorCurrent = document.getElementById("locatorCurrent");
       const locatorQueue = document.getElementById("locatorQueue");
+      const directionModal = document.getElementById("directionModal");
+      const directionCloseButton = directionModal?.querySelector('[data-action="close-direction-help"]');
       const circleNumbers = ["", "①", "②", "③", "④", "⑤", "⑥", "⑦", "⑧", "⑨", "⑩", "⑪", "⑫"];
 
       const loadState = () => {
@@ -1946,6 +2300,7 @@
       const getPalace = (key) => palaces.find((palace) => palace.key === key) || palaces[0];
       const getOption = (label) => options.find((item) => item.label === label) || { label, short: label.slice(0, 1), type: "family" };
       const getItems = (key) => Array.isArray(state.placements[key]) ? state.placements[key] : [];
+      const getPlacementCount = () => Object.values(state.placements).reduce((total, items) => total + (Array.isArray(items) ? items.length : 0), 0);
       const formatIndex = (index) => circleNumbers[index] || `${index}.`;
       const escapeHtml = (value) => String(value).replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[char]));
       const formatReadingText = (text) => String(text || "")
@@ -1981,6 +2336,15 @@
         const card = document.getElementById(getResultCardId(index));
         if (!card) return;
         card.scrollIntoView({ behavior, block: "start" });
+      }
+
+      function setDirectionHelpOpen(open) {
+        if (!directionModal) return;
+        directionModal.hidden = !open;
+        document.body.classList.toggle("is-modal-open", open);
+        if (open) {
+          requestAnimationFrame(() => directionCloseButton?.focus());
+        }
       }
 
       function activateResult(index, { scroll = false } = {}) {
@@ -2043,11 +2407,11 @@
         const selected = getItems(palace.key);
         activeName.textContent = `${palace.gua}宫 · ${palace.dir}`;
         activeRole.textContent = palace.role;
-        activeHint.textContent = `建议本位：${palace.defaultItem || "先定方位"}。可多选，再次点击取消。`;
+        activeHint.textContent = `先点左侧九宫里的方位，再点下方成员或空间。建议本位：${palace.defaultItem || "先定方位"}。`;
         pickedList.classList.toggle("is-empty", !selected.length);
         pickedList.innerHTML = selected.length
           ? selected.map((item) => `<span class="item-pill">${escapeHtml(item)}</span>`).join(" ")
-          : "当前宫位尚未安位";
+          : "当前方位还没放内容";
         optionGrid.innerHTML = options.map((option) => {
           const isSelected = option.type !== "clear" && selected.includes(option.label);
           const selectedClass = isSelected ? " is-selected" : "";
@@ -2154,7 +2518,7 @@
         resultGrid.classList.toggle("is-reading", hasResults);
         if (!hasResults) {
           resultMeta.textContent = "尚未生成";
-          resultGrid.innerHTML = `<div class="empty-state">先在九宫中安位，再点击「解读分析」。</div>`;
+          resultGrid.innerHTML = `<div class="empty-state">先选方位，再放入家人或空间，最后点击「生成家宅解读」。</div>`;
           return 0;
         }
 
@@ -2194,8 +2558,13 @@
         renderPicker();
         const resultCount = renderResults();
         const isReading = state.analyzed && resultCount > 0;
+        const hasPlacement = getPlacementCount() > 0;
         workbench.classList.toggle("is-reading", isReading);
         yangzhaiContainer.classList.toggle("is-reading", isReading);
+        if (analyzeButton) {
+          analyzeButton.disabled = !hasPlacement;
+          analyzeButton.title = hasPlacement ? "" : "先选方位，再放入家人或空间";
+        }
         save();
         if (pendingResultScroll !== null && isReading) {
           const targetIndex = pendingResultScroll;
@@ -2261,6 +2630,14 @@
       document.addEventListener("click", (event) => {
         const action = event.target.closest("[data-action]")?.dataset.action;
         if (!action) return;
+        if (action === "open-direction-help") {
+          setDirectionHelpOpen(true);
+          return;
+        }
+        if (action === "close-direction-help") {
+          setDirectionHelpOpen(false);
+          return;
+        }
         if (action === "autofill") {
           state.placements = JSON.parse(JSON.stringify(defaultPlacements));
           state.analyzed = false;
@@ -2288,6 +2665,10 @@
           document.getElementById("workbench")?.scrollIntoView({ behavior: "smooth", block: "start" });
         }
         if (action === "analyze") {
+          if (!getPlacementCount()) {
+            render();
+            return;
+          }
           state.analyzed = true;
           setActiveResultFromPalace(state.active);
           pendingResultScroll = state.activeResult;
@@ -2300,6 +2681,16 @@
 
       document.querySelectorAll("[data-scroll]").forEach((button) => {
         button.addEventListener("click", () => document.querySelector(button.dataset.scroll)?.scrollIntoView({ behavior: "smooth" }));
+      });
+
+      directionModal?.addEventListener("click", (event) => {
+        if (event.target === directionModal) setDirectionHelpOpen(false);
+      });
+
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape" && !directionModal?.hidden) {
+          setDirectionHelpOpen(false);
+        }
       });
 
       render();
