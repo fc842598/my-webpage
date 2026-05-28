@@ -15681,7 +15681,7 @@ function getWentianYijingReading(result, key) {
     original,
     masterTitle: `${meta.title} · ${result.name || "卦象"}`,
     summary: firstReadableSentence(detail, `${result.name || "此卦"}重在审时度势，先看命盘本象，再定进退。`),
-    detail: trimWentianAiText(detail, 220),
+    detail: cleanWentianAiText(detail),
   };
 }
 
@@ -15724,7 +15724,8 @@ function renderWentianMobileYijingPanel(saved) {
       </div>
       <article class="wentian-yijing-card">
         <div class="wentian-yijing-art">
-          ${imageSrc ? `<img src="${imageSrc}" alt="${escapeHtml(`${meta.title} ${result?.name || ""}`)}" loading="lazy">` : `<div class="wentian-yijing-lines">${renderWentianYijingLines(result)}</div>`}
+          ${imageSrc ? `<img src="${imageSrc}" alt="${escapeHtml(`${meta.title} ${result?.name || ""}`)}" loading="lazy">` : ""}
+          <div class="wentian-yijing-lines">${renderWentianYijingLines(result)}</div>
         </div>
         <div class="wentian-yijing-main">
           <span>${escapeHtml(meta.note)}</span>
@@ -15734,15 +15735,17 @@ function renderWentianMobileYijingPanel(saved) {
       </article>
       <section class="wentian-yijing-reading">
         <span>古籍原文</span>
-        <p>${escapeHtml(reading.original || "当前卦辞资料待补，先看下方名师讲解。")}</p>
+        ${renderWentianReadingParagraphs(reading.original || "当前卦辞资料待补，先看下方名师讲解。")}
       </section>
       <section class="wentian-yijing-master">
-        <div>
+        <div class="wentian-yijing-master-head">
           <span>名师讲解</span>
           <strong>${escapeHtml(reading.masterTitle)}</strong>
         </div>
         <p>${escapeHtml(reading.summary)}</p>
-        <em>${escapeHtml(reading.detail)}</em>
+        <div class="wentian-yijing-master-detail">
+          ${renderWentianReadingParagraphs(reading.detail || reading.summary)}
+        </div>
       </section>
     </section>
   `;
