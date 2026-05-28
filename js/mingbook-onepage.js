@@ -2367,6 +2367,43 @@
     updateDatePreview();
   }
 
+  function getLunarLeapMonth(year) {
+    if (!(window.LunarYear && typeof window.LunarYear.fromYear === 'function' && year)) return 0;
+    try {
+      return Math.abs(Number(window.LunarYear.fromYear(year)?.getLeapMonth?.())) || 0;
+    } catch (_) {
+      return 0;
+    }
+  }
+
+  function getNextLunarMonth(year, month) {
+    const y = Number(year);
+    const m = Number(month);
+    return m >= 12 ? { year: y + 1, month: 1 } : { year: y, month: m + 1 };
+  }
+
+  function formatLunarRuleLabel(year, month, day, isLeap = false) {
+    if (typeof formatLunarDate === 'function') return formatLunarDate({ year, month, day, isLeap });
+    return `${year}年${isLeap ? '闰' : ''}${month}月${day}日`;
+  }
+
+  function getLunarLeapRuleInfo(lunar, enabled = true) {
+    if (!enabled || !lunar?.isLeap) return { enabled: !!enabled, applied: false };
+    const next = getNextLunarMonth(lunar.year, lunar.month);
+    let effectiveDay = Number(lunar.day) || 1;
+    if (typeof lunarToSolar === 'function') {
+      while (effectiveDay > 1 && !lunarToSolar(next.year, next.month, effectiveDay, false)) effectiveDay -= 1;
+    }
+    return {
+      enabled: true,
+      applied: true,
+      actual: { year: lunar.year, month: lunar.month, day: lunar.day, isLeap: true },
+      effective: { year: next.year, month: next.month, day: effectiveDay, isLeap: false },
+      actualLabel: formatLunarRuleLabel(lunar.year, lunar.month, lunar.day, true),
+      effectiveLabel: formatLunarRuleLabel(next.year, next.month, effectiveDay, false),
+    };
+  }
+
   function solarFromForm() {
     if (formCalMode === 'lunar') {
       const lunarYear = Number($('#mbpLunarYear')?.value);
@@ -2378,8 +2415,10 @@
       const solar = lunarToSolar(lunarYear, lunarMonth, lunarDay, lunarLeap);
       if (!solar) return { error: '农历日期无效或超出支持范围' };
       const lunarObj = { year: lunarYear, month: lunarMonth, day: lunarDay, isLeap: lunarLeap };
+      const leapMonthRule = getLunarLeapRuleInfo(lunarObj, lunarLeap);
       const lunarPrefix = cityScope === 'global' ? '中国农历口径' : '农历';
       const lunarText = typeof formatLunarDate === 'function' ? formatLunarDate(lunarObj) : `${lunarYear}年${lunarMonth}月${lunarDay}日`;
+      const leapRuleText = leapMonthRule.applied ? ` · ${leapMonthRule.actualLabel}按${leapMonthRule.effectiveLabel}排盘` : '';
       return {
         year: solar.getFullYear(),
         month: solar.getMonth() + 1,
@@ -2389,8 +2428,9 @@
         lunarMonth,
         lunarDay,
         lunarLeap,
+        leapMonthRule,
         lunarLabel: lunarText,
-        calModeLabel: `${lunarPrefix} ${lunarText}（公历 ${solar.getFullYear()}-${pad2(solar.getMonth() + 1)}-${pad2(solar.getDate())}）`,
+        calModeLabel: `${lunarPrefix} ${lunarText}（公历 ${solar.getFullYear()}-${pad2(solar.getMonth() + 1)}-${pad2(solar.getDate())}）${leapRuleText}`,
       };
     }
     const year = Number($('#mbpYear')?.value);
@@ -2414,7 +2454,8 @@
     if (data.error) {
       preview.textContent = '';
     } else if (data.isLunar) {
-      preview.textContent = `公历: ${data.year}-${pad2(data.month)}-${pad2(data.day)}${cityScope === 'global' ? ' · 中国农历口径' : ''}`;
+      const leapText = data.leapMonthRule?.applied ? ` · ${data.leapMonthRule.actualLabel}按${data.leapMonthRule.effectiveLabel}排盘` : '';
+      preview.textContent = `公历: ${data.year}-${pad2(data.month)}-${pad2(data.day)}${cityScope === 'global' ? ' · 中国农历口径' : ''}${leapText}`;
     } else if (typeof solarToLunar === 'function') {
       const lunar = solarToLunar(data.year, data.month, data.day);
       preview.textContent = lunar ? `${cityScope === 'global' ? '中国农历参考' : '农历'}: ${typeof formatLunarDate === 'function' ? formatLunarDate(lunar) : ''}` : '';
@@ -2427,21 +2468,19 @@
   function updateLunarLeapState() {
     const year = Number($('#mbpLunarYear')?.value);
     const month = Number($('#mbpLunarMonth')?.value);
-    let leapMonth = 0;
-    if (window.LunarYear && typeof window.LunarYear.fromYear === 'function' && year) {
-      try {
-        leapMonth = Math.abs(Number(window.LunarYear.fromYear(year)?.getLeapMonth?.())) || 0;
-      } catch (_) {
-        leapMonth = 0;
-      }
-    }
+    const leapMonth = getLunarLeapMonth(year);
     const wrap = $('#mbpLunarLeapWrap');
     const note = $('#mbpLunarLeapNote');
     const checkbox = $('#mbpLunarLeap');
     const enabled = !!(leapMonth && month === leapMonth);
     if (wrap) wrap.style.opacity = enabled ? '1' : '.55';
     if (checkbox && !enabled) checkbox.checked = false;
-    if (note) note.textContent = leapMonth ? (enabled ? '可选闰月' : `闰${leapMonth}月`) : '无闰月';
+    if (note) {
+      if (!leapMonth) note.textContent = '无闰月';
+      else if (!enabled) note.textContent = `闰${leapMonth}月`;
+      else if (checkbox?.checked) note.textContent = `闰${leapMonth}月 · 按下个月排盘`;
+      else note.textContent = `闰${leapMonth}月 · 勾选后按下个月排盘`;
+    }
   }
 
   function formTime() {
@@ -2572,6 +2611,14 @@
     const timeIdx = typeof window.tstToShichen === 'function' && tstResult
       ? window.tstToShichen(tstResult.trueSolarHour, tstResult.trueSolarMinute)
       : localShichenIndex(profile.hour, profile.minute);
+    const leapMonthRule = profile.isLunar
+      ? getLunarLeapRuleInfo({
+        year: profile.lunarYear,
+        month: profile.lunarMonth,
+        day: profile.lunarDay,
+        isLeap: profile.lunarLeap,
+      }, !!profile.lunarLeap)
+      : { enabled: false, applied: false };
     return {
       ...profile,
       dateStr: trueSolarDateStr,
@@ -2586,6 +2633,7 @@
       birthTimeZone,
       timeIdx,
       tstResult,
+      leapMonthRule,
       cityDetail: profile.cityLon ? {
         name: profile.city,
         lon: profile.cityLon,
@@ -2603,7 +2651,22 @@
   }
 
   function profileKey(profile) {
-    return [profile.year, profile.month, profile.day, profile.hour, profile.minute, profile.gender, profile.city, profile.cityLon, profile.cityTimeZone, profile.isLunar].join('|');
+    return [
+      profile.year,
+      profile.month,
+      profile.day,
+      profile.hour,
+      profile.minute,
+      profile.gender,
+      profile.city,
+      profile.cityLon,
+      profile.cityTimeZone,
+      profile.isLunar,
+      profile.lunarYear,
+      profile.lunarMonth,
+      profile.lunarDay,
+      profile.lunarLeap,
+    ].join('|');
   }
 
   function getChartBundle() {
@@ -2614,9 +2677,17 @@
     const norm = computeNorm(state.profile);
     const genderStr = state.profile.gender === 'male' ? '男' : '女';
     try {
-      const chart = typeof lib.bySolar === 'function'
-        ? lib.bySolar(norm.dateStr, norm.timeIdx, genderStr, true)
-        : lib.astrolabeBySolarDate(norm.dateStr, norm.timeIdx, genderStr, true);
+      const chart = norm.leapMonthRule?.applied
+        ? (
+          typeof lib.byLunar === 'function'
+            ? lib.byLunar(`${norm.leapMonthRule.effective.year}-${norm.leapMonthRule.effective.month}-${norm.leapMonthRule.effective.day}`, norm.timeIdx, genderStr, false, false)
+            : lib.astrolabeByLunarDate(`${norm.leapMonthRule.effective.year}-${norm.leapMonthRule.effective.month}-${norm.leapMonthRule.effective.day}`, norm.timeIdx, genderStr, false, false)
+        )
+        : (
+          typeof lib.bySolar === 'function'
+            ? lib.bySolar(norm.dateStr, norm.timeIdx, genderStr, true)
+            : lib.astrolabeBySolarDate(norm.dateStr, norm.timeIdx, genderStr, true)
+        );
       state.chart = chart;
       state.norm = norm;
       state.chartKey = key;
@@ -3953,7 +4024,9 @@
     const usedShichen = fcResolvedShichenName(chart, norm);
     const cstPart = norm.cstHour !== undefined ? `${pad2(norm.cstHour)}:${pad2(norm.cstMinute)}` : '';
     $('#mbpFcSolar').textContent = [norm.calModeLabel || norm.dateStr || '', cstPart, `${usedShichen}时`].filter(Boolean).join(' ');
-    $('#mbpFcLunar').textContent = chart.chineseDate || chart.lunarDate || '—';
+    $('#mbpFcLunar').textContent = norm.leapMonthRule?.applied
+      ? `${chart.chineseDate || chart.lunarDate || '—'} · ${norm.leapMonthRule.actualLabel}按${norm.leapMonthRule.effectiveLabel}排盘`
+      : (chart.chineseDate || chart.lunarDate || '—');
     if (norm.tstResult) {
       $('#mbpFcTst').textContent = `${pad2(norm.tstResult.trueSolarHour)}:${pad2(norm.tstResult.trueSolarMinute)}${norm.tstResult.isEstimated ? '（北京经度估算）' : `（偏差${norm.tstResult.diffStr}）`}`;
     } else {
@@ -7221,7 +7294,10 @@
       });
     });
     $('#mbpLunarDay')?.addEventListener('change', updateDatePreview);
-    $('#mbpLunarLeap')?.addEventListener('change', updateDatePreview);
+    $('#mbpLunarLeap')?.addEventListener('change', () => {
+      updateLunarLeapState();
+      updateDatePreview();
+    });
     $('#mbpHour')?.addEventListener('change', updateTrueSolarPreview);
     $('#mbpMinute')?.addEventListener('change', updateTrueSolarPreview);
 
