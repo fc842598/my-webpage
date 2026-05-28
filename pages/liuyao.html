@@ -7,11 +7,11 @@
   <meta name="description" content="阅天电脑端六爻占卜，一事一问，六次成卦，看本卦、动爻与变卦。">
   <link rel="icon" href="../images/logo-mark.svg" type="image/svg+xml">
   <link rel="stylesheet" href="../css/mingbook-onepage.css?v=20260525-liuyao-standalone">
-  <link rel="stylesheet" href="../css/liuyao.css?v=20260528-desktop-gate-inline">
+  <link rel="stylesheet" href="../css/liuyao.css?v=20260528-liuyao-ux">
   <script defer src="../js/config.js?v=20260521-api-domain-auth-proxy"></script>
   <script defer src="./guaci-data.js?v=20260520-yijing-typo-fix-7"></script>
   <script defer src="./yijing-master-data.js?v=20260520-yijing-typo-fix-7"></script>
-  <script defer src="../js/liuyao-page.js?v=20260528-desktop-gate-inline"></script>
+  <script defer src="../js/liuyao-page.js?v=20260528-liuyao-ux"></script>
 </head>
 <body class="liuyao-page">
   <header class="mbp-nav">
@@ -38,11 +38,18 @@
           <div class="mbp-liuyao-head">
             <span>六爻占卜</span>
             <strong id="mbpLiuyaoTitle">先定问题，再成六爻</strong>
-            <p>不要一次问多个方向。一个问题对应一卦，越具体，后面越好判断。</p>
+            <p>写清一件具体事，审题通过后再起卦。六次成爻后，会给出本卦、变卦、动爻和 AI 解卦入口。</p>
             <div class="mbp-liuyao-steps" id="mbpLiuyaoSteps" aria-label="占卜步骤">
               <span data-liuyao-step="question">1 定事</span>
               <span data-liuyao-step="cast">2 起卦</span>
               <span data-liuyao-step="read">3 看卦</span>
+            </div>
+            <div class="mbp-liuyao-flow-brief" aria-label="完整流程">
+              <span>写问题</span>
+              <span>审题</span>
+              <span>投 6 爻</span>
+              <span>看本卦/变卦</span>
+              <span>AI 解卦</span>
             </div>
           </div>
           <div class="mbp-liuyao-body">
@@ -51,6 +58,11 @@
                 <span>所问之事</span>
                 <textarea id="mbpLiuyaoQuestion" maxlength="120" rows="4" placeholder="例如：我现在是否适合推进这个合作？本月能不能见到明确结果？"></textarea>
               </label>
+              <p class="mbp-liuyao-field-hint">只问一件事。点下面示例可自动填入，再按自己的情况改细一点。</p>
+              <div class="mbp-liuyao-suggestion-head">
+                <span>示例问题</span>
+                <em>点选填入</em>
+              </div>
               <div class="mbp-liuyao-suggestions" aria-label="常见问法">
                 <button type="button" data-liuyao-question="我现在是否适合推进这个合作？">合作能不能推</button>
                 <button type="button" data-liuyao-question="这段感情未来三个月会不会有结果？">感情有没有结果</button>
@@ -63,9 +75,9 @@
               </section>
               <div class="mbp-liuyao-gate-tags" id="mbpLiuyaoGateTags">
                 <span>一卦一问</span>
-                <span>通过后开放起卦</span>
+                <span>审题后可起卦</span>
               </div>
-              <span class="mbp-liuyao-quota" id="mbpLiuyaoQuota">今日已占 0/3</span>
+              <span class="mbp-liuyao-quota" id="mbpLiuyaoQuota">今日次数 0/3</span>
               <div class="mbp-liuyao-mode" aria-label="起卦方式">
                 <button type="button" class="is-active" data-liuyao-mode="online">在线投币</button>
                 <button type="button" data-liuyao-mode="manual">手动起卦</button>
@@ -80,7 +92,7 @@
             <section class="mbp-liuyao-cast" aria-label="起卦结果">
               <div class="mbp-liuyao-cast-head">
                 <span>起卦进度</span>
-                <strong id="mbpLiuyaoProgressText">0 / 6</strong>
+                <strong id="mbpLiuyaoProgressText">已成 0/6 爻</strong>
                 <i><u id="mbpLiuyaoProgressBar"></u></i>
               </div>
               <div class="mbp-liuyao-coins" id="mbpLiuyaoCoins"></div>

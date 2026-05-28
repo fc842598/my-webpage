@@ -216,9 +216,9 @@
     const tags = gate?.labels?.length ? gate.labels.slice(0, 3) : ['一卦一问'];
     if (gate?.allowed) return [...tags, '可起卦'].slice(0, 3);
     if (state.gateLoading) return [...tags, '确认中'].slice(0, 3);
-    if (!normalizedQuestion) return ['一卦一问', '通过后开放起卦'];
+    if (!normalizedQuestion) return ['一卦一问', '审题后可起卦'];
     if (gate && !gate.allowed) return [...tags, '改好后重审'].slice(0, 3);
-    return ['一卦一问', '通过后开放起卦'];
+    return ['一卦一问', '审题后可起卦'];
   }
 
   function parseGateJson(text) {
@@ -466,7 +466,7 @@
     const label = animating
       ? `铜钱翻转中，落入${lineLabels[progress] || '本爻'}`
       : disabled
-        ? (progress >= 6 ? '六爻已成' : exhausted ? '今日已满，明天再起卦。' : '提交通过后开放投币')
+        ? (progress >= 6 ? '六爻已成' : exhausted ? '今日已满，明天再起卦。' : '先提交审题，通过后投第 1 爻')
         : `按住上拉，松手投${lineLabels[progress] || '本爻'}`;
     coins.innerHTML = `
         <div class="mbp-liuyao-coin-stage ${animating ? 'is-tossing' : ''} ${disabled ? 'is-disabled' : ''} ${state.drag ? 'is-dragging' : ''} ${dragReady ? 'is-ready' : ''}"
@@ -524,7 +524,20 @@
     if (!box) return;
     const result = getResult();
     if (!result) {
-      box.innerHTML = '<p class="mbp-liuyao-note">完成 6 爻后输出：本卦、变卦、动爻、古籍摘录和许半仙 AI 解卦入口。</p>';
+      box.innerHTML = `
+        <section class="mbp-liuyao-empty-preview" aria-label="解读结果预览">
+          <span>解读结果预览</span>
+          <strong>投满 6 爻后，这里会直接生成完整结果</strong>
+          <div>
+            <em>本卦</em>
+            <em>变卦</em>
+            <em>动爻</em>
+            <em>卦辞摘录</em>
+            <em>AI 解卦</em>
+          </div>
+          <p>不用猜会看到什么：先看当前局面，再看变化方向，最后可交给许半仙继续细断。</p>
+        </section>
+      `;
       return;
     }
     const movingText = formatMovingText(result.movingLines);
@@ -607,7 +620,7 @@
       ? '今日已满 3 次，明天再起卦。'
       : state.gateLoading
         ? '正在审题，合格后才起卦。'
-        : '先提交审题，通过后开放起卦。';
+        : '先提交审题，通过后可在线投币或手动录入。';
     if (state.mode !== 'manual') {
       panel.innerHTML = `
         <div class="mbp-liuyao-online-card ${disabled ? 'is-locked' : ''}">
@@ -651,7 +664,7 @@
           <div class="mbp-liuyao-manual-current">
             <div>
               <strong>${escapeHtml(lineLabels[currentIndex])}</strong>
-              <em>${currentCoins.filter(Boolean).length}/3</em>
+              <em>本爻 ${currentCoins.filter(Boolean).length}/3 枚</em>
             </div>
             <p>${disabled ? lockText : (currentCast ? `本爻已成：${currentCast.value} ${currentCast.name}。确认后进入下一爻。` : '现实中投三枚铜钱后，依次录入第 1、2、3 枚。')}</p>
             <div class="mbp-liuyao-manual-coins">
@@ -684,7 +697,7 @@
   function syncProgress(count) {
     const progressText = $('#mbpLiuyaoProgressText');
     const progressBar = $('#mbpLiuyaoProgressBar');
-    if (progressText) progressText.textContent = `${count} / 6`;
+    if (progressText) progressText.textContent = `${count >= 6 ? '已完成' : '已成'} ${count}/6 爻`;
     if (progressBar) progressBar.style.width = `${Math.min(100, Math.max(0, count / 6 * 100))}%`;
     const hasQuestion = Boolean(String($('#mbpLiuyaoQuestion')?.value || state.question || '').trim());
     document.querySelectorAll('[data-liuyao-step]').forEach((step) => {
@@ -715,7 +728,7 @@
       status.textContent = state.error
         || (count >= 6 ? '已成卦，可看本卦、动爻、变卦。'
           : ready ? (count > 0 ? `审题已通过，已成 ${count}/6 爻，继续投${lineLabels[count]}。` : (gate?.reason || '审题通过，可以起卦。'))
-            : (state.question ? '先点“提交审题”，通过后再起卦。' : '先写清楚一件事，再提交审题。'));
+            : (state.question ? '先点“提交审题”，通过后再起卦。' : '先写清一件事，或点示例问题自动填入。'));
       if (exhausted) status.textContent = '今日六爻占卜已满 3 次，明天再起卦。';
     }
     if (gateBadge) {
@@ -735,7 +748,7 @@
     if (toss) {
       toss.disabled = state.mode !== 'online' || !ready || state.gateLoading || state.tossAnimation?.active || exhausted || count >= 6;
       toss.textContent = state.gateLoading ? '审题中…'
-        : !ready ? '提交通过后开放投币'
+        : !ready ? '先提交审题'
           : state.mode !== 'online' ? '手动录入中'
             : count >= 6 ? '已成卦' : `投第 ${count + 1} 爻`;
       if (exhausted) toss.textContent = '今日已满';
@@ -749,7 +762,7 @@
     });
     if (quota) {
       const daily = normalizeQuota(state.quota);
-      quota.textContent = state.quotaLoading ? '今日次数确认中…' : `今日已占 ${daily.used}/${daily.limit}`;
+      quota.textContent = state.quotaLoading ? '今日次数确认中…' : `今日次数 ${daily.used}/${daily.limit}`;
       quota.classList.toggle('is-empty', daily.remaining <= 0);
     }
     syncProgress(count);
@@ -977,7 +990,8 @@
       render();
     });
     document.querySelectorAll('[data-liuyao-question]').forEach((button) => {
-      button.addEventListener('click', () => {
+      button.addEventListener('click', (event) => {
+        event.preventDefault();
         const textarea = $('#mbpLiuyaoQuestion');
         if (textarea) textarea.value = button.dataset.liuyaoQuestion || '';
         if (state.casts.length) {
@@ -987,7 +1001,7 @@
         }
         state.question = normalizeQuestion(textarea?.value || '');
         state.questionGate = null;
-        state.error = state.question ? '点“提交审题”后，再起卦。' : '';
+        state.error = state.question ? '示例已填入，确认无误后点“提交审题”。' : '';
         state.statusTone = '';
         render();
         textarea?.focus();
@@ -1059,6 +1073,6 @@
   document.addEventListener('DOMContentLoaded', () => {
     bindEvents();
     render();
-    refreshQuota();
+    if (window.SITE_CONFIG?.liuyaoQuotaRefresh === true) refreshQuota();
   });
 }());
