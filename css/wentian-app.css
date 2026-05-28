@@ -6678,18 +6678,18 @@ html[lang="en"] .liuyao-coin-summary em {
 
 .wentian-chart-content-stack {
   position: absolute;
-  left: 15px;
+  left: 8px;
   top: 608px;
-  width: 360px;
+  width: 374px;
   display: grid;
-  gap: 14px;
+  gap: 12px;
 }
 
 .wentian-chart-ai-panel {
   width: 100%;
-  padding: 20px 16px 22px;
+  padding: 18px 10px 20px;
   border: 1px solid #e0dcd3;
-  border-radius: 18px;
+  border-radius: 16px;
   background: linear-gradient(180deg, #fff 0%, #fffaf3 100%);
   box-shadow: 0 8px 22px rgba(70, 45, 25, 0.08);
 }
@@ -7132,15 +7132,15 @@ html[lang="en"] .liuyao-coin-summary em {
 
 .wentian-chart-ai-actions {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 72px 88px;
-  gap: 8px;
-  margin: 18px 0 14px;
+  grid-template-columns: minmax(0, 1fr) 68px 82px;
+  gap: 7px;
+  margin: 16px 0 12px;
 }
 
 .wentian-chart-ai-actions button {
   height: 44px;
   border-radius: 10px;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 900;
 }
 
@@ -7256,8 +7256,8 @@ html[lang="en"] .wentian-chart-ai-modules button {
 .wentian-chart-ai-pulse {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 8px;
-  margin-bottom: 14px;
+  gap: 7px;
+  margin-bottom: 12px;
 }
 
 .wentian-chart-ai-pulse span {
@@ -7281,13 +7281,13 @@ html[lang="en"] .wentian-chart-ai-modules button {
 .wentian-chart-ai-menu {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 7px;
-  margin-bottom: 16px;
+  gap: 6px;
+  margin-bottom: 14px;
 }
 
 .wentian-chart-ai-menu button {
   min-width: 0;
-  height: 48px;
+  height: 46px;
   border: 1px solid #eadbc7;
   border-radius: 10px;
   background: #fff;
