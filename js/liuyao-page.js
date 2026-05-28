@@ -188,28 +188,6 @@
     };
   }
 
-  function getGateButtonMeta(question = state.question) {
-    const normalizedQuestion = normalizeQuestion(question);
-    const gate = normalizeGate(state.questionGate, normalizedQuestion);
-    const exhausted = normalizeQuota(state.quota).remaining <= 0 && !gate?.allowed;
-    if (state.gateLoading) return { label: '审题中…', disabled: true, state: 'loading' };
-    if (exhausted) return { label: '今日已满', disabled: true, state: 'error' };
-    if (gate?.allowed) return { label: '已通过', disabled: true, state: 'approved' };
-    if (gate && !gate.allowed) return { label: '修改后重审', disabled: !normalizedQuestion, state: 'rejected' };
-    return { label: '提交审题', disabled: !normalizedQuestion, state: 'idle' };
-  }
-
-  function getGateBadgeMeta(question = state.question) {
-    const normalizedQuestion = normalizeQuestion(question);
-    const gate = normalizeGate(state.questionGate, normalizedQuestion);
-    const exhausted = normalizeQuota(state.quota).remaining <= 0 && !gate?.allowed;
-    if (state.gateLoading) return { label: '审题中', state: 'loading' };
-    if (exhausted) return { label: '今日已满', state: 'error' };
-    if (gate?.allowed) return { label: '已通过', state: 'ok' };
-    if (gate && !gate.allowed) return { label: '需修改', state: 'error' };
-    return { label: normalizedQuestion ? '待确认' : '待审题', state: 'idle' };
-  }
-
   function getGateTags(question = state.question) {
     const normalizedQuestion = normalizeQuestion(question);
     const gate = normalizeGate(state.questionGate, normalizedQuestion);
@@ -217,7 +195,7 @@
     if (gate?.allowed) return [...tags, '可起卦'].slice(0, 3);
     if (state.gateLoading) return [...tags, '确认中'].slice(0, 3);
     if (!normalizedQuestion) return ['一卦一问', '审题后可起卦'];
-    if (gate && !gate.allowed) return [...tags, '改好后重审'].slice(0, 3);
+    if (gate && !gate.allowed) return [...tags, '改好后再起卦'].slice(0, 3);
     return ['一卦一问', '审题后可起卦'];
   }
 
@@ -256,7 +234,7 @@
       return fail('问题还太泛，暂不起卦。', '请具体到一件事，例如“这个项目本月能不能推进”。', ['问题太泛']);
     }
     if ((normalizedQuestion.match(/[？?]/g) || []).length > 1 || /同时|另外|还有|顺便|以及/.test(normalizedQuestion)) {
-      return fail('一次只问一件事。', '请先删到一个核心问题，再提交。', ['一事一占']);
+      return fail('一次只问一件事。', '请先删到一个核心问题，再起卦。', ['一事一占']);
     }
 
     const hasSpecificSubject = /(我|我们|本人|自己|这个|这件|该|现在|本月|今年|最近|网站|项目|公司|店|生意|工作|客户|合作|合同|订单|产品|账号|平台|考试|offer|面试|房子|投资|资金|对方|他|她|TA|孩子|家人|父母|伴侣|对象|老板|同事|合伙人)/i.test(normalizedQuestion);
@@ -469,16 +447,17 @@
     const animating = state.tossAnimation?.active;
     const values = animating ? state.tossAnimation.cast.coins : (state.lastCoins.length ? state.lastCoins : [3, 2, 3]);
     const progress = getProgress();
+    const hasQuestion = Boolean(normalizeQuestion(state.question));
     const questionReady = Boolean(normalizeGate(state.questionGate, state.question)?.allowed);
     const exhausted = normalizeQuota(state.quota).remaining <= 0 && !questionReady;
-    const disabled = state.mode !== 'online' || state.gateLoading || exhausted || !questionReady || progress >= 6;
+    const disabled = state.mode !== 'online' || state.gateLoading || exhausted || !hasQuestion || progress >= 6;
     const power = animating ? Math.max(18, Math.min(100, Number(state.tossAnimation.power) || 62)) : 0;
     const pull = state.drag?.pull || 0;
     const dragReady = state.drag?.ready;
     const label = animating
       ? `铜钱翻转中，落入${lineLabels[progress] || '本爻'}`
       : disabled
-        ? (progress >= 6 ? '六爻已成' : exhausted ? '今日已满，明天再起卦。' : '先提交审题，通过后投第 1 爻')
+        ? (progress >= 6 ? '六爻已成' : exhausted ? '今日已满，明天再起卦。' : '先写清问题，再起卦')
         : `按住上拉，松手投${lineLabels[progress] || '本爻'}`;
     coins.innerHTML = `
         <div class="mbp-liuyao-coin-stage ${animating ? 'is-tossing' : ''} ${disabled ? 'is-disabled' : ''} ${state.drag ? 'is-dragging' : ''} ${dragReady ? 'is-ready' : ''}"
@@ -627,17 +606,19 @@
     const gate = normalizeGate(state.questionGate, state.question);
     const ready = Boolean(gate?.allowed);
     const exhausted = normalizeQuota(state.quota).remaining <= 0 && !ready;
-    const disabled = state.gateLoading || exhausted || !ready;
+    const hasQuestion = Boolean(normalizeQuestion(state.question));
+    const disabled = state.gateLoading || exhausted || !hasQuestion;
     const lockText = exhausted
       ? '今日已满 3 次，明天再起卦。'
       : state.gateLoading
         ? '正在审题，合格后才起卦。'
-        : '先提交审题，通过后可在线投币或手动录入。';
+        : '先写清一件事，再起卦。';
+    const activeHint = !ready && state.error ? state.error : '';
     if (state.mode !== 'manual') {
       panel.innerHTML = `
         <div class="mbp-liuyao-online-card ${disabled ? 'is-locked' : ''}">
           <strong>动态投币</strong>
-          <span class="${disabled ? 'is-lock' : ''}">${disabled ? lockText : `点击“投第 ${Math.min(progress + 1, 6)} 爻”，或按住右侧铜钱上拉松手，铜钱翻转后落爻。`}</span>
+          <span class="${disabled ? 'is-lock' : ''}">${disabled ? lockText : (activeHint || `点击“投第 ${Math.min(progress + 1, 6)} 爻”，系统会先审题，通过后直接落爻。`)}</span>
         </div>
       `;
       return;
@@ -678,7 +659,7 @@
               <strong>${escapeHtml(lineLabels[currentIndex])}</strong>
               <em>本爻 ${currentCoins.filter(Boolean).length}/3 枚</em>
             </div>
-            <p>${disabled ? lockText : (currentCast ? `本爻已成：${currentCast.value} ${currentCast.name}。确认后进入下一爻。` : '现实中投三枚铜钱后，依次录入第 1、2、3 枚。')}</p>
+            <p>${disabled ? lockText : (activeHint || (currentCast ? `本爻已成：${currentCast.value} ${currentCast.name}。确认后进入下一爻。` : '现实中投三枚铜钱后，依次录入第 1、2、3 枚；系统会先审题。'))}</p>
             <div class="mbp-liuyao-manual-coins">
               ${[0, 1, 2].map((coinIndex) => `
                 <div>
@@ -723,51 +704,27 @@
 
   function render() {
     const count = getProgress();
-    const status = $('#mbpLiuyaoStatus');
     const toss = $('#mbpLiuyaoToss');
     const auto = $('#mbpLiuyaoAuto');
     const quota = $('#mbpLiuyaoQuota');
-    const gateButton = $('#mbpLiuyaoGateSubmit');
-    const gateBadge = $('#mbpLiuyaoGateBadge');
     const gateTags = $('#mbpLiuyaoGateTags');
     const gate = normalizeGate(state.questionGate, state.question);
     const ready = Boolean(gate?.allowed);
     const exhausted = normalizeQuota(state.quota).exhausted && !ready;
-    if (status) {
-      status.classList.toggle('is-error', exhausted || (Boolean(state.error) && !['ok', 'loading'].includes(state.statusTone)));
-      status.classList.toggle('is-ok', state.statusTone === 'ok');
-      status.classList.toggle('is-loading', state.statusTone === 'loading');
-      status.textContent = state.error
-        || (count >= 6 ? '已成卦，可看本卦、动爻、变卦。'
-          : ready ? (count > 0 ? `审题已通过，已成 ${count}/6 爻，继续投${lineLabels[count]}。` : (gate?.reason || '审题通过，可以起卦。'))
-            : (state.question ? '先点“提交审题”，通过后再起卦。' : '先写清一件事，或点示例问题自动填入。'));
-      if (exhausted) status.textContent = '今日六爻占卜已满 3 次，明天再起卦。';
-    }
-    if (gateBadge) {
-      const badgeMeta = getGateBadgeMeta();
-      gateBadge.textContent = badgeMeta.label;
-      gateBadge.className = `mbp-liuyao-gate-badge${badgeMeta.state ? ` is-${badgeMeta.state}` : ''}`;
-    }
-    if (gateButton) {
-      const meta = getGateButtonMeta();
-      gateButton.textContent = meta.label;
-      gateButton.disabled = meta.disabled;
-      gateButton.className = `mbp-liuyao-gate-submit${meta.state ? ` is-${meta.state}` : ''}`;
-    }
     if (gateTags) {
       gateTags.innerHTML = getGateTags().map((item) => `<span>${escapeHtml(item)}</span>`).join('');
     }
     if (toss) {
-      toss.disabled = state.mode !== 'online' || !ready || state.gateLoading || state.tossAnimation?.active || exhausted || count >= 6;
+      toss.disabled = state.mode !== 'online' || !normalizeQuestion(state.question) || state.gateLoading || state.tossAnimation?.active || exhausted || count >= 6;
       toss.textContent = state.gateLoading ? '审题中…'
-        : !ready ? '先提交审题'
+        : !normalizeQuestion(state.question) ? '先写问题'
           : state.mode !== 'online' ? '手动录入中'
             : count >= 6 ? '已成卦' : `投第 ${count + 1} 爻`;
       if (exhausted) toss.textContent = '今日已满';
     }
     if (auto) {
-      auto.disabled = state.mode !== 'online' || !ready || state.gateLoading || state.tossAnimation?.active || exhausted || count >= 6;
-      auto.textContent = exhausted ? '今日已满' : (!ready ? '待审题' : '一键成卦');
+      auto.disabled = state.mode !== 'online' || !normalizeQuestion(state.question) || state.gateLoading || state.tossAnimation?.active || exhausted || count >= 6;
+      auto.textContent = exhausted ? '今日已满' : (!normalizeQuestion(state.question) ? '先写问题' : '一键成卦');
     }
     document.querySelectorAll('[data-liuyao-mode]').forEach((button) => {
       button.classList.toggle('is-active', button.dataset.liuyaoMode === state.mode);
@@ -997,29 +954,10 @@
       }
       state.question = nextQuestion;
       state.questionGate = null;
-      state.error = nextQuestion && hadGate ? '改好后点“提交审题”，重新确认。' : '';
+      state.error = nextQuestion && hadGate ? '改好后直接起卦，系统会重新审题。' : '';
       state.statusTone = '';
       render();
     });
-    document.querySelectorAll('[data-liuyao-question]').forEach((button) => {
-      button.addEventListener('click', (event) => {
-        event.preventDefault();
-        const textarea = $('#mbpLiuyaoQuestion');
-        if (textarea) textarea.value = button.dataset.liuyaoQuestion || '';
-        if (state.casts.length) {
-          state.casts = [];
-          state.manualCoins = Array.from({ length: 6 }, () => LIUYAO_MANUAL_EMPTY_COINS.slice());
-          state.lastCoins = [];
-        }
-        state.question = normalizeQuestion(textarea?.value || '');
-        state.questionGate = null;
-        state.error = state.question ? '示例已填入，确认无误后点“提交审题”。' : '';
-        state.statusTone = '';
-        render();
-        textarea?.focus();
-      });
-    });
-    $('#mbpLiuyaoGateSubmit')?.addEventListener('click', ensureQuestionAllowed);
     $('#mbpLiuyaoToss')?.addEventListener('click', tossLine);
     $('#mbpLiuyaoAuto')?.addEventListener('click', autoCast);
     $('#mbpLiuyaoReset')?.addEventListener('click', reset);
