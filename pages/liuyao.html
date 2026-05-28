@@ -7,11 +7,11 @@
   <meta name="description" content="阅天电脑端六爻占卜，一事一问，六次成卦，看本卦、动爻与变卦。">
   <link rel="icon" href="../images/logo-mark.svg" type="image/svg+xml">
   <link rel="stylesheet" href="../css/mingbook-onepage.css?v=20260525-liuyao-standalone">
-  <link rel="stylesheet" href="../css/liuyao.css?v=20260528-desktop-gate-review">
+  <link rel="stylesheet" href="../css/liuyao.css?v=20260528-desktop-gate-inline">
   <script defer src="../js/config.js?v=20260521-api-domain-auth-proxy"></script>
   <script defer src="./guaci-data.js?v=20260520-yijing-typo-fix-7"></script>
   <script defer src="./yijing-master-data.js?v=20260520-yijing-typo-fix-7"></script>
-  <script defer src="../js/liuyao-page.js?v=20260528-desktop-gate-review"></script>
+  <script defer src="../js/liuyao-page.js?v=20260528-desktop-gate-inline"></script>
 </head>
 <body class="liuyao-page">
   <header class="mbp-nav">
@@ -56,20 +56,15 @@
                 <button type="button" data-liuyao-question="这段感情未来三个月会不会有结果？">感情有没有结果</button>
                 <button type="button" data-liuyao-question="我近期是否适合换工作或换方向？">工作要不要换</button>
               </div>
-              <section class="mbp-liuyao-gate-card" id="mbpLiuyaoGateCard" aria-label="审题确认">
-                <div class="mbp-liuyao-gate-head">
-                  <strong>审题确认</strong>
-                  <span class="is-idle" id="mbpLiuyaoGateBadge">待审题</span>
-                </div>
+              <section class="mbp-liuyao-gate-inline" id="mbpLiuyaoGateCard" aria-label="审题确认">
+                <span class="mbp-liuyao-gate-badge is-idle" id="mbpLiuyaoGateBadge">待审题</span>
                 <p class="mbp-liuyao-status" id="mbpLiuyaoStatus">先写清楚一件事，再提交审题。</p>
-                <div class="mbp-liuyao-gate-actions">
-                  <button type="button" class="mbp-liuyao-gate-submit" id="mbpLiuyaoGateSubmit" disabled>提交审题</button>
-                  <div class="mbp-liuyao-gate-tags" id="mbpLiuyaoGateTags">
-                    <span>一卦一问</span>
-                    <span>通过后开放起卦</span>
-                  </div>
-                </div>
+                <button type="button" class="mbp-liuyao-gate-submit" id="mbpLiuyaoGateSubmit" disabled>提交审题</button>
               </section>
+              <div class="mbp-liuyao-gate-tags" id="mbpLiuyaoGateTags">
+                <span>一卦一问</span>
+                <span>通过后开放起卦</span>
+              </div>
               <span class="mbp-liuyao-quota" id="mbpLiuyaoQuota">今日已占 0/3</span>
               <div class="mbp-liuyao-mode" aria-label="起卦方式">
                 <button type="button" class="is-active" data-liuyao-mode="online">在线投币</button>

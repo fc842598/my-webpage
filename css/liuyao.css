@@ -74,32 +74,14 @@
   color: #f1d47d;
 }
 
-.liuyao-page .mbp-liuyao-gate-card {
+.liuyao-page .mbp-liuyao-gate-inline {
   display: grid;
-  gap: 12px;
-  padding: 14px;
-  border: 1px solid rgba(241, 212, 125, .16);
-  border-radius: 16px;
-  background:
-    linear-gradient(135deg, rgba(241, 212, 125, .08), transparent 56%),
-    rgba(8, 6, 4, .32);
-}
-
-.liuyao-page .mbp-liuyao-gate-head,
-.liuyao-page .mbp-liuyao-gate-actions {
-  display: flex;
+  grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: center;
-  justify-content: space-between;
   gap: 12px;
 }
 
-.liuyao-page .mbp-liuyao-gate-head strong {
-  color: #fff7db;
-  font-size: 16px;
-  font-weight: 900;
-}
-
-.liuyao-page .mbp-liuyao-gate-head span {
+.liuyao-page .mbp-liuyao-gate-badge {
   min-height: 28px;
   display: inline-flex;
   align-items: center;
@@ -113,26 +95,26 @@
   line-height: 1.2;
 }
 
-.liuyao-page .mbp-liuyao-gate-head span.is-ok {
+.liuyao-page .mbp-liuyao-gate-badge.is-ok {
   border-color: rgba(125, 187, 130, .34);
   background: rgba(125, 187, 130, .14);
   color: #c7efc2;
 }
 
-.liuyao-page .mbp-liuyao-gate-head span.is-loading {
+.liuyao-page .mbp-liuyao-gate-badge.is-loading {
   border-color: rgba(241, 212, 125, .32);
   background: rgba(241, 212, 125, .12);
   color: #f1d47d;
 }
 
-.liuyao-page .mbp-liuyao-gate-head span.is-error {
+.liuyao-page .mbp-liuyao-gate-badge.is-error {
   border-color: rgba(255, 181, 157, .28);
   background: rgba(163, 68, 54, .13);
   color: #ffb59d;
 }
 
-.liuyao-page .mbp-liuyao-gate-card .mbp-liuyao-status {
-  min-height: 52px;
+.liuyao-page .mbp-liuyao-gate-inline .mbp-liuyao-status {
+  min-height: 0;
   margin: 0;
 }
 
@@ -177,8 +159,9 @@
 .liuyao-page .mbp-liuyao-gate-tags {
   display: flex;
   flex-wrap: wrap;
-  justify-content: flex-end;
+  justify-content: flex-start;
   gap: 8px;
+  margin-top: 8px;
 }
 
 .liuyao-page .mbp-liuyao-gate-tags span {
@@ -911,19 +894,13 @@
 }
 
 @media (max-width: 640px) {
-  .liuyao-page .mbp-liuyao-gate-head,
-  .liuyao-page .mbp-liuyao-gate-actions {
-    align-items: stretch;
-    flex-direction: column;
+  .liuyao-page .mbp-liuyao-gate-inline {
+    grid-template-columns: 1fr;
   }
 
-  .liuyao-page .mbp-liuyao-gate-head span,
+  .liuyao-page .mbp-liuyao-gate-badge,
   .liuyao-page .mbp-liuyao-gate-submit {
     width: 100%;
     justify-content: center;
-  }
-
-  .liuyao-page .mbp-liuyao-gate-tags {
-    justify-content: flex-start;
   }
 }

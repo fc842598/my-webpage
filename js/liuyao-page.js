@@ -721,7 +721,7 @@
     if (gateBadge) {
       const badgeMeta = getGateBadgeMeta();
       gateBadge.textContent = badgeMeta.label;
-      gateBadge.className = badgeMeta.state ? `is-${badgeMeta.state}` : '';
+      gateBadge.className = `mbp-liuyao-gate-badge${badgeMeta.state ? ` is-${badgeMeta.state}` : ''}`;
     }
     if (gateButton) {
       const meta = getGateButtonMeta();
