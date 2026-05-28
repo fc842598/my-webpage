@@ -64,7 +64,11 @@ const convertedScreens = [
   { no: 46, title: "六壬法", active: "活动" },
   { no: 47, title: "六壬法教程", active: "活动" },
   { no: 48, title: "支付记录", active: "我的" },
-  { no: 49, title: "合盘结果", active: "首页" }
+  { no: 49, title: "合盘结果", active: "首页" },
+  { no: 50, title: "办公室布局", active: "首页" },
+  { no: 51, title: "办公室布局说明", active: "首页" },
+  { no: 52, title: "办公室布局结果", active: "首页" },
+  { no: 53, title: "导入平面图", active: "首页" }
 ];
 
 const convertedByNo = new Map(convertedScreens.map((screen) => [screen.no, screen]));
@@ -115,7 +119,13 @@ const screenFlowHotspots = {
   44: [],
   45: [],
   46: [],
-  47: []
+  47: [],
+  48: [],
+  49: [],
+  50: [],
+  51: [],
+  52: [],
+  53: []
 };
 
 const routes = {
@@ -169,7 +179,9 @@ const routeAliases = {
   language: "screen-37",
   basic: "screen-39",
   login: "screen-40",
-  password: "screen-41"
+  password: "screen-41",
+  office: "screen-50",
+  "office-layout": "screen-50"
 };
 
 const state = {
@@ -13586,6 +13598,702 @@ const LIUREN_HAND_BADGE_COLORS = [
 ];
 const LIUREN_FLASH_INTERVAL_SECONDS = 0.2;
 const LIUREN_SCREEN_HEIGHT = 1900;
+
+const OFFICE_LAYOUT_STORAGE_KEY = "wentian-office-layout-state-v1";
+const OFFICE_LAYOUT_STATE_VERSION = 1;
+const OFFICE_LAYOUT_MAX_CASES = 6;
+const OFFICE_LAYOUT_RECOGNITION_MIN_CONFIDENCE = 0.65;
+const OFFICE_LAYOUT_TRIGRAMS = [
+  { gua: "乾", direction: "西北", label: "西北 · 乾卦", meaning: "偏管理、掌控、资源与决策节奏。" },
+  { gua: "坎", direction: "正北", label: "正北 · 坎卦", meaning: "偏流动、信息、沟通与外部往来。" },
+  { gua: "艮", direction: "东北", label: "东北 · 艮卦", meaning: "偏稳定、边界、沉淀与执行底盘。" },
+  { gua: "震", direction: "正东", label: "正东 · 震卦", meaning: "偏启动、执行、推进与团队动能。" },
+  { gua: "巽", direction: "东南", label: "东南 · 巽卦", meaning: "偏协同、渗透、关系与业务拓展。" },
+  { gua: "离", direction: "正南", label: "正南 · 离卦", meaning: "偏曝光、判断、品牌与看见度。" },
+  { gua: "坤", direction: "西南", label: "西南 · 坤卦", meaning: "偏承载、团队配合与后勤支持。" },
+  { gua: "兑", direction: "正西", label: "正西 · 兑卦", meaning: "偏表达、洽谈、客户感受与输出。" },
+];
+let officeLayoutState = loadOfficeLayoutState();
+let officeLayoutImportLoading = false;
+
+function getOfficeLayoutExternalMap() {
+  const map = typeof window !== "undefined" ? window.OFFICE_LAYOUT_TEXT_MAP : null;
+  return map && typeof map === "object" ? map : {};
+}
+
+function getOfficeLayoutTrigramMeta(value = "") {
+  return OFFICE_LAYOUT_TRIGRAMS.find((item) => item.gua === value) || {
+    gua: "",
+    direction: "",
+    label: "待定",
+    meaning: "先确定方向，再看布局。",
+  };
+}
+
+function normalizeOfficeLayoutTrigram(value = "") {
+  const raw = String(value || "").trim();
+  if (!raw) return "";
+  const direct = OFFICE_LAYOUT_TRIGRAMS.find((item) => item.gua === raw);
+  if (direct) return direct.gua;
+  const cleaned = raw.replace(/\s+/g, "");
+  const byDirection = OFFICE_LAYOUT_TRIGRAMS.find((item) => cleaned.includes(item.direction));
+  return byDirection ? byDirection.gua : "";
+}
+
+function normalizeOfficeLayoutConfidence(value) {
+  const num = Number(value);
+  if (!Number.isFinite(num)) return null;
+  return Math.max(0, Math.min(1, num));
+}
+
+function normalizeOfficeLayoutRecognition(value) {
+  if (!value || typeof value !== "object") return null;
+  const outerCandidate = normalizeOfficeLayoutTrigram(value.outerCandidate || value.doorDirectionLabel);
+  const innerCandidate = normalizeOfficeLayoutTrigram(value.innerCandidate || value.bossDirectionLabel);
+  const confidence = normalizeOfficeLayoutConfidence(value.confidence);
+  const needConfirm =
+    Boolean(value.needConfirm) ||
+    confidence === null ||
+    confidence < OFFICE_LAYOUT_RECOGNITION_MIN_CONFIDENCE ||
+    !outerCandidate ||
+    !innerCandidate;
+  return {
+    outerCandidate,
+    innerCandidate,
+    confidence,
+    notes: String(value.notes || "").trim().slice(0, 180),
+    needConfirm,
+    confirmed: !needConfirm || Boolean(value.confirmed),
+    doorDirectionLabel: String(value.doorDirectionLabel || (outerCandidate ? getOfficeLayoutTrigramMeta(outerCandidate).direction : "")).trim(),
+    bossDirectionLabel: String(value.bossDirectionLabel || (innerCandidate ? getOfficeLayoutTrigramMeta(innerCandidate).direction : "")).trim(),
+  };
+}
+
+function buildOfficeLayoutCaseTitleFromValues(outerTrigram, innerTrigram) {
+  if (!outerTrigram || !innerTrigram) return "办公室布局";
+  return `${getOfficeLayoutTrigramMeta(outerTrigram).direction}门向 × ${getOfficeLayoutTrigramMeta(innerTrigram).direction}老板位`;
+}
+
+function normalizeOfficeLayoutCases(list) {
+  return (Array.isArray(list) ? list : [])
+    .map((item) => {
+      if (!item || typeof item !== "object") return null;
+      const outerTrigram = normalizeOfficeLayoutTrigram(item.outerTrigram);
+      const innerTrigram = normalizeOfficeLayoutTrigram(item.innerTrigram);
+      if (!outerTrigram || !innerTrigram) return null;
+      return {
+        id: isWentianUuid(item.id) ? item.id : makeWentianUuid(),
+        title: String(item.title || "").trim() || buildOfficeLayoutCaseTitleFromValues(outerTrigram, innerTrigram),
+        outerTrigram,
+        innerTrigram,
+        importedImageDataUrl: typeof item.importedImageDataUrl === "string" ? item.importedImageDataUrl : null,
+        createdAt: item.createdAt || new Date().toISOString(),
+      };
+    })
+    .filter(Boolean)
+    .slice(0, OFFICE_LAYOUT_MAX_CASES);
+}
+
+function createOfficeLayoutState() {
+  return {
+    version: OFFICE_LAYOUT_STATE_VERSION,
+    outerTrigram: "",
+    innerTrigram: "",
+    importedImageDataUrl: null,
+    recognition: null,
+    saveCase: false,
+    cases: [],
+    activeCaseId: "",
+    statusText: "",
+    statusTone: "",
+  };
+}
+
+function loadOfficeLayoutState() {
+  try {
+    const raw = typeof localStorage !== "undefined" ? localStorage.getItem(OFFICE_LAYOUT_STORAGE_KEY) : "";
+    const parsed = raw ? JSON.parse(raw) : null;
+    if (!parsed || typeof parsed !== "object") return createOfficeLayoutState();
+    return {
+      version: OFFICE_LAYOUT_STATE_VERSION,
+      outerTrigram: normalizeOfficeLayoutTrigram(parsed.outerTrigram),
+      innerTrigram: normalizeOfficeLayoutTrigram(parsed.innerTrigram),
+      importedImageDataUrl: typeof parsed.importedImageDataUrl === "string" ? parsed.importedImageDataUrl : null,
+      recognition: normalizeOfficeLayoutRecognition(parsed.recognition),
+      saveCase: Boolean(parsed.saveCase),
+      cases: normalizeOfficeLayoutCases(parsed.cases),
+      activeCaseId: isWentianUuid(parsed.activeCaseId) ? parsed.activeCaseId : "",
+      statusText: String(parsed.statusText || "").trim(),
+      statusTone: String(parsed.statusTone || "").trim(),
+    };
+  } catch (_err) {
+    return createOfficeLayoutState();
+  }
+}
+
+function saveOfficeLayoutState() {
+  try {
+    if (typeof localStorage === "undefined") return;
+    localStorage.setItem(OFFICE_LAYOUT_STORAGE_KEY, JSON.stringify({
+      version: OFFICE_LAYOUT_STATE_VERSION,
+      outerTrigram: officeLayoutState.outerTrigram,
+      innerTrigram: officeLayoutState.innerTrigram,
+      importedImageDataUrl: officeLayoutState.importedImageDataUrl,
+      recognition: officeLayoutState.recognition,
+      saveCase: officeLayoutState.saveCase,
+      cases: normalizeOfficeLayoutCases(officeLayoutState.cases),
+      activeCaseId: officeLayoutState.activeCaseId,
+      statusText: officeLayoutState.statusText,
+      statusTone: officeLayoutState.statusTone,
+    }));
+  } catch (_err) {}
+}
+
+function isOfficeLayoutRoute(route = state.route) {
+  return ["screen-50", "screen-51", "screen-52", "screen-53"].includes(route);
+}
+
+function refreshOfficeLayoutView(route = state.route) {
+  if (isOfficeLayoutRoute(route)) navigate(route, false);
+}
+
+function setOfficeLayoutStatus(text, tone = "") {
+  officeLayoutState.statusText = String(text || "").trim();
+  officeLayoutState.statusTone = String(tone || "").trim();
+  saveOfficeLayoutState();
+}
+
+function getOfficeLayoutStatusSnapshot() {
+  return {
+    text: officeLayoutState.statusText || "可先手动选择外卦和内卦，也可导入平面图自动识别方向。",
+    tone: officeLayoutState.statusTone || "",
+  };
+}
+
+function getOfficeLayoutHex(outerTrigram, innerTrigram) {
+  return outerTrigram && innerTrigram ? YANGZHAI_HEX_INDEX[`${outerTrigram}-${innerTrigram}`] || null : null;
+}
+
+function createOfficeLayoutFallbackReading(outerTrigram, innerTrigram, hex) {
+  const outerMeta = getOfficeLayoutTrigramMeta(outerTrigram);
+  const innerMeta = getOfficeLayoutTrigramMeta(innerTrigram);
+  const hexNo = String(hex?.no || "--");
+  const hexName = String(hex?.name || "组合待定");
+  return {
+    outerTrigram,
+    innerTrigram,
+    hexNo,
+    hexName,
+    summary: `${outerMeta.direction}门向配${innerMeta.direction}老板位，先看入口纳气能否顺畅送到主位。`,
+    conclusion: "这一组布局先看外面怎么进气，再看里面怎么定盘。门向与老板位如果动静配合顺，团队更容易形成稳定的执行节奏。",
+    advice: "先保证大门通畅、老板位背后有靠、主通道不过冲，再检查会客区、工位动线和核心决策位是否互相打架。",
+    longReading: [
+      `当前外卦是${outerMeta.label}，代表办公室对外纳气的入口气质；当前内卦是${innerMeta.label}，代表老板位置与决策核心。两者组合后，对应第${hexNo}卦《${hexName}》。`,
+      `${outerMeta.meaning}${innerMeta.meaning}。如果门口进来的气流、来访动线和老板位的视线关系顺着走，通常更容易形成“信息进得来、决策落得下、执行推得动”的布局。`,
+      "这一版先把重点放在三个检查项：一是门口是否被杂物、柜体或尖角压住；二是老板位背后有没有稳定依靠、前方有没有直冲；三是团队主要动线会不会直接切过老板位或核心会议位。先把这三件事理顺，再做细节微调。",
+    ].join("\n\n"),
+    focusTags: [`外卦 · ${outerMeta.direction}`, `内卦 · ${innerMeta.direction}`, "先看门口纳气", "再看老板位有无靠"],
+  };
+}
+
+function getOfficeLayoutReading(outerTrigram = officeLayoutState.outerTrigram, innerTrigram = officeLayoutState.innerTrigram) {
+  const hex = getOfficeLayoutHex(outerTrigram, innerTrigram);
+  const external = getOfficeLayoutExternalMap();
+  const keyed = external[`${outerTrigram}-${innerTrigram}`] || external[String(hex?.no || "")] || null;
+  const fallback = createOfficeLayoutFallbackReading(outerTrigram, innerTrigram, hex);
+  if (!keyed || typeof keyed !== "object") return fallback;
+  return {
+    ...fallback,
+    summary: String(keyed.summary || fallback.summary),
+    conclusion: String(keyed.conclusion || keyed.summary || fallback.conclusion),
+    advice: String(keyed.advice || fallback.advice),
+    longReading: String(keyed.longReading || fallback.longReading),
+    focusTags: Array.isArray(keyed.focusTags) && keyed.focusTags.length ? keyed.focusTags.slice(0, 4) : fallback.focusTags,
+  };
+}
+
+function getOfficeLayoutConfidenceLabel(confidence) {
+  if (!Number.isFinite(confidence)) return "待确认";
+  return `${Math.round(confidence * 100)}%`;
+}
+
+function officeLayoutNeedsManualConfirmation() {
+  return Boolean(officeLayoutState.recognition?.needConfirm && !officeLayoutState.recognition?.confirmed);
+}
+
+function canQueryOfficeLayout() {
+  return Boolean(
+    officeLayoutState.outerTrigram &&
+    officeLayoutState.innerTrigram &&
+    !officeLayoutImportLoading &&
+    !officeLayoutNeedsManualConfirmation()
+  );
+}
+
+function buildOfficeLayoutCaseTitle(outerTrigram = officeLayoutState.outerTrigram, innerTrigram = officeLayoutState.innerTrigram) {
+  return buildOfficeLayoutCaseTitleFromValues(outerTrigram, innerTrigram);
+}
+
+function formatOfficeLayoutCaseDate(value) {
+  const date = new Date(value || "");
+  if (Number.isNaN(date.getTime())) return "";
+  const cn = new Date(date.getTime() + 8 * 60 * 60 * 1000);
+  return cn.toISOString().slice(0, 16).replace("T", " ");
+}
+
+function markOfficeLayoutRecognitionConfirmed(statusText = "已按当前方向确认，可继续查询。") {
+  if (!officeLayoutState.recognition) return;
+  officeLayoutState.recognition.confirmed = true;
+  officeLayoutState.recognition.needConfirm = false;
+  setOfficeLayoutStatus(statusText, "ok");
+  saveOfficeLayoutState();
+}
+
+function updateOfficeLayoutField(field, value, options = {}) {
+  officeLayoutState[field] = normalizeOfficeLayoutTrigram(value);
+  if (options.manualConfirm && officeLayoutState.recognition) {
+    markOfficeLayoutRecognitionConfirmed("已按手动选择为准，可继续查询。");
+  } else {
+    saveOfficeLayoutState();
+  }
+}
+
+function toggleOfficeLayoutSaveCase(checked) {
+  officeLayoutState.saveCase = Boolean(checked);
+  saveOfficeLayoutState();
+  refreshOfficeLayoutView();
+}
+
+function removeOfficeLayoutImportedImage() {
+  officeLayoutState.importedImageDataUrl = null;
+  officeLayoutState.recognition = null;
+  officeLayoutImportLoading = false;
+  setOfficeLayoutStatus("已移除平面图，仍可手动选择外卦和内卦。", "warn");
+  saveOfficeLayoutState();
+  refreshOfficeLayoutView();
+}
+
+function resetOfficeLayoutCurrent() {
+  const next = createOfficeLayoutState();
+  next.cases = normalizeOfficeLayoutCases(officeLayoutState.cases);
+  officeLayoutState = next;
+  officeLayoutImportLoading = false;
+  setOfficeLayoutStatus("已清空本次办公室布局。", "warn");
+  saveOfficeLayoutState();
+  navigate("screen-50", false);
+}
+
+function persistOfficeLayoutCaseIfNeeded() {
+  if (!officeLayoutState.saveCase || !officeLayoutState.outerTrigram || !officeLayoutState.innerTrigram) return null;
+  const existing = officeLayoutState.cases.find((item) => item.id === officeLayoutState.activeCaseId) || null;
+  const entry = {
+    id: existing?.id || makeWentianUuid(),
+    title: buildOfficeLayoutCaseTitle(),
+    outerTrigram: officeLayoutState.outerTrigram,
+    innerTrigram: officeLayoutState.innerTrigram,
+    importedImageDataUrl: officeLayoutState.importedImageDataUrl,
+    createdAt: existing?.createdAt || new Date().toISOString(),
+  };
+  officeLayoutState.cases = normalizeOfficeLayoutCases([entry, ...officeLayoutState.cases.filter((item) => item.id !== entry.id)]);
+  officeLayoutState.activeCaseId = entry.id;
+  saveOfficeLayoutState();
+  return entry;
+}
+
+function loadOfficeLayoutCase(caseId, openResult = false) {
+  const entry = officeLayoutState.cases.find((item) => item.id === caseId);
+  if (!entry) return;
+  officeLayoutState.outerTrigram = entry.outerTrigram;
+  officeLayoutState.innerTrigram = entry.innerTrigram;
+  officeLayoutState.importedImageDataUrl = entry.importedImageDataUrl || null;
+  officeLayoutState.recognition = null;
+  officeLayoutState.activeCaseId = entry.id;
+  officeLayoutState.saveCase = true;
+  setOfficeLayoutStatus(`已载入案例：${entry.title}`, "ok");
+  saveOfficeLayoutState();
+  navigate(openResult ? "screen-52" : "screen-50", false);
+}
+
+function deleteOfficeLayoutCase(caseId) {
+  officeLayoutState.cases = officeLayoutState.cases.filter((item) => item.id !== caseId);
+  if (officeLayoutState.activeCaseId === caseId) officeLayoutState.activeCaseId = "";
+  setOfficeLayoutStatus("本地案例已删除。", "warn");
+  saveOfficeLayoutState();
+  refreshOfficeLayoutView();
+}
+
+function splitOfficeLayoutParagraphs(text) {
+  return String(text || "").split(/\n{2,}/).map((item) => item.trim()).filter(Boolean);
+}
+
+function splitOfficeLayoutAdvice(text) {
+  return String(text || "").split(/[；;。]/).map((item) => item.trim()).filter(Boolean).slice(0, 4);
+}
+
+function renderOfficeLayoutDirectionOptions(selected = "") {
+  const current = normalizeOfficeLayoutTrigram(selected);
+  return [
+    '<option value="">请选择</option>',
+    ...OFFICE_LAYOUT_TRIGRAMS.map((item) => `<option value="${item.gua}"${item.gua === current ? " selected" : ""}>${item.label}</option>`),
+  ].join("");
+}
+
+function renderOfficeLayoutRecognitionSummary() {
+  const status = getOfficeLayoutStatusSnapshot();
+  const recognition = officeLayoutState.recognition;
+  const outerMeta = recognition?.outerCandidate ? getOfficeLayoutTrigramMeta(recognition.outerCandidate) : null;
+  const innerMeta = recognition?.innerCandidate ? getOfficeLayoutTrigramMeta(recognition.innerCandidate) : null;
+  const title = officeLayoutImportLoading ? "正在识别平面图" : (recognition ? "平面图识别结果" : "当前状态");
+  const metaText = recognition
+    ? [
+        outerMeta ? `外卦：${outerMeta.direction}` : "",
+        innerMeta ? `内卦：${innerMeta.direction}` : "",
+        `置信度：${getOfficeLayoutConfidenceLabel(recognition.confidence)}`,
+      ].filter(Boolean).join(" · ")
+    : "";
+  return `
+    <div class="office-layout-status" data-tone="${escapeHtml(status.tone || "")}">
+      <strong>${title}</strong>
+      <span>${escapeHtml(status.text)}</span>
+      ${metaText ? `<span>${escapeHtml(metaText)}</span>` : ""}
+    </div>
+  `;
+}
+
+function renderOfficeLayoutPreviewBlock() {
+  const recognition = officeLayoutState.recognition;
+  if (!officeLayoutState.importedImageDataUrl) return "";
+  return `
+    <div class="office-layout-preview">
+      <img src="${officeLayoutState.importedImageDataUrl}" alt="办公室平面图预览">
+      <div class="office-layout-preview-meta">
+        <span class="office-layout-chip">${escapeHtml(officeLayoutState.outerTrigram ? `${getOfficeLayoutTrigramMeta(officeLayoutState.outerTrigram).direction}外卦` : "外卦待定")}</span>
+        <span class="office-layout-chip">${escapeHtml(officeLayoutState.innerTrigram ? `${getOfficeLayoutTrigramMeta(officeLayoutState.innerTrigram).direction}内卦` : "内卦待定")}</span>
+        ${recognition ? `<span class="office-layout-chip">${escapeHtml(`识别 ${getOfficeLayoutConfidenceLabel(recognition.confidence)}`)}</span>` : ""}
+      </div>
+    </div>
+  `;
+}
+
+function renderOfficeLayoutCaseList() {
+  if (!officeLayoutState.cases.length) {
+    return '<div class="office-layout-empty">还没有保存的办公室案例。<br>勾选“保存案例”后查询，下次可以直接重新打开。</div>';
+  }
+  return `
+    <div class="office-layout-case-list">
+      ${officeLayoutState.cases.map((item) => `
+        <article class="office-layout-case">
+          <div class="office-layout-case-title">${escapeHtml(item.title)}</div>
+          <div class="office-layout-case-meta">${escapeHtml(formatOfficeLayoutCaseDate(item.createdAt) || "本地保存")}</div>
+          <div class="office-layout-case-actions">
+            <button type="button" class="office-layout-case-action" data-action="office-layout-load-case" data-case-id="${item.id}">载入</button>
+            <button type="button" class="office-layout-case-action" data-action="office-layout-view-case" data-case-id="${item.id}">看结果</button>
+            <button type="button" class="office-layout-case-action" data-action="office-layout-delete-case" data-case-id="${item.id}">删除</button>
+          </div>
+        </article>
+      `).join("")}
+    </div>
+  `;
+}
+
+function sourceOfficeLayoutFrame(id, title, content, rightLabel = "", rightRoute = "") {
+  return `
+    ${figBox(`${id}-bg`, 0, 0, 390, 844, "", "background:linear-gradient(180deg,#fffdf8 0%,#f8f1e5 52%,#fffaf2 100%);")}
+    ${figBox(`${id}-top`, 0, 0, 390, 92, "", "background:#fffaf1;")}
+    ${figLine(`${id}-line`, 0, 91, 390, "#eadbc6")}
+    ${wentianSimpleHeader(id, title, rightLabel)}
+    ${rightRoute ? figButton(`${id}-right-hit`, 314, 32, 64, 44, `data-route="${rightRoute}"`) : ""}
+    <section class="office-layout-scroll" data-node-id="${id}-scroll">
+      ${content}
+    </section>
+  `;
+}
+
+function sourceOfficeLayoutHomeScreen() {
+  const status = getOfficeLayoutStatusSnapshot();
+  return sourceOfficeLayoutFrame("office50", "办公室布局", `
+    <section class="office-layout-panel hero">
+      <span class="office-layout-kicker">门向外卦 · 老板内卦</span>
+      <h2 class="office-layout-title">先定门向，再看老板位</h2>
+      <p class="office-layout-copy">根据办公室大门朝向和老板位置，快速生成一版布局摘要、调整建议和长文解读。新手也可以先导入平面图，让系统给出方向候选。</p>
+      <div class="office-layout-steps">
+        <span class="office-layout-step-chip">1 选外卦</span>
+        <span class="office-layout-step-chip">2 选内卦</span>
+        <span class="office-layout-step-chip">3 查结果</span>
+      </div>
+    </section>
+    <section class="office-layout-panel">
+      <div class="office-layout-panel-header">
+        <h3>办公室布局首页</h3>
+        <span class="office-layout-chip">手机端新功能</span>
+      </div>
+      <div class="office-layout-row">
+        <label class="office-layout-row-label" for="office-layout-outer-select">办公室大门朝向（外卦）</label>
+        <select id="office-layout-outer-select" class="office-layout-select">${renderOfficeLayoutDirectionOptions(officeLayoutState.outerTrigram)}</select>
+      </div>
+      <div class="office-layout-row">
+        <label class="office-layout-row-label" for="office-layout-inner-select">老板位置（内卦）</label>
+        <select id="office-layout-inner-select" class="office-layout-select">${renderOfficeLayoutDirectionOptions(officeLayoutState.innerTrigram)}</select>
+      </div>
+      <div class="office-layout-row">
+        <div class="office-layout-toggle-line">
+          <div class="office-layout-toggle-copy">
+            <strong>保存案例</strong>
+            <span>勾选后，本次组合会保存在手机本地，下次可以直接重新打开。</span>
+          </div>
+          <label class="office-layout-toggle-checkbox">
+            <input id="office-layout-save-toggle" type="checkbox"${officeLayoutState.saveCase ? " checked" : ""}>
+            <span></span>
+          </label>
+        </div>
+      </div>
+      <div class="office-layout-row">
+        <span class="office-layout-row-label">导入平面图</span>
+        <button type="button" class="office-layout-text-button" data-route="screen-53">拍照或从相册选择，自动识别外卦 / 内卦</button>
+      </div>
+      ${renderOfficeLayoutRecognitionSummary()}
+      ${renderOfficeLayoutPreviewBlock()}
+      <div class="office-layout-buttons">
+        <button type="button" class="office-layout-button primary" data-action="office-layout-query"${canQueryOfficeLayout() ? "" : " disabled"}>查询</button>
+        <button type="button" class="office-layout-button secondary" data-route="screen-51">查看使用说明</button>
+        <button type="button" class="office-layout-button ghost" data-route="screen-53">导入平面图</button>
+        <button type="button" class="office-layout-button danger" data-action="office-layout-reset">清空本次</button>
+      </div>
+      ${officeLayoutNeedsManualConfirmation() ? '<p class="office-layout-note">当前识别置信度偏低，请手动核对方向，或去导入页点“我已确认当前方向”。</p>' : ""}
+      ${status.tone === "error" ? '<p class="office-layout-note">识图失败也没关系，手动选外卦和内卦一样能直接查询。</p>' : ""}
+    </section>
+    <section class="office-layout-panel">
+      <div class="office-layout-panel-header">
+        <h3>本地案例</h3>
+        <span class="office-layout-chip">${officeLayoutState.cases.length} 条</span>
+      </div>
+      ${renderOfficeLayoutCaseList()}
+    </section>
+  `, "说明", "screen-51");
+}
+
+function sourceOfficeLayoutGuideScreen() {
+  return sourceOfficeLayoutFrame("office51", "使用说明", `
+    <section class="office-layout-panel hero">
+      <span class="office-layout-kicker">新手先看这里</span>
+      <h2 class="office-layout-title">先定大门，再定老板位</h2>
+      <p class="office-layout-copy">你只需要先确定办公室大门朝向和老板位置。可以手动选，也可以导入平面图后让系统先给一版方向候选。</p>
+    </section>
+    <section class="office-layout-panel">
+      <div class="office-layout-video-slot">
+        <span class="office-layout-chip">【视频讲解位】</span>
+        <strong>这里先放静态讲解卡位</strong>
+        <p class="office-layout-copy">v1 先做静态卡位，后续可直接替换成真实视频或截图讲解。</p>
+      </div>
+    </section>
+    <section class="office-layout-guide-grid">
+      <article class="office-layout-guide-step"><i>01</i><div><strong>先确定办公室大门朝向和老板位置</strong><p>外卦看大门朝向，内卦看老板位。先把这两个点定住，再谈布局是否顺手。</p></div></article>
+      <article class="office-layout-guide-step"><i>02</i><div><strong>可用手机指南针或平面图判断</strong><p>站在办公室中心附近看大门所在方向，或在平面图里标出北向后，判断大门和老板位分别落在哪个方位。</p></div></article>
+      <article class="office-layout-guide-step"><i>03</i><div><strong>选外卦和内卦，再查询</strong><p>系统会给出摘要卡、核心结论、布局建议和长文解读。低置信度识图时，记得先手动确认再查。</p></div></article>
+    </section>
+    <section class="office-layout-panel">
+      <h3>不会确定方位？</h3>
+      <p class="office-layout-copy">1）先找平面图上的北；2）再看大门在哪一边；3）最后看老板位靠哪一宫。没有十足把握时，宁可手动确认，也不要直接照着低置信度结果硬查。</p>
+      <div class="office-layout-buttons">
+        <button type="button" class="office-layout-button primary" data-route="screen-50">返回办公室布局</button>
+        <button type="button" class="office-layout-button ghost" data-route="screen-53">去导入平面图</button>
+      </div>
+    </section>
+  `);
+}
+
+function sourceOfficeLayoutImportScreen() {
+  const recognition = officeLayoutState.recognition;
+  return sourceOfficeLayoutFrame("office53", "导入平面图", `
+    <section class="office-layout-panel hero">
+      <span class="office-layout-kicker">支持拍照与相册</span>
+      <h2 class="office-layout-title">导入平面图，先给方向候选</h2>
+      <p class="office-layout-copy">系统会尝试识别大门朝向和老板位置，并自动回填外卦与内卦。识别不稳时，前端会要求你手动确认后才能查询。</p>
+    </section>
+    <section class="office-layout-panel">
+      <div class="office-layout-panel-header">
+        <h3>导入平面图</h3>
+        <span class="office-layout-chip">${officeLayoutImportLoading ? "识别中" : "可重传"}</span>
+      </div>
+      <div class="office-layout-action-sheet">
+        <button type="button" class="primary" data-action="office-layout-pick-camera">拍摄平面图</button>
+        <button type="button" data-action="office-layout-pick-album">从相册中选择</button>
+      </div>
+      <input id="office-layout-camera-input" type="file" accept="image/*" capture="environment" hidden>
+      <input id="office-layout-album-input" type="file" accept="image/*" hidden>
+      ${renderOfficeLayoutRecognitionSummary()}
+      ${renderOfficeLayoutPreviewBlock()}
+      <div class="office-layout-buttons">
+        ${officeLayoutNeedsManualConfirmation() ? '<button type="button" class="office-layout-button primary" data-action="office-layout-confirm-recognition">我已确认当前方向</button>' : '<button type="button" class="office-layout-button primary" data-route="screen-50">返回办公室布局</button>'}
+        <button type="button" class="office-layout-button ghost" data-route="screen-50">手动改外卦 / 内卦</button>
+        <button type="button" class="office-layout-button danger" data-action="office-layout-remove-image"${officeLayoutState.importedImageDataUrl ? "" : " disabled"}>移除图片</button>
+        <button type="button" class="office-layout-button secondary" data-route="screen-52"${canQueryOfficeLayout() ? "" : " disabled"}>直接看结果</button>
+      </div>
+      ${recognition?.notes ? `<p class="office-layout-note">识别说明：${escapeHtml(recognition.notes)}</p>` : ""}
+    </section>
+  `);
+}
+
+function sourceOfficeLayoutResultScreen() {
+  if (!officeLayoutState.outerTrigram || !officeLayoutState.innerTrigram) {
+    return sourceOfficeLayoutFrame("office52", "办公室布局结果", `
+      <section class="office-layout-panel hero">
+        <span class="office-layout-kicker">还没开始查询</span>
+        <h2 class="office-layout-title">先选门向和老板位</h2>
+        <p class="office-layout-copy">先回到办公室布局首页，确定外卦与内卦，再生成这一页的长文结果。</p>
+      </section>
+      <section class="office-layout-panel">
+        <div class="office-layout-buttons">
+          <button type="button" class="office-layout-button primary" data-route="screen-50">去办公室布局</button>
+          <button type="button" class="office-layout-button ghost" data-route="screen-51">先看说明</button>
+        </div>
+      </section>
+    `);
+  }
+  const reading = getOfficeLayoutReading();
+  const outerMeta = getOfficeLayoutTrigramMeta(reading.outerTrigram);
+  const innerMeta = getOfficeLayoutTrigramMeta(reading.innerTrigram);
+  const caseEntry = officeLayoutState.cases.find((item) => item.id === officeLayoutState.activeCaseId) || null;
+  return sourceOfficeLayoutFrame("office52", "办公室布局结果", `
+    <section class="office-layout-panel office-layout-summary-card">
+      <span class="office-layout-kicker">办公室布局长文卡</span>
+      <h2>第 ${escapeHtml(reading.hexNo)} 卦 · ${escapeHtml(reading.hexName)}</h2>
+      <p>${escapeHtml(reading.summary)}</p>
+      <div class="office-layout-pill-row">
+        <span class="office-layout-pill">外卦：${escapeHtml(`${outerMeta.direction} · ${outerMeta.gua}`)}</span>
+        <span class="office-layout-pill">内卦：${escapeHtml(`${innerMeta.direction} · ${innerMeta.gua}`)}</span>
+        ${caseEntry ? '<span class="office-layout-pill">本地案例已载入</span>' : ""}
+      </div>
+    </section>
+    <section class="office-layout-panel office-layout-rich-card">
+      <h4>核心结论</h4>
+      <p>${escapeHtml(reading.conclusion)}</p>
+      <div class="office-layout-preview-meta">
+        ${(reading.focusTags || []).map((tag) => `<span class="office-layout-chip">${escapeHtml(tag)}</span>`).join("")}
+      </div>
+    </section>
+    <section class="office-layout-panel office-layout-rich-card">
+      <h4>布局建议</h4>
+      <ul>${splitOfficeLayoutAdvice(reading.advice).map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
+      ${officeLayoutState.importedImageDataUrl ? renderOfficeLayoutPreviewBlock() : ""}
+    </section>
+    <section class="office-layout-panel office-layout-rich-card office-layout-long">
+      <h4>长文解读</h4>
+      ${splitOfficeLayoutParagraphs(reading.longReading).map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`).join("")}
+    </section>
+    <section class="office-layout-panel">
+      <h3>下一步</h3>
+      <div class="office-layout-buttons">
+        <button type="button" class="office-layout-button primary" data-route="screen-50">继续调整</button>
+        <button type="button" class="office-layout-button ghost" data-route="screen-51">查看使用说明</button>
+      </div>
+    </section>
+  `);
+}
+
+function initOfficeLayoutHomeScreen() {
+  const outer = document.getElementById("office-layout-outer-select");
+  const inner = document.getElementById("office-layout-inner-select");
+  const saveToggle = document.getElementById("office-layout-save-toggle");
+  outer?.addEventListener("change", (event) => {
+    updateOfficeLayoutField("outerTrigram", event.target.value || "", { manualConfirm: true });
+    refreshOfficeLayoutView("screen-50");
+  });
+  inner?.addEventListener("change", (event) => {
+    updateOfficeLayoutField("innerTrigram", event.target.value || "", { manualConfirm: true });
+    refreshOfficeLayoutView("screen-50");
+  });
+  saveToggle?.addEventListener("change", (event) => {
+    toggleOfficeLayoutSaveCase(Boolean(event.target.checked));
+  });
+}
+
+function initOfficeLayoutImportScreen() {
+  const bindPicker = (id) => {
+    const input = document.getElementById(id);
+    if (!input) return;
+    input.value = "";
+    input.addEventListener("change", (event) => {
+      const file = event.target.files?.[0] || null;
+      if (file) handleOfficeLayoutImageSelection(file);
+    });
+  };
+  bindPicker("office-layout-camera-input");
+  bindPicker("office-layout-album-input");
+}
+
+function triggerOfficeLayoutFileInput(kind = "album") {
+  const targetId = kind === "camera" ? "office-layout-camera-input" : "office-layout-album-input";
+  document.getElementById(targetId)?.click();
+}
+
+async function handleOfficeLayoutImageSelection(file) {
+  officeLayoutImportLoading = true;
+  setOfficeLayoutStatus("正在识别平面图里的门向和老板位，请稍等。", "active");
+  refreshOfficeLayoutView();
+  try {
+    officeLayoutState.importedImageDataUrl = await compressWentianRefundScreenshot(file);
+    officeLayoutState.recognition = null;
+    saveOfficeLayoutState();
+    refreshOfficeLayoutView();
+    const data = await wentianFetchJson("/api/ai/office-layout-recognize", {
+      method: "POST",
+      body: {
+        imageDataUrl: officeLayoutState.importedImageDataUrl,
+        clientId: getWentianClientId(),
+      },
+      noAuth: true,
+    });
+    officeLayoutState.recognition = normalizeOfficeLayoutRecognition(data);
+    if (officeLayoutState.recognition?.outerCandidate) officeLayoutState.outerTrigram = officeLayoutState.recognition.outerCandidate;
+    if (officeLayoutState.recognition?.innerCandidate) officeLayoutState.innerTrigram = officeLayoutState.recognition.innerCandidate;
+    if (officeLayoutState.recognition?.needConfirm) {
+      setOfficeLayoutStatus("识别完成，但置信度偏低。请手动确认方向后再查询。", "warn");
+    } else {
+      setOfficeLayoutStatus("识别完成，已自动回填外卦和内卦。", "ok");
+    }
+  } catch (error) {
+    officeLayoutState.recognition = {
+      outerCandidate: officeLayoutState.outerTrigram || "",
+      innerCandidate: officeLayoutState.innerTrigram || "",
+      confidence: null,
+      notes: error?.message || "识图接口暂不可用",
+      needConfirm: true,
+      confirmed: false,
+      doorDirectionLabel: "",
+      bossDirectionLabel: "",
+    };
+    setOfficeLayoutStatus("识图接口暂不可用，先手动选外卦和内卦也能查询。", "warn");
+  } finally {
+    officeLayoutImportLoading = false;
+    saveOfficeLayoutState();
+    refreshOfficeLayoutView();
+  }
+}
+
+function confirmOfficeLayoutRecognition() {
+  if (!officeLayoutState.recognition) return;
+  markOfficeLayoutRecognitionConfirmed();
+  refreshOfficeLayoutView();
+}
+
+function submitOfficeLayoutQuery() {
+  if (!officeLayoutState.outerTrigram || !officeLayoutState.innerTrigram) {
+    setOfficeLayoutStatus("请先选好办公室大门朝向和老板位置。", "error");
+    refreshOfficeLayoutView();
+    return;
+  }
+  if (officeLayoutNeedsManualConfirmation()) {
+    setOfficeLayoutStatus("请先手动确认当前方向，再继续查询。", "warn");
+    refreshOfficeLayoutView();
+    return;
+  }
+  persistOfficeLayoutCaseIfNeeded();
+  setOfficeLayoutStatus("已生成办公室布局结果。", "ok");
+  saveOfficeLayoutState();
+  navigate("screen-52");
+}
+
 let liurenHasStarted = false;
 let liurenXuRecordId = null;
 let liurenActiveDate = null;
@@ -14104,6 +14812,10 @@ function renderWentianPolishedScreen(screen) {
   if (no === 45) return sourceYangzhaiTutorialScreen();
   if (no === 46) return sourceLiurenScreen();
   if (no === 47) return sourceLiurenTutorialScreen();
+  if (no === 50) return sourceOfficeLayoutHomeScreen();
+  if (no === 51) return sourceOfficeLayoutGuideScreen();
+  if (no === 52) return sourceOfficeLayoutResultScreen();
+  if (no === 53) return sourceOfficeLayoutImportScreen();
   if (no >= 17 && no <= 19) return sourceLiuyaoCastScreen();
   if (no === 20) return sourceLiuyaoResultScreen();
   if (no === 30) return sourcePaymentScreen();
@@ -14812,6 +15524,8 @@ function sourceDashboardHomeScreen() {
       ["合盘分析", "双方命盘合参", "01-feature-hepan.png", "hepan", 201, 400],
       ["六爻占卜", "铜钱起卦", "01-feature-gua.png", "screen-17", 18, 516],
       ["阳宅地脉", "方位九宫", "01-feature-li.png", "screen-42", 201, 516],
+      ["办公室布局", "门向与老板位", "01-feature-qian.png", "screen-50", 18, 632],
+      ["六壬法", "农历掌诀", "01-feature-qian.png", "screen-46", 201, 632],
     ];
     return `
       ${figBox("source-1-bg", 0, 0, 390, 844, "", "background:linear-gradient(180deg,#fffdf8 0%,#fbf7ef 50%,#fff6ea 100%);")}
@@ -14852,11 +15566,6 @@ function sourceDashboardHomeScreen() {
         ${figImage(`source-1-feature-icon-${index}`, `../images/wentian-prototype-assets/${icon}`, x + 112, y + 18, 50, 58, "object-fit:contain;opacity:.86;")}
         ${figButton(`source-1-feature-hit-${index}`, x, y, 171, 104, `data-route="${route}"`, "", "z-index:35;")}
       `).join("")}
-      ${figBox("source-1-liuren", 18, 636, 354, 82, "", "border-radius:18px;background:#fffdf8;border:1px solid #eadfce;box-shadow:0 8px 20px rgba(70,45,25,.07);overflow:hidden;")}
-      ${figText("source-1-liuren-title", "六壬法", 36, 657, 100, 20, "#25221f", 900)}
-      ${figText("source-1-liuren-sub", "农历月日时，即刻起课", 36, 685, 172, 13, "#8d877e", 700)}
-      ${figImage("source-1-liuren-icon", "../images/wentian-prototype-assets/01-feature-qian.png", 284, 644, 70, 68, "object-fit:contain;opacity:.9;")}
-      ${figButton("source-1-liuren-hit", 18, 636, 354, 82, 'data-route="screen-46"', "", "z-index:35;")}
       ${sourceAppBottomNav("首页", 755)}
     `;
   }
@@ -16132,6 +16841,8 @@ function navigate(route, push = true) {
     if (screen.no === 26) window.setTimeout(initWentianChartForm, 0);
     if (screen.no === 27) window.setTimeout(initWentianClassicChartScreen, 0);
     if (screen.no === 46) window.setTimeout(initLiurenScreen, 0);
+    if (screen.no === 50) window.setTimeout(initOfficeLayoutHomeScreen, 0);
+    if (screen.no === 53) window.setTimeout(initOfficeLayoutImportScreen, 0);
     if (screen.no === 49) window.setTimeout(initWentianHepanAiJudgement, 0);
     if (!location.hash.includes("figmacapture=") && !hasWentianAuthParams(getWentianUrlParams(location.hash))) location.hash = route;
     window.scrollTo(0, 0);
@@ -16153,6 +16864,7 @@ function syncActive() {
   if (screenNo === 3 || screenNo >= 25 && screenNo <= 27) railRoute = "screen-3";
   if (screenNo >= 13 && screenNo <= 24) railRoute = "screen-13";
   if (screenNo >= 28 && screenNo <= 41) railRoute = "screen-31";
+  if (screenNo >= 50 && screenNo <= 53) railRoute = "screen-1";
   if (screenNo === 1 || screenNo === 2 || screenNo === 10 || screenNo === 11) railRoute = "screen-1";
   for (const button of document.querySelectorAll("[data-route]")) {
     if (button.closest(".rail-nav")) {
@@ -16165,7 +16877,6 @@ function syncActive() {
   }
   screenNav?.querySelector(`[data-route="${state.route}"]`)?.scrollIntoView({ block: "nearest" });
 }
-
 function reportCards() {
   return reports.map(([name, desc, price]) => `
     <article class="report-card">
@@ -16630,6 +17341,45 @@ document.addEventListener("click", (event) => {
   }
   if (earlyAction === "liuyao-ask-xu") {
     openLiuyaoXuChat();
+    return;
+  }
+  if (earlyAction === "office-layout-query") {
+    submitOfficeLayoutQuery();
+    return;
+  }
+  if (earlyAction === "office-layout-reset") {
+    resetOfficeLayoutCurrent();
+    return;
+  }
+  if (earlyAction === "office-layout-pick-camera") {
+    triggerOfficeLayoutFileInput("camera");
+    return;
+  }
+  if (earlyAction === "office-layout-pick-album") {
+    triggerOfficeLayoutFileInput("album");
+    return;
+  }
+  if (earlyAction === "office-layout-confirm-recognition") {
+    confirmOfficeLayoutRecognition();
+    return;
+  }
+  if (earlyAction === "office-layout-remove-image") {
+    removeOfficeLayoutImportedImage();
+    return;
+  }
+  if (earlyAction === "office-layout-load-case") {
+    const caseId = earlyActionTarget.dataset.caseId || "";
+    if (caseId) loadOfficeLayoutCase(caseId, false);
+    return;
+  }
+  if (earlyAction === "office-layout-view-case") {
+    const caseId = earlyActionTarget.dataset.caseId || "";
+    if (caseId) loadOfficeLayoutCase(caseId, true);
+    return;
+  }
+  if (earlyAction === "office-layout-delete-case") {
+    const caseId = earlyActionTarget.dataset.caseId || "";
+    if (caseId) deleteOfficeLayoutCase(caseId);
     return;
   }
   const routeButton = event.target.closest("[data-route]");
