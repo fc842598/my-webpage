@@ -313,13 +313,25 @@
       if (!parsed) throw new Error('gate parse failed');
       return parsed;
     } catch (_err) {
+      const quota = normalizeQuota(state.quota);
+      if (quota.remaining > 0) {
+        return {
+          ...localGate,
+          allowed: true,
+          normalizedQuestion: localGate.normalizedQuestion || question,
+          reason: '本地审题通过，可以起卦。后台次数稍后同步。',
+          suggestion: '后台恢复后会继续同步今日次数。',
+          labels: [...new Set([...(localGate.labels || ['一事一占']), '本地通过'])].slice(0, 4),
+          quota,
+        };
+      }
       return {
         allowed: false,
         normalizedQuestion: question,
-        reason: '后台暂时不可用，无法确认今日次数，先不起卦。',
-        suggestion: '请稍后再试。',
-        labels: ['次数未确认'],
-        quota: state.quota,
+        reason: '今日六爻占卜已满 3 次，明天再起卦。',
+        suggestion: '',
+        labels: ['今日已满'],
+        quota,
       };
     }
   }
