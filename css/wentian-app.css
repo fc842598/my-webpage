@@ -8704,9 +8704,11 @@ html[lang="en"] .wentian-chart-ai-menu span {
 }
 
 .wentian-mb-curve-verify-grid section {
+  display: grid;
+  row-gap: 12px;
   border: 1px solid rgba(199, 164, 75, .38);
   border-radius: 16px;
-  padding: 13px;
+  padding: 14px;
   background: #181006;
 }
 
@@ -8730,32 +8732,32 @@ html[lang="en"] .wentian-chart-ai-menu span {
 
 .wentian-mb-curve-verify-grid strong {
   display: block;
-  margin-top: 8px;
   color: #fff7df;
   font-size: 16px;
   font-weight: 900;
 }
 
 .wentian-mb-curve-verify-grid p {
-  margin: 8px 0 0;
+  margin: 0;
   color: #d7c7a0;
   font-size: 14px;
   font-weight: 800;
-  line-height: 1.65;
+  line-height: 1.82;
 }
 
 .wentian-mb-curve-verify-grid nav {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 7px;
-  margin-top: 11px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 2px;
 }
 
 .wentian-mb-curve-verify-grid nav button {
   min-height: 44px;
+  min-width: 0;
   border: 1px solid rgba(226, 199, 103, .38);
   border-radius: 999px;
-  padding: 0 10px;
+  padding: 0 8px;
   background: transparent;
   color: #ecd281;
   font-family: inherit;
