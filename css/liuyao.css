@@ -74,6 +74,127 @@
   color: #f1d47d;
 }
 
+.liuyao-page .mbp-liuyao-gate-card {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid rgba(241, 212, 125, .16);
+  border-radius: 16px;
+  background:
+    linear-gradient(135deg, rgba(241, 212, 125, .08), transparent 56%),
+    rgba(8, 6, 4, .32);
+}
+
+.liuyao-page .mbp-liuyao-gate-head,
+.liuyao-page .mbp-liuyao-gate-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.liuyao-page .mbp-liuyao-gate-head strong {
+  color: #fff7db;
+  font-size: 16px;
+  font-weight: 900;
+}
+
+.liuyao-page .mbp-liuyao-gate-head span {
+  min-height: 28px;
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 12px;
+  border: 1px solid rgba(241, 212, 125, .18);
+  border-radius: 999px;
+  background: rgba(241, 212, 125, .08);
+  color: #d9c99d;
+  font-size: 12px;
+  font-weight: 900;
+  line-height: 1.2;
+}
+
+.liuyao-page .mbp-liuyao-gate-head span.is-ok {
+  border-color: rgba(125, 187, 130, .34);
+  background: rgba(125, 187, 130, .14);
+  color: #c7efc2;
+}
+
+.liuyao-page .mbp-liuyao-gate-head span.is-loading {
+  border-color: rgba(241, 212, 125, .32);
+  background: rgba(241, 212, 125, .12);
+  color: #f1d47d;
+}
+
+.liuyao-page .mbp-liuyao-gate-head span.is-error {
+  border-color: rgba(255, 181, 157, .28);
+  background: rgba(163, 68, 54, .13);
+  color: #ffb59d;
+}
+
+.liuyao-page .mbp-liuyao-gate-card .mbp-liuyao-status {
+  min-height: 52px;
+  margin: 0;
+}
+
+.liuyao-page .mbp-liuyao-gate-submit {
+  min-height: 42px;
+  padding: 0 18px;
+  border: 0;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #d5bb69, #b96f42);
+  color: #17100a;
+  cursor: pointer;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 950;
+  white-space: nowrap;
+}
+
+.liuyao-page .mbp-liuyao-gate-submit:disabled {
+  opacity: .55;
+  cursor: default;
+}
+
+.liuyao-page .mbp-liuyao-gate-submit.is-approved {
+  background: linear-gradient(135deg, #9fd49f, #5e9f67);
+  color: #0f1a11;
+}
+
+.liuyao-page .mbp-liuyao-gate-submit.is-rejected {
+  background: linear-gradient(135deg, #c18a62, #8b4e39);
+  color: #fff3e6;
+}
+
+.liuyao-page .mbp-liuyao-gate-submit.is-loading {
+  background: linear-gradient(135deg, #f1d47d, #c59242);
+}
+
+.liuyao-page .mbp-liuyao-gate-submit.is-error {
+  background: linear-gradient(135deg, #c18a62, #8b4e39);
+  color: #fff3e6;
+}
+
+.liuyao-page .mbp-liuyao-gate-tags {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.liuyao-page .mbp-liuyao-gate-tags span {
+  min-height: 26px;
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 10px;
+  border: 1px solid rgba(241, 212, 125, .14);
+  border-radius: 999px;
+  background: rgba(241, 212, 125, .05);
+  color: #cab98f;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
 .liuyao-page .mbp-liuyao-quota {
   justify-self: start;
   min-height: 26px;
@@ -135,6 +256,14 @@
   border: 1px solid rgba(241, 212, 125, .18);
   border-radius: 16px;
   background: rgba(8, 6, 4, .3);
+}
+
+.liuyao-page .mbp-liuyao-online-card.is-locked,
+.liuyao-page .mbp-liuyao-manual-card.is-locked {
+  border-color: rgba(241, 212, 125, .12);
+  background:
+    linear-gradient(135deg, rgba(241, 212, 125, .04), transparent 56%),
+    rgba(8, 6, 4, .2);
 }
 
 .liuyao-page .mbp-liuyao-online-card strong,
@@ -254,6 +383,11 @@
   opacity: .48;
   cursor: not-allowed;
   box-shadow: none;
+}
+
+.liuyao-page .mbp-liuyao-online-card .is-lock,
+.liuyao-page .mbp-liuyao-manual-card .is-lock {
+  color: #f1d47d;
 }
 
 .liuyao-page .mbp-liuyao-manual-history {
@@ -773,5 +907,23 @@
 
   .liuyao-page .mbp-liuyao-coin-token:nth-of-type(3) {
     right: 10%;
+  }
+}
+
+@media (max-width: 640px) {
+  .liuyao-page .mbp-liuyao-gate-head,
+  .liuyao-page .mbp-liuyao-gate-actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .liuyao-page .mbp-liuyao-gate-head span,
+  .liuyao-page .mbp-liuyao-gate-submit {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .liuyao-page .mbp-liuyao-gate-tags {
+    justify-content: flex-start;
   }
 }
