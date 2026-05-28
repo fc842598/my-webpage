@@ -2356,7 +2356,7 @@
     updateTrueSolarPreview();
   }
 
-  function setCalMode(mode) {
+  function setCalMode(mode, options = {}) {
     formCalMode = mode;
     document.querySelectorAll('.nf-cal-btn').forEach((btn) => btn.classList.toggle('active', btn.dataset.cal === mode));
     const isLunar = mode === 'lunar';
@@ -2364,6 +2364,8 @@
     $('#mbpSolarInputs').style.display = isLunar ? 'none' : '';
     $('#mbpLunarInputs').style.display = isLunar ? '' : 'none';
     $('#mbpAiInlineWrap').style.display = isAi ? 'block' : 'none';
+    if (isLunar) updateLunarLeapState({ autoDefault: !!options.autoDefaultLeap });
+    else updateLunarLeapState();
     updateDatePreview();
   }
 
@@ -2465,7 +2467,7 @@
     updateTrueSolarPreview();
   }
 
-  function updateLunarLeapState() {
+  function updateLunarLeapState(options = {}) {
     const year = Number($('#mbpLunarYear')?.value);
     const month = Number($('#mbpLunarMonth')?.value);
     const leapMonth = getLunarLeapMonth(year);
@@ -2474,6 +2476,7 @@
     const checkbox = $('#mbpLunarLeap');
     const enabled = !!(leapMonth && month === leapMonth);
     if (wrap) wrap.style.opacity = enabled ? '1' : '.55';
+    if (checkbox && enabled && options.autoDefault) checkbox.checked = true;
     if (checkbox && !enabled) checkbox.checked = false;
     if (note) {
       if (!leapMonth) note.textContent = '无闰月';
@@ -7267,7 +7270,8 @@
 
     document.querySelectorAll('.nf-cal-btn').forEach((btn) => {
       btn.addEventListener('click', () => {
-        setCalMode(btn.dataset.cal || 'solar');
+        const nextMode = btn.dataset.cal || 'solar';
+        setCalMode(nextMode, { autoDefaultLeap: nextMode === 'lunar' });
         invalidateChartFromFormEdit();
       });
     });
@@ -7285,11 +7289,11 @@
     $('#mbpDay')?.addEventListener('change', updateDatePreview);
     ['#mbpLunarYear', '#mbpLunarMonth'].forEach((selector) => {
       $(selector)?.addEventListener('change', () => {
-        updateLunarLeapState();
+        updateLunarLeapState({ autoDefault: true });
         updateDatePreview();
       });
       $(selector)?.addEventListener('input', () => {
-        updateLunarLeapState();
+        updateLunarLeapState({ autoDefault: true });
         updateDatePreview();
       });
     });
