@@ -8813,6 +8813,187 @@ html[lang="en"] .wentian-chart-ai-menu span {
   color: #1b1205;
 }
 
+.wentian-mb-advice-chapter,
+.wentian-mb-advice-chapter.is-ready {
+  display: grid;
+  gap: 14px;
+  border: 1px solid rgba(199, 164, 75, .55);
+  border-radius: 20px;
+  padding: 14px;
+  background:
+    radial-gradient(circle at 88% 9%, rgba(205, 149, 61, .22), transparent 28%),
+    linear-gradient(145deg, #110b04 0%, #080502 58%, #251806 100%);
+  box-shadow: 0 18px 34px rgba(36, 22, 8, .22);
+}
+
+.wentian-mb-advice-hero {
+  position: relative;
+  overflow: hidden;
+  min-height: 174px;
+  border-radius: 18px;
+  padding: 22px 18px 20px 96px;
+  background: linear-gradient(135deg, #241707 0%, #0b0703 68%, #4a2b0d 100%);
+}
+
+.wentian-mb-advice-hero::before {
+  content: "卷6";
+  position: absolute;
+  left: 18px;
+  top: 22px;
+  display: grid;
+  place-items: center;
+  width: 60px;
+  height: 60px;
+  border: 1px solid #806f36;
+  border-radius: 50%;
+  background: #2a2312;
+  color: #f7e7ad;
+  font-size: 22px;
+  font-weight: 900;
+}
+
+.wentian-mb-advice-hero span,
+.wentian-mb-advice-hero h3,
+.wentian-mb-advice-hero p {
+  position: relative;
+}
+
+.wentian-mb-advice-hero span {
+  display: block;
+  color: #d9bd61;
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.wentian-mb-advice-hero h3 {
+  margin: 8px 0 0;
+  color: #fff7df;
+  font-size: 28px;
+  font-weight: 900;
+  line-height: 1.12;
+}
+
+.wentian-mb-advice-hero p {
+  margin: 16px 0 0 -78px;
+  color: #d2c39b;
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 1.68;
+}
+
+.wentian-mb-advice-focus {
+  display: grid;
+  gap: 12px;
+}
+
+.wentian-mb-advice-focus section {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr);
+  gap: 12px;
+  border: 1px solid rgba(199, 164, 75, .44);
+  border-radius: 16px;
+  padding: 14px;
+  background: #f7efdd;
+}
+
+.wentian-mb-advice-focus b {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: #1d1306;
+  color: #e8cc70;
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.wentian-mb-advice-focus strong {
+  display: block;
+  margin-bottom: 8px;
+  color: #24190d;
+  font-size: 20px;
+  font-weight: 900;
+  line-height: 1.18;
+}
+
+.wentian-mb-advice-focus .wentian-mb-reading-lines {
+  display: grid;
+  gap: 7px;
+}
+
+.wentian-mb-advice-focus .wentian-mb-reading-lines p {
+  margin: 0;
+  color: #514430;
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 1.72;
+}
+
+.wentian-mb-advice-plan {
+  display: grid;
+  gap: 10px;
+  border: 1px solid rgba(226, 199, 103, .42);
+  border-radius: 18px;
+  padding: 16px;
+  background: rgba(15, 10, 4, .98);
+}
+
+.wentian-mb-advice-plan header {
+  display: grid;
+  gap: 4px;
+  margin-bottom: 2px;
+}
+
+.wentian-mb-advice-plan header span {
+  color: #d9bd61;
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.wentian-mb-advice-plan header b {
+  color: #fff7df;
+  font-size: 20px;
+  font-weight: 900;
+  line-height: 1.2;
+}
+
+.wentian-mb-advice-plan div {
+  display: grid;
+  grid-template-columns: 62px minmax(0, 1fr);
+  gap: 10px;
+  align-items: start;
+  border-radius: 14px;
+  padding: 12px;
+  background: rgba(226, 199, 103, .08);
+}
+
+.wentian-mb-advice-plan strong {
+  color: #f0d982;
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.wentian-mb-advice-plan p {
+  margin: 0;
+  color: #d7c7a0;
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 1.65;
+}
+
+.wentian-mb-advice-actions button {
+  min-height: 44px;
+  width: 100%;
+  border: 1px solid #e7c95e;
+  border-radius: 14px;
+  background: #e7c95e;
+  color: #1b1205;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 900;
+}
+
 .wentian-mb-chapter-head {
   display: grid;
   grid-template-columns: 38px minmax(0, 1fr) 78px;

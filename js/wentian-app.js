@@ -4479,18 +4479,81 @@ function getWentianAdviceRows() {
   ];
 }
 
-function renderWentianAdviceDetail(data, fallback) {
-  if (getWentianAiSections(data).length) {
-    return renderWentianAiDetailSections(data, fallback, { limit: 4, max: 260 });
+function getWentianAdviceGroups(data, fallback) {
+  const sections = getWentianAiSections(data);
+  const wanted = [
+    { title: "先避风险", keys: ["风险", "压力", "注意", "不宜", "避免"] },
+    { title: "抓准时机", keys: ["时机", "阶段", "大限", "流年", "窗口"] },
+    { title: "落到动作", keys: ["行动", "建议", "适合", "调整", "执行"] },
+  ];
+  if (sections.length) {
+    const used = new Set();
+    return wanted.map((item) => {
+      const found = sections.find((section, index) => {
+        if (used.has(index)) return false;
+        const text = `${section.title || ""} ${section.content || ""}`;
+        return item.keys.some((key) => text.includes(key));
+      }) || sections.find((_section, index) => !used.has(index));
+      const index = found ? sections.indexOf(found) : -1;
+      if (index >= 0) used.add(index);
+      return {
+        title: found?.title || item.title,
+        content: found?.content || fallback || "",
+      };
+    }).filter((item) => item.content).slice(0, 3);
   }
+  return getWentianAdviceRows().map(([title, content]) => ({
+    title: title === "风险" ? "先避风险" : title === "时机" ? "抓准时机" : "落到动作",
+    content,
+  }));
+}
+
+function getWentianAdvicePlanItems(groups) {
+  const source = (groups || []).map((item) => normalizeWentianAiText(item.content)).filter(Boolean).join(" ");
+  const pick = (words, fallback) => {
+    const sentence = source.match(/[^。！？；.!?;]+[。！？；.!?;]?/g)?.find((item) => words.some((word) => item.includes(word)));
+    return trimWentianAiText(sentence || fallback, 72);
+  };
+  return [
+    ["7天内", pick(["风险", "压力", "避免", "不宜"], "先列出当前最容易失控的一件事，减少情绪化决定。")],
+    ["30天内", pick(["适合", "建议", "行动", "调整"], "把最重要的目标拆成三步，只推进能看到结果的一条主线。")],
+    ["复盘点", pick(["阶段", "时机", "大限", "流年"], "月底复盘节奏是否顺势，必要时收缩投入、调整顺序。")],
+  ];
+}
+
+function renderWentianAdviceDetail(data, fallback, actionAttr = "", actionLabel = "生成建议") {
+  const groups = getWentianAdviceGroups(data, fallback);
+  const summary = trimWentianAiText(getWentianAiSummary(data, 150) || groups.map((item) => item.content).join(" "), 132);
+  const ready = !!data && !!summary;
+  const planItems = getWentianAdvicePlanItems(groups);
   return `
-    <div class="wentian-mb-advice">
-      ${getWentianAdviceRows().map(([label, text]) => `
+    <div class="wentian-mb-advice-hero">
+      <span>行动建议</span>
+      <h3>先避险<br>再落地</h3>
+      <p>${escapeHtml(summary || fallback)}</p>
+    </div>
+    <div class="wentian-mb-advice-focus">
+      ${groups.slice(0, 3).map((item, index) => `
         <section>
-          <b>${escapeHtml(label)}</b>
-          <p>${escapeHtml(trimWentianAiText(text, 126))}</p>
+          <b>${String(index + 1).padStart(2, "0")}</b>
+          <div>
+            <strong>${escapeHtml(item.title)}</strong>
+            ${renderWentianReadingParagraphs(item.content, fallback)}
+          </div>
         </section>
       `).join("")}
+    </div>
+    <section class="wentian-mb-advice-plan">
+      <header><span>30天执行</span><b>把命盘建议变成动作</b></header>
+      ${planItems.map(([label, text]) => `
+        <div>
+          <strong>${escapeHtml(label)}</strong>
+          <p>${escapeHtml(text)}</p>
+        </div>
+      `).join("")}
+    </section>
+    <div class="wentian-mb-advice-actions">
+      <button type="button" ${actionAttr}>${escapeHtml(ready ? "重批建议" : actionLabel)}</button>
     </div>
   `;
 }
@@ -4537,12 +4600,15 @@ function renderWentianMobileChapter(chapter, index) {
       </article>
     `;
   }
-  let body = "";
   if (chapter.module === "action_advice") {
-    body = renderWentianAdviceDetail(result, chapter.placeholder);
-  } else {
-    body = renderWentianAiDetailSections(result, chapter.placeholder);
+    return `
+      <article class="wentian-mb-chapter wentian-mb-advice-chapter ${chapter.ready ? "is-ready" : "is-empty"}" data-wentian-report-chapter="${index}">
+        ${renderWentianAdviceDetail(result, chapter.placeholder, actionAttr, chapter.ready ? "重批建议" : chapter.actionLabel)}
+      </article>
+    `;
   }
+  let body = "";
+  body = renderWentianAiDetailSections(result, chapter.placeholder);
   return `
     <article class="wentian-mb-chapter ${chapter.ready ? "is-ready" : "is-empty"}" data-wentian-report-chapter="${index}">
       <div class="wentian-mb-chapter-head">
