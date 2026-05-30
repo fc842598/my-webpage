@@ -235,6 +235,71 @@
       box-shadow: 0 18px 44px rgba(0, 0, 0, .18);
     }
 
+    .intro-toggle-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 0;
+    }
+
+    .intro-toggle-copy {
+      min-width: 0;
+    }
+
+    .intro-toggle-copy strong {
+      display: block;
+      color: var(--ivory);
+      font-family: "Noto Serif SC", "Songti SC", serif;
+      font-size: 22px;
+      line-height: 1.24;
+      letter-spacing: 0;
+    }
+
+    .intro-toggle-copy span {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .intro-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      min-height: 38px;
+      padding: 0 16px;
+      border: 1px solid rgba(201,169,97,.34);
+      border-radius: 999px;
+      background: rgba(8, 6, 3, .64);
+      color: var(--gold-soft);
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .intro-toggle::after {
+      content: "▾";
+      font-size: 12px;
+      transition: transform .2s ease;
+    }
+
+    .intro-panel.is-open .intro-toggle::after {
+      transform: rotate(180deg);
+    }
+
+    .intro-collapse[hidden] {
+      display: none !important;
+    }
+
+    .intro-collapse {
+      display: grid;
+      gap: 0;
+      margin-top: 18px;
+    }
+
     .intro-kicker {
       display: inline-flex;
       align-items: center;
@@ -355,6 +420,11 @@
       font-size: 13px;
       font-weight: 700;
       line-height: 1.65;
+    }
+
+    .intro-steps,
+    .intro-support {
+      scroll-margin-top: 96px;
     }
 
     .workbench {
@@ -1208,6 +1278,13 @@
       .nav .cta { height: 34px; min-width: 104px; padding: 0 13px; font-size: 14px; }
       .yangzhai-main { padding-top: 80px; }
       .intro-panel { padding: 16px 14px; }
+      .intro-toggle-row { align-items: flex-start; }
+      .intro-toggle-copy strong { font-size: 18px; }
+      .intro-toggle-copy span { font-size: 12px; }
+      .intro-toggle {
+        width: 100%;
+        justify-content: center;
+      }
       .intro-copy h1 { font-size: 22px; }
       .intro-copy p { font-size: 14px; }
       .workbench,
@@ -1275,6 +1352,10 @@
         margin-bottom: 16px;
         border-color: rgba(201,169,97,.44);
         box-shadow: none;
+      }
+
+      .intro-toggle-copy strong {
+        font-size: 24px;
       }
 
       .intro-copy h1 {
@@ -2048,6 +2129,14 @@
     <main class="yangzhai-main">
       <div class="container" id="yangzhaiContainer">
         <section class="intro-panel" id="yangzhaiIntro" aria-label="阳宅九宫安位介绍">
+          <div class="intro-toggle-row">
+            <div class="intro-toggle-copy">
+              <strong>Yangzhai guide</strong>
+              <span>Open to view the full instructions</span>
+            </div>
+            <button class="intro-toggle" id="yangzhaiIntroToggle" type="button" aria-expanded="false" aria-controls="yangzhaiIntroContent">Open guide</button>
+          </div>
+          <div class="intro-collapse" id="yangzhaiIntroContent" hidden>
           <div class="intro-copy">
             <span class="intro-kicker">阳宅九宫安位</span>
             <h1>按房屋朝向，把家人与空间放进九宫，快速看家宅气场与需要调整的方位。</h1>
@@ -2077,6 +2166,7 @@
               <p>先看户型图有没有北向标记；没有的话，用手机指南针先找北，再回到九宫安位。</p>
             </div>
             <button class="text-link" type="button" data-action="open-direction-help">打开 30 秒教程</button>
+          </div>
           </div>
         </section>
 
@@ -2266,6 +2356,11 @@
       const resultsPanel = document.getElementById("results");
       const workbench = document.getElementById("workbench");
       const yangzhaiContainer = document.getElementById("yangzhaiContainer");
+      const introPanel = document.getElementById("yangzhaiIntro");
+      const introToggle = document.getElementById("yangzhaiIntroToggle");
+      const introContent = document.getElementById("yangzhaiIntroContent");
+      const introSummaryTitle = introPanel?.querySelector(".intro-toggle-copy strong");
+      const introSummaryLead = introPanel?.querySelector(".intro-toggle-copy span");
       const pickerStage = document.getElementById("pickerStage");
       const locatorStage = document.getElementById("locatorStage");
       const locatorCurrent = document.getElementById("locatorCurrent");
@@ -2345,6 +2440,26 @@
         if (open) {
           requestAnimationFrame(() => directionCloseButton?.focus());
         }
+      }
+
+      function setIntroOpen(open) {
+        introPanel?.classList.toggle("is-open", open);
+        if (introContent) introContent.hidden = !open;
+        if (introSummaryTitle) introSummaryTitle.textContent = "\u9633\u5b85\u4e5d\u5bab\u5b89\u4f4d\u8bf4\u660e";
+        if (introSummaryLead) introSummaryLead.textContent = "\u70b9\u5f00\u540e\u518d\u770b\u5b89\u4f4d\u8bf4\u660e";
+        if (introToggle) {
+          introToggle.setAttribute("aria-expanded", open ? "true" : "false");
+          introToggle.textContent = open ? "\u6536\u8d77\u8bf4\u660e" : "\u5c55\u5f00\u8bf4\u660e";
+        }
+      }
+
+      function expandIntroForHash(hash, behavior = "smooth") {
+        if (!hash) return false;
+        const target = document.querySelector(hash);
+        if (!target || !introPanel?.contains(target)) return false;
+        setIntroOpen(true);
+        requestAnimationFrame(() => target.scrollIntoView({ behavior, block: "start" }));
+        return true;
       }
 
       function activateResult(index, { scroll = false } = {}) {
@@ -2627,6 +2742,20 @@
         activateResult(index, { scroll: true });
       });
 
+      introToggle?.addEventListener("click", () => {
+        setIntroOpen(introContent?.hidden);
+      });
+
+      document.addEventListener("click", (event) => {
+        const anchor = event.target.closest('a[href^="#"]');
+        if (!anchor) return;
+        expandIntroForHash(anchor.getAttribute("href"));
+      });
+
+      window.addEventListener("hashchange", () => {
+        expandIntroForHash(window.location.hash);
+      });
+
       document.addEventListener("click", (event) => {
         const action = event.target.closest("[data-action]")?.dataset.action;
         if (!action) return;
@@ -2693,7 +2822,9 @@
         }
       });
 
+      setIntroOpen(false);
       render();
+      expandIntroForHash(window.location.hash, "auto");
     })();
   </script>
 </body>
