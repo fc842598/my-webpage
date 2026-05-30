@@ -120,6 +120,12 @@ select {
   gap: 12px;
 }
 
+@media (min-width: 1021px) {
+  .mingbook-onepage .mbp-nav-actions {
+    margin-right: 44px;
+  }
+}
+
 .mbp-auth-trigger {
   min-height: 36px;
   min-width: 132px;
