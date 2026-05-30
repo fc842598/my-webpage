@@ -12979,9 +12979,13 @@ let yangzhaiState = loadYangzhaiState();
 let yangzhaiCompassHandler = null;
 let yangzhaiCompassSmoothedHeading = null;
 let yangzhaiCompassLastAppliedAt = 0;
-const YANGZHAI_COMPASS_MIN_DELTA = 1.4;
-const YANGZHAI_COMPASS_MIN_INTERVAL = 80;
-const YANGZHAI_COMPASS_SMOOTHING = 0.18;
+let yangzhaiCompassPoorAccuracyCount = 0;
+const YANGZHAI_COMPASS_MIN_DELTA = 2.4;
+const YANGZHAI_COMPASS_MIN_INTERVAL = 120;
+const YANGZHAI_COMPASS_SMOOTHING_SLOW = 0.12;
+const YANGZHAI_COMPASS_SMOOTHING_FAST = 0.34;
+const YANGZHAI_COMPASS_FAST_DELTA = 18;
+const YANGZHAI_COMPASS_MAX_ACCURACY = 45;
 
 function saveYangzhaiState() {
   try {
@@ -13004,6 +13008,31 @@ function getCompassDeltaDegrees(from, to) {
   return ((end - start + 540) % 360) - 180;
 }
 
+function getYangzhaiScreenOrientationAngle() {
+  const angle = Number(window.screen?.orientation?.angle ?? window.orientation ?? 0);
+  return Number.isFinite(angle) ? angle : 0;
+}
+
+function getYangzhaiHeadingFromOrientationEvent(event) {
+  const webkitHeading = typeof event.webkitCompassHeading === "number" ? event.webkitCompassHeading : NaN;
+  const webkitAccuracy = typeof event.webkitCompassAccuracy === "number" ? event.webkitCompassAccuracy : NaN;
+  if (Number.isFinite(webkitHeading)) {
+    if (Number.isFinite(webkitAccuracy) && webkitAccuracy > YANGZHAI_COMPASS_MAX_ACCURACY) {
+      yangzhaiCompassPoorAccuracyCount += 1;
+      if (yangzhaiCompassPoorAccuracyCount >= 4) setYangzhaiCompassStatus("校准中", "warn");
+      return null;
+    }
+    yangzhaiCompassPoorAccuracyCount = 0;
+    return normalizeCompassHeading(webkitHeading);
+  }
+
+  const alpha = typeof event.alpha === "number" ? event.alpha : NaN;
+  if (!Number.isFinite(alpha)) return null;
+  const isReliableAbsolute = event.absolute === true || event.type === "deviceorientationabsolute";
+  if (!isReliableAbsolute) return null;
+  return normalizeCompassHeading(360 - alpha + getYangzhaiScreenOrientationAngle());
+}
+
 function smoothYangzhaiCompassHeading(rawHeading) {
   const raw = normalizeCompassHeading(rawHeading);
   if (raw === null) return null;
@@ -13013,8 +13042,11 @@ function smoothYangzhaiCompassHeading(rawHeading) {
   }
   const delta = getCompassDeltaDegrees(yangzhaiCompassSmoothedHeading, raw);
   if (Math.abs(delta) < YANGZHAI_COMPASS_MIN_DELTA) return null;
+  const smoothing = Math.abs(delta) >= YANGZHAI_COMPASS_FAST_DELTA
+    ? YANGZHAI_COMPASS_SMOOTHING_FAST
+    : YANGZHAI_COMPASS_SMOOTHING_SLOW;
   yangzhaiCompassSmoothedHeading = normalizeCompassHeading(
-    yangzhaiCompassSmoothedHeading + delta * YANGZHAI_COMPASS_SMOOTHING
+    yangzhaiCompassSmoothedHeading + delta * smoothing
   );
   return yangzhaiCompassSmoothedHeading;
 }
@@ -13022,6 +13054,7 @@ function smoothYangzhaiCompassHeading(rawHeading) {
 function resetYangzhaiCompassSmoothing() {
   yangzhaiCompassSmoothedHeading = null;
   yangzhaiCompassLastAppliedAt = 0;
+  yangzhaiCompassPoorAccuracyCount = 0;
 }
 
 function getYangzhaiCompassDirectionLabel(heading) {
@@ -13154,11 +13187,7 @@ function setYangzhaiCompassStatus(text, tone = "") {
 }
 
 function handleYangzhaiCompassOrientation(event) {
-  const webkitHeading = typeof event.webkitCompassHeading === "number" ? event.webkitCompassHeading : NaN;
-  const alpha = typeof event.alpha === "number" ? event.alpha : NaN;
-  const heading = Number.isFinite(webkitHeading)
-    ? normalizeCompassHeading(webkitHeading)
-    : normalizeCompassHeading(360 - alpha);
+  const heading = getYangzhaiHeadingFromOrientationEvent(event);
   if (heading === null) return;
   const now = Date.now();
   if (now - yangzhaiCompassLastAppliedAt < YANGZHAI_COMPASS_MIN_INTERVAL) return;

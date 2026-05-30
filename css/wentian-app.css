@@ -554,6 +554,7 @@ html[lang="en"] [data-node-id="wt15-seal-text"] {
 .yangzhai-direction-cross {
   position: absolute;
   display: block;
+  z-index: 12;
   border: 1px solid rgba(205, 174, 126, 0.78);
   border-radius: 50%;
   background:
@@ -579,6 +580,7 @@ html[lang="en"] [data-node-id="wt15-seal-text"] {
 
 .yangzhai-direction-cross .yz-cross-line {
   background: linear-gradient(90deg, rgba(165, 74, 58, 0), rgba(165, 74, 58, 0.72), rgba(165, 74, 58, 0));
+  pointer-events: none;
 }
 
 .yangzhai-direction-cross .yz-cross-line-ns {
@@ -635,14 +637,46 @@ html[lang="en"] [data-node-id="wt15-seal-text"] {
 }
 
 .yangzhai-direction-cross[data-yangzhai-compass-cross] {
+  --yangzhai-sight-reach-x: -70vw;
+  --yangzhai-sight-reach-y: -70vh;
   transform: rotate(var(--yangzhai-luopan-rotation, 0deg));
   transform-origin: center;
-  transition: transform 0.24s ease-out;
+  transition: transform 0.18s linear;
 }
 
 .yangzhai-direction-cross[data-yangzhai-compass-cross].is-compass-active {
   border-color: rgba(169, 68, 55, 0.5);
   box-shadow: inset 0 0 0 8px rgba(255, 255, 255, 0.42), 0 9px 20px rgba(98, 58, 28, 0.12);
+}
+
+.yangzhai-direction-cross[data-yangzhai-compass-cross].is-compass-active .yz-cross-line-ns {
+  top: var(--yangzhai-sight-reach-y);
+  bottom: var(--yangzhai-sight-reach-y);
+  width: 1px;
+  left: calc(50% - 0.5px);
+  background: linear-gradient(
+    180deg,
+    rgba(169, 68, 55, 0),
+    rgba(169, 68, 55, 0.38) 18%,
+    rgba(169, 68, 55, 0.58) 50%,
+    rgba(169, 68, 55, 0.38) 82%,
+    rgba(169, 68, 55, 0)
+  );
+}
+
+.yangzhai-direction-cross[data-yangzhai-compass-cross].is-compass-active .yz-cross-line-ew {
+  left: var(--yangzhai-sight-reach-x);
+  right: var(--yangzhai-sight-reach-x);
+  height: 1px;
+  top: calc(50% - 0.5px);
+  background: linear-gradient(
+    90deg,
+    rgba(169, 68, 55, 0),
+    rgba(169, 68, 55, 0.38) 18%,
+    rgba(169, 68, 55, 0.58) 50%,
+    rgba(169, 68, 55, 0.38) 82%,
+    rgba(169, 68, 55, 0)
+  );
 }
 
 .yangzhai-inline-compass-status {
