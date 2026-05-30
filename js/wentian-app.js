@@ -15510,15 +15510,13 @@ function convertedSpecial(screen) {
 function sourceDashboardHomeScreen() {
   {
     const dashboardAccount = getWentianAuthDisplay();
-    const dashboardMember = getWentianMemberSnapshot();
     const dashboardArchive = getCurrentWentianArchive();
     const dashboardArchiveDisplay = getWentianArchiveDisplay(dashboardArchive);
     const dashboardArchiveName = dashboardArchive ? dashboardArchiveDisplay.name : "未建档";
     const dashboardArchiveMeta = dashboardArchive
       ? [dashboardArchiveDisplay.gender, dashboardArchiveDisplay.datetime].filter(Boolean).join(" · ")
       : "先建立命盘档案";
-    const dashboardMemberLabel = dashboardMember.isMember ? "会员" : dashboardMember.daily;
-    const dashboardLoginLabel = dashboardAccount.loggedIn ? "账户" : "登录";
+    const dashboardLoginLabel = dashboardAccount.loggedIn ? "已登陆" : "未登陆";
     const dashboardFeatures = [
       ["紫微斗数", "排盘 · AI细读", "01-feature-hepan.png", "screen-26", 18, 400],
       ["合盘分析", "双方命盘合参", "01-feature-hepan.png", "hepan", 201, 400],
@@ -15532,7 +15530,7 @@ function sourceDashboardHomeScreen() {
       ${figText("source-1-brand", "阅天AI", 18, 26, 96, 23, "#25221f", 900)}
       ${figText("source-1-brand-sub", "专业AI命理工作台", 18, 54, 150, 13, "#8d877e", 700)}
       ${figBox("source-1-login-pill", 256, 28, 116, 34, "", "border-radius:17px;background:#fffdf8;border:1px solid #eadfce;box-shadow:0 6px 14px rgba(70,45,25,.06);")}
-      ${figText("source-1-login-pill-text", `${dashboardLoginLabel} · ${dashboardMemberLabel}`, 266, 38, 96, 12, dashboardMember.isMember ? "#9f3d2e" : "#9a681c", 900, "center", "white-space:nowrap;overflow:hidden;text-overflow:ellipsis;")}
+      ${figText("source-1-login-pill-text", dashboardLoginLabel, 266, 38, 96, 12, dashboardAccount.loggedIn ? "#9f3d2e" : "#9a681c", 900, "center", "white-space:nowrap;overflow:hidden;text-overflow:ellipsis;")}
       ${figButton("source-1-login-hit", 250, 22, 128, 48, 'data-action="wentian-login-open"', "", "z-index:35;")}
 
       ${figBox("source-1-hero", 18, 92, 354, 184, "", "border-radius:22px;background:linear-gradient(135deg,#2b1d16 0%,#8f3d30 58%,#c48b25 100%);overflow:hidden;box-shadow:0 16px 34px rgba(96,53,24,.18);")}
