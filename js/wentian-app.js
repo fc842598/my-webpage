@@ -13714,7 +13714,7 @@ function loadOfficeLayoutState() {
       version: OFFICE_LAYOUT_STATE_VERSION,
       outerTrigram: normalizeOfficeLayoutTrigram(parsed.outerTrigram),
       innerTrigram: normalizeOfficeLayoutTrigram(parsed.innerTrigram),
-      saveCase: Boolean(parsed.saveCase),
+      saveCase: false,
       cases: normalizeOfficeLayoutCases(parsed.cases),
       activeCaseId: isWentianUuid(parsed.activeCaseId) ? parsed.activeCaseId : "",
       statusText: String(parsed.statusText || "").trim(),
@@ -13753,13 +13753,6 @@ function setOfficeLayoutStatus(text, tone = "") {
   officeLayoutState.statusText = String(text || "").trim();
   officeLayoutState.statusTone = String(tone || "").trim();
   saveOfficeLayoutState();
-}
-
-function getOfficeLayoutStatusSnapshot() {
-  return {
-    text: officeLayoutState.statusText || "请手动选择外卦和内卦后查询。",
-    tone: officeLayoutState.statusTone || "",
-  };
 }
 
 function getOfficeLayoutHex(outerTrigram, innerTrigram) {
@@ -13827,12 +13820,6 @@ function updateOfficeLayoutField(field, value) {
   saveOfficeLayoutState();
 }
 
-function toggleOfficeLayoutSaveCase(checked) {
-  officeLayoutState.saveCase = Boolean(checked);
-  saveOfficeLayoutState();
-  refreshOfficeLayoutView();
-}
-
 function resetOfficeLayoutCurrent() {
   const next = createOfficeLayoutState();
   next.cases = normalizeOfficeLayoutCases(officeLayoutState.cases);
@@ -13864,7 +13851,7 @@ function loadOfficeLayoutCase(caseId, openResult = false) {
   officeLayoutState.outerTrigram = entry.outerTrigram;
   officeLayoutState.innerTrigram = entry.innerTrigram;
   officeLayoutState.activeCaseId = entry.id;
-  officeLayoutState.saveCase = true;
+  officeLayoutState.saveCase = false;
   setOfficeLayoutStatus(`已载入案例：${entry.title}`, "ok");
   saveOfficeLayoutState();
   navigate(openResult ? "screen-52" : "screen-50", false);
@@ -13892,16 +13879,6 @@ function renderOfficeLayoutDirectionOptions(selected = "") {
     '<option value="">请选择</option>',
     ...OFFICE_LAYOUT_TRIGRAMS.map((item) => `<option value="${item.gua}"${item.gua === current ? " selected" : ""}>${item.label}</option>`),
   ].join("");
-}
-
-function renderOfficeLayoutStatusSummary() {
-  const status = getOfficeLayoutStatusSnapshot();
-  return `
-    <div class="office-layout-status" data-tone="${escapeHtml(status.tone || "")}">
-      <strong>当前状态</strong>
-      <span>${escapeHtml(status.text)}</span>
-    </div>
-  `;
 }
 
 function renderOfficeLayoutCaseList() {
@@ -13951,10 +13928,6 @@ function sourceOfficeLayoutHomeScreen() {
       </div>
     </section>
     <section class="office-layout-panel">
-      <div class="office-layout-panel-header">
-        <h3>办公室布局首页</h3>
-        <span class="office-layout-chip">手机端新功能</span>
-      </div>
       <div class="office-layout-row">
         <label class="office-layout-row-label" for="office-layout-outer-select">办公室大门朝向（外卦）</label>
         <select id="office-layout-outer-select" class="office-layout-select">${renderOfficeLayoutDirectionOptions(officeLayoutState.outerTrigram)}</select>
@@ -13963,19 +13936,6 @@ function sourceOfficeLayoutHomeScreen() {
         <label class="office-layout-row-label" for="office-layout-inner-select">老板位置（内卦）</label>
         <select id="office-layout-inner-select" class="office-layout-select">${renderOfficeLayoutDirectionOptions(officeLayoutState.innerTrigram)}</select>
       </div>
-      <div class="office-layout-row">
-        <div class="office-layout-toggle-line">
-          <div class="office-layout-toggle-copy">
-            <strong>保存案例</strong>
-            <span>勾选后，本次组合会保存在手机本地，下次可以直接重新打开。</span>
-          </div>
-          <label class="office-layout-toggle-checkbox">
-            <input id="office-layout-save-toggle" type="checkbox"${officeLayoutState.saveCase ? " checked" : ""}>
-            <span></span>
-          </label>
-        </div>
-      </div>
-      ${renderOfficeLayoutStatusSummary()}
       <div class="office-layout-buttons">
         <button type="button" class="office-layout-button primary" data-action="office-layout-query"${canQueryOfficeLayout() ? "" : " disabled"}>查询</button>
         <button type="button" class="office-layout-button secondary" data-route="screen-51">查看使用说明</button>
@@ -14080,7 +14040,6 @@ function sourceOfficeLayoutResultScreen() {
 function initOfficeLayoutHomeScreen() {
   const outer = document.getElementById("office-layout-outer-select");
   const inner = document.getElementById("office-layout-inner-select");
-  const saveToggle = document.getElementById("office-layout-save-toggle");
   outer?.addEventListener("change", (event) => {
     updateOfficeLayoutField("outerTrigram", event.target.value || "");
     refreshOfficeLayoutView("screen-50");
@@ -14088,9 +14047,6 @@ function initOfficeLayoutHomeScreen() {
   inner?.addEventListener("change", (event) => {
     updateOfficeLayoutField("innerTrigram", event.target.value || "");
     refreshOfficeLayoutView("screen-50");
-  });
-  saveToggle?.addEventListener("change", (event) => {
-    toggleOfficeLayoutSaveCase(Boolean(event.target.checked));
   });
 }
 
