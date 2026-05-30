@@ -199,6 +199,61 @@
     return ['一卦一问', '审题后可起卦'];
   }
 
+  function getGateStatus(question = state.question) {
+    const normalizedQuestion = normalizeQuestion(question);
+    const gate = normalizeGate(state.questionGate, normalizedQuestion);
+    if (state.gateLoading) {
+      return {
+        tone: 'loading',
+        badge: '审题中',
+        text: state.error || '正在审题，系统会调用大模型判断能否继续占卜。',
+      };
+    }
+    if (!gate?.allowed && normalizeQuota(state.quota).remaining <= 0) {
+      return {
+        tone: 'error',
+        badge: '今日已满',
+        text: '今日六爻占卜已满 3 次，明天再起卦。',
+      };
+    }
+    if (gate?.allowed) {
+      return {
+        tone: 'ok',
+        badge: '已通过',
+        text: gate.reason || '审题通过，可以起卦。',
+      };
+    }
+    if (gate && !gate.allowed) {
+      return {
+        tone: 'error',
+        badge: '未通过',
+        text: `${gate.reason || '问题还不够清楚，暂不起卦。'}${gate.suggestion ? ` ${gate.suggestion}` : ''}`,
+      };
+    }
+    if (!normalizedQuestion) {
+      return {
+        tone: 'hint',
+        badge: '待审题',
+        text: '先写清楚一件事，再点“提交问题”，系统会调用大模型判断能否继续占卜。',
+      };
+    }
+    return {
+      tone: state.statusTone === 'error' ? 'error' : 'hint',
+      badge: '待审题',
+      text: state.error || '问题写好后点“提交问题”，通过后再起卦。',
+    };
+  }
+
+  function getGateSubmitMeta(question = state.question) {
+    const normalizedQuestion = normalizeQuestion(question);
+    const gate = normalizeGate(state.questionGate, normalizedQuestion);
+    if (state.gateLoading) return { label: '审题中…', disabled: true, state: 'loading' };
+    if (!gate?.allowed && normalizeQuota(state.quota).remaining <= 0) return { label: '今日已满', disabled: true, state: 'rejected' };
+    if (gate?.allowed) return { label: '已通过', disabled: true, state: 'approved' };
+    if (gate && !gate.allowed) return { label: '重新提交', disabled: !normalizedQuestion, state: 'rejected' };
+    return { label: '提交问题', disabled: !normalizedQuestion, state: 'idle' };
+  }
+
   function parseGateJson(text) {
     const raw = String(text || '').trim();
     const fenced = raw.match(/```(?:json)?\s*([\s\S]*?)```/i);
@@ -607,12 +662,14 @@
     const ready = Boolean(gate?.allowed);
     const exhausted = normalizeQuota(state.quota).remaining <= 0 && !ready;
     const hasQuestion = Boolean(normalizeQuestion(state.question));
-    const disabled = state.gateLoading || exhausted || !hasQuestion;
+    const disabled = state.gateLoading || exhausted || !hasQuestion || !ready;
     const lockText = exhausted
       ? '今日已满 3 次，明天再起卦。'
       : state.gateLoading
         ? '正在审题，合格后才起卦。'
-        : '先写清一件事，再起卦。';
+        : !hasQuestion
+          ? '先写清一件事，再提交问题。'
+          : '先提交问题，审题通过后再起卦。';
     const activeHint = !ready && state.error ? state.error : '';
     if (state.mode !== 'manual') {
       panel.innerHTML = `
@@ -708,23 +765,44 @@
     const auto = $('#mbpLiuyaoAuto');
     const quota = $('#mbpLiuyaoQuota');
     const gateTags = $('#mbpLiuyaoGateTags');
+    const gateBadge = $('#mbpLiuyaoGateBadge');
+    const gateStatus = $('#mbpLiuyaoGateStatus');
+    const gateSubmit = $('#mbpLiuyaoSubmitQuestion');
     const gate = normalizeGate(state.questionGate, state.question);
+    const submitMeta = getGateSubmitMeta();
+    const gateStatusMeta = getGateStatus();
     const ready = Boolean(gate?.allowed);
     const exhausted = normalizeQuota(state.quota).exhausted && !ready;
     if (gateTags) {
       gateTags.innerHTML = getGateTags().map((item) => `<span>${escapeHtml(item)}</span>`).join('');
     }
+    if (gateBadge) {
+      gateBadge.textContent = gateStatusMeta.badge;
+      gateBadge.dataset.tone = gateStatusMeta.tone || 'hint';
+    }
+    if (gateStatus) {
+      gateStatus.textContent = gateStatusMeta.text;
+    }
+    if (gateSubmit) {
+      gateSubmit.textContent = submitMeta.label;
+      gateSubmit.disabled = submitMeta.disabled;
+      ['is-loading', 'is-approved', 'is-rejected'].forEach((className) => gateSubmit.classList.remove(className));
+      if (submitMeta.state === 'loading') gateSubmit.classList.add('is-loading');
+      if (submitMeta.state === 'approved') gateSubmit.classList.add('is-approved');
+      if (submitMeta.state === 'rejected') gateSubmit.classList.add('is-rejected');
+    }
     if (toss) {
-      toss.disabled = state.mode !== 'online' || !normalizeQuestion(state.question) || state.gateLoading || state.tossAnimation?.active || exhausted || count >= 6;
+      toss.disabled = state.mode !== 'online' || !normalizeQuestion(state.question) || !ready || state.gateLoading || state.tossAnimation?.active || exhausted || count >= 6;
       toss.textContent = state.gateLoading ? '审题中…'
         : !normalizeQuestion(state.question) ? '先写问题'
+          : !ready ? '先提交问题'
           : state.mode !== 'online' ? '手动录入中'
             : count >= 6 ? '已成卦' : `投第 ${count + 1} 爻`;
       if (exhausted) toss.textContent = '今日已满';
     }
     if (auto) {
-      auto.disabled = state.mode !== 'online' || !normalizeQuestion(state.question) || state.gateLoading || state.tossAnimation?.active || exhausted || count >= 6;
-      auto.textContent = exhausted ? '今日已满' : (!normalizeQuestion(state.question) ? '先写问题' : '一键成卦');
+      auto.disabled = state.mode !== 'online' || !normalizeQuestion(state.question) || !ready || state.gateLoading || state.tossAnimation?.active || exhausted || count >= 6;
+      auto.textContent = exhausted ? '今日已满' : (!normalizeQuestion(state.question) ? '先写问题' : (!ready ? '先提交问题' : '一键成卦'));
     }
     document.querySelectorAll('[data-liuyao-mode]').forEach((button) => {
       button.classList.toggle('is-active', button.dataset.liuyaoMode === state.mode);
@@ -755,24 +833,18 @@
     render();
   }
 
-  async function ensureQuestionAllowed() {
+  async function submitQuestion() {
     const question = questionText();
-    const cached = normalizeGate(state.questionGate, question);
-    if (cached?.allowed) {
-      state.error = '';
-      state.statusTone = 'ok';
-      return true;
-    }
     if (!question) {
-      state.error = '先写清楚一件事，再起卦。';
-      state.statusTone = '';
+      state.error = '先写清楚一件事，再提交问题。';
+      state.statusTone = 'hint';
       render();
       $('#mbpLiuyaoQuestion')?.focus();
       return false;
     }
     if (normalizeQuota(state.quota).remaining <= 0) {
       state.error = '今日六爻占卜已满 3 次，明天再起卦。';
-      state.statusTone = '';
+      state.statusTone = 'error';
       render();
       return false;
     }
@@ -791,17 +863,47 @@
         return true;
       }
       state.error = `${gate?.reason || '问题还不够清楚，暂不起卦。'}${gate?.suggestion ? ` ${gate.suggestion}` : ''}`;
-      state.statusTone = '';
+      state.statusTone = 'error';
       $('#mbpLiuyaoQuestion')?.focus();
       return false;
     } catch (_err) {
       state.error = '审题服务暂时不可用，请稍后再试。';
-      state.statusTone = '';
+      state.statusTone = 'error';
       return false;
     } finally {
       state.gateLoading = false;
       render();
     }
+  }
+
+  async function ensureQuestionAllowed() {
+    const question = questionText();
+    const cached = normalizeGate(state.questionGate, question);
+    if (cached?.allowed) {
+      state.error = cached.reason || '审题通过，可以起卦。';
+      state.statusTone = 'ok';
+      return true;
+    }
+    if (!question) {
+      state.error = '先写清楚一件事，再提交问题。';
+      state.statusTone = 'hint';
+      render();
+      $('#mbpLiuyaoQuestion')?.focus();
+      return false;
+    }
+    if (normalizeQuota(state.quota).remaining <= 0) {
+      state.error = '今日六爻占卜已满 3 次，明天再起卦。';
+      state.statusTone = 'error';
+      render();
+      return false;
+    }
+    state.error = cached && cached.allowed === false
+      ? '请先修改问题并重新提交，审题通过后再起卦。'
+      : '请先提交问题，审题通过后再起卦。';
+    state.statusTone = 'hint';
+    render();
+    $('#mbpLiuyaoQuestion')?.focus();
+    return false;
   }
 
   function placeNextCast(cast) {
@@ -960,10 +1062,11 @@
       }
       state.question = nextQuestion;
       state.questionGate = null;
-      state.error = nextQuestion && hadGate ? '改好后直接起卦，系统会重新审题。' : '';
-      state.statusTone = '';
+      state.error = nextQuestion && hadGate ? '改好后点“提交问题”，系统会重新审题。' : '';
+      state.statusTone = nextQuestion && hadGate ? 'hint' : '';
       render();
     });
+    $('#mbpLiuyaoSubmitQuestion')?.addEventListener('click', submitQuestion);
     $('#mbpLiuyaoToss')?.addEventListener('click', tossLine);
     $('#mbpLiuyaoAuto')?.addEventListener('click', autoCast);
     $('#mbpLiuyaoReset')?.addEventListener('click', reset);

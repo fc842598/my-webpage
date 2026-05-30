@@ -97,6 +97,100 @@
   line-height: 1.55;
 }
 
+.liuyao-page .mbp-liuyao-gate-inline {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 176px;
+  gap: 12px;
+  align-items: stretch;
+  margin-top: 6px;
+}
+
+.liuyao-page .mbp-liuyao-gate-copy {
+  display: grid;
+  gap: 8px;
+  align-content: start;
+}
+
+.liuyao-page .mbp-liuyao-gate-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  min-height: 32px;
+  padding: 0 14px;
+  border: 1px solid rgba(241, 212, 125, .18);
+  border-radius: 999px;
+  background: rgba(241, 212, 125, .08);
+  color: #d6c18e;
+  font-size: 13px;
+  font-weight: 900;
+  line-height: 1.2;
+}
+
+.liuyao-page .mbp-liuyao-gate-badge[data-tone="ok"] {
+  border-color: rgba(140, 184, 151, .34);
+  background: rgba(140, 184, 151, .12);
+  color: #b7d7bc;
+}
+
+.liuyao-page .mbp-liuyao-gate-badge[data-tone="error"] {
+  border-color: rgba(216, 112, 84, .34);
+  background: rgba(216, 112, 84, .12);
+  color: #ffbea9;
+}
+
+.liuyao-page .mbp-liuyao-gate-badge[data-tone="loading"] {
+  border-color: rgba(241, 212, 125, .34);
+  background: rgba(241, 212, 125, .14);
+  color: #f2dd9d;
+}
+
+.liuyao-page .mbp-liuyao-gate-status {
+  margin: 0;
+  color: #cfc09a;
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1.6;
+}
+
+.liuyao-page .mbp-liuyao-gate-submit {
+  align-self: start;
+  width: 100%;
+  min-height: 52px;
+  border: 1px solid rgba(241, 212, 125, .2);
+  border-radius: 16px;
+  background: rgba(241, 212, 125, .08);
+  color: #f4e2a2;
+  font-size: 15px;
+  font-weight: 900;
+  letter-spacing: 0;
+  transition: background .2s ease, border-color .2s ease, color .2s ease, opacity .2s ease, box-shadow .2s ease;
+}
+
+.liuyao-page .mbp-liuyao-gate-submit:hover:not(:disabled) {
+  border-color: rgba(241, 212, 125, .4);
+  box-shadow: 0 16px 30px rgba(0, 0, 0, .18);
+}
+
+.liuyao-page .mbp-liuyao-gate-submit.is-loading,
+.liuyao-page .mbp-liuyao-gate-submit.is-approved {
+  border-color: rgba(140, 184, 151, .28);
+  background: rgba(140, 184, 151, .14);
+  color: #dff1df;
+}
+
+.liuyao-page .mbp-liuyao-gate-submit.is-rejected {
+  border-color: rgba(216, 112, 84, .28);
+  background: rgba(216, 112, 84, .12);
+  color: #ffd0c2;
+}
+
+.liuyao-page .mbp-liuyao-gate-submit:disabled {
+  opacity: .76;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
 .liuyao-page .mbp-liuyao-gate-tags {
   display: flex;
   flex-wrap: wrap;
