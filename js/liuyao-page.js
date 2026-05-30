@@ -6,7 +6,7 @@
   const LIUYAO_DAILY_LIMIT = 3;
   const LIUYAO_TOSS_ANIMATION_MS = 980;
   const LIUYAO_PULL_MAX = 132;
-  const LIUYAO_READY_POWER = 0.18;
+  const LIUYAO_READY_POWER = 0.10;
   const LIUYAO_DEFAULT_POWER = 0.62;
   const LIUYAO_VALUES = [7, 8, 9, 6];
   const LIUYAO_MANUAL_EMPTY_COINS = [null, null, null];
@@ -999,7 +999,7 @@
     document.addEventListener('pointerdown', (event) => {
       const stage = event.target.closest('#mbpLiuyaoCoinStage');
       if (!stage || stage.getAttribute('aria-disabled') === 'true' || state.tossAnimation?.active) return;
-      state.drag = { id: event.pointerId, startX: event.clientX, startY: event.clientY, pull: 0, ready: false };
+      state.drag = { id: event.pointerId, startX: event.clientX, startY: event.clientY, pull: 0, maxPull: 0, ready: false };
       stage.setPointerCapture?.(event.pointerId);
       renderCoins();
     });
@@ -1007,13 +1007,15 @@
       if (!state.drag || state.drag.id !== event.pointerId) return;
       const pull = Math.max(0, Math.min(LIUYAO_PULL_MAX, Math.round(state.drag.startY - event.clientY)));
       state.drag.pull = pull;
-      state.drag.ready = pull >= Math.round(LIUYAO_PULL_MAX * LIUYAO_READY_POWER);
+      state.drag.maxPull = Math.max(state.drag.maxPull || 0, pull);
+      state.drag.ready = state.drag.ready || state.drag.maxPull >= Math.round(LIUYAO_PULL_MAX * LIUYAO_READY_POWER);
       renderCoins();
     });
     document.addEventListener('pointerup', (event) => {
       if (!state.drag || state.drag.id !== event.pointerId) return;
-      const power = Math.max(LIUYAO_READY_POWER, Math.min(1, state.drag.pull / LIUYAO_PULL_MAX));
-      const shouldToss = state.drag.ready;
+      const peakPull = Math.max(state.drag.pull || 0, state.drag.maxPull || 0);
+      const power = Math.max(LIUYAO_READY_POWER, Math.min(1, peakPull / LIUYAO_PULL_MAX));
+      const shouldToss = peakPull >= Math.round(LIUYAO_PULL_MAX * LIUYAO_READY_POWER);
       state.drag = null;
       if (shouldToss) tossLine(power);
       else renderCoins();
