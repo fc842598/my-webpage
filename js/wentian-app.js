@@ -13942,13 +13942,6 @@ function sourceOfficeLayoutHomeScreen() {
         <button type="button" class="office-layout-button danger" data-action="office-layout-reset">清空本次</button>
       </div>
     </section>
-    <section class="office-layout-panel">
-      <div class="office-layout-panel-header">
-        <h3>本地案例</h3>
-        <span class="office-layout-chip">${officeLayoutState.cases.length} 条</span>
-      </div>
-      ${renderOfficeLayoutCaseList()}
-    </section>
   `, "说明", "screen-51");
 }
 
