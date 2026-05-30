@@ -944,6 +944,12 @@
   }
 
   function bindEvents() {
+    $('#mbpLiuyaoBack')?.addEventListener('click', (event) => {
+      if (window.history.length > 1) {
+        event.preventDefault();
+        window.history.back();
+      }
+    });
     $('#mbpLiuyaoQuestion')?.addEventListener('input', () => {
       const nextQuestion = normalizeQuestion($('#mbpLiuyaoQuestion')?.value || '');
       const hadGate = Boolean(state.questionGate);
