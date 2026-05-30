@@ -67,8 +67,7 @@ const convertedScreens = [
   { no: 49, title: "合盘结果", active: "首页" },
   { no: 50, title: "办公室布局", active: "首页" },
   { no: 51, title: "办公室布局说明", active: "首页" },
-  { no: 52, title: "办公室布局结果", active: "首页" },
-  { no: 53, title: "导入平面图", active: "首页" }
+  { no: 52, title: "办公室布局结果", active: "首页" }
 ];
 
 const convertedByNo = new Map(convertedScreens.map((screen) => [screen.no, screen]));
@@ -181,7 +180,9 @@ const routeAliases = {
   login: "screen-40",
   password: "screen-41",
   office: "screen-50",
-  "office-layout": "screen-50"
+  "office-layout": "screen-50",
+  "screen-53": "screen-50",
+  "53": "screen-50"
 };
 
 const state = {
@@ -13631,7 +13632,6 @@ const LIUREN_SCREEN_HEIGHT = 1900;
 const OFFICE_LAYOUT_STORAGE_KEY = "wentian-office-layout-state-v1";
 const OFFICE_LAYOUT_STATE_VERSION = 1;
 const OFFICE_LAYOUT_MAX_CASES = 6;
-const OFFICE_LAYOUT_RECOGNITION_MIN_CONFIDENCE = 0.65;
 const OFFICE_LAYOUT_TRIGRAMS = [
   { gua: "乾", direction: "西北", label: "西北 · 乾卦", meaning: "偏管理、掌控、资源与决策节奏。" },
   { gua: "坎", direction: "正北", label: "正北 · 坎卦", meaning: "偏流动、信息、沟通与外部往来。" },
@@ -13643,7 +13643,6 @@ const OFFICE_LAYOUT_TRIGRAMS = [
   { gua: "兑", direction: "正西", label: "正西 · 兑卦", meaning: "偏表达、洽谈、客户感受与输出。" },
 ];
 let officeLayoutState = loadOfficeLayoutState();
-let officeLayoutImportLoading = false;
 
 function getOfficeLayoutExternalMap() {
   const map = typeof window !== "undefined" ? window.OFFICE_LAYOUT_TEXT_MAP : null;
@@ -13669,35 +13668,6 @@ function normalizeOfficeLayoutTrigram(value = "") {
   return byDirection ? byDirection.gua : "";
 }
 
-function normalizeOfficeLayoutConfidence(value) {
-  const num = Number(value);
-  if (!Number.isFinite(num)) return null;
-  return Math.max(0, Math.min(1, num));
-}
-
-function normalizeOfficeLayoutRecognition(value) {
-  if (!value || typeof value !== "object") return null;
-  const outerCandidate = normalizeOfficeLayoutTrigram(value.outerCandidate || value.doorDirectionLabel);
-  const innerCandidate = normalizeOfficeLayoutTrigram(value.innerCandidate || value.bossDirectionLabel);
-  const confidence = normalizeOfficeLayoutConfidence(value.confidence);
-  const needConfirm =
-    Boolean(value.needConfirm) ||
-    confidence === null ||
-    confidence < OFFICE_LAYOUT_RECOGNITION_MIN_CONFIDENCE ||
-    !outerCandidate ||
-    !innerCandidate;
-  return {
-    outerCandidate,
-    innerCandidate,
-    confidence,
-    notes: String(value.notes || "").trim().slice(0, 180),
-    needConfirm,
-    confirmed: !needConfirm || Boolean(value.confirmed),
-    doorDirectionLabel: String(value.doorDirectionLabel || (outerCandidate ? getOfficeLayoutTrigramMeta(outerCandidate).direction : "")).trim(),
-    bossDirectionLabel: String(value.bossDirectionLabel || (innerCandidate ? getOfficeLayoutTrigramMeta(innerCandidate).direction : "")).trim(),
-  };
-}
-
 function buildOfficeLayoutCaseTitleFromValues(outerTrigram, innerTrigram) {
   if (!outerTrigram || !innerTrigram) return "办公室布局";
   return `${getOfficeLayoutTrigramMeta(outerTrigram).direction}门向 × ${getOfficeLayoutTrigramMeta(innerTrigram).direction}老板位`;
@@ -13715,7 +13685,6 @@ function normalizeOfficeLayoutCases(list) {
         title: String(item.title || "").trim() || buildOfficeLayoutCaseTitleFromValues(outerTrigram, innerTrigram),
         outerTrigram,
         innerTrigram,
-        importedImageDataUrl: typeof item.importedImageDataUrl === "string" ? item.importedImageDataUrl : null,
         createdAt: item.createdAt || new Date().toISOString(),
       };
     })
@@ -13728,8 +13697,6 @@ function createOfficeLayoutState() {
     version: OFFICE_LAYOUT_STATE_VERSION,
     outerTrigram: "",
     innerTrigram: "",
-    importedImageDataUrl: null,
-    recognition: null,
     saveCase: false,
     cases: [],
     activeCaseId: "",
@@ -13747,8 +13714,6 @@ function loadOfficeLayoutState() {
       version: OFFICE_LAYOUT_STATE_VERSION,
       outerTrigram: normalizeOfficeLayoutTrigram(parsed.outerTrigram),
       innerTrigram: normalizeOfficeLayoutTrigram(parsed.innerTrigram),
-      importedImageDataUrl: typeof parsed.importedImageDataUrl === "string" ? parsed.importedImageDataUrl : null,
-      recognition: normalizeOfficeLayoutRecognition(parsed.recognition),
       saveCase: Boolean(parsed.saveCase),
       cases: normalizeOfficeLayoutCases(parsed.cases),
       activeCaseId: isWentianUuid(parsed.activeCaseId) ? parsed.activeCaseId : "",
@@ -13767,8 +13732,6 @@ function saveOfficeLayoutState() {
       version: OFFICE_LAYOUT_STATE_VERSION,
       outerTrigram: officeLayoutState.outerTrigram,
       innerTrigram: officeLayoutState.innerTrigram,
-      importedImageDataUrl: officeLayoutState.importedImageDataUrl,
-      recognition: officeLayoutState.recognition,
       saveCase: officeLayoutState.saveCase,
       cases: normalizeOfficeLayoutCases(officeLayoutState.cases),
       activeCaseId: officeLayoutState.activeCaseId,
@@ -13779,7 +13742,7 @@ function saveOfficeLayoutState() {
 }
 
 function isOfficeLayoutRoute(route = state.route) {
-  return ["screen-50", "screen-51", "screen-52", "screen-53"].includes(route);
+  return ["screen-50", "screen-51", "screen-52"].includes(route);
 }
 
 function refreshOfficeLayoutView(route = state.route) {
@@ -13794,7 +13757,7 @@ function setOfficeLayoutStatus(text, tone = "") {
 
 function getOfficeLayoutStatusSnapshot() {
   return {
-    text: officeLayoutState.statusText || "可先手动选择外卦和内卦，也可导入平面图自动识别方向。",
+    text: officeLayoutState.statusText || "请手动选择外卦和内卦后查询。",
     tone: officeLayoutState.statusTone || "",
   };
 }
@@ -13841,21 +13804,10 @@ function getOfficeLayoutReading(outerTrigram = officeLayoutState.outerTrigram, i
   };
 }
 
-function getOfficeLayoutConfidenceLabel(confidence) {
-  if (!Number.isFinite(confidence)) return "待确认";
-  return `${Math.round(confidence * 100)}%`;
-}
-
-function officeLayoutNeedsManualConfirmation() {
-  return Boolean(officeLayoutState.recognition?.needConfirm && !officeLayoutState.recognition?.confirmed);
-}
-
 function canQueryOfficeLayout() {
   return Boolean(
     officeLayoutState.outerTrigram &&
-    officeLayoutState.innerTrigram &&
-    !officeLayoutImportLoading &&
-    !officeLayoutNeedsManualConfirmation()
+    officeLayoutState.innerTrigram
   );
 }
 
@@ -13870,21 +13822,9 @@ function formatOfficeLayoutCaseDate(value) {
   return cn.toISOString().slice(0, 16).replace("T", " ");
 }
 
-function markOfficeLayoutRecognitionConfirmed(statusText = "已按当前方向确认，可继续查询。") {
-  if (!officeLayoutState.recognition) return;
-  officeLayoutState.recognition.confirmed = true;
-  officeLayoutState.recognition.needConfirm = false;
-  setOfficeLayoutStatus(statusText, "ok");
-  saveOfficeLayoutState();
-}
-
-function updateOfficeLayoutField(field, value, options = {}) {
+function updateOfficeLayoutField(field, value) {
   officeLayoutState[field] = normalizeOfficeLayoutTrigram(value);
-  if (options.manualConfirm && officeLayoutState.recognition) {
-    markOfficeLayoutRecognitionConfirmed("已按手动选择为准，可继续查询。");
-  } else {
-    saveOfficeLayoutState();
-  }
+  saveOfficeLayoutState();
 }
 
 function toggleOfficeLayoutSaveCase(checked) {
@@ -13893,20 +13833,10 @@ function toggleOfficeLayoutSaveCase(checked) {
   refreshOfficeLayoutView();
 }
 
-function removeOfficeLayoutImportedImage() {
-  officeLayoutState.importedImageDataUrl = null;
-  officeLayoutState.recognition = null;
-  officeLayoutImportLoading = false;
-  setOfficeLayoutStatus("已移除平面图，仍可手动选择外卦和内卦。", "warn");
-  saveOfficeLayoutState();
-  refreshOfficeLayoutView();
-}
-
 function resetOfficeLayoutCurrent() {
   const next = createOfficeLayoutState();
   next.cases = normalizeOfficeLayoutCases(officeLayoutState.cases);
   officeLayoutState = next;
-  officeLayoutImportLoading = false;
   setOfficeLayoutStatus("已清空本次办公室布局。", "warn");
   saveOfficeLayoutState();
   navigate("screen-50", false);
@@ -13920,7 +13850,6 @@ function persistOfficeLayoutCaseIfNeeded() {
     title: buildOfficeLayoutCaseTitle(),
     outerTrigram: officeLayoutState.outerTrigram,
     innerTrigram: officeLayoutState.innerTrigram,
-    importedImageDataUrl: officeLayoutState.importedImageDataUrl,
     createdAt: existing?.createdAt || new Date().toISOString(),
   };
   officeLayoutState.cases = normalizeOfficeLayoutCases([entry, ...officeLayoutState.cases.filter((item) => item.id !== entry.id)]);
@@ -13934,8 +13863,6 @@ function loadOfficeLayoutCase(caseId, openResult = false) {
   if (!entry) return;
   officeLayoutState.outerTrigram = entry.outerTrigram;
   officeLayoutState.innerTrigram = entry.innerTrigram;
-  officeLayoutState.importedImageDataUrl = entry.importedImageDataUrl || null;
-  officeLayoutState.recognition = null;
   officeLayoutState.activeCaseId = entry.id;
   officeLayoutState.saveCase = true;
   setOfficeLayoutStatus(`已载入案例：${entry.title}`, "ok");
@@ -13967,39 +13894,12 @@ function renderOfficeLayoutDirectionOptions(selected = "") {
   ].join("");
 }
 
-function renderOfficeLayoutRecognitionSummary() {
+function renderOfficeLayoutStatusSummary() {
   const status = getOfficeLayoutStatusSnapshot();
-  const recognition = officeLayoutState.recognition;
-  const outerMeta = recognition?.outerCandidate ? getOfficeLayoutTrigramMeta(recognition.outerCandidate) : null;
-  const innerMeta = recognition?.innerCandidate ? getOfficeLayoutTrigramMeta(recognition.innerCandidate) : null;
-  const title = officeLayoutImportLoading ? "正在识别平面图" : (recognition ? "平面图识别结果" : "当前状态");
-  const metaText = recognition
-    ? [
-        outerMeta ? `外卦：${outerMeta.direction}` : "",
-        innerMeta ? `内卦：${innerMeta.direction}` : "",
-        `置信度：${getOfficeLayoutConfidenceLabel(recognition.confidence)}`,
-      ].filter(Boolean).join(" · ")
-    : "";
   return `
     <div class="office-layout-status" data-tone="${escapeHtml(status.tone || "")}">
-      <strong>${title}</strong>
+      <strong>当前状态</strong>
       <span>${escapeHtml(status.text)}</span>
-      ${metaText ? `<span>${escapeHtml(metaText)}</span>` : ""}
-    </div>
-  `;
-}
-
-function renderOfficeLayoutPreviewBlock() {
-  const recognition = officeLayoutState.recognition;
-  if (!officeLayoutState.importedImageDataUrl) return "";
-  return `
-    <div class="office-layout-preview">
-      <img src="${officeLayoutState.importedImageDataUrl}" alt="办公室平面图预览">
-      <div class="office-layout-preview-meta">
-        <span class="office-layout-chip">${escapeHtml(officeLayoutState.outerTrigram ? `${getOfficeLayoutTrigramMeta(officeLayoutState.outerTrigram).direction}外卦` : "外卦待定")}</span>
-        <span class="office-layout-chip">${escapeHtml(officeLayoutState.innerTrigram ? `${getOfficeLayoutTrigramMeta(officeLayoutState.innerTrigram).direction}内卦` : "内卦待定")}</span>
-        ${recognition ? `<span class="office-layout-chip">${escapeHtml(`识别 ${getOfficeLayoutConfidenceLabel(recognition.confidence)}`)}</span>` : ""}
-      </div>
     </div>
   `;
 }
@@ -14039,12 +13939,11 @@ function sourceOfficeLayoutFrame(id, title, content, rightLabel = "", rightRoute
 }
 
 function sourceOfficeLayoutHomeScreen() {
-  const status = getOfficeLayoutStatusSnapshot();
   return sourceOfficeLayoutFrame("office50", "办公室布局", `
     <section class="office-layout-panel hero">
       <span class="office-layout-kicker">门向外卦 · 老板内卦</span>
       <h2 class="office-layout-title">先定门向，再看老板位</h2>
-      <p class="office-layout-copy">根据办公室大门朝向和老板位置，快速生成一版布局摘要、调整建议和长文解读。新手也可以先导入平面图，让系统给出方向候选。</p>
+      <p class="office-layout-copy">根据办公室大门朝向和老板位置，快速生成一版布局摘要、调整建议和长文解读。</p>
       <div class="office-layout-steps">
         <span class="office-layout-step-chip">1 选外卦</span>
         <span class="office-layout-step-chip">2 选内卦</span>
@@ -14076,20 +13975,12 @@ function sourceOfficeLayoutHomeScreen() {
           </label>
         </div>
       </div>
-      <div class="office-layout-row">
-        <span class="office-layout-row-label">导入平面图</span>
-        <button type="button" class="office-layout-text-button" data-route="screen-53">拍照或从相册选择，自动识别外卦 / 内卦</button>
-      </div>
-      ${renderOfficeLayoutRecognitionSummary()}
-      ${renderOfficeLayoutPreviewBlock()}
+      ${renderOfficeLayoutStatusSummary()}
       <div class="office-layout-buttons">
         <button type="button" class="office-layout-button primary" data-action="office-layout-query"${canQueryOfficeLayout() ? "" : " disabled"}>查询</button>
         <button type="button" class="office-layout-button secondary" data-route="screen-51">查看使用说明</button>
-        <button type="button" class="office-layout-button ghost" data-route="screen-53">导入平面图</button>
         <button type="button" class="office-layout-button danger" data-action="office-layout-reset">清空本次</button>
       </div>
-      ${officeLayoutNeedsManualConfirmation() ? '<p class="office-layout-note">当前识别置信度偏低，请手动核对方向，或去导入页点“我已确认当前方向”。</p>' : ""}
-      ${status.tone === "error" ? '<p class="office-layout-note">识图失败也没关系，手动选外卦和内卦一样能直接查询。</p>' : ""}
     </section>
     <section class="office-layout-panel">
       <div class="office-layout-panel-header">
@@ -14106,7 +13997,7 @@ function sourceOfficeLayoutGuideScreen() {
     <section class="office-layout-panel hero">
       <span class="office-layout-kicker">新手先看这里</span>
       <h2 class="office-layout-title">先定大门，再定老板位</h2>
-      <p class="office-layout-copy">你只需要先确定办公室大门朝向和老板位置。可以手动选，也可以导入平面图后让系统先给一版方向候选。</p>
+      <p class="office-layout-copy">你只需要先确定办公室大门朝向和老板位置，手动选好外卦和内卦后再查询。</p>
     </section>
     <section class="office-layout-panel">
       <div class="office-layout-video-slot">
@@ -14118,47 +14009,14 @@ function sourceOfficeLayoutGuideScreen() {
     <section class="office-layout-guide-grid">
       <article class="office-layout-guide-step"><i>01</i><div><strong>先确定办公室大门朝向和老板位置</strong><p>外卦看大门朝向，内卦看老板位。先把这两个点定住，再谈布局是否顺手。</p></div></article>
       <article class="office-layout-guide-step"><i>02</i><div><strong>可用手机指南针或平面图判断</strong><p>站在办公室中心附近看大门所在方向，或在平面图里标出北向后，判断大门和老板位分别落在哪个方位。</p></div></article>
-      <article class="office-layout-guide-step"><i>03</i><div><strong>选外卦和内卦，再查询</strong><p>系统会给出摘要卡、核心结论、布局建议和长文解读。低置信度识图时，记得先手动确认再查。</p></div></article>
+      <article class="office-layout-guide-step"><i>03</i><div><strong>选外卦和内卦，再查询</strong><p>系统会给出摘要卡、核心结论、布局建议和长文解读。</p></div></article>
     </section>
     <section class="office-layout-panel">
       <h3>不会确定方位？</h3>
-      <p class="office-layout-copy">1）先找平面图上的北；2）再看大门在哪一边；3）最后看老板位靠哪一宫。没有十足把握时，宁可手动确认，也不要直接照着低置信度结果硬查。</p>
+      <p class="office-layout-copy">1）先找平面图上的北；2）再看大门在哪一边；3）最后看老板位靠哪一宫。没有十足把握时，先用指南针复核后再选。</p>
       <div class="office-layout-buttons">
         <button type="button" class="office-layout-button primary" data-route="screen-50">返回办公室布局</button>
-        <button type="button" class="office-layout-button ghost" data-route="screen-53">去导入平面图</button>
       </div>
-    </section>
-  `);
-}
-
-function sourceOfficeLayoutImportScreen() {
-  const recognition = officeLayoutState.recognition;
-  return sourceOfficeLayoutFrame("office53", "导入平面图", `
-    <section class="office-layout-panel hero">
-      <span class="office-layout-kicker">支持拍照与相册</span>
-      <h2 class="office-layout-title">导入平面图，先给方向候选</h2>
-      <p class="office-layout-copy">系统会尝试识别大门朝向和老板位置，并自动回填外卦与内卦。识别不稳时，前端会要求你手动确认后才能查询。</p>
-    </section>
-    <section class="office-layout-panel">
-      <div class="office-layout-panel-header">
-        <h3>导入平面图</h3>
-        <span class="office-layout-chip">${officeLayoutImportLoading ? "识别中" : "可重传"}</span>
-      </div>
-      <div class="office-layout-action-sheet">
-        <button type="button" class="primary" data-action="office-layout-pick-camera">拍摄平面图</button>
-        <button type="button" data-action="office-layout-pick-album">从相册中选择</button>
-      </div>
-      <input id="office-layout-camera-input" type="file" accept="image/*" capture="environment" hidden>
-      <input id="office-layout-album-input" type="file" accept="image/*" hidden>
-      ${renderOfficeLayoutRecognitionSummary()}
-      ${renderOfficeLayoutPreviewBlock()}
-      <div class="office-layout-buttons">
-        ${officeLayoutNeedsManualConfirmation() ? '<button type="button" class="office-layout-button primary" data-action="office-layout-confirm-recognition">我已确认当前方向</button>' : '<button type="button" class="office-layout-button primary" data-route="screen-50">返回办公室布局</button>'}
-        <button type="button" class="office-layout-button ghost" data-route="screen-50">手动改外卦 / 内卦</button>
-        <button type="button" class="office-layout-button danger" data-action="office-layout-remove-image"${officeLayoutState.importedImageDataUrl ? "" : " disabled"}>移除图片</button>
-        <button type="button" class="office-layout-button secondary" data-route="screen-52"${canQueryOfficeLayout() ? "" : " disabled"}>直接看结果</button>
-      </div>
-      ${recognition?.notes ? `<p class="office-layout-note">识别说明：${escapeHtml(recognition.notes)}</p>` : ""}
     </section>
   `);
 }
@@ -14204,7 +14062,6 @@ function sourceOfficeLayoutResultScreen() {
     <section class="office-layout-panel office-layout-rich-card">
       <h4>布局建议</h4>
       <ul>${splitOfficeLayoutAdvice(reading.advice).map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
-      ${officeLayoutState.importedImageDataUrl ? renderOfficeLayoutPreviewBlock() : ""}
     </section>
     <section class="office-layout-panel office-layout-rich-card office-layout-long">
       <h4>长文解读</h4>
@@ -14225,11 +14082,11 @@ function initOfficeLayoutHomeScreen() {
   const inner = document.getElementById("office-layout-inner-select");
   const saveToggle = document.getElementById("office-layout-save-toggle");
   outer?.addEventListener("change", (event) => {
-    updateOfficeLayoutField("outerTrigram", event.target.value || "", { manualConfirm: true });
+    updateOfficeLayoutField("outerTrigram", event.target.value || "");
     refreshOfficeLayoutView("screen-50");
   });
   inner?.addEventListener("change", (event) => {
-    updateOfficeLayoutField("innerTrigram", event.target.value || "", { manualConfirm: true });
+    updateOfficeLayoutField("innerTrigram", event.target.value || "");
     refreshOfficeLayoutView("screen-50");
   });
   saveToggle?.addEventListener("change", (event) => {
@@ -14237,83 +14094,9 @@ function initOfficeLayoutHomeScreen() {
   });
 }
 
-function initOfficeLayoutImportScreen() {
-  const bindPicker = (id) => {
-    const input = document.getElementById(id);
-    if (!input) return;
-    input.value = "";
-    input.addEventListener("change", (event) => {
-      const file = event.target.files?.[0] || null;
-      if (file) handleOfficeLayoutImageSelection(file);
-    });
-  };
-  bindPicker("office-layout-camera-input");
-  bindPicker("office-layout-album-input");
-}
-
-function triggerOfficeLayoutFileInput(kind = "album") {
-  const targetId = kind === "camera" ? "office-layout-camera-input" : "office-layout-album-input";
-  document.getElementById(targetId)?.click();
-}
-
-async function handleOfficeLayoutImageSelection(file) {
-  officeLayoutImportLoading = true;
-  setOfficeLayoutStatus("正在识别平面图里的门向和老板位，请稍等。", "active");
-  refreshOfficeLayoutView();
-  try {
-    officeLayoutState.importedImageDataUrl = await compressWentianRefundScreenshot(file);
-    officeLayoutState.recognition = null;
-    saveOfficeLayoutState();
-    refreshOfficeLayoutView();
-    const data = await wentianFetchJson("/api/ai/office-layout-recognize", {
-      method: "POST",
-      body: {
-        imageDataUrl: officeLayoutState.importedImageDataUrl,
-        clientId: getWentianClientId(),
-      },
-      noAuth: true,
-    });
-    officeLayoutState.recognition = normalizeOfficeLayoutRecognition(data);
-    if (officeLayoutState.recognition?.outerCandidate) officeLayoutState.outerTrigram = officeLayoutState.recognition.outerCandidate;
-    if (officeLayoutState.recognition?.innerCandidate) officeLayoutState.innerTrigram = officeLayoutState.recognition.innerCandidate;
-    if (officeLayoutState.recognition?.needConfirm) {
-      setOfficeLayoutStatus("识别完成，但置信度偏低。请手动确认方向后再查询。", "warn");
-    } else {
-      setOfficeLayoutStatus("识别完成，已自动回填外卦和内卦。", "ok");
-    }
-  } catch (error) {
-    officeLayoutState.recognition = {
-      outerCandidate: officeLayoutState.outerTrigram || "",
-      innerCandidate: officeLayoutState.innerTrigram || "",
-      confidence: null,
-      notes: error?.message || "识图接口暂不可用",
-      needConfirm: true,
-      confirmed: false,
-      doorDirectionLabel: "",
-      bossDirectionLabel: "",
-    };
-    setOfficeLayoutStatus("识图接口暂不可用，先手动选外卦和内卦也能查询。", "warn");
-  } finally {
-    officeLayoutImportLoading = false;
-    saveOfficeLayoutState();
-    refreshOfficeLayoutView();
-  }
-}
-
-function confirmOfficeLayoutRecognition() {
-  if (!officeLayoutState.recognition) return;
-  markOfficeLayoutRecognitionConfirmed();
-  refreshOfficeLayoutView();
-}
-
 function submitOfficeLayoutQuery() {
   if (!officeLayoutState.outerTrigram || !officeLayoutState.innerTrigram) {
     setOfficeLayoutStatus("请先选好办公室大门朝向和老板位置。", "error");
-    refreshOfficeLayoutView();
-    return;
-  }
-  if (officeLayoutNeedsManualConfirmation()) {
-    setOfficeLayoutStatus("请先手动确认当前方向，再继续查询。", "warn");
     refreshOfficeLayoutView();
     return;
   }
@@ -14844,7 +14627,6 @@ function renderWentianPolishedScreen(screen) {
   if (no === 50) return sourceOfficeLayoutHomeScreen();
   if (no === 51) return sourceOfficeLayoutGuideScreen();
   if (no === 52) return sourceOfficeLayoutResultScreen();
-  if (no === 53) return sourceOfficeLayoutImportScreen();
   if (no >= 17 && no <= 19) return sourceLiuyaoCastScreen();
   if (no === 20) return sourceLiuyaoResultScreen();
   if (no === 30) return sourcePaymentScreen();
@@ -16869,7 +16651,6 @@ function navigate(route, push = true) {
     if (screen.no === 27) window.setTimeout(initWentianClassicChartScreen, 0);
     if (screen.no === 46) window.setTimeout(initLiurenScreen, 0);
     if (screen.no === 50) window.setTimeout(initOfficeLayoutHomeScreen, 0);
-    if (screen.no === 53) window.setTimeout(initOfficeLayoutImportScreen, 0);
     if (screen.no === 49) window.setTimeout(initWentianHepanAiJudgement, 0);
     if (!location.hash.includes("figmacapture=") && !hasWentianAuthParams(getWentianUrlParams(location.hash))) location.hash = route;
     window.scrollTo(0, 0);
@@ -17376,22 +17157,6 @@ document.addEventListener("click", (event) => {
   }
   if (earlyAction === "office-layout-reset") {
     resetOfficeLayoutCurrent();
-    return;
-  }
-  if (earlyAction === "office-layout-pick-camera") {
-    triggerOfficeLayoutFileInput("camera");
-    return;
-  }
-  if (earlyAction === "office-layout-pick-album") {
-    triggerOfficeLayoutFileInput("album");
-    return;
-  }
-  if (earlyAction === "office-layout-confirm-recognition") {
-    confirmOfficeLayoutRecognition();
-    return;
-  }
-  if (earlyAction === "office-layout-remove-image") {
-    removeOfficeLayoutImportedImage();
     return;
   }
   if (earlyAction === "office-layout-load-case") {
