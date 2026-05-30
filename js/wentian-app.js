@@ -13797,6 +13797,30 @@ function getOfficeLayoutReading(outerTrigram = officeLayoutState.outerTrigram, i
   };
 }
 
+function getOfficeLayoutTrigramBits(gua = "") {
+  const target = String(gua || "").trim();
+  if (!target) return "";
+  const matched = Object.entries(LIUYAO_TRIGRAM_BY_BITS).find(([, item]) => item?.gua === target);
+  return matched ? matched[0] : "";
+}
+
+function getOfficeLayoutHexLines(outerTrigram = officeLayoutState.outerTrigram, innerTrigram = officeLayoutState.innerTrigram) {
+  const upperBits = getOfficeLayoutTrigramBits(outerTrigram);
+  const lowerBits = getOfficeLayoutTrigramBits(innerTrigram);
+  if (!upperBits || !lowerBits) return [];
+  return `${lowerBits}${upperBits}`.split("").map((bit) => bit === "1" ? "solid" : "broken");
+}
+
+function renderOfficeLayoutHexLines(lines) {
+  const displayLines = Array.isArray(lines) ? lines.slice().reverse() : [];
+  if (!displayLines.length) return "";
+  return displayLines.map((line) => {
+    if (line === "gap") return `<i class="is-gap"></i>`;
+    if (line === "solid") return `<i></i>`;
+    return `<i class="is-broken"><b></b><b></b></i>`;
+  }).join("");
+}
+
 function canQueryOfficeLayout() {
   return Boolean(
     officeLayoutState.outerTrigram &&
@@ -13991,18 +14015,22 @@ function sourceOfficeLayoutResultScreen() {
     `);
   }
   const reading = getOfficeLayoutReading();
-  const outerMeta = getOfficeLayoutTrigramMeta(reading.outerTrigram);
-  const innerMeta = getOfficeLayoutTrigramMeta(reading.innerTrigram);
-  const caseEntry = officeLayoutState.cases.find((item) => item.id === officeLayoutState.activeCaseId) || null;
+  const imageSrc = getYijingHexagramImageSrc(reading.hexNo);
+  const lineHtml = renderOfficeLayoutHexLines(getOfficeLayoutHexLines(reading.outerTrigram, reading.innerTrigram));
   return sourceOfficeLayoutFrame("office52", "办公室布局结果", `
     <section class="office-layout-panel office-layout-summary-card">
       <span class="office-layout-kicker">办公室布局长文卡</span>
       <h2>第 ${escapeHtml(reading.hexNo)} 卦 · ${escapeHtml(reading.hexName)}</h2>
-      <p>${escapeHtml(reading.summary)}</p>
-      <div class="office-layout-pill-row">
-        <span class="office-layout-pill">外卦：${escapeHtml(`${outerMeta.direction} · ${outerMeta.gua}`)}</span>
-        <span class="office-layout-pill">内卦：${escapeHtml(`${innerMeta.direction} · ${innerMeta.gua}`)}</span>
-        ${caseEntry ? '<span class="office-layout-pill">本地案例已载入</span>' : ""}
+      <div class="office-layout-hex-hero">
+        <div class="office-layout-hex-image-wrap">
+          ${imageSrc
+            ? `<img class="office-layout-hex-image" src="${imageSrc}" alt="${escapeHtml(`第 ${reading.hexNo} 卦 ${reading.hexName}`)}" loading="lazy" decoding="async">`
+            : `<div class="office-layout-hex-image office-layout-hex-image-empty">${escapeHtml(reading.hexName)}</div>`}
+        </div>
+        <div class="office-layout-hex-lines-card" aria-label="${escapeHtml(`第 ${reading.hexNo} 卦六爻`)}}">
+          <span>六爻卦象</span>
+          <div class="office-layout-hex-lines">${lineHtml || '<i class="is-gap"></i><i class="is-gap"></i><i class="is-gap"></i><i class="is-gap"></i><i class="is-gap"></i><i class="is-gap"></i>'}</div>
+        </div>
       </div>
     </section>
     <section class="office-layout-panel office-layout-rich-card">

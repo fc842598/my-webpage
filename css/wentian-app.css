@@ -2539,7 +2539,8 @@ html[lang="en"] .wentian-chat-starter {
 .office-layout-summary-card h2,
 .office-layout-summary-card h3,
 .office-layout-summary-card p,
-.office-layout-summary-card strong {
+.office-layout-summary-card strong,
+.office-layout-hex-hero {
   position: relative;
   z-index: 1;
 }
@@ -2557,6 +2558,113 @@ html[lang="en"] .wentian-chat-starter {
   color: rgba(255, 250, 243, .86);
   font-size: 13px;
   line-height: 1.65;
+}
+
+.office-layout-hex-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 88px;
+  gap: 14px;
+  align-items: stretch;
+  margin-top: 16px;
+}
+
+.office-layout-hex-image-wrap,
+.office-layout-hex-lines-card {
+  border: 1px solid rgba(255, 239, 204, .22);
+  border-radius: 18px;
+  background: rgba(255, 250, 243, .12);
+  backdrop-filter: blur(6px);
+}
+
+.office-layout-hex-image-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 148px;
+  padding: 12px;
+  overflow: hidden;
+}
+
+.office-layout-hex-image {
+  display: block;
+  width: 100%;
+  max-width: 180px;
+  aspect-ratio: 1 / 1;
+  object-fit: contain;
+  filter: drop-shadow(0 10px 20px rgba(36, 16, 6, .24));
+}
+
+.office-layout-hex-image-empty {
+  color: #fff2c8;
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.office-layout-hex-lines-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px 10px;
+}
+
+.office-layout-hex-lines-card span {
+  color: rgba(255, 242, 200, .86);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0;
+}
+
+.office-layout-hex-lines {
+  display: grid;
+  gap: 8px;
+  width: 100%;
+}
+
+.office-layout-hex-lines i {
+  display: block;
+  height: 7px;
+  border-radius: 999px;
+  background: #f3dd95;
+  box-shadow: 0 0 0 1px rgba(255, 239, 204, .08);
+}
+
+.office-layout-hex-lines i.is-broken {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  background: transparent;
+  box-shadow: none;
+}
+
+.office-layout-hex-lines i.is-broken b {
+  display: block;
+  border-radius: 999px;
+  background: #f3dd95;
+}
+
+.office-layout-hex-lines i.is-gap {
+  height: 2px;
+  background: transparent;
+  box-shadow: none;
+}
+
+@media (max-width: 360px) {
+  .office-layout-hex-hero {
+    grid-template-columns: minmax(0, 1fr) 78px;
+    gap: 10px;
+  }
+
+  .office-layout-hex-lines-card {
+    padding: 10px 8px;
+  }
+
+  .office-layout-hex-lines i.is-broken {
+    gap: 10px;
+  }
 }
 
 .office-layout-pill-row {
