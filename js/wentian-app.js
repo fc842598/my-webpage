@@ -1348,6 +1348,8 @@ let wentianInviteReadyPromise = null;
 let wentianHtml2PdfPromise = null;
 const wentianAuthState = {
   mode: "login",
+  account: "",
+  password: "",
   error: "",
   loading: false,
 };
@@ -7912,6 +7914,66 @@ function inputToWentianAuthEmail(value) {
   return phoneToWentianEmail(raw);
 }
 
+function syncWentianAuthDraftFromDom() {
+  const accountInput = document.getElementById("wentian-auth-phone");
+  const passwordInput = document.getElementById("wentian-auth-password");
+  if (accountInput) wentianAuthState.account = accountInput.value || "";
+  if (passwordInput) wentianAuthState.password = passwordInput.value || "";
+}
+
+function clearWentianAuthDraft() {
+  wentianAuthState.account = "";
+  wentianAuthState.password = "";
+}
+
+function getWentianAuthStatusText() {
+  if (wentianAuthState.error) return wentianAuthState.error;
+  const pendingInviteCode = getWentianPendingInviteCode();
+  return pendingInviteCode ? `已记录邀请码 ${pendingInviteCode}，登录后自动绑定` : "";
+}
+
+function getWentianAuthStatusTone() {
+  if (wentianAuthState.error) return "error";
+  return getWentianPendingInviteCode() ? "notice" : "";
+}
+
+function syncWentianAuthUi() {
+  const status = document.getElementById("wentian-auth-status");
+  if (status) {
+    status.textContent = getWentianAuthStatusText();
+    status.dataset.tone = getWentianAuthStatusTone();
+  }
+  const submitText = document.getElementById("source-login-submit-text");
+  if (submitText) {
+    submitText.textContent = wentianAuthState.loading
+      ? "处理中..."
+      : (wentianAuthState.mode === "register" ? "注册并登录" : "登录并继续");
+  }
+  const submitBox = document.getElementById("source-login-submit");
+  if (submitBox) {
+    submitBox.style.background = wentianAuthState.loading
+      ? "#d8c7aa"
+      : "linear-gradient(180deg,#b74e39,#983323)";
+    submitBox.style.boxShadow = wentianAuthState.loading
+      ? "0 8px 18px rgba(120,94,46,.10)"
+      : "0 12px 24px rgba(158,61,43,.16)";
+  }
+  const submitHit = document.getElementById("source-login-submit-hit");
+  if (submitHit) {
+    submitHit.disabled = wentianAuthState.loading;
+    submitHit.style.pointerEvents = wentianAuthState.loading ? "none" : "auto";
+  }
+}
+
+function normalizeWentianAuthErrorMessage(message) {
+  const text = String(message || "").trim();
+  if (!text) return "登录失败";
+  if (/invalid login credentials|invalid credentials|wrong password|密码错误|密码有误/i.test(text)) {
+    return "密码有误，请重新输入";
+  }
+  return text;
+}
+
 function getWentianAuthUserLabel(session = wentianAuthSession) {
   const user = session?.user;
   if (!user) return "";
@@ -10251,7 +10313,6 @@ function sourceLoginMethodsScreen() {
   const account = getWentianAuthDisplay();
   const member = getWentianMemberSnapshot();
   const isRegister = wentianAuthState.mode === "register";
-  const pendingInviteCode = getWentianPendingInviteCode();
   if (account.loggedIn) {
     const provider = wentianAuthSession?.user?.app_metadata?.provider || "phone";
     const phone = wentianAuthSession?.user?.user_metadata?.phone || "";
@@ -10308,10 +10369,10 @@ function sourceLoginMethodsScreen() {
     <button class="wentian-auth-tab ${!isRegister ? "is-active" : ""}" type="button" data-action="wentian-auth-mode" data-auth-mode="login" style="left:50px;top:154px;width:136px">登录</button>
     <button class="wentian-auth-tab ${isRegister ? "is-active" : ""}" type="button" data-action="wentian-auth-mode" data-auth-mode="register" style="left:204px;top:154px;width:136px">注册</button>
     ${figText("source-login-phone-label", isRegister ? "手机号" : "手机号 / 邮箱", 50, 224, 110, 14, "#6e6254", 800)}
-    <input id="wentian-auth-phone" class="wentian-auth-input" inputmode="${isRegister ? "tel" : "email"}" autocomplete="${isRegister ? "tel" : "username"}" style="left:50px;top:248px;width:290px" placeholder="${isRegister ? "请输入手机号" : "请输入手机号或邮箱"}">
+    <input id="wentian-auth-phone" class="wentian-auth-input" inputmode="${isRegister ? "tel" : "email"}" autocomplete="${isRegister ? "tel" : "username"}" style="left:50px;top:248px;width:290px" placeholder="${isRegister ? "请输入手机号" : "请输入手机号或邮箱"}" value="${escapeHtml(wentianAuthState.account || "")}">
     ${figText("source-login-password-label", "密码", 50, 318, 88, 14, "#6e6254", 800)}
-    <input id="wentian-auth-password" class="wentian-auth-input" type="password" autocomplete="${isRegister ? "new-password" : "current-password"}" style="left:50px;top:342px;width:290px" placeholder="至少 6 位">
-    ${wentianAuthState.error ? figText("source-login-error", escapeHtml(wentianAuthState.error), 50, 404, 290, 13, "#a94437", 700, "center", "line-height:1.35;") : (pendingInviteCode ? figText("source-login-invite", `已记录邀请码 ${escapeHtml(pendingInviteCode)}，登录后自动绑定`, 50, 404, 290, 13, "#9b742e", 700, "center", "line-height:1.35;") : "")}
+    <input id="wentian-auth-password" class="wentian-auth-input" type="password" autocomplete="${isRegister ? "new-password" : "current-password"}" style="left:50px;top:342px;width:290px" placeholder="至少 6 位" value="${escapeHtml(wentianAuthState.password || "")}">
+    <div id="wentian-auth-status" class="wentian-profile-status" data-tone="${escapeHtml(getWentianAuthStatusTone())}" style="top:404px">${escapeHtml(getWentianAuthStatusText())}</div>
     ${figBox("source-login-submit", 50, 442, 290, 46, "", `border-radius:23px;background:${wentianAuthState.loading ? "#d8c7aa" : "linear-gradient(180deg,#b74e39,#983323)"};box-shadow:0 12px 24px rgba(158,61,43,.16);`)}
     ${figButton("source-login-submit-hit", 50, 442, 290, 46, 'data-action="wentian-auth-submit"')}
     ${figText("source-login-submit-text", wentianAuthState.loading ? "处理中..." : (isRegister ? "注册并登录" : "登录并继续"), 50, 456, 290, 14, "#fffaf3", 900, "center")}
@@ -17540,6 +17601,18 @@ document.addEventListener("input", (event) => {
     if (event.target.id === "liuyao-question") saveLiuyaoQuestionFromDom();
     return;
   }
+  if (event.target.id === "wentian-auth-phone" || event.target.id === "wentian-auth-password") {
+    if (event.target.id === "wentian-auth-phone") {
+      wentianAuthState.account = event.target.value || "";
+    } else {
+      wentianAuthState.password = event.target.value || "";
+    }
+    if (wentianAuthState.error) {
+      wentianAuthState.error = "";
+      syncWentianAuthUi();
+    }
+    return;
+  }
   if (event.target.closest?.(".liuren-panel")) {
     if (event.target.id === "liuren-year") updateLiurenDayOptions();
     liurenHasStarted = false;
@@ -17603,28 +17676,30 @@ function buildScreenNav() {
 }
 
 async function submitWentianAuth(mode = wentianAuthState.mode) {
-  const phone = (document.getElementById("wentian-auth-phone")?.value || "").trim();
-  const password = document.getElementById("wentian-auth-password")?.value || "";
+  if (wentianAuthState.loading) return;
+  syncWentianAuthDraftFromDom();
+  const phone = String(wentianAuthState.account || "").trim();
+  const password = String(wentianAuthState.password || "");
   const email = inputToWentianAuthEmail(phone);
   const usingEmail = /@/.test(phone);
   if (mode === "register" && usingEmail) {
     wentianAuthState.error = "注册请填写手机号";
-    navigate("screen-40", false);
+    syncWentianAuthUi();
     return;
   }
   if (!email) {
     wentianAuthState.error = mode === "register" ? "请输入正确手机号" : "请输入正确手机号或邮箱";
-    navigate("screen-40", false);
+    syncWentianAuthUi();
     return;
   }
   if (password.length < 6) {
     wentianAuthState.error = "密码至少 6 位";
-    navigate("screen-40", false);
+    syncWentianAuthUi();
     return;
   }
   wentianAuthState.loading = true;
   wentianAuthState.error = "";
-  navigate("screen-40", false);
+  syncWentianAuthUi();
   try {
     let data = null;
     if (mode === "register") {
@@ -17645,6 +17720,7 @@ async function submitWentianAuth(mode = wentianAuthState.mode) {
       });
     }
     setWentianAuthSession(data?.session || null);
+    clearWentianAuthDraft();
     wentianAuthState.error = "";
     await bindWentianPendingInvite();
     await hydrateWentianInvite({ force: true });
@@ -17655,10 +17731,14 @@ async function submitWentianAuth(mode = wentianAuthState.mode) {
     }
     navigate("screen-31");
   } catch (error) {
-    wentianAuthState.error = error.message || "登录失败";
-    navigate("screen-40", false);
+    wentianAuthState.error = normalizeWentianAuthErrorMessage(error.message || "登录失败");
+    syncWentianAuthUi();
+    const passwordInput = document.getElementById("wentian-auth-password");
+    passwordInput?.focus();
+    passwordInput?.select?.();
   } finally {
     wentianAuthState.loading = false;
+    syncWentianAuthUi();
   }
 }
 
