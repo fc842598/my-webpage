@@ -5,10 +5,7 @@ const reports = [
   ["合盘关系报告", "分析双方关系吸引力、冲突点和长期相处策略。", "¥68"]
 ];
 
-const profiles = [
-  ["谢广周", "普通会员 / 账号信息", "男 / 1990-05-11 / 已保存"],
-  ["命主", "AI阅天默认档案", "女 / 1995-08-18 / 已保存"]
-];
+const profiles = [];
 
 const plans = [
   ["免费版", "30次/天", "每日自动刷新"],
@@ -19,7 +16,7 @@ const plans = [
 const convertedScreens = [
   { no: 1, title: "授权书", active: "", cards: [["本人授权阅天AI依据输入资料生成排盘、合盘与AI解读。", "签署人：谢广周 / 2026-05-11"]], badge: "已授权" },
   { no: 2, title: "首页/报告商城", active: "首页", heading: "阅天AI", cards: [["你的专属命理报告，立即生成", "排盘、合盘、流年、AI解读", "立即生成", "screen-26"], ["生命曲线预测报告 ¥99", "基于命盘生成完整报告", "", "screen-27"], ["2026丙午年预测报告 ¥50", "流年趋势与行动建议", "", "screen-27"], ["八字与MBTI人格深度解析 ¥58", "性格模型与命盘交叉分析", "", "screen-27"]] },
-  { no: 3, title: "档案列表", active: "档案", list: [["谢｜男｜阳历 2026-05-12", "用于排盘、合盘、AI问答", "screen-25"], ["命主｜女｜阴历八月", "用于排盘、合盘、AI问答", "screen-25"], ["贵王红仪｜VIP", "用于排盘、合盘、AI问答", "screen-25"], ["情侣合盘", "用于排盘、合盘、AI问答", "screen-10"]] },
+  { no: 3, title: "档案列表", active: "档案", list: [] },
   { no: 4, title: "AI阅天", active: "阅天AI", ai: "base" },
   { no: 5, title: "选择档案", active: "阅天AI", ai: "modal", modalTitle: "选择档案", modalItems: ["谢｜男｜阳历", "命主｜女｜阴历"], next: "screen-6" },
   { no: 6, title: "AI提问中", active: "阅天AI", ai: "asking" },
@@ -40,7 +37,7 @@ const convertedScreens = [
   { no: 21, title: "购买弹窗", active: "活动", modalTitle: "购买完整解读", modalItems: ["地风升完整卦象 ¥12", "包含本卦、变卦与行动建议"], next: "screen-29" },
   { no: 22, title: "邀请好友", active: "活动", cards: [["邀请好友", "邀请码：8R7U58ZW"], ["奖励规则", "好友注册后可获得对话次数。"]], button: ["查看邀请详情", "screen-24"] },
   { no: 24, title: "邀请详情", active: "活动", sections: ["邀请详情", "奖励说明", "到账规则", "常见问题"] },
-  { no: 25, title: "档案", active: "档案", list: [["谢广周", "男｜阳历 2026-05-12", "screen-26"], ["查看命盘", "紫微命盘 / 八字", "screen-27"], ["AI阅天", "使用当前档案提问", "screen-4"]] },
+  { no: 25, title: "档案", active: "档案", list: [] },
   { no: 26, title: "排盘表单", active: "档案", form: ["姓名", "性别", "出生日期", "出生地"], button: ["开始排盘", "screen-27"] },
   { no: 27, title: "紫微命盘", active: "档案", chart: true, button: ["购买解读", "screen-21"] },
   { no: 28, title: "卡券包", active: "我的", cards: [["卡券包", "暂无可用卡券"], ["报告券", "购买套餐后自动发放。"]] },
@@ -1835,36 +1832,7 @@ function buildWentianArchiveFromInput({ id, name, gender, datetime, city = "", c
 }
 
 function getDefaultWentianArchives() {
-  return [
-    {
-      id: "default-xie",
-      chartRecordId: makeWentianUuid(),
-      chart: null,
-      chartData: { ...WENTIAN_XU_CHART_BASE, chartRecordId: makeWentianUuid() },
-      form: {
-        archiveId: "default-xie",
-        name: "谢",
-        gender: "male",
-        type: "ziwei",
-        datetime: "1991-02-16T22:58",
-        useTrueSolar: true,
-        isDefault: true,
-      },
-      createdAt: new Date().toISOString(),
-    },
-    buildWentianArchiveFromInput({
-      id: "default-mingzhu",
-      name: "命主",
-      gender: "female",
-      datetime: "2026-05-12T15:08",
-      isDefault: true,
-    }),
-  ].map((archive) => {
-    if (archive.id === "default-xie") {
-      archive.chartData.chartRecordId = archive.chartRecordId;
-    }
-    return archive;
-  });
+  return [];
 }
 
 function normalizeWentianArchive(archive) {
@@ -1998,6 +1966,7 @@ function mergeWentianArchives(localArchives, remoteArchives) {
   const add = (archive) => {
     const normalized = normalizeWentianArchive(archive);
     if (!normalized) return;
+    if (isWentianSeedArchive(normalized)) return;
     if (isWentianArchiveTombstoned(normalized, tombstones)) return;
     const key = getWentianArchiveDuplicateKey(normalized) || normalized.id || normalized.chartRecordId;
     const old = merged.get(key);
@@ -2178,17 +2147,19 @@ async function hydrateWentianArchivesFromRemote(options = {}) {
 
 function getWentianArchiveList() {
   const hasStoredArchives = hasStoredWentianArchives();
-  let archives = readWentianArchives().map(normalizeWentianArchive).filter(Boolean);
+  let archives = readWentianArchives()
+    .map(normalizeWentianArchive)
+    .filter((archive) => archive && !isWentianSeedArchive(archive));
   const currentArchive = archiveFromChartState(getWentianSavedChart());
   if (!archives.length && !hasStoredArchives) archives = getDefaultWentianArchives();
-  if (currentArchive && !isWentianArchiveTombstoned(currentArchive) && !archives.some((item) => item.id === currentArchive.id || getWentianArchiveDuplicateKey(item) === getWentianArchiveDuplicateKey(currentArchive))) {
+  if (currentArchive && !isWentianSeedArchive(currentArchive) && !isWentianArchiveTombstoned(currentArchive) && !archives.some((item) => item.id === currentArchive.id || getWentianArchiveDuplicateKey(item) === getWentianArchiveDuplicateKey(currentArchive))) {
     archives.unshift(currentArchive);
   }
   const merged = mergeWentianArchives(archives, []);
   const selectedId = getWentianSelectedArchiveId(merged);
   const sorted = markWentianArchiveDefault(sortWentianArchivesByDefault(merged, selectedId), selectedId);
   writeWentianArchives(sorted);
-  if (selectedId) setWentianSelectedArchiveId(selectedId);
+  setWentianSelectedArchiveId(selectedId || "");
   return sorted;
 }
 
@@ -5266,7 +5237,7 @@ function getWentianArchiveDisplay(archive) {
     name,
     gender,
     datetime,
-    pillars: pillars || "辛未 庚寅 丁巳 辛亥",
+    pillars: pillars || "命盘资料待补全",
     tag: "四柱八字",
     badge: archive?.id === getWentianStoredSelectedArchiveId() ? "默认" : "",
   };
@@ -9934,9 +9905,10 @@ function renderWentianProfileRows(archives = getWentianArchiveList(), query = we
   let y = 296;
   let lastInitial = "";
   if (!visibleArchives.length) {
+    const isSearchEmpty = Boolean(String(query || "").trim());
     return `
-      ${figText("source-25-empty-title", "暂无匹配档案", 0, 330, 390, 18, "#6e6254", 900, "center")}
-      ${figText("source-25-empty-sub", "换个姓名再试试", 0, 362, 390, 13, "#a79b8e", 700, "center")}
+      ${figText("source-25-empty-title", isSearchEmpty ? "暂无匹配档案" : "暂无档案", 0, 330, 390, 18, "#6e6254", 900, "center")}
+      ${figText("source-25-empty-sub", isSearchEmpty ? "换个姓名再试试" : "点击右上角 + 新建命盘档案", 0, 362, 390, 13, "#a79b8e", 700, "center")}
     `;
   }
   return visibleArchives.map((archive, index) => {
@@ -16872,14 +16844,14 @@ function renderArchive() {
           <button class="primary-btn small" type="button" data-route="chart">新增档案</button>
         </div>
         <div class="stack">
-          ${profiles.map(([name, meta, detail]) => `
+          ${profiles.length ? profiles.map(([name, meta, detail]) => `
             <article class="profile-card">
               <h3>${name}</h3>
               <p>${meta}</p>
               <p>${detail}</p>
               <button class="ghost-btn" type="button" data-route="ai">阅天咨询</button>
             </article>
-          `).join("")}
+          `).join("") : `<p class="muted">暂无档案，先新增一张命盘档案。</p>`}
         </div>
       </section>
       <section class="panel">
