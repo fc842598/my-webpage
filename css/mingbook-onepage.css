@@ -3203,6 +3203,21 @@ body.mbp-ticket-open {
   box-shadow: inset 0 0 0 2px rgba(150, 61, 50, .32);
 }
 
+.fc-cell.fc-xiaolian.is-locating {
+  animation: fcXiaoLianCellPulse 1.45s ease-out 1;
+}
+
+.fc-cell.fc-xiaolian.is-locating::after {
+  content: "";
+  position: absolute;
+  inset: 5px;
+  z-index: 3;
+  border: 2px solid rgba(192, 120, 32, .9);
+  border-radius: 6px;
+  pointer-events: none;
+  animation: fcXiaoLianRing 1.45s ease-out 1;
+}
+
 .fc-xiaolian-badge {
   position: absolute;
   right: 5px;
@@ -3222,6 +3237,32 @@ body.mbp-ticket-open {
   white-space: nowrap;
   flex-shrink: 0;
   box-shadow: 0 2px 8px rgba(117, 65, 16, .28);
+}
+
+@keyframes fcXiaoLianCellPulse {
+  0% {
+    filter: brightness(1);
+  }
+  30% {
+    filter: brightness(1.12);
+  }
+  100% {
+    filter: brightness(1);
+  }
+}
+
+@keyframes fcXiaoLianRing {
+  0% {
+    opacity: 0;
+    transform: scale(.9);
+  }
+  18% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.12);
+  }
 }
 
 @media (min-width: 1021px) {

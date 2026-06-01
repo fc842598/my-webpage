@@ -46,6 +46,7 @@
   let fcCurrentChart = null;
   let fcCurrentGender = 'male';
   let fcBirthPillars = null;
+  let fcXiaoLianPulseTimer = null;
   let yijingTimingOpen = false;
   let yijingTimingAiBusy = false;
   let yijingTimingAiResult = null;
@@ -3356,6 +3357,28 @@
     fcActiveBranch = activeBranch;
     (fcCurrentChart.palaces || []).forEach((palace) => fcBuildCell(palace, activeBranch));
     requestAnimationFrame(() => fcRenderSanfangLines(activeBranch));
+  }
+
+  function fcPulseXiaoLianPalace() {
+    window.clearTimeout(fcXiaoLianPulseTimer);
+    requestAnimationFrame(() => {
+      const cell = document.querySelector('.fc-cell.fc-xiaolian');
+      if (!cell) return;
+      cell.classList.remove('is-locating');
+      void cell.offsetWidth;
+      cell.classList.add('is-locating');
+      fcXiaoLianPulseTimer = window.setTimeout(() => {
+        cell.classList.remove('is-locating');
+      }, 1500);
+    });
+  }
+
+  function fcLocateXiaoLianAge(age, options = {}) {
+    const safeAge = clampXiaoLianAge(age);
+    state.selectedXiaoLianAge = safeAge;
+    fcRenderHighlight(fcActiveBranch || fcCurrentChart?.earthlyBranchOfSoulPalace || '卯');
+    fcRenderLuckLocator();
+    if (options.pulse !== false) fcPulseXiaoLianPalace();
   }
 
   function fcRenderTabs() {
@@ -7932,10 +7955,7 @@
 
     $('#mbpXiaoLianSelect')?.addEventListener('change', (event) => {
       const age = clampXiaoLianAge(event.target.value);
-      state.selectedXiaoLianAge = age;
-      fcActiveTab = '流年卦';
-      fcRenderTabs();
-      fcSelectYear(age);
+      fcLocateXiaoLianAge(age);
       refreshReportSelectionViews();
     });
 
