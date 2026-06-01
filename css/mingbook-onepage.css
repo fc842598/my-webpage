@@ -1373,10 +1373,11 @@ body.mbp-ticket-open {
   min-width: 0;
   width: 100%;
   display: flex;
-  flex-wrap: wrap;
-  align-items: flex-start;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  align-items: center;
   justify-content: center;
-  gap: 16px;
+  gap: 12px;
   min-height: 690px;
   padding: 26px;
   scroll-margin-top: 76px;
@@ -1390,11 +1391,13 @@ body.mbp-ticket-open {
 }
 
 .mbp-luck-locator {
-  flex: 0 1 190px;
-  width: 190px;
+  flex: 0 0 auto;
+  width: min(640px, 100%);
   display: grid;
-  gap: 12px;
-  padding: 15px 14px;
+  grid-template-columns: minmax(92px, .75fr) minmax(140px, 1fr) minmax(140px, 1fr) minmax(160px, 1.15fr);
+  align-items: end;
+  gap: 10px;
+  padding: 12px;
   border: 1px solid rgba(241, 212, 125, .22);
   border-radius: 12px;
   background:
@@ -1423,7 +1426,7 @@ body.mbp-ticket-open {
   display: block;
   margin-top: 3px;
   color: var(--ivory);
-  font-size: 15px;
+  font-size: 14px;
   line-height: 1.3;
 }
 
@@ -1534,9 +1537,9 @@ body.mbp-ticket-open {
 
 .mbp-luck-locator-meta {
   display: grid;
-  gap: 4px;
-  min-height: 58px;
-  padding: 10px;
+  gap: 2px;
+  min-height: 38px;
+  padding: 7px 9px;
   border: 1px solid rgba(241, 212, 125, .16);
   border-radius: 8px;
   background: rgba(241, 212, 125, .045);
@@ -1556,6 +1559,7 @@ body.mbp-ticket-open {
   .mbp-luck-locator {
     width: min(640px, 100%);
     flex-basis: min(640px, 100%);
+    grid-template-columns: minmax(92px, .75fr) minmax(140px, 1fr) minmax(140px, 1fr) minmax(160px, 1.15fr);
   }
 }
 
