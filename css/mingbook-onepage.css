@@ -1436,8 +1436,10 @@ body.mbp-ticket-open {
   min-width: 0;
   width: 100%;
   display: flex;
-  align-items: center;
+  flex-wrap: wrap;
+  align-items: flex-start;
   justify-content: center;
+  gap: 16px;
   min-height: 690px;
   padding: 26px;
   scroll-margin-top: 76px;
@@ -1448,6 +1450,115 @@ body.mbp-ticket-open {
     linear-gradient(180deg, rgba(241, 212, 125, .045), transparent 28%),
     rgba(13, 10, 7, .82);
   box-shadow: inset 0 1px 0 rgba(255, 244, 196, .08);
+}
+
+.mbp-luck-locator {
+  flex: 0 1 190px;
+  width: 190px;
+  display: grid;
+  gap: 12px;
+  padding: 15px 14px;
+  border: 1px solid rgba(241, 212, 125, .22);
+  border-radius: 12px;
+  background:
+    linear-gradient(180deg, rgba(241, 212, 125, .08), transparent 34%),
+    rgba(16, 12, 8, .9);
+  color: var(--muted);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 244, 196, .08),
+    0 14px 34px rgba(0, 0, 0, .26);
+}
+
+.mbp-luck-locator.is-pending {
+  opacity: .72;
+}
+
+.mbp-luck-locator-head span,
+.mbp-luck-field span {
+  display: block;
+  color: var(--gold);
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: .14em;
+}
+
+.mbp-luck-locator-head strong {
+  display: block;
+  margin-top: 3px;
+  color: var(--ivory);
+  font-size: 15px;
+  line-height: 1.3;
+}
+
+.mbp-luck-field {
+  display: grid;
+  gap: 6px;
+}
+
+.mbp-luck-field select {
+  width: 100%;
+  min-height: 38px;
+  border: 1px solid rgba(241, 212, 125, .24);
+  border-radius: 8px;
+  background: rgba(6, 5, 4, .9);
+  color: var(--ivory);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.mbp-luck-field select:focus-visible {
+  outline: 2px solid rgba(241, 212, 125, .48);
+  outline-offset: 2px;
+}
+
+.mbp-luck-field select:disabled {
+  color: rgba(245, 232, 198, .52);
+}
+
+.mbp-luck-locator-meta {
+  display: grid;
+  gap: 4px;
+  min-height: 58px;
+  padding: 10px;
+  border: 1px solid rgba(241, 212, 125, .16);
+  border-radius: 8px;
+  background: rgba(241, 212, 125, .045);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.mbp-luck-locator-meta b {
+  color: var(--ivory);
+}
+
+.mbp-luck-locator-meta span {
+  color: var(--muted);
+}
+
+@media (max-width: 1020px) {
+  .mbp-luck-locator {
+    width: min(640px, 100%);
+    flex-basis: min(640px, 100%);
+  }
+}
+
+@media (max-width: 680px) {
+  .mbp-luck-locator {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    padding: 12px;
+  }
+
+  .mbp-luck-locator-head,
+  .mbp-luck-locator-meta {
+    grid-column: 1 / -1;
+  }
+
+  .mbp-luck-field select {
+    min-height: 36px;
+    font-size: 11px;
+  }
 }
 
 .mbp-hero-copy {
@@ -2543,14 +2654,23 @@ body.mbp-ticket-open {
 }
 
 .mbp-fc-card {
-  width: min(640px, 100%);
-  margin: 0 auto;
+  flex: 1 1 420px;
+  width: 100%;
+  min-width: 420px;
+  max-width: 640px;
+  margin: 0;
   background: #f0ebe1;
   border-radius: 18px;
   overflow: hidden;
   box-shadow: 0 18px 48px rgba(0, 0, 0, .42);
   font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
   color: #2d2420;
+}
+
+@media (max-width: 680px) {
+  .mbp-fc-card {
+    min-width: 0;
+  }
 }
 
 .fc-header {
@@ -3136,6 +3256,32 @@ body.mbp-ticket-open {
   background: #fef3e2 !important;
   outline: 2px solid #c07820;
   outline-offset: -2px;
+}
+
+.fc-cell.fc-decade {
+  box-shadow: inset 0 0 0 2px rgba(109, 86, 45, .42);
+}
+
+.fc-cell.fc-decade.fc-xiaolian {
+  box-shadow: inset 0 0 0 2px rgba(150, 61, 50, .32);
+}
+
+.fc-decade-badge {
+  position: absolute;
+  left: 5px;
+  bottom: 5px;
+  z-index: 2;
+  display: inline-flex;
+  max-width: calc(100% - 10px);
+  padding: 1px 5px;
+  border: 1px solid rgba(109, 86, 45, .34);
+  border-radius: 999px;
+  background: rgba(255, 250, 238, .92);
+  color: #6d562d;
+  font-size: 8px;
+  font-weight: 900;
+  line-height: 1.4;
+  white-space: nowrap;
 }
 
 .fc-xiaolian-badge {

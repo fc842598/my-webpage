@@ -3255,14 +3255,16 @@
     const cell = document.getElementById(fcBranchId[branch]);
     if (!cell) return;
 
+    const selectedDecade = selectedLuckInfo({ readonly: true }).selected;
     const activeIndex = Math.max(0, fcZhi.indexOf(activeBranch));
     const related = [fcZhi[(activeIndex + 4) % 12], fcZhi[(activeIndex + 8) % 12], fcZhi[(activeIndex + 6) % 12]];
     const isBen = branch === activeBranch;
     const isRel = !isBen && related.includes(branch);
+    const isDecade = !!selectedDecade?.branch && branch === selectedDecade.branch;
     const isXiaoLian = fcActiveTab === '流年卦' && branch === fcXiaoLianBranch;
     const smallStars = allSmallStars(palace);
     const densityClass = `${smallStars.length >= 7 ? ' fc-compact-stars' : ''}${smallStars.length >= 10 ? ' fc-crowded-stars' : ''}`;
-    cell.className = `fc-cell${isBen ? ' fc-ben' : isRel ? ' fc-rel' : ''}${isXiaoLian ? ' fc-xiaolian' : ''}${densityClass}`;
+    cell.className = `fc-cell${isBen ? ' fc-ben' : isRel ? ' fc-rel' : ''}${isDecade ? ' fc-decade' : ''}${isXiaoLian ? ' fc-xiaolian' : ''}${densityClass}`;
 
     const allStarsForMutagen = [
       ...(palace.majorStars || []),
@@ -3292,6 +3294,7 @@
       .join('') : '';
     const yearlyHtml = yearlyMutagen || yearlyStars ? `<div class="fc-yearly-row">${yearlyMutagen}${yearlyStars}</div>` : '';
     const xiaoLianHtml = isXiaoLian ? `<div class="fc-xiaolian-badge">${fcActiveAge}岁</div>` : '';
+    const decadeHtml = isDecade ? `<div class="fc-decade-badge">${escapeHtml(selectedDecade.rangeLabel || '大限')}</div>` : '';
     const stemBranch = `${palace.heavenlyStem || ''}${palace.earthlyBranch || ''}`;
     const ageRange = rangeFromDecadal(palace);
     const ageStr = shouldDisplayDecadeRange(ageRange) ? `${ageRange[0]}–${ageRange[1]}` : '';
@@ -3304,6 +3307,7 @@
         <div class="fc-minor-list">${minorHtml}</div>
       </div>
       ${yearlyHtml}
+      ${decadeHtml}
       <div class="fc-cell-bottom">
         <div class="fc-shen-list">${shenHtml}</div>
         <div class="fc-palace-info">
@@ -3371,6 +3375,7 @@
     fcActiveTab = nextTab;
     if (enteringLiunian) {
       fcActiveAge = fcCurrentVirtualAge();
+      state.selectedXiaoLianAge = clampXiaoLianAge(fcActiveAge);
       fcLoadYearly(fcAgeToYear(fcActiveAge));
       fcLiunianResult = fcLiunianSeq[fcActiveAge] || null;
       $('#mbpFcLiunian').textContent = `${fcActiveAge}岁 · ${fcLiunianResult?.name || '—'}`;
@@ -3380,6 +3385,7 @@
     fcRenderHexagram();
     renderZipingFooter();
     fcRenderHighlight(fcActiveBranch || fcCurrentChart?.earthlyBranchOfSoulPalace || '卯');
+    fcRenderLuckLocator();
   }
 
   function fcRenderLiunianScroll() {
@@ -3397,6 +3403,60 @@
     requestAnimationFrame(() => {
       scroll.querySelector('.fc-year-card.active')?.scrollIntoView({ inline: 'center', behavior: 'smooth', block: 'nearest' });
     });
+  }
+
+  function fcRenderLuckLocator() {
+    const panel = $('#mbpLuckLocator');
+    const decadeSelect = $('#mbpLuckDecadeSelect');
+    const xiaoSelect = $('#mbpXiaoLianSelect');
+    const meta = $('#mbpLuckLocatorMeta');
+    if (!panel || !decadeSelect || !xiaoSelect || !meta) return;
+
+    const chart = fcCurrentChart || state.chart;
+    if (!state.chartReady || !chart) {
+      panel.classList.add('is-pending');
+      decadeSelect.disabled = true;
+      xiaoSelect.disabled = true;
+      decadeSelect.innerHTML = '<option>排盘后选择</option>';
+      xiaoSelect.innerHTML = '<option>1-100 岁</option>';
+      meta.textContent = '排盘后显示落宫。';
+      return;
+    }
+
+    panel.classList.remove('is-pending');
+    const luckInfo = selectedLuckInfo();
+    const xiaoInfo = selectedXiaoLianInfo();
+    const selectedDecade = luckInfo.selected;
+    const selectedYear = xiaoInfo.selected;
+
+    decadeSelect.disabled = !luckInfo.items.length;
+    decadeSelect.innerHTML = luckInfo.items.length
+      ? luckInfo.items.map((item) => `
+        <option value="${escapeHtml(item.key)}"${item.key === selectedDecade?.key ? ' selected' : ''}>
+          ${escapeHtml(`${item.rangeLabel} · ${item.palaceName}${item.isCurrent ? '（当前）' : ''}`)}
+        </option>
+      `).join('')
+      : '<option>暂无大限</option>';
+
+    xiaoSelect.disabled = !xiaoInfo.items.length;
+    xiaoSelect.innerHTML = xiaoInfo.items.length
+      ? xiaoInfo.items.map((item) => `
+        <option value="${item.age}"${item.age === selectedYear?.age ? ' selected' : ''}>
+          ${escapeHtml(`${item.age}岁 · ${item.yearGz || item.year} · ${item.xiaoLabel}${item.isCurrent ? '（当前）' : ''}`)}
+        </option>
+      `).join('')
+      : '<option>暂无小流年</option>';
+
+    const yearLine = selectedYear
+      ? `${selectedYear.age}岁小流年到${selectedYear.xiaoLabel || '未定'}`
+      : '小流年未定';
+    const decadeLine = selectedDecade
+      ? `${selectedDecade.rangeLabel}走${selectedDecade.palaceName}`
+      : '大限未定';
+    meta.innerHTML = `
+      <b>${escapeHtml(decadeLine)}</b>
+      <span>${escapeHtml(yearLine)}</span>
+    `;
   }
 
   function fcRenderHexagram(forced) {
@@ -4002,6 +4062,7 @@
 
   function fcSelectYear(age) {
     fcActiveAge = fcClampAge(age);
+    state.selectedXiaoLianAge = clampXiaoLianAge(fcActiveAge);
     fcLoadYearly(fcAgeToYear(fcActiveAge));
     fcLiunianResult = fcLiunianSeq[fcActiveAge] || null;
     $('#mbpFcLiunian').textContent = `${fcActiveAge}岁 · ${fcLiunianResult?.name || '—'}`;
@@ -4009,6 +4070,7 @@
     if (fcActiveTab === '流年卦') fcRenderHexagram();
     renderZipingFooter();
     fcRenderHighlight(fcActiveBranch || fcCurrentChart?.earthlyBranchOfSoulPalace || '卯');
+    fcRenderLuckLocator();
   }
 
   function renderClassicChart(chart, norm) {
@@ -4079,6 +4141,7 @@
     fcRenderHexagram();
     renderZipingFooter(fcBirthPillars);
     fcRenderHighlight(fcActiveBranch);
+    fcRenderLuckLocator();
   }
 
   function renderChart() {
@@ -4094,6 +4157,7 @@
       fcRenderTabs();
       updateHeroMeta({});
       fcClearCells('***', true);
+      fcRenderLuckLocator();
       const summary = $('#mbpChartSummary');
       syncChatPanelState();
       if (summary) summary.textContent = '点击开始排盘后显示命盘摘要。';
@@ -4113,6 +4177,7 @@
       fcLiunianResult = null;
       fcLiunianSeq = {};
       fcClearCells(bundle.error);
+      fcRenderLuckLocator();
       syncChatPanelState();
       if (summary) summary.textContent = bundle.error;
       return;
@@ -5465,6 +5530,12 @@
 
   function hasAnyXiaoLianResult() {
     return hasAiRenderableContent(state.aiResults.xiaoxian_liunian) || Object.values(state.xiaoLianAiResults || {}).some(hasAiRenderableContent);
+  }
+
+  function refreshReportSelectionViews() {
+    if (hasAnyLuckResult() || hasAnyXiaoLianResult() || state.curveGenerated || state.adviceGenerated) {
+      renderChaptersFromAi();
+    }
   }
 
   function moduleHasRenderable(moduleKey) {
@@ -7816,12 +7887,18 @@
       const decadeButton = event.target.closest('[data-luck-decade]');
       if (decadeButton) {
         state.selectedLuckRangeKey = decadeButton.dataset.luckDecade || '';
+        fcRenderLuckLocator();
+        const info = selectedLuckInfo({ readonly: true });
+        if (info.selected?.branch) fcRenderHighlight(info.selected.branch);
         renderChaptersFromAi();
         return;
       }
       const xiaoLianAgeButton = event.target.closest('[data-xiaolian-age]');
       if (xiaoLianAgeButton) {
         state.selectedXiaoLianAge = clampXiaoLianAge(xiaoLianAgeButton.dataset.xiaolianAge);
+        fcActiveTab = '流年卦';
+        fcRenderTabs();
+        fcSelectYear(state.selectedXiaoLianAge);
         renderChaptersFromAi();
         return;
       }
@@ -7841,6 +7918,23 @@
         actionButton.disabled = false;
         actionButton.classList.remove('is-running');
       }
+    });
+
+    $('#mbpLuckDecadeSelect')?.addEventListener('change', (event) => {
+      state.selectedLuckRangeKey = event.target.value || '';
+      const info = selectedLuckInfo();
+      fcRenderLuckLocator();
+      if (info.selected?.branch) fcRenderHighlight(info.selected.branch);
+      refreshReportSelectionViews();
+    });
+
+    $('#mbpXiaoLianSelect')?.addEventListener('change', (event) => {
+      const age = clampXiaoLianAge(event.target.value);
+      state.selectedXiaoLianAge = age;
+      fcActiveTab = '流年卦';
+      fcRenderTabs();
+      fcSelectYear(age);
+      refreshReportSelectionViews();
     });
 
     $('#mbpExportPdf')?.addEventListener('click', downloadMingbookPdf);
