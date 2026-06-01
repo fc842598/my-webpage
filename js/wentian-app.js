@@ -15403,12 +15403,12 @@ function sourceDashboardHomeScreen() {
       : "先建立命盘档案";
     const dashboardLoginLabel = dashboardAccount.loggedIn ? "已登陆" : "未登陆";
     const dashboardFeatures = [
-      ["紫微斗数", "排盘 · AI细读", "01-feature-hepan.png", "screen-26", 18, 400],
-      ["合盘分析", "双方命盘合参", "01-feature-hepan.png", "hepan", 201, 400],
-      ["六爻占卜", "铜钱起卦", "01-feature-gua.png", "screen-17", 18, 516],
-      ["阳宅地脉", "方位九宫", "01-feature-li.png", "screen-42", 201, 516],
-      ["办公室布局", "门向与老板位", "01-feature-qian.png", "screen-50", 18, 632],
-      ["六壬法", "农历掌诀", "01-feature-qian.png", "screen-46", 201, 632],
+      ["紫微斗数", "排盘 · AI细读", "01-feature-ziwei-v2.svg", "screen-26", 18, 400],
+      ["合盘分析", "双方命盘合参", "01-feature-hepan-v2.svg", "hepan", 201, 400],
+      ["六爻占卜", "铜钱起卦", "01-feature-liuyao-v2.svg", "screen-17", 18, 516],
+      ["阳宅地脉", "方位九宫", "01-feature-yangzhai-v2.svg", "screen-42", 201, 516],
+      ["办公室布局", "门向与老板位", "01-feature-office-v2.svg", "screen-50", 18, 632],
+      ["六壬法", "农历掌诀", "01-feature-liuren-v2.svg", "screen-46", 201, 632],
     ];
     return `
       ${figBox("source-1-bg", 0, 0, 390, 844, "", "background:linear-gradient(180deg,#fffdf8 0%,#fbf7ef 50%,#fff6ea 100%);")}
