@@ -1,5 +1,7 @@
 .liuyao-page {
   min-height: 100vh;
+  --liuyao-shell-max: 1480px;
+  --liuyao-shell-gutter: 24px;
   background:
     radial-gradient(circle at 72% 12%, rgba(241, 212, 125, .16), transparent 25%),
     radial-gradient(circle at 20% 86%, rgba(164, 93, 57, .12), transparent 28%),
@@ -7,13 +9,16 @@
 }
 
 .liuyao-shell {
-  width: min(1480px, calc(100vw - 48px));
-  margin: 0 auto 0 max(24px, calc((100vw - 1480px) / 2 - 96px));
+  width: min(var(--liuyao-shell-max), calc(100vw - (var(--liuyao-shell-gutter) * 2)));
+  margin: 0 auto;
   padding: 26px 0 80px;
 }
 
 .liuyao-page .mbp-nav {
-  padding: 0 max(24px, calc((100vw - 1120px) / 2 - 72px));
+  padding: 0 max(
+    var(--liuyao-shell-gutter),
+    calc((100vw - (var(--liuyao-shell-max) * var(--mbp-ui-scale, 1))) / 2)
+  );
 }
 
 .liuyao-workbench {
