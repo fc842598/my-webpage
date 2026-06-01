@@ -15412,7 +15412,7 @@ function sourceDashboardHomeScreen() {
     ];
     return `
       ${figBox("source-1-bg", 0, 0, 390, 844, "", "background:linear-gradient(180deg,#fffdf8 0%,#fbf7ef 50%,#fff6ea 100%);")}
-      ${figImage("source-1-brand-logo", "../images/wentian-prototype-assets/wentian-brand-logo-ai-v1.png", 18, 23, 42, 42, "border-radius:10px;object-fit:cover;box-shadow:0 6px 14px rgba(19,40,58,.10);", "loading=\"eager\" decoding=\"async\"")}
+      ${figImage("source-1-brand-logo", "../images/wentian-prototype-assets/wentian-brand-logo-ai-gold-v1.png", 18, 23, 42, 42, "border-radius:10px;object-fit:cover;box-shadow:0 6px 14px rgba(24,19,8,.18);", "loading=\"eager\" decoding=\"async\"")}
       ${figText("source-1-brand", "阅天AI", 68, 32, 110, 23, "#25221f", 900)}
       ${figBox("source-1-login-pill", 256, 28, 116, 34, "", "border-radius:17px;background:#fffdf8;border:1px solid #eadfce;box-shadow:0 6px 14px rgba(70,45,25,.06);")}
       ${figText("source-1-login-pill-text", dashboardLoginLabel, 266, 38, 96, 12, dashboardAccount.loggedIn ? "#9f3d2e" : "#9a681c", 900, "center", "white-space:nowrap;overflow:hidden;text-overflow:ellipsis;")}
