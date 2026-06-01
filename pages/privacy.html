@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>隐私政策 · 阅天</title>
-  <link rel="icon" href="../images/logo-mark.svg" type="image/svg+xml">
+  <link rel="icon" href="../images/wentian-prototype-assets/wentian-brand-logo-ai-gold-v1.png" type="image/png">
   <style>
     :root {
       --bg: #050302;
@@ -58,9 +58,25 @@
     }
 
     .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
       color: var(--ivory);
       font: 900 20px/1 "Noto Serif SC", "Songti SC", serif;
+      letter-spacing: 0;
+    }
+
+    .brand span {
       letter-spacing: .16em;
+    }
+
+    .brand-logo {
+      width: 34px;
+      height: 34px;
+      border-radius: 9px;
+      object-fit: cover;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, .28);
+      flex: 0 0 auto;
     }
 
     .back-link {
@@ -243,7 +259,7 @@
 <body>
   <header class="nav">
     <div class="nav-inner">
-      <a class="brand" href="../index.html">阅 天</a>
+      <a class="brand" href="../index.html"><img class="brand-logo" src="../images/wentian-prototype-assets/wentian-brand-logo-ai-gold-v1.png" alt="" aria-hidden="true" loading="eager" decoding="async"><span>阅 天</span></a>
       <a class="back-link" href="../index.html">返回首页</a>
     </div>
   </header>

@@ -43,7 +43,7 @@
     try {
       var notification = new Notification(title, {
         body: body,
-        icon: options.icon || '../images/logo-mark.svg',
+        icon: options.icon || '../images/wentian-prototype-assets/wentian-brand-logo-ai-gold-v1.png',
         tag: options.tag || 'yuetian-task',
         renotify: !!options.renotify,
         silent: !!options.silent,

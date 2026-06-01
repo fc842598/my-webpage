@@ -15312,8 +15312,7 @@ function renderWentianPolishedScreen(screen) {
     return `
       ${figBox("wt36-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
       ${wentianSimpleHeader("wt36", "关于我们")}
-      ${figBox("wt36-logo", 158, 126, 74, 74, "", "border-radius:18px;background:#1e1712;")}
-      ${figText("wt36-logo-text", "阅天AI", 158, 152, 74, 16, "#d6ad3e", 800, "center")}
+      ${figImage("wt36-logo", "../images/wentian-prototype-assets/wentian-brand-logo-ai-gold-v1.png", 158, 126, 74, 74, "border-radius:18px;object-fit:cover;box-shadow:0 10px 24px rgba(24,19,8,.18);", "loading=\"lazy\" decoding=\"async\"")}
       ${figText("wt36-name", "阅天AI", 0, 230, 390, 20, "#25211d", 800, "center")}
       ${figText("wt36-version", "v1.0.3199", 0, 260, 390, 12, "#8d857b", 600, "center")}
       ${figText("wt36-desc", "阅天AI是一款手机端命理排盘、合盘、抽签与AI解读工具，帮你把复杂命理信息转成可理解、可行动的建议。", 54, 304, 282, 14, "#756d63", 500, "center", "line-height:1.65;")}
