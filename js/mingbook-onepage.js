@@ -3432,17 +3432,22 @@
   function fcRenderLuckLocator() {
     const panel = $('#mbpLuckLocator');
     const decadeSelect = $('#mbpLuckDecadeSelect');
-    const xiaoSelect = $('#mbpXiaoLianSelect');
+    const xiaoToggle = $('#mbpXiaoLianToggle');
+    const xiaoCurrent = $('#mbpXiaoLianCurrent');
+    const xiaoMenu = $('#mbpXiaoLianMenu');
     const meta = $('#mbpLuckLocatorMeta');
-    if (!panel || !decadeSelect || !xiaoSelect || !meta) return;
+    if (!panel || !decadeSelect || !xiaoToggle || !xiaoCurrent || !xiaoMenu || !meta) return;
 
     const chart = fcCurrentChart || state.chart;
     if (!state.chartReady || !chart) {
       panel.classList.add('is-pending');
       decadeSelect.disabled = true;
-      xiaoSelect.disabled = true;
+      xiaoToggle.disabled = true;
       decadeSelect.innerHTML = '<option>排盘后选择</option>';
-      xiaoSelect.innerHTML = '<option>1-100 岁</option>';
+      xiaoCurrent.textContent = '排盘后选择';
+      xiaoMenu.hidden = true;
+      xiaoMenu.innerHTML = '';
+      xiaoToggle.setAttribute('aria-expanded', 'false');
       meta.textContent = '排盘后显示落宫。';
       return;
     }
@@ -3463,14 +3468,17 @@
       `).join('')
       : '<option>暂无大限</option>';
 
-    xiaoSelect.disabled = !xiaoInfo.items.length;
-    xiaoSelect.innerHTML = xiaoInfo.items.length
+    xiaoToggle.disabled = !xiaoInfo.items.length;
+    xiaoCurrent.textContent = selectedYear
+      ? `${selectedYear.age}岁 · ${shortPalaceLabel(selectedYear.xiaoLianPalace, selectedYear.xiaoLabel)}${selectedYear.isCurrent ? ' 当前' : ''}`
+      : '暂无小流年';
+    xiaoMenu.innerHTML = xiaoInfo.items.length
       ? xiaoInfo.items.map((item) => `
-        <option value="${item.age}"${item.age === selectedYear?.age ? ' selected' : ''}>
+        <button type="button" role="option" class="${item.age === selectedYear?.age ? 'is-selected' : ''}${item.isCurrent ? ' is-current' : ''}" aria-selected="${item.age === selectedYear?.age ? 'true' : 'false'}" data-xiaolian-option="${item.age}">
           ${escapeHtml(`${item.age}岁 · ${shortPalaceLabel(item.xiaoLianPalace, item.xiaoLabel)}${item.isCurrent ? ' 当前' : ''}`)}
-        </option>
+        </button>
       `).join('')
-      : '<option>暂无小流年</option>';
+      : '<span class="mbp-xiaolian-empty">暂无小流年</span>';
 
     const yearLine = selectedYear
       ? `小流年：${selectedYear.age}岁 · ${shortPalaceLabel(selectedYear.xiaoLianPalace, selectedYear.xiaoLabel) || '未定'}`
@@ -7953,10 +7961,38 @@
       refreshReportSelectionViews();
     });
 
-    $('#mbpXiaoLianSelect')?.addEventListener('change', (event) => {
-      const age = clampXiaoLianAge(event.target.value);
+    $('#mbpXiaoLianToggle')?.addEventListener('click', (event) => {
+      const toggle = event.currentTarget;
+      const menu = $('#mbpXiaoLianMenu');
+      if (!menu || toggle.disabled) return;
+      const opening = menu.hidden;
+      menu.hidden = !opening;
+      toggle.setAttribute('aria-expanded', opening ? 'true' : 'false');
+      if (opening) menu.scrollTop = 0;
+    });
+
+    $('#mbpXiaoLianMenu')?.addEventListener('click', (event) => {
+      const option = event.target.closest('[data-xiaolian-option]');
+      if (!option) return;
+      const age = clampXiaoLianAge(option.dataset.xiaolianOption);
+      $('#mbpXiaoLianMenu').hidden = true;
+      $('#mbpXiaoLianToggle')?.setAttribute('aria-expanded', 'false');
       fcLocateXiaoLianAge(age);
       refreshReportSelectionViews();
+    });
+
+    document.addEventListener('click', (event) => {
+      if (event.target.closest('#mbpXiaoLianToggle, #mbpXiaoLianMenu')) return;
+      const menu = $('#mbpXiaoLianMenu');
+      if (menu) menu.hidden = true;
+      $('#mbpXiaoLianToggle')?.setAttribute('aria-expanded', 'false');
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key !== 'Escape') return;
+      const menu = $('#mbpXiaoLianMenu');
+      if (menu) menu.hidden = true;
+      $('#mbpXiaoLianToggle')?.setAttribute('aria-expanded', 'false');
     });
 
     $('#mbpExportPdf')?.addEventListener('click', downloadMingbookPdf);

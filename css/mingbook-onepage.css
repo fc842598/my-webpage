@@ -1432,7 +1432,8 @@ body.mbp-ticket-open {
   gap: 6px;
 }
 
-.mbp-luck-field select {
+.mbp-luck-field select,
+.mbp-xiaolian-toggle {
   width: 100%;
   min-height: 38px;
   border: 1px solid rgba(241, 212, 125, .24);
@@ -1444,13 +1445,91 @@ body.mbp-ticket-open {
   font-weight: 800;
 }
 
-.mbp-luck-field select:focus-visible {
+.mbp-luck-field select:focus-visible,
+.mbp-xiaolian-toggle:focus-visible {
   outline: 2px solid rgba(241, 212, 125, .48);
   outline-offset: 2px;
 }
 
-.mbp-luck-field select:disabled {
+.mbp-luck-field select:disabled,
+.mbp-xiaolian-toggle:disabled {
   color: rgba(245, 232, 198, .52);
+}
+
+.mbp-xiaolian-field {
+  position: relative;
+}
+
+.mbp-xiaolian-toggle {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 16px;
+  align-items: center;
+  gap: 8px;
+  padding: 0 10px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.mbp-xiaolian-toggle span {
+  overflow: hidden;
+  color: inherit;
+  font-size: inherit;
+  letter-spacing: 0;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mbp-xiaolian-toggle i {
+  width: 10px;
+  height: 10px;
+  border-right: 2px solid rgba(245, 232, 198, .9);
+  border-bottom: 2px solid rgba(245, 232, 198, .9);
+  transform: translateY(-2px) rotate(45deg);
+}
+
+.mbp-xiaolian-menu {
+  position: absolute;
+  z-index: 40;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  max-height: 340px;
+  overflow: auto;
+  padding: 6px 0;
+  border: 1px solid rgba(241, 212, 125, .24);
+  border-radius: 8px;
+  background: #171615;
+  box-shadow: 0 18px 34px rgba(0, 0, 0, .42);
+}
+
+.mbp-xiaolian-menu button,
+.mbp-xiaolian-empty {
+  width: 100%;
+  min-height: 34px;
+  display: block;
+  padding: 0 10px;
+  border: 0;
+  background: transparent;
+  color: var(--ivory);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 800;
+  text-align: left;
+}
+
+.mbp-xiaolian-menu button {
+  cursor: pointer;
+}
+
+.mbp-xiaolian-menu button:hover,
+.mbp-xiaolian-menu button:focus-visible {
+  background: rgba(241, 212, 125, .12);
+  outline: 0;
+}
+
+.mbp-xiaolian-menu button.is-selected {
+  background: rgba(241, 212, 125, .2);
+  color: #fff0c6;
 }
 
 .mbp-luck-locator-meta {
@@ -1492,7 +1571,8 @@ body.mbp-ticket-open {
     grid-column: 1 / -1;
   }
 
-  .mbp-luck-field select {
+  .mbp-luck-field select,
+  .mbp-xiaolian-toggle {
     min-height: 36px;
     font-size: 11px;
   }
