@@ -3369,7 +3369,7 @@
       cell.classList.add('is-locating');
       fcXiaoLianPulseTimer = window.setTimeout(() => {
         cell.classList.remove('is-locating');
-      }, 1500);
+      }, 1800);
     });
   }
 
