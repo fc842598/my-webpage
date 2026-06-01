@@ -3431,64 +3431,39 @@
 
   function fcRenderLuckLocator() {
     const panel = $('#mbpLuckLocator');
-    const decadeSelect = $('#mbpLuckDecadeSelect');
     const xiaoToggle = $('#mbpXiaoLianToggle');
     const xiaoCurrent = $('#mbpXiaoLianCurrent');
     const xiaoMenu = $('#mbpXiaoLianMenu');
-    const meta = $('#mbpLuckLocatorMeta');
-    if (!panel || !decadeSelect || !xiaoToggle || !xiaoCurrent || !xiaoMenu || !meta) return;
+    if (!panel || !xiaoToggle || !xiaoCurrent || !xiaoMenu) return;
 
     const chart = fcCurrentChart || state.chart;
     if (!state.chartReady || !chart) {
       panel.classList.add('is-pending');
-      decadeSelect.disabled = true;
       xiaoToggle.disabled = true;
-      decadeSelect.innerHTML = '<option>排盘后</option>';
-      xiaoCurrent.textContent = '排盘后';
+      xiaoToggle.classList.remove('is-current');
+      xiaoCurrent.textContent = '--';
       xiaoMenu.hidden = true;
       xiaoMenu.innerHTML = '';
       xiaoToggle.setAttribute('aria-expanded', 'false');
-      meta.textContent = '未排盘';
       return;
     }
 
     panel.classList.remove('is-pending');
-    const luckInfo = selectedLuckInfo();
     const xiaoInfo = selectedXiaoLianInfo();
-    const selectedDecade = luckInfo.selected;
     const selectedYear = xiaoInfo.selected;
-    const shortPalaceLabel = (palace, fallback = '') => normalizePalaceName(palace?.name || String(fallback || '').split('·')[0].trim() || '');
-    const shortRangeLabel = (range) => String(range || '').replace(/岁/g, '');
-    const palaceMetaLabel = (label) => {
-      const text = normalizePalaceName(label);
-      if (!text) return '未定';
-      return text.endsWith('宫') ? text : `${text}宫`;
-    };
-
-    decadeSelect.disabled = !luckInfo.items.length;
-    decadeSelect.innerHTML = luckInfo.items.length
-      ? luckInfo.items.map((item) => `
-        <option value="${escapeHtml(item.key)}"${item.key === selectedDecade?.key ? ' selected' : ''}>
-          ${escapeHtml(`${shortRangeLabel(item.rangeLabel)} · ${item.palaceName}`)}
-        </option>
-      `).join('')
-      : '<option>暂无大限</option>';
 
     xiaoToggle.disabled = !xiaoInfo.items.length;
+    xiaoToggle.classList.toggle('is-current', !!selectedYear?.isCurrent);
     xiaoCurrent.textContent = selectedYear
-      ? `${selectedYear.age} · ${shortPalaceLabel(selectedYear.xiaoLianPalace, selectedYear.xiaoLabel)}`
-      : '暂无小流年';
+      ? `${selectedYear.age}岁`
+      : '--';
     xiaoMenu.innerHTML = xiaoInfo.items.length
       ? xiaoInfo.items.map((item) => `
         <button type="button" role="option" class="${item.age === selectedYear?.age ? 'is-selected' : ''}${item.isCurrent ? ' is-current' : ''}" aria-selected="${item.age === selectedYear?.age ? 'true' : 'false'}" data-xiaolian-option="${item.age}">
-          ${escapeHtml(`${item.age} · ${shortPalaceLabel(item.xiaoLianPalace, item.xiaoLabel)}${item.isCurrent ? ' 今' : ''}`)}
+          <span>${escapeHtml(`${item.age}岁`)}</span>${item.isCurrent ? '<i class="fc-xiaolian-current-dot" aria-label="当前"></i>' : ''}
         </button>
       `).join('')
-      : '<span class="mbp-xiaolian-empty">暂无小流年</span>';
-
-    const decadePalace = selectedDecade ? palaceMetaLabel(selectedDecade.palaceName) : '未定';
-    const yearPalace = selectedYear ? palaceMetaLabel(shortPalaceLabel(selectedYear.xiaoLianPalace, selectedYear.xiaoLabel)) : '未定';
-    meta.textContent = `${decadePalace} / ${yearPalace}`;
+      : '<span class="mbp-xiaolian-empty">暂无</span>';
   }
 
   function fcRenderHexagram(forced) {
@@ -7263,6 +7238,8 @@
 
     function invalidateChartFromFormEdit() {
       if (!state.chartReady && !state.chartConfirmedKey && !state.decoded) return;
+      const currentProfile = collectProfileFromForm();
+      if (!currentProfile.error && state.chartConfirmedKey && profileHistoryKey(currentProfile) === state.chartConfirmedKey) return;
       resetForProfileChange();
       renderChart();
     }
@@ -7961,6 +7938,8 @@
     });
 
     $('#mbpXiaoLianToggle')?.addEventListener('click', (event) => {
+      event.preventDefault();
+      event.stopPropagation();
       const toggle = event.currentTarget;
       const menu = $('#mbpXiaoLianMenu');
       if (!menu || toggle.disabled) return;
@@ -7973,6 +7952,8 @@
     $('#mbpXiaoLianMenu')?.addEventListener('click', (event) => {
       const option = event.target.closest('[data-xiaolian-option]');
       if (!option) return;
+      event.preventDefault();
+      event.stopPropagation();
       const age = clampXiaoLianAge(option.dataset.xiaolianOption);
       $('#mbpXiaoLianMenu').hidden = true;
       $('#mbpXiaoLianToggle')?.setAttribute('aria-expanded', 'false');

@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>阅天 · 紫微排盘</title>
   <link rel="icon" href="../images/wentian-prototype-assets/wentian-brand-logo-ai-gold-v1.png" type="image/png">
-  <link rel="stylesheet" href="../css/mingbook-onepage.css?v=20260601-brand-logo-all">
+  <link rel="stylesheet" href="../css/mingbook-onepage.css?v=20260601-brand-logo-xiaolian-center">
   <script src="../js/config.js?v=20260521-api-domain-auth-proxy"></script>
   <script defer src="../js/cities.js"></script>
   <script defer src="../js/lunarCalendar.js"></script>
@@ -22,7 +22,7 @@
   <script defer src="../src/ziping/runtime.js"></script>
   <script defer src="../js/ai-piming.js?v=20260522-yijing-ai-timing"></script>
   <script defer src="../js/ai-chat.js?v=20260521-no-auto-jump"></script>
-  <script defer src="../js/mingbook-onepage.js?v=20260601-mingbook-luck-compact"></script>
+  <script defer src="../js/mingbook-onepage.js?v=20260601-mingbook-xiaolian-center"></script>
 </head>
 <body class="mingbook-onepage">
   <header class="mbp-nav">
@@ -225,6 +225,16 @@
                     <div class="fc-gua-row"><span class="fc-center-lbl">后天卦</span><span class="fc-center-val" id="mbpFcHoutian">—</span></div>
                     <div class="fc-gua-row"><span class="fc-center-lbl">流年卦</span><span class="fc-center-val" id="mbpFcLiunian">—</span></div>
                   </div>
+                  <div class="fc-xiaolian-control" id="mbpLuckLocator">
+                    <span class="fc-xiaolian-label" id="mbpXiaoLianLabel">小流年</span>
+                    <div class="mbp-xiaolian-field fc-xiaolian-field">
+                      <button class="mbp-xiaolian-toggle fc-xiaolian-toggle" id="mbpXiaoLianToggle" type="button" disabled aria-haspopup="listbox" aria-expanded="false" aria-labelledby="mbpXiaoLianLabel mbpXiaoLianCurrent">
+                        <span id="mbpXiaoLianCurrent">--</span>
+                        <i aria-hidden="true"></i>
+                      </button>
+                      <div class="mbp-xiaolian-menu fc-xiaolian-menu" id="mbpXiaoLianMenu" role="listbox" hidden></div>
+                    </div>
+                  </div>
                   <div class="fc-center-btns">
                     <button class="fc-center-btn" id="mbpFcTimeUp" type="button">时 ↑</button>
                     <button class="fc-center-btn" id="mbpFcTimeDown" type="button">时 ↓</button>
@@ -267,27 +277,6 @@
             </div>
 
           </div>
-
-          <aside class="mbp-luck-locator" id="mbpLuckLocator" aria-label="大限小流年定位">
-            <div class="mbp-luck-locator-head">
-              <strong>运限</strong>
-            </div>
-            <label class="mbp-luck-field" for="mbpLuckDecadeSelect">
-              <span>大限</span>
-              <select id="mbpLuckDecadeSelect" disabled>
-                <option>排盘后</option>
-              </select>
-            </label>
-            <div class="mbp-luck-field mbp-xiaolian-field">
-              <span id="mbpXiaoLianLabel">小流年</span>
-              <button class="mbp-xiaolian-toggle" id="mbpXiaoLianToggle" type="button" disabled aria-haspopup="listbox" aria-expanded="false" aria-labelledby="mbpXiaoLianLabel mbpXiaoLianCurrent">
-                <span id="mbpXiaoLianCurrent">排盘后</span>
-                <i aria-hidden="true"></i>
-              </button>
-              <div class="mbp-xiaolian-menu" id="mbpXiaoLianMenu" role="listbox" hidden></div>
-            </div>
-            <div class="mbp-luck-locator-meta" id="mbpLuckLocatorMeta">未排盘</div>
-          </aside>
         </div>
       </div>
     </section>

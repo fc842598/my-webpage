@@ -3090,6 +3090,96 @@ body.mbp-ticket-open {
   gap: 1px;
 }
 
+.fc-xiaolian-control {
+  position: absolute;
+  right: 10px;
+  bottom: 52px;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.fc-xiaolian-label {
+  color: #8c7e75;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.fc-xiaolian-field {
+  width: 82px;
+}
+
+.fc-xiaolian-toggle {
+  min-height: 22px;
+  height: 22px;
+  grid-template-columns: minmax(0, 1fr) 8px;
+  gap: 3px;
+  padding: 0 7px;
+  border-color: #dcc8a3;
+  border-radius: 999px;
+  background: #f6efe4;
+  color: #4a3f39;
+  font-size: 10px;
+  font-weight: 900;
+}
+
+.fc-xiaolian-toggle.is-current {
+  border-color: #c07820;
+  box-shadow: inset 0 0 0 1px rgba(192, 120, 32, .32);
+}
+
+.fc-xiaolian-toggle i {
+  width: 6px;
+  height: 6px;
+  border-width: 1.5px;
+}
+
+.fc-xiaolian-menu {
+  left: auto;
+  right: 0;
+  width: 82px;
+  max-height: 144px;
+  padding: 3px;
+  border-color: rgba(192, 120, 32, .32);
+  border-radius: 8px;
+  background: #fffaf0;
+  box-shadow: 0 10px 22px rgba(61, 38, 18, .22);
+}
+
+.fc-xiaolian-menu button,
+.fc-xiaolian-menu .mbp-xiaolian-empty {
+  min-height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 7px;
+  border-radius: 6px;
+  color: #4a3f39;
+  font-size: 10px;
+  font-weight: 900;
+}
+
+.fc-xiaolian-menu button:hover,
+.fc-xiaolian-menu button:focus-visible {
+  background: rgba(192, 120, 32, .1);
+}
+
+.fc-xiaolian-menu button.is-selected {
+  background: rgba(192, 120, 32, .18);
+  color: #2d2420;
+}
+
+.fc-xiaolian-current-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: #c07820;
+  box-shadow: 0 0 0 3px rgba(192, 120, 32, .15);
+}
+
 .fc-center-btns {
   display: flex;
   justify-content: space-between;
