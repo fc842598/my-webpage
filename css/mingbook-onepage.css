@@ -1394,7 +1394,7 @@ body.mbp-ticket-open {
   flex: 0 0 auto;
   width: min(640px, 100%);
   display: grid;
-  grid-template-columns: minmax(92px, .75fr) minmax(140px, 1fr) minmax(140px, 1fr) minmax(160px, 1.15fr);
+  grid-template-columns: minmax(58px, .42fr) minmax(148px, 1fr) minmax(130px, .9fr) minmax(112px, .74fr);
   align-items: end;
   gap: 10px;
   padding: 12px;
@@ -1413,6 +1413,10 @@ body.mbp-ticket-open {
   opacity: .72;
 }
 
+.mbp-luck-locator-head {
+  align-self: center;
+}
+
 .mbp-luck-locator-head span,
 .mbp-luck-field span {
   display: block;
@@ -1424,10 +1428,10 @@ body.mbp-ticket-open {
 
 .mbp-luck-locator-head strong {
   display: block;
-  margin-top: 3px;
+  margin: 0;
   color: var(--ivory);
-  font-size: 14px;
-  line-height: 1.3;
+  font-size: 16px;
+  line-height: 1;
 }
 
 .mbp-luck-field {
@@ -1536,15 +1540,18 @@ body.mbp-ticket-open {
 }
 
 .mbp-luck-locator-meta {
-  display: grid;
-  gap: 2px;
   min-height: 38px;
+  display: flex;
+  align-items: center;
   padding: 7px 9px;
   border: 1px solid rgba(241, 212, 125, .16);
   border-radius: 8px;
   background: rgba(241, 212, 125, .045);
+  color: var(--ivory);
   font-size: 12px;
+  font-weight: 800;
   line-height: 1.45;
+  white-space: nowrap;
 }
 
 .mbp-luck-locator-meta b {
@@ -1559,7 +1566,7 @@ body.mbp-ticket-open {
   .mbp-luck-locator {
     width: min(640px, 100%);
     flex-basis: min(640px, 100%);
-    grid-template-columns: minmax(92px, .75fr) minmax(140px, 1fr) minmax(140px, 1fr) minmax(160px, 1.15fr);
+    grid-template-columns: minmax(58px, .42fr) minmax(148px, 1fr) minmax(130px, .9fr) minmax(112px, .74fr);
   }
 }
 

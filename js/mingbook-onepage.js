@@ -3443,12 +3443,12 @@
       panel.classList.add('is-pending');
       decadeSelect.disabled = true;
       xiaoToggle.disabled = true;
-      decadeSelect.innerHTML = '<option>排盘后选择</option>';
-      xiaoCurrent.textContent = '排盘后选择';
+      decadeSelect.innerHTML = '<option>排盘后</option>';
+      xiaoCurrent.textContent = '排盘后';
       xiaoMenu.hidden = true;
       xiaoMenu.innerHTML = '';
       xiaoToggle.setAttribute('aria-expanded', 'false');
-      meta.textContent = '排盘后显示落宫。';
+      meta.textContent = '未排盘';
       return;
     }
 
@@ -3458,38 +3458,37 @@
     const selectedDecade = luckInfo.selected;
     const selectedYear = xiaoInfo.selected;
     const shortPalaceLabel = (palace, fallback = '') => normalizePalaceName(palace?.name || String(fallback || '').split('·')[0].trim() || '');
+    const shortRangeLabel = (range) => String(range || '').replace(/岁/g, '');
+    const palaceMetaLabel = (label) => {
+      const text = normalizePalaceName(label);
+      if (!text) return '未定';
+      return text.endsWith('宫') ? text : `${text}宫`;
+    };
 
     decadeSelect.disabled = !luckInfo.items.length;
     decadeSelect.innerHTML = luckInfo.items.length
       ? luckInfo.items.map((item) => `
         <option value="${escapeHtml(item.key)}"${item.key === selectedDecade?.key ? ' selected' : ''}>
-          ${escapeHtml(`${item.rangeLabel} · ${item.palaceName}${item.isCurrent ? ' 当前' : ''}`)}
+          ${escapeHtml(`${shortRangeLabel(item.rangeLabel)} · ${item.palaceName}`)}
         </option>
       `).join('')
       : '<option>暂无大限</option>';
 
     xiaoToggle.disabled = !xiaoInfo.items.length;
     xiaoCurrent.textContent = selectedYear
-      ? `${selectedYear.age}岁 · ${shortPalaceLabel(selectedYear.xiaoLianPalace, selectedYear.xiaoLabel)}${selectedYear.isCurrent ? ' 当前' : ''}`
+      ? `${selectedYear.age} · ${shortPalaceLabel(selectedYear.xiaoLianPalace, selectedYear.xiaoLabel)}`
       : '暂无小流年';
     xiaoMenu.innerHTML = xiaoInfo.items.length
       ? xiaoInfo.items.map((item) => `
         <button type="button" role="option" class="${item.age === selectedYear?.age ? 'is-selected' : ''}${item.isCurrent ? ' is-current' : ''}" aria-selected="${item.age === selectedYear?.age ? 'true' : 'false'}" data-xiaolian-option="${item.age}">
-          ${escapeHtml(`${item.age}岁 · ${shortPalaceLabel(item.xiaoLianPalace, item.xiaoLabel)}${item.isCurrent ? ' 当前' : ''}`)}
+          ${escapeHtml(`${item.age} · ${shortPalaceLabel(item.xiaoLianPalace, item.xiaoLabel)}${item.isCurrent ? ' 今' : ''}`)}
         </button>
       `).join('')
       : '<span class="mbp-xiaolian-empty">暂无小流年</span>';
 
-    const yearLine = selectedYear
-      ? `小流年：${selectedYear.age}岁 · ${shortPalaceLabel(selectedYear.xiaoLianPalace, selectedYear.xiaoLabel) || '未定'}`
-      : '小流年未定';
-    const decadeLine = selectedDecade
-      ? `大限：${selectedDecade.rangeLabel} · ${selectedDecade.palaceName}`
-      : '大限未定';
-    meta.innerHTML = `
-      <b>${escapeHtml(decadeLine)}</b>
-      <span>${escapeHtml(yearLine)}</span>
-    `;
+    const decadePalace = selectedDecade ? palaceMetaLabel(selectedDecade.palaceName) : '未定';
+    const yearPalace = selectedYear ? palaceMetaLabel(shortPalaceLabel(selectedYear.xiaoLianPalace, selectedYear.xiaoLabel)) : '未定';
+    meta.textContent = `${decadePalace} / ${yearPalace}`;
   }
 
   function fcRenderHexagram(forced) {
