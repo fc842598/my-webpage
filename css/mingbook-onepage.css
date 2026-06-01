@@ -1389,6 +1389,15 @@ body.mbp-ticket-open {
   box-shadow: inset 0 1px 0 rgba(255, 244, 196, .08);
 }
 
+@media (min-width: 1021px) {
+  .mbp-hero-chart {
+    display: grid;
+    grid-template-columns: minmax(0, 640px) 190px;
+    align-items: start;
+    justify-content: center;
+  }
+}
+
 .mbp-luck-locator {
   flex: 0 1 190px;
   width: 190px;
@@ -2673,7 +2682,7 @@ body.mbp-ticket-open {
 .mbp-fc-card {
   flex: 1 1 420px;
   width: 100%;
-  min-width: 420px;
+  min-width: 0;
   max-width: 640px;
   margin: 0;
   background: #f0ebe1;
@@ -2682,12 +2691,6 @@ body.mbp-ticket-open {
   box-shadow: 0 18px 48px rgba(0, 0, 0, .42);
   font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
   color: #2d2420;
-}
-
-@media (max-width: 680px) {
-  .mbp-fc-card {
-    min-width: 0;
-  }
 }
 
 .fc-header {
