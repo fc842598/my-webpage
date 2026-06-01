@@ -3261,7 +3261,9 @@
     const isBen = branch === activeBranch;
     const isRel = !isBen && related.includes(branch);
     const isDecade = !!selectedDecade?.branch && branch === selectedDecade.branch;
-    const isXiaoLian = fcActiveTab === '流年卦' && branch === fcXiaoLianBranch;
+    const displayedXiaoLianAge = clampXiaoLianAge(state.selectedXiaoLianAge || fcActiveAge || fcCurrentVirtualAge());
+    const displayedXiaoLianBranch = fcResolveXiaoLianBranch(displayedXiaoLianAge);
+    const isXiaoLian = branch === displayedXiaoLianBranch;
     const smallStars = allSmallStars(palace);
     const visibleSmallStars = smallStars.slice(0, 3);
     const densityClass = `${visibleSmallStars.length >= 3 ? ' fc-compact-stars' : ''}`;
@@ -3294,7 +3296,7 @@
       .map((star) => `<span class="fc-minor-star" style="color:#476885">${escapeHtml(star.name || star)}</span>`)
       .join('') : '';
     const yearlyHtml = yearlyMutagen || yearlyStars ? `<div class="fc-yearly-row">${yearlyMutagen}${yearlyStars}</div>` : '';
-    const xiaoLianHtml = isXiaoLian ? `<div class="fc-xiaolian-badge">${fcActiveAge}岁</div>` : '';
+    const xiaoLianHtml = isXiaoLian ? `<div class="fc-xiaolian-badge">${displayedXiaoLianAge}岁</div>` : '';
     const stemBranch = `${palace.heavenlyStem || ''}${palace.earthlyBranch || ''}`;
     const ageRange = rangeFromDecadal(palace);
     const ageStr = shouldDisplayDecadeRange(ageRange) ? `${ageRange[0]}–${ageRange[1]}` : '';
