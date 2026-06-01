@@ -3263,7 +3263,8 @@
     const isDecade = !!selectedDecade?.branch && branch === selectedDecade.branch;
     const isXiaoLian = fcActiveTab === '流年卦' && branch === fcXiaoLianBranch;
     const smallStars = allSmallStars(palace);
-    const densityClass = `${smallStars.length >= 7 ? ' fc-compact-stars' : ''}${smallStars.length >= 10 ? ' fc-crowded-stars' : ''}`;
+    const visibleSmallStars = smallStars.slice(0, 3);
+    const densityClass = `${visibleSmallStars.length >= 3 ? ' fc-compact-stars' : ''}`;
     cell.className = `fc-cell${isBen ? ' fc-ben' : isRel ? ' fc-rel' : ''}${isDecade ? ' fc-decade' : ''}${isXiaoLian ? ' fc-xiaolian' : ''}${densityClass}`;
 
     const allStarsForMutagen = [
@@ -3279,7 +3280,7 @@
     const majorHtml = (palace.majorStars || [])
       .map((star) => `<div class="fc-major-star">${escapeHtml((star.name || '') + (star.brightness || ''))}</div>`)
       .join('');
-    const minorHtml = smallStars
+    const minorHtml = visibleSmallStars
       .map((star) => `<div class="fc-minor-star">${escapeHtml(starText(star))}</div>`)
       .join('');
     const shenHtml = [palace.changsheng12, palace.boshi12].filter(Boolean)
@@ -3289,12 +3290,11 @@
     const yearlyMutagen = yearly ? (yearly.mutagen || [])
       .map((item) => `<span class="fc-minor-star" style="color:#963d32">${escapeHtml(item)}</span>`)
       .join('') : '';
-    const yearlyStars = yearly ? (yearly.stars || yearly.majorStars || [])
+    const yearlyStars = yearly ? (yearly.stars || yearly.majorStars || []).slice(0, 2)
       .map((star) => `<span class="fc-minor-star" style="color:#476885">${escapeHtml(star.name || star)}</span>`)
       .join('') : '';
     const yearlyHtml = yearlyMutagen || yearlyStars ? `<div class="fc-yearly-row">${yearlyMutagen}${yearlyStars}</div>` : '';
     const xiaoLianHtml = isXiaoLian ? `<div class="fc-xiaolian-badge">${fcActiveAge}岁</div>` : '';
-    const decadeHtml = isDecade ? `<div class="fc-decade-badge">${escapeHtml(selectedDecade.rangeLabel || '大限')}</div>` : '';
     const stemBranch = `${palace.heavenlyStem || ''}${palace.earthlyBranch || ''}`;
     const ageRange = rangeFromDecadal(palace);
     const ageStr = shouldDisplayDecadeRange(ageRange) ? `${ageRange[0]}–${ageRange[1]}` : '';
@@ -3307,7 +3307,6 @@
         <div class="fc-minor-list">${minorHtml}</div>
       </div>
       ${yearlyHtml}
-      ${decadeHtml}
       <div class="fc-cell-bottom">
         <div class="fc-shen-list">${shenHtml}</div>
         <div class="fc-palace-info">
@@ -3428,12 +3427,13 @@
     const xiaoInfo = selectedXiaoLianInfo();
     const selectedDecade = luckInfo.selected;
     const selectedYear = xiaoInfo.selected;
+    const shortPalaceLabel = (palace, fallback = '') => normalizePalaceName(palace?.name || String(fallback || '').split('·')[0].trim() || '');
 
     decadeSelect.disabled = !luckInfo.items.length;
     decadeSelect.innerHTML = luckInfo.items.length
       ? luckInfo.items.map((item) => `
         <option value="${escapeHtml(item.key)}"${item.key === selectedDecade?.key ? ' selected' : ''}>
-          ${escapeHtml(`${item.rangeLabel} · ${item.palaceName}${item.isCurrent ? '（当前）' : ''}`)}
+          ${escapeHtml(`${item.rangeLabel} · ${item.palaceName}${item.isCurrent ? ' 当前' : ''}`)}
         </option>
       `).join('')
       : '<option>暂无大限</option>';
@@ -3442,16 +3442,16 @@
     xiaoSelect.innerHTML = xiaoInfo.items.length
       ? xiaoInfo.items.map((item) => `
         <option value="${item.age}"${item.age === selectedYear?.age ? ' selected' : ''}>
-          ${escapeHtml(`${item.age}岁 · ${item.yearGz || item.year} · ${item.xiaoLabel}${item.isCurrent ? '（当前）' : ''}`)}
+          ${escapeHtml(`${item.age}岁 · ${shortPalaceLabel(item.xiaoLianPalace, item.xiaoLabel)}${item.isCurrent ? ' 当前' : ''}`)}
         </option>
       `).join('')
       : '<option>暂无小流年</option>';
 
     const yearLine = selectedYear
-      ? `${selectedYear.age}岁小流年到${selectedYear.xiaoLabel || '未定'}`
+      ? `小流年：${selectedYear.age}岁 · ${shortPalaceLabel(selectedYear.xiaoLianPalace, selectedYear.xiaoLabel) || '未定'}`
       : '小流年未定';
     const decadeLine = selectedDecade
-      ? `${selectedDecade.rangeLabel}走${selectedDecade.palaceName}`
+      ? `大限：${selectedDecade.rangeLabel} · ${selectedDecade.palaceName}`
       : '大限未定';
     meta.innerHTML = `
       <b>${escapeHtml(decadeLine)}</b>
