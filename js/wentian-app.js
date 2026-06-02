@@ -2457,6 +2457,14 @@ function formatWentianCity(city) {
   return city.province === city.city ? `中国-${city.city}` : `${city.province}-${city.city}`;
 }
 
+function getWentianTrueSolarPlaceLabel(city) {
+  if (!city) return "北京";
+  const province = String(city.province || "").trim();
+  const cityName = String(city.city || "").trim();
+  if (isWentianChinaCity(city)) return province || cityName || "北京";
+  return cityName || province || "当地";
+}
+
 function formatWentianTzOffset(tzOffset) {
   const value = Number.isFinite(Number(tzOffset)) ? Number(tzOffset) : 8;
   const sign = value >= 0 ? "+" : "-";
@@ -2851,13 +2859,14 @@ function updateWentianChartPreview() {
         timeZone: city?.timeZone || (city && typeof getBirthTimeZoneId === "function" ? getBirthTimeZoneId(city) : "Asia/Shanghai"),
         cityName: city ? formatWentianCity(city) : "北京（默认）",
       });
-      const used = document.getElementById("wentian-chart-true-solar")?.checked;
       const shichen = ["子", "丑", "寅", "卯", "辰", "巳", "午", "未", "申", "酉", "戌", "亥"][getWentianTimeIndex(result.trueSolarHour, result.trueSolarMinute)] || "";
       updateWentianSelectedCityText(result.tzOffset);
       const trueSolarDate = formatWentianTrueSolarDate(parts.date, result);
       const trueSolarClock = `${padWentianNumber(result.trueSolarHour)}:${padWentianNumber(result.trueSolarMinute)}`;
       const trueSolarDisplay = result.dayShift ? `${trueSolarDate} ${trueSolarClock}` : trueSolarClock;
-      tst.textContent = `${used ? "已采用" : "预览"}真太阳时：${trueSolarDisplay} · ${formatWentianTzOffset(result.tzOffset)} · ${shichen}时 · ${result.diffStr}`;
+      const areaLabel = city && !isWentianChinaCity(city) ? "当地区时" : "中国区时";
+      const placeLabel = getWentianTrueSolarPlaceLabel(city);
+      tst.textContent = `${areaLabel} ${formatWentianTzOffset(result.tzOffset)} · 出生地${placeLabel} ${result.diffStr}，排盘按${trueSolarDisplay} ${shichen}时`;
     }
   } catch (error) {
     if (preview) preview.textContent = error.message || "";
