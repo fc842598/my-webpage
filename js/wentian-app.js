@@ -2810,6 +2810,22 @@ function getWentianSolarLeapRuleInfo(date, autoLeapMonth = true) {
   };
 }
 
+function setWentianFigureTop(node, top) {
+  if (!node || !Number.isFinite(top)) return;
+  node.style.top = `${Math.round(top)}px`;
+}
+
+function syncWentianChartFormLayout() {
+  const phone = document.querySelector('.figma-phone[data-node-id="screen-26"]');
+  const card = phone?.querySelector(".wentian-chart-card");
+  if (!phone || !card) return;
+  const submitTop = Math.max(742, card.offsetTop + card.offsetHeight + 18);
+  setWentianFigureTop(phone.querySelector('[data-node-id="source-26-submit"]'), submitTop);
+  setWentianFigureTop(phone.querySelector('[data-node-id="source-26-submit-hit"]'), submitTop);
+  setWentianFigureTop(phone.querySelector('[data-node-id="source-26-submit-text"]'), submitTop + 16);
+  setWentianFigureTop(phone.querySelector("#wentian-chart-status"), submitTop + 62);
+}
+
 function updateWentianChartPreview() {
   const preview = document.getElementById("wentian-chart-preview");
   const tst = document.getElementById("wentian-chart-tst");
@@ -2847,6 +2863,7 @@ function updateWentianChartPreview() {
     if (preview) preview.textContent = error.message || "";
     if (tst) tst.textContent = "请先补全出生时间，地点可选。";
   }
+  syncWentianChartFormLayout();
 }
 
 function getWentianIztroLib() {
@@ -9904,6 +9921,7 @@ function initWentianChartForm() {
   }
   updateWentianChartPreview();
   setWentianChartStatus("");
+  syncWentianChartFormLayout();
 }
 
 function getWentianArchiveInitial(name) {
@@ -17614,6 +17632,7 @@ document.addEventListener("click", (event) => {
   if (action === "wentian-chart-tst-help") {
     const help = document.getElementById("wentian-chart-tst-help");
     if (help) help.style.display = help.style.display === "none" ? "block" : "none";
+    syncWentianChartFormLayout();
     return;
   }
   if (action === "wentian-chart-city-scope") {
