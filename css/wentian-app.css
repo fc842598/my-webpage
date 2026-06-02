@@ -1418,27 +1418,29 @@ html[lang="en"] .wentian-native-mingpan .fc-age {
 .wentian-native-mingpan .fc-center-panel {
   position: relative;
   z-index: 4;
-  padding: 9px 8px 7px;
+  padding: 8px 9px 7px;
   display: flex;
   flex-direction: column;
   gap: 3px;
+  overflow: visible;
 }
 
 .wentian-native-mingpan .fc-center-title {
   color: #201813;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 900;
-  letter-spacing: 4px;
+  letter-spacing: 3px;
   text-align: center;
 }
 
 .wentian-native-mingpan .fc-center-meta,
-.wentian-native-mingpan .fc-center-row {
+.wentian-native-mingpan .fc-center-row,
+.wentian-native-mingpan .fc-gua-row {
   display: flex;
   align-items: center;
   color: #7a6d60;
-  font-size: 8.5px;
-  line-height: 1.25;
+  font-size: 7.7px;
+  line-height: 1.2;
 }
 
 .wentian-native-mingpan .fc-center-meta {
@@ -1450,11 +1452,15 @@ html[lang="en"] .wentian-native-mingpan .fc-age {
 .wentian-native-mingpan .fc-center-val {
   color: #514238;
   font-weight: 800;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .wentian-native-mingpan .fc-center-lbl {
-  width: 36px;
-  flex: 0 0 36px;
+  width: 38px;
+  flex: 0 0 38px;
 }
 
 .wentian-native-mingpan .fc-center-rows {
@@ -1466,31 +1472,131 @@ html[lang="en"] .wentian-native-mingpan .fc-age {
 .wentian-native-mingpan .fc-sizhu {
   display: flex;
   justify-content: center;
-  gap: 8px;
+  gap: 6px;
   margin-top: 3px;
+}
+
+.wentian-native-mingpan .fc-center-sizhu-row {
+  align-items: flex-start;
+}
+
+.wentian-native-mingpan .fc-center-sizhu-row .fc-sizhu {
+  flex: 1;
+  justify-content: flex-start;
+  margin-top: 0;
 }
 
 .wentian-native-mingpan .fc-sizhu-col {
   display: flex;
   flex-direction: column;
   align-items: center;
-  font-size: 10px;
+  font-size: 9px;
   font-weight: 900;
-  line-height: 1.3;
+  line-height: 1.15;
+}
+
+.wentian-native-mingpan .fc-gua-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding-top: 2px;
+  border-top: 1px solid rgba(226, 207, 184, .75);
+}
+
+.wentian-native-mingpan .fc-xiaolian-control {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  min-height: 19px;
+  margin-top: 1px;
+  color: #8a7a69;
+  font-size: 8px;
+  font-weight: 800;
+}
+
+.wentian-native-mingpan .fc-xiaolian-control > summary {
+  list-style: none;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+}
+
+.wentian-native-mingpan .fc-xiaolian-control summary::-webkit-details-marker {
+  display: none;
+}
+
+.wentian-native-mingpan .fc-xiaolian-control b {
+  min-width: 48px;
+  height: 18px;
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(194, 149, 60, .55);
+  border-radius: 999px;
+  background: #fff8ee;
+  color: #514238;
+  font-size: 9px;
+  font-weight: 900;
+}
+
+.wentian-native-mingpan .fc-xiaolian-control i {
+  width: 6px;
+  height: 6px;
+  border-right: 1px solid #c2953c;
+  border-bottom: 1px solid #c2953c;
+  transform: rotate(45deg) translateY(-2px);
+}
+
+.wentian-native-mingpan .fc-xiaolian-menu {
+  position: absolute;
+  right: 0;
+  top: 21px;
+  z-index: 30;
+  width: 98px;
+  max-height: 106px;
+  overflow: auto;
+  padding: 4px;
+  border: 1px solid #e0c99d;
+  border-radius: 8px;
+  background: #fffaf3;
+  box-shadow: 0 10px 22px rgba(75, 48, 22, .16);
+}
+
+.wentian-native-mingpan .fc-xiaolian-menu button {
+  width: 100%;
+  height: 24px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: #514238;
+  font-size: 9px;
+  font-weight: 800;
+  text-align: center;
+  cursor: pointer;
+}
+
+.wentian-native-mingpan .fc-xiaolian-menu button.is-selected {
+  background: #f4e8d3;
+  color: #9e4738;
 }
 
 .wentian-native-mingpan .fc-center-btns {
   display: flex;
   justify-content: center;
-  gap: 7px;
-  margin: 2px 12px 0;
+  gap: 8px;
+  margin: 2px 4px 0;
 }
 
 .wentian-native-mingpan .fc-center-btn {
-  width: 42px;
-  height: 18px;
+  flex: 1;
+  width: auto;
+  height: 20px;
   border: 1px solid rgba(158, 71, 56, .55);
-  border-radius: 5px;
+  border-radius: 10px;
   background: #fff8ee;
   color: #9e4738;
   font-size: 9px;

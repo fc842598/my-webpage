@@ -15937,13 +15937,61 @@ function initWentianClassicChartScreen() {
   });
 }
 
-function renderWentianClassicCenter(chart, chartData, form, options = {}) {
+function formatWentianCenterDateTime(value = "") {
+  const text = String(value || "").replace("T", " ").replace(/:00$/, "").trim();
+  return text.replace(/^公历\s*/, "") || "—";
+}
+
+function formatWentianCenterClock(value = "") {
+  const text = String(value || "").replace("T", " ");
+  const match = text.match(/(\d{1,2}):(\d{2})/);
+  return match ? `${match[1].padStart(2, "0")}:${match[2]}` : "";
+}
+
+function formatWentianClassicTrueSolar(chartData = {}, fallbackTime = "") {
+  const trueSolarClock = formatWentianCenterClock(chartData.trueSolarTime || chartData.solarTime || "");
+  const localClock = formatWentianCenterClock(chartData.localTime || chartData.birthDate || fallbackTime || "");
+  const diff = chartData.trueSolarDiff ? `（偏差${chartData.trueSolarDiff}）` : "";
+  if (trueSolarClock) return `${trueSolarClock}${diff}`;
+  return localClock ? `${localClock}（未校正）` : "—";
+}
+
+function renderWentianClassicGuaRow(label, value) {
+  return `<div class="fc-gua-row"><span class="fc-center-lbl">${escapeHtml(label)}</span><span class="fc-center-val">${escapeHtml(value || "—")}</span></div>`;
+}
+
+function renderWentianClassicXiaoLianPicker(selected = {}, options = {}) {
+  const items = Array.isArray(selected.items) ? selected.items : [];
+  const activeKey = selected.key || selected.currentKey || "";
+  const label = selected.age ? `${selected.age}岁` : (selected.solarYear ? `${selected.solarYear}年` : "--");
+  if (options.readonly || !items.length) {
+    return `<div class="fc-xiaolian-control is-readonly"><span class="fc-xiaolian-label">小流年</span><b>${escapeHtml(label)}</b></div>`;
+  }
+  return `
+    <details class="fc-xiaolian-control">
+      <summary><span class="fc-xiaolian-label">小流年</span><b>${escapeHtml(label)}</b><i aria-hidden="true"></i></summary>
+      <div class="fc-xiaolian-menu">
+        ${items.map((item) => `
+          <button type="button" class="${item.key === activeKey ? "is-selected" : ""}${item.key === selected.currentKey ? " is-current" : ""}" data-action="wentian-chart-ai-xiaolian-pick" data-xiaolian-age-key="${escapeHtml(item.key)}">
+            ${escapeHtml(item.age ? `${item.age}岁` : item.solarYear || "流年")}
+          </button>
+        `).join("")}
+      </div>
+    </details>`;
+}
+
+function renderWentianClassicCenter(chart, chartData, form, options = {}, source = {}) {
   const pillars = chartData?.sizhu || extractWentianPillars(chart);
   const genderLabel = form.gender === "female" ? "阴女" : "阳男";
   const titleName = escapeHtml(getWentianArchiveResolvedName({ form, chartData }));
-  const dateText = (form.datetime || chartData?.birthDate || chart?.solarDate || "").replace("T", " ").replace(/:00$/, "");
+  const metaText = [chart?.fiveElementsClass || chartData?.fiveElementsClass || "", chart?.zodiac || chartData?.zodiac ? `属${chart?.zodiac || chartData?.zodiac}` : ""].filter(Boolean).join(" ");
+  const dateText = formatWentianCenterDateTime(chartData?.localTime || chartData?.birthDate || form.datetime || chart?.solarDate || "");
   const timeIndex = Number(chartData?.timeIndex);
   const timeName = WENTIAN_SHICHEN[Number.isFinite(timeIndex) ? timeIndex : getWentianTimeIndex(new Date(form.datetime || Date.now()).getHours(), new Date(form.datetime || Date.now()).getMinutes())] || "";
+  const trueSolarText = formatWentianClassicTrueSolar(chartData, dateText);
+  const yijing = getWentianYijingContext(source?.chart ? source : { chart, chartData, form });
+  const selectedXiao = getWentianSelectedXiaoLianYear(chartData);
+  const liunianName = selectedXiao?.age ? `${selectedXiao.age}岁 · ${selectedXiao.liunianGuaName || yijing.results.liunian?.name || "—"}` : (yijing.results.liunian?.name || "—");
   const columns = [
     [pillars.yearStem, pillars.yearBranch, "#886a4a"],
     [pillars.monthStem, pillars.monthBranch, "#4d7a5b"],
@@ -15952,22 +16000,27 @@ function renderWentianClassicCenter(chart, chartData, form, options = {}) {
   ];
   return `
     <div class="fc-center-panel" style="grid-column:2 / 4;grid-row:2 / 4;">
-      <div class="fc-center-title">命主</div>
-      <div class="fc-center-meta"><span class="fc-center-name">${titleName}</span><span>${escapeHtml(genderLabel)}</span></div>
+      <div class="fc-center-title">紫微排盘</div>
+      <div class="fc-center-meta"><span class="fc-center-name">${titleName}</span><span>${escapeHtml(metaText || genderLabel)}</span></div>
       <div class="fc-center-rows">
-        <div class="fc-center-row"><span class="fc-center-lbl">公历</span><span class="fc-center-val">${escapeHtml(dateText || "—")}</span></div>
+        <div class="fc-center-row"><span class="fc-center-lbl">公历</span><span class="fc-center-val">${escapeHtml([dateText, timeName ? `${timeName}时` : ""].filter(Boolean).join(" "))}</span></div>
         <div class="fc-center-row"><span class="fc-center-lbl">农历</span><span class="fc-center-val">${escapeHtml(chart?.lunarDate || chart?.chineseDate || "—")}</span></div>
-        <div class="fc-center-row"><span class="fc-center-lbl">时辰</span><span class="fc-center-val">${escapeHtml(timeName ? `${timeName}时` : "—")}</span></div>
-        <div class="fc-center-row"><span class="fc-center-lbl">局数</span><span class="fc-center-val">${escapeHtml(chart?.fiveElementsClass || "—")}</span></div>
+        <div class="fc-center-row"><span class="fc-center-lbl">真太阳时</span><span class="fc-center-val">${escapeHtml(trueSolarText)}</span></div>
+        <div class="fc-center-row"><span class="fc-center-lbl">排盘时辰</span><span class="fc-center-val">${escapeHtml(timeName ? `${timeName}时` : "—")}</span></div>
+        <div class="fc-center-row fc-center-sizhu-row"><span class="fc-center-lbl">节气四柱</span><div class="fc-sizhu">
+          ${columns.map(([stem, branch, color]) => (stem || branch) ? `<div class="fc-sizhu-col" style="color:${color}"><span>${escapeHtml(stem || "?")}</span><span>${escapeHtml(branch || "?")}</span></div>` : "").join("")}
+        </div></div>
       </div>
-      <div class="fc-sizhu">
-        ${columns.map(([stem, branch, color]) => (stem || branch) ? `<div class="fc-sizhu-col" style="color:${color}"><span>${escapeHtml(stem || "?")}</span><span>${escapeHtml(branch || "?")}</span></div>` : "").join("")}
+      <div class="fc-gua-rows">
+        ${renderWentianClassicGuaRow("先天卦", yijing.results.xiantian?.name)}
+        ${renderWentianClassicGuaRow("后天卦", yijing.results.houtian?.name)}
+        ${renderWentianClassicGuaRow("流年卦", liunianName)}
       </div>
+      ${renderWentianClassicXiaoLianPicker(selectedXiao, options)}
       ${options.readonly ? "" : `<div class="fc-center-btns" aria-label="切换排盘时辰">
         <button type="button" class="fc-center-btn" data-action="wentian-chart-time-step" data-hours-delta="-2" aria-label="上一个时辰">时↑</button>
         <button type="button" class="fc-center-btn" data-action="wentian-chart-time-step" data-hours-delta="2" aria-label="下一个时辰">时↓</button>
       </div>`}
-      <div class="wentian-fc-note">命宫 ${escapeHtml(chart?.earthlyBranchOfSoulPalace || "—")} · 身宫 ${escapeHtml(chart?.earthlyBranchOfBodyPalace || "—")} · 已接入</div>
     </div>`;
 }
 
@@ -16042,7 +16095,7 @@ function renderWentianClassicChart(saved, options = {}) {
               <g class="fc-sanfang-points"></g>
             </svg>
             ${(chart.palaces || []).map((palace) => renderWentianClassicPalaceCell(palace, activeBranch, options)).join("")}
-            ${renderWentianClassicCenter(chart, chartData, form, options)}
+            ${renderWentianClassicCenter(chart, chartData, form, options, source)}
           </div>
         </div>
       </div>
@@ -16301,7 +16354,8 @@ function getWentianYijingContext(saved) {
   const birthDate = String(form.datetime || chartData.birthDate || "").slice(0, 10);
   const birthYear = chartData.birthYear || Number(birthDate.slice(0, 4)) || new Date().getFullYear();
   const fallbackAge = birthYear ? new Date().getFullYear() - Number(birthYear) + 1 : 1;
-  const activeAge = Math.max(1, Number(chartData.activeAge || chartData.realCurrentAge || fallbackAge || 1));
+  const selectedXiao = getWentianSelectedXiaoLianYear(chartData);
+  const activeAge = Math.max(1, Number(selectedXiao?.age || chartData.activeAge || chartData.realCurrentAge || fallbackAge || 1));
   let zipingResult = null;
   if (window.ZipingRuntime && sizhu?.yearStem && sizhu?.monthStem && sizhu?.dayStem && sizhu?.hourStem) {
     try {
@@ -16312,14 +16366,15 @@ function getWentianYijingContext(saved) {
   }
   const liunianMap = zipingResult?.liunianMap || {};
   const liunian = liunianMap[activeAge] || liunianMap[String(activeAge)] || null;
-  const currentYear = getWentianAiCurrentYear(chartData);
-  const fallbackLiunian = currentYear.liunianGuaName ? {
-    name: currentYear.liunianGuaName,
-    period: currentYear.liunianGuaPeriod || String(currentYear.solarYear || ""),
+  const currentYear = getWentianAiCurrentYear({ ...chartData, activeAge });
+  const fallbackLiunianName = selectedXiao?.liunianGuaName || currentYear.liunianGuaName;
+  const fallbackLiunian = fallbackLiunianName ? {
+    name: fallbackLiunianName,
+    period: selectedXiao?.liunianGuaPeriod || currentYear.liunianGuaPeriod || String(selectedXiao?.solarYear || currentYear.solarYear || ""),
   } : null;
   return {
     activeAge,
-    currentYear: currentYear.solarYear || new Date().getFullYear(),
+    currentYear: selectedXiao?.solarYear || currentYear.solarYear || new Date().getFullYear(),
     results: {
       xiantian: normalizeWentianYijingResult(zipingResult?.xiantian),
       houtian: normalizeWentianYijingResult(zipingResult?.houtian),
