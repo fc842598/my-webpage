@@ -1502,9 +1502,17 @@ function getWentianClientId() {
   }
 }
 
+function getWentianArchiveAccountUserId() {
+  return wentianAuthSession?.user?.id || readWentianStoredSession()?.user?.id || "";
+}
+
+function hasWentianArchiveAccount() {
+  return !!getWentianArchiveAccountUserId();
+}
+
 function getWentianArchiveRemoteScope() {
-  const userId = wentianAuthSession?.user?.id || readWentianStoredSession()?.user?.id || "";
-  return userId ? `account:${userId}` : `client:${getWentianClientId()}`;
+  const userId = getWentianArchiveAccountUserId();
+  return userId ? `account:${userId}` : "local-only";
 }
 
 function normalizeWentianInviteCode(value) {
@@ -1982,6 +1990,7 @@ function mergeWentianArchives(localArchives, remoteArchives) {
 }
 
 async function fetchWentianRemoteArchives() {
+  if (!hasWentianArchiveAccount()) throw new Error("未登录不读取云端档案");
   const clientId = getWentianClientId();
   const response = await fetch(`${getWentianApiBase()}/api/wentian/archives?clientId=${encodeURIComponent(clientId)}`, {
     method: "GET",
@@ -2037,6 +2046,7 @@ async function verifyWentianRemoteArchives(expectedArchives, selectedArchiveId =
 }
 
 async function pushWentianArchivesToRemote(archives, options = {}) {
+  if (!hasWentianArchiveAccount()) return null;
   try {
     const clientId = getWentianClientId();
     const syncArchives = archives
@@ -2068,6 +2078,7 @@ async function pushWentianArchivesToRemote(archives, options = {}) {
 }
 
 async function deleteWentianArchiveFromRemote(archive, options = {}) {
+  if (!hasWentianArchiveAccount()) return null;
   try {
     const clientId = getWentianClientId();
     const archiveId = archive?.id || archive?.form?.archiveId || "";
@@ -2101,6 +2112,7 @@ async function deleteWentianArchiveFromRemote(archive, options = {}) {
 }
 
 async function hydrateWentianArchivesFromRemote(options = {}) {
+  if (!hasWentianArchiveAccount()) return null;
   const scope = getWentianArchiveRemoteScope();
   if (wentianArchiveRemotePromise && wentianArchiveRemotePromiseScope === scope) return wentianArchiveRemotePromise;
   if (wentianArchiveRemoteLoaded && wentianArchiveRemoteLoadedScope === scope && !options.force) return null;
@@ -7053,8 +7065,6 @@ Object.assign(WENTIAN_I18N_EN_EXTRA, {
   "再交给许半仙细读": "Then let Master Xu read it.",
   "排盘、合盘、占卜从一个档案开始。": "Charts, compatibility, and divination all start from one file.",
   "换档案": "Change File",
-  "常用入口": "Quick Access",
-  "一屏开始": "Start Here",
   "紫微斗数": "Zi Wei",
   "排盘 · AI细读": "Chart + AI",
   "双方命盘合参": "Two-chart match",
@@ -15439,8 +15449,6 @@ function sourceDashboardHomeScreen() {
       ${figText("source-1-archive-action-text", "换档案", 282, 322, 68, 11, "#9a681c", 900, "center")}
       ${figButton("source-1-archive-hit", 18, 294, 354, 70, 'data-route="screen-25"', "", "z-index:35;")}
 
-      ${figText("source-1-section-title", "常用入口", 18, 380, 110, 17, "#25221f", 900)}
-      ${figText("source-1-section-more", "一屏开始", 286, 382, 80, 12, "#9a681c", 900, "right")}
       ${dashboardFeatures.map(([title, sub, icon, route, x, y], index) => `
         ${figBox(`source-1-feature-${index}`, x, y, 171, 104, "", "border-radius:18px;background:#fffdf8;border:1px solid #eadfce;box-shadow:0 8px 20px rgba(70,45,25,.07);overflow:hidden;")}
         ${figText(`source-1-feature-title-${index}`, title, x + 16, y + 20, 92, 18, "#25221f", 900, "left", "white-space:nowrap;")}
