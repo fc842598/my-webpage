@@ -7,7 +7,7 @@
   <meta name="description" content="阅天电脑端六爻占卜，一事一问，六次成卦，看本卦、动爻与变卦。">
   <link rel="icon" href="../images/wentian-prototype-assets/wentian-brand-logo-ai-gold-v1.png" type="image/png">
   <link rel="stylesheet" href="../css/mingbook-onepage.css?v=20260601-brand-logo-all">
-  <link rel="stylesheet" href="../css/liuyao.css?v=20260602-unified-back-pill">
+  <link rel="stylesheet" href="../css/liuyao.css?v=20260602-liuyao-ask-cleanup">
   <script defer src="../js/config.js?v=20260521-api-domain-auth-proxy"></script>
   <script defer src="./guaci-data.js?v=20260520-yijing-typo-fix-7"></script>
   <script defer src="./yijing-master-data.js?v=20260520-yijing-typo-fix-7"></script>
@@ -42,17 +42,8 @@
                 <span>所问之事</span>
                 <textarea id="mbpLiuyaoQuestion" maxlength="120" rows="4" placeholder="例如：我现在是否适合推进这个合作？本月能不能见到明确结果？"></textarea>
               </label>
-              <p class="mbp-liuyao-field-hint">只问一件事。写完先提交问题，审题通过后再起卦。</p>
               <div class="mbp-liuyao-gate-inline">
-                <div class="mbp-liuyao-gate-copy">
-                  <span class="mbp-liuyao-gate-badge" id="mbpLiuyaoGateBadge" data-tone="hint">待审题</span>
-                  <p class="mbp-liuyao-gate-status" id="mbpLiuyaoGateStatus">问题写好后点“提交问题”，系统会调用大模型判断能否继续占卜。</p>
-                </div>
                 <button type="button" class="mbp-liuyao-gate-submit" id="mbpLiuyaoSubmitQuestion">提交问题</button>
-              </div>
-              <div class="mbp-liuyao-gate-tags" id="mbpLiuyaoGateTags">
-                <span>一卦一问</span>
-                <span>审题后可起卦</span>
               </div>
               <span class="mbp-liuyao-quota" id="mbpLiuyaoQuota">今日次数 0/3</span>
               <div class="mbp-liuyao-mode" aria-label="起卦方式">
