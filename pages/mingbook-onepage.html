@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>阅天 · 紫微排盘</title>
   <link rel="icon" href="../images/wentian-prototype-assets/wentian-brand-logo-ai-gold-v1.png" type="image/png">
-  <link rel="stylesheet" href="../css/mingbook-onepage.css?v=20260602-chart-slightly-shorter">
+  <link rel="stylesheet" href="../css/mingbook-onepage.css?v=20260602-shichen-quick-time">
   <script src="../js/config.js?v=20260521-api-domain-auth-proxy"></script>
   <script defer src="../js/cities.js"></script>
   <script defer src="../js/lunarCalendar.js"></script>
@@ -22,7 +22,7 @@
   <script defer src="../src/ziping/runtime.js"></script>
   <script defer src="../js/ai-piming.js?v=20260522-yijing-ai-timing"></script>
   <script defer src="../js/ai-chat.js?v=20260602-xu-dashi-labels"></script>
-  <script defer src="../js/mingbook-onepage.js?v=20260602-leap-month-auto-only"></script>
+  <script defer src="../js/mingbook-onepage.js?v=20260602-shichen-quick-time"></script>
 </head>
 <body class="mingbook-onepage">
   <header class="mbp-nav">
@@ -714,10 +714,13 @@
         <button type="button" id="mbpShichenClose" aria-label="关闭">×</button>
       </div>
       <div class="mbp-shichen-questions" id="mbpShichenQuestions">
-        <label class="mbp-shichen-field">
+        <div class="mbp-shichen-field">
           <span>① 大概什么时候出生的？</span>
-          <input type="text" id="mbpVagueTime" placeholder="如：晚上、天亮前、吃早饭时、日落后" autocomplete="off">
-        </label>
+          <div class="mbp-shichen-time-grid" id="mbpShichenTimeQuick" aria-label="选择大概出生时段"></div>
+          <div class="mbp-shichen-time-detail" id="mbpShichenTimeDetail" hidden aria-label="细化出生时段"></div>
+          <p class="mbp-shichen-time-hint" id="mbpShichenTimeHint">先选大概时段，再点下面细化词。</p>
+          <input type="hidden" id="mbpVagueTime">
+        </div>
         <div class="mbp-shichen-field mbp-shichen-field-whorl">
           <div class="mbp-shichen-field-title">
             <span>② 头旋位置（从后面正上方看如下图）</span>

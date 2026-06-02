@@ -8220,6 +8220,77 @@ p.mbp-topic-detail {
   padding: 0 12px;
 }
 
+.mbp-shichen-time-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.mbp-shichen-time-grid button,
+.mbp-shichen-time-detail button {
+  min-height: 38px;
+  border: 1px solid rgba(201, 169, 97, .28);
+  border-radius: 999px;
+  background: rgba(255, 250, 240, .88);
+  color: #6c563c;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 900;
+  line-height: 1.2;
+}
+
+.mbp-shichen-time-grid button {
+  display: grid;
+  place-items: center;
+  gap: 1px;
+  padding: 7px 8px;
+}
+
+.mbp-shichen-time-grid button b {
+  font-size: 13px;
+}
+
+.mbp-shichen-time-grid button small {
+  color: #a48658;
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.mbp-shichen-time-detail {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.mbp-shichen-time-detail[hidden] {
+  display: none;
+}
+
+.mbp-shichen-time-detail button {
+  min-height: 30px;
+  padding: 0 12px;
+  font-size: 12px;
+}
+
+.mbp-shichen-time-grid button.is-active,
+.mbp-shichen-time-detail button.is-active {
+  border-color: #b77d36;
+  background: linear-gradient(135deg, #f3d486, #b97738);
+  color: #2c1d13;
+  box-shadow: 0 8px 18px rgba(183, 125, 54, .18);
+}
+
+.mbp-shichen-time-grid button.is-active small {
+  color: rgba(44, 29, 19, .72);
+}
+
+.mbp-shichen-time-hint {
+  margin: -2px 0 0 !important;
+  color: #9a8060 !important;
+  font-size: 12px !important;
+  line-height: 1.45 !important;
+}
+
 .mbp-shichen-field label {
   display: flex;
   gap: 7px;
@@ -8725,6 +8796,42 @@ p.mbp-topic-detail {
   border: 1px solid #d6c08e;
   background: #fff7e8;
   color: #4b3824;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 0 12px;
+}
+
+.mbp-shichen-candidates button span {
+  min-width: 0;
+}
+
+.mbp-shichen-candidates button em {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  flex: 0 0 auto;
+  padding: 3px 7px;
+  border-radius: 999px;
+  background: rgba(183, 125, 54, .16);
+  color: #8d5524;
+  font-style: normal;
+  font-size: 12px;
+  line-height: 1;
+}
+
+.mbp-shichen-candidates button em i {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  min-height: 20px;
+  border-radius: 999px;
+  background: #b76f32;
+  color: #fff6dc;
+  font-style: normal;
+  font-size: 10px;
 }
 
 .mbp-shichen-back {
@@ -8746,6 +8853,10 @@ p.mbp-topic-detail {
 
   .mbp-shichen-field-title {
     align-items: flex-start;
+  }
+
+  .mbp-shichen-time-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .mbp-whorl-guide {

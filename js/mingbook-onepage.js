@@ -6958,13 +6958,83 @@
     double: ['辰时', '戌时', '丑时', '未时'],
   };
 
+  const shichenTimeGroups = [
+    {
+      key: 'before-dawn',
+      label: '凌晨',
+      hint: '夜深到天亮前',
+      candidates: ['子时', '丑时', '寅时'],
+      details: [
+        { key: 'midnight', label: '半夜', candidates: ['子时'] },
+        { key: 'deep-night', label: '凌晨', candidates: ['丑时'] },
+        { key: 'pre-dawn', label: '天亮前', candidates: ['寅时'] },
+      ],
+    },
+    {
+      key: 'morning',
+      label: '早上',
+      hint: '天亮后到上午',
+      candidates: ['卯时', '辰时', '巳时'],
+      details: [
+        { key: 'daybreak', label: '天亮后', candidates: ['卯时'] },
+        { key: 'breakfast', label: '早饭时', candidates: ['辰时'] },
+        { key: 'late-morning', label: '上午', candidates: ['巳时'] },
+      ],
+    },
+    {
+      key: 'daytime',
+      label: '白天',
+      hint: '白天范围较长，建议再细选',
+      candidates: ['卯时', '辰时', '巳时', '午时', '未时', '申时', '酉时'],
+      details: [
+        { key: 'daybreak', label: '天亮后', candidates: ['卯时'] },
+        { key: 'breakfast', label: '早饭时', candidates: ['辰时'] },
+        { key: 'late-morning', label: '上午', candidates: ['巳时'] },
+        { key: 'noon', label: '中午', candidates: ['午时'] },
+        { key: 'after-noon', label: '午后', candidates: ['未时'] },
+        { key: 'afternoon', label: '下午', candidates: ['申时'] },
+        { key: 'sunset-before', label: '日落前', candidates: ['酉时'] },
+      ],
+    },
+    {
+      key: 'noon',
+      label: '中午',
+      hint: '约 11 点到 13 点',
+      candidates: ['午时'],
+      details: [],
+    },
+    {
+      key: 'afternoon',
+      label: '下午',
+      hint: '午后到日落前',
+      candidates: ['未时', '申时', '酉时'],
+      details: [
+        { key: 'after-noon', label: '午后', candidates: ['未时'] },
+        { key: 'mid-afternoon', label: '下午三四点', candidates: ['申时'] },
+        { key: 'sunset-before', label: '日落前', candidates: ['酉时'] },
+      ],
+    },
+    {
+      key: 'night',
+      label: '晚上',
+      hint: '日落后到睡前、夜里',
+      candidates: ['戌时', '亥时', '子时'],
+      details: [
+        { key: 'dinner-after', label: '晚饭后', candidates: ['戌时'] },
+        { key: 'before-sleep', label: '睡前', candidates: ['亥时'] },
+        { key: 'late-night', label: '夜里', candidates: ['子时'] },
+      ],
+    },
+  ];
+
   function openShichenModal() {
     const overlay = $('#mbpShichenOverlay');
     if (!overlay) return;
+    renderShichenTimeQuick();
     overlay.hidden = false;
     $('#mbpShichenQuestions').hidden = false;
     $('#mbpShichenResult').hidden = true;
-    $('#mbpVagueTime')?.focus();
+    $('#mbpShichenTimeQuick button')?.focus();
   }
 
   function closeShichenModal() {
@@ -6976,28 +7046,151 @@
     return shichenCandidates.find((item) => item.name === name);
   }
 
+  function uniqueShichenCandidates(items) {
+    const seen = new Set();
+    return items.filter((item) => {
+      if (!item || seen.has(item.name)) return false;
+      seen.add(item.name);
+      return true;
+    });
+  }
+
+  function shichenTimeGroupByKey(key) {
+    return shichenTimeGroups.find((item) => item.key === key) || null;
+  }
+
+  function shichenTimeDetailByKey(group, key) {
+    return (group?.details || []).find((item) => item.key === key) || null;
+  }
+
+  function setShichenTimeSelection(groupKey, detailKey = '') {
+    const group = shichenTimeGroupByKey(groupKey);
+    if (!group) return;
+    const detail = shichenTimeDetailByKey(group, detailKey);
+    const names = detail?.candidates || group.candidates || [];
+    const input = $('#mbpVagueTime');
+    if (input) {
+      input.value = [group.label, detail?.label].filter(Boolean).join(' · ');
+      input.dataset.group = group.key;
+      input.dataset.detail = detail?.key || '';
+      input.dataset.candidates = names.join(',');
+    }
+    renderShichenTimeDetail(group.key);
+    syncShichenTimeButtons();
+    const hint = $('#mbpShichenTimeHint');
+    if (hint) hint.textContent = detail ? `${group.label} · ${detail.label}：已细化到 ${names.join(' / ')}` : `${group.hint}：可继续点下面细化词。`;
+  }
+
+  function renderShichenTimeQuick() {
+    const root = $('#mbpShichenTimeQuick');
+    if (!root || root.dataset.ready === '1') {
+      syncShichenTimeButtons();
+      return;
+    }
+    root.innerHTML = shichenTimeGroups.map((item) => `
+      <button type="button" data-shichen-time="${escapeHtml(item.key)}">
+        <b>${escapeHtml(item.label)}</b>
+        <small>${escapeHtml(item.hint)}</small>
+      </button>
+    `).join('');
+    root.dataset.ready = '1';
+    renderShichenTimeDetail($('#mbpVagueTime')?.dataset?.group || '');
+    syncShichenTimeButtons();
+  }
+
+  function renderShichenTimeDetail(groupKey) {
+    const box = $('#mbpShichenTimeDetail');
+    if (!box) return;
+    const group = shichenTimeGroupByKey(groupKey);
+    const details = group?.details || [];
+    box.hidden = !details.length;
+    box.innerHTML = details.map((item) => `
+      <button type="button" data-shichen-detail="${escapeHtml(item.key)}">
+        ${escapeHtml(item.label)}
+      </button>
+    `).join('');
+  }
+
+  function syncShichenTimeButtons() {
+    const input = $('#mbpVagueTime');
+    const groupKey = input?.dataset?.group || '';
+    const detailKey = input?.dataset?.detail || '';
+    document.querySelectorAll('[data-shichen-time]').forEach((button) => {
+      button.classList.toggle('is-active', button.dataset.shichenTime === groupKey);
+    });
+    document.querySelectorAll('[data-shichen-detail]').forEach((button) => {
+      button.classList.toggle('is-active', button.dataset.shichenDetail === detailKey);
+    });
+  }
+
+  function selectedTimeCandidates() {
+    const input = $('#mbpVagueTime');
+    const names = (input?.dataset?.candidates || '').split(',').filter(Boolean);
+    if (names.length) return uniqueShichenCandidates(names.map(candidateByName));
+    const vague = normalizeText(input?.value);
+    return shichenCandidates.filter((item) => item.keys.some((key) => vague.includes(key)));
+  }
+
   function inferShichenCandidates() {
-    const vague = normalizeText($('#mbpVagueTime')?.value);
     const whorl = document.querySelector('input[name="mbpWhorl"]:checked')?.value;
-    const byText = shichenCandidates.filter((item) => item.keys.some((key) => vague.includes(key)));
+    const byText = selectedTimeCandidates();
     const byWhorl = (whorlGroups[whorl] || []).map(candidateByName).filter(Boolean);
     const merged = byText.filter((item) => byWhorl.some((match) => match.name === item.name));
     const picks = merged.length ? merged : byText.length ? byText : byWhorl.length ? byWhorl : [candidateByName('午时')];
-    return picks.filter(Boolean).slice(0, 4);
+    return {
+      picks: uniqueShichenCandidates(picks).slice(0, 4),
+      byText,
+      byWhorl,
+      merged,
+    };
+  }
+
+  function shichenCandidateScore(candidate, context) {
+    const inTime = context.byText.some((item) => item.name === candidate.name);
+    const inWhorl = context.byWhorl.some((item) => item.name === candidate.name);
+    if (inTime && inWhorl && context.merged.length === 1) return 96;
+    if (inTime && inWhorl) return 88;
+    if (inTime) return 76;
+    if (inWhorl) return 68;
+    return 58;
+  }
+
+  function shichenApplyHour(candidate) {
+    const start = Number(candidate?.hour);
+    if (!Number.isFinite(start)) return 12;
+    return candidate?.name === '子时' ? 0 : (start + 1) % 24;
+  }
+
+  function shichenRangeText(candidate) {
+    const start = Number(candidate?.hour);
+    if (!Number.isFinite(start)) return '';
+    return `${pad2(start)}:00-${pad2((start + 2) % 24)}:00`;
   }
 
   function renderShichenResult() {
-    const picks = inferShichenCandidates();
+    const context = inferShichenCandidates();
+    const picks = context.picks;
     const title = $('#mbpShichenResultTitle');
     const reason = $('#mbpShichenResultReason');
     const list = $('#mbpShichenCandidates');
     const vague = normalizeText($('#mbpVagueTime')?.value) || '未填写大概时间';
     const whorlInput = document.querySelector('input[name="mbpWhorl"]:checked');
     const whorl = whorlInput?.dataset?.label || '未选择头旋';
-    if (title) title.textContent = `推荐 ${picks.map((item) => item.name).join(' / ')}`;
-    if (reason) reason.textContent = `依据：${vague}；${whorl}。可先采用最接近的时辰排盘，后续再核对人生事件。`;
+    const hasSingleHit = context.merged.length === 1;
+    if (title) title.textContent = hasSingleHit ? `最符合：${picks[0].name}` : `候选：${picks.map((item) => item.name).join(' / ')}`;
+    if (reason) reason.textContent = `依据：${vague}；${whorl}。时间词与头旋交叉后${hasSingleHit ? '只剩 1 个时辰' : `得到 ${picks.length} 个候选`}。`;
     if (list) {
-      list.innerHTML = picks.map((item) => `<button type="button" data-shichen-hour="${item.hour}" data-shichen-name="${item.name}">${item.name} · ${pad2(item.hour)}:00</button>`).join('');
+      list.innerHTML = picks.map((item) => {
+        const score = shichenCandidateScore(item, context);
+        const range = shichenRangeText(item);
+        const applyHour = shichenApplyHour(item);
+        return `
+          <button type="button" data-shichen-hour="${applyHour}" data-shichen-name="${escapeHtml(item.name)}" data-shichen-range="${escapeHtml(range)}" data-shichen-score="${score}">
+            <span>${escapeHtml(item.name)} · ${escapeHtml(range)}</span>
+            <em><i>推合</i>${score}%</em>
+          </button>
+        `;
+      }).join('');
     }
     $('#mbpShichenQuestions').hidden = true;
     $('#mbpShichenResult').hidden = false;
@@ -7006,13 +7199,15 @@
   function applyShichenCandidate(button) {
     const hour = Number(button.dataset.shichenHour);
     const name = button.dataset.shichenName || '候选时辰';
+    const range = button.dataset.shichenRange || '';
     const hourEl = $('#mbpHour');
     const minuteEl = $('#mbpMinute');
     if (hourEl) hourEl.value = String(hour);
     if (minuteEl) minuteEl.value = '0';
     updateTrueSolarPreview();
     const preview = $('#mbpShichenPreview');
-    if (preview) preview.textContent = `已按天纪推时辰采用：${name} ${pad2(hour)}:00。${preview.textContent ? ` ${preview.textContent}` : ''}`;
+    const score = button.dataset.shichenScore ? `（推合${button.dataset.shichenScore}%）` : '';
+    if (preview) preview.textContent = `已按天纪推时辰采用：${name}${range ? ` ${range}` : ''}${score}。${preview.textContent ? ` ${preview.textContent}` : ''}`;
     closeShichenModal();
   }
 
@@ -7427,10 +7622,19 @@
       if (event.target.id === 'mbpShichenOverlay') closeShichenModal();
     });
     $('#mbpShichenCalc')?.addEventListener('click', renderShichenResult);
+    $('#mbpShichenTimeQuick')?.addEventListener('click', (event) => {
+      const button = event.target.closest('[data-shichen-time]');
+      if (button) setShichenTimeSelection(button.dataset.shichenTime);
+    });
+    $('#mbpShichenTimeDetail')?.addEventListener('click', (event) => {
+      const button = event.target.closest('[data-shichen-detail]');
+      const groupKey = $('#mbpVagueTime')?.dataset?.group || '';
+      if (button && groupKey) setShichenTimeSelection(groupKey, button.dataset.shichenDetail);
+    });
     $('#mbpShichenBack')?.addEventListener('click', () => {
       $('#mbpShichenQuestions').hidden = false;
       $('#mbpShichenResult').hidden = true;
-      $('#mbpVagueTime')?.focus();
+      $('#mbpShichenTimeQuick button')?.focus();
     });
     $('#mbpShichenCandidates')?.addEventListener('click', (event) => {
       const button = event.target.closest('[data-shichen-hour]');
