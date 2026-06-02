@@ -4921,12 +4921,6 @@ function refreshWentianChartAiScreen() {
   if (state.route === "screen-27") navigatePreservingScroll("screen-27", false);
 }
 
-function scrollToWentianMobileChapter(index) {
-  window.setTimeout(() => {
-    document.querySelector(`[data-wentian-report-chapter="${Number(index) || 0}"]`)?.scrollIntoView({ behavior: "smooth", block: "start" });
-  }, 80);
-}
-
 async function decodeWentianChartAiModules(moduleKeys, options = {}) {
   syncWentianChartAiStateFromStorage();
   if (wentianChartAiState.status === "running") return;
@@ -16510,13 +16504,6 @@ function sourceZiweiAiDecodePanel(saved) {
         <span><b>${hasResults ? "已生成" : (isRunning ? "生成中" : "待生成")}</b> 状态</span>
         <span><b>6</b> 卷报告</span>
       </div>
-      <nav class="wentian-chart-ai-menu" aria-label="命书目录">
-        ${chapters.map((chapter, index) => `
-          <button type="button" class="${chapter.ready ? "is-ready" : ""}" data-action="wentian-chart-ai-jump" data-report-index="${index}">
-            <b>${escapeHtml(chapter.menu)}</b><span>${escapeHtml(chapter.title)}</span>
-          </button>
-        `).join("")}
-      </nav>
       <div class="wentian-chart-ai-list">
         ${chapters.map(renderWentianMobileChapter).join("")}
       </div>
@@ -17669,11 +17656,6 @@ document.addEventListener("click", (event) => {
   }
   if (action === "wentian-chart-ai-advice") {
     decodeWentianChartAiAdvice();
-    return;
-  }
-  if (action === "wentian-chart-ai-jump") {
-    const index = Number(event.target.closest("[data-report-index]")?.dataset.reportIndex || 0);
-    scrollToWentianMobileChapter(index);
     return;
   }
   if (action === "wentian-yijing-tab") {
