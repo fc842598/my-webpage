@@ -227,6 +227,30 @@ function figButton(id, x, y, w, h, attrs, className = "", style = "") {
   return `<button class="fig-click ${className}" type="button" data-node-id="${id}" ${attrs} style="left:${x}px;top:${y}px;width:${w}px;height:${h}px;${style}"></button>`;
 }
 
+function wentianBackPill(id, x = 18, y = 44, attrs = 'data-action="back" aria-label="返回"', options = {}) {
+  const width = Number(options.width || 92);
+  const height = Number(options.height || 38);
+  const hitWidth = Number(options.hitWidth || Math.max(96, width + 4));
+  const hitHeight = Number(options.hitHeight || 54);
+  const z = Number(options.zIndex || 20);
+  const label = options.label || "返回";
+  const textWidth = Math.max(40, width - 48);
+  const boxStyle = [
+    "border:1px solid rgba(194,149,60,.28)",
+    `border-radius:${height / 2}px`,
+    "background:linear-gradient(180deg,#fffdf7 0%,#fbf1df 100%)",
+    "box-shadow:0 8px 18px rgba(126,88,42,.12), inset 0 1px 0 rgba(255,255,255,.8)",
+    `z-index:${z}`,
+    options.style || "",
+  ].filter(Boolean).join(";");
+  return `
+    ${figBox(`${id}-back-pill`, x, y, width, height, "", boxStyle)}
+    ${figText(`${id}-back-icon`, "‹", x + 12, y + 10, 14, 18, "#96533d", 800, "center", `z-index:${z + 1};line-height:1;`)}
+    ${figText(`${id}-back-copy`, label, x + 30, y + 10, textWidth, 18, "#96533d", 800, "center", `z-index:${z + 1};line-height:1;`)}
+    ${figButton(`${id}-back-hit`, x, y - 4, hitWidth, hitHeight, attrs, options.className || "", `z-index:${z + 10};${options.hitStyle || ""}`)}
+  `;
+}
+
 function figLine(id, x, y, w, color = "#e5decc") {
   return `<div class="fig-line" data-node-id="${id}" style="left:${x}px;top:${y}px;width:${w}px;height:1px;background:${color};"></div>`;
 }
@@ -561,9 +585,8 @@ function convertedHeader(screen) {
   return `
     ${figText(`screen-${screen.no}-time`, screen.no >= 36 ? "15:19" : screen.no >= 30 ? "15:18" : "15:16", 18, 10, 70, 11, "#26211c")}
     ${figText(`screen-${screen.no}-battery`, "● ● ● 72%", 292, 10, 78, 11, "#26211c", 400, "right")}
-    ${figButton(`screen-${screen.no}-back-hit`, 10, 36, 54, 54, 'data-action="back"')}
-    ${figText(`screen-${screen.no}-back`, "‹", 22, 42, 30, 28, "#26211c")}
-    ${figText(`screen-${screen.no}-title`, screen.title, 62, 48, 266, 17, "#26211c", 700, "center")}
+    ${wentianBackPill(`screen-${screen.no}`, 18, 42)}
+    ${figText(`screen-${screen.no}-title`, screen.title, 0, 52, 390, 17, "#26211c", 700, "center")}
   `;
 }
 
@@ -684,8 +707,8 @@ function sourceHomeScreen(screen) {
   return `
     ${figText("source-2-time", "15:16", 18, 16, 70, 14, "#26211c")}
     ${figText("source-2-status", "◉  0.00  5G  ▮ 31 ⚡", 250, 14, 120, 10, "#26211c", 700, "right")}
-    ${figText("source-2-back", "‹", 28, 56, 28, 28, "#c6a763", 400)}
-    ${figText("source-2-title", "命理报告", 62, 61, 266, 18, "#c6a763", 700, "center")}
+    ${wentianBackPill("source-2", 18, 44)}
+    ${figText("source-2-title", "命理报告", 0, 58, 390, 18, "#c6a763", 700, "center")}
     ${figBox("source-2-hero", 18, 98, 354, 166, "", "border-radius:13px;background:linear-gradient(135deg,#b64c47,#8d302a);box-shadow:0 9px 22px rgba(161,56,36,.18);")}
     ${figText("source-2-hero-title", "你的专属命理报告，立即生成", 36, 119, 320, 22, "#fff", 800)}
     ${figText("source-2-hero-sub", "解锁AI专属命理报告，快速获得可执行建议", 36, 153, 304, 14, "rgba(255,255,255,.9)")}
@@ -1012,11 +1035,10 @@ function sourceAiChatScreen(screen) {
   return `
     ${figBox("source-4-bg", 0, 0, 390, 892, "", "background:#fbf7ef;")}
     ${figBox("source-4-header", 0, 0, 390, 88, "", "background:#f8f3ea;box-shadow:0 1px 0 rgba(110,82,38,.08);")}
-    ${figText("source-4-back", "‹", 24, 29, 28, 34, "#26211c", 500)}
-    ${figButton("source-4-back-hit", 16, 24, 48, 56, 'data-action="back" aria-label="返回"', "", "z-index:72;")}
-    ${figImage("source-4-avatar", "../images/wentian-prototype-assets/xu-dashi.jpg", 58, 25, 40, 40, "border-radius:20px;object-fit:cover;object-position:center 18%;")}
-    ${figText("source-4-name", "许大师", 110, 27, 110, 17, "#26211c", 800)}
-    ${figText("source-4-left", chatRoleText, 110, 51, 140, 12, "#8d8377", 500)}
+    ${wentianBackPill("source-4", 14, 25, 'data-action="back" aria-label="返回"', { zIndex: 72 })}
+    ${figImage("source-4-avatar", "../images/wentian-prototype-assets/xu-dashi.jpg", 114, 25, 36, 36, "border-radius:18px;object-fit:cover;object-position:center 18%;")}
+    ${figText("source-4-name", "许大师", 158, 27, 82, 17, "#26211c", 800)}
+    ${figText("source-4-left", chatRoleText, 158, 51, 84, 12, "#8d8377", 500)}
     ${profileTag}
     ${figText("source-4-record", "⋯", 344, 31, 22, 22, "#6f665d", 800, "center")}
     ${isContextChat ? "" : figButton("source-4-record-hit", 334, 24, 38, 56, 'data-route="screen-9" aria-label="对话记录"', "", "z-index:72;")}
@@ -1064,9 +1086,8 @@ function sourceArchiveSelectScreen() {
   return `
     ${figBox("source-5-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
     ${figBox("source-5-header", 0, 0, 390, 88, "", "background:#fffdf8;border-bottom:1px solid #eadfce;")}
-    ${figButton("source-5-back-hit", 16, 28, 64, 54, 'data-action="back"')}
-    ${figText("source-5-back", "‹", 28, 37, 28, 34, "#26211c", 500)}
-    ${figText("source-5-title", "选择档案", 0, 42, 390, 22, "#1f1d1a", 800, "center")}
+    ${wentianBackPill("source-5", 18, 42)}
+    ${figText("source-5-title", "选择档案", 0, 52, 390, 22, "#1f1d1a", 800, "center")}
     ${figBox("source-5-count", 300, 32, 66, 32, "", "border-radius:14px;background:#f7f2ec;")}
     ${figText("source-5-count-text", `共 ${archives.length} 张`, 300, 42, 66, 11, "#8b8176", 700, "center")}
 
@@ -10037,9 +10058,7 @@ function sourceProfileScreen(screen) {
     ${figBox("source-25-bg", 0, 0, 390, 867, "", "background:linear-gradient(180deg,#fbf6eb 0%,#fffdf8 36%,#fffdf8 100%);")}
     ${figText("source-25-time", "15:21", 18, 15, 70, 14, "#26211c")}
     ${figText("source-25-status", "◉  0.30  5G  ▮ 33 ⚡", 250, 14, 120, 10, "#26211c", 700, "right")}
-    ${figBox("source-25-back-bg", 18, 46, 56, 56, "", "border:1px solid #eadfce;border-radius:18px;background:rgba(255,253,248,.92);box-shadow:0 8px 18px rgba(74,55,32,.08);")}
-    ${figText("source-25-back", "‹", 18, 56, 56, 28, "#201813", 900, "center", "line-height:1;")}
-    ${figButton("source-25-back-hit", 12, 40, 68, 68, 'data-action="back" aria-label="返回"', "", "z-index:80;")}
+    ${wentianBackPill("source-25", 18, 48, 'data-action="back" aria-label="返回"', { zIndex: 80 })}
     ${figText("source-25-title", "排盘记录", 0, 60, 390, 24, "#201813", 900, "center")}
     ${figText("source-25-menu", "☰", 334, 61, 34, 22, "#201813", 800, "center")}
     ${figBox("source-25-tabs", 110, 110, 170, 58, "", "border-radius:29px;background:rgba(255,255,255,.88);box-shadow:0 9px 20px rgba(107,75,42,.08);")}
@@ -10127,9 +10146,8 @@ function sourcePaymentScreen() {
   const amountText = formatWentianPaymentAmount(wentianPaymentState.amountYuan || "19.90", wentianPaymentState.currency || "CNY");
   return `
     ${figBox("wt30-bg", 0, 0, 390, 844, "", "background:linear-gradient(180deg,#fffdf8 0%,#fbf7ef 58%,#f3eadc 100%);")}
-    ${figButton("wt30-back-hit", 18, 38, 58, 50, 'data-action="back"')}
-    ${figText("wt30-back", "‹", 26, 46, 28, 28, "#2b251f", 600, "center")}
-    ${figText("wt30-page-title", "套餐支付", 0, 52, 390, 22, "#201812", 900, "center")}
+    ${wentianBackPill("wt30", 18, 42)}
+    ${figText("wt30-page-title", "套餐支付", 0, 54, 390, 22, "#201812", 900, "center")}
     ${figBox("wt30-status-pill", 286, 48, 74, 30, "", "border-radius:15px;background:#f4ead8;border:1px solid #eadbc2;")}
     ${figText("wt30-status-text", stateText, 286, 56, 74, 12, "#9a6f22", 800, "center")}
 
@@ -10268,9 +10286,8 @@ function sourceBasicInfoScreen() {
   const account = getWentianAuthDisplay();
   return `
     ${figBox("source-39-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
-    ${figButton("source-39-back-hit", 18, 40, 54, 54, 'data-action="back"')}
-    ${figText("source-39-back", "‹", 28, 49, 28, 30, "#26211c", 700)}
-    ${figText("source-39-title", "基本信息", 0, 56, 390, 22, "#1f1d1a", 900, "center")}
+    ${wentianBackPill("source-39", 18, 42)}
+    ${figText("source-39-title", "基本信息", 0, 54, 390, 22, "#1f1d1a", 900, "center")}
     ${figBox("source-39-account", 22, 112, 346, 98, "", "border:1px solid #e2d8c8;border-radius:18px;background:#fff;box-shadow:0 8px 18px rgba(74,55,32,.07);")}
     ${figBox("source-39-avatar", 42, 134, 54, 54, "", "border-radius:27px;background:#b88c33;")}
     ${figText("source-39-avatar-text", escapeHtml(account.initial), 42, 147, 54, 24, "#fff", 900, "center")}
@@ -10310,9 +10327,8 @@ function sourceAccountSettingsScreen() {
   ];
   return `
     ${figBox("source-settings-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
-    ${figButton("source-settings-back-hit", 18, 40, 54, 54, 'data-action="back"')}
-    ${figText("source-settings-back", "‹", 28, 49, 28, 30, "#26211c", 700)}
-    ${figText("source-settings-title", "账户设置", 0, 56, 390, 22, "#1f1d1a", 900, "center")}
+    ${wentianBackPill("source-settings", 18, 42)}
+    ${figText("source-settings-title", "账户设置", 0, 54, 390, 22, "#1f1d1a", 900, "center")}
     ${figBox("source-settings-card", 22, 112, 346, 320, "", "border:1px solid #e2d8c8;border-radius:18px;background:#fff;box-shadow:0 8px 20px rgba(74,55,32,.07);")}
     ${rows.map(([icon, label, desc, route, action], index) => {
       const y = 112 + index * 80;
@@ -10353,9 +10369,8 @@ function sourceLoginMethodsScreen() {
     const phone = wentianAuthSession?.user?.user_metadata?.phone || "";
     return `
       ${figBox("source-login-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
-      ${figButton("source-login-back-hit", 18, 40, 54, 54, 'data-action="back"')}
-      ${figText("source-login-back", "‹", 28, 49, 28, 30, "#26211c", 700)}
-      ${figText("source-login-title", "登录方式", 0, 56, 390, 22, "#1f1d1a", 900, "center")}
+      ${wentianBackPill("source-login", 18, 42)}
+      ${figText("source-login-title", "登录方式", 0, 54, 390, 22, "#1f1d1a", 900, "center")}
       ${figBox("source-login-account", 24, 112, 342, 132, "", "border:1px solid #e2d8c8;border-radius:18px;background:#fff;box-shadow:0 8px 18px rgba(74,55,32,.08);")}
       ${figBox("source-login-avatar", 46, 144, 58, 58, "", "border-radius:29px;background:#b88c33;")}
       ${figText("source-login-avatar-text", escapeHtml(account.initial), 46, 158, 58, 24, "#fff", 900, "center")}
@@ -10396,9 +10411,8 @@ function sourceLoginMethodsScreen() {
   }
   return `
     ${figBox("source-login-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
-    ${figButton("source-login-back-hit", 18, 40, 54, 54, 'data-action="back"')}
-    ${figText("source-login-back", "‹", 28, 49, 28, 30, "#26211c", 600)}
-    ${figText("source-login-title", "登录 / 注册", 0, 56, 390, 22, "#1f1d1a", 800, "center")}
+    ${wentianBackPill("source-login", 18, 42)}
+    ${figText("source-login-title", "登录 / 注册", 0, 54, 390, 22, "#1f1d1a", 800, "center")}
     ${figText("source-login-sub", "会员、支付记录会绑定到账号", 0, 92, 390, 13, "#8f857a", 700, "center")}
     ${figBox("source-login-card", 24, 128, 342, 390, "", "border:1px solid #e2d8c8;border-radius:18px;background:#fff;box-shadow:0 8px 20px rgba(74,55,32,.08);")}
     <button class="wentian-auth-tab ${!isRegister ? "is-active" : ""}" type="button" data-action="wentian-auth-mode" data-auth-mode="login" style="left:50px;top:154px;width:136px">登录</button>
@@ -10425,9 +10439,8 @@ function sourcePasswordSettingsScreen() {
   if (!account.loggedIn) {
     return `
     ${figBox("source-password-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
-    ${figButton("source-password-back-hit", 18, 40, 54, 54, 'data-action="back"')}
-    ${figText("source-password-back", "‹", 28, 49, 28, 30, "#26211c", 700)}
-    ${figText("source-password-title", "设置密码", 0, 56, 390, 22, "#1f1d1a", 900, "center")}
+    ${wentianBackPill("source-password", 18, 42)}
+    ${figText("source-password-title", "设置密码", 0, 54, 390, 22, "#1f1d1a", 900, "center")}
     ${figBox("source-password-login-card", 24, 136, 342, 178, "", "border-radius:18px;background:#fff;box-shadow:0 8px 18px rgba(74,55,32,.08);border:1px solid #eadfce;")}
     ${figText("source-password-login-title", "登录后设置账号密码", 48, 172, 190, 18, "#25211d", 900)}
     ${figText("source-password-login-desc", "密码会绑定到你的阅天账号，用于邮箱或手机号登录、支付记录和会员权益。", 48, 210, 280, 13, "#756d63", 700, "left", "line-height:1.45;")}
@@ -10438,9 +10451,8 @@ function sourcePasswordSettingsScreen() {
   }
   return `
     ${figBox("source-password-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
-    ${figButton("source-password-back-hit", 18, 40, 54, 54, 'data-action="back"')}
-    ${figText("source-password-back", "‹", 28, 49, 28, 30, "#26211c", 700)}
-    ${figText("source-password-title", "设置密码", 0, 56, 390, 22, "#1f1d1a", 900, "center")}
+    ${wentianBackPill("source-password", 18, 42)}
+    ${figText("source-password-title", "设置密码", 0, 54, 390, 22, "#1f1d1a", 900, "center")}
     ${figBox("source-password-account", 24, 112, 342, 88, "", "border-radius:18px;background:#fff;box-shadow:0 8px 18px rgba(74,55,32,.07);border:1px solid #eadfce;")}
     ${figText("source-password-account-title", escapeHtml(account.name), 46, 138, 200, 17, "#25211d", 900)}
     ${figText("source-password-account-sub", escapeHtml(account.email), 46, 166, 260, 12, "#8f857a", 700)}
@@ -10464,9 +10476,8 @@ function sourceLanguageSettingsScreen() {
   const activeCode = wentianLanguageDraft || getWentianLanguageCode();
   return `
     ${figBox("source-37-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
-    ${figButton("source-37-back-hit", 18, 40, 54, 54, 'data-action="back"')}
-    ${figText("source-37-back", "‹", 28, 49, 28, 30, "#26211c", 600)}
-    ${figText("source-37-title", "语言设置", 0, 56, 390, 22, "#1f1d1a", 800, "center")}
+    ${wentianBackPill("source-37", 18, 42)}
+    ${figText("source-37-title", "语言设置", 0, 54, 390, 22, "#1f1d1a", 800, "center")}
     ${figText("source-37-copy", "选择界面显示语言", 34, 128, 220, 15, "#8f857a")}
     ${figBox("source-37-preview", 22, 166, 346, 74, "converted-card", "border-radius:14px;box-shadow:0 6px 16px rgba(74,55,32,.08);")}
     ${figText("source-37-preview-title", getWentianLanguageOption(activeCode).label, 42, 188, 180, 18, "#26211c", 800)}
@@ -10485,7 +10496,7 @@ function sourceLanguageSettingsScreen() {
       `;
     }).join("")}
     <button class="wentian-language-confirm" type="button" data-action="wentian-language-confirm">确定</button>
-    ${figButton("source-37-back-top-hit", 18, 40, 54, 54, 'data-action="back" aria-label="返回我的"', "", "z-index:90;")}
+    ${figButton("source-37-back-top-hit", 18, 38, 100, 58, 'data-action="back" aria-label="返回我的"', "", "z-index:90;")}
   `;
 }
 
@@ -10518,9 +10529,8 @@ function convertedAi(screen) {
 
 function wentianSimpleHeader(id, title, right = "") {
   return `
-    ${figButton(`${id}-back-hit`, 10, 38, 54, 54, 'data-action="back"')}
-    ${figText(`${id}-back`, "‹", 22, 42, 30, 30, "#25211d", 400)}
-    ${figText(`${id}-title`, title, 62, 51, 266, 17, "#25211d", 800, "center")}
+    ${wentianBackPill(id, 18, 42)}
+    ${figText(`${id}-title`, title, 0, 52, 390, 17, "#25211d", 800, "center")}
     ${right ? figText(`${id}-right`, right, 318, 48, 52, 20, "#8d857b", 700, "center") : ""}
   `;
 }
@@ -13486,9 +13496,8 @@ function yangzhaiBg(id, height = 844) {
 
 function yangzhaiHeader(id, title = "地脉道", right = "教程") {
   return `
-    ${figButton(`${id}-back-hit`, 16, 34, 52, 52, 'data-action="back"')}
-    ${figText(`${id}-back`, "‹", 26, 42, 24, 24, "#514437", 500, "center", "line-height:1;font-family:'Noto Sans SC','Microsoft YaHei',sans-serif;")}
-    ${figText(`${id}-title`, title, 120, 43, 150, 20, "#241811", 700, "center", "line-height:1.25;font-family:'Noto Serif SC','Songti SC',serif;")}
+    ${wentianBackPill(id, 18, 42)}
+    ${figText(`${id}-title`, title, 0, 52, 390, 20, "#241811", 700, "center", "line-height:1.25;font-family:'Noto Serif SC','Songti SC',serif;")}
     ${right ? `${figBox(`${id}-tutorial`, 322, 35, 52, 34, "", "border:1px solid #d9c5a8;border-radius:12px;background:#fffdf8;")}
     ${figButton(`${id}-tutorial-hit`, 322, 35, 52, 34, 'data-route="screen-45"')}
     ${figText(`${id}-tutorial-text`, right, 322, 44, 52, 13, "#8c342a", 700, "center", "font-family:'Noto Sans SC','Microsoft YaHei',sans-serif;")}` : ""}
@@ -15202,9 +15211,8 @@ function renderWentianPolishedScreen(screen) {
   if (no === 30) {
     return `
       ${figBox("wt30-bg", 0, 0, 390, 844, "", "background:linear-gradient(180deg,#fffdf8 0%,#fbf7ef 56%,#f3eadc 100%);")}
-      ${figButton("wt30-back-hit", 18, 38, 58, 50, 'data-route="screen-29"')}
-      ${figText("wt30-back", "‹", 26, 46, 28, 28, "#2b251f", 600, "center")}
-      ${figText("wt30-page-title", "确认订单", 0, 52, 390, 22, "#201812", 900, "center")}
+      ${wentianBackPill("wt30", 18, 42, 'data-route="screen-29" aria-label="返回"')}
+      ${figText("wt30-page-title", "确认订单", 0, 54, 390, 22, "#201812", 900, "center")}
       ${figBox("wt30-status-pill", 286, 48, 74, 30, "", "border-radius:15px;background:#f4ead8;border:1px solid #eadbc2;")}
       ${figText("wt30-status-text", "待支付", 286, 56, 74, 12, "#9a6f22", 800, "center")}
 
@@ -15541,9 +15549,8 @@ function sourceChartFormScreen() {
   return `
     ${figBox("source-26-bg", 0, 0, 390, 944, "", "background:linear-gradient(180deg,#fffdf8 0%,#fbf7ef 52%,#f6eee2 100%);")}
     ${figBox("source-26-top", 0, 0, 390, 92, "", "background:#fffdf8;border-bottom:1px solid #eadfce;")}
-    ${figButton("source-26-back-hit", 16, 34, 64, 52, 'data-action="back"', "", "z-index:70;")}
-    ${figText("source-26-back", "‹", 26, 42, 24, 24, "#6e6254", 500, "center", "line-height:1;")}
-    ${figText("source-26-title", title, 0, 43, 390, 24, "#1f1d1a", 800, "center", "font-family:'Noto Serif SC','Songti SC',serif;")}
+    ${wentianBackPill("source-26", 18, 42, 'data-action="back" aria-label="返回"', { zIndex: 70 })}
+    ${figText("source-26-title", title, 0, 52, 390, 24, "#1f1d1a", 800, "center", "font-family:'Noto Serif SC','Songti SC',serif;")}
 
     ${figText("source-26-heading", heading, 24, 108, 160, 24, "#2b251c", 900, "left", "font-family:'Noto Serif SC','Songti SC',serif;")}
     <div class="wentian-chart-card">
@@ -16524,10 +16531,7 @@ function sourceZiweiMingpanScreenFromChart(saved) {
     ${figBox("source-27-bg", 0, 0, 390, screenHeight, "", "background:#fbf7ef;")}
     ${figText("source-27-title", "紫微命盘", 0, 58, 390, 25, "#3b3934", 800, "center")}
     ${figText("source-27-more", "•••", 330, 56, 42, 22, "#3b3934", 800, "center")}
-    ${figBox("source-27-back-pill", 18, 44, 92, 38, "", "border:1px solid rgba(194,149,60,.28);border-radius:19px;background:linear-gradient(180deg,#fffdf7 0%,#fbf1df 100%);box-shadow:0 8px 18px rgba(126,88,42,.12), inset 0 1px 0 rgba(255,255,255,.8);z-index:20;")}
-    ${figText("source-27-back-icon", "‹", 30, 54, 14, 18, "#96533d", 800, "center", "z-index:21;")}
-    ${figText("source-27-back-copy", "返回", 48, 54, 44, 18, "#96533d", 800, "center", "z-index:21;")}
-    ${figButton("source-27-back-hit", 18, 40, 96, 54, 'data-action="back" aria-label="返回"', "", "z-index:30;")}
+    ${wentianBackPill("source-27", 18, 44)}
     ${renderWentianClassicChart(saved)}
     <div class="wentian-chart-content-stack">
       ${sourceZiweiAiDecodePanel(saved)}
