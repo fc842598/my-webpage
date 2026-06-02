@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>阅天 · 紫微排盘</title>
   <link rel="icon" href="../images/wentian-prototype-assets/wentian-brand-logo-ai-gold-v1.png" type="image/png">
-  <link rel="stylesheet" href="../css/mingbook-onepage.css?v=20260602-whorl-selected-badge">
+  <link rel="stylesheet" href="../css/mingbook-onepage.css?v=20260602-shichen-copy-trim">
   <script src="../js/config.js?v=20260521-api-domain-auth-proxy"></script>
   <script defer src="../js/cities.js"></script>
   <script defer src="../js/lunarCalendar.js"></script>
@@ -707,18 +707,25 @@
   <div class="mbp-shichen-overlay" id="mbpShichenOverlay" hidden>
     <div class="mbp-shichen-modal" role="dialog" aria-modal="true" aria-labelledby="mbpShichenTitle">
       <div class="mbp-shichen-head">
-        <strong id="mbpShichenTitle">☯ 天纪推时辰</strong>
+        <strong id="mbpShichenTitle">
+          <img src="../images/wentian-prototype-assets/wentian-brand-logo-ai-gold-v1.png" alt="" aria-hidden="true">
+          <span>智能推算出生时辰</span>
+        </strong>
         <button type="button" id="mbpShichenClose" aria-label="关闭">×</button>
       </div>
       <div class="mbp-shichen-questions" id="mbpShichenQuestions">
-        <p>先说大概出生时段，再看后脑头旋位置，系统按天纪规则给候选时辰。</p>
         <label class="mbp-shichen-field">
           <span>① 大概什么时候出生的？</span>
           <input type="text" id="mbpVagueTime" placeholder="如：晚上、天亮前、吃早饭时、日落后" autocomplete="off">
         </label>
         <div class="mbp-shichen-field mbp-shichen-field-whorl">
-          <span>② 头旋位置（从后面看）</span>
-          <div class="mbp-shichen-rule">天纪口诀：中左取子午卯酉，偏右取寅申巳亥，多旋取辰戌丑未。</div>
+          <div class="mbp-shichen-field-title">
+            <span>② 头旋位置（从后面正上方看如下图）</span>
+            <details class="mbp-shichen-rule">
+              <summary>规则说明</summary>
+              <p>头旋中间或偏左取子午卯酉，偏右取寅申巳亥，多旋（两个或以上）取辰戌丑未。</p>
+            </details>
+          </div>
           <div class="mbp-whorl-guide" aria-label="头旋位置示意">
             <label class="mbp-whorl-card">
               <input type="radio" name="mbpWhorl" value="center-left" data-label="单旋中左：子午卯酉" aria-label="居中或偏左，子午卯酉">
