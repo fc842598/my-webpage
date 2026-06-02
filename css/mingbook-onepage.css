@@ -2100,14 +2100,24 @@ body.mbp-ticket-open {
 }
 
 .nf-city-selected {
-  display: grid;
-  gap: 3px;
-  margin-top: 10px;
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-top: 8px;
   color: #dec48c;
   font-size: 15px;
+  min-width: 0;
+  white-space: nowrap;
+}
+
+.nf-city-selected-main {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .nf-city-selected-meta {
+  flex: 0 0 auto;
   color: #a29482;
   font-size: 13px;
 }
@@ -2182,7 +2192,7 @@ body.mbp-ticket-open {
 }
 
 .nf-submit-wrap {
-  padding-top: 14px;
+  padding-top: 8px;
 }
 
 .nf-submit {
