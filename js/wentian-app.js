@@ -2820,7 +2820,7 @@ function updateWentianChartPreview() {
     const timeStr = `${padWentianNumber(parts.hour)}:${padWentianNumber(parts.minute)}`;
     if (hiddenDate) hiddenDate.value = `${dateStr}T${timeStr}`;
     const leapText = parts.leapMonthRule?.applied ? ` · ${parts.leapMonthRule.actualLabel}按${parts.leapMonthRule.effectiveLabel}排盘` : "";
-    if (preview) preview.textContent = `${parts.calModeLabel} · 当地法定时 ${timeStr}${leapText}`;
+    if (preview) preview.textContent = "";
     const cityText = document.getElementById("wentian-chart-city")?.value.trim() || "";
     const city = wentianChartCity || findWentianCity(cityText);
     if (tst && typeof calcTrueSolarTime === "function") {
@@ -9903,7 +9903,7 @@ function initWentianChartForm() {
     if (cityInput) cityInput.value = form.city;
   }
   updateWentianChartPreview();
-  setWentianChartStatus(saved?.chart ? "可重新排盘" : "出生信息已就绪");
+  setWentianChartStatus("");
 }
 
 function getWentianArchiveInitial(name) {
