@@ -6732,7 +6732,7 @@ const WENTIAN_I18N_EN_EXTRA = {
   "出生信息": "Birth Info",
   "排盘": "Chart",
   "姓名": "Name",
-  "请输入姓名（选填）": "Enter name (optional)",
+  "（选填）如李先生/小姐": "(Optional) e.g. Mr. Li / Ms. Li",
   "年": "Year",
   "农历年": "Lunar year",
   "搜索城市，如：北京、上海、Tokyo": "Search city, e.g. Beijing, Shanghai, Tokyo",
@@ -6745,19 +6745,22 @@ const WENTIAN_I18N_EN_EXTRA = {
   "出生日期": "Birth Date",
   "必填": "Required",
   "出生时刻": "Birth Time",
-  "精确到分钟": "To the minute",
-  "出生地点": "Birth Place",
-  "影响真太阳时": "Affects true solar time",
+  "出生时刻（尽量精确到分钟）": "Birth Time (as accurate as possible)",
+  "填写出生地 自动校正真太阳时": "Enter birthplace to auto-correct true solar time",
+  "解读": "Explain",
+  "真太阳时就是：把出生记录的区时，换算成出生地当地的太阳时间。": "True solar time converts the recorded standard time into the local solar time of the birthplace.",
+  "紫微斗数按真太阳时排盘。因为出生地不同，太阳时间会不同。": "Zi Wei charting uses true solar time. Different birthplaces can have different solar times.",
+  "比如中国通常记录 北京时间 UTC+8。同样是北京时间 08:00 出生，如果出生地在 新疆乌鲁木齐，真太阳时约为 06:10。": "For example, China usually records Beijing time UTC+8. If someone is born at 08:00 Beijing time in Urumqi, Xinjiang, true solar time is about 06:10.",
+  "填好出生地区后，系统会自动换算。最终排盘用换算后的真太阳时。": "After the birthplace is entered, the system converts it automatically. The final chart uses the converted true solar time.",
   "出生日期必填": "Birth date required",
   "公历": "Solar",
   "农历": "Lunar",
   "闰月": "Leap Month",
-  "闰月自动识别": "Auto Leap Month",
-  "出生时刻精确到分钟": "Birth time accurate to the minute",
-  "出生地点影响真太阳时": "Birth location affects true solar time",
+  "闰月按下个月计算": "Leap month counts as the next month",
   "采用真太阳时": "Use true solar time",
   "开始排盘": "Create Chart",
-  "已接入网站排盘算法": "Site chart algorithm connected",
+  "出生信息已就绪": "Birth info ready",
+  "可重新排盘": "Ready to recalculate",
   "‹ 返回": "‹ Back",
   "阳男": "Yang Male",
   "二〇二六年三月廿六": "Lunar Mar 26, 2026",
@@ -9770,7 +9773,7 @@ function getWentianChartFormData() {
 
 async function submitWentianChartForm() {
   try {
-    setWentianChartStatus("正在调用网站排盘算法...");
+    setWentianChartStatus("正在排盘...");
     const norm = getWentianChartFormData();
     const lib = getWentianIztroLib();
     if (!lib) throw new Error("排盘模块未加载，请刷新后重试");
@@ -9832,7 +9835,7 @@ function initWentianChartForm() {
   const defaultDate = new Date(form.datetime || "2026-05-12T15:21");
   const date = Number.isNaN(defaultDate.getTime()) ? new Date("2026-05-12T15:21") : defaultDate;
   const name = document.getElementById("wentian-chart-name");
-  if (name) name.value = form.name || "谢";
+  if (name) name.value = form.name || "";
   populateWentianChartSelects();
   const hiddenDate = document.getElementById("wentian-chart-date");
   if (hiddenDate) hiddenDate.value = `${date.getFullYear()}-${padWentianNumber(date.getMonth() + 1)}-${padWentianNumber(date.getDate())}T${padWentianNumber(date.getHours())}:${padWentianNumber(date.getMinutes())}`;
@@ -9877,7 +9880,7 @@ function initWentianChartForm() {
     if (cityInput) cityInput.value = form.city;
   }
   updateWentianChartPreview();
-  setWentianChartStatus(saved?.chart ? "已接入网站排盘算法，可重新排盘" : "已接入网站排盘算法");
+  setWentianChartStatus(saved?.chart ? "可重新排盘" : "出生信息已就绪");
 }
 
 function getWentianArchiveInitial(name) {
@@ -15501,7 +15504,7 @@ function sourceChartFormScreen() {
 
       <div class="wentian-chart-row two">
         <span class="wentian-chart-label">姓名</span>
-        <input id="wentian-chart-name" class="wentian-chart-name" placeholder="请输入姓名（选填）" autocomplete="off">
+        <input id="wentian-chart-name" class="wentian-chart-name" placeholder="（选填）如李先生/小姐" autocomplete="off">
       </div>
 
       <div class="wentian-chart-row two">
@@ -15530,14 +15533,14 @@ function sourceChartFormScreen() {
           <select id="wentian-chart-lunar-month"></select>
           <select id="wentian-chart-lunar-day"></select>
         </div>
-        <label style="display:flex;align-items:center;gap:6px;color:#8d7d69;font-size:12px">
-          <input id="wentian-chart-lunar-leap" type="checkbox" checked style="width:14px;height:14px"> 闰月自动识别
+        <label class="wentian-chart-leap-note">
+          <input id="wentian-chart-lunar-leap" type="checkbox" checked style="width:14px;height:14px"> 闰月按下个月计算
         </label>
         <div id="wentian-chart-preview" class="wentian-chart-preview"></div>
       </div>
 
       <div class="wentian-chart-row stack">
-        <span class="wentian-chart-label">出生时刻<small>精确到分钟</small></span>
+        <span class="wentian-chart-label wentian-chart-label-wide">出生时刻（尽量精确到分钟）</span>
         <div class="wentian-chart-time-grid">
           <select id="wentian-chart-hour"></select>
           <select id="wentian-chart-minute"></select>
@@ -15545,7 +15548,7 @@ function sourceChartFormScreen() {
       </div>
 
       <div class="wentian-chart-row stack">
-        <span class="wentian-chart-label">出生地点<small>影响真太阳时</small></span>
+        <span class="wentian-chart-label wentian-chart-label-wide">填写出生地 自动校正真太阳时</span>
         <div class="wentian-chart-city-wrap">
           <input id="wentian-chart-city" class="wentian-chart-city-input" placeholder="搜索城市，如：北京、上海、深圳" autocomplete="off">
           <button type="button" id="wentian-chart-city-clear" class="wentian-chart-city-clear" data-action="wentian-chart-city-clear" style="display:none">清除</button>
@@ -15556,7 +15559,14 @@ function sourceChartFormScreen() {
 
       <div class="wentian-chart-row two">
         <span class="wentian-chart-label">采用真太阳时</span>
+        <button type="button" class="wentian-chart-help-btn" data-action="wentian-chart-tst-help">解读</button>
         <label class="wentian-chart-toggle"><input id="wentian-chart-true-solar" type="checkbox"><span></span></label>
+      </div>
+      <div id="wentian-chart-tst-help" class="wentian-chart-tst-help" style="display:none">
+        <p>真太阳时就是：把出生记录的区时，换算成出生地当地的太阳时间。</p>
+        <p>紫微斗数按真太阳时排盘。因为出生地不同，太阳时间会不同。</p>
+        <p>比如中国通常记录 北京时间 UTC+8。同样是北京时间 08:00 出生，如果出生地在 新疆乌鲁木齐，真太阳时约为 06:10。</p>
+        <p>填好出生地区后，系统会自动换算。最终排盘用换算后的真太阳时。</p>
       </div>
       <div id="wentian-chart-tst" class="wentian-chart-tst">请先补全出生时间，地点可选。</div>
     </div>
@@ -17576,6 +17586,11 @@ document.addEventListener("click", (event) => {
   if (action === "wentian-chart-cal") {
     const value = event.target.closest("[data-wentian-chart-cal]")?.dataset.wentianChartCal || "solar";
     setWentianChartCalendarMode(value);
+    return;
+  }
+  if (action === "wentian-chart-tst-help") {
+    const help = document.getElementById("wentian-chart-tst-help");
+    if (help) help.style.display = help.style.display === "none" ? "block" : "none";
     return;
   }
   if (action === "wentian-chart-city-scope") {

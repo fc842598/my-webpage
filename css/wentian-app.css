@@ -904,6 +904,10 @@ html[lang="en"] [data-node-id="wt15-seal-text"] {
   font-weight: 800;
 }
 
+.wentian-chart-label-wide {
+  width: 100%;
+}
+
 .wentian-chart-label small {
   margin-left: 4px;
   color: #9b8f7f;
@@ -936,7 +940,7 @@ html[lang="en"] [data-node-id="wt15-seal-text"] {
 
 .wentian-chart-name {
   flex: 1 1 auto;
-  text-align: right;
+  text-align: center;
 }
 
 .wentian-chart-segment {
@@ -1041,6 +1045,46 @@ html[lang="en"] [data-node-id="wt15-seal-text"] {
   color: #8d7d69;
   font-size: 11px;
   line-height: 1.45;
+}
+
+.wentian-chart-leap-note {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #8d7d69;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.wentian-chart-help-btn {
+  margin-left: auto;
+  min-width: 44px;
+  height: 28px;
+  border: 1px solid #e5c887;
+  border-radius: 14px;
+  background: #fff7df;
+  color: #9b6c1f;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.wentian-chart-tst-help {
+  margin: -2px 0 6px;
+  padding: 10px 12px;
+  border: 1px solid #ead8b8;
+  border-radius: 12px;
+  background: #fff9eb;
+  color: #6f5d49;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.wentian-chart-tst-help p {
+  margin: 0 0 6px;
+}
+
+.wentian-chart-tst-help p:last-child {
+  margin-bottom: 0;
 }
 
 .wentian-chart-tst {
