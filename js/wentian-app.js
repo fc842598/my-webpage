@@ -1753,7 +1753,33 @@ function setWentianChartRecordId(id) {
 }
 
 function normalizeWentianArchiveNameKey(value) {
-  return String(value || "命主").trim().replace(/\s+/g, "");
+  return String(value || "").trim().replace(/\s+/g, "");
+}
+
+function getWentianArchiveRawName(archive) {
+  return String(
+    archive?.form?.name
+    || archive?.form?.remoteRaw?.name
+    || archive?.chartData?.name
+    || ""
+  ).trim();
+}
+
+function getWentianArchiveGenericName(archive) {
+  const gender = normalizeWentianArchiveGender(archive);
+  if (gender === "female") return "女命主";
+  if (gender === "male") return "男命主";
+  return "命主";
+}
+
+function getWentianArchiveResolvedName(archive, now = new Date()) {
+  const rawName = getWentianArchiveRawName(archive);
+  if (rawName) return rawName;
+  const base = getWentianArchiveGenericName(archive);
+  const ageInfo = getWentianArchiveAgeInfo(archive, now);
+  return ageInfo.ok && Number.isFinite(ageInfo.age) && ageInfo.age >= 0
+    ? `${base} · ${ageInfo.age}岁`
+    : base;
 }
 
 function normalizeWentianArchiveDateTimeKey(value) {
@@ -1774,7 +1800,7 @@ function getWentianArchiveDuplicateKey(archive) {
   const raw = form.remoteRaw || {};
   const rawDateTime = raw.datetime
     || (raw.dateStr ? `${raw.dateStr}T${String(raw.cstHour ?? raw.hour ?? 0).padStart(2, "0")}:${String(raw.cstMinute ?? raw.minute ?? 0).padStart(2, "0")}` : "");
-  const nameKey = normalizeWentianArchiveNameKey(form.name || raw.name || chartData.name || "命主");
+  const nameKey = normalizeWentianArchiveNameKey(getWentianArchiveRawName(archive) || getWentianArchiveGenericName(archive));
   const datetimeKey = normalizeWentianArchiveDateTimeKey(form.datetime || rawDateTime || chartData.birthDate || chartData.solarTime || "");
   return nameKey && datetimeKey ? `${nameKey}|${datetimeKey}` : "";
 }
@@ -1864,7 +1890,7 @@ function normalizeWentianArchive(archive) {
       ...buildWentianArchiveFromInput({
         id,
         chartRecordId,
-        name: normalized.form.name || raw.name || "命主",
+        name: normalized.form.name || raw.name || "",
         gender: normalized.form.gender || raw.gender || "male",
         datetime,
         city: normalized.form.city || raw.city?.name || raw.city || "",
@@ -5019,7 +5045,7 @@ function buildWentianPdfBasicCards(saved, generatedAt) {
   const chartData = saved?.chartData || {};
   const gender = (form.gender || chartData.gender) === "female" ? "女命" : "男命";
   const rows = [
-    ["命主", form.name || "命主"],
+    ["命主", getWentianArchiveResolvedName(saved)],
     ["性别", gender],
     ["出生资料", formatWentianPdfBirthText(saved)],
     ["出生地点", form.city || chartData.city || "未填"],
@@ -5072,7 +5098,7 @@ function buildWentianPdfChartGrid(saved) {
     <div class="wentian-pdf-chart-grid">
       ${cells}
       <section class="wentian-pdf-center" style="grid-column:2 / 4;grid-row:2 / 4;">
-        <h3>${escapeHtml(form.name || "命主")}</h3>
+        <h3>${escapeHtml(getWentianArchiveResolvedName(saved))}</h3>
         <p>${escapeHtml(formatWentianPdfBirthText(saved))}</p>
         <dl>
           <div><dt>农历</dt><dd>${escapeHtml(chart.lunarDate || chart.chineseDate || "未填")}</dd></div>
@@ -5147,7 +5173,7 @@ function buildWentianMobilePdfReportElement(saved) {
   report.innerHTML = `
     <header class="wentian-pdf-head">
       <span>阅天AI · 紫微命盘</span>
-      <h1>${escapeHtml(form.name || "命主")}个人命盘解读</h1>
+      <h1>${escapeHtml(getWentianArchiveResolvedName(saved))}个人命盘解读</h1>
       <p>${escapeHtml(gender)} · ${escapeHtml(formatWentianPdfBirthText(saved))} · ${escapeHtml(form.city || saved?.chartData?.city || "未填地点")}</p>
       <div class="wentian-pdf-meta">
         <div><b>命盘</b><span>${escapeHtml(saved?.chart?.fiveElementsClass || saved?.chartData?.fiveElementsClass || "紫微命盘")}</span></div>
@@ -5240,7 +5266,7 @@ function getWentianArchiveDisplay(archive) {
   const form = archive?.form || {};
   const chartData = archive?.chartData || {};
   const sizhu = chartData.sizhu || {};
-  const name = form.name || "命主";
+  const name = getWentianArchiveResolvedName(archive);
   const normalizedGender = normalizeWentianArchiveGender(archive);
   const gender = normalizedGender === "female" ? "女" : normalizedGender === "male" ? "男" : "未填";
   const datetime = (form.datetime || chartData.birthDate || chartData.solarTime || "").replace("T", " ").replace(/:00$/, "");
@@ -5514,12 +5540,9 @@ function getWentianArchivePersonKey(archive) {
 }
 
 function getWentianArchiveIdentityKey(archive) {
-  const form = archive?.form || {};
-  const chartData = archive?.chartData || {};
-  const name = String(form.name || chartData.name || "").trim().replace(/\s+/g, "");
+  const name = getWentianArchiveRawName(archive).replace(/\s+/g, "");
   const gender = normalizeWentianArchiveGender(archive);
-  const genericNames = new Set(["命主", "默认", "客户", "男命", "女命"]);
-  if (!name || !gender || genericNames.has(name)) return "";
+  if (!name || !gender || /^(命主|默认|客户|男命|女命|男命主|女命主)(\s*·\s*\d+岁)?$/.test(name)) return "";
   return `${name}|${gender}`;
 }
 
@@ -5669,7 +5692,7 @@ function saveWentianHepanTimeEdit() {
   const rawCity = form.city || raw.city?.name || raw.city || "";
   const updated = buildWentianArchiveFromInput({
     id: archive.id,
-    name: form.name || raw.name || archive.chartData?.name || display.name || "命主",
+    name: form.name || raw.name || archive.chartData?.name || "",
     gender: normalizeWentianArchiveGender(archive) || form.gender || raw.gender || "male",
     datetime: value,
     city: typeof rawCity === "string" ? rawCity : rawCity?.name || "",
@@ -6732,7 +6755,7 @@ const WENTIAN_I18N_EN_EXTRA = {
   "出生信息": "Birth Info",
   "排盘": "Chart",
   "姓名": "Name",
-  "（选填）如李先生/小姐": "(Optional) e.g. Mr. Li / Ms. Li",
+  "可不填，系统自动生成称呼": "Optional. The system will generate a label.",
   "年": "Year",
   "农历年": "Lunar year",
   "搜索城市，如：北京、上海、Tokyo": "Search city, e.g. Beijing, Shanghai, Tokyo",
@@ -9785,7 +9808,7 @@ async function submitWentianChartForm() {
     const existingArchives = getWentianArchiveList();
     const editingArchive = editingArchiveId ? findWentianArchiveById(editingArchiveId, existingArchives) : null;
     const duplicateArchive = editingArchive ? null : findWentianArchiveDuplicate(existingArchives, {
-      form: { name: norm.name || "命主", datetime: datetimeValue },
+      form: { name: norm.name || "", datetime: datetimeValue },
     });
     const chartRecordId = editingArchive?.chartRecordId || editingArchive?.chartData?.chartRecordId || duplicateArchive?.chartRecordId || duplicateArchive?.chartData?.chartRecordId || resetWentianChartRecordId();
     if (editingArchive || duplicateArchive) setWentianChartRecordId(chartRecordId);
@@ -15504,7 +15527,7 @@ function sourceChartFormScreen() {
 
       <div class="wentian-chart-row two">
         <span class="wentian-chart-label">姓名</span>
-        <input id="wentian-chart-name" class="wentian-chart-name" placeholder="（选填）如李先生/小姐" autocomplete="off">
+        <input id="wentian-chart-name" class="wentian-chart-name" placeholder="可不填，系统自动生成称呼" autocomplete="off">
       </div>
 
       <div class="wentian-chart-row two">
@@ -15888,7 +15911,7 @@ function initWentianClassicChartScreen() {
 function renderWentianClassicCenter(chart, chartData, form, options = {}) {
   const pillars = chartData?.sizhu || extractWentianPillars(chart);
   const genderLabel = form.gender === "female" ? "阴女" : "阳男";
-  const titleName = escapeHtml(form.name || "命主");
+  const titleName = escapeHtml(getWentianArchiveResolvedName({ form, chartData }));
   const dateText = (form.datetime || chartData?.birthDate || chart?.solarDate || "").replace("T", " ").replace(/:00$/, "");
   const timeIndex = Number(chartData?.timeIndex);
   const timeName = WENTIAN_SHICHEN[Number.isFinite(timeIndex) ? timeIndex : getWentianTimeIndex(new Date(form.datetime || Date.now()).getHours(), new Date(form.datetime || Date.now()).getMinutes())] || "";
@@ -16183,7 +16206,7 @@ function renderWentianMobileChartParams(saved) {
         <b>命盘速览</b>
       </div>
       <div class="wentian-param-kv">
-        ${renderWentianParamPair("命主", form.name || "命主")}
+        ${renderWentianParamPair("命主", getWentianArchiveResolvedName({ form, chartData }))}
         ${renderWentianParamPair("性别", genderText)}
         ${renderWentianParamPair("公历", chartData.birthDate || chart.solarDate || form.datetime)}
         ${renderWentianParamPair("农历", chart.lunarDate || chart.chineseDate || chartData.lunarDate)}
