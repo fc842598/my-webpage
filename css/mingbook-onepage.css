@@ -2783,7 +2783,7 @@ body.mbp-ticket-open {
   grid-template-columns: repeat(4, 1fr);
   grid-template-rows: repeat(4, minmax(0, 1fr));
   gap: 1px;
-  aspect-ratio: 1 / 1.18;
+  aspect-ratio: 1 / 1.15;
   overflow: hidden;
   border: 1px solid #d2c4b5;
   border-radius: 5px;
