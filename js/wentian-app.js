@@ -16458,10 +16458,16 @@ function sourceZiweiMingpanScreenFromChart(saved) {
   const bottomNavY = Math.max(755, screenHeight - 89);
   return `
     ${figBox("source-27-bg", 0, 0, 390, screenHeight, "", "background:#fbf7ef;")}
+    ${figBox("source-27-back-pill", 18, 44, 92, 38, "", "border:1px solid rgba(194,149,60,.28);border-radius:19px;background:linear-gradient(180deg,#fffdf7 0%,#fbf1df 100%);box-shadow:0 8px 18px rgba(126,88,42,.12), inset 0 1px 0 rgba(255,255,255,.8);z-index:1;")}
+    ${figText("source-27-back-icon", "‹", 30, 54, 14, 18, "#96533d", 800, "center", "z-index:2;")}
+    ${figText("source-27-back-copy", "返回", 48, 54, 44, 18, "#96533d", 800, "center", "z-index:2;")}
     ${figButton("source-27-back-hit", 18, 40, 96, 54, 'data-action="back"')}
     ${figText("source-27-back", "‹ 返回", 28, 54, 92, 26, "#9f2417", 500)}
     ${figText("source-27-title", "紫微命盘", 0, 58, 390, 25, "#3b3934", 800, "center")}
     ${figText("source-27-more", "•••", 330, 56, 42, 22, "#3b3934", 800, "center")}
+    ${figBox("source-27-back-pill-top", 18, 44, 92, 38, "", "border:1px solid rgba(194,149,60,.28);border-radius:19px;background:linear-gradient(180deg,#fffdf7 0%,#fbf1df 100%);box-shadow:0 8px 18px rgba(126,88,42,.12), inset 0 1px 0 rgba(255,255,255,.8);z-index:5;")}
+    ${figText("source-27-back-icon-top", "‹", 30, 54, 14, 18, "#96533d", 800, "center", "z-index:6;")}
+    ${figText("source-27-back-copy-top", "返回", 48, 54, 44, 18, "#96533d", 800, "center", "z-index:6;")}
     ${renderWentianClassicChart(saved)}
     <div class="wentian-chart-content-stack">
       ${sourceZiweiAiDecodePanel(saved)}
