@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>阅天 · 阳宅地脉</title>
   <meta name="description" content="阅天阳宅居住方位：先定房屋中心与朝向，再按实际居住角色安位，生成阳宅居住解读。">
-  <link rel="icon" href="../images/wentian-prototype-assets/wentian-brand-logo-ai-gold-v1.png" type="image/png">
+  <link rel="icon" href="../images/logo-mark.svg" type="image/svg+xml">
   <meta name="theme-color" content="#030201">
   <style>
     :root {
@@ -393,6 +393,390 @@
       font-size: 13px;
       font-weight: 700;
       line-height: 1.6;
+    }
+
+    .usage-guide {
+      position: relative;
+      overflow: hidden;
+      isolation: isolate;
+      scroll-margin-top: 96px;
+      padding: clamp(22px, 3vw, 42px);
+      border: 1px solid rgba(201, 169, 97, .58);
+      border-radius: 14px;
+      background:
+        radial-gradient(circle at 89% 0%, rgba(201, 169, 97, .11), transparent 30%),
+        linear-gradient(180deg, rgba(8, 6, 3, .96), rgba(3, 2, 1, .98));
+      box-shadow:
+        inset 0 0 0 1px rgba(240, 215, 155, .06),
+        0 28px 70px rgba(0, 0, 0, .32);
+    }
+
+    .usage-guide::before,
+    .usage-guide::after {
+      content: "";
+      position: absolute;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .usage-guide::before {
+      width: 520px;
+      height: 520px;
+      right: -190px;
+      top: -220px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(201,169,97,.10), transparent 62%);
+    }
+
+    .usage-guide::after {
+      inset: auto 0 0;
+      height: 128px;
+      opacity: .48;
+      background:
+        linear-gradient(180deg, transparent, rgba(3,2,1,.88)),
+        url("data:image/svg+xml,%3Csvg width='900' height='120' viewBox='0 0 900 120' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23c9a961' stroke-opacity='.34' stroke-width='2'%3E%3Cpath d='M0 104 C55 72 98 82 140 58 C178 36 216 46 255 73 C300 106 338 95 385 62 C424 35 470 42 520 82 C555 110 602 103 642 72 C694 31 750 44 801 84 C840 114 868 105 900 88'/%3E%3Cpath d='M0 116 C78 86 124 95 178 74 C250 45 315 80 382 100 C468 126 542 70 618 88 C690 106 730 52 812 88 C852 105 876 102 900 98'/%3E%3C/g%3E%3C/svg%3E") bottom center / cover no-repeat;
+    }
+
+    .usage-guide-head {
+      position: relative;
+      z-index: 1;
+      max-width: 1180px;
+    }
+
+    .usage-guide-title {
+      margin: 0;
+      color: var(--ivory);
+      font-family: "Noto Serif SC", "Songti SC", serif;
+      font-size: clamp(30px, 3.1vw, 50px);
+      line-height: 1.18;
+      letter-spacing: 0;
+    }
+
+    .usage-guide-subtitle {
+      margin: 10px 0 0;
+      color: var(--gold-soft);
+      font-size: clamp(14px, 1.22vw, 20px);
+      font-weight: 900;
+      line-height: 1.45;
+    }
+
+    .usage-guide-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 38px;
+      margin-top: 26px;
+      padding: 0 28px;
+      border: 1px solid rgba(201,169,97,.54);
+      border-radius: 999px;
+      color: var(--gold-soft);
+      background: rgba(20, 16, 6, .72);
+      font-size: 15px;
+      font-weight: 900;
+      box-shadow: inset 0 0 18px rgba(201,169,97,.08);
+    }
+
+    .usage-guide-principle {
+      margin: 34px 0 0;
+      max-width: 1490px;
+      color: #ecd9ad;
+      font-size: clamp(16px, 1.42vw, 24px);
+      font-weight: 900;
+      line-height: 1.72;
+    }
+
+    .usage-guide-cards {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: clamp(14px, 1.45vw, 24px);
+      margin-top: clamp(26px, 3.2vw, 48px);
+    }
+
+    .usage-card {
+      position: relative;
+      overflow: hidden;
+      min-height: clamp(300px, 24vw, 430px);
+      padding: clamp(18px, 1.7vw, 28px);
+      border: 1px solid rgba(201, 169, 97, .48);
+      border-radius: 12px;
+      background:
+        radial-gradient(circle at 18% 62%, rgba(201,169,97,.14), transparent 28%),
+        linear-gradient(180deg, rgba(8, 6, 3, .78), rgba(3, 2, 1, .88));
+      box-shadow:
+        inset 0 0 0 1px rgba(240,215,155,.05),
+        0 18px 42px rgba(0,0,0,.26);
+    }
+
+    .usage-card-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 0;
+      color: var(--ivory);
+      font-family: "Noto Serif SC", "Songti SC", serif;
+      font-size: clamp(21px, 1.75vw, 30px);
+      line-height: 1.18;
+      letter-spacing: 0;
+    }
+
+    .usage-card-number {
+      width: 38px;
+      height: 38px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex: 0 0 auto;
+      border: 1px solid rgba(201,169,97,.78);
+      border-radius: 999px;
+      color: var(--gold-soft);
+      background: rgba(18, 13, 5, .78);
+      font-family: "Noto Serif SC", "Songti SC", serif;
+      font-size: 20px;
+      box-shadow: 0 0 20px rgba(201,169,97,.16);
+    }
+
+    .usage-card-copy {
+      margin: 12px 0 0;
+      color: #d5bf84;
+      font-size: clamp(13px, 1.02vw, 17px);
+      font-weight: 800;
+      line-height: 1.58;
+    }
+
+    .usage-card-visual {
+      position: absolute;
+      inset: auto clamp(16px, 1.6vw, 28px) clamp(20px, 2vw, 34px);
+      height: clamp(168px, 15vw, 264px);
+    }
+
+    .house-visual svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+      overflow: visible;
+    }
+
+    .house-visual .plan-line,
+    .house-visual .plan-wall {
+      fill: none;
+      stroke: rgba(240, 215, 155, .88);
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .house-visual .plan-wall { stroke-width: 4; }
+    .house-visual .plan-line {
+      stroke: rgba(201,169,97,.62);
+      stroke-width: 2;
+      stroke-dasharray: 7 8;
+    }
+
+    .house-visual .plan-node {
+      fill: #f0d79b;
+      filter: drop-shadow(0 0 8px rgba(240,215,155,.64));
+    }
+
+    .house-visual .center-node {
+      fill: #f8e7a8;
+      filter: drop-shadow(0 0 18px rgba(240,215,155,.90));
+    }
+
+    .house-visual .compass-ring {
+      fill: rgba(11,8,4,.94);
+      stroke: rgba(240,215,155,.70);
+      stroke-width: 2;
+      filter: drop-shadow(0 0 18px rgba(201,169,97,.30));
+    }
+
+    .house-visual .compass-mark,
+    .house-visual .compass-text {
+      fill: #f0d79b;
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .palace-visual {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(3, 1fr);
+      border: 1px solid rgba(201,169,97,.72);
+      box-shadow:
+        0 0 28px rgba(201,169,97,.16),
+        inset 0 0 28px rgba(201,169,97,.08);
+      background: rgba(4,3,1,.56);
+    }
+
+    .palace-visual::before,
+    .palace-visual::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    .palace-visual::before {
+      background:
+        linear-gradient(90deg, transparent 33.1%, rgba(201,169,97,.58) 33.1%, rgba(201,169,97,.58) 33.6%, transparent 33.6%, transparent 66.4%, rgba(201,169,97,.58) 66.4%, rgba(201,169,97,.58) 66.9%, transparent 66.9%),
+        linear-gradient(180deg, transparent 33.1%, rgba(201,169,97,.58) 33.1%, rgba(201,169,97,.58) 33.6%, transparent 33.6%, transparent 66.4%, rgba(201,169,97,.58) 66.4%, rgba(201,169,97,.58) 66.9%, transparent 66.9%);
+    }
+
+    .palace-cell-demo {
+      position: relative;
+      display: grid;
+      place-items: center;
+      padding: 10px;
+      color: #d8bb76;
+      font-family: "Noto Serif SC", "Songti SC", serif;
+      font-size: clamp(15px, 1.25vw, 24px);
+      font-weight: 800;
+      line-height: 1.22;
+      text-align: center;
+    }
+
+    .palace-cell-demo.is-active {
+      align-items: start;
+      justify-items: start;
+      background: radial-gradient(circle at 26% 48%, rgba(240,215,155,.22), transparent 42%);
+      color: var(--gold-soft);
+    }
+
+    .role-marker {
+      position: absolute;
+      left: 16%;
+      bottom: 18%;
+      display: grid;
+      justify-items: center;
+      gap: 3px;
+      color: var(--ivory);
+    }
+
+    .role-marker::before {
+      content: "";
+      width: 30px;
+      height: 30px;
+      border-radius: 50% 50% 42% 42%;
+      background:
+        radial-gradient(circle at 50% 34%, #f7de92 0 19%, transparent 20%),
+        linear-gradient(180deg, transparent 37%, #f7de92 38% 100%);
+      filter: drop-shadow(0 0 12px rgba(240,215,155,.44));
+    }
+
+    .role-marker span {
+      min-width: 52px;
+      padding: 3px 10px 5px;
+      border: 1px solid rgba(240,215,155,.78);
+      border-radius: 999px;
+      background: rgba(18,12,4,.88);
+      font-size: clamp(12px, .96vw, 16px);
+      line-height: 1.1;
+    }
+
+    .scroll-visual {
+      display: grid;
+      place-items: center;
+    }
+
+    .scroll-sheet {
+      position: relative;
+      width: min(84%, 326px);
+      height: min(100%, 226px);
+      min-height: 170px;
+      border: 1px solid rgba(110,72,27,.42);
+      border-radius: 8px;
+      background:
+        radial-gradient(circle at 20% 82%, rgba(96,61,23,.24), transparent 20%),
+        linear-gradient(180deg, rgba(235,199,125,.96), rgba(178,125,55,.92));
+      box-shadow:
+        inset 0 0 22px rgba(75,43,12,.34),
+        0 0 28px rgba(201,169,97,.24);
+    }
+
+    .scroll-sheet::before,
+    .scroll-sheet::after {
+      content: "";
+      position: absolute;
+      left: -8px;
+      right: -8px;
+      height: 18px;
+      border-radius: 999px;
+      background: linear-gradient(180deg, #e2b665, #87521d);
+      box-shadow: inset 0 2px 5px rgba(255,255,255,.24), 0 3px 10px rgba(0,0,0,.34);
+    }
+
+    .scroll-sheet::before { top: -8px; }
+    .scroll-sheet::after { bottom: -8px; }
+
+    .hexagram-lines {
+      position: absolute;
+      left: 34px;
+      top: 48px;
+      display: grid;
+      gap: 9px;
+      width: 74px;
+    }
+
+    .hex-line,
+    .hex-split {
+      height: 6px;
+      border-radius: 999px;
+      background: #44270b;
+    }
+
+    .hex-split {
+      background: linear-gradient(90deg, #44270b 0 42%, transparent 42% 58%, #44270b 58% 100%);
+    }
+
+    .scroll-text {
+      position: absolute;
+      left: 126px;
+      top: 38px;
+      right: 22px;
+      color: #3b230b;
+      font-size: clamp(10px, .68vw, 12px);
+      font-weight: 900;
+      line-height: 1.6;
+    }
+
+    .scroll-text strong {
+      display: block;
+      margin: 12px 0 2px;
+      font-size: clamp(12px, .86vw, 15px);
+    }
+
+    .scroll-seal {
+      position: absolute;
+      right: -22px;
+      bottom: -18px;
+      width: clamp(54px, 4.4vw, 76px);
+      height: clamp(54px, 4.4vw, 76px);
+      border: 2px solid rgba(240,215,155,.86);
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(201,169,97,.26), rgba(11,8,4,.98) 62%);
+      box-shadow: 0 0 28px rgba(240,215,155,.58);
+    }
+
+    .scroll-seal::before,
+    .scroll-seal::after {
+      content: "";
+      position: absolute;
+      left: 34%;
+      top: 52%;
+      height: 5px;
+      border-radius: 999px;
+      background: #f0d79b;
+      transform-origin: left center;
+    }
+
+    .scroll-seal::before {
+      width: 22%;
+      transform: rotate(42deg);
+    }
+
+    .scroll-seal::after {
+      width: 48%;
+      transform: rotate(-48deg);
     }
 
     .intro-toolbar {
@@ -1294,6 +1678,13 @@
       .container { width: calc(100vw - 56px); }
       .links { display: none; }
       .intro-steps { grid-template-columns: 1fr; }
+      .usage-guide-cards { grid-template-columns: 1fr; }
+      .usage-card {
+        min-height: 390px;
+      }
+      .usage-card-visual {
+        height: 240px;
+      }
       .intro-support { align-items: flex-start; flex-direction: column; }
       .workbench { grid-template-columns: 1fr; }
       .guide-panel,
@@ -1311,15 +1702,49 @@
         min-width: 92px;
         height: 36px;
       }
-      .nav .cta { height: 34px; min-width: 88px; padding: 0 10px; font-size: 13px; }
+      .nav .cta { height: 34px; min-width: 104px; padding: 0 13px; font-size: 14px; }
       .yangzhai-main { padding-top: 80px; }
       .intro-panel { padding: 16px 14px; }
-      .intro-toggle-row { align-items: flex-start; }
+      .intro-toggle-row {
+        align-items: stretch;
+        flex-direction: column;
+      }
       .intro-toggle-copy strong { font-size: 18px; }
       .intro-toggle-copy span { font-size: 12px; }
       .intro-toggle {
         width: 100%;
         justify-content: center;
+      }
+      .usage-guide {
+        padding: 20px 14px 18px;
+        border-radius: 10px;
+      }
+      .usage-guide-principle {
+        margin-top: 22px;
+      }
+      .usage-guide-cards {
+        gap: 14px;
+        margin-top: 22px;
+      }
+      .usage-card {
+        min-height: 350px;
+        padding: 18px;
+      }
+      .usage-card-number {
+        width: 32px;
+        height: 32px;
+        font-size: 17px;
+      }
+      .usage-card-visual {
+        inset-inline: 16px;
+        height: 210px;
+      }
+      .scroll-sheet {
+        width: min(86%, 300px);
+      }
+      .scroll-text {
+        left: 136px;
+        right: 18px;
       }
       .intro-copy h1 { font-size: 22px; }
       .intro-copy p { font-size: 14px; }
@@ -1340,7 +1765,7 @@
 
     /* Desktop visual upgrade: keep the original interactions, improve the reading surface. */
     @media (min-width: 901px) {
-      :root { --container: 980px; }
+      :root { --container: 1920px; }
 
       body {
         background:
@@ -1373,11 +1798,10 @@
       }
 
       .cta {
-        min-width: 88px;
+        min-width: 120px;
         height: 32px;
-        border-radius: 16px;
+        border-radius: 4px;
         box-shadow: none;
-        padding: 0 10px;
       }
 
       .nav-home {
@@ -2157,7 +2581,7 @@
     <header class="nav">
       <div class="container">
         <a class="brand" href="./yangzhai.html" aria-label="阳宅安位首页">
-          <img class="brand-logo" src="../images/wentian-prototype-assets/wentian-brand-logo-ai-gold-v1.png" alt="" aria-hidden="true" loading="eager" decoding="async">
+          <img class="brand-logo" src="../images/logo-mark.svg" alt="" aria-hidden="true" loading="eager" decoding="async">
           <span>阅 天</span>
         </a>
         <nav class="links" aria-label="阳宅导航">
@@ -2181,36 +2605,98 @@
             <button class="intro-toggle" id="yangzhaiIntroToggle" type="button" aria-expanded="false" aria-controls="yangzhaiIntroContent">展开说明</button>
           </div>
           <div class="intro-collapse" id="yangzhaiIntroContent" hidden>
-          <div class="intro-copy">
-            <span class="intro-kicker">阳宅居住方位</span>
-            <h1>先定方位，再把实际居住的人放进九宫，快速看这个住法对人的影响。</h1>
-            <p>原理取自阳宅的“名位相等”。先找房屋中心，定出东南西北，再看父母、子女或空间现在实际落在哪个方位。位置住久了，会影响人的心念、判断与做法，所以可以据此看家中卦象与需要调整的地方。</p>
-          </div>
-          <div class="intro-steps" id="startPlacement" aria-label="使用步骤">
-            <div class="intro-step">
-              <strong>1 确认房屋朝向</strong>
-              <span>站在现住房中心点，用罗盘或手机指南针定出正北，再把九宫方向和户型对应起来。</span>
+            <div class="usage-guide" id="startPlacement" aria-label="阳宅居住方位图示说明">
+              <div class="usage-guide-head">
+                <h1 class="usage-guide-title">阳宅居住方位使用说明</h1>
+                <p class="usage-guide-subtitle">先定中心，再按实际居住方位安人，最后看名位是否相等。</p>
+                <span class="usage-guide-pill">图示说明</span>
+                <p class="usage-guide-principle">按照海厦老师“名位相等”的思路：先找房屋中心，定出东南西北，再看实际居住的人落在哪一宫。住久之后，方位会影响人的心念、判断与做法，所以要看现在的住法是否合位。</p>
+              </div>
+
+              <div class="usage-guide-cards" aria-label="三步使用说明">
+                <article class="usage-card">
+                  <h2 class="usage-card-title"><span class="usage-card-number">1</span>确认房屋朝向</h2>
+                  <p class="usage-card-copy">取户型中心点，用罗盘或手机指南针定出正北。</p>
+                  <div class="usage-card-visual house-visual" aria-hidden="true">
+                    <svg viewBox="0 0 420 300" role="img">
+                      <path class="plan-wall" d="M48 56H366V226H48Z" />
+                      <path class="plan-wall" d="M120 56V118H174V86H244V56" />
+                      <path class="plan-wall" d="M48 166H110V226M164 226V188H206M300 226V166H366" />
+                      <path class="plan-line" d="M48 56 208 144 366 56M48 226 208 144 366 226M208 56V226" />
+                      <circle class="plan-node" cx="48" cy="56" r="8" />
+                      <circle class="plan-node" cx="366" cy="56" r="8" />
+                      <circle class="plan-node" cx="48" cy="226" r="8" />
+                      <circle class="plan-node" cx="366" cy="226" r="8" />
+                      <circle class="center-node" cx="208" cy="144" r="11" />
+                      <text class="compass-text" x="204" y="42">北</text>
+                      <path class="compass-mark" d="M208 47l-8 18h16Z" />
+                      <circle class="compass-ring" cx="310" cy="206" r="58" />
+                      <path class="compass-mark" d="M318 172l14 78-28-62Z" />
+                      <path class="compass-mark" opacity=".42" d="M304 238l-13-74 27 58Z" />
+                      <text class="compass-text" x="306" y="174">N</text>
+                      <text class="compass-text" x="306" y="258">S</text>
+                      <text class="compass-text" x="354" y="214">E</text>
+                      <text class="compass-text" x="262" y="214">W</text>
+                    </svg>
+                  </div>
+                </article>
+
+                <article class="usage-card">
+                  <h2 class="usage-card-title"><span class="usage-card-number">2</span>放入实际居住角色</h2>
+                  <p class="usage-card-copy">哪个方位是谁长期居住，就把角色放进对应宫位。</p>
+                  <div class="usage-card-visual palace-visual" aria-hidden="true">
+                    <div class="palace-cell-demo">东南<br>巽宫</div>
+                    <div class="palace-cell-demo">正南<br>离宫</div>
+                    <div class="palace-cell-demo">西南<br>坤宫</div>
+                    <div class="palace-cell-demo is-active">正东<br>震宫<span class="role-marker"><span>长子</span></span></div>
+                    <div class="palace-cell-demo">中宫</div>
+                    <div class="palace-cell-demo">正西<br>兑宫</div>
+                    <div class="palace-cell-demo">东北<br>艮宫</div>
+                    <div class="palace-cell-demo">正北<br>坎宫</div>
+                    <div class="palace-cell-demo">西北<br>乾宫</div>
+                  </div>
+                </article>
+
+                <article class="usage-card">
+                  <h2 class="usage-card-title"><span class="usage-card-number">3</span>生成居住解读</h2>
+                  <p class="usage-card-copy">看是否名位相等，再查看卦象提醒与调整方向。</p>
+                  <div class="usage-card-visual scroll-visual" aria-hidden="true">
+                    <div class="scroll-sheet">
+                      <div class="hexagram-lines">
+                        <span class="hex-line"></span>
+                        <span class="hex-split"></span>
+                        <span class="hex-line"></span>
+                        <span class="hex-line"></span>
+                        <span class="hex-split"></span>
+                        <span class="hex-line"></span>
+                      </div>
+                      <div class="scroll-text">
+                        <strong>本宫卦象</strong>
+                        震为雷<br>
+                        震动奋起，直行动变通。
+                        <strong>要点提醒</strong>
+                        注意家庭沟通与情绪管理，保持稳健。
+                        <strong>调整方向</strong>
+                        可加强东方布局。
+                      </div>
+                      <span class="scroll-seal"></span>
+                    </div>
+                  </div>
+                </article>
+              </div>
+
+              <div class="intro-toolbar">
+                <button class="ghost-btn" type="button" data-action="open-direction-help">不会确定朝向？</button>
+                <a class="subtle-link" href="../index.html">返回阅天首页</a>
+              </div>
+              <div class="intro-support" id="directionGuide">
+                <div>
+                  <strong>使用前先看什么？</strong>
+                  <p>先取房屋中心，再定正北。定完方向后，先填“现在是谁住在哪个方位”，系统再告诉你是否名位相等、哪里需要调整。</p>
+                </div>
+                <button class="text-link" type="button" data-action="open-direction-help">打开 30 秒教程</button>
+              </div>
             </div>
-            <div class="intro-step">
-              <strong>2 按方位加入实际居住角色</strong>
-              <span>哪个方位现在是谁在住，就把谁放进去；比如东边卧室住长子，就在正东安“长子”。</span>
-            </div>
-            <div class="intro-step">
-              <strong>3 生成阳宅居住解读</strong>
-              <span>看各方位是否名位相等，再逐条看长期这样居住会带来的提醒与调整方向。</span>
-            </div>
-          </div>
-          <div class="intro-toolbar">
-            <button class="ghost-btn" type="button" data-action="open-direction-help">不会确定朝向？</button>
-            <a class="subtle-link" href="../index.html">返回阅天首页</a>
-          </div>
-          <div class="intro-support" id="directionGuide">
-            <div>
-              <strong>使用前先看什么？</strong>
-              <p>先取房屋中心，再定正北。定完方向后，先填“现在是谁住在哪个方位”，系统再告诉你是否名位相等、哪里需要调整。</p>
-            </div>
-            <button class="text-link" type="button" data-action="open-direction-help">打开 30 秒教程</button>
-          </div>
           </div>
         </section>
 
@@ -2273,7 +2759,7 @@
         <div class="footer-grid">
           <div class="footer-brand">
             <a class="brand" href="./yangzhai.html">
-              <img class="brand-logo" src="../images/wentian-prototype-assets/wentian-brand-logo-ai-gold-v1.png" alt="" aria-hidden="true" loading="lazy" decoding="async">
+              <img class="brand-logo" src="../images/logo-mark.svg" alt="" aria-hidden="true" loading="lazy" decoding="async">
               <span>阅 天</span>
             </a>
             <p style="margin-top:22px">把家人与空间安进九宫，再看家宅重点。</p>
