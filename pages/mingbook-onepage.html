@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>阅天 · 紫微排盘</title>
   <link rel="icon" href="../images/wentian-prototype-assets/wentian-brand-logo-ai-gold-v1.png" type="image/png">
-  <link rel="stylesheet" href="../css/mingbook-onepage.css?v=20260602-input-prompt-compact">
+  <link rel="stylesheet" href="../css/mingbook-onepage.css?v=20260602-ai-input-placeholder">
   <script src="../js/config.js?v=20260521-api-domain-auth-proxy"></script>
   <script defer src="../js/cities.js"></script>
   <script defer src="../js/lunarCalendar.js"></script>
@@ -103,11 +103,9 @@
               <div id="mbpDatePreview" class="nf-muted-line"></div>
 
               <div id="mbpAiInlineWrap" class="mbp-ai-inline" style="display:none">
-                <div class="ai-chat-messages" id="mbpAiMessages" aria-live="polite">
-                  <div class="ai-msg ai-msg-ai">告诉我出生信息就好，比如：<em>1991年2月16日晚上10点，男，上海</em><br>城市影响真太阳时，尽量填。</div>
-                </div>
+                <div class="ai-chat-messages" id="mbpAiMessages" aria-live="polite"></div>
                 <div class="ai-chat-input-row">
-                  <input type="text" id="mbpAiInput" class="ai-chat-input" placeholder="年月日、时间、性别、城市…" autocomplete="off">
+                  <input type="text" id="mbpAiInput" class="ai-chat-input" placeholder="示例：1991年2月16日晚上10点，公历，男，上海" autocomplete="off">
                   <button type="button" id="mbpAiSend" class="ai-chat-send">发送</button>
                 </div>
                 <div class="ai-chat-tip" id="mbpAiTip">信息齐全后自动填入表单；缺信息时会继续追问。</div>

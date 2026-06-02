@@ -1928,6 +1928,10 @@ body.mbp-ticket-open {
   padding-right: 2px;
 }
 
+.ai-chat-messages:empty {
+  display: none;
+}
+
 .mbp-ai-inline .ai-msg {
   width: fit-content;
   max-width: 92%;
@@ -1968,15 +1972,20 @@ body.mbp-ticket-open {
   margin-top: 10px;
 }
 
+.ai-chat-messages:empty + .ai-chat-input-row {
+  margin-top: 0;
+}
+
 .ai-chat-input {
   flex: 1;
   min-width: 0;
-  height: 42px;
+  height: 64px;
   border: 1px solid rgba(201, 169, 97, .22);
   border-radius: 10px;
   background: #110d09;
   color: #d9cdbb;
-  padding: 0 12px;
+  padding: 0 16px;
+  font-size: 16px;
 }
 
 .ai-chat-send,
