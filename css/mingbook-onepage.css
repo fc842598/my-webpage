@@ -3138,10 +3138,12 @@ body.mbp-ticket-open {
 }
 
 .fc-xiaolian-menu {
+  top: auto;
+  bottom: calc(100% + 5px);
   left: auto;
   right: 0;
-  width: 82px;
-  max-height: 144px;
+  width: 76px;
+  max-height: 104px;
   padding: 3px;
   border-color: rgba(192, 120, 32, .32);
   border-radius: 8px;
@@ -3151,7 +3153,7 @@ body.mbp-ticket-open {
 
 .fc-xiaolian-menu button,
 .fc-xiaolian-menu .mbp-xiaolian-empty {
-  min-height: 24px;
+  min-height: 22px;
   display: flex;
   align-items: center;
   justify-content: space-between;
