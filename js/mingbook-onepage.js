@@ -7131,17 +7131,32 @@
     return shichenCandidates.filter((item) => item.keys.some((key) => vague.includes(key)));
   }
 
+  function getSelectedShichenTimeMeta() {
+    const input = $('#mbpVagueTime');
+    const group = shichenTimeGroupByKey(input?.dataset?.group || '');
+    const detail = shichenTimeDetailByKey(group, input?.dataset?.detail || '');
+    const hasDetail = Boolean(detail);
+    const hasCoarseGroup = Boolean(group && !hasDetail);
+    return { group, detail, hasDetail, hasCoarseGroup };
+  }
+
   function inferShichenCandidates() {
     const whorl = document.querySelector('input[name="mbpWhorl"]:checked')?.value;
     const byText = selectedTimeCandidates();
     const byWhorl = (whorlGroups[whorl] || []).map(candidateByName).filter(Boolean);
+    const timeMeta = getSelectedShichenTimeMeta();
     const merged = byText.filter((item) => byWhorl.some((match) => match.name === item.name));
-    const picks = merged.length ? merged : byText.length ? byText : byWhorl.length ? byWhorl : [candidateByName('午时')];
+    const roughTimeOnly = timeMeta.hasCoarseGroup && !timeMeta.hasDetail;
+    const picks = roughTimeOnly && byWhorl.length
+      ? byWhorl
+      : merged.length ? merged : byText.length ? byText : byWhorl.length ? byWhorl : [candidateByName('午时')];
     return {
       picks: uniqueShichenCandidates(picks).slice(0, 4),
       byText,
       byWhorl,
       merged,
+      timeMeta,
+      roughTimeOnly,
     };
   }
 
@@ -7168,17 +7183,27 @@
   }
 
   function renderShichenResult() {
+    const whorlInput = document.querySelector('input[name="mbpWhorl"]:checked');
+    if (!whorlInput) {
+      const hint = $('#mbpShichenTimeHint');
+      if (hint) hint.textContent = '头旋位置为必选项，请先选一个头旋，再推算时辰。';
+      document.querySelector('.mbp-shichen-field-whorl')?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+      return;
+    }
     const context = inferShichenCandidates();
     const picks = context.picks;
     const title = $('#mbpShichenResultTitle');
     const reason = $('#mbpShichenResultReason');
     const list = $('#mbpShichenCandidates');
     const vague = normalizeText($('#mbpVagueTime')?.value) || '未填写大概时间';
-    const whorlInput = document.querySelector('input[name="mbpWhorl"]:checked');
     const whorl = whorlInput?.dataset?.label || '未选择头旋';
-    const hasSingleHit = context.merged.length === 1;
+    const hasSingleHit = !context.roughTimeOnly && context.merged.length === 1;
     if (title) title.textContent = hasSingleHit ? `最符合：${picks[0].name}` : `候选：${picks.map((item) => item.name).join(' / ')}`;
-    if (reason) reason.textContent = `依据：${vague}；${whorl}。时间词与头旋交叉后${hasSingleHit ? '只剩 1 个时辰' : `得到 ${picks.length} 个候选`}。`;
+    if (reason) {
+      reason.textContent = context.roughTimeOnly
+        ? `依据：${vague}；${whorl}。未细化具体时段，先按头旋给出 ${picks.length} 个候选。`
+        : `依据：${vague}；${whorl}。时间词与头旋交叉后${hasSingleHit ? '只剩 1 个时辰' : `得到 ${picks.length} 个候选`}。`;
+    }
     if (list) {
       list.innerHTML = picks.map((item) => {
         const score = shichenCandidateScore(item, context);
