@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>阅天 · 阳宅地脉</title>
-  <meta name="description" content="阅天阳宅九宫安位：确认朝向，放入家人和空间，生成家宅解读。">
+  <meta name="description" content="阅天阳宅居住方位：先定房屋中心与朝向，再按实际居住角色安位，生成阳宅居住解读。">
   <link rel="icon" href="../images/wentian-prototype-assets/wentian-brand-logo-ai-gold-v1.png" type="image/png">
   <meta name="theme-color" content="#030201">
   <style>
@@ -2172,32 +2172,32 @@
 
     <main class="yangzhai-main">
       <div class="container" id="yangzhaiContainer">
-        <section class="intro-panel" id="yangzhaiIntro" aria-label="阳宅九宫安位介绍">
+        <section class="intro-panel" id="yangzhaiIntro" aria-label="阳宅居住方位介绍">
           <div class="intro-toggle-row">
             <div class="intro-toggle-copy">
-              <strong>Yangzhai guide</strong>
-              <span>Open to view the full instructions</span>
+              <strong>阳宅居住方位使用说明</strong>
+              <span>点开后再看使用说明</span>
             </div>
-            <button class="intro-toggle" id="yangzhaiIntroToggle" type="button" aria-expanded="false" aria-controls="yangzhaiIntroContent">Open guide</button>
+            <button class="intro-toggle" id="yangzhaiIntroToggle" type="button" aria-expanded="false" aria-controls="yangzhaiIntroContent">展开说明</button>
           </div>
           <div class="intro-collapse" id="yangzhaiIntroContent" hidden>
           <div class="intro-copy">
-            <span class="intro-kicker">阳宅九宫安位</span>
-            <h1>按房屋朝向，把家人与空间放进九宫，快速看家宅气场与需要调整的方位。</h1>
-            <p>它用九宫方位帮你看父母子女、厨房厕所、客厅安位是否合适。先定朝向，再安位，最后生成家宅解读。</p>
+            <span class="intro-kicker">阳宅居住方位</span>
+            <h1>先定方位，再把实际居住的人放进九宫，快速看这个住法对人的影响。</h1>
+            <p>原理取自阳宅的“名位相等”。先找房屋中心，定出东南西北，再看父母、子女或空间现在实际落在哪个方位。位置住久了，会影响人的心念、判断与做法，所以可以据此看家中卦象与需要调整的地方。</p>
           </div>
           <div class="intro-steps" id="startPlacement" aria-label="使用步骤">
             <div class="intro-step">
               <strong>1 确认房屋朝向</strong>
-              <span>先判断北向，再对照东南西北，把九宫方向和户型对应起来。</span>
+              <span>站在现住房中心点，用罗盘或手机指南针定出正北，再把九宫方向和户型对应起来。</span>
             </div>
             <div class="intro-step">
-              <strong>2 放入家人与空间</strong>
-              <span>点击九宫里的方位，再放入父母、子女、厨房、厕所或客厅。</span>
+              <strong>2 按方位加入实际居住角色</strong>
+              <span>哪个方位现在是谁在住，就把谁放进去；比如东边卧室住长子，就在正东安“长子”。</span>
             </div>
             <div class="intro-step">
-              <strong>3 生成家宅解读</strong>
-              <span>看整体定位，再逐条看每个方位的提醒和需要调整的地方。</span>
+              <strong>3 生成阳宅居住解读</strong>
+              <span>看各方位是否名位相等，再逐条看长期这样居住会带来的提醒与调整方向。</span>
             </div>
           </div>
           <div class="intro-toolbar">
@@ -2206,8 +2206,8 @@
           </div>
           <div class="intro-support" id="directionGuide">
             <div>
-              <strong>朝向判断先看什么？</strong>
-              <p>先看户型图有没有北向标记；没有的话，用手机指南针先找北，再回到九宫安位。</p>
+              <strong>使用前先看什么？</strong>
+              <p>先取房屋中心，再定正北。定完方向后，先填“现在是谁住在哪个方位”，系统再告诉你是否名位相等、哪里需要调整。</p>
             </div>
             <button class="text-link" type="button" data-action="open-direction-help">打开 30 秒教程</button>
           </div>
@@ -2306,11 +2306,11 @@
         <button class="direction-close" type="button" data-action="close-direction-help" aria-label="关闭朝向教程">×</button>
         <span class="direction-kicker">朝向判断 · 30 秒看懂</span>
         <h2 id="directionHelpTitle">不会确定朝向？先这样看</h2>
-        <p>不用先懂风水。先把房屋的北向定出来，再把九宫里的东南西北和户型对应起来就行。</p>
+        <p>不用先懂风水。先站在房屋中心附近定出正北，再把九宫的东南西北对到实际户型，最后按现在的居住位置安人。</p>
         <ol class="direction-list">
-          <li><strong>1 先看户型图</strong><span>如果图上本来就标了北，直接按图上的北去对应九宫方向。</span></li>
-          <li><strong>2 没标北就用手机指南针</strong><span>站在屋内中间附近，看手机指南针，先找北，再顺着分出东南西北。</span></li>
-          <li><strong>3 先粗定，再细调</strong><span>先把父母、子女、厨房、厕所放进去看结果；不确定时可重置或一键按长幼安位再对照。</span></li>
+          <li><strong>1 先取房屋中心</strong><span>户型四角取点，对角连线，中心交点就是参考位置，尽量站在这里附近判断方位。</span></li>
+          <li><strong>2 用罗盘或手机指南针定北</strong><span>先找正北，再顺着分出东、南、西、北和四个角位。</span></li>
+          <li><strong>3 按实际居住位置安位</strong><span>哪个房间或床位在哪个方位、谁长期住在那里，就把谁放进对应宫位，再看解读。</span></li>
         </ol>
       </div>
     </div>
@@ -2489,8 +2489,8 @@
       function setIntroOpen(open) {
         introPanel?.classList.toggle("is-open", open);
         if (introContent) introContent.hidden = !open;
-        if (introSummaryTitle) introSummaryTitle.textContent = "\u9633\u5b85\u4e5d\u5bab\u5b89\u4f4d\u8bf4\u660e";
-        if (introSummaryLead) introSummaryLead.textContent = "\u70b9\u5f00\u540e\u518d\u770b\u5b89\u4f4d\u8bf4\u660e";
+        if (introSummaryTitle) introSummaryTitle.textContent = "\u9633\u5b85\u5c45\u4f4f\u65b9\u4f4d\u4f7f\u7528\u8bf4\u660e";
+        if (introSummaryLead) introSummaryLead.textContent = "\u70b9\u5f00\u540e\u518d\u770b\u4f7f\u7528\u8bf4\u660e";
         if (introToggle) {
           introToggle.setAttribute("aria-expanded", open ? "true" : "false");
           introToggle.textContent = open ? "\u6536\u8d77\u8bf4\u660e" : "\u5c55\u5f00\u8bf4\u660e";
