@@ -1785,6 +1785,14 @@ body.mbp-ticket-open {
   display: block;
 }
 
+.nf-city-row .nf-row-head {
+  margin-bottom: 8px;
+}
+
+.nf-city-row .nf-label {
+  white-space: nowrap;
+}
+
 .nf-tst-row {
   display: none;
 }

@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>阅天 · 紫微排盘</title>
   <link rel="icon" href="../images/wentian-prototype-assets/wentian-brand-logo-ai-gold-v1.png" type="image/png">
-  <link rel="stylesheet" href="../css/mingbook-onepage.css?v=20260602-ai-input-placeholder">
+  <link rel="stylesheet" href="../css/mingbook-onepage.css?v=20260602-city-heading-inline">
   <script src="../js/config.js?v=20260521-api-domain-auth-proxy"></script>
   <script defer src="../js/cities.js"></script>
   <script defer src="../js/lunarCalendar.js"></script>
@@ -125,14 +125,12 @@
 
             <div class="nf-row nf-city-row">
               <div class="nf-row-head">
-                <span class="nf-label">出生地点</span>
-                <span class="nf-hint">（影响真太阳时）</span>
+                <span class="nf-label">填写出生地 自动校正真太阳时</span>
               </div>
               <div class="nf-city-scope" role="group" aria-label="出生地点范围">
                 <button type="button" class="nf-city-scope-btn active" data-city-scope="china">中国（含港澳台）</button>
                 <button type="button" class="nf-city-scope-btn" data-city-scope="global">全球</button>
               </div>
-              <div id="mbpCityScopeNote" class="nf-city-note">填出生证时间，系统按出生地自动校正真太阳时。</div>
               <div class="nf-city-search-wrap">
                 <input type="text" id="mbpCitySearch" placeholder="搜索城市，如：北京、香港、台北" class="nf-select" autocomplete="off">
                 <button type="button" id="mbpClearCity" class="nf-clear-city" style="display:none">清除</button>
