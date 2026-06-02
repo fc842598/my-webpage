@@ -2852,6 +2852,19 @@
     return profile.name || (profile.gender === 'female' ? '女命客户' : '男命客户');
   }
 
+  function clientAvatarMark(label, profile = {}) {
+    const raw = String(label || '').trim().replace(/\s+/g, '');
+    const withoutTitle = raw.replace(/(先生|小姐|女士|老板|老师|师傅|总|姐|哥|兄|弟|妹|太太|夫人|命主|客户)+$/g, '');
+    const source = withoutTitle || raw;
+    const chinese = source.match(/[\u4e00-\u9fff]/);
+    if (chinese) return chinese[0];
+    const alpha = source.match(/[A-Za-z0-9]/);
+    if (alpha) return alpha[0].toUpperCase();
+    if (profile.gender === 'female') return '女';
+    if (profile.gender === 'male') return '男';
+    return '命';
+  }
+
   function clientSubline(profile) {
     return `${profile.year}-${pad2(profile.month)}-${pad2(profile.day)} ${pad2(profile.hour)}:${pad2(profile.minute)} · ${profile.cityName || profile.city || '未填地点'}`;
   }
@@ -2869,7 +2882,7 @@
     listEl.innerHTML = clientRecordsCache.map((item, index) => {
       const profile = item.profile;
       const label = clientLabel(profile);
-      const mark = (label || '命').slice(-1);
+      const mark = clientAvatarMark(label, profile);
       const isActive = profileHistoryKey(profile) === activeKey;
       const isCurrent = item.id === 'current';
       const confirming = deleteConfirmClientId === item.id;
