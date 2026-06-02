@@ -1246,8 +1246,8 @@ body.mbp-ticket-open {
   position: relative;
   overflow: hidden;
   display: grid;
-  gap: 6px;
-  padding: 16px 18px;
+  gap: 4px;
+  padding: 12px 18px;
   border: 1px solid rgba(241, 212, 125, .24);
   border-radius: 12px;
   background:
@@ -10113,19 +10113,13 @@ p.mbp-topic-detail {
 
   .mbp-input-prompt {
     min-height: 0;
-    padding: 12px 13px;
+    padding: 10px 13px;
     border-radius: 9px;
   }
 
   .mbp-input-prompt strong {
     font-size: 16px;
     line-height: 1.35;
-  }
-
-  .mbp-input-prompt small {
-    margin-top: 4px;
-    font-size: 11px;
-    line-height: 1.45;
   }
 
   .mbp-client-input-card {
