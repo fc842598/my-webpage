@@ -1,4 +1,4 @@
-﻿(function () {
+(function () {
   const storageKey = 'yt_mingbook_onepage_profile_v1';
   const legacyHistoryKey = 'yt_zw_history_v1';
   const chartHistoryKey = 'ziwei_local_chart_history_v1';
@@ -143,7 +143,7 @@
   const desktopFreeDailyLimit = 30;
   const desktopPaidDailyLimit = 100;
   const desktopPaidProductName = '阅天AI付费版';
-  const desktopPaidProductDesc = '许半仙 AI 对话：付费用户 100次/天；免费用户 30次/天。按日刷新，不设月额度。';
+  const desktopPaidProductDesc = '许大师 AI 对话：付费用户 100次/天；免费用户 30次/天。按日刷新，不设月额度。';
   const desktopPaymentPollMs = 3000;
   const desktopPaymentState = {
     open: false,
@@ -2839,7 +2839,7 @@
     if (xuMeta && sourceMeta) {
       xuMeta.textContent = state.chartReady
         ? `${sourceMeta.textContent || '当前命盘'} · 全页共用`
-        : '先排盘，再让许半仙读这一张';
+        : '先排盘，再让许大师读这一张';
     }
     if (xuStatus) xuStatus.textContent = state.chartReady ? '当前命盘' : '待排盘';
   }

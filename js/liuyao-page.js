@@ -2,7 +2,7 @@
   const $ = (selector) => document.querySelector(selector);
   const CLIENT_ID_KEY = 'ziwei_client_id';
   const AUTH_SESSION_KEY = 'wentian-app-auth-session-v1';
-  const XU_CONTEXT_KEY = 'wentian-xubanxian-context-v1';
+  const XU_CONTEXT_KEY = 'wentian-xudashi-context-v1';
   const LIUYAO_DAILY_LIMIT = 3;
   const LIUYAO_TOSS_ANIMATION_MS = 980;
   const LIUYAO_PULL_MAX = 132;
@@ -581,7 +581,7 @@
             <em>卦辞摘录</em>
             <em>AI 解卦</em>
           </div>
-          <p>不用猜会看到什么：先看当前局面，再看变化方向，最后可交给许半仙继续细断。</p>
+          <p>不用猜会看到什么：先看当前局面，再看变化方向，最后可交给许大师继续细断。</p>
         </section>
       `;
       return;
@@ -647,7 +647,7 @@
       </article>
       <article class="mbp-liuyao-ai-card">
         <span>AI 解卦</span>
-        <strong>交给许半仙，按本卦、变卦、动爻继续细断</strong>
+        <strong>交给许大师，按本卦、变卦、动爻继续细断</strong>
         <p>本卦：${escapeHtml(primaryOriginal.text)}${result.changed?.name !== result.primary?.name ? `<br>变卦：${escapeHtml(changedOriginal.text)}` : ''}</p>
         <button type="button" id="mbpLiuyaoAskXu">开始 AI 解卦</button>
       </article>
@@ -707,7 +707,7 @@
         ${complete ? `
           <div class="mbp-liuyao-manual-done">
             <strong>六爻已录完</strong>
-            <span>可看本卦、变卦、动爻和许半仙解卦。</span>
+            <span>可看本卦、变卦、动爻和许大师解卦。</span>
             <button type="button" data-manual-clear-last ${disabled ? 'disabled' : ''}>重录上一爻</button>
           </div>
         ` : `

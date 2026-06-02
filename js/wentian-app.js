@@ -731,17 +731,17 @@ function sourceArchiveScreen(screen) {
   const activeArchive = getCurrentWentianArchive();
   const active = getWentianArchiveDisplay(activeArchive);
   const masters = [
-    ["许半仙", "紫微命盘", "AI解析", "", "已接入您的紫微命盘，可直接开启对话", 305]
+    ["许大师", "紫微命盘", "AI解析", "", "已接入您的紫微命盘，可直接开启对话", 305]
   ];
   return `
     ${figText("source-3-time", "15:17", 18, 16, 70, 14, "#26211c")}
     ${figText("source-3-status", "◉  0.00  5G  ▮ 31 ⚡", 250, 14, 120, 10, "#26211c", 700, "right")}
     ${figText("source-3-title", "阅天AI", 18, 62, 160, 29, "#26211c", 800)}
-    ${figText("source-3-subtitle", "许半仙已准备好为您解读", 18, 101, 220, 13, "#7f756b")}
+    ${figText("source-3-subtitle", "许大师已准备好为您解读", 18, 101, 220, 13, "#7f756b")}
     ${figText("source-3-current-title", "当前档案", 18, 136, 120, 15, "#26211c", 800)}
     ${figText("source-3-change", "更换档案 〉", 284, 138, 88, 12, "#9b742e", 500, "right")}
     ${figBox("source-3-profile", 16, 164, 358, 104, "converted-card", "border-radius:12px;box-shadow:0 6px 18px rgba(90,62,34,.09);")}
-    ${figImage("source-3-profile-avatar", "../images/wentian-prototype-assets/03-profile.jpg", 38, 192, 48, 48, "border-radius:24px;border:1px solid #e4d2a7;object-fit:cover;", "loading=\"eager\" decoding=\"async\" onerror=\"this.onerror=null;this.src='../images/wentian-prototype-assets/xu-banxian.jpg';\"")}
+    ${figImage("source-3-profile-avatar", "../images/wentian-prototype-assets/03-profile.jpg", 38, 192, 48, 48, "border-radius:24px;border:1px solid #e4d2a7;object-fit:cover;", "loading=\"eager\" decoding=\"async\" onerror=\"this.onerror=null;this.src='../images/wentian-prototype-assets/xu-dashi.jpg';\"")}
     ${figText("source-3-profile-name", escapeHtml(active.name), 102, 184, 188, 18, "#26211c", 800)}
     ${figBox("source-3-gender", 102, 211, 30, 18, "", "border-radius:9px;background:#f7ecd5;")}
     ${figText("source-3-gender-text", active.gender, 102, 215, 30, 10, "#b07a2d", 700, "center")}
@@ -752,7 +752,7 @@ function sourceArchiveScreen(screen) {
     ${figText("source-3-master-title", "命理师", 18, 276, 160, 15, "#26211c", 800)}
     ${masters.map(([name, tag1, tag2, tag3, desc, y], index) => `
       ${figBox(`source-3-master-${index}`, 16, y, 358, 116, "converted-card", "border-radius:17px;background:linear-gradient(110deg,#fff,#f8f4ea);box-shadow:0 7px 20px rgba(92,64,32,.11);")}
-      ${figImage(`source-3-master-avatar-${index}`, "../images/wentian-prototype-assets/xu-banxian.jpg", 34, y + 20, 62, 62, "border-radius:31px;object-fit:cover;object-position:center 18%;")}
+      ${figImage(`source-3-master-avatar-${index}`, "../images/wentian-prototype-assets/xu-dashi.jpg", 34, y + 20, 62, 62, "border-radius:31px;object-fit:cover;object-position:center 18%;")}
       ${figText(`source-3-master-name-${index}`, name, 112, y + 24, 194, 17, "#26211c", 800)}
       ${figBox(`source-3-pill-a-${index}`, 112, y + 54, 62, 18, "", "border-radius:9px;background:#f7ecd8;")}
       ${figText(`source-3-pill-a-text-${index}`, tag1, 112, y + 58, 62, 10, "#b88c33", 600, "center")}
@@ -1014,13 +1014,13 @@ function sourceAiChatScreen(screen) {
     ${figBox("source-4-header", 0, 0, 390, 88, "", "background:#f8f3ea;box-shadow:0 1px 0 rgba(110,82,38,.08);")}
     ${figText("source-4-back", "‹", 24, 29, 28, 34, "#26211c", 500)}
     ${figButton("source-4-back-hit", 16, 24, 48, 56, 'data-action="back" aria-label="返回"', "", "z-index:72;")}
-    ${figImage("source-4-avatar", "../images/wentian-prototype-assets/xu-banxian.jpg", 58, 25, 40, 40, "border-radius:20px;object-fit:cover;object-position:center 18%;")}
-    ${figText("source-4-name", "许半仙", 110, 27, 110, 17, "#26211c", 800)}
+    ${figImage("source-4-avatar", "../images/wentian-prototype-assets/xu-dashi.jpg", 58, 25, 40, 40, "border-radius:20px;object-fit:cover;object-position:center 18%;")}
+    ${figText("source-4-name", "许大师", 110, 27, 110, 17, "#26211c", 800)}
     ${figText("source-4-left", chatRoleText, 110, 51, 140, 12, "#8d8377", 500)}
     ${profileTag}
     ${figText("source-4-record", "⋯", 344, 31, 22, 22, "#6f665d", 800, "center")}
     ${isContextChat ? "" : figButton("source-4-record-hit", 334, 24, 38, 56, 'data-route="screen-9" aria-label="对话记录"', "", "z-index:72;")}
-    <div id="wentian-chat-status" class="wentian-chat-status">正在接入许半仙…</div>
+    <div id="wentian-chat-status" class="wentian-chat-status">正在接入许大师…</div>
     ${chatContext ? `
       <div class="wentian-chat-context-card">
         <span>${contextLabel}</span>
@@ -1071,13 +1071,13 @@ function sourceArchiveSelectScreen() {
     ${figText("source-5-count-text", `共 ${archives.length} 张`, 300, 42, 66, 11, "#8b8176", 700, "center")}
 
     ${figBox("source-5-intro", 24, 108, 342, 82, "", "border-radius:18px;background:linear-gradient(135deg,#fff,#f8f1e5);box-shadow:0 10px 24px rgba(70,45,25,.09);")}
-    ${figImage("source-5-avatar", "../images/wentian-prototype-assets/xu-banxian.jpg", 44, 126, 46, 46, "border-radius:23px;object-fit:cover;object-position:center 18%;")}
-    ${figText("source-5-name", "许半仙", 106, 124, 120, 18, "#26211c", 900)}
+    ${figImage("source-5-avatar", "../images/wentian-prototype-assets/xu-dashi.jpg", 44, 126, 46, 46, "border-radius:23px;object-fit:cover;object-position:center 18%;")}
+    ${figText("source-5-name", "许大师", 106, 124, 120, 18, "#26211c", 900)}
     ${figText("source-5-sub", "选择一个档案接入对话", 106, 150, 210, 14, "#8b8176", 600)}
 
     ${figBox("source-5-sheet", 18, 214, 354, 532, "", "border:1px solid #eadfce;border-radius:20px;background:#fffaf3;box-shadow:0 12px 28px rgba(70,45,25,.08);")}
     ${figText("source-5-sheet-title", "请确认命盘", 42, 240, 150, 22, "#1f1d1a", 900)}
-    ${figText("source-5-sheet-sub", "确认后再进入许半仙对话", 42, 270, 210, 13, "#8b8176", 600)}
+    ${figText("source-5-sheet-sub", "确认后再进入许大师对话", 42, 270, 210, 13, "#8b8176", 600)}
     <button class="wentian-archive-new-mini" type="button" data-action="wentian-archive-new">＋ 新建</button>
     ${archiveStatus}
     <div class="wentian-archive-list">
@@ -1277,14 +1277,14 @@ const WENTIAN_PROFILE_STORAGE_KEY = "wentian-app-profile-v1";
 const WENTIAN_AUTH_RETURN_KEY = "wentian-app-auth-return-v1";
 const WENTIAN_AUTH_SESSION_KEY = "wentian-app-auth-session-v1";
 const WENTIAN_AUTH_REFRESH_SKEW_MS = 60 * 1000;
-const WENTIAN_XU_CONTEXT_KEY = "wentian-xubanxian-context-v1";
+const WENTIAN_XU_CONTEXT_KEY = "wentian-xudashi-context-v1";
 const WENTIAN_INVITE_PENDING_KEY = "wentian-app-pending-invite-v1";
 const WENTIAN_INVITE_LOCAL_STATUS_KEY = "wentian-app-invite-status-v1";
 const WENTIAN_MEMBER_PRODUCT_KEY = "monthly_member";
 const WENTIAN_FREE_DAILY_LIMIT = 30;
 const WENTIAN_PAID_DAILY_LIMIT = 100;
 const WENTIAN_PAID_PRODUCT_NAME = "阅天AI付费版";
-const WENTIAN_PAID_PRODUCT_DESC = "许半仙 AI 对话：付费用户 100次/天；免费用户 30次/天。按日刷新，不设月额度。";
+const WENTIAN_PAID_PRODUCT_DESC = "许大师 AI 对话：付费用户 100次/天；免费用户 30次/天。按日刷新，不设月额度。";
 const WENTIAN_PAYMENT_POLL_MS = 3500;
 const WENTIAN_GOOGLE_REDIRECT_BRIDGE = "https://fc842598.github.io/my-webpage/pages/wentian-app.html";
 const WENTIAN_GOOGLE_ENABLED = true;
@@ -1652,7 +1652,7 @@ function isWentianUuid(id) {
 }
 
 function getWentianChartRecordId() {
-  const key = "wentian-xubanxian-chart-record-id";
+  const key = "wentian-xudashi-chart-record-id";
   try {
     let id = localStorage.getItem(key);
     if (!isWentianUuid(id)) {
@@ -1669,7 +1669,7 @@ function getWentianChartRecordId() {
 function resetWentianChartRecordId() {
   const id = makeWentianUuid();
   try {
-    localStorage.setItem("wentian-xubanxian-chart-record-id", id);
+    localStorage.setItem("wentian-xudashi-chart-record-id", id);
   } catch (_err) {
     wentianFallbackChartRecordId = id;
   }
@@ -1713,7 +1713,7 @@ function clearWentianSavedChart() {
   try {
     localStorage.removeItem(WENTIAN_CHART_STORAGE_KEY);
     localStorage.removeItem(WENTIAN_SELECTED_ARCHIVE_KEY);
-    localStorage.removeItem("wentian-xubanxian-chart-record-id");
+    localStorage.removeItem("wentian-xudashi-chart-record-id");
   } catch (_err) {}
   wentianFallbackChartRecordId = "";
 }
@@ -1745,7 +1745,7 @@ function getWentianSelectedArchiveId(archives) {
 function setWentianChartRecordId(id) {
   if (!id) return "";
   try {
-    localStorage.setItem("wentian-xubanxian-chart-record-id", id);
+    localStorage.setItem("wentian-xudashi-chart-record-id", id);
   } catch (_err) {
     wentianFallbackChartRecordId = id;
   }
@@ -6307,7 +6307,7 @@ const WENTIAN_I18N = {
     "选择档案": "選擇檔案",
     "选择一个档案接入对话": "選擇一個檔案接入對話",
     "请确认命盘": "請確認命盤",
-    "确认后再进入许半仙对话": "確認後再進入許半仙對話",
+    "确认后再进入许大师对话": "確認後再進入許大師對話",
     "退出选盘": "退出選盤",
     "切换": "切換",
     "查看": "查看",
@@ -6332,8 +6332,8 @@ const WENTIAN_I18N_EN_EXTRA = {
   "✦ 排盘": "Create Chart",
   "为你推荐": "Recommended",
   "邀请好友双方获得奖励": "Invite friends and both earn rewards",
-  "许半仙": "Master Xu",
-  "许半仙已准备好为您解读": "Master Xu is ready",
+  "许大师": "Master Xu",
+  "许大师已准备好为您解读": "Master Xu is ready",
   "紫微命盘专属解析，已接入当前档案": "Chart linked",
   "紫微命盘专属解析，已接入档案": "Zi Wei chart linked",
   "紫微命盘": "Zi Wei Chart",
@@ -6382,7 +6382,7 @@ const WENTIAN_I18N_EN_EXTRA = {
   "动爻与变卦": "Moving Lines",
   "行动建议": "Action Advice",
   "查看卦义摘要": "View Summary",
-  "追问许半仙": "Ask Master Xu",
+  "追问许大师": "Ask Master Xu",
   "重新起卦": "Cast Again",
   "尚未完成起卦": "Casting Not Complete",
   "请先投满六爻，或用手动起卦补全六爻。": "Cast six lines first, or complete them manually.",
@@ -6441,9 +6441,9 @@ const WENTIAN_I18N_EN_EXTRA = {
   "已连接": "Connected",
   "占卜已接入": "Divination linked",
   "接入占卜中…": "Linking divination...",
-  "正在接入许半仙…": "Connecting to Xu Banxian...",
+  "正在接入许大师…": "Connecting to Master Xu...",
   "我在，看命盘直接问。": "I am here. Ask about your chart.",
-  "许半仙正在看卦…": "Xu Banxian is reading the hexagram...",
+  "许大师正在看卦…": "Master Xu is reading the hexagram...",
   "我按这卦看这件事。你可以继续问成败、应期、动爻或行动取舍。": "I will read this hexagram for this matter. Ask about outcome, timing, moving lines, or next steps.",
   "常问": "FAQ",
   "占卜追问": "Divination Follow-up",
@@ -6503,13 +6503,13 @@ const WENTIAN_I18N_EN_EXTRA = {
   "行动建议": "Action Advice",
   "◷ 对话记录": "Chat History",
   "◇ 剩余 1 条": "1 remaining",
-  "你好！我是许半仙": "Hello, I am Xu Banxian",
+  "你好！我是许大师": "Hello, I am Master Xu",
   "需要我为您做些什么？": "What can I help with?",
   "选择档案": "Choose File",
   "共 2 张": "2 files",
   "选择一个档案接入对话": "Choose a file for this chat",
   "请确认命盘": "Confirm Chart",
-  "确认后再进入许半仙对话": "Confirm before entering chat",
+  "确认后再进入许大师对话": "Confirm before entering chat",
   "退出选盘": "Exit",
   "＋ 新建": "+ New",
   "默认": "Default",
@@ -6601,7 +6601,7 @@ const WENTIAN_I18N_EN_EXTRA = {
   "适合把关系往长期规划推进，重要事项先定共同目标，再分工执行。": "Good for long-term planning. Set shared goals first, then divide execution.",
   "先慢下来观察真实相处节奏，把金钱、边界、沟通频率提前说清。": "Slow down and observe the real rhythm. Clarify money, boundaries, and communication frequency early.",
   "重新选择": "Choose Again",
-  "追问许半仙": "Ask Xu",
+  "追问许大师": "Ask Master Xu",
   "暂不能合盘": "Cannot Match Yet",
   "已选2/2": "Selected 2/2",
   "写下你想问的命理问题": "Write your question",
@@ -6619,7 +6619,7 @@ const WENTIAN_I18N_EN_EXTRA = {
   "财运": "Wealth",
   "虔诚抽签": "Draw Lot",
   "正在为你取签": "Drawing your lot",
-  "已接入当前档案，签文生成后可交给许半仙继续解读。": "Current file is connected. Xu Banxian can explain after the lot appears.",
+  "已接入当前档案，签文生成后可交给许大师继续解读。": "Current file is connected. Master Xu can explain after the lot appears.",
   "请稍候": "Please wait",
   "签文将现": "Lot appearing",
   "正在抽取第廿九签": "Drawing Lot 29",
@@ -6642,7 +6642,7 @@ const WENTIAN_I18N_EN_EXTRA = {
   "详情": "Details",
   "所问之事有转机，但需顺势而行。": "There is a turning point, but move with the timing.",
   "AI解签": "AI Lot Reading",
-  "请许半仙结合命盘继续解读": "Ask Xu Banxian to read it with your chart",
+  "请许大师结合命盘继续解读": "Ask Master Xu to read it with your chart",
   "让 AI 继续解读此签": "Let AI continue this reading",
   "起卦": "Cast",
   "六爻在线起卦": "Online Liuyao Hexagram",
@@ -6676,7 +6676,7 @@ const WENTIAN_I18N_EN_EXTRA = {
   "行动窗口": "Action Window",
   "未来三十日适合复盘、签约、修正计划；不宜仓促做高风险扩张。": "The next 30 days suit review, signing, and plan correction; avoid rushed expansion.",
   "AI解卦": "AI Hexagram Reading",
-  "可让许半仙结合当前命盘继续解读此卦。": "Xu Banxian can read this hexagram with your chart.",
+  "可让许大师结合当前命盘继续解读此卦。": "Master Xu can read this hexagram with your chart.",
   "购买完整解读": "Buy Full Reading",
   "购买完整解读后可查看详细分析。": "Buy the full reading to view detailed analysis.",
   "卦意": "Hexagram Meaning",
@@ -6858,7 +6858,7 @@ const WENTIAN_I18N_EN_EXTRA = {
   "确认订单": "Confirm Order",
   "阅天会员月卡": "Monthly Member",
   "阅天AI付费版": "Yuetian AI Paid Plan",
-  "许半仙 AI 对话": "AI Chat",
+  "许大师 AI 对话": "AI Chat",
   "商品": "Product",
   "订单号": "Order No.",
   "待创建": "Pending",
@@ -6886,7 +6886,7 @@ const WENTIAN_I18N_EN_EXTRA = {
   "今日剩余 100/100": "Today remaining 100/100",
   "开通会员 ¥19.90": "Open Membership ¥19.90",
   "开通付费版 ¥19.90": "Open Paid Plan ¥19.90",
-  "推荐你使用阅天AI，AI排盘、命盘解读和许半仙问答都在这里。": "I recommend Yuetian AI for AI charting, chart readings, and Xu Banxian Q&A.",
+  "推荐你使用阅天AI，AI排盘、命盘解读和许大师问答都在这里。": "I recommend Yuetian AI for AI charting, chart readings, and Master Xu Q&A.",
   "登录后可生成专属邀请码。": "Sign in to generate your personal invite code.",
   "微信好友": "WeChat Friend",
   "朋友圈": "Moments",
@@ -7059,10 +7059,10 @@ const WENTIAN_I18N_EN_EXTRA = {
 
 Object.assign(WENTIAN_I18N_EN_EXTRA, {
   "专业AI命理工作台": "AI Destiny Studio",
-  "许半仙已在线": "Master Xu is online",
+  "许大师已在线": "Master Xu is online",
   "先建命盘": "Create Chart",
-  "再交给许半仙细读\n排盘、合盘、占卜从一个档案开始。": "Then let Master Xu read it.\nCharts, compatibility, and divination all start from one file.",
-  "再交给许半仙细读": "Then let Master Xu read it.",
+  "再交给许大师细读\n排盘、合盘、占卜从一个档案开始。": "Then let Master Xu read it.\nCharts, compatibility, and divination all start from one file.",
+  "再交给许大师细读": "Then let Master Xu read it.",
   "排盘、合盘、占卜从一个档案开始。": "Charts, compatibility, and divination all start from one file.",
   "换档案": "Change File",
   "紫微斗数": "Zi Wei",
@@ -7138,7 +7138,7 @@ Object.assign(WENTIAN_I18N_EN_EXTRA, {
   "提交通过后开放投币": "Casting opens after approval",
   "六爻进度": "Line Progress",
   "完成 6 爻后输出": "Output after 6 lines",
-  "本卦 / 变卦 / 动爻 / 古籍摘录 / 许半仙 AI 解卦": "Original / Changed / Moving lines / Classic excerpt / Master Xu AI reading",
+  "本卦 / 变卦 / 动爻 / 古籍摘录 / 许大师 AI 解卦": "Original / Changed / Moving lines / Classic excerpt / Master Xu AI reading",
   "例如：我现在是否应该继续推进这个合作？本月能不能见到明确结果？": "Example: Should I keep pushing this cooperation now? Can I see clear results this month?",
   "六爻结果": "Liuyao Result",
   "核心结构": "Core Structure",
@@ -7203,7 +7203,7 @@ Object.assign(WENTIAN_I18N_EN_EXTRA, {
   "日辰：9日，空亡": "Day: 9 · Void",
   "时辰：辰时，待起课": "Hour: Chen · Not Cast",
   "当前落宫：待起课": "Current Palace: Not Cast",
-  "起课后问许半仙": "Ask Master Xu after casting",
+  "起课后问许大师": "Ask Master Xu after casting",
   "请选择两张不同档案": "Choose two different files",
   "新建档案": "New File",
   "粤ICP备2026055337号　© 2026 阅天AI Copyright, All Rights Reserved. Powered By 阅天工作室": "Yue ICP 2026055337 · © 2026 Yuetian AI. All Rights Reserved. Powered by Yuetian Studio",
@@ -8143,7 +8143,7 @@ function applyWentianArchiveToCurrent(archive) {
   if (!archive) return false;
   const chartRecordId = archive.chartRecordId || archive.chartData?.chartRecordId || makeWentianUuid();
   try {
-    localStorage.setItem("wentian-xubanxian-chart-record-id", chartRecordId);
+    localStorage.setItem("wentian-xudashi-chart-record-id", chartRecordId);
   } catch (_err) {
     wentianFallbackChartRecordId = chartRecordId;
   }
@@ -8376,7 +8376,7 @@ function buildWentianXuOutboundMessage(message, context) {
 }
 
 function getWentianTransientKey(recordId = getWentianXuChatPayload().chartRecordId) {
-  return `wentian-xubanxian-transient:${recordId}`;
+  return `wentian-xudashi-transient:${recordId}`;
 }
 
 function loadWentianTransientState(recordId) {
@@ -8405,8 +8405,8 @@ function isWentianRetryableError(error) {
 }
 
 function getWentianFriendlyError(error) {
-  if (isWentianRetryableError(error)) return "网络有点慢，许半仙刚才没接上，请再点一次发送。";
-  return error?.message || "许半仙暂时不可用";
+  if (isWentianRetryableError(error)) return "网络有点慢，许大师刚才没接上，请再点一次发送。";
+  return error?.message || "许大师暂时不可用";
 }
 
 async function wentianPostJsonOnce(path, payload, timeoutMs) {
@@ -8426,7 +8426,7 @@ async function wentianPostJsonOnce(path, payload, timeoutMs) {
     const data = contentType.includes("application/json")
       ? await response.json()
       : { error: await response.text() };
-    if (!response.ok || data.error) throw new Error(data.error || `许半仙服务异常 ${response.status}`);
+    if (!response.ok || data.error) throw new Error(data.error || `许大师服务异常 ${response.status}`);
     return data;
   } finally {
     clearTimeout(timer);
@@ -8625,7 +8625,7 @@ async function copyWentianContactText(text, okText) {
 
 async function shareWentianInvite() {
   const summary = getWentianInviteSnapshot();
-  const text = `我在用阅天AI排盘和问许半仙，注册时填邀请码 ${summary.inviteCode} 可领取体验次数：${summary.inviteLink}`;
+  const text = `我在用阅天AI排盘和问许大师，注册时填邀请码 ${summary.inviteCode} 可领取体验次数：${summary.inviteLink}`;
   if (navigator.share) {
     try {
       await navigator.share({ title: "阅天AI", text, url: summary.inviteLink });
@@ -8643,7 +8643,7 @@ function getWentianSharePayload() {
   const hasInvite = account.loggedIn && isWentianInviteCode(summary.inviteCode);
   const url = hasInvite ? summary.inviteLink : appUrl;
   const inviteLine = hasInvite ? `我的邀请码：${summary.inviteCode}` : "登录后可生成专属邀请码。";
-  const text = `推荐你使用阅天AI，AI排盘、命盘解读和许半仙问答都在这里。\n${inviteLine}\n${url}`;
+  const text = `推荐你使用阅天AI，AI排盘、命盘解读和许大师问答都在这里。\n${inviteLine}\n${url}`;
   return {
     title: "阅天AI",
     text,
@@ -8825,7 +8825,7 @@ function renderWentianChatMessageContent(message, role) {
     return `
       <span class="wentian-chat-thinking">
         <i></i><i></i><i></i>
-        <em>${escapeHtml(text || "许半仙正在解读")}</em>
+        <em>${escapeHtml(text || "许大师正在解读")}</em>
       </span>
     `;
   }
@@ -8968,10 +8968,10 @@ function setWentianChatBusy(busy) {
 
 function getWentianXuModeText(mode, phase = "ready") {
   const map = {
-    liuyao: { connecting: "接入占卜中…", ready: "占卜已接入", typing: "许半仙正在看卦…" },
-    hepan: { connecting: "接入合盘中…", ready: "合盘已接入", typing: "许半仙正在看合盘…" },
-    liuren: { connecting: "接入六壬中…", ready: "六壬已接入", typing: "许半仙正在看课…" },
-    chart: { connecting: "接入中…", ready: "已连接", typing: "许半仙正在看盘…" },
+    liuyao: { connecting: "接入占卜中…", ready: "占卜已接入", typing: "许大师正在看卦…" },
+    hepan: { connecting: "接入合盘中…", ready: "合盘已接入", typing: "许大师正在看合盘…" },
+    liuren: { connecting: "接入六壬中…", ready: "六壬已接入", typing: "许大师正在看课…" },
+    chart: { connecting: "接入中…", ready: "已连接", typing: "许大师正在看盘…" },
   };
   return (map[mode] || map.chart)[phase] || map.chart[phase] || "";
 }
@@ -10439,8 +10439,8 @@ function sourceLanguageSettingsScreen() {
 function convertedAi(screen) {
   const base = `
     ${figBox(`screen-${screen.no}-bg`, 0, 0, 390, 844, "", "background:#fbf7ef;")}
-    ${figImage(`screen-${screen.no}-avatar`, "../images/wentian-prototype-assets/xu-banxian.jpg", 42, 108, 44, 44, "border-radius:22px;object-fit:cover;object-position:center 18%;")}
-    ${figText(`screen-${screen.no}-hello`, "你好！我是许半仙", 92, 112, 240, 21, "#b88c33", 700)}
+    ${figImage(`screen-${screen.no}-avatar`, "../images/wentian-prototype-assets/xu-dashi.jpg", 42, 108, 44, 44, "border-radius:22px;object-fit:cover;object-position:center 18%;")}
+    ${figText(`screen-${screen.no}-hello`, "你好！我是许大师", 92, 112, 240, 21, "#b88c33", 700)}
     ${figBox(`screen-${screen.no}-bazi`, 32, 170, 326, 88, "converted-card", "")}
     ${figText(`screen-${screen.no}-bazi-title`, "当前八字", 48, 184, 294, 15, "#26211c", 700)}
     ${figText(`screen-${screen.no}-bazi-desc`, "年 辛未｜月 癸巳｜日 丁亥｜时 辛亥", 48, 212, 294, 12, "#8c8275")}
@@ -10839,9 +10839,9 @@ function renderWentianHepanXuEntry(result) {
   return `
     <section class="wentian-hepan-xu-card">
       <span>下一步</span>
-      <strong>进入合盘许半仙</strong>
+      <strong>进入合盘许大师</strong>
       <p>带上${escapeHtml(names)}的完整命盘、夫妻宫依据和本页合盘结论继续追问。</p>
-      <button type="button" data-action="wentian-hepan-ask-xu">进入合盘许半仙</button>
+      <button type="button" data-action="wentian-hepan-ask-xu">进入合盘许大师</button>
     </section>
   `;
 }
@@ -10963,7 +10963,7 @@ function sourceHepanResultScreen() {
 
       <div class="wentian-hepan-result-actions">
         <button type="button" data-route="screen-11">重新选择</button>
-        <button type="button" class="primary" data-action="wentian-hepan-ask-xu">进入合盘许半仙</button>
+        <button type="button" class="primary" data-action="wentian-hepan-ask-xu">进入合盘许大师</button>
       </div>
     </section>
   `;
@@ -12489,7 +12489,7 @@ function sourceLiuyaoCastScreen() {
       </div>
       <div class="liuyao-result-preview">
         <strong>${complete ? "六爻已成" : "完成 6 爻后输出"}</strong>
-        <p>本卦 / 变卦 / 动爻 / 古籍摘录 / 许半仙 AI 解卦</p>
+        <p>本卦 / 变卦 / 动爻 / 古籍摘录 / 许大师 AI 解卦</p>
         ${complete ? `<button type="button" data-action="liuyao-show-result">查看卦象解读</button>` : ""}
       </div>
     </section>
@@ -12555,7 +12555,7 @@ function sourceLiuyaoResultScreen() {
       </div>
       <div class="liuyao-ai-card">
         <span>AI解卦</span>
-        <strong>许半仙按本卦、变卦、动爻继续断</strong>
+        <strong>许大师按本卦、变卦、动爻继续断</strong>
         <p>本卦原文：${escapeHtml(primaryOriginal.text.split("\n")[0] || result.primary.name)}${result.changed.name !== result.primary.name ? `<br>变卦原文：${escapeHtml(changedOriginal.text.split("\n")[0] || result.changed.name)}` : ""}</p>
         <button type="button" class="primary" data-action="liuyao-ask-xu">开始AI解卦</button>
       </div>
@@ -14513,7 +14513,7 @@ function updateLiurenPreview(options = {}) {
     const askButton = document.querySelector('[data-action="liuren-ask-xu"]');
     if (askButton) {
       askButton.disabled = !reveal;
-      askButton.textContent = reveal ? "追问许半仙" : "起课后问许半仙";
+      askButton.textContent = reveal ? "追问许大师" : "起课后问许大师";
     }
     setLiurenStatus(reveal ? "已按农历月日时起课" : "已取当下时间，先定念再起课", reveal ? "ok" : "");
   } catch (error) {
@@ -14600,7 +14600,7 @@ function getLiurenXuOpeningMessage(context) {
 function openLiurenXuChat() {
   const context = makeLiurenXuContext();
   if (!context) {
-    setLiurenStatus("先定念起课，再追问许半仙", "error");
+    setLiurenStatus("先定念起课，再追问许大师", "error");
     return;
   }
   setWentianXuChatContext(context);
@@ -14661,7 +14661,7 @@ function sourceLiurenScreen() {
       <div id="liuren-track" class="liuren-track">${renderLiurenTrack(initial, false)}</div>
       <div id="liuren-result">${renderLiurenResultHtml(initial, false)}</div>
       <div class="liuren-actions">
-        <button type="button" class="primary liuren-ask-xu" data-action="liuren-ask-xu" disabled>起课后问许半仙</button>
+        <button type="button" class="primary liuren-ask-xu" data-action="liuren-ask-xu" disabled>起课后问许大师</button>
         <button type="button" class="primary liuren-reset-action" data-action="liuren-reset">重新定念</button>
       </div>
       <p id="liuren-status" class="liuren-status">已取当下时间，先定念再起课</p>
@@ -14730,8 +14730,8 @@ function renderWentianPolishedScreen(screen) {
       ${figBox("wt8-bg", 0, 0, 390, 1280, "", "background:#fbf7ef;")}
       ${wentianSimpleHeader("wt8", "AI长文解读")}
       ${figBox("wt8-master", 24, 100, 342, 92, "", "border-radius:16px;background:#fff;box-shadow:0 8px 20px rgba(70,45,25,.08);")}
-      ${figImage("wt8-avatar", "../images/wentian-prototype-assets/xu-banxian.jpg", 42, 116, 58, 58, "border-radius:29px;object-fit:cover;object-position:center 18%;")}
-      ${figText("wt8-name", "许半仙", 116, 122, 120, 17, "#25211d", 800)}
+      ${figImage("wt8-avatar", "../images/wentian-prototype-assets/xu-dashi.jpg", 42, 116, 58, 58, "border-radius:29px;object-fit:cover;object-position:center 18%;")}
+      ${figText("wt8-name", "许大师", 116, 122, 120, 17, "#25211d", 800)}
       ${figText("wt8-desc", "已结合紫微命盘、八字与当前档案生成", 116, 150, 210, 13, "#8d857b", 500)}
       ${figBox("wt8-question", 42, 222, 306, 88, "", "border-radius:14px;background:#c69a34;box-shadow:0 8px 18px rgba(148,101,25,.16);")}
       ${figText("wt8-question-text", "请根据我的八字，深度拆解我的核心性格特质、事业机会和近期行动重点。", 62, 246, 266, 14, "#fff", 700, "left", "line-height:1.55;")}
@@ -14789,8 +14789,8 @@ function renderWentianPolishedScreen(screen) {
     return `
       ${figBox("wt12-bg", 0, 0, 390, 844, "", "background:#f7f7f6;")}
       ${wentianSimpleHeader("wt12", "", "◷")}
-      ${figImage("wt12-avatar", "../images/wentian-prototype-assets/xu-banxian.jpg", 145, 126, 100, 100, "border-radius:50px;object-fit:cover;object-position:center 18%;")}
-      ${figText("wt12-name", "许半仙", 0, 252, 390, 16, "#25211d", 800, "center")}
+      ${figImage("wt12-avatar", "../images/wentian-prototype-assets/xu-dashi.jpg", 145, 126, 100, 100, "border-radius:50px;object-fit:cover;object-position:center 18%;")}
+      ${figText("wt12-name", "许大师", 0, 252, 390, 16, "#25211d", 800, "center")}
       ${figText("wt12-sub", "写下你想问的命理问题", 0, 279, 390, 14, "#8f8a84", 500, "center")}
       ${figBox("wt12-input", 36, 356, 318, 92, "", "border-radius:12px;background:#fff;")}
       ${figText("wt12-placeholder", "请输入想问什么？", 56, 386, 220, 14, "#b6b0aa")}
@@ -14809,7 +14809,7 @@ function renderWentianPolishedScreen(screen) {
       ${wentianSimpleHeader(`wt${no}`, "黄大仙灵签", "◷")}
       ${figBox(`wt${no}-hero`, 22, 104, 346, 108, "", "border-radius:18px;background:#fff;box-shadow:0 10px 26px rgba(70,45,25,.1);")}
       ${figText(`wt${no}-hero-title`, loading ? "正在为你取签" : "心中默念所问之事", 44, 128, 210, 18, "#25211d", 800)}
-      ${figText(`wt${no}-hero-copy`, loading ? "已接入当前档案，签文生成后可交给许半仙继续解读。" : "感情、事业、财运皆可问。抽签后可查看签文、解签和 AI 延展。", 44, 160, 282, 13, "#776f65", 500, "left", "line-height:1.55;")}
+      ${figText(`wt${no}-hero-copy`, loading ? "已接入当前档案，签文生成后可交给许大师继续解读。" : "感情、事业、财运皆可问。抽签后可查看签文、解签和 AI 延展。", 44, 160, 282, 13, "#776f65", 500, "left", "line-height:1.55;")}
       ${figBox(`wt${no}-count`, 270, 126, 72, 26, "", "border-radius:13px;background:#fff7e8;border:1px solid #ead8ae;")}
       ${figText(`wt${no}-count-text`, "剩余 1 次", 270, 133, 72, 11, "#9b742e", 800, "center")}
       ${figBox(`wt${no}-stage`, 32, 246, 326, 330, "", "border-radius:24px;background:#fff;box-shadow:0 14px 34px rgba(70,45,25,.11);overflow:hidden;")}
@@ -14858,7 +14858,7 @@ function renderWentianPolishedScreen(screen) {
     `;
   }
   if (no === 16) {
-    const sections = [["签文", "岁岁休言悔，莫道定难改。"], ["解签", "眼前事宜先稳住心神，不急于求成。"], ["详情", "所问之事有转机，但需顺势而行。"], ["AI解签", "请许半仙结合命盘继续解读"]];
+    const sections = [["签文", "岁岁休言悔，莫道定难改。"], ["解签", "眼前事宜先稳住心神，不急于求成。"], ["详情", "所问之事有转机，但需顺势而行。"], ["AI解签", "请许大师结合命盘继续解读"]];
     return `
       ${figBox("wt16-bg", 0, 0, 390, 844, "", "background:#f7f7f6;")}
       ${wentianSimpleHeader("wt16", "第廿九签\n【中吉】", "◷")}
@@ -14925,7 +14925,7 @@ function renderWentianPolishedScreen(screen) {
       }).join("")}
       ${figBox("wt20-ai", 24, 930, 342, 70, "", "border-radius:14px;background:#fff;box-shadow:0 6px 16px rgba(70,45,25,.07);")}
       ${figText("wt20-ai-title", "AI解卦", 44, 950, 100, 15, "#25211d", 800)}
-      ${figText("wt20-ai-copy", "可让许半仙结合当前命盘继续解读此卦。", 44, 978, 260, 12, "#756d63")}
+      ${figText("wt20-ai-copy", "可让许大师结合当前命盘继续解读此卦。", 44, 978, 260, 12, "#756d63")}
       ${wentianGoldButton("wt20", "购买完整解读", "screen-21", 1012)}
     `;
   }
@@ -15429,10 +15429,10 @@ function sourceDashboardHomeScreen() {
 
       ${figBox("source-1-hero", 18, 92, 354, 184, "", "border-radius:22px;background:linear-gradient(135deg,#2b1d16 0%,#8f3d30 58%,#c48b25 100%);overflow:hidden;box-shadow:0 16px 34px rgba(96,53,24,.18);")}
       ${figBox("source-1-hero-shine", 218, 84, 170, 170, "", "border-radius:85px;background:rgba(255,232,178,.16);")}
-      ${figImage("source-1-hero-master", "../images/wentian-prototype-assets/xu-banxian.jpg", 254, 110, 98, 116, "border-radius:18px;object-fit:cover;object-position:center 18%;box-shadow:0 10px 24px rgba(0,0,0,.18);")}
-      ${figText("source-1-hero-kicker", "许半仙已在线", 36, 118, 118, 12, "#f6d783", 900)}
+      ${figImage("source-1-hero-master", "../images/wentian-prototype-assets/xu-dashi.jpg", 254, 110, 98, 116, "border-radius:18px;object-fit:cover;object-position:center 18%;box-shadow:0 10px 24px rgba(0,0,0,.18);")}
+      ${figText("source-1-hero-kicker", "许大师已在线", 36, 118, 118, 12, "#f6d783", 900)}
       ${figText("source-1-hero-title", "先建命盘", 36, 144, 150, 25, "#fffaf3", 900, "left", "white-space:nowrap;")}
-      ${figText("source-1-hero-copy", "再交给许半仙细读\n排盘、合盘、占卜从一个档案开始。", 36, 176, 202, 12, "rgba(255,250,243,.86)", 700, "left", "line-height:1.45;")}
+      ${figText("source-1-hero-copy", "再交给许大师细读\n排盘、合盘、占卜从一个档案开始。", 36, 176, 202, 12, "rgba(255,250,243,.86)", 700, "left", "line-height:1.45;")}
       ${figBox("source-1-hero-primary", 36, 226, 112, 34, "", "border-radius:17px;background:#fffaf3;")}
       ${figText("source-1-hero-primary-text", "开始排盘", 36, 236, 112, 12, "#8f3d30", 900, "center")}
       ${figButton("source-1-hero-primary-hit", 36, 226, 112, 34, 'data-route="screen-26"', "", "z-index:35;")}
@@ -16799,7 +16799,7 @@ function renderAI() {
     ${figButton("17:6-hit", 14, 54, 54, 62, 'data-route="home"')}
     ${figText("17:6", "‹", 28, 66, 26, 42, "#21211f", 700, "center")}
     ${figBox("17:7", 58, 54, 32, 32, "", "border-radius:50%;background:linear-gradient(145deg,#2f2f2b,#756f5f);box-shadow:inset 0 -6px 10px rgba(0,0,0,.22);")}
-    ${figText("17:8", "许半仙", 96, 59, 150, 22, "#21211f", 700)}
+    ${figText("17:8", "许大师", 96, 59, 150, 22, "#21211f", 700)}
     ${figButton("17:9-hit", 294, 54, 90, 42, 'data-route="archive"')}
     ${figText("17:9", "◷ 对话记录", 306, 63, 78, 15, "#75756e", 500, "right")}
     ${figLine("17:10", 0, 116, 390)}
@@ -16810,7 +16810,7 @@ function renderAI() {
     ${figBox("17:15", 318, 124, 56, 34, "fig-card fig-pill", "box-shadow:0 1px 5px rgba(0,0,0,.1);")}
     ${figText("17:16", "谢⌄", 329, 132, 34, 17, "#21211f", 700, "center")}
     ${figLine("17:17", 0, 161, 390)}
-    ${figText("17:18", "你好！我是许半仙", 24, 219, 316, 32, "#ba8f38", 700)}
+    ${figText("17:18", "你好！我是许大师", 24, 219, 316, 32, "#ba8f38", 700)}
     ${figText("17:19", "需要我为您做些什么？", 24, 272, 260, 22, "#adaba1")}
     ${figBox("17:20", 24, 326, 342, 178, "fig-card", "border-radius:18px;box-shadow:0 4px 12px rgba(0,0,0,.16);")}
     ${figText("17:21", "谢的八字", 42, 348, 180, 20, "#75756e", 700)}

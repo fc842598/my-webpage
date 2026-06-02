@@ -1,5 +1,5 @@
-﻿/**
- * js/ai-chat.js — AI半仙 对话面板
+/**
+ * js/ai-chat.js — 许大师 对话面板
  *
  * 记忆策略：A0 基础命盘按需读取，A1/A2/A3/A4 专题结论按问题按需注入。
  * 不再有任何后台预补全 / warmup 队列。
@@ -104,7 +104,7 @@
     if (!document.getElementById('aip-panel-chat')) return;
 
     if (!window._chart || !window._chartInputs) {
-      _setMsgArea('<div class="chat-sys-msg">请先完成排盘，再使用 AI半仙。</div>');
+      _setMsgArea('<div class="chat-sys-msg">请先完成排盘，再使用 许大师。</div>');
       _setInputEnabled(false);
       _setStarterEnabled(false);
       _setRefreshEnabled(false);
@@ -142,7 +142,7 @@
 
     if (_lastChartRecordId && _lastChartRecordId !== chartRecordId) {
       _resetSessionState();
-      _setMsgArea('<div class="chat-sys-msg">检测到你切换了新的命盘，许半仙正在重新读取。</div>');
+      _setMsgArea('<div class="chat-sys-msg">检测到你切换了新的命盘，许大师正在重新读取。</div>');
     }
     _lastChartRecordId = chartRecordId;
 
@@ -178,7 +178,7 @@
     _setModeBadge(false);
     _updateBadges(false, false, 0, false);
     _setMemorySources(null, null);
-    _setContextPreview('新命盘正在保存，许半仙稍后会重新读取，不会沿用上一张盘。');
+    _setContextPreview('新命盘正在保存，许大师稍后会重新读取，不会沿用上一张盘。');
     _setBackgroundStatus('', '');
   }
 
@@ -261,7 +261,7 @@
         }
 
         if ((!data.messages || data.messages.length === 0) && !quietGreeting) {
-          _appendMsg('assistant', '您好，我是许半仙。基础命盘已读入，您可以直接问您关心的感情、事业、财运或最近一年等相关话题。');
+          _appendMsg('assistant', '您好，我是许大师。基础命盘已读入，您可以直接问您关心的感情、事业、财运或最近一年等相关话题。');
         }
 
         _setInputEnabled(true);
@@ -312,7 +312,7 @@
         chartData: chartData,
         forceRefreshMemoryA: doForceRefreshA || undefined,
       });
-      _appendMsg('system', '已加入队列，许半仙会按顺序回复。');
+      _appendMsg('system', '已加入队列，许大师会按顺序回复。');
       return;
     }
 
@@ -361,7 +361,7 @@
           window._updateQuotaDisplay(data.quota);
         }
         if (data.memoryAJustBuilt) {
-          _appendMsg('system', '基础命盘已重新读入，许半仙会按最新命盘继续回答。');
+          _appendMsg('system', '基础命盘已重新读入，许大师会按最新命盘继续回答。');
         }
         if (data.memoryBJustBuilt) {
           _appendMsg('system', '本轮对话重点已自动整理，后续回答会更贴着你的问题走。');
@@ -382,7 +382,7 @@
           _setRefreshEnabled(false);
           _setModeBadge(true);
           _setMemorySources(null, null);
-          _setContextPreview('当前聊天数据库还没建好，许半仙暂时无法保存会话与命盘记忆。先执行 Supabase SQL，再回来重试。');
+          _setContextPreview('当前聊天数据库还没建好，许大师暂时无法保存会话与命盘记忆。先执行 Supabase SQL，再回来重试。');
         }
 
         _appendMsg('system', '发送失败：' + _friendlyErrorMessage(err));
@@ -422,8 +422,8 @@
       return response.text().then(function () {
         var err = new Error(
           response.status === 404
-            ? 'AI半仙后端还没部署到聊天接口，请稍后重试。'
-            : 'AI半仙服务暂时不可用，请稍后重试。'
+            ? '许大师后端还没部署到聊天接口，请稍后重试。'
+            : '许大师服务暂时不可用，请稍后重试。'
         );
         err.status = response.status;
         err.nonJson = true;
@@ -450,7 +450,7 @@
       : String((errOrData && errOrData.error) || (errOrData && errOrData.message) || '');
 
     if ((errOrData && errOrData.setupRequired) || /Could not find the table|schema cache|chat_sessions|chat_messages|chat_memory_snapshots/i.test(raw)) {
-      return 'AI半仙还没完成数据库初始化，请先在 Supabase SQL Editor 执行聊天表 SQL。';
+      return '许大师还没完成数据库初始化，请先在 Supabase SQL Editor 执行聊天表 SQL。';
     }
     if (/Failed to fetch/i.test(raw)) {
       return '网络或后端服务异常，请稍后重试。';
@@ -458,7 +458,7 @@
     if (/服务暂时不可用|后端还没部署/.test(raw)) {
       return raw;
     }
-    return raw || 'AI半仙暂时不可用，请稍后重试。';
+    return raw || '许大师暂时不可用，请稍后重试。';
   }
 
   function _handleLoadError(err) {
@@ -467,11 +467,11 @@
     if (err && err.setupRequired) {
       _setMsgArea(
         '<div class="chat-sys-msg chat-setup">' +
-        'AI半仙聊天功能还没初始化完成。<br>' +
+        '许大师聊天功能还没初始化完成。<br>' +
         '先到 Supabase SQL Editor 执行聊天表 SQL，再回来点"重试"。' +
         '</div>'
       );
-      _setContextPreview('当前缺少聊天表，许半仙还没法保存会话记忆。先把数据库初始化好，这个板块才能真正工作。');
+      _setContextPreview('当前缺少聊天表，许大师还没法保存会话记忆。先把数据库初始化好，这个板块才能真正工作。');
       _setModeBadge(false);
       _setMemorySources(null);
       _setBackgroundStatus('', '');
@@ -486,7 +486,7 @@
       '&nbsp;<button onclick="window._chatPanelRefresh()" style="margin-left:6px;padding:2px 10px;border:1px solid rgba(200,80,80,.4);border-radius:12px;background:rgba(200,80,80,.1);color:#c06060;font-size:12px;cursor:pointer;font-family:inherit">重试</button>' +
       '</div>'
     );
-    _setContextPreview('许半仙暂时没成功读到命盘或后端服务，请稍后重试。');
+    _setContextPreview('许大师暂时没成功读到命盘或后端服务，请稍后重试。');
     _setModeBadge(false);
     _setMemorySources(null);
     _setBackgroundStatus('', '');
@@ -570,7 +570,7 @@
 
     if (sender === 'assistant') {
       div.innerHTML =
-        '<span class="chat-sender">许半仙<span class="chat-sender-read-pill">已读盘</span></span>' +
+        '<span class="chat-sender">许大师<span class="chat-sender-read-pill">已读盘</span></span>' +
         '<span class="chat-bubble"></span>';
     } else if (sender === 'user') {
       div.innerHTML =
@@ -604,7 +604,7 @@
     div.id = 'chat-typing';
     div.className = 'chat-msg chat-msg-assistant';
     div.innerHTML =
-      '<span class="chat-sender">许半仙<span class="chat-sender-read-pill">已读盘</span></span>' +
+      '<span class="chat-sender">许大师<span class="chat-sender-read-pill">已读盘</span></span>' +
       '<span class="chat-bubble">' +
       '<span class="chat-typing-dots"><span></span><span></span><span></span></span>' +
       '</span>';
