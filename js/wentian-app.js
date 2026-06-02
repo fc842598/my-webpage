@@ -7064,7 +7064,7 @@ Object.assign(WENTIAN_I18N_EN_EXTRA, {
   "专业AI命理工作台": "AI Destiny Studio",
   "许大师已在线": "Master Xu is online",
   "先排盘，后解读": "Chart First, Read Next",
-  "输入年月日时\n建立档案": "Enter birth date and time.\nCreate a profile.",
+  "输入年月日时 建立档案": "Enter birth date and time, then create a profile.",
   "输入年月日时": "Enter birth date and time.",
   "建立档案": "Create a profile.",
   "换档案": "Change File",
@@ -15435,7 +15435,7 @@ function sourceDashboardHomeScreen() {
       ${figImage("source-1-hero-master", "../images/wentian-prototype-assets/xu-dashi.jpg", 254, 110, 98, 116, "border-radius:18px;object-fit:cover;object-position:center 18%;box-shadow:0 10px 24px rgba(0,0,0,.18);")}
       ${figText("source-1-hero-kicker", "许大师已在线", 36, 118, 118, 12, "#f6d783", 900)}
       ${figText("source-1-hero-title", "先排盘，后解读", 36, 144, 190, 25, "#fffaf3", 900, "left", "white-space:nowrap;")}
-      ${figText("source-1-hero-copy", "输入年月日时\n建立档案", 36, 176, 202, 12, "rgba(255,250,243,.86)", 700, "left", "line-height:1.45;")}
+      ${figText("source-1-hero-copy", "输入年月日时 建立档案", 36, 176, 212, 12, "rgba(255,250,243,.86)", 700, "left", "white-space:nowrap;")}
       ${figBox("source-1-hero-primary", 36, 226, 112, 34, "", "border-radius:17px;background:#fffaf3;")}
       ${figText("source-1-hero-primary-text", "开始排盘", 36, 236, 112, 12, "#8f3d30", 900, "center")}
       ${figButton("source-1-hero-primary-hit", 36, 226, 112, 34, 'data-route="screen-26"', "", "z-index:35;")}
