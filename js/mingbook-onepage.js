@@ -6202,6 +6202,21 @@
     return root;
   }
 
+  function buildPdfSyncedChaptersHtml() {
+    const source = $('#mbpChapters');
+    if (!source || !source.classList.contains('is-generated')) return '';
+    const clone = cleanCloneIds(source.cloneNode(true));
+    clone.classList.add('mbp-pdf-synced-chapters');
+    clone.querySelectorAll('button, .mbp-report-actions, [data-luck-decade-rail], [data-xiaolian-age-rail]').forEach((node) => node.remove());
+    clone.querySelectorAll('[aria-live], [aria-current], [tabindex], [role]').forEach((node) => {
+      node.removeAttribute('aria-live');
+      node.removeAttribute('aria-current');
+      node.removeAttribute('tabindex');
+      node.removeAttribute('role');
+    });
+    return clone.outerHTML;
+  }
+
   function pdfPillarLine(pillars = fcBirthPillars) {
     if (!pillars) return '—';
     return [
@@ -6406,6 +6421,7 @@
     const bundle = getChartBundle();
     if (bundle.error) throw new Error(bundle.error);
     renderChart();
+    if (pdfReportReady()) renderChaptersFromAi();
     const facts = chartFacts();
     const name = state.profile.name || (state.profile.gender === 'female' ? '女命' : '男命');
     const gender = state.profile.gender === 'female' ? '女命' : '男命';
@@ -6444,7 +6460,7 @@
       </section>
       <section class="mbp-pdf-section">
         <h2>命盘解读</h2>
-        <div class="mbp-pdf-chapters-slot">${buildPdfChaptersHtml()}</div>
+        <div class="mbp-pdf-chapters-slot">${buildPdfSyncedChaptersHtml() || buildPdfChaptersHtml()}</div>
       </section>
     `;
     return report;
