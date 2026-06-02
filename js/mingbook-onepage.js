@@ -2371,12 +2371,16 @@
   }
 
   function getLunarLeapMonth(year) {
-    if (!(window.LunarYear && typeof window.LunarYear.fromYear === 'function' && year)) return 0;
+    if (!year) return 0;
+    if (!(window.LunarYear && typeof window.LunarYear.fromYear === 'function')) return 0;
     try {
-      return Math.abs(Number(window.LunarYear.fromYear(year)?.getLeapMonth?.())) || 0;
-    } catch (_) {
-      return 0;
-    }
+      const lunarYear = window.LunarYear.fromYear(year);
+      const leapMonth = Math.abs(Number(lunarYear?.getLeapMonth?.())) || 0;
+      if (leapMonth) return leapMonth;
+      const leapEntry = lunarYear?.getMonths?.()?.find((item) => Number(item?.getMonth?.()) < 0);
+      return Math.abs(Number(leapEntry?.getMonth?.())) || 0;
+    } catch (_) {}
+    return 0;
   }
 
   function getNextLunarMonth(year, month) {
