@@ -22,7 +22,7 @@
   <script defer src="../src/ziping/runtime.js"></script>
   <script defer src="../js/ai-piming.js?v=20260522-yijing-ai-timing"></script>
   <script defer src="../js/ai-chat.js?v=20260602-xu-dashi-labels"></script>
-  <script defer src="../js/mingbook-onepage.js?v=20260602-pdf-sync-chapters"></script>
+  <script defer src="../js/mingbook-onepage.js?v=20260602-leap-month-auto-only"></script>
 </head>
 <body class="mingbook-onepage">
   <header class="mbp-nav">
@@ -94,8 +94,8 @@
                 <input type="number" id="mbpLunarYear" min="1900" max="2030" placeholder="农历年 如1990" class="nf-select" autocomplete="off">
                 <select id="mbpLunarMonth" class="nf-select"></select>
                 <select id="mbpLunarDay" class="nf-select"></select>
-                <label id="mbpLunarLeapWrap" class="nf-lunar-leap">
-                  <input type="checkbox" id="mbpLunarLeap">闰月
+                <label id="mbpLunarLeapWrap" class="nf-lunar-leap" hidden>
+                  <input type="checkbox" id="mbpLunarLeap">
                   <span id="mbpLunarLeapNote"></span>
                 </label>
               </div>

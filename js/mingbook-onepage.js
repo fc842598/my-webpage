@@ -2479,13 +2479,16 @@
     const wrap = $('#mbpLunarLeapWrap');
     const note = $('#mbpLunarLeapNote');
     const checkbox = $('#mbpLunarLeap');
-    const enabled = !!(leapMonth && month === leapMonth);
-    if (wrap) wrap.style.opacity = enabled ? '1' : '.55';
-    if (checkbox && enabled && options.autoDefault) checkbox.checked = true;
+    const enabled = !!(formCalMode === 'lunar' && leapMonth && month === leapMonth);
+    const wasEnabled = wrap?.dataset.leapEnabled === '1';
+    if (wrap) {
+      wrap.hidden = !enabled;
+      wrap.dataset.leapEnabled = enabled ? '1' : '0';
+    }
+    if (checkbox && enabled && (options.autoDefault || !wasEnabled)) checkbox.checked = true;
     if (checkbox && !enabled) checkbox.checked = false;
     if (note) {
-      if (!leapMonth) note.textContent = '无闰月';
-      else if (!enabled) note.textContent = `闰${leapMonth}月`;
+      if (!enabled) note.textContent = '';
       else if (checkbox?.checked) note.textContent = `闰${leapMonth}月 · 按下个月排盘`;
       else note.textContent = `闰${leapMonth}月 · 勾选后按下个月排盘`;
     }
