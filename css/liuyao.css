@@ -13,10 +13,9 @@
 }
 
 .liuyao-page .mbp-nav {
-  display: grid;
-  grid-template-columns: minmax(180px, 1fr) auto minmax(180px, 1fr);
-  gap: 24px;
-  padding: 0 max(24px, calc((100vw - 1480px) / 2 + 24px));
+  justify-content: center;
+  gap: 36px;
+  padding: 0 24px;
 }
 
 .liuyao-workbench {
@@ -62,7 +61,7 @@
 
 .liuyao-page .mbp-nav-links {
   margin-left: 0;
-  justify-self: center;
+  justify-self: auto;
 }
 
 .liuyao-page .mbp-nav-links a:not(.is-active):hover {
@@ -71,8 +70,8 @@
 
 .liuyao-page .mbp-nav-actions {
   margin-left: 0;
-  justify-content: flex-end;
-  justify-self: end;
+  justify-content: center;
+  justify-self: auto;
 }
 
 .liuyao-page .liuyao-back-link {
@@ -977,8 +976,7 @@
   }
 
   .liuyao-page .mbp-nav {
-    display: flex;
-    grid-template-columns: none;
+    justify-content: space-between;
     gap: 12px;
     padding: 0 16px;
   }
