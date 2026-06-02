@@ -7060,10 +7060,10 @@ const WENTIAN_I18N_EN_EXTRA = {
 Object.assign(WENTIAN_I18N_EN_EXTRA, {
   "专业AI命理工作台": "AI Destiny Studio",
   "许大师已在线": "Master Xu is online",
-  "先建命盘": "Create Chart",
-  "再交给许大师细读\n排盘、合盘、占卜从一个档案开始。": "Then let Master Xu read it.\nCharts, compatibility, and divination all start from one file.",
-  "再交给许大师细读": "Then let Master Xu read it.",
-  "排盘、合盘、占卜从一个档案开始。": "Charts, compatibility, and divination all start from one file.",
+  "先排盘，后解读": "Chart First, Read Next",
+  "输入年月日时\n建立档案": "Enter birth date and time.\nCreate a profile.",
+  "输入年月日时": "Enter birth date and time.",
+  "建立档案": "Create a profile.",
   "换档案": "Change File",
   "紫微斗数": "Zi Wei",
   "排盘 · AI细读": "Chart + AI",
@@ -15431,8 +15431,8 @@ function sourceDashboardHomeScreen() {
       ${figBox("source-1-hero-shine", 218, 84, 170, 170, "", "border-radius:85px;background:rgba(255,232,178,.16);")}
       ${figImage("source-1-hero-master", "../images/wentian-prototype-assets/xu-dashi.jpg", 254, 110, 98, 116, "border-radius:18px;object-fit:cover;object-position:center 18%;box-shadow:0 10px 24px rgba(0,0,0,.18);")}
       ${figText("source-1-hero-kicker", "许大师已在线", 36, 118, 118, 12, "#f6d783", 900)}
-      ${figText("source-1-hero-title", "先建命盘", 36, 144, 150, 25, "#fffaf3", 900, "left", "white-space:nowrap;")}
-      ${figText("source-1-hero-copy", "再交给许大师细读\n排盘、合盘、占卜从一个档案开始。", 36, 176, 202, 12, "rgba(255,250,243,.86)", 700, "left", "line-height:1.45;")}
+      ${figText("source-1-hero-title", "先排盘，后解读", 36, 144, 190, 25, "#fffaf3", 900, "left", "white-space:nowrap;")}
+      ${figText("source-1-hero-copy", "输入年月日时\n建立档案", 36, 176, 202, 12, "rgba(255,250,243,.86)", 700, "left", "line-height:1.45;")}
       ${figBox("source-1-hero-primary", 36, 226, 112, 34, "", "border-radius:17px;background:#fffaf3;")}
       ${figText("source-1-hero-primary-text", "开始排盘", 36, 236, 112, 12, "#8f3d30", 900, "center")}
       ${figButton("source-1-hero-primary-hit", 36, 226, 112, 34, 'data-route="screen-26"', "", "z-index:35;")}
