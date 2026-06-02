@@ -1293,7 +1293,7 @@ body.mbp-ticket-open {
   width: min(268px, 100%);
   justify-self: end;
   margin: 0;
-  padding: 8px;
+  padding: 7px;
   border: 1px solid rgba(241, 212, 125, .22);
   border-radius: 10px;
   background:
@@ -1333,10 +1333,10 @@ body.mbp-ticket-open {
 }
 
 .mbp-input-client-picker .mbp-client-current {
-  min-height: 46px;
+  min-height: 44px;
   grid-template-columns: 34px 1fr 14px;
   gap: 8px;
-  padding: 7px 9px;
+  padding: 6px 9px;
 }
 
 .mbp-input-client-picker .mbp-profile-mark {
@@ -1353,6 +1353,35 @@ body.mbp-ticket-open {
   line-height: 1.25;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.mbp-input-client-picker .mbp-profile-line {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+.mbp-input-client-picker .mbp-profile-line strong {
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.mbp-client-inline-label,
+.mbp-client-switch-note {
+  flex: 0 0 auto;
+  font-size: 10px;
+  font-weight: 900;
+  line-height: 1.2;
+}
+
+.mbp-client-inline-label {
+  color: var(--gold);
+}
+
+.mbp-client-switch-note {
+  color: var(--muted);
 }
 
 .mbp-input-client-picker small {

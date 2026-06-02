@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>阅天 · 紫微排盘</title>
   <link rel="icon" href="../images/wentian-prototype-assets/wentian-brand-logo-ai-gold-v1.png" type="image/png">
-  <link rel="stylesheet" href="../css/mingbook-onepage.css?v=20260602-city-selected-inline">
+  <link rel="stylesheet" href="../css/mingbook-onepage.css?v=20260602-client-inline-head">
   <script src="../js/config.js?v=20260521-api-domain-auth-proxy"></script>
   <script defer src="../js/cities.js"></script>
   <script defer src="../js/lunarCalendar.js"></script>
@@ -167,15 +167,15 @@
           </form>
 
           <section class="mbp-client-input-card" aria-label="客户盘选择">
-            <div class="mbp-client-input-head">
-              <strong>当前客户盘</strong>
-              <small>可切换</small>
-            </div>
             <div class="mbp-input-client-picker" id="mbpClientPicker">
               <button class="mbp-client-current" id="mbpClientToggle" type="button" aria-expanded="false">
                 <span class="mbp-profile-mark" id="mbpProfileMark">命</span>
                 <span class="mbp-profile-copy">
-                  <strong id="mbpProfileTitle">命 主</strong>
+                  <span class="mbp-profile-line">
+                    <span class="mbp-client-inline-label">当前客户盘</span>
+                    <strong id="mbpProfileTitle">命 主</strong>
+                    <span class="mbp-client-switch-note">可切换</span>
+                  </span>
                   <small id="mbpProfileMeta">待排盘 · 命书未启</small>
                 </span>
                 <span class="mbp-client-arrow">⌄</span>
