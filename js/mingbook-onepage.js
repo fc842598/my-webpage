@@ -7946,7 +7946,16 @@
       const opening = menu.hidden;
       menu.hidden = !opening;
       toggle.setAttribute('aria-expanded', opening ? 'true' : 'false');
-      if (opening) menu.scrollTop = 0;
+      if (opening) {
+        requestAnimationFrame(() => {
+          const selected = menu.querySelector('.is-selected') || menu.querySelector('.is-current');
+          if (!selected) {
+            menu.scrollTop = 0;
+            return;
+          }
+          menu.scrollTop = selected.offsetTop - ((menu.clientHeight - selected.offsetHeight) / 2);
+        });
+      }
     });
 
     $('#mbpXiaoLianMenu')?.addEventListener('click', (event) => {
