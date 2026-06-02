@@ -15599,8 +15599,10 @@ function sourceChartFormScreen() {
       </div>
 
       <div class="wentian-chart-row two">
-        <span class="wentian-chart-label">采用真太阳时</span>
-        <button type="button" class="wentian-chart-help-btn" data-action="wentian-chart-tst-help">解读</button>
+        <div class="wentian-chart-label-group">
+          <span class="wentian-chart-label">采用真太阳时</span>
+          <button type="button" class="wentian-chart-help-btn" data-action="wentian-chart-tst-help">解读</button>
+        </div>
         <label class="wentian-chart-toggle"><input id="wentian-chart-true-solar" type="checkbox"><span></span></label>
       </div>
       <div id="wentian-chart-tst-help" class="wentian-chart-tst-help" style="display:none">

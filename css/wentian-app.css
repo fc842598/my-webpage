@@ -1056,16 +1056,25 @@ html[lang="en"] [data-node-id="wt15-seal-text"] {
   white-space: nowrap;
 }
 
+.wentian-chart-label-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
 .wentian-chart-help-btn {
-  margin-left: auto;
-  min-width: 44px;
-  height: 28px;
+  flex: 0 0 auto;
+  min-width: 0;
+  height: 24px;
+  padding: 0 10px;
   border: 1px solid #e5c887;
-  border-radius: 14px;
+  border-radius: 999px;
   background: #fff7df;
   color: #9b6c1f;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 800;
+  line-height: 1;
 }
 
 .wentian-chart-tst-help {
