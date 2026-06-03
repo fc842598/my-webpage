@@ -16157,6 +16157,22 @@ function renderWentianClassicXiaoLianPicker(selected = {}, options = {}) {
     </details>`;
 }
 
+function focusWentianClassicXiaoLianMenu(details) {
+  if (!details?.matches?.(".fc-xiaolian-control[open]")) return;
+  const menu = details.querySelector(".fc-xiaolian-menu");
+  if (!menu) return;
+  const target = menu.querySelector("button.is-selected")
+    || menu.querySelector("button.is-current")
+    || menu.querySelector("button");
+  if (!target) return;
+  const align = () => {
+    const top = target.offsetTop - Math.max(0, (menu.clientHeight - target.offsetHeight) / 2);
+    menu.scrollTop = Math.max(0, top);
+  };
+  if (typeof window.requestAnimationFrame === "function") window.requestAnimationFrame(align);
+  else window.setTimeout(align, 0);
+}
+
 function renderWentianClassicCenter(chart, chartData, form, options = {}, source = {}) {
   const pillars = chartData?.sizhu || extractWentianPillars(chart);
   const genderLabel = form.gender === "female" ? "阴女" : "阳男";
@@ -17370,6 +17386,11 @@ document.addEventListener("keydown", (event) => {
   event.preventDefault();
   startLiuyaoAnimatedToss({ power: LIUYAO_DEFAULT_POWER, pull: LIUYAO_PULL_MAX * LIUYAO_DEFAULT_POWER, duration: 320 });
 });
+
+document.addEventListener("toggle", (event) => {
+  if (!event.target?.matches?.(".fc-xiaolian-control")) return;
+  focusWentianClassicXiaoLianMenu(event.target);
+}, true);
 
 document.addEventListener("click", (event) => {
   if (Date.now() < wentianPointerRouteSuppressUntil) {
