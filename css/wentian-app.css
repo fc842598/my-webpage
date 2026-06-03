@@ -1668,7 +1668,8 @@ html[lang="en"] .wentian-native-mingpan .fc-age {
 .wentian-native-mingpan .fc-xiaolian-menu {
   position: absolute;
   right: 0;
-  top: 21px;
+  top: auto;
+  bottom: calc(100% + 6px);
   z-index: 30;
   width: 98px;
   max-height: 106px;
