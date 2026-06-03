@@ -16696,27 +16696,43 @@ function sourceZiweiAiDecodePanel(saved) {
   const hasResults = hasWentianChartAiResults();
   const doneCount = getWentianGeneratedModuleCount();
   const buttonText = isRunning ? `生成中 ${doneCount}/${WENTIAN_CHART_AI_TASKS.length}` : (hasResults ? "重新总批命" : "总批命");
+  const visibleChapters = chapters.filter((chapter) => chapter.module !== "overall" || chapter.ready);
+  const selectedXiao = getWentianSelectedXiaoLianYear(saved?.chartData || {});
+  const activeAge = Number(selectedXiao?.age || saved?.chartData?.activeAge || saved?.chartData?.realCurrentAge || 0);
+  const statusLabel = isRunning ? `生成中 ${doneCount}/${WENTIAN_CHART_AI_TASKS.length}` : (hasResults ? "已生成" : "待生成");
+  const reportCount = chapters.length || 6;
 
   return `
     <section class="wentian-chart-ai-panel" data-node-id="source-27-ai-card">
       <header class="wentian-chart-ai-head">
-        <h2>✦ 命盘 · AI解读</h2>
-        ${wentianChartAiState.error ? `<p class="is-error">${escapeHtml(wentianChartAiState.error)}</p>` : ""}
+        <div>
+          <span class="wentian-chart-ai-kicker"><i aria-hidden="true"></i>AI 命盘解读</span>
+          <h2>总局先行</h2>
+        </div>
+        <b class="wentian-chart-ai-status">${escapeHtml(statusLabel)}</b>
       </header>
+      ${wentianChartAiState.error ? `<p class="wentian-chart-ai-error">${escapeHtml(wentianChartAiState.error)}</p>` : ""}
+      <div class="wentian-chart-ai-hero">
+        <div>
+          <strong>生成完整六卷批命</strong>
+          <p>命盘主线、格局底色与关键提醒先出来，再向下看专题和流年。</p>
+        </div>
+        <div class="wentian-chart-ai-coin"><span>总批</span>命</div>
+      </div>
+      <div class="wentian-chart-ai-pulse">
+        <span><b>${reportCount}</b> 卷报告</span>
+        <span><b>${activeAge || "--"}</b> 岁流年</span>
+      </div>
       <div class="wentian-chart-ai-actions">
         <button type="button" class="wentian-chart-ai-primary" data-action="wentian-chart-ai-decode" ${isRunning ? "disabled" : ""}>${escapeHtml(buttonText)}</button>
         <button type="button" class="wentian-chart-ai-secondary" data-route="screen-4">追问</button>
         <button type="button" class="wentian-chart-ai-secondary" data-action="wentian-open-mingbook-onepage">下载PDF</button>
       </div>
       <p class="wentian-chart-ai-pdf-status" data-wentian-pdf-status></p>
-      <div class="wentian-chart-ai-pulse">
-        <span><b>${hasResults ? "已生成" : (isRunning ? "生成中" : "待生成")}</b> 状态</span>
-        <span><b>6</b> 卷报告</span>
-      </div>
-      <div class="wentian-chart-ai-list">
-        ${chapters.map(renderWentianMobileChapter).join("")}
-      </div>
     </section>
+    <div class="wentian-chart-ai-list">
+      ${visibleChapters.map(renderWentianMobileChapter).join("")}
+    </div>
   `;
 }
 
