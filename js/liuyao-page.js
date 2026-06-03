@@ -765,6 +765,7 @@
     const auto = $('#mbpLiuyaoAuto');
     const quota = $('#mbpLiuyaoQuota');
     const gateTags = $('#mbpLiuyaoGateTags');
+    const gateInline = $('#mbpLiuyaoGateInline');
     const gateBadge = $('#mbpLiuyaoGateBadge');
     const gateStatus = $('#mbpLiuyaoGateStatus');
     const gateSubmit = $('#mbpLiuyaoSubmitQuestion');
@@ -780,8 +781,12 @@
       gateBadge.textContent = gateStatusMeta.badge;
       gateBadge.dataset.tone = gateStatusMeta.tone || 'hint';
     }
+    if (gateInline) {
+      gateInline.dataset.tone = gateStatusMeta.tone || 'hint';
+    }
     if (gateStatus) {
       gateStatus.textContent = gateStatusMeta.text;
+      gateStatus.dataset.tone = gateStatusMeta.tone || 'hint';
     }
     if (gateSubmit) {
       gateSubmit.textContent = submitMeta.label;
@@ -867,7 +872,7 @@
       $('#mbpLiuyaoQuestion')?.focus();
       return false;
     } catch (_err) {
-      state.error = '审题服务暂时不可用，请稍后再试。';
+      state.error = '提交失败：审题服务暂时没有响应，请稍后重新提交。';
       state.statusTone = 'error';
       return false;
     } finally {
