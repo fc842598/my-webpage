@@ -15664,6 +15664,10 @@ function renderWentianClassicPalaceCell(palace, activeBranch, options = {}) {
   if (!pos) return "";
   const [col, row] = pos;
   const highlightClass = getWentianClassicCellClasses(branch, activeBranch);
+  const selectedXiaoLian = options.selectedXiaoLian || {};
+  const xiaoLianBranch = selectedXiaoLian.xiaolianBranch || selectedXiaoLian.xiaoLianBranch || "";
+  const xiaoLianAge = Number(selectedXiaoLian.age || 0);
+  const isXiaoLian = !!xiaoLianBranch && branch === xiaoLianBranch;
   const readonly = !!options.readonly;
   const palaceAction = options.palaceAction || "";
   const allStars = [
@@ -15684,13 +15688,14 @@ function renderWentianClassicPalaceCell(palace, activeBranch, options = {}) {
   ].slice(0, 5).map((star) => `<div class="fc-minor-star">${escapeHtml(getWentianClassicStarText(star))}</div>`).join("");
   const shenHtml = [palace.changsheng12, palace.boshi12].filter(Boolean).map((item) => `<span>${escapeHtml(item)}</span>`).join("");
   const palaceName = `${palace.isBodyPalace ? "身宫\n" : ""}${palace.name || ""}`;
+  const xiaoLianHtml = isXiaoLian ? `<div class="fc-xiaolian-badge">${escapeHtml(xiaoLianAge ? `${xiaoLianAge}岁` : "小流年")}</div>` : "";
   const cellAttrs = palaceAction
     ? `data-action="${escapeHtml(palaceAction)}" data-palace-branch="${escapeHtml(branch)}" data-palace-name="${escapeHtml(palace.name || branch)}" role="button"`
     : readonly
     ? `data-palace-branch="${escapeHtml(branch)}" data-palace-name="${escapeHtml(palace.name || branch)}"`
     : `data-action="wentian-chart-palace" data-palace-branch="${escapeHtml(branch)}" data-palace-name="${escapeHtml(palace.name || branch)}" role="button"`;
   return `
-    <div class="fc-cell ${highlightClass}${readonly && !palaceAction ? " is-readonly" : ""}" ${cellAttrs} style="grid-column:${col + 1};grid-row:${row + 1};">
+    <div class="fc-cell ${highlightClass}${isXiaoLian ? " fc-xiaolian is-locating" : ""}${readonly && !palaceAction ? " is-readonly" : ""}" ${cellAttrs} style="grid-column:${col + 1};grid-row:${row + 1};">
       <div class="fc-cell-top">
         ${mutagenHtml ? `<div class="fc-cell-mutagen">${mutagenHtml}</div>` : ""}
         <div class="fc-major-list">${majorHtml}</div>
@@ -15703,6 +15708,7 @@ function renderWentianClassicPalaceCell(palace, activeBranch, options = {}) {
           <span class="fc-age">${escapeHtml(getWentianClassicRange(palace))}</span>
           <span class="fc-palace-name">${escapeHtml(palaceName)}</span>
         </div>
+        ${xiaoLianHtml}
       </div>
     </div>`;
 }
@@ -16078,11 +16084,28 @@ function renderWentianClassicChart(saved, options = {}) {
   const chart = source.chart || {};
   if (!Array.isArray(chart.palaces) || !chart.palaces.length) return "";
   const form = source.form || {};
-  const chartData = source.chartData || buildWentianChartPayload(chart, {
+  const sourceChartData = source.chartData || {};
+  const computedChartData = buildWentianChartPayload(chart, {
     gender: form.gender || "male",
     date: form.datetime ? new Date(form.datetime) : null,
     city: form.city || "",
   });
+  const chartData = {
+    ...computedChartData,
+    ...sourceChartData,
+    liunianTable: Array.isArray(sourceChartData.liunianTable) && sourceChartData.liunianTable.length
+      ? sourceChartData.liunianTable
+      : computedChartData.liunianTable,
+    yijing: sourceChartData.yijing || computedChartData.yijing,
+    activeAge: sourceChartData.activeAge || computedChartData.activeAge,
+    realCurrentAge: sourceChartData.realCurrentAge || computedChartData.realCurrentAge,
+    currentYear: sourceChartData.currentYear || computedChartData.currentYear,
+    currentYearData: sourceChartData.currentYearData || computedChartData.currentYearData,
+    currentXiaolian: sourceChartData.currentXiaolian || computedChartData.currentXiaolian,
+  };
+  const selectedXiaoLian = getWentianSelectedXiaoLianYear(chartData);
+  const cellOptions = { ...options, selectedXiaoLian };
+  const centerSource = { ...source, chart, chartData };
   const activeBranch = options.activeBranch || chart.earthlyBranchOfSoulPalace || (chart.palaces || []).find((p) => p.name === "命宫")?.earthlyBranch || "卯";
   const nodeId = options.nodeId || "source-27-native-chart";
   return `
@@ -16095,8 +16118,8 @@ function renderWentianClassicChart(saved, options = {}) {
               <path class="fc-sanfang-triangle"></path>
               <g class="fc-sanfang-points"></g>
             </svg>
-            ${(chart.palaces || []).map((palace) => renderWentianClassicPalaceCell(palace, activeBranch, options)).join("")}
-            ${renderWentianClassicCenter(chart, chartData, form, options, source)}
+            ${(chart.palaces || []).map((palace) => renderWentianClassicPalaceCell(palace, activeBranch, cellOptions)).join("")}
+            ${renderWentianClassicCenter(chart, chartData, form, options, centerSource)}
           </div>
         </div>
       </div>
