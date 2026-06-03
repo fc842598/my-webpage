@@ -3064,10 +3064,10 @@ function extractWentianPillars(chart) {
 function buildWentianLiunianTimingFields(chartData = {}) {
   const palacesSummary = Array.isArray(chartData.palacesSummary) ? chartData.palacesSummary : [];
   const findPalaceByBranch = (branch) => palacesSummary.find((p) => p?.branch === branch || p?.earthlyBranch === branch) || null;
-  const currentYear = Number(chartData.currentYear || new Date().getFullYear());
+  const currentYear = new Date().getFullYear();
   const birthYear = Number(chartData.birthYear || String(chartData.birthDate || chartData.solarTime || "").slice(0, 4));
-  const realCurrentAge = Number(chartData.realCurrentAge || (birthYear ? currentYear - birthYear + 1 : 0));
-  const activeAge = Number(chartData.activeAge || realCurrentAge || 0);
+  const realCurrentAge = birthYear ? currentYear - birthYear + 1 : 0;
+  const activeAge = realCurrentAge || 0;
   const gender = chartData.gender || "male";
   const sizhu = chartData.sizhu || {};
   const birthYearBranch = sizhu.yearBranch || chartData.yearBranch || getWentianYearGanzhi(birthYear).branch;
@@ -16267,11 +16267,11 @@ function renderWentianClassicChart(saved, options = {}) {
       ? sourceChartData.liunianTable
       : computedChartData.liunianTable,
     yijing: sourceChartData.yijing || computedChartData.yijing,
-    activeAge: sourceChartData.activeAge || computedChartData.activeAge,
-    realCurrentAge: sourceChartData.realCurrentAge || computedChartData.realCurrentAge,
-    currentYear: sourceChartData.currentYear || computedChartData.currentYear,
-    currentYearData: sourceChartData.currentYearData || computedChartData.currentYearData,
-    currentXiaolian: sourceChartData.currentXiaolian || computedChartData.currentXiaolian,
+    activeAge: computedChartData.activeAge || sourceChartData.activeAge,
+    realCurrentAge: computedChartData.realCurrentAge || sourceChartData.realCurrentAge,
+    currentYear: computedChartData.currentYear || sourceChartData.currentYear,
+    currentYearData: computedChartData.currentYearData || sourceChartData.currentYearData,
+    currentXiaolian: computedChartData.currentXiaolian || sourceChartData.currentXiaolian,
   };
   const selectedXiaoLian = getWentianSelectedXiaoLianYear(chartData);
   const cellOptions = { ...options, selectedXiaoLian };
