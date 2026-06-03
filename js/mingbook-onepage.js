@@ -7034,7 +7034,7 @@
     overlay.hidden = false;
     $('#mbpShichenQuestions').hidden = false;
     $('#mbpShichenResult').hidden = true;
-    $('#mbpShichenTimeQuick button')?.focus();
+    $('#mbpShichenTimeQuick [data-shichen-time]')?.focus();
   }
 
   function closeShichenModal() {
@@ -7088,10 +7088,13 @@
       return;
     }
     root.innerHTML = shichenTimeGroups.map((item) => `
-      <button type="button" data-shichen-time="${escapeHtml(item.key)}">
-        <b>${escapeHtml(item.label)}</b>
-        <small>${escapeHtml(item.hint)}</small>
-      </button>
+      <div class="mbp-shichen-time-card" data-shichen-card="${escapeHtml(item.key)}">
+        <button type="button" class="mbp-shichen-time-main" data-shichen-time="${escapeHtml(item.key)}">
+          <b>${escapeHtml(item.label)}</b>
+          <small>${escapeHtml(item.hint)}</small>
+        </button>
+        <div class="mbp-shichen-time-card-detail" data-shichen-card-detail="${escapeHtml(item.key)}" hidden></div>
+      </div>
     `).join('');
     root.dataset.ready = '1';
     renderShichenTimeDetail($('#mbpVagueTime')?.dataset?.group || '');
@@ -7100,15 +7103,23 @@
 
   function renderShichenTimeDetail(groupKey) {
     const box = $('#mbpShichenTimeDetail');
-    if (!box) return;
+    if (box) {
+      box.hidden = true;
+      box.innerHTML = '';
+    }
     const group = shichenTimeGroupByKey(groupKey);
     const details = group?.details || [];
-    box.hidden = !details.length;
-    box.innerHTML = details.map((item) => `
-      <button type="button" data-shichen-detail="${escapeHtml(item.key)}">
-        ${escapeHtml(item.label)}
-      </button>
-    `).join('');
+    document.querySelectorAll('[data-shichen-card-detail]').forEach((detailBox) => {
+      const isCurrent = detailBox.dataset.shichenCardDetail === groupKey;
+      detailBox.hidden = !isCurrent || !details.length;
+      detailBox.innerHTML = isCurrent && details.length
+        ? `<span>可细选</span>${details.map((item) => `
+          <button type="button" data-shichen-detail="${escapeHtml(item.key)}">
+            ${escapeHtml(item.label)}
+          </button>
+        `).join('')}`
+        : '';
+    });
   }
 
   function syncShichenTimeButtons() {
@@ -7117,6 +7128,9 @@
     const detailKey = input?.dataset?.detail || '';
     document.querySelectorAll('[data-shichen-time]').forEach((button) => {
       button.classList.toggle('is-active', button.dataset.shichenTime === groupKey);
+    });
+    document.querySelectorAll('[data-shichen-card]').forEach((card) => {
+      card.classList.toggle('is-active', card.dataset.shichenCard === groupKey);
     });
     document.querySelectorAll('[data-shichen-detail]').forEach((button) => {
       button.classList.toggle('is-active', button.dataset.shichenDetail === detailKey);
@@ -7648,6 +7662,12 @@
     });
     $('#mbpShichenCalc')?.addEventListener('click', renderShichenResult);
     $('#mbpShichenTimeQuick')?.addEventListener('click', (event) => {
+      const detail = event.target.closest('[data-shichen-detail]');
+      if (detail) {
+        const groupKey = detail.closest('[data-shichen-card]')?.dataset?.shichenCard || $('#mbpVagueTime')?.dataset?.group || '';
+        if (groupKey) setShichenTimeSelection(groupKey, detail.dataset.shichenDetail);
+        return;
+      }
       const button = event.target.closest('[data-shichen-time]');
       if (button) setShichenTimeSelection(button.dataset.shichenTime);
     });
@@ -7659,7 +7679,7 @@
     $('#mbpShichenBack')?.addEventListener('click', () => {
       $('#mbpShichenQuestions').hidden = false;
       $('#mbpShichenResult').hidden = true;
-      $('#mbpShichenTimeQuick button')?.focus();
+      $('#mbpShichenTimeQuick [data-shichen-time]')?.focus();
     });
     $('#mbpShichenCandidates')?.addEventListener('click', (event) => {
       const button = event.target.closest('[data-shichen-hour]');
