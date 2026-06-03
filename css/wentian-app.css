@@ -9764,6 +9764,49 @@ html[lang="en"] .wentian-chart-ai-actions button {
   line-height: 1.68;
 }
 
+.wentian-mb-curve-hero.is-pending {
+  min-height: 172px;
+  background: linear-gradient(135deg, #1a1207 0%, #0b0804 68%, #2b2110 100%);
+}
+
+.wentian-mb-curve-hero.is-pending::before {
+  content: "AI";
+  color: #1b1205;
+  background: linear-gradient(145deg, #f4df82, #be8d36);
+  box-shadow: 0 12px 28px rgba(221, 184, 83, .2);
+}
+
+.wentian-mb-curve-pending-card {
+  display: grid;
+  gap: 8px;
+  padding: 16px;
+  border: 1px solid rgba(226, 199, 103, .34);
+  border-radius: 16px;
+  background: rgba(255, 247, 224, .06);
+}
+
+.wentian-mb-curve-pending-card span {
+  color: #d9bd61;
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.wentian-mb-curve-pending-card h4 {
+  margin: 0;
+  color: #fff7df;
+  font-size: 19px;
+  font-weight: 900;
+  line-height: 1.35;
+}
+
+.wentian-mb-curve-pending-card p {
+  margin: 0;
+  color: #cabc96;
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 1.65;
+}
+
 .wentian-mb-curve-tabs {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -10124,6 +10167,10 @@ html[lang="en"] .wentian-chart-ai-actions button {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 8px;
+}
+
+.wentian-mb-curve-actions.is-single {
+  grid-template-columns: 1fr;
 }
 
 .wentian-mb-curve-actions button {

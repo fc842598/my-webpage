@@ -4457,12 +4457,33 @@ function renderWentianCurveTabs(activeView) {
   `;
 }
 
+function renderWentianCurvePending(fallback, actionAttr, actionLabel) {
+  return `
+    <div class="wentian-mb-curve-hero is-pending" data-wentian-curve-pending>
+      <span>人生曲线</span>
+      <h3>等待 AI<br>生成曲线</h3>
+      <b>生成后显示逐岁评分</b>
+      <p>${escapeHtml(fallback || "等待生成客户易懂版人生曲线、低点高点和阶段提醒。")}</p>
+    </div>
+    <section class="wentian-mb-curve-pending-card">
+      <span>未生成</span>
+      <h4>这里先不显示本地预估分</h4>
+      <p>逐岁分数、关键节点和过去验证，需要点击生成曲线后由 AI 结果展示。</p>
+    </section>
+    <div class="wentian-mb-curve-actions is-single">
+      <button type="button" ${actionAttr}>${escapeHtml(actionLabel || "生成曲线")}</button>
+    </div>
+  `;
+}
+
 function renderWentianCurveReading(data, fallback, actionAttr, actionLabel) {
   const chartData = getWentianChartPayload();
+  const hasAiCurveScores = !!getWentianCurveDataFromAi(data, chartData)?.scores?.length;
+  const ready = hasAiCurveScores || (!!data && getWentianAiSections(data).length > 0);
+  if (!ready) return renderWentianCurvePending(fallback, actionAttr, actionLabel);
   const curve = buildWentianLifeCurveData(chartData, data);
   const activeView = wentianMobileCurveView === "past" ? "past" : "future";
   const { current, high, low } = getWentianCurveFocusPoints(curve);
-  const ready = !!data && getWentianAiSections(data).length > 0;
   const groups = getWentianCurveReadingGroups(data, curve);
   const primaryLabel = ready ? "重批曲线" : actionLabel;
   const secondaryView = activeView === "past" ? "future" : "past";
