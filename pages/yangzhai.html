@@ -398,7 +398,7 @@
     .usage-guide {
       position: relative;
       display: grid;
-      grid-template-columns: minmax(430px, .62fr) minmax(760px, 1fr);
+      grid-template-columns: minmax(360px, .62fr) minmax(0, 1fr);
       align-items: start;
       column-gap: clamp(28px, 4vw, 64px);
       row-gap: 18px;
@@ -1500,7 +1500,7 @@
 
     /* Desktop visual upgrade: keep the original interactions, improve the reading surface. */
     @media (min-width: 901px) {
-      :root { --container: 1920px; }
+      :root { --container: 1360px; }
 
       body {
         background:
