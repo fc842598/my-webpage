@@ -497,286 +497,27 @@
     .usage-card {
       position: relative;
       overflow: hidden;
-      min-height: clamp(300px, 24vw, 430px);
-      padding: clamp(18px, 1.7vw, 28px);
-      border: 1px solid rgba(201, 169, 97, .48);
-      border-radius: 12px;
-      background:
-        radial-gradient(circle at 18% 62%, rgba(201,169,97,.14), transparent 28%),
-        linear-gradient(180deg, rgba(8, 6, 3, .78), rgba(3, 2, 1, .88));
-      box-shadow:
-        inset 0 0 0 1px rgba(240,215,155,.05),
-        0 18px 42px rgba(0,0,0,.26);
-    }
-
-    .usage-card-title {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin: 0;
-      color: var(--ivory);
-      font-family: "Noto Serif SC", "Songti SC", serif;
-      font-size: clamp(21px, 1.75vw, 30px);
-      line-height: 1.18;
-      letter-spacing: 0;
-    }
-
-    .usage-card-number {
-      width: 38px;
-      height: 38px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      flex: 0 0 auto;
-      border: 1px solid rgba(201,169,97,.78);
-      border-radius: 999px;
-      color: var(--gold-soft);
-      background: rgba(18, 13, 5, .78);
-      font-family: "Noto Serif SC", "Songti SC", serif;
-      font-size: 20px;
-      box-shadow: 0 0 20px rgba(201,169,97,.16);
-    }
-
-    .usage-card-copy {
-      margin: 12px 0 0;
-      color: #d5bf84;
-      font-size: clamp(13px, 1.02vw, 17px);
-      font-weight: 800;
-      line-height: 1.58;
-    }
-
-    .usage-card-visual {
-      position: absolute;
-      inset: auto clamp(16px, 1.6vw, 28px) clamp(20px, 2vw, 34px);
-      height: clamp(168px, 15vw, 264px);
-    }
-
-    .house-visual svg {
       width: 100%;
-      height: 100%;
-      display: block;
-      overflow: visible;
-    }
-
-    .house-visual .plan-line,
-    .house-visual .plan-wall {
-      fill: none;
-      stroke: rgba(240, 215, 155, .88);
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-
-    .house-visual .plan-wall { stroke-width: 4; }
-    .house-visual .plan-line {
-      stroke: rgba(201,169,97,.62);
-      stroke-width: 2;
-      stroke-dasharray: 7 8;
-    }
-
-    .house-visual .plan-node {
-      fill: #f0d79b;
-      filter: drop-shadow(0 0 8px rgba(240,215,155,.64));
-    }
-
-    .house-visual .center-node {
-      fill: #f8e7a8;
-      filter: drop-shadow(0 0 18px rgba(240,215,155,.90));
-    }
-
-    .house-visual .compass-ring {
-      fill: rgba(11,8,4,.94);
-      stroke: rgba(240,215,155,.70);
-      stroke-width: 2;
-      filter: drop-shadow(0 0 18px rgba(201,169,97,.30));
-    }
-
-    .house-visual .compass-mark,
-    .house-visual .compass-text {
-      fill: #f0d79b;
-      font-size: 13px;
-      font-weight: 900;
-    }
-
-    .palace-visual {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      grid-template-rows: repeat(3, 1fr);
-      border: 1px solid rgba(201,169,97,.72);
-      box-shadow:
-        0 0 28px rgba(201,169,97,.16),
-        inset 0 0 28px rgba(201,169,97,.08);
-      background: rgba(4,3,1,.56);
-    }
-
-    .palace-visual::before,
-    .palace-visual::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-    }
-
-    .palace-visual::before {
-      background:
-        linear-gradient(90deg, transparent 33.1%, rgba(201,169,97,.58) 33.1%, rgba(201,169,97,.58) 33.6%, transparent 33.6%, transparent 66.4%, rgba(201,169,97,.58) 66.4%, rgba(201,169,97,.58) 66.9%, transparent 66.9%),
-        linear-gradient(180deg, transparent 33.1%, rgba(201,169,97,.58) 33.1%, rgba(201,169,97,.58) 33.6%, transparent 33.6%, transparent 66.4%, rgba(201,169,97,.58) 66.4%, rgba(201,169,97,.58) 66.9%, transparent 66.9%);
-    }
-
-    .palace-cell-demo {
-      position: relative;
-      display: grid;
-      place-items: center;
-      padding: 10px;
-      color: #d8bb76;
-      font-family: "Noto Serif SC", "Songti SC", serif;
-      font-size: clamp(15px, 1.25vw, 24px);
-      font-weight: 800;
-      line-height: 1.22;
-      text-align: center;
-    }
-
-    .palace-cell-demo.is-active {
-      align-items: start;
-      justify-items: start;
-      background: radial-gradient(circle at 26% 48%, rgba(240,215,155,.22), transparent 42%);
-      color: var(--gold-soft);
-    }
-
-    .role-marker {
-      position: absolute;
-      left: 16%;
-      bottom: 18%;
-      display: grid;
-      justify-items: center;
-      gap: 3px;
-      color: var(--ivory);
-    }
-
-    .role-marker::before {
-      content: "";
-      width: 30px;
-      height: 30px;
-      border-radius: 50% 50% 42% 42%;
-      background:
-        radial-gradient(circle at 50% 34%, #f7de92 0 19%, transparent 20%),
-        linear-gradient(180deg, transparent 37%, #f7de92 38% 100%);
-      filter: drop-shadow(0 0 12px rgba(240,215,155,.44));
-    }
-
-    .role-marker span {
-      min-width: 52px;
-      padding: 3px 10px 5px;
-      border: 1px solid rgba(240,215,155,.78);
-      border-radius: 999px;
-      background: rgba(18,12,4,.88);
-      font-size: clamp(12px, .96vw, 16px);
-      line-height: 1.1;
-    }
-
-    .scroll-visual {
-      display: grid;
-      place-items: center;
-    }
-
-    .scroll-sheet {
-      position: relative;
-      width: min(84%, 326px);
-      height: min(100%, 226px);
-      min-height: 170px;
-      border: 1px solid rgba(110,72,27,.42);
       border-radius: 8px;
-      background:
-        radial-gradient(circle at 20% 82%, rgba(96,61,23,.24), transparent 20%),
-        linear-gradient(180deg, rgba(235,199,125,.96), rgba(178,125,55,.92));
-      box-shadow:
-        inset 0 0 22px rgba(75,43,12,.34),
-        0 0 28px rgba(201,169,97,.24);
+      background: transparent;
+      box-shadow: 0 18px 42px rgba(0,0,0,.28);
     }
 
-    .scroll-sheet::before,
-    .scroll-sheet::after {
-      content: "";
-      position: absolute;
-      left: -8px;
-      right: -8px;
-      height: 18px;
-      border-radius: 999px;
-      background: linear-gradient(180deg, #e2b665, #87521d);
-      box-shadow: inset 0 2px 5px rgba(255,255,255,.24), 0 3px 10px rgba(0,0,0,.34);
-    }
-
-    .scroll-sheet::before { top: -8px; }
-    .scroll-sheet::after { bottom: -8px; }
-
-    .hexagram-lines {
-      position: absolute;
-      left: 34px;
-      top: 48px;
-      display: grid;
-      gap: 9px;
-      width: 74px;
-    }
-
-    .hex-line,
-    .hex-split {
-      height: 6px;
-      border-radius: 999px;
-      background: #44270b;
-    }
-
-    .hex-split {
-      background: linear-gradient(90deg, #44270b 0 42%, transparent 42% 58%, #44270b 58% 100%);
-    }
-
-    .scroll-text {
-      position: absolute;
-      left: 126px;
-      top: 38px;
-      right: 22px;
-      color: #3b230b;
-      font-size: clamp(10px, .68vw, 12px);
-      font-weight: 900;
-      line-height: 1.6;
-    }
-
-    .scroll-text strong {
+    .usage-card-image {
       display: block;
-      margin: 12px 0 2px;
-      font-size: clamp(12px, .86vw, 15px);
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
     }
 
-    .scroll-seal {
+    .usage-card-sr {
       position: absolute;
-      right: -22px;
-      bottom: -18px;
-      width: clamp(54px, 4.4vw, 76px);
-      height: clamp(54px, 4.4vw, 76px);
-      border: 2px solid rgba(240,215,155,.86);
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(201,169,97,.26), rgba(11,8,4,.98) 62%);
-      box-shadow: 0 0 28px rgba(240,215,155,.58);
-    }
-
-    .scroll-seal::before,
-    .scroll-seal::after {
-      content: "";
-      position: absolute;
-      left: 34%;
-      top: 52%;
-      height: 5px;
-      border-radius: 999px;
-      background: #f0d79b;
-      transform-origin: left center;
-    }
-
-    .scroll-seal::before {
-      width: 22%;
-      transform: rotate(42deg);
-    }
-
-    .scroll-seal::after {
-      width: 48%;
-      transform: rotate(-48deg);
+      width: 1px;
+      height: 1px;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      white-space: nowrap;
     }
 
     .intro-toolbar {
@@ -1679,12 +1420,6 @@
       .links { display: none; }
       .intro-steps { grid-template-columns: 1fr; }
       .usage-guide-cards { grid-template-columns: 1fr; }
-      .usage-card {
-        min-height: 390px;
-      }
-      .usage-card-visual {
-        height: 240px;
-      }
       .intro-support { align-items: flex-start; flex-direction: column; }
       .workbench { grid-template-columns: 1fr; }
       .guide-panel,
@@ -1725,26 +1460,6 @@
       .usage-guide-cards {
         gap: 14px;
         margin-top: 22px;
-      }
-      .usage-card {
-        min-height: 350px;
-        padding: 18px;
-      }
-      .usage-card-number {
-        width: 32px;
-        height: 32px;
-        font-size: 17px;
-      }
-      .usage-card-visual {
-        inset-inline: 16px;
-        height: 210px;
-      }
-      .scroll-sheet {
-        width: min(86%, 300px);
-      }
-      .scroll-text {
-        left: 136px;
-        right: 18px;
       }
       .intro-copy h1 { font-size: 22px; }
       .intro-copy p { font-size: 14px; }
@@ -2615,73 +2330,18 @@
 
               <div class="usage-guide-cards" aria-label="三步使用说明">
                 <article class="usage-card">
-                  <h2 class="usage-card-title"><span class="usage-card-number">1</span>确认房屋朝向</h2>
-                  <p class="usage-card-copy">取户型中心点，用罗盘或手机指南针定出正北。</p>
-                  <div class="usage-card-visual house-visual" aria-hidden="true">
-                    <svg viewBox="0 0 420 300" role="img">
-                      <path class="plan-wall" d="M48 56H366V226H48Z" />
-                      <path class="plan-wall" d="M120 56V118H174V86H244V56" />
-                      <path class="plan-wall" d="M48 166H110V226M164 226V188H206M300 226V166H366" />
-                      <path class="plan-line" d="M48 56 208 144 366 56M48 226 208 144 366 226M208 56V226" />
-                      <circle class="plan-node" cx="48" cy="56" r="8" />
-                      <circle class="plan-node" cx="366" cy="56" r="8" />
-                      <circle class="plan-node" cx="48" cy="226" r="8" />
-                      <circle class="plan-node" cx="366" cy="226" r="8" />
-                      <circle class="center-node" cx="208" cy="144" r="11" />
-                      <text class="compass-text" x="204" y="42">北</text>
-                      <path class="compass-mark" d="M208 47l-8 18h16Z" />
-                      <circle class="compass-ring" cx="310" cy="206" r="58" />
-                      <path class="compass-mark" d="M318 172l14 78-28-62Z" />
-                      <path class="compass-mark" opacity=".42" d="M304 238l-13-74 27 58Z" />
-                      <text class="compass-text" x="306" y="174">N</text>
-                      <text class="compass-text" x="306" y="258">S</text>
-                      <text class="compass-text" x="354" y="214">E</text>
-                      <text class="compass-text" x="262" y="214">W</text>
-                    </svg>
-                  </div>
+                  <img class="usage-card-image" src="../images/yangzhai-usage/yangzhai-usage-step-1.png" alt="" loading="eager" decoding="async">
+                  <span class="usage-card-sr">1 确认房屋朝向：取户型中心点，用罗盘或手机指南针定出正北。</span>
                 </article>
 
                 <article class="usage-card">
-                  <h2 class="usage-card-title"><span class="usage-card-number">2</span>放入实际居住角色</h2>
-                  <p class="usage-card-copy">哪个方位是谁长期居住，就把角色放进对应宫位。</p>
-                  <div class="usage-card-visual palace-visual" aria-hidden="true">
-                    <div class="palace-cell-demo">东南<br>巽宫</div>
-                    <div class="palace-cell-demo">正南<br>离宫</div>
-                    <div class="palace-cell-demo">西南<br>坤宫</div>
-                    <div class="palace-cell-demo is-active">正东<br>震宫<span class="role-marker"><span>长子</span></span></div>
-                    <div class="palace-cell-demo">中宫</div>
-                    <div class="palace-cell-demo">正西<br>兑宫</div>
-                    <div class="palace-cell-demo">东北<br>艮宫</div>
-                    <div class="palace-cell-demo">正北<br>坎宫</div>
-                    <div class="palace-cell-demo">西北<br>乾宫</div>
-                  </div>
+                  <img class="usage-card-image" src="../images/yangzhai-usage/yangzhai-usage-step-2.png" alt="" loading="eager" decoding="async">
+                  <span class="usage-card-sr">2 放入实际居住角色：哪个方位是谁长期居住，就把角色放进对应宫位。</span>
                 </article>
 
                 <article class="usage-card">
-                  <h2 class="usage-card-title"><span class="usage-card-number">3</span>生成居住解读</h2>
-                  <p class="usage-card-copy">看是否名位相等，再查看卦象提醒与调整方向。</p>
-                  <div class="usage-card-visual scroll-visual" aria-hidden="true">
-                    <div class="scroll-sheet">
-                      <div class="hexagram-lines">
-                        <span class="hex-line"></span>
-                        <span class="hex-split"></span>
-                        <span class="hex-line"></span>
-                        <span class="hex-line"></span>
-                        <span class="hex-split"></span>
-                        <span class="hex-line"></span>
-                      </div>
-                      <div class="scroll-text">
-                        <strong>本宫卦象</strong>
-                        震为雷<br>
-                        震动奋起，直行动变通。
-                        <strong>要点提醒</strong>
-                        注意家庭沟通与情绪管理，保持稳健。
-                        <strong>调整方向</strong>
-                        可加强东方布局。
-                      </div>
-                      <span class="scroll-seal"></span>
-                    </div>
-                  </div>
+                  <img class="usage-card-image" src="../images/yangzhai-usage/yangzhai-usage-step-3.png" alt="" loading="eager" decoding="async">
+                  <span class="usage-card-sr">3 生成居住解读：看是否名位相等，再查看卦象提醒与调整方向。</span>
                 </article>
               </div>
 
@@ -2935,6 +2595,23 @@
         .replace(/([，,])(?=[一二三四五六七八九十]、)/g, "$1\n")
         .replace(/。(?=\S)/g, "。\n")
         .trim();
+      const traditionalToSimplified = {
+        "與": "与", "為": "为", "須": "须", "長": "长", "變": "变", "將": "将", "則": "则", "時": "时",
+        "陽": "阳", "親": "亲", "從": "从", "勞": "劳", "怨": "怨", "連": "连", "適": "适", "齡": "龄",
+        "歡": "欢", "於": "于", "後": "后", "歲": "岁", "離": "离", "馬": "马", "遠": "远", "廚": "厨",
+        "廁": "厕", "廳": "厅", "宮": "宫", "卦": "卦", "現": "现", "見": "见", "來": "来", "這": "这",
+        "個": "个", "內": "内", "會": "会", "幾": "几", "間": "间", "開": "开", "關": "关", "係": "系",
+        "職": "职", "業": "业", "財": "财", "貴": "贵", "賤": "贱", "買": "买", "賣": "卖", "進": "进",
+        "還": "还", "過": "过", "應": "应", "順": "顺", "斷": "断", "論": "论", "註": "注", "記": "记",
+        "點": "点", "國": "国", "獨": "独", "體": "体", "書": "书", "學": "学", "氣": "气", "無": "无",
+        "實": "实", "審": "审", "認": "认", "讓": "让", "說": "说", "語": "语", "讀": "读", "寫": "写",
+        "幫": "帮", "辦": "办", "對": "对", "當": "当", "當": "当", "條": "条", "號": "号", "萬": "万",
+        "區": "区", "壓": "压", "壽": "寿", "陰": "阴", "險": "险", "難": "难", "雙": "双", "單": "单",
+        "發": "发", "復": "复", "歸": "归", "臺": "台", "禮": "礼", "義": "义", "藝": "艺", "靈": "灵",
+        "雲": "云", "運": "运", "澤": "泽", "風": "风", "雷": "雷", "澤": "泽", "豫": "豫",
+        "厭": "厌", "煩": "烦", "興": "兴", "憂": "忧", "懼": "惧", "屢": "屡", "錯": "错", "恥": "耻"
+      };
+      const toSimplified = (text) => [...String(text || "")].map((char) => traditionalToSimplified[char] || char).join("");
       const getHexEntry = (label, palace) => {
         const upper = roleGua[label];
         if (!upper || !palace?.gua) return null;
@@ -3117,26 +2794,26 @@
             if (option.type === "space") {
               const rule = spaceRules[label] || {};
               const matched = (rule.preferredPalaces || []).includes(palace.key);
-              const text = formatReadingText(rule.original || `${rule.meaning || ""}${rule.preference || ""}`) || "空间象义待补。";
+              const text = toSimplified(formatReadingText(rule.original || `${rule.meaning || ""}${rule.preference || ""}`) || "空间象义待补。");
               results.push({
                 ...base,
                 tag: matched ? "方位适配" : "位置待调",
                 title: `${label}在${palace.gua}宫 · ${palace.dir}`,
                 body: `${text}\n当前：${palace.gua}宫(${palace.dir})。`,
-                source: rule.source || sourceTitle
+                source: toSimplified(rule.source || sourceTitle)
               });
               return;
             }
             const hex = getHexEntry(label, palace);
             const matched = label === palace.defaultItem;
             const reading = getHexReading(hex);
-            const originalText = formatReadingText(getReadingText(reading));
+            const originalText = toSimplified(formatReadingText(getReadingText(reading)));
             results.push({
               ...base,
               tag: matched ? "本位相合" : "卦象解读",
-              title: hex ? `${label}住${palace.gua}宫 · 第${hex.no}卦 ${hex.name}` : `${label}住${palace.gua}宫`,
+              title: toSimplified(hex ? `${label}住${palace.gua}宫 · 第${hex.no}卦 ${hex.name}` : `${label}住${palace.gua}宫`),
               body: hex ? (originalText || "原文待核。") : `已安位到${palace.dir}，该组合暂无索引。`,
-              source: reading?.source || sourceTitle
+              source: toSimplified(reading?.source || sourceTitle)
             });
           }));
         return results;
