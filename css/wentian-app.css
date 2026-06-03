@@ -8122,9 +8122,9 @@ html[lang="en"] .liuyao-coin-summary em {
 .wentian-yijing-reading,
 .wentian-yijing-master {
   padding: 16px;
-  border: 1px solid rgba(226, 199, 103, .42);
+  border: 1px solid rgba(226, 199, 103, .48);
   border-radius: 18px;
-  background: rgba(15, 10, 4, .98);
+  background: rgba(18, 12, 5, .98);
 }
 
 .wentian-yijing-reading p,
@@ -8132,11 +8132,19 @@ html[lang="en"] .liuyao-coin-summary em {
 .wentian-yijing-master-detail p {
   display: block;
   margin: 0;
-  color: #d7c7a0;
+  color: #eadfc8;
   font-size: 14px;
   font-style: normal;
   font-weight: 800;
   line-height: 1.72;
+}
+
+.wentian-yijing-reading p {
+  color: #d8c8a6;
+}
+
+.wentian-yijing-master-detail p {
+  color: #efe4cc;
 }
 
 .wentian-yijing-reading .wentian-mb-reading-lines,
@@ -8144,6 +8152,16 @@ html[lang="en"] .liuyao-coin-summary em {
   display: grid;
   gap: 7px;
   margin-top: 10px;
+}
+
+.wentian-yijing-reading .wentian-mb-reading-lines p {
+  color: #d8c8a6;
+  font-size: 14px;
+}
+
+.wentian-yijing-master-detail .wentian-mb-reading-lines p {
+  color: #efe4cc;
+  font-size: 15px;
 }
 
 .wentian-yijing-master > p {
@@ -8166,7 +8184,7 @@ html[lang="en"] .liuyao-coin-summary em {
 
 .wentian-yijing-master-detail {
   margin-top: 12px;
-  border-top: 1px solid rgba(226, 199, 103, .22);
+  border-top: 1px solid rgba(226, 199, 103, .3);
   padding-top: 12px;
 }
 
