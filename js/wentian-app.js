@@ -7387,6 +7387,35 @@ const WENTIAN_I18N_ZH_HANT_PHRASES = {
 };
 
 const WENTIAN_I18N_ZH_HANT_CHAR_MAP = {"爱":"愛","暧":"曖","败":"敗","办":"辦","帮":"幫","绑":"綁","宝":"寶","报":"報","备":"備","辈":"輩","贲":"賁","笔":"筆","币":"幣","闭":"閉","边":"邊","编":"編","变":"變","标":"標","别":"別","并":"並","剥":"剝","补":"補","财":"財","采":"採","参":"參","仓":"倉","册":"冊","厕":"廁","测":"測","层":"層","缠":"纏","产":"產","场":"場","陈":"陳","称":"稱","诚":"誠","迟":"遲","冲":"衝","筹":"籌","厨":"廚","础":"礎","处":"處","触":"觸","传":"傳","创":"創","词":"詞","辞":"辭","从":"從","达":"達","带":"帶","单":"單","担":"擔","弹":"彈","当":"當","档":"檔","导":"導","点":"點","电":"電","调":"調","订":"訂","东":"東","动":"動","独":"獨","读":"讀","断":"斷","对":"對","兑":"兌","额":"額","贰":"貳","发":"發","范":"範","飞":"飛","费":"費","丰":"豐","风":"風","凤":"鳳","辅":"輔","复":"復","该":"該","盖":"蓋","刚":"剛","岗":"崗","杠":"槓","诰":"誥","阁":"閣","个":"個","给":"給","宫":"宮","沟":"溝","构":"構","购":"購","够":"夠","蛊":"蠱","顾":"顧","关":"關","观":"觀","贯":"貫","惯":"慣","广":"廣","归":"歸","规":"規","贵":"貴","滚":"滾","国":"國","过":"過","还":"還","号":"號","鹤":"鶴","恒":"恆","横":"橫","红":"紅","后":"後","户":"戶","护":"護","华":"華","划":"劃","话":"話","怀":"懷","环":"環","缓":"緩","换":"換","涣":"渙","黄":"黃","挥":"揮","汇":"匯","会":"會","伙":"夥","获":"獲","击":"擊","机":"機","鸡":"雞","积":"積","级":"級","辑":"輯","几":"幾","计":"計","记":"記","纪":"紀","际":"際","济":"濟","继":"繼","价":"價","坚":"堅","间":"間","减":"減","检":"檢","简":"簡","见":"見","荐":"薦","渐":"漸","键":"鍵","将":"將","讲":"講","奖":"獎","较":"較","阶":"階","节":"節","结":"結","仅":"僅","尽":"盡","劲":"勁","进":"進","晋":"晉","经":"經","径":"徑","静":"靜","旧":"舊","据":"據","决":"決","诀":"訣","绝":"絕","觉":"覺","军":"軍","开":"開","课":"課","块":"塊","况":"況","扩":"擴","腊":"臘","来":"來","览":"覽","乐":"樂","类":"類","离":"離","礼":"禮","里":"裡","历":"歷","励":"勵","连":"連","联":"聯","恋":"戀","链":"鏈","两":"兩","辽":"遼","临":"臨","灵":"靈","铃":"鈴","龄":"齡","领":"領","刘":"劉","浏":"瀏","龙":"龍","陆":"陸","录":"錄","禄":"祿","侣":"侶","虑":"慮","鸾":"鸞","乱":"亂","轮":"輪","论":"論","罗":"羅","逻":"邏","络":"絡","妈":"媽","马":"馬","码":"碼","吗":"嗎","买":"買","卖":"賣","脉":"脈","满":"滿","么":"麼","没":"沒","门":"門","们":"們","庙":"廟","纳":"納","难":"難","脑":"腦","内":"內","拟":"擬","昵":"暱","宁":"寧","钮":"鈕","农":"農","诺":"諾","盘":"盤","抛":"拋","频":"頻","评":"評","凭":"憑","仆":"僕","铺":"鋪","齐":"齊","启":"啟","气":"氣","迁":"遷","牵":"牽","谦":"謙","签":"籤","钱":"錢","潜":"潛","强":"強","亲":"親","倾":"傾","请":"請","庆":"慶","区":"區","趋":"趨","权":"權","确":"確","让":"讓","绕":"繞","认":"認","闰":"閏","叁":"叄","丧":"喪","扫":"掃","杀":"殺","厦":"廈","筛":"篩","删":"刪","陕":"陝","伤":"傷","设":"設","谁":"誰","审":"審","师":"師","狮":"獅","时":"時","识":"識","实":"實","势":"勢","视":"視","试":"試","适":"適","释":"釋","寿":"壽","书":"書","输":"輸","属":"屬","术":"術","数":"數","双":"雙","顺":"順","说":"說","讼":"訟","苏":"蘇","肃":"肅","随":"隨","岁":"歲","孙":"孫","损":"損","缩":"縮","锁":"鎖","台":"臺","态":"態","贪":"貪","谈":"談","题":"題","体":"體","条":"條","贴":"貼","厅":"廳","铜":"銅","统":"統","头":"頭","图":"圖","湾":"灣","网":"網","围":"圍","维":"維","卫":"衛","为":"為","谓":"謂","稳":"穩","问":"問","涡":"渦","无":"無","吴":"吳","务":"務","误":"誤","习":"習","细":"細","显":"顯","险":"險","现":"現","线":"線","详":"詳","响":"響","项":"項","蝎":"蠍","协":"協","写":"寫","谢":"謝","凶":"兇","须":"須","虚":"虛","许":"許","绪":"緒","续":"續","选":"選","学":"學","询":"詢","讯":"訊","压":"壓","烟":"煙","验":"驗","阳":"陽","杨":"楊","养":"養","样":"樣","摇":"搖","业":"業","页":"頁","仪":"儀","遗":"遺","颐":"頤","义":"義","艺":"藝","议":"議","异":"異","驿":"驛","阴":"陰","银":"銀","隐":"隱","应":"應","赢":"贏","颙":"顒","优":"優","邮":"郵","于":"於","余":"餘","鱼":"魚","娱":"娛","与":"與","语":"語","预":"預","员":"員","缘":"緣","愿":"願","约":"約","悦":"悅","钺":"鉞","阅":"閱","粤":"粵","云":"雲","运":"運","杂":"雜","灾":"災","载":"載","暂":"暫","则":"則","择":"擇","泽":"澤","责":"責","张":"張","长":"長","涨":"漲","账":"賬","赵":"趙","这":"這","着":"著","贞":"貞","针":"針","争":"爭","征":"徵","证":"證","执":"執","职":"職","质":"質","掷":"擲","滞":"滯","终":"終","钟":"鍾","种":"種","众":"眾","骤":"驟","猪":"豬","专":"專","转":"轉","赚":"賺","壮":"壯","状":"狀","准":"準","咨":"諮","资":"資","综":"綜","总":"總","组":"組"};
+const WENTIAN_I18N_ZH_HANS_CHAR_MAP = Object.fromEntries(
+  Object.entries(WENTIAN_I18N_ZH_HANT_CHAR_MAP).map(([from, to]) => [to, from])
+);
+Object.assign(WENTIAN_I18N_ZH_HANT_CHAR_MAP, {
+  "兴": "興", "厌": "厭", "烦": "煩", "忧": "憂", "惧": "懼", "屡": "屢", "错": "錯", "耻": "恥",
+  "奋": "奮", "负": "負", "侧": "側", "占": "佔", "复": "複", "畅": "暢", "荫": "蔭", "儿": "兒",
+  "欢": "歡", "诸": "諸", "赌": "賭", "举": "舉", "惊": "驚", "板": "闆", "贤": "賢", "云": "雲",
+  "达": "達", "级": "級", "领": "領", "责": "責", "军": "軍", "愿": "願", "个": "個", "听": "聽",
+  "讼": "訟", "卧": "臥", "脱": "脫", "录": "錄", "职": "職", "赖": "賴", "极": "極", "娇": "嬌",
+  "钟": "鐘", "谦": "謙", "遁": "遯", "却": "卻", "体": "體", "远": "遠", "琐": "瑣", "双": "雙",
+  "丧": "喪", "装": "裝", "倾": "傾", "认": "認", "顾": "顧", "围": "圍", "观": "觀", "说": "說",
+  "劝": "勸", "唠": "嘮", "阴": "陰", "贲": "賁", "饰": "飾", "试": "試", "汉": "漢", "实": "實",
+  "舍": "捨", "乱": "亂", "夸": "誇", "矫": "矯", "弃": "棄", "节": "節", "俭": "儉", "绝": "絕",
+  "暂": "暫", "罗": "羅", "经": "經", "准": "準", "设": "設", "厅": "廳", "续": "續", "隐": "隱",
+  "布": "佈", "担": "擔", "乐": "樂", "饮": "飲", "祸": "禍", "狱": "獄", "难": "難"
+});
+Object.assign(WENTIAN_I18N_ZH_HANS_CHAR_MAP, {
+  "興": "兴", "厭": "厌", "煩": "烦", "憂": "忧", "懼": "惧", "屢": "屡", "錯": "错", "恥": "耻",
+  "奮": "奋", "負": "负", "側": "侧", "佔": "占", "複": "复", "暢": "畅", "蔭": "荫", "兒": "儿",
+  "歡": "欢", "諸": "诸", "賭": "赌", "舉": "举", "驚": "惊", "闆": "板", "賢": "贤", "雲": "云",
+  "達": "达", "級": "级", "領": "领", "責": "责", "軍": "军", "願": "愿", "個": "个", "聽": "听",
+  "訟": "讼", "臥": "卧", "脫": "脱", "錄": "录", "職": "职", "賴": "赖", "極": "极", "嬌": "娇",
+  "鐘": "钟", "謙": "谦", "遯": "遁", "卻": "却", "體": "体", "遠": "远", "瑣": "琐", "雙": "双",
+  "喪": "丧", "裝": "装", "傾": "倾", "認": "认", "顧": "顾", "圍": "围", "觀": "观", "說": "说",
+  "勸": "劝", "嘮": "唠", "陰": "阴", "賁": "贲", "飾": "饰", "試": "试", "漢": "汉", "實": "实",
+  "捨": "舍", "亂": "乱", "誇": "夸", "矯": "矫", "棄": "弃", "節": "节", "儉": "俭", "絕": "绝",
+  "暫": "暂", "羅": "罗", "經": "经", "準": "准", "設": "设", "廳": "厅", "續": "续", "隱": "隐",
+  "佈": "布", "擔": "担", "樂": "乐", "飲": "饮", "禍": "祸", "獄": "狱", "難": "难"
+});
 
 function convertWentianTextToTraditional(source) {
   let output = source;
@@ -7394,6 +7423,14 @@ function convertWentianTextToTraditional(source) {
     output = output.replaceAll(from, to);
   }
   return [...output].map((char) => WENTIAN_I18N_ZH_HANT_CHAR_MAP[char] || char).join("");
+}
+
+function convertWentianTextToSimplified(source) {
+  let output = String(source || "");
+  for (const [from, to] of Object.entries(WENTIAN_I18N_ZH_HANT_PHRASES)) {
+    output = output.replaceAll(to, from);
+  }
+  return [...output].map((char) => WENTIAN_I18N_ZH_HANS_CHAR_MAP[char] || char).join("");
 }
 
 function getWentianEnglishTerm(text) {
@@ -7456,6 +7493,9 @@ function translateWentianText(text, code = getWentianLanguageCode(), element = n
   const source = String(text || "").trim();
   if (!source) return source;
   const lang = getWentianLanguageOption(code).code;
+  if (lang === "zh-Hans") {
+    return convertWentianTextToSimplified(source);
+  }
   const dict = WENTIAN_I18N[lang];
   if (!dict) return source;
   if (lang === "en" && source === "阅天AI" && element?.dataset?.nodeId?.startsWith("source-bottom-label-")) return "AI";
@@ -13416,17 +13456,134 @@ function formatYangzhaiReadingText(text) {
     .trim();
 }
 
+const YANGZHAI_EN_ROLE_GUA = {
+  乾: "Heaven",
+  坤: "Earth",
+  震: "Thunder",
+  巽: "Wind",
+  坎: "Water",
+  离: "Fire",
+  艮: "Mountain",
+  兑: "Lake"
+};
+
+const YANGZHAI_EN_TRIGRAM_NAME = {
+  天: "Heaven",
+  地: "Earth",
+  雷: "Thunder",
+  风: "Wind",
+  水: "Water",
+  火: "Fire",
+  山: "Mountain",
+  泽: "Lake"
+};
+
+const YANGZHAI_EN_LABELS = {
+  父亲: "Father",
+  母亲: "Mother",
+  长子: "Eldest Son",
+  长女: "Eldest Daughter",
+  二子: "Second Son",
+  二女: "Second Daughter",
+  三子: "Third Son",
+  三女: "Third Daughter",
+  厨房: "Kitchen",
+  厕所: "Bathroom",
+  客厅: "Living Room",
+  正北: "North",
+  东北: "Northeast",
+  正东: "East",
+  东南: "Southeast",
+  正南: "South",
+  西南: "Southwest",
+  正西: "West",
+  西北: "Northwest",
+  中宫: "Center"
+};
+
+function localizeYangzhaiText(text) {
+  const lang = getWentianLanguageCode();
+  if (lang === "en") return String(text || "");
+  return translateWentianText(text, lang);
+}
+
+function getYangzhaiEnglishLabel(value) {
+  return YANGZHAI_EN_LABELS[value] || translateWentianText(value, "en");
+}
+
+function getYangzhaiEnglishHexName(hex) {
+  if (!hex?.name) return "Hexagram";
+  const name = convertWentianTextToSimplified(String(hex.name || ""));
+  const pure = name.match(/^(.+)为(.+)$/);
+  if (pure) {
+    const trigram = YANGZHAI_EN_ROLE_GUA[pure[1]] || YANGZHAI_EN_TRIGRAM_NAME[pure[2]] || translateWentianText(pure[2], "en");
+    return `${trigram} over ${trigram}`;
+  }
+  const chars = [...name];
+  if (chars.length >= 3) {
+    const upper = YANGZHAI_EN_TRIGRAM_NAME[chars[0]] || YANGZHAI_EN_ROLE_GUA[chars[0]] || translateWentianText(chars[0], "en");
+    const lower = YANGZHAI_EN_TRIGRAM_NAME[chars[1]] || YANGZHAI_EN_ROLE_GUA[chars[1]] || translateWentianText(chars[1], "en");
+    const suffix = translateWentianText(chars.slice(2).join(""), "en");
+    return `${upper} over ${lower}${suffix && suffix !== "Text" ? ` · ${suffix}` : ""}`;
+  }
+  return translateWentianText(hex.name, "en");
+}
+
+function buildYangzhaiEnglishHexDesc({ hex, label, palace, matched }) {
+  const person = getYangzhaiEnglishLabel(label);
+  const direction = getYangzhaiEnglishLabel(palace.dir);
+  const hexName = getYangzhaiEnglishHexName(hex);
+  return [
+    `Hexagram ${hex.no}: ${hexName}.`,
+    `${person} is placed in the ${direction} sector (${YANGZHAI_EN_ROLE_GUA[palace.gua] || palace.gua} palace).`,
+    matched
+      ? "This matches the default family-position alignment."
+      : "This is a non-default placement; use the hexagram as a layout reference."
+  ].join("\n");
+}
+
+function buildYangzhaiEnglishSpaceDesc({ label, palace, matched }) {
+  const space = getYangzhaiEnglishLabel(label);
+  const direction = getYangzhaiEnglishLabel(palace.dir);
+  return [
+    `${space} is placed in the ${direction} sector (${YANGZHAI_EN_ROLE_GUA[palace.gua] || palace.gua} palace).`,
+    matched
+      ? "This room type fits the preferred sector rule."
+      : "This room type is not in a preferred sector; review the layout if needed."
+  ].join("\n");
+}
+
+function localizeYangzhaiResult(item) {
+  const lang = getWentianLanguageCode();
+  if (lang === "en") return item;
+  return {
+    ...item,
+    title: localizeYangzhaiText(item.title),
+    desc: localizeYangzhaiText(item.desc),
+    full: localizeYangzhaiText(item.full),
+    short: localizeYangzhaiText(item.short)
+  };
+}
+
 function buildYangzhaiResults() {
   return YANGZHAI_PALACES
     .filter((palace) => palace.key !== "center")
     .flatMap((palace) => getYangzhaiPlacementItems(palace.key).map((label) => {
+      const lang = getWentianLanguageCode();
       const option = getYangzhaiOption(label);
       const short = option.short;
       if (option.type === "space") {
         const rule = YANGZHAI_SPACE_RULES[label] || {};
         const preferred = (rule.preferredPalaces || []).includes(palace.key);
         const desc = `${formatYangzhaiReadingText(rule.original || `${rule.meaning || "待核"}${rule.preference || ""}`)}\n当前：${palace.gua}宫(${palace.dir})。`;
-        return {
+        const result = lang === "en" ? {
+          kind: "space",
+          title: `${getYangzhaiEnglishLabel(label)} in ${getYangzhaiEnglishLabel(palace.dir)} - Room Placement`,
+          desc: buildYangzhaiEnglishSpaceDesc({ label, palace, matched: preferred }),
+          full: buildYangzhaiEnglishSpaceDesc({ label, palace, matched: preferred }),
+          short: getYangzhaiEnglishLabel(label).slice(0, 2).toUpperCase(),
+          matched: preferred
+        } : {
           kind: "space",
           title: `${label}在${palace.gua}(${palace.dir}) - 功能区象义`,
           desc,
@@ -13434,6 +13591,7 @@ function buildYangzhaiResults() {
           short,
           matched: preferred
         };
+        return localizeYangzhaiResult(result);
       }
       const hex = getYangzhaiHex(label, palace);
       const matched = label === palace.defaultItem;
@@ -13442,7 +13600,14 @@ function buildYangzhaiResults() {
       const desc = hex
         ? `第${hex.no}卦 ${hex.name}：\n${originalText}`
         : `八宫基础：${label}住${palace.gua}(${palace.dir})，待补结构索引。`;
-      return {
+      const result = lang === "en" && hex ? {
+        kind: "hex",
+        title: `${getYangzhaiEnglishLabel(label)} in ${getYangzhaiEnglishLabel(palace.dir)} - ${getYangzhaiEnglishHexName(hex)}`,
+        desc: buildYangzhaiEnglishHexDesc({ hex, label, palace, matched }),
+        full: buildYangzhaiEnglishHexDesc({ hex, label, palace, matched }),
+        short: getYangzhaiEnglishLabel(label).slice(0, 2).toUpperCase(),
+        matched
+      } : {
         kind: "hex",
         title: `${label}住${palace.gua}(${palace.dir}) - ${hex ? hex.name : palace.role}`,
         desc,
@@ -13452,6 +13617,7 @@ function buildYangzhaiResults() {
         short,
         matched
       };
+      return localizeYangzhaiResult(result);
     }));
 }
 
@@ -13473,8 +13639,12 @@ function getYangzhaiResultHeight() {
 }
 
 function getYangzhaiResultTag(item) {
-  if (item.kind === "space") return item.matched ? "方位适配" : "位置待调";
-  return item.matched ? "本位相合" : "卦象解读";
+  if (getWentianLanguageCode() === "en") {
+    if (item.kind === "space") return item.matched ? "Good Fit" : "Review";
+    return item.matched ? "Aligned" : "Hexagram";
+  }
+  if (item.kind === "space") return localizeYangzhaiText(item.matched ? "方位适配" : "位置待调");
+  return localizeYangzhaiText(item.matched ? "本位相合" : "卦象解读");
 }
 
 function yangzhaiBg(id, height = 844) {
