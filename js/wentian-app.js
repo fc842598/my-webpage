@@ -3313,6 +3313,7 @@ function syncWentianChartAiStateFromStorage() {
     updatedAt: "",
   });
   wentianMobileLuckDecadeKey = "";
+  wentianMobileXiaoLianAge = "";
   try {
     const all = JSON.parse(localStorage.getItem(WENTIAN_CHART_AI_STORAGE_KEY) || "{}");
     const saved = all?.[chartRecordId];
@@ -3330,7 +3331,6 @@ function syncWentianChartAiStateFromStorage() {
         error: saved.error || "",
         updatedAt: saved.updatedAt || "",
       });
-      if (saved.xiaoLianAgeKey && !wentianMobileXiaoLianAge) wentianMobileXiaoLianAge = saved.xiaoLianAgeKey;
     }
   } catch (_err) {}
 }
@@ -4091,11 +4091,6 @@ function renderWentianXiaoLianReading(data, fallback, actionAttr) {
     selected.yearGanzhi || "",
     selected.age ? `${selected.age}岁` : "",
   ].filter(Boolean).join(" ");
-  const triggerCards = [
-    ["小限落宫", [selected.xiaolianPalaceName, selected.xiaolianBranch].filter(Boolean).join(" · ") || "待排"],
-    ["对宫应事", [selected.oppositePalaceName, selected.oppositeBranch].filter(Boolean).join(" · ") || "待排"],
-    ["流年卦线", [selected.liunianGuaName, guaLine].filter(Boolean).join(" · ") || "待排"],
-  ];
   const groupTags = [
     [selected.xiaolianPalaceName, selected.domain, selected.xiaolianBranch],
     [selected.oppositePalaceName, "对宫照应", selected.oppositeBranch],
@@ -4105,30 +4100,14 @@ function renderWentianXiaoLianReading(data, fallback, actionAttr) {
     <div class="wentian-mb-xiaolian-hero">
       <span>小限流年</span>
       <h3>当年触发<br>展开读</h3>
-      <b>小限 · 对宫 · 流年卦线</b>
-      <p>以电脑端年龄选择为准：今年看小限落点，对宫看应事对象，再用流年卦线定提醒。</p>
     </div>
     <div class="wentian-mb-xiaolian-age-rail" aria-label="小限流年年龄选择">
       ${(selected.items || []).map((item) => `
         <button type="button" class="${item.key === selected.key ? "is-active" : ""}${item.key === selected.currentKey ? " is-current" : ""}" data-action="wentian-chart-ai-xiaolian-pick" data-xiaolian-age-key="${escapeHtml(item.key)}">
           <span>${escapeHtml(item.age ? `${item.age}岁` : item.solarYear || "流年")}</span>
-          <strong>${escapeHtml(String(item.xiaolianPalaceName || "小限").replace(/宫$/, ""))}</strong>
-          ${item.key === selected.currentKey ? "<em>当前</em>" : ""}
         </button>
       `).join("")}
     </div>
-    <section class="wentian-mb-xiaolian-summary">
-      <span>${selected.key === selected.currentKey ? "当前小流年" : "选中小流年"}</span>
-      <h4>${escapeHtml(summaryTitle || "当前流年")}</h4>
-      <p>${escapeHtml(`小限落${selected.xiaolianPalaceName || "本年落点"}，对宫照${selected.oppositePalaceName || "应事对象"}。大限看十年背景，小流年看今年触发，对宫看外部牵动。`)}</p>
-    </section>
-    <div class="wentian-mb-xiaolian-triggers">
-      ${triggerCards.map(([label, value]) => `<section><b>${escapeHtml(label)}</b><strong>${escapeHtml(value)}</strong></section>`).join("")}
-    </div>
-    <aside class="wentian-mb-xiaolian-read">
-      <b>读法</b>
-      <p>${escapeHtml(`小限看今年落点，对宫看应事对象。${selected.xiaolianPalaceName || "小限宫"}代表${selected.domain || "当年主题"}，${selected.oppositePalaceName || "对宫"}被照时，事情会落回现实选择。`)}</p>
-    </aside>
     <div class="wentian-mb-xiaolian-list">
       ${groups.length ? groups.map((group, index) => `
         <section>
@@ -16228,11 +16207,20 @@ function initWentianClassicChartScreen() {
       || "";
     renderWentianClassicSanfangLines(activeBranch);
     centerWentianLuckRail();
+    centerWentianXiaoLianRail();
   });
 }
 
 function centerWentianLuckRail() {
   const rail = view.querySelector(".wentian-mb-luck-rail");
+  const active = rail?.querySelector("button.is-active") || rail?.querySelector("button.is-current");
+  if (!rail || !active) return;
+  const left = active.offsetLeft - ((rail.clientWidth - active.offsetWidth) / 2);
+  rail.scrollTo?.({ left: Math.max(0, left), behavior: "auto" });
+}
+
+function centerWentianXiaoLianRail() {
+  const rail = view.querySelector(".wentian-mb-xiaolian-age-rail");
   const active = rail?.querySelector("button.is-active") || rail?.querySelector("button.is-current");
   if (!rail || !active) return;
   const left = active.offsetLeft - ((rail.clientWidth - active.offsetWidth) / 2);

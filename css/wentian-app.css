@@ -9801,9 +9801,7 @@ html[lang="en"] .wentian-chart-ai-actions button {
 }
 
 .wentian-mb-xiaolian-hero span,
-.wentian-mb-xiaolian-hero h3,
-.wentian-mb-xiaolian-hero b,
-.wentian-mb-xiaolian-hero p {
+.wentian-mb-xiaolian-hero h3 {
   position: relative;
 }
 
@@ -9823,32 +9821,10 @@ html[lang="en"] .wentian-chart-ai-actions button {
   line-height: 1.06;
 }
 
-.wentian-mb-xiaolian-hero b {
-  display: inline-flex;
-  max-width: 100%;
-  margin-top: 13px;
-  border: 1px solid rgba(226, 197, 103, .55);
-  border-radius: 999px;
-  padding: 7px 11px;
-  background: rgba(226, 197, 103, .08);
-  color: #f6dc83;
-  font-size: 14px;
-  font-weight: 900;
-  line-height: 1.2;
-}
-
-.wentian-mb-xiaolian-hero p {
-  margin: 15px 0 0;
-  color: #dfd1ad;
-  font-size: 14px;
-  font-weight: 800;
-  line-height: 1.7;
-}
-
 .wentian-mb-xiaolian-age-rail {
   display: grid;
   grid-auto-flow: column;
-  grid-auto-columns: 66px;
+  grid-auto-columns: 62px;
   gap: 7px;
   padding-bottom: 2px;
   overflow-x: auto;
@@ -9862,10 +9838,10 @@ html[lang="en"] .wentian-chart-ai-actions button {
 .wentian-mb-xiaolian-age-rail button {
   display: grid;
   place-items: center;
-  min-height: 72px;
+  min-height: 54px;
   border: 1px solid rgba(208, 177, 89, .42);
-  border-radius: 17px;
-  padding: 8px 5px;
+  border-radius: 15px;
+  padding: 6px 5px;
   background: #151006;
   color: #e7cc70;
   font-family: inherit;
@@ -9879,9 +9855,7 @@ html[lang="en"] .wentian-chart-ai-actions button {
   box-shadow: 0 0 20px rgba(232, 207, 105, .28);
 }
 
-.wentian-mb-xiaolian-age-rail span,
-.wentian-mb-xiaolian-age-rail strong,
-.wentian-mb-xiaolian-age-rail em {
+.wentian-mb-xiaolian-age-rail span {
   display: block;
   max-width: 100%;
   overflow-wrap: anywhere;
@@ -9889,24 +9863,8 @@ html[lang="en"] .wentian-chart-ai-actions button {
 }
 
 .wentian-mb-xiaolian-age-rail span {
-  font-size: 14px;
+  font-size: 16px;
   line-height: 1.05;
-}
-
-.wentian-mb-xiaolian-age-rail strong {
-  color: #fff8e8;
-  font-size: 15px;
-  line-height: 1.12;
-}
-
-.wentian-mb-xiaolian-age-rail em {
-  border-radius: 999px;
-  padding: 2px 7px;
-  background: rgba(255, 240, 177, .18);
-  color: #fff0b1;
-  font-size: 14px;
-  font-style: normal;
-  line-height: 1.1;
 }
 
 .wentian-mb-xiaolian-summary,
