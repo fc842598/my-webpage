@@ -3657,10 +3657,7 @@ function renderWentianOverallReading(data, fallback, actionAttr, actionLabel) {
   }
   const card = getWentianAiCard(data);
   const evidence = getWentianAiEvidenceMap(data);
-  const title = getWentianAiTitle(data, "整体批命");
   const badge = normalizeWentianAiText(card.profileBadge || "贪狼坐命，武官星入局");
-  const summarySection = sections.find((section) => /总断|总结|总论/.test(section.title));
-  const summary = trimWentianAiText(summarySection?.content || getWentianAiSummary(data, 150), 132);
   const risk = trimWentianAiText(card.risk || "迁移化忌冲命，外部阻力重，异地发展需稳扎稳打，不宜草率。", 92);
   const quicks = [
     ["实干开创", "命盘主线"],
@@ -3670,9 +3667,8 @@ function renderWentianOverallReading(data, fallback, actionAttr, actionLabel) {
   return `
     <div class="wentian-mb-overall-hero">
       <span>整体批命</span>
-      <h3>${escapeHtml(title)}</h3>
+      <h3>整体批命</h3>
       <b>${escapeHtml(badge)}</b>
-      <p>${escapeHtml(summary)}</p>
       <button type="button" ${actionAttr}>${escapeHtml(actionLabel)}</button>
     </div>
     <div class="wentian-mb-overall-quick">
