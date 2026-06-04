@@ -74,7 +74,8 @@ $excludeDirNames = @(
   "__pycache__",
   ".next",
   "dist",
-  "build"
+  "build",
+  ([string]::Concat([char]0x6CA1, [char]0x7528, [char]0x7684))
 )
 
 $excludeFileNames = @(
