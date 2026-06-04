@@ -2,6 +2,9 @@
   "name": "codex-browser-session",
   "private": true,
   "scripts": {
+    "codex:auto-optimize:install": "powershell -NoProfile -ExecutionPolicy Bypass -File .\\tools\\codex-auto-optimize.ps1 -InstallTask",
+    "codex:auto-optimize:test": "powershell -NoProfile -ExecutionPolicy Bypass -File .\\tools\\codex-auto-optimize.ps1 -RunLoop -DryRun -PollSeconds 1 -MaxLoops 3 -CpuBusyPercent 0 -PressureHits 1",
+    "codex:auto-optimize:remove": "powershell -NoProfile -ExecutionPolicy Bypass -File .\\tools\\codex-auto-optimize.ps1 -UninstallTask",
     "smoke:overall-piming": "node scripts/smoke-overall-piming-contract.js",
     "validate:ziping": "node scripts/validate-ziping-professional-tool-samples.js",
     "validate:ziping:boundary": "node scripts/validate-ziping-boundary-rules.js",
