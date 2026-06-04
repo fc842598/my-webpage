@@ -45,6 +45,14 @@ function Append-LogLine {
   Add-Content -LiteralPath $LogPath -Value $Message -Encoding UTF8
 }
 
+function Get-CleanupCandidates {
+  param([string]$Path)
+
+  Get-ChildItem -LiteralPath $Path -Force |
+    Where-Object { $_.Name -notin @("backup-log.txt", "site-backup.ps1") } |
+    Sort-Object LastWriteTime, Name
+}
+
 $resolvedSource = (Resolve-Path -LiteralPath $SourceRoot).Path
 $resolvedBackupRoot = $BackupRoot
 
@@ -114,21 +122,30 @@ if ($robocopyCode -gt 7) {
 }
 
 $removedBackups = New-Object System.Collections.Generic.List[string]
-$allBackupDirs = Get-ChildItem -LiteralPath $resolvedBackupRoot -Directory |
-  Where-Object { $_.Name -like "yuetian-site-backup-*" } |
-  Sort-Object Name
+$cleanupCandidates = @(Get-CleanupCandidates -Path $resolvedBackupRoot)
+$backupEntryCount = @(
+  $cleanupCandidates |
+  Where-Object { $_.PSIsContainer -and $_.Name -like "yuetian-site-backup-*" }
+).Count
 
 $totalBytes = Get-DirectorySizeBytes -Path $resolvedBackupRoot
 
-while ($totalBytes -gt $maxBytes -and $allBackupDirs.Count -gt 1) {
-  $oldest = $allBackupDirs[0]
-  Remove-Item -LiteralPath $oldest.FullName -Recurse -Force
+while ($totalBytes -gt $maxBytes -and $cleanupCandidates.Count -gt 1) {
+  $oldest = $cleanupCandidates[0]
+
+  if ($oldest.PSIsContainer) {
+    Remove-Item -LiteralPath $oldest.FullName -Recurse -Force
+  } else {
+    Remove-Item -LiteralPath $oldest.FullName -Force
+  }
+
   $removedBackups.Add($oldest.FullName) | Out-Null
 
-  $allBackupDirs = Get-ChildItem -LiteralPath $resolvedBackupRoot -Directory |
-    Where-Object { $_.Name -like "yuetian-site-backup-*" } |
-    Sort-Object Name
-
+  $cleanupCandidates = @(Get-CleanupCandidates -Path $resolvedBackupRoot)
+  $backupEntryCount = @(
+    $cleanupCandidates |
+    Where-Object { $_.PSIsContainer -and $_.Name -like "yuetian-site-backup-*" }
+  ).Count
   $totalBytes = Get-DirectorySizeBytes -Path $resolvedBackupRoot
 }
 
@@ -137,7 +154,7 @@ $result = [pscustomobject]@{
   sourceRoot = $resolvedSource
   backupRoot = $resolvedBackupRoot
   createdBackup = $backupPath
-  currentBackupCount = $allBackupDirs.Count
+  currentBackupCount = $backupEntryCount
   totalSizeGB = Format-SizeGb -Bytes $totalBytes
   overLimit = ($totalBytes -gt $maxBytes)
   removedOldBackups = @($removedBackups)
