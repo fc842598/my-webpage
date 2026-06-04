@@ -10153,40 +10153,11 @@ html[lang="en"] .wentian-chart-ai-actions button {
   color: #181005;
 }
 
-.wentian-mb-curve-summary,
 .wentian-mb-curve-chart,
 .wentian-mb-curve-verify {
   border: 1px solid rgba(199, 164, 75, .52);
   border-radius: 18px;
   background: rgba(13, 9, 3, .98);
-}
-
-.wentian-mb-curve-summary {
-  padding: 16px;
-  background: rgba(54, 45, 25, .88);
-}
-
-.wentian-mb-curve-summary span {
-  display: block;
-  color: #e4c567;
-  font-size: 14px;
-  font-weight: 900;
-}
-
-.wentian-mb-curve-summary h4 {
-  margin: 8px 0 0;
-  color: #fff8ea;
-  font-size: 22px;
-  font-weight: 900;
-  line-height: 1.2;
-}
-
-.wentian-mb-curve-summary p {
-  margin: 11px 0 0;
-  color: #dacda9;
-  font-size: 14px;
-  font-weight: 800;
-  line-height: 1.68;
 }
 
 .wentian-mb-curve-chart {

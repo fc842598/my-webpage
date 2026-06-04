@@ -4493,8 +4493,6 @@ function renderWentianCurveReading(data, fallback, actionAttr, actionLabel) {
   const primaryLabel = ready ? "重批曲线" : actionLabel;
   const secondaryView = activeView === "past" ? "future" : "past";
   const secondaryLabel = activeView === "past" ? "曲线走势" : "过去验证";
-  const summaryTitle = `${current.age || "当前"}岁 · ${getWentianCurveScoreBand(current.score)}。未来先看${low.age || "低点"}岁调整，再看${high.age || "高点"}岁上升。`;
-  const summaryText = `当前 ${current.score || "--"} 分，主线在${current.domain || "命盘主线"}。先稳现金流、住处和长期项目，后面上升窗口才接得住。`;
   return `
     <div class="wentian-mb-curve-hero">
       <span>人生曲线</span>
@@ -4520,11 +4518,6 @@ function renderWentianCurveReading(data, fallback, actionAttr, actionLabel) {
         <p class="wentian-mb-curve-result" data-curve-verify-result>先点几个过往节点，系统会给出这条曲线的参考可信度。</p>
       </section>
     ` : `
-      <section class="wentian-mb-curve-summary">
-        <span>当前节点</span>
-        <h4>${escapeHtml(summaryTitle)}</h4>
-        <p>${escapeHtml(summaryText)}</p>
-      </section>
       <section class="wentian-mb-curve-chart">
         <header><b>逐岁评分曲线</b><span>1-100岁</span></header>
         ${renderWentianLifeCurveSvg(curve)}
