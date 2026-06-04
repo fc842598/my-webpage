@@ -10654,6 +10654,34 @@ html[lang="en"] .wentian-chart-ai-actions button {
   font-weight: 900;
 }
 
+button.wentian-mb-rebatch-btn.wentian-mb-rebatch-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 46px;
+  border: 1.5px solid #9d7a3f !important;
+  border-radius: 999px !important;
+  padding: 0 22px;
+  background: linear-gradient(180deg, #fffefd 0%, #fff9ef 100%) !important;
+  color: #6f471d !important;
+  font-family: inherit;
+  font-size: 17px;
+  font-weight: 900;
+  letter-spacing: .02em;
+  box-shadow: 0 1px 0 rgba(125, 89, 40, .08), inset 0 0 0 1px rgba(255, 255, 255, .7);
+}
+
+button.wentian-mb-rebatch-btn.wentian-mb-rebatch-btn::before {
+  content: "↻";
+  display: inline-block;
+  color: #6f471d;
+  font-size: 24px;
+  font-weight: 800;
+  line-height: 1;
+  transform: translateY(-1px);
+}
+
 .wentian-mb-chapter-head {
   display: grid;
   grid-template-columns: 38px minmax(0, 1fr) 78px;

@@ -3675,13 +3675,20 @@ function renderWentianReadingParagraphs(value, fallback = "") {
   `;
 }
 
+function renderWentianMobileActionButton(actionAttr, label) {
+  const isRebatch = String(label || "").startsWith("重批");
+  const displayLabel = isRebatch ? "重批" : label;
+  const classAttr = isRebatch ? ` class="wentian-mb-rebatch-btn"` : "";
+  return `<button type="button"${classAttr}${actionAttr ? ` ${actionAttr}` : ""}>${escapeHtml(displayLabel)}</button>`;
+}
+
 function renderWentianOverallReading(data, fallback, actionAttr, actionLabel) {
   const sections = getWentianAiSections(data).slice(0, 5);
   if (!sections.length) {
     return `
       <div class="wentian-mb-overall-empty">
         <p>${escapeHtml(fallback)}</p>
-        <button type="button" ${actionAttr}>${escapeHtml(actionLabel)}</button>
+        ${renderWentianMobileActionButton(actionAttr, actionLabel)}
       </div>
     `;
   }
@@ -3699,7 +3706,7 @@ function renderWentianOverallReading(data, fallback, actionAttr, actionLabel) {
       <span>整体批命</span>
       <h3>整体批命</h3>
       <b>${escapeHtml(badge)}</b>
-      <button type="button" ${actionAttr}>${escapeHtml(actionLabel)}</button>
+      ${renderWentianMobileActionButton(actionAttr, actionLabel)}
     </div>
     <div class="wentian-mb-overall-quick">
       ${quicks.map(([main, sub]) => `<section><strong>${escapeHtml(main)}</strong><span>${escapeHtml(sub)}</span></section>`).join("")}
@@ -3732,7 +3739,7 @@ function renderWentianSpecialReading(actionAttr, actionLabel) {
       <span>专题批命</span>
       <h3>专题解读</h3>
       <b>身宫 · 婚姻 · 健康 · 财运 · 事业</b>
-      <button type="button" ${actionAttr}>${escapeHtml(readyCount ? "重批专题" : actionLabel)}</button>
+      ${renderWentianMobileActionButton(actionAttr, readyCount ? "重批专题" : actionLabel)}
     </div>
     <div class="wentian-mb-special-tabs">
       ${WENTIAN_CHART_SPECIAL_MODULES.map((moduleKey) => `
@@ -3761,7 +3768,7 @@ function renderWentianSpecialReading(actionAttr, actionLabel) {
             </header>
             ${renderWentianReadingParagraphs(body, "等待单独批命生成。")}
             ${tip ? `<aside>${escapeHtml(tip)}</aside>` : ""}
-            <button type="button" data-action="wentian-chart-ai-module" data-ai-module="${escapeHtml(moduleKey)}">${escapeHtml(buttonText)}</button>
+            ${renderWentianMobileActionButton(`data-action="wentian-chart-ai-module" data-ai-module="${escapeHtml(moduleKey)}"`, buttonText)}
           </section>
         `;
       }).join("")}
@@ -3936,7 +3943,7 @@ function renderWentianLuckReading(data, fallback, actionAttr, actionLabel) {
     </div>
     <div class="wentian-mb-luck-actions">
       <button type="button" data-action="wentian-chart-ai-luck-current">回到当前</button>
-      <button type="button" ${actionAttr}>${escapeHtml(readyLabel)}</button>
+      ${renderWentianMobileActionButton(actionAttr, readyLabel)}
     </div>
   `;
 }
@@ -4125,7 +4132,7 @@ function renderWentianXiaoLianReading(data, fallback, actionAttr) {
     </div>
     <div class="wentian-mb-xiaolian-actions">
       <button type="button" data-action="wentian-chart-ai-xiaolian-current">回到今年</button>
-      <button type="button" ${actionAttr}>${escapeHtml(readyLabel)}</button>
+      ${renderWentianMobileActionButton(actionAttr, readyLabel)}
     </div>
   `;
 }
@@ -4476,7 +4483,7 @@ function renderWentianCurvePending(fallback, actionAttr, actionLabel) {
       <p>逐岁分数、关键节点和过去验证，需要点击生成曲线后由 AI 结果展示。</p>
     </section>
     <div class="wentian-mb-curve-actions is-single">
-      <button type="button" ${actionAttr}>${escapeHtml(actionLabel || "生成曲线")}</button>
+      ${renderWentianMobileActionButton(actionAttr, actionLabel || "生成曲线")}
     </div>
   `;
 }
@@ -4547,7 +4554,7 @@ function renderWentianCurveReading(data, fallback, actionAttr, actionLabel) {
     `}
     <div class="wentian-mb-curve-actions">
       <button type="button" data-action="wentian-chart-ai-curve-view" data-curve-view="${secondaryView}">${escapeHtml(secondaryLabel)}</button>
-      <button type="button" ${actionAttr}>${escapeHtml(primaryLabel)}</button>
+      ${renderWentianMobileActionButton(actionAttr, primaryLabel)}
     </div>
   `;
 }
@@ -4639,7 +4646,7 @@ function renderWentianAdviceDetail(data, fallback, actionAttr = "", actionLabel 
       `).join("")}
     </section>
     <div class="wentian-mb-advice-actions">
-      <button type="button" ${actionAttr}>${escapeHtml(ready ? "重批建议" : actionLabel)}</button>
+      ${renderWentianMobileActionButton(actionAttr, ready ? "重批建议" : actionLabel)}
     </div>
   `;
 }
