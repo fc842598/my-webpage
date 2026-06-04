@@ -4499,8 +4499,6 @@ function renderWentianCurveReading(data, fallback, actionAttr, actionLabel) {
     <div class="wentian-mb-curve-hero">
       <span>人生曲线</span>
       <h3>看高低点<br>与转折</h3>
-      <b>曲线走势 · 过去验证</b>
-      <p>按电脑端曲线模块：用大限、小限、对宫和流年卦做逐岁评分，再把节点翻成可读的阶段提醒。</p>
     </div>
     ${renderWentianCurveTabs(activeView)}
     ${activeView === "past" ? `

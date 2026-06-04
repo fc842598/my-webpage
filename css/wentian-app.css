@@ -10065,9 +10065,7 @@ html[lang="en"] .wentian-chart-ai-actions button {
 }
 
 .wentian-mb-curve-hero span,
-.wentian-mb-curve-hero h3,
-.wentian-mb-curve-hero b,
-.wentian-mb-curve-hero p {
+.wentian-mb-curve-hero h3 {
   position: relative;
 }
 
@@ -10084,28 +10082,6 @@ html[lang="en"] .wentian-chart-ai-actions button {
   font-size: 28px;
   font-weight: 900;
   line-height: 1.12;
-}
-
-.wentian-mb-curve-hero b {
-  display: inline-flex;
-  max-width: 100%;
-  margin-top: 10px;
-  border: 1px solid rgba(226, 199, 103, .55);
-  border-radius: 999px;
-  padding: 7px 11px;
-  background: rgba(226, 199, 103, .07);
-  color: #f3d879;
-  font-size: 14px;
-  font-weight: 900;
-  line-height: 1.2;
-}
-
-.wentian-mb-curve-hero p {
-  margin: 18px 0 0 -78px;
-  color: #d2c39b;
-  font-size: 14px;
-  font-weight: 800;
-  line-height: 1.68;
 }
 
 .wentian-mb-curve-hero.is-pending {
