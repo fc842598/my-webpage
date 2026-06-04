@@ -1020,6 +1020,71 @@
 
     .option-btn.is-clear::after { display: none; }
 
+    .elder-helper[hidden] {
+      display: none !important;
+    }
+
+    .elder-helper {
+      display: grid;
+      gap: 8px;
+      margin-top: 10px;
+      padding: 10px;
+      border: 1px solid rgba(201,169,97,.18);
+      border-radius: 8px;
+      background: rgba(201,169,97,.045);
+    }
+
+    .elder-helper-note {
+      color: #bcae84;
+      font-size: 12px;
+      font-weight: 800;
+      line-height: 1.6;
+    }
+
+    .elder-age-stack {
+      display: grid;
+      gap: 8px;
+    }
+
+    .elder-age-card {
+      display: grid;
+      gap: 7px;
+    }
+
+    .elder-age-card strong {
+      color: var(--ivory);
+      font-size: 12px;
+      line-height: 1.4;
+    }
+
+    .elder-age-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .elder-age-btn {
+      min-height: 28px;
+      padding: 0 12px;
+      border: 1px solid rgba(201,169,97,.24);
+      border-radius: 999px;
+      color: #cfbf95;
+      background: rgba(6,5,3,.72);
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .elder-age-btn:hover,
+    .elder-age-btn.is-active {
+      border-color: rgba(240,215,155,.56);
+      color: var(--ivory);
+      background:
+        linear-gradient(180deg, rgba(201,169,97,.20), rgba(117,86,37,.14)),
+        rgba(18,12,5,.84);
+    }
+
     .picked-list {
       min-height: 42px;
       max-height: 108px;
@@ -2406,6 +2471,7 @@
                 <p id="activePalaceHint">先点左侧九宫里的方位，再点下方成员或空间放进去。</p>
               </div>
               <div class="option-grid" id="optionGrid" aria-label="安位选项"></div>
+              <div class="elder-helper" id="elderHelper" hidden></div>
               <div class="picked-list" id="pickedList">当前宫位尚未安位</div>
             </div>
             <div class="locator-stage" id="locatorStage" hidden>
@@ -2508,11 +2574,26 @@
         { label: "二女", short: "二女", type: "family" },
         { label: "三子", short: "三子", type: "family" },
         { label: "三女", short: "三女", type: "family" },
+        { label: "爷爷（外公）", short: "爷爷", type: "family", elderKey: "grandpa", mappedLabel: "父亲" },
+        { label: "奶奶（外婆）", short: "奶奶", type: "family", elderKey: "grandma", mappedLabel: "母亲" },
         { label: "厨房", short: "厨", type: "space" },
         { label: "厕所", short: "厕", type: "space" },
         { label: "客厅", short: "厅", type: "space" },
         { label: "清空", short: "×", type: "clear" }
       ];
+
+      const elderAgeDefaults = { grandpa: "65plus", grandma: "65plus" };
+      const elderAgeLabels = { under65: "65岁以下", "65plus": "65岁以上" };
+      const elderRoleCopy = {
+        grandpa: {
+          familyClass: "父位类",
+          seniorNote: "65岁以上再参考东北安养位；若退休后同住不顺，再复看分房安置。"
+        },
+        grandma: {
+          familyClass: "母位类",
+          seniorNote: "65岁以上仍先按母位类看；若退休后同住不顺，再复看分房安置。"
+        }
+      };
 
       const defaultPlacements = {
         xun: ["长女"],
@@ -2557,6 +2638,7 @@
       const grid = document.getElementById("palaceGrid");
       const optionGrid = document.getElementById("optionGrid");
       const pickedList = document.getElementById("pickedList");
+      const elderHelper = document.getElementById("elderHelper");
       const activeName = document.getElementById("activePalaceName");
       const activeRole = document.getElementById("activePalaceRole");
       const activeHint = document.getElementById("activePalaceHint");
@@ -2586,13 +2668,14 @@
             const parsed = JSON.parse(raw);
             return {
               placements: parsed.placements || {},
+              elderAges: { ...elderAgeDefaults, ...(parsed.elderAges || {}) },
               active: parsed.active || "xun",
               analyzed: Boolean(parsed.analyzed),
               activeResult: Number.isFinite(parsed.activeResult) ? parsed.activeResult : 0
             };
           }
         } catch (_) {}
-        return { placements: {}, active: "xun", analyzed: false, activeResult: 0 };
+        return { placements: {}, elderAges: { ...elderAgeDefaults }, active: "xun", analyzed: false, activeResult: 0 };
       };
 
       let state = loadState();
@@ -2604,6 +2687,33 @@
 
       const getPalace = (key) => palaces.find((palace) => palace.key === key) || palaces[0];
       const getOption = (label) => options.find((item) => item.label === label) || { label, short: label.slice(0, 1), type: "family" };
+      const getMappedLabel = (label) => getOption(label).mappedLabel || label;
+      const getElderAgeValue = (elderKey) => state.elderAges?.[elderKey] || elderAgeDefaults[elderKey] || "65plus";
+      const getElderAgeLabel = (elderKey) => elderAgeLabels[getElderAgeValue(elderKey)] || elderAgeLabels["65plus"];
+      const isElderLabel = (label) => Boolean(getOption(label).elderKey);
+      const getDisplayLabel = (label, mode = "default") => {
+        const option = getOption(label);
+        if (!option.elderKey) return label;
+        if (mode === "pill") {
+          return `${option.short}${getElderAgeValue(option.elderKey) === "under65" ? "65-" : "65+"}`;
+        }
+        if (mode === "detail") {
+          return `${option.label} · ${getElderAgeLabel(option.elderKey)}`;
+        }
+        return option.label;
+      };
+      const getElderReadingLines = (label) => {
+        const option = getOption(label);
+        if (!option.elderKey) return [];
+        const copy = elderRoleCopy[option.elderKey];
+        if (getElderAgeValue(option.elderKey) === "under65") {
+          return [`此角色按${copy.familyClass}解读，65岁以下仍先按本位直接看。`];
+        }
+        return [
+          `此角色按${copy.familyClass}解读，当前按65岁以上参考。`,
+          copy.seniorNote
+        ];
+      };
       const getItems = (key) => Array.isArray(state.placements[key]) ? state.placements[key] : [];
       const getPlacementCount = () => Object.values(state.placements).reduce((total, items) => total + (Array.isArray(items) ? items.length : 0), 0);
       const formatIndex = (index) => circleNumbers[index] || `${index}.`;
@@ -2633,7 +2743,7 @@
       };
       const toSimplified = (text) => [...String(text || "")].map((char) => traditionalToSimplified[char] || char).join("");
       const getHexEntry = (label, palace) => {
-        const upper = roleGua[label];
+        const upper = roleGua[getMappedLabel(label)];
         if (!upper || !palace?.gua) return null;
         const key = `${upper}-${palace.gua}`;
         const indexed = hexIndex[key];
@@ -2702,7 +2812,7 @@
 
       function renderGrid() {
         const readingItems = state.analyzed ? buildResults() : [];
-        const indexedItems = new Map(readingItems.map((item, index) => [`${item.palaceKey}::${item.label}`, index]));
+        const indexedItems = new Map(readingItems.map((item, index) => [`${item.palaceKey}::${item.rawLabel}`, index]));
         grid.innerHTML = palaces.map((palace) => {
           if (palace.key === "center") {
             return `<div class="palace-cell center-cell" aria-label="中宫定位">
@@ -2714,19 +2824,20 @@
           }
           const items = getItems(palace.key);
           const currentResult = readingItems[state.activeResult];
-          const currentItem = currentResult?.palaceKey === palace.key ? currentResult.label : "";
+          const currentItem = currentResult?.palaceKey === palace.key ? currentResult.rawLabel : "";
           const visibleItems = items.length > 3 && currentItem && !items.slice(0, 3).includes(currentItem)
             ? [...items.slice(0, 2), currentItem]
             : items.slice(0, 3);
           const hiddenCount = items.length - visibleItems.length;
           const pills = items.length
             ? `${visibleItems.map((item) => {
-                const resultIndex = indexedItems.get(`${palace.key}::${item}`);
-                const isCurrent = resultIndex === state.activeResult;
-                const resultAttr = resultIndex === undefined ? "" : ` data-result-index="${resultIndex}"`;
-                const pillText = resultIndex === undefined ? item : `${formatIndex(resultIndex + 1)}${item}`;
-                return `<span class="item-pill${isCurrent ? " is-current" : ""}" title="${escapeHtml(item)}"${resultAttr}>${escapeHtml(pillText)}</span>`;
-              }).join("")}${hiddenCount > 0 ? `<span class="item-pill is-more">+${hiddenCount}</span>` : ""}`
+              const resultIndex = indexedItems.get(`${palace.key}::${item}`);
+              const isCurrent = resultIndex === state.activeResult;
+              const resultAttr = resultIndex === undefined ? "" : ` data-result-index="${resultIndex}"`;
+              const pillLabel = getDisplayLabel(item, isElderLabel(item) ? "pill" : "default");
+              const pillText = resultIndex === undefined ? pillLabel : `${formatIndex(resultIndex + 1)}${pillLabel}`;
+              return `<span class="item-pill${isCurrent ? " is-current" : ""}" title="${escapeHtml(getDisplayLabel(item, "detail"))}"${resultAttr}>${escapeHtml(pillText)}</span>`;
+            }).join("")}${hiddenCount > 0 ? `<span class="item-pill is-more">+${hiddenCount}</span>` : ""}`
             : `<div class="add-hint">+ 点此安位</div>`;
           return `<button class="palace-cell${state.active === palace.key ? " is-active" : ""}" type="button" data-palace="${palace.key}">
             <div class="palace-top"><span class="palace-dir">${palace.dir}</span><span class="palace-gua">${palace.gua}</span></div>
@@ -2747,12 +2858,15 @@
         }
         const palace = getPalace(state.active);
         const selected = getItems(palace.key);
+        const selectedElders = selected.map((label) => getOption(label)).filter((option) => option.elderKey);
         activeName.textContent = `${palace.gua}宫 · ${palace.dir}`;
         activeRole.textContent = palace.role;
-        activeHint.textContent = `先点左侧九宫里的方位，再点下方成员或空间。建议本位：${palace.defaultItem || "先定方位"}。`;
+        activeHint.textContent = selectedElders.length
+          ? `先点左侧九宫里的方位，再点下方成员或空间。长辈仍按父位/母位解读；65岁以上再参考退休安养位。建议本位：${palace.defaultItem || "先定方位"}。`
+          : `先点左侧九宫里的方位，再点下方成员或空间。建议本位：${palace.defaultItem || "先定方位"}。`;
         pickedList.classList.toggle("is-empty", !selected.length);
         pickedList.innerHTML = selected.length
-          ? selected.map((item) => `<span class="item-pill">${escapeHtml(item)}</span>`).join(" ")
+          ? selected.map((item) => `<span class="item-pill" title="${escapeHtml(getDisplayLabel(item, "detail"))}">${escapeHtml(getDisplayLabel(item, isElderLabel(item) ? "detail" : "default"))}</span>`).join(" ")
           : "当前方位还没放内容";
         optionGrid.innerHTML = options.map((option) => {
           const isSelected = option.type !== "clear" && selected.includes(option.label);
@@ -2762,6 +2876,27 @@
             <span class="option-main">${escapeHtml(option.label)}</span>
           </button>`;
         }).join("");
+        if (!selectedElders.length) {
+          elderHelper.hidden = true;
+          elderHelper.innerHTML = "";
+          return;
+        }
+        elderHelper.hidden = false;
+        elderHelper.innerHTML = `
+          <div class="elder-helper-note">长辈仍按父位/母位解读；65岁以上再参考退休安养位。</div>
+          <div class="elder-age-stack">${selectedElders.map((option) => `
+            <div class="elder-age-card">
+              <strong>${escapeHtml(option.label)}</strong>
+              <div class="elder-age-actions">
+                ${Object.entries(elderAgeLabels).map(([value, text]) => `
+                  <button class="elder-age-btn${getElderAgeValue(option.elderKey) === value ? " is-active" : ""}" type="button" data-elder-key="${option.elderKey}" data-elder-age="${value}" aria-pressed="${getElderAgeValue(option.elderKey) === value}">
+                    ${escapeHtml(text)}
+                  </button>
+                `).join("")}
+              </div>
+            </div>
+          `).join("")}</div>
+        `;
       }
 
       function renderLocator(results) {
@@ -2803,13 +2938,17 @@
           .filter((palace) => palace.key !== "center")
           .forEach((palace) => getItems(palace.key).forEach((label) => {
             const option = getOption(label);
+            const mappedLabel = getMappedLabel(label);
+            const readingLines = getElderReadingLines(label);
+            const displayLabel = getDisplayLabel(label, isElderLabel(label) ? "detail" : "default");
             const number = results.length + 1;
             const base = {
               number,
               palaceKey: palace.key,
               palaceTitle: `${palace.gua}宫 · ${palace.dir}`,
               palaceRole: palace.role,
-              label
+              label: displayLabel,
+              rawLabel: label
             };
             if (option.type === "space") {
               const rule = spaceRules[label] || {};
@@ -2825,14 +2964,15 @@
               return;
             }
             const hex = getHexEntry(label, palace);
-            const matched = label === palace.defaultItem;
+            const matched = mappedLabel === palace.defaultItem;
             const reading = getHexReading(hex);
             const originalText = toSimplified(formatReadingText(getReadingText(reading)));
+            const bodyLines = [...readingLines, hex ? (originalText || "原文待核。") : `已安位到${palace.dir}，该组合暂无索引。`];
             results.push({
               ...base,
               tag: matched ? "本位相合" : "卦象解读",
-              title: toSimplified(hex ? `${label}住${palace.gua}宫 · 第${hex.no}卦 ${hex.name}` : `${label}住${palace.gua}宫`),
-              body: hex ? (originalText || "原文待核。") : `已安位到${palace.dir}，该组合暂无索引。`,
+              title: toSimplified(hex ? `${displayLabel}住${palace.gua}宫 · 第${hex.no}卦 ${hex.name}` : `${displayLabel}住${palace.gua}宫`),
+              body: bodyLines.join("\n"),
               source: toSimplified(reading?.source || sourceTitle)
             });
           }));
@@ -2949,6 +3089,16 @@
           state.placements[state.active] = [...current];
         }
         if (!getItems(state.active).length) delete state.placements[state.active];
+        state.analyzed = false;
+        state.activeResult = 0;
+        pendingResultScroll = null;
+        render();
+      });
+
+      pickerStage.addEventListener("click", (event) => {
+        const button = event.target.closest("[data-elder-key][data-elder-age]");
+        if (!button) return;
+        state.elderAges[button.dataset.elderKey] = button.dataset.elderAge;
         state.analyzed = false;
         state.activeResult = 0;
         pendingResultScroll = null;
