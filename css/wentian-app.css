@@ -10522,8 +10522,7 @@ html[lang="en"] .wentian-chart-ai-actions button {
 }
 
 .wentian-mb-advice-hero span,
-.wentian-mb-advice-hero h3,
-.wentian-mb-advice-hero p {
+.wentian-mb-advice-hero h3 {
   position: relative;
 }
 
@@ -10540,14 +10539,6 @@ html[lang="en"] .wentian-chart-ai-actions button {
   font-size: 28px;
   font-weight: 900;
   line-height: 1.12;
-}
-
-.wentian-mb-advice-hero p {
-  margin: 16px 0 0 -78px;
-  color: #d2c39b;
-  font-size: 14px;
-  font-weight: 800;
-  line-height: 1.68;
 }
 
 .wentian-mb-advice-focus {

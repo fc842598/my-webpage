@@ -4611,14 +4611,12 @@ function getWentianAdvicePlanItems(groups) {
 
 function renderWentianAdviceDetail(data, fallback, actionAttr = "", actionLabel = "生成建议") {
   const groups = getWentianAdviceGroups(data, fallback);
-  const summary = trimWentianAiText(getWentianAiSummary(data, 150) || groups.map((item) => item.content).join(" "), 132);
-  const ready = !!data && !!summary;
+  const ready = !!data && groups.some((item) => item.content);
   const planItems = getWentianAdvicePlanItems(groups);
   return `
     <div class="wentian-mb-advice-hero">
       <span>行动建议</span>
       <h3>先避险<br>再落地</h3>
-      <p>${escapeHtml(summary || fallback)}</p>
     </div>
     <div class="wentian-mb-advice-focus">
       ${groups.slice(0, 3).map((item, index) => `
