@@ -16787,11 +16787,22 @@ function sourceZiweiAiDecodePanel(saved) {
   const chapters = getWentianChartAiChapters();
   const isRunning = wentianChartAiState.status === "running";
   const hasResults = hasWentianChartAiResults();
-  const doneCount = getWentianGeneratedModuleCount();
   const showFinalBoard = !hasResults && !isRunning;
   const visibleChapters = chapters.filter((chapter) => chapter.module !== "overall" || chapter.ready);
-  const statusLabel = isRunning ? `生成中 ${doneCount}/${WENTIAN_CHART_AI_TASKS.length}` : (hasResults ? "已生成" : "待生成");
-  const coinActionLabel = hasResults ? "重新总批命" : "总批命";
+  const chapterTotal = chapters.length || 6;
+  const chapterDoneCount = chapters.filter((chapter) => chapter.ready).length;
+  const isComplete = chapterDoneCount >= chapterTotal;
+  const coinProgressDeg = chapterTotal ? Math.round((chapterDoneCount / chapterTotal) * 360) : 0;
+  const coinMainLabel = isRunning ? "生成" : (isComplete ? "已完" : "总批");
+  const coinSubLabel = isRunning ? "中" : (isComplete ? "成" : "命");
+  const statusLabel = isRunning ? `生成中 ${chapterDoneCount}/${chapterTotal}` : (isComplete ? "已生成" : (hasResults ? `${chapterDoneCount}/${chapterTotal} 已生成` : "待生成"));
+  const coinActionLabel = isComplete ? "重新总批命" : "总批命";
+  const coinClass = [
+    "wentian-chart-ai-coin",
+    isRunning ? "is-running" : "",
+    isComplete ? "is-complete" : "",
+    (isRunning || chapterDoneCount || isComplete) ? "has-progress" : "",
+  ].filter(Boolean).join(" ");
 
   return `
     <section class="wentian-chart-ai-panel" data-node-id="source-27-ai-card">
@@ -16809,11 +16820,17 @@ function sourceZiweiAiDecodePanel(saved) {
         </div>
         <button
           type="button"
-          class="wentian-chart-ai-coin"
+          class="${escapeHtml(coinClass)}"
+          style="--decode-progress:${coinProgressDeg}deg"
           data-action="wentian-chart-ai-decode"
-          aria-label="${escapeHtml(getWentianCompactText(coinActionLabel, hasResults ? "Run full reading again" : "Run full reading"))}"
+          aria-label="${escapeHtml(`${coinActionLabel}，已完成 ${chapterDoneCount}/${chapterTotal} 卷`)}"
           ${isRunning ? "disabled" : ""}
-        ><span>总批</span>命</button>
+        >
+          <i class="wentian-chart-ai-coin-ring" aria-hidden="true"></i>
+          <span>${escapeHtml(coinMainLabel)}</span>
+          <b>${escapeHtml(coinSubLabel)}</b>
+          <em>${escapeHtml(`${chapterDoneCount}/${chapterTotal}`)}</em>
+        </button>
       </div>`}
       <div class="wentian-chart-ai-actions">
         <button type="button" class="wentian-chart-ai-secondary" data-route="screen-4">追问</button>
