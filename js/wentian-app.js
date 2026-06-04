@@ -3817,7 +3817,12 @@ function getWentianDecadeItems(chartData = {}) {
       theme: getWentianDecadeTheme(domain),
       isCurrent: !!(activeAge && ageStart && ageEnd && activeAge >= ageStart && activeAge <= ageEnd),
     };
-  }).filter((item) => item.key);
+  }).filter((item) => item.key).sort((a, b) => {
+    const aStart = Number(a.ageStart || Number.MAX_SAFE_INTEGER);
+    const bStart = Number(b.ageStart || Number.MAX_SAFE_INTEGER);
+    if (aStart !== bStart) return aStart - bStart;
+    return Number(a.ageEnd || Number.MAX_SAFE_INTEGER) - Number(b.ageEnd || Number.MAX_SAFE_INTEGER);
+  });
 }
 
 function getWentianSelectedDecade(chartData = {}) {
@@ -3870,6 +3875,8 @@ function getWentianLuckReadingGroups(data) {
 function renderWentianLuckReading(data, fallback, actionAttr, actionLabel) {
   const chartData = getWentianChartPayload();
   const selected = getWentianSelectedDecade(chartData);
+  const currentYear = getWentianAiCurrentYear(chartData);
+  const currentYearLabel = currentYear.age ? `${currentYear.age}岁流年` : "当年流年";
   const resultMatches = !!data && (!wentianChartAiState.luckDecadeKey || wentianChartAiState.luckDecadeKey === selected.key);
   const groups = resultMatches ? getWentianLuckReadingGroups(data) : [];
   const starText = formatWentianDecadeStars(selected.majorStars);
@@ -3884,9 +3891,7 @@ function renderWentianLuckReading(data, fallback, actionAttr, actionLabel) {
   return `
     <div class="wentian-mb-luck-hero">
       <span>十年大限</span>
-      <h3>当前十年<br>展开读</h3>
-      <b>以电脑端选中大限为准</b>
-      <p>先选十年，再读宫位、主星、流年节奏和现实动作，手机端不只看一段摘要。</p>
+      <h3>当前十年<br>${escapeHtml(currentYearLabel)}</h3>
     </div>
     <div class="wentian-mb-luck-rail" aria-label="十年大限选择">
       ${(selected.items || []).map((item) => `
