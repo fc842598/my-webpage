@@ -1605,6 +1605,13 @@
     return `mbp-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 9)}`;
   }
 
+  function getReusableClientRecordId(profile) {
+    if (!editingClientRecordId) return '';
+    const editingRecord = findClientRecordById(editingClientRecordId);
+    if (!editingRecord?.profile) return '';
+    return profileHistoryKey(editingRecord.profile) === profileHistoryKey(profile) ? editingClientRecordId : '';
+  }
+
   function syncChatPanelState() {
     if (!document.getElementById('aip-panel-chat')) return;
     if (!state.chartReady || !state.chart || !state.norm) {
@@ -7482,13 +7489,14 @@
     function renderChartFromProfile(profile) {
       showFormError('');
       state.profile = normalizeProfile(profile);
+      const reusableRecordId = getReusableClientRecordId(state.profile);
       formCalMode = state.profile.isLunar ? 'lunar' : 'solar';
       resetForProfileChange();
-      state.chartRecordId = editingClientRecordId || makeLocalId();
+      state.chartRecordId = reusableRecordId || makeLocalId();
       state.chartReady = true;
       state.chartConfirmedKey = profileHistoryKey(state.profile);
       saveProfile();
-      saveProfileToHistory(state.profile, { id: editingClientRecordId || state.chartRecordId });
+      saveProfileToHistory(state.profile, { id: reusableRecordId || state.chartRecordId });
       updateForm();
       renderChart();
     }
@@ -8134,11 +8142,12 @@
       }
       showFormError('');
       state.profile = profile;
+      const reusableRecordId = getReusableClientRecordId(state.profile);
       formCalMode = profile.isLunar ? 'lunar' : 'solar';
       resetAiContent();
       state.chart = null;
       state.chartKey = '';
-      state.chartRecordId = editingClientRecordId || makeLocalId();
+      state.chartRecordId = reusableRecordId || makeLocalId();
       state.norm = null;
       state.chartReady = true;
       state.chartConfirmedKey = profileHistoryKey(profile);
@@ -8151,7 +8160,7 @@
       state.batchDecoding = false;
       document.body.classList.remove('is-decoded');
       saveProfile();
-      saveProfileToHistory(state.profile, { id: editingClientRecordId || state.chartRecordId });
+      saveProfileToHistory(state.profile, { id: reusableRecordId || state.chartRecordId });
       renderChart();
       if (desktopAuthState.session?.user) hydrateDesktopMemberStatus({ force: true });
       $('#chart')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
