@@ -1312,6 +1312,13 @@ const WENTIAN_GOOGLE_ENABLED = true;
 const WENTIAN_CHART_AI_STORAGE_KEY = "wentian-app-chart-ai-v2";
 const WENTIAN_HTML2PDF_URL = "../vendor/html2pdf/html2pdf.bundle.min.js?v=20260521-local-vendor";
 const WENTIAN_CHART_SPECIAL_MODULES = ["shengong", "hunyin", "jiankang", "caiyun", "shiye"];
+const WENTIAN_CHART_SPECIAL_META = {
+  shengong: { no: "01", label: "身宫", key: "事业牵引" },
+  hunyin: { no: "02", label: "婚姻", key: "稳中有冲" },
+  jiankang: { no: "03", label: "健康", key: "肠胃波动" },
+  caiyun: { no: "04", label: "财运", key: "变动求财" },
+  shiye: { no: "05", label: "事业", key: "独立主导" },
+};
 const WENTIAN_CHART_AI_TASKS = [
   { module: "overall", label: "整体批命" },
   { module: "current_luck", label: "十年大限" },
@@ -3695,24 +3702,19 @@ function renderWentianOverallReading(data, fallback, actionAttr, actionLabel) {
 
 function renderWentianSpecialReading(actionAttr, actionLabel) {
   const results = wentianChartAiState.results || {};
-  const meta = {
-    shengong: { no: "01", label: "身宫", key: "事业牵引" },
-    hunyin: { no: "02", label: "婚姻", key: "稳中有冲" },
-    jiankang: { no: "03", label: "健康", key: "肠胃波动" },
-    caiyun: { no: "04", label: "财运", key: "变动求财" },
-    shiye: { no: "05", label: "事业", key: "独立主导" },
-  };
+  const meta = WENTIAN_CHART_SPECIAL_META;
   const readyCount = WENTIAN_CHART_SPECIAL_MODULES.filter((moduleKey) => !!results[moduleKey]).length;
   return `
     <div class="wentian-mb-special-hero">
       <span>专题批命</span>
-      <h3>五项专题<br>合参</h3>
+      <h3>专题解读</h3>
       <b>身宫 · 婚姻 · 健康 · 财运 · 事业</b>
-      <p>把分散专题合成一卷看：先看安身方向，再看关系、身体、财路和事业压力。</p>
       <button type="button" ${actionAttr}>${escapeHtml(readyCount ? "重批专题" : actionLabel)}</button>
     </div>
     <div class="wentian-mb-special-tabs">
-      ${WENTIAN_CHART_SPECIAL_MODULES.map((moduleKey) => `<span>${escapeHtml(meta[moduleKey]?.label || moduleKey)}</span>`).join("")}
+      ${WENTIAN_CHART_SPECIAL_MODULES.map((moduleKey) => `
+        <button type="button" data-action="wentian-chart-ai-special-focus" data-special-module="${escapeHtml(moduleKey)}">${escapeHtml(meta[moduleKey]?.label || moduleKey)}</button>
+      `).join("")}
     </div>
     <div class="wentian-mb-special-list">
       ${WENTIAN_CHART_SPECIAL_MODULES.map((moduleKey) => {
@@ -3725,7 +3727,7 @@ function renderWentianSpecialReading(actionAttr, actionLabel) {
         const tip = trimWentianAiText(card.tip || "", 160);
         const buttonText = data ? "重批" : "生成";
         return `
-          <section class="${data ? "is-ready" : "is-empty"}">
+          <section class="${data ? "is-ready" : "is-empty"}" data-special-module="${escapeHtml(moduleKey)}">
             <header>
               <span>${escapeHtml(item.no)}</span>
               <div>
@@ -3742,6 +3744,18 @@ function renderWentianSpecialReading(actionAttr, actionLabel) {
       }).join("")}
     </div>
   `;
+}
+
+function focusWentianChartAiSpecialModule(moduleKey) {
+  const key = String(moduleKey || "").trim();
+  if (!key) return;
+  const root = view.querySelector(".wentian-mb-special-list");
+  const target = root?.querySelector(`section[data-special-module="${key}"]`);
+  if (!target) return;
+  root.querySelectorAll("section.is-focused").forEach((node) => node.classList.remove("is-focused"));
+  target.classList.add("is-focused");
+  target.scrollIntoView?.({ block: "start", behavior: "smooth" });
+  window.setTimeout(() => target.classList.remove("is-focused"), 1800);
 }
 
 function getWentianDecadeDomain(name = "") {
@@ -17908,6 +17922,11 @@ document.addEventListener("click", (event) => {
   }
   if (action === "wentian-chart-ai-specials") {
     decodeWentianChartAiSpecials();
+    return;
+  }
+  if (action === "wentian-chart-ai-special-focus") {
+    const moduleKey = event.target.closest("[data-special-module]")?.dataset.specialModule || "";
+    focusWentianChartAiSpecialModule(moduleKey);
     return;
   }
   if (action === "wentian-chart-ai-luck-pick") {

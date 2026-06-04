@@ -9183,7 +9183,7 @@ html[lang="en"] .wentian-chart-ai-actions button {
   gap: 6px;
 }
 
-.wentian-mb-special-tabs span {
+.wentian-mb-special-tabs button {
   display: grid;
   place-items: center;
   min-height: 42px;
@@ -9191,11 +9191,17 @@ html[lang="en"] .wentian-chart-ai-actions button {
   border-radius: 12px;
   background: #fffdf8;
   color: #8a6325;
+  font-family: inherit;
   font-size: 14px;
   font-weight: 900;
   line-height: 1.15;
   text-align: center;
   box-shadow: 0 7px 16px rgba(80, 51, 25, .05);
+  cursor: pointer;
+}
+
+.wentian-mb-special-tabs button:active {
+  transform: translateY(1px);
 }
 
 .wentian-mb-special-list {
@@ -9215,6 +9221,11 @@ html[lang="en"] .wentian-chart-ai-actions button {
 .wentian-mb-special-list > section:nth-child(4) {
   border-color: #d0aa63;
   background: linear-gradient(180deg, #fffdf9, #fff7e7);
+}
+
+.wentian-mb-special-list > section.is-focused {
+  border-color: #c69237;
+  box-shadow: 0 0 0 2px rgba(198, 146, 55, .16), 0 12px 26px rgba(83, 54, 26, .12);
 }
 
 .wentian-mb-special-list header {
