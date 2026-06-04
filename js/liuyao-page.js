@@ -13,7 +13,7 @@
   const LIUYAO_MANUAL_EMPTY_COINS = [null, null, null];
   const LIUYAO_COIN_FRONT_SRC = '../images/liuyao-coins/qianlong-coin-front.png';
   const LIUYAO_COIN_BACK_SRC = '../images/liuyao-coins/qianlong-coin-back.png';
-  const LIUYAO_COIN_TABLE_RX = 12;
+  const LIUYAO_COIN_TABLE_RX = 0;
   const lineLabels = ['初爻', '二爻', '三爻', '四爻', '五爻', '上爻'];
   const trigrams = {
     111: { gua: '乾', name: '天' },

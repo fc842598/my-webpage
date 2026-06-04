@@ -552,7 +552,7 @@
   height: 102px;
   border-radius: 50%;
   transform:
-    rotateX(var(--coin-rx, 12deg))
+    rotateX(var(--coin-rx, 0deg))
     rotateY(var(--coin-ry, 0deg))
     rotateZ(var(--coin-rz, 0deg));
   transform-style: preserve-3d;
@@ -592,6 +592,7 @@
   object-fit: contain;
   border-radius: 50%;
   backface-visibility: hidden;
+  filter: brightness(1.12) contrast(1.08) saturate(1.05);
   transform: translateZ(4px);
 }
 
