@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="160" height="640" viewBox="0 0 160 640" fill="none">
+  <defs>
+    <linearGradient id="edgeBase" x1="24" y1="320" x2="136" y2="320" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#5A3117"/>
+      <stop offset="0.14" stop-color="#A86F35"/>
+      <stop offset="0.34" stop-color="#E4BE69"/>
+      <stop offset="0.5" stop-color="#F8E19A"/>
+      <stop offset="0.68" stop-color="#C78D44"/>
+      <stop offset="0.86" stop-color="#8A562B"/>
+      <stop offset="1" stop-color="#4B2712"/>
+    </linearGradient>
+    <linearGradient id="edgeInner" x1="44" y1="320" x2="116" y2="320" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#73411B" stop-opacity="0.9"/>
+      <stop offset="0.18" stop-color="#E1B865" stop-opacity="0.82"/>
+      <stop offset="0.5" stop-color="#F6D98A" stop-opacity="0.95"/>
+      <stop offset="0.8" stop-color="#C07A36" stop-opacity="0.84"/>
+      <stop offset="1" stop-color="#683717" stop-opacity="0.92"/>
+    </linearGradient>
+    <linearGradient id="edgeGloss" x1="80" y1="18" x2="80" y2="622" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FFF0BB" stop-opacity="0.68"/>
+      <stop offset="0.2" stop-color="#FFF0BB" stop-opacity="0.08"/>
+      <stop offset="0.82" stop-color="#FFF0BB" stop-opacity="0"/>
+      <stop offset="1" stop-color="#FFF0BB" stop-opacity="0.34"/>
+    </linearGradient>
+    <filter id="edgeShadow" x="10" y="0" width="140" height="640" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="12" stdDeviation="10" flood-color="#130A04" flood-opacity="0.32"/>
+      <feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#FFF0BB" flood-opacity="0.16"/>
+    </filter>
+  </defs>
+
+  <g filter="url(#edgeShadow)">
+    <rect x="30" y="18" width="100" height="604" rx="50" fill="url(#edgeBase)"/>
+    <rect x="38" y="24" width="84" height="592" rx="42" fill="url(#edgeInner)"/>
+    <rect x="73" y="22" width="14" height="596" rx="7" fill="#F8E3A1" opacity="0.76"/>
+    <rect x="50" y="26" width="8" height="588" rx="4" fill="#FFF5C9" opacity="0.42"/>
+    <rect x="102" y="26" width="7" height="588" rx="3.5" fill="#6C3A1A" opacity="0.34"/>
+    <rect x="30" y="18" width="100" height="604" rx="50" fill="url(#edgeGloss)"/>
+
+    <g opacity="0.28" stroke="#FFF2BE" stroke-linecap="round">
+      <path d="M52 84C62 136 62 214 52 266"/>
+      <path d="M108 116C98 184 98 256 108 324"/>
+      <path d="M58 344C68 408 68 486 58 552"/>
+      <path d="M104 378C96 434 96 502 104 566"/>
+    </g>
+
+    <g opacity="0.18" stroke="#4C2410" stroke-linecap="round">
+      <path d="M45 156C58 210 58 286 45 338"/>
+      <path d="M116 64C103 120 103 196 116 250"/>
+      <path d="M46 430C60 486 60 560 46 610"/>
+    </g>
+
+    <g fill="#F3D788" opacity="0.42">
+      <circle cx="80" cy="96" r="4"/>
+      <circle cx="80" cy="204" r="3"/>
+      <circle cx="80" cy="318" r="3"/>
+      <circle cx="80" cy="438" r="4"/>
+      <circle cx="80" cy="548" r="3"/>
+    </g>
+  </g>
+</svg>

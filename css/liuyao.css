@@ -545,6 +545,7 @@
 }
 
 .liuyao-page .mbp-liuyao-coin {
+  --coin-edge-width: 18px;
   position: relative;
   z-index: 1;
   display: block;
@@ -598,6 +599,23 @@
 
 .liuyao-page .mbp-liuyao-coin-face.is-back {
   transform: rotateY(180deg) translateZ(4px);
+}
+
+.liuyao-page .mbp-liuyao-coin-edge {
+  position: absolute;
+  left: 50%;
+  top: -3px;
+  z-index: 2;
+  width: var(--coin-edge-width);
+  height: 108px;
+  margin-left: calc(var(--coin-edge-width) * -.5);
+  object-fit: fill;
+  backface-visibility: hidden;
+  opacity: .98;
+  transform: rotateY(90deg) translateZ(0);
+  transform-style: preserve-3d;
+  pointer-events: none;
+  filter: brightness(1.08) contrast(1.08) saturate(1.02);
 }
 
 .liuyao-page .mbp-liuyao-coin-token em {

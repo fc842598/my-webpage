@@ -13,6 +13,7 @@
   const LIUYAO_MANUAL_EMPTY_COINS = [null, null, null];
   const LIUYAO_COIN_FRONT_SRC = '../images/liuyao-coins/qianlong-coin-front.png';
   const LIUYAO_COIN_BACK_SRC = '../images/liuyao-coins/qianlong-coin-back.png';
+  const LIUYAO_COIN_EDGE_SRC = '../images/liuyao-coins/qianlong-coin-edge.svg';
   const LIUYAO_COIN_TABLE_RX = 0;
   const lineLabels = ['初爻', '二爻', '三爻', '四爻', '五爻', '上爻'];
   const trigrams = {
@@ -693,6 +694,7 @@
             <span class="mbp-liuyao-coin ${coin === 3 ? 'is-yang' : 'is-yin'}">
               <img class="mbp-liuyao-coin-face is-front" src="${LIUYAO_COIN_FRONT_SRC}" alt="" aria-hidden="true" loading="eager" decoding="async">
               <img class="mbp-liuyao-coin-face is-back" src="${LIUYAO_COIN_BACK_SRC}" alt="" aria-hidden="true" loading="eager" decoding="async">
+              <img class="mbp-liuyao-coin-edge" src="${LIUYAO_COIN_EDGE_SRC}" alt="" aria-hidden="true" loading="eager" decoding="async">
             </span>
             <em>${escapeHtml(animating || last || state.lastCoins.length ? getCoinFaceLabel(coin) : '待')}</em>
           </span>
