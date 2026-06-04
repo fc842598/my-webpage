@@ -9232,7 +9232,7 @@ html[lang="en"] .wentian-chart-ai-actions button {
   display: grid;
   grid-template-columns: 34px minmax(0, 1fr) auto;
   gap: 9px;
-  align-items: start;
+  align-items: center;
   margin-bottom: 10px;
 }
 
@@ -9248,16 +9248,32 @@ html[lang="en"] .wentian-chart-ai-actions button {
   font-weight: 900;
 }
 
-.wentian-mb-special-list b {
-  display: block;
-  color: #9b742e;
-  font-size: 14px;
-  font-weight: 900;
-  line-height: 1.1;
+.wentian-mb-special-title-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
 }
 
-.wentian-mb-special-list h4 {
-  margin: 4px 0 0;
+.wentian-mb-special-title-row b {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  min-height: 26px;
+  border: 1px solid #dfc384;
+  border-radius: 999px;
+  padding: 4px 8px;
+  background: #fff4dc;
+  color: #9b742e;
+  font-size: 13px;
+  font-weight: 900;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.wentian-mb-special-title-row h4 {
+  min-width: 0;
+  margin: 0;
   color: #211812;
   font-size: 22px;
   font-weight: 900;

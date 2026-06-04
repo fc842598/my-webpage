@@ -3730,9 +3730,9 @@ function renderWentianSpecialReading(actionAttr, actionLabel) {
           <section class="${data ? "is-ready" : "is-empty"}" data-special-module="${escapeHtml(moduleKey)}">
             <header>
               <span>${escapeHtml(item.no)}</span>
-              <div>
-                <b>${escapeHtml(item.label)}</b>
+              <div class="wentian-mb-special-title-row">
                 <h4>${escapeHtml(title)}</h4>
+                <b>${escapeHtml(item.label)}</b>
               </div>
               <em>${escapeHtml(item.key)}</em>
             </header>
