@@ -8699,6 +8699,12 @@ html[lang="en"] .wentian-chart-ai-menu span {
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .035);
 }
 
+.wentian-chart-ai-hero-copy {
+  display: grid;
+  align-content: center;
+  min-height: 100%;
+}
+
 .wentian-chart-ai-hero strong {
   display: block;
   margin-bottom: 8px;
@@ -8706,6 +8712,10 @@ html[lang="en"] .wentian-chart-ai-menu span {
   font-size: 19px;
   font-weight: 900;
   line-height: 1.25;
+}
+
+.wentian-chart-ai-hero-title {
+  margin-bottom: 0;
 }
 
 .wentian-chart-ai-hero p {
@@ -8736,6 +8746,13 @@ html[lang="en"] .wentian-chart-ai-menu span {
   font-weight: 900;
   line-height: 1.04;
   text-align: center;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.wentian-chart-ai-coin:disabled {
+  cursor: default;
+  opacity: .82;
 }
 
 .wentian-chart-ai-coin span {
@@ -8776,7 +8793,7 @@ html[lang="en"] .wentian-chart-ai-menu span {
 
 .wentian-chart-ai-actions {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 78px 92px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 8px;
   margin: 14px 0 0;
 }

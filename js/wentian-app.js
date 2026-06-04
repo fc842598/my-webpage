@@ -16774,12 +16774,9 @@ function sourceZiweiAiDecodePanel(saved) {
   const hasResults = hasWentianChartAiResults();
   const doneCount = getWentianGeneratedModuleCount();
   const showFinalBoard = !hasResults && !isRunning;
-  const buttonText = isRunning ? `生成中 ${doneCount}/${WENTIAN_CHART_AI_TASKS.length}` : (hasResults ? "重新总批命" : "总批命");
   const visibleChapters = chapters.filter((chapter) => chapter.module !== "overall" || chapter.ready);
-  const selectedXiao = getWentianSelectedXiaoLianYear(saved?.chartData || {});
-  const activeAge = Number(selectedXiao?.age || saved?.chartData?.activeAge || saved?.chartData?.realCurrentAge || 0);
   const statusLabel = isRunning ? `生成中 ${doneCount}/${WENTIAN_CHART_AI_TASKS.length}` : (hasResults ? "已生成" : "待生成");
-  const reportCount = chapters.length || 6;
+  const coinActionLabel = hasResults ? "重新总批命" : "总批命";
 
   return `
     <section class="wentian-chart-ai-panel" data-node-id="source-27-ai-card">
@@ -16792,18 +16789,18 @@ function sourceZiweiAiDecodePanel(saved) {
       </header>
       ${wentianChartAiState.error ? `<p class="wentian-chart-ai-error">${escapeHtml(wentianChartAiState.error)}</p>` : ""}
       ${showFinalBoard ? "" : `<div class="wentian-chart-ai-hero">
-        <div>
-          <strong>生成完整六卷批命</strong>
-          <p>命盘主线、格局底色与关键提醒先出来，再向下看专题和流年。</p>
+        <div class="wentian-chart-ai-hero-copy">
+          <strong class="wentian-chart-ai-hero-title">${escapeHtml(getWentianCompactText("点击解读", "Tap to decode"))}</strong>
         </div>
-        <div class="wentian-chart-ai-coin"><span>总批</span>命</div>
-      </div>`}
-      ${showFinalBoard ? "" : `<div class="wentian-chart-ai-pulse">
-        <span><b>${reportCount}</b> 卷报告</span>
-        <span><b>${activeAge || "--"}</b> 岁流年</span>
+        <button
+          type="button"
+          class="wentian-chart-ai-coin"
+          data-action="wentian-chart-ai-decode"
+          aria-label="${escapeHtml(getWentianCompactText(coinActionLabel, hasResults ? "Run full reading again" : "Run full reading"))}"
+          ${isRunning ? "disabled" : ""}
+        ><span>总批</span>命</button>
       </div>`}
       <div class="wentian-chart-ai-actions">
-        <button type="button" class="wentian-chart-ai-primary" data-action="wentian-chart-ai-decode" ${isRunning ? "disabled" : ""}>${escapeHtml(buttonText)}</button>
         <button type="button" class="wentian-chart-ai-secondary" data-route="screen-4">追问</button>
         <button type="button" class="wentian-chart-ai-secondary" data-action="wentian-open-mingbook-onepage">下载PDF</button>
       </div>
