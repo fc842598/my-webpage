@@ -1325,12 +1325,12 @@ const WENTIAN_CHART_AI_TASKS = [
   { module: "action_advice", label: "行动建议" },
 ];
 const WENTIAN_CHART_AI_CHAPTERS = [
-  { vol: "卷一", menu: "壹", title: "整体批命", modules: ["overall"], action: "module", module: "overall", actionLabel: "单独批总局", placeholder: "等待 AI 批命生成命盘主线、格局底色与关键提醒。" },
-  { vol: "卷二", menu: "贰", title: "专题批命", modules: WENTIAN_CHART_SPECIAL_MODULES, action: "specials", actionLabel: "单独批专题", placeholder: "等待生成身宫、婚姻、健康、财运、事业五项专题。" },
-  { vol: "卷三", menu: "叁", title: "十年大限", modules: ["current_luck"], action: "module", module: "current_luck", actionLabel: "批当前十年", placeholder: "等待生成当前大限、流年节奏与时间窗口。" },
-  { vol: "卷四", menu: "肆", title: "小限流年", modules: ["xiaoxian_liunian"], action: "module", module: "xiaoxian_liunian", actionLabel: "单独批小限", placeholder: "等待生成当前小限流年、应事宫位与提醒。" },
-  { vol: "卷五", menu: "伍", title: "人生曲线", modules: ["life_curve"], action: "module", module: "life_curve", actionLabel: "生成曲线", placeholder: "等待生成客户易懂版人生曲线、低点高点和阶段提醒。" },
-  { vol: "卷六", menu: "陆", title: "行动建议", modules: ["action_advice"], action: "module", module: "action_advice", actionLabel: "生成建议", placeholder: "等待汇总风险、时机和可执行建议。" },
+  { vol: "卷一", menu: "壹", title: "整体批命", modules: ["overall"], action: "module", module: "overall", actionLabel: "单独批总局", compactTag: "总纲", compactTagEn: "Overview", compactSummary: "命格主线、人生底色、贵人与风险。", compactSummaryEn: "Core pattern, life tone, helpers, and risks.", compactActionLabel: "只批卷一", compactActionLabelEn: "Generate Vol. 1", placeholder: "等待 AI 批命生成命盘主线、格局底色与关键提醒。" },
+  { vol: "卷二", menu: "贰", title: "专题批命", modules: WENTIAN_CHART_SPECIAL_MODULES, action: "specials", actionLabel: "单独批专题", compactTag: "专题", compactTagEn: "Topics", compactSummary: "婚姻、健康、财运、事业分项展开。", compactSummaryEn: "Marriage, health, wealth, and career by topic.", compactActionLabel: "只批卷二", compactActionLabelEn: "Generate Vol. 2", placeholder: "等待生成身宫、婚姻、健康、财运、事业五项专题。" },
+  { vol: "卷三", menu: "叁", title: "十年大限", modules: ["current_luck"], action: "module", module: "current_luck", actionLabel: "批当前十年", compactTag: "当前十年", compactTagEn: "Current Decade", compactSummary: "时间线、转折点、十年策略，最适合先单独看。", compactSummaryEn: "Timing, turning points, and the next-decade strategy.", compactActionLabel: "只批卷三", compactActionLabelEn: "Generate Vol. 3", compactFeatured: true, placeholder: "等待生成当前大限、流年节奏与时间窗口。" },
+  { vol: "卷四", menu: "肆", title: "小限流年", modules: ["xiaoxian_liunian"], action: "module", module: "xiaoxian_liunian", actionLabel: "单独批小限", compactTag: "流年", compactTagEn: "Annual", compactSummary: "今年判断、应期提醒与当下关键节点。", compactSummaryEn: "This year, timing triggers, and current key moments.", compactActionLabel: "只批卷四", compactActionLabelEn: "Generate Vol. 4", placeholder: "等待生成当前小限流年、应事宫位与提醒。" },
+  { vol: "卷五", menu: "伍", title: "人生曲线", modules: ["life_curve"], action: "module", module: "life_curve", actionLabel: "生成曲线", compactTag: "曲线", compactTagEn: "Curve", compactSummary: "高低点、顺逆势与阶段变化趋势。", compactSummaryEn: "Highs, lows, and stage-by-stage trend shifts.", compactActionLabel: "只批卷五", compactActionLabelEn: "Generate Vol. 5", placeholder: "等待生成客户易懂版人生曲线、低点高点和阶段提醒。" },
+  { vol: "卷六", menu: "陆", title: "行动建议", modules: ["action_advice"], action: "module", module: "action_advice", actionLabel: "生成建议", compactTag: "建议", compactTagEn: "Advice", compactSummary: "把前面内容收束成客户下一步怎么做。", compactSummaryEn: "Turns the reading into clear next steps.", compactActionLabel: "只批卷六", compactActionLabelEn: "Generate Vol. 6", placeholder: "等待汇总风险、时机和可执行建议。" },
 ];
 const WENTIAN_LANGUAGE_OPTIONS = [
   { code: "zh-Hans", label: "简体中文", htmlLang: "zh-CN" },
@@ -4646,6 +4646,63 @@ function renderWentianAdviceDetail(data, fallback, actionAttr = "", actionLabel 
     </section>
     <div class="wentian-mb-advice-actions">
       <button type="button" ${actionAttr}>${escapeHtml(ready ? "重批建议" : actionLabel)}</button>
+    </div>
+  `;
+}
+
+function getWentianCompactText(source, english) {
+  const lang = getWentianLanguageCode();
+  if (lang === "en") return english || source || "";
+  const text = source || "";
+  return lang === "zh-Hant" ? convertWentianTextToTraditional(text) : text;
+}
+
+function getWentianCompactChapterSummary(chapter) {
+  return getWentianCompactText(chapter.compactSummary || chapter.placeholder || "", chapter.compactSummaryEn);
+}
+
+function getWentianCompactChapterTag(chapter) {
+  return getWentianCompactText(chapter.compactTag || "", chapter.compactTagEn);
+}
+
+function getWentianCompactActionLabel(chapter) {
+  return getWentianCompactText(chapter.compactActionLabel || chapter.actionLabel || "", chapter.compactActionLabelEn);
+}
+
+function renderWentianFinalVolumeCard(chapter, index) {
+  const lang = getWentianLanguageCode();
+  const actionAttr = chapter.module
+    ? `data-action="wentian-chart-ai-module" data-ai-module="${escapeHtml(chapter.module)}"`
+    : `data-action="wentian-chart-ai-${escapeHtml(chapter.action)}"`;
+  return `
+    <article class="wentian-chart-ai-final-card ${chapter.compactFeatured ? "is-featured" : ""}" data-wentian-report-chapter="${index}">
+      <div class="wentian-chart-ai-final-card-top">
+        <span class="wentian-chart-ai-final-vol">${escapeHtml(translateWentianText(chapter.vol, lang))}</span>
+        <span class="wentian-chart-ai-final-tag">${escapeHtml(getWentianCompactChapterTag(chapter))}</span>
+      </div>
+      <h3>${escapeHtml(translateWentianText(chapter.title, lang))}</h3>
+      <p>${escapeHtml(getWentianCompactChapterSummary(chapter))}</p>
+      <button type="button" ${actionAttr}>${escapeHtml(getWentianCompactActionLabel(chapter))}</button>
+    </article>
+  `;
+}
+
+function renderWentianFinalVolumeBoard(chapters) {
+  return `
+    <div class="wentian-chart-ai-final-board" aria-label="${escapeHtml(getWentianCompactText("命书目录", "Report chapters"))}">
+      <div class="wentian-chart-ai-final-hero">
+        <span>${escapeHtml(getWentianCompactText("READ / PICK / DECODE", "READ / PICK / DECODE"))}</span>
+        <h3>${escapeHtml(getWentianCompactText("直接看六卷，直接点单卷", "Read six volumes, pick one anytime"))}</h3>
+        <p>${escapeHtml(getWentianCompactText("可总批成书，也可先批任意一卷。卷三主看当前十年，适合作为第一卷先开。", "Generate the full report, or open any single volume first. Vol. 3 is the best first read for the current decade."))}</p>
+      </div>
+      <div class="wentian-chart-ai-final-meta">
+        <div><b>${escapeHtml(getWentianCompactText("6卷", "6 Vols"))}</b>${escapeHtml(getWentianCompactText("完整命书", "Full report"))}</div>
+        <div><b>${escapeHtml(getWentianCompactText("单卷可点", "Single volume"))}</b>${escapeHtml(getWentianCompactText("不必全开", "No need to unlock all"))}</div>
+        <div><b>${escapeHtml(getWentianCompactText("卷三优先", "Vol. 3 first"))}</b>${escapeHtml(getWentianCompactText("最适合先看", "Best first read"))}</div>
+      </div>
+      <div class="wentian-chart-ai-final-grid">
+        ${chapters.map(renderWentianFinalVolumeCard).join("")}
+      </div>
     </div>
   `;
 }
@@ -16716,6 +16773,7 @@ function sourceZiweiAiDecodePanel(saved) {
   const isRunning = wentianChartAiState.status === "running";
   const hasResults = hasWentianChartAiResults();
   const doneCount = getWentianGeneratedModuleCount();
+  const showFinalBoard = !hasResults && !isRunning;
   const buttonText = isRunning ? `生成中 ${doneCount}/${WENTIAN_CHART_AI_TASKS.length}` : (hasResults ? "重新总批命" : "总批命");
   const visibleChapters = chapters.filter((chapter) => chapter.module !== "overall" || chapter.ready);
   const selectedXiao = getWentianSelectedXiaoLianYear(saved?.chartData || {});
@@ -16728,32 +16786,33 @@ function sourceZiweiAiDecodePanel(saved) {
       <header class="wentian-chart-ai-head">
         <div>
           <span class="wentian-chart-ai-kicker"><i aria-hidden="true"></i>AI 命盘解读</span>
-          <h2>总局先行</h2>
+          <h2>六卷命书</h2>
         </div>
         <b class="wentian-chart-ai-status">${escapeHtml(statusLabel)}</b>
       </header>
       ${wentianChartAiState.error ? `<p class="wentian-chart-ai-error">${escapeHtml(wentianChartAiState.error)}</p>` : ""}
-      <div class="wentian-chart-ai-hero">
+      ${showFinalBoard ? "" : `<div class="wentian-chart-ai-hero">
         <div>
           <strong>生成完整六卷批命</strong>
           <p>命盘主线、格局底色与关键提醒先出来，再向下看专题和流年。</p>
         </div>
         <div class="wentian-chart-ai-coin"><span>总批</span>命</div>
-      </div>
-      <div class="wentian-chart-ai-pulse">
+      </div>`}
+      ${showFinalBoard ? "" : `<div class="wentian-chart-ai-pulse">
         <span><b>${reportCount}</b> 卷报告</span>
         <span><b>${activeAge || "--"}</b> 岁流年</span>
-      </div>
+      </div>`}
       <div class="wentian-chart-ai-actions">
         <button type="button" class="wentian-chart-ai-primary" data-action="wentian-chart-ai-decode" ${isRunning ? "disabled" : ""}>${escapeHtml(buttonText)}</button>
         <button type="button" class="wentian-chart-ai-secondary" data-route="screen-4">追问</button>
         <button type="button" class="wentian-chart-ai-secondary" data-action="wentian-open-mingbook-onepage">下载PDF</button>
       </div>
       <p class="wentian-chart-ai-pdf-status" data-wentian-pdf-status></p>
+      ${showFinalBoard ? renderWentianFinalVolumeBoard(chapters) : ""}
     </section>
-    <div class="wentian-chart-ai-list">
+    ${showFinalBoard ? "" : `<div class="wentian-chart-ai-list">
       ${visibleChapters.map(renderWentianMobileChapter).join("")}
-    </div>
+    </div>`}
   `;
 }
 

@@ -8337,6 +8337,176 @@ html[lang="en"] .wentian-chart-ai-modules button {
   font-size: 13px;
 }
 
+.wentian-chart-ai-final-board {
+  display: grid;
+  gap: 13px;
+  padding: 14px;
+  overflow: hidden;
+  border: 1px solid rgba(211, 174, 99, .24);
+  border-radius: 22px;
+  background:
+    radial-gradient(circle at 96% 0%, rgba(238, 202, 125, .17), transparent 30%),
+    linear-gradient(180deg, #24160d 0%, #120b07 100%);
+  color: #fff7ea;
+  box-shadow: inset 0 1px 0 rgba(255, 244, 220, .08), 0 14px 28px rgba(52, 30, 12, .18);
+}
+
+.wentian-chart-ai-final-hero {
+  display: grid;
+  gap: 8px;
+  padding: 14px;
+  border: 1px solid rgba(230, 194, 116, .18);
+  border-radius: 18px;
+  background:
+    radial-gradient(circle at right top, rgba(240, 204, 126, .16), transparent 34%),
+    linear-gradient(135deg, rgba(255, 250, 240, .13), rgba(255, 250, 240, .04));
+}
+
+.wentian-chart-ai-final-hero span {
+  color: #d8bb75;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: .16em;
+}
+
+.wentian-chart-ai-final-hero h3 {
+  margin: 0;
+  color: #fff9ee;
+  font-size: 23px;
+  font-weight: 900;
+  line-height: 1.12;
+}
+
+.wentian-chart-ai-final-hero p {
+  margin: 0;
+  color: rgba(244, 228, 201, .84);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.62;
+}
+
+.wentian-chart-ai-final-meta {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 7px;
+}
+
+.wentian-chart-ai-final-meta div {
+  min-width: 0;
+  padding: 9px 6px;
+  border: 1px solid rgba(233, 196, 119, .14);
+  border-radius: 13px;
+  background: rgba(255, 250, 240, .075);
+  color: rgba(244, 228, 199, .76);
+  font-size: 10px;
+  font-weight: 800;
+  line-height: 1.35;
+  text-align: center;
+}
+
+.wentian-chart-ai-final-meta b {
+  display: block;
+  margin-bottom: 3px;
+  color: #fff8ec;
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.wentian-chart-ai-final-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 9px;
+}
+
+.wentian-chart-ai-final-card {
+  display: grid;
+  align-content: start;
+  gap: 8px;
+  min-width: 0;
+  min-height: 164px;
+  padding: 11px;
+  border: 1px solid rgba(225, 192, 131, .26);
+  border-radius: 16px;
+  background:
+    radial-gradient(circle at right top, rgba(240, 205, 130, .12), transparent 30%),
+    rgba(255, 251, 244, .96);
+  color: #24180f;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, .07);
+}
+
+.wentian-chart-ai-final-card.is-featured {
+  border-color: rgba(224, 184, 105, .52);
+  box-shadow: 0 12px 22px rgba(208, 152, 61, .16);
+}
+
+.wentian-chart-ai-final-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+}
+
+.wentian-chart-ai-final-vol,
+.wentian-chart-ai-final-tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  white-space: nowrap;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.wentian-chart-ai-final-vol {
+  padding: 5px 8px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #f8e4b0 0%, #d49a47 100%);
+  color: #351f0d;
+  font-size: 11px;
+}
+
+.wentian-chart-ai-final-tag {
+  max-width: 78px;
+  padding: 5px 7px;
+  overflow: hidden;
+  border: 1px solid rgba(214, 183, 130, .34);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .86);
+  color: #917d67;
+  font-size: 10px;
+  text-overflow: ellipsis;
+}
+
+.wentian-chart-ai-final-card h3 {
+  margin: 0;
+  color: #24180f;
+  font-size: 17px;
+  font-weight: 900;
+  line-height: 1.15;
+}
+
+.wentian-chart-ai-final-card p {
+  margin: 0;
+  color: #7a6958;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.55;
+}
+
+.wentian-chart-ai-final-card button {
+  align-self: end;
+  min-height: 34px;
+  margin-top: auto;
+  padding: 0 10px;
+  border: 0;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #f0d08a 0%, #cc9047 100%);
+  color: #2d190d;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 900;
+}
+
 .wentian-chart-ai-menu {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -8382,6 +8552,27 @@ html[lang="en"] .wentian-chart-ai-modules button {
 
 html[lang="en"] .wentian-chart-ai-menu {
   gap: 5px;
+}
+
+html[lang="en"] .wentian-chart-ai-final-hero h3 {
+  font-size: 20px;
+}
+
+html[lang="en"] .wentian-chart-ai-final-card {
+  min-height: 188px;
+}
+
+html[lang="en"] .wentian-chart-ai-final-tag {
+  max-width: 92px;
+}
+
+html[lang="en"] .wentian-chart-ai-final-card h3 {
+  font-size: 15px;
+}
+
+html[lang="en"] .wentian-chart-ai-final-card p,
+html[lang="en"] .wentian-chart-ai-final-card button {
+  font-size: 11px;
 }
 
 html[lang="en"] .wentian-chart-ai-menu button {
