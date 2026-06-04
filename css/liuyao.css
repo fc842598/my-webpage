@@ -279,6 +279,10 @@
   line-height: 1.55;
 }
 
+.liuyao-page .mbp-liuyao-actions button {
+  min-height: 44px;
+}
+
 .liuyao-page .mbp-liuyao-manual-head,
 .liuyao-page .mbp-liuyao-manual-current > div:first-child {
   display: flex;
@@ -416,7 +420,7 @@
   align-items: stretch;
   justify-content: stretch;
   gap: 0;
-  min-height: 260px;
+  min-height: 306px;
   overflow: hidden;
 }
 
@@ -424,36 +428,43 @@
   position: relative;
   width: 100%;
   min-width: 0;
-  min-height: 190px;
+  min-height: 236px;
   touch-action: none;
   user-select: none;
   cursor: grab;
   outline: 0;
-  perspective: 820px;
+  perspective: 980px;
+  perspective-origin: 50% 30%;
+  transform-style: preserve-3d;
 }
 
 .liuyao-page .mbp-liuyao-coin-stage::before {
   content: "";
   position: absolute;
-  inset: 12px 18px 42px;
-  border: 1px solid rgba(241, 212, 125, .14);
-  border-radius: 999px;
+  inset: 10px 18px 38px;
+  border: 1px solid rgba(241, 212, 125, .18);
+  border-radius: 30px;
   background:
-    radial-gradient(circle at 50% 40%, rgba(241, 212, 125, .26), transparent 58%),
-    radial-gradient(circle at 50% 100%, rgba(164, 93, 57, .22), transparent 42%),
-    rgba(241, 212, 125, .05);
+    linear-gradient(90deg, rgba(255, 240, 172, .07) 1px, transparent 1px) 0 0 / 46px 100%,
+    linear-gradient(0deg, rgba(43, 24, 12, .22) 1px, transparent 1px) 0 0 / 100% 38px,
+    radial-gradient(circle at 50% 30%, rgba(241, 212, 125, .23), transparent 50%),
+    linear-gradient(135deg, rgba(70, 49, 25, .96), rgba(37, 28, 16, .96) 48%, rgba(86, 46, 26, .9));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 240, 172, .16),
+    inset 0 -18px 42px rgba(0, 0, 0, .28),
+    0 20px 38px rgba(0, 0, 0, .24);
 }
 
 .liuyao-page .mbp-liuyao-coin-stage::after {
   content: "";
   position: absolute;
-  right: 72px;
-  bottom: 48px;
-  left: 72px;
-  height: 20px;
-  border-radius: 50%;
-  background: radial-gradient(ellipse at center, rgba(0, 0, 0, .38), transparent 70%);
-  filter: blur(8px);
+  right: 36px;
+  bottom: 35px;
+  left: 36px;
+  height: 12px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, transparent, rgba(241, 212, 125, .18), transparent);
+  opacity: .72;
   pointer-events: none;
 }
 
@@ -470,119 +481,142 @@
 .liuyao-page .mbp-liuyao-coin-token {
   position: absolute;
   z-index: 2;
+  left: 50%;
+  top: 44%;
   display: grid;
   justify-items: center;
-  width: 82px;
-  height: 104px;
+  width: 112px;
+  height: 146px;
+  margin: -58px 0 0 -56px;
   transform-style: preserve-3d;
-  animation: mbpLiuyaoCoinSettle 2.8s ease-in-out infinite;
-  animation-delay: var(--d);
-}
-
-.liuyao-page .mbp-liuyao-coin-token:nth-of-type(1) {
-  left: 19%;
-  top: 46px;
-  --tx: -66px;
-  --rot: 720deg;
-  --coin-rot: -13deg;
-}
-
-.liuyao-page .mbp-liuyao-coin-token:nth-of-type(2) {
-  left: 50%;
-  top: 62px;
-  margin-left: -41px;
-  --tx: 0px;
-  --rot: -760deg;
-  --coin-rot: 8deg;
-}
-
-.liuyao-page .mbp-liuyao-coin-token:nth-of-type(3) {
-  right: 19%;
-  top: 44px;
-  --tx: 66px;
-  --rot: 680deg;
-  --coin-rot: 2deg;
+  transform:
+    translate3d(var(--coin-x, var(--coin-home-x)), var(--coin-y, var(--coin-home-y)), var(--coin-z, 0))
+    rotateZ(var(--coin-track-rot, 0deg))
+    scale(var(--coin-scale, 1));
+  will-change: transform;
 }
 
 .liuyao-page .mbp-liuyao-coin-stage.is-tossing .mbp-liuyao-coin-token {
-  animation: mbpLiuyaoCoinToss .98s cubic-bezier(.18, .78, .18, 1) both;
-  animation-delay: calc(var(--d) * .35);
+  transition: none;
 }
 
 .liuyao-page .mbp-liuyao-coin-stage.is-dragging .mbp-liuyao-coin-token {
-  animation: none;
-  transform: translateY(var(--pull-y)) rotate(var(--drag-rot)) scale(1.04);
-  transition: transform .06s linear;
+  transform:
+    translate3d(
+      calc(var(--coin-home-x) + var(--drag-offset-x)),
+      calc(var(--coin-home-y) + var(--pull-y)),
+      var(--drag-lift)
+    )
+    rotateZ(var(--drag-tilt))
+    scale(1.06);
+  transition: transform .05s linear;
 }
 
 .liuyao-page .mbp-liuyao-coin-stage.is-dragging .mbp-liuyao-coin-token:nth-of-type(2) {
-  transform: translateY(var(--pull-y)) rotate(var(--drag-rot-neg)) scale(1.04);
+  transform:
+    translate3d(
+      calc(var(--coin-home-x) + var(--drag-offset-x)),
+      calc(var(--coin-home-y) + var(--pull-y)),
+      var(--drag-lift)
+    )
+    rotateZ(calc(var(--drag-tilt) * -1))
+    scale(1.06);
+}
+
+.liuyao-page .mbp-liuyao-coin-shadow {
+  position: absolute;
+  left: 11px;
+  top: 86px;
+  z-index: 0;
+  width: 90px;
+  height: 21px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center, rgba(0, 0, 0, .5), rgba(0, 0, 0, .08) 58%, transparent 72%);
+  filter: blur(5px);
+  opacity: var(--shadow-opacity, .34);
+  transform: translate3d(0, var(--shadow-y, 0), -2px) scale(var(--shadow-scale, 1));
+  transform-origin: center;
+  will-change: transform, opacity;
+}
+
+.liuyao-page .mbp-liuyao-coin-stage.is-dragging .mbp-liuyao-coin-shadow {
+  opacity: var(--drag-shadow-opacity, .18);
+  transform: translate3d(0, var(--drag-lift), -2px) scale(var(--drag-shadow-scale, .76));
 }
 
 .liuyao-page .mbp-liuyao-coin {
   position: relative;
   z-index: 1;
-  display: grid;
-  place-items: center;
-  width: 72px;
-  height: 72px;
-  border: 1px solid rgba(74, 43, 16, .45);
+  display: block;
+  width: 102px;
+  height: 102px;
   border-radius: 50%;
-  overflow: hidden;
-  background:
-    radial-gradient(circle at 34% 28%, rgba(255, 239, 160, .8), transparent 15%),
-    radial-gradient(circle at 66% 72%, rgba(83, 45, 18, .28), transparent 28%),
-    linear-gradient(145deg, #f0d070 0%, #c1872a 42%, #6b3f17 100%);
-  box-shadow:
-    0 18px 28px rgba(0, 0, 0, .28),
-    inset 0 0 0 5px rgba(255, 229, 143, .22),
-    inset 0 0 0 10px rgba(83, 45, 18, .12);
-  color: #4a2a12;
-  font-size: 12px;
-  font-family: "SimSun", "Songti SC", serif;
-  font-weight: 900;
-  transform: rotateX(58deg) rotateZ(var(--coin-rot, -8deg));
+  transform:
+    rotateX(var(--coin-rx, 12deg))
+    rotateY(var(--coin-ry, 0deg))
+    rotateZ(var(--coin-rz, 0deg));
   transform-style: preserve-3d;
+  will-change: transform;
+  filter:
+    drop-shadow(0 17px 16px rgba(0, 0, 0, .22))
+    drop-shadow(0 3px 2px rgba(255, 235, 154, .18));
 }
 
-.liuyao-page .mbp-liuyao-coin.is-yin {
-  background:
-    radial-gradient(circle at 34% 28%, rgba(255, 238, 188, .55), transparent 15%),
-    radial-gradient(circle at 70% 72%, rgba(68, 50, 34, .28), transparent 28%),
-    linear-gradient(145deg, #d3b981 0%, #a98545 42%, #4e3a25 100%);
-}
-
-.liuyao-page .mbp-liuyao-coin b {
+.liuyao-page .mbp-liuyao-coin::before {
+  content: "";
   position: absolute;
-  left: 50%;
-  top: 50%;
-  z-index: 2;
-  width: 21px;
-  height: 21px;
-  border: 2px solid rgba(72, 41, 15, .58);
-  border-radius: 4px;
-  background: #5a3417;
-  transform: translate(-50%, -50%);
+  inset: 5px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 234, 141, .35), rgba(95, 50, 20, .18) 58%, rgba(45, 24, 12, .32));
+  transform: translateZ(-3px);
 }
 
-.liuyao-page .mbp-liuyao-coin i {
-  position: relative;
-  z-index: 3;
-  font-style: normal;
+.liuyao-page .mbp-liuyao-coin::after {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  border-radius: 50%;
+  box-shadow:
+    inset 0 0 0 2px rgba(255, 226, 130, .34),
+    inset 0 0 16px rgba(67, 32, 10, .28);
+  transform: translateZ(3px);
+  pointer-events: none;
+}
+
+.liuyao-page .mbp-liuyao-coin-face {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 50%;
+  backface-visibility: hidden;
+  transform: translateZ(4px);
+}
+
+.liuyao-page .mbp-liuyao-coin-face.is-back {
+  transform: rotateY(180deg) translateZ(4px);
 }
 
 .liuyao-page .mbp-liuyao-coin-token em {
   position: relative;
   z-index: 3;
-  margin-top: 5px;
+  margin-top: 7px;
   color: #f1d47d;
   font-style: normal;
   font-weight: 900;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, .4);
 }
 
-.liuyao-page .mbp-liuyao-coin-stage.is-tossing .mbp-liuyao-coin {
-  animation: mbpLiuyaoCoinFlip .98s cubic-bezier(.2, .78, .18, 1) both;
-  animation-delay: calc(var(--d) * .35);
+.liuyao-page .mbp-liuyao-coin-stage.is-tossing .mbp-liuyao-coin-token em {
+  opacity: .86;
+}
+
+.liuyao-page .mbp-liuyao-coin-stage.is-ready .mbp-liuyao-coin {
+  box-shadow:
+    0 0 0 1px rgba(241, 212, 125, .16),
+    0 0 24px rgba(241, 212, 125, .18);
 }
 
 .liuyao-page .mbp-liuyao-power {
@@ -592,7 +626,7 @@
   left: 44px;
   height: 6px;
   border-radius: 999px;
-  background: rgba(241, 212, 125, .12);
+  background: rgba(241, 212, 125, .13);
   overflow: hidden;
 }
 
@@ -881,57 +915,6 @@
   line-height: 1.62;
 }
 
-@keyframes mbpLiuyaoCoinSettle {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-
-  50% {
-    transform: translateY(-3px);
-  }
-}
-
-@keyframes mbpLiuyaoCoinToss {
-  0% {
-    opacity: 1;
-    transform: translate3d(0, 0, 0) scale(1);
-  }
-
-  38% {
-    opacity: .98;
-    transform: translate3d(var(--tx), var(--throw-y), 46px) scale(1.14);
-  }
-
-  66% {
-    opacity: .94;
-    transform: translate3d(calc(var(--tx) * .45), -22px, 20px) scale(.96);
-  }
-
-  100% {
-    opacity: 1;
-    transform: translate3d(0, 0, 0) scale(1);
-  }
-}
-
-@keyframes mbpLiuyaoCoinFlip {
-  0% {
-    transform: rotateX(58deg) rotateZ(var(--coin-rot, -8deg));
-  }
-
-  38% {
-    transform: rotateX(670deg) rotateY(130deg) rotateZ(var(--rot));
-  }
-
-  66% {
-    transform: rotateX(980deg) rotateY(220deg) rotateZ(calc(var(--rot) * 1.2));
-  }
-
-  100% {
-    transform: rotateX(58deg) rotateZ(var(--coin-rot, -8deg));
-  }
-}
-
 @media (min-width: 1021px) {
   .liuyao-shell {
     zoom: var(--mbp-ui-scale);
@@ -973,12 +956,8 @@
     grid-template-columns: 1fr;
   }
 
-  .liuyao-page .mbp-liuyao-coin-token:nth-of-type(1) {
-    left: 10%;
-  }
-
-  .liuyao-page .mbp-liuyao-coin-token:nth-of-type(3) {
-    right: 10%;
+  .liuyao-page .mbp-liuyao-coin-stage {
+    min-height: 202px;
   }
 }
 
@@ -994,6 +973,27 @@
 
   .liuyao-page .mbp-liuyao-coins {
     min-height: 250px;
+  }
+
+  .liuyao-page .mbp-liuyao-coin-stage {
+    min-height: 190px;
+  }
+
+  .liuyao-page .mbp-liuyao-coin-token {
+    width: 78px;
+    height: 108px;
+    margin: -43px 0 0 -39px;
+  }
+
+  .liuyao-page .mbp-liuyao-coin {
+    width: 74px;
+    height: 74px;
+  }
+
+  .liuyao-page .mbp-liuyao-coin-shadow {
+    left: 8px;
+    top: 62px;
+    width: 62px;
   }
 
   .liuyao-page .mbp-liuyao-gate-inline {

@@ -4,12 +4,16 @@
   const AUTH_SESSION_KEY = 'wentian-app-auth-session-v1';
   const XU_CONTEXT_KEY = 'wentian-xudashi-context-v1';
   const LIUYAO_DAILY_LIMIT = 3;
-  const LIUYAO_TOSS_ANIMATION_MS = 980;
-  const LIUYAO_PULL_MAX = 132;
+  const LIUYAO_TOSS_ANIMATION_MS = 1680;
+  const LIUYAO_PULL_MAX = 150;
+  const LIUYAO_DRAG_X_MAX = 150;
   const LIUYAO_READY_POWER = 0.10;
   const LIUYAO_DEFAULT_POWER = 0.62;
   const LIUYAO_VALUES = [7, 8, 9, 6];
   const LIUYAO_MANUAL_EMPTY_COINS = [null, null, null];
+  const LIUYAO_COIN_FRONT_SRC = '../images/liuyao-coins/qianlong-coin-front.png';
+  const LIUYAO_COIN_BACK_SRC = '../images/liuyao-coins/qianlong-coin-back.png';
+  const LIUYAO_COIN_TABLE_RX = 12;
   const lineLabels = ['初爻', '二爻', '三爻', '四爻', '五爻', '上爻'];
   const trigrams = {
     111: { gua: '乾', name: '天' },
@@ -55,6 +59,7 @@
     tossAnimation: null,
     drag: null,
   };
+  let tossFrameId = 0;
 
   function escapeHtml(value) {
     return String(value ?? '').replace(/[&<>"']/g, (char) => ({
@@ -104,6 +109,161 @@
 
   function getCoinFaceLabel(coin) {
     return Number(coin) === 3 ? '正' : '反';
+  }
+
+  function clamp(value, min, max) {
+    const number = Number(value);
+    if (!Number.isFinite(number)) return min;
+    return Math.max(min, Math.min(max, number));
+  }
+
+  function normalizePowerValue(value) {
+    return clamp(Number(value), LIUYAO_READY_POWER, 1) || LIUYAO_DEFAULT_POWER;
+  }
+
+  function easeOutCubic(value) {
+    const t = clamp(value, 0, 1);
+    return 1 - ((1 - t) ** 3);
+  }
+
+  function easeInCubic(value) {
+    const t = clamp(value, 0, 1);
+    return t ** 3;
+  }
+
+  function getCoinHome(index) {
+    const homes = [
+      { x: -112, y: -6, rot: -11 },
+      { x: 0, y: 8, rot: 7 },
+      { x: 112, y: -4, rot: 4 },
+    ];
+    return homes[index] || homes[1];
+  }
+
+  function makeCoinMotions(coins, power, gesture = {}) {
+    const normalizedPower = normalizePowerValue(power);
+    const lateral = clamp(gesture.lateral || 0, -LIUYAO_DRAG_X_MAX, LIUYAO_DRAG_X_MAX);
+    const pull = clamp(gesture.pull || 0, 0, LIUYAO_PULL_MAX);
+    return coins.map((coin, index) => {
+      const home = getCoinHome(index);
+      const direction = index - 1;
+      const finalFace = Number(coin) === 3 ? 0 : 180;
+      const turnSign = Math.random() > 0.5 ? 1 : -1;
+      const spinTurns = 3 + Math.floor(normalizedPower * 4) + index;
+      return {
+        coin,
+        homeX: home.x,
+        homeY: home.y,
+        homeRot: home.rot,
+        lift: 66 + (normalizedPower * 104) + (pull * 0.35) + (index * 8),
+        rise: 34 + (normalizedPower * 58) + (Math.random() * 18),
+        travelX: (lateral * 0.52) + (direction * (18 + normalizedPower * 34)) + ((Math.random() - 0.5) * 22),
+        sway: (18 + normalizedPower * 28) * (direction || turnSign),
+        bounce: 18 + (normalizedPower * 44) + (Math.random() * 12),
+        spinX: turnSign * ((2 + Math.floor(normalizedPower * 4) + index) * 360),
+        spinY: (spinTurns * 360) + finalFace,
+        spinZ: (turnSign * (210 + normalizedPower * 320)) + (direction * 46),
+        finalTilt: (Math.random() - 0.5) * 18,
+        finalFace,
+      };
+    });
+  }
+
+  function coinStyleVars(index, coin, motion) {
+    const home = motion || getCoinHome(index);
+    const homeX = Number.isFinite(home.homeX) ? home.homeX : home.x;
+    const homeY = Number.isFinite(home.homeY) ? home.homeY : home.y;
+    const homeRot = Number.isFinite(home.homeRot) ? home.homeRot : home.rot;
+    const faceY = Number(coin) === 3 ? 0 : 180;
+    return [
+      `--coin-home-x:${homeX}px`,
+      `--coin-home-y:${homeY}px`,
+      `--coin-x:${homeX}px`,
+      `--coin-y:${homeY}px`,
+      '--coin-z:0px',
+      '--coin-scale:1',
+      '--coin-track-rot:0deg',
+      '--shadow-opacity:.34',
+      '--shadow-scale:1',
+      '--shadow-y:0px',
+      `--coin-rx:${LIUYAO_COIN_TABLE_RX}deg`,
+      `--coin-ry:${faceY}deg`,
+      `--coin-rz:${homeRot}deg`,
+    ].join(';');
+  }
+
+  function cancelTossFrame() {
+    if (tossFrameId) window.cancelAnimationFrame(tossFrameId);
+    tossFrameId = 0;
+  }
+
+  function setCoinMotionVars(token, motion, progress) {
+    const flightEnd = 0.64;
+    const p = clamp(progress, 0, 1);
+    let y;
+    if (p < flightEnd) {
+      const flight = p / flightEnd;
+      y = (-motion.lift * (1 - easeInCubic(flight))) - (motion.rise * Math.sin(flight * Math.PI));
+    } else {
+      const bounceP = (p - flightEnd) / (1 - flightEnd);
+      const decay = (1 - bounceP) ** 1.45;
+      y = -Math.abs(Math.sin(bounceP * Math.PI * 3.2)) * motion.bounce * decay;
+    }
+    const travel = easeOutCubic(Math.min(1, p / 0.78));
+    const x = motion.homeX + (motion.travelX * travel) + (Math.sin(p * Math.PI * 2.4) * motion.sway * (1 - p));
+    const height = Math.max(0, -y);
+    const spin = easeOutCubic(p);
+    const bounceWobble = p > flightEnd ? Math.sin(((p - flightEnd) / (1 - flightEnd)) * Math.PI * 5) * 18 * (1 - p) : 0;
+    const rx = LIUYAO_COIN_TABLE_RX + (motion.spinX * spin) + bounceWobble;
+    const ry = motion.spinY * spin;
+    const rz = motion.homeRot + (motion.spinZ * spin) + (motion.finalTilt * travel);
+    token.style.setProperty('--coin-x', `${Math.round(x)}px`);
+    token.style.setProperty('--coin-y', `${Math.round(motion.homeY + y)}px`);
+    token.style.setProperty('--coin-z', `${Math.round(height * 0.74)}px`);
+    token.style.setProperty('--coin-scale', String(1 + Math.min(0.18, height / 720)));
+    token.style.setProperty('--coin-rx', `${Math.round(rx)}deg`);
+    token.style.setProperty('--coin-ry', `${Math.round(ry)}deg`);
+    token.style.setProperty('--coin-rz', `${Math.round(rz)}deg`);
+    token.style.setProperty('--shadow-opacity', String(Math.max(0.08, 0.36 - (height / 420))));
+    token.style.setProperty('--shadow-scale', String(Math.max(0.52, 1 - (height / 520))));
+    token.style.setProperty('--shadow-y', `${Math.round(height)}px`);
+  }
+
+  function finishTossAnimation(animation) {
+    if (state.tossAnimation !== animation) return;
+    cancelTossFrame();
+    placeNextCast(animation.cast);
+    state.tossAnimation = null;
+    state.drag = null;
+    render();
+  }
+
+  function stepTossAnimation() {
+    const animation = state.tossAnimation;
+    if (!animation?.active) {
+      cancelTossFrame();
+      return;
+    }
+    const stage = $('#mbpLiuyaoCoinStage');
+    if (!stage) {
+      tossFrameId = window.requestAnimationFrame(stepTossAnimation);
+      return;
+    }
+    const elapsed = performance.now() - animation.startedAt;
+    const duration = Math.max(480, animation.duration || LIUYAO_TOSS_ANIMATION_MS);
+    stage.querySelectorAll('.mbp-liuyao-coin-token').forEach((token, index) => {
+      setCoinMotionVars(token, animation.motions[index], elapsed / duration);
+    });
+    if (elapsed >= duration) {
+      finishTossAnimation(animation);
+      return;
+    }
+    tossFrameId = window.requestAnimationFrame(stepTossAnimation);
+  }
+
+  function startTossAnimationLoop() {
+    cancelTossFrame();
+    tossFrameId = window.requestAnimationFrame(stepTossAnimation);
   }
 
   function getProgress() {
@@ -508,12 +668,17 @@
     const disabled = state.mode !== 'online' || state.gateLoading || exhausted || !hasQuestion || progress >= 6;
     const power = animating ? Math.max(18, Math.min(100, Number(state.tossAnimation.power) || 62)) : 0;
     const pull = state.drag?.pull || 0;
+    const lateral = state.drag?.lateral || 0;
     const dragReady = state.drag?.ready;
     const label = animating
       ? `铜钱翻转中，落入${lineLabels[progress] || '本爻'}`
       : disabled
         ? (progress >= 6 ? '六爻已成' : exhausted ? '今日已满，明天再起卦。' : '先写清问题，再起卦')
         : `按住上拉，松手投${lineLabels[progress] || '本爻'}`;
+    const dragLift = Math.round(Math.max(0, pull) * 0.62);
+    const dragTilt = Math.round(clamp(lateral / 5, -22, 22));
+    const dragShadowOpacity = Math.max(0.08, 0.34 - (dragLift / 520)).toFixed(2);
+    const dragShadowScale = Math.max(0.54, 1 - (dragLift / 540)).toFixed(2);
     coins.innerHTML = `
         <div class="mbp-liuyao-coin-stage ${animating ? 'is-tossing' : ''} ${disabled ? 'is-disabled' : ''} ${state.drag ? 'is-dragging' : ''} ${dragReady ? 'is-ready' : ''}"
         id="mbpLiuyaoCoinStage"
@@ -521,11 +686,13 @@
         tabindex="${disabled ? '-1' : '0'}"
         aria-disabled="${disabled ? 'true' : 'false'}"
         aria-label="${escapeHtml(label)}"
-        style="--pull-y:${-pull}px;--drag-rot:${Math.round(pull / 5)}deg;--drag-rot-neg:${Math.round(-pull / 5)}deg;--power:${(power / 100).toFixed(2)};--throw-y:${Math.round(-66 - power * .72)}px;">
+        style="--pull-y:${-pull}px;--drag-offset-x:${Math.round(lateral * .28)}px;--drag-lift:${dragLift}px;--drag-tilt:${dragTilt}deg;--drag-shadow-opacity:${dragShadowOpacity};--drag-shadow-scale:${dragShadowScale};--power:${(power / 100).toFixed(2)};">
         ${values.map((coin, index) => `
-          <span class="mbp-liuyao-coin-token ${coin === 3 ? 'is-head' : 'is-tail'}" style="--d:${index * .1}s">
+          <span class="mbp-liuyao-coin-token ${coin === 3 ? 'is-head' : 'is-tail'}" style="${coinStyleVars(index, coin, state.tossAnimation?.motions?.[index])}">
+            <span class="mbp-liuyao-coin-shadow" aria-hidden="true"></span>
             <span class="mbp-liuyao-coin ${coin === 3 ? 'is-yang' : 'is-yin'}">
-              <i>阅</i><b></b><i>天</i>
+              <img class="mbp-liuyao-coin-face is-front" src="${LIUYAO_COIN_FRONT_SRC}" alt="" aria-hidden="true" loading="eager" decoding="async">
+              <img class="mbp-liuyao-coin-face is-back" src="${LIUYAO_COIN_BACK_SRC}" alt="" aria-hidden="true" loading="eager" decoding="async">
             </span>
             <em>${escapeHtml(animating || last || state.lastCoins.length ? getCoinFaceLabel(coin) : '待')}</em>
           </span>
@@ -825,6 +992,7 @@
   }
 
   function reset() {
+    cancelTossFrame();
     questionText();
     state.casts = [];
     state.manualCoins = Array.from({ length: 6 }, () => LIUYAO_MANUAL_EMPTY_COINS.slice());
@@ -920,28 +1088,27 @@
     return index >= 0 ? index : state.casts.length - 1;
   }
 
-  async function tossLine(power = LIUYAO_DEFAULT_POWER) {
+  async function tossLine(power = LIUYAO_DEFAULT_POWER, gesture = {}) {
     if (state.tossAnimation?.active) return;
     if (!await ensureQuestionAllowed()) return;
     if (getProgress() >= 6) return;
+    const normalizedPower = normalizePowerValue(typeof power === 'number' ? power : LIUYAO_DEFAULT_POWER);
     state.mode = 'online';
-    const cast = makeCast({ power });
+    const cast = makeCast({ power: normalizedPower });
     const lineIndex = state.casts.findIndex((item) => !item);
+    const reducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
     state.tossAnimation = {
       active: true,
       cast,
       lineIndex: lineIndex >= 0 ? lineIndex : getProgress(),
-      power: Math.round(power * 100),
+      power: Math.round(normalizedPower * 100),
+      startedAt: performance.now(),
+      duration: reducedMotion ? 520 : Math.round(LIUYAO_TOSS_ANIMATION_MS + (normalizedPower * 220)),
+      motions: makeCoinMotions(cast.coins, normalizedPower, gesture),
     };
     state.lastCoins = cast.coins;
     render();
-    window.setTimeout(() => {
-      if (!state.tossAnimation?.active) return;
-      placeNextCast(cast);
-      state.tossAnimation = null;
-      state.drag = null;
-      render();
-    }, LIUYAO_TOSS_ANIMATION_MS);
+    startTossAnimationLoop();
   }
 
   async function autoCast() {
@@ -1107,14 +1274,16 @@
     document.addEventListener('pointerdown', (event) => {
       const stage = event.target.closest('#mbpLiuyaoCoinStage');
       if (!stage || stage.getAttribute('aria-disabled') === 'true' || state.tossAnimation?.active) return;
-      state.drag = { id: event.pointerId, startX: event.clientX, startY: event.clientY, pull: 0, maxPull: 0, ready: false };
+      state.drag = { id: event.pointerId, startX: event.clientX, startY: event.clientY, pull: 0, maxPull: 0, lateral: 0, ready: false };
       stage.setPointerCapture?.(event.pointerId);
       renderCoins();
     });
     document.addEventListener('pointermove', (event) => {
       if (!state.drag || state.drag.id !== event.pointerId) return;
       const pull = Math.max(0, Math.min(LIUYAO_PULL_MAX, Math.round(state.drag.startY - event.clientY)));
+      const lateral = clamp(event.clientX - state.drag.startX, -LIUYAO_DRAG_X_MAX, LIUYAO_DRAG_X_MAX);
       state.drag.pull = pull;
+      state.drag.lateral = lateral;
       state.drag.maxPull = Math.max(state.drag.maxPull || 0, pull);
       state.drag.ready = state.drag.ready || state.drag.maxPull >= Math.round(LIUYAO_PULL_MAX * LIUYAO_READY_POWER);
       renderCoins();
@@ -1124,9 +1293,15 @@
       const peakPull = Math.max(state.drag.pull || 0, state.drag.maxPull || 0);
       const power = Math.max(LIUYAO_READY_POWER, Math.min(1, peakPull / LIUYAO_PULL_MAX));
       const shouldToss = peakPull >= Math.round(LIUYAO_PULL_MAX * LIUYAO_READY_POWER);
+      const gesture = { lateral: state.drag.lateral || 0, pull: peakPull };
       state.drag = null;
-      if (shouldToss) tossLine(power);
+      if (shouldToss) tossLine(power, gesture);
       else renderCoins();
+    });
+    document.addEventListener('pointercancel', (event) => {
+      if (!state.drag || state.drag.id !== event.pointerId) return;
+      state.drag = null;
+      renderCoins();
     });
     document.addEventListener('keydown', (event) => {
       if (event.target?.id === 'mbpLiuyaoCoinStage' && (event.key === 'Enter' || event.key === ' ')) {
