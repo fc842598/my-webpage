@@ -3388,8 +3388,9 @@
       function setActiveResultFromPalace(preferredKey = state.active) {
         const results = buildResults();
         const index = results.findIndex((item) => item.palaceKey === preferredKey);
-        state.activeResult = index >= 0 ? index : 0;
-        return results.length;
+        if (index < 0) return false;
+        state.activeResult = index;
+        return true;
       }
 
       function setActiveResultAt(index = 0) {
@@ -3472,11 +3473,15 @@
         }
         const cell = event.target.closest("[data-palace]");
         if (!cell) return;
-        state.active = cell.dataset.palace;
+        const nextPalace = cell.dataset.palace;
         if (state.analyzed) {
-          setActiveResultFromPalace(state.active);
-          pendingResultScroll = state.activeResult;
+          if (!setActiveResultFromPalace(nextPalace)) return;
+          state.active = nextPalace;
+          pendingResultScroll = null;
+          render();
+          return;
         }
+        state.active = nextPalace;
         render();
       });
 
