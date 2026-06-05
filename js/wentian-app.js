@@ -7930,7 +7930,7 @@ function getWentianRouteFromClickPoint(event) {
   const x = (event.clientX - phoneRect.left) / (scale || 1);
   const y = (event.clientY - phoneRect.top) / (scale || 1);
   const screenNo = Number(String(state.route || "").replace("screen-", ""));
-  const hotspots = screenFlowHotspots[screenNo] || [];
+  const hotspots = getScreenFlowHotspots(screenNo);
   for (let index = hotspots.length - 1; index >= 0; index -= 1) {
     const [left, top, width, height, route] = hotspots[index];
     if (x >= left && x <= left + width && y >= top && y <= top + height) return route;
@@ -10054,7 +10054,7 @@ async function submitWentianChartForm() {
 
     resetWentianXuChatRuntime();
     setWentianChartStatus(editingArchive ? "已保存修改" : "已生成命盘");
-    navigate(editReturnRoute || "screen-27", false);
+    navigate(editReturnRoute || "screen-27", !editReturnRoute);
   } catch (error) {
     setWentianChartStatus(error.message || "排盘失败，请检查出生信息", "error");
   }
@@ -15818,9 +15818,27 @@ function convertedButton(screen) {
 
 const sourceScreenOwnHotspotNos = new Set([1, 4, 22, 24, 29, 34, 35]);
 
+function rectsOverlap(a, b) {
+  return a.left < b.left + b.width &&
+    a.left + a.width > b.left &&
+    a.top < b.top + b.height &&
+    a.top + a.height > b.top;
+}
+
+function isWentianBackHotspot(x, y, w, h) {
+  return rectsOverlap(
+    { left: Number(x), top: Number(y), width: Number(w), height: Number(h) },
+    { left: 12, top: 20, width: 108, height: 80 }
+  );
+}
+
+function getScreenFlowHotspots(screenNo) {
+  return (screenFlowHotspots[screenNo] || []).filter(([x, y, w, h]) => !isWentianBackHotspot(x, y, w, h));
+}
+
 function convertedFlowHotspots(screen) {
   if (sourceScreenOwnHotspotNos.has(screen.no)) return "";
-  return (screenFlowHotspots[screen.no] || []).map(([x, y, w, h, route], index) =>
+  return getScreenFlowHotspots(screen.no).map(([x, y, w, h, route], index) =>
     figButton(`screen-${screen.no}-flow-${index}`, x, y, w, h, `data-route="${route}"`, "flow-hotspot", "z-index:30;")
   ).join("");
 }
@@ -17083,6 +17101,17 @@ function routeFromLocation() {
   return "screen-1";
 }
 
+function syncWentianStackWithRoute(route) {
+  const nextRoute = resolveRoute(route);
+  if (!/^screen-\d+$/.test(nextRoute) || nextRoute === state.route) return;
+  const stackTop = state.stack[state.stack.length - 1];
+  if (stackTop === nextRoute) {
+    state.stack.pop();
+    return;
+  }
+  if (/^screen-\d+$/.test(state.route)) state.stack.push(state.route);
+}
+
 function stripScreenshotStatusBar() {
   const phone = view.querySelector(".figma-phone");
   if (!phone) return;
@@ -17220,7 +17249,7 @@ function ensureWentianPhoneFitObserver() {
   wentianFitObserver.observe(view, { childList: true });
 }
 
-function navigate(route, push = true) {
+function navigate(route, push = true, syncHash = true) {
   route = resolveRoute(route);
   if (/^screen-?\d+$/.test(route)) {
     const no = Number(route.replace(/^screen-?/, ""));
@@ -17256,11 +17285,18 @@ function navigate(route, push = true) {
     if (screen.no === 46) window.setTimeout(initLiurenScreen, 0);
     if (screen.no === 50) window.setTimeout(initOfficeLayoutHomeScreen, 0);
     if (screen.no === 49) window.setTimeout(initWentianHepanAiJudgement, 0);
-    if (!location.hash.includes("figmacapture=") && !hasWentianAuthParams(getWentianUrlParams(location.hash))) location.hash = route;
+    const currentHashRoute = normalizeRoute(location.hash.slice(1));
+    if (
+      syncHash &&
+      !location.hash.includes("figmacapture=") &&
+      !hasWentianAuthParams(getWentianUrlParams(location.hash)) &&
+      currentHashRoute !== route &&
+      (currentHashRoute || route !== "screen-1")
+    ) location.hash = route;
     window.scrollTo(0, 0);
     return;
   }
-  navigate("screen-1", push);
+  navigate("screen-1", push, syncHash);
 }
 
 function syncActive() {
@@ -17814,9 +17850,16 @@ document.addEventListener("click", (event) => {
       navigate("screen-42", false);
       return;
     }
-    const previousRoute = state.stack.pop();
     if (state.route === "screen-26") clearWentianArchiveEditContext();
-    navigate(previousRoute || (mineBackFallbackRoutes.has(state.route) ? "screen-31" : "home"), false);
+    const previousRoute = state.stack[state.stack.length - 1];
+    if (previousRoute && window.history.length > 1) {
+      window.history.back();
+      return;
+    }
+    const fallbackRoute = previousRoute || (mineBackFallbackRoutes.has(state.route) ? "screen-31" : "home");
+    if (previousRoute) state.stack.pop();
+    replaceWentianUrlRoute(resolveRoute(fallbackRoute));
+    navigate(fallbackRoute, false, false);
     return;
   }
   if (action === "wentian-login-open") {
@@ -18469,7 +18512,11 @@ async function bootWentianApp() {
   clearWentianAuthReturnState();
 }
 
-window.addEventListener("hashchange", () => navigate(routeFromLocation(), false));
+window.addEventListener("hashchange", () => {
+  const nextRoute = routeFromLocation();
+  syncWentianStackWithRoute(nextRoute);
+  navigate(nextRoute, false, false);
+});
 window.addEventListener("resize", fitActivePhoneShell);
 if (window.visualViewport) {
   window.visualViewport.addEventListener("resize", fitActivePhoneShell);
