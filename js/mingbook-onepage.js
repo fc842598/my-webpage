@@ -437,7 +437,11 @@
     try {
       const raw = localStorage.getItem(storageKey);
       const profile = raw ? normalizeProfile(JSON.parse(raw)) : null;
-      return isLegacyDefaultProfile(profile) ? null : profile;
+      if (isLegacyDefaultProfile(profile) || isLegacyOnlyProfile(profile)) {
+        localStorage.removeItem(storageKey);
+        return null;
+      }
+      return profile;
     } catch (_) {
       return null;
     }
@@ -454,6 +458,17 @@
       && Number(profile.hour) === 12
       && Number(profile.minute) === 0
       && /北京|东城/.test(city);
+  }
+
+  function isLegacyOnlyProfile(profile) {
+    if (!profile) return false;
+    const key = profileHistoryKey(profile);
+    if (!key) return false;
+    const hasModernRecord = readJsonList(chartHistoryKey)
+      .some((record) => profileHistoryKey(recordToProfile(record)) === key);
+    if (hasModernRecord) return false;
+    return readJsonList(legacyHistoryKey)
+      .some((record) => profileHistoryKey(recordToProfile(record)) === key);
   }
 
   function readJsonList(key) {
@@ -1911,7 +1926,6 @@
   function loadCustomerRecords() {
     const records = [
       ...readCustomerHistoryRecords(),
-      ...readJsonList(legacyHistoryKey),
     ].filter((record) => !isCustomerRecordTombstoned(record));
     const current = { ...profileToRecord(state.profile), id: 'current', chartRecordId: '', savedAt: new Date().toISOString() };
     const seen = new Set();
@@ -2058,7 +2072,7 @@
   }
 
   function readInitialProfile() {
-    return profileFromParams() || profileFromSaved() || profileFromLegacyHistory() || { ...defaultProfile };
+    return profileFromParams() || profileFromSaved() || { ...defaultProfile };
   }
 
   function dateStr(profile) {
