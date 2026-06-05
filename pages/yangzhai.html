@@ -1814,9 +1814,9 @@
       }
 
       .usage-guide {
-        grid-template-columns: minmax(204px, 232px) minmax(0, 1fr);
-        align-items: stretch;
-        column-gap: 14px;
+        grid-template-columns: minmax(0, 1fr);
+        align-items: start;
+        column-gap: 0;
         row-gap: 18px;
         padding: 0;
         border: 0;
@@ -1843,13 +1843,13 @@
 
       .usage-guide-primary {
         justify-content: flex-start;
-        min-height: 316px;
-        padding-top: 16px;
+        min-height: 0;
+        padding-top: 12px;
       }
 
       .usage-guide-head {
         gap: 8px;
-        max-width: 232px;
+        max-width: 236px;
       }
 
       .usage-guide-head::after {
@@ -1926,8 +1926,8 @@
 
       .usage-guide-visuals {
         display: flex;
-        align-items: center;
-        min-height: 332px;
+        align-items: flex-start;
+        min-height: 0;
         padding: 0;
         border: 0;
         border-radius: 0;
@@ -1943,10 +1943,11 @@
         grid-template-columns: repeat(3, minmax(0, 1fr));
         gap: 10px;
         margin: 0;
+        width: 100%;
       }
 
       .usage-card {
-        min-height: 332px;
+        min-height: 352px;
         padding: 6px;
         border-color: rgba(201,169,97,.50);
         border-radius: 14px;
@@ -1961,13 +1962,14 @@
       .usage-card-image {
         width: 100%;
         height: 100%;
-        min-height: 320px;
+        min-height: 340px;
         object-fit: contain;
         object-position: center;
         border-radius: 10px;
       }
 
       .intro-support {
+        display: none;
         position: relative;
         grid-template-columns: 112px minmax(0, 1fr) auto;
         align-items: center;
