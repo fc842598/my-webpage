@@ -10798,17 +10798,10 @@ function sourceHepanSelectScreen() {
   const hint = getWentianHepanHint(archives, selectedIds, validation);
   return `
     ${figBox("wt11-bg", 0, 0, 390, 844, "", "background:linear-gradient(180deg,#fff8ec 0%,#f4e5d2 42%,#fffdf9 100%);")}
-    ${figBox("wt11-top-glow", 0, 0, 390, 238, "", "background:radial-gradient(circle at 50% 6%,rgba(212,171,88,.22),rgba(212,171,88,0) 46%),linear-gradient(180deg,#fff4df 0%,rgba(255,244,223,0) 100%);")}
-    ${wentianSimpleHeader("wt11", "选择合盘档案")}
-    ${figBox("wt11-summary", 24, 110, 342, 88, "", "border:1px solid #ead8bd;border-radius:20px;background:#fffdf8;box-shadow:0 14px 28px rgba(92,50,29,.08);")}
-    ${figBox("wt11-summary-mark", 44, 132, 44, 44, "", "border-radius:22px;background:#fff0df;border:1px solid #ead2ad;")}
-    ${figText("wt11-summary-mark-text", "合", 44, 143, 44, 17, "#a94437", 900, "center", "font-family:'Noto Serif SC','Songti SC',serif;")}
-    ${figText("wt11-summary-title", "选两张档案", 104, 128, 132, 20, "#241811", 900, "left", "font-family:'Noto Serif SC','Songti SC',serif;")}
-    ${figText("wt11-summary-copy", "用于关系合盘", 104, 158, 120, 13, "#8d806f", 700, "left")}
-    ${figBox("wt11-count-pill", 276, 132, 64, 30, "", "border-radius:15px;background:#fff3df;border:1px solid #ead2ad;")}
-    ${figText("wt11-count-text", "2人", 276, 140, 64, 12, "#9b742e", 900, "center")}
-    ${figBox("wt11-sheet", 0, 220, 390, 624, "", "border-radius:28px 28px 0 0;background:#fffdfb;box-shadow:0 -12px 30px rgba(75,48,24,.14);")}
-    ${figBox("wt11-handle", 164, 234, 62, 5, "", "border-radius:5px;background:#e2d4bf;")}
+    ${figBox("wt11-top-glow", 0, 0, 390, 138, "", "background:radial-gradient(circle at 50% 6%,rgba(212,171,88,.22),rgba(212,171,88,0) 46%),linear-gradient(180deg,#fff4df 0%,rgba(255,244,223,0) 100%);")}
+    ${wentianBackPill("wt11", 18, 42)}
+    ${figBox("wt11-sheet", 0, 90, 390, 754, "", "border-radius:28px 28px 0 0;background:#fffdfb;box-shadow:0 -12px 30px rgba(75,48,24,.14);")}
+    ${figBox("wt11-handle", 164, 104, 62, 5, "", "border-radius:5px;background:#e2d4bf;")}
     <div class="wentian-hepan-head" data-node-id="wt11-head">
       <div>
         <strong>档案</strong>
@@ -16883,9 +16876,9 @@ function sourceZiweiAiDecodePanel(saved) {
         type="button"
         class="wentian-chart-ai-shortcut"
         data-action="wentian-chart-ai-decode"
-        aria-label="${escapeHtml(getWentianCompactText("????", "One-tap read"))}"
+        aria-label="${escapeHtml(getWentianCompactText("一键解读", "One-tap read"))}"
         ${isRunning ? "disabled" : ""}
-      >${escapeHtml(getWentianCompactText("????", "One-tap read"))}</button>
+      >${escapeHtml(getWentianCompactText("一键解读", "One-tap read"))}</button>
       <p class="wentian-chart-ai-pdf-status" data-wentian-pdf-status></p>
       ${showFinalBoard ? renderWentianFinalVolumeBoard(chapters) : ""}
     </section>
@@ -18426,3 +18419,4 @@ if (window.visualViewport) {
 }
 ensureWentianPhoneFitObserver();
 bootWentianApp();
+
