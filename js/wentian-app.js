@@ -16945,15 +16945,15 @@ function renderWentianChartMoreMenu() {
   const pdfReady = isWentianMingbookPdfReady();
   return `
     ${figButton("source-27-more-mask", 0, 0, 390, getWentianZiweiScreenHeight(), 'data-action="wentian-chart-more-close" aria-label="收起命盘工具"', "", "z-index:82;")}
-    ${figBox("source-27-more-menu", 204, 92, 168, 176, "", "border:1px solid #ead8b4;border-radius:18px;background:linear-gradient(180deg,#fffdf8 0%,#fff5e5 100%);box-shadow:0 18px 42px rgba(77,49,24,.22);z-index:92;")}
-    ${figText("source-27-more-menu-title", "命盘工具", 224, 112, 126, 16, "#3b2d20", 900, "center", "z-index:93;")}
-    ${figText("source-27-more-menu-sub", "当前命盘常用操作", 224, 135, 126, 11, "#9a7a49", 800, "center", "z-index:93;")}
-    ${figText("source-27-more-menu-edit", "修改资料", 234, 166, 106, 14, "#8f4f3d", 900, "center", "z-index:93;")}
-    ${figButton("source-27-more-edit-hit", 224, 156, 126, 34, 'data-action="wentian-chart-current-edit" aria-label="修改当前命盘资料"', "", "z-index:94;")}
-    ${figText("source-27-more-menu-switch", "切换档案", 234, 204, 106, 14, "#8f4f3d", 900, "center", "z-index:93;")}
-    ${figButton("source-27-more-switch-hit", 224, 194, 126, 34, 'data-route="screen-25" aria-label="切换命盘档案"', "", "z-index:94;")}
-    ${figText("source-27-more-menu-pdf", pdfReady ? "下载报告" : "解读完可下载", 224, 242, 126, 14, pdfReady ? "#8f4f3d" : "#b9a27c", 900, "center", "z-index:93;")}
-    ${figButton("source-27-more-pdf-hit", 224, 232, 126, 34, pdfReady ? 'data-action="wentian-open-mingbook-onepage" aria-label="下载命盘报告"' : 'disabled aria-disabled="true" aria-label="解读完成后才能下载报告"', "", "z-index:94;")}
+    ${figBox("source-27-more-menu", 204, 92, 168, 188, "", "border:1px solid #ead8b4;border-radius:18px;background:linear-gradient(180deg,#fffdf8 0%,#fff5e5 100%);box-shadow:0 18px 42px rgba(77,49,24,.22);z-index:92;")}
+    ${figText("source-27-more-menu-edit", "修改资料", 224, 124, 126, 14, "#8f4f3d", 900, "center", "z-index:93;")}
+    ${figButton("source-27-more-edit-hit", 224, 114, 126, 34, 'data-action="wentian-chart-current-edit" aria-label="修改当前命盘资料"', "", "z-index:94;")}
+    ${figText("source-27-more-menu-switch", "切换档案", 224, 162, 126, 14, "#8f4f3d", 900, "center", "z-index:93;")}
+    ${figButton("source-27-more-switch-hit", 224, 152, 126, 34, 'data-route="screen-25" aria-label="切换命盘档案"', "", "z-index:94;")}
+    ${figText("source-27-more-menu-pdf", pdfReady ? "下载报告" : "解读完可下载", 224, 200, 126, 14, pdfReady ? "#8f4f3d" : "#b9a27c", 900, "center", "z-index:93;")}
+    ${figButton("source-27-more-pdf-hit", 224, 190, 126, 34, pdfReady ? 'data-action="wentian-open-mingbook-onepage" aria-label="下载命盘报告"' : 'disabled aria-disabled="true" aria-label="解读完成后才能下载报告"', "", "z-index:94;")}
+    ${figText("source-27-more-menu-close", "关闭", 224, 238, 126, 14, "#8c857a", 900, "center", "z-index:93;")}
+    ${figButton("source-27-more-close-hit", 224, 228, 126, 34, 'data-action="wentian-chart-more-close" aria-label="关闭命盘工具"', "", "z-index:94;")}
   `;
 }
 
