@@ -2398,9 +2398,10 @@ function cancelWentianArchiveDelete() {
   navigatePreservingScroll(state.route, false);
 }
 
-function startWentianArchiveCreate() {
+function startWentianArchiveCreate(returnRoute = "") {
   wentianArchiveDeleteConfirmId = "";
-  clearWentianArchiveEditContext();
+  setWentianArchiveEditId("");
+  setWentianArchiveEditReturnRoute(returnRoute);
   navigate("screen-26");
 }
 
@@ -10040,12 +10041,19 @@ async function submitWentianChartForm() {
       createdAt: editingArchive?.createdAt || duplicateArchive?.createdAt || new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     });
-    const editReturnRoute = editingArchive ? getWentianArchiveEditReturnRoute() : "";
+    const editReturnRoute = getWentianArchiveEditReturnRoute();
+    if (!editingArchive && editReturnRoute === "screen-11") {
+      const hepanArchives = getWentianArchiveList();
+      const selectedIds = getWentianHepanSelectedIds(hepanArchives);
+      if (!selectedIds.includes(archiveId) && selectedIds.length < 2) {
+        saveWentianHepanSelectedIds([...selectedIds, archiveId]);
+      }
+    }
     clearWentianArchiveEditContext();
 
     resetWentianXuChatRuntime();
     setWentianChartStatus(editingArchive ? "已保存修改" : "已生成命盘");
-    navigate(editingArchive && editReturnRoute ? editReturnRoute : "screen-27", false);
+    navigate(editReturnRoute || "screen-27", false);
   } catch (error) {
     setWentianChartStatus(error.message || "排盘失败，请检查出生信息", "error");
   }
@@ -10842,7 +10850,7 @@ function sourceHepanSelectScreen() {
       }).join("")}
     </div>
     <div class="wentian-hepan-footer" data-node-id="wt11-footer">
-      <button class="wentian-hepan-secondary" type="button" data-route="screen-26">+ 新建档案</button>
+      <button class="wentian-hepan-secondary" type="button" data-action="wentian-hepan-new-archive">+ 新建档案</button>
       <button class="wentian-hepan-primary" type="button" data-action="wentian-hepan-confirm" ${ready ? "" : "disabled"}>确定</button>
       <p class="${ready ? "is-ready" : selectedIds.length >= 2 ? "is-error" : ""}">${escapeHtml(hint)}</p>
     </div>
@@ -17833,6 +17841,10 @@ document.addEventListener("click", (event) => {
     confirmWentianHepanSelection();
     return;
   }
+  if (action === "wentian-hepan-new-archive") {
+    startWentianArchiveCreate("screen-11");
+    return;
+  }
   if (action === "wentian-hepan-ask-xu") {
     openWentianHepanXuChat();
     return;
@@ -18419,4 +18431,3 @@ if (window.visualViewport) {
 }
 ensureWentianPhoneFitObserver();
 bootWentianApp();
-
