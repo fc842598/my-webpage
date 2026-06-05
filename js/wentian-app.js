@@ -2643,8 +2643,35 @@ function updateWentianChartDayOptions(dayEl, year, month, forcedMax) {
   dayEl.value = String(Math.min(previous, max));
 }
 
-function setWentianChartCalendarMode(mode) {
-  wentianChartCalMode = mode === "lunar" ? "lunar" : "solar";
+function syncWentianChartCalendarFields(nextMode) {
+  const isLunarTarget = nextMode === "lunar";
+  const sourceYear = getWentianNumber(isLunarTarget ? "wentian-chart-year" : "wentian-chart-lunar-year");
+  const sourceMonth = getWentianNumber(isLunarTarget ? "wentian-chart-month" : "wentian-chart-lunar-month");
+  const sourceDay = getWentianNumber(isLunarTarget ? "wentian-chart-day" : "wentian-chart-lunar-day");
+  if (!sourceYear && !sourceMonth && !sourceDay) return;
+
+  const targetYear = document.getElementById(isLunarTarget ? "wentian-chart-lunar-year" : "wentian-chart-year");
+  const targetMonth = document.getElementById(isLunarTarget ? "wentian-chart-lunar-month" : "wentian-chart-month");
+  const targetDay = document.getElementById(isLunarTarget ? "wentian-chart-lunar-day" : "wentian-chart-day");
+  const year = sourceYear || getWentianNumber(targetYear?.id || "");
+  const month = sourceMonth || getWentianNumber(targetMonth?.id || "");
+  if (targetYear && year) targetYear.value = String(year);
+  if (targetMonth && month) targetMonth.value = String(month);
+
+  if (targetDay) {
+    const isLeap = isLunarTarget
+      && document.getElementById("wentian-chart-lunar-leap")?.checked
+      && getWentianLunarLeapMonth(year) === month;
+    const max = isLunarTarget ? getWentianLunarMonthMax(year, month, isLeap) : null;
+    updateWentianChartDayOptions(targetDay, isLunarTarget ? 0 : year, isLunarTarget ? 0 : month, max);
+    targetDay.value = String(Math.min(sourceDay || Number(targetDay.value) || 1, Number(targetDay.options.length) || 31));
+  }
+}
+
+function setWentianChartCalendarMode(mode, options = {}) {
+  const nextMode = mode === "lunar" ? "lunar" : "solar";
+  if (options.syncFields) syncWentianChartCalendarFields(nextMode);
+  wentianChartCalMode = nextMode;
   const hidden = document.getElementById("wentian-chart-cal");
   if (hidden) hidden.value = wentianChartCalMode;
   document.querySelectorAll("[data-wentian-chart-cal]").forEach((btn) => {
@@ -18040,7 +18067,7 @@ document.addEventListener("click", (event) => {
   }
   if (action === "wentian-chart-cal") {
     const value = event.target.closest("[data-wentian-chart-cal]")?.dataset.wentianChartCal || "solar";
-    setWentianChartCalendarMode(value);
+    setWentianChartCalendarMode(value, { syncFields: true });
     return;
   }
   if (action === "wentian-chart-tst-help") {
