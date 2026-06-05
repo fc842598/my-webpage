@@ -1360,6 +1360,7 @@ let wentianHepanAiState = { key: "", loading: false, card: null, error: "", prom
 let wentianMobileYijingTab = "xiantian";
 let wentianMobileLuckDecadeKey = "";
 let wentianMobileXiaoLianAge = "";
+let wentianHepanXiaoLianAge = { left: "", right: "" };
 let wentianMobileCurveView = "future";
 let wentianChartMoreOpen = false;
 let wentianChartCalMode = "solar";
@@ -4061,15 +4062,24 @@ function getWentianXiaoLianItems(chartData = {}) {
   }).filter((item) => item.key);
 }
 
-function getWentianSelectedXiaoLianYear(chartData = {}) {
+function resolveWentianSelectedXiaoLianYear(chartData = {}, selectedKey = "") {
   const items = getWentianXiaoLianItems(chartData);
   const current = items.find((item) => item.isCurrent) || items[0] || getWentianAiCurrentYear(chartData);
-  const selected = items.find((item) => item.key === wentianMobileXiaoLianAge) || current;
+  const selected = items.find((item) => item.key === selectedKey) || current;
   return {
     ...selected,
     items,
     currentKey: current?.key || "",
   };
+}
+
+function getWentianSelectedXiaoLianYear(chartData = {}) {
+  return resolveWentianSelectedXiaoLianYear(chartData, wentianMobileXiaoLianAge);
+}
+
+function getWentianHepanSelectedXiaoLianYear(chartData = {}, side = "left") {
+  const key = side === "right" ? "right" : "left";
+  return resolveWentianSelectedXiaoLianYear(chartData, wentianHepanXiaoLianAge[key] || "");
 }
 
 function getWentianXiaoLianPayload(year = {}) {
@@ -11087,12 +11097,16 @@ function getWentianHepanChartFocusBranch(archive) {
   return getWentianPalaceBranch(spousePalace);
 }
 
-function renderWentianHepanChartCard(archive, display, label, nodeId) {
+function renderWentianHepanChartCard(archive, display, label, nodeId, side = "left") {
   const item = display || (archive ? getWentianArchiveDisplay(archive) : {});
   const chartHtml = renderWentianClassicChart(archive, {
     readonly: true,
+    enableXiaoLianPicker: true,
     palaceAction: "wentian-hepan-chart-palace",
     activeBranch: getWentianHepanChartFocusBranch(archive),
+    selectedXiaoLian: getWentianHepanSelectedXiaoLianYear(archive?.chartData || {}, side),
+    xiaolianAction: "wentian-hepan-xiaolian-pick",
+    xiaolianDataset: { hepanSide: side },
     nodeId,
   });
   return `
@@ -11116,8 +11130,8 @@ function renderWentianHepanChartCompare(result) {
         <span>双方命盘</span>
         <b>默认高亮夫妻宫三方四正</b>
       </div>
-      ${renderWentianHepanChartCard(result.left, result.leftDisplay, "对象一命盘", "hepan-left-native-chart")}
-      ${renderWentianHepanChartCard(result.right, result.rightDisplay, "对象二命盘", "hepan-right-native-chart")}
+      ${renderWentianHepanChartCard(result.left, result.leftDisplay, "对象一命盘", "hepan-left-native-chart", "left")}
+      ${renderWentianHepanChartCard(result.right, result.rightDisplay, "对象二命盘", "hepan-right-native-chart", "right")}
     </section>
   `;
 }
@@ -16308,11 +16322,21 @@ function renderWentianClassicGuaRow(label, value) {
   return `<div class="fc-gua-row"><span class="fc-center-lbl">${escapeHtml(label)}</span><span class="fc-center-val">${escapeHtml(value || "—")}</span></div>`;
 }
 
+function renderWentianDatasetAttrs(dataset = {}) {
+  return Object.entries(dataset || {}).map(([key, value]) => {
+    if (value === null || value === undefined || value === "") return "";
+    const dataKey = String(key).replace(/([A-Z])/g, "-$1").toLowerCase();
+    return ` data-${escapeHtml(dataKey)}="${escapeHtml(String(value))}"`;
+  }).join("");
+}
+
 function renderWentianClassicXiaoLianPicker(selected = {}, options = {}) {
   const items = Array.isArray(selected.items) ? selected.items : [];
   const activeKey = selected.key || selected.currentKey || "";
+  const action = options.xiaolianAction || "wentian-chart-ai-xiaolian-pick";
+  const datasetAttrs = renderWentianDatasetAttrs(options.xiaolianDataset);
   const label = selected.age ? `${selected.age}岁` : (selected.solarYear ? `${selected.solarYear}年` : "--");
-  if (options.readonly || !items.length) {
+  if ((options.readonly && !options.enableXiaoLianPicker) || !items.length) {
     return `<div class="fc-xiaolian-control is-readonly"><span class="fc-xiaolian-label">小流年</span><b>${escapeHtml(label)}</b></div>`;
   }
   return `
@@ -16320,7 +16344,7 @@ function renderWentianClassicXiaoLianPicker(selected = {}, options = {}) {
       <summary><span class="fc-xiaolian-label">小流年</span><b>${escapeHtml(label)}</b><i aria-hidden="true"></i></summary>
       <div class="fc-xiaolian-menu">
         ${items.map((item) => `
-          <button type="button" class="${item.key === activeKey ? "is-selected" : ""}${item.key === selected.currentKey ? " is-current" : ""}" data-action="wentian-chart-ai-xiaolian-pick" data-xiaolian-age-key="${escapeHtml(item.key)}">
+          <button type="button" class="${item.key === activeKey ? "is-selected" : ""}${item.key === selected.currentKey ? " is-current" : ""}" data-action="${escapeHtml(action)}" data-xiaolian-age-key="${escapeHtml(item.key)}"${datasetAttrs}>
             ${escapeHtml(item.age ? `${item.age}岁` : item.solarYear || "流年")}
           </button>
         `).join("")}
@@ -16353,8 +16377,8 @@ function renderWentianClassicCenter(chart, chartData, form, options = {}, source
   const timeIndex = Number(chartData?.timeIndex);
   const timeName = WENTIAN_SHICHEN[Number.isFinite(timeIndex) ? timeIndex : getWentianTimeIndex(new Date(form.datetime || Date.now()).getHours(), new Date(form.datetime || Date.now()).getMinutes())] || "";
   const trueSolarText = formatWentianClassicTrueSolar(chartData, dateText);
-  const yijing = getWentianYijingContext(source?.chart ? source : { chart, chartData, form });
-  const selectedXiao = getWentianSelectedXiaoLianYear(chartData);
+  const selectedXiao = options.selectedXiaoLian || getWentianSelectedXiaoLianYear(chartData);
+  const yijing = getWentianYijingContext(source?.chart ? source : { chart, chartData, form }, selectedXiao);
   const liunianName = selectedXiao?.age ? `${selectedXiao.age}岁 · ${selectedXiao.liunianGuaName || yijing.results.liunian?.name || "—"}` : (yijing.results.liunian?.name || "—");
   const columns = [
     [pillars.yearStem, pillars.yearBranch, "#886a4a"],
@@ -16460,8 +16484,9 @@ function renderWentianClassicChart(saved, options = {}) {
     currentYearData: computedChartData.currentYearData || sourceChartData.currentYearData,
     currentXiaolian: computedChartData.currentXiaolian || sourceChartData.currentXiaolian,
   };
-  const selectedXiaoLian = getWentianSelectedXiaoLianYear(chartData);
+  const selectedXiaoLian = options.selectedXiaoLian || getWentianSelectedXiaoLianYear(chartData);
   const cellOptions = { ...options, selectedXiaoLian };
+  const centerOptions = { ...options, selectedXiaoLian };
   const centerSource = { ...source, chart, chartData };
   const activeBranch = options.activeBranch || chart.earthlyBranchOfSoulPalace || (chart.palaces || []).find((p) => p.name === "命宫")?.earthlyBranch || "卯";
   const nodeId = options.nodeId || "source-27-native-chart";
@@ -16476,7 +16501,7 @@ function renderWentianClassicChart(saved, options = {}) {
               <g class="fc-sanfang-points"></g>
             </svg>
             ${(chart.palaces || []).map((palace) => renderWentianClassicPalaceCell(palace, activeBranch, cellOptions)).join("")}
-            ${renderWentianClassicCenter(chart, chartData, form, options, centerSource)}
+            ${renderWentianClassicCenter(chart, chartData, form, centerOptions, centerSource)}
           </div>
         </div>
       </div>
@@ -16726,7 +16751,7 @@ function normalizeWentianYijingResult(result) {
   };
 }
 
-function getWentianYijingContext(saved) {
+function getWentianYijingContext(saved, selectedXiaoLian = null) {
   const ctx = getWentianMobileParamContext(saved);
   const chartData = ctx.chartData || {};
   const form = ctx.form || {};
@@ -16735,7 +16760,7 @@ function getWentianYijingContext(saved) {
   const birthDate = String(form.datetime || chartData.birthDate || "").slice(0, 10);
   const birthYear = chartData.birthYear || Number(birthDate.slice(0, 4)) || new Date().getFullYear();
   const fallbackAge = birthYear ? new Date().getFullYear() - Number(birthYear) + 1 : 1;
-  const selectedXiao = getWentianSelectedXiaoLianYear(chartData);
+  const selectedXiao = selectedXiaoLian || getWentianSelectedXiaoLianYear(chartData);
   const activeAge = Math.max(1, Number(selectedXiao?.age || chartData.activeAge || chartData.realCurrentAge || fallbackAge || 1));
   let zipingResult = null;
   if (window.ZipingRuntime && sizhu?.yearStem && sizhu?.monthStem && sizhu?.dayStem && sizhu?.hourStem) {
@@ -18117,6 +18142,13 @@ document.addEventListener("click", (event) => {
     const current = getWentianSelectedDecade(getWentianChartPayload());
     wentianMobileLuckDecadeKey = current.currentKey || "";
     navigatePreservingScroll("screen-27", false);
+    return;
+  }
+  if (action === "wentian-hepan-xiaolian-pick") {
+    const target = event.target.closest("[data-xiaolian-age-key]");
+    const side = target?.dataset.hepanSide === "right" ? "right" : "left";
+    wentianHepanXiaoLianAge[side] = target?.dataset.xiaolianAgeKey || "";
+    navigatePreservingScroll("screen-49", false);
     return;
   }
   if (action === "wentian-chart-ai-xiaolian-pick") {
