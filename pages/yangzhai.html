@@ -1268,10 +1268,8 @@
     }
 
     .locator-map {
-      display: grid;
-      grid-template-columns: 1fr 112px;
-      gap: 12px;
-      align-items: start;
+      display: flex;
+      justify-content: flex-end;
       margin-top: 14px;
     }
 
@@ -1279,6 +1277,7 @@
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 4px;
+      width: 112px;
     }
 
     .locator-mini-cell {
@@ -3300,19 +3299,9 @@
         if (state.activeResult !== activeIndex) state.activeResult = activeIndex;
         const active = results[activeIndex];
         locatorCurrent.innerHTML = `
-          <div class="locator-kicker"><b>${formatIndex(active.number)}</b><span>当前定位</span></div>
+          <div class="locator-kicker"><b>${formatIndex(active.number)}</b><span>&#24403;&#21069;&#23450;&#20301;</span></div>
           <h3>${escapeHtml(active.title)}</h3>
-          <p>九宫里会同步高亮同编号，点右侧任一条，下面正文会自动滚到对应卡片。</p>
-          <div class="locator-meta">
-            <span>${escapeHtml(active.palaceTitle)}</span>
-            <span>${escapeHtml(active.palaceRole)}</span>
-            <span>第 ${active.number} / ${results.length} 条</span>
-          </div>
           <div class="locator-map">
-            <div class="locator-copy">
-              <strong>${escapeHtml(active.label)}</strong>
-              <span>${escapeHtml(active.tag)} · ${escapeHtml(active.source)}</span>
-            </div>
             ${buildLocatorMiniGrid(active.palaceKey)}
           </div>
         `;
