@@ -17214,10 +17214,18 @@ function compactWentianHepanResultLayout() {
   if (!phone) return false;
   const panel = phone.querySelector(".wentian-hepan-result-panel");
   const bg = phone.querySelector('[data-node-id="wt49-bg"]');
-  if (!panel || !bg) return false;
+  const navBg = phone.querySelector('[data-node-id="source-bottom-bg"]');
+  if (!panel || !bg || !navBg) return false;
   const panelTop = Number.parseFloat(getComputedStyle(panel).top) || panel.offsetTop || 0;
   const panelBottom = Math.ceil(panelTop + panel.offsetHeight);
-  const nextHeight = Math.max(WENTIAN_PHONE_HEIGHT, panelBottom + 32);
+  const navY = Math.max(755, panelBottom + 28);
+  const currentNavY = Number.parseFloat(navBg.style.top) || navY;
+  const delta = navY - currentNavY;
+  for (const node of phone.querySelectorAll('[data-node-id^="source-bottom-"]')) {
+    const top = Number.parseFloat(node.style.top);
+    if (Number.isFinite(top)) node.style.top = `${Math.round(top + delta)}px`;
+  }
+  const nextHeight = Math.max(WENTIAN_PHONE_HEIGHT, navY + 89);
   phone.style.height = `${nextHeight}px`;
   bg.style.height = `${nextHeight}px`;
   return true;
