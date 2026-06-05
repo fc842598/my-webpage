@@ -3622,6 +3622,14 @@ function getWentianGeneratedModuleCount() {
   }).length;
 }
 
+function isWentianMingbookPdfReady() {
+  syncWentianChartAiStateFromStorage();
+  const chapters = getWentianChartAiChapters();
+  return wentianChartAiState.status !== "running"
+    && chapters.length > 0
+    && chapters.every((chapter) => chapter.ready);
+}
+
 function getWentianAiTask(moduleKey) {
   return WENTIAN_CHART_AI_TASKS.find((task) => task.module === moduleKey);
 }
@@ -5370,6 +5378,10 @@ async function downloadWentianMingbookPdf() {
   const saved = getWentianDisplayChartState() || getWentianSavedChart() || getWentianFallbackChartState();
   const btn = view.querySelector('[data-action="wentian-open-mingbook-onepage"]');
   const originalText = btn?.textContent || translateWentianText("下载PDF");
+  if (!isWentianMingbookPdfReady()) {
+    setWentianMobilePdfStatus("解读完成后才能下载PDF。", "error");
+    return;
+  }
   if (btn) {
     btn.disabled = true;
     btn.textContent = translateWentianText("正在打包PDF…");
@@ -6962,6 +6974,9 @@ const WENTIAN_I18N_EN_EXTRA = {
   "总批命": "Full Reading",
   "追问": "Follow-up",
   "下载PDF": "Download PDF",
+  "解读完下载": "Download after reading",
+  "解读完可下载": "Download after reading",
+  "解读完成后才能下载PDF。": "Complete the reading before downloading the PDF.",
   "正在打包PDF…": "Packing PDF...",
   "PDF已开始下载。": "PDF download started.",
   "PDF下载失败，请检查网络后重试。": "PDF failed. Check network and retry.",
@@ -16855,6 +16870,8 @@ function sourceZiweiAiDecodePanel(saved) {
   const chapterTotal = chapters.length || 6;
   const chapterDoneCount = chapters.filter((chapter) => chapter.ready).length;
   const isComplete = chapterDoneCount >= chapterTotal;
+  const pdfReady = isComplete && !isRunning;
+  const pdfLabel = pdfReady ? "下载PDF" : "解读完下载";
   const coinProgressDeg = chapterTotal ? Math.round((chapterDoneCount / chapterTotal) * 360) : 0;
   const coinMainLabel = isRunning ? "生成" : (isComplete ? "已完" : "总批");
   const coinSubLabel = isRunning ? "中" : (isComplete ? "成" : "命");
@@ -16897,7 +16914,7 @@ function sourceZiweiAiDecodePanel(saved) {
       </div>`}
       <div class="wentian-chart-ai-actions">
         <button type="button" class="wentian-chart-ai-secondary" data-route="screen-4">追问</button>
-        <button type="button" class="wentian-chart-ai-secondary" data-action="wentian-open-mingbook-onepage">下载PDF</button>
+        <button type="button" class="wentian-chart-ai-secondary" data-action="wentian-open-mingbook-onepage" ${pdfReady ? "" : "disabled"}>${escapeHtml(pdfLabel)}</button>
       </div>
       <button
         type="button"
@@ -16925,6 +16942,7 @@ function renderWentianChartMoreButton() {
 
 function renderWentianChartMoreMenu() {
   if (!wentianChartMoreOpen) return "";
+  const pdfReady = isWentianMingbookPdfReady();
   return `
     ${figButton("source-27-more-mask", 0, 0, 390, getWentianZiweiScreenHeight(), 'data-action="wentian-chart-more-close" aria-label="收起命盘工具"', "", "z-index:82;")}
     ${figBox("source-27-more-menu", 204, 92, 168, 176, "", "border:1px solid #ead8b4;border-radius:18px;background:linear-gradient(180deg,#fffdf8 0%,#fff5e5 100%);box-shadow:0 18px 42px rgba(77,49,24,.22);z-index:92;")}
@@ -16934,8 +16952,8 @@ function renderWentianChartMoreMenu() {
     ${figButton("source-27-more-edit-hit", 224, 156, 126, 34, 'data-action="wentian-chart-current-edit" aria-label="修改当前命盘资料"', "", "z-index:94;")}
     ${figText("source-27-more-menu-switch", "切换档案", 234, 204, 106, 14, "#8f4f3d", 900, "center", "z-index:93;")}
     ${figButton("source-27-more-switch-hit", 224, 194, 126, 34, 'data-route="screen-25" aria-label="切换命盘档案"', "", "z-index:94;")}
-    ${figText("source-27-more-menu-pdf", "下载报告", 234, 242, 106, 14, "#8f4f3d", 900, "center", "z-index:93;")}
-    ${figButton("source-27-more-pdf-hit", 224, 232, 126, 34, 'data-action="wentian-open-mingbook-onepage" aria-label="下载命盘报告"', "", "z-index:94;")}
+    ${figText("source-27-more-menu-pdf", pdfReady ? "下载报告" : "解读完可下载", 224, 242, 126, 14, pdfReady ? "#8f4f3d" : "#b9a27c", 900, "center", "z-index:93;")}
+    ${figButton("source-27-more-pdf-hit", 224, 232, 126, 34, pdfReady ? 'data-action="wentian-open-mingbook-onepage" aria-label="下载命盘报告"' : 'disabled aria-disabled="true" aria-label="解读完成后才能下载报告"', "", "z-index:94;")}
   `;
 }
 

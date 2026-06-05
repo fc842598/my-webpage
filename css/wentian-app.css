@@ -8976,6 +8976,13 @@ html[lang="en"] .wentian-chart-ai-menu span {
   color: #f2d68b;
 }
 
+.wentian-chart-ai-secondary:disabled {
+  cursor: not-allowed;
+  border-color: rgba(239, 210, 123, .28);
+  background: rgba(255, 244, 210, .03);
+  color: rgba(242, 214, 139, .48);
+}
+
 .wentian-chart-ai-shortcut {
   width: 100%;
   height: 52px;
