@@ -1361,6 +1361,7 @@ let wentianMobileYijingTab = "xiantian";
 let wentianMobileLuckDecadeKey = "";
 let wentianMobileXiaoLianAge = "";
 let wentianMobileCurveView = "future";
+let wentianChartMoreOpen = false;
 let wentianChartCalMode = "solar";
 let wentianChartCity = null;
 let wentianChartCityScope = "china";
@@ -16896,19 +16897,44 @@ function sourceZiweiAiDecodePanel(saved) {
   `;
 }
 
+function renderWentianChartMoreButton() {
+  return `
+    ${figBox("source-27-more-pill", 322, 44, 50, 38, "", "border:1px solid #eadfce;border-radius:19px;background:rgba(255,253,248,.9);box-shadow:0 8px 18px rgba(126,88,42,.10);z-index:78;")}
+    ${figText("source-27-more", "•••", 326, 55, 42, 13, "#3b3934", 900, "center", "z-index:79;letter-spacing:3px;")}
+    ${figButton("source-27-more-hit", 316, 38, 62, 52, `data-action="wentian-chart-more-toggle" aria-label="命盘更多操作" aria-expanded="${wentianChartMoreOpen ? "true" : "false"}"`, "", "z-index:90;")}
+  `;
+}
+
+function renderWentianChartMoreMenu() {
+  if (!wentianChartMoreOpen) return "";
+  return `
+    ${figButton("source-27-more-mask", 0, 0, 390, getWentianZiweiScreenHeight(), 'data-action="wentian-chart-more-close" aria-label="收起命盘工具"', "", "z-index:82;")}
+    ${figBox("source-27-more-menu", 204, 92, 168, 176, "", "border:1px solid #ead8b4;border-radius:18px;background:linear-gradient(180deg,#fffdf8 0%,#fff5e5 100%);box-shadow:0 18px 42px rgba(77,49,24,.22);z-index:92;")}
+    ${figText("source-27-more-menu-title", "命盘工具", 224, 112, 126, 16, "#3b2d20", 900, "center", "z-index:93;")}
+    ${figText("source-27-more-menu-sub", "当前命盘常用操作", 224, 135, 126, 11, "#9a7a49", 800, "center", "z-index:93;")}
+    ${figText("source-27-more-menu-edit", "修改资料", 234, 166, 106, 14, "#8f4f3d", 900, "center", "z-index:93;")}
+    ${figButton("source-27-more-edit-hit", 224, 156, 126, 34, 'data-action="wentian-chart-current-edit" aria-label="修改当前命盘资料"', "", "z-index:94;")}
+    ${figText("source-27-more-menu-switch", "切换档案", 234, 204, 106, 14, "#8f4f3d", 900, "center", "z-index:93;")}
+    ${figButton("source-27-more-switch-hit", 224, 194, 126, 34, 'data-route="screen-25" aria-label="切换命盘档案"', "", "z-index:94;")}
+    ${figText("source-27-more-menu-pdf", "下载报告", 234, 242, 106, 14, "#8f4f3d", 900, "center", "z-index:93;")}
+    ${figButton("source-27-more-pdf-hit", 224, 232, 126, 34, 'data-action="wentian-open-mingbook-onepage" aria-label="下载命盘报告"', "", "z-index:94;")}
+  `;
+}
+
 function sourceZiweiMingpanScreenFromChart(saved) {
   const screenHeight = getWentianZiweiScreenHeight();
   const bottomNavY = Math.max(755, screenHeight - 89);
   return `
     ${figBox("source-27-bg", 0, 0, 390, screenHeight, "", "background:#fbf7ef;")}
     ${figText("source-27-title", "紫微命盘", 0, 58, 390, 25, "#3b3934", 800, "center")}
-    ${figText("source-27-more", "•••", 330, 56, 42, 22, "#3b3934", 800, "center")}
+    ${renderWentianChartMoreButton()}
     ${wentianBackPill("source-27", 18, 44)}
     ${renderWentianClassicChart(saved)}
     <div class="wentian-chart-content-stack">
       ${sourceZiweiAiDecodePanel(saved)}
       ${renderWentianMobileYijingPanel(saved)}
     </div>
+    ${renderWentianChartMoreMenu()}
     ${sourceAppBottomNav("档案", bottomNavY)}
   `;
 }
@@ -17202,6 +17228,7 @@ function navigate(route, push = true) {
     route = `screen-${screen.no}`;
     if (push && route !== state.route) state.stack.push(state.route);
     state.route = route;
+    if (route !== "screen-27") wentianChartMoreOpen = false;
     if (screen.no !== 42 && yangzhaiCompassHandler) stopYangzhaiCompass();
     if (route !== "screen-38") wentianLogoutConfirmOpen = false;
     if (routeKicker) routeKicker.textContent = translateWentianText("阅天AI");
@@ -17759,10 +17786,28 @@ document.addEventListener("click", (event) => {
   const routeButton = event.target.closest("[data-route]");
   const clickRoute = routeButton?.dataset.route || (!earlyActionTarget ? getWentianRouteFromClickPoint(event) : "");
   if (clickRoute) {
+    wentianChartMoreOpen = false;
     navigateWentianClickRoute(clickRoute);
     return;
   }
   const action = event.target.closest("[data-action]")?.dataset.action;
+  if (action === "wentian-chart-more-toggle") {
+    wentianChartMoreOpen = !wentianChartMoreOpen;
+    navigatePreservingScroll("screen-27", false);
+    return;
+  }
+  if (action === "wentian-chart-more-close") {
+    wentianChartMoreOpen = false;
+    navigatePreservingScroll("screen-27", false);
+    return;
+  }
+  if (action === "wentian-chart-current-edit") {
+    wentianChartMoreOpen = false;
+    const currentArchive = getCurrentWentianArchive();
+    if (currentArchive?.id) editWentianArchive(currentArchive.id);
+    else navigate("screen-26");
+    return;
+  }
   if (action === "back") {
     setLiuyaoCasterModalOpen(false);
     if (state.route === "screen-43") {
@@ -18063,6 +18108,7 @@ document.addEventListener("click", (event) => {
     return;
   }
   if (action === "wentian-open-mingbook-onepage") {
+    wentianChartMoreOpen = false;
     downloadWentianMingbookPdf();
     return;
   }
