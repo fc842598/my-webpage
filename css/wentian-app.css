@@ -7957,14 +7957,6 @@ html[lang="en"] .liuyao-coin-summary em {
   line-height: 1.12;
 }
 
-.wentian-yijing-head p {
-  margin: 10px 0 0;
-  color: #d2c39b;
-  font-size: 14px;
-  font-weight: 800;
-  line-height: 1.68;
-}
-
 .wentian-yijing-tabs {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -7973,10 +7965,10 @@ html[lang="en"] .liuyao-coin-summary em {
 
 .wentian-yijing-tabs button {
   min-width: 0;
-  min-height: 64px;
+  min-height: 54px;
   border: 1px solid rgba(226, 199, 103, .36);
   border-radius: 14px;
-  padding: 9px 10px;
+  padding: 10px;
   background: rgba(20, 13, 5, .94);
   color: #d7c7a0;
   font-family: inherit;
@@ -7989,24 +7981,14 @@ html[lang="en"] .liuyao-coin-summary em {
   color: #1b1205;
 }
 
-.wentian-yijing-tabs span,
-.wentian-yijing-tabs b {
+.wentian-yijing-tabs span {
   display: block;
   pointer-events: none;
 }
 
 .wentian-yijing-tabs span {
-  margin: 0 0 6px;
   font-size: 14px;
   font-weight: 900;
-}
-
-.wentian-yijing-tabs b {
-  color: inherit;
-  font-size: 14px;
-  font-weight: 900;
-  line-height: 1.24;
-  overflow-wrap: anywhere;
 }
 
 .wentian-yijing-card {
@@ -8099,25 +8081,12 @@ html[lang="en"] .liuyao-coin-summary em {
   font-family: "Noto Serif SC", "Songti SC", serif;
 }
 
-.wentian-yijing-main span {
-  color: #b88c33;
-  font-size: 14px;
-  font-weight: 900;
-}
-
 .wentian-yijing-main h3 {
-  margin: 8px 0 6px;
+  margin: 0;
   color: #251d18;
   font-size: 28px;
   font-weight: 900;
   line-height: 1.12;
-}
-
-.wentian-yijing-main p {
-  margin: 0;
-  color: #817568;
-  font-size: 14px;
-  font-weight: 900;
 }
 
 .wentian-yijing-reading,

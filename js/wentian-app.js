@@ -16820,14 +16820,12 @@ function renderWentianMobileYijingPanel(saved) {
       <header class="wentian-yijing-head">
         <span>易经推命</span>
         <h2>先天 · 后天 · 流年卦</h2>
-        <p>补齐电脑端同款易经辅助解读，跟当前紫微命盘一起看。</p>
       </header>
       <div class="wentian-yijing-tabs" role="tablist" aria-label="易经推命切换">
         ${tabRows.map(([key, item]) => {
           const itemMeta = getWentianYijingTabMeta(key);
-          return `<button type="button" class="${key === activeKey ? "is-active" : ""}" data-action="wentian-yijing-tab" data-yijing-tab="${key}">
+          return `<button type="button" class="${key === activeKey ? "is-active" : ""}" data-action="wentian-yijing-tab" data-yijing-tab="${key}" aria-label="${escapeHtml(`${itemMeta.label} ${item?.name || ""}`.trim())}">
             <span>${escapeHtml(itemMeta.label)}</span>
-            <b>${escapeHtml(item?.name || "待算")}</b>
           </button>`;
         }).join("")}
       </div>
@@ -16837,9 +16835,7 @@ function renderWentianMobileYijingPanel(saved) {
           <div class="wentian-yijing-lines">${renderWentianYijingLines(result)}</div>
         </div>
         <div class="wentian-yijing-main">
-          <span>${escapeHtml(meta.note)}</span>
           <h3>${escapeHtml(result?.name || "等待排盘")}</h3>
-          <p>${escapeHtml(result?.no ? `第${result.no}卦` : (activeKey === "liunian" ? `${ctx.activeAge}岁 · ${ctx.currentYear}年` : "本命卦"))}</p>
         </div>
       </article>
       <section class="wentian-yijing-reading">
