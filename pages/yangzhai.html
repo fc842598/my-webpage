@@ -2977,15 +2977,17 @@
       ];
 
       const elderAgeDefaults = { grandpa: "65plus", grandma: "65plus" };
-      const elderAgeLabels = { under65: "65岁以下", "65plus": "65岁以上" };
+      const elderAgeLabels = { under65: "65岁前", "65plus": "65岁后" };
       const elderRoleCopy = {
         grandpa: {
           familyClass: "父位类",
-          seniorNote: "65岁以上再参考东北安养位；若退休后同住不顺，再复看分房安置。"
+          under65Note: "按父位类解，先看现住位。",
+          seniorNote: "按父位类解，再兼看东北安养位。"
         },
         grandma: {
           familyClass: "母位类",
-          seniorNote: "65岁以上仍先按母位类看；若退休后同住不顺，再复看分房安置。"
+          under65Note: "按母位类解，先看现住位。",
+          seniorNote: "按母位类解，再兼看东南安养位。"
         }
       };
 
@@ -3091,8 +3093,11 @@
         if (mode === "pill") {
           return `${option.short}${getElderAgeValue(option.elderKey) === "under65" ? "65-" : "65+"}`;
         }
-        if (mode === "detail") {
+        if (mode === "selection") {
           return `${option.label} · ${getElderAgeLabel(option.elderKey)}`;
+        }
+        if (mode === "tooltip") {
+          return `${option.label}（${getElderAgeLabel(option.elderKey)}）`;
         }
         return option.label;
       };
@@ -3101,12 +3106,9 @@
         if (!option.elderKey) return [];
         const copy = elderRoleCopy[option.elderKey];
         if (getElderAgeValue(option.elderKey) === "under65") {
-          return [`此角色按${copy.familyClass}解读，65岁以下仍先按本位直接看。`];
+          return [copy.under65Note];
         }
-        return [
-          `此角色按${copy.familyClass}解读，当前按65岁以上参考。`,
-          copy.seniorNote
-        ];
+        return [copy.seniorNote];
       };
       const getItems = (key) => Array.isArray(state.placements[key]) ? state.placements[key] : [];
       const getPlacementCount = () => Object.values(state.placements).reduce((total, items) => total + (Array.isArray(items) ? items.length : 0), 0);
@@ -3256,11 +3258,11 @@
         activeName.textContent = `${palace.gua}宫 · ${palace.dir}`;
         activeRole.textContent = palace.role;
         activeHint.textContent = selectedElders.length
-          ? `先点左侧九宫里的方位，再点下方成员或空间。长辈仍按父位/母位解读；65岁以上再参考退休安养位。建议本位：${palace.defaultItem || "先定方位"}。`
+          ? `先看现在住哪一宫。长辈仍按父位/母位解读；65岁后再加看安养位。建议本位：${palace.defaultItem || "先定方位"}。`
           : `先点左侧九宫里的方位，再点下方成员或空间。建议本位：${palace.defaultItem || "先定方位"}。`;
         pickedList.classList.toggle("is-empty", !selected.length);
         pickedList.innerHTML = selected.length
-          ? selected.map((item) => `<span class="item-pill" title="${escapeHtml(getDisplayLabel(item, "detail"))}">${escapeHtml(getDisplayLabel(item, isElderLabel(item) ? "detail" : "default"))}</span>`).join(" ")
+          ? selected.map((item) => `<span class="item-pill" title="${escapeHtml(getDisplayLabel(item, isElderLabel(item) ? "tooltip" : "default"))}">${escapeHtml(getDisplayLabel(item, isElderLabel(item) ? "selection" : "default"))}</span>`).join(" ")
           : "当前方位还没放内容";
         optionGrid.innerHTML = options.map((option) => {
           const isSelected = option.type !== "clear" && selected.includes(option.label);
@@ -3277,7 +3279,7 @@
         }
         elderHelper.hidden = false;
         elderHelper.innerHTML = `
-          <div class="elder-helper-note">长辈仍按父位/母位解读；65岁以上再参考退休安养位。</div>
+          <div class="elder-helper-note">65岁前先看现住位；65岁后再加看安养位：爷爷/外公看东北，奶奶/外婆看东南。</div>
           <div class="elder-age-stack">${selectedElders.map((option) => `
             <div class="elder-age-card">
               <strong>${escapeHtml(option.label)}</strong>
@@ -3324,7 +3326,7 @@
             const option = getOption(label);
             const mappedLabel = getMappedLabel(label);
             const readingLines = getElderReadingLines(label);
-            const displayLabel = getDisplayLabel(label, isElderLabel(label) ? "detail" : "default");
+            const displayLabel = getDisplayLabel(label, "default");
             const number = results.length + 1;
             const base = {
               number,
