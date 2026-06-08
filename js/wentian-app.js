@@ -6356,7 +6356,7 @@ function pickWentianLanguage(code) {
 function confirmWentianLanguage() {
   setWentianLanguageCode(wentianLanguageDraft || getWentianLanguageCode());
   wentianLanguageDraft = null;
-  navigate(state.stack.pop() || "screen-31", false);
+  replaceCurrentWentianRoute(state.stack.pop() || "screen-31");
 }
 
 const wentianI18nTextSources = new WeakMap();
@@ -8084,6 +8084,12 @@ function replaceWentianUrlRoute(route) {
   window.history.replaceState(null, "", nextUrl);
 }
 
+function replaceCurrentWentianRoute(route) {
+  const nextRoute = resolveRoute(route);
+  replaceWentianUrlRoute(nextRoute);
+  navigate(nextRoute, false, false);
+}
+
 function getWentianGoogleRedirectUrl() {
   if (window.location.hostname === "yuetianai.com") return WENTIAN_GOOGLE_REDIRECT_BRIDGE;
   return new URL(window.location.pathname, window.location.origin).toString();
@@ -8450,7 +8456,7 @@ function confirmWentianArchiveSelection() {
 
 function cancelWentianArchiveSelection() {
   wentianArchiveDraftId = null;
-  navigate(state.stack.pop() || "screen-1", false);
+  replaceCurrentWentianRoute(state.stack.pop() || "screen-1");
 }
 
 function resetWentianXuChatRuntime() {
@@ -12055,7 +12061,7 @@ function finishLiuyaoAnimatedToss() {
   const complete = state.casts.length >= 6;
   setLiuyaoCasterModalOpen(!complete);
   if (complete) {
-    navigate("screen-20", false);
+    navigate("screen-20");
     return;
   }
   if (!refreshLiuyaoCasterModalDom({ focus: true })) {
@@ -12103,7 +12109,8 @@ async function tossLiuyaoLine(all = false) {
     state.casts.push(makeLiuyaoCoinCast({ power: LIUYAO_DEFAULT_POWER, pull: LIUYAO_PULL_MAX * LIUYAO_DEFAULT_POWER }));
   } while (all && state.casts.length < 6);
   saveLiuyaoState();
-  navigate(state.casts.length >= 6 ? "screen-20" : "screen-17", false);
+  if (state.casts.length >= 6) navigate("screen-20");
+  else navigate("screen-17", false);
   return true;
 }
 
@@ -12197,7 +12204,7 @@ function clearLastLiuyaoManualLine() {
 async function showLiuyaoResultIfAllowed() {
   if (!(await ensureLiuyaoQuestionAllowed())) return false;
   if (getLiuyaoResult()) {
-    navigate("screen-20", false);
+    navigate("screen-20");
     return true;
   }
   return false;
@@ -14360,7 +14367,8 @@ function loadOfficeLayoutCase(caseId, openResult = false) {
   officeLayoutState.saveCase = false;
   setOfficeLayoutStatus(`已载入案例：${entry.title}`, "ok");
   saveOfficeLayoutState();
-  navigate(openResult ? "screen-52" : "screen-50", false);
+  const targetRoute = openResult ? "screen-52" : "screen-50";
+  navigate(targetRoute, targetRoute !== state.route);
 }
 
 function deleteOfficeLayoutCase(caseId) {
@@ -17894,7 +17902,7 @@ document.addEventListener("click", (event) => {
   if (action === "back") {
     setLiuyaoCasterModalOpen(false);
     if (state.route === "screen-43") {
-      navigate("screen-42", false);
+      replaceCurrentWentianRoute("screen-42");
       return;
     }
     if (state.route === "screen-26") clearWentianArchiveEditContext();
@@ -17905,8 +17913,7 @@ document.addEventListener("click", (event) => {
     }
     const fallbackRoute = previousRoute || (mineBackFallbackRoutes.has(state.route) ? "screen-31" : "home");
     if (previousRoute) state.stack.pop();
-    replaceWentianUrlRoute(resolveRoute(fallbackRoute));
-    navigate(fallbackRoute, false, false);
+    replaceCurrentWentianRoute(fallbackRoute);
     return;
   }
   if (action === "wentian-login-open") {
@@ -18468,7 +18475,7 @@ async function startWentianGoogleLogin() {
 async function signOutWentianAuth() {
   setWentianAuthSession(null);
   wentianLogoutConfirmOpen = false;
-  navigate("screen-31", false);
+  replaceCurrentWentianRoute("screen-31");
 }
 
 async function submitWentianPasswordForm() {
@@ -18551,8 +18558,7 @@ async function bootWentianApp() {
     wentianAuthState.error = error.message || "Google 登录失败，请稍后重试";
   }
   const nextRoute = session?.user ? "screen-31" : "screen-40";
-  replaceWentianUrlRoute(nextRoute);
-  navigate(nextRoute, false);
+  replaceCurrentWentianRoute(nextRoute);
   if (session?.user) {
     wentianMemberState.loaded = false;
     wentianOrderState.loaded = false;
