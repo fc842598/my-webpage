@@ -234,25 +234,110 @@
 
     .links a:hover { color: var(--gold-soft); }
 
-    .cta {
+    .nav-actions {
+      display: inline-flex;
+      align-items: center;
+      gap: 14px;
+      margin-left: 52px;
+      flex: 0 0 auto;
+    }
+
+    .nav-pay,
+    .nav-auth-pill,
+    .nav-member-link {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      height: 44px;
-      margin-left: 64px;
-      padding: 0 32px;
-      border: 1px solid rgba(238, 178, 130, .38);
-      border-radius: 6px;
-      color: #fff1d6;
-      background: linear-gradient(135deg, #873126, #b24b35);
-      font-weight: 700;
-      box-shadow: 0 16px 44px rgba(129, 42, 31, .26);
-      transition: transform .2s ease, box-shadow .2s ease;
+      min-height: 56px;
+      padding: 7px 24px;
+      border-radius: 999px;
+      transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
     }
 
-    .cta:hover {
+    .nav-pay,
+    .nav-auth-pill {
+      flex-direction: column;
+      gap: 1px;
+      border: 1px solid rgba(201, 169, 97, .28);
+      background: rgba(25, 18, 10, .78);
+      box-shadow: inset 0 0 0 1px rgba(255, 244, 214, .03);
+    }
+
+    .nav-pay {
+      min-width: 188px;
+      color: #2d1809;
+      background: linear-gradient(135deg, #e7c675, #c9a35f);
+      border-color: rgba(255, 231, 180, .36);
+      box-shadow: 0 16px 38px rgba(146, 107, 39, .18);
+    }
+
+    .nav-pay strong,
+    .nav-pay small,
+    .nav-auth-pill strong,
+    .nav-auth-pill small {
+      display: block;
+      text-align: center;
+      line-height: 1.1;
+    }
+
+    .nav-pay strong {
+      font-size: 16px;
+      font-weight: 800;
+    }
+
+    .nav-pay small {
+      margin-top: 2px;
+      font-size: 12px;
+      font-weight: 700;
+      opacity: .88;
+    }
+
+    .nav-auth-pill {
+      min-width: 176px;
+      color: var(--gold-soft);
+    }
+
+    .nav-auth-pill strong {
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: .02em;
+    }
+
+    .nav-auth-pill small {
+      margin-top: 3px;
+      color: rgba(223, 201, 144, .76);
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .nav-member-link {
+      min-width: 160px;
+      padding-inline: 28px;
+      border: 1px solid rgba(235, 174, 140, .34);
+      color: #fff0d8;
+      background: linear-gradient(135deg, #a55c43, #8d4a35);
+      font-size: 16px;
+      font-weight: 800;
+      box-shadow: 0 16px 38px rgba(112, 59, 44, .18);
+    }
+
+    .nav-pay:hover,
+    .nav-auth-pill:hover,
+    .nav-member-link:hover {
       transform: translateY(-1px);
-      box-shadow: 0 20px 54px rgba(129, 42, 31, .34);
+    }
+
+    .nav-pay:hover {
+      box-shadow: 0 20px 44px rgba(146, 107, 39, .24);
+    }
+
+    .nav-auth-pill:hover {
+      border-color: rgba(240, 215, 155, .38);
+      box-shadow: inset 0 0 0 1px rgba(255, 244, 214, .05), 0 14px 34px rgba(0, 0, 0, .18);
+    }
+
+    .nav-member-link:hover {
+      box-shadow: 0 20px 44px rgba(112, 59, 44, .26);
     }
 
     .hero {
@@ -491,9 +576,7 @@
 
     .hero-preview {
       position: relative;
-      min-height: 760px;
-      display: flex;
-      flex-direction: column;
+      min-height: 650px;
       animation: wheel-drift 6s ease-in-out infinite;
       will-change: transform;
     }
@@ -521,102 +604,6 @@
       position: relative;
       z-index: 2;
       color: inherit;
-    }
-
-    .hero-entry-panel {
-      width: min(46vw, 560px);
-      margin: 26px 0 0 auto;
-      padding: 14px;
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 12px;
-      border: 1px solid rgba(201, 169, 97, .22);
-      border-radius: 24px;
-      background: linear-gradient(180deg, rgba(14, 10, 6, .92), rgba(7, 5, 3, .82));
-      box-shadow: 0 22px 54px rgba(0, 0, 0, .34), inset 0 0 0 1px rgba(255, 244, 214, .03);
-      backdrop-filter: blur(18px);
-    }
-
-    .hero-entry-card {
-      position: relative;
-      min-height: 96px;
-      padding: 14px 15px 13px;
-      border: 1px solid rgba(201, 169, 97, .18);
-      border-radius: 18px;
-      background: linear-gradient(180deg, rgba(36, 28, 18, .92), rgba(18, 13, 8, .94));
-      overflow: hidden;
-      transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease;
-    }
-
-    .hero-entry-card::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(circle at 12% 18%, rgba(240, 215, 155, .18), transparent 42%);
-      opacity: .72;
-      pointer-events: none;
-    }
-
-    .hero-entry-card:hover {
-      transform: translateY(-2px);
-      border-color: rgba(240, 215, 155, .34);
-      box-shadow: 0 16px 30px rgba(0, 0, 0, .26);
-    }
-
-    .hero-entry-card strong,
-    .hero-entry-card small,
-    .hero-entry-kicker {
-      position: relative;
-      z-index: 1;
-      display: block;
-    }
-
-    .hero-entry-kicker {
-      margin-bottom: 10px;
-      color: rgba(242, 224, 182, .82);
-      font-size: 11px;
-      letter-spacing: .12em;
-      text-transform: uppercase;
-    }
-
-    .hero-entry-card strong {
-      color: var(--ivory);
-      font: 700 18px/1.35 "Noto Serif SC", "Songti SC", serif;
-    }
-
-    .hero-entry-card small {
-      margin-top: 6px;
-      color: #93815c;
-      font-size: 12px;
-      line-height: 1.55;
-    }
-
-    .hero-entry-card--pay {
-      border-color: rgba(231, 194, 110, .32);
-      background: linear-gradient(135deg, rgba(223, 188, 111, .98), rgba(182, 132, 72, .94));
-    }
-
-    .hero-entry-card--pay .hero-entry-kicker,
-    .hero-entry-card--pay strong,
-    .hero-entry-card--pay small {
-      color: #2b1709;
-    }
-
-    .hero-entry-card--pay small {
-      color: rgba(43, 23, 9, .78);
-    }
-
-    .hero-entry-card--app {
-      border-color: rgba(229, 154, 116, .28);
-      background: linear-gradient(135deg, rgba(165, 93, 62, .96), rgba(118, 55, 41, .94));
-    }
-
-    .hero-entry-card--app .hero-entry-kicker {
-      color: rgba(255, 228, 206, .72);
-    }
-
-    .hero-entry-card--app small {
-      color: rgba(255, 223, 199, .74);
     }
 
     .ritual-base {
@@ -1648,7 +1635,17 @@
       .brand-logo { width: 34px; height: 34px; border-radius: 9px; }
       .links { gap: 56px; }
       .links a { font-size: 14px; }
-      .cta { height: 34px; margin-left: 48px; padding: 0 24px; font-size: 14px; border-radius: 5px; }
+      .nav-actions { gap: 10px; margin-left: 36px; }
+      .nav-pay,
+      .nav-auth-pill,
+      .nav-member-link { min-height: 48px; padding: 6px 18px; }
+      .nav-pay { min-width: 156px; }
+      .nav-auth-pill { min-width: 148px; }
+      .nav-member-link { min-width: 132px; padding-inline: 20px; font-size: 14px; }
+      .nav-pay strong { font-size: 14px; }
+      .nav-pay small,
+      .nav-auth-pill small { font-size: 11px; }
+      .nav-auth-pill strong { font-size: 17px; }
 
       .hero { min-height: 554px; padding-top: 68px; }
       .hero-grid { width: 900px; grid-template-columns: 405px 1fr; gap: 54px; }
@@ -1662,12 +1659,8 @@
       .micro-line { width: 76px; margin: 18px 0 14px 24px; }
       .micro h3 { font-size: 15px; margin-bottom: 7px; }
       .micro p { font-size: 13px; line-height: 1.65; }
-      .hero-preview { min-height: 560px; margin-top: -14px; }
+      .hero-preview { min-height: 439px; margin-top: -14px; }
       .hero-preview::before { inset: -34px -46px auto auto; width: 465px; height: 465px; }
-      .hero-entry-panel { width: min(45vw, 465px); margin-top: 18px; padding: 12px; gap: 10px; border-radius: 22px; }
-      .hero-entry-card { min-height: 88px; padding: 13px 13px 12px; }
-      .hero-entry-card strong { font-size: 16px; }
-      .hero-entry-card small { font-size: 11px; }
       .destiny-wheel { width: 405px; margin-top: -10px; }
       .destiny-wheel::before { inset: -6%; }
       .wheel-core { padding: 15px; }
@@ -1762,13 +1755,22 @@
     @media (max-width: 1180px) {
       .container { width: calc(100vw - 48px); }
       .links { gap: 28px; }
-      .cta { margin-left: 28px; }
+      .nav-actions { gap: 8px; margin-left: 22px; }
+      .nav-pay,
+      .nav-auth-pill,
+      .nav-member-link { min-height: 44px; padding: 5px 14px; }
+      .nav-pay { min-width: 138px; }
+      .nav-auth-pill { min-width: 132px; }
+      .nav-member-link { min-width: 118px; padding-inline: 16px; font-size: 13px; }
+      .nav-pay strong { font-size: 13px; }
+      .nav-pay small,
+      .nav-auth-pill small { font-size: 10px; }
+      .nav-auth-pill strong { font-size: 15px; }
       h1 { width: auto; font-size: 54px; }
       h1 .gold { font-size: .74em; }
       .hero-grid { grid-template-columns: minmax(360px, 480px) 1fr; gap: 36px; }
       .micro { width: auto; gap: 24px; }
-      .hero-preview { min-height: 640px; }
-      .hero-entry-panel { width: min(45vw, 500px); }
+      .hero-preview { min-height: 520px; }
       .destiny-wheel { width: min(45vw, 500px); }
       .astrolabe { right: -40px; width: 500px; height: 500px; }
       .stone { right: 12px; width: 420px; }
@@ -1822,7 +1824,7 @@
       }
       .brand { font-size: 23px; }
       .brand-logo { width: 38px; height: 38px; border-radius: 10px; }
-      .nav .cta {
+      .nav-actions {
         display: none;
       }
 
@@ -1909,7 +1911,7 @@
       }
       .micro { display: none; }
       .hero-preview {
-        height: auto;
+        height: 276px;
         min-height: 0;
         margin-top: 6px;
         order: 2;
@@ -1927,7 +1929,7 @@
         height: 12px;
         opacity: .72;
       }
-      .hero-preview a { height: auto; }
+      .hero-preview a { height: 100%; }
       .destiny-wheel {
         width: min(70vw, 264px);
         margin: 6px 0 0 auto;
@@ -1949,26 +1951,8 @@
       .wheel-copy,
       .wheel-orbit-label { display: none; }
 
-      .hero-entry-panel {
-        width: 100%;
-        margin-top: 12px;
-        padding: 10px;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 8px;
-        border-radius: 16px;
-        order: 3;
-      }
-      .hero-entry-card {
-        min-height: 0;
-        padding: 12px 12px 11px;
-        border-radius: 12px;
-      }
-      .hero-entry-card strong { font-size: 15px; }
-      .hero-entry-card small { font-size: 11px; }
-      .hero-entry-card--app { grid-column: 1 / -1; }
-
       .mobile-quick-panel {
-        order: 4;
+        order: 3;
         display: grid;
         grid-template-columns: repeat(3, 1fr);
         gap: 10px;
@@ -2249,13 +2233,6 @@
         border-radius: 8px;
       }
 
-      .nav .cta {
-        height: 44px;
-        padding: 0 13px;
-        border-radius: 7px;
-        font-size: 12px;
-      }
-
       .hero {
         padding: 28px 0 34px;
       }
@@ -2296,36 +2273,13 @@
       }
 
       .hero-preview {
-        height: auto;
+        height: 244px;
         margin-top: 0;
       }
 
       .destiny-wheel {
         width: min(66vw, 242px);
         margin-top: 0;
-      }
-
-      .hero-entry-panel {
-        padding: 8px;
-      }
-
-      .hero-entry-card {
-        padding: 11px 11px 10px;
-      }
-
-      .hero-entry-kicker {
-        margin-bottom: 8px;
-        font-size: 10px;
-      }
-
-      .hero-entry-card strong {
-        font-size: 14px;
-      }
-
-      .hero-entry-card small {
-        margin-top: 5px;
-        font-size: 10px;
-        line-height: 1.5;
       }
 
       .mobile-quick-panel {
@@ -2577,7 +2531,17 @@
           <a href="pages/liuyao.html"><span class="link-text-full">六爻占卜</span><span class="link-text-short">六爻</span></a>
           <a href="pages/yangzhai.html"><span class="link-text-full">阳宅居住方位</span><span class="link-text-short">阳宅方位</span></a>
         </nav>
-        <a class="cta" href="pages/mingbook-onepage.html">立即排盘</a>
+        <div class="nav-actions" aria-label="快捷入口">
+          <a class="nav-pay" href="pages/mingbook-onepage.html" aria-label="套餐支付 19.9元">
+            <strong>套餐支付</strong>
+            <small>&#165;19.90</small>
+          </a>
+          <a class="nav-auth-pill" href="pages/mingbook-onepage.html" aria-label="电脑端已登录">
+            <strong>159****7747</strong>
+            <small>电脑端已登录</small>
+          </a>
+          <a class="nav-member-link" href="pages/wentian-app.html">手机端入口</a>
+        </div>
       </div>
     </header>
     <a class="mobile-floating-cta" href="pages/mingbook-onepage.html" aria-label="立即免费排盘">立即免费排盘</a>
@@ -2648,23 +2612,6 @@
                 </div>
               </div>
             </a>
-            <div class="hero-entry-panel" aria-label="导盘快捷入口">
-              <a class="hero-entry-card hero-entry-card--pay" href="pages/mingbook-onepage.html?action=pay">
-                <span class="hero-entry-kicker">套餐支付</span>
-                <strong>开通付费版</strong>
-                <small>命书、会员与订单权益共用</small>
-              </a>
-              <a class="hero-entry-card hero-entry-card--login" href="pages/mingbook-onepage.html?action=login">
-                <span class="hero-entry-kicker">电脑端入口</span>
-                <strong>登录后继续排盘</strong>
-                <small>同步账号、记录与会员状态</small>
-              </a>
-              <a class="hero-entry-card hero-entry-card--app" href="pages/wentian-app.html">
-                <span class="hero-entry-kicker">手机端入口</span>
-                <strong>打开阅天AI</strong>
-                <small>适合移动端继续查看和使用</small>
-              </a>
-            </div>
           </div>
           <div class="mobile-quick-panel" aria-label="移动端核心能力">
             <a href="pages/mingbook-onepage.html"><b>命</b><span>底色</span></a>
