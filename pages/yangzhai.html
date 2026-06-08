@@ -2981,13 +2981,13 @@
       const elderRoleCopy = {
         grandpa: {
           familyClass: "父位类",
-          under65Note: "按父位类解，先看现住位。",
-          seniorNote: "按父位类解，再兼看东北安养位。"
+          under65Note: "现住位为主，按父亲位解。",
+          seniorNote: "现住位为主，按父亲位解；65岁后兼看东北。"
         },
         grandma: {
           familyClass: "母位类",
-          under65Note: "按母位类解，先看现住位。",
-          seniorNote: "按母位类解，再兼看东南安养位。"
+          under65Note: "现住位为主，按母亲位解。",
+          seniorNote: "现住位为主，按母亲位解；65岁后兼看东南。"
         }
       };
 
@@ -3258,7 +3258,7 @@
         activeName.textContent = `${palace.gua}宫 · ${palace.dir}`;
         activeRole.textContent = palace.role;
         activeHint.textContent = selectedElders.length
-          ? `先看现在住哪一宫。长辈仍按父位/母位解读；65岁后再加看安养位。建议本位：${palace.defaultItem || "先定方位"}。`
+          ? `先看现在住哪一宫。长辈先按现住位解；65岁后再参考长辈位。建议本位：${palace.defaultItem || "先定方位"}。`
           : `先点左侧九宫里的方位，再点下方成员或空间。建议本位：${palace.defaultItem || "先定方位"}。`;
         pickedList.classList.toggle("is-empty", !selected.length);
         pickedList.innerHTML = selected.length
@@ -3279,7 +3279,7 @@
         }
         elderHelper.hidden = false;
         elderHelper.innerHTML = `
-          <div class="elder-helper-note">65岁前先看现住位；65岁后再加看安养位：爷爷/外公看东北，奶奶/外婆看东南。</div>
+          <div class="elder-helper-note">长辈先看现住位；65岁后再参考长辈位：爷爷/外公看东北，奶奶/外婆看东南。</div>
           <div class="elder-age-stack">${selectedElders.map((option) => `
             <div class="elder-age-card">
               <strong>${escapeHtml(option.label)}</strong>
