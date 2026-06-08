@@ -566,6 +566,30 @@
     window.history.replaceState(null, '', `${window.location.pathname}${query ? `?${query}` : ''}${hash || ''}`);
   }
 
+  function getDesktopEntryAction() {
+    const action = new URLSearchParams(window.location.search).get('action');
+    return action === 'pay' || action === 'login' ? action : '';
+  }
+
+  function clearDesktopEntryAction() {
+    const params = new URLSearchParams(window.location.search);
+    if (!params.has('action')) return;
+    params.delete('action');
+    const query = params.toString();
+    window.history.replaceState(null, '', `${window.location.pathname}${query ? `?${query}` : ''}${window.location.hash || ''}`);
+  }
+
+  async function handleDesktopEntryAction() {
+    const action = getDesktopEntryAction();
+    if (!action) return;
+    clearDesktopEntryAction();
+    if (action === 'pay') {
+      await openDesktopMemberPayment();
+      return;
+    }
+    openDesktopAuth('login');
+  }
+
   function getDesktopGoogleRedirectUrl() {
     if (window.location.hostname === 'yuetianai.com') return desktopGoogleRedirectBridge;
     return new URL(window.location.pathname, window.location.origin).toString();
@@ -1565,6 +1589,7 @@
     if (!isDesktopAuthCallbackUrl()) {
       await initDesktopAuth();
       if (desktopAuthState.session?.user) hydrateDesktopMemberStatus({ force: true });
+      await handleDesktopEntryAction();
       return;
     }
     desktopAuthState.open = true;
@@ -1586,6 +1611,7 @@
       desktopAuthState.loading = false;
       renderDesktopAuth();
     }
+    await handleDesktopEntryAction();
   }
   window.mbpBootDesktopAuth = bootDesktopAuth;
 
