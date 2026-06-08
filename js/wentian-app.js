@@ -8098,7 +8098,7 @@ function returnToPreviousWentianRoute(fallbackRoute = "screen-1") {
   }
   const targetRoute = previousRoute || fallbackRoute;
   if (previousRoute) state.stack.pop();
-  replaceCurrentWentianRoute(targetRoute);
+  navigate(targetRoute, false);
 }
 
 function getWentianGoogleRedirectUrl() {
@@ -17925,7 +17925,7 @@ document.addEventListener("click", (event) => {
     }
     const fallbackRoute = previousRoute || (mineBackFallbackRoutes.has(state.route) ? "screen-31" : "home");
     if (previousRoute) state.stack.pop();
-    replaceCurrentWentianRoute(fallbackRoute);
+    navigate(fallbackRoute, false);
     return;
   }
   if (action === "wentian-login-open") {
