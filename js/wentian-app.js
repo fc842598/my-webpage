@@ -6356,7 +6356,7 @@ function pickWentianLanguage(code) {
 function confirmWentianLanguage() {
   setWentianLanguageCode(wentianLanguageDraft || getWentianLanguageCode());
   wentianLanguageDraft = null;
-  replaceCurrentWentianRoute(state.stack.pop() || "screen-31");
+  returnToPreviousWentianRoute("screen-31");
 }
 
 const wentianI18nTextSources = new WeakMap();
@@ -8090,6 +8090,17 @@ function replaceCurrentWentianRoute(route) {
   navigate(nextRoute, false, false);
 }
 
+function returnToPreviousWentianRoute(fallbackRoute = "screen-1") {
+  const previousRoute = state.stack[state.stack.length - 1];
+  if (previousRoute && window.history.length > 1) {
+    window.history.back();
+    return;
+  }
+  const targetRoute = previousRoute || fallbackRoute;
+  if (previousRoute) state.stack.pop();
+  replaceCurrentWentianRoute(targetRoute);
+}
+
 function getWentianGoogleRedirectUrl() {
   if (window.location.hostname === "yuetianai.com") return WENTIAN_GOOGLE_REDIRECT_BRIDGE;
   return new URL(window.location.pathname, window.location.origin).toString();
@@ -8456,7 +8467,7 @@ function confirmWentianArchiveSelection() {
 
 function cancelWentianArchiveSelection() {
   wentianArchiveDraftId = null;
-  replaceCurrentWentianRoute(state.stack.pop() || "screen-1");
+  returnToPreviousWentianRoute("screen-1");
 }
 
 function resetWentianXuChatRuntime() {
@@ -10085,7 +10096,8 @@ async function submitWentianChartForm() {
 
     resetWentianXuChatRuntime();
     setWentianChartStatus(editingArchive ? "已保存修改" : "已生成命盘");
-    navigate(editReturnRoute || "screen-27", !editReturnRoute);
+    if (editReturnRoute) returnToPreviousWentianRoute(editReturnRoute);
+    else navigate("screen-27");
   } catch (error) {
     setWentianChartStatus(error.message || "排盘失败，请检查出生信息", "error");
   }
@@ -17902,7 +17914,7 @@ document.addEventListener("click", (event) => {
   if (action === "back") {
     setLiuyaoCasterModalOpen(false);
     if (state.route === "screen-43") {
-      replaceCurrentWentianRoute("screen-42");
+      returnToPreviousWentianRoute("screen-42");
       return;
     }
     if (state.route === "screen-26") clearWentianArchiveEditContext();
@@ -18475,7 +18487,7 @@ async function startWentianGoogleLogin() {
 async function signOutWentianAuth() {
   setWentianAuthSession(null);
   wentianLogoutConfirmOpen = false;
-  replaceCurrentWentianRoute("screen-31");
+  returnToPreviousWentianRoute("screen-31");
 }
 
 async function submitWentianPasswordForm() {
