@@ -9694,7 +9694,9 @@ async function captureWentianPayPalReturn(params = getWentianPayPalReturnParams(
       body: { orderNo: params.orderNo, paypalOrderId: params.paypalOrderId },
     });
     wentianPaymentState.status = data.status || "paid";
-    wentianPaymentState.message = "已开通付费版";
+    wentianPaymentState.message = data.status === "paid"
+      ? "已开通付费版"
+      : `等待${getWentianPaymentProviderLabel()}完成`;
     clearWentianPayPalReturnParams();
     await hydrateWentianMemberStatus({ force: true });
   } catch (error) {
@@ -11392,7 +11394,7 @@ const LIUYAO_TRIGRAM_BY_BITS = {
 function getLiuyaoCastScreenHeight() {
   const state = getLiuyaoState();
   if (state.mode === "online" && liuyaoCastModalOpen) return 844;
-  return state.mode === "manual" ? 1840 : 1620;
+  return state.mode === "manual" ? 1840 : 1280;
 }
 const LIUYAO_LINE_LABELS = ["初爻", "二爻", "三爻", "四爻", "五爻", "上爻"];
 const LIUYAO_MANUAL_EMPTY_COINS = [null, null, null];
