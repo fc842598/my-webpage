@@ -11394,7 +11394,7 @@ const LIUYAO_TRIGRAM_BY_BITS = {
 function getLiuyaoCastScreenHeight() {
   const state = getLiuyaoState();
   if (state.mode === "online" && liuyaoCastModalOpen) return 844;
-  return state.mode === "manual" ? 1840 : 1280;
+  return state.mode === "manual" ? 1840 : 1620;
 }
 const LIUYAO_LINE_LABELS = ["初爻", "二爻", "三爻", "四爻", "五爻", "上爻"];
 const LIUYAO_MANUAL_EMPTY_COINS = [null, null, null];
