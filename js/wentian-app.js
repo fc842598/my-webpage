@@ -9469,11 +9469,14 @@ function getWentianPaymentProviders() {
   const list = Array.isArray(wentianMemberState.providers) ? wentianMemberState.providers : [];
   const byKey = new Map(list.map((item) => [item.provider, item]));
   const alipayMeta = byKey.get("alipay") || {};
+  const alipayLabel = shouldUseWentianAipayResourceFlow("alipay")
+    ? "\u652f\u4ed8\u5b9dAI\u6536"
+    : (alipayMeta.label || "\u652f\u4ed8\u5b9d");
   return [
     { provider: "wechat", label: "微信支付", enabled: true, ...(byKey.get("wechat") || {}) },
     { ...alipayMeta, provider: "alipay", label: "支付宝AI收", enabled: alipayMeta.enabled !== false },
     { provider: "paypal", label: "PayPal", enabled: false, ...(byKey.get("paypal") || {}) },
-  ];
+  ].map((item) => (item.provider === "alipay" ? { ...item, label: alipayLabel } : item));
 }
 
 function getWentianPaymentProviderMeta(provider = wentianPaymentState.provider) {
@@ -9493,6 +9496,10 @@ function isWentianMobilePayDevice() {
   const ua = navigator.userAgent || "";
   return /Android|iPhone|iPad|iPod|Mobile|MicroMessenger|AlipayClient/i.test(ua)
     || (typeof window !== "undefined" && window.matchMedia?.("(max-width: 768px)")?.matches);
+}
+
+function shouldUseWentianAipayResourceFlow(provider = wentianPaymentState.provider) {
+  return provider === "alipay" && isWentianMobilePayDevice();
 }
 
 function getWentianPreferredPaymentProvider() {
@@ -9611,7 +9618,7 @@ function startWentianAipayResourcePayment() {
 }
 
 async function startWentianMemberPayment() {
-  if (wentianPaymentState.provider === "alipay") {
+  if (shouldUseWentianAipayResourceFlow()) {
     startWentianAipayResourcePayment();
     return;
   }
@@ -10344,7 +10351,7 @@ function sourceProfileScreen(screen) {
 
 function sourceMembershipScreen() {
   const member = getWentianMemberSnapshot();
-  const isAipaySelected = wentianPaymentState.provider === "alipay";
+  const isAipaySelected = shouldUseWentianAipayResourceFlow();
   const buttonText = isAipaySelected
     ? "查看AI收服务入口"
     : (member.isMember ? `续费付费版 ¥${member.amountYuan}` : `开通付费版 ¥${member.amountYuan}`);
