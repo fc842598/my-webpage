@@ -220,12 +220,13 @@
     .links {
       display: flex;
       align-items: center;
-      gap: 74px;
+      gap: 56px;
     }
 
     .links a {
       color: #b9a875;
       font-size: 16px;
+      white-space: nowrap;
       transition: color .2s ease;
     }
 
@@ -237,8 +238,8 @@
     .nav-actions {
       display: inline-flex;
       align-items: center;
-      gap: 14px;
-      margin-left: 52px;
+      gap: 10px;
+      margin-left: 28px;
       flex: 0 0 auto;
     }
 
@@ -247,37 +248,66 @@
     .nav-member-link {
       display: inline-flex;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-start;
+      gap: 12px;
       min-height: 56px;
-      padding: 7px 24px;
+      padding: 8px 18px 8px 15px;
       border-radius: 999px;
       transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
     }
 
     .nav-pay,
-    .nav-auth-pill {
-      flex-direction: column;
-      gap: 1px;
+    .nav-auth-pill,
+    .nav-member-link {
       border: 1px solid rgba(201, 169, 97, .28);
       background: rgba(25, 18, 10, .78);
       box-shadow: inset 0 0 0 1px rgba(255, 244, 214, .03);
     }
 
     .nav-pay {
-      min-width: 188px;
-      color: #2d1809;
-      background: linear-gradient(135deg, #e7c675, #c9a35f);
+      min-width: 174px;
+      color: #fff7ea;
+      background: linear-gradient(135deg, #e7c675, #c49a55);
       border-color: rgba(255, 231, 180, .36);
       box-shadow: 0 16px 38px rgba(146, 107, 39, .18);
+    }
+
+    .nav-action-icon {
+      width: 34px;
+      height: 34px;
+      flex: 0 0 34px;
+      display: grid;
+      place-items: center;
+    }
+
+    .nav-action-icon svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.85;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .nav-action-copy {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+      gap: 2px;
+      text-align: left;
+      line-height: 1.08;
     }
 
     .nav-pay strong,
     .nav-pay small,
     .nav-auth-pill strong,
-    .nav-auth-pill small {
+    .nav-auth-pill small,
+    .nav-member-link strong,
+    .nav-member-link small {
       display: block;
-      text-align: center;
-      line-height: 1.1;
     }
 
     .nav-pay strong {
@@ -286,39 +316,56 @@
     }
 
     .nav-pay small {
-      margin-top: 2px;
-      font-size: 12px;
+      color: rgba(255, 247, 234, .82);
+      font-size: 11px;
       font-weight: 700;
-      opacity: .88;
+      letter-spacing: .02em;
     }
 
     .nav-auth-pill {
-      min-width: 176px;
+      min-width: 166px;
       color: var(--gold-soft);
     }
 
     .nav-auth-pill strong {
-      font-size: 20px;
+      font-size: 16px;
       font-weight: 800;
       letter-spacing: .02em;
     }
 
     .nav-auth-pill small {
-      margin-top: 3px;
       color: rgba(223, 201, 144, .76);
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 600;
     }
 
     .nav-member-link {
-      min-width: 160px;
-      padding-inline: 28px;
+      min-width: 176px;
       border: 1px solid rgba(235, 174, 140, .34);
       color: #fff0d8;
       background: linear-gradient(135deg, #a55c43, #8d4a35);
+      box-shadow: 0 16px 38px rgba(112, 59, 44, .18);
+    }
+
+    .nav-pay .nav-action-icon {
+      color: rgba(108, 66, 20, .8);
+    }
+
+    .nav-auth-pill .nav-action-icon,
+    .nav-member-link .nav-action-icon {
+      color: currentColor;
+    }
+
+    .nav-member-link strong {
       font-size: 16px;
       font-weight: 800;
-      box-shadow: 0 16px 38px rgba(112, 59, 44, .18);
+      letter-spacing: .01em;
+    }
+
+    .nav-member-link small {
+      color: rgba(255, 240, 216, .82);
+      font-size: 11px;
+      font-weight: 600;
     }
 
     .nav-pay:hover,
@@ -1638,14 +1685,17 @@
       .nav-actions { gap: 10px; margin-left: 36px; }
       .nav-pay,
       .nav-auth-pill,
-      .nav-member-link { min-height: 48px; padding: 6px 18px; }
-      .nav-pay { min-width: 156px; }
-      .nav-auth-pill { min-width: 148px; }
-      .nav-member-link { min-width: 132px; padding-inline: 20px; font-size: 14px; }
-      .nav-pay strong { font-size: 14px; }
+      .nav-member-link { min-height: 50px; gap: 11px; padding: 6px 16px 6px 14px; }
+      .nav-action-icon { width: 31px; height: 31px; flex-basis: 31px; }
+      .nav-pay { min-width: 170px; }
+      .nav-auth-pill { min-width: 160px; }
+      .nav-member-link { min-width: 170px; }
+      .nav-pay strong,
+      .nav-auth-pill strong,
+      .nav-member-link strong { font-size: 16px; }
       .nav-pay small,
-      .nav-auth-pill small { font-size: 11px; }
-      .nav-auth-pill strong { font-size: 17px; }
+      .nav-auth-pill small,
+      .nav-member-link small { font-size: 10px; }
 
       .hero { min-height: 554px; padding-top: 68px; }
       .hero-grid { width: 900px; grid-template-columns: 405px 1fr; gap: 54px; }
@@ -1758,14 +1808,17 @@
       .nav-actions { gap: 8px; margin-left: 22px; }
       .nav-pay,
       .nav-auth-pill,
-      .nav-member-link { min-height: 44px; padding: 5px 14px; }
-      .nav-pay { min-width: 138px; }
-      .nav-auth-pill { min-width: 132px; }
-      .nav-member-link { min-width: 118px; padding-inline: 16px; font-size: 13px; }
-      .nav-pay strong { font-size: 13px; }
+      .nav-member-link { min-height: 46px; gap: 9px; padding: 5px 12px 5px 11px; }
+      .nav-action-icon { width: 26px; height: 26px; flex-basis: 26px; }
+      .nav-pay { min-width: 150px; }
+      .nav-auth-pill { min-width: 142px; }
+      .nav-member-link { min-width: 150px; }
+      .nav-pay strong,
+      .nav-auth-pill strong,
+      .nav-member-link strong { font-size: 14px; }
       .nav-pay small,
-      .nav-auth-pill small { font-size: 10px; }
-      .nav-auth-pill strong { font-size: 15px; }
+      .nav-auth-pill small,
+      .nav-member-link small { font-size: 9px; }
       h1 { width: auto; font-size: 54px; }
       h1 .gold { font-size: .74em; }
       .hero-grid { grid-template-columns: minmax(360px, 480px) 1fr; gap: 36px; }
@@ -2532,15 +2585,46 @@
           <a href="pages/yangzhai.html"><span class="link-text-full">阳宅居住方位</span><span class="link-text-short">阳宅方位</span></a>
         </nav>
         <div class="nav-actions" aria-label="快捷入口">
-          <a class="nav-pay" href="pages/mingbook-onepage.html" aria-label="套餐支付 19.9元">
-            <strong>套餐支付</strong>
-            <small>&#165;19.90</small>
+          <a class="nav-pay" href="pages/mingbook-onepage.html" aria-label="会员 开通权益">
+            <span class="nav-action-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path d="M4 18.5h16"></path>
+                <path d="M5.5 18.5 4 8.5l5 3 3-6 3 6 5-3-1.5 10Z"></path>
+                <path d="M8.5 8.3h.01"></path>
+                <path d="M15.5 8.3h.01"></path>
+                <path d="M12 5.5h.01"></path>
+              </svg>
+            </span>
+            <span class="nav-action-copy">
+              <strong>会员</strong>
+              <small>开通权益</small>
+            </span>
           </a>
-          <a class="nav-auth-pill" href="pages/mingbook-onepage.html" aria-label="电脑端已登录">
-            <strong>159****7747</strong>
-            <small>电脑端已登录</small>
+          <a class="nav-auth-pill" href="pages/mingbook-onepage.html" aria-label="登录 电脑端继续">
+            <span class="nav-action-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path d="M12 12a4.75 4.75 0 1 0-4.75-4.75A4.75 4.75 0 0 0 12 12Z"></path>
+                <path d="M4.5 19.25a7.5 7.5 0 0 1 15 0"></path>
+              </svg>
+            </span>
+            <span class="nav-action-copy">
+              <strong>登录</strong>
+              <small>电脑端继续</small>
+            </span>
           </a>
-          <a class="nav-member-link" href="pages/wentian-app.html">手机端入口</a>
+          <a class="nav-member-link" href="pages/wentian-app.html" aria-label="手机App 移动端使用">
+            <span class="nav-action-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <rect x="7" y="3.5" width="10" height="17" rx="2.2"></rect>
+                <path d="M10.5 6.5h3"></path>
+                <path d="M11.8 17.2h.4"></path>
+              </svg>
+            </span>
+            <span class="nav-action-copy">
+              <strong>手机App</strong>
+              <small>移动端使用</small>
+            </span>
+          </a>
         </div>
       </div>
     </header>
