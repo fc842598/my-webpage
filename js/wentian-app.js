@@ -1307,6 +1307,7 @@ const WENTIAN_PAID_DAILY_LIMIT = 100;
 const WENTIAN_PAID_PRODUCT_NAME = "阅天AI付费版";
 const WENTIAN_PAID_PRODUCT_DESC = "许大师 AI 对话：付费用户 100次/天；免费用户 30次/天。按日刷新，不设月额度。";
 const WENTIAN_PAYMENT_POLL_MS = 3500;
+const WENTIAN_AIPAY_RESOURCE_PATH = "/api/payments/aipay/resource";
 const WENTIAN_GOOGLE_REDIRECT_BRIDGE = "https://fc842598.github.io/my-webpage/pages/wentian-app.html";
 const WENTIAN_GOOGLE_ENABLED = true;
 const WENTIAN_CHART_AI_STORAGE_KEY = "wentian-app-chart-ai-v2";
@@ -1518,6 +1519,10 @@ function getWentianApiBase() {
   const queryBase = qs.get("aiBackendBase") || qs.get("pimingApiBase") || qs.get("apiBase") || "";
   const configBase = window.SITE_CONFIG?.aiBackendBase || "";
   return (queryBase || configBase || "https://api.yuetianai.com").replace(/\/+$/, "");
+}
+
+function getWentianAipayResourceUrl() {
+  return `${getWentianApiBase()}${WENTIAN_AIPAY_RESOURCE_PATH}`;
 }
 
 function getWentianClientId() {
@@ -9463,9 +9468,10 @@ function getWentianMemberSnapshot() {
 function getWentianPaymentProviders() {
   const list = Array.isArray(wentianMemberState.providers) ? wentianMemberState.providers : [];
   const byKey = new Map(list.map((item) => [item.provider, item]));
+  const alipayMeta = byKey.get("alipay") || {};
   return [
     { provider: "wechat", label: "微信支付", enabled: true, ...(byKey.get("wechat") || {}) },
-    { provider: "alipay", label: "支付宝", enabled: false, ...(byKey.get("alipay") || {}) },
+    { ...alipayMeta, provider: "alipay", label: "支付宝AI收", enabled: alipayMeta.enabled !== false },
     { provider: "paypal", label: "PayPal", enabled: false, ...(byKey.get("paypal") || {}) },
   ];
 }
@@ -9587,7 +9593,29 @@ function startWentianPaymentPoll() {
   wentianPaymentPollTimer = setInterval(checkWentianPaymentStatus, WENTIAN_PAYMENT_POLL_MS);
 }
 
+function startWentianAipayResourcePayment() {
+  stopWentianPaymentPoll();
+  const product = wentianMemberState.product || {};
+  wentianPaymentState.status = "pending";
+  wentianPaymentState.orderNo = "AI收402资源";
+  wentianPaymentState.payUrl = getWentianAipayResourceUrl();
+  wentianPaymentState.payMethod = "aipay-resource";
+  wentianPaymentState.message = "AI收是 HTTP 402 付费资源入口，请使用支持 AI收/402 的智能体访问此服务地址。网页内不会自动扫码付款。";
+  wentianPaymentState.error = "";
+  wentianPaymentState.mockMode = false;
+  wentianPaymentState.provider = "alipay";
+  wentianPaymentState.productName = product.name || WENTIAN_PAID_PRODUCT_NAME;
+  wentianPaymentState.amountYuan = product.amountYuan || "19.90";
+  wentianPaymentState.currency = product.currency || "CNY";
+  navigate("screen-30");
+}
+
 async function startWentianMemberPayment() {
+  if (wentianPaymentState.provider === "alipay") {
+    startWentianAipayResourcePayment();
+    return;
+  }
+
   const session = await requireWentianAuth();
   if (!session?.user) return;
   const product = wentianMemberState.product || {};
@@ -9670,6 +9698,18 @@ async function captureWentianPayPalReturn(params = getWentianPayPalReturnParams(
 }
 
 function openWentianPaymentUrl() {
+  if (wentianPaymentState.payMethod === "aipay-resource") {
+    const url = wentianPaymentState.payUrl || getWentianAipayResourceUrl();
+    navigator.clipboard?.writeText(url)
+      .then(() => {
+        wentianPaymentState.message = "AI收服务地址已复制，可粘贴给支持 HTTP 402 的智能体调用。";
+        refreshWentianPaymentScreen();
+      })
+      .catch(() => {
+        window.open(url, "_blank", "noopener,noreferrer");
+      });
+    return;
+  }
   if (wentianPaymentState.payUrl) window.location.href = wentianPaymentState.payUrl;
 }
 
@@ -10304,7 +10344,10 @@ function sourceProfileScreen(screen) {
 
 function sourceMembershipScreen() {
   const member = getWentianMemberSnapshot();
-  const buttonText = member.isMember ? `续费付费版 ¥${member.amountYuan}` : `开通付费版 ¥${member.amountYuan}`;
+  const isAipaySelected = wentianPaymentState.provider === "alipay";
+  const buttonText = isAipaySelected
+    ? "查看AI收服务入口"
+    : (member.isMember ? `续费付费版 ¥${member.amountYuan}` : `开通付费版 ¥${member.amountYuan}`);
   const providers = getWentianPaymentProviders();
   const methodButtons = providers.map((item, index) => {
     const compact = providers.length > 2;
@@ -10351,6 +10394,7 @@ function sourceMembershipScreen() {
 }
 
 function sourcePaymentScreen() {
+  const isAipayResource = wentianPaymentState.payMethod === "aipay-resource";
   const stateText = wentianPaymentState.status === "paid"
     ? "支付成功"
     : wentianPaymentState.status === "error"
@@ -10358,18 +10402,22 @@ function sourcePaymentScreen() {
       : wentianPaymentState.status === "loading"
         ? "创建订单"
         : "确认订单";
+  const stateLabel = isAipayResource ? "AI收入口" : stateText;
   const payUrl = wentianPaymentState.payUrl || "";
-  const showQr = payUrl && !["h5", "redirect"].includes(wentianPaymentState.payMethod) && !wentianPaymentState.mockMode;
-  const showOpen = payUrl && ["h5", "redirect"].includes(wentianPaymentState.payMethod) && !wentianPaymentState.mockMode;
+  const showQr = payUrl && !isAipayResource && !["h5", "redirect"].includes(wentianPaymentState.payMethod) && !wentianPaymentState.mockMode;
+  const showOpen = payUrl && (isAipayResource || ["h5", "redirect"].includes(wentianPaymentState.payMethod)) && !wentianPaymentState.mockMode;
   const message = wentianPaymentState.error || wentianPaymentState.message || "付费版 100次/天，按日刷新";
   const orderCardHeight = showQr ? 376 : 190;
   const amountText = formatWentianPaymentAmount(wentianPaymentState.amountYuan || "19.90", wentianPaymentState.currency || "CNY");
+  const payButtonAction = isAipayResource ? "back" : (wentianPaymentState.status === "paid" ? "wentian-pay-done" : (wentianPaymentState.status === "idle" || wentianPaymentState.status === "error" ? "wentian-member-pay" : "wentian-payment-check"));
+  const payButtonText = isAipayResource ? "返回" : (wentianPaymentState.status === "paid" ? "已开通，返回我的" : (wentianPaymentState.status === "pending" ? "刷新支付状态" : `确认支付 ${amountText}`));
+  const safeText = isAipayResource ? "AI收为智能体 402 付费资源，不是网页扫码支付" : `${getWentianPaymentProviderLabel()}完成后付费额度自动刷新`;
   return `
     ${figBox("wt30-bg", 0, 0, 390, 844, "", "background:linear-gradient(180deg,#fffdf8 0%,#fbf7ef 58%,#f3eadc 100%);")}
     ${wentianBackPill("wt30", 18, 42)}
     ${figText("wt30-page-title", "套餐支付", 0, 54, 390, 22, "#201812", 900, "center")}
     ${figBox("wt30-status-pill", 286, 48, 74, 30, "", "border-radius:15px;background:#f4ead8;border:1px solid #eadbc2;")}
-    ${figText("wt30-status-text", stateText, 286, 56, 74, 12, "#9a6f22", 800, "center")}
+    ${figText("wt30-status-text", stateLabel, 286, 56, 74, 12, "#9a6f22", 800, "center")}
 
     ${figBox("wt30-hero", 24, 108, 342, 128, "", "border-radius:20px;background:linear-gradient(135deg,#b54c3a 0%,#8e3429 100%);box-shadow:0 16px 34px rgba(131,56,39,.18);")}
     ${figText("wt30-hero-label", WENTIAN_PAID_PRODUCT_NAME, 46, 132, 150, 13, "#f7e6cf", 700)}
@@ -10390,14 +10438,14 @@ function sourcePaymentScreen() {
 
     ${showOpen ? figBox("wt30-open", 42, 650, 306, 50, "", "border-radius:25px;background:#16783d;box-shadow:0 12px 24px rgba(22,120,61,.18);") : ""}
     ${showOpen ? figButton("wt30-open-hit", 42, 650, 306, 50, 'data-action="wentian-pay-open"') : ""}
-    ${showOpen ? figText("wt30-open-text", `打开${getWentianPaymentProviderLabel()}`, 42, 665, 306, 14, "#fff", 900, "center") : ""}
+    ${showOpen ? figText("wt30-open-text", isAipayResource ? "复制AI收服务地址" : `打开${getWentianPaymentProviderLabel()}`, 42, 665, 306, 14, "#fff", 900, "center") : ""}
     ${wentianPaymentState.mockMode ? figBox("wt30-mock", 42, 650, 306, 50, "", "border-radius:25px;background:#16783d;box-shadow:0 12px 24px rgba(22,120,61,.18);") : ""}
     ${wentianPaymentState.mockMode ? figButton("wt30-mock-hit", 42, 650, 306, 50, 'data-action="wentian-pay-mock-success"') : ""}
     ${wentianPaymentState.mockMode ? figText("wt30-mock-text", "模拟支付成功", 42, 665, 306, 14, "#fff", 900, "center") : ""}
     ${figBox("wt30-pay", 42, 736, 306, 50, "", `border-radius:25px;background:${wentianPaymentState.status === "paid" ? "#7a9a4b" : "linear-gradient(180deg,#b74e39,#983323)"};box-shadow:0 14px 28px rgba(158,61,43,.18);`)}
-    ${figButton("wt30-pay-hit", 42, 736, 306, 50, `data-action="${wentianPaymentState.status === "paid" ? "wentian-pay-done" : (wentianPaymentState.status === "idle" || wentianPaymentState.status === "error" ? "wentian-member-pay" : "wentian-payment-check")}"`)}
-    ${figText("wt30-pay-text", wentianPaymentState.status === "paid" ? "已开通，返回我的" : (wentianPaymentState.status === "pending" ? "刷新支付状态" : `确认支付 ${amountText}`), 42, 751, 306, 14, "#fffaf3", 900, "center")}
-    ${figText("wt30-safe", `${getWentianPaymentProviderLabel()}完成后付费额度自动刷新`, 0, 804, 390, 11, "#a49b91", 600, "center")}
+    ${figButton("wt30-pay-hit", 42, 736, 306, 50, `data-action="${payButtonAction}"`)}
+    ${figText("wt30-pay-text", payButtonText, 42, 751, 306, 14, "#fffaf3", 900, "center")}
+    ${figText("wt30-safe", safeText, 0, 804, 390, 11, "#a49b91", 600, "center")}
   `;
 }
 
