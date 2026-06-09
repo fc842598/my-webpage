@@ -1434,7 +1434,7 @@ const wentianPaymentState = {
   message: "",
   error: "",
   mockMode: false,
-  provider: "wechat",
+  provider: "alipay",
   productName: WENTIAN_PAID_PRODUCT_NAME,
   amountYuan: "19.90",
   currency: "CNY",
@@ -9482,6 +9482,20 @@ function getWentianPaymentProviderAppLabel() {
   return getWentianPaymentProviderLabel().replace(/支付$/, "");
 }
 
+function isWentianMobilePayDevice() {
+  if (typeof navigator === "undefined") return false;
+  const ua = navigator.userAgent || "";
+  return /Android|iPhone|iPad|iPod|Mobile|MicroMessenger|AlipayClient/i.test(ua)
+    || (typeof window !== "undefined" && window.matchMedia?.("(max-width: 768px)")?.matches);
+}
+
+function getWentianPreferredPaymentProvider() {
+  const providers = getWentianPaymentProviders();
+  return providers.find((item) => item.provider === "alipay" && item.enabled)?.provider
+    || providers.find((item) => item.enabled)?.provider
+    || "wechat";
+}
+
 async function hydrateWentianMemberStatus(options = {}) {
   if (wentianMemberStatusPromise && !options.force) return wentianMemberStatusPromise;
   if (wentianMemberState.loaded && !options.force) return null;
@@ -9496,8 +9510,10 @@ async function hydrateWentianMemberStatus(options = {}) {
       if (data.quota) wentianMemberState.quota = normalizeWentianQuota(data.quota);
       if (data.product) wentianMemberState.product = data.product;
       if (Array.isArray(data.providers)) wentianMemberState.providers = data.providers;
-      if (!getWentianPaymentProviderMeta(wentianPaymentState.provider)?.enabled) {
-        wentianPaymentState.provider = getWentianPaymentProviders().find((item) => item.enabled)?.provider || "wechat";
+      const currentProviderEnabled = !!getWentianPaymentProviderMeta(wentianPaymentState.provider)?.enabled;
+      const canPreferAlipay = !wentianPaymentState.orderNo && wentianPaymentState.provider === "wechat";
+      if (!currentProviderEnabled || canPreferAlipay) {
+        wentianPaymentState.provider = getWentianPreferredPaymentProvider();
       }
       wentianMemberState.mockMode = !!data.mockMode;
       const after = JSON.stringify({
