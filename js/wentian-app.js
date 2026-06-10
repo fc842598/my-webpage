@@ -10311,7 +10311,6 @@ function renderWentianProfileRows(archives = getWentianArchiveList(), query = we
       ${figText(`source-25-name-${index}`, escapeHtml(item.name), 90, rowY + 7, 112, 17, "#201813", 900)}
       ${figText(`source-25-gender-text-${index}`, item.gender, 204, rowY + 10, 28, 13, "#9c938a", 700)}
       ${figText(`source-25-date-${index}`, `阳历:${escapeHtml(item.datetime.split(" ")[0] || item.datetime)}`, 90, rowY + 34, 174, 13, "#8f8780", 700)}
-      ${figText(`source-25-detail-${index}`, escapeHtml(item.pillars), 90, rowY + 56, 176, 12, "#b08a4b", 600)}
       ${actionControls}
       ${figButton(`source-25-open-${index}`, 0, rowY, 222, 76, `data-action="wentian-profile-open" data-archive-id="${escapeHtml(archive.id)}"`)}
     `;
