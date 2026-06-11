@@ -12331,3 +12331,394 @@ body.wentian-refund-open {
   height: 44px;
   border-radius: 15px;
 }
+
+/* liuyao cast compact refresh */
+.liuyao-stage-cast {
+  gap: 10px;
+}
+
+.liuyao-stage-cast .liuyao-flow-steps {
+  padding: 9px 12px;
+  border-radius: 14px;
+}
+
+.liuyao-question-pill {
+  padding: 11px 14px;
+  border-radius: 15px;
+  background: rgba(255, 252, 246, .96);
+}
+
+.liuyao-stage-cast .liuyao-mode-card,
+.liuyao-coin-summary,
+.liuyao-manual-card,
+.liuyao-progress-card,
+.liuyao-result-preview {
+  border: 1px solid #e7d9c1;
+  border-radius: 18px;
+  background: rgba(255, 253, 248, .97);
+  box-shadow: 0 10px 24px rgba(75, 53, 25, .07);
+}
+
+.liuyao-stage-cast .liuyao-mode-card {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+}
+
+.liuyao-stage-cast .liuyao-mode-card .liuyao-section-title {
+  margin: 0;
+}
+
+.liuyao-stage-cast .liuyao-mode-card .liuyao-section-title label {
+  color: #241912;
+  font-size: 14px;
+}
+
+.liuyao-stage-cast .liuyao-mode-card .liuyao-section-title em {
+  color: #9d825f;
+  font-size: 12px;
+}
+
+.liuyao-stage-cast .liuyao-mode-card > div:not(.liuyao-section-title) {
+  padding: 4px;
+  border-radius: 999px;
+  background: #efe4cf;
+}
+
+.liuyao-stage-cast .liuyao-mode-card button {
+  height: 44px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: #9a866c;
+  font-size: 14px;
+}
+
+.liuyao-stage-cast .liuyao-mode-card button.is-active {
+  background: #fffdf9;
+  color: #34241a;
+  box-shadow: 0 2px 8px rgba(88, 62, 34, .14);
+}
+
+.liuyao-coin-summary {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 12px;
+  align-items: stretch;
+  padding: 14px;
+}
+
+.liuyao-coin-summary-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.liuyao-coin-summary-head > div {
+  min-width: 0;
+}
+
+.liuyao-coin-summary-head span,
+.liuyao-coin-summary-head strong,
+.liuyao-coin-summary-head em {
+  display: block;
+}
+
+.liuyao-coin-summary-head span {
+  color: #9b7c51;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.liuyao-coin-summary-head strong {
+  margin-top: 4px;
+  color: #241912;
+  font-size: 20px;
+  font-weight: 900;
+}
+
+.liuyao-coin-summary-head em {
+  margin-top: 4px;
+  color: #8f7b66;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 800;
+  line-height: 1.5;
+}
+
+.liuyao-coin-summary-head b,
+.liuyao-manual-head em {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 58px;
+  height: 40px;
+  padding: 0 14px;
+  border: 1px solid #e7d19c;
+  border-radius: 999px;
+  background: #fff6de;
+  color: #b07d26;
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.liuyao-coin-summary-shell,
+.liuyao-manual-current,
+.liuyao-manual-done {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 12px;
+  padding: 16px;
+  border: 1px solid #eadabf;
+  border-radius: 16px;
+  background: #fdf7ec;
+}
+
+.liuyao-coin-summary-copy span,
+.liuyao-coin-summary-copy strong,
+.liuyao-coin-summary-copy em {
+  display: block;
+}
+
+.liuyao-coin-summary-copy span {
+  color: #aa8b61;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.liuyao-coin-summary-copy strong {
+  margin-top: 4px;
+  color: #241912;
+  font-size: 18px;
+  font-weight: 900;
+}
+
+.liuyao-coin-summary-copy em,
+.liuyao-manual-copy,
+.liuyao-manual-status,
+.liuyao-manual-done span {
+  color: #8f7b66;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 800;
+  line-height: 1.6;
+}
+
+.liuyao-coin-summary-chips,
+.liuyao-manual-history > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.liuyao-coin-summary-chips i,
+.liuyao-manual-history i {
+  display: inline-flex;
+  align-items: center;
+  height: 28px;
+  padding: 0 12px;
+  border-radius: 999px;
+  background: #f2e7d2;
+  color: #7b674d;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 900;
+}
+
+.liuyao-coin-summary button,
+.liuyao-manual-current-actions .liuyao-manual-clear,
+.liuyao-manual-current-actions .liuyao-manual-confirm,
+.liuyao-result-preview button {
+  min-width: 0;
+  width: 100%;
+  height: 44px;
+  border-radius: 14px;
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.liuyao-coin-summary button,
+.liuyao-manual-current-actions .liuyao-manual-confirm,
+.liuyao-result-preview button {
+  border: 0;
+  background: #eadcc6;
+  color: #9e8b71;
+}
+
+.liuyao-coin-summary:not(.is-disabled):not(.is-complete) button,
+.liuyao-manual-current-actions .liuyao-manual-confirm:not(:disabled),
+.liuyao-result-preview button {
+  background: linear-gradient(180deg, #f0e2ca 0%, #e6d4b6 100%);
+  color: #6e5036;
+}
+
+.liuyao-manual-card {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+}
+
+.liuyao-manual-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 0;
+}
+
+.liuyao-manual-head span,
+.liuyao-manual-head strong {
+  display: block;
+}
+
+.liuyao-manual-head span {
+  color: #9b7c51;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.liuyao-manual-head strong {
+  margin-top: 4px;
+  color: #241912;
+  font-size: 20px;
+  font-weight: 900;
+}
+
+.liuyao-manual-card > p {
+  margin: 0;
+}
+
+.liuyao-manual-current-head {
+  align-items: center;
+  margin: 0;
+}
+
+.liuyao-manual-current-head strong {
+  color: #241912;
+  font-size: 17px;
+}
+
+.liuyao-manual-current-head span {
+  margin-top: 3px;
+  color: #aa9071;
+  font-size: 12px;
+}
+
+.liuyao-manual-current-head em {
+  color: #b07d26;
+  font-size: 13px;
+}
+
+.liuyao-manual-coins {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.liuyao-manual-coin-pick {
+  gap: 10px;
+  padding: 10px 8px;
+  border-radius: 14px;
+  background: #fffaf2;
+}
+
+.liuyao-manual-coin-pick i {
+  color: #9b886f;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 900;
+}
+
+.liuyao-manual-coin-pick span {
+  gap: 6px;
+}
+
+.liuyao-manual-current .liuyao-manual-coin-pick button {
+  height: 44px;
+  border-radius: 12px;
+  font-size: 20px;
+}
+
+.liuyao-manual-current-actions {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.liuyao-manual-current-actions .liuyao-manual-clear {
+  border: 1px solid #e1cfb1;
+  background: #f8f0e2;
+  color: #816845;
+}
+
+.liuyao-manual-done strong {
+  color: #241912;
+  font-size: 18px;
+}
+
+.liuyao-manual-history {
+  gap: 10px;
+  margin: 0;
+}
+
+.liuyao-manual-history > span {
+  color: #9b7c51;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.liuyao-progress-card {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+}
+
+.liuyao-progress-head {
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: center;
+}
+
+.liuyao-progress-head strong {
+  color: #241912;
+  font-size: 16px;
+}
+
+.liuyao-progress-head span {
+  color: #9d907f;
+  font-size: 12px;
+}
+
+.liuyao-progress-head em {
+  color: #a87a27;
+  font-size: 16px;
+}
+
+.liuyao-progress-result {
+  gap: 10px;
+  min-height: 0;
+  padding: 14px;
+  border-radius: 15px;
+  background: #fdf7ec;
+}
+
+.liuyao-progress-result strong {
+  font-size: 16px;
+}
+
+.liuyao-result-preview {
+  display: grid;
+  gap: 8px;
+  padding: 14px;
+}
+
+.liuyao-result-preview strong {
+  color: #241912;
+  font-size: 17px;
+}
+
+.liuyao-result-preview p {
+  margin: 0;
+  color: #8f7b66;
+  font-size: 12px;
+  line-height: 1.6;
+}

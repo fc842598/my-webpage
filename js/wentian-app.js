@@ -12978,6 +12978,192 @@ function renderLiuyaoCastStage(state, details = {}) {
   `;
 }
 
+function renderLiuyaoCoinSummary(state, options = {}) {
+  const progress = getLiuyaoProgress(state);
+  const last = getLiuyaoValidCasts(state).at(-1);
+  const complete = Boolean(options.complete);
+  const disabled = Boolean(options.disabled && !complete);
+  const tossing = liuyaoTossAnimation?.active && state.mode === "online";
+  const nextLine = Math.min(progress + 1, 6);
+  const lineType = last ? getLiuyaoLineType(last.value) : null;
+  const action = complete ? "liuyao-show-result" : "liuyao-open-caster";
+  const buttonText = complete
+    ? "查看解卦"
+    : (options.lockText || (tossing ? "查看落币" : `投第 ${nextLine} 爻`));
+  const status = complete
+    ? "卦已成"
+    : tossing
+      ? "铜钱落定中"
+      : progress
+        ? `第 ${progress} 爻已录`
+        : "准备起卦";
+  const desc = last
+    ? `上次力度 ${last.power || 0}% · ${last.coins.map(getLiuyaoCoinFaceLabel).join(" ")}`
+    : (options.lockText || "轻抛三枚铜钱，连起六爻。");
+  return `
+    <section class="liuyao-coin-summary ${disabled ? "is-disabled" : ""} ${complete ? "is-complete" : ""}">
+      <div class="liuyao-coin-summary-head">
+        <div>
+          <span>${escapeHtml(complete ? "六爻已成" : "当前起卦")}</span>
+          <strong>${escapeHtml(status)}</strong>
+          <em>${escapeHtml(desc)}</em>
+        </div>
+        <b>${escapeHtml(complete ? "6/6" : `${progress}/6`)}</b>
+      </div>
+      <div class="liuyao-coin-summary-shell">
+        <div class="liuyao-coin-summary-copy">
+          <span>${escapeHtml(complete ? "在线投币" : `第 ${nextLine} 爻`)}</span>
+          <strong>${escapeHtml(complete ? "六爻已成" : (lineType ? `${last.value} ${lineType.name}` : "等待落币"))}</strong>
+          <em>${escapeHtml(lineType ? `${lineType.mark || ""} ${lineType.name}`.trim() : "每次只看当前一爻，落定后自动进入下一爻。")}</em>
+        </div>
+        <div class="liuyao-coin-summary-chips">
+          ${(last?.coins || []).map((coin, index) => `<i>${index + 1} ${escapeHtml(getLiuyaoCoinFaceLabel(coin))}</i>`).join("") || '<i>第 1 枚</i><i>第 2 枚</i><i>第 3 枚</i>'}
+        </div>
+        <button type="button" data-action="${action}" ${disabled ? "disabled" : ""}>${escapeHtml(buttonText)}</button>
+      </div>
+    </section>
+  `;
+}
+
+function renderLiuyaoManualCoinInput(state, options = {}) {
+  const disabled = Boolean(options.disabled);
+  const casts = Array.from({ length: 6 }, (_, index) => normalizeLiuyaoCast(state.casts[index]));
+  const nextIndex = casts.findIndex((cast) => !cast);
+  const complete = nextIndex < 0 && casts.every(Boolean);
+  const activeIndex = complete ? -1 : nextIndex;
+  const currentIndex = activeIndex >= 0 ? activeIndex : 5;
+  const currentCoins = activeIndex >= 0 ? getLiuyaoManualCoins(state, currentIndex) : [];
+  const currentCoinCount = currentCoins.filter(Boolean).length;
+  const currentCast = makeLiuyaoManualCastFromCoins(currentCoins);
+  const completedRows = casts
+    .map((cast, lineIndex) => ({ cast, lineIndex, type: cast ? getLiuyaoLineType(cast.value) : null }))
+    .filter((item) => item.cast && item.type);
+  const renderFaceButton = (lineIndex, coinIndex, value, current) => `
+    <button
+      type="button"
+      class="${current === value ? "is-active" : ""}"
+      data-action="liuyao-manual-coin"
+      data-line-index="${lineIndex}"
+      data-coin-index="${coinIndex}"
+      data-coin-face="${value}"
+      ${disabled ? "disabled" : ""}
+    >${getLiuyaoCoinFaceLabel(value)}</button>
+  `;
+  return `
+    <section class="liuyao-manual-card ${disabled ? "is-disabled" : ""}">
+      <div class="liuyao-manual-head">
+        <div>
+          <span>真实铜钱录入</span>
+          <strong>${escapeHtml(complete ? "六爻已录满" : LIUYAO_LINE_LABELS[currentIndex])}</strong>
+        </div>
+        <em>${escapeHtml(complete ? "6/6" : `${currentCoinCount}/3`)}</em>
+      </div>
+      <p class="liuyao-manual-copy">${escapeHtml(complete ? "六爻已满，可直接查看卦象；如需修正，可重录上一爻。" : `第 ${currentIndex + 1}/6 爻，每爻录入三枚铜钱，按正反依次确认。`)}</p>
+      ${complete ? `
+        <div class="liuyao-manual-done">
+          <strong>卦已成</strong>
+          <span>本卦、变卦和动爻都已生成。</span>
+          <div class="liuyao-manual-current-actions">
+            <button type="button" class="liuyao-manual-clear" data-action="liuyao-manual-clear-last" ${disabled ? "disabled" : ""}>重录上一爻</button>
+            <button type="button" class="liuyao-manual-confirm" data-action="liuyao-show-result">查看解卦</button>
+          </div>
+        </div>
+      ` : `
+        <div class="liuyao-manual-current">
+          <div class="liuyao-manual-current-head">
+            <div>
+              <strong>${LIUYAO_LINE_LABELS[currentIndex]}</strong>
+              <span>第 ${currentIndex + 1}/6 爻</span>
+            </div>
+            <em>${currentCoinCount}/3</em>
+          </div>
+          <div class="liuyao-manual-status">${escapeHtml(currentCoinCount >= 3 ? `本爻已成：${currentCast?.value || ""} ${currentCast ? getLiuyaoLineType(currentCast.value).name : ""}，确认后进入下一爻。` : "抛三枚铜钱后，依次录入第 1、2、3 枚。")}</div>
+          <div class="liuyao-manual-coins">
+            ${[0, 1, 2].map((coinIndex) => `
+              <div class="liuyao-manual-coin-pick">
+                <i>第 ${coinIndex + 1} 枚</i>
+                <span>
+                  ${renderFaceButton(currentIndex, coinIndex, 3, currentCoins[coinIndex])}
+                  ${renderFaceButton(currentIndex, coinIndex, 2, currentCoins[coinIndex])}
+                </span>
+              </div>
+            `).join("")}
+          </div>
+          <div class="liuyao-manual-current-actions">
+            <button type="button" class="liuyao-manual-clear" data-action="liuyao-manual-clear-line" data-line-index="${currentIndex}" ${disabled || !currentCoins.some(Boolean) ? "disabled" : ""}>清空本爻</button>
+            <button type="button" class="liuyao-manual-confirm" data-action="liuyao-manual-confirm-line" data-line-index="${currentIndex}" ${disabled || !currentCast ? "disabled" : ""}>${currentIndex >= 5 ? "确认成卦" : "确认本爻"}</button>
+          </div>
+        </div>
+      `}
+      ${completedRows.length ? `
+        <div class="liuyao-manual-history">
+          <span>已录入</span>
+          <div>
+            ${completedRows.map(({ cast, lineIndex, type }) => `<i>${LIUYAO_LINE_LABELS[lineIndex]} ${cast.value}${type.name}${type.mark ? type.mark : ""}</i>`).join("")}
+          </div>
+        </div>
+      ` : ""}
+    </section>
+  `;
+}
+
+function renderLiuyaoCastStage(state, details = {}) {
+  const progress = details.progress || getLiuyaoProgress(state);
+  const complete = Boolean(details.complete);
+  const result = details.completeResult || (complete ? getLiuyaoResult(state) : null);
+  const lines = details.lines || getLiuyaoCastLines(state);
+  const questionLockText = details.questionLockText || "";
+  const gateBusy = Boolean(details.gateBusy);
+  const questionReady = Boolean(details.questionReady);
+  const tossing = liuyaoTossAnimation?.active && state.mode === "online";
+  const movingText = result ? formatLiuyaoMovingLineText(result.movingLines) : "无";
+  const modeLocked = progress > 0 || complete || tossing;
+  return `
+    <section class="liuyao-stage liuyao-stage-cast">
+      ${renderLiuyaoFlowSteps(complete ? 2 : 1)}
+      <div class="liuyao-question-pill">
+        <i></i>
+        <span>${escapeHtml(normalizeLiuyaoQuestion(state.question) || "所问之事")}</span>
+      </div>
+      ${renderLiuyaoModeCard(state, modeLocked)}
+      ${state.mode === "manual"
+        ? renderLiuyaoManualCoinInput(state, { disabled: gateBusy || !questionReady })
+        : renderLiuyaoCoinSummary(state, { complete, disabled: gateBusy || !questionReady, lockText: questionReady ? "" : questionLockText })}
+      <section class="liuyao-progress-card">
+        <div class="liuyao-progress-head">
+          <strong>六爻进度</strong>
+          <span>${escapeHtml(formatWentianDateTime(new Date(state.createdAt || Date.now())))}</span>
+          <em>${complete ? "6/6" : `${progress}/6`}</em>
+        </div>
+        ${result ? `
+          <div class="liuyao-progress-result">
+            <div>
+              <span>本卦</span>
+              <strong>${escapeHtml(result.primary?.name || "本卦")}</strong>
+              <em>${escapeHtml(formatLiuyaoHexMeta(result.primary))}</em>
+            </div>
+            <div>
+              <span>变卦</span>
+              <strong>${escapeHtml(result.changed?.name || "变卦")}</strong>
+              <em>${escapeHtml(formatLiuyaoHexMeta(result.changed))}</em>
+            </div>
+            <b>动爻：${escapeHtml(movingText)}</b>
+          </div>
+        ` : ""}
+        ${tossing ? `<p class="liuyao-cast-note">本次力度 ${Math.max(18, Math.min(100, Number(liuyaoTossAnimation.power) || 62))}% ，铜钱约 1 秒后落入第 ${progress + 1} 爻。</p>` : ""}
+        ${renderLiuyaoHexStack(lines, { id: "cast" })}
+      </section>
+      ${complete ? `
+        <section class="liuyao-result-preview">
+          <strong>六爻已成</strong>
+          <p>本卦、变卦、动爻和许大师解卦已准备好。</p>
+          <button type="button" data-action="liuyao-show-result">查看卦象解读</button>
+        </section>
+      ` : ""}
+    </section>
+  `;
+}
+
 function sourceLiuyaoCastScreen() {
   const state = getLiuyaoState();
   queueLiuyaoQuotaRefresh();
