@@ -1641,6 +1641,32 @@
 
     .footer a:hover { color: var(--gold-soft); }
 
+    .footer-brand .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      margin: 0;
+      color: var(--ivory);
+      font: 700 26px/1 "Noto Serif SC", "Songti SC", serif;
+      white-space: nowrap;
+    }
+
+    .footer-brand .brand-logo {
+      width: 42px;
+      height: 42px;
+      border-radius: 11px;
+      object-fit: cover;
+      box-shadow: 0 8px 22px rgba(8, 23, 38, .22);
+      flex: 0 0 auto;
+    }
+
+    .footer .footer-brand p {
+      margin-top: 22px;
+      color: #9b8a66;
+      font-size: 17px;
+      line-height: 1.9;
+    }
+
     .copyright {
       margin-top: 46px;
       color: #61563f;
@@ -1824,6 +1850,9 @@
       .trust { margin-top: 24px; gap: 48px; font-size: 13px; }
       .footer { min-height: 214px; padding-top: 44px; }
       .footer-grid { gap: 52px; }
+      .footer-brand .brand { font-size: 20px; gap: 9px; }
+      .footer-brand .brand-logo { width: 34px; height: 34px; border-radius: 9px; }
+      .footer .footer-brand p { font-size: 14px; }
       .footer h4 { margin-bottom: 14px; font-size: 14px; }
       .footer a, .footer p { font-size: 13px; line-height: 1.9; }
       .copyright { margin-top: 34px; font-size: 12px; }
