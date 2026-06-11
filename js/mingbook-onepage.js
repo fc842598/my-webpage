@@ -739,7 +739,7 @@
     const label = $('#mbpMemberPayLabel');
     const meta = $('#mbpMemberPayMeta');
     const trigger = $('#mbpMemberPayTrigger');
-    if (label) label.textContent = isMember ? '付费版已开通' : '套餐支付';
+    if (label) label.textContent = '会员';
     if (meta) meta.textContent = isMember ? (expiresText ? expiresText.replace('有效期', '') : '会员有效') : `¥${product.amountYuan || '19.90'}`;
     if (trigger) {
       trigger.classList.toggle('is-member', isMember);
@@ -822,7 +822,7 @@
       trigger.disabled = desktopAuthState.loading;
     }
     const triggerLabel = $('#mbpAuthTriggerLabel');
-    if (triggerLabel) triggerLabel.textContent = loggedIn ? shortenDesktopAuthLabel(getDesktopAuthUserLabel()) : '登录/注册';
+    if (triggerLabel) triggerLabel.textContent = '登录';
     const triggerMeta = $('#mbpAuthTriggerMeta');
     if (triggerMeta) {
       triggerMeta.textContent = loggedIn

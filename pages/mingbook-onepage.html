@@ -37,14 +37,38 @@
     </nav>
     <div class="mbp-nav-actions">
       <button type="button" class="mbp-member-pay-trigger" id="mbpMemberPayTrigger">
-        <span id="mbpMemberPayLabel">套餐支付</span>
+        <span class="mbp-nav-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24">
+            <path d="M4 18.5h16"></path>
+            <path d="M5.5 18.5 4 8.5l5 3 3-6 3 6 5-3-1.5 10Z"></path>
+            <path d="M8.5 8.3h.01"></path>
+            <path d="M15.5 8.3h.01"></path>
+            <path d="M12 5.5h.01"></path>
+          </svg>
+        </span>
+        <span id="mbpMemberPayLabel">会员</span>
         <small id="mbpMemberPayMeta">开通付费版</small>
       </button>
       <button type="button" class="mbp-auth-trigger" id="mbpAuthTrigger" aria-haspopup="dialog" aria-controls="mbpAuthOverlay" aria-expanded="false">
-        <span class="mbp-auth-trigger-label" id="mbpAuthTriggerLabel">登录/注册</span>
+        <span class="mbp-nav-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24">
+            <path d="M12 12a4.75 4.75 0 1 0-4.75-4.75A4.75 4.75 0 0 0 12 12Z"></path>
+            <path d="M4.5 19.25a7.5 7.5 0 0 1 15 0"></path>
+          </svg>
+        </span>
+        <span class="mbp-auth-trigger-label" id="mbpAuthTriggerLabel">登录</span>
         <small class="mbp-auth-trigger-meta" id="mbpAuthTriggerMeta">电脑端账号</small>
       </button>
-      <a class="mbp-member" href="./wentian-app.html">手机端入口</a>
+      <a class="mbp-member" href="./wentian-app.html">
+        <span class="mbp-nav-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24">
+            <rect x="7" y="3.5" width="10" height="17" rx="2.2"></rect>
+            <path d="M10.5 6.5h3"></path>
+            <path d="M11.8 17.2h.4"></path>
+          </svg>
+        </span>
+        <span>手机App</span>
+      </a>
     </div>
   </header>
 
