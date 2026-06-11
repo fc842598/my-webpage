@@ -31,54 +31,56 @@
     <rect x="29" y="29" width="440" height="536" rx="22" stroke="rgba(201,169,97,.22)" stroke-opacity=".22"/>
   </g>
 
-  <circle cx="80" cy="86" r="31" fill="url(#badgeBg)" stroke="#D7BA73" stroke-width="3"/>
-  <text x="80" y="98" text-anchor="middle" fill="#F5E6BF" font-family="'Noto Serif SC','Songti SC',serif" font-size="36" font-weight="700">1</text>
+  <circle cx="82" cy="88" r="28" fill="url(#badgeBg)" stroke="#D7BA73" stroke-width="3"/>
+  <text x="82" y="99" text-anchor="middle" fill="#F5E6BF" font-family="'Noto Serif SC','Songti SC',serif" font-size="33" font-weight="700">1</text>
 
-  <text x="124" y="95" fill="#F5E6BF" font-family="'Noto Serif SC','Songti SC',serif" font-size="31" font-weight="700">确认房屋朝向</text>
-  <text x="55" y="151" fill="#D7BD7B" font-family="'Noto Sans SC','Microsoft YaHei',sans-serif" font-size="15" font-weight="700">取户型中心点，用罗盘或手机指南针定出正北。</text>
+  <text x="124" y="96" fill="#F5E6BF" font-family="'Noto Serif SC','Songti SC',serif" font-size="30.5" font-weight="700">确认房屋朝向</text>
+  <text x="50" y="149" fill="#D7BD7B" font-family="'Noto Sans SC','Microsoft YaHei',sans-serif" font-size="14.6" font-weight="700">取户型中心点，用罗盘或手机指南针定出正北。</text>
 
+  <g transform="translate(250 360) scale(1.08) translate(-250 -360)">
   <g>
-    <rect x="217" y="181" width="66" height="36" rx="18" fill="#100C07" stroke="#C9A961" stroke-opacity=".78" stroke-width="1.6"/>
-    <text x="250" y="205" text-anchor="middle" fill="#F3E0B2" font-family="'Noto Serif SC','Songti SC',serif" font-size="22" font-weight="700">南</text>
+    <rect x="221" y="182" width="58" height="34" rx="17" fill="#100C07" stroke="#C9A961" stroke-opacity=".78" stroke-width="1.55"/>
+    <text x="250" y="205" text-anchor="middle" fill="#F3E0B2" font-family="'Noto Serif SC','Songti SC',serif" font-size="20" font-weight="700">南</text>
 
-    <rect x="31" y="303" width="66" height="36" rx="18" fill="#100C07" stroke="#C9A961" stroke-opacity=".78" stroke-width="1.6"/>
-    <text x="64" y="327" text-anchor="middle" fill="#F3E0B2" font-family="'Noto Serif SC','Songti SC',serif" font-size="22" font-weight="700">东</text>
+    <rect x="36" y="304" width="58" height="34" rx="17" fill="#100C07" stroke="#C9A961" stroke-opacity=".78" stroke-width="1.55"/>
+    <text x="65" y="327" text-anchor="middle" fill="#F3E0B2" font-family="'Noto Serif SC','Songti SC',serif" font-size="20" font-weight="700">东</text>
 
-    <rect x="401" y="303" width="66" height="36" rx="18" fill="#100C07" stroke="#C9A961" stroke-opacity=".78" stroke-width="1.6"/>
-    <text x="434" y="327" text-anchor="middle" fill="#F3E0B2" font-family="'Noto Serif SC','Songti SC',serif" font-size="22" font-weight="700">西</text>
+    <rect x="405" y="304" width="58" height="34" rx="17" fill="#100C07" stroke="#C9A961" stroke-opacity=".78" stroke-width="1.55"/>
+    <text x="434" y="327" text-anchor="middle" fill="#F3E0B2" font-family="'Noto Serif SC','Songti SC',serif" font-size="20" font-weight="700">西</text>
 
-    <rect x="217" y="497" width="66" height="36" rx="18" fill="#100C07" stroke="#C9A961" stroke-opacity=".78" stroke-width="1.6"/>
-    <text x="250" y="521" text-anchor="middle" fill="#F3E0B2" font-family="'Noto Serif SC','Songti SC',serif" font-size="22" font-weight="700">北</text>
+    <rect x="221" y="495" width="58" height="34" rx="17" fill="#100C07" stroke="#C9A961" stroke-opacity=".78" stroke-width="1.55"/>
+    <text x="250" y="518" text-anchor="middle" fill="#F3E0B2" font-family="'Noto Serif SC','Songti SC',serif" font-size="20" font-weight="700">北</text>
   </g>
 
-  <circle cx="250" cy="357" r="78" fill="url(#glow)"/>
+  <circle cx="250" cy="356" r="72" fill="url(#glow)"/>
   <g filter="url(#centerGlow)">
-    <circle cx="250" cy="357" r="28" fill="#F2CF79" fill-opacity=".18"/>
+    <circle cx="250" cy="356" r="25" fill="#F2CF79" fill-opacity=".18"/>
   </g>
 
   <g stroke="#E7C679" stroke-linecap="round" stroke-linejoin="round">
-    <rect x="114" y="229" width="272" height="252" rx="2" stroke-width="5"/>
+    <rect x="114" y="230" width="272" height="248" rx="2" stroke-width="4.4"/>
 
-    <path d="M182 229V263H225V292H242" stroke-width="4.2"/>
-    <path d="M318 229V263H275V292H258" stroke-width="4.2"/>
-    <path d="M114 357H163V390" stroke-width="4.2"/>
-    <path d="M337 357H386V390" stroke-width="4.2"/>
-    <path d="M178 410V481" stroke-width="4.2"/>
-    <path d="M322 410V481" stroke-width="4.2"/>
+    <path d="M182 230V262H225V289H242" stroke-width="3.8"/>
+    <path d="M318 230V262H275V289H258" stroke-width="3.8"/>
+    <path d="M114 355H163V385" stroke-width="3.8"/>
+    <path d="M337 355H386V385" stroke-width="3.8"/>
+    <path d="M178 408V478" stroke-width="3.8"/>
+    <path d="M322 408V478" stroke-width="3.8"/>
   </g>
 
-  <g stroke="#D8B25E" stroke-opacity=".72" stroke-width="2.2" stroke-linecap="round" stroke-dasharray="9 8">
-    <path d="M114 229L250 357L386 229"/>
-    <path d="M114 481L250 357L386 481"/>
-    <path d="M250 229V481"/>
-    <path d="M114 357H386"/>
+  <g stroke="#D8B25E" stroke-opacity=".68" stroke-width="2" stroke-linecap="round" stroke-dasharray="9 8">
+    <path d="M114 230L250 356L386 230"/>
+    <path d="M114 478L250 356L386 478"/>
+    <path d="M250 230V478"/>
+    <path d="M114 355H386"/>
   </g>
 
   <g fill="#F2DE9B" stroke="#7A5120" stroke-opacity=".58" stroke-width="2.4">
-    <circle cx="114" cy="229" r="11"/>
-    <circle cx="386" cy="229" r="11"/>
-    <circle cx="114" cy="481" r="11"/>
-    <circle cx="386" cy="481" r="11"/>
-    <circle cx="250" cy="357" r="14"/>
+    <circle cx="114" cy="230" r="10"/>
+    <circle cx="386" cy="230" r="10"/>
+    <circle cx="114" cy="478" r="10"/>
+    <circle cx="386" cy="478" r="10"/>
+    <circle cx="250" cy="356" r="13"/>
+  </g>
   </g>
 </svg>
