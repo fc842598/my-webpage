@@ -66,16 +66,17 @@
       inset: 0 0 auto;
       z-index: 20;
       border-bottom: 1px solid rgba(201, 169, 97, .18);
-      background: rgba(3, 2, 1, .78);
-      backdrop-filter: blur(24px);
+      background: rgba(21, 16, 12, .95);
+      backdrop-filter: blur(14px);
     }
 
     .nav .container {
+      width: min(1120px, calc(100vw - 48px));
       height: 100%;
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      gap: 26px;
+      justify-content: flex-start;
+      gap: 10px;
     }
 
     .brand {
@@ -88,6 +89,7 @@
       font-weight: 800;
       letter-spacing: 0;
       white-space: nowrap;
+      margin-right: auto;
     }
 
     .brand-logo {
@@ -102,36 +104,40 @@
     .links {
       display: flex;
       align-items: center;
-      gap: 22px;
-      color: var(--muted);
-      font-size: 14px;
+      gap: 10px;
       white-space: nowrap;
     }
 
-    .links a { transition: color .2s ease; }
-    .links a:hover { color: var(--gold-soft); }
-
-    .nav-home {
-      margin-left: auto;
-      min-width: 92px;
-      height: 38px;
+    .links a,
+    .nav-home,
+    .cta {
+      min-height: 44px;
+      padding: 0 18px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      border: 1px solid rgba(194, 149, 60, .28);
-      border-radius: 19px;
-      color: #96533d;
-      background: linear-gradient(180deg, #fffdf7 0%, #fbf1df 100%);
-      box-shadow: 0 8px 18px rgba(126, 88, 42, .12), inset 0 1px 0 rgba(255, 255, 255, .8);
-      font-size: 14px;
-      font-weight: 800;
-      transition: transform .2s ease, border-color .2s ease, background .2s ease;
+      gap: 9px;
+      border: 1px solid rgba(201, 169, 97, .25);
+      border-radius: 999px;
+      background: linear-gradient(180deg, rgba(20, 16, 11, .92), rgba(10, 8, 5, .92));
+      box-shadow: inset 0 0 0 1px rgba(255, 244, 214, .03);
+      color: rgba(237, 219, 178, .88);
+      font: 700 15px/1 "Noto Serif SC", "Songti SC", serif;
+      text-align: center;
+      white-space: nowrap;
+      transition: transform .2s ease, color .2s ease, border-color .2s ease, box-shadow .2s ease;
     }
 
+    .nav-home {
+      margin-left: 0;
+    }
+
+    .links a:hover,
     .nav-home:hover {
+      color: var(--gold-soft);
       transform: translateY(-1px);
-      border-color: rgba(194, 149, 60, .46);
-      background: linear-gradient(180deg, #fffaf0 0%, #f7e8d0 100%);
+      border-color: rgba(231, 201, 133, .38);
+      box-shadow: inset 0 0 0 1px rgba(255, 244, 214, .05), 0 12px 30px rgba(0, 0, 0, .16);
     }
 
     .nav-home svg {
@@ -144,27 +150,11 @@
       stroke-linejoin: round;
     }
 
-    .cta {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 112px;
-      height: 38px;
-      padding: 0 18px;
-      border: 1px solid rgba(201, 169, 97, .58);
-      border-radius: 999px;
-      color: #0b0703;
-      background: linear-gradient(180deg, #f0d79b, #c39b4d);
-      box-shadow: 0 10px 26px rgba(201, 169, 97, .16);
-      font-size: 14px;
-      font-weight: 900;
-      white-space: nowrap;
-      transition: transform .2s ease, box-shadow .2s ease;
-    }
-
     .cta:hover {
+      color: var(--gold-soft);
+      border-color: rgba(231, 201, 133, .38);
       transform: translateY(-1px);
-      box-shadow: 0 14px 32px rgba(201, 169, 97, .24);
+      box-shadow: inset 0 0 0 1px rgba(255, 244, 214, .05), 0 12px 30px rgba(0, 0, 0, .16);
     }
 
     .cta:disabled,
@@ -1701,35 +1691,33 @@
       }
 
       .nav {
-        height: 50px;
-        background: rgba(2, 1, 0, .86);
-        border-bottom-color: rgba(201,169,97,.30);
+        height: 64px;
+        background: rgba(21, 16, 12, .95);
+        border-bottom-color: rgba(201,169,97,.18);
       }
 
       .brand {
         color: var(--gold-soft);
-        font-size: 20px;
+        font-size: 22px;
       }
 
       .links {
-        gap: 38px;
-        color: var(--ivory);
-        font-size: 12px;
+        gap: 10px;
       }
 
       .cta {
-        min-width: 102px;
-        height: 28px;
-        border-radius: 4px;
-        box-shadow: none;
-        font-size: 12px;
+        min-height: 44px;
+        height: auto;
+        border-radius: 999px;
+        box-shadow: inset 0 0 0 1px rgba(255, 244, 214, .03);
+        font-size: 15px;
       }
 
       .nav-home {
-        min-width: 78px;
-        height: 31px;
-        border-radius: 16px;
-        font-size: 12px;
+        min-height: 44px;
+        height: auto;
+        border-radius: 999px;
+        font-size: 15px;
       }
 
       .yangzhai-main {

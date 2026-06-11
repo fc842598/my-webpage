@@ -13,9 +13,9 @@
 }
 
 .liuyao-page .mbp-nav {
-  justify-content: center;
-  gap: 36px;
-  padding: 0 24px;
+  justify-content: flex-start;
+  gap: 10px;
+  padding: 0 max(24px, calc((100vw - 1120px) / 2));
 }
 
 .liuyao-workbench {
@@ -56,12 +56,13 @@
 }
 
 .liuyao-page .mbp-nav-links a:not(.is-active) {
-  opacity: .72;
+  opacity: 1;
 }
 
 .liuyao-page .mbp-nav-links {
   margin-left: 0;
   justify-self: auto;
+  gap: 10px;
 }
 
 .liuyao-page .mbp-nav-links a:not(.is-active):hover {
@@ -72,18 +73,21 @@
   margin-left: 0;
   justify-content: center;
   justify-self: auto;
+  gap: 10px;
 }
 
 .liuyao-page .liuyao-back-link {
-  min-width: 92px;
-  height: 38px;
+  min-width: 0;
+  min-height: 44px;
+  height: auto;
+  padding: 0 18px;
   justify-content: center;
-  border: 1px solid rgba(194, 149, 60, .28);
-  border-radius: 19px;
-  background: linear-gradient(180deg, #fffdf7 0%, #fbf1df 100%);
-  box-shadow: 0 8px 18px rgba(126, 88, 42, .12), inset 0 1px 0 rgba(255, 255, 255, .8);
-  color: #96533d;
-  font-weight: 800;
+  border: 1px solid rgba(201, 169, 97, .25);
+  border-radius: 999px;
+  background: linear-gradient(180deg, rgba(20, 16, 11, .92), rgba(10, 8, 5, .92));
+  box-shadow: inset 0 0 0 1px rgba(255, 244, 214, .03);
+  color: rgba(237, 219, 178, .88);
+  font: 700 15px/1 "Noto Serif SC", "Songti SC", serif;
 }
 
 .liuyao-page .mbp-liuyao-body {
