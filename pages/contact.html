@@ -3,24 +3,22 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>联系我们 · 阅天</title>
+  <title>联系我们 | 阅天</title>
   <link rel="icon" href="../images/wentian-prototype-assets/wentian-brand-logo-ai-gold-v1.png" type="image/png">
   <style>
     :root {
       --bg: #040200;
-      --bg-2: #0b0603;
-      --panel: rgba(18, 11, 6, 0.86);
-      --panel-strong: rgba(15, 9, 4, 0.94);
-      --panel-soft: rgba(12, 10, 8, 0.7);
+      --panel: rgba(18, 11, 6, 0.88);
+      --panel-strong: rgba(13, 8, 4, 0.96);
+      --line: rgba(198, 164, 93, 0.18);
       --gold: #c6a45d;
       --gold-bright: #f1d38b;
       --ivory: #f6ead0;
       --text: #d3bf8e;
-      --muted: #9a8760;
-      --line: rgba(198, 164, 93, 0.2);
-      --shadow: 0 24px 80px rgba(0, 0, 0, 0.26);
+      --muted: #98815e;
       --success: #96d4a0;
       --danger: #f0a58f;
+      --shadow: 0 24px 80px rgba(0, 0, 0, 0.28);
     }
 
     * {
@@ -59,7 +57,7 @@
 
     .nav-inner,
     .wrap {
-      width: min(1180px, calc(100vw - 48px));
+      width: min(1280px, calc(100vw - 64px));
       margin: 0 auto;
     }
 
@@ -67,7 +65,7 @@
       display: flex;
       align-items: center;
       gap: 12px;
-      min-height: 66px;
+      min-height: 72px;
     }
 
     .brand {
@@ -80,9 +78,9 @@
     }
 
     .brand-logo {
-      width: 36px;
-      height: 36px;
-      border-radius: 10px;
+      width: 38px;
+      height: 38px;
+      border-radius: 11px;
       object-fit: cover;
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
     }
@@ -103,18 +101,18 @@
 
     .back-link:hover {
       transform: translateY(-1px);
-      border-color: rgba(241, 211, 139, 0.4);
+      border-color: rgba(241, 211, 139, 0.42);
       color: var(--gold-bright);
     }
 
     .wrap {
-      padding: 52px 0 90px;
+      padding: 64px 0 96px;
     }
 
     .hero {
       display: grid;
-      grid-template-columns: minmax(0, 0.92fr) minmax(340px, 0.78fr);
-      gap: 28px;
+      grid-template-columns: minmax(0, 1.06fr) minmax(420px, 0.88fr);
+      gap: 34px;
       align-items: stretch;
     }
 
@@ -123,16 +121,12 @@
       position: relative;
       overflow: hidden;
       border: 1px solid var(--line);
-      border-radius: 26px;
+      border-radius: 30px;
       background:
-        linear-gradient(180deg, rgba(255, 243, 214, 0.04), transparent 25%),
+        linear-gradient(180deg, rgba(255, 243, 214, 0.04), transparent 24%),
         linear-gradient(135deg, rgba(198, 164, 93, 0.08), transparent 42%),
         var(--panel);
       box-shadow: var(--shadow);
-    }
-
-    .hero-panel {
-      padding: 36px 34px 34px;
     }
 
     .hero-panel::after,
@@ -141,9 +135,24 @@
       position: absolute;
       inset: 0;
       background:
-        linear-gradient(120deg, rgba(255, 243, 214, 0.06), transparent 24%),
-        radial-gradient(circle at 90% 0%, rgba(198, 164, 93, 0.16), transparent 28%);
+        linear-gradient(120deg, rgba(255, 243, 214, 0.05), transparent 24%),
+        radial-gradient(circle at 90% 0%, rgba(198, 164, 93, 0.14), transparent 28%);
       pointer-events: none;
+    }
+
+    .hero-panel {
+      padding: 42px 40px 36px;
+      min-height: 760px;
+    }
+
+    .form-shell {
+      padding: 30px;
+    }
+
+    .hero-panel > *,
+    .form-shell > * {
+      position: relative;
+      z-index: 1;
     }
 
     .kicker {
@@ -165,8 +174,7 @@
     }
 
     h1,
-    h2,
-    h3 {
+    h2 {
       margin: 0;
       color: var(--ivory);
       font-family: "Noto Serif SC", "Songti SC", serif;
@@ -175,16 +183,15 @@
 
     h1 {
       margin-top: 18px;
-      font-size: clamp(42px, 5.8vw, 66px);
-      line-height: 1.06;
-      letter-spacing: 0.02em;
+      font-size: clamp(52px, 6.4vw, 88px);
+      line-height: 1.04;
+      letter-spacing: 0.01em;
     }
 
     .lead {
-      max-width: 620px;
-      margin: 22px 0 0;
+      margin: 20px 0 0;
       color: #e4cf98;
-      font-size: 18px;
+      font-size: 19px;
       font-weight: 700;
     }
 
@@ -192,41 +199,36 @@
       display: grid;
       grid-template-columns: minmax(0, 1fr) auto;
       gap: 18px;
-      margin-top: 28px;
-      padding: 22px;
-      border: 1px solid rgba(198, 164, 93, 0.16);
-      border-radius: 20px;
+      margin-top: 34px;
+      padding: 26px 28px;
+      border: 1px solid rgba(198, 164, 93, 0.14);
+      border-radius: 22px;
       background: linear-gradient(135deg, rgba(198, 164, 93, 0.08), rgba(8, 5, 3, 0.92));
     }
 
     .support-card p {
       margin: 8px 0 0;
       color: var(--muted);
-      font-size: 14px;
+      font-size: 15px;
     }
 
     .mail-link {
       color: var(--gold-bright);
-      font: 900 18px/1.3 "Noto Serif SC", "Songti SC", serif;
+      font: 900 20px/1.3 "Noto Serif SC", "Songti SC", serif;
       word-break: break-word;
       align-self: center;
     }
 
-    .form-shell {
-      padding: 28px;
-    }
-
-    .form-shell > * {
-      position: relative;
-      z-index: 1;
+    .copyright {
+      margin-top: 40px;
+      padding: 24px 2px 0;
+      border-top: 1px solid rgba(198, 164, 93, 0.1);
+      color: #8f7b56;
+      font-size: 13px;
     }
 
     .panel-head {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 16px;
-      margin-bottom: 20px;
+      margin-bottom: 18px;
     }
 
     .panel-head p {
@@ -238,12 +240,6 @@
     .contact-form {
       display: grid;
       gap: 18px;
-    }
-
-    .field-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 14px;
     }
 
     .field {
@@ -265,67 +261,53 @@
     }
 
     .field input,
-    .field select,
     .field textarea {
       width: 100%;
       border: 1px solid rgba(198, 164, 93, 0.18);
-      border-radius: 16px;
-      background: rgba(7, 5, 3, 0.88);
+      border-radius: 18px;
+      background: rgba(7, 5, 3, 0.9);
       color: var(--ivory);
       font: 600 15px/1.5 "Noto Sans SC", "PingFang SC", sans-serif;
       outline: none;
       transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
     }
 
-    .field input,
-    .field select {
-      min-height: 52px;
-      padding: 0 16px;
+    .field input {
+      min-height: 58px;
+      padding: 0 18px;
+    }
+
+    .field input[type="file"] {
+      min-height: auto;
+      padding: 14px 16px;
+      line-height: 1.4;
     }
 
     .field textarea {
-      min-height: 162px;
-      padding: 14px 16px;
+      min-height: 176px;
+      padding: 16px 18px;
       resize: vertical;
     }
 
     .field input:focus,
-    .field select:focus,
     .field textarea:focus {
-      border-color: rgba(241, 211, 139, 0.48);
+      border-color: rgba(241, 211, 139, 0.5);
       box-shadow: 0 0 0 4px rgba(198, 164, 93, 0.12);
       transform: translateY(-1px);
     }
 
-    .submit-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      padding-top: 8px;
+    .upload-meta {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.6;
     }
 
-    .submit-btn {
-      min-width: 180px;
-      min-height: 54px;
-      padding: 0 24px;
-      border: 0;
-      border-radius: 999px;
-      background: linear-gradient(180deg, #e5c57b, #b88d45);
-      color: #241607;
-      font: 900 16px/1 "Noto Serif SC", "Songti SC", serif;
-      cursor: pointer;
-      transition: transform 0.2s ease, filter 0.2s ease, opacity 0.2s ease;
+    .upload-meta.is-error {
+      color: var(--danger);
     }
 
-    .submit-btn:hover:not(:disabled) {
-      transform: translateY(-1px);
-      filter: brightness(1.04);
-    }
-
-    .submit-btn:disabled {
-      cursor: wait;
-      opacity: 0.7;
+    .upload-meta.is-ready {
+      color: var(--success);
     }
 
     .status {
@@ -333,7 +315,7 @@
       padding: 14px 16px;
       border-radius: 16px;
       border: 1px solid rgba(198, 164, 93, 0.14);
-      background: var(--panel-soft);
+      background: rgba(11, 8, 5, 0.78);
       font-size: 14px;
       font-weight: 700;
     }
@@ -344,7 +326,7 @@
 
     .status[data-tone="success"] {
       color: var(--success);
-      border-color: rgba(150, 212, 160, 0.24);
+      border-color: rgba(150, 212, 160, 0.22);
     }
 
     .status[data-tone="error"] {
@@ -357,12 +339,30 @@
       border-color: rgba(198, 164, 93, 0.18);
     }
 
-    .copyright {
-      margin-top: 30px;
-      padding: 18px 20px 0;
-      border-top: 1px solid rgba(198, 164, 93, 0.1);
-      color: #8f7b56;
-      font-size: 13px;
+    .submit-row {
+      padding-top: 8px;
+    }
+
+    .submit-btn {
+      width: 100%;
+      min-height: 56px;
+      border: 0;
+      border-radius: 999px;
+      background: linear-gradient(180deg, #e5c57b, #b88d45);
+      color: #241607;
+      font: 900 17px/1 "Noto Serif SC", "Songti SC", serif;
+      cursor: pointer;
+      transition: transform 0.2s ease, filter 0.2s ease, opacity 0.2s ease;
+    }
+
+    .submit-btn:hover:not(:disabled) {
+      transform: translateY(-1px);
+      filter: brightness(1.04);
+    }
+
+    .submit-btn:disabled {
+      cursor: wait;
+      opacity: 0.72;
     }
 
     .sr-only {
@@ -377,14 +377,17 @@
       border: 0;
     }
 
-    @media (max-width: 980px) {
+    @media (max-width: 1100px) {
+      .wrap {
+        padding-top: 40px;
+      }
+
       .hero {
         grid-template-columns: 1fr;
       }
 
-      .hero-panel,
-      .form-shell {
-        border-radius: 22px;
+      .hero-panel {
+        min-height: auto;
       }
     }
 
@@ -400,35 +403,33 @@
       }
 
       .wrap {
-        padding: 30px 18px 62px;
+        padding: 28px 18px 60px;
+      }
+
+      .hero {
+        gap: 22px;
       }
 
       .hero-panel,
       .form-shell {
         padding: 24px 18px;
-        border-radius: 20px;
+        border-radius: 22px;
       }
 
       h1 {
-        font-size: 38px;
+        font-size: 40px;
       }
 
       .lead {
         font-size: 16px;
       }
 
-      .field-grid,
-      .submit-row,
       .support-card {
         grid-template-columns: 1fr;
       }
 
-      .submit-row {
-        display: grid;
-      }
-
-      .submit-btn {
-        width: 100%;
+      .mail-link {
+        font-size: 18px;
       }
     }
   </style>
@@ -466,11 +467,9 @@
 
       <section class="form-shell" aria-labelledby="ticket-title">
         <div class="panel-head">
-          <div>
-            <span class="kicker">Submit Ticket</span>
-            <h2 id="ticket-title" style="margin-top:12px;font-size:32px;">提交</h2>
-            <p>信息将直达邮箱。</p>
-          </div>
+          <span class="kicker">Submit Ticket</span>
+          <h2 id="ticket-title" style="margin-top:12px;font-size:32px;">提交</h2>
+          <p>信息将直达邮箱。截图会先上传到后台存储，再通过链接发到通知邮件里。</p>
         </div>
 
         <form id="contactForm" class="contact-form" novalidate>
@@ -486,7 +485,13 @@
 
           <div class="field">
             <label for="message">详细描述</label>
-            <textarea id="message" name="message" maxlength="2000" required placeholder="问题、报错、时间。"></textarea>
+            <textarea id="message" name="message" maxlength="2000" required placeholder="问题、报错、出现时间。"></textarea>
+          </div>
+
+          <div class="field">
+            <label for="evidenceImage">截图上传 <span>可选</span></label>
+            <input id="evidenceImage" name="evidenceImage" type="file" accept="image/png,image/jpeg,image/webp">
+            <div id="uploadMeta" class="upload-meta">支持 PNG / JPG / WebP，系统会自动压缩后上传。</div>
           </div>
 
           <div class="sr-only" aria-hidden="true">
@@ -510,6 +515,10 @@
       const form = document.getElementById('contactForm');
       const submitBtn = document.getElementById('submitBtn');
       const statusEl = document.getElementById('contactStatus');
+      const uploadInput = document.getElementById('evidenceImage');
+      const uploadMeta = document.getElementById('uploadMeta');
+      let uploadedImageDataUrl = '';
+      let uploadedImageName = '';
 
       function trimValue(value) {
         return String(value || '').replace(/\s+/g, ' ').trim();
@@ -532,6 +541,71 @@
         statusEl.classList.add('is-visible');
       }
 
+      function setUploadMeta(message, tone) {
+        if (!uploadMeta) return;
+        uploadMeta.textContent = message;
+        uploadMeta.classList.remove('is-error', 'is-ready');
+        if (tone === 'error') uploadMeta.classList.add('is-error');
+        if (tone === 'ready') uploadMeta.classList.add('is-ready');
+      }
+
+      function readImageAsDataUrl(file) {
+        return new Promise(function (resolve, reject) {
+          const reader = new FileReader();
+          reader.onload = function () { resolve(String(reader.result || '')); };
+          reader.onerror = function () { reject(new Error('截图读取失败')); };
+          reader.readAsDataURL(file);
+        });
+      }
+
+      async function compressEvidenceImage(file) {
+        if (!file || !/^image\/(png|jpeg|jpg|webp)$/i.test(file.type || '')) {
+          throw new Error('请上传 PNG、JPG 或 WebP 截图');
+        }
+        const rawUrl = await readImageAsDataUrl(file);
+        const image = await new Promise(function (resolve, reject) {
+          const img = new Image();
+          img.onload = function () { resolve(img); };
+          img.onerror = function () { reject(new Error('截图无法识别')); };
+          img.src = rawUrl;
+        });
+        const maxSide = 1280;
+        const scale = Math.min(1, maxSide / Math.max(image.width || maxSide, image.height || maxSide));
+        const canvas = document.createElement('canvas');
+        canvas.width = Math.max(1, Math.round((image.width || maxSide) * scale));
+        canvas.height = Math.max(1, Math.round((image.height || maxSide) * scale));
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+        const dataUrl = canvas.toDataURL('image/jpeg', 0.78);
+        if (dataUrl.length > 2.8 * 1024 * 1024) {
+          throw new Error('截图仍然过大，请裁剪后再上传');
+        }
+        return dataUrl;
+      }
+
+      if (uploadInput) {
+        uploadInput.addEventListener('change', async function (event) {
+          const file = event.target && event.target.files ? event.target.files[0] : null;
+          uploadedImageDataUrl = '';
+          uploadedImageName = '';
+          if (!file) {
+            setUploadMeta('支持 PNG / JPG / WebP，系统会自动压缩后上传。');
+            return;
+          }
+          setUploadMeta('正在处理截图...', 'ready');
+          try {
+            uploadedImageDataUrl = await compressEvidenceImage(file);
+            uploadedImageName = file.name || 'contact-screenshot.jpg';
+            setUploadMeta('截图已就绪，提交时会一并上传。', 'ready');
+          } catch (error) {
+            uploadInput.value = '';
+            uploadedImageDataUrl = '';
+            uploadedImageName = '';
+            setUploadMeta(error && error.message ? error.message : '截图处理失败', 'error');
+          }
+        });
+      }
+
       form.addEventListener('submit', async function (event) {
         event.preventDefault();
 
@@ -540,9 +614,11 @@
           contact: trimValue(form.contact.value),
           title: trimValue(form.title.value),
           name: '',
-          pageUrl: '',
+          pageUrl: window.location.href.split('#')[0],
           accountInfo: '',
           evidenceLink: '',
+          uploadedImageDataUrl: uploadedImageDataUrl,
+          uploadedImageName: uploadedImageName,
           message: String(form.message.value || '').trim(),
           company: trimValue(form.company.value)
         };
@@ -554,7 +630,7 @@
 
         submitBtn.disabled = true;
         submitBtn.textContent = '提交中...';
-        setStatus('正在提交，请稍候...', 'neutral');
+        setStatus(uploadedImageDataUrl ? '正在提交并上传截图，请稍候...' : '正在提交，请稍候...', 'neutral');
 
         try {
           const response = await fetch(getApiBase() + '/api/contact/submit', {
@@ -568,7 +644,11 @@
           }
 
           form.reset();
-          setStatus(data.message || '已收到你的问题，我们会尽快处理。', 'success');
+          uploadedImageDataUrl = '';
+          uploadedImageName = '';
+          if (uploadInput) uploadInput.value = '';
+          setUploadMeta('支持 PNG / JPG / WebP，系统会自动压缩后上传。');
+          setStatus(data.message || '我们已经收到你的问题，会尽快处理。', 'success');
         } catch (error) {
           setStatus(error && error.message ? error.message : '提交失败，请稍后再试。', 'error');
         } finally {
