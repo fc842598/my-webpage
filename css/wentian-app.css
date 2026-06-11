@@ -11365,3 +11365,349 @@ body.wentian-refund-open {
   .grid.three,
   .plans { grid-template-columns: 1fr; }
 }
+
+/* ──────────────────────────────────────────────────
+   六爻占卜页面 - 设计升级样式 (新颜色体系)
+   ────────────────────────────────────────────────── */
+
+:root {
+  --liuyao-bg: #F9F8F5;
+  --liuyao-surface: #FFFFFF;
+  --liuyao-dark: #1C1917;
+  --liuyao-gold: #9E7D42;
+  --liuyao-goldSoft: #C4A96C;
+  --liuyao-goldBg: #F3EFE7;
+  --liuyao-goldBorder: #E0D5C4;
+  --liuyao-text: #1C1917;
+  --liuyao-text2: #8C8880;
+  --liuyao-text3: #B8B5AF;
+  --liuyao-green: #4D8A5C;
+  --liuyao-greenBg: #EDF4EF;
+  --liuyao-border: rgba(26, 24, 22, 0.06);
+}
+
+/* 页面容器与背景 */
+.liuyao-panel {
+  background: var(--liuyao-surface);
+  color: var(--liuyao-text);
+}
+
+/* 流程步骤条 */
+.liuyao-flow-hero {
+  background: linear-gradient(135deg, var(--liuyao-goldBg) 0%, var(--liuyao-surface) 100%);
+  border: 1px solid var(--liuyao-goldBorder);
+  color: var(--liuyao-text);
+}
+
+.liuyao-flow-hero h3,
+.liuyao-flow-hero p {
+  color: var(--liuyao-text);
+}
+
+.liuyao-flow-steps {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 20px;
+  user-select: none;
+}
+
+.liuyao-flow-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.liuyao-flow-step-dot {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 600;
+  border: 1.5px solid var(--liuyao-text3);
+  background: transparent;
+  color: var(--liuyao-text3);
+  transition: all 0.3s ease;
+}
+
+.liuyao-flow-step.is-active .liuyao-flow-step-dot {
+  background: var(--liuyao-gold);
+  color: white;
+  border-color: var(--liuyao-gold);
+}
+
+.liuyao-flow-step.is-done .liuyao-flow-step-dot {
+  background: var(--liuyao-gold);
+  color: white;
+  border-color: var(--liuyao-gold);
+}
+
+.liuyao-flow-step-label {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--liuyao-text3);
+  transition: all 0.3s ease;
+}
+
+.liuyao-flow-step.is-active .liuyao-flow-step-label {
+  font-weight: 600;
+  color: var(--liuyao-gold);
+}
+
+.liuyao-flow-step.is-done .liuyao-flow-step-label {
+  color: var(--liuyao-text2);
+}
+
+.liuyao-flow-line {
+  width: 48px;
+  height: 1.5px;
+  background: var(--liuyao-border);
+  transition: background 0.4s ease;
+}
+
+.liuyao-flow-line.is-done {
+  background: var(--liuyao-gold);
+}
+
+.liuyao-flow-hint {
+  text-align: center;
+  font-size: 13px;
+  color: var(--liuyao-text2);
+  margin-top: 14px;
+  letter-spacing: 0.3px;
+}
+
+/* 问题卡片 */
+.liuyao-question-card {
+  background: var(--liuyao-surface);
+  border: 1px solid var(--liuyao-border);
+  border-radius: 16px;
+  padding: 16px;
+}
+
+.liuyao-question-card label {
+  color: var(--liuyao-text);
+}
+
+.liuyao-question-card textarea {
+  background: var(--liuyao-bg);
+  border: 1px solid var(--liuyao-border);
+  color: var(--liuyao-text);
+}
+
+.liuyao-question-card textarea::placeholder {
+  color: var(--liuyao-text3);
+}
+
+/* 提交按钮 */
+.liuyao-question-submit {
+  background: var(--liuyao-gold);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-weight: 600;
+  height: 54px;
+  transition: all 0.3s ease;
+}
+
+.liuyao-question-submit:hover:not(:disabled) {
+  background: var(--liuyao-goldSoft);
+  transform: translateY(-1px);
+}
+
+.liuyao-question-submit.is-approved {
+  background: var(--liuyao-green);
+}
+
+.liuyao-question-submit.is-rejected {
+  background: #E07856;
+}
+
+.liuyao-question-submit:disabled {
+  opacity: 0.5;
+}
+
+/* 投币区域 */
+.liuyao-coin-panel {
+  background: var(--liuyao-surface);
+  border: 1px solid var(--liuyao-border);
+  border-radius: 16px;
+  padding: 16px;
+}
+
+.liuyao-coin-stage {
+  background: var(--liuyao-bg);
+  border: 1px solid var(--liuyao-border);
+  border-radius: 12px;
+  position: relative;
+}
+
+/* 手动卡片 */
+.liuyao-manual-card {
+  background: var(--liuyao-surface);
+  border: 1px solid var(--liuyao-border);
+  border-radius: 16px;
+  padding: 16px;
+}
+
+.liuyao-manual-card label {
+  color: var(--liuyao-text);
+}
+
+.liuyao-manual-coin-pick button {
+  background: var(--liuyao-bg);
+  border: 1px solid var(--liuyao-border);
+  color: var(--liuyao-text2);
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.liuyao-manual-coin-pick button:hover {
+  border-color: var(--liuyao-gold);
+  color: var(--liuyao-gold);
+}
+
+.liuyao-manual-coin-pick button.is-active {
+  background: var(--liuyao-goldBg);
+  border-color: var(--liuyao-gold);
+  color: var(--liuyao-gold);
+  font-weight: 600;
+}
+
+/* 进度卡片 */
+.liuyao-progress-card {
+  background: var(--liuyao-surface);
+  border: 1px solid var(--liuyao-border);
+  border-radius: 16px;
+  padding: 16px;
+}
+
+.liuyao-progress-head strong {
+  color: var(--liuyao-text);
+}
+
+.liuyao-progress-head span {
+  color: var(--liuyao-text2);
+}
+
+.liuyao-line-row {
+  color: var(--liuyao-text);
+}
+
+/* 卦象卡片 */
+.mbp-liuyao-result-hero {
+  background: linear-gradient(135deg, var(--liuyao-goldBg) 0%, var(--liuyao-surface) 100%);
+  border: 1px solid var(--liuyao-goldBorder);
+  color: var(--liuyao-text);
+}
+
+.mbp-liuyao-hex-card {
+  background: var(--liuyao-surface);
+  border: 1px solid var(--liuyao-border);
+  color: var(--liuyao-text);
+}
+
+.mbp-liuyao-minihex {
+  color: var(--liuyao-gold);
+}
+
+/* 模态框样式 */
+.liuyao-caster-modal {
+  background: var(--liuyao-surface);
+  border-radius: 20px;
+}
+
+.liuyao-caster-head {
+  background: var(--liuyao-bg);
+  border-bottom: 1px solid var(--liuyao-border);
+  color: var(--liuyao-text);
+}
+
+.liuyao-caster-head button {
+  color: var(--liuyao-text3);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.liuyao-caster-head button:hover {
+  color: var(--liuyao-text);
+}
+
+.liuyao-caster-body {
+  background: var(--liuyao-surface);
+}
+
+/* 底部导航（TabBar） */
+.liuyao-tabbar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: auto;
+  background: var(--liuyao-surface);
+  border-top: 1px solid var(--liuyao-border);
+  display: flex;
+  z-index: 50;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+.liuyao-tabbar-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 0 6px;
+  gap: 3px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 10px;
+}
+
+.liuyao-tabbar-item svg {
+  width: 22px;
+  height: 22px;
+  stroke: var(--liuyao-text3);
+  transition: stroke 0.2s ease;
+}
+
+.liuyao-tabbar-item.is-active svg {
+  stroke: var(--liuyao-gold);
+}
+
+.liuyao-tabbar-item-label {
+  color: var(--liuyao-text3);
+  font-weight: 400;
+  transition: all 0.2s ease;
+}
+
+.liuyao-tabbar-item.is-active .liuyao-tabbar-item-label {
+  color: var(--liuyao-gold);
+  font-weight: 600;
+}
+
+.liuyao-tabbar-item-indicator {
+  width: 14px;
+  height: 2px;
+  background: var(--liuyao-gold);
+  border-radius: 1px;
+  display: none;
+}
+
+.liuyao-tabbar-item.is-active .liuyao-tabbar-item-indicator {
+  display: block;
+}
+
+/* 响应式调整 */
+@media (max-width: 640px) {
+  .liuyao-panel {
+    padding-bottom: 80px;
+  }
+}
