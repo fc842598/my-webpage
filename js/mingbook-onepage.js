@@ -595,8 +595,15 @@
     }
   }
 
+  function shouldUseDesktopGoogleRedirectBridge() {
+    if (typeof window.SITE_CONFIG?.useGoogleRedirectBridge === 'boolean') {
+      return window.SITE_CONFIG.useGoogleRedirectBridge;
+    }
+    return window.location.hostname === 'yuetianai.com';
+  }
+
   function getDesktopGoogleRedirectUrl() {
-    if (window.location.hostname === 'yuetianai.com') return desktopGoogleRedirectBridge;
+    if (shouldUseDesktopGoogleRedirectBridge()) return desktopGoogleRedirectBridge;
     return new URL(window.location.pathname, window.location.origin).toString();
   }
 

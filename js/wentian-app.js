@@ -1442,6 +1442,7 @@ const wentianPaymentState = {
 };
 const wentianChartAiState = {
   chartRecordId: "",
+  userStarted: false,
   status: "idle",
   runningModule: "",
   results: {},
@@ -1452,6 +1453,7 @@ const wentianChartAiState = {
   error: "",
   updatedAt: "",
 };
+let wentianChartAiRunSerial = 0;
 const WENTIAN_BRANCH_POSITIONS = {
   "巳": [0, 0],
   "午": [1, 0],
@@ -1521,6 +1523,25 @@ function getWentianApiBase() {
   return (queryBase || configBase || "https://api.yuetianai.com").replace(/\/+$/, "");
 }
 
+function getWentianFrontendBase() {
+  const configBase = String(window.SITE_CONFIG?.frontendBaseUrl || "").trim();
+  if (configBase) return configBase.replace(/\/+$/, "");
+  return window.location.origin.replace(/\/+$/, "");
+}
+
+function getWentianAppUrl(extraSearch = "") {
+  const url = new URL("/pages/wentian-app.html", `${getWentianFrontendBase()}/`);
+  if (extraSearch) url.search = extraSearch.replace(/^\?/, "");
+  return url.toString();
+}
+
+function shouldUseWentianGoogleRedirectBridge() {
+  if (typeof window.SITE_CONFIG?.useGoogleRedirectBridge === "boolean") {
+    return window.SITE_CONFIG.useGoogleRedirectBridge;
+  }
+  return window.location.hostname === "yuetianai.com";
+}
+
 function getWentianAipayResourceUrl() {
   return `${getWentianApiBase()}${WENTIAN_AIPAY_RESOURCE_PATH}`;
 }
@@ -1584,7 +1605,7 @@ function formatWentianInviteCode(code) {
 }
 
 function getWentianInviteLink(code = getWentianInviteCode()) {
-  return `https://yuetianai.com/pages/wentian-app.html?invite=${encodeURIComponent(normalizeWentianInviteCode(code))}`;
+  return getWentianAppUrl(`invite=${encodeURIComponent(normalizeWentianInviteCode(code))}`);
 }
 
 function getWentianInviteCode() {
@@ -3337,6 +3358,7 @@ function syncWentianChartAiStateFromStorage() {
   if (wentianChartAiState.chartRecordId === chartRecordId) return;
   Object.assign(wentianChartAiState, {
     chartRecordId,
+    userStarted: false,
     status: "idle",
     runningModule: "",
     results: {},
@@ -3354,8 +3376,10 @@ function syncWentianChartAiStateFromStorage() {
     const saved = all?.[chartRecordId];
     if (saved && typeof saved === "object") {
       const resultCount = Object.keys(saved.results || {}).length + Object.keys(saved.luckAiResults || {}).length;
+      const hasOutput = resultCount > 0 || !!saved.curveGenerated || saved.status === "done" || saved.status === "running";
       Object.assign(wentianChartAiState, {
         chartRecordId,
+        userStarted: saved.userStarted == null ? hasOutput : !!saved.userStarted,
         status: saved.status === "running" ? (resultCount ? "done" : "idle") : (saved.status || "done"),
         runningModule: "",
         results: saved.results || {},
@@ -3374,6 +3398,7 @@ function saveWentianChartAiState() {
   try {
     const all = JSON.parse(localStorage.getItem(WENTIAN_CHART_AI_STORAGE_KEY) || "{}");
     all[wentianChartAiState.chartRecordId] = {
+      userStarted: !!wentianChartAiState.userStarted,
       status: wentianChartAiState.status,
       results: wentianChartAiState.results,
       luckAiResults: wentianChartAiState.luckAiResults,
@@ -3388,8 +3413,10 @@ function saveWentianChartAiState() {
 }
 
 function resetWentianChartAiState(chartRecordId = "") {
+  wentianChartAiRunSerial += 1;
   Object.assign(wentianChartAiState, {
     chartRecordId: chartRecordId || getWentianChartPayload().chartRecordId,
+    userStarted: false,
     status: "idle",
     runningModule: "",
     results: {},
@@ -3614,6 +3641,7 @@ function combineWentianAiSummaries(modules, max = 132) {
 
 function hasWentianChartAiResults() {
   syncWentianChartAiStateFromStorage();
+  if (!wentianChartAiState.userStarted) return false;
   return WENTIAN_CHART_AI_TASKS.some((task) => {
     if (task.module === "current_luck") return hasWentianLuckAiResult();
     return !!wentianChartAiState.results?.[task.module];
@@ -3622,6 +3650,7 @@ function hasWentianChartAiResults() {
 
 function getWentianGeneratedModuleCount() {
   syncWentianChartAiStateFromStorage();
+  if (!wentianChartAiState.userStarted) return 0;
   return WENTIAN_CHART_AI_TASKS.filter((task) => {
     if (task.module === "current_luck") return hasWentianLuckAiResult();
     return !!wentianChartAiState.results?.[task.module];
@@ -3630,6 +3659,7 @@ function getWentianGeneratedModuleCount() {
 
 function isWentianMingbookPdfReady() {
   syncWentianChartAiStateFromStorage();
+  if (!wentianChartAiState.userStarted) return false;
   const chapters = getWentianChartAiChapters();
   return wentianChartAiState.status !== "running"
     && chapters.length > 0
@@ -3641,8 +3671,13 @@ function getWentianAiTask(moduleKey) {
 }
 
 function hasWentianLuckAiResult() {
+  if (!wentianChartAiState.userStarted) return false;
   return !!wentianChartAiState.results?.current_luck
     || Object.values(wentianChartAiState.luckAiResults || {}).some(Boolean);
+}
+
+function isWentianChartAiRunStale(runSerial, chartRecordId) {
+  return runSerial !== wentianChartAiRunSerial || wentianChartAiState.chartRecordId !== chartRecordId;
 }
 
 function getWentianLuckAiResultForSelected(selected = getWentianSelectedDecade(getWentianChartPayload())) {
@@ -4087,6 +4122,21 @@ function getWentianHepanSelectedXiaoLianYear(chartData = {}, side = "left") {
   return resolveWentianSelectedXiaoLianYear(chartData, wentianHepanXiaoLianAge[key] || "");
 }
 
+function getWentianXiaoLianRailItems(selected = {}, windowSize = 5) {
+  const items = Array.isArray(selected.items) ? selected.items : [];
+  if (items.length <= windowSize) return items;
+  const activeKey = selected.key || selected.currentKey || items[0]?.key || "";
+  const activeIndex = Math.max(0, items.findIndex((item) => item.key === activeKey));
+  const radius = Math.floor(windowSize / 2);
+  let start = Math.max(0, activeIndex - radius);
+  let end = start + windowSize;
+  if (end > items.length) {
+    end = items.length;
+    start = Math.max(0, end - windowSize);
+  }
+  return items.slice(start, end);
+}
+
 function getWentianXiaoLianPayload(year = {}) {
   const { items: _items, currentKey: _currentKey, ...payload } = year || {};
   return payload;
@@ -4139,6 +4189,7 @@ function renderWentianXiaoLianTags(items) {
 function renderWentianXiaoLianReading(data, fallback, actionAttr) {
   const chartData = getWentianChartPayload();
   const selected = getWentianSelectedXiaoLianYear(chartData);
+  const railItems = getWentianXiaoLianRailItems(selected);
   const resultMatches = !!data && (!wentianChartAiState.xiaoLianAgeKey || wentianChartAiState.xiaoLianAgeKey === selected.key);
   const groups = resultMatches ? getWentianXiaoLianReadingGroups(data) : [];
   const guaLine = formatWentianGuaLine(selected.lineType, selected.lineNum);
@@ -4161,7 +4212,7 @@ function renderWentianXiaoLianReading(data, fallback, actionAttr) {
       <h3>当年触发<br>展开读</h3>
     </div>
     <div class="wentian-mb-xiaolian-age-rail" aria-label="小限流年年龄选择">
-      ${(selected.items || []).map((item) => `
+      ${railItems.map((item) => `
         <button type="button" class="${item.key === selected.key ? "is-active" : ""}${item.key === selected.currentKey ? " is-current" : ""}" data-action="wentian-chart-ai-xiaolian-pick" data-xiaolian-age-key="${escapeHtml(item.key)}">
           <span>${escapeHtml(item.age ? `${item.age}岁` : item.solarYear || "流年")}</span>
         </button>
@@ -5059,8 +5110,10 @@ async function decodeWentianChartAiModules(moduleKeys, options = {}) {
   syncWentianChartAiStateFromStorage();
   if (wentianChartAiState.status === "running") return;
   const chartData = getWentianChartPayload();
+  const runSerial = ++wentianChartAiRunSerial;
   Object.assign(wentianChartAiState, {
     chartRecordId: chartData.chartRecordId,
+    userStarted: true,
     status: "running",
     runningModule: "",
     results: options.reset ? {} : { ...(wentianChartAiState.results || {}) },
@@ -5075,10 +5128,12 @@ async function decodeWentianChartAiModules(moduleKeys, options = {}) {
   let success = 0;
   const tasks = moduleKeys.map(getWentianAiTask).filter(Boolean);
   for (const task of tasks) {
+    if (isWentianChartAiRunStale(runSerial, chartData.chartRecordId)) return 0;
     wentianChartAiState.runningModule = task.module;
     refreshWentianChartAiScreen();
     try {
       const taskResult = await callWentianChartAiModule(task.module, chartData);
+      if (isWentianChartAiRunStale(runSerial, chartData.chartRecordId)) return 0;
       if (task.module === "current_luck") {
         const selected = getWentianSelectedDecade(chartData);
         const selectedKey = selected.key || "";
@@ -5090,9 +5145,11 @@ async function decodeWentianChartAiModules(moduleKeys, options = {}) {
       success += 1;
       saveWentianChartAiState();
     } catch (error) {
+      if (isWentianChartAiRunStale(runSerial, chartData.chartRecordId)) return 0;
       wentianChartAiState.error = error.message || `${task.label}生成失败`;
     }
   }
+  if (isWentianChartAiRunStale(runSerial, chartData.chartRecordId)) return 0;
   if (options.curveGenerated) wentianChartAiState.curveGenerated = true;
   Object.assign(wentianChartAiState, {
     status: success || hasWentianChartAiResults() ? "done" : "error",
@@ -8108,7 +8165,7 @@ function returnToPreviousWentianRoute(fallbackRoute = "screen-1") {
 }
 
 function getWentianGoogleRedirectUrl() {
-  if (window.location.hostname === "yuetianai.com") return WENTIAN_GOOGLE_REDIRECT_BRIDGE;
+  if (shouldUseWentianGoogleRedirectBridge()) return WENTIAN_GOOGLE_REDIRECT_BRIDGE;
   return new URL(window.location.pathname, window.location.origin).toString();
 }
 
@@ -8914,7 +8971,7 @@ async function shareWentianInvite() {
 function getWentianSharePayload() {
   const account = getWentianAuthDisplay();
   const summary = getWentianInviteSnapshot();
-  const appUrl = "https://yuetianai.com/pages/wentian-app.html";
+  const appUrl = getWentianAppUrl();
   const hasInvite = account.loggedIn && isWentianInviteCode(summary.inviteCode);
   const url = hasInvite ? summary.inviteLink : appUrl;
   const inviteLine = hasInvite ? `我的邀请码：${summary.inviteCode}` : "登录后可生成专属邀请码。";
@@ -11553,6 +11610,8 @@ function saveLiuyaoQuestionFromDom() {
   if (!input) return;
   const state = getLiuyaoState();
   const nextQuestion = normalizeLiuyaoQuestion(input.value);
+  const count = document.querySelector(".liuyao-big-question span");
+  if (count) count.textContent = `${Array.from(nextQuestion).length} 字`;
   if (state.question !== nextQuestion) {
     const hadCasts = getLiuyaoValidCasts(state).length > 0;
     state.question = nextQuestion;
@@ -11857,7 +11916,7 @@ function updateLiuyaoQuestionSubmitDom(state = getLiuyaoState()) {
   const button = document.querySelector('[data-action="liuyao-submit-question"]');
   const meta = getLiuyaoQuestionSubmitMeta(state);
   if (button) {
-    button.textContent = meta.label;
+    button.textContent = button.classList.contains("liuyao-start-button") && meta.state === "idle" ? "开始起卦" : meta.label;
     button.disabled = meta.disabled;
     ["idle", "loading", "approved", "rejected"].forEach((name) => {
       button.classList.toggle(`is-${name}`, meta.state === name);
@@ -17059,6 +17118,7 @@ function renderWentianMobileYijingPanel(saved) {
   const reading = getWentianYijingReading(result, activeKey);
   const imageSrc = getYijingHexagramImageSrc(result?.no || result?.num);
   const selectedXiao = ctx.selectedXiao || {};
+  const railItems = getWentianXiaoLianRailItems(selectedXiao);
   const currentAgeLabel = selectedXiao?.age ? `${selectedXiao.age}岁` : "";
   const currentYearLabel = selectedXiao?.solarYear ? `${selectedXiao.solarYear}年` : "";
   const liunianHeadline = [currentYearLabel, currentAgeLabel].filter(Boolean).join(" · ");
@@ -17089,7 +17149,7 @@ function renderWentianMobileYijingPanel(saved) {
       ` : ""}
       ${activeKey === "liunian" && Array.isArray(selectedXiao.items) && selectedXiao.items.length ? `
         <div class="wentian-mb-xiaolian-age-rail wentian-yijing-age-rail" aria-label="流年年龄选择">
-          ${selectedXiao.items.map((item) => `
+          ${railItems.map((item) => `
             <button type="button" class="${item.key === selectedXiao.key ? "is-active" : ""}${item.key === selectedXiao.currentKey ? " is-current" : ""}" data-action="wentian-chart-ai-xiaolian-pick" data-xiaolian-age-key="${escapeHtml(item.key)}" aria-label="${escapeHtml(item.age ? `${item.age}岁` : item.solarYear || "流年")}"${item.key === selectedXiao.key ? ' aria-current="true"' : ""}>
               <strong>${escapeHtml(item.age || item.solarYear || "")}</strong>
               <span>岁</span>
@@ -17130,8 +17190,9 @@ function renderWentianMobileYijingPanel(saved) {
 function sourceZiweiAiDecodePanel(saved) {
   syncWentianChartAiStateFromStorage();
   const chapters = getWentianChartAiChapters();
-  const isRunning = wentianChartAiState.status === "running";
-  const hasResults = hasWentianChartAiResults();
+  const userStarted = !!wentianChartAiState.userStarted;
+  const isRunning = userStarted && wentianChartAiState.status === "running";
+  const hasResults = userStarted && hasWentianChartAiResults();
   const showFinalBoard = !hasResults && !isRunning;
   const visibleChapters = chapters.filter((chapter) => chapter.module !== "overall" || chapter.ready);
   const chapterTotal = chapters.length || 6;
@@ -18566,7 +18627,7 @@ document.addEventListener("input", (event) => {
     if (list) list.innerHTML = renderWentianProfileRows(getWentianArchiveList(), wentianProfileSearchQuery);
     return;
   }
-  if (event.target.closest?.(".liuyao-panel")) {
+  if (event.target.id === "liuyao-question") {
     if (event.target.id === "liuyao-question") saveLiuyaoQuestionFromDom();
     return;
   }
