@@ -18,12 +18,22 @@ require('dotenv').config({ path: path.join(__dirname, '.env') });
 
 const express = require('express');
 const cors    = require('cors');
+const nodemailer = require('nodemailer');
 const OpenAI  = require('openai').default ?? require('openai');
 
 // ── 配置 ────────────────────────────────────────────────
 const PORT    = process.env.PORT    || 3001;
 const MODEL   = process.env.DEEPSEEK_MODEL || 'deepseek-chat';  // 改成 deepseek-reasoner 即升级推理
 const API_KEY = process.env.DEEPSEEK_API_KEY;
+const CONTACT_NOTIFY_TO = (process.env.CONTACT_NOTIFY_TO || '842598522@qq.com').trim();
+const CONTACT_SMTP_HOST = (process.env.CONTACT_SMTP_HOST || 'smtp.qq.com').trim();
+const CONTACT_SMTP_PORT = Number(process.env.CONTACT_SMTP_PORT || 465);
+const CONTACT_SMTP_SECURE = String(process.env.CONTACT_SMTP_SECURE || 'true').toLowerCase() !== 'false';
+const CONTACT_SMTP_USER = (process.env.CONTACT_SMTP_USER || '').trim();
+const CONTACT_SMTP_PASS = (process.env.CONTACT_SMTP_PASS || '').trim();
+const CONTACT_FROM = (process.env.CONTACT_FROM || CONTACT_SMTP_USER || CONTACT_NOTIFY_TO).trim();
+const CONTACT_RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000;
+const CONTACT_RATE_LIMIT_MAX = 6;
 
 if (!API_KEY) {
   console.error('[piming-api] 缺少 DEEPSEEK_API_KEY 环境变量，请在 server/.env 中设置');
@@ -34,6 +44,9 @@ const deepseek = new OpenAI({
   baseURL: 'https://api.deepseek.com',
   apiKey : API_KEY,
 });
+
+const contactRateWindow = new Map();
+let contactTransporter = null;
 
 // ── 评分缓存（文件级，同命盘同年龄段不重复调用 AI）──────────────
 const PROMPT_VERSION = 'v3-two-layer';
@@ -269,6 +282,141 @@ function buildDefaultDecadeProfilesMap(years) {
 }
 
 // ── CORS ────────────────────────────────────────────────
+function getContactTransporter() {
+  if (contactTransporter) return contactTransporter;
+  contactTransporter = nodemailer.createTransport({
+    host: CONTACT_SMTP_HOST,
+    port: CONTACT_SMTP_PORT,
+    secure: CONTACT_SMTP_SECURE,
+    auth: {
+      user: CONTACT_SMTP_USER,
+      pass: CONTACT_SMTP_PASS,
+    },
+  });
+  return contactTransporter;
+}
+
+function escapeHtml(value) {
+  return String(value || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function sanitizeContactText(value, maxLength, singleLine = false) {
+  const source = String(value || '').replace(/\u0000/g, '');
+  const normalized = singleLine
+    ? source.replace(/[\r\n\t]+/g, ' ').replace(/\s+/g, ' ').trim()
+    : source.replace(/\r\n?/g, '\n').replace(/\n{3,}/g, '\n\n').trim();
+  return normalized.slice(0, maxLength);
+}
+
+function isLikelyEmail(value) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(value || '').trim());
+}
+
+function isLikelyUrl(value) {
+  if (!value) return false;
+  try {
+    const parsed = new URL(value);
+    return parsed.protocol === 'http:' || parsed.protocol === 'https:';
+  } catch (_err) {
+    return false;
+  }
+}
+
+function getClientIp(req) {
+  const forwarded = String(req.headers['x-forwarded-for'] || '').split(',')[0].trim();
+  return forwarded || req.ip || req.socket?.remoteAddress || 'unknown';
+}
+
+function checkContactRateLimit(ip) {
+  const now = Date.now();
+  const recent = (contactRateWindow.get(ip) || []).filter((ts) => now - ts < CONTACT_RATE_LIMIT_WINDOW_MS);
+  if (recent.length >= CONTACT_RATE_LIMIT_MAX) {
+    contactRateWindow.set(ip, recent);
+    return false;
+  }
+  recent.push(now);
+  contactRateWindow.set(ip, recent);
+  return true;
+}
+
+function normalizeIssueType(value) {
+  const issueMap = {
+    service: '服务咨询',
+    account: '账号问题',
+    payment: '支付问题',
+    privacy: '隐私请求',
+  };
+  const key = String(value || 'service').toLowerCase();
+  return {
+    key: issueMap[key] ? key : 'service',
+    label: issueMap[key] || issueMap.service,
+  };
+}
+
+function buildContactMail(payload, meta) {
+  const lines = [
+    `问题类型：${payload.issueType.label}`,
+    `问题标题：${payload.title}`,
+    `联系方式：${payload.contact}`,
+    `称呼：${payload.name || '未填写'}`,
+    `页面链接：${payload.pageUrl || '未填写'}`,
+    `账号/订单线索：${payload.accountInfo || '未填写'}`,
+    `截图链接：${payload.evidenceLink || '未填写'}`,
+    `提交时间：${meta.submittedAt}`,
+    `来源页面：${meta.originPage}`,
+    `来源站点：${meta.originHost}`,
+    `客户端 IP：${meta.ip}`,
+    '',
+    '详细描述：',
+    payload.message,
+  ];
+
+  const detailRows = [
+    ['问题类型', payload.issueType.label],
+    ['问题标题', payload.title],
+    ['联系方式', payload.contact],
+    ['称呼', payload.name || '未填写'],
+    ['页面链接', payload.pageUrl || '未填写'],
+    ['账号/订单线索', payload.accountInfo || '未填写'],
+    ['截图链接', payload.evidenceLink || '未填写'],
+    ['提交时间', meta.submittedAt],
+    ['来源页面', meta.originPage],
+    ['来源站点', meta.originHost],
+    ['客户端 IP', meta.ip],
+  ];
+
+  const html = `
+    <div style="font-family:Arial,'PingFang SC','Microsoft YaHei',sans-serif;color:#2b2115;line-height:1.7">
+      <h2 style="margin:0 0 16px;font-size:22px;color:#7a5620">阅天联系表单新提交</h2>
+      <table style="width:100%;border-collapse:collapse;margin-bottom:18px">
+        <tbody>
+          ${detailRows.map(([label, value]) => `
+            <tr>
+              <td style="padding:8px 0;border-bottom:1px solid #eee0bf;width:124px;color:#7c6a4a;font-weight:700;vertical-align:top">${escapeHtml(label)}</td>
+              <td style="padding:8px 0;border-bottom:1px solid #eee0bf;color:#2b2115">${escapeHtml(value)}</td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+      <div style="padding:16px 18px;border-radius:14px;background:#fff7e7;border:1px solid #ead2a0">
+        <div style="font-weight:700;color:#7a5620;margin-bottom:8px">详细描述</div>
+        <div style="white-space:pre-wrap">${escapeHtml(payload.message)}</div>
+      </div>
+    </div>
+  `;
+
+  return {
+    subject: `[阅天联系表单] ${payload.issueType.label} - ${payload.title}`,
+    text: lines.join('\n'),
+    html,
+  };
+}
+
 const allowedOrigins = process.env.ALLOWED_ORIGINS
   ? process.env.ALLOWED_ORIGINS.split(',').map(s => s.trim())
   : null;  // null = 允许所有（开发阶段）
@@ -283,6 +431,86 @@ app.use(express.json({ limit: '1mb' }));
 
 // ── 健康检查 ─────────────────────────────────────────────
 app.get('/api/ping', (_req, res) => res.json({ ok: true, model: MODEL }));
+
+app.post('/api/contact/submit', async (req, res) => {
+  const ip = getClientIp(req);
+  if (!checkContactRateLimit(ip)) {
+    return res.status(429).json({ ok: false, error: '提交过于频繁，请十分钟后再试。' });
+  }
+
+  if (!CONTACT_SMTP_USER || !CONTACT_SMTP_PASS) {
+    return res.status(503).json({ ok: false, error: '联系表单暂未完成邮件配置。' });
+  }
+
+  const issueType = normalizeIssueType(req.body?.issueType);
+  const name = sanitizeContactText(req.body?.name, 40, true);
+  const contact = sanitizeContactText(req.body?.contact, 120, true);
+  const title = sanitizeContactText(req.body?.title, 80, true);
+  const pageUrl = sanitizeContactText(req.body?.pageUrl, 220, true);
+  const accountInfo = sanitizeContactText(req.body?.accountInfo, 120, true);
+  const evidenceLink = sanitizeContactText(req.body?.evidenceLink, 220, true);
+  const message = sanitizeContactText(req.body?.message, 2000, false);
+  const honeypot = sanitizeContactText(req.body?.company, 80, true);
+
+  if (honeypot) {
+    return res.json({ ok: true, message: '已收到你的问题，我们会尽快处理。' });
+  }
+
+  if (!contact || !title || !message) {
+    return res.status(400).json({ ok: false, error: '请填写联系方式、问题标题和详细描述。' });
+  }
+
+  if (pageUrl && !isLikelyUrl(pageUrl)) {
+    return res.status(400).json({ ok: false, error: '问题页面链接格式不正确。' });
+  }
+
+  if (evidenceLink && !isLikelyUrl(evidenceLink)) {
+    return res.status(400).json({ ok: false, error: '截图链接格式不正确。' });
+  }
+
+  try {
+    const payload = {
+      issueType,
+      name,
+      contact,
+      title,
+      pageUrl,
+      accountInfo,
+      evidenceLink,
+      message,
+    };
+
+    const meta = {
+      ip,
+      originHost: req.headers.origin || req.headers.host || 'unknown',
+      originPage: req.headers.referer || pageUrl || 'unknown',
+      submittedAt: new Date().toLocaleString('zh-CN', { hour12: false, timeZone: 'Asia/Shanghai' }),
+    };
+
+    const mail = buildContactMail(payload, meta);
+    const transporter = getContactTransporter();
+    const messageOptions = {
+      from: CONTACT_FROM,
+      to: CONTACT_NOTIFY_TO,
+      subject: mail.subject,
+      text: mail.text,
+      html: mail.html,
+    };
+    if (isLikelyEmail(contact)) {
+      messageOptions.replyTo = contact;
+    }
+
+    await transporter.sendMail(messageOptions);
+
+    return res.json({
+      ok: true,
+      message: '提交成功，我们已经收到你的问题。',
+    });
+  } catch (err) {
+    console.error('[contact-api] submit failed:', err.message);
+    return res.status(502).json({ ok: false, error: '提交失败，请稍后再试。' });
+  }
+});
 
 // ── Prompt 构建 ──────────────────────────────────────────
 
