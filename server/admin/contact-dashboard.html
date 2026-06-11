@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>联系表单后台</title>
+  <style>
+    :root {
+      --bg: #07111a;
+      --panel: #0f1b27;
+      --panel-2: #142333;
+      --line: rgba(255,255,255,0.08);
+      --text: #eef4fb;
+      --muted: #90a3b8;
+      --accent: #f0c36d;
+      --ok: #67c587;
+      --warn: #f0a65d;
+      --danger: #e67d73;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "PingFang SC","Microsoft YaHei",sans-serif;
+      background: linear-gradient(180deg, #07111a 0%, #0b1521 100%);
+      color: var(--text);
+    }
+    .wrap { width: min(1280px, calc(100vw - 32px)); margin: 0 auto; padding: 24px 0 40px; }
+    .topbar, .filters, .summary, .list { display: grid; gap: 14px; }
+    .panel {
+      background: rgba(15, 27, 39, 0.92);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 16px;
+    }
+    h1, h2, h3, p { margin: 0; }
+    .topbar { grid-template-columns: 1.2fr 1fr auto; align-items: end; }
+    .filters { grid-template-columns: 1.2fr 160px 160px auto auto; align-items: center; margin-top: 14px; }
+    .summary { grid-template-columns: repeat(5, minmax(0, 1fr)); margin-top: 14px; }
+    .card { padding: 14px; border-radius: 14px; background: var(--panel-2); border: 1px solid var(--line); }
+    .card strong { display: block; font-size: 28px; margin-top: 6px; }
+    input, select, textarea, button {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: #0b1520;
+      color: var(--text);
+      padding: 12px 14px;
+      font: inherit;
+    }
+    button {
+      cursor: pointer;
+      background: linear-gradient(180deg, #f0c36d, #d7a94f);
+      color: #231706;
+      font-weight: 800;
+    }
+    button.secondary {
+      background: #132130;
+      color: var(--text);
+    }
+    .row {
+      display: grid;
+      grid-template-columns: 1.1fr 160px 160px;
+      gap: 14px;
+      align-items: start;
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px solid var(--line);
+    }
+    .meta, .body, .actions { display: grid; gap: 10px; }
+    .meta-line { color: var(--muted); font-size: 13px; line-height: 1.6; }
+    .title { font-size: 20px; font-weight: 800; }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      min-height: 28px;
+      padding: 0 10px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      font-size: 12px;
+      font-weight: 700;
+      margin-right: 8px;
+    }
+    .pill.new { color: var(--warn); }
+    .pill.processing { color: var(--accent); }
+    .pill.resolved { color: var(--ok); }
+    .pill.archived { color: var(--muted); }
+    .pill.sent { color: var(--ok); }
+    .pill.failed, .pill.skipped { color: var(--danger); }
+    .body-text {
+      white-space: pre-wrap;
+      line-height: 1.7;
+      color: #dbe6f1;
+      background: #0b1520;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 12px;
+      min-height: 112px;
+    }
+    .status { color: var(--muted); font-size: 13px; }
+    .empty { padding: 20px; color: var(--muted); text-align: center; }
+    @media (max-width: 980px) {
+      .topbar, .filters, .summary, .row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <section class="panel">
+      <div class="topbar">
+        <div>
+          <h1>联系表单后台</h1>
+          <p style="margin-top:8px;color:var(--muted)">查看提交记录、邮件状态、处理备注。</p>
+        </div>
+        <div>
+          <label for="tokenInput" style="display:block;margin-bottom:8px;color:var(--muted)">管理口令</label>
+          <input id="tokenInput" type="password" placeholder="输入 CONTACT_ADMIN_TOKEN">
+        </div>
+        <button id="saveTokenBtn">保存口令</button>
+      </div>
+
+      <div class="filters">
+        <input id="searchInput" type="text" placeholder="搜索标题 / 联系方式 / 内容">
+        <select id="statusFilter">
+          <option value="">全部状态</option>
+          <option value="new">new</option>
+          <option value="processing">processing</option>
+          <option value="resolved">resolved</option>
+          <option value="archived">archived</option>
+        </select>
+        <select id="emailFilter">
+          <option value="">全部邮件状态</option>
+          <option value="sent">sent</option>
+          <option value="failed">failed</option>
+          <option value="pending">pending</option>
+          <option value="skipped">skipped</option>
+        </select>
+        <button id="reloadBtn" class="secondary">刷新</button>
+        <div id="statusText" class="status">未加载</div>
+      </div>
+
+      <div id="summary" class="summary"></div>
+      <div id="list" class="list"></div>
+    </section>
+  </main>
+
+  <script>
+    (function () {
+      const KEY = 'contact_admin_token';
+      const tokenInput = document.getElementById('tokenInput');
+      const saveTokenBtn = document.getElementById('saveTokenBtn');
+      const reloadBtn = document.getElementById('reloadBtn');
+      const searchInput = document.getElementById('searchInput');
+      const statusFilter = document.getElementById('statusFilter');
+      const emailFilter = document.getElementById('emailFilter');
+      const statusText = document.getElementById('statusText');
+      const summaryEl = document.getElementById('summary');
+      const listEl = document.getElementById('list');
+
+      tokenInput.value = localStorage.getItem(KEY) || '';
+
+      function getToken() {
+        return (tokenInput.value || '').trim();
+      }
+
+      function setStatus(text) {
+        statusText.textContent = text || '';
+      }
+
+      function card(label, value) {
+        return '<div class="card"><div style="color:var(--muted)">' + label + '</div><strong>' + value + '</strong></div>';
+      }
+
+      function escapeHtml(value) {
+        return String(value || '')
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#39;');
+      }
+
+      function renderSummary(summary) {
+        if (!summary) {
+          summaryEl.innerHTML = '';
+          return;
+        }
+        summaryEl.innerHTML = [
+          card('总数', summary.total || 0),
+          card('新提交', summary.new || 0),
+          card('处理中', summary.processing || 0),
+          card('已解决', summary.resolved || 0),
+          card('邮件失败', summary.failedEmail || 0)
+        ].join('');
+      }
+
+      function itemHtml(item) {
+        return '' +
+          '<article class="panel row">' +
+            '<div class="meta">' +
+              '<div class="title">' + escapeHtml(item.title) + '</div>' +
+              '<div>' +
+                '<span class="pill ' + escapeHtml(item.status) + '">' + escapeHtml(item.status) + '</span>' +
+                '<span class="pill ' + escapeHtml(item.emailStatus) + '">' + escapeHtml(item.emailStatus) + '</span>' +
+              '</div>' +
+              '<div class="meta-line">类型：' + escapeHtml(item.issueType && item.issueType.label) + '</div>' +
+              '<div class="meta-line">联系方式：' + escapeHtml(item.contact) + '</div>' +
+              '<div class="meta-line">提交时间：' + escapeHtml(item.submittedAt || item.createdAt) + '</div>' +
+              '<div class="meta-line">页面：' + escapeHtml(item.pageUrl || item.originPage || '-') + '</div>' +
+              '<div class="meta-line">线索：' + escapeHtml(item.accountInfo || '-') + '</div>' +
+              '<div class="meta-line">截图：' + escapeHtml(item.evidenceLink || '-') + '</div>' +
+              '<div class="meta-line">邮件错误：' + escapeHtml(item.emailError || '-') + '</div>' +
+            '</div>' +
+            '<div class="body">' +
+              '<div class="body-text">' + escapeHtml(item.message) + '</div>' +
+              '<textarea data-note="' + escapeHtml(item.id) + '" placeholder="后台备注">' + escapeHtml(item.adminNote || '') + '</textarea>' +
+            '</div>' +
+            '<div class="actions">' +
+              '<select data-status="' + escapeHtml(item.id) + '">' +
+                '<option value="new"' + (item.status === 'new' ? ' selected' : '') + '>new</option>' +
+                '<option value="processing"' + (item.status === 'processing' ? ' selected' : '') + '>processing</option>' +
+                '<option value="resolved"' + (item.status === 'resolved' ? ' selected' : '') + '>resolved</option>' +
+                '<option value="archived"' + (item.status === 'archived' ? ' selected' : '') + '>archived</option>' +
+              '</select>' +
+              '<button class="secondary" data-save="' + escapeHtml(item.id) + '">保存</button>' +
+            '</div>' +
+          '</article>';
+      }
+
+      async function request(path, options) {
+        const token = getToken();
+        if (!token) throw new Error('请先输入后台口令');
+        const response = await fetch(path, {
+          ...options,
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token,
+            ...(options && options.headers ? options.headers : {})
+          }
+        });
+        const data = await response.json().catch(function () { return {}; });
+        if (!response.ok || !data.ok) {
+          throw new Error(data.error || '请求失败');
+        }
+        return data;
+      }
+
+      async function loadList() {
+        setStatus('加载中...');
+        const params = new URLSearchParams();
+        if (searchInput.value.trim()) params.set('q', searchInput.value.trim());
+        if (statusFilter.value) params.set('status', statusFilter.value);
+        if (emailFilter.value) params.set('emailStatus', emailFilter.value);
+        try {
+          const data = await request('/api/contact/admin/items?' + params.toString());
+          renderSummary(data.summary);
+          listEl.innerHTML = Array.isArray(data.items) && data.items.length
+            ? data.items.map(itemHtml).join('')
+            : '<div class="empty">当前没有记录</div>';
+          setStatus('已更新');
+        } catch (error) {
+          renderSummary(null);
+          listEl.innerHTML = '<div class="empty">' + escapeHtml(error.message || '加载失败') + '</div>';
+          setStatus(error.message || '加载失败');
+        }
+      }
+
+      async function saveItem(id) {
+        const status = document.querySelector('[data-status="' + id + '"]');
+        const note = document.querySelector('[data-note="' + id + '"]');
+        try {
+          setStatus('保存中...');
+          await request('/api/contact/admin/items/' + encodeURIComponent(id), {
+            method: 'PATCH',
+            body: JSON.stringify({
+              status: status ? status.value : 'new',
+              adminNote: note ? note.value : ''
+            })
+          });
+          setStatus('已保存');
+          await loadList();
+        } catch (error) {
+          setStatus(error.message || '保存失败');
+        }
+      }
+
+      saveTokenBtn.addEventListener('click', function () {
+        localStorage.setItem(KEY, getToken());
+        setStatus('口令已保存');
+      });
+      reloadBtn.addEventListener('click', loadList);
+      searchInput.addEventListener('keydown', function (event) {
+        if (event.key === 'Enter') loadList();
+      });
+      statusFilter.addEventListener('change', loadList);
+      emailFilter.addEventListener('change', loadList);
+      listEl.addEventListener('click', function (event) {
+        const button = event.target.closest('[data-save]');
+        if (!button) return;
+        saveItem(button.getAttribute('data-save'));
+      });
+
+      loadList();
+    }());
+  </script>
+</body>
+</html>

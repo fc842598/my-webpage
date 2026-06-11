@@ -32,8 +32,11 @@ const CONTACT_SMTP_SECURE = String(process.env.CONTACT_SMTP_SECURE || 'true').to
 const CONTACT_SMTP_USER = (process.env.CONTACT_SMTP_USER || '').trim();
 const CONTACT_SMTP_PASS = (process.env.CONTACT_SMTP_PASS || '').trim();
 const CONTACT_FROM = (process.env.CONTACT_FROM || CONTACT_SMTP_USER || CONTACT_NOTIFY_TO).trim();
+const CONTACT_ADMIN_TOKEN = (process.env.CONTACT_ADMIN_TOKEN || '').trim();
 const CONTACT_RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000;
 const CONTACT_RATE_LIMIT_MAX = 6;
+const CONTACT_STORE_DIR = path.join(__dirname, 'data');
+const CONTACT_STORE_FILE = path.join(CONTACT_STORE_DIR, 'contact-submissions.json');
 
 if (!API_KEY) {
   console.error('[piming-api] 缺少 DEEPSEEK_API_KEY 环境变量，请在 server/.env 中设置');
@@ -47,6 +50,7 @@ const deepseek = new OpenAI({
 
 const contactRateWindow = new Map();
 let contactTransporter = null;
+let contactStoreCache = null;
 
 // ── 评分缓存（文件级，同命盘同年龄段不重复调用 AI）──────────────
 const PROMPT_VERSION = 'v3-two-layer';
@@ -327,6 +331,101 @@ function isLikelyUrl(value) {
   }
 }
 
+function ensureContactStoreLoaded() {
+  if (contactStoreCache) return contactStoreCache;
+  try {
+    const raw = fs.readFileSync(CONTACT_STORE_FILE, 'utf8');
+    const parsed = JSON.parse(raw);
+    if (Array.isArray(parsed?.items)) {
+      contactStoreCache = { items: parsed.items };
+      return contactStoreCache;
+    }
+  } catch (_err) {}
+  contactStoreCache = { items: [] };
+  return contactStoreCache;
+}
+
+function persistContactStore() {
+  const store = ensureContactStoreLoaded();
+  fs.mkdirSync(CONTACT_STORE_DIR, { recursive: true });
+  fs.writeFileSync(CONTACT_STORE_FILE, JSON.stringify(store, null, 2), 'utf8');
+}
+
+function createContactSubmissionRecord(payload, meta) {
+  const nowIso = new Date().toISOString();
+  return {
+    id: `ct_${Date.now()}_${crypto.randomBytes(4).toString('hex')}`,
+    issueType: payload.issueType,
+    name: payload.name,
+    contact: payload.contact,
+    title: payload.title,
+    pageUrl: payload.pageUrl,
+    accountInfo: payload.accountInfo,
+    evidenceLink: payload.evidenceLink,
+    message: payload.message,
+    status: 'new',
+    emailStatus: 'pending',
+    emailError: '',
+    emailAccepted: [],
+    emailRejected: [],
+    ip: meta.ip,
+    originHost: meta.originHost,
+    originPage: meta.originPage,
+    submittedAt: meta.submittedAt,
+    createdAt: nowIso,
+    updatedAt: nowIso,
+    adminNote: '',
+    handledAt: '',
+  };
+}
+
+function saveContactSubmission(record) {
+  const store = ensureContactStoreLoaded();
+  store.items.unshift(record);
+  persistContactStore();
+  return record;
+}
+
+function updateContactSubmission(id, updater) {
+  const store = ensureContactStoreLoaded();
+  const index = store.items.findIndex((item) => item.id === id);
+  if (index < 0) return null;
+  const current = store.items[index];
+  const next = typeof updater === 'function' ? updater(current) : { ...current, ...updater };
+  next.updatedAt = new Date().toISOString();
+  store.items[index] = next;
+  persistContactStore();
+  return next;
+}
+
+function getContactSubmissionList() {
+  const store = ensureContactStoreLoaded();
+  return store.items.slice();
+}
+
+function getContactAdminAuthToken(req) {
+  const authHeader = String(req.headers.authorization || '').trim();
+  if (authHeader.toLowerCase().startsWith('bearer ')) {
+    return authHeader.slice(7).trim();
+  }
+  return String(req.query.token || req.headers['x-contact-admin-token'] || '').trim();
+}
+
+function requireContactAdmin(req, res, next) {
+  if (!CONTACT_ADMIN_TOKEN) {
+    return res.status(503).json({ ok: false, error: '后台尚未配置管理口令。' });
+  }
+  const token = getContactAdminAuthToken(req);
+  if (!token || token !== CONTACT_ADMIN_TOKEN) {
+    return res.status(401).json({ ok: false, error: '后台未授权。' });
+  }
+  next();
+}
+
+function sanitizeAdminNote(value) {
+  return sanitizeContactText(value, 1000, false);
+}
+
 function getClientIp(req) {
   const forwarded = String(req.headers['x-forwarded-for'] || '').split(',')[0].trim();
   return forwarded || req.ip || req.socket?.remoteAddress || 'unknown';
@@ -356,6 +455,12 @@ function normalizeIssueType(value) {
     key: issueMap[key] ? key : 'service',
     label: issueMap[key] || issueMap.service,
   };
+}
+
+function normalizeContactHandleStatus(value) {
+  const allowed = new Set(['new', 'processing', 'resolved', 'archived']);
+  const normalized = String(value || 'new').trim().toLowerCase();
+  return allowed.has(normalized) ? normalized : 'new';
 }
 
 function buildContactMail(payload, meta) {
@@ -434,12 +539,9 @@ app.get('/api/ping', (_req, res) => res.json({ ok: true, model: MODEL }));
 
 app.post('/api/contact/submit', async (req, res) => {
   const ip = getClientIp(req);
+  let record = null;
   if (!checkContactRateLimit(ip)) {
     return res.status(429).json({ ok: false, error: '提交过于频繁，请十分钟后再试。' });
-  }
-
-  if (!CONTACT_SMTP_USER || !CONTACT_SMTP_PASS) {
-    return res.status(503).json({ ok: false, error: '联系表单暂未完成邮件配置。' });
   }
 
   const issueType = normalizeIssueType(req.body?.issueType);
@@ -486,6 +588,15 @@ app.post('/api/contact/submit', async (req, res) => {
       originPage: req.headers.referer || pageUrl || 'unknown',
       submittedAt: new Date().toLocaleString('zh-CN', { hour12: false, timeZone: 'Asia/Shanghai' }),
     };
+    record = saveContactSubmission(createContactSubmissionRecord(payload, meta));
+    if (!CONTACT_SMTP_USER || !CONTACT_SMTP_PASS) {
+      updateContactSubmission(record.id, (current) => ({
+        ...current,
+        emailStatus: 'skipped',
+        emailError: 'SMTP not configured',
+      }));
+      return res.status(503).json({ ok: false, error: '表单已收下，但邮件通知尚未配置。' });
+    }
 
     const mail = buildContactMail(payload, meta);
     const transporter = getContactTransporter();
@@ -500,19 +611,98 @@ app.post('/api/contact/submit', async (req, res) => {
       messageOptions.replyTo = contact;
     }
 
-    await transporter.sendMail(messageOptions);
+    const mailInfo = await transporter.sendMail(messageOptions);
+    if (record) {
+      updateContactSubmission(record.id, (current) => ({
+        ...current,
+        emailStatus: 'sent',
+        emailAccepted: Array.isArray(mailInfo?.accepted) ? mailInfo.accepted : [],
+        emailRejected: Array.isArray(mailInfo?.rejected) ? mailInfo.rejected : [],
+        emailError: '',
+      }));
+    }
 
     return res.json({
       ok: true,
       message: '提交成功，我们已经收到你的问题。',
     });
   } catch (err) {
+    if (record) {
+      updateContactSubmission(record.id, (current) => ({
+        ...current,
+        emailStatus: 'failed',
+        emailError: err.message || 'send failed',
+      }));
+    }
     console.error('[contact-api] submit failed:', err.message);
     return res.status(502).json({ ok: false, error: '提交失败，请稍后再试。' });
   }
 });
 
 // ── Prompt 构建 ──────────────────────────────────────────
+
+app.get('/api/contact/admin/items', requireContactAdmin, (req, res) => {
+  const queryStatus = sanitizeContactText(req.query.status, 20, true);
+  const queryEmailStatus = sanitizeContactText(req.query.emailStatus, 20, true).toLowerCase();
+  const q = sanitizeContactText(req.query.q, 80, true).toLowerCase();
+  let items = getContactSubmissionList();
+
+  if (queryStatus) {
+    const status = normalizeContactHandleStatus(queryStatus);
+    items = items.filter((item) => item.status === status);
+  }
+  if (queryEmailStatus) {
+    items = items.filter((item) => String(item.emailStatus || '').toLowerCase() === queryEmailStatus);
+  }
+  if (q) {
+    items = items.filter((item) => {
+      const haystack = [
+        item.title,
+        item.contact,
+        item.message,
+        item.pageUrl,
+        item.accountInfo,
+        item.adminNote,
+      ].join('\n').toLowerCase();
+      return haystack.includes(q);
+    });
+  }
+
+  return res.json({
+    ok: true,
+    items,
+    summary: {
+      total: items.length,
+      new: items.filter((item) => item.status === 'new').length,
+      processing: items.filter((item) => item.status === 'processing').length,
+      resolved: items.filter((item) => item.status === 'resolved').length,
+      archived: items.filter((item) => item.status === 'archived').length,
+      failedEmail: items.filter((item) => item.emailStatus === 'failed').length,
+    },
+  });
+});
+
+app.patch('/api/contact/admin/items/:id', requireContactAdmin, (req, res) => {
+  const id = sanitizeContactText(req.params.id, 80, true);
+  const nextStatus = req.body?.status ? normalizeContactHandleStatus(req.body.status) : null;
+  const nextNote = typeof req.body?.adminNote === 'string' ? sanitizeAdminNote(req.body.adminNote) : null;
+  const updated = updateContactSubmission(id, (current) => ({
+    ...current,
+    status: nextStatus || current.status,
+    adminNote: nextNote === null ? current.adminNote : nextNote,
+    handledAt: nextStatus && nextStatus !== 'new' ? new Date().toISOString() : current.handledAt,
+  }));
+
+  if (!updated) {
+    return res.status(404).json({ ok: false, error: '未找到该记录。' });
+  }
+
+  return res.json({ ok: true, item: updated });
+});
+
+app.get('/admin/contact', (_req, res) => {
+  res.sendFile(path.join(__dirname, 'admin', 'contact-dashboard.html'));
+});
 
 function collectOverallSignals(cd) {
   // ── 安全取星名：兼容 string[] 和 {name}[] 两种形态 ──────────────────────────
