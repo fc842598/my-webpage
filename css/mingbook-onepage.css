@@ -30,6 +30,10 @@ html {
   scroll-behavior: smooth;
 }
 
+html.mbp-entry-intent body {
+  visibility: hidden;
+}
+
 body {
   margin: 0;
   background:

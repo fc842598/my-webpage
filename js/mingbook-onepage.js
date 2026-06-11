@@ -582,11 +582,17 @@
     const intent = getDesktopEntryIntent();
     if (!intent) return;
     clearDesktopEntryIntent();
-    if (intent === 'member') {
-      await openDesktopMemberPayment();
-      return;
+    try {
+      if (intent === 'member') {
+        await openDesktopMemberPayment();
+        return;
+      }
+      if (intent === 'login') openDesktopAuth('login');
+    } finally {
+      window.requestAnimationFrame(() => {
+        document.documentElement.classList.remove('mbp-entry-intent');
+      });
     }
-    if (intent === 'login') openDesktopAuth('login');
   }
 
   function getDesktopGoogleRedirectUrl() {
