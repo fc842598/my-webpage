@@ -17977,7 +17977,11 @@ document.addEventListener("click", (event) => {
     return;
   }
   if (earlyAction === "liuyao-reset-silent") {
-    window.history.back();
+    if (document.referrer && document.referrer.includes(window.location.origin)) {
+      window.history.back();
+    } else {
+      navigateTo("/");
+    }
     return;
   }
   if (earlyAction === "liuyao-reset") {
