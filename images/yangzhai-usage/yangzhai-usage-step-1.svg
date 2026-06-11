@@ -34,8 +34,8 @@
   <circle cx="82" cy="88" r="28" fill="url(#badgeBg)" stroke="#D7BA73" stroke-width="3"/>
   <text x="82" y="99" text-anchor="middle" fill="#F5E6BF" font-family="'Noto Serif SC','Songti SC',serif" font-size="33" font-weight="700">1</text>
 
-  <text x="124" y="96" fill="#F5E6BF" font-family="'Noto Serif SC','Songti SC',serif" font-size="30.5" font-weight="700">确认房屋朝向</text>
-  <text x="50" y="149" fill="#D7BD7B" font-family="'Noto Sans SC','Microsoft YaHei',sans-serif" font-size="14.6" font-weight="700">取户型中心点，用罗盘或手机指南针定出正北。</text>
+  <text x="124" y="96" fill="#F5E6BF" font-family="'Noto Serif SC','Songti SC',serif" font-size="33.5" font-weight="700">确认房屋朝向</text>
+  <text x="50" y="151" fill="#D7BD7B" font-family="'Noto Sans SC','Microsoft YaHei',sans-serif" font-size="16.2" font-weight="700">取户型中心点，用罗盘或手机指南针定出正北。</text>
 
   <g transform="translate(250 360) scale(1.08) translate(-250 -360)">
   <g>
