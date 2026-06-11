@@ -16930,6 +16930,7 @@ function getWentianYijingContext(saved, selectedXiaoLian = null) {
   } : null;
   return {
     activeAge,
+    selectedXiao,
     currentYear: selectedXiao?.solarYear || currentYear.solarYear || new Date().getFullYear(),
     results: {
       xiantian: normalizeWentianYijingResult(zipingResult?.xiantian),
@@ -16985,6 +16986,10 @@ function renderWentianMobileYijingPanel(saved) {
   const meta = getWentianYijingTabMeta(activeKey);
   const reading = getWentianYijingReading(result, activeKey);
   const imageSrc = getYijingHexagramImageSrc(result?.no || result?.num);
+  const selectedXiao = ctx.selectedXiao || {};
+  const currentAgeLabel = selectedXiao?.age ? `${selectedXiao.age}岁` : "";
+  const currentYearLabel = selectedXiao?.solarYear ? `${selectedXiao.solarYear}年` : "";
+  const liunianHeadline = [currentYearLabel, currentAgeLabel].filter(Boolean).join(" · ");
   const tabRows = [
     ["xiantian", ctx.results.xiantian],
     ["houtian", ctx.results.houtian],
@@ -17004,12 +17009,32 @@ function renderWentianMobileYijingPanel(saved) {
           </button>`;
         }).join("")}
       </div>
+      ${activeKey === "liunian" ? `
+        <div class="wentian-yijing-current">
+          <span>当前流年</span>
+          <strong>${escapeHtml(liunianHeadline || currentAgeLabel || "流年待定")}</strong>
+        </div>
+      ` : ""}
+      ${activeKey === "liunian" && Array.isArray(selectedXiao.items) && selectedXiao.items.length ? `
+        <div class="wentian-mb-xiaolian-age-rail wentian-yijing-age-rail" aria-label="流年年龄选择">
+          ${selectedXiao.items.map((item) => `
+            <button type="button" class="${item.key === selectedXiao.key ? "is-active" : ""}${item.key === selectedXiao.currentKey ? " is-current" : ""}" data-action="wentian-chart-ai-xiaolian-pick" data-xiaolian-age-key="${escapeHtml(item.key)}" aria-label="${escapeHtml(item.age ? `${item.age}岁` : item.solarYear || "流年")}"${item.key === selectedXiao.key ? ' aria-current="true"' : ""}>
+              <strong>${escapeHtml(item.age || item.solarYear || "")}</strong>
+              <span>岁</span>
+            </button>
+          `).join("")}
+        </div>
+      ` : ""}
       <article class="wentian-yijing-card">
         <div class="wentian-yijing-art">
           ${imageSrc ? `<img src="${imageSrc}" alt="${escapeHtml(`${meta.title} ${result?.name || ""}`)}" loading="lazy">` : ""}
           <div class="wentian-yijing-lines">${renderWentianYijingLines(result)}</div>
         </div>
         <div class="wentian-yijing-main">
+          <div class="wentian-yijing-card-kicker">
+            <span>${escapeHtml(meta.title)}</span>
+            ${activeKey === "liunian" && liunianHeadline ? `<b>${escapeHtml(liunianHeadline)}</b>` : ""}
+          </div>
           <h3>${escapeHtml(result?.name || "等待排盘")}</h3>
         </div>
       </article>
@@ -17022,7 +17047,6 @@ function renderWentianMobileYijingPanel(saved) {
           <span>名师讲解</span>
           <strong>${escapeHtml(reading.masterTitle)}</strong>
         </div>
-        <p>${escapeHtml(reading.summary)}</p>
         <div class="wentian-yijing-master-detail">
           ${renderWentianReadingParagraphs(reading.detail || reading.summary)}
         </div>
@@ -17354,6 +17378,7 @@ function compactWentianZiweiScreenLayout() {
 function scheduleWentianZiweiScreenLayout() {
   const refit = () => {
     if (compactWentianZiweiScreenLayout()) fitActivePhoneShell();
+    centerWentianXiaoLianRail();
   };
   refit();
   [120, 360, 900, 1800, 3200].forEach((delay) => window.setTimeout(refit, delay));
