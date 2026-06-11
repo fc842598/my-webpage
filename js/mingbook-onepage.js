@@ -566,6 +566,29 @@
     window.history.replaceState(null, '', `${window.location.pathname}${query ? `?${query}` : ''}${hash || ''}`);
   }
 
+  function getDesktopEntryIntent() {
+    const value = new URLSearchParams(window.location.search).get('entry');
+    return value ? String(value).trim().toLowerCase() : '';
+  }
+
+  function clearDesktopEntryIntent() {
+    const params = new URLSearchParams(window.location.search);
+    params.delete('entry');
+    const query = params.toString();
+    window.history.replaceState(null, '', `${window.location.pathname}${query ? `?${query}` : ''}${window.location.hash || ''}`);
+  }
+
+  async function handleDesktopEntryIntent() {
+    const intent = getDesktopEntryIntent();
+    if (!intent) return;
+    clearDesktopEntryIntent();
+    if (intent === 'member') {
+      await openDesktopMemberPayment();
+      return;
+    }
+    if (intent === 'login') openDesktopAuth('login');
+  }
+
   function getDesktopGoogleRedirectUrl() {
     if (window.location.hostname === 'yuetianai.com') return desktopGoogleRedirectBridge;
     return new URL(window.location.pathname, window.location.origin).toString();
@@ -1565,6 +1588,7 @@
     if (!isDesktopAuthCallbackUrl()) {
       await initDesktopAuth();
       if (desktopAuthState.session?.user) hydrateDesktopMemberStatus({ force: true });
+      await handleDesktopEntryIntent();
       return;
     }
     desktopAuthState.open = true;
