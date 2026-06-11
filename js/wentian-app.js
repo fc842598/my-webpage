@@ -11394,8 +11394,12 @@ const LIUYAO_TRIGRAM_BY_BITS = {
 function getLiuyaoCastScreenHeight() {
   const state = getLiuyaoState();
   if (state.mode === "online" && liuyaoCastModalOpen) return 844;
-  if (state.mode === "manual") return 1840;
-  return getLiuyaoResult(state) ? 1530 : 1508;
+  const question = normalizeLiuyaoQuestion(state.question);
+  const gate = normalizeLiuyaoQuestionGate(state.questionGate, question);
+  const progress = getLiuyaoProgress(state);
+  if (!gate?.allowed && progress <= 0) return 844;
+  if (state.mode === "manual") return 1180;
+  return getLiuyaoResult(state) ? 1040 : 980;
 }
 const LIUYAO_LINE_LABELS = ["初爻", "二爻", "三爻", "四爻", "五爻", "上爻"];
 const LIUYAO_MANUAL_EMPTY_COINS = [null, null, null];
@@ -12447,6 +12451,49 @@ function getLiuyaoTopicAdvice(question, result) {
   return moving ? "当前局面有变化点，先看动爻，再看变卦走向。" : "当前局面偏静，重看本卦，不宜反复重占同一件事。";
 }
 
+function getLiuyaoTrigramNature(trigram) {
+  return trigram?.name || "象";
+}
+
+function getLiuyaoFullHexName(hex) {
+  const upper = hex?.upper?.name || "";
+  const lower = hex?.lower?.name || "";
+  const name = hex?.name || "本卦";
+  if ((upper || lower) && name.startsWith(`${upper}${lower}`)) return name;
+  return upper || lower ? `${upper}${lower}${name}` : name;
+}
+
+function genLiuyaoAIText(result = getLiuyaoResult()) {
+  if (!result) return "";
+  const hex = result.primary || {};
+  const changed = result.changed || {};
+  const moving = Array.isArray(result.movingLines) ? result.movingLines : [];
+  const upperGua = hex.upper?.gua || "";
+  const lowerGua = hex.lower?.gua || "";
+  const upperNature = getLiuyaoTrigramNature(hex.upper);
+  const lowerNature = getLiuyaoTrigramNature(hex.lower);
+  const changedUpperNature = getLiuyaoTrigramNature(changed.upper);
+  const changedLowerNature = getLiuyaoTrigramNature(changed.lower);
+  let text = `【卦象概述】\n所得卦象为${getLiuyaoFullHexName(hex)}（第${hex.no || "-"}卦）。上卦${upperGua || upperNature}为${upperNature}，下卦${lowerGua || lowerNature}为${lowerNature}。`;
+  text += upperNature === lowerNature
+    ? "上下同体，纯卦之象，力量集中而纯粹。"
+    : `${upperNature}居上而${lowerNature}居下，两者相互作用，需审卦中各爻之动静。`;
+  text += `\n\n【针对所问】\n就「${result.question || "所问之事"}」而言，此卦提示：`;
+  const no = Number(hex.no) || 0;
+  if (no && no <= 16) text += "当前形势尚在发展初期，宜静观其变，不宜急进。保持耐心，等待时机成熟。事物初生，虽有艰难，但蕴含无限可能。";
+  else if (no && no <= 32) text += "目前处于关键转折期，需审时度势，把握机会。顺应时势而动，可得事半功倍之效。但须谨慎行事，不可冒进。";
+  else if (no && no <= 48) text += "形势已经较为明朗，宜顺势而为。注意守住已有成果，稳中求进。此时最忌贪多冒进，当知足常乐。";
+  else text += "当前局面已近圆满，宜收束整理。反思过往经验，总结得失，为未来新的起点做好充分准备。";
+  if (moving.length > 0) {
+    text += `\n\n【动爻分析】\n本卦有${moving.length}个动爻：${moving.map((line) => line.label).join("、")}。动爻为卦中变化之关键，提示事态发展的方向与力量。`;
+    text += `变卦为${getLiuyaoFullHexName(changed)}，事态将由${hex.name || "本卦"}之象转向${changed.name || "变卦"}之象，即从${upperNature}${lowerNature}之势演变为${changedUpperNature}${changedLowerNature}之格局。需顺应变化，灵活应对。`;
+  } else {
+    text += "\n\n【稳定之卦】\n本卦无动爻，为静卦。事态较为稳定，不会有太大变化。宜保持现状，循序渐进。";
+  }
+  text += "\n\n【总结】\n综合卦象分析，建议保持内心清明，顺应自然规律。凡事以诚为本，不必过分焦虑。时机到来之时，自然水到渠成。";
+  return text;
+}
+
 function renderLiuyaoLineVisual(line, prefix) {
   const lineClass = line?.broken ? "is-yin" : "is-yang";
   return `<span class="liuyao-line-visual ${lineClass}" data-line="${prefix}">${line?.broken ? "<i></i><i></i>" : "<i></i>"}</span>`;
@@ -12728,6 +12775,150 @@ function renderLiuyaoManualCoinInput(state, options = {}) {
   `;
 }
 
+function renderLiuyaoAppHeader(id, title, state = getLiuyaoState(), options = {}) {
+  const quota = getLiuyaoQuota(state);
+  const badge = options.badge || `${quota.used}/${quota.limit}`;
+  return `
+    <div class="liuyao-app-header" aria-label="${escapeHtml(title)}">
+      ${wentianBackPill(id, 18, 42, 'data-action="back" aria-label="返回"')}
+      <div class="liuyao-app-title">
+        <strong>${escapeHtml(title)}</strong>
+        <span>${escapeHtml(badge)}</span>
+      </div>
+      ${options.reset ? `<button type="button" class="liuyao-header-reset" data-action="liuyao-reset">${escapeHtml(options.resetLabel || "重来")}</button>` : '<span class="liuyao-header-spacer"></span>'}
+    </div>
+  `;
+}
+
+function renderLiuyaoFlowSteps(activeIndex) {
+  const items = ["审题", "起卦", "解卦"];
+  return `
+    <div class="liuyao-flow-steps" aria-label="六爻流程">
+      ${items.map((label, index) => `
+        <div class="liuyao-flow-step ${index === activeIndex ? "is-active" : ""} ${index < activeIndex ? "is-done" : ""}">
+          <span class="liuyao-flow-step-dot">${index < activeIndex ? "✓" : index + 1}</span>
+          <span class="liuyao-flow-step-label">${escapeHtml(label)}</span>
+        </div>
+        ${index < items.length - 1 ? `<i class="liuyao-flow-line ${index < activeIndex ? "is-done" : ""}"></i>` : ""}
+      `).join("")}
+    </div>
+  `;
+}
+
+function renderLiuyaoQuestionStartButton(state = getLiuyaoState()) {
+  const meta = getLiuyaoQuestionSubmitMeta(state);
+  const label = meta.state === "idle" ? "开始起卦" : meta.label;
+  return `
+    <button
+      type="button"
+      class="liuyao-question-submit liuyao-start-button ${meta.state ? `is-${meta.state}` : ""}"
+      data-action="liuyao-submit-question"
+      ${meta.disabled ? "disabled" : ""}
+    >${escapeHtml(label)}</button>
+  `;
+}
+
+function renderLiuyaoQuestionStage(state = getLiuyaoState()) {
+  return `
+    <section class="liuyao-stage liuyao-stage-ask">
+      <div class="liuyao-ask-title">
+        <h2>你想问什么？</h2>
+        <p>一事一卦，越具体越准</p>
+      </div>
+      <label class="liuyao-big-question" for="liuyao-question">
+        <textarea id="liuyao-question" maxlength="${LIUYAO_QUESTION_MAX_LENGTH}" rows="8" placeholder="例如：这周面试能顺利通过吗？">${escapeHtml(getLiuyaoQuestionInputValue(state))}</textarea>
+        <span>${Array.from(getLiuyaoQuestionInputValue(state)).length} 字</span>
+      </label>
+      ${renderLiuyaoQuestionStartButton(state)}
+      <div class="liuyao-ask-review">
+        ${renderLiuyaoQuotaBadge(state)}
+        ${renderLiuyaoQuestionGateStatus(state)}
+      </div>
+      ${renderLiuyaoQuestionSuggestions(state)}
+    </section>
+  `;
+}
+
+function renderLiuyaoModeCard(state = getLiuyaoState(), locked = false) {
+  return `
+    <section class="liuyao-mode-card">
+      <div class="liuyao-section-title">
+        <label>起卦方式</label>
+        <em>${state.mode === "manual" ? "手动起卦" : "在线投币"}</em>
+      </div>
+      <div>
+        <button type="button" class="${state.mode === "online" ? "is-active" : ""}" data-action="liuyao-mode" data-mode="online" ${locked ? "disabled" : ""}>在线投币</button>
+        <button type="button" class="${state.mode === "manual" ? "is-active" : ""}" data-action="liuyao-mode" data-mode="manual" ${locked ? "disabled" : ""}>手动起卦</button>
+      </div>
+    </section>
+  `;
+}
+
+function renderLiuyaoCastStage(state, details = {}) {
+  const progress = details.progress || getLiuyaoProgress(state);
+  const complete = Boolean(details.complete);
+  const result = details.completeResult || (complete ? getLiuyaoResult(state) : null);
+  const lines = details.lines || getLiuyaoCastLines(state);
+  const questionLockText = details.questionLockText || "";
+  const gateBusy = Boolean(details.gateBusy);
+  const questionReady = Boolean(details.questionReady);
+  const tossing = liuyaoTossAnimation?.active && state.mode === "online";
+  const movingText = result ? formatLiuyaoMovingLineText(result.movingLines) : "无";
+  const modeLocked = progress > 0 || complete || tossing;
+  return `
+    <section class="liuyao-stage liuyao-stage-cast">
+      ${renderLiuyaoFlowSteps(complete ? 2 : 1)}
+      <div class="liuyao-question-pill">
+        <i></i>
+        <span>${escapeHtml(normalizeLiuyaoQuestion(state.question) || "所问之事")}</span>
+      </div>
+      ${renderLiuyaoModeCard(state, modeLocked)}
+      ${state.mode === "manual"
+        ? renderLiuyaoManualCoinInput(state, { disabled: gateBusy || !questionReady })
+        : `
+          <section class="liuyao-coin-panel">
+            <div class="liuyao-section-title">
+              <label>${complete ? "六爻已成" : `第 ${Math.min(progress + 1, 6)} 爻`}</label>
+              <em>在线投币</em>
+            </div>
+            ${renderLiuyaoCoinSummary(state, { complete, disabled: gateBusy || !questionReady, lockText: questionReady ? "" : questionLockText })}
+          </section>
+        `}
+      <section class="liuyao-progress-card">
+        <div class="liuyao-progress-head">
+          <strong>六爻进度</strong>
+          <span>${escapeHtml(formatWentianDateTime(new Date(state.createdAt || Date.now())))}</span>
+          <em>${complete ? "6/6" : `${progress}/6`}</em>
+        </div>
+        ${result ? `
+          <div class="liuyao-progress-result">
+            <div>
+              <span>本卦</span>
+              <strong>${escapeHtml(result.primary?.name || "本卦")}</strong>
+              <em>${escapeHtml(formatLiuyaoHexMeta(result.primary))}</em>
+            </div>
+            <div>
+              <span>变卦</span>
+              <strong>${escapeHtml(result.changed?.name || "变卦")}</strong>
+              <em>${escapeHtml(formatLiuyaoHexMeta(result.changed))}</em>
+            </div>
+            <b>动爻：${escapeHtml(movingText)}</b>
+          </div>
+        ` : ""}
+        ${tossing ? `<p class="liuyao-cast-note">本次力度 ${Math.max(18, Math.min(100, Number(liuyaoTossAnimation.power) || 62))}%；铜钱翻转 1 秒后落入第 ${progress + 1} 爻。</p>` : ""}
+        ${renderLiuyaoHexStack(lines, { id: "cast" })}
+      </section>
+      ${complete ? `
+        <section class="liuyao-result-preview">
+          <strong>六爻已成</strong>
+          <p>本卦 / 变卦 / 动爻 / 古籍摘录 / 许大师 AI 解卦</p>
+          <button type="button" data-action="liuyao-show-result">查看卦象解读</button>
+        </section>
+      ` : ""}
+    </section>
+  `;
+}
+
 function sourceLiuyaoCastScreen() {
   const state = getLiuyaoState();
   queueLiuyaoQuotaRefresh();
@@ -12743,12 +12934,8 @@ function sourceLiuyaoCastScreen() {
   const quotaEmpty = isLiuyaoQuotaExhausted(state);
   const questionLockText = quotaEmpty ? "今日已满，明天再占" : gateBusy ? "审题中，稍候开放" : "提交通过后开放投币";
   const completeResult = complete ? getLiuyaoResult(state) : null;
-  const completeMovingText = completeResult ? formatLiuyaoMovingLineText(completeResult.movingLines) : "无";
   const screenHeight = getLiuyaoCastScreenHeight();
   const casterOptions = { complete, disabled: gateBusy || !questionReady, lockText: questionReady ? "" : questionLockText };
-  const flowStep = complete ? "result" : (questionReady || progress > 0 ? "cast" : "ask");
-  const flowStepIndex = flowStep === "ask" ? 0 : flowStep === "cast" ? 1 : 2;
-  const dailyCount = (state.quota?.limit || 3) - (state.quota?.remaining || 0);
 
   if (state.mode === "online" && liuyaoCastModalOpen && !complete) {
     return `
@@ -12758,135 +12945,12 @@ function sourceLiuyaoCastScreen() {
   }
 
   return `
-    <div style="background:#F9F8F5;min-height:100vh;display:flex;flex-direction:column;">
-      <!-- Header -->
-      <header style="display:flex;align-items:center;justify-content:space-between;padding:0 20px;height:56px;background:#F9F8F5;border-bottom:1px solid rgba(26,24,22,0.06);position:sticky;top:0;z-index:10;">
-        <button style="background:none;border:none;display:flex;align-items:center;gap:4px;font-size:15px;color:#8C8880;cursor:pointer;padding:8px 0;" data-action="liuyao-reset-silent">
-          <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M12.5 4.5L7 10l5.5 5.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>返回
-        </button>
-        <div style="display:flex;align-items:center;gap:10px;">
-          <h1 style="font-size:17px;font-weight:600;letter-spacing:1px;">六爻占卜</h1>
-          <span style="font-size:11px;color:#9E7D42;padding:2px 8px;background:#F3EFE7;border-radius:10px;font-weight:500;">${dailyCount}/3</span>
-        </div>
-        <button style="background:none;border:none;font-size:14px;color:#B8B5AF;cursor:pointer;padding:8px 0;" ${complete ? 'onclick="document.querySelector(\'[data-action=liuyao-reset]\') && true"' : 'disabled'}>重来</button>
-      </header>
-
-      <!-- StepBar -->
-      <div style="padding:20px;user-select:none;">
-        <div style="display:flex;align-items:center;justify-content:center;">
-          ${['审题', '起卦', '解卦'].map((label, i) => `
-            <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
-              <div style="width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;transition:all 0.3s;background:${i <= flowStepIndex ? '#9E7D42' : 'transparent'};color:${i <= flowStepIndex ? '#fff' : '#B8B5AF'};border:${i <= flowStepIndex ? '2px solid #9E7D42' : '1.5px solid #B8B5AF'};">${i < flowStepIndex ? '✓' : i + 1}</div>
-              <span style="font-size:12px;font-weight:${i === flowStepIndex ? 600 : 400};color:${i === flowStepIndex ? '#9E7D42' : i < flowStepIndex ? '#8C8880' : '#B8B5AF'};transition:all 0.3s;">${label}</span>
-            </div>
-            ${i < 2 ? `<div style="width:48px;height:1.5px;background:${i < flowStepIndex ? '#9E7D42' : 'rgba(26,24,22,0.06)'};transition:background 0.4s;margin:0 4px;"></div>` : ''}
-          `).join('')}
-        </div>
-        <p style="text-align:center;font-size:13px;color:#8C8880;margin-top:14px;letter-spacing:0.3px;">
-          ${['把问题说清楚，卦才有方向', '心诚则灵，静心投币', '卦象已成，细观其意'][flowStepIndex]}
-        </p>
-      </div>
-
-      <!-- Main Content -->
-      <section style="flex:1;padding:0 20px 100px;display:flex;flex-direction:column;gap:14px;overflow-y:auto;">
-        <!-- Question Step -->
-        <section style="background:#FFFFFF;border:1px solid rgba(26,24,22,0.06);border-radius:16px;padding:16px;">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
-            <label for="liuyao-question" style="color:#1C1917;font-weight:600;">所问之事</label>
-            ${renderLiuyaoQuotaBadge(state)}
-          </div>
-          <textarea id="liuyao-question" maxlength="${LIUYAO_QUESTION_MAX_LENGTH}" rows="3" style="width:100%;border:1px solid rgba(26,24,22,0.06);background:#F9F8F5;border-radius:8px;padding:10px;color:#1C1917;font-size:14px;font-family:inherit;resize:none;" placeholder="例如：我现在是否应该继续推进这个合作？本月能不能见到明确结果？">${escapeHtml(getLiuyaoQuestionInputValue(state))}</textarea>
-          <div style="font-size:11px;color:#B8B5AF;margin-top:10px;text-align:center;">一卦一问 · 不同时问感情和事业</div>
-          ${renderLiuyaoQuestionSubmit(state)}
-          ${renderLiuyaoQuestionGateStatus(state)}
-          ${renderLiuyaoQuestionSuggestions(state)}
-        </section>
-
-        <!-- Mode Selector -->
-        ${questionReady ? `
-        <div style="background:#FFFFFF;border:1px solid rgba(26,24,22,0.06);border-radius:16px;padding:16px;">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
-            <span style="color:#1C1917;font-weight:600;">起卦方式</span>
-            <em style="color:#8C8880;font-size:12px;font-style:normal;">${state.mode === "online" ? "在线投币" : "手动起卦"}</em>
-          </div>
-          <div style="display:flex;gap:8px;">
-            <button type="button" style="flex:1;padding:10px;border:1px solid ${state.mode === "online" ? '#9E7D42' : 'rgba(26,24,22,0.06)'};background:${state.mode === "online" ? '#F3EFE7' : '#FFFFFF'};color:${state.mode === "online" ? '#9E7D42' : '#8C8880'};border-radius:8px;cursor:pointer;font-weight:${state.mode === "online" ? '600' : '400'};" data-action="liuyao-mode" data-mode="online">在线投币</button>
-            <button type="button" style="flex:1;padding:10px;border:1px solid ${state.mode === "manual" ? '#9E7D42' : 'rgba(26,24,22,0.06)'};background:${state.mode === "manual" ? '#F3EFE7' : '#FFFFFF'};color:${state.mode === "manual" ? '#9E7D42' : '#8C8880'};border-radius:8px;cursor:pointer;font-weight:${state.mode === "manual" ? '600' : '400'};" data-action="liuyao-mode" data-mode="manual">手动起卦</button>
-          </div>
-        </div>
-        ` : ''}
-
-        <!-- Cast Step -->
-        ${state.mode === "online" ? `
-        <div style="background:#FFFFFF;border:1px solid rgba(26,24,22,0.06);border-radius:16px;padding:16px;">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
-            <span style="color:#1C1917;">${complete ? "六爻已成" : `第 ${Math.min(progress + 1, 6)} 爻 · 待投`}</span>
-            <strong style="color:#9E7D42;font-size:14px;">在线投币</strong>
-          </div>
-          ${renderLiuyaoCoinSummary(state, { complete, disabled: gateBusy || !questionReady, lockText: questionReady ? "" : questionLockText })}
-        </div>
-        ` : ''}
-
-        ${state.mode === "manual" ? renderLiuyaoManualCoinInput(state, { disabled: gateBusy || !questionReady }) : ''}
-
-        <!-- Progress Card -->
-        <div style="background:#FFFFFF;border:1px solid rgba(26,24,22,0.06);border-radius:16px;padding:16px;">
-          <div style="display:grid;grid-template-columns:minmax(0,1fr) auto auto;align-items:baseline;gap:10px;margin-bottom:12px;">
-            <strong style="color:#1C1917;font-size:18px;font-weight:900;">六爻进度</strong>
-            <span style="color:#8C8880;font-size:11px;font-weight:700;">${formatWentianDateTime(new Date(state.createdAt || Date.now()))}</span>
-            <em style="color:#9E7D42;font-size:12px;font-style:normal;font-weight:700;">${complete ? "6/6" : `${progress}/6`}</em>
-          </div>
-          ${completeResult ? `
-          <div style="margin-bottom:12px;">
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;">
-              <div>
-                <span style="display:block;color:#8C8880;font-size:11px;margin-bottom:4px;">本卦</span>
-                <strong style="display:block;color:#1C1917;font-size:14px;font-weight:600;margin-bottom:2px;">${escapeHtml(completeResult.primary?.name || "本卦")}</strong>
-                <em style="display:block;color:#B8B5AF;font-size:11px;font-style:normal;">${escapeHtml(formatLiuyaoHexMeta(completeResult.primary))}</em>
-              </div>
-              <div>
-                <span style="display:block;color:#8C8880;font-size:11px;margin-bottom:4px;">变卦</span>
-                <strong style="display:block;color:#1C1917;font-size:14px;font-weight:600;margin-bottom:2px;">${escapeHtml(completeResult.changed?.name || "变卦")}</strong>
-                <em style="display:block;color:#B8B5AF;font-size:11px;font-style:normal;">${escapeHtml(formatLiuyaoHexMeta(completeResult.changed))}</em>
-              </div>
-            </div>
-            <b style="display:block;color:#9E7D42;font-size:12px;">动爻：${escapeHtml(completeMovingText)}</b>
-          </div>
-          ` : ''}
-          ${tossing ? `<p style="color:#8C8880;font-size:12px;margin-bottom:12px;">本次力度 ${Math.max(18, Math.min(100, Number(liuyaoTossAnimation.power) || 62))}%；铜钱翻转 1 秒后落入第 ${progress + 1} 爻。</p>` : ''}
-          ${renderLiuyaoHexStack(lines, { id: "cast" })}
-        </div>
-
-        <!-- Result Preview -->
-        ${complete ? `
-        <div style="background:linear-gradient(135deg,#F3EFE7 0%,#FFFFFF 100%);border:1px solid #E0D5C4;border-radius:16px;padding:16px;text-align:center;">
-          <strong style="display:block;color:#1C1917;font-size:16px;font-weight:600;margin-bottom:8px;">六爻已成</strong>
-          <p style="color:#8C8880;font-size:12px;margin-bottom:12px;">本卦 / 变卦 / 动爻 / 古籍摘录 / 许大师 AI 解卦</p>
-          <button type="button" style="background:#9E7D42;color:#FFFFFF;border:none;border-radius:12px;padding:12px 24px;font-weight:600;cursor:pointer;" data-action="liuyao-show-result">查看卦象解读</button>
-        </div>
-        ` : ''}
-      </section>
-
-      <!-- TabBar -->
-      <nav style="position:fixed;bottom:0;left:0;right:0;height:auto;background:#FFFFFF;border-top:1px solid rgba(26,24,22,0.06);display:flex;z-index:50;padding-bottom:env(safe-area-inset-bottom,0px);">
-        <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:8px 0 6px;gap:3px;cursor:pointer;font-size:10px;" data-action="liuyao-tabbar" data-tab="home">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#9E7D42" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l8-8 8 8"/><path d="M6 10.5V20h12V10.5"/></svg>
-          <span style="color:#9E7D42;font-weight:600;">首页</span>
-          <div style="width:14px;height:2px;background:#9E7D42;border-radius:1px;"></div>
-        </div>
-        <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:8px 0 6px;gap:3px;cursor:pointer;font-size:10px;" data-action="liuyao-tabbar" data-tab="file">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#B8B5AF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="3" width="12" height="18" rx="2"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="9" y1="12" x2="15" y2="12"/></svg>
-          <span style="color:#B8B5AF;font-weight:400;">档案</span>
-        </div>
-        <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:8px 0 6px;gap:3px;cursor:pointer;font-size:10px;" data-action="liuyao-tabbar" data-tab="ai">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#B8B5AF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 3v18M3 12h18"/></svg>
-          <span style="color:#B8B5AF;font-weight:400;">阅天AI</span>
-        </div>
-        <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:8px 0 6px;gap:3px;cursor:pointer;font-size:10px;" data-action="liuyao-tabbar" data-tab="me">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#B8B5AF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M5 20a7 7 0 0114 0"/></svg>
-          <span style="color:#B8B5AF;font-weight:400;">我的</span>
-        </div>
-      </nav>
+    <div class="liuyao-phone-screen" style="min-height:${screenHeight}px">
+      ${renderLiuyaoAppHeader("ly17", complete ? "起卦" : "六爻占卜", state, { reset: questionReady || progress > 0 || complete })}
+      ${questionReady || progress > 0 || complete
+        ? renderLiuyaoCastStage(state, { progress, complete, completeResult, lines, gateBusy, questionReady, questionLockText })
+        : renderLiuyaoQuestionStage(state)}
+      ${sourceAppBottomNav("首页", 755)}
     </div>
     ${renderLiuyaoCasterModal(state, casterOptions)}
     ${renderLiuyaoResetConfirm()}
@@ -12894,70 +12958,78 @@ function sourceLiuyaoCastScreen() {
 }
 
 function sourceLiuyaoResultScreen() {
+  const state = getLiuyaoState();
   const result = getLiuyaoResult();
   if (!result) {
     return `
-      ${figBox("ly20-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
-      ${wentianSimpleHeader("ly20", "六爻结果")}
-      <section class="liuyao-panel">
+      <div class="liuyao-phone-screen liuyao-result-screen" style="min-height:844px">
+        ${renderLiuyaoAppHeader("ly20", "解卦", state)}
         <div class="liuyao-empty-card">
           <strong>尚未完成起卦</strong>
           <span>请先投满六爻，或用手动起卦补全六爻。</span>
           <button type="button" data-route="screen-17">返回起卦</button>
         </div>
-      </section>
+        ${sourceAppBottomNav("首页", 755)}
+      </div>
     `;
   }
-  const heroCueText = formatLiuyaoMovingLineText(result.movingLines, "动爻：");
   const screenHeight = getLiuyaoResultScreenHeight();
-  const primaryOriginal = getLiuyaoZhouyiOriginal(result.primary);
-  const changedOriginal = getLiuyaoZhouyiOriginal(result.changed);
+  const movingText = formatLiuyaoMovingLineText(result.movingLines);
+  const hasChanged = result.changed?.key && result.changed.key !== result.primary?.key;
+  const aiText = genLiuyaoAIText(result);
   return `
-    ${figBox("ly20-bg", 0, 0, 390, screenHeight, "", "background:linear-gradient(180deg,#fffdf8 0%,#fbf7ef 54%,#f3eadc 100%);")}
-    ${wentianSimpleHeader("ly20", result.primary.name)}
-    <section class="liuyao-panel liuyao-result-panel">
-      <div class="liuyao-result-hero">
-        <span>本卦</span>
-        <strong>${escapeHtml(result.primary.name)}</strong>
-        <em>${escapeHtml(formatLiuyaoHexMeta(result.primary))}</em>
-        <b>${escapeHtml(heroCueText)}</b>
-      </div>
-      <div class="liuyao-result-pair">
-        <article class="is-image-card">
-          <span>本卦</span>
-          <div class="liuyao-result-card-title">
+    <div class="liuyao-phone-screen liuyao-result-screen" style="min-height:${screenHeight}px">
+      ${renderLiuyaoAppHeader("ly20", "解卦", state, { reset: true, resetLabel: "重来" })}
+      <section class="liuyao-stage liuyao-stage-result">
+        ${renderLiuyaoFlowSteps(2)}
+        <div class="liuyao-result-hero">
+          ${renderLiuyaoMiniHex(result.lines, { label: `本卦六爻：${result.primary.name}` })}
+          <div>
+            <span>第 ${escapeHtml(result.primary.no || "-")} 卦</span>
             <strong>${escapeHtml(result.primary.name)}</strong>
-            ${renderLiuyaoMiniHex(result.lines, { label: `本卦六爻：${result.primary.name}` })}
+            <em>${escapeHtml(formatLiuyaoHexMeta(result.primary))}</em>
+            <p>
+              <b>${escapeHtml(result.primary.upper?.gua || "")}（${escapeHtml(result.primary.upper?.name || "")}）上</b>
+              <i></i>
+              <b>${escapeHtml(result.primary.lower?.gua || "")}（${escapeHtml(result.primary.lower?.name || "")}）下</b>
+            </p>
           </div>
-          ${renderLiuyaoHexImage(result.primary, "本卦")}
-          ${renderLiuyaoOriginalExcerpt(result.primary)}
-          <em>${escapeHtml(formatLiuyaoHexMeta(result.primary))}</em>
-        </article>
-        <article class="is-image-card">
-          <span>变卦</span>
-          <div class="liuyao-result-card-title">
-            <strong>${escapeHtml(result.changed.name)}</strong>
-            ${renderLiuyaoMiniHex(result.lines, { changed: true, label: `变卦六爻：${result.changed.name}` })}
+        </div>
+        <div class="liuyao-result-transform">
+          <div>
+            <span>本卦</span>
+            <strong>${escapeHtml(result.primary.name)}</strong>
           </div>
-          ${renderLiuyaoHexImage(result.changed, "变卦")}
-          ${renderLiuyaoOriginalExcerpt(result.changed)}
-          <em>${escapeHtml(formatLiuyaoHexMeta(result.changed))}</em>
-        </article>
+          <div class="liuyao-result-arrow">
+            <b>→</b>
+            <em>${escapeHtml(movingText)}</em>
+          </div>
+          <div>
+            <span>变卦</span>
+            <strong>${escapeHtml(hasChanged ? result.changed.name : result.primary.name)}</strong>
+          </div>
+        </div>
+        <div class="liuyao-reading-card liuyao-question-result-card">
+          <span>所问之事</span>
+          <strong>${escapeHtml(result.question || "所问之事")}</strong>
+        </div>
+        <div class="liuyao-ai-card liuyao-master-card">
+          <div class="liuyao-master-head">
+            <i>许</i>
+            <div>
+              <strong>许大师 解卦</strong>
+              <span>AI 命理分析</span>
+            </div>
+          </div>
+          <p class="liuyao-ai-reading">${escapeHtml(aiText)}</p>
+          <button type="button" class="primary" data-action="liuyao-ask-xu">开始AI解卦</button>
+        </div>
+        <div class="liuyao-actions is-single">
+          <button type="button" data-action="liuyao-reset">重新起卦</button>
+        </div>
+      </section>
+      ${sourceAppBottomNav("首页", 755)}
       </div>
-      <div class="liuyao-reading-card">
-        <span>所问</span>
-        <strong>${escapeHtml(result.question)}</strong>
-      </div>
-      <div class="liuyao-ai-card">
-        <span>AI解卦</span>
-        <strong>许大师按本卦、变卦、动爻继续断</strong>
-        <p>本卦原文：${escapeHtml(primaryOriginal.text.split("\n")[0] || result.primary.name)}${result.changed.name !== result.primary.name ? `<br>变卦原文：${escapeHtml(changedOriginal.text.split("\n")[0] || result.changed.name)}` : ""}</p>
-        <button type="button" class="primary" data-action="liuyao-ask-xu">开始AI解卦</button>
-      </div>
-      <div class="liuyao-actions">
-        <button type="button" data-action="liuyao-reset">重新起卦</button>
-      </div>
-    </section>
   `;
 }
 
@@ -12966,7 +13038,7 @@ function getLiuyaoResultScreenHeight() {
   if (!result) return 844;
   const questionLength = Array.from(result.question || "").length;
   const extraLines = Math.max(0, Math.ceil((questionLength - 24) / 20));
-  return Math.min(1320, 1120 + extraLines * 22);
+  return Math.min(1380, 1180 + extraLines * 22);
 }
 
 function makeLiuyaoXuContext(result = getLiuyaoResult()) {
