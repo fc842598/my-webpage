@@ -16255,10 +16255,11 @@ function sourceDashboardHomeScreen() {
     const dashboardFeatures = [
       ["紫微斗数", "排盘 · AI细读", "01-feature-ziwei-v2.svg", "screen-26", 18, 400],
       ["合盘分析", "双方命盘合参", "01-feature-hepan-v2.svg", "hepan", 201, 400],
-      ["六爻占卜", "铜钱起卦", "01-feature-liuyao-v2.svg", "screen-17", 18, 516],
-      ["阳宅地脉", "方位九宫", "01-feature-yangzhai-v2.svg", "screen-42", 201, 516],
-      ["办公室布局", "门向与老板位", "01-feature-office-v2.svg", "screen-50", 18, 632],
-      ["六壬法", "农历掌诀", "01-feature-liuren-v2.svg", "screen-46", 201, 632],
+      ["六爻占卜", "铜钱起卦", "01-feature-liuyao-v2.svg", "screen-17", 18, 488],
+      ["六爻新版", "龟壳摇卦", "01-feature-liuyao-v2.svg", "liuyao-v2", 201, 488],
+      ["阳宅地脉", "方位九宫", "01-feature-yangzhai-v2.svg", "screen-42", 18, 576],
+      ["办公室布局", "门向与老板位", "01-feature-office-v2.svg", "screen-50", 201, 576],
+      ["六壬法", "农历掌诀", "01-feature-liuren-v2.svg", "screen-46", 18, 664],
     ];
     return `
       ${figBox("source-1-bg", 0, 0, 390, 844, "", "background:linear-gradient(180deg,#fffdf8 0%,#fbf7ef 50%,#fff6ea 100%);")}
@@ -16290,13 +16291,18 @@ function sourceDashboardHomeScreen() {
       ${figText("source-1-archive-action-text", "换档案", 282, 322, 68, 11, "#9a681c", 900, "center")}
       ${figButton("source-1-archive-hit", 18, 294, 354, 70, 'data-route="screen-25"', "", "z-index:35;")}
 
-      ${dashboardFeatures.map(([title, sub, icon, route, x, y], index) => `
-        ${figBox(`source-1-feature-${index}`, x, y, 171, 104, "", "border-radius:18px;background:#fffdf8;border:1px solid #eadfce;box-shadow:0 8px 20px rgba(70,45,25,.07);overflow:hidden;")}
-        ${figText(`source-1-feature-title-${index}`, title, x + 16, y + 20, 92, 18, "#25221f", 900, "left", "white-space:nowrap;")}
-        ${figText(`source-1-feature-sub-${index}`, sub, x + 16, y + 49, 96, 12, "#8d877e", 700, "left", "white-space:nowrap;")}
-        ${figImage(`source-1-feature-icon-${index}`, `../images/wentian-prototype-assets/${icon}`, x + 112, y + 18, 50, 58, "object-fit:contain;opacity:.86;")}
-        ${figButton(`source-1-feature-hit-${index}`, x, y, 171, 104, `data-route="${route}"`, "", "z-index:35;")}
-      `).join("")}
+      ${dashboardFeatures.map(([title, sub, icon, route, x, y], index) => {
+        const hitAttrs = route === "liuyao-v2"
+          ? 'data-action="wentian-open-liuyao-v2" aria-label="打开六爻占卜新版"'
+          : `data-route="${route}"`;
+        return `
+        ${figBox(`source-1-feature-${index}`, x, y, 171, 80, "", "border-radius:18px;background:#fffdf8;border:1px solid #eadfce;box-shadow:0 8px 20px rgba(70,45,25,.07);overflow:hidden;")}
+        ${figText(`source-1-feature-title-${index}`, title, x + 16, y + 16, 100, 17, "#25221f", 900, "left", "white-space:nowrap;")}
+        ${figText(`source-1-feature-sub-${index}`, sub, x + 16, y + 43, 96, 12, "#8d877e", 700, "left", "white-space:nowrap;")}
+        ${figImage(`source-1-feature-icon-${index}`, `../images/wentian-prototype-assets/${icon}`, x + 120, y + 18, 38, 44, "object-fit:contain;opacity:.86;")}
+        ${figButton(`source-1-feature-hit-${index}`, x, y, 171, 80, hitAttrs, "", "z-index:35;")}
+      `;
+      }).join("")}
       ${sourceAppBottomNav("首页", 755)}
     `;
   }
@@ -18197,6 +18203,10 @@ document.addEventListener("click", (event) => {
   }
   const earlyActionTarget = event.target.closest("[data-action]");
   const earlyAction = earlyActionTarget?.dataset.action;
+  if (earlyAction === "wentian-open-liuyao-v2") {
+    window.location.href = "./liuyao-v2.html?v=20260612-native";
+    return;
+  }
   if (earlyAction === "yangzhai-open") {
     openYangzhaiPicker(earlyActionTarget.dataset.palace || "xun");
     return;
