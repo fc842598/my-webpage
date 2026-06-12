@@ -599,7 +599,7 @@
     if (typeof window.SITE_CONFIG?.useGoogleRedirectBridge === 'boolean') {
       return window.SITE_CONFIG.useGoogleRedirectBridge;
     }
-    return window.location.hostname === 'yuetianai.com';
+    return ['yuetianai.com', 'www.yuetianai.com'].includes(window.location.hostname);
   }
 
   function getDesktopGoogleRedirectUrl() {

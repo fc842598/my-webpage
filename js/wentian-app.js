@@ -1539,7 +1539,7 @@ function shouldUseWentianGoogleRedirectBridge() {
   if (typeof window.SITE_CONFIG?.useGoogleRedirectBridge === "boolean") {
     return window.SITE_CONFIG.useGoogleRedirectBridge;
   }
-  return window.location.hostname === "yuetianai.com";
+  return ["yuetianai.com", "www.yuetianai.com"].includes(window.location.hostname);
 }
 
 function getWentianAipayResourceUrl() {
@@ -7481,7 +7481,7 @@ Object.assign(WENTIAN_I18N_EN_EXTRA, {
   "起课后问许大师": "Ask Master Xu after casting",
   "请选择两张不同档案": "Choose two different files",
   "新建档案": "New File",
-  "粤ICP备2026055337号　© 2026 阅天AI Copyright, All Rights Reserved. Powered By 阅天工作室": "Yue ICP 2026055337 · © 2026 Yuetian AI. All Rights Reserved. Powered by Yuetian Studio",
+  "粤ICP备2026055337号-1　© 2026 阅天AI Copyright, All Rights Reserved. Powered By 阅天工作室": "Yue ICP 2026055337-1 · © 2026 Yuetian AI. All Rights Reserved. Powered by Yuetian Studio",
   "时↑": "Hr ↑",
   "时↓": "Hr ↓",
   "第5卦": "Hexagram 5",
@@ -16175,7 +16175,7 @@ function renderWentianPolishedScreen(screen) {
           ${figText(`wt36-arrow-${index}`, "›", 330, y + 16, 20, 18, "#c9bba6", 800, "center")}
         `;
       }).join("")}
-      ${figText("wt36-copy", "粤ICP备2026055337号　© 2026 阅天AI Copyright, All Rights Reserved. Powered By 阅天工作室　", 18, 736, 354, 9, "#b4ada5", 500, "center")}
+      ${figText("wt36-copy", "粤ICP备2026055337号-1　© 2026 阅天AI Copyright, All Rights Reserved. Powered By 阅天工作室　", 18, 736, 354, 9, "#b4ada5", 500, "center")}
     `;
   }
   return "";
