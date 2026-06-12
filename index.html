@@ -237,15 +237,6 @@
       box-shadow: 0 8px 22px rgba(8, 23, 38, .22);
     }
 
-    .brand-logo-core-mask {
-      position: absolute;
-      inset: 3px;
-      overflow: hidden;
-      border-radius: 50%;
-      box-shadow: 0 0 16px rgba(201, 169, 97, .10);
-      pointer-events: none;
-    }
-
     .brand-logo--motion {
       position: absolute;
       top: 50%;
@@ -255,9 +246,11 @@
       height: 42px;
       max-width: none;
       border-radius: 0;
+      object-fit: cover;
       box-shadow: none;
       animation: brand-logo-orbit 30s linear infinite;
       will-change: transform;
+      pointer-events: none;
     }
 
     .brand:hover .brand-logo--motion {
@@ -2691,9 +2684,7 @@
         <a class="brand" href="index.html" aria-label="阅天首页">
           <span class="brand-logo-stage" aria-hidden="true">
             <img class="brand-logo-frame" src="images/wentian-prototype-assets/wentian-brand-logo-ai-gold-v1.webp" alt="" aria-hidden="true" loading="eager" decoding="async">
-            <span class="brand-logo-core-mask" aria-hidden="true">
-              <img class="brand-logo brand-logo--motion" src="images/wentian-prototype-assets/wentian-brand-logo-ai-gold-v1.webp" alt="" aria-hidden="true" loading="eager" decoding="async">
-            </span>
+            <img class="brand-logo brand-logo--motion" src="images/wentian-prototype-assets/wentian-brand-logo-ai-gold-core-v1.webp" alt="" aria-hidden="true" loading="eager" decoding="async">
           </span>
           <span>阅 天</span>
         </a>
