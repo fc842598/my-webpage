@@ -33,11 +33,6 @@
       0%, 100% { transform: translate3d(0, 0, 0); opacity: .70; }
       50% { transform: translate3d(-18px, 10px, 0); opacity: .96; }
     }
-    @keyframes scan-sweep {
-      0% { transform: translateX(-35%) rotate(-8deg); opacity: 0; }
-      18%, 62% { opacity: .88; }
-      100% { transform: translateX(35%) rotate(-8deg); opacity: 0; }
-    }
     @keyframes orbit-pulse {
       0%, 100% { opacity: .36; transform: scale(.985); }
       50% { opacity: .78; transform: scale(1.018); }
@@ -304,158 +299,6 @@
       background: linear-gradient(180deg, rgba(126, 61, 42, .58), rgba(30, 19, 12, .92));
     }
 
-    .nav-actions {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      margin-left: 28px;
-      flex: 0 0 auto;
-    }
-
-    .nav-pay,
-    .nav-auth-pill,
-    .nav-member-link {
-      display: inline-flex;
-      align-items: center;
-      justify-content: flex-start;
-      gap: 12px;
-      min-height: 56px;
-      padding: 8px 18px 8px 15px;
-      border-radius: 999px;
-      transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
-    }
-
-    .nav-pay,
-    .nav-auth-pill,
-    .nav-member-link {
-      border: 1px solid rgba(201, 169, 97, .28);
-      background: rgba(25, 18, 10, .78);
-      box-shadow: inset 0 0 0 1px rgba(255, 244, 214, .03);
-    }
-
-    .nav-pay {
-      min-width: 174px;
-      color: #fff7ea;
-      background: linear-gradient(135deg, #e7c675, #c49a55);
-      border-color: rgba(255, 231, 180, .36);
-      box-shadow: 0 16px 38px rgba(146, 107, 39, .18);
-    }
-
-    .nav-action-icon {
-      width: 16px;
-      height: 16px;
-      flex: 0 0 16px;
-      display: grid;
-      place-items: center;
-    }
-
-    .nav-action-icon svg {
-      width: 100%;
-      height: 100%;
-      display: block;
-      fill: none;
-      stroke: currentColor;
-      stroke-width: 1.9;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-
-    .nav-action-copy {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      justify-content: center;
-      gap: 2px;
-      text-align: left;
-      line-height: 1.08;
-    }
-
-    .nav-pay strong,
-    .nav-pay small,
-    .nav-auth-pill strong,
-    .nav-auth-pill small,
-    .nav-member-link strong,
-    .nav-member-link small {
-      display: block;
-    }
-
-    .nav-pay strong {
-      font-size: 16px;
-      font-weight: 800;
-    }
-
-    .nav-pay small {
-      color: rgba(255, 247, 234, .82);
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: .02em;
-    }
-
-    .nav-auth-pill {
-      min-width: 166px;
-      color: var(--gold-soft);
-    }
-
-    .nav-auth-pill strong {
-      font-size: 16px;
-      font-weight: 800;
-      letter-spacing: .02em;
-    }
-
-    .nav-auth-pill small {
-      color: rgba(223, 201, 144, .76);
-      font-size: 11px;
-      font-weight: 600;
-    }
-
-    .nav-member-link {
-      min-width: 176px;
-      border: 1px solid rgba(235, 174, 140, .34);
-      color: #fff0d8;
-      background: linear-gradient(135deg, #a55c43, #8d4a35);
-      box-shadow: 0 16px 38px rgba(112, 59, 44, .18);
-    }
-
-    .nav-pay .nav-action-icon {
-      color: rgba(108, 66, 20, .8);
-    }
-
-    .nav-auth-pill .nav-action-icon,
-    .nav-member-link .nav-action-icon {
-      color: currentColor;
-    }
-
-    .nav-member-link strong {
-      font-size: 16px;
-      font-weight: 800;
-      letter-spacing: .01em;
-    }
-
-    .nav-member-link small {
-      color: rgba(255, 240, 216, .82);
-      font-size: 11px;
-      font-weight: 600;
-    }
-
-    .nav-pay:hover,
-    .nav-auth-pill:hover,
-    .nav-member-link:hover {
-      transform: translateY(-1px);
-    }
-
-    .nav-pay:hover {
-      box-shadow: 0 20px 44px rgba(146, 107, 39, .24);
-    }
-
-    .nav-auth-pill:hover {
-      border-color: rgba(240, 215, 155, .38);
-      box-shadow: inset 0 0 0 1px rgba(255, 244, 214, .05), 0 14px 34px rgba(0, 0, 0, .18);
-    }
-
-    .nav-member-link:hover {
-      box-shadow: 0 20px 44px rgba(112, 59, 44, .26);
-    }
-
     .hero {
       min-height: 820px;
       padding-top: 100px;
@@ -682,12 +525,6 @@
       color: #918058;
       font-size: 14px;
       line-height: 1.75;
-    }
-
-    .astrolabe-wrap {
-      height: 650px;
-      margin-top: -20px;
-      position: relative;
     }
 
     .hero-preview {
@@ -1051,114 +888,6 @@
     .wheel-orbit-top-left { left: 0; top: 18%; }
     .wheel-orbit-bottom-left { left: 6%; bottom: 10%; }
     .wheel-orbit-right { right: -2%; top: 22%; text-align: right; }
-
-    .hero-art {
-      display: none;
-      position: absolute;
-      pointer-events: none;
-      background: url("images/home2/reference-hero-art.webp") center / contain no-repeat;
-      filter: contrast(1.08) saturate(1.05);
-      overflow: hidden;
-      -webkit-mask-image: radial-gradient(ellipse 59% 58% at 51% 50%, #000 0 62%, rgba(0, 0, 0, .74) 72%, transparent 88%);
-      mask-image: radial-gradient(ellipse 59% 58% at 51% 50%, #000 0 62%, rgba(0, 0, 0, .74) 72%, transparent 88%);
-    }
-
-    .hero-art::after {
-      content: "";
-      position: absolute;
-      inset: -1px;
-      background:
-        linear-gradient(90deg, #030201 0%, rgba(3, 2, 1, 0) 18%, rgba(3, 2, 1, 0) 84%, #030201 100%),
-        linear-gradient(180deg, #030201 0%, rgba(3, 2, 1, 0) 18%, rgba(3, 2, 1, 0) 80%, #030201 100%);
-    }
-
-    .astrolabe-glow {
-      position: absolute;
-      right: -38px;
-      top: -76px;
-      width: 650px;
-      height: 650px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(201,169,97,.13), rgba(201,169,97,.04) 52%, transparent 70%);
-      filter: blur(4px);
-    }
-
-    .astrolabe {
-      position: absolute;
-      right: 4px;
-      top: -40px;
-      width: 570px;
-      height: 570px;
-      border: 1px solid rgba(201, 169, 97, .38);
-      border-radius: 50%;
-      background:
-        repeating-conic-gradient(from -2deg, rgba(201,169,97,.22) 0 1deg, transparent 1deg 15deg),
-        radial-gradient(circle, transparent 0 15%, rgba(201,169,97,.17) 15.2% 15.6%, transparent 15.9% 25%, rgba(201,169,97,.24) 25.2% 25.6%, transparent 25.9% 37%, rgba(201,169,97,.18) 37.2% 37.6%, transparent 37.9% 50%, rgba(201,169,97,.22) 50.2% 50.7%, transparent 51% 64%, rgba(201,169,97,.18) 64.2% 64.7%, transparent 65% 78%, rgba(201,169,97,.28) 78.2% 78.7%, transparent 79%),
-        radial-gradient(circle, rgba(24,18,10,.95), rgba(3,2,1,.24) 70%);
-      box-shadow: inset 0 0 60px rgba(201, 169, 97, .12), 0 0 90px rgba(201, 169, 97, .12);
-      opacity: .95;
-    }
-
-    .astrolabe::before {
-      content: "紫微";
-      position: absolute;
-      inset: 50% auto auto 50%;
-      transform: translate(-50%, -50%);
-      width: 116px;
-      height: 116px;
-      display: grid;
-      place-items: center;
-      border: 1px solid rgba(240, 215, 155, .65);
-      border-radius: 50%;
-      color: var(--gold-soft);
-      background: radial-gradient(circle, rgba(201, 169, 97, .12), rgba(7, 5, 2, .9));
-      font: 700 28px/1 "Noto Serif SC", "Songti SC", serif;
-      box-shadow: 0 0 34px rgba(201, 169, 97, .18);
-    }
-
-    .astrolabe::after {
-      content: "";
-      position: absolute;
-      inset: 80px;
-      border-radius: 50%;
-      opacity: .7;
-      background:
-        linear-gradient(25deg, transparent 49.7%, rgba(201,169,97,.22) 50%, transparent 50.3%),
-        linear-gradient(75deg, transparent 49.7%, rgba(201,169,97,.18) 50%, transparent 50.3%),
-        linear-gradient(135deg, transparent 49.7%, rgba(201,169,97,.14) 50%, transparent 50.3%);
-    }
-
-    .stone {
-      position: absolute;
-      right: 88px;
-      top: 500px;
-      width: 500px;
-      height: 92px;
-      border: 1px solid rgba(201, 169, 97, .22);
-      border-radius: 50%;
-      background:
-        radial-gradient(ellipse at center, rgba(201,169,97,.20), transparent 18%),
-        radial-gradient(ellipse at center, #15100a, #040302 72%);
-      box-shadow: 0 26px 80px rgba(0,0,0,.7);
-    }
-
-    .stone::before {
-      content: "";
-      position: absolute;
-      inset: 18px 52px;
-      border: 1px solid rgba(201, 169, 97, .28);
-      border-radius: 50%;
-      background: repeating-conic-gradient(rgba(201,169,97,.10) 0 2deg, transparent 2deg 16deg);
-    }
-
-    .stone-line {
-      position: absolute;
-      right: 34px;
-      top: 494px;
-      width: 560px;
-      height: 58px;
-      border: 1px solid rgba(201, 169, 97, .14);
-    }
 
     .section {
       padding: 106px 0 0;
@@ -1780,20 +1509,7 @@
       .brand-logo--motion { width: 34px; height: 34px; }
       .links { gap: 8px; }
       .links a { font-size: 14px; }
-      .nav-actions { gap: 10px; margin-left: 36px; }
-      .nav-pay,
-      .nav-auth-pill,
-      .nav-member-link { min-height: 50px; gap: 11px; padding: 6px 16px 6px 14px; }
       .nav-action-icon { width: 16px; height: 16px; flex-basis: 16px; }
-      .nav-pay { min-width: 170px; }
-      .nav-auth-pill { min-width: 160px; }
-      .nav-member-link { min-width: 170px; }
-      .nav-pay strong,
-      .nav-auth-pill strong,
-      .nav-member-link strong { font-size: 16px; }
-      .nav-pay small,
-      .nav-auth-pill small,
-      .nav-member-link small { font-size: 10px; }
 
       .hero { min-height: 554px; padding-top: 68px; }
       .hero-grid { width: 900px; grid-template-columns: 405px 1fr; gap: 54px; }
@@ -1823,17 +1539,6 @@
       .wheel-copy-sub { font-size: 11px; line-height: 1.6; }
       .wheel-orbit-label b { font-size: 11px; }
       .wheel-orbit-label span { font-size: 10px; }
-      .astrolabe-wrap { height: 439px; margin-top: -14px; }
-      .hero-art { display: block; right: -24px; top: -36px; width: 430px; height: 418px; opacity: .98; }
-      .astrolabe-glow,
-      .astrolabe,
-      .stone,
-      .stone-line { display: none; }
-      .astrolabe { right: 3px; top: -27px; width: 385px; height: 385px; }
-      .astrolabe::before { width: 78px; height: 78px; font-size: 19px; }
-      .astrolabe::after { inset: 54px; }
-      .stone { right: 59px; top: 338px; width: 338px; height: 62px; }
-      .stone-line { right: 23px; top: 334px; width: 378px; height: 40px; }
 
       .section { padding-top: 80px; }
       .section-title { margin-bottom: 36px; }
@@ -1906,29 +1611,13 @@
     @media (max-width: 1180px) {
       .container { width: calc(100vw - 48px); }
       .links { gap: 7px; }
-      .nav-actions { gap: 8px; margin-left: 22px; }
-      .nav-pay,
-      .nav-auth-pill,
-      .nav-member-link { min-height: 46px; gap: 9px; padding: 5px 12px 5px 11px; }
       .nav-action-icon { width: 15px; height: 15px; flex-basis: 15px; }
-      .nav-pay { min-width: 150px; }
-      .nav-auth-pill { min-width: 142px; }
-      .nav-member-link { min-width: 150px; }
-      .nav-pay strong,
-      .nav-auth-pill strong,
-      .nav-member-link strong { font-size: 14px; }
-      .nav-pay small,
-      .nav-auth-pill small,
-      .nav-member-link small { font-size: 9px; }
       h1 { width: auto; font-size: 54px; }
       h1 .gold { font-size: .74em; }
       .hero-grid { grid-template-columns: minmax(360px, 480px) 1fr; gap: 36px; }
       .micro { width: auto; gap: 24px; }
       .hero-preview { min-height: 520px; }
       .destiny-wheel { width: min(45vw, 500px); }
-      .astrolabe { right: -40px; width: 500px; height: 500px; }
-      .stone { right: 12px; width: 420px; }
-      .stone-line { right: -20px; width: 480px; }
       .step.left { left: 20px; }
       .step.right { right: 20px; }
       .step.left::after { right: -220px; width: 190px; }
@@ -1981,9 +1670,6 @@
       .brand-logo-stage { width: 38px; height: 38px; }
       .brand-logo-frame { border-radius: 10px; }
       .brand-logo--motion { width: 38px; height: 38px; }
-      .nav-actions {
-        display: none;
-      }
 
       .link-text-full {
         display: none;
@@ -2138,13 +1824,6 @@
         color: #a9986d;
         font-size: 12px;
       }
-
-      .astrolabe-wrap { height: 360px; margin-top: 26px; }
-      .hero-art { display: none; }
-      .astrolabe-glow { right: 50%; transform: translateX(50%); width: 390px; height: 390px; }
-      .astrolabe { right: 50%; transform: translateX(50%); width: 336px; height: 336px; }
-      .stone { top: 286px; right: 50%; transform: translateX(50%); width: 300px; height: 56px; }
-      .stone-line { display: none; }
 
       .section {
         padding-top: 68px;
@@ -2330,11 +2009,6 @@
       .mobile-quick-panel { gap: 8px; }
       .mobile-quick-panel a { padding: 13px 8px; }
       .mobile-quick-panel span { font-size: 12px; }
-      .links a {
-        font-size: 12px;
-        min-height: 44px;
-      }
-
       .links {
         margin-right: 8px;
       }
@@ -3220,18 +2894,18 @@
       const hero = document.querySelector('.hero');
       if (!hero) return;
       let heroPointerFrame = 0;
-      let heroPointerX = 0;
-      let heroPointerY = 0;
+      let heroPointerPctX = 72;
+      let heroPointerPctY = 42;
       const updateHeroPointer = () => {
         heroPointerFrame = 0;
-        hero.style.setProperty('--cursor-x', `${heroPointerX}px`);
-        hero.style.setProperty('--cursor-y', `${heroPointerY}px`);
+        hero.style.setProperty('--cursor-x', `${heroPointerPctX}%`);
+        hero.style.setProperty('--cursor-y', `${heroPointerPctY}%`);
       };
       document.addEventListener('pointermove', (event) => {
         const rect = hero.getBoundingClientRect();
         if (event.clientY < rect.top || event.clientY > rect.bottom) return;
-        heroPointerX = event.clientX - rect.left;
-        heroPointerY = event.clientY - rect.top;
+        heroPointerPctX = ((event.clientX - rect.left) / rect.width) * 100;
+        heroPointerPctY = ((event.clientY - rect.top) / rect.height) * 100;
         if (!heroPointerFrame) {
           heroPointerFrame = requestAnimationFrame(updateHeroPointer);
         }
