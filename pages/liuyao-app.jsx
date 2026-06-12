@@ -52,22 +52,37 @@ function useShakeDetect(onShake, enabled) {
 function Header({ title, onBack, rightLabel, onRight, quota }) {
   return (
     <header style={{
-      display:'flex', alignItems:'center', justifyContent:'space-between',
-      padding:'0 18px', height:52, borderBottom:`1px solid ${C.border}`,
-      background:C.bg, position:'sticky', top:0, zIndex:20, flexShrink:0,
+      position:'sticky', top:0, zIndex:30, flexShrink:0, height:68,
+      display:'grid', gridTemplateColumns:'112px 1fr 84px', alignItems:'center',
+      padding:'12px 18px 10px', borderBottom:'1px solid rgba(194,149,60,.24)',
+      background:'linear-gradient(180deg,#fffdf8 0%,#fbf3e5 100%)',
+      boxShadow:'0 8px 18px rgba(126,88,42,.08)',
     }}>
-      <button onClick={onBack} style={{ background:'none', border:'none', display:'flex', alignItems:'center', gap:3, fontSize:15, color:C.text2, cursor:'pointer', padding:'8px 0', minWidth:52 }}>
-        <svg width="17" height="17" viewBox="0 0 20 20" fill="none"><path d="M12.5 4.5L7 10l5.5 5.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
+      <button onClick={onBack} aria-label="返回阅天首页" style={{
+        width:92, height:38, border:'1px solid rgba(194,149,60,.28)', borderRadius:19,
+        background:'linear-gradient(180deg,#fffdf7 0%,#fbf1df 100%)',
+        boxShadow:'0 8px 18px rgba(126,88,42,.12), inset 0 1px 0 rgba(255,255,255,.8)',
+        display:'flex', alignItems:'center', justifyContent:'center', gap:4,
+        color:'#96533d', fontSize:14, fontWeight:700, cursor:'pointer', padding:0,
+      }}>
+        <svg width="15" height="15" viewBox="0 0 20 20" fill="none"><path d="M12.5 4.5L7 10l5.5 5.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
         返回
       </button>
-      <div style={{ display:'flex', alignItems:'center', gap:8 }}>
-        <span style={{ fontSize:17, fontWeight:600, letterSpacing:0.5 }}>{title}</span>
+      <div style={{ display:'flex', alignItems:'center', justifyContent:'center', gap:8, minWidth:0 }}>
+        <span style={{ fontSize:22, fontWeight:900, letterSpacing:0, color:'#25221f', fontFamily:"'Noto Serif SC','Songti SC',serif", whiteSpace:'nowrap' }}>{title}</span>
         {quota !== undefined && (
-          <span style={{ fontSize:11, color:C.gold, padding:'2px 9px', background:C.goldBg, borderRadius:20, fontWeight:600, border:`1px solid ${C.goldBorder}` }}>{quota}/3</span>
+          <span style={{
+            fontSize:12, color:'#9a681c', padding:'4px 10px', background:'#fff1dc',
+            borderRadius:999, fontWeight:900, border:'1px solid #ead2a2', whiteSpace:'nowrap'
+          }}>{quota}/3</span>
         )}
       </div>
-      <div style={{ minWidth:52, display:'flex', justifyContent:'flex-end' }}>
-        {rightLabel && <button onClick={onRight} style={{ background:'none', border:'none', fontSize:14, color:C.text3, cursor:'pointer', padding:'8px 0' }}>{rightLabel}</button>}
+      <div style={{ display:'flex', justifyContent:'flex-end' }}>
+        {rightLabel && <button onClick={onRight} style={{
+          minWidth:58, height:32, border:'1px solid rgba(194,149,60,.24)', borderRadius:16,
+          background:'rgba(255,253,248,.78)', color:'#9a681c', fontSize:13, fontWeight:800,
+          cursor:'pointer', padding:'0 12px'
+        }}>{rightLabel}</button>}
       </div>
     </header>
   );
@@ -75,20 +90,32 @@ function Header({ title, onBack, rightLabel, onRight, quota }) {
 
 /* ─── Tab Bar ─── */
 function TabBar() {
+  const go = (route) => { window.location.href = `./wentian-app.html#${route}`; };
   const tabs = [
-    { label:'首页', active:true, d:'M4 12l8-8 8 8 M6 10.5V20h4.5v-4.5h3V20H18V10.5' },
-    { label:'档案', d:'M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z M9 8h6 M9 12h6 M9 16h4' },
-    { label:'阅天AI', d:'M12 3a9 9 0 1 0 0 18A9 9 0 0 0 12 3z M8 12h8 M12 8v8' },
-    { label:'我的', d:'M12 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8z M5 20a7 7 0 0 1 14 0' },
+    { label:'首页', route:'screen-1', active:true, d:'M4 12l8-8 8 8 M6 10.5V20h4.5v-4.5h3V20H18V10.5' },
+    { label:'档案', route:'screen-25', d:'M6 4h12a2 2 0 0 1 2 2v14H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z M8 8h8 M8 12h8 M8 16h5' },
+    { label:'阅天AI', route:'screen-3', d:'M12 3a9 9 0 1 0 0 18A9 9 0 0 0 12 3z M8 12h8 M12 8v8' },
+    { label:'我的', route:'screen-31', d:'M12 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8z M5 20a7 7 0 0 1 14 0' },
   ];
   return (
-    <nav style={{ display:'flex', borderTop:`1px solid ${C.border}`, background:C.surface, flexShrink:0, paddingBottom:'env(safe-area-inset-bottom, 8px)' }}>
+    <nav style={{
+      display:'grid', gridTemplateColumns:'repeat(4, 1fr)', flexShrink:0,
+      borderTop:'1px solid rgba(234,223,206,.95)',
+      background:'linear-gradient(180deg,rgba(255,255,255,.98),rgba(255,250,241,.98))',
+      boxShadow:'0 -4px 14px rgba(62,38,18,.07)',
+      padding:'7px 0 max(8px, env(safe-area-inset-bottom))',
+      zIndex:25,
+    }} aria-label="阅天底部导航">
       {tabs.map(t => (
-        <div key={t.label} style={{ flex:1, display:'flex', flexDirection:'column', alignItems:'center', padding:'9px 0 4px', gap:3, cursor:'pointer', color:t.active ? C.primary : C.text3 }}>
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d={t.d}/></svg>
-          <span style={{ fontSize:10, fontWeight:t.active ? 600 : 400 }}>{t.label}</span>
-          {t.active && <div style={{ width:18, height:2.5, background:C.primary, borderRadius:2 }}></div>}
-        </div>
+        <button key={t.label} type="button" onClick={() => go(t.route)} aria-current={t.active ? 'page' : undefined} style={{
+          display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center',
+          gap:3, minWidth:0, minHeight:62, border:0, background:'transparent',
+          color:t.active ? '#a33129' : '#8c857b', cursor:'pointer', padding:'0 2px',
+        }}>
+          <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><path d={t.d}/></svg>
+          <span style={{ fontSize:12, lineHeight:1.1, fontWeight:t.active ? 900 : 600 }}>{t.label}</span>
+          <i aria-hidden="true" style={{ width:18, height:3, borderRadius:999, background:t.active ? '#a33129' : 'transparent', opacity:.76 }} />
+        </button>
       ))}
     </nav>
   );
