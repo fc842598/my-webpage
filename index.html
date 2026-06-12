@@ -92,6 +92,24 @@
       20%, 72% { opacity: .72; }
       to { transform: translateY(440px); opacity: 0; }
     }
+    @keyframes brand-logo-orbit {
+      from { transform: translate(-50%, -50%) scale(1.08) rotate(0deg); }
+      to { transform: translate(-50%, -50%) scale(1.08) rotate(360deg); }
+    }
+    @keyframes brand-logo-aura {
+      0%, 100% {
+        box-shadow:
+          0 8px 22px rgba(8, 23, 38, .22),
+          0 0 0 1px rgba(255, 235, 182, .10),
+          0 0 20px rgba(201, 169, 97, .12);
+      }
+      50% {
+        box-shadow:
+          0 10px 26px rgba(8, 23, 38, .26),
+          0 0 0 1px rgba(255, 235, 182, .18),
+          0 0 28px rgba(201, 169, 97, .20);
+      }
+    }
     * { box-sizing: border-box; }
     html { scroll-behavior: smooth; background: var(--bg); }
     body {
@@ -215,6 +233,61 @@
       object-fit: cover;
       box-shadow: 0 8px 22px rgba(8, 23, 38, .22);
       flex: 0 0 auto;
+    }
+
+    .brand-logo-shell {
+      position: relative;
+      width: 42px;
+      height: 42px;
+      border-radius: 11px;
+      overflow: hidden;
+      flex: 0 0 auto;
+      background:
+        radial-gradient(circle at 30% 22%, rgba(255, 235, 182, .36), transparent 42%),
+        linear-gradient(135deg, rgba(223, 194, 123, .18), rgba(16, 12, 8, .06));
+      animation: brand-logo-aura 5.6s ease-in-out infinite;
+      isolation: isolate;
+    }
+
+    .brand-logo-shell::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      box-shadow: inset 0 0 0 1px rgba(255, 235, 182, .14);
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .brand-logo--motion {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: calc(100% + 8px);
+      height: calc(100% + 8px);
+      max-width: none;
+      border-radius: 13px;
+      margin: 0;
+      transform: translate(-50%, -50%) scale(1.08);
+      transform-origin: center;
+      animation: brand-logo-orbit 24s linear infinite;
+      will-change: transform;
+      box-shadow: none;
+    }
+
+    .brand:hover .brand-logo-shell {
+      animation-duration: 4.4s;
+    }
+
+    .brand:hover .brand-logo--motion {
+      animation-duration: 16s;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .brand-logo-shell,
+      .brand-logo--motion {
+        animation: none;
+      }
     }
 
     .links {
@@ -1733,6 +1806,7 @@
       .nav { height: 59px; }
       .brand { font-size: 20px; gap: 9px; }
       .brand-logo { width: 34px; height: 34px; border-radius: 9px; }
+      .brand-logo-shell { width: 34px; height: 34px; border-radius: 9px; }
       .links { gap: 8px; }
       .links a { font-size: 14px; }
       .nav-actions { gap: 10px; margin-left: 36px; }
@@ -1933,6 +2007,7 @@
       }
       .brand { font-size: 23px; }
       .brand-logo { width: 38px; height: 38px; border-radius: 10px; }
+      .brand-logo-shell { width: 38px; height: 38px; border-radius: 10px; }
       .nav-actions {
         display: none;
       }
@@ -2630,7 +2705,9 @@
     <header class="nav">
       <div class="container">
         <a class="brand" href="index.html" aria-label="阅天首页">
-          <img class="brand-logo" src="images/wentian-prototype-assets/wentian-brand-logo-ai-gold-v1.webp" alt="" aria-hidden="true" loading="eager" decoding="async">
+          <span class="brand-logo-shell" aria-hidden="true">
+            <img class="brand-logo brand-logo--motion" src="images/wentian-prototype-assets/wentian-brand-logo-ai-gold-v1.webp" alt="" aria-hidden="true" loading="eager" decoding="async">
+          </span>
           <span>阅 天</span>
         </a>
         <nav class="links" aria-label="主导航">
