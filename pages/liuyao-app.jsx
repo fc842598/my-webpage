@@ -18,35 +18,14 @@ const C = {
   shadow:      '0 2px 14px rgba(60,28,8,0.13)',
 };
 
+const TOSS_COOLDOWN_MS = 950;
+
 const YAO_TYPE_INFO = {
   9: { name: '老阳', dynamic: true,  mark: '○', isYin: false },
   8: { name: '少阴', dynamic: false, mark: '',  isYin: true  },
   7: { name: '少阳', dynamic: false, mark: '',  isYin: false },
   6: { name: '老阴', dynamic: true,  mark: '×', isYin: true  },
 };
-
-/* ─── Shake Detection ─── */
-function useShakeDetect(onShake, enabled) {
-  const lastXYZ = useRef(null);
-  const lastAt  = useRef(0);
-  useEffect(() => {
-    if (!enabled) return;
-    const h = (e) => {
-      const a = e.accelerationIncludingGravity;
-      if (!a || a.x === null) return;
-      const { x, y, z } = a;
-      const prev = lastXYZ.current;
-      if (prev) {
-        const d = Math.abs(x-prev.x)+Math.abs(y-prev.y)+Math.abs(z-prev.z);
-        const now = Date.now();
-        if (d > 22 && now - lastAt.current > 1600) { lastAt.current = now; onShake(); }
-      }
-      lastXYZ.current = { x, y, z };
-    };
-    window.addEventListener('devicemotion', h);
-    return () => window.removeEventListener('devicemotion', h);
-  }, [onShake, enabled]);
-}
 
 /* ─── Header ─── */
 function Header({ title, onBack, rightLabel, onRight, quota }) {
@@ -315,6 +294,9 @@ function ShakeScene({ onlinePhase, coins, curYao, onTrigger, onTossComplete, sha
   const mountRef   = useRef(null);
   const sceneRef   = useRef(null);
   const runningRef = useRef(false);
+  const triggerLockRef = useRef(false);
+  const motionArmedRef = useRef(true);
+  const lastTriggerAtRef = useRef(0);
   const cbRef      = useRef(onTossComplete);
   cbRef.current    = onTossComplete;
 
@@ -350,6 +332,20 @@ function ShakeScene({ onlinePhase, coins, curYao, onTrigger, onTossComplete, sha
   const powerRef  = useRef(0);
   const dragRef   = useRef({ active: false, lastX: 0, lastY: 0, velX: 0, velY: 0 });
 
+  const requestToss = useCallback((source) => {
+    const now = performance.now();
+    if (triggerLockRef.current || runningRef.current || onlinePhase !== 'idle' || curYao >= 6) return false;
+    if (now - lastTriggerAtRef.current < TOSS_COOLDOWN_MS) return false;
+    triggerLockRef.current = true;
+    motionArmedRef.current = source !== 'motion';
+    lastTriggerAtRef.current = now;
+    powerRef.current = 0;
+    setPower(0);
+    if (sceneRef.current) sceneRef.current.setShakePower(0);
+    onTrigger();
+    return true;
+  }, [onlinePhase, curYao, onTrigger]);
+
   // mount 3D scene once
   useEffect(() => {
     if (!window.TurtleScene || !mountRef.current) return;
@@ -378,15 +374,39 @@ function ShakeScene({ onlinePhase, coins, curYao, onTrigger, onTossComplete, sha
       if (!a || a.x == null) return;
       const mag = Math.sqrt((a.x||0)**2+(a.y||0)**2+(a.z||0)**2);
       const force = Math.max(0, mag - 9.6);
+      if (runningRef.current || onlinePhase !== 'idle' || curYao >= 6) {
+        powerRef.current = 0;
+        setPower(0);
+        if (sceneRef.current) sceneRef.current.setShakePower(0);
+        return;
+      }
+      if (force < 1.25 && powerRef.current < 0.18 && !runningRef.current && onlinePhase === 'idle') {
+        motionArmedRef.current = true;
+      }
+      if (!motionArmedRef.current) {
+        powerRef.current = 0;
+        setPower(0);
+        if (sceneRef.current) sceneRef.current.setShakePower(0);
+        return;
+      }
       const np = Math.min(1, powerRef.current + force * 0.052);
       powerRef.current = np; setPower(np);
       hapticFeedback('power');
       if (sceneRef.current) sceneRef.current.setShakePower(np);
-      if (np >= 0.94 && !runningRef.current && onlinePhase === 'idle' && curYao < 6) onTrigger();
+      if (np >= 0.94 && motionArmedRef.current) requestToss('motion');
     };
     window.addEventListener('devicemotion', h);
     return () => window.removeEventListener('devicemotion', h);
-  }, [shakeReady, onlinePhase, curYao, onTrigger]);
+  }, [shakeReady, onlinePhase, requestToss, hapticFeedback]);
+
+  useEffect(() => {
+    if (onlinePhase !== 'idle' || curYao >= 6) return;
+    const timer = setTimeout(() => {
+      triggerLockRef.current = false;
+      if (powerRef.current < 0.18) motionArmedRef.current = true;
+    }, TOSS_COOLDOWN_MS);
+    return () => clearTimeout(timer);
+  }, [onlinePhase, curYao]);
 
   // trigger 3D toss when phase → 'shaking'
   useEffect(() => {
@@ -404,6 +424,7 @@ function ShakeScene({ onlinePhase, coins, curYao, onTrigger, onTossComplete, sha
       }
       sceneRef.current.toss(captured, (result) => {
         runningRef.current = false;
+        triggerLockRef.current = true;
         const res = result || captured;
         setLastCoins(res);
         playSound('settle');
@@ -415,7 +436,7 @@ function ShakeScene({ onlinePhase, coins, curYao, onTrigger, onTossComplete, sha
 
   // ── Desktop drag-to-shake handlers ──
   const onPtrDown = useCallback((e) => {
-    if (onlinePhase === 'shaking' || curYao >= 6) return;
+    if (triggerLockRef.current || onlinePhase === 'shaking' || curYao >= 6) return;
     dragRef.current = { active: true, lastX: e.clientX, lastY: e.clientY, velX: 0, velY: 0 };
   }, [onlinePhase, curYao]);
 
@@ -433,11 +454,11 @@ function ShakeScene({ onlinePhase, coins, curYao, onTrigger, onTossComplete, sha
       sceneRef.current.setShakePower(np);
       sceneRef.current.setDragBias(Math.atan2(dy, dx));
     }
-    if (np >= 0.94 && !runningRef.current && onlinePhase === 'idle' && curYao < 6) {
+    if (np >= 0.94) {
       dragRef.current.active = false;
-      onTrigger();
+      requestToss('drag');
     }
-  }, [onlinePhase, curYao, onTrigger]);
+  }, [requestToss]);
 
   const onPtrUp = useCallback((e) => {
     if (!dragRef.current.active) return;
@@ -446,9 +467,9 @@ function ShakeScene({ onlinePhase, coins, curYao, onTrigger, onTossComplete, sha
     const speed = Math.sqrt(velX*velX + velY*velY);
     if (sceneRef.current) sceneRef.current.setDragBias(Math.atan2(velY, velX));
     if (onlinePhase !== 'shaking' && curYao < 6) {
-      if (powerRef.current > 0.15 || speed > 4) onTrigger();
+      if (powerRef.current > 0.65 || speed > 14) requestToss('drag');
     }
-  }, [onlinePhase, curYao, onTrigger]);
+  }, [onlinePhase, curYao, requestToss]);
 
   const done      = curYao >= 6;
   const isShaking = onlinePhase === 'shaking';
@@ -491,7 +512,7 @@ function ShakeScene({ onlinePhase, coins, curYao, onTrigger, onTossComplete, sha
         )}
         {/* 3D canvas with drag handlers */}
         <div ref={mountRef}
-          onClick={() => !isShaking && !done && !dragRef.current.active && onTrigger()}
+          onClick={() => !isShaking && !done && !dragRef.current.active && requestToss('tap')}
           onPointerDown={onPtrDown}
           onPointerMove={onPtrMove}
           onPointerUp={onPtrUp}
@@ -832,11 +853,19 @@ function App() {
   const [daily, setDaily]                 = useState(() => {
     try { return parseInt(localStorage.getItem('yt_daily') || '0', 10); } catch { return 0; }
   });
+  const tossInFlightRef = useRef(false);
+  const tossCooldownRef = useRef(null);
 
   useEffect(() => {
     if (typeof DeviceMotionEvent !== 'undefined' && typeof DeviceMotionEvent.requestPermission !== 'function') {
       setShakeReady(true);
     }
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      if (tossCooldownRef.current) clearTimeout(tossCooldownRef.current);
+    };
   }, []);
 
   const enableShake = useCallback(async () => {
@@ -858,23 +887,29 @@ function App() {
   };
 
   const handleReset = () => {
+    tossInFlightRef.current = false;
+    if (tossCooldownRef.current) clearTimeout(tossCooldownRef.current);
     setStep(0); setQuestion(''); setMethod('coin');
     setOnlineResults([]); setOnlineCur(0); setOnlinePhase('idle'); setOnlineCoins(null); setLastResult(null);
     setManualResults([]);
   };
 
   const handleToss = useCallback(() => {
-    if (onlinePhase !== 'idle' || onlineCur >= 6) return;
+    if (tossInFlightRef.current || onlinePhase !== 'idle' || onlineCur >= 6 || step !== 1 || method !== 'coin') return;
+    tossInFlightRef.current = true;
     const c = [Math.random()>0.5, Math.random()>0.5, Math.random()>0.5];
     setOnlineCoins(c);
     setOnlinePhase('shaking');
-  }, [onlinePhase, onlineCur]);
+  }, [onlinePhase, onlineCur, step, method]);
 
   // Called by the 3D scene once the coins have settled
   const handleTossComplete = useCallback((c) => {
+    if (!tossInFlightRef.current) return;
+    tossInFlightRef.current = false;
     const val = c.reduce((s, h) => s+(h?3:2), 0);
     setLastResult(val);
     setOnlineResults(p => {
+      if (p.length >= 6) return p;
       const next = p.length + 1;
       if (next >= 6) {
         const nd = daily + 1; setDaily(nd);
@@ -884,16 +919,13 @@ function App() {
       return [...p, { coins:c, value:val }];
     });
     setOnlineCur(n => n + 1);
-    setOnlinePhase('idle');
     setOnlineCoins(null);
+    if (tossCooldownRef.current) clearTimeout(tossCooldownRef.current);
+    tossCooldownRef.current = setTimeout(() => {
+      setOnlinePhase('idle');
+      tossCooldownRef.current = null;
+    }, TOSS_COOLDOWN_MS);
   }, [daily]);
-
-  useShakeDetect(
-    useCallback(() => {
-      if (onlinePhase === 'idle' && step === 1 && method === 'coin' && onlineCur < 6) handleToss();
-    }, [onlinePhase, step, method, onlineCur, handleToss]),
-    shakeReady
-  );
 
   const handleManualConfirm = (yaoObj) => {
     const newR = [...manualResults, yaoObj];
