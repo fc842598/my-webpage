@@ -15173,7 +15173,7 @@ function renderLiurenPath(result, reveal = true) {
   const finalDelay = reveal ? visualSequence.length * LIUREN_FLASH_INTERVAL_SECONDS + 0.1 : 0;
   return `
     <div class="liuren-hand-board ${reveal ? "is-revealed" : "is-idle"}" style="--liuren-step-duration:${LIUREN_FLASH_INTERVAL_SECONDS.toFixed(2)}s;--liuren-final-delay:${finalDelay.toFixed(2)}s;" aria-label="小六壬掌诀三指六位推演图">
-      <img src="../images/wentian-prototype-assets/liuren-hand-board-base.png" alt="" aria-hidden="true" loading="eager" decoding="sync" fetchpriority="high" onerror="this.onerror=null;this.src='../images/wentian-prototype-assets/liuren-hand-board.png';">
+      <img src="../images/wentian-prototype-assets/liuren-hand-board-base.webp" alt="" aria-hidden="true" loading="eager" decoding="sync" fetchpriority="high" onerror="this.onerror=null;this.src='../images/wentian-prototype-assets/liuren-hand-board-base.png';">
       <div class="liuren-palace-layer" aria-hidden="true">${renderLiurenPalaceBadges(result, reveal)}</div>
       ${reveal ? `<div class="liuren-palace-pulses" aria-hidden="true">${renderLiurenPalacePulses(result)}</div>` : ""}
       <div class="liuren-hand-a11y" aria-live="polite">
@@ -16163,7 +16163,7 @@ function renderWentianPolishedScreen(screen) {
     return `
       ${figBox("wt36-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
       ${wentianSimpleHeader("wt36", "关于我们")}
-      ${figImage("wt36-logo", "../images/wentian-prototype-assets/wentian-brand-logo-ai-gold-v1.png", 158, 126, 74, 74, "border-radius:18px;object-fit:cover;box-shadow:0 10px 24px rgba(24,19,8,.18);", "loading=\"lazy\" decoding=\"async\"")}
+      ${figImage("wt36-logo", "../images/wentian-prototype-assets/wentian-brand-logo-ai-gold-v1.webp", 158, 126, 74, 74, "border-radius:18px;object-fit:cover;box-shadow:0 10px 24px rgba(24,19,8,.18);", "loading=\"lazy\" decoding=\"async\"")}
       ${figText("wt36-name", "阅天AI", 0, 230, 390, 20, "#25211d", 800, "center")}
       ${figText("wt36-version", "v1.0.3199", 0, 260, 390, 12, "#8d857b", 600, "center")}
       ${figText("wt36-desc", "阅天AI是一款手机端命理排盘、合盘、抽签与AI解读工具，帮你把复杂命理信息转成可理解、可行动的建议。", 54, 304, 282, 14, "#756d63", 500, "center", "line-height:1.65;")}
@@ -16262,7 +16262,7 @@ function sourceDashboardHomeScreen() {
     ];
     return `
       ${figBox("source-1-bg", 0, 0, 390, 844, "", "background:linear-gradient(180deg,#fffdf8 0%,#fbf7ef 50%,#fff6ea 100%);")}
-      ${figImage("source-1-brand-logo", "../images/wentian-prototype-assets/wentian-brand-logo-ai-gold-v1.png", 18, 23, 42, 42, "border-radius:10px;object-fit:cover;box-shadow:0 6px 14px rgba(24,19,8,.18);", "loading=\"eager\" decoding=\"async\"")}
+      ${figImage("source-1-brand-logo", "../images/wentian-prototype-assets/wentian-brand-logo-ai-gold-v1.webp", 18, 23, 42, 42, "border-radius:10px;object-fit:cover;box-shadow:0 6px 14px rgba(24,19,8,.18);", "loading=\"eager\" decoding=\"async\"")}
       ${figText("source-1-brand", "阅天AI", 68, 32, 110, 23, "#25221f", 900)}
       ${figBox("source-1-login-pill", 256, 28, 116, 34, "", "border-radius:17px;background:#fffdf8;border:1px solid #eadfce;box-shadow:0 6px 14px rgba(70,45,25,.06);")}
       ${figText("source-1-login-pill-text", dashboardLoginLabel, 266, 38, 96, 12, dashboardAccount.loggedIn ? "#9f3d2e" : "#9a681c", 900, "center", "white-space:nowrap;overflow:hidden;text-overflow:ellipsis;")}
