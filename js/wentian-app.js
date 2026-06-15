@@ -16255,7 +16255,7 @@ function sourceDashboardHomeScreen() {
     const dashboardFeatures = [
       ["紫微斗数", "排盘 · AI细读", "01-feature-ziwei-v2.svg", "screen-26", 18, 400],
       ["合盘分析", "双方命盘合参", "01-feature-hepan-v2.svg", "hepan", 201, 400],
-      ["六爻占卜", "铜钱起卦", "01-feature-liuyao-v2.svg", "screen-17", 18, 488],
+      ["六爻占卜", "铜钱起卦", "01-feature-liuyao-v2.svg", "liuyao-v2", 18, 488],
       ["六爻新版", "龟壳摇卦", "01-feature-liuyao-v2.svg", "liuyao-v2", 201, 488],
       ["阳宅地脉", "方位九宫", "01-feature-yangzhai-v2.svg", "screen-42", 18, 576],
       ["办公室布局", "门向与老板位", "01-feature-office-v2.svg", "screen-50", 201, 576],
@@ -18204,7 +18204,7 @@ document.addEventListener("click", (event) => {
   const earlyActionTarget = event.target.closest("[data-action]");
   const earlyAction = earlyActionTarget?.dataset.action;
   if (earlyAction === "wentian-open-liuyao-v2") {
-    window.location.href = "./liuyao-v2.html?v=20260615-motion-delta";
+    window.location.href = "./liuyao-v2.html?v=20260615-quota-gate";
     return;
   }
   if (earlyAction === "yangzhai-open") {

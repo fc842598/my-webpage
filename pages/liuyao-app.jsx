@@ -19,6 +19,149 @@ const C = {
 };
 
 const TOSS_COOLDOWN_MS = 450;
+const MOTION_SINGLE_LINE_LOCK_MS = 1800;
+const MOTION_REARM_STILL_MS = 900;
+const LIUYAO_DAILY_LIMIT = 3;
+const LIUYAO_QUESTION_MAX_LENGTH = 120;
+const LIUYAO_CLIENT_ID_KEY = 'ziwei_client_id';
+const LIUYAO_STATE_KEY = 'wentian-liuyao-v2-state-v1';
+
+function makeUuid() {
+  if (window.crypto?.randomUUID) return window.crypto.randomUUID();
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
+    const r = Math.random() * 16 | 0;
+    return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+  });
+}
+
+function getClientId() {
+  try {
+    let id = localStorage.getItem(LIUYAO_CLIENT_ID_KEY);
+    if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(id || '')) {
+      id = makeUuid();
+      localStorage.setItem(LIUYAO_CLIENT_ID_KEY, id);
+    }
+    return id;
+  } catch {
+    return 'global';
+  }
+}
+
+function normalizeQuestion(value) {
+  return String(value || '').replace(/\s+/g, ' ').trim().slice(0, LIUYAO_QUESTION_MAX_LENGTH);
+}
+
+function normalizeQuota(raw) {
+  const limit = Math.max(1, Number(raw?.limit || raw?.dailyLimit || LIUYAO_DAILY_LIMIT));
+  const used = Math.max(0, Number(raw?.used ?? raw?.dailyUsed ?? 0));
+  const remaining = Math.max(0, Number(raw?.remaining ?? raw?.dailyRemaining ?? (limit - used)));
+  return { limit, used, remaining, date: String(raw?.date || ''), exhausted: remaining <= 0, checkedAt: Number(raw?.checkedAt) || Date.now() };
+}
+
+function mergeQuota(currentRaw, nextRaw) {
+  const next = normalizeQuota(nextRaw);
+  if (!currentRaw) return next;
+  const current = normalizeQuota(currentRaw);
+  const sameDate = (current.date && next.date && current.date === next.date) || (!current.date && !next.date);
+  return sameDate && next.used < current.used ? current : next;
+}
+
+function loadStoredQuota() {
+  try {
+    const parsed = JSON.parse(localStorage.getItem(LIUYAO_STATE_KEY) || 'null');
+    return parsed?.quota ? normalizeQuota(parsed.quota) : normalizeQuota();
+  } catch {
+    return normalizeQuota();
+  }
+}
+
+function saveStoredQuota(quota) {
+  try {
+    localStorage.setItem(LIUYAO_STATE_KEY, JSON.stringify({ quota: normalizeQuota(quota), updatedAt: Date.now() }));
+  } catch {}
+}
+
+function parseGateJson(text) {
+  const raw = String(text || '').trim();
+  const fenced = raw.match(/```(?:json)?\s*([\s\S]*?)```/i);
+  const source = fenced ? fenced[1] : raw;
+  const start = source.indexOf('{');
+  const end = source.lastIndexOf('}');
+  if (start < 0 || end <= start) return null;
+  try { return JSON.parse(source.slice(start, end + 1)); } catch { return null; }
+}
+
+function localQuestionGate(question) {
+  const normalizedQuestion = normalizeQuestion(question);
+  const compact = normalizedQuestion.replace(/[\s，。！？、,.!?'"“”‘’（）()[\]]+/g, '');
+  const fail = (reason, suggestion, retryable = true) => ({ allowed:false, normalizedQuestion, reason, suggestion, retryable, labels:['一事一卦'] });
+  if (!normalizedQuestion) return fail('请先写清楚要问的一件事。', '一句话只问一件具体事情，再起卦。');
+  if (compact.length < 4) return fail('问题还不够具体，暂不起卦。', '请写清对象、事件和想看的结果。');
+  if (/^(随便|随机|娱乐|玩玩|试试|测试|乱点|看看|测一下|试一试|test|demo|random)$/i.test(compact)) {
+    return fail('这个问题太随意，暂不起卦。', '请写清具体对象和想看的结果。');
+  }
+  if ((normalizedQuestion.match(/[？?]/g) || []).length > 1 || /同时|另外|还有|以及|顺便/.test(normalizedQuestion)) {
+    return fail('一次只问一件事。', '请先删到一个核心问题，再提交。');
+  }
+  return { allowed:true, normalizedQuestion, reason:'审题通过，可以起卦。', suggestion:'', retryable:true, labels:['一事一卦'] };
+}
+
+function getApiBase() {
+  return String(window.SITE_CONFIG?.aiBackendBase || 'https://api.yuetianai.com').replace(/\/+$/, '');
+}
+
+async function postJson(path, payload, timeoutMs = 6000) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(new DOMException('request timeout', 'TimeoutError')), timeoutMs);
+  try {
+    const res = await fetch(`${getApiBase()}${path}`, {
+      method:'POST',
+      headers:{ 'Content-Type':'application/json' },
+      body:JSON.stringify(payload),
+      signal:controller.signal,
+    });
+    const contentType = String(res.headers.get('content-type') || '');
+    const data = contentType.includes('application/json') ? await res.json() : { error: await res.text() };
+    if (!res.ok || data.error) throw new Error(data.error || `request failed ${res.status}`);
+    return data;
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+async function refreshRemoteQuota(currentQuota) {
+  const clientId = getClientId();
+  const data = await postJson('/api/ai/liuyao-question', {
+    action:'quota',
+    clientId,
+    divinationContext:{ type:'liuyao_quota', clientId },
+  }, 6000);
+  return data?.quota ? mergeQuota(currentQuota, data.quota) : normalizeQuota(currentQuota);
+}
+
+async function reviewQuestion(question, currentQuota) {
+  const local = localQuestionGate(question);
+  if (String(window.SITE_CONFIG?.liuyaoQuestionGateMode || 'remote').toLowerCase() === 'local') {
+    return { ...local, quota: normalizeQuota(currentQuota) };
+  }
+  if (!local.allowed) return { ...local, quota: normalizeQuota(currentQuota) };
+  const clientId = getClientId();
+  try {
+    const data = await postJson('/api/ai/liuyao-question', {
+      question,
+      clientId,
+      chatMode:'liuyao_question_gate',
+      divinationContext:{ type:'liuyao_question_gate', question, clientId, recordId:makeUuid() },
+    }, 6000);
+    const gate = typeof data?.allowed === 'boolean' ? data : (parseGateJson(data?.reply) || local);
+    return { ...gate, quota: data?.quota || gate.quota || currentQuota };
+  } catch {
+    const quota = normalizeQuota(currentQuota);
+    return quota.remaining > 0
+      ? { ...local, allowed:true, reason:'本地审题通过，可以起卦。后台次数稍后同步。', quota }
+      : { allowed:false, normalizedQuestion:question, reason:'今日六爻占卜已满 3 次，明天再起卦。', suggestion:'', retryable:false, quota };
+  }
+}
 
 const YAO_TYPE_INFO = {
   9: { name: '老阳', dynamic: true,  mark: '○', isYin: false },
@@ -29,6 +172,9 @@ const YAO_TYPE_INFO = {
 
 /* ─── Header ─── */
 function Header({ title, onBack, rightLabel, onRight, quota }) {
+  const quotaText = quota && typeof quota === 'object'
+    ? `${normalizeQuota(quota).used}/${normalizeQuota(quota).limit}`
+    : `${Number(quota || 0)}/3`;
   return (
     <header style={{
       position:'sticky', top:0, zIndex:30, flexShrink:0, height:68,
@@ -53,7 +199,7 @@ function Header({ title, onBack, rightLabel, onRight, quota }) {
           <span style={{
             fontSize:12, color:'#9a681c', padding:'4px 10px', background:'#fff1dc',
             borderRadius:999, fontWeight:900, border:'1px solid #ead2a2', whiteSpace:'nowrap'
-          }}>{quota}/3</span>
+          }}>{quotaText}</span>
         )}
       </div>
       <div style={{ display:'flex', justifyContent:'flex-end' }}>
@@ -71,29 +217,30 @@ function Header({ title, onBack, rightLabel, onRight, quota }) {
 function TabBar() {
   const go = (route) => { window.location.href = `./wentian-app.html#${route}`; };
   const tabs = [
-    { label:'首页', route:'screen-1', active:true, d:'M4 12l8-8 8 8 M6 10.5V20h4.5v-4.5h3V20H18V10.5' },
+    { label:'首页', route:'screen-1', active:true, d:'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18z M12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10z M12 10.2a1.8 1.8 0 1 0 0 3.6 1.8 1.8 0 0 0 0-3.6z M12 1.5v4 M22.5 12h-4 M12 22.5v-4 M1.5 12h4' },
     { label:'档案', route:'screen-25', d:'M6 4h12a2 2 0 0 1 2 2v14H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z M8 8h8 M8 12h8 M8 16h5' },
-    { label:'阅天AI', route:'screen-3', d:'M12 3a9 9 0 1 0 0 18A9 9 0 0 0 12 3z M8 12h8 M12 8v8' },
+    { label:'阅天AI', route:'screen-3', d:'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18z M12 5.8l3.2 6.2L12 18.2 8.8 12 12 5.8z M7 12h10' },
     { label:'我的', route:'screen-31', d:'M12 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8z M5 20a7 7 0 0 1 14 0' },
   ];
   return (
     <nav style={{
       display:'grid', gridTemplateColumns:'repeat(4, 1fr)', flexShrink:0,
-      borderTop:'1px solid rgba(234,223,206,.95)',
-      background:'linear-gradient(180deg,rgba(255,255,255,.98),rgba(255,250,241,.98))',
-      boxShadow:'0 -4px 14px rgba(62,38,18,.07)',
-      padding:'7px 0 max(8px, env(safe-area-inset-bottom))',
+      borderTop:'1px solid rgba(232,222,205,.9)',
+      background:'#fffdf8',
+      boxShadow:'0 -2px 12px rgba(62,38,18,.05)',
+      padding:'7px 0 max(7px, env(safe-area-inset-bottom))',
       zIndex:25,
     }} aria-label="阅天底部导航">
       {tabs.map(t => (
         <button key={t.label} type="button" onClick={() => go(t.route)} aria-current={t.active ? 'page' : undefined} style={{
           display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center',
-          gap:3, minWidth:0, minHeight:62, border:0, background:'transparent',
+          gap:4, minWidth:0, minHeight:68, border:0, background:'transparent',
           color:t.active ? '#a33129' : '#8c857b', cursor:'pointer', padding:'0 2px',
         }}>
-          <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><path d={t.d}/></svg>
-          <span style={{ fontSize:12, lineHeight:1.1, fontWeight:t.active ? 900 : 600 }}>{t.label}</span>
-          <i aria-hidden="true" style={{ width:18, height:3, borderRadius:999, background:t.active ? '#a33129' : 'transparent', opacity:.76 }} />
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.85" strokeLinecap="round" strokeLinejoin="round"
+            style={{ filter:t.active ? 'drop-shadow(0 7px 13px rgba(163,49,41,.22))' : 'none' }}><path d={t.d}/></svg>
+          <span style={{ fontSize:13, lineHeight:1.08, fontWeight:t.active ? 900 : 600 }}>{t.label}</span>
+          <i aria-hidden="true" style={{ width:24, height:4, borderRadius:999, background:t.active ? '#b55247' : 'transparent', opacity:.86 }} />
         </button>
       ))}
     </nav>
@@ -101,26 +248,31 @@ function TabBar() {
 }
 
 /* ─── Step 0: Question ─── */
-function QuestionStep({ question, setQuestion, onSubmit }) {
+function QuestionStep({ question, setQuestion, onSubmit, reviewing, gateMessage, quota }) {
   const valid = question.trim().length >= 4;
+  const quotaInfo = normalizeQuota(quota);
+  const disabled = !valid || reviewing || quotaInfo.remaining <= 0;
   return (
-    <div style={{ flex:1, display:'flex', flexDirection:'column', padding:'28px 20px 24px' }}>
+    <div style={{ flex:1, display:'flex', flexDirection:'column', padding:'26px 20px 24px' }}>
       <p style={{ fontSize:24, fontWeight:700, fontFamily:"'Noto Serif SC',serif", color:C.text, lineHeight:1.4, marginBottom:6 }}>你想问什么？</p>
-      <p style={{ fontSize:14, color:C.text2, marginBottom:22 }}>一事一卦，越具体越准</p>
-      <div style={{ background:C.surface, borderRadius:16, padding:'18px 18px 14px', boxShadow:C.shadow, flex:1, display:'flex', flexDirection:'column', minHeight:160 }}>
-        <textarea value={question} onChange={e => setQuestion(e.target.value)} placeholder="例如：这周面试能顺利通过吗？" autoFocus rows={4}
-          style={{ fontFamily:'inherit', fontSize:17, lineHeight:1.75, border:'none', outline:'none', resize:'none', background:'transparent', color:C.text, flex:1, width:'100%' }}/>
+      <p style={{ fontSize:14, color:C.text2, marginBottom:18 }}>一事一卦，越具体越准</p>
+      <div style={{ background:C.surface, borderRadius:16, padding:'16px 18px 12px', boxShadow:C.shadow, display:'flex', flexDirection:'column', height:220, flexShrink:0 }}>
+        <textarea value={question} onChange={e => setQuestion(e.target.value)} placeholder="例如：这周面试能顺利通过吗？" autoFocus rows={3} maxLength={LIUYAO_QUESTION_MAX_LENGTH}
+          style={{ fontFamily:'inherit', fontSize:17, lineHeight:1.65, border:'none', outline:'none', resize:'none', background:'transparent', color:C.text, flex:1, width:'100%', minHeight:0 }}/>
         <div style={{ display:'flex', justifyContent:'flex-end', marginTop:8 }}>
           <span style={{ fontSize:12, color:valid ? C.gold : C.text3, transition:'color 0.2s' }}>{question.length} 字</span>
         </div>
       </div>
-      <button onClick={onSubmit} disabled={!valid} style={{
-        width:'100%', padding:'16px 0', marginTop:16, borderRadius:14, border:'none',
-        background: valid ? `linear-gradient(135deg,${C.primary} 0%,#A33020 100%)` : '#DDD0C0',
-        color: valid ? '#fff' : C.text3, fontSize:17, fontWeight:600,
-        cursor: valid ? 'pointer' : 'default', letterSpacing:2, transition:'all 0.25s',
-        boxShadow: valid ? '0 4px 18px rgba(107,29,16,0.3)' : 'none', fontFamily:'inherit',
-      }}>开始起卦</button>
+      <div style={{ minHeight:38, padding:'10px 2px 0', color:gateMessage?.tone === 'error' ? '#8e2f25' : gateMessage?.tone === 'ok' ? C.goldDeep : C.text2, fontSize:12, lineHeight:1.55 }}>
+        {gateMessage?.text || `今日已占 ${quotaInfo.used}/${quotaInfo.limit}`}
+      </div>
+      <button onClick={onSubmit} disabled={disabled} style={{
+        width:'100%', padding:'15px 0', marginTop:10, borderRadius:14, border:'none',
+        background: !disabled ? `linear-gradient(135deg,${C.primary} 0%,#A33020 100%)` : '#DDD0C0',
+        color: !disabled ? '#fff' : C.text3, fontSize:17, fontWeight:600,
+        cursor: !disabled ? 'pointer' : 'default', letterSpacing:2, transition:'all 0.25s',
+        boxShadow: !disabled ? '0 4px 18px rgba(107,29,16,0.3)' : 'none', fontFamily:'inherit',
+      }}>{reviewing ? '审题中...' : quotaInfo.remaining <= 0 ? '今日已满' : '提交占问'}</button>
     </div>
   );
 }
@@ -297,6 +449,9 @@ function ShakeScene({ onlinePhase, coins, curYao, onTrigger, onTossComplete, sha
   const triggerLockRef = useRef(false);
   const motionArmedRef = useRef(true);
   const lastTriggerAtRef = useRef(0);
+  const lastMotionTossAtRef = useRef(0);
+  const lastTriggerSourceRef = useRef('');
+  const motionStillSinceRef = useRef(0);
   const cbRef      = useRef(onTossComplete);
   cbRef.current    = onTossComplete;
 
@@ -337,9 +492,13 @@ function ShakeScene({ onlinePhase, coins, curYao, onTrigger, onTossComplete, sha
     const now = performance.now();
     if (triggerLockRef.current || runningRef.current || onlinePhase !== 'idle' || curYao >= 6) return false;
     if (now - lastTriggerAtRef.current < TOSS_COOLDOWN_MS) return false;
+    if (source === 'motion' && now - lastMotionTossAtRef.current < MOTION_SINGLE_LINE_LOCK_MS) return false;
     triggerLockRef.current = true;
     motionArmedRef.current = source !== 'motion';
+    lastTriggerSourceRef.current = source;
     lastTriggerAtRef.current = now;
+    if (source === 'motion') lastMotionTossAtRef.current = now;
+    motionStillSinceRef.current = 0;
     powerRef.current = 0;
     setPower(0);
     if (sceneRef.current) sceneRef.current.setShakePower(0);
@@ -379,6 +538,7 @@ function ShakeScene({ onlinePhase, coins, curYao, onTrigger, onTossComplete, sha
       lastMotionRef.current = cur;
       if (!prev) return;
       const jerk = Math.abs(cur.x - prev.x) + Math.abs(cur.y - prev.y) + Math.abs(cur.z - prev.z);
+      const now = performance.now();
       if (runningRef.current || onlinePhase !== 'idle' || curYao >= 6) {
         if (powerRef.current !== 0) {
           powerRef.current = 0;
@@ -387,8 +547,11 @@ function ShakeScene({ onlinePhase, coins, curYao, onTrigger, onTossComplete, sha
         }
         return;
       }
-      if (jerk < 2.8 && powerRef.current < 0.18 && !runningRef.current && onlinePhase === 'idle') {
-        motionArmedRef.current = true;
+      if (jerk < 1.6 && powerRef.current < 0.18) {
+        if (!motionStillSinceRef.current) motionStillSinceRef.current = now;
+        if (now - motionStillSinceRef.current > MOTION_REARM_STILL_MS) motionArmedRef.current = true;
+      } else {
+        motionStillSinceRef.current = 0;
       }
       if (!motionArmedRef.current) {
         if (powerRef.current !== 0) {
@@ -398,7 +561,7 @@ function ShakeScene({ onlinePhase, coins, curYao, onTrigger, onTossComplete, sha
         }
         return;
       }
-      const impulse = Math.max(0, jerk - 7.5);
+      const impulse = Math.max(0, jerk - 9.5);
       if (impulse <= 0) return;
       const np = Math.min(1, powerRef.current + impulse * 0.07);
       powerRef.current = np; setPower(np);
@@ -417,7 +580,7 @@ function ShakeScene({ onlinePhase, coins, curYao, onTrigger, onTossComplete, sha
     if (onlinePhase !== 'idle' || curYao >= 6) return;
     const timer = setTimeout(() => {
       triggerLockRef.current = false;
-      if (powerRef.current < 0.18) motionArmedRef.current = true;
+      if (lastTriggerSourceRef.current !== 'motion' && powerRef.current < 0.18) motionArmedRef.current = true;
     }, TOSS_COOLDOWN_MS);
     return () => clearTimeout(timer);
   }, [onlinePhase, curYao]);
@@ -872,9 +1035,9 @@ function App() {
   const [lastResult, setLastResult]       = useState(null);
   const [manualResults, setManualResults] = useState([]);
   const [shakeReady, setShakeReady]       = useState(false);
-  const [daily, setDaily]                 = useState(() => {
-    try { return parseInt(localStorage.getItem('yt_daily') || '0', 10); } catch { return 0; }
-  });
+  const [quota, setQuota]                 = useState(() => loadStoredQuota());
+  const [questionGate, setQuestionGate]   = useState(null);
+  const [reviewing, setReviewing]         = useState(false);
   const tossInFlightRef = useRef(false);
   const tossCooldownRef = useRef(null);
 
@@ -889,6 +1052,22 @@ function App() {
       if (tossCooldownRef.current) clearTimeout(tossCooldownRef.current);
     };
   }, []);
+
+  useEffect(() => {
+    let alive = true;
+    refreshRemoteQuota(quota)
+      .then((nextQuota) => {
+        if (!alive) return;
+        setQuota(nextQuota);
+        saveStoredQuota(nextQuota);
+      })
+      .catch(() => {});
+    return () => { alive = false; };
+  }, []);
+
+  useEffect(() => {
+    setQuestionGate(null);
+  }, [question]);
 
   const enableShake = useCallback(async () => {
     if (typeof DeviceMotionEvent !== 'undefined' && typeof DeviceMotionEvent.requestPermission === 'function') {
@@ -913,8 +1092,35 @@ function App() {
     if (tossCooldownRef.current) clearTimeout(tossCooldownRef.current);
     setStep(0); setQuestion(''); setMethod('coin');
     setOnlineResults([]); setOnlineCur(0); setOnlinePhase('idle'); setOnlineCoins(null); setLastResult(null);
-    setManualResults([]);
+    setManualResults([]); setQuestionGate(null); setReviewing(false);
   };
+
+  const handleQuestionSubmit = useCallback(async () => {
+    const clean = normalizeQuestion(question);
+    if (!clean || reviewing) return;
+    const quotaInfo = normalizeQuota(quota);
+    if (quotaInfo.remaining <= 0) {
+      setQuestionGate({ allowed:false, reason:'今日六爻占卜已满 3 次，明天再起卦。', suggestion:'', retryable:false, quota:quotaInfo });
+      return;
+    }
+    setQuestion(clean);
+    setReviewing(true);
+    setQuestionGate({ allowed:false, reason:'正在审题，合格后才能起卦。', suggestion:'', retryable:true, quota:quotaInfo, loading:true });
+    try {
+      const result = await reviewQuestion(clean, quotaInfo);
+      const nextQuota = result?.quota ? mergeQuota(quotaInfo, result.quota) : quotaInfo;
+      setQuota(nextQuota);
+      saveStoredQuota(nextQuota);
+      setQuestionGate(result);
+      if (result?.allowed) {
+        setOnlineResults([]); setOnlineCur(0); setOnlinePhase('idle'); setOnlineCoins(null); setLastResult(null);
+        setManualResults([]);
+        setStep(1);
+      }
+    } finally {
+      setReviewing(false);
+    }
+  }, [question, reviewing, quota]);
 
   const handleToss = useCallback(() => {
     if (tossInFlightRef.current || onlinePhase !== 'idle' || onlineCur >= 6 || step !== 1 || method !== 'coin') return;
@@ -934,8 +1140,6 @@ function App() {
       if (p.length >= 6) return p;
       const next = p.length + 1;
       if (next >= 6) {
-        const nd = daily + 1; setDaily(nd);
-        try { localStorage.setItem('yt_daily', nd); } catch {}
         setTimeout(() => setStep(2), 700);
       }
       return [...p, { coins:c, value:val }];
@@ -947,15 +1151,11 @@ function App() {
       setOnlinePhase('idle');
       tossCooldownRef.current = null;
     }, TOSS_COOLDOWN_MS);
-  }, [daily]);
+  }, []);
 
   const handleManualConfirm = (yaoObj) => {
     const newR = [...manualResults, yaoObj];
     setManualResults(newR);
-    if (newR.length >= 6) {
-      const nd = daily + 1; setDaily(nd);
-      try { localStorage.setItem('yt_daily', nd); } catch {}
-    }
   };
 
   const vals   = (method === 'coin' ? onlineResults : manualResults).map(r => r.value);
@@ -963,9 +1163,10 @@ function App() {
 
   return (
     <div style={{ display:'flex', flexDirection:'column', height:'100dvh', minHeight:'100dvh', background:C.bg, overflow:'hidden', paddingTop:'env(safe-area-inset-top, 0px)' }}>
-      <Header title={titles[step]} onBack={handleBack} rightLabel={step>0?'重来':undefined} onRight={handleReset} quota={daily}/>
+      <Header title={titles[step]} onBack={handleBack} rightLabel={step>0?'重来':undefined} onRight={handleReset} quota={quota}/>
       <div style={{ flex:1, overflow:'auto', WebkitOverflowScrolling:'touch', display:'flex', flexDirection:'column' }}>
-        {step === 0 && <QuestionStep question={question} setQuestion={setQuestion} onSubmit={() => question.trim().length >= 4 && setStep(1)}/>}
+        {step === 0 && <QuestionStep question={question} setQuestion={setQuestion} onSubmit={handleQuestionSubmit} reviewing={reviewing} quota={quota}
+          gateMessage={questionGate ? { tone: questionGate.loading ? 'hint' : questionGate.allowed ? 'ok' : 'error', text: `${questionGate.reason || ''}${questionGate.suggestion ? ` ${questionGate.suggestion}` : ''}` } : null}/>}
         {step === 1 && (
           <>
             <CastStep question={question} method={method} setMethod={setMethod}
