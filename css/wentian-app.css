@@ -2070,7 +2070,7 @@ html[lang="en"] .wentian-native-mingpan .fc-age {
   width: 28px;
   height: 28px;
   border-radius: 50%;
-  background: url("../images/wentian-prototype-assets/xu-dashi.jpg") center 18% / cover;
+  background: url("../images/wentian-prototype-assets/xu-dashi.webp") center 18% / cover;
   content: "";
   box-shadow: 0 2px 7px rgba(70, 45, 25, .12);
 }
@@ -4623,7 +4623,7 @@ html[lang="en"] .wentian-profile-input {
   border-radius: 22px;
   background:
     linear-gradient(90deg, rgba(28, 15, 10, .90) 0%, rgba(59, 29, 20, .72) 47%, rgba(124, 70, 28, .34) 100%),
-    url("../images/wentian-prototype-assets/liuren-flow-hero.jpg") center / cover no-repeat;
+    url("../images/wentian-prototype-assets/liuren-flow-hero.webp") center / cover no-repeat;
   box-shadow: 0 18px 34px rgba(77, 43, 22, 0.18);
 }
 
@@ -4859,7 +4859,7 @@ html[data-wentian-language="en"] .liuren-hero-copy em {
   overflow: hidden;
   border-radius: 18px;
   background-color: #fff8ed;
-  background-image: url("../images/wentian-prototype-assets/liuren-hand-board.png");
+  background-image: url("../images/wentian-prototype-assets/liuren-hand-board.webp");
   background-position: center;
   background-repeat: no-repeat;
   background-size: 100% auto;

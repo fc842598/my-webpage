@@ -8545,7 +8545,7 @@ p.mbp-topic-detail {
   padding: 0;
   overflow: hidden;
   border-color: rgba(205, 168, 96, .72);
-  background: #fff8ed url("../images/shichen-whorl-guide.jpg") 0 0 / 300% 100% no-repeat;
+  background: #fff8ed url("../images/shichen-whorl-guide.webp") 0 0 / 300% 100% no-repeat;
 }
 
 .mbp-whorl-card::before {
@@ -8596,7 +8596,7 @@ p.mbp-topic-detail {
 
 .mbp-whorl-card:has(input:checked) {
   border-color: #c13228;
-  background: #fff8ed url("../images/shichen-whorl-guide.jpg") 0 0 / 300% 100% no-repeat;
+  background: #fff8ed url("../images/shichen-whorl-guide.webp") 0 0 / 300% 100% no-repeat;
   box-shadow:
     0 0 0 3px rgba(193, 50, 40, .28),
     0 14px 30px rgba(159, 91, 53, .2);

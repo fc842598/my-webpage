@@ -764,7 +764,7 @@ function sourceArchiveScreen(screen) {
     ${figText("source-3-current-title", "当前档案", 18, 136, 120, 15, "#26211c", 800)}
     ${figText("source-3-change", "更换档案 〉", 284, 138, 88, 12, "#9b742e", 500, "right")}
     ${figBox("source-3-profile", 16, 164, 358, 104, "converted-card", "border-radius:12px;box-shadow:0 6px 18px rgba(90,62,34,.09);")}
-    ${figImage("source-3-profile-avatar", "../images/wentian-prototype-assets/03-profile.jpg", 38, 192, 48, 48, "border-radius:24px;border:1px solid #e4d2a7;object-fit:cover;", "loading=\"eager\" decoding=\"async\" onerror=\"this.onerror=null;this.src='../images/wentian-prototype-assets/xu-dashi.jpg';\"")}
+    ${figImage("source-3-profile-avatar", "../images/wentian-prototype-assets/03-profile.webp", 38, 192, 48, 48, "border-radius:24px;border:1px solid #e4d2a7;object-fit:cover;", "loading=\"eager\" decoding=\"async\" onerror=\"this.onerror=null;this.src='../images/wentian-prototype-assets/xu-dashi.webp';\"")}
     ${figText("source-3-profile-name", escapeHtml(active.name), 102, 184, 188, 18, "#26211c", 800)}
     ${figBox("source-3-gender", 102, 211, 30, 18, "", "border-radius:9px;background:#f7ecd5;")}
     ${figText("source-3-gender-text", active.gender, 102, 215, 30, 10, "#b07a2d", 700, "center")}
@@ -775,7 +775,7 @@ function sourceArchiveScreen(screen) {
     ${figText("source-3-master-title", "命理师", 18, 276, 160, 15, "#26211c", 800)}
     ${masters.map(([name, tag1, tag2, tag3, desc, y], index) => `
       ${figBox(`source-3-master-${index}`, 16, y, 358, 116, "converted-card", "border-radius:17px;background:linear-gradient(110deg,#fff,#f8f4ea);box-shadow:0 7px 20px rgba(92,64,32,.11);")}
-      ${figImage(`source-3-master-avatar-${index}`, "../images/wentian-prototype-assets/xu-dashi.jpg", 34, y + 20, 62, 62, "border-radius:31px;object-fit:cover;object-position:center 18%;")}
+      ${figImage(`source-3-master-avatar-${index}`, "../images/wentian-prototype-assets/xu-dashi.webp", 34, y + 20, 62, 62, "border-radius:31px;object-fit:cover;object-position:center 18%;")}
       ${figText(`source-3-master-name-${index}`, name, 112, y + 24, 194, 17, "#26211c", 800)}
       ${figBox(`source-3-pill-a-${index}`, 112, y + 54, 62, 18, "", "border-radius:9px;background:#f7ecd8;")}
       ${figText(`source-3-pill-a-text-${index}`, tag1, 112, y + 58, 62, 10, "#b88c33", 600, "center")}
@@ -1036,7 +1036,7 @@ function sourceAiChatScreen(screen) {
     ${figBox("source-4-bg", 0, 0, 390, 892, "", "background:#fbf7ef;")}
     ${figBox("source-4-header", 0, 0, 390, 88, "", "background:#f8f3ea;box-shadow:0 1px 0 rgba(110,82,38,.08);")}
     ${wentianBackPill("source-4", 14, 25, 'data-action="back" aria-label="返回"', { zIndex: 72 })}
-    ${figImage("source-4-avatar", "../images/wentian-prototype-assets/xu-dashi.jpg", 114, 25, 36, 36, "border-radius:18px;object-fit:cover;object-position:center 18%;")}
+    ${figImage("source-4-avatar", "../images/wentian-prototype-assets/xu-dashi.webp", 114, 25, 36, 36, "border-radius:18px;object-fit:cover;object-position:center 18%;")}
     ${figText("source-4-name", "许大师", 158, 27, 82, 17, "#26211c", 800)}
     ${figText("source-4-left", chatRoleText, 158, 51, 84, 12, "#8d8377", 500)}
     ${profileTag}
@@ -1092,7 +1092,7 @@ function sourceArchiveSelectScreen() {
     ${figText("source-5-count-text", `共 ${archives.length} 张`, 300, 42, 66, 11, "#8b8176", 700, "center")}
 
     ${figBox("source-5-intro", 24, 108, 342, 82, "", "border-radius:18px;background:linear-gradient(135deg,#fff,#f8f1e5);box-shadow:0 10px 24px rgba(70,45,25,.09);")}
-    ${figImage("source-5-avatar", "../images/wentian-prototype-assets/xu-dashi.jpg", 44, 126, 46, 46, "border-radius:23px;object-fit:cover;object-position:center 18%;")}
+    ${figImage("source-5-avatar", "../images/wentian-prototype-assets/xu-dashi.webp", 44, 126, 46, 46, "border-radius:23px;object-fit:cover;object-position:center 18%;")}
     ${figText("source-5-name", "许大师", 106, 124, 120, 18, "#26211c", 900)}
     ${figText("source-5-sub", "选择一个档案接入对话", 106, 150, 210, 14, "#8b8176", 600)}
 
@@ -10837,7 +10837,7 @@ function sourceLanguageSettingsScreen() {
 function convertedAi(screen) {
   const base = `
     ${figBox(`screen-${screen.no}-bg`, 0, 0, 390, 844, "", "background:#fbf7ef;")}
-    ${figImage(`screen-${screen.no}-avatar`, "../images/wentian-prototype-assets/xu-dashi.jpg", 42, 108, 44, 44, "border-radius:22px;object-fit:cover;object-position:center 18%;")}
+    ${figImage(`screen-${screen.no}-avatar`, "../images/wentian-prototype-assets/xu-dashi.webp", 42, 108, 44, 44, "border-radius:22px;object-fit:cover;object-position:center 18%;")}
     ${figText(`screen-${screen.no}-hello`, "你好！我是许大师", 92, 112, 240, 21, "#b88c33", 700)}
     ${figBox(`screen-${screen.no}-bazi`, 32, 170, 326, 88, "converted-card", "")}
     ${figText(`screen-${screen.no}-bazi-title`, "当前八字", 48, 184, 294, 15, "#26211c", 700)}
@@ -10960,7 +10960,7 @@ function sourceHepanTypeScreen() {
       ${figBox(`wt10-pill-${index}`, 122, 178 + index * 34, 146, 24, "", "border:1px solid #c8a65f;border-radius:12px;background:#fffaf0;")}
       ${figText(`wt10-pill-text-${index}`, text, 122, 184 + index * 34, 146, 11, "#7c5d22", 700, "center")}
     `).join("")}
-    ${figImage("wt10-image", "../images/wentian-prototype-assets/hepan-master.jpg", 34, 320, 322, 278, "object-fit:cover;object-position:center 18%;")}
+    ${figImage("wt10-image", "../images/wentian-prototype-assets/hepan-master.webp", 34, 320, 322, 278, "object-fit:cover;object-position:center 18%;")}
     ${figBox("wt10-start-row", 90, 564, 210, 28, "", "border-radius:14px;background:#fbf7ef;")}
     ${figButton("wt10-start-hit", 90, 564, 210, 28, 'data-route="screen-11"')}
     ${figText("wt10-start-text", "选择两张档案", 90, 571, 210, 12, "#25211d", 700, "center")}
@@ -13541,14 +13541,14 @@ const YANGZHAI_RESULT_START_Y = 562;
 const YANGZHAI_RESULT_CARD_HEIGHT = 180;
 const YANGZHAI_RESULT_GAP = 14;
 const YANGZHAI_AVATAR_IMAGES = {
-  父亲: "../images/wentian-prototype-assets/yangzhai-avatar-fuqin.png",
-  母亲: "../images/wentian-prototype-assets/yangzhai-avatar-muqin.png",
-  长子: "../images/wentian-prototype-assets/yangzhai-avatar-changzi.png",
-  长女: "../images/wentian-prototype-assets/yangzhai-avatar-changnv.png",
-  二子: "../images/wentian-prototype-assets/yangzhai-avatar-erzi.png",
-  二女: "../images/wentian-prototype-assets/yangzhai-avatar-ernv.png",
-  三子: "../images/wentian-prototype-assets/yangzhai-avatar-sanzi.png",
-  三女: "../images/wentian-prototype-assets/yangzhai-avatar-sannv.png"
+  父亲: "../images/wentian-prototype-assets/yangzhai-avatar-fuqin.webp",
+  母亲: "../images/wentian-prototype-assets/yangzhai-avatar-muqin.webp",
+  长子: "../images/wentian-prototype-assets/yangzhai-avatar-changzi.webp",
+  长女: "../images/wentian-prototype-assets/yangzhai-avatar-changnv.webp",
+  二子: "../images/wentian-prototype-assets/yangzhai-avatar-erzi.webp",
+  二女: "../images/wentian-prototype-assets/yangzhai-avatar-ernv.webp",
+  三子: "../images/wentian-prototype-assets/yangzhai-avatar-sanzi.webp",
+  三女: "../images/wentian-prototype-assets/yangzhai-avatar-sannv.webp"
 };
 const YANGZHAI_ROLE_GUA = {
   父亲: "乾",
@@ -15190,7 +15190,7 @@ function renderLiurenPath(result, reveal = true) {
   const finalDelay = reveal ? visualSequence.length * LIUREN_FLASH_INTERVAL_SECONDS + 0.1 : 0;
   return `
     <div class="liuren-hand-board ${reveal ? "is-revealed" : "is-idle"}" style="--liuren-step-duration:${LIUREN_FLASH_INTERVAL_SECONDS.toFixed(2)}s;--liuren-final-delay:${finalDelay.toFixed(2)}s;" aria-label="小六壬掌诀三指六位推演图">
-      <img src="../images/wentian-prototype-assets/liuren-hand-board-base.webp" alt="" aria-hidden="true" loading="eager" decoding="sync" fetchpriority="high" onerror="this.onerror=null;this.src='../images/wentian-prototype-assets/liuren-hand-board-base.png';">
+      <img src="../images/wentian-prototype-assets/liuren-hand-board-base.webp" alt="" aria-hidden="true" loading="eager" decoding="sync" fetchpriority="high">
       <div class="liuren-palace-layer" aria-hidden="true">${renderLiurenPalaceBadges(result, reveal)}</div>
       ${reveal ? `<div class="liuren-palace-pulses" aria-hidden="true">${renderLiurenPalacePulses(result)}</div>` : ""}
       <div class="liuren-hand-a11y" aria-live="polite">
@@ -15589,7 +15589,7 @@ function renderWentianPolishedScreen(screen) {
       ${figBox("wt8-bg", 0, 0, 390, 1280, "", "background:#fbf7ef;")}
       ${wentianSimpleHeader("wt8", "AI长文解读")}
       ${figBox("wt8-master", 24, 100, 342, 92, "", "border-radius:16px;background:#fff;box-shadow:0 8px 20px rgba(70,45,25,.08);")}
-      ${figImage("wt8-avatar", "../images/wentian-prototype-assets/xu-dashi.jpg", 42, 116, 58, 58, "border-radius:29px;object-fit:cover;object-position:center 18%;")}
+      ${figImage("wt8-avatar", "../images/wentian-prototype-assets/xu-dashi.webp", 42, 116, 58, 58, "border-radius:29px;object-fit:cover;object-position:center 18%;")}
       ${figText("wt8-name", "许大师", 116, 122, 120, 17, "#25211d", 800)}
       ${figText("wt8-desc", "已结合紫微命盘、八字与当前档案生成", 116, 150, 210, 13, "#8d857b", 500)}
       ${figBox("wt8-question", 42, 222, 306, 88, "", "border-radius:14px;background:#c69a34;box-shadow:0 8px 18px rgba(148,101,25,.16);")}
@@ -15648,7 +15648,7 @@ function renderWentianPolishedScreen(screen) {
     return `
       ${figBox("wt12-bg", 0, 0, 390, 844, "", "background:#f7f7f6;")}
       ${wentianSimpleHeader("wt12", "", "◷")}
-      ${figImage("wt12-avatar", "../images/wentian-prototype-assets/xu-dashi.jpg", 145, 126, 100, 100, "border-radius:50px;object-fit:cover;object-position:center 18%;")}
+      ${figImage("wt12-avatar", "../images/wentian-prototype-assets/xu-dashi.webp", 145, 126, 100, 100, "border-radius:50px;object-fit:cover;object-position:center 18%;")}
       ${figText("wt12-name", "许大师", 0, 252, 390, 16, "#25211d", 800, "center")}
       ${figText("wt12-sub", "写下你想问的命理问题", 0, 279, 390, 14, "#8f8a84", 500, "center")}
       ${figBox("wt12-input", 36, 356, 318, 92, "", "border-radius:12px;background:#fff;")}
@@ -16288,7 +16288,7 @@ function sourceDashboardHomeScreen() {
 
       ${figBox("source-1-hero", 18, 92, 354, 184, "", "border-radius:22px;background:linear-gradient(135deg,#2b1d16 0%,#8f3d30 58%,#c48b25 100%);overflow:hidden;box-shadow:0 16px 34px rgba(96,53,24,.18);")}
       ${figBox("source-1-hero-shine", 218, 84, 170, 170, "", "border-radius:85px;background:rgba(255,232,178,.16);")}
-      ${figImage("source-1-hero-master", "../images/wentian-prototype-assets/xu-dashi.jpg", 254, 110, 98, 116, "border-radius:18px;object-fit:cover;object-position:center 18%;box-shadow:0 10px 24px rgba(0,0,0,.18);")}
+      ${figImage("source-1-hero-master", "../images/wentian-prototype-assets/xu-dashi.webp", 254, 110, 98, 116, "border-radius:18px;object-fit:cover;object-position:center 18%;box-shadow:0 10px 24px rgba(0,0,0,.18);")}
       ${figText("source-1-hero-kicker", "许大师已在线", 36, 118, 118, 12, "#f6d783", 900)}
       ${figText("source-1-hero-title", "先排盘，后解读", 36, 144, 190, 25, "#fffaf3", 900, "left", "white-space:nowrap;")}
       ${figText("source-1-hero-copy", "输入年月日时 建立档案", 36, 176, 212, 12, "rgba(255,250,243,.86)", 700, "left", "white-space:nowrap;")}
