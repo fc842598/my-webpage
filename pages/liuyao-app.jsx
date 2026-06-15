@@ -331,6 +331,7 @@ function ShakeScene({ onlinePhase, coins, curYao, onTrigger, onTossComplete, sha
   const [lastCoins, setLastCoins] = useState(null);
   const powerRef  = useRef(0);
   const dragRef   = useRef({ active: false, lastX: 0, lastY: 0, velX: 0, velY: 0 });
+  const lastMotionRef = useRef(null);
 
   const requestToss = useCallback((source) => {
     const now = performance.now();
@@ -373,8 +374,11 @@ function ShakeScene({ onlinePhase, coins, curYao, onTrigger, onTossComplete, sha
     const h = (e) => {
       const a = e.accelerationIncludingGravity;
       if (!a || a.x == null) return;
-      const mag = Math.sqrt((a.x||0)**2+(a.y||0)**2+(a.z||0)**2);
-      const force = Math.max(0, mag - 9.6);
+      const cur = { x:a.x || 0, y:a.y || 0, z:a.z || 0 };
+      const prev = lastMotionRef.current;
+      lastMotionRef.current = cur;
+      if (!prev) return;
+      const jerk = Math.abs(cur.x - prev.x) + Math.abs(cur.y - prev.y) + Math.abs(cur.z - prev.z);
       if (runningRef.current || onlinePhase !== 'idle' || curYao >= 6) {
         if (powerRef.current !== 0) {
           powerRef.current = 0;
@@ -383,7 +387,7 @@ function ShakeScene({ onlinePhase, coins, curYao, onTrigger, onTossComplete, sha
         }
         return;
       }
-      if (force < 1.25 && powerRef.current < 0.18 && !runningRef.current && onlinePhase === 'idle') {
+      if (jerk < 2.8 && powerRef.current < 0.18 && !runningRef.current && onlinePhase === 'idle') {
         motionArmedRef.current = true;
       }
       if (!motionArmedRef.current) {
@@ -394,7 +398,9 @@ function ShakeScene({ onlinePhase, coins, curYao, onTrigger, onTossComplete, sha
         }
         return;
       }
-      const np = Math.min(1, powerRef.current + force * 0.052);
+      const impulse = Math.max(0, jerk - 7.5);
+      if (impulse <= 0) return;
+      const np = Math.min(1, powerRef.current + impulse * 0.07);
       powerRef.current = np; setPower(np);
       hapticFeedback('power');
       if (sceneRef.current) sceneRef.current.setShakePower(np);
