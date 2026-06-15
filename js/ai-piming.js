@@ -759,18 +759,6 @@ function _aipRenderResult(moduleKey, data) {
 
 // ── 主入口：两个独立 AI 批命按钮 ─────────────────────────────────────────────
 (function _initAipNewBackend() {
-  function _notifyDone(label, detail, tag) {
-    if (typeof window._desktopNotifyTaskDone === 'function') {
-      window._desktopNotifyTaskDone(label, detail, { tag: tag });
-    }
-  }
-
-  function _notifyFailed(label, err, tag) {
-    if (typeof window._desktopNotifyTaskFailed === 'function') {
-      window._desktopNotifyTaskFailed(label, _aipFriendlyError(err) || '\u8bf7\u56de\u5230\u9875\u9762\u67e5\u770b\u539f\u56e0\u3002', { tag: tag });
-    }
-  }
-
   function _bindOverallBtn() {
     const btn      = document.getElementById('aip-overall-btn');
     const statusEl = document.getElementById('aip-overall-status');
@@ -808,11 +796,9 @@ function _aipRenderResult(moduleKey, data) {
         const data = await _aipCallBackend('overall');
         _aipRenderResult('overall', data);
         const meta = data.meta || data.debug || {};
-        _notifyDone('AI\u6574\u4f53\u6279\u547d', '\u6574\u4f53\u6279\u547d\u5df2\u751f\u6210\u3002', 'yuetian-aip-overall');
         if (statusEl) statusEl.textContent = `完成 · ${_fmtDuration(meta.durationMs)}`;
       } catch (err) {
         const msg = _aipFriendlyError(err);
-        _notifyFailed('AI\u6574\u4f53\u6279\u547d', err, 'yuetian-aip-overall-error');
         if (statusEl) statusEl.textContent = msg;
         if (body) { body.textContent = '⚠ ' + msg + '\n请稍后重试'; body.style.color = '#963d32'; }
         if (tip)  tip.textContent = '';
@@ -848,11 +834,9 @@ function _aipRenderResult(moduleKey, data) {
         const data = await _aipCallBackend('shengong');
         _aipRenderResult('shengong', data);
         const meta = data.meta || data.debug || {};
-        _notifyDone('AI\u8eab\u5bab\u6279\u547d', '\u8eab\u5bab\u6279\u547d\u5df2\u751f\u6210\u3002', 'yuetian-aip-shengong');
         if (statusEl) statusEl.textContent = `完成 · ${_fmtDuration(meta.durationMs)}`;
       } catch (err) {
         const msg = _aipFriendlyError(err);
-        _notifyFailed('AI\u8eab\u5bab\u6279\u547d', err, 'yuetian-aip-shengong-error');
         if (statusEl) statusEl.textContent = msg;
         if (shenBody) { shenBody.textContent = '⚠ ' + msg + '\n请稍后重试'; shenBody.style.color = '#963d32'; }
         if (shenTip)  shenTip.textContent = '';
@@ -888,11 +872,9 @@ function _aipRenderResult(moduleKey, data) {
         const data = await _aipCallBackend('hunyin');
         _aipRenderResult('hunyin', data);
         const meta = data.meta || data.debug || {};
-        _notifyDone('AI\u5a5a\u59fb\u6279\u547d', '\u5a5a\u59fb\u6279\u547d\u5df2\u751f\u6210\u3002', 'yuetian-aip-hunyin');
         if (statusEl) statusEl.textContent = `完成 · ${_fmtDuration(meta.durationMs)}`;
       } catch (err) {
         const msg = _aipFriendlyError(err);
-        _notifyFailed('AI\u5a5a\u59fb\u6279\u547d', err, 'yuetian-aip-hunyin-error');
         if (statusEl) statusEl.textContent = msg;
         if (hunyinBody) { hunyinBody.textContent = '⚠ ' + msg + '\n请稍后重试'; hunyinBody.style.color = '#963d32'; }
         if (hunyinTip)  hunyinTip.textContent = '';
@@ -928,11 +910,9 @@ function _aipRenderResult(moduleKey, data) {
         const data = await _aipCallBackend('jiankang');
         _aipRenderResult('jiankang', data);
         const meta = data.meta || data.debug || {};
-        _notifyDone('AI\u5065\u5eb7\u6279\u547d', '\u5065\u5eb7\u6279\u547d\u5df2\u751f\u6210\u3002', 'yuetian-aip-jiankang');
         if (statusEl) statusEl.textContent = `完成 · ${_fmtDuration(meta.durationMs)}`;
       } catch (err) {
         const msg = _aipFriendlyError(err);
-        _notifyFailed('AI\u5065\u5eb7\u6279\u547d', err, 'yuetian-aip-jiankang-error');
         if (statusEl) statusEl.textContent = msg;
         if (body) { body.textContent = '⚠ ' + msg + '\n请稍后重试'; body.style.color = '#963d32'; }
         if (tip)  tip.textContent = '';
@@ -968,11 +948,9 @@ function _aipRenderResult(moduleKey, data) {
         const data = await _aipCallBackend('caiyun');
         _aipRenderResult('caiyun', data);
         const meta = data.meta || data.debug || {};
-        _notifyDone('AI\u8d22\u8fd0\u6279\u547d', '\u8d22\u8fd0\u6279\u547d\u5df2\u751f\u6210\u3002', 'yuetian-aip-caiyun');
         if (statusEl) statusEl.textContent = `完成 · ${_fmtDuration(meta.durationMs)}`;
       } catch (err) {
         const msg = _aipFriendlyError(err);
-        _notifyFailed('AI\u8d22\u8fd0\u6279\u547d', err, 'yuetian-aip-caiyun-error');
         if (statusEl) statusEl.textContent = msg;
         if (body) { body.textContent = '⚠ ' + msg + '\n请稍后重试'; body.style.color = '#963d32'; }
         if (tip)  tip.textContent = '';
@@ -1004,11 +982,9 @@ function _aipRenderResult(moduleKey, data) {
         const data = await _aipCallBackend('shiye');
         _aipRenderResult('shiye', data);
         const meta = data.meta || data.debug || {};
-        _notifyDone('AI\u4e8b\u4e1a\u6279\u547d', '\u4e8b\u4e1a\u6279\u547d\u5df2\u751f\u6210\u3002', 'yuetian-aip-shiye');
         if (statusEl) statusEl.textContent = `完成 · ${_fmtDuration(meta.durationMs)}`;
       } catch (err) {
         const msg = _aipFriendlyError(err);
-        _notifyFailed('AI\u4e8b\u4e1a\u6279\u547d', err, 'yuetian-aip-shiye-error');
         if (statusEl) statusEl.textContent = msg;
         if (body) { body.textContent = '⚠ ' + msg + '\n请稍后重试'; body.style.color = '#963d32'; }
         if (tip)  tip.textContent = '';
@@ -1080,7 +1056,6 @@ function _aipRenderResult(moduleKey, data) {
         const data = await _aipCallBackend('current_luck', { selectedDayun: decadeData, decadeData });
         const card = data.card || {};
         const durationMs = data.meta?.durationMs || (Date.now() - t0);
-        _notifyDone('AI\u5927\u9650\u6279\u547d', '\u5927\u9650\u6279\u547d\u5df2\u751f\u6210\u3002', 'yuetian-aip-daxian');
         if (statusEl) statusEl.textContent = `完成 · ${_fmtDuration(durationMs)}`;
         if (bodyEl) {
           bodyEl.innerHTML = '';
@@ -1090,7 +1065,6 @@ function _aipRenderResult(moduleKey, data) {
         }
         if (riskEl) riskEl.textContent = card.risk ? '要留意：' + card.risk : '';
       } catch (err) {
-        _notifyFailed('AI\u5927\u9650\u6279\u547d', err, 'yuetian-aip-daxian-error');
         if (statusEl) statusEl.textContent = _aipFriendlyError(err);
         if (bodyEl)   bodyEl.innerHTML = '';
       } finally {
@@ -1123,7 +1097,6 @@ function _aipRenderResult(moduleKey, data) {
         const data = await _aipCallBackend('liunian_year', { decadeData, liunianData });
         const card = data.card || {};
         const durationMs = data.meta?.durationMs || (Date.now() - t0);
-        _notifyDone('AI\u6d41\u5e74\u6279\u547d', '\u6d41\u5e74\u6279\u547d\u5df2\u751f\u6210\u3002', 'yuetian-aip-liunian');
         if (statusEl) statusEl.textContent = `完成 · ${_fmtDuration(durationMs)}`;
         if (bodyEl) {
           bodyEl.innerHTML = '';
@@ -1133,7 +1106,6 @@ function _aipRenderResult(moduleKey, data) {
         }
         if (riskEl) riskEl.textContent = card.risk ? '要留意：' + card.risk : '';
       } catch (err) {
-        _notifyFailed('AI\u6d41\u5e74\u6279\u547d', err, 'yuetian-aip-liunian-error');
         if (statusEl) statusEl.textContent = _aipFriendlyError(err);
         if (bodyEl)   bodyEl.innerHTML = '';
       } finally {

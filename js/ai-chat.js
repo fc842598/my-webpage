@@ -282,10 +282,6 @@
     var input = document.getElementById('chat-input');
     var msg = (input ? input.value : '').trim();
     if (!msg) return;
-    if (typeof window._desktopNotifyPrepare === 'function') {
-      window._desktopNotifyPrepare();
-    }
-
     if (!_sessionId) {
       init();
       return;
@@ -366,9 +362,6 @@
         if (data.memoryBJustBuilt) {
           _appendMsg('system', '本轮对话重点已自动整理，后续回答会更贴着你的问题走。');
         }
-        if (typeof window._desktopNotifyTaskDone === 'function') {
-          window._desktopNotifyTaskDone('AI\u534a\u4ed9\u56de\u590d', '\u8bb8\u534a\u4ed9\u5df2\u7ecf\u56de\u5b8c\u4e86\u3002', { tag: 'yuetian-chat' });
-        }
           });
       })
       .catch(function (err) {
@@ -386,9 +379,6 @@
         }
 
         _appendMsg('system', '发送失败：' + _friendlyErrorMessage(err));
-        if (typeof window._desktopNotifyTaskFailed === 'function') {
-          window._desktopNotifyTaskFailed('AI\u534a\u4ed9\u56de\u590d', _friendlyErrorMessage(err), { tag: 'yuetian-chat-error' });
-        }
       })
       .finally(function () {
         _loading = false;

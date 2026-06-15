@@ -7,6 +7,12 @@ const { execFileSync } = require('child_process');
 const rootDir = path.resolve(__dirname, '..');
 const SOURCE_EXTENSIONS = new Set(['.html', '.js', '.jsx', '.css']);
 const ASSET_EXTENSIONS = new Set(['.png', '.jpg', '.jpeg', '.webp', '.svg']);
+const SOURCE_CANDIDATE_EXTENSIONS = new Set(['.js', '.jsx', '.css']);
+const SOURCE_CANDIDATE_PREFIXES = [
+  'css/',
+  'js/',
+  'pages/',
+];
 const EXCLUDED_PREFIXES = [
   '.codex/',
   '.codex-worktrees/',
@@ -53,6 +59,21 @@ function hasTextReference(corpus, filePath) {
   return corpus.includes(filePath) || corpus.includes(basename);
 }
 
+function hasIncomingTextReference(corpusByFile, filePath) {
+  const basename = path.posix.basename(filePath);
+  const pathVariants = [
+    filePath,
+    `./${filePath}`,
+    `../${filePath}`,
+    basename,
+  ];
+
+  return corpusByFile.some(({ path: sourcePath, text }) => {
+    if (sourcePath === filePath) return false;
+    return pathVariants.some(variant => text.includes(variant));
+  });
+}
+
 function main() {
   const tracked = listTrackedFiles()
     .filter(filePath => !isExcluded(filePath))
@@ -62,6 +83,10 @@ function main() {
   const sourceCorpus = sourceFiles
     .map(filePath => readText(filePath))
     .join('\n');
+  const corpusByFile = sourceFiles.map(filePath => ({
+    path: filePath,
+    text: readText(filePath),
+  }));
 
   const largestFiles = tracked
     .map(filePath => ({
@@ -89,14 +114,26 @@ function main() {
     }))
     .sort((a, b) => b.kb - a.kb);
 
+  const unreferencedSourceFiles = tracked
+    .filter(filePath => SOURCE_CANDIDATE_PREFIXES.some(prefix => filePath.startsWith(prefix)))
+    .filter(filePath => SOURCE_CANDIDATE_EXTENSIONS.has(path.extname(filePath).toLowerCase()))
+    .filter(filePath => !hasIncomingTextReference(corpusByFile, filePath))
+    .map(filePath => ({
+      path: filePath,
+      kb: Number((getFileSize(filePath) / 1024).toFixed(1)),
+    }))
+    .sort((a, b) => b.kb - a.kb);
+
   console.log(JSON.stringify({
     generatedAt: new Date().toISOString(),
     largestFiles,
     rootArtifacts,
     unreferencedAssets,
+    unreferencedSourceFiles,
     notes: [
       'Review candidates before deletion.',
       'Dynamic assets are excluded from unreferencedAssets by explicit allowlist.',
+      'unreferencedSourceFiles excludes HTML route entries and checks text references only.',
     ],
   }, null, 2));
 }
