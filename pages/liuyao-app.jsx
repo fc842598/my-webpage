@@ -163,6 +163,82 @@ async function reviewQuestion(question, currentQuota) {
   }
 }
 
+const LIUYAO_TYPE_TEXT = {
+  6: '老阴',
+  7: '少阳',
+  8: '少阴',
+  9: '老阳',
+};
+
+function buildLiuyaoReadingPayload({ question, vals, results }) {
+  const hex = getHexInfo(vals);
+  const dynamic = getDynamic(vals);
+  const changedHex = dynamic.length > 0 ? getChangedHex(vals) : null;
+  const lines = vals.map((value, index) => {
+    const type = YAO_TYPES[value] || {};
+    const source = results?.[index] || {};
+    return {
+      index: index + 1,
+      label: YAO_LABELS[index],
+      value,
+      type: LIUYAO_TYPE_TEXT[value] || type.name || String(value),
+      yinYang: type.isYin ? '阴' : '阳',
+      moving: value === 6 || value === 9,
+      coins: source.coins || null,
+    };
+  });
+  const dynamicLines = dynamic.map(index => lines[index]).filter(Boolean);
+  return {
+    moduleKey: 'liuyao_reading',
+    chartData: {
+      type: 'liuyao',
+      source: 'liuyao-v2',
+      question,
+      method: results?.some(item => Array.isArray(item?.coins)) ? 'online_coin' : 'manual',
+      hex: {
+        number: hex.number,
+        name: hex.name,
+        fullName: hex.fullName,
+        upper: { index: hex.upper, name: TRIGRAM_NAMES[hex.upper], nature: TRIGRAM_NATURE[hex.upper] },
+        lower: { index: hex.lower, name: TRIGRAM_NAMES[hex.lower], nature: TRIGRAM_NATURE[hex.lower] },
+      },
+      changedHex: changedHex ? {
+        number: changedHex.number,
+        name: changedHex.name,
+        fullName: changedHex.fullName,
+        upper: { index: changedHex.upper, name: TRIGRAM_NAMES[changedHex.upper], nature: TRIGRAM_NATURE[changedHex.upper] },
+        lower: { index: changedHex.lower, name: TRIGRAM_NAMES[changedHex.lower], nature: TRIGRAM_NATURE[changedHex.lower] },
+      } : null,
+      upper: `${TRIGRAM_NAMES[hex.upper]}(${TRIGRAM_NATURE[hex.upper]})`,
+      lower: `${TRIGRAM_NAMES[hex.lower]}(${TRIGRAM_NATURE[hex.lower]})`,
+      lines,
+      dynamicLines,
+      generatedAt: new Date().toISOString(),
+    },
+    extraParams: {
+      source: 'liuyao-v2',
+      liuyao: { question, lines, dynamicLines },
+    },
+  };
+}
+
+function flattenReadingResponse(data, fallback) {
+  const card = data?.card;
+  if (card?.sections?.length) {
+    const sections = card.sections
+      .map(item => `${item.title ? `【${item.title}】\n` : ''}${item.content || ''}`.trim())
+      .filter(Boolean);
+    if (card.risk) sections.push(`【提醒】\n${card.risk}`);
+    return sections.join('\n\n') || fallback;
+  }
+  return String(data?.finalAnswer || data?.rawResponse || data?.reply || fallback || '').trim();
+}
+
+async function fetchLiuyaoReading({ question, vals, results }) {
+  const payload = buildLiuyaoReadingPayload({ question, vals, results });
+  return postJson('/api/ai/run', payload, 60000);
+}
+
 const YAO_TYPE_INFO = {
   9: { name: '老阳', dynamic: true,  mark: '○', isYin: false },
   8: { name: '少阴', dynamic: false, mark: '',  isYin: true  },
@@ -980,11 +1056,36 @@ function TypingText({ text, speed=18 }) {
 }
 
 /* ─── Result Step ─── */
-function ResultStep({ vals, question }) {
+function ResultStep({ vals, question, results }) {
   const hex   = getHexInfo(vals);
   const dyn   = getDynamic(vals);
   const chHex = dyn.length > 0 ? getChangedHex(vals) : null;
-  const ai    = genAIText(hex, chHex, dyn, question);
+  const fallbackAi = genAIText(hex, chHex, dyn, question);
+  const [ai, setAi] = useState('');
+  const [loadingAi, setLoadingAi] = useState(true);
+  const [aiError, setAiError] = useState('');
+
+  useEffect(() => {
+    let alive = true;
+    setAi('');
+    setAiError('');
+    setLoadingAi(true);
+    fetchLiuyaoReading({ question, vals, results })
+      .then(data => {
+        if (!alive) return;
+        setAi(flattenReadingResponse(data, fallbackAi) || fallbackAi);
+      })
+      .catch(() => {
+        if (!alive) return;
+        setAiError('后台解卦暂时繁忙，先显示基础解读。');
+        setAi(fallbackAi);
+      })
+      .finally(() => {
+        if (alive) setLoadingAi(false);
+      });
+    return () => { alive = false; };
+  }, [question, vals.join('-')]);
+
   return (
     <div style={{ flex:1, padding:'20px 20px 32px', display:'flex', flexDirection:'column', gap:14 }}>
       <div style={{ background:`linear-gradient(160deg,${C.primaryDark} 0%,${C.primary} 50%,#B06030 100%)`, borderRadius:20, padding:'30px 24px 28px', display:'flex', flexDirection:'column', alignItems:'center', boxShadow:'0 8px 28px rgba(60,15,8,0.22)' }}>
@@ -1026,6 +1127,13 @@ function ResultStep({ vals, question }) {
             <div style={{ fontSize:11, color:C.text3 }}>AI 命理分析</div>
           </div>
         </div>
+        {loadingAi && !ai && (
+          <div style={{ display:'flex', alignItems:'center', gap:8, fontSize:13, color:C.text3, lineHeight:1.8, marginBottom:8 }}>
+            <span style={{ width:7, height:7, borderRadius:'50%', background:C.gold, boxShadow:'0 0 0 5px rgba(148,98,8,.10)', animation:'pulse 0.9s infinite' }}></span>
+            大模型正在解卦，请稍等...
+          </div>
+        )}
+        {aiError && <div style={{ fontSize:12, color:C.text3, marginBottom:8 }}>{aiError}</div>}
         <div style={{ fontSize:14, lineHeight:2, color:C.text }}><TypingText text={ai} speed={18}/></div>
       </div>
       <div style={{ height:8 }}></div>
@@ -1190,7 +1298,7 @@ function App() {
             )}
           </>
         )}
-        {step === 2 && <ResultStep vals={vals} question={question}/>}
+        {step === 2 && <ResultStep vals={vals} question={question} results={method === 'coin' ? onlineResults : manualResults}/>}
       </div>
       <TabBar/>
     </div>

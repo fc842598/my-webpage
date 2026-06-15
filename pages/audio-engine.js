@@ -73,32 +73,32 @@
     }
 
     function shake() {
-      thump(96, 0, 0.42, 0.075);
-      [0.02, 0.20, 0.42].forEach((delay, i) => {
-        clickNoise(delay, 0.075, 0.028, 1200 + i * 110);
-        ping(150 + i * 18, delay + 0.025, 0.16, 0.024);
+      thump(82, 0, 0.72, 0.072);
+      [0.04, 0.34, 0.68].forEach((delay, i) => {
+        clickNoise(delay, 0.12, 0.022, 980 + i * 90);
+        ping(128 + i * 14, delay + 0.04, 0.24, 0.018);
       });
     }
 
     function pour() {
-      thump(124, 0, 0.46, 0.06);
-      [0.04, 0.26, 0.50].forEach((delay, i) => {
-        clickNoise(delay, 0.07, 0.042, 1850 - i * 170);
-        ping(305 - i * 42, delay + 0.02, 0.18, 0.052);
+      thump(104, 0, 0.78, 0.058);
+      [0.08, 0.44, 0.78].forEach((delay, i) => {
+        clickNoise(delay, 0.13, 0.032, 1500 - i * 150);
+        ping(246 - i * 34, delay + 0.04, 0.28, 0.038);
       });
     }
 
     function spin() {
-      [0, 0.34, 0.70].forEach((delay, i) => {
-        ping(160 + i * 10, delay, 0.20, 0.024);
+      [0, 0.52, 1.04].forEach((delay, i) => {
+        ping(136 + i * 8, delay, 0.32, 0.018);
       });
     }
 
     function settle() {
-      thump(132, 0, 0.56, 0.095);
-      ping(220, 0.08, 0.26, 0.075);
-      ping(168, 0.22, 0.24, 0.046);
-      clickNoise(0.04, 0.09, 0.05, 1350);
+      thump(104, 0, 0.72, 0.082);
+      ping(188, 0.12, 0.34, 0.052);
+      ping(142, 0.36, 0.28, 0.034);
+      clickNoise(0.08, 0.14, 0.038, 1050);
     }
 
     return { resume, shake, pour, spin, settle };

@@ -292,10 +292,10 @@
         const flatQ = new THREE.Quaternion().setFromAxisAngle(axis, angle);
         const yawQ  = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0,1,0), Math.random()*0.6-0.3);
         qFlat[i].copy(yawQ).multiply(flatQ);
-        spinOmega[i] = 12 + Math.random() * 8;
+        spinOmega[i] = 8 + Math.random() * 5;
         spinAngle[i] = Math.random() * Math.PI * 2;
         spinInit[i]  = spinOmega[i];
-        spinDecel[i] = 20 + Math.random() * 8;
+        spinDecel[i] = 9 + Math.random() * 4;
       });
     }
 
@@ -328,20 +328,20 @@
 
         /* ── SHAKE: vigorous rattle ── */
         else if (phase === 'shake') {
-          const amp = Math.sin(Math.min(e/0.45, 1) * Math.PI) * 0.55;
-          shell.rotation.z = Math.sin(e * 42) * amp;
-          shell.rotation.x = Math.sin(e * 34) * amp * 0.65;
-          shell.position.y = 0.12 + Math.abs(Math.sin(e * 40)) * 0.14;
-          if (e >= 0.45) phase = 'pour';
+          const amp = Math.sin(Math.min(e/0.72, 1) * Math.PI) * 0.48;
+          shell.rotation.z = Math.sin(e * 28) * amp;
+          shell.rotation.x = Math.sin(e * 22) * amp * 0.65;
+          shell.position.y = 0.12 + Math.abs(Math.sin(e * 26)) * 0.12;
+          if (e >= 0.72) phase = 'pour';
         }
 
         /* ── POUR: shell tips forward, coins emerge from collar opening ── */
         else if (phase === 'pour') {
-          const pe = e - 0.45;
+          const pe = e - 0.72;
           // Shell tip: 0 → 68° then gently back
           let tipAngle;
-          if (pe < 0.25) tipAngle = ease3(pe / 0.25) * 1.18;      // tip forward
-          else if (pe < 0.62) tipAngle = 1.18 - ease3((pe-0.25)/0.37) * 0.28; // settle back a bit
+          if (pe < 0.38) tipAngle = ease3(pe / 0.38) * 1.18;      // tip forward
+          else if (pe < 0.95) tipAngle = 1.18 - ease3((pe-0.38)/0.57) * 0.28; // settle back a bit
           else tipAngle = 0.90;
           shell.rotation.x = tipAngle;
           shell.rotation.z = Math.sin(pe * 4) * 0.04 * Math.max(0, 1 - pe/0.8);
@@ -349,8 +349,8 @@
 
           // Coins: staggered emergence from opening
           coins.forEach((c, i) => {
-            const delay = i * 0.07;
-            const cu = Math.max(0, Math.min((pe - delay) / 0.55, 1));
+            const delay = i * 0.11;
+            const cu = Math.max(0, Math.min((pe - delay) / 0.82, 1));
             if (cu > 0) {
               c.visible = true;
               const eu = ease3(cu);
@@ -369,12 +369,12 @@
               }
             }
           });
-          if (pe >= 0.72) { phase = 'spin'; settleInit = false; }
+          if (pe >= 1.05) { phase = 'spin'; settleInit = false; }
         }
 
         /* ── SPIN: coins spin on the ground (tops/gyros decelerating) ── */
         else if (phase === 'spin') {
-          const se = e - 1.17; // time since spin started
+          const se = e - 1.77; // time since spin started
           if (!settleInit) {
             // Lock coins to landing position, set initial spin standing upright
             coins.forEach((c, i) => {
@@ -421,7 +421,7 @@
             if (onDone) {
               const cb = onDone, r = coinResult.slice();
               onDone = null;
-              setTimeout(() => cb(r), 180);
+              setTimeout(() => cb(r), 320);
             }
           }
         }
