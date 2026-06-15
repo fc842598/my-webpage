@@ -153,18 +153,41 @@
       75%{ transform: translate(-1px,1px); }
     }
     .screen-shake { animation: screenShake 0.5s ease-in-out; }
+
+    @keyframes liuyaoReviewSpin {
+      to { transform: rotate(360deg); }
+    }
+    @keyframes liuyaoThinkingPulse {
+      0%, 100% { opacity: 0.34; transform: scale(0.72); }
+      50% { opacity: 1; transform: scale(1); }
+    }
+    .liuyao-review-spinner {
+      width: 16px; height: 16px; border-radius: 50%;
+      border: 2px solid rgba(160, 120, 64, 0.26);
+      border-top-color: currentColor;
+      display: inline-block;
+      animation: liuyaoReviewSpin 0.8s linear infinite;
+    }
+    .liuyao-thinking-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: #946208;
+      display: inline-block;
+      box-shadow: 13px 0 0 rgba(148,98,8,0.45), 26px 0 0 rgba(148,98,8,0.22);
+      animation: liuyaoThinkingPulse 1.05s ease-in-out infinite;
+      margin-right: 24px;
+    }
   </style>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
   <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
   <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
-  <script src="../js/config.js?v=20260615-quota-gate"></script>
-  <script src="audio-engine.js?v=20260615-quota-gate"></script>
-  <script src="haptic.js?v=20260615-quota-gate"></script>
-  <script src="liuyao-3d.js?v=20260615-quota-gate"></script>
-  <script type="text/babel" src="liuyao-data.jsx?v=20260615-quota-gate"></script>
-  <script type="text/babel" src="liuyao-app.jsx?v=20260615-quota-gate"></script>
+  <script src="../js/config.js?v=20260615-review-loading"></script>
+  <script src="audio-engine.js?v=20260615-review-loading"></script>
+  <script src="haptic.js?v=20260615-review-loading"></script>
+  <script src="liuyao-3d.js?v=20260615-review-loading"></script>
+  <script type="text/babel" src="liuyao-data.jsx?v=20260615-review-loading"></script>
+  <script type="text/babel" src="liuyao-app.jsx?v=20260615-review-loading"></script>
 </head>
 <body>
   <div id="root"></div>

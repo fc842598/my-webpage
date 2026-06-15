@@ -256,15 +256,20 @@ function QuestionStep({ question, setQuestion, onSubmit, reviewing, gateMessage,
     <div style={{ flex:1, display:'flex', flexDirection:'column', padding:'26px 20px 24px' }}>
       <p style={{ fontSize:24, fontWeight:700, fontFamily:"'Noto Serif SC',serif", color:C.text, lineHeight:1.4, marginBottom:6 }}>你想问什么？</p>
       <p style={{ fontSize:14, color:C.text2, marginBottom:18 }}>一事一卦，越具体越准</p>
-      <div style={{ background:C.surface, borderRadius:16, padding:'16px 18px 12px', boxShadow:C.shadow, display:'flex', flexDirection:'column', height:220, flexShrink:0 }}>
+      <div style={{ background:C.surface, borderRadius:16, padding:'14px 16px 10px', boxShadow:C.shadow, display:'flex', flexDirection:'column', height:128, flexShrink:0 }}>
         <textarea value={question} onChange={e => setQuestion(e.target.value)} placeholder="例如：这周面试能顺利通过吗？" autoFocus rows={3} maxLength={LIUYAO_QUESTION_MAX_LENGTH}
-          style={{ fontFamily:'inherit', fontSize:17, lineHeight:1.65, border:'none', outline:'none', resize:'none', background:'transparent', color:C.text, flex:1, width:'100%', minHeight:0 }}/>
-        <div style={{ display:'flex', justifyContent:'flex-end', marginTop:8 }}>
+          style={{ fontFamily:'inherit', fontSize:16, lineHeight:1.55, border:'none', outline:'none', resize:'none', background:'transparent', color:C.text, flex:1, width:'100%', minHeight:0 }}/>
+        <div style={{ display:'flex', justifyContent:'flex-end', marginTop:6 }}>
           <span style={{ fontSize:12, color:valid ? C.gold : C.text3, transition:'color 0.2s' }}>{question.length} 字</span>
         </div>
       </div>
-      <div style={{ minHeight:38, padding:'10px 2px 0', color:gateMessage?.tone === 'error' ? '#8e2f25' : gateMessage?.tone === 'ok' ? C.goldDeep : C.text2, fontSize:12, lineHeight:1.55 }}>
-        {gateMessage?.text || `今日已占 ${quotaInfo.used}/${quotaInfo.limit}`}
+      <div style={{ minHeight:42, padding:'10px 2px 0', color:gateMessage?.tone === 'error' ? '#8e2f25' : gateMessage?.tone === 'ok' ? C.goldDeep : C.text2, fontSize:12, lineHeight:1.55 }}>
+        {reviewing ? (
+          <span style={{ display:'inline-flex', alignItems:'center', gap:7 }}>
+            <span className="liuyao-thinking-dot"></span>
+            大模型正在审题，请稍候
+          </span>
+        ) : (gateMessage?.text || `今日已占 ${quotaInfo.used}/${quotaInfo.limit}`)}
       </div>
       <button onClick={onSubmit} disabled={disabled} style={{
         width:'100%', padding:'15px 0', marginTop:10, borderRadius:14, border:'none',
@@ -272,7 +277,12 @@ function QuestionStep({ question, setQuestion, onSubmit, reviewing, gateMessage,
         color: !disabled ? '#fff' : C.text3, fontSize:17, fontWeight:600,
         cursor: !disabled ? 'pointer' : 'default', letterSpacing:2, transition:'all 0.25s',
         boxShadow: !disabled ? '0 4px 18px rgba(107,29,16,0.3)' : 'none', fontFamily:'inherit',
-      }}>{reviewing ? '审题中...' : quotaInfo.remaining <= 0 ? '今日已满' : '提交占问'}</button>
+      }}>{reviewing ? (
+        <span style={{ display:'inline-flex', alignItems:'center', justifyContent:'center', gap:9 }}>
+          <span className="liuyao-review-spinner"></span>
+          审题中
+        </span>
+      ) : quotaInfo.remaining <= 0 ? '今日已满' : '提交占问'}</button>
     </div>
   );
 }

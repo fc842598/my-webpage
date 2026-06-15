@@ -18204,7 +18204,7 @@ document.addEventListener("click", (event) => {
   const earlyActionTarget = event.target.closest("[data-action]");
   const earlyAction = earlyActionTarget?.dataset.action;
   if (earlyAction === "wentian-open-liuyao-v2") {
-    window.location.href = "./liuyao-v2.html?v=20260615-quota-gate";
+    window.location.href = "./liuyao-v2.html?v=20260615-review-loading";
     return;
   }
   if (earlyAction === "yangzhai-open") {
