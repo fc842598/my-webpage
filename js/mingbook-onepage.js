@@ -4472,7 +4472,47 @@
     if (nestedSectionCard) {
       next.card = { ...next.card, ...nestedSectionCard };
     }
+    const embeddedCard = findEmbeddedAiCard({
+      card: next.card,
+      finalAnswer: next.finalAnswer,
+      answer: next.answer,
+      result: next.result,
+      text: next.text,
+    });
+    if (embeddedCard) {
+      next.card = { ...next.card, ...embeddedCard };
+    }
     return next;
+  }
+
+  function findEmbeddedAiCard(source, depth = 0) {
+    if (!source || depth > 4) return null;
+    if (typeof source === 'string') return parsedAiCard(source);
+    if (Array.isArray(source)) {
+      for (const item of source) {
+        const found = findEmbeddedAiCard(item, depth + 1);
+        if (found) return found;
+      }
+      return null;
+    }
+    if (typeof source !== 'object') return null;
+    const textKeys = ['body', 'summary', 'content', 'text', 'finalAnswer', 'answer', 'result'];
+    for (const key of textKeys) {
+      const found = findEmbeddedAiCard(source[key], depth + 1);
+      if (found) return found;
+    }
+    if (Array.isArray(source.sections)) {
+      for (const section of source.sections) {
+        const found = findEmbeddedAiCard(section?.content || section?.body || section?.summary || section, depth + 1);
+        if (found) return found;
+      }
+    }
+    const objectKeys = ['card', 'data', 'payload', 'output', 'response'];
+    for (const key of objectKeys) {
+      const found = findEmbeddedAiCard(source[key], depth + 1);
+      if (found) return found;
+    }
+    return null;
   }
 
   function aiCardText(data) {
