@@ -36,6 +36,19 @@
       });
     }
 
+    function thump(freq = 110, delay = 0, duration = 0.38, volume = 0.075) {
+      resume();
+      const start = ctx.currentTime + delay;
+      const out = makeGain(volume, start, duration);
+      const osc = ctx.createOscillator();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(freq, start);
+      osc.frequency.exponentialRampToValueAtTime(Math.max(40, freq * 0.55), start + duration);
+      osc.connect(out);
+      osc.start(start);
+      osc.stop(start + duration);
+    }
+
     function clickNoise(delay = 0, duration = 0.045, volume = 0.07, filterFreq = 2600) {
       resume();
       const start = ctx.currentTime + delay;
@@ -60,29 +73,32 @@
     }
 
     function shake() {
-      [0, 0.075, 0.15].forEach((delay, i) => {
-        clickNoise(delay, 0.05, 0.038, 1700 + i * 180);
-        ping(210 + i * 28, delay, 0.10, 0.035);
+      thump(96, 0, 0.42, 0.075);
+      [0.02, 0.20, 0.42].forEach((delay, i) => {
+        clickNoise(delay, 0.075, 0.028, 1200 + i * 110);
+        ping(150 + i * 18, delay + 0.025, 0.16, 0.024);
       });
     }
 
     function pour() {
-      [0, 0.075, 0.15].forEach((delay, i) => {
-        clickNoise(delay, 0.055, 0.052, 2200 - i * 180);
-        ping(390 - i * 52, delay, 0.13, 0.075);
+      thump(124, 0, 0.46, 0.06);
+      [0.04, 0.26, 0.50].forEach((delay, i) => {
+        clickNoise(delay, 0.07, 0.042, 1850 - i * 170);
+        ping(305 - i * 42, delay + 0.02, 0.18, 0.052);
       });
     }
 
     function spin() {
-      [0, 0.18, 0.36].forEach((delay, i) => {
-        ping(190 + i * 14, delay, 0.12, 0.032);
+      [0, 0.34, 0.70].forEach((delay, i) => {
+        ping(160 + i * 10, delay, 0.20, 0.024);
       });
     }
 
     function settle() {
-      ping(275, 0, 0.22, 0.11);
-      ping(205, 0.06, 0.18, 0.075);
-      clickNoise(0.01, 0.07, 0.055, 1700);
+      thump(132, 0, 0.56, 0.095);
+      ping(220, 0.08, 0.26, 0.075);
+      ping(168, 0.22, 0.24, 0.046);
+      clickNoise(0.04, 0.09, 0.05, 1350);
     }
 
     return { resume, shake, pour, spin, settle };

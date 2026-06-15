@@ -606,8 +606,8 @@ function ShakeScene({ onlinePhase, coins, curYao, onTrigger, onTossComplete, sha
       const captured = coins; // capture before async
       // Setup pour sound trigger during animation
       if (audioRef.current) {
-        setTimeout(() => { playSound('pour'); }, 450);
-        setTimeout(() => { playSound('spin'); }, 650);
+        setTimeout(() => { playSound('pour'); }, 820);
+        setTimeout(() => { playSound('spin'); }, 1180);
       }
       sceneRef.current.toss(captured, (result) => {
         finishToss(result || captured);
