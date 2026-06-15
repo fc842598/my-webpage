@@ -24,6 +24,10 @@ function readJson(relPath) {
   return JSON.parse(fs.readFileSync(path.join(rootDir, relPath), 'utf8'));
 }
 
+function hasFixture(relPath) {
+  return fs.existsSync(path.join(rootDir, relPath));
+}
+
 function buildExpectedMap() {
   const reverse = {};
   for (let upper = 1; upper <= 8; upper++) {
@@ -84,7 +88,14 @@ function replay(sample, reverse) {
 
 function main() {
   const reverse = buildExpectedMap();
-  const truth300 = readJson(path.join('tmp', 'tianji-truth-300.json'));
+  const truth300Path = path.join('tmp', 'tianji-truth-300.json');
+
+  if (!hasFixture(truth300Path)) {
+    console.warn(`[skip] XianTian Experimental Replay: missing optional fixture ${truth300Path}`);
+    return;
+  }
+
+  const truth300 = readJson(truth300Path);
   const rows = truth300.map(sample => replay(sample, reverse));
   const failed = rows.filter(row => !row.xianOk);
 

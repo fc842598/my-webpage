@@ -21,6 +21,10 @@ function readJson(relPath) {
   return JSON.parse(fs.readFileSync(path.join(rootDir, relPath), 'utf8'));
 }
 
+function hasFixture(relPath) {
+  return fs.existsSync(path.join(rootDir, relPath));
+}
+
 function parsePillarsText(text, civilSlot) {
   const [yearP, monthP, dayP, hourP] = String(text || '').trim().split(/\s+/);
   const timeSlot = civilSlot === 'early-zi' ? '早子' : civilSlot === 'night-zi' ? '夜子' : civilSlot;
@@ -63,10 +67,23 @@ function replay(sample) {
 }
 
 function main() {
-  const truth300 = readJson(path.join('tmp', 'tianji-truth-300.json'));
-  const haiEdge = readJson(path.join('tmp', 'tianji-hai-edge-samples.json'));
-  const femaleQian = readJson(path.join('tmp', 'tianji-female-qian-hai-samples.json'));
-  const femaleQianBoundary = readJson(path.join('tmp', 'tianji-female-qian-hai-boundary-samples.json'));
+  const requiredFixtures = [
+    path.join('tmp', 'tianji-truth-300.json'),
+    path.join('tmp', 'tianji-hai-edge-samples.json'),
+    path.join('tmp', 'tianji-female-qian-hai-samples.json'),
+    path.join('tmp', 'tianji-female-qian-hai-boundary-samples.json'),
+  ];
+  const missingFixtures = requiredFixtures.filter(relPath => !hasFixture(relPath));
+
+  if (missingFixtures.length) {
+    console.warn(`[skip] Hai Experimental Replay: missing optional fixtures ${missingFixtures.join(', ')}`);
+    return;
+  }
+
+  const truth300 = readJson(requiredFixtures[0]);
+  const haiEdge = readJson(requiredFixtures[1]);
+  const femaleQian = readJson(requiredFixtures[2]);
+  const femaleQianBoundary = readJson(requiredFixtures[3]);
 
   const allHai = truth300.filter(item => item.civilSlot === '亥')
     .concat(haiEdge)

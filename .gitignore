@@ -4,7 +4,10 @@ node_modules/
 # Generated data
 tmp/
 output/
+mockups/
 .playwright-cli/
+.codex-remote-attachments/
+.codex-worktrees/
 
 # Local caches
 __pycache__/
@@ -20,3 +23,19 @@ tmp-*.jpg
 tmp-*.jpeg
 tmp-*.png
 tmp-*.webp
+output-*.jpg
+output-*.jpeg
+output-*.png
+output-*.webp
+output_*.jpg
+output_*.jpeg
+output_*.png
+output_*.webp
+go-*.jpg
+go-*.jpeg
+go-*.png
+go-*.webp
+*-smoke.jpg
+*-smoke.jpeg
+*-smoke.png
+*-smoke.webp

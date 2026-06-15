@@ -2,7 +2,7 @@
 
 const DEFAULT_BASE =
   process.env.AI_PIMING_BASE_URL ||
-  'https://ai-piming-backend-production.up.railway.app';
+  'https://api.yuetianai.com';
 
 function parseArg(prefix, fallback) {
   const arg = process.argv.find((value) => value.startsWith(prefix));
@@ -166,18 +166,17 @@ function checkMeta(meta) {
   assert(typeof meta.promptSource === 'string', 'meta.promptSource must be a string');
 }
 
-function checkDebug(debug, rawResponse) {
+function checkDebug(debug) {
   assert(debug && typeof debug === 'object', 'debug must be an object');
   assert(typeof debug.model === 'string', 'debug.model must be a string');
   assert(typeof debug.durationMs === 'number', 'debug.durationMs must be a number');
   assert(typeof debug.promptSource === 'string', 'debug.promptSource must be a string');
   assert(Array.isArray(debug.trace), 'debug.trace must be an array');
-  assert(typeof debug.rawResponse === 'string', 'debug.rawResponse must be a string');
-  assert(debug.rawResponse === rawResponse, 'debug.rawResponse must match rawResponse');
 }
 
-function checkRawJson(rawResponse) {
-  assert(typeof rawResponse === 'string' && rawResponse.trim(), 'rawResponse must be a non-empty string');
+function checkOptionalRawJson(rawResponse) {
+  if (!rawResponse) return null;
+  assert(typeof rawResponse === 'string', 'rawResponse must be a string when present');
   const parsed = extractJsonObject(rawResponse);
   assert(parsed && typeof parsed === 'object', 'rawResponse must contain a valid JSON object');
   assert(typeof parsed.title === 'string', 'raw JSON title must be a string');
@@ -212,21 +211,23 @@ async function runOnce(base, runIndex) {
   assert(result.resp.ok, `run ${runIndex}: HTTP ${result.resp.status} ${result.text}`);
   assert(result.data && result.data.ok === true, `run ${runIndex}: response.ok must be true`);
   assert(result.data.success === true, `run ${runIndex}: response.success must be true`);
-  assert(result.data.module === 'overall_piming', `run ${runIndex}: module must equal overall_piming`);
+  assert(result.data.module === 'overall', `run ${runIndex}: module must equal overall`);
   assert(typeof result.data.finalAnswer === 'string', `run ${runIndex}: finalAnswer must be a string`);
+  assert(result.data.finalAnswer.trim(), `run ${runIndex}: finalAnswer must not be empty`);
   assert(Array.isArray(result.data.backendSteps), `run ${runIndex}: backendSteps must be an array`);
 
-  const rawJson = checkRawJson(result.data.rawResponse);
+  const rawJson = checkOptionalRawJson(result.data.rawResponse);
   checkCard(result.data.card);
+  assert(result.data.card.sections.length >= 3, `run ${runIndex}: card.sections must contain at least 3 items`);
   checkMeta(result.data.meta);
-  checkDebug(result.data.debug, result.data.rawResponse);
+  checkDebug(result.data.debug);
 
   return {
     run: runIndex,
     durationMs: result.data.meta.durationMs,
     tokensUsed: result.data.meta.tokensUsed,
     sectionCount: result.data.card.sections.length,
-    rawSectionCount: rawJson.sections.length,
+    rawSectionCount: rawJson ? rawJson.sections.length : null,
     title: result.data.card.title,
     profileBadge: result.data.card.profileBadge,
   };

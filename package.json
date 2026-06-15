@@ -2,6 +2,7 @@
   "name": "codex-browser-session",
   "private": true,
   "scripts": {
+    "audit:dead-code": "node scripts/audit-dead-code.js",
     "smoke:overall-piming": "node scripts/smoke-overall-piming-contract.js",
     "validate:ziping": "node scripts/validate-ziping-professional-tool-samples.js",
     "validate:ziping:boundary": "node scripts/validate-ziping-boundary-rules.js",
