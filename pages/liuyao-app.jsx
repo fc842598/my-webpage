@@ -929,26 +929,26 @@ function ManualCast({ results, onConfirmYao, onUndoLast }) {
 function CastStep({ question, method, setMethod, onlineResults, onlineCur, onlinePhase, onlineCoins, onToss, onTossComplete, lastResult, manualResults, onManualConfirm, onManualUndo, shakeReady, onEnableShake }) {
   const canSwitch = onlineResults.length === 0 && manualResults.length === 0;
   return (
-    <div style={{ flex:1, padding:'18px 20px 28px', display:'flex', flexDirection:'column', gap:14 }}>
-      <div style={{ display:'inline-flex', alignItems:'center', gap:7, alignSelf:'flex-start', background:C.surface, padding:'9px 14px', borderRadius:30, boxShadow:C.shadow, maxWidth:'100%' }}>
+    <div style={{ flex:1, padding:'8px 20px 28px', display:'flex', flexDirection:'column', gap:8 }}>
+      <div style={{ display:'inline-flex', alignItems:'center', gap:6, alignSelf:'flex-start', background:C.surface, padding:'6px 12px', borderRadius:24, boxShadow:C.shadow, maxWidth:'100%' }}>
         <div style={{ width:6, height:6, borderRadius:'50%', background:C.gold, flexShrink:0 }}></div>
-        <span style={{ fontSize:13, color:C.text2, overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>{question}</span>
+        <span style={{ fontSize:12, color:C.text2, overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>{question}</span>
       </div>
-      <div style={{ background:C.surface, borderRadius:16, padding:'14px 16px', boxShadow:C.shadow }}>
-        <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:12 }}>
-          <span style={{ fontSize:14, fontWeight:600, color:C.text }}>起卦方式</span>
+      <div style={{ background:C.surface, borderRadius:15, padding:'10px 12px', boxShadow:C.shadow }}>
+        <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:8 }}>
+          <span style={{ fontSize:13, fontWeight:700, color:C.text }}>起卦方式</span>
           {!canSwitch && <span style={{ fontSize:12, color:C.text3 }}>{method==='coin'?'在线投币':'手动起卦'}</span>}
         </div>
-        <div style={{ display:'flex', gap:8 }}>
+        <div style={{ display:'flex', gap:7 }}>
           {['coin','manual'].map(m => {
             const active = method === m;
             return (
               <button key={m} onClick={() => canSwitch && setMethod(m)} style={{
-                flex:1, padding:'11px 0', borderRadius:10,
+                flex:1, padding:'8px 0', borderRadius:10,
                 background: active ? C.goldBg : 'transparent',
                 border: active ? `1.5px solid ${C.goldBorder}` : `1px solid ${C.border}`,
                 color: active ? C.gold : C.text3,
-                fontSize:14, fontWeight:active?700:400,
+                fontSize:13, fontWeight:active?800:500,
                 cursor: canSwitch ? 'pointer' : 'default',
                 transition:'all 0.2s', fontFamily:'inherit',
               }}>{m==='coin'?'在线投币':'手动起卦'}</button>
