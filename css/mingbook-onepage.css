@@ -94,7 +94,7 @@ select {
 
 .mbp-brand {
   gap: 12px;
-  margin-right: auto;
+  margin-right: 28px;
   color: var(--gold);
   font: 800 22px/1 "Noto Serif SC", "Songti SC", serif;
 }
@@ -9025,6 +9025,10 @@ p.mbp-topic-detail {
 @media (max-width: 1020px) {
   .mbp-nav {
     padding-inline: 20px;
+  }
+
+  .mbp-brand {
+    margin-right: auto;
   }
 
   .mbp-nav-actions {
