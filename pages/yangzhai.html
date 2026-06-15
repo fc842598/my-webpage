@@ -3049,13 +3049,13 @@
       const elderRoleCopy = {
         grandpa: {
           familyClass: "父位类",
-          under65Note: "现住位为主，按父亲位解。",
-          seniorNote: "现住位为主，按父亲位解；65岁后兼看东北。"
+          introNote: "现（爷爷、外公）居此位，65岁之前按父亲位解读。",
+          retirementNote: "65岁后应退位（不再担一家之主的角色），退居东北位为佳。"
         },
         grandma: {
           familyClass: "母位类",
-          under65Note: "现住位为主，按母亲位解。",
-          seniorNote: "现住位为主，按母亲位解；65岁后兼看东南。"
+          introNote: "现（奶奶、外婆）居此位，65岁之前按母亲位解读。",
+          retirementNote: "65岁后应退位（不再担一家之主的角色），退居东北位为佳。"
         }
       };
 
@@ -3173,10 +3173,13 @@
         const option = getOption(label);
         if (!option.elderKey) return [];
         const copy = elderRoleCopy[option.elderKey];
-        if (getElderAgeValue(option.elderKey) === "under65") {
-          return [copy.under65Note];
-        }
-        return [copy.seniorNote];
+        return [copy.introNote];
+      };
+      const getElderClosingLines = (label) => {
+        const option = getOption(label);
+        if (!option.elderKey || getElderAgeValue(option.elderKey) === "under65") return [];
+        const copy = elderRoleCopy[option.elderKey];
+        return [copy.retirementNote];
       };
       const getItems = (key) => Array.isArray(state.placements[key]) ? state.placements[key] : [];
       const getPlacementCount = () => Object.values(state.placements).reduce((total, items) => total + (Array.isArray(items) ? items.length : 0), 0);
@@ -3327,7 +3330,7 @@
         activeName.textContent = `${palace.gua}宫 · ${palace.dir}`;
         activeRole.textContent = palace.role;
         activeHint.textContent = selectedElders.length
-          ? `先看现在住哪一宫。长辈先按现住位解；65岁后再参考长辈位。建议本位：${palace.defaultItem || "先定方位"}。`
+          ? `先看现在住哪一宫。长辈65岁前按父母位类解读；65岁后退居东北为佳。建议本位：${palace.defaultItem || "先定方位"}。`
           : `先点左侧九宫里的方位，再点下方成员或空间。建议本位：${palace.defaultItem || "先定方位"}。`;
         pickedList.classList.toggle("is-empty", !selected.length);
         pickedList.innerHTML = selected.length
@@ -3348,7 +3351,7 @@
         }
         elderHelper.hidden = false;
         elderHelper.innerHTML = `
-          <div class="elder-helper-note">长辈先看现住位；65岁后再参考长辈位：爷爷/外公看东北，奶奶/外婆看东南。</div>
+          <div class="elder-helper-note">长辈现住位先按父母位类解读；65岁后应退位，退居东北位为佳。</div>
           <div class="elder-age-stack">${selectedElders.map((option) => `
             <div class="elder-age-card">
               <strong>${escapeHtml(option.label)}</strong>
@@ -3422,7 +3425,8 @@
             const matched = mappedLabel === palace.defaultItem;
             const reading = getHexReading(hex);
             const originalText = toSimplified(formatReadingText(getReadingText(reading)));
-            const bodyLines = [...readingLines, hex ? (originalText || "原文待核。") : `已安位到${palace.dir}，该组合暂无索引。`];
+            const closingLines = getElderClosingLines(label);
+            const bodyLines = [...readingLines, hex ? (originalText || "原文待核。") : `已安位到${palace.dir}，该组合暂无索引。`, ...closingLines];
             results.push({
               ...base,
               tag: matched ? "本位相合" : "卦象解读",
