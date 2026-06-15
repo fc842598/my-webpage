@@ -934,6 +934,7 @@
       min-height: 86px;
       display: grid;
       align-content: center;
+      justify-items: center;
       gap: 6px;
       padding: 10px 8px;
       border: 1px solid rgba(201,169,97,.30);
@@ -948,6 +949,44 @@
       font-family: "Noto Serif SC", "Songti SC", serif;
       font-size: 17px;
       line-height: 1.1;
+    }
+
+    .center-person {
+      position: relative;
+      width: 22px;
+      height: 30px;
+      margin-top: 2px;
+      color: #dbc17b;
+      opacity: .92;
+    }
+
+    .center-person::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 50%;
+      width: 8px;
+      height: 8px;
+      border: 1.6px solid currentColor;
+      border-radius: 50%;
+      transform: translateX(-50%);
+      box-shadow: 0 0 10px rgba(219, 193, 123, .18);
+    }
+
+    .center-person::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 10px;
+      width: 14px;
+      height: 18px;
+      transform: translateX(-50%);
+      background:
+        linear-gradient(currentColor, currentColor) center 0 / 1.6px 18px no-repeat,
+        linear-gradient(currentColor, currentColor) center 4px / 12px 1.6px no-repeat,
+        linear-gradient(135deg, transparent calc(50% - .8px), currentColor calc(50% - .8px), currentColor calc(50% + .8px), transparent calc(50% + .8px)) left 11px / 7px 7px no-repeat,
+        linear-gradient(225deg, transparent calc(50% - .8px), currentColor calc(50% - .8px), currentColor calc(50% + .8px), transparent calc(50% + .8px)) right 11px / 7px 7px no-repeat;
+      opacity: .95;
     }
 
     .center-marker span {
@@ -2262,6 +2301,11 @@
         font-size: 16px;
       }
 
+      .center-person {
+        width: 20px;
+        height: 28px;
+      }
+
       .center-marker span {
         font-size: 11px;
         line-height: 1.55;
@@ -3238,7 +3282,8 @@
             return `<div class="palace-cell center-cell" aria-label="中宫定位">
               <div class="center-marker" aria-hidden="true">
                 <strong>中宫</strong>
-                <span>以户型中心为准<br>确认北向后再安位</span>
+                <span class="center-person"></span>
+                <span>以户型中心为准<br>确认后再安位</span>
               </div>
             </div>`;
           }
