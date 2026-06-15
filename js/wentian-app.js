@@ -11515,6 +11515,22 @@ function normalizeLiuyaoQuestion(value) {
 }
 
 function normalizeLiuyaoQuota(raw) {
+  if (raw?.testingUnlimited) {
+    const limit = Math.max(1, Number(raw?.limit || raw?.dailyLimit || 999));
+    const used = Math.max(0, Number(raw?.used ?? raw?.dailyUsed ?? 0));
+    return {
+      ...raw,
+      limit,
+      used,
+      remaining: limit,
+      dailyLimit: limit,
+      dailyUsed: used,
+      dailyRemaining: limit,
+      exhausted: false,
+      testingUnlimited: true,
+      checkedAt: Number(raw?.checkedAt) || Date.now(),
+    };
+  }
   const limit = Math.max(1, Number(raw?.limit || raw?.dailyLimit || LIUYAO_DAILY_LIMIT));
   const used = Math.max(0, Number(raw?.used ?? raw?.dailyUsed ?? 0));
   const remaining = Math.max(0, Number(raw?.remaining ?? raw?.dailyRemaining ?? (limit - used)));
@@ -11530,6 +11546,7 @@ function normalizeLiuyaoQuota(raw) {
 
 function mergeLiuyaoQuota(currentRaw, nextRaw) {
   const next = normalizeLiuyaoQuota(nextRaw);
+  if (next.testingUnlimited) return next;
   if (!currentRaw) return next;
   const current = normalizeLiuyaoQuota(currentRaw);
   const sameKnownDate = current.date && next.date && current.date === next.date;
@@ -11783,7 +11800,7 @@ function isLiuyaoQuotaExhausted(state = getLiuyaoState()) {
 
 function renderLiuyaoQuotaBadge(state = getLiuyaoState()) {
   const quota = getLiuyaoQuota(state);
-  const text = liuyaoQuotaLoading ? "今日次数确认中" : `今日已占 ${quota.used}/${quota.limit}`;
+  const text = liuyaoQuotaLoading ? "今日次数确认中" : (quota.testingUnlimited ? "测试期不限次数" : `今日已占 ${quota.used}/${quota.limit}`);
   return `<span class="liuyao-quota-badge ${quota.remaining <= 0 ? "is-empty" : ""}">${escapeHtml(text)}</span>`;
 }
 
@@ -12836,7 +12853,7 @@ function renderLiuyaoManualCoinInput(state, options = {}) {
 
 function renderLiuyaoAppHeader(id, title, state = getLiuyaoState(), options = {}) {
   const quota = getLiuyaoQuota(state);
-  const badge = options.badge || `${quota.used}/${quota.limit}`;
+  const badge = options.badge || (quota.testingUnlimited ? "测试不限" : `${quota.used}/${quota.limit}`);
   return `
     <div class="liuyao-app-header" aria-label="${escapeHtml(title)}">
       ${wentianBackPill(id, 18, 42, 'data-action="back" aria-label="返回"')}
@@ -18204,7 +18221,7 @@ document.addEventListener("click", (event) => {
   const earlyActionTarget = event.target.closest("[data-action]");
   const earlyAction = earlyActionTarget?.dataset.action;
   if (earlyAction === "wentian-open-liuyao-v2") {
-    window.location.href = "./liuyao-v2.html?v=20260615-ai-reading";
+    window.location.href = "./liuyao-v2.html?v=20260615-liuyao-test-unlimited";
     return;
   }
   if (earlyAction === "yangzhai-open") {

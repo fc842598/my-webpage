@@ -52,6 +52,23 @@ function normalizeQuestion(value) {
 }
 
 function normalizeQuota(raw) {
+  if (raw?.testingUnlimited) {
+    const limit = Math.max(1, Number(raw?.limit || raw?.dailyLimit || 999));
+    const used = Math.max(0, Number(raw?.used ?? raw?.dailyUsed ?? 0));
+    return {
+      limit,
+      used,
+      remaining: limit,
+      dailyLimit: limit,
+      dailyUsed: used,
+      dailyRemaining: limit,
+      date: String(raw?.date || ''),
+      exhausted: false,
+      testingUnlimited: true,
+      unlimitedUntil: raw?.unlimitedUntil || '',
+      checkedAt: Number(raw?.checkedAt) || Date.now(),
+    };
+  }
   const limit = Math.max(1, Number(raw?.limit || raw?.dailyLimit || LIUYAO_DAILY_LIMIT));
   const used = Math.max(0, Number(raw?.used ?? raw?.dailyUsed ?? 0));
   const remaining = Math.max(0, Number(raw?.remaining ?? raw?.dailyRemaining ?? (limit - used)));
@@ -60,6 +77,7 @@ function normalizeQuota(raw) {
 
 function mergeQuota(currentRaw, nextRaw) {
   const next = normalizeQuota(nextRaw);
+  if (next.testingUnlimited) return next;
   if (!currentRaw) return next;
   const current = normalizeQuota(currentRaw);
   const sameDate = (current.date && next.date && current.date === next.date) || (!current.date && !next.date);
@@ -248,8 +266,11 @@ const YAO_TYPE_INFO = {
 
 /* ─── Header ─── */
 function Header({ title, onBack, rightLabel, onRight, quota }) {
-  const quotaText = quota && typeof quota === 'object'
-    ? `${normalizeQuota(quota).used}/${normalizeQuota(quota).limit}`
+  const quotaInfo = quota && typeof quota === 'object' ? normalizeQuota(quota) : null;
+  const quotaText = quotaInfo?.testingUnlimited
+    ? '测试不限'
+    : quotaInfo
+      ? `${quotaInfo.used}/${quotaInfo.limit}`
     : `${Number(quota || 0)}/3`;
   return (
     <header style={{
@@ -345,7 +366,7 @@ function QuestionStep({ question, setQuestion, onSubmit, reviewing, gateMessage,
             <span className="liuyao-thinking-dot"></span>
             大模型正在审题，请稍候
           </span>
-        ) : (gateMessage?.text || `今日已占 ${quotaInfo.used}/${quotaInfo.limit}`)}
+        ) : (gateMessage?.text || (quotaInfo.testingUnlimited ? '测试期不限次数' : `今日已占 ${quotaInfo.used}/${quotaInfo.limit}`))}
       </div>
       <button onClick={onSubmit} disabled={disabled} style={{
         width:'100%', padding:'15px 0', marginTop:10, borderRadius:14, border:'none',

@@ -328,6 +328,19 @@
   }
 
   function normalizeQuota(raw) {
+    if (raw?.testingUnlimited) {
+      const limit = Math.max(1, Number(raw?.limit || raw?.dailyLimit || 999));
+      const used = Math.max(0, Number(raw?.used ?? raw?.dailyUsed ?? 0));
+      return {
+        limit,
+        used,
+        remaining: limit,
+        date: String(raw?.date || ''),
+        exhausted: false,
+        testingUnlimited: true,
+        unlimitedUntil: raw?.unlimitedUntil || '',
+      };
+    }
     const limit = Math.max(1, Number(raw?.limit || raw?.dailyLimit || LIUYAO_DAILY_LIMIT));
     const used = Math.max(0, Number(raw?.used ?? raw?.dailyUsed ?? 0));
     const remaining = Math.max(0, Number(raw?.remaining ?? raw?.dailyRemaining ?? (limit - used)));
