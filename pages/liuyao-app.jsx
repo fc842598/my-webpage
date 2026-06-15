@@ -18,7 +18,7 @@ const C = {
   shadow:      '0 2px 14px rgba(60,28,8,0.13)',
 };
 
-const TOSS_COOLDOWN_MS = 950;
+const TOSS_COOLDOWN_MS = 450;
 
 const YAO_TYPE_INFO = {
   9: { name: '老阳', dynamic: true,  mark: '○', isYin: false },
@@ -342,6 +342,7 @@ function ShakeScene({ onlinePhase, coins, curYao, onTrigger, onTossComplete, sha
     powerRef.current = 0;
     setPower(0);
     if (sceneRef.current) sceneRef.current.setShakePower(0);
+    if (audioRef.current?.resume) audioRef.current.resume();
     onTrigger();
     return true;
   }, [onlinePhase, curYao, onTrigger]);
@@ -357,47 +358,54 @@ function ShakeScene({ onlinePhase, coins, curYao, onTrigger, onTossComplete, sha
 
   // power decay (idle desktop)
   useEffect(() => {
-    if (!shakeReady) return;
+    if (!shakeReady || onlinePhase !== 'idle' || curYao >= 6) return;
     const iv = setInterval(() => {
       const np = Math.max(0, powerRef.current - 0.016);
       powerRef.current = np; setPower(np);
       if (sceneRef.current) sceneRef.current.setShakePower(np);
     }, 50);
     return () => clearInterval(iv);
-  }, [shakeReady]);
+  }, [shakeReady, onlinePhase, curYao]);
 
   // DeviceMotion → power (mobile)
   useEffect(() => {
-    if (!shakeReady) return;
+    if (!shakeReady || onlinePhase !== 'idle' || curYao >= 6) return;
     const h = (e) => {
       const a = e.accelerationIncludingGravity;
       if (!a || a.x == null) return;
       const mag = Math.sqrt((a.x||0)**2+(a.y||0)**2+(a.z||0)**2);
       const force = Math.max(0, mag - 9.6);
       if (runningRef.current || onlinePhase !== 'idle' || curYao >= 6) {
-        powerRef.current = 0;
-        setPower(0);
-        if (sceneRef.current) sceneRef.current.setShakePower(0);
+        if (powerRef.current !== 0) {
+          powerRef.current = 0;
+          setPower(0);
+          if (sceneRef.current) sceneRef.current.setShakePower(0);
+        }
         return;
       }
       if (force < 1.25 && powerRef.current < 0.18 && !runningRef.current && onlinePhase === 'idle') {
         motionArmedRef.current = true;
       }
       if (!motionArmedRef.current) {
-        powerRef.current = 0;
-        setPower(0);
-        if (sceneRef.current) sceneRef.current.setShakePower(0);
+        if (powerRef.current !== 0) {
+          powerRef.current = 0;
+          setPower(0);
+          if (sceneRef.current) sceneRef.current.setShakePower(0);
+        }
         return;
       }
       const np = Math.min(1, powerRef.current + force * 0.052);
       powerRef.current = np; setPower(np);
       hapticFeedback('power');
       if (sceneRef.current) sceneRef.current.setShakePower(np);
-      if (np >= 0.94 && motionArmedRef.current) requestToss('motion');
+      if (np >= 0.94 && motionArmedRef.current) {
+        window.removeEventListener('devicemotion', h);
+        requestToss('motion');
+      }
     };
     window.addEventListener('devicemotion', h);
     return () => window.removeEventListener('devicemotion', h);
-  }, [shakeReady, onlinePhase, requestToss, hapticFeedback]);
+  }, [shakeReady, onlinePhase, curYao, requestToss, hapticFeedback]);
 
   useEffect(() => {
     if (onlinePhase !== 'idle' || curYao >= 6) return;
@@ -419,18 +427,26 @@ function ShakeScene({ onlinePhase, coins, curYao, onTrigger, onTossComplete, sha
       const captured = coins; // capture before async
       // Setup pour sound trigger during animation
       if (audioRef.current) {
-        setTimeout(() => { playSound('pour'); }, 850);
-        setTimeout(() => { playSound('spin'); }, 950);
+        setTimeout(() => { playSound('pour'); }, 450);
+        setTimeout(() => { playSound('spin'); }, 650);
       }
       sceneRef.current.toss(captured, (result) => {
+        finishToss(result || captured);
+      });
+
+      let finished = false;
+      const fallback = setTimeout(() => finishToss(captured), 3600);
+      function finishToss(res) {
+        if (finished) return;
+        finished = true;
+        clearTimeout(fallback);
         runningRef.current = false;
         triggerLockRef.current = true;
-        const res = result || captured;
         setLastCoins(res);
         playSound('settle');
         hapticFeedback('settle');
         if (cbRef.current) cbRef.current(res);
-      });
+      }
     }
   }, [onlinePhase]);
 

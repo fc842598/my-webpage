@@ -292,10 +292,10 @@
         const flatQ = new THREE.Quaternion().setFromAxisAngle(axis, angle);
         const yawQ  = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0,1,0), Math.random()*0.6-0.3);
         qFlat[i].copy(yawQ).multiply(flatQ);
-        spinOmega[i] = 20 + Math.random() * 18;   // 20–38 rad/s — 2–3× more revolutions
+        spinOmega[i] = 12 + Math.random() * 8;
         spinAngle[i] = Math.random() * Math.PI * 2;
         spinInit[i]  = spinOmega[i];
-        spinDecel[i] = 8 + Math.random() * 7;        // 8–15 — varies finish time per coin
+        spinDecel[i] = 20 + Math.random() * 8;
       });
     }
 
@@ -328,36 +328,36 @@
 
         /* ── SHAKE: vigorous rattle ── */
         else if (phase === 'shake') {
-          const amp = Math.sin(Math.min(e/0.85, 1) * Math.PI) * 0.55;
+          const amp = Math.sin(Math.min(e/0.45, 1) * Math.PI) * 0.55;
           shell.rotation.z = Math.sin(e * 42) * amp;
           shell.rotation.x = Math.sin(e * 34) * amp * 0.65;
           shell.position.y = 0.12 + Math.abs(Math.sin(e * 40)) * 0.14;
-          if (e >= 0.85) phase = 'pour';
+          if (e >= 0.45) phase = 'pour';
         }
 
         /* ── POUR: shell tips forward, coins emerge from collar opening ── */
         else if (phase === 'pour') {
-          const pe = e - 0.85;
+          const pe = e - 0.45;
           // Shell tip: 0 → 68° then gently back
           let tipAngle;
-          if (pe < 0.42) tipAngle = ease3(pe / 0.42) * 1.18;      // tip forward
-          else if (pe < 1.0) tipAngle = 1.18 - ease3((pe-0.42)/0.58) * 0.28; // settle back a bit
+          if (pe < 0.25) tipAngle = ease3(pe / 0.25) * 1.18;      // tip forward
+          else if (pe < 0.62) tipAngle = 1.18 - ease3((pe-0.25)/0.37) * 0.28; // settle back a bit
           else tipAngle = 0.90;
           shell.rotation.x = tipAngle;
-          shell.rotation.z = Math.sin(pe * 3) * 0.04 * Math.max(0, 1 - pe/1.2);
+          shell.rotation.z = Math.sin(pe * 4) * 0.04 * Math.max(0, 1 - pe/0.8);
           shell.position.y = 0.12;
 
           // Coins: staggered emergence from opening
           coins.forEach((c, i) => {
-            const delay = i * 0.12;
-            const cu = Math.max(0, Math.min((pe - delay) / 0.9, 1));
+            const delay = i * 0.07;
+            const cu = Math.max(0, Math.min((pe - delay) / 0.55, 1));
             if (cu > 0) {
               c.visible = true;
               const eu = ease3(cu);
               c.position.x = pourStart.x + (land[i].x - pourStart.x) * eu;
               c.position.z = pourStart.z + (land[i].z - pourStart.z) * eu;
               // arc: start high near collar, arc down to ground
-              const arcY = pourStart.y + (land[i].y - pourStart.y) * eu + Math.sin(Math.PI * cu) * 1.4;
+              const arcY = pourStart.y + (land[i].y - pourStart.y) * eu + Math.sin(Math.PI * cu) * 1.05;
               c.position.y = Math.max(land[i].y, arcY);
               // spin in flight
               if (cu < 1) {
@@ -369,12 +369,12 @@
               }
             }
           });
-          if (pe >= 1.05) { phase = 'spin'; settleInit = false; }
+          if (pe >= 0.72) { phase = 'spin'; settleInit = false; }
         }
 
         /* ── SPIN: coins spin on the ground (tops/gyros decelerating) ── */
         else if (phase === 'spin') {
-          const se = e - 1.9; // time since spin started
+          const se = e - 1.17; // time since spin started
           if (!settleInit) {
             // Lock coins to landing position, set initial spin standing upright
             coins.forEach((c, i) => {
@@ -414,14 +414,14 @@
             }
           });
           // Also settle shell back to upright
-          if (shell.rotation.x > 0.02) shell.rotation.x *= Math.max(0, 1 - dt * 2.5);
+          if (shell.rotation.x > 0.02) shell.rotation.x *= Math.max(0, 1 - dt * 4);
 
           if (allDone) {
             phase = 'rest';
             if (onDone) {
               const cb = onDone, r = coinResult.slice();
               onDone = null;
-              setTimeout(() => cb(r), 320);
+              setTimeout(() => cb(r), 180);
             }
           }
         }
