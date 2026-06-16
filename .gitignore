@@ -8,6 +8,7 @@ mockups/
 .playwright-cli/
 .codex-remote-attachments/
 .codex-worktrees/
+没用的文件夹/
 
 # Local caches
 __pycache__/
