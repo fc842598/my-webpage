@@ -128,13 +128,25 @@ function getApiBase() {
   return String(window.SITE_CONFIG?.aiBackendBase || 'https://api.yuetianai.com').replace(/\/+$/, '');
 }
 
+function getWentianAuthToken() {
+  try {
+    const session = JSON.parse(localStorage.getItem('wentian-app-auth-session-v1') || 'null');
+    return session?.access_token || '';
+  } catch {
+    return '';
+  }
+}
+
 async function postJson(path, payload, timeoutMs = 6000) {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(new DOMException('request timeout', 'TimeoutError')), timeoutMs);
+  const authToken = getWentianAuthToken();
+  const headers = { 'Content-Type':'application/json' };
+  if (authToken) headers.Authorization = `Bearer ${authToken}`;
   try {
     const res = await fetch(`${getApiBase()}${path}`, {
       method:'POST',
-      headers:{ 'Content-Type':'application/json' },
+      headers,
       body:JSON.stringify(payload),
       signal:controller.signal,
     });
