@@ -1136,34 +1136,6 @@
 
     .option-btn.is-clear::after { display: none; }
 
-    .picked-list {
-      min-height: 42px;
-      max-height: 108px;
-      margin-top: 10px;
-      padding: 9px;
-      border: 1px solid rgba(201,169,97,.16);
-      border-radius: 8px;
-      color: #8d7e5c;
-      font-size: 12px;
-      display: flex;
-      flex-wrap: wrap;
-      align-content: flex-start;
-      gap: 6px;
-      overflow: auto;
-      scrollbar-width: thin;
-      scrollbar-color: rgba(201,169,97,.46) rgba(201,169,97,.08);
-    }
-
-    .picked-list .item-pill {
-      max-width: calc(50% - 3px);
-    }
-
-    .picked-list.is-empty {
-      display: grid;
-      align-items: center;
-      color: #776a4d;
-    }
-
     .locator-head p {
       margin: -4px 0 0;
       color: #93835f;
@@ -2327,25 +2299,6 @@
         background: rgba(87,24,15,.72);
       }
 
-      .picked-list {
-        margin-top: 10px;
-        min-height: 39px;
-        max-height: 82px;
-        border: 0;
-        border-top: 1px solid rgba(201,169,97,.22);
-        border-radius: 0;
-        justify-content: center;
-      }
-
-      .picked-list::before {
-        content: "已选成员";
-        width: 100%;
-        color: var(--ivory);
-        text-align: center;
-        font-size: 12px;
-        font-weight: 800;
-      }
-
       .result-panel {
         margin-top: 12px;
         padding: 24px 15px 27px;
@@ -2868,7 +2821,6 @@
                 <p id="activePalaceHint">选中后会放入当前宫位。</p>
               </div>
               <div class="option-grid" id="optionGrid" aria-label="安位选项"></div>
-              <div class="picked-list" id="pickedList">当前宫位尚未安位</div>
             </div>
             <div class="locator-stage" id="locatorStage" hidden>
               <div class="locator-head">
@@ -3035,7 +2987,6 @@
 
       const grid = document.getElementById("palaceGrid");
       const optionGrid = document.getElementById("optionGrid");
-      const pickedList = document.getElementById("pickedList");
       const activeName = document.getElementById("activePalaceName");
       const activeRole = document.getElementById("activePalaceRole");
       const activeHint = document.getElementById("activePalaceHint");
@@ -3262,10 +3213,6 @@
         activeName.textContent = `${palace.gua}宫 · ${palace.dir}`;
         activeRole.textContent = palace.role;
         activeHint.textContent = `选中后会放入当前宫位。建议本位：${palace.defaultItem || "先定方位"}。`;
-        pickedList.classList.toggle("is-empty", !selected.length);
-        pickedList.innerHTML = selected.length
-          ? selected.map((item) => `<span class="item-pill" title="${escapeHtml(getDisplayLabel(item, isElderLabel(item) ? "tooltip" : "default"))}">${escapeHtml(getDisplayLabel(item, isElderLabel(item) ? "selection" : "default"))}</span>`).join(" ")
-          : "当前方位还没放内容";
         optionGrid.innerHTML = options.map((option) => {
           const isSelected = option.type !== "clear" && selected.includes(option.label);
           const selectedClass = isSelected ? " is-selected" : "";
