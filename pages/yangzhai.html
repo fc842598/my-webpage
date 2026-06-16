@@ -1136,71 +1136,6 @@
 
     .option-btn.is-clear::after { display: none; }
 
-    .elder-helper[hidden] {
-      display: none !important;
-    }
-
-    .elder-helper {
-      display: grid;
-      gap: 8px;
-      margin-top: 10px;
-      padding: 10px;
-      border: 1px solid rgba(201,169,97,.18);
-      border-radius: 8px;
-      background: rgba(201,169,97,.045);
-    }
-
-    .elder-helper-note {
-      color: #bcae84;
-      font-size: 12px;
-      font-weight: 800;
-      line-height: 1.6;
-    }
-
-    .elder-age-stack {
-      display: grid;
-      gap: 8px;
-    }
-
-    .elder-age-card {
-      display: grid;
-      gap: 7px;
-    }
-
-    .elder-age-card strong {
-      color: var(--ivory);
-      font-size: 12px;
-      line-height: 1.4;
-    }
-
-    .elder-age-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-    }
-
-    .elder-age-btn {
-      min-height: 28px;
-      padding: 0 12px;
-      border: 1px solid rgba(201,169,97,.24);
-      border-radius: 999px;
-      color: #cfbf95;
-      background: rgba(6,5,3,.72);
-      cursor: pointer;
-      font-size: 12px;
-      font-weight: 900;
-      white-space: nowrap;
-    }
-
-    .elder-age-btn:hover,
-    .elder-age-btn.is-active {
-      border-color: rgba(240,215,155,.56);
-      color: var(--ivory);
-      background:
-        linear-gradient(180deg, rgba(201,169,97,.20), rgba(117,86,37,.14)),
-        rgba(18,12,5,.84);
-    }
-
     .picked-list {
       min-height: 42px;
       max-height: 108px;
@@ -2870,8 +2805,8 @@
         <section class="intro-panel" id="yangzhaiIntro" aria-label="阳宅居住方位介绍">
           <div class="intro-toggle-row">
             <div class="intro-toggle-copy">
-              <strong>阳宅居住方位使用说明</strong>
-              <span>点开后再看使用说明</span>
+              <strong>先定中心，再按实际居住位置安人</strong>
+              <span>定中心 -> 安人 -> 生成解读</span>
             </div>
             <button class="intro-toggle" id="yangzhaiIntroToggle" type="button" aria-expanded="false" aria-controls="yangzhaiIntroContent">展开说明</button>
           </div>
@@ -2898,10 +2833,10 @@
 
               <div class="intro-support" id="directionGuide">
                 <div>
-                  <strong>使用前先看什么？</strong>
-                  <p>先取房屋中心，再定正北。定完方向后，先填“现在是谁住在哪个方位”，系统再告诉你是否名位相等、哪里需要调整。</p>
+                  <strong>30秒看懂朝向</strong>
+                  <p>先找房屋中心，再看各方位落点，最后按实际居住位置安人。</p>
                 </div>
-                <button class="text-link" type="button" data-action="open-direction-help">打开 30 秒教程</button>
+                <button class="text-link" type="button" data-action="open-direction-help">30秒看懂朝向</button>
               </div>
             </div>
           </div>
@@ -2912,34 +2847,33 @@
             <div class="section-head">
               <div class="section-head-copy">
                 <h2>九宫安位</h2>
-                <p>先确定房屋朝向，再点九宫方位放入家人或空间。</p>
-                <button class="text-link section-help" type="button" data-action="open-direction-help">不会确定朝向？</button>
+                <p>先选宫位，再放家人或空间。</p>
+                <button class="text-link section-help" type="button" data-action="open-direction-help">30秒看懂朝向</button>
               </div>
             </div>
             <div class="palace-grid" id="palaceGrid" aria-label="九宫方位"></div>
             <div class="grid-actions">
               <button class="danger-btn" type="button" data-action="reset">重置</button>
               <button class="ghost-btn" type="button" data-action="autofill">一键按长幼安位</button>
-              <button class="gold-btn" type="button" data-action="analyze">生成家宅解读</button>
+              <button class="gold-btn" type="button" data-action="analyze">生成解读</button>
             </div>
           </section>
 
           <aside class="picker-panel">
             <div class="picker-stage" id="pickerStage">
-              <h2 class="picker-title">给当前方位放成员/空间</h2>
-              <p class="picker-lead">先点左侧九宫里的方位，再选择这个方位对应的家人或空间。</p>
+              <h2 class="picker-title">当前宫位安位</h2>
+              <p class="picker-lead">先选宫位，再放家人或空间。</p>
               <div class="active-card" hidden aria-hidden="true">
                 <div class="active-meta"><span id="activePalaceName">巽宫 · 东南</span><span id="activePalaceRole">长女位</span></div>
-                <p id="activePalaceHint">先点左侧九宫里的方位，再点下方成员或空间放进去。</p>
+                <p id="activePalaceHint">选中后会放入当前宫位。</p>
               </div>
               <div class="option-grid" id="optionGrid" aria-label="安位选项"></div>
-              <div class="elder-helper" id="elderHelper" hidden></div>
               <div class="picked-list" id="pickedList">当前宫位尚未安位</div>
             </div>
             <div class="locator-stage" id="locatorStage" hidden>
               <div class="locator-head">
-                <h2 class="picker-title">解读定位</h2>
-                <p>点编号，下面会自动跳到对应解读。</p>
+                <h2 class="picker-title">方位解读</h2>
+                <p>点编号查看对应解读。</p>
               </div>
               <div class="locator-current" id="locatorCurrent"></div>
               <div class="locator-list" id="locatorQueue" aria-label="解读定位队列"></div>
@@ -2953,10 +2887,10 @@
               <h2 id="result-title">解读结果</h2>
               <p id="resultMeta">尚未生成</p>
             </div>
-            <button class="ghost-btn result-edit-btn" type="button" data-action="edit">继续安位</button>
+            <button class="ghost-btn result-edit-btn" type="button" data-action="edit">返回安位</button>
           </div>
           <div id="resultGrid" class="result-grid">
-            <div class="empty-state">先选方位，再放入家人或空间，最后点击「生成家宅解读」。</div>
+            <div class="empty-state">完成安位后生成解读</div>
           </div>
         </section>
       </div>
@@ -2975,14 +2909,14 @@
           <div>
             <h4>阳宅工具</h4>
             <a href="#workbench">九宫安位</a>
-            <a href="#results">生成家宅解读</a>
+            <a href="#results">生成解读</a>
             <a href="#yangzhaiIntro">朝向判断</a>
           </div>
           <div>
-            <h4>操作说明</h4>
-            <a href="#startPlacement">三步开始安位</a>
-            <a href="#workbench">一键按长幼安位</a>
-            <a href="#results">查看方位解读</a>
+            <h4>使用流程</h4>
+            <a href="#startPlacement">定中心</a>
+            <a href="#workbench">九宫安位</a>
+            <a href="#results">查看解读</a>
           </div>
           <div>
             <h4>帮助</h4>
@@ -2998,13 +2932,13 @@
     <div class="direction-modal" id="directionModal" hidden>
       <div class="direction-dialog" role="dialog" aria-modal="true" aria-labelledby="directionHelpTitle">
         <button class="direction-close" type="button" data-action="close-direction-help" aria-label="关闭朝向教程">×</button>
-        <span class="direction-kicker">朝向判断 · 30 秒看懂</span>
-        <h2 id="directionHelpTitle">不会确定朝向？先这样看</h2>
-        <p>不用先懂风水。先站在房屋中心附近定出正北，再把九宫的东南西北对到实际户型，最后按现在的居住位置安人。</p>
+        <span class="direction-kicker">30秒看懂朝向</span>
+        <h2 id="directionHelpTitle">朝向怎么看</h2>
+        <p>先找房屋中心，再看各方位落点，最后按实际居住位置安人。</p>
         <ol class="direction-list">
-          <li><strong>1 先取房屋中心</strong><span>户型四角取点，对角连线，中心交点就是参考位置，尽量站在这里附近判断方位。</span></li>
-          <li><strong>2 用罗盘或手机指南针定北</strong><span>先找正北，再顺着分出东、南、西、北和四个角位。</span></li>
-          <li><strong>3 按实际居住位置安位</strong><span>哪个房间或床位在哪个方位、谁长期住在那里，就把谁放进对应宫位，再看解读。</span></li>
+          <li><strong>1 先找房屋中心</strong><span>中心点就是判断方位的基准。</span></li>
+          <li><strong>2 再看各方位落点</strong><span>先定正北，再分出东、南、西、北和四角。</span></li>
+          <li><strong>3 最后按实际居住位置安人</strong><span>谁长期住在哪里，就放进对应宫位。</span></li>
         </ol>
       </div>
     </div>
@@ -3102,7 +3036,6 @@
       const grid = document.getElementById("palaceGrid");
       const optionGrid = document.getElementById("optionGrid");
       const pickedList = document.getElementById("pickedList");
-      const elderHelper = document.getElementById("elderHelper");
       const activeName = document.getElementById("activePalaceName");
       const activeRole = document.getElementById("activePalaceRole");
       const activeHint = document.getElementById("activePalaceHint");
@@ -3159,13 +3092,13 @@
         const option = getOption(label);
         if (!option.elderKey) return label;
         if (mode === "pill") {
-          return `${option.short}${getElderAgeValue(option.elderKey) === "under65" ? "65-" : "65+"}`;
+          return option.short;
         }
         if (mode === "selection") {
-          return `${option.label} · ${getElderAgeLabel(option.elderKey)}`;
+          return option.label;
         }
         if (mode === "tooltip") {
-          return `${option.label}（${getElderAgeLabel(option.elderKey)}）`;
+          return option.label;
         }
         return option.label;
       };
@@ -3326,12 +3259,9 @@
         }
         const palace = getPalace(state.active);
         const selected = getItems(palace.key);
-        const selectedElders = selected.map((label) => getOption(label)).filter((option) => option.elderKey);
         activeName.textContent = `${palace.gua}宫 · ${palace.dir}`;
         activeRole.textContent = palace.role;
-        activeHint.textContent = selectedElders.length
-          ? `先看现在住哪一宫。长辈65岁前按父母位类解读；65岁后退居东北为佳。建议本位：${palace.defaultItem || "先定方位"}。`
-          : `先点左侧九宫里的方位，再点下方成员或空间。建议本位：${palace.defaultItem || "先定方位"}。`;
+        activeHint.textContent = `选中后会放入当前宫位。建议本位：${palace.defaultItem || "先定方位"}。`;
         pickedList.classList.toggle("is-empty", !selected.length);
         pickedList.innerHTML = selected.length
           ? selected.map((item) => `<span class="item-pill" title="${escapeHtml(getDisplayLabel(item, isElderLabel(item) ? "tooltip" : "default"))}">${escapeHtml(getDisplayLabel(item, isElderLabel(item) ? "selection" : "default"))}</span>`).join(" ")
@@ -3344,27 +3274,6 @@
             <span class="option-main">${escapeHtml(option.label)}</span>
           </button>`;
         }).join("");
-        if (!selectedElders.length) {
-          elderHelper.hidden = true;
-          elderHelper.innerHTML = "";
-          return;
-        }
-        elderHelper.hidden = false;
-        elderHelper.innerHTML = `
-          <div class="elder-helper-note">长辈现住位先按父母位类解读；65岁后应退位，退居东北位为佳。</div>
-          <div class="elder-age-stack">${selectedElders.map((option) => `
-            <div class="elder-age-card">
-              <strong>${escapeHtml(option.label)}</strong>
-              <div class="elder-age-actions">
-                ${Object.entries(elderAgeLabels).map(([value, text]) => `
-                  <button class="elder-age-btn${getElderAgeValue(option.elderKey) === value ? " is-active" : ""}" type="button" data-elder-key="${option.elderKey}" data-elder-age="${value}" aria-pressed="${getElderAgeValue(option.elderKey) === value}">
-                    ${escapeHtml(text)}
-                  </button>
-                `).join("")}
-              </div>
-            </div>
-          `).join("")}</div>
-        `;
       }
 
       function renderLocator(results) {
@@ -3460,7 +3369,7 @@
         resultGrid.classList.toggle("is-reading", hasResults);
         if (!hasResults) {
           resultMeta.textContent = "尚未生成";
-          resultGrid.innerHTML = `<div class="empty-state">先选方位，再放入家人或空间，最后点击「生成家宅解读」。</div>`;
+          resultGrid.innerHTML = `<div class="empty-state">完成安位后生成解读</div>`;
           return 0;
         }
 
@@ -3505,7 +3414,7 @@
         yangzhaiContainer.classList.toggle("is-reading", isReading);
         if (analyzeButton) {
           analyzeButton.disabled = !hasPlacement;
-          analyzeButton.title = hasPlacement ? "" : "先选方位，再放入家人或空间";
+          analyzeButton.title = hasPlacement ? "" : "先选宫位，再放家人或空间";
         }
         save();
         if (pendingResultScroll !== null && isReading) {
@@ -3553,16 +3462,6 @@
           state.placements[state.active] = [...current];
         }
         if (!getItems(state.active).length) delete state.placements[state.active];
-        state.analyzed = false;
-        state.activeResult = 0;
-        pendingResultScroll = null;
-        render();
-      });
-
-      pickerStage.addEventListener("click", (event) => {
-        const button = event.target.closest("[data-elder-key][data-elder-age]");
-        if (!button) return;
-        state.elderAges[button.dataset.elderKey] = button.dataset.elderAge;
         state.analyzed = false;
         state.activeResult = 0;
         pendingResultScroll = null;
