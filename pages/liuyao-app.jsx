@@ -115,8 +115,17 @@ function localQuestionGate(question) {
   const fail = (reason, suggestion, retryable = true) => ({ allowed:false, normalizedQuestion, reason, suggestion, retryable, labels:['一事一卦'] });
   if (!normalizedQuestion) return fail('请先写清楚要问的一件事。', '一句话只问一件具体事情，再起卦。');
   if (compact.length < 4) return fail('问题还不够具体，暂不起卦。', '请写清对象、事件和想看的结果。');
+  const hasReadableText = /[\u4e00-\u9fffA-Za-z]/.test(compact);
+  const onlyNumbersOrSymbols = !hasReadableText || /^[0-9０-９\-_.:：/\\]+$/.test(compact);
+  if (onlyNumbersOrSymbols) {
+    return fail('占问内容无效，暂不起卦。', '请用一句完整的话写清楚要问的事，例如：这次面试能通过吗？');
+  }
   if (/^(随便|随机|娱乐|玩玩|试试|测试|乱点|看看|测一下|试一试|test|demo|random)$/i.test(compact)) {
     return fail('这个问题太随意，暂不起卦。', '请写清具体对象和想看的结果。');
+  }
+  const hasQuestionCue = /[？?]|吗|呢|能不能|能否|是否|可否|会不会|要不要|该不该|适不适合|成不成|有没有|如何|怎样|怎么样|结果|通过|合格|及格|过线|过关|考过|考上|拿证|拿到|录取|顺利|成交|签约|复合|结婚|分手|离职|跳槽|搬家|买|卖|租|开店|上线|发布|推进|合作|投资|到账|怀孕|好转/.test(normalizedQuestion);
+  if (!hasQuestionCue) {
+    return fail('占问还没有明确结果，暂不起卦。', '请写成一句明确的问题，例如：这次面试能通过吗？');
   }
   if ((normalizedQuestion.match(/[？?]/g) || []).length > 1 || /同时|另外|还有|以及|顺便/.test(normalizedQuestion)) {
     return fail('一次只问一件事。', '请先删到一个核心问题，再提交。');
