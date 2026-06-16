@@ -11,7 +11,7 @@
   <script defer src="../js/config.js?v=20260521-api-domain-auth-proxy"></script>
   <script defer src="./guaci-data.js?v=20260520-yijing-typo-fix-7"></script>
   <script defer src="./yijing-master-data.js?v=20260520-yijing-typo-fix-7"></script>
-  <script defer src="../js/liuyao-page.js?v=20260604-liuyao-real-coin-motion-edge"></script>
+  <script defer src="../js/liuyao-page.js?v=20260616-liuyao-copy-trim"></script>
 </head>
 <body class="liuyao-page">
   <header class="mbp-nav">
@@ -33,21 +33,21 @@
       <div class="mbp-liuyao-overlay" id="mbpLiuyaoOverlay">
         <div class="mbp-liuyao-modal" role="region" aria-labelledby="mbpLiuyaoTitle">
           <div class="mbp-liuyao-head">
-            <strong id="mbpLiuyaoTitle">六爻占卜（易经铜钱卦）</strong>
-            <p>借卦象观变化，整理思路，把问题想得更周全</p>
+            <strong id="mbpLiuyaoTitle">六爻占卜</strong>
+            <p>先问事，再起卦</p>
           </div>
           <div class="mbp-liuyao-body">
             <section class="mbp-liuyao-ask">
               <label>
                 <div class="mbp-liuyao-question-title">
                   <span>所问之事</span>
-                  <span class="mbp-liuyao-quota" id="mbpLiuyaoQuota">今日次数 0/3</span>
+                  <span class="mbp-liuyao-quota" id="mbpLiuyaoQuota">今日 0/3</span>
                 </div>
-                <textarea id="mbpLiuyaoQuestion" maxlength="120" rows="4" placeholder="例如：我现在是否适合推进这个合作？本月能不能见到明确结果？"></textarea>
+                <textarea id="mbpLiuyaoQuestion" maxlength="120" rows="4" placeholder="例如：这次面试能过吗？"></textarea>
               </label>
               <div class="mbp-liuyao-gate-inline" id="mbpLiuyaoGateInline">
-                <p class="mbp-liuyao-gate-status" id="mbpLiuyaoGateStatus" data-tone="hint" aria-live="polite">写完后先提交问题，审题通过后再起卦。</p>
-                <button type="button" class="mbp-liuyao-gate-submit" id="mbpLiuyaoSubmitQuestion">提交问题</button>
+                <p class="mbp-liuyao-gate-status" id="mbpLiuyaoGateStatus" data-tone="hint" aria-live="polite">提交后起卦</p>
+                <button type="button" class="mbp-liuyao-gate-submit" id="mbpLiuyaoSubmitQuestion">提交占问</button>
               </div>
               <div class="mbp-liuyao-mode" aria-label="起卦方式">
                 <button type="button" class="is-active" data-liuyao-mode="online">在线投币</button>
@@ -62,8 +62,8 @@
             </section>
             <section class="mbp-liuyao-cast" aria-label="起卦结果">
               <div class="mbp-liuyao-cast-head">
-                <span>起卦进度</span>
-                <strong id="mbpLiuyaoProgressText">已成 0/6 爻</strong>
+                <span>进度</span>
+                <strong id="mbpLiuyaoProgressText">0/6</strong>
                 <i><u id="mbpLiuyaoProgressBar"></u></i>
               </div>
               <div class="mbp-liuyao-coins" id="mbpLiuyaoCoins"></div>

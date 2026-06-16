@@ -354,7 +354,7 @@
     return {
       question: normalizeQuestion(question),
       allowed: raw.allowed === true,
-      reason: normalizeQuestion(raw.reason || (raw.allowed ? '审题通过，可以起卦。' : '问题还不够清楚，暂不起卦。')).slice(0, 80),
+      reason: normalizeQuestion(raw.reason || (raw.allowed ? '可起卦。' : '问题不清。')).slice(0, 80),
       suggestion: normalizeQuestion(raw.suggestion || '').slice(0, 100),
       labels: Array.isArray(raw.labels) ? raw.labels.map(normalizeQuestion).filter(Boolean).slice(0, 4) : [],
       quota: normalizeQuota(raw.quota || state.quota),
@@ -365,12 +365,12 @@
   function getGateTags(question = state.question) {
     const normalizedQuestion = normalizeQuestion(question);
     const gate = normalizeGate(state.questionGate, normalizedQuestion);
-    const tags = gate?.labels?.length ? gate.labels.slice(0, 3) : ['一卦一问'];
+    const tags = gate?.labels?.length ? gate.labels.slice(0, 3) : ['一事一卦'];
     if (gate?.allowed) return [...tags, '可起卦'].slice(0, 3);
     if (state.gateLoading) return [...tags, '确认中'].slice(0, 3);
-    if (!normalizedQuestion) return ['一卦一问', '审题后可起卦'];
-    if (gate && !gate.allowed) return [...tags, '改好后再起卦'].slice(0, 3);
-    return ['一卦一问', '审题后可起卦'];
+    if (!normalizedQuestion) return ['一事一卦'];
+    if (gate && !gate.allowed) return [...tags, '请修改'].slice(0, 3);
+    return ['一事一卦'];
   }
 
   function getGateStatus(question = state.question) {
@@ -380,41 +380,41 @@
       return {
         tone: 'loading',
         badge: '审题中',
-        text: state.error || '正在审题，系统会调用大模型判断能否继续占卜。',
+        text: state.error || '正在审题',
       };
     }
     if (!gate?.allowed && normalizeQuota(state.quota).remaining <= 0) {
       return {
         tone: 'error',
         badge: '今日已满',
-        text: '今日六爻占卜已满 3 次，明天再起卦。',
+        text: '今日已满，明天再占。',
       };
     }
     if (gate?.allowed) {
       return {
         tone: 'ok',
         badge: '已通过',
-        text: gate.reason || '审题通过，可以起卦。',
+        text: gate.reason || '可起卦。',
       };
     }
     if (gate && !gate.allowed) {
       return {
         tone: 'error',
         badge: '未通过',
-        text: `${gate.reason || '问题还不够清楚，暂不起卦。'}${gate.suggestion ? ` ${gate.suggestion}` : ''}`,
+        text: `${gate.reason || '问题不清。'}${gate.suggestion ? ` ${gate.suggestion}` : ''}`,
       };
     }
     if (!normalizedQuestion) {
       return {
         tone: 'hint',
         badge: '待审题',
-        text: '先写清楚一件事，再点“提交问题”，系统会调用大模型判断能否继续占卜。',
+        text: '提交后起卦',
       };
     }
     return {
       tone: state.statusTone === 'error' ? 'error' : 'hint',
       badge: '待审题',
-      text: state.error || '问题写好后点“提交问题”，通过后再起卦。',
+      text: state.error || '提交后起卦',
     };
   }
 
@@ -425,7 +425,7 @@
     if (!gate?.allowed && normalizeQuota(state.quota).remaining <= 0) return { label: '今日已满', disabled: true, state: 'rejected' };
     if (gate?.allowed) return { label: '已通过', disabled: true, state: 'approved' };
     if (gate && !gate.allowed) return { label: '重新提交', disabled: !normalizedQuestion, state: 'rejected' };
-    return { label: '提交问题', disabled: !normalizedQuestion, state: 'idle' };
+    return { label: '提交占问', disabled: !normalizedQuestion, state: 'idle' };
   }
 
   function parseGateJson(text) {
@@ -454,16 +454,16 @@
     });
 
     if (!normalizedQuestion) {
-      return fail('请先写清楚要问的一件事。', '一句话只问一件具体事情，再起卦。');
+      return fail('先写一件事。', '一事一卦。');
     }
     if (/^(随便|随机|娱乐|玩玩|试试|测试|乱点|看看|不知道|无所谓|都行|随便玩玩|随便看看|随机看看|测一下|测测|试一下|试试看|占着玩|测着玩)$/.test(compact)) {
-      return fail('这个问题太随意，暂不起卦。', '请写清楚具体对象和想看的结果。', ['问题太散']);
+      return fail('问题太散。', '写清对象和结果。', ['问题太散']);
     }
     if (/^(事业|财运|感情|婚姻|健康|工作|学业|运势|赚钱|求财|桃花|考试|合作|项目|网站)(怎么样|如何|好吗|看看|测测|测一下)?$/.test(compact)) {
-      return fail('问题还太泛，暂不起卦。', '请具体到一件事，例如“这个项目本月能不能推进”。', ['问题太泛']);
+      return fail('问题太泛。', '具体到一件事。', ['问题太泛']);
     }
     if ((normalizedQuestion.match(/[？?]/g) || []).length > 1 || /同时|另外|还有|顺便|以及/.test(normalizedQuestion)) {
-      return fail('一次只问一件事。', '请先删到一个核心问题，再起卦。', ['一事一占']);
+      return fail('一次只问一件。', '删到一个核心问题。', ['一事一占']);
     }
 
     const hasSpecificSubject = /(我|我们|本人|自己|这个|这件|该|现在|本月|今年|最近|网站|项目|公司|店|生意|工作|客户|合作|合同|订单|产品|账号|平台|考试|考证|证书|证件|驾照|驾考|科目[一二三四1-4]|英语|雅思|托福|四六级|offer|面试|房子|投资|资金|对方|他|她|TA|孩子|家人|父母|伴侣|对象|老板|同事|合伙人)/i.test(normalizedQuestion);
@@ -471,12 +471,12 @@
     const hasQuestionCue = /[？?]|吗|呢|如何|怎样|怎么样|能|该|是否|可否|会不会|要不要/.test(normalizedQuestion);
 
     if (compact.length < 8 || !hasSpecificSubject || !hasOutcome || !hasQuestionCue) {
-      return fail('问题还不够具体，暂不起卦。', '请写清对象、事件和想看的结果。', ['问题不具体']);
+      return fail('问题不够具体。', '写清对象、事件和结果。', ['问题不具体']);
     }
     return {
       allowed: true,
       normalizedQuestion,
-      reason: '问题具体到对象、事件和结果，符合一事一占原则。',
+      reason: '可起卦。',
       suggestion: '',
       labels: ['一事一占'],
     };
@@ -526,8 +526,8 @@
           ...localGate,
           allowed: true,
           normalizedQuestion: localGate.normalizedQuestion || question,
-          reason: '本地审题通过，可以起卦。后台次数稍后同步。',
-          suggestion: '后台恢复后会继续同步今日次数。',
+          reason: '可起卦。',
+          suggestion: '',
           labels: [...new Set([...(localGate.labels || ['一事一占']), '本地通过'])].slice(0, 4),
           quota,
         };
@@ -535,7 +535,7 @@
       return {
         allowed: false,
         normalizedQuestion: question,
-        reason: '今日六爻占卜已满 3 次，明天再起卦。',
+        reason: '今日已满，明天再占。',
         suggestion: '',
         labels: ['今日已满'],
         quota,
@@ -687,7 +687,7 @@
     const label = animating
       ? `铜钱翻转中，落入${lineLabels[progress] || '本爻'}`
       : disabled
-        ? (progress >= 6 ? '六爻已成' : exhausted ? '今日已满，明天再起卦。' : '先写清问题，再起卦')
+        ? (progress >= 6 ? '六爻已成' : exhausted ? '今日已满' : '先提交占问')
         : `按住上拉，松手投${lineLabels[progress] || '本爻'}`;
     const dragLift = Math.round(Math.max(0, pull) * 0.62);
     const dragTilt = Math.round(clamp(lateral / 5, -22, 22));
@@ -754,16 +754,16 @@
     if (!result) {
       box.innerHTML = `
         <section class="mbp-liuyao-empty-preview" aria-label="解读结果预览">
-          <span>解读结果预览</span>
-          <strong>投满 6 爻后，这里会直接生成完整结果</strong>
+          <span>结果预览</span>
+          <strong>投满 6 爻后生成</strong>
           <div>
             <em>本卦</em>
             <em>变卦</em>
             <em>动爻</em>
-            <em>卦辞摘录</em>
+            <em>卦辞</em>
             <em>AI 解卦</em>
           </div>
-          <p>不用猜会看到什么：先看当前局面，再看变化方向，最后可交给许大师继续细断。</p>
+          <p>先看本卦，再看动爻与变卦。</p>
         </section>
       `;
       return;
@@ -846,18 +846,18 @@
     const hasQuestion = Boolean(normalizeQuestion(state.question));
     const disabled = state.gateLoading || exhausted || !hasQuestion || !ready;
     const lockText = exhausted
-      ? '今日已满 3 次，明天再起卦。'
+      ? '今日已满，明天再占。'
       : state.gateLoading
-        ? '正在审题，合格后才起卦。'
+        ? '正在审题。'
         : !hasQuestion
-          ? '先写清一件事，再提交问题。'
-          : '先提交问题，审题通过后再起卦。';
+          ? '先写一件事。'
+          : '先提交占问。';
     const activeHint = !ready && state.error ? state.error : '';
     if (state.mode !== 'manual') {
       panel.innerHTML = `
         <div class="mbp-liuyao-online-card ${disabled ? 'is-locked' : ''}">
           <strong>动态投币</strong>
-          <span class="${disabled ? 'is-lock' : ''}">${disabled ? lockText : (activeHint || `点击“投第 ${Math.min(progress + 1, 6)} 爻”，系统会先审题，通过后直接落爻。`)}</span>
+          <span class="${disabled ? 'is-lock' : ''}">${disabled ? lockText : (activeHint || `投第 ${Math.min(progress + 1, 6)} 爻`)}</span>
         </div>
       `;
       return;
@@ -882,14 +882,14 @@
         <div class="mbp-liuyao-manual-head">
           <div>
             <span>真实铜钱录入</span>
-            <strong>按初爻到上爻，逐爻填三枚铜钱</strong>
+            <strong>逐爻填三枚铜钱</strong>
           </div>
           <em>${progress}/6</em>
         </div>
         ${complete ? `
           <div class="mbp-liuyao-manual-done">
             <strong>六爻已录完</strong>
-            <span>可看本卦、变卦、动爻和许大师解卦。</span>
+            <span>可看本卦、变卦和动爻。</span>
             <button type="button" data-manual-clear-last ${disabled ? 'disabled' : ''}>重录上一爻</button>
           </div>
         ` : `
@@ -898,7 +898,7 @@
               <strong>${escapeHtml(lineLabels[currentIndex])}</strong>
               <em>本爻 ${currentCoins.filter(Boolean).length}/3 枚</em>
             </div>
-            <p>${disabled ? lockText : (activeHint || (currentCast ? `本爻已成：${currentCast.value} ${currentCast.name}。确认后进入下一爻。` : '现实中投三枚铜钱后，依次录入第 1、2、3 枚；系统会先审题。'))}</p>
+            <p>${disabled ? lockText : (activeHint || (currentCast ? `本爻：${currentCast.value} ${currentCast.name}` : '依次录入三枚铜钱。'))}</p>
             <div class="mbp-liuyao-manual-coins">
               ${[0, 1, 2].map((coinIndex) => `
                 <div>
@@ -929,7 +929,7 @@
   function syncProgress(count) {
     const progressText = $('#mbpLiuyaoProgressText');
     const progressBar = $('#mbpLiuyaoProgressBar');
-    if (progressText) progressText.textContent = `${count >= 6 ? '已完成' : '已成'} ${count}/6 爻`;
+    if (progressText) progressText.textContent = count >= 6 ? '完成' : `${count}/6`;
     if (progressBar) progressBar.style.width = `${Math.min(100, Math.max(0, count / 6 * 100))}%`;
     const hasQuestion = Boolean(String($('#mbpLiuyaoQuestion')?.value || state.question || '').trim());
     document.querySelectorAll('[data-liuyao-step]').forEach((step) => {
@@ -982,21 +982,21 @@
       toss.disabled = state.mode !== 'online' || !normalizeQuestion(state.question) || !ready || state.gateLoading || state.tossAnimation?.active || exhausted || count >= 6;
       toss.textContent = state.gateLoading ? '审题中…'
         : !normalizeQuestion(state.question) ? '先写问题'
-          : !ready ? '先提交问题'
+          : !ready ? '提交占问'
           : state.mode !== 'online' ? '手动录入中'
             : count >= 6 ? '已成卦' : `投第 ${count + 1} 爻`;
       if (exhausted) toss.textContent = '今日已满';
     }
     if (auto) {
       auto.disabled = state.mode !== 'online' || !normalizeQuestion(state.question) || !ready || state.gateLoading || state.tossAnimation?.active || exhausted || count >= 6;
-      auto.textContent = exhausted ? '今日已满' : (!normalizeQuestion(state.question) ? '先写问题' : (!ready ? '先提交问题' : '一键成卦'));
+      auto.textContent = exhausted ? '今日已满' : '一键成卦';
     }
     document.querySelectorAll('[data-liuyao-mode]').forEach((button) => {
       button.classList.toggle('is-active', button.dataset.liuyaoMode === state.mode);
     });
     if (quota) {
       const daily = normalizeQuota(state.quota);
-      quota.textContent = state.quotaLoading ? '今日次数确认中…' : `今日次数 ${daily.used}/${daily.limit}`;
+      quota.textContent = state.quotaLoading ? '确认中…' : `今日 ${daily.used}/${daily.limit}`;
       quota.classList.toggle('is-empty', daily.remaining <= 0);
     }
     syncProgress(count);
@@ -1024,21 +1024,21 @@
   async function submitQuestion() {
     const question = questionText();
     if (!question) {
-      state.error = '先写清楚一件事，再提交问题。';
+      state.error = '先写一件事。';
       state.statusTone = 'hint';
       render();
       $('#mbpLiuyaoQuestion')?.focus();
       return false;
     }
     if (normalizeQuota(state.quota).remaining <= 0) {
-      state.error = '今日六爻占卜已满 3 次，明天再起卦。';
+      state.error = '今日已满，明天再占。';
       state.statusTone = 'error';
       render();
       return false;
     }
 
     state.gateLoading = true;
-    state.error = '正在接入后台审题，合格后才起卦。';
+    state.error = '正在审题。';
     state.statusTone = 'loading';
     render();
     try {
@@ -1046,16 +1046,16 @@
       state.questionGate = gate;
       if (gate?.quota) state.quota = normalizeQuota(gate.quota);
       if (gate?.allowed) {
-        state.error = gate.reason || '审题通过，可以起卦。';
+        state.error = gate.reason || '可起卦。';
         state.statusTone = 'ok';
         return true;
       }
-      state.error = `${gate?.reason || '问题还不够清楚，暂不起卦。'}${gate?.suggestion ? ` ${gate.suggestion}` : ''}`;
+      state.error = `${gate?.reason || '问题不清。'}${gate?.suggestion ? ` ${gate.suggestion}` : ''}`;
       state.statusTone = 'error';
       $('#mbpLiuyaoQuestion')?.focus();
       return false;
     } catch (_err) {
-      state.error = '提交失败：审题服务暂时没有响应，请稍后重新提交。';
+      state.error = '提交失败，请稍后重试。';
       state.statusTone = 'error';
       return false;
     } finally {
@@ -1068,26 +1068,26 @@
     const question = questionText();
     const cached = normalizeGate(state.questionGate, question);
     if (cached?.allowed) {
-      state.error = cached.reason || '审题通过，可以起卦。';
+      state.error = cached.reason || '可起卦。';
       state.statusTone = 'ok';
       return true;
     }
     if (!question) {
-      state.error = '先写清楚一件事，再提交问题。';
+      state.error = '先写一件事。';
       state.statusTone = 'hint';
       render();
       $('#mbpLiuyaoQuestion')?.focus();
       return false;
     }
     if (normalizeQuota(state.quota).remaining <= 0) {
-      state.error = '今日六爻占卜已满 3 次，明天再起卦。';
+      state.error = '今日已满，明天再占。';
       state.statusTone = 'error';
       render();
       return false;
     }
     state.error = cached && cached.allowed === false
-      ? '请先修改问题并重新提交，审题通过后再起卦。'
-      : '请先提交问题，审题通过后再起卦。';
+      ? '请修改后重提。'
+      : '先提交占问。';
     state.statusTone = 'hint';
     render();
     $('#mbpLiuyaoQuestion')?.focus();
@@ -1169,7 +1169,7 @@
     state.casts[line] = cast;
     state.manualCoins[line] = cast.coins.slice();
     state.lastCoins = cast.coins;
-    state.error = line >= 5 ? '六爻已成，可看本卦、动爻、变卦。' : `已录入${lineLabels[line]}，继续录${lineLabels[line + 1]}。`;
+    state.error = line >= 5 ? '六爻已成。' : `已录${lineLabels[line]}，继续${lineLabels[line + 1]}。`;
     state.statusTone = 'ok';
     render();
   }
@@ -1249,7 +1249,7 @@
       }
       state.question = nextQuestion;
       state.questionGate = null;
-      state.error = nextQuestion && hadGate ? '改好后点“提交问题”，系统会重新审题。' : '';
+      state.error = nextQuestion && hadGate ? '改好后重提。' : '';
       state.statusTone = nextQuestion && hadGate ? 'hint' : '';
       render();
     });
