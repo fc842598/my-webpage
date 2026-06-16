@@ -3079,6 +3079,7 @@
       const traditionalToSimplified = {
         "與": "与", "為": "为", "須": "须", "長": "长", "變": "变", "將": "将", "則": "则", "時": "时",
         "陽": "阳", "親": "亲", "從": "从", "勞": "劳", "怨": "怨", "連": "连", "適": "适", "齡": "龄",
+        "東": "东", "廣": "广", "產": "产", "讀": "读", "樂": "乐", "慶": "庆", "陳": "陈", "應": "应",
         "歡": "欢", "於": "于", "後": "后", "歲": "岁", "離": "离", "馬": "马", "遠": "远", "廚": "厨",
         "廁": "厕", "廳": "厅", "宮": "宫", "卦": "卦", "現": "现", "見": "见", "來": "来", "這": "这",
         "個": "个", "內": "内", "會": "会", "幾": "几", "間": "间", "開": "开", "關": "关", "係": "系",
@@ -3092,7 +3093,76 @@
         "雲": "云", "運": "运", "澤": "泽", "風": "风", "雷": "雷", "澤": "泽", "豫": "豫",
         "厭": "厌", "煩": "烦", "興": "兴", "憂": "忧", "懼": "惧", "屢": "屡", "錯": "错", "恥": "耻"
       };
-      const toSimplified = (text) => [...String(text || "")].map((char) => traditionalToSimplified[char] || char).join("");
+      Object.assign(traditionalToSimplified, {
+        "舉": "举", "達": "达", "級": "级", "晉": "晋", "領": "领", "導": "导", "統": "统", "責": "责",
+        "賢": "贤", "負": "负", "樣": "样", "義": "义", "戰": "战", "權": "权", "賺": "赚", "願": "愿",
+        "趨": "趋", "擺": "摆", "佈": "布", "顧": "顾", "兇": "凶", "異": "异", "潑": "泼", "婦": "妇",
+        "毆": "殴", "產": "产", "賭": "赌", "錢": "钱", "禍": "祸", "獄": "狱", "獲": "获", "謀": "谋",
+        "慮": "虑", "聽": "听", "擇": "择", "纏": "缠", "訟": "讼", "臥": "卧", "脫": "脱", "諸": "诸",
+        "禿": "秃", "豐": "丰", "祿": "禄", "對": "对", "強": "强", "親": "亲", "員": "员", "警": "警",
+        "醫": "医", "傳": "传", "綁": "绑", "綠": "绿", "綱": "纲", "經": "经", "緣": "缘", "線": "线",
+        "緊": "紧", "縣": "县", "總": "总", "績": "绩", "繼": "继", "續": "续", "纔": "才", "羅": "罗",
+        "擔": "担", "據": "据", "據": "据", "據": "据", "據": "据", "據": "据", "爭": "争", "爾": "尔",
+        "爐": "炉", "牽": "牵", "狀": "状", "獻": "献", "獵": "猎", "獸": "兽", "環": "环", "療": "疗",
+        "盡": "尽", "監": "监", "盤": "盘", "盧": "卢", "瞭": "了", "矯": "矫", "礙": "碍", "禪": "禅",
+        "穩": "稳", "窺": "窥", "竊": "窃", "築": "筑", "簡": "简", "糾": "纠", "約": "约", "紅": "红",
+        "級": "级", "紀": "纪", "納": "纳", "紛": "纷", "終": "终", "組": "组", "結": "结", "絕": "绝",
+        "給": "给", "絞": "绞", "絡": "络", "綁": "绑", "綜": "综", "綠": "绿", "維": "维", "綱": "纲",
+        "網": "网", "綿": "绵", "緊": "紧", "緒": "绪", "緩": "缓", "編": "编", "緣": "缘", "線": "线",
+        "縛": "缚", "縱": "纵", "縣": "县", "總": "总", "績": "绩", "繫": "系", "續": "续", "罵": "骂",
+        "羅": "罗", "罰": "罚", "聖": "圣", "聞": "闻", "聯": "联", "聲": "声", "聰": "聪", "肅": "肃",
+        "脅": "胁", "脈": "脉", "臉": "脸", "臟": "脏", "舊": "旧", "艱": "艰", "莊": "庄", "萬": "万",
+        "葉": "叶", "著": "着", "號": "号", "處": "处", "虛": "虚", "蟲": "虫", "蠱": "蛊", "衛": "卫",
+        "衝": "冲", "袞": "衮", "裝": "装", "製": "制", "複": "复", "褲": "裤", "覺": "觉", "觀": "观",
+        "規": "规", "視": "视", "覽": "览", "觸": "触", "訣": "诀", "該": "该", "詳": "详", "誤": "误",
+        "誌": "志", "誦": "诵", "誘": "诱", "語": "语", "誠": "诚", "誤": "误", "調": "调", "談": "谈",
+        "請": "请", "諒": "谅", "諸": "诸", "諾": "诺", "謀": "谋", "謂": "谓", "謙": "谦", "講": "讲",
+        "謝": "谢", "謠": "谣", "證": "证", "識": "识", "譯": "译", "議": "议", "護": "护", "變": "变",
+        "讓": "让", "豈": "岂", "豎": "竖", "豬": "猪", "貓": "猫", "貝": "贝", "負": "负", "貞": "贞",
+        "貫": "贯", "責": "责", "貯": "贮", "貴": "贵", "貸": "贷", "費": "费", "賀": "贺", "賁": "贲",
+        "賊": "贼", "賓": "宾", "賜": "赐", "賞": "赏", "賢": "贤", "賣": "卖", "質": "质", "賬": "账",
+        "賴": "赖", "賺": "赚", "贈": "赠", "贊": "赞", "趕": "赶", "趙": "赵", "跡": "迹", "踐": "践",
+        "躊": "踌", "躍": "跃", "躑": "踯", "軀": "躯", "車": "车", "軌": "轨", "軍": "军", "軟": "软",
+        "較": "较", "輔": "辅", "輕": "轻", "輩": "辈", "輪": "轮", "輯": "辑", "輸": "输", "轄": "辖",
+        "辭": "辞", "邊": "边", "遞": "递", "遷": "迁", "選": "选", "遺": "遗", "遲": "迟", "遼": "辽",
+        "邁": "迈", "還": "还", "邇": "迩", "郵": "邮", "鄉": "乡", "鄧": "邓", "鄭": "郑", "酈": "郦",
+        "醜": "丑", "醫": "医", "釀": "酿", "釋": "释", "釐": "厘", "針": "针", "鈔": "钞", "鈴": "铃",
+        "鉅": "巨", "鉛": "铅", "銅": "铜", "銘": "铭", "銳": "锐", "鋒": "锋", "錦": "锦", "錯": "错",
+        "錄": "录", "鍊": "炼", "鍋": "锅", "鎮": "镇", "鏡": "镜", "鐵": "铁", "鑑": "鉴", "鑰": "钥",
+        "長": "长", "門": "门", "閃": "闪", "閉": "闭", "開": "开", "閑": "闲", "間": "间", "閣": "阁",
+        "閩": "闽", "閱": "阅", "闆": "板", "闊": "阔", "關": "关", "闡": "阐", "闢": "辟", "隊": "队",
+        "階": "阶", "隨": "随", "隱": "隐", "雜": "杂", "雞": "鸡", "難": "难", "霧": "雾", "靈": "灵",
+        "靜": "静", "鞏": "巩", "韋": "韦", "韌": "韧", "韓": "韩", "韻": "韵", "頁": "页", "頂": "顶",
+        "項": "项", "順": "顺", "須": "须", "頌": "颂", "預": "预", "頑": "顽", "領": "领", "頗": "颇",
+        "頻": "频", "題": "题", "額": "额", "顏": "颜", "顯": "显", "願": "愿", "顧": "顾", "風": "风",
+        "颱": "台", "飄": "飘", "飛": "飞", "飯": "饭", "飲": "饮", "飾": "饰", "餘": "余", "館": "馆",
+        "饒": "饶", "馬": "马", "馮": "冯", "駐": "驻", "駕": "驾", "騎": "骑", "騙": "骗", "驚": "惊",
+        "驟": "骤", "體": "体", "鬧": "闹", "鬚": "须", "鬥": "斗", "魚": "鱼", "魯": "鲁", "鮮": "鲜",
+        "鳥": "鸟", "鳳": "凤", "鳴": "鸣", "鴻": "鸿", "鵬": "鹏", "麗": "丽", "麥": "麦", "黃": "黄",
+        "點": "点", "黨": "党", "齊": "齐", "齋": "斋", "齒": "齿", "齡": "龄", "龍": "龙", "龜": "龟"
+      });
+      const getHanVariant = () => {
+        const lang = `${document.documentElement.lang || navigator.language || "zh-CN"}`.toLowerCase();
+        return /hant|zh-tw|zh-hk|zh-mo/.test(lang) ? "traditional" : "simplified";
+      };
+      const simplifiedToTraditional = Object.entries(traditionalToSimplified).reduce((map, [traditional, simplified]) => {
+        if (!map[simplified]) map[simplified] = traditional;
+        return map;
+      }, {});
+      const convertHanText = (text, map) => [...String(text || "")].map((char) => map[char] || char).join("");
+      const toSimplified = (text) => convertHanText(text, traditionalToSimplified);
+      const toTraditional = (text) => convertHanText(text, simplifiedToTraditional);
+      const formatHanText = (text) => getHanVariant() === "traditional" ? toTraditional(text) : toSimplified(text);
+      const applyHanVariant = (root) => {
+        if (!root) return;
+        const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+        const nodes = [];
+        while (walker.nextNode()) nodes.push(walker.currentNode);
+        nodes.forEach((node) => {
+          const converted = formatHanText(node.nodeValue);
+          if (converted !== node.nodeValue) node.nodeValue = converted;
+        });
+      };
       const getHexEntry = (label, palace) => {
         const upper = roleGua[getMappedLabel(label)];
         if (!upper || !palace?.gua) return null;
@@ -3267,28 +3337,28 @@
             if (option.type === "space") {
               const rule = spaceRules[label] || {};
               const matched = (rule.preferredPalaces || []).includes(palace.key);
-              const text = toSimplified(formatReadingText(rule.original || `${rule.meaning || ""}${rule.preference || ""}`) || "空间象义待补。");
+              const text = formatHanText(formatReadingText(rule.original || `${rule.meaning || ""}${rule.preference || ""}`) || "空间象义待补。");
               results.push({
                 ...base,
                 tag: matched ? "方位适配" : "位置待调",
                 title: `${label}在${palace.gua}宫 · ${palace.dir}`,
                 body: `${text}\n当前：${palace.gua}宫(${palace.dir})。`,
-                source: toSimplified(rule.source || sourceTitle)
+                source: formatHanText(rule.source || sourceTitle)
               });
               return;
             }
             const hex = getHexEntry(label, palace);
             const matched = mappedLabel === palace.defaultItem;
             const reading = getHexReading(hex);
-            const originalText = toSimplified(formatReadingText(getReadingText(reading)));
+            const originalText = formatHanText(formatReadingText(getReadingText(reading)));
             const closingLines = getElderClosingLines(label);
             const bodyLines = [...readingLines, hex ? (originalText || "原文待核。") : `已安位到${palace.dir}，该组合暂无索引。`, ...closingLines];
             results.push({
               ...base,
               tag: matched ? "本位相合" : "卦象解读",
-              title: toSimplified(hex ? `${displayLabel}住${palace.gua}宫 · 第${hex.no}卦 ${hex.name}` : `${displayLabel}住${palace.gua}宫`),
+              title: formatHanText(hex ? `${displayLabel}住${palace.gua}宫 · 第${hex.no}卦 ${hex.name}` : `${displayLabel}住${palace.gua}宫`),
               body: bodyLines.join("\n"),
-              source: toSimplified(reading?.source || sourceTitle)
+              source: formatHanText(reading?.source || sourceTitle)
             });
           }));
         return results;
@@ -3317,6 +3387,7 @@
         if (!hasResults) {
           resultMeta.textContent = "尚未生成";
           resultGrid.innerHTML = `<div class="empty-state">完成安位后生成解读</div>`;
+          applyHanVariant(resultsPanel);
           return 0;
         }
 
@@ -3324,30 +3395,31 @@
         const activeIndex = Math.min(Math.max(Number(state.activeResult) || 0, 0), maxIndex);
         if (state.activeResult !== activeIndex) state.activeResult = activeIndex;
         const active = results[activeIndex];
-        resultMeta.textContent = `已生成 ${results.length} 条解读 · 当前定位 ${formatIndex(active.number)}${active.label}`;
+        resultMeta.textContent = `已生成 ${results.length} 条解读 · 当前定位 ${formatIndex(active.number)}${formatHanText(active.label)}`;
         resultGrid.innerHTML = `<div class="reading-list">${results.map((item, index) => {
           const bodyHtml = item.body.split("\n")
             .map((line) => line.trim())
             .filter(Boolean)
-            .map((line) => `<p>${escapeHtml(line)}</p>`)
+            .map((line) => `<p>${escapeHtml(formatHanText(line))}</p>`)
             .join("");
           return `<article class="reading-card${index === activeIndex ? " is-active" : ""}" id="${getResultCardId(index)}" data-result-card-index="${index}" tabindex="-1">
             <div class="reading-card-head">
               <div class="reading-card-meta">
-                <span class="result-tag">${escapeHtml(item.tag)}</span>
-                <span class="reading-palace-chip">${escapeHtml(item.palaceTitle)}</span>
-                <span class="reading-palace-chip">${escapeHtml(item.palaceRole)}</span>
+                <span class="result-tag">${escapeHtml(formatHanText(item.tag))}</span>
+                <span class="reading-palace-chip">${escapeHtml(formatHanText(item.palaceTitle))}</span>
+                <span class="reading-palace-chip">${escapeHtml(formatHanText(item.palaceRole))}</span>
               </div>
               <button class="reading-card-jump${index === activeIndex ? " is-active" : ""}" type="button" data-result-index="${index}">${formatIndex(item.number)}</button>
             </div>
-            <h3><span aria-hidden="true">${formatIndex(item.number)}</span>${escapeHtml(item.title)}</h3>
+            <h3><span aria-hidden="true">${formatIndex(item.number)}</span>${escapeHtml(formatHanText(item.title))}</h3>
             <div class="reading-body">${bodyHtml}</div>
             <div class="result-top">
-              <span class="reading-palace-chip">${escapeHtml(item.label)}</span>
-              <span class="reading-source">${escapeHtml(item.source)}</span>
+              <span class="reading-palace-chip">${escapeHtml(formatHanText(item.label))}</span>
+              <span class="reading-source">${escapeHtml(formatHanText(item.source))}</span>
             </div>
           </article>`;
         }).join("")}</div>`;
+        applyHanVariant(resultsPanel);
         return results.length;
       }
 
