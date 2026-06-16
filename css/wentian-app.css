@@ -12722,3 +12722,8 @@ body.wentian-refund-open {
   font-size: 12px;
   line-height: 1.6;
 }
+
+.wentian-chart-ai-actions,
+.wentian-chart-ai-final-meta {
+  display: none !important;
+}
