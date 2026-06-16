@@ -15261,7 +15261,6 @@ function renderLiurenResultHtml(result, reveal = true) {
           <div class="liuren-seal">念</div>
         </div>
         <p class="liuren-summary">心里只问一件事，确认当下时间后再起课。不要反复重占同一件事。</p>
-        <div class="liuren-tags"><span>定念</span><span>当下</span><span>一事一占</span></div>
         <textarea id="liuren-copy-text" class="liuren-copy-text" readonly></textarea>
       </article>
     `;
@@ -15285,11 +15284,6 @@ function renderLiurenResultHtml(result, reveal = true) {
         <div class="liuren-seal">${palace.name.slice(0, 1)}</div>
       </div>
       <p class="liuren-summary">${palace.summary}</p>
-      <div class="liuren-tags">${palace.keys.map((key) => `<span>${key}</span>`).join("")}</div>
-      <div class="liuren-detail">
-        <strong>当前课式</strong>
-        <span>${formatLiurenLunar(result.lunar)} · ${result.hourName}时 · ${result.formula}</span>
-      </div>
       <div class="liuren-detail">
         <strong>行动建议</strong>
         <span>${palace.advice}</span>
@@ -15497,13 +15491,7 @@ function sourceLiurenScreen() {
         <div class="liuren-hero-shade"></div>
         <div class="liuren-hero-copy">
           <span>小六壬起课</span>
-          <strong>先定一念，再看六宫</strong>
-          <em>农历月令起，大安顺推至时辰。</em>
         </div>
-      </div>
-      <div class="liuren-intent-card">
-        <strong>起课前</strong>
-        <span>心里只问一件事，不用输入问题。确认当下时间后点击起课。</span>
       </div>
       <div class="liuren-now-card">
         <div id="liuren-preview" class="liuren-preview">
@@ -15523,7 +15511,6 @@ function sourceLiurenScreen() {
         <button type="button" class="primary liuren-ask-xu" data-action="liuren-ask-xu" disabled>起课后问许大师</button>
         <button type="button" class="primary liuren-reset-action" data-action="liuren-reset">重新定念</button>
       </div>
-      <p id="liuren-status" class="liuren-status">已取当下时间，先定念再起课</p>
     </section>
   `;
 }
