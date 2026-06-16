@@ -1025,34 +1025,38 @@ function ManualCast({ results, onConfirmYao, onUndoLast }) {
 /* ─── Cast Step ─── */
 function CastStep({ question, method, setMethod, onlineResults, onlineCur, onlinePhase, onlineCoins, onToss, onTossComplete, lastResult, manualResults, onManualConfirm, onManualUndo, shakeReady, onEnableShake }) {
   const canSwitch = onlineResults.length === 0 && manualResults.length === 0;
+  const shouldCollapseMode = method === 'coin' && onlineResults.length > 0;
   return (
     <div style={{ flex:1, padding:'8px 20px 28px', display:'flex', flexDirection:'column', gap:8 }}>
-      <div style={{ display:'inline-flex', alignItems:'center', gap:6, alignSelf:'flex-start', background:C.surface, padding:'6px 12px', borderRadius:24, boxShadow:C.shadow, maxWidth:'100%' }}>
+      <div style={{ display:'inline-flex', alignItems:'center', gap:6, alignSelf:'flex-start', background:C.surface, padding:'6px 10px', borderRadius:24, boxShadow:C.shadow, maxWidth:'100%' }}>
+        <span style={{ fontSize:10, fontWeight:900, color:C.goldDeep, background:'rgba(148,98,8,0.10)', border:'1px solid rgba(148,98,8,0.12)', borderRadius:999, padding:'2px 6px', lineHeight:1.1, whiteSpace:'nowrap', flexShrink:0 }}>所占之事</span>
         <div style={{ width:6, height:6, borderRadius:'50%', background:C.gold, flexShrink:0 }}></div>
         <span style={{ fontSize:12, color:C.text2, overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>{question}</span>
       </div>
-      <div style={{ background:C.surface, borderRadius:15, padding:'10px 12px', boxShadow:C.shadow }}>
-        <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:8 }}>
-          <span style={{ fontSize:13, fontWeight:700, color:C.text }}>起卦方式</span>
-          {!canSwitch && <span style={{ fontSize:12, color:C.text3 }}>{method==='coin'?'在线投币':'手动起卦'}</span>}
+      {!shouldCollapseMode && (
+        <div style={{ background:C.surface, borderRadius:15, padding:'10px 12px', boxShadow:C.shadow }}>
+          <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:8 }}>
+            <span style={{ fontSize:13, fontWeight:700, color:C.text }}>起卦方式</span>
+            {!canSwitch && <span style={{ fontSize:12, color:C.text3 }}>{method==='coin'?'在线投币':'手动起卦'}</span>}
+          </div>
+          <div style={{ display:'flex', gap:7 }}>
+            {['coin','manual'].map(m => {
+              const active = method === m;
+              return (
+                <button key={m} onClick={() => canSwitch && setMethod(m)} style={{
+                  flex:1, padding:'8px 0', borderRadius:10,
+                  background: active ? C.goldBg : 'transparent',
+                  border: active ? `1.5px solid ${C.goldBorder}` : `1px solid ${C.border}`,
+                  color: active ? C.gold : C.text3,
+                  fontSize:13, fontWeight:active?800:500,
+                  cursor: canSwitch ? 'pointer' : 'default',
+                  transition:'all 0.2s', fontFamily:'inherit',
+                }}>{m==='coin'?'在线投币':'手动起卦'}</button>
+              );
+            })}
+          </div>
         </div>
-        <div style={{ display:'flex', gap:7 }}>
-          {['coin','manual'].map(m => {
-            const active = method === m;
-            return (
-              <button key={m} onClick={() => canSwitch && setMethod(m)} style={{
-                flex:1, padding:'8px 0', borderRadius:10,
-                background: active ? C.goldBg : 'transparent',
-                border: active ? `1.5px solid ${C.goldBorder}` : `1px solid ${C.border}`,
-                color: active ? C.gold : C.text3,
-                fontSize:13, fontWeight:active?800:500,
-                cursor: canSwitch ? 'pointer' : 'default',
-                transition:'all 0.2s', fontFamily:'inherit',
-              }}>{m==='coin'?'在线投币':'手动起卦'}</button>
-            );
-          })}
-        </div>
-      </div>
+      )}
       {method==='coin'
         ? <OnlineCast results={onlineResults} curYao={onlineCur} phase={onlinePhase} coins={onlineCoins} onToss={onToss} onTossComplete={onTossComplete} shakeReady={shakeReady} onEnableShake={onEnableShake} lastResult={lastResult}/>
         : <ManualCast results={manualResults} onConfirmYao={onManualConfirm} onUndoLast={onManualUndo}/>

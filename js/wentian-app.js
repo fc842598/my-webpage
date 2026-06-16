@@ -18221,7 +18221,7 @@ document.addEventListener("click", (event) => {
   const earlyActionTarget = event.target.closest("[data-action]");
   const earlyAction = earlyActionTarget?.dataset.action;
   if (earlyAction === "wentian-open-liuyao-v2") {
-    window.location.href = "./liuyao-v2.html?v=20260615-liuyao-test-unlimited";
+    window.location.href = "./liuyao-v2.html?v=20260616-cast-compact";
     return;
   }
   if (earlyAction === "yangzhai-open") {
