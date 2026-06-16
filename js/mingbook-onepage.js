@@ -140,10 +140,10 @@
     quota: null,
   };
   const desktopMemberProductKey = 'monthly_member';
-  const desktopFreeDailyLimit = 30;
+  const desktopFreeDailyLimit = 20;
   const desktopPaidDailyLimit = 100;
   const desktopPaidProductName = '阅天AI付费版';
-  const desktopPaidProductDesc = '许大师 AI 对话：付费用户 100次/天；免费用户 30次/天。按日刷新，不设月额度。';
+  const desktopPaidProductDesc = '许大师 AI 对话：付费用户 100次/天；免费用户 20次/天。按日刷新，不设月额度。';
   const desktopPaymentPollMs = 3000;
   const desktopPaymentState = {
     open: false,
