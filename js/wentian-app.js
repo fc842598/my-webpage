@@ -16270,12 +16270,12 @@ function sourceDashboardHomeScreen() {
       : "先建立命盘档案";
     const dashboardLoginLabel = dashboardAccount.loggedIn ? "已登陆" : "未登陆";
     const dashboardFeatures = [
-      ["紫微斗数", "排盘 · AI细读", "01-feature-ziwei-v2.svg", "screen-26", 18, 400],
-      ["合盘分析", "双方命盘合参", "01-feature-hepan-v2.svg", "hepan", 201, 400],
-      ["六爻占卜", "铜钱起卦", "01-feature-liuyao-v2.svg", "liuyao-v2", 201, 488],
-      ["阳宅地脉", "方位九宫", "01-feature-yangzhai-v2.svg", "screen-42", 18, 576],
-      ["办公室布局", "门向与老板位", "01-feature-office-v2.svg", "screen-50", 201, 576],
-      ["六壬法", "农历掌诀", "01-feature-liuren-v2.svg", "screen-46", 18, 664],
+      ["紫微斗数", "排盘 · AI细读", "01-feature-ziwei-v2.svg", "screen-26"],
+      ["合盘分析", "双方命盘合参", "01-feature-hepan-v2.svg", "hepan"],
+      ["六爻占卜", "铜钱起卦", "01-feature-liuyao-v2.svg", "liuyao-v2"],
+      ["阳宅地脉", "方位九宫", "01-feature-yangzhai-v2.svg", "screen-42"],
+      ["办公室布局", "门向与老板位", "01-feature-office-v2.svg", "screen-50"],
+      ["六壬法", "农历掌诀", "01-feature-liuren-v2.svg", "screen-46"],
     ];
     return `
       ${figBox("source-1-bg", 0, 0, 390, 844, "", "background:linear-gradient(180deg,#fffdf8 0%,#fbf7ef 50%,#fff6ea 100%);")}
@@ -16307,7 +16307,9 @@ function sourceDashboardHomeScreen() {
       ${figText("source-1-archive-action-text", "换档案", 282, 322, 68, 11, "#9a681c", 900, "center")}
       ${figButton("source-1-archive-hit", 18, 294, 354, 70, 'data-route="screen-25"', "", "z-index:35;")}
 
-      ${dashboardFeatures.map(([title, sub, icon, route, x, y], index) => {
+      ${dashboardFeatures.map(([title, sub, icon, route], index) => {
+        const x = index % 2 === 0 ? 18 : 201;
+        const y = 400 + Math.floor(index / 2) * 88;
         const hitAttrs = route === "liuyao-v2"
           ? 'data-action="wentian-open-liuyao-v2" aria-label="打开六爻占卜新版"'
           : `data-route="${route}"`;
