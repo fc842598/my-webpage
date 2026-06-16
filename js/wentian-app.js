@@ -15603,12 +15603,6 @@ function sourceLiurenScreen() {
     ${wentianSimpleHeader("lr46", "六壬法", "教程")}
     ${figButton("lr46-tutorial-hit", 318, 38, 62, 54, 'data-route="screen-47"')}
     <section class="liuren-panel">
-      <div class="liuren-hero-card">
-        <div class="liuren-hero-shade"></div>
-        <div class="liuren-hero-copy">
-          <span>小六壬起课</span>
-        </div>
-      </div>
       <div class="liuren-now-card">
         <div id="liuren-preview" class="liuren-preview">
           <span>当前课时</span>
