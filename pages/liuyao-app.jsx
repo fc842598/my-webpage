@@ -845,35 +845,108 @@ function ShakeScene({ onlinePhase, coins, curYao, onTrigger, onTossComplete, sha
 
       {/* 正/反 result labels */}
       {lastCoins && !isShaking && !done && (
-        <div style={{ display:'flex', gap:22, marginTop:2, marginBottom:-4 }}>
-          {lastCoins.map((isHeads, i) => (
-            <div key={i} style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:2 }}>
+        <div style={{ display:'flex', justifyContent:'center', marginTop:-14, marginBottom:0 }}>
+          <div style={{
+            display:'inline-flex',
+            alignItems:'center',
+            gap:8,
+            padding:'8px 12px',
+            borderRadius:18,
+            background:'rgba(255,250,241,0.88)',
+            border:`1px solid ${C.border}`,
+            boxShadow:'0 6px 14px rgba(120,84,26,0.06)',
+          }}>
+            {lastCoins.map((isHeads, i) => (
+              <div key={`compact-${i}`} style={{
+                width:28,
+                height:28,
+                borderRadius:'50%',
+                background: isHeads ? 'linear-gradient(135deg,#D4B050,#9A6E20)' : C.goldBg,
+                border: isHeads ? 'none' : `1px solid ${C.goldBorder}`,
+                display:'flex',
+                alignItems:'center',
+                justifyContent:'center',
+                fontSize:13,
+                fontWeight:700,
+                fontFamily:"'Noto Serif SC',serif",
+                color: isHeads ? '#fff' : C.gold,
+              }}>{isHeads ? '正' : '反'}</div>
+            ))}
+            {lastResult && (
               <div style={{
-                width:36, height:36, borderRadius:'50%',
+                display:'inline-flex',
+                alignItems:'center',
+                padding:'0 12px',
+                height:28,
+                borderRadius:16,
+                background:C.goldBg,
+                border:`1px solid ${C.goldBorder}`,
+                color:C.gold,
+                fontSize:13,
+                fontWeight:700,
+                whiteSpace:'nowrap',
+              }}>
+                {lastResult}点 / {YAO_TYPE_INFO[lastResult]?.name}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {false && lastCoins && !isShaking && !done && (
+        <div style={{ display:'flex', justifyContent:'center', marginTop:-10, marginBottom:-2 }}>
+          {lastCoins.map((isHeads, i) => (
+            <div key={i} style={{ display:'flex', alignItems:'center' }}>
+              <div style={{
+                width:29, height:29, borderRadius:'50%',
                 background: isHeads ? 'linear-gradient(135deg,#D4B050,#9A6E20)' : C.goldBg,
                 border: isHeads ? 'none' : `1.5px solid ${C.goldBorder}`,
                 display:'flex', alignItems:'center', justifyContent:'center',
                 fontSize:14, fontWeight:700, fontFamily:"'Noto Serif SC',serif",
                 color: isHeads ? '#fff' : C.gold,
               }}>{isHeads ? '正' : '反'}</div>
-              <span style={{ fontSize:10, color:C.text3 }}>{i+1}</span>
             </div>
           ))}
           {lastResult && (
-            <div style={{ display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', gap:2, marginLeft:4 }}>
+            <div style={{ display:'inline-flex', alignItems:'center', justifyContent:'center', gap:4, marginLeft:8, padding:'0 12px', height:30, borderRadius:16, background:C.goldBg, border:`1px solid ${C.goldBorder}`, whiteSpace:'nowrap' }}>
               <span style={{ fontSize:14, fontWeight:700, color:C.gold }}>{lastResult}点</span>
-              <span style={{ fontSize:11, color:C.text2 }}>{YAO_TYPE_INFO[lastResult]?.name}</span>
+              <span style={{ fontSize:13, color:C.gold, fontWeight:700 }}>· {YAO_TYPE_INFO[lastResult]?.name}</span>
             </div>
           )}
         </div>
       )}
 
       {/* Hint text */}
-      <div style={{ textAlign:'center', marginTop:6, minHeight:48, display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', gap:5 }}>
+      {!isShaking && !done && (
+        <div style={{ textAlign:'center', marginTop:2, minHeight:22, display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', gap:4 }}>
+          {shakeReady ? (
+            <>
+              <p style={{ fontSize:12, color:C.text2, fontWeight:500, lineHeight:1.35 }}>
+                {isCharged ? '充能完成，自动起卦' : power > 0.35 ? '加速摇动中…' : '拖动 / 摇机 / 点龟起卦'}
+              </p>
+              {power > 0.05 && (
+                <div style={{ display:'flex', gap:5 }}>
+                  {[0.25,0.5,0.75,1.0].map(v => (
+                    <div key={`compact-power-${v}`} style={{ width:7, height:7, borderRadius:'50%', background: power >= v ? C.gold : C.border, transition:'background 0.12s', boxShadow: power >= v && power > 0.8 ? `0 0 5px ${C.gold}` : 'none' }}/>
+                  ))}
+                </div>
+              )}
+            </>
+          ) : (
+            <div style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:5 }}>
+              <p style={{ fontSize:12, color:C.text2, lineHeight:1.35 }}>拖动或点龟起卦</p>
+              <button onClick={onEnableShake} style={{ background:'none', border:`1px solid ${C.goldBorder}`, padding:'5px 18px', borderRadius:20, fontSize:12, color:C.gold, cursor:'pointer', fontFamily:'inherit' }}>开启摇一摇</button>
+            </div>
+          )}
+        </div>
+      )}
+      {isShaking && <p style={{ fontSize:13, color:C.text2, fontWeight:500, textAlign:'center', marginTop:2 }}>铜钱滚出中…</p>}
+
+      <div style={{ display:'none', textAlign:'center', marginTop:2, minHeight:30, flexDirection:'column', alignItems:'center', justifyContent:'center', gap:4 }}>
         {!isShaking && !done && (
           shakeReady ? (
-            <div style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:5 }}>
-              <p style={{ fontSize:13, color:C.text2, fontWeight:500 }}>
+            <div style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:4 }}>
+              <p style={{ fontSize:12, color:C.text2, fontWeight:500, lineHeight:1.35 }}>
                 {isCharged ? '🔥 充能完成，自动起卦！' : power > 0.35 ? '⚡ 加速摇动…' : '拖动 / 摇手机充能，点击即刻起卦'}
               </p>
               {power > 0.05 && (
@@ -930,8 +1003,8 @@ function OnlineCast({ results, curYao, phase, coins, onToss, onTossComplete, sha
       </div>
       <ShakeScene onlinePhase={phase} coins={coins} curYao={curYao} onTrigger={onToss} onTossComplete={onTossComplete} shakeReady={shakeReady} onEnableShake={onEnableShake} lastResult={lastResult}/>
       {results.length > 0 && (
-        <div style={{ marginTop:14, paddingTop:14, borderTop:`1px solid ${C.border}` }}>
-          <p style={{ fontSize:11, color:C.text3, textAlign:'center', marginBottom:10, letterSpacing:1 }}>卦象成形</p>
+        <div style={{ marginTop:6, paddingTop:10, borderTop:`1px solid ${C.border}` }}>
+          <p style={{ fontSize:11, color:C.text3, textAlign:'center', marginBottom:8, letterSpacing:1 }}>卦象成形</p>
           <HexLines results={results} large={false}/>
         </div>
       )}

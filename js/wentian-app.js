@@ -548,7 +548,7 @@ function getWentianBottomNavActive(nodeId) {
 
 function withWentianStandardBottomNav(nodeId, body, height) {
   const baseHeight = Number(height) || WENTIAN_PHONE_HEIGHT;
-  if (!/^screen-\d+$/.test(String(nodeId)) || hasWentianBottomNav(body) || /class="liuyao-caster-modal"/.test(String(body)) || /liuyao-result-panel/.test(String(body))) {
+  if (String(nodeId) === "screen-43" || !/^screen-\d+$/.test(String(nodeId)) || hasWentianBottomNav(body) || /class="liuyao-caster-modal"/.test(String(body)) || /liuyao-result-panel/.test(String(body))) {
     return { body, height: baseHeight };
   }
   const navY = Math.max(755, Math.round(baseHeight));
@@ -14349,6 +14349,46 @@ function getYangzhaiResultHeight() {
   return Math.max(844, y + 110);
 }
 
+function getYangzhaiSelectLayout() {
+  const selectedItems = getYangzhaiPendingItems();
+  const selectedElders = selectedItems
+    .map((label) => getYangzhaiOption(label))
+    .filter((option) => option.elderKey);
+  const sheetTop = 274;
+  const titleY = 314;
+  const palacePillY = 346;
+  const subtitleY = 382;
+  const dividerY = 404;
+  const optionsStartY = 412;
+  const optionRowGap = 40;
+  const optionBoxHeight = 38;
+  const optionRows = Math.ceil(YANGZHAI_OPTIONS.length / 2);
+  const optionsBottomY = optionsStartY + (optionRows - 1) * optionRowGap + optionBoxHeight;
+  const helperY = optionsBottomY + 10;
+  const elderHelperHeight = selectedElders.length ? 44 + selectedElders.length * 34 : 0;
+  const confirmY = selectedElders.length ? helperY + elderHelperHeight + 10 : helperY + 8;
+  const screenHeight = Math.max(844, confirmY + 72);
+  return {
+    selectedElders,
+    sheetTop,
+    titleY,
+    palacePillY,
+    subtitleY,
+    dividerY,
+    optionsStartY,
+    optionRowGap,
+    optionBoxHeight,
+    helperY,
+    elderHelperHeight,
+    confirmY,
+    screenHeight
+  };
+}
+
+function getYangzhaiSelectHeight() {
+  return getYangzhaiSelectLayout().screenHeight;
+}
+
 function getYangzhaiResultTag(item) {
   if (getWentianLanguageCode() === "en") {
     if (item.kind === "space") return item.matched ? "Good Fit" : "Review";
@@ -14530,21 +14570,21 @@ function sourceYangzhaiCompassScreen(showPrompt = true) {
 function sourceYangzhaiSelectScreen() {
   const activePalace = getYangzhaiPalace(yangzhaiState.activePalace);
   const selectedItems = getYangzhaiPendingItems();
-  const selectedElders = selectedItems
-    .map((label) => getYangzhaiOption(label))
-    .filter((option) => option.elderKey);
-  const sheetTop = 300;
-  const titleY = 336;
-  const palacePillY = 370;
-  const subtitleY = 412;
-  const dividerY = 438;
-  const optionsStartY = 454;
-  const optionRows = Math.ceil(YANGZHAI_OPTIONS.length / 2);
-  const optionsBottomY = optionsStartY + (optionRows - 1) * 48 + 37;
-  const helperY = optionsBottomY + 18;
-  const elderHelperHeight = selectedElders.length ? 58 + selectedElders.length * 46 : 0;
-  const confirmY = selectedElders.length ? helperY + elderHelperHeight + 18 : helperY + 4;
-  const screenHeight = Math.max(844, confirmY + 76);
+  const {
+    selectedElders,
+    sheetTop,
+    titleY,
+    palacePillY,
+    subtitleY,
+    dividerY,
+    optionsStartY,
+    optionRowGap,
+    optionBoxHeight,
+    helperY,
+    elderHelperHeight,
+    confirmY,
+    screenHeight
+  } = getYangzhaiSelectLayout();
   return `
     ${sourceYangzhaiCompassScreen(false)}
     ${figBox("yz43-overlay", 0, 0, 390, screenHeight, "", "background:rgba(33,22,15,.50);backdrop-filter:blur(1px);z-index:40;")}
@@ -14564,34 +14604,34 @@ function sourceYangzhaiSelectScreen() {
       const col = index % 2;
       const row = Math.floor(index / 2);
       const x = col ? 214 : 44;
-      const y = 426 + row * 48;
+      const y = optionsStartY + row * optionRowGap;
       const isSelected = option.type !== "clear" && selectedItems.includes(label);
       const shortSize = option.short.length > 1 ? 10 : 12;
       const optionSize = optionText.length > 5 ? 12 : 14;
       return `
-        ${figBox(`yz43-option-bg-${index}`, x - 8, y - 5, 158, 42, "", `border:1px solid ${isSelected ? "#a94437" : "#eadfce"};border-radius:14px;background:${isSelected ? "#fff1e8" : "#fffdf8"};box-shadow:${isSelected ? "0 8px 18px rgba(155,62,43,.10)" : "0 6px 16px rgba(70,45,25,.04)"};z-index:42;`)}
-        ${figBox(`yz43-avatar-${index}`, x, y, 32, 32, "", `border-radius:16px;background:${option.type === "clear" ? "#fff1ea" : "#f2e8d7"};border:1px solid #e0d2bd;z-index:43;`)}
-        ${figText(`yz43-avatar-text-${index}`, option.short, x, y + (option.short.length > 1 ? 9 : 8), 32, shortSize, option.type === "clear" ? "#a94437" : "#7f5b2a", 900, "center", "z-index:44;")}
-        ${figText(`yz43-option-${index}`, optionText, x + 42, y + 7, 78, optionSize, "#201812", 800, "left", "z-index:44;white-space:nowrap;")}
-        ${figBox(`yz43-radio-${index}`, x + 120, y + 7, 20, 20, "", `border:1px solid ${isSelected ? "#a94437" : "#c9bba9"};border-radius:10px;background:${isSelected ? "#a94437" : "#fffdf8"};z-index:43;`)}
+        ${figBox(`yz43-option-bg-${index}`, x - 8, y - 4, 158, optionBoxHeight, "", `border:1px solid ${isSelected ? "#a94437" : "#eadfce"};border-radius:13px;background:${isSelected ? "#fff1e8" : "#fffdf8"};box-shadow:${isSelected ? "0 8px 18px rgba(155,62,43,.10)" : "0 6px 16px rgba(70,45,25,.04)"};z-index:42;`)}
+        ${figBox(`yz43-avatar-${index}`, x, y, 30, 30, "", `border-radius:15px;background:${option.type === "clear" ? "#fff1ea" : "#f2e8d7"};border:1px solid #e0d2bd;z-index:43;`)}
+        ${figText(`yz43-avatar-text-${index}`, option.short, x, y + (option.short.length > 1 ? 8 : 7), 30, shortSize, option.type === "clear" ? "#a94437" : "#7f5b2a", 900, "center", "z-index:44;")}
+        ${figText(`yz43-option-${index}`, optionText, x + 40, y + 6, 80, optionSize, "#201812", 800, "left", "z-index:44;white-space:nowrap;")}
+        ${figBox(`yz43-radio-${index}`, x + 120, y + 6, 18, 18, "", `border:1px solid ${isSelected ? "#a94437" : "#c9bba9"};border-radius:9px;background:${isSelected ? "#a94437" : "#fffdf8"};z-index:43;`)}
         ${isSelected ? figText(`yz43-radio-check-${index}`, "✓", x + 120, y + 10, 20, 10, "#fffaf3", 900, "center", "z-index:44;") : ""}
-        ${figButton(`yz43-option-hit-${index}`, x - 8, y - 5, 158, 42, `data-action="yangzhai-pick" data-yangzhai-option="${label}"`, "", "z-index:45;")}
+        ${figButton(`yz43-option-hit-${index}`, x - 8, y - 4, 158, optionBoxHeight, `data-action="yangzhai-pick" data-yangzhai-option="${label}"`, "", "z-index:45;")}
       `;
     }).join("")}
     ${selectedElders.length ? `
-      ${figBox("yz43-elder-helper", 24, helperY, 342, elderHelperHeight, "", "border:1px solid #eadbc6;border-radius:18px;background:#fffdf8;box-shadow:0 10px 22px rgba(70,45,25,.05);z-index:42;")}
+      ${figBox("yz43-elder-helper", 24, helperY, 342, elderHelperHeight, "", "border:1px solid #eadbc6;border-radius:16px;background:#fffdf8;box-shadow:0 10px 22px rgba(70,45,25,.05);z-index:42;")}
       ${figText("yz43-elder-note", "长辈现住位先按父母位类解读；65岁后应退位，退居东北位为佳。", 40, helperY + 16, 300, 12, "#7d6b58", 700, "left", "line-height:1.5;font-family:'Noto Sans SC','Microsoft YaHei',sans-serif;z-index:43;")}
       ${selectedElders.map((option, index) => {
-        const rowY = helperY + 52 + index * 46;
+        const rowY = helperY + 34 + index * 34;
         return `
-          ${figText(`yz43-elder-label-${index}`, option.label, 40, rowY + 7, 138, 13, "#201812", 800, "left", "white-space:nowrap;z-index:43;")}
+          ${figText(`yz43-elder-label-${index}`, option.label, 40, rowY + 8, 132, 12, "#201812", 800, "left", "white-space:nowrap;z-index:43;")}
           ${Object.entries(YANGZHAI_ELDER_AGE_LABELS).map(([ageValue, ageText], ageIndex) => {
             const isActive = getYangzhaiElderAgeValue(option.elderKey) === ageValue;
-            const ageX = ageIndex === 0 ? 234 : 296;
+            const ageX = ageIndex === 0 ? 234 : 292;
             return `
-              ${figBox(`yz43-elder-age-bg-${index}-${ageIndex}`, ageX, rowY, 56, 30, "", `border:1px solid ${isActive ? "#a94437" : "#e2d4c1"};border-radius:15px;background:${isActive ? "#fff1e8" : "#fffdf8"};z-index:43;`)}
-              ${figText(`yz43-elder-age-text-${index}-${ageIndex}`, ageText, ageX, rowY + 9, 56, 11, isActive ? "#9d3f31" : "#8a755f", 800, "center", "z-index:44;white-space:nowrap;")}
-              ${figButton(`yz43-elder-age-hit-${index}-${ageIndex}`, ageX, rowY, 56, 30, `data-action="yangzhai-elder-age" data-elder-key="${option.elderKey}" data-elder-age="${ageValue}"`, "", "z-index:45;")}
+              ${figBox(`yz43-elder-age-bg-${index}-${ageIndex}`, ageX, rowY, 50, 28, "", `border:1px solid ${isActive ? "#a94437" : "#e2d4c1"};border-radius:14px;background:${isActive ? "#fff1e8" : "#fffdf8"};z-index:43;`)}
+              ${figText(`yz43-elder-age-text-${index}-${ageIndex}`, ageText, ageX, rowY + 8, 50, 10, isActive ? "#9d3f31" : "#8a755f", 800, "center", "z-index:44;white-space:nowrap;")}
+              ${figButton(`yz43-elder-age-hit-${index}-${ageIndex}`, ageX, rowY, 50, 28, `data-action="yangzhai-elder-age" data-elder-key="${option.elderKey}" data-elder-age="${ageValue}"`, "", "z-index:45;")}
             `;
           }).join("")}
         `;
@@ -15177,20 +15217,67 @@ function formatLiurenDayName(day) {
 function formatLiurenLunar(lunar) {
   if (!lunar) return "农历未识别";
   const month = `${lunar.isLeap ? "闰" : ""}${LIUREN_MONTHS[lunar.month - 1] || `${lunar.month}月`}`;
-  return `${lunar.year}年${month}${lunar.day}日`;
+  return `${lunar.year}年${month}${formatLiurenDayName(lunar.day)}`;
 }
 
 function formatLiurenLunarBrief(lunar, hourName) {
   if (!lunar) return "农历未识别";
   const month = `${lunar.isLeap ? "闰" : ""}${LIUREN_MONTHS[lunar.month - 1] || `${lunar.month}月`}`;
-  return `${month} ${formatLiurenDayName(lunar.day)} ${hourName}时`;
+  return `${month}${formatLiurenDayName(lunar.day)} ${hourName}时`;
+}
+
+function parseLiurenIntlMonth(raw) {
+  if (!raw) return null;
+  const normalized = String(raw).replace(/\s+/g, "");
+  const isLeap = normalized.includes("闰");
+  const clean = normalized.replace("闰", "");
+  const month = LIUREN_MONTHS.findIndex((item) => item === clean) + 1;
+  return month ? { month, isLeap } : null;
+}
+
+function getLiurenLunarFromIntl(date) {
+  try {
+    if (typeof Intl?.DateTimeFormat !== "function") return null;
+    const parts = new Intl.DateTimeFormat("zh-Hans-u-ca-chinese", {
+      year: "numeric",
+      month: "long",
+      day: "numeric"
+    }).formatToParts(date);
+    const yearPart = parts.find((part) => part.type === "relatedYear")?.value;
+    const monthPart = parts.find((part) => part.type === "month")?.value;
+    const dayPart = parts.find((part) => part.type === "day")?.value;
+    const parsedMonth = parseLiurenIntlMonth(monthPart);
+    const day = Number(dayPart);
+    const year = Number(yearPart);
+    if (!parsedMonth || !day || !year) return null;
+    return {
+      year,
+      month: parsedMonth.month,
+      day,
+      isLeap: parsedMonth.isLeap
+    };
+  } catch (_error) {
+    return null;
+  }
 }
 
 function getLiurenLunar(date) {
+  const intlLunar = getLiurenLunarFromIntl(date);
+  if (intlLunar) return intlLunar;
   if (typeof solarToLunar !== "function") throw new Error("农历转换模块未加载，请刷新后重试");
   const lunar = solarToLunar(date.getFullYear(), date.getMonth() + 1, date.getDate());
   if (!lunar) throw new Error("当前日期超出农历支持范围");
   return lunar;
+}
+
+function renderLiurenPreview(result) {
+  return `
+    <div class="liuren-preview-copy">
+      <span>当前课时</span>
+      <strong>新历：${formatWentianDateTime(result.date)}</strong>
+      <em>农历：${formatLiurenLunarBrief(result.lunar, result.hourName)}</em>
+    </div>
+  `;
 }
 
 function getLiurenResultByDate(date) {
@@ -15449,6 +15536,12 @@ function setLiurenDateTime(date, options = {}) {
   updateLiurenPreview({ reveal: options.reveal ?? liurenHasStarted });
 }
 
+function closeLiurenTimeMenu() {
+  document.querySelectorAll(".liuren-time-picker[open]").forEach((node) => {
+    node.open = false;
+  });
+}
+
 function setLiurenStatus(text, tone = "") {
   const status = document.getElementById("liuren-status");
   if (!status) return;
@@ -15466,14 +15559,7 @@ function updateLiurenPreview(options = {}) {
   const reveal = options.reveal ?? liurenHasStarted;
   try {
     const result = getLiurenResultByDate(getLiurenInputDate());
-    if (preview) {
-      preview.innerHTML = `
-        <span>当前课时</span>
-        <strong>${result.hourName}时</strong>
-        <em>${formatLiurenLunar(result.lunar)}</em>
-        <small>${formatWentianDateTime(result.date)}</small>
-      `;
-    }
+    if (preview) preview.innerHTML = renderLiurenPreview(result);
     if (track) track.innerHTML = renderLiurenTrack(result, reveal);
     if (path) path.innerHTML = renderLiurenPath(result, reveal);
     if (process) process.innerHTML = renderLiurenProcess(result, reveal);
@@ -15486,7 +15572,7 @@ function updateLiurenPreview(options = {}) {
     }
     setLiurenStatus(reveal ? "已按农历月日时起课" : "已取当下时间，先定念再起课", reveal ? "ok" : "");
   } catch (error) {
-    if (preview) preview.innerHTML = "<span>当前课时</span><strong>待起课</strong><em>请补全时间</em>";
+    if (preview) preview.innerHTML = '<div class="liuren-preview-copy"><span>当前课时</span><strong>新历：待取时</strong><em>农历：请补全时间</em></div>';
     if (process) process.innerHTML = "";
     setLiurenStatus(error.message || "起课失败", "error");
   }
@@ -15604,13 +15690,13 @@ function sourceLiurenScreen() {
     ${figButton("lr46-tutorial-hit", 318, 38, 62, 54, 'data-route="screen-47"')}
     <section class="liuren-panel">
       <div class="liuren-now-card">
-        <div id="liuren-preview" class="liuren-preview">
-          <span>当前课时</span>
-          <strong>${initial.hourName}时</strong>
-          <em>${formatLiurenLunar(initial.lunar)}</em>
-          <small>${formatWentianDateTime(initial.date)}</small>
-        </div>
-        <button type="button" class="liuren-now" data-action="liuren-use-now">重新取时</button>
+        <div id="liuren-preview" class="liuren-preview">${renderLiurenPreview(initial)}</div>
+        <details class="liuren-time-picker">
+          <summary class="liuren-now">重新取时</summary>
+          <div class="liuren-time-menu">
+            <button type="button" class="liuren-time-option" data-action="liuren-use-now">获取当前时间</button>
+          </div>
+        </details>
       </div>
       <button type="button" class="liuren-start" data-action="liuren-calc"><span data-liuren-start-text>默念后起课</span></button>
       <div id="liuren-path">${renderLiurenPath(initial, false)}</div>
@@ -17710,7 +17796,7 @@ function renderConvertedScreen(no) {
   }
   const polishedScreen = renderWentianPolishedScreen(screen);
   if (polishedScreen) {
-    const polishedHeight = screen.no === 4 ? 892 : screen.no === 8 ? 1280 : screen.no === 17 ? getLiuyaoCastScreenHeight() : screen.no === 18 || screen.no === 19 ? 1480 : screen.no === 20 ? getLiuyaoResultScreenHeight() : screen.no === 22 ? 1120 : screen.no === 24 ? 1180 : screen.no === 44 ? getYangzhaiResultHeight() : screen.no === 46 ? LIUREN_SCREEN_HEIGHT : screen.no === 49 ? WENTIAN_HEPAN_RESULT_SCREEN_HEIGHT : 844;
+    const polishedHeight = screen.no === 4 ? 892 : screen.no === 8 ? 1280 : screen.no === 17 ? getLiuyaoCastScreenHeight() : screen.no === 18 || screen.no === 19 ? 1480 : screen.no === 20 ? getLiuyaoResultScreenHeight() : screen.no === 22 ? 1120 : screen.no === 24 ? 1180 : screen.no === 43 ? getYangzhaiSelectHeight() : screen.no === 44 ? getYangzhaiResultHeight() : screen.no === 46 ? LIUREN_SCREEN_HEIGHT : screen.no === 49 ? WENTIAN_HEPAN_RESULT_SCREEN_HEIGHT : 844;
     const wideBgClass = screen.no >= 42 && screen.no <= 45 ? " wide-bg" : "";
     const customHotspots = screen.no >= 17 && screen.no <= 20 ? "" : convertedFlowHotspots(screen);
     return figPhone(`screen-${screen.no}`, `${String(screen.no).padStart(2, "0")} ${screen.title}`, `
@@ -18369,16 +18455,19 @@ document.addEventListener("click", (event) => {
     return;
   }
   if (earlyAction === "liuren-use-now") {
+    closeLiurenTimeMenu();
     liurenHasStarted = false;
     liurenXuRecordId = null;
     setLiurenDateTime(new Date(), { reveal: false });
     return;
   }
   if (earlyAction === "liuren-calc") {
+    closeLiurenTimeMenu();
     calculateLiurenFromInputs();
     return;
   }
   if (earlyAction === "liuren-reset") {
+    closeLiurenTimeMenu();
     resetLiuren();
     return;
   }

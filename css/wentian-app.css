@@ -3130,8 +3130,9 @@ html[lang="en"] .wentian-chat-starter {
 }
 
 .wentian-archive-avatar {
-  display: grid;
-  place-items: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 52px;
   height: 52px;
   border: 1px solid #e7d3b5;
@@ -3140,6 +3141,8 @@ html[lang="en"] .wentian-chat-starter {
   color: #a47a32;
   font-size: 18px;
   font-weight: 800;
+  line-height: 1;
+  padding-top: 1px;
 }
 
 .wentian-archive-main,
@@ -4725,51 +4728,126 @@ html[data-wentian-language="en"] .liuren-hero-copy em {
   align-items: center;
   justify-content: space-between;
   margin-top: 12px;
-  min-height: 78px;
-  padding: 14px;
+  gap: 10px;
+  min-height: 96px;
+  padding: 15px 14px 16px;
+  border-radius: 24px;
+  background: linear-gradient(180deg, rgba(255, 252, 246, 0.98) 0%, rgba(255, 249, 239, 0.96) 100%);
 }
 
 .liuren-preview {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.liuren-preview-copy {
   display: grid;
-  gap: 3px;
+  gap: 8px;
+  min-width: 0;
+  padding-right: 2px;
+}
+
+.liuren-preview-copy::after {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 1px;
+  order: 1;
+  background: linear-gradient(90deg, rgba(222, 203, 170, 0.95) 0%, rgba(222, 203, 170, 0.15) 100%);
 }
 
 .liuren-preview strong {
-  color: #9d3329;
-  font-size: 22px;
-  line-height: 1;
+  order: 2;
+  color: #2b1a12;
+  font-size: 16px;
+  line-height: 1.28;
 }
 
 .liuren-preview span,
-.liuren-preview em,
-.liuren-preview small {
+.liuren-preview em {
   display: block;
   color: #817568;
-  font-size: 12px;
+  font-size: 13px;
   font-style: normal;
-  font-weight: 600;
+  font-weight: 700;
+  line-height: 1.35;
 }
 
 .liuren-preview span {
+  order: 0;
   color: #9a681c;
+  font-weight: 900;
+  font-size: 15px;
+}
+
+.liuren-preview em {
+  order: 3;
+  color: #8a563e;
+  font-size: 16px;
   font-weight: 900;
 }
 
-.liuren-preview small {
-  color: #9d9183;
+.liuren-time-picker {
+  position: relative;
+  flex: 0 0 auto;
+}
+
+.liuren-time-picker[open] .liuren-now {
+  background: #fff4de;
+  box-shadow: 0 10px 20px rgba(177, 133, 54, 0.14);
 }
 
 .liuren-now {
-  flex: 0 0 auto;
-  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 94px;
+  height: 44px;
   padding: 0 14px;
-  border: 1px solid #ead9bd;
-  border-radius: 18px;
-  background: #fff0d6;
+  border: 1px solid #e2c98d;
+  border-radius: 27px;
+  background: #fff2d9;
+  color: #9a681c;
+  font-size: 13px;
+  font-weight: 900;
+  list-style: none;
+  cursor: pointer;
+}
+
+.liuren-now::-webkit-details-marker {
+  display: none;
+}
+
+.liuren-now::after {
+  content: "▾";
+  margin-left: 4px;
+  font-size: 16px;
+}
+
+.liuren-time-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 5;
+  min-width: 148px;
+  padding: 8px;
+  border: 1px solid #e4d4b7;
+  border-radius: 16px;
+  background: rgba(255, 251, 244, 0.98);
+  box-shadow: 0 16px 34px rgba(76, 48, 24, 0.16);
+}
+
+.liuren-time-option {
+  width: 100%;
+  height: 42px;
+  border: 0;
+  border-radius: 12px;
+  background: #fff5e2;
   color: #9a681c;
   font: inherit;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 800;
+  cursor: pointer;
 }
 
 .liuren-form-card {
@@ -7951,7 +8029,7 @@ html[lang="en"] .liuyao-coin-summary em {
 .wentian-yijing-master span {
   display: inline-flex;
   color: #d9bd61;
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 900;
   letter-spacing: .04em;
 }
@@ -8199,20 +8277,20 @@ html[lang="en"] .liuyao-coin-summary em {
 .wentian-yijing-master-detail p {
   display: block;
   margin: 0;
-  color: #eadfc8;
-  font-size: 13px;
+  color: #f6eddc;
+  font-size: 15px;
   font-style: normal;
   font-weight: 700;
-  line-height: 1.78;
+  line-height: 1.9;
 }
 
 .wentian-yijing-reading p {
-  color: #d8c8a6;
+  color: #f6eddc;
 }
 
 .wentian-yijing-master-detail p {
-  color: #efe4cc;
-  font-size: 14px;
+  color: #fff7e6;
+  font-size: 15px;
 }
 
 .wentian-yijing-reading .wentian-mb-reading-lines,
@@ -8223,8 +8301,8 @@ html[lang="en"] .liuyao-coin-summary em {
 }
 
 .wentian-yijing-reading .wentian-mb-reading-lines p {
-  color: #d8c8a6;
-  font-size: 13px;
+  color: #f6eddc;
+  font-size: 15px;
 }
 
 .wentian-yijing-master-head {
@@ -8234,7 +8312,7 @@ html[lang="en"] .liuyao-coin-summary em {
 
 .wentian-yijing-master strong {
   color: #fff7df;
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 900;
   line-height: 1.28;
 }
