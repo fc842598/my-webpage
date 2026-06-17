@@ -1253,6 +1253,9 @@ html[lang="en"] [data-node-id="wt15-seal-text"] {
   box-shadow:
     0 2px 8px rgba(117, 65, 16, .32),
     0 0 0 2px rgba(255, 255, 255, .55);
+  transform-origin: center;
+  will-change: opacity, transform;
+  animation: wentianFcXiaoLianBadgeAutoHide 2s ease-out forwards;
 }
 
 @keyframes wentianFcXiaoLianCellPulse {
@@ -1270,6 +1273,18 @@ html[lang="en"] [data-node-id="wt15-seal-text"] {
   100% {
     filter: brightness(1);
     transform: scale(1);
+  }
+}
+
+@keyframes wentianFcXiaoLianBadgeAutoHide {
+  0%,
+  72% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(.88);
   }
 }
 
