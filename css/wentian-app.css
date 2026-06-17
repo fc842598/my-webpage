@@ -8289,7 +8289,7 @@ html[lang="en"] .liuyao-coin-summary em {
 }
 
 .wentian-yijing-master-detail p {
-  color: #fff7e6;
+  color: #ffffff;
   font-size: 15px;
 }
 
@@ -8303,6 +8303,11 @@ html[lang="en"] .liuyao-coin-summary em {
 .wentian-yijing-reading .wentian-mb-reading-lines p {
   color: #f6eddc;
   font-size: 15px;
+}
+
+.wentian-yijing-master .wentian-mb-reading-lines p,
+.wentian-yijing-master-detail .wentian-mb-reading-lines p {
+  color: #ffffff;
 }
 
 .wentian-yijing-master-head {
