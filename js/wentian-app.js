@@ -1362,8 +1362,8 @@ let wentianMobileYijingTab = "xiantian";
 let wentianMobileLuckDecadeKey = "";
 let wentianMobileXiaoLianAge = "";
 let wentianXiaoLianBadgeVisibleKey = "";
+let wentianXiaoLianBadgeFrame = 0;
 let wentianXiaoLianBadgeTimer = 0;
-const wentianXiaoLianBadgeSeenKeys = new Set();
 let wentianHepanXiaoLianAge = { left: "", right: "" };
 let wentianMobileCurveView = "future";
 let wentianChartMoreOpen = false;
@@ -3374,6 +3374,8 @@ function syncWentianChartAiStateFromStorage() {
   });
   wentianMobileLuckDecadeKey = "";
   wentianMobileXiaoLianAge = "";
+  wentianXiaoLianBadgeVisibleKey = "";
+  clearWentianXiaoLianBadgeTimer();
   try {
     const all = JSON.parse(localStorage.getItem(WENTIAN_CHART_AI_STORAGE_KEY) || "{}");
     const saved = all?.[chartRecordId];
@@ -4121,36 +4123,34 @@ function getWentianSelectedXiaoLianYear(chartData = {}) {
 }
 
 function clearWentianXiaoLianBadgeTimer() {
+  if (wentianXiaoLianBadgeFrame) {
+    window.cancelAnimationFrame(wentianXiaoLianBadgeFrame);
+    wentianXiaoLianBadgeFrame = 0;
+  }
   if (!wentianXiaoLianBadgeTimer) return;
   window.clearTimeout(wentianXiaoLianBadgeTimer);
   wentianXiaoLianBadgeTimer = 0;
 }
 
-function getWentianXiaoLianBadgeStateKey(selected = {}, chartData = {}) {
-  const chartKey = chartData.chartRecordId || chartData.archiveId || chartData.recordId || chartData.birthDate || chartData.localTime || chartData.solarTime || "";
-  const ageKey = selected.key || selected.currentKey || "";
-  const branchKey = selected.xiaolianBranch || selected.xiaoLianBranch || "";
-  return [chartKey, ageKey, branchKey].filter(Boolean).join("|");
-}
-
-function shouldShowWentianXiaoLianBadge(selected = {}, chartData = {}) {
-  const key = getWentianXiaoLianBadgeStateKey(selected, chartData);
+function shouldShowWentianXiaoLianBadge(selected = {}) {
+  const key = selected.key || selected.currentKey || "";
   return !!key && key === wentianXiaoLianBadgeVisibleKey;
 }
 
-function armWentianXiaoLianBadge(selected = {}, chartData = {}, options = {}) {
-  const key = getWentianXiaoLianBadgeStateKey(selected, chartData);
+function armWentianXiaoLianBadge(selected = {}, options = {}) {
+  const key = selected.key || selected.currentKey || "";
   if (!key) return;
-  if (!options.force && wentianXiaoLianBadgeSeenKeys.has(key)) return;
   clearWentianXiaoLianBadgeTimer();
   wentianXiaoLianBadgeVisibleKey = key;
-  wentianXiaoLianBadgeSeenKeys.add(key);
-  wentianXiaoLianBadgeTimer = window.setTimeout(() => {
-    wentianXiaoLianBadgeTimer = 0;
-    if (wentianXiaoLianBadgeVisibleKey !== key) return;
-    wentianXiaoLianBadgeVisibleKey = "";
-    if (state.route === "screen-27") navigatePreservingScroll("screen-27", false);
-  }, 2000);
+  wentianXiaoLianBadgeFrame = window.requestAnimationFrame(() => {
+    wentianXiaoLianBadgeFrame = 0;
+    wentianXiaoLianBadgeTimer = window.setTimeout(() => {
+      wentianXiaoLianBadgeTimer = 0;
+      if (wentianXiaoLianBadgeVisibleKey !== key) return;
+      wentianXiaoLianBadgeVisibleKey = "";
+      if (state.route === "screen-27") navigatePreservingScroll("screen-27", false);
+    }, Math.max(0, Number(options.durationMs || 2000)));
+  });
 }
 
 function getWentianHepanSelectedXiaoLianYear(chartData = {}, side = "left") {
@@ -5200,6 +5200,8 @@ async function decodeWentianChartAiModules(moduleKeys, options = {}) {
 async function decodeWentianChartAi() {
   wentianMobileLuckDecadeKey = "";
   wentianMobileXiaoLianAge = "";
+  wentianXiaoLianBadgeVisibleKey = "";
+  clearWentianXiaoLianBadgeTimer();
   return decodeWentianChartAiModules(WENTIAN_CHART_AI_TASKS.map((task) => task.module), {
     reset: true,
   });
@@ -16716,10 +16718,9 @@ function renderWentianClassicPalaceCell(palace, activeBranch, options = {}) {
   const xiaoLianAge = Number(selectedXiaoLian.age || 0);
   const isXiaoLian = !!xiaoLianBranch && branch === xiaoLianBranch;
   const readonly = !!options.readonly;
-  const badgeChartData = options.chartData || {};
   const showXiaoLianBadge = readonly
     ? isXiaoLian
-    : (isXiaoLian && shouldShowWentianXiaoLianBadge(selectedXiaoLian, badgeChartData));
+    : (isXiaoLian && shouldShowWentianXiaoLianBadge(selectedXiaoLian));
   const palaceAction = options.palaceAction || "";
   const allStars = [
     ...(palace.majorStars || []),
@@ -17200,8 +17201,7 @@ function renderWentianClassicChart(saved, options = {}) {
     currentXiaolian: computedChartData.currentXiaolian || sourceChartData.currentXiaolian,
   };
   const selectedXiaoLian = options.selectedXiaoLian || getWentianSelectedXiaoLianYear(chartData);
-  if (!options.readonly) armWentianXiaoLianBadge(selectedXiaoLian, chartData);
-  const cellOptions = { ...options, selectedXiaoLian, chartData };
+  const cellOptions = { ...options, selectedXiaoLian };
   const centerOptions = { ...options, selectedXiaoLian };
   const centerSource = { ...source, chart, chartData };
   const activeBranch = options.activeBranch || chart.earthlyBranchOfSoulPalace || (chart.palaces || []).find((p) => p.name === "命宫")?.earthlyBranch || "卯";
@@ -18942,16 +18942,16 @@ document.addEventListener("click", (event) => {
     const nextKey = event.target.closest("[data-xiaolian-age-key]")?.dataset.xiaolianAgeKey || "";
     const chartData = getWentianChartPayload();
     const selected = resolveWentianSelectedXiaoLianYear(chartData, nextKey);
-    armWentianXiaoLianBadge(selected, chartData, { force: true });
     wentianMobileXiaoLianAge = nextKey;
+    armWentianXiaoLianBadge(selected);
     navigatePreservingScroll("screen-27", false);
     return;
   }
   if (action === "wentian-chart-ai-xiaolian-current") {
     const chartData = getWentianChartPayload();
     const current = getWentianSelectedXiaoLianYear(chartData);
-    armWentianXiaoLianBadge(current, chartData, { force: true });
     wentianMobileXiaoLianAge = current.currentKey || "";
+    armWentianXiaoLianBadge(current);
     navigatePreservingScroll("screen-27", false);
     return;
   }
