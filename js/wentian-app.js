@@ -14397,29 +14397,29 @@ function getYangzhaiSelectLayout() {
   const titleY = 322;
   const palacePillY = 316;
   const subtitleY = 352;
-  const dividerY = 372;
-  const optionsStartY = 382;
+  const confirmPanelY = 372;
+  const dividerY = 438;
+  const optionsStartY = 450;
   const optionRowGap = 42;
   const optionBoxHeight = 40;
   const optionRows = Math.ceil(YANGZHAI_OPTIONS.length / 2);
   const optionsBottomY = optionsStartY + (optionRows - 1) * optionRowGap + optionBoxHeight;
-  const helperY = optionsBottomY + 12;
+  const helperY = optionsBottomY + 16;
   const elderHelperHeight = selectedElders.length ? 44 + selectedElders.length * 34 : 0;
-  const confirmY = selectedElders.length ? helperY + elderHelperHeight + 14 : helperY + 12;
-  const screenHeight = Math.max(844, confirmY + 78);
+  const screenHeight = selectedElders.length ? helperY + elderHelperHeight + 24 : optionsBottomY + 26;
   return {
     selectedElders,
     sheetTop,
     titleY,
     palacePillY,
     subtitleY,
+    confirmPanelY,
     dividerY,
     optionsStartY,
     optionRowGap,
     optionBoxHeight,
     helperY,
     elderHelperHeight,
-    confirmY,
     screenHeight
   };
 }
@@ -14619,31 +14619,37 @@ function sourceYangzhaiSelectScreen() {
     titleY,
     palacePillY,
     subtitleY,
+    confirmPanelY,
     dividerY,
     optionsStartY,
     optionRowGap,
     optionBoxHeight,
     helperY,
     elderHelperHeight,
-    confirmY,
     screenHeight
   } = getYangzhaiSelectLayout();
   return `
     ${sourceYangzhaiCompassScreen(false)}
     ${figBox("yz43-overlay", 0, 0, 390, screenHeight, "", "background:rgba(33,22,15,.50);backdrop-filter:blur(1px);z-index:40;")}
-    ${figButton("yz43-top-back-hit", 0, 0, 96, 110, 'data-route="screen-42" aria-label="返回地脉道"', "", "z-index:42;")}
+    ${figButton("yz43-top-back-hit", 0, 0, 96, 110, 'data-route="screen-42" aria-label="\u8fd4\u56de\u5730\u8109\u9053"', "", "z-index:42;")}
     ${figBox("yz43-sheet", 0, sheetTop, 390, screenHeight - sheetTop, "", "border-radius:28px 28px 0 0;background:#fffaf3;box-shadow:0 -20px 44px rgba(35,20,10,.24);z-index:41;")}
     ${figBox("yz43-handle", 160, sheetTop + 16, 70, 5, "", "border-radius:4px;background:#dfcfb8;z-index:42;")}
-    ${figText("yz43-title", "选择方位成员", 24, titleY, 168, 20, "#201812", 900, "left", "font-family:'Noto Serif SC','Songti SC',serif;z-index:42;")}
+    ${figText("yz43-title", "\u9009\u62e9\u65b9\u4f4d\u6210\u5458", 24, titleY, 168, 20, "#201812", 900, "left", "font-family:'Noto Serif SC','Songti SC',serif;z-index:42;")}
     ${figButton("yz43-close-hit", 328, titleY - 10, 42, 42, 'data-route="screen-42"', "", "z-index:44;")}
-    ${figText("yz43-close", "×", 330, titleY - 9, 42, 30, "#5f5a52", 500, "center", "z-index:43;")}
+    ${figText("yz43-close", "\u00d7", 330, titleY - 9, 42, 30, "#5f5a52", 500, "center", "z-index:43;")}
     ${figBox("yz43-palace-pill", 206, palacePillY, 106, 32, "", "border:1px solid #eadbc6;border-radius:16px;background:#fffdf8;z-index:42;")}
-    ${figText("yz43-palace-text", `${activePalace.dir} · ${activePalace.role}`, 206, palacePillY + 9, 106, 12, "#8a5a22", 800, "center", "white-space:nowrap;font-family:'Noto Sans SC','Microsoft YaHei',sans-serif;z-index:43;")}
-    ${figText("yz43-sub", "按实际居住位置安人", 24, subtitleY, 210, 12, "#817568", 700, "left", "font-family:'Noto Sans SC','Microsoft YaHei',sans-serif;z-index:42;")}
+    ${figText("yz43-palace-text", `${activePalace.dir} / ${activePalace.role}`, 206, palacePillY + 9, 106, 12, "#8a5a22", 800, "center", "white-space:nowrap;font-family:'Noto Sans SC','Microsoft YaHei',sans-serif;z-index:43;")}
+    ${figText("yz43-sub", "\u6309\u5b9e\u9645\u5c45\u4f4f\u4f4d\u7f6e\u5b89\u4eba", 24, subtitleY, 210, 12, "#817568", 700, "left", "font-family:'Noto Sans SC','Microsoft YaHei',sans-serif;z-index:42;")}
+    ${figBox("yz43-confirm-panel", 24, confirmPanelY, 342, 54, "", "border:1px solid #eadbc6;border-radius:18px;background:linear-gradient(180deg,#fffdf8,#fdf6eb);box-shadow:0 10px 24px rgba(70,45,25,.06);z-index:42;")}
+    ${figText("yz43-confirm-kicker", selectedItems.length ? `\u5df2\u9009 ${selectedItems.length} \u9879` : "\u672a\u9009\u6210\u5458", 42, confirmPanelY + 11, 120, 11, "#9a6b33", 900, "left", "letter-spacing:.02em;z-index:43;")}
+    ${figText("yz43-confirm-note", selectedItems.length ? "\u5148\u786e\u8ba4\u672c\u5bab\uff0c\u518d\u7ee7\u7eed\u5fae\u8c03\u4e0b\u9762\u6210\u5458\u3002" : "\u5148\u9009\u6210\u5458\uff0c\u518d\u786e\u8ba4\u5f53\u524d\u5bab\u4f4d\u3002", 42, confirmPanelY + 28, 148, 11, "#8a7a67", 700, "left", "line-height:1.35;z-index:43;")}
+    ${figBox("yz43-confirm", 206, confirmPanelY + 9, 142, 36, "", "border-radius:18px;background:linear-gradient(180deg,#b74e39,#983323);box-shadow:0 10px 22px rgba(158,61,43,.18);z-index:42;")}
+    ${figButton("yz43-confirm-hit", 206, confirmPanelY + 9, 142, 36, 'data-action="yangzhai-confirm"', "", "z-index:45;")}
+    ${figText("yz43-confirm-text", selectedItems.length ? `\u786e\u8ba4\u672c\u5bab (${selectedItems.length})` : "\u786e\u8ba4\u6e05\u7a7a", 206, confirmPanelY + 20, 142, 13, "#fffaf3", 900, "center", "z-index:44;white-space:nowrap;")}
     ${figBox("yz43-midline", 24, dividerY, 342, 1, "", "background:#eadfce;z-index:42;")}
     ${YANGZHAI_OPTIONS.map((option, index) => {
       const label = option.label;
-      const optionText = option.elderKey ? option.label.replace("（", "/").replace("）", "") : label;
+      const optionText = option.elderKey ? option.label.replace("\uff08", "/").replace("\uff09", "") : label;
       const col = index % 2;
       const row = Math.floor(index / 2);
       const x = col ? 214 : 44;
@@ -14657,13 +14663,13 @@ function sourceYangzhaiSelectScreen() {
         ${figText(`yz43-avatar-text-${index}`, option.short, x, y + (option.short.length > 1 ? 8 : 7), 30, shortSize, option.type === "clear" ? "#a94437" : "#7f5b2a", 900, "center", "z-index:44;")}
         ${figText(`yz43-option-${index}`, optionText, x + 40, y + 6, 80, optionSize, "#201812", 800, "left", "z-index:44;white-space:nowrap;")}
         ${figBox(`yz43-radio-${index}`, x + 120, y + 6, 18, 18, "", `border:1px solid ${isSelected ? "#a94437" : "#c9bba9"};border-radius:9px;background:${isSelected ? "#a94437" : "#fffdf8"};z-index:43;`)}
-        ${isSelected ? figText(`yz43-radio-check-${index}`, "✓", x + 120, y + 10, 20, 10, "#fffaf3", 900, "center", "z-index:44;") : ""}
+        ${isSelected ? figText(`yz43-radio-check-${index}`, "\u2713", x + 120, y + 10, 20, 10, "#fffaf3", 900, "center", "z-index:44;") : ""}
         ${figButton(`yz43-option-hit-${index}`, x - 8, y - 4, 158, optionBoxHeight, `data-action="yangzhai-pick" data-yangzhai-option="${label}"`, "", "z-index:45;")}
       `;
     }).join("")}
     ${selectedElders.length ? `
       ${figBox("yz43-elder-helper", 24, helperY, 342, elderHelperHeight, "", "border:1px solid #eadbc6;border-radius:16px;background:#fffdf8;box-shadow:0 10px 22px rgba(70,45,25,.05);z-index:42;")}
-      ${figText("yz43-elder-note", "长辈按父母位解读；65岁后可优先参考东北位。", 40, helperY + 16, 300, 12, "#7d6b58", 700, "left", "line-height:1.5;font-family:'Noto Sans SC','Microsoft YaHei',sans-serif;z-index:43;")}
+      ${figText("yz43-elder-note", "\u957f\u8f88\u6309\u7236\u6bcd\u4f4d\u89e3\u8bfb\uff0c75\u5c81\u540e\u53ef\u4f18\u5148\u53c2\u8003\u4e1c\u5317\u4f4d\u3002", 40, helperY + 16, 300, 12, "#7d6b58", 700, "left", "line-height:1.5;font-family:'Noto Sans SC','Microsoft YaHei',sans-serif;z-index:43;")}
       ${selectedElders.map((option, index) => {
         const rowY = helperY + 34 + index * 34;
         return `
@@ -14680,9 +14686,6 @@ function sourceYangzhaiSelectScreen() {
         `;
       }).join("")}
     ` : ""}
-    ${figBox("yz43-confirm", 44, confirmY, 302, 50, "", "border-radius:25px;background:linear-gradient(180deg,#b74e39,#983323);box-shadow:0 12px 24px rgba(158,61,43,.22);z-index:42;")}
-    ${figButton("yz43-confirm-hit", 44, confirmY, 302, 50, 'data-action="yangzhai-confirm"', "", "z-index:45;")}
-    ${figText("yz43-confirm-text", selectedItems.length ? `确认本宫安位 (${selectedItems.length})` : "确认清空", 44, confirmY + 14, 302, 16, "#fffaf3", 900, "center", "z-index:44;")}
   `;
 }
 
