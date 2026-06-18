@@ -16461,11 +16461,6 @@ function sourceDashboardHomeScreen() {
       ["办公室布局", "门向与老板位", "01-feature-office-v2.svg", "screen-50"],
       ["六壬法", "农历掌诀", "01-feature-liuren-v2.svg", "screen-46"],
     ];
-    const quickActions = [
-      ["去问AI", 'data-route="screen-5"'],
-      ["六爻占卜", 'data-action="wentian-open-liuyao-v2" aria-label="打开六爻占卜新版"'],
-      ["阳宅地脉", 'data-route="screen-42"']
-    ];
     return `
       ${figBox("source-1-bg", 0, 0, 390, 844, "", "background:linear-gradient(180deg,#fffdf8 0%,#fbf7ef 50%,#fff6ea 100%);")}
       ${figImage("source-1-brand-logo", "../images/wentian-prototype-assets/wentian-brand-logo-ai-gold-v1.webp", 18, 23, 42, 42, "border-radius:10px;object-fit:cover;box-shadow:0 6px 14px rgba(24,19,8,.18);", "loading=\"eager\" decoding=\"async\"")}
@@ -16510,17 +16505,7 @@ function sourceDashboardHomeScreen() {
         ${figButton(`source-1-feature-hit-${index}`, x, y, 171, 80, hitAttrs, "", "z-index:35;")}
       `;
       }).join("")}
-      ${figBox("source-1-quick", 18, 670, 354, 72, "", "border-radius:18px;background:rgba(255,253,248,.88);border:1px solid #eadfce;box-shadow:0 10px 22px rgba(70,45,25,.06);")}
-      ${figText("source-1-quick-title", "常用入口", 32, 684, 88, 14, "#6f5c47", 900, "left")}
-      ${quickActions.map(([label, attrs], index) => {
-        const x = 30 + index * 110;
-        return `
-          ${figBox(`source-1-quick-chip-${index}`, x, 705, 98, 26, "", "border-radius:13px;background:#fff6e8;border:1px solid #ead2a2;")}
-          ${figText(`source-1-quick-chip-text-${index}`, label, x, 713, 98, 11, "#9a681c", 900, "center", "white-space:nowrap;")}
-          ${figButton(`source-1-quick-chip-hit-${index}`, x, 705, 98, 26, attrs, "", "z-index:35;")}
-        `;
-      }).join("")}
-      ${sourceAppBottomNav("首页", 755)}
+      ${sourceAppBottomNav("首页", 670)}
     `;
   }
 }
