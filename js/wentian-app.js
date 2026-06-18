@@ -1116,16 +1116,16 @@ function sourceArchiveSelectScreen() {
   const activeId = wentianArchiveDraftId || getWentianSelectedArchiveId(archives);
   const displayArchives = archives;
   const archiveCount = displayArchives.length;
-  const sheetHeight = archiveCount === 0 ? 248 : archiveCount === 1 ? 338 : archiveCount === 2 ? 450 : 510;
-  const listHeight = archiveCount === 0 ? 72 : archiveCount === 1 ? 160 : archiveCount === 2 ? 276 : 392;
-  const actionTop = archiveCount === 0 ? 470 : archiveCount === 1 ? 560 : archiveCount === 2 ? 672 : 714;
+  const sheetHeight = archiveCount === 0 ? 248 : archiveCount === 1 ? 338 : archiveCount === 2 ? 450 : archiveCount === 3 ? 486 : 510;
+  const listHeight = archiveCount === 0 ? 72 : archiveCount === 1 ? 160 : archiveCount === 2 ? 276 : archiveCount === 3 ? 338 : 392;
+  const actionTop = archiveCount === 0 ? 470 : archiveCount === 1 ? 560 : archiveCount === 2 ? 672 : archiveCount === 3 ? 708 : 714;
   const archiveStatus = wentianArchiveStatus.text
     ? `<div id="wentian-archive-status" class="wentian-invite-status" style="left:42px;top:260px;width:306px;text-align:center" data-tone="${escapeHtml(wentianArchiveStatus.tone || "")}">${escapeHtml(wentianArchiveStatus.text)}</div>`
     : "";
   return `
     ${figBox("source-5-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
     <style>
-      #source-5-sheet{height:${sheetHeight}px !important;}
+      .fig-box[data-node-id="source-5-sheet"]{height:${sheetHeight}px !important;}
       .wentian-archive-list{height:${listHeight}px !important;}
       .wentian-archive-exit,.wentian-archive-confirm{top:${actionTop}px !important;}
     </style>
