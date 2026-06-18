@@ -13901,16 +13901,10 @@ function getYangzhaiCompassDirectionLabel(heading) {
 
 function getYangzhaiCompassCardinalAlignment(heading) {
   const normalized = normalizeCompassHeading(heading) || 0;
-  const cardinals = [
-    { angle: 0, label: "正北" },
-    { angle: 90, label: "正东" },
-    { angle: 180, label: "正南" },
-    { angle: 270, label: "正西" }
-  ];
-  const nearest = cardinals[Math.round(normalized / 90) % cardinals.length];
-  const delta = Math.abs(getCompassDeltaDegrees(nearest.angle, normalized));
+  const delta = Math.abs(getCompassDeltaDegrees(0, normalized));
   return {
-    ...nearest,
+    angle: 0,
+    label: "正北",
     delta,
     aligned: delta <= YANGZHAI_COMPASS_ALIGN_TOLERANCE
   };
@@ -13947,13 +13941,13 @@ function applyYangzhaiCompassHeading(rawHeading, tone = "active") {
     cross.classList.toggle("is-cardinal-aligned", alignment.aligned);
   });
   setYangzhaiCompassStatus(alignment.aligned
-    ? `已对准${alignment.label}`
+    ? "四正已对齐"
     : `${Math.round(heading)}° ${getYangzhaiCompassDirectionLabel(heading)}`,
     alignment.aligned ? "ready" : tone
   );
   setYangzhaiCompassPrompt(alignment.aligned
-    ? `可以安位：点九宫加号，选择谁住哪里。`
-    : `接近${alignment.label}，偏${Math.round(alignment.delta)}°，对齐后再安位。`,
+    ? "已对准四正：右侧为东、下方为南，可以开始安位。"
+    : `请将手机上方对准正北，确保右东下南；当前偏${Math.round(alignment.delta)}°。`,
     alignment.aligned ? "ready" : "active"
   );
   return heading;
