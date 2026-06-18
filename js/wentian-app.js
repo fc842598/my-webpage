@@ -10525,6 +10525,101 @@ function sourceMembershipScreen() {
   `;
 }
 
+function sourceMembershipScreenPreview() {
+  const member = getWentianMemberSnapshot();
+  const account = getWentianAuthDisplay();
+  const displayName = account.loggedIn ? account.name : "谢广周";
+  const displayInitial = account.loggedIn ? account.initial : "谢";
+  const buttonText = member.isMember ? `续费付费版 ¥${member.amountYuan}` : `开通付费版 ¥${member.amountYuan}`;
+  const providers = getWentianPaymentProviders();
+  const memberNote = member.isMember
+    ? "付费版已开通，可继续高频问盘与连续追问"
+    : "您还不是会员，开通后提升 AI 问答额度";
+  const methodButtons = providers.map((item, index) => {
+    const width = providers.length > 2 ? 96 : 146;
+    const x = providers.length > 2 ? 36 + index * 107 : (index === 0 ? 42 : 202);
+    const active = wentianPaymentState.provider === item.provider;
+    const disabled = !item.enabled;
+    const bg = active ? "#fff3d9" : "#fffdf8";
+    const border = active ? "#d9b87a" : "#eadfce";
+    const textColor = disabled ? "#b4aaa0" : (active ? "#8f3d30" : "#756d63");
+    const text = disabled ? `${item.label}配置中` : item.label;
+    return `
+      ${figBox(`wt33-preview-method-${item.provider}`, x, 402, width, 38, "", `border:1px solid ${border};border-radius:19px;background:${bg};box-shadow:0 6px 14px rgba(92,65,35,.05);`)}
+      ${figButton(`wt33-preview-method-hit-${item.provider}`, x, 402, width, 38, disabled ? "" : `data-action="wentian-pay-provider" data-provider="${item.provider}"`)}
+      ${figText(`wt33-preview-method-text-${item.provider}`, text, x, 413, width, providers.length > 2 ? 11 : 12, textColor, 900, "center")}
+    `;
+  }).join("");
+
+  return `
+    ${figBox("wt33-preview-bg", 0, 0, 390, 844, "", "background:linear-gradient(180deg,#fff8ef 0%,#faf1e5 40%,#f7ecde 100%);")}
+    ${figBox("wt33-preview-top-glow", 238, 90, 120, 92, "", "border-radius:46px;background:radial-gradient(circle,rgba(255,184,134,.32),rgba(255,184,134,0));")}
+    ${wentianSimpleHeader("wt33p", "阅天套餐")}
+
+    ${figBox("wt33-preview-member", 22, 102, 346, 84, "", "border-radius:22px;background:linear-gradient(180deg,rgba(255,255,255,.92),rgba(255,249,241,.92));border:1px solid rgba(233,216,190,.82);box-shadow:0 12px 28px rgba(99,72,40,.08);")}
+    ${figBox("wt33-preview-avatar", 36, 122, 44, 44, "", "border-radius:14px;background:linear-gradient(145deg,#2f241d,#5b4032);")}
+    ${figText("wt33-preview-avatar-text", escapeHtml(displayInitial || "谢"), 36, 135, 44, 16, "#fff7ea", 900, "center")}
+    ${figText("wt33-preview-name", escapeHtml(displayName || "谢广周"), 94, 123, 100, 16, "#241b15", 900)}
+    ${figBox("wt33-preview-badge", 170, 121, 64, 20, "", "border-radius:10px;background:#f7ead2;")}
+    ${figText("wt33-preview-badge-text", member.isMember ? "VIP" : "AI+", 170, 126, 64, 10, "#a06f2a", 900, "center")}
+    ${figText("wt33-preview-note", escapeHtml(memberNote), 94, 147, 180, 12, "#8a7d70", 700)}
+    ${figBox("wt33-preview-right-badge", 286, 116, 56, 56, "", "border-radius:18px;background:linear-gradient(145deg,#ffd8bb,#f0b789);box-shadow:0 10px 20px rgba(226,164,109,.18);")}
+    ${figText("wt33-preview-right-main", "100", 286, 132, 56, 16, "#fffaf3", 900, "center")}
+    ${figText("wt33-preview-right-sub", "/天", 286, 149, 56, 10, "#fff5e8", 800, "center")}
+
+    ${[
+      ["付费版", `¥${member.amountYuan}`, "按日刷新"],
+      ["每日额度", "100次/天", "高频可用"],
+      ["当前剩余", escapeHtml(member.daily), escapeHtml(member.dailyLimit)],
+    ].map((item, index) => {
+      const x = 22 + index * 116;
+      const highlight = index === 1;
+      const bg = highlight ? "linear-gradient(180deg,#fffaf0,#ffefcb)" : "rgba(255,255,255,.92)";
+      const border = highlight ? "rgba(221,190,128,.82)" : "rgba(234,223,206,.88)";
+      const labelColor = highlight ? "#a26b22" : "#9a8b7a";
+      const valueColor = highlight ? "#8a3b25" : "#241b15";
+      const subColor = highlight ? "#b08a53" : "#a3978b";
+      return `
+        ${figBox(`wt33-preview-card-${index}`, x, 206, 108, 96, "", `border-radius:20px;background:${bg};border:1px solid ${border};box-shadow:0 10px 20px rgba(92,65,35,.06);`)}
+        ${figText(`wt33-preview-card-title-${index}`, item[0], x, 223, 108, 12, labelColor, 800, "center")}
+        ${figText(`wt33-preview-card-value-${index}`, item[1], x, 248, 108, 19, valueColor, 900, "center")}
+        ${figText(`wt33-preview-card-sub-${index}`, item[2], x, 275, 108, 10, subColor, 700, "center")}
+      `;
+    }).join("")}
+
+    ${figText("wt33-preview-pay-title", "支付方式", 28, 370, 120, 13, "#756d63", 800)}
+    ${methodButtons}
+
+    ${figBox("wt33-preview-submit", 22, 458, 346, 50, "", "border-radius:25px;background:linear-gradient(180deg,#272532,#16141e);box-shadow:0 14px 28px rgba(29,23,18,.18);")}
+    ${figButton("wt33-preview-submit-hit", 22, 458, 346, 50, 'data-action="wentian-member-pay"')}
+    ${figText("wt33-preview-submit-text", buttonText, 22, 473, 346, 14, "#fffaf3", 900, "center")}
+    ${figText("wt33-preview-submit-note", "开通后提升 AI 问答额度，付费版为 100次/天，按日刷新", 0, 520, 390, 11, "#9c9286", 700, "center")}
+
+    ${figText("wt33-preview-compare-title", "额度权益对比", 24, 556, 132, 16, "#25211d", 900)}
+    ${figText("wt33-preview-compare-more", "查看详情 〉", 272, 556, 86, 12, "#9d7a42", 800, "right")}
+    ${figBox("wt33-preview-table", 22, 588, 346, 190, "", "border-radius:22px;background:rgba(255,255,255,.94);border:1px solid rgba(234,223,206,.9);box-shadow:0 10px 24px rgba(92,65,35,.07);")}
+    ${figText("wt33-preview-col-item", "项目", 42, 608, 70, 12, "#9a8b7a", 800)}
+    ${figText("wt33-preview-col-free", "免费用户", 148, 608, 82, 12, "#9a8b7a", 800, "center")}
+    ${figBox("wt33-preview-col-paid-bg", 264, 600, 76, 24, "", "border-radius:12px;background:#fff5e2;")}
+    ${figText("wt33-preview-col-paid", "付费版", 264, 607, 76, 12, "#a36b25", 900, "center")}
+    ${[
+      ["AI问答额度", "20次/天", "100次/天"],
+      ["每日刷新", "支持", "支持"],
+      ["连续追问", "基础", "更适合"],
+      ["开通后提额", "—", "立即提升"],
+    ].map((row, index) => {
+      const y = 638 + index * 34;
+      return `
+        ${index === 0 ? "" : figLine(`wt33-preview-line-${index}`, 40, y - 8, 292, "#efe4d3")}
+        ${figText(`wt33-preview-row-name-${index}`, row[0], 42, y, 92, 12, "#4b3d31", 800)}
+        ${figText(`wt33-preview-row-free-${index}`, row[1], 148, y, 82, 12, "#8d8377", 800, "center")}
+        ${figText(`wt33-preview-row-paid-${index}`, row[2], 262, y, 80, 12, "#7f3a25", 900, "center")}
+      `;
+    }).join("")}
+    ${sourceAppBottomNav("我的", 778)}
+  `;
+}
+
 function sourcePaymentScreen() {
   const isAipayResource = wentianPaymentState.payMethod === "aipay-resource";
   const stateText = wentianPaymentState.status === "paid"
@@ -15851,7 +15946,7 @@ function renderWentianPolishedScreen(screen) {
   if (no >= 17 && no <= 19) return sourceLiuyaoCastScreen();
   if (no === 20) return sourceLiuyaoResultScreen();
   if (no === 30) return sourcePaymentScreen();
-  if (no === 33) return sourceMembershipScreen();
+  if (no === 33) return sourceMembershipScreenPreview();
   if (no === 49) return sourceHepanResultScreen();
   if (no === 8) {
     const paragraphs = [
