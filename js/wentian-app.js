@@ -13907,10 +13907,10 @@ function getYangzhaiCompassDirectionLabel(heading) {
 
 function getYangzhaiCompassCardinalAlignment(heading) {
   const normalized = normalizeCompassHeading(heading) || 0;
-  const delta = Math.abs(getCompassDeltaDegrees(0, normalized));
+  const delta = Math.abs(getCompassDeltaDegrees(180, normalized));
   return {
-    angle: 0,
-    label: "正北",
+    angle: 180,
+    label: "正南",
     delta,
     aligned: delta <= YANGZHAI_COMPASS_ALIGN_TOLERANCE
   };
@@ -13924,7 +13924,7 @@ function setYangzhaiCompassActiveUi(active) {
   });
   if (!active) {
     setYangzhaiCompassStatus("未开启", "");
-    setYangzhaiCompassPrompt("开指南针，对准正北/正东/正南/正西后安位。", "");
+    setYangzhaiCompassPrompt("开指南针，对准九宫方位后安位。", "");
   }
 }
 
@@ -13952,8 +13952,8 @@ function applyYangzhaiCompassHeading(rawHeading, tone = "active") {
     alignment.aligned ? "ready" : tone
   );
   setYangzhaiCompassPrompt(alignment.aligned
-    ? "已对准四正：右侧为东、下方为南，可以开始安位。"
-    : `请将手机上方对准正北，确保右东下南；当前偏${Math.round(alignment.delta)}°。`,
+    ? "已对准九宫四正：上南、左东、下北、右西，可以开始安位。"
+    : `请将手机上方对准正南，确保左东右西；当前偏${Math.round(alignment.delta)}°。`,
     alignment.aligned ? "ready" : "active"
   );
   return heading;
