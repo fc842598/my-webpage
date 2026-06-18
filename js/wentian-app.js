@@ -14553,7 +14553,7 @@ function yangzhaiCompassGrid(id, compact = false) {
         ${figBox(`${id}-compass-close`, x + metrics.cellW - 42, y + metrics.cellH - 31, 34, 22, "yangzhai-compass-close-ui", "border:1px solid #ead2a9;border-radius:11px;background:rgba(255,248,233,.9);")}
         <p class="fig-text yangzhai-compass-close-ui yangzhai-compass-label" data-node-id="${id}-compass-close-text" style="left:${x + metrics.cellW - 42}px;top:${y + metrics.cellH - 26}px;width:34px;font-size:9px;color:#8a5a22;font-weight:800;text-align:center;line-height:1.1;">关闭</p>
         ${figButton(`${id}-compass-close-hit`, x + metrics.cellW - 50, y + metrics.cellH - 42, 48, 40, 'data-action="yangzhai-compass-toggle" aria-label="关闭手机指南针"', "yangzhai-compass-close-ui", "cursor:pointer;")}
-        <div class="yangzhai-inline-compass-status" data-node-id="${id}-compass-note" data-yangzhai-compass-status style="left:${x + 10}px;top:${y + 145}px;width:${metrics.cellW - 20}px;">未开启</div>
+        <div class="yangzhai-inline-compass-status" data-node-id="${id}-compass-note" data-yangzhai-compass-status style="left:${x + 54}px;top:${y + 78}px;width:46px;">未开启</div>
         `}
       `;
     }
