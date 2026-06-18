@@ -72,7 +72,7 @@ const convertedByNo = new Map(convertedScreens.map((screen) => [screen.no, scree
 const screenFlowHotspots = {
   1: [[18, 130, 354, 274, "screen-5"], [18, 438, 354, 96, "screen-26"], [18, 535, 354, 96, "hepan"], [18, 632, 354, 96, "screen-17"], [18, 729, 354, 96, "screen-42"], [18, 826, 354, 96, "screen-46"], [12, 950, 76, 83, "screen-1"], [109, 950, 76, 83, "screen-25"], [207, 950, 76, 83, "screen-3"], [304, 950, 76, 83, "screen-31"]],
   2: [[18, 282, 354, 190, "screen-4"], [18, 487, 354, 190, "screen-4"], [18, 692, 354, 175, "screen-4"]],
-  3: [[285, 128, 82, 28, "screen-5"], [16, 164, 358, 84, "screen-5"], [16, 305, 358, 116, "screen-5"], [12, 761, 76, 72, "screen-1"], [109, 761, 76, 72, "screen-25"], [207, 761, 76, 72, "screen-3"], [304, 761, 76, 72, "screen-31"]],
+  3: [[285, 128, 82, 28, "screen-5"], [16, 164, 358, 92, "screen-5"], [16, 282, 358, 102, "screen-4"], [16, 402, 358, 292, "screen-4"], [12, 761, 76, 72, "screen-1"], [109, 761, 76, 72, "screen-25"], [207, 761, 76, 72, "screen-3"], [304, 761, 76, 72, "screen-31"]],
   4: [[18, 24, 44, 56, "screen-3"], [334, 24, 38, 56, "screen-9"], [252, 26, 78, 36, "screen-5"]],
   5: [[320, 116, 48, 48, "screen-4"], [34, 235, 322, 72, "screen-6"], [34, 318, 322, 72, "screen-6"], [48, 748, 294, 52, "screen-6"]],
   6: [[18, 44, 48, 48, "screen-4"], [88, 600, 220, 76, "screen-7"]],
@@ -786,6 +786,61 @@ function sourceArchiveScreen(screen) {
       ${figText(`source-3-master-desc-${index}`, desc, 112, y + 82, 232, 13, "#9a9086", 400, "left", "line-height:1.5;")}
     `).join("")}
     ${sourceAppBottomNav("阅天AI", 755)}
+  `;
+}
+
+function sourceArchiveScreenV2(screen) {
+  const activeArchive = getCurrentWentianArchive();
+  const active = getWentianArchiveDisplay(activeArchive);
+  return `
+    ${figText("source-3-time-v2", "15:17", 18, 16, 70, 14, "#26211c")}
+    ${figText("source-3-status-v2", "\u25c9  0.00  5G  \u25ae 31 \u26a1", 250, 14, 120, 10, "#26211c", 700, "right")}
+    ${figText("source-3-title-v2", "\u9605\u5929AI", 18, 62, 170, 29, "#26211c", 800)}
+    ${figText("source-3-subtitle-v2", "\u8bb8\u5927\u5e08\u5df2\u51c6\u5907\u597d\u4e3a\u60a8\u89e3\u8bfb", 18, 101, 240, 13, "#7f756b")}
+    ${figText("source-3-current-title-v2", "\u5f53\u524d\u6863\u6848", 18, 136, 120, 15, "#26211c", 800)}
+    ${figText("source-3-change-v2", "\u66f4\u6362\u6863\u6848 \u3009", 284, 138, 88, 12, "#9b742e", 500, "right")}
+    ${figBox("source-3-profile-v2", 16, 164, 358, 92, "converted-card", "border-radius:16px;background:linear-gradient(180deg,#fffefb,#fff9f0);box-shadow:0 8px 20px rgba(90,62,34,.08);")}
+    ${figBox("source-3-profile-avatar-ring-v2", 34, 183, 54, 54, "", "border-radius:27px;background:linear-gradient(135deg,#fffaf0,#efe0b7);border:1px solid rgba(212,184,118,.55);box-shadow:0 10px 20px rgba(157,114,41,.16);")}
+    ${figBox("source-3-profile-avatar-core-v2", 41, 190, 40, 40, "", "border-radius:20px;background:linear-gradient(135deg,#cb932e,#f1d18c);")}
+    ${figText("source-3-profile-avatar-mark-v2", "\u547d", 41, 201, 40, 16, "#fffdf7", 800, "center")}
+    ${figBox("source-3-profile-avatar-dot-v2", 72, 191, 8, 8, "", "border-radius:999px;background:#fff8e8;border:1px solid rgba(255,255,255,.75);")}
+    ${figText("source-3-profile-name-v2", escapeHtml(active.name), 102, 180, 190, 18, "#26211c", 800)}
+    ${figBox("source-3-gender-v2", 102, 205, 30, 18, "", "border-radius:999px;background:#fbefcf;")}
+    ${figText("source-3-gender-text-v2", active.gender, 102, 209, 30, 10, "#b07a2d", 700, "center")}
+    ${figBox("source-3-profile-tag-v2", 140, 205, 72, 18, "", "border-radius:999px;background:#fbefcf;")}
+    ${figText("source-3-profile-tag-text-v2", "\u7d2b\u5fae\u547d\u76d8", 140, 209, 72, 10, "#b88c33", 600, "center")}
+    ${figText("source-3-profile-date-v2", escapeHtml(active.datetime), 102, 230, 170, 12, "#8d8175")}
+    ${figText("source-3-profile-switch-v2", "\u2195", 332, 198, 24, 24, "#b8ae9d", 500, "center")}
+    ${figText("source-3-master-title-v2", "\u547d\u7406\u5e08", 18, 260, 160, 15, "#26211c", 800)}
+    ${figBox("source-3-master-v2", 16, 282, 358, 102, "converted-card", "border-radius:18px;background:linear-gradient(110deg,#fffefb,#f8f2e6);box-shadow:0 10px 24px rgba(92,64,32,.11);")}
+    ${figImage("source-3-master-avatar-v2", "../images/wentian-prototype-assets/xu-dashi.webp", 34, 301, 62, 62, "border-radius:31px;object-fit:cover;object-position:center 18%;")}
+    ${figText("source-3-master-name-v2", "\u8bb8\u5927\u5e08", 112, 303, 180, 18, "#26211c", 800)}
+    ${figBox("source-3-master-pill-a-v2", 112, 331, 66, 18, "", "border-radius:999px;background:#f7ecd8;")}
+    ${figText("source-3-master-pill-a-text-v2", "\u7d2b\u5fae\u547d\u76d8", 112, 335, 66, 10, "#b88c33", 600, "center")}
+    ${figBox("source-3-master-pill-b-v2", 186, 331, 54, 18, "", "border-radius:999px;background:#f7ecd8;")}
+    ${figText("source-3-master-pill-b-text-v2", "AI\u89e3\u6790", 186, 335, 54, 10, "#b88c33", 600, "center")}
+    ${figText("source-3-master-desc-v2", "\u5df2\u63a5\u5165\u60a8\u7684\u7d2b\u5fae\u547d\u76d8\uff0c\u53ef\u76f4\u63a5\u5f00\u542f\u5bf9\u8bdd", 112, 357, 220, 13, "#948676", 400, "left", "line-height:1.45;")}
+    ${figBox("source-3-action-panel-v2", 16, 402, 358, 292, "converted-card", "border-radius:24px;background:linear-gradient(180deg,#fffefb,#fff8ed);box-shadow:0 14px 28px rgba(111,82,42,.10);")}
+    ${figText("source-3-action-kicker-v2", "\u5feb\u901f\u5f00\u59cb", 34, 424, 88, 12, "#b18437", 700)}
+    ${figText("source-3-action-title-v2", "\u4e00\u6b21\u8fdb\u5165\u95ee\u7b54\uff0c\u76f4\u63a5\u804a\u91cd\u70b9", 34, 445, 290, 21, "#26211c", 800)}
+    ${figText("source-3-action-desc-v2", "\u5148\u770b\u6574\u4f53\u8d70\u5411\uff0c\u518d\u6309\u60a8\u6700\u60f3\u95ee\u7684\u65b9\u5411\u7ee7\u7eed\u8ffd\u95ee\u3002", 34, 476, 292, 13, "#8d8175", 400, "left", "line-height:1.55;")}
+    ${figBox("source-3-action-hero-v2", 34, 508, 322, 74, "", "border-radius:20px;background:radial-gradient(circle at 22% 10%,rgba(255,248,216,.92),rgba(250,229,173,.55) 28%,rgba(197,150,70,.92) 100%);box-shadow:inset 0 1px 0 rgba(255,255,255,.6),0 10px 18px rgba(170,124,46,.18);")}
+    ${figText("source-3-action-hero-title-v2", "\u5f00\u59cb\u95ee\u8bb8\u5927\u5e08", 54, 525, 146, 18, "#543716", 800)}
+    ${figText("source-3-action-hero-desc-v2", "\u8fdb\u5165\u540e\u53ef\u4ee5\u76f4\u63a5\u95ee\u611f\u60c5\u3001\u4e8b\u4e1a\u3001\u8d22\u8fd0\u6216\u8fd1\u671f\u8282\u70b9\u3002", 54, 549, 198, 12, "#7a5a27", 500, "left", "line-height:1.5;")}
+    ${figBox("source-3-action-hero-cta-v2", 248, 525, 88, 38, "", "border-radius:19px;background:rgba(61,40,15,.88);box-shadow:0 8px 18px rgba(61,40,15,.22);")}
+    ${figText("source-3-action-hero-cta-text-v2", "\u7acb\u5373\u53d1\u95ee", 248, 536, 88, 14, "#fff8eb", 700, "center")}
+    ${figBox("source-3-action-chip-1-v2", 34, 600, 102, 52, "", "border-radius:16px;background:#ffffff;border:1px solid rgba(226,209,178,.9);")}
+    ${figText("source-3-action-chip-1-title-v2", "\u6574\u4f53\u8d70\u5411", 34, 614, 102, 14, "#26211c", 700, "center")}
+    ${figText("source-3-action-chip-1-desc-v2", "\u5148\u770b\u5927\u65b9\u5411", 34, 634, 102, 10, "#9a8a76", 500, "center")}
+    ${figBox("source-3-action-chip-2-v2", 144, 600, 102, 52, "", "border-radius:16px;background:#ffffff;border:1px solid rgba(226,209,178,.9);")}
+    ${figText("source-3-action-chip-2-title-v2", "\u611f\u60c5\u4e8b\u4e1a", 144, 614, 102, 14, "#26211c", 700, "center")}
+    ${figText("source-3-action-chip-2-desc-v2", "\u6309\u4e3b\u9898\u76f4\u63a5\u95ee", 144, 634, 102, 10, "#9a8a76", 500, "center")}
+    ${figBox("source-3-action-chip-3-v2", 254, 600, 102, 52, "", "border-radius:16px;background:#ffffff;border:1px solid rgba(226,209,178,.9);")}
+    ${figText("source-3-action-chip-3-title-v2", "\u5f53\u524d\u547d\u76d8", 254, 614, 102, 14, "#26211c", 700, "center")}
+    ${figText("source-3-action-chip-3-desc-v2", "\u7ee7\u7eed\u5f80\u4e0b\u8ffd\u95ee", 254, 634, 102, 10, "#9a8a76", 500, "center")}
+    ${figBox("source-3-action-note-v2", 34, 664, 322, 18, "", "border-radius:9px;background:rgba(248,236,210,.7);")}
+    ${figText("source-3-action-note-text-v2", "\u70b9\u51fb\u8fd9\u5757\u5373\u53ef\u76f4\u63a5\u8fdb\u5165\u8bb8\u5927\u5e08\u5bf9\u8bdd", 34, 668, 322, 10, "#a17633", 600, "center")}
+    ${sourceAppBottomNav("\u9605\u5929AI", 755)}
   `;
 }
 
@@ -17927,7 +17982,7 @@ function renderConvertedScreen(no) {
   }
   if (screen.no === 3) {
     return figPhone(`screen-${screen.no}`, `${String(screen.no).padStart(2, "0")} ${screen.title}`, `
-      ${sourceArchiveScreen(screen)}
+      ${sourceArchiveScreenV2(screen)}
       ${convertedFlowHotspots(screen)}
     `, 844, "converted source-screen", true);
   }
