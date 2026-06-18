@@ -14625,11 +14625,11 @@ function sourceYangzhaiSelectScreen() {
   return `
     ${sourceYangzhaiCompassScreen(false)}
     ${figBox("yz43-overlay", 0, 0, 390, screenHeight, "", "background:rgba(33,22,15,.50);backdrop-filter:blur(1px);z-index:40;")}
-    ${figButton("yz43-top-back-hit", 0, 0, 96, 110, 'data-route="screen-42" aria-label="\u8fd4\u56de\u5730\u8109\u9053"', "", "z-index:42;")}
+    ${figButton("yz43-top-back-hit", 0, 0, 96, 110, 'data-action="back" aria-label="\u8fd4\u56de\u5730\u8109\u9053"', "", "z-index:42;")}
     ${figBox("yz43-sheet", 0, sheetTop, 390, screenHeight - sheetTop, "", "border-radius:28px 28px 0 0;background:#fffaf3;box-shadow:0 -20px 44px rgba(35,20,10,.24);z-index:41;")}
     ${figBox("yz43-handle", 160, sheetTop + 16, 70, 5, "", "border-radius:4px;background:#dfcfb8;z-index:42;")}
     ${figText("yz43-title", "\u9009\u62e9\u65b9\u4f4d\u6210\u5458", 24, titleY, 168, 20, "#201812", 900, "left", "font-family:'Noto Serif SC','Songti SC',serif;z-index:42;")}
-    ${figButton("yz43-close-hit", 328, titleY - 10, 42, 42, 'data-route="screen-42"', "", "z-index:44;")}
+    ${figButton("yz43-close-hit", 328, titleY - 10, 42, 42, 'data-action="back" aria-label="\u5173\u95ed\u65b9\u4f4d\u6210\u5458"', "", "z-index:44;")}
     ${figText("yz43-close", "\u00d7", 330, titleY - 9, 42, 30, "#5f5a52", 500, "center", "z-index:43;")}
     ${figBox("yz43-palace-pill", 206, palacePillY, 106, 32, "", "border:1px solid #eadbc6;border-radius:16px;background:#fffdf8;z-index:42;")}
     ${figText("yz43-palace-text", `${activePalace.dir} / ${activePalace.role}`, 206, palacePillY + 9, 106, 12, "#8a5a22", 800, "center", "white-space:nowrap;font-family:'Noto Sans SC','Microsoft YaHei',sans-serif;z-index:43;")}
