@@ -8372,6 +8372,17 @@ function getWentianAuthDisplay() {
   };
 }
 
+function getWentianCompactAccountTitle(account = {}) {
+  const rawName = String(account.name || "").trim();
+  const rawEmail = String(account.email || "").trim();
+  if (!rawName) return "";
+  if (rawEmail && rawName === rawEmail && rawEmail.includes("@")) {
+    const local = rawEmail.split("@")[0] || rawEmail;
+    return local.length > 14 ? `${local.slice(0, 14)}…` : local;
+  }
+  return rawName;
+}
+
 async function getWentianAuthSession(options = {}) {
   const current = wentianAuthSession || readWentianStoredSession();
   if (current && !options.force && !isWentianSessionExpiring(current)) {
@@ -10627,7 +10638,9 @@ function sourceMineScreen(screen) {
   const profile = getWentianProfile();
   const member = getWentianMemberSnapshot();
   const account = getWentianAuthDisplay();
-  const statusText = member.isMember ? member.subtitle : (account.loggedIn ? "免费版 · 可升级付费版" : "未登录 · 可注册新账号");
+  const accountTitle = account.loggedIn ? getWentianCompactAccountTitle(account) : "登录 / 注册";
+  const statusText = member.isMember ? member.subtitle : (account.loggedIn ? "免费版，可升级" : "未登录，可注册");
+  const loginBadgeText = member.isMember ? "付费版" : (account.loggedIn ? "账号" : "登录");
   return `
     ${figText("source-31-time", "15:23", 18, 15, 70, 14, "#26211c")}
     ${figText("source-31-status", "◉  30.4  5G  ▮ 33 ⚡", 250, 14, 120, 10, "#26211c", 700, "right")}
@@ -10639,11 +10652,11 @@ function sourceMineScreen(screen) {
     ${figBox("source-31-profile", 16, 126, 358, 96, "converted-card", "border-radius:12px;box-shadow:0 6px 16px rgba(74,55,32,.08);")}
     ${figBox("source-31-avatar", 34, 144, 60, 60, "", "border-radius:30px;background:#b88c33;")}
     ${figText("source-31-avatar-icon", escapeHtml(account.initial), 34, 157, 60, 28, "#fff", 700, "center")}
-    ${figText("source-31-name", escapeHtml(account.loggedIn ? account.name : "登录 / 注册"), 116, 150, 140, 18, "#26211c", 800)}
-    ${figText("source-31-vip", escapeHtml(statusText), 116, 177, 170, 13, member.isMember ? "#7a9a4b" : "#8f857a")}
-    ${figText("source-31-email", escapeHtml(account.loggedIn ? account.email : "登录 / 注册后可查看支付记录"), 116, 197, 200, 12, "#8f857a")}
-    ${figBox("source-31-login-badge", 258, 148, 86, 24, "", `border-radius:12px;background:${member.isMember ? "#fff0d6" : "#f6f2e9"};`)}
-    ${figText("source-31-login-badge-text", member.isMember ? "付费版" : (account.loggedIn ? "账号" : "登录/注册"), 258, 154, 86, 11, member.isMember ? "#9f3d2e" : "#9b742e", 800, "center")}
+    ${figText("source-31-name", escapeHtml(accountTitle), 116, 148, 164, 18, "#26211c", 800, "left", "white-space:nowrap;overflow:hidden;text-overflow:ellipsis;")}
+    ${figText("source-31-vip", escapeHtml(statusText), 116, 174, 148, 13, member.isMember ? "#7a9a4b" : "#8f857a", 700, "left", "white-space:nowrap;overflow:hidden;text-overflow:ellipsis;")}
+    ${figText("source-31-email", escapeHtml(account.loggedIn ? account.email : "登录后可查看支付记录"), 116, 195, 174, 12, "#8f857a", 700, "left", "white-space:nowrap;overflow:hidden;text-overflow:ellipsis;")}
+    ${figBox("source-31-login-badge", 292, 146, 58, 24, "", `border-radius:12px;background:${member.isMember ? "#fff0d6" : "#f6f2e9"};`)}
+    ${figText("source-31-login-badge-text", loginBadgeText, 292, 152, 58, 11, member.isMember ? "#9f3d2e" : "#9b742e", 800, "center", "white-space:nowrap;overflow:hidden;text-overflow:ellipsis;")}
     ${figButton("source-31-login-hit", 16, 126, 358, 96, 'data-route="screen-40" aria-label="登录 / 注册"', "", "z-index:35;")}
     ${[["今日次数", member.daily, 16, "screen-33"], ["每日额度", member.dailyLimit, 139, "screen-33"], ["套餐状态", member.isMember ? "付费版" : "免费版", 262, "screen-9"]].map(([label, count, x, route], index) => `
       ${figBox(`source-31-stat-${index}`, x, 240, 111, 75, "converted-card", "border-radius:12px;box-shadow:0 5px 14px rgba(74,55,32,.08);")}
