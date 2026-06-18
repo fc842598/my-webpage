@@ -3998,6 +3998,7 @@ function renderWentianLuckReading(data, fallback, actionAttr, actionLabel) {
     ? (groups.length ? "重批当前十年" : "批当前十年")
     : (groups.length ? "重批选中十年" : "批选中十年");
   const buttonLabel = isLoading ? "加载中..." : readyLabel;
+  const showGenerateButton = isLoading || !groups.length;
   return `
     <div class="wentian-mb-luck-hero">
       <span>十年大限</span>
@@ -4029,7 +4030,7 @@ function renderWentianLuckReading(data, fallback, actionAttr, actionLabel) {
     </div>
     <div class="wentian-mb-luck-actions">
       <button type="button" data-action="wentian-chart-ai-luck-current">回到当前</button>
-      ${renderWentianMobileActionButton(actionAttr, buttonLabel, isLoading)}
+      ${showGenerateButton ? renderWentianMobileActionButton(actionAttr, buttonLabel, isLoading) : ""}
     </div>
   `;
 }
