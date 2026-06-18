@@ -10770,6 +10770,71 @@ function sourceMineScreen(screen) {
   `;
 }
 
+function sourceMineScreenV2(screen) {
+  const languageLabel = getWentianLanguageOption().label;
+  const member = getWentianMemberSnapshot();
+  const account = getWentianAuthDisplay();
+  const accountTitle = account.loggedIn ? getWentianCompactAccountTitle(account) : "\u767B\u5F55 / \u6CE8\u518C";
+  const statusText = member.isMember
+    ? member.subtitle
+    : (account.loggedIn ? "\u514D\u8D39\u7248\uFF0C\u53EF\u5347\u7EA7" : "\u672A\u767B\u5F55\uFF0C\u53EF\u6CE8\u518C");
+  const loginBadgeText = member.isMember ? "\u4ED8\u8D39\u7248" : (account.loggedIn ? "\u8D26\u53F7" : "\u767B\u5F55");
+  const statCards = [
+    ["\u4ECA\u65E5\u6B21\u6570", member.daily, 16, "screen-33"],
+    ["\u6BCF\u65E5\u989D\u5EA6", member.dailyLimit, 139, "screen-33"],
+    ["\u5957\u9910\u72B6\u6001", member.isMember ? "\u4ED8\u8D39\u7248" : "\u514D\u8D39\u7248", 262, "screen-9"]
+  ];
+  const listRows = [
+    ["\u25A4", "\u6211\u7684\u62A5\u544A", "", 408, "screen-27"],
+    ["\u25A6", "\u8BA2\u5355\u8BB0\u5F55", "", 464, "screen-48"],
+    ["\u2667", "\u9080\u8BF7\u597D\u53CB", "", 520, "screen-22"],
+    ["\u6587", "\u8BED\u8A00\u8BBE\u7F6E", languageLabel, 576, "screen-37"],
+    ["\u21BB", "\u5206\u4EAB\u9605\u5929AI", "", 632, "screen-34"],
+    ["\u260E", "\u8054\u7CFB\u6211\u4EEC", "", 688, "screen-35"]
+  ];
+  const planBannerText = member.isMember ? "\u67E5\u770B\u6743\u76CA" : "\u7ACB\u5373\u67E5\u770B";
+  return `
+    ${figText("source-31-time-v2", "15:23", 18, 15, 70, 14, "#26211c")}
+    ${figText("source-31-status-v2", "\u25CF  30.4  5G  \u25B3 33 \u25E6", 250, 14, 120, 10, "#26211c", 700, "right")}
+    ${figText("source-31-title-v2", "\u6211\u7684", 18, 58, 150, 30, "#26211c", 800)}
+    ${figText("source-31-sub-v2", "\u8D26\u6237\u4E0E\u504F\u597D\u8BBE\u7F6E", 18, 101, 180, 14, "#8f857a")}
+    ${figBox("source-31-gear-v2", 338, 56, 38, 38, "", "border-radius:19px;background:#fff;box-shadow:0 5px 14px rgba(80,55,28,.10);")}
+    ${figText("source-31-gear-text-v2", "\u2699", 338, 64, 38, 18, "#b88c33", 700, "center")}
+    ${figButton("source-31-gear-hit-v2", 336, 54, 42, 42, 'data-route="screen-38" aria-label="\\u8D26\\u6237\\u8BBE\\u7F6E"', "", "z-index:36;")}
+    ${figBox("source-31-profile-v2", 16, 126, 358, 96, "converted-card", "border-radius:12px;box-shadow:0 6px 16px rgba(74,55,32,.08);")}
+    ${figBox("source-31-avatar-v2", 34, 144, 60, 60, "", "border-radius:30px;background:#b88c33;")}
+    ${figText("source-31-avatar-icon-v2", escapeHtml(account.initial), 34, 157, 60, 28, "#fff", 700, "center")}
+    ${figText("source-31-name-v2", escapeHtml(accountTitle), 116, 148, 164, 18, "#26211c", 800, "left", "white-space:nowrap;overflow:hidden;text-overflow:ellipsis;")}
+    ${figText("source-31-vip-v2", escapeHtml(statusText), 116, 174, 148, 13, member.isMember ? "#7a9a4b" : "#8f857a", 700, "left", "white-space:nowrap;overflow:hidden;text-overflow:ellipsis;")}
+    ${figText("source-31-email-v2", escapeHtml(account.loggedIn ? account.email : "\u767B\u5F55\u540E\u53EF\u67E5\u770B\u652F\u4ED8\u8BB0\u5F55"), 116, 195, 174, 12, "#8f857a", 700, "left", "white-space:nowrap;overflow:hidden;text-overflow:ellipsis;")}
+    ${figBox("source-31-login-badge-v2", 292, 146, 58, 24, "", `border-radius:12px;background:${member.isMember ? "#fff0d6" : "#f6f2e9"};`)}
+    ${figText("source-31-login-badge-text-v2", loginBadgeText, 292, 152, 58, 11, member.isMember ? "#9f3d2e" : "#9b742e", 800, "center", "white-space:nowrap;overflow:hidden;text-overflow:ellipsis;")}
+    ${figButton("source-31-login-hit-v2", 16, 126, 358, 96, 'data-route="screen-40" aria-label="\\u767B\\u5F55 / \\u6CE8\\u518C"', "", "z-index:35;")}
+    ${statCards.map(([label, count, x, route], index) => `
+      ${figBox(`source-31-stat-v2-${index}`, x, 240, 111, 75, "converted-card", "border-radius:12px;box-shadow:0 5px 14px rgba(74,55,32,.08);")}
+      ${figText(`source-31-stat-label-v2-${index}`, label, x + 14, 253, 80, 12, "#9b742e", 500)}
+      ${figText(`source-31-stat-count-v2-${index}`, count, x + 14, 279, 86, 20, "#b88c33", 800)}
+      ${figButton(`source-31-stat-hit-v2-${index}`, x, 240, 111, 75, `data-route="${route}" aria-label="${label}"`, "", "z-index:37;")}
+    `).join("")}
+    ${figBox("source-31-plan-banner-v2", 16, 330, 358, 66, "", "border-radius:22px;background:linear-gradient(135deg,#2e2937 0%,#1b1824 100%);box-shadow:0 12px 24px rgba(36,25,18,.15);")}
+    ${figText("source-31-plan-banner-icon-v2", "\u265B", 34, 349, 24, 16, "#f4d59a", 700, "center")}
+    ${figText("source-31-plan-banner-title-v2", "\u9605\u5929\u5957\u9910", 68, 346, 132, 18, "#fff8ef", 800)}
+    ${figText("source-31-plan-banner-sub-v2", "\u67E5\u770B\u989D\u5EA6\u4E0E\u5F00\u901A\u65B9\u5F0F", 68, 369, 150, 12, "#d7cab8", 700)}
+    ${figBox("source-31-plan-banner-cta-v2", 262, 344, 92, 38, "", "border-radius:19px;background:linear-gradient(180deg,#f6d8a3,#efc681);")}
+    ${figText("source-31-plan-banner-cta-text-v2", planBannerText, 262, 355, 92, 13, "#2c211b", 800, "center")}
+    ${figButton("source-31-plan-banner-hit-v2", 16, 330, 358, 66, 'data-route="screen-33" aria-label="\\u9605\\u5929\\u5957\\u9910"', "", "z-index:37;")}
+    ${listRows.map(([icon, label, value, y, route], index) => `
+      ${figBox(`source-31-list-row-v2-${index}`, 16, y, 358, 48, "converted-card", "border-radius:18px;box-shadow:0 6px 16px rgba(74,55,32,.08);")}
+      ${figText(`source-31-list-icon-v2-${index}`, icon, 32, y + 15, 26, 16, "#2d2926", 700, "center")}
+      ${figText(`source-31-list-label-v2-${index}`, label, 68, y + 15, 150, 16, "#26211c", 700)}
+      ${value ? figText(`source-31-list-value-v2-${index}`, value, 246, y + 16, 86, 13, "#9b742e", 600, "right") : ""}
+      ${figText(`source-31-list-arrow-v2-${index}`, "\u203A", 338, y + 13, 18, 18, "#b2a79a", 700, "center")}
+      ${figButton(`source-31-list-hit-v2-${index}`, 16, y, 358, 48, `data-route="${route}" aria-label="${label}"`, "", "z-index:37;")}
+    `).join("")}
+    ${sourceAppBottomNav("\u6211\u7684", 755)}
+  `;
+}
+
 function sourceBasicInfoScreen() {
   const profile = getWentianProfile();
   const account = getWentianAuthDisplay();
@@ -16454,7 +16519,7 @@ function renderWentianPolishedScreen(screen) {
       ["邮件", "邮", "wentian-share-mail"],
     ];
     return `
-      ${sourceMineScreen(screen)}
+      ${sourceMineScreenV2(screen)}
       ${figBox("wt34-overlay", 0, 0, 390, 755, "", "background:rgba(0,0,0,.30);z-index:80;")}
       ${figBox("wt34-sheet", 0, 432, 390, 323, "", "border-radius:22px 22px 0 0;background:#fff;box-shadow:0 -10px 28px rgba(45,31,18,.16);z-index:81;")}
       ${figText("wt34-title", "分享阅天AI", 0, 462, 390, 18, "#25211d", 900, "center", "z-index:82;")}
@@ -17892,7 +17957,7 @@ function renderConvertedScreen(no) {
   }
   if (screen.no === 31) {
     return figPhone(`screen-${screen.no}`, `${String(screen.no).padStart(2, "0")} ${screen.title}`, `
-      ${sourceMineScreen(screen)}
+      ${sourceMineScreenV2(screen)}
       ${convertedFlowHotspots(screen)}
     `, 844, "converted source-screen", true);
   }
