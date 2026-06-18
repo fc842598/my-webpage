@@ -10232,12 +10232,16 @@ html[lang="en"] .wentian-chart-ai-actions button {
 
 .wentian-mb-xiaolian-list {
   display: grid;
-  gap: 12px;
+  gap: 1px;
+  margin: 0 -14px;
+  overflow: hidden;
+  border-radius: 18px;
+  background: rgba(217, 191, 125, .42);
 }
 
 .wentian-mb-xiaolian-list > section {
-  border: 1px solid #d9bf7d;
-  border-radius: 18px;
+  border: 0;
+  border-radius: 0;
   padding: 17px 18px 15px;
   background: #f7efdd;
 }
