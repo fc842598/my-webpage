@@ -17635,7 +17635,8 @@ function sourceZiweiAiDecodePanel(saved) {
       ${wentianChartAiState.error ? `<p class="wentian-chart-ai-error">${escapeHtml(wentianChartAiState.error)}</p>` : ""}
       ${showFinalBoard ? "" : `<div class="wentian-chart-ai-hero">
         <div class="wentian-chart-ai-hero-copy">
-          <strong class="wentian-chart-ai-hero-title">${escapeHtml(getWentianCompactText("点击解读", "Tap to decode"))}</strong>
+          <strong class="wentian-chart-ai-hero-title">${escapeHtml(getWentianCompactText("六卷命书", "Volume report"))}</strong>
+          <p>${escapeHtml(getWentianCompactText(isRunning ? "正在解读" : "点击解读", isRunning ? "Decoding..." : "Tap to decode"))}</p>
         </div>
         <button
           type="button"
