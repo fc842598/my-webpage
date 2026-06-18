@@ -10371,7 +10371,8 @@ function renderWentianProfileRows(archives = getWentianArchiveList(), query = we
       y += 30;
     }
     const rowY = y;
-    y += 78;
+    const profileMeta = [item.gender, item.datetime.split(" ")[0] || item.datetime].filter(Boolean).join(" · ");
+    y += 86;
     const actionControls = confirmingDelete ? `
       ${figBox(`source-25-delete-confirm-${index}`, 218, rowY + 8, 86, 30, "", "border:1px solid #c85a4a;border-radius:15px;background:#fff1ee;z-index:31;")}
       ${figText(`source-25-delete-confirm-text-${index}`, "确认删除", 218, rowY + 17, 86, 11, "#b53a2e", 900, "center", "z-index:32;")}
@@ -10401,14 +10402,13 @@ function renderWentianProfileRows(archives = getWentianArchiveList(), query = we
     `;
     return `
       ${group}
-      ${figBox(`source-25-row-line-${index}`, 88, rowY + 76, 258, 1, "", "background:#eee5d8;")}
-      ${figBox(`source-25-avatar-${index}`, 18, rowY + 8, 54, 54, "", "border-radius:27px;background:linear-gradient(180deg,#d9ab73,#c88f56);box-shadow:0 5px 12px rgba(151,102,45,.14);")}
+      ${figBox(`source-25-row-line-${index}`, 88, rowY + 84, 258, 1, "", "background:#eee5d8;")}
+      ${figBox(`source-25-avatar-${index}`, 18, rowY + 10, 54, 54, "", "border-radius:27px;background:linear-gradient(180deg,#d9ab73,#c88f56);box-shadow:0 5px 12px rgba(151,102,45,.14);")}
       ${figText(`source-25-avatar-text-${index}`, item.name.slice(0, 1) || "命", 18, rowY + 23, 54, 18, "#fffaf3", 900, "center")}
-      ${figText(`source-25-name-${index}`, escapeHtml(item.name), 90, rowY + 7, 126, 17, "#201813", 900, "left", "white-space:nowrap;overflow:hidden;text-overflow:ellipsis;")}
-      ${figText(`source-25-gender-text-${index}`, item.gender, 218, rowY + 10, 16, 13, "#9c938a", 700, "right")}
-      ${figText(`source-25-date-${index}`, `阳历:${escapeHtml(item.datetime.split(" ")[0] || item.datetime)}`, 90, rowY + 38, 174, 13, "#8f8780", 700, "left", "white-space:nowrap;overflow:hidden;text-overflow:ellipsis;")}
+      ${figText(`source-25-name-${index}`, escapeHtml(item.name), 90, rowY + 10, 126, 17, "#201813", 900, "left", "white-space:nowrap;overflow:hidden;text-overflow:ellipsis;")}
+      ${figText(`source-25-meta-${index}`, escapeHtml(profileMeta), 90, rowY + 38, 126, 13, "#8f8780", 700, "left", "white-space:nowrap;overflow:hidden;text-overflow:ellipsis;")}
       ${actionControls}
-      ${figButton(`source-25-open-${index}`, 0, rowY, 222, 76, `data-action="wentian-profile-open" data-archive-id="${escapeHtml(archive.id)}"`)}
+      ${figButton(`source-25-open-${index}`, 0, rowY, 222, 84, `data-action="wentian-profile-open" data-archive-id="${escapeHtml(archive.id)}"`)}
     `;
   }).join("");
 }
