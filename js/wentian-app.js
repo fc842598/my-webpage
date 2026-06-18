@@ -9725,7 +9725,6 @@ async function hydrateWentianMemberStatus(options = {}) {
 
 function getWentianPayMethod() {
   if (wentianPaymentState.provider === "paypal") return "redirect";
-  if (wentianPaymentState.provider === "alipay" && isWentianMobilePayDevice()) return "h5";
   return "native";
 }
 
@@ -9825,7 +9824,7 @@ async function startWentianMemberPayment() {
     wentianPaymentState.currency = order.currency || session.currency || product.currency || "CNY";
     wentianPaymentState.message = wentianPaymentState.mockMode
       ? "当前是支付测试模式"
-      : (["h5", "redirect"].includes(wentianPaymentState.payMethod) ? `点击下方按钮打开${getWentianPaymentProviderLabel()}` : `请用另一台手机${getWentianPaymentProviderAppLabel()}扫码支付。`);
+      : (["h5", "redirect"].includes(wentianPaymentState.payMethod) ? `点击下方按钮打开${getWentianPaymentProviderLabel()}` : `请使用${getWentianPaymentProviderAppLabel()}扫码支付。`);
     startWentianPaymentPoll();
     refreshWentianPaymentScreen();
   } catch (error) {
@@ -10704,7 +10703,7 @@ function sourcePaymentScreen() {
     ${figLine("wt30-order-line-2", 44, 390, 302, "#efe4d3")}
     ${figText("wt30-order-tip", escapeHtml(message), 44, 416, 282, 14, wentianPaymentState.error ? "#a64032" : "#756d63", 700, "left", "line-height:1.5;")}
     ${showQr ? `<div id="wentian-pay-qr" class="wentian-pay-qr" data-pay-url="${escapeHtml(payUrl)}" style="left:109px;top:448px;width:172px;height:172px"></div>` : ""}
-    ${showQr ? figText("wt30-qr-tip", `请用另一台手机打开${getWentianPaymentProviderAppLabel()}扫一扫；同一台手机截图识别通常无法支付。`, 46, 626, 298, 12, "#8d8377", 700, "center", "line-height:1.45;") : ""}
+    ${showQr ? figText("wt30-qr-tip", `请使用${getWentianPaymentProviderAppLabel()}扫码支付；若当前设备不便扫码，请在另一台设备打开此页。`, 46, 626, 298, 12, "#8d8377", 700, "center", "line-height:1.45;") : ""}
 
     ${showOpen ? figBox("wt30-open", 42, 650, 306, 50, "", "border-radius:25px;background:#16783d;box-shadow:0 12px 24px rgba(22,120,61,.18);") : ""}
     ${showOpen ? figButton("wt30-open-hit", 42, 650, 306, 50, 'data-action="wentian-pay-open"') : ""}
