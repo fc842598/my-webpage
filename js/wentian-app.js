@@ -7318,8 +7318,8 @@ const WENTIAN_I18N_EN_EXTRA = {
   "站在户型中心，以手机指南针或户型图确认八方。": "Stand at the floor-plan center and confirm the eight directions.",
   "安人事": "Place People",
   "点方位加号，放入父母子女、厨房、厕所、客厅。": "Tap a direction plus, then place family members, kitchen, bathroom, or living room.",
-  "看重点": "Read Focus",
-  "系统按卦位生成摘要，先读偏旺、相合、需调整。": "The system summarizes by palace: over-strong, aligned, or needs adjustment.",
+  "看生克": "Read Balance",
+  "先看宫位旺衰、生克，再看家人与空间是否得位。": "First read palace strength and elemental relations, then check whether people and spaces match their positions.",
   "可重排": "Rearrange",
   "不确定时可清空、长幼归位，再重新解读。": "If unsure, clear, auto-align, and read again.",
   "开始排宅盘": "Start Home Chart",
@@ -14766,7 +14766,7 @@ function sourceYangzhaiTutorialScreen() {
   const steps = [
     ["01", "定中宫", "站在户型中心，以手机指南针或户型图确认八方。"],
     ["02", "安人事", "点方位加号，放入父母子女、长辈或厨房厕所客厅。"],
-    ["03", "看重点", "系统按卦位生成摘要，先读偏旺、相合、需调整。"],
+    ["03", "看生克", "先看宫位旺衰、生克，再看家人与空间是否得位。"],
     ["04", "可重排", "不确定时可清空、长幼归位，再重新解读。"]
   ];
   return `
