@@ -16297,7 +16297,16 @@ function renderWentianPolishedScreen(screen) {
   }
   if (no === 34) {
     const payload = getWentianSharePayload();
-    const previewText = escapeHtml(payload.text).replace(/\n/g, "<br>");
+    const [shareLead = "", shareInvite = ""] = payload.text.split("\n");
+    let shareLinkHtml = escapeHtml(payload.url);
+    try {
+      const shareUrl = new URL(payload.url);
+      const mainLine = `${shareUrl.origin}${shareUrl.pathname}`;
+      const queryLine = shareUrl.search || "";
+      shareLinkHtml = queryLine
+        ? `${escapeHtml(mainLine)}<br>${escapeHtml(queryLine)}`
+        : escapeHtml(mainLine);
+    } catch (_err) {}
     const shareTargets = [
       ["微信好友", "微", "wentian-share-wechat"],
       ["朋友圈", "圈", "wentian-share-moments"],
@@ -16306,73 +16315,26 @@ function renderWentianPolishedScreen(screen) {
     ];
     return `
       ${sourceMineScreen(screen)}
-      ${figBox("wt34-overlay", 0, 0, 390, 755, "", "background:rgba(0,0,0,.30);")}
-      ${figBox("wt34-sheet", 0, 432, 390, 323, "", "border-radius:22px 22px 0 0;background:#fff;box-shadow:0 -10px 28px rgba(45,31,18,.16);")}
-      ${figText("wt34-title", "分享阅天AI", 0, 462, 390, 18, "#25211d", 900, "center")}
-      ${figText("wt34-close", "×", 334, 460, 28, 24, "#25211d", 500, "center")}
-      ${figButton("wt34-close-hit", 322, 450, 52, 46, 'data-route="screen-31"')}
-      ${figBox("wt34-copy", 28, 506, 334, 92, "", "border-radius:12px;background:#fffaf2;border:1px solid #ead9bd;")}
-      ${figText("wt34-copy-text", previewText, 44, 524, 302, 13, "#756d63", 700, "left", "line-height:1.45;")}
+      ${figBox("wt34-overlay", 0, 0, 390, 755, "", "background:rgba(0,0,0,.30);z-index:80;")}
+      ${figBox("wt34-sheet", 0, 432, 390, 323, "", "border-radius:22px 22px 0 0;background:#fff;box-shadow:0 -10px 28px rgba(45,31,18,.16);z-index:81;")}
+      ${figText("wt34-title", "分享阅天AI", 0, 462, 390, 18, "#25211d", 900, "center", "z-index:82;")}
+      ${figText("wt34-close", "×", 334, 460, 28, 24, "#25211d", 500, "center", "z-index:82;")}
+      ${figButton("wt34-close-hit", 322, 450, 52, 46, 'data-route="screen-31"', "", "z-index:83;")}
+      ${figBox("wt34-copy", 28, 502, 334, 122, "", "border-radius:14px;background:#fffaf2;border:1px solid #ead9bd;box-shadow:0 6px 16px rgba(112,78,35,.06);z-index:82;")}
+      ${figText("wt34-copy-title", "分享文案", 44, 518, 84, 12, "#b38434", 900, "left", "z-index:83;")}
+      ${figText("wt34-copy-lead", escapeHtml(shareLead), 44, 540, 302, 13, "#5f554a", 800, "left", "line-height:1.5;z-index:83;")}
+      ${shareInvite ? figText("wt34-copy-invite", escapeHtml(shareInvite), 44, 564, 302, 13, "#7f7569", 700, "left", "line-height:1.45;z-index:83;") : ""}
+      <div id="wt34-link-box" style="position:absolute;left:44px;top:586px;width:302px;padding:9px 12px;border-radius:12px;border:1px dashed #ddc7a3;background:#fff;box-sizing:border-box;color:#7a6a56;font-size:12px;font-weight:700;line-height:1.5;word-break:break-all;z-index:83;">${shareLinkHtml}</div>
       ${shareTargets.map(([label, icon, action], index) => {
         const x = 38 + index * 82;
         return `
-          ${figBox(`wt34-share-${index}`, x, 628, 50, 50, "", "border-radius:25px;background:#f7ebd4;")}
-          ${figButton(`wt34-share-hit-${index}`, x - 7, 620, 64, 78, `data-action="${action}"`)}
-          ${figText(`wt34-share-icon-${index}`, icon, x, 644, 50, 14, "#bd8624", 900, "center")}
-          ${figText(`wt34-share-label-${index}`, label, x - 12, 688, 74, 12, "#756d63", 800, "center")}
+          ${figBox(`wt34-share-${index}`, x, 640, 50, 50, "", "border-radius:25px;background:#f7ebd4;z-index:82;")}
+          ${figButton(`wt34-share-hit-${index}`, x - 7, 632, 64, 78, `data-action="${action}"`, "", "z-index:84;")}
+          ${figText(`wt34-share-icon-${index}`, icon, x, 656, 50, 14, "#bd8624", 900, "center", "z-index:83;")}
+          ${figText(`wt34-share-label-${index}`, label, x - 12, 700, 74, 12, "#756d63", 800, "center", "z-index:83;")}
         `;
       }).join("")}
-      <div id="wentian-share-status" class="wentian-invite-status" style="left:42px;top:724px;width:306px;text-align:center" data-tone="">${escapeHtml(wentianInviteState.status || "")}</div>
-    `;
-    const account = getWentianAuthDisplay();
-    if (!account.loggedIn) {
-      return `
-      ${sourceMineScreen(screen)}
-      ${figBox("wt34-overlay", 0, 0, 390, 844, "", "background:rgba(0,0,0,.3);")}
-      ${figBox("wt34-sheet", 0, 604, 390, 240, "", "border-radius:22px 22px 0 0;background:#fff;")}
-      ${figText("wt34-title", "分享阅天AI", 0, 632, 390, 18, "#25211d", 800, "center")}
-      ${figText("wt34-close", "×", 334, 630, 28, 24, "#25211d", 400, "center")}
-      ${figButton("wt34-close-hit", 322, 620, 52, 46, 'data-route="screen-31"')}
-      ${figText("wt34-login-desc", "登录后生成专属邀请链接，好友注册和首付奖励会自动记到你的账号。", 42, 682, 306, 13, "#756d63", 700, "center", "line-height:1.55;")}
-      ${figBox("wt34-login-btn", 78, 748, 234, 46, "", "border-radius:23px;background:#b74e39;")}
-      ${figButton("wt34-login-hit", 78, 748, 234, 46, 'data-route="screen-40"')}
-      ${figText("wt34-login-text", "登录 / 注册", 78, 763, 234, 12, "#fff", 900, "center")}
-    `;
-    }
-    const invite = getWentianInviteSnapshot();
-    const shareText = `推荐你使用阅天AI，注册填写邀请码 ${invite.inviteCode} 可领取体验次数。${invite.inviteLink}`;
-    return `
-      ${sourceMineScreen(screen)}
-      ${figBox("wt34-overlay", 0, 0, 390, 844, "", "background:rgba(0,0,0,.3);")}
-      ${figBox("wt34-sheet", 0, 574, 390, 270, "", "border-radius:22px 22px 0 0;background:#fff;")}
-      ${figText("wt34-title", "分享阅天AI", 0, 602, 390, 18, "#25211d", 800, "center")}
-      ${figText("wt34-close", "×", 334, 600, 28, 24, "#25211d", 400, "center")}
-      ${figButton("wt34-close-hit", 322, 590, 52, 46, 'data-route="screen-31"')}
-      ${figBox("wt34-copy", 28, 644, 334, 72, "", "border-radius:10px;background:#fbf7ef;border:1px solid #eadfce;")}
-      ${figText("wt34-copy-text", escapeHtml(shareText), 44, 658, 280, 13, "#756d63", 500, "left", "line-height:1.45;")}
-      ${figBox("wt34-copy-code", 38, 742, 92, 46, "", "border-radius:23px;background:#d0a03a;")}
-      ${figButton("wt34-copy-code-hit", 38, 742, 92, 46, 'data-action="wentian-invite-copy-code"')}
-      ${figText("wt34-copy-code-text", "复制码", 38, 757, 92, 12, "#fff", 900, "center")}
-      ${figBox("wt34-copy-link", 150, 742, 92, 46, "", "border-radius:23px;background:#25211d;")}
-      ${figButton("wt34-copy-link-hit", 150, 742, 92, 46, 'data-action="wentian-invite-copy-link"')}
-      ${figText("wt34-copy-link-text", "复制链接", 150, 757, 92, 12, "#fff", 900, "center")}
-      ${figBox("wt34-share-btn", 262, 742, 92, 46, "", "border-radius:23px;background:#fff7ec;border:1px solid #ead9bd;")}
-      ${figButton("wt34-share-hit", 262, 742, 92, 46, 'data-action="wentian-invite-share"')}
-      ${figText("wt34-share-text", "系统分享", 262, 757, 92, 12, "#9b742e", 900, "center")}
-    `;
-    return `
-      ${sourceMineScreen(screen)}
-      ${figBox("wt34-overlay", 0, 0, 390, 844, "", "background:rgba(0,0,0,.3);")}
-      ${figBox("wt34-sheet", 0, 574, 390, 270, "", "border-radius:22px 22px 0 0;background:#fff;")}
-      ${figText("wt34-title", "分享文本", 0, 602, 390, 18, "#25211d", 800, "center")}
-      ${figText("wt34-close", "×", 334, 600, 28, 24, "#25211d", 400, "center")}
-      ${figBox("wt34-copy", 28, 644, 334, 72, "", "border-radius:10px;background:#fbf7ef;border:1px solid #eadfce;")}
-      ${figText("wt34-copy-text", "推荐你使用阅天AI，AI智能和八字分析平台，为你解读命运密码。使用我的邀请码：8R7U58ZW", 44, 658, 280, 13, "#756d63", 500, "left", "line-height:1.45;")}
-      ${["微信好友", "朋友圈", "Chrome", "邮件"].map((text, index) => `
-        ${figBox(`wt34-share-${index}`, 38 + index * 82, 742, 42, 42, "", "border-radius:21px;background:#f5ead4;")}
-        ${figText(`wt34-share-icon-${index}`, index === 0 ? "微" : index === 1 ? "圈" : index === 2 ? "C" : "邮", 38 + index * 82, 755, 42, 14, "#bd8624", 800, "center")}
-        ${figText(`wt34-share-text-${index}`, text, 28 + index * 82, 794, 62, 11, "#756d63", 600, "center")}
-      `).join("")}
+      <div id="wentian-share-status" class="wentian-invite-status" style="left:42px;top:726px;width:306px;text-align:center;z-index:84" data-tone="">${escapeHtml(wentianInviteState.status || "")}</div>
     `;
   }
   if (no === 35) {
