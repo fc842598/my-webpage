@@ -9591,12 +9591,10 @@ function getWentianPaymentProviders() {
   const list = Array.isArray(wentianMemberState.providers) ? wentianMemberState.providers : [];
   const byKey = new Map(list.map((item) => [item.provider, item]));
   const alipayMeta = byKey.get("alipay") || {};
-  const alipayLabel = shouldUseWentianAipayResourceFlow("alipay")
-    ? "\u652f\u4ed8\u5b9dAI\u6536"
-    : (alipayMeta.label || "\u652f\u4ed8\u5b9d");
+  const alipayLabel = alipayMeta.label || "\u652f\u4ed8\u5b9d";
   return [
     { provider: "wechat", label: "微信支付", enabled: true, ...(byKey.get("wechat") || {}) },
-    { ...alipayMeta, provider: "alipay", label: "支付宝AI收", enabled: alipayMeta.enabled !== false },
+    { ...alipayMeta, provider: "alipay", label: "支付宝", enabled: alipayMeta.enabled !== false },
     { provider: "paypal", label: "PayPal", enabled: false, ...(byKey.get("paypal") || {}) },
   ].map((item) => (item.provider === "alipay" ? { ...item, label: alipayLabel } : item));
 }
@@ -9621,7 +9619,7 @@ function isWentianMobilePayDevice() {
 }
 
 function shouldUseWentianAipayResourceFlow(provider = wentianPaymentState.provider) {
-  return provider === "alipay" && isWentianMobilePayDevice();
+  return false;
 }
 
 function getWentianPreferredPaymentProvider() {
@@ -9740,11 +9738,6 @@ function startWentianAipayResourcePayment() {
 }
 
 async function startWentianMemberPayment() {
-  if (shouldUseWentianAipayResourceFlow()) {
-    startWentianAipayResourcePayment();
-    return;
-  }
-
   const session = await requireWentianAuth();
   if (!session?.user) return;
   const product = wentianMemberState.product || {};
@@ -10474,10 +10467,7 @@ function sourceProfileScreen(screen) {
 
 function sourceMembershipScreen() {
   const member = getWentianMemberSnapshot();
-  const isAipaySelected = shouldUseWentianAipayResourceFlow();
-  const buttonText = isAipaySelected
-    ? "查看AI收服务入口"
-    : (member.isMember ? `续费付费版 ¥${member.amountYuan}` : `开通付费版 ¥${member.amountYuan}`);
+  const buttonText = member.isMember ? `续费付费版 ¥${member.amountYuan}` : `开通付费版 ¥${member.amountYuan}`;
   const providers = getWentianPaymentProviders();
   const methodButtons = providers.map((item, index) => {
     const compact = providers.length > 2;
