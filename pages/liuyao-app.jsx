@@ -123,6 +123,11 @@ function localQuestionGate(question) {
   if (/^(随便|随机|娱乐|玩玩|试试|测试|乱点|看看|测一下|试一试|test|demo|random)$/i.test(compact)) {
     return fail('这个问题太随意，暂不起卦。', '请写清具体对象和想看的结果。');
   }
+  const looksLikeCasualChat = /(宝宝|宝贝|亲爱的|老公|老婆|在吗|忙吗|吃了吗|睡了吗|下课了吗|上课了吗|到家了吗|回来了吗|想我吗|爱我吗|有没有空|你是不是|是不是你|是不是在|哈哈|呵呵|嘻嘻|早安|晚安)/i.test(normalizedQuestion);
+  const hasDivinationMatter = /(项目|合作|客户|合同|订单|面试|考试|offer|录取|工作|离职|跳槽|创业|开店|上线|发布|推进|签约|回款|到账|投资|财运|感情|婚姻|复合|分手|怀孕|健康|手术|治疗|搬家|买房|卖房|租房|官司|家宅|父母|孩子|伴侣|对象|关系)/i.test(normalizedQuestion);
+  if (looksLikeCasualChat && !hasDivinationMatter) {
+    return fail('这句话更像日常聊天，不属于正式占问。', '请改成一件需要判断结果的事情，例如：这段关系这个月还能不能推进？');
+  }
   const hasQuestionCue = /[？?]|吗|呢|能不能|能否|是否|可否|会不会|要不要|该不该|适不适合|成不成|有没有|如何|怎样|怎么样|结果|通过|合格|及格|过线|过关|考过|考上|拿证|拿到|录取|顺利|成交|签约|复合|结婚|分手|离职|跳槽|搬家|买|卖|租|开店|上线|发布|推进|合作|投资|到账|怀孕|好转/.test(normalizedQuestion);
   if (!hasQuestionCue) {
     return fail('占问还没有明确结果，暂不起卦。', '请写成一句明确的问题，例如：这次面试能通过吗？');

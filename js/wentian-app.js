@@ -12068,6 +12068,11 @@ function reviewLiuyaoQuestionLocally(question) {
   if (/^(事业|财运|感情|婚姻|健康|工作|学业|运势|赚钱|求财|桃花|考试|合作|项目|网站)(怎么样|如何|好吗|看看|测测|测一下)?$/.test(compact)) {
     return fail("问题还太泛，暂不起卦。", "请具体到一件事，例如“这个项目本月能不能推进”。", ["问题太泛"]);
   }
+  const looksLikeCasualChat = /(宝宝|宝贝|亲爱的|老公|老婆|在吗|忙吗|吃了吗|睡了吗|下课了吗|上课了吗|到家了吗|回来了吗|想我吗|爱我吗|有没有空|你是不是|是不是你|是不是在|哈哈|呵呵|嘻嘻|早安|晚安)/i.test(normalizedQuestion);
+  const hasDivinationMatter = /(项目|合作|客户|合同|订单|面试|考试|offer|录取|工作|离职|跳槽|创业|开店|上线|发布|推进|签约|回款|到账|投资|财运|感情|婚姻|复合|分手|怀孕|健康|手术|治疗|搬家|买房|卖房|租房|官司|家宅|父母|孩子|伴侣|对象|关系)/i.test(normalizedQuestion);
+  if (looksLikeCasualChat && !hasDivinationMatter) {
+    return fail("这句话更像日常聊天，不属于正式占问。", "请改成一件需要判断结果的事情，例如：这段关系这个月还能不能推进？", ["非占问"]);
+  }
   if ((normalizedQuestion.match(/[？?]/g) || []).length > 1 || /同时|另外|还有|顺便|以及/.test(normalizedQuestion)) {
     return fail("一次只问一件事。", "请先删到一个核心问题，再提交。", ["一事一占"]);
   }
