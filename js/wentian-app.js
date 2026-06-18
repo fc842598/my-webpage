@@ -4825,13 +4825,32 @@ function renderWentianFinalVolumeCard(chapter, index) {
   `;
 }
 
-function renderWentianFinalVolumeBoard(chapters) {
+function renderWentianFinalVolumeBoard(chapters, options = {}) {
+  const coinProgressDeg = Number(options.coinProgressDeg || 0);
+  const coinClass = options.coinClass || "wentian-chart-ai-coin";
+  const coinActionLabel = options.coinActionLabel || "Decode report";
+  const chapterDoneCount = Number(options.chapterDoneCount || 0);
+  const chapterTotal = Number(options.chapterTotal || 6);
+  const coinMainLabel = options.coinMainLabel || "Read";
+  const coinSubLabel = options.coinSubLabel || "Now";
   return `
     <div class="wentian-chart-ai-final-board" aria-label="${escapeHtml(getWentianCompactText("命书目录", "Report chapters"))}">
       <div class="wentian-chart-ai-final-hero">
         <span>${escapeHtml(getWentianCompactText("六卷解读", "Six-volume guide"))}</span>
         <h3>${escapeHtml(getWentianCompactText("先看全局，再挑重点", "Start broad, then go deeper"))}</h3>
         <p>${escapeHtml(getWentianCompactText("可一键解读整套六卷，也可按你最关心的方向单独展开。第一次建议先看卷一，再看卷三。", "Unlock the full six-volume reading, or open only the parts you care about first. For a first read, start with Vol. 1, then Vol. 3."))}</p>
+        <button
+          type="button"
+          class="${escapeHtml(`${coinClass} wentian-chart-ai-final-coin`)}"
+          style="--decode-progress:${coinProgressDeg}deg"
+          data-action="wentian-chart-ai-decode"
+          aria-label="${escapeHtml(`${coinActionLabel}，已完成 ${chapterDoneCount}/${chapterTotal} 卷`)}"
+        >
+          <i class="wentian-chart-ai-coin-ring" aria-hidden="true"></i>
+          <span>${escapeHtml(coinMainLabel)}</span>
+          <b>${escapeHtml(coinSubLabel)}</b>
+          <em>${escapeHtml(`${chapterDoneCount}/${chapterTotal}`)}</em>
+        </button>
       </div>
       <div class="wentian-chart-ai-final-meta">
         <div><b>${escapeHtml(getWentianCompactText("整套可看", "Full set"))}</b>${escapeHtml(getWentianCompactText("一次看全局", "See the whole picture"))}</div>
@@ -17654,7 +17673,15 @@ function sourceZiweiAiDecodePanel(saved) {
         <button type="button" class="wentian-chart-ai-secondary" data-action="wentian-open-mingbook-onepage" ${pdfReady ? "" : "disabled"}>${escapeHtml(pdfLabel)}</button>
       </div>
       <p class="wentian-chart-ai-pdf-status" data-wentian-pdf-status></p>
-      ${showFinalBoard ? renderWentianFinalVolumeBoard(chapters) : ""}
+      ${showFinalBoard ? renderWentianFinalVolumeBoard(chapters, {
+        coinProgressDeg,
+        coinClass,
+        coinActionLabel,
+        chapterDoneCount,
+        chapterTotal,
+        coinMainLabel,
+        coinSubLabel,
+      }) : ""}
     </section>
     ${showFinalBoard ? "" : `<div class="wentian-chart-ai-list">
       ${visibleChapters.map(renderWentianMobileChapter).join("")}
