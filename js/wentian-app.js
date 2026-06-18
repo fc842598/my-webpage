@@ -1081,24 +1081,26 @@ function sourceArchiveSelectScreen() {
   const activeId = wentianArchiveDraftId || getWentianSelectedArchiveId(archives);
   const displayArchives = archives;
   const archiveStatus = wentianArchiveStatus.text
-    ? `<div id="wentian-archive-status" class="wentian-invite-status" style="left:42px;top:286px;width:306px;text-align:center" data-tone="${escapeHtml(wentianArchiveStatus.tone || "")}">${escapeHtml(wentianArchiveStatus.text)}</div>`
+    ? `<div id="wentian-archive-status" class="wentian-invite-status" style="left:42px;top:282px;width:306px;text-align:center" data-tone="${escapeHtml(wentianArchiveStatus.tone || "")}">${escapeHtml(wentianArchiveStatus.text)}</div>`
     : "";
   return `
     ${figBox("source-5-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
-    ${figBox("source-5-header", 0, 0, 390, 88, "", "background:#fffdf8;border-bottom:1px solid #eadfce;")}
+    ${figBox("source-5-header", 0, 0, 390, 92, "", "background:#fffdf8;border-bottom:1px solid #efe4d3;")}
     ${wentianBackPill("source-5", 18, 42)}
-    ${figText("source-5-title", "选择档案", 0, 52, 390, 22, "#1f1d1a", 800, "center")}
-    ${figBox("source-5-count", 300, 32, 66, 32, "", "border-radius:14px;background:#f7f2ec;")}
-    ${figText("source-5-count-text", `共 ${archives.length} 张`, 300, 42, 66, 11, "#8b8176", 700, "center")}
+    ${figText("source-5-title", "选择档案", 0, 54, 390, 22, "#1f1d1a", 900, "center")}
+    ${figBox("source-5-count", 298, 34, 68, 30, "", "border-radius:15px;background:#f7f1e7;")}
+    ${figText("source-5-count-text", `共 ${archives.length} 张`, 298, 43, 68, 11, "#8b8176", 700, "center")}
 
-    ${figBox("source-5-intro", 24, 108, 342, 82, "", "border-radius:18px;background:linear-gradient(135deg,#fff,#f8f1e5);box-shadow:0 10px 24px rgba(70,45,25,.09);")}
-    ${figImage("source-5-avatar", "../images/wentian-prototype-assets/xu-dashi.webp", 44, 126, 46, 46, "border-radius:23px;object-fit:cover;object-position:center 18%;")}
-    ${figText("source-5-name", "许大师", 106, 124, 120, 18, "#26211c", 900)}
-    ${figText("source-5-sub", "选择一个档案接入对话", 106, 150, 210, 14, "#8b8176", 600)}
+    ${figBox("source-5-intro", 24, 104, 342, 76, "", "border-radius:20px;background:linear-gradient(135deg,#fff,#f8f1e5);box-shadow:0 12px 28px rgba(70,45,25,.08);")}
+    ${figImage("source-5-avatar", "../images/wentian-prototype-assets/xu-dashi.webp", 42, 120, 44, 44, "border-radius:22px;object-fit:cover;object-position:center 18%;")}
+    ${figText("source-5-name", "许大师", 100, 118, 120, 18, "#26211c", 900)}
+    ${figText("source-5-sub", "选择一个档案接入对话", 100, 144, 210, 14, "#8b8176", 600)}
+    ${figBox("source-5-intro-pill", 286, 118, 56, 24, "", "border-radius:12px;background:#fff8eb;border:1px solid #ead8bb;")}
+    ${figText("source-5-intro-pill-text", "已在线", 286, 125, 56, 11, "#ad7b2c", 800, "center")}
 
-    ${figBox("source-5-sheet", 18, 214, 354, 532, "", "border:1px solid #eadfce;border-radius:20px;background:#fffaf3;box-shadow:0 12px 28px rgba(70,45,25,.08);")}
-    ${figText("source-5-sheet-title", "请确认命盘", 42, 240, 150, 22, "#1f1d1a", 900)}
-    ${figText("source-5-sheet-sub", "确认后再进入许大师对话", 42, 270, 210, 13, "#8b8176", 600)}
+    ${figBox("source-5-sheet", 18, 194, 354, 478, "", "border:1px solid #eadfce;border-radius:22px;background:#fffaf5;box-shadow:0 12px 28px rgba(70,45,25,.07);")}
+    ${figText("source-5-sheet-title", "请确认命盘", 42, 220, 150, 22, "#1f1d1a", 900)}
+    ${figText("source-5-sheet-sub", "确认后再进入许大师对话", 42, 248, 210, 13, "#8b8176", 600)}
     <button class="wentian-archive-new-mini" type="button" data-action="wentian-archive-new">＋ 新建</button>
     ${archiveStatus}
     <div class="wentian-archive-list">
@@ -1115,7 +1117,6 @@ function sourceArchiveSelectScreen() {
                 <span class="wentian-archive-name">${escapeHtml(item.name)}</span>
                 ${item.badge ? `<span class="wentian-archive-badge">${escapeHtml(item.badge)}</span>` : ""}
                 <span class="wentian-archive-gender">${item.gender}</span>
-                <span class="wentian-archive-tag">${escapeHtml(item.tag)}</span>
               </span>
               <span class="wentian-archive-date">${escapeHtml(item.datetime)}</span>
               <span class="wentian-archive-pillars">${escapeHtml(item.pillars)}</span>
@@ -1136,7 +1137,7 @@ function sourceArchiveSelectScreen() {
       `;
     }).join("")}
     </div>
-    ${figLine("source-5-sheet-line", 24, 750, 342, "#eee8df")}
+    ${figLine("source-5-sheet-line", 24, 682, 342, "#eee8df")}
     <button class="wentian-archive-exit" type="button" data-action="wentian-archive-cancel">退出选盘</button>
     <button class="wentian-archive-confirm" type="button" data-action="wentian-archive-confirm">确定</button>
   `;
