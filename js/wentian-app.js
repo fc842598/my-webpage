@@ -14424,6 +14424,10 @@ function getYangzhaiSelectLayout() {
   };
 }
 
+function getYangzhaiCompassHeight() {
+  return 772;
+}
+
 function getYangzhaiSelectHeight() {
   return getYangzhaiSelectLayout().screenHeight;
 }
@@ -14593,7 +14597,7 @@ function yangzhaiActions(id, primaryText = "解读分析", y = YANGZHAI_ACTION_Y
 
 function sourceYangzhaiCompassScreen(showPrompt = true) {
   return `
-    ${yangzhaiBg("yz42")}
+    ${yangzhaiBg("yz42", getYangzhaiCompassHeight())}
     ${yangzhaiHeader("yz42")}
     ${figText("yz42-section-title", "九宫安位", 22, 104, 110, 21, "#241811", 900, "left", "font-family:'Noto Serif SC','Songti SC',serif;")}
     ${figText("yz42-section-help", "逐格点击加号安位", 214, 111, 154, 12, "#8e7d68", 700, "right", "font-family:'Noto Sans SC','Microsoft YaHei',sans-serif;")}
@@ -17813,7 +17817,7 @@ function renderConvertedScreen(no) {
   }
   const polishedScreen = renderWentianPolishedScreen(screen);
   if (polishedScreen) {
-    const polishedHeight = screen.no === 4 ? 892 : screen.no === 8 ? 1280 : screen.no === 17 ? getLiuyaoCastScreenHeight() : screen.no === 18 || screen.no === 19 ? 1480 : screen.no === 20 ? getLiuyaoResultScreenHeight() : screen.no === 22 ? 1120 : screen.no === 24 ? 1180 : screen.no === 43 ? getYangzhaiSelectHeight() : screen.no === 44 ? getYangzhaiResultHeight() : screen.no === 46 ? LIUREN_SCREEN_HEIGHT : screen.no === 49 ? WENTIAN_HEPAN_RESULT_SCREEN_HEIGHT : 844;
+    const polishedHeight = screen.no === 4 ? 892 : screen.no === 8 ? 1280 : screen.no === 17 ? getLiuyaoCastScreenHeight() : screen.no === 18 || screen.no === 19 ? 1480 : screen.no === 20 ? getLiuyaoResultScreenHeight() : screen.no === 22 ? 1120 : screen.no === 24 ? 1180 : screen.no === 42 ? getYangzhaiCompassHeight() : screen.no === 43 ? getYangzhaiSelectHeight() : screen.no === 44 ? getYangzhaiResultHeight() : screen.no === 46 ? LIUREN_SCREEN_HEIGHT : screen.no === 49 ? WENTIAN_HEPAN_RESULT_SCREEN_HEIGHT : 844;
     const wideBgClass = screen.no >= 42 && screen.no <= 45 ? " wide-bg" : "";
     const customHotspots = screen.no >= 17 && screen.no <= 20 ? "" : convertedFlowHotspots(screen);
     return figPhone(`screen-${screen.no}`, `${String(screen.no).padStart(2, "0")} ${screen.title}`, `
