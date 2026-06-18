@@ -1081,26 +1081,25 @@ function sourceArchiveSelectScreen() {
   const activeId = wentianArchiveDraftId || getWentianSelectedArchiveId(archives);
   const displayArchives = archives;
   const archiveStatus = wentianArchiveStatus.text
-    ? `<div id="wentian-archive-status" class="wentian-invite-status" style="left:42px;top:282px;width:306px;text-align:center" data-tone="${escapeHtml(wentianArchiveStatus.tone || "")}">${escapeHtml(wentianArchiveStatus.text)}</div>`
+    ? `<div id="wentian-archive-status" class="wentian-invite-status" style="left:42px;top:260px;width:306px;text-align:center" data-tone="${escapeHtml(wentianArchiveStatus.tone || "")}">${escapeHtml(wentianArchiveStatus.text)}</div>`
     : "";
   return `
     ${figBox("source-5-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
-    ${figBox("source-5-header", 0, 0, 390, 92, "", "background:#fffdf8;border-bottom:1px solid #efe4d3;")}
     ${wentianBackPill("source-5", 18, 42)}
     ${figText("source-5-title", "选择档案", 0, 54, 390, 22, "#1f1d1a", 900, "center")}
-    ${figBox("source-5-count", 298, 34, 68, 30, "", "border-radius:15px;background:#f7f1e7;")}
-    ${figText("source-5-count-text", `共 ${archives.length} 张`, 298, 43, 68, 11, "#8b8176", 700, "center")}
+    ${figBox("source-5-count", 304, 40, 56, 28, "", "border-radius:14px;background:rgba(255,247,230,.86);border:1px solid rgba(226,204,158,.62);")}
+    ${figText("source-5-count-text", `共${archives.length}张`, 304, 48, 56, 12, "#ad8a4d", 800, "center")}
 
-    ${figBox("source-5-intro", 24, 104, 342, 76, "", "border-radius:20px;background:linear-gradient(135deg,#fff,#f8f1e5);box-shadow:0 12px 28px rgba(70,45,25,.08);")}
-    ${figImage("source-5-avatar", "../images/wentian-prototype-assets/xu-dashi.webp", 42, 120, 44, 44, "border-radius:22px;object-fit:cover;object-position:center 18%;")}
-    ${figText("source-5-name", "许大师", 100, 118, 120, 18, "#26211c", 900)}
-    ${figText("source-5-sub", "选择一个档案接入对话", 100, 144, 210, 14, "#8b8176", 600)}
-    ${figBox("source-5-intro-pill", 286, 118, 56, 24, "", "border-radius:12px;background:#fff8eb;border:1px solid #ead8bb;")}
-    ${figText("source-5-intro-pill-text", "已在线", 286, 125, 56, 11, "#ad7b2c", 800, "center")}
+    ${figBox("source-5-intro", 24, 104, 342, 64, "", "border-radius:20px;background:linear-gradient(135deg,rgba(255,255,255,.96),rgba(249,242,230,.95));border:1px solid rgba(233,219,190,.7);box-shadow:0 10px 24px rgba(70,45,25,.06);")}
+    ${figImage("source-5-avatar", "../images/wentian-prototype-assets/xu-dashi.webp", 38, 115, 42, 42, "border-radius:16px;object-fit:cover;object-position:center 18%;")}
+    ${figText("source-5-name", "许大师", 92, 116, 120, 18, "#26211c", 900)}
+    ${figText("source-5-sub", "选择一个档案接入对话", 92, 140, 180, 12, "#8b8176", 600)}
+    ${figBox("source-5-intro-pill", 290, 120, 56, 24, "", "border-radius:12px;background:#fff8eb;border:1px solid #ead8bb;")}
+    ${figText("source-5-intro-pill-text", "已在线", 290, 127, 56, 11, "#ad7b2c", 800, "center")}
 
-    ${figBox("source-5-sheet", 18, 194, 354, 478, "", "border:1px solid #eadfce;border-radius:22px;background:#fffaf5;box-shadow:0 12px 28px rgba(70,45,25,.07);")}
-    ${figText("source-5-sheet-title", "请确认命盘", 42, 220, 150, 22, "#1f1d1a", 900)}
-    ${figText("source-5-sheet-sub", "确认后再进入许大师对话", 42, 248, 210, 13, "#8b8176", 600)}
+    ${figBox("source-5-sheet", 18, 184, 354, 510, "", "border:1px solid #eadfce;border-radius:26px;background:rgba(255,250,245,.96);box-shadow:0 14px 30px rgba(70,45,25,.06);")}
+    ${figText("source-5-sheet-title", "请确认命盘", 36, 214, 150, 20, "#1f1d1a", 900)}
+    ${figText("source-5-sheet-sub", "确认后再进入许大师对话", 36, 240, 220, 12, "#8b8176", 600)}
     <button class="wentian-archive-new-mini" type="button" data-action="wentian-archive-new">＋ 新建</button>
     ${archiveStatus}
     <div class="wentian-archive-list">
@@ -1137,7 +1136,6 @@ function sourceArchiveSelectScreen() {
       `;
     }).join("")}
     </div>
-    ${figLine("source-5-sheet-line", 24, 682, 342, "#eee8df")}
     <button class="wentian-archive-exit" type="button" data-action="wentian-archive-cancel">退出选盘</button>
     <button class="wentian-archive-confirm" type="button" data-action="wentian-archive-confirm">确定</button>
   `;
@@ -15946,7 +15944,7 @@ function renderWentianPolishedScreen(screen) {
   if (no >= 17 && no <= 19) return sourceLiuyaoCastScreen();
   if (no === 20) return sourceLiuyaoResultScreen();
   if (no === 30) return sourcePaymentScreen();
-  if (no === 33) return sourceMembershipScreenPreview();
+  if (no === 33) return sourceMembershipScreen();
   if (no === 49) return sourceHepanResultScreen();
   if (no === 8) {
     const paragraphs = [

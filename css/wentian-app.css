@@ -3076,14 +3076,14 @@ html[lang="en"] .wentian-chat-starter {
 .wentian-archive-list {
   position: absolute;
   left: 24px;
-  top: 300px;
+  top: 282px;
   width: 342px;
-  height: 340px;
+  height: 392px;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 12px;
   overflow-y: auto;
-  padding: 0 6px 8px 2px;
+  padding: 0 4px 8px 2px;
 }
 
 .wentian-archive-list::-webkit-scrollbar {
@@ -3100,28 +3100,29 @@ html[lang="en"] .wentian-chat-starter {
   display: flex;
   flex-direction: column;
   gap: 12px;
-  min-height: 144px;
-  border: 1px solid #dec49a;
-  border-radius: 22px;
-  background: linear-gradient(180deg, #fffefc 0%, #fff9f1 100%);
+  min-height: 128px;
+  border: 1px solid #e9d9bd;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, .88);
   color: #201813;
-  padding: 16px 14px 14px;
+  padding: 14px 14px 12px;
   text-align: left;
-  box-shadow: 0 14px 28px rgba(70, 45, 25, .08);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .8);
 }
 
 .wentian-archive-option.is-selected {
-  border-color: #c2953c;
-  box-shadow: 0 0 0 1px rgba(194, 149, 60, .55) inset, 0 10px 24px rgba(130, 91, 31, .11);
+  border-color: #dcb563;
+  background: linear-gradient(180deg, rgba(255, 252, 246, .98) 0%, rgba(255, 246, 228, .96) 100%);
+  box-shadow: 0 10px 22px rgba(130, 91, 31, .08), 0 0 0 1px rgba(220, 181, 99, .24) inset;
 }
 
 .wentian-archive-pick {
   display: grid;
-  grid-template-columns: 58px minmax(0, 1fr) 52px;
-  gap: 14px;
+  grid-template-columns: 56px minmax(0, 1fr) 42px;
+  gap: 12px;
   align-items: start;
   width: 100%;
-  min-height: 78px;
+  min-height: 70px;
   padding: 0;
   border: 0;
   border-radius: 18px;
@@ -3135,13 +3136,13 @@ html[lang="en"] .wentian-chat-starter {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 54px;
-  height: 54px;
-  border: 1px solid #e2c99f;
-  border-radius: 27px;
-  background: linear-gradient(180deg, #fff6e6 0%, #f8e8c8 100%);
+  width: 56px;
+  height: 56px;
+  border: 1px solid #e6d1aa;
+  border-radius: 20px;
+  background: linear-gradient(180deg, #fff8ea 0%, #f7e8c9 100%);
   color: #a47a32;
-  font-size: 24px;
+  font-size: 18px;
   font-weight: 800;
   line-height: 1;
   padding-top: 1px;
@@ -3155,8 +3156,8 @@ html[lang="en"] .wentian-chat-starter {
 
 .wentian-archive-main {
   display: grid;
-  gap: 7px;
-  padding-top: 2px;
+  gap: 6px;
+  padding-top: 0;
 }
 
 .wentian-archive-title-row {
@@ -3171,9 +3172,9 @@ html[lang="en"] .wentian-chat-starter {
   flex: 1 1 auto;
   min-width: 0;
   color: #201813;
-  font-size: 17px;
+  font-size: 18px;
   font-weight: 800;
-  line-height: 21px;
+  line-height: 22px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -3183,13 +3184,13 @@ html[lang="en"] .wentian-chat-starter {
 .wentian-archive-gender,
 .wentian-archive-tag {
   flex: 0 0 auto;
-  height: 22px;
-  border-radius: 11px;
-  font-size: 12px;
+  height: 20px;
+  border-radius: 10px;
+  font-size: 11px;
   font-weight: 700;
-  line-height: 22px;
+  line-height: 20px;
   text-align: center;
-  padding: 0 10px;
+  padding: 0 9px;
 }
 
 .wentian-archive-badge {
@@ -3208,15 +3209,15 @@ html[lang="en"] .wentian-chat-starter {
   width: auto;
   background: #f5efe3;
   color: #948879;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 500;
 }
 
 .wentian-archive-date {
   overflow: hidden;
   color: #8e8172;
-  font-size: 14px;
-  line-height: 17px;
+  font-size: 13px;
+  line-height: 16px;
   white-space: nowrap;
   text-overflow: ellipsis;
 }
@@ -3224,8 +3225,8 @@ html[lang="en"] .wentian-chat-starter {
 .wentian-archive-pillars {
   overflow: hidden;
   color: #a79887;
-  font-size: 13px;
-  line-height: 16px;
+  font-size: 12px;
+  line-height: 15px;
   white-space: nowrap;
   text-overflow: ellipsis;
 }
@@ -3234,43 +3235,43 @@ html[lang="en"] .wentian-chat-starter {
   display: grid;
   place-items: center;
   justify-self: end;
-  width: 46px;
-  height: 46px;
-  border: 1px solid #e0d2bc;
-  border-radius: 23px;
+  width: 42px;
+  height: 42px;
+  border: 1px solid #e4d6bf;
+  border-radius: 21px;
   color: #fff;
-  background: #fff;
-  font-size: 24px;
+  background: linear-gradient(180deg, #fffefb 0%, #faf4e8 100%);
+  font-size: 22px;
   font-weight: 900;
-  box-shadow: inset 0 0 0 4px rgba(247, 236, 213, .58), 0 6px 16px rgba(146, 104, 42, .08);
+  box-shadow: inset 0 0 0 4px rgba(247, 236, 213, .5), 0 4px 12px rgba(146, 104, 42, .06);
 }
 
 .wentian-archive-option.is-selected .wentian-archive-check {
-  border-color: #c2953c;
-  background: linear-gradient(180deg, #d1ab58 0%, #c2953c 100%);
+  border-color: #d3aa54;
+  background: linear-gradient(180deg, #d8b96e 0%, #c7983e 100%);
 }
 
 .wentian-archive-actions {
   display: flex;
   justify-content: flex-end;
   flex-wrap: wrap;
-  gap: 10px;
-  padding-left: 72px;
+  gap: 8px;
+  padding-left: 68px;
 }
 
 .wentian-archive-action {
-  height: 36px;
-  min-width: 66px;
-  padding: 0 14px;
+  height: 28px;
+  min-width: 60px;
+  padding: 0 12px;
   border: 1px solid #e7d6ba;
-  border-radius: 18px;
+  border-radius: 14px;
   background: #fffaf2;
   color: #9b742e;
   font-family: inherit;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 900;
   line-height: 1;
-  box-shadow: 0 4px 10px rgba(146, 104, 42, .06);
+  box-shadow: 0 3px 8px rgba(146, 104, 42, .05);
 }
 
 .wentian-archive-action.danger {
@@ -3300,9 +3301,9 @@ html[lang="en"] .wentian-chat-starter {
 .wentian-archive-exit,
 .wentian-archive-confirm {
   position: absolute;
-  top: 698px;
-  height: 50px;
-  border-radius: 18px;
+  top: 714px;
+  height: 52px;
+  border-radius: 26px;
   font-family: inherit;
   font-size: 17px;
   font-weight: 800;
@@ -3310,8 +3311,8 @@ html[lang="en"] .wentian-chat-starter {
 }
 
 .wentian-archive-exit {
-  left: 38px;
-  width: 150px;
+  left: 24px;
+  width: 152px;
   border: 1px solid #c5a66b;
   background: rgba(255, 255, 255, .96);
   color: #c2953c;
@@ -3319,12 +3320,12 @@ html[lang="en"] .wentian-chat-starter {
 
 .wentian-archive-new-mini {
   position: absolute;
-  left: 282px;
-  top: 218px;
+  left: 284px;
+  top: 208px;
   width: 68px;
-  height: 34px;
+  height: 30px;
   border: 1px solid #e2c78e;
-  border-radius: 17px;
+  border-radius: 15px;
   background: #fffdf8;
   color: #a87828;
   font-family: inherit;
@@ -3333,8 +3334,8 @@ html[lang="en"] .wentian-chat-starter {
 }
 
 .wentian-archive-confirm {
-  left: 206px;
-  width: 146px;
+  left: 194px;
+  width: 172px;
   border: 0;
   background: linear-gradient(180deg, #d0ab56 0%, #c2953c 100%);
   color: #fff;

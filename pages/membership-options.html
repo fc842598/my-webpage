@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>阅天套餐方案预览</title>
+  <style>
+    :root {
+      --bg: #f8f0e4;
+      --paper: #fffaf3;
+      --line: rgba(220, 196, 162, 0.9);
+      --text: #241a15;
+      --muted: #8c7c6f;
+      --gold: #c79c4b;
+      --gold-soft: #f7e6bd;
+      --dark: #281d18;
+      --accent: #ca4635;
+      --shadow: 0 14px 34px rgba(111, 78, 34, 0.08);
+      --radius-xl: 28px;
+      --radius-lg: 22px;
+      --radius-md: 18px;
+      --radius-sm: 14px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at top, rgba(255, 247, 232, 0.96), rgba(248, 240, 228, 1) 44%),
+        linear-gradient(180deg, #fbf5eb 0%, #f7ecde 100%);
+      color: var(--text);
+      font-family: "PingFang SC", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+    }
+
+    body {
+      padding: 18px 14px 28px;
+    }
+
+    .page {
+      max-width: 1120px;
+      margin: 0 auto;
+    }
+
+    .hero {
+      padding: 18px;
+      border-radius: 24px;
+      border: 1px solid rgba(228, 209, 183, 0.9);
+      background: rgba(255, 252, 247, 0.9);
+      box-shadow: var(--shadow);
+      margin-bottom: 14px;
+    }
+
+    .hero h1 {
+      margin: 0 0 8px;
+      font-size: 24px;
+    }
+
+    .hero p {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.65;
+      color: var(--muted);
+    }
+
+    .tabs {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      padding: 10px 2px 14px;
+      background: linear-gradient(180deg, rgba(248, 240, 228, 0.98) 0%, rgba(248, 240, 228, 0.8) 72%, rgba(248, 240, 228, 0) 100%);
+      backdrop-filter: blur(6px);
+    }
+
+    .tabs a {
+      flex: 0 0 auto;
+      padding: 10px 16px;
+      border-radius: 999px;
+      border: 1px solid rgba(220, 196, 162, 0.95);
+      background: rgba(255, 251, 245, 0.96);
+      color: #8b642a;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .option-list {
+      display: grid;
+      gap: 18px;
+    }
+
+    .option {
+      padding: 16px;
+      border-radius: 30px;
+      background: rgba(255, 251, 246, 0.78);
+      border: 1px solid rgba(228, 209, 183, 0.95);
+      box-shadow: var(--shadow);
+    }
+
+    .option-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .option-head h2 {
+      margin: 0 0 5px;
+      font-size: 19px;
+    }
+
+    .option-head p {
+      margin: 0;
+      font-size: 13px;
+      line-height: 1.55;
+      color: var(--muted);
+    }
+
+    .tag {
+      flex: 0 0 auto;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: var(--gold-soft);
+      color: #9a6822;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .phone {
+      width: 100%;
+      max-width: 390px;
+      min-height: 844px;
+      margin: 0 auto;
+      overflow: hidden;
+      border-radius: 34px;
+      border: 1px solid rgba(226, 206, 180, 0.96);
+      background: linear-gradient(180deg, #fff8ef 0%, #faf1e5 48%, #f6ebdc 100%);
+      box-shadow: 0 24px 54px rgba(108, 77, 40, 0.12);
+      position: relative;
+    }
+
+    .screen {
+      padding: 20px 18px 84px;
+    }
+
+    .topbar {
+      display: grid;
+      grid-template-columns: 88px 1fr 88px;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+
+    .back {
+      width: 88px;
+      height: 40px;
+      border-radius: 999px;
+      border: 1px solid rgba(220, 196, 162, 0.92);
+      background: rgba(255, 251, 245, 0.94);
+      color: #9a6a24;
+      font-size: 14px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 8px 18px rgba(191, 152, 96, 0.12);
+    }
+
+    .title {
+      text-align: center;
+      font-size: 18px;
+      font-weight: 900;
+    }
+
+    .ghost {
+      width: 40px;
+      height: 40px;
+      margin-left: auto;
+      border-radius: 20px;
+      background: rgba(255, 251, 245, 0.72);
+      border: 1px solid rgba(220, 196, 162, 0.7);
+    }
+
+    .member {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px;
+      border-radius: 24px;
+      background: rgba(255, 252, 247, 0.95);
+      border: 1px solid rgba(229, 212, 188, 0.95);
+      box-shadow: 0 12px 28px rgba(96, 69, 37, 0.07);
+      margin-bottom: 14px;
+    }
+
+    .avatar {
+      width: 46px;
+      height: 46px;
+      border-radius: 16px;
+      background: linear-gradient(145deg, #2f241d, #5a4032);
+      color: #fff8ee;
+      font-size: 18px;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex: 0 0 auto;
+    }
+
+    .member-main {
+      min-width: 0;
+      flex: 1;
+    }
+
+    .member-name {
+      font-size: 17px;
+      font-weight: 900;
+      margin-bottom: 4px;
+    }
+
+    .member-note {
+      font-size: 12px;
+      line-height: 1.45;
+      color: var(--muted);
+    }
+
+    .member-chip {
+      flex: 0 0 auto;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: #f7ead2;
+      color: #a27028;
+      font-size: 11px;
+      font-weight: 900;
+    }
+
+    .dark-card {
+      padding: 18px;
+      border-radius: 28px;
+      background: linear-gradient(135deg, #2b211c 0%, #1d1714 100%);
+      color: #fff9f2;
+      box-shadow: 0 18px 36px rgba(39, 25, 17, 0.16);
+      margin-bottom: 14px;
+    }
+
+    .dark-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .dark-top strong {
+      display: block;
+      font-size: 17px;
+      margin-bottom: 6px;
+    }
+
+    .dark-top span {
+      display: block;
+      font-size: 12px;
+      color: rgba(255, 243, 228, 0.78);
+    }
+
+    .price {
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    .price strong {
+      font-size: 34px;
+      line-height: 1;
+      color: #ffd77b;
+      margin: 0 0 6px;
+    }
+
+    .price span {
+      font-size: 12px;
+      color: rgba(255, 243, 228, 0.7);
+    }
+
+    .quota-line {
+      display: flex;
+      gap: 10px;
+    }
+
+    .quota-pill {
+      flex: 1;
+      padding: 12px 14px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 232, 202, 0.12);
+    }
+
+    .quota-pill span {
+      display: block;
+      font-size: 11px;
+      color: rgba(255, 243, 228, 0.72);
+      margin-bottom: 6px;
+    }
+
+    .quota-pill strong {
+      display: block;
+      font-size: 18px;
+      color: #fff9f2;
+    }
+
+    .split {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .card {
+      padding: 16px 14px;
+      border-radius: 22px;
+      background: rgba(255, 255, 255, 0.94);
+      border: 1px solid rgba(233, 220, 203, 0.95);
+      box-shadow: 0 10px 22px rgba(92, 65, 35, 0.06);
+    }
+
+    .card.highlight {
+      background: linear-gradient(180deg, #fffaf0, #ffefcb);
+      border-color: rgba(220, 185, 120, 0.9);
+    }
+
+    .card span {
+      display: block;
+      font-size: 12px;
+      color: #9b8b7a;
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+
+    .card strong {
+      display: block;
+      font-size: 26px;
+      line-height: 1.1;
+      margin-bottom: 6px;
+      font-weight: 900;
+    }
+
+    .card em {
+      display: block;
+      font-style: normal;
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .single-card {
+      margin-bottom: 14px;
+      padding: 16px;
+      border-radius: 24px;
+      background: rgba(255, 255, 255, 0.95);
+      border: 1px solid rgba(233, 220, 203, 0.96);
+      box-shadow: 0 10px 22px rgba(92, 65, 35, 0.06);
+    }
+
+    .single-card h3 {
+      margin: 0 0 12px;
+      font-size: 16px;
+    }
+
+    .single-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+      align-items: center;
+      padding-top: 12px;
+      border-top: 1px solid rgba(240, 230, 214, 1);
+    }
+
+    .single-row:first-of-type {
+      padding-top: 0;
+      border-top: 0;
+    }
+
+    .single-row strong {
+      font-size: 15px;
+    }
+
+    .single-row span {
+      display: block;
+      margin-top: 4px;
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .single-row em {
+      font-style: normal;
+      font-size: 24px;
+      font-weight: 900;
+      color: #8f3d30;
+      white-space: nowrap;
+    }
+
+    .pay-label {
+      margin: 2px 0 10px 6px;
+      font-size: 13px;
+      font-weight: 800;
+      color: #786d61;
+    }
+
+    .pay-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .pay-btn {
+      height: 40px;
+      border-radius: 20px;
+      border: 1px solid rgba(233, 220, 203, 0.96);
+      background: #fffdf8;
+      color: #756d63;
+      font-size: 12px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .pay-btn.active {
+      background: #fff3d9;
+      border-color: #d9b87a;
+      color: #8f3d30;
+    }
+
+    .benefits {
+      display: grid;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .benefit {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 14px 16px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.94);
+      border: 1px solid rgba(233, 220, 203, 0.96);
+      box-shadow: 0 10px 20px rgba(92, 65, 35, 0.05);
+    }
+
+    .benefit strong {
+      display: block;
+      font-size: 15px;
+      margin-bottom: 4px;
+    }
+
+    .benefit span {
+      display: block;
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .benefit em {
+      flex: 0 0 auto;
+      font-style: normal;
+      font-size: 16px;
+      font-weight: 900;
+      color: #9a6a24;
+    }
+
+    .plan-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .plan-box {
+      padding: 14px 10px;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.94);
+      border: 1px solid rgba(233, 220, 203, 0.96);
+      text-align: center;
+      box-shadow: 0 10px 20px rgba(92, 65, 35, 0.05);
+    }
+
+    .plan-box strong {
+      display: block;
+      font-size: 13px;
+      margin-bottom: 8px;
+    }
+
+    .plan-box span {
+      display: block;
+      font-size: 22px;
+      font-weight: 900;
+      line-height: 1.1;
+      color: #8f3d30;
+      margin-bottom: 6px;
+    }
+
+    .plan-box em {
+      display: block;
+      font-style: normal;
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .cta {
+      height: 52px;
+      border-radius: 26px;
+      background: linear-gradient(180deg, #d85343 0%, #c43b2e 100%);
+      color: #fffaf3;
+      font-size: 15px;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 16px 30px rgba(196, 59, 46, 0.22);
+    }
+
+    .helper {
+      margin-top: 10px;
+      font-size: 11px;
+      line-height: 1.55;
+      text-align: center;
+      color: #98897b;
+    }
+
+    .bottom-nav {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 66px;
+      border-top: 1px solid rgba(226, 211, 188, 0.88);
+      background: rgba(255, 250, 243, 0.97);
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      align-items: center;
+      padding-top: 6px;
+    }
+
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      font-size: 11px;
+      color: #90816f;
+    }
+
+    .nav-icon {
+      width: 24px;
+      height: 24px;
+      border-radius: 12px;
+      border: 1.6px solid currentColor;
+      opacity: 0.9;
+    }
+
+    .nav-item.active {
+      color: #c24d39;
+      font-weight: 800;
+    }
+
+    .nav-item.active::after {
+      content: "";
+      width: 18px;
+      height: 3px;
+      border-radius: 999px;
+      background: currentColor;
+    }
+
+    .footer-note {
+      margin-top: 16px;
+      text-align: center;
+      font-size: 12px;
+      line-height: 1.65;
+      color: var(--muted);
+    }
+
+    @media (min-width: 980px) {
+      .option {
+        padding: 22px;
+      }
+
+      .option-wrap {
+        display: grid;
+        grid-template-columns: 390px 1fr;
+        gap: 24px;
+        align-items: start;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <section class="hero">
+      <h1>阅天套餐精简预览</h1>
+      <p>这次只放更简洁的方向，不再堆说明和大表格。你在手机上直接上下滑，看完告诉我选 A、B、C，或者说“用 A 的上半部分 + B 的下半部分”。</p>
+    </section>
+
+    <nav class="tabs">
+      <a href="#option-a">方案 A 最简</a>
+      <a href="#option-b">方案 B 稳一点</a>
+      <a href="#option-c">方案 C 会员感</a>
+    </nav>
+
+    <div class="option-list">
+      <section class="option" id="option-a">
+        <div class="option-head">
+          <div>
+            <h2>方案 A · 最简</h2>
+            <p>一眼先看到价格和额度，结构最短，适合你想把“开通付费版”放成唯一重点。</p>
+          </div>
+          <span class="tag">最轻</span>
+        </div>
+        <div class="option-wrap">
+          <div class="phone">
+            <div class="screen">
+              <div class="topbar">
+                <div class="back">‹ 返回</div>
+                <div class="title">阅天套餐</div>
+                <div class="ghost"></div>
+              </div>
+
+              <div class="dark-card">
+                <div class="dark-top">
+                  <div>
+                    <strong>付费版</strong>
+                    <span>按日刷新，适合高频问答</span>
+                  </div>
+                  <div class="price">
+                    <strong>¥19.90</strong>
+                    <span>100次/天</span>
+                  </div>
+                </div>
+                <div class="quota-line">
+                  <div class="quota-pill">
+                    <span>免费用户</span>
+                    <strong>20次/天</strong>
+                  </div>
+                  <div class="quota-pill">
+                    <span>当前剩余</span>
+                    <strong>20/20</strong>
+                  </div>
+                </div>
+              </div>
+
+              <div class="pay-label">支付方式</div>
+              <div class="pay-row">
+                <div class="pay-btn">微信支付</div>
+                <div class="pay-btn active">支付宝AI收</div>
+                <div class="pay-btn">PayPal</div>
+              </div>
+
+              <div class="cta">开通付费版</div>
+              <div class="helper">开通后每日额度提升到 100 次，仍然按天刷新。</div>
+            </div>
+            <div class="bottom-nav">
+              <div class="nav-item"><div class="nav-icon"></div>首页</div>
+              <div class="nav-item"><div class="nav-icon"></div>档案</div>
+              <div class="nav-item"><div class="nav-icon"></div>阅天AI</div>
+              <div class="nav-item active"><div class="nav-icon"></div>我的</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="option" id="option-b">
+        <div class="option-head">
+          <div>
+            <h2>方案 B · 稳一点</h2>
+            <p>保留一点产品层次，把“当前额度”和“套餐差异”拆开，看起来会更完整，但还是比较简洁。</p>
+          </div>
+          <span class="tag">平衡</span>
+        </div>
+        <div class="option-wrap">
+          <div class="phone">
+            <div class="screen">
+              <div class="topbar">
+                <div class="back">‹ 返回</div>
+                <div class="title">阅天套餐</div>
+                <div class="ghost"></div>
+              </div>
+
+              <div class="member">
+                <div class="avatar">谢</div>
+                <div class="member-main">
+                  <div class="member-name">谢广周</div>
+                  <div class="member-note">您还不是会员，开通后提升 AI 问答额度。</div>
+                </div>
+                <div class="member-chip">AI+</div>
+              </div>
+
+              <div class="split">
+                <div class="card">
+                  <span>免费版</span>
+                  <strong>20次/天</strong>
+                  <em>基础使用</em>
+                </div>
+                <div class="card highlight">
+                  <span>付费版</span>
+                  <strong>100次/天</strong>
+                  <em>按日刷新</em>
+                </div>
+              </div>
+
+              <div class="single-card">
+                <h3>当前额度</h3>
+                <div class="single-row">
+                  <div>
+                    <strong>今日剩余</strong>
+                    <span>当前仍是免费用户额度</span>
+                  </div>
+                  <em>20/20</em>
+                </div>
+                <div class="single-row">
+                  <div>
+                    <strong>开通后</strong>
+                    <span>每日自动提升到 100 次</span>
+                  </div>
+                  <em>100次</em>
+                </div>
+              </div>
+
+              <div class="pay-label">支付方式</div>
+              <div class="pay-row">
+                <div class="pay-btn">微信支付</div>
+                <div class="pay-btn active">支付宝AI收</div>
+                <div class="pay-btn">PayPal</div>
+              </div>
+
+              <div class="cta">立即开通 ¥19.90</div>
+              <div class="helper">适合连续追问、集中解读和高频使用。</div>
+            </div>
+            <div class="bottom-nav">
+              <div class="nav-item"><div class="nav-icon"></div>首页</div>
+              <div class="nav-item"><div class="nav-icon"></div>档案</div>
+              <div class="nav-item"><div class="nav-icon"></div>阅天AI</div>
+              <div class="nav-item active"><div class="nav-icon"></div>我的</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="option" id="option-c">
+        <div class="option-head">
+          <div>
+            <h2>方案 C · 会员感</h2>
+            <p>借一点会员中心的排布，但内容还是你自己的，只保留最关键的套餐、额度和权益。</p>
+          </div>
+          <span class="tag">偏会员中心</span>
+        </div>
+        <div class="option-wrap">
+          <div class="phone">
+            <div class="screen">
+              <div class="topbar">
+                <div class="back">‹ 返回</div>
+                <div class="title">阅天套餐</div>
+                <div class="ghost"></div>
+              </div>
+
+              <div class="member">
+                <div class="avatar">谢</div>
+                <div class="member-main">
+                  <div class="member-name">谢广周</div>
+                  <div class="member-note">您还不是会员，开通立刻获得更多 AI 问答额度。</div>
+                </div>
+                <div class="member-chip">VIP</div>
+              </div>
+
+              <div class="plan-row">
+                <div class="plan-box">
+                  <strong>免费版</strong>
+                  <span>20</span>
+                  <em>次/天</em>
+                </div>
+                <div class="plan-box">
+                  <strong>当前剩余</strong>
+                  <span>20/20</span>
+                  <em>今日可用</em>
+                </div>
+                <div class="plan-box">
+                  <strong>付费版</strong>
+                  <span>100</span>
+                  <em>次/天</em>
+                </div>
+              </div>
+
+              <div class="benefits">
+                <div class="benefit">
+                  <div>
+                    <strong>套餐价格</strong>
+                    <span>按日刷新，适合高频问答和连续追问。</span>
+                  </div>
+                  <em>¥19.90</em>
+                </div>
+                <div class="benefit">
+                  <div>
+                    <strong>支付方式</strong>
+                    <span>微信支付、支付宝AI收、PayPal。</span>
+                  </div>
+                  <em>3种</em>
+                </div>
+                <div class="benefit">
+                  <div>
+                    <strong>额度提升</strong>
+                    <span>开通后每日从 20 次提升到 100 次。</span>
+                  </div>
+                  <em>5倍</em>
+                </div>
+              </div>
+
+              <div class="cta">开通 VIP 套餐</div>
+              <div class="helper">适合想要一点会员感，但又不想页面太满的版本。</div>
+            </div>
+            <div class="bottom-nav">
+              <div class="nav-item"><div class="nav-icon"></div>首页</div>
+              <div class="nav-item"><div class="nav-icon"></div>档案</div>
+              <div class="nav-item"><div class="nav-icon"></div>阅天AI</div>
+              <div class="nav-item active"><div class="nav-icon"></div>我的</div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div class="footer-note">
+      看完直接告诉我：选 A、选 B、选 C。<br>
+      或者说“用 A 的上半部分 + C 的下半部分”，我再正式落进网站页面。
+    </div>
+  </div>
+</body>
+</html>
