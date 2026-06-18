@@ -3759,11 +3759,11 @@ function renderWentianReadingParagraphs(value, fallback = "") {
   `;
 }
 
-function renderWentianMobileActionButton(actionAttr, label) {
+function renderWentianMobileActionButton(actionAttr, label, disabled = false) {
   const isRebatch = String(label || "").startsWith("重批");
   const displayLabel = isRebatch ? "重批" : label;
   const classAttr = isRebatch ? ` class="wentian-mb-rebatch-btn"` : "";
-  return `<button type="button"${classAttr}${actionAttr ? ` ${actionAttr}` : ""}>${escapeHtml(displayLabel)}</button>`;
+  return `<button type="button"${classAttr}${actionAttr ? ` ${actionAttr}` : ""}${disabled ? " disabled" : ""}>${escapeHtml(displayLabel)}</button>`;
 }
 
 function renderWentianOverallReading(data, fallback, actionAttr, actionLabel) {
@@ -3993,9 +3993,11 @@ function renderWentianLuckReading(data, fallback, actionAttr, actionLabel) {
   const currentRangeLabel = currentDecade?.rangeLabel || selected.rangeLabel || "当前十年";
   const selectedData = getWentianLuckAiResultForSelected(selected) || (selected.key === selected.currentKey ? data : null);
   const groups = selectedData ? getWentianLuckReadingGroups(selectedData) : [];
+  const isLoading = wentianChartAiState.status === "running" && wentianChartAiState.runningModule === "current_luck";
   const readyLabel = selected.key === selected.currentKey
     ? (groups.length ? "重批当前十年" : "批当前十年")
     : (groups.length ? "重批选中十年" : "批选中十年");
+  const buttonLabel = isLoading ? "加载中..." : readyLabel;
   return `
     <div class="wentian-mb-luck-hero">
       <span>十年大限</span>
@@ -4027,7 +4029,7 @@ function renderWentianLuckReading(data, fallback, actionAttr, actionLabel) {
     </div>
     <div class="wentian-mb-luck-actions">
       <button type="button" data-action="wentian-chart-ai-luck-current">回到当前</button>
-      ${renderWentianMobileActionButton(actionAttr, readyLabel)}
+      ${renderWentianMobileActionButton(actionAttr, buttonLabel, isLoading)}
     </div>
   `;
 }
