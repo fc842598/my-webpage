@@ -1115,11 +1115,20 @@ function sourceArchiveSelectScreen() {
   const archives = getWentianArchiveList();
   const activeId = wentianArchiveDraftId || getWentianSelectedArchiveId(archives);
   const displayArchives = archives;
+  const archiveCount = displayArchives.length;
+  const sheetHeight = archiveCount === 0 ? 248 : archiveCount === 1 ? 338 : archiveCount === 2 ? 450 : 510;
+  const listHeight = archiveCount === 0 ? 72 : archiveCount === 1 ? 160 : archiveCount === 2 ? 276 : 392;
+  const actionTop = archiveCount === 0 ? 470 : archiveCount === 1 ? 560 : archiveCount === 2 ? 672 : 714;
   const archiveStatus = wentianArchiveStatus.text
     ? `<div id="wentian-archive-status" class="wentian-invite-status" style="left:42px;top:260px;width:306px;text-align:center" data-tone="${escapeHtml(wentianArchiveStatus.tone || "")}">${escapeHtml(wentianArchiveStatus.text)}</div>`
     : "";
   return `
     ${figBox("source-5-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
+    <style>
+      #source-5-sheet{height:${sheetHeight}px !important;}
+      .wentian-archive-list{height:${listHeight}px !important;}
+      .wentian-archive-exit,.wentian-archive-confirm{top:${actionTop}px !important;}
+    </style>
     ${wentianBackPill("source-5", 18, 42)}
     ${figText("source-5-title", "选择档案", 0, 54, 390, 22, "#1f1d1a", 900, "center")}
     ${figBox("source-5-count", 304, 40, 56, 28, "", "border-radius:14px;background:rgba(255,247,230,.86);border:1px solid rgba(226,204,158,.62);")}
@@ -10644,6 +10653,8 @@ function sourceMembershipScreenPreview() {
 
 function sourcePaymentScreen() {
   const isAipayResource = wentianPaymentState.payMethod === "aipay-resource";
+  const rawMessage = wentianPaymentState.error || wentianPaymentState.message || "付费版 100次/天，按日刷新";
+  const alipayPermissionIssue = /接口调用权限不足|insufficient-isv-permissions|open\.alipay\.com\/api\/lowCheck|lowCheck/i.test(`${rawMessage} ${wentianPaymentState.payUrl || ""}`);
   const stateText = wentianPaymentState.status === "paid"
     ? "支付成功"
     : wentianPaymentState.status === "error"
@@ -10653,10 +10664,12 @@ function sourcePaymentScreen() {
         : "确认订单";
   const stateLabel = isAipayResource ? "AI收入口" : stateText;
   const payUrl = wentianPaymentState.payUrl || "";
-  const showQr = payUrl && !isAipayResource && !["h5", "redirect"].includes(wentianPaymentState.payMethod) && !wentianPaymentState.mockMode;
-  const showOpen = payUrl && (isAipayResource || ["h5", "redirect"].includes(wentianPaymentState.payMethod)) && !wentianPaymentState.mockMode;
-  const message = wentianPaymentState.error || wentianPaymentState.message || "付费版 100次/天，按日刷新";
-  const orderCardHeight = showQr ? 376 : 190;
+  const showQr = payUrl && !alipayPermissionIssue && !isAipayResource && !["h5", "redirect"].includes(wentianPaymentState.payMethod) && !wentianPaymentState.mockMode;
+  const showOpen = payUrl && !alipayPermissionIssue && (isAipayResource || ["h5", "redirect"].includes(wentianPaymentState.payMethod)) && !wentianPaymentState.mockMode;
+  const message = alipayPermissionIssue
+    ? "支付宝扫码权限异常，请先改用微信支付，或联系管理员检查支付宝当面付配置。"
+    : rawMessage.replace(/https?:\/\/\S+/gi, "支付链接");
+  const orderCardHeight = showQr ? 376 : (alipayPermissionIssue ? 218 : 190);
   const amountText = formatWentianPaymentAmount(wentianPaymentState.amountYuan || "19.90", wentianPaymentState.currency || "CNY");
   const payButtonAction = isAipayResource ? "back" : (wentianPaymentState.status === "paid" ? "wentian-pay-done" : (wentianPaymentState.status === "idle" || wentianPaymentState.status === "error" ? "wentian-member-pay" : "wentian-payment-check"));
   const payButtonText = isAipayResource ? "返回" : (wentianPaymentState.status === "paid" ? "已开通，返回我的" : (wentianPaymentState.status === "pending" ? "刷新支付状态" : `确认支付 ${amountText}`));
