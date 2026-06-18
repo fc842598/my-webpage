@@ -17655,13 +17655,6 @@ function sourceZiweiAiDecodePanel(saved) {
         <button type="button" class="wentian-chart-ai-secondary" data-route="screen-4">追问</button>
         <button type="button" class="wentian-chart-ai-secondary" data-action="wentian-open-mingbook-onepage" ${pdfReady ? "" : "disabled"}>${escapeHtml(pdfLabel)}</button>
       </div>
-      <button
-        type="button"
-        class="wentian-chart-ai-shortcut"
-        data-action="wentian-chart-ai-decode"
-        aria-label="${escapeHtml(getWentianCompactText("一键解读", "One-tap read"))}"
-        ${isRunning ? "disabled" : ""}
-      >${escapeHtml(getWentianCompactText("一键解读", "One-tap read"))}</button>
       <p class="wentian-chart-ai-pdf-status" data-wentian-pdf-status></p>
       ${showFinalBoard ? renderWentianFinalVolumeBoard(chapters) : ""}
     </section>
