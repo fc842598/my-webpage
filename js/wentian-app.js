@@ -14787,7 +14787,7 @@ const LIUREN_HAND_BADGE_COLORS = [
   { accent: "#6f91a1", glow: "rgba(111,145,161,.23)", soft: "rgba(111,145,161,.10)" }
 ];
 const LIUREN_FLASH_INTERVAL_SECONDS = 0.2;
-const LIUREN_SCREEN_HEIGHT = 1900;
+const LIUREN_SCREEN_HEIGHT = 1220;
 
 const OFFICE_LAYOUT_STORAGE_KEY = "wentian-office-layout-state-v1";
 const OFFICE_LAYOUT_STATE_VERSION = 1;
@@ -15588,6 +15588,17 @@ function setLiurenStatus(text, tone = "") {
   status.dataset.tone = tone;
 }
 
+function syncLiurenScreenLayout() {
+  const phone = document.querySelector('.figma-phone[data-node-id="screen-46"]');
+  const panel = phone?.querySelector(".liuren-panel");
+  if (!phone || !panel) return;
+  const nextHeight = Math.max(LIUREN_SCREEN_HEIGHT, Math.ceil(panel.offsetTop + panel.offsetHeight + 88));
+  phone.style.height = `${nextHeight}px`;
+  const bg = phone.querySelector('[data-node-id="lr46-bg"]');
+  if (bg) bg.style.height = `${nextHeight}px`;
+  scheduleWentianPhoneFit();
+}
+
 function updateLiurenPreview(options = {}) {
   const preview = document.getElementById("liuren-preview");
   const track = document.getElementById("liuren-track");
@@ -15615,6 +15626,7 @@ function updateLiurenPreview(options = {}) {
     if (process) process.innerHTML = "";
     setLiurenStatus(error.message || "起课失败", "error");
   }
+  syncLiurenScreenLayout();
 }
 
 function initLiurenScreen() {
