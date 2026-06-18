@@ -9013,8 +9013,8 @@ function getWentianSharePayload() {
   const appUrl = getWentianAppUrl();
   const hasInvite = account.loggedIn && isWentianInviteCode(summary.inviteCode);
   const url = hasInvite ? summary.inviteLink : appUrl;
-  const inviteLine = hasInvite ? `我的邀请码：${summary.inviteCode}` : "登录后可生成专属邀请码。";
-  const text = `推荐你使用阅天AI，AI排盘、命盘解读和许大师问答都在这里。\n${inviteLine}\n${url}`;
+  const inviteLine = hasInvite ? `邀请码：${summary.inviteCode}` : "登录后生成专属邀请码";
+  const text = `推荐你用阅天AI：AI排盘、命盘解读、许大师问答。\n${inviteLine}\n${url}`;
   return {
     title: "阅天AI",
     text,
@@ -16335,10 +16335,10 @@ function renderWentianPolishedScreen(screen) {
       ${figText("wt34-close", "×", 334, 460, 28, 24, "#25211d", 500, "center", "z-index:82;")}
       ${figButton("wt34-close-hit", 322, 450, 52, 46, 'data-route="screen-31"', "", "z-index:83;")}
       ${figBox("wt34-copy", 28, 502, 334, 122, "", "border-radius:14px;background:#fffaf2;border:1px solid #ead9bd;box-shadow:0 6px 16px rgba(112,78,35,.06);z-index:82;")}
-      ${figText("wt34-copy-title", "分享文案", 44, 518, 84, 12, "#b38434", 900, "left", "z-index:83;")}
-      ${figText("wt34-copy-lead", escapeHtml(shareLead), 44, 540, 302, 13, "#5f554a", 800, "left", "line-height:1.5;z-index:83;")}
-      ${shareInvite ? figText("wt34-copy-invite", escapeHtml(shareInvite), 44, 564, 302, 13, "#7f7569", 700, "left", "line-height:1.45;z-index:83;") : ""}
-      <div id="wt34-link-box" style="position:absolute;left:44px;top:586px;width:302px;padding:9px 12px;border-radius:12px;border:1px dashed #ddc7a3;background:#fff;box-sizing:border-box;color:#7a6a56;font-size:12px;font-weight:700;line-height:1.5;word-break:break-all;z-index:83;">${shareLinkHtml}</div>
+      ${figText("wt34-copy-title", "分享文案", 44, 518, 84, 12, "#b38434", 700, "left", "z-index:83;")}
+      ${figText("wt34-copy-lead", escapeHtml(shareLead), 44, 540, 302, 13, "#5f554a", 600, "left", "line-height:1.5;z-index:83;")}
+      ${shareInvite ? figText("wt34-copy-invite", escapeHtml(shareInvite), 44, 564, 302, 13, "#7f7569", 500, "left", "line-height:1.45;z-index:83;") : ""}
+      <div id="wt34-link-box" style="position:absolute;left:44px;top:586px;width:302px;padding:9px 12px;border-radius:12px;border:1px dashed #ddc7a3;background:#fff;box-sizing:border-box;color:#7a6a56;font-size:12px;font-weight:600;line-height:1.5;word-break:break-all;z-index:83;">${shareLinkHtml}</div>
       ${shareTargets.map(([label, icon, action], index) => {
         const x = 38 + index * 82;
         return `
