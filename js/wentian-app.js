@@ -14392,20 +14392,20 @@ function getYangzhaiSelectLayout() {
   const selectedElders = selectedItems
     .map((label) => getYangzhaiOption(label))
     .filter((option) => option.elderKey);
-  const sheetTop = 274;
-  const titleY = 314;
-  const palacePillY = 346;
-  const subtitleY = 382;
-  const dividerY = 404;
-  const optionsStartY = 412;
-  const optionRowGap = 40;
-  const optionBoxHeight = 38;
+  const sheetTop = 286;
+  const titleY = 322;
+  const palacePillY = 316;
+  const subtitleY = 352;
+  const dividerY = 372;
+  const optionsStartY = 382;
+  const optionRowGap = 42;
+  const optionBoxHeight = 40;
   const optionRows = Math.ceil(YANGZHAI_OPTIONS.length / 2);
   const optionsBottomY = optionsStartY + (optionRows - 1) * optionRowGap + optionBoxHeight;
-  const helperY = optionsBottomY + 10;
+  const helperY = optionsBottomY + 12;
   const elderHelperHeight = selectedElders.length ? 44 + selectedElders.length * 34 : 0;
-  const confirmY = selectedElders.length ? helperY + elderHelperHeight + 10 : helperY + 8;
-  const screenHeight = Math.max(844, confirmY + 72);
+  const confirmY = selectedElders.length ? helperY + elderHelperHeight + 14 : helperY + 12;
+  const screenHeight = Math.max(844, confirmY + 78);
   return {
     selectedElders,
     sheetTop,
@@ -14629,12 +14629,12 @@ function sourceYangzhaiSelectScreen() {
     ${figButton("yz43-top-back-hit", 0, 0, 96, 110, 'data-route="screen-42" aria-label="返回地脉道"', "", "z-index:42;")}
     ${figBox("yz43-sheet", 0, sheetTop, 390, screenHeight - sheetTop, "", "border-radius:28px 28px 0 0;background:#fffaf3;box-shadow:0 -20px 44px rgba(35,20,10,.24);z-index:41;")}
     ${figBox("yz43-handle", 160, sheetTop + 16, 70, 5, "", "border-radius:4px;background:#dfcfb8;z-index:42;")}
-    ${figText("yz43-title", "选择方位成员", 24, titleY, 180, 20, "#201812", 900, "left", "font-family:'Noto Serif SC','Songti SC',serif;z-index:42;")}
+    ${figText("yz43-title", "选择方位成员", 24, titleY, 168, 20, "#201812", 900, "left", "font-family:'Noto Serif SC','Songti SC',serif;z-index:42;")}
     ${figButton("yz43-close-hit", 328, titleY - 10, 42, 42, 'data-route="screen-42"', "", "z-index:44;")}
     ${figText("yz43-close", "×", 330, titleY - 9, 42, 30, "#5f5a52", 500, "center", "z-index:43;")}
-    ${figBox("yz43-palace-pill", 24, palacePillY, 292, 34, "", "border:1px solid #eadbc6;border-radius:17px;background:#fffdf8;z-index:42;")}
-    ${figText("yz43-palace-text", `${activePalace.dir} · ${activePalace.role}`, 36, palacePillY + 9, 268, 13, "#8a5a22", 800, "center", "white-space:nowrap;font-family:'Noto Sans SC','Microsoft YaHei',sans-serif;z-index:43;")}
-    ${figText("yz43-sub", "可多选；再点一次取消。", 24, subtitleY, 300, 12, "#817568", 600, "left", "font-family:'Noto Sans SC','Microsoft YaHei',sans-serif;z-index:42;")}
+    ${figBox("yz43-palace-pill", 206, palacePillY, 106, 32, "", "border:1px solid #eadbc6;border-radius:16px;background:#fffdf8;z-index:42;")}
+    ${figText("yz43-palace-text", `${activePalace.dir} · ${activePalace.role}`, 206, palacePillY + 9, 106, 12, "#8a5a22", 800, "center", "white-space:nowrap;font-family:'Noto Sans SC','Microsoft YaHei',sans-serif;z-index:43;")}
+    ${figText("yz43-sub", "按实际居住位置安人", 24, subtitleY, 210, 12, "#817568", 700, "left", "font-family:'Noto Sans SC','Microsoft YaHei',sans-serif;z-index:42;")}
     ${figBox("yz43-midline", 24, dividerY, 342, 1, "", "background:#eadfce;z-index:42;")}
     ${YANGZHAI_OPTIONS.map((option, index) => {
       const label = option.label;
@@ -14658,7 +14658,7 @@ function sourceYangzhaiSelectScreen() {
     }).join("")}
     ${selectedElders.length ? `
       ${figBox("yz43-elder-helper", 24, helperY, 342, elderHelperHeight, "", "border:1px solid #eadbc6;border-radius:16px;background:#fffdf8;box-shadow:0 10px 22px rgba(70,45,25,.05);z-index:42;")}
-      ${figText("yz43-elder-note", "长辈现住位先按父母位类解读；65岁后应退位，退居东北位为佳。", 40, helperY + 16, 300, 12, "#7d6b58", 700, "left", "line-height:1.5;font-family:'Noto Sans SC','Microsoft YaHei',sans-serif;z-index:43;")}
+      ${figText("yz43-elder-note", "长辈按父母位解读；65岁后可优先参考东北位。", 40, helperY + 16, 300, 12, "#7d6b58", 700, "left", "line-height:1.5;font-family:'Noto Sans SC','Microsoft YaHei',sans-serif;z-index:43;")}
       ${selectedElders.map((option, index) => {
         const rowY = helperY + 34 + index * 34;
         return `
@@ -16498,6 +16498,11 @@ function sourceDashboardHomeScreen() {
       ["办公室布局", "门向与老板位", "01-feature-office-v2.svg", "screen-50"],
       ["六壬法", "农历掌诀", "01-feature-liuren-v2.svg", "screen-46"],
     ];
+    const quickActions = [
+      ["去问AI", 'data-route="screen-5"'],
+      ["六爻占卜", 'data-action="wentian-open-liuyao-v2" aria-label="打开六爻占卜新版"'],
+      ["阳宅地脉", 'data-route="screen-42"']
+    ];
     return `
       ${figBox("source-1-bg", 0, 0, 390, 844, "", "background:linear-gradient(180deg,#fffdf8 0%,#fbf7ef 50%,#fff6ea 100%);")}
       ${figImage("source-1-brand-logo", "../images/wentian-prototype-assets/wentian-brand-logo-ai-gold-v1.webp", 18, 23, 42, 42, "border-radius:10px;object-fit:cover;box-shadow:0 6px 14px rgba(24,19,8,.18);", "loading=\"eager\" decoding=\"async\"")}
@@ -16541,6 +16546,16 @@ function sourceDashboardHomeScreen() {
         ${figImage(`source-1-feature-icon-${index}`, `../images/wentian-prototype-assets/${icon}`, x + 120, y + 18, 38, 44, "object-fit:contain;opacity:.86;")}
         ${figButton(`source-1-feature-hit-${index}`, x, y, 171, 80, hitAttrs, "", "z-index:35;")}
       `;
+      }).join("")}
+      ${figBox("source-1-quick", 18, 670, 354, 72, "", "border-radius:18px;background:rgba(255,253,248,.88);border:1px solid #eadfce;box-shadow:0 10px 22px rgba(70,45,25,.06);")}
+      ${figText("source-1-quick-title", "常用入口", 32, 684, 88, 14, "#6f5c47", 900, "left")}
+      ${quickActions.map(([label, attrs], index) => {
+        const x = 30 + index * 110;
+        return `
+          ${figBox(`source-1-quick-chip-${index}`, x, 705, 98, 26, "", "border-radius:13px;background:#fff6e8;border:1px solid #ead2a2;")}
+          ${figText(`source-1-quick-chip-text-${index}`, label, x, 713, 98, 11, "#9a681c", 900, "center", "white-space:nowrap;")}
+          ${figButton(`source-1-quick-chip-hit-${index}`, x, 705, 98, 26, attrs, "", "z-index:35;")}
+        `;
       }).join("")}
       ${sourceAppBottomNav("首页", 755)}
     `;
