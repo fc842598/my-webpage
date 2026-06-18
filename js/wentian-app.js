@@ -4232,10 +4232,13 @@ function renderWentianXiaoLianReading(data, fallback, actionAttr) {
   const railItems = getWentianXiaoLianRailItems(selected);
   const resultMatches = !!data && (!wentianChartAiState.xiaoLianAgeKey || wentianChartAiState.xiaoLianAgeKey === selected.key);
   const groups = resultMatches ? getWentianXiaoLianReadingGroups(data) : [];
+  const isLoading = wentianChartAiState.status === "running" && wentianChartAiState.runningModule === "xiaoxian_liunian";
   const guaLine = formatWentianGuaLine(selected.lineType, selected.lineNum);
   const readyLabel = selected.key === selected.currentKey
     ? (resultMatches && groups.length ? "重批当前小限" : "批当前小限")
     : (resultMatches && groups.length ? "重批选中小限" : "单独批小限");
+  const buttonLabel = isLoading ? "加载中..." : readyLabel;
+  const showGenerateButton = isLoading || !groups.length;
   const summaryTitle = [
     selected.solarYear ? `${selected.solarYear}` : "",
     selected.yearGanzhi || "",
@@ -4275,7 +4278,7 @@ function renderWentianXiaoLianReading(data, fallback, actionAttr) {
     </div>
     <div class="wentian-mb-xiaolian-actions">
       <button type="button" data-action="wentian-chart-ai-xiaolian-current">回到今年</button>
-      ${renderWentianMobileActionButton(actionAttr, readyLabel)}
+      ${showGenerateButton ? renderWentianMobileActionButton(actionAttr, buttonLabel, isLoading) : ""}
     </div>
   `;
 }
