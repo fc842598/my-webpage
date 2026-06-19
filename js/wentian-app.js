@@ -551,10 +551,45 @@ function withWentianStandardBottomNav(nodeId, body, height) {
   if (String(nodeId) === "screen-43" || !/^screen-\d+$/.test(String(nodeId)) || hasWentianBottomNav(body) || /class="liuyao-caster-modal"/.test(String(body)) || /liuyao-result-panel/.test(String(body))) {
     return { body, height: baseHeight };
   }
-  const navY = Math.max(755, Math.round(baseHeight));
+  const navY = Math.max(755, Math.round(baseHeight - 89));
   return {
     body: `${body}${sourceAppBottomNav(getWentianBottomNavActive(nodeId), navY)}`,
-    height: navY + 89
+    height: Math.max(baseHeight, navY + 89)
+  };
+}
+
+function getWentianArchiveSelectScreenMetrics(archiveCount = 0) {
+  if (archiveCount <= 0) return { bottomNavY: 648, height: 756 };
+  if (archiveCount === 1) return { bottomNavY: 706, height: 814 };
+  return { bottomNavY: 755, height: 844 };
+}
+
+function getWentianArchiveSelectScreenState() {
+  const archives = getWentianArchiveList();
+  return {
+    archives,
+    archiveCount: archives.length,
+    metrics: getWentianArchiveSelectScreenMetrics(archives.length)
+  };
+}
+
+function getWentianProfileScreenMetrics(visibleCount = 0, showIndex = false) {
+  if (showIndex) return { bottomNavY: 778, height: 867 };
+  if (visibleCount <= 0) return { bottomNavY: 700, height: 790 };
+  if (visibleCount === 1) return { bottomNavY: 716, height: 806 };
+  if (visibleCount === 2) return { bottomNavY: 736, height: 826 };
+  return { bottomNavY: 756, height: 846 };
+}
+
+function getWentianProfileScreenState(query = wentianProfileSearchQuery) {
+  const archives = getWentianArchiveList();
+  const visibleArchives = getWentianProfileVisibleArchives(archives, query);
+  const showIndex = visibleArchives.length >= 4;
+  return {
+    archives,
+    visibleArchives,
+    showIndex,
+    metrics: getWentianProfileScreenMetrics(visibleArchives.length, showIndex)
   };
 }
 
@@ -1112,10 +1147,9 @@ function sourceAiChatScreen(screen) {
 }
 
 function sourceArchiveSelectScreen() {
-  const archives = getWentianArchiveList();
+  const { archives, archiveCount, metrics } = getWentianArchiveSelectScreenState();
   const activeId = wentianArchiveDraftId || getWentianSelectedArchiveId(archives);
   const displayArchives = archives;
-  const archiveCount = displayArchives.length;
   const sheetHeight = archiveCount === 0 ? 248 : archiveCount === 1 ? 338 : archiveCount === 2 ? 450 : archiveCount === 3 ? 486 : 510;
   const listHeight = archiveCount === 0 ? 72 : archiveCount === 1 ? 160 : archiveCount === 2 ? 276 : archiveCount === 3 ? 338 : 392;
   const actionTop = archiveCount === 0 ? 470 : archiveCount === 1 ? 560 : archiveCount === 2 ? 672 : archiveCount === 3 ? 708 : 714;
@@ -1123,7 +1157,7 @@ function sourceArchiveSelectScreen() {
     ? `<div id="wentian-archive-status" class="wentian-invite-status" style="left:42px;top:260px;width:306px;text-align:center" data-tone="${escapeHtml(wentianArchiveStatus.tone || "")}">${escapeHtml(wentianArchiveStatus.text)}</div>`
     : "";
   return `
-    ${figBox("source-5-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
+    ${figBox("source-5-bg", 0, 0, 390, metrics.height, "", "background:#fbf7ef;")}
     <style>
       .fig-box[data-node-id="source-5-sheet"]{height:${sheetHeight}px !important;}
       .wentian-archive-list{height:${listHeight}px !important;}
@@ -10491,12 +10525,13 @@ function renderWentianProfileRows(archives = getWentianArchiveList(), query = we
 }
 
 function sourceProfileScreen(screen) {
-  const rows = renderWentianProfileRows(getWentianArchiveList(), wentianProfileSearchQuery);
+  const { archives, showIndex, metrics } = getWentianProfileScreenState(wentianProfileSearchQuery);
+  const rows = renderWentianProfileRows(archives, wentianProfileSearchQuery);
   const archiveStatus = wentianArchiveStatus.text
     ? figText("source-25-archive-status", escapeHtml(wentianArchiveStatus.text), 76, 284, 238, 12, wentianArchiveStatus.tone === "error" ? "#a94437" : "#5f8745", 800, "center")
     : "";
   return `
-    ${figBox("source-25-bg", 0, 0, 390, 867, "", "background:linear-gradient(180deg,#fbf6eb 0%,#fffdf8 36%,#fffdf8 100%);")}
+    ${figBox("source-25-bg", 0, 0, 390, metrics.height, "", "background:linear-gradient(180deg,#fbf6eb 0%,#fffdf8 36%,#fffdf8 100%);")}
     ${figText("source-25-time", "15:21", 18, 15, 70, 14, "#26211c")}
     ${figText("source-25-status", "◉  0.30  5G  ▮ 33 ⚡", 250, 14, 120, 10, "#26211c", 700, "right")}
     ${wentianBackPill("source-25", 18, 48, 'data-action="back" aria-label="返回"', { zIndex: 80 })}
@@ -10517,9 +10552,9 @@ function sourceProfileScreen(screen) {
     ${figText("source-25-add-plus", "+", 338, 257, 28, 14, "#201813", 800, "center")}
     ${figButton("source-25-add-hit", 330, 248, 44, 44, 'data-route="screen-26" aria-label="添加档案"')}
     <div id="wentian-profile-list" class="wentian-profile-list-layer">${rows}</div>
-    ${figBox("source-25-index", 354, 496, 26, 224, "", "border-radius:14px;background:rgba(255,255,255,.9);box-shadow:0 7px 18px rgba(73,55,34,.14);")}
-    ${figText("source-25-index-text", "A\nC\nF\nH\nJ\nL\nM\nS\nX\nZ\n#", 354, 509, 26, 10, "#6f6860", 700, "center", "line-height:1.62;")}
-    ${sourceAppBottomNav("档案", 778)}
+    ${showIndex ? figBox("source-25-index", 354, 496, 26, 224, "", "border-radius:14px;background:rgba(255,255,255,.9);box-shadow:0 7px 18px rgba(73,55,34,.14);") : ""}
+    ${showIndex ? figText("source-25-index-text", "A\nC\nF\nH\nJ\nL\nM\nS\nX\nZ\n#", 354, 509, 26, 10, "#6f6860", 700, "center", "line-height:1.62;") : ""}
+    ${sourceAppBottomNav("档案", metrics.bottomNavY)}
   `;
 }
 
@@ -18076,12 +18111,11 @@ function renderConvertedScreen(no) {
     `, 844, "converted source-screen no-status-shift", true);
   }
   if (screen.no === 5) {
-    const archiveCount = getWentianArchiveList().length;
-    const bottomNavY = archiveCount === 0 ? 648 : archiveCount === 1 ? 706 : archiveCount === 2 ? 755 : null;
+    const { metrics } = getWentianArchiveSelectScreenState();
     return figPhone(`screen-${screen.no}`, `${String(screen.no).padStart(2, "0")} ${screen.title}`, `
       ${sourceArchiveSelectScreen()}
-      ${bottomNavY ? sourceAppBottomNav("\u9605\u5929AI", bottomNavY) : ""}
-    `, 844, "converted source-screen no-status-shift", true);
+      ${sourceAppBottomNav("\u9605\u5929AI", metrics.bottomNavY)}
+    `, metrics.height, "converted source-screen no-status-shift", true);
   }
   if (screen.no === 6 || screen.no === 7) {
     return figPhone(`screen-${screen.no}`, `${String(screen.no).padStart(2, "0")} ${screen.title}`, `
@@ -18091,10 +18125,11 @@ function renderConvertedScreen(no) {
     `, 844, "converted source-screen no-status-shift", true);
   }
   if (screen.no === 25) {
+    const { metrics } = getWentianProfileScreenState(wentianProfileSearchQuery);
     return figPhone(`screen-${screen.no}`, `${String(screen.no).padStart(2, "0")} ${screen.title}`, `
       ${sourceProfileScreen(screen)}
       ${convertedFlowHotspots(screen)}
-    `, 867, "converted source-screen", true);
+    `, metrics.height, "converted source-screen", true);
   }
   if (screen.no === 31) {
     return figPhone(`screen-${screen.no}`, `${String(screen.no).padStart(2, "0")} ${screen.title}`, `
