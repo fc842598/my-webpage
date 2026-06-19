@@ -17985,8 +17985,11 @@ function renderConvertedScreen(no) {
     `, 844, "converted source-screen no-status-shift", true);
   }
   if (screen.no === 5) {
+    const archiveCount = getWentianArchiveList().length;
+    const bottomNavY = archiveCount === 0 ? 648 : archiveCount === 1 ? 706 : archiveCount === 2 ? 755 : null;
     return figPhone(`screen-${screen.no}`, `${String(screen.no).padStart(2, "0")} ${screen.title}`, `
       ${sourceArchiveSelectScreen()}
+      ${bottomNavY ? sourceAppBottomNav("\u9605\u5929AI", bottomNavY) : ""}
     `, 844, "converted source-screen no-status-shift", true);
   }
   if (screen.no === 6 || screen.no === 7) {
