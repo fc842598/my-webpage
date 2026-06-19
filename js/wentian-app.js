@@ -18140,6 +18140,75 @@ function stripScreenshotStatusBar() {
   }
 }
 
+function clearWentianFloatingBottomNav() {
+  document.querySelector(".wentian-floating-bottom-nav")?.remove();
+  view?.classList.remove("has-floating-bottom-nav");
+  for (const node of document.querySelectorAll('.figma-phone [data-wentian-nav-hidden="1"]')) {
+    node.style.visibility = "";
+    node.style.pointerEvents = "";
+    delete node.dataset.wentianNavHidden;
+  }
+}
+
+function syncWentianFloatingBottomNav() {
+  const phone = view?.querySelector?.(".figma-phone");
+  const desktop = window.matchMedia?.("(min-width: 881px)").matches;
+  if (!phone || desktop) {
+    clearWentianFloatingBottomNav();
+    return;
+  }
+
+  const navNodes = [...phone.querySelectorAll('[data-node-id^="source-bottom-"], [data-node-id^="converted-bottom-"], [data-node-id^="bottom-"]')];
+  if (!navNodes.length) {
+    clearWentianFloatingBottomNav();
+    return;
+  }
+
+  const navTop = navNodes.reduce((min, node) => {
+    const top = Number.parseFloat(node.style.top);
+    return Number.isFinite(top) ? Math.min(min, top) : min;
+  }, Infinity);
+  const navBottom = navNodes.reduce((max, node) => {
+    const top = Number.parseFloat(node.style.top);
+    const height = Number.parseFloat(node.style.height);
+    return Number.isFinite(top) && Number.isFinite(height) ? Math.max(max, top + height) : max;
+  }, 0);
+  if (!Number.isFinite(navTop) || !Number.isFinite(navBottom) || navBottom <= navTop) {
+    clearWentianFloatingBottomNav();
+    return;
+  }
+
+  let floating = document.querySelector(".wentian-floating-bottom-nav");
+  if (!floating) {
+    floating = document.createElement("div");
+    floating.className = "wentian-floating-bottom-nav";
+    floating.innerHTML = '<div class="wentian-floating-bottom-nav-inner"></div>';
+    document.body.appendChild(floating);
+  }
+
+  const navHeight = Math.ceil(navBottom - navTop);
+  const viewportWidth = window.visualViewport?.width || window.innerWidth || document.documentElement.clientWidth || WENTIAN_PHONE_WIDTH;
+  const scale = Math.min(1, viewportWidth / WENTIAN_PHONE_WIDTH);
+  const inner = floating.querySelector(".wentian-floating-bottom-nav-inner");
+  inner.innerHTML = "";
+
+  navNodes.forEach((node) => {
+    const clone = node.cloneNode(true);
+    const top = Number.parseFloat(clone.style.top);
+    if (Number.isFinite(top)) clone.style.top = `${Math.round(top - navTop)}px`;
+    inner.appendChild(clone);
+    node.style.visibility = "hidden";
+    node.style.pointerEvents = "none";
+    node.dataset.wentianNavHidden = "1";
+  });
+
+  floating.style.setProperty("--wentian-floating-nav-scale", String(scale));
+  floating.style.setProperty("--wentian-floating-nav-width", `${Math.ceil(WENTIAN_PHONE_WIDTH * scale)}px`);
+  floating.style.setProperty("--wentian-floating-nav-height", `${Math.ceil(navHeight * scale)}px`);
+  inner.style.height = `${navHeight}px`;
+  view?.classList.add("has-floating-bottom-nav");
+}
+
 function compactWentianZiweiScreenLayout() {
   const phone = view.querySelector('.figma-phone[data-node-id="screen-27"]');
   if (!phone) return false;
@@ -18232,6 +18301,7 @@ function fitActivePhoneShell() {
   wrap.style.justifyContent = edgeFit ? "flex-start" : "center";
   wrap.style.overflow = desktop ? "visible" : "hidden";
   wrap.style.height = `${Math.ceil(rawHeight * scale)}px`;
+  syncWentianFloatingBottomNav();
 }
 
 function scheduleWentianPhoneFit() {
@@ -18271,6 +18341,7 @@ function navigate(route, push = true, syncHash = true) {
     if (route !== "screen-38") wentianLogoutConfirmOpen = false;
     if (routeKicker) routeKicker.textContent = translateWentianText("阅天AI");
     if (routeTitle) routeTitle.textContent = translateWentianText(screen.title);
+    clearWentianFloatingBottomNav();
     view.innerHTML = applyWentianColorUpgrade(renderConvertedScreen(screen.no));
     stripScreenshotStatusBar();
     applyWentianLanguageText(view, getWentianLanguageCode(), { force: true });

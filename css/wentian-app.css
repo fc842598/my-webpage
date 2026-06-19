@@ -436,6 +436,30 @@ button {
   display: none;
 }
 
+.wentian-floating-bottom-nav {
+  position: fixed;
+  left: 50%;
+  bottom: 0;
+  z-index: 999;
+  width: var(--wentian-floating-nav-width, 390px);
+  height: calc(var(--wentian-floating-nav-height, 89px) + env(safe-area-inset-bottom));
+  padding-bottom: env(safe-area-inset-bottom);
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.wentian-floating-bottom-nav-inner {
+  position: relative;
+  width: 390px;
+  transform: scale(var(--wentian-floating-nav-scale, 1));
+  transform-origin: left bottom;
+  pointer-events: none;
+}
+
+.wentian-floating-bottom-nav .fig-click {
+  pointer-events: auto;
+}
+
 .fig-text,
 .fig-box,
 .fig-line,
