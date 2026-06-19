@@ -17023,7 +17023,7 @@ function renderWentianClassicPalaceCell(palace, activeBranch, options = {}) {
   const xiaoLianAge = Number(selectedXiaoLian.age || 0);
   const isXiaoLian = !!xiaoLianBranch && branch === xiaoLianBranch;
   const readonly = !!options.readonly;
-  const showXiaoLianBadge = readonly
+  const showXiaoLianHighlight = readonly
     ? isXiaoLian
     : (isXiaoLian && shouldShowWentianXiaoLianBadge(selectedXiaoLian));
   const palaceAction = options.palaceAction || "";
@@ -17046,14 +17046,14 @@ function renderWentianClassicPalaceCell(palace, activeBranch, options = {}) {
   const shenHtml = [palace.changsheng12, palace.boshi12].filter(Boolean).map((item) => `<span>${escapeHtml(item)}</span>`).join("");
   const palaceName = `${palace.isBodyPalace ? "身宫\n" : ""}${palace.name || ""}`;
   const xiaoLianHtml = isXiaoLian ? `<div class="fc-xiaolian-badge">${escapeHtml(xiaoLianAge ? `${xiaoLianAge}岁` : "小流年")}</div>` : "";
-  const displayXiaoLianHtml = showXiaoLianBadge ? xiaoLianHtml : "";
+  const displayXiaoLianHtml = isXiaoLian ? xiaoLianHtml : "";
   const cellAttrs = palaceAction
     ? `data-action="${escapeHtml(palaceAction)}" data-palace-branch="${escapeHtml(branch)}" data-palace-name="${escapeHtml(palace.name || branch)}" role="button"`
     : readonly
     ? `data-palace-branch="${escapeHtml(branch)}" data-palace-name="${escapeHtml(palace.name || branch)}"`
     : `data-action="wentian-chart-palace" data-palace-branch="${escapeHtml(branch)}" data-palace-name="${escapeHtml(palace.name || branch)}" role="button"`;
   return `
-    <div class="fc-cell ${highlightClass}${isXiaoLian ? " fc-xiaolian" : ""}${showXiaoLianBadge ? " is-locating" : ""}${readonly && !palaceAction ? " is-readonly" : ""}" ${cellAttrs} style="grid-column:${col + 1};grid-row:${row + 1};">
+    <div class="fc-cell ${highlightClass}${showXiaoLianHighlight ? " fc-xiaolian is-locating" : ""}${readonly && !palaceAction ? " is-readonly" : ""}" ${cellAttrs} style="grid-column:${col + 1};grid-row:${row + 1};">
       <div class="fc-cell-top">
         ${mutagenHtml ? `<div class="fc-cell-mutagen">${mutagenHtml}</div>` : ""}
         <div class="fc-major-list">${majorHtml}</div>
