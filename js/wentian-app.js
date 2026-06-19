@@ -4188,6 +4188,15 @@ function armWentianXiaoLianBadge(selected = {}) {
   if (!key) return;
   clearWentianXiaoLianBadgeTimer();
   wentianXiaoLianBadgeVisibleKey = key;
+  wentianXiaoLianBadgeFrame = window.requestAnimationFrame(() => {
+    wentianXiaoLianBadgeFrame = 0;
+    wentianXiaoLianBadgeTimer = window.setTimeout(() => {
+      wentianXiaoLianBadgeTimer = 0;
+      if (wentianXiaoLianBadgeVisibleKey !== key) return;
+      wentianXiaoLianBadgeVisibleKey = "";
+      if (state.route === "screen-27") navigatePreservingScroll("screen-27", false);
+    }, 2000);
+  });
 }
 
 function getWentianHepanSelectedXiaoLianYear(chartData = {}, side = "left") {
