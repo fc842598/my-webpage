@@ -18248,6 +18248,11 @@ function syncWentianFloatingBottomNav() {
     clearWentianFloatingBottomNav();
     return;
   }
+  const rawHeight = parseFloat(phone.style.height) || phone.offsetHeight || WENTIAN_PHONE_HEIGHT;
+  if (rawHeight <= 900) {
+    clearWentianFloatingBottomNav();
+    return;
+  }
 
   const navNodes = [...phone.querySelectorAll('[data-node-id^="source-bottom-"], [data-node-id^="converted-bottom-"], [data-node-id^="bottom-"]')];
   if (!navNodes.length) {
