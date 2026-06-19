@@ -91,7 +91,7 @@ const screenFlowHotspots = {
   19: [[18, 44, 48, 48, "screen-18"], [70, 610, 250, 72, "screen-20"]],
   20: [[18, 44, 48, 48, "screen-19"], [42, 742, 306, 56, "screen-21"]],
   21: [[316, 175, 48, 48, "screen-20"], [50, 705, 290, 58, "screen-29"]],
-  22: [[18, 44, 48, 48, "screen-31"], [42, 735, 306, 62, "screen-24"]],
+  22: [],
   24: [[18, 44, 48, 48, "screen-22"]],
   25: [[330, 248, 44, 44, "screen-26"], [12, 784, 76, 72, "screen-1"], [109, 784, 76, 72, "screen-25"], [207, 784, 76, 72, "screen-3"], [304, 784, 76, 72, "screen-31"]],
   26: [[18, 40, 96, 54, "screen-1"]],
@@ -16294,6 +16294,73 @@ function renderWentianPolishedScreen(screen) {
     const bound = getWentianLocalInviteStatus();
     const status = wentianInviteState.status || wentianInviteState.error || (pendingCode ? `待绑定邀请码：${pendingCode}` : (bound?.inviteCode ? `已绑定邀请码：${bound.inviteCode}` : ""));
     const records = (invite.records || []).slice(0, 3);
+    const rewardText = `注册各得 ${invite.registerReward || 2} 次，首付再得 ${invite.paidReward || 10} 次`;
+    if (!account.loggedIn) {
+      return `
+      ${figBox("wt22-bg-clean", 0, 0, 390, 844, "", "background:#fbf7ef;")}
+      ${wentianSimpleHeader("wt22-clean", "邀请好友")}
+
+      ${figBox("wt22-login-card-clean", 16, 102, 358, 142, "", "border-radius:20px;background:#fff;box-shadow:0 10px 24px rgba(70,45,25,.08);")}
+      ${figText("wt22-login-title-clean", "登录后生成专属邀请码", 34, 128, 220, 20, "#25211d", 900)}
+      ${figText("wt22-login-desc-clean", "邀请奖励与记录会跟随当前账号同步。", 34, 160, 270, 13, "#8f867b", 700)}
+      ${figBox("wt22-login-btn-clean", 34, 190, 132, 38, "", "border-radius:19px;background:#25211d;")}
+      ${figButton("wt22-login-hit-clean", 34, 190, 132, 38, 'data-route="screen-40"')}
+      ${figText("wt22-login-text-clean", "登录 / 注册", 34, 202, 132, 12, "#fff", 900, "center")}
+
+      ${figBox("wt22-bind-clean", 16, 266, 358, 144, "", "border-radius:20px;background:#fff;box-shadow:0 10px 24px rgba(70,45,25,.08);")}
+      ${figText("wt22-bind-title-clean", "已有邀请码", 34, 292, 120, 16, "#25211d", 900)}
+      ${figText("wt22-bind-desc-clean", "先填邀请码，登录后自动绑定。", 34, 318, 220, 12, "#8f867b", 700)}
+      <input id="wentian-invite-bind-input" class="wentian-invite-input" style="left:34px;top:348px;width:210px" value="${escapeHtml(pendingCode || "")}" placeholder="输入邀请码">
+      ${figBox("wt22-bind-btn-clean", 256, 348, 84, 38, "", "border-radius:19px;background:#b74e39;")}
+      ${figButton("wt22-bind-hit-clean", 256, 348, 84, 38, 'data-action="wentian-invite-bind"')}
+      ${figText("wt22-bind-text-clean", "绑定", 256, 360, 84, 12, "#fff", 900, "center")}
+      <div id="wentian-invite-status" class="wentian-invite-status" style="left:34px;top:396px;width:306px" data-tone="${wentianInviteState.error ? "error" : ""}">${escapeHtml(status)}</div>
+
+      ${figBox("wt22-tip-clean", 16, 434, 358, 62, "", "border-radius:18px;background:#fff9ef;border:1px solid #efdfc3;")}
+      ${figText("wt22-tip-title-clean", "奖励规则", 34, 452, 80, 13, "#9b742e", 900)}
+      ${figText("wt22-tip-desc-clean", rewardText, 34, 472, 300, 12, "#756d63", 700)}
+    `;
+    }
+    return `
+      ${figBox("wt22-bg-clean", 0, 0, 390, 844, "", "background:#fbf7ef;")}
+      ${wentianSimpleHeader("wt22-clean", "邀请好友", "刷新")}
+      ${figButton("wt22-refresh-hit-clean", 318, 38, 62, 54, 'data-action="wentian-invite-refresh"')}
+
+      ${figBox("wt22-top-clean", 16, 98, 358, 96, "", "border-radius:20px;background:#fff;box-shadow:0 10px 24px rgba(70,45,25,.08);")}
+      ${figText("wt22-stat-num-clean", String(invite.invitedCount || 0), 28, 120, 86, 30, "#25211d", 900, "center")}
+      ${figText("wt22-stat-num-label-clean", "已邀好友", 28, 156, 86, 12, "#8f867b", 800, "center")}
+      ${figBox("wt22-stat-line-a-clean", 128, 122, 1, 48, "", "background:#eee2cf;")}
+      ${figText("wt22-stat-reward-clean", String(Number(invite.bonusRemaining ?? invite.bonusTalks ?? 0)), 140, 120, 100, 30, "#25211d", 900, "center")}
+      ${figText("wt22-stat-reward-label-clean", "可用奖励", 140, 156, 100, 12, "#8f867b", 800, "center")}
+      ${figBox("wt22-stat-line-b-clean", 254, 122, 1, 48, "", "background:#eee2cf;")}
+      ${figText("wt22-stat-paid-clean", String(Number(invite.paidCount || 0)), 266, 120, 96, 30, "#25211d", 900, "center")}
+      ${figText("wt22-stat-paid-label-clean", "首付好友", 266, 156, 96, 12, "#8f867b", 800, "center")}
+
+      ${figBox("wt22-code-clean", 16, 216, 358, 160, "", "border-radius:20px;background:#fff;box-shadow:0 10px 24px rgba(70,45,25,.08);")}
+      ${figText("wt22-code-title-clean", "我的邀请码", 34, 240, 100, 13, "#8f867b", 800)}
+      ${figText("wt22-code-num-clean", formatWentianInviteCode(code), 34, 272, 314, 24, "#25211d", 900, "center")}
+      ${figBox("wt22-copy-code-clean", 34, 318, 98, 38, "", "border-radius:19px;background:#d0a03a;")}
+      ${figButton("wt22-copy-code-hit-clean", 34, 318, 98, 38, 'data-action="wentian-invite-copy-code"')}
+      ${figText("wt22-copy-code-text-clean", "复制码", 34, 330, 98, 12, "#fff", 900, "center")}
+      ${figBox("wt22-copy-link-clean", 146, 318, 98, 38, "", "border-radius:19px;background:#25211d;")}
+      ${figButton("wt22-copy-link-hit-clean", 146, 318, 98, 38, 'data-action="wentian-invite-copy-link"')}
+      ${figText("wt22-copy-link-text-clean", "复制链接", 146, 330, 98, 12, "#fff", 900, "center")}
+      ${figBox("wt22-share-clean", 258, 318, 98, 38, "", "border-radius:19px;background:#fff7ec;border:1px solid #ead9bd;")}
+      ${figButton("wt22-share-hit-clean", 258, 318, 98, 38, 'data-action="wentian-invite-share"')}
+      ${figText("wt22-share-text-clean", "系统分享", 258, 330, 98, 12, "#9b742e", 900, "center")}
+
+      ${figBox("wt22-bind-clean", 16, 398, 358, 138, "", "border-radius:20px;background:#fff;box-shadow:0 10px 24px rgba(70,45,25,.08);")}
+      ${figText("wt22-bind-title-clean", "绑定好友邀请码", 34, 422, 140, 15, "#25211d", 900)}
+      <input id="wentian-invite-bind-input" class="wentian-invite-input" style="left:34px;top:456px;width:210px" value="${escapeHtml(pendingCode || "")}" placeholder="输入邀请码">
+      ${figBox("wt22-bind-btn-clean", 256, 456, 84, 38, "", "border-radius:19px;background:#b74e39;")}
+      ${figButton("wt22-bind-hit-clean", 256, 456, 84, 38, 'data-action="wentian-invite-bind"')}
+      ${figText("wt22-bind-text-clean", "绑定", 256, 468, 84, 12, "#fff", 900, "center")}
+      <div id="wentian-invite-status" class="wentian-invite-status" style="left:34px;top:506px;width:306px" data-tone="${wentianInviteState.error ? "error" : ""}">${escapeHtml(status)}</div>
+
+      ${figBox("wt22-tip-clean", 16, 558, 358, 62, "", "border-radius:18px;background:#fff9ef;border:1px solid #efdfc3;")}
+      ${figText("wt22-tip-title-clean", "奖励规则", 34, 576, 80, 13, "#9b742e", 900)}
+      ${figText("wt22-tip-desc-clean", rewardText, 34, 596, 300, 12, "#756d63", 700)}
+    `;
     if (!account.loggedIn) {
       return `
       ${figBox("wt22-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
