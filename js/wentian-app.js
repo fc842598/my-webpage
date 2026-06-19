@@ -1722,8 +1722,11 @@ function getWentianInviteSnapshot() {
     bonusTalks: 0,
     bonusUsed: 0,
     bonusRemaining: 0,
-    registerReward: 2,
-    paidReward: 10,
+    activeDailyBonus: 0,
+    activeRewardCount: 0,
+    registerReward: 10,
+    registerRewardDays: 3,
+    paidReward: 0,
     records: [],
   };
   return { ...fallback, ...(wentianInviteState.summary || {}) };
@@ -7064,24 +7067,23 @@ const WENTIAN_I18N_EN_EXTRA = {
   "绑定": "Bind",
   "输入邀请码": "Enter invite code",
   "奖励规则": "Reward Rules",
-  "好友注册成功：双方各得 2 次对话奖励。": "Friend registers: both get 2 chat credits.",
-  "好友首次付费：邀请人再得 10 次对话奖励。": "Friend's first payment: inviter gets 10 more chat credits.",
+  "好友注册成功后，邀请人和注册人都可连续 3 天每天各得 10 次许大师对话。": "After a successful sign-up, both inviter and invitee get 10 Xu Dashi chats per day for 3 straight days.",
   "刷新": "Sync",
   "可用奖励 0 次": "Available rewards: 0 credits",
   "去邀请": "Invite",
   "邀": "I",
   "礼": "G",
   "邀请好友注册": "Friend Sign-up",
-  "双方各得 2 次对话": "Both get 2 chats",
+  "双方连发 3 天": "3 days for both",
   "奖": "R",
-  "好友首次付费": "Friend first payment",
-  "邀请人再得 10 次对话": "Inviter gets 10 more chats",
+  "每天各得 10 次许大师对话": "10 Xu Dashi chats each day",
+  "邀请人和注册人都按天发放": "Daily rewards for both sides",
   "签": "C",
   "每日签到": "Daily Check-in",
   "连续签到功能待开放": "Streak check-in coming soon",
   "已邀请好友": "Friends Invited",
   "累计奖励 0": "Total rewards: 0",
-  "邀请好友注册阅天AI，双方都可获得对话次数奖励。": "Invite friends and both get chat credits.",
+  "好友注册成功后，双方连续 3 天每天各得 10 次许大师对话。": "After a successful sign-up, both sides get 10 Xu Dashi chats per day for 3 days.",
   "我的邀请码": "My Invite Code",
   "复制": "Copy",
   "好友注册时填写邀请码即可绑定邀请关系": "Friends enter the code at registration to bind the invite.",
@@ -7089,16 +7091,16 @@ const WENTIAN_I18N_EN_EXTRA = {
   "也可以直接分享链接给好友，系统自动识别。": "Share the link and the system will recognize it automatically.",
   "邀请奖励": "Invite Rewards",
   "好友注册": "Friend Signs Up",
-  "可获得：2 次对话": "Reward: 2 chats",
-  "立即到账": "Instant",
-  "邀请满 3 人": "Invite 3 friends",
-  "额外获得：会员体验券": "Extra: membership trial coupon",
-  "阶段奖励": "Milestone Reward",
-  "邀请满 10 人": "Invite 10 friends",
-  "额外获得：高级报告券": "Extra: premium report coupon",
-  "进阶奖励": "Advanced Reward",
-  "好友首次付费奖励": "First Payment Reward",
-  "好友完成首次付费后，邀请人可额外获得 10 次对话。": "After a friend's first payment, the inviter gets 10 extra chats.",
+  "双方连发 3 天": "3 days for both",
+  "立即生效": "Starts now",
+  "每日到账": "Daily grant",
+  "每天各得 10 次许大师对话": "10 Xu Dashi chats each day",
+  "双方同享": "Shared by both",
+  "奖励说明": "Reward notes",
+  "邀请人和注册人都按天发放，次日自动刷新": "Granted daily to both sides and refreshed automatically the next day.",
+  "自动刷新": "Auto refresh",
+  "奖励到账方式": "How rewards arrive",
+  "绑定邀请码并注册成功后，双方都会立即开始连续 3 天的奖励周期。": "After binding an invite code and registering successfully, both sides start the 3-day reward cycle immediately.",
   "邀请记录": "Invite Records",
   "暂无邀请记录": "No invite records yet",
   "管理你的命盘资料": "Manage your chart files",
@@ -9074,7 +9076,9 @@ async function copyWentianContactText(text, okText) {
 
 async function shareWentianInvite() {
   const summary = getWentianInviteSnapshot();
-  const text = `我在用阅天AI排盘和问许大师，注册时填邀请码 ${summary.inviteCode} 可领取体验次数：${summary.inviteLink}`;
+  const rewardDaily = Number(summary.registerReward || 10);
+  const rewardDays = Number(summary.registerRewardDays || 3);
+  const text = `我在用阅天AI排盘和问许大师，注册时填写邀请码 ${summary.inviteCode}，双方注册成功后可连续 ${rewardDays} 天每天各得 ${rewardDaily} 次许大师对话：${summary.inviteLink}`;
   if (navigator.share) {
     try {
       await navigator.share({ title: "阅天AI", text, url: summary.inviteLink });
@@ -9092,7 +9096,9 @@ function getWentianSharePayload() {
   const hasInvite = account.loggedIn && isWentianInviteCode(summary.inviteCode);
   const url = hasInvite ? summary.inviteLink : appUrl;
   const inviteLine = hasInvite ? `邀请码：${summary.inviteCode}` : "登录后生成专属邀请码";
-  const text = `推荐你用阅天AI：AI排盘、命盘解读、许大师问答。\n${inviteLine}\n${url}`;
+  const rewardDaily = Number(summary.registerReward || 10);
+  const rewardDays = Number(summary.registerRewardDays || 3);
+  const text = `推荐你用阅天AI：AI排盘、命盘解读、许大师问答。\n${inviteLine}\n注册成功后，邀请人和注册人都可连续 ${rewardDays} 天每天各得 ${rewardDaily} 次许大师对话。\n${url}`;
   return {
     title: "阅天AI",
     text,
@@ -16303,7 +16309,11 @@ function renderWentianPolishedScreen(screen) {
     const bound = getWentianLocalInviteStatus();
     const status = wentianInviteState.status || wentianInviteState.error || (pendingCode ? `待绑定邀请码：${pendingCode}` : (bound?.inviteCode ? `已绑定邀请码：${bound.inviteCode}` : ""));
     const records = (invite.records || []).slice(0, 3);
-    const rewardText = `注册各得 ${invite.registerReward || 2} 次，首付再得 ${invite.paidReward || 10} 次`;
+    const rewardDaily = Number(invite.registerReward || 10);
+    const rewardDays = Number(invite.registerRewardDays || 3);
+    const activeDailyBonus = Number(invite.activeDailyBonus ?? invite.bonusRemaining ?? 0);
+    const activeRewardCount = Number(invite.activeRewardCount || 0);
+    const rewardText = `注册成功后，双方连发 ${rewardDays} 天，每天各得许大师 ${rewardDaily} 次对话。`;
     if (!account.loggedIn) {
       return `
       ${figBox("wt22-bg-clean", 0, 0, 390, 844, "", "background:#fbf7ef;")}
@@ -16311,7 +16321,7 @@ function renderWentianPolishedScreen(screen) {
 
       ${figBox("wt22-login-card-clean", 16, 102, 358, 142, "", "border-radius:20px;background:#fff;box-shadow:0 10px 24px rgba(70,45,25,.08);")}
       ${figText("wt22-login-title-clean", "登录后生成专属邀请码", 34, 128, 220, 20, "#25211d", 900)}
-      ${figText("wt22-login-desc-clean", "邀请奖励与记录会跟随当前账号同步。", 34, 160, 270, 13, "#8f867b", 700)}
+      ${figText("wt22-login-desc-clean", `注册成功后，邀请人和注册人都可连续 ${rewardDays} 天每天各得 ${rewardDaily} 次许大师对话。`, 34, 160, 292, 13, "#8f867b", 700)}
       ${figBox("wt22-login-btn-clean", 34, 190, 132, 38, "", "border-radius:19px;background:#25211d;")}
       ${figButton("wt22-login-hit-clean", 34, 190, 132, 38, 'data-route="screen-40"')}
       ${figText("wt22-login-text-clean", "登录 / 注册", 34, 202, 132, 12, "#fff", 900, "center")}
@@ -16339,11 +16349,11 @@ function renderWentianPolishedScreen(screen) {
       ${figText("wt22-stat-num-clean", String(invite.invitedCount || 0), 28, 120, 86, 30, "#25211d", 900, "center")}
       ${figText("wt22-stat-num-label-clean", "已邀好友", 28, 156, 86, 12, "#8f867b", 800, "center")}
       ${figBox("wt22-stat-line-a-clean", 128, 122, 1, 48, "", "background:#eee2cf;")}
-      ${figText("wt22-stat-reward-clean", String(Number(invite.bonusRemaining ?? invite.bonusTalks ?? 0)), 140, 120, 100, 30, "#25211d", 900, "center")}
-      ${figText("wt22-stat-reward-label-clean", "可用奖励", 140, 156, 100, 12, "#8f867b", 800, "center")}
+      ${figText("wt22-stat-reward-clean", String(activeDailyBonus), 140, 120, 100, 30, "#25211d", 900, "center")}
+      ${figText("wt22-stat-reward-label-clean", "今日加赠", 140, 156, 100, 12, "#8f867b", 800, "center")}
       ${figBox("wt22-stat-line-b-clean", 254, 122, 1, 48, "", "background:#eee2cf;")}
-      ${figText("wt22-stat-paid-clean", String(Number(invite.paidCount || 0)), 266, 120, 96, 30, "#25211d", 900, "center")}
-      ${figText("wt22-stat-paid-label-clean", "首付好友", 266, 156, 96, 12, "#8f867b", 800, "center")}
+      ${figText("wt22-stat-paid-clean", String(activeRewardCount), 266, 120, 96, 30, "#25211d", 900, "center")}
+      ${figText("wt22-stat-paid-label-clean", "奖励中", 266, 156, 96, 12, "#8f867b", 800, "center")}
 
       ${figBox("wt22-code-clean", 16, 216, 358, 160, "", "border-radius:20px;background:#fff;box-shadow:0 10px 24px rgba(70,45,25,.08);")}
       ${figText("wt22-code-title-clean", "我的邀请码", 34, 240, 100, 13, "#8f867b", 800)}
@@ -16376,7 +16386,7 @@ function renderWentianPolishedScreen(screen) {
       ${wentianSimpleHeader("wt22", "邀请好友")}
       ${figBox("wt22-login-card", 16, 112, 358, 178, "", "border-radius:18px;background:linear-gradient(135deg,#d5ad42,#9f741d);box-shadow:0 12px 26px rgba(121,82,18,.18);")}
       ${figText("wt22-login-title", "登录后生成专属邀请码", 38, 154, 260, 22, "#fff", 900)}
-      ${figText("wt22-login-desc", "邀请好友注册、首付奖励和收益记录都会绑定到你的账号。", 38, 194, 292, 13, "#fff6df", 800, "left", "line-height:1.55;")}
+      ${figText("wt22-login-desc", `好友注册成功后，邀请人和注册人都可连续 ${rewardDays} 天每天各得 ${rewardDaily} 次许大师对话。`, 38, 194, 292, 13, "#fff6df", 800, "left", "line-height:1.55;")}
       ${figBox("wt22-login-btn", 38, 234, 140, 38, "", "border-radius:19px;background:#fff;")}
       ${figButton("wt22-login-hit", 38, 234, 140, 38, 'data-route="screen-40"')}
       ${figText("wt22-login-text", "登录 / 注册", 38, 246, 140, 12, "#9b742e", 900, "center")}
@@ -16392,7 +16402,7 @@ function renderWentianPolishedScreen(screen) {
 
       ${figBox("wt22-rule", 16, 506, 358, 134, "", "border-radius:18px;background:#fff;box-shadow:0 8px 20px rgba(70,45,25,.07);")}
       ${figText("wt22-rule-title", "奖励规则", 42, 532, 110, 16, "#25211d", 900)}
-      ${figText("wt22-rule-desc", "好友注册成功：双方各得 2 次对话奖励。<br>好友首次付费：邀请人再得 10 次对话奖励。", 42, 564, 292, 13, "#756d63", 700, "left", "line-height:1.55;")}
+      ${figText("wt22-rule-desc", `好友注册成功后，邀请人和注册人都可连续 ${rewardDays} 天每天各得 ${rewardDaily} 次许大师对话。`, 42, 564, 292, 13, "#756d63", 700, "left", "line-height:1.55;")}
     `;
     }
     return `
@@ -16402,8 +16412,8 @@ function renderWentianPolishedScreen(screen) {
       ${figBox("wt22-top", 16, 94, 358, 112, "", "border-radius:18px;background:linear-gradient(135deg,#d5ad42,#9f741d);box-shadow:0 12px 26px rgba(121,82,18,.18);")}
       ${figText("wt22-num", String(invite.invitedCount || 0), 44, 118, 80, 36, "#fff", 900)}
       ${figText("wt22-num-label", "邀请好友人数", 44, 162, 130, 13, "#fff6df", 800)}
-      ${figText("wt22-reward", `可用奖励 ${Number(invite.bonusRemaining ?? invite.bonusTalks ?? 0)} 次`, 214, 122, 120, 14, "#fff7df", 900, "right")}
-      ${figText("wt22-paid", `首付好友 ${Number(invite.paidCount || 0)} 人`, 214, 158, 120, 12, "#fff1cc", 700, "right")}
+      ${figText("wt22-reward", `今日加赠 ${activeDailyBonus} 次`, 214, 122, 120, 14, "#fff7df", 900, "right")}
+      ${figText("wt22-paid", `奖励中 ${activeRewardCount} 份`, 214, 158, 120, 12, "#fff1cc", 700, "right")}
 
       ${figBox("wt22-code", 16, 226, 358, 172, "", "border-radius:18px;background:#fff;box-shadow:0 8px 20px rgba(70,45,25,.08);")}
       ${figText("wt22-code-title", "我的邀请码", 38, 250, 100, 13, "#8f867b", 800)}
@@ -16429,7 +16439,7 @@ function renderWentianPolishedScreen(screen) {
 
       ${figBox("wt22-rule", 16, 618, 358, 134, "", "border-radius:18px;background:#fff;box-shadow:0 8px 20px rgba(70,45,25,.07);")}
       ${figText("wt22-rule-title", "奖励规则", 42, 644, 110, 16, "#25211d", 900)}
-      ${figText("wt22-rule-desc", `好友注册成功：双方各得 ${invite.registerReward || 2} 次对话奖励。<br>好友首次付费：邀请人再得 ${invite.paidReward || 10} 次对话奖励。`, 42, 676, 292, 13, "#756d63", 700, "left", "line-height:1.55;")}
+      ${figText("wt22-rule-desc", `好友注册成功后，邀请人和注册人都可连续 ${rewardDays} 天每天各得 ${rewardDaily} 次许大师对话。`, 42, 676, 292, 13, "#756d63", 700, "left", "line-height:1.55;")}
 
       ${figBox("wt22-record", 16, 780, 358, 244, "", "border-radius:18px;background:#fff;box-shadow:0 8px 20px rgba(70,45,25,.07);")}
       ${figText("wt22-record-title", "收益记录", 42, 806, 110, 16, "#25211d", 900)}
@@ -16438,7 +16448,7 @@ function renderWentianPolishedScreen(screen) {
         return `
           ${figText(`wt22-record-name-${index}`, escapeHtml(item.label || "好友账号"), 42, y, 138, 13, "#25211d", 800)}
           ${figText(`wt22-record-date-${index}`, escapeHtml(formatWentianMemberDate(item.joinedAt) || "已注册"), 42, y + 22, 138, 11, "#9a9289", 600)}
-          ${figText(`wt22-record-reward-${index}`, item.paidAt ? `+${invite.paidReward || 10} 次` : `+${invite.registerReward || 2} 次`, 262, y + 4, 72, 13, item.paidAt ? "#b74e39" : "#9b742e", 900, "right")}
+          ${figText(`wt22-record-reward-${index}`, `${item.rewardDays || rewardDays}天×${item.rewardDailyChats || rewardDaily}次`, 228, y + 4, 106, 13, item.rewardActive ? "#b74e39" : "#9b742e", 900, "right")}
         `;
       }).join("") : figText("wt22-empty", "暂无邀请记录，复制链接发给好友即可开始。", 42, 866, 272, 13, "#9a9289", 700)}
     `;
@@ -16456,26 +16466,31 @@ function renderWentianPolishedScreen(screen) {
         return `
           ${figBox(`wt22-rule-${index}`, 16, y, 358, 94, "", "border-radius:12px;background:#fff;box-shadow:0 8px 20px rgba(70,45,25,.07);")}
           ${figText(`wt22-rule-title-${index}`, title, 42, y + 20, 110, 15, "#25211d", 800)}
-          ${figText(`wt22-rule-desc-${index}`, "好友注册后双方可获得对话次数奖励，完成付费后可继续返利。", 42, y + 50, 278, 13, "#756d63", 500, "left", "line-height:1.45;")}
+          ${figText(`wt22-rule-desc-${index}`, `好友注册成功后，邀请人和注册人都可连续 ${rewardDays} 天每天各得 ${rewardDaily} 次许大师对话。`, 42, y + 50, 278, 13, "#756d63", 500, "left", "line-height:1.45;")}
         `;
       }).join("")}
       ${sourceAppBottomNav("藏宝阁", 780)}
     `;
   }
   if (no === 24) {
+    const invite = getWentianInviteSnapshot();
+    const code = invite.inviteCode || "8R7U58ZW";
+    const rewardDaily = Number(invite.registerReward || 10);
+    const rewardDays = Number(invite.registerRewardDays || 3);
+    const activeDailyBonus = Number(invite.activeDailyBonus ?? invite.bonusRemaining ?? 0);
     return `
       ${figBox("wt24-bg", 0, 0, 390, 1180, "", "background:#fbf7ef;")}
       ${wentianSimpleHeader("wt24", "邀请好友")}
       ${figBox("wt24-hero", 24, 98, 342, 118, "", "border-radius:16px;background:linear-gradient(135deg,#d5ad42,#9f741d);box-shadow:0 12px 26px rgba(121,82,18,.18);")}
-      ${figText("wt24-hero-num", "0", 54, 126, 80, 34, "#fff", 800)}
+      ${figText("wt24-hero-num", String(invite.invitedCount || 0), 54, 126, 80, 34, "#fff", 800)}
       ${figText("wt24-hero-label", "已邀请好友", 54, 168, 120, 13, "#fff7df", 700)}
       ${figBox("wt24-hero-badge", 246, 126, 82, 34, "", "border-radius:17px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.28);")}
-      ${figText("wt24-hero-badge-text", "累计奖励 0", 246, 136, 82, 11, "#fff", 800, "center")}
-      ${figText("wt24-hero-copy", "邀请好友注册阅天AI，双方都可获得对话次数奖励。", 54, 190, 250, 12, "#fff5dc", 600)}
+      ${figText("wt24-hero-badge-text", `今日加赠 ${activeDailyBonus}`, 246, 136, 82, 11, "#fff", 800, "center")}
+      ${figText("wt24-hero-copy", `好友注册成功后，双方连续 ${rewardDays} 天每天各得 ${rewardDaily} 次许大师对话。`, 54, 190, 250, 12, "#fff5dc", 600)}
 
       ${figBox("wt24-code-card", 24, 240, 342, 130, "", "border-radius:14px;background:#fff;box-shadow:0 8px 20px rgba(70,45,25,.08);")}
       ${figText("wt24-code-title", "我的邀请码", 44, 262, 110, 14, "#7f766b", 700)}
-      ${figText("wt24-code", "8R7U58ZW", 44, 298, 178, 24, "#25211d", 900)}
+      ${figText("wt24-code", code, 44, 298, 178, 24, "#25211d", 900)}
       ${figBox("wt24-copy-code", 260, 285, 72, 34, "", "border-radius:17px;background:#d0a03a;")}
       ${figText("wt24-copy-code-text", "复制", 260, 295, 72, 12, "#fff", 800, "center")}
       ${figText("wt24-code-tip", "好友注册时填写邀请码即可绑定邀请关系", 44, 342, 250, 12, "#9a9289", 500)}
@@ -16490,7 +16505,7 @@ function renderWentianPolishedScreen(screen) {
 
       ${figBox("wt24-reward", 24, 556, 342, 288, "", "border-radius:14px;background:#fff;box-shadow:0 8px 20px rgba(70,45,25,.08);")}
       ${figText("wt24-reward-title", "邀请奖励", 44, 580, 120, 16, "#25211d", 800)}
-      ${[["好友注册", "可获得：2 次对话", "立即到账"], ["邀请满 3 人", "额外获得：会员体验券", "阶段奖励"], ["邀请满 10 人", "额外获得：高级报告券", "进阶奖励"]].map(([title, desc, tag], index) => {
+      ${[["好友注册", `双方连发 ${rewardDays} 天`, "立即生效"], ["每日到账", `每天各得 ${rewardDaily} 次许大师对话`, "双方同享"], ["奖励说明", "邀请人和注册人都按天发放，次日自动刷新", "自动刷新"]].map(([title, desc, tag], index) => {
         const y = 620 + index * 66;
         return `
           ${figBox(`wt24-reward-dot-${index}`, 44, y + 8, 9, 9, "", "border-radius:5px;background:#d0a03a;")}
@@ -16502,10 +16517,10 @@ function renderWentianPolishedScreen(screen) {
       }).join("")}
 
       ${figBox("wt24-pay", 24, 868, 342, 118, "", "border-radius:14px;background:#fff;box-shadow:0 8px 20px rgba(70,45,25,.08);")}
-      ${figText("wt24-pay-title", "好友首次付费奖励", 44, 892, 150, 16, "#25211d", 800)}
-      ${figText("wt24-pay-desc", "好友完成首次付费后，邀请人可额外获得 10 次对话。", 44, 926, 238, 13, "#756d63", 500, "left", "line-height:1.45;")}
+      ${figText("wt24-pay-title", "奖励到账方式", 44, 892, 150, 16, "#25211d", 800)}
+      ${figText("wt24-pay-desc", `绑定邀请码并注册成功后，双方都会立即开始连续 ${rewardDays} 天的奖励周期。`, 44, 926, 238, 13, "#756d63", 500, "left", "line-height:1.45;")}
       ${figBox("wt24-pay-badge", 284, 906, 52, 52, "", "border-radius:26px;background:#fff0d6;")}
-      ${figText("wt24-pay-badge-text", "+10", 284, 922, 52, 16, "#bd8624", 900, "center")}
+      ${figText("wt24-pay-badge-text", `+${rewardDaily}`, 284, 922, 52, 16, "#bd8624", 900, "center")}
 
       ${figBox("wt24-record", 24, 1010, 342, 118, "", "border-radius:14px;background:#fff;box-shadow:0 8px 20px rgba(70,45,25,.08);")}
       ${figText("wt24-record-title", "邀请记录", 44, 1034, 120, 16, "#25211d", 800)}
