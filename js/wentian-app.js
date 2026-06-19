@@ -593,6 +593,49 @@ function getWentianProfileScreenState(query = wentianProfileSearchQuery) {
   };
 }
 
+function getWentianShortScreenLayoutOptions(screenNo) {
+  const no = Number(screenNo) || 0;
+  const account = getWentianAuthDisplay();
+  switch (no) {
+    case 3:
+      return { minNavY: 560, gap: 28 };
+    case 5:
+      return { minNavY: 560, gap: 26, bgSelector: '[data-node-id="source-5-bg"]' };
+    case 22:
+      return {
+        minNavY: account.loggedIn ? 620 : 580,
+        gap: 30,
+        bgSelector: '[data-node-id^="wt22-bg"]',
+        extraSelectors: ["#wentian-invite-status"]
+      };
+    case 32:
+    case 38:
+      return { minNavY: 590, gap: 30, bgSelector: '[data-node-id="source-settings-bg"]' };
+    case 35:
+      return {
+        minNavY: 540,
+        gap: 28,
+        bgSelector: '[data-node-id="wt35-bg"]',
+        extraSelectors: ["#wentian-contact-status"]
+      };
+    case 40:
+      return { minNavY: account.loggedIn ? 650 : 590, gap: 30, bgSelector: '[data-node-id="source-login-bg"]' };
+    case 41:
+      return {
+        minNavY: account.loggedIn ? 650 : 560,
+        gap: 30,
+        bgSelector: '[data-node-id="source-password-bg"]',
+        extraSelectors: ["#wentian-password-status"]
+      };
+    case 48:
+      return { minNavY: 560, gap: 30, bgSelector: '[data-node-id="wt48-bg"]' };
+    case 49:
+      return { minNavY: 600, gap: 32, bgSelector: '[data-node-id="wt49-bg"]' };
+    default:
+      return null;
+  }
+}
+
 function figBottomNav(active) {
   const items = [
     ["home", "home", "首页"],
@@ -1150,9 +1193,9 @@ function sourceArchiveSelectScreen() {
   const { archives, archiveCount, metrics } = getWentianArchiveSelectScreenState();
   const activeId = wentianArchiveDraftId || getWentianSelectedArchiveId(archives);
   const displayArchives = archives;
-  const sheetHeight = archiveCount === 0 ? 248 : archiveCount === 1 ? 338 : archiveCount === 2 ? 450 : archiveCount === 3 ? 486 : 510;
-  const listHeight = archiveCount === 0 ? 72 : archiveCount === 1 ? 160 : archiveCount === 2 ? 276 : archiveCount === 3 ? 338 : 392;
-  const actionTop = archiveCount === 0 ? 470 : archiveCount === 1 ? 560 : archiveCount === 2 ? 672 : archiveCount === 3 ? 708 : 714;
+  const sheetHeight = archiveCount === 0 ? 214 : archiveCount === 1 ? 338 : archiveCount === 2 ? 450 : archiveCount === 3 ? 486 : 510;
+  const listHeight = archiveCount === 0 ? 28 : archiveCount === 1 ? 160 : archiveCount === 2 ? 276 : archiveCount === 3 ? 338 : 392;
+  const actionTop = archiveCount === 0 ? 404 : archiveCount === 1 ? 560 : archiveCount === 2 ? 672 : archiveCount === 3 ? 708 : 714;
   const archiveStatus = wentianArchiveStatus.text
     ? `<div id="wentian-archive-status" class="wentian-invite-status" style="left:42px;top:260px;width:306px;text-align:center" data-tone="${escapeHtml(wentianArchiveStatus.tone || "")}">${escapeHtml(wentianArchiveStatus.text)}</div>`
     : "";
@@ -18340,6 +18383,81 @@ function syncWentianFloatingBottomNav() {
   view?.classList.add("has-floating-bottom-nav");
 }
 
+function getWentianNodeBottomWithinPhone(phone, node) {
+  if (!phone || !node || !node.isConnected) return 0;
+  const style = getComputedStyle(node);
+  if (style.display === "none" || style.visibility === "hidden" || Number(style.opacity || 1) <= 0) return 0;
+  const rect = node.getBoundingClientRect();
+  const phoneRect = phone.getBoundingClientRect();
+  if (rect.width <= 0 && rect.height <= 0) return 0;
+  return Math.max(0, Math.ceil(rect.bottom - phoneRect.top));
+}
+
+function compactWentianShortFigScreenLayout(screenNo, options = getWentianShortScreenLayoutOptions(screenNo)) {
+  if (!view || !options) return false;
+  const phone = view.querySelector(`.figma-phone[data-node-id="screen-${screenNo}"]`);
+  if (!phone) return false;
+  const navNodes = Array.from(phone.querySelectorAll('[data-node-id^="source-bottom-"],[data-node-id^="converted-bottom-"],[data-node-id^="bottom-"]'));
+  if (!navNodes.length) return false;
+  const navTop = Math.min(...navNodes.map((node) => Number.parseFloat(node.style.top)).filter((top) => Number.isFinite(top)));
+  if (!Number.isFinite(navTop)) return false;
+  const bg = options.bgSelector ? phone.querySelector(options.bgSelector) : null;
+  let maxBottom = 0;
+  phone.querySelectorAll("[data-node-id]").forEach((node) => {
+    const id = node.dataset.nodeId || "";
+    if (!id || /^source-bottom-|^converted-bottom-|^bottom-/.test(id)) return;
+    if (bg && node === bg) return;
+    if (node.classList.contains("flow-hotspot")) return;
+    maxBottom = Math.max(maxBottom, getWentianNodeBottomWithinPhone(phone, node));
+  });
+  (options.extraSelectors || []).forEach((selector) => {
+    phone.querySelectorAll(selector).forEach((node) => {
+      maxBottom = Math.max(maxBottom, getWentianNodeBottomWithinPhone(phone, node));
+    });
+  });
+  if (!maxBottom) return false;
+  const nextNavY = Math.max(Number(options.minNavY) || 620, Math.ceil(maxBottom + (Number(options.gap) || 28)));
+  if (nextNavY >= navTop - 4) return false;
+  const delta = nextNavY - navTop;
+  navNodes.forEach((node) => {
+    const top = Number.parseFloat(node.style.top);
+    if (Number.isFinite(top)) node.style.top = `${Math.round(top + delta)}px`;
+  });
+  const nextHeight = nextNavY + 89;
+  phone.style.height = `${nextHeight}px`;
+  if (bg) bg.style.height = `${nextHeight}px`;
+  return true;
+}
+
+function compactWentianLiuyaoEmptyResultLayout() {
+  if (!view || getLiuyaoResult()) return false;
+  const phone = view.querySelector('.figma-phone[data-node-id="screen-20"]');
+  if (!phone) return false;
+  const wrapper = phone.querySelector(".liuyao-phone-screen.liuyao-result-screen");
+  const emptyCard = phone.querySelector(".liuyao-empty-card");
+  const header = phone.querySelector(".liuyao-app-header");
+  const navNodes = Array.from(phone.querySelectorAll('[data-node-id^="source-bottom-"],[data-node-id^="converted-bottom-"],[data-node-id^="bottom-"]'));
+  if (!wrapper || !emptyCard || !navNodes.length) return false;
+  const navTop = Math.min(...navNodes.map((node) => Number.parseFloat(node.style.top)).filter((top) => Number.isFinite(top)));
+  if (!Number.isFinite(navTop)) return false;
+  const contentBottom = Math.max(
+    getWentianNodeBottomWithinPhone(phone, header),
+    getWentianNodeBottomWithinPhone(phone, emptyCard)
+  );
+  const nextNavY = Math.max(560, Math.ceil(contentBottom + 30));
+  if (nextNavY >= navTop - 4) return false;
+  const delta = nextNavY - navTop;
+  navNodes.forEach((node) => {
+    const top = Number.parseFloat(node.style.top);
+    if (Number.isFinite(top)) node.style.top = `${Math.round(top + delta)}px`;
+  });
+  const nextHeight = nextNavY + 89;
+  phone.style.height = `${nextHeight}px`;
+  wrapper.style.minHeight = `${nextHeight}px`;
+  wrapper.style.height = `${nextHeight}px`;
+  return true;
+}
+
 function compactWentianZiweiScreenLayout() {
   const phone = view.querySelector('.figma-phone[data-node-id="screen-27"]');
   if (!phone) return false;
@@ -18377,7 +18495,8 @@ function compactWentianHepanResultLayout() {
   const panel = phone.querySelector(".wentian-hepan-result-panel");
   const bg = phone.querySelector('[data-node-id="wt49-bg"]');
   const navBg = phone.querySelector('[data-node-id="source-bottom-bg"]');
-  if (!panel || !bg || !navBg) return false;
+  if (!bg || !navBg) return false;
+  if (!panel) return compactWentianShortFigScreenLayout(49);
   const panelTop = Number.parseFloat(getComputedStyle(panel).top) || panel.offsetTop || 0;
   const panelBottom = Math.ceil(panelTop + panel.offsetHeight);
   const navY = Math.max(755, panelBottom + 28);
@@ -18396,6 +18515,19 @@ function compactWentianHepanResultLayout() {
 function scheduleWentianHepanResultLayout() {
   const refit = () => {
     if (compactWentianHepanResultLayout()) fitActivePhoneShell();
+  };
+  refit();
+  [120, 360, 900, 1800, 3200].forEach((delay) => window.setTimeout(refit, delay));
+}
+
+function scheduleWentianShortPageLayout(screenNo) {
+  const no = Number(screenNo) || 0;
+  if (!no) return;
+  const refit = () => {
+    const changed = no === 20
+      ? compactWentianLiuyaoEmptyResultLayout()
+      : compactWentianShortFigScreenLayout(no);
+    if (changed) fitActivePhoneShell();
   };
   refit();
   [120, 360, 900, 1800, 3200].forEach((delay) => window.setTimeout(refit, delay));
@@ -18478,10 +18610,15 @@ function navigate(route, push = true, syncHash = true) {
     applyWentianLanguageText(view, getWentianLanguageCode(), { force: true });
     stabilizeWentianLanguageText(view);
     if (screen.no === 27) compactWentianZiweiScreenLayout();
+    if ([3, 5, 20, 22, 32, 35, 38, 40, 41, 48].includes(screen.no)) {
+      if (screen.no === 20) compactWentianLiuyaoEmptyResultLayout();
+      else compactWentianShortFigScreenLayout(screen.no);
+    }
     if (screen.no === 49) compactWentianHepanResultLayout();
     ensureWentianLanguageObserver();
     scheduleWentianPhoneFit();
     if (screen.no === 27) scheduleWentianZiweiScreenLayout();
+    if ([3, 5, 20, 22, 32, 35, 38, 40, 41, 48].includes(screen.no)) scheduleWentianShortPageLayout(screen.no);
     if (screen.no === 49) scheduleWentianHepanResultLayout();
     syncActive();
     window.setTimeout(initWentianAuth, 0);
