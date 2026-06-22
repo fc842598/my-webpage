@@ -597,6 +597,13 @@ function getWentianShortScreenLayoutOptions(screenNo) {
   const no = Number(screenNo) || 0;
   const account = getWentianAuthDisplay();
   switch (no) {
+    case 26:
+      return {
+        minNavY: 694,
+        gap: 16,
+        bgSelector: '[data-node-id="source-26-bg"]',
+        extraSelectors: ["#wentian-chart-status"]
+      };
     case 3:
       return { minNavY: 560, gap: 28 };
     case 5:
@@ -3038,7 +3045,7 @@ function syncWentianChartFormLayout() {
   const phone = document.querySelector('.figma-phone[data-node-id="screen-26"]');
   const card = phone?.querySelector(".wentian-chart-card");
   if (!phone || !card) return;
-  const submitTop = Math.max(742, card.offsetTop + card.offsetHeight + 18);
+  const submitTop = Math.max(660, card.offsetTop + card.offsetHeight + 12);
   setWentianFigureTop(phone.querySelector('[data-node-id="source-26-submit"]'), submitTop);
   setWentianFigureTop(phone.querySelector('[data-node-id="source-26-submit-hit"]'), submitTop);
   setWentianFigureTop(phone.querySelector('[data-node-id="source-26-submit-text"]'), submitTop + 16);
