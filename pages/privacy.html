@@ -8,14 +8,33 @@
       const params = new URLSearchParams(window.location.search);
       if (params.get("view") === "desktop") return;
       const ua = navigator.userAgent || "";
-      const isTouchMobile =
-        window.matchMedia?.("(max-width: 900px) and (pointer: coarse)")?.matches ||
-        /Android|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini|Mobile/i.test(ua);
+      const target = "/pages/wentian-app.html#screen-36";
+      const isTouchMobile = /Android|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini|Mobile/i.test(ua);
       const isIPadLike =
         /iPad/i.test(ua) ||
         (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
-      if (!isTouchMobile && !isIPadLike) return;
-      window.location.replace("/pages/wentian-app.html#screen-36");
+      const isNarrowViewport = () =>
+        (window.innerWidth || document.documentElement.clientWidth || 0) <= 900;
+      const shouldRedirect = () => isTouchMobile || isIPadLike || isNarrowViewport();
+      if (shouldRedirect()) {
+        window.location.replace(target);
+        return;
+      }
+      let redirected = false;
+      let resizeTimer = 0;
+      const maybeRedirect = () => {
+        if (redirected || !isNarrowViewport()) return;
+        redirected = true;
+        window.location.replace(target);
+      };
+      const handleResize = () => {
+        window.clearTimeout(resizeTimer);
+        resizeTimer = window.setTimeout(maybeRedirect, 120);
+      };
+      window.addEventListener("resize", handleResize, { passive: true });
+      window.matchMedia?.("(max-width: 900px)")?.addEventListener?.("change", (event) => {
+        if (event.matches) maybeRedirect();
+      });
     })();
   </script>
   <script src="../js/site-analytics.js?v=20260618-ga4"></script>
