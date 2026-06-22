@@ -548,7 +548,14 @@ function getWentianBottomNavActive(nodeId) {
 
 function withWentianStandardBottomNav(nodeId, body, height) {
   const baseHeight = Number(height) || WENTIAN_PHONE_HEIGHT;
-  if (String(nodeId) === "screen-43" || !/^screen-\d+$/.test(String(nodeId)) || hasWentianBottomNav(body) || /class="liuyao-caster-modal"/.test(String(body)) || /liuyao-result-panel/.test(String(body))) {
+  if (
+    String(nodeId) === "screen-11" ||
+    String(nodeId) === "screen-43" ||
+    !/^screen-\d+$/.test(String(nodeId)) ||
+    hasWentianBottomNav(body) ||
+    /class="liuyao-caster-modal"/.test(String(body)) ||
+    /liuyao-result-panel/.test(String(body))
+  ) {
     return { body, height: baseHeight };
   }
   const navY = Math.max(755, Math.round(baseHeight - 89));
