@@ -664,6 +664,17 @@ html[lang="en"] .wentian-chat-profile-copy small {
   font-size: 8px;
 }
 
+html[lang="zh-TW"] .wentian-chat-profile-tag {
+  left: 240px;
+  width: 100px;
+  gap: 4px;
+  padding: 0 8px 0 6px;
+}
+
+html[lang="zh-TW"] .wentian-chat-profile-copy b {
+  max-width: 42px;
+}
+
 html[lang="en"] [data-node-id="yz43-title"] {
   width: 178px !important;
   font-size: 20px !important;
@@ -1104,10 +1115,16 @@ html[lang="en"] .fig-text[data-node-id^="wt24-reward-tag-text-"] {
 
 .yangzhai-inline-compass-status {
   position: absolute;
+  z-index: 16;
+  height: 16px;
+  padding: 2px 6px;
+  border: 1px solid rgba(224, 199, 160, 0.88);
+  border-radius: 999px;
+  background: rgba(255, 250, 241, 0.94);
   color: #7a6a58;
   font-size: 9px;
   font-weight: 700;
-  line-height: 1.2;
+  line-height: 10px;
   overflow: hidden;
   text-align: center;
   text-overflow: ellipsis;

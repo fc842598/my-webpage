@@ -15075,7 +15075,7 @@ function yangzhaiCompassGrid(id, compact = false) {
         ${figBox(`${id}-compass-close`, x + metrics.cellW - 42, y + metrics.cellH - 31, 34, 22, "yangzhai-compass-close-ui", "border:1px solid #ead2a9;border-radius:11px;background:rgba(255,248,233,.9);")}
         <p class="fig-text yangzhai-compass-close-ui yangzhai-compass-label" data-node-id="${id}-compass-close-text" style="left:${x + metrics.cellW - 42}px;top:${y + metrics.cellH - 26}px;width:34px;font-size:9px;color:#8a5a22;font-weight:800;text-align:center;line-height:1.1;">关闭</p>
         ${figButton(`${id}-compass-close-hit`, x + metrics.cellW - 50, y + metrics.cellH - 42, 48, 40, 'data-action="yangzhai-compass-toggle" aria-label="关闭手机指南针"', "yangzhai-compass-close-ui", "cursor:pointer;")}
-        <div class="yangzhai-inline-compass-status" data-node-id="${id}-compass-note" data-yangzhai-compass-status style="left:${x + (compact ? 12 : 15)}px;top:${y + (compact ? 2 : 8)}px;width:${metrics.cellW - (compact ? 24 : 30)}px;">未开启</div>
+        <div class="yangzhai-inline-compass-status" data-node-id="${id}-compass-note" data-yangzhai-compass-status style="left:${x + 9}px;top:${y + 10}px;width:58px;">未开启</div>
         `}
       `;
     }
@@ -18805,6 +18805,66 @@ function compactWentianLiuyaoEmptyResultLayout() {
   return true;
 }
 
+function compactWentianLiuyaoCastLayout() {
+  if (!view) return false;
+  const phone = view.querySelector('.figma-phone[data-node-id="screen-17"], .figma-phone[data-node-id="screen-18"], .figma-phone[data-node-id="screen-19"]');
+  const wrapper = phone?.querySelector(".liuyao-phone-screen");
+  if (!phone || !wrapper) return false;
+  const navNodes = Array.from(phone.querySelectorAll('[data-node-id^="source-bottom-"],[data-node-id^="converted-bottom-"],[data-node-id^="bottom-"]'));
+  const wrapperMin = Number.parseFloat(wrapper.style.minHeight) || wrapper.scrollHeight || wrapper.offsetHeight || WENTIAN_PHONE_HEIGHT;
+  let contentBottom = 0;
+  phone.querySelectorAll([
+    ".liuyao-stage",
+    ".liuyao-question-stage",
+    ".liuyao-progress-card",
+    ".liuyao-line-row",
+    ".liuyao-mode-card",
+    ".liuyao-coin-summary",
+    ".liuyao-manual-card",
+    ".liuyao-result-preview",
+    ".liuyao-empty-card"
+  ].join(",")).forEach((node) => {
+    if (node instanceof Element) {
+      contentBottom = Math.max(contentBottom, getWentianNodeBottomWithinPhone(phone, node));
+    }
+  });
+  let navBottom = 0;
+  if (navNodes.length && contentBottom > 0) {
+    const navTop = Math.min(...navNodes.map((node) => Number.parseFloat(node.style.top)).filter((top) => Number.isFinite(top)));
+    const currentNavBottom = Math.max(...navNodes.map((node) => {
+      const top = Number.parseFloat(node.style.top);
+      const height = Number.parseFloat(node.style.height);
+      return Number.isFinite(top) && Number.isFinite(height) ? top + height : 0;
+    }));
+    if (Number.isFinite(navTop) && currentNavBottom > 0) {
+      const navHeight = Math.max(89, Math.ceil(currentNavBottom - navTop));
+      const nextNavY = Math.max(755, Math.ceil(contentBottom + 30));
+      const delta = nextNavY - navTop;
+      if (delta > 2) {
+        navNodes.forEach((node) => {
+          const top = Number.parseFloat(node.style.top);
+          if (Number.isFinite(top)) node.style.top = `${Math.round(top + delta)}px`;
+        });
+      }
+      navBottom = nextNavY + navHeight;
+    }
+  }
+  const nextHeight = Math.max(WENTIAN_PHONE_HEIGHT, Math.ceil(wrapperMin), Math.ceil(contentBottom + 30), Math.ceil(navBottom));
+  const currentHeight = Number.parseFloat(phone.style.height) || phone.offsetHeight || WENTIAN_PHONE_HEIGHT;
+  if (nextHeight <= currentHeight + 2) return false;
+  phone.style.height = `${nextHeight}px`;
+  wrapper.style.minHeight = `${nextHeight}px`;
+  return true;
+}
+
+function scheduleWentianLiuyaoCastLayout() {
+  const refit = () => {
+    if (compactWentianLiuyaoCastLayout()) fitActivePhoneShell();
+  };
+  refit();
+  [120, 360, 900, 1800, 3200].forEach((delay) => window.setTimeout(refit, delay));
+}
+
 function compactWentianZiweiScreenLayout() {
   const phone = view.querySelector('.figma-phone[data-node-id="screen-27"]');
   if (!phone) return false;
@@ -18959,6 +19019,7 @@ function navigate(route, push = true, syncHash = true) {
     applyWentianLanguageText(view, getWentianLanguageCode(), { force: true });
     stabilizeWentianLanguageText(view);
     if (screen.no === 27) compactWentianZiweiScreenLayout();
+    if ([17, 18, 19].includes(screen.no)) compactWentianLiuyaoCastLayout();
     if ([3, 5, 20, 22, 32, 35, 38, 40, 41, 42, 48].includes(screen.no)) {
       if (screen.no === 20) compactWentianLiuyaoEmptyResultLayout();
       else compactWentianShortFigScreenLayout(screen.no);
@@ -18968,6 +19029,7 @@ function navigate(route, push = true, syncHash = true) {
     ensureWentianLanguageObserver();
     scheduleWentianPhoneFit();
     if (screen.no === 27) scheduleWentianZiweiScreenLayout();
+    if ([17, 18, 19].includes(screen.no)) scheduleWentianLiuyaoCastLayout();
     if ([3, 5, 20, 22, 32, 35, 38, 40, 41, 42, 48].includes(screen.no)) scheduleWentianShortPageLayout(screen.no);
     if (screen.no === 49) scheduleWentianHepanResultLayout();
     syncActive();
