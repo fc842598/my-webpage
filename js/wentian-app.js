@@ -15588,6 +15588,7 @@ function submitOfficeLayoutQuery() {
 let liurenHasStarted = false;
 let liurenXuRecordId = null;
 let liurenActiveDate = null;
+let liurenLayoutTimers = [];
 
 function formatLiurenDayName(day) {
   const names = ["初一", "初二", "初三", "初四", "初五", "初六", "初七", "初八", "初九", "初十", "十一", "十二", "十三", "十四", "十五", "十六", "十七", "十八", "十九", "二十", "廿一", "廿二", "廿三", "廿四", "廿五", "廿六", "廿七", "廿八", "廿九", "三十"];
@@ -15933,11 +15934,40 @@ function syncLiurenScreenLayout() {
   const phone = document.querySelector('.figma-phone[data-node-id="screen-46"]');
   const panel = phone?.querySelector(".liuren-panel");
   if (!phone || !panel) return;
-  const nextHeight = Math.max(LIUREN_SCREEN_HEIGHT, Math.ceil(panel.offsetTop + panel.offsetHeight + 88));
+  const navSelector = '[data-node-id^="source-bottom-"],[data-node-id^="converted-bottom-"],[data-node-id^="bottom-"]';
+  const navNodes = Array.from(phone.querySelectorAll(navSelector));
+  const panelBottom = Math.ceil(panel.offsetTop + panel.offsetHeight);
+  let nextHeight = Math.max(WENTIAN_PHONE_HEIGHT, panelBottom + 88);
+  if (navNodes.length) {
+    const navTop = Math.min(...navNodes.map((node) => Number.parseFloat(node.style.top)).filter((top) => Number.isFinite(top)));
+    const navBottom = Math.max(...navNodes.map((node) => {
+      const top = Number.parseFloat(node.style.top);
+      const height = Number.parseFloat(node.style.height);
+      return Number.isFinite(top) && Number.isFinite(height) ? top + height : 0;
+    }));
+    const navHeight = navBottom - navTop;
+    if (Number.isFinite(navTop) && Number.isFinite(navBottom) && navHeight > 0) {
+      const nextNavY = Math.max(WENTIAN_PHONE_HEIGHT - navHeight, panelBottom + 18);
+      const delta = nextNavY - navTop;
+      navNodes.forEach((node) => {
+        const top = Number.parseFloat(node.style.top);
+        if (Number.isFinite(top)) node.style.top = `${Math.round(top + delta)}px`;
+      });
+      nextHeight = Math.max(WENTIAN_PHONE_HEIGHT, Math.ceil(nextNavY + navHeight));
+    }
+  }
   phone.style.height = `${nextHeight}px`;
   const bg = phone.querySelector('[data-node-id="lr46-bg"]');
   if (bg) bg.style.height = `${nextHeight}px`;
   scheduleWentianPhoneFit();
+}
+
+function scheduleLiurenScreenLayout() {
+  liurenLayoutTimers.forEach((timer) => window.clearTimeout(timer));
+  liurenLayoutTimers = [];
+  [0, 120, 360, 720, 1200].forEach((delay) => {
+    liurenLayoutTimers.push(window.setTimeout(syncLiurenScreenLayout, delay));
+  });
 }
 
 function updateLiurenPreview(options = {}) {
@@ -15975,6 +16005,7 @@ function initLiurenScreen() {
   liurenHasStarted = false;
   liurenXuRecordId = null;
   setLiurenDateTime(new Date(), { reveal: false });
+  scheduleLiurenScreenLayout();
 }
 
 function calculateLiurenFromInputs() {
@@ -18752,6 +18783,7 @@ function navigate(route, push = true, syncHash = true) {
       if (screen.no === 20) compactWentianLiuyaoEmptyResultLayout();
       else compactWentianShortFigScreenLayout(screen.no);
     }
+    if (screen.no === 46) scheduleLiurenScreenLayout();
     if (screen.no === 49) compactWentianHepanResultLayout();
     ensureWentianLanguageObserver();
     scheduleWentianPhoneFit();
