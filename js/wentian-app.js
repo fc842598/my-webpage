@@ -85,7 +85,7 @@ const screenFlowHotspots = {
   13: [[18, 44, 48, 48, "screen-1"], [82, 620, 226, 70, "screen-14"]],
   14: [[65, 570, 260, 90, "screen-15"]],
   15: [[18, 44, 48, 48, "screen-13"], [43, 615, 304, 58, "screen-16"]],
-  16: [[18, 44, 48, 48, "screen-15"], [162, 1210, 66, 44, "screen-4"]],
+  16: [[18, 44, 48, 48, "screen-15"], [42, 670, 306, 50, "screen-4"]],
   17: [[18, 44, 48, 48, "screen-1"], [70, 610, 250, 72, "screen-18"]],
   18: [[18, 44, 48, 48, "screen-17"], [70, 610, 250, 72, "screen-19"]],
   19: [[18, 44, 48, 48, "screen-18"], [70, 610, 250, 72, "screen-20"]],
@@ -1467,8 +1467,8 @@ const WENTIAN_CHART_AI_TASKS = [
 const WENTIAN_CHART_AI_CHAPTERS = [
   { vol: "卷一", menu: "壹", title: "整体批命", modules: ["overall"], action: "module", module: "overall", actionLabel: "单独批总局", compactTag: "总局", compactTagEn: "Overview", compactSummary: "先看命格主线、人生底色、贵人与风险。", compactSummaryEn: "Start with the core pattern, life tone, helpers, and risks.", compactActionLabel: "先看卷一", compactActionLabelEn: "Open Vol. 1", placeholder: "等待 AI 批命生成命盘主线、格局底色与关键提醒。" },
   { vol: "卷二", menu: "贰", title: "专题解读", modules: WENTIAN_CHART_SPECIAL_MODULES, action: "specials", actionLabel: "单独批专题", compactTag: "专题", compactTagEn: "Topics", compactSummary: "婚姻、健康、财运、事业，按主题分开看。", compactSummaryEn: "Open marriage, health, wealth, and career by topic.", compactActionLabel: "展开卷二", compactActionLabelEn: "Open Vol. 2", placeholder: "等待生成身宫、婚姻、健康、财运、事业五项专题。" },
-  { vol: "卷三", menu: "叁", title: "十年大限", modules: ["current_luck"], action: "module", module: "current_luck", actionLabel: "批当前十年", compactTag: "十年", compactTagEn: "Decade", compactSummary: "看这十年的主线节奏、转折点和发力方向。", compactSummaryEn: "See this decade's pace, turning points, and direction.", compactActionLabel: "先看卷三", compactActionLabelEn: "Open Vol. 3", compactFeatured: true, placeholder: "等待生成当前大限、流年节奏与时间窗口。" },
-  { vol: "卷四", menu: "肆", title: "小限流年", modules: ["xiaoxian_liunian"], action: "module", module: "xiaoxian_liunian", actionLabel: "单独批小限", compactTag: "流年", compactTagEn: "Annual", compactSummary: "看今年的触发点、应期提醒和当下重点。", compactSummaryEn: "See this year's triggers, timing notes, and current focus.", compactActionLabel: "展开卷四", compactActionLabelEn: "Open Vol. 4", placeholder: "等待生成当前小限流年、应事宫位与提醒。" },
+  { vol: "卷三", menu: "叁", title: "十年大限", modules: ["current_luck"], action: "module", module: "current_luck", actionLabel: "批当前十年", compactTag: "十年", compactTagEn: "Decade", compactSummary: "看这十年的主线节奏、转折点和发力方向。", compactSummaryEn: "See the decade pace, turning points, and direction.", compactActionLabel: "先看卷三", compactActionLabelEn: "Open Vol. 3", compactFeatured: true, placeholder: "等待生成当前大限、流年节奏与时间窗口。" },
+  { vol: "卷四", menu: "肆", title: "小限流年", modules: ["xiaoxian_liunian"], action: "module", module: "xiaoxian_liunian", actionLabel: "单独批小限", compactTag: "流年", compactTagEn: "Annual", compactSummary: "看今年的触发点、应期提醒和当下重点。", compactSummaryEn: "See annual triggers, timing notes, and current focus.", compactActionLabel: "展开卷四", compactActionLabelEn: "Open Vol. 4", placeholder: "等待生成当前小限流年、应事宫位与提醒。" },
   { vol: "卷五", menu: "伍", title: "人生曲线", modules: ["life_curve"], action: "module", module: "life_curve", actionLabel: "生成曲线", compactTag: "曲线", compactTagEn: "Curve", compactSummary: "看高低起伏、关键节点和阶段变化。", compactSummaryEn: "See highs, lows, key nodes, and stage changes.", compactActionLabel: "展开卷五", compactActionLabelEn: "Open Vol. 5", placeholder: "等待生成客户易懂版人生曲线、低点高点和阶段提醒。" },
   { vol: "卷六", menu: "陆", title: "行动建议", modules: ["action_advice"], action: "module", module: "action_advice", actionLabel: "生成建议", compactTag: "建议", compactTagEn: "Advice", compactSummary: "把前面内容收束成下一步该怎么做。", compactSummaryEn: "Turn the reading into clear next steps.", compactActionLabel: "展开卷六", compactActionLabelEn: "Open Vol. 6", placeholder: "等待汇总风险、时机和可执行建议。" },
 ];
@@ -8231,6 +8231,12 @@ function finalizeWentianLanguageText(root = view, code = getWentianLanguageCode(
   setWentianFinalText(root, '[data-node-id="wt34-copy-title"]', "Share Copy");
   setWentianFinalText(root, '[data-node-id="wt34-copy-lead"]', "Share Yuetian AI with friends for charting, readings, and Master Xu chat.");
   setWentianFinalText(root, '[data-node-id="source-password-login-desc"]', "Password login will be linked to this account, payment records, and membership benefits.");
+  setWentianFinalText(root, '[data-node-id="wt16-title"]', "Lot 29");
+  const finalCoin = root.querySelector(".wentian-chart-ai-final-coin");
+  if (finalCoin) {
+    setWentianFinalText(finalCoin, "span", "Full");
+    setWentianFinalText(finalCoin, "b", "Reading");
+  }
 
   const yangzhaiKicker = root.querySelector('[data-node-id="yz43-confirm-kicker"]');
   const selectedCount = yangzhaiKicker?.textContent?.match(/\d+/)?.[0] || "";
@@ -16514,7 +16520,7 @@ function renderWentianPolishedScreen(screen) {
           ${figText(`wt16-desc-${index}`, desc, 48, y + 48, 284, 13, "#706a63", 500, "left", "line-height:1.55;")}
         `;
       }).join("")}
-      ${wentianGoldButton("wt16", "让 AI 继续解读此签", "screen-4", 720)}
+      ${wentianGoldButton("wt16", "让 AI 继续解读此签", "screen-4", 670)}
     `;
   }
   if (no >= 17 && no <= 19) {

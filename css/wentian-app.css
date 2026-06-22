@@ -879,6 +879,16 @@ html[lang="en"] [data-node-id="wt24-bg"] {
   height: 1268px !important;
 }
 
+html[lang="en"] .wentian-chart-ai-final-coin span {
+  font-size: 11px !important;
+  line-height: 1.05 !important;
+}
+
+html[lang="en"] .wentian-chart-ai-final-coin b {
+  font-size: 17px !important;
+  line-height: 1.05 !important;
+}
+
 html[lang="en"] .fig-text[data-node-id^="wt24-reward-name-"] {
   width: 150px !important;
   font-size: 13px !important;
@@ -2766,7 +2776,7 @@ html[lang="en"] .wentian-chat-starter {
   left: 0;
   top: 96px;
   width: 390px;
-  height: 748px;
+  height: calc(748px - var(--wentian-floating-nav-height, 89px));
   overflow-y: auto;
   padding: 0 18px 124px;
   box-sizing: border-box;
