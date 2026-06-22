@@ -841,6 +841,19 @@ html[lang="en"] .fig-text[data-node-id^="yz45-step-desc-"] {
   line-height: 1.2 !important;
 }
 
+html[lang="en"] [data-node-id="yz45-go"],
+html[lang="en"] [data-node-id="yz45-go-hit"] {
+  top: 706px !important;
+  height: 46px !important;
+  border-radius: 23px !important;
+}
+
+html[lang="en"] [data-node-id="yz45-go-text"] {
+  top: 720px !important;
+  height: 16px !important;
+  font-size: 14px !important;
+}
+
 .fig-click {
   border: 0;
   padding: 0;
@@ -2705,7 +2718,7 @@ html[lang="en"] .wentian-chat-starter {
   width: 390px;
   height: 748px;
   overflow-y: auto;
-  padding: 0 18px 34px;
+  padding: 0 18px 124px;
   box-sizing: border-box;
 }
 

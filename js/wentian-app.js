@@ -6865,11 +6865,11 @@ const WENTIAN_I18N_EN_EXTRA = {
   "· 下单后自动生成，可在我的报告持续复盘": "· Auto-generated after purchase and saved in My Reports",
   "八字": "Bazi",
   "生命健康预测报告(文字版持续更新)": "Life Health Report",
-  "基于您的八字信息，系统将计算出横跨121年的生命能量曲线。预见人生的波峰与波谷，在关键节…": "Based on your Bazi, the system calculates a 121-year life energy curve so you can see key rises and dips.",
+  "基于您的八字信息，系统将计算出横跨121年的生命能量曲线。预见人生的波峰与波谷，在关键节…": "121-year Bazi energy curve with key highs, dips, and timing cues.",
   "直接购买": "Buy Now",
   "立即解锁 →": "Unlock Now →",
   "2026丙午年预测报告": "2026 Bingwu Forecast",
-  "全面八字分析，2026概览、太岁情况、事业发展、财富运势、爱情婚姻、健康关注、风水建议、每…": "Full Bazi analysis covering 2026 overview, Tai Sui, career, wealth, love, health, feng shui, and monthly focus.",
+  "全面八字分析，2026概览、太岁情况、事业发展、财富运势、爱情婚姻、健康关注、风水建议、每…": "2026 Tai Sui, career, wealth, love, health, feng shui, and monthly focus.",
   "八字与MBTI人格深度解析及运势全面预测": "Bazi MBTI Report",
   "融合八字命理学与MBTI四维模型。从五行能量场到潜意识决策模式，为您深度揭示性格底色、原生…": "Combines Bazi and MBTI to reveal personality patterns, decision style, and life direction.",
   "当前档案": "Current File",
@@ -10992,10 +10992,10 @@ function sourcePaymentScreen() {
     ${wentianPaymentState.mockMode ? figBox("wt30-mock", 42, 650, 306, 50, "", "border-radius:25px;background:#16783d;box-shadow:0 12px 24px rgba(22,120,61,.18);") : ""}
     ${wentianPaymentState.mockMode ? figButton("wt30-mock-hit", 42, 650, 306, 50, 'data-action="wentian-pay-mock-success"') : ""}
     ${wentianPaymentState.mockMode ? figText("wt30-mock-text", "模拟支付成功", 42, 665, 306, 14, "#fff", 900, "center") : ""}
-    ${figBox("wt30-pay", 42, 736, 306, 50, "", `border-radius:25px;background:${wentianPaymentState.status === "paid" ? "#7a9a4b" : "linear-gradient(180deg,#b74e39,#983323)"};box-shadow:0 14px 28px rgba(158,61,43,.18);`)}
-    ${figButton("wt30-pay-hit", 42, 736, 306, 50, `data-action="${payButtonAction}"`)}
-    ${figText("wt30-pay-text", payButtonText, 42, 751, 306, 14, "#fffaf3", 900, "center")}
-    ${figText("wt30-safe", safeText, 0, 804, 390, 11, "#a49b91", 600, "center")}
+    ${figBox("wt30-pay", 42, 690, 306, 50, "", `border-radius:25px;background:${wentianPaymentState.status === "paid" ? "#7a9a4b" : "linear-gradient(180deg,#b74e39,#983323)"};box-shadow:0 14px 28px rgba(158,61,43,.18);`)}
+    ${figButton("wt30-pay-hit", 42, 690, 306, 50, `data-action="${payButtonAction}"`)}
+    ${figText("wt30-pay-text", payButtonText, 42, 705, 306, 14, "#fffaf3", 900, "center")}
+    ${figText("wt30-safe", safeText, 0, 748, 390, 11, "#a49b91", 600, "center")}
   `;
 }
 
@@ -16859,10 +16859,10 @@ function renderWentianPolishedScreen(screen) {
       ${figText("wt29-wechat-text", "微信支付", 24, 603, 150, 12, "#8f3d30", 900, "center")}
       ${figBox("wt29-alipay", 196, 590, 150, 42, "", "border:1px solid #eadfce;border-radius:21px;background:#fffdf8;")}
       ${figText("wt29-alipay-text", "支付宝配置中", 196, 603, 150, 12, "#b4aaa0", 900, "center")}
-      ${figText("wt29-terms", "只按每日额度计算：免费 20次/天，付费 100次/天。", 0, 692, 390, 12, "#9e968d", 700, "center")}
-      ${figBox("wt29-submit", 42, 736, 306, 50, "", "border-radius:25px;background:linear-gradient(180deg,#b74e39,#983323);box-shadow:0 14px 28px rgba(158,61,43,.20);")}
-      ${figButton("wt29-submit-hit", 42, 736, 306, 50, 'data-action="wentian-member-pay"')}
-      ${figText("wt29-submit-text", member.isMember ? `续费付费版 ¥${member.amountYuan}` : `开通付费版 ¥${member.amountYuan}`, 42, 751, 306, 14, "#fffaf3", 900, "center")}
+      ${figText("wt29-terms", "只按每日额度计算：免费 20次/天，付费 100次/天。", 0, 666, 390, 12, "#9e968d", 700, "center")}
+      ${figBox("wt29-submit", 42, 704, 306, 50, "", "border-radius:25px;background:linear-gradient(180deg,#b74e39,#983323);box-shadow:0 14px 28px rgba(158,61,43,.20);")}
+      ${figButton("wt29-submit-hit", 42, 704, 306, 50, 'data-action="wentian-member-pay"')}
+      ${figText("wt29-submit-text", member.isMember ? `续费付费版 ¥${member.amountYuan}` : `开通付费版 ¥${member.amountYuan}`, 42, 719, 306, 14, "#fffaf3", 900, "center")}
     `;
   }
   if (no === 30) {
@@ -16901,10 +16901,10 @@ function renderWentianPolishedScreen(screen) {
       ${figBox("wt30-summary", 24, 654, 342, 58, "", "border-radius:16px;background:#fff8e8;border:1px solid #eadbc2;")}
       ${figText("wt30-summary-label", "应付金额", 44, 675, 90, 13, "#7e6f5f", 700)}
       ${figText("wt30-summary-price", "¥19.90", 246, 669, 94, 22, "#a64032", 900, "right")}
-      ${figBox("wt30-pay", 42, 736, 306, 50, "", "border-radius:25px;background:linear-gradient(180deg,#b74e39,#983323);box-shadow:0 14px 28px rgba(158,61,43,.22);")}
-      ${figButton("wt30-pay-hit", 42, 736, 306, 50, 'data-route="screen-31"')}
-      ${figText("wt30-pay-text", "确认支付 ¥19.90", 42, 751, 306, 14, "#fffaf3", 900, "center")}
-      ${figText("wt30-safe", "支付信息由服务商加密处理", 0, 804, 390, 11, "#a49b91", 600, "center")}
+      ${figBox("wt30-pay", 42, 714, 306, 50, "", "border-radius:25px;background:linear-gradient(180deg,#b74e39,#983323);box-shadow:0 14px 28px rgba(158,61,43,.22);")}
+      ${figButton("wt30-pay-hit", 42, 714, 306, 50, 'data-route="screen-31"')}
+      ${figText("wt30-pay-text", "确认支付 ¥19.90", 42, 729, 306, 14, "#fffaf3", 900, "center")}
+      ${figText("wt30-safe", "支付信息由服务商加密处理", 0, 776, 390, 11, "#a49b91", 600, "center")}
     `;
   }
   if (no === 33) {
@@ -18358,7 +18358,7 @@ function renderConvertedScreen(no) {
     return figPhone(`screen-${screen.no}`, `${String(screen.no).padStart(2, "0")} ${screen.title}`, `
       ${sourceHomeScreen(screen)}
       ${convertedFlowHotspots(screen)}
-    `, 867, "converted source-screen", true);
+    `, 1044, "converted source-screen", true);
   }
   if (screen.no === 3) {
     return figPhone(`screen-${screen.no}`, `${String(screen.no).padStart(2, "0")} ${screen.title}`, `
