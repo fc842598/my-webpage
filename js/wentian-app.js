@@ -542,6 +542,7 @@ function getWentianBottomNavActive(nodeId) {
 function withWentianStandardBottomNav(nodeId, body, height) {
   const baseHeight = Number(height) || WENTIAN_PHONE_HEIGHT;
   if (
+    String(nodeId) === "screen-4" ||
     String(nodeId) === "screen-11" ||
     String(nodeId) === "screen-43" ||
     !/^screen-\d+$/.test(String(nodeId)) ||
@@ -9257,23 +9258,75 @@ function resizeWentianChatInput(input) {
 function syncWentianChatFaqLayout() {
   const phone = document.querySelector('.figma-phone[data-node-id="screen-4"]');
   const starters = document.querySelector(".wentian-chat-starters");
+  const faqTitle = document.querySelector('[data-node-id="source-4-faq-title"]');
+  const log = document.getElementById("wentian-chat-messages");
+  const scrollBottom = document.getElementById("wentian-chat-scroll-bottom");
   const inputBg = document.querySelector('[data-node-id="source-4-input-bg"]');
   const input = document.getElementById("wentian-chat-input");
   const send = document.getElementById("wentian-chat-send");
   const disclaimer = document.querySelector('[data-node-id="source-4-disclaimer"]');
-  if (!phone || !starters || !inputBg || !input || !send || !disclaimer) return;
+  if (!phone || !starters || !faqTitle || !log || !inputBg || !input || !send || !disclaimer) return;
 
   const openGroup = starters.querySelector(".wentian-chat-faq-group[open]");
   const baseListHeight = 160;
   const basePhoneHeight = 892;
-  const basePositions = { inputBg: 790, input: 804, send: 812, disclaimer: 862 };
+  const basePositions = {
+    faqTitle: 582,
+    starters: 608,
+    inputBg: 790,
+    input: 804,
+    send: 812,
+    disclaimer: 862,
+  };
 
-  starters.classList.toggle("is-expanded", Boolean(openGroup));
-  starters.style.maxHeight = openGroup ? "none" : "";
-  const listHeight = openGroup ? Math.ceil(starters.scrollHeight) : baseListHeight;
-  const faqExtra = openGroup ? Math.max(0, listHeight - baseListHeight + 18) : 0;
   const inputExtra = resizeWentianChatInput(input);
   const fieldHeight = 48 + inputExtra;
+  const desktop = window.matchMedia?.("(min-width: 881px)")?.matches || false;
+  const viewportHeight = Math.max(window.innerHeight || 0, window.visualViewport?.height || 0);
+  const viewportWidth = window.visualViewport?.width || window.innerWidth || document.documentElement.clientWidth || WENTIAN_PHONE_WIDTH;
+  const currentScale = Number.parseFloat(getComputedStyle(phone).getPropertyValue("--wentian-phone-scale"));
+  const fallbackScale = Math.max(0.78, Math.min(1, viewportWidth / WENTIAN_PHONE_WIDTH));
+  const phoneScale = Number.isFinite(currentScale) && currentScale > 0 ? currentScale : fallbackScale;
+  const visiblePhoneHeight = viewportHeight ? Math.floor(viewportHeight / phoneScale) : basePhoneHeight;
+
+  starters.classList.toggle("is-expanded", Boolean(openGroup));
+
+  if (!desktop) {
+    const inputBgHeight = 102 + inputExtra;
+    const phoneHeight = Math.max(680 + inputExtra, Math.min(basePhoneHeight + inputExtra, visiblePhoneHeight || basePhoneHeight));
+    const inputBgTop = Math.min(basePositions.inputBg, Math.max(560, phoneHeight - inputBgHeight));
+    const starterBottom = inputBgTop - 24;
+    const startersTop = Math.max(408, Math.min(basePositions.starters, starterBottom - baseListHeight));
+    const startersHeight = Math.max(112, Math.min(baseListHeight, starterBottom - startersTop));
+    const faqTitleTop = Math.max(382, startersTop - 26);
+    const logTop = Number.parseFloat(getComputedStyle(log).top) || (log.classList.contains("is-with-context") ? 224 : 136);
+    const logHeight = Math.max(log.classList.contains("is-with-context") ? 132 : 210, faqTitleTop - logTop - 24);
+
+    phone.style.height = `${phoneHeight}px`;
+    log.style.height = `${logHeight}px`;
+    if (scrollBottom) scrollBottom.style.top = `${logTop + logHeight - 6}px`;
+    faqTitle.style.top = `${faqTitleTop}px`;
+    starters.style.top = `${startersTop}px`;
+    starters.style.maxHeight = `${startersHeight}px`;
+    starters.style.overflow = "hidden auto";
+    inputBg.style.top = `${inputBgTop}px`;
+    inputBg.style.height = `${inputBgHeight}px`;
+    input.style.top = `${inputBgTop + 14}px`;
+    send.style.top = `${inputBgTop + 14 + fieldHeight - 40}px`;
+    disclaimer.style.top = `${inputBgTop + 72 + inputExtra}px`;
+    scheduleWentianPhoneFit();
+    return;
+  }
+
+  starters.style.overflow = "";
+  starters.style.maxHeight = openGroup ? "none" : "";
+  starters.style.top = "";
+  faqTitle.style.top = "";
+  log.style.height = "";
+  if (scrollBottom) scrollBottom.style.top = "";
+
+  const listHeight = openGroup ? Math.ceil(starters.scrollHeight) : baseListHeight;
+  const faqExtra = openGroup ? Math.max(0, listHeight - baseListHeight + 18) : 0;
   const totalExtra = faqExtra + inputExtra;
 
   phone.style.height = `${basePhoneHeight + totalExtra}px`;
