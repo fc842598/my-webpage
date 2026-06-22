@@ -154,10 +154,6 @@ button {
   overflow: visible;
 }
 
-.view.has-floating-bottom-nav {
-  padding-bottom: calc(var(--wentian-floating-nav-height, 89px) + env(safe-area-inset-bottom) + 8px);
-}
-
 .seo-fallback {
   display: none !important;
 }

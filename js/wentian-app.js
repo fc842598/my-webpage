@@ -18406,6 +18406,52 @@ function getWentianNodeBottomWithinPhone(phone, node) {
   return Math.max(0, Math.ceil(rect.bottom - phoneRect.top));
 }
 
+function syncWentianPhoneBackgroundHeights(phone, nextHeight) {
+  const currentHeight = parseFloat(phone?.style?.height) || phone?.offsetHeight || WENTIAN_PHONE_HEIGHT;
+  if (!phone || !Number.isFinite(nextHeight) || nextHeight <= 0) return;
+  for (const node of phone.querySelectorAll(".fig-box")) {
+    const left = Number.parseFloat(node.style.left);
+    const top = Number.parseFloat(node.style.top);
+    const width = Number.parseFloat(node.style.width);
+    const height = Number.parseFloat(node.style.height);
+    if (!Number.isFinite(left) || !Number.isFinite(top) || !Number.isFinite(width) || !Number.isFinite(height)) continue;
+    if (left !== 0 || top !== 0 || Math.round(width) < WENTIAN_PHONE_WIDTH) continue;
+    if (height < currentHeight - 1) continue;
+    node.style.height = `${nextHeight}px`;
+  }
+}
+
+function compactWentianBottomNavGap(phone = view?.querySelector?.(".figma-phone")) {
+  if (!phone) return false;
+  const navSelector = '[data-node-id^="source-bottom-"],[data-node-id^="converted-bottom-"],[data-node-id^="bottom-"]';
+  const navNodes = Array.from(phone.querySelectorAll(navSelector));
+  if (!navNodes.length) return false;
+  const navTop = Math.min(...navNodes.map((node) => Number.parseFloat(node.style.top)).filter((top) => Number.isFinite(top)));
+  const navBottom = Math.max(...navNodes.map((node) => {
+    const top = Number.parseFloat(node.style.top);
+    const height = Number.parseFloat(node.style.height);
+    return Number.isFinite(top) && Number.isFinite(height) ? top + height : 0;
+  }));
+  if (!Number.isFinite(navTop) || !Number.isFinite(navBottom)) return false;
+  const phoneHeight = parseFloat(phone.style.height) || phone.offsetHeight || WENTIAN_PHONE_HEIGHT;
+  if (phoneHeight <= navBottom + 4) return false;
+
+  let maxBottom = 0;
+  const contentNodes = phone.querySelectorAll('[data-node-id], input, select, textarea, .wentian-chart-content-stack, .liuyao-phone-screen, .wentian-hepan-result-panel, .wentian-native-mingpan');
+  contentNodes.forEach((node) => {
+    if (!(node instanceof Element)) return;
+    if (node.matches(navSelector) || node.closest(navSelector)) return;
+    maxBottom = Math.max(maxBottom, getWentianNodeBottomWithinPhone(phone, node));
+  });
+  if (maxBottom > navTop + 4) return false;
+
+  const nextHeight = Math.max(Math.ceil(navBottom), Math.ceil(maxBottom));
+  if (phoneHeight - nextHeight < 8) return false;
+  phone.style.height = `${nextHeight}px`;
+  syncWentianPhoneBackgroundHeights(phone, nextHeight);
+  return true;
+}
+
 function compactWentianShortFigScreenLayout(screenNo, options = getWentianShortScreenLayoutOptions(screenNo)) {
   if (!view || !options) return false;
   const phone = view.querySelector(`.figma-phone[data-node-id="screen-${screenNo}"]`);
@@ -18550,6 +18596,7 @@ function fitActivePhoneShell() {
   const wrap = view.querySelector(".phone-wrap");
   const phone = view.querySelector(".figma-phone");
   if (!wrap || !phone) return;
+  compactWentianBottomNavGap(phone);
   const viewport = window.visualViewport;
   const viewportWidth = viewport?.width || window.innerWidth || document.documentElement.clientWidth || WENTIAN_PHONE_WIDTH;
   const viewportHeight = viewport?.height || window.innerHeight || document.documentElement.clientHeight || WENTIAN_PHONE_HEIGHT;
