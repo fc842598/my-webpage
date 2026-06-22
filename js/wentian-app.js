@@ -511,13 +511,6 @@ function applyWentianColorUpgrade(markup) {
   return String(markup).replace(/#[0-9a-fA-F]{3,8}\b/g, (hex) => WENTIAN_COLOR_UPGRADE[hex.toLowerCase()] || hex);
 }
 
-function figStatus(time) {
-  return `
-    ${figText("status-time", time, 22, 16, 90, 21, "#21211f", 700)}
-    ${figText("status-net", "◷  30.4\\nKB/s   5G  ▮▮▮  33 ⚡", 266, 15, 106, 10, "#21211f", 700, "right")}
-  `;
-}
-
 function figPhone(nodeId, name, body, height = 844, extraClass = "", showHomeIndicator = true) {
   const phoneBody = withWentianStandardBottomNav(nodeId, body, height);
   return `
@@ -681,8 +674,6 @@ function figBottomNav(active) {
 
 function convertedHeader(screen) {
   return `
-    ${figText(`screen-${screen.no}-time`, screen.no >= 36 ? "15:19" : screen.no >= 30 ? "15:18" : "15:16", 18, 10, 70, 11, "#26211c")}
-    ${figText(`screen-${screen.no}-battery`, "● ● ● 72%", 292, 10, 78, 11, "#26211c", 400, "right")}
     ${wentianBackPill(`screen-${screen.no}`, 18, 42)}
     ${figText(`screen-${screen.no}-title`, screen.title, 0, 52, 390, 17, "#26211c", 700, "center")}
   `;
@@ -803,8 +794,6 @@ function sourceHomeScreen(screen) {
     ["八字与MBTI人格深度解析及运势全面预测", "融合八字命理学与MBTI四维模型。从五行能量场到潜意识决策模式，为您深度揭示性格底色、原生…", "¥58", "¥88", "直接购买", 692]
   ];
   return `
-    ${figText("source-2-time", "15:16", 18, 16, 70, 14, "#26211c")}
-    ${figText("source-2-status", "◉  0.00  5G  ▮ 31 ⚡", 250, 14, 120, 10, "#26211c", 700, "right")}
     ${wentianBackPill("source-2", 18, 44)}
     ${figText("source-2-title", "命理报告", 0, 58, 390, 18, "#c6a763", 700, "center")}
     ${figBox("source-2-hero", 18, 98, 354, 166, "", "border-radius:13px;background:linear-gradient(135deg,#b64c47,#8d302a);box-shadow:0 9px 22px rgba(161,56,36,.18);")}
@@ -855,8 +844,6 @@ function sourceArchiveScreen(screen) {
     ["许大师", "紫微命盘", "AI解析", "", "已接入您的紫微命盘，可直接开启对话", 305]
   ];
   return `
-    ${figText("source-3-time", "15:17", 18, 16, 70, 14, "#26211c")}
-    ${figText("source-3-status", "◉  0.00  5G  ▮ 31 ⚡", 250, 14, 120, 10, "#26211c", 700, "right")}
     ${figText("source-3-title", "阅天AI", 18, 62, 160, 29, "#26211c", 800)}
     ${figText("source-3-subtitle", "许大师已准备好为您解读", 18, 101, 220, 13, "#7f756b")}
     ${figText("source-3-current-title", "当前档案", 18, 136, 120, 15, "#26211c", 800)}
@@ -891,8 +878,6 @@ function sourceArchiveScreenV2(screen) {
   const activeArchive = getCurrentWentianArchive();
   const active = getWentianArchiveDisplay(activeArchive);
   return `
-    ${figText("source-3-time-v2", "15:17", 18, 16, 70, 14, "#26211c")}
-    ${figText("source-3-status-v2", "\u25c9  0.00  5G  \u25ae 31 \u26a1", 250, 14, 120, 10, "#26211c", 700, "right")}
     ${figText("source-3-title-v2", "\u9605\u5929AI", 18, 62, 170, 29, "#26211c", 800)}
     ${figText("source-3-subtitle-v2", "\u8bb8\u5927\u5e08\u5df2\u51c6\u5907\u597d\u4e3a\u60a8\u89e3\u8bfb", 18, 101, 240, 13, "#7f756b")}
     ${figText("source-3-current-title-v2", "\u5f53\u524d\u6863\u6848", 18, 136, 120, 15, "#26211c", 800)}
@@ -10584,8 +10569,6 @@ function sourceProfileScreen(screen) {
     : "";
   return `
     ${figBox("source-25-bg", 0, 0, 390, metrics.height, "", "background:linear-gradient(180deg,#fbf6eb 0%,#fffdf8 36%,#fffdf8 100%);")}
-    ${figText("source-25-time", "15:21", 18, 15, 70, 14, "#26211c")}
-    ${figText("source-25-status", "◉  0.30  5G  ▮ 33 ⚡", 250, 14, 120, 10, "#26211c", 700, "right")}
     ${wentianBackPill("source-25", 18, 48, 'data-action="back" aria-label="返回"', { zIndex: 80 })}
     ${figText("source-25-title", "排盘记录", 0, 60, 390, 24, "#201813", 900, "center")}
     ${figText("source-25-menu", "☰", 334, 61, 34, 22, "#201813", 800, "center")}
@@ -10878,8 +10861,6 @@ function sourceMineScreen(screen) {
   const statusText = member.isMember ? member.subtitle : (account.loggedIn ? "免费版，可升级" : "未登录，可注册");
   const loginBadgeText = member.isMember ? "付费版" : (account.loggedIn ? "账号" : "登录");
   return `
-    ${figText("source-31-time", "15:23", 18, 15, 70, 14, "#26211c")}
-    ${figText("source-31-status", "◉  30.4  5G  ▮ 33 ⚡", 250, 14, 120, 10, "#26211c", 700, "right")}
     ${figText("source-31-title", "我的", 18, 58, 150, 30, "#26211c", 800)}
     ${figText("source-31-sub", "账户与偏好设置", 18, 101, 180, 14, "#8f857a")}
     ${figBox("source-31-gear", 338, 56, 38, 38, "", "border-radius:19px;background:#fff;box-shadow:0 5px 14px rgba(80,55,28,.10);")}
@@ -10943,8 +10924,6 @@ function sourceMineScreenV2(screen) {
   ];
   const planBannerText = member.isMember ? "\u67E5\u770B\u6743\u76CA" : "\u7ACB\u5373\u67E5\u770B";
   return `
-    ${figText("source-31-time-v2", "15:23", 18, 15, 70, 14, "#26211c")}
-    ${figText("source-31-status-v2", "\u25CF  30.4  5G  \u25B3 33 \u25E6", 250, 14, 120, 10, "#26211c", 700, "right")}
     ${figText("source-31-title-v2", "\u6211\u7684", 18, 58, 150, 30, "#26211c", 800)}
     ${figText("source-31-sub-v2", "\u8D26\u6237\u4E0E\u504F\u597D\u8BBE\u7F6E", 18, 101, 180, 14, "#8f857a")}
     ${figBox("source-31-gear-v2", 338, 56, 38, 38, "", "border-radius:19px;background:#fff;box-shadow:0 5px 14px rgba(80,55,28,.10);")}
@@ -18325,14 +18304,6 @@ function syncWentianStackWithRoute(route) {
 function stripScreenshotStatusBar() {
   const phone = view.querySelector(".figma-phone");
   if (!phone) return;
-  const statusNodes = phone.querySelectorAll([
-    '[data-node-id="status-time"]',
-    '[data-node-id="status-net"]',
-    '[data-node-id$="-time"]',
-    '[data-node-id$="-status"]',
-    '[data-node-id$="-battery"]'
-  ].join(","));
-  statusNodes.forEach((node) => node.remove());
   if (phone.classList.contains("no-status-shift")) return;
 
   const bottomNodes = [...phone.querySelectorAll('[data-node-id^="source-bottom-"], [data-node-id^="converted-bottom-"], [data-node-id^="bottom-"]')];
@@ -18871,7 +18842,6 @@ function renderHome() {
 
 function renderAI() {
   return figPhone("17:3", "Hi-Fi 01 AI阅天", `
-    ${figStatus("15:17")}
     ${figButton("17:6-hit", 14, 54, 54, 62, 'data-route="home"')}
     ${figText("17:6", "‹", 28, 66, 26, 42, "#21211f", 700, "center")}
     ${figBox("17:7", 58, 54, 32, 32, "", "border-radius:50%;background:linear-gradient(145deg,#2f2f2b,#756f5f);box-shadow:inset 0 -6px 10px rgba(0,0,0,.22);")}
@@ -18972,7 +18942,6 @@ function renderDivine() {
 
 function renderMine() {
   return figPhone("17:97", "Hi-Fi 03 我的", `
-    ${figStatus("15:23")}
     ${figText("17:100", "我的", 16, 66, 120, 35, "#21211f", 700)}
     ${figText("17:101", "账户与偏好设置", 16, 120, 160, 18, "#75756e")}
     ${figBox("17:102", 338, 70, 38, 38, "fig-card", "border-radius:13px;")}
@@ -19036,7 +19005,6 @@ function renderMine() {
 
 function renderRecharge() {
   return figPhone("17:49", "Hi-Fi 02 阅天套餐", `
-    ${figStatus("15:22")}
     ${figButton("17:52-hit", 14, 54, 54, 62, 'data-route="mine"')}
     ${figText("17:52", "‹", 28, 66, 26, 42, "#ba8f38", 700, "center")}
     ${figText("17:53", "阅天套餐", 0, 68, 390, 28, "#ba8f38", 700, "center")}
