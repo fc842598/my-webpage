@@ -18378,6 +18378,9 @@ function syncWentianFloatingBottomNav() {
 
   navNodes.forEach((node) => {
     const clone = node.cloneNode(true);
+    clone.style.visibility = "";
+    clone.style.pointerEvents = "";
+    delete clone.dataset.wentianNavHidden;
     const top = Number.parseFloat(clone.style.top);
     if (Number.isFinite(top)) clone.style.top = `${Math.round(top - navTop)}px`;
     inner.appendChild(clone);
