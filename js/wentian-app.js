@@ -7749,6 +7749,45 @@ Object.assign(WENTIAN_I18N_EN_EXTRA, {
   "\u5f85\u751f\u6210": "Waiting"
 });
 
+Object.assign(WENTIAN_I18N_EN_EXTRA, {
+  "\u8fd4\u56de": "Back",
+  "\u547d\u4e3b": "Chart",
+  "\u5207\u6362": "Switch",
+  "\u8bb8\u5927\u5e08": "Master Xu",
+  "\u547d\u76d8\u987e\u95ee \u00b7 \u5728\u7ebf": "Chart Advisor",
+  "\u5e38\u95ee": "FAQ",
+  "\u7ec6\u95ee": "Details",
+  "\u95ee\u4e00\u95ee": "Ask",
+  "\u9605\u5929AI": "Yuetian AI",
+  "\u7d2b\u5fae\u547d\u76d8": "Zi Wei Chart",
+  "\u4f60\u60f3\u95ee\u4ec0\u4e48\uff1f": "What do you want to ask?",
+  "\u4e00\u4e8b\u4e00\u5366\uff0c\u8d8a\u5177\u4f53\u8d8a\u51c6": "One clear matter works best",
+  "\u5f00\u59cb\u8d77\u5366": "Start Casting",
+  "\u4eca\u65e5\u5df2\u5360 0/3": "Today 0/3",
+  "\u53ef\u9009\u793a\u4f8b": "Examples",
+  "\u9605\u5929AI\u9ad8\u7ea7\u547d\u7406\u5de5\u5177": "Yuetian AI Tools",
+  "\u547d\u4e66": "Reports",
+  "\u95ee\u5929": "Ask",
+  "\u5b50\u5e73": "Bazi",
+  "\u3010\u89c6\u9891\u8bb2\u89e3\u4f4d\u3011": "Video Guide",
+  "\u5148\u786e\u5b9a\u529e\u516c\u5ba4\u5927\u95e8\u671d\u5411\u548c\u8001\u677f\u4f4d\u7f6e": "Confirm the door direction and boss seat first",
+  "\u4e0d\u4f1a\u786e\u5b9a\u65b9\u4f4d\uff1f": "Not Sure About Direction?",
+  "\u8fd4\u56de\u529e\u516c\u5ba4\u5e03\u5c40": "Back to Office Layout",
+  "\u5148\u770b\u8bf4\u660e": "Guide First",
+  "\u53bb\u529e\u516c\u5ba4\u5e03\u5c40": "Office Layout",
+  "\u7ee7\u7eed\u8c03\u6574": "Adjust Layout",
+  "\u67e5\u770b\u4f7f\u7528\u8bf4\u660e": "View Guide",
+  "\u5df2\u751f\u6210 0 \u6761\u89e3\u8bfb": "0 readings",
+  "\u8fd8\u6ca1\u6709\u53ef\u89e3\u8bfb\u5185\u5bb9": "No readable content yet",
+  "\u6dfb\u52a0\u5bb6\u4eba\u3001\u957f\u8f88\u3001\u53a8\u623f\u3001\u5395\u6240\u6216\u5ba2\u5385\u540e\u518d\u5206\u6790\u3002": "Add people or spaces before analyzing.",
+  "\u5c1a\u672a\u6392\u5e03": "Not placed yet",
+  "\u89e3\u8bfb\u7ed3\u679c": "Reading Results",
+  "\u91cd\u65b0\u5206\u6790": "Analyze Again",
+  "\u6dfb\u52a0\u5bb6\u4eba\u3001\u5b50\u5973\u3001\u53a8\u623f\u3001\u5395\u6240\u6216\u5ba2\u5385\u540e\u518d\u5206\u6790\u3002": "Add people or spaces before analyzing.",
+  "\u4e0d\u4f1a\u786e\u5b9a\u65b9\u4f4d": "Not sure about direction",
+  "v1 \u5148\u505a\u9759\u6001\u5361\u4f4d\uff0c\u540e\u7eed\u53ef\u76f4\u63a5\u66ff\u6362\u6210\u771f\u5b9e\u89c6\u9891\u6216\u622a\u56fe\u8bb2\u89e3\u3002": "Static placeholder. Replace with a real guide video later."
+});
+
 const WENTIAN_I18N_EN_LUNAR_MONTH_MAP = {
   "正月": "First Month", "二月": "Second Month", "三月": "Third Month", "四月": "Fourth Month", "五月": "Fifth Month", "六月": "Sixth Month",
   "七月": "Seventh Month", "八月": "Eighth Month", "九月": "Ninth Month", "十月": "Tenth Month", "十一月": "Eleventh Month", "十二月": "Twelfth Month",
@@ -8141,11 +8180,124 @@ function applyWentianLanguageText(root = view, code = getWentianLanguageCode(), 
       const translated = translateWentianText(source, option.code, element);
       if (translated !== current) element.value = translated;
     }
+
+    finalizeWentianLanguageText(root, option.code);
   } finally {
     window.setTimeout(() => {
       if (!wasApplying || options.force) wentianI18nApplying = false;
       if (wentianI18nPendingRoot) queueWentianLanguageApply(wentianI18nPendingRoot, wentianI18nPendingCode);
     }, 0);
+  }
+}
+
+function setWentianFinalText(root, selector, text) {
+  const element = root?.querySelector?.(selector);
+  if (element) element.textContent = text;
+}
+
+function setWentianFinalTextAt(root, selector, index, text) {
+  const element = root?.querySelectorAll?.(selector)?.[index];
+  if (element) element.textContent = text;
+}
+
+function finalizeWentianLanguageText(root = view, code = getWentianLanguageCode()) {
+  if (code !== "en" || !root?.querySelector) return;
+
+  setWentianFinalText(root, '[data-node-id="source-1-feature-title-4"]', "Office Layout");
+  setWentianFinalText(root, '[data-node-id="source-1-feature-sub-4"]', "Door & Boss Seat");
+  setWentianFinalText(root, '[data-node-id="source-1-feature-title-5"]', "Liuren");
+  setWentianFinalText(root, '[data-node-id="source-1-feature-sub-5"]', "Lunar Palm Casting");
+
+  setWentianFinalText(root, '[data-node-id="yz42-compass-close-text"]', "Close");
+  setWentianFinalText(root, '[data-node-id="yz42-section-title"]', "Nine Palaces");
+  setWentianFinalText(root, '[data-node-id="yz42-placement-prompt"]', "Open compass, align N/E/S/W, then place items.");
+  setWentianFinalText(root, '[data-node-id="yz43-sub"]', "Place by actual room use");
+  setWentianFinalText(root, '[data-node-id="yz43-avatar-text-8"]', "GP");
+  setWentianFinalText(root, '[data-node-id="yz43-option-8"]', "Grandfather");
+  setWentianFinalText(root, '[data-node-id="yz43-avatar-text-9"]', "GM");
+  setWentianFinalText(root, '[data-node-id="yz43-option-9"]', "Grandmother");
+
+  const fileCount = root.querySelector('[data-node-id="source-5-count-text"]');
+  const fileCountValue = fileCount?.textContent?.match(/\d+/)?.[0] || "0";
+  if (fileCount) fileCount.textContent = `${fileCountValue} Files`;
+  setWentianFinalText(root, '[data-node-id="source-5-intro-pill-text"]', "Online");
+
+  setWentianFinalText(root, '[data-node-id="wt22-login-desc-clean"]', "Invite both sides to get daily Master Xu credits for 3 days after registration.");
+  setWentianFinalText(root, '[data-node-id="wt22-tip-desc-clean"]', "Both inviter and new user receive daily chat rewards for 3 days.");
+  setWentianFinalText(root, "#wentian-chart-tst", "Enter a birthplace to preview true solar time. You can also create the chart first.");
+  const chartCity = root.querySelector("#wentian-chart-city");
+  if (chartCity) chartCity.setAttribute("placeholder", "Birth city, optional");
+  setWentianFinalText(root, '[data-node-id="wt30-safe"]', "Payment details are encrypted by the provider.");
+  setWentianFinalText(root, '[data-node-id="wt34-copy-title"]', "Share Copy");
+  setWentianFinalText(root, '[data-node-id="wt34-copy-lead"]', "Share Yuetian AI with friends for charting, readings, and Master Xu chat.");
+  setWentianFinalText(root, '[data-node-id="source-password-login-desc"]', "Password login will be linked to this account, payment records, and membership benefits.");
+
+  const yangzhaiKicker = root.querySelector('[data-node-id="yz43-confirm-kicker"]');
+  const selectedCount = yangzhaiKicker?.textContent?.match(/\d+/)?.[0] || "";
+  if (yangzhaiKicker) yangzhaiKicker.textContent = selectedCount ? `Selected ${selectedCount}` : "No Selection";
+  setWentianFinalText(root, '[data-node-id="yz43-confirm-note"]', selectedCount ? "Confirm this palace, then adjust members below." : "Choose members, then confirm this palace.");
+
+  root.querySelectorAll(".wentian-native-mingpan .fc-center-lbl").forEach((element, index) => {
+    if (element.textContent.trim() === "Text") element.textContent = index === 0 ? "Solar" : "True Solar";
+  });
+  const yijingMaster = root.querySelector(".wentian-yijing-master-detail");
+  if (yijingMaster) {
+    yijingMaster.innerHTML = "<p>This saved commentary is in Chinese. Regenerate this module in English for a full English reading.</p><p>Use the classic text and summary above as a quick reference for now.</p>";
+  }
+  const yijingLines = root.querySelector(".wentian-mb-reading-lines");
+  if (yijingLines && yijingLines.textContent.includes("This Chinese text")) {
+    yijingLines.innerHTML = "<p>Regenerate this saved reading in English to replace the Chinese long-form commentary.</p>";
+  }
+
+  setWentianFinalText(root, '[data-node-id="yz45-step-desc-1"]', "Place family members, elders, kitchen, bathroom, or living room.");
+  setWentianFinalText(root, '[data-node-id="yz45-step-title-3"]', "Rework");
+
+  const officeGuide = root.querySelector('[data-node-id="office51-scroll"]');
+  if (officeGuide) {
+    setWentianFinalText(officeGuide, ".office-layout-panel.hero .office-layout-kicker", "Start Here");
+    setWentianFinalText(officeGuide, ".office-layout-panel.hero .office-layout-title", "Set Door First, Then Boss Seat");
+    setWentianFinalText(officeGuide, ".office-layout-panel.hero .office-layout-copy", "Confirm the office door direction and boss seat first, then choose the outer and inner trigrams.");
+    setWentianFinalText(officeGuide, ".office-layout-video-slot strong", "Guide Card");
+    setWentianFinalTextAt(officeGuide, ".office-layout-guide-step strong", 0, "Confirm the door direction and boss seat first");
+    setWentianFinalTextAt(officeGuide, ".office-layout-guide-step p", 0, "The outer trigram reads the door direction. The inner trigram reads the boss seat.");
+    setWentianFinalTextAt(officeGuide, ".office-layout-guide-step strong", 1, "Use a compass or floor plan");
+    setWentianFinalTextAt(officeGuide, ".office-layout-guide-step p", 1, "Stand near the office center, mark north, then locate the door and boss seat.");
+    setWentianFinalTextAt(officeGuide, ".office-layout-guide-step strong", 2, "Choose trigrams, then query");
+    setWentianFinalTextAt(officeGuide, ".office-layout-guide-step p", 2, "The system returns a summary, core conclusion, layout advice, and long-form reading.");
+    setWentianFinalText(officeGuide, ".office-layout-panel:last-child h3", "Not Sure About Direction?");
+    setWentianFinalText(officeGuide, ".office-layout-panel:last-child .office-layout-copy", "First find north on the floor plan, then locate the door side and the boss seat palace. If unsure, verify with a compass before choosing.");
+    setWentianFinalText(officeGuide, ".office-layout-panel:last-child .office-layout-button", "Back to Office Layout");
+  }
+
+  const officeHome = root.querySelector('[data-node-id="office50-scroll"]');
+  if (officeHome) {
+    setWentianFinalText(root, '[data-node-id="office50-title"]', "Office Layout");
+    setWentianFinalText(root, '[data-node-id="office50-right"]', "Help");
+    setWentianFinalText(officeHome, ".office-layout-panel.hero .office-layout-kicker", "Door Outer · Boss Inner");
+    setWentianFinalText(officeHome, ".office-layout-panel.hero .office-layout-title", "Door Direction + Boss Seat");
+    setWentianFinalText(officeHome, ".office-layout-panel.hero .office-layout-copy", "Choose the office door direction and boss seat to generate a layout summary and advice.");
+    setWentianFinalTextAt(officeHome, ".office-layout-step-chip", 0, "1 Outer");
+    setWentianFinalTextAt(officeHome, ".office-layout-step-chip", 1, "2 Inner");
+    setWentianFinalTextAt(officeHome, ".office-layout-step-chip", 2, "3 Result");
+    setWentianFinalTextAt(officeHome, ".office-layout-row-label", 0, "Office door direction (outer)");
+    setWentianFinalTextAt(officeHome, ".office-layout-row-label", 1, "Boss seat position (inner)");
+    setWentianFinalTextAt(officeHome, ".office-layout-button", 0, "Query");
+    setWentianFinalTextAt(officeHome, ".office-layout-button", 1, "View Guide");
+    setWentianFinalTextAt(officeHome, ".office-layout-button", 2, "Clear");
+    const officeOptions = ["Please choose", "NW · Qian", "N · Kan", "NE · Gen", "E · Zhen", "SE · Xun", "S · Li", "SW · Kun", "W · Dui"];
+    officeHome.querySelectorAll(".office-layout-select").forEach((select) => {
+      Array.from(select.options || []).forEach((option, index) => {
+        if (officeOptions[index]) option.textContent = officeOptions[index];
+      });
+    });
+  }
+
+  const officeResult = root.querySelector('[data-node-id="office52-scroll"]');
+  if (officeResult && !officeResult.querySelector(".office-layout-summary-card")) {
+    setWentianFinalText(root, '[data-node-id="office52-title"]', "Office Layout Result");
+    setWentianFinalText(officeResult, ".office-layout-panel.hero .office-layout-kicker", "Not Started");
+    setWentianFinalText(officeResult, ".office-layout-panel.hero .office-layout-title", "Choose Layout First");
+    setWentianFinalText(officeResult, ".office-layout-panel.hero .office-layout-copy", "Return to Office Layout, choose the outer and inner trigrams, then generate the result.");
   }
 }
 
