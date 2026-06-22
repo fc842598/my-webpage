@@ -559,9 +559,9 @@ function withWentianStandardBottomNav(nodeId, body, height) {
 }
 
 function getWentianArchiveSelectScreenMetrics(archiveCount = 0) {
-  if (archiveCount <= 0) return { bottomNavY: 648, height: 756 };
-  if (archiveCount === 1) return { bottomNavY: 706, height: 814 };
-  return { bottomNavY: 755, height: 844 };
+  if (archiveCount <= 0) return getWentianStandardScreenMetrics(648, 756);
+  if (archiveCount === 1) return getWentianStandardScreenMetrics(706, 814);
+  return getWentianStandardScreenMetrics(755, 844);
 }
 
 function getWentianArchiveSelectScreenState() {
@@ -574,11 +574,17 @@ function getWentianArchiveSelectScreenState() {
 }
 
 function getWentianProfileScreenMetrics(visibleCount = 0, showIndex = false) {
-  if (showIndex) return { bottomNavY: 778, height: 867 };
-  if (visibleCount <= 0) return { bottomNavY: 700, height: 790 };
-  if (visibleCount === 1) return { bottomNavY: 716, height: 806 };
-  if (visibleCount === 2) return { bottomNavY: 736, height: 826 };
-  return { bottomNavY: 756, height: 846 };
+  if (showIndex) return getWentianStandardScreenMetrics(778, 867);
+  if (visibleCount <= 0) return getWentianStandardScreenMetrics(700, 790);
+  if (visibleCount === 1) return getWentianStandardScreenMetrics(716, 806);
+  if (visibleCount === 2) return getWentianStandardScreenMetrics(736, 826);
+  return getWentianStandardScreenMetrics(756, 846);
+}
+
+function getWentianStandardScreenMetrics(bottomNavY = 755, height = WENTIAN_PHONE_HEIGHT) {
+  const navY = Math.max(755, Number(bottomNavY) || 0);
+  const screenHeight = Math.max(WENTIAN_PHONE_HEIGHT, Number(height) || 0, navY + 89);
+  return { bottomNavY: navY, height: screenHeight };
 }
 
 function getWentianProfileScreenState(query = wentianProfileSearchQuery) {
@@ -3909,20 +3915,12 @@ function renderWentianOverallReading(data, fallback, actionAttr, actionLabel) {
   const evidence = getWentianAiEvidenceMap(data);
   const badge = normalizeWentianAiText(card.profileBadge || "贪狼坐命，武官星入局");
   const risk = trimWentianAiText(card.risk || "迁移化忌冲命，外部阻力重，异地发展需稳扎稳打，不宜草率。", 92);
-  const quicks = [
-    ["实干开创", "命盘主线"],
-    ["七杀执行", "优势核心"],
-    ["迁移化忌", "风险关键"],
-  ];
   return `
     <div class="wentian-mb-overall-hero">
       <span>整体批命</span>
       <h3>整体批命</h3>
       <b>${escapeHtml(badge)}</b>
       ${renderWentianMobileActionButton(actionAttr, actionLabel)}
-    </div>
-    <div class="wentian-mb-overall-quick">
-      ${quicks.map(([main, sub]) => `<section><strong>${escapeHtml(main)}</strong><span>${escapeHtml(sub)}</span></section>`).join("")}
     </div>
     <div class="wentian-mb-overall-sections">
       ${sections.map((section, index) => {
@@ -4395,13 +4393,11 @@ function renderWentianXiaoLianReading(data, fallback, actionAttr) {
         <section>
           <header><span>${String(index + 1).padStart(2, "0")}</span><h4>${escapeHtml(group.title || "解读")}</h4></header>
           ${renderWentianReadingParagraphs(group.content, fallback)}
-          ${renderWentianXiaoLianTags(groupTags[index])}
         </section>
       `).join("") : `
         <section>
           <header><span>01</span><h4>等待生成</h4></header>
           ${renderWentianReadingParagraphs(`${summaryTitle || "当前流年"} · ${selected.xiaolianPalaceName || "小限宫"}。点击下方按钮，按电脑端小限流年逻辑生成这一岁完整解盘。`, fallback)}
-          ${renderWentianXiaoLianTags([selected.xiaolianPalaceName, selected.oppositePalaceName, selected.liunianGuaName])}
         </section>
       `}
     </div>
@@ -4971,12 +4967,16 @@ function renderWentianFinalVolumeBoard(chapters, options = {}) {
   const chapterTotal = Number(options.chapterTotal || 6);
   const coinMainLabel = options.coinMainLabel || "Read";
   const coinSubLabel = options.coinSubLabel || "Now";
+  const statusLabel = options.statusLabel || "";
   return `
     <div class="wentian-chart-ai-final-board" aria-label="${escapeHtml(getWentianCompactText("命书目录", "Report chapters"))}">
       <div class="wentian-chart-ai-final-hero">
-        <span>${escapeHtml(getWentianCompactText("六卷解读", "Six-volume guide"))}</span>
-        <h3>${escapeHtml(getWentianCompactText("先看全局，再挑重点", "Start broad, then go deeper"))}</h3>
-        <p>${escapeHtml(getWentianCompactText("可一键解读整套六卷，也可按你最关心的方向单独展开。第一次建议先看卷一，再看卷三。", "Unlock the full six-volume reading, or open only the parts you care about first. For a first read, start with Vol. 1, then Vol. 3."))}</p>
+        <div class="wentian-chart-ai-final-copy">
+          <span class="wentian-chart-ai-final-kicker">${escapeHtml(getWentianCompactText("六卷命书", "Volume report"))}</span>
+          <h3>${escapeHtml(getWentianCompactText("先看总批", "Start with the overview"))}</h3>
+          <p>${escapeHtml(getWentianCompactText("专题 · 十年 · 流年 · 曲线", "Topics · Decade · Annual · Curve"))}</p>
+          ${statusLabel ? `<b class="wentian-chart-ai-final-status">${escapeHtml(statusLabel)}</b>` : ""}
+        </div>
         <button
           type="button"
           class="${escapeHtml(`${coinClass} wentian-chart-ai-final-coin`)}"
@@ -4989,11 +4989,6 @@ function renderWentianFinalVolumeBoard(chapters, options = {}) {
           <b>${escapeHtml(coinSubLabel)}</b>
           <em>${escapeHtml(`${chapterDoneCount}/${chapterTotal}`)}</em>
         </button>
-      </div>
-      <div class="wentian-chart-ai-final-meta">
-        <div><b>${escapeHtml(getWentianCompactText("整套可看", "Full set"))}</b>${escapeHtml(getWentianCompactText("一次看全局", "See the whole picture"))}</div>
-        <div><b>${escapeHtml(getWentianCompactText("单卷可点", "Single volume"))}</b>${escapeHtml(getWentianCompactText("想看哪卷点哪卷", "Open any volume you want"))}</div>
-        <div><b>${escapeHtml(getWentianCompactText("首次建议", "First pick"))}</b>${escapeHtml(getWentianCompactText("先看卷一、卷三", "Start with Vol. 1 and 3"))}</div>
       </div>
       <div class="wentian-chart-ai-final-grid">
         ${chapters.map(renderWentianFinalVolumeCard).join("")}
@@ -18042,15 +18037,15 @@ function sourceZiweiAiDecodePanel(saved) {
       <header class="wentian-chart-ai-head">
         <div>
           <span class="wentian-chart-ai-kicker"><i aria-hidden="true"></i>AI 命盘解读</span>
-          <h2>六卷命书</h2>
         </div>
-        <b class="wentian-chart-ai-status">${escapeHtml(statusLabel)}</b>
       </header>
       ${wentianChartAiState.error ? `<p class="wentian-chart-ai-error">${escapeHtml(wentianChartAiState.error)}</p>` : ""}
       ${showFinalBoard ? "" : `<div class="wentian-chart-ai-hero">
         <div class="wentian-chart-ai-hero-copy">
-          <strong class="wentian-chart-ai-hero-title">${escapeHtml(getWentianCompactText("六卷命书", "Volume report"))}</strong>
-          <p>${escapeHtml(getWentianCompactText(isRunning ? "正在解读" : "点击解读", isRunning ? "Decoding..." : "Tap to decode"))}</p>
+          <span class="wentian-chart-ai-hero-kicker">${escapeHtml(getWentianCompactText("六卷命书", "Volume report"))}</span>
+          <strong class="wentian-chart-ai-hero-title">${escapeHtml(getWentianCompactText(isRunning ? "正在生成命书" : "先看总批", isRunning ? "Building your report" : "Start with the overview"))}</strong>
+          <p>${escapeHtml(getWentianCompactText(isRunning ? "生成后可分卷查看" : "专题 · 十年 · 流年 · 曲线", isRunning ? "Open each volume after generation" : "Topics · Decade · Annual · Curve"))}</p>
+          <b class="wentian-chart-ai-hero-status">${escapeHtml(statusLabel)}</b>
         </div>
         <button
           type="button"
@@ -18079,6 +18074,7 @@ function sourceZiweiAiDecodePanel(saved) {
         chapterTotal,
         coinMainLabel,
         coinSubLabel,
+        statusLabel,
       }) : ""}
     </section>
     ${showFinalBoard ? "" : `<div class="wentian-chart-ai-list">
