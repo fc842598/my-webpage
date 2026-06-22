@@ -640,6 +640,13 @@ function getWentianShortScreenLayoutOptions(screenNo) {
         bgSelector: '[data-node-id="source-password-bg"]',
         extraSelectors: ["#wentian-password-status"]
       };
+    case 42:
+      return {
+        minNavY: 674,
+        gap: 18,
+        bgSelector: '[data-node-id="yz42-bg"]',
+        ignoreSelectors: ['[data-node-id="yz42-paper-main"]']
+      };
     case 48:
       return { minNavY: 560, gap: 30, bgSelector: '[data-node-id="wt48-bg"]' };
     case 49:
@@ -14907,10 +14914,6 @@ function sourceYangzhaiCompassScreen(showPrompt = true) {
     ${figText("yz42-section-help", "逐格点击加号安位", 214, 111, 154, 12, "#8e7d68", 700, "right", "font-family:'Noto Sans SC','Microsoft YaHei',sans-serif;")}
     ${yangzhaiCompassShell("yz42", false, showPrompt)}
     ${yangzhaiActions("yz42")}
-    ${figBox("yz42-tip", 20, 720, 350, 46, "", "border:1px solid #eadbc6;border-radius:14px;background:#fffdf8;")}
-    ${figBox("yz42-tip-icon-bg", 36, 734, 18, 18, "", "border-radius:9px;background:#d0c6b6;")}
-    ${figText("yz42-tip-icon", "!", 36, 737, 18, 10, "#fffdf6", 900, "center", "line-height:1;")}
-    ${figText("yz42-tip-text", "当前内容仅供娱乐参考，不等于专业测评或现实指导。", 66, 732, 278, 12, "#9d907f", 600, "left", "line-height:1.45;")}
   `;
 }
 
@@ -18539,6 +18542,7 @@ function compactWentianShortFigScreenLayout(screenNo, options = getWentianShortS
     const id = node.dataset.nodeId || "";
     if (!id || /^source-bottom-|^converted-bottom-|^bottom-/.test(id)) return;
     if (bg && node === bg) return;
+    if ((options.ignoreSelectors || []).some((selector) => node.matches(selector))) return;
     if (node.classList.contains("flow-hotspot")) return;
     maxBottom = Math.max(maxBottom, getWentianNodeBottomWithinPhone(phone, node));
   });
@@ -18744,7 +18748,7 @@ function navigate(route, push = true, syncHash = true) {
     applyWentianLanguageText(view, getWentianLanguageCode(), { force: true });
     stabilizeWentianLanguageText(view);
     if (screen.no === 27) compactWentianZiweiScreenLayout();
-    if ([3, 5, 20, 22, 32, 35, 38, 40, 41, 48].includes(screen.no)) {
+    if ([3, 5, 20, 22, 32, 35, 38, 40, 41, 42, 48].includes(screen.no)) {
       if (screen.no === 20) compactWentianLiuyaoEmptyResultLayout();
       else compactWentianShortFigScreenLayout(screen.no);
     }
@@ -18753,7 +18757,7 @@ function navigate(route, push = true, syncHash = true) {
     ensureWentianLanguageObserver();
     scheduleWentianPhoneFit();
     if (screen.no === 27) scheduleWentianZiweiScreenLayout();
-    if ([3, 5, 20, 22, 32, 35, 38, 40, 41, 48].includes(screen.no)) scheduleWentianShortPageLayout(screen.no);
+    if ([3, 5, 20, 22, 32, 35, 38, 40, 41, 42, 48].includes(screen.no)) scheduleWentianShortPageLayout(screen.no);
     if (screen.no === 49) scheduleWentianHepanResultLayout();
     syncActive();
     window.setTimeout(initWentianAuth, 0);
