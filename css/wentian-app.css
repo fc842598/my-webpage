@@ -1228,6 +1228,14 @@ html[lang="en"] [data-node-id="wt15-seal-text"] {
   z-index: 2;
 }
 
+.wentian-native-mingpan .fc-cell.fc-xiaolian .fc-cell-bottom {
+  padding-right: 36px;
+}
+
+.wentian-native-mingpan .fc-cell.fc-xiaolian .fc-palace-info {
+  min-width: 0;
+}
+
 .wentian-native-mingpan .fc-cell.fc-xiaolian.is-locating {
   animation: wentianFcXiaoLianCellPulse 1.7s ease-out 1;
 }
