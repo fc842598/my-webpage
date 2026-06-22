@@ -586,6 +586,10 @@ html[lang="en"] [data-node-id="source-1-archive-action-text"] {
   font-size: 9px !important;
 }
 
+.figma-phone[data-node-id="screen-9"] [data-node-id="source-4-disclaimer"] {
+  display: none !important;
+}
+
 html[lang="en"] [data-node-id="source-2-hero-title"] {
   top: 112px !important;
   width: 318px !important;
