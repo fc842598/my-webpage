@@ -10624,9 +10624,9 @@ function sourceMembershipScreen() {
     const border = active ? "#c8a65f" : "#eadfce";
     const text = disabled ? `${item.label}配置中` : item.label;
     return `
-      ${figBox(`wt33-pay-method-${item.provider}`, x, 660, width, 42, "", `border:1px solid ${border};border-radius:21px;background:${bg};`)}
-      ${figButton(`wt33-pay-method-hit-${item.provider}`, x, 660, width, 42, disabled ? "" : `data-action="wentian-pay-provider" data-provider="${item.provider}"`)}
-      ${figText(`wt33-pay-method-text-${item.provider}`, text, x, 673, width, compact ? 11 : 12, disabled ? "#b4aaa0" : (active ? "#8f3d30" : "#756d63"), 900, "center")}
+      ${figBox(`wt33-pay-method-${item.provider}`, x, 628, width, 42, "", `border:1px solid ${border};border-radius:21px;background:${bg};`)}
+      ${figButton(`wt33-pay-method-hit-${item.provider}`, x, 628, width, 42, disabled ? "" : `data-action="wentian-pay-provider" data-provider="${item.provider}"`)}
+      ${figText(`wt33-pay-method-text-${item.provider}`, text, x, 641, width, compact ? 11 : 12, disabled ? "#b4aaa0" : (active ? "#8f3d30" : "#756d63"), 900, "center")}
     `;
   }).join("");
   return `
@@ -10647,14 +10647,14 @@ function sourceMembershipScreen() {
     ${figText("wt33-member-quota", "100次/天", 174, 402, 160, 15, "#8f3d30", 900, "right")}
     ${figText("wt33-member-desc", "每日额度自动刷新。", 44, 436, 282, 13, "#756d63", 700)}
 
-    ${figBox("wt33-benefit", 24, 508, 342, 116, "", "border-radius:16px;background:#fff;box-shadow:0 8px 20px rgba(70,45,25,.07);")}
-    ${figText("wt33-benefit-title", "当前额度", 44, 530, 120, 15, "#25211d", 900)}
-    ${figText("wt33-benefit-list", `今日剩余 ${member.daily}<br>每日额度 ${member.dailyLimit}`, 44, 562, 260, 15, "#756d63", 800, "left", "line-height:1.8;")}
-    ${figText("wt33-pay-method-title", "支付方式", 42, 636, 120, 13, "#756d63", 800)}
+    ${figBox("wt33-benefit", 24, 492, 342, 104, "", "border-radius:16px;background:#fff;box-shadow:0 8px 20px rgba(70,45,25,.07);")}
+    ${figText("wt33-benefit-title", "当前额度", 44, 514, 120, 15, "#25211d", 900)}
+    ${figText("wt33-benefit-list", `今日剩余 ${member.daily}<br>每日额度 ${member.dailyLimit}`, 44, 544, 260, 14, "#756d63", 800, "left", "line-height:1.7;")}
+    ${figText("wt33-pay-method-title", "支付方式", 42, 604, 120, 13, "#756d63", 800)}
     ${methodButtons}
-    ${figBox("wt33-submit", 42, 736, 306, 50, "", "border-radius:25px;background:linear-gradient(180deg,#b74e39,#983323);box-shadow:0 14px 28px rgba(158,61,43,.20);")}
-    ${figButton("wt33-submit-hit", 42, 736, 306, 50, 'data-action="wentian-member-pay"')}
-    ${figText("wt33-submit-text", buttonText, 42, 751, 306, 14, "#fffaf3", 900, "center")}
+    ${figBox("wt33-submit", 42, 684, 306, 50, "", "border-radius:25px;background:linear-gradient(180deg,#b74e39,#983323);box-shadow:0 14px 28px rgba(158,61,43,.20);")}
+    ${figButton("wt33-submit-hit", 42, 684, 306, 50, 'data-action="wentian-member-pay"')}
+    ${figText("wt33-submit-text", buttonText, 42, 699, 306, 14, "#fffaf3", 900, "center")}
   `;
 }
 
