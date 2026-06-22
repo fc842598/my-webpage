@@ -1433,7 +1433,6 @@ const WENTIAN_PAID_PRODUCT_NAME = "阅天AI付费版";
 const WENTIAN_PAID_PRODUCT_DESC = "许大师 AI 对话：付费用户 100次/天；免费用户 20次/天。按日刷新，不设月额度。";
 const WENTIAN_PAYMENT_POLL_MS = 3500;
 const WENTIAN_AIPAY_RESOURCE_PATH = "/api/payments/aipay/resource";
-const WENTIAN_GOOGLE_REDIRECT_BRIDGE = "https://fc842598.github.io/my-webpage/pages/wentian-app.html";
 const WENTIAN_GOOGLE_ENABLED = true;
 const WENTIAN_CHART_AI_STORAGE_KEY = "wentian-app-chart-ai-v2";
 const WENTIAN_HTML2PDF_URL = "../vendor/html2pdf/html2pdf.bundle.min.js?v=20260521-local-vendor";
@@ -1661,13 +1660,6 @@ function getWentianAppUrl(extraSearch = "") {
   const url = new URL("/pages/wentian-app.html", `${getWentianFrontendBase()}/`);
   if (extraSearch) url.search = extraSearch.replace(/^\?/, "");
   return url.toString();
-}
-
-function shouldUseWentianGoogleRedirectBridge() {
-  if (typeof window.SITE_CONFIG?.useGoogleRedirectBridge === "boolean") {
-    return window.SITE_CONFIG.useGoogleRedirectBridge;
-  }
-  return ["yuetianai.com", "www.yuetianai.com"].includes(window.location.hostname);
 }
 
 function getWentianAipayResourceUrl() {
@@ -8344,8 +8336,7 @@ function returnToPreviousWentianRoute(fallbackRoute = "screen-1") {
 }
 
 function getWentianGoogleRedirectUrl() {
-  if (shouldUseWentianGoogleRedirectBridge()) return WENTIAN_GOOGLE_REDIRECT_BRIDGE;
-  return new URL(window.location.pathname, window.location.origin).toString();
+  return getWentianAppUrl();
 }
 
 function readWentianStoredSession() {

@@ -32,7 +32,6 @@ const SITE_CONFIG = {
   // API 统一走自定义域名，后续只需要替换这一处
   aiBackendBase: "https://api.yuetianai.com",
   frontendBaseUrl: "",
-  useGoogleRedirectBridge: true,
 
   // ── 六爻审题 ───────────────────────────────────────────
   // 固定走 AI 后端审题，由后台提示词调用大模型判断
