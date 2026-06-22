@@ -18322,15 +18322,22 @@ function clearWentianFloatingBottomNav() {
   }
 }
 
+function shouldHideWentianFloatingBottomNav(phone) {
+  if (!phone || !view) return false;
+  const active = document.activeElement;
+  if (active && view.contains(active)) {
+    const tag = String(active.tagName || "").toLowerCase();
+    if (tag === "input" || tag === "textarea" || tag === "select" || active.isContentEditable) return true;
+  }
+  const viewportHeight = window.visualViewport?.height || 0;
+  const windowHeight = window.innerHeight || document.documentElement.clientHeight || 0;
+  return viewportHeight > 0 && windowHeight > 0 && viewportHeight < windowHeight - 140;
+}
+
 function syncWentianFloatingBottomNav() {
   const phone = view?.querySelector?.(".figma-phone");
   const desktop = window.matchMedia?.("(min-width: 881px)").matches;
   if (!phone || desktop) {
-    clearWentianFloatingBottomNav();
-    return;
-  }
-  const rawHeight = parseFloat(phone.style.height) || phone.offsetHeight || WENTIAN_PHONE_HEIGHT;
-  if (rawHeight <= 900) {
     clearWentianFloatingBottomNav();
     return;
   }
@@ -18383,6 +18390,9 @@ function syncWentianFloatingBottomNav() {
   floating.style.setProperty("--wentian-floating-nav-width", `${Math.ceil(WENTIAN_PHONE_WIDTH * scale)}px`);
   floating.style.setProperty("--wentian-floating-nav-height", `${Math.ceil(navHeight * scale)}px`);
   inner.style.height = `${navHeight}px`;
+  const hidden = shouldHideWentianFloatingBottomNav(phone);
+  floating.classList.toggle("is-hidden", hidden);
+  floating.setAttribute("aria-hidden", hidden ? "true" : "false");
   view?.classList.add("has-floating-bottom-nav");
 }
 
@@ -19916,6 +19926,8 @@ window.addEventListener("hashchange", () => {
   syncWentianStackWithRoute(nextRoute);
   navigate(nextRoute, false, false);
 });
+window.addEventListener("focusin", fitActivePhoneShell);
+window.addEventListener("focusout", () => window.setTimeout(fitActivePhoneShell, 60));
 window.addEventListener("resize", fitActivePhoneShell);
 if (window.visualViewport) {
   window.visualViewport.addEventListener("resize", fitActivePhoneShell);
