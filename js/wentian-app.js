@@ -18406,6 +18406,70 @@ function getWentianNodeBottomWithinPhone(phone, node) {
   return Math.max(0, Math.ceil(rect.bottom - phoneRect.top));
 }
 
+function isWentianCanvasBackgroundNode(node, phoneHeight = WENTIAN_PHONE_HEIGHT) {
+  if (!(node instanceof Element)) return false;
+  const style = node.style || {};
+  const left = Number.parseFloat(style.left);
+  const top = Number.parseFloat(style.top);
+  const width = Number.parseFloat(style.width);
+  const height = Number.parseFloat(style.height);
+  if (!Number.isFinite(left) || !Number.isFinite(top) || !Number.isFinite(width) || !Number.isFinite(height)) return false;
+  const id = node.dataset?.nodeId || "";
+  const spansWholePhone = left <= 0 && top === 0 && width >= WENTIAN_PHONE_WIDTH - 1 && height >= phoneHeight - 1;
+  if (spansWholePhone) return true;
+  return /(?:^|-)bg$|paper-top|paper-main|wash|header-line|source-\d+-bg|wt\d+-bg|yz\d+-bg|office\d+-bg|lr\d+-bg/.test(id);
+}
+
+function adjustWentianHeaderTitles(phone = view?.querySelector?.(".figma-phone")) {
+  if (!phone) return false;
+  const phoneRect = phone.getBoundingClientRect();
+  const topNodes = Array.from(phone.querySelectorAll(".fig-text, .fig-box, .fig-img, .fig-click")).filter((node) => {
+    if (!(node instanceof Element)) return false;
+    const style = getComputedStyle(node);
+    if (style.display === "none" || style.visibility === "hidden" || Number(style.opacity || 1) <= 0) return false;
+    const rect = node.getBoundingClientRect();
+    return rect.width > 0 && rect.height > 0 && rect.top - phoneRect.top <= 96;
+  });
+  let changed = false;
+  topNodes.forEach((node) => {
+    if (!(node instanceof HTMLElement) || !node.classList.contains("fig-text")) return;
+    const style = getComputedStyle(node);
+    const rect = node.getBoundingClientRect();
+    const top = rect.top - phoneRect.top;
+    const left = rect.left - phoneRect.left;
+    const width = rect.width;
+    const align = style.textAlign;
+    const size = Number.parseFloat(style.fontSize || "0");
+    if (top > 72 || left > 4 || width < 280 || align !== "center" || size < 16) return;
+
+    let safeLeft = 16;
+    let safeRight = WENTIAN_PHONE_WIDTH - 16;
+    topNodes.forEach((other) => {
+      if (other === node || !(other instanceof Element)) return;
+      const otherRect = other.getBoundingClientRect();
+      const otherTop = otherRect.top - phoneRect.top;
+      const otherLeft = otherRect.left - phoneRect.left;
+      const otherRight = otherRect.right - phoneRect.left;
+      const otherWidth = otherRect.width;
+      const otherHeight = otherRect.height;
+      if (otherTop > 92 || otherHeight <= 0 || otherWidth <= 0) return;
+      if (otherRight <= 150) safeLeft = Math.max(safeLeft, Math.ceil(otherRight + 8));
+      if (otherLeft >= 240) safeRight = Math.min(safeRight, Math.floor(otherLeft - 8));
+    });
+    const nextWidth = Math.max(120, safeRight - safeLeft);
+    const nextLeft = Math.max(16, Math.min((WENTIAN_PHONE_WIDTH - nextWidth) / 2, safeLeft));
+    if (Math.abs(nextLeft - Number.parseFloat(node.style.left || "0")) > 1 || Math.abs(nextWidth - Number.parseFloat(node.style.width || "0")) > 1) {
+      node.style.left = `${Math.round(nextLeft)}px`;
+      node.style.width = `${Math.round(nextWidth)}px`;
+      if (!/white-space:/.test(node.style.cssText)) node.style.whiteSpace = "nowrap";
+      node.style.overflow = "hidden";
+      node.style.textOverflow = "ellipsis";
+      changed = true;
+    }
+  });
+  return changed;
+}
+
 function syncWentianPhoneBackgroundHeights(phone, nextHeight) {
   const currentHeight = parseFloat(phone?.style?.height) || phone?.offsetHeight || WENTIAN_PHONE_HEIGHT;
   if (!phone || !Number.isFinite(nextHeight) || nextHeight <= 0) return;
@@ -18441,6 +18505,12 @@ function compactWentianBottomNavGap(phone = view?.querySelector?.(".figma-phone"
   contentNodes.forEach((node) => {
     if (!(node instanceof Element)) return;
     if (node.matches(navSelector) || node.closest(navSelector)) return;
+    if (isWentianCanvasBackgroundNode(node, phoneHeight)) return;
+    if (!node.dataset?.nodeId && (
+      node.classList.contains("liuyao-phone-screen") ||
+      node.classList.contains("wentian-hepan-result-panel") ||
+      node.classList.contains("wentian-native-mingpan")
+    )) return;
     maxBottom = Math.max(maxBottom, getWentianNodeBottomWithinPhone(phone, node));
   });
   if (maxBottom > navTop + 4) return false;
@@ -18596,6 +18666,7 @@ function fitActivePhoneShell() {
   const wrap = view.querySelector(".phone-wrap");
   const phone = view.querySelector(".figma-phone");
   if (!wrap || !phone) return;
+  adjustWentianHeaderTitles(phone);
   compactWentianBottomNavGap(phone);
   const viewport = window.visualViewport;
   const viewportWidth = viewport?.width || window.innerWidth || document.documentElement.clientWidth || WENTIAN_PHONE_WIDTH;
