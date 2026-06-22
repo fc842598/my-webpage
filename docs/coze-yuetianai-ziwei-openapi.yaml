@@ -1,0 +1,47 @@
+openapi: 3.0.3
+info:
+  title: YuetianAI Ziwei Reading API
+  version: 1.0.0
+  description: >
+    Call YuetianAI Ziwei Dou Shu reading service. Provide one complete birth
+    information text, such as "1991-02-16 22:00, male, born in Shanghai".
+    The API returns plain text that can be shown directly to the user.
+servers:
+  - url: https://api.yuetianai.com
+paths:
+  /api/coze/workflow-text:
+    get:
+      operationId: getZiweiReading
+      summary: Get Ziwei Dou Shu reading
+      description: >
+        Input complete birth information text and return the YuetianAI Ziwei
+        Dou Shu reading result. If required information is missing, the API
+        returns a clarification prompt.
+      parameters:
+        - name: text
+          in: query
+          required: true
+          description: >
+            Complete birth information text. It should include date, time,
+            gender, and birthplace whenever possible.
+          schema:
+            type: string
+          example: "1991-02-16 22:00, male, born in Shanghai"
+      responses:
+        "200":
+          description: Plain text reading result
+          content:
+            text/plain:
+              schema:
+                type: string
+              example: |
+                Personality baseline
+                This chart is interpreted from the Ziwei Dou Shu system.
+                Strengths
+                The chart shows strong professional focus and execution.
+        "400":
+          description: Missing or invalid input
+          content:
+            text/plain:
+              schema:
+                type: string
