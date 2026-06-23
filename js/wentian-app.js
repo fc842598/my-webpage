@@ -8268,6 +8268,44 @@ function finalizeWentianLanguageText(root = view, code = getWentianLanguageCode(
   setWentianFinalText(root, '[data-node-id="wt34-copy-lead"]', "Share Yuetian AI for charts, readings, and Master Xu.");
   setWentianFinalText(root, '[data-node-id="source-password-login-desc"]', "Password login will be linked to this account, payment records, and membership benefits.");
   setWentianFinalText(root, '[data-node-id="wt16-title"]', "Lot 29");
+  const invite = getWentianInviteSnapshot();
+  const account = getWentianAuthDisplay();
+  const member = getWentianMemberSnapshot();
+  const provider = wentianAuthSession?.user?.app_metadata?.provider || "phone";
+  const phone = wentianAuthSession?.user?.user_metadata?.phone || "";
+  const inviteCode = account.loggedIn && isWentianInviteCode(invite.inviteCode) ? invite.inviteCode : "";
+  const memberLine = member.isMember
+    ? `Valid until ${formatWentianMemberDate(wentianMemberState?.quota?.memberExpiresAt) || "the current cycle"}`
+    : (account.loggedIn ? "Free plan, upgrade anytime" : "Not signed in yet");
+  setWentianFinalText(root, '[data-node-id="wt34-copy-invite"]', inviteCode ? `Invite code: ${inviteCode}` : "Sign in to generate your invite code");
+  setWentianFinalText(root, '[data-node-id="source-31-vip"]', memberLine);
+  setWentianFinalText(root, '[data-node-id="source-31-vip-v2"]', memberLine);
+  setWentianFinalText(root, '[data-node-id="source-31-login-badge-text"]', member.isMember ? "Member" : (account.loggedIn ? "Account" : "Sign In"));
+  setWentianFinalText(root, '[data-node-id="source-31-login-badge-text-v2"]', member.isMember ? "Member" : (account.loggedIn ? "Account" : "Sign In"));
+  setWentianFinalText(root, '[data-node-id="source-31-plan-banner-title-v2"]', "Yuetian Plan");
+  setWentianFinalText(root, '[data-node-id="source-31-plan-banner-sub-v2"]', "View quotas and upgrade options");
+  setWentianFinalText(root, '[data-node-id="source-31-plan-banner-cta-text-v2"]', member.isMember ? "View Benefits" : "View Plan");
+  setWentianFinalText(root, '[data-node-id="source-login-sub"]', "Membership and payment records follow this account.");
+  setWentianFinalText(root, '[data-node-id="source-login-member-text"]', member.isMember ? "Paid Plan" : "Free Account");
+  setWentianFinalText(root, '[data-node-id="source-login-method-desc-0"]', phone || "Not linked yet");
+  setWentianFinalText(root, '[data-node-id="source-login-method-desc-1"]', provider === "google" ? "Current sign-in method" : "Available anytime");
+  setWentianFinalText(root, '[data-node-id="source-login-method-desc-2"]', "Used for phone or email sign-in");
+  setWentianFinalText(root, '[data-node-id="source-login-method-badge-text-0"]', phone ? "Enabled" : "Available");
+  setWentianFinalText(root, '[data-node-id="source-login-method-badge-text-1"]', provider === "google" ? "Enabled" : "Available");
+  setWentianFinalText(root, '[data-node-id="source-login-method-badge-text-2"]', "Editable");
+  setWentianFinalText(root, '[data-node-id="source-login-action-label-1"]', member.isMember ? "Renew Membership" : "Upgrade Plan");
+  setWentianFinalText(root, '[data-node-id="source-login-note-title"]', "Account Notes");
+  setWentianFinalText(root, '[data-node-id="source-login-note-text"]', "This account is already linked. Password updates, renewals, and order checks are all available from the entries above.");
+  setWentianFinalText(root, '[data-node-id="source-login-note"]', "Phone sign-in uses a password, not SMS codes.");
+  setWentianFinalText(root, '[data-node-id="wt48-title"]', "Payment Records");
+  setWentianFinalText(root, '[data-node-id="wt48-right"]', "Sync");
+  setWentianFinalText(root, '[data-node-id="wt48-ticket-text"]', "Refund Help");
+  setWentianFinalText(root, '[data-node-id="wt48-loading"]', "Loading payment records...");
+  setWentianFinalText(root, '[data-node-id="wt48-loading-sub"]', "Order status, amount, and refund records will appear here.");
+  setWentianFinalText(root, '[data-node-id="wt48-empty-title"]', account.loggedIn ? "No payment records yet" : "Sign in to view payment records");
+  setWentianFinalText(root, '[data-node-id="wt48-empty-sub"]', account.loggedIn ? "Once you activate a plan, your orders will appear here." : "Membership orders, payment status, and refunds are linked to your account.");
+  setWentianFinalText(root, '[data-node-id="wt48-login-text"]', "Sign In / Register");
+  setWentianFinalText(root, '[data-node-id="wt48-retry-text"]', "Try Again");
   const finalCoin = root.querySelector(".wentian-chart-ai-final-coin");
   if (finalCoin) {
     setWentianFinalText(finalCoin, "span", "Full");
@@ -9359,6 +9397,18 @@ function getWentianSharePayload() {
   const appUrl = getWentianAppUrl();
   const hasInvite = account.loggedIn && isWentianInviteCode(summary.inviteCode);
   const url = hasInvite ? summary.inviteLink : appUrl;
+  if (getWentianLanguageCode() === "en") {
+    const rewardDaily = Number(summary.registerReward || 10);
+    const rewardDays = Number(summary.registerRewardDays || 3);
+    const inviteLine = hasInvite ? `Invite code: ${summary.inviteCode}` : "Sign in to generate your invite code";
+    return {
+      title: "Yuetian AI",
+      text: `Try Yuetian AI for charting, readings, and Master Xu.\n${inviteLine}\nAfter registration, both the inviter and the new user receive ${rewardDaily} Master Xu chats per day for ${rewardDays} days.\n${url}`,
+      url,
+      inviteCode: hasInvite ? summary.inviteCode : "",
+      hasInvite,
+    };
+  }
   const inviteLine = hasInvite ? `邀请码：${summary.inviteCode}` : "登录后生成专属邀请码";
   const rewardDaily = Number(summary.registerReward || 10);
   const rewardDays = Number(summary.registerRewardDays || 3);
@@ -9589,8 +9639,19 @@ function splitWentianReplyParagraphs(text) {
   return paragraphs.length ? paragraphs : [raw];
 }
 
+function stripWentianEnglishUiText(text) {
+  return String(text || "")
+    .replace(/[（(][^()（）]*[\u3400-\u9fff][^()（）]*[)）]/g, "")
+    .replace(/[\u3400-\u9fff]+/g, "")
+    .replace(/[ \t]+([,.;:!?])/g, "$1")
+    .replace(/\n{3,}/g, "\n\n")
+    .replace(/[ \t]{2,}/g, " ")
+    .trim();
+}
+
 function renderWentianChatMessageContent(message, role) {
-  const text = String(message.text || "");
+  const rawText = String(message.text || "");
+  const text = role === "assistant" && isWentianEnglishMode() ? stripWentianEnglishUiText(rawText) : rawText;
   if (role !== "assistant") return escapeHtml(text);
   if (message.pending) {
     return `
