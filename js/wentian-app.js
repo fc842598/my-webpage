@@ -9655,18 +9655,34 @@ function stripWentianEnglishUiText(text) {
     .trim();
 }
 
+function isWentianMeaningfulEnglishText(text) {
+  const raw = String(text || "").trim();
+  if (!raw) return false;
+  const letters = (raw.match(/[A-Za-z]/g) || []).length;
+  const words = (raw.match(/[A-Za-z][A-Za-z'-]{1,}/g) || []).length;
+  const visible = raw.replace(/\s/g, "").length || 1;
+  return letters >= 16 && words >= 4 && letters / visible >= 0.35;
+}
+
+function normalizeWentianEnglishAssistantText(text) {
+  const cleaned = stripWentianEnglishUiText(text);
+  if (isWentianMeaningfulEnglishText(cleaned)) return cleaned;
+  return "I did not receive a clean English answer. Please send your question again, and I will answer in English only.";
+}
+
 function renderWentianChatMessageContent(message, role) {
   const rawText = String(message.text || "");
-  const text = role === "assistant" && isWentianEnglishMode() ? stripWentianEnglishUiText(rawText) : rawText;
-  if (role !== "assistant") return escapeHtml(text);
+  if (role !== "assistant") return escapeHtml(rawText);
   if (message.pending) {
+    const pendingText = isWentianEnglishMode() ? "Master Xu is reading the chart..." : (rawText || "许大师正在解读");
     return `
       <span class="wentian-chat-thinking">
         <i></i><i></i><i></i>
-        <em>${escapeHtml(text || "许大师正在解读")}</em>
+        <em>${escapeHtml(pendingText)}</em>
       </span>
     `;
   }
+  const text = role === "assistant" && isWentianEnglishMode() ? normalizeWentianEnglishAssistantText(rawText) : rawText;
   return splitWentianReplyParagraphs(text)
     .map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`)
     .join("");
