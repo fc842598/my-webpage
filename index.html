@@ -339,6 +339,20 @@
       overflow: visible;
     }
 
+    .nav-auth-label {
+      display: inline-block;
+      max-width: 9em;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      vertical-align: middle;
+    }
+
+    .nav-action-link.is-logged-in {
+      color: #f3d58c;
+      border-color: rgba(223, 194, 123, .42);
+      background: linear-gradient(135deg, rgba(118, 86, 37, .28), rgba(22, 18, 12, .94));
+    }
+
     .link-text-full { display: inline; }
     .link-text-short { display: none; }
 
@@ -2442,14 +2456,14 @@
             </span>
             <span>会员</span>
           </a>
-          <a class="nav-action-link" href="pages/mingbook-onepage.html?entry=login" aria-label="登录">
+          <a class="nav-action-link" id="homeAuthLink" href="pages/mingbook-onepage.html?entry=login" aria-label="登录">
             <span class="nav-action-icon" aria-hidden="true">
               <svg viewBox="0 0 24 24">
                 <path d="M12 12a4.75 4.75 0 1 0-4.75-4.75A4.75 4.75 0 0 0 12 12Z"></path>
                 <path d="M4.5 19.25a7.5 7.5 0 0 1 15 0"></path>
               </svg>
             </span>
-            <span>登录</span>
+            <span class="nav-auth-label" id="homeAuthLabel">登录</span>
           </a>
           <a class="nav-action-link" href="pages/wentian-app.html" aria-label="手机App">
             <span class="nav-action-icon" aria-hidden="true">
@@ -2719,6 +2733,53 @@
       const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       const lazyBackgrounds = document.querySelectorAll('.triad, .steps, .final');
       const loadBackground = (el) => el.classList.add('bg-ready');
+
+      const readStoredSession = () => {
+        try {
+          const raw = localStorage.getItem('wentian-app-auth-session-v1');
+          const session = raw ? JSON.parse(raw) : null;
+          return session?.access_token && session?.user ? session : null;
+        } catch (_) {
+          return null;
+        }
+      };
+
+      const getUserLabel = (session) => {
+        const user = session?.user;
+        if (!user) return '';
+        const raw = String(
+          user.user_metadata?.phone
+          || user.user_metadata?.name
+          || user.user_metadata?.full_name
+          || user.email
+          || ''
+        ).trim();
+        const digits = raw.replace(/\D/g, '');
+        if (digits.length >= 11) return `${digits.slice(0, 3)}****${digits.slice(-4)}`;
+        if (raw.includes('@')) {
+          const [name, domain] = raw.split('@');
+          if (name && domain) return `${name.slice(0, 3)}***@${domain}`;
+        }
+        return raw || '已登录';
+      };
+
+      const syncHomeAuthNav = () => {
+        const link = document.getElementById('homeAuthLink');
+        const label = document.getElementById('homeAuthLabel');
+        if (!link || !label) return;
+        const session = readStoredSession();
+        const userLabel = getUserLabel(session);
+        const loggedIn = !!userLabel;
+        link.classList.toggle('is-logged-in', loggedIn);
+        link.href = loggedIn ? 'pages/mingbook-onepage.html?entry=member' : 'pages/mingbook-onepage.html?entry=login';
+        link.setAttribute('aria-label', loggedIn ? `当前账号：${userLabel}` : '登录');
+        label.textContent = loggedIn ? userLabel : '登录';
+      };
+
+      syncHomeAuthNav();
+      window.addEventListener('storage', (event) => {
+        if (event.key === 'wentian-app-auth-session-v1') syncHomeAuthNav();
+      });
 
       if ('IntersectionObserver' in window) {
         const bgObserver = new IntersectionObserver((entries) => {
