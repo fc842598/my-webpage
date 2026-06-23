@@ -166,27 +166,51 @@ h1 {
   font-size: 14px;
 }
 
-.article-grid {
+.article-list {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 16px;
+  gap: 12px;
 }
 
 .article-card {
-  overflow: hidden;
+  position: relative;
+  display: grid;
+  grid-template-columns: 58px minmax(0, 1fr);
+  gap: 16px;
+  align-items: center;
+  min-height: 132px;
+  padding: 18px 20px;
   border: 1px solid var(--line);
   border-radius: 8px;
   background: linear-gradient(180deg, rgba(17, 12, 7, .96), rgba(8, 6, 4, .96));
 }
 
-.article-card img {
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  object-fit: cover;
+.article-card::before {
+  content: attr(data-index);
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(201, 169, 97, .28);
+  border-radius: 8px;
+  color: var(--gold-soft);
+  background: rgba(201, 169, 97, .08);
+  font: 800 15px/1 "Noto Serif SC", "Songti SC", serif;
 }
 
 .card-body {
-  padding: 18px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 8px 18px;
+  align-items: center;
+}
+
+.card-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  grid-column: 1 / -1;
+  color: var(--muted);
+  font-size: 13px;
 }
 
 .tag {
@@ -196,14 +220,14 @@ h1 {
 }
 
 .article-card h3 {
-  margin: 8px 0 8px;
+  margin: 0;
   font-size: 20px;
   line-height: 1.4;
 }
 
 .article-card p {
-  min-height: 76px;
-  margin: 0 0 16px;
+  grid-column: 1 / 2;
+  margin: 0;
   color: #9d8d67;
   font-size: 14px;
 }
@@ -245,7 +269,8 @@ h1 {
 }
 
 .article-main figure {
-  margin: 0 0 28px;
+  width: min(320px, 100%);
+  margin: 0 0 24px;
   overflow: hidden;
   border: 1px solid var(--line);
   border-radius: 8px;
@@ -253,7 +278,7 @@ h1 {
 
 .article-main figure img {
   width: 100%;
-  aspect-ratio: 16 / 9;
+  aspect-ratio: 4 / 3;
   object-fit: cover;
 }
 
@@ -356,9 +381,23 @@ h1 {
     margin-top: 8px;
   }
 
-  .article-grid,
+  .article-list,
   .article-layout {
     grid-template-columns: 1fr;
+  }
+
+  .article-card,
+  .card-body {
+    grid-template-columns: 1fr;
+  }
+
+  .article-card::before {
+    width: 38px;
+    height: 38px;
+  }
+
+  .article-card p {
+    grid-column: auto;
   }
 
   .side-panel {
