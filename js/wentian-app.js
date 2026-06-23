@@ -17245,9 +17245,18 @@ function sourceDashboardHomeScreen() {
       ${figText("source-1-archive-action-text", "换档案", 282, 322, 68, 11, "#9a681c", 900, "center")}
       ${figButton("source-1-archive-hit", 18, 294, 354, 70, 'data-route="screen-25"', "", "z-index:35;")}
 
+      ${figBox("source-1-articles", 18, 382, 354, 54, "", "border-radius:16px;background:#fffaf3;border:1px solid #eadfce;box-shadow:0 8px 20px rgba(70,45,25,.06);")}
+      ${figBox("source-1-articles-mark", 36, 398, 24, 24, "", "border-radius:12px;background:#fff0d6;")}
+      ${figText("source-1-articles-mark-text", "文", 36, 405, 24, 10, "#a37018", 900, "center")}
+      ${figText("source-1-articles-title", "命理短文", 72, 394, 96, 15, "#25221f", 900, "left", "white-space:nowrap;")}
+      ${figText("source-1-articles-sub", "命宫、身宫、流年慢慢讲", 72, 416, 178, 11, "#8d877e", 700, "left", "white-space:nowrap;overflow:hidden;text-overflow:ellipsis;")}
+      ${figText("source-1-articles-action", "去阅读", 292, 403, 52, 11, "#9a681c", 900, "center")}
+      ${figText("source-1-articles-arrow", "›", 344, 400, 16, 16, "#c2a170", 900, "center")}
+      ${figButton("source-1-articles-hit", 18, 382, 354, 54, 'data-action="wentian-open-articles" aria-label="打开命理短文"', "", "z-index:35;")}
+
       ${dashboardFeatures.map(([title, sub, icon, route], index) => {
         const x = index % 2 === 0 ? 18 : 201;
-        const y = 400 + Math.floor(index / 2) * 88;
+        const y = 462 + Math.floor(index / 2) * 88;
         const hitAttrs = route === "liuyao-v2"
           ? 'data-action="wentian-open-liuyao-v2" aria-label="打开六爻占卜新版"'
           : `data-route="${route}"`;
@@ -17259,7 +17268,7 @@ function sourceDashboardHomeScreen() {
         ${figButton(`source-1-feature-hit-${index}`, x, y, 171, 80, hitAttrs, "", "z-index:35;")}
       `;
       }).join("")}
-      ${sourceAppBottomNav("首页", 670)}
+      ${sourceAppBottomNav("首页", 758)}
     `;
   }
 }
@@ -18472,7 +18481,7 @@ function renderConvertedScreen(no) {
     return figPhone(`screen-${screen.no}`, `${String(screen.no).padStart(2, "0")} 首页`, `
       ${sourceDashboardHomeScreen()}
       ${convertedFlowHotspots(screen)}
-    `, 844, "converted source-screen no-status-shift", false);
+    `, 932, "converted source-screen no-status-shift", false);
   }
   if (screen.no === 2) {
     return figPhone(`screen-${screen.no}`, `${String(screen.no).padStart(2, "0")} ${screen.title}`, `
@@ -19529,6 +19538,10 @@ document.addEventListener("click", (event) => {
   const earlyAction = earlyActionTarget?.dataset.action;
   if (earlyAction === "wentian-open-liuyao-v2") {
     window.location.href = "./liuyao-v2.html?v=20260616-cast-compact";
+    return;
+  }
+  if (earlyAction === "wentian-open-articles") {
+    window.location.href = "../articles/";
     return;
   }
   if (earlyAction === "yangzhai-open") {
