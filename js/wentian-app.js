@@ -9664,6 +9664,10 @@ function isWentianMeaningfulEnglishText(text) {
   return letters >= 16 && words >= 4 && letters / visible >= 0.35;
 }
 
+function isWentianEnglishAssistantFailureText(text) {
+  return /clean English answer|send your question again|Regenerate in English|Chinese text has not been translated/i.test(String(text || ""));
+}
+
 function normalizeWentianEnglishAssistantText(text) {
   const cleaned = stripWentianEnglishUiText(text);
   if (isWentianMeaningfulEnglishText(cleaned)) return cleaned;
@@ -9857,7 +9861,11 @@ async function ensureWentianXuSession(options = {}) {
         ? data.messages.slice(-12).map((item) => ({
           role: item.sender === "user" ? "user" : item.sender === "system" ? "system" : "assistant",
           text: item.content || "",
-        })).filter((item) => !isWentianEnglishMode() || !hasWentianHanText(item.text))
+        })).filter((item) => {
+          if (!isWentianEnglishMode()) return true;
+          if (hasWentianHanText(item.text)) return false;
+          return !(item.role === "assistant" && isWentianEnglishAssistantFailureText(item.text));
+        })
         : [];
       if (historyMessages.length) {
         wentianXuChat.messages = historyMessages;
