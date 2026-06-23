@@ -10207,6 +10207,21 @@ function formatWentianPaymentAmount(amount, currency = "CNY") {
   return `${code} ${value}`;
 }
 
+function getWentianSelectedPaymentPrice(provider = wentianPaymentState.provider) {
+  const product = wentianMemberState.product || {};
+  const meta = getWentianPaymentProviderMeta(provider) || {};
+  const fallback = provider === "paypal"
+    ? { amountYuan: "2.99", currency: "USD" }
+    : { amountYuan: product.amountYuan || "19.90", currency: product.currency || "CNY" };
+  const amountYuan = meta.amountYuan || meta.amount || fallback.amountYuan;
+  const currency = meta.currency || fallback.currency;
+  return {
+    amountYuan,
+    currency,
+    text: formatWentianPaymentAmount(amountYuan, currency),
+  };
+}
+
 function stopWentianPaymentPoll() {
   if (wentianPaymentPollTimer) {
     clearInterval(wentianPaymentPollTimer);
@@ -10264,11 +10279,13 @@ async function startWentianMemberPayment() {
   const session = await requireWentianAuth();
   if (!session?.user) return;
   const product = wentianMemberState.product || {};
+  const paymentPrice = getWentianSelectedPaymentPrice();
   wentianPaymentState.status = "loading";
   wentianPaymentState.message = `正在创建${getWentianPaymentProviderLabel()}订单...`;
   wentianPaymentState.error = "";
   wentianPaymentState.productName = product.name || WENTIAN_PAID_PRODUCT_NAME;
-  wentianPaymentState.amountYuan = product.amountYuan || "19.90";
+  wentianPaymentState.amountYuan = paymentPrice.amountYuan;
+  wentianPaymentState.currency = paymentPrice.currency;
   navigate("screen-30");
 
   try {
@@ -10518,7 +10535,7 @@ function renderWentianRefundTicketModal() {
       ? orders.map((order) => {
         const disabled = order.canSubmitTicket ? "" : " disabled";
         const tag = order.ticketNo ? " · 工单处理中" : "";
-        return `<option value="${escapeHtml(order.orderNo)}"${disabled}>${escapeHtml(order.productName || "会员订单")} · ¥${escapeHtml(order.amountYuan || "")}${tag}</option>`;
+        return `<option value="${escapeHtml(order.orderNo)}"${disabled}>${escapeHtml(order.productName || "会员订单")} · ${formatWentianPaymentAmount(order.amountYuan || "", order.currency || "CNY")}${tag}</option>`;
       }).join("")
       : '<option value="">暂无可提交工单的订单</option>';
     orderSelect.value = wentianRefundTicketState.orderNo || "";
@@ -10989,7 +11006,8 @@ function sourceProfileScreen(screen) {
 
 function sourceMembershipScreen() {
   const member = getWentianMemberSnapshot();
-  const buttonText = member.isMember ? `续费付费版 ¥${member.amountYuan}` : `开通付费版 ¥${member.amountYuan}`;
+  const paymentPrice = getWentianSelectedPaymentPrice();
+  const buttonText = member.isMember ? `续费付费版 ${paymentPrice.text}` : `开通付费版 ${paymentPrice.text}`;
   const providers = getWentianPaymentProviders();
   const methodButtons = providers.map((item, index) => {
     const compact = providers.length > 2;
@@ -11012,7 +11030,7 @@ function sourceMembershipScreen() {
     ${figBox("wt33-card", 24, 108, 342, 116, "", "border-radius:18px;background:linear-gradient(135deg,#2b2722,#14110d);box-shadow:0 16px 30px rgba(28,20,12,.16);")}
     ${figText("wt33-card-label", "付费版", 52, 136, 130, 20, "#fff", 900)}
     ${figText("wt33-card-sub", member.isMember ? escapeHtml(member.subtitle) : "100次/天，按日刷新", 52, 168, 190, 13, "#cfc1a9", 700)}
-    ${figText("wt33-card-price", `¥${member.amountYuan}`, 238, 132, 84, 26, "#f4d293", 900, "right")}
+    ${figText("wt33-card-price", paymentPrice.text, 238, 132, 84, 26, "#f4d293", 900, "right")}
     ${figText("wt33-card-period", "按日刷新", 246, 170, 78, 12, "#cfc1a9", 700, "right")}
 
     ${figText("wt33-plan-title", "对话额度", 24, 254, 120, 17, "#25211d", 900)}
@@ -11040,7 +11058,8 @@ function sourceMembershipScreenPreview() {
   const account = getWentianAuthDisplay();
   const displayName = account.loggedIn ? account.name : "谢广周";
   const displayInitial = account.loggedIn ? account.initial : "谢";
-  const buttonText = member.isMember ? `续费付费版 ¥${member.amountYuan}` : `开通付费版 ¥${member.amountYuan}`;
+  const paymentPrice = getWentianSelectedPaymentPrice();
+  const buttonText = member.isMember ? `续费付费版 ${paymentPrice.text}` : `开通付费版 ${paymentPrice.text}`;
   const providers = getWentianPaymentProviders();
   const memberNote = member.isMember
     ? "付费版已开通，可继续高频问盘与连续追问"
@@ -11078,7 +11097,7 @@ function sourceMembershipScreenPreview() {
     ${figText("wt33-preview-right-sub", "/天", 286, 149, 56, 10, "#fff5e8", 800, "center")}
 
     ${[
-      ["付费版", `¥${member.amountYuan}`, "按日刷新"],
+      ["付费版", paymentPrice.text, "按日刷新"],
       ["每日额度", "100次/天", "高频可用"],
       ["当前剩余", escapeHtml(member.daily), escapeHtml(member.dailyLimit)],
     ].map((item, index) => {
@@ -11225,7 +11244,7 @@ function sourceOrderRecordsScreen() {
               ${figText(`wt48-order-name-${index}`, escapeHtml(order.productName || WENTIAN_PAID_PRODUCT_NAME), 44, y + 16, 156, 15, "#201812", 900)}
               ${figText(`wt48-order-date-${index}`, escapeHtml(paidAt), 44, y + 44, 112, 12, "#8f857a", 700)}
               ${figText(`wt48-order-status-${index}`, escapeHtml(status), 192, y + 18, 62, 12, order.status === "paid" ? "#5f8745" : "#9b742e", 900, "right")}
-              ${figText(`wt48-order-amount-${index}`, `¥${escapeHtml(order.amountYuan || "0.00")}`, 264, y + 18, 78, 17, "#9f3d2e", 900, "right")}
+              ${figText(`wt48-order-amount-${index}`, formatWentianPaymentAmount(order.amountYuan || "0.00", order.currency || "CNY"), 264, y + 18, 78, 17, "#9f3d2e", 900, "right")}
               ${figText(`wt48-order-no-${index}`, escapeHtml(order.orderNo || ""), 170, y + 46, 170, 10, "#b4ada5", 700, "right")}
             `;
           }).join("")
