@@ -8546,6 +8546,7 @@ html[lang="en"] .liuyao-coin-summary em {
   display: grid;
   gap: 12px;
   width: 100%;
+  margin-bottom: 96px;
   padding: 16px;
   border: 1px solid rgba(199, 164, 75, .5);
   border-radius: 24px;
@@ -8863,6 +8864,55 @@ html[lang="en"] .liuyao-coin-summary em {
   margin-top: 12px;
   border-top: 1px solid rgba(226, 199, 103, .3);
   padding-top: 12px;
+}
+
+.wentian-yijing-xu-cta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid rgba(226, 199, 103, .34);
+  border-radius: 18px;
+  background: linear-gradient(135deg, rgba(240, 217, 130, .13), rgba(20, 12, 4, .96));
+}
+
+.wentian-yijing-xu-cta div {
+  display: grid;
+  min-width: 0;
+  gap: 4px;
+}
+
+.wentian-yijing-xu-cta span {
+  color: #d9bd61;
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: .04em;
+}
+
+.wentian-yijing-xu-cta strong {
+  color: #fff7df;
+  font-size: 15px;
+  font-weight: 900;
+  line-height: 1.35;
+}
+
+.wentian-yijing-xu-cta button {
+  flex: 0 0 auto;
+  min-width: 112px;
+  height: 44px;
+  border: 0;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #f3db84 0%, #c9972f 100%);
+  color: #271708;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 900;
+  box-shadow: 0 12px 22px rgba(180, 130, 52, .3);
+}
+
+.wentian-yijing-xu-cta button:active {
+  transform: translateY(1px);
 }
 
 .wentian-chart-ai-actions {
