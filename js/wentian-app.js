@@ -9731,7 +9731,8 @@ function renderWentianChatMessageContent(message, role) {
       </span>
     `;
   }
-  const text = role === "assistant" && isWentianEnglishMode() ? normalizeWentianEnglishAssistantText(rawText) : rawText;
+  const shouldNormalizeEnglishAssistant = role === "assistant" && isWentianEnglishMode() && !message.typing;
+  const text = shouldNormalizeEnglishAssistant ? normalizeWentianEnglishAssistantText(rawText) : rawText;
   return splitWentianReplyParagraphs(text)
     .map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`)
     .join("");
@@ -9851,9 +9852,13 @@ function startWentianTyping(message) {
 }
 
 function addWentianMessage(role, text, options = {}) {
+  const rawText = String(text || "");
+  const safeText = role === "assistant" && isWentianEnglishMode()
+    ? normalizeWentianEnglishAssistantText(rawText)
+    : rawText;
   const message = options.typewriter && role === "assistant"
-    ? { role, text: "", fullText: String(text || ""), typing: true }
-    : { role, text };
+    ? { role, text: "", fullText: safeText, typing: true }
+    : { role, text: safeText };
   if (options.pending) message.pending = true;
   wentianXuChat.messages.push(message);
   if (wentianXuChat.messages.length > 30) wentianXuChat.messages.shift();
