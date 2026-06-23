@@ -9834,6 +9834,19 @@ function getWentianXuModeText(mode, phase = "ready") {
   return (map[mode] || map.chart)[phase] || map.chart[phase] || "";
 }
 
+function getWentianXuOpeningText(payload = getWentianXuChatPayload()) {
+  if (isWentianEnglishMode()) {
+    if (payload.mode === "liuyao") return "I have the hexagram loaded. Ask your follow-up in English.";
+    if (payload.mode === "hepan") return "I have the compatibility chart loaded. Ask your relationship question in English.";
+    if (payload.mode === "liuren") return "I have the Liuren reading loaded. Ask your follow-up in English.";
+    return "I am here. Ask about your chart.";
+  }
+  if (payload.mode === "liuyao") return getLiuyaoXuOpeningMessage(payload.divinationContext);
+  if (payload.mode === "hepan") return getHepanXuOpeningMessage(payload.divinationContext);
+  if (payload.mode === "liuren") return getLiurenXuOpeningMessage(payload.divinationContext);
+  return "我在，看命盘直接问。";
+}
+
 async function ensureWentianXuSession(options = {}) {
   const silent = !!options.silent;
   const payload = getWentianXuChatPayload();
@@ -9870,13 +9883,7 @@ async function ensureWentianXuSession(options = {}) {
       if (historyMessages.length) {
         wentianXuChat.messages = historyMessages;
       } else {
-        addWentianMessage("assistant", payload.mode === "liuyao"
-          ? getLiuyaoXuOpeningMessage(payload.divinationContext)
-          : payload.mode === "hepan"
-            ? getHepanXuOpeningMessage(payload.divinationContext)
-            : payload.mode === "liuren"
-              ? getLiurenXuOpeningMessage(payload.divinationContext)
-              : "命盘我已经读到了。你可以直接问感情、事业、财运，或者问最近一年怎么走。");
+        addWentianMessage("assistant", getWentianXuOpeningText(payload));
       }
       renderWentianMessages();
     }
@@ -9987,13 +9994,7 @@ function initWentianXuChat() {
   };
 
   if (!wentianXuChat.messages.length) {
-    addWentianMessage("assistant", payload.mode === "liuyao"
-      ? getLiuyaoXuOpeningMessage(payload.divinationContext)
-      : payload.mode === "hepan"
-        ? getHepanXuOpeningMessage(payload.divinationContext)
-        : payload.mode === "liuren"
-          ? getLiurenXuOpeningMessage(payload.divinationContext)
-          : "我在，看命盘直接问。");
+    addWentianMessage("assistant", getWentianXuOpeningText(payload));
   } else {
     renderWentianMessages();
   }
