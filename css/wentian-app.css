@@ -833,6 +833,23 @@ html[lang="en"] [data-node-id="wt22-login-text-clean"] {
   font-size: 11px !important;
 }
 
+html[lang="en"] [data-node-id="source-login-title"] {
+  left: 116px !important;
+  width: 236px !important;
+  text-align: left !important;
+  font-size: 20px !important;
+  line-height: 1.08 !important;
+}
+
+html[lang="en"] [data-node-id="source-login-sub"] {
+  top: 90px !important;
+  left: 116px !important;
+  width: 236px !important;
+  text-align: left !important;
+  font-size: 11px !important;
+  line-height: 1.18 !important;
+}
+
 html[lang="en"] [data-node-id="yz45-title"] {
   width: 306px !important;
   font-size: 22px !important;

@@ -1577,6 +1577,7 @@ const wentianPaymentState = {
 };
 const wentianChartAiState = {
   chartRecordId: "",
+  languageKey: "",
   userStarted: false,
   status: "idle",
   runningModule: "",
@@ -3484,11 +3485,23 @@ function getWentianChartPayload() {
   return applyWentianLiunianTimingFields({ ...WENTIAN_XU_CHART_BASE, chartRecordId });
 }
 
+function getWentianChartAiStorageLanguageKey() {
+  return getWentianLanguageCode() === "en" ? "en" : "";
+}
+
+function getWentianChartAiStorageKey(chartRecordId) {
+  const id = String(chartRecordId || "");
+  const languageKey = getWentianChartAiStorageLanguageKey();
+  return languageKey ? `${id}::${languageKey}` : id;
+}
+
 function syncWentianChartAiStateFromStorage() {
   const chartRecordId = getWentianChartPayload().chartRecordId;
-  if (wentianChartAiState.chartRecordId === chartRecordId) return;
+  const languageKey = getWentianChartAiStorageLanguageKey();
+  if (wentianChartAiState.chartRecordId === chartRecordId && wentianChartAiState.languageKey === languageKey) return;
   Object.assign(wentianChartAiState, {
     chartRecordId,
+    languageKey,
     userStarted: false,
     status: "idle",
     runningModule: "",
@@ -3506,12 +3519,13 @@ function syncWentianChartAiStateFromStorage() {
   clearWentianXiaoLianBadgeTimer();
   try {
     const all = JSON.parse(localStorage.getItem(WENTIAN_CHART_AI_STORAGE_KEY) || "{}");
-    const saved = all?.[chartRecordId];
+    const saved = all?.[getWentianChartAiStorageKey(chartRecordId)];
     if (saved && typeof saved === "object") {
       const resultCount = Object.keys(saved.results || {}).length + Object.keys(saved.luckAiResults || {}).length;
       const hasOutput = resultCount > 0 || !!saved.curveGenerated || saved.status === "done" || saved.status === "running";
       Object.assign(wentianChartAiState, {
         chartRecordId,
+        languageKey,
         userStarted: saved.userStarted == null ? hasOutput : !!saved.userStarted,
         status: saved.status === "running" ? (resultCount ? "done" : "idle") : (saved.status || "done"),
         runningModule: "",
@@ -3530,7 +3544,7 @@ function syncWentianChartAiStateFromStorage() {
 function saveWentianChartAiState() {
   try {
     const all = JSON.parse(localStorage.getItem(WENTIAN_CHART_AI_STORAGE_KEY) || "{}");
-    all[wentianChartAiState.chartRecordId] = {
+    all[getWentianChartAiStorageKey(wentianChartAiState.chartRecordId)] = {
       userStarted: !!wentianChartAiState.userStarted,
       status: wentianChartAiState.status,
       results: wentianChartAiState.results,
@@ -3549,6 +3563,7 @@ function resetWentianChartAiState(chartRecordId = "") {
   wentianChartAiRunSerial += 1;
   Object.assign(wentianChartAiState, {
     chartRecordId: chartRecordId || getWentianChartPayload().chartRecordId,
+    languageKey: getWentianChartAiStorageLanguageKey(),
     userStarted: false,
     status: "idle",
     runningModule: "",
@@ -3660,7 +3675,7 @@ function isWentianEnglishMode() {
 function getWentianEnglishAiLanguageNotice(title = "AI Reading") {
   return {
     title: "Regenerate in English",
-    content: `${title || "This reading"} was generated in Chinese. Tap the button for this module again to create a clean English reading.`,
+    content: "This reading was generated in Chinese. Regenerate in English.",
   };
 }
 
@@ -5273,6 +5288,9 @@ function buildWentianChartAiPayload(moduleKey, chartData = {}) {
   };
   return {
     moduleKey: getWentianBackendAiModule(moduleKey),
+    responseLanguage: languageParams.responseLanguage,
+    responseLanguageName: languageParams.responseLanguageName,
+    responseLanguageInstruction: languageParams.responseLanguageInstruction,
     chartData: aiChartData,
     extraParams,
   };
@@ -5293,6 +5311,7 @@ async function decodeWentianChartAiModules(moduleKeys, options = {}) {
   const runSerial = ++wentianChartAiRunSerial;
   Object.assign(wentianChartAiState, {
     chartRecordId: chartData.chartRecordId,
+    languageKey: getWentianChartAiStorageLanguageKey(),
     userStarted: true,
     status: "running",
     runningModule: "",
@@ -7912,7 +7931,7 @@ function translateWentianHanRunToEnglish(run) {
 function translateWentianUnknownChineseToEnglish(source) {
   if (!WENTIAN_I18N_HAS_HAN_RE.test(source)) return source;
   const hanCount = (source.match(/\p{Script=Han}/gu) || []).length;
-  if (hanCount > 12) return "This Chinese text has not been translated yet.";
+  if (hanCount > 12) return "Regenerate in English.";
   return source
     .replace(/\p{Script=Han}+/gu, (run) => translateWentianHanRunToEnglish(run))
     .replace(/、/g, ", ")
@@ -9751,11 +9770,14 @@ async function ensureWentianXuSession(options = {}) {
     if (data.transientState) saveWentianTransientState(data.transientState, payload.chartRecordId);
     setWentianChatStatus(data.transientMode ? "临时会话" : getWentianXuModeText(payload.mode, "ready"), data.transientMode ? "warn" : "ok");
     if (!wentianXuChat.messages.length) {
-      if (Array.isArray(data.messages) && data.messages.length) {
-        wentianXuChat.messages = data.messages.slice(-12).map((item) => ({
+      const historyMessages = Array.isArray(data.messages)
+        ? data.messages.slice(-12).map((item) => ({
           role: item.sender === "user" ? "user" : item.sender === "system" ? "system" : "assistant",
           text: item.content || "",
-        }));
+        })).filter((item) => !isWentianEnglishMode() || !hasWentianHanText(item.text))
+        : [];
+      if (historyMessages.length) {
+        wentianXuChat.messages = historyMessages;
       } else {
         addWentianMessage("assistant", payload.mode === "liuyao"
           ? getLiuyaoXuOpeningMessage(payload.divinationContext)
