@@ -35,6 +35,18 @@
 
 ## 3. 当前已确认的全局约定
 
+### 发布 / SEO 文章上线
+
+默认发布链路只认 GitHub `master` 为唯一源头，不要另起分支或另造 GitHub Actions。
+
+- 阿里云服务器已有自动同步脚本：`/usr/local/bin/yuetian-sync.sh`
+- 定时任务每分钟执行一次，从 `https://github.com/fc842598/my-webpage.git` 拉取 `master`
+- 线上目录是 `/usr/share/nginx/html`
+- 同步范围必须包含：`index.html`、`robots.txt`、`sitemap.xml`、`articles`、`css`、`fixtures`、`images`、`js`、`pages`、`src`、`vendor`
+- SEO 文章版块在 `articles/`，站点地图是 `sitemap.xml`
+
+以后发文章的正确流程是：本地写文章 -> 提交并 push 到 GitHub `master` -> 阿里云自动同步上线。不要把阿里云当成第二份源代码单独维护。
+
 ### 邮箱
 
 默认复用现有邮件链路，不新建第二套。

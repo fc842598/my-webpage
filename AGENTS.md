@@ -13,6 +13,12 @@
 
 ## 必知约定
 
+- 发布/上线默认只认 GitHub `master` 为唯一源头：
+  - 阿里云服务器已有自动同步：`/usr/local/bin/yuetian-sync.sh`
+  - 定时任务：每分钟拉取 `https://github.com/fc842598/my-webpage.git`
+  - 线上目录：`/usr/share/nginx/html`
+  - 同步范围必须包含：`index.html`、`robots.txt`、`sitemap.xml`、`articles`、`css`、`fixtures`、`images`、`js`、`pages`、`src`、`vendor`
+  - 不要另建 GitHub Actions、不要另建分支、不要绕开 GitHub 单独手工维护阿里云文件；临时救火后也要回到 GitHub 源头。
 - 邮箱能力默认复用现有链路，不新建系统：
   - 实现：`C:\Users\1\Desktop\ai-piming-backend\lib\payments\paymentNotify.js`
   - 发信：Resend
