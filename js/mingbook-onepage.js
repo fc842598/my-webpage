@@ -844,14 +844,16 @@
   function renderDesktopAuth() {
     const loggedIn = !!desktopAuthState.session?.user;
     const trigger = $('#mbpAuthTrigger');
+    const authLabel = loggedIn ? shortenDesktopAuthLabel(getDesktopAuthUserLabel()) : '登录';
     if (trigger) {
       trigger.classList.toggle('is-logged-in', loggedIn);
       trigger.classList.toggle('is-member', loggedIn && !!desktopAuthState.quota?.isMember);
       trigger.setAttribute('aria-expanded', desktopAuthState.open ? 'true' : 'false');
+      trigger.setAttribute('aria-label', loggedIn ? `当前账号：${authLabel || '已登录'}` : '登录');
       trigger.disabled = desktopAuthState.loading;
     }
     const triggerLabel = $('#mbpAuthTriggerLabel');
-    if (triggerLabel) triggerLabel.textContent = '登录';
+    if (triggerLabel) triggerLabel.textContent = authLabel || (loggedIn ? '已登录' : '登录');
     const triggerMeta = $('#mbpAuthTriggerMeta');
     if (triggerMeta) {
       triggerMeta.textContent = loggedIn
