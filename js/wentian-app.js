@@ -1271,7 +1271,7 @@ function sourceArchiveSelectScreen() {
     }).join("")}
     </div>
     <button class="wentian-archive-exit" type="button" data-action="wentian-archive-cancel">退出选盘</button>
-    <button class="wentian-archive-confirm" type="button" data-action="wentian-archive-confirm">确定</button>
+    <button class="wentian-archive-confirm" type="button" data-action="wentian-archive-confirm" aria-label="进入许大师">进入许大师</button>
   `;
 }
 
@@ -6777,6 +6777,7 @@ const WENTIAN_I18N = {
     "选择一个档案接入对话": "選擇一個檔案接入對話",
     "请确认命盘": "請確認命盤",
     "确认后再进入许大师对话": "確認後再進入許大師對話",
+    "进入许大师": "進入許大師",
     "退出选盘": "退出選盤",
     "切换": "切換",
     "查看": "查看",
@@ -8257,6 +8258,7 @@ function finalizeWentianLanguageText(root = view, code = getWentianLanguageCode(
   const fileCountValue = fileCount?.textContent?.match(/\d+/)?.[0] || "0";
   if (fileCount) fileCount.textContent = `${fileCountValue} Files`;
   setWentianFinalText(root, '[data-node-id="source-5-intro-pill-text"]', "Online");
+  setWentianFinalText(root, ".wentian-archive-confirm", "Enter Master Xu");
 
   setWentianFinalText(root, '[data-node-id="wt22-login-desc-clean"]', "Invite both sides to get daily Master Xu credits for 3 days after registration.");
   setWentianFinalText(root, '[data-node-id="wt22-tip-desc-clean"]', "Both inviter and new user receive daily chat rewards for 3 days.");
