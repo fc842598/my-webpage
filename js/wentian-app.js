@@ -959,6 +959,50 @@ function renderWentianChatContextSheet(chatContext) {
   `;
 }
 
+function getWentianChatFaqEnglishPrompt(groupLabel, itemLabel, fallbackPrompt = "") {
+  const group = translateWentianText(groupLabel, "en");
+  const item = translateWentianText(itemLabel, "en");
+  const key = `${group}::${item}`;
+  const promptMap = {
+    "Life Path::Life Direction": "Based on my chart, what is the main direction of my life path? Answer in English.",
+    "Life Path::What Builds Momentum": "Based on my chart, what gives me momentum and helps me rise? Answer in English.",
+    "Life Path::Biggest Weakness": "Based on my chart, what is my biggest weakness or blind spot? Answer in English.",
+    "Life Path::First Step": "Based on my chart, what should I do first from here? Answer in English.",
+    "Love::Can This Work?": "Based on my chart, can this relationship work, and what should I watch for? Answer in English.",
+    "Love::Suitable Partner": "Based on my chart, what kind of partner suits me? Answer in English.",
+    "Love::Marriage Pitfalls": "Based on my chart, what should I avoid in love and marriage? Answer in English.",
+    "Career & Work::Best Work": "Based on my chart, what kind of work fits me best? Answer in English.",
+    "Career & Work::Change Jobs?": "Based on my chart, should I change jobs now? Answer in English.",
+    "Career & Work::Start a Business?": "Based on my chart, am I suited to start a business? Answer in English.",
+    "Career & Work::Career Timing": "Based on my chart, when does my career begin to rise? Answer in English.",
+    "Money & Wealth::Money Source": "Based on my chart, where does my money mainly come from? Answer in English.",
+    "Money & Wealth::Can I Earn This Year?": "Based on my chart, can I make more money this year? Answer in English.",
+    "Money & Wealth::Good for Investing?": "Based on my chart, am I suited to invest now? Answer in English.",
+    "Money & Wealth::Best Wealth Years": "Based on my chart, which years are better for wealth? Answer in English.",
+    "This Year::This Year's Path": "Based on my chart and current annual luck, how does this year go overall? Answer in English.",
+    "This Year::What to Focus On": "Based on my chart, what should I focus on this year? Answer in English.",
+    "This Year::What to Avoid": "Based on my chart, what should I avoid this year? Answer in English.",
+    "This Year::12-Month Focus": "Based on my chart, what are the key points for the next 12 months? Answer in English.",
+    "Luck Shift::When the Low Passes": "Based on my chart, when does this low period pass? Answer in English.",
+    "Luck Shift::Next Decade Luck": "Based on my chart, how will my next decade luck change? Answer in English.",
+    "Luck Shift::Key Years": "Based on my chart, which future years are most important? Answer in English.",
+    "Health::Health Watch": "Based on my chart, what should I watch in health? Answer in English.",
+    "Health::Sleep & Mood": "Based on my chart, how should I adjust sleep, mood, and stress? Answer in English.",
+    "Health::How to Restore Luck": "Based on my chart, what long-term habits help restore my luck? Answer in English.",
+    "Family & People::Where Help Comes From": "Based on my chart, where do helpful people or support come from? Answer in English.",
+    "Family & People::Who to Watch": "Based on my chart, what kind of people should I watch out for? Answer in English.",
+    "Family & People::Parents & Home": "Based on my chart, how are parents, elders, home, and property matters recently? Answer in English.",
+  };
+  if (promptMap[key]) return promptMap[key];
+  if (group && item && !/Regenerate in English/i.test(group) && !/Regenerate in English/i.test(item)) {
+    return `Based on my chart, answer this ${group} question: ${item}. Answer in English.`;
+  }
+  const translatedFallback = translateWentianText(fallbackPrompt, "en");
+  return /Regenerate in English/i.test(translatedFallback)
+    ? "Based on my chart, please answer this question in English."
+    : translatedFallback;
+}
+
 function sourceAiChatScreen(screen) {
   const chatContext = getWentianXuChatContext();
   const isLiuyaoChat = chatContext?.type === "liuyao";
@@ -1187,9 +1231,10 @@ function sourceAiChatScreen(screen) {
             <small>细问</small>
           </summary>
           <div class="wentian-chat-subtopics">
-            ${group.items.map(([label, prompt]) => `
-              <button class="wentian-chat-starter" type="button" data-wentian-prompt="${escapeHtml(prompt)}">${escapeHtml(label)}</button>
-            `).join("")}
+            ${group.items.map(([label, prompt]) => {
+              const promptEn = getWentianChatFaqEnglishPrompt(group.label, label, prompt);
+              return `<button class="wentian-chat-starter" type="button" data-wentian-prompt="${escapeHtml(prompt)}" data-wentian-prompt-en="${escapeHtml(promptEn)}">${escapeHtml(label)}</button>`;
+            }).join("")}
           </div>
         </details>
       `).join("")}
@@ -19547,7 +19592,10 @@ document.addEventListener("click", (event) => {
   if (promptButton) {
     promptButton.closest(".wentian-chat-faq-group")?.removeAttribute("open");
     window.setTimeout(syncWentianChatFaqLayout, 0);
-    sendWentianXuChat(promptButton.dataset.wentianPrompt || "");
+    const faqPrompt = isWentianEnglishMode()
+      ? (promptButton.dataset.wentianPromptEn || promptButton.dataset.wentianPrompt || "")
+      : (promptButton.dataset.wentianPrompt || "");
+    sendWentianXuChat(faqPrompt);
     return;
   }
   const faqToggle = event.target.closest("[data-wentian-faq-toggle]");
