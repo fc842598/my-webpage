@@ -3890,7 +3890,7 @@ function renderWentianMobileActionButton(actionAttr, label, disabled = false) {
   const isRebatch = String(label || "").startsWith("重批");
   const displayLabel = isRebatch ? "重批" : label;
   const classAttr = isRebatch ? ` class="wentian-mb-rebatch-btn"` : "";
-  return `<button type="button"${classAttr}${actionAttr ? ` ${actionAttr}` : ""}${disabled ? " disabled" : ""}>${escapeHtml(displayLabel)}</button>`;
+  return `<button type="button"${classAttr}${actionAttr ? ` ${actionAttr}` : ""}${disabled ? " disabled" : ""}>${escapeHtml(getWentianCompactText(displayLabel, isRebatch ? "Retry" : ""))}</button>`;
 }
 
 function renderWentianOverallReading(data, fallback, actionAttr, actionLabel) {
@@ -3905,7 +3905,8 @@ function renderWentianOverallReading(data, fallback, actionAttr, actionLabel) {
   }
   const card = getWentianAiCard(data);
   const evidence = getWentianAiEvidenceMap(data);
-  const badge = normalizeWentianAiText(card.profileBadge || "贪狼坐命，武官星入局");
+  const rawBadge = normalizeWentianAiText(card.profileBadge || "贪狼坐命，武官星入局");
+  const badge = getWentianCompactText(rawBadge, hasWentianHanText(rawBadge) ? "Life Palace: Tan Lang" : "");
   const risk = trimWentianAiText(card.risk || "迁移化忌冲命，外部阻力重，异地发展需稳扎稳打，不宜草率。", 92);
   return `
     <div class="wentian-mb-overall-hero">
@@ -4960,6 +4961,7 @@ function renderWentianFinalVolumeBoard(chapters, options = {}) {
   const coinMainLabel = options.coinMainLabel || "Read";
   const coinSubLabel = options.coinSubLabel || "Now";
   const statusLabel = options.statusLabel || "";
+  const coinAriaLabel = getWentianCompactText(`${coinActionLabel}，已完成 ${chapterDoneCount}/${chapterTotal} 卷`, `${coinActionLabel}, ${chapterDoneCount}/${chapterTotal} complete`);
   return `
     <div class="wentian-chart-ai-final-board" aria-label="${escapeHtml(getWentianCompactText("命书目录", "Report chapters"))}">
       <div class="wentian-chart-ai-final-hero">
@@ -4974,7 +4976,7 @@ function renderWentianFinalVolumeBoard(chapters, options = {}) {
           class="${escapeHtml(`${coinClass} wentian-chart-ai-final-coin`)}"
           style="--decode-progress:${coinProgressDeg}deg"
           data-action="wentian-chart-ai-decode"
-          aria-label="${escapeHtml(`${coinActionLabel}，已完成 ${chapterDoneCount}/${chapterTotal} 卷`)}"
+          aria-label="${escapeHtml(coinAriaLabel)}"
         >
           <i class="wentian-chart-ai-coin-ring" aria-hidden="true"></i>
           <span>${escapeHtml(coinMainLabel)}</span>
@@ -7282,6 +7284,14 @@ const WENTIAN_I18N_EN_EXTRA = {
   "单独批专题": "Read Topics",
   "等待单独批命生成。": "Waiting for module reading.",
   "生成": "Generate",
+  "重批": "Retry",
+  "重批专题": "Retry Topics",
+  "重批当前十年": "Retry Decade",
+  "重批选中十年": "Retry Decade",
+  "重批当前小限": "Retry Year",
+  "重批选中小限": "Retry Year",
+  "重批曲线": "Retry Curve",
+  "重批建议": "Retry Advice",
   "等待汇总风险、时机和可执行建议。": "Waiting to summarize risks, timing, and actions.",
   "生成建议": "Generate Advice",
   "风险": "Risks",
@@ -7500,6 +7510,8 @@ const WENTIAN_I18N_EN_EXTRA = {
   "大安 → 留连 → 速喜 → 赤口 → 小吉 → 空亡": "Great Peace → Lingering → Quick Joy → Red Mouth → Minor Luck → Void",
   "开始起课": "Start Casting",
   "未登录": "Not signed in",
+  "未登录，可注册": "Not signed in",
+  "登录后可查看支付记录": "Sign in to view payment records",
   "登录后查看支付记录": "Sign in to view payment records",
   "会员订单、支付状态和退款记录都会绑定到账号。": "Membership orders, payment status, and refunds are linked to your account.",
   "去登录": "Sign In",
@@ -7546,7 +7558,7 @@ Object.assign(WENTIAN_I18N_EN_EXTRA, {
   "今年抓什么": "What to Focus On",
   "今年避什么": "What to Avoid",
   "12个月重点": "12-Month Focus",
-  "转运节点": "Luck Turning Point",
+  "转运节点": "Luck Shift",
   "低谷何时过": "When the Low Passes",
   "下个大限": "Next Decade Luck",
   "关键年份": "Key Years",
@@ -7661,11 +7673,12 @@ Object.assign(WENTIAN_I18N_EN_EXTRA, {
   "请选择两张不同档案": "Choose two different files",
   "新建档案": "New File",
   "粤ICP备2026055337号-1　© 2026 阅天AI Copyright, All Rights Reserved. Powered By 阅天工作室": "Yue ICP 2026055337-1 · © 2026 Yuetian AI. All Rights Reserved. Powered by Yuetian Studio",
-  "时↑": "Hr ↑",
-  "时↓": "Hr ↓",
+  "时↑": "Hour +",
+  "时↓": "Hour -",
   "第5卦": "Hexagram 5",
   "流年小限": "Annual Minor Limit",
   "命": "Life",
+  "贪狼坐命，武官星入局": "Life Palace: Tan Lang",
   "空宫": "Empty Palace"
 });
 
@@ -7951,8 +7964,12 @@ function translateWentianText(text, code = getWentianLanguageCode(), element = n
     if (decadeRange) return `Decade ${decadeRange[1]}-${decadeRange[2]}`;
     const annualMinorLimit = source.match(/^(\d{4})年\s*·\s*虚岁(\d+)\s*·\s*([甲乙丙丁戊己庚辛壬癸][子丑寅卯辰巳午未申酉戌亥])\s*·\s*流年小限$/);
     if (annualMinorLimit) return `${annualMinorLimit[1]} · nominal age ${annualMinorLimit[2]} · ${translateWentianText(annualMinorLimit[3], "en")} · Annual Minor Limit`;
+    const ageOnly = source.match(/^(\d+)\s*岁$/);
+    if (ageOnly) return `Age ${ageOnly[1]}`;
     const ageYear = source.match(/^(\d+)岁\s*·\s*(\d{4})年$/);
     if (ageYear) return `Age ${ageYear[1]} · ${ageYear[2]}`;
+    const ageWithDetail = source.match(/^(\d+)\s*岁\s*·\s*(.+)$/);
+    if (ageWithDetail) return `Age ${ageWithDetail[1]} · ${translateWentianText(ageWithDetail[2], "en")}`;
     if (source.includes("分钟")) return source.replace(/分钟/g, " min");
     const chineseNameList = source.match(/^[\p{Script=Han}、]+$/u);
     if (chineseNameList && source.includes("、")) {
@@ -8229,7 +8246,7 @@ function finalizeWentianLanguageText(root = view, code = getWentianLanguageCode(
   if (chartCity) chartCity.setAttribute("placeholder", "Birth city, optional");
   setWentianFinalText(root, '[data-node-id="wt30-safe"]', "Payment details are encrypted by the provider.");
   setWentianFinalText(root, '[data-node-id="wt34-copy-title"]', "Share Copy");
-  setWentianFinalText(root, '[data-node-id="wt34-copy-lead"]', "Share Yuetian AI with friends for charting, readings, and Master Xu chat.");
+  setWentianFinalText(root, '[data-node-id="wt34-copy-lead"]', "Share Yuetian AI for charts, readings, and Master Xu.");
   setWentianFinalText(root, '[data-node-id="source-password-login-desc"]', "Password login will be linked to this account, payment records, and membership benefits.");
   setWentianFinalText(root, '[data-node-id="wt16-title"]', "Lot 29");
   const finalCoin = root.querySelector(".wentian-chart-ai-final-coin");
@@ -9721,11 +9738,13 @@ async function ensureWentianXuSession(options = {}) {
   if (wentianXuChat.sessionPromise) return wentianXuChat.sessionPromise;
 
   if (!silent) setWentianChatStatus(getWentianXuModeText(payload.mode, "connecting"));
+  const languageParams = getWentianAiLanguageParams();
   wentianXuChat.sessionPromise = wentianPostJson("/api/ai/chat/session", {
     chartRecordId: payload.chartRecordId,
     chartData: payload.chartData,
     chatMode: payload.mode,
     divinationContext: payload.divinationContext,
+    ...languageParams,
     transientState: loadWentianTransientState(payload.chartRecordId),
   }, 90000, 1).then((data) => {
     wentianXuChat.sessionId = data.sessionId || `transient:${payload.chartRecordId}`;
@@ -9786,6 +9805,7 @@ async function sendWentianXuChat(promptText = "") {
 
   try {
     await ensureWentianXuSession({ silent: false });
+    const languageParams = getWentianAiLanguageParams();
     const data = await wentianPostJson("/api/ai/chat/send", {
       chartRecordId: payload.chartRecordId,
       message: outboundMessage,
@@ -9793,6 +9813,7 @@ async function sendWentianXuChat(promptText = "") {
       chartData: payload.chartData,
       chatMode: payload.mode,
       divinationContext: payload.divinationContext,
+      ...languageParams,
       transientState: loadWentianTransientState(payload.chartRecordId),
     }, 70000, 0);
     wentianXuChat.messages.pop();
@@ -18241,18 +18262,22 @@ function sourceZiweiAiDecodePanel(saved) {
   const chapterDoneCount = chapters.filter((chapter) => chapter.ready).length;
   const isComplete = chapterDoneCount >= chapterTotal;
   const pdfReady = isComplete && !isRunning;
-  const pdfLabel = pdfReady ? "下载PDF" : "解读完下载";
+  const pdfLabel = getWentianCompactText(pdfReady ? "下载PDF" : "解读完下载", pdfReady ? "Download PDF" : "After reading");
   const coinProgressDeg = chapterTotal ? Math.round((chapterDoneCount / chapterTotal) * 360) : 0;
-  const coinMainLabel = isRunning ? "生成" : (isComplete ? "已完" : "总批");
-  const coinSubLabel = isRunning ? "中" : (isComplete ? "成" : "命");
-  const statusLabel = isRunning ? `生成中 ${chapterDoneCount}/${chapterTotal}` : (isComplete ? "已生成" : (hasResults ? `${chapterDoneCount}/${chapterTotal} 已生成` : "待生成"));
-  const coinActionLabel = isComplete ? "重新总批命" : "总批命";
+  const coinMainLabel = getWentianCompactText(isRunning ? "生成" : (isComplete ? "已完" : "总批"), isRunning ? "Making" : (isComplete ? "Done" : "Read"));
+  const coinSubLabel = getWentianCompactText(isRunning ? "中" : (isComplete ? "成" : "命"), isRunning ? "Report" : (isComplete ? "All" : "Chart"));
+  const statusLabel = getWentianCompactText(
+    isRunning ? `生成中 ${chapterDoneCount}/${chapterTotal}` : (isComplete ? "已生成" : (hasResults ? `${chapterDoneCount}/${chapterTotal} 已生成` : "待生成")),
+    isRunning ? `Generating ${chapterDoneCount}/${chapterTotal}` : (isComplete ? "Completed" : (hasResults ? `${chapterDoneCount}/${chapterTotal} generated` : "Pending"))
+  );
+  const coinActionLabel = getWentianCompactText(isComplete ? "重新总批命" : "总批命", isComplete ? "Regenerate report" : "Generate report");
   const coinClass = [
     "wentian-chart-ai-coin",
     isRunning ? "is-running" : "",
     isComplete ? "is-complete" : "",
     (isRunning || chapterDoneCount || isComplete) ? "has-progress" : "",
   ].filter(Boolean).join(" ");
+  const coinAriaLabel = getWentianCompactText(`${coinActionLabel}，已完成 ${chapterDoneCount}/${chapterTotal} 卷`, `${coinActionLabel}, ${chapterDoneCount}/${chapterTotal} complete`);
 
   return `
     <section class="wentian-chart-ai-panel" data-node-id="source-27-ai-card">
@@ -18274,7 +18299,7 @@ function sourceZiweiAiDecodePanel(saved) {
           class="${escapeHtml(coinClass)}"
           style="--decode-progress:${coinProgressDeg}deg"
           data-action="wentian-chart-ai-decode"
-          aria-label="${escapeHtml(`${coinActionLabel}，已完成 ${chapterDoneCount}/${chapterTotal} 卷`)}"
+          aria-label="${escapeHtml(coinAriaLabel)}"
           ${isRunning ? "disabled" : ""}
         >
           <i class="wentian-chart-ai-coin-ring" aria-hidden="true"></i>

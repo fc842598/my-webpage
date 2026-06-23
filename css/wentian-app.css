@@ -900,6 +900,68 @@ html[lang="en"] .wentian-chart-ai-final-coin b {
   line-height: 1.05 !important;
 }
 
+html[lang="en"] .wentian-chart-ai-coin span {
+  font-size: 11px;
+  line-height: 1.04;
+}
+
+html[lang="en"] .wentian-chart-ai-coin b {
+  font-size: 19px;
+  line-height: 1.02;
+}
+
+html[lang="en"] .wentian-chart-ai-coin em {
+  bottom: 12px;
+}
+
+html[lang="en"] [data-node-id="wt34-copy"] {
+  height: 132px !important;
+}
+
+html[lang="en"] [data-node-id="wt34-copy-lead"] {
+  top: 538px !important;
+  height: 32px !important;
+  font-size: 12px !important;
+  line-height: 1.28 !important;
+}
+
+html[lang="en"] [data-node-id="wt34-copy-invite"] {
+  top: 571px !important;
+  height: 16px !important;
+  font-size: 11px !important;
+  line-height: 1.18 !important;
+}
+
+html[lang="en"] #wt34-link-box {
+  top: 590px !important;
+  padding: 8px 10px !important;
+  font-size: 11px !important;
+  line-height: 1.32 !important;
+}
+
+html[lang="en"] [data-node-id="wt48-empty-title"] {
+  width: 292px !important;
+  height: 42px !important;
+  font-size: 17px !important;
+  line-height: 1.12 !important;
+}
+
+html[lang="en"] [data-node-id="wt48-empty-sub"] {
+  top: 226px !important;
+  width: 284px !important;
+  font-size: 12px !important;
+  line-height: 1.34 !important;
+}
+
+html[lang="en"] [data-node-id="wt48-login"],
+html[lang="en"] [data-node-id="wt48-login-hit"] {
+  top: 257px !important;
+}
+
+html[lang="en"] [data-node-id="wt48-login-text"] {
+  top: 268px !important;
+}
+
 html[lang="en"] .fig-text[data-node-id^="wt24-reward-name-"] {
   width: 150px !important;
   font-size: 13px !important;
@@ -2750,6 +2812,27 @@ html[lang="en"] .wentian-native-mingpan .fc-age {
 html[lang="en"] .wentian-chat-subtopics {
   gap: 5px;
   padding: 7px;
+}
+
+html[lang="en"] .wentian-chat-faq-summary {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  column-gap: 5px;
+  height: 36px;
+  padding: 0 9px;
+  font-size: 10.8px;
+  line-height: 1.08;
+}
+
+html[lang="en"] .wentian-chat-faq-summary span,
+html[lang="en"] .wentian-chat-faq-summary small {
+  min-width: 0;
+}
+
+html[lang="en"] .wentian-chat-faq-summary small {
+  font-size: 8.8px;
+  text-align: right;
+  white-space: nowrap;
 }
 
 html[lang="en"] .wentian-chat-starter {
