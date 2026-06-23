@@ -3698,6 +3698,7 @@ html[lang="en"] .wentian-chat-starter {
 }
 
 .wentian-archive-badge,
+.wentian-archive-age-badge,
 .wentian-archive-gender,
 .wentian-archive-tag {
   flex: 0 0 auto;
@@ -3714,6 +3715,14 @@ html[lang="en"] .wentian-chat-starter {
   width: auto;
   background: #fff2eb;
   color: #a7372f;
+}
+
+.wentian-archive-age-badge {
+  width: auto;
+  background: #fff8eb;
+  color: #b18231;
+  border: 1px solid rgba(218, 184, 113, .48);
+  line-height: 18px;
 }
 
 .wentian-archive-gender {
@@ -3875,6 +3884,7 @@ html[lang="en"] .wentian-archive-name {
 }
 
 html[lang="en"] .wentian-archive-badge,
+html[lang="en"] .wentian-archive-age-badge,
 html[lang="en"] .wentian-archive-gender,
 html[lang="en"] .wentian-archive-tag {
   height: 18px;

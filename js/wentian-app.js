@@ -1314,6 +1314,7 @@ function sourceArchiveSelectScreen() {
             <span class="wentian-archive-main">
               <span class="wentian-archive-title-row">
                 <span class="wentian-archive-name">${escapeHtml(item.name)}</span>
+                ${item.ageBadge ? `<span class="wentian-archive-age-badge">${escapeHtml(item.ageBadge)}</span>` : ""}
                 ${item.badge ? `<span class="wentian-archive-badge">${escapeHtml(item.badge)}</span>` : ""}
                 <span class="wentian-archive-gender">${item.gender}</span>
               </span>
@@ -2027,12 +2028,25 @@ function getWentianArchiveGenericName(archive) {
   return "命主";
 }
 
+function getWentianArchiveVirtualAgeInfo(archive, now = new Date()) {
+  const birthDate = parseWentianArchiveBirthDate(archive);
+  if (!birthDate) return { ok: false, code: "missing-birth", birthDate: null, age: null };
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 12, 0, 0, 0);
+  if (birthDate.getTime() > today.getTime()) return { ok: false, code: "future-birth", birthDate, age: null };
+  return {
+    ok: true,
+    code: "ok",
+    birthDate,
+    age: Math.max(1, today.getFullYear() - birthDate.getFullYear() + 1),
+  };
+}
+
 function getWentianArchiveResolvedName(archive, now = new Date()) {
   const rawName = getWentianArchiveRawName(archive);
   if (rawName) return rawName;
   const base = getWentianArchiveGenericName(archive);
-  const ageInfo = getWentianArchiveAgeInfo(archive, now);
-  return ageInfo.ok && Number.isFinite(ageInfo.age) && ageInfo.age >= 0
+  const ageInfo = getWentianArchiveVirtualAgeInfo(archive, now);
+  return ageInfo.ok && Number.isFinite(ageInfo.age) && ageInfo.age >= 1
     ? `${base} · ${ageInfo.age}岁`
     : base;
 }
@@ -5823,6 +5837,8 @@ function getWentianArchiveDisplay(archive) {
   const chartData = archive?.chartData || {};
   const sizhu = chartData.sizhu || {};
   const name = getWentianArchiveResolvedName(archive);
+  const hasGeneratedName = !getWentianArchiveRawName(archive);
+  const virtualAgeInfo = hasGeneratedName ? getWentianArchiveVirtualAgeInfo(archive) : null;
   const normalizedGender = normalizeWentianArchiveGender(archive);
   const gender = normalizedGender === "female" ? "女" : normalizedGender === "male" ? "男" : "未填";
   const datetime = (form.datetime || chartData.birthDate || chartData.solarTime || "").replace("T", " ").replace(/:00$/, "");
@@ -5834,6 +5850,7 @@ function getWentianArchiveDisplay(archive) {
     pillars: pillars || "命盘资料待补全",
     tag: "四柱八字",
     badge: archive?.id === getWentianStoredSelectedArchiveId() ? "默认" : "",
+    ageBadge: virtualAgeInfo?.ok ? "虚岁" : "",
   };
 }
 
