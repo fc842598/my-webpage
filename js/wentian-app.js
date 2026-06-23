@@ -211,6 +211,27 @@ function escapeHtml(value) {
   })[char]);
 }
 
+function renderWentianSafeInlineMarkdown(value) {
+  const raw = String(value || "");
+  const parts = raw.split(/(\*\*[^*\n][\s\S]*?[^*\n]\*\*)/g);
+  return parts.map((part) => {
+    const match = part.match(/^\*\*([\s\S]+?)\*\*$/);
+    if (match) {
+      const skipI18n = typeof isWentianEnglishMode === "function" && isWentianEnglishMode() && /[\u3400-\u9fff]/.test(match[1]);
+      return `<strong${skipI18n ? ' data-wentian-i18n-skip="true"' : ""}>${escapeHtml(match[1])}</strong>`;
+    }
+    return escapeHtml(part);
+  }).join("");
+}
+
+function stripWentianMarkdownEmphasis(value) {
+  return String(value || "")
+    .replace(/\*\*([^*\n]+)\*\*/g, "$1")
+    .replace(/__([^_\n]+)__/g, "$1")
+    .replace(/\*\*/g, "")
+    .replace(/__/g, "");
+}
+
 function figText(id, text, x, y, w, size, color, weight = 400, align = "left", extra = "") {
   return `<p class="fig-text" data-node-id="${id}" style="left:${x}px;top:${y}px;width:${w}px;font-size:${size}px;color:${color};font-weight:${weight};text-align:${align};${extra}">${text}</p>`;
 }
@@ -3696,9 +3717,7 @@ function cleanWentianAiText(value) {
     .replace(/(^|\n)\s{0,3}#{1,6}\s*/g, "$1")
     .replace(/(^|\n)\s{0,3}>\s*/g, "$1")
     .replace(/(^|\n)\s*[-*+]\s+/g, "$1")
-    .replace(/\*\*([^*\n]+)\*\*/g, "$1")
     .replace(/__([^_\n]+)__/g, "$1")
-    .replace(/\*\*/g, "")
     .replace(/__/g, "")
     .replace(/[ \t]+\n/g, "\n")
     .replace(/\n{3,}/g, "\n\n")
@@ -3706,11 +3725,57 @@ function cleanWentianAiText(value) {
 }
 
 function normalizeWentianAiText(value) {
-  return cleanWentianAiText(value).replace(/\s+/g, " ").trim();
+  return stripWentianMarkdownEmphasis(cleanWentianAiText(value)).replace(/\s+/g, " ").trim();
 }
 
 function hasWentianHanText(value) {
   return WENTIAN_I18N_HAS_HAN_RE.test(String(value || ""));
+}
+
+function getWentianEnglishAllowedGlossaryTerms() {
+  return Array.from(new Set([
+    "紫微斗数", "命盘", "命宫", "身宫", "兄弟宫", "夫妻宫", "子女宫", "财帛宫", "疾厄宫", "迁移宫",
+    "交友宫", "仆役宫", "官禄宫", "事业宫", "田宅宫", "福德宫", "父母宫", "大限", "小限", "流年",
+    "流月", "四化", "化禄", "化权", "化科", "化忌", "三方四正", "对宫", "本宫", "宫位",
+    "八字", "日主", "用神", "喜神", "忌神", "十神", "正财", "偏财", "正官", "七杀",
+    "正印", "偏印", "食神", "伤官", "比肩", "劫财", "财星", "官星", "印星", "食伤",
+    "比劫", "天干", "地支", "五行",
+    ...Object.keys(WENTIAN_I18N_EN_TERM_MAP),
+    ...Object.keys(WENTIAN_I18N_EN_ZIWEI_TERMS),
+    ...Object.keys(WENTIAN_I18N_EN_STEM_BRANCH),
+  ].filter((term) => WENTIAN_I18N_HAS_HAN_RE.test(term)))).sort((a, b) => b.length - a.length);
+}
+
+function consumeWentianAllowedGlossaryTerms(value) {
+  let rest = String(value || "").replace(/[^\u3400-\u9fff]/g, "");
+  if (!rest) return false;
+  const terms = getWentianEnglishAllowedGlossaryTerms();
+  while (rest) {
+    const term = terms.find((item) => rest.startsWith(item));
+    if (!term) return false;
+    rest = rest.slice(term.length);
+  }
+  return true;
+}
+
+function preserveWentianAllowedGlossaryParentheses(value) {
+  const placeholders = [];
+  const text = String(value || "").replace(/[（(]([^()（）]{1,28})[)）]/g, (match, inner) => {
+    if (!WENTIAN_I18N_HAS_HAN_RE.test(inner) || !consumeWentianAllowedGlossaryTerms(inner)) return match;
+    const token = `__WT_EN_GLOSSARY_${placeholders.length}__`;
+    placeholders.push([token, match]);
+    return token;
+  });
+  return { text, placeholders };
+}
+
+function restoreWentianAllowedGlossaryParentheses(value, placeholders) {
+  return placeholders.reduce((next, [token, original]) => next.replaceAll(token, original), String(value || ""));
+}
+
+function hasWentianDisallowedEnglishHanText(value) {
+  const preserved = preserveWentianAllowedGlossaryParentheses(value);
+  return WENTIAN_I18N_HAS_HAN_RE.test(preserved.text);
 }
 
 function isWentianEnglishMode() {
@@ -3743,7 +3808,7 @@ function isWentianAiResultChinese(data) {
       texts.push(section?.title, section?.content, section?.body, section?.summary);
     }
   }
-  return texts.some(hasWentianHanText);
+  return texts.some(hasWentianDisallowedEnglishHanText);
 }
 
 function normalizeWentianAiData(data) {
@@ -3890,7 +3955,7 @@ function renderWentianAiDetailSections(data, fallback, options = {}) {
       ${list.map((section) => `
         <section>
           <h4>${escapeHtml(section.title || "解读")}</h4>
-          <p>${escapeHtml(trimWentianAiText(section.content || fallback, max))}</p>
+          <p>${renderWentianSafeInlineMarkdown(trimWentianAiText(section.content || fallback, max))}</p>
         </section>
       `).join("")}
     </div>
@@ -3913,7 +3978,7 @@ function renderWentianOverallEvidenceTags(items) {
 }
 
 function splitWentianReadingParagraphs(value, max = 48) {
-  const text = normalizeWentianAiText(value);
+  const text = cleanWentianAiText(value);
   if (!text) return [];
   const sentences = text.match(/[^。！？；.!?;]+[。！？；.!?;]?/g)?.map((item) => item.trim()).filter(Boolean) || [text];
   const paragraphs = [];
@@ -3941,7 +4006,7 @@ function renderWentianReadingParagraphs(value, fallback = "") {
   const paragraphs = splitWentianReadingParagraphs(value || fallback);
   return `
     <div class="wentian-mb-reading-lines">
-      ${(paragraphs.length ? paragraphs : [fallback]).map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`).join("")}
+      ${(paragraphs.length ? paragraphs : [fallback]).map((paragraph) => `<p>${renderWentianSafeInlineMarkdown(paragraph)}</p>`).join("")}
     </div>
   `;
 }
@@ -3981,7 +4046,7 @@ function renderWentianOverallReading(data, fallback, actionAttr, actionLabel) {
         return `
           <section>
             <header><span>${String(index + 1).padStart(2, "0")}</span><h4>${escapeHtml(section.title || "解读")}</h4></header>
-            <p>${escapeHtml(section.content || fallback)}</p>
+            <p>${renderWentianSafeInlineMarkdown(section.content || fallback)}</p>
             ${renderWentianOverallEvidenceTags(tags)}
           </section>
         `;
@@ -3989,7 +4054,7 @@ function renderWentianOverallReading(data, fallback, actionAttr, actionLabel) {
     </div>
     <div class="wentian-mb-overall-risk">
       <strong>迁移化忌冲命</strong>
-      <p>${escapeHtml(risk.replace(/^迁移化忌冲命[，,：:\s]*/, ""))}</p>
+      <p>${renderWentianSafeInlineMarkdown(risk.replace(/^迁移化忌冲命[，,：:\s]*/, ""))}</p>
     </div>
   `;
 }
@@ -5605,7 +5670,7 @@ function buildWentianPdfTextCards(sections, fallbackTitle, fallbackText, limit =
   return safeList.map((section) => `
     <section class="wentian-pdf-text-card">
       <strong>${escapeHtml(section.title || fallbackTitle)}</strong>
-      <p>${escapeHtml(cleanWentianAiText(section.content || fallbackText || "等待生成。"))}</p>
+      <p>${renderWentianSafeInlineMarkdown(cleanWentianAiText(section.content || fallbackText || "等待生成。"))}</p>
     </section>
   `).join("");
 }
@@ -8213,6 +8278,7 @@ function applyWentianLanguageText(root = view, code = getWentianLanguageCode(), 
         if (!node.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
         const tag = node.parentElement?.tagName;
         if (tag === "SCRIPT" || tag === "STYLE") return NodeFilter.FILTER_REJECT;
+        if (node.parentElement?.closest?.("[data-wentian-i18n-skip]")) return NodeFilter.FILTER_REJECT;
         return NodeFilter.FILTER_ACCEPT;
       }
     });
@@ -9689,9 +9755,11 @@ function splitWentianReplyParagraphs(text) {
 }
 
 function stripWentianEnglishUiText(text) {
-  return String(text || "")
+  const preserved = preserveWentianAllowedGlossaryParentheses(text);
+  const stripped = preserved.text
     .replace(/[（(][^()（）]*[\u3400-\u9fff][^()（）]*[)）]/g, "")
     .replace(/[\u3400-\u9fff]+/g, "")
+    .replace(/[，。！？；：、【】《》“”‘’￥…—]/g, "")
     .replace(/([.!?])(?=[A-Z])/g, "$1 ")
     .replace(/\(\s*\)/g, "")
     .replace(/^[)\]）]+/gm, "")
@@ -9700,6 +9768,7 @@ function stripWentianEnglishUiText(text) {
     .replace(/\n{3,}/g, "\n\n")
     .replace(/[ \t]{2,}/g, " ")
     .trim();
+  return restoreWentianAllowedGlossaryParentheses(stripped, preserved.placeholders);
 }
 
 function isWentianMeaningfulEnglishText(text) {
@@ -9736,7 +9805,7 @@ function renderWentianChatMessageContent(message, role) {
   const shouldNormalizeEnglishAssistant = role === "assistant" && isWentianEnglishMode() && !message.typing;
   const text = shouldNormalizeEnglishAssistant ? normalizeWentianEnglishAssistantText(rawText) : rawText;
   return splitWentianReplyParagraphs(text)
-    .map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`)
+    .map((paragraph) => `<p>${renderWentianSafeInlineMarkdown(paragraph)}</p>`)
     .join("");
 }
 
@@ -9912,10 +9981,11 @@ async function ensureWentianXuSession(options = {}) {
   const languageParams = getWentianAiLanguageParams();
   wentianXuChat.sessionPromise = wentianPostJson("/api/ai/chat/session", {
     chartRecordId: payload.chartRecordId,
-    chartData: payload.chartData,
+    chartData: { ...payload.chartData, ...languageParams },
     chatMode: payload.mode,
     divinationContext: payload.divinationContext,
     ...languageParams,
+    extraParams: languageParams,
     transientState: loadWentianTransientState(payload.chartRecordId),
   }, 90000, 1).then((data) => {
     wentianXuChat.sessionId = data.sessionId || `transient:${payload.chartRecordId}`;
@@ -9928,7 +9998,7 @@ async function ensureWentianXuSession(options = {}) {
           text: item.content || "",
         })).filter((item) => {
           if (!isWentianEnglishMode()) return true;
-          if (hasWentianHanText(item.text)) return false;
+          if (hasWentianDisallowedEnglishHanText(item.text)) return false;
           return !(item.role === "assistant" && isWentianEnglishAssistantFailureText(item.text));
         })
         : [];
@@ -9982,10 +10052,11 @@ async function sendWentianXuChat(promptText = "") {
       chartRecordId: payload.chartRecordId,
       message: outboundMessage,
       displayMessage: message,
-      chartData: payload.chartData,
+      chartData: { ...payload.chartData, ...languageParams },
       chatMode: payload.mode,
       divinationContext: payload.divinationContext,
       ...languageParams,
+      extraParams: languageParams,
       transientState: loadWentianTransientState(payload.chartRecordId),
     }, 70000, 0);
     wentianXuChat.messages.pop();
@@ -11959,11 +12030,11 @@ function renderWentianHepanAiPanel(result) {
             <article>
               <span>${escapeHtml(item.title || "判定")}</span>
               ${item.subtitle ? `<small>${escapeHtml(item.subtitle)}</small>` : ""}
-              <p>${escapeHtml(formatWentianHepanReportText(item.content))}</p>
+              <p>${renderWentianSafeInlineMarkdown(formatWentianHepanReportText(item.content))}</p>
             </article>
           `).join("")}
         </div>
-        ${ai.card.risk ? `<p class="wentian-hepan-ai-risk"><span>避开误区</span>${escapeHtml(ai.card.risk)}</p>` : ""}
+        ${ai.card.risk ? `<p class="wentian-hepan-ai-risk"><span>避开误区</span>${renderWentianSafeInlineMarkdown(ai.card.risk)}</p>` : ""}
       </section>
     `;
   }
