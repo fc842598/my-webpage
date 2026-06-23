@@ -6703,6 +6703,7 @@ const WENTIAN_I18N = {
     "已开通": "Active",
     "阅天套餐": "Yuetian Plan",
     "我的报告": "My Reports",
+    "学习紫微": "Learn Zi Wei",
     "订单记录": "Orders",
     "邀请好友": "Invite Friends",
     "双方获得奖励": "Both earn rewards",
@@ -6813,6 +6814,7 @@ const WENTIAN_I18N = {
     "分享阅天AI": "分享閱天AI",
     "联系我们": "聯絡我們",
     "我的报告": "我的報告",
+    "学习紫微": "學習紫微",
     "订单记录": "訂單記錄",
     "每日额度": "每日額度",
     "套餐状态": "套餐狀態",
@@ -11328,12 +11330,13 @@ function sourceMineScreenV2(screen) {
     ["\u5957\u9910\u72B6\u6001", member.isMember ? "\u4ED8\u8D39\u7248" : "\u514D\u8D39\u7248", 262, "screen-9"]
   ];
   const listRows = [
-    ["\u25A4", "\u6211\u7684\u62A5\u544A", "", 408, "screen-27"],
-    ["\u25A6", "\u8BA2\u5355\u8BB0\u5F55", "", 464, "screen-48"],
-    ["\u2667", "\u9080\u8BF7\u597D\u53CB", "", 520, "screen-22"],
-    ["\u6587", "\u8BED\u8A00\u8BBE\u7F6E", languageLabel, 576, "screen-37"],
-    ["\u21BB", "\u5206\u4EAB\u9605\u5929AI", "", 632, "screen-34"],
-    ["\u260E", "\u8054\u7CFB\u6211\u4EEC", "", 688, "screen-35"]
+    ["\u25A4", "\u6211\u7684\u62A5\u544A", "", 400, "screen-27"],
+    ["\u25A6", "\u8BA2\u5355\u8BB0\u5F55", "", 449, "screen-48"],
+    ["\u2667", "\u9080\u8BF7\u597D\u53CB", "", 498, "screen-22"],
+    ["\u6587", "\u8BED\u8A00\u8BBE\u7F6E", languageLabel, 547, "screen-37"],
+    ["\u21BB", "\u5206\u4EAB\u9605\u5929AI", "", 596, "screen-34"],
+    ["\u260E", "\u8054\u7CFB\u6211\u4EEC", "", 645, "screen-35"],
+    ["\u6587", "\u5B66\u4E60\u7D2B\u5FAE", "", 694, "articles"]
   ];
   const planBannerText = member.isMember ? "\u67E5\u770B\u6743\u76CA" : "\u7ACB\u5373\u67E5\u770B";
   return `
@@ -11365,12 +11368,12 @@ function sourceMineScreenV2(screen) {
     ${figText("source-31-plan-banner-cta-text-v2", planBannerText, 262, 355, 92, 13, "#2c211b", 800, "center")}
     ${figButton("source-31-plan-banner-hit-v2", 16, 330, 358, 66, 'data-route="screen-33" aria-label="\\u9605\\u5929\\u5957\\u9910"', "", "z-index:37;")}
     ${listRows.map(([icon, label, value, y, route], index) => `
-      ${figBox(`source-31-list-row-v2-${index}`, 16, y, 358, 48, "converted-card", "border-radius:18px;box-shadow:0 6px 16px rgba(74,55,32,.08);")}
-      ${figText(`source-31-list-icon-v2-${index}`, icon, 32, y + 15, 26, 16, "#2d2926", 700, "center")}
-      ${figText(`source-31-list-label-v2-${index}`, label, 68, y + 15, 150, 16, "#26211c", 700)}
-      ${value ? figText(`source-31-list-value-v2-${index}`, value, 246, y + 16, 86, 13, "#9b742e", 600, "right") : ""}
-      ${figText(`source-31-list-arrow-v2-${index}`, "\u203A", 338, y + 13, 18, 18, "#b2a79a", 700, "center")}
-      ${figButton(`source-31-list-hit-v2-${index}`, 16, y, 358, 48, `data-route="${route}" aria-label="${label}"`, "", "z-index:37;")}
+      ${figBox(`source-31-list-row-v2-${index}`, 16, y, 358, 44, "converted-card", "border-radius:18px;box-shadow:0 6px 16px rgba(74,55,32,.08);")}
+      ${figText(`source-31-list-icon-v2-${index}`, icon, 32, y + 13, 26, 16, "#2d2926", 700, "center")}
+      ${figText(`source-31-list-label-v2-${index}`, label, 68, y + 13, 150, 16, "#26211c", 700)}
+      ${value ? figText(`source-31-list-value-v2-${index}`, value, 246, y + 14, 86, 13, "#9b742e", 600, "right") : ""}
+      ${figText(`source-31-list-arrow-v2-${index}`, "\u203A", 338, y + 11, 18, 18, "#b2a79a", 700, "center")}
+      ${figButton(`source-31-list-hit-v2-${index}`, 16, y, 358, 44, route === "articles" ? `data-action="wentian-open-articles" aria-label="${label}"` : `data-route="${route}" aria-label="${label}"`, "", "z-index:37;")}
     `).join("")}
     ${sourceAppBottomNav("\u6211\u7684", 755)}
   `;
@@ -17339,18 +17342,9 @@ function sourceDashboardHomeScreen() {
       ${figText("source-1-archive-action-text", "换档案", 282, 322, 68, 11, "#9a681c", 900, "center")}
       ${figButton("source-1-archive-hit", 18, 294, 354, 70, 'data-route="screen-25"', "", "z-index:35;")}
 
-      ${figBox("source-1-articles", 18, 382, 354, 54, "", "border-radius:16px;background:#fffaf3;border:1px solid #eadfce;box-shadow:0 8px 20px rgba(70,45,25,.06);")}
-      ${figBox("source-1-articles-mark", 36, 398, 24, 24, "", "border-radius:12px;background:#fff0d6;")}
-      ${figText("source-1-articles-mark-text", "文", 36, 405, 24, 10, "#a37018", 900, "center")}
-      ${figText("source-1-articles-title", "命理短文", 72, 394, 96, 15, "#25221f", 900, "left", "white-space:nowrap;")}
-      ${figText("source-1-articles-sub", "命宫、身宫、流年慢慢讲", 72, 416, 178, 11, "#8d877e", 700, "left", "white-space:nowrap;overflow:hidden;text-overflow:ellipsis;")}
-      ${figText("source-1-articles-action", "去阅读", 292, 403, 52, 11, "#9a681c", 900, "center")}
-      ${figText("source-1-articles-arrow", "›", 344, 400, 16, 16, "#c2a170", 900, "center")}
-      ${figButton("source-1-articles-hit", 18, 382, 354, 54, 'data-action="wentian-open-articles" aria-label="打开命理短文"', "", "z-index:35;")}
-
       ${dashboardFeatures.map(([title, sub, icon, route], index) => {
         const x = index % 2 === 0 ? 18 : 201;
-        const y = 462 + Math.floor(index / 2) * 88;
+        const y = 382 + Math.floor(index / 2) * 88;
         const hitAttrs = route === "liuyao-v2"
           ? 'data-action="wentian-open-liuyao-v2" aria-label="打开六爻占卜新版"'
           : `data-route="${route}"`;
