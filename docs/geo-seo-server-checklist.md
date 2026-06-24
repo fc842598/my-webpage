@@ -44,6 +44,39 @@ server {
 }
 ```
 
+## 先查同步白名单
+
+这次线上现象很像：
+
+- 首页和旧文件已经同步到了 `/usr/share/nginx/html`
+- 但新根文件 `llms.txt`、`404.html`、`sitemap-pages.xml`、`sitemap-articles.xml` 没进线上目录
+- 所以访问这些 URL 时，Nginx 又按兜底规则回到了首页 `200`
+
+先在服务器上执行这几条：
+
+```bash
+ls -l /usr/share/nginx/html/llms.txt
+ls -l /usr/share/nginx/html/404.html
+ls -l /usr/share/nginx/html/sitemap-pages.xml
+ls -l /usr/share/nginx/html/sitemap-articles.xml
+sed -n '1,240p' /usr/local/bin/yuetian-sync.sh
+```
+
+如果 `yuetian-sync.sh` 里有同步白名单，要把下面这些文件补进去：
+
+- `llms.txt`
+- `404.html`
+- `sitemap-pages.xml`
+- `sitemap-articles.xml`
+
+补完后先手动跑一遍同步脚本，再重载 Nginx：
+
+```bash
+sudo /usr/local/bin/yuetian-sync.sh
+sudo nginx -t
+sudo systemctl reload nginx
+```
+
 ## 不要这样配
 
 ```nginx

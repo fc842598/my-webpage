@@ -82,8 +82,15 @@ async function main() {
       }
 
       if (check.name === "llms") {
-        const ok = result.status === 200 && /YuetianAI|阅天AI/i.test(result.text);
-        console.log(`[llms] status=${result.status} brand=${/YuetianAI|阅天AI/i.test(result.text)}`);
+        const hasBrand = /YuetianAI|阅天AI/i.test(result.text);
+        const looksLikeHtml = /<!doctype html>|<html/i.test(result.text);
+        const looksLikePlainText =
+          /text\/plain|application\/octet-stream/i.test(result.contentType) ||
+          /^#\s*YuetianAI/m.test(result.text);
+        const ok = result.status === 200 && hasBrand && looksLikePlainText && !looksLikeHtml;
+        console.log(
+          `[llms] status=${result.status} brand=${hasBrand} plain=${looksLikePlainText} html=${looksLikeHtml} type=${result.contentType}`
+        );
         if (!ok) failures.push("llms.txt 异常");
         continue;
       }
