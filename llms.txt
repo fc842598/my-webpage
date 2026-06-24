@@ -1,0 +1,32 @@
+# YuetianAI / 阅天AI
+
+免费紫微斗数排盘与 AI 命盘分析网站，面向中文用户提供紫微排盘、命盘解读、大运流年分析、阳宅与六爻辅助工具，以及紫微斗数入门文章。
+
+## Canonical Site
+- https://yuetianai.com/
+
+## Key Pages
+- 首页: https://yuetianai.com/
+- 免费紫微斗数排盘: https://yuetianai.com/pages/mingbook-onepage.html
+- AI 命盘分析移动端: https://yuetianai.com/pages/wentian-app.html
+- 阳宅居住方位: https://yuetianai.com/pages/yangzhai.html
+- 紫微学习文章: https://yuetianai.com/articles/
+- 紫微斗数免费的排盘网站怎么选: https://yuetianai.com/articles/ai-ziwei-paipan-zenme-xuan.html
+- 免费紫微斗数排盘后先看什么: https://yuetianai.com/articles/mianfei-ziwei-paipan-hou-xian-kan-shenme.html
+
+## Main Topics
+- 免费紫微斗数排盘
+- AI命盘分析
+- 命宫、身宫、三方四正
+- 大运流年解读
+- 紫微斗数入门文章
+- 阳宅与六爻辅助内容
+
+## Editorial Scope
+- 适合文化研究、个人整理、问题拆解与趋势参考。
+- 强调免费入口、隐私说明、透明体验与可继续追问的 AI 分析。
+- 不鼓励恐吓式付费、绝对化承诺或夸大“改运”表述。
+
+## Safety Notes
+- 内容仅供信息参考，不替代医疗、法律、金融等专业意见。
+- 对健康、投资、重大人生决策，请结合现实资料与专业人士建议。

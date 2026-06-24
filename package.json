@@ -3,6 +3,8 @@
   "private": true,
   "scripts": {
     "audit:dead-code": "node scripts/audit-dead-code.js",
+    "geo:check": "node scripts/check-geo-basics.js",
+    "geo:check:local": "node scripts/check-geo-local.js",
     "seo:hooks:install": "node scripts/install-git-hooks.mjs",
     "seo:indexnow:submit": "node scripts/indexnow-auto-submit.mjs",
     "seo:baidu:submit": "node scripts/baidu-auto-submit.mjs",

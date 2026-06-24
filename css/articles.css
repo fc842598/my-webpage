@@ -176,6 +176,7 @@ h1 {
   background: rgba(17, 14, 10, .82);
 }
 
+.section-head h1,
 .section-head h2 {
   margin: 0;
   font-size: 26px;
@@ -857,6 +858,7 @@ h1 {
     background: var(--surface-2);
   }
 
+  .section-head h1,
   .section-head h2 {
     font-size: 20px;
   }

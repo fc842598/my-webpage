@@ -1317,7 +1317,9 @@ body.mbp-ticket-open {
   letter-spacing: .22em;
 }
 
+.mbp-input-prompt h1,
 .mbp-input-prompt strong {
+  margin: 0;
   color: var(--ivory);
   font: 900 22px/1.18 "Noto Sans SC", "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
   letter-spacing: .04em;
@@ -2432,6 +2434,83 @@ body.mbp-ticket-open {
   margin: 12px 0 0;
   color: var(--muted);
   font-size: 16px;
+}
+
+.mbp-seo-section {
+  margin-top: 36px;
+}
+
+.mbp-seo-grid,
+.mbp-seo-faq-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.mbp-seo-card,
+.mbp-seo-faq-item {
+  padding: 20px 18px;
+  border: 1px solid rgba(241, 212, 125, .14);
+  border-radius: 18px;
+  background:
+    linear-gradient(180deg, rgba(20, 12, 7, .94), rgba(10, 7, 5, .92)),
+    rgba(241, 212, 125, .03);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 245, 205, .06),
+    0 14px 28px rgba(0, 0, 0, .18);
+}
+
+.mbp-seo-card span {
+  display: inline-flex;
+  min-width: 44px;
+  min-height: 28px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  border: 1px solid rgba(241, 212, 125, .26);
+  color: var(--gold);
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: .16em;
+}
+
+.mbp-seo-card h3,
+.mbp-seo-faq-item h3 {
+  margin: 14px 0 0;
+  color: var(--ivory);
+  font-size: 18px;
+  line-height: 1.35;
+}
+
+.mbp-seo-card p,
+.mbp-seo-faq-item p {
+  margin: 10px 0 0;
+  color: var(--muted);
+}
+
+.mbp-seo-faq-head {
+  margin-top: 28px;
+}
+
+.mbp-seo-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.mbp-seo-links a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  padding: 0 16px;
+  border: 1px solid rgba(241, 212, 125, .16);
+  border-radius: 999px;
+  background: rgba(241, 212, 125, .045);
+  color: var(--gold-soft);
+  font-size: 14px;
+  font-weight: 800;
+  text-decoration: none;
 }
 
 .mbp-report-pulse {
@@ -10454,6 +10533,7 @@ p.mbp-topic-detail {
     border-radius: 9px;
   }
 
+  .mbp-input-prompt h1,
   .mbp-input-prompt strong {
     font-size: 16px;
     line-height: 1.35;

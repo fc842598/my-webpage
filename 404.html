@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>404｜阅天AI</title>
+  <meta name="description" content="你访问的页面不存在。可返回阅天AI首页、免费紫微斗数排盘页或紫微学习文章页继续浏览。">
+  <meta name="robots" content="noindex,follow">
+  <link rel="canonical" href="https://yuetianai.com/404.html">
+  <link rel="icon" href="images/wentian-prototype-assets/wentian-brand-logo-ai-gold-v1.webp" type="image/webp">
+  <style>
+    :root {
+      --bg: #070402;
+      --panel: #120c08;
+      --line: rgba(241, 212, 125, .2);
+      --gold: #e9c97f;
+      --ivory: #f3e8c8;
+      --muted: #af9a71;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      background:
+        radial-gradient(circle at top, rgba(233, 201, 127, .14), transparent 28%),
+        linear-gradient(180deg, #070402, #020100 72%);
+      color: var(--ivory);
+      font: 16px/1.7 "Noto Sans SC", "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
+    }
+
+    main {
+      width: min(760px, 100%);
+      padding: 36px 28px;
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      background: rgba(18, 12, 8, .92);
+      box-shadow: 0 28px 80px rgba(0, 0, 0, .35);
+    }
+
+    .eyebrow {
+      margin: 0 0 10px;
+      color: var(--gold);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(32px, 6vw, 54px);
+      line-height: 1.1;
+    }
+
+    p {
+      margin: 14px 0 0;
+      color: var(--muted);
+    }
+
+    nav {
+      display: grid;
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    a {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      padding: 16px 18px;
+      border: 1px solid rgba(241, 212, 125, .14);
+      border-radius: 16px;
+      color: inherit;
+      text-decoration: none;
+      background: rgba(241, 212, 125, .04);
+    }
+
+    a span:last-child {
+      color: var(--gold);
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <p class="eyebrow">404 Not Found</p>
+    <h1>这个页面不存在</h1>
+    <p>你可以返回首页，直接去免费紫微斗数排盘，或先看紫微学习文章。</p>
+    <nav aria-label="推荐去向">
+      <a href="/"><span>阅天AI首页</span><span>返回首页</span></a>
+      <a href="/pages/mingbook-onepage.html"><span>免费紫微斗数排盘</span><span>立即排盘</span></a>
+      <a href="/articles/"><span>学习紫微</span><span>查看文章</span></a>
+    </nav>
+  </main>
+</body>
+</html>
