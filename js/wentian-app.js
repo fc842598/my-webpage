@@ -680,6 +680,12 @@ function getWentianShortScreenLayoutOptions(screenNo) {
         bgSelector: '[data-node-id="yz42-bg"]',
         ignoreSelectors: ['[data-node-id="yz42-paper-main"]']
       };
+    case 47:
+      return {
+        minNavY: 620,
+        gap: 30,
+        bgSelector: '[data-node-id="lr47-bg"]'
+      };
     case 48:
       return { minNavY: 560, gap: 30, bgSelector: '[data-node-id="wt48-bg"]' };
     case 49:
@@ -11987,11 +11993,13 @@ function convertedAi(screen) {
   return base;
 }
 
-function wentianSimpleHeader(id, title, right = "") {
+function wentianSimpleHeader(id, title, right = "", options = {}) {
+  const backAttrs = options.backAttrs || 'data-action="back" aria-label="返回"';
+  const rightAttrs = options.rightAttrs || "";
   return `
-    ${wentianBackPill(id, 18, 42)}
+    ${wentianBackPill(id, 18, 42, backAttrs)}
     ${figText(`${id}-title`, title, 0, 52, 390, 17, "#25211d", 800, "center")}
-    ${right ? figText(`${id}-right`, right, 318, 48, 52, 20, "#8d857b", 700, "center") : ""}
+    ${right ? `${figText(`${id}-right`, right, 318, 48, 52, 20, "#8d857b", 700, "center")}${rightAttrs ? figButton(`${id}-right-hit`, 314, 32, 64, 44, rightAttrs) : ""}` : ""}
   `;
 }
 
@@ -16893,7 +16901,7 @@ function sourceLiurenTutorialScreen() {
   ];
   return `
     ${figBox("lr47-bg", 0, 0, 390, 844, "", "background:linear-gradient(180deg,#fffaf3 0%,#fbf5eb 100%);")}
-    ${wentianSimpleHeader("lr47", "六壬法教程")}
+    ${wentianSimpleHeader("lr47", "六壬法教程", "", { backAttrs: 'data-action="wentian-return-previous" data-fallback-route="screen-46" aria-label="返回"' })}
     ${figText("lr47-main-title", "怎么起课", 24, 112, 150, 24, "#201812", 900, "left", "font-family:'Noto Serif SC','Songti SC',serif;")}
     ${figText("lr47-sub", "不用输入问题，直接以当前农历时间取象。", 24, 146, 280, 13, "#817568", 600)}
     ${steps.map(([num, title, desc], index) => {
@@ -19428,13 +19436,13 @@ function compactWentianShortFigScreenLayout(screenNo, options = getWentianShortS
   });
   if (!maxBottom) return false;
   const nextNavY = Math.max(Number(options.minNavY) || 620, Math.ceil(maxBottom + (Number(options.gap) || 28)));
-  if (nextNavY >= navTop - 4) return false;
   const delta = nextNavY - navTop;
+  if (Math.abs(delta) < 4) return false;
   navNodes.forEach((node) => {
     const top = Number.parseFloat(node.style.top);
     if (Number.isFinite(top)) node.style.top = `${Math.round(top + delta)}px`;
   });
-  const nextHeight = nextNavY + 89;
+  const nextHeight = Math.max(WENTIAN_PHONE_HEIGHT, nextNavY + 89);
   phone.style.height = `${nextHeight}px`;
   if (bg) bg.style.height = `${nextHeight}px`;
   return true;
@@ -19694,7 +19702,7 @@ function navigate(route, push = true, syncHash = true) {
     scheduleWentianPhoneFit();
     if (screen.no === 27) scheduleWentianZiweiScreenLayout();
     if ([17, 18, 19].includes(screen.no)) scheduleWentianLiuyaoCastLayout();
-    if ([3, 5, 20, 22, 32, 35, 38, 40, 41, 42, 48].includes(screen.no)) scheduleWentianShortPageLayout(screen.no);
+    if ([3, 5, 20, 22, 32, 35, 38, 40, 41, 42, 47, 48].includes(screen.no)) scheduleWentianShortPageLayout(screen.no);
     if (screen.no === 49) scheduleWentianHepanResultLayout();
     syncActive();
     window.setTimeout(initWentianAuth, 0);
