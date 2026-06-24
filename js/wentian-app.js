@@ -76,7 +76,7 @@ const screenFlowHotspots = {
   4: [[18, 24, 44, 56, "screen-3"], [334, 24, 38, 56, "screen-9"], [252, 26, 78, 36, "screen-5"]],
   5: [[320, 116, 48, 48, "screen-4"], [34, 235, 322, 72, "screen-6"], [34, 318, 322, 72, "screen-6"], [48, 748, 294, 52, "screen-6"]],
   6: [[18, 44, 48, 48, "screen-4"]],
-  7: [[18, 44, 48, 48, "screen-4"], [54, 280, 282, 168, "screen-8"]],
+  7: [],
   8: [[18, 44, 48, 48, "screen-7"]],
   9: [[18, 44, 48, 48, "screen-4"], [278, 44, 84, 48, "screen-4"], [20, 118, 350, 72, "screen-7"], [20, 198, 350, 72, "screen-7"], [20, 278, 350, 72, "screen-7"]],
   10: [[18, 44, 48, 48, "screen-1"], [24, 165, 342, 90, "screen-11"], [24, 270, 342, 90, "screen-11"], [24, 375, 342, 90, "screen-11"]],
@@ -7251,6 +7251,7 @@ const WENTIAN_I18N_EN_EXTRA = {
   "问一问": "Ask",
   "推算中...": "Calculating...",
   "查看回复": "View Reply",
+  "查看长文": "View Full Reading",
   "请根据我的八字，深度拆解核心性格特质。": "Based on my Bazi, deeply analyze my core personality.",
   "请根据我的八字拆解性格。": "Please analyze my personality from my Bazi.",
   "你的八字显示辛未、癸巳、丁亥、辛亥。核心是敏感、洞察力强，适合把直觉转化为决策。": "Your Bazi shows strong sensitivity and insight. Turn intuition into decisions.",
@@ -11939,7 +11940,10 @@ function convertedAi(screen) {
     return base + figBox("reply-user", 46, 260, 298, 74, "", "border-radius:14px;background:#b88c33;") +
       figText("reply-user-text", "请根据我的八字拆解性格。", 64, 282, 260, 14, "#fff") +
       figBox("reply-ai-card", 42, 360, 306, 112, "", "border-radius:14px;background:#fff;box-shadow:0 6px 16px rgba(74,55,32,.07);") +
-      figText("reply-ai", "你的八字显示辛未、癸巳、丁亥、辛亥。核心是敏感、洞察力强，适合把直觉转化为决策。", 60, 384, 270, 14, "#26211c", 500, "left", "line-height:1.55;");
+      figText("reply-ai", "你的八字显示辛未、癸巳、丁亥、辛亥。核心是敏感、洞察力强，适合把直觉转化为决策。", 60, 384, 270, 14, "#26211c", 500, "left", "line-height:1.55;") +
+      figBox("reply-next", 42, 492, 138, 40, "", "border-radius:20px;background:#fff;border:1px solid rgba(184,140,51,.34);box-shadow:0 8px 18px rgba(72,48,26,.08);") +
+      figButton("reply-next-hit", 42, 492, 138, 40, 'data-route="screen-8"') +
+      figText("reply-next-text", "查看长文", 42, 505, 138, 14, "#b88c33", 800, "center");
   }
   return base;
 }
@@ -19962,7 +19966,8 @@ document.addEventListener("toggle", (event) => {
 }, true);
 
 document.addEventListener("click", (event) => {
-  if (Date.now() < wentianPointerRouteSuppressUntil) {
+  const earlyActionTarget = event.target.closest("[data-action]");
+  if (Date.now() < wentianPointerRouteSuppressUntil && !earlyActionTarget) {
     event.preventDefault();
     event.stopPropagation();
     return;
@@ -19987,7 +19992,6 @@ document.addEventListener("click", (event) => {
     window.setTimeout(syncWentianChatFaqLayout, 0);
     return;
   }
-  const earlyActionTarget = event.target.closest("[data-action]");
   const earlyAction = earlyActionTarget?.dataset.action;
   if (earlyAction === "wentian-open-liuyao-v2") {
     window.location.href = "./liuyao-v2.html?v=20260616-cast-compact";
@@ -20225,13 +20229,17 @@ document.addEventListener("click", (event) => {
       return;
     }
     if (state.route === "screen-26") clearWentianArchiveEditContext();
-    const previousRoute = state.stack[state.stack.length - 1];
-    if (previousRoute && window.history.length > 1) {
-      window.history.back();
+    let previousRoute = state.stack[state.stack.length - 1];
+    while (previousRoute === state.route) {
+      state.stack.pop();
+      previousRoute = state.stack[state.stack.length - 1];
+    }
+    if (previousRoute) {
+      state.stack.pop();
+      navigate(previousRoute, false);
       return;
     }
     const fallbackRoute = previousRoute || (mineBackFallbackRoutes.has(state.route) ? "screen-31" : "home");
-    if (previousRoute) state.stack.pop();
     navigate(fallbackRoute, false);
     return;
   }
