@@ -70,23 +70,38 @@
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    "name": "阅天AI免费紫微斗数排盘",
-    "applicationCategory": "LifestyleApplication",
-    "operatingSystem": "Web",
-    "url": "https://yuetianai.com/pages/mingbook-onepage.html",
-    "description": "输入出生资料即可免费生成紫微斗数命盘，并继续查看命宫、三方四正、大运流年与AI命盘分析。",
-    "offers": {
-      "@type": "Offer",
-      "price": "0",
-      "priceCurrency": "CNY"
-    },
-    "featureList": [
-      "免费紫微斗数排盘",
-      "AI命盘分析",
-      "命宫与三方四正解读",
-      "大运流年解读",
-      "排盘后继续追问"
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://yuetianai.com/#organization",
+        "name": "阅天AI",
+        "alternateName": "YuetianAI",
+        "url": "https://yuetianai.com/",
+        "logo": "https://yuetianai.com/images/wentian-prototype-assets/wentian-brand-logo-ai-gold-v1.webp"
+      },
+      {
+        "@type": "SoftwareApplication",
+        "@id": "https://yuetianai.com/pages/mingbook-onepage.html#app",
+        "name": "阅天AI免费紫微斗数排盘",
+        "alternateName": "YuetianAI",
+        "applicationCategory": "LifestyleApplication",
+        "operatingSystem": "Web",
+        "url": "https://yuetianai.com/pages/mingbook-onepage.html",
+        "publisher": { "@id": "https://yuetianai.com/#organization" },
+        "description": "输入出生资料即可免费生成紫微斗数命盘，并继续查看命宫、三方四正、大运流年与AI命盘分析。",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "CNY"
+        },
+        "featureList": [
+          "免费紫微斗数排盘",
+          "AI命盘分析",
+          "命宫与三方四正解读",
+          "大运流年解读",
+          "排盘后继续追问"
+        ]
+      }
     ]
   }
   </script>
@@ -125,6 +140,14 @@
         "acceptedAnswer": {
           "@type": "Answer",
           "text": "不适合作为医疗、法律、金融等专业建议替代，更适合文化研究、个人整理与趋势参考。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "阅天AI是什么？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "阅天AI是提供免费紫微斗数排盘与AI命盘分析的网站品牌名，官网域名是 yuetianai.com。"
         }
       }
     ]
