@@ -9659,6 +9659,13 @@ function setWentianContactStatus(text, tone = "") {
   el.dataset.tone = tone;
 }
 
+function setWentianAboutStatus(text, tone = "") {
+  const el = document.getElementById("wentian-about-status");
+  if (!el) return;
+  el.textContent = text || "";
+  el.dataset.tone = tone;
+}
+
 async function copyWentianContactText(text, okText) {
   try {
     const copied = await writeWentianClipboardText(text);
@@ -9767,6 +9774,20 @@ async function handleWentianContactAction(action) {
   }
   if (action === "wentian-contact-x") {
     await copyWentianContactText("阅天AI yuetianai.com", "X 联系信息已复制");
+  }
+}
+
+async function handleWentianAboutAction(action) {
+  if (action === "wentian-about-privacy") {
+    window.location.href = "privacy.html?view=desktop";
+    return;
+  }
+  if (action === "wentian-about-terms") {
+    setWentianAboutStatus("用户协议页即将上线", "ok");
+    return;
+  }
+  if (action === "wentian-about-update") {
+    setWentianAboutStatus("当前已是最新版本", "ok");
   }
 }
 
@@ -17581,14 +17602,20 @@ function renderWentianPolishedScreen(screen) {
       ${figText("wt36-name", "阅天AI", 0, 230, 390, 20, "#25211d", 800, "center")}
       ${figText("wt36-version", "v1.0.3199", 0, 260, 390, 12, "#8d857b", 600, "center")}
       ${figText("wt36-desc", "阅天AI是一款手机端命理排盘、合盘、抽签与AI解读工具，帮你把复杂命理信息转成可理解、可行动的建议。", 54, 304, 282, 14, "#756d63", 500, "center", "line-height:1.65;")}
-      ${["隐私协议", "用户协议", "检查更新"].map((title, index) => {
+      ${[
+        ["隐私协议", "wentian-about-privacy"],
+        ["用户协议", "wentian-about-terms"],
+        ["检查更新", "wentian-about-update"]
+      ].map(([title, action], index) => {
         const y = 466 + index * 70;
         return `
           ${figBox(`wt36-row-${index}`, 24, y, 342, 54, "", "border-radius:12px;background:#fff;box-shadow:0 6px 16px rgba(70,45,25,.06);")}
           ${figText(`wt36-title-${index}`, title, 58, y + 16, 160, 14, "#25211d", 800)}
           ${figText(`wt36-arrow-${index}`, "›", 330, y + 16, 20, 18, "#c9bba6", 800, "center")}
+          ${figButton(`wt36-hit-${index}`, 24, y, 342, 54, `data-action="${action}"`)}
         `;
       }).join("")}
+      <div id="wentian-about-status" class="wentian-invite-status" style="left:42px;top:690px;width:306px;text-align:center" data-tone=""></div>
       ${figText("wt36-copy", "粤ICP备2026055337号-1　© 2026 阅天AI Copyright, All Rights Reserved. Powered By 阅天工作室　", 18, 736, 354, 9, "#b4ada5", 500, "center")}
     `;
   }
@@ -20388,6 +20415,10 @@ document.addEventListener("click", (event) => {
   }
   if (action?.startsWith("wentian-contact-")) {
     handleWentianContactAction(action);
+    return;
+  }
+  if (action?.startsWith("wentian-about-")) {
+    handleWentianAboutAction(action);
     return;
   }
   if (action === "wentian-invite-copy-code") {
