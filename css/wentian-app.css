@@ -3695,7 +3695,7 @@ html[lang="en"] .wentian-chat-starter {
 }
 
 .wentian-archive-name {
-  flex: 1 1 auto;
+  flex: 0 1 auto;
   min-width: 0;
   color: #201813;
   font-size: 18px;
@@ -3704,6 +3704,29 @@ html[lang="en"] .wentian-chat-starter {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.wentian-archive-name-with-age,
+.wentian-archive-inline-name {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  max-width: 100%;
+  min-width: 0;
+  vertical-align: baseline;
+  white-space: nowrap;
+}
+
+.wentian-archive-inline-name {
+  display: flex;
+  line-height: 1.16;
+}
+
+.wentian-archive-name-text {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .wentian-archive-badge,
@@ -3732,6 +3755,15 @@ html[lang="en"] .wentian-chat-starter {
   color: #b18231;
   border: 1px solid rgba(218, 184, 113, .48);
   line-height: 18px;
+}
+
+.wentian-archive-name-with-age .wentian-archive-age-badge,
+.wentian-archive-inline-name .wentian-archive-age-badge {
+  height: 16px;
+  padding: 0 5px;
+  font-size: 10px;
+  line-height: 14px;
+  transform: translateY(-1px);
 }
 
 .wentian-archive-gender {

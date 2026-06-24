@@ -236,6 +236,16 @@ function figText(id, text, x, y, w, size, color, weight = 400, align = "left", e
   return `<p class="fig-text" data-node-id="${id}" style="left:${x}px;top:${y}px;width:${w}px;font-size:${size}px;color:${color};font-weight:${weight};text-align:${align};${extra}">${text}</p>`;
 }
 
+function renderWentianArchiveNameWithAgeBadge(item, fallback = "命主") {
+  const name = item?.name || fallback;
+  const badge = item?.ageBadge ? `<span class="wentian-archive-age-badge">${escapeHtml(item.ageBadge)}</span>` : "";
+  return `<span class="wentian-archive-name-with-age"><span class="wentian-archive-name-text">${escapeHtml(name)}</span>${badge}</span>`;
+}
+
+function figArchiveName(id, item, x, y, w, size, color, weight = 900, align = "left", extra = "") {
+  return `<p class="fig-text wentian-archive-inline-name" data-node-id="${id}" style="left:${x}px;top:${y}px;width:${w}px;font-size:${size}px;color:${color};font-weight:${weight};text-align:${align};${extra}">${renderWentianArchiveNameWithAgeBadge(item)}</p>`;
+}
+
 function figBox(id, x, y, w, h, className = "", style = "", attrs = "") {
   return `<div class="fig-box ${className}" data-node-id="${id}" ${attrs} style="left:${x}px;top:${y}px;width:${w}px;height:${h}px;${style}"></div>`;
 }
@@ -1578,6 +1588,9 @@ let wentianArchiveRemotePromise = null;
 let wentianArchiveRemotePromiseScope = "";
 let wentianArchiveDeleteConfirmId = "";
 let wentianArchiveStatus = { text: "", tone: "" };
+let wentianProfileBatchMode = false;
+let wentianProfileBatchSelectedIds = [];
+let wentianProfileBatchDeleteConfirm = false;
 let wentianLanguageDraft = null;
 let wentianHepanSelectedIds = null;
 let wentianHepanTimeEditId = "";
@@ -2591,11 +2604,69 @@ function findWentianArchiveById(id, archives = getWentianArchiveList()) {
 function editWentianArchive(id) {
   const archive = findWentianArchiveById(id);
   if (!archive) return;
+  resetWentianProfileBatchState();
   wentianArchiveDeleteConfirmId = "";
   setWentianArchiveEditId(archive.id);
   setWentianArchiveEditReturnRoute(state.route);
   applyWentianArchiveToCurrent(archive);
   navigate("screen-26");
+}
+
+async function deleteWentianArchivesBatch(ids = []) {
+  const wantedIds = Array.from(new Set((Array.isArray(ids) ? ids : []).filter(Boolean)));
+  if (!wantedIds.length) return false;
+  const archives = getWentianArchiveList();
+  const targets = archives.filter((archive) => wantedIds.includes(archive.id));
+  if (!targets.length) return false;
+  const targetIdSet = new Set(targets.map((archive) => archive.id));
+  const nextArchives = archives.filter((archive) => !targetIdSet.has(archive.id));
+  targets.forEach((archive) => rememberWentianArchiveTombstone(archive));
+  writeWentianArchives(nextArchives);
+  saveWentianHepanSelectedIds(getWentianHepanSelectedIds(nextArchives));
+  if (targetIdSet.has(wentianArchiveDraftId)) wentianArchiveDraftId = nextArchives[0]?.id || null;
+  if (targetIdSet.has(getWentianArchiveEditId())) clearWentianArchiveEditContext();
+
+  const saved = getWentianSavedChart();
+  const savedId = saved?.archiveId || saved?.form?.archiveId || "";
+  if (savedId && targetIdSet.has(savedId)) {
+    const replacement = nextArchives[0] || null;
+    if (replacement) {
+      setWentianSelectedArchiveId(replacement.id);
+      const chartRecordId = replacement.chartRecordId || replacement.chartData?.chartRecordId || makeWentianUuid();
+      saveWentianChart({
+        archiveId: replacement.id,
+        chart: replacement.chart || null,
+        chartData: { ...replacement.chartData, chartRecordId },
+        form: { ...(replacement.form || {}), archiveId: replacement.id },
+        createdAt: replacement.createdAt || new Date().toISOString(),
+      }, { upsertArchive: false });
+      setWentianChartRecordId(chartRecordId);
+    } else {
+      clearWentianSavedChart();
+    }
+  } else if (nextArchives.length) {
+    setWentianSelectedArchiveId(getWentianSelectedArchiveId(nextArchives));
+  } else {
+    clearWentianSavedChart();
+  }
+
+  wentianArchiveDeleteConfirmId = "";
+  const removedCount = targets.length;
+  resetWentianProfileBatchState();
+  setWentianArchiveStatus(`已删除 ${removedCount} 份档案，正在同步`, "ok");
+  navigatePreservingScroll("screen-25", false);
+  try {
+    for (const archive of targets) {
+      await deleteWentianArchiveFromRemote(archive, { throwOnError: true });
+    }
+    await pushWentianArchivesToRemote(nextArchives, { throwOnError: true, verify: true });
+    setWentianArchiveStatus(`已删除 ${removedCount} 份档案并同步`, "ok");
+  } catch (error) {
+    console.info("wentian archive remote batch delete delayed", error);
+    setWentianArchiveStatus(`已从本机删除 ${removedCount} 份档案，云端同步稍后重试`, "ok");
+  }
+  refreshWentianArchiveStatusView();
+  return true;
 }
 
 async function deleteWentianArchive(id) {
@@ -2664,7 +2735,28 @@ function cancelWentianArchiveDelete() {
   navigatePreservingScroll(state.route, false);
 }
 
+function requestWentianProfileBatchDelete() {
+  const selected = getWentianProfileBatchSelected();
+  if (!selected.length) {
+    setWentianArchiveStatus("请先勾选要删除的档案", "error");
+    refreshWentianArchiveStatusView();
+    return;
+  }
+  if (wentianProfileBatchDeleteConfirm) {
+    void deleteWentianArchivesBatch(selected);
+    return;
+  }
+  wentianProfileBatchDeleteConfirm = true;
+  navigatePreservingScroll("screen-25", false);
+}
+
+function cancelWentianProfileBatchDelete() {
+  wentianProfileBatchDeleteConfirm = false;
+  navigatePreservingScroll("screen-25", false);
+}
+
 function startWentianArchiveCreate(returnRoute = "") {
+  resetWentianProfileBatchState();
   wentianArchiveDeleteConfirmId = "";
   setWentianArchiveEditId("");
   setWentianArchiveEditReturnRoute(returnRoute);
@@ -5862,9 +5954,11 @@ function getWentianArchiveDisplay(archive) {
   const form = archive?.form || {};
   const chartData = archive?.chartData || {};
   const sizhu = chartData.sizhu || {};
-  const name = getWentianArchiveResolvedName(archive);
-  const hasGeneratedName = !getWentianArchiveRawName(archive);
-  const virtualAgeInfo = hasGeneratedName ? getWentianArchiveVirtualAgeInfo(archive) : null;
+  const virtualAgeInfo = getWentianArchiveVirtualAgeInfo(archive);
+  const baseName = getWentianArchiveRawName(archive) || getWentianArchiveGenericName(archive);
+  const name = virtualAgeInfo?.ok && Number.isFinite(virtualAgeInfo.age) && virtualAgeInfo.age >= 1 && !/[岁歲]/.test(baseName)
+    ? `${baseName} · ${virtualAgeInfo.age}岁`
+    : (baseName || getWentianArchiveResolvedName(archive));
   const normalizedGender = normalizeWentianArchiveGender(archive);
   const gender = normalizedGender === "female" ? "女" : normalizedGender === "male" ? "男" : "未填";
   const datetime = (form.datetime || chartData.birthDate || chartData.solarTime || "").replace("T", " ").replace(/:00$/, "");
@@ -11057,9 +11151,51 @@ function getWentianProfileVisibleArchives(archives, query = "") {
   return list.slice(0, 6);
 }
 
+function getWentianProfileBatchSelected(archives = getWentianArchiveList()) {
+  const archiveIds = new Set((Array.isArray(archives) ? archives : []).map((archive) => archive.id));
+  const next = [];
+  for (const id of Array.isArray(wentianProfileBatchSelectedIds) ? wentianProfileBatchSelectedIds : []) {
+    if (archiveIds.has(id) && !next.includes(id)) next.push(id);
+  }
+  wentianProfileBatchSelectedIds = next;
+  return next;
+}
+
+function resetWentianProfileBatchState() {
+  wentianProfileBatchMode = false;
+  wentianProfileBatchSelectedIds = [];
+  wentianProfileBatchDeleteConfirm = false;
+}
+
+function toggleWentianProfileBatchMode() {
+  if (wentianProfileBatchMode) {
+    resetWentianProfileBatchState();
+  } else {
+    wentianProfileBatchMode = true;
+    wentianProfileBatchSelectedIds = [];
+    wentianProfileBatchDeleteConfirm = false;
+    wentianArchiveDeleteConfirmId = "";
+  }
+  navigatePreservingScroll("screen-25", false);
+}
+
+function toggleWentianProfileBatchArchive(id) {
+  if (!id) return;
+  const archives = getWentianArchiveList();
+  if (!archives.some((archive) => archive.id === id)) return;
+  const selected = getWentianProfileBatchSelected(archives);
+  wentianProfileBatchSelectedIds = selected.includes(id)
+    ? selected.filter((item) => item !== id)
+    : [...selected, id];
+  wentianProfileBatchDeleteConfirm = false;
+  navigatePreservingScroll("screen-25", false);
+}
+
 function renderWentianProfileRows(archives = getWentianArchiveList(), query = wentianProfileSearchQuery) {
   const visibleArchives = getWentianProfileVisibleArchives(archives, query);
   const selectedArchiveId = getWentianSelectedArchiveId(archives);
+  const batchSelectedIds = getWentianProfileBatchSelected(archives);
+  const isBatchMode = wentianProfileBatchMode;
   let y = 296;
   let lastInitial = "";
   if (!visibleArchives.length) {
@@ -11074,6 +11210,7 @@ function renderWentianProfileRows(archives = getWentianArchiveList(), query = we
     const initial = getWentianArchiveInitial(item.name);
     const confirmingDelete = wentianArchiveDeleteConfirmId === archive.id;
     const isDefaultArchive = archive.id === selectedArchiveId;
+    const batchSelected = batchSelectedIds.includes(archive.id);
     const group = initial !== lastInitial ? figText(`source-25-group-${index}`, initial, 18, y + 6, 24, 14, "#aaa198", 600) : "";
     if (initial !== lastInitial) {
       lastInitial = initial;
@@ -11082,7 +11219,11 @@ function renderWentianProfileRows(archives = getWentianArchiveList(), query = we
     const rowY = y;
     const profileMeta = [item.gender, item.datetime.split(" ")[0] || item.datetime].filter(Boolean).join(" · ");
     y += 86;
-    const actionControls = confirmingDelete ? `
+    const actionControls = isBatchMode ? `
+      ${figBox(`source-25-batch-check-${index}`, 320, rowY + 12, 38, 38, "", `border:1px solid ${batchSelected ? "#b67d2f" : "#e0d4c4"};border-radius:19px;background:${batchSelected ? "#fff2d8" : "#fffdf9"};z-index:31;`)}
+      ${batchSelected ? figText(`source-25-batch-check-text-${index}`, "✓", 320, rowY + 22, 38, 14, "#9b6a23", 900, "center", "z-index:32;") : ""}
+      ${figText(`source-25-batch-tip-${index}`, batchSelected ? "已选" : "勾选", 270, rowY + 24, 42, 11, batchSelected ? "#9b6a23" : "#a79b8e", 800, "center", "z-index:32;")}
+    ` : confirmingDelete ? `
       ${figBox(`source-25-delete-confirm-${index}`, 218, rowY + 8, 86, 30, "", "border:1px solid #c85a4a;border-radius:15px;background:#fff1ee;z-index:31;")}
       ${figText(`source-25-delete-confirm-text-${index}`, "确认删除", 218, rowY + 17, 86, 11, "#b53a2e", 900, "center", "z-index:32;")}
       ${figButton(`source-25-delete-confirm-hit-${index}`, 212, rowY - 2, 96, 48, `data-action="wentian-archive-delete" data-archive-id="${escapeHtml(archive.id)}" aria-label="确认删除${escapeHtml(item.name)}"`, "", "z-index:33;")}
@@ -11114,10 +11255,10 @@ function renderWentianProfileRows(archives = getWentianArchiveList(), query = we
       ${figBox(`source-25-row-line-${index}`, 88, rowY + 84, 258, 1, "", "background:#eee5d8;")}
       ${figBox(`source-25-avatar-${index}`, 18, rowY + 10, 54, 54, "", "border-radius:27px;background:linear-gradient(180deg,#d9ab73,#c88f56);box-shadow:0 5px 12px rgba(151,102,45,.14);")}
       ${figText(`source-25-avatar-text-${index}`, item.name.slice(0, 1) || "命", 18, rowY + 23, 54, 18, "#fffaf3", 900, "center")}
-      ${figText(`source-25-name-${index}`, escapeHtml(item.name), 90, rowY + 10, 126, 17, "#201813", 900, "left", "white-space:nowrap;overflow:hidden;text-overflow:ellipsis;")}
+      ${figArchiveName(`source-25-name-${index}`, item, 90, rowY + 10, 130, 17, "#201813", 900, "left", "white-space:nowrap;overflow:hidden;text-overflow:ellipsis;")}
       ${figText(`source-25-meta-${index}`, escapeHtml(profileMeta), 90, rowY + 38, 126, 13, "#8f8780", 700, "left", "white-space:nowrap;overflow:hidden;text-overflow:ellipsis;")}
       ${actionControls}
-      ${figButton(`source-25-open-${index}`, 0, rowY, 222, 84, `data-action="wentian-profile-open" data-archive-id="${escapeHtml(archive.id)}"`)}
+      ${figButton(`source-25-open-${index}`, 0, rowY, 370, 84, `data-action="${isBatchMode ? "wentian-profile-batch-pick" : "wentian-profile-open"}" data-archive-id="${escapeHtml(archive.id)}"`)}
     `;
   }).join("");
 }
@@ -11125,6 +11266,14 @@ function renderWentianProfileRows(archives = getWentianArchiveList(), query = we
 function sourceProfileScreen(screen) {
   const { archives, showIndex, metrics } = getWentianProfileScreenState(wentianProfileSearchQuery);
   const rows = renderWentianProfileRows(archives, wentianProfileSearchQuery);
+  const batchSelectedCount = getWentianProfileBatchSelected(archives).length;
+  const batchBar = wentianProfileBatchMode ? `
+    ${figBox("source-25-batch-bar", 18, metrics.bottomNavY - 66, 354, 54, "", "border-radius:20px;background:#fffdf8;border:1px solid #eadbc5;box-shadow:0 10px 20px rgba(86,54,37,.10);")}
+    ${figText("source-25-batch-count", `已选 ${batchSelectedCount} 项`, 34, metrics.bottomNavY - 49, 108, 14, "#5f453a", 900)}
+    ${figBox("source-25-batch-delete", 230, metrics.bottomNavY - 58, 122, 38, "", `border-radius:19px;background:${wentianProfileBatchDeleteConfirm ? "#a94437" : "#604236"};box-shadow:0 8px 16px rgba(86,54,37,.16);`)}
+    ${figText("source-25-batch-delete-text", wentianProfileBatchDeleteConfirm ? "确认删除" : "批量删除", 230, metrics.bottomNavY - 47, 122, 14, "#fffaf3", 900, "center")}
+    ${figButton("source-25-batch-delete-hit", 224, metrics.bottomNavY - 64, 132, 46, `data-action="${wentianProfileBatchDeleteConfirm ? "wentian-profile-batch-delete" : "wentian-profile-batch-delete"}" aria-label="${wentianProfileBatchDeleteConfirm ? "确认批量删除" : "批量删除"}"`)}
+  ` : "";
   const archiveStatus = wentianArchiveStatus.text
     ? figText("source-25-archive-status", escapeHtml(wentianArchiveStatus.text), 76, 284, 238, 12, wentianArchiveStatus.tone === "error" ? "#a94437" : "#5f8745", 800, "center")
     : "";
@@ -11132,7 +11281,9 @@ function sourceProfileScreen(screen) {
     ${figBox("source-25-bg", 0, 0, 390, metrics.height, "", "background:linear-gradient(180deg,#fbf6eb 0%,#fffdf8 36%,#fffdf8 100%);")}
     ${wentianBackPill("source-25", 18, 48, 'data-action="back" aria-label="返回"', { zIndex: 80 })}
     ${figText("source-25-title", "排盘记录", 0, 60, 390, 24, "#201813", 900, "center")}
-    ${figText("source-25-menu", "☰", 334, 61, 34, 22, "#201813", 800, "center")}
+    ${figBox("source-25-menu-pill", 308, 48, 60, 34, "", "border-radius:17px;background:#fffdf8;border:1px solid #eadbc5;box-shadow:0 8px 18px rgba(86,54,37,.08);")}
+    ${figText("source-25-menu", wentianProfileBatchMode ? "完成" : "批量", 308, 58, 60, 14, "#5f453a", 900, "center")}
+    ${figButton("source-25-menu-hit", 304, 44, 68, 42, 'data-action="wentian-profile-batch-toggle" aria-label="切换批量管理"')}
     ${figBox("source-25-tabs", 110, 110, 170, 58, "", "border-radius:29px;background:rgba(255,255,255,.88);box-shadow:0 9px 20px rgba(107,75,42,.08);")}
     ${figBox("source-25-tab-active", 118, 118, 154, 42, "", "border-radius:23px;background:#604236;")}
     ${figText("source-25-tab-active-text", "· 个人案例 ·", 118, 130, 154, 16, "#fff", 900, "center")}
@@ -11144,12 +11295,13 @@ function sourceProfileScreen(screen) {
     ${figButton("source-25-filter-hit", 294, 188, 78, 48, 'data-action="wentian-profile-search-focus" aria-label="筛选档案"')}
     ${figText("source-25-all", "全部", 18, 262, 60, 18, "#bf8732", 900)}
     ${archiveStatus}
-    ${figBox("source-25-add-mini", 338, 252, 28, 28, "", "border:1px solid #dad1c6;border-radius:14px;background:#fffdf9;")}
-    ${figText("source-25-add-plus", "+", 338, 257, 28, 14, "#201813", 800, "center")}
-    ${figButton("source-25-add-hit", 330, 248, 44, 44, 'data-route="screen-26" aria-label="添加档案"')}
+    ${wentianProfileBatchMode ? "" : figBox("source-25-add-mini", 338, 252, 28, 28, "", "border:1px solid #dad1c6;border-radius:14px;background:#fffdf9;")}
+    ${wentianProfileBatchMode ? "" : figText("source-25-add-plus", "+", 338, 257, 28, 14, "#201813", 800, "center")}
+    ${wentianProfileBatchMode ? "" : figButton("source-25-add-hit", 330, 248, 44, 44, 'data-route="screen-26" aria-label="添加档案"')}
     <div id="wentian-profile-list" class="wentian-profile-list-layer">${rows}</div>
     ${showIndex ? figBox("source-25-index", 354, 496, 26, 224, "", "border-radius:14px;background:rgba(255,255,255,.9);box-shadow:0 7px 18px rgba(73,55,34,.14);") : ""}
     ${showIndex ? figText("source-25-index-text", "A\nC\nF\nH\nJ\nL\nM\nS\nX\nZ\n#", 354, 509, 26, 10, "#6f6860", 700, "center", "line-height:1.62;") : ""}
+    ${batchBar}
     ${sourceAppBottomNav("档案", metrics.bottomNavY)}
   `;
 }
@@ -11854,7 +12006,7 @@ function renderWentianHepanTimeEditSheet(archives) {
     <section class="wentian-hepan-time-sheet" aria-label="编辑命盘时间">
       <div class="wentian-hepan-time-handle"></div>
       <strong>编辑命盘时间</strong>
-      <p>${escapeHtml(item.name)} · ${escapeHtml(item.gender)} · ${escapeHtml(item.tag)}</p>
+      <p>${renderWentianArchiveNameWithAgeBadge(item)} · ${escapeHtml(item.gender)} · ${escapeHtml(item.tag)}</p>
       <label for="wentian-hepan-edit-datetime">出生日期时间</label>
       <input id="wentian-hepan-edit-datetime" type="datetime-local" value="${escapeHtml(value)}">
       <em>保存后会重新排盘，并刷新合盘结果。</em>
@@ -11918,7 +12070,7 @@ function sourceHepanSelectScreen() {
             <button class="wentian-hepan-select" type="button" data-action="wentian-hepan-pick" data-archive-id="${escapeHtml(archive.id)}" aria-pressed="${selected ? "true" : "false"}" aria-label="选择${escapeHtml(item.name)}">
               <span class="wentian-hepan-avatar">${escapeHtml(item.name.slice(0, 1))}</span>
               <span class="wentian-hepan-copy">
-                <strong>${escapeHtml(item.name)}</strong>
+                <strong>${renderWentianArchiveNameWithAgeBadge(item)}</strong>
                 <em>${escapeHtml(item.gender)} · ${escapeHtml(item.tag)}</em>
                 <small>${escapeHtml(item.datetime)}</small>
               </span>
@@ -12179,7 +12331,7 @@ function renderWentianHepanChartCard(archive, display, label, nodeId, side = "le
       <header>
         <div>
           <span>${escapeHtml(label)}</span>
-          <strong>${escapeHtml(item.name || "命主")}</strong>
+          <strong>${renderWentianArchiveNameWithAgeBadge(item, "命主")}</strong>
         </div>
         <em>${escapeHtml([item.gender, item.datetime].filter(Boolean).join(" · ") || "命盘资料")}</em>
       </header>
@@ -12219,14 +12371,14 @@ function sourceHepanResultScreen() {
       <div class="wentian-hepan-result-pair">
         <article>
           <span>${escapeHtml(result.leftDisplay.gender || "档案")}</span>
-          <strong>${escapeHtml(result.leftDisplay.name)}</strong>
+          <strong>${renderWentianArchiveNameWithAgeBadge(result.leftDisplay)}</strong>
           <em>${escapeHtml(result.leftDisplay.datetime)}</em>
           <small>${escapeHtml(result.leftDisplay.pillars)}</small>
         </article>
         <b>合</b>
         <article>
           <span>${escapeHtml(result.rightDisplay.gender || "档案")}</span>
-          <strong>${escapeHtml(result.rightDisplay.name)}</strong>
+          <strong>${renderWentianArchiveNameWithAgeBadge(result.rightDisplay)}</strong>
           <em>${escapeHtml(result.rightDisplay.datetime)}</em>
           <small>${escapeHtml(result.rightDisplay.pillars)}</small>
         </article>
@@ -17484,7 +17636,7 @@ function sourceDashboardHomeScreen() {
       ${figBox("source-1-archive", 18, 294, 354, 70, "", "border-radius:18px;background:#fffdf8;border:1px solid #eadfce;box-shadow:0 8px 20px rgba(70,45,25,.07);")}
       ${figBox("source-1-archive-mark", 36, 313, 32, 32, "", "border-radius:16px;background:#fff0d6;")}
       ${figText("source-1-archive-mark-text", "命", 36, 322, 32, 12, "#a37018", 900, "center")}
-      ${figText("source-1-archive-title", escapeHtml(dashboardArchiveName), 82, 308, 148, 18, "#25221f", 900, "left", "white-space:nowrap;overflow:hidden;text-overflow:ellipsis;")}
+      ${dashboardArchive ? figArchiveName("source-1-archive-title", dashboardArchiveDisplay, 82, 308, 164, 18, "#25221f", 900, "left", "white-space:nowrap;overflow:hidden;text-overflow:ellipsis;") : figText("source-1-archive-title", escapeHtml(dashboardArchiveName), 82, 308, 148, 18, "#25221f", 900, "left", "white-space:nowrap;overflow:hidden;text-overflow:ellipsis;")}
       ${figText("source-1-archive-meta", escapeHtml(dashboardArchiveMeta || "当前档案"), 82, 335, 178, 12, "#8d877e", 700, "left", "white-space:nowrap;overflow:hidden;text-overflow:ellipsis;")}
       ${figBox("source-1-archive-action", 282, 313, 68, 30, "", "border-radius:15px;background:#fff1dc;border:1px solid #ead2a2;")}
       ${figText("source-1-archive-action-text", "换档案", 282, 322, 68, 11, "#9a681c", 900, "center")}
@@ -20227,6 +20379,19 @@ document.addEventListener("click", (event) => {
     cancelWentianArchiveDelete();
     return;
   }
+  if (action === "wentian-profile-batch-toggle") {
+    toggleWentianProfileBatchMode();
+    return;
+  }
+  if (action === "wentian-profile-batch-pick") {
+    const id = event.target.closest("[data-archive-id]")?.dataset.archiveId;
+    if (id) toggleWentianProfileBatchArchive(id);
+    return;
+  }
+  if (action === "wentian-profile-batch-delete") {
+    requestWentianProfileBatchDelete();
+    return;
+  }
   if (action === "wentian-profile-search-focus") {
     const input = document.getElementById("wentian-profile-search");
     input?.focus();
@@ -20236,6 +20401,7 @@ document.addEventListener("click", (event) => {
   if (action === "wentian-profile-open") {
     const id = event.target.closest("[data-archive-id]")?.dataset.archiveId;
     const archive = getWentianArchiveList().find((item) => item.id === id);
+    resetWentianProfileBatchState();
     if (applyWentianArchiveToCurrent(archive)) navigate("screen-27");
     return;
   }
