@@ -9719,6 +9719,9 @@ function getWentianSharePayload() {
 
 async function shareWentianApp(target = "system") {
   const payload = getWentianSharePayload();
+  const canUseNativeShare = typeof navigator !== "undefined"
+    && typeof navigator.share === "function"
+    && /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent || "");
   if (target === "link") {
     await copyWentianText(payload.url, "分享链接已复制");
     return;
@@ -9738,7 +9741,7 @@ async function shareWentianApp(target = "system") {
     setWentianInviteStatus("已打开邮件分享", "ok");
     return;
   }
-  if (navigator.share) {
+  if (canUseNativeShare) {
     try {
       await navigator.share({ title: payload.title, text: payload.text, url: payload.url });
       setWentianInviteStatus("已打开系统分享", "ok");
