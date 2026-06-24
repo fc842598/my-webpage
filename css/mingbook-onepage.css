@@ -207,6 +207,9 @@ select {
 .mbp-auth-trigger-label {
   font-weight: 800;
   line-height: 1.1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .mbp-auth-trigger-meta,
@@ -232,6 +235,23 @@ select {
 
 .mbp-member-pay-trigger.is-member {
   border-color: rgba(241, 212, 125, .42);
+}
+
+@media (min-width: 1021px) {
+  .mbp-member-pay-trigger {
+    width: 112px;
+    flex: 0 0 112px;
+  }
+
+  .mbp-auth-trigger {
+    width: 176px;
+    flex: 0 0 176px;
+  }
+
+  .mbp-member {
+    width: 138px;
+    flex: 0 0 138px;
+  }
 }
 
 .mbp-auth-overlay {
