@@ -11340,7 +11340,8 @@ function sourceMembershipScreen() {
   }).join("");
   return `
     ${figBox("wt33-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
-    ${wentianSimpleHeader("wt33", "阅天套餐")}
+    ${wentianBackPill("wt33", 18, 42, 'data-action="wentian-return-previous" data-fallback-route="screen-31" aria-label="返回"')}
+    ${figText("wt33-title", "阅天套餐", 0, 52, 390, 17, "#25211d", 800, "center")}
     ${figBox("wt33-card", 24, 108, 342, 116, "", "border-radius:18px;background:linear-gradient(135deg,#2b2722,#14110d);box-shadow:0 16px 30px rgba(28,20,12,.16);")}
     ${figText("wt33-card-label", "付费版", 52, 136, 130, 20, "#fff", 900)}
     ${figText("wt33-card-sub", member.isMember ? escapeHtml(member.subtitle) : "100次/天，按日刷新", 52, 168, 190, 13, "#cfc1a9", 700)}
