@@ -45,6 +45,12 @@
 - 同步范围必须包含：`index.html`、`robots.txt`、`sitemap.xml`、`articles`、`css`、`fixtures`、`images`、`js`、`pages`、`src`、`vendor`
 - SEO 文章版块在 `articles/`，站点地图是 `sitemap.xml`
 
+Google 收录提交流程：
+- 首页保留 Google Search Console 验证标签，不要删除 `index.html` 里的 `google-site-verification` meta。
+- 每次新增或改文章后，同步更新 `sitemap.xml` 的文章 URL 和 `lastmod`。
+- 提交并 push 到 GitHub `master`，等阿里云自动同步上线后，确认 `https://yuetianai.com/sitemap.xml` 能访问。
+- 进入 Google Search Console 的站点地图页面，提交或重新提交 `sitemap.xml`；文章 URL 不需要散落在功能页面，靠文章索引页、内链和 sitemap 发现。
+
 以后发文章的正确流程是：本地写文章 -> 提交并 push 到 GitHub `master` -> 阿里云自动同步上线。不要把阿里云当成第二份源代码单独维护。
 
 ### 邮箱
