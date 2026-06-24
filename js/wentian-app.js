@@ -11736,7 +11736,7 @@ function sourceBasicInfoScreen() {
   const account = getWentianAuthDisplay();
   return `
     ${figBox("source-39-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
-    ${wentianBackPill("source-39", 18, 42)}
+    ${wentianBackPill("source-39", 18, 42, 'data-action="wentian-return-previous" data-fallback-route="screen-38" aria-label="返回"')}
     ${figText("source-39-title", "基本信息", 0, 54, 390, 22, "#1f1d1a", 900, "center")}
     ${figBox("source-39-account", 22, 112, 346, 98, "", "border:1px solid #e2d8c8;border-radius:18px;background:#fff;box-shadow:0 8px 18px rgba(74,55,32,.07);")}
     ${figBox("source-39-avatar", 42, 134, 54, 54, "", "border-radius:27px;background:#b88c33;")}
