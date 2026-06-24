@@ -50,6 +50,7 @@ Google 收录提交流程：
 - 每次新增或改文章后，同步更新 `sitemap.xml` 的文章 URL 和 `lastmod`。
 - 提交并 push 到 GitHub `master`，等阿里云自动同步上线后，确认 `https://yuetianai.com/sitemap.xml` 能访问。
 - 进入 Google Search Console 的站点地图页面，提交或重新提交 `sitemap.xml`；文章 URL 不需要散落在功能页面，靠文章索引页、内链和 sitemap 发现。
+- 已加 IndexNow 自动提交流程：`git push origin master` 后会通过 `images/indexnow/8d5c8f7d8a0f4e8cb61a5f62b3d41944.txt` 这个键文件，把本次变动 URL 推送到 `https://api.indexnow.org/indexnow`，Bing 等参与方会共享这些 URL。
 
 百度收录提交流程：
 - 首页保留百度资源平台验证标签，不要删除 `index.html` 里的 `baidu-site-verification` meta。

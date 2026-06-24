@@ -4,6 +4,7 @@
   "scripts": {
     "audit:dead-code": "node scripts/audit-dead-code.js",
     "seo:hooks:install": "node scripts/install-git-hooks.mjs",
+    "seo:indexnow:submit": "node scripts/indexnow-auto-submit.mjs",
     "seo:baidu:submit": "node scripts/baidu-auto-submit.mjs",
     "smoke:overall-piming": "node scripts/smoke-overall-piming-contract.js",
     "validate:ziping": "node scripts/validate-ziping-professional-tool-samples.js",

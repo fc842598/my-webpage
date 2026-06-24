@@ -4,5 +4,6 @@ repo_root="$(git rev-parse --show-toplevel 2>/dev/null)" || exit 0
 tmp_file="$repo_root/.git/.baidu-post-push.stdin"
 
 cat > "$tmp_file"
+node "$repo_root/scripts/indexnow-auto-submit.mjs" "$tmp_file" || true
 node "$repo_root/scripts/baidu-auto-submit.mjs" "$tmp_file" || true
 rm -f "$tmp_file"
