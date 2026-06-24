@@ -12,8 +12,18 @@ const corePages = [
   "pages/privacy.html",
   "pages/liuyao.html",
   "pages/liuyao-v2.html",
+  "pages/yuetianai.html",
+  "pages/yuetianai-product.html",
+  "pages/ai-ziwei-paipan.html",
   "articles/index.html"
 ];
+
+const machineLinkedPages = new Set([
+  "index.html",
+  "pages/yuetianai.html",
+  "pages/yuetianai-product.html",
+  "pages/ai-ziwei-paipan.html"
+]);
 
 function readFile(relPath) {
   return fs.readFileSync(path.join(rootDir, relPath), "utf8");
@@ -54,6 +64,10 @@ function checkHtmlFile(relPath, failures) {
   ensure(pickMeta(html, "description"), `${relPath}: 缺少 description`, failures);
   ensure(pickLink(html, "canonical"), `${relPath}: 缺少 canonical`, failures);
   ensure(pickTagText(html, "h1"), `${relPath}: 缺少 H1`, failures);
+  if (machineLinkedPages.has(relPath)) {
+    ensure(/feed\.xml/i.test(html), `${relPath}: 缺少 feed.xml 机器入口`, failures);
+    ensure(/brand-profile\.xml/i.test(html), `${relPath}: 缺少 brand-profile.xml 机器入口`, failures);
+  }
 }
 
 function checkCorePages(failures) {
@@ -91,6 +105,12 @@ function checkSupportFiles(failures) {
 
   const sitemap = readFile("sitemap.xml");
   ensure(/<urlset/i.test(sitemap) || /<sitemapindex/i.test(sitemap), "sitemap.xml: 不是有效 sitemap", failures);
+
+  const feed = readFile("feed.xml");
+  ensure(/<rss/i.test(feed) && /阅天AI|YuetianAI/.test(feed), "feed.xml: 缺少有效订阅内容", failures);
+
+  const brandProfile = readFile("brand-profile.xml");
+  ensure(/<brandProfile/i.test(brandProfile) && /阅天AI|YuetianAI/.test(brandProfile), "brand-profile.xml: 缺少品牌实体", failures);
 }
 
 function main() {

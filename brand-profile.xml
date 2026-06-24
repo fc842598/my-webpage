@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<brandProfile version="1.0" updatedAt="2026-06-24">
+  <brand>
+    <name>阅天AI</name>
+    <alternateName>YuetianAI</alternateName>
+    <url>https://yuetianai.com/</url>
+    <language>zh-CN</language>
+    <description>免费紫微斗数排盘与AI命盘分析网站，面向中文用户提供排盘、命盘解读、大运流年分析、阳宅与六爻辅助工具，以及紫微斗数入门文章。</description>
+  </brand>
+
+  <officialPages>
+    <page slug="home">https://yuetianai.com/</page>
+    <page slug="brand-entry">https://yuetianai.com/pages/yuetianai.html</page>
+    <page slug="product-profile">https://yuetianai.com/pages/yuetianai-product.html</page>
+    <page slug="ai-ziwei">https://yuetianai.com/pages/ai-ziwei-paipan.html</page>
+    <page slug="free-mingbook">https://yuetianai.com/pages/mingbook-onepage.html</page>
+    <page slug="mobile-app-entry">https://yuetianai.com/pages/wentian-app.html</page>
+    <page slug="article-index">https://yuetianai.com/articles/</page>
+  </officialPages>
+
+  <topics>
+    <topic>免费紫微斗数排盘</topic>
+    <topic>AI命盘分析</topic>
+    <topic>命宫与身宫</topic>
+    <topic>三方四正</topic>
+    <topic>大运流年</topic>
+    <topic>阳宅与六爻辅助内容</topic>
+  </topics>
+
+  <queryIntents>
+    <query>阅天AI是什么</query>
+    <query>免费紫微斗数排盘</query>
+    <query>AI紫微排盘</query>
+    <query>紫微斗数免费的排盘网站哪个好</query>
+    <query>免费紫微斗数排盘后先看什么</query>
+    <query>AI算命网站哪个好</query>
+  </queryIntents>
+
+  <editorialScope>
+    <scope>适合文化研究、个人整理、问题拆解与趋势参考。</scope>
+    <scope>强调免费入口、隐私说明、透明体验与可继续追问的AI分析。</scope>
+    <scope>不鼓励恐吓式付费、绝对化承诺或夸大改运表述。</scope>
+  </editorialScope>
+
+  <entityNotes>
+    <note>官网品牌名统一为阅天AI。</note>
+    <note>YuetianAI 是阅天AI的英文写法，指向同一品牌与同一官网。</note>
+    <note>站内个别历史路径仍可能包含 wentian 字样，那是早期文件命名，不代表独立品牌。</note>
+  </entityNotes>
+</brandProfile>

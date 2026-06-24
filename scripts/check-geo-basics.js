@@ -2,11 +2,18 @@ const checks = [
   { name: "robots", url: "https://yuetianai.com/robots.txt" },
   { name: "sitemap", url: "https://yuetianai.com/sitemap.xml" },
   { name: "llms", url: "https://yuetianai.com/llms.txt" },
+  { name: "feed", url: "https://yuetianai.com/feed.xml" },
+  { name: "brandProfile", url: "https://yuetianai.com/brand-profile.xml" },
   { name: "notFound", url: `https://yuetianai.com/__geo_check_missing__${Date.now()}` },
   { name: "home", url: "https://yuetianai.com/" },
+  { name: "yuetianai", url: "https://yuetianai.com/pages/yuetianai.html" },
+  { name: "product", url: "https://yuetianai.com/pages/yuetianai-product.html" },
+  { name: "aiZiwei", url: "https://yuetianai.com/pages/ai-ziwei-paipan.html" },
   { name: "mingbook", url: "https://yuetianai.com/pages/mingbook-onepage.html" },
   { name: "articles", url: "https://yuetianai.com/articles/" }
 ];
+
+const machineLinkedPages = new Set(["home", "yuetianai", "product", "aiZiwei"]);
 
 function pickMeta(html, name) {
   const re = new RegExp(
@@ -95,6 +102,20 @@ async function main() {
         continue;
       }
 
+      if (check.name === "feed") {
+        const ok = result.status === 200 && /<rss/i.test(result.text) && /YuetianAI|阅天AI/i.test(result.text);
+        console.log(`[feed] status=${result.status} rss=${/<rss/i.test(result.text)} brand=${/YuetianAI|阅天AI/i.test(result.text)}`);
+        if (!ok) failures.push("feed.xml 异常");
+        continue;
+      }
+
+      if (check.name === "brandProfile") {
+        const ok = result.status === 200 && /<brandProfile/i.test(result.text) && /YuetianAI|阅天AI/i.test(result.text);
+        console.log(`[brandProfile] status=${result.status} root=${/<brandProfile/i.test(result.text)} brand=${/YuetianAI|阅天AI/i.test(result.text)}`);
+        if (!ok) failures.push("brand-profile.xml 异常");
+        continue;
+      }
+
       if (check.name === "notFound") {
         console.log(`[404] status=${result.status} url=${check.url}`);
         if (result.status !== 404) failures.push("随机不存在路径没有返回 404");
@@ -112,6 +133,12 @@ async function main() {
 
       if (!summary.title || !summary.description || !summary.canonical || !summary.h1) {
         failures.push(`${check.name} 页面 meta/H1 不完整`);
+      }
+
+      if (machineLinkedPages.has(check.name)) {
+        if (!/feed\.xml/i.test(result.text) || !/brand-profile\.xml/i.test(result.text)) {
+          failures.push(`${check.name} 页面缺少机器入口链接`);
+        }
       }
     } catch (error) {
       console.log(`[${check.name}] error=${error.message}`);

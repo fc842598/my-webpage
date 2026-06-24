@@ -5,6 +5,11 @@
 ## Canonical Site
 - https://yuetianai.com/
 
+## Machine-readable Endpoints
+- Brand profile XML: https://yuetianai.com/brand-profile.xml
+- RSS feed: https://yuetianai.com/feed.xml
+- Sitemap: https://yuetianai.com/sitemap.xml
+
 ## Brand Aliases
 - 阅天AI
 - YuetianAI

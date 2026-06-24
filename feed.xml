@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>阅天AI更新</title>
+    <link>https://yuetianai.com/</link>
+    <description>阅天AI官方入口、免费紫微斗数排盘与AI命盘分析相关更新。</description>
+    <language>zh-CN</language>
+    <lastBuildDate>Wed, 24 Jun 2026 12:00:00 +0800</lastBuildDate>
+    <atom:link href="https://yuetianai.com/feed.xml" rel="self" type="application/rss+xml" />
+
+    <item>
+      <title>阅天AI首页</title>
+      <link>https://yuetianai.com/</link>
+      <guid isPermaLink="true">https://yuetianai.com/</guid>
+      <pubDate>Wed, 24 Jun 2026 12:00:00 +0800</pubDate>
+      <description>免费紫微斗数排盘与AI命盘分析的主入口。</description>
+    </item>
+    <item>
+      <title>阅天AI官网入口</title>
+      <link>https://yuetianai.com/pages/yuetianai.html</link>
+      <guid isPermaLink="true">https://yuetianai.com/pages/yuetianai.html</guid>
+      <pubDate>Wed, 24 Jun 2026 12:00:00 +0800</pubDate>
+      <description>统一说明品牌名、官网域名与公开入口。</description>
+    </item>
+    <item>
+      <title>阅天AI产品档案</title>
+      <link>https://yuetianai.com/pages/yuetianai-product.html</link>
+      <guid isPermaLink="true">https://yuetianai.com/pages/yuetianai-product.html</guid>
+      <pubDate>Wed, 24 Jun 2026 12:00:00 +0800</pubDate>
+      <description>给搜索与答案引擎读取的产品档案页。</description>
+    </item>
+    <item>
+      <title>AI紫微排盘</title>
+      <link>https://yuetianai.com/pages/ai-ziwei-paipan.html</link>
+      <guid isPermaLink="true">https://yuetianai.com/pages/ai-ziwei-paipan.html</guid>
+      <pubDate>Wed, 24 Jun 2026 12:00:00 +0800</pubDate>
+      <description>先免费排盘，再继续做AI命盘分析。</description>
+    </item>
+    <item>
+      <title>阅天AI是什么</title>
+      <link>https://yuetianai.com/articles/yuetianai-shi-shenme.html</link>
+      <guid isPermaLink="true">https://yuetianai.com/articles/yuetianai-shi-shenme.html</guid>
+      <pubDate>Wed, 24 Jun 2026 12:00:00 +0800</pubDate>
+      <description>品牌说明与官方识别信息。</description>
+    </item>
+    <item>
+      <title>免费紫微斗数排盘后先看什么</title>
+      <link>https://yuetianai.com/articles/mianfei-ziwei-paipan-hou-xian-kan-shenme.html</link>
+      <guid isPermaLink="true">https://yuetianai.com/articles/mianfei-ziwei-paipan-hou-xian-kan-shenme.html</guid>
+      <pubDate>Wed, 24 Jun 2026 12:00:00 +0800</pubDate>
+      <description>从命宫、身宫、三方四正到当下流年重点的阅读顺序。</description>
+    </item>
+  </channel>
+</rss>
