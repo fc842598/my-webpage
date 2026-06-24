@@ -11893,7 +11893,7 @@ function sourcePasswordSettingsScreen() {
   if (!account.loggedIn) {
     return `
     ${figBox("source-password-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
-    ${wentianBackPill("source-password", 18, 42)}
+    ${wentianBackPill("source-password", 18, 42, 'data-action="wentian-return-previous" data-fallback-route="screen-38" aria-label="返回"')}
     ${figText("source-password-title", "设置密码", 0, 54, 390, 22, "#1f1d1a", 900, "center")}
     ${figBox("source-password-login-card", 24, 136, 342, 164, "", "border-radius:18px;background:#fff;box-shadow:0 8px 18px rgba(74,55,32,.08);border:1px solid #eadfce;")}
     ${figText("source-password-login-title", "登录后设置账号密码", 48, 170, 190, 18, "#25211d", 900)}
@@ -11906,7 +11906,7 @@ function sourcePasswordSettingsScreen() {
   const compactName = getWentianCompactAccountTitle(account) || account.name;
   return `
     ${figBox("source-password-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
-    ${wentianBackPill("source-password", 18, 42)}
+    ${wentianBackPill("source-password", 18, 42, 'data-action="wentian-return-previous" data-fallback-route="screen-38" aria-label="返回"')}
     ${figText("source-password-title", "设置密码", 0, 54, 390, 22, "#1f1d1a", 900, "center")}
     ${figBox("source-password-account", 24, 112, 342, 80, "", "border-radius:18px;background:#fff;box-shadow:0 8px 18px rgba(74,55,32,.07);border:1px solid #eadfce;")}
     ${figText("source-password-account-title", escapeHtml(compactName), 46, 134, 220, 17, "#25211d", 900, "left", "white-space:nowrap;overflow:hidden;text-overflow:ellipsis;")}
