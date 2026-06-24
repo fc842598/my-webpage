@@ -43,6 +43,7 @@
 - 定时任务每分钟执行一次，从 `https://github.com/fc842598/my-webpage.git` 拉取 `master`
 - 线上目录是 `/usr/share/nginx/html`
 - 同步范围必须包含：`index.html`、`robots.txt`、`sitemap.xml`、`articles`、`css`、`fixtures`、`images`、`js`、`pages`、`src`、`vendor`
+- 2026-06-24 已在服务器修正两处：`yuetian-sync.sh` 现在会同步根目录 `*.html`、`*.xml`、`*.txt`（含 `404.html`、`llms.txt`、IndexNow 键文件）；`/etc/nginx/conf.d/yuetian-main.conf` 已改成精确文件直出，未知路径返回真实 `404`，不再统一回退首页 `200`
 - SEO 文章版块在 `articles/`，站点地图是 `sitemap.xml`
 
 Google 收录提交流程：
