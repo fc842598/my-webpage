@@ -16186,12 +16186,13 @@ function renderOfficeLayoutCaseList() {
   `;
 }
 
-function sourceOfficeLayoutFrame(id, title, content, rightLabel = "", rightRoute = "") {
+function sourceOfficeLayoutFrame(id, title, content, rightLabel = "", rightRoute = "", options = {}) {
+  const backAttrs = options.backAttrs || 'data-action="back" aria-label="返回"';
   return `
     ${figBox(`${id}-bg`, 0, 0, 390, 844, "", "background:linear-gradient(180deg,#fffdf8 0%,#f8f1e5 52%,#fffaf2 100%);")}
     ${figBox(`${id}-top`, 0, 0, 390, 92, "", "background:#fffaf1;")}
     ${figLine(`${id}-line`, 0, 91, 390, "#eadbc6")}
-    ${wentianSimpleHeader(id, title, rightLabel)}
+    ${wentianSimpleHeader(id, title, rightLabel, { backAttrs })}
     ${rightRoute ? figButton(`${id}-right-hit`, 314, 32, 64, 44, `data-route="${rightRoute}"`) : ""}
     <section class="office-layout-scroll" data-node-id="${id}-scroll">
       ${content}
@@ -16255,7 +16256,7 @@ function sourceOfficeLayoutGuideScreen() {
         <button type="button" class="office-layout-button primary" data-route="screen-50">返回办公室布局</button>
       </div>
     </section>
-  `);
+  `, "", "", { backAttrs: 'data-route="screen-50" aria-label="返回"' });
 }
 
 function sourceOfficeLayoutResultScreen() {
@@ -16272,7 +16273,7 @@ function sourceOfficeLayoutResultScreen() {
           <button type="button" class="office-layout-button ghost" data-route="screen-51">先看说明</button>
         </div>
       </section>
-    `);
+    `, "", "", { backAttrs: 'data-route="screen-50" aria-label="返回"' });
   }
   const reading = getOfficeLayoutReading();
   const imageSrc = getYijingHexagramImageSrc(reading.hexNo);
@@ -16315,7 +16316,7 @@ function sourceOfficeLayoutResultScreen() {
         <button type="button" class="office-layout-button ghost" data-route="screen-51">查看使用说明</button>
       </div>
     </section>
-  `);
+  `, "", "", { backAttrs: 'data-route="screen-50" aria-label="返回"' });
 }
 
 function initOfficeLayoutHomeScreen() {
