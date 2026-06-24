@@ -75,7 +75,7 @@ const screenFlowHotspots = {
   3: [[285, 128, 82, 28, "screen-5"], [16, 164, 358, 92, "screen-5"], [16, 282, 358, 108, "screen-4"], [12, 761, 76, 72, "screen-1"], [109, 761, 76, 72, "screen-25"], [207, 761, 76, 72, "screen-3"], [304, 761, 76, 72, "screen-31"]],
   4: [[18, 24, 44, 56, "screen-3"], [334, 24, 38, 56, "screen-9"], [252, 26, 78, 36, "screen-5"]],
   5: [[320, 116, 48, 48, "screen-4"], [34, 235, 322, 72, "screen-6"], [34, 318, 322, 72, "screen-6"], [48, 748, 294, 52, "screen-6"]],
-  6: [[18, 44, 48, 48, "screen-4"], [88, 600, 220, 76, "screen-7"]],
+  6: [[18, 44, 48, 48, "screen-4"]],
   7: [[18, 44, 48, 48, "screen-4"], [54, 280, 282, 168, "screen-8"]],
   8: [[18, 44, 48, 48, "screen-7"]],
   9: [[18, 44, 48, 48, "screen-4"], [278, 44, 84, 48, "screen-4"], [20, 118, 350, 72, "screen-7"], [20, 198, 350, 72, "screen-7"], [20, 278, 350, 72, "screen-7"]],
@@ -7250,6 +7250,7 @@ const WENTIAN_I18N_EN_EXTRA = {
   "年 辛未｜月 癸巳｜日 丁亥｜时 辛亥": "Year Xin Wei | Month Gui Si | Day Ding Hai | Hour Xin Hai",
   "问一问": "Ask",
   "推算中...": "Calculating...",
+  "查看回复": "View Reply",
   "请根据我的八字，深度拆解核心性格特质。": "Based on my Bazi, deeply analyze my core personality.",
   "请根据我的八字拆解性格。": "Please analyze my personality from my Bazi.",
   "你的八字显示辛未、癸巳、丁亥、辛亥。核心是敏感、洞察力强，适合把直觉转化为决策。": "Your Bazi shows strong sensitivity and insight. Turn intuition into decisions.",
@@ -11929,7 +11930,10 @@ function convertedAi(screen) {
   if (screen.ai === "asking") {
     return base + figBox("asking-bubble", 46, 286, 298, 92, "", "border-radius:14px;background:#b88c33;") +
       figText("asking-text", "请根据我的八字，深度拆解核心性格特质。", 64, 306, 260, 14, "#fff") +
-      figText("asking-wait", "推算中...", 46, 420, 200, 14, "#8c8275");
+      figText("asking-wait", "推算中...", 46, 420, 200, 14, "#8c8275") +
+      figBox("asking-next", 46, 454, 138, 40, "", "border-radius:20px;background:#fff;border:1px solid rgba(184,140,51,.34);box-shadow:0 8px 18px rgba(72,48,26,.08);") +
+      figButton("asking-next-hit", 46, 454, 138, 40, 'data-route="screen-7"') +
+      figText("asking-next-text", "查看回复", 46, 467, 138, 14, "#b88c33", 800, "center");
   }
   if (screen.ai === "reply") {
     return base + figBox("reply-user", 46, 260, 298, 74, "", "border-radius:14px;background:#b88c33;") +
