@@ -629,6 +629,19 @@
     return raw.length > 18 ? `${raw.slice(0, 18)}…` : raw;
   }
 
+  function getDesktopAuthDisplayLabel(session = desktopAuthState.session) {
+    const user = session?.user;
+    if (!user) return '';
+    const raw = String(
+      user.user_metadata?.name
+      || user.user_metadata?.full_name
+      || user.user_metadata?.phone
+      || user.email
+      || ''
+    ).trim();
+    return shortenDesktopAuthLabel(raw);
+  }
+
   async function getDesktopAuthSession(options = {}) {
     const current = desktopAuthState.session || readDesktopStoredSession();
     if (current && !options.force && !isDesktopSessionExpiring(current)) {
@@ -844,16 +857,19 @@
   function renderDesktopAuth() {
     const loggedIn = !!desktopAuthState.session?.user;
     const trigger = $('#mbpAuthTrigger');
+    const authDisplayLabel = loggedIn ? getDesktopAuthDisplayLabel() : '';
     const authLabel = loggedIn ? shortenDesktopAuthLabel(getDesktopAuthUserLabel()) : '登录';
     if (trigger) {
       trigger.classList.toggle('is-logged-in', loggedIn);
       trigger.classList.toggle('is-member', loggedIn && !!desktopAuthState.quota?.isMember);
       trigger.setAttribute('aria-expanded', desktopAuthState.open ? 'true' : 'false');
       trigger.setAttribute('aria-label', loggedIn ? `当前账号：${authLabel || '已登录'}` : '登录');
+      if (authDisplayLabel) trigger.setAttribute('aria-label', `当前账号：${authDisplayLabel}`);
       trigger.disabled = desktopAuthState.loading;
     }
     const triggerLabel = $('#mbpAuthTriggerLabel');
     if (triggerLabel) triggerLabel.textContent = authLabel || (loggedIn ? '已登录' : '登录');
+    if (triggerLabel && authDisplayLabel) triggerLabel.textContent = authDisplayLabel;
     const triggerMeta = $('#mbpAuthTriggerMeta');
     if (triggerMeta) {
       triggerMeta.textContent = loggedIn
@@ -877,6 +893,7 @@
       const label = getDesktopAuthUserLabel();
       const sessionLabel = $('#mbpAuthSessionLabel');
       if (sessionLabel) sessionLabel.textContent = shortenDesktopAuthLabel(label) || '已登录';
+      if (sessionLabel && authDisplayLabel) sessionLabel.textContent = authDisplayLabel;
       const sessionMeta = $('#mbpAuthSessionMeta');
       if (sessionMeta) sessionMeta.textContent = getDesktopQuotaSharedText();
       updateDesktopQuotaDisplay();
