@@ -7,7 +7,7 @@ const repoRoot = process.cwd();
 const defaultHost = "www.yuetianai.com";
 const defaultSiteUrl = `https://${defaultHost}`;
 const remoteSitemapUrl = `${defaultSiteUrl}/sitemap.xml`;
-const defaultKeyPath = "images/indexnow/8d5c8f7d8a0f4e8cb61a5f62b3d41944.txt";
+const defaultKeyPath = "8d5c8f7d8a0f4e8cb61a5f62b3d41944.txt";
 
 function log(message) {
   process.stdout.write(`[indexnow-auto-submit] ${message}\n`);
