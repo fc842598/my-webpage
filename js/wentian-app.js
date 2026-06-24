@@ -838,9 +838,10 @@ function sourceHomeScreen(screen) {
     ${figBox("source-2-hero", 18, 98, 354, 166, "", "border-radius:13px;background:linear-gradient(135deg,#b64c47,#8d302a);box-shadow:0 9px 22px rgba(161,56,36,.18);")}
     ${figText("source-2-hero-title", "你的专属命理报告，立即生成", 36, 119, 320, 22, "#fff", 800)}
     ${figText("source-2-hero-sub", "解锁AI专属命理报告，快速获得可执行建议", 36, 153, 304, 14, "rgba(255,255,255,.9)")}
-    ${figText("source-2-hero-lines", "· 覆盖事业、情感、财富等核心场景\\n· 结合命盘结构输出高价值行动建议\\n· 下单后自动生成，可在我的报告持续复盘", 36, 184, 312, 13, "#fff", 500, "left", "line-height:1.75;")}
+    ${figText("source-2-hero-lines", "· 覆盖事业、情感、财富等核心场景\n· 结合命盘结构输出高价值行动建议\n· 下单后自动生成，可在我的报告持续复盘", 36, 184, 312, 13, "#fff", 500, "left", "line-height:1.75;")}
     ${reports.map(([title, desc, price, oldPrice, payLabel, y], index) => `
       ${figBox(`source-2-report-${index}`, 18, y, 354, index === 2 ? 184 : 190, "converted-card", "border-radius:12px;box-shadow:0 8px 20px rgba(70,45,25,.12);")}
+      ${figButton(`source-2-report-hit-${index}`, 18, y, 354, index === 2 ? 184 : 190, 'data-route="screen-27"', "", "z-index:35;")}
       ${figBox(`source-2-tag-${index}`, 36, y + 22, 44, 28, "", "border-radius:14px;background:#fff4ec;")}
       ${figText(`source-2-tag-text-${index}`, "八字", 44, y + 29, 28, 11, "#9a6b33", 700, "center")}
       ${figText(`source-2-price-${index}`, price, 285, y + 20, 60, 26, "#8d251d", 800, "right")}
@@ -17671,7 +17672,7 @@ function convertedButton(screen) {
   `;
 }
 
-const sourceScreenOwnHotspotNos = new Set([1, 4, 22, 24, 29, 34, 35]);
+const sourceScreenOwnHotspotNos = new Set([1, 2, 4, 22, 24, 29, 34, 35]);
 
 function rectsOverlap(a, b) {
   return a.left < b.left + b.width &&
