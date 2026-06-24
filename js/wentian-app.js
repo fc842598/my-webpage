@@ -573,6 +573,7 @@ function getWentianBottomNavActive(nodeId) {
 function withWentianStandardBottomNav(nodeId, body, height) {
   const baseHeight = Number(height) || WENTIAN_PHONE_HEIGHT;
   if (
+    String(nodeId) === "screen-3" ||
     String(nodeId) === "screen-4" ||
     String(nodeId) === "screen-11" ||
     String(nodeId) === "screen-43" ||
