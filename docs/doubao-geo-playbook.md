@@ -94,6 +94,32 @@ node scripts/check-geo-basics.js
 - 抓取量过大
 - 已提交 sitemap 但长期没动静
 
+### 5.1 先用服务器脚本看它有没有来抓
+
+仓库里已经补了一个专门看字节系爬虫命中的脚本：
+
+```bash
+bash scripts/geo-bytecrawl-check.sh
+```
+
+它会直接给出：
+
+- `Bytespider / Toutiao / ByteDance` 命中总数
+- 最近抓了哪些 URL
+- 返回码分布
+- 最近 20 条原始访问日志
+
+如果你看到它主要在抓：
+
+- `/sitemap.xml`
+- `/llms.txt`
+- `pages/yuetianai.html`
+- `pages/yuetianai-product.html`
+- `pages/ai-ziwei-paipan.html`
+- `articles/*.html`
+
+说明这条线已经开始建立候选资料池了。
+
 ### 6. 固定每周复测
 
 每周开 fresh chat 测这几组问法：
