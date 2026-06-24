@@ -6866,9 +6866,15 @@ function pickWentianLanguage(code) {
 }
 
 function confirmWentianLanguage() {
-  setWentianLanguageCode(wentianLanguageDraft || getWentianLanguageCode());
+  const nextCode = wentianLanguageDraft || getWentianLanguageCode();
+  wentianI18nPendingRoot = null;
+  wentianI18nPendingCode = "";
+  setWentianLanguageCode(nextCode);
   wentianLanguageDraft = null;
-  returnToPreviousWentianRoute("screen-31");
+  const previousRoute = state.stack[state.stack.length - 1] || "screen-31";
+  if (state.stack.length) state.stack.pop();
+  replaceCurrentWentianRoute(previousRoute);
+  window.setTimeout(() => applyWentianLanguageText(view, nextCode, { force: true }), 0);
 }
 
 const wentianI18nTextSources = new WeakMap();
@@ -8394,9 +8400,14 @@ function queueWentianLanguageApply(root = view, code = getWentianLanguageCode())
   window.setTimeout(() => {
     wentianI18nQueued = false;
     const nextRoot = wentianI18nPendingRoot || view;
-    const nextCode = wentianI18nPendingCode || getWentianLanguageCode();
+    const nextCode = getWentianLanguageOption(wentianI18nPendingCode || getWentianLanguageCode()).code;
+    const activeCode = getWentianLanguageCode();
     wentianI18nPendingRoot = null;
     wentianI18nPendingCode = "";
+    if (nextCode !== activeCode) {
+      applyWentianLanguageText(nextRoot, activeCode, { force: true });
+      return;
+    }
     applyWentianLanguageText(nextRoot, nextCode);
   }, 0);
 }
@@ -8638,9 +8649,13 @@ function finalizeWentianLanguageText(root = view, code = getWentianLanguageCode(
 }
 
 function stabilizeWentianLanguageText(root = view) {
-  if (getWentianLanguageCode() === "zh-Hans") return;
+  const scheduledCode = getWentianLanguageCode();
+  if (scheduledCode === "zh-Hans") return;
   [0, 60, 180, 420, 900].forEach((delay) => {
-    window.setTimeout(() => applyWentianLanguageText(root, getWentianLanguageCode(), { force: true }), delay);
+    window.setTimeout(() => {
+      if (getWentianLanguageCode() !== scheduledCode) return;
+      applyWentianLanguageText(root, scheduledCode, { force: true });
+    }, delay);
   });
 }
 
@@ -11916,7 +11931,7 @@ function sourceLanguageSettingsScreen() {
   const activeCode = wentianLanguageDraft || getWentianLanguageCode();
   return `
     ${figBox("source-37-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
-    ${wentianBackPill("source-37", 18, 42)}
+    ${wentianBackPill("source-37", 18, 42, 'data-action="back" aria-label="返回"', { zIndex: 90 })}
     ${figText("source-37-title", "语言设置", 0, 54, 390, 22, "#1f1d1a", 800, "center")}
     ${figText("source-37-copy", "选择界面显示语言", 34, 128, 220, 15, "#8f857a")}
     ${figBox("source-37-preview", 22, 166, 346, 74, "converted-card", "border-radius:14px;box-shadow:0 6px 16px rgba(74,55,32,.08);")}
@@ -11936,7 +11951,6 @@ function sourceLanguageSettingsScreen() {
       `;
     }).join("")}
     <button class="wentian-language-confirm" type="button" data-action="wentian-language-confirm">确定</button>
-    ${figButton("source-37-back-top-hit", 18, 38, 100, 58, 'data-action="back" aria-label="返回我的"', "", "z-index:90;")}
   `;
 }
 
