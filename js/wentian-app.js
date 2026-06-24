@@ -11488,7 +11488,7 @@ function sourcePaymentScreen() {
   const safeText = isAipayResource ? "AI收为智能体 402 付费资源，不是网页扫码支付" : `${getWentianPaymentProviderLabel()}完成后付费额度自动刷新`;
   return `
     ${figBox("wt30-bg", 0, 0, 390, 844, "", "background:linear-gradient(180deg,#fffdf8 0%,#fbf7ef 58%,#f3eadc 100%);")}
-    ${wentianBackPill("wt30", 18, 42)}
+    ${wentianBackPill("wt30", 18, 42, 'data-action="wentian-return-previous" data-fallback-route="screen-29" aria-label="返回"')}
     ${figText("wt30-page-title", "套餐支付", 0, 54, 390, 22, "#201812", 900, "center")}
     ${figBox("wt30-status-pill", 286, 48, 74, 30, "", "border-radius:15px;background:#f4ead8;border:1px solid #eadbc2;")}
     ${figText("wt30-status-text", stateLabel, 286, 56, 74, 12, "#9a6f22", 800, "center")}
