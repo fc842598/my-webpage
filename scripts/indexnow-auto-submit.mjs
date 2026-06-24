@@ -103,7 +103,7 @@ function urlForFile(filePath, siteUrl = defaultSiteUrl) {
   if (normalized === "robots.txt") return `${siteUrl}/robots.txt`;
   if (normalized === "feed.xml") return `${siteUrl}/feed.xml`;
   if (normalized === "brand-profile.xml") return `${siteUrl}/brand-profile.xml`;
-  if (normalized === "brand-profile.jsonld") return `${siteUrl}/brand-profile.jsonld`;
+  if (normalized === "pages/brand-profile.jsonld") return `${siteUrl}/pages/brand-profile.jsonld`;
   return null;
 }
 

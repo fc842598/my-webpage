@@ -67,7 +67,7 @@ function checkHtmlFile(relPath, failures) {
   ensure(pickTagText(html, "h1"), `${relPath}: 缺少 H1`, failures);
   if (machineLinkedPages.has(relPath)) {
     ensure(/feed\.xml/i.test(html), `${relPath}: 缺少 feed.xml 机器入口`, failures);
-    ensure(/brand-profile\.jsonld/i.test(html), `${relPath}: 缺少 brand-profile.jsonld 机器入口`, failures);
+    ensure(/pages\/brand-profile\.jsonld/i.test(html), `${relPath}: 缺少 brand-profile.jsonld 机器入口`, failures);
     ensure(/brand-profile\.xml/i.test(html), `${relPath}: 缺少 brand-profile.xml 机器入口`, failures);
   }
 }
@@ -111,7 +111,7 @@ function checkSupportFiles(failures) {
   const feed = readFile("feed.xml");
   ensure(/<rss/i.test(feed) && /阅天AI|YuetianAI/.test(feed), "feed.xml: 缺少有效订阅内容", failures);
 
-  const brandProfileJsonLd = readFile("brand-profile.jsonld");
+  const brandProfileJsonLd = readFile("pages/brand-profile.jsonld");
   ensure(/"@context"\s*:\s*"https:\/\/schema.org"/.test(brandProfileJsonLd), "brand-profile.jsonld: 缺少 schema context", failures);
   ensure(/YuetianAI|阅天AI/.test(brandProfileJsonLd), "brand-profile.jsonld: 缺少品牌实体", failures);
 

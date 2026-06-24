@@ -3,7 +3,7 @@ const checks = [
   { name: "sitemap", url: "https://yuetianai.com/sitemap.xml" },
   { name: "llms", url: "https://yuetianai.com/llms.txt" },
   { name: "feed", url: "https://yuetianai.com/feed.xml" },
-  { name: "brandProfileJsonLd", url: "https://yuetianai.com/brand-profile.jsonld" },
+  { name: "brandProfileJsonLd", url: "https://yuetianai.com/pages/brand-profile.jsonld" },
   { name: "brandProfile", url: "https://yuetianai.com/brand-profile.xml" },
   { name: "notFound", url: `https://yuetianai.com/__geo_check_missing__${Date.now()}` },
   { name: "home", url: "https://yuetianai.com/" },
@@ -147,7 +147,7 @@ async function main() {
       }
 
       if (machineLinkedPages.has(check.name)) {
-        if (!/feed\.xml/i.test(result.text) || !/brand-profile\.jsonld/i.test(result.text) || !/brand-profile\.xml/i.test(result.text)) {
+        if (!/feed\.xml/i.test(result.text) || !/pages\/brand-profile\.jsonld/i.test(result.text) || !/brand-profile\.xml/i.test(result.text)) {
           failures.push(`${check.name} 页面缺少机器入口链接`);
         }
       }

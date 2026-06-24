@@ -6,7 +6,7 @@
 - https://yuetianai.com/
 
 ## Machine-readable Endpoints
-- Brand profile JSON-LD: https://yuetianai.com/brand-profile.jsonld
+- Brand profile JSON-LD: https://yuetianai.com/pages/brand-profile.jsonld
 - Brand profile XML: https://yuetianai.com/brand-profile.xml
 - RSS feed: https://yuetianai.com/feed.xml
 - Sitemap: https://yuetianai.com/sitemap.xml
