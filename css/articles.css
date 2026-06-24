@@ -474,22 +474,63 @@ h1 {
 }
 
 .article-bottom-link {
-  min-height: 58px;
-  display: flex;
+  position: relative;
+  min-height: 104px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
-  justify-content: space-between;
-  gap: 18px;
+  gap: 28px;
   margin-top: 48px;
-  padding: 0 26px;
-  border: 1px solid rgba(201, 169, 97, .18);
-  border-radius: 8px;
-  color: #cbb99c;
-  background: rgba(20, 16, 11, .88);
+  overflow: hidden;
+  padding: 26px 30px 26px 34px;
+  border: 1px solid rgba(201, 169, 97, .34);
+  border-radius: 12px;
+  color: #ead7ad;
+  background:
+    radial-gradient(circle at 92% 50%, rgba(201, 169, 97, .18), transparent 34%),
+    linear-gradient(135deg, rgba(36, 28, 17, .96), rgba(12, 9, 6, .98));
+  box-shadow: 0 18px 42px rgba(0, 0, 0, .22), inset 0 1px rgba(255, 244, 205, .06);
+}
+
+.article-bottom-link::before {
+  content: "下一步";
+  position: absolute;
+  top: 18px;
+  left: 34px;
+  color: var(--gold);
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: .18em;
+}
+
+.article-bottom-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: linear-gradient(180deg, #f1d58f, #9b6325);
+}
+
+.article-bottom-link span {
+  padding-top: 22px;
+  color: #f4e8c9;
+  font: 800 20px/1.5 "Noto Serif SC", "Songti SC", serif;
 }
 
 .article-bottom-link a {
-  color: var(--gold);
+  min-height: 48px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 28px;
+  border-radius: 999px;
+  color: #17110a;
+  background: linear-gradient(180deg, #f0d48d, #c9a961);
+  box-shadow: 0 12px 26px rgba(201, 169, 97, .18);
   font-weight: 900;
+  white-space: nowrap;
 }
 
 .breadcrumb {
@@ -630,7 +671,8 @@ h1 {
   .article-card,
   .nav-links a,
   .card-link,
-  .article-cta {
+  .article-cta,
+  .article-bottom-link a {
     transition: border-color .18s ease, transform .18s ease, background .18s ease;
   }
 
@@ -644,6 +686,11 @@ h1 {
   .nav-links a:hover {
     border-color: var(--line-strong);
     background: rgba(201, 169, 97, .14);
+  }
+
+  .article-bottom-link a:hover {
+    transform: translateY(-1px);
+    background: linear-gradient(180deg, #f7df9e, #d5b56b);
   }
 }
 
@@ -988,19 +1035,30 @@ h1 {
   }
 
   .article-bottom-link {
-    min-height: 54px;
+    min-height: 0;
+    grid-template-columns: 1fr;
+    gap: 16px;
     margin-top: 34px;
-    padding: 0 20px;
+    padding: 48px 20px 22px;
     color: #fff3db;
-    background: #2a2118;
+    background:
+      radial-gradient(circle at 100% 20%, rgba(155, 99, 37, .18), transparent 38%),
+      #2a2118;
+  }
+
+  .article-bottom-link::before {
+    top: 18px;
+    left: 20px;
   }
 
   .article-bottom-link span {
-    font-weight: 800;
+    padding-top: 0;
+    font-size: 18px;
   }
 
   .article-bottom-link a {
-    flex: 0 0 auto;
+    width: 100%;
+    min-height: 46px;
   }
 
   .article-main figure {
