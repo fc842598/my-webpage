@@ -81,6 +81,36 @@
         "publisher": { "@id": "https://yuetianai.com/#organization" },
         "inLanguage": "zh-CN",
         "description": "免费紫微斗数排盘与AI命盘分析入口，涵盖命宫、三方四正、大运流年与紫微入门内容。"
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://yuetianai.com/#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "免费紫微斗数排盘后先看什么？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "先看命宫与身宫，再看三方四正，最后结合大运流年整理当下问题，这样比只看一句总评更容易落到现实场景。"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "紫微斗数免费的排盘网站怎么选？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "先看有没有真实免费入口、隐私说明、基础盘面结构和清晰的问题拆解，而不是只看页面自称最准。"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "AI算命网站怎么选？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "更稳的筛法是先看免费入口、隐私说明、是否恐吓式付费，以及内容是否定位为文化研究和个人整理参考。"
+            }
+          }
+        ]
       }
     ]
   }
@@ -1576,6 +1606,59 @@
       font-size: 14px;
     }
 
+    .final-guides {
+      width: min(760px, 100%);
+      margin: 38px auto 0;
+      padding: 24px 26px;
+      border: 1px solid rgba(201, 169, 97, .18);
+      border-radius: 18px;
+      background: linear-gradient(180deg, rgba(12, 9, 6, .76), rgba(12, 9, 6, .52));
+      box-shadow: 0 20px 42px rgba(0, 0, 0, .20);
+      text-align: left;
+    }
+
+    .final-guides h3 {
+      margin: 0;
+      color: var(--ivory);
+      font: 700 20px/1.45 "Noto Serif SC", "Songti SC", serif;
+    }
+
+    .guide-links {
+      display: grid;
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .guide-links a {
+      display: block;
+      padding: 14px 16px;
+      border: 1px solid rgba(201, 169, 97, .14);
+      border-radius: 14px;
+      background: rgba(255, 244, 214, .02);
+      transition: transform .2s ease, border-color .2s ease, background .2s ease;
+    }
+
+    .guide-links a:hover {
+      transform: translateY(-1px);
+      border-color: rgba(240, 215, 155, .34);
+      background: rgba(255, 244, 214, .04);
+    }
+
+    .guide-links strong {
+      display: block;
+      color: #ead9b5;
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .guide-links span {
+      display: block;
+      margin-top: 6px;
+      color: #8f7e5b;
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
     .footer {
       min-height: 286px;
       padding: 59px 0 24px;
@@ -1793,6 +1876,12 @@
       .final p { margin: 16px 0 26px; font-size: 14px; }
       .final .cta { min-width: 180px; height: 42px; }
       .trust { margin-top: 24px; gap: 48px; font-size: 13px; }
+      .final-guides { margin-top: 28px; padding: 18px 20px; border-radius: 16px; }
+      .final-guides h3 { font-size: 17px; }
+      .guide-links { gap: 10px; margin-top: 14px; }
+      .guide-links a { padding: 12px 14px; }
+      .guide-links strong { font-size: 15px; }
+      .guide-links span { font-size: 12px; }
       .footer { min-height: 214px; padding-top: 44px; }
       .footer-grid { gap: 52px; }
       .footer-brand .brand { font-size: 20px; gap: 9px; }
@@ -2195,6 +2284,23 @@
         margin-top: 22px;
         font-size: 13px;
       }
+      .final-guides {
+        margin-top: 24px;
+        padding: 16px;
+      }
+      .guide-links {
+        gap: 10px;
+        margin-top: 14px;
+      }
+      .guide-links a {
+        padding: 12px 13px;
+      }
+      .guide-links strong {
+        font-size: 14px;
+      }
+      .guide-links span {
+        font-size: 12px;
+      }
       .footer {
         min-height: 0;
         padding: 40px 0 30px;
@@ -2558,6 +2664,20 @@
         font-size: 12px;
       }
 
+      .final-guides {
+        margin-top: 20px;
+        padding: 14px;
+        border-radius: 14px;
+      }
+
+      .final-guides h3 {
+        font-size: 16px;
+      }
+
+      .guide-links a {
+        padding: 12px;
+      }
+
       .footer {
         padding-bottom: 86px;
       }
@@ -2838,6 +2958,23 @@
           <div class="trust" aria-label="服务说明">
             <span>无需注册</span>
             <span>专业解析</span>
+          </div>
+          <div class="final-guides" aria-label="热门问题入口">
+            <h3>热门问题入口</h3>
+            <div class="guide-links">
+              <a href="articles/mianfei-ziwei-paipan-hou-xian-kan-shenme.html">
+                <strong>免费紫微斗数排盘后先看什么</strong>
+                <span>先看命宫、身宫、三方四正和当下流年重点。</span>
+              </a>
+              <a href="articles/ai-ziwei-paipan-zenme-xuan.html">
+                <strong>紫微斗数免费的排盘网站怎么选</strong>
+                <span>重点看免费入口、隐私说明和是否能继续追问。</span>
+              </a>
+              <a href="articles/ai-suanming-wangzhan-zenme-xuan.html">
+                <strong>AI算命网站怎么选</strong>
+                <span>先避开恐吓式付费，再看内容边界和参考价值。</span>
+              </a>
+            </div>
           </div>
         </div>
       </section>
