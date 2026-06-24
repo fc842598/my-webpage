@@ -12424,7 +12424,7 @@ function sourceHepanResultScreen() {
   const summary = getWentianHepanReportSummary(result);
   return `
     ${figBox("wt49-bg", 0, 0, 390, WENTIAN_HEPAN_RESULT_SCREEN_HEIGHT, "", "background:linear-gradient(180deg,#fffdf8 0%,#fbf7ef 58%,#f3eadc 100%);")}
-    ${wentianSimpleHeader("wt49", "合盘结果")}
+    ${wentianSimpleHeader("wt49", "合盘结果", "", { backAttrs: 'data-action="wentian-return-previous" data-fallback-route="screen-11" aria-label="back"' })}
     <section class="wentian-hepan-result-panel">
       <div class="wentian-hepan-result-hero">
         <span>关系主格 · 本地初判</span>
@@ -12501,7 +12501,7 @@ function sourceHepanInvalidScreen(result) {
   const message = result?.message || "请选择两张不同档案";
   return `
     ${figBox("wt49-bg", 0, 0, 390, 844, "", "background:linear-gradient(180deg,#fffdf8 0%,#fbf7ef 58%,#f3eadc 100%);")}
-    ${wentianSimpleHeader("wt49", "合盘结果")}
+    ${wentianSimpleHeader("wt49", "合盘结果", "", { backAttrs: 'data-action="wentian-return-previous" data-fallback-route="screen-11" aria-label="back"' })}
     ${figBox("wt49-invalid-card", 24, 132, 342, 318, "", "border:1px solid #eadfce;border-radius:22px;background:#fff;box-shadow:0 12px 28px rgba(70,45,25,.1);")}
     ${figBox("wt49-invalid-icon", 142, 174, 106, 106, "", "border-radius:53px;background:#fff1dc;border:1px solid #e2c27a;")}
     ${figText("wt49-invalid-icon-text", "合", 142, 204, 106, 38, "#a94437", 900, "center", "font-size:38px;")}
