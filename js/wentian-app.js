@@ -17729,7 +17729,7 @@ function convertedButton(screen) {
   `;
 }
 
-const sourceScreenOwnHotspotNos = new Set([1, 2, 4, 9, 22, 24, 25, 29, 34, 35]);
+const sourceScreenOwnHotspotNos = new Set([1, 2, 4, 9, 22, 24, 25, 28, 29, 34, 35]);
 
 function rectsOverlap(a, b) {
   return a.left < b.left + b.width &&
