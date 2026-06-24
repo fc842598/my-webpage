@@ -94,6 +94,36 @@ node scripts/check-geo-basics.js
 - 抓取量过大
 - 已提交 sitemap 但长期没动静
 
+### 5.0 头条验证文件怎么落地
+
+公开资料显示，头条站长平台的站点验证走的是“下载 HTML 验证文件，放到网站根目录可访问”的方式。
+
+仓库里已经补了安装脚本：
+
+```bash
+node scripts/install-toutiao-verification-file.mjs /path/to/verify-file.html
+```
+
+如果你只是想先演练路径，不真正复制：
+
+```bash
+node scripts/install-toutiao-verification-file.mjs /path/to/verify-file.html --dry-run
+```
+
+它会做 3 件事：
+
+- 检查文件名是不是可公开访问的 `.html`
+- 把验证文件复制到仓库根目录
+- 直接打印出线上验证 URL
+
+因为你这个站是 `GitHub master -> 阿里云自动同步`，所以正确流程是：
+
+1. 在头条站长平台下载验证文件
+2. 跑上面的脚本放到仓库根目录
+3. `git add / commit / push`
+4. 等线上自动同步
+5. 在站长平台点击验证
+
 ### 5.1 先用服务器脚本看它有没有来抓
 
 仓库里已经补了一个专门看字节系爬虫命中的脚本：
