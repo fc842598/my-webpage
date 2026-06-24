@@ -16920,6 +16920,7 @@ function renderWentianPolishedScreen(screen) {
       ${figBox("wt8-input", 24, 1198, 342, 44, "", "border-radius:22px;background:#fff;border:1px solid #eadfce;")}
       ${figText("wt8-input-text", "继续追问", 48, 1212, 160, 13, "#a09890")}
       ${figText("wt8-input-plus", "+", 318, 1205, 28, 24, "#c49a34", 800, "center")}
+      ${figButton("wt8-input-hit", 24, 1198, 342, 44, 'data-route="screen-6"')}
     `;
   }
   if (no === 9) {
