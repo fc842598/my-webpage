@@ -820,20 +820,21 @@ html[lang="en"] [data-node-id="wt22-login-title-clean"] {
 }
 
 html[lang="en"] [data-node-id="wt22-login-desc-clean"] {
-  top: 156px !important;
+  top: 160px !important;
   width: 302px !important;
   font-size: 10px !important;
-  line-height: 1.2 !important;
+  line-height: 1.28 !important;
 }
 
 html[lang="en"] [data-node-id="wt22-tip-desc-clean"] {
-  top: 470px !important;
+  top: 512px !important;
   width: 320px !important;
   font-size: 10px !important;
-  line-height: 1.15 !important;
+  line-height: 1.24 !important;
 }
 
 html[lang="en"] [data-node-id="wt22-tip-title-clean"] {
+  top: 488px !important;
   width: 120px !important;
   font-size: 12.5px !important;
 }

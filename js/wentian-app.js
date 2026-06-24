@@ -17128,25 +17128,25 @@ function renderWentianPolishedScreen(screen) {
       ${figBox("wt22-bg-clean", 0, 0, 390, 844, "", "background:#fbf7ef;")}
       ${wentianSimpleHeader("wt22-clean", "邀请好友")}
 
-      ${figBox("wt22-login-card-clean", 16, 102, 358, 142, "", "border-radius:20px;background:#fff;box-shadow:0 10px 24px rgba(70,45,25,.08);")}
+      ${figBox("wt22-login-card-clean", 16, 102, 358, 164, "", "border-radius:20px;background:#fff;box-shadow:0 10px 24px rgba(70,45,25,.08);")}
       ${figText("wt22-login-title-clean", "登录后生成专属邀请码", 34, 128, 220, 20, "#25211d", 900)}
-      ${figText("wt22-login-desc-clean", `注册成功后，邀请人和注册人都可连续 ${rewardDays} 天每天各得 ${rewardDaily} 次许大师对话。`, 34, 160, 292, 13, "#8f867b", 700)}
-      ${figBox("wt22-login-btn-clean", 34, 190, 132, 38, "", "border-radius:19px;background:#25211d;")}
-      ${figButton("wt22-login-hit-clean", 34, 190, 132, 38, 'data-route="screen-40"')}
-      ${figText("wt22-login-text-clean", "登录 / 注册", 34, 202, 132, 12, "#fff", 900, "center")}
+      ${figText("wt22-login-desc-clean", `注册成功后，邀请人和注册人都可连续 ${rewardDays} 天每天各得 ${rewardDaily} 次许大师对话。`, 34, 160, 292, 13, "#8f867b", 700, "left", "line-height:1.45;")}
+      ${figBox("wt22-login-btn-clean", 34, 214, 132, 38, "", "border-radius:19px;background:#25211d;")}
+      ${figButton("wt22-login-hit-clean", 34, 214, 132, 38, 'data-route="screen-40"')}
+      ${figText("wt22-login-text-clean", "登录 / 注册", 34, 226, 132, 12, "#fff", 900, "center")}
 
-      ${figBox("wt22-bind-clean", 16, 266, 358, 144, "", "border-radius:20px;background:#fff;box-shadow:0 10px 24px rgba(70,45,25,.08);")}
-      ${figText("wt22-bind-title-clean", "已有邀请码", 34, 292, 120, 16, "#25211d", 900)}
-      ${figText("wt22-bind-desc-clean", "先填邀请码，登录后自动绑定。", 34, 318, 220, 12, "#8f867b", 700)}
-      <input id="wentian-invite-bind-input" class="wentian-invite-input" style="left:34px;top:348px;width:210px" value="${escapeHtml(pendingCode || "")}" placeholder="输入邀请码">
-      ${figBox("wt22-bind-btn-clean", 256, 348, 84, 38, "", "border-radius:19px;background:#b74e39;")}
-      ${figButton("wt22-bind-hit-clean", 256, 348, 84, 38, 'data-action="wentian-invite-bind"')}
-      ${figText("wt22-bind-text-clean", "绑定", 256, 360, 84, 12, "#fff", 900, "center")}
-      <div id="wentian-invite-status" class="wentian-invite-status" style="left:34px;top:396px;width:306px" data-tone="${wentianInviteState.error ? "error" : ""}">${escapeHtml(status)}</div>
+      ${figBox("wt22-bind-clean", 16, 288, 358, 144, "", "border-radius:20px;background:#fff;box-shadow:0 10px 24px rgba(70,45,25,.08);")}
+      ${figText("wt22-bind-title-clean", "已有邀请码", 34, 314, 120, 16, "#25211d", 900)}
+      ${figText("wt22-bind-desc-clean", "先填邀请码，登录后自动绑定。", 34, 340, 220, 12, "#8f867b", 700)}
+      <input id="wentian-invite-bind-input" class="wentian-invite-input" style="left:34px;top:370px;width:210px" value="${escapeHtml(pendingCode || "")}" placeholder="输入邀请码">
+      ${figBox("wt22-bind-btn-clean", 256, 370, 84, 38, "", "border-radius:19px;background:#b74e39;")}
+      ${figButton("wt22-bind-hit-clean", 256, 370, 84, 38, 'data-action="wentian-invite-bind"')}
+      ${figText("wt22-bind-text-clean", "绑定", 256, 382, 84, 12, "#fff", 900, "center")}
+      <div id="wentian-invite-status" class="wentian-invite-status" style="left:34px;top:418px;width:306px" data-tone="${wentianInviteState.error ? "error" : ""}">${escapeHtml(status)}</div>
 
-      ${figBox("wt22-tip-clean", 16, 434, 358, 62, "", "border-radius:18px;background:#fff9ef;border:1px solid #efdfc3;")}
-      ${figText("wt22-tip-title-clean", "奖励规则", 34, 452, 80, 13, "#9b742e", 900)}
-      ${figText("wt22-tip-desc-clean", rewardText, 34, 472, 300, 12, "#756d63", 700)}
+      ${figBox("wt22-tip-clean", 16, 468, 358, 78, "", "border-radius:18px;background:#fff9ef;border:1px solid #efdfc3;")}
+      ${figText("wt22-tip-title-clean", "奖励规则", 34, 488, 80, 13, "#9b742e", 900)}
+      ${figText("wt22-tip-desc-clean", rewardText, 34, 512, 300, 12, "#756d63", 700, "left", "line-height:1.42;")}
     `;
     }
     return `
