@@ -9128,10 +9128,10 @@ function resetWentianXuChatRuntime() {
 }
 
 function getWentianXuChatContext() {
-  if (wentianXuChat.context) return wentianXuChat.context;
+  if (wentianXuChat.context && (wentianXuChat.context.type === "liuyao" || wentianXuChat.context.type === "hepan" || wentianXuChat.context.type === "liuren")) return wentianXuChat.context;
   try {
     const parsed = JSON.parse(sessionStorage.getItem(WENTIAN_XU_CONTEXT_KEY) || "null");
-    if ((parsed?.type === "liuyao" || parsed?.type === "hepan" || parsed?.type === "liuren" || parsed?.type === "yijing") && isWentianUuid(parsed.recordId)) {
+    if ((parsed?.type === "liuyao" || parsed?.type === "hepan" || parsed?.type === "liuren") && isWentianUuid(parsed.recordId)) {
       wentianXuChat.context = parsed;
       return parsed;
     }
@@ -9149,7 +9149,6 @@ function setWentianXuChatContext(context) {
 }
 
 function clearWentianXuChatContext() {
-  if (!getWentianXuChatContext()) return;
   setWentianXuChatContext(null);
 }
 
@@ -17462,7 +17461,7 @@ function sourceDashboardHomeScreen() {
       ["六壬法", "农历掌诀", "01-feature-liuren-v2.svg", "screen-46"],
     ];
     return `
-      ${figBox("source-1-bg", 0, 0, 390, 844, "", "background:linear-gradient(180deg,#fffdf8 0%,#fbf7ef 50%,#fff6ea 100%);")}
+      ${figBox("source-1-bg", 0, 0, 390, 746, "", "background:linear-gradient(180deg,#fffdf8 0%,#fbf7ef 50%,#fff6ea 100%);")}
       ${figImage("source-1-brand-logo", "../images/wentian-prototype-assets/wentian-brand-logo-ai-gold-v1.webp", 18, 23, 42, 42, "border-radius:10px;object-fit:cover;box-shadow:0 6px 14px rgba(24,19,8,.18);", "loading=\"eager\" decoding=\"async\"")}
       ${figText("source-1-brand", "阅天AI", 68, 32, 110, 23, "#25221f", 900)}
       ${figBox("source-1-login-pill", 256, 28, 116, 34, "", "border-radius:17px;background:#fffdf8;border:1px solid #eadfce;box-shadow:0 6px 14px rgba(70,45,25,.06);")}
@@ -17505,7 +17504,7 @@ function sourceDashboardHomeScreen() {
         ${figButton(`source-1-feature-hit-${index}`, x, y, 171, 80, hitAttrs, "", "z-index:35;")}
       `;
       }).join("")}
-      ${sourceAppBottomNav("首页", 758)}
+      ${sourceAppBottomNav("首页", 656)}
     `;
   }
 }
@@ -18624,10 +18623,10 @@ function renderWentianMobileYijingPanel(saved) {
       </section>
       <div class="wentian-yijing-xu-cta">
         <div>
-          <span>${escapeHtml(getWentianCompactText("许大师追问", "Ask Master Xu"))}</span>
-          <strong>${escapeHtml(getWentianCompactText("结合命盘，继续细断这组卦", "Continue with this hexagram and chart"))}</strong>
+          <span>${escapeHtml(getWentianCompactText("许大师读盘", "Master Xu"))}</span>
+          <strong>${escapeHtml(getWentianCompactText("回到当前命盘，让许大师继续解读", "Read the current chart"))}</strong>
         </div>
-        <button type="button" data-action="wentian-yijing-ask-xu">${escapeHtml(getWentianCompactText("进入许大师", "Enter"))}</button>
+        <button type="button" data-route="screen-4">${escapeHtml(getWentianCompactText("读命盘", "Read Chart"))}</button>
       </div>
     </section>
   `;
@@ -19282,7 +19281,7 @@ function compactWentianZiweiScreenLayout() {
   if (!stack || !bg || !navBg) return false;
   const stackTop = Number.parseFloat(getComputedStyle(stack).top) || stack.offsetTop || 0;
   const stackBottom = Math.ceil(stackTop + stack.offsetHeight);
-  const navY = Math.max(755, stackBottom + 28);
+  const navY = Math.max(755, stackBottom + 8);
   const currentNavY = Number.parseFloat(navBg.style.top) || navY;
   const delta = navY - currentNavY;
   for (const node of phone.querySelectorAll('[data-node-id^="source-bottom-"]')) {
