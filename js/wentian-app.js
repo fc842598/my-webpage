@@ -11820,7 +11820,7 @@ function sourceLoginMethodsScreen() {
     const phone = wentianAuthSession?.user?.user_metadata?.phone || "";
     return `
       ${figBox("source-login-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
-      ${wentianBackPill("source-login", 18, 42)}
+      ${wentianBackPill("source-login", 18, 42, 'data-action="wentian-return-previous" data-fallback-route="screen-38" aria-label="返回"')}
       ${figText("source-login-title", "登录方式", 0, 54, 390, 22, "#1f1d1a", 900, "center")}
       ${figBox("source-login-account", 24, 112, 342, 112, "", "border:1px solid #e2d8c8;border-radius:18px;background:#fff;box-shadow:0 8px 18px rgba(74,55,32,.08);")}
       ${figBox("source-login-avatar", 46, 140, 54, 54, "", "border-radius:27px;background:#b88c33;")}
@@ -11865,7 +11865,7 @@ function sourceLoginMethodsScreen() {
   }
   return `
     ${figBox("source-login-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
-    ${wentianBackPill("source-login", 18, 42)}
+    ${wentianBackPill("source-login", 18, 42, 'data-action="wentian-return-previous" data-fallback-route="screen-38" aria-label="返回"')}
     ${figText("source-login-title", "登录 / 注册", 0, 54, 390, 22, "#1f1d1a", 800, "center")}
     ${figText("source-login-sub", "会员、支付记录会绑定到账号", 0, 92, 390, 13, "#8f857a", 700, "center")}
     ${figBox("source-login-card", 24, 128, 342, 390, "", "border:1px solid #e2d8c8;border-radius:18px;background:#fff;box-shadow:0 8px 20px rgba(74,55,32,.08);")}
