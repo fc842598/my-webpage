@@ -11737,7 +11737,7 @@ function sourceAccountSettingsScreen() {
   ];
   return `
     ${figBox("source-settings-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
-    ${wentianBackPill("source-settings", 18, 42)}
+    ${wentianBackPill("source-settings", 18, 42, 'data-action="wentian-return-previous" data-fallback-route="screen-31" aria-label="返回"')}
     ${figText("source-settings-title", "账户设置", 0, 54, 390, 22, "#1f1d1a", 900, "center")}
     ${figBox("source-settings-card", 22, 112, 346, 320, "", "border:1px solid #e2d8c8;border-radius:18px;background:#fff;box-shadow:0 8px 20px rgba(74,55,32,.07);")}
     ${rows.map(([icon, label, desc, route, action], index) => {
