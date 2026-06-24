@@ -16948,7 +16948,7 @@ function renderWentianPolishedScreen(screen) {
           ${figText(`wt9-row-time-${index}`, time, 278, y + 12, 54, 12, "#a39a90", 600, "right")}
           ${figText(`wt9-row-desc-${index}`, desc, 82, y + 34, 210, 11, "#7f766b", 500)}
           ${figText(`wt9-row-arrow-${index}`, "›", 334, y + 23, 18, 18, "#c5b7a5", 800, "center")}
-          ${figButton(`wt9-row-hit-${index}`, 24, y, 342, 58, 'data-route="screen-7"')}
+          ${figButton(`wt9-row-hit-${index}`, 24, y, 342, 58, 'data-route="screen-4"')}
         `;
       }).join("")}
       ${figText("wt9-foot", "仅保留最近 10 条对话", 0, 812, 390, 11, "#b2aaa2", 500, "center")}
@@ -17690,7 +17690,7 @@ function convertedButton(screen) {
   `;
 }
 
-const sourceScreenOwnHotspotNos = new Set([1, 2, 4, 22, 24, 29, 34, 35]);
+const sourceScreenOwnHotspotNos = new Set([1, 2, 4, 9, 22, 24, 29, 34, 35]);
 
 function rectsOverlap(a, b) {
   return a.left < b.left + b.width &&
