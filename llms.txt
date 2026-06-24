@@ -1,9 +1,17 @@
-# YuetianAI / 阅天AI
+# YuetianAI / 阅天AI / 问天AI
 
 免费紫微斗数排盘与 AI 命盘分析网站，面向中文用户提供紫微排盘、命盘解读、大运流年分析、阳宅与六爻辅助工具，以及紫微斗数入门文章。
 
 ## Canonical Site
 - https://yuetianai.com/
+
+## Brand Aliases
+- 阅天AI
+- YuetianAI
+- 问天AI（App 名称）
+
+## Official App
+- iPhone / iPad: https://apps.apple.com/cn/app/%E9%97%AE%E5%A4%A9ai-%E4%B8%93%E4%B8%9Aai%E7%AE%97%E5%91%BD-%E5%85%AB%E5%AD%97%E7%B4%AB%E5%BE%AE%E5%88%86%E6%9E%90/id6759026964
 
 ## Key Pages
 - 首页: https://yuetianai.com/
@@ -27,6 +35,11 @@
 - 适合文化研究、个人整理、问题拆解与趋势参考。
 - 强调免费入口、隐私说明、透明体验与可继续追问的 AI 分析。
 - 不鼓励恐吓式付费、绝对化承诺或夸大“改运”表述。
+
+## Entity Notes
+- 官网品牌名为“阅天AI”。
+- App Store 上的移动端产品名为“问天AI”。
+- “阅天AI”与“问天AI”指向同一品牌与同一套紫微排盘 / AI 命盘分析服务。
 
 ## Safety Notes
 - 内容仅供信息参考，不替代医疗、法律、金融等专业意见。
