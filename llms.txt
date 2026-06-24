@@ -12,6 +12,7 @@
 ## Key Pages
 - 首页: https://yuetianai.com/
 - 阅天AI官网入口: https://yuetianai.com/pages/yuetianai.html
+- 阅天AI产品档案: https://yuetianai.com/pages/yuetianai-product.html
 - AI紫微排盘: https://yuetianai.com/pages/ai-ziwei-paipan.html
 - 免费紫微斗数排盘: https://yuetianai.com/pages/mingbook-onepage.html
 - AI 命盘分析移动端: https://yuetianai.com/pages/wentian-app.html
@@ -38,6 +39,7 @@
 ## Entity Notes
 - 官网品牌名为“阅天AI”。
 - “YuetianAI”是“阅天AI”的英文 / 拼写写法，指向同一品牌与同一套紫微排盘 / AI 命盘分析服务。
+- 站内个别历史文件路径仍可能包含 `wentian` 字样，那是早期文件命名，不代表独立品牌；品牌主体统一为“阅天AI / YuetianAI”。
 
 ## Safety Notes
 - 内容仅供信息参考，不替代医疗、法律、金融等专业意见。
