@@ -15538,12 +15538,14 @@ function yangzhaiBg(id, height = 844) {
   `;
 }
 
-function yangzhaiHeader(id, title = "地脉道", right = "教程") {
+function yangzhaiHeader(id, title = "地脉道", right = "教程", options = {}) {
+  const backAttrs = options.backAttrs || 'data-action="back" aria-label="返回"';
+  const tutorialRoute = options.tutorialRoute || "screen-45";
   return `
-    ${wentianBackPill(id, 18, 42)}
+    ${wentianBackPill(id, 18, 42, backAttrs)}
     ${figText(`${id}-title`, title, 0, 52, 390, 20, "#241811", 700, "center", "line-height:1.25;font-family:'Noto Serif SC','Songti SC',serif;")}
     ${right ? `${figBox(`${id}-tutorial`, 322, 35, 52, 34, "", "border:1px solid #d9c5a8;border-radius:12px;background:#fffdf8;")}
-    ${figButton(`${id}-tutorial-hit`, 322, 35, 52, 34, 'data-route="screen-45"')}
+    ${figButton(`${id}-tutorial-hit`, 322, 35, 52, 34, `data-route="${tutorialRoute}"`)}
     ${figText(`${id}-tutorial-text`, right, 322, 44, 52, 13, "#8c342a", 700, "center", "font-family:'Noto Sans SC','Microsoft YaHei',sans-serif;")}` : ""}
   `;
 }
@@ -15825,7 +15827,7 @@ function sourceYangzhaiTutorialScreen() {
   ];
   return `
     ${yangzhaiBg("yz45")}
-    ${yangzhaiHeader("yz45", "教程", "")}
+    ${yangzhaiHeader("yz45", "教程", "", { backAttrs: 'data-action="wentian-return-previous" data-fallback-route="screen-42" aria-label="返回"' })}
     ${figText("yz45-title", "3分钟排出宅盘", 24, 120, 248, 28, "#201812", 900, "left", "line-height:1.1;font-family:'Noto Serif SC','Songti SC',serif;")}
     ${figText("yz45-sub", "先定中宫，再分八方，最后把家人与空间放入宫位。", 24, 164, 318, 13, "#817568", 700, "left", "line-height:1.55;")}
     ${figBox("yz45-intro", 24, 228, 342, 136, "", "border:1px solid #ead8b8;border-radius:22px;background:#fffdf8;box-shadow:0 12px 28px rgba(70,45,25,.07);")}
