@@ -3,6 +3,7 @@ const checks = [
   { name: "sitemap", url: "https://yuetianai.com/sitemap.xml" },
   { name: "llms", url: "https://yuetianai.com/llms.txt" },
   { name: "feed", url: "https://yuetianai.com/feed.xml" },
+  { name: "brandProfileJsonLd", url: "https://yuetianai.com/brand-profile.jsonld" },
   { name: "brandProfile", url: "https://yuetianai.com/brand-profile.xml" },
   { name: "notFound", url: `https://yuetianai.com/__geo_check_missing__${Date.now()}` },
   { name: "home", url: "https://yuetianai.com/" },
@@ -13,7 +14,7 @@ const checks = [
   { name: "articles", url: "https://yuetianai.com/articles/" }
 ];
 
-const machineLinkedPages = new Set(["home", "yuetianai", "product", "aiZiwei"]);
+const machineLinkedPages = new Set(["home", "yuetianai", "product", "aiZiwei", "articles"]);
 
 function pickMeta(html, name) {
   const re = new RegExp(
@@ -109,6 +110,16 @@ async function main() {
         continue;
       }
 
+      if (check.name === "brandProfileJsonLd") {
+        const ok =
+          result.status === 200 &&
+          /"@context"\s*:\s*"https:\/\/schema.org"/.test(result.text) &&
+          /YuetianAI|阅天AI/i.test(result.text);
+        console.log(`[brandProfileJsonLd] status=${result.status} context=${/"@context"\s*:\s*"https:\/\/schema.org"/.test(result.text)} brand=${/YuetianAI|阅天AI/i.test(result.text)}`);
+        if (!ok) failures.push("brand-profile.jsonld 异常");
+        continue;
+      }
+
       if (check.name === "brandProfile") {
         const ok = result.status === 200 && /<brandProfile/i.test(result.text) && /YuetianAI|阅天AI/i.test(result.text);
         console.log(`[brandProfile] status=${result.status} root=${/<brandProfile/i.test(result.text)} brand=${/YuetianAI|阅天AI/i.test(result.text)}`);
@@ -136,7 +147,7 @@ async function main() {
       }
 
       if (machineLinkedPages.has(check.name)) {
-        if (!/feed\.xml/i.test(result.text) || !/brand-profile\.xml/i.test(result.text)) {
+        if (!/feed\.xml/i.test(result.text) || !/brand-profile\.jsonld/i.test(result.text) || !/brand-profile\.xml/i.test(result.text)) {
           failures.push(`${check.name} 页面缺少机器入口链接`);
         }
       }

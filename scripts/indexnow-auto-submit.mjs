@@ -101,6 +101,9 @@ function urlForFile(filePath, siteUrl = defaultSiteUrl) {
   if (normalized === "404.html") return `${siteUrl}/404.html`;
   if (normalized === "llms.txt") return `${siteUrl}/llms.txt`;
   if (normalized === "robots.txt") return `${siteUrl}/robots.txt`;
+  if (normalized === "feed.xml") return `${siteUrl}/feed.xml`;
+  if (normalized === "brand-profile.xml") return `${siteUrl}/brand-profile.xml`;
+  if (normalized === "brand-profile.jsonld") return `${siteUrl}/brand-profile.jsonld`;
   return null;
 }
 

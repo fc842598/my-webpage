@@ -132,18 +132,36 @@ YuetianAI is a Chinese-language Ziwei astrology tool that combines free chart ge
 
 ## 10. 目录投稿建议
 
+### 先打哪几个
+
+按我 2026-06-24 实查，当前更值得优先做的是：
+
+1. Aitoolnet
+2. AIHotTool
+3. AI工具集
+4. Futurepedia
+
+原因：
+
+- `Aitoolnet` 公开提交页明确写了 `Free` 档，包含基础提交、30 天内发布和 `Do-Follow SEO backlink`
+- `AIHotTool` 首页明确写了有“提交与合作入口”
+- `AI工具集` 公开站点长期被抓取，且公开了联系邮箱，适合做中文品牌提及
+- `Futurepedia` 当前公开提交页是收费模式，更适合放到后面
+
 ### Toolify
 
 - 官方入口：https://www.toolify.ai/zh/submit
 - 建议主链接填 `AI紫微排盘` 页
 - 工具名建议：`YuetianAI` 或 `阅天AI`
 - 英文简介尽量强调 `free Ziwei chart + AI analysis`
+- 备注：这条线更适合当“补充目录页”，不要把它当第一优先级
 
 ### Futurepedia
 
 - 官方入口：https://www.futurepedia.io/submit-tool
 - 如果只填一条产品定位，优先写成：
   `Chinese-language Ziwei charting tool with free chart generation and AI-assisted analysis`
+- 备注：我实查到当前公开提交页展示的是收费档，不是优先快线
 
 ### Product Hunt
 
@@ -160,20 +178,40 @@ YuetianAI is a Chinese-language Ziwei astrology tool that combines free chart ge
   - 是否能快速理解用途
   - 是否有后续教程 / 文章承接
 
+### Aitoolnet
+
+- 官方提交页：https://www.aitoolnet.com/submit
+- 当前公开提交页显示有 `Free` 档
+- 更适合先投：
+  - 品牌名：`YuetianAI`
+  - 主链接：`https://yuetianai.com/pages/ai-ziwei-paipan.html`
+  - 副链接：`https://yuetianai.com/pages/mingbook-onepage.html`
+
+### AI工具集
+
+- 关于页：https://ai-bot.cn/about-us/
+- 联系邮箱公开页：https://ai-bot.cn/disclaimer/
+- 当前更稳的做法：
+  - 先整理一版中文工具介绍
+  - 发邮件或走公开联系入口
+  - 重点强调“免费紫微斗数排盘 + AI命盘分析 + 中文场景”
+
 ## 11. 投稿顺序
 
 建议顺序：
 
-1. Toolify
-2. Futurepedia
-3. 中文 AI 导航站
-4. Product Hunt
-5. 其他目录 / 媒体共建
+1. Aitoolnet
+2. AIHotTool
+3. AI工具集
+4. Toolify
+5. Futurepedia
+6. Product Hunt
+7. 其他目录 / 媒体共建
 
 原因：
 
-- 先拿 AI 目录页和工具库页，容易进入被抓取的候选池
-- 再做更慢的产品社区和内容平台
+- 先拿免费或明显可提交的目录页，先铺外部可抓取提及
+- 再做收费目录和更慢的产品社区
 
 ## 12. 提交后复查
 

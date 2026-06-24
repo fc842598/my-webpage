@@ -1,0 +1,102 @@
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://yuetianai.com/#organization",
+      "name": "阅天AI",
+      "alternateName": "YuetianAI",
+      "url": "https://yuetianai.com/",
+      "logo": "https://yuetianai.com/images/wentian-prototype-assets/wentian-brand-logo-ai-gold-v1.webp",
+      "description": "提供免费紫微斗数排盘、AI命盘分析、大运流年解读与紫微学习内容的中文网站。",
+      "knowsAbout": [
+        "免费紫微斗数排盘",
+        "AI命盘分析",
+        "命宫",
+        "身宫",
+        "三方四正",
+        "大运流年"
+      ]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://yuetianai.com/#website",
+      "url": "https://yuetianai.com/",
+      "name": "阅天AI",
+      "publisher": {
+        "@id": "https://yuetianai.com/#organization"
+      },
+      "inLanguage": "zh-CN",
+      "description": "免费紫微斗数排盘与AI命盘分析入口，涵盖命宫、三方四正、大运流年与紫微入门内容。"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "@id": "https://yuetianai.com/#software",
+      "name": "阅天AI",
+      "alternateName": "YuetianAI",
+      "applicationCategory": "LifestyleApplication",
+      "operatingSystem": "Web",
+      "url": "https://yuetianai.com/",
+      "publisher": {
+        "@id": "https://yuetianai.com/#organization"
+      },
+      "description": "先免费排出紫微斗数命盘，再继续做 AI 命盘分析，围绕命宫、三方四正、大运流年与现实问题做结构化拆解。",
+      "isAccessibleForFree": true,
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "CNY"
+      },
+      "featureList": [
+        "免费紫微斗数排盘",
+        "AI命盘分析",
+        "命宫与身宫阅读",
+        "三方四正解读",
+        "大运流年分析"
+      ]
+    },
+    {
+      "@type": "ItemList",
+      "@id": "https://yuetianai.com/#official-pages",
+      "name": "阅天AI官方入口矩阵",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "url": "https://yuetianai.com/",
+          "name": "阅天AI首页"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "url": "https://yuetianai.com/pages/yuetianai.html",
+          "name": "阅天AI官网入口"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "url": "https://yuetianai.com/pages/yuetianai-product.html",
+          "name": "阅天AI产品档案"
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "url": "https://yuetianai.com/pages/ai-ziwei-paipan.html",
+          "name": "AI紫微排盘"
+        },
+        {
+          "@type": "ListItem",
+          "position": 5,
+          "url": "https://yuetianai.com/pages/mingbook-onepage.html",
+          "name": "免费紫微斗数排盘"
+        },
+        {
+          "@type": "ListItem",
+          "position": 6,
+          "url": "https://yuetianai.com/articles/",
+          "name": "学习紫微文章页"
+        }
+      ]
+    }
+  ]
+}
