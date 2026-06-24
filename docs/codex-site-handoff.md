@@ -51,6 +51,12 @@ Google 收录提交流程：
 - 提交并 push 到 GitHub `master`，等阿里云自动同步上线后，确认 `https://yuetianai.com/sitemap.xml` 能访问。
 - 进入 Google Search Console 的站点地图页面，提交或重新提交 `sitemap.xml`；文章 URL 不需要散落在功能页面，靠文章索引页、内链和 sitemap 发现。
 
+百度收录提交流程：
+- 首页保留百度资源平台验证标签，不要删除 `index.html` 里的 `baidu-site-verification` meta。
+- 百度资源平台当前验证站点是 `https://www.yuetianai.com`，验证完成后再进入“普通收录”或相关提交入口。
+- 每次新增或改文章后，同步更新 `sitemap.xml` 的文章 URL 和 `lastmod`，push 到 GitHub `master`，等阿里云自动同步上线。
+- 百度侧提交不保证立即收录，但可以缩短发现时间；后续按 sitemap 和文章链接持续提交即可。
+
 以后发文章的正确流程是：本地写文章 -> 提交并 push 到 GitHub `master` -> 阿里云自动同步上线。不要把阿里云当成第二份源代码单独维护。
 
 ### 邮箱
