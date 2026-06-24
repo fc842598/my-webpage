@@ -11615,7 +11615,7 @@ function sourceOrderRecordsScreen() {
           `;
   return `
     ${figBox("wt48-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
-    ${wentianSimpleHeader("wt48", "支付记录", "刷新")}
+    ${wentianSimpleHeader("wt48", "支付记录", "刷新", { backAttrs: 'data-action="wentian-return-previous" data-fallback-route="screen-31" aria-label="返回"' })}
     ${figButton("wt48-refresh-hit", 318, 38, 62, 54, 'data-action="wentian-order-refresh"')}
     ${figText("wt48-sub", account.loggedIn ? escapeHtml(account.email) : "未登录", 24, 96, 300, 13, "#8f857a", 700)}
     ${account.loggedIn ? figBox("wt48-ticket", 274, 92, 92, 30, "", "border:1px solid #eadfce;border-radius:15px;background:#fffdf8;") : ""}
