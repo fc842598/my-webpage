@@ -507,6 +507,12 @@ html[lang="en"] [data-node-id^="source-1-feature-sub-"] {
   font-size: 10.5px !important;
 }
 
+html[lang="en"] .figma-phone[data-node-id="screen-2"] [data-node-id="source-2-hero-lines"] {
+  top: 178px !important;
+  font-size: 12px !important;
+  line-height: 1.35 !important;
+}
+
 html[lang="en"] [data-node-id="source-1-feature-title-4"] {
   width: 112px !important;
 }
