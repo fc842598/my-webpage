@@ -221,35 +221,53 @@
     }
 
     .nav {
-      height: 78px;
+      height: 104px;
       position: sticky;
       top: 0;
       z-index: 20;
-      background: rgba(3, 2, 1, .96);
-      border-bottom: 1px solid rgba(201, 169, 97, .18);
+      background:
+        radial-gradient(circle at 50% -120%, rgba(196, 148, 54, .26), transparent 34%),
+        linear-gradient(180deg, #040403 0%, #080704 100%);
+      border-bottom: 1px solid rgba(201, 169, 97, .22);
+      box-shadow: inset 0 -1px rgba(255, 244, 204, .04);
       backdrop-filter: blur(14px);
+    }
+
+    .nav::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(242, 209, 126, .45), transparent);
+      pointer-events: none;
     }
 
     .nav .container {
       height: 100%;
-      display: flex;
+      width: min(1280px, calc(100vw - 96px));
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr) auto;
       align-items: center;
+      gap: 30px;
     }
 
     .brand {
       display: flex;
       align-items: center;
-      gap: 12px;
-      margin-right: auto;
+      gap: 14px;
+      min-width: 180px;
       color: var(--ivory);
-      font: 700 26px/1 "Noto Serif SC", "Songti SC", serif;
+      font: 800 32px/1 "Noto Serif SC", "Songti SC", serif;
+      letter-spacing: .08em;
       white-space: nowrap;
     }
 
     .brand-logo {
-      width: 42px;
-      height: 42px;
-      border-radius: 11px;
+      width: 50px;
+      height: 50px;
+      border-radius: 14px;
       object-fit: cover;
       box-shadow: 0 8px 22px rgba(8, 23, 38, .22);
       flex: 0 0 auto;
@@ -257,8 +275,8 @@
 
     .brand-logo-stage {
       position: relative;
-      width: 42px;
-      height: 42px;
+      width: 50px;
+      height: 50px;
       flex: 0 0 auto;
     }
 
@@ -266,9 +284,9 @@
       display: block;
       width: 100%;
       height: 100%;
-      border-radius: 11px;
+      border-radius: 14px;
       object-fit: cover;
-      box-shadow: 0 8px 22px rgba(8, 23, 38, .22);
+      box-shadow: 0 0 0 1px rgba(236, 204, 116, .56), 0 16px 34px rgba(0, 0, 0, .45);
     }
 
     .brand-logo--motion {
@@ -277,8 +295,8 @@
       left: 50%;
       transform: translate(-50%, -50%) scale(1.02) rotate(0deg);
       transform-origin: center;
-      width: 42px;
-      height: 42px;
+      width: 50px;
+      height: 50px;
       max-width: none;
       border-radius: 0;
       object-fit: cover;
@@ -297,24 +315,57 @@
     .links {
       display: flex;
       align-items: center;
-      gap: 10px;
+      justify-content: center;
+      gap: 4px;
+      min-width: 0;
+      height: 56px;
+      padding: 0 10px;
+      border: 1px solid rgba(219, 185, 112, .18);
+      border-radius: 28px;
+      background: rgba(255, 246, 215, .045);
+      box-shadow: inset 0 1px rgba(255, 255, 255, .05);
     }
 
     .links a {
+      position: relative;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 9px;
-      min-height: 44px;
-      padding: 0 18px;
-      border: 1px solid rgba(201, 169, 97, .25);
-      border-radius: 999px;
-      background: linear-gradient(180deg, rgba(20, 16, 11, .92), rgba(10, 8, 5, .92));
-      box-shadow: inset 0 0 0 1px rgba(255, 244, 214, .03);
-      color: #b9a875;
-      font: 700 15px/1 "Noto Serif SC", "Songti SC", serif;
+      height: 42px;
+      padding: 0 24px;
+      border-radius: 21px;
+      color: rgba(246, 229, 181, .78);
+      font: 800 21px/1 "Noto Serif SC", "Songti SC", serif;
+      letter-spacing: .03em;
       white-space: nowrap;
-      transition: transform .2s ease, color .2s ease, border-color .2s ease, box-shadow .2s ease;
+      transition: transform .2s ease, color .2s ease, background .2s ease, box-shadow .2s ease;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
+    }
+
+    .nav-action-link,
+    .nav-plan-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      height: 50px;
+      padding: 0 18px;
+      border: 1px solid rgba(220, 188, 115, .22);
+      border-radius: 25px;
+      background: rgba(255, 246, 215, .05);
+      color: #ead6a0;
+      font-size: 17px;
+      font-weight: 800;
+      line-height: 1;
+      white-space: nowrap;
+      transition: transform .2s ease, color .2s ease, border-color .2s ease, box-shadow .2s ease, background .2s ease;
     }
 
     .nav-action-icon {
@@ -349,8 +400,9 @@
 
     .nav-action-link.is-logged-in {
       color: #f3d58c;
-      border-color: rgba(223, 194, 123, .42);
-      background: linear-gradient(135deg, rgba(118, 86, 37, .28), rgba(22, 18, 12, .94));
+      min-width: 170px;
+      border-color: rgba(238, 206, 128, .36);
+      background: linear-gradient(180deg, rgba(211, 169, 74, .13), rgba(255, 244, 208, .045));
     }
 
     .link-text-full { display: inline; }
@@ -358,21 +410,54 @@
 
     .links a:hover {
       color: var(--gold-soft);
-      border-color: rgba(231, 201, 133, .38);
-      box-shadow: inset 0 0 0 1px rgba(255, 244, 214, .05), 0 12px 30px rgba(0, 0, 0, .16);
+      background: rgba(227, 188, 91, .10);
       transform: translateY(-1px);
     }
 
     .links a.is-active {
-      color: #f3d58c;
-      border-color: rgba(223, 194, 123, .44);
-      background: linear-gradient(135deg, rgba(118, 86, 37, .34), rgba(22, 18, 12, .94));
+      color: #fff0bd;
+      background: linear-gradient(180deg, rgba(227, 188, 91, .18), rgba(227, 188, 91, .06));
     }
 
-    .links a.nav-plan-link {
+    .links a.is-active::after {
+      content: "";
+      position: absolute;
+      left: 22px;
+      right: 22px;
+      bottom: 2px;
+      height: 3px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #8d5c1b, #f2d37b, #8d5c1b);
+      box-shadow: 0 0 18px rgba(240, 204, 111, .55);
+    }
+
+    .nav-action-link:hover {
+      color: #fff0bd;
+      border-color: rgba(231, 201, 133, .38);
+      background: rgba(255, 246, 215, .08);
+      box-shadow: inset 0 0 0 1px rgba(255, 244, 214, .05), 0 12px 30px rgba(0, 0, 0, .16);
+      transform: translateY(-1px);
+    }
+
+    .nav-plan-link {
+      min-width: 112px;
+      height: 58px;
+      padding: 0 27px;
+      border-radius: 29px;
       color: #fff1d6;
-      border-color: rgba(235, 174, 140, .3);
-      background: linear-gradient(180deg, rgba(126, 61, 42, .58), rgba(30, 19, 12, .92));
+      border-color: rgba(241, 197, 108, .45);
+      background: linear-gradient(135deg, #6b3021 0%, #3b170f 48%, #a06431 100%);
+      box-shadow: 0 16px 34px rgba(88, 34, 20, .5), inset 0 1px rgba(255, 255, 255, .16);
+      font-family: "Noto Serif SC", "Songti SC", serif;
+      font-size: 21px;
+      font-weight: 900;
+    }
+
+    .nav-plan-link:hover {
+      color: #fff8df;
+      border-color: rgba(249, 217, 141, .62);
+      transform: translateY(-1px);
+      box-shadow: 0 18px 38px rgba(88, 34, 20, .56), inset 0 1px rgba(255, 255, 255, .20);
     }
 
     .hero {
@@ -1568,14 +1653,15 @@
       :root { --container: 900px; }
       .page { zoom: .84; }
 
-      .nav { height: 59px; }
-      .brand { font-size: 20px; gap: 9px; }
-      .brand-logo { width: 34px; height: 34px; border-radius: 9px; }
-      .brand-logo-stage { width: 34px; height: 34px; }
-      .brand-logo-frame { border-radius: 9px; }
-      .brand-logo--motion { width: 34px; height: 34px; }
-      .links { gap: 8px; }
-      .links a { font-size: 14px; }
+      .nav { height: 104px; }
+      .nav .container { width: min(1280px, calc(100vw - 96px)); }
+      .brand { font-size: 32px; gap: 14px; }
+      .brand-logo { width: 50px; height: 50px; border-radius: 14px; }
+      .brand-logo-stage { width: 50px; height: 50px; }
+      .brand-logo-frame { border-radius: 14px; }
+      .brand-logo--motion { width: 50px; height: 50px; }
+      .links { gap: 4px; }
+      .links a { font-size: 21px; }
       .nav-action-icon { width: 16px; height: 16px; flex-basis: 16px; }
 
       .hero { min-height: 554px; padding-top: 68px; }
@@ -1677,7 +1763,19 @@
 
     @media (max-width: 1180px) {
       .container { width: calc(100vw - 48px); }
+      .nav .container {
+        width: calc(100vw - 48px);
+        display: flex;
+        justify-content: space-between;
+        gap: 24px;
+      }
       .links { gap: 7px; }
+      .links a {
+        height: 38px;
+        padding: 0 16px;
+        font-size: 14px;
+      }
+      .nav-actions { display: none; }
       .nav-action-icon { width: 15px; height: 15px; flex-basis: 15px; }
       h1 { width: auto; font-size: 54px; }
       h1 .gold { font-size: .74em; }
@@ -1716,6 +1814,11 @@
         overflow-y: hidden;
         padding: 0 2px;
         margin-right: 12px;
+        height: auto;
+        border: 0;
+        border-radius: 0;
+        background: transparent;
+        box-shadow: none;
         scrollbar-width: none;
       }
       .links::-webkit-scrollbar { display: none; }
@@ -1733,6 +1836,7 @@
         background: rgba(201, 169, 97, .12);
       }
       .brand { font-size: 23px; }
+      .brand { min-width: 0; }
       .brand-logo { width: 38px; height: 38px; border-radius: 10px; }
       .brand-logo-stage { width: 38px; height: 38px; }
       .brand-logo-frame { border-radius: 10px; }
@@ -2444,6 +2548,8 @@
           <a href="pages/liuyao.html"><span class="link-text-full">六爻占卜</span><span class="link-text-short">六爻</span></a>
           <a href="pages/yangzhai.html"><span class="link-text-full">阳宅居住方位</span><span class="link-text-short">阳宅方位</span></a>
           <a href="articles/"><span class="link-text-full">学习紫微</span><span class="link-text-short">紫微</span></a>
+        </nav>
+        <div class="nav-actions" aria-label="账户与操作">
           <a class="nav-action-link" href="pages/mingbook-onepage.html?entry=member" aria-label="会员">
             <span class="nav-action-icon" aria-hidden="true">
               <svg viewBox="0 0 24 24">
@@ -2476,7 +2582,7 @@
             <span>手机App</span>
           </a>
           <a class="nav-plan-link" href="pages/mingbook-onepage.html">排盘</a>
-        </nav>
+        </div>
       </div>
     </header>
     <a class="mobile-floating-cta" href="pages/mingbook-onepage.html" aria-label="立即免费排盘">立即免费排盘</a>
