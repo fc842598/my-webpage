@@ -221,14 +221,14 @@
     }
 
     .nav {
-      height: 104px;
+      height: 84px;
       position: sticky;
       top: 0;
       z-index: 20;
       background:
-        radial-gradient(circle at 50% -120%, rgba(196, 148, 54, .26), transparent 34%),
+        radial-gradient(circle at 50% -150%, rgba(196, 148, 54, .16), transparent 32%),
         linear-gradient(180deg, #040403 0%, #080704 100%);
-      border-bottom: 1px solid rgba(201, 169, 97, .22);
+      border-bottom: 1px solid rgba(201, 169, 97, .16);
       box-shadow: inset 0 -1px rgba(255, 244, 204, .04);
       backdrop-filter: blur(14px);
     }
@@ -240,34 +240,34 @@
       right: 0;
       bottom: 0;
       height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(242, 209, 126, .45), transparent);
+      background: linear-gradient(90deg, transparent, rgba(242, 209, 126, .28), transparent);
       pointer-events: none;
     }
 
     .nav .container {
       height: 100%;
-      width: min(1280px, calc(100vw - 96px));
+      width: min(1120px, calc(100vw - 180px));
       display: grid;
       grid-template-columns: auto minmax(0, 1fr) auto;
       align-items: center;
-      gap: 30px;
+      gap: 22px;
     }
 
     .brand {
       display: flex;
       align-items: center;
-      gap: 14px;
-      min-width: 180px;
+      gap: 12px;
+      min-width: 150px;
       color: var(--ivory);
-      font: 800 32px/1 "Noto Serif SC", "Songti SC", serif;
-      letter-spacing: .08em;
+      font: 800 27px/1 "Noto Serif SC", "Songti SC", serif;
+      letter-spacing: .06em;
       white-space: nowrap;
     }
 
     .brand-logo {
-      width: 50px;
-      height: 50px;
-      border-radius: 14px;
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
       object-fit: cover;
       box-shadow: 0 8px 22px rgba(8, 23, 38, .22);
       flex: 0 0 auto;
@@ -275,8 +275,8 @@
 
     .brand-logo-stage {
       position: relative;
-      width: 50px;
-      height: 50px;
+      width: 44px;
+      height: 44px;
       flex: 0 0 auto;
     }
 
@@ -284,9 +284,9 @@
       display: block;
       width: 100%;
       height: 100%;
-      border-radius: 14px;
+      border-radius: 12px;
       object-fit: cover;
-      box-shadow: 0 0 0 1px rgba(236, 204, 116, .56), 0 16px 34px rgba(0, 0, 0, .45);
+      box-shadow: 0 0 0 1px rgba(236, 204, 116, .44), 0 10px 24px rgba(0, 0, 0, .36);
     }
 
     .brand-logo--motion {
@@ -295,8 +295,8 @@
       left: 50%;
       transform: translate(-50%, -50%) scale(1.02) rotate(0deg);
       transform-origin: center;
-      width: 50px;
-      height: 50px;
+      width: 44px;
+      height: 44px;
       max-width: none;
       border-radius: 0;
       object-fit: cover;
@@ -316,14 +316,14 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 4px;
+      gap: 6px;
       min-width: 0;
-      height: 56px;
-      padding: 0 10px;
-      border: 1px solid rgba(219, 185, 112, .18);
-      border-radius: 28px;
-      background: rgba(255, 246, 215, .045);
-      box-shadow: inset 0 1px rgba(255, 255, 255, .05);
+      height: 44px;
+      padding: 0;
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      box-shadow: none;
     }
 
     .links a {
@@ -331,13 +331,15 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 9px;
-      height: 42px;
-      padding: 0 24px;
-      border-radius: 21px;
+      gap: 7px;
+      height: 38px;
+      padding: 0 15px;
+      border: 1px solid rgba(219, 185, 112, .15);
+      border-radius: 19px;
+      background: rgba(255, 246, 215, .025);
       color: rgba(246, 229, 181, .78);
-      font: 800 21px/1 "Noto Serif SC", "Songti SC", serif;
-      letter-spacing: .03em;
+      font: 800 16px/1 "Noto Serif SC", "Songti SC", serif;
+      letter-spacing: .02em;
       white-space: nowrap;
       transition: transform .2s ease, color .2s ease, background .2s ease, box-shadow .2s ease;
     }
@@ -345,7 +347,7 @@
     .nav-actions {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
       font-family: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
     }
 
@@ -354,14 +356,14 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 9px;
-      height: 50px;
-      padding: 0 18px;
-      border: 1px solid rgba(220, 188, 115, .22);
-      border-radius: 25px;
-      background: rgba(255, 246, 215, .05);
+      gap: 7px;
+      height: 40px;
+      padding: 0 13px;
+      border: 1px solid rgba(220, 188, 115, .18);
+      border-radius: 20px;
+      background: rgba(255, 246, 215, .032);
       color: #ead6a0;
-      font-size: 17px;
+      font-size: 14px;
       font-weight: 800;
       line-height: 1;
       white-space: nowrap;
@@ -369,9 +371,9 @@
     }
 
     .nav-action-icon {
-      width: 18px;
-      height: 18px;
-      flex: 0 0 18px;
+      width: 15px;
+      height: 15px;
+      flex: 0 0 15px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -400,7 +402,7 @@
 
     .nav-action-link.is-logged-in {
       color: #f3d58c;
-      min-width: 170px;
+      min-width: 140px;
       border-color: rgba(238, 206, 128, .36);
       background: linear-gradient(180deg, rgba(211, 169, 74, .13), rgba(255, 244, 208, .045));
     }
@@ -410,46 +412,48 @@
 
     .links a:hover {
       color: var(--gold-soft);
-      background: rgba(227, 188, 91, .10);
+      border-color: rgba(231, 201, 133, .24);
+      background: rgba(227, 188, 91, .08);
       transform: translateY(-1px);
     }
 
     .links a.is-active {
       color: #fff0bd;
-      background: linear-gradient(180deg, rgba(227, 188, 91, .18), rgba(227, 188, 91, .06));
+      border-color: rgba(241, 211, 132, .34);
+      background: rgba(227, 188, 91, .10);
     }
 
     .links a.is-active::after {
       content: "";
       position: absolute;
-      left: 22px;
-      right: 22px;
-      bottom: 2px;
-      height: 3px;
+      left: 15px;
+      right: 15px;
+      bottom: 1px;
+      height: 2px;
       border-radius: 999px;
       background: linear-gradient(90deg, #8d5c1b, #f2d37b, #8d5c1b);
-      box-shadow: 0 0 18px rgba(240, 204, 111, .55);
+      box-shadow: 0 0 10px rgba(240, 204, 111, .35);
     }
 
     .nav-action-link:hover {
       color: #fff0bd;
       border-color: rgba(231, 201, 133, .38);
       background: rgba(255, 246, 215, .08);
-      box-shadow: inset 0 0 0 1px rgba(255, 244, 214, .05), 0 12px 30px rgba(0, 0, 0, .16);
+      box-shadow: inset 0 0 0 1px rgba(255, 244, 214, .04), 0 8px 20px rgba(0, 0, 0, .12);
       transform: translateY(-1px);
     }
 
     .nav-plan-link {
-      min-width: 112px;
-      height: 58px;
-      padding: 0 27px;
-      border-radius: 29px;
+      min-width: 92px;
+      height: 44px;
+      padding: 0 20px;
+      border-radius: 22px;
       color: #fff1d6;
       border-color: rgba(241, 197, 108, .45);
       background: linear-gradient(135deg, #6b3021 0%, #3b170f 48%, #a06431 100%);
-      box-shadow: 0 16px 34px rgba(88, 34, 20, .5), inset 0 1px rgba(255, 255, 255, .16);
+      box-shadow: 0 10px 24px rgba(88, 34, 20, .36), inset 0 1px rgba(255, 255, 255, .14);
       font-family: "Noto Serif SC", "Songti SC", serif;
-      font-size: 21px;
+      font-size: 17px;
       font-weight: 900;
     }
 
@@ -457,7 +461,7 @@
       color: #fff8df;
       border-color: rgba(249, 217, 141, .62);
       transform: translateY(-1px);
-      box-shadow: 0 18px 38px rgba(88, 34, 20, .56), inset 0 1px rgba(255, 255, 255, .20);
+      box-shadow: 0 12px 28px rgba(88, 34, 20, .42), inset 0 1px rgba(255, 255, 255, .18);
     }
 
     .hero {
@@ -1653,16 +1657,16 @@
       :root { --container: 900px; }
       .page { zoom: .84; }
 
-      .nav { height: 104px; }
-      .nav .container { width: min(1280px, calc(100vw - 96px)); }
-      .brand { font-size: 32px; gap: 14px; }
-      .brand-logo { width: 50px; height: 50px; border-radius: 14px; }
-      .brand-logo-stage { width: 50px; height: 50px; }
-      .brand-logo-frame { border-radius: 14px; }
-      .brand-logo--motion { width: 50px; height: 50px; }
-      .links { gap: 4px; }
-      .links a { font-size: 21px; }
-      .nav-action-icon { width: 16px; height: 16px; flex-basis: 16px; }
+      .nav { height: 84px; }
+      .nav .container { width: min(1120px, calc(100vw - 180px)); }
+      .brand { font-size: 27px; gap: 12px; }
+      .brand-logo { width: 44px; height: 44px; border-radius: 12px; }
+      .brand-logo-stage { width: 44px; height: 44px; }
+      .brand-logo-frame { border-radius: 12px; }
+      .brand-logo--motion { width: 44px; height: 44px; }
+      .links { gap: 6px; }
+      .links a { font-size: 16px; }
+      .nav-action-icon { width: 15px; height: 15px; flex-basis: 15px; }
 
       .hero { min-height: 554px; padding-top: 68px; }
       .hero-grid { width: 900px; grid-template-columns: 405px 1fr; gap: 54px; }
