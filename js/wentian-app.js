@@ -17338,6 +17338,8 @@ function renderWentianPolishedScreen(screen) {
   if (no === 24) {
     const invite = getWentianInviteSnapshot();
     const code = invite.inviteCode || "8R7U58ZW";
+    const inviteLink = invite.inviteLink || getWentianInviteLink(code);
+    const inviteLinkLabel = String(inviteLink || "").replace(/^https?:\/\//i, "");
     const rewardDaily = Number(invite.registerReward || 10);
     const rewardDays = Number(invite.registerRewardDays || 3);
     const activeDailyBonus = Number(invite.activeDailyBonus ?? invite.bonusRemaining ?? 0);
@@ -17356,14 +17358,16 @@ function renderWentianPolishedScreen(screen) {
       ${figText("wt24-code", code, 44, 298, 178, 24, "#25211d", 900)}
       ${figBox("wt24-copy-code", 260, 285, 72, 34, "", "border-radius:17px;background:#d0a03a;")}
       ${figText("wt24-copy-code-text", "复制", 260, 295, 72, 12, "#fff", 800, "center")}
+      ${figButton("wt24-copy-code-hit", 260, 285, 72, 34, 'data-action="wentian-invite-copy-code"', "", "background:transparent;")}
       ${figText("wt24-code-tip", "好友注册时填写邀请码即可绑定邀请关系", 44, 342, 250, 12, "#9a9289", 500)}
 
       ${figBox("wt24-link-card", 24, 394, 342, 138, "", "border-radius:14px;background:#fff;box-shadow:0 8px 20px rgba(70,45,25,.08);")}
       ${figText("wt24-link-title", "我的邀请链接", 44, 416, 120, 14, "#25211d", 800)}
       ${figBox("wt24-link-box", 44, 454, 248, 38, "", "border-radius:9px;background:#fff7ec;border:1px solid #ead9bd;")}
-      ${figText("wt24-link", "yuetianai.com/i/8R7U58ZW", 56, 466, 220, 11, "#7f766b", 600)}
+      ${figText("wt24-link", inviteLinkLabel, 56, 466, 220, 11, "#7f766b", 600)}
       ${figBox("wt24-copy-link", 304, 454, 42, 38, "", "border-radius:9px;background:#25211d;")}
       ${figText("wt24-copy-link-text", "复制", 304, 466, 42, 11, "#fff", 800, "center")}
+      ${figButton("wt24-copy-link-hit", 304, 454, 42, 38, 'data-action="wentian-invite-copy-link"', "", "background:transparent;")}
       ${figText("wt24-link-tip", "也可以直接分享链接给好友，系统自动识别。", 44, 506, 260, 12, "#9a9289", 500)}
 
       ${figBox("wt24-reward", 24, 556, 342, 288, "", "border-radius:14px;background:#fff;box-shadow:0 8px 20px rgba(70,45,25,.08);")}
