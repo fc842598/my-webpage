@@ -19059,7 +19059,7 @@ function normalizeRoute(route) {
 
 function resolveRoute(route) {
   const clean = normalizeRoute(route).replace(/^#/, "");
-  if (clean === "hepan" || clean === "10" || clean === "screen-10") return "screen-11";
+  if (clean === "hepan" || clean === "10" || clean === "screen-10") return "screen-10";
   if (clean === "23" || clean === "screen-23") return "screen-22";
   return routeAliases[clean] || clean || "screen-1";
 }
