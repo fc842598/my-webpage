@@ -8054,8 +8054,10 @@ Object.assign(WENTIAN_I18N_EN_EXTRA, {
 Object.assign(WENTIAN_I18N_EN_EXTRA, {
   "\u8fd4\u56de": "Back",
   "\u547d\u4e3b": "Chart",
+  "\u672a\u586b": "Unset",
   "\u5207\u6362": "Switch",
   "\u8bb8\u5927\u5e08": "Master Xu",
+  "\u5df2\u63a5\u5165\u547d\u76d8\uff0c\u53ef\u76f4\u63a5\u5f00\u542f\u5bf9\u8bdd": "Chart linked. Start chatting now.",
   "\u547d\u76d8\u987e\u95ee \u00b7 \u5728\u7ebf": "Chart Advisor",
   "\u5e38\u95ee": "FAQ",
   "\u7ec6\u95ee": "Details",
