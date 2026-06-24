@@ -56,6 +56,8 @@ Google 收录提交流程：
 - 百度资源平台当前验证站点是 `https://www.yuetianai.com`，验证完成后再进入“普通收录”或相关提交入口。
 - 每次新增或改文章后，同步更新 `sitemap.xml` 的文章 URL 和 `lastmod`，push 到 GitHub `master`，等阿里云自动同步上线。
 - 百度侧提交不保证立即收录，但可以缩短发现时间；后续按 sitemap 和文章链接持续提交即可。
+- 已加本地自动提交流程：`git push origin master` 后会触发 `.githooks/post-push`，脚本会等待线上 `sitemap.xml` 同步，再按本次 push 里变动的页面自动调用百度普通收录 API。
+- 本地仓库需设置：`git config core.hooksPath .githooks`、`git config seo.baiduPushSite www.yuetianai.com`、`git config seo.baiduPushToken <token>`；安装脚本是 `npm run seo:hooks:install`。
 
 以后发文章的正确流程是：本地写文章 -> 提交并 push 到 GitHub `master` -> 阿里云自动同步上线。不要把阿里云当成第二份源代码单独维护。
 
