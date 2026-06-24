@@ -9197,6 +9197,14 @@ function confirmWentianArchiveSelection() {
   const archives = getWentianArchiveList();
   const id = wentianArchiveDraftId || getWentianSelectedArchiveId(archives);
   const archive = archives.find((item) => item.id === id) || archives[0];
+  if (!archive) {
+    setWentianArchiveStatus(
+      getWentianCompactText("请先新建至少一个命盘", "Create a chart first"),
+      "error"
+    );
+    refreshWentianArchiveStatusView();
+    return;
+  }
   if (!applyWentianArchiveToCurrent(archive)) return;
   wentianArchiveDraftId = null;
   clearWentianXuChatContext();
