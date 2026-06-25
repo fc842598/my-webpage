@@ -8055,6 +8055,9 @@ Object.assign(WENTIAN_I18N_EN_EXTRA, {
   "\u8fd4\u56de": "Back",
   "\u547d\u4e3b": "Chart",
   "\u672a\u586b": "Unset",
+  "\u865a\u5c81": "Nominal",
+  "\u786e\u8ba4\u5220\u9664": "Confirm Delete",
+  "\u547d\u76d8\u8d44\u6599\u5f85\u8865\u5168": "Chart data incomplete",
   "\u5207\u6362": "Switch",
   "\u8bb8\u5927\u5e08": "Master Xu",
   "\u5df2\u63a5\u5165\u547d\u76d8\uff0c\u53ef\u76f4\u63a5\u5f00\u542f\u5bf9\u8bdd": "Chart linked. Start chatting now.",
@@ -8249,6 +8252,10 @@ function translateWentianText(text, code = getWentianLanguageCode(), element = n
     if (archiveSolarDate) return `Solar: ${archiveSolarDate[1]}`;
     const exact = getWentianEnglishTerm(source);
     if (exact) return exact;
+    const archiveAgeTitle = source.match(/^(.+?)\s*·\s*(\d+)\s*岁$/);
+    if (archiveAgeTitle) return `${translateWentianText(archiveAgeTitle[1], "en")} · Age ${archiveAgeTitle[2]}`;
+    const nominalAgeCn = source.match(/^虚岁\s*(\d+)$/);
+    if (nominalAgeCn) return `Nominal age ${nominalAgeCn[1]}`;
     const loginQuota = source.match(/^登录\s*·\s*(\d+)\/(\d+)$/);
     if (loginQuota) return `Sign In · ${loginQuota[1]}/${loginQuota[2]}`;
     const genderDate = source.match(/^(男|女)\s*·\s*(.+)$/);
