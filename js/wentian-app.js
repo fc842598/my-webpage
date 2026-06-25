@@ -18046,8 +18046,8 @@ function renderWentianClassicPalaceCell(palace, activeBranch, options = {}) {
           <span class="fc-age">${escapeHtml(getWentianClassicRange(palace))}</span>
           <span class="fc-palace-name">${escapeHtml(palaceName)}</span>
         </div>
-        ${displayXiaoLianHtml}
       </div>
+      ${displayXiaoLianHtml}
     </div>`;
 }
 

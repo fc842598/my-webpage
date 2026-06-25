@@ -1726,6 +1726,10 @@ html[lang="en"] .fig-text[data-node-id^="wt24-reward-tag-text-"] {
   min-width: 0;
 }
 
+.wentian-native-mingpan .fc-cell.fc-xiaolian .fc-cell-top {
+  padding-top: 14px;
+}
+
 .wentian-native-mingpan .fc-cell.fc-xiaolian.is-locating {
   animation: wentianFcXiaoLianCellPulse 1.7s ease-out 1;
 }
@@ -1755,12 +1759,13 @@ html[lang="en"] .fig-text[data-node-id^="wt24-reward-tag-text-"] {
   animation: wentianFcXiaoLianRing 1.7s ease-out 1;
 }
 
-.wentian-native-mingpan .fc-xiaolian-badge {
-  position: static;
-  flex: 0 0 auto;
-  align-self: flex-end;
+.wentian-native-mingpan .fc-cell.fc-xiaolian > .fc-xiaolian-badge {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: auto;
   z-index: 4;
-  display: none;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   min-width: 23px;
