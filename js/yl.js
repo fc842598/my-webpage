@@ -3,6 +3,10 @@
 
   var STORAGE_KEY = "yuetian-health-assessment-v1";
   var FREE_ASK_LIMIT = 3;
+  var AUTH_SESSION_KEY = "wentian-app-auth-session-v1";
+  var HEALTH_PRODUCT_KEY = "health_member";
+  var HEALTH_PRODUCT_NAME = "综合健康会员";
+  var HEALTH_PRODUCT_AMOUNT = "19.90";
 
   var categories = [
     {
@@ -162,12 +166,90 @@
     askCount: 0
   };
 
+  var paymentState = {
+    provider: "wechat",
+    loading: false,
+    orderNo: "",
+    status: "",
+    payUrl: "",
+    payMethod: "",
+    mockMode: false,
+    providers: [],
+    product: null,
+    message: ""
+  };
+
   function $(selector) {
     return document.querySelector(selector);
   }
 
   function $all(selector) {
     return Array.prototype.slice.call(document.querySelectorAll(selector));
+  }
+
+  function readAuthSession() {
+    try {
+      var session = JSON.parse(localStorage.getItem(AUTH_SESSION_KEY) || "null");
+      return session && session.access_token ? session : null;
+    } catch (_error) {
+      return null;
+    }
+  }
+
+  function getAuthToken() {
+    var session = readAuthSession();
+    return session && session.access_token ? session.access_token : "";
+  }
+
+  async function apiFetch(path, options) {
+    var opts = options || {};
+    var headers = Object.assign({ "Content-Type": "application/json" }, opts.headers || {});
+    var token = getAuthToken();
+    if (token) headers.Authorization = "Bearer " + token;
+    var response = await fetch(path, {
+      method: opts.method || "GET",
+      headers: headers,
+      body: opts.body ? JSON.stringify(opts.body) : undefined
+    });
+    var text = await response.text();
+    var data = {};
+    try {
+      data = text ? JSON.parse(text) : {};
+    } catch (_error) {
+      data = { error: text || "服务暂时不可用" };
+    }
+    if (!response.ok || data.error) throw new Error(data.error || "服务暂时不可用");
+    return data;
+  }
+
+  function isH5PayPreferred() {
+    return /MicroMessenger|Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent || "");
+  }
+
+  function getProviderLabel(provider) {
+    if (provider === "paypal") return "PayPal";
+    if (provider === "alipay") return "支付宝";
+    return "微信支付";
+  }
+
+  function getProviderMeta(provider) {
+    var list = Array.isArray(paymentState.providers) ? paymentState.providers : [];
+    if (!list.length) return { provider: provider, label: getProviderLabel(provider), enabled: true };
+    return list.find(function (item) {
+      return item.provider === provider;
+    }) || { provider: provider, label: getProviderLabel(provider), enabled: provider === "wechat" };
+  }
+
+  function getPaymentAmountLabel() {
+    var product = paymentState.product || {};
+    var amount = product.amountYuan || HEALTH_PRODUCT_AMOUNT;
+    if (paymentState.provider === "paypal" && product.currency === "USD") return "$" + amount;
+    return "¥" + amount;
+  }
+
+  function setPayHint(text) {
+    var el = $("#ylPayHint");
+    if (el) el.textContent = text || "";
   }
 
   function loadState() {
@@ -430,6 +512,219 @@
     renderAll();
   }
 
+  function renderPaymentQr() {
+    var holder = $("#ylPaymentQr");
+    if (!holder) return;
+    holder.innerHTML = "";
+    if (!paymentState.payUrl || paymentState.payMethod === "h5" || paymentState.provider === "paypal" || paymentState.mockMode) {
+      holder.hidden = true;
+      return;
+    }
+    holder.hidden = false;
+    if (typeof QRCode === "function") {
+      new QRCode(holder, {
+        text: paymentState.payUrl,
+        width: 152,
+        height: 152,
+        correctLevel: QRCode.CorrectLevel ? QRCode.CorrectLevel.M : undefined
+      });
+      return;
+    }
+    holder.textContent = "请打开支付链接";
+  }
+
+  function renderPayment() {
+    $all(".yl-pay-method").forEach(function (button) {
+      var provider = button.dataset.provider || "wechat";
+      var meta = getProviderMeta(provider);
+      button.classList.toggle("is-active", paymentState.provider === provider);
+      button.disabled = paymentState.loading || paymentState.status === "pending" || !meta.enabled;
+      button.textContent = meta.enabled ? (meta.label || getProviderLabel(provider)) : (meta.label || getProviderLabel(provider)) + "未配置";
+    });
+
+    var productName = paymentState.product?.name || HEALTH_PRODUCT_NAME;
+    var amount = getPaymentAmountLabel();
+    var openButton = $("#ylOpenPayBtn");
+    if (openButton) {
+      openButton.disabled = paymentState.loading;
+      if (paymentState.loading) openButton.textContent = "处理中...";
+      else if (paymentState.status === "paid") openButton.textContent = "已开通综合健康会员";
+      else if (paymentState.status === "pending" && paymentState.payMethod === "h5") openButton.textContent = "打开" + getProviderLabel(paymentState.provider);
+      else if (paymentState.status === "pending") openButton.textContent = "我已支付，刷新状态";
+      else openButton.textContent = "确认开通" + productName + " " + amount;
+    }
+
+    var panel = $("#ylPaymentPanel");
+    if (panel) panel.hidden = !paymentState.status && !paymentState.message;
+    var status = $("#ylPaymentStatus");
+    if (status) status.textContent = paymentState.message || "请选择支付方式后创建订单。";
+    var code = $("#ylPaymentCode");
+    if (code) code.hidden = !paymentState.orderNo;
+    var orderNo = $("#ylPaymentOrderNo");
+    if (orderNo) orderNo.textContent = paymentState.orderNo ? "订单号：" + paymentState.orderNo : "";
+
+    var link = $("#ylPaymentLink");
+    if (link) {
+      var showLink = !!paymentState.payUrl && !paymentState.mockMode;
+      link.hidden = !showLink;
+      link.href = paymentState.payUrl || "#";
+      link.textContent = paymentState.provider === "paypal" || paymentState.payMethod === "h5"
+        ? "打开" + getProviderLabel(paymentState.provider)
+        : "支付链接备用打开";
+    }
+
+    var refresh = $("#ylRefreshPayBtn");
+    if (refresh) refresh.hidden = !paymentState.orderNo || paymentState.status === "paid";
+    var mock = $("#ylMockPayBtn");
+    if (mock) mock.hidden = !(paymentState.mockMode && paymentState.orderNo && paymentState.status !== "paid");
+
+    renderPaymentQr();
+    if (paymentState.status === "paid") {
+      setPayHint("已开通综合健康会员，后续报告和追问额度会绑定到当前账号。");
+    }
+  }
+
+  async function hydratePaymentProduct() {
+    try {
+      var data = await apiFetch("/api/payments/member-status?productKey=" + encodeURIComponent(HEALTH_PRODUCT_KEY));
+      if (data.product) paymentState.product = data.product;
+      if (data.productEntitlement?.isMember) {
+        paymentState.status = "paid";
+        paymentState.message = "当前账号已开通综合健康会员。";
+      }
+      if (Array.isArray(data.providers)) {
+        paymentState.providers = data.providers;
+        var selected = data.providers.find(function (item) {
+          return item.provider === paymentState.provider;
+        });
+        if (selected && selected.currency) {
+          paymentState.product = Object.assign({}, paymentState.product || {}, {
+            amountYuan: selected.amountYuan || paymentState.product?.amountYuan,
+            currency: selected.currency
+          });
+        }
+      }
+    } catch (_error) {}
+    renderPayment();
+  }
+
+  function requireHealthLogin() {
+    if (readAuthSession()) return true;
+    try {
+      localStorage.setItem("wentian-app-auth-return-v1", window.location.href.split("#")[0] + "#member");
+    } catch (_error) {}
+    paymentState.message = "请先登录阅天AI账号，再开通综合健康会员。";
+    paymentState.status = "login";
+    renderPayment();
+    setPayHint("点击后会前往阅天AI登录，登录完成后再回到健康会员支付。");
+    window.location.href = "/pages/wentian-app.html#screen-40";
+    return false;
+  }
+
+  async function startHealthPayment() {
+    if (paymentState.loading) return;
+    if (paymentState.status === "paid") return;
+    if (paymentState.status === "pending") {
+      if (paymentState.payMethod === "h5" || paymentState.provider === "paypal") {
+        if (paymentState.payUrl) window.location.href = paymentState.payUrl;
+        return;
+      }
+      await refreshHealthPaymentStatus();
+      return;
+    }
+    if (!requireHealthLogin()) return;
+
+    paymentState.loading = true;
+    paymentState.status = "loading";
+    paymentState.message = "正在创建" + getProviderLabel(paymentState.provider) + "健康会员订单...";
+    paymentState.orderNo = "";
+    paymentState.payUrl = "";
+    paymentState.payMethod = "";
+    paymentState.mockMode = false;
+    renderPayment();
+    try {
+      var order = await apiFetch("/api/payments/create-order", {
+        method: "POST",
+        body: {
+          productKey: HEALTH_PRODUCT_KEY,
+          provider: paymentState.provider,
+          meta: { source: "yl_health_page" }
+        }
+      });
+      var payMethod = paymentState.provider === "paypal" ? "redirect" : (isH5PayPreferred() ? "h5" : "native");
+      var session = await apiFetch("/api/payments/create-session", {
+        method: "POST",
+        body: { orderNo: order.orderNo, payMethod: payMethod }
+      });
+
+      paymentState.status = "pending";
+      paymentState.orderNo = order.orderNo || "";
+      paymentState.provider = session.provider && session.provider !== "mock"
+        ? session.provider
+        : (order.provider && order.provider !== "mock" ? order.provider : paymentState.provider);
+      paymentState.payUrl = session.payUrl || session.qrUrl || "";
+      paymentState.payMethod = session.payMethod || payMethod;
+      paymentState.mockMode = !!(order.mockMode || session.mockMode);
+      paymentState.product = {
+        name: order.productName || HEALTH_PRODUCT_NAME,
+        description: order.description || "",
+        amountYuan: order.amountYuan || HEALTH_PRODUCT_AMOUNT,
+        currency: order.currency || "CNY"
+      };
+      paymentState.message = paymentState.mockMode
+        ? "当前为支付测试模式，可点击模拟支付成功完成验证。"
+        : (paymentState.payMethod === "h5" || paymentState.provider === "paypal"
+          ? "请打开" + getProviderLabel(paymentState.provider) + "完成支付，支付后返回刷新状态。"
+          : "请使用" + getProviderLabel(paymentState.provider) + "扫码支付，完成后刷新状态。");
+    } catch (error) {
+      paymentState.status = "error";
+      paymentState.message = error.message || "支付订单创建失败";
+      setPayHint("如果支付方式不可用，可以先换微信支付或稍后重试。");
+    } finally {
+      paymentState.loading = false;
+      renderPayment();
+    }
+  }
+
+  async function refreshHealthPaymentStatus() {
+    if (!paymentState.orderNo || paymentState.loading) return;
+    paymentState.loading = true;
+    paymentState.message = "正在刷新支付状态...";
+    renderPayment();
+    try {
+      var data = await apiFetch("/api/payments/order-status?orderNo=" + encodeURIComponent(paymentState.orderNo));
+      paymentState.status = data.status || paymentState.status;
+      paymentState.message = data.status === "paid"
+        ? "支付已完成，综合健康会员已开通。"
+        : "暂未确认支付成功，请完成付款后再刷新。";
+    } catch (error) {
+      paymentState.message = error.message || "支付状态查询失败";
+    } finally {
+      paymentState.loading = false;
+      renderPayment();
+    }
+  }
+
+  async function completeMockPayment() {
+    if (!paymentState.orderNo || paymentState.loading) return;
+    paymentState.loading = true;
+    paymentState.message = "正在确认测试支付...";
+    renderPayment();
+    try {
+      var data = await apiFetch("/api/payments/mock/complete", {
+        method: "POST",
+        body: { orderNo: paymentState.orderNo }
+      });
+      paymentState.status = data.status || "paid";
+      paymentState.message = "支付测试成功，综合健康会员已开通。";
+    } catch (error) {
+      paymentState.message = error.message || "测试支付失败";
+    } finally {
+      paymentState.loading = false;
+      renderPayment();
+    }
+  }
+
   function bindEvents() {
     $("#ylGenerateBtn").addEventListener("click", generateReport);
     $("#ylResetBtn").addEventListener("click", resetAssessment);
@@ -445,6 +740,31 @@
     });
   }
 
+  function bindPaymentEvents() {
+    $all(".yl-pay-method").forEach(function (button) {
+      button.addEventListener("click", function () {
+        if (paymentState.loading || paymentState.status === "pending") return;
+        paymentState.provider = button.dataset.provider || "wechat";
+        var meta = getProviderMeta(paymentState.provider);
+        if (meta.currency) {
+          paymentState.product = Object.assign({}, paymentState.product || {}, {
+            amountYuan: meta.amountYuan || paymentState.product?.amountYuan,
+            currency: meta.currency
+          });
+        }
+        renderPayment();
+      });
+    });
+    $("#ylOpenPayBtn").addEventListener("click", startHealthPayment);
+    $("#ylRefreshPayBtn").addEventListener("click", refreshHealthPaymentStatus);
+    $("#ylMockPayBtn").addEventListener("click", completeMockPayment);
+    if (readAuthSession()) hydratePaymentProduct();
+    else {
+      renderPayment();
+      setPayHint("登录后可直接用当前账号开通综合健康会员。");
+    }
+  }
+
   function renderAll() {
     renderProgress();
     renderCategories();
@@ -456,5 +776,6 @@
   loadState();
   state.report = state.report || calculateReport();
   bindEvents();
+  bindPaymentEvents();
   renderAll();
 })();

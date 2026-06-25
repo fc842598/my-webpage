@@ -45,6 +45,10 @@ button {
   cursor: pointer;
 }
 
+[hidden] {
+  display: none !important;
+}
+
 .skip-link,
 .sr-only {
   position: absolute;
@@ -430,7 +434,8 @@ button {
   gap: 10px;
 }
 
-.yl-option {
+.yl-option,
+.yl-option-chip {
   border: 1px solid var(--yl-line);
   border-radius: 999px;
   background: #fffaf2;
@@ -440,7 +445,8 @@ button {
   padding: 10px 16px;
 }
 
-.yl-option[aria-pressed="true"] {
+.yl-option[aria-pressed="true"],
+.yl-option-chip.is-selected {
   border-color: transparent;
   background: var(--yl-green);
   color: #fff;
@@ -863,7 +869,7 @@ button {
   gap: 10px;
 }
 
-.yl-pay-row span {
+.yl-pay-method {
   min-width: 92px;
   border: 1px solid var(--yl-line);
   border-radius: 999px;
@@ -875,8 +881,87 @@ button {
   text-align: center;
 }
 
+.yl-pay-method.is-active {
+  border-color: transparent;
+  background: var(--yl-green);
+  color: #fff;
+}
+
+.yl-pay-method:disabled {
+  cursor: not-allowed;
+  opacity: 0.48;
+}
+
 #ylOpenPayBtn {
   grid-column: 2;
+}
+
+.yl-payment-panel {
+  grid-column: 1 / -1;
+  display: grid;
+  gap: 12px;
+  border: 1px solid var(--yl-line-soft);
+  border-radius: 22px;
+  background: rgba(255, 253, 247, 0.9);
+  padding: 14px;
+}
+
+.yl-payment-status {
+  color: var(--yl-green-dark);
+  font-size: 13px;
+  font-weight: 900;
+  line-height: 1.55;
+  text-align: center;
+}
+
+.yl-payment-code {
+  display: grid;
+  gap: 10px;
+  justify-items: center;
+}
+
+.yl-payment-qr {
+  display: grid;
+  place-items: center;
+  width: 172px;
+  height: 172px;
+  border: 10px solid #fff;
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 12px 24px rgba(84, 60, 26, 0.12);
+}
+
+.yl-payment-qr img,
+.yl-payment-qr canvas {
+  width: 152px !important;
+  height: 152px !important;
+}
+
+.yl-payment-code a {
+  border-radius: 999px;
+  background: #fffaf2;
+  color: var(--yl-green-dark);
+  font-size: 13px;
+  font-weight: 900;
+  padding: 10px 16px;
+  text-decoration: none;
+}
+
+.yl-payment-code code {
+  color: var(--yl-muted);
+  font-family: "SFMono-Regular", Consolas, monospace;
+  font-size: 12px;
+}
+
+.yl-payment-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.yl-payment-actions .yl-btn {
+  flex: 0 1 auto;
+  min-height: 40px;
 }
 
 .yl-pay-note {
@@ -917,7 +1002,8 @@ button {
   }
 
   .yl-pay-row,
-  #ylOpenPayBtn {
+  #ylOpenPayBtn,
+  .yl-payment-panel {
     grid-column: auto;
   }
 }

@@ -15,8 +15,9 @@
   <meta property="og:image" content="https://yuetianai.com/images/health/constitution-report-hero.png">
   <meta name="theme-color" content="#f7f0e5">
   <link rel="icon" href="/images/wentian-prototype-assets/wentian-brand-logo-ai-gold-v1.webp" type="image/webp">
-  <link rel="stylesheet" href="/css/yl.css?v=20260625-health-v1">
-  <script defer src="/js/yl.js?v=20260625-health-v1"></script>
+  <link rel="stylesheet" href="/css/yl.css?v=20260625-health-v2">
+  <script defer src="/vendor/qrcodejs/qrcode.min.js"></script>
+  <script defer src="/js/yl.js?v=20260625-health-v2"></script>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -73,7 +74,7 @@
             <p>每类先选一个最接近的标签，再生成报告。</p>
           </div>
           <div class="yl-progress" aria-live="polite">
-            <span id="ylProgressText">0/8 已填</span>
+            <span id="ylProgressText">0/8 已填写</span>
             <i><b id="ylProgressBar"></b></i>
           </div>
         </div>
@@ -198,12 +199,24 @@
           </div>
         </div>
         <div class="yl-pay-row" aria-label="支付方式">
-          <span>微信支付</span>
-          <span>支付宝</span>
-          <span>PayPal</span>
+          <button type="button" class="yl-pay-method is-active" data-provider="wechat">微信支付</button>
+          <button type="button" class="yl-pay-method" data-provider="alipay">支付宝</button>
+          <button type="button" class="yl-pay-method" data-provider="paypal">PayPal</button>
         </div>
         <button class="yl-btn yl-btn-primary" type="button" id="ylOpenPayBtn">确认开通综合健康会员 ¥19.90</button>
-        <p class="yl-pay-hint" id="ylPayHint">健康会员为独立商品，后续接入阅天AI统一支付通道。</p>
+        <div class="yl-payment-panel" id="ylPaymentPanel" hidden>
+          <div class="yl-payment-status" id="ylPaymentStatus">请选择支付方式后创建订单。</div>
+          <div class="yl-payment-code" id="ylPaymentCode" hidden>
+            <div class="yl-payment-qr" id="ylPaymentQr" aria-label="支付二维码" hidden></div>
+            <a id="ylPaymentLink" href="#" target="_blank" rel="noopener" hidden>打开支付链接</a>
+            <code id="ylPaymentOrderNo"></code>
+          </div>
+          <div class="yl-payment-actions">
+            <button class="yl-btn yl-btn-ghost" type="button" id="ylRefreshPayBtn" hidden>刷新支付状态</button>
+            <button class="yl-btn yl-btn-ghost" type="button" id="ylMockPayBtn" hidden>模拟支付成功</button>
+          </div>
+        </div>
+        <p class="yl-pay-hint" id="ylPayHint">健康会员为独立商品，复用阅天AI统一登录与支付通道。</p>
         <p class="yl-pay-note">账号登录与支付服务由阅天AI体系提供支持；健康线页面、报告与会员商品保持独立。</p>
       </div>
       <div class="yl-operator">
