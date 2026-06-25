@@ -1769,6 +1769,7 @@ function getWentianApiBase() {
 function getWentianFrontendBase() {
   const configBase = String(window.SITE_CONFIG?.frontendBaseUrl || "").trim();
   if (configBase) return configBase.replace(/\/+$/, "");
+  if (window.location.protocol === "file:") return "https://yuetianai.com";
   return window.location.origin.replace(/\/+$/, "");
 }
 
@@ -17401,21 +17402,24 @@ function renderWentianPolishedScreen(screen) {
     `;
   }
   if (no === 24) {
+    const isEn = getWentianLanguageCode() === "en";
     const invite = getWentianInviteSnapshot();
     const code = invite.inviteCode || "8R7U58ZW";
     const inviteLink = invite.inviteLink || getWentianInviteLink(code);
-    const inviteLinkLabel = String(inviteLink || "").replace(/^https?:\/\//i, "");
+    const inviteLinkLabel = String(inviteLink || "")
+      .replace(/^https?:\/\//i, "")
+      .replace(/^file:\/\/\/?/i, "yuetianai.com/");
     const rewardDaily = Number(invite.registerReward || 10);
     const rewardDays = Number(invite.registerRewardDays || 3);
     const activeDailyBonus = Number(invite.activeDailyBonus ?? invite.bonusRemaining ?? 0);
     return `
-      ${figBox("wt24-bg", 0, 0, 390, 1180, "", "background:#fbf7ef;")}
+      ${figBox("wt24-bg", 0, 0, 390, 1368, "", "background:#fbf7ef;")}
       ${wentianSimpleHeader("wt24", "邀请好友")}
       ${figBox("wt24-hero", 24, 98, 342, 118, "", "border-radius:16px;background:linear-gradient(135deg,#d5ad42,#9f741d);box-shadow:0 12px 26px rgba(121,82,18,.18);")}
       ${figText("wt24-hero-num", String(invite.invitedCount || 0), 54, 126, 80, 34, "#fff", 800)}
       ${figText("wt24-hero-label", "已邀请好友", 54, 168, 120, 13, "#fff7df", 700)}
       ${figBox("wt24-hero-badge", 246, 126, 82, 34, "", "border-radius:17px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.28);")}
-      ${figText("wt24-hero-badge-text", `今日加赠 ${activeDailyBonus}`, 246, 136, 82, 11, "#fff", 800, "center")}
+      ${figText("wt24-hero-badge-text", isEn ? `Today +${activeDailyBonus}` : `今日加赠 ${activeDailyBonus}`, 246, 136, 82, 11, "#fff", 800, "center")}
       ${figText("wt24-hero-copy", `好友注册成功后，双方连续 ${rewardDays} 天每天各得 ${rewardDaily} 次许大师对话。`, 54, 190, 250, 12, "#fff5dc", 600)}
 
       ${figBox("wt24-code-card", 24, 240, 342, 130, "", "border-radius:14px;background:#fff;box-shadow:0 8px 20px rgba(70,45,25,.08);")}
@@ -17454,10 +17458,10 @@ function renderWentianPolishedScreen(screen) {
       ${figBox("wt24-pay-badge", 284, 906, 52, 52, "", "border-radius:26px;background:#fff0d6;")}
       ${figText("wt24-pay-badge-text", `+${rewardDaily}`, 284, 922, 52, 16, "#bd8624", 900, "center")}
 
-      ${figBox("wt24-record", 24, 1010, 342, 118, "", "border-radius:14px;background:#fff;box-shadow:0 8px 20px rgba(70,45,25,.08);")}
-      ${figText("wt24-record-title", "邀请记录", 44, 1034, 120, 16, "#25211d", 800)}
-      ${figBox("wt24-empty-icon", 174, 1066, 42, 26, "", "border-radius:8px;background:#eee6db;")}
-      ${figText("wt24-empty", "暂无邀请记录", 0, 1104, 390, 12, "#a59d94", 600, "center")}
+      ${figBox("wt24-record", 24, 1130, 342, 118, "", "border-radius:14px;background:#fff;box-shadow:0 8px 20px rgba(70,45,25,.08);")}
+      ${figText("wt24-record-title", "邀请记录", 44, 1154, 120, 16, "#25211d", 800)}
+      ${figBox("wt24-empty-icon", 174, 1186, 42, 26, "", "border-radius:8px;background:#eee6db;")}
+      ${figText("wt24-empty", "暂无邀请记录", 0, 1224, 390, 12, "#a59d94", 600, "center")}
     `;
   }
   if (no === 28) {
@@ -19139,7 +19143,7 @@ function renderConvertedScreen(no) {
   }
   const polishedScreen = renderWentianPolishedScreen(screen);
   if (polishedScreen) {
-    const polishedHeight = screen.no === 4 ? 892 : screen.no === 8 ? 1380 : screen.no === 17 ? getLiuyaoCastScreenHeight() : screen.no === 18 || screen.no === 19 ? 1480 : screen.no === 20 ? getLiuyaoResultScreenHeight() : screen.no === 22 ? 1120 : screen.no === 24 ? 1180 : screen.no === 42 ? getYangzhaiCompassHeight() : screen.no === 43 ? getYangzhaiSelectHeight() : screen.no === 44 ? getYangzhaiResultHeight() : screen.no === 46 ? LIUREN_SCREEN_HEIGHT : screen.no === 49 ? WENTIAN_HEPAN_RESULT_SCREEN_HEIGHT : 844;
+    const polishedHeight = screen.no === 4 ? 892 : screen.no === 8 ? 1380 : screen.no === 17 ? getLiuyaoCastScreenHeight() : screen.no === 18 || screen.no === 19 ? 1480 : screen.no === 20 ? getLiuyaoResultScreenHeight() : screen.no === 22 ? 1120 : screen.no === 24 ? 1368 : screen.no === 42 ? getYangzhaiCompassHeight() : screen.no === 43 ? getYangzhaiSelectHeight() : screen.no === 44 ? getYangzhaiResultHeight() : screen.no === 46 ? LIUREN_SCREEN_HEIGHT : screen.no === 49 ? WENTIAN_HEPAN_RESULT_SCREEN_HEIGHT : 844;
     const wideBgClass = screen.no >= 42 && screen.no <= 45 ? " wide-bg" : "";
     const customHotspots = screen.no >= 17 && screen.no <= 20 ? "" : convertedFlowHotspots(screen);
     return figPhone(`screen-${screen.no}`, `${String(screen.no).padStart(2, "0")} ${screen.title}`, `
