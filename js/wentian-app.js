@@ -157,7 +157,7 @@ const routeAliases = {
   payment: "screen-30",
   orders: "screen-48",
   order: "screen-48",
-  coupons: "screen-28",
+  coupons: "screen-31",
   vip: "screen-33",
   membership: "screen-33",
   invite: "screen-22",
@@ -19279,6 +19279,7 @@ function resolveRoute(route) {
   if (clean === "hepan" || clean === "10" || clean === "screen-10") return "screen-11";
   if (clean === "21" || clean === "screen-21") return "screen-29";
   if (clean === "23" || clean === "screen-23") return "screen-22";
+  if (clean === "28" || clean === "screen-28" || clean === "coupons") return "screen-31";
   const resolved = routeAliases[clean] || clean || "screen-1";
   return /^screen-?(13|14|15|16)$/.test(resolved) ? "screen-1" : resolved;
 }
