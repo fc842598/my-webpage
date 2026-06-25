@@ -48,7 +48,7 @@ const convertedScreens = [
   { no: 33, title: "阅天套餐", active: "我的", cards: [["免费版", ""], ["付费版", "100次/天"], ["付费版 ¥19.90", "按日刷新"]], button: ["立即开通 ¥19.90", "screen-30"] },
   { no: 34, title: "分享阅天AI", active: "我的", modalTitle: "分享阅天AI", modalItems: ["分享文本", "邀请码：8R7U58ZW", "微信好友 / 朋友圈 / 复制链接"], next: "screen-31" },
   { no: 35, title: "联系我们", active: "我的", list: [["电子邮箱", "", ""], ["小红书", "", ""], ["微信公众号", "", ""], ["X", "", ""]] },
-  { no: 36, title: "关于我们", active: "我的", cards: [["阅天AI v1.0.3199", "阅天AI是一款命理排盘、合盘、抽签与AI解读工具。"], ["隐私协议", ""], ["用户协议", ""], ["检查更新", ""]] },
+  { no: 36, title: "关于我们", active: "我的", cards: [["阅天AI v1.0.3199", "阅天AI是一款命理排盘、合盘与AI解读工具。"], ["隐私协议", ""], ["用户协议", ""], ["检查更新", ""]] },
   { no: 37, title: "语言设置", active: "我的", modalTitle: "语言设置", modalItems: ["简体中文 ✓", "繁體中文", "English"], next: "screen-38" },
   { no: 38, title: "账户设置", active: "我的", list: [["基本信息", "", "screen-39"], ["登录方式", "", "screen-40"], ["设置密码", "", "screen-41"], ["退出登录", "", "screen-31"]] },
   { no: 39, title: "基本信息", active: "我的", form: ["昵称 谢广周", "邮箱 aa1598...@gmail.com", "手机号 绑定"], button: ["保存", "screen-38"] },
@@ -7649,7 +7649,7 @@ const WENTIAN_I18N_EN_EXTRA = {
   "悦天AI公众号": "Yuetian AI",
   "关注我们的推特": "Follow us on X",
   "关于我们": "About Us",
-  "阅天AI是一款手机端命理排盘、合盘、抽签与AI解读工具，帮你把复杂命理信息转成可理解、可行动的建议。": "Yuetian AI is a mobile tool for charting, compatibility, lots, and AI readings, turning complex destiny data into understandable guidance.",
+  "阅天AI是一款手机端命理排盘、合盘与AI解读工具，帮你把复杂命理信息转成可理解、可行动的建议。": "Yuetian AI is a mobile tool for charting, compatibility, and AI readings, turning complex destiny data into understandable guidance.",
   "隐私协议": "Privacy Policy",
   "用户协议": "Terms of Service",
   "检查更新": "Check for Updates",
@@ -17652,7 +17652,7 @@ function renderWentianPolishedScreen(screen) {
       ${figImage("wt36-logo", "../images/wentian-prototype-assets/wentian-brand-logo-ai-gold-v1.webp", 158, 126, 74, 74, "border-radius:18px;object-fit:cover;box-shadow:0 10px 24px rgba(24,19,8,.18);", "loading=\"lazy\" decoding=\"async\"")}
       ${figText("wt36-name", "阅天AI", 0, 230, 390, 20, "#25211d", 800, "center")}
       ${figText("wt36-version", "v1.0.3199", 0, 260, 390, 12, "#8d857b", 600, "center")}
-      ${figText("wt36-desc", "阅天AI是一款手机端命理排盘、合盘、抽签与AI解读工具，帮你把复杂命理信息转成可理解、可行动的建议。", 54, 304, 282, 14, "#756d63", 500, "center", "line-height:1.65;")}
+      ${figText("wt36-desc", "阅天AI是一款手机端命理排盘、合盘与AI解读工具，帮你把复杂命理信息转成可理解、可行动的建议。", 54, 304, 282, 14, "#756d63", 500, "center", "line-height:1.65;")}
       ${[
         ["隐私协议", "wentian-about-privacy"],
         ["用户协议", "wentian-about-terms"],
@@ -19182,7 +19182,8 @@ function resolveRoute(route) {
   const clean = normalizeRoute(route).replace(/^#/, "");
   if (clean === "hepan" || clean === "10" || clean === "screen-10") return "screen-10";
   if (clean === "23" || clean === "screen-23") return "screen-22";
-  return routeAliases[clean] || clean || "screen-1";
+  const resolved = routeAliases[clean] || clean || "screen-1";
+  return /^screen-?(13|14|15|16)$/.test(resolved) ? "screen-1" : resolved;
 }
 
 function routeFromLocation() {
