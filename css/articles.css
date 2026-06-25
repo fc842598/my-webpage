@@ -1865,3 +1865,75 @@ h1 {
     font-size: 15px;
   }
 }
+
+@media (max-width: 760px) {
+  .article-orbit--series .article-orbit__poster {
+    min-height: 0;
+    height: auto;
+    aspect-ratio: 1.78 / 1;
+    padding: 20px 18px;
+    border-radius: 24px;
+  }
+
+  .article-orbit__copy {
+    max-width: 48%;
+    margin-right: 46%;
+    justify-content: center;
+  }
+
+  .article-orbit__title {
+    font-size: 32px;
+  }
+
+  .article-orbit__summary {
+    max-width: 100%;
+    font-size: 13px;
+    line-height: 1.48;
+  }
+
+  .article-orbit__metrics {
+    display: none;
+  }
+
+  .article-orbit__glyph {
+    right: 6%;
+    top: 50%;
+    width: 38%;
+    height: auto;
+    aspect-ratio: 1;
+    transform: translateY(-50%);
+  }
+
+  .article-orbit__core-label {
+    font-size: 32px;
+  }
+
+  .article-orbit__related {
+    margin-top: 16px;
+  }
+}
+
+@media (max-width: 430px) {
+  .article-orbit--series .article-orbit__poster {
+    padding: 18px 16px;
+    border-radius: 22px;
+  }
+
+  .article-orbit__copy {
+    max-width: 50%;
+    margin-right: 44%;
+  }
+
+  .article-orbit__title {
+    font-size: 30px;
+  }
+
+  .article-orbit__summary {
+    font-size: 12px;
+  }
+
+  .article-orbit__glyph {
+    right: 5%;
+    width: 39%;
+  }
+}
