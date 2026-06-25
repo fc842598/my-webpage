@@ -7,6 +7,7 @@
   var HEALTH_PRODUCT_KEY = "health_member";
   var HEALTH_PRODUCT_NAME = "综合健康会员";
   var HEALTH_PRODUCT_AMOUNT = "19.90";
+  var HEALTH_PAYPAL_AMOUNT = "2.99";
 
   var categories = [
     {
@@ -174,6 +175,7 @@
     payUrl: "",
     payMethod: "",
     mockMode: false,
+    isMember: false,
     providers: [],
     product: null,
     message: ""
@@ -233,23 +235,48 @@
   }
 
   function getProviderMeta(provider) {
+    var fallback = {
+      provider: provider,
+      label: getProviderLabel(provider),
+      enabled: true,
+      amountYuan: provider === "paypal" ? HEALTH_PAYPAL_AMOUNT : HEALTH_PRODUCT_AMOUNT,
+      currency: provider === "paypal" ? "USD" : "CNY"
+    };
     var list = Array.isArray(paymentState.providers) ? paymentState.providers : [];
-    if (!list.length) return { provider: provider, label: getProviderLabel(provider), enabled: true };
+    if (!list.length) return fallback;
     return list.find(function (item) {
       return item.provider === provider;
-    }) || { provider: provider, label: getProviderLabel(provider), enabled: provider === "wechat" };
+    }) || fallback;
   }
 
   function getPaymentAmountLabel() {
     var product = paymentState.product || {};
-    var amount = product.amountYuan || HEALTH_PRODUCT_AMOUNT;
-    if (paymentState.provider === "paypal" && product.currency === "USD") return "$" + amount;
+    var providerMeta = getProviderMeta(paymentState.provider);
+    var amount = providerMeta.amountYuan || product.amountYuan || HEALTH_PRODUCT_AMOUNT;
+    var currency = providerMeta.currency || product.currency;
+    if (paymentState.provider === "paypal" || currency === "USD") return "$" + amount;
     return "¥" + amount;
   }
 
   function setPayHint(text) {
     var el = $("#ylPayHint");
     if (el) el.textContent = text || "";
+  }
+
+  function isHealthMember() {
+    return paymentState.isMember || paymentState.status === "paid";
+  }
+
+  function updateAskQuota() {
+    var el = $("#ylAskQuota");
+    if (!el) return;
+    if (isHealthMember()) {
+      el.textContent = "会员深聊";
+      return;
+    }
+    el.textContent = state.askCount >= FREE_ASK_LIMIT
+      ? "开通会员深聊"
+      : "免费 " + (FREE_ASK_LIMIT - state.askCount) + " 次";
   }
 
   function loadState() {
@@ -429,9 +456,9 @@
     var report = state.report || calculateReport();
     var primary = typeMeta[report.primary];
 
-    $("#ylAskQuota").textContent = state.askCount >= FREE_ASK_LIMIT ? "会员可深聊" : "免费 " + (FREE_ASK_LIMIT - state.askCount) + " 次";
     $("#ylChatTitle").textContent = "围绕" + primary.name + "继续追问";
 
+    updateAskQuota();
     suggestions.innerHTML = "";
     [
       "睡眠怎么先调整？",
@@ -463,6 +490,18 @@
     var primary = typeMeta[report.primary];
     var log = $("#ylChatLog");
 
+    if (!isHealthMember() && state.askCount >= FREE_ASK_LIMIT) {
+      var limit = document.createElement("div");
+      limit.className = "yl-message is-ai";
+      limit.textContent = "免费追问次数已用完。开通综合健康会员后，可以继续围绕这份报告深聊睡眠、脾胃、情绪和作息调整。";
+      log.appendChild(limit);
+      log.scrollTop = log.scrollHeight;
+      updateAskQuota();
+      setPayHint("免费追问已用完，可开通综合健康会员继续深聊。");
+      $("#member").scrollIntoView({ behavior: "smooth", block: "center" });
+      return;
+    }
+
     var user = document.createElement("div");
     user.className = "yl-message is-user";
     user.textContent = text;
@@ -475,7 +514,7 @@
     log.scrollTop = log.scrollHeight;
 
     state.askCount += 1;
-    $("#ylAskQuota").textContent = state.askCount >= FREE_ASK_LIMIT ? "会员可深聊" : "免费 " + (FREE_ASK_LIMIT - state.askCount) + " 次";
+    updateAskQuota();
     saveState();
   }
 
@@ -539,10 +578,10 @@
       var meta = getProviderMeta(provider);
       button.classList.toggle("is-active", paymentState.provider === provider);
       button.disabled = paymentState.loading || paymentState.status === "pending" || !meta.enabled;
-      button.textContent = meta.enabled ? (meta.label || getProviderLabel(provider)) : (meta.label || getProviderLabel(provider)) + "未配置";
+      button.textContent = meta.enabled ? getProviderLabel(provider) : getProviderLabel(provider) + "未配置";
     });
 
-    var productName = paymentState.product?.name || HEALTH_PRODUCT_NAME;
+    var productName = HEALTH_PRODUCT_NAME;
     var amount = getPaymentAmountLabel();
     var openButton = $("#ylOpenPayBtn");
     if (openButton) {
@@ -581,6 +620,7 @@
     renderPaymentQr();
     if (paymentState.status === "paid") {
       setPayHint("已开通综合健康会员，后续报告和追问额度会绑定到当前账号。");
+      updateAskQuota();
     }
   }
 
@@ -588,6 +628,7 @@
     try {
       var data = await apiFetch("/api/payments/member-status?productKey=" + encodeURIComponent(HEALTH_PRODUCT_KEY));
       if (data.product) paymentState.product = data.product;
+      paymentState.isMember = !!data.productEntitlement?.isMember;
       if (data.productEntitlement?.isMember) {
         paymentState.status = "paid";
         paymentState.message = "当前账号已开通综合健康会员。";
@@ -694,6 +735,7 @@
     try {
       var data = await apiFetch("/api/payments/order-status?orderNo=" + encodeURIComponent(paymentState.orderNo));
       paymentState.status = data.status || paymentState.status;
+      if (paymentState.status === "paid") paymentState.isMember = true;
       paymentState.message = data.status === "paid"
         ? "支付已完成，综合健康会员已开通。"
         : "暂未确认支付成功，请完成付款后再刷新。";
@@ -716,6 +758,7 @@
         body: { orderNo: paymentState.orderNo }
       });
       paymentState.status = data.status || "paid";
+      paymentState.isMember = paymentState.status === "paid";
       paymentState.message = "支付测试成功，综合健康会员已开通。";
     } catch (error) {
       paymentState.message = error.message || "测试支付失败";
@@ -734,10 +777,6 @@
       ask(input.value);
       input.value = "";
     });
-    $("#ylOpenPayBtn").addEventListener("click", function () {
-      $("#ylPayHint").textContent = "已确认健康会员商品。下一步接入统一支付接口时，将从这里创建健康会员订单。";
-      $("#member").scrollIntoView({ behavior: "smooth", block: "center" });
-    });
   }
 
   function bindPaymentEvents() {
@@ -755,7 +794,11 @@
         renderPayment();
       });
     });
-    $("#ylOpenPayBtn").addEventListener("click", startHealthPayment);
+    $("#ylOpenPayBtn").addEventListener("click", function (event) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      startHealthPayment();
+    }, true);
     $("#ylRefreshPayBtn").addEventListener("click", refreshHealthPaymentStatus);
     $("#ylMockPayBtn").addEventListener("click", completeMockPayment);
     if (readAuthSession()) hydratePaymentProduct();
