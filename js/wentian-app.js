@@ -575,6 +575,7 @@ function withWentianStandardBottomNav(nodeId, body, height) {
   if (
     String(nodeId) === "screen-3" ||
     String(nodeId) === "screen-4" ||
+    String(nodeId) === "screen-9" ||
     String(nodeId) === "screen-11" ||
     String(nodeId) === "screen-43" ||
     !/^screen-\d+$/.test(String(nodeId)) ||
