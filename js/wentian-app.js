@@ -17057,7 +17057,7 @@ function renderWentianPolishedScreen(screen) {
     const loading = no === 14;
     return `
       ${figBox(`wt${no}-bg`, 0, 0, 390, 844, "", "background:linear-gradient(180deg,#fffdf8 0%,#fbf7ef 48%,#f7f2ea 100%);")}
-      ${wentianSimpleHeader(`wt${no}`, "黄大仙灵签", "◷")}
+      ${wentianSimpleHeader(`wt${no}`, "黄大仙灵签", "◷", { rightAttrs: 'data-route="screen-9" aria-label="聊天记录"' })}
       ${figBox(`wt${no}-hero`, 22, 104, 346, 108, "", "border-radius:18px;background:#fff;box-shadow:0 10px 26px rgba(70,45,25,.1);")}
       ${figText(`wt${no}-hero-title`, loading ? "正在为你取签" : "心中默念所问之事", 44, 128, 210, 18, "#25211d", 800)}
       ${figText(`wt${no}-hero-copy`, loading ? "已接入当前档案，签文生成后可交给许大师继续解读。" : "感情、事业、财运皆可问。抽签后可查看签文、解签和 AI 延展。", 44, 160, 282, 13, "#776f65", 500, "left", "line-height:1.55;")}
