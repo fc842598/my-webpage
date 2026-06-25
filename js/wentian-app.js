@@ -91,7 +91,7 @@ const screenFlowHotspots = {
   28: [[18, 44, 48, 48, "screen-31"], [42, 735, 306, 58, "screen-33"]],
   29: [[18, 44, 48, 48, "screen-31"], [22, 178, 346, 70, "screen-30"], [22, 257, 346, 70, "screen-30"], [22, 336, 346, 70, "screen-30"], [34, 738, 322, 58, "screen-30"]],
   30: [[18, 44, 48, 48, "screen-33"]],
-  31: [[336, 54, 42, 42, "screen-38"], [16, 126, 358, 96, "screen-40"], [16, 240, 111, 75, "screen-33"], [139, 240, 111, 75, "screen-33"], [262, 240, 111, 75, "screen-9"], [16, 330, 174, 60, "screen-33"], [200, 330, 174, 60, "screen-27"], [16, 400, 174, 60, "screen-48"], [200, 400, 174, 60, "screen-22"], [16, 491, 358, 61, "screen-37"], [16, 552, 358, 61, "screen-34"], [16, 613, 358, 61, "screen-35"], [12, 762, 76, 72, "screen-1"], [109, 762, 76, 72, "screen-25"], [207, 762, 76, 72, "screen-3"], [304, 762, 76, 72, "screen-31"]],
+  31: [[336, 54, 42, 42, "screen-38"], [16, 126, 358, 96, "screen-40"], [16, 240, 111, 75, "screen-33"], [139, 240, 111, 75, "screen-33"], [262, 240, 111, 75, "screen-33"], [16, 330, 174, 60, "screen-33"], [200, 330, 174, 60, "screen-27"], [16, 400, 174, 60, "screen-48"], [200, 400, 174, 60, "screen-22"], [16, 491, 358, 61, "screen-37"], [16, 552, 358, 61, "screen-34"], [16, 613, 358, 61, "screen-35"], [12, 762, 76, 72, "screen-1"], [109, 762, 76, 72, "screen-25"], [207, 762, 76, 72, "screen-3"], [304, 762, 76, 72, "screen-31"]],
   32: [[18, 44, 48, 48, "screen-31"], [20, 94, 350, 56, "screen-39"], [20, 164, 350, 56, "screen-33"], [20, 236, 350, 56, "screen-40"], [20, 306, 350, 56, "screen-41"], [20, 376, 350, 56, "screen-37"], [20, 452, 350, 56, "screen-34"], [20, 520, 350, 56, "screen-35"], [20, 590, 350, 56, "screen-36"]],
   33: [[18, 44, 48, 48, "screen-31"]],
   34: [[18, 44, 48, 48, "screen-31"], [42, 735, 306, 58, "screen-22"]],
@@ -11657,7 +11657,7 @@ function sourceMineScreen(screen) {
     ${figBox("source-31-login-badge", 292, 146, 58, 24, "", `border-radius:12px;background:${member.isMember ? "#fff0d6" : "#f6f2e9"};`)}
     ${figText("source-31-login-badge-text", loginBadgeText, 292, 152, 58, 11, member.isMember ? "#9f3d2e" : "#9b742e", 800, "center", "white-space:nowrap;overflow:hidden;text-overflow:ellipsis;")}
     ${figButton("source-31-login-hit", 16, 126, 358, 96, 'data-route="screen-40" aria-label="登录 / 注册"', "", "z-index:35;")}
-    ${[["今日次数", member.daily, 16, "screen-33"], ["每日额度", member.dailyLimit, 139, "screen-33"], ["套餐状态", member.isMember ? "付费版" : "免费版", 262, "screen-9"]].map(([label, count, x, route], index) => `
+    ${[["今日次数", member.daily, 16, "screen-33"], ["每日额度", member.dailyLimit, 139, "screen-33"], ["套餐状态", member.isMember ? "付费版" : "免费版", 262, "screen-33"]].map(([label, count, x, route], index) => `
       ${figBox(`source-31-stat-${index}`, x, 240, 111, 75, "converted-card", "border-radius:12px;box-shadow:0 5px 14px rgba(74,55,32,.08);")}
       ${figText(`source-31-stat-label-${index}`, label, x + 14, 253, 80, 12, "#9b742e", 500)}
       ${figText(`source-31-stat-count-${index}`, count, x + 14, 279, 86, 20, "#b88c33", 800)}
@@ -11694,7 +11694,7 @@ function sourceMineScreenV2(screen) {
   const statCards = [
     ["\u4ECA\u65E5\u6B21\u6570", member.daily, 16, "screen-33"],
     ["\u6BCF\u65E5\u989D\u5EA6", member.dailyLimit, 139, "screen-33"],
-    ["\u5957\u9910\u72B6\u6001", member.isMember ? "\u4ED8\u8D39\u7248" : "\u514D\u8D39\u7248", 262, "screen-9"]
+    ["\u5957\u9910\u72B6\u6001", member.isMember ? "\u4ED8\u8D39\u7248" : "\u514D\u8D39\u7248", 262, "screen-33"]
   ];
   const listRows = [
     ["\u25A4", "\u6211\u7684\u62A5\u544A", "", 400, "screen-27"],
