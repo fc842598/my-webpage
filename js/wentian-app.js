@@ -2952,20 +2952,21 @@ function findWentianCity(query, scope = "all") {
 }
 
 function syncWentianChartCityScopeUi() {
+  const isEn = isWentianEnglishUi();
   document.querySelectorAll("[data-wentian-city-scope]").forEach((btn) => {
     btn.classList.toggle("active", btn.dataset.wentianCityScope === wentianChartCityScope);
   });
   const input = document.getElementById("wentian-chart-city");
   if (input) {
     input.placeholder = wentianChartCityScope === "global"
-      ? "搜索国家/城市，如：Singapore、Tokyo"
-      : "搜索出生地，如：广东廉江、朝阳区、上海";
+      ? (isEn ? "Country or city, e.g. Tokyo" : "搜索国家/城市，如：Singapore、Tokyo")
+      : (isEn ? "Birthplace, e.g. Beijing" : "搜索出生地，如：广东廉江、朝阳区、上海");
   }
   const note = document.getElementById("wentian-chart-city-note");
   if (note) {
     note.textContent = wentianChartCityScope === "global"
-      ? "当地法定时 + 经度校正；海外农历按中国农历口径。"
-      : "北京时间 UTC+8 + 经度校正。";
+      ? (isEn ? "Uses local legal time plus longitude correction. Overseas lunar dates still follow the Chinese lunar calendar standard." : "当地法定时 + 经度校正；海外农历按中国农历口径。")
+      : (isEn ? "Uses China Standard Time UTC+8 plus longitude correction." : "北京时间 UTC+8 + 经度校正。");
   }
 }
 
@@ -2978,6 +2979,7 @@ function setWentianChartCityScope(scope, options = {}) {
 }
 
 function populateWentianChartSelects() {
+  const isEn = isWentianEnglishUi();
   const month = document.getElementById("wentian-chart-month");
   const day = document.getElementById("wentian-chart-day");
   const lunarMonth = document.getElementById("wentian-chart-lunar-month");
@@ -2985,16 +2987,17 @@ function populateWentianChartSelects() {
   const hour = document.getElementById("wentian-chart-hour");
   const minute = document.getElementById("wentian-chart-minute");
   if (month && !month.options.length) {
-    month.innerHTML = Array.from({ length: 12 }, (_, i) => `<option value="${i + 1}">${i + 1}月</option>`).join("");
+    const solarMonthLabels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    month.innerHTML = Array.from({ length: 12 }, (_, i) => `<option value="${i + 1}">${isEn ? solarMonthLabels[i] : `${i + 1}月`}</option>`).join("");
   }
   if (lunarMonth && !lunarMonth.options.length) {
-    lunarMonth.innerHTML = ["正月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"].map((name, i) => `<option value="${i + 1}">${name}</option>`).join("");
+    lunarMonth.innerHTML = ["正月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"].map((name, i) => `<option value="${i + 1}">${isEn ? `M${i + 1}` : name}</option>`).join("");
   }
   if (hour && !hour.options.length) {
-    hour.innerHTML = Array.from({ length: 24 }, (_, i) => `<option value="${i}">${padWentianNumber(i)}时</option>`).join("");
+    hour.innerHTML = Array.from({ length: 24 }, (_, i) => `<option value="${i}">${isEn ? `${padWentianNumber(i)}:00` : `${padWentianNumber(i)}时`}</option>`).join("");
   }
   if (minute && !minute.options.length) {
-    minute.innerHTML = Array.from({ length: 60 }, (_, i) => `<option value="${i}">${padWentianNumber(i)}分</option>`).join("");
+    minute.innerHTML = Array.from({ length: 60 }, (_, i) => `<option value="${i}">${isEn ? `${padWentianNumber(i)} min` : `${padWentianNumber(i)}分`}</option>`).join("");
   }
   updateWentianChartDayOptions(day, getWentianNumber("wentian-chart-year"), getWentianNumber("wentian-chart-month"));
   updateWentianChartDayOptions(lunarDay, 0, 0, 30);
@@ -3002,9 +3005,10 @@ function populateWentianChartSelects() {
 
 function updateWentianChartDayOptions(dayEl, year, month, forcedMax) {
   if (!dayEl) return;
+  const isEn = isWentianEnglishUi();
   const previous = Number(dayEl.value) || 1;
   const max = forcedMax || (year && month ? new Date(year, month, 0).getDate() : 31);
-  dayEl.innerHTML = Array.from({ length: max }, (_, i) => `<option value="${i + 1}">${i + 1}日</option>`).join("");
+  dayEl.innerHTML = Array.from({ length: max }, (_, i) => `<option value="${i + 1}">${isEn ? String(i + 1) : `${i + 1}日`}</option>`).join("");
   dayEl.value = String(Math.min(previous, max));
 }
 
@@ -3159,7 +3163,9 @@ function updateWentianSelectedCityText(tzOffset) {
   const selected = document.getElementById("wentian-chart-city-selected");
   if (!selected || !wentianChartCity) return;
   const offset = Number.isFinite(Number(tzOffset)) ? Number(tzOffset) : wentianChartCity.tzOffset;
-  selected.textContent = `已选：${formatWentianCity(wentianChartCity)} · ${formatWentianTzOffset(offset)} · ${formatWentianGeoCoord(wentianChartCity.lon, "lon")}`;
+  selected.textContent = isWentianEnglishUi()
+    ? `Selected: ${formatWentianCity(wentianChartCity)} · ${formatWentianTzOffset(offset)} · ${formatWentianGeoCoord(wentianChartCity.lon, "lon")}`
+    : `已选：${formatWentianCity(wentianChartCity)} · ${formatWentianTzOffset(offset)} · ${formatWentianGeoCoord(wentianChartCity.lon, "lon")}`;
   selected.style.display = "block";
 }
 
@@ -3177,7 +3183,11 @@ function applyWentianChartCity(city, options = {}) {
   if (input) input.value = city ? `${city.province} · ${city.city}` : "";
   if (clear) clear.style.display = city ? "" : "none";
   if (selected) {
-    selected.textContent = city ? `已选：${formatWentianCity(city)} · ${formatWentianCityTimeZoneLabelForForm(city)} · ${formatWentianGeoCoord(city.lon, "lon")}` : "";
+    selected.textContent = city
+      ? (isWentianEnglishUi()
+        ? `Selected: ${formatWentianCity(city)} · ${formatWentianCityTimeZoneLabelForForm(city)} · ${formatWentianGeoCoord(city.lon, "lon")}`
+        : `已选：${formatWentianCity(city)} · ${formatWentianCityTimeZoneLabelForForm(city)} · ${formatWentianGeoCoord(city.lon, "lon")}`)
+      : "";
     selected.style.display = city ? "block" : "none";
   }
   if (dropdown) dropdown.style.display = "none";
@@ -3256,6 +3266,7 @@ function syncWentianChartFormLayout() {
 }
 
 function updateWentianChartPreview() {
+  const isEn = isWentianEnglishUi();
   const preview = document.getElementById("wentian-chart-preview");
   const tst = document.getElementById("wentian-chart-tst");
   const hiddenDate = document.getElementById("wentian-chart-date");
@@ -3285,13 +3296,19 @@ function updateWentianChartPreview() {
       const trueSolarDate = formatWentianTrueSolarDate(parts.date, result);
       const trueSolarClock = `${padWentianNumber(result.trueSolarHour)}:${padWentianNumber(result.trueSolarMinute)}`;
       const trueSolarDisplay = result.dayShift ? `${trueSolarDate} ${trueSolarClock}` : trueSolarClock;
-      const areaLabel = city && !isWentianChinaCity(city) ? "当地区时" : "中国区时";
-      const placeLabel = getWentianTrueSolarPlaceLabel(city);
-      tst.textContent = `${areaLabel} ${formatWentianTzOffset(result.tzOffset)} · 出生地${placeLabel} ${result.diffStr}，排盘按${trueSolarDisplay} ${shichen}时`;
+      const areaLabel = city && !isWentianChinaCity(city)
+        ? (isEn ? "Local time" : "当地区时")
+        : (isEn ? "China time" : "中国区时");
+      const placeLabel = isEn
+        ? (city ? String(city.city || city.province || "Beijing") : "Beijing")
+        : getWentianTrueSolarPlaceLabel(city);
+      tst.textContent = isEn
+        ? `${areaLabel} ${formatWentianTzOffset(result.tzOffset)} · Birthplace ${placeLabel} ${String(result.diffStr || "").replace(/分钟/g, " min")} · Chart uses ${trueSolarDisplay}${shichen ? ` (${shichen})` : ""}`
+        : `${areaLabel} ${formatWentianTzOffset(result.tzOffset)} · 出生地${placeLabel} ${result.diffStr}，排盘按${trueSolarDisplay} ${shichen}时`;
     }
   } catch (error) {
     if (preview) preview.textContent = error.message || "";
-    if (tst) tst.textContent = "请先补全出生时间，地点可选。";
+    if (tst) tst.textContent = isEn ? "Complete birth time first. Birthplace is optional." : "请先补全出生时间，地点可选。";
   }
   syncWentianChartFormLayout();
 }
@@ -8547,9 +8564,6 @@ function finalizeWentianLanguageText(root = view, code = getWentianLanguageCode(
 
   setWentianFinalText(root, '[data-node-id="wt22-login-desc-clean"]', "Invite both sides to get daily Master Xu credits for 3 days after registration.");
   setWentianFinalText(root, '[data-node-id="wt22-tip-desc-clean"]', "Both inviter and new user receive daily chat rewards for 3 days.");
-  setWentianFinalText(root, "#wentian-chart-tst", "Enter a birthplace to preview true solar time. You can also create the chart first.");
-  const chartCity = root.querySelector("#wentian-chart-city");
-  if (chartCity) chartCity.setAttribute("placeholder", "Birth city, optional");
   setWentianFinalText(root, '[data-node-id="wt30-safe"]', "Payment details are encrypted by the provider.");
   setWentianFinalText(root, '[data-node-id="wt34-copy-title"]', "Share Copy");
   setWentianFinalText(root, '[data-node-id="wt34-copy-lead"]', "Share Yuetian AI for charts, readings, and Master Xu.");
@@ -17841,14 +17855,15 @@ function convertedFlowHotspots(screen) {
 }
 
 function sourceChartFormScreen() {
+  const isEn = isWentianEnglishUi();
   const isEditingArchive = !!getWentianArchiveEditId();
-  const title = isEditingArchive ? "编辑命盘" : "排盘";
-  const heading = isEditingArchive ? "修改出生信息" : "出生信息";
-  const submitText = isEditingArchive ? "保存修改" : "开始排盘";
+  const title = isEditingArchive ? (isEn ? "Edit Chart" : "编辑命盘") : (isEn ? "Chart" : "排盘");
+  const heading = isEditingArchive ? (isEn ? "Edit Birth Info" : "修改出生信息") : (isEn ? "Birth Info" : "出生信息");
+  const submitText = isEditingArchive ? (isEn ? "Save Changes" : "保存修改") : (isEn ? "Create Chart" : "开始排盘");
   return `
     ${figBox("source-26-bg", 0, 0, 390, 944, "", "background:linear-gradient(180deg,#fffdf8 0%,#fbf7ef 52%,#f6eee2 100%);")}
     ${figBox("source-26-top", 0, 0, 390, 92, "", "background:#fffdf8;border-bottom:1px solid #eadfce;")}
-    ${wentianBackPill("source-26", 18, 42, 'data-action="back" aria-label="返回"', { zIndex: 70 })}
+    ${wentianBackPill("source-26", 18, 42, `data-action="back" aria-label="${isEn ? "Back" : "返回"}"`, { zIndex: 70 })}
     ${figText("source-26-title", title, 0, 52, 390, 24, "#1f1d1a", 800, "center", "font-family:'Noto Serif SC','Songti SC',serif;")}
 
     ${figText("source-26-heading", heading, 24, 108, 160, 24, "#2b251c", 900, "left", "font-family:'Noto Serif SC','Songti SC',serif;")}
@@ -17859,44 +17874,44 @@ function sourceChartFormScreen() {
       <input type="hidden" id="wentian-chart-date" value="2026-05-12T15:21">
 
       <div class="wentian-chart-row two">
-        <span class="wentian-chart-label">姓名</span>
-        <input id="wentian-chart-name" class="wentian-chart-name" placeholder="可不填，系统自动生成称呼" autocomplete="off">
+        <span class="wentian-chart-label">${isEn ? "Name" : "姓名"}</span>
+        <input id="wentian-chart-name" class="wentian-chart-name" placeholder="${isEn ? "Optional name" : "可不填，系统自动生成称呼"}" autocomplete="off">
       </div>
 
       <div class="wentian-chart-row two">
-        <span class="wentian-chart-label">性别</span>
+        <span class="wentian-chart-label">${isEn ? "Gender" : "性别"}</span>
         <div class="wentian-chart-segment">
-          <button type="button" data-action="wentian-chart-gender" data-wentian-chart-gender="male">男</button>
-          <button type="button" data-action="wentian-chart-gender" data-wentian-chart-gender="female">女</button>
+          <button type="button" data-action="wentian-chart-gender" data-wentian-chart-gender="male">${isEn ? "Male" : "男"}</button>
+          <button type="button" data-action="wentian-chart-gender" data-wentian-chart-gender="female">${isEn ? "Female" : "女"}</button>
         </div>
       </div>
 
       <div class="wentian-chart-row stack">
         <div class="wentian-chart-row two" style="min-height:34px;border:0">
-          <span class="wentian-chart-label">出生日期<small>必填</small></span>
+          <span class="wentian-chart-label">${isEn ? "Birth Date <small>Required</small>" : "出生日期<small>必填</small>"}</span>
           <div class="wentian-chart-segment">
-            <button type="button" data-action="wentian-chart-cal" data-wentian-chart-cal="solar">公历</button>
-            <button type="button" data-action="wentian-chart-cal" data-wentian-chart-cal="lunar">农历</button>
+            <button type="button" data-action="wentian-chart-cal" data-wentian-chart-cal="solar">${isEn ? "Solar" : "公历"}</button>
+            <button type="button" data-action="wentian-chart-cal" data-wentian-chart-cal="lunar">${isEn ? "Lunar" : "农历"}</button>
           </div>
         </div>
         <div id="wentian-chart-solar-fields" class="wentian-chart-date-grid">
-          <input id="wentian-chart-year" type="number" min="1900" max="2030" inputmode="numeric" placeholder="年">
+          <input id="wentian-chart-year" type="number" min="1900" max="2030" inputmode="numeric" placeholder="${isEn ? "Year" : "年"}">
           <select id="wentian-chart-month"></select>
           <select id="wentian-chart-day"></select>
         </div>
         <div id="wentian-chart-lunar-fields" class="wentian-chart-date-grid" style="display:none">
-          <input id="wentian-chart-lunar-year" type="number" min="1900" max="2030" inputmode="numeric" placeholder="农历年">
+          <input id="wentian-chart-lunar-year" type="number" min="1900" max="2030" inputmode="numeric" placeholder="${isEn ? "Lunar Year" : "农历年"}">
           <select id="wentian-chart-lunar-month"></select>
           <select id="wentian-chart-lunar-day"></select>
         </div>
         <label class="wentian-chart-leap-note">
-          <input id="wentian-chart-lunar-leap" type="checkbox" checked style="width:14px;height:14px"> 闰月按下个月计算
+          <input id="wentian-chart-lunar-leap" type="checkbox" checked style="width:14px;height:14px"> ${isEn ? "Leap month counts as the next month" : "闰月按下个月计算"}
         </label>
         <div id="wentian-chart-preview" class="wentian-chart-preview"></div>
       </div>
 
       <div class="wentian-chart-row stack">
-        <span class="wentian-chart-label wentian-chart-label-wide">出生时刻（尽量精确到分钟）</span>
+        <span class="wentian-chart-label wentian-chart-label-wide">${isEn ? "Birth Time (minute precision if possible)" : "出生时刻（尽量精确到分钟）"}</span>
         <div class="wentian-chart-time-grid">
           <select id="wentian-chart-hour"></select>
           <select id="wentian-chart-minute"></select>
@@ -17904,10 +17919,10 @@ function sourceChartFormScreen() {
       </div>
 
       <div class="wentian-chart-row stack">
-        <span class="wentian-chart-label wentian-chart-label-wide">填写出生地 自动校正真太阳时</span>
+        <span class="wentian-chart-label wentian-chart-label-wide">${isEn ? "Birthplace for true solar correction" : "填写出生地 自动校正真太阳时"}</span>
         <div class="wentian-chart-city-wrap">
-          <input id="wentian-chart-city" class="wentian-chart-city-input" placeholder="搜索城市，如：北京、上海、深圳" autocomplete="off">
-          <button type="button" id="wentian-chart-city-clear" class="wentian-chart-city-clear" data-action="wentian-chart-city-clear" style="display:none">清除</button>
+          <input id="wentian-chart-city" class="wentian-chart-city-input" placeholder="${isEn ? "Birthplace, e.g. Beijing" : "搜索城市，如：北京、上海、深圳"}" autocomplete="off">
+          <button type="button" id="wentian-chart-city-clear" class="wentian-chart-city-clear" data-action="wentian-chart-city-clear" style="display:none">${isEn ? "Clear" : "清除"}</button>
           <div id="wentian-chart-city-dropdown" class="wentian-chart-city-dropdown" style="display:none"></div>
         </div>
         <div id="wentian-chart-city-selected" class="wentian-chart-preview" style="display:none"></div>
@@ -17915,18 +17930,25 @@ function sourceChartFormScreen() {
 
       <div class="wentian-chart-row two">
         <div class="wentian-chart-label-group">
-          <span class="wentian-chart-label">采用真太阳时</span>
-          <button type="button" class="wentian-chart-help-btn" data-action="wentian-chart-tst-help">解读</button>
+          <span class="wentian-chart-label">${isEn ? "Use True Solar Time" : "采用真太阳时"}</span>
+          <button type="button" class="wentian-chart-help-btn" data-action="wentian-chart-tst-help">${isEn ? "Explain" : "解读"}</button>
         </div>
         <label class="wentian-chart-toggle"><input id="wentian-chart-true-solar" type="checkbox"><span></span></label>
       </div>
       <div id="wentian-chart-tst-help" class="wentian-chart-tst-help" style="display:none">
+        ${isEn ? `
+        <p>True solar time converts the recorded zone time into the solar time at the actual birthplace.</p>
+        <p>Ziwei charts are traditionally cast with true solar time, so different birthplaces can shift the chart time.</p>
+        <p>For example, China usually records Beijing time UTC+8. A recorded 08:00 birth in Urumqi would be about 06:10 in true solar time.</p>
+        <p>After you enter a birthplace, the system calculates it automatically and uses the converted true solar time for the chart.</p>
+        ` : `
         <p>真太阳时就是：把出生记录的区时，换算成出生地当地的太阳时间。</p>
         <p>紫微斗数按真太阳时排盘。因为出生地不同，太阳时间会不同。</p>
         <p>比如中国通常记录 北京时间 UTC+8。同样是北京时间 08:00 出生，如果出生地在 新疆乌鲁木齐，真太阳时约为 06:10。</p>
         <p>填好出生地区后，系统会自动换算。最终排盘用换算后的真太阳时。</p>
+        `}
       </div>
-      <div id="wentian-chart-tst" class="wentian-chart-tst">请先补全出生时间，地点可选。</div>
+      <div id="wentian-chart-tst" class="wentian-chart-tst">${isEn ? "Complete birth time first. Birthplace is optional." : "请先补全出生时间，地点可选。"}</div>
     </div>
 
     ${figBox("source-26-submit", 18, 742, 354, 54, "", "border:1px solid #7b3129;border-radius:12px;background:#9e4738;box-shadow:0 10px 20px rgba(123,49,41,.14);")}
