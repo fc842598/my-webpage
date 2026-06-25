@@ -1680,6 +1680,62 @@ h1 {
   z-index: 1;
 }
 
+@media (min-width: 761px) {
+  .article-orbit--series {
+    width: 300px;
+    margin-left: auto;
+  }
+
+  .article-orbit--series .article-orbit__poster {
+    min-height: 166px;
+    height: 166px;
+    padding: 18px 16px;
+    border-radius: 10px;
+    box-shadow: inset 0 1px 0 rgba(255, 244, 214, .10), 0 26px 56px rgba(0, 0, 0, .28);
+  }
+
+  .article-orbit__glyph {
+    left: 18px;
+    right: auto;
+    top: 50%;
+    width: 102px;
+    height: 102px;
+    transform: translateY(-50%);
+  }
+
+  .article-orbit__copy {
+    min-height: 0;
+    max-width: none;
+    margin-left: 126px;
+    margin-right: 0;
+    padding-top: 0;
+    justify-content: center;
+  }
+
+  .article-orbit__eyebrow {
+    margin-bottom: 8px;
+    font-size: 12px;
+  }
+
+  .article-orbit__title {
+    font-size: 28px;
+    line-height: 1.05;
+    white-space: nowrap;
+  }
+
+  .article-orbit__summary {
+    max-width: 118px;
+    margin-top: 10px;
+    font-size: 12px;
+    line-height: 1.45;
+  }
+
+  .article-orbit__metrics,
+  .article-orbit__related {
+    display: none !important;
+  }
+}
+
 @media (max-width: 760px) {
   .article-orbit--series {
     width: 100%;
