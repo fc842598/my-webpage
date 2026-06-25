@@ -17188,25 +17188,41 @@ function renderWentianPolishedScreen(screen) {
     `;
   }
   if (no === 21) {
-    const paywallTitle = screen.modalTitle || "购买完整解读";
-    const paywallItems = (screen.modalItems && screen.modalItems.length
-      ? screen.modalItems
-      : ["地风升完整卦象 ¥12", "包含本卦、变卦与行动建议"]).slice(0, 2);
+    const isEn = getWentianLanguageCode() === "en";
+    const paywallTitle = isEn ? "Unlock Full Reading" : (screen.modalTitle || "购买完整解读");
+    const paywallItems = (isEn
+      ? [
+          "Full hexagram reading · ¥12",
+          "Includes the original hexagram, changed hexagram, and action guidance"
+        ]
+      : (screen.modalItems && screen.modalItems.length
+        ? screen.modalItems
+        : ["地风升完整卦象 ¥12", "包含本卦、变卦与行动建议"])).slice(0, 2);
+    const previewTitles = isEn
+      ? ["Original Hexagram", "Meaning", "Career Guidance", "Relationship Guidance"]
+      : ["本卦：地风升", "卦意", "事业建议", "关系建议"];
+    const previewDesc = isEn ? "Buy the full reading to unlock the detailed analysis." : "购买完整解读后可查看详细分析。";
+    const headerTitle = isEn ? "Hexagram Reading" : "地风升";
+    const cardDesc = isEn
+      ? "Unlock the full hexagram reading, changed-hexagram guidance, and continue with follow-up questions for Master Xu."
+      : "解锁后可查看完整卦象、变卦建议，并继续交给许大师追问。";
+    const buyLabel = isEn ? "View Plans" : "查看套餐规则";
+    const cancelLabel = isEn ? "Cancel" : "取消";
     return `
       ${figBox("wt21-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
-      ${wentianSimpleHeader("wt21", "地风升", "⋯")}
-      ${["本卦：地风升", "卦意", "事业建议", "关系建议"].map((title, index) => {
+      ${wentianSimpleHeader("wt21", headerTitle, "⋯")}
+      ${previewTitles.map((title, index) => {
         const y = 112 + index * 110;
         return `
           ${figBox(`wt21-under-${index}`, 24, y, 342, 82, "", "border-radius:12px;background:#fff;box-shadow:0 6px 16px rgba(70,45,25,.07);")}
           ${figText(`wt21-under-title-${index}`, title, 44, y + 18, 150, 14, "#25211d", 800)}
-          ${figText(`wt21-under-desc-${index}`, "购买完整解读后可查看详细分析。", 44, y + 46, 260, 12, "#756d63")}
+          ${figText(`wt21-under-desc-${index}`, previewDesc, 44, y + 46, 260, 12, "#756d63")}
         `;
       }).join("")}
       ${figBox("wt21-overlay", 0, 0, 390, 844, "", "background:rgba(0,0,0,.34);")}
       ${figBox("wt21-card", 36, 346, 318, 294, "", "border-radius:16px;background:#fff;box-shadow:0 16px 36px rgba(0,0,0,.18);")}
       ${figText("wt21-title", paywallTitle, 0, 380, 390, 18, "#25211d", 800, "center")}
-      ${figText("wt21-desc", "解锁后可查看完整卦象、变卦建议，并继续交给许大师追问。", 64, 414, 262, 13, "#756d63", 500, "center", "line-height:1.5;")}
+      ${figText("wt21-desc", cardDesc, 64, 414, 262, 13, "#756d63", 500, "center", "line-height:1.5;")}
       ${paywallItems.map((item, index) => {
         const y = 466 + index * 48;
         return `
@@ -17215,10 +17231,10 @@ function renderWentianPolishedScreen(screen) {
         `;
       }).join("")}
       ${figBox("wt21-buy", 58, 572, 274, 42, "", "border-radius:8px;background:#a73f35;")}
-      ${figText("wt21-buy-text", "查看套餐规则", 58, 585, 274, 13, "#fff", 800, "center")}
+      ${figText("wt21-buy-text", buyLabel, 58, 585, 274, 13, "#fff", 800, "center")}
       ${figButton("wt21-pay-hit", 58, 572, 274, 42, `data-route="${screen.next || "screen-29"}"`)}
       ${figBox("wt21-cancel", 58, 620, 274, 28, "", "border:1px solid #eadfce;border-radius:6px;background:#fff;")}
-      ${figText("wt21-cancel-text", "取消", 58, 627, 274, 12, "#756d63", 700, "center")}
+      ${figText("wt21-cancel-text", cancelLabel, 58, 627, 274, 12, "#756d63", 700, "center")}
       ${figButton("wt21-cancel-hit", 58, 620, 274, 28, 'data-action="wentian-return-previous" data-fallback-route="screen-20"')}
     `;
   }
