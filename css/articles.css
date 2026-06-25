@@ -1207,6 +1207,19 @@ h1 {
   box-shadow: inset 0 0 0 1px rgba(255, 241, 206, .18), 0 0 26px rgba(201, 169, 97, .14);
 }
 
+.article-orbit__core-label {
+  position: absolute;
+  inset: 26px;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff0c6;
+  font: 900 34px/1 "Noto Serif SC", "Songti SC", serif;
+  letter-spacing: .02em;
+  text-shadow: 0 8px 20px rgba(0, 0, 0, .22);
+}
+
 .article-orbit__star {
   width: 6px;
   height: 6px;
@@ -1314,89 +1327,153 @@ h1 {
 @media (max-width: 760px) {
   .article-orbit--series {
     width: 100%;
-    min-height: 216px;
+    min-height: 286px;
     margin-top: 26px;
-    padding: 22px 18px;
-    border-color: #dec091;
+    padding: 18px 16px 16px;
+    border-radius: 24px;
+    border-color: rgba(233, 201, 139, .28);
     background:
-      radial-gradient(circle at 16% 22%, rgba(255, 239, 206, .94), transparent 24%),
-      radial-gradient(circle at 80% 20%, rgba(205, 160, 83, .16), transparent 26%),
-      linear-gradient(135deg, #f8eedc, #efd8b0 72%, #ebd2a2);
-    box-shadow: 0 18px 34px rgba(127, 85, 39, .14);
+      linear-gradient(112deg, rgba(15, 10, 7, .96) 0%, rgba(15, 10, 7, .88) 40%, rgba(15, 10, 7, .42) 100%),
+      var(--article-orbit-image, radial-gradient(circle at 78% 22%, rgba(201, 169, 97, .16), transparent 26%)),
+      linear-gradient(135deg, rgba(39, 28, 18, .98), rgba(14, 10, 7, .98));
+    background-position: center;
+    background-size: cover;
+    box-shadow: inset 0 1px 0 rgba(255, 244, 214, .10), 0 22px 46px rgba(0, 0, 0, .28);
   }
 
-  .article-orbit__glyph { left: 18px; width: 102px; height: 102px; }
-  .article-orbit__ring--outer { border-color: rgba(155, 99, 37, .34); }
-  .article-orbit__ring--mid,
-  .article-orbit__ring--inner { border-color: rgba(155, 99, 37, .20); }
-  .article-orbit__star { background: rgba(138, 87, 30, .64); box-shadow: 0 0 9px rgba(155, 99, 37, .12); }
-  .article-orbit__copy { min-height: 118px; margin-left: 118px; margin-right: 0; }
-  .article-orbit__eyebrow { color: rgba(105, 78, 43, .64); font-size: 11px; }
-  .article-orbit__title { color: #7a4b17; font-size: 32px; text-shadow: none; }
-  .article-orbit__summary { color: #8b7351; font-size: 13px; }
-  .article-orbit__rail { position: static; width: auto; margin-top: 18px; }
-  .article-orbit__serial { color: rgba(122, 75, 23, .56); text-align: left; }
-  .article-orbit__rule { background: linear-gradient(90deg, rgba(155, 99, 37, .18), rgba(155, 99, 37, .42), transparent); }
-  .article-orbit__mini-list { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  .article-orbit__mini { min-height: 54px; border-color: rgba(155, 99, 37, .12); background: linear-gradient(180deg, rgba(255, 252, 245, .82), rgba(248, 239, 222, .52)); }
-  .article-orbit__mini span { color: rgba(105, 78, 43, .48); }
-  .article-orbit__mini strong { color: #7b4b16; font-size: 15px; }
-}
+  .article-orbit__glow {
+    background:
+      radial-gradient(circle at 18% 78%, rgba(240, 215, 155, .18), transparent 24%),
+      radial-gradient(circle at 78% 24%, rgba(255, 236, 188, .18), transparent 20%),
+      linear-gradient(180deg, rgba(255, 255, 255, .02), transparent 42%);
+  }
 
-@media (max-width: 760px) {
-  .article-orbit--series {
-    min-height: 188px;
-    padding: 20px 18px 18px;
+  .article-orbit__glyph {
+    left: auto;
+    right: 12px;
+    top: 24px;
+    width: 150px;
+    height: 150px;
+    transform: none;
+    opacity: .98;
+  }
+
+  .article-orbit__ring--outer { border-color: rgba(240, 215, 155, .52); }
+  .article-orbit__ring--mid,
+  .article-orbit__ring--inner { border-color: rgba(240, 215, 155, .24); }
+  .article-orbit__star {
+    background: rgba(255, 236, 188, .84);
+    box-shadow: 0 0 12px rgba(240, 215, 155, .26);
+    opacity: .92;
   }
 
   .article-orbit__copy {
-    min-height: 96px;
-    margin-left: 118px;
-    margin-right: 0;
-    justify-content: center;
+    min-height: 0;
+    max-width: 172px;
+    margin-left: 0;
+    margin-right: 154px;
+    padding-top: 4px;
+    justify-content: flex-start;
   }
 
   .article-orbit__eyebrow {
-    margin-bottom: 8px;
+    margin-bottom: 10px;
+    color: rgba(248, 229, 192, .76);
+    font-size: 11px;
   }
 
   .article-orbit__title {
-    font-size: 30px;
-    line-height: 1.05;
+    color: #fff2cc;
+    font-size: 34px;
+    text-shadow: 0 12px 24px rgba(0, 0, 0, .24);
   }
 
   .article-orbit__summary {
-    display: none;
+    display: block;
+    margin-top: 10px;
+    color: rgba(248, 229, 192, .78);
+    font-size: 13px;
+    line-height: 1.55;
+  }
+
+  .article-orbit__rail {
+    left: 16px;
+    right: 16px;
+    bottom: 16px;
+    top: auto;
+    width: auto;
+    gap: 10px;
   }
 
   .article-orbit__serial {
     display: none;
   }
 
-  .article-orbit__rail {
-    margin-top: 14px;
-  }
-}
-
-@media (max-width: 760px) {
-  .article-orbit__glyph {
-    left: 20px;
-    width: 92px;
-    height: 92px;
-    opacity: .58;
+  .article-orbit__rule {
+    background: linear-gradient(90deg, rgba(248, 229, 192, .24), rgba(248, 229, 192, .04));
   }
 
-  .article-orbit__copy {
-    margin-left: 110px;
+  .article-orbit__mini-list {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .article-orbit__mini {
+    min-height: 68px;
+    padding: 10px 12px;
+    border-color: rgba(248, 229, 192, .18);
+    background: linear-gradient(180deg, rgba(255, 250, 239, .16), rgba(255, 250, 239, .08));
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .04);
+  }
+
+  .article-orbit__mini span {
+    color: rgba(248, 229, 192, .58);
+    font-size: 10px;
+  }
+
+  .article-orbit__mini strong {
+    color: #fff6dd;
+    font-size: 16px;
   }
 
   .article-orbit__core {
-    inset: 24px;
-    opacity: .78;
+    inset: 32px;
+    opacity: .92;
   }
 
-  .article-orbit__star {
-    opacity: .62;
+  .article-orbit__core-label {
+    inset: 32px;
+    color: #fff4d6;
+    font-size: 38px;
+  }
+}
+
+@media (max-width: 430px) {
+  .article-orbit--series {
+    min-height: 272px;
+  }
+
+  .article-orbit__glyph {
+    right: 10px;
+    width: 138px;
+    height: 138px;
+  }
+
+  .article-orbit__copy {
+    max-width: 156px;
+    margin-right: 142px;
+  }
+
+  .article-orbit__title {
+    font-size: 31px;
+  }
+
+  .article-orbit__summary {
+    font-size: 12px;
+  }
+
+  .article-orbit__core-label {
+    font-size: 34px;
   }
 }
 
@@ -1441,7 +1518,7 @@ h1 {
   }
 
   .article-orbit--series .article-orbit__mini span {
-    color: rgba(105, 78, 43, .48);
+    color: rgba(248, 229, 192, .58);
   }
 }
 
@@ -1466,7 +1543,7 @@ h1 {
 
 @media (max-width: 760px) {
   .article-orbit--series .article-orbit__glyph {
-    opacity: .72;
+    opacity: .98;
   }
 }
 

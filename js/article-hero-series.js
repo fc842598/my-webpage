@@ -45,6 +45,30 @@
       .replace(/后先看什么$/, "先看什么");
   }
 
+  function glyphSymbol(label) {
+    const clean = text({ textContent: label })
+      .replace(/系列文章$/, "")
+      .replace(/阅天AI$/, "阅")
+      .replace(/品牌介绍$/, "阅")
+      .replace(/三方四正$/, "三")
+      .replace(/算命网站$/, "算")
+      .replace(/怎么选$/, "选")
+      .replace(/先看什么$/, "先")
+      .replace(/宫$/, "");
+    return Array.from(clean)[0] || "阅";
+  }
+
+  function posterImage() {
+    const raw = document.querySelector('meta[property="og:image"]')?.content || "";
+    if (!raw || !/(images\/home2\/|xu-dashi\.webp)/i.test(raw)) return "";
+    try {
+      const url = new URL(raw, window.location.href);
+      return /(^|\.)yuetianai\.com$/i.test(url.hostname) ? `${url.pathname}${url.search}` : url.href;
+    } catch (_error) {
+      return raw;
+    }
+  }
+
   function palaceConfig(slug) {
     const index = palaces.findIndex((item) => item.slug === slug);
     if (index < 0) return null;
@@ -101,11 +125,17 @@
     const slug = window.location.pathname.split("/").pop() || "";
     const config = getConfig(slug, root);
     const summary = shortSummary(root.querySelector(".detail-subtitle")?.textContent);
+    const glyph = glyphSymbol(config.label);
+    const image = posterImage();
     const stars = Array.from({ length: 7 }, (_, index) => `<span class="article-orbit__star article-orbit__star--${index + 1}"></span>`).join("");
 
     orbit.classList.add("article-orbit--series");
     orbit.dataset.seriesEnhanced = "true";
     orbit.removeAttribute("aria-hidden");
+    if (image) {
+      orbit.style.setProperty("--article-orbit-image", `url("${image}")`);
+      orbit.dataset.posterImage = "true";
+    }
     orbit.innerHTML = `
       <div class="article-orbit__glow" aria-hidden="true"></div>
       <div class="article-orbit__glyph" aria-hidden="true">
@@ -113,6 +143,7 @@
         <span class="article-orbit__ring article-orbit__ring--mid"></span>
         <span class="article-orbit__ring article-orbit__ring--inner"></span>
         <span class="article-orbit__core"></span>
+        <span class="article-orbit__core-label">${glyph}</span>
         ${stars}
       </div>
       <div class="article-orbit__copy">
