@@ -2864,6 +2864,10 @@ function formatWentianTzOffset(tzOffset) {
   return minutes ? `UTC${sign}${hour}:${String(minutes).padStart(2, "0")}` : `UTC${sign}${hour}`;
 }
 
+function isWentianEnglishUi() {
+  return getWentianLanguageCode() === "en";
+}
+
 function formatWentianTimeZoneLabel(timeZone, tzOffset) {
   const offsetText = formatWentianTzOffset(tzOffset);
   return timeZone ? `${timeZone} · ${offsetText}` : offsetText;
@@ -17621,6 +17625,9 @@ function renderWentianPolishedScreen(screen) {
   if (no === 35) {
     const contacts = [
       ["电子邮箱", "842598522@qq.com", "✉", "wentian-contact-email"],
+      ["小红书", "阅天AI命理小助手", "红", "wentian-contact-xiaohongshu"],
+      ["微信公众号", "悦天AI公众号", "微", "wentian-contact-wechat"],
+      ["X", "阅天AI yuetianai.com", "X", "wentian-contact-x"],
     ];
     const contactStatusTop = 128 + contacts.length * 78 + 16;
     return `
