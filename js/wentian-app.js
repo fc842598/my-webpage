@@ -12105,7 +12105,8 @@ function renderWentianHepanTimeEditSheet(archives) {
 function sourceHepanTypeScreen() {
   return `
     ${figBox("wt10-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
-    ${wentianSimpleHeader("wt10", "选择合盘类型")}
+    ${wentianBackPill("wt10", 18, 42)}
+    ${figText("wt10-header-title", "选择合盘类型", 120, 53, 230, 15, "#25211d", 800, "left")}
     ${figBox("wt10-card", 34, 108, 322, 584, "", "border-radius:18px;background:#fff;box-shadow:0 12px 30px rgba(69,45,24,.12);overflow:hidden;")}
     ${figText("wt10-title", "情侣合盘", 0, 136, 390, 25, "#25211d", 800, "center")}
     ${["真命盘合参", "情感契合度", "冲突化解建议"].map((text, index) => `
