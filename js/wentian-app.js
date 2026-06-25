@@ -17974,8 +17974,15 @@ function getWentianClassicMutagenClass(mutagen = "") {
 
 function getWentianClassicStarText(star) {
   if (!star) return "";
-  if (typeof star === "string") return star;
-  return `${star.name || ""}${star.brightness || ""}`;
+  if (typeof star === "string") return isWentianEnglishUi() ? translateWentianText(star, "en") : star;
+  if (!isWentianEnglishUi()) return `${star.name || ""}${star.brightness || ""}`;
+  const name = translateWentianText(star.name || "", "en");
+  const brightness = star.brightness
+    ? (WENTIAN_I18N_EN_BRIGHTNESS_PINYIN[star.brightness]
+      || WENTIAN_I18N_EN_BRIGHTNESS[star.brightness]
+      || translateWentianText(star.brightness, "en"))
+    : "";
+  return [name, brightness].filter(Boolean).join(" ");
 }
 
 function getWentianClassicRange(palace) {
@@ -18329,7 +18336,28 @@ function renderWentianClassicXiaoLianPicker(selected = {}, options = {}) {
   const activeKey = selected.key || selected.currentKey || "";
   const action = options.xiaolianAction || "wentian-chart-ai-xiaolian-pick";
   const datasetAttrs = renderWentianDatasetAttrs(options.xiaolianDataset);
+  const isEn = isWentianEnglishUi();
+  const controlLabel = isEn ? "Annual" : "灏忔祦骞?";
   const label = selected.age ? `${selected.age}岁` : (selected.solarYear ? `${selected.solarYear}年` : "--");
+  const displayLabel = selected.age
+    ? (isEn ? `Age ${selected.age}` : label)
+    : (selected.solarYear ? (isEn ? `${selected.solarYear}` : label) : label);
+  if (isEn) {
+    if ((options.readonly && !options.enableXiaoLianPicker) || !items.length) {
+      return `<div class="fc-xiaolian-control is-readonly"><span class="fc-xiaolian-label">${escapeHtml(controlLabel)}</span><b>${escapeHtml(displayLabel)}</b></div>`;
+    }
+    return `
+      <details class="fc-xiaolian-control">
+        <summary><span class="fc-xiaolian-label">${escapeHtml(controlLabel)}</span><b>${escapeHtml(displayLabel)}</b><i aria-hidden="true"></i></summary>
+        <div class="fc-xiaolian-menu">
+          ${items.map((item) => `
+            <button type="button" class="${item.key === activeKey ? "is-selected" : ""}${item.key === selected.currentKey ? " is-current" : ""}" data-action="${escapeHtml(action)}" data-xiaolian-age-key="${escapeHtml(item.key)}"${datasetAttrs}>
+              ${escapeHtml(item.age ? `Age ${item.age}` : item.solarYear || "Annual")}
+            </button>
+          `).join("")}
+        </div>
+      </details>`;
+  }
   if ((options.readonly && !options.enableXiaoLianPicker) || !items.length) {
     return `<div class="fc-xiaolian-control is-readonly"><span class="fc-xiaolian-label">小流年</span><b>${escapeHtml(label)}</b></div>`;
   }
@@ -18363,6 +18391,7 @@ function focusWentianClassicXiaoLianMenu(details) {
 }
 
 function renderWentianClassicCenter(chart, chartData, form, options = {}, source = {}) {
+  const isEn = isWentianEnglishUi();
   const pillars = chartData?.sizhu || extractWentianPillars(chart);
   const genderLabel = form.gender === "female" ? "阴女" : "阳男";
   const titleName = escapeHtml(getWentianArchiveResolvedName({ form, chartData }));
@@ -18373,6 +18402,23 @@ function renderWentianClassicCenter(chart, chartData, form, options = {}, source
   const trueSolarText = formatWentianClassicTrueSolar(chartData, dateText);
   const selectedXiao = options.selectedXiaoLian || getWentianSelectedXiaoLianYear(chartData);
   const yijing = getWentianYijingContext(source?.chart ? source : { chart, chartData, form }, selectedXiao);
+  const zodiac = chart?.zodiac || chartData?.zodiac || "";
+  const zodiacEn = zodiac ? translateWentianText(zodiac, "en").replace(/\bText\b\s*/gi, "").trim() : "";
+  const metaTextEn = [
+    chart?.fiveElementsClass || chartData?.fiveElementsClass ? translateWentianText(chart?.fiveElementsClass || chartData?.fiveElementsClass || "", "en") : "",
+    zodiacEn,
+  ].filter(Boolean).join(" 路 ");
+  const timeLabelEn = timeName ? `${translateWentianText(timeName, "en").replace(/\?/g, "")} Hour` : "";
+  const lunarTextEn = translateWentianText(chart?.lunarDate || chart?.chineseDate || "鈥?", "en");
+  const liunianBaseEn = translateWentianText(yijing.results.liunian?.name || selectedXiao?.liunianGuaName || "鈥?", "en").replace(/\bText\b\s*/gi, "").trim();
+  const liunianNameEn = selectedXiao?.age ? `Age ${selectedXiao.age} 路 ${liunianBaseEn}` : liunianBaseEn;
+  const trueSolarDisplayEn = (() => {
+    const trueSolarClock = formatWentianCenterClock(chartData.trueSolarTime || chartData.solarTime || "");
+    const localClock = formatWentianCenterClock(chartData.localTime || chartData.birthDate || dateText || "");
+    const diffRaw = String(chartData.trueSolarDiff || "").trim().replace(/分钟/g, " min").replace(/鍒嗛挓/g, " min");
+    if (trueSolarClock) return diffRaw ? `${trueSolarClock} (${diffRaw})` : trueSolarClock;
+    return localClock ? `${localClock} (Not corrected)` : "鈥?";
+  })();
   const liunianName = selectedXiao?.age ? `${selectedXiao.age}岁 · ${selectedXiao.liunianGuaName || yijing.results.liunian?.name || "—"}` : (yijing.results.liunian?.name || "—");
   const columns = [
     [pillars.yearStem, pillars.yearBranch, "#886a4a"],
@@ -18380,6 +18426,32 @@ function renderWentianClassicCenter(chart, chartData, form, options = {}, source
     [pillars.dayStem, pillars.dayBranch, "#9b4238"],
     [pillars.hourStem, pillars.hourBranch, "#476885"],
   ];
+  if (isEn) {
+    return `
+      <div class="fc-center-panel" style="grid-column:2 / 4;grid-row:2 / 4;">
+        <div class="fc-center-title">Zi Wei Chart</div>
+        <div class="fc-center-meta"><span class="fc-center-name">${titleName}</span><span>${escapeHtml(metaTextEn || translateWentianText(genderLabel, "en"))}</span></div>
+        <div class="fc-center-rows">
+          <div class="fc-center-row"><span class="fc-center-lbl">Solar</span><span class="fc-center-val">${escapeHtml([dateText, timeLabelEn].filter(Boolean).join(" "))}</span></div>
+          <div class="fc-center-row"><span class="fc-center-lbl">Lunar</span><span class="fc-center-val">${escapeHtml(lunarTextEn)}</span></div>
+          <div class="fc-center-row"><span class="fc-center-lbl">True Solar</span><span class="fc-center-val">${escapeHtml(trueSolarDisplayEn)}</span></div>
+          <div class="fc-center-row"><span class="fc-center-lbl">Chart Hour</span><span class="fc-center-val">${escapeHtml(timeLabelEn || "鈥?")}</span></div>
+          <div class="fc-center-row fc-center-sizhu-row"><span class="fc-center-lbl">Pillars</span><div class="fc-sizhu">
+            ${columns.map(([stem, branch, color]) => (stem || branch) ? `<div class="fc-sizhu-col" style="color:${color}"><span>${escapeHtml(stem || "?")}</span><span>${escapeHtml(branch || "?")}</span></div>` : "").join("")}
+          </div></div>
+        </div>
+        <div class="fc-gua-rows">
+          ${renderWentianClassicGuaRow("Innate Hexagram", translateWentianText(yijing.results.xiantian?.name || "鈥?", "en"))}
+          ${renderWentianClassicGuaRow("Acquired Hexagram", translateWentianText(yijing.results.houtian?.name || "鈥?", "en"))}
+          ${renderWentianClassicGuaRow("Annual Hexagram", liunianNameEn)}
+        </div>
+        ${renderWentianClassicXiaoLianPicker(selectedXiao, options)}
+        ${options.readonly ? "" : `<div class="fc-center-btns" aria-label="Adjust chart hour">
+          <button type="button" class="fc-center-btn" data-action="wentian-chart-time-step" data-hours-delta="-2" aria-label="Earlier by 2 hours">-2h</button>
+          <button type="button" class="fc-center-btn" data-action="wentian-chart-time-step" data-hours-delta="2" aria-label="Later by 2 hours">+2h</button>
+        </div>`}
+      </div>`;
+  }
   return `
     <div class="fc-center-panel" style="grid-column:2 / 4;grid-row:2 / 4;">
       <div class="fc-center-title">紫微排盘</div>

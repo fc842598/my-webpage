@@ -1990,24 +1990,24 @@ html[lang="en"] .wentian-native-mingpan .fc-cell {
 }
 
 html[lang="en"] .wentian-native-mingpan .fc-major-star {
-  font-size: 8.6px;
-  line-height: 1.08;
-  max-width: 54px;
+  font-size: 7px;
+  line-height: 1.02;
+  max-width: 42px;
   overflow: hidden;
   text-overflow: clip;
   white-space: normal;
-  word-break: keep-all;
+  word-break: break-word;
 }
 
 html[lang="en"] .wentian-native-mingpan .fc-minor-star,
 html[lang="en"] .wentian-native-mingpan .fc-shen-list span {
-  font-size: 7px;
-  line-height: 1.08;
-  max-width: 46px;
+  font-size: 5.8px;
+  line-height: 1.02;
+  max-width: 34px;
   overflow: hidden;
   text-overflow: clip;
   white-space: normal;
-  word-break: keep-all;
+  word-break: break-word;
 }
 
 html[lang="en"] .wentian-native-mingpan .fc-pal-mutagen {
@@ -2017,18 +2017,71 @@ html[lang="en"] .wentian-native-mingpan .fc-pal-mutagen {
 }
 
 html[lang="en"] .wentian-native-mingpan .fc-palace-info {
-  font-size: 7px;
+  font-size: 6px;
 }
 
 html[lang="en"] .wentian-native-mingpan .fc-palace-name {
-  font-size: 8.8px;
-  line-height: 1.05;
+  font-size: 6.8px;
+  line-height: 1;
 }
 
 html[lang="en"] .wentian-native-mingpan .fc-branch,
 html[lang="en"] .wentian-native-mingpan .fc-age {
-  font-size: 7px;
+  font-size: 5.8px;
+  line-height: 1;
+}
+
+html[lang="en"] .wentian-native-mingpan .fc-center-panel {
+  padding: 6px 6px 5px;
+  gap: 2px;
+}
+
+html[lang="en"] .wentian-native-mingpan .fc-center-title {
+  font-size: 10px;
+  letter-spacing: 1px;
+}
+
+html[lang="en"] .wentian-native-mingpan .fc-center-meta,
+html[lang="en"] .wentian-native-mingpan .fc-center-row,
+html[lang="en"] .wentian-native-mingpan .fc-gua-row {
+  font-size: 5.9px;
   line-height: 1.05;
+}
+
+html[lang="en"] .wentian-native-mingpan .fc-center-lbl {
+  width: 26px;
+  flex: 0 0 26px;
+}
+
+html[lang="en"] .wentian-native-mingpan .fc-sizhu {
+  gap: 3px;
+}
+
+html[lang="en"] .wentian-native-mingpan .fc-sizhu-col {
+  font-size: 6.5px;
+  line-height: 1;
+}
+
+html[lang="en"] .wentian-native-mingpan .fc-xiaolian-control {
+  gap: 3px;
+  font-size: 6px;
+}
+
+html[lang="en"] .wentian-native-mingpan .fc-xiaolian-control b {
+  min-width: 34px;
+  height: 14px;
+  font-size: 7px;
+}
+
+html[lang="en"] .wentian-native-mingpan .fc-center-btns {
+  gap: 4px;
+  margin: 1px 2px 0;
+}
+
+html[lang="en"] .wentian-native-mingpan .fc-center-btn {
+  height: 16px;
+  font-size: 7px;
+  line-height: 12px;
 }
 
 .wentian-native-mingpan .fc-pal-mutagen.fc-mutagen-lu {
