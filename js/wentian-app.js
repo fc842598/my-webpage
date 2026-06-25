@@ -66,7 +66,7 @@ const convertedScreens = [
 const convertedByNo = new Map(convertedScreens.map((screen) => [screen.no, screen]));
 
 const screenFlowHotspots = {
-  1: [[18, 130, 354, 274, "screen-5"], [18, 438, 354, 96, "screen-26"], [18, 535, 354, 96, "hepan"], [18, 632, 354, 96, "screen-17"], [18, 729, 354, 96, "screen-42"], [18, 826, 354, 96, "screen-46"], [12, 950, 76, 83, "screen-1"], [109, 950, 76, 83, "screen-25"], [207, 950, 76, 83, "screen-3"], [304, 950, 76, 83, "screen-31"]],
+  1: [[18, 130, 354, 274, "screen-5"], [18, 438, 354, 96, "screen-26"], [18, 535, 354, 96, "screen-11"], [18, 632, 354, 96, "screen-17"], [18, 729, 354, 96, "screen-42"], [18, 826, 354, 96, "screen-46"], [12, 950, 76, 83, "screen-1"], [109, 950, 76, 83, "screen-25"], [207, 950, 76, 83, "screen-3"], [304, 950, 76, 83, "screen-31"]],
   2: [[18, 282, 354, 190, "screen-4"], [18, 487, 354, 190, "screen-4"], [18, 692, 354, 175, "screen-4"]],
   3: [[285, 128, 82, 28, "screen-5"], [16, 164, 358, 92, "screen-5"], [16, 282, 358, 108, "screen-4"], [12, 761, 76, 72, "screen-1"], [109, 761, 76, 72, "screen-25"], [207, 761, 76, 72, "screen-3"], [304, 761, 76, 72, "screen-31"]],
   4: [[18, 24, 44, 56, "screen-3"], [334, 24, 38, 56, "screen-9"], [252, 26, 78, 36, "screen-5"]],
@@ -14387,79 +14387,158 @@ function sourceLiuyaoCastScreen() {
 function sourceLiuyaoResultScreen() {
   const state = getLiuyaoState();
   const result = getLiuyaoResult();
+  const isEn = getWentianLanguageCode() === "en";
+  const trigramEn = {
+    qian: { roman: "Qian", name: "Heaven" },
+    dui: { roman: "Dui", name: "Lake" },
+    li: { roman: "Li", name: "Fire" },
+    zhen: { roman: "Zhen", name: "Thunder" },
+    xun: { roman: "Xun", name: "Wind" },
+    kan: { roman: "Kan", name: "Water" },
+    gen: { roman: "Gen", name: "Mountain" },
+    kun: { roman: "Kun", name: "Earth" }
+  };
+  const getTriEn = (tri) => trigramEn[tri?.key] || { roman: tri?.gua || "", name: tri?.name || "" };
+  const formatHexTitleEn = (hex) => {
+    const upper = getTriEn(hex?.upper).name;
+    const lower = getTriEn(hex?.lower).name;
+    if (upper && lower) return `${upper} over ${lower}`;
+    return upper || lower || `Hexagram ${hex?.no || ""}`.trim();
+  };
+  const formatHexMetaEn = (hex) => {
+    const upper = getTriEn(hex?.upper);
+    const lower = getTriEn(hex?.lower);
+    const parts = [];
+    if (hex?.no) parts.push(`Hexagram ${hex.no}`);
+    if (upper.roman && lower.roman) parts.push(`${upper.roman} over ${lower.roman}`);
+    return parts.join(" / ");
+  };
+  const formatHexTransformTitleEn = (hex) => {
+    const upper = getTriEn(hex?.upper).name;
+    const lower = getTriEn(hex?.lower).name;
+    if (!upper && !lower) return `Hexagram ${hex?.no || ""}`.trim();
+    return upper && lower && upper !== lower ? `${upper} / ${lower}` : (upper || lower);
+  };
+  const formatHexSideEn = (tri, side) => {
+    const item = getTriEn(tri);
+    return `${item.roman} (${item.name}) ${side}`;
+  };
+  const formatMovingTextEn = (movingLines) => {
+    const lines = Array.isArray(movingLines) ? movingLines : [];
+    if (!lines.length) return "No moving lines";
+    return lines.map((line) => `Line ${Number(line.index) + 1}`).join(", ");
+  };
+  const buildAiTextEn = () => {
+    if (!result) return "";
+    const originalTitle = formatHexTitleEn(result.primary);
+    const changedTitle = hasChanged ? formatHexTitleEn(result.changed) : originalTitle;
+    const movingCount = Array.isArray(result.movingLines) ? result.movingLines.length : 0;
+    const movingLineText = formatMovingTextEn(result.movingLines);
+    const cleanQuestion = String(result.question || "this matter").replace(/[?.!]+$/g, "");
+    const lowerQuestion = cleanQuestion.toLowerCase();
+    let suggestion = "Move in smaller steps, verify the response at each turn, and avoid forcing the pace before the signal is clear.";
+    if (/(project|work|job|career|offer|client|cooperation|contract|business|deal)/i.test(lowerQuestion)) {
+      suggestion = "This is better handled through steady progress, clear scope, and tight follow-through on terms and timing.";
+    } else if (/(relationship|love|partner|marriage|reconcile|dating)/i.test(lowerQuestion)) {
+      suggestion = "Keep communication steady, watch the other side's response, and do not rush for an immediate answer.";
+    } else if (/(money|finance|income|investment|payment)/i.test(lowerQuestion)) {
+      suggestion = "Protect cash flow first, control risk, and confirm the next step before expanding further.";
+    } else if (/(exam|study|school|application)/i.test(lowerQuestion)) {
+      suggestion = "Stay with the core plan, tighten execution, and let results accumulate before changing direction.";
+    }
+    const overview = movingCount
+      ? `The original hexagram is ${originalTitle}, changing through ${movingLineText} into ${changedTitle}. This shows a live situation that can move if you respond at the right time.`
+      : `The original hexagram is ${originalTitle}. With no moving lines, the situation is relatively steady and favors clarity over repeated probing.`;
+    return [
+      `[Overview]
+${overview}` ,
+      `[For Your Question]
+For "${cleanQuestion}", the sign is workable, but progress depends on timing, discipline, and not overreaching too early.`,
+      `[Moving Lines]
+${movingCount ? `${movingLineText} are the key change points. Watch what shifts after the next concrete move, then adjust.` : `No moving lines appear, so keep the main direction stable and judge by consistent follow-through.`}`,
+      `[Suggestion]
+${suggestion}`
+    ].join("\n\n");
+  };
   if (!result) {
     return `
       <div class="liuyao-phone-screen liuyao-result-screen" style="min-height:844px">
-        ${renderLiuyaoAppHeader("ly20", "解卦", state)}
+        ${renderLiuyaoAppHeader("ly20", isEn ? "Reading" : "\u89e3\u5366", state)}
         <div class="liuyao-empty-card">
-          <strong>尚未完成起卦</strong>
-          <span>请先投满六爻，或用手动起卦补全六爻。</span>
-          <button type="button" data-route="screen-17">返回起卦</button>
+          <strong>${isEn ? "Casting Not Complete" : "\u5c1a\u672a\u5b8c\u6210\u8d77\u5366"}</strong>
+          <span>${isEn ? "Cast all six lines first, or finish them manually." : "\u8bf7\u5148\u6295\u6ee1\u516d\u723b\uff0c\u6216\u7528\u624b\u52a8\u8d77\u5366\u8865\u5168\u516d\u723b\u3002"}</span>
+          <button type="button" data-route="screen-17">${isEn ? "Back to Casting" : "\u8fd4\u56de\u8d77\u5366"}</button>
         </div>
         ${sourceAppBottomNav("首页", 755)}
       </div>
     `;
   }
   const screenHeight = getLiuyaoResultScreenHeight();
-  const movingText = formatLiuyaoMovingLineText(result.movingLines);
   const hasChanged = result.changed?.key && result.changed.key !== result.primary?.key;
-  const aiText = genLiuyaoAIText(result);
+  const movingText = isEn ? formatMovingTextEn(result.movingLines) : formatLiuyaoMovingLineText(result.movingLines);
+  const aiText = isEn ? buildAiTextEn() : genLiuyaoAIText(result);
+  const primaryTitle = isEn ? formatHexTitleEn(result.primary) : result.primary.name;
+  const changedTitle = isEn ? formatHexTitleEn(hasChanged ? result.changed : result.primary) : (hasChanged ? result.changed.name : result.primary.name);
+  const primaryTransformTitle = isEn ? formatHexTransformTitleEn(result.primary) : result.primary.name;
+  const changedTransformTitle = isEn ? formatHexTransformTitleEn(hasChanged ? result.changed : result.primary) : (hasChanged ? result.changed.name : result.primary.name);
+  const heroMeta = isEn ? formatHexMetaEn(result.primary) : formatLiuyaoHexMeta(result.primary);
+  const heroUpper = isEn ? formatHexSideEn(result.primary.upper, "above") : `${result.primary.upper?.gua || ""}\uFF08${result.primary.upper?.name || ""}\uFF09\u4E0A`;
+  const heroLower = isEn ? formatHexSideEn(result.primary.lower, "below") : `${result.primary.lower?.gua || ""}\uFF08${result.primary.lower?.name || ""}\uFF09\u4E0B`;
   return `
     <div class="liuyao-phone-screen liuyao-result-screen" style="min-height:${screenHeight}px">
-      ${renderLiuyaoAppHeader("ly20", "解卦", state, { reset: true, resetLabel: "重来" })}
+      ${renderLiuyaoAppHeader("ly20", isEn ? "Reading" : "\u89e3\u5366", state, { reset: true, resetLabel: isEn ? "Reset" : "\u91cd\u6765" })}
       <section class="liuyao-stage liuyao-stage-result">
         ${renderLiuyaoFlowSteps(2)}
         <div class="liuyao-result-hero">
-          ${renderLiuyaoMiniHex(result.lines, { label: `本卦六爻：${result.primary.name}` })}
+          ${renderLiuyaoMiniHex(result.lines, { label: isEn ? `Original hexagram lines: ${primaryTitle}` : `\u672c\u5366\u516d\u723b\uff1a${result.primary.name}` })}
           <div>
-            <span>第 ${escapeHtml(result.primary.no || "-")} 卦</span>
-            <strong>${escapeHtml(result.primary.name)}</strong>
-            <em>${escapeHtml(formatLiuyaoHexMeta(result.primary))}</em>
+            <span>${isEn ? `Hexagram ${escapeHtml(result.primary.no || "-")}` : `\u7b2c${escapeHtml(result.primary.no || "-")}\u5366`}</span>
+            <strong>${escapeHtml(primaryTitle)}</strong>
+            <em>${escapeHtml(heroMeta)}</em>
             <p>
-              <b>${escapeHtml(result.primary.upper?.gua || "")}（${escapeHtml(result.primary.upper?.name || "")}）上</b>
+              <b>${escapeHtml(heroUpper)}</b>
               <i></i>
-              <b>${escapeHtml(result.primary.lower?.gua || "")}（${escapeHtml(result.primary.lower?.name || "")}）下</b>
+              <b>${escapeHtml(heroLower)}</b>
             </p>
           </div>
         </div>
         <div class="liuyao-result-transform">
           <div>
-            <span>本卦</span>
-            <strong>${escapeHtml(result.primary.name)}</strong>
+            <span>${isEn ? "Original" : "\u672c\u5366"}</span>
+            <strong>${escapeHtml(primaryTransformTitle)}</strong>
           </div>
           <div class="liuyao-result-arrow">
-            <b>→</b>
+            <b>-></b>
             <em>${escapeHtml(movingText)}</em>
           </div>
           <div>
-            <span>变卦</span>
-            <strong>${escapeHtml(hasChanged ? result.changed.name : result.primary.name)}</strong>
+            <span>${isEn ? "Changed" : "\u53d8\u5366"}</span>
+            <strong>${escapeHtml(changedTransformTitle)}</strong>
           </div>
         </div>
         <div class="liuyao-reading-card liuyao-question-result-card">
-          <span>所问之事</span>
-          <strong>${escapeHtml(result.question || "所问之事")}</strong>
+          <span>${isEn ? "Question" : "\u6240\u95ee\u4e4b\u4e8b"}</span>
+          <strong>${escapeHtml(result.question || (isEn ? "Question" : "\u6240\u95ee\u4e4b\u4e8b"))}</strong>
         </div>
         <div class="liuyao-ai-card liuyao-master-card">
           <div class="liuyao-master-head">
-            <i>许</i>
+            <i>${isEn ? "Xu" : "\u8bb8"}</i>
             <div>
-              <strong>许大师 解卦</strong>
-              <span>AI 命理分析</span>
+              <strong>${isEn ? "Master Xu Reading" : "\u8bb8\u5927\u5e08 \u89e3\u5366"}</strong>
+              <span>${isEn ? "AI Reading" : "AI \u547d\u7406\u5206\u6790"}</span>
             </div>
           </div>
           <p class="liuyao-ai-reading">${escapeHtml(aiText)}</p>
-          <button type="button" class="primary" data-action="liuyao-ask-xu">开始AI解卦</button>
+          <button type="button" class="primary" data-action="liuyao-ask-xu">${isEn ? "Start AI Reading" : "\u5f00\u59cbAI\u89e3\u5366"}</button>
         </div>
         <div class="liuyao-actions is-single">
-          <button type="button" data-action="liuyao-reset">重新起卦</button>
+          <button type="button" data-action="liuyao-reset">${isEn ? "Cast Again" : "\u91cd\u65b0\u8d77\u5366"}</button>
         </div>
       </section>
       ${sourceAppBottomNav("首页", 755)}
       </div>
   `;
 }
-
 function getLiuyaoResultScreenHeight() {
   const result = getLiuyaoResult();
   if (!result) return 844;
@@ -17030,10 +17109,7 @@ function renderWentianPolishedScreen(screen) {
       ${figText("wt9-foot", "仅保留最近 10 条对话", 0, 812, 390, 11, "#b2aaa2", 500, "center")}
     `;
   }
-  if (no === 10) {
-    return sourceHepanTypeScreen();
-  }
-  if (no === 11) {
+  if (no === 10 || no === 11) {
     return sourceHepanSelectScreen();
   }
   if (no === 12) {
@@ -17677,7 +17753,7 @@ function sourceDashboardHomeScreen() {
     const dashboardLoginLabel = dashboardAccount.loggedIn ? "已登陆" : "未登陆";
     const dashboardFeatures = [
       ["紫微斗数", "排盘 · AI细读", "01-feature-ziwei-v2.svg", "screen-26"],
-      ["合盘分析", "双方命盘合参", "01-feature-hepan-v2.svg", "hepan"],
+      ["合盘分析", "双方命盘合参", "01-feature-hepan-v2.svg", "screen-11"],
       ["六爻占卜", "铜钱起卦", "01-feature-liuyao-v2.svg", "liuyao-v2"],
       ["阳宅地脉", "方位九宫", "01-feature-yangzhai-v2.svg", "screen-42"],
       ["办公室布局", "门向与老板位", "01-feature-office-v2.svg", "screen-50"],
@@ -19111,7 +19187,7 @@ function normalizeRoute(route) {
 
 function resolveRoute(route) {
   const clean = normalizeRoute(route).replace(/^#/, "");
-  if (clean === "hepan" || clean === "10" || clean === "screen-10") return "screen-10";
+  if (clean === "hepan" || clean === "10" || clean === "screen-10") return "screen-11";
   if (clean === "23" || clean === "screen-23") return "screen-22";
   const resolved = routeAliases[clean] || clean || "screen-1";
   return /^screen-?(13|14|15|16)$/.test(resolved) ? "screen-1" : resolved;
