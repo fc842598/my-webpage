@@ -14162,24 +14162,32 @@ function renderLiuyaoCoinSummary(state, options = {}) {
   const nextLine = Math.min(progress + 1, 6);
   const lineType = last ? getLiuyaoLineType(last.value) : null;
   const action = complete ? "liuyao-show-result" : "liuyao-open-caster";
+  const isEn = getWentianLanguageCode() === "en";
   const buttonText = complete
-    ? "查看解卦"
-    : (options.lockText || (tossing ? "查看落币" : `投第 ${nextLine} 爻`));
+    ? (isEn ? "View Reading" : "查看解卦")
+    : (options.lockText || (tossing ? (isEn ? "Watch Coins" : "查看落币") : (isEn ? `Cast Line ${nextLine}` : `投第 ${nextLine} 爻`)));
   const status = complete
-    ? "卦已成"
+    ? (isEn ? "Six Lines Complete" : "六爻已成")
     : tossing
-      ? "铜钱落定中"
+      ? (isEn ? "Coins Landing..." : "铜钱落定中")
       : progress
-        ? `第 ${progress} 爻已录`
-        : "准备起卦";
+        ? (isEn ? `Line ${progress} Recorded` : `第 ${progress} 爻已录`)
+        : (isEn ? "Ready to Cast" : "准备起卦");
   const desc = last
-    ? `上次力度 ${last.power || 0}% · ${last.coins.map(getLiuyaoCoinFaceLabel).join(" ")}`
-    : (options.lockText || "轻抛三枚铜钱，连起六爻。");
+    ? (isEn ? `Last force ${last.power || 0}% / ${last.coins.map(getLiuyaoCoinFaceLabel).join(" ")}` : `上次力度 ${last.power || 0}% / ${last.coins.map(getLiuyaoCoinFaceLabel).join(" ")}`)
+    : (options.lockText || (isEn ? "Lightly toss three coins to build six lines." : "轻抛三枚铜钱，连起六爻。"));
+  const headLabel = complete ? (isEn ? "Coin Cast" : "在线投币") : (isEn ? "Current Cast" : "当前起卦");
+  const shellLabel = complete ? (isEn ? "Coin Cast" : "在线投币") : (isEn ? `Line ${nextLine}` : `第 ${nextLine} 爻`);
+  const shellValue = complete ? (isEn ? "Six Lines Complete" : "六爻已成") : (lineType ? `${last.value} ${lineType.name}` : (isEn ? "Waiting for coins" : "等待落币"));
+  const shellHint = lineType
+    ? `${lineType.mark || ""} ${lineType.name}`.trim()
+    : (isEn ? "Focus on one line at a time. After it lands, the next line opens automatically." : "每次只看当前一爻，落定后自动进入下一爻。");
+  const emptyCoinText = isEn ? "<i>Coin 1</i><i>Coin 2</i><i>Coin 3</i>" : "<i>第 1 枚</i><i>第 2 枚</i><i>第 3 枚</i>";
   return `
     <section class="liuyao-coin-summary ${disabled ? "is-disabled" : ""} ${complete ? "is-complete" : ""}">
       <div class="liuyao-coin-summary-head">
         <div>
-          <span>${escapeHtml(complete ? "六爻已成" : "当前起卦")}</span>
+          <span>${escapeHtml(headLabel)}</span>
           <strong>${escapeHtml(status)}</strong>
           <em>${escapeHtml(desc)}</em>
         </div>
@@ -14187,19 +14195,18 @@ function renderLiuyaoCoinSummary(state, options = {}) {
       </div>
       <div class="liuyao-coin-summary-shell">
         <div class="liuyao-coin-summary-copy">
-          <span>${escapeHtml(complete ? "在线投币" : `第 ${nextLine} 爻`)}</span>
-          <strong>${escapeHtml(complete ? "六爻已成" : (lineType ? `${last.value} ${lineType.name}` : "等待落币"))}</strong>
-          <em>${escapeHtml(lineType ? `${lineType.mark || ""} ${lineType.name}`.trim() : "每次只看当前一爻，落定后自动进入下一爻。")}</em>
+          <span>${escapeHtml(shellLabel)}</span>
+          <strong>${escapeHtml(shellValue)}</strong>
+          <em>${escapeHtml(shellHint)}</em>
         </div>
         <div class="liuyao-coin-summary-chips">
-          ${(last?.coins || []).map((coin, index) => `<i>${index + 1} ${escapeHtml(getLiuyaoCoinFaceLabel(coin))}</i>`).join("") || '<i>第 1 枚</i><i>第 2 枚</i><i>第 3 枚</i>'}
+          ${(last?.coins || []).map((coin, index) => `<i>${isEn ? `Coin ${index + 1}` : `第 ${index + 1} 枚`} ${escapeHtml(getLiuyaoCoinFaceLabel(coin))}</i>`).join("") || emptyCoinText}
         </div>
         <button type="button" data-action="${action}" ${disabled ? "disabled" : ""}>${escapeHtml(buttonText)}</button>
       </div>
     </section>
   `;
 }
-
 function renderLiuyaoManualCoinInput(state, options = {}) {
   const disabled = Boolean(options.disabled);
   const casts = Array.from({ length: 6 }, (_, index) => normalizeLiuyaoCast(state.casts[index]));
