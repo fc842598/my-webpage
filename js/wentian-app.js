@@ -43,7 +43,7 @@ const convertedScreens = [
   { no: 32, title: "账户设置", active: "我的", list: [["基本信息", "", "screen-39"], ["登录方式", "", "screen-40"], ["设置密码", "", "screen-41"], ["退出登录", "", "screen-31"]] },
   { no: 33, title: "阅天套餐", active: "我的", cards: [["免费版", ""], ["付费版", "100次/天"], ["付费版 ¥19.90", "按日刷新"]], button: ["立即开通 ¥19.90", "screen-30"] },
   { no: 34, title: "分享阅天AI", active: "我的", modalTitle: "分享阅天AI", modalItems: ["分享文本", "邀请码：8R7U58ZW", "微信好友 / 朋友圈 / 复制链接"], next: "screen-31" },
-  { no: 35, title: "联系我们", active: "我的", list: [["电子邮箱", "", ""], ["小红书", "", ""], ["微信公众号", "", ""], ["X", "", ""]] },
+  { no: 35, title: "联系我们", active: "我的", list: [["电子邮箱", "", ""]] },
   { no: 36, title: "关于我们", active: "我的", cards: [["阅天AI v1.0.3199", "阅天AI是一款命理排盘、合盘与AI解读工具。"], ["隐私协议", ""], ["用户协议", ""], ["检查更新", ""]] },
   { no: 37, title: "语言设置", active: "我的", modalTitle: "语言设置", modalItems: ["简体中文 ✓", "繁體中文", "English"], next: "screen-38" },
   { no: 38, title: "账户设置", active: "我的", list: [["基本信息", "", "screen-39"], ["登录方式", "", "screen-40"], ["设置密码", "", "screen-41"], ["退出登录", "", "screen-31"]] },
@@ -9813,17 +9813,6 @@ async function handleWentianContactAction(action) {
     window.location.href = "mailto:842598522@qq.com?subject=%E9%98%85%E5%A4%A9AI%E5%92%A8%E8%AF%A2";
     return;
   }
-  if (action === "wentian-contact-xiaohongshu") {
-    await copyWentianContactText("阅天AI命理小助手", "小红书名称已复制，打开小红书搜索即可");
-    return;
-  }
-  if (action === "wentian-contact-wechat") {
-    await copyWentianContactText("悦天AI公众号", "公众号名称已复制，打开微信搜索即可");
-    return;
-  }
-  if (action === "wentian-contact-x") {
-    await copyWentianContactText("阅天AI yuetianai.com", "X 联系信息已复制");
-  }
 }
 
 async function handleWentianAboutAction(action) {
@@ -17637,12 +17626,7 @@ function renderWentianPolishedScreen(screen) {
     `;
   }
   if (no === 35) {
-    const contacts = [
-      ["电子邮箱", "842598522@qq.com", "✉", "wentian-contact-email"],
-      ["小红书", "阅天AI命理小助手", "红", "wentian-contact-xiaohongshu"],
-      ["微信公众号", "悦天AI公众号", "微", "wentian-contact-wechat"],
-      ["X", "阅天AI yuetianai.com", "X", "wentian-contact-x"],
-    ];
+    const contacts = [["电子邮箱", "842598522@qq.com", "邮", "wentian-contact-email"]];
     const contactStatusTop = 128 + contacts.length * 78 + 16;
     return `
       ${figBox("wt35-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
