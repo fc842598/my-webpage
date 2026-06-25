@@ -26,10 +26,6 @@ const convertedScreens = [
   { no: 10, title: "合盘类型", active: "首页", cards: [["情侣合盘", "合盘深度解析｜情感契合度｜冲突化解建议"], ["合盘主视觉", ""]], button: ["开始合盘", "screen-11"] },
   { no: 11, title: "选择合盘档案", active: "首页", modalTitle: "选择合盘档案", modalItems: ["谢｜男｜阳历", "命主｜女｜阴历"], next: "screen-49" },
   { no: 12, title: "随机提问", cards: [["今日适合问什么？", "事业方向 / 感情状态 / 近期机会"], ["换一批问题", ""]], button: ["开始阅天", "screen-4"] },
-  { no: 13, title: "抽签", active: "活动", cards: [["抽签", "静心默念问题，抽取一支签文。"]], button: ["开始抽签", "screen-14"] },
-  { no: 14, title: "抽签中", active: "活动", cards: [["抽签中", "签筒正在摇动，请稍候。"]], button: ["查看结果", "screen-15"] },
-  { no: 15, title: "抽签结果", active: "活动", cards: [["上上签", "当前所问宜稳中推进，先定边界，再谈扩张。"]], button: ["查看签文详情", "screen-16"] },
-  { no: 16, title: "签文详情", active: "活动", sections: ["签文", "解签", "事业", "感情", "行动建议"] },
   { no: 17, title: "起卦", active: "活动", cards: [["起卦", "抛掷六次生成卦象。"]], button: ["开始投掷", "screen-18"] },
   { no: 18, title: "投掷4次", active: "活动", cards: [["已投掷 4 次", "还差 2 次完成本卦。"]], button: ["继续投掷", "screen-19"] },
   { no: 19, title: "投掷5次", active: "活动", cards: [["已投掷 5 次", "再投一次查看结果。"]], button: ["查看结果", "screen-20"] },
@@ -82,10 +78,6 @@ const screenFlowHotspots = {
   10: [[18, 44, 48, 48, "screen-1"], [24, 165, 342, 90, "screen-11"], [24, 270, 342, 90, "screen-11"], [24, 375, 342, 90, "screen-11"]],
   11: [[18, 44, 48, 48, "screen-1"]],
   12: [[18, 44, 48, 48, "screen-4"], [22, 150, 346, 72, "screen-4"], [116, 690, 158, 54, "screen-4"]],
-  13: [[18, 44, 48, 48, "screen-1"], [82, 620, 226, 70, "screen-14"]],
-  14: [[65, 570, 260, 90, "screen-15"]],
-  15: [[18, 44, 48, 48, "screen-13"], [43, 615, 304, 58, "screen-16"]],
-  16: [[18, 44, 48, 48, "screen-15"], [42, 670, 306, 50, "screen-4"]],
   17: [[18, 44, 48, 48, "screen-1"], [70, 610, 250, 72, "screen-18"]],
   18: [[18, 44, 48, 48, "screen-17"], [70, 610, 250, 72, "screen-19"]],
   19: [[18, 44, 48, 48, "screen-18"], [70, 610, 250, 72, "screen-20"]],
@@ -128,7 +120,7 @@ const routes = {
   home: ["阅天AI", "命理报告", renderHome],
   ai: ["阅天AI", "AI阅天", renderAI],
   archive: ["个人档案", "档案列表", renderArchive],
-  divine: ["占问工具", "抽签与起卦", renderDivine],
+  divine: ["占问工具", "起卦与占问", renderDivine],
   mine: ["账户中心", "我的", renderMine],
   recharge: ["账户中心", "阅天套餐", renderRecharge],
   settings: ["账户中心", "账户设置", renderSettings],
@@ -154,9 +146,9 @@ const routeAliases = {
   chart: "screen-26",
   report: "screen-27",
   reports: "screen-27",
-  divine: "screen-13",
-  activity: "screen-13",
-  treasure: "screen-13",
+  divine: "screen-17",
+  activity: "screen-17",
+  treasure: "screen-17",
   mine: "screen-31",
   account: "screen-31",
   settings: "screen-38",
@@ -7093,6 +7085,34 @@ const WENTIAN_I18N_EN_EXTRA = {
   "审题通过，可以起卦。": "Question approved. You may cast.",
   "审题服务暂时没接上，请稍后再试。": "Remote question check is unavailable. Please try again later.",
   "请稍后再试。": "Try again shortly.",
+  "改好后点提交占问，重新审题。": "Revise it, then submit again for a fresh review.",
+  "今日已满": "Limit Reached",
+  "已通过": "Passed",
+  "重新提交": "Resubmit",
+  "修改后提交": "Revise and Resubmit",
+  "开始起卦": "Start Casting",
+  "今日已满，明天再占": "Today's limit is reached. Try again tomorrow.",
+  "审题中，稍候开放": "Checking. Unlocks shortly.",
+  "提交通过后开放投币": "Coin casting unlocks after approval.",
+  "待审题": "Waiting for Review",
+  "本地审题通过，可以起卦。后台次数稍后同步。": "Local review passed. You may cast now. Usage sync will follow shortly.",
+  "后台恢复后会继续同步今日次数。": "Today's usage will keep syncing after the service recovers.",
+  "本地通过": "Local Pass",
+  "这个问题太随意，暂不起卦。": "This question is too casual. Casting is blocked.",
+  "请写清楚具体对象和想看的结果。": "State the specific subject and the result you want to know.",
+  "问题还太泛，暂不起卦。": "The question is still too broad. Casting is blocked.",
+  "请具体到一件事，例如“这个项目本月能不能推进”。": "Make it one concrete matter, for example: Can this project move forward this month?",
+  "这句话更像日常聊天，不属于正式占问。": "This sounds more like casual chat and not a formal divination question.",
+  "请改成一件需要判断结果的事情，例如：这段关系这个月还能不能推进？": "Rewrite it as one matter with a clear outcome, for example: Can this relationship still move forward this month?",
+  "一次只问一件事。": "Ask only one matter at a time.",
+  "请先删到一个核心问题，再提交。": "Trim it down to one core question, then submit again.",
+  "问题还不够具体，暂不起卦。": "The question is not specific enough. Casting is blocked.",
+  "请写清对象、事件和想看的结果。": "State the subject, event, and the outcome you want to know.",
+  "问题具体到对象、事件和结果，符合一事一占原则。": "The question names the subject, event, and outcome, and matches the one-question rule.",
+  "问题太散": "Too Vague",
+  "问题太泛": "Too Broad",
+  "非占问": "Not Divination",
+  "问题不具体": "Not Specific",
   "起卦方式": "Casting Method",
   "在线投币": "Coin Cast",
   "手动起卦": "Manual",
@@ -7342,44 +7362,11 @@ const WENTIAN_I18N_EN_EXTRA = {
   "已选2/2": "Selected 2/2",
   "写下你想问的命理问题": "Write your question",
   "请输入想问什么？": "What do you want to ask?",
+  "例如：这周面试能顺利通过吗？": "Example: Will this week's interview go smoothly?",
   "今日运势如何？": "How is my luck today?",
   "最近的工作会有好的转机吗？": "Will work improve soon?",
   "我和TA的感情未来如何发展？": "How will this relationship develop?",
   "近期的贵人会何时出现？": "When will helpful people appear?",
-  "黄大仙灵签": "Wong Tai Sin Lots",
-  "心中默念所问之事": "Focus on your question",
-  "感情、事业、财运皆可问。抽签后可查看签文、解签和 AI 延展。": "Ask about love, career, or wealth. Draw a lot for text, reading, and AI follow-up.",
-  "剩余 1 次": "1 draw left",
-  "感情": "Love",
-  "事业": "Career",
-  "财运": "Wealth",
-  "虔诚抽签": "Draw Lot",
-  "正在为你取签": "Drawing your lot",
-  "已接入当前档案，签文生成后可交给许大师继续解读。": "Current file is connected. Master Xu can explain after the lot appears.",
-  "请稍候": "Please wait",
-  "签文将现": "Lot appearing",
-  "正在抽取第廿九签": "Drawing Lot 29",
-  "遗定良缘": "Destined match",
-  "乱转涡鱼": "Turbid waters",
-  "性立盖守": "Stay steady",
-  "家奇得靖": "Home finds calm",
-  "舞烟泛鹤": "Cranes in mist",
-  "燕上晚也": "Evening swallows",
-  "灵": "Lot",
-  "诚心祈愿": "Sincere wish",
-  "一签一问": "One lot, one question",
-  "第廿九签": "Lot 29",
-  "【中吉】": "Moderate Luck",
-  "点击签面查看详情": "Tap the lot for details",
-  "签文": "Lot Text",
-  "岁岁休言悔，莫道定难改。": "Do not dwell on regret; change is still possible.",
-  "解签": "Reading",
-  "眼前事宜先稳住心神，不急于求成。": "Stay steady first. Do not rush results.",
-  "详情": "Details",
-  "所问之事有转机，但需顺势而行。": "There is a turning point, but move with the timing.",
-  "AI解签": "AI Lot Reading",
-  "请许大师结合命盘继续解读": "Ask Master Xu to read it with your chart",
-  "让 AI 继续解读此签": "Let AI continue this reading",
   "起卦": "Cast",
   "六爻在线起卦": "Online Liuyao Hexagram",
   "先定问题，再投铜钱。系统会生成本卦、变卦和 AI 解读入口。": "Set a question, toss coins, then get original and changed hexagrams plus AI reading.",
@@ -12785,7 +12772,7 @@ function saveLiuyaoQuestionFromDom() {
   const state = getLiuyaoState();
   const nextQuestion = normalizeLiuyaoQuestion(input.value);
   const count = document.querySelector(".liuyao-big-question span");
-  if (count) count.textContent = `${Array.from(nextQuestion).length} 字`;
+  if (count) count.textContent = formatLiuyaoQuestionCount(nextQuestion);
   if (state.question !== nextQuestion) {
     const hadCasts = getLiuyaoValidCasts(state).length > 0;
     state.question = nextQuestion;
@@ -12798,7 +12785,7 @@ function saveLiuyaoQuestionFromDom() {
     }
     const status = document.getElementById("liuyao-question-status");
     if (status) {
-      status.textContent = "改好后点提交占问，重新审题。";
+      status.textContent = translateWentianText("改好后点提交占问，重新审题。");
       status.dataset.tone = "hint";
     }
   }
@@ -12981,7 +12968,7 @@ function getLiuyaoQuestionGateMessage(state = getLiuyaoState()) {
   }
   return {
     tone: "error",
-    text: `${gate.reason || "问题还不够清楚，暂不起卦。"}${gate.suggestion ? ` ${gate.suggestion}` : ""}`,
+    text: [gate.reason || "问题还不够清楚，暂不起卦。", gate.suggestion || ""].filter(Boolean).join("\n"),
   };
 }
 
@@ -13090,7 +13077,9 @@ function updateLiuyaoQuestionSubmitDom(state = getLiuyaoState()) {
   const button = document.querySelector('[data-action="liuyao-submit-question"]');
   const meta = getLiuyaoQuestionSubmitMeta(state);
   if (button) {
-    button.textContent = button.classList.contains("liuyao-start-button") && meta.state === "idle" ? "开始起卦" : meta.label;
+    button.textContent = translateWentianText(
+      button.classList.contains("liuyao-start-button") && meta.state === "idle" ? "开始起卦" : meta.label
+    );
     button.disabled = meta.disabled;
     ["idle", "loading", "approved", "rejected"].forEach((name) => {
       button.classList.toggle(`is-${name}`, meta.state === name);
@@ -13118,22 +13107,29 @@ function updateLiuyaoQuestionLockedDom(state = getLiuyaoState()) {
     stage.classList.toggle("is-disabled", disabled);
     stage.setAttribute("aria-disabled", disabled ? "true" : "false");
     stage.setAttribute("tabindex", disabled ? "-1" : "0");
-    stage.setAttribute("aria-label", disabled ? lockText : `按住铜钱上拉，松手投第 ${progress + 1} 爻`);
+    stage.setAttribute("aria-label", translateWentianText(disabled ? lockText : `按住铜钱上拉，松手投第 ${progress + 1} 爻`));
     const cue = stage.querySelector(".liuyao-swipe-cue");
-    if (cue) cue.textContent = disabled ? lockText : `按住铜钱上拉，松手投第 ${progress + 1} 爻`;
+    if (cue) cue.textContent = translateWentianText(disabled ? lockText : `按住铜钱上拉，松手投第 ${progress + 1} 爻`);
     const force = stage.querySelector(".liuyao-force-label");
-    if (force && !ready) force.textContent = "待审题";
+    if (force && !ready) force.textContent = translateWentianText("待审题");
   }
   const onlineAction = document.querySelector('[data-action="liuyao-open-caster"]');
   if (onlineAction) {
     onlineAction.disabled = !ready || liuyaoQuestionGateLoading || Boolean(liuyaoTossAnimation?.active);
-    onlineAction.textContent = liuyaoQuestionGateLoading ? "审题中…" : (!ready ? "提交通过后开放投币" : `全屏投第 ${progress + 1} 爻`);
+    onlineAction.textContent = translateWentianText(
+      liuyaoQuestionGateLoading ? "审题中…" : (!ready ? "提交通过后开放投币" : `全屏投第 ${progress + 1} 爻`)
+    );
   }
   if (!ready) {
     document.querySelectorAll('.liuyao-line-row[data-action="liuyao-manual-line"]').forEach((item) => {
       item.removeAttribute("data-action");
     });
   }
+}
+
+function formatLiuyaoQuestionCount(question = "") {
+  const count = Array.from(String(question || "")).length;
+  return getWentianLanguageCode() === "en" ? `${count} chars` : `${count} 字`;
 }
 
 function parseLiuyaoGateJson(text) {
@@ -14065,7 +14061,7 @@ function renderLiuyaoQuestionStage(state = getLiuyaoState()) {
       </div>
       <label class="liuyao-big-question" for="liuyao-question">
         <textarea id="liuyao-question" maxlength="${LIUYAO_QUESTION_MAX_LENGTH}" rows="8" placeholder="例如：这周面试能顺利通过吗？">${escapeHtml(getLiuyaoQuestionInputValue(state))}</textarea>
-        <span>${Array.from(getLiuyaoQuestionInputValue(state)).length} 字</span>
+        <span>${formatLiuyaoQuestionCount(getLiuyaoQuestionInputValue(state))}</span>
       </label>
       ${renderLiuyaoQuestionStartButton(state)}
       <div class="liuyao-ask-review">
@@ -17053,78 +17049,6 @@ function renderWentianPolishedScreen(screen) {
       `).join("")}
     `;
   }
-  if (no === 13 || no === 14) {
-    const loading = no === 14;
-    return `
-      ${figBox(`wt${no}-bg`, 0, 0, 390, 844, "", "background:linear-gradient(180deg,#fffdf8 0%,#fbf7ef 48%,#f7f2ea 100%);")}
-      ${wentianSimpleHeader(`wt${no}`, "黄大仙灵签", "◷", { rightAttrs: 'data-route="screen-9" aria-label="聊天记录"' })}
-      ${figBox(`wt${no}-hero`, 22, 104, 346, 108, "", "border-radius:18px;background:#fff;box-shadow:0 10px 26px rgba(70,45,25,.1);")}
-      ${figText(`wt${no}-hero-title`, loading ? "正在为你取签" : "心中默念所问之事", 44, 128, 210, 18, "#25211d", 800)}
-      ${figText(`wt${no}-hero-copy`, loading ? "已接入当前档案，签文生成后可交给许大师继续解读。" : "感情、事业、财运皆可问。抽签后可查看签文、解签和 AI 延展。", 44, 160, 282, 13, "#776f65", 500, "left", "line-height:1.55;")}
-      ${figBox(`wt${no}-count`, 270, 126, 72, 26, "", "border-radius:13px;background:#fff7e8;border:1px solid #ead8ae;")}
-      ${figText(`wt${no}-count-text`, "剩余 1 次", 270, 133, 72, 11, "#9b742e", 800, "center")}
-      ${figBox(`wt${no}-stage`, 32, 246, 326, 330, "", "border-radius:24px;background:#fff;box-shadow:0 14px 34px rgba(70,45,25,.11);overflow:hidden;")}
-      ${figBox(`wt${no}-halo`, 96, 268, 198, 198, "", "border-radius:99px;background:radial-gradient(circle,rgba(215,172,70,.22),rgba(215,172,70,0) 68%);")}
-      ${Array.from({ length: 18 }, (_, index) => {
-        const x = 86 + index * 12 + (loading ? (index % 2) * 2 : 0);
-        const y = loading ? 306 + (index % 5) * 4 : 296 + Math.abs(index - 9) * 3;
-        const rotate = -12 + index * 1.2;
-        return figBox(`wt${no}-stick-${index}`, x, y, 7, 184, "", `border-radius:4px;background:#f3d86d;transform:rotate(${rotate}deg);transform-origin:bottom center;`);
-      }).join("")}
-      ${figBox(`wt${no}-bucket`, 96, 454, 198, 126, "", "border-radius:6px 6px 22px 22px;background:linear-gradient(180deg,#ebe8e2,#ddd9d2);")}
-      ${figText(`wt${no}-bucket-text`, loading ? "请稍候" : "黄大仙灵签", 0, 520, 390, 16, "#7f766b", 800, "center")}
-      ${loading ? `
-        ${figBox(`wt${no}-load-card`, 68, 612, 254, 76, "", "border-radius:18px;background:#1f1d1a;box-shadow:0 10px 22px rgba(20,15,10,.18);")}
-        ${figText(`wt${no}-load-title`, "签文将现", 68, 628, 254, 16, "#fff", 800, "center")}
-        ${figText(`wt${no}-load-copy`, "正在抽取第廿九签", 68, 655, 254, 12, "#f1d88a", 700, "center")}
-      ` : `
-        ${["感情", "事业", "财运"].map((text, index) => `
-          ${figBox(`wt${no}-chip-${index}`, 64 + index * 88, 612, 72, 30, "", "border-radius:15px;background:#fff;border:1px solid #ead8ae;")}
-          ${figText(`wt${no}-chip-text-${index}`, text, 64 + index * 88, 620, 72, 11, "#9b742e", 800, "center")}
-        `).join("")}
-        ${wentianGoldButton(`wt${no}`, "虔诚抽签", "screen-14", 690)}
-      `}
-    `;
-  }
-  if (no === 15) {
-    return `
-      ${figBox("wt15-bg", 0, 0, 390, 844, "", "background:#2a2928;")}
-      ${wentianSimpleHeader("wt15", "", "◷")}
-      ${figBox("wt15-card", 62, 150, 266, 446, "", "border-radius:10px;background:#111;box-shadow:0 16px 36px rgba(0,0,0,.32);")}
-      ${figBox("wt15-paper", 92, 184, 206, 290, "", "border:2px solid #462b2b;border-radius:3px;background:#e98aa0;")}
-      ${figText("wt15-paper-title", "黄大仙灵签", 104, 220, 120, 18, "#2b201d", 800, "center")}
-      ${figText("wt15-poem", "遗定良缘\n乱转涡鱼\n性立盖守\n家奇得靖\n舞烟泛鹤\n燕上晚也", 128, 264, 90, 22, "#2b201d", 800, "center", "line-height:1.22;")}
-      ${figBox("wt15-seal", 234, 202, 42, 42, "", "border:2px solid #332;border-radius:21px;background:rgba(255,255,255,.12);")}
-      ${figText("wt15-seal-text", "灵", 234, 213, 42, 15, "#332", 800, "center")}
-      ${figText("wt15-side-copy", "诚心祈愿\n一签一问", 242, 256, 40, 13, "#4b211f", 800, "center", "line-height:1.45;")}
-      ${[0,1,2,3,4,5,6,7,8].map((idx) => {
-        const x = 238 + (idx % 3) * 12;
-        const y = 418 + Math.floor(idx / 3) * 12;
-        return figBox(`wt15-qr-${idx}`, x, y, 8, 8, "", `background:${idx % 2 ? "#e98aa0" : "#2b201d"};`);
-      }).join("")}
-      ${figText("wt15-result", "第廿九签", 0, 506, 390, 20, "#d7a941", 800, "center")}
-      ${figText("wt15-grade", "【中吉】", 0, 538, 390, 15, "#6fb866", 800, "center")}
-      ${figText("wt15-tip", "点击签面查看详情", 0, 566, 390, 12, "#bbb3aa", 500, "center")}
-      ${figButton("wt15-hit", 62, 150, 266, 446, 'data-route="screen-16"')}
-    `;
-  }
-  if (no === 16) {
-    const sections = [["签文", "岁岁休言悔，莫道定难改。"], ["解签", "眼前事宜先稳住心神，不急于求成。"], ["详情", "所问之事有转机，但需顺势而行。"], ["AI解签", "请许大师结合命盘继续解读"]];
-    return `
-      ${figBox("wt16-bg", 0, 0, 390, 844, "", "background:#f7f7f6;")}
-      ${wentianSimpleHeader("wt16", "第廿九签\n【中吉】", "◷")}
-      ${sections.map(([title, desc], index) => {
-        const y = index === 0 ? 110 : 214 + (index - 1) * 130;
-        const h = index === 0 ? 80 : 104;
-        return `
-          ${figBox(`wt16-card-${index}`, 28, y, 334, h, "", "border-radius:12px;background:#fff;box-shadow:0 6px 18px rgba(70,45,25,.07);")}
-          ${figText(`wt16-title-${index}`, title, 48, y + 18, 120, 15, "#25211d", 800)}
-          ${figText(`wt16-desc-${index}`, desc, 48, y + 48, 284, 13, "#706a63", 500, "left", "line-height:1.55;")}
-        `;
-      }).join("")}
-      ${wentianGoldButton("wt16", "让 AI 继续解读此签", "screen-4", 670)}
-    `;
-  }
   if (no >= 17 && no <= 19) {
     const count = no === 17 ? 0 : no === 18 ? 4 : 5;
     return `
@@ -19770,7 +19694,7 @@ function syncActive() {
   }[state.route] || state.route;
   if (screenNo >= 4 && screenNo <= 9 || screenNo === 12) railRoute = "screen-4";
   if (screenNo === 3 || screenNo >= 25 && screenNo <= 27) railRoute = "screen-3";
-  if (screenNo >= 13 && screenNo <= 24) railRoute = "screen-13";
+  if (screenNo >= 17 && screenNo <= 24) railRoute = "screen-17";
   if (screenNo >= 28 && screenNo <= 41) railRoute = "screen-31";
   if (screenNo >= 50 && screenNo <= 53) railRoute = "screen-1";
   if (screenNo === 1 || screenNo === 2 || screenNo === 10 || screenNo === 11) railRoute = "screen-1";
@@ -19892,20 +19816,15 @@ function renderArchive() {
 
 function renderDivine() {
   return `
-    <div class="grid three">
+    <div class="grid two">
       <article class="panel">
-        <div class="panel-title"><h2>抽签</h2></div>
-        <p class="muted">静心后抽取一签，查看签文与行动建议。</p>
-        <button class="primary-btn" type="button" data-action="drawLot">开始抽签</button>
-      </article>
-      <article class="panel">
-        <div class="panel-title"><h2>起卦</h2></div>
-        <p class="muted">按六次投掷生成卦象，查看本卦、变卦和解读。</p>
-        <button class="primary-btn" type="button" data-action="hexagram">开始起卦</button>
+        <div class="panel-title"><h2>??</h2></div>
+        <p class="muted">?????????????????????</p>
+        <button class="primary-btn" type="button" data-action="hexagram">????</button>
       </article>
       <article class="panel" id="divineResult">
-        <div class="panel-title"><h2>结果</h2></div>
-        <p class="muted">等待你的选择。</p>
+        <div class="panel-title"><h2>??</h2></div>
+        <p class="muted">???????</p>
       </article>
     </div>
   `;
@@ -20767,9 +20686,6 @@ document.addEventListener("click", (event) => {
     const question = escapeHtml(input.value.trim());
     messages.insertAdjacentHTML("beforeend", `<div class="bubble user">${question}</div><div class="bubble ai">我先看当前八字结构：土金偏显，判断问题时更适合先稳住边界，再决定推进节奏。</div>`);
     input.value = "";
-  }
-  if (action === "drawLot") {
-    document.getElementById("divineResult").innerHTML = `<div class="panel-title"><h2>上上签</h2></div><p class="muted">当前所问宜稳中推进，先定边界，再谈扩张。</p>`;
   }
   if (action === "hexagram") {
     document.getElementById("divineResult").innerHTML = `<div class="panel-title"><h2>地风升</h2></div><p class="muted">升而有序，适合积累资源，等待更好的推进窗口。</p>`;
