@@ -17036,7 +17036,7 @@ function renderWentianPolishedScreen(screen) {
   if (no === 12) {
     return `
       ${figBox("wt12-bg", 0, 0, 390, 844, "", "background:#f7f7f6;")}
-      ${wentianSimpleHeader("wt12", "", "◷")}
+      ${wentianSimpleHeader("wt12", "", "◷", { rightAttrs: 'data-route="screen-9" aria-label="聊天记录"' })}
       ${figImage("wt12-avatar", "../images/wentian-prototype-assets/xu-dashi.webp", 145, 126, 100, 100, "border-radius:50px;object-fit:cover;object-position:center 18%;")}
       ${figText("wt12-name", "许大师", 0, 252, 390, 16, "#25211d", 800, "center")}
       ${figText("wt12-sub", "写下你想问的命理问题", 0, 279, 390, 14, "#8f8a84", 500, "center")}
@@ -17044,9 +17044,12 @@ function renderWentianPolishedScreen(screen) {
       ${figText("wt12-placeholder", "请输入想问什么？", 56, 386, 220, 14, "#b6b0aa")}
       ${figBox("wt12-send", 314, 400, 32, 32, "", "border-radius:16px;background:#e4e1dd;")}
       ${figText("wt12-send-text", "+", 314, 405, 32, 20, "#fff", 800, "center")}
+      ${figButton("wt12-input-hit", 36, 356, 318, 92, 'data-route="screen-4" aria-label="开始阅天"', "", "z-index:18;")}
+      ${figButton("wt12-send-hit", 306, 392, 48, 48, 'data-route="screen-4" aria-label="开始阅天"', "", "z-index:19;")}
       ${["今日运势如何？", "最近的工作会有好的转机吗？", "我和TA的感情未来如何发展？", "近期的贵人会何时出现？"].map((text, index) => `
         ${figBox(`wt12-chip-${index}`, 54, 504 + index * 42, 282, 30, "", "border-radius:15px;background:#fff;")}
         ${figText(`wt12-chip-text-${index}`, text, 54, 512 + index * 42, 282, 12, "#7f7a74", 600, "center")}
+        ${figButton(`wt12-chip-hit-${index}`, 54, 504 + index * 42, 282, 30, 'data-route="screen-4" aria-label="开始阅天"', "", "z-index:18;")}
       `).join("")}
     `;
   }
