@@ -29,13 +29,13 @@ const convertedScreens = [
   { no: 17, title: "起卦", active: "活动", cards: [["起卦", "抛掷六次生成卦象。"]], button: ["开始投掷", "screen-18"] },
   { no: 18, title: "投掷4次", active: "活动", cards: [["已投掷 4 次", "还差 2 次完成本卦。"]], button: ["继续投掷", "screen-19"] },
   { no: 19, title: "投掷5次", active: "活动", cards: [["已投掷 5 次", "再投一次查看结果。"]], button: ["查看结果", "screen-20"] },
-  { no: 20, title: "地风升", active: "活动", sections: ["本卦：地风升", "卦意", "事业建议", "关系建议", "行动窗口"], button: ["购买解读", "screen-21"] },
+  { no: 20, title: "地风升", active: "活动", sections: ["本卦：地风升", "卦意", "事业建议", "关系建议", "行动窗口"], button: ["购买解读", "screen-29"] },
   { no: 21, title: "购买弹窗", active: "活动", modalTitle: "购买完整解读", modalItems: ["地风升完整卦象 ¥12", "包含本卦、变卦与行动建议"], next: "screen-29" },
   { no: 22, title: "邀请好友", active: "活动", cards: [["邀请好友", "邀请码：8R7U58ZW"], ["奖励规则", "好友注册后可获得对话次数。"]], button: ["查看邀请详情", "screen-24"] },
   { no: 24, title: "邀请详情", active: "活动", sections: ["邀请详情", "奖励说明", "到账规则", "常见问题"] },
   { no: 25, title: "档案", active: "档案", list: [] },
   { no: 26, title: "排盘表单", active: "档案", form: ["姓名", "性别", "出生日期", "出生地"], button: ["开始排盘", "screen-27"] },
-  { no: 27, title: "紫微命盘", active: "档案", chart: true, button: ["购买解读", "screen-21"] },
+  { no: 27, title: "紫微命盘", active: "档案", chart: true, button: ["购买解读", "screen-29"] },
   { no: 28, title: "卡券包", active: "我的", cards: [["卡券包", "暂无可用卡券"], ["报告券", "购买套餐后自动发放。"]] },
   { no: 29, title: "阅天套餐", active: "我的", recharge: true },
   { no: 30, title: "支付页", active: "我的", cards: [["订单信息", "支付金额 ¥19.90"]], button: ["确认支付 ¥19.90", "screen-31"] },
@@ -81,7 +81,7 @@ const screenFlowHotspots = {
   17: [[18, 44, 48, 48, "screen-1"], [70, 610, 250, 72, "screen-18"]],
   18: [[18, 44, 48, 48, "screen-17"], [70, 610, 250, 72, "screen-19"]],
   19: [[18, 44, 48, 48, "screen-18"], [70, 610, 250, 72, "screen-20"]],
-  20: [[18, 44, 48, 48, "screen-19"], [42, 742, 306, 56, "screen-21"]],
+  20: [[18, 44, 48, 48, "screen-19"], [42, 742, 306, 56, "screen-29"]],
   21: [[316, 175, 48, 48, "screen-20"], [50, 705, 290, 58, "screen-29"]],
   22: [],
   24: [[18, 44, 48, 48, "screen-22"]],
@@ -17184,59 +17184,11 @@ function renderWentianPolishedScreen(screen) {
       ${figBox("wt20-ai", 24, 930, 342, 70, "", "border-radius:14px;background:#fff;box-shadow:0 6px 16px rgba(70,45,25,.07);")}
       ${figText("wt20-ai-title", "AI解卦", 44, 950, 100, 15, "#25211d", 800)}
       ${figText("wt20-ai-copy", "可让许大师结合当前命盘继续解读此卦。", 44, 978, 260, 12, "#756d63")}
-      ${wentianGoldButton("wt20", "购买完整解读", "screen-21", 1012)}
+      ${wentianGoldButton("wt20", "购买完整解读", "screen-29", 1012)}
     `;
   }
   if (no === 21) {
-    const isEn = getWentianLanguageCode() === "en";
-    const paywallTitle = isEn ? "Unlock Full Reading" : (screen.modalTitle || "购买完整解读");
-    const paywallItems = (isEn
-      ? [
-          "Full hexagram reading · ¥12",
-          "Includes the original hexagram, changed hexagram, and action guidance"
-        ]
-      : (screen.modalItems && screen.modalItems.length
-        ? screen.modalItems
-        : ["地风升完整卦象 ¥12", "包含本卦、变卦与行动建议"])).slice(0, 2);
-    const previewTitles = isEn
-      ? ["Original Hexagram", "Meaning", "Career Guidance", "Relationship Guidance"]
-      : ["本卦：地风升", "卦意", "事业建议", "关系建议"];
-    const previewDesc = isEn ? "Buy the full reading to unlock the detailed analysis." : "购买完整解读后可查看详细分析。";
-    const headerTitle = isEn ? "Hexagram Reading" : "地风升";
-    const cardDesc = isEn
-      ? "Unlock the full hexagram reading, changed-hexagram guidance, and continue with follow-up questions for Master Xu."
-      : "解锁后可查看完整卦象、变卦建议，并继续交给许大师追问。";
-    const buyLabel = isEn ? "View Plans" : "查看套餐规则";
-    const cancelLabel = isEn ? "Cancel" : "取消";
-    return `
-      ${figBox("wt21-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
-      ${wentianSimpleHeader("wt21", headerTitle, "⋯")}
-      ${previewTitles.map((title, index) => {
-        const y = 112 + index * 110;
-        return `
-          ${figBox(`wt21-under-${index}`, 24, y, 342, 82, "", "border-radius:12px;background:#fff;box-shadow:0 6px 16px rgba(70,45,25,.07);")}
-          ${figText(`wt21-under-title-${index}`, title, 44, y + 18, 150, 14, "#25211d", 800)}
-          ${figText(`wt21-under-desc-${index}`, previewDesc, 44, y + 46, 260, 12, "#756d63")}
-        `;
-      }).join("")}
-      ${figBox("wt21-overlay", 0, 0, 390, 844, "", "background:rgba(0,0,0,.34);")}
-      ${figBox("wt21-card", 36, 346, 318, 294, "", "border-radius:16px;background:#fff;box-shadow:0 16px 36px rgba(0,0,0,.18);")}
-      ${figText("wt21-title", paywallTitle, 0, 380, 390, 18, "#25211d", 800, "center")}
-      ${figText("wt21-desc", cardDesc, 64, 414, 262, 13, "#756d63", 500, "center", "line-height:1.5;")}
-      ${paywallItems.map((item, index) => {
-        const y = 466 + index * 48;
-        return `
-          ${figBox(`wt21-item-${index}`, 58, y, 274, 34, "", "border-radius:10px;background:#fff8ec;border:1px solid #ead9bd;")}
-          ${figText(`wt21-item-text-${index}`, item, 74, y + 9, 242, 12, "#8f6a24", 700, "center")}
-        `;
-      }).join("")}
-      ${figBox("wt21-buy", 58, 572, 274, 42, "", "border-radius:8px;background:#a73f35;")}
-      ${figText("wt21-buy-text", buyLabel, 58, 585, 274, 13, "#fff", 800, "center")}
-      ${figButton("wt21-pay-hit", 58, 572, 274, 42, `data-route="${screen.next || "screen-29"}"`)}
-      ${figBox("wt21-cancel", 58, 620, 274, 28, "", "border:1px solid #eadfce;border-radius:6px;background:#fff;")}
-      ${figText("wt21-cancel-text", cancelLabel, 58, 627, 274, 12, "#756d63", 700, "center")}
-      ${figButton("wt21-cancel-hit", 58, 620, 274, 28, 'data-action="wentian-return-previous" data-fallback-route="screen-20"')}
-    `;
+    return renderWentianPolishedScreen(convertedByNo.get(29));
   }
   if (false && no === 21) {
     return `
@@ -17266,6 +17218,7 @@ function renderWentianPolishedScreen(screen) {
   if (no === 22) {
     const invite = getWentianInviteSnapshot();
     const account = getWentianAuthDisplay();
+    const isEn = getWentianLanguageCode() === "en";
     const code = invite.inviteCode;
     const pendingCode = getWentianPendingInviteCode();
     const bound = getWentianLocalInviteStatus();
@@ -17275,30 +17228,43 @@ function renderWentianPolishedScreen(screen) {
     const rewardDays = Number(invite.registerRewardDays || 3);
     const activeDailyBonus = Number(invite.activeDailyBonus ?? invite.bonusRemaining ?? 0);
     const activeRewardCount = Number(invite.activeRewardCount || 0);
-    const rewardText = `注册成功后，双方连发 ${rewardDays} 天，每天各得许大师 ${rewardDaily} 次对话。`;
+    const rewardText = isEn
+      ? `Both sides get ${rewardDaily} Master Xu chats daily for ${rewardDays} days after sign-up.`
+      : `注册成功后，双方连发 ${rewardDays} 天，每天各得许大师 ${rewardDaily} 次对话。`;
     if (!account.loggedIn) {
+      const guestHeader = isEn ? "Invite Friends" : "邀请好友";
+      const guestLoginTitle = isEn ? "Sign in to get your invite code" : "登录后生成专属邀请码";
+      const guestLoginDesc = isEn
+        ? `After sign-up, both sides get ${rewardDaily} Master Xu chats a day for ${rewardDays} days.`
+        : `注册成功后，邀请人和注册人都可连续 ${rewardDays} 天每天各得 ${rewardDaily} 次许大师对话。`;
+      const guestLoginButton = isEn ? "Sign In / Register" : "登录 / 注册";
+      const guestBindTitle = isEn ? "Have an invite code?" : "我有好友邀请码";
+      const guestBindDesc = isEn ? "Enter it now. It binds after sign-in." : "先填在这里也可以；登录/注册后自动绑定。";
+      const guestBindPlaceholder = isEn ? "ENTER INVITE CODE" : "输入邀请码";
+      const guestBindButton = isEn ? "Bind" : "绑定";
+      const guestRuleTitle = isEn ? "Reward Rules" : "奖励规则";
       return `
       ${figBox("wt22-bg-clean", 0, 0, 390, 844, "", "background:#fbf7ef;")}
-      ${wentianSimpleHeader("wt22-clean", "邀请好友")}
+      ${wentianSimpleHeader("wt22-clean", guestHeader)}
 
       ${figBox("wt22-login-card-clean", 16, 102, 358, 164, "", "border-radius:20px;background:#fff;box-shadow:0 10px 24px rgba(70,45,25,.08);")}
-      ${figText("wt22-login-title-clean", "登录后生成专属邀请码", 34, 128, 220, 20, "#25211d", 900)}
-      ${figText("wt22-login-desc-clean", `注册成功后，邀请人和注册人都可连续 ${rewardDays} 天每天各得 ${rewardDaily} 次许大师对话。`, 34, 160, 292, 13, "#8f867b", 700, "left", "line-height:1.45;")}
+      ${figText("wt22-login-title-clean", guestLoginTitle, 34, 128, 270, 20, "#25211d", 900)}
+      ${figText("wt22-login-desc-clean", guestLoginDesc, 34, 160, 292, 13, "#8f867b", 700, "left", "line-height:1.45;")}
       ${figBox("wt22-login-btn-clean", 34, 214, 132, 38, "", "border-radius:19px;background:#25211d;")}
       ${figButton("wt22-login-hit-clean", 34, 214, 132, 38, 'data-route="screen-40"')}
-      ${figText("wt22-login-text-clean", "登录 / 注册", 34, 226, 132, 12, "#fff", 900, "center")}
+      ${figText("wt22-login-text-clean", guestLoginButton, 34, 226, 132, 12, "#fff", 900, "center")}
 
       ${figBox("wt22-bind-clean", 16, 288, 358, 144, "", "border-radius:20px;background:#fff;box-shadow:0 10px 24px rgba(70,45,25,.08);")}
-      ${figText("wt22-bind-title-clean", "已有邀请码", 34, 314, 120, 16, "#25211d", 900)}
-      ${figText("wt22-bind-desc-clean", "先填邀请码，登录后自动绑定。", 34, 340, 220, 12, "#8f867b", 700)}
-      <input id="wentian-invite-bind-input" class="wentian-invite-input" style="left:34px;top:370px;width:210px" value="${escapeHtml(pendingCode || "")}" placeholder="输入邀请码">
+      ${figText("wt22-bind-title-clean", guestBindTitle, 34, 314, 220, 16, "#25211d", 900)}
+      ${figText("wt22-bind-desc-clean", guestBindDesc, 34, 340, 260, 12, "#8f867b", 700)}
+      <input id="wentian-invite-bind-input" class="wentian-invite-input" style="left:34px;top:370px;width:210px" value="${escapeHtml(pendingCode || "")}" placeholder="${escapeHtml(guestBindPlaceholder)}">
       ${figBox("wt22-bind-btn-clean", 256, 370, 84, 38, "", "border-radius:19px;background:#b74e39;")}
       ${figButton("wt22-bind-hit-clean", 256, 370, 84, 38, 'data-action="wentian-invite-bind"')}
-      ${figText("wt22-bind-text-clean", "绑定", 256, 382, 84, 12, "#fff", 900, "center")}
+      ${figText("wt22-bind-text-clean", guestBindButton, 256, 382, 84, 12, "#fff", 900, "center")}
       <div id="wentian-invite-status" class="wentian-invite-status" style="left:34px;top:418px;width:306px" data-tone="${wentianInviteState.error ? "error" : ""}">${escapeHtml(status)}</div>
 
       ${figBox("wt22-tip-clean", 16, 468, 358, 78, "", "border-radius:18px;background:#fff9ef;border:1px solid #efdfc3;")}
-      ${figText("wt22-tip-title-clean", "奖励规则", 34, 488, 80, 13, "#9b742e", 900)}
+      ${figText("wt22-tip-title-clean", guestRuleTitle, 34, 488, 110, 13, "#9b742e", 900)}
       ${figText("wt22-tip-desc-clean", rewardText, 34, 512, 300, 12, "#756d63", 700, "left", "line-height:1.42;")}
     `;
     }
@@ -19204,6 +19170,7 @@ function normalizeRoute(route) {
 function resolveRoute(route) {
   const clean = normalizeRoute(route).replace(/^#/, "");
   if (clean === "hepan" || clean === "10" || clean === "screen-10") return "screen-11";
+  if (clean === "21" || clean === "screen-21") return "screen-29";
   if (clean === "23" || clean === "screen-23") return "screen-22";
   const resolved = routeAliases[clean] || clean || "screen-1";
   return /^screen-?(13|14|15|16)$/.test(resolved) ? "screen-1" : resolved;
