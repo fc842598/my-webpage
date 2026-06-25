@@ -14,27 +14,28 @@
     ["ziwei-fumugong.html", "父母宫", "12"],
   ].map(([slug, label, serial]) => ({ slug, label, serial }));
 
-  const posterArt = {
-    "ziwei-minggong.html": "/images/home2/triad-tian-bg.webp",
-    "ziwei-xiongdigong.html": "/images/home2/triad-tian-bg.webp",
-    "ziwei-fuqigong.html": "/images/home2/triad-ren-bg.webp",
-    "ziwei-zinvgong.html": "/images/home2/triad-tian-bg.webp",
-    "ziwei-caibogong.html": "/images/home2/triad-ren-bg.webp",
-    "ziwei-jiegong.html": "/images/home2/triad-tian-bg.webp",
-    "ziwei-qianyigong.html": "/images/home2/triad-ren-bg.webp",
-    "ziwei-puyigong.html": "/images/home2/triad-tian-bg.webp",
-    "ziwei-guanlugong.html": "/images/home2/triad-tian-bg.webp",
-    "ziwei-tianzhaigong.html": "/images/home2/triad-tian-bg.webp",
-    "ziwei-fudegong.html": "/images/home2/triad-tian-bg.webp",
-    "ziwei-fumugong.html": "/images/home2/triad-tian-bg.webp",
-    "ziwei-sanfang-sizheng.html": "/images/home2/triad-tian-bg.webp",
-    "ziwei-shengong.html": "/images/wentian-prototype-assets/xu-dashi.webp",
-    "ziwei-gongxing.html": "/images/home2/triad-ren-bg.webp",
-    "ziwei-kequanlu.html": "/images/home2/triad-tian-bg.webp",
-    "mianfei-ziwei-paipan-hou-xian-kan-shenme.html": "/images/home2/triad-tian-bg.webp",
-    "ai-ziwei-paipan-zenme-xuan.html": "/images/home2/triad-tian-bg.webp",
-    "ai-suanming-wangzhan-zenme-xuan.html": "/images/home2/triad-ren-bg.webp",
-  };
+  const posterSlugs = new Set([
+    "ziwei-minggong.html",
+    "ziwei-xiongdigong.html",
+    "ziwei-fuqigong.html",
+    "ziwei-zinvgong.html",
+    "ziwei-caibogong.html",
+    "ziwei-jiegong.html",
+    "ziwei-qianyigong.html",
+    "ziwei-puyigong.html",
+    "ziwei-guanlugong.html",
+    "ziwei-tianzhaigong.html",
+    "ziwei-fudegong.html",
+    "ziwei-fumugong.html",
+    "ziwei-sanfang-sizheng.html",
+    "ziwei-shengong.html",
+    "ziwei-gongxing.html",
+    "ziwei-kequanlu.html",
+    "mianfei-ziwei-paipan-hou-xian-kan-shenme.html",
+    "ai-ziwei-paipan-zenme-xuan.html",
+    "ai-suanming-wangzhan-zenme-xuan.html",
+    "yuetianai-shi-shenme.html",
+  ]);
 
   const custom = {
     "ziwei-sanfang-sizheng.html": ["看盘方法", "三方四正", "M1"],
@@ -67,62 +68,15 @@
       .replace(/后先看什么$/, "先看什么");
   }
 
-  function glyphSymbol(label) {
-    const clean = text({ textContent: label })
-      .replace(/系列文章$/, "")
-      .replace(/阅天AI$/, "阅")
-      .replace(/品牌介绍$/, "阅")
-      .replace(/三方四正$/, "三")
-      .replace(/算命网站$/, "算")
-      .replace(/怎么选$/, "选")
-      .replace(/先看什么$/, "先")
-      .replace(/宫$/, "");
-    return Array.from(clean)[0] || "阅";
-  }
-
-  function posterImage() {
-    const raw = document.querySelector('meta[property="og:image"]')?.content || "";
-    if (!raw || !/(images\/home2\/|xu-dashi\.webp)/i.test(raw)) return "";
-    try {
-      const url = new URL(raw, window.location.href);
-      return /(^|\.)yuetianai\.com$/i.test(url.hostname) ? `${url.pathname}${url.search}` : url.href;
-    } catch (_error) {
-      return raw;
-    }
-  }
-
-  function posterImageBySlug(slug) {
-    return posterArt[slug] || "";
+  function posterImageBySlug(slug, size = "poster") {
+    if (!posterSlugs.has(slug)) return "";
+    const name = slug.replace(/\.html$/, ".webp");
+    const folder = size === "thumb" ? "thumbs/" : "";
+    return `/images/articles/posters/${folder}${name}`;
   }
 
   function articleHref(slug) {
     return new URL(`../articles/${slug}`, window.location.href).pathname;
-  }
-
-  function posterMetrics(slug, label) {
-    const dict = {
-      "ziwei-minggong.html": ["性格底色", "人生主线", "发展方向"],
-      "ziwei-xiongdigong.html": ["同辈关系", "合作边界", "助力阻力"],
-      "ziwei-fuqigong.html": ["关系模式", "婚缘节奏", "相处边界"],
-      "ziwei-zinvgong.html": ["表达延续", "投入方式", "责任感受"],
-      "ziwei-caibogong.html": ["财帛格局", "收入来源", "理财守成"],
-      "ziwei-jiegong.html": ["身体压力", "风险提示", "恢复节奏"],
-      "ziwei-qianyigong.html": ["外出机会", "发展机缘", "环境变化"],
-      "ziwei-puyigong.html": ["团队协作", "人脉结构", "资源往来"],
-      "ziwei-guanlugong.html": ["事业路径", "岗位角色", "发力方式"],
-      "ziwei-tianzhaigong.html": ["家宅资源", "稳定基础", "空间归属"],
-      "ziwei-fudegong.html": ["内在能量", "精神重心", "放松方式"],
-      "ziwei-fumugong.html": ["原生影响", "承接方式", "支持压力"],
-      "ziwei-sanfang-sizheng.html": ["主宫定位", "对宫牵引", "结构合参"],
-      "ziwei-shengong.html": ["行为落点", "现实姿态", "处世反应"],
-      "ziwei-gongxing.html": ["宫位职责", "阅读顺序", "现实映射"],
-      "ziwei-kequanlu.html": ["名声资源", "权责分布", "现实结果"],
-      "mianfei-ziwei-paipan-hou-xian-kan-shenme.html": ["先看命身", "再看三方", "最后接流年"],
-      "ai-ziwei-paipan-zenme-xuan.html": ["入口清楚", "边界明确", "能落地用"],
-      "ai-suanming-wangzhan-zenme-xuan.html": ["隐私边界", "收费方式", "内容质量"],
-      "yuetianai-shi-shenme.html": ["官网入口", "主要功能", "适合人群"],
-    };
-    return dict[slug] || [`${label}入门`, "结构重点", "现实用法"];
   }
 
   function palaceConfig(slug) {
@@ -131,16 +85,16 @@
     const item = palaces[index];
     const preview = [-2, 2, 4].map((offset) => {
       const target = palaces[(index + offset + palaces.length) % palaces.length];
-      return { href: articleHref(target.slug), image: posterImageBySlug(target.slug), label: target.label, kicker: "十二宫" };
+      return { href: articleHref(target.slug), image: posterImageBySlug(target.slug, "thumb"), label: target.label, kicker: "十二宫" };
     });
     return { series: "十二宫入门", label: item.label, serial: item.serial, preview };
   }
 
   function fallbackPreview() {
     return [
-      { href: articleHref("ziwei-minggong.html"), image: posterImageBySlug("ziwei-minggong.html"), label: "命宫", kicker: "十二宫" },
-      { href: articleHref("ziwei-sanfang-sizheng.html"), image: posterImageBySlug("ziwei-sanfang-sizheng.html"), label: "三方四正", kicker: "看盘方法" },
-      { href: articleHref("ziwei-kequanlu.html"), image: posterImageBySlug("ziwei-kequanlu.html"), label: "科权禄", kicker: "星曜入门" },
+      { href: articleHref("ziwei-minggong.html"), image: posterImageBySlug("ziwei-minggong.html", "thumb"), label: "命宫", kicker: "十二宫" },
+      { href: articleHref("ziwei-sanfang-sizheng.html"), image: posterImageBySlug("ziwei-sanfang-sizheng.html", "thumb"), label: "三方四正", kicker: "看盘方法" },
+      { href: articleHref("ziwei-kequanlu.html"), image: posterImageBySlug("ziwei-kequanlu.html", "thumb"), label: "科权禄", kicker: "星曜入门" },
     ];
   }
 
@@ -180,36 +134,14 @@
 
     const slug = window.location.pathname.split("/").pop() || "";
     const config = getConfig(slug, root);
-    const summary = shortSummary(root.querySelector(".detail-subtitle")?.textContent);
-    const glyph = glyphSymbol(config.label);
-    const image = posterImage();
-    const metrics = posterMetrics(slug, config.label).map((item) => `<span>${item}</span>`).join("");
-    const stars = Array.from({ length: 7 }, (_, index) => `<span class="article-orbit__star article-orbit__star--${index + 1}"></span>`).join("");
+    const image = posterImageBySlug(slug);
 
     orbit.classList.add("article-orbit--series");
     orbit.dataset.seriesEnhanced = "true";
     orbit.removeAttribute("aria-hidden");
-    if (image) {
-      orbit.style.setProperty("--article-orbit-image", `url("${image}")`);
-      orbit.dataset.posterImage = "true";
-    }
     orbit.innerHTML = `
       <div class="article-orbit__poster">
-        <div class="article-orbit__glow" aria-hidden="true"></div>
-        <div class="article-orbit__glyph" aria-hidden="true">
-          <span class="article-orbit__ring article-orbit__ring--outer"></span>
-          <span class="article-orbit__ring article-orbit__ring--mid"></span>
-          <span class="article-orbit__ring article-orbit__ring--inner"></span>
-          <span class="article-orbit__core"></span>
-          <span class="article-orbit__core-label">${glyph}</span>
-          ${stars}
-        </div>
-        <div class="article-orbit__copy">
-          <p class="article-orbit__eyebrow">${config.series}</p>
-          <p class="article-orbit__title">${config.label}</p>
-          <p class="article-orbit__summary">${summary}</p>
-          <p class="article-orbit__metrics">${metrics}</p>
-        </div>
+        ${image ? `<img class="article-orbit__image" src="${image}" alt="" width="960" height="540" decoding="async">` : ""}
       </div>
       <div class="article-orbit__related">
         <div class="article-orbit__rail">
