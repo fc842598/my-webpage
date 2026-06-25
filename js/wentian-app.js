@@ -16968,7 +16968,7 @@ function renderWentianPolishedScreen(screen) {
       ["行动方案", "未来三个月，把精力放在一个主目标上，每周复盘一次，删掉消耗型关系和低回报事项。"]
     ];
     return `
-      ${figBox("wt8-bg", 0, 0, 390, 1280, "", "background:#fbf7ef;")}
+      ${figBox("wt8-bg", 0, 0, 390, 1380, "", "background:#fbf7ef;")}
       ${wentianSimpleHeader("wt8", "AI长文解读")}
       ${figBox("wt8-master", 24, 100, 342, 92, "", "border-radius:16px;background:#fff;box-shadow:0 8px 20px rgba(70,45,25,.08);")}
       ${figImage("wt8-avatar", "../images/wentian-prototype-assets/xu-dashi.webp", 42, 116, 58, 58, "border-radius:29px;object-fit:cover;object-position:center 18%;")}
@@ -19141,7 +19141,7 @@ function renderConvertedScreen(no) {
   }
   const polishedScreen = renderWentianPolishedScreen(screen);
   if (polishedScreen) {
-    const polishedHeight = screen.no === 4 ? 892 : screen.no === 8 ? 1280 : screen.no === 17 ? getLiuyaoCastScreenHeight() : screen.no === 18 || screen.no === 19 ? 1480 : screen.no === 20 ? getLiuyaoResultScreenHeight() : screen.no === 22 ? 1120 : screen.no === 24 ? 1180 : screen.no === 42 ? getYangzhaiCompassHeight() : screen.no === 43 ? getYangzhaiSelectHeight() : screen.no === 44 ? getYangzhaiResultHeight() : screen.no === 46 ? LIUREN_SCREEN_HEIGHT : screen.no === 49 ? WENTIAN_HEPAN_RESULT_SCREEN_HEIGHT : 844;
+    const polishedHeight = screen.no === 4 ? 892 : screen.no === 8 ? 1380 : screen.no === 17 ? getLiuyaoCastScreenHeight() : screen.no === 18 || screen.no === 19 ? 1480 : screen.no === 20 ? getLiuyaoResultScreenHeight() : screen.no === 22 ? 1120 : screen.no === 24 ? 1180 : screen.no === 42 ? getYangzhaiCompassHeight() : screen.no === 43 ? getYangzhaiSelectHeight() : screen.no === 44 ? getYangzhaiResultHeight() : screen.no === 46 ? LIUREN_SCREEN_HEIGHT : screen.no === 49 ? WENTIAN_HEPAN_RESULT_SCREEN_HEIGHT : 844;
     const wideBgClass = screen.no >= 42 && screen.no <= 45 ? " wide-bg" : "";
     const customHotspots = screen.no >= 17 && screen.no <= 20 ? "" : convertedFlowHotspots(screen);
     return figPhone(`screen-${screen.no}`, `${String(screen.no).padStart(2, "0")} ${screen.title}`, `
