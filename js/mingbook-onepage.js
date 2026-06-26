@@ -5560,8 +5560,13 @@
     const chart = bundle.chart || state.chart;
     const ageState = fcAgeSupportState(visibleDecadeMaxAge(chart));
     const items = decadeItemsForChart(chart, ageState.isOverflow ? null : ageState.realAge);
-    const current = ageState.isOverflow ? null : (items.find((item) => item.isCurrent) || null);
-    const fallback = items[items.length - 1] || items[0] || null;
+    const underflowCurrent = !ageState.isOverflow && items.length && ageState.realAge < items[0].start;
+    const current = ageState.isOverflow
+      ? null
+      : (items.find((item) => item.isCurrent) || (underflowCurrent ? items[0] : null));
+    const fallback = ageState.isOverflow
+      ? (items[items.length - 1] || items[0] || null)
+      : (items[0] || items[items.length - 1] || null);
     const selectedKey = options.forceCurrent ? (current?.key || fallback?.key) : (state.selectedLuckRangeKey || current?.key || fallback?.key);
     const selected = items.find((item) => item.key === selectedKey) || current || fallback || null;
     if (selected && !options.readonly && (!state.selectedLuckRangeKey || options.forceCurrent || !items.some((item) => item.key === state.selectedLuckRangeKey))) {
