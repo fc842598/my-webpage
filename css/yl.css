@@ -117,10 +117,24 @@ button {
 }
 
 .yl-nav a:hover,
-.yl-nav a:focus-visible {
+.yl-nav a:focus-visible,
+.yl-nav a.is-active {
   background: rgba(255, 253, 247, 0.9);
   color: var(--yl-green-dark);
   outline: none;
+}
+
+.yl-page[hidden] {
+  display: none !important;
+}
+
+.yl-app-grid.is-empty {
+  display: none;
+}
+
+.yl-app-grid.is-single {
+  grid-template-columns: minmax(0, 760px);
+  justify-content: center;
 }
 
 .yl-shell {
@@ -181,6 +195,17 @@ button {
   font-size: 13px;
   font-weight: 900;
   padding: 8px 12px;
+}
+
+.yl-home-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.yl-home-actions .yl-btn {
+  min-width: 148px;
 }
 
 .yl-app-grid {
@@ -456,12 +481,17 @@ button {
 }
 
 .yl-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   min-height: 48px;
   border-radius: 999px;
   border: 0;
   font-size: 15px;
   font-weight: 900;
   padding: 0 20px;
+  text-decoration: none;
+  cursor: pointer;
 }
 
 .yl-btn-primary {

@@ -44,6 +44,7 @@
       <span>阅天健康</span>
     </a>
     <nav class="yl-nav" aria-label="健康服务导航">
+      <a href="#home">首页</a>
       <a href="#assessment">体质自评</a>
       <a href="#report">报告示例</a>
       <a href="#member">综合健康会员</a>
@@ -51,11 +52,15 @@
   </header>
 
   <main class="yl-shell">
-    <section class="yl-product-head" aria-labelledby="yl-title">
+    <section class="yl-product-head yl-page" id="home" data-page="home" aria-labelledby="yl-title">
       <div>
         <p class="yl-kicker">独立健康服务 · 体质分析 · 报告内追问</p>
         <h1 id="yl-title">AI中医体质分析</h1>
         <p>先整理 8 类身体信号，生成一份体质自评报告，再围绕报告继续追问睡眠、脾胃、情绪、冷热等具体问题。</p>
+        <div class="yl-home-actions">
+          <a class="yl-btn yl-btn-primary" href="#assessment">开始体质自评</a>
+          <a class="yl-btn yl-btn-ghost" href="#report">先看报告示例</a>
+        </div>
       </div>
       <div class="yl-head-card" aria-label="服务边界">
         <strong>服务边界</strong>
@@ -66,7 +71,7 @@
     </section>
 
     <section class="yl-app-grid">
-      <div class="yl-panel yl-assessment" id="assessment">
+      <div class="yl-panel yl-assessment yl-page" id="assessment" data-page="assessment">
         <div class="yl-section-title">
           <div>
             <span class="yl-step">01</span>
@@ -110,7 +115,7 @@
         <p class="yl-risk-note">本报告仅用于健康信息整理和养生参考，不构成医疗诊断或治疗建议。如有明显不适，请及时就医。</p>
       </div>
 
-      <div class="yl-report-column" id="report">
+      <div class="yl-report-column yl-page" id="report" data-page="report">
         <section class="yl-panel yl-report" aria-labelledby="ylReportTitle">
           <div class="yl-section-title">
             <div>
@@ -177,7 +182,7 @@
       </div>
     </section>
 
-    <section class="yl-member-wrap" id="member">
+    <section class="yl-member-wrap yl-page" id="member" data-page="member">
       <div class="yl-panel yl-member-card">
         <div class="yl-member-main">
           <span>综合健康会员</span>

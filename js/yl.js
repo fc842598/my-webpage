@@ -8,6 +8,7 @@
   var HEALTH_PRODUCT_NAME = "综合健康会员";
   var HEALTH_PRODUCT_AMOUNT = "19.90";
   var HEALTH_PAYPAL_AMOUNT = "2.99";
+  var PAGE_IDS = ["home", "assessment", "report", "member"];
 
   var categories = [
     {
@@ -187,6 +188,42 @@
 
   function $all(selector) {
     return Array.prototype.slice.call(document.querySelectorAll(selector));
+  }
+
+  function normalizePage(page) {
+    return PAGE_IDS.indexOf(page) >= 0 ? page : "home";
+  }
+
+  function pageFromHash() {
+    return normalizePage((window.location.hash || "#home").replace(/^#/, ""));
+  }
+
+  function setActivePage(page, options) {
+    var active = normalizePage(page);
+    var opts = options || {};
+    $all(".yl-page").forEach(function (element) {
+      element.hidden = element.dataset.page !== active;
+    });
+    var appGrid = $(".yl-app-grid");
+    if (appGrid) {
+      appGrid.classList.toggle("is-empty", active === "home" || active === "member");
+      appGrid.classList.toggle("is-single", active === "assessment" || active === "report");
+    }
+    $all(".yl-nav a").forEach(function (link) {
+      link.classList.toggle("is-active", link.getAttribute("href") === "#" + active);
+    });
+    if (opts.scroll !== false) {
+      window.scrollTo({ top: 0, behavior: opts.instant ? "auto" : "smooth" });
+    }
+  }
+
+  function goToPage(page, options) {
+    var active = normalizePage(page);
+    if (window.location.hash !== "#" + active) {
+      window.location.hash = active;
+      return;
+    }
+    setActivePage(active, options);
   }
 
   function readAuthSession() {
@@ -498,7 +535,7 @@
       log.scrollTop = log.scrollHeight;
       updateAskQuota();
       setPayHint("免费追问已用完，可开通综合健康会员继续深聊。");
-      $("#member").scrollIntoView({ behavior: "smooth", block: "center" });
+      goToPage("member");
       return;
     }
 
@@ -538,7 +575,7 @@
     state.report = calculateReport();
     saveState();
     renderReport();
-    $("#report").scrollIntoView({ behavior: "smooth", block: "start" });
+    goToPage("report");
   }
 
   function resetAssessment() {
@@ -549,6 +586,7 @@
     localStorage.removeItem(STORAGE_KEY);
     $("#ylChatLog").innerHTML = "";
     renderAll();
+    goToPage("assessment");
   }
 
   function renderPaymentQr() {
@@ -821,4 +859,8 @@
   bindEvents();
   bindPaymentEvents();
   renderAll();
+  setActivePage(pageFromHash(), { scroll: false, instant: true });
+  window.addEventListener("hashchange", function () {
+    setActivePage(pageFromHash());
+  });
 })();
