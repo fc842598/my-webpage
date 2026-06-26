@@ -8,6 +8,14 @@
   <meta name="robots" content="noindex,follow">
   <link rel="canonical" href="https://yuetianai.com/404.html">
   <link rel="icon" href="images/wentian-prototype-assets/wentian-brand-logo-ai-gold-v1.webp" type="image/webp">
+  <script>
+    (function () {
+      var path = window.location.pathname.replace(/\/+$/, "");
+      if (path === "/yl") {
+        window.location.replace("/yl.html" + window.location.search + window.location.hash);
+      }
+    })();
+  </script>
   <style>
     :root {
       --bg: #070402;
