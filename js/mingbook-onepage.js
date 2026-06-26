@@ -3181,13 +3181,38 @@
     return ages.length ? Math.max(...ages) : 100;
   }
 
+  function fcRealCurrentAge() {
+    const curYear = new Date().getFullYear();
+    const birthYear = Number(fcBirthYear) || Number(state.profile.year) || curYear;
+    return Math.max(1, curYear - birthYear + 1);
+  }
+
+  function fcAgeSupportState(maxAge) {
+    const supportedMaxAge = Math.max(1, Math.floor(Number(maxAge) || 1));
+    const realAge = fcRealCurrentAge();
+    return {
+      realAge,
+      supportedMaxAge,
+      displayAge: Math.max(1, Math.min(supportedMaxAge, realAge)),
+      isOverflow: realAge > supportedMaxAge,
+    };
+  }
+
+  function currentAgeOverflowNote(scope, realAge, supportedMaxAge) {
+    return `当前${realAge}岁，${scope}仅展示到${supportedMaxAge}岁，以下都是末段参考，不把${supportedMaxAge}岁当成当前。`;
+  }
+
   function fcClampAge(age) {
     const num = Math.floor(Number(age) || 1);
     return Math.max(1, Math.min(fcMaxAge(), num));
   }
 
   function xiaoLianMaxAge() {
-    return xiaoLianDisplayMaxAge;
+    const fallback = Math.min(xiaoLianDisplayMaxAge, fcMaxAge());
+    const ages = Object.keys(fcLiunianSeq || {})
+      .map(Number)
+      .filter((age) => Number.isFinite(age) && age >= 1 && age <= xiaoLianDisplayMaxAge);
+    return Math.max(1, ages.length ? Math.max(...ages) : fallback);
   }
 
   function clampXiaoLianAge(age) {
@@ -3204,9 +3229,7 @@
   }
 
   function fcCurrentVirtualAge() {
-    const curYear = new Date().getFullYear();
-    const startYear = Number(fcSequenceStartYear) || Number(fcBirthYear) || Number(state.profile.year) || curYear;
-    return fcClampAge(curYear - startYear + 1);
+    return fcClampAge(fcRealCurrentAge());
   }
 
   function calcXiaoLianBranch(yearBranch, gender, xuAge) {
@@ -3352,9 +3375,12 @@
     const isBen = branch === activeBranch;
     const isRel = !isBen && related.includes(branch);
     const isDecade = !!selectedDecade?.branch && branch === selectedDecade.branch;
-    const displayedXiaoLianAge = clampXiaoLianAge(state.selectedXiaoLianAge || fcActiveAge || fcCurrentVirtualAge());
-    const displayedXiaoLianBranch = fcResolveXiaoLianBranch(displayedXiaoLianAge);
-    const isXiaoLian = branch === displayedXiaoLianBranch;
+    const xiaoAgeState = fcAgeSupportState(xiaoLianMaxAge());
+    const displayedXiaoLianAge = state.selectedXiaoLianAge
+      ? clampXiaoLianAge(state.selectedXiaoLianAge)
+      : (xiaoAgeState.isOverflow ? null : clampXiaoLianAge(fcActiveAge || xiaoAgeState.displayAge));
+    const displayedXiaoLianBranch = displayedXiaoLianAge ? fcResolveXiaoLianBranch(displayedXiaoLianAge) : '';
+    const isXiaoLian = !!displayedXiaoLianBranch && branch === displayedXiaoLianBranch;
     const smallStars = allSmallStars(palace);
     const visibleSmallStars = smallStars.slice(0, 3);
     const densityClass = `${visibleSmallStars.length >= 3 ? ' fc-compact-stars' : ''}`;
@@ -3387,7 +3413,7 @@
       .map((star) => `<span class="fc-minor-star" style="color:#476885">${escapeHtml(star.name || star)}</span>`)
       .join('') : '';
     const yearlyHtml = yearlyMutagen || yearlyStars ? `<div class="fc-yearly-row">${yearlyMutagen}${yearlyStars}</div>` : '';
-    const xiaoLianHtml = isXiaoLian ? `<div class="fc-xiaolian-badge">${displayedXiaoLianAge}岁</div>` : '';
+    const xiaoLianHtml = isXiaoLian && displayedXiaoLianAge ? `<div class="fc-xiaolian-badge">${displayedXiaoLianAge}岁</div>` : '';
     const stemBranch = `${palace.heavenlyStem || ''}${palace.earthlyBranch || ''}`;
     const ageRange = rangeFromDecadal(palace);
     const ageStr = shouldDisplayDecadeRange(ageRange) ? `${ageRange[0]}–${ageRange[1]}` : '';
@@ -3489,7 +3515,7 @@
     fcActiveTab = nextTab;
     if (enteringLiunian) {
       fcActiveAge = fcCurrentVirtualAge();
-      state.selectedXiaoLianAge = clampXiaoLianAge(fcActiveAge);
+      state.selectedXiaoLianAge = fcAgeSupportState(xiaoLianMaxAge()).isOverflow ? '' : clampXiaoLianAge(fcActiveAge);
       fcLoadYearly(fcAgeToYear(fcActiveAge));
       fcLiunianResult = fcLiunianSeq[fcActiveAge] || null;
       $('#mbpFcLiunian').textContent = `${fcActiveAge}岁 · ${fcLiunianResult?.name || '—'}`;
@@ -3543,10 +3569,12 @@
     const selectedYear = xiaoInfo.selected;
 
     xiaoToggle.disabled = !xiaoInfo.items.length;
-    xiaoToggle.classList.toggle('is-current', !!selectedYear?.isCurrent);
-    xiaoCurrent.textContent = selectedYear
-      ? `${selectedYear.age}岁`
-      : '--';
+    xiaoToggle.classList.toggle('is-current', !!selectedYear?.isCurrent && !xiaoInfo.isOverflowCurrentAge);
+    xiaoCurrent.textContent = xiaoInfo.isOverflowCurrentAge
+      ? `${xiaoInfo.realCurrentAge}岁·参考${xiaoInfo.supportedMaxAge}岁`
+      : (selectedYear
+        ? `${selectedYear.age}岁`
+        : '--');
     xiaoMenu.innerHTML = xiaoInfo.items.length
       ? xiaoInfo.items.map((item) => `
         <button type="button" role="option" class="${item.age === selectedYear?.age ? 'is-selected' : ''}${item.isCurrent ? ' is-current' : ''}" aria-selected="${item.age === selectedYear?.age ? 'true' : 'false'}" data-xiaolian-option="${item.age}">
@@ -5055,13 +5083,14 @@
     const bundle = getChartBundle();
     const chart = bundle.chart || state.chart || fcCurrentChart;
     if (!chart) return { profileKey: key, scores: [], decades: [], peakAges: [], valleyAges: [] };
-    const currentAge = clampXiaoLianAge(fcCurrentVirtualAge());
+    const ageState = fcAgeSupportState(xiaoLianMaxAge());
+    const currentAge = ageState.displayAge;
     const maxAge = xiaoLianMaxAge();
     const rawPoints = Array.from({ length: maxAge }, (_, index) => buildLifeCurvePoint(chart, index + 1, currentAge));
     const scores = normalizeLifeCurveAmplitude(smoothLifeCurveScores(rawPoints));
     const peaks = localCurveExtrema(scores, 'peak').slice(0, 6);
     const valleys = localCurveExtrema(scores, 'valley').slice(0, 6);
-    const current = scores.find((point) => point.age === currentAge) || scores[0] || null;
+    const current = scores.find((point) => point.age === currentAge) || scores[scores.length - 1] || scores[0] || null;
     const decades = decadeItemsForChart(chart, currentAge).map((item) => ({
       range: item.rangeLabel,
       start: item.start,
@@ -5076,6 +5105,9 @@
       mode: 'age_score_1_100',
       generatedAt: new Date().toISOString(),
       currentAge,
+      realCurrentAge: ageState.realAge,
+      supportedMaxAge: ageState.supportedMaxAge,
+      isCurrentAgeOverflow: ageState.isOverflow,
       current,
       scores,
       decades,
@@ -5104,12 +5136,17 @@
       .filter((item) => item.age >= 1 && item.age <= xiaoLianMaxAge());
     if (!scores.length) return null;
     scores.sort((a, b) => a.age - b.age);
-    const currentAge = clampXiaoLianAge(fcCurrentVirtualAge());
+    const supportedMaxAge = scores[scores.length - 1]?.age || xiaoLianMaxAge();
+    const ageState = fcAgeSupportState(supportedMaxAge);
+    const currentAge = ageState.displayAge;
     return {
       profileKey: profileHistoryKey(state.profile),
       mode: 'backend_scores',
       currentAge,
-      current: scores.find((point) => point.age === currentAge) || null,
+      realCurrentAge: ageState.realAge,
+      supportedMaxAge: ageState.supportedMaxAge,
+      isCurrentAgeOverflow: ageState.isOverflow,
+      current: scores.find((point) => point.age === currentAge) || scores[scores.length - 1] || null,
       scores,
       peakAges: localCurveExtrema(scores, 'peak').slice(0, 6).map((point) => point.age),
       valleyAges: localCurveExtrema(scores, 'valley').slice(0, 6).map((point) => point.age),
@@ -5159,7 +5196,7 @@
     const allFuture = mapped.filter((point) => point.age >= currentAge);
     const past = mapped.filter((point) => point.age <= currentAge);
     const candidates = [
-      { point: byAge.get(currentAge), label: '当前', type: 'current' },
+      { point: byAge.get(currentAge), label: curve?.isCurrentAgeOverflow ? '末段参考' : '当前', type: 'current' },
       { point: [...future].sort((a, b) => b.score - a.score)[0] || [...allFuture].sort((a, b) => b.score - a.score)[0] || [...mapped].sort((a, b) => b.score - a.score)[0], label: '高点', type: 'peak' },
       { point: [...future].sort((a, b) => a.score - b.score)[0] || [...allFuture].sort((a, b) => a.score - b.score)[0] || [...mapped].sort((a, b) => a.score - b.score)[0], label: '低点', type: 'valley' },
       { point: [...past].sort((a, b) => b.score - a.score)[0], label: '已验高点', type: 'peak' },
@@ -5224,7 +5261,7 @@
     const high = [...futureSource].sort((a, b) => b.score - a.score)[0];
     const low = [...futureSource].sort((a, b) => a.score - b.score)[0];
     const rows = [
-      { title: '当前', point: current },
+      { title: curve?.isCurrentAgeOverflow ? '参考末段' : '当前', point: current },
       { title: '低点', point: low },
       { title: '高点', point: high },
     ];
@@ -5286,10 +5323,14 @@
         <div class="mbp-curve-view is-active" data-curve-pane="future">
           <div class="mbp-curve-summary">
             <div>
-              <strong>${escapeHtml(`${current.age}岁在${curveScoreBand(current.score)}，后面高点看${nextPeak.age}岁，低点看${nextValley.age}岁。`)}</strong>
-              <p>${escapeHtml(`曲线按命盘大限底色、小限落宫、对宫应事和流年卦逐岁评分；后台提示词负责把曲线翻成命书说明。`)}</p>
+              <strong>${escapeHtml(curve.isCurrentAgeOverflow
+                ? `当前${curve.realCurrentAge}岁，曲线仅展示至${curve.supportedMaxAge}岁，末段参考落在${current.age}岁。`
+                : `${current.age}岁在${curveScoreBand(current.score)}，后面高点看${nextPeak.age}岁，低点看${nextValley.age}岁。`)}</strong>
+              <p>${escapeHtml(curve.isCurrentAgeOverflow
+                ? currentAgeOverflowNote('人生曲线', curve.realCurrentAge, curve.supportedMaxAge)
+                : '曲线按命盘大限底色、小限落宫、对宫应事和流年卦逐岁评分；后台提示词负责把曲线翻成命书说明。')}</p>
             </div>
-            <em>1-100岁逐岁评分</em>
+            <em>${escapeHtml(curve.isCurrentAgeOverflow ? `当前${curve.realCurrentAge}岁 · 仅展示至${curve.supportedMaxAge}岁` : '1-100岁逐岁评分')}</em>
           </div>
           ${renderLifeCurveSvg(curve)}
           ${renderCurveCards(curve)}
@@ -5461,6 +5502,15 @@
     return Number.isFinite(start) && start <= decadeDisplayMaxStartAge;
   }
 
+  function visibleDecadeMaxAge(chart) {
+    const ages = (chart?.palaces || [])
+      .map((palace) => rangeFromDecadal(palace))
+      .filter((range) => shouldDisplayDecadeRange(range))
+      .map((range) => Number(range?.[1]))
+      .filter((age) => Number.isFinite(age) && age >= 1);
+    return ages.length ? Math.max(...ages) : fcMaxAge();
+  }
+
   function findDecadePalace(chart, age) {
     return (chart?.palaces || []).find((palace) => {
       const range = rangeFromDecadal(palace);
@@ -5496,7 +5546,7 @@
           stars,
           domain,
           theme: decadeTheme(domain),
-          isCurrent: currentAge >= start && currentAge <= end,
+          isCurrent: Number.isFinite(currentAge) && currentAge >= start && currentAge <= end,
         };
         item.key = decadeRangeKey(item);
         return item;
@@ -5508,15 +5558,25 @@
   function selectedLuckInfo(options = {}) {
     const bundle = getChartBundle();
     const chart = bundle.chart || state.chart;
-    const currentAge = Math.max(1, fcCurrentVirtualAge());
-    const items = decadeItemsForChart(chart, currentAge);
-    const current = items.find((item) => item.isCurrent) || items[0] || null;
-    const selectedKey = options.forceCurrent ? current?.key : (state.selectedLuckRangeKey || current?.key);
-    const selected = items.find((item) => item.key === selectedKey) || current || items[0] || null;
+    const ageState = fcAgeSupportState(visibleDecadeMaxAge(chart));
+    const items = decadeItemsForChart(chart, ageState.isOverflow ? null : ageState.realAge);
+    const current = ageState.isOverflow ? null : (items.find((item) => item.isCurrent) || null);
+    const fallback = items[items.length - 1] || items[0] || null;
+    const selectedKey = options.forceCurrent ? (current?.key || fallback?.key) : (state.selectedLuckRangeKey || current?.key || fallback?.key);
+    const selected = items.find((item) => item.key === selectedKey) || current || fallback || null;
     if (selected && !options.readonly && (!state.selectedLuckRangeKey || options.forceCurrent || !items.some((item) => item.key === state.selectedLuckRangeKey))) {
       state.selectedLuckRangeKey = selected.key;
     }
-    return { chart, items, current, selected, currentAge };
+    return {
+      chart,
+      items,
+      current,
+      selected,
+      currentAge: ageState.displayAge,
+      realCurrentAge: ageState.realAge,
+      supportedMaxAge: ageState.supportedMaxAge,
+      isOverflowCurrentAge: ageState.isOverflow,
+    };
   }
 
   function decadePayload(item) {
@@ -5547,9 +5607,15 @@
     const info = selectedLuckInfo({ forceCurrent: options.forceCurrentLuck });
     const selectedDayun = decadePayload(info.selected);
     return {
-      activeAge: info.currentAge,
+      activeAge: info.realCurrentAge,
+      currentAge: info.realCurrentAge,
+      viewedAge: info.selected?.end || info.currentAge,
       selectedDayun,
       decadeData: selectedDayun,
+      realCurrentAge: info.realCurrentAge,
+      supportedMaxAge: info.supportedMaxAge,
+      isCurrentAgeOverflow: info.isOverflowCurrentAge,
+      currentAgeNotice: info.isOverflowCurrentAge ? currentAgeOverflowNote('十年大限', info.realCurrentAge, info.supportedMaxAge) : '',
     };
   }
 
@@ -5599,7 +5665,7 @@
       xiaoLabel,
       oppositeLabel,
       decade,
-      isCurrent: safeAge === currentAge,
+      isCurrent: Number.isFinite(currentAge) && safeAge === currentAge,
     };
   }
 
@@ -5610,15 +5676,29 @@
   function selectedXiaoLianInfo(options = {}) {
     const bundle = getChartBundle();
     const chart = bundle.chart || state.chart;
-    const currentAge = clampXiaoLianAge(fcCurrentVirtualAge());
-    const items = xiaoLianAgeItems(chart, currentAge);
-    const selectedAge = options.forceCurrentXiaoLian ? currentAge : clampXiaoLianAge(state.selectedXiaoLianAge || currentAge);
-    const current = items.find((item) => item.age === currentAge) || items[0] || null;
-    const selected = items.find((item) => item.age === selectedAge) || current || items[0] || null;
+    const ageState = fcAgeSupportState(xiaoLianMaxAge());
+    const items = xiaoLianAgeItems(chart, ageState.isOverflow ? null : ageState.realAge);
+    const current = ageState.isOverflow ? null : (items.find((item) => item.age === ageState.realAge) || null);
+    const fallback = items[items.length - 1] || items[0] || null;
+    const defaultSelectedAge = options.forceCurrentXiaoLian
+      ? (current?.age || fallback?.age || 1)
+      : clampXiaoLianAge(state.selectedXiaoLianAge || current?.age || fallback?.age || 1);
+    const selected = items.find((item) => item.age === defaultSelectedAge) || current || fallback || null;
     if (selected && !options.readonly && (!state.selectedXiaoLianAge || options.forceCurrentXiaoLian || !items.some((item) => item.age === Number(state.selectedXiaoLianAge)))) {
       state.selectedXiaoLianAge = selected.age;
     }
-    return { chart, items, current, selected, currentAge, selectedDecade: selected?.decade || null, currentDecade: current?.decade || null };
+    return {
+      chart,
+      items,
+      current,
+      selected,
+      currentAge: ageState.displayAge,
+      realCurrentAge: ageState.realAge,
+      supportedMaxAge: ageState.supportedMaxAge,
+      isOverflowCurrentAge: ageState.isOverflow,
+      selectedDecade: selected?.decade || null,
+      currentDecade: current?.decade || null,
+    };
   }
 
   function xiaoLianExtraParams(options = {}) {
@@ -5643,11 +5723,18 @@
       tianjiLineType: selected.liunian?.lineType || '',
     };
     return {
-      activeAge: selected.age,
+      activeAge: info.realCurrentAge,
+      currentAge: info.realCurrentAge,
+      viewedAge: selected.age,
+      referenceAge: selected.age,
       selectedDayun,
       decadeData: selectedDayun,
       selectedYear,
       liunianData: selectedYear,
+      realCurrentAge: info.realCurrentAge,
+      supportedMaxAge: info.supportedMaxAge,
+      isCurrentAgeOverflow: info.isOverflowCurrentAge,
+      currentAgeNotice: info.isOverflowCurrentAge ? currentAgeOverflowNote('小流年', info.realCurrentAge, info.supportedMaxAge) : '',
     };
   }
 
@@ -5834,6 +5921,9 @@
       decadeItems: luckInfo.items,
       currentDecade: luckInfo.current,
       selectedDecade: luckInfo.selected,
+      realCurrentAge: luckInfo.realCurrentAge,
+      supportedMaxAge: luckInfo.supportedMaxAge,
+      isOverflowCurrentAge: luckInfo.isOverflowCurrentAge,
     };
   }
 
@@ -5888,6 +5978,7 @@
           </button>
         `).join('')}
       </div>
+      ${info.isOverflowCurrentAge ? `<p class="mbp-luck-overflow-note">${escapeHtml(currentAgeOverflowNote('小流年', info.realCurrentAge, info.supportedMaxAge))}</p>` : ''}
     `;
   }
 
@@ -5904,6 +5995,7 @@
           </button>
         `).join('')}
       </div>
+      ${info.isOverflowCurrentAge ? `<p class="mbp-luck-overflow-note">${escapeHtml(currentAgeOverflowNote('十年大限', info.realCurrentAge, info.supportedMaxAge))}</p>` : ''}
     `;
   }
 
@@ -5936,15 +6028,21 @@
       : rawText.split(/\n{2,}/).map((content) => ({ title: '', content: cleanAiText(content) })).filter((section) => section.content);
     const selected = info.selectedDecade;
     const isCurrentSelected = !!selected && selected.key === info.currentDecade?.key;
-    const placeholder = isCurrentSelected
+    const placeholder = info.isOverflowCurrentAge
+      ? `当前${info.realCurrentAge}岁已超出十年大限展示区间，以下仅参考 ${selected?.rangeLabel || `${info.supportedMaxAge}岁前后`} 的末段走势，不把 ${info.supportedMaxAge}岁当成当前年龄。`
+      : (isCurrentSelected
       ? `${selected?.rangeLabel || '当前十年'} · ${selected?.palaceName || '大限宫'}。当前十年会随“总批命”自动生成，不需要单独点击。`
-      : `${selected?.rangeLabel || '选中十年'} · ${selected?.palaceName || '大限宫'}。点击“批选中十年”，按后台大限提示词生成这一段整体解盘。`;
+      : `${selected?.rangeLabel || '选中十年'} · ${selected?.palaceName || '大限宫'}。点击“批选中十年”，按后台大限提示词生成这一段整体解盘。`);
     return `
       <div class="mbp-luck-reading">
         <div class="mbp-luck-reading-head">
-          <span>${selected?.key === info.currentDecade?.key ? '当前十年' : '选中十年'}</span>
-          <strong>${escapeHtml(`${selected?.rangeLabel || ''} · ${selected?.palaceName || '大限宫'} · ${selected?.theme || '十年主轴'}`)}</strong>
-          <p>${escapeHtml(`主星：${selected?.stars || '待排盘'}；领域：${selected?.domain || '命盘主线'}`)}</p>
+          <span>${info.isOverflowCurrentAge ? '超高龄参考十年' : (selected?.key === info.currentDecade?.key ? '当前十年' : '选中十年')}</span>
+          <strong>${escapeHtml(info.isOverflowCurrentAge
+            ? `${selected?.rangeLabel || `参考至${info.supportedMaxAge}岁`} · ${selected?.palaceName || '大限宫'} · 末段参考`
+            : `${selected?.rangeLabel || ''} · ${selected?.palaceName || '大限宫'} · ${selected?.theme || '十年主轴'}`)}</strong>
+          <p>${escapeHtml(info.isOverflowCurrentAge
+            ? currentAgeOverflowNote('十年大限', info.realCurrentAge, info.supportedMaxAge)
+            : `主星：${selected?.stars || '待排盘'}；领域：${selected?.domain || '命盘主线'}`)}</p>
         </div>
         <div class="mbp-luck-reading-body">
           ${paragraphs.length ? paragraphs.map((section) => `
@@ -5971,14 +6069,18 @@
     const selected = info.selected || {};
     const yearText = `${selected.year || ''} ${selected.yearGz || ''}`.trim();
     const title = selected.age
-      ? `${selected.age}岁 · ${yearText || '流年'} · ${selected.liunian?.name || '流年卦'}`
+      ? `${info.isOverflowCurrentAge ? `参考${selected.age}岁` : `${selected.age}岁`} · ${yearText || '流年'} · ${selected.liunian?.name || '流年卦'}`
       : '小限流年';
-    const meta = `小限：${selected.xiaoLabel || '未定'}；对宫：${selected.oppositeLabel || '未定'}`;
-    const placeholder = '选择上方 1-100 岁，再点“单独批小限”生成这一年的小限流年解读。';
+    const meta = info.isOverflowCurrentAge
+      ? currentAgeOverflowNote('小流年', info.realCurrentAge, info.supportedMaxAge)
+      : `小限：${selected.xiaoLabel || '未定'}；对宫：${selected.oppositeLabel || '未定'}`;
+    const placeholder = info.isOverflowCurrentAge
+      ? `当前${info.realCurrentAge}岁已超出小流年展示区间，以下仅参考 ${selected.age || info.supportedMaxAge} 岁这一年，不把它当成当前年龄。`
+      : '选择上方 1-100 岁，再点“单独批小限”生成这一年的小限流年解读。';
     return `
       <div class="mbp-luck-reading">
         <div class="mbp-luck-reading-head">
-          <span>${selected.isCurrent ? '当前小流年' : '选中小流年'}</span>
+          <span>${info.isOverflowCurrentAge ? '超高龄参考小流年' : (selected.isCurrent ? '当前小流年' : '选中小流年')}</span>
           <strong>${escapeHtml(title)}</strong>
           <p>${escapeHtml(meta)}</p>
         </div>

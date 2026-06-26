@@ -7385,6 +7385,13 @@ p.mbp-topic-detail {
   line-height: 1.7;
 }
 
+.mbp-luck-overflow-note {
+  margin: -2px 2px 12px;
+  color: #d7c28f;
+  font-size: 12px;
+  line-height: 1.65;
+}
+
 .mbp-luck-reading-body {
   display: grid;
   gap: 10px;
