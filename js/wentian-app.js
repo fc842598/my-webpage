@@ -216,6 +216,12 @@ function renderWentianSafeInlineMarkdown(value) {
   }).join("");
 }
 
+const WENTIAN_FOOTNOTE_MARKERS = ["①", "②", "③", "④", "⑤"];
+
+function escapeWentianAttr(value) {
+  return escapeHtml(value).replace(/`/g, "&#096;");
+}
+
 function stripWentianMarkdownEmphasis(value) {
   return String(value || "")
     .replace(/\*\*([^*\n]+)\*\*/g, "$1")
@@ -4218,7 +4224,69 @@ function splitWentianReadingParagraphs(value, max = 48) {
   return paragraphs;
 }
 
+function parseWentianReadingFootnotes(value) {
+  const text = cleanWentianAiText(value);
+  const noteMatch = text.match(/(?:^|\n)\s*注[:：]\s*([①②③④⑤][\s\S]*)$/);
+  if (!noteMatch) return null;
+  const body = text.slice(0, noteMatch.index).trim();
+  const noteText = noteMatch[1].trim();
+  if (!body || !noteText) return null;
+
+  const notes = {};
+  const noteRe = /([①②③④⑤])\s*([\s\S]*?)(?=(?:[①②③④⑤]\s*)|$)/g;
+  let match;
+  while ((match = noteRe.exec(noteText))) {
+    const marker = match[1];
+    const content = String(match[2] || "").replace(/^[:：\s]+/, "").trim();
+    if (content) notes[marker] = content;
+  }
+  if (!Object.keys(notes).length) return null;
+  return { body, notes };
+}
+
+function renderWentianFootnoteInline(value, notes = {}) {
+  const markerRe = /[①②③④⑤]/g;
+  let output = "";
+  let lastIndex = 0;
+  let match;
+  while ((match = markerRe.exec(value))) {
+    const marker = match[0];
+    output += renderWentianSafeInlineMarkdown(value.slice(lastIndex, match.index));
+    if (notes[marker]) {
+      const note = notes[marker];
+      output += `<button type="button" class="wentian-footnote-ref" data-wentian-footnote-ref="${escapeWentianAttr(marker)}" data-wentian-footnote-text="${escapeWentianAttr(note)}" aria-label="${escapeWentianAttr(`查看注释${marker}`)}" aria-expanded="false">${escapeHtml(marker)}</button>`;
+    } else {
+      output += escapeHtml(marker);
+    }
+    lastIndex = markerRe.lastIndex;
+  }
+  output += renderWentianSafeInlineMarkdown(value.slice(lastIndex));
+  return output;
+}
+
+function renderWentianFootnotedReading(value) {
+  const parsed = parseWentianReadingFootnotes(value);
+  if (!parsed) return "";
+  const paragraphs = splitWentianReadingParagraphs(parsed.body, 58);
+  const markers = WENTIAN_FOOTNOTE_MARKERS.filter((marker) => parsed.notes[marker]);
+  return `
+    <div class="wentian-mb-reading-lines has-footnotes">
+      ${(paragraphs.length ? paragraphs : [parsed.body]).map((paragraph) => `<p>${renderWentianFootnoteInline(paragraph, parsed.notes)}</p>`).join("")}
+      <div class="wentian-reading-footnotes" aria-label="注释">
+        ${markers.map((marker) => `
+          <div class="wentian-reading-footnote" data-wentian-footnote-note="${escapeWentianAttr(marker)}">
+            <span>注 ${escapeHtml(marker)}</span>
+            <p>${renderWentianSafeInlineMarkdown(parsed.notes[marker])}</p>
+          </div>
+        `).join("")}
+      </div>
+    </div>
+  `;
+}
+
 function renderWentianReadingParagraphs(value, fallback = "") {
+  const footnoted = renderWentianFootnotedReading(value || fallback);
+  if (footnoted) return footnoted;
   const paragraphs = splitWentianReadingParagraphs(value || fallback);
   return `
     <div class="wentian-mb-reading-lines">
@@ -8808,6 +8876,7 @@ function navigateWentianClickRoute(route) {
 
 function handleWentianRoutePointerCapture(event) {
   if (event.pointerType === "mouse" && event.button !== 0) return;
+  if (event.target.closest?.("[data-wentian-footnote-ref], .wentian-footnote-popover")) return;
   if (event.target.closest?.("input, textarea, select, [contenteditable='true']")) return;
   if (event.target.closest?.('.wentian-floating-chart-submit [data-action="wentian-chart-submit"]')) {
     wentianPointerRouteSuppressUntil = Date.now() + 350;
@@ -19531,6 +19600,50 @@ function syncWentianFloatingChartSubmit(phone, scale, navHeight, hidden) {
   floating.setAttribute("aria-hidden", hidden ? "true" : "false");
 }
 
+function closeWentianFootnotePopover() {
+  document.querySelector(".wentian-footnote-popover")?.remove();
+  document.querySelectorAll(".wentian-footnote-ref.is-active").forEach((node) => {
+    node.classList.remove("is-active");
+    node.setAttribute("aria-expanded", "false");
+  });
+  document.querySelectorAll(".wentian-reading-footnote.is-active").forEach((node) => node.classList.remove("is-active"));
+}
+
+function openWentianFootnotePopover(button) {
+  if (!button) return;
+  const marker = button.dataset.wentianFootnoteRef || "";
+  const note = button.dataset.wentianFootnoteText || "";
+  if (!marker || !note) return;
+  const wasActive = button.classList.contains("is-active");
+  closeWentianFootnotePopover();
+  if (wasActive) return;
+
+  const popover = document.createElement("div");
+  popover.className = "wentian-footnote-popover";
+  popover.setAttribute("role", "tooltip");
+  popover.innerHTML = `<strong>注 ${escapeHtml(marker)}</strong><p>${renderWentianSafeInlineMarkdown(note)}</p>`;
+  document.body.appendChild(popover);
+
+  const rect = button.getBoundingClientRect();
+  const viewportWidth = window.visualViewport?.width || window.innerWidth || document.documentElement.clientWidth || 390;
+  const viewportHeight = window.visualViewport?.height || window.innerHeight || document.documentElement.clientHeight || 844;
+  const width = Math.min(316, Math.max(240, viewportWidth - 28));
+  const left = Math.min(Math.max(14, rect.left + rect.width / 2 - width / 2), viewportWidth - width - 14);
+  let top = rect.bottom + 8;
+  const estimatedHeight = Math.min(180, Math.max(96, popover.offsetHeight || 118));
+  if (top + estimatedHeight > viewportHeight - 12) top = Math.max(12, rect.top - estimatedHeight - 8);
+  popover.style.left = `${left}px`;
+  popover.style.top = `${top}px`;
+  popover.style.width = `${width}px`;
+
+  button.classList.add("is-active");
+  button.setAttribute("aria-expanded", "true");
+  const container = button.closest(".wentian-mb-reading-lines");
+  const noteNode = [...(container?.querySelectorAll(".wentian-reading-footnote") || [])]
+    .find((node) => node.dataset.wentianFootnoteNote === marker);
+  noteNode?.classList.add("is-active");
+}
+
 function getWentianNodeBottomWithinPhone(phone, node) {
   if (!phone || !node || !node.isConnected) return 0;
   const style = getComputedStyle(node);
@@ -20289,6 +20402,7 @@ document.addEventListener("pointerup", handleLiuyaoSwipePointerUp);
 document.addEventListener("pointercancel", cancelLiuyaoSwipePointer);
 
 document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") closeWentianFootnotePopover();
   if (event.target?.id === "wentian-chart-city" && event.key === "Backspace") {
     if (handleWentianChartCityDeleteGesture(event)) return;
   }
@@ -20316,6 +20430,15 @@ document.addEventListener("toggle", (event) => {
 }, true);
 
 document.addEventListener("click", (event) => {
+  const footnoteButton = event.target.closest?.("[data-wentian-footnote-ref]");
+  if (footnoteButton) {
+    event.preventDefault();
+    event.stopPropagation();
+    openWentianFootnotePopover(footnoteButton);
+    return;
+  }
+  if (!event.target.closest?.(".wentian-footnote-popover")) closeWentianFootnotePopover();
+
   const earlyActionTarget = event.target.closest("[data-action]");
   if (Date.now() < wentianPointerRouteSuppressUntil && !earlyActionTarget) {
     event.preventDefault();
