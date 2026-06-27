@@ -12,12 +12,12 @@
   <meta property="og:description" content="完成 8 类健康信息采集，生成体质自评报告，并围绕报告继续追问。">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://yuetianai.com/yl.html">
-  <meta property="og:image" content="https://yuetianai.com/images/health/constitution-report-hero.png">
+  <meta property="og:image" content="https://yuetianai.com/images/health/constitution-report-hero-v8.png">
   <meta name="theme-color" content="#f7f0e5">
   <link rel="icon" href="/images/wentian-prototype-assets/wentian-brand-logo-ai-gold-v1.webp" type="image/webp">
-  <link rel="stylesheet" href="/css/yl.css?v=20260625-health-v2">
+  <link rel="stylesheet" href="/css/yl.css?v=20260627-health-v8">
   <script defer src="/vendor/qrcodejs/qrcode.min.js"></script>
-  <script defer src="/js/yl.js?v=20260625-health-v2"></script>
+  <script defer src="/js/yl.js?v=20260627-health-v8"></script>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -38,155 +38,178 @@
 </head>
 <body>
   <a class="skip-link" href="#assessment">跳到体质自评</a>
+
   <header class="yl-header">
     <a class="yl-brand" href="/" aria-label="返回阅天AI首页">
-      <img src="/images/wentian-prototype-assets/wentian-brand-logo-ai-gold-v1.webp" alt="" aria-hidden="true">
+      <span class="yl-brand-mark" aria-hidden="true"></span>
       <span>阅天健康</span>
     </a>
     <nav class="yl-nav" aria-label="健康服务导航">
       <a href="#home">首页</a>
       <a href="#assessment">体质自评</a>
       <a href="#report">报告示例</a>
-      <a href="#member">综合健康会员</a>
+      <a href="#member">综合会员</a>
     </nav>
+    <a class="yl-top-cta" href="#assessment">开始自评</a>
   </header>
 
   <main class="yl-shell">
-    <section class="yl-product-head yl-page" id="home" data-page="home" aria-labelledby="yl-title">
-      <div>
+    <section class="yl-page yl-home" id="home" data-page="home" aria-labelledby="yl-title">
+      <div class="yl-phone-frame">
+        <div class="yl-mobile-bar">
+          <span class="yl-brand-mark" aria-hidden="true"></span>
+          <strong>阅天健康</strong>
+        </div>
         <p class="yl-kicker">独立健康服务 · 体质分析 · 报告内追问</p>
         <h1 id="yl-title">AI中医体质分析</h1>
-        <p>先整理 8 类身体信号，生成一份体质自评报告，再围绕报告继续追问睡眠、脾胃、情绪、冷热等具体问题。</p>
-        <div class="yl-home-actions">
-          <a class="yl-btn yl-btn-primary" href="#assessment">开始体质自评</a>
-          <a class="yl-btn yl-btn-ghost" href="#report">先看报告示例</a>
+        <p class="yl-lead">先整理 8 类身体信号，生成体质自评报告，再围绕报告继续追问睡眠、脾胃、情绪、冷热等具体问题。</p>
+        <figure class="yl-hero-visual">
+          <img src="/images/health/constitution-report-hero-v8.png" alt="坐姿冥想人物与青绿色体质圆盘">
+        </figure>
+        <div class="yl-flow-list" aria-label="使用流程">
+          <a href="#assessment"><b>01</b><span>先填 8 类</span></a>
+          <a href="#report"><b>02</b><span>生成报告</span></a>
+          <a href="#report"><b>03</b><span>围绕报告追问</span></a>
         </div>
-      </div>
-      <div class="yl-head-card" aria-label="服务边界">
-        <strong>服务边界</strong>
-        <span>健康信息整理</span>
-        <span>养生参考建议</span>
-        <span>不作诊断治疗</span>
-      </div>
-    </section>
-
-    <section class="yl-app-grid">
-      <div class="yl-panel yl-assessment yl-page" id="assessment" data-page="assessment">
-        <div class="yl-section-title">
-          <div>
-            <span class="yl-step">01</span>
-            <h2>8 类体质自评</h2>
-            <p>每类先选一个最接近的标签，再生成报告。</p>
-          </div>
-          <div class="yl-progress" aria-live="polite">
-            <span id="ylProgressText">0/8 已填写</span>
-            <i><b id="ylProgressBar"></b></i>
-          </div>
-        </div>
-
-        <div class="yl-visual-card">
-          <img src="/images/health/constitution-report-hero.png" alt="AI体质自评报告视觉图">
-          <div class="yl-visual-copy">
-            <span>AI 体质自评</span>
-            <strong>先填身体信号<br>再看体质报告</strong>
-            <small>舌象、睡眠、胃口、冷热等 8 类</small>
-          </div>
-        </div>
-
-        <div class="yl-category-grid" id="ylCategoryGrid" aria-label="8 类采集进度"></div>
-
-        <article class="yl-question-card" id="ylQuestionCard">
-          <div class="yl-question-head">
-            <div>
-              <span id="ylQuestionIndex">01</span>
-              <h3 id="ylQuestionTitle">舌象</h3>
-              <p id="ylQuestionHint">舌头更像哪几种？</p>
-            </div>
-            <div class="yl-category-switcher" id="ylCategorySwitcher" aria-label="切换采集类别"></div>
-          </div>
-          <div class="yl-option-grid" id="ylOptionGrid"></div>
-        </article>
-
-        <div class="yl-actions">
-          <button class="yl-btn yl-btn-primary" type="button" id="ylGenerateBtn">生成体质报告</button>
-          <button class="yl-btn yl-btn-ghost" type="button" id="ylResetBtn">重新自评</button>
-        </div>
-
+        <a class="yl-btn yl-btn-primary" href="#assessment">开始 3 分钟自评</a>
         <p class="yl-risk-note">本报告仅用于健康信息整理和养生参考，不构成医疗诊断或治疗建议。如有明显不适，请及时就医。</p>
       </div>
+    </section>
 
-      <div class="yl-report-column yl-page" id="report" data-page="report">
-        <section class="yl-panel yl-report" aria-labelledby="ylReportTitle">
+    <section class="yl-page yl-assessment" id="assessment" data-page="assessment">
+      <div class="yl-assessment-layout">
+        <aside class="yl-rail" aria-label="8 类采集进度">
+          <h2>8 类采集</h2>
+          <div class="yl-category-grid" id="ylCategoryGrid"></div>
+        </aside>
+
+        <div class="yl-assessment-main">
           <div class="yl-section-title">
             <div>
-              <span class="yl-step">02</span>
-              <h2 id="ylReportTitle">体质自评报告</h2>
-              <p id="ylReportState">选择标签后生成你的报告。</p>
+              <h2>8 类体质自评</h2>
+              <p>每类可多选，选中后有高亮反馈。</p>
             </div>
-            <span class="yl-report-badge" id="ylReportBadge">示例</span>
+            <div class="yl-progress" aria-live="polite">
+              <span id="ylProgressText">0/8</span>
+            </div>
           </div>
 
-          <div class="yl-report-hero">
-            <img src="/images/health/constitution-report-hero.png" alt="" aria-hidden="true">
+          <div class="yl-category-switcher" id="ylCategorySwitcher" aria-label="切换采集类别"></div>
+
+          <figure class="yl-assessment-visual">
+            <img src="/images/health/constitution-report-hero-v8.png" alt="体质自评视觉图">
+          </figure>
+
+          <article class="yl-question-card" id="ylQuestionCard">
+            <div class="yl-question-head">
+              <span id="ylQuestionIndex">01</span>
+              <div>
+                <h3 id="ylQuestionTitle">舌象</h3>
+                <p id="ylQuestionHint">选择最接近当前状态的描述。</p>
+              </div>
+            </div>
+            <div class="yl-option-grid" id="ylOptionGrid"></div>
+          </article>
+
+          <div class="yl-progress-card">
             <div>
-              <span>综合体质指数</span>
-              <strong><b id="ylScore">83</b>分</strong>
-              <small id="ylPercentile">优于 87% 用户</small>
-              <p id="ylMainType">体质倾向：气虚偏弱</p>
+              <strong id="ylProgressCardText">已完成 0/8</strong>
+              <i><b id="ylProgressBar"></b></i>
             </div>
+            <button class="yl-btn yl-btn-ghost" type="button" id="ylNextBtn">继续下一项</button>
           </div>
 
-          <div class="yl-summary-card">
-            <div>
-              <strong id="ylPrimaryType">主要体质：气虚偏弱</strong>
-              <span id="ylSecondaryType">兼有体质：痰湿倾向</span>
-            </div>
-            <p id="ylSummaryAdvice">饮食宜健脾，运动宜柔缓。</p>
+          <div class="yl-actions">
+            <button class="yl-btn yl-btn-primary" type="button" id="ylGenerateBtn">完成 8 类后生成报告</button>
+            <button class="yl-btn yl-btn-link" type="button" id="ylResetBtn">重新自评</button>
           </div>
 
-          <div class="yl-chart-card" aria-label="体质分布">
-            <div class="yl-card-head">
-              <strong>体质分布</strong>
-              <span>确定 / 潜在</span>
-            </div>
-            <div class="yl-bars" id="ylBars"></div>
-          </div>
+          <p class="yl-risk-note">本报告仅用于健康信息整理和养生参考，不构成医疗诊断或治疗建议。如有明显不适，请及时就医。</p>
+        </div>
 
-          <div class="yl-value-card">
-            <strong id="ylValueScore">83分</strong>
-            <p id="ylValueText">你的体质状态优于 87% 的用户。饮食宜益气健脾，起居勿过劳，情绪宜乐观。</p>
-          </div>
-
-          <div class="yl-report-blocks" id="ylReportBlocks"></div>
-
-          <p class="yl-risk-note yl-risk-note-report">本报告仅用于健康信息整理和养生参考，不构成医疗诊断或治疗建议。如有明显不适，请及时就医。</p>
-        </section>
-
-        <section class="yl-panel yl-chat" aria-labelledby="ylChatTitle">
-          <div class="yl-card-head">
-            <div>
-              <h2 id="ylChatTitle">围绕本报告继续追问</h2>
-              <p>AI 对话只围绕当前报告展开，不做泛聊天。</p>
-            </div>
-            <span id="ylAskQuota">免费 3 次</span>
-          </div>
-          <div class="yl-chat-log" id="ylChatLog" aria-live="polite"></div>
-          <div class="yl-suggestions" id="ylSuggestions"></div>
-          <form class="yl-chat-form" id="ylChatForm">
-            <label class="sr-only" for="ylChatInput">输入追问</label>
-            <input id="ylChatInput" type="text" maxlength="120" placeholder="围绕报告继续追问">
-            <button type="submit">发送</button>
-          </form>
-          <p class="yl-chat-disclaimer">提示：追问回答仅用于健康信息整理和养生参考，不构成医疗诊断或治疗建议。</p>
-        </section>
+        <aside class="yl-selected-card" aria-label="已选摘要">
+          <figure>
+            <img src="/images/health/constitution-report-hero-v8.png" alt="">
+          </figure>
+          <h2>已选摘要</h2>
+          <div class="yl-selected-list" id="ylSelectedSummary"></div>
+          <span class="yl-mini-pill" id="ylMiniQuota">追问额度：2/3</span>
+          <p class="yl-risk-note">本报告仅用于健康信息整理和养生参考，不构成医疗诊断或治疗建议。</p>
+        </aside>
       </div>
     </section>
 
-    <section class="yl-member-wrap yl-page" id="member" data-page="member">
-      <div class="yl-panel yl-member-card">
+    <section class="yl-page yl-report-column" id="report" data-page="report">
+      <section class="yl-report-panel" aria-labelledby="ylReportTitle">
+        <div class="yl-section-title">
+          <div>
+            <span class="yl-step">02</span>
+            <h2 id="ylReportTitle">体质自评报告</h2>
+            <p id="ylReportState">选择标签后生成你的报告。</p>
+          </div>
+          <span class="yl-report-badge" id="ylReportBadge">示例</span>
+        </div>
+
+        <div class="yl-report-hero">
+          <figure>
+            <img src="/images/health/constitution-report-hero-v8.png" alt="">
+          </figure>
+          <div>
+            <span>综合体质指数</span>
+            <strong><b id="ylScore">83</b>分</strong>
+            <small id="ylPercentile">优于 87% 用户</small>
+            <p id="ylMainType">体质倾向：气虚偏弱</p>
+          </div>
+        </div>
+
+        <div class="yl-summary-card">
+          <p><strong id="ylPrimaryType">主要体质：气虚偏弱</strong></p>
+          <p><span id="ylSecondaryType">兼有体质：痰湿倾向</span></p>
+          <p id="ylSummaryAdvice">饮食宜健脾，运动宜柔缓。</p>
+        </div>
+
+        <div class="yl-chart-card" aria-label="体质分布">
+          <div class="yl-card-head">
+            <strong>体质分布</strong>
+            <span>确定 / 潜在</span>
+          </div>
+          <div class="yl-bars" id="ylBars"></div>
+        </div>
+
+        <section class="yl-value-card">
+          <h3>健康值评估</h3>
+          <strong id="ylValueScore">83分</strong>
+          <p id="ylValueText">你的体质状态优于 87% 的用户。饮食宜益气健脾，起居勿过劳，情绪宜乐观。</p>
+        </section>
+
+        <div class="yl-report-blocks" id="ylReportBlocks"></div>
+        <p class="yl-risk-note yl-risk-note-report">本报告仅用于健康信息整理和养生参考，不构成医疗诊断或治疗建议。如有明显不适，请及时就医。</p>
+      </section>
+
+      <section class="yl-chat-panel" aria-labelledby="ylChatTitle">
+        <div class="yl-card-head">
+          <div>
+            <h2 id="ylChatTitle">围绕本报告继续追问</h2>
+            <p>AI 对话只围绕当前报告展开，不做泛聊天。</p>
+          </div>
+          <span id="ylAskQuota">免费 3 次</span>
+        </div>
+        <div class="yl-chat-log" id="ylChatLog" aria-live="polite"></div>
+        <div class="yl-suggestions" id="ylSuggestions"></div>
+        <form class="yl-chat-form" id="ylChatForm">
+          <label class="sr-only" for="ylChatInput">输入追问</label>
+          <input id="ylChatInput" type="text" maxlength="120" placeholder="围绕报告继续追问">
+          <button type="submit">发送</button>
+        </form>
+        <p class="yl-chat-disclaimer">提示：追问回答仅用于健康信息整理和养生参考，不构成医疗诊断或治疗建议。</p>
+      </section>
+    </section>
+
+    <section class="yl-page yl-member-wrap" id="member" data-page="member">
+      <div class="yl-member-card">
         <div class="yl-member-main">
-          <span>综合健康会员</span>
-          <strong>¥19.90</strong>
+          <span>阅天综合会员</span>
+          <strong id="ylMemberPrice">¥19.90</strong>
           <p>体测报告 · 历史复盘 · 深度追问</p>
         </div>
         <div class="yl-member-compare" aria-label="免费体验和会员权益">
@@ -208,7 +231,7 @@
           <button type="button" class="yl-pay-method" data-provider="alipay">支付宝</button>
           <button type="button" class="yl-pay-method" data-provider="paypal">PayPal</button>
         </div>
-        <button class="yl-btn yl-btn-primary" type="button" id="ylOpenPayBtn">确认开通综合健康会员 ¥19.90</button>
+        <button class="yl-btn yl-btn-primary" type="button" id="ylOpenPayBtn">确认开通阅天综合会员 ¥19.90</button>
         <div class="yl-payment-panel" id="ylPaymentPanel" hidden>
           <div class="yl-payment-status" id="ylPaymentStatus">请选择支付方式后创建订单。</div>
           <div class="yl-payment-code" id="ylPaymentCode" hidden>
@@ -221,7 +244,7 @@
             <button class="yl-btn yl-btn-ghost" type="button" id="ylMockPayBtn" hidden>模拟支付成功</button>
           </div>
         </div>
-        <p class="yl-pay-hint" id="ylPayHint">健康会员为独立商品，复用阅天AI统一登录与支付通道。</p>
+        <p class="yl-pay-hint" id="ylPayHint">健康专题为独立页面与独立权益，复用阅天AI统一登录与支付通道。</p>
         <p class="yl-pay-note">账号登录与支付服务由阅天AI体系提供支持；健康线页面、报告与会员商品保持独立。</p>
       </div>
       <div class="yl-operator">
@@ -231,5 +254,12 @@
       </div>
     </section>
   </main>
+
+  <nav class="yl-bottom-nav" aria-label="移动端健康服务导航">
+    <a href="#home">首页</a>
+    <a href="#assessment">自评</a>
+    <a href="#report">报告</a>
+    <a href="#member">会员</a>
+  </nav>
 </body>
 </html>

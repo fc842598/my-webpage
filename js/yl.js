@@ -5,7 +5,7 @@
   var FREE_ASK_LIMIT = 3;
   var AUTH_SESSION_KEY = "wentian-app-auth-session-v1";
   var HEALTH_PRODUCT_KEY = "health_member";
-  var HEALTH_PRODUCT_NAME = "综合健康会员";
+  var HEALTH_PRODUCT_NAME = "阅天综合会员";
   var HEALTH_PRODUCT_AMOUNT = "19.90";
   var HEALTH_PAYPAL_AMOUNT = "2.99";
   var PAGE_IDS = ["home", "assessment", "report", "member"];
@@ -212,6 +212,9 @@
     $all(".yl-nav a").forEach(function (link) {
       link.classList.toggle("is-active", link.getAttribute("href") === "#" + active);
     });
+    $all(".yl-bottom-nav a").forEach(function (link) {
+      link.classList.toggle("is-active", link.getAttribute("href") === "#" + active);
+    });
     if (opts.scroll !== false) {
       window.scrollTo({ top: 0, behavior: opts.instant ? "auto" : "smooth" });
     }
@@ -330,23 +333,52 @@
     }
   }
 
+  function normalizeSelections() {
+    var normalized = {};
+    categories.forEach(function (category) {
+      var value = state.selections[category.id];
+      if (!value) return;
+      normalized[category.id] = Array.isArray(value) ? value : [value];
+      normalized[category.id] = normalized[category.id].filter(Boolean);
+    });
+    state.selections = normalized;
+  }
+
   function saveState() {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
   }
 
   function selectedCount() {
     return Object.keys(state.selections).filter(function (key) {
-      return state.selections[key];
+      return Array.isArray(state.selections[key]) && state.selections[key].length > 0;
     }).length;
+  }
+
+  function selectedItems(categoryId) {
+    return Array.isArray(state.selections[categoryId]) ? state.selections[categoryId] : [];
+  }
+
+  function selectedLabel(categoryId) {
+    var items = selectedItems(categoryId);
+    if (!items.length) return "";
+    return items.map(function (item) { return item.label; }).join("、");
   }
 
   function renderProgress() {
     var count = selectedCount();
     var percent = Math.round((count / categories.length) * 100);
-    $("#ylProgressText").textContent = count + "/" + categories.length + " 已填写";
+    $("#ylProgressText").textContent = count + "/" + categories.length;
     $("#ylProgressBar").style.width = percent + "%";
+    $("#ylProgressCardText").textContent = "已完成 " + count + "/" + categories.length;
     $("#ylGenerateBtn").disabled = count < categories.length;
-    $("#ylGenerateBtn").textContent = count < categories.length ? "完成 8 类后生成报告" : "生成体质自评报告";
+    $("#ylGenerateBtn").textContent = count < categories.length ? "完成 8 类后生成报告" : "生成体质报告";
+    var nextButton = $("#ylNextBtn");
+    if (nextButton) {
+      nextButton.disabled = state.currentIndex >= categories.length - 1;
+      nextButton.textContent = state.currentIndex >= categories.length - 1 ? "已到最后一项" : "继续下一项";
+    }
+    var miniQuota = $("#ylMiniQuota");
+    if (miniQuota) miniQuota.textContent = isHealthMember() ? "追问额度：会员深聊" : "追问额度：" + Math.max(0, FREE_ASK_LIMIT - state.askCount) + "/" + FREE_ASK_LIMIT;
   }
 
   function renderCategories() {
@@ -355,14 +387,14 @@
     wrap.innerHTML = "";
     switcher.innerHTML = "";
     categories.forEach(function (category, index) {
-      var selected = state.selections[category.id];
+      var items = selectedItems(category.id);
+      var selected = items.length > 0;
       var button = document.createElement("button");
       button.type = "button";
       button.className = "yl-category-card" + (state.currentIndex === index ? " is-active" : "") + (selected ? " is-filled" : "");
       button.innerHTML =
-        '<span class="yl-category-icon">' + category.icon + "</span>" +
         "<strong>" + category.name + "</strong>" +
-        "<small>" + (selected ? selected.label : category.prompt) + "</small>";
+        "<small>" + (selected ? "已选 " + items.length : "待填") + "</small>";
       button.addEventListener("click", function () {
         state.currentIndex = index;
         saveState();
@@ -372,7 +404,7 @@
 
       var switchButton = document.createElement("button");
       switchButton.type = "button";
-      switchButton.className = "yl-switch-btn" + (state.currentIndex === index ? " is-active" : "");
+      switchButton.className = "yl-switch-btn" + (state.currentIndex === index ? " is-active" : "") + (selected ? " is-filled" : "");
       switchButton.textContent = category.name;
       switchButton.addEventListener("click", function () {
         state.currentIndex = index;
@@ -385,7 +417,7 @@
 
   function renderQuestion() {
     var category = categories[state.currentIndex];
-    var selected = state.selections[category.id];
+    var selected = selectedItems(category.id);
     $("#ylQuestionIndex").textContent = String(state.currentIndex + 1).padStart(2, "0");
     $("#ylQuestionTitle").textContent = category.name;
     $("#ylQuestionHint").textContent = category.prompt;
@@ -395,19 +427,35 @@
     category.options.forEach(function (option) {
       var button = document.createElement("button");
       button.type = "button";
-      button.className = "yl-option-chip" + (selected && selected.label === option.label ? " is-selected" : "");
+      var isSelected = selected.some(function (item) {
+        return item.label === option.label;
+      });
+      button.className = "yl-option-chip" + (isSelected ? " is-selected" : "");
+      button.setAttribute("aria-pressed", isSelected ? "true" : "false");
       button.textContent = option.label;
       button.addEventListener("click", function () {
-        state.selections[category.id] = option;
-        if (state.currentIndex < categories.length - 1) {
-          state.currentIndex += 1;
-        }
+        toggleOption(category.id, option);
+        button.classList.add("is-flash");
+        window.setTimeout(function () {
+          button.classList.remove("is-flash");
+        }, 150);
         state.report = calculateReport();
         saveState();
         renderAll();
       });
       wrap.appendChild(button);
     });
+  }
+
+  function toggleOption(categoryId, option) {
+    var items = selectedItems(categoryId).slice();
+    var exists = items.some(function (item) {
+      return item.label === option.label;
+    });
+    state.selections[categoryId] = exists
+      ? items.filter(function (item) { return item.label !== option.label; })
+      : items.concat([option]);
+    if (!state.selections[categoryId].length) delete state.selections[categoryId];
   }
 
   function calculateReport() {
@@ -417,9 +465,10 @@
     });
 
     Object.keys(state.selections).forEach(function (key) {
-      var item = state.selections[key];
-      if (!item) return;
+      selectedItems(key).forEach(function (item) {
+        if (!item) return;
       scores[item.type] = (scores[item.type] || 0) + item.weight;
+      });
     });
 
     var sorted = Object.keys(scores).sort(function (a, b) {
@@ -484,6 +533,28 @@
         '<span class="yl-bar-track"><i class="yl-bar-fill" style="height:' + height + "px;background:" + meta.color + '"></i></span>' +
         "<em>" + meta.name.replace("倾向", "") + "</em>";
       bars.appendChild(bar);
+    });
+  }
+
+  function renderSelectedSummary() {
+    var wrap = $("#ylSelectedSummary");
+    if (!wrap) return;
+    wrap.innerHTML = "";
+    var filled = categories.filter(function (category) {
+      return selectedItems(category.id).length > 0;
+    });
+    if (!filled.length) {
+      var empty = document.createElement("p");
+      empty.className = "yl-selected-empty";
+      empty.textContent = "先选择舌象、睡眠、情绪等标签，右侧会同步形成摘要。";
+      wrap.appendChild(empty);
+      return;
+    }
+    filled.slice(0, 5).forEach(function (category) {
+      var item = document.createElement("div");
+      item.className = "yl-selected-item";
+      item.innerHTML = "<strong>" + category.name + "</strong><span>" + selectedLabel(category.id) + "</span>";
+      wrap.appendChild(item);
     });
   }
 
@@ -578,6 +649,14 @@
     goToPage("report");
   }
 
+  function goNextCategory() {
+    if (state.currentIndex < categories.length - 1) {
+      state.currentIndex += 1;
+      saveState();
+      renderAll();
+    }
+  }
+
   function resetAssessment() {
     state.currentIndex = 0;
     state.selections = {};
@@ -621,6 +700,8 @@
 
     var productName = HEALTH_PRODUCT_NAME;
     var amount = getPaymentAmountLabel();
+    var memberPrice = $("#ylMemberPrice");
+    if (memberPrice) memberPrice.textContent = amount;
     var openButton = $("#ylOpenPayBtn");
     if (openButton) {
       openButton.disabled = paymentState.loading;
@@ -808,6 +889,7 @@
 
   function bindEvents() {
     $("#ylGenerateBtn").addEventListener("click", generateReport);
+    $("#ylNextBtn").addEventListener("click", goNextCategory);
     $("#ylResetBtn").addEventListener("click", resetAssessment);
     $("#ylChatForm").addEventListener("submit", function (event) {
       event.preventDefault();
@@ -850,16 +932,18 @@
     renderProgress();
     renderCategories();
     renderQuestion();
+    renderSelectedSummary();
     renderReport();
     renderChatIntro();
   }
 
   loadState();
+  normalizeSelections();
   state.report = state.report || calculateReport();
   bindEvents();
   bindPaymentEvents();
   renderAll();
-  setActivePage(pageFromHash(), { scroll: false, instant: true });
+  setActivePage(pageFromHash(), { instant: true });
   window.addEventListener("hashchange", function () {
     setActivePage(pageFromHash());
   });
