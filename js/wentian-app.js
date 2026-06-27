@@ -3263,6 +3263,7 @@ function syncWentianChartFormLayout() {
   setWentianFigureTop(phone.querySelector('[data-node-id="source-26-submit-hit"]'), submitTop);
   setWentianFigureTop(phone.querySelector('[data-node-id="source-26-submit-text"]'), submitTop + 16);
   setWentianFigureTop(phone.querySelector("#wentian-chart-status"), submitTop + 62);
+  if (compactWentianShortFigScreenLayout(26)) fitActivePhoneShell();
 }
 
 function updateWentianChartPreview() {
@@ -11019,6 +11020,7 @@ function setWentianChartStatus(text, tone = "") {
   if (!el) return;
   el.textContent = text;
   el.dataset.tone = tone;
+  syncWentianChartFormLayout();
 }
 
 function getWentianChartFormData() {
