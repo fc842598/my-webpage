@@ -17843,7 +17843,7 @@ function convertedFlowHotspots(screen) {
 function sourceChartFormScreen() {
   const isEn = isWentianEnglishUi();
   const isEditingArchive = !!getWentianArchiveEditId();
-  const title = isEditingArchive ? (isEn ? "Edit Chart" : "编辑命盘") : (isEn ? "Chart" : "排盘");
+  const title = isEditingArchive ? (isEn ? "Edit Chart" : "编辑命盘") : (isEn ? "Birth Details" : "填写生辰信息");
   const heading = isEditingArchive ? (isEn ? "Edit Birth Info" : "修改出生信息") : (isEn ? "Birth Info" : "出生信息");
   const submitText = isEditingArchive ? (isEn ? "Save Changes" : "保存修改") : (isEn ? "Create Chart" : "开始排盘");
   return `
