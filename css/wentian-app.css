@@ -479,6 +479,42 @@ button {
   pointer-events: auto;
 }
 
+.wentian-floating-chart-submit {
+  position: fixed;
+  left: 50%;
+  bottom: calc(var(--wentian-floating-nav-height, 89px) + env(safe-area-inset-bottom, 0px) + 8px);
+  z-index: 1000;
+  width: var(--wentian-floating-nav-width, 390px);
+  height: var(--wentian-floating-submit-height, 54px);
+  transform: translateX(-50%);
+  pointer-events: auto;
+  transition: opacity .22s ease, transform .22s ease;
+}
+
+.wentian-floating-chart-submit.is-hidden {
+  opacity: 0;
+  transform: translateX(-50%) translateY(18px);
+  pointer-events: none;
+}
+
+.wentian-floating-chart-submit-inner {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 390px;
+  transform: scale(var(--wentian-floating-nav-scale, 1));
+  transform-origin: left bottom;
+  pointer-events: none;
+}
+
+.wentian-floating-chart-submit .fig-click {
+  pointer-events: auto;
+}
+
+.wentian-floating-chart-submit.is-hidden .fig-click {
+  pointer-events: none;
+}
+
 .fig-text,
 .fig-box,
 .fig-line,
@@ -1345,9 +1381,9 @@ html[lang="en"] .fig-text[data-node-id^="wt24-reward-tag-text-"] {
   position: absolute;
   left: 0;
   top: -3px;
-  width: 28px;
-  height: 28px;
-  border-radius: 14px;
+  width: 26px;
+  height: 26px;
+  border-radius: 13px;
   background: #e0d4c5;
   transition: transform .16s ease, background .16s ease;
 }
@@ -1357,14 +1393,14 @@ html[lang="en"] .fig-text[data-node-id^="wt24-reward-tag-text-"] {
 }
 
 .wentian-chart-toggle input:checked + span::after {
-  transform: translateX(18px);
+  transform: translateX(16px);
   background: #c2953c;
 }
 
 .wentian-chart-status {
   position: absolute;
   left: 24px;
-  top: 804px;
+  top: 654px;
   width: 342px;
   color: #9b7a3f;
   font-size: 12px;
@@ -1381,9 +1417,9 @@ html[lang="en"] .fig-text[data-node-id^="wt24-reward-tag-text-"] {
   left: 18px;
   top: 142px;
   width: 354px;
-  padding: 12px 14px;
+  padding: 9px 12px;
   border: 1px solid #e5d6be;
-  border-radius: 18px;
+  border-radius: 16px;
   background: rgba(255, 253, 247, 0.96);
   box-shadow: 0 16px 36px rgba(89, 56, 28, 0.08);
 }
@@ -1391,8 +1427,8 @@ html[lang="en"] .fig-text[data-node-id^="wt24-reward-tag-text-"] {
 .wentian-chart-row {
   display: flex;
   align-items: center;
-  gap: 10px;
-  min-height: 48px;
+  gap: 8px;
+  min-height: 42px;
   border-bottom: 1px solid #eadfce;
 }
 
@@ -1403,8 +1439,8 @@ html[lang="en"] .fig-text[data-node-id^="wt24-reward-tag-text-"] {
 .wentian-chart-row.stack {
   align-items: stretch;
   flex-direction: column;
-  gap: 6px;
-  padding: 8px 0;
+  gap: 5px;
+  padding: 6px 0;
 }
 
 .wentian-chart-row.two {
@@ -1414,7 +1450,7 @@ html[lang="en"] .fig-text[data-node-id^="wt24-reward-tag-text-"] {
 .wentian-chart-label {
   flex: 0 0 auto;
   color: #2b251c;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 800;
 }
 
@@ -1433,7 +1469,7 @@ html[lang="en"] .fig-text[data-node-id^="wt24-reward-tag-text-"] {
 .wentian-chart-card input,
 .wentian-chart-card select {
   min-width: 0;
-  height: 34px;
+  height: 32px;
   border: 1px solid #e4d6c3;
   border-radius: 10px;
   background: #fffaf3;
@@ -1459,15 +1495,15 @@ html[lang="en"] .fig-text[data-node-id^="wt24-reward-tag-text-"] {
 
 .wentian-chart-segment {
   display: inline-flex;
-  gap: 4px;
-  padding: 3px;
+  gap: 3px;
+  padding: 2px;
   border: 1px solid #e3d2b8;
   border-radius: 12px;
   background: #f5ebdc;
 }
 
 .wentian-chart-segment button {
-  height: 28px;
+  height: 26px;
   min-width: 44px;
   border: 0;
   border-radius: 9px;
@@ -1486,7 +1522,7 @@ html[lang="en"] .fig-text[data-node-id^="wt24-reward-tag-text-"] {
 .wentian-chart-date-grid,
 .wentian-chart-time-grid {
   display: grid;
-  gap: 8px;
+  gap: 6px;
   width: 100%;
 }
 
@@ -1510,7 +1546,7 @@ html[lang="en"] .fig-text[data-node-id^="wt24-reward-tag-text-"] {
 
 .wentian-chart-city-clear {
   position: absolute;
-  top: 7px;
+  top: 4px;
   right: 7px;
   height: 24px;
   border: 0;
@@ -1524,7 +1560,7 @@ html[lang="en"] .fig-text[data-node-id^="wt24-reward-tag-text-"] {
   z-index: 80;
   left: 0;
   right: 0;
-  top: 42px;
+  top: 38px;
   max-height: 156px;
   overflow-y: auto;
   border: 1px solid #e1d0b8;
@@ -1555,9 +1591,9 @@ html[lang="en"] .fig-text[data-node-id^="wt24-reward-tag-text-"] {
 }
 
 .wentian-chart-preview {
-  min-height: 17px;
+  min-height: 14px;
   color: #8d7d69;
-  font-size: 11px;
+  font-size: 10.5px;
   line-height: 1.45;
 }
 
@@ -1566,7 +1602,7 @@ html[lang="en"] .fig-text[data-node-id^="wt24-reward-tag-text-"] {
   align-items: center;
   gap: 6px;
   color: #8d7d69;
-  font-size: 12px;
+  font-size: 11px;
   white-space: nowrap;
 }
 
@@ -1580,8 +1616,8 @@ html[lang="en"] .fig-text[data-node-id^="wt24-reward-tag-text-"] {
 .wentian-chart-help-btn {
   flex: 0 0 auto;
   min-width: 0;
-  height: 24px;
-  padding: 0 10px;
+  height: 22px;
+  padding: 0 9px;
   border: 1px solid #e5c887;
   border-radius: 999px;
   background: #fff7df;
@@ -1611,7 +1647,7 @@ html[lang="en"] .fig-text[data-node-id^="wt24-reward-tag-text-"] {
 }
 
 .wentian-chart-tst {
-  padding: 7px 10px;
+  padding: 6px 9px;
   border: 1px solid #ecdcc2;
   border-radius: 12px;
   background: #fbf2df;
@@ -1622,8 +1658,8 @@ html[lang="en"] .fig-text[data-node-id^="wt24-reward-tag-text-"] {
 
 .wentian-chart-card .wentian-chart-toggle {
   position: relative;
-  width: 46px;
-  height: 28px;
+  width: 44px;
+  height: 26px;
 }
 
 .wentian-native-mingpan {

@@ -634,7 +634,7 @@ function getWentianShortScreenLayoutOptions(screenNo) {
         minNavY: 694,
         gap: 16,
         bgSelector: '[data-node-id="source-26-bg"]',
-        extraSelectors: ["#wentian-chart-status"]
+        extraSelectors: [".wentian-chart-card", "#wentian-chart-status"]
       };
     case 3:
       return { minNavY: 560, gap: 28 };
@@ -3317,11 +3317,13 @@ function syncWentianChartFormLayout() {
   const phone = document.querySelector('.figma-phone[data-node-id="screen-26"]');
   const card = phone?.querySelector(".wentian-chart-card");
   if (!phone || !card) return;
-  const submitTop = Math.max(660, card.offsetTop + card.offsetHeight + 12);
+  const cardBottom = card.offsetTop + card.offsetHeight;
+  const submitTop = Math.max(648, cardBottom + 10);
+  const statusTop = submitTop <= 684 ? Math.max(cardBottom + 6, submitTop - 28) : submitTop + 58;
   setWentianFigureTop(phone.querySelector('[data-node-id="source-26-submit"]'), submitTop);
   setWentianFigureTop(phone.querySelector('[data-node-id="source-26-submit-hit"]'), submitTop);
   setWentianFigureTop(phone.querySelector('[data-node-id="source-26-submit-text"]'), submitTop + 16);
-  setWentianFigureTop(phone.querySelector("#wentian-chart-status"), submitTop + 62);
+  setWentianFigureTop(phone.querySelector("#wentian-chart-status"), statusTop);
   if (compactWentianShortFigScreenLayout(26)) fitActivePhoneShell();
 }
 
@@ -8817,6 +8819,13 @@ function navigateWentianClickRoute(route) {
 function handleWentianRoutePointerCapture(event) {
   if (event.pointerType === "mouse" && event.button !== 0) return;
   if (event.target.closest?.("input, textarea, select, [contenteditable='true']")) return;
+  if (event.target.closest?.('.wentian-floating-chart-submit [data-action="wentian-chart-submit"]')) {
+    wentianPointerRouteSuppressUntil = Date.now() + 350;
+    event.preventDefault();
+    event.stopPropagation();
+    submitWentianChartForm();
+    return;
+  }
   if (event.target.closest?.("[data-action]")) return;
   const route = event.target.closest?.("[data-route]")?.dataset.route || getWentianRouteFromClickPoint(event);
   if (!route) return;
@@ -17902,10 +17911,11 @@ function sourceChartFormScreen() {
   const isEditingArchive = !!getWentianArchiveEditId();
   const title = isEditingArchive ? (isEn ? "Edit Chart" : "编辑命盘") : (isEn ? "Birth Details" : "填写生辰信息");
   const heading = isEditingArchive ? (isEn ? "Edit Birth Info" : "修改出生信息") : "";
-  const cardTop = isEditingArchive ? 142 : 118;
-  const submitText = isEditingArchive ? (isEn ? "Save Changes" : "保存修改") : (isEn ? "Create Chart" : "开始排盘");
+  const cardTop = isEditingArchive ? 130 : 104;
+  const submitY = isEditingArchive ? 690 : 684;
+  const submitText = isEditingArchive ? (isEn ? "Save Changes" : "保存修改") : (isEn ? "Create Chart" : "立即排盘");
   return `
-    ${figBox("source-26-bg", 0, 0, 390, 944, "", "background:linear-gradient(180deg,#fffdf8 0%,#fbf7ef 52%,#f6eee2 100%);")}
+    ${figBox("source-26-bg", 0, 0, 390, 844, "", "background:linear-gradient(180deg,#fffdf8 0%,#fbf7ef 52%,#f6eee2 100%);")}
     ${figBox("source-26-top", 0, 0, 390, 92, "", "background:#fffdf8;border-bottom:1px solid #eadfce;")}
     ${wentianBackPill("source-26", 18, 42, `data-action="back" aria-label="${isEn ? "Back" : "返回"}"`, { zIndex: 70 })}
     ${figText("source-26-title", title, 0, 52, 390, 24, "#1f1d1a", 800, "center", "font-family:'Noto Serif SC','Songti SC',serif;")}
@@ -17995,9 +18005,9 @@ function sourceChartFormScreen() {
       <div id="wentian-chart-tst" class="wentian-chart-tst">${isEn ? "Complete birth time first. Birthplace is optional." : "请先补全出生时间，地点可选。"}</div>
     </div>
 
-    ${figBox("source-26-submit", 18, 742, 354, 54, "", "border:1px solid #7b3129;border-radius:12px;background:#9e4738;box-shadow:0 10px 20px rgba(123,49,41,.14);")}
-    ${figButton("source-26-submit-hit", 18, 742, 354, 54, 'data-action="wentian-chart-submit"', "", "z-index:70;")}
-    ${figText("source-26-submit-text", submitText, 0, 758, 390, 18, "#fffdf6", 800, "center")}
+    ${figBox("source-26-submit", 18, submitY, 354, 52, "", "border:1px solid #7b3129;border-radius:12px;background:#9e4738;box-shadow:0 10px 20px rgba(123,49,41,.14);")}
+    ${figButton("source-26-submit-hit", 18, submitY, 354, 52, 'data-action="wentian-chart-submit"', "", "z-index:70;")}
+    ${figText("source-26-submit-text", submitText, 0, submitY + 16, 390, 18, "#fffdf6", 800, "center")}
     <div id="wentian-chart-status" class="wentian-chart-status"></div>
   `;
 }
@@ -19280,7 +19290,7 @@ function renderConvertedScreen(no) {
     return figPhone(`screen-${screen.no}`, `${String(screen.no).padStart(2, "0")} ${screen.title}`, `
       ${sourceChartFormScreen()}
       ${convertedFlowHotspots(screen)}
-    `, 944, "converted source-screen no-status-shift", true);
+    `, 844, "converted source-screen no-status-shift", true);
   }
   if (screen.no === 27) {
     return figPhone(`screen-${screen.no}`, `${String(screen.no).padStart(2, "0")} ${screen.title}`, `
@@ -19370,11 +19380,21 @@ function stripScreenshotStatusBar() {
 
 function clearWentianFloatingBottomNav() {
   document.querySelector(".wentian-floating-bottom-nav")?.remove();
+  clearWentianFloatingChartSubmit();
   view?.classList.remove("has-floating-bottom-nav");
   for (const node of document.querySelectorAll('.figma-phone [data-wentian-nav-hidden="1"]')) {
     node.style.visibility = "";
     node.style.pointerEvents = "";
     delete node.dataset.wentianNavHidden;
+  }
+}
+
+function clearWentianFloatingChartSubmit() {
+  document.querySelector(".wentian-floating-chart-submit")?.remove();
+  for (const node of document.querySelectorAll('.figma-phone [data-wentian-submit-hidden="1"]')) {
+    node.style.visibility = "";
+    node.style.pointerEvents = "";
+    delete node.dataset.wentianSubmitHidden;
   }
 }
 
@@ -19453,6 +19473,63 @@ function syncWentianFloatingBottomNav() {
   floating.classList.toggle("is-hidden", hidden);
   floating.setAttribute("aria-hidden", hidden ? "true" : "false");
   view?.classList.add("has-floating-bottom-nav");
+  syncWentianFloatingChartSubmit(phone, scale, navHeight, hidden);
+}
+
+function syncWentianFloatingChartSubmit(phone, scale, navHeight, hidden) {
+  if (!phone || state.route !== "screen-26") {
+    clearWentianFloatingChartSubmit();
+    return;
+  }
+  const submitNodes = [...phone.querySelectorAll('[data-node-id^="source-26-submit"]')];
+  if (!submitNodes.length) {
+    clearWentianFloatingChartSubmit();
+    return;
+  }
+  const submitTop = submitNodes.reduce((min, node) => {
+    const top = Number.parseFloat(node.style.top);
+    return Number.isFinite(top) ? Math.min(min, top) : min;
+  }, Infinity);
+  const submitBottom = submitNodes.reduce((max, node) => {
+    const top = Number.parseFloat(node.style.top);
+    const height = Number.parseFloat(node.style.height) || (node.classList.contains("fig-text") ? Number.parseFloat(node.style.fontSize) * 1.4 : 0);
+    return Number.isFinite(top) && Number.isFinite(height) ? Math.max(max, top + height) : max;
+  }, 0);
+  if (!Number.isFinite(submitTop) || submitBottom <= submitTop) {
+    clearWentianFloatingChartSubmit();
+    return;
+  }
+
+  let floating = document.querySelector(".wentian-floating-chart-submit");
+  if (!floating) {
+    floating = document.createElement("div");
+    floating.className = "wentian-floating-chart-submit";
+    floating.innerHTML = '<div class="wentian-floating-chart-submit-inner"></div>';
+    document.body.appendChild(floating);
+  }
+
+  const inner = floating.querySelector(".wentian-floating-chart-submit-inner");
+  const submitHeight = Math.ceil(submitBottom - submitTop);
+  inner.innerHTML = "";
+  submitNodes.forEach((node) => {
+    const clone = node.cloneNode(true);
+    const top = Number.parseFloat(clone.style.top);
+    if (Number.isFinite(top)) clone.style.top = `${Math.round(top - submitTop)}px`;
+    clone.style.visibility = "";
+    clone.style.pointerEvents = "";
+    delete clone.dataset.wentianSubmitHidden;
+    inner.appendChild(clone);
+    node.style.visibility = "hidden";
+    node.style.pointerEvents = "none";
+    node.dataset.wentianSubmitHidden = "1";
+  });
+  inner.style.height = `${submitHeight}px`;
+  floating.style.setProperty("--wentian-floating-nav-scale", String(scale));
+  floating.style.setProperty("--wentian-floating-nav-width", `${Math.ceil(WENTIAN_PHONE_WIDTH * scale)}px`);
+  floating.style.setProperty("--wentian-floating-nav-height", `${Math.ceil(navHeight * scale)}px`);
+  floating.style.setProperty("--wentian-floating-submit-height", `${Math.ceil(submitHeight * scale)}px`);
+  floating.classList.toggle("is-hidden", hidden);
+  floating.setAttribute("aria-hidden", hidden ? "true" : "false");
 }
 
 function getWentianNodeBottomWithinPhone(phone, node) {
@@ -19862,7 +19939,7 @@ function navigate(route, push = true, syncHash = true) {
     stabilizeWentianLanguageText(view);
     if (screen.no === 27) compactWentianZiweiScreenLayout();
     if ([17, 18, 19].includes(screen.no)) compactWentianLiuyaoCastLayout();
-    if ([3, 5, 20, 22, 32, 35, 38, 40, 41, 42, 48].includes(screen.no)) {
+    if ([3, 5, 20, 22, 26, 32, 35, 38, 40, 41, 42, 48].includes(screen.no)) {
       if (screen.no === 20) compactWentianLiuyaoEmptyResultLayout();
       else compactWentianShortFigScreenLayout(screen.no);
     }
@@ -19872,7 +19949,7 @@ function navigate(route, push = true, syncHash = true) {
     scheduleWentianPhoneFit();
     if (screen.no === 27) scheduleWentianZiweiScreenLayout();
     if ([17, 18, 19].includes(screen.no)) scheduleWentianLiuyaoCastLayout();
-    if ([3, 5, 20, 22, 32, 35, 38, 40, 41, 42, 47, 48].includes(screen.no)) scheduleWentianShortPageLayout(screen.no);
+    if ([3, 5, 20, 22, 26, 32, 35, 38, 40, 41, 42, 47, 48].includes(screen.no)) scheduleWentianShortPageLayout(screen.no);
     if (screen.no === 49) scheduleWentianHepanResultLayout();
     syncActive();
     window.setTimeout(initWentianAuth, 0);
