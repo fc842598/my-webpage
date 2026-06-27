@@ -1254,23 +1254,25 @@ function sourceAiChatScreen(screen) {
       <span class="wentian-chat-profile-caret">⌄</span>
     </button>
   `;
-  const chatRoleText = isLiuyaoChat ? "占卜专批 · 在线" : isHepanChat ? "合盘专批 · 在线" : isLiurenChat ? "六壬专批 · 在线" : isYijingChat ? "易经推命 · 在线" : "命盘顾问 · 在线";
   const contextLabel = isHepanChat ? "本次合盘" : isLiurenChat ? "本次六壬课" : isYijingChat ? "本次易经推命" : "本次占问";
   const contextQuestion = chatContext?.question || (isHepanChat ? "双方关系" : isLiurenChat ? "所念之事" : isYijingChat ? (chatContext?.summaryLine || "当前卦象") : "所问之事");
   const faqTitle = isLiuyaoChat ? "占卜追问" : isHepanChat ? "合盘追问" : isLiurenChat ? "六壬追问" : isYijingChat ? "卦象追问" : "常问";
   const inputPlaceholder = isLiuyaoChat ? "追问这卦" : isHepanChat ? "追问合盘" : isLiurenChat ? "追问此课" : isYijingChat ? "追问这组卦" : "问一问";
   const contextSheet = renderWentianChatContextSheet(chatContext);
+  const memberSnapshot = getWentianMemberSnapshot();
+  const dailyRemaining = getWentianQuotaValue("dailyRemaining", String(memberSnapshot.daily || "--").split("/")[0] || "--");
+  const onlineLabel = isWentianEnglishUi() ? "Online" : "在线";
+  const quotaLabel = isWentianEnglishUi() ? `${dailyRemaining} left` : `余 ${dailyRemaining}次`;
   return `
     ${figBox("source-4-bg", 0, 0, 390, 892, "", "background:#fbf7ef;")}
     ${figBox("source-4-header", 0, 0, 390, 88, "", "background:#f8f3ea;box-shadow:0 1px 0 rgba(110,82,38,.08);")}
     ${wentianBackPill("source-4", 14, 25, 'data-action="back" aria-label="返回"', { zIndex: 72 })}
-    ${figImage("source-4-avatar", "../images/wentian-prototype-assets/xu-dashi.webp", 114, 25, 36, 36, "border-radius:18px;object-fit:cover;object-position:center 18%;")}
-    ${figText("source-4-name", "许大师", 158, 27, 82, 17, "#26211c", 800)}
-    ${figText("source-4-left", chatRoleText, 158, 51, 84, 12, "#8d8377", 500)}
+    ${figBox("source-4-online-pill", 114, 30, 48, 20, "", "border:1px solid rgba(194,149,60,.24);border-radius:999px;background:#fffaf1;z-index:72;")}
+    ${figText("source-4-online-text", onlineLabel, 114, 35, 48, 10, "#a77721", 900, "center", "z-index:73;letter-spacing:.02em;")}
+    ${figText("source-4-left", quotaLabel, 170, 33, 78, 15, "#7f756b", 700, "left")}
     ${profileTag}
     ${figText("source-4-record", "⋯", 344, 31, 22, 22, "#6f665d", 800, "center")}
     ${isContextChat ? "" : figButton("source-4-record-hit", 334, 24, 38, 56, 'data-route="screen-9" aria-label="对话记录"', "", "z-index:72;")}
-    <div id="wentian-chat-status" class="wentian-chat-status">正在接入许大师…</div>
     ${chatContext ? `
       <div class="wentian-chat-context-card">
         <span>${contextLabel}</span>
@@ -9947,10 +9949,8 @@ function setWentianQuota(quota) {
   if (getWentianXuChatContext()) return;
   const normalized = normalizeWentianQuota(quota);
   const remainingValue = normalized.dailyRemaining ?? normalized.remaining;
-  const limitValue = normalized.dailyLimit ?? normalized.limit;
   const remaining = remainingValue === null || remainingValue === undefined || remainingValue === "" ? "--" : remainingValue;
-  const limit = limitValue === null || limitValue === undefined || limitValue === "" ? "--" : limitValue;
-  el.textContent = `◇ 今日 ${remaining}/${limit}`;
+  el.textContent = isWentianEnglishUi() ? `${remaining} left` : `余 ${remaining}次`;
 }
 
 function splitWentianLongSentence(sentence, maxLength = 58) {

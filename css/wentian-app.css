@@ -2485,7 +2485,7 @@ html[lang="en"] .wentian-native-mingpan .fc-center-btn {
 .wentian-chat-context-card {
   position: absolute;
   left: 22px;
-  top: 132px;
+  top: 102px;
   display: grid;
   gap: 4px;
   width: 346px;
@@ -2614,16 +2614,16 @@ html[lang="en"] .wentian-native-mingpan .fc-center-btn {
 .wentian-chat-log {
   position: absolute;
   left: 22px;
-  top: 136px;
+  top: 102px;
   width: 346px;
-  height: 418px;
+  height: 452px;
   overflow-y: auto;
   padding: 2px 2px 16px;
 }
 
 .wentian-chat-log.is-with-context {
-  top: 224px;
-  height: 330px;
+  top: 194px;
+  height: 360px;
 }
 
 .wentian-chat-log::-webkit-scrollbar {
