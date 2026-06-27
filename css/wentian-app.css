@@ -8813,7 +8813,12 @@ html[lang="en"] .liuyao-coin-summary em {
 
 .wentian-yijing-card {
   display: grid;
-  padding: 14px;
+  grid-template-columns: minmax(0, 1fr) 84px;
+  grid-template-areas:
+    "media media"
+    "main badge";
+  gap: 10px 8px;
+  padding: 10px 10px 12px;
   border: 1px solid rgba(227, 199, 109, .34);
   border-radius: 22px;
   background: linear-gradient(180deg, #fbf4e8 0%, #f4ead8 100%);
@@ -8821,33 +8826,34 @@ html[lang="en"] .liuyao-coin-summary em {
 }
 
 .wentian-yijing-art {
-  display: grid;
-  place-items: center;
-  position: relative;
-  width: 100%;
-  min-height: 266px;
-  aspect-ratio: 1.25 / 1;
-  border-radius: 18px;
-  background: #ebe0cc;
-  overflow: hidden;
+  display: contents;
 }
 
 .wentian-yijing-art img {
-  width: calc(100% - 22px);
-  height: calc(100% - 22px);
+  grid-area: media;
+  display: block;
+  width: 100%;
+  min-height: 208px;
+  aspect-ratio: 1.52 / 1;
+  padding: 8px;
+  border-radius: 18px;
+  background: #ebe0cc;
+  box-shadow: inset 0 0 0 1px rgba(114, 84, 46, .12);
   object-fit: contain;
 }
 
 .wentian-yijing-art .wentian-yijing-lines {
-  position: absolute;
-  right: 12px;
-  bottom: 12px;
+  grid-area: badge;
+  align-self: end;
+  justify-self: end;
+  position: static;
   width: 72px;
   gap: 6px;
   border: 1px solid rgba(226, 199, 103, .46);
   border-radius: 14px;
   padding: 10px;
   background: rgba(13, 9, 3, .88);
+  box-shadow: 0 10px 22px rgba(31, 19, 8, .18);
 }
 
 .wentian-yijing-art .wentian-yijing-lines i {
@@ -8858,7 +8864,7 @@ html[lang="en"] .liuyao-coin-summary em {
 .wentian-yijing-lines {
   display: grid;
   gap: 8px;
-  width: 60px;
+  width: 100%;
 }
 
 .wentian-yijing-lines i {
@@ -8900,17 +8906,20 @@ html[lang="en"] .liuyao-coin-summary em {
 }
 
 .wentian-yijing-main h3 {
-  margin: 4px 0 0;
+  margin: 2px 0 0;
   color: #251d18;
-  font-size: 28px;
+  font-size: 24px;
   font-weight: 900;
-  line-height: 1.06;
+  line-height: 1.08;
 }
 
 .wentian-yijing-main {
+  grid-area: main;
   display: grid;
   gap: 4px;
-  padding: 2px 4px 4px;
+  align-content: center;
+  min-height: 72px;
+  padding: 0 2px 2px;
 }
 
 .wentian-yijing-card-kicker {
