@@ -1679,7 +1679,7 @@ html[lang="en"] .fig-text[data-node-id^="wt24-reward-tag-text-"] {
   background: #f6ead9;
   border-radius: 0;
   box-shadow: none;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .wentian-native-mingpan .fc-grid-wrap {
@@ -1694,7 +1694,7 @@ html[lang="en"] .fig-text[data-node-id^="wt24-reward-tag-text-"] {
   gap: 1px;
   width: 100%;
   aspect-ratio: 1 / 1.18;
-  overflow: hidden;
+  overflow: visible;
   border: 1px solid #e2cfb8;
   background: #e2cfb8;
 }
@@ -1738,6 +1738,8 @@ html[lang="en"] .fig-text[data-node-id^="wt24-reward-tag-text-"] {
 }
 
 .wentian-native-mingpan .fc-cell.fc-xiaolian {
+  z-index: 6;
+  overflow: visible;
   background:
     radial-gradient(circle at 84% 80%, rgba(210, 138, 49, .24), transparent 34%),
     linear-gradient(135deg, rgba(255, 249, 235, .98), rgba(255, 238, 207, .94)) !important;
@@ -1772,10 +1774,6 @@ html[lang="en"] .fig-text[data-node-id^="wt24-reward-tag-text-"] {
   min-width: 0;
 }
 
-.wentian-native-mingpan .fc-cell.fc-xiaolian .fc-cell-top {
-  padding-top: 14px;
-}
-
 .wentian-native-mingpan .fc-cell.fc-xiaolian.is-locating {
   animation: wentianFcXiaoLianCellPulse 1.7s ease-out 1;
 }
@@ -1807,8 +1805,8 @@ html[lang="en"] .fig-text[data-node-id^="wt24-reward-tag-text-"] {
 
 .wentian-native-mingpan .fc-cell.fc-xiaolian > .fc-xiaolian-badge {
   position: absolute;
-  top: 5px;
-  right: 5px;
+  top: auto;
+  right: auto;
   width: auto;
   z-index: 4;
   display: inline-flex;
@@ -1823,11 +1821,36 @@ html[lang="en"] .fig-text[data-node-id^="wt24-reward-tag-text-"] {
   font-weight: 900;
   line-height: 1.25;
   white-space: nowrap;
+  pointer-events: none;
   box-shadow:
     0 2px 8px rgba(117, 65, 16, .32),
     0 0 0 2px rgba(255, 255, 255, .55);
   transform-origin: center;
   will-change: transform;
+}
+
+.wentian-native-mingpan .fc-cell.fc-xiaolian-side-top > .fc-xiaolian-badge {
+  top: -7px;
+  left: 50%;
+  transform: translate(-50%, -100%);
+}
+
+.wentian-native-mingpan .fc-cell.fc-xiaolian-side-right > .fc-xiaolian-badge {
+  top: 50%;
+  right: -1px;
+  transform: translate(20%, -50%);
+}
+
+.wentian-native-mingpan .fc-cell.fc-xiaolian-side-bottom > .fc-xiaolian-badge {
+  bottom: -7px;
+  left: 50%;
+  transform: translate(-50%, 100%);
+}
+
+.wentian-native-mingpan .fc-cell.fc-xiaolian-side-left > .fc-xiaolian-badge {
+  top: 50%;
+  left: -1px;
+  transform: translate(-20%, -50%);
 }
 
 [data-node-id^="source-25-name-"].wentian-archive-inline-name {
