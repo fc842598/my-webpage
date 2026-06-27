@@ -1262,15 +1262,14 @@ function sourceAiChatScreen(screen) {
   const memberSnapshot = getWentianMemberSnapshot();
   const dailyRemaining = getWentianQuotaValue("dailyRemaining", String(memberSnapshot.daily || "--").split("/")[0] || "--");
   const onlineLabel = isWentianEnglishUi() ? "Online" : "在线";
-  const quotaLabel = isWentianEnglishUi() ? `${dailyRemaining} left` : `余 ${dailyRemaining}次`;
+  const quotaLabel = isWentianEnglishUi() ? `${dailyRemaining} left` : `余${dailyRemaining}次`;
   return `
     ${figBox("source-4-bg", 0, 0, 390, 892, "", "background:#fbf7ef;")}
     ${figBox("source-4-header", 0, 0, 390, 88, "", "background:#f8f3ea;box-shadow:0 1px 0 rgba(110,82,38,.08);")}
     ${wentianBackPill("source-4", 8, 25, 'data-action="back" aria-label="返回"', { zIndex: 72 })}
-    ${figBox("source-4-status-strip", 104, 25, 126, 30, "", "border:1px solid rgba(226,210,177,.72);border-radius:15px;background:rgba(255,252,246,.66);z-index:70;")}
-    ${figBox("source-4-online-pill", 110, 30, 48, 20, "", "border:1px solid rgba(194,149,60,.24);border-radius:999px;background:#fffaf1;z-index:72;")}
-    ${figText("source-4-online-text", onlineLabel, 110, 35, 48, 10, "#a77721", 900, "center", "z-index:73;letter-spacing:0;")}
-    ${figText("source-4-left", quotaLabel, 166, 32, 58, 16, "#6f665d", 800, "left")}
+    ${figText("source-4-left", quotaLabel, 112, 27, 112, 17, "#4f4942", 900, "center")}
+    ${figBox("source-4-online-dot", 151, 52, 5, 5, "", "border-radius:50%;background:#6fa35a;box-shadow:0 0 0 3px rgba(111,163,90,.10);z-index:73;")}
+    ${figText("source-4-online-text", onlineLabel, 161, 48, 44, 10, "#6b8d58", 800, "left", "z-index:73;letter-spacing:0;")}
     ${profileTag}
     ${figText("source-4-record", "⋯", 354, 31, 22, 22, "#6f665d", 800, "center")}
     ${isContextChat ? "" : figButton("source-4-record-hit", 344, 24, 38, 56, 'data-route="screen-9" aria-label="对话记录"', "", "z-index:72;")}
