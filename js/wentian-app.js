@@ -1266,13 +1266,14 @@ function sourceAiChatScreen(screen) {
   return `
     ${figBox("source-4-bg", 0, 0, 390, 892, "", "background:#fbf7ef;")}
     ${figBox("source-4-header", 0, 0, 390, 88, "", "background:#f8f3ea;box-shadow:0 1px 0 rgba(110,82,38,.08);")}
-    ${wentianBackPill("source-4", 10, 25, 'data-action="back" aria-label="返回"', { zIndex: 72 })}
-    ${figBox("source-4-online-pill", 106, 30, 50, 20, "", "border:1px solid rgba(194,149,60,.24);border-radius:999px;background:#fffaf1;z-index:72;")}
-    ${figText("source-4-online-text", onlineLabel, 106, 35, 50, 10, "#a77721", 900, "center", "z-index:73;letter-spacing:.02em;")}
-    ${figText("source-4-left", quotaLabel, 164, 32, 76, 16, "#7f756b", 700, "left")}
+    ${wentianBackPill("source-4", 8, 25, 'data-action="back" aria-label="返回"', { zIndex: 72 })}
+    ${figBox("source-4-status-strip", 104, 25, 126, 30, "", "border:1px solid rgba(226,210,177,.72);border-radius:15px;background:rgba(255,252,246,.66);z-index:70;")}
+    ${figBox("source-4-online-pill", 110, 30, 48, 20, "", "border:1px solid rgba(194,149,60,.24);border-radius:999px;background:#fffaf1;z-index:72;")}
+    ${figText("source-4-online-text", onlineLabel, 110, 35, 48, 10, "#a77721", 900, "center", "z-index:73;letter-spacing:0;")}
+    ${figText("source-4-left", quotaLabel, 166, 32, 58, 16, "#6f665d", 800, "left")}
     ${profileTag}
-    ${figText("source-4-record", "⋯", 350, 31, 22, 22, "#6f665d", 800, "center")}
-    ${isContextChat ? "" : figButton("source-4-record-hit", 340, 24, 38, 56, 'data-route="screen-9" aria-label="对话记录"', "", "z-index:72;")}
+    ${figText("source-4-record", "⋯", 354, 31, 22, 22, "#6f665d", 800, "center")}
+    ${isContextChat ? "" : figButton("source-4-record-hit", 344, 24, 38, 56, 'data-route="screen-9" aria-label="对话记录"', "", "z-index:72;")}
     ${chatContext ? `
       <div class="wentian-chat-context-card">
         <span>${contextLabel}</span>
@@ -1282,7 +1283,7 @@ function sourceAiChatScreen(screen) {
     ` : ""}
     <div id="wentian-chat-messages" class="wentian-chat-log ${chatContext ? "is-with-context" : ""}" aria-live="polite"></div>
     <button id="wentian-chat-scroll-bottom" class="wentian-chat-scroll-bottom" type="button" data-action="wentian-chat-scroll-bottom">回到底部</button>
-    ${figText("source-4-faq-title", faqTitle, 18, 582, 96, 14, "#25211d", 800)}
+    ${figText("source-4-faq-title", faqTitle, 16, 580, 96, 14, "#25211d", 800)}
     <div class="wentian-chat-starters" aria-label="常见问题分类">
       ${faqGroups.map((group) => `
         <details class="wentian-chat-faq-group">
