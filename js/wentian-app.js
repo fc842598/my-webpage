@@ -1611,6 +1611,7 @@ let wentianChartMoreOpen = false;
 let wentianChartCalMode = "solar";
 let wentianChartCity = null;
 let wentianChartCityScope = "china";
+let wentianChartCityDeleteArmed = false;
 let wentianMemberStatusPromise = null;
 let wentianPaymentPollTimer = null;
 let wentianAuthSession = null;
@@ -3171,8 +3172,63 @@ function updateWentianSelectedCityText(tzOffset) {
   selected.style.display = "block";
 }
 
+function getWentianChartCityInputValue(city = wentianChartCity) {
+  if (!city) return "";
+  return `${city.province} · ${city.city}`;
+}
+
+function resetWentianChartCityDeleteGesture() {
+  wentianChartCityDeleteArmed = false;
+}
+
+function clearWentianChartCitySelectionUi(options = {}) {
+  wentianChartCity = null;
+  resetWentianChartCityDeleteGesture();
+  const input = document.getElementById("wentian-chart-city");
+  const clear = document.getElementById("wentian-chart-city-clear");
+  const selected = document.getElementById("wentian-chart-city-selected");
+  if (input && !options.preserveInputValue) input.value = "";
+  if (clear) clear.style.display = "none";
+  if (selected) {
+    selected.textContent = "";
+    selected.style.display = "none";
+  }
+}
+
+function handleWentianChartCityDeleteGesture(event) {
+  const input = event?.target?.id === "wentian-chart-city"
+    ? event.target
+    : document.getElementById("wentian-chart-city");
+  if (!input || !wentianChartCity) return false;
+  const fullValue = getWentianChartCityInputValue(wentianChartCity);
+  if (!fullValue || input.value !== fullValue) return false;
+  const start = Number.isFinite(input.selectionStart) ? input.selectionStart : fullValue.length;
+  const end = Number.isFinite(input.selectionEnd) ? input.selectionEnd : fullValue.length;
+  const wholeSelected = start === 0 && end === fullValue.length;
+  const atTail = start === end && end === fullValue.length;
+
+  if (wholeSelected || (wentianChartCityDeleteArmed && atTail)) {
+    event.preventDefault();
+    applyWentianChartCity(null);
+    return true;
+  }
+  if (atTail) {
+    event.preventDefault();
+    try {
+      input.setSelectionRange(0, fullValue.length);
+    } catch (_error) {
+      wentianChartCityDeleteArmed = true;
+    }
+    wentianChartCityDeleteArmed = true;
+    return true;
+  }
+  resetWentianChartCityDeleteGesture();
+  return false;
+}
+
 function applyWentianChartCity(city, options = {}) {
   wentianChartCity = city || null;
+  resetWentianChartCityDeleteGesture();
   if (city && !options.preserveScope) {
     setWentianChartCityScope(isWentianChinaCity(city) ? "china" : "global", { keepSelected: true });
   } else {
@@ -3182,7 +3238,7 @@ function applyWentianChartCity(city, options = {}) {
   const clear = document.getElementById("wentian-chart-city-clear");
   const selected = document.getElementById("wentian-chart-city-selected");
   const dropdown = document.getElementById("wentian-chart-city-dropdown");
-  if (input) input.value = city ? `${city.province} · ${city.city}` : "";
+  if (input) input.value = getWentianChartCityInputValue(city);
   if (clear) clear.style.display = city ? "" : "none";
   if (selected) {
     selected.textContent = city
@@ -17844,7 +17900,8 @@ function sourceChartFormScreen() {
   const isEn = isWentianEnglishUi();
   const isEditingArchive = !!getWentianArchiveEditId();
   const title = isEditingArchive ? (isEn ? "Edit Chart" : "编辑命盘") : (isEn ? "Birth Details" : "填写生辰信息");
-  const heading = isEditingArchive ? (isEn ? "Edit Birth Info" : "修改出生信息") : (isEn ? "Birth Info" : "出生信息");
+  const heading = isEditingArchive ? (isEn ? "Edit Birth Info" : "修改出生信息") : "";
+  const cardTop = isEditingArchive ? 142 : 118;
   const submitText = isEditingArchive ? (isEn ? "Save Changes" : "保存修改") : (isEn ? "Create Chart" : "开始排盘");
   return `
     ${figBox("source-26-bg", 0, 0, 390, 944, "", "background:linear-gradient(180deg,#fffdf8 0%,#fbf7ef 52%,#f6eee2 100%);")}
@@ -17852,8 +17909,8 @@ function sourceChartFormScreen() {
     ${wentianBackPill("source-26", 18, 42, `data-action="back" aria-label="${isEn ? "Back" : "返回"}"`, { zIndex: 70 })}
     ${figText("source-26-title", title, 0, 52, 390, 24, "#1f1d1a", 800, "center", "font-family:'Noto Serif SC','Songti SC',serif;")}
 
-    ${figText("source-26-heading", heading, 24, 108, 160, 24, "#2b251c", 900, "left", "font-family:'Noto Serif SC','Songti SC',serif;")}
-    <div class="wentian-chart-card">
+    ${heading ? figText("source-26-heading", heading, 24, 108, 160, 24, "#2b251c", 900, "left", "font-family:'Noto Serif SC','Songti SC',serif;") : ""}
+    <div class="wentian-chart-card" style="top:${cardTop}px">
       <input type="hidden" id="wentian-chart-gender" value="male">
       <input type="hidden" id="wentian-chart-type" value="ziwei">
       <input type="hidden" id="wentian-chart-cal" value="solar">
@@ -20155,11 +20212,25 @@ document.addEventListener("pointerup", handleLiuyaoSwipePointerUp);
 document.addEventListener("pointercancel", cancelLiuyaoSwipePointer);
 
 document.addEventListener("keydown", (event) => {
+  if (event.target?.id === "wentian-chart-city" && event.key === "Backspace") {
+    if (handleWentianChartCityDeleteGesture(event)) return;
+  }
   const target = event.target.closest?.('[data-action="liuyao-swipe-cast"]');
   if (!target || !canUseLiuyaoSwipeCaster(target)) return;
   if (event.key !== "Enter" && event.key !== " ") return;
   event.preventDefault();
   startLiuyaoAnimatedToss({ power: LIUYAO_DEFAULT_POWER, pull: LIUYAO_PULL_MAX * LIUYAO_DEFAULT_POWER, duration: 320 });
+});
+
+document.addEventListener("beforeinput", (event) => {
+  if (event.target?.id !== "wentian-chart-city") return;
+  if (event.inputType !== "deleteContentBackward") return;
+  handleWentianChartCityDeleteGesture(event);
+});
+
+document.addEventListener("focusout", (event) => {
+  if (event.target?.id !== "wentian-chart-city") return;
+  resetWentianChartCityDeleteGesture();
 });
 
 document.addEventListener("toggle", (event) => {
@@ -20884,7 +20955,12 @@ document.addEventListener("input", (event) => {
   }
   if (!event.target.closest?.(".wentian-chart-card")) return;
   if (event.target.id === "wentian-chart-city") {
-    wentianChartCity = null;
+    const selectedValue = getWentianChartCityInputValue(wentianChartCity);
+    if (wentianChartCity && event.target.value !== selectedValue) {
+      clearWentianChartCitySelectionUi({ preserveInputValue: true });
+    } else {
+      resetWentianChartCityDeleteGesture();
+    }
     renderWentianChartCityDropdown(event.target.value);
   }
   if (event.target.id === "wentian-chart-year" || event.target.id === "wentian-chart-month") {
