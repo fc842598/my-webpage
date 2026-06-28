@@ -4618,7 +4618,7 @@ function clearWentianXiaoLianBadgeTimer() {
 
 function shouldShowWentianXiaoLianBadge(selected = {}) {
   const key = selected.key || selected.currentKey || "";
-  return !!key && (!wentianXiaoLianBadgeVisibleKey || key === wentianXiaoLianBadgeVisibleKey);
+  return !!key && key === wentianXiaoLianBadgeVisibleKey;
 }
 
 function armWentianXiaoLianBadge(selected = {}) {
@@ -4626,6 +4626,15 @@ function armWentianXiaoLianBadge(selected = {}) {
   if (!key) return;
   clearWentianXiaoLianBadgeTimer();
   wentianXiaoLianBadgeVisibleKey = key;
+  wentianXiaoLianBadgeFrame = window.requestAnimationFrame(() => {
+    wentianXiaoLianBadgeFrame = 0;
+    wentianXiaoLianBadgeTimer = window.setTimeout(() => {
+      wentianXiaoLianBadgeTimer = 0;
+      if (wentianXiaoLianBadgeVisibleKey !== key) return;
+      wentianXiaoLianBadgeVisibleKey = "";
+      if (state.route === "screen-27") navigatePreservingScroll("screen-27", false);
+    }, 2000);
+  });
 }
 
 function getWentianHepanSelectedXiaoLianYear(chartData = {}, side = "left") {
@@ -18078,7 +18087,7 @@ function renderWentianClassicPalaceCell(palace, activeBranch, options = {}) {
   const showXiaoLianLocate = readonly
     ? false
     : (isXiaoLian && shouldShowWentianXiaoLianBadge(selectedXiaoLian));
-  const xiaoLianSideClass = isXiaoLian ? ` fc-xiaolian-side-${getWentianClassicXiaoLianBadgeSide(col, row)}` : "";
+  const xiaoLianSideClass = showXiaoLianLocate ? ` fc-xiaolian-side-${getWentianClassicXiaoLianBadgeSide(col, row)}` : "";
   const palaceAction = options.palaceAction || "";
   const allStars = [
     ...(palace.majorStars || []),
@@ -18099,14 +18108,14 @@ function renderWentianClassicPalaceCell(palace, activeBranch, options = {}) {
   const shenHtml = [palace.changsheng12, palace.boshi12].filter(Boolean).map((item) => `<span>${escapeHtml(item)}</span>`).join("");
   const palaceName = `${palace.isBodyPalace ? "身宫\n" : ""}${palace.name || ""}`;
   const xiaoLianHtml = isXiaoLian ? `<div class="fc-xiaolian-badge">${escapeHtml(xiaoLianAge ? `${xiaoLianAge}岁` : "小流年")}</div>` : "";
-  const displayXiaoLianHtml = isXiaoLian ? xiaoLianHtml : "";
+  const displayXiaoLianHtml = showXiaoLianLocate ? xiaoLianHtml : "";
   const cellAttrs = palaceAction
     ? `data-action="${escapeHtml(palaceAction)}" data-palace-branch="${escapeHtml(branch)}" data-palace-name="${escapeHtml(palace.name || branch)}" role="button"`
     : readonly
     ? `data-palace-branch="${escapeHtml(branch)}" data-palace-name="${escapeHtml(palace.name || branch)}"`
     : `data-action="wentian-chart-palace" data-palace-branch="${escapeHtml(branch)}" data-palace-name="${escapeHtml(palace.name || branch)}" role="button"`;
   return `
-    <div class="fc-cell ${highlightClass}${isXiaoLian ? ` fc-xiaolian${xiaoLianSideClass}` : ""}${showXiaoLianLocate ? " is-locating" : ""}${readonly && !palaceAction ? " is-readonly" : ""}" ${cellAttrs} style="grid-column:${col + 1};grid-row:${row + 1};">
+    <div class="fc-cell ${highlightClass}${showXiaoLianLocate ? ` fc-xiaolian${xiaoLianSideClass} is-locating` : ""}${readonly && !palaceAction ? " is-readonly" : ""}" ${cellAttrs} style="grid-column:${col + 1};grid-row:${row + 1};">
       <div class="fc-cell-top">
         ${mutagenHtml ? `<div class="fc-cell-mutagen">${mutagenHtml}</div>` : ""}
         <div class="fc-major-list">${majorHtml}</div>
