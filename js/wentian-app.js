@@ -4297,31 +4297,50 @@ function renderWentianOverallReading(data, fallback, actionAttr, actionLabel) {
 function renderWentianSpecialReading(actionAttr, actionLabel) {
   const results = wentianChartAiState.results || {};
   const meta = WENTIAN_CHART_SPECIAL_META;
-  const readyCount = WENTIAN_CHART_SPECIAL_MODULES.filter((moduleKey) => !!results[moduleKey]).length;
+  const generatedModules = WENTIAN_CHART_SPECIAL_MODULES.filter((moduleKey) => !!results[moduleKey]);
+  const readyCount = generatedModules.length;
+  const totalCount = WENTIAN_CHART_SPECIAL_MODULES.length;
+  const isRunning = wentianChartAiState.status === "running";
+  const runningModule = wentianChartAiState.runningModule || "";
+  const runningSpecialIndex = WENTIAN_CHART_SPECIAL_MODULES.indexOf(runningModule);
+  const isSpecialRunning = isRunning && runningSpecialIndex >= 0;
+  const hasPartialError = !isRunning && readyCount > 0 && readyCount < totalCount && !!wentianChartAiState.error;
+  const statusText = hasPartialError
+    ? getWentianCompactText(`部分专题未完成，可重试专题 · ${readyCount}/${totalCount}`, `Some topics failed. Retry topics · ${readyCount}/${totalCount}`)
+    : isSpecialRunning
+    ? getWentianCompactText(`正在生成 ${runningSpecialIndex + 1}/${totalCount}`, `Generating ${runningSpecialIndex + 1}/${totalCount}`)
+    : isRunning
+    ? getWentianCompactText(`专题排队中 · 已生成 ${readyCount}/${totalCount}`, `Topics queued · ${readyCount}/${totalCount} ready`)
+    : getWentianCompactText(`已生成 ${readyCount}/${totalCount}`, `${readyCount}/${totalCount} ready`);
+  const buttonLabel = isRunning ? getWentianCompactText("生成中", "Running") : (readyCount ? "重批专题" : actionLabel);
   return `
     <div class="wentian-mb-special-hero">
       <span>专题解读</span>
       <h3>专题解读</h3>
       <b>身宫 · 婚姻 · 健康 · 财运 · 事业</b>
-      ${renderWentianMobileActionButton(actionAttr, readyCount ? "重批专题" : actionLabel)}
+      <small class="wentian-mb-special-status ${hasPartialError ? "is-error" : isRunning ? "is-running" : readyCount ? "is-ready" : ""}">
+        <i style="--topic-progress:${Math.round((readyCount / totalCount) * 100)}%"></i>
+        ${escapeHtml(statusText)}
+      </small>
+      ${renderWentianMobileActionButton(actionAttr, buttonLabel, isRunning)}
     </div>
-    <div class="wentian-mb-special-tabs">
-      ${WENTIAN_CHART_SPECIAL_MODULES.map((moduleKey) => `
+    ${generatedModules.length ? `
+    <div class="wentian-mb-special-tabs" aria-label="${escapeHtml(getWentianCompactText("已生成专题", "Generated topics"))}">
+      ${generatedModules.map((moduleKey) => `
         <button type="button" data-action="wentian-chart-ai-special-focus" data-special-module="${escapeHtml(moduleKey)}">${escapeHtml(meta[moduleKey]?.label || moduleKey)}</button>
       `).join("")}
     </div>
     <div class="wentian-mb-special-list">
-      ${WENTIAN_CHART_SPECIAL_MODULES.map((moduleKey) => {
+      ${generatedModules.map((moduleKey) => {
         const item = meta[moduleKey] || { no: "00", label: moduleKey, key: "专题" };
         const data = results[moduleKey];
         const card = getWentianAiCard(data);
         const sections = getWentianAiSections(data);
         const body = sections[0]?.content || card.body || card.summary || card.text || "";
-        const title = data ? getWentianAiTitle(data, item.label) : item.label;
+        const title = getWentianAiTitle(data, item.label);
         const tip = trimWentianAiText(card.tip || "", 160);
-        const buttonText = data ? "重批" : "生成";
         return `
-          <section class="${data ? "is-ready" : "is-empty"}" data-special-module="${escapeHtml(moduleKey)}">
+          <section class="is-ready" data-special-module="${escapeHtml(moduleKey)}">
             <header>
               <span>${escapeHtml(item.no)}</span>
               <div class="wentian-mb-special-title-row">
@@ -4330,13 +4349,14 @@ function renderWentianSpecialReading(actionAttr, actionLabel) {
               </div>
               <em>${escapeHtml(item.key)}</em>
             </header>
-            ${renderWentianReadingParagraphs(body, "等待单独批命生成。")}
+            ${renderWentianReadingParagraphs(body, "")}
             ${tip ? `<aside>${escapeHtml(tip)}</aside>` : ""}
-            ${renderWentianMobileActionButton(`data-action="wentian-chart-ai-module" data-ai-module="${escapeHtml(moduleKey)}"`, buttonText)}
+            ${renderWentianMobileActionButton(`data-action="wentian-chart-ai-module" data-ai-module="${escapeHtml(moduleKey)}"`, "重批", isRunning)}
           </section>
         `;
       }).join("")}
     </div>
+    ` : ""}
   `;
 }
 
