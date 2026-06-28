@@ -1597,6 +1597,11 @@ html[lang="en"] .fig-text[data-node-id^="wt24-reward-tag-text-"] {
   line-height: 1.45;
 }
 
+.wentian-chart-preview[data-tone="error"] {
+  color: #a94437;
+  font-weight: 800;
+}
+
 .wentian-chart-leap-note {
   display: flex;
   align-items: center;

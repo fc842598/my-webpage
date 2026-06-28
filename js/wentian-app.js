@@ -3252,6 +3252,10 @@ function applyWentianChartCity(city, options = {}) {
   updateWentianChartPreview();
 }
 
+function getWentianFutureBirthErrorText() {
+  return isWentianEnglishUi() ? "Birth time cannot be in the future" : "出生时间不能在未来";
+}
+
 function getWentianChartDateParts() {
   const mode = document.getElementById("wentian-chart-cal")?.value || wentianChartCalMode || "solar";
   const hour = getWentianNumber("wentian-chart-hour");
@@ -3293,6 +3297,7 @@ function getWentianChartDateParts() {
 
   if (year < 1900 || year > 2030) throw new Error("出生年份请填写 1900-2030");
   if (Number.isNaN(date.getTime())) throw new Error("出生日期无效");
+  if (date.getTime() > Date.now()) throw new Error(getWentianFutureBirthErrorText());
   return { mode, date, hour, minute, calModeLabel, lunar, leapMonthRule, autoLeapMonth };
 }
 
@@ -3337,7 +3342,10 @@ function updateWentianChartPreview() {
     const timeStr = `${padWentianNumber(parts.hour)}:${padWentianNumber(parts.minute)}`;
     if (hiddenDate) hiddenDate.value = `${dateStr}T${timeStr}`;
     const leapText = parts.leapMonthRule?.applied ? ` · ${parts.leapMonthRule.actualLabel}按${parts.leapMonthRule.effectiveLabel}排盘` : "";
-    if (preview) preview.textContent = "";
+    if (preview) {
+      preview.textContent = "";
+      preview.dataset.tone = "";
+    }
     const cityText = document.getElementById("wentian-chart-city")?.value.trim() || "";
     const city = wentianChartCity || findWentianCity(cityText);
     if (tst && typeof calcTrueSolarTime === "function") {
@@ -3368,7 +3376,10 @@ function updateWentianChartPreview() {
         : `${areaLabel} ${formatWentianTzOffset(result.tzOffset)} · 出生地${placeLabel} ${result.diffStr}，排盘按${trueSolarDisplay} ${shichen}时`;
     }
   } catch (error) {
-    if (preview) preview.textContent = error.message || "";
+    if (preview) {
+      preview.textContent = error.message || "";
+      preview.dataset.tone = "error";
+    }
     if (tst) tst.textContent = isEn ? "Complete birth time first. Birthplace is optional." : "请先补全出生时间，地点可选。";
   }
   syncWentianChartFormLayout();
@@ -11094,6 +11105,7 @@ function getWentianChartFormData() {
   const rawDate = document.getElementById("wentian-chart-date")?.value || "";
   const date = parts?.date || (rawDate ? new Date(rawDate) : null);
   if (!date || Number.isNaN(date.getTime())) throw new Error("请先选择出生日期和时间");
+  if (date.getTime() > Date.now()) throw new Error(getWentianFutureBirthErrorText());
 
   const useTrueSolar = !!document.getElementById("wentian-chart-true-solar")?.checked;
   const cityInput = (document.getElementById("wentian-chart-city")?.value || "").trim();
