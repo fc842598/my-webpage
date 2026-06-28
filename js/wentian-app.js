@@ -19129,7 +19129,7 @@ function sourceZiweiAiDecodePanel(saved) {
   const isRunning = userStarted && wentianChartAiState.status === "running";
   const hasResults = userStarted && hasWentianChartAiResults();
   const showFinalBoard = !hasResults && !isRunning;
-  const visibleChapters = chapters.filter((chapter) => chapter.module !== "overall" || chapter.ready);
+  const visibleChapters = chapters.filter((chapter) => chapter.ready);
   const chapterTotal = chapters.length || 6;
   const chapterDoneCount = chapters.filter((chapter) => chapter.ready).length;
   const isComplete = chapterDoneCount >= chapterTotal;
@@ -19196,7 +19196,7 @@ function sourceZiweiAiDecodePanel(saved) {
         statusLabel,
       }) : ""}
     </section>
-    ${showFinalBoard ? "" : `<div class="wentian-chart-ai-list">
+    ${showFinalBoard || !visibleChapters.length ? "" : `<div class="wentian-chart-ai-list">
       ${visibleChapters.map(renderWentianMobileChapter).join("")}
     </div>`}
   `;
