@@ -15,9 +15,9 @@
   <meta property="og:image" content="https://yuetianai.com/images/health/constitution-report-hero-v8.png">
   <meta name="theme-color" content="#f7f0e5">
   <link rel="icon" href="/images/wentian-prototype-assets/wentian-brand-logo-ai-gold-v1.webp" type="image/webp">
-  <link rel="stylesheet" href="/css/yl.css?v=20260629-health-v9">
+  <link rel="stylesheet" href="/css/yl.css?v=20260629-health-v10">
   <script defer src="/vendor/qrcodejs/qrcode.min.js"></script>
-  <script defer src="/js/yl.js?v=20260629-health-v9"></script>
+  <script defer src="/js/yl.js?v=20260629-health-v10"></script>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -48,6 +48,7 @@
       <a href="#home">首页</a>
       <a href="#assessment">体质自评</a>
       <a href="#report">报告示例</a>
+      <a href="#chat">健康追问</a>
       <a href="#member">综合会员</a>
     </nav>
     <a class="yl-top-cta" href="#assessment">开始自评</a>
@@ -69,7 +70,7 @@
         <div class="yl-flow-list" aria-label="使用流程">
           <a href="#assessment"><b>01</b><span>先填 8 类</span></a>
           <a href="#report"><b>02</b><span>生成报告</span></a>
-          <a href="#report"><b>03</b><span>围绕报告追问</span></a>
+          <a href="#chat"><b>03</b><span>进入独立追问页</span></a>
         </div>
         <a class="yl-btn yl-btn-primary" href="#assessment">开始 3 分钟自评</a>
         <p class="yl-risk-note">本报告仅用于健康信息整理和养生参考，不构成医疗诊断或治疗建议。如有明显不适，请及时就医。</p>
@@ -133,7 +134,7 @@
           </figure>
           <h2>已选摘要</h2>
           <div class="yl-selected-list" id="ylSelectedSummary"></div>
-          <span class="yl-mini-pill" id="ylMiniQuota">追问额度：2/3</span>
+          <span class="yl-mini-pill" id="ylMiniQuota">追问额度：20条/天</span>
           <p class="yl-risk-note">本报告仅用于健康信息整理和养生参考，不构成医疗诊断或治疗建议。</p>
         </aside>
       </div>
@@ -186,13 +187,44 @@
         <p class="yl-risk-note yl-risk-note-report">本报告仅用于健康信息整理和养生参考，不构成医疗诊断或治疗建议。如有明显不适，请及时就医。</p>
       </section>
 
-      <section class="yl-chat-panel" aria-labelledby="ylChatTitle">
+      <section class="yl-chat-preview-panel" aria-labelledby="ylChatPreviewTitle">
         <div class="yl-card-head">
           <div>
-            <h2 id="ylChatTitle">围绕本报告继续追问</h2>
-            <p>AI 对话只围绕当前报告展开，不做泛聊天。</p>
+            <h2 id="ylChatPreviewTitle">进入健康追问页</h2>
+            <p>完整对话已拆成独立页面，围绕当前报告继续深聊睡眠、脾胃、情绪、冷热等问题。</p>
           </div>
-          <span id="ylAskQuota">免费 3 次</span>
+          <span id="ylAskQuotaPreview">免费 20条/天</span>
+        </div>
+        <div class="yl-chat-preview">
+          <strong id="ylChatPreviewType">基于当前体质倾向追问</strong>
+          <p id="ylChatPreviewText">先完成 8 类采集，再进入独立追问页。AI 会带着这份报告回答，不做泛聊天。</p>
+          <a class="yl-btn yl-btn-primary" href="#chat">打开健康追问</a>
+        </div>
+        <p class="yl-chat-disclaimer">提示：追问回答仅用于健康信息整理和养生参考，不构成医疗诊断或治疗建议。</p>
+      </section>
+    </section>
+
+    <section class="yl-page yl-chat-page" id="chat" data-page="chat">
+      <aside class="yl-chat-context" aria-labelledby="ylChatContextTitle">
+        <span class="yl-step">03</span>
+        <h2 id="ylChatContextTitle">报告上下文</h2>
+        <p>AI 会带着当前体质自评报告回答，只围绕健康信息整理和养生参考展开。</p>
+        <div class="yl-chat-context-card">
+          <strong id="ylChatContextType">体质倾向：气虚偏弱</strong>
+          <span id="ylChatContextScore">健康值 83分</span>
+          <p id="ylChatContextAdvice">饮食宜健脾，运动宜柔缓。</p>
+        </div>
+        <a class="yl-btn yl-btn-ghost" href="#report">返回报告</a>
+        <p class="yl-risk-note">本报告和追问仅用于健康信息整理和养生参考，不构成医疗诊断或治疗建议。如有明显不适，请及时就医。</p>
+      </aside>
+
+      <section class="yl-chat-panel yl-chat-full-panel" aria-labelledby="ylChatTitle">
+        <div class="yl-card-head">
+          <div>
+            <h2 id="ylChatTitle">围绕报告继续追问</h2>
+            <p>DeepSeek 健康模型会基于当前报告回答，不做泛聊天。</p>
+          </div>
+          <span id="ylAskQuota">免费 20条/天</span>
         </div>
         <div class="yl-chat-log" id="ylChatLog" aria-live="polite"></div>
         <div class="yl-suggestions" id="ylSuggestions"></div>
@@ -217,12 +249,12 @@
             <strong>免费用户</strong>
             <span>完成采集</span>
             <span>查看报告摘要</span>
-            <span>少量 AI 追问</span>
+            <span>20条/天 AI 追问</span>
           </div>
           <div>
             <strong>会员用户</strong>
             <span>查看完整报告</span>
-            <span>更多连续追问额度</span>
+            <span>100条/天连续追问</span>
             <span>历史报告复盘</span>
           </div>
         </div>
@@ -259,6 +291,7 @@
     <a href="#home">首页</a>
     <a href="#assessment">自评</a>
     <a href="#report">报告</a>
+    <a href="#chat">追问</a>
     <a href="#member">会员</a>
   </nav>
 </body>

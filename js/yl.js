@@ -2,13 +2,15 @@
   "use strict";
 
   var STORAGE_KEY = "yuetian-health-assessment-v1";
-  var FREE_ASK_LIMIT = 3;
+  var CLIENT_ID_KEY = "yuetian-health-client-id-v1";
+  var FREE_ASK_LIMIT = 20;
+  var MEMBER_ASK_LIMIT = 100;
   var AUTH_SESSION_KEY = "wentian-app-auth-session-v1";
-  var HEALTH_PRODUCT_KEY = "health_member";
+  var HEALTH_PRODUCT_KEY = "monthly_member";
   var HEALTH_PRODUCT_NAME = "阅天综合会员";
   var HEALTH_PRODUCT_AMOUNT = "19.90";
   var HEALTH_PAYPAL_AMOUNT = "2.99";
-  var PAGE_IDS = ["home", "assessment", "report", "member"];
+  var PAGE_IDS = ["home", "assessment", "report", "chat", "member"];
 
   var categories = [
     {
@@ -165,8 +167,11 @@
     currentIndex: 0,
     selections: {},
     report: null,
-    askCount: 0
+    askCount: 0,
+    quota: null,
+    chatMessages: []
   };
+  var chatBusy = false;
 
   var paymentState = {
     provider: "wechat",
@@ -207,7 +212,7 @@
     var appGrid = $(".yl-app-grid");
     if (appGrid) {
       appGrid.classList.toggle("is-empty", active === "home" || active === "member");
-      appGrid.classList.toggle("is-single", active === "assessment" || active === "report");
+      appGrid.classList.toggle("is-single", active === "assessment" || active === "report" || active === "chat");
     }
     $all(".yl-nav a").forEach(function (link) {
       link.classList.toggle("is-active", link.getAttribute("href") === "#" + active);
@@ -241,6 +246,18 @@
   function getAuthToken() {
     var session = readAuthSession();
     return session && session.access_token ? session.access_token : "";
+  }
+
+  function getHealthClientId() {
+    try {
+      var saved = localStorage.getItem(CLIENT_ID_KEY);
+      if (saved) return saved;
+      var next = "yl-" + Date.now().toString(36) + "-" + Math.random().toString(36).slice(2, 10);
+      localStorage.setItem(CLIENT_ID_KEY, next);
+      return next;
+    } catch (_error) {
+      return "yl-browser";
+    }
   }
 
   async function apiFetch(path, options) {
@@ -308,15 +325,18 @@
   }
 
   function updateAskQuota() {
-    var el = $("#ylAskQuota");
-    if (!el) return;
-    if (isHealthMember()) {
-      el.textContent = "会员深聊";
-      return;
-    }
-    el.textContent = state.askCount >= FREE_ASK_LIMIT
-      ? "开通会员深聊"
-      : "免费 " + (FREE_ASK_LIMIT - state.askCount) + " 次";
+    var quota = state.quota || {};
+    var isMember = isHealthMember() || quota.isMember || quota.plan === "member";
+    var limit = Number(quota.dailyLimit || quota.limit || (isMember ? MEMBER_ASK_LIMIT : FREE_ASK_LIMIT));
+    var remaining = quota.dailyRemaining ?? quota.remaining;
+    var label = isMember ? "会员 " + limit + "条/天" : "免费 " + limit + "条/天";
+    if (typeof remaining === "number") label += " · 剩余 " + Math.max(0, remaining);
+    if (!isMember && typeof remaining === "number" && remaining <= 0) label = "开通会员 100条/天";
+
+    ["#ylAskQuota", "#ylAskQuotaPreview"].forEach(function (selector) {
+      var el = $(selector);
+      if (el) el.textContent = label;
+    });
   }
 
   function loadState() {
@@ -328,6 +348,8 @@
       state.selections = saved.selections || {};
       state.report = saved.report || null;
       state.askCount = saved.askCount || 0;
+      state.quota = saved.quota || null;
+      state.chatMessages = Array.isArray(saved.chatMessages) ? saved.chatMessages.slice(-20) : [];
     } catch (error) {
       localStorage.removeItem(STORAGE_KEY);
     }
@@ -378,7 +400,15 @@
       nextButton.textContent = state.currentIndex >= categories.length - 1 ? "已到最后一项" : "继续下一项";
     }
     var miniQuota = $("#ylMiniQuota");
-    if (miniQuota) miniQuota.textContent = isHealthMember() ? "追问额度：会员深聊" : "追问额度：" + Math.max(0, FREE_ASK_LIMIT - state.askCount) + "/" + FREE_ASK_LIMIT;
+    if (miniQuota) {
+      var quota = state.quota || {};
+      var isMember = isHealthMember() || quota.isMember || quota.plan === "member";
+      var limit = Number(quota.dailyLimit || quota.limit || (isMember ? MEMBER_ASK_LIMIT : FREE_ASK_LIMIT));
+      var remaining = quota.dailyRemaining ?? quota.remaining;
+      miniQuota.textContent = typeof remaining === "number"
+        ? "追问额度：" + Math.max(0, remaining) + "/" + limit + "条"
+        : "追问额度：" + limit + "条/天";
+    }
   }
 
   function renderCategories() {
@@ -491,6 +521,33 @@
     };
   }
 
+  function buildReportPayload() {
+    var report = state.report || calculateReport();
+    var primary = typeMeta[report.primary] || typeMeta.balanced;
+    var secondary = report.secondary ? typeMeta[report.secondary] : null;
+    return {
+      primary: report.primary,
+      primaryName: primary.name,
+      secondary: report.secondary || "",
+      secondaryName: secondary ? secondary.name : "暂无明显兼夹",
+      healthScore: report.healthScore,
+      summary: primary.summary,
+      advice: primary.advice,
+      scores: report.scores || {},
+      generatedAt: report.generatedAt || ""
+    };
+  }
+
+  function buildSelectionsPayload() {
+    var payload = {};
+    categories.forEach(function (category) {
+      payload[category.name] = selectedItems(category.id).map(function (item) {
+        return item.label;
+      });
+    });
+    return payload;
+  }
+
   function renderReport() {
     var report = state.report || calculateReport();
     var primary = typeMeta[report.primary];
@@ -506,6 +563,16 @@
     $("#ylSummaryAdvice").textContent = primary.advice;
     $("#ylValueScore").textContent = report.healthScore + "分";
     $("#ylValueText").textContent = "你的体质状态优于 " + Math.min(91, report.healthScore + 4) + "% 的用户。" + primary.summary;
+    var previewType = $("#ylChatPreviewType");
+    if (previewType) previewType.textContent = "基于" + primary.name + "继续追问";
+    var previewText = $("#ylChatPreviewText");
+    if (previewText) previewText.textContent = "已带入当前报告、8 类采集和体质分布。进入独立追问页后，可继续问睡眠、脾胃、情绪、冷热等具体调整。";
+    var contextType = $("#ylChatContextType");
+    if (contextType) contextType.textContent = "体质倾向：" + primary.name;
+    var contextScore = $("#ylChatContextScore");
+    if (contextScore) contextScore.textContent = "健康值 " + report.healthScore + "分";
+    var contextAdvice = $("#ylChatContextAdvice");
+    if (contextAdvice) contextAdvice.textContent = primary.advice;
 
     var blocks = $("#ylReportBlocks");
     blocks.innerHTML = "";
@@ -583,47 +650,98 @@
       suggestions.appendChild(button);
     });
 
-    if (log.children.length > 0) return;
-    var bubble = document.createElement("div");
-    bubble.className = "yl-message is-ai";
-    bubble.textContent = "我会基于这份体质自评报告继续追问。你可以问睡眠、脾胃、情绪、腰腿或手脚冷热怎么观察。";
-    log.appendChild(bubble);
+    renderChatMessages(log);
   }
 
-  function ask(question) {
-    var text = (question || "").trim();
-    if (!text) return;
-
-    var report = state.report || calculateReport();
-    var primary = typeMeta[report.primary];
-    var log = $("#ylChatLog");
-
-    if (!isHealthMember() && state.askCount >= FREE_ASK_LIMIT) {
-      var limit = document.createElement("div");
-      limit.className = "yl-message is-ai";
-      limit.textContent = "免费追问次数已用完。开通阅天综合会员后，可以继续围绕这份报告深聊睡眠、脾胃、情绪和作息调整。";
-      log.appendChild(limit);
-      log.scrollTop = log.scrollHeight;
-      updateAskQuota();
-      setPayHint("免费追问已用完，可开通阅天综合会员继续深聊。");
-      goToPage("member");
+  function renderChatMessages(log) {
+    log.innerHTML = "";
+    if (!state.chatMessages.length) {
+      var bubble = document.createElement("div");
+      bubble.className = "yl-message is-ai";
+      bubble.textContent = "我会基于这份体质自评报告继续追问。你可以问睡眠、脾胃、情绪、腰腿或手脚冷热怎么观察。";
+      log.appendChild(bubble);
       return;
     }
-
-    var user = document.createElement("div");
-    user.className = "yl-message is-user";
-    user.textContent = text;
-    log.appendChild(user);
-
-    var ai = document.createElement("div");
-    ai.className = "yl-message is-ai";
-    ai.textContent = buildAnswer(text, primary);
-    log.appendChild(ai);
+    state.chatMessages.slice(-20).forEach(function (message) {
+      var bubble = document.createElement("div");
+      bubble.className = "yl-message " + (message.role === "user" ? "is-user" : "is-ai");
+      bubble.textContent = message.content || "";
+      log.appendChild(bubble);
+    });
     log.scrollTop = log.scrollHeight;
+  }
 
-    state.askCount += 1;
-    updateAskQuota();
+  function appendChatMessage(role, content) {
+    state.chatMessages.push({
+      role: role,
+      content: String(content || "").trim(),
+      ts: Date.now()
+    });
+    state.chatMessages = state.chatMessages.filter(function (item) {
+      return item.content;
+    }).slice(-20);
     saveState();
+    var log = $("#ylChatLog");
+    if (log) renderChatMessages(log);
+  }
+
+  function setChatBusy(isBusy) {
+    chatBusy = !!isBusy;
+    var input = $("#ylChatInput");
+    var button = $(".yl-chat-form button");
+    if (input) input.disabled = chatBusy;
+    if (button) {
+      button.disabled = chatBusy;
+      button.textContent = chatBusy ? "生成中" : "发送";
+    }
+  }
+
+  function buildHistoryPayload() {
+    return state.chatMessages.slice(-10).map(function (message) {
+      return {
+        role: message.role === "assistant" ? "assistant" : "user",
+        content: message.content
+      };
+    });
+  }
+
+  async function ask(question) {
+    var text = (question || "").trim();
+    if (!text || chatBusy) return;
+
+    state.report = state.report || calculateReport();
+    var report = state.report;
+    var primary = typeMeta[report.primary] || typeMeta.balanced;
+    var history = buildHistoryPayload();
+
+    appendChatMessage("user", text);
+    setChatBusy(true);
+
+    try {
+      var data = await apiFetch("/api/health/chat", {
+        method: "POST",
+        body: {
+          question: text,
+          clientId: getHealthClientId(),
+          report: buildReportPayload(),
+          selections: buildSelectionsPayload(),
+          history: history
+        }
+      });
+      state.quota = data.quota || state.quota;
+      if (state.quota && typeof state.quota.dailyUsed === "number") state.askCount = state.quota.dailyUsed;
+      appendChatMessage("assistant", data.reply || buildAnswer(text, primary));
+      if (data.quotaExceeded) {
+        setPayHint("免费追问已用完，可开通阅天综合会员提升到 100条/天。");
+      }
+    } catch (error) {
+      appendChatMessage("assistant", "健康模型暂时没有连上，请稍后再试。你也可以先把问题具体到睡眠、脾胃、情绪或手脚冷热其中一项。");
+      console.error("health chat failed:", error);
+    } finally {
+      setChatBusy(false);
+      updateAskQuota();
+      saveState();
+    }
   }
 
   function buildAnswer(question, primary) {
@@ -651,6 +769,9 @@
 
   function generateReport() {
     state.report = calculateReport();
+    state.chatMessages = [];
+    state.quota = null;
+    state.askCount = 0;
     saveState();
     renderReport();
     goToPage("report");
@@ -669,8 +790,11 @@
     state.selections = {};
     state.report = calculateReport();
     state.askCount = 0;
+    state.quota = null;
+    state.chatMessages = [];
     localStorage.removeItem(STORAGE_KEY);
-    $("#ylChatLog").innerHTML = "";
+    var log = $("#ylChatLog");
+    if (log) log.innerHTML = "";
     renderAll();
     goToPage("assessment");
   }
@@ -754,6 +878,7 @@
     try {
       var data = await apiFetch("/api/payments/member-status?productKey=" + encodeURIComponent(HEALTH_PRODUCT_KEY));
       if (data.product) paymentState.product = data.product;
+      if (data.quota) state.quota = data.quota;
       paymentState.isMember = !!data.productEntitlement?.isMember;
       if (data.productEntitlement?.isMember) {
         paymentState.status = "paid";
@@ -772,6 +897,9 @@
         }
       }
     } catch (_error) {}
+    updateAskQuota();
+    renderProgress();
+    saveState();
     renderPayment();
   }
 
@@ -779,8 +907,8 @@
     if (readAuthSession()) return true;
     try {
       localStorage.setItem("wentian-app-auth-return-v1", JSON.stringify({
-        source: "health_member",
-        after: "health-member-payment",
+        source: "monthly_member",
+        after: "comprehensive-member-payment",
         returnUrl: window.location.href.split("#")[0] + "#member",
         title: "阅天综合会员",
         ts: Date.now()
