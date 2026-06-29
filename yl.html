@@ -15,9 +15,9 @@
   <meta property="og:image" content="https://yuetianai.com/images/health/constitution-report-hero-v8.png">
   <meta name="theme-color" content="#f7f0e5">
   <link rel="icon" href="/images/wentian-prototype-assets/wentian-brand-logo-ai-gold-v1.webp" type="image/webp">
-  <link rel="stylesheet" href="/css/yl.css?v=20260629-health-v11">
+  <link rel="stylesheet" href="/css/yl.css?v=20260629-health-v12">
   <script defer src="/vendor/qrcodejs/qrcode.min.js"></script>
-  <script defer src="/js/yl.js?v=20260629-health-v11"></script>
+  <script defer src="/js/yl.js?v=20260629-health-v12"></script>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -61,18 +61,18 @@
           <span class="yl-brand-mark" aria-hidden="true"></span>
           <strong>阅天健康</strong>
         </div>
-        <p class="yl-kicker">独立健康服务 · 体质分析 · 报告内追问</p>
+        <p class="yl-kicker">健康信息整理 · 体质自评 · AI追问</p>
         <h1 id="yl-title">AI中医体质分析</h1>
-        <p class="yl-lead">先整理 8 类身体信号，生成体质自评报告，再围绕报告继续追问睡眠、脾胃、情绪、冷热等具体问题。</p>
+        <p class="yl-lead">8 类身体信号，一次生成体质自评报告，并继续追问睡眠、脾胃、情绪、冷热。</p>
         <figure class="yl-hero-visual">
           <img src="/images/health/constitution-report-hero-v8.png" alt="坐姿冥想人物与青绿色体质圆盘">
         </figure>
         <div class="yl-flow-list" aria-label="使用流程">
           <a href="#assessment"><b>01</b><span>先填 8 类</span></a>
           <a href="#report"><b>02</b><span>生成报告</span></a>
-          <a href="#chat"><b>03</b><span>进入独立追问页</span></a>
+          <a href="#chat"><b>03</b><span>报告追问</span></a>
         </div>
-        <a class="yl-btn yl-btn-primary" href="#assessment">开始 3 分钟自评</a>
+        <a class="yl-btn yl-btn-primary" href="#assessment">开始自评</a>
         <p class="yl-risk-note">本报告仅用于健康信息整理和养生参考，不构成医疗诊断或治疗建议。如有明显不适，请及时就医。</p>
       </div>
     </section>
@@ -88,7 +88,7 @@
           <div class="yl-section-title">
             <div>
               <h2>8 类体质自评</h2>
-              <p>每类可多选，选中后有高亮反馈。</p>
+              <p>可多选，点选即保存。</p>
             </div>
             <div class="yl-progress" aria-live="polite">
               <span id="ylProgressText">0/8</span>
@@ -190,14 +190,14 @@
       <section class="yl-chat-preview-panel" aria-labelledby="ylChatPreviewTitle">
         <div class="yl-card-head">
           <div>
-            <h2 id="ylChatPreviewTitle">进入健康追问页</h2>
-            <p>完整对话已拆成独立页面，围绕当前报告继续深聊睡眠、脾胃、情绪、冷热等问题。</p>
+            <h2 id="ylChatPreviewTitle">继续追问</h2>
+            <p>带着当前报告问睡眠、脾胃、情绪、冷热。</p>
           </div>
           <span id="ylAskQuotaPreview">免费 20条/天</span>
         </div>
         <div class="yl-chat-preview">
           <strong id="ylChatPreviewType">基于当前体质倾向追问</strong>
-          <p id="ylChatPreviewText">先完成 8 类采集，再进入独立追问页。AI 会带着这份报告回答，不做泛聊天。</p>
+          <p id="ylChatPreviewText">AI 会带着这份报告回答，不做泛聊天。</p>
           <a class="yl-btn yl-btn-primary" href="#chat">打开健康追问</a>
         </div>
         <p class="yl-chat-disclaimer">提示：追问回答仅用于健康信息整理和养生参考，不构成医疗诊断或治疗建议。</p>
@@ -208,11 +208,17 @@
       <aside class="yl-chat-context" aria-labelledby="ylChatContextTitle">
         <span class="yl-step">03</span>
         <h2 id="ylChatContextTitle">报告上下文</h2>
-        <p>AI 会带着当前体质自评报告回答，只围绕健康信息整理和养生参考展开。</p>
+        <p>追问只围绕当前报告。</p>
         <div class="yl-chat-context-card">
           <strong id="ylChatContextType">体质倾向：气虚偏弱</strong>
           <span id="ylChatContextScore">健康值 83分</span>
           <p id="ylChatContextAdvice">饮食宜健脾，运动宜柔缓。</p>
+        </div>
+        <div class="yl-chat-member-card">
+          <span>阅天综合会员</span>
+          <strong>100条/天</strong>
+          <p>完整报告、连续追问、历史复盘统一开通。</p>
+          <a class="yl-btn yl-btn-ghost" href="#member">查看权益</a>
         </div>
         <a class="yl-btn yl-btn-ghost" href="#report">返回报告</a>
         <p class="yl-risk-note">本报告和追问仅用于健康信息整理和养生参考，不构成医疗诊断或治疗建议。如有明显不适，请及时就医。</p>
@@ -222,7 +228,7 @@
         <div class="yl-card-head">
           <div>
             <h2 id="ylChatTitle">围绕报告继续追问</h2>
-            <p>DeepSeek 健康模型会基于当前报告回答，不做泛聊天。</p>
+            <p>基于报告回答，不做泛聊天。</p>
           </div>
           <span id="ylAskQuota">免费 20条/天</span>
         </div>
@@ -276,8 +282,8 @@
             <button class="yl-btn yl-btn-ghost" type="button" id="ylMockPayBtn" hidden>模拟支付成功</button>
           </div>
         </div>
-        <p class="yl-pay-hint" id="ylPayHint">健康专题为独立页面与独立权益，复用阅天AI统一登录与支付通道。</p>
-        <p class="yl-pay-note">账号登录与支付服务由阅天AI体系提供支持；健康线页面、报告与会员商品保持独立。</p>
+        <p class="yl-pay-hint" id="ylPayHint">健康专题复用阅天AI统一登录与支付通道。</p>
+        <p class="yl-pay-note">账号登录与支付服务由阅天AI体系提供支持。</p>
       </div>
       <div class="yl-operator">
         <strong>主体说明</strong>

@@ -155,7 +155,7 @@ input:focus-visible {
 .yl-shell {
   width: min(1280px, calc(100% - 48px));
   margin: 0 auto;
-  padding: 64px 0 80px;
+  padding: 32px 0 56px;
 }
 
 .yl-page[hidden] {
@@ -168,9 +168,9 @@ input:focus-visible {
 
 .yl-phone-frame {
   width: 430px;
-  min-height: 932px;
+  min-height: auto;
   margin: 0 auto;
-  padding: 0 28px 18px;
+  padding: 0 24px 18px;
   background: var(--yl-page);
   border: 1px solid rgba(223, 207, 184, 0.5);
   box-shadow: 0 24px 70px rgba(84, 60, 26, 0.12);
@@ -180,9 +180,9 @@ input:focus-visible {
   display: flex;
   align-items: center;
   gap: 9px;
-  height: 56px;
-  margin: 0 -28px 36px;
-  padding: 0 28px;
+  height: 50px;
+  margin: 0 -24px 18px;
+  padding: 0 24px;
   border-bottom: 1px solid rgba(223, 207, 184, 0.72);
   background: rgba(246, 239, 227, 0.82);
 }
@@ -193,20 +193,20 @@ input:focus-visible {
 }
 
 .yl-kicker {
-  margin: 0 0 18px;
+  margin: 0 0 10px;
   color: var(--yl-green-dark);
   font-size: 13px;
   font-weight: 900;
 }
 
 .yl-home h1 {
-  margin: 0 0 12px;
+  margin: 0 0 8px;
   font-size: 32px;
   line-height: 1.12;
 }
 
 .yl-lead {
-  margin: 0 0 26px;
+  margin: 0 0 16px;
   color: var(--yl-muted);
   font-size: 15px;
   line-height: 1.65;
@@ -222,10 +222,10 @@ input:focus-visible {
 }
 
 .yl-hero-visual {
-  width: 322px;
-  height: 248px;
-  margin: 0 auto 42px;
-  border-radius: 24px;
+  width: 100%;
+  height: 210px;
+  margin: 0 auto 18px;
+  border-radius: 20px;
 }
 
 .yl-hero-visual img,
@@ -240,30 +240,32 @@ input:focus-visible {
 
 .yl-flow-list {
   display: grid;
-  gap: 16px;
-  margin-bottom: 40px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin-bottom: 16px;
 }
 
 .yl-flow-list a {
   display: grid;
-  grid-template-columns: 48px 1fr;
-  align-items: center;
-  min-height: 58px;
+  gap: 6px;
+  align-content: center;
+  min-height: 74px;
   border: 1px solid var(--yl-line);
   border-radius: 16px;
   background: rgba(255, 253, 248, 0.9);
   color: var(--yl-ink);
   text-decoration: none;
+  text-align: center;
 }
 
 .yl-flow-list b {
   color: var(--yl-aqua);
-  font-size: 18px;
+  font-size: 17px;
   text-align: center;
 }
 
 .yl-flow-list span {
-  font-size: 17px;
+  font-size: 14px;
   font-weight: 900;
 }
 
@@ -271,7 +273,7 @@ input:focus-visible {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 54px;
+  min-height: 48px;
   border: 0;
   border-radius: 999px;
   font-size: 16px;
@@ -331,8 +333,8 @@ input:focus-visible {
 
 .yl-assessment-layout {
   display: grid;
-  grid-template-columns: 260px minmax(520px, 1fr) 300px;
-  gap: 36px;
+  grid-template-columns: 190px minmax(520px, 1fr) 240px;
+  gap: 18px;
   align-items: stretch;
 }
 
@@ -352,36 +354,36 @@ input:focus-visible {
 }
 
 .yl-rail {
-  padding: 26px 24px;
+  padding: 18px;
 }
 
 .yl-rail h2,
 .yl-selected-card h2 {
-  margin: 0 0 24px;
-  font-size: 24px;
+  margin: 0 0 14px;
+  font-size: 20px;
 }
 
 .yl-category-grid {
   display: grid;
-  gap: 24px;
+  gap: 10px;
 }
 
 .yl-category-card {
   display: grid;
   grid-template-columns: 1fr auto;
   align-items: center;
-  min-height: 48px;
+  min-height: 40px;
   border: 1px solid var(--yl-line);
   border-radius: 14px;
   background: var(--yl-paper-strong);
   color: var(--yl-muted);
   font-weight: 900;
-  padding: 0 18px;
+  padding: 0 12px;
   text-align: left;
 }
 
 .yl-category-card strong {
-  font-size: 16px;
+  font-size: 14px;
 }
 
 .yl-category-card small,
@@ -405,7 +407,7 @@ input:focus-visible {
 }
 
 .yl-assessment-main {
-  padding: 34px;
+  padding: 22px;
 }
 
 .yl-section-title,
@@ -421,7 +423,7 @@ input:focus-visible {
 .yl-card-head h2,
 .yl-question-head h3 {
   margin: 0 0 8px;
-  font-size: 30px;
+  font-size: 26px;
   line-height: 1.2;
 }
 
@@ -450,13 +452,13 @@ input:focus-visible {
 .yl-category-switcher {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
-  margin: 28px 0;
+  gap: 8px;
+  margin: 16px 0;
 }
 
 .yl-switch-btn {
-  min-width: 94px;
-  min-height: 34px;
+  min-width: 82px;
+  min-height: 32px;
   border: 1px solid var(--yl-line);
   border-radius: 999px;
   background: var(--yl-paper);
@@ -487,7 +489,7 @@ input:focus-visible {
 
 .yl-question-head {
   justify-content: flex-start;
-  margin-bottom: 30px;
+  margin-bottom: 16px;
 }
 
 .yl-question-head span {
@@ -506,19 +508,19 @@ input:focus-visible {
 .yl-option-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 24px 28px;
+  gap: 12px;
 }
 
 .yl-option-chip {
-  min-height: 68px;
+  min-height: 54px;
   border: 1px solid var(--yl-line);
   border-radius: 16px;
   background: var(--yl-paper-strong);
   color: var(--yl-ink);
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 900;
   text-align: left;
-  padding: 0 24px;
+  padding: 0 18px;
   transition: background 160ms ease, border-color 160ms ease, transform 160ms ease;
 }
 
@@ -535,24 +537,37 @@ input:focus-visible {
 }
 
 .yl-option-chip.is-flash {
+  animation: yl-chip-flash 260ms ease;
   transform: scale(0.98);
+}
+
+@keyframes yl-chip-flash {
+  0% {
+    box-shadow: 0 0 0 0 rgba(36, 192, 191, 0.42);
+  }
+  70% {
+    box-shadow: 0 0 0 7px rgba(36, 192, 191, 0.12);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(36, 192, 191, 0);
+  }
 }
 
 .yl-progress-card {
   display: grid;
   grid-template-columns: 1fr auto;
-  gap: 20px;
+  gap: 14px;
   align-items: center;
-  margin-top: 82px;
+  margin-top: 18px;
   border: 1px solid var(--yl-line);
   border-radius: 18px;
   background: var(--yl-paper);
-  padding: 20px 24px;
+  padding: 14px 16px;
 }
 
 .yl-progress-card strong {
   display: block;
-  margin-bottom: 14px;
+  margin-bottom: 8px;
   color: var(--yl-green-dark);
   font-size: 18px;
 }
@@ -579,24 +594,21 @@ input:focus-visible {
   display: grid;
   grid-template-columns: 1fr auto;
   gap: 12px;
-  margin-top: 16px;
+  margin-top: 12px;
 }
 
 .yl-selected-card {
   align-self: stretch;
-  padding: 30px;
+  padding: 18px;
 }
 
 .yl-selected-card figure {
-  width: 220px;
-  height: 300px;
-  margin: 0 auto 42px;
-  border-radius: 18px;
+  display: none;
 }
 
 .yl-selected-list {
   display: grid;
-  gap: 20px;
+  gap: 10px;
 }
 
 .yl-selected-item {
@@ -645,7 +657,7 @@ input:focus-visible {
 
 .yl-mini-pill {
   width: 100%;
-  margin-top: 24px;
+  margin-top: 14px;
 }
 
 .yl-report-column {
@@ -660,7 +672,7 @@ input:focus-visible {
 .yl-chat-panel,
 .yl-chat-preview-panel,
 .yl-chat-context {
-  padding: 28px;
+  padding: 22px;
 }
 
 .yl-report-hero {
@@ -890,7 +902,7 @@ input:focus-visible {
 
 .yl-chat-page {
   display: grid;
-  grid-template-columns: minmax(280px, 360px) minmax(0, 760px);
+  grid-template-columns: minmax(250px, 320px) minmax(0, 820px);
   gap: 24px;
   justify-content: center;
   align-items: start;
@@ -898,7 +910,7 @@ input:focus-visible {
 
 .yl-chat-context,
 .yl-chat-full-panel {
-  min-height: 640px;
+  min-height: auto;
 }
 
 .yl-chat-context {
@@ -907,21 +919,21 @@ input:focus-visible {
 }
 
 .yl-chat-context h2 {
-  margin: 16px 0 10px;
-  font-size: 30px;
+  margin: 12px 0 8px;
+  font-size: 26px;
 }
 
 .yl-chat-context > p {
-  margin: 0 0 18px;
+  margin: 0 0 12px;
   color: var(--yl-muted);
   line-height: 1.7;
 }
 
 .yl-chat-context-card {
   display: grid;
-  gap: 10px;
-  margin-bottom: 16px;
-  padding: 20px;
+  gap: 8px;
+  margin-bottom: 12px;
+  padding: 16px;
 }
 
 .yl-chat-context-card strong {
@@ -941,9 +953,45 @@ input:focus-visible {
   line-height: 1.7;
 }
 
+.yl-chat-member-card {
+  display: grid;
+  gap: 6px;
+  margin-bottom: 12px;
+  border: 1px solid var(--yl-line-soft);
+  border-radius: 18px;
+  background: #1f211f;
+  color: #fff8e6;
+  padding: 16px;
+}
+
+.yl-chat-member-card span {
+  color: #f7dfae;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.yl-chat-member-card strong {
+  font-size: 30px;
+}
+
+.yl-chat-member-card p {
+  margin: 0;
+  color: #eadabc;
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.yl-chat-member-card .yl-btn {
+  width: 100%;
+  margin-top: 6px;
+  border-color: rgba(247, 223, 174, 0.42);
+  background: rgba(255, 253, 248, 0.1);
+  color: #fff8e6;
+}
+
 .yl-chat-full-panel .yl-chat-log {
-  min-height: 390px;
-  max-height: min(58vh, 560px);
+  min-height: 320px;
+  max-height: min(52vh, 500px);
 }
 
 .yl-chat-log {
@@ -1025,7 +1073,7 @@ input:focus-visible {
 
 .yl-member-wrap {
   display: grid;
-  grid-template-columns: minmax(0, 760px) 360px;
+  grid-template-columns: minmax(0, 800px) 320px;
   gap: 24px;
   justify-content: center;
   align-items: start;
@@ -1033,20 +1081,20 @@ input:focus-visible {
 
 .yl-member-card {
   display: grid;
-  grid-template-columns: 300px minmax(0, 1fr);
-  gap: 18px;
-  padding: 24px;
+  grid-template-columns: 260px minmax(0, 1fr);
+  gap: 14px;
+  padding: 20px;
 }
 
 .yl-member-main {
   display: flex;
-  min-height: 220px;
+  min-height: 160px;
   flex-direction: column;
   justify-content: center;
   border-radius: 20px;
   background: #1f211f;
   color: #fff8e6;
-  padding: 26px;
+  padding: 22px;
 }
 
 .yl-member-main span {
@@ -1055,8 +1103,8 @@ input:focus-visible {
 
 .yl-member-main strong {
   display: block;
-  margin: 14px 0 8px;
-  font-size: 48px;
+  margin: 10px 0 6px;
+  font-size: 42px;
 }
 
 .yl-member-main p {
@@ -1074,11 +1122,11 @@ input:focus-visible {
 .yl-member-compare div {
   display: grid;
   align-content: start;
-  gap: 9px;
+  gap: 7px;
   border: 1px solid var(--yl-line-soft);
   border-radius: 18px;
   background: var(--yl-paper-strong);
-  padding: 16px;
+  padding: 14px;
 }
 
 .yl-member-compare span {
@@ -1454,10 +1502,16 @@ input:focus-visible {
   }
 
   .yl-chat-page {
-    display: block;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .yl-chat-panel {
+    order: 1;
   }
 
   .yl-chat-context {
+    order: 2;
     position: static;
     min-height: auto;
     padding-bottom: 10px;
@@ -1469,12 +1523,12 @@ input:focus-visible {
 
   .yl-chat-full-panel {
     min-height: calc(100vh - 78px);
-    padding-top: 8px;
+    padding-top: 18px;
   }
 
   .yl-chat-full-panel .yl-chat-log {
-    min-height: 360px;
-    max-height: 48vh;
+    min-height: 330px;
+    max-height: 46vh;
   }
 
   .yl-member-card {

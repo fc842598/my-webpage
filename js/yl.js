@@ -170,7 +170,8 @@
     report: null,
     askCount: 0,
     quota: null,
-    chatMessages: []
+    chatMessages: [],
+    flashOption: ""
   };
   var chatBusy = false;
 
@@ -361,6 +362,7 @@
       state.askCount = saved.askCount || 0;
       state.quota = saved.quota || null;
       state.chatMessages = Array.isArray(saved.chatMessages) ? saved.chatMessages.slice(-20) : [];
+      state.flashOption = "";
     } catch (error) {
       localStorage.removeItem(STORAGE_KEY);
     }
@@ -402,13 +404,13 @@
     var percent = Math.round((count / categories.length) * 100);
     $("#ylProgressText").textContent = count + "/" + categories.length;
     $("#ylProgressBar").style.width = percent + "%";
-    $("#ylProgressCardText").textContent = "已完成 " + count + "/" + categories.length;
+    $("#ylProgressCardText").textContent = "已选 " + count + "/" + categories.length;
     $("#ylGenerateBtn").disabled = count < categories.length;
-    $("#ylGenerateBtn").textContent = count < categories.length ? "完成 8 类后生成报告" : "生成体质报告";
+    $("#ylGenerateBtn").textContent = count < categories.length ? "选满 8 类生成报告" : "生成体质报告";
     var nextButton = $("#ylNextBtn");
     if (nextButton) {
       nextButton.disabled = state.currentIndex >= categories.length - 1;
-      nextButton.textContent = state.currentIndex >= categories.length - 1 ? "已到最后一项" : "继续下一项";
+      nextButton.textContent = state.currentIndex >= categories.length - 1 ? "最后一项" : "下一项";
     }
     var miniQuota = $("#ylMiniQuota");
     if (miniQuota) {
@@ -471,15 +473,23 @@
       var isSelected = selected.some(function (item) {
         return item.label === option.label;
       });
-      button.className = "yl-option-chip" + (isSelected ? " is-selected" : "");
+      var flashKey = category.id + "::" + option.label;
+      var isFlash = state.flashOption === flashKey;
+      button.className = "yl-option-chip" + (isSelected ? " is-selected" : "") + (isFlash ? " is-flash" : "");
       button.setAttribute("aria-pressed", isSelected ? "true" : "false");
       button.textContent = option.label;
-      button.addEventListener("click", function () {
-        toggleOption(category.id, option);
-        button.classList.add("is-flash");
+      if (isFlash) {
         window.setTimeout(function () {
           button.classList.remove("is-flash");
-        }, 150);
+          if (state.flashOption === flashKey) {
+            state.flashOption = "";
+            saveState();
+          }
+        }, 260);
+      }
+      button.addEventListener("click", function () {
+        toggleOption(category.id, option);
+        state.flashOption = flashKey;
         state.report = calculateReport();
         saveState();
         renderAll();
@@ -577,7 +587,7 @@
     var previewType = $("#ylChatPreviewType");
     if (previewType) previewType.textContent = "基于" + primary.name + "继续追问";
     var previewText = $("#ylChatPreviewText");
-    if (previewText) previewText.textContent = "已带入当前报告、8 类采集和体质分布。进入独立追问页后，可继续问睡眠、脾胃、情绪、冷热等具体调整。";
+    if (previewText) previewText.textContent = "已带入报告和 8 类采集，可继续问睡眠、脾胃、情绪、冷热。";
     var contextType = $("#ylChatContextType");
     if (contextType) contextType.textContent = "体质倾向：" + primary.name;
     var contextScore = $("#ylChatContextScore");
@@ -647,10 +657,10 @@
     updateAskQuota();
     suggestions.innerHTML = "";
     [
-      "睡眠怎么先调整？",
-      "脾胃和饮食怎么观察？",
-      "手脚冷热说明什么？",
-      "我每天复盘看什么？"
+      "睡眠先调什么？",
+      "脾胃怎么看？",
+      "冷热说明什么？",
+      "每天复盘什么？"
     ].forEach(function (text) {
       var button = document.createElement("button");
       button.type = "button";
@@ -669,7 +679,7 @@
     if (!state.chatMessages.length) {
       var bubble = document.createElement("div");
       bubble.className = "yl-message is-ai";
-      bubble.textContent = "我会基于这份体质自评报告继续追问。你可以问睡眠、脾胃、情绪、腰腿或手脚冷热怎么观察。";
+      bubble.textContent = "我会基于这份报告回答。可以问睡眠、脾胃、情绪、腰腿、冷热。";
       log.appendChild(bubble);
       return;
     }
