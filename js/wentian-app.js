@@ -1333,8 +1333,8 @@ function sourceArchiveSelectScreen() {
     ${figImage("source-5-avatar", "../images/wentian-prototype-assets/xu-dashi.webp", 38, 115, 42, 42, "border-radius:16px;object-fit:cover;object-position:center 18%;")}
     ${figText("source-5-name", "许大师", 92, 116, 120, 18, "#26211c", 900)}
     ${figText("source-5-sub", "选择一个档案接入对话", 92, 140, 180, 12, "#8b8176", 600)}
-    ${figBox("source-5-intro-pill", 290, 120, 56, 24, "", "border-radius:12px;background:#fff8eb;border:1px solid #ead8bb;")}
-    ${figText("source-5-intro-pill-text", "已在线", 290, 127, 56, 11, "#ad7b2c", 800, "center")}
+    ${figBox("source-5-intro-online-icon", 316, 124, 20, 20, "", "border-radius:10px;background:#62a85f;box-shadow:0 0 0 5px rgba(98,168,95,.12);", 'role="img" aria-label="已在线"')}
+    ${figText("source-5-intro-online-check", "✓", 316, 128, 20, 12, "#fff", 900, "center", "line-height:1;")}
 
     ${figBox("source-5-sheet", 18, 184, 354, 510, "", "border:1px solid #eadfce;border-radius:26px;background:rgba(255,250,245,.96);box-shadow:0 14px 30px rgba(70,45,25,.06);")}
     ${figText("source-5-sheet-title", "请确认命盘", 36, 214, 150, 20, "#1f1d1a", 900)}
@@ -8659,7 +8659,6 @@ function finalizeWentianLanguageText(root = view, code = getWentianLanguageCode(
   const fileCount = root.querySelector('[data-node-id="source-5-count-text"]');
   const fileCountValue = fileCount?.textContent?.match(/\d+/)?.[0] || "0";
   if (fileCount) fileCount.textContent = `${fileCountValue} Files`;
-  setWentianFinalText(root, '[data-node-id="source-5-intro-pill-text"]', "Online");
   setWentianFinalText(root, ".wentian-archive-confirm", "Enter Master Xu");
 
   setWentianFinalText(root, '[data-node-id="wt22-login-desc-clean"]', "Invite both sides to get daily Master Xu credits for 3 days after registration.");
