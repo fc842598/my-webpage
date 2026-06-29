@@ -3808,7 +3808,7 @@ html[lang="en"] .wentian-chat-starter {
   flex-direction: column;
   gap: 12px;
   overflow-y: auto;
-  padding: 0 4px 8px 2px;
+  padding: 0 4px 88px 2px;
 }
 
 .wentian-archive-list::-webkit-scrollbar {

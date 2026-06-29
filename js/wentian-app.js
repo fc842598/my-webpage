@@ -9371,6 +9371,21 @@ function pickWentianArchive(id) {
     const check = row.querySelector(".wentian-archive-check");
     if (check) check.textContent = selected ? "✓" : "";
   }
+  requestAnimationFrame(() => revealWentianArchiveSelection(id));
+}
+
+function revealWentianArchiveSelection(id = wentianArchiveDraftId) {
+  const list = document.querySelector(".wentian-archive-list");
+  if (!(list instanceof HTMLElement) || !id) return;
+  const selected = list.querySelector(`[data-wentian-archive-option][data-archive-id="${CSS.escape(id)}"]`);
+  if (!(selected instanceof HTMLElement)) return;
+  const maxScrollTop = Math.max(0, list.scrollHeight - list.clientHeight);
+  const targetScrollTop = Math.min(maxScrollTop, Math.max(0, selected.offsetTop - 8));
+  if (Math.abs((list.scrollTop || 0) - targetScrollTop) < 2) return;
+  list.scrollTo({
+    top: targetScrollTop,
+    behavior: "smooth",
+  });
 }
 
 function confirmWentianArchiveSelection() {
