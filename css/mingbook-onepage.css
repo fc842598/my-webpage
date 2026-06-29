@@ -8951,83 +8951,43 @@ p.mbp-topic-detail {
 
 @media (min-width: 561px) {
   .mbp-shichen-overlay {
-    padding: 16px;
+    padding: 12px;
   }
 
   .mbp-shichen-modal {
-    width: min(640px, calc(100vw - 48px));
-    max-height: calc(100vh - 32px);
-    max-height: calc(100dvh - 32px);
+    max-height: calc(100vh - 24px);
+    max-height: calc(100dvh - 24px);
   }
 
   .mbp-shichen-head {
-    padding: 12px 16px 10px;
-  }
-
-  .mbp-shichen-head strong {
-    gap: 8px;
-    font-size: 16px;
-  }
-
-  .mbp-shichen-head strong img {
-    width: 24px;
-    height: 24px;
+    padding: 14px 18px 10px;
   }
 
   .mbp-shichen-questions,
   .mbp-shichen-result {
-    padding: 12px 16px 16px;
+    padding: 14px 18px 16px;
   }
 
   .mbp-shichen-field {
-    gap: 6px;
+    gap: 7px;
     margin-top: 10px;
   }
 
-  .mbp-shichen-time-grid {
-    grid-template-columns: repeat(6, minmax(0, 1fr));
-    gap: 6px;
+  .mbp-shichen-time-grid,
+  .mbp-whorl-guide {
+    gap: 7px;
   }
 
   .mbp-shichen-time-main {
-    min-height: 38px;
-    padding: 5px 4px;
-  }
-
-  .mbp-shichen-time-main small,
-  .mbp-shichen-time-hint {
-    display: none;
-  }
-
-  .mbp-whorl-guide {
-    gap: 6px;
-  }
-
-  .mbp-whorl-card {
-    aspect-ratio: auto;
-    height: 190px;
-    height: clamp(156px, 29dvh, 190px);
-  }
-
-  .mbp-whorl-card::before {
-    top: 8px;
-    left: 8px;
-    height: 20px;
-    min-width: 34px;
-    font-size: 10px;
-    line-height: 18px;
-  }
-
-  .mbp-whorl-card:has(input:checked)::before {
-    min-width: 48px;
+    min-height: 36px;
+    padding: 6px 8px;
   }
 
   .mbp-shichen-primary {
     position: sticky;
     bottom: 0;
     z-index: 8;
-    min-height: 40px;
-    margin-top: 10px;
+    margin-top: 12px;
     box-shadow: 0 -8px 18px rgba(253, 248, 242, .92);
   }
 }
