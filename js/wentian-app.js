@@ -1313,7 +1313,7 @@ function sourceArchiveSelectScreen() {
   const displayArchives = archives;
   const sheetHeight = archiveCount === 0 ? 214 : archiveCount === 1 ? 338 : archiveCount === 2 ? 450 : archiveCount === 3 ? 486 : 510;
   const listHeight = archiveCount === 0 ? 28 : archiveCount === 1 ? 170 : archiveCount === 2 ? 326 : archiveCount === 3 ? 370 : 392;
-  const actionTop = archiveCount === 0 ? 404 : archiveCount === 1 ? 560 : archiveCount === 2 ? 672 : archiveCount === 3 ? 708 : 714;
+  const actionTop = archiveCount === 0 ? 404 : archiveCount === 1 ? 560 : archiveCount === 2 ? 672 : 690;
   const archiveStatus = wentianArchiveStatus.text
     ? `<div id="wentian-archive-status" class="wentian-invite-status" style="left:42px;top:260px;width:306px;text-align:center" data-tone="${escapeHtml(wentianArchiveStatus.tone || "")}">${escapeHtml(wentianArchiveStatus.text)}</div>`
     : "";
@@ -1377,7 +1377,7 @@ function sourceArchiveSelectScreen() {
     }).join("")}
     </div>
     <button class="wentian-archive-exit" type="button" data-action="wentian-archive-cancel">退出选盘</button>
-    <button class="wentian-archive-confirm" type="button" data-action="wentian-archive-confirm" aria-label="进入许大师">进入许大师</button>
+    <button class="wentian-archive-confirm" type="button" data-action="wentian-archive-confirm" aria-label="确认进入">确认进入</button>
   `;
 }
 
@@ -7156,7 +7156,11 @@ const WENTIAN_I18N = {
     "请确认命盘": "請確認命盤",
     "确认后再进入许大师对话": "確認後再進入許大師對話",
     "进入许大师": "進入許大師",
+    "确认进入": "確認進入",
     "退出选盘": "退出選盤",
+    "保存付款码": "保存付款碼",
+    "付款码已保存到下载文件。": "付款碼已儲存到下載檔案。",
+    "付款码还没生成，请稍后再试。": "付款碼尚未生成，請稍後再試。",
     "切换": "切換",
     "查看": "查看",
     "本课": "本課",
@@ -7386,7 +7390,11 @@ const WENTIAN_I18N_EN_EXTRA = {
   "选择一个档案接入对话": "Choose a file for this chat",
   "请确认命盘": "Confirm Chart",
   "确认后再进入许大师对话": "Confirm before entering chat",
+  "确认进入": "Confirm",
   "退出选盘": "Exit",
+  "保存付款码": "Save QR",
+  "付款码已保存到下载文件。": "QR saved to downloads.",
+  "付款码还没生成，请稍后再试。": "QR is not ready. Try again shortly.",
   "＋ 新建": "+ New",
   "默认": "Default",
   "命": "File",
@@ -8659,7 +8667,7 @@ function finalizeWentianLanguageText(root = view, code = getWentianLanguageCode(
   const fileCount = root.querySelector('[data-node-id="source-5-count-text"]');
   const fileCountValue = fileCount?.textContent?.match(/\d+/)?.[0] || "0";
   if (fileCount) fileCount.textContent = `${fileCountValue} Files`;
-  setWentianFinalText(root, ".wentian-archive-confirm", "Enter Master Xu");
+  setWentianFinalText(root, ".wentian-archive-confirm", "Confirm");
 
   setWentianFinalText(root, '[data-node-id="wt22-login-desc-clean"]', "Invite both sides to get daily Master Xu credits for 3 days after registration.");
   setWentianFinalText(root, '[data-node-id="wt22-tip-desc-clean"]', "Both inviter and new user receive daily chat rewards for 3 days.");
@@ -11138,6 +11146,36 @@ function initWentianPaymentScreen() {
   }
 }
 
+function saveWentianPaymentQr() {
+  const holder = document.getElementById("wentian-pay-qr");
+  let dataUrl = "";
+  const canvas = holder?.querySelector("canvas");
+  if (canvas && typeof canvas.toDataURL === "function") {
+    try {
+      dataUrl = canvas.toDataURL("image/png");
+    } catch (_err) {}
+  }
+  const image = holder?.querySelector("img");
+  if (!dataUrl && image?.src && /^data:image\//i.test(image.src)) dataUrl = image.src;
+  if (!dataUrl) {
+    wentianPaymentState.error = "付款码还没生成，请稍后再试。";
+    refreshWentianPaymentScreen();
+    return;
+  }
+  const suffix = String(wentianPaymentState.orderNo || Date.now())
+    .replace(/[^\w-]+/g, "-")
+    .replace(/^-+|-+$/g, "") || "qr";
+  const link = document.createElement("a");
+  link.href = dataUrl;
+  link.download = `yuetianai-pay-${suffix}.png`;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  wentianPaymentState.error = "";
+  wentianPaymentState.message = "付款码已保存到下载文件。";
+  refreshWentianPaymentScreen();
+}
+
 function setWentianChartStatus(text, tone = "") {
   const el = document.getElementById("wentian-chart-status");
   if (!el) return;
@@ -11676,6 +11714,8 @@ function sourcePaymentScreen() {
   const amountText = formatWentianPaymentAmount(wentianPaymentState.amountYuan || "19.90", wentianPaymentState.currency || "CNY");
   const payButtonAction = isAipayResource ? "back" : (wentianPaymentState.status === "paid" ? "wentian-pay-done" : (wentianPaymentState.status === "idle" || wentianPaymentState.status === "error" ? "wentian-member-pay" : "wentian-payment-check"));
   const payButtonText = isAipayResource ? "返回" : (wentianPaymentState.status === "paid" ? "已开通，返回我的" : (wentianPaymentState.status === "pending" ? "刷新支付状态" : `确认支付 ${amountText}`));
+  const payButtonX = showQr ? 204 : 42;
+  const payButtonWidth = showQr ? 144 : 306;
   const safeText = isAipayResource ? "AI收为智能体 402 付费资源，不是网页扫码支付" : `${getWentianPaymentProviderLabel()}完成后付费额度自动刷新`;
   return `
     ${figBox("wt30-bg", 0, 0, 390, 844, "", "background:linear-gradient(180deg,#fffdf8 0%,#fbf7ef 58%,#f3eadc 100%);")}
@@ -11700,6 +11740,9 @@ function sourcePaymentScreen() {
     ${figText("wt30-order-tip", escapeHtml(message), 44, 416, 282, 14, wentianPaymentState.error ? "#a64032" : "#756d63", 700, "left", "line-height:1.5;")}
     ${showQr ? `<div id="wentian-pay-qr" class="wentian-pay-qr" data-pay-url="${escapeHtml(payUrl)}" style="left:109px;top:448px;width:172px;height:172px"></div>` : ""}
     ${showQr ? figText("wt30-qr-tip", `请使用${getWentianPaymentProviderAppLabel()}扫码支付；若当前设备不便扫码，请在另一台设备打开此页。`, 46, 626, 298, 12, "#8d8377", 700, "center", "line-height:1.45;") : ""}
+    ${showQr ? figBox("wt30-save-qr", 42, 690, 144, 50, "", "border:1px solid #d9c8ac;border-radius:25px;background:#fffdf8;box-shadow:0 10px 22px rgba(70,45,25,.08);") : ""}
+    ${showQr ? figButton("wt30-save-qr-hit", 42, 690, 144, 50, 'data-action="wentian-pay-save-qr" aria-label="保存付款码"') : ""}
+    ${showQr ? figText("wt30-save-qr-text", "保存付款码", 42, 705, 144, 14, "#7b5930", 900, "center") : ""}
 
     ${showOpen ? figBox("wt30-open", 42, 650, 306, 50, "", "border-radius:25px;background:#16783d;box-shadow:0 12px 24px rgba(22,120,61,.18);") : ""}
     ${showOpen ? figButton("wt30-open-hit", 42, 650, 306, 50, 'data-action="wentian-pay-open"') : ""}
@@ -11707,10 +11750,10 @@ function sourcePaymentScreen() {
     ${wentianPaymentState.mockMode ? figBox("wt30-mock", 42, 650, 306, 50, "", "border-radius:25px;background:#16783d;box-shadow:0 12px 24px rgba(22,120,61,.18);") : ""}
     ${wentianPaymentState.mockMode ? figButton("wt30-mock-hit", 42, 650, 306, 50, 'data-action="wentian-pay-mock-success"') : ""}
     ${wentianPaymentState.mockMode ? figText("wt30-mock-text", "模拟支付成功", 42, 665, 306, 14, "#fff", 900, "center") : ""}
-    ${figBox("wt30-pay", 42, 690, 306, 50, "", `border-radius:25px;background:${wentianPaymentState.status === "paid" ? "#7a9a4b" : "linear-gradient(180deg,#b74e39,#983323)"};box-shadow:0 14px 28px rgba(158,61,43,.18);`)}
-    ${figButton("wt30-pay-hit", 42, 690, 306, 50, `data-action="${payButtonAction}"`)}
-    ${figText("wt30-pay-text", payButtonText, 42, 705, 306, 14, "#fffaf3", 900, "center")}
-    ${figText("wt30-safe", safeText, 0, 748, 390, 11, "#a49b91", 600, "center")}
+    ${figBox("wt30-pay", payButtonX, 690, payButtonWidth, 50, "", `border-radius:25px;background:${wentianPaymentState.status === "paid" ? "#7a9a4b" : "linear-gradient(180deg,#b74e39,#983323)"};box-shadow:0 14px 28px rgba(158,61,43,.18);`)}
+    ${figButton("wt30-pay-hit", payButtonX, 690, payButtonWidth, 50, `data-action="${payButtonAction}"`)}
+    ${figText("wt30-pay-text", payButtonText, payButtonX, 705, payButtonWidth, 14, "#fffaf3", 900, "center")}
+    ${figText("wt30-safe", safeText, 0, 744, 390, 11, "#a49b91", 600, "center", "line-height:1;")}
   `;
 }
 
@@ -20889,6 +20932,10 @@ document.addEventListener("click", (event) => {
   }
   if (action === "wentian-pay-mock-success") {
     completeWentianMockPayment();
+    return;
+  }
+  if (action === "wentian-pay-save-qr") {
+    saveWentianPaymentQr();
     return;
   }
   if (action === "wentian-payment-check") {

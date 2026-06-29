@@ -4022,6 +4022,7 @@ html[lang="en"] .wentian-chat-starter {
 .wentian-archive-confirm {
   position: absolute;
   top: 714px;
+  z-index: 95;
   height: 52px;
   border-radius: 26px;
   font-family: inherit;
