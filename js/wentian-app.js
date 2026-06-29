@@ -19623,7 +19623,9 @@ function syncWentianFloatingBottomNav() {
   floating.classList.toggle("is-hidden", hidden);
   floating.setAttribute("aria-hidden", hidden ? "true" : "false");
   view?.classList.add("has-floating-bottom-nav");
-  syncWentianFloatingChartSubmit(phone, scale, navHeight, hidden);
+  const submitHidden = false;
+  const submitNavHeight = hidden ? 0 : navHeight;
+  syncWentianFloatingChartSubmit(phone, scale, submitNavHeight, submitHidden);
   syncWentianFloatingArchiveConfirm(phone, scale, navHeight, hidden);
 }
 
