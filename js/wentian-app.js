@@ -19493,6 +19493,7 @@ function stripScreenshotStatusBar() {
 function clearWentianFloatingBottomNav() {
   document.querySelector(".wentian-floating-bottom-nav")?.remove();
   clearWentianFloatingChartSubmit();
+  clearWentianFloatingArchiveConfirm();
   view?.classList.remove("has-floating-bottom-nav");
   for (const node of document.querySelectorAll('.figma-phone [data-wentian-nav-hidden="1"]')) {
     node.style.visibility = "";
@@ -19507,6 +19508,15 @@ function clearWentianFloatingChartSubmit() {
     node.style.visibility = "";
     node.style.pointerEvents = "";
     delete node.dataset.wentianSubmitHidden;
+  }
+}
+
+function clearWentianFloatingArchiveConfirm() {
+  document.querySelector(".wentian-floating-archive-confirm")?.remove();
+  for (const node of document.querySelectorAll('.figma-phone .wentian-archive-confirm[data-wentian-archive-confirm-hidden="1"]')) {
+    node.style.visibility = "";
+    node.style.pointerEvents = "";
+    delete node.dataset.wentianArchiveConfirmHidden;
   }
 }
 
@@ -19586,6 +19596,7 @@ function syncWentianFloatingBottomNav() {
   floating.setAttribute("aria-hidden", hidden ? "true" : "false");
   view?.classList.add("has-floating-bottom-nav");
   syncWentianFloatingChartSubmit(phone, scale, navHeight, hidden);
+  syncWentianFloatingArchiveConfirm(phone, scale, navHeight, hidden);
 }
 
 function syncWentianFloatingChartSubmit(phone, scale, navHeight, hidden) {
@@ -19642,6 +19653,39 @@ function syncWentianFloatingChartSubmit(phone, scale, navHeight, hidden) {
   floating.style.setProperty("--wentian-floating-submit-height", `${Math.ceil(submitHeight * scale)}px`);
   floating.classList.toggle("is-hidden", hidden);
   floating.setAttribute("aria-hidden", hidden ? "true" : "false");
+}
+
+function syncWentianFloatingArchiveConfirm(phone, scale, navHeight, hidden) {
+  if (!phone || state.route !== "screen-5") {
+    clearWentianFloatingArchiveConfirm();
+    return;
+  }
+  const original = phone.querySelector(".wentian-archive-confirm");
+  if (!original) {
+    clearWentianFloatingArchiveConfirm();
+    return;
+  }
+  let floating = document.querySelector(".wentian-floating-archive-confirm");
+  if (!floating) {
+    floating = document.createElement("div");
+    floating.className = "wentian-floating-archive-confirm";
+    floating.innerHTML = '<div class="wentian-floating-archive-confirm-inner"><button class="wentian-floating-archive-confirm-btn" type="button" data-action="wentian-archive-confirm"></button></div>';
+    document.body.appendChild(floating);
+  }
+  const label = original.textContent?.trim() || original.getAttribute("aria-label") || "确认进入";
+  const button = floating.querySelector(".wentian-floating-archive-confirm-btn");
+  if (button) {
+    button.textContent = label;
+    button.setAttribute("aria-label", original.getAttribute("aria-label") || label);
+  }
+  floating.style.setProperty("--wentian-floating-nav-scale", String(scale));
+  floating.style.setProperty("--wentian-floating-nav-width", `${Math.ceil(WENTIAN_PHONE_WIDTH * scale)}px`);
+  floating.style.setProperty("--wentian-floating-nav-height", `${Math.ceil(navHeight * scale)}px`);
+  floating.classList.toggle("is-hidden", hidden);
+  floating.setAttribute("aria-hidden", hidden ? "true" : "false");
+  original.style.visibility = "hidden";
+  original.style.pointerEvents = "none";
+  original.dataset.wentianArchiveConfirmHidden = "1";
 }
 
 function getWentianNodeBottomWithinPhone(phone, node) {
