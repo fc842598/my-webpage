@@ -11,6 +11,7 @@
   var HEALTH_PRODUCT_AMOUNT = "19.90";
   var HEALTH_PAYPAL_AMOUNT = "2.99";
   var PAGE_IDS = ["home", "assessment", "report", "chat", "member"];
+  var DEFAULT_API_BASE = "https://api.yuetianai.com";
 
   var categories = [
     {
@@ -248,6 +249,15 @@
     return session && session.access_token ? session.access_token : "";
   }
 
+  function getHealthApiBase() {
+    try {
+      var params = new URLSearchParams(window.location.search || "");
+      var queryBase = params.get("apiBase");
+      if (queryBase) return queryBase.replace(/\/+$/, "");
+    } catch (_error) {}
+    return DEFAULT_API_BASE;
+  }
+
   function getHealthClientId() {
     try {
       var saved = localStorage.getItem(CLIENT_ID_KEY);
@@ -265,7 +275,8 @@
     var headers = Object.assign({ "Content-Type": "application/json" }, opts.headers || {});
     var token = getAuthToken();
     if (token) headers.Authorization = "Bearer " + token;
-    var response = await fetch(path, {
+    var url = /^https?:\/\//i.test(path) ? path : getHealthApiBase() + path;
+    var response = await fetch(url, {
       method: opts.method || "GET",
       headers: headers,
       body: opts.body ? JSON.stringify(opts.body) : undefined
