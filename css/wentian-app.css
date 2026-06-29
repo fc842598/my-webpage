@@ -482,7 +482,7 @@ button {
 .wentian-floating-chart-submit {
   position: fixed;
   left: 50%;
-  bottom: calc(var(--wentian-floating-nav-height, 89px) + env(safe-area-inset-bottom, 0px) + 8px);
+  bottom: calc(var(--wentian-floating-nav-height, 89px) + env(safe-area-inset-bottom, 0px) + 18px);
   z-index: 1000;
   width: var(--wentian-floating-nav-width, 390px);
   height: var(--wentian-floating-submit-height, 54px);

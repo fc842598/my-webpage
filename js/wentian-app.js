@@ -9652,6 +9652,63 @@ function getWentianFriendlyError(error) {
   return error?.message || "许大师暂时不可用";
 }
 
+function flattenWentianReplyCandidate(value) {
+  if (typeof value === "string") return value.trim();
+  if (Array.isArray(value)) {
+    return value.map(flattenWentianReplyCandidate).filter(Boolean).join("\n").trim();
+  }
+  if (!value || typeof value !== "object") return "";
+  return flattenWentianReplyCandidate(
+    value.reply
+      ?? value.finalAnswer
+      ?? value.answer
+      ?? value.output_text
+      ?? value.output
+      ?? value.text
+      ?? value.content
+      ?? value.message
+      ?? value.data
+      ?? value.result
+      ?? value.assistant
+      ?? value.choices?.[0]?.message
+      ?? ""
+  );
+}
+
+function extractWentianReplyText(data) {
+  const direct = [
+    data?.reply,
+    data?.finalAnswer,
+    data?.answer,
+    data?.output,
+    data?.content,
+    data?.message,
+    data?.data,
+    data?.result,
+    data?.assistant,
+    data?.choices,
+  ];
+  for (const item of direct) {
+    const text = flattenWentianReplyCandidate(item);
+    if (text) return text;
+  }
+  const historyLists = [data?.messages, data?.transientState?.messages];
+  for (const history of historyLists) {
+    if (!Array.isArray(history)) continue;
+    const assistant = history.slice().reverse().find((item) => {
+      const role = item?.role || item?.sender;
+      return role === "assistant";
+    });
+    const text = flattenWentianReplyCandidate(assistant?.content || assistant?.text || assistant?.reply || "");
+    if (text) return text;
+  }
+  return "";
+}
+
+function getWentianEmptyReplyText() {
+  return "这轮回复没有生成完整内容，问题已保留，请再点一次发送。";
+}
+
 async function wentianPostJsonOnce(path, payload, timeoutMs) {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(new DOMException("request timeout", "TimeoutError")), timeoutMs);
@@ -10454,7 +10511,9 @@ async function sendWentianXuChat(promptText = "") {
     if (data.transientState) saveWentianTransientState(data.transientState, payload.chartRecordId);
     setWentianQuota(data.quota);
     setWentianChatStatus(data.transientMode ? "临时会话" : getWentianXuModeText(payload.mode, "ready"), data.transientMode ? "warn" : "ok");
-    addWentianMessage("assistant", data.reply || "我看到了，但这轮没有返回内容，请再问一次。", { typewriter: true });
+    const replyText = extractWentianReplyText(data);
+    if (!replyText) setWentianChatStatus("回复未生成", "warn");
+    addWentianMessage("assistant", replyText || getWentianEmptyReplyText(), { typewriter: true });
   } catch (error) {
     wentianXuChat.messages.pop();
     setWentianChatStatus("发送未完成", "error");
