@@ -10,6 +10,7 @@
     "seo:hooks:install": "node scripts/install-git-hooks.mjs",
     "seo:indexnow:submit": "node scripts/indexnow-auto-submit.mjs",
     "seo:baidu:submit": "node scripts/baidu-auto-submit.mjs",
+    "seo:google:index-check": "node scripts/google-index-check.mjs",
     "smoke:overall-piming": "node scripts/smoke-overall-piming-contract.js",
     "validate:ziping": "node scripts/validate-ziping-professional-tool-samples.js",
     "validate:ziping:boundary": "node scripts/validate-ziping-boundary-rules.js",

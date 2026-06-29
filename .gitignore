@@ -4,6 +4,7 @@ node_modules/
 # Generated data
 tmp/
 output/
+reports/
 mockups/
 .playwright-cli/
 .codex-remote-attachments/
