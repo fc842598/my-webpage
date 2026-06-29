@@ -1,0 +1,306 @@
+[
+  {
+    "name": "r1-01-mobile-home-fresh",
+    "file": "C:/Users/1/Desktop/家里用的图标/docs/health-audit/screenshots/r1-01-mobile-home-fresh.png",
+    "note": "round 1 fresh mobile home",
+    "state": {
+      "url": "https://yuetianai.com/yl.html#home",
+      "progress": "0/8",
+      "progressCard": "已选 0/8",
+      "generateText": "选满 8 类生成报告",
+      "generateDisabled": true,
+      "reportState": "选择 8 类标签后生成你的报告。",
+      "askQuota": "免费 20条/天",
+      "chatText": "我会基于这份报告回答。可以问睡眠、脾胃、情绪、腰腿、冷热。",
+      "payButton": "确认开通阅天综合会员 ¥19.90",
+      "width": 390,
+      "viewport": 390,
+      "overflowX": false
+    }
+  },
+  {
+    "name": "r1-02-mobile-assessment-initial",
+    "file": "C:/Users/1/Desktop/家里用的图标/docs/health-audit/screenshots/r1-02-mobile-assessment-initial.png",
+    "note": "fresh assessment starts at 0/8",
+    "state": {
+      "url": "https://yuetianai.com/yl.html#assessment",
+      "progress": "0/8",
+      "progressCard": "已选 0/8",
+      "generateText": "选满 8 类生成报告",
+      "generateDisabled": true,
+      "reportState": "选择 8 类标签后生成你的报告。",
+      "askQuota": "免费 20条/天",
+      "chatText": "我会基于这份报告回答。可以问睡眠、脾胃、情绪、腰腿、冷热。",
+      "payButton": "确认开通阅天综合会员 ¥19.90",
+      "width": 390,
+      "viewport": 390,
+      "overflowX": false
+    }
+  },
+  {
+    "name": "r1-03-first-option-selected",
+    "file": "C:/Users/1/Desktop/家里用的图标/docs/health-audit/screenshots/r1-03-first-option-selected.png",
+    "note": "after selecting first option",
+    "state": {
+      "url": "https://yuetianai.com/yl.html#assessment",
+      "progress": "1/8",
+      "progressCard": "已选 1/8",
+      "generateText": "选满 8 类生成报告",
+      "generateDisabled": true,
+      "reportState": "选择 8 类标签后生成你的报告。",
+      "askQuota": "免费 20条/天",
+      "chatText": "我会基于这份报告回答。可以问睡眠、脾胃、情绪、腰腿、冷热。",
+      "payButton": "确认开通阅天综合会员 ¥19.90",
+      "width": 390,
+      "viewport": 390,
+      "overflowX": false
+    }
+  },
+  {
+    "name": "r1-04-mobile-assessment-complete",
+    "file": "C:/Users/1/Desktop/家里用的图标/docs/health-audit/screenshots/r1-04-mobile-assessment-complete.png",
+    "note": "assessment complete before generating report",
+    "state": {
+      "url": "https://yuetianai.com/yl.html#assessment",
+      "progress": "8/8",
+      "progressCard": "已选 8/8",
+      "generateText": "生成体质报告",
+      "generateDisabled": false,
+      "reportState": "已生成你的体质自评报告。",
+      "askQuota": "免费 20条/天",
+      "chatText": "我会基于这份报告回答。可以问睡眠、脾胃、情绪、腰腿、冷热。",
+      "payButton": "确认开通阅天综合会员 ¥19.90",
+      "width": 390,
+      "viewport": 390,
+      "overflowX": false
+    }
+  },
+  {
+    "name": "r1-05-mobile-report",
+    "file": "C:/Users/1/Desktop/家里用的图标/docs/health-audit/screenshots/r1-05-mobile-report.png",
+    "note": "generated mobile report",
+    "state": {
+      "url": "https://yuetianai.com/yl.html#report",
+      "progress": "8/8",
+      "progressCard": "已选 8/8",
+      "generateText": "生成体质报告",
+      "generateDisabled": false,
+      "reportState": "已生成你的体质自评报告。",
+      "askQuota": "免费 20条/天",
+      "chatText": "我会基于这份报告回答。可以问睡眠、脾胃、情绪、腰腿、冷热。",
+      "payButton": "确认开通阅天综合会员 ¥19.90",
+      "width": 390,
+      "viewport": 390,
+      "overflowX": false
+    }
+  },
+  {
+    "name": "r1-06-mobile-chat-before-ask",
+    "file": "C:/Users/1/Desktop/家里用的图标/docs/health-audit/screenshots/r1-06-mobile-chat-before-ask.png",
+    "note": "mobile chat before ask",
+    "state": {
+      "url": "https://yuetianai.com/yl.html#chat",
+      "progress": "8/8",
+      "progressCard": "已选 8/8",
+      "generateText": "生成体质报告",
+      "generateDisabled": false,
+      "reportState": "已生成你的体质自评报告。",
+      "askQuota": "免费 20条/天",
+      "chatText": "我会基于这份报告回答。可以问睡眠、脾胃、情绪、腰腿、冷热。",
+      "payButton": "确认开通阅天综合会员 ¥19.90",
+      "width": 390,
+      "viewport": 390,
+      "overflowX": false
+    }
+  },
+  {
+    "name": "r1-07-mobile-chat-after-ask",
+    "file": "C:/Users/1/Desktop/家里用的图标/docs/health-audit/screenshots/r1-07-mobile-chat-after-ask.png",
+    "note": "mobile chat after one ask",
+    "state": {
+      "url": "https://yuetianai.com/yl.html#chat",
+      "progress": "8/8",
+      "progressCard": "已选 8/8",
+      "generateText": "生成体质报告",
+      "generateDisabled": false,
+      "reportState": "已生成你的体质自评报告。",
+      "askQuota": "免费 20条/天 · 剩余 19",
+      "chatText": "睡眠先调什么？从您的报告看，入睡困难与气虚、阳虚有关——气血不足则心神失养，加上手脚偏冷、舌淡白，说明身体能量偏弱。建议先固定晚上11点前躺下，睡前1小时避免看手机，可温水泡脚10分钟，帮助阳气归位。如果躺下后烦躁，试试腹式呼吸：吸气时肚子鼓起，呼气时收回，重复5分钟。明显不适请就医。",
+      "payButton": "确认开通阅天综合会员 ¥19.90",
+      "width": 390,
+      "viewport": 390,
+      "overflowX": false
+    }
+  },
+  {
+    "name": "r1-08-mobile-member",
+    "file": "C:/Users/1/Desktop/家里用的图标/docs/health-audit/screenshots/r1-08-mobile-member.png",
+    "note": "mobile member and payment entry",
+    "state": {
+      "url": "https://yuetianai.com/yl.html#member",
+      "progress": "8/8",
+      "progressCard": "已选 8/8",
+      "generateText": "生成体质报告",
+      "generateDisabled": false,
+      "reportState": "已生成你的体质自评报告。",
+      "askQuota": "免费 20条/天 · 剩余 19",
+      "chatText": "睡眠先调什么？从您的报告看，入睡困难与气虚、阳虚有关——气血不足则心神失养，加上手脚偏冷、舌淡白，说明身体能量偏弱。建议先固定晚上11点前躺下，睡前1小时避免看手机，可温水泡脚10分钟，帮助阳气归位。如果躺下后烦躁，试试腹式呼吸：吸气时肚子鼓起，呼气时收回，重复5分钟。明显不适请就医。",
+      "payButton": "确认开通阅天综合会员 ¥19.90",
+      "width": 390,
+      "viewport": 390,
+      "overflowX": false
+    }
+  },
+  {
+    "name": "r2-01-mobile-return-assessment-persisted",
+    "file": "C:/Users/1/Desktop/家里用的图标/docs/health-audit/screenshots/r2-01-mobile-return-assessment-persisted.png",
+    "note": "returning to assessment after completed report; progress persists",
+    "state": {
+      "url": "https://yuetianai.com/yl.html#assessment",
+      "progress": "8/8",
+      "progressCard": "已选 8/8",
+      "generateText": "生成体质报告",
+      "generateDisabled": false,
+      "reportState": "已生成你的体质自评报告。",
+      "askQuota": "免费 20条/天 · 剩余 19",
+      "chatText": "睡眠先调什么？从您的报告看，入睡困难与气虚、阳虚有关——气血不足则心神失养，加上手脚偏冷、舌淡白，说明身体能量偏弱。建议先固定晚上11点前躺下，睡前1小时避免看手机，可温水泡脚10分钟，帮助阳气归位。如果躺下后烦躁，试试腹式呼吸：吸气时肚子鼓起，呼气时收回，重复5分钟。明显不适请就医。",
+      "payButton": "确认开通阅天综合会员 ¥19.90",
+      "width": 390,
+      "viewport": 390,
+      "overflowX": false
+    }
+  },
+  {
+    "name": "r2-02-mobile-after-reset",
+    "file": "C:/Users/1/Desktop/家里用的图标/docs/health-audit/screenshots/r2-02-mobile-after-reset.png",
+    "note": "after tapping reset",
+    "state": {
+      "url": "https://yuetianai.com/yl.html#assessment",
+      "progress": "0/8",
+      "progressCard": "已选 0/8",
+      "generateText": "选满 8 类生成报告",
+      "generateDisabled": true,
+      "reportState": "选择 8 类标签后生成你的报告。",
+      "askQuota": "免费 20条/天",
+      "chatText": "我会基于这份报告回答。可以问睡眠、脾胃、情绪、腰腿、冷热。",
+      "payButton": "确认开通阅天综合会员 ¥19.90",
+      "width": 390,
+      "viewport": 390,
+      "overflowX": false
+    }
+  },
+  {
+    "name": "r2-03-mobile-mid-category-one-selected",
+    "file": "C:/Users/1/Desktop/家里用的图标/docs/health-audit/screenshots/r2-03-mobile-mid-category-one-selected.png",
+    "note": "manual jump to waist category and select one option",
+    "state": {
+      "url": "https://yuetianai.com/yl.html#assessment",
+      "progress": "1/8",
+      "progressCard": "已选 1/8",
+      "generateText": "选满 8 类生成报告",
+      "generateDisabled": true,
+      "reportState": "选择 8 类标签后生成你的报告。",
+      "askQuota": "免费 20条/天",
+      "chatText": "我会基于这份报告回答。可以问睡眠、脾胃、情绪、腰腿、冷热。",
+      "payButton": "确认开通阅天综合会员 ¥19.90",
+      "width": 390,
+      "viewport": 390,
+      "overflowX": false
+    }
+  },
+  {
+    "name": "r3-01-desktop-home",
+    "file": "C:/Users/1/Desktop/家里用的图标/docs/health-audit/screenshots/r3-01-desktop-home.png",
+    "note": "desktop home",
+    "state": {
+      "url": "https://yuetianai.com/yl.html#home",
+      "progress": "0/8",
+      "progressCard": "已选 0/8",
+      "generateText": "选满 8 类生成报告",
+      "generateDisabled": true,
+      "reportState": "选择 8 类标签后生成你的报告。",
+      "askQuota": "免费 20条/天",
+      "chatText": "我会基于这份报告回答。可以问睡眠、脾胃、情绪、腰腿、冷热。",
+      "payButton": "确认开通阅天综合会员 ¥19.90",
+      "width": 1440,
+      "viewport": 1440,
+      "overflowX": false
+    }
+  },
+  {
+    "name": "r3-02-desktop-report-example-empty",
+    "file": "C:/Users/1/Desktop/家里用的图标/docs/health-audit/screenshots/r3-02-desktop-report-example-empty.png",
+    "note": "desktop report opened before assessment",
+    "state": {
+      "url": "https://yuetianai.com/yl.html#report",
+      "progress": "0/8",
+      "progressCard": "已选 0/8",
+      "generateText": "选满 8 类生成报告",
+      "generateDisabled": true,
+      "reportState": "选择 8 类标签后生成你的报告。",
+      "askQuota": "免费 20条/天",
+      "chatText": "我会基于这份报告回答。可以问睡眠、脾胃、情绪、腰腿、冷热。",
+      "payButton": "确认开通阅天综合会员 ¥19.90",
+      "width": 1440,
+      "viewport": 1440,
+      "overflowX": false
+    }
+  },
+  {
+    "name": "r3-03-desktop-chat-empty-context",
+    "file": "C:/Users/1/Desktop/家里用的图标/docs/health-audit/screenshots/r3-03-desktop-chat-empty-context.png",
+    "note": "desktop chat before assessment",
+    "state": {
+      "url": "https://yuetianai.com/yl.html#chat",
+      "progress": "0/8",
+      "progressCard": "已选 0/8",
+      "generateText": "选满 8 类生成报告",
+      "generateDisabled": true,
+      "reportState": "选择 8 类标签后生成你的报告。",
+      "askQuota": "免费 20条/天",
+      "chatText": "我会基于这份报告回答。可以问睡眠、脾胃、情绪、腰腿、冷热。",
+      "payButton": "确认开通阅天综合会员 ¥19.90",
+      "width": 1440,
+      "viewport": 1440,
+      "overflowX": false
+    }
+  },
+  {
+    "name": "r3-04-desktop-chat-urgent-reply",
+    "file": "C:/Users/1/Desktop/家里用的图标/docs/health-audit/screenshots/r3-04-desktop-chat-urgent-reply.png",
+    "note": "desktop chat urgent symptom reply",
+    "state": {
+      "url": "https://yuetianai.com/yl.html#chat",
+      "progress": "0/8",
+      "progressCard": "已选 0/8",
+      "generateText": "选满 8 类生成报告",
+      "generateDisabled": true,
+      "reportState": "选择 8 类标签后生成你的报告。",
+      "askQuota": "免费 20条/天 · 剩余 20",
+      "chatText": "胸痛呼吸困难怎么办你提到的情况可能属于需要及时评估的明显不适。请不要只参考体质自评，建议尽快联系医生或到正规医疗机构就诊；如果伴随胸痛、呼吸困难、晕厥、突发麻木、剧烈疼痛或持续加重，请立即寻求急诊帮助。",
+      "payButton": "确认开通阅天综合会员 ¥19.90",
+      "width": 1440,
+      "viewport": 1440,
+      "overflowX": false
+    }
+  },
+  {
+    "name": "r3-05-desktop-member-paypal-selected",
+    "file": "C:/Users/1/Desktop/家里用的图标/docs/health-audit/screenshots/r3-05-desktop-member-paypal-selected.png",
+    "note": "desktop member with PayPal selected",
+    "state": {
+      "url": "https://yuetianai.com/yl.html#member",
+      "progress": "0/8",
+      "progressCard": "已选 0/8",
+      "generateText": "选满 8 类生成报告",
+      "generateDisabled": true,
+      "reportState": "选择 8 类标签后生成你的报告。",
+      "askQuota": "免费 20条/天 · 剩余 20",
+      "chatText": "胸痛呼吸困难怎么办你提到的情况可能属于需要及时评估的明显不适。请不要只参考体质自评，建议尽快联系医生或到正规医疗机构就诊；如果伴随胸痛、呼吸困难、晕厥、突发麻木、剧烈疼痛或持续加重，请立即寻求急诊帮助。",
+      "payButton": "确认开通阅天综合会员 $2.99",
+      "width": 1440,
+      "viewport": 1440,
+      "overflowX": false
+    }
+  }
+]
