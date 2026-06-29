@@ -9114,11 +9114,12 @@ html[lang="en"] .liuyao-coin-summary em {
 
 .wentian-yijing-tabs button {
   display: grid;
+  gap: 4px;
   place-items: center;
-  min-height: 58px;
+  min-height: 64px;
   border: 1px solid rgba(226, 199, 103, .3);
   border-radius: 16px;
-  padding: 10px 8px;
+  padding: 9px 7px;
   background: rgba(17, 11, 5, .88);
   color: #d7c7a0;
   font-family: inherit;
@@ -9137,6 +9138,19 @@ html[lang="en"] .liuyao-coin-summary em {
   pointer-events: none;
   font-size: 16px;
   font-weight: 900;
+}
+
+.wentian-yijing-tabs small {
+  display: block;
+  pointer-events: none;
+  color: rgba(234, 216, 170, .78);
+  font-size: 10px;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.wentian-yijing-tabs button.is-active small {
+  color: rgba(36, 22, 7, .72);
 }
 
 .wentian-yijing-current {

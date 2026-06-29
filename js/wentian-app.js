@@ -19156,8 +19156,9 @@ function renderWentianMobileYijingPanel(saved) {
       <div class="wentian-yijing-tabs" role="tablist" aria-label="易经推命切换">
         ${tabRows.map(([key, item]) => {
           const itemMeta = getWentianYijingTabMeta(key);
-          return `<button type="button" class="${key === activeKey ? "is-active" : ""}" data-action="wentian-yijing-tab" data-yijing-tab="${key}" aria-label="${escapeHtml(`${itemMeta.label} ${item?.name || ""}`.trim())}">
+          return `<button type="button" class="${key === activeKey ? "is-active" : ""}" data-action="wentian-yijing-tab" data-yijing-tab="${key}" aria-label="${escapeHtml(`${itemMeta.label} ${itemMeta.note} ${item?.name || ""}`.trim())}">
             <span>${escapeHtml(itemMeta.label)}</span>
+            <small>${escapeHtml(itemMeta.note)}</small>
           </button>`;
         }).join("")}
       </div>

@@ -10959,7 +10959,13 @@ p.mbp-topic-detail {
   }
 
   .mbp-yijing-help {
-    display: none;
+    display: inline-grid;
+    right: 5px;
+    width: 18px;
+    height: 18px;
+    border-radius: 6px;
+    font-size: 10px;
+    transform: translateY(-50%);
   }
 
   .mbp-yijing-help-note {
