@@ -8961,6 +8961,26 @@ function setWentianAuthReturnState(data = {}) {
   } catch (_err) {}
 }
 
+function getWentianExternalReturnUrl(returnState) {
+  if (!returnState?.returnUrl) return "";
+  try {
+    const url = new URL(returnState.returnUrl, window.location.origin);
+    if (url.origin !== window.location.origin) return "";
+    if (url.pathname !== "/yl.html") return "";
+    return url.href;
+  } catch (_err) {
+    return "";
+  }
+}
+
+function completeWentianExternalAuthReturn(returnState) {
+  const returnUrl = getWentianExternalReturnUrl(returnState);
+  if (!returnUrl) return false;
+  clearWentianAuthReturnState();
+  window.location.href = returnUrl;
+  return true;
+}
+
 function replaceWentianUrlRoute(route) {
   const params = new URLSearchParams(window.location.search);
   ["code", "state", "error", "error_code", "error_description", "auth", "screen"].forEach((key) => params.delete(key));
@@ -11945,6 +11965,8 @@ function sourceLoginMethodsScreen() {
   const account = getWentianAuthDisplay();
   const member = getWentianMemberSnapshot();
   const isRegister = wentianAuthState.mode === "register";
+  const returnState = getWentianAuthReturnState();
+  const isHealthReturn = returnState?.source === "health_member";
   if (account.loggedIn) {
     const compactName = getWentianCompactAccountTitle(account) || account.name;
     const provider = wentianAuthSession?.user?.app_metadata?.provider || "phone";
@@ -11998,7 +12020,7 @@ function sourceLoginMethodsScreen() {
     ${figBox("source-login-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
     ${wentianBackPill("source-login", 18, 42, 'data-action="wentian-return-previous" data-fallback-route="screen-38" aria-label="返回"')}
     ${figText("source-login-title", "登录 / 注册", 0, 54, 390, 22, "#1f1d1a", 800, "center")}
-    ${figText("source-login-sub", "会员、支付记录会绑定到账号", 0, 92, 390, 13, "#8f857a", 700, "center")}
+    ${figText("source-login-sub", isHealthReturn ? "登录后返回健康专题继续开通阅天综合会员" : "会员、支付记录会绑定到账号", 0, 92, 390, 13, "#8f857a", 700, "center")}
     ${figBox("source-login-card", 24, 128, 342, 390, "", "border:1px solid #e2d8c8;border-radius:18px;background:#fff;box-shadow:0 8px 20px rgba(74,55,32,.08);")}
     <button class="wentian-auth-tab ${!isRegister ? "is-active" : ""}" type="button" data-action="wentian-auth-mode" data-auth-mode="login" style="left:50px;top:154px;width:136px">登录</button>
     <button class="wentian-auth-tab ${isRegister ? "is-active" : ""}" type="button" data-action="wentian-auth-mode" data-auth-mode="register" style="left:204px;top:154px;width:136px">注册</button>
@@ -12015,7 +12037,7 @@ function sourceLoginMethodsScreen() {
       ${figButton("source-login-google-hit", 50, 538, 290, 44, 'data-action="wentian-google-login"')}
       ${figText("source-login-google-text", "海外用户 Google 登录", 50, 551, 290, 13, "#26211c", 800, "center")}
     ` : ""}
-    ${figText("source-login-note", "手机号登录使用密码，不发验证码。", 0, 604, 390, 12, "#9b9287", 600, "center")}
+    ${figText("source-login-note", isHealthReturn ? "当前登录只用于绑定账号、支付记录和会员权益。" : "手机号登录使用密码，不发验证码。", 0, 604, 390, 12, "#9b9287", 600, "center")}
   `;
 }
 
@@ -17773,7 +17795,7 @@ function renderWentianPolishedScreen(screen) {
         `;
       }).join("")}
       <div id="wentian-about-status" class="wentian-invite-status" style="left:42px;top:690px;width:306px;text-align:center" data-tone=""></div>
-      <p class="fig-text" data-node-id="wt36-copy" style="left:18px;top:710px;width:354px;font-size:10px;color:#b4ada5;font-weight:500;text-align:center;line-height:1.45;overflow-wrap:anywhere;pointer-events:auto;"><a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;white-space:nowrap;">粤ICP备2026055337号-1</a>　© 2026 阅天AI Copyright, All Rights Reserved. Powered By 阅天工作室　</p>
+      ${figText("wt36-copy", "粤ICP备2026055337号-1　© 2026 阅天AI Copyright, All Rights Reserved. Powered By 阅天工作室　", 18, 736, 354, 9, "#b4ada5", 500, "center")}
     `;
   }
   return "";
@@ -21187,6 +21209,8 @@ async function submitWentianAuth(mode = wentianAuthState.mode) {
     wentianAuthState.error = "";
     await bindWentianPendingInvite();
     await hydrateWentianInvite({ force: true });
+    const returnState = getWentianAuthReturnState();
+    if (completeWentianExternalAuthReturn(returnState)) return;
     if (wentianPendingPaymentAfterLogin) {
       wentianPendingPaymentAfterLogin = false;
       await startWentianMemberPayment();
@@ -21211,7 +21235,8 @@ async function startWentianGoogleLogin() {
     navigate("screen-40", false);
     return;
   }
-  setWentianAuthReturnState({ after: wentianPendingPaymentAfterLogin ? "member-payment" : "account" });
+  const returnState = getWentianAuthReturnState();
+  setWentianAuthReturnState({ ...(returnState || {}), after: returnState?.after || (wentianPendingPaymentAfterLogin ? "member-payment" : "account") });
   wentianAuthState.error = "";
   try {
     const data = await wentianFetchJson("/api/auth/oauth-url", {
@@ -21324,6 +21349,7 @@ async function bootWentianApp() {
     wentianInviteState.loaded = false;
     await bindWentianPendingInvite();
     await hydrateWentianInvite({ force: true });
+    if (completeWentianExternalAuthReturn(returnState)) return;
     if (returnState?.after === "member-payment") {
       window.setTimeout(() => startWentianMemberPayment(), 120);
     }

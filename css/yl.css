@@ -43,6 +43,13 @@ button {
   cursor: pointer;
 }
 
+button:focus-visible,
+a:focus-visible,
+input:focus-visible {
+  outline: 3px solid rgba(36, 91, 59, 0.34);
+  outline-offset: 3px;
+}
+
 [hidden] {
   display: none !important;
 }
@@ -138,7 +145,6 @@ button {
   background: var(--yl-green);
   border-color: var(--yl-green);
   color: #fff;
-  outline: none;
 }
 
 .yl-top-cta {
@@ -149,11 +155,15 @@ button {
 .yl-shell {
   width: min(1280px, calc(100% - 48px));
   margin: 0 auto;
-  padding: 50px 0 80px;
+  padding: 64px 0 80px;
 }
 
 .yl-page[hidden] {
   display: none !important;
+}
+
+.yl-page {
+  scroll-margin-top: 96px;
 }
 
 .yl-phone-frame {
@@ -284,7 +294,6 @@ button {
 .yl-btn-primary:hover,
 .yl-btn-primary:focus-visible {
   background: var(--yl-green-dark);
-  outline: none;
 }
 
 .yl-btn-primary:disabled {
@@ -1189,7 +1198,7 @@ button {
   .yl-chat-panel,
   .yl-member-card,
   .yl-operator {
-    padding: 20px 28px;
+    padding: 18px 28px;
     background: var(--yl-page);
   }
 
@@ -1202,42 +1211,39 @@ button {
   }
 
   .yl-section-title h2 {
-    font-size: 28px;
+    font-size: 26px;
   }
 
   .yl-progress {
-    min-width: 78px;
-    height: 46px;
+    min-width: 68px;
+    height: 42px;
     border-radius: 17px;
-    font-size: 20px;
+    font-size: 18px;
   }
 
   .yl-category-switcher {
-    gap: 10px;
-    margin: 24px 0 28px;
+    gap: 8px;
+    margin: 16px 0 14px;
   }
 
   .yl-switch-btn {
     min-width: calc(25% - 8px);
+    min-height: 36px;
   }
 
   .yl-assessment-visual {
-    display: block;
-    width: 302px;
-    height: 246px;
-    margin: 0 auto 30px;
-    border-radius: 22px;
+    display: none;
   }
 
   .yl-question-card {
     border: 1px solid var(--yl-line);
-    border-radius: 22px;
+    border-radius: 20px;
     background: var(--yl-paper);
-    padding: 22px;
+    padding: 18px;
   }
 
   .yl-question-head {
-    margin-bottom: 22px;
+    margin-bottom: 16px;
   }
 
   .yl-question-head h3 {
@@ -1250,7 +1256,7 @@ button {
   }
 
   .yl-option-chip {
-    min-height: 34px;
+    min-height: 44px;
     border-radius: 999px;
     font-size: 14px;
     text-align: center;
@@ -1261,7 +1267,7 @@ button {
     display: grid;
     grid-template-columns: 1fr auto;
     gap: 12px;
-    margin-top: 18px;
+    margin-top: 14px;
     padding: 12px;
     border-radius: 16px;
   }
@@ -1277,7 +1283,7 @@ button {
 
   .yl-actions {
     grid-template-columns: 1fr;
-    margin-top: 30px;
+    margin-top: 18px;
   }
 
   .yl-actions .yl-btn-link {

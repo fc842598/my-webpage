@@ -601,11 +601,11 @@
     if (!isHealthMember() && state.askCount >= FREE_ASK_LIMIT) {
       var limit = document.createElement("div");
       limit.className = "yl-message is-ai";
-      limit.textContent = "免费追问次数已用完。开通综合健康会员后，可以继续围绕这份报告深聊睡眠、脾胃、情绪和作息调整。";
+      limit.textContent = "免费追问次数已用完。开通阅天综合会员后，可以继续围绕这份报告深聊睡眠、脾胃、情绪和作息调整。";
       log.appendChild(limit);
       log.scrollTop = log.scrollHeight;
       updateAskQuota();
-      setPayHint("免费追问已用完，可开通综合健康会员继续深聊。");
+      setPayHint("免费追问已用完，可开通阅天综合会员继续深聊。");
       goToPage("member");
       return;
     }
@@ -627,6 +627,9 @@
   }
 
   function buildAnswer(question, primary) {
+    if (isUrgentHealthQuestion(question)) {
+      return "你提到的情况可能属于需要及时评估的明显不适。请不要只参考体质自评，建议尽快联系医生或到正规医疗机构就诊；如果伴随胸痛、呼吸困难、晕厥、突发麻木、剧烈疼痛或持续加重，请立即寻求急诊帮助。";
+    }
     if (question.indexOf("睡眠") >= 0) {
       return "结合你的报告，" + primary.name + "更适合先稳定睡前节律：睡前 30 分钟减少刺激信息，晚餐少冷饮和油甜，连续记录 7 天入睡、夜醒和晨起精神。";
     }
@@ -640,6 +643,10 @@
       return "建议复盘四项：睡眠质量、胃口胀不胀、大便形态、手脚冷热。连续 7 天看趋势，比单日感觉更可靠。";
     }
     return "可以围绕 " + primary.name + " 继续观察。先选一个最明显的问题开始，比如睡眠、胃口、情绪或冷热，不要一次改太多。";
+  }
+
+  function isUrgentHealthQuestion(question) {
+    return /胸痛|胸闷|心口痛|呼吸困难|喘不上气|晕厥|昏倒|意识不清|剧烈疼痛|剧痛|突发麻木|半边麻|口角歪|说话不清|便血|吐血|持续高热|高烧不退|严重过敏|休克|自杀|轻生|服毒|中毒/.test(question || "");
   }
 
   function generateReport() {
@@ -706,7 +713,7 @@
     if (openButton) {
       openButton.disabled = paymentState.loading;
       if (paymentState.loading) openButton.textContent = "处理中...";
-      else if (paymentState.status === "paid") openButton.textContent = "已开通综合健康会员";
+      else if (paymentState.status === "paid") openButton.textContent = "已开通阅天综合会员";
       else if (paymentState.status === "pending" && paymentState.payMethod === "h5") openButton.textContent = "打开" + getProviderLabel(paymentState.provider);
       else if (paymentState.status === "pending") openButton.textContent = "我已支付，刷新状态";
       else openButton.textContent = "确认开通" + productName + " " + amount;
@@ -738,7 +745,7 @@
 
     renderPaymentQr();
     if (paymentState.status === "paid") {
-      setPayHint("已开通综合健康会员，后续报告和追问额度会绑定到当前账号。");
+      setPayHint("已开通阅天综合会员，后续报告和追问额度会绑定到当前账号。");
       updateAskQuota();
     }
   }
@@ -750,7 +757,7 @@
       paymentState.isMember = !!data.productEntitlement?.isMember;
       if (data.productEntitlement?.isMember) {
         paymentState.status = "paid";
-        paymentState.message = "当前账号已开通综合健康会员。";
+        paymentState.message = "当前账号已开通阅天综合会员。";
       }
       if (Array.isArray(data.providers)) {
         paymentState.providers = data.providers;
@@ -771,12 +778,18 @@
   function requireHealthLogin() {
     if (readAuthSession()) return true;
     try {
-      localStorage.setItem("wentian-app-auth-return-v1", window.location.href.split("#")[0] + "#member");
+      localStorage.setItem("wentian-app-auth-return-v1", JSON.stringify({
+        source: "health_member",
+        after: "health-member-payment",
+        returnUrl: window.location.href.split("#")[0] + "#member",
+        title: "阅天综合会员",
+        ts: Date.now()
+      }));
     } catch (_error) {}
-    paymentState.message = "请先登录阅天AI账号，再开通综合健康会员。";
+    paymentState.message = "请先登录阅天AI账号，再开通阅天综合会员。";
     paymentState.status = "login";
     renderPayment();
-    setPayHint("点击后会前往阅天AI登录，登录完成后再回到健康会员支付。");
+    setPayHint("点击后会前往阅天AI登录，登录完成后返回本页继续支付。");
     window.location.href = "/pages/wentian-app.html#screen-40";
     return false;
   }
@@ -796,7 +809,7 @@
 
     paymentState.loading = true;
     paymentState.status = "loading";
-    paymentState.message = "正在创建" + getProviderLabel(paymentState.provider) + "健康会员订单...";
+    paymentState.message = "正在创建" + getProviderLabel(paymentState.provider) + "阅天综合会员订单...";
     paymentState.orderNo = "";
     paymentState.payUrl = "";
     paymentState.payMethod = "";
@@ -856,7 +869,7 @@
       paymentState.status = data.status || paymentState.status;
       if (paymentState.status === "paid") paymentState.isMember = true;
       paymentState.message = data.status === "paid"
-        ? "支付已完成，综合健康会员已开通。"
+        ? "支付已完成，阅天综合会员已开通。"
         : "暂未确认支付成功，请完成付款后再刷新。";
     } catch (error) {
       paymentState.message = error.message || "支付状态查询失败";
@@ -878,7 +891,7 @@
       });
       paymentState.status = data.status || "paid";
       paymentState.isMember = paymentState.status === "paid";
-      paymentState.message = "支付测试成功，综合健康会员已开通。";
+      paymentState.message = "支付测试成功，阅天综合会员已开通。";
     } catch (error) {
       paymentState.message = error.message || "测试支付失败";
     } finally {
@@ -924,7 +937,7 @@
     if (readAuthSession()) hydratePaymentProduct();
     else {
       renderPayment();
-      setPayHint("登录后可直接用当前账号开通综合健康会员。");
+      setPayHint("登录后可直接用当前账号开通阅天综合会员。");
     }
   }
 
