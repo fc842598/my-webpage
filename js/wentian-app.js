@@ -599,12 +599,8 @@ function getWentianArchiveSelectScreenState() {
   };
 }
 
-function getWentianProfileScreenMetrics(visibleCount = 0, showIndex = false) {
-  if (showIndex) return getWentianStandardScreenMetrics(778, 867);
-  if (visibleCount <= 0) return getWentianStandardScreenMetrics(700, 790);
-  if (visibleCount === 1) return getWentianStandardScreenMetrics(716, 806);
-  if (visibleCount === 2) return getWentianStandardScreenMetrics(736, 826);
-  return getWentianStandardScreenMetrics(756, 846);
+function getWentianProfileScreenMetrics() {
+  return getWentianStandardScreenMetrics(755, WENTIAN_PHONE_HEIGHT);
 }
 
 function getWentianStandardScreenMetrics(bottomNavY = 755, height = WENTIAN_PHONE_HEIGHT) {
@@ -616,12 +612,11 @@ function getWentianStandardScreenMetrics(bottomNavY = 755, height = WENTIAN_PHON
 function getWentianProfileScreenState(query = wentianProfileSearchQuery) {
   const archives = getWentianArchiveList();
   const visibleArchives = getWentianProfileVisibleArchives(archives, query);
-  const showIndex = visibleArchives.length >= 4;
   return {
     archives,
     visibleArchives,
-    showIndex,
-    metrics: getWentianProfileScreenMetrics(visibleArchives.length, showIndex)
+    showIndex: false,
+    metrics: getWentianProfileScreenMetrics()
   };
 }
 
@@ -11429,81 +11424,93 @@ function toggleWentianProfileBatchArchive(id) {
   navigatePreservingScroll("screen-25", false);
 }
 
+function getWentianProfileSummaryText(visibleCount, totalCount, query = wentianProfileSearchQuery) {
+  const isEn = getWentianLanguageCode() === "en";
+  const hasQuery = Boolean(String(query || "").trim());
+  if (hasQuery) return isEn ? `Results · ${visibleCount}/${totalCount}` : `搜索结果 · ${visibleCount}/${totalCount}`;
+  return isEn ? `All · ${totalCount}` : `全部 · ${totalCount} 份`;
+}
+
+function renderWentianProfileActionRow(archive, item, isDefaultArchive, confirmingDelete, isEn) {
+  if (confirmingDelete) {
+    return `
+      <span class="wentian-archive-actions" role="group" aria-label="${escapeHtml(isEn ? `${item.name} file actions` : `${item.name}档案操作`)}">
+        <button class="wentian-archive-action danger is-confirming" type="button" data-action="wentian-archive-delete" data-archive-id="${escapeHtml(archive.id)}" aria-label="${escapeHtml(isEn ? `Confirm delete ${item.name}` : `确认删除${item.name}`)}">${isEn ? "Confirm" : "确认删除"}</button>
+        <button class="wentian-archive-action cancel" type="button" data-action="wentian-archive-delete-cancel" data-archive-id="${escapeHtml(archive.id)}" aria-label="${escapeHtml(isEn ? `Cancel delete ${item.name}` : `取消删除${item.name}`)}">${isEn ? "Cancel" : "取消"}</button>
+      </span>
+    `;
+  }
+  return `
+    <span class="wentian-archive-actions" role="group" aria-label="${escapeHtml(isEn ? `${item.name} file actions` : `${item.name}档案操作`)}">
+      ${isDefaultArchive ? "" : `<button class="wentian-archive-action default" type="button" data-action="wentian-archive-default" data-archive-id="${escapeHtml(archive.id)}" aria-label="${escapeHtml(isEn ? `Set ${item.name} as default` : `设为默认${item.name}`)}">${isEn ? "Set Main" : "设主"}</button>`}
+      <button class="wentian-archive-action" type="button" data-action="wentian-archive-edit" data-archive-id="${escapeHtml(archive.id)}" aria-label="${escapeHtml(isEn ? `Edit ${item.name}` : `编辑${item.name}`)}">${isEn ? "Edit" : "编辑"}</button>
+      <button class="wentian-archive-action danger" type="button" data-action="wentian-archive-delete" data-archive-id="${escapeHtml(archive.id)}" aria-label="${escapeHtml(isEn ? `Delete ${item.name}` : `删除${item.name}`)}">${isEn ? "Delete" : "删除"}</button>
+    </span>
+  `;
+}
+
 function renderWentianProfileRows(archives = getWentianArchiveList(), query = wentianProfileSearchQuery) {
   const visibleArchives = getWentianProfileVisibleArchives(archives, query);
   const selectedArchiveId = getWentianSelectedArchiveId(archives);
   const batchSelectedIds = getWentianProfileBatchSelected(archives);
   const isBatchMode = wentianProfileBatchMode;
   const isEn = getWentianLanguageCode() === "en";
-  let y = 296;
-  let lastInitial = "";
   if (!visibleArchives.length) {
     const isSearchEmpty = Boolean(String(query || "").trim());
     return `
-      ${figText("source-25-empty-title", isEn ? (isSearchEmpty ? "No matching files" : "No files yet") : (isSearchEmpty ? "暂无匹配档案" : "暂无档案"), 0, 330, 390, 18, "#6e6254", 900, "center")}
-      ${figText("source-25-empty-sub", isEn ? (isSearchEmpty ? "Try another name." : "Tap + at the top right to create a chart file.") : (isSearchEmpty ? "换个姓名再试试" : "点击右上角 + 新建命盘档案"), 0, 362, 390, 13, "#a79b8e", 700, "center")}
+      <div class="wentian-profile-empty">
+        <strong>${isEn ? (isSearchEmpty ? "No matching files" : "No files yet") : (isSearchEmpty ? "暂无匹配档案" : "暂无档案")}</strong>
+        <p>${isEn ? (isSearchEmpty ? "Try another name." : "Tap + New to create a chart file.") : (isSearchEmpty ? "换个姓名再试试" : "点击上方“新建”添加命盘档案")}</p>
+      </div>
     `;
   }
-  return visibleArchives.map((archive, index) => {
+  const groups = [];
+  let currentInitial = "";
+  let currentRows = [];
+  visibleArchives.forEach((archive) => {
     const item = getWentianArchiveDisplay(archive);
     const initial = getWentianArchiveInitial(item.name);
     const confirmingDelete = wentianArchiveDeleteConfirmId === archive.id;
     const isDefaultArchive = archive.id === selectedArchiveId;
     const batchSelected = batchSelectedIds.includes(archive.id);
-    const group = initial !== lastInitial ? figText(`source-25-group-${index}`, initial, 18, y + 6, 24, 14, "#aaa198", 600) : "";
-    if (initial !== lastInitial) {
-      lastInitial = initial;
-      y += 30;
+    const isSelected = isBatchMode ? batchSelected : isDefaultArchive;
+    if (initial !== currentInitial) {
+      if (currentRows.length) groups.push({ initial: currentInitial, rows: currentRows });
+      currentInitial = initial;
+      currentRows = [];
     }
-    const rowY = y;
     const profileMeta = [item.gender, item.datetime.split(" ")[0] || item.datetime].filter(Boolean).join(" · ");
-    y += 86;
-    const actionControls = isBatchMode ? `
-      ${figBox(`source-25-batch-check-${index}`, 320, rowY + 12, 38, 38, "", `border:1px solid ${batchSelected ? "#b67d2f" : "#e0d4c4"};border-radius:19px;background:${batchSelected ? "#fff2d8" : "#fffdf9"};z-index:31;`)}
-      ${batchSelected ? figText(`source-25-batch-check-text-${index}`, "✓", 320, rowY + 22, 38, 14, "#9b6a23", 900, "center", "z-index:32;") : ""}
-      ${figText(`source-25-batch-tip-${index}`, batchSelected ? "已选" : "勾选", 270, rowY + 24, 42, 11, batchSelected ? "#9b6a23" : "#a79b8e", 800, "center", "z-index:32;")}
-    ` : confirmingDelete ? `
-      ${figBox(`source-25-delete-confirm-${index}`, 218, rowY + 8, 86, 30, "", "border:1px solid #c85a4a;border-radius:15px;background:#fff1ee;z-index:31;")}
-      ${figText(`source-25-delete-confirm-text-${index}`, "确认删除", 218, rowY + 17, 86, 11, "#b53a2e", 900, "center", "z-index:32;")}
-      ${figButton(`source-25-delete-confirm-hit-${index}`, 212, rowY - 2, 96, 48, `data-action="wentian-archive-delete" data-archive-id="${escapeHtml(archive.id)}" aria-label="确认删除${escapeHtml(item.name)}"`, "", "z-index:33;")}
-      ${figBox(`source-25-delete-cancel-${index}`, 312, rowY + 8, 44, 30, "", "border:1px solid #ead8bd;border-radius:15px;background:#fffaf2;z-index:31;")}
-      ${figText(`source-25-delete-cancel-text-${index}`, "取消", 312, rowY + 17, 44, 11, "#9b742e", 900, "center", "z-index:32;")}
-      ${figButton(`source-25-delete-cancel-hit-${index}`, 310, rowY - 2, 50, 48, `data-action="wentian-archive-delete-cancel" data-archive-id="${escapeHtml(archive.id)}" aria-label="取消删除${escapeHtml(item.name)}"`, "", "z-index:33;")}
-    ` : isDefaultArchive ? `
-      ${figBox(`source-25-default-${index}`, 232, rowY + 8, 46, 30, "", "border:1px solid #d5c493;border-radius:15px;background:#fffdf5;z-index:31;")}
-      ${figText(`source-25-default-text-${index}`, "默认", 232, rowY + 17, 46, 11, "#7b8a44", 900, "center", "z-index:32;")}
-      ${figBox(`source-25-edit-${index}`, 284, rowY + 8, 36, 30, "", "border:1px solid #ead8bd;border-radius:15px;background:#fffaf2;z-index:31;")}
-      ${figText(`source-25-edit-text-${index}`, "改", 284, rowY + 17, 36, 11, "#9b742e", 900, "center", "z-index:32;")}
-      ${figButton(`source-25-edit-hit-${index}`, 278, rowY - 2, 48, 48, `data-action="wentian-archive-edit" data-archive-id="${escapeHtml(archive.id)}" aria-label="编辑${escapeHtml(item.name)}"`, "", "z-index:33;")}
-      ${figBox(`source-25-delete-${index}`, 328, rowY + 8, 36, 30, "", "border:1px solid #ead8bd;border-radius:15px;background:#fffaf2;z-index:31;")}
-      ${figText(`source-25-delete-text-${index}`, "删", 328, rowY + 17, 36, 11, "#9b742e", 900, "center", "z-index:32;")}
-      ${figButton(`source-25-delete-hit-${index}`, 322, rowY - 2, 48, 48, `data-action="wentian-archive-delete" data-archive-id="${escapeHtml(archive.id)}" aria-label="删除${escapeHtml(item.name)}"`, "", "z-index:33;")}
-    ` : `
-      ${figBox(`source-25-set-default-${index}`, 230, rowY + 8, 48, 30, "", "border:1px solid #d5c493;border-radius:15px;background:#fffdf5;z-index:31;")}
-      ${figText(`source-25-set-default-text-${index}`, "设主", 230, rowY + 17, 48, 11, "#7b8a44", 900, "center", "z-index:32;")}
-      ${figButton(`source-25-set-default-hit-${index}`, 222, rowY - 2, 56, 48, `data-action="wentian-archive-default" data-archive-id="${escapeHtml(archive.id)}" aria-label="设为默认${escapeHtml(item.name)}"`, "", "z-index:33;")}
-      ${figBox(`source-25-edit-${index}`, 284, rowY + 8, 36, 30, "", "border:1px solid #ead8bd;border-radius:15px;background:#fffaf2;z-index:31;")}
-      ${figText(`source-25-edit-text-${index}`, "改", 284, rowY + 17, 36, 11, "#9b742e", 900, "center", "z-index:32;")}
-      ${figButton(`source-25-edit-hit-${index}`, 278, rowY - 2, 48, 48, `data-action="wentian-archive-edit" data-archive-id="${escapeHtml(archive.id)}" aria-label="编辑${escapeHtml(item.name)}"`, "", "z-index:33;")}
-      ${figBox(`source-25-delete-${index}`, 328, rowY + 8, 36, 30, "", "border:1px solid #ead8bd;border-radius:15px;background:#fffaf2;z-index:31;")}
-      ${figText(`source-25-delete-text-${index}`, "删", 328, rowY + 17, 36, 11, "#9b742e", 900, "center", "z-index:32;")}
-      ${figButton(`source-25-delete-hit-${index}`, 322, rowY - 2, 48, 48, `data-action="wentian-archive-delete" data-archive-id="${escapeHtml(archive.id)}" aria-label="删除${escapeHtml(item.name)}"`, "", "z-index:33;")}
-    `;
-    return `
-      ${group}
-      ${figBox(`source-25-row-line-${index}`, 88, rowY + 84, 258, 1, "", "background:#eee5d8;")}
-      ${figBox(`source-25-avatar-${index}`, 18, rowY + 10, 54, 54, "", "border-radius:27px;background:linear-gradient(180deg,#d9ab73,#c88f56);box-shadow:0 5px 12px rgba(151,102,45,.14);")}
-      ${figText(`source-25-avatar-text-${index}`, item.name.slice(0, 1) || "命", 18, rowY + 23, 54, 18, "#fffaf3", 900, "center")}
-      ${figArchiveName(`source-25-name-${index}`, item, 90, rowY + 10, 130, 17, "#201813", 900, "left", "white-space:nowrap;overflow:hidden;text-overflow:ellipsis;")}
-      ${figText(`source-25-meta-${index}`, escapeHtml(profileMeta), 90, rowY + 38, 126, 13, "#8f8780", 700, "left", "white-space:nowrap;overflow:hidden;text-overflow:ellipsis;")}
-      ${actionControls}
-      ${figButton(`source-25-open-${index}`, 0, rowY, 370, 84, `data-action="${isBatchMode ? "wentian-profile-batch-pick" : "wentian-profile-open"}" data-archive-id="${escapeHtml(archive.id)}"`)}
-    `;
-  }).join("");
+    currentRows.push(`
+      <article class="wentian-archive-option wentian-profile-card ${isSelected ? "is-selected" : ""} ${isBatchMode ? "is-batch" : ""}" data-archive-id="${escapeHtml(archive.id)}" aria-pressed="${isSelected ? "true" : "false"}">
+        <button class="wentian-archive-pick wentian-profile-pick" type="button" data-action="${isBatchMode ? "wentian-profile-batch-pick" : "wentian-profile-open"}" data-archive-id="${escapeHtml(archive.id)}" aria-pressed="${isSelected ? "true" : "false"}" aria-label="${escapeHtml(isEn ? (isBatchMode ? `Select ${item.name}` : `Open ${item.name}`) : (isBatchMode ? `勾选${item.name}` : `打开${item.name}`))}">
+          <span class="wentian-archive-avatar">${escapeHtml(item.name.slice(0, 1) || "命")}</span>
+          <span class="wentian-archive-main wentian-profile-main">
+            <span class="wentian-archive-title-row">
+              <span class="wentian-archive-name">${escapeHtml(item.name)}</span>
+              ${item.ageBadge ? `<span class="wentian-archive-age-badge">${escapeHtml(item.ageBadge)}</span>` : ""}
+              ${item.badge ? `<span class="wentian-archive-badge">${escapeHtml(item.badge)}</span>` : ""}
+            </span>
+            <span class="wentian-archive-date">${escapeHtml(profileMeta || (isEn ? "Chart file" : "命盘档案"))}</span>
+          </span>
+          <span class="wentian-archive-check" aria-hidden="true">${isSelected ? "✓" : ""}</span>
+        </button>
+        ${isBatchMode
+          ? `<span class="wentian-profile-batch-note ${isSelected ? "is-selected" : ""}">${isSelected ? (isEn ? "Selected" : "已选中") : (isEn ? "Tap card to select" : "点卡片勾选")}</span>`
+          : renderWentianProfileActionRow(archive, item, isDefaultArchive, confirmingDelete, isEn)}
+      </article>
+    `);
+  });
+  if (currentRows.length) groups.push({ initial: currentInitial, rows: currentRows });
+  return groups.map((group) => `
+    <section class="wentian-profile-group" aria-label="${escapeHtml(group.initial)}">
+      <div class="wentian-profile-group-label">${escapeHtml(group.initial)}</div>
+      ${group.rows.join("")}
+    </section>
+  `).join("");
 }
 
 function sourceProfileScreen(screen) {
-  const { archives, showIndex, metrics } = getWentianProfileScreenState(wentianProfileSearchQuery);
+  const { archives, visibleArchives, metrics } = getWentianProfileScreenState(wentianProfileSearchQuery);
   const rows = renderWentianProfileRows(archives, wentianProfileSearchQuery);
   const batchSelectedCount = getWentianProfileBatchSelected(archives).length;
   const isEn = getWentianLanguageCode() === "en";
@@ -11512,11 +11519,11 @@ function sourceProfileScreen(screen) {
     ${figText("source-25-batch-count", isEn ? `Selected ${batchSelectedCount}` : `已选 ${batchSelectedCount} 项`, 34, metrics.bottomNavY - 49, 108, 14, "#5f453a", 900)}
     ${figBox("source-25-batch-delete", 230, metrics.bottomNavY - 58, 122, 38, "", `border-radius:19px;background:${wentianProfileBatchDeleteConfirm ? "#a94437" : "#604236"};box-shadow:0 8px 16px rgba(86,54,37,.16);`)}
     ${figText("source-25-batch-delete-text", isEn ? (wentianProfileBatchDeleteConfirm ? "Confirm Delete" : "Delete Selected") : (wentianProfileBatchDeleteConfirm ? "确认删除" : "批量删除"), 230, metrics.bottomNavY - 47, 122, 14, "#fffaf3", 900, "center")}
-    ${figButton("source-25-batch-delete-hit", 224, metrics.bottomNavY - 64, 132, 46, `data-action="${wentianProfileBatchDeleteConfirm ? "wentian-profile-batch-delete" : "wentian-profile-batch-delete"}" aria-label="${isEn ? (wentianProfileBatchDeleteConfirm ? "Confirm batch delete" : "Delete selected files") : (wentianProfileBatchDeleteConfirm ? "确认批量删除" : "批量删除")}"`)}
+    ${figButton("source-25-batch-delete-hit", 224, metrics.bottomNavY - 64, 132, 46, `data-action="wentian-profile-batch-delete" aria-label="${isEn ? (wentianProfileBatchDeleteConfirm ? "Confirm batch delete" : "Delete selected files") : (wentianProfileBatchDeleteConfirm ? "确认批量删除" : "批量删除")}"`)}
   ` : "";
   const archiveStatus = wentianArchiveStatus.text
-    ? figText("source-25-archive-status", escapeHtml(wentianArchiveStatus.text), 76, 284, 238, 12, wentianArchiveStatus.tone === "error" ? "#a94437" : "#5f8745", 800, "center")
-    : "";
+    ? `<span class="wentian-profile-status-inline" data-tone="${escapeHtml(wentianArchiveStatus.tone === "error" ? "error" : "ok")}">${escapeHtml(wentianArchiveStatus.text)}</span>`
+    : `<span class="wentian-profile-status-inline">${isEn ? (wentianProfileBatchMode ? "Tap cards to select files" : "Tap a card to open the chart") : (wentianProfileBatchMode ? "点卡片勾选要批量删除的档案" : "点卡片进入命盘，右侧按钮管理")}</span>`;
   return `
     ${figBox("source-25-bg", 0, 0, 390, metrics.height, "", "background:linear-gradient(180deg,#fbf6eb 0%,#fffdf8 36%,#fffdf8 100%);")}
     ${wentianBackPill("source-25", 18, 48, 'data-action="back" aria-label="返回"', { zIndex: 80 })}
@@ -11524,23 +11531,25 @@ function sourceProfileScreen(screen) {
     ${figBox("source-25-menu-pill", 308, 48, 60, 34, "", "border-radius:17px;background:#fffdf8;border:1px solid #eadbc5;box-shadow:0 8px 18px rgba(86,54,37,.08);")}
     ${figText("source-25-menu", isEn ? (wentianProfileBatchMode ? "Done" : "Manage") : (wentianProfileBatchMode ? "完成" : "批量"), 308, 58, 60, 14, "#5f453a", 900, "center")}
     ${figButton("source-25-menu-hit", 304, 44, 68, 42, `data-action="wentian-profile-batch-toggle" aria-label="${isEn ? "Toggle batch management" : "切换批量管理"}"`)}
-    ${figBox("source-25-tabs", 110, 110, 170, 58, "", "border-radius:29px;background:rgba(255,255,255,.88);box-shadow:0 9px 20px rgba(107,75,42,.08);")}
-    ${figBox("source-25-tab-active", 118, 118, 154, 42, "", "border-radius:23px;background:#604236;")}
-    ${figText("source-25-tab-active-text", isEn ? "· Personal ·" : "· 个人案例 ·", 118, 130, 154, 16, "#fff", 900, "center")}
-    ${figBox("source-25-search", 18, 188, 260, 48, "", "border-radius:24px;background:#fff;box-shadow:0 6px 14px rgba(90,62,34,.06);")}
-    ${figText("source-25-search-icon", "⌕", 34, 197, 32, 25, "#201813", 700, "center")}
-    <input id="wentian-profile-search" class="wentian-archive-search-input" style="left:72px;top:188px;width:188px;height:48px" value="${escapeHtml(wentianProfileSearchQuery)}" placeholder="${escapeHtml(isEn ? "Enter name" : "请输入姓名")}" autocomplete="off" inputmode="search">
-    ${figBox("source-25-filter", 294, 188, 78, 48, "", "border-radius:24px;background:#604236;box-shadow:0 8px 16px rgba(86,54,37,.16);")}
-    ${figText("source-25-filter-text", isEn ? "Filter" : "筛选", 294, 202, 78, 17, "#fffaf3", 900, "center")}
-    ${figButton("source-25-filter-hit", 294, 188, 78, 48, `data-action="wentian-profile-search-focus" aria-label="${isEn ? "Filter files" : "筛选档案"}"`)}
-    ${figText("source-25-all", isEn ? "All" : "全部", 18, 262, 60, 18, "#bf8732", 900)}
-    ${archiveStatus}
-    ${wentianProfileBatchMode ? "" : figBox("source-25-add-mini", 338, 252, 28, 28, "", "border:1px solid #dad1c6;border-radius:14px;background:#fffdf9;")}
-    ${wentianProfileBatchMode ? "" : figText("source-25-add-plus", "+", 338, 257, 28, 14, "#201813", 800, "center")}
-    ${wentianProfileBatchMode ? "" : figButton("source-25-add-hit", 330, 248, 44, 44, 'data-route="screen-26" aria-label="添加档案"')}
-    <div id="wentian-profile-list" class="wentian-profile-list-layer">${rows}</div>
-    ${showIndex ? figBox("source-25-index", 354, 496, 26, 224, "", "border-radius:14px;background:rgba(255,255,255,.9);box-shadow:0 7px 18px rgba(73,55,34,.14);") : ""}
-    ${showIndex ? figText("source-25-index-text", "A\nC\nF\nH\nJ\nL\nM\nS\nX\nZ\n#", 354, 509, 26, 10, "#6f6860", 700, "center", "line-height:1.62;") : ""}
+    <section class="wentian-profile-stage ${wentianProfileBatchMode ? "is-batch" : ""}">
+      <div class="wentian-profile-hero">
+        <span class="wentian-profile-top-pill">${isEn ? "Personal Files" : "个人案例"}</span>
+        <div class="wentian-profile-toolbar">
+          <label class="wentian-profile-search-shell" for="wentian-profile-search">
+            <span aria-hidden="true">⌕</span>
+            <input id="wentian-profile-search" class="wentian-archive-search-input wentian-profile-search-input" value="${escapeHtml(wentianProfileSearchQuery)}" placeholder="${escapeHtml(isEn ? "Enter name" : "请输入姓名")}" autocomplete="off" inputmode="search">
+          </label>
+          ${wentianProfileBatchMode ? "" : `<button class="wentian-profile-new-button" type="button" data-route="screen-26" aria-label="${escapeHtml(isEn ? "Create new chart file" : "添加档案")}">${isEn ? "+ New" : "+ 新建"}</button>`}
+        </div>
+        <div class="wentian-profile-meta-row">
+          <b id="wentian-profile-count">${escapeHtml(getWentianProfileSummaryText(visibleArchives.length, archives.length, wentianProfileSearchQuery))}</b>
+          ${archiveStatus}
+        </div>
+      </div>
+      <div class="wentian-profile-board">
+        <div id="wentian-profile-list" class="wentian-profile-list">${rows}</div>
+      </div>
+    </section>
     ${batchBar}
     ${sourceAppBottomNav("档案", metrics.bottomNavY)}
   `;
@@ -21164,8 +21173,15 @@ document.addEventListener("click", (event) => {
 document.addEventListener("input", (event) => {
   if (event.target.id === "wentian-profile-search") {
     wentianProfileSearchQuery = event.target.value || "";
+    const archives = getWentianArchiveList();
+    const visibleArchives = getWentianProfileVisibleArchives(archives, wentianProfileSearchQuery);
     const list = document.getElementById("wentian-profile-list");
-    if (list) list.innerHTML = renderWentianProfileRows(getWentianArchiveList(), wentianProfileSearchQuery);
+    if (list) {
+      list.innerHTML = renderWentianProfileRows(archives, wentianProfileSearchQuery);
+      list.scrollTop = 0;
+    }
+    const count = document.getElementById("wentian-profile-count");
+    if (count) count.textContent = getWentianProfileSummaryText(visibleArchives.length, archives.length, wentianProfileSearchQuery);
     return;
   }
   if (event.target.id === "liuyao-question") {

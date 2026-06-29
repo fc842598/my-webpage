@@ -5258,6 +5258,291 @@ html[lang="en"] .wentian-archive-confirm {
   pointer-events: auto;
 }
 
+.wentian-profile-stage {
+  position: absolute;
+  left: 18px;
+  top: 108px;
+  width: 354px;
+  bottom: 106px;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  gap: 14px;
+  z-index: 12;
+}
+
+.wentian-profile-stage.is-batch {
+  bottom: 196px;
+}
+
+.wentian-profile-hero {
+  display: grid;
+  gap: 12px;
+  padding: 16px;
+  border: 1px solid rgba(234, 220, 199, .92);
+  border-radius: 28px;
+  background: rgba(255, 253, 248, .92);
+  box-shadow: 0 14px 28px rgba(92, 62, 31, .08), inset 0 1px 0 rgba(255, 255, 255, .84);
+}
+
+.wentian-profile-top-pill {
+  justify-self: center;
+  min-width: 126px;
+  height: 34px;
+  padding: 0 18px;
+  border-radius: 17px;
+  background: #604236;
+  color: #fffaf3;
+  font-size: 14px;
+  font-weight: 900;
+  line-height: 34px;
+  text-align: center;
+  box-shadow: 0 8px 18px rgba(86, 54, 37, .16);
+}
+
+.wentian-profile-toolbar {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: center;
+}
+
+.wentian-profile-search-shell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 48px;
+  padding: 0 16px;
+  border: 1px solid #efe3d2;
+  border-radius: 24px;
+  background: #fff;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .88);
+}
+
+.wentian-profile-search-shell span {
+  color: #756456;
+  font-size: 19px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.wentian-profile-search-input {
+  position: static;
+  z-index: auto;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.wentian-profile-new-button {
+  height: 48px;
+  min-width: 84px;
+  padding: 0 18px;
+  border: 1px solid #d5c493;
+  border-radius: 24px;
+  background: linear-gradient(180deg, #fffdf8 0%, #fbf1df 100%);
+  color: #8b6525;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 900;
+  box-shadow: 0 8px 18px rgba(146, 104, 42, .08);
+}
+
+.wentian-profile-meta-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-width: 0;
+}
+
+.wentian-profile-meta-row b {
+  flex: 0 0 auto;
+  color: #b98334;
+  font-size: 15px;
+  font-weight: 900;
+}
+
+.wentian-profile-status-inline {
+  min-width: 0;
+  color: #8f8173;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.35;
+  text-align: right;
+}
+
+.wentian-profile-status-inline[data-tone="ok"] {
+  color: #5f8745;
+}
+
+.wentian-profile-status-inline[data-tone="error"] {
+  color: #a94437;
+}
+
+.wentian-profile-board {
+  min-height: 0;
+  padding: 12px 10px 10px;
+  border: 1px solid rgba(234, 223, 206, .96);
+  border-radius: 30px;
+  background: rgba(255, 255, 255, .84);
+  box-shadow: 0 16px 34px rgba(92, 62, 31, .08), inset 0 1px 0 rgba(255, 255, 255, .84);
+  overflow: hidden;
+}
+
+.wentian-profile-list {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.wentian-profile-list::-webkit-scrollbar {
+  width: 3px;
+}
+
+.wentian-profile-list::-webkit-scrollbar-thumb {
+  border-radius: 3px;
+  background: rgba(194, 149, 60, .32);
+}
+
+.wentian-profile-group {
+  display: grid;
+  gap: 10px;
+}
+
+.wentian-profile-group-label {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  width: fit-content;
+  padding: 0 10px;
+  border-radius: 11px;
+  background: rgba(251, 247, 239, .94);
+  color: #ad8b56;
+  font-size: 12px;
+  font-weight: 900;
+  line-height: 22px;
+  box-shadow: 0 4px 10px rgba(126, 88, 42, .06);
+}
+
+.wentian-profile-card {
+  min-height: 124px;
+  padding: 12px 12px 10px;
+  border-radius: 22px;
+  gap: 10px;
+}
+
+.wentian-profile-pick {
+  min-height: 74px;
+  grid-template-columns: 52px minmax(0, 1fr) 38px;
+  gap: 10px;
+}
+
+.wentian-profile-card .wentian-archive-avatar {
+  width: 52px;
+  height: 52px;
+  border-radius: 18px;
+  font-size: 17px;
+}
+
+.wentian-profile-main {
+  gap: 5px;
+}
+
+.wentian-profile-card .wentian-archive-name {
+  font-size: 17px;
+  line-height: 21px;
+}
+
+.wentian-profile-card .wentian-archive-date {
+  font-size: 12px;
+  line-height: 15px;
+}
+
+.wentian-profile-card .wentian-archive-check {
+  width: 38px;
+  height: 38px;
+  border-radius: 19px;
+  font-size: 20px;
+}
+
+.wentian-profile-card .wentian-archive-actions {
+  padding-left: 62px;
+  gap: 8px;
+}
+
+.wentian-profile-card .wentian-archive-action {
+  min-width: 58px;
+  height: 30px;
+  padding: 0 11px;
+  border-radius: 15px;
+  font-size: 12px;
+}
+
+.wentian-profile-card .wentian-archive-action.default {
+  min-width: 66px;
+}
+
+.wentian-profile-card.is-batch {
+  min-height: 98px;
+}
+
+.wentian-profile-batch-note {
+  padding-left: 62px;
+  color: #8f8173;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+.wentian-profile-batch-note.is-selected {
+  color: #9b6a23;
+}
+
+.wentian-profile-empty {
+  height: 100%;
+  min-height: 260px;
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  padding: 24px 16px;
+  text-align: center;
+}
+
+.wentian-profile-empty strong {
+  color: #3a2d23;
+  font-size: 18px;
+  font-weight: 900;
+}
+
+.wentian-profile-empty p {
+  margin: 8px 0 0;
+  color: #9a8d7e;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.6;
+}
+
+html[lang="en"] .wentian-profile-top-pill {
+  min-width: 154px;
+  font-size: 13px;
+}
+
+html[lang="en"] .wentian-profile-new-button {
+  min-width: 92px;
+  font-size: 13px;
+}
+
+html[lang="en"] .wentian-profile-card .wentian-archive-action {
+  min-width: 64px;
+  padding: 0 10px;
+  font-size: 11px;
+}
+
 html[lang="en"] .wentian-profile-input {
   padding: 0 10px;
   font-size: 13px;
