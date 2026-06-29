@@ -1543,8 +1543,8 @@ const WENTIAN_INVITE_LOCAL_STATUS_KEY = "wentian-app-invite-status-v1";
 const WENTIAN_MEMBER_PRODUCT_KEY = "monthly_member";
 const WENTIAN_FREE_DAILY_LIMIT = 20;
 const WENTIAN_PAID_DAILY_LIMIT = 100;
-const WENTIAN_PAID_PRODUCT_NAME = "阅天AI付费版";
-const WENTIAN_PAID_PRODUCT_DESC = "许大师 AI 对话：付费用户 100次/天；免费用户 20次/天。按日刷新，不设月额度。";
+const WENTIAN_PAID_PRODUCT_NAME = "阅天AI";
+const WENTIAN_PAID_PRODUCT_DESC = "许大师 AI 对话 100 次/天，按日刷新。";
 const WENTIAN_PAYMENT_POLL_MS = 3500;
 const WENTIAN_AIPAY_RESOURCE_PATH = "/api/payments/aipay/resource";
 const WENTIAN_GOOGLE_ENABLED = true;
@@ -7098,7 +7098,7 @@ const WENTIAN_I18N = {
     "可修改": "Editable",
     "续费会员": "Renew Membership",
     "开通会员": "Open Membership",
-    "续费付费版": "Renew Paid Plan",
+    "续费": "Renew",
     "开通付费版": "Open Paid Plan",
     "支付记录": "Payment Records",
     "登录后设置账号密码": "Sign in to set account password",
@@ -7716,7 +7716,7 @@ const WENTIAN_I18N_EN_EXTRA = {
   "套餐支付": "Plan Payment",
   "确认订单": "Confirm Order",
   "阅天会员月卡": "Monthly Member",
-  "阅天AI付费版": "Yuetian AI Paid Plan",
+  "阅天AI": "Yuetian AI",
   "许大师 AI 对话": "AI Chat",
   "商品": "Product",
   "订单号": "Order No.",
@@ -7736,7 +7736,7 @@ const WENTIAN_I18N_EN_EXTRA = {
   "每日额度自动刷新。": "Daily quota resets automatically.",
   "每日自动刷新。": "Resets daily.",
   "只按每日额度计算：免费 20次/天，付费 100次/天。": "Daily only: free 20/day, paid 100/day.",
-  "免费用户 20次/天，付费用户 100次/天；每日刷新，不设月额度。": "Free 20/day, paid 100/day; resets daily with no monthly quota.",
+  "许大师 AI 对话 100 次/天，按日刷新。": "Master Xu AI chat: 100/day, resets daily.",
   "开通付费版": "Open Paid Plan",
   "查看套餐规则": "View Plan Rules",
   "更适合高频追问、复盘命盘、连续做年度规划。": "Better for frequent follow-ups, chart review, and yearly planning.",
@@ -10547,9 +10547,9 @@ function getWentianMemberSnapshot() {
       : "免费 20次/天",
     daily: `${dailyRemaining}/${dailyLimit}`,
     dailyLimit: `${dailyLimit}次/天`,
-    productName: product.name || WENTIAN_PAID_PRODUCT_NAME,
+    productName: WENTIAN_PAID_PRODUCT_NAME,
     amountYuan: product.amountYuan || "19.90",
-    description: product.description || WENTIAN_PAID_PRODUCT_DESC,
+    description: WENTIAN_PAID_PRODUCT_DESC,
   };
 }
 
@@ -10711,7 +10711,7 @@ function startWentianAipayResourcePayment() {
   wentianPaymentState.error = "";
   wentianPaymentState.mockMode = false;
   wentianPaymentState.provider = "alipay";
-  wentianPaymentState.productName = product.name || WENTIAN_PAID_PRODUCT_NAME;
+  wentianPaymentState.productName = WENTIAN_PAID_PRODUCT_NAME;
   wentianPaymentState.amountYuan = product.amountYuan || "19.90";
   wentianPaymentState.currency = product.currency || "CNY";
   navigate("screen-30");
@@ -10725,7 +10725,7 @@ async function startWentianMemberPayment() {
   wentianPaymentState.status = "loading";
   wentianPaymentState.message = `正在创建${getWentianPaymentProviderLabel()}订单...`;
   wentianPaymentState.error = "";
-  wentianPaymentState.productName = product.name || WENTIAN_PAID_PRODUCT_NAME;
+  wentianPaymentState.productName = WENTIAN_PAID_PRODUCT_NAME;
   wentianPaymentState.amountYuan = paymentPrice.amountYuan;
   wentianPaymentState.currency = paymentPrice.currency;
   navigate("screen-30");
@@ -10747,7 +10747,7 @@ async function startWentianMemberPayment() {
     wentianPaymentState.payMethod = session.payMethod || payMethod;
     wentianPaymentState.provider = session.provider || order.provider || wentianPaymentState.provider;
     wentianPaymentState.mockMode = !!(order.mockMode || session.mockMode);
-    wentianPaymentState.productName = order.productName || product.name || WENTIAN_PAID_PRODUCT_NAME;
+    wentianPaymentState.productName = WENTIAN_PAID_PRODUCT_NAME;
     wentianPaymentState.amountYuan = order.amountYuan || product.amountYuan || "19.90";
     wentianPaymentState.currency = order.currency || session.currency || product.currency || "CNY";
     wentianPaymentState.message = wentianPaymentState.mockMode
@@ -11511,7 +11511,7 @@ function sourceProfileScreen(screen) {
 function sourceMembershipScreen() {
   const member = getWentianMemberSnapshot();
   const paymentPrice = getWentianSelectedPaymentPrice();
-  const buttonText = member.isMember ? `续费付费版 ${paymentPrice.text}` : `开通付费版 ${paymentPrice.text}`;
+  const buttonText = member.isMember ? `续费 ${paymentPrice.text}` : `开通付费版 ${paymentPrice.text}`;
   const providers = getWentianPaymentProviders();
   const methodButtons = providers.map((item, index) => {
     const compact = providers.length > 2;
@@ -11533,23 +11533,23 @@ function sourceMembershipScreen() {
     ${wentianBackPill("wt33", 18, 42, 'data-action="wentian-return-previous" data-fallback-route="screen-31" aria-label="返回"')}
     ${figText("wt33-title", "阅天套餐", 0, 52, 390, 17, "#25211d", 800, "center")}
     ${figBox("wt33-card", 24, 108, 342, 116, "", "border-radius:18px;background:linear-gradient(135deg,#2b2722,#14110d);box-shadow:0 16px 30px rgba(28,20,12,.16);")}
-    ${figText("wt33-card-label", "付费版", 52, 136, 130, 20, "#fff", 900)}
-    ${figText("wt33-card-sub", member.isMember ? escapeHtml(member.subtitle) : "100次/天，按日刷新", 52, 168, 190, 13, "#cfc1a9", 700)}
+    ${figText("wt33-card-label", WENTIAN_PAID_PRODUCT_NAME, 52, 136, 130, 20, "#fff", 900)}
+    ${figText("wt33-card-sub", member.isMember ? escapeHtml(member.subtitle) : WENTIAN_PAID_PRODUCT_DESC, 52, 166, 210, 12, "#cfc1a9", 700, "left", "line-height:1.45;")}
     ${figText("wt33-card-price", paymentPrice.text, 238, 132, 84, 26, "#f4d293", 900, "right")}
-    ${figText("wt33-card-period", "按日刷新", 246, 170, 78, 12, "#cfc1a9", 700, "right")}
+    ${figText("wt33-card-period", "", 246, 170, 78, 12, "#cfc1a9", 700, "right")}
 
-    ${figText("wt33-plan-title", "对话额度", 24, 254, 120, 17, "#25211d", 900)}
+    ${figText("wt33-plan-title", "套餐权益", 24, 254, 120, 17, "#25211d", 900)}
     ${figBox("wt33-free", 24, 292, 342, 72, "", "border:1px solid #eadfce;border-radius:14px;background:#fff;box-shadow:0 6px 16px rgba(70,45,25,.06);")}
-    ${figText("wt33-free-title", "免费用户", 44, 314, 90, 15, "#25211d", 900)}
-    ${figText("wt33-free-quota", "20次/天", 174, 314, 160, 14, "#8d8377", 800, "right")}
+    ${figText("wt33-free-title", "许大师 AI 对话付费额度", 44, 314, 190, 15, "#25211d", 900)}
+    ${figText("wt33-free-quota", "", 214, 314, 120, 14, "#8d8377", 800, "right")}
     ${figBox("wt33-member", 24, 378, 342, 92, "", "border:1px solid #c8a65f;border-radius:16px;background:#fffaf0;box-shadow:0 10px 24px rgba(130,91,31,.10);")}
-    ${figText("wt33-member-title", "付费用户", 44, 402, 100, 16, "#8f3d30", 900)}
-    ${figText("wt33-member-quota", "100次/天", 174, 402, 160, 15, "#8f3d30", 900, "right")}
-    ${figText("wt33-member-desc", "每日额度自动刷新。", 44, 436, 282, 13, "#756d63", 700)}
+    ${figText("wt33-member-title", "电脑 / 手机共用", 44, 402, 160, 16, "#8f3d30", 900)}
+    ${figText("wt33-member-quota", "同账号", 214, 402, 120, 15, "#8f3d30", 900, "right")}
+    ${figText("wt33-member-desc", "权益绑定当前账号，电脑和手机共用。", 44, 436, 282, 13, "#756d63", 700)}
 
     ${figBox("wt33-benefit", 24, 492, 342, 104, "", "border-radius:16px;background:#fff;box-shadow:0 8px 20px rgba(70,45,25,.07);")}
-    ${figText("wt33-benefit-title", "当前额度", 44, 514, 120, 15, "#25211d", 900)}
-    ${figText("wt33-benefit-list", `今日剩余 ${member.daily}<br>每日额度 ${member.dailyLimit}`, 44, 544, 260, 14, "#756d63", 800, "left", "line-height:1.7;")}
+    ${figText("wt33-benefit-title", "支付后自动刷新", 44, 514, 140, 15, "#25211d", 900)}
+    ${figText("wt33-benefit-list", `支付成功后自动刷新付费状态<br>今日剩余 ${member.daily} · 每日额度 ${member.dailyLimit}`, 44, 544, 260, 14, "#756d63", 800, "left", "line-height:1.7;")}
     ${figText("wt33-pay-method-title", "支付方式", 42, 604, 120, 13, "#756d63", 800)}
     ${methodButtons}
     ${figBox("wt33-submit", 42, 684, 306, 50, "", "border-radius:25px;background:linear-gradient(180deg,#b74e39,#983323);box-shadow:0 14px 28px rgba(158,61,43,.20);")}
@@ -11564,7 +11564,7 @@ function sourceMembershipScreenPreview() {
   const displayName = account.loggedIn ? account.name : "谢广周";
   const displayInitial = account.loggedIn ? account.initial : "谢";
   const paymentPrice = getWentianSelectedPaymentPrice();
-  const buttonText = member.isMember ? `续费付费版 ${paymentPrice.text}` : `开通付费版 ${paymentPrice.text}`;
+  const buttonText = member.isMember ? `续费 ${paymentPrice.text}` : `开通付费版 ${paymentPrice.text}`;
   const providers = getWentianPaymentProviders();
   const memberNote = member.isMember
     ? "付费版已开通，可继续高频问盘与连续追问"
@@ -11998,7 +11998,7 @@ function sourceLoginMethodsScreen() {
       }).join("")}
 
       ${figBox("source-login-actions", 24, 442, 342, 120, "", "border-radius:18px;background:#fff;box-shadow:0 6px 16px rgba(74,55,32,.06);border:1px solid #eadfce;")}
-      ${[["设置密码", "screen-41"], [member.isMember ? "续费付费版" : "开通付费版", "screen-33"], ["支付记录", "screen-48"]].map(([label, route], index) => {
+      ${[["设置密码", "screen-41"], [member.isMember ? "续费" : "开通付费版", "screen-33"], ["支付记录", "screen-48"]].map(([label, route], index) => {
         const y = 442 + index * 40;
         return `
           ${index ? figLine(`source-login-action-line-${index}`, 46, y, 298, "#eee8df") : ""}
@@ -17343,7 +17343,7 @@ function renderWentianPolishedScreen(screen) {
       ${figBox("wt21-overlay", 0, 0, 390, 844, "", "background:rgba(0,0,0,.34);")}
       ${figBox("wt21-card", 36, 376, 318, 264, "", "border-radius:16px;background:#fff;box-shadow:0 16px 36px rgba(0,0,0,.18);")}
       ${figText("wt21-title", "对话次数已用尽", 0, 408, 390, 18, "#25211d", 800, "center")}
-      ${figText("wt21-desc", "免费用户 20次/天，付费用户 100次/天；每日刷新，不设月额度。", 70, 450, 250, 13, "#756d63", 500, "center", "line-height:1.5;")}
+      ${figText("wt21-desc", "许大师 AI 对话 100 次/天，按日刷新。", 70, 450, 250, 13, "#756d63", 500, "center", "line-height:1.5;")}
       ${figBox("wt21-vip", 58, 510, 274, 38, "", "border-radius:6px;background:#d1a43b;")}
       ${figText("wt21-vip-text", "开通付费版", 58, 520, 274, 13, "#fff", 800, "center")}
       ${figBox("wt21-buy", 58, 558, 274, 38, "", "border-radius:6px;background:#a73f35;")}
@@ -17639,7 +17639,7 @@ function renderWentianPolishedScreen(screen) {
       ${figText("wt29-terms", "只按每日额度计算：免费 20次/天，付费 100次/天。", 0, 666, 390, 12, "#9e968d", 700, "center")}
       ${figBox("wt29-submit", 42, 704, 306, 50, "", "border-radius:25px;background:linear-gradient(180deg,#b74e39,#983323);box-shadow:0 14px 28px rgba(158,61,43,.20);")}
       ${figButton("wt29-submit-hit", 42, 704, 306, 50, 'data-action="wentian-member-pay"')}
-      ${figText("wt29-submit-text", member.isMember ? `续费付费版 ¥${member.amountYuan}` : `开通付费版 ¥${member.amountYuan}`, 42, 719, 306, 14, "#fffaf3", 900, "center")}
+      ${figText("wt29-submit-text", member.isMember ? `续费 ¥${member.amountYuan}` : `开通付费版 ¥${member.amountYuan}`, 42, 719, 306, 14, "#fffaf3", 900, "center")}
     `;
   }
   if (no === 30) {
@@ -17662,7 +17662,7 @@ function renderWentianPolishedScreen(screen) {
       ${figText("wt30-order-no", "PAY_20260512_cfa12a1e", 132, 334, 190, 13, "#2b251f", 800, "right")}
       ${figLine("wt30-order-line-1", 44, 366, 302, "#efe4d3")}
       ${figText("wt30-order-product-label", "商品", 44, 390, 80, 13, "#8d8377", 600)}
-      ${figText("wt30-order-product", "阅天AI付费版", 196, 390, 126, 13, "#2b251f", 800, "right")}
+      ${figText("wt30-order-product", "阅天AI", 196, 390, 126, 13, "#2b251f", 800, "right")}
       ${figLine("wt30-order-line-2", 44, 422, 302, "#efe4d3")}
       ${figText("wt30-order-time-label", "创建时间", 44, 446, 80, 13, "#8d8377", 600)}
       ${figText("wt30-order-created", "2026-05-12 15:08", 182, 446, 140, 13, "#2b251f", 700, "right")}
@@ -17705,7 +17705,7 @@ function renderWentianPolishedScreen(screen) {
       ${figText("wt33-year-price", "100次/天", 226, 444, 90, 18, "#bd8624", 800)}
       ${figBox("wt33-benefit", 24, 516, 342, 130, "", "border-radius:12px;background:#fff;")}
       ${figText("wt33-benefit-title", "套餐权益", 44, 538, 120, 15, "#25211d", 800)}
-      ${figText("wt33-benefit-list", "1. 免费用户 20次/天\\n2. 付费用户 100次/天\\n3. 只按每日额度计算", 44, 572, 260, 13, "#756d63", 500, "left", "line-height:1.8;")}
+      ${figText("wt33-benefit-list", "1. 许大师 AI 对话付费额度\\n2. 电脑 / 手机共用\\n3. 支付后自动刷新", 44, 572, 260, 13, "#756d63", 500, "left", "line-height:1.8;")}
       ${figBox("wt33-submit", 42, 736, 306, 50, "", "border-radius:25px;background:#c49a34;")}
       ${figButton("wt33-submit-hit", 42, 736, 306, 50, 'data-route="screen-30"')}
       ${figText("wt33-submit-text", "开通付费版 ¥19.90", 42, 751, 306, 14, "#fff", 800, "center")}
@@ -20342,7 +20342,7 @@ function renderPay() {
       <div class="panel-title"><h2>订单信息</h2></div>
       <div class="report-card">
         <div>
-          <h3>阅天AI付费版</h3>
+          <h3>阅天AI</h3>
           <p>订单号 PAY_20260512_cfa323ae</p>
         </div>
         <div class="price">¥19.90</div>
