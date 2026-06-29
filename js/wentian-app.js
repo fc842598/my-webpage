@@ -1312,7 +1312,7 @@ function sourceArchiveSelectScreen() {
   const activeId = wentianArchiveDraftId || getWentianSelectedArchiveId(archives);
   const displayArchives = archives;
   const sheetHeight = archiveCount === 0 ? 214 : archiveCount === 1 ? 338 : archiveCount === 2 ? 450 : archiveCount === 3 ? 486 : 510;
-  const listHeight = archiveCount === 0 ? 28 : archiveCount === 1 ? 160 : archiveCount === 2 ? 276 : archiveCount === 3 ? 338 : 392;
+  const listHeight = archiveCount === 0 ? 28 : archiveCount === 1 ? 170 : archiveCount === 2 ? 326 : archiveCount === 3 ? 370 : 392;
   const actionTop = archiveCount === 0 ? 404 : archiveCount === 1 ? 560 : archiveCount === 2 ? 672 : archiveCount === 3 ? 708 : 714;
   const archiveStatus = wentianArchiveStatus.text
     ? `<div id="wentian-archive-status" class="wentian-invite-status" style="left:42px;top:260px;width:306px;text-align:center" data-tone="${escapeHtml(wentianArchiveStatus.tone || "")}">${escapeHtml(wentianArchiveStatus.text)}</div>`
