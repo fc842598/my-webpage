@@ -119,10 +119,7 @@
 
   function miniCards(items) {
     return items.slice(0, 3).map((item) => `
-      <a class="article-orbit__mini" href="${item.href}"${item.image ? ` style="--article-mini-image:url('${item.image}');"` : ""}>
-        <span>${item.kicker}</span>
-        <strong>${item.label}</strong>
-      </a>
+      <a class="article-orbit__mini" href="${item.href}" aria-label="${item.kicker}：${item.label}" title="${item.label}"${item.image ? ` style="--article-mini-image:url('${item.image}');"` : ""}></a>
     `).join("");
   }
 
@@ -152,7 +149,6 @@
             <a href="${articleHref("index.html")}">查看全部</a>
           </div>
           <div class="article-orbit__mini-list">${miniCards(config.preview)}</div>
-          <p class="article-orbit__related-note">统一一视觉，替换宫位内容即可应用到更多文章</p>
         </div>
       </div>
     `;

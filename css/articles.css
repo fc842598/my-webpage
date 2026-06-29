@@ -1973,3 +1973,23 @@ h1 {
     border-radius: 22px;
   }
 }
+
+.article-orbit--series .article-orbit__mini {
+  min-height: 0;
+  aspect-ratio: 16 / 9;
+  justify-content: initial;
+  gap: 0;
+  padding: 0;
+  background-position: center;
+  background-size: cover;
+}
+
+.article-orbit--series .article-orbit__mini::after {
+  background: linear-gradient(180deg, rgba(10, 7, 5, .04), rgba(10, 7, 5, .10));
+}
+
+.article-orbit--series .article-orbit__mini span,
+.article-orbit--series .article-orbit__mini strong,
+.article-orbit__related-note {
+  display: none !important;
+}
