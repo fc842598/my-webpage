@@ -1255,7 +1255,9 @@ function sourceAiChatScreen(screen) {
   const inputPlaceholder = isLiuyaoChat ? "追问这卦" : isHepanChat ? "追问合盘" : isLiurenChat ? "追问此课" : isYijingChat ? "追问这组卦" : "问一问";
   const contextSheet = renderWentianChatContextSheet(chatContext);
   const memberSnapshot = getWentianMemberSnapshot();
-  const dailyRemaining = getWentianQuotaValue("dailyRemaining", String(memberSnapshot.daily || "--").split("/")[0] || "--");
+  const dailyRemaining = wentianMemberState.quota
+    ? getWentianQuotaValue("dailyRemaining", String(memberSnapshot.daily || "--").split("/")[0] || "--")
+    : "--";
   const onlineLabel = isWentianEnglishUi() ? "Online" : "在线";
   const quotaLabel = isWentianEnglishUi() ? `${dailyRemaining} left` : `余${dailyRemaining}次`;
   return `
@@ -10377,6 +10379,7 @@ async function ensureWentianXuSession(options = {}) {
   }, 90000, 1).then((data) => {
     wentianXuChat.sessionId = data.sessionId || `transient:${payload.chartRecordId}`;
     if (data.transientState) saveWentianTransientState(data.transientState, payload.chartRecordId);
+    setWentianQuota(data.quota);
     setWentianChatStatus(data.transientMode ? "临时会话" : getWentianXuModeText(payload.mode, "ready"), data.transientMode ? "warn" : "ok");
     if (!wentianXuChat.messages.length) {
       const historyMessages = Array.isArray(data.messages)
@@ -10637,6 +10640,7 @@ async function hydrateWentianMemberStatus(options = {}) {
         quota: wentianMemberState.quota,
         product: wentianMemberState.product,
       });
+      if (state.route === "screen-4") setWentianQuota(wentianMemberState.quota);
       if (options.rerender && before !== after && ["screen-30", "screen-31", "screen-33", "screen-38", "screen-40", "screen-41"].includes(state.route)) {
         navigatePreservingScroll(state.route, false);
       }
@@ -20136,7 +20140,7 @@ function navigate(route, push = true, syncHash = true) {
     if (screen.no === 4) window.setTimeout(initWentianXuChat, 0);
     if (screen.no === 5 || screen.no === 25) window.setTimeout(() => hydrateWentianArchivesFromRemote({ rerender: true }), 0);
     if (screen.no === 30) window.setTimeout(initWentianPaymentScreen, 0);
-    if (screen.no === 1 || screen.no === 29 || screen.no === 31 || screen.no === 33 || screen.no === 38 || screen.no === 40 || screen.no === 41) window.setTimeout(() => hydrateWentianMemberStatus({ rerender: true }), 0);
+    if (screen.no === 1 || screen.no === 4 || screen.no === 29 || screen.no === 31 || screen.no === 33 || screen.no === 38 || screen.no === 40 || screen.no === 41) window.setTimeout(() => hydrateWentianMemberStatus({ rerender: true }), 0);
     if (screen.no === 22 || screen.no === 23 || screen.no === 24 || screen.no === 31 || screen.no === 34) window.setTimeout(() => hydrateWentianInvite({ rerender: true }), 0);
     if (screen.no === 48) window.setTimeout(() => hydrateWentianOrders({ rerender: true }), 0);
     if (screen.no === 26) window.setTimeout(initWentianChartForm, 0);
