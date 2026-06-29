@@ -17773,7 +17773,7 @@ function renderWentianPolishedScreen(screen) {
         `;
       }).join("")}
       <div id="wentian-about-status" class="wentian-invite-status" style="left:42px;top:690px;width:306px;text-align:center" data-tone=""></div>
-      ${figText("wt36-copy", "粤ICP备2026055337号-1　© 2026 阅天AI Copyright, All Rights Reserved. Powered By 阅天工作室　", 18, 736, 354, 9, "#b4ada5", 500, "center")}
+      <p class="fig-text" data-node-id="wt36-copy" style="left:18px;top:710px;width:354px;font-size:10px;color:#b4ada5;font-weight:500;text-align:center;line-height:1.45;overflow-wrap:anywhere;pointer-events:auto;"><a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;white-space:nowrap;">粤ICP备2026055337号-1</a>　© 2026 阅天AI Copyright, All Rights Reserved. Powered By 阅天工作室　</p>
     `;
   }
   return "";
