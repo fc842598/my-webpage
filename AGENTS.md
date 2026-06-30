@@ -52,6 +52,21 @@
 7. SEO固定：同步 `title`、`description`、canonical、OG、Article JSON-LD、内链、`articles/index.html`、`feed.xml`、`sitemap*.xml` 的 `lastmod`；SEO规则变更时优先查 Google Search Central 官方资料。
 8. 上线前固定验证：JSON-LD 可解析、禁用词检索、重复内容检查、`node scripts/check-geo-local.js`、浏览器抽查。执行 `git push` 后必须复查远端一致和线上页面生效。
 
+## 英文文章固定流程
+
+用户提到“英文文章”“英文版本”“翻译文章”“English article”时，不做逐句硬翻译，默认执行英文改写流程：
+
+1. 英文读者默认是英语圈/美国用户，可能知道 astrology、birth chart、Chinese astrology，但不一定知道紫微斗数术语。
+2. 英文标题保留必要 SEO 关键词：`Zi Wei Dou Shu`、`Chinese astrology chart`、`Life Palace`、`Wealth Palace`、`Career Palace`、`annual cycle` 等；正文先用英文解释意思，再少量保留术语。
+3. 风格固定：少玄乎、少专名堆叠；用 everyday English、career/money/relationship/platform/cash flow 这类现实词解释。
+4. 每篇中文紫微文章上线时，同步生成英文改写页、英文 canonical、OG、Article JSON-LD、`hreflang` 双向链接、`articles/en/feed.xml`、`sitemap-en.xml`。
+5. 英文页统一由 `node scripts/generate-en-articles.mjs` 生成，目录在 `articles/en/`；改英文内容先改生成器数据，再重新生成。
+6. 英文内容也必须查重，避免把中文文章机械翻成多个同质页面。
+
+## 每日文章发布节奏
+
+每日自动发布紫微文章时，默认每次 `4` 篇中文文章，并同步英文改写版。选材优先来自用户同步文稿，先给出本次 4 篇标题和摘要预览，然后无需等待确认即可继续生成、验证、提交、推送和线上复查。已发布选题要记录，避免重复。
+
 ## 快速定位
 
 - 首页：`index.html`

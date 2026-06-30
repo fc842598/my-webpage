@@ -4,3 +4,4 @@ Allow: /
 Sitemap: https://yuetianai.com/sitemap.xml
 Sitemap: https://yuetianai.com/sitemap-pages.xml
 Sitemap: https://yuetianai.com/sitemap-articles.xml
+Sitemap: https://yuetianai.com/sitemap-en.xml
