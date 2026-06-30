@@ -9551,6 +9551,14 @@ function setWentianArchiveAsDefault(id) {
   navigatePreservingScroll(state.route, false);
 }
 
+function pickWentianProfileArchive(id) {
+  const archives = getWentianArchiveList();
+  if (!archives.some((archive) => archive.id === id)) return;
+  wentianArchiveDraftId = id;
+  wentianArchiveDeleteConfirmId = "";
+  navigatePreservingScroll("screen-25", false);
+}
+
 function pickWentianArchive(id) {
   wentianArchiveDraftId = id;
   for (const row of document.querySelectorAll("[data-wentian-archive-option]")) {
@@ -9577,6 +9585,25 @@ function revealWentianArchiveSelection(id = wentianArchiveDraftId) {
     top: targetScrollTop,
     behavior: "smooth",
   });
+}
+
+function confirmWentianProfileSelection() {
+  const archives = getWentianArchiveList();
+  const id = wentianArchiveDraftId || getWentianSelectedArchiveId(archives);
+  const archive = archives.find((item) => item.id === id) || archives[0];
+  if (!archive) {
+    setWentianArchiveStatus(
+      getWentianCompactText("请先新建至少一个命盘", "Create a chart first"),
+      "error"
+    );
+    refreshWentianArchiveStatusView();
+    return;
+  }
+  resetWentianProfileBatchState();
+  if (!applyWentianArchiveToCurrent(archive)) return;
+  wentianArchiveDraftId = null;
+  clearWentianXuChatContext();
+  navigate("screen-27");
 }
 
 function confirmWentianArchiveSelection() {
@@ -11742,6 +11769,7 @@ function toggleWentianProfileBatchMode() {
     resetWentianProfileBatchState();
   } else {
     wentianProfileBatchMode = true;
+    wentianArchiveDraftId = null;
     wentianProfileBatchSelectedIds = [];
     wentianProfileBatchDeleteConfirm = false;
     wentianArchiveDeleteConfirmId = "";
@@ -11788,10 +11816,12 @@ function renderWentianProfileActionRow(archive, item, isDefaultArchive, confirmi
 
 function renderWentianProfileRows(archives = getWentianArchiveList(), query = wentianProfileSearchQuery) {
   const visibleArchives = getWentianProfileVisibleArchives(archives, query);
-  const selectedArchiveId = getWentianSelectedArchiveId(archives);
   const batchSelectedIds = getWentianProfileBatchSelected(archives);
   const isBatchMode = wentianProfileBatchMode;
   const isEn = getWentianLanguageCode() === "en";
+  const storedSelectedArchiveId = getWentianSelectedArchiveId(archives);
+  const draftArchiveVisible = visibleArchives.some((archive) => archive.id === wentianArchiveDraftId);
+  const selectedArchiveId = !isBatchMode && draftArchiveVisible ? wentianArchiveDraftId : storedSelectedArchiveId;
   if (!visibleArchives.length) {
     const isSearchEmpty = Boolean(String(query || "").trim());
     return `
@@ -11808,9 +11838,9 @@ function renderWentianProfileRows(archives = getWentianArchiveList(), query = we
     const item = getWentianArchiveDisplay(archive);
     const initial = getWentianArchiveInitial(item.name);
     const confirmingDelete = wentianArchiveDeleteConfirmId === archive.id;
-    const isDefaultArchive = archive.id === selectedArchiveId;
+    const isDefaultArchive = archive.id === storedSelectedArchiveId;
     const batchSelected = batchSelectedIds.includes(archive.id);
-    const isSelected = isBatchMode ? batchSelected : isDefaultArchive;
+    const isActiveArchive = isBatchMode ? batchSelected : archive.id === selectedArchiveId;
     if (initial !== currentInitial) {
       if (currentRows.length) groups.push({ initial: currentInitial, rows: currentRows });
       currentInitial = initial;
@@ -11818,8 +11848,8 @@ function renderWentianProfileRows(archives = getWentianArchiveList(), query = we
     }
     const profileMeta = [item.gender, item.datetime.split(" ")[0] || item.datetime].filter(Boolean).join(" · ");
     currentRows.push(`
-      <article class="wentian-archive-option wentian-profile-card ${isSelected ? "is-selected" : ""} ${isBatchMode ? "is-batch" : ""}" data-archive-id="${escapeHtml(archive.id)}" aria-pressed="${isSelected ? "true" : "false"}">
-        <button class="wentian-archive-pick wentian-profile-pick" type="button" data-action="${isBatchMode ? "wentian-profile-batch-pick" : "wentian-profile-open"}" data-archive-id="${escapeHtml(archive.id)}" aria-pressed="${isSelected ? "true" : "false"}" aria-label="${escapeHtml(isEn ? (isBatchMode ? `Select ${item.name}` : `Open ${item.name}`) : (isBatchMode ? `勾选${item.name}` : `打开${item.name}`))}">
+      <article class="wentian-archive-option wentian-profile-card ${isActiveArchive ? "is-selected" : ""} ${isBatchMode ? "is-batch" : ""}" data-archive-id="${escapeHtml(archive.id)}" aria-pressed="${isActiveArchive ? "true" : "false"}">
+        <button class="wentian-archive-pick wentian-profile-pick" type="button" data-action="${isBatchMode ? "wentian-profile-batch-pick" : "wentian-profile-pick"}" data-archive-id="${escapeHtml(archive.id)}" aria-pressed="${isActiveArchive ? "true" : "false"}" aria-label="${escapeHtml(isEn ? (isBatchMode ? `Select ${item.name}` : `Choose ${item.name}`) : (isBatchMode ? `勾选${item.name}` : `选择${item.name}`))}">
           <span class="wentian-archive-avatar">${escapeHtml(item.name.slice(0, 1) || "命")}</span>
           <span class="wentian-archive-main wentian-profile-main">
             <span class="wentian-archive-title-row">
@@ -11829,10 +11859,10 @@ function renderWentianProfileRows(archives = getWentianArchiveList(), query = we
             </span>
             <span class="wentian-archive-date">${escapeHtml(profileMeta || (isEn ? "Chart file" : "命盘档案"))}</span>
           </span>
-          <span class="wentian-archive-check" aria-hidden="true">${isSelected ? "✓" : ""}</span>
+          <span class="wentian-archive-check" aria-hidden="true">${isActiveArchive ? "✓" : ""}</span>
         </button>
         ${isBatchMode
-          ? `<span class="wentian-profile-batch-note ${isSelected ? "is-selected" : ""}">${isSelected ? (isEn ? "Selected" : "已选中") : (isEn ? "Tap card to select" : "点卡片勾选")}</span>`
+          ? `<span class="wentian-profile-batch-note ${isActiveArchive ? "is-selected" : ""}">${isActiveArchive ? (isEn ? "Selected" : "已选中") : (isEn ? "Tap card to select" : "点卡片勾选")}</span>`
           : renderWentianProfileActionRow(archive, item, isDefaultArchive, confirmingDelete, isEn)}
       </article>
     `);
@@ -11851,6 +11881,9 @@ function sourceProfileScreen(screen) {
   const rows = renderWentianProfileRows(archives, wentianProfileSearchQuery);
   const batchSelectedCount = getWentianProfileBatchSelected(archives).length;
   const isEn = getWentianLanguageCode() === "en";
+  const confirmArchiveId = wentianArchiveDraftId || getWentianSelectedArchiveId(archives);
+  const confirmArchive = archives.find((archive) => archive.id === confirmArchiveId) || archives[0] || null;
+  const confirmArchiveName = confirmArchive ? getWentianArchiveDisplay(confirmArchive).name : "";
   const batchBar = wentianProfileBatchMode ? `
     ${figBox("source-25-batch-bar", 18, metrics.bottomNavY - 66, 354, 54, "", "border-radius:20px;background:#fffdf8;border:1px solid #eadbc5;box-shadow:0 10px 20px rgba(86,54,37,.10);")}
     ${figText("source-25-batch-count", isEn ? `Selected ${batchSelectedCount}` : `已选 ${batchSelectedCount} 项`, 34, metrics.bottomNavY - 49, 108, 14, "#5f453a", 900)}
@@ -11858,9 +11891,15 @@ function sourceProfileScreen(screen) {
     ${figText("source-25-batch-delete-text", isEn ? (wentianProfileBatchDeleteConfirm ? "Confirm Delete" : "Delete Selected") : (wentianProfileBatchDeleteConfirm ? "确认删除" : "批量删除"), 230, metrics.bottomNavY - 47, 122, 14, "#fffaf3", 900, "center")}
     ${figButton("source-25-batch-delete-hit", 224, metrics.bottomNavY - 64, 132, 46, `data-action="wentian-profile-batch-delete" aria-label="${isEn ? (wentianProfileBatchDeleteConfirm ? "Confirm batch delete" : "Delete selected files") : (wentianProfileBatchDeleteConfirm ? "确认批量删除" : "批量删除")}"`)}
   ` : "";
+  const confirmBar = !wentianProfileBatchMode && archives.length ? `
+    <div class="wentian-profile-confirm-bar" style="top:${metrics.bottomNavY - 76}px">
+      <span class="wentian-profile-confirm-name">${escapeHtml(isEn ? `Selected: ${confirmArchiveName}` : `已选：${confirmArchiveName}`)}</span>
+      <button class="wentian-profile-confirm-button" type="button" data-action="wentian-profile-confirm" aria-label="${escapeHtml(isEn ? "Confirm and open chart" : "确认进入命盘")}">${isEn ? "Open Chart" : "确认进入命盘"}</button>
+    </div>
+  ` : "";
   const archiveStatus = wentianArchiveStatus.text
     ? `<span class="wentian-profile-status-inline" data-tone="${escapeHtml(wentianArchiveStatus.tone === "error" ? "error" : "ok")}">${escapeHtml(wentianArchiveStatus.text)}</span>`
-    : `<span class="wentian-profile-status-inline">${isEn ? (wentianProfileBatchMode ? "Tap cards to select files" : "Tap a card to open the chart") : (wentianProfileBatchMode ? "点卡片勾选要批量删除的档案" : "点卡片进入命盘，右侧按钮管理")}</span>`;
+    : `<span class="wentian-profile-status-inline">${isEn ? (wentianProfileBatchMode ? "Tap cards to select files" : "Choose a card, then confirm below") : (wentianProfileBatchMode ? "点卡片勾选要批量删除的档案" : "先选命盘，再点下方确认进入")}</span>`;
   return `
     ${figBox("source-25-bg", 0, 0, 390, metrics.height, "", "background:linear-gradient(180deg,#fbf6eb 0%,#fffdf8 36%,#fffdf8 100%);")}
     ${wentianBackPill("source-25", 18, 48, 'data-action="back" aria-label="返回"', { zIndex: 80 })}
@@ -11868,7 +11907,7 @@ function sourceProfileScreen(screen) {
     ${figBox("source-25-menu-pill", 308, 48, 60, 34, "", "border-radius:17px;background:#fffdf8;border:1px solid #eadbc5;box-shadow:0 8px 18px rgba(86,54,37,.08);")}
     ${figText("source-25-menu", isEn ? (wentianProfileBatchMode ? "Done" : "Manage") : (wentianProfileBatchMode ? "完成" : "批量"), 308, 58, 60, 14, "#5f453a", 900, "center")}
     ${figButton("source-25-menu-hit", 304, 44, 68, 42, `data-action="wentian-profile-batch-toggle" aria-label="${isEn ? "Toggle batch management" : "切换批量管理"}"`)}
-    <section class="wentian-profile-stage ${wentianProfileBatchMode ? "is-batch" : ""}">
+    <section class="wentian-profile-stage ${wentianProfileBatchMode ? "is-batch" : ""} ${confirmBar ? "has-confirm" : ""}">
       <div class="wentian-profile-hero">
         <span class="wentian-profile-top-pill">${isEn ? "Personal Files" : "个人案例"}</span>
         <div class="wentian-profile-toolbar">
@@ -11887,6 +11926,7 @@ function sourceProfileScreen(screen) {
         <div id="wentian-profile-list" class="wentian-profile-list">${rows}</div>
       </div>
     </section>
+    ${confirmBar}
     ${batchBar}
     ${sourceAppBottomNav("档案", metrics.bottomNavY)}
   `;
@@ -21278,17 +21318,19 @@ document.addEventListener("click", (event) => {
     requestWentianProfileBatchDelete();
     return;
   }
+  if (action === "wentian-profile-pick") {
+    const id = event.target.closest("[data-archive-id]")?.dataset.archiveId;
+    if (id) pickWentianProfileArchive(id);
+    return;
+  }
+  if (action === "wentian-profile-confirm") {
+    confirmWentianProfileSelection();
+    return;
+  }
   if (action === "wentian-profile-search-focus") {
     const input = document.getElementById("wentian-profile-search");
     input?.focus();
     input?.select?.();
-    return;
-  }
-  if (action === "wentian-profile-open") {
-    const id = event.target.closest("[data-archive-id]")?.dataset.archiveId;
-    const archive = getWentianArchiveList().find((item) => item.id === id);
-    resetWentianProfileBatchState();
-    if (applyWentianArchiveToCurrent(archive)) navigate("screen-27");
     return;
   }
   if (action === "wentian-language-pick") {
