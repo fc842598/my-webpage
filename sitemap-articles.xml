@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://yuetianai.com/articles/</loc>
-    <lastmod>2026-06-29</lastmod>
+    <lastmod>2026-06-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -80,7 +80,7 @@
   </url>
   <url>
     <loc>https://yuetianai.com/articles/ziwei-guanlugong.html</loc>
-    <lastmod>2026-06-29</lastmod>
+    <lastmod>2026-06-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -104,7 +104,7 @@
   </url>
   <url>
     <loc>https://yuetianai.com/articles/ziwei-shengong.html</loc>
-    <lastmod>2026-06-29</lastmod>
+    <lastmod>2026-06-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -117,6 +117,18 @@
   <url>
     <loc>https://yuetianai.com/articles/ziwei-gongxing.html</loc>
     <lastmod>2026-06-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://yuetianai.com/articles/ziwei-daxian.html</loc>
+    <lastmod>2026-06-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://yuetianai.com/articles/ziwei-xiaoxian-liunian.html</loc>
+    <lastmod>2026-06-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>

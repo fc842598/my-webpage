@@ -40,19 +40,30 @@ const cards = [
   ["ziwei-jiegong", "十二宫入门", "疾厄宫", "看压力、身体和恢复节奏。", ["身体压力", "风险提示", "恢复节奏"], "triad-tian-bg.webp", "疾"],
   ["ziwei-qianyigong", "十二宫入门", "迁移宫", "看外出与发展机会。", ["外部环境", "迁移机会", "发展机缘"], "triad-ren-bg.webp", "迁"],
   ["ziwei-puyigong", "十二宫入门", "仆役宫", "看团队、人脉与资源往来。", ["团队协作", "人脉结构", "资源往来"], "triad-tian-bg.webp", "仆"],
-  ["ziwei-guanlugong", "十二宫入门", "官禄宫", "看事业路径与岗位角色。", ["事业路径", "岗位角色", "发力方式"], "triad-tian-bg.webp", "官"],
+  ["ziwei-guanlugong", "十二宫入门", "官禄宫", "看事业位置与责任强弱。", ["事业位置", "责任强弱", "财官合看"], "triad-tian-bg.webp", "官"],
   ["ziwei-tianzhaigong", "十二宫入门", "田宅宫", "看家宅、资源与稳定基础。", ["家宅资源", "稳定基础", "空间归属"], "triad-tian-bg.webp", "田"],
   ["ziwei-fudegong", "十二宫入门", "福德宫", "看内在能量与放松方式。", ["内在能量", "精神重心", "放松方式"], "triad-tian-bg.webp", "福"],
   ["ziwei-fumugong", "十二宫入门", "父母宫", "看原生影响与支持压力。", ["原生影响", "承接方式", "支持压力"], "triad-tian-bg.webp", "父"],
   ["ziwei-sanfang-sizheng", "看盘方法", "三方四正", "把主题宫位放回结构里看。", ["主宫定位", "对宫牵引", "结构合参"], "triad-tian-bg.webp", "三"],
-  ["ziwei-shengong", "看盘方法", "身宫", "看行动落点与现实姿态。", ["行为落点", "现实姿态", "处世反应"], "triad-ren-bg.webp", "身"],
+  ["ziwei-shengong", "看盘方法", "身宫", "看后天重心落在哪里。", ["后天重心", "落宫判断", "强弱组合"], "triad-ren-bg.webp", "身"],
   ["ziwei-gongxing", "流年入门", "宫性", "先分清宫位负责什么。", ["宫位职责", "阅读顺序", "现实映射"], "triad-ren-bg.webp", "宫"],
+  ["ziwei-daxian", "看盘方法", "十年大限", "看十年阶段与发力方向。", ["阶段主线", "三方四正", "小限触发"], "triad-tian-bg.webp", "限"],
+  ["ziwei-xiaoxian-liunian", "流年入门", "小限流年", "看今年落宫与触发点。", ["本宫对宫", "年度主题", "现实触发"], "triad-ren-bg.webp", "年"],
   ["ziwei-kequanlu", "星曜入门", "科权禄", "看名声、权责与现实结果。", ["名声资源", "权责分布", "现实结果"], "triad-tian-bg.webp", "禄"],
   ["mianfei-ziwei-paipan-hou-xian-kan-shenme", "实用指南", "先看什么", "先看命身，再接三方四正。", ["先看命身", "再看三方", "最后接流年"], "triad-tian-bg.webp", "先"],
   ["ai-ziwei-paipan-zenme-xuan", "实用指南", "怎么选", "看入口、边界和能否落地。", ["入口清楚", "边界明确", "能落地用"], "triad-tian-bg.webp", "选"],
   ["ai-suanming-wangzhan-zenme-xuan", "实用指南", "算命网站", "先看隐私、收费和内容质量。", ["隐私边界", "收费方式", "内容质量"], "triad-ren-bg.webp", "算"],
   ["yuetianai-shi-shenme", "阅天AI", "品牌介绍", "官网入口、主要功能和适合人群。", ["官网入口", "主要功能", "适合人群"], "triad-tian-bg.webp", "阅"],
 ];
+
+const requestedSlugs = new Set(process.argv.slice(2));
+const selectedCards = requestedSlugs.size ? cards.filter(([slug]) => requestedSlugs.has(slug)) : cards;
+
+if (requestedSlugs.size && selectedCards.length !== requestedSlugs.size) {
+  const found = new Set(selectedCards.map(([slug]) => slug));
+  const missing = [...requestedSlugs].filter((slug) => !found.has(slug));
+  throw new Error(`Unknown article poster slug: ${missing.join(", ")}`);
+}
 
 function escapeHtml(value) {
   return String(value).replace(/[&<>"']/g, (char) => ({
@@ -110,7 +121,7 @@ body{font-family:"Noto Serif SC","Songti SC","Microsoft YaHei",serif;color:#fff0
 </html>`;
 }
 
-for (const card of cards) {
+for (const card of selectedCards) {
   const [slug] = card;
   const page = path.join(renderDir, `${slug}.html`);
   const png = path.join(renderDir, `${slug}.png`);
@@ -130,4 +141,4 @@ for (const card of cards) {
   execFileSync("ffmpeg", ["-y", "-v", "error", "-i", png, "-vf", "scale=360:203", "-c:v", "libwebp", "-quality", "72", "-compression_level", "6", thumb], { stdio: "inherit" });
 }
 
-console.log(`Generated ${cards.length} article posters.`);
+console.log(`Generated ${selectedCards.length} article posters.`);
