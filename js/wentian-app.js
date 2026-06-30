@@ -10147,10 +10147,10 @@ function setWentianQuota(quota) {
   if (quota) wentianMemberState.quota = normalizeWentianQuota({ ...(wentianMemberState.quota || {}), ...quota });
   if (!el || !quota) return;
   if (getWentianXuChatContext()) return;
-  const normalized = normalizeWentianQuota(quota);
+  const normalized = wentianMemberState.quota || normalizeWentianQuota(quota);
   const remainingValue = normalized.dailyRemaining ?? normalized.remaining;
   const remaining = remainingValue === null || remainingValue === undefined || remainingValue === "" ? "--" : remainingValue;
-  el.textContent = isWentianEnglishUi() ? `${remaining} left` : `余 ${remaining}次`;
+  el.textContent = isWentianEnglishUi() ? `${remaining} left` : `余${remaining}次`;
 }
 
 function splitWentianLongSentence(sentence, maxLength = 58) {
@@ -10592,11 +10592,21 @@ function normalizeWentianQuota(quota) {
   if (!quota) return quota;
   if (quota.testingUnlimited) return quota;
   const isMember = !!quota.isMember;
-  const baseLimit = isMember ? WENTIAN_PAID_DAILY_LIMIT : WENTIAN_FREE_DAILY_LIMIT;
-  const used = Number(quota.dailyUsed ?? quota.used ?? 0) || 0;
+  const rawLimit = Number(quota.dailyLimit ?? quota.limit);
+  const rawBaseLimit = Number(quota.baseDailyLimit);
+  const baseLimit = Number.isFinite(rawBaseLimit) && rawBaseLimit > 0
+    ? rawBaseLimit
+    : (isMember ? WENTIAN_PAID_DAILY_LIMIT : WENTIAN_FREE_DAILY_LIMIT);
   const bonusRemaining = Math.max(0, Number(quota.referralBonus?.remaining || 0));
-  const dailyLimit = baseLimit + bonusRemaining;
-  const dailyRemaining = Math.max(0, dailyLimit - used);
+  const dailyLimit = Number.isFinite(rawLimit) && rawLimit > 0 ? rawLimit : baseLimit + bonusRemaining;
+  const rawRemaining = Number(quota.dailyRemaining ?? quota.remaining);
+  let used = Number(quota.dailyUsed ?? quota.used);
+  let dailyRemaining = Number.isFinite(rawRemaining) ? rawRemaining : NaN;
+  if (!Number.isFinite(used) && Number.isFinite(dailyRemaining)) used = dailyLimit - dailyRemaining;
+  if (!Number.isFinite(used)) used = 0;
+  if (!Number.isFinite(dailyRemaining)) dailyRemaining = dailyLimit - used;
+  used = Math.max(0, Math.min(dailyLimit, used));
+  dailyRemaining = Math.max(0, Math.min(dailyLimit, dailyRemaining));
   return {
     ...quota,
     dailyLimit,
@@ -10616,6 +10626,7 @@ function getWentianMemberSnapshot() {
   const quota = wentianMemberState.quota || {};
   const product = wentianMemberState.product || {};
   const isMember = !!quota.isMember;
+  const quotaPending = !wentianMemberState.loaded && !wentianMemberState.quota;
   const defaultDailyLimit = isMember ? WENTIAN_PAID_DAILY_LIMIT : WENTIAN_FREE_DAILY_LIMIT;
   const dailyLimit = getWentianQuotaValue("dailyLimit", defaultDailyLimit);
   const dailyRemaining = getWentianQuotaValue("dailyRemaining", dailyLimit);
@@ -10625,8 +10636,8 @@ function getWentianMemberSnapshot() {
     subtitle: isMember
       ? `有效期至 ${formatWentianMemberDate(quota.memberExpiresAt) || "当前周期"}`
       : "免费 20次/天",
-    daily: `${dailyRemaining}/${dailyLimit}`,
-    dailyLimit: `${dailyLimit}次/天`,
+    daily: quotaPending ? "同步中" : `${dailyRemaining}/${dailyLimit}`,
+    dailyLimit: quotaPending ? "同步中" : `${dailyLimit}次/天`,
     productName: WENTIAN_PAID_PRODUCT_NAME,
     amountYuan: product.amountYuan || "19.90",
     description: WENTIAN_PAID_PRODUCT_DESC,
