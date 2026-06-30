@@ -4693,9 +4693,11 @@ html[lang="en"] .wentian-archive-confirm {
 .wentian-hepan-result-hero em {
   margin-top: 6px;
   color: #fff4df;
-  font-size: 20px;
+  max-width: 286px;
+  font-size: 13px;
   font-style: normal;
-  font-weight: 900;
+  font-weight: 800;
+  line-height: 1.45;
 }
 
 .wentian-hepan-result-hero p {

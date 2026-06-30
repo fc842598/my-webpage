@@ -6365,6 +6365,8 @@ const WENTIAN_HEPAN_RELATION_PROFILES = {
   couple: {
     label: "夫妻格",
     title: "情侣合盘",
+    displayTitle: "夫妻合",
+    note: "夫妻关系按伴侣承诺来看，重点看现实节奏、长期分工和边界。",
     scope: "夫妻宫对应",
     score: 14,
     dimensions: ["缘分吸引", "沟通节奏", "长期稳定", "共同成长"],
@@ -6374,6 +6376,8 @@ const WENTIAN_HEPAN_RELATION_PROFILES = {
   parent: {
     label: "父母格",
     title: "父母合盘",
+    displayTitle: "父母合",
+    note: "夫妻关系像父母照顾一样亲合，容易一方带着另一方走。",
     scope: "父母宫对应",
     score: 6,
     dimensions: ["长幼牵引", "沟通节奏", "边界稳定", "共同成长"],
@@ -6383,6 +6387,8 @@ const WENTIAN_HEPAN_RELATION_PROFILES = {
   sibling: {
     label: "兄弟格",
     title: "兄弟合盘",
+    displayTitle: "兄弟合",
+    note: "夫妻关系像兄弟一样亲合，讲义气、能互帮，也容易平辈较劲。",
     scope: "兄弟宫对应",
     score: 7,
     dimensions: ["同气默契", "沟通节奏", "边界稳定", "共同成长"],
@@ -6392,6 +6398,8 @@ const WENTIAN_HEPAN_RELATION_PROFILES = {
   friend: {
     label: "朋友格",
     title: "朋友合盘",
+    displayTitle: "朋友合",
+    note: "夫妻关系像朋友同道一样亲合，重在陪伴、信任和边界。",
     scope: "朋友宫对应",
     score: 8,
     dimensions: ["同道默契", "沟通节奏", "信任稳定", "共同成长"],
@@ -6401,6 +6409,8 @@ const WENTIAN_HEPAN_RELATION_PROFILES = {
   child: {
     label: "子女格",
     title: "子女合盘",
+    displayTitle: "子女合",
+    note: "夫妻关系像子女一样亲合，有保护和牵引感，也要看能否独立回应。",
     scope: "子女宫对应",
     score: 4,
     dimensions: ["照顾牵引", "沟通节奏", "责任稳定", "共同成长"],
@@ -6410,6 +6420,8 @@ const WENTIAN_HEPAN_RELATION_PROFILES = {
   life: {
     label: "命宫格",
     title: "命宫合盘",
+    displayTitle: "命宫合",
+    note: "夫妻关系牵引明显，容易互相看见，还要用现实相处验证稳定性。",
     scope: "命宫对应",
     score: 10,
     dimensions: ["命宫牵引", "沟通节奏", "长期稳定", "共同成长"],
@@ -6419,6 +6431,8 @@ const WENTIAN_HEPAN_RELATION_PROFILES = {
   other: {
     label: "关系格",
     title: "关系合盘",
+    displayTitle: "关系合",
+    note: "当前更像普通关系牵引，需要用更多互动和盘面证据继续校准。",
     scope: "宫位对应",
     score: 2,
     dimensions: ["关系牵引", "沟通节奏", "长期稳定", "共同成长"],
@@ -6498,16 +6512,16 @@ function getWentianHepanLanding(sourceArchive, targetArchive, sourceInfo, target
     label: profile.label,
     scope: profile.scope,
     score: profile.score,
-    evidence: `${sourceInfo.label}夫妻宫落${targetInfo.label}${targetPalaceName}，按${profile.label}看`,
+    evidence: `${sourceInfo.label}夫妻宫落${targetInfo.label}${targetPalaceName}，按${profile.displayTitle || profile.label}看`,
   };
 }
 
 function getWentianHepanStarMatches(sourceArchive, targetArchive, sourceInfo, targetInfo) {
   const rules = [
-    { source: ["父母"], target: ["命"], label: "母子格" },
-    { source: ["命"], target: ["父母"], label: "父女格" },
-    { source: ["兄弟"], target: ["命"], label: "兄弟格" },
-    { source: ["仆役", "朋友", "交友"], target: ["命"], label: "朋友格" },
+    { source: ["父母"], target: ["命"], label: "母子合" },
+    { source: ["命"], target: ["父母"], label: "父女合" },
+    { source: ["兄弟"], target: ["命"], label: "兄弟合" },
+    { source: ["仆役", "朋友", "交友"], target: ["命"], label: "朋友合" },
   ];
   return rules.map((rule) => {
     const sourcePalace = findWentianArchivePalace(sourceArchive, rule.source);
@@ -6543,6 +6557,8 @@ function getWentianHepanRelationship(left, right, ageInfos = []) {
     type,
     label: preferred?.label || profile.label,
     title: profile.title,
+    displayTitle: profile.displayTitle || profile.title,
+    note: profile.note || "",
     scope: profile.scope,
     score: preferred?.score ?? profile.score,
     dimensions: profile.dimensions,
@@ -6827,6 +6843,8 @@ function getWentianHepanResult() {
     relationship,
     relationLabel: relationship.label,
     relationTitle: relationship.title,
+    relationDisplayTitle: relationship.displayTitle,
+    relationNote: relationship.note,
     relationScope: relationship.scope,
     relationEvidence: relationship.evidence,
     relationLandings: relationship.landings,
@@ -6884,8 +6902,10 @@ function makeWentianHepanXuContext(result = getWentianHepanResult()) {
     recordId: makeWentianUuid(),
     title: "合盘结果深批",
     question: `${result.leftDisplay.name} × ${result.rightDisplay.name}`,
-    summaryLine: `${result.level} · ${result.total}分 · ${result.relationTitle || result.relationLabel}`,
+    summaryLine: `${result.level} · ${result.total}分 · ${result.relationDisplayTitle || result.relationTitle || result.relationLabel}`,
     relationLabel: result.relationLabel,
+    relationDisplayTitle: result.relationDisplayTitle,
+    relationNote: result.relationNote,
     relationScope: result.relationScope,
     relationEvidence: result.relationEvidence || [],
     relationLandings: result.relationLandings || [],
@@ -7056,11 +7076,11 @@ function makeWentianHepanAiPayload(result) {
       ],
       aiOutputContract: {
         title: "关系合盘：一句话结论",
-        profileBadge: "关系格 · 夫妻宫合参",
+        profileBadge: "关系合 · 夫妻宫合参",
         sections: [
           { title: "女方夫妻宫", content: "只解读女方夫妻宫信息与落对方宫位。" },
           { title: "男方夫妻宫", content: "只解读男方夫妻宫信息与落对方宫位。" },
-          { title: "双盘合参解读", content: "综合两张命盘与本次关系格，给最终盘面解读。" },
+          { title: "双盘合参解读", content: "综合两张命盘与本次关系合，给最终盘面解读。" },
         ],
         risk: "一句避坑提醒",
       },
@@ -7069,6 +7089,8 @@ function makeWentianHepanAiPayload(result) {
     hepanRelationship: {
       label: result.relationLabel,
       title: result.relationTitle,
+      displayTitle: result.relationDisplayTitle,
+      note: result.relationNote,
       scope: result.relationScope,
       evidence: result.relationEvidence || [],
       landings: result.relationLandings || [],
@@ -9751,6 +9773,8 @@ function getWentianXuChatPayload() {
       hepanRules: WENTIAN_HEPAN_AI_RULES,
       hepanRelationship: {
         label: context.relationLabel,
+        displayTitle: context.relationDisplayTitle,
+        note: context.relationNote,
         scope: context.relationScope,
         evidence: context.relationEvidence || [],
       },
@@ -9821,10 +9845,11 @@ function buildWentianXuOutboundMessage(message, context) {
   if (context?.type === "hepan") {
     return [
       "【关系合盘追问】",
-      `本次不是单人命盘读盘，请只围绕本次${context.relationLabel || "关系合盘"}回答。`,
+      `本次不是单人命盘读盘，请只围绕本次${context.relationDisplayTitle || context.relationLabel || "关系合盘"}回答。`,
       "合盘前置规则：",
       context.rules || WENTIAN_HEPAN_AI_RULES,
-      `关系类型：${context.relationLabel || ""}，${context.relationScope || ""}`,
+      `关系类型：${context.relationDisplayTitle || context.relationLabel || ""}，${context.relationScope || ""}`,
+      context.relationNote ? `关系备注：${context.relationNote}` : "",
       `宫位落点：${(context.relationEvidence || []).join("；")}`,
       `对象A：${context.left?.name || ""}，${context.left?.gender || ""}，${context.left?.datetime || ""}，${context.left?.age ?? ""}岁，四柱：${context.left?.pillars || ""}`,
       `对象A命盘摘要：${JSON.stringify(context.left?.chart || {})}`,
@@ -12821,12 +12846,12 @@ function formatWentianHepanReportText(text, fallback = "资料不足，建议结
 function getWentianHepanRelationReading(result) {
   const type = result?.relationship?.type || "other";
   const map = {
-    couple: "夫妻格才看婚恋推进；这类盘面重点看承诺、现实节奏和长期分工。",
-    parent: "父母格照顾感强，容易一方带着另一方走；重点不是甜不甜，而是边界是否清楚。",
-    sibling: "兄弟格更像同伴手足，讲义气、能互帮，也容易平辈较劲。",
-    friend: "朋友格重在同道、合作和陪伴，适合先看信用、目标和边界。",
-    child: "子女格有保护与牵引感，容易一方多承担；要看对方是否能独立回应。",
-    life: "命宫格牵引明显，容易互相看见；还要用现实相处验证稳定性。",
+    couple: "夫妻合按伴侣承诺来看；这类盘面重点看现实节奏、长期分工和边界。",
+    parent: "父母合表示夫妻关系像父母照顾一样亲合，容易一方带着另一方走。",
+    sibling: "兄弟合表示夫妻关系像兄弟一样亲合，讲义气、能互帮，也容易平辈较劲。",
+    friend: "朋友合表示夫妻关系像朋友同道一样亲合，重在陪伴、信任和边界。",
+    child: "子女合表示夫妻关系像子女一样亲合，有保护和牵引感，也要看能否独立回应。",
+    life: "命宫合牵引明显，容易互相看见；还要用现实相处验证稳定性。",
     other: "当前更像关系格，需要用更多互动和盘面证据继续校准。",
   };
   return map[type] || map.other;
@@ -12835,8 +12860,10 @@ function getWentianHepanRelationReading(result) {
 function getWentianHepanReportSummary(result) {
   const strongest = result.dimensions.slice().sort((a, b) => Number(b[1]) - Number(a[1]))[0] || result.dimensions[0];
   const weakest = result.dimensions.slice().sort((a, b) => Number(a[1]) - Number(b[1]))[0] || result.dimensions[0];
+  const title = result.relationDisplayTitle || result.relationTitle || result.relationLabel || "关系合";
+  const note = result.relationNote || getWentianHepanRelationReading(result);
   return {
-    core: `${result.leftDisplay.name} 与 ${result.rightDisplay.name} 本地初判为「${result.relationLabel || result.relationTitle}」。${getWentianHepanRelationReading(result)}`,
+    core: `${result.leftDisplay.name} 与 ${result.rightDisplay.name} 本地初判为「${title}」。${note}`,
     advantage: strongest ? `${strongest[0]}较突出：${strongest[2]}` : "双方有继续观察和磨合的空间。",
     warning: weakest ? `${weakest[0]}需要留意：${weakest[2]}` : "先把边界、节奏和现实安排说清楚。",
   };
@@ -12911,7 +12938,8 @@ function describeWentianHepanCombinedChart(result) {
     .map(([label, score, note]) => `${label}${score}分，${note}`)
     .join("；");
   return [
-    `${result.leftDisplay.name}与${result.rightDisplay.name}本地初判为「${result.relationLabel || result.relationTitle || "关系格"}」，参考${result.total}分。`,
+    `${result.leftDisplay.name}与${result.rightDisplay.name}本地初判为「${result.relationDisplayTitle || result.relationTitle || result.relationLabel || "关系合"}」，参考${result.total}分。`,
+    result.relationNote || "",
     evidence ? `盘面证据：${evidence}。` : "",
     dims ? `合参重点：${dims}。` : "",
     result.advice ? `落地建议：${result.advice}` : "",
@@ -12965,7 +12993,7 @@ function renderWentianHepanAiPanel(result) {
           <b>已接入</b>
         </header>
         <strong>${escapeHtml(ai.card.title || result.relationTitle || "关系合盘")}</strong>
-        <em>${escapeHtml(ai.card.profileBadge || `${result.relationLabel || "关系格"} · 夫妻宫合参`)}</em>
+        <em>${escapeHtml(ai.card.profileBadge || `${result.relationDisplayTitle || result.relationTitle || "关系合"} · 夫妻宫合参`)}</em>
         <div class="wentian-hepan-ai-sections">
           ${sections.map((item) => `
             <article>
@@ -13079,8 +13107,8 @@ function sourceHepanResultScreen() {
     <section class="wentian-hepan-result-panel">
       <div class="wentian-hepan-result-hero">
         <span>关系主格 · 本地初判</span>
-        <strong>${escapeHtml(result.relationLabel || "关系格")}</strong>
-        <em>${escapeHtml(result.relationTitle || "关系合盘")}</em>
+        <strong>${escapeHtml(result.relationDisplayTitle || result.relationTitle || "关系合")}</strong>
+        <em>${escapeHtml(result.relationNote || result.relationTitle || "关系合盘")}</em>
         <p>${escapeHtml(result.leftDisplay.name)} × ${escapeHtml(result.rightDisplay.name)} · 参考 ${escapeHtml(result.total)}分</p>
       </div>
 
