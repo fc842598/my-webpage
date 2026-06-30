@@ -1035,6 +1035,175 @@ function getWentianChatFaqEnglishPrompt(groupLabel, itemLabel, fallbackPrompt = 
     : translatedFallback;
 }
 
+const WENTIAN_XU_FAQ_GROUP_DOMAINS = {
+  "人生主线": "life",
+  "感情婚姻": "love",
+  "事业工作": "career",
+  "财运赚钱": "wealth",
+  "今年运势": "year",
+  "转运节点": "timing",
+  "健康身体": "health",
+  "家庭人际": "family",
+};
+
+const WENTIAN_XU_FAQ_PALACE_DOMAINS = {
+  命: "life",
+  身: "life",
+  夫妻: "love",
+  财帛: "wealth",
+  官禄: "career",
+  疾厄: "health",
+  迁移: "timing",
+  田宅: "family",
+  子女: "family",
+  父母: "family",
+  兄弟: "family",
+  仆役: "family",
+  福德: "health",
+};
+
+const WENTIAN_XU_DYNAMIC_FAQ_ITEMS = [
+  { domain: "love", label: "感情该推进吗", prompt: "结合我的命盘，重点看夫妻宫和当前流年，这段感情适合继续推进还是先放下。", min: 18, max: 45 },
+  { domain: "love", label: "婚姻何时稳定", prompt: "结合我的命盘，看婚姻什么时候容易稳定，感情里最该避开什么问题。", min: 24, max: 55 },
+  { domain: "love", label: "适合主动吗", prompt: "结合我的命盘，看感情里我适合主动推进，还是先观察对方和现实条件。", min: 18, max: 38, gender: "female" },
+  { domain: "love", label: "怎么推进关系", prompt: "结合我的命盘，看这段关系应该怎么推进，哪些动作会加分，哪些会扣分。", min: 18, max: 40, gender: "male" },
+  { domain: "career", label: "现在换方向吗", prompt: "结合我的命盘和当前大限流年，看现在适不适合换工作、转岗或重新选方向。", min: 22, max: 45 },
+  { domain: "career", label: "事业怎么起势", prompt: "结合我的命盘，看事业最容易靠什么起势，下一步先抓岗位、资源还是项目。", min: 18, max: 55 },
+  { domain: "career", label: "第二曲线在哪", prompt: "结合我的命盘，看我中年阶段适合守住原路，还是发展第二条事业线。", min: 36, max: 60 },
+  { domain: "wealth", label: "今年钱从哪来", prompt: "结合我的命盘和当前流年，看今年财从哪里来，适合主动争取什么钱。", min: 20, max: 60 },
+  { domain: "wealth", label: "投资合伙能碰吗", prompt: "结合我的命盘，看现在适不适合投资、合伙或副业，最大风险在哪里。", min: 26, max: 58 },
+  { domain: "wealth", label: "该赚钱还是守财", prompt: "结合我的命盘和当前流年，看今年更适合进攻赚钱，还是控制现金流守财。", min: 30, max: 70 },
+  { domain: "health", label: "身体先顾哪里", prompt: "结合我的命盘和当前流年，看身体、压力和作息最该先顾哪一块。", min: 25, max: 70 },
+  { domain: "health", label: "压力怎么化", prompt: "结合我的命盘，看睡眠、情绪和压力该怎么调整，哪些习惯要先改。", min: 18, max: 65 },
+  { domain: "family", label: "家里事怎么走", prompt: "结合我的命盘，看父母、伴侣、孩子或家宅近期哪件事最需要先处理。", min: 30, max: 70 },
+  { domain: "family", label: "孩子家宅重点", prompt: "结合我的命盘，看子女、家宅和家庭关系近期有什么重点提醒。", min: 28, max: 58 },
+  { domain: "timing", label: "今年会动吗", prompt: "结合我的命盘和当前流年，看今年会不会有搬迁、出行、岗位或圈层变动。", min: 18, max: 65 },
+  { domain: "timing", label: "转运点在哪", prompt: "结合我的命盘和当前大限流年，看接下来最明显的转运点在什么时候。", min: 18, max: 70 },
+  { domain: "life", label: "主线怎么定", prompt: "结合我的命盘和当前年龄阶段，帮我把人生主线和接下来优先级讲清楚。", min: 0, max: 70 },
+  { domain: "life", label: "先抓哪件事", prompt: "结合我的命盘，看现在最应该先抓事业、钱、感情、健康还是家里事。", min: 16, max: 70 },
+  { domain: "year", label: "今年重点宫位", prompt: "结合我的命盘，重点看今年流年小限落宫，讲今年最容易应在哪些事情上。", min: 0, max: 70 },
+  { domain: "year", label: "今年避什么坑", prompt: "结合我的命盘和当前流年，看今年最容易踩什么坑，应该怎么避开。", min: 18, max: 70 },
+];
+
+function normalizeWentianFaqPalaceName(value = "") {
+  return String(value || "").replace(/宫/g, "").trim();
+}
+
+function getWentianFaqDomainForPalace(value = "") {
+  const name = normalizeWentianFaqPalaceName(value);
+  return WENTIAN_XU_FAQ_PALACE_DOMAINS[name] || "";
+}
+
+function getWentianFaqAgeBand(age) {
+  const n = Number(age) || 0;
+  if (n <= 17) return "young";
+  if (n <= 25) return "start";
+  if (n <= 35) return "build";
+  if (n <= 45) return "middle";
+  if (n <= 55) return "steady";
+  return "later";
+}
+
+function getWentianFaqChartContext(payload = getWentianXuChatPayload()) {
+  const chartData = payload?.chartData || {};
+  const archive = getCurrentWentianArchive();
+  const form = archive?.form || {};
+  const rawGender = String(chartData.gender || form.gender || "").toLowerCase();
+  const gender = /女|female|woman/.test(rawGender) ? "female" : /男|male|man/.test(rawGender) ? "male" : rawGender;
+  const age = Number(chartData.realCurrentAge || chartData.activeAge || chartData.currentLiunian?.age || 0);
+  const palaceSignals = [
+    { palace: chartData.currentLiunian?.xiaolianPalaceName || chartData.currentXiaolian?.palaceName, weight: 90 },
+    { palace: chartData.currentLiunian?.oppositePalaceName || chartData.currentXiaolian?.oppositePalaceName, weight: 34 },
+    { palace: chartData.currentDecade?.palaceName, weight: 56 },
+  ].filter((item) => item.palace);
+  const domainScores = {};
+  palaceSignals.forEach((item) => {
+    const domain = getWentianFaqDomainForPalace(item.palace);
+    if (domain) domainScores[domain] = (domainScores[domain] || 0) + item.weight;
+  });
+  const band = getWentianFaqAgeBand(age);
+  const ageWeights = {
+    young: { life: 28, family: 18, year: 14 },
+    start: { life: 24, career: 22, love: 18, year: 14 },
+    build: { career: 24, wealth: 22, love: 18, year: 16 },
+    middle: { wealth: 24, career: 20, family: 18, health: 14 },
+    steady: { wealth: 20, health: 20, family: 18, timing: 16 },
+    later: { health: 26, family: 20, timing: 16, life: 14 },
+  }[band] || {};
+  Object.entries(ageWeights).forEach(([domain, score]) => {
+    domainScores[domain] = (domainScores[domain] || 0) + score;
+  });
+  return { chartData, age, gender, band, palaceSignals, domainScores };
+}
+
+function scoreWentianDynamicFaqItem(item, context) {
+  const age = Number(context.age) || 0;
+  if (item.min !== undefined && age && age < item.min) return -1;
+  if (item.max !== undefined && age && age > item.max) return -1;
+  if (item.gender && context.gender && item.gender !== context.gender) return -1;
+  let score = context.domainScores[item.domain] || 0;
+  if (!age && item.domain === "life") score += 12;
+  if (item.gender && item.gender === context.gender) score += 8;
+  if (context.band === "young" && item.domain === "love") score -= 24;
+  return score;
+}
+
+function getWentianDynamicFaqItemsForGroup(domain, context) {
+  return WENTIAN_XU_DYNAMIC_FAQ_ITEMS
+    .filter((item) => item.domain === domain)
+    .map((item, index) => ({ item, score: scoreWentianDynamicFaqItem(item, context), index }))
+    .filter((entry) => entry.score >= 12)
+    .sort((a, b) => b.score - a.score || a.index - b.index)
+    .slice(0, 2)
+    .map((entry) => [entry.item.label, entry.item.prompt]);
+}
+
+function dedupeWentianFaqItems(items) {
+  const seen = new Set();
+  return items.filter(([label]) => {
+    const key = String(label || "").trim();
+    if (!key || seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+}
+
+function getWentianPersonalizedChartFaqGroups(baseGroups, payload = getWentianXuChatPayload()) {
+  if (!Array.isArray(baseGroups) || !baseGroups.length) return baseGroups || [];
+  const context = getWentianFaqChartContext(payload);
+  return baseGroups
+    .map((group, index) => {
+      const domain = WENTIAN_XU_FAQ_GROUP_DOMAINS[group.label] || "";
+      const featuredItems = domain ? getWentianDynamicFaqItemsForGroup(domain, context) : [];
+      const baseItems = Array.isArray(group.items) ? group.items : [];
+      const score = (domain ? context.domainScores[domain] || 0 : 0) + (featuredItems.length ? 10 : 0);
+      return {
+        ...group,
+        items: dedupeWentianFaqItems([...featuredItems, ...baseItems]).slice(0, 6),
+        _score: score,
+        _index: index,
+      };
+    })
+    .sort((a, b) => b._score - a._score || a._index - b._index)
+    .map(({ _score, _index, ...group }) => group);
+}
+
+function getWentianCompactFaqItems(groups) {
+  const items = [];
+  (groups || []).forEach((group) => {
+    (group.items || []).forEach(([label, prompt]) => {
+      if (items.length < 4) items.push({ groupLabel: group.label, label, prompt });
+    });
+  });
+  return items;
+}
+
+function getWentianChatFaqModeForRender() {
+  return ["initial", "compact", "expanded"].includes(wentianXuChat.faqMode)
+    ? wentianXuChat.faqMode
+    : "initial";
+}
+
 function sourceAiChatScreen(screen) {
   const chatContext = getWentianXuChatContext();
   const isLiuyaoChat = chatContext?.type === "liuyao";
@@ -1223,7 +1392,17 @@ function sourceAiChatScreen(screen) {
       ]
     }
   ];
-  const faqGroups = isLiuyaoChat ? liuyaoFaqGroups : isHepanChat ? hepanFaqGroups : isLiurenChat ? liurenFaqGroups : isYijingChat ? yijingFaqGroups : chartFaqGroups;
+  const faqGroups = isLiuyaoChat
+    ? liuyaoFaqGroups
+    : isHepanChat
+      ? hepanFaqGroups
+      : isLiurenChat
+        ? liurenFaqGroups
+        : isYijingChat
+          ? yijingFaqGroups
+          : getWentianPersonalizedChartFaqGroups(chartFaqGroups);
+  const faqMode = getWentianChatFaqModeForRender();
+  const compactFaqItems = getWentianCompactFaqItems(faqGroups);
   const contextTitle = chatContext?.title || (isHepanChat ? "情侣合盘" : isLiurenChat ? "六壬课" : isYijingChat ? "易经推命" : "六爻占卜");
   const contextSummary = chatContext?.summaryLine || "";
   const chartArchiveDisplay = isContextChat ? null : getWentianArchiveDisplay(getCurrentWentianArchive());
@@ -1279,22 +1458,30 @@ function sourceAiChatScreen(screen) {
     ` : ""}
     <div id="wentian-chat-messages" class="wentian-chat-log ${chatContext ? "is-with-context" : ""}" aria-live="polite"></div>
     <button id="wentian-chat-scroll-bottom" class="wentian-chat-scroll-bottom" type="button" data-action="wentian-chat-scroll-bottom">回到底部</button>
-    ${figText("source-4-faq-title", faqTitle, 16, 580, 96, 14, "#25211d", 800)}
-    <div class="wentian-chat-starters" aria-label="常见问题分类">
-      ${faqGroups.map((group) => `
-        <details class="wentian-chat-faq-group">
-          <summary class="wentian-chat-faq-summary" data-wentian-faq-toggle>
-            <span>${escapeHtml(group.label)}</span>
-            <small>细问</small>
-          </summary>
-          <div class="wentian-chat-subtopics">
-            ${group.items.map(([label, prompt]) => {
-              const promptEn = getWentianChatFaqEnglishPrompt(group.label, label, prompt);
-              return `<button class="wentian-chat-starter" type="button" data-wentian-prompt="${escapeHtml(prompt)}" data-wentian-prompt-en="${escapeHtml(promptEn)}">${escapeHtml(label)}</button>`;
-            }).join("")}
-          </div>
-        </details>
-      `).join("")}
+    ${figText("source-4-faq-title", faqTitle, 16, 580, 96, 14, "#25211d", 800, "left", faqMode === "compact" ? "display:none;" : "")}
+    <div class="wentian-chat-starters is-mode-${faqMode}${faqMode === "compact" ? " is-compact" : ""}" data-wentian-faq-mode="${faqMode}" aria-label="常见问题分类">
+      <div class="wentian-chat-compact-row" aria-label="推荐追问">
+        ${compactFaqItems.map((item) => {
+          const promptEn = getWentianChatFaqEnglishPrompt(item.groupLabel, item.label, item.prompt);
+          return `<button class="wentian-chat-compact-question" type="button" data-wentian-prompt="${escapeHtml(item.prompt)}" data-wentian-prompt-en="${escapeHtml(promptEn)}">${escapeHtml(item.label)}</button>`;
+        }).join("")}
+      </div>
+      <div class="wentian-chat-faq-grid">
+        ${faqGroups.map((group) => `
+          <details class="wentian-chat-faq-group">
+            <summary class="wentian-chat-faq-summary" data-wentian-faq-toggle>
+              <span>${escapeHtml(group.label)}</span>
+              <small>细问</small>
+            </summary>
+            <div class="wentian-chat-subtopics">
+              ${group.items.map(([label, prompt]) => {
+                const promptEn = getWentianChatFaqEnglishPrompt(group.label, label, prompt);
+                return `<button class="wentian-chat-starter" type="button" data-wentian-prompt="${escapeHtml(prompt)}" data-wentian-prompt-en="${escapeHtml(promptEn)}">${escapeHtml(label)}</button>`;
+              }).join("")}
+            </div>
+          </details>
+        `).join("")}
+      </div>
     </div>
     ${figBox("source-4-input-bg", 0, 790, 390, 102, "", "background:#f7f3ec;box-shadow:0 -1px 0 rgba(110,82,38,.08);")}
     <textarea id="wentian-chat-input" class="wentian-chat-field" rows="1" placeholder="${inputPlaceholder}" autocomplete="off"></textarea>
@@ -1505,6 +1692,8 @@ const wentianXuChat = {
   autoScroll: true,
   userPinned: false,
   contextSheetOpen: false,
+  faqMode: "initial",
+  suppressNextFaqFocus: false,
 };
 
 let wentianFallbackChartRecordId = null;
@@ -9426,6 +9615,8 @@ function resetWentianXuChatRuntime() {
   wentianXuChat.autoScroll = true;
   wentianXuChat.userPinned = false;
   wentianXuChat.contextSheetOpen = false;
+  wentianXuChat.faqMode = "initial";
+  wentianXuChat.suppressNextFaqFocus = false;
 }
 
 function getWentianXuChatContext() {
@@ -10059,6 +10250,48 @@ function resizeWentianChatInput(input) {
   return nextHeight - minHeight;
 }
 
+function applyWentianChatFaqModeClass(starters, mode) {
+  if (!starters) return;
+  const safeMode = ["initial", "compact", "expanded"].includes(mode) ? mode : "initial";
+  starters.dataset.wentianFaqMode = safeMode;
+  starters.classList.toggle("is-compact", safeMode === "compact");
+  starters.classList.toggle("is-mode-initial", safeMode === "initial");
+  starters.classList.toggle("is-mode-expanded", safeMode === "expanded");
+}
+
+function setWentianChatFaqTitleVisible(visible) {
+  const faqTitle = document.querySelector('[data-node-id="source-4-faq-title"]');
+  if (faqTitle) faqTitle.style.display = visible ? "" : "none";
+}
+
+function setWentianChatFaqMode(mode, options = {}) {
+  const safeMode = ["initial", "compact", "expanded"].includes(mode) ? mode : "initial";
+  wentianXuChat.faqMode = safeMode;
+  const starters = document.querySelector(".wentian-chat-starters");
+  if (!starters) return;
+  applyWentianChatFaqModeClass(starters, safeMode);
+  const groups = Array.from(starters.querySelectorAll(".wentian-chat-faq-group"));
+  if (safeMode === "compact") {
+    groups.forEach((group) => group.removeAttribute("open"));
+  }
+  if (safeMode === "expanded" && options.openFirst && !groups.some((group) => group.open)) {
+    groups[0]?.setAttribute("open", "");
+  }
+  setWentianChatFaqTitleVisible(safeMode !== "compact");
+  syncWentianChatFaqLayout();
+}
+
+function expandWentianChatFaqFromInput() {
+  if (wentianXuChat.loading) return;
+  if (wentianXuChat.suppressNextFaqFocus) {
+    wentianXuChat.suppressNextFaqFocus = false;
+    return;
+  }
+  if (wentianXuChat.faqMode === "compact") {
+    setWentianChatFaqMode("expanded", { openFirst: true });
+  }
+}
+
 function syncWentianChatFaqLayout() {
   const phone = document.querySelector('.figma-phone[data-node-id="screen-4"]');
   const starters = document.querySelector(".wentian-chat-starters");
@@ -10071,8 +10304,13 @@ function syncWentianChatFaqLayout() {
   const disclaimer = document.querySelector('[data-node-id="source-4-disclaimer"]');
   if (!phone || !starters || !faqTitle || !log || !inputBg || !input || !send || !disclaimer) return;
 
-  const openGroup = starters.querySelector(".wentian-chat-faq-group[open]");
-  const baseListHeight = 160;
+  const faqMode = starters.dataset.wentianFaqMode || getWentianChatFaqModeForRender();
+  const isCompact = faqMode === "compact";
+  applyWentianChatFaqModeClass(starters, faqMode);
+  setWentianChatFaqTitleVisible(!isCompact);
+
+  const openGroup = isCompact ? null : starters.querySelector(".wentian-chat-faq-group[open]");
+  const baseListHeight = isCompact ? 42 : faqMode === "expanded" ? 180 : 160;
   const basePhoneHeight = 892;
   const basePositions = {
     faqTitle: 582,
@@ -10099,12 +10337,16 @@ function syncWentianChatFaqLayout() {
     const inputBgHeight = 102 + inputExtra;
     const phoneHeight = Math.max(680 + inputExtra, Math.min(basePhoneHeight + inputExtra, visiblePhoneHeight || basePhoneHeight));
     const inputBgTop = Math.min(basePositions.inputBg, Math.max(560, phoneHeight - inputBgHeight));
-    const starterBottom = inputBgTop - 24;
-    const startersTop = Math.max(408, Math.min(basePositions.starters, starterBottom - baseListHeight));
-    const startersHeight = Math.max(112, Math.min(baseListHeight, starterBottom - startersTop));
+    const starterBottom = inputBgTop - (isCompact ? 14 : 24);
+    const startersTop = isCompact
+      ? Math.max(408, starterBottom - baseListHeight)
+      : Math.max(408, Math.min(basePositions.starters, starterBottom - baseListHeight));
+    const minStartersHeight = isCompact ? 42 : 112;
+    const startersHeight = Math.max(minStartersHeight, Math.min(baseListHeight, starterBottom - startersTop));
     const faqTitleTop = Math.max(382, startersTop - 26);
     const logTop = Number.parseFloat(getComputedStyle(log).top) || (log.classList.contains("is-with-context") ? 224 : 136);
-    const logHeight = Math.max(log.classList.contains("is-with-context") ? 132 : 210, faqTitleTop - logTop - 24);
+    const logBottomLimit = isCompact ? startersTop : faqTitleTop;
+    const logHeight = Math.max(log.classList.contains("is-with-context") ? 132 : 210, logBottomLimit - logTop - 24);
 
     phone.style.height = `${phoneHeight}px`;
     log.style.height = `${logHeight}px`;
@@ -10123,14 +10365,14 @@ function syncWentianChatFaqLayout() {
   }
 
   starters.style.overflow = "";
-  starters.style.maxHeight = openGroup ? "none" : "";
-  starters.style.top = "";
+  starters.style.maxHeight = isCompact ? `${baseListHeight}px` : openGroup ? "none" : "";
+  starters.style.top = isCompact ? `${basePositions.inputBg - baseListHeight - 14}px` : "";
   faqTitle.style.top = "";
   log.style.height = "";
   if (scrollBottom) scrollBottom.style.top = "";
 
-  const listHeight = openGroup ? Math.ceil(starters.scrollHeight) : baseListHeight;
-  const faqExtra = openGroup ? Math.max(0, listHeight - baseListHeight + 18) : 0;
+  const listHeight = isCompact ? baseListHeight : openGroup ? Math.ceil(starters.scrollHeight) : baseListHeight;
+  const faqExtra = !isCompact && openGroup ? Math.max(0, listHeight - baseListHeight + 18) : 0;
   const totalExtra = faqExtra + inputExtra;
 
   phone.style.height = `${basePhoneHeight + totalExtra}px`;
@@ -10482,6 +10724,7 @@ async function sendWentianXuChat(promptText = "") {
     syncWentianChatFaqLayout();
     if (isWentianMobileKeyboardViewport()) input.blur();
   }
+  setWentianChatFaqMode("compact");
 
   const payload = getWentianXuChatPayload();
   ensureWentianXuPayloadRuntime(payload);
@@ -10520,7 +10763,10 @@ async function sendWentianXuChat(promptText = "") {
     addWentianMessage("system", getWentianFriendlyError(error));
   } finally {
     setWentianChatBusy(false);
-    if (!isWentianMobileKeyboardViewport()) input?.focus();
+    if (!isWentianMobileKeyboardViewport()) {
+      wentianXuChat.suppressNextFaqFocus = true;
+      input?.focus();
+    }
   }
 }
 
@@ -10558,6 +10804,8 @@ function initWentianXuChat() {
 
   send.onclick = () => sendWentianXuChat();
   input.addEventListener("input", syncWentianChatFaqLayout);
+  input.addEventListener("focus", expandWentianChatFaqFromInput);
+  input.addEventListener("click", expandWentianChatFaqFromInput);
   input.onkeydown = (event) => {
     if (event.key === "Enter" && (event.metaKey || event.ctrlKey)) {
       event.preventDefault();
