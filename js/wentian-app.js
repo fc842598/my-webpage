@@ -1462,8 +1462,7 @@ function sourceAiChatScreen(screen) {
     <div class="wentian-chat-starters is-mode-${faqMode}${faqMode === "compact" ? " is-compact" : ""}" data-wentian-faq-mode="${faqMode}" aria-label="常见问题分类">
       <div class="wentian-chat-compact-row" aria-label="推荐追问">
         ${compactFaqItems.map((item) => {
-          const promptEn = getWentianChatFaqEnglishPrompt(item.groupLabel, item.label, item.prompt);
-          return `<button class="wentian-chat-compact-question" type="button" data-wentian-prompt="${escapeHtml(item.prompt)}" data-wentian-prompt-en="${escapeHtml(promptEn)}">${escapeHtml(item.label)}</button>`;
+          return `<button class="wentian-chat-compact-question" type="button" data-wentian-faq-expand="${escapeHtml(item.groupLabel)}" aria-label="展开${escapeHtml(item.groupLabel)}常问">${escapeHtml(item.label)}</button>`;
         }).join("")}
       </div>
       <div class="wentian-chat-faq-grid">
@@ -10331,6 +10330,21 @@ function setWentianChatFaqMode(mode, options = {}) {
   const groups = Array.from(starters.querySelectorAll(".wentian-chat-faq-group"));
   if (safeMode === "compact") {
     groups.forEach((group) => group.removeAttribute("open"));
+  }
+  if (safeMode === "expanded" && options.openGroupLabel) {
+    const openLabel = String(options.openGroupLabel || "").trim();
+    let didOpen = false;
+    groups.forEach((group) => {
+      const label = group.querySelector(".wentian-chat-faq-summary span")?.textContent?.trim() || "";
+      const shouldOpen = label === openLabel;
+      if (shouldOpen) {
+        group.setAttribute("open", "");
+        didOpen = true;
+      } else {
+        group.removeAttribute("open");
+      }
+    });
+    if (!didOpen && options.openFirst) groups[0]?.setAttribute("open", "");
   }
   if (safeMode === "expanded" && options.openFirst && !groups.some((group) => group.open)) {
     groups[0]?.setAttribute("open", "");
@@ -20965,6 +20979,14 @@ document.addEventListener("click", (event) => {
     return;
   }
   if (event.target.closest?.("input, textarea, select, [contenteditable='true']")) return;
+  const faqExpandButton = event.target.closest("[data-wentian-faq-expand]");
+  if (faqExpandButton) {
+    setWentianChatFaqMode("expanded", {
+      openFirst: true,
+      openGroupLabel: faqExpandButton.dataset.wentianFaqExpand || "",
+    });
+    return;
+  }
   const promptButton = event.target.closest("[data-wentian-prompt]");
   if (promptButton) {
     promptButton.closest(".wentian-chat-faq-group")?.removeAttribute("open");
