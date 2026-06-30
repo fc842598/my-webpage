@@ -2665,7 +2665,8 @@ async function hydrateWentianArchivesFromRemote(options = {}) {
       }
       if (merged.length && remoteArchives.length < merged.length) pushWentianArchivesToRemote(merged);
       if (options.rerender && before !== after && (state.route === "screen-5" || state.route === "screen-25")) {
-        navigatePreservingScroll(state.route, false);
+        if (state.route === "screen-25") navigateWentianProfilePreservingListScroll();
+        else navigatePreservingScroll(state.route, false);
       }
       return merged;
     })
@@ -9050,6 +9051,13 @@ function navigateWentianClickRoute(route) {
 function handleWentianRoutePointerCapture(event) {
   if (event.pointerType === "mouse" && event.button !== 0) return;
   if (event.target.closest?.("input, textarea, select, [contenteditable='true']")) return;
+  if (event.target.closest?.('.wentian-floating-profile-confirm [data-action="wentian-profile-confirm"]')) {
+    wentianPointerRouteSuppressUntil = Date.now() + 350;
+    event.preventDefault();
+    event.stopPropagation();
+    confirmWentianProfileSelection();
+    return;
+  }
   if (event.target.closest?.('.wentian-floating-chart-submit [data-action="wentian-chart-submit"]')) {
     wentianPointerRouteSuppressUntil = Date.now() + 350;
     event.preventDefault();
@@ -9551,12 +9559,35 @@ function setWentianArchiveAsDefault(id) {
   navigatePreservingScroll(state.route, false);
 }
 
+function getWentianProfileConfirmLabel(id, archives = getWentianArchiveList()) {
+  const archive = archives.find((item) => item.id === id) || archives[0] || null;
+  if (!archive) return "";
+  const name = getWentianArchiveDisplay(archive).name;
+  return getWentianLanguageCode() === "en" ? `Selected: ${name}` : `已选：${name}`;
+}
+
+function updateWentianProfileSelectionDom(id) {
+  for (const card of document.querySelectorAll(".wentian-profile-card[data-archive-id]")) {
+    const selected = card.dataset.archiveId === id;
+    card.classList.toggle("is-selected", selected);
+    card.setAttribute("aria-pressed", selected ? "true" : "false");
+    const pick = card.querySelector(".wentian-profile-pick");
+    if (pick) pick.setAttribute("aria-pressed", selected ? "true" : "false");
+    const check = card.querySelector(".wentian-archive-check");
+    if (check) check.textContent = selected ? "✓" : "";
+  }
+  const label = getWentianProfileConfirmLabel(id);
+  for (const node of document.querySelectorAll(".wentian-profile-confirm-name")) {
+    node.textContent = label;
+  }
+}
+
 function pickWentianProfileArchive(id) {
   const archives = getWentianArchiveList();
   if (!archives.some((archive) => archive.id === id)) return;
   wentianArchiveDraftId = id;
   wentianArchiveDeleteConfirmId = "";
-  navigatePreservingScroll("screen-25", false);
+  updateWentianProfileSelectionDom(id);
 }
 
 function pickWentianArchive(id) {
@@ -13377,6 +13408,24 @@ function navigatePreservingScroll(route, push = false) {
   window.setTimeout(() => window.scrollTo(scrollX, scrollY), 0);
   window.setTimeout(() => window.scrollTo(scrollX, scrollY), 80);
   window.setTimeout(() => window.scrollTo(scrollX, scrollY), 220);
+}
+
+function navigateWentianProfilePreservingListScroll() {
+  const list = document.getElementById("wentian-profile-list");
+  const scrollTop = list?.scrollTop || 0;
+  const selectedId = wentianArchiveDraftId || getWentianSelectedArchiveId(getWentianArchiveList());
+  navigatePreservingScroll("screen-25", false);
+  const restore = () => {
+    const nextList = document.getElementById("wentian-profile-list");
+    if (nextList) {
+      const maxScrollTop = Math.max(0, nextList.scrollHeight - nextList.clientHeight);
+      nextList.scrollTop = Math.min(scrollTop, maxScrollTop);
+    }
+    if (selectedId) updateWentianProfileSelectionDom(selectedId);
+  };
+  window.requestAnimationFrame(restore);
+  window.setTimeout(restore, 80);
+  window.setTimeout(restore, 220);
 }
 
 function navigateLiuyaoCastPreservingScroll() {
@@ -19881,6 +19930,7 @@ function clearWentianFloatingBottomNav() {
   document.querySelector(".wentian-floating-bottom-nav")?.remove();
   clearWentianFloatingChartSubmit();
   clearWentianFloatingArchiveConfirm();
+  clearWentianFloatingProfileConfirm();
   view?.classList.remove("has-floating-bottom-nav");
   for (const node of document.querySelectorAll('.figma-phone [data-wentian-nav-hidden="1"]')) {
     node.style.visibility = "";
@@ -19904,6 +19954,15 @@ function clearWentianFloatingArchiveConfirm() {
     node.style.visibility = "";
     node.style.pointerEvents = "";
     delete node.dataset.wentianArchiveConfirmHidden;
+  }
+}
+
+function clearWentianFloatingProfileConfirm() {
+  document.querySelector(".wentian-floating-profile-confirm")?.remove();
+  for (const node of document.querySelectorAll('.figma-phone .wentian-profile-confirm-bar[data-wentian-profile-confirm-hidden="1"]')) {
+    node.style.visibility = "";
+    node.style.pointerEvents = "";
+    delete node.dataset.wentianProfileConfirmHidden;
   }
 }
 
@@ -19986,6 +20045,7 @@ function syncWentianFloatingBottomNav() {
   const submitNavHeight = hidden ? 0 : navHeight;
   syncWentianFloatingChartSubmit(phone, scale, submitNavHeight, submitHidden);
   syncWentianFloatingArchiveConfirm(phone, scale, navHeight, hidden);
+  syncWentianFloatingProfileConfirm(phone, scale, navHeight, hidden);
 }
 
 function syncWentianFloatingChartSubmit(phone, scale, navHeight, hidden) {
@@ -20075,6 +20135,42 @@ function syncWentianFloatingArchiveConfirm(phone, scale, navHeight, hidden) {
   original.style.visibility = "hidden";
   original.style.pointerEvents = "none";
   original.dataset.wentianArchiveConfirmHidden = "1";
+}
+
+function syncWentianFloatingProfileConfirm(phone, scale, navHeight, hidden) {
+  if (!phone || state.route !== "screen-25") {
+    clearWentianFloatingProfileConfirm();
+    return;
+  }
+  const original = phone.querySelector(".wentian-profile-confirm-bar");
+  if (!original) {
+    clearWentianFloatingProfileConfirm();
+    return;
+  }
+  let floating = document.querySelector(".wentian-floating-profile-confirm");
+  if (!floating) {
+    floating = document.createElement("div");
+    floating.className = "wentian-floating-profile-confirm";
+    floating.innerHTML = '<div class="wentian-floating-profile-confirm-inner"></div>';
+    document.body.appendChild(floating);
+  }
+  const inner = floating.querySelector(".wentian-floating-profile-confirm-inner");
+  inner.innerHTML = "";
+  const clone = original.cloneNode(true);
+  clone.style.top = "0px";
+  clone.style.left = "";
+  clone.style.visibility = "";
+  clone.style.pointerEvents = "";
+  delete clone.dataset.wentianProfileConfirmHidden;
+  inner.appendChild(clone);
+  floating.style.setProperty("--wentian-floating-nav-scale", String(scale));
+  floating.style.setProperty("--wentian-floating-nav-width", `${Math.ceil(WENTIAN_PHONE_WIDTH * scale)}px`);
+  floating.style.setProperty("--wentian-floating-nav-height", `${Math.ceil(navHeight * scale)}px`);
+  floating.classList.toggle("is-hidden", hidden);
+  floating.setAttribute("aria-hidden", hidden ? "true" : "false");
+  original.style.visibility = "hidden";
+  original.style.pointerEvents = "none";
+  original.dataset.wentianProfileConfirmHidden = "1";
 }
 
 function getWentianNodeBottomWithinPhone(phone, node) {

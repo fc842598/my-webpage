@@ -561,6 +561,39 @@ button {
   pointer-events: auto;
 }
 
+.wentian-floating-profile-confirm {
+  position: fixed;
+  left: 50%;
+  bottom: calc(var(--wentian-floating-nav-height, 89px) + env(safe-area-inset-bottom, 0px) + 10px);
+  z-index: 1000;
+  width: var(--wentian-floating-nav-width, 390px);
+  height: 58px;
+  transform: translateX(-50%);
+  pointer-events: auto;
+  transition: opacity .22s ease, transform .22s ease;
+}
+
+.wentian-floating-profile-confirm.is-hidden {
+  opacity: 0;
+  transform: translateX(-50%) translateY(18px);
+  pointer-events: none;
+}
+
+.wentian-floating-profile-confirm-inner {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 390px;
+  height: 58px;
+  transform: scale(var(--wentian-floating-nav-scale, 1));
+  transform-origin: left bottom;
+  pointer-events: none;
+}
+
+.wentian-floating-profile-confirm .wentian-profile-confirm-bar {
+  pointer-events: auto;
+}
+
 .fig-text,
 .fig-box,
 .fig-line,
