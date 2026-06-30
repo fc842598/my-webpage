@@ -13065,6 +13065,7 @@ function renderWentianHepanChartCard(archive, display, label, nodeId, side = "le
     activeBranch: getWentianHepanChartFocusBranch(archive),
     selectedXiaoLian: getWentianHepanSelectedXiaoLianYear(chartData, side),
     showXiaoLianLocateInReadonly: true,
+    persistXiaoLianBadge: true,
     xiaolianLocateScope: xiaolianScope,
     xiaolianAction: "wentian-hepan-xiaolian-pick",
     xiaolianDataset: { hepanSide: side },
@@ -18678,7 +18679,9 @@ function renderWentianClassicPalaceCell(palace, activeBranch, options = {}) {
   const showXiaoLianLocate = canLocateXiaoLian
     ? (isXiaoLian && shouldShowWentianXiaoLianBadge(selectedXiaoLian, options.xiaolianLocateScope || ""))
     : false;
-  const xiaoLianSideClass = showXiaoLianLocate ? ` fc-xiaolian-side-${getWentianClassicXiaoLianBadgeSide(col, row)}` : "";
+  const persistXiaoLianBadge = isXiaoLian && !!options.persistXiaoLianBadge;
+  const showXiaoLianBadge = showXiaoLianLocate || persistXiaoLianBadge;
+  const xiaoLianSideClass = showXiaoLianBadge ? ` fc-xiaolian-side-${getWentianClassicXiaoLianBadgeSide(col, row)}` : "";
   const palaceAction = options.palaceAction || "";
   const allStars = [
     ...(palace.majorStars || []),
@@ -18699,14 +18702,14 @@ function renderWentianClassicPalaceCell(palace, activeBranch, options = {}) {
   const shenHtml = [palace.changsheng12, palace.boshi12].filter(Boolean).map((item) => `<span>${escapeHtml(item)}</span>`).join("");
   const palaceName = `${palace.isBodyPalace ? "身宫\n" : ""}${palace.name || ""}`;
   const xiaoLianHtml = isXiaoLian ? `<div class="fc-xiaolian-badge">${escapeHtml(xiaoLianAge ? `${xiaoLianAge}岁` : "小流年")}</div>` : "";
-  const displayXiaoLianHtml = showXiaoLianLocate ? xiaoLianHtml : "";
+  const displayXiaoLianHtml = showXiaoLianBadge ? xiaoLianHtml : "";
   const cellAttrs = palaceAction
     ? `data-action="${escapeHtml(palaceAction)}" data-palace-branch="${escapeHtml(branch)}" data-palace-name="${escapeHtml(palace.name || branch)}" role="button"`
     : readonly
     ? `data-palace-branch="${escapeHtml(branch)}" data-palace-name="${escapeHtml(palace.name || branch)}"`
     : `data-action="wentian-chart-palace" data-palace-branch="${escapeHtml(branch)}" data-palace-name="${escapeHtml(palace.name || branch)}" role="button"`;
   return `
-    <div class="fc-cell ${highlightClass}${showXiaoLianLocate ? ` fc-xiaolian${xiaoLianSideClass} is-locating` : ""}${readonly && !palaceAction ? " is-readonly" : ""}" ${cellAttrs} style="grid-column:${col + 1};grid-row:${row + 1};">
+    <div class="fc-cell ${highlightClass}${showXiaoLianBadge ? ` fc-xiaolian${xiaoLianSideClass}${showXiaoLianLocate ? " is-locating" : ""}` : ""}${readonly && !palaceAction ? " is-readonly" : ""}" ${cellAttrs} style="grid-column:${col + 1};grid-row:${row + 1};">
       <div class="fc-cell-top">
         ${mutagenHtml ? `<div class="fc-cell-mutagen">${mutagenHtml}</div>` : ""}
         <div class="fc-major-list">${majorHtml}</div>
