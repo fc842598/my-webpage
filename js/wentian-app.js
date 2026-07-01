@@ -8317,8 +8317,8 @@ const WENTIAN_I18N_EN_EXTRA = {
   "开始起课": "Start Casting",
   "未登录": "Not signed in",
   "未登录，可注册": "Not signed in",
-  "登录后可查看支付记录": "Sign in to view payment records",
-  "登录后查看支付记录": "Sign in to view payment records",
+  "登录后可查看支付记录": "Sign in for records",
+  "登录后查看支付记录": "Sign in for records",
   "会员订单、支付状态和退款记录都会绑定到账号。": "Membership orders, payment status, and refunds are linked to your account.",
   "去登录": "Sign In",
   "微": "W",
@@ -9118,7 +9118,7 @@ function finalizeWentianLanguageText(root = view, code = getWentianLanguageCode(
   setWentianFinalText(root, '[data-node-id="source-31-login-badge-text"]', member.isMember ? "Member" : (account.loggedIn ? "Account" : "Sign In"));
   setWentianFinalText(root, '[data-node-id="source-31-login-badge-text-v2"]', member.isMember ? "Member" : (account.loggedIn ? "Account" : "Sign In"));
   setWentianFinalText(root, '[data-node-id="source-31-plan-banner-title-v2"]', "Yuetian Plan");
-  setWentianFinalText(root, '[data-node-id="source-31-plan-banner-sub-v2"]', "View quotas and upgrade options");
+  setWentianFinalText(root, '[data-node-id="source-31-plan-banner-sub-v2"]', "Quotas and upgrades");
   setWentianFinalText(root, '[data-node-id="source-31-plan-banner-cta-text-v2"]', member.isMember ? "View Benefits" : "View Plan");
   setWentianFinalText(root, '[data-node-id="source-login-sub"]', "Membership and payment records follow this account.");
   setWentianFinalText(root, '[data-node-id="source-login-member-text"]', member.isMember ? "Paid Plan" : "Free Account");
