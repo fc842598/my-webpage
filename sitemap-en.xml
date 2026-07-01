@@ -2,146 +2,266 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://yuetianai.com/articles/en/</loc>
-    <lastmod>2026-06-30</lastmod>
-    <changefreq>monthly</changefreq>
+    <lastmod>2026-07-01</lastmod>
+    <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://yuetianai.com/articles/en/feed.xml</loc>
-    <lastmod>2026-06-30</lastmod>
-    <changefreq>monthly</changefreq>
+    <lastmod>2026-07-01</lastmod>
+    <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://yuetianai.com/articles/en/how-to-read-zi-wei-dou-shu-chart.html</loc>
-    <lastmod>2026-06-30</lastmod>
-    <changefreq>monthly</changefreq>
+    <loc>https://yuetianai.com/articles/en/ziwei-liunian-qianyi.html</loc>
+    <lastmod>2026-07-01</lastmod>
+    <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://yuetianai.com/articles/en/best-free-zi-wei-dou-shu-chart.html</loc>
-    <lastmod>2026-06-30</lastmod>
-    <changefreq>monthly</changefreq>
+    <loc>https://yuetianai.com/articles/en/ziwei-liunian-caibo.html</loc>
+    <lastmod>2026-07-01</lastmod>
+    <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://yuetianai.com/articles/en/ai-fortune-telling-sites.html</loc>
-    <lastmod>2026-06-30</lastmod>
-    <changefreq>monthly</changefreq>
+    <loc>https://yuetianai.com/articles/en/ziwei-minggong-konggong.html</loc>
+    <lastmod>2026-07-01</lastmod>
+    <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://yuetianai.com/articles/en/what-is-yuetianai.html</loc>
-    <lastmod>2026-06-30</lastmod>
-    <changefreq>monthly</changefreq>
+    <loc>https://yuetianai.com/articles/en/ziwei-xiaoxian-bengong-duigong.html</loc>
+    <lastmod>2026-07-01</lastmod>
+    <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://yuetianai.com/articles/en/life-palace.html</loc>
-    <lastmod>2026-06-30</lastmod>
-    <changefreq>monthly</changefreq>
+    <loc>https://yuetianai.com/articles/en/ziwei-quan-lu-caibo.html</loc>
+    <lastmod>2026-07-01</lastmod>
+    <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://yuetianai.com/articles/en/siblings-palace.html</loc>
-    <lastmod>2026-06-30</lastmod>
-    <changefreq>monthly</changefreq>
+    <loc>https://yuetianai.com/articles/en/ziwei-dikong-dijie-liunian.html</loc>
+    <lastmod>2026-07-01</lastmod>
+    <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://yuetianai.com/articles/en/spouse-palace.html</loc>
-    <lastmod>2026-06-30</lastmod>
-    <changefreq>monthly</changefreq>
+    <loc>https://yuetianai.com/articles/en/ziwei-daxian-ke-quan-lu.html</loc>
+    <lastmod>2026-07-01</lastmod>
+    <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://yuetianai.com/articles/en/children-palace.html</loc>
-    <lastmod>2026-06-30</lastmod>
-    <changefreq>monthly</changefreq>
+    <loc>https://yuetianai.com/articles/en/ziwei-huaji.html</loc>
+    <lastmod>2026-07-01</lastmod>
+    <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://yuetianai.com/articles/en/wealth-palace.html</loc>
-    <lastmod>2026-06-30</lastmod>
-    <changefreq>monthly</changefreq>
+    <loc>https://yuetianai.com/articles/en/ziwei-huake.html</loc>
+    <lastmod>2026-07-01</lastmod>
+    <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://yuetianai.com/articles/en/health-palace.html</loc>
-    <lastmod>2026-06-30</lastmod>
-    <changefreq>monthly</changefreq>
+    <loc>https://yuetianai.com/articles/en/ziwei-hualu.html</loc>
+    <lastmod>2026-07-01</lastmod>
+    <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://yuetianai.com/articles/en/outside-palace.html</loc>
-    <lastmod>2026-06-30</lastmod>
-    <changefreq>monthly</changefreq>
+    <loc>https://yuetianai.com/articles/en/ziwei-huaquan.html</loc>
+    <lastmod>2026-07-01</lastmod>
+    <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://yuetianai.com/articles/en/friends-network-palace.html</loc>
-    <lastmod>2026-06-30</lastmod>
-    <changefreq>monthly</changefreq>
+    <loc>https://yuetianai.com/articles/en/ziwei-huoling-liunian.html</loc>
+    <lastmod>2026-07-01</lastmod>
+    <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://yuetianai.com/articles/en/career-palace.html</loc>
-    <lastmod>2026-06-30</lastmod>
-    <changefreq>monthly</changefreq>
+    <loc>https://yuetianai.com/articles/en/ziwei-qisha-pojun-liunian.html</loc>
+    <lastmod>2026-07-01</lastmod>
+    <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://yuetianai.com/articles/en/property-palace.html</loc>
-    <lastmod>2026-06-30</lastmod>
-    <changefreq>monthly</changefreq>
+    <loc>https://yuetianai.com/articles/en/ziwei-chart-first-triad-opposite.html</loc>
+    <lastmod>2026-07-01</lastmod>
+    <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://yuetianai.com/articles/en/inner-life-palace.html</loc>
-    <lastmod>2026-06-30</lastmod>
-    <changefreq>monthly</changefreq>
+    <loc>https://yuetianai.com/articles/en/ziwei-tanlang-liunian.html</loc>
+    <lastmod>2026-07-01</lastmod>
+    <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://yuetianai.com/articles/en/parents-palace.html</loc>
-    <lastmod>2026-06-30</lastmod>
-    <changefreq>monthly</changefreq>
+    <loc>https://yuetianai.com/articles/en/ziwei-daxian-xiaoliunian.html</loc>
+    <lastmod>2026-07-01</lastmod>
+    <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://yuetianai.com/articles/en/body-palace.html</loc>
-    <lastmod>2026-06-30</lastmod>
-    <changefreq>monthly</changefreq>
+    <loc>https://yuetianai.com/articles/en/ziwei-taiyin-caibo.html</loc>
+    <lastmod>2026-07-01</lastmod>
+    <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://yuetianai.com/articles/en/triad-and-opposite.html</loc>
-    <lastmod>2026-06-30</lastmod>
-    <changefreq>monthly</changefreq>
+    <loc>https://yuetianai.com/articles/en/ziwei-taiyang-caibo.html</loc>
+    <lastmod>2026-07-01</lastmod>
+    <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://yuetianai.com/articles/en/palace-context.html</loc>
-    <lastmod>2026-06-30</lastmod>
-    <changefreq>monthly</changefreq>
+    <loc>https://yuetianai.com/articles/en/ziwei-cai-zai-guanlu.html</loc>
+    <lastmod>2026-07-01</lastmod>
+    <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://yuetianai.com/articles/en/four-transformations.html</loc>
-    <lastmod>2026-06-30</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://yuetianai.com/articles/en/ten-year-cycle.html</loc>
-    <lastmod>2026-06-30</lastmod>
-    <changefreq>monthly</changefreq>
+    <loc>https://yuetianai.com/articles/en/ziwei-cai-zai-qianyi.html</loc>
+    <lastmod>2026-07-01</lastmod>
+    <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://yuetianai.com/articles/en/annual-cycle.html</loc>
     <lastmod>2026-06-30</lastmod>
-    <changefreq>monthly</changefreq>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://yuetianai.com/articles/en/body-palace.html</loc>
+    <lastmod>2026-06-30</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://yuetianai.com/articles/en/career-palace.html</loc>
+    <lastmod>2026-06-30</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://yuetianai.com/articles/en/children-palace.html</loc>
+    <lastmod>2026-06-30</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://yuetianai.com/articles/en/friends-network-palace.html</loc>
+    <lastmod>2026-06-30</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://yuetianai.com/articles/en/health-palace.html</loc>
+    <lastmod>2026-06-30</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://yuetianai.com/articles/en/best-free-zi-wei-dou-shu-chart.html</loc>
+    <lastmod>2026-06-30</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://yuetianai.com/articles/en/ai-fortune-telling-sites.html</loc>
+    <lastmod>2026-06-30</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://yuetianai.com/articles/en/how-to-read-zi-wei-dou-shu-chart.html</loc>
+    <lastmod>2026-06-30</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://yuetianai.com/articles/en/inner-life-palace.html</loc>
+    <lastmod>2026-06-30</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://yuetianai.com/articles/en/life-palace.html</loc>
+    <lastmod>2026-06-30</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://yuetianai.com/articles/en/outside-palace.html</loc>
+    <lastmod>2026-06-30</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://yuetianai.com/articles/en/palace-context.html</loc>
+    <lastmod>2026-06-30</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://yuetianai.com/articles/en/parents-palace.html</loc>
+    <lastmod>2026-06-30</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://yuetianai.com/articles/en/property-palace.html</loc>
+    <lastmod>2026-06-30</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://yuetianai.com/articles/en/siblings-palace.html</loc>
+    <lastmod>2026-06-30</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://yuetianai.com/articles/en/spouse-palace.html</loc>
+    <lastmod>2026-06-30</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://yuetianai.com/articles/en/ten-year-cycle.html</loc>
+    <lastmod>2026-06-30</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://yuetianai.com/articles/en/four-transformations.html</loc>
+    <lastmod>2026-06-30</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://yuetianai.com/articles/en/triad-and-opposite.html</loc>
+    <lastmod>2026-06-30</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://yuetianai.com/articles/en/wealth-palace.html</loc>
+    <lastmod>2026-06-30</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://yuetianai.com/articles/en/what-is-yuetianai.html</loc>
+    <lastmod>2026-06-30</lastmod>
+    <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
 </urlset>
