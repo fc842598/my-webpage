@@ -4660,7 +4660,7 @@ html[lang="en"] .wentian-archive-confirm {
 }
 
 .wentian-hepan-result-hero {
-  min-height: 156px;
+  min-height: 132px;
   padding: 18px;
   border-radius: 22px;
   background:
@@ -4671,7 +4671,6 @@ html[lang="en"] .wentian-archive-confirm {
 
 .wentian-hepan-result-hero span,
 .wentian-hepan-result-hero strong,
-.wentian-hepan-result-hero em,
 .wentian-hepan-result-hero p {
   display: block;
 }
@@ -4690,31 +4689,12 @@ html[lang="en"] .wentian-archive-confirm {
   line-height: 1;
 }
 
-.wentian-hepan-result-hero em {
-  margin-top: 6px;
-  color: #fff4df;
-  max-width: 286px;
-  font-size: 13px;
-  font-style: normal;
-  font-weight: 800;
-  line-height: 1.45;
-}
-
 .wentian-hepan-result-hero p {
   margin: 12px 0 0;
   color: #eadcc7;
   font-size: 13px;
   font-weight: 800;
 }
-
-.wentian-hepan-result-pair {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 34px minmax(0, 1fr);
-  gap: 8px;
-  align-items: center;
-}
-
-.wentian-hepan-result-pair article,
 .wentian-hepan-chart-card,
 .wentian-hepan-ai-card,
 .wentian-hepan-report-card,
@@ -4725,57 +4705,6 @@ html[lang="en"] .wentian-archive-confirm {
   border: 1px solid #eadfce;
   background: #fffdf8;
   box-shadow: 0 8px 20px rgba(70, 45, 25, .06);
-}
-
-.wentian-hepan-result-pair article {
-  min-width: 0;
-  min-height: 98px;
-  padding: 12px;
-  border-radius: 16px;
-}
-
-.wentian-hepan-result-pair b {
-  display: grid;
-  place-items: center;
-  width: 34px;
-  height: 34px;
-  border-radius: 17px;
-  background: #fff1dc;
-  color: #a94437;
-  font-size: 15px;
-  font-weight: 900;
-}
-
-.wentian-hepan-result-pair span,
-.wentian-hepan-result-pair strong,
-.wentian-hepan-result-pair em,
-.wentian-hepan-result-pair small {
-  display: block;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.wentian-hepan-result-pair span {
-  color: #a47726;
-  font-size: 11px;
-  font-weight: 900;
-}
-
-.wentian-hepan-result-pair strong {
-  margin-top: 5px;
-  color: #201813;
-  font-size: 17px;
-  font-weight: 900;
-}
-
-.wentian-hepan-result-pair em,
-.wentian-hepan-result-pair small {
-  margin-top: 5px;
-  color: #807568;
-  font-size: 11px;
-  font-style: normal;
-  font-weight: 800;
 }
 
 .wentian-hepan-chart-section {

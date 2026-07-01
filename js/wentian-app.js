@@ -13206,24 +13206,7 @@ function sourceHepanResultScreen() {
       <div class="wentian-hepan-result-hero">
         <span>关系主格 · 本地初判</span>
         <strong>${escapeHtml(result.relationDisplayTitle || result.relationTitle || "关系合参")}</strong>
-        <em>${escapeHtml(result.relationNote || result.relationTitle || "关系合盘")}</em>
         <p>${escapeHtml(result.leftDisplay.name)} × ${escapeHtml(result.rightDisplay.name)} · 参考 ${escapeHtml(result.total)}分</p>
-      </div>
-
-      <div class="wentian-hepan-result-pair">
-        <article>
-          <span>${escapeHtml(result.leftDisplay.gender || "档案")}</span>
-          <strong>${renderWentianArchiveNameWithAgeBadge(result.leftDisplay)}</strong>
-          <em>${escapeHtml(result.leftDisplay.datetime)}</em>
-          <small>${escapeHtml(result.leftDisplay.pillars)}</small>
-        </article>
-        <b>合</b>
-        <article>
-          <span>${escapeHtml(result.rightDisplay.gender || "档案")}</span>
-          <strong>${renderWentianArchiveNameWithAgeBadge(result.rightDisplay)}</strong>
-          <em>${escapeHtml(result.rightDisplay.datetime)}</em>
-          <small>${escapeHtml(result.rightDisplay.pillars)}</small>
-        </article>
       </div>
 
       ${renderWentianHepanChartCompare(result)}
