@@ -13087,13 +13087,23 @@ function renderWentianHepanChartCard(archive, display, label, nodeId, side = "le
 
 function renderWentianHepanChartCompare(result) {
   return `
-    <section class="wentian-hepan-chart-section" aria-label="双方命盘">
+    <section class="wentian-hepan-chart-section" aria-label="????">
       <div class="wentian-hepan-section-head">
-        <span>双方命盘</span>
-        <b>默认高亮夫妻宫三方四正</b>
+        <span>????</span>
+        <b>???????????</b>
       </div>
-      ${renderWentianHepanChartCard(result.left, result.leftDisplay, "对象一命盘", "hepan-left-native-chart", "left")}
-      ${renderWentianHepanChartCard(result.right, result.rightDisplay, "对象二命盘", "hepan-right-native-chart", "right")}
+      <details class="wentian-hepan-chart-details">
+        <summary>
+          <span class="wentian-hepan-chart-summary-label wentian-hepan-chart-summary-label--closed">????</span>
+          <span class="wentian-hepan-chart-summary-label wentian-hepan-chart-summary-label--open">????</span>
+          <em>????????</em>
+        </summary>
+        <div class="wentian-hepan-chart-detail-body">
+          <p class="wentian-hepan-chart-note">??????????????</p>
+          ${renderWentianHepanChartCard(result.left, result.leftDisplay, "?????", "hepan-left-native-chart", "left")}
+          ${renderWentianHepanChartCard(result.right, result.rightDisplay, "?????", "hepan-right-native-chart", "right")}
+        </div>
+      </details>
     </section>
   `;
 }
@@ -21037,6 +21047,11 @@ document.addEventListener("focusout", (event) => {
 document.addEventListener("toggle", (event) => {
   if (!event.target?.matches?.(".fc-xiaolian-control")) return;
   focusWentianClassicXiaoLianMenu(event.target);
+}, true);
+
+document.addEventListener("toggle", (event) => {
+  if (!event.target?.matches?.(".wentian-hepan-chart-details")) return;
+  scheduleWentianHepanResultLayout();
 }, true);
 
 document.addEventListener("click", (event) => {

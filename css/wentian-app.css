@@ -4783,6 +4783,74 @@ html[lang="en"] .wentian-archive-confirm {
   gap: 12px;
 }
 
+.wentian-hepan-chart-details {
+  border: 1px solid #eadfce;
+  border-radius: 18px;
+  background: #fffdf8;
+  box-shadow: 0 8px 20px rgba(70, 45, 25, .06);
+  overflow: hidden;
+}
+
+.wentian-hepan-chart-details summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px;
+  cursor: pointer;
+  list-style: none;
+}
+
+.wentian-hepan-chart-details summary::-webkit-details-marker {
+  display: none;
+}
+
+.wentian-hepan-chart-summary-label,
+.wentian-hepan-chart-details summary em,
+.wentian-hepan-chart-note {
+  display: block;
+  font-style: normal;
+}
+
+.wentian-hepan-chart-summary-label {
+  color: #7e3b2f;
+  font-size: 14px;
+  font-weight: 900;
+  line-height: 1.35;
+}
+
+.wentian-hepan-chart-details summary em {
+  color: #9a8f82;
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1.35;
+  text-align: right;
+}
+
+.wentian-hepan-chart-summary-label--open,
+.wentian-hepan-chart-details[open] .wentian-hepan-chart-summary-label--closed {
+  display: none;
+}
+
+.wentian-hepan-chart-details[open] .wentian-hepan-chart-summary-label--open {
+  display: block;
+}
+
+.wentian-hepan-chart-detail-body {
+  display: grid;
+  gap: 12px;
+  padding: 0 0 12px;
+}
+
+.wentian-hepan-chart-note {
+  margin: 0;
+  padding: 0 16px;
+  color: #9a8f82;
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1.45;
+}
+
 .wentian-hepan-section-head {
   display: flex;
   align-items: flex-end;
