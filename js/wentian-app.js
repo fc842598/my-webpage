@@ -12175,7 +12175,7 @@ function sourceProfileScreen(screen) {
     ${figButton("source-25-batch-delete-hit", 224, metrics.bottomNavY - 64, 132, 46, `data-action="wentian-profile-batch-delete" aria-label="${isEn ? (wentianProfileBatchDeleteConfirm ? "Confirm batch delete" : "Delete selected files") : (wentianProfileBatchDeleteConfirm ? "确认批量删除" : "批量删除")}"`)}
   ` : "";
   const confirmBar = !wentianProfileBatchMode && archives.length ? `
-    <div class="wentian-profile-confirm-bar" style="top:${metrics.bottomNavY - 76}px">
+    <div class="wentian-profile-confirm-bar" style="top:${metrics.bottomNavY - 68}px">
       <span class="wentian-profile-confirm-name">${escapeHtml(isEn ? `Selected: ${confirmArchiveName}` : `已选：${confirmArchiveName}`)}</span>
       <button class="wentian-profile-confirm-button" type="button" data-action="wentian-profile-confirm" aria-label="${escapeHtml(isEn ? "Confirm and open chart" : "确认进入命盘")}">${isEn ? "Open Chart" : "确认进入命盘"}</button>
     </div>

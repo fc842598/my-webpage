@@ -567,7 +567,7 @@ button {
   bottom: calc(var(--wentian-floating-nav-height, 89px) + env(safe-area-inset-bottom, 0px) + 10px);
   z-index: 1000;
   width: var(--wentian-floating-nav-width, 390px);
-  height: 58px;
+  height: 50px;
   transform: translateX(-50%);
   pointer-events: auto;
   transition: opacity .22s ease, transform .22s ease;
@@ -584,7 +584,7 @@ button {
   left: 0;
   bottom: 0;
   width: 390px;
-  height: 58px;
+  height: 50px;
   transform: scale(var(--wentian-floating-nav-scale, 1));
   transform-origin: left bottom;
   pointer-events: none;
@@ -5779,12 +5779,12 @@ html[lang="en"] .wentian-archive-confirm {
 .wentian-profile-stage {
   position: absolute;
   left: 18px;
-  top: 108px;
+  top: 102px;
   width: 354px;
-  bottom: 106px;
+  bottom: 100px;
   display: grid;
   grid-template-rows: auto minmax(0, 1fr);
-  gap: 14px;
+  gap: 10px;
   z-index: 12;
 }
 
@@ -5793,56 +5793,56 @@ html[lang="en"] .wentian-archive-confirm {
 }
 
 .wentian-profile-stage.has-confirm {
-  bottom: 186px;
+  bottom: 170px;
 }
 
 .wentian-profile-hero {
   display: grid;
-  gap: 12px;
-  padding: 16px;
+  gap: 9px;
+  padding: 12px 14px;
   border: 1px solid rgba(234, 220, 199, .92);
-  border-radius: 28px;
-  background: rgba(255, 253, 248, .92);
-  box-shadow: 0 14px 28px rgba(92, 62, 31, .08), inset 0 1px 0 rgba(255, 255, 255, .84);
+  border-radius: 24px;
+  background: rgba(255, 253, 248, .94);
+  box-shadow: 0 10px 22px rgba(92, 62, 31, .06), inset 0 1px 0 rgba(255, 255, 255, .84);
 }
 
 .wentian-profile-top-pill {
   justify-self: center;
-  min-width: 126px;
-  height: 34px;
-  padding: 0 18px;
-  border-radius: 17px;
+  min-width: 112px;
+  height: 30px;
+  padding: 0 16px;
+  border-radius: 15px;
   background: #604236;
   color: #fffaf3;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 900;
-  line-height: 34px;
+  line-height: 30px;
   text-align: center;
-  box-shadow: 0 8px 18px rgba(86, 54, 37, .16);
+  box-shadow: 0 6px 14px rgba(86, 54, 37, .14);
 }
 
 .wentian-profile-toolbar {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
-  gap: 10px;
+  gap: 8px;
   align-items: center;
 }
 
 .wentian-profile-search-shell {
   display: flex;
   align-items: center;
-  gap: 10px;
-  height: 48px;
-  padding: 0 16px;
+  gap: 8px;
+  height: 42px;
+  padding: 0 14px;
   border: 1px solid #efe3d2;
-  border-radius: 24px;
+  border-radius: 21px;
   background: #fff;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, .88);
 }
 
 .wentian-profile-search-shell span {
   color: #756456;
-  font-size: 19px;
+  font-size: 17px;
   font-weight: 700;
   line-height: 1;
 }
@@ -5853,43 +5853,43 @@ html[lang="en"] .wentian-archive-confirm {
   width: 100%;
   height: 100%;
   padding: 0;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 800;
 }
 
 .wentian-profile-new-button {
-  height: 48px;
-  min-width: 84px;
-  padding: 0 18px;
+  height: 42px;
+  min-width: 76px;
+  padding: 0 15px;
   border: 1px solid #d5c493;
-  border-radius: 24px;
+  border-radius: 21px;
   background: linear-gradient(180deg, #fffdf8 0%, #fbf1df 100%);
   color: #8b6525;
   font-family: inherit;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 900;
-  box-shadow: 0 8px 18px rgba(146, 104, 42, .08);
+  box-shadow: 0 6px 14px rgba(146, 104, 42, .07);
 }
 
 .wentian-profile-meta-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  gap: 8px;
   min-width: 0;
 }
 
 .wentian-profile-meta-row b {
   flex: 0 0 auto;
   color: #b98334;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 900;
 }
 
 .wentian-profile-status-inline {
   min-width: 0;
   color: #8f8173;
-  font-size: 12px;
+  font-size: 11.5px;
   font-weight: 800;
   line-height: 1.35;
   text-align: right;
@@ -5908,24 +5908,24 @@ html[lang="en"] .wentian-archive-confirm {
   left: 18px;
   z-index: 108;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 148px;
+  grid-template-columns: minmax(0, 1fr) 136px;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   width: 354px;
-  height: 58px;
-  padding: 8px 10px 8px 16px;
+  height: 50px;
+  padding: 7px 8px 7px 14px;
   box-sizing: border-box;
   border: 1px solid #eadbc5;
-  border-radius: 22px;
+  border-radius: 20px;
   background: rgba(255, 253, 248, .98);
-  box-shadow: 0 14px 28px rgba(86, 54, 37, .14);
+  box-shadow: 0 10px 22px rgba(86, 54, 37, .12);
 }
 
 .wentian-profile-confirm-name {
   min-width: 0;
   overflow: hidden;
   color: #5f453a;
-  font-size: 13px;
+  font-size: 12.5px;
   font-weight: 900;
   line-height: 1.25;
   white-space: nowrap;
@@ -5934,24 +5934,24 @@ html[lang="en"] .wentian-archive-confirm {
 
 .wentian-profile-confirm-button {
   width: 100%;
-  height: 42px;
+  height: 36px;
   border: 0;
-  border-radius: 21px;
+  border-radius: 18px;
   background: linear-gradient(180deg, #b45140 0%, #963929 100%);
   color: #fffaf3;
   font-family: inherit;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 900;
-  box-shadow: 0 10px 20px rgba(153, 58, 41, .22);
+  box-shadow: 0 8px 16px rgba(153, 58, 41, .20);
 }
 
 .wentian-profile-board {
   min-height: 0;
-  padding: 12px 10px 10px;
+  padding: 10px 8px 8px;
   border: 1px solid rgba(234, 223, 206, .96);
-  border-radius: 30px;
+  border-radius: 26px;
   background: rgba(255, 255, 255, .84);
-  box-shadow: 0 16px 34px rgba(92, 62, 31, .08), inset 0 1px 0 rgba(255, 255, 255, .84);
+  box-shadow: 0 12px 26px rgba(92, 62, 31, .07), inset 0 1px 0 rgba(255, 255, 255, .84);
   overflow: hidden;
 }
 
@@ -5959,7 +5959,7 @@ html[lang="en"] .wentian-archive-confirm {
   height: 100%;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 9px;
   overflow-y: auto;
   padding-right: 4px;
 }
@@ -5975,7 +5975,7 @@ html[lang="en"] .wentian-archive-confirm {
 
 .wentian-profile-group {
   display: grid;
-  gap: 10px;
+  gap: 8px;
 }
 
 .wentian-profile-group-label {
@@ -5983,72 +5983,90 @@ html[lang="en"] .wentian-archive-confirm {
   top: 0;
   z-index: 2;
   width: fit-content;
-  padding: 0 10px;
-  border-radius: 11px;
+  padding: 0 8px;
+  border-radius: 10px;
   background: rgba(251, 247, 239, .94);
   color: #ad8b56;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 900;
-  line-height: 22px;
+  line-height: 20px;
   box-shadow: 0 4px 10px rgba(126, 88, 42, .06);
 }
 
 .wentian-profile-card {
-  min-height: 124px;
-  padding: 12px 12px 10px;
-  border-radius: 22px;
-  gap: 10px;
+  min-height: 102px;
+  padding: 10px 10px 9px;
+  border-radius: 20px;
+  gap: 7px;
 }
 
 .wentian-profile-pick {
-  min-height: 74px;
-  grid-template-columns: 52px minmax(0, 1fr) 38px;
-  gap: 10px;
+  min-height: 58px;
+  grid-template-columns: 44px minmax(0, 1fr) 34px;
+  gap: 8px;
+  align-items: center;
 }
 
 .wentian-profile-card .wentian-archive-avatar {
-  width: 52px;
-  height: 52px;
-  border-radius: 18px;
-  font-size: 17px;
+  width: 44px;
+  height: 44px;
+  border-radius: 16px;
+  font-size: 16px;
 }
 
 .wentian-profile-main {
+  gap: 4px;
+}
+
+.wentian-profile-card .wentian-archive-title-row {
+  flex-wrap: nowrap;
   gap: 5px;
 }
 
 .wentian-profile-card .wentian-archive-name {
-  font-size: 17px;
-  line-height: 21px;
+  font-size: 16px;
+  line-height: 20px;
+}
+
+.wentian-profile-card .wentian-archive-badge,
+.wentian-profile-card .wentian-archive-age-badge,
+.wentian-profile-card .wentian-archive-gender,
+.wentian-profile-card .wentian-archive-tag {
+  height: 17px;
+  padding: 0 6px;
+  border-radius: 9px;
+  font-size: 10px;
+  line-height: 16px;
 }
 
 .wentian-profile-card .wentian-archive-date {
-  font-size: 12px;
-  line-height: 15px;
+  font-size: 11.5px;
+  line-height: 14px;
 }
 
 .wentian-profile-card .wentian-archive-check {
-  width: 38px;
-  height: 38px;
-  border-radius: 19px;
-  font-size: 20px;
+  width: 34px;
+  height: 34px;
+  border-radius: 17px;
+  font-size: 18px;
+  box-shadow: inset 0 0 0 3px rgba(247, 236, 213, .5), 0 3px 8px rgba(146, 104, 42, .05);
 }
 
 .wentian-profile-card .wentian-archive-actions {
-  padding-left: 62px;
-  gap: 8px;
+  padding-left: 52px;
+  gap: 7px;
 }
 
 .wentian-profile-card .wentian-archive-action {
-  min-width: 58px;
-  height: 30px;
-  padding: 0 11px;
-  border-radius: 15px;
-  font-size: 12px;
+  min-width: 54px;
+  height: 26px;
+  padding: 0 10px;
+  border-radius: 13px;
+  font-size: 11.5px;
 }
 
 .wentian-profile-card .wentian-archive-action.default {
-  min-width: 66px;
+  min-width: 58px;
 }
 
 .wentian-profile-card.is-batch {
