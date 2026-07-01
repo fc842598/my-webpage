@@ -17953,8 +17953,13 @@ function renderWentianPolishedScreen(screen) {
       ["财运建议", "财运来自长期积累，不宜追短线。先守现金流，再考虑扩张。"],
       ["行动方案", "未来三个月，把精力放在一个主目标上，每周复盘一次，删掉消耗型关系和低回报事项。"]
     ];
+    const screenHeight = 1490;
+    const firstCardY = 344;
+    const cardStep = 132;
+    const cardHeight = 112;
+    const inputY = firstCardY + paragraphs.length * cardStep + 32;
     return `
-      ${figBox("wt8-bg", 0, 0, 390, 1380, "", "background:#fbf7ef;")}
+      ${figBox("wt8-bg", 0, 0, 390, screenHeight, "", "background:#fbf7ef;")}
       ${wentianSimpleHeader("wt8", "AI长文解读")}
       ${figBox("wt8-master", 24, 100, 342, 92, "", "border-radius:16px;background:#fff;box-shadow:0 8px 20px rgba(70,45,25,.08);")}
       ${figImage("wt8-avatar", "../images/wentian-prototype-assets/xu-dashi.webp", 42, 116, 58, 58, "border-radius:29px;object-fit:cover;object-position:center 18%;")}
@@ -17963,17 +17968,17 @@ function renderWentianPolishedScreen(screen) {
       ${figBox("wt8-question", 42, 222, 306, 88, "", "border-radius:14px;background:#c69a34;box-shadow:0 8px 18px rgba(148,101,25,.16);")}
       ${figText("wt8-question-text", "请根据我的八字，深度拆解我的核心性格特质、事业机会和近期行动重点。", 62, 246, 266, 14, "#fff", 700, "left", "line-height:1.55;")}
       ${paragraphs.map(([title, desc], index) => {
-        const y = 344 + index * 118;
+        const y = firstCardY + index * cardStep;
         return `
-          ${figBox(`wt8-card-${index}`, 24, y, 342, 94, "", "border-radius:14px;background:#fff;box-shadow:0 6px 18px rgba(70,45,25,.07);")}
-          ${figText(`wt8-title-${index}`, title, 44, y + 17, 110, 15, "#25211d", 800)}
-          ${figText(`wt8-desc-${index}`, desc, 44, y + 45, 290, 13, "#625b53", 500, "left", "line-height:1.55;")}
+          ${figBox(`wt8-card-${index}`, 24, y, 342, cardHeight, "", "border-radius:14px;background:#fff;box-shadow:0 6px 18px rgba(70,45,25,.07);")}
+          ${figText(`wt8-title-${index}`, title, 44, y + 17, 290, 15, "#25211d", 800)}
+          ${figText(`wt8-desc-${index}`, desc, 44, y + 47, 290, 13, "#625b53", 500, "left", "line-height:1.55;")}
         `;
       }).join("")}
-      ${figBox("wt8-input", 24, 1198, 342, 44, "", "border-radius:22px;background:#fff;border:1px solid #eadfce;")}
-      ${figText("wt8-input-text", "继续追问", 48, 1212, 160, 13, "#a09890")}
-      ${figText("wt8-input-plus", "+", 318, 1205, 28, 24, "#c49a34", 800, "center")}
-      ${figButton("wt8-input-hit", 24, 1198, 342, 44, 'data-route="screen-6"')}
+      ${figBox("wt8-input", 24, inputY, 342, 44, "", "border-radius:22px;background:#fff;border:1px solid #eadfce;")}
+      ${figText("wt8-input-text", "继续追问", 48, inputY + 14, 160, 13, "#a09890")}
+      ${figText("wt8-input-plus", "+", 318, inputY + 7, 28, 24, "#c49a34", 800, "center")}
+      ${figButton("wt8-input-hit", 24, inputY, 342, 44, 'data-route="screen-6"')}
     `;
   }
   if (no === 9) {
@@ -20140,7 +20145,7 @@ function renderConvertedScreen(no) {
   }
   const polishedScreen = renderWentianPolishedScreen(screen);
   if (polishedScreen) {
-    const polishedHeight = screen.no === 4 ? 892 : screen.no === 8 ? 1380 : screen.no === 17 ? getLiuyaoCastScreenHeight() : screen.no === 18 || screen.no === 19 ? 1480 : screen.no === 20 ? getLiuyaoResultScreenHeight() : screen.no === 22 ? 1120 : screen.no === 24 ? 1368 : screen.no === 42 ? getYangzhaiCompassHeight() : screen.no === 43 ? getYangzhaiSelectHeight() : screen.no === 44 ? getYangzhaiResultHeight() : screen.no === 46 ? LIUREN_SCREEN_HEIGHT : screen.no === 49 ? WENTIAN_HEPAN_RESULT_SCREEN_HEIGHT : 844;
+    const polishedHeight = screen.no === 4 ? 892 : screen.no === 8 ? 1490 : screen.no === 17 ? getLiuyaoCastScreenHeight() : screen.no === 18 || screen.no === 19 ? 1480 : screen.no === 20 ? getLiuyaoResultScreenHeight() : screen.no === 22 ? 1120 : screen.no === 24 ? 1368 : screen.no === 42 ? getYangzhaiCompassHeight() : screen.no === 43 ? getYangzhaiSelectHeight() : screen.no === 44 ? getYangzhaiResultHeight() : screen.no === 46 ? LIUREN_SCREEN_HEIGHT : screen.no === 49 ? WENTIAN_HEPAN_RESULT_SCREEN_HEIGHT : 844;
     const wideBgClass = screen.no >= 42 && screen.no <= 45 ? " wide-bg" : "";
     const customHotspots = screen.no >= 17 && screen.no <= 20 ? "" : convertedFlowHotspots(screen);
     return figPhone(`screen-${screen.no}`, `${String(screen.no).padStart(2, "0")} ${screen.title}`, `
@@ -20273,7 +20278,7 @@ function shouldHideWentianFloatingBottomNav(phone) {
 function syncWentianFloatingBottomNav() {
   const phone = view?.querySelector?.(".figma-phone");
   const desktop = window.matchMedia?.("(min-width: 881px)").matches;
-  if (!phone || desktop) {
+  if (!phone || desktop || phone.dataset.nodeId === "screen-8") {
     clearWentianFloatingBottomNav();
     return;
   }
