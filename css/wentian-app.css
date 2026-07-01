@@ -4817,13 +4817,16 @@ html[lang="en"] .wentian-archive-confirm {
 
 .wentian-hepan-chart-card header {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
   gap: 12px;
   min-width: 0;
 }
 
 .wentian-hepan-chart-card header div {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   min-width: 0;
 }
 
@@ -4833,7 +4836,6 @@ html[lang="en"] .wentian-archive-confirm {
 }
 
 .wentian-hepan-chart-card header strong {
-  margin-top: 4px;
   overflow: hidden;
   color: #201813;
   font-size: 18px;
