@@ -3,8 +3,8 @@
 
   var STORAGE_KEY = "yuetian-health-assessment-v1";
   var CLIENT_ID_KEY = "yuetian-health-client-id-v1";
-  var FREE_ASK_LIMIT = 20;
-  var MEMBER_ASK_LIMIT = 100;
+  var FREE_ASK_LIMIT = 8;
+  var MEMBER_ASK_LIMIT = 80;
   var AUTH_SESSION_KEY = "wentian-app-auth-session-v1";
   var HEALTH_PRODUCT_KEY = "monthly_member";
   var HEALTH_PRODUCT_NAME = "阅天综合会员";
@@ -343,7 +343,7 @@
     var remaining = quota.dailyRemaining ?? quota.remaining;
     var label = isMember ? "会员 " + limit + "条/天" : "免费 " + limit + "条/天";
     if (typeof remaining === "number") label += " · 剩余 " + Math.max(0, remaining);
-    if (!isMember && typeof remaining === "number" && remaining <= 0) label = "开通会员 100条/天";
+    if (!isMember && typeof remaining === "number" && remaining <= 0) label = "开通会员 80条/天";
 
     ["#ylAskQuota", "#ylAskQuotaPreview"].forEach(function (selector) {
       var el = $(selector);
@@ -753,7 +753,7 @@
       if (state.quota && typeof state.quota.dailyUsed === "number") state.askCount = state.quota.dailyUsed;
       appendChatMessage("assistant", data.reply || buildAnswer(text, primary));
       if (data.quotaExceeded) {
-        setPayHint("免费追问已用完，可开通阅天综合会员提升到 100条/天。");
+        setPayHint("免费追问已用完，可开通阅天综合会员提升到 80条/天。");
       }
     } catch (error) {
       appendChatMessage("assistant", "健康模型暂时没有连上，请稍后再试。你也可以先把问题具体到睡眠、脾胃、情绪或手脚冷热其中一项。");
