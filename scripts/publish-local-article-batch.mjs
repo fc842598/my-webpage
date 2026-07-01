@@ -759,6 +759,7 @@ function regenerateFeedsAndSitemaps() {
   writeFileSync(path.join(root, "articles", "en", "feed.xml"), enFeed(enArticles), "utf8");
   writeFileSync(path.join(root, "articles", "en", "index.html"), enIndex(enArticles), "utf8");
   writeFileSync(path.join(root, "sitemap.xml"), mainSitemap(zhArticles), "utf8");
+  writeFileSync(path.join(root, "sitemap-articles.xml"), articlesSitemap(zhArticles), "utf8");
   writeFileSync(path.join(root, "sitemap-en.xml"), enSitemap(enArticles), "utf8");
 }
 
@@ -959,6 +960,11 @@ function mainSitemap(articles) {
   return sitemapXml([...urls], articles);
 }
 
+function articlesSitemap(articles) {
+  const urls = [`${site}/articles/`, ...topicHubs.map((hub) => `${site}/articles/${hub.file}`), ...articles.map((article) => article.url)];
+  return sitemapXml([...new Set(urls)], articles);
+}
+
 function enSitemap(articles) {
   const urls = [`${site}/articles/en/`, `${site}/articles/en/feed.xml`, ...articles.map((article) => article.url)];
   return sitemapXml(urls, articles);
@@ -970,7 +976,7 @@ function sitemapXml(urls, articles) {
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${urls.map((url) => `  <url>
     <loc>${url}</loc>
-    <lastmod>${byUrl.get(url) || (url.includes("feed.xml") || url.endsWith("/articles/") || url.endsWith("/articles/en/") ? publishDate : "2026-06-24")}</lastmod>
+    <lastmod>${byUrl.get(url) || (url.includes("feed.xml") || url.endsWith("/articles/") || url.endsWith("/articles/en/") || topicHubs.some((hub) => url.endsWith(`/articles/${hub.file}`)) ? publishDate : "2026-06-24")}</lastmod>
     <changefreq>${url.includes("/articles/") || url.includes("feed.xml") ? "daily" : "weekly"}</changefreq>
     <priority>${url.endsWith("/articles/") || url.endsWith("/articles/en/") ? "0.8" : url.includes("/articles/") ? "0.7" : "0.6"}</priority>
   </url>`).join("\n")}
