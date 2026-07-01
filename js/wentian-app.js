@@ -13198,7 +13198,6 @@ function renderWentianHepanChartCompare(result) {
 function sourceHepanResultScreen() {
   const result = getWentianHepanResult();
   if (!result.ok) return sourceHepanInvalidScreen(result);
-  const summary = getWentianHepanReportSummary(result);
   return `
     ${figBox("wt49-bg", 0, 0, 390, WENTIAN_HEPAN_RESULT_SCREEN_HEIGHT, "", "background:linear-gradient(180deg,#fffdf8 0%,#fbf7ef 58%,#f3eadc 100%);")}
     ${wentianSimpleHeader("wt49", "合盘结果", "", { backAttrs: 'data-action="wentian-return-previous" data-fallback-route="screen-11" aria-label="back"' })}
@@ -13213,28 +13212,6 @@ function sourceHepanResultScreen() {
 
       <div id="wentian-hepan-ai-panel">
         ${renderWentianHepanAiPanel(result)}
-      </div>
-
-      <div class="wentian-hepan-report-card">
-        <span>判定逻辑</span>
-        <strong>先定格局，再看证据</strong>
-        <p>${escapeHtml(summary.core)}</p>
-      </div>
-
-      <div class="wentian-hepan-result-grid">
-        <article>
-          <span>可用优势</span>
-          <p>${escapeHtml(formatWentianHepanReportText(summary.advantage))}</p>
-        </article>
-        <article>
-          <span>关键提醒</span>
-          <p>${escapeHtml(formatWentianHepanReportText(summary.warning))}</p>
-        </article>
-      </div>
-
-      <div class="wentian-hepan-result-card">
-        <h3>盘面依据</h3>
-        <ul>${renderWentianHepanEvidence(result)}</ul>
       </div>
 
       <div class="wentian-hepan-result-card">
