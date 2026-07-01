@@ -18004,7 +18004,7 @@ function renderWentianPolishedScreen(screen) {
           ${figText(`wt9-row-icon-text-${index}`, "◷", 40, y + 21, 28, 12, "#bd8624", 800, "center")}
           ${figText(`wt9-row-title-${index}`, title, 82, y + 11, 132, 14, "#25211d", 800)}
           ${figText(`wt9-row-time-${index}`, time, 278, y + 12, 54, 12, "#a39a90", 600, "right")}
-          ${figText(`wt9-row-desc-${index}`, desc, 82, y + 34, 210, 11, "#7f766b", 500)}
+          ${figText(`wt9-row-desc-${index}`, desc, 82, y + 34, 210, 11, "#7f766b", 500, "left", "white-space:nowrap;overflow:hidden;text-overflow:ellipsis;")}
           ${figText(`wt9-row-arrow-${index}`, "›", 334, y + 23, 18, 18, "#c5b7a5", 800, "center")}
           ${figButton(`wt9-row-hit-${index}`, 24, y, 342, 58, 'data-route="screen-4"')}
         `;
