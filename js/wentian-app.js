@@ -12957,16 +12957,68 @@ function getWentianHepanReportSummary(result) {
 }
 
 function renderWentianHepanDimensionRows(result) {
-  return result.dimensions.map(([label, score, note]) => `
-    <div class="wentian-hepan-result-dim">
-      <div>
-        <strong>${escapeHtml(label)}</strong>
-        <span>${escapeHtml(note)}</span>
+  const total = Math.max(0, Math.min(100, Number(result?.total) || 0));
+  const totalBand = total >= 82 ? "上吉" : total >= 74 ? "中上" : total >= 66 ? "中稳" : "待磨";
+  const toneMap = [
+    { match: /命宫|缘分|牵引/, short: "牵引", icon: "∞" },
+    { match: /沟通|节奏/, short: "节奏", icon: "≈" },
+    { match: /稳定|长期/, short: "稳定", icon: "⬢" },
+    { match: /成长|共同/, short: "共长", icon: "✦" },
+  ];
+  const badgeForScore = (score) => {
+    const numeric = Number(score) || 0;
+    if (numeric >= 80) return "优";
+    if (numeric >= 75) return "良优";
+    if (numeric >= 68) return "良";
+    return "可";
+  };
+  const items = result.dimensions.map(([label, score]) => {
+    const numeric = Math.max(0, Math.min(100, Number(score) || 0));
+    const preset = toneMap.find((item) => item.match.test(String(label || ""))) || { short: label, icon: "◇" };
+    return `
+      <article class="wentian-hepan-a-row" style="--hepan-score:${numeric}%">
+        <span class="wentian-hepan-a-icon" aria-hidden="true">${escapeHtml(preset.icon)}</span>
+        <strong>${escapeHtml(preset.short)}</strong>
+        <div class="wentian-hepan-a-rail" aria-hidden="true">
+          <i></i>
+          <span></span>
+          <span></span>
+          <span></span>
+          <b></b>
+        </div>
+        <span class="wentian-hepan-a-score">
+          <em>${escapeHtml(numeric)}</em>
+          <small>${badgeForScore(numeric)}</small>
+        </span>
+      </article>
+    `;
+  }).join("");
+  return `
+    <div class="wentian-hepan-a-shell">
+      <div class="wentian-hepan-a-head">
+        <div class="wentian-hepan-a-title">
+          <span class="wentian-hepan-a-flower" aria-hidden="true">✿</span>
+          <strong>本地合参</strong>
+          <em>象</em>
+        </div>
+        <button type="button" class="wentian-hepan-a-detail">详解</button>
       </div>
-      <b>${escapeHtml(score)}</b>
-      <i style="--hepan-score:${Math.max(0, Math.min(100, Number(score) || 0))}%"></i>
+      <div class="wentian-hepan-a-body">
+        <div class="wentian-hepan-a-medal">
+          <div class="wentian-hepan-a-medal-ring">
+            <div class="wentian-hepan-a-medal-core">
+              <b>${escapeHtml(total)}</b>
+              <span>综合</span>
+            </div>
+          </div>
+          <p>${totalBand}</p>
+        </div>
+        <div class="wentian-hepan-a-list">
+          ${items}
+        </div>
+      </div>
     </div>
-  `).join("");
+  `;
 }
 
 function renderWentianHepanEvidence(result) {
@@ -13214,8 +13266,7 @@ function sourceHepanResultScreen() {
         ${renderWentianHepanAiPanel(result)}
       </div>
 
-      <div class="wentian-hepan-result-card">
-        <h3>本地合参</h3>
+      <div class="wentian-hepan-result-card wentian-hepan-metrics-card">
         ${renderWentianHepanDimensionRows(result)}
       </div>
 

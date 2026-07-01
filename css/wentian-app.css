@@ -5106,6 +5106,428 @@ html[lang="en"] .wentian-archive-confirm {
   font-weight: 900;
 }
 
+.wentian-hepan-metrics-card {
+  overflow: hidden;
+  padding: 14px;
+  border: 1px solid rgba(221, 192, 141, .75);
+  border-radius: 26px;
+  background:
+    radial-gradient(circle at 16% 28%, rgba(255, 250, 243, .98) 0%, rgba(255, 250, 243, .9) 20%, transparent 48%),
+    radial-gradient(circle at 84% 12%, rgba(255, 243, 221, .7), transparent 26%),
+    linear-gradient(180deg, #fffdf8 0%, #fff8ee 78%, #f6ebdc 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, .9),
+    0 14px 30px rgba(92, 58, 24, .08);
+}
+
+.wentian-hepan-a-shell {
+  position: relative;
+}
+
+.wentian-hepan-a-shell::before {
+  content: "";
+  position: absolute;
+  left: -6px;
+  right: -6px;
+  bottom: -6px;
+  height: 78px;
+  background:
+    radial-gradient(120px 28px at 20% 100%, rgba(200, 161, 102, .18), transparent 70%),
+    radial-gradient(180px 40px at 84% 100%, rgba(183, 133, 47, .28), transparent 72%);
+  pointer-events: none;
+}
+
+.wentian-hepan-a-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.wentian-hepan-a-title,
+.wentian-hepan-a-detail,
+.wentian-hepan-a-medal p,
+.wentian-hepan-a-medal-core b,
+.wentian-hepan-a-medal-core span,
+.wentian-hepan-a-row strong,
+.wentian-hepan-a-row em,
+.wentian-hepan-a-row small,
+.wentian-hepan-a-score {
+  display: block;
+}
+
+.wentian-hepan-a-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.wentian-hepan-a-flower {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border: 1px solid rgba(215, 181, 120, .78);
+  border-radius: 50%;
+  background: linear-gradient(180deg, #fff9ef 0%, #fff2dd 100%);
+  color: #c2954f;
+  font-size: 17px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .88);
+}
+
+.wentian-hepan-a-title strong {
+  color: #27190f;
+  font-size: 22px;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.wentian-hepan-a-title em {
+  color: #bc7a52;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 900;
+}
+
+.wentian-hepan-a-detail {
+  flex: 0 0 auto;
+  border: 1px solid rgba(223, 200, 163, .92);
+  border-radius: 999px;
+  padding: 0 14px;
+  height: 36px;
+  background: rgba(255, 252, 247, .92);
+  color: #8f692f;
+  font-size: 13px;
+  font-weight: 900;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .92);
+}
+
+.wentian-hepan-a-detail::after {
+  content: "›";
+  margin-left: 8px;
+  font-size: 18px;
+  line-height: 1;
+}
+
+.wentian-hepan-a-body {
+  display: grid;
+  grid-template-columns: 84px minmax(0, 1fr);
+  gap: 8px;
+  align-items: center;
+  margin-top: 14px;
+}
+
+.wentian-hepan-a-medal {
+  display: grid;
+  justify-items: center;
+  gap: 10px;
+}
+
+.wentian-hepan-a-medal-ring {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 50% 50%, rgba(255, 239, 203, .28) 0 50%, transparent 54%),
+    conic-gradient(from 180deg, #8e541f 0deg, #c3843a 55deg, #f0c97e 120deg, #a56628 205deg, #5f3314 290deg, #8e541f 360deg);
+  box-shadow:
+    inset 0 2px 0 rgba(255, 248, 235, .88),
+    0 10px 20px rgba(128, 81, 29, .18);
+}
+
+.wentian-hepan-a-medal-ring::before {
+  content: "";
+  position: absolute;
+  inset: 5px;
+  border: 1px solid rgba(255, 237, 203, .75);
+  border-radius: 50%;
+}
+
+.wentian-hepan-a-medal-ring::after {
+  content: "";
+  position: absolute;
+  inset: 9px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 35% 32%, rgba(255, 202, 134, .32), transparent 22%),
+    linear-gradient(180deg, #6f3d17 0%, #8e531d 38%, #5d3113 100%);
+  box-shadow: inset 0 0 0 2px rgba(255, 221, 173, .14);
+}
+
+.wentian-hepan-a-medal-core {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  justify-items: center;
+}
+
+.wentian-hepan-a-medal-core b {
+  color: #fffaf2;
+  font-size: 29px;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.wentian-hepan-a-medal-core span {
+  margin-top: 4px;
+  color: #f5dfbd;
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.wentian-hepan-a-medal p {
+  min-width: 58px;
+  border: 1px solid rgba(223, 200, 163, .92);
+  border-radius: 999px;
+  padding: 5px 10px;
+  background: rgba(255, 252, 247, .96);
+  color: #9a6f28;
+  font-size: 11px;
+  font-weight: 900;
+  line-height: 1;
+  text-align: center;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .92);
+}
+
+.wentian-hepan-a-list {
+  display: grid;
+  gap: 10px;
+  min-width: 0;
+}
+
+.wentian-hepan-a-row {
+  display: grid;
+  grid-template-columns: 28px max-content minmax(72px, 1fr) auto;
+  gap: 6px;
+  align-items: center;
+  min-height: 50px;
+  min-width: 0;
+  padding: 0 8px 0 6px;
+  border: 1px solid rgba(232, 212, 185, .95);
+  border-radius: 999px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, .95), rgba(255, 251, 245, .98)),
+    #fffdf9;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, .94),
+    0 8px 18px rgba(97, 63, 29, .06);
+}
+
+.wentian-hepan-a-icon {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border: 1px solid rgba(224, 193, 145, .86);
+  border-radius: 50%;
+  background: linear-gradient(180deg, #fff9ef 0%, #fff1de 100%);
+  color: #bf8a3f;
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.wentian-hepan-a-row strong {
+  color: #2a1a10;
+  font-size: 12px;
+  font-weight: 900;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.wentian-hepan-a-rail {
+  position: relative;
+  height: 18px;
+  min-width: 0;
+}
+
+.wentian-hepan-a-rail i,
+.wentian-hepan-a-rail b {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 7px;
+  height: 8px;
+  border-radius: 999px;
+}
+
+.wentian-hepan-a-rail i {
+  background: linear-gradient(90deg, #b76a2e 0%, #c88943 24%, #dcae69 56%, #efe2cb 100%);
+  opacity: .28;
+}
+
+.wentian-hepan-a-rail b {
+  right: auto;
+  width: var(--hepan-score);
+  background: linear-gradient(90deg, #b9692c 0%, #cb8a43 40%, #e4bc75 100%);
+}
+
+.wentian-hepan-a-rail::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: calc(var(--hepan-score) - 7px);
+  width: 14px;
+  height: 14px;
+  border: 1.5px solid #d7a24f;
+  border-radius: 50%;
+  background: #fffdf8;
+  box-shadow: 0 3px 8px rgba(183, 121, 47, .18);
+}
+
+.wentian-hepan-a-rail span {
+  position: absolute;
+  top: 4px;
+  width: 1px;
+  height: 10px;
+  background: rgba(255, 248, 236, .78);
+}
+
+.wentian-hepan-a-rail span:nth-of-type(1) {
+  left: 25%;
+}
+
+.wentian-hepan-a-rail span:nth-of-type(2) {
+  left: 50%;
+}
+
+.wentian-hepan-a-rail span:nth-of-type(3) {
+  left: 75%;
+}
+
+.wentian-hepan-a-row em {
+  color: #6a4521;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.wentian-hepan-a-score {
+  display: inline-flex;
+  align-items: center;
+  justify-self: end;
+  gap: 2px;
+  min-width: 0;
+}
+
+.wentian-hepan-a-row small {
+  border: 1px solid rgba(228, 213, 188, .95);
+  border-radius: 999px;
+  padding: 4px 5px;
+  background: rgba(255, 252, 247, .94);
+  color: #a2702b;
+  font-size: 10px;
+  font-weight: 900;
+  line-height: 1;
+  text-align: center;
+}
+
+@media (min-width: 900px) {
+  .wentian-hepan-a-title {
+    gap: 10px;
+  }
+
+  .wentian-hepan-a-flower {
+    width: 38px;
+    height: 38px;
+    font-size: 19px;
+  }
+
+  .wentian-hepan-a-title strong {
+    font-size: 26px;
+  }
+
+  .wentian-hepan-a-title em {
+    font-size: 18px;
+  }
+
+  .wentian-hepan-a-detail {
+    padding: 0 16px;
+    height: 40px;
+    font-size: 14px;
+  }
+
+  .wentian-hepan-a-body {
+    grid-template-columns: 152px minmax(0, 1fr);
+    gap: 16px;
+    margin-top: 18px;
+  }
+
+  .wentian-hepan-a-medal-ring {
+    width: 132px;
+    height: 132px;
+  }
+
+  .wentian-hepan-a-medal-ring::before {
+    inset: 8px;
+  }
+
+  .wentian-hepan-a-medal-ring::after {
+    inset: 14px;
+  }
+
+  .wentian-hepan-a-medal-core b {
+    font-size: 44px;
+  }
+
+  .wentian-hepan-a-medal p {
+    min-width: 76px;
+    padding: 7px 14px;
+    font-size: 14px;
+  }
+
+  .wentian-hepan-a-row {
+    grid-template-columns: 34px auto minmax(0, 1fr) auto;
+    gap: 10px;
+    min-height: 60px;
+    padding: 0 14px 0 10px;
+  }
+
+  .wentian-hepan-a-icon {
+    width: 34px;
+    height: 34px;
+    font-size: 18px;
+  }
+
+  .wentian-hepan-a-row strong {
+    font-size: 16px;
+  }
+
+  .wentian-hepan-a-rail {
+    height: 22px;
+  }
+
+  .wentian-hepan-a-rail::after {
+    top: 3px;
+    left: calc(var(--hepan-score) - 9px);
+    width: 18px;
+    height: 18px;
+    border-width: 2px;
+  }
+
+  .wentian-hepan-a-rail span {
+    top: 5px;
+    height: 12px;
+  }
+
+  .wentian-hepan-a-row em {
+    font-size: 22px;
+  }
+
+  .wentian-hepan-a-score {
+    gap: 4px;
+  }
+
+  .wentian-hepan-a-row small {
+    padding: 7px 8px;
+    font-size: 13px;
+  }
+}
+
 .wentian-hepan-result-dim {
   position: relative;
   display: grid;
