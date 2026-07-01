@@ -189,6 +189,7 @@ let wentianFitObserver = null;
 let wentianFitTimers = [];
 let wentianFitLoop = 0;
 let wentianFitLoopUntil = 0;
+let wentianFitFrame = 0;
 let wentianPointerRouteSuppressUntil = 0;
 const WENTIAN_PHONE_WIDTH = 390;
 const WENTIAN_PHONE_HEIGHT = 844;
@@ -20775,6 +20776,14 @@ function fitActivePhoneShell() {
   syncWentianFloatingBottomNav();
 }
 
+function requestWentianPhoneFit() {
+  if (wentianFitFrame) return;
+  wentianFitFrame = window.requestAnimationFrame(() => {
+    wentianFitFrame = 0;
+    fitActivePhoneShell();
+  });
+}
+
 function scheduleWentianPhoneFit() {
   wentianFitTimers.forEach((timer) => window.clearTimeout(timer));
   wentianFitTimers = [];
@@ -22205,12 +22214,12 @@ window.addEventListener("hashchange", () => {
   syncWentianStackWithRoute(nextRoute);
   navigate(nextRoute, false, false);
 });
-window.addEventListener("focusin", fitActivePhoneShell);
-window.addEventListener("focusout", () => window.setTimeout(fitActivePhoneShell, 60));
-window.addEventListener("resize", fitActivePhoneShell);
+window.addEventListener("focusin", requestWentianPhoneFit);
+window.addEventListener("focusout", () => window.setTimeout(requestWentianPhoneFit, 60));
+window.addEventListener("resize", requestWentianPhoneFit);
 if (window.visualViewport) {
-  window.visualViewport.addEventListener("resize", fitActivePhoneShell);
-  window.visualViewport.addEventListener("scroll", fitActivePhoneShell);
+  window.visualViewport.addEventListener("resize", requestWentianPhoneFit);
+  window.visualViewport.addEventListener("scroll", requestWentianPhoneFit);
 }
 ensureWentianPhoneFitObserver();
 bootWentianApp();
