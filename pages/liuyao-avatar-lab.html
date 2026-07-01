@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <script src="../js/site-analytics.js?v=20260618-ga4"></script>
+  <title>阅天AI · 六爻抛币内测</title>
+  <meta name="description" content="阅天AI六爻抛币角色内测页。">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <link rel="icon" href="../images/wentian-prototype-assets/wentian-brand-logo-ai-gold-v1.webp" type="image/webp">
+  <link rel="stylesheet" href="../css/liuyao-avatar-lab.css?v=20260701-beauty-avatar">
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script defer src="./audio-engine.js?v=20260616-liuyao-auth-token"></script>
+  <script defer src="./haptic.js?v=20260616-liuyao-auth-token"></script>
+  <script defer src="./liuyao-data.js?v=20260625-liuyao-precompile"></script>
+  <script defer src="./liuyao-avatar-lab.js?v=20260701-beauty-avatar"></script>
+</head>
+<body class="avatar-lab-page">
+  <main class="lab-phone" id="labApp">
+    <header class="lab-topbar">
+      <a class="lab-icon-button" href="./wentian-app.html#screen-1" aria-label="返回">
+        <span aria-hidden="true">‹</span>
+      </a>
+      <div class="lab-title">
+        <span>阅天AI</span>
+        <strong>六爻抛币内测</strong>
+      </div>
+      <button class="lab-icon-button" id="labVoiceToggle" type="button" aria-label="关闭语音" aria-pressed="true">
+        <span class="lab-speaker-icon" aria-hidden="true"></span>
+      </button>
+    </header>
+
+    <section class="lab-stage" aria-label="六爻抛币场景">
+      <div class="lab-room" aria-hidden="true">
+        <span class="lab-ceiling"></span>
+        <span class="lab-wall-line lab-wall-line-a"></span>
+        <span class="lab-wall-line lab-wall-line-b"></span>
+        <span class="lab-floor-grid"></span>
+      </div>
+
+      <div class="lab-bubble" id="labBubble" aria-live="polite">
+        <button class="lab-bubble-sound" id="labBubbleSpeak" type="button" aria-label="朗读当前提示">
+          <span aria-hidden="true">▶</span>
+        </button>
+        <p id="labBubbleText">先定一个问题，我来替你抛六次铜钱。</p>
+      </div>
+
+      <div class="lab-beauty" id="labBeauty" aria-hidden="true">
+        <span class="lab-beauty-aura"></span>
+        <img src="../images/liuyao-avatar/beauty-assistant.webp" alt="" loading="eager" decoding="async">
+        <span class="lab-beauty-mouth"></span>
+        <span class="lab-beauty-hands-glow"></span>
+      </div>
+
+      <div class="lab-coin-scene" id="labCoinScene" aria-hidden="true"></div>
+
+      <div class="lab-progress" aria-label="起卦进度">
+        <span id="labProgressText">0/6</span>
+        <i><b id="labProgressBar"></b></i>
+      </div>
+    </section>
+
+    <section class="lab-control" aria-label="六爻操作">
+      <label class="lab-question-label" for="labQuestion">所问之事</label>
+      <div class="lab-question-row">
+        <textarea id="labQuestion" maxlength="80" rows="2" placeholder="例如：这次合作要不要继续推进？"></textarea>
+        <button class="lab-mic-button" id="labMicButton" type="button" aria-label="语音输入">
+          <span class="lab-mic-icon" aria-hidden="true"></span>
+        </button>
+      </div>
+
+      <div class="lab-lines" id="labLines" aria-label="六爻结果"></div>
+
+      <div class="lab-actions">
+        <button class="lab-primary" id="labTossButton" type="button">投第 1 爻</button>
+        <button class="lab-secondary" id="labAutoButton" type="button">连续完成</button>
+        <button class="lab-reset" id="labResetButton" type="button" aria-label="重来">
+          <span aria-hidden="true">↻</span>
+        </button>
+      </div>
+    </section>
+
+    <section class="lab-result-sheet" id="labResultSheet" hidden aria-live="polite"></section>
+    <p class="lab-toast" id="labToast" role="status" aria-live="polite"></p>
+  </main>
+</body>
+</html>
