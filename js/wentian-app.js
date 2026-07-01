@@ -9087,6 +9087,14 @@ function finalizeWentianLanguageText(root = view, code = getWentianLanguageCode(
   const fileCountValue = fileCount?.textContent?.match(/\d+/)?.[0] || "0";
   if (fileCount) fileCount.textContent = `${fileCountValue} Charts`;
   setWentianFinalText(root, ".wentian-archive-confirm", "Confirm");
+  const hepanHead = root.querySelector('[data-node-id="wt11-head"]');
+  if (hepanHead) {
+    setWentianFinalText(hepanHead, "strong", "Charts");
+    setWentianFinalText(hepanHead, "span", "Pick Two People");
+  }
+  setWentianFinalText(root, ".wentian-hepan-secondary", "+ New Chart");
+  const hepanHint = root.querySelector(".wentian-hepan-footer p");
+  if (hepanHint?.textContent?.includes("files")) hepanHint.textContent = "At least two charts are required";
 
   setWentianFinalText(root, '[data-node-id="wt22-login-desc-clean"]', "Invite both sides to get daily Master Xu credits for 3 days after registration.");
   setWentianFinalText(root, '[data-node-id="wt22-tip-desc-clean"]', "Both inviter and new user receive daily chat rewards for 3 days.");
