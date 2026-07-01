@@ -998,33 +998,36 @@ function getWentianChatFaqEnglishPrompt(groupLabel, itemLabel, fallbackPrompt = 
   const key = `${group}::${item}`;
   const promptMap = {
     "Life Path::Life Direction": "Based on my chart, what is the main direction of my life path? Answer in English.",
-    "Life Path::What Builds Momentum": "Based on my chart, what gives me momentum and helps me rise? Answer in English.",
-    "Life Path::Biggest Weakness": "Based on my chart, what is my biggest weakness or blind spot? Answer in English.",
-    "Life Path::First Step": "Based on my chart, what should I do first from here? Answer in English.",
-    "Love::Can This Work?": "Based on my chart, can this relationship work, and what should I watch for? Answer in English.",
+    "Life Path::Core Strength": "Based on my chart, what is my strongest advantage and how can I use it? Answer in English.",
+    "Life Path::Core Weakness": "Based on my chart, what is my core weakness or blind spot? Answer in English.",
+    "Life Path::First Three Steps": "Based on my chart, what are the first three things I should do? Answer in English.",
+    "Love::Right Partner Window": "Based on my chart, when is my right-partner window, and what type of person fits? Answer in English.",
+    "Love::Can This Continue?": "Based on my chart, can this relationship continue, and should I move forward or let go? Answer in English.",
     "Love::Suitable Partner": "Based on my chart, what kind of partner suits me? Answer in English.",
-    "Love::Marriage Pitfalls": "Based on my chart, what should I avoid in love and marriage? Answer in English.",
-    "Career & Work::Best Work": "Based on my chart, what kind of work fits me best? Answer in English.",
-    "Career & Work::Change Jobs?": "Based on my chart, should I change jobs now? Answer in English.",
+    "Love::Marriage Risks": "Based on my chart, what are the main marriage risks and how should I avoid them? Answer in English.",
+    "Career & Work::Best Role": "Based on my chart, what industry and role fit me best? Answer in English.",
+    "Career & Work::Job Change Timing": "Based on my chart, is this a good time to change jobs, and when is steadier? Answer in English.",
     "Career & Work::Start a Business?": "Based on my chart, am I suited to start a business? Answer in English.",
-    "Career & Work::Career Timing": "Based on my chart, when does my career begin to rise? Answer in English.",
+    "Career & Work::Career Breakthrough": "Based on my chart, where is my career breakthrough and which years matter most? Answer in English.",
     "Money & Wealth::Money Source": "Based on my chart, where does my money mainly come from? Answer in English.",
-    "Money & Wealth::Can I Earn This Year?": "Based on my chart, can I make more money this year? Answer in English.",
-    "Money & Wealth::Good for Investing?": "Based on my chart, am I suited to invest now? Answer in English.",
+    "Money & Wealth::Wealth This Year": "Based on my chart and this year's luck, what is the main money opportunity? Answer in English.",
+    "Money & Wealth::Investment & Partnership": "Based on my chart, are investment, partnership, or side business suitable now? Answer in English.",
     "Money & Wealth::Best Wealth Years": "Based on my chart, which years are better for wealth? Answer in English.",
     "This Year::This Year's Path": "Based on my chart and current annual luck, how does this year go overall? Answer in English.",
-    "This Year::What to Focus On": "Based on my chart, what should I focus on this year? Answer in English.",
+    "This Year::This Year's Chance": "Based on my chart, what opportunity should I focus on this year? Answer in English.",
     "This Year::What to Avoid": "Based on my chart, what should I avoid this year? Answer in English.",
     "This Year::12-Month Focus": "Based on my chart, what are the key points for the next 12 months? Answer in English.",
-    "Luck Shift::When the Low Passes": "Based on my chart, when does this low period pass? Answer in English.",
+    "Luck Shift::Luck Shift Timing": "Based on my chart, when does my luck clearly improve? Answer in English.",
+    "Luck Shift::When the Low Passes": "Based on my chart, when does this low period pass, and how should I stay steady now? Answer in English.",
     "Luck Shift::Next Decade Luck": "Based on my chart, how will my next decade luck change? Answer in English.",
     "Luck Shift::Key Years": "Based on my chart, which future years are most important? Answer in English.",
-    "Health::Health Watch": "Based on my chart, what should I watch in health? Answer in English.",
+    "Health::Health Focus": "Based on my chart, what should I watch in health? Answer in English.",
     "Health::Sleep & Mood": "Based on my chart, how should I adjust sleep, mood, and stress? Answer in English.",
-    "Health::How to Restore Luck": "Based on my chart, what long-term habits help restore my luck? Answer in English.",
-    "Family & People::Where Help Comes From": "Based on my chart, where do helpful people or support come from? Answer in English.",
-    "Family & People::Who to Watch": "Based on my chart, what kind of people should I watch out for? Answer in English.",
-    "Family & People::Parents & Home": "Based on my chart, how are parents, elders, home, and property matters recently? Answer in English.",
+    "Health::Long-Term Habits": "Based on my chart, what long-term habits support my luck and health? Answer in English.",
+    "Family & People::Helpful People": "Based on my chart, where do helpful people or support come from? Answer in English.",
+    "Family & People::People Risks": "Based on my chart, what kind of interpersonal drain or conflict should I watch for? Answer in English.",
+    "Family & People::Home & Parents": "Based on my chart, what should I handle first around parents and home or property? Answer in English.",
+    "Family & People::Children & Home": "Based on my chart, what should I watch around children, parent-child matters, and home? Answer in English.",
   };
   if (promptMap[key]) return promptMap[key];
   if (group && item && !/Regenerate in English/i.test(group) && !/Regenerate in English/i.test(item)) {
@@ -1064,26 +1067,26 @@ const WENTIAN_XU_FAQ_PALACE_DOMAINS = {
 };
 
 const WENTIAN_XU_DYNAMIC_FAQ_ITEMS = [
-  { domain: "love", label: "感情该推进吗", prompt: "结合我的命盘，重点看夫妻宫和当前流年，这段感情适合继续推进还是先放下。", min: 18, max: 45 },
-  { domain: "love", label: "婚姻何时稳定", prompt: "结合我的命盘，看婚姻什么时候容易稳定，感情里最该避开什么问题。", min: 24, max: 55 },
-  { domain: "love", label: "适合主动吗", prompt: "结合我的命盘，看感情里我适合主动推进，还是先观察对方和现实条件。", min: 18, max: 38, gender: "female" },
-  { domain: "love", label: "怎么推进关系", prompt: "结合我的命盘，看这段关系应该怎么推进，哪些动作会加分，哪些会扣分。", min: 18, max: 40, gender: "male" },
-  { domain: "career", label: "现在换方向吗", prompt: "结合我的命盘和当前大限流年，看现在适不适合换工作、转岗或重新选方向。", min: 22, max: 45 },
-  { domain: "career", label: "事业怎么起势", prompt: "结合我的命盘，看事业最容易靠什么起势，下一步先抓岗位、资源还是项目。", min: 18, max: 55 },
-  { domain: "career", label: "第二曲线在哪", prompt: "结合我的命盘，看我中年阶段适合守住原路，还是发展第二条事业线。", min: 36, max: 60 },
-  { domain: "wealth", label: "今年钱从哪来", prompt: "结合我的命盘和当前流年，看今年财从哪里来，适合主动争取什么钱。", min: 20, max: 60 },
-  { domain: "wealth", label: "投资合伙能碰吗", prompt: "结合我的命盘，看现在适不适合投资、合伙或副业，最大风险在哪里。", min: 26, max: 58 },
-  { domain: "wealth", label: "该赚钱还是守财", prompt: "结合我的命盘和当前流年，看今年更适合进攻赚钱，还是控制现金流守财。", min: 30, max: 70 },
-  { domain: "health", label: "身体先顾哪里", prompt: "结合我的命盘和当前流年，看身体、压力和作息最该先顾哪一块。", min: 25, max: 70 },
-  { domain: "health", label: "压力怎么化", prompt: "结合我的命盘，看睡眠、情绪和压力该怎么调整，哪些习惯要先改。", min: 18, max: 65 },
-  { domain: "family", label: "家里事怎么走", prompt: "结合我的命盘，看父母、伴侣、孩子或家宅近期哪件事最需要先处理。", min: 30, max: 70 },
-  { domain: "family", label: "孩子家宅重点", prompt: "结合我的命盘，看子女、家宅和家庭关系近期有什么重点提醒。", min: 28, max: 58 },
-  { domain: "timing", label: "今年会动吗", prompt: "结合我的命盘和当前流年，看今年会不会有搬迁、出行、岗位或圈层变动。", min: 18, max: 65 },
-  { domain: "timing", label: "转运点在哪", prompt: "结合我的命盘和当前大限流年，看接下来最明显的转运点在什么时候。", min: 18, max: 70 },
-  { domain: "life", label: "主线怎么定", prompt: "结合我的命盘和当前年龄阶段，帮我把人生主线和接下来优先级讲清楚。", min: 0, max: 70 },
-  { domain: "life", label: "先抓哪件事", prompt: "结合我的命盘，看现在最应该先抓事业、钱、感情、健康还是家里事。", min: 16, max: 70 },
-  { domain: "year", label: "今年重点宫位", prompt: "结合我的命盘，重点看今年流年小限落宫，讲今年最容易应在哪些事情上。", min: 0, max: 70 },
-  { domain: "year", label: "今年避什么坑", prompt: "结合我的命盘和当前流年，看今年最容易踩什么坑，应该怎么避开。", min: 18, max: 70 },
+  { domain: "love", label: "感情能推吗", prompt: "结合命盘和流年，看这段关系近期能不能推进，关键阻力是什么。", min: 18, max: 45 },
+  { domain: "love", label: "婚姻何时稳", prompt: "结合命盘，看婚姻稳定窗口，以及最该避开的相处问题。", min: 24, max: 55 },
+  { domain: "love", label: "该主动吗", prompt: "结合命盘，看感情里我该主动推进，还是先观察对方反应。", min: 18, max: 38, gender: "female" },
+  { domain: "love", label: "关系怎么推", prompt: "结合命盘，看这段关系下一步怎么推进，先从哪件事入手。", min: 18, max: 40, gender: "male" },
+  { domain: "career", label: "该换方向吗", prompt: "结合命盘和大限流年，看现在是否适合换工作、转岗或换方向。", min: 22, max: 45 },
+  { domain: "career", label: "事业突破点", prompt: "结合命盘，看事业突破点在哪里，先抓岗位、资源还是项目。", min: 18, max: 55 },
+  { domain: "career", label: "副业方向", prompt: "结合命盘，看中年阶段适合守主业，还是发展第二曲线。", min: 36, max: 60 },
+  { domain: "wealth", label: "财从哪来", prompt: "结合命盘和流年，看今年钱从哪里来，先争取什么。", min: 20, max: 60 },
+  { domain: "wealth", label: "合伙风险", prompt: "结合命盘，看投资、合伙、副业现在能不能碰，最大风险是什么。", min: 26, max: 58 },
+  { domain: "wealth", label: "赚钱守财", prompt: "结合命盘和流年，看今年该进攻赚钱，还是先守现金流。", min: 30, max: 70 },
+  { domain: "health", label: "身体重点", prompt: "结合命盘和流年，看身体、压力、作息哪一块要先顾。", min: 25, max: 70 },
+  { domain: "health", label: "压力怎么调", prompt: "结合命盘，看睡眠、情绪和压力怎么调整，先改什么习惯。", min: 18, max: 65 },
+  { domain: "family", label: "家宅近况", prompt: "结合命盘，看近期父母与房宅哪件事先应，应该先处理什么。", min: 30, max: 70 },
+  { domain: "family", label: "子女家事", prompt: "结合命盘，看近期孩子、家宅和亲子关系的重点提醒。", min: 28, max: 58 },
+  { domain: "timing", label: "今年会动吗", prompt: "结合命盘和流年，看今年是否有搬迁、出行、岗位或圈层变动。", min: 18, max: 65 },
+  { domain: "timing", label: "转运点", prompt: "结合命盘和大限流年，看接下来最明显的转运点在什么时候。", min: 18, max: 70 },
+  { domain: "life", label: "人生方向", prompt: "结合命盘和当前年龄，看我的人生方向，以及眼下优先级。", min: 0, max: 70 },
+  { domain: "life", label: "先抓什么", prompt: "结合命盘，看现在最该先抓事业、钱、感情、健康还是家事。", min: 16, max: 70 },
+  { domain: "year", label: "今年重点", prompt: "结合命盘和流年，看今年最容易应在哪个宫位、哪类事情。", min: 0, max: 70 },
+  { domain: "year", label: "今年避坑", prompt: "结合命盘和流年，看今年最容易踩什么坑，怎么避开。", min: 18, max: 70 },
 ];
 
 function normalizeWentianFaqPalaceName(value = "") {
@@ -1323,73 +1326,73 @@ function sourceAiChatScreen(screen) {
     {
       label: "人生主线",
       items: [
-        ["这辈子怎么走", "结合我的命盘，直接说我这辈子最重要的主线是什么，适合走什么路。"],
-        ["靠什么起势", "结合我的命盘，看我最容易靠什么起势，真正的优势在哪里。"],
-        ["最大短板", "结合我的命盘，看我最大的短板和最容易反复出问题的地方。"],
-        ["先做什么", "结合我的命盘，给我接下来最该先做的三件事。"]
+        ["人生方向", "结合命盘，直接说我的人生主线是什么，适合走什么路。"],
+        ["优势在哪", "结合命盘，看我最强的优势是什么，适合靠什么打开局面。"],
+        ["核心短板", "结合命盘，看我最容易反复出问题的短板是什么。"],
+        ["先做三件事", "结合命盘，给我接下来最该先做的三件事。"]
       ]
     },
     {
       label: "感情婚姻",
       items: [
-        ["正缘何时来", "结合我的命盘，看我的正缘什么时候容易出现，对方大概是什么类型。"],
-        ["这段能成吗", "结合我的命盘，看这段关系能不能继续，适合推进还是放下。"],
-        ["适合伴侣", "结合我的命盘，看我适合什么样的伴侣，什么类型的人不适合我。"],
-        ["婚姻避坑", "结合我的命盘，看婚姻里最容易出问题的点，以及怎么避开。"]
+        ["正缘窗口", "结合命盘，看正缘容易出现的时间窗口和对方类型。"],
+        ["这段能走吗", "结合命盘，看这段关系能不能继续，适合推进还是放下。"],
+        ["适合伴侣", "结合命盘，看我适合什么伴侣，什么类型不合适。"],
+        ["婚姻风险", "结合命盘，看婚姻里最容易出问题的点，以及怎么避开。"]
       ]
     },
     {
       label: "事业工作",
       items: [
-        ["适合工作", "结合我的命盘，看我适合什么行业和岗位，靠什么能力发展。"],
-        ["要换工作吗", "结合我的命盘，看我现在适不适合换工作、转岗或换方向。"],
-        ["能创业吗", "结合我的命盘，看我适合创业还是上班，创业要注意什么。"],
-        ["事业何时起", "结合我的命盘，看事业什么时候容易起来，哪几年最关键。"]
+        ["适合岗位", "结合命盘，看我适合什么行业和岗位，靠什么能力发展。"],
+        ["跳槽时机", "结合命盘，看近期跳槽是否有利，什么时候动更稳。"],
+        ["创业适合吗", "结合命盘，看我适合创业还是上班，创业要注意什么。"],
+        ["事业突破点", "结合命盘，看事业突破点在哪里，哪几年最关键。"]
       ]
     },
     {
       label: "财运赚钱",
       items: [
-        ["财从哪里来", "结合我的命盘，看我的财从哪里来，适合靠什么赚钱。"],
-        ["今年能赚钱吗", "结合我的命盘和今年流年，看今年财运怎么样，能不能赚钱。"],
-        ["适合投资吗", "结合我的命盘，看我适不适合投资、合伙或做副业，风险在哪里。"],
-        ["哪年财运好", "结合我的命盘，看哪几年财运比较好，哪几年要守财。"]
+        ["财从哪来", "结合命盘，看主要财路在哪里，适合靠什么赚钱。"],
+        ["今年财运", "结合命盘和今年流年，看今年财运重点和赚钱机会。"],
+        ["投资合伙", "结合命盘，看投资、合伙或副业能不能碰，风险在哪里。"],
+        ["旺财年份", "结合命盘，看哪几年财运较好，哪几年要守财。"]
       ]
     },
     {
       label: "今年运势",
       items: [
-        ["今年怎么走", "结合我的命盘和当前流年，看今年整体运势怎么走。"],
-        ["今年抓什么", "结合我的命盘，看今年最该抓住的机会是什么。"],
-        ["今年避什么", "结合我的命盘，看今年最容易踩什么坑，怎么避开。"],
-        ["12个月重点", "结合我的命盘，看未来12个月每个阶段的重点和提醒。"]
+        ["今年走势", "结合命盘和当前流年，看今年整体走势和重点事件。"],
+        ["今年机会", "结合命盘，看今年最该抓住的机会是什么。"],
+        ["今年避坑", "结合命盘，看今年最容易踩什么坑，怎么避开。"],
+        ["12个月重点", "结合命盘，看未来12个月每个阶段的重点和提醒。"]
       ]
     },
     {
       label: "转运节点",
       items: [
-        ["何时转运", "结合我的命盘，看我什么时候转运，什么时候会明显好起来。"],
-        ["低谷何时过", "结合我的命盘，看我现在这段低谷什么时候过去，应该怎么熬。"],
-        ["下个大限", "结合我的命盘，看我下一个大限怎么样，会往哪里变。"],
-        ["关键年份", "结合我的命盘，看未来哪些年份最关键，哪些年要主动争取。"]
+        ["转运时间", "结合命盘，看我什么时候转运，什么时候会明显好起来。"],
+        ["低谷何时过", "结合命盘，看这段低谷什么时候过去，当前怎么稳住。"],
+        ["下个大限", "结合命盘，看下一个大限会往哪里变，重点是什么。"],
+        ["关键年份", "结合命盘，看未来哪些年份最关键，哪些年要主动争取。"]
       ]
     },
     {
       label: "健康身体",
       items: [
-        ["身体注意", "结合我的命盘，看身体最该注意哪里，哪些习惯要改。"],
-        ["今年健康", "结合我的命盘和今年流年，看今年健康方面有什么风险。"],
-        ["睡眠情绪", "结合我的命盘，看睡眠、情绪和压力该怎么调整。"],
-        ["怎么养运", "结合我的命盘，给我适合长期坚持的养运和生活建议。"]
+        ["身体重点", "结合命盘，看身体最该注意哪里，哪些习惯要改。"],
+        ["今年健康", "结合命盘和今年流年，看今年健康方面的主要风险。"],
+        ["睡眠情绪", "结合命盘，看睡眠、情绪和压力该怎么调整。"],
+        ["长期养运", "结合命盘，给我适合长期坚持的养运和生活建议。"]
       ]
     },
     {
       label: "家庭人际",
       items: [
-        ["贵人在哪", "结合我的命盘，看我的贵人在哪里，什么人最能帮我。"],
-        ["防什么人", "结合我的命盘，看我近期要防什么小人、口舌或人际消耗。"],
-        ["父母家宅", "结合我的命盘，看父母、长辈、房子和家宅近期怎么走。"],
-        ["子女缘分", "结合我的命盘，看子女缘分、亲子关系和孩子相关运势。"]
+        ["贵人助力", "结合命盘，看我的贵人来自哪里，什么人最能帮我。"],
+        ["人际风险", "结合命盘，看近期要防哪类人际消耗、口舌或暗耗。"],
+        ["家宅近况", "结合命盘，看近期父母与房宅哪件事先应，应该先处理什么。"],
+        ["子女家事", "结合命盘，看孩子、亲子关系和家庭沟通提醒。"]
       ]
     }
   ];
@@ -8311,40 +8314,56 @@ Object.assign(WENTIAN_I18N_EN_EXTRA, {
   "双方命盘合参": "Two-chart match",
   "铜钱起卦": "Coin casting",
   "方位九宫": "Nine Palaces",
-  "这辈子怎么走": "Life Direction",
-  "靠什么起势": "What Builds Momentum",
-  "最大短板": "Biggest Weakness",
-  "先做什么": "First Step",
-  "这段能成吗": "Can This Work?",
+  "感情能推吗": "Move Love Forward?",
+  "婚姻何时稳": "Marriage Timing",
+  "该主动吗": "Take Initiative?",
+  "关系怎么推": "Next Relationship Step",
+  "该换方向吗": "Change Direction?",
+  "副业方向": "Side Business Path",
+  "合伙风险": "Partnership Risk",
+  "赚钱守财": "Earn or Save",
+  "压力怎么调": "Adjust Stress",
+  "今年会动吗": "Change This Year?",
+  "转运点": "Luck Shift Point",
+  "先抓什么": "First Priority",
+  "今年重点": "This Year's Focus",
+  "人生方向": "Life Direction",
+  "优势在哪": "Core Strength",
+  "核心短板": "Core Weakness",
+  "先做三件事": "First Three Steps",
+  "正缘窗口": "Right Partner Window",
+  "这段能走吗": "Can This Continue?",
   "适合伴侣": "Suitable Partner",
-  "婚姻避坑": "Marriage Pitfalls",
+  "婚姻风险": "Marriage Risks",
   "事业工作": "Career & Work",
-  "适合工作": "Best Work",
-  "要换工作吗": "Change Jobs?",
-  "能创业吗": "Start a Business?",
-  "事业何时起": "Career Timing",
+  "适合岗位": "Best Role",
+  "跳槽时机": "Job Change Timing",
+  "创业适合吗": "Start a Business?",
+  "事业突破点": "Career Breakthrough",
   "财运赚钱": "Money & Wealth",
-  "财从哪里来": "Money Source",
-  "今年能赚钱吗": "Can I Earn This Year?",
-  "适合投资吗": "Good for Investing?",
-  "哪年财运好": "Best Wealth Years",
+  "财从哪来": "Money Source",
+  "今年财运": "Wealth This Year",
+  "投资合伙": "Investment & Partnership",
+  "旺财年份": "Best Wealth Years",
   "今年运势": "This Year",
-  "今年怎么走": "This Year's Path",
-  "今年抓什么": "What to Focus On",
-  "今年避什么": "What to Avoid",
+  "今年走势": "This Year's Path",
+  "今年机会": "This Year's Chance",
+  "今年避坑": "What to Avoid",
   "12个月重点": "12-Month Focus",
   "转运节点": "Luck Shift",
+  "转运时间": "Luck Shift Timing",
   "低谷何时过": "When the Low Passes",
   "下个大限": "Next Decade Luck",
   "关键年份": "Key Years",
   "健康身体": "Health",
-  "身体注意": "Health Watch",
+  "身体重点": "Health Focus",
   "睡眠情绪": "Sleep & Mood",
-  "怎么养运": "How to Restore Luck",
+  "长期养运": "Long-Term Habits",
   "家庭人际": "Family & People",
-  "贵人在哪": "Where Help Comes From",
-  "防什么人": "Who to Watch",
-  "父母家宅": "Parents & Home",
+  "贵人助力": "Helpful People",
+  "人际风险": "People Risks",
+  "家宅近况": "Home & Parents",
+  "子女家事": "Children & Home",
   "编辑": "Edit",
   "删除": "Delete",
   "改": "Edit",
