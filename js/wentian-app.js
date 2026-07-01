@@ -1703,6 +1703,7 @@ const WENTIAN_ARCHIVE_TOMBSTONES_KEY = "wentian-app-archive-tombstones-v1";
 const WENTIAN_SELECTED_ARCHIVE_KEY = "wentian-app-selected-archive-id";
 const WENTIAN_HEPAN_SELECTION_KEY = "wentian-app-hepan-selected-ids";
 const WENTIAN_HEPAN_AI_CACHE_KEY = "wentian-app-hepan-ai-judge-v3";
+const WENTIAN_CHART_RECORD_STORAGE_KEY = "wentian-xudashi-chart-record-id";
 const WENTIAN_HEPAN_MIN_AGE = 18;
 const WENTIAN_HEPAN_MAX_AGE_GAP = 15;
 const WENTIAN_HEPAN_DOC_TERMS = [
@@ -1789,6 +1790,7 @@ let wentianProfileBatchSelectedIds = [];
 let wentianProfileBatchDeleteConfirm = false;
 let wentianLanguageDraft = null;
 let wentianHepanSelectedIds = null;
+let wentianHepanSelectedIdsScope = "";
 let wentianHepanTimeEditId = "";
 let wentianHepanTimeEditError = "";
 let wentianHepanAiState = { key: "", loading: false, card: null, error: "", promise: null };
@@ -2005,6 +2007,48 @@ function getWentianArchiveRemoteScope() {
   return userId ? `account:${userId}` : "local-only";
 }
 
+function getWentianArchiveStorageScopeId() {
+  const userId = getWentianArchiveAccountUserId();
+  const scope = userId ? `account-${userId}` : "local-only";
+  return String(scope).replace(/[^a-zA-Z0-9_-]/g, "").slice(0, 120) || "local-only";
+}
+
+function getWentianScopedStorageKey(baseKey) {
+  return `${String(baseKey || "").trim()}:${getWentianArchiveStorageScopeId()}`;
+}
+
+function getWentianScopedLocalStorageItem(baseKey, options = {}) {
+  const { allowLegacyLocal = false } = options;
+  const scopedKey = getWentianScopedStorageKey(baseKey);
+  let value = null;
+  try {
+    value = localStorage.getItem(scopedKey);
+    if (value != null) return value;
+    if (allowLegacyLocal && !getWentianArchiveAccountUserId()) {
+      value = localStorage.getItem(baseKey);
+      if (value != null) {
+        try {
+          localStorage.setItem(scopedKey, value);
+        } catch (_err) {}
+        return value;
+      }
+    }
+  } catch (_err) {}
+  return null;
+}
+
+function setWentianScopedLocalStorageItem(baseKey, value) {
+  localStorage.setItem(getWentianScopedStorageKey(baseKey), value);
+}
+
+function removeWentianScopedLocalStorageItem(baseKey, options = {}) {
+  const { removeLegacyLocal = false } = options;
+  localStorage.removeItem(getWentianScopedStorageKey(baseKey));
+  if (removeLegacyLocal && !getWentianArchiveAccountUserId()) {
+    localStorage.removeItem(baseKey);
+  }
+}
+
 function normalizeWentianInviteCode(value) {
   return String(value || "").toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 12);
 }
@@ -2145,12 +2189,11 @@ function isWentianUuid(id) {
 }
 
 function getWentianChartRecordId() {
-  const key = "wentian-xudashi-chart-record-id";
   try {
-    let id = localStorage.getItem(key);
+    let id = getWentianScopedLocalStorageItem(WENTIAN_CHART_RECORD_STORAGE_KEY, { allowLegacyLocal: true });
     if (!isWentianUuid(id)) {
       id = makeWentianUuid();
-      localStorage.setItem(key, id);
+      setWentianScopedLocalStorageItem(WENTIAN_CHART_RECORD_STORAGE_KEY, id);
     }
     return id;
   } catch (_err) {
@@ -2162,7 +2205,7 @@ function getWentianChartRecordId() {
 function resetWentianChartRecordId() {
   const id = makeWentianUuid();
   try {
-    localStorage.setItem("wentian-xudashi-chart-record-id", id);
+    setWentianScopedLocalStorageItem(WENTIAN_CHART_RECORD_STORAGE_KEY, id);
   } catch (_err) {
     wentianFallbackChartRecordId = id;
   }
@@ -2171,7 +2214,7 @@ function resetWentianChartRecordId() {
 
 function getWentianSavedChart() {
   try {
-    const raw = localStorage.getItem(WENTIAN_CHART_STORAGE_KEY);
+    const raw = getWentianScopedLocalStorageItem(WENTIAN_CHART_STORAGE_KEY, { allowLegacyLocal: true });
     return raw ? JSON.parse(raw) : null;
   } catch (_err) {
     return null;
@@ -2180,7 +2223,7 @@ function getWentianSavedChart() {
 
 function readWentianArchives() {
   try {
-    const raw = localStorage.getItem(WENTIAN_ARCHIVES_STORAGE_KEY);
+    const raw = getWentianScopedLocalStorageItem(WENTIAN_ARCHIVES_STORAGE_KEY, { allowLegacyLocal: true });
     const list = raw ? JSON.parse(raw) : [];
     return Array.isArray(list) ? list : [];
   } catch (_err) {
@@ -2190,7 +2233,7 @@ function readWentianArchives() {
 
 function hasStoredWentianArchives() {
   try {
-    return localStorage.getItem(WENTIAN_ARCHIVES_STORAGE_KEY) !== null;
+    return getWentianScopedLocalStorageItem(WENTIAN_ARCHIVES_STORAGE_KEY, { allowLegacyLocal: true }) !== null;
   } catch (_err) {
     return false;
   }
@@ -2198,15 +2241,15 @@ function hasStoredWentianArchives() {
 
 function writeWentianArchives(archives) {
   try {
-    localStorage.setItem(WENTIAN_ARCHIVES_STORAGE_KEY, JSON.stringify(archives));
+    setWentianScopedLocalStorageItem(WENTIAN_ARCHIVES_STORAGE_KEY, JSON.stringify(archives));
   } catch (_err) {}
 }
 
 function clearWentianSavedChart() {
   try {
-    localStorage.removeItem(WENTIAN_CHART_STORAGE_KEY);
-    localStorage.removeItem(WENTIAN_SELECTED_ARCHIVE_KEY);
-    localStorage.removeItem("wentian-xudashi-chart-record-id");
+    removeWentianScopedLocalStorageItem(WENTIAN_CHART_STORAGE_KEY, { removeLegacyLocal: true });
+    removeWentianScopedLocalStorageItem(WENTIAN_SELECTED_ARCHIVE_KEY, { removeLegacyLocal: true });
+    removeWentianScopedLocalStorageItem(WENTIAN_CHART_RECORD_STORAGE_KEY, { removeLegacyLocal: true });
   } catch (_err) {}
   wentianFallbackChartRecordId = "";
 }
@@ -2217,14 +2260,14 @@ function makeWentianArchiveId(prefix = "archive") {
 
 function setWentianSelectedArchiveId(id) {
   try {
-    localStorage.setItem(WENTIAN_SELECTED_ARCHIVE_KEY, id);
+    setWentianScopedLocalStorageItem(WENTIAN_SELECTED_ARCHIVE_KEY, id);
   } catch (_err) {}
 }
 
 function getWentianStoredSelectedArchiveId() {
   let selectedId = "";
   try {
-    selectedId = localStorage.getItem(WENTIAN_SELECTED_ARCHIVE_KEY) || "";
+    selectedId = getWentianScopedLocalStorageItem(WENTIAN_SELECTED_ARCHIVE_KEY, { allowLegacyLocal: true }) || "";
   } catch (_err) {}
   return selectedId;
 }
@@ -2238,7 +2281,7 @@ function getWentianSelectedArchiveId(archives) {
 function setWentianChartRecordId(id) {
   if (!id) return "";
   try {
-    localStorage.setItem("wentian-xudashi-chart-record-id", id);
+    setWentianScopedLocalStorageItem(WENTIAN_CHART_RECORD_STORAGE_KEY, id);
   } catch (_err) {
     wentianFallbackChartRecordId = id;
   }
@@ -2415,7 +2458,7 @@ function getWentianArchiveStamp(archive) {
 
 function readWentianArchiveTombstones() {
   try {
-    const raw = localStorage.getItem(WENTIAN_ARCHIVE_TOMBSTONES_KEY);
+    const raw = getWentianScopedLocalStorageItem(WENTIAN_ARCHIVE_TOMBSTONES_KEY, { allowLegacyLocal: true });
     const list = raw ? JSON.parse(raw) : [];
     return Array.isArray(list) ? list : [];
   } catch (_err) {
@@ -2425,7 +2468,7 @@ function readWentianArchiveTombstones() {
 
 function writeWentianArchiveTombstones(tombstones) {
   try {
-    localStorage.setItem(WENTIAN_ARCHIVE_TOMBSTONES_KEY, JSON.stringify(tombstones.slice(-120)));
+    setWentianScopedLocalStorageItem(WENTIAN_ARCHIVE_TOMBSTONES_KEY, JSON.stringify(tombstones.slice(-120)));
   } catch (_err) {}
 }
 
@@ -2736,7 +2779,7 @@ function saveWentianArchiveFromChartState(chartState) {
 
 function saveWentianChart(chartState, options = {}) {
   try {
-    localStorage.setItem(WENTIAN_CHART_STORAGE_KEY, JSON.stringify(chartState));
+    setWentianScopedLocalStorageItem(WENTIAN_CHART_STORAGE_KEY, JSON.stringify(chartState));
   } catch (_err) {}
   if (options.upsertArchive !== false) saveWentianArchiveFromChartState(chartState);
 }
@@ -4005,7 +4048,7 @@ function syncWentianChartAiStateFromStorage() {
   wentianXiaoLianBadgeVisibleKey = "";
   clearWentianXiaoLianBadgeTimer();
   try {
-    const all = JSON.parse(localStorage.getItem(WENTIAN_CHART_AI_STORAGE_KEY) || "{}");
+    const all = JSON.parse(getWentianScopedLocalStorageItem(WENTIAN_CHART_AI_STORAGE_KEY, { allowLegacyLocal: true }) || "{}");
     const saved = all?.[getWentianChartAiStorageKey(chartRecordId)];
     if (saved && typeof saved === "object") {
       const resultCount = Object.keys(saved.results || {}).length + Object.keys(saved.luckAiResults || {}).length;
@@ -4030,7 +4073,7 @@ function syncWentianChartAiStateFromStorage() {
 
 function saveWentianChartAiState() {
   try {
-    const all = JSON.parse(localStorage.getItem(WENTIAN_CHART_AI_STORAGE_KEY) || "{}");
+    const all = JSON.parse(getWentianScopedLocalStorageItem(WENTIAN_CHART_AI_STORAGE_KEY, { allowLegacyLocal: true }) || "{}");
     all[getWentianChartAiStorageKey(wentianChartAiState.chartRecordId)] = {
       userStarted: !!wentianChartAiState.userStarted,
       status: wentianChartAiState.status,
@@ -4042,7 +4085,7 @@ function saveWentianChartAiState() {
       error: wentianChartAiState.error,
       updatedAt: wentianChartAiState.updatedAt,
     };
-    localStorage.setItem(WENTIAN_CHART_AI_STORAGE_KEY, JSON.stringify(all));
+    setWentianScopedLocalStorageItem(WENTIAN_CHART_AI_STORAGE_KEY, JSON.stringify(all));
   } catch (_err) {}
 }
 
@@ -6723,9 +6766,14 @@ function clampWentianScore(value) {
 }
 
 function getWentianHepanSelectedIds(archives = getWentianArchiveList()) {
+  const scopeKey = getWentianScopedStorageKey(WENTIAN_HEPAN_SELECTION_KEY);
+  if (wentianHepanSelectedIdsScope !== scopeKey) {
+    wentianHepanSelectedIds = null;
+    wentianHepanSelectedIdsScope = scopeKey;
+  }
   if (!Array.isArray(wentianHepanSelectedIds)) {
     try {
-      const raw = localStorage.getItem(WENTIAN_HEPAN_SELECTION_KEY);
+      const raw = getWentianScopedLocalStorageItem(WENTIAN_HEPAN_SELECTION_KEY, { allowLegacyLocal: true });
       const saved = raw ? JSON.parse(raw) : [];
       wentianHepanSelectedIds = Array.isArray(saved) ? saved : [];
     } catch (_err) {
@@ -6743,9 +6791,10 @@ function getWentianHepanSelectedIds(archives = getWentianArchiveList()) {
 }
 
 function saveWentianHepanSelectedIds(ids) {
+  wentianHepanSelectedIdsScope = getWentianScopedStorageKey(WENTIAN_HEPAN_SELECTION_KEY);
   wentianHepanSelectedIds = ids.slice(0, 2);
   try {
-    localStorage.setItem(WENTIAN_HEPAN_SELECTION_KEY, JSON.stringify(wentianHepanSelectedIds));
+    setWentianScopedLocalStorageItem(WENTIAN_HEPAN_SELECTION_KEY, JSON.stringify(wentianHepanSelectedIds));
   } catch (_err) {}
 }
 
@@ -9660,7 +9709,7 @@ function applyWentianArchiveToCurrent(archive) {
   if (!archive) return false;
   const chartRecordId = archive.chartRecordId || archive.chartData?.chartRecordId || makeWentianUuid();
   try {
-    localStorage.setItem("wentian-xudashi-chart-record-id", chartRecordId);
+    setWentianScopedLocalStorageItem(WENTIAN_CHART_RECORD_STORAGE_KEY, chartRecordId);
   } catch (_err) {
     wentianFallbackChartRecordId = chartRecordId;
   }
