@@ -13,6 +13,66 @@ const category = args.category || "紫微斗数";
 const publishDate = args.date || todayShanghai();
 const publishTime = args.time || "09:00";
 
+const topicHubs = [
+  {
+    key: "learning",
+    file: "ziwei-learning-path.html",
+    name: "紫微斗数看盘入门路径",
+    shortName: "看盘入门",
+    desc: "从排盘、命宫、三方四正到流年触发，给新手一条不乱跳的阅读顺序。"
+  },
+  {
+    key: "palaces",
+    file: "ziwei-palaces.html",
+    name: "紫微斗数十二宫位",
+    shortName: "十二宫位",
+    desc: "先定事情发生在哪一宫，再看星曜强弱和三方四正。"
+  },
+  {
+    key: "transformations",
+    file: "ziwei-four-transformations.html",
+    name: "紫微斗数四化科权禄忌",
+    shortName: "四化科权禄忌",
+    desc: "化科看名声与专业，化权看责任，化禄看资源，化忌看卡点。"
+  },
+  {
+    key: "main-stars",
+    file: "ziwei-main-stars.html",
+    name: "紫微斗数十四主星星性",
+    shortName: "十四主星",
+    desc: "先懂主星本性，再放回宫位、辅煞和现实问题里看。"
+  },
+  {
+    key: "helper-malice",
+    file: "ziwei-helper-malice-stars.html",
+    name: "紫微斗数辅曜煞曜",
+    shortName: "辅曜煞曜",
+    desc: "辅曜看助力，煞曜看压力，重点是它们怎样改变主星的成用。"
+  },
+  {
+    key: "case-patterns",
+    file: "ziwei-case-patterns.html",
+    name: "紫微斗数特定命例解读",
+    shortName: "特定命例",
+    desc: "把常见格局、断语和组合拆成成格条件、例子和现代转法。"
+  },
+  {
+    key: "cycles",
+    file: "ziwei-cycles.html",
+    name: "紫微斗数大限流年",
+    shortName: "大限流年",
+    desc: "大限定十年背景，流年定当年触发，小限和对宫看事件落点。"
+  },
+  {
+    key: "money-career",
+    file: "ziwei-money-career.html",
+    name: "紫微斗数财运事业",
+    shortName: "财运事业",
+    desc: "钱从哪里来、职位怎么变、财帛官禄迁移如何合看。"
+  }
+];
+const topicHubFiles = new Set(topicHubs.map((hub) => hub.file));
+
 if (!queuePath || !sourcePath || !count) {
   fail("Usage: node scripts/publish-local-article-batch.mjs --queue <发布队列.md> --source <稿件.md> --count 20 --category <大类>");
 }
@@ -178,6 +238,80 @@ function inlineMarkdown(value) {
     .replace(/`([^`]+)`/g, "<code>$1</code>");
 }
 
+function articleText(article) {
+  return `${article.category || article.section || ""} ${article.title || article.headline || ""} ${article.description || ""}`;
+}
+
+function topicByKey(key) {
+  return topicHubs.find((hub) => hub.key === key) || topicHubs[0];
+}
+
+function topicHubFor(article) {
+  const text = articleText(article);
+  if (text.includes("单星星性")) return topicByKey("main-stars");
+  if (text.includes("特定命例")) return topicByKey("case-patterns");
+  if (/(左辅|右弼|文昌|文曲|天魁|天钺|禄存|天马|擎羊|陀罗|火星|铃星|地空|地劫|红鸾|天喜|三台|八座|天刑|天姚|孤辰|寡宿|天哭|天虚|咸池|解神|天巫|阴煞)/.test(text)) return topicByKey("helper-malice");
+  if (/(紫微星|天机星|太阳星|武曲星|天同星|廉贞星|天府星|太阴星|天梁星|天相星|七杀星|破军星|贪狼星|巨门星|十四主星)/.test(text)) return topicByKey("main-stars");
+  if (/(七杀临身|日照雷门|月朗天门|明珠出海|紫府坐垣|七杀朝斗|夹命|夹财|夹贵|火贪|格局|命例)/.test(text)) return topicByKey("case-patterns");
+  if (/(大限|小限|流年)/.test(text)) return topicByKey("cycles");
+  if (/(化科|化权|化禄|化忌|四化|科权禄忌)/.test(text)) return topicByKey("transformations");
+  if (/(命宫|兄弟宫|夫妻宫|子女宫|财帛宫|疾厄宫|迁移宫|仆役宫|朋友宫|官禄宫|田宅宫|福德宫|父母宫|十二宫|宫性)/.test(text)) return topicByKey("palaces");
+  if (/(财|钱|收入|事业|职位|官禄|赚钱|财运)/.test(text)) return topicByKey("money-career");
+  return topicByKey("learning");
+}
+
+function articleMatchesHub(article, hub) {
+  const text = articleText(article);
+  if (hub.key === "learning") return /(排盘|入门|先看|三方四正|命宫空宫|宫有宫性|免费紫微|小限流年)/.test(text);
+  if (hub.key === "palaces") return /(命宫|兄弟宫|夫妻宫|子女宫|财帛宫|疾厄宫|迁移宫|仆役宫|朋友宫|官禄宫|田宅宫|福德宫|父母宫|十二宫|宫性)/.test(text);
+  if (hub.key === "transformations") return /(化科|化权|化禄|化忌|四化|科权禄忌|权禄)/.test(text);
+  if (hub.key === "main-stars") return text.includes("单星星性") || /(紫微星|天机星|太阳星|武曲星|天同星|廉贞星|天府星|太阴星|天梁星|天相星|七杀星|破军星|贪狼星|巨门星|十四主星)/.test(text);
+  if (hub.key === "helper-malice") return /(辅曜|煞曜|左辅|右弼|文昌|文曲|天魁|天钺|禄存|天马|擎羊|陀罗|火星|铃星|地空|地劫|红鸾|天喜|三台|八座|天刑|天姚|孤辰|寡宿|天哭|天虚|咸池|解神|天巫|阴煞)/.test(text);
+  if (hub.key === "case-patterns") return text.includes("特定命例") || /(七杀临身|日照雷门|月朗天门|明珠出海|紫府坐垣|七杀朝斗|夹命|夹财|夹贵|禄马|火贪|格局|命例)/.test(text);
+  if (hub.key === "cycles") return /(大限|小限|流年|十年)/.test(text);
+  if (hub.key === "money-career") return /(财|钱|收入|事业|职位|官禄|财帛|迁移|赚钱|财运|老板|客户)/.test(text);
+  return false;
+}
+
+function uniqueLinks(links) {
+  const seen = new Set();
+  return links.filter((link) => {
+    if (!link.href || seen.has(link.href)) return false;
+    seen.add(link.href);
+    return true;
+  });
+}
+
+function relatedLinksFor(article) {
+  const hub = topicHubFor(article);
+  const text = articleText(article);
+  const links = [
+    { href: hub.file, text: `${hub.shortName}专题` },
+    { href: "ziwei-sanfang-sizheng.html", text: "先看三方四正" },
+    { href: "ziwei-minggong.html", text: "回到命宫定位本人" }
+  ];
+  if (hub.key !== "palaces") links.push({ href: "ziwei-palaces.html", text: "十二宫位总览" });
+  if (hub.key !== "main-stars") links.push({ href: "ziwei-main-stars.html", text: "十四主星星性" });
+  if (hub.key !== "helper-malice") links.push({ href: "ziwei-helper-malice-stars.html", text: "辅曜煞曜怎么改局" });
+  if (hub.key !== "transformations") links.push({ href: "ziwei-four-transformations.html", text: "四化科权禄忌" });
+  if (/(财|钱|收入|财帛|官禄|事业|职位)/.test(text)) links.push({ href: "ziwei-money-career.html", text: "财运事业合看" });
+  if (/(大限|小限|流年|十年)/.test(text)) links.push({ href: "ziwei-cycles.html", text: "大限流年顺序" });
+  links.push({ href: "../pages/mingbook-onepage.html", text: "打开免费排盘验证" });
+  return uniqueLinks(links).slice(0, 6);
+}
+
+function relatedReadingHtml(article) {
+  const links = relatedLinksFor(article).filter((link) => !link.href.startsWith("../")).slice(0, 4);
+  return `<hr>
+        <h2 id="related-reading">同主题阅读</h2>
+        <p>${links.map((link) => `<a href="${link.href}">${escapeHtml(link.text)}</a>`).join(" · ")}</p>`;
+}
+
+function sideLinksHtml(article) {
+  const links = relatedLinksFor(article).slice(0, 5);
+  return links.map((link) => `        <a class="card-link" href="${link.href}">${escapeHtml(link.text)}</a>`).join("\n");
+}
+
 function markdownBody(markdown) {
   const chunks = markdown.trim().split(/\n\s*\n/);
   let firstParagraph = true;
@@ -204,6 +338,7 @@ function chinesePage(article, time) {
   const title = article.title.replace(/^紫微斗数/, "紫微斗数");
   const pageTitle = `${title} | 学习紫微`;
   const section = article.category;
+  const hub = topicHubFor(article);
   return `<!doctype html>
 <html lang="zh-CN">
 <head>
@@ -235,7 +370,7 @@ function chinesePage(article, time) {
     dateModified: publishDate,
     inLanguage: "zh-CN",
     articleSection: section,
-    about: ["紫微斗数", section, title],
+    about: ["紫微斗数", section, hub.shortName, title],
     author: { "@type": "Organization", name: "阅天AI" },
     publisher: { "@type": "Organization", name: "阅天AI" },
     mainEntityOfPage: canonical
@@ -248,7 +383,8 @@ function chinesePage(article, time) {
     itemListElement: [
       { "@type": "ListItem", position: 1, name: "阅天AI", item: `${site}/` },
       { "@type": "ListItem", position: 2, name: "学习紫微", item: `${site}/articles/` },
-      { "@type": "ListItem", position: 3, name: title, item: canonical }
+      { "@type": "ListItem", position: 3, name: hub.shortName, item: `${site}/articles/${hub.file}` },
+      { "@type": "ListItem", position: 4, name: title, item: canonical }
     ]
   }, null, 2)}
   </script>
@@ -264,7 +400,7 @@ function chinesePage(article, time) {
     <section class="detail-hero">
       <div class="container detail-hero-grid">
         <div>
-          <nav class="breadcrumb" aria-label="面包屑"><a href="./">学习紫微</a><span>/</span><span>${escapeHtml(section)}</span></nav>
+          <nav class="breadcrumb" aria-label="面包屑"><a href="./">学习紫微</a><span>/</span><a href="${hub.file}">${escapeHtml(hub.shortName)}</a></nav>
           <h1>${escapeHtml(title)}</h1>
           <p class="detail-subtitle">${escapeHtml(subtitleOf(article))}</p>
           <p class="article-meta"><span>${escapeHtml(section)}</span><span><time datetime="${publishDate}">${publishDate}</time></span></p>
@@ -275,11 +411,11 @@ function chinesePage(article, time) {
     <div class="container article-layout article-detail-layout">
       <article id="article-start" class="article-main article-paper">
         ${markdownBody(article.body)}
+        ${relatedReadingHtml(article)}
       </article>
       <aside class="side-panel detail-rail" aria-label="本文导航">
         <h2>继续阅读</h2>
-        <a class="card-link" href="./">返回学习紫微</a>
-        <a class="card-link" href="../pages/mingbook-onepage.html">打开免费排盘</a>
+${sideLinksHtml(article)}
       </aside>
     </div>
   </main>
@@ -471,7 +607,7 @@ function pickTitle(html) {
 
 function allChineseArticles() {
   return readdirSync(path.join(root, "articles"))
-    .filter((file) => file.endsWith(".html") && file !== "index.html")
+    .filter((file) => file.endsWith(".html") && file !== "index.html" && !topicHubFiles.has(file))
     .map((file) => parseArticleFile(path.join(root, "articles", file)))
     .sort((a, b) => b.published.localeCompare(a.published) || a.headline.localeCompare(b.headline, "zh-CN"));
 }
@@ -516,6 +652,14 @@ ${items.map((article, index) => `          <article class="article-card" data-in
           </article>`).join("\n")}
           </div>
         </details>`).join("\n");
+  const hubCards = topicHubs.map((hub, index) => `          <article class="article-card" data-index="${String(index + 1).padStart(2, "0")}">
+            <div class="card-body">
+              <div class="card-meta"><span class="tag">学习路径</span><span>${articles.filter((article) => articleMatchesHub(article, hub)).length} 篇</span></div>
+              <h3>${escapeHtml(hub.shortName)}</h3>
+              <p>${escapeHtml(hub.desc)}</p>
+              <a class="card-link" href="${hub.file}">进入${escapeHtml(hub.shortName)}</a>
+            </div>
+          </article>`).join("\n");
 
   const html = `<!doctype html>
 <html lang="zh-CN">
@@ -564,6 +708,16 @@ ${items.map((article, index) => `          <article class="article-card" data-in
             <span class="section-toggle"><span>${articles.length} 篇</span></span>
           </summary>
         </details>
+        <details class="article-group" open>
+          <summary class="section-head">
+            <h2>按学习路径进入</h2>
+            <span class="section-desc">新手先走路径，熟手按专题查。每个专题页都会继续指向下一级文章。</span>
+            <span class="section-toggle"><span>${topicHubs.length} 类</span></span>
+          </summary>
+          <div class="article-list">
+${hubCards}
+          </div>
+        </details>
 ${groups}
       </div>
     </section>
@@ -585,11 +739,142 @@ function sectionDesc(name) {
 function regenerateFeedsAndSitemaps() {
   const zhArticles = allChineseArticles();
   const enArticles = allEnglishArticles();
+  regenerateTopicHubs(zhArticles);
   writeFileSync(path.join(root, "feed.xml"), zhFeed(zhArticles), "utf8");
   writeFileSync(path.join(root, "articles", "en", "feed.xml"), enFeed(enArticles), "utf8");
   writeFileSync(path.join(root, "articles", "en", "index.html"), enIndex(enArticles), "utf8");
   writeFileSync(path.join(root, "sitemap.xml"), mainSitemap(zhArticles), "utf8");
   writeFileSync(path.join(root, "sitemap-en.xml"), enSitemap(enArticles), "utf8");
+}
+
+function regenerateTopicHubs(articles) {
+  for (const hub of topicHubs) {
+    writeFileSync(path.join(root, "articles", hub.file), topicHubPage(hub, articles), "utf8");
+  }
+}
+
+function topicHubPage(hub, articles) {
+  const items = articles.filter((article) => articleMatchesHub(article, hub));
+  const canonical = `${site}/articles/${hub.file}`;
+  const itemList = items.map((article, index) => ({
+    "@type": "ListItem",
+    position: index + 1,
+    url: article.url,
+    name: article.headline
+  }));
+  const cards = items.length
+    ? items.map((article, index) => `          <article class="article-card" data-index="${String(index + 1).padStart(2, "0")}">
+            <div class="card-body">
+              <div class="card-meta"><span class="tag">${escapeHtml(article.section)}</span><span><time datetime="${article.published}">${article.published}</time></span></div>
+              <h3>${escapeHtml(article.headline)}</h3>
+              <p>${escapeHtml(article.description)}</p>
+              <a class="card-link" href="${article.rel}">阅读全文</a>
+            </div>
+          </article>`).join("\n")
+    : `          <article class="article-card" data-index="01">
+            <div class="card-body">
+              <div class="card-meta"><span class="tag">专题建设中</span><span>${publishDate}</span></div>
+              <h3>${escapeHtml(hub.shortName)}文章正在扩展</h3>
+              <p>${escapeHtml(hub.desc)} 后续发布的新文章会自动进入这个专题。</p>
+              <a class="card-link" href="./">先返回文章索引</a>
+            </div>
+          </article>`;
+  const pathLinks = topicPathLinks(hub).map((link) => `<a class="card-link" href="${link.href}">${escapeHtml(link.text)}</a>`).join("\n          ");
+  return `<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../js/site-analytics.js?v=20260618-ga4"></script>
+  <title>${escapeHtml(hub.name)} | 学习紫微</title>
+  <meta name="description" content="${escapeHtml(hub.desc)}">
+  <meta name="robots" content="index,follow,max-image-preview:large">
+  <link rel="canonical" href="${canonical}">
+  <link rel="alternate" hreflang="zh-CN" href="${canonical}">
+  <link rel="alternate" hreflang="en" href="${site}/articles/en/">
+  <meta property="og:title" content="${escapeHtml(hub.name)}">
+  <meta property="og:description" content="${escapeHtml(hub.desc)}">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="${canonical}">
+  <meta property="og:image" content="${defaultImage}">
+  <link rel="icon" href="../images/wentian-prototype-assets/wentian-brand-logo-ai-gold-v1.webp" type="image/webp">
+  <link rel="stylesheet" href="../css/articles.css?v=20260629-article-accordion-v1">
+  <script type="application/ld+json">
+  ${JSON.stringify({ "@context": "https://schema.org", "@type": "CollectionPage", name: hub.name, url: canonical, description: hub.desc }, null, 2)}
+  </script>
+  <script type="application/ld+json">
+  ${JSON.stringify({ "@context": "https://schema.org", "@type": "ItemList", name: hub.name, itemListElement: itemList }, null, 2)}
+  </script>
+  <script type="application/ld+json">
+  ${JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "阅天AI", item: `${site}/` },
+      { "@type": "ListItem", position: 2, name: "学习紫微", item: `${site}/articles/` },
+      { "@type": "ListItem", position: 3, name: hub.shortName, item: canonical }
+    ]
+  }, null, 2)}
+  </script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-nav">
+      <a class="brand" href="../index.html" aria-label="阅天首页"><img src="../images/wentian-prototype-assets/wentian-brand-logo-ai-gold-v1.webp" alt="" aria-hidden="true" loading="eager" decoding="async"><span>阅天</span></a>
+      <nav class="nav-links" aria-label="主导航"><a href="../index.html">首页</a><a href="./">学习紫微</a><a href="en/">English</a></nav>
+    </div>
+  </header>
+  <main>
+    <section class="series" aria-labelledby="topic-title">
+      <div class="container">
+        <details class="article-group" open>
+          <summary class="section-head">
+            <h1 id="topic-title">${escapeHtml(hub.name)}</h1>
+            <span class="section-desc">${escapeHtml(hub.desc)}</span>
+            <span class="section-toggle"><span>${items.length} 篇</span></span>
+          </summary>
+          <div class="article-list">
+${cards}
+          </div>
+        </details>
+        <details class="article-group" open>
+          <summary class="section-head">
+            <h2>相关路径</h2>
+            <span class="section-desc">从本专题继续向上、向下阅读，避免单篇文章孤立理解。</span>
+            <span class="section-toggle"><span>${topicPathLinks(hub).length} 个入口</span></span>
+          </summary>
+          <div class="article-list">
+            <article class="article-card" data-index="01">
+              <div class="card-body">
+                <div class="card-meta"><span class="tag">内链路径</span><span>${publishDate}</span></div>
+                <h3>继续建立完整看盘顺序</h3>
+                <p>专题之间互相连接：先定宫位，再看主星、辅煞、四化和限年，最后回到具体命例验证。</p>
+                ${pathLinks}
+              </div>
+            </article>
+          </div>
+        </details>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
+`;
+}
+
+function topicPathLinks(hub) {
+  const links = [
+    { href: "./", text: "返回学习紫微总索引" },
+    { href: "ziwei-learning-path.html", text: "看盘入门路径" },
+    { href: "ziwei-palaces.html", text: "十二宫位" },
+    { href: "ziwei-main-stars.html", text: "十四主星" },
+    { href: "ziwei-helper-malice-stars.html", text: "辅曜煞曜" },
+    { href: "ziwei-four-transformations.html", text: "四化科权禄忌" },
+    { href: "ziwei-case-patterns.html", text: "特定命例解读" },
+    { href: "ziwei-cycles.html", text: "大限流年" },
+    { href: "ziwei-money-career.html", text: "财运事业" }
+  ];
+  return uniqueLinks(links.filter((link) => link.href !== hub.file)).slice(0, 6);
 }
 
 function zhFeed(articles) {
@@ -654,6 +939,7 @@ function mainSitemap(articles) {
   const urls = new Set(existingSitemapUrls());
   urls.add(`${site}/articles/`);
   urls.add(`${site}/feed.xml`);
+  for (const hub of topicHubs) urls.add(`${site}/articles/${hub.file}`);
   for (const article of articles) urls.add(article.url);
   return sitemapXml([...urls], articles);
 }
