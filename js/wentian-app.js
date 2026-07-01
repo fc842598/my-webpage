@@ -7788,13 +7788,13 @@ const WENTIAN_I18N_EN_EXTRA = {
   "◇ 剩余 1 条": "1 remaining",
   "你好！我是许大师": "Hello, I am Master Xu",
   "需要我为您做些什么？": "What can I help with?",
-  "选择档案": "Choose File",
+  "选择档案": "Choose Chart",
   "共 2 张": "2 files",
-  "选择一个档案接入对话": "Choose a file for this chat",
+  "选择一个档案接入对话": "Choose a chart for this chat",
   "请确认命盘": "Confirm Chart",
   "确认后再进入许大师对话": "Confirm before entering chat",
   "确认进入": "Confirm",
-  "退出选盘": "Exit",
+  "退出选盘": "Exit Selection",
   "保存付款码": "Save QR",
   "付款码已保存到下载文件。": "QR saved to downloads.",
   "付款码还没生成，请稍后再试。": "QR is not ready. Try again shortly.",
@@ -9085,7 +9085,7 @@ function finalizeWentianLanguageText(root = view, code = getWentianLanguageCode(
 
   const fileCount = root.querySelector('[data-node-id="source-5-count-text"]');
   const fileCountValue = fileCount?.textContent?.match(/\d+/)?.[0] || "0";
-  if (fileCount) fileCount.textContent = `${fileCountValue} Files`;
+  if (fileCount) fileCount.textContent = `${fileCountValue} Charts`;
   setWentianFinalText(root, ".wentian-archive-confirm", "Confirm");
 
   setWentianFinalText(root, '[data-node-id="wt22-login-desc-clean"]', "Invite both sides to get daily Master Xu credits for 3 days after registration.");
