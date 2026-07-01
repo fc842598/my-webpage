@@ -12230,38 +12230,38 @@ function sourceMembershipScreen() {
     const border = active ? "#c8a65f" : "#eadfce";
     const text = disabled ? `${item.label}配置中` : item.label;
     return `
-      ${figBox(`wt33-pay-method-${item.provider}`, x, 628, width, 42, "", `border:1px solid ${border};border-radius:21px;background:${bg};`)}
-      ${figButton(`wt33-pay-method-hit-${item.provider}`, x, 628, width, 42, disabled ? "" : `data-action="wentian-pay-provider" data-provider="${item.provider}"`)}
-      ${figText(`wt33-pay-method-text-${item.provider}`, text, x, 641, width, compact ? 11 : 12, disabled ? "#b4aaa0" : (active ? "#8f3d30" : "#756d63"), 900, "center")}
+      ${figBox(`wt33-pay-method-${item.provider}`, x, 508, width, 36, "", `border:1px solid ${border};border-radius:18px;background:${bg};`)}
+      ${figButton(`wt33-pay-method-hit-${item.provider}`, x, 508, width, 36, disabled ? "" : `data-action="wentian-pay-provider" data-provider="${item.provider}"`)}
+      ${figText(`wt33-pay-method-text-${item.provider}`, text, x, 519, width, compact ? 10 : 11, disabled ? "#b4aaa0" : (active ? "#8f3d30" : "#756d63"), 900, "center")}
     `;
   }).join("");
   return `
     ${figBox("wt33-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
     ${wentianBackPill("wt33", 18, 42, 'data-action="wentian-return-previous" data-fallback-route="screen-31" aria-label="返回"')}
     ${figText("wt33-title", "阅天套餐", 0, 52, 390, 17, "#25211d", 800, "center")}
-    ${figBox("wt33-card", 24, 108, 342, 116, "", "border-radius:18px;background:linear-gradient(135deg,#2b2722,#14110d);box-shadow:0 16px 30px rgba(28,20,12,.16);")}
-    ${figText("wt33-card-label", WENTIAN_PAID_PRODUCT_NAME, 52, 136, 130, 20, "#fff", 900)}
-    ${figText("wt33-card-sub", member.isMember ? escapeHtml(member.subtitle) : WENTIAN_PAID_PRODUCT_DESC, 52, 166, 210, 12, "#cfc1a9", 700, "left", "line-height:1.45;")}
-    ${figText("wt33-card-price", paymentPrice.text, 238, 132, 84, 26, "#f4d293", 900, "right")}
-    ${figText("wt33-card-period", "", 246, 170, 78, 12, "#cfc1a9", 700, "right")}
+    ${figBox("wt33-card", 24, 96, 342, 104, "", "border-radius:18px;background:linear-gradient(135deg,#2b2722,#14110d);box-shadow:0 14px 26px rgba(28,20,12,.14);")}
+    ${figText("wt33-card-label", WENTIAN_PAID_PRODUCT_NAME, 52, 122, 130, 18, "#fff", 900)}
+    ${figText("wt33-card-sub", member.isMember ? escapeHtml(member.subtitle) : WENTIAN_PAID_PRODUCT_DESC, 52, 150, 210, 11, "#cfc1a9", 700, "left", "line-height:1.35;")}
+    ${figText("wt33-card-price", paymentPrice.text, 238, 120, 84, 24, "#f4d293", 900, "right")}
+    ${figText("wt33-card-period", "", 246, 158, 78, 12, "#cfc1a9", 700, "right")}
 
-    ${figText("wt33-plan-title", "套餐权益", 24, 254, 120, 17, "#25211d", 900)}
-    ${figBox("wt33-free", 24, 292, 342, 72, "", "border:1px solid #eadfce;border-radius:14px;background:#fff;box-shadow:0 6px 16px rgba(70,45,25,.06);")}
-    ${figText("wt33-free-title", "许大师 AI 对话付费额度", 44, 314, 190, 15, "#25211d", 900)}
-    ${figText("wt33-free-quota", "", 214, 314, 120, 14, "#8d8377", 800, "right")}
-    ${figBox("wt33-member", 24, 378, 342, 92, "", "border:1px solid #c8a65f;border-radius:16px;background:#fffaf0;box-shadow:0 10px 24px rgba(130,91,31,.10);")}
-    ${figText("wt33-member-title", "电脑 / 手机共用", 44, 402, 160, 16, "#8f3d30", 900)}
-    ${figText("wt33-member-quota", "同账号", 214, 402, 120, 15, "#8f3d30", 900, "right")}
-    ${figText("wt33-member-desc", "权益绑定当前账号，电脑和手机共用。", 44, 436, 282, 13, "#756d63", 700)}
+    ${figText("wt33-plan-title", "套餐权益", 24, 226, 120, 16, "#25211d", 900)}
+    ${figBox("wt33-free", 24, 258, 342, 62, "", "border:1px solid #eadfce;border-radius:14px;background:#fff;box-shadow:0 5px 14px rgba(70,45,25,.05);")}
+    ${figText("wt33-free-title", "许大师 AI 对话付费额度", 44, 280, 190, 14, "#25211d", 900)}
+    ${figText("wt33-free-quota", "", 214, 280, 120, 13, "#8d8377", 800, "right")}
+    ${figBox("wt33-member", 24, 336, 342, 78, "", "border:1px solid #c8a65f;border-radius:16px;background:#fffaf0;box-shadow:0 8px 20px rgba(130,91,31,.08);")}
+    ${figText("wt33-member-title", "电脑 / 手机共用", 44, 358, 160, 15, "#8f3d30", 900)}
+    ${figText("wt33-member-quota", "同账号", 214, 358, 120, 14, "#8f3d30", 900, "right")}
+    ${figText("wt33-member-desc", "权益绑定当前账号，电脑和手机共用。", 44, 388, 282, 12, "#756d63", 700)}
 
-    ${figBox("wt33-benefit", 24, 492, 342, 104, "", "border-radius:16px;background:#fff;box-shadow:0 8px 20px rgba(70,45,25,.07);")}
-    ${figText("wt33-benefit-title", "支付后自动刷新", 44, 514, 140, 15, "#25211d", 900)}
-    ${figText("wt33-benefit-list", `支付成功后自动刷新付费状态<br>今日剩余 ${member.daily} · 每日额度 ${member.dailyLimit}`, 44, 544, 260, 14, "#756d63", 800, "left", "line-height:1.7;")}
-    ${figText("wt33-pay-method-title", "支付方式", 42, 604, 120, 13, "#756d63", 800)}
+    ${figBox("wt33-benefit", 24, 424, 342, 62, "", "border-radius:16px;background:#fff;box-shadow:0 7px 18px rgba(70,45,25,.06);")}
+    ${figText("wt33-benefit-title", "支付后自动刷新", 44, 440, 140, 13, "#25211d", 900)}
+    ${figText("wt33-benefit-list", `今日剩余 ${member.daily} · 每日额度 ${member.dailyLimit}`, 44, 462, 260, 12, "#756d63", 800, "left", "line-height:1.4;")}
+    ${figText("wt33-pay-method-title", "支付方式", 42, 486, 120, 12, "#756d63", 800)}
     ${methodButtons}
-    ${figBox("wt33-submit", 42, 684, 306, 50, "", "border-radius:25px;background:linear-gradient(180deg,#b74e39,#983323);box-shadow:0 14px 28px rgba(158,61,43,.20);")}
-    ${figButton("wt33-submit-hit", 42, 684, 306, 50, 'data-action="wentian-member-pay"')}
-    ${figText("wt33-submit-text", buttonText, 42, 699, 306, 14, "#fffaf3", 900, "center")}
+    ${figBox("wt33-submit", 42, 558, 306, 46, "", "border-radius:23px;background:linear-gradient(180deg,#b74e39,#983323);box-shadow:0 12px 24px rgba(158,61,43,.18);")}
+    ${figButton("wt33-submit-hit", 42, 558, 306, 46, 'data-action="wentian-member-pay"')}
+    ${figText("wt33-submit-text", buttonText, 42, 572, 306, 13, "#fffaf3", 900, "center")}
   `;
 }
 
@@ -18375,30 +18375,30 @@ function renderWentianPolishedScreen(screen) {
     return `
       ${figBox("wt29-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
       ${wentianSimpleHeader("wt29", "阅天套餐")}
-      ${figBox("wt29-balance", 24, 118, 342, 122, "", "border-radius:18px;background:linear-gradient(135deg,#2b2620,#16130f);box-shadow:0 12px 26px rgba(25,18,12,.18);")}
-      ${figText("wt29-balance-label", "当前套餐", 48, 146, 130, 15, "#c9b887", 700)}
-      ${figText("wt29-balance-num", member.title, 48, 172, 120, 30, "#fff", 900)}
-      ${figText("wt29-note", `今日剩余 ${member.daily} · 每日额度 ${member.dailyLimit}`, 48, 208, 260, 13, "#a69b8d", 700)}
+      ${figBox("wt29-balance", 24, 100, 342, 104, "", "border-radius:18px;background:linear-gradient(135deg,#2b2620,#16130f);box-shadow:0 12px 24px rgba(25,18,12,.16);")}
+      ${figText("wt29-balance-label", "当前套餐", 48, 126, 130, 14, "#c9b887", 700)}
+      ${figText("wt29-balance-num", member.title, 48, 150, 120, 27, "#fff", 900)}
+      ${figText("wt29-note", `今日剩余 ${member.daily} · 每日额度 ${member.dailyLimit}`, 48, 184, 260, 12, "#a69b8d", 700)}
 
-      ${figText("wt29-select", "套餐规则", 24, 274, 130, 16, "#25211d", 900)}
-      ${figBox("wt29-free", 24, 312, 342, 78, "", "border:1px solid #eadfce;border-radius:14px;background:#fff;box-shadow:0 6px 16px rgba(70,45,25,.06);")}
-      ${figText("wt29-free-title", "免费用户", 44, 336, 90, 15, "#25211d", 900)}
-      ${figText("wt29-free-quota", "8次/天", 220, 336, 100, 15, "#8d8377", 900, "right")}
-      ${figText("wt29-free-desc", "每日自动刷新。", 44, 362, 240, 12, "#8d8377", 700)}
-      ${figBox("wt29-paid", 24, 410, 342, 104, "", "border:1px solid #c8a65f;border-radius:16px;background:#fffaf0;box-shadow:0 10px 24px rgba(130,91,31,.10);")}
-      ${figText("wt29-paid-title", "付费用户", 44, 436, 90, 16, "#8f3d30", 900)}
-      ${figText("wt29-paid-quota", "80次/天", 220, 436, 100, 16, "#8f3d30", 900, "right")}
-      ${figText("wt29-paid-desc", "适合连续追问、复盘命盘、做阶段规划。", 44, 470, 260, 13, "#756d63", 700)}
-      ${figText("wt29-pay-title", "支付方式", 24, 552, 130, 16, "#25211d", 900)}
-      ${figBox("wt29-wechat", 24, 590, 150, 42, "", "border:1px solid #c8a65f;border-radius:21px;background:#fff3d9;")}
-      ${figButton("wt29-wechat-hit", 24, 590, 150, 42, 'data-action="wentian-pay-provider" data-provider="wechat"')}
-      ${figText("wt29-wechat-text", "微信支付", 24, 603, 150, 12, "#8f3d30", 900, "center")}
-      ${figBox("wt29-alipay", 196, 590, 150, 42, "", "border:1px solid #eadfce;border-radius:21px;background:#fffdf8;")}
-      ${figText("wt29-alipay-text", "支付宝配置中", 196, 603, 150, 12, "#b4aaa0", 900, "center")}
-      ${figText("wt29-terms", "只按每日额度计算：免费 8次/天，付费 80次/天。", 0, 666, 390, 12, "#9e968d", 700, "center")}
-      ${figBox("wt29-submit", 42, 704, 306, 50, "", "border-radius:25px;background:linear-gradient(180deg,#b74e39,#983323);box-shadow:0 14px 28px rgba(158,61,43,.20);")}
-      ${figButton("wt29-submit-hit", 42, 704, 306, 50, 'data-action="wentian-member-pay"')}
-      ${figText("wt29-submit-text", member.isMember ? `续费 ¥${member.amountYuan}` : `开通付费版 ¥${member.amountYuan}`, 42, 719, 306, 14, "#fffaf3", 900, "center")}
+      ${figText("wt29-select", "套餐规则", 24, 230, 130, 15, "#25211d", 900)}
+      ${figBox("wt29-free", 24, 262, 342, 62, "", "border:1px solid #eadfce;border-radius:14px;background:#fff;box-shadow:0 5px 14px rgba(70,45,25,.05);")}
+      ${figText("wt29-free-title", "免费用户", 44, 283, 90, 14, "#25211d", 900)}
+      ${figText("wt29-free-quota", "8次/天", 220, 283, 100, 14, "#8d8377", 900, "right")}
+      ${figText("wt29-free-desc", "每日自动刷新。", 44, 305, 240, 11, "#8d8377", 700)}
+      ${figBox("wt29-paid", 24, 340, 342, 84, "", "border:1px solid #c8a65f;border-radius:16px;background:#fffaf0;box-shadow:0 8px 20px rgba(130,91,31,.08);")}
+      ${figText("wt29-paid-title", "付费用户", 44, 362, 90, 15, "#8f3d30", 900)}
+      ${figText("wt29-paid-quota", "80次/天", 220, 362, 100, 15, "#8f3d30", 900, "right")}
+      ${figText("wt29-paid-desc", "适合连续追问、复盘命盘、做阶段规划。", 44, 394, 260, 12, "#756d63", 700)}
+      ${figText("wt29-pay-title", "支付方式", 24, 444, 130, 14, "#25211d", 900)}
+      ${figBox("wt29-wechat", 24, 474, 150, 36, "", "border:1px solid #c8a65f;border-radius:18px;background:#fff3d9;")}
+      ${figButton("wt29-wechat-hit", 24, 474, 150, 36, 'data-action="wentian-pay-provider" data-provider="wechat"')}
+      ${figText("wt29-wechat-text", "微信支付", 24, 485, 150, 11, "#8f3d30", 900, "center")}
+      ${figBox("wt29-alipay", 196, 474, 150, 36, "", "border:1px solid #eadfce;border-radius:18px;background:#fffdf8;")}
+      ${figText("wt29-alipay-text", "支付宝配置中", 196, 485, 150, 11, "#b4aaa0", 900, "center")}
+      ${figText("wt29-terms", "只按每日额度计算：免费 8次/天，付费 80次/天。", 0, 526, 390, 12, "#9e968d", 700, "center")}
+      ${figBox("wt29-submit", 42, 558, 306, 46, "", "border-radius:23px;background:linear-gradient(180deg,#b74e39,#983323);box-shadow:0 12px 24px rgba(158,61,43,.18);")}
+      ${figButton("wt29-submit-hit", 42, 558, 306, 46, 'data-action="wentian-member-pay"')}
+      ${figText("wt29-submit-text", member.isMember ? `续费 ¥${member.amountYuan}` : `开通付费版 ¥${member.amountYuan}`, 42, 572, 306, 13, "#fffaf3", 900, "center")}
     `;
   }
   if (no === 30) {
@@ -20627,6 +20627,34 @@ function compactWentianShortFigScreenLayout(screenNo, options = getWentianShortS
   return true;
 }
 
+function compactWentianMembershipPageLayout(screenNo = 33) {
+  if (!view || ![29, 33].includes(Number(screenNo))) return false;
+  const phone = view.querySelector(`.figma-phone[data-node-id="screen-${screenNo}"]`);
+  if (!phone) return false;
+  const bg = phone.querySelector(`[data-node-id="wt${screenNo}-bg"]`);
+  let maxBottom = 0;
+  phone.querySelectorAll("[data-node-id]").forEach((node) => {
+    const id = node.dataset.nodeId || "";
+    if (!id || node === bg || node.classList.contains("flow-hotspot")) return;
+    maxBottom = Math.max(maxBottom, getWentianNodeBottomWithinPhone(phone, node));
+  });
+  if (!maxBottom) return false;
+  const nextHeight = Math.max(680, Math.ceil(maxBottom + 28));
+  const currentHeight = Number.parseFloat(phone.style.height) || phone.offsetHeight || WENTIAN_PHONE_HEIGHT;
+  if (Math.abs(currentHeight - nextHeight) < 2) return false;
+  phone.style.height = `${nextHeight}px`;
+  if (bg) bg.style.height = `${nextHeight}px`;
+  return true;
+}
+
+function scheduleWentianMembershipPageLayout(screenNo) {
+  const refit = () => {
+    if (compactWentianMembershipPageLayout(screenNo)) fitActivePhoneShell();
+  };
+  refit();
+  [120, 360, 900, 1800, 3200].forEach((delay) => window.setTimeout(refit, delay));
+}
+
 function compactWentianLiuyaoEmptyResultLayout() {
   if (!view || getLiuyaoResult()) return false;
   const phone = view.querySelector('.figma-phone[data-node-id="screen-20"]');
@@ -20879,6 +20907,7 @@ function navigate(route, push = true, syncHash = true) {
     stabilizeWentianLanguageText(view);
     if (screen.no === 27) compactWentianZiweiScreenLayout();
     if ([17, 18, 19].includes(screen.no)) compactWentianLiuyaoCastLayout();
+    if ([29, 33].includes(screen.no)) compactWentianMembershipPageLayout(screen.no);
     if ([3, 5, 20, 22, 26, 32, 35, 38, 40, 41, 42, 48].includes(screen.no)) {
       if (screen.no === 20) compactWentianLiuyaoEmptyResultLayout();
       else compactWentianShortFigScreenLayout(screen.no);
@@ -20889,6 +20918,7 @@ function navigate(route, push = true, syncHash = true) {
     scheduleWentianPhoneFit();
     if (screen.no === 27) scheduleWentianZiweiScreenLayout();
     if ([17, 18, 19].includes(screen.no)) scheduleWentianLiuyaoCastLayout();
+    if ([29, 33].includes(screen.no)) scheduleWentianMembershipPageLayout(screen.no);
     if ([3, 5, 20, 22, 26, 32, 35, 38, 40, 41, 42, 47, 48].includes(screen.no)) scheduleWentianShortPageLayout(screen.no);
     if (screen.no === 49) scheduleWentianHepanResultLayout();
     syncActive();
