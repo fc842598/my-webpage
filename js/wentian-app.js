@@ -18325,12 +18325,12 @@ function renderWentianPolishedScreen(screen) {
     return `
       ${figBox("wt24-bg", 0, 0, 390, 1368, "", "background:#fbf7ef;")}
       ${wentianSimpleHeader("wt24", "邀请好友")}
-      ${figBox("wt24-hero", 24, 98, 342, 118, "", "border-radius:16px;background:linear-gradient(135deg,#d5ad42,#9f741d);box-shadow:0 12px 26px rgba(121,82,18,.18);")}
+      ${figBox("wt24-hero", 24, 98, 342, 126, "", "border-radius:16px;background:linear-gradient(135deg,#d5ad42,#9f741d);box-shadow:0 12px 26px rgba(121,82,18,.18);")}
       ${figText("wt24-hero-num", String(invite.invitedCount || 0), 54, 126, 80, 34, "#fff", 800)}
       ${figText("wt24-hero-label", "已邀请好友", 54, 168, 120, 13, "#fff7df", 700)}
       ${figBox("wt24-hero-badge", 246, 126, 82, 34, "", "border-radius:17px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.28);")}
       ${figText("wt24-hero-badge-text", isEn ? `Today +${activeDailyBonus}` : `今日加赠 ${activeDailyBonus}`, 246, 136, 82, 11, "#fff", 800, "center")}
-      ${figText("wt24-hero-copy", `好友注册成功后，双方连续 ${rewardDays} 天每天各得 ${rewardDaily} 次许大师对话。`, 54, 190, 250, 12, "#fff5dc", 600)}
+      ${figText("wt24-hero-copy", `好友注册成功后，双方连续 ${rewardDays} 天每天各得 ${rewardDaily} 次许大师对话。`, 54, 184, 250, 12, "#fff5dc", 600)}
 
       ${figBox("wt24-code-card", 24, 240, 342, 130, "", "border-radius:14px;background:#fff;box-shadow:0 8px 20px rgba(70,45,25,.08);")}
       ${figText("wt24-code-title", "我的邀请码", 44, 262, 110, 14, "#7f766b", 700)}
