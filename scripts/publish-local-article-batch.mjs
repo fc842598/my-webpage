@@ -683,7 +683,7 @@ ${items.map((article, index) => `          <article class="article-card" data-in
   <meta property="og:url" content="${site}/articles/">
   <meta property="og:image" content="${defaultImage}">
   <link rel="icon" href="../images/wentian-prototype-assets/wentian-brand-logo-ai-gold-v1.webp" type="image/webp">
-  <link rel="stylesheet" href="../css/articles.css?v=20260629-article-accordion-v1">
+  <link rel="stylesheet" href="../css/articles.css?v=20260701-index-overview-v1">
   <script type="application/ld+json">
   ${JSON.stringify({ "@context": "https://schema.org", "@type": "CollectionPage", name: "学习紫微", url: `${site}/articles/`, description: "紫微斗数学习文章集合。" }, null, 2)}
   </script>
@@ -701,13 +701,18 @@ ${items.map((article, index) => `          <article class="article-card" data-in
   <main>
     <section class="series" aria-labelledby="article-index-title">
       <div class="container">
-        <details class="article-group" open>
-          <summary class="section-head">
+        <section class="index-overview">
+          <div>
+            <span class="index-overview__eyebrow">总索引</span>
             <h1 id="article-index-title">学习紫微：排盘后的文章索引</h1>
-            <span class="section-desc">先看宫位，再看星曜、格局、四化和限年，文章会按主题持续更新。</span>
-            <span class="section-toggle"><span>${articles.length} 篇</span></span>
-          </summary>
-        </details>
+            <p class="index-overview__desc">先看宫位，再看星曜、格局、四化和限年。这里是全部文章的总入口，下面才是按主题拆开的栏目。</p>
+          </div>
+          <div class="index-overview__stats" aria-label="文章索引概览">
+            <div class="index-overview__stat"><span>已整理文章</span><strong>${articles.length} 篇</strong></div>
+            <div class="index-overview__stat"><span>学习专题</span><strong>${topicHubs.length} 类</strong></div>
+            <a class="index-overview__link" href="../pages/mingbook-onepage.html">打开免费排盘</a>
+          </div>
+        </section>
         <details class="article-group" open>
           <summary class="section-head">
             <h2>按学习路径进入</h2>
