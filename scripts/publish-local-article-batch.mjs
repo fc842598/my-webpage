@@ -683,7 +683,7 @@ ${items.map((article, index) => `          <article class="article-card" data-in
   <meta property="og:url" content="${site}/articles/">
   <meta property="og:image" content="${defaultImage}">
   <link rel="icon" href="../images/wentian-prototype-assets/wentian-brand-logo-ai-gold-v1.webp" type="image/webp">
-  <link rel="stylesheet" href="../css/articles.css?v=20260701-index-overview-v1">
+  <link rel="stylesheet" href="../css/articles.css?v=20260701-mobile-index-v1">
   <script type="application/ld+json">
   ${JSON.stringify({ "@context": "https://schema.org", "@type": "CollectionPage", name: "紫微斗数排盘后先看什么", url: `${site}/articles/`, description: "按看盘顺序整理的紫微斗数文章，帮助读者从命宫、三方四正、宫位、四化和流年开始读盘。" }, null, 2)}
   </script>
@@ -691,7 +691,7 @@ ${items.map((article, index) => `          <article class="article-card" data-in
   ${JSON.stringify({ "@context": "https://schema.org", "@type": "ItemList", name: "紫微斗数排盘后阅读导航", itemListElement: itemList }, null, 2)}
   </script>
 </head>
-<body>
+<body class="article-index-page">
   <header class="site-header">
     <div class="site-nav">
       <a class="brand" href="../index.html" aria-label="阅天首页"><img src="../images/wentian-prototype-assets/wentian-brand-logo-ai-gold-v1.webp" alt="" aria-hidden="true" loading="eager" decoding="async"><span>阅天</span></a>

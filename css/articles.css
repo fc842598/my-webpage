@@ -1138,6 +1138,75 @@ h1 {
     padding: 0 12px;
   }
 
+  /* Keep the mobile article index in the same dark/gold system as desktop. */
+  body.article-index-page {
+    --bg: #0b0907;
+    --bg-soft: #100d09;
+    --surface: #15120d;
+    --surface-2: #1d160f;
+    --paper: #f6ead2;
+    --text: #b8aa86;
+    --text-strong: #f6ead2;
+    --muted: #938467;
+    --gold: #c9a961;
+    --gold-soft: #f0d79b;
+    --jade: #8fe6c9;
+    --rust: #d58a55;
+    --line: rgba(201, 169, 97, .22);
+    --line-strong: rgba(201, 169, 97, .42);
+    --shadow: 0 18px 38px rgba(0, 0, 0, .24);
+    color: var(--text);
+    background:
+      linear-gradient(180deg, rgba(22, 17, 11, .98), rgba(11, 9, 7, 1) 360px),
+      var(--bg);
+  }
+
+  .article-index-page .site-header {
+    border-bottom-color: rgba(201, 169, 97, .18);
+    background: rgba(8, 6, 4, .94);
+  }
+
+  .article-index-page .nav-links a,
+  .article-index-page .article-cta,
+  .article-index-page .card-link,
+  .article-index-page .back-link {
+    color: var(--gold-soft);
+    background: rgba(21, 18, 13, .84);
+  }
+
+  .article-index-page .nav-links a[aria-current="page"] {
+    background: rgba(201, 169, 97, .12);
+  }
+
+  .article-index-page .section-head {
+    border-color: rgba(201, 169, 97, .24);
+    color: var(--text-strong);
+    background:
+      linear-gradient(180deg, rgba(29, 22, 15, .96), rgba(14, 11, 8, .96));
+  }
+
+  .article-index-page .section-head p,
+  .article-index-page .section-desc {
+    color: #aa9a78;
+  }
+
+  .article-index-page .article-card {
+    border-color: rgba(201, 169, 97, .20);
+    background:
+      linear-gradient(180deg, rgba(22, 18, 13, .98), rgba(12, 9, 6, .98));
+    box-shadow: 0 16px 32px rgba(0, 0, 0, .22);
+  }
+
+  .article-index-page .article-card::before {
+    color: var(--gold-soft);
+    background: rgba(201, 169, 97, .08);
+    border-color: rgba(201, 169, 97, .30);
+  }
+
+  .article-index-page .article-card p {
+    color: #a49470;
+  }
+
   .article-shell {
     padding: 28px 0 44px;
   }
