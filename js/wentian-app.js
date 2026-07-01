@@ -8476,7 +8476,7 @@ Object.assign(WENTIAN_I18N_EN_EXTRA, {
   "财帛 · 对宫福德": "Wealth · Opposite Fortune",
   "小限 财帛；对宫 福德": "Minor limit: Wealth; opposite: Fortune",
   "今日剩余 8/8 · 每日额度 8次/天": "Today remaining 8/8 · Daily quota 8/day",
-  "适合连续追问、复盘命盘、做阶段规划。": "Good for continuous follow-ups, chart review, and stage planning.",
+  "适合连续追问、复盘命盘、做阶段规划。": "For follow-ups, chart review, and planning.",
   "按日刷新，不设月额度": "Resets daily, no monthly quota",
   "未登录 · 可注册新账号": "Not signed in · New account available",
   "登录 / 注册后可查看支付记录": "Sign in / register to view payment records",
