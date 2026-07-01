@@ -10620,7 +10620,8 @@ function syncWentianChatFaqLayout() {
   setWentianChatFaqTitleVisible(!isCompact);
 
   const openGroup = isCompact ? null : starters.querySelector(".wentian-chat-faq-group[open]");
-  const baseListHeight = isCompact ? 42 : faqMode === "expanded" ? 180 : 160;
+  const naturalListHeight = Math.ceil(starters.scrollHeight || 0);
+  const baseListHeight = isCompact ? 42 : faqMode === "expanded" ? 180 : Math.max(160, Math.min(184, naturalListHeight || 174));
   const basePhoneHeight = 892;
   const basePositions = {
     faqTitle: 582,
