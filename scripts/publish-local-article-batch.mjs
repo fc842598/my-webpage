@@ -296,7 +296,6 @@ function relatedLinksFor(article) {
   if (hub.key !== "transformations") links.push({ href: "ziwei-four-transformations.html", text: "四化科权禄忌" });
   if (/(财|钱|收入|财帛|官禄|事业|职位)/.test(text)) links.push({ href: "ziwei-money-career.html", text: "财运事业合看" });
   if (/(大限|小限|流年|十年)/.test(text)) links.push({ href: "ziwei-cycles.html", text: "大限流年顺序" });
-  links.push({ href: "../pages/mingbook-onepage.html", text: "打开免费排盘验证" });
   return uniqueLinks(links).slice(0, 6);
 }
 
@@ -310,6 +309,13 @@ function relatedReadingHtml(article) {
 function sideLinksHtml(article) {
   const links = relatedLinksFor(article).slice(0, 5);
   return links.map((link) => `        <a class="card-link" href="${link.href}">${escapeHtml(link.text)}</a>`).join("\n");
+}
+
+function bottomChartCtaHtml() {
+  return `    <div class="container article-bottom-link">
+      <span>读完这篇，回到自己的命盘上对照一遍，会比只看概念更清楚。</span>
+      <a href="../pages/mingbook-onepage.html">快速排盘 →</a>
+    </div>`;
 }
 
 function markdownBody(markdown) {
@@ -358,7 +364,7 @@ function chinesePage(article, time) {
   <meta property="og:url" content="${canonical}">
   <meta property="og:image" content="${defaultImage}">
   <link rel="icon" href="../images/wentian-prototype-assets/wentian-brand-logo-ai-gold-v1.webp" type="image/webp">
-  <link rel="stylesheet" href="../css/articles.css?v=20260629-footer-legal-v1">
+  <link rel="stylesheet" href="../css/articles.css?v=20260701-article-cta-v1">
   <script type="application/ld+json">
   ${JSON.stringify({
     "@context": "https://schema.org",
@@ -418,7 +424,9 @@ function chinesePage(article, time) {
 ${sideLinksHtml(article)}
       </aside>
     </div>
+${bottomChartCtaHtml()}
   </main>
+  <footer class="site-footer"><div class="container site-footer__legal"><a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener">粤ICP备2026055337号-1</a>　<span>© 2026 阅天AI Copyright, All Rights Reserved. Powered By 阅天工作室</span>　</div></footer>
 </body>
 </html>
 `;
@@ -453,7 +461,7 @@ function englishPage(article, time) {
   <meta property="og:url" content="${canonical}">
   <meta property="og:image" content="${defaultImage}">
   <link rel="icon" href="../../images/wentian-prototype-assets/wentian-brand-logo-ai-gold-v1.webp" type="image/webp">
-  <link rel="stylesheet" href="../../css/articles.css?v=20260629-footer-legal-v1">
+  <link rel="stylesheet" href="../../css/articles.css?v=20260701-article-cta-v1">
   <script type="application/ld+json">
   ${JSON.stringify({
     "@context": "https://schema.org",

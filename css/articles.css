@@ -653,6 +653,19 @@ h1 {
   background: var(--gold);
 }
 
+.detail-rail .card-link {
+  min-height: 0;
+  display: block;
+  padding: 12px 0;
+  border: 0;
+  border-top: 1px solid rgba(201, 169, 97, .14);
+  border-radius: 0;
+  color: var(--gold-soft);
+  background: transparent;
+  box-shadow: none;
+  text-align: left;
+}
+
 .detail-rail small {
   display: block;
   margin-top: 10px;
