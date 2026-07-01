@@ -7982,7 +7982,7 @@ const WENTIAN_I18N_EN_EXTRA = {
   "绑定邀请码并注册成功后，双方都会立即开始连续 3 天的奖励周期。": "After binding an invite code and registering successfully, both sides start the 3-day reward cycle immediately.",
   "邀请记录": "Invite Records",
   "暂无邀请记录": "No invite records yet",
-  "管理你的命盘资料": "Manage your chart files",
+  "管理你的命盘资料": "Manage your chart records",
   "+ 添加": "+ Add",
   "出生信息": "Birth Info",
   "排盘": "Chart",
@@ -12118,8 +12118,8 @@ function renderWentianProfileRows(archives = getWentianArchiveList(), query = we
     const isSearchEmpty = Boolean(String(query || "").trim());
     return `
       <div class="wentian-profile-empty">
-        <strong>${isEn ? (isSearchEmpty ? "No matching files" : "No files yet") : (isSearchEmpty ? "暂无匹配档案" : "暂无档案")}</strong>
-        <p>${isEn ? (isSearchEmpty ? "Try another name." : "Tap + New to create a chart file.") : (isSearchEmpty ? "换个姓名再试试" : "点击上方“新建”添加命盘档案")}</p>
+        <strong>${isEn ? (isSearchEmpty ? "No matching charts" : "No charts yet") : (isSearchEmpty ? "暂无匹配档案" : "暂无档案")}</strong>
+        <p>${isEn ? (isSearchEmpty ? "Try another name." : "Tap + New to create a chart.") : (isSearchEmpty ? "换个姓名再试试" : "点击上方“新建”添加命盘档案")}</p>
       </div>
     `;
   }
@@ -12197,17 +12197,17 @@ function sourceProfileScreen(screen) {
     ${wentianBackPill("source-25", 18, 48, 'data-action="back" aria-label="返回"', { zIndex: 80 })}
     ${figText("source-25-title", isEn ? "Chart Records" : "排盘记录", 0, 60, 390, 24, "#201813", 900, "center")}
     ${figBox("source-25-menu-pill", 308, 48, 60, 34, "", "border-radius:17px;background:#fffdf8;border:1px solid #eadbc5;box-shadow:0 8px 18px rgba(86,54,37,.08);")}
-    ${figText("source-25-menu", isEn ? (wentianProfileBatchMode ? "Done" : "Manage") : (wentianProfileBatchMode ? "完成" : "批量"), 308, 58, 60, 14, "#5f453a", 900, "center")}
+    ${figText("source-25-menu", isEn ? (wentianProfileBatchMode ? "Done" : "Edit") : (wentianProfileBatchMode ? "完成" : "批量"), 308, 58, 60, 14, "#5f453a", 900, "center")}
     ${figButton("source-25-menu-hit", 304, 44, 68, 42, `data-action="wentian-profile-batch-toggle" aria-label="${isEn ? "Toggle batch management" : "切换批量管理"}"`)}
     <section class="wentian-profile-stage ${wentianProfileBatchMode ? "is-batch" : ""} ${confirmBar ? "has-confirm" : ""}">
       <div class="wentian-profile-hero">
-        <span class="wentian-profile-top-pill">${isEn ? "Personal Files" : "个人案例"}</span>
+        <span class="wentian-profile-top-pill">${isEn ? "Personal Charts" : "个人案例"}</span>
         <div class="wentian-profile-toolbar">
           <label class="wentian-profile-search-shell" for="wentian-profile-search">
             <span aria-hidden="true">⌕</span>
             <input id="wentian-profile-search" class="wentian-archive-search-input wentian-profile-search-input" value="${escapeHtml(wentianProfileSearchQuery)}" placeholder="${escapeHtml(isEn ? "Enter name" : "请输入姓名")}" autocomplete="off" inputmode="search">
           </label>
-          ${wentianProfileBatchMode ? "" : `<button class="wentian-profile-new-button" type="button" data-route="screen-26" aria-label="${escapeHtml(isEn ? "Create new chart file" : "添加档案")}">${isEn ? "+ New" : "+ 新建"}</button>`}
+          ${wentianProfileBatchMode ? "" : `<button class="wentian-profile-new-button" type="button" data-route="screen-26" aria-label="${escapeHtml(isEn ? "Create new chart" : "添加档案")}">${isEn ? "+ New" : "+ 新建"}</button>`}
         </div>
         <div class="wentian-profile-meta-row">
           <b id="wentian-profile-count">${escapeHtml(getWentianProfileSummaryText(visibleArchives.length, archives.length, wentianProfileSearchQuery))}</b>
