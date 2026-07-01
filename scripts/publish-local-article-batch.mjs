@@ -19,56 +19,56 @@ const topicHubs = [
     file: "ziwei-learning-path.html",
     name: "紫微斗数看盘入门路径",
     shortName: "看盘入门",
-    desc: "从排盘、命宫、三方四正到流年触发，给新手一条不乱跳的阅读顺序。"
+    desc: "刚排完盘不知道从哪里看，就按命宫、三方四正、宫位和流年的顺序往下读。"
   },
   {
     key: "palaces",
     file: "ziwei-palaces.html",
     name: "紫微斗数十二宫位",
     shortName: "十二宫位",
-    desc: "先定事情发生在哪一宫，再看星曜强弱和三方四正。"
+    desc: "先判断问题落在哪一宫，再看星曜、四化和三方四正怎么配合。"
   },
   {
     key: "transformations",
     file: "ziwei-four-transformations.html",
     name: "紫微斗数四化科权禄忌",
     shortName: "四化科权禄忌",
-    desc: "化科看名声与专业，化权看责任，化禄看资源，化忌看卡点。"
+    desc: "化科、化权、化禄、化忌都要看落宫：名声、责任、资源和卡点各不一样。"
   },
   {
     key: "main-stars",
     file: "ziwei-main-stars.html",
     name: "紫微斗数十四主星星性",
     shortName: "十四主星",
-    desc: "先懂主星本性，再放回宫位、辅煞和现实问题里看。"
+    desc: "先把主星的性格读清楚，再回到宫位、辅煞和现实问题里判断强弱。"
   },
   {
     key: "helper-malice",
     file: "ziwei-helper-malice-stars.html",
     name: "紫微斗数辅曜煞曜",
     shortName: "辅曜煞曜",
-    desc: "辅曜看助力，煞曜看压力，重点是它们怎样改变主星的成用。"
+    desc: "辅曜不是单纯加分，煞曜也不是只扣分，重点是它们怎样改变主星的用法。"
   },
   {
     key: "case-patterns",
     file: "ziwei-case-patterns.html",
     name: "紫微斗数特定命例解读",
     shortName: "特定命例",
-    desc: "把常见格局、断语和组合拆成成格条件、例子和现代转法。"
+    desc: "遇到固定格局和断语时，先拆成格条件，再看现代生活里怎么落地。"
   },
   {
     key: "cycles",
     file: "ziwei-cycles.html",
     name: "紫微斗数大限流年",
     shortName: "大限流年",
-    desc: "大限定十年背景，流年定当年触发，小限和对宫看事件落点。"
+    desc: "大限看这十年的背景，流年看今年哪里被触发，小限和对宫补细节。"
   },
   {
     key: "money-career",
     file: "ziwei-money-career.html",
     name: "紫微斗数财运事业",
     shortName: "财运事业",
-    desc: "钱从哪里来、职位怎么变、财帛官禄迁移如何合看。"
+    desc: "看钱和事业不能只盯财帛宫，还要合看官禄、迁移和命宫能不能接住。"
   }
 ];
 const topicHubFiles = new Set(topicHubs.map((hub) => hub.file));
@@ -667,8 +667,8 @@ ${items.map((article, index) => `          <article class="article-card" data-in
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <script src="../js/site-analytics.js?v=20260618-ga4"></script>
-  <title>学习紫微｜免费紫微斗数排盘后的入门指南 | 阅天AI</title>
-  <meta name="description" content="从免费紫微斗数排盘后先看什么，到命例格局、单星星性、十二宫、大限流年和四化科权禄忌，整理适合排盘后继续阅读的紫微文章。">
+  <title>紫微斗数排盘后先看什么？看盘顺序和文章导航 | 阅天AI</title>
+  <meta name="description" content="刚排完紫微斗数命盘，不知道先看哪里？这里按命宫、三方四正、十二宫、四化、流年和常见组合整理文章，适合一边排盘一边查。">
   <meta name="robots" content="index,follow,max-image-preview:large">
   <link rel="canonical" href="${site}/articles/">
   <link rel="alternate" hreflang="zh-CN" href="${site}/articles/">
@@ -677,18 +677,18 @@ ${items.map((article, index) => `          <article class="article-card" data-in
   <link rel="alternate" type="application/rss+xml" title="阅天AI更新订阅" href="${site}/feed.xml">
   <link rel="alternate" type="application/ld+json" title="阅天AI品牌知识图谱" href="${site}/pages/brand-profile.jsonld">
   <link rel="alternate" type="application/xml" title="阅天AI品牌资料" href="${site}/brand-profile.xml">
-  <meta property="og:title" content="学习紫微｜免费紫微斗数排盘后的入门指南">
-  <meta property="og:description" content="紫微斗数排盘后的实用文章集合。">
+  <meta property="og:title" content="紫微斗数排盘后先看什么？看盘顺序和文章导航">
+  <meta property="og:description" content="排完命盘后不知道从哪里读，可以按命宫、宫位、四化、流年和常见组合一步步查。">
   <meta property="og:type" content="website">
   <meta property="og:url" content="${site}/articles/">
   <meta property="og:image" content="${defaultImage}">
   <link rel="icon" href="../images/wentian-prototype-assets/wentian-brand-logo-ai-gold-v1.webp" type="image/webp">
   <link rel="stylesheet" href="../css/articles.css?v=20260701-index-overview-v1">
   <script type="application/ld+json">
-  ${JSON.stringify({ "@context": "https://schema.org", "@type": "CollectionPage", name: "学习紫微", url: `${site}/articles/`, description: "紫微斗数学习文章集合。" }, null, 2)}
+  ${JSON.stringify({ "@context": "https://schema.org", "@type": "CollectionPage", name: "紫微斗数排盘后先看什么", url: `${site}/articles/`, description: "按看盘顺序整理的紫微斗数文章，帮助读者从命宫、三方四正、宫位、四化和流年开始读盘。" }, null, 2)}
   </script>
   <script type="application/ld+json">
-  ${JSON.stringify({ "@context": "https://schema.org", "@type": "ItemList", name: "阅天AI紫微学习文章", itemListElement: itemList }, null, 2)}
+  ${JSON.stringify({ "@context": "https://schema.org", "@type": "ItemList", name: "紫微斗数排盘后阅读导航", itemListElement: itemList }, null, 2)}
   </script>
 </head>
 <body>
@@ -703,20 +703,20 @@ ${items.map((article, index) => `          <article class="article-card" data-in
       <div class="container">
         <section class="index-overview">
           <div>
-            <span class="index-overview__eyebrow">总索引</span>
-            <h1 id="article-index-title">学习紫微：排盘后的文章索引</h1>
-            <p class="index-overview__desc">先看宫位，再看星曜、格局、四化和限年。这里是全部文章的总入口，下面才是按主题拆开的栏目。</p>
+            <span class="index-overview__eyebrow">先别急着断吉凶</span>
+            <h1 id="article-index-title">紫微斗数排盘后，先从哪里看？</h1>
+            <p class="index-overview__desc">不用一上来就问某颗星好不好。先把命宫、三方四正、十二宫和四化的顺序搭起来，再按财运、事业、关系、流年去找对应文章。</p>
           </div>
-          <div class="index-overview__stats" aria-label="文章索引概览">
-            <div class="index-overview__stat"><span>已整理文章</span><strong>${articles.length} 篇</strong></div>
-            <div class="index-overview__stat"><span>学习专题</span><strong>${topicHubs.length} 类</strong></div>
-            <a class="index-overview__link" href="../pages/mingbook-onepage.html">打开免费排盘</a>
+          <div class="index-overview__stats" aria-label="紫微文章导航概览">
+            <div class="index-overview__stat"><span>能查的文章</span><strong>${articles.length} 篇</strong></div>
+            <div class="index-overview__stat"><span>分好的主题</span><strong>${topicHubs.length} 组</strong></div>
+            <a class="index-overview__link" href="../pages/mingbook-onepage.html">去排盘边看边查</a>
           </div>
         </section>
         <details class="article-group" open>
           <summary class="section-head">
-            <h2>按学习路径进入</h2>
-            <span class="section-desc">新手先走路径，熟手按专题查。每个专题页都会继续指向下一级文章。</span>
+            <h2>不知道看哪篇？先按问题选</h2>
+            <span class="section-desc">想看事业、财运、关系、流年，先选问题，再进对应专题慢慢查。</span>
             <span class="section-toggle"><span>${topicHubs.length} 类</span></span>
           </summary>
           <div class="article-list">
@@ -734,11 +734,13 @@ ${groups}
 }
 
 function sectionDesc(name) {
-  if (name.includes("特定")) return "把常见格局和具体组合拆开讲，重点看成格条件与现实用法。";
-  if (name.includes("单星")) return "单独拆主星星性，先懂星，再放回宫位和组合里看。";
-  if (name.includes("十二")) return "十二宫先定事情范围，再看星曜落点。";
-  if (name.includes("看盘")) return "适合新手建立排盘后的阅读顺序。";
-  return "围绕紫微斗数排盘后的实际问题继续阅读。";
+  if (name.includes("特定")) return "遇到固定格局和组合时，先看成格条件，再看现实里能不能用出来。";
+  if (name.includes("单星")) return "想知道一颗主星到底怎么读，先看星性，再放回宫位和组合。";
+  if (name.includes("十二")) return "先确定问题属于哪一宫，再看主星、四化和三方四正怎么配合。";
+  if (name.includes("四化")) return "化科、化权、化禄、化忌不是吉凶标签，要看落在哪一宫、卡在哪里。";
+  if (name.includes("流年")) return "想看今年容易动在哪件事，先看流年落宫，再看对宫和触发点。";
+  if (name.includes("看盘")) return "刚排完盘，不知道先看哪一宫、哪颗星，就从这里把顺序理清。";
+  return "第一次来可以先扫这里：排盘入口、基础概念、十二宫和常见问题都放在一起。";
 }
 
 function regenerateFeedsAndSitemaps() {
@@ -781,7 +783,7 @@ function topicHubPage(hub, articles) {
               <div class="card-meta"><span class="tag">专题建设中</span><span>${publishDate}</span></div>
               <h3>${escapeHtml(hub.shortName)}文章正在扩展</h3>
               <p>${escapeHtml(hub.desc)} 后续发布的新文章会自动进入这个专题。</p>
-              <a class="card-link" href="./">先返回文章索引</a>
+              <a class="card-link" href="./">先回文章首页</a>
             </div>
           </article>`;
   const pathLinks = topicPathLinks(hub).map((link) => `<a class="card-link" href="${link.href}">${escapeHtml(link.text)}</a>`).join("\n          ");
@@ -869,7 +871,7 @@ ${cards}
 
 function topicPathLinks(hub) {
   const links = [
-    { href: "./", text: "返回学习紫微总索引" },
+    { href: "./", text: "返回文章首页" },
     { href: "ziwei-learning-path.html", text: "看盘入门路径" },
     { href: "ziwei-palaces.html", text: "十二宫位" },
     { href: "ziwei-main-stars.html", text: "十四主星" },
