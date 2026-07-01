@@ -9120,6 +9120,16 @@ function finalizeWentianLanguageText(root = view, code = getWentianLanguageCode(
   setWentianFinalText(root, '[data-node-id="source-31-plan-banner-title-v2"]', "Yuetian Plan");
   setWentianFinalText(root, '[data-node-id="source-31-plan-banner-sub-v2"]', "Quotas and upgrades");
   setWentianFinalText(root, '[data-node-id="source-31-plan-banner-cta-text-v2"]', member.isMember ? "View Benefits" : "View Plan");
+  setWentianFinalText(root, '[data-node-id="wt33-title"]', "Yuetian Plan");
+  setWentianFinalText(root, '[data-node-id="wt33-card-label"]', "Yuetian AI");
+  setWentianFinalText(root, '[data-node-id="wt33-card-sub"]', member.isMember ? "Paid plan active." : "Master Xu AI chat: 80/day, resets daily.");
+  setWentianFinalText(root, '[data-node-id="wt33-plan-title"]', "Plan Benefits");
+  setWentianFinalText(root, '[data-node-id="wt33-free-title"]', "Master Xu AI Chat");
+  setWentianFinalText(root, '[data-node-id="wt33-member-title"]', "Computer / Mobile");
+  setWentianFinalText(root, '[data-node-id="wt33-member-quota"]', "Same account");
+  setWentianFinalText(root, '[data-node-id="wt33-member-desc"]', "One account across devices.");
+  setWentianFinalText(root, '[data-node-id="wt33-benefit-title"]', "Auto Refresh");
+  setWentianFinalText(root, '[data-node-id="wt33-pay-method-title"]', "Payment Method");
   setWentianFinalText(root, '[data-node-id="source-login-sub"]', "Membership and payment records follow this account.");
   setWentianFinalText(root, '[data-node-id="source-login-member-text"]', member.isMember ? "Paid Plan" : "Free Account");
   setWentianFinalText(root, '[data-node-id="source-login-method-desc-0"]', phone || "Not linked yet");
