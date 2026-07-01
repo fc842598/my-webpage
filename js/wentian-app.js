@@ -13087,21 +13087,21 @@ function renderWentianHepanChartCard(archive, display, label, nodeId, side = "le
 
 function renderWentianHepanChartCompare(result) {
   return `
-    <section class="wentian-hepan-chart-section" aria-label="????">
+    <section class="wentian-hepan-chart-section" aria-label="\u53cc\u65b9\u547d\u76d8">
       <div class="wentian-hepan-section-head">
-        <span>????</span>
-        <b>???????????</b>
+        <span>\u53cc\u65b9\u547d\u76d8</span>
+        <b>\u9ed8\u8ba4\u6536\u8d77\uff0c\u70b9\u5f00\u624d\u770b\u53c2\u6570</b>
       </div>
       <details class="wentian-hepan-chart-details">
         <summary>
-          <span class="wentian-hepan-chart-summary-label wentian-hepan-chart-summary-label--closed">????</span>
-          <span class="wentian-hepan-chart-summary-label wentian-hepan-chart-summary-label--open">????</span>
-          <em>????????</em>
+          <span class="wentian-hepan-chart-summary-label wentian-hepan-chart-summary-label--closed">\u6253\u5f00\u8be6\u60c5</span>
+          <span class="wentian-hepan-chart-summary-label wentian-hepan-chart-summary-label--open">\u6536\u8d77\u8be6\u60c5</span>
+          <em>\u67e5\u770b\u53cc\u65b9\u547d\u76d8\u53c2\u6570</em>
         </summary>
         <div class="wentian-hepan-chart-detail-body">
-          <p class="wentian-hepan-chart-note">??????????????</p>
-          ${renderWentianHepanChartCard(result.left, result.leftDisplay, "?????", "hepan-left-native-chart", "left")}
-          ${renderWentianHepanChartCard(result.right, result.rightDisplay, "?????", "hepan-right-native-chart", "right")}
+          <p class="wentian-hepan-chart-note">\u5c55\u5f00\u540e\u9ed8\u8ba4\u9ad8\u4eae\u592b\u59bb\u5bab\u4e09\u65b9\u56db\u6b63</p>
+          ${renderWentianHepanChartCard(result.left, result.leftDisplay, "\u5bf9\u8c61\u4e00\u547d\u76d8", "hepan-left-native-chart", "left")}
+          ${renderWentianHepanChartCard(result.right, result.rightDisplay, "\u5bf9\u8c61\u4e8c\u547d\u76d8", "hepan-right-native-chart", "right")}
         </div>
       </details>
     </section>
