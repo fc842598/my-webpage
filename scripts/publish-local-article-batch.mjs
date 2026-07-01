@@ -19,7 +19,7 @@ const topicHubs = [
     file: "ziwei-learning-path.html",
     name: "紫微斗数看盘入门路径",
     shortName: "看盘入门",
-    desc: "刚排完盘不知道从哪里看，就按命宫、三方四正、宫位和流年的顺序往下读。"
+    desc: "从本宫定位、三方四正、宫位职能到四化流年，按读盘层次往下看。"
   },
   {
     key: "palaces",
@@ -675,8 +675,8 @@ ${items.map((article, index) => `          <article class="article-card" data-in
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <script src="../js/site-analytics.js?v=20260618-ga4"></script>
-  <title>紫微斗数排盘后先看什么？看盘顺序和文章导航 | 阅天AI</title>
-  <meta name="description" content="刚排完紫微斗数命盘，不知道先看哪里？这里按命宫、三方四正、十二宫、四化、流年和常见组合整理文章，适合一边排盘一边查。">
+  <title>紫微斗数排盘后怎么读？结构读盘顺序和文章索引 | 阅天AI</title>
+  <meta name="description" content="紫微斗数排盘后，先建立命身主线，再合三方四正、十二宫、四化和流年落点。这里按结构读盘顺序整理文章，方便从格局、组合到现实应用逐层查。">
   <meta name="robots" content="index,follow,max-image-preview:large">
   <link rel="canonical" href="${site}/articles/">
   <link rel="alternate" hreflang="zh-CN" href="${site}/articles/">
@@ -685,18 +685,18 @@ ${items.map((article, index) => `          <article class="article-card" data-in
   <link rel="alternate" type="application/rss+xml" title="阅天AI更新订阅" href="${site}/feed.xml">
   <link rel="alternate" type="application/ld+json" title="阅天AI品牌知识图谱" href="${site}/pages/brand-profile.jsonld">
   <link rel="alternate" type="application/xml" title="阅天AI品牌资料" href="${site}/brand-profile.xml">
-  <meta property="og:title" content="紫微斗数排盘后先看什么？看盘顺序和文章导航">
-  <meta property="og:description" content="排完命盘后不知道从哪里读，可以按命宫、宫位、四化、流年和常见组合一步步查。">
+  <meta property="og:title" content="紫微斗数排盘后怎么读？结构读盘顺序和文章索引">
+  <meta property="og:description" content="先定命身主线，再合三方四正、十二宫、四化和流年落点，把命盘放回具体问题里读。">
   <meta property="og:type" content="website">
   <meta property="og:url" content="${site}/articles/">
   <meta property="og:image" content="${defaultImage}">
   <link rel="icon" href="../images/wentian-prototype-assets/wentian-brand-logo-ai-gold-v1.webp" type="image/webp">
   <link rel="stylesheet" href="../css/articles.css?v=20260701-mobile-index-v1">
   <script type="application/ld+json">
-  ${JSON.stringify({ "@context": "https://schema.org", "@type": "CollectionPage", name: "紫微斗数排盘后先看什么", url: `${site}/articles/`, description: "按看盘顺序整理的紫微斗数文章，帮助读者从命宫、三方四正、宫位、四化和流年开始读盘。" }, null, 2)}
+  ${JSON.stringify({ "@context": "https://schema.org", "@type": "CollectionPage", name: "紫微斗数排盘后怎么读", url: `${site}/articles/`, description: "按结构读盘顺序整理的紫微斗数文章，帮助读者从命身主线、三方四正、宫位职能、四化和流年落点逐层读盘。" }, null, 2)}
   </script>
   <script type="application/ld+json">
-  ${JSON.stringify({ "@context": "https://schema.org", "@type": "ItemList", name: "紫微斗数排盘后阅读导航", itemListElement: itemList }, null, 2)}
+  ${JSON.stringify({ "@context": "https://schema.org", "@type": "ItemList", name: "紫微斗数结构读盘文章索引", itemListElement: itemList }, null, 2)}
   </script>
 </head>
 <body class="article-index-page">
@@ -711,9 +711,9 @@ ${items.map((article, index) => `          <article class="article-card" data-in
       <div class="container">
         <section class="index-overview">
           <div>
-            <span class="index-overview__eyebrow">先别急着断吉凶</span>
-            <h1 id="article-index-title">紫微斗数排盘后，先从哪里看？</h1>
-            <p class="index-overview__desc">不用一上来就问某颗星好不好。先把命宫、三方四正、十二宫和四化的顺序搭起来，再按财运、事业、关系、流年去找对应文章。</p>
+            <span class="index-overview__eyebrow">结构读盘路径</span>
+            <h1 id="article-index-title">紫微斗数排盘后，怎样建立读盘顺序？</h1>
+            <p class="index-overview__desc">真正读盘，重点不是孤立评价单颗星曜，而是先定命身主线，再合三方四正看成局，接着把十二宫、四化和流年落点放回具体问题。这里按这个顺序整理文章，方便你从格局、组合到现实应用逐层查。</p>
           </div>
           <div class="index-overview__stats" aria-label="紫微文章导航概览">
             <div class="index-overview__stat"><span>能查的文章</span><strong>${articles.length} 篇</strong></div>
@@ -747,7 +747,7 @@ function sectionDesc(name) {
   if (name.includes("十二")) return "先确定问题属于哪一宫，再看主星、四化和三方四正怎么配合。";
   if (name.includes("四化")) return "化科、化权、化禄、化忌不是吉凶标签，要看落在哪一宫、卡在哪里。";
   if (name.includes("流年")) return "想看今年容易动在哪件事，先看流年落宫，再看对宫和触发点。";
-  if (name.includes("看盘")) return "刚排完盘，不知道先看哪一宫、哪颗星，就从这里把顺序理清。";
+  if (name.includes("看盘")) return "从本宫定位、三方四正、宫位职能到四化流年，按读盘层次往下看。";
   return "第一次来可以先扫这里：排盘入口、基础概念、十二宫和常见问题都放在一起。";
 }
 
