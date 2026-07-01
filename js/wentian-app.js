@@ -1066,6 +1066,27 @@ const WENTIAN_XU_FAQ_PALACE_DOMAINS = {
   福德: "health",
 };
 
+const WENTIAN_CHAT_COMPACT_FAQ_LABELS = {
+  "人生主线": { zh: "人生", en: "Life" },
+  "感情婚姻": { zh: "婚姻", en: "Love" },
+  "事业工作": { zh: "事业", en: "Career" },
+  "财运赚钱": { zh: "财运", en: "Wealth" },
+  "今年运势": { zh: "今年", en: "Year" },
+  "转运节点": { zh: "转运", en: "Luck" },
+  "健康身体": { zh: "健康", en: "Health" },
+  "家庭人际": { zh: "家庭", en: "Family" },
+  "事情成败": { zh: "成败", en: "Result" },
+  "时间变化": { zh: "时间", en: "Timing" },
+  "人事关系": { zh: "人事", en: "People" },
+  "行动取舍": { zh: "行动", en: "Action" },
+  "相处判断": { zh: "相处", en: "Fit" },
+  "冲突化解": { zh: "化解", en: "Repair" },
+  "成败快慢": { zh: "成败", en: "Result" },
+  "人事消息": { zh: "消息", en: "News" },
+  "卦象细断": { zh: "卦象", en: "Hex" },
+  "行动建议": { zh: "行动", en: "Action" },
+};
+
 const WENTIAN_XU_DYNAMIC_FAQ_ITEMS = [
   { domain: "love", label: "感情能推吗", prompt: "结合命盘和流年，看这段关系近期能不能推进，关键阻力是什么。", min: 18, max: 45 },
   { domain: "love", label: "婚姻何时稳", prompt: "结合命盘，看婚姻稳定窗口，以及最该避开的相处问题。", min: 24, max: 55 },
@@ -1172,6 +1193,13 @@ function dedupeWentianFaqItems(items) {
   });
 }
 
+function getWentianCompactFaqLabel(groupLabel) {
+  const key = String(groupLabel || "").trim();
+  const mapped = WENTIAN_CHAT_COMPACT_FAQ_LABELS[key];
+  if (mapped) return isWentianEnglishUi() ? mapped.en : mapped.zh;
+  return key.slice(0, isWentianEnglishUi() ? 6 : 4);
+}
+
 function getWentianPersonalizedChartFaqGroups(baseGroups, payload = getWentianXuChatPayload()) {
   if (!Array.isArray(baseGroups) || !baseGroups.length) return baseGroups || [];
   const context = getWentianFaqChartContext(payload);
@@ -1195,8 +1223,12 @@ function getWentianPersonalizedChartFaqGroups(baseGroups, payload = getWentianXu
 function getWentianCompactFaqItems(groups) {
   const items = [];
   (groups || []).forEach((group) => {
-    (group.items || []).forEach(([label, prompt]) => {
-      if (items.length < 4) items.push({ groupLabel: group.label, label, prompt });
+    if (items.length >= 4) return;
+    const groupLabel = String(group?.label || "").trim();
+    if (!groupLabel) return;
+    items.push({
+      groupLabel,
+      label: getWentianCompactFaqLabel(groupLabel),
     });
   });
   return items;
