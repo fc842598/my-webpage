@@ -42,8 +42,8 @@ button {
   position: relative;
   overflow: hidden;
   background:
-    linear-gradient(180deg, rgba(255, 253, 246, .98), rgba(241, 231, 214, .96) 58%, rgba(234, 220, 198, .98)),
-    #f3eadb;
+    linear-gradient(180deg, rgba(250, 254, 255, .98), rgba(231, 241, 245, .96) 58%, rgba(238, 229, 211, .98)),
+    #e9f1f4;
   box-shadow: 0 0 0 1px rgba(255, 255, 255, .08), 0 28px 80px rgba(0, 0, 0, .34);
 }
 
@@ -148,8 +148,8 @@ button {
 
 .lab-stage {
   position: relative;
-  height: clamp(390px, 55dvh, 600px);
-  min-height: 390px;
+  height: clamp(430px, 59dvh, 620px);
+  min-height: 430px;
   overflow: hidden;
   isolation: isolate;
 }
@@ -158,21 +158,53 @@ button {
   position: absolute;
   inset: -18px 0 0;
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, .82), rgba(226, 238, 229, .76) 44%, rgba(213, 196, 166, .72) 45%, rgba(171, 143, 103, .44)),
-    linear-gradient(110deg, #edf4ed, #e7dfd0 50%, #d9e6de);
+    linear-gradient(180deg, rgba(255, 255, 255, .88), rgba(222, 239, 248, .78) 43%, rgba(205, 222, 230, .72) 44%, rgba(216, 203, 175, .42)),
+    radial-gradient(circle at 50% 88%, rgba(255, 255, 255, .98), transparent 22%),
+    linear-gradient(110deg, #e9f5fa, #dceaf0 48%, #eef7f7);
   overflow: hidden;
+}
+
+.lab-room::before {
+  content: "YUE TIAN RESEARCH";
+  position: absolute;
+  z-index: 0;
+  left: 50%;
+  top: 112px;
+  width: 100%;
+  transform: translateX(-50%);
+  color: rgba(98, 122, 132, .16);
+  font-size: 27px;
+  font-weight: 1000;
+  letter-spacing: 0;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.lab-room::after {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  left: 50%;
+  bottom: 26px;
+  width: 312px;
+  height: 76px;
+  transform: translateX(-50%) perspective(340px) rotateX(58deg);
+  border: 7px solid rgba(255, 255, 255, .82);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, .86), rgba(154, 196, 211, .18) 52%, rgba(84, 122, 138, .08));
+  box-shadow: 0 0 18px rgba(255, 255, 255, .95), 0 18px 42px rgba(80, 113, 125, .22);
 }
 
 .lab-ceiling {
   position: absolute;
   left: 50%;
   top: 18px;
-  width: 210px;
-  height: 60px;
+  width: 252px;
+  height: 72px;
   transform: translateX(-50%) perspective(260px) rotateX(58deg);
-  border: 1px solid rgba(75, 117, 104, .18);
-  background: rgba(255, 255, 255, .58);
-  box-shadow: 0 22px 54px rgba(255, 255, 255, .5);
+  border: 1px solid rgba(92, 127, 142, .18);
+  background: rgba(255, 255, 255, .72);
+  box-shadow: 0 22px 54px rgba(255, 255, 255, .64), inset 0 0 24px rgba(255, 255, 255, .82);
 }
 
 .lab-wall-line {
@@ -197,21 +229,118 @@ button {
   position: absolute;
   left: -20%;
   right: -20%;
-  bottom: -62px;
+  bottom: -42px;
   height: 220px;
   transform: perspective(360px) rotateX(64deg);
   transform-origin: center bottom;
   background:
-    repeating-linear-gradient(90deg, rgba(116, 91, 57, .12) 0 1px, transparent 1px 48px),
-    repeating-linear-gradient(0deg, rgba(116, 91, 57, .14) 0 1px, transparent 1px 42px);
-  opacity: .8;
+    radial-gradient(circle at 50% 30%, rgba(255, 255, 255, .82), transparent 24%),
+    repeating-linear-gradient(90deg, rgba(92, 127, 142, .1) 0 1px, transparent 1px 54px),
+    repeating-linear-gradient(0deg, rgba(92, 127, 142, .12) 0 1px, transparent 1px 46px);
+  opacity: .68;
+}
+
+.lab-mode-tabs {
+  position: absolute;
+  z-index: 7;
+  top: 6px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: inline-grid;
+  grid-template-columns: repeat(3, auto);
+  gap: 24px;
+}
+
+.lab-mode-tabs[hidden],
+.lab-session-pill[hidden] {
+  display: none;
+}
+
+.lab-mode-tabs button {
+  position: relative;
+  width: 56px;
+  height: 56px;
+  border: 1px solid rgba(255, 255, 255, .54);
+  border-radius: 50%;
+  background: rgba(255, 253, 240, .88);
+  color: #4d463c;
+  font-size: 12px;
+  font-weight: 900;
+  box-shadow: 0 10px 24px rgba(72, 57, 36, .1);
+  backdrop-filter: blur(10px);
+}
+
+.lab-mode-tabs button:first-child {
+  color: #4d463c;
+  background: rgba(255, 253, 240, .9);
+}
+
+.lab-mode-tabs button::after {
+  content: "";
+  position: absolute;
+  right: 5px;
+  bottom: 5px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #fff4a8 0 28%, #e1b33f 29% 100%);
+  box-shadow: 0 2px 7px rgba(188, 138, 32, .28);
+}
+
+.lab-session-pill {
+  position: absolute;
+  z-index: 7;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  min-width: 92px;
+  height: 28px;
+  padding: 0 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, .46);
+  border-radius: 999px;
+  background: rgba(61, 65, 60, .46);
+  color: #fff7e6;
+  font-size: 12px;
+  font-weight: 900;
+  backdrop-filter: blur(10px);
+}
+
+.lab-side-rail {
+  position: absolute;
+  z-index: 7;
+  right: 12px;
+  top: 92px;
+  display: grid;
+  gap: 8px;
+}
+
+.lab-side-rail button {
+  width: 50px;
+  height: 40px;
+  border: 1px solid rgba(255, 255, 255, .48);
+  border-radius: 10px;
+  background: rgba(255, 250, 230, .82);
+  color: #6b5a40;
+  font-size: 12px;
+  font-weight: 900;
+  box-shadow: 0 10px 22px rgba(60, 45, 27, .1);
+  backdrop-filter: blur(10px);
+}
+
+.lab-side-rail button.is-active {
+  color: #1c211d;
+  background: linear-gradient(135deg, #fff2aa, #d4aa4e);
+  border-color: rgba(160, 115, 39, .42);
 }
 
 .lab-bubble {
   position: absolute;
   left: 18px;
-  right: 18px;
-  top: 12px;
+  right: 74px;
+  top: 72px;
   z-index: 5;
   min-height: 54px;
   display: grid;
@@ -249,7 +378,7 @@ button {
   z-index: 4;
   left: 0;
   right: 0;
-  top: 76px;
+  top: 92px;
   bottom: 16px;
   height: auto;
   pointer-events: none;
@@ -259,9 +388,9 @@ button {
   position: absolute;
   z-index: 4;
   left: 50%;
-  top: 42px;
-  width: min(78vw, 310px);
-  height: 500px;
+  top: 112px;
+  width: min(76vw, 300px);
+  height: 430px;
   transform: translateX(-50%) rotateY(-3deg);
   transform-origin: 50% 62%;
   pointer-events: none;
@@ -284,7 +413,7 @@ button {
 .lab-beauty-aura {
   position: absolute;
   left: 50%;
-  top: 92px;
+  top: 76px;
   width: 210px;
   height: 300px;
   transform: translateX(-50%);
@@ -297,7 +426,7 @@ button {
 .lab-beauty-hands-glow {
   position: absolute;
   left: 50%;
-  top: 303px;
+  top: 260px;
   width: 76px;
   height: 38px;
   transform: translateX(-50%);
@@ -316,11 +445,16 @@ button {
 }
 
 .lab-beauty.is-speaking {
+  animation: beauty-speak 1.15s ease-in-out infinite;
   filter: drop-shadow(0 28px 38px rgba(52, 38, 23, .22)) drop-shadow(0 0 18px rgba(205, 169, 92, .22));
 }
 
 .lab-beauty.is-tossing {
   animation: beauty-cast 2.2s ease-in-out both;
+}
+
+.lab-beauty.is-thinking {
+  animation: beauty-thinking 2.2s ease-in-out infinite;
 }
 
 .lab-coin-scene canvas {
@@ -344,6 +478,80 @@ button {
   color: #fff8e8;
   background: rgba(28, 33, 29, .64);
   backdrop-filter: blur(10px);
+}
+
+.lab-yao-panel {
+  position: absolute;
+  z-index: 6;
+  left: 24px;
+  right: 24px;
+  bottom: 58px;
+  display: none;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px 12px;
+  padding: 8px 10px;
+  border: 1px solid rgba(255, 255, 255, .26);
+  border-radius: 12px;
+  background: rgba(48, 54, 50, .54);
+  color: #fff7e3;
+  box-shadow: 0 16px 34px rgba(33, 28, 18, .14);
+  backdrop-filter: blur(12px);
+}
+
+.lab-yao-panel.is-visible {
+  display: grid;
+}
+
+.lab-yao-item {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: 32px 1fr;
+  gap: 2px 6px;
+  align-items: center;
+}
+
+.lab-yao-item span {
+  overflow: hidden;
+  color: #f4cf62;
+  font-size: 11px;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.lab-yao-item em {
+  min-width: 0;
+  overflow: hidden;
+  color: rgba(255, 249, 231, .92);
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 900;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.lab-yao-item i {
+  grid-column: 1 / -1;
+  height: 7px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .18);
+  overflow: hidden;
+}
+
+.lab-yao-item b {
+  display: block;
+  width: 0%;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #f4cf62, #dd9d35);
+  transition: width .22s ease;
+}
+
+.lab-yao-item.is-done b {
+  width: 100%;
+}
+
+.lab-yao-item.is-current i {
+  box-shadow: 0 0 0 1px rgba(244, 207, 98, .38);
 }
 
 .lab-progress span {
@@ -383,6 +591,31 @@ button {
   font-size: 13px;
   font-weight: 900;
   color: var(--gold-deep);
+}
+
+.lab-chat-samples {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 1px 0 9px;
+  scrollbar-width: none;
+}
+
+.lab-chat-samples::-webkit-scrollbar {
+  display: none;
+}
+
+.lab-chat-samples button {
+  flex: 0 0 auto;
+  height: 32px;
+  padding: 0 11px;
+  border: 1px solid rgba(74, 90, 78, .18);
+  border-radius: 999px;
+  background: rgba(255, 253, 246, .8);
+  color: #6b5a40;
+  font-size: 12px;
+  font-weight: 900;
+  white-space: nowrap;
 }
 
 .lab-question-row {
@@ -555,6 +788,41 @@ button {
   padding: 16px;
 }
 
+.lab-result-notice {
+  position: absolute;
+  z-index: 13;
+  left: 18px;
+  right: 18px;
+  bottom: calc(122px + env(safe-area-inset-bottom, 0px));
+  min-height: 54px;
+  display: grid;
+  grid-template-columns: 86px 1fr;
+  gap: 10px;
+  align-items: center;
+  padding: 10px 12px;
+  border: 1px solid rgba(207, 171, 85, .28);
+  border-radius: 12px;
+  background: rgba(255, 253, 247, .96);
+  box-shadow: 0 18px 42px rgba(48, 38, 22, .18);
+}
+
+.lab-result-notice[hidden] {
+  display: none;
+}
+
+.lab-result-notice strong {
+  color: #b77b18;
+  font-size: 15px;
+  font-weight: 900;
+}
+
+.lab-result-notice span {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.45;
+}
+
 .lab-result-sheet[hidden] {
   display: none;
 }
@@ -685,10 +953,10 @@ button {
 
 @keyframes beauty-idle {
   0%, 100% {
-    transform: translateX(-50%) translateY(0) rotateY(-3deg);
+    transform: translateX(-50%) translateY(0) rotateY(-3deg) scale(1);
   }
   50% {
-    transform: translateX(-50%) translateY(-7px) rotateY(3deg);
+    transform: translateX(-50%) translateY(-8px) rotateY(3deg) scale(1.012);
   }
 }
 
@@ -697,13 +965,31 @@ button {
     transform: translateX(-50%) translateY(0) rotateY(-3deg) scale(1);
   }
   32% {
-    transform: translateX(-50%) translateY(-12px) rotateY(0deg) scale(1.025);
+    transform: translateX(-50%) translateY(-22px) rotateY(0deg) scale(1.045);
   }
   58% {
-    transform: translateX(-50%) translateY(-4px) rotateY(5deg) scale(1.01);
+    transform: translateX(-50%) translateY(-6px) rotateY(6deg) scale(1.018);
   }
   100% {
     transform: translateX(-50%) translateY(0) rotateY(-3deg) scale(1);
+  }
+}
+
+@keyframes beauty-speak {
+  0%, 100% {
+    transform: translateX(-50%) translateY(-3px) rotateY(-2deg) scale(1.01);
+  }
+  50% {
+    transform: translateX(-50%) translateY(-12px) rotateY(4deg) scale(1.025);
+  }
+}
+
+@keyframes beauty-thinking {
+  0%, 100% {
+    transform: translateX(-50%) translateY(-2px) rotateY(-4deg) scale(1.006);
+  }
+  50% {
+    transform: translateX(-50%) translateY(-10px) rotateY(2deg) scale(1.018);
   }
 }
 
@@ -731,14 +1017,33 @@ button {
 
 @media (max-width: 360px) {
   .lab-stage {
-    min-height: 360px;
-    height: 51dvh;
+    min-height: 410px;
+    height: 57dvh;
   }
 
   .lab-beauty {
-    top: 48px;
+    top: 118px;
     width: min(78vw, 278px);
-    height: 450px;
+    height: 400px;
+  }
+
+  .lab-side-rail {
+    right: 8px;
+  }
+
+  .lab-side-rail button {
+    width: 44px;
+    height: 36px;
+  }
+
+  .lab-bubble {
+    right: 62px;
+  }
+
+  .lab-yao-panel {
+    left: 16px;
+    right: 16px;
+    bottom: 56px;
   }
 
   .lab-actions {

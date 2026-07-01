@@ -22,6 +22,7 @@
     audio: null,
     recognition: null,
     toastTimer: 0,
+    speakTimer: 0,
   };
 
   const els = {};
@@ -63,6 +64,14 @@
     if (speakNow) speak(text);
   }
 
+  function cueBeautyTalking(duration = 1400) {
+    els.beauty?.classList.add("is-speaking");
+    window.clearTimeout(state.speakTimer);
+    state.speakTimer = window.setTimeout(() => {
+      els.beauty?.classList.remove("is-speaking");
+    }, duration);
+  }
+
   function chooseVoice() {
     const voices = window.speechSynthesis?.getVoices?.() || [];
     return voices.find((voice) => /zh|cmn|yue/i.test(voice.lang) && /female|xiaoxiao|ting|hui|han|chinese|mandarin/i.test(voice.name))
@@ -72,9 +81,10 @@
   }
 
   function speak(text) {
-    if (!state.voice || !("speechSynthesis" in window)) return;
     const clean = normalizeText(text);
     if (!clean) return;
+    cueBeautyTalking();
+    if (!state.voice || !("speechSynthesis" in window)) return;
     window.speechSynthesis.cancel();
     const utterance = new SpeechSynthesisUtterance(clean);
     const voice = chooseVoice();
@@ -83,12 +93,15 @@
     utterance.rate = 0.96;
     utterance.pitch = 1.08;
     utterance.onstart = () => {
+      window.clearTimeout(state.speakTimer);
       els.beauty?.classList.add("is-speaking");
     };
     utterance.onend = () => {
+      window.clearTimeout(state.speakTimer);
       els.beauty?.classList.remove("is-speaking");
     };
     utterance.onerror = () => {
+      window.clearTimeout(state.speakTimer);
       els.beauty?.classList.remove("is-speaking");
     };
     window.speechSynthesis.speak(utterance);
@@ -232,26 +245,33 @@
   async function autoCast() {
     if (!requireQuestion() || state.auto || state.lines.length >= 6) return;
     state.auto = true;
+    els.beauty?.classList.add("is-thinking");
     render();
-    while (state.auto && state.lines.length < 6) {
-      const ok = await tossOnce();
-      if (!ok) break;
-      if (state.lines.length < 6) {
-        await new Promise((resolve) => window.setTimeout(resolve, 650));
+    try {
+      while (state.auto && state.lines.length < 6) {
+        const ok = await tossOnce();
+        if (!ok) break;
+        if (state.lines.length < 6) {
+          await new Promise((resolve) => window.setTimeout(resolve, 650));
+        }
       }
+    } finally {
+      state.auto = false;
+      els.beauty?.classList.remove("is-thinking");
+      render();
     }
-    state.auto = false;
-    render();
   }
 
   function resetAll() {
     state.auto = false;
     state.phase = "idle";
     state.lines = [];
-    els.beauty?.classList.remove("is-tossing", "is-speaking");
+    window.clearTimeout(state.speakTimer);
+    els.beauty?.classList.remove("is-tossing", "is-speaking", "is-thinking");
     if ("speechSynthesis" in window) window.speechSynthesis.cancel();
     if (state.scene) state.scene.clear();
     if (els.resultSheet) els.resultSheet.hidden = true;
+    if (els.resultNotice) els.resultNotice.hidden = true;
     setPrompt("先定一个问题，我来替你抛六次铜钱。", state.voice);
     render();
   }
@@ -322,9 +342,35 @@
       <ul class="lab-line-list">${listItems}</ul>
     `;
     els.resultSheet.hidden = false;
+    if (els.resultNotice) {
+      els.resultNotice.hidden = false;
+      els.resultNotice.onclick = () => {
+        els.resultSheet.hidden = false;
+      };
+    }
     els.resultSheet.querySelector(".lab-result-close")?.addEventListener("click", () => {
       els.resultSheet.hidden = true;
     });
+  }
+
+  function renderYaoPanel() {
+    if (!els.yaoPanel) return;
+    const count = state.lines.length;
+    els.yaoPanel.classList.toggle("is-visible", count > 0 || state.phase === "tossing");
+    els.yaoPanel.innerHTML = lineLabels.map((label, index) => {
+      const done = index < count;
+      const current = index === count && count < 6;
+      const line = state.lines[index];
+      const info = line ? yaoInfo[line.value] : null;
+      const text = info ? `${line.value}${info.name}${info.mark || ""}` : current ? "进行中" : "待定";
+      return `
+        <div class="lab-yao-item ${done ? "is-done" : ""} ${current ? "is-current" : ""}">
+          <span>${escapeHtml(label)}</span>
+          <em>${escapeHtml(text)}</em>
+          <i><b style="width:${done ? 100 : current ? 38 : 0}%"></b></i>
+        </div>
+      `;
+    }).join("");
   }
 
   function renderLines() {
@@ -357,7 +403,13 @@
       els.autoButton.textContent = state.auto ? "进行中" : "连续完成";
     }
     if (els.resetButton) els.resetButton.disabled = state.phase === "tossing";
+    if (els.sessionPill) {
+      els.sessionPill.textContent = done ? "查看结果" : state.phase === "tossing" ? "摇卦中" : `摇卦 ${count}/6`;
+      els.sessionPill.hidden = count === 0 && state.phase === "idle" && !state.question;
+    }
+    if (els.modeTabs) els.modeTabs.hidden = count > 0 || state.phase === "tossing" || Boolean(state.question);
     renderLines();
+    renderYaoPanel();
   }
 
   function makeFaceTexture(label, fill) {
@@ -655,6 +707,22 @@
     els.tossButton?.addEventListener("click", tossOnce);
     els.autoButton?.addEventListener("click", autoCast);
     els.resetButton?.addEventListener("click", resetAll);
+    document.querySelectorAll("[data-sample-question]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const question = normalizeText(button.dataset.sampleQuestion);
+        if (!question || !els.question) return;
+        state.question = question;
+        els.question.value = question;
+        setPrompt("问题已收到，现在可以开始抛币。", true);
+        render();
+      });
+    });
+    document.querySelectorAll("[data-mode-note], [data-feature-note]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const note = button.dataset.modeNote || button.dataset.featureNote;
+        if (note) showToast(note);
+      });
+    });
   }
 
   function init() {
@@ -671,6 +739,10 @@
     els.lines = $("#labLines");
     els.progressText = $("#labProgressText");
     els.progressBar = $("#labProgressBar");
+    els.yaoPanel = $("#labYaoPanel");
+    els.sessionPill = $("#labSessionPill");
+    els.modeTabs = document.querySelector(".lab-mode-tabs");
+    els.resultNotice = $("#labResultNotice");
     els.resultSheet = $("#labResultSheet");
     els.toast = $("#labToast");
 

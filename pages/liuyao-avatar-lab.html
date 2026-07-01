@@ -38,6 +38,21 @@
         <span class="lab-floor-grid"></span>
       </div>
 
+      <div class="lab-mode-tabs" aria-label="体验模式">
+        <button type="button" data-mode-note="挥手动作稍后开放，先体验六爻抛币。">挥手</button>
+        <button type="button" data-mode-note="拥抱动作稍后开放，先体验六爻抛币。">拥抱</button>
+        <button type="button" data-mode-note="比心动作稍后开放，先体验六爻抛币。">比心</button>
+      </div>
+
+      <div class="lab-session-pill" id="labSessionPill">摇卦六次</div>
+
+      <nav class="lab-side-rail" aria-label="功能切换">
+        <button type="button" data-feature-note="八字入口暂未接入这个内测页。"><span>八字</span></button>
+        <button type="button" data-feature-note="塔罗入口暂未接入这个内测页。"><span>塔罗</span></button>
+        <button type="button" class="is-active"><span>六爻</span></button>
+        <button type="button" data-feature-note="聊天入口会复用现有问天对话。"><span>聊天</span></button>
+      </nav>
+
       <div class="lab-bubble" id="labBubble" aria-live="polite">
         <button class="lab-bubble-sound" id="labBubbleSpeak" type="button" aria-label="朗读当前提示">
           <span aria-hidden="true">▶</span>
@@ -54,6 +69,8 @@
 
       <div class="lab-coin-scene" id="labCoinScene" aria-hidden="true"></div>
 
+      <div class="lab-yao-panel" id="labYaoPanel" aria-label="六爻浮动进度"></div>
+
       <div class="lab-progress" aria-label="起卦进度">
         <span id="labProgressText">0/6</span>
         <i><b id="labProgressBar"></b></i>
@@ -62,6 +79,11 @@
 
     <section class="lab-control" aria-label="六爻操作">
       <label class="lab-question-label" for="labQuestion">所问之事</label>
+      <div class="lab-chat-samples" aria-label="快速问题">
+        <button type="button" data-sample-question="最近适合换工作吗？">最近适合换工作吗？</button>
+        <button type="button" data-sample-question="这次合作要不要继续推进？">合作能不能推？</button>
+        <button type="button" data-sample-question="未来三个月感情会有进展吗？">感情有进展吗？</button>
+      </div>
       <div class="lab-question-row">
         <textarea id="labQuestion" maxlength="80" rows="2" placeholder="例如：这次合作要不要继续推进？"></textarea>
         <button class="lab-mic-button" id="labMicButton" type="button" aria-label="语音输入">
@@ -80,6 +102,10 @@
       </div>
     </section>
 
+    <section class="lab-result-notice" id="labResultNotice" hidden aria-live="polite">
+      <strong>稿豆 +3</strong>
+      <span>六爻结果已生成，点击结果卡继续查看。</span>
+    </section>
     <section class="lab-result-sheet" id="labResultSheet" hidden aria-live="polite"></section>
     <p class="lab-toast" id="labToast" role="status" aria-live="polite"></p>
   </main>
