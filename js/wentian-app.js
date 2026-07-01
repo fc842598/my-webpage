@@ -7444,7 +7444,7 @@ const WENTIAN_I18N = {
     "任务与活动奖励": "Tasks and rewards",
     "分享阅天AI": "Share Yuetian AI",
     "联系我们": "Contact Us",
-    "账户设置": "Account Settings",
+    "账户设置": "Settings",
     "基本信息": "Profile",
     "登录方式": "Sign-in Methods",
     "设置密码": "Set Password",
