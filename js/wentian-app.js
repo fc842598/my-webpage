@@ -7431,6 +7431,7 @@ const WENTIAN_I18N = {
     "会员": "Member",
     "今日次数": "Today",
     "每日额度": "Daily Quota",
+    "同步中": "Syncing",
     "会员状态": "Plan",
     "套餐状态": "Plan",
     "免费版": "Free",
