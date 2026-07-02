@@ -939,6 +939,13 @@ html[lang="en"] .office-layout-title {
   line-height: 1.08;
 }
 
+html[lang="en"] .office-layout-panel.hero .office-layout-title {
+  font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  font-size: 21px;
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+}
+
 html[lang="en"] .office-layout-copy,
 html[lang="en"] .office-layout-guide-step p {
   font-size: 11px;
