@@ -15420,11 +15420,43 @@ function renderLiuyaoCastStage(state, details = {}) {
   const complete = Boolean(details.complete);
   const result = details.completeResult || (complete ? getLiuyaoResult(state) : null);
   const lines = details.lines || getLiuyaoCastLines(state);
+  const isEn = getWentianLanguageCode() === "en";
   const questionLockText = details.questionLockText || "";
   const gateBusy = Boolean(details.gateBusy);
   const questionReady = Boolean(details.questionReady);
   const tossing = liuyaoTossAnimation?.active && state.mode === "online";
-  const movingText = result ? formatLiuyaoMovingLineText(result.movingLines) : "无";
+  const trigramEn = {
+    qian: { roman: "Qian", name: "Heaven" },
+    dui: { roman: "Dui", name: "Lake" },
+    li: { roman: "Li", name: "Fire" },
+    zhen: { roman: "Zhen", name: "Thunder" },
+    xun: { roman: "Xun", name: "Wind" },
+    kan: { roman: "Kan", name: "Water" },
+    gen: { roman: "Gen", name: "Mountain" },
+    kun: { roman: "Kun", name: "Earth" }
+  };
+  const getTriEn = (tri) => trigramEn[tri?.key] || { roman: tri?.gua || "", name: tri?.name || "" };
+  const formatCastHexTitle = (hex, fallback) => {
+    if (!isEn) return hex?.name || fallback;
+    const upper = getTriEn(hex?.upper).name;
+    const lower = getTriEn(hex?.lower).name;
+    if (upper && lower && upper !== lower) return `${upper} / ${lower}`;
+    return upper || lower || fallback;
+  };
+  const formatCastHexMeta = (hex) => {
+    if (!isEn) return formatLiuyaoHexMeta(hex);
+    const upper = getTriEn(hex?.upper);
+    const lower = getTriEn(hex?.lower);
+    const parts = [];
+    if (hex?.no) parts.push(`Hex ${hex.no}`);
+    if (upper.roman && lower.roman) parts.push(`${upper.roman}/${lower.roman}`);
+    return parts.join(" · ") || "Hex";
+  };
+  const movingText = result
+    ? (isEn
+      ? (result.movingLines?.length ? result.movingLines.map((line) => `Line ${Number(line.index) + 1}`).join(", ") : "No moving lines")
+      : formatLiuyaoMovingLineText(result.movingLines))
+    : (isEn ? "None" : "无");
   const modeLocked = progress > 0 || complete || tossing;
   return `
     <section class="liuyao-stage liuyao-stage-cast">
@@ -15621,11 +15653,43 @@ function renderLiuyaoCastStage(state, details = {}) {
   const complete = Boolean(details.complete);
   const result = details.completeResult || (complete ? getLiuyaoResult(state) : null);
   const lines = details.lines || getLiuyaoCastLines(state);
+  const isEn = getWentianLanguageCode() === "en";
   const questionLockText = details.questionLockText || "";
   const gateBusy = Boolean(details.gateBusy);
   const questionReady = Boolean(details.questionReady);
   const tossing = liuyaoTossAnimation?.active && state.mode === "online";
-  const movingText = result ? formatLiuyaoMovingLineText(result.movingLines) : "无";
+  const trigramEn = {
+    qian: { roman: "Qian", name: "Heaven" },
+    dui: { roman: "Dui", name: "Lake" },
+    li: { roman: "Li", name: "Fire" },
+    zhen: { roman: "Zhen", name: "Thunder" },
+    xun: { roman: "Xun", name: "Wind" },
+    kan: { roman: "Kan", name: "Water" },
+    gen: { roman: "Gen", name: "Mountain" },
+    kun: { roman: "Kun", name: "Earth" }
+  };
+  const getTriEn = (tri) => trigramEn[tri?.key] || { roman: tri?.gua || "", name: tri?.name || "" };
+  const formatCastHexTitle = (hex, fallback) => {
+    if (!isEn) return hex?.name || fallback;
+    const upper = getTriEn(hex?.upper).name;
+    const lower = getTriEn(hex?.lower).name;
+    if (upper && lower && upper !== lower) return `${upper} / ${lower}`;
+    return upper || lower || fallback;
+  };
+  const formatCastHexMeta = (hex) => {
+    if (!isEn) return formatLiuyaoHexMeta(hex);
+    const upper = getTriEn(hex?.upper);
+    const lower = getTriEn(hex?.lower);
+    const parts = [];
+    if (hex?.no) parts.push(`Hex ${hex.no}`);
+    if (upper.roman && lower.roman) parts.push(`${upper.roman}/${lower.roman}`);
+    return parts.join(" · ") || "Hex";
+  };
+  const movingText = result
+    ? (isEn
+      ? (result.movingLines?.length ? result.movingLines.map((line) => `Line ${Number(line.index) + 1}`).join(", ") : "No moving lines")
+      : formatLiuyaoMovingLineText(result.movingLines))
+    : (isEn ? "None" : "无");
   const modeLocked = progress > 0 || complete || tossing;
   return `
     <section class="liuyao-stage liuyao-stage-cast">
@@ -15640,33 +15704,33 @@ function renderLiuyaoCastStage(state, details = {}) {
         : renderLiuyaoCoinSummary(state, { complete, disabled: gateBusy || !questionReady, lockText: questionReady ? "" : questionLockText })}
       <section class="liuyao-progress-card">
         <div class="liuyao-progress-head">
-          <strong>六爻进度</strong>
+          <strong>${isEn ? "Casting Progress" : "六爻进度"}</strong>
           <span>${escapeHtml(formatWentianDateTime(new Date(state.createdAt || Date.now())))}</span>
           <em>${complete ? "6/6" : `${progress}/6`}</em>
         </div>
         ${result ? `
           <div class="liuyao-progress-result">
             <div>
-              <span>本卦</span>
-              <strong>${escapeHtml(result.primary?.name || "本卦")}</strong>
-              <em>${escapeHtml(formatLiuyaoHexMeta(result.primary))}</em>
+              <span>${isEn ? "Original" : "本卦"}</span>
+              <strong>${escapeHtml(formatCastHexTitle(result.primary, isEn ? "Original" : "本卦"))}</strong>
+              <em>${escapeHtml(formatCastHexMeta(result.primary))}</em>
             </div>
             <div>
-              <span>变卦</span>
-              <strong>${escapeHtml(result.changed?.name || "变卦")}</strong>
-              <em>${escapeHtml(formatLiuyaoHexMeta(result.changed))}</em>
+              <span>${isEn ? "Changed" : "变卦"}</span>
+              <strong>${escapeHtml(formatCastHexTitle(result.changed, isEn ? "Changed" : "变卦"))}</strong>
+              <em>${escapeHtml(formatCastHexMeta(result.changed))}</em>
             </div>
-            <b>动爻：${escapeHtml(movingText)}</b>
+            <b>${isEn ? "Moving: " : "动爻："}${escapeHtml(movingText)}</b>
           </div>
         ` : ""}
-        ${tossing ? `<p class="liuyao-cast-note">本次力度 ${Math.max(18, Math.min(100, Number(liuyaoTossAnimation.power) || 62))}% ，铜钱约 1 秒后落入第 ${progress + 1} 爻。</p>` : ""}
+        ${tossing ? `<p class="liuyao-cast-note">${isEn ? `Current force ${Math.max(18, Math.min(100, Number(liuyaoTossAnimation.power) || 62))}%. Coins land on Line ${progress + 1} in about 1 second.` : `本次力度 ${Math.max(18, Math.min(100, Number(liuyaoTossAnimation.power) || 62))}% ，铜钱约 1 秒后落入第 ${progress + 1} 爻。`}</p>` : ""}
         ${renderLiuyaoHexStack(lines, { id: "cast" })}
       </section>
       ${complete ? `
         <section class="liuyao-result-preview">
-          <strong>六爻已成</strong>
-          <p>本卦、变卦、动爻和许大师解卦已准备好。</p>
-          <button type="button" data-action="liuyao-show-result">查看卦象解读</button>
+          <strong>${isEn ? "Current Hexagram" : "六爻已成"}</strong>
+          <p>${isEn ? "Original, changed, moving lines, and AI reading." : "本卦、变卦、动爻和许大师解卦已准备好。"}</p>
+          <button type="button" data-action="liuyao-show-result">${isEn ? "Read Hexagram" : "查看卦象解读"}</button>
         </section>
       ` : ""}
     </section>
