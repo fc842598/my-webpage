@@ -9965,10 +9965,10 @@ function collectWentianProfileForm() {
   const email = (document.getElementById("wentian-profile-email")?.value || "").trim();
   const phone = (document.getElementById("wentian-profile-phone")?.value || "").trim();
   if (!nickname) {
-    return { error: "请填写昵称" };
+    return { error: getWentianLanguageCode() === "en" ? "Please enter a nickname." : "请填写昵称" };
   }
   if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    return { error: "邮箱格式不正确" };
+    return { error: getWentianLanguageCode() === "en" ? "Enter a valid email address." : "邮箱格式不正确" };
   }
   return { nickname, email, phone };
 }
@@ -9980,7 +9980,13 @@ function submitWentianProfileForm() {
     return;
   }
   saveWentianProfile(profile);
-  setWentianProfileStatus(wentianAuthSession?.user ? "已保存到本机，可点下方同步到账号" : "已保存到本机", "ok");
+  const isEn = getWentianLanguageCode() === "en";
+  setWentianProfileStatus(
+    wentianAuthSession?.user
+      ? (isEn ? "Saved locally. You can sync it to your account below." : "已保存到本机，可点下方同步到账号")
+      : (isEn ? "Saved locally." : "已保存到本机"),
+    "ok"
+  );
 }
 
 async function syncWentianProfileToAccount() {
@@ -9992,10 +9998,10 @@ async function syncWentianProfileToAccount() {
   saveWentianProfile(profile);
   const session = await getWentianAuthSession();
   if (!session?.user) {
-    setWentianProfileStatus("请先登录，再同步到账号", "error");
+    setWentianProfileStatus(getWentianLanguageCode() === "en" ? "Please sign in before syncing to your account." : "请先登录，再同步到账号", "error");
     return;
   }
-  setWentianProfileStatus("正在同步到账号...", "");
+  setWentianProfileStatus(getWentianLanguageCode() === "en" ? "Syncing to your account..." : "正在同步到账号...", "");
   try {
     const data = await wentianFetchJson("/api/auth/profile", {
       method: "POST",
@@ -10004,9 +10010,9 @@ async function syncWentianProfileToAccount() {
     if (data?.user) {
       setWentianAuthSession({ ...session, user: data.user });
     }
-    setWentianProfileStatus("已同步到账号，换设备登录后可带出资料", "ok");
+    setWentianProfileStatus(getWentianLanguageCode() === "en" ? "Synced to your account. It will follow you after signing in on another device." : "已同步到账号，换设备登录后可带出资料", "ok");
   } catch (error) {
-    setWentianProfileStatus(error.message || "同步失败，请稍后重试", "error");
+    setWentianProfileStatus(error.message || (getWentianLanguageCode() === "en" ? "Sync failed. Please try again later." : "同步失败，请稍后重试"), "error");
   }
 }
 
@@ -10640,13 +10646,14 @@ async function writeWentianClipboardText(text) {
 }
 
 async function copyWentianText(text, okText, failText = "复制失败，请长按文本手动复制", failTone = "error") {
+  const isEn = getWentianLanguageCode() === "en";
   try {
     const copied = await writeWentianClipboardText(text);
     if (!copied) throw new Error("copy failed");
-    setWentianInviteStatus(okText || "已复制", "ok");
+    setWentianInviteStatus(isEn ? (okText || "Copied.") : (okText || "已复制"), "ok");
     return true;
   } catch (_err) {
-    setWentianInviteStatus(failText, failTone);
+    setWentianInviteStatus(isEn ? "Copy blocked by the browser. Long-press the text above to copy it." : failText, failTone);
     return false;
   }
 }
@@ -10666,13 +10673,14 @@ function setWentianAboutStatus(text, tone = "") {
 }
 
 async function copyWentianContactText(text, okText) {
+  const isEn = getWentianLanguageCode() === "en";
   try {
     const copied = await writeWentianClipboardText(text);
     if (!copied) throw new Error("copy failed");
-    setWentianContactStatus(okText || "已复制", "ok");
+    setWentianContactStatus(isEn ? (okText || "Copied.") : (okText || "已复制"), "ok");
     return true;
   } catch (_err) {
-    setWentianContactStatus("已显示联系信息，请长按本页文字复制", "ok");
+    setWentianContactStatus(isEn ? "Contact details are shown above. Long-press to copy if needed." : "已显示联系信息，请长按本页文字复制", "ok");
     return false;
   }
 }
@@ -10725,57 +10733,60 @@ function getWentianSharePayload() {
 
 async function shareWentianApp(target = "system") {
   const payload = getWentianSharePayload();
+  const isEn = getWentianLanguageCode() === "en";
   const canUseNativeShare = typeof navigator !== "undefined"
     && typeof navigator.share === "function"
     && /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent || "");
   if (target === "link") {
-    await copyWentianText(payload.url, "分享链接已复制");
+    await copyWentianText(payload.url, isEn ? "Share link copied." : "分享链接已复制");
     return;
   }
   if (target === "wechat") {
-    await copyWentianText(payload.text, "已复制，打开微信发送给好友", "浏览器限制自动复制，请长按上方文案后发给微信好友", "ok");
+    await copyWentianText(payload.text, isEn ? "Share text copied. Open WeChat to send it." : "已复制，打开微信发送给好友", isEn ? "Copy blocked. Long-press the copy above, then send it in WeChat." : "浏览器限制自动复制，请长按上方文案后发给微信好友", "ok");
     return;
   }
   if (target === "moments") {
-    await copyWentianText(payload.text, "已复制，打开朋友圈粘贴发布", "浏览器限制自动复制，请长按上方文案后发到朋友圈", "ok");
+    await copyWentianText(payload.text, isEn ? "Share text copied. Paste it to Moments." : "已复制，打开朋友圈粘贴发布", isEn ? "Copy blocked. Long-press the copy above, then post it to Moments." : "浏览器限制自动复制，请长按上方文案后发到朋友圈", "ok");
     return;
   }
   if (target === "mail") {
     const subject = encodeURIComponent(payload.title);
     const body = encodeURIComponent(payload.text);
     window.location.href = `mailto:?subject=${subject}&body=${body}`;
-    setWentianInviteStatus("已打开邮件分享", "ok");
+    setWentianInviteStatus(isEn ? "Opening email share." : "已打开邮件分享", "ok");
     return;
   }
   if (canUseNativeShare) {
     try {
       await navigator.share({ title: payload.title, text: payload.text, url: payload.url });
-      setWentianInviteStatus("已打开系统分享", "ok");
+      setWentianInviteStatus(isEn ? "Opened system share." : "已打开系统分享", "ok");
       return;
     } catch (_err) {}
   }
-  await copyWentianText(payload.text, "分享文案已复制", "浏览器未开放系统分享，请长按上方文案复制", "ok");
+  await copyWentianText(payload.text, isEn ? "Share text copied." : "分享文案已复制", isEn ? "System share is unavailable. Long-press the copy above." : "浏览器未开放系统分享，请长按上方文案复制", "ok");
 }
 
 async function handleWentianContactAction(action) {
   if (action === "wentian-contact-email") {
-    await copyWentianContactText("842598522@qq.com", "邮箱已复制，可直接发邮件联系");
-    window.location.href = "mailto:842598522@qq.com?subject=%E9%98%85%E5%A4%A9AI%E5%92%A8%E8%AF%A2";
+    const isEn = getWentianLanguageCode() === "en";
+    await copyWentianContactText("842598522@qq.com", isEn ? "Email copied. You can contact us directly." : "邮箱已复制，可直接发邮件联系");
+    window.location.href = isEn ? "mailto:842598522@qq.com?subject=YuetianAI%20Support" : "mailto:842598522@qq.com?subject=%E9%98%85%E5%A4%A9AI%E5%92%A8%E8%AF%A2";
     return;
   }
 }
 
 async function handleWentianAboutAction(action) {
+  const isEn = getWentianLanguageCode() === "en";
   if (action === "wentian-about-privacy") {
     window.location.href = "privacy.html?view=desktop";
     return;
   }
   if (action === "wentian-about-terms") {
-    setWentianAboutStatus("用户协议页即将上线", "ok");
+    setWentianAboutStatus(isEn ? "Terms page is coming soon." : "用户协议页即将上线", "ok");
     return;
   }
   if (action === "wentian-about-update") {
-    setWentianAboutStatus("当前已是最新版本", "ok");
+    setWentianAboutStatus(isEn ? "You are already on the latest version." : "当前已是最新版本", "ok");
   }
 }
 
