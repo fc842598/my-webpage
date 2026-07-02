@@ -18450,6 +18450,36 @@ function sourceLiurenScreen() {
 }
 
 function sourceLiurenTutorialScreen() {
+  if (isWentianEnglishUi()) {
+    const steps = [
+      ["1", "Use current time", "Read live time, then map lunar month, day, hour."],
+      ["2", "Count from Da'an", "Count month from Da'an, then day, then hour."],
+      ["3", "Read good vs risk", "Good: Great Peace, Quick Joy, Minor Luck."],
+      ["4", "Quick timing only", "Not for major calls. Check the full chart too."]
+    ];
+    return `
+      ${figBox("lr47-bg", 0, 0, 390, 884, "", "background:linear-gradient(180deg,#fffaf3 0%,#fbf5eb 100%);")}
+      ${wentianSimpleHeader("lr47", "Liuren Guide", "", { backAttrs: 'data-action="wentian-return-previous" data-fallback-route="screen-46" aria-label="Back"' })}
+      ${figText("lr47-main-title", "How to Cast", 24, 112, 168, 24, "#201812", 900, "left", "font-family:Georgia,'Times New Roman',serif;")}
+      ${figText("lr47-sub", "No typed question. Read the live lunar time.", 24, 146, 320, 12, "#817568", 600)}
+      ${steps.map(([num, title, desc], index) => {
+        const y = 184 + index * 98;
+        return `
+          ${figBox(`lr47-step-${index}`, 24, y, 342, 82, "", "border:1px solid #eadfce;border-radius:18px;background:#fffdf8;box-shadow:0 10px 24px rgba(70,45,25,.07);")}
+          ${figBox(`lr47-num-${index}`, 44, y + 22, 34, 34, "", "border-radius:17px;background:#9e4738;")}
+          ${figText(`lr47-num-text-${index}`, num, 44, y + 31, 34, 13, "#fffaf3", 900, "center")}
+          ${figText(`lr47-step-title-${index}`, title, 94, y + 17, 220, 15, "#201812", 900)}
+          ${figText(`lr47-step-desc-${index}`, desc, 94, y + 45, 248, 11, "#817568", 600, "left", "line-height:1.1;letter-spacing:-0.01em;white-space:nowrap;")}
+        `;
+      }).join("")}
+      ${figBox("lr47-palace", 24, 584, 342, 84, "", "border:1px solid #eadfce;border-radius:18px;background:#fffdf8;")}
+      ${figText("lr47-palace-title", "Six Palace Order", 44, 604, 250, 15, "#201812", 900)}
+      ${figText("lr47-palace-list", "Great Peace→Lingering→Quick Joy→Red Mouth→Minor Luck→Void", 44, 632, 314, 10, "#6e6254", 700, "left", "line-height:1.05;letter-spacing:-0.03em;white-space:nowrap;")}
+      ${figBox("lr47-go", 42, 706, 306, 50, "", "border-radius:25px;background:linear-gradient(180deg,#b74e39,#983323);box-shadow:0 12px 24px rgba(158,61,43,.22);")}
+      ${figButton("lr47-go-hit", 42, 706, 306, 50, 'data-route="screen-46"')}
+      ${figText("lr47-go-text", "Start Casting", 42, 720, 306, 16, "#fffaf3", 900, "center")}
+    `;
+  }
   const steps = [
     ["一", "取当下时间", "进入页面会自动读取手机当前公历时间，并换算成农历月日与时辰。"],
     ["二", "从大安顺推", "农历月份从大安起，接着推农历日期，再推十二时辰。"],

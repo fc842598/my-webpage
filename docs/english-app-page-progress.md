@@ -7,9 +7,9 @@
 - 已完成历史项：英文公共入口、会员页 PayPal 文案、`?lang=en` 强制英文、英文文章入口与链路复查。
 - 本轮已完成：`screen-50` `Office Layout`，主标题已从英文断行为单行收纳。
 - 本轮已完成：`screen-51` `Guide`，步骤标题已从英文断行为单行收纳。
-- 本轮已完成：`screen-46` `Liuren`，英文页起局前后复查通过，动态英文残留与拥挤排版已修复。
-- 当前停靠点：已处理到 `screen-46`
-- 下一页：`screen-47` `Liuren Guide`
+- 本轮已完成：`screen-47` `Liuren Guide`，英文说明卡、宫位顺序与引导文案已压缩收纳，无英文换行撑版。
+- 当前停靠点：已处理到 `screen-47`
+- 下一页：`screen-48` `Orders`
 
 ## 英文页面总清单
 
@@ -53,7 +53,7 @@
 | 待排查 | `screen-44` | Placement | 阳宅结果 |
 | 待排查 | `screen-45` | Guide | 阳宅教程 |
 | 已完成 | `screen-46` | Liuren | 已修复动态英文残留、流程卡换行与宫位英文标签拥挤问题 |
-| 待排查 | `screen-47` | Liuren Guide | 六壬教程 |
+| 已完成 | `screen-47` | Liuren Guide | 已修复英文说明卡与宫位顺序文案过长换行问题 |
 | 待排查 | `screen-48` | Orders | 支付记录 |
 | 待排查 | `screen-49` | Compatibility Result | 合盘结果 |
 | 已完成 | `screen-50` | Office Layout | 本轮已修英文标题收纳 |
