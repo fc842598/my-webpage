@@ -17195,6 +17195,64 @@ const LIUREN_PALACES = [
   { name: "小吉", nature: "吉", tone: "good", keys: ["小成", "贵人", "顺手"], summary: "主小利、小成、有人帮扶。不是暴涨，但推进顺手。", advice: "适合小步试探、先拿结果、借力推进。" },
   { name: "空亡", nature: "凶", tone: "warn", keys: ["落空", "虚耗", "暂无"], summary: "主落空、虚耗、信息不实。问事多需重新核对根基。", advice: "适合暂停、查证、换方案；不要把希望压在单一路径。" }
 ];
+const LIUREN_PALACE_EN_CONTENT = [
+  {
+    name: "Great Peace",
+    nature: "Good",
+    summary: "Steady ground. Hold your current plan, keep the pace calm, and protect what is already working.",
+    advice: "Confirm the existing plan, wait for the next signal, and tighten the details before pushing harder."
+  },
+  {
+    name: "Lingering",
+    nature: "Warning",
+    summary: "Expect delay, repetition, or a sticky back-and-forth. This is better handled by clearing blockers first.",
+    advice: "Follow up, complete missing information, and clean up old loose ends before trying to lock things in."
+  },
+  {
+    name: "Quick Joy",
+    nature: "Good",
+    summary: "A reply, opening, or useful piece of news can arrive quickly. Once it appears, act on it right away.",
+    advice: "Reach out, publish, meet, or confirm fast. This result rewards quick but clean execution."
+  },
+  {
+    name: "Red Mouth",
+    nature: "Warning",
+    summary: "Conflict, harsh words, or misunderstanding are easy to trigger here. Reduce friction before you argue your case.",
+    advice: "Observe first, keep evidence, and slow the conversation down. Do not force a hard confrontation."
+  },
+  {
+    name: "Minor Luck",
+    nature: "Good",
+    summary: "A small but useful opening is available. It is not a sudden jackpot, but progress can move smoothly.",
+    advice: "Take the next small step, secure an early result, and use help or timing to keep the matter moving."
+  },
+  {
+    name: "Void",
+    nature: "Warning",
+    summary: "The matter is not solid yet. What looks available now may still be empty, weak, or unverified.",
+    advice: "Pause, verify the base facts, and prepare another route instead of relying on one uncertain path."
+  }
+];
+const LIUREN_PROCESS_LABELS_EN = {
+  month: "Month count",
+  day: "Day count",
+  hour: "Hour count",
+  process: "Process",
+  lunarTiming: "Lunar timing",
+  arrive: "Arrive at",
+  final: "Final palace",
+  waitingKicker: "Waiting to Cast",
+  waitingTitle: "Focus First",
+  waitingNature: "Focus",
+  waitingSummary: "Hold one clear question in mind. Confirm the current time, then cast once. Avoid repeating the same question over and over.",
+  resultKicker: "Cast Result",
+  action: "Action",
+  currentTime: "Current Time",
+  castReady: "Current time loaded. Focus before casting.",
+  castDone: "Cast from the lunar month, day, and hour.",
+  fallbackSolar: "Solar: waiting for time",
+  fallbackLunar: "Lunar: complete the time first"
+};
 const LIUREN_HAND_POINTS = [
   { left: 39.2, top: 58.0, width: 10.8, height: 13.2 },
   { left: 38.4, top: 42.0, width: 10.6, height: 13.0 },
@@ -17692,6 +17750,20 @@ function formatLiurenLunarBrief(lunar, hourName) {
   return `${month}${formatLiurenDayName(lunar.day)} ${hourName}时`;
 }
 
+function formatLiurenLunarBriefEn(lunar, hourName) {
+  if (!lunar) return "Lunar date unavailable";
+  const monthLabel = `${lunar.isLeap ? "Leap " : ""}Month ${lunar.month}`;
+  const dayLabel = `Day ${lunar.day}`;
+  const hourLabel = hourName ? translateWentianText(`${hourName}时`, "en").replace(/\s+/g, " ").trim() : "";
+  return `Lunar: ${monthLabel} · ${dayLabel}${hourLabel ? ` · ${hourLabel}` : ""}`;
+}
+
+function formatLiurenLunarCompactEn(lunar, hourName) {
+  if (!lunar) return "Lunar unavailable";
+  const hourLabel = hourName ? translateWentianText(`${hourName}时`, "en").replace(/\s+/g, " ").trim() : "";
+  return `M${lunar.month} · D${lunar.day}${hourLabel ? ` · ${hourLabel}` : ""}`;
+}
+
 function parseLiurenIntlMonth(raw) {
   if (!raw) return null;
   const normalized = String(raw).replace(/\s+/g, "");
@@ -17737,6 +17809,15 @@ function getLiurenLunar(date) {
 }
 
 function renderLiurenPreview(result) {
+  if (isWentianEnglishUi()) {
+    return `
+      <div class="liuren-preview-copy">
+        <span>Current Time</span>
+        <strong>Solar: ${formatWentianDateTime(result.date)}</strong>
+        <em>${formatLiurenLunarBriefEn(result.lunar, result.hourName)}</em>
+      </div>
+    `;
+  }
   return `
     <div class="liuren-preview-copy">
       <span>当前课时</span>
@@ -17768,6 +17849,15 @@ function getLiurenResultByDate(date) {
   };
 }
 
+function getLiurenPalaceDisplay(index) {
+  const palace = LIUREN_PALACES[index] || LIUREN_PALACES[0];
+  if (!isWentianEnglishUi()) return palace;
+  return {
+    ...palace,
+    ...(LIUREN_PALACE_EN_CONTENT[index] || {})
+  };
+}
+
 function getLiurenInputDate() {
   if (!document.getElementById("liuren-year")) {
     return new Date((liurenActiveDate || new Date()).getTime());
@@ -17785,13 +17875,16 @@ function getLiurenInputDate() {
 }
 
 function renderLiurenTrack(result, reveal = true) {
-  return LIUREN_PALACES.map((item, index) => `
-    <div class="liuren-track-item ${reveal && index === result.palaceIndex ? "is-active" : ""} ${item.tone === "good" ? "is-good" : "is-warn"}">
-      <em>${index + 1}</em>
-      <strong>${item.name}</strong>
-      <span>${item.nature}</span>
-    </div>
-  `).join("");
+  return LIUREN_PALACES.map((item, index) => {
+    const palace = getLiurenPalaceDisplay(index);
+    return `
+      <div class="liuren-track-item ${reveal && index === result.palaceIndex ? "is-active" : ""} ${item.tone === "good" ? "is-good" : "is-warn"}">
+        <em>${index + 1}</em>
+        <strong>${palace.name}</strong>
+        <span>${palace.nature}</span>
+      </div>
+    `;
+  }).join("");
 }
 
 function getLiurenHandBadgeStyle(index, order = index) {
@@ -17826,23 +17919,27 @@ function getLiurenVisualSequence(result) {
 
 function renderLiurenPalaceBadges(result, reveal = true) {
   const finalIndex = reveal ? result.palaceIndex : -1;
-  return LIUREN_PALACES.map((palace, index) => `
-    <span class="liuren-palace-button ${palace.tone === "good" ? "is-good" : "is-warn"} ${index === finalIndex ? "is-final" : ""}" style="${getLiurenHandBadgeStyle(index)}">
-      <i>${index + 1}</i>
-      <strong>${palace.name}</strong>
-      <em>${palace.nature}</em>
-    </span>
-  `).join("");
+  return LIUREN_PALACES.map((palace, index) => {
+    const display = getLiurenPalaceDisplay(index);
+    return `
+      <span class="liuren-palace-button ${palace.tone === "good" ? "is-good" : "is-warn"} ${index === finalIndex ? "is-final" : ""}" style="${getLiurenHandBadgeStyle(index)}">
+        <i>${index + 1}</i>
+        <strong>${display.name}</strong>
+        <em>${display.nature}</em>
+      </span>
+    `;
+  }).join("");
 }
 
 function renderLiurenPalacePulses(result) {
   return getLiurenVisualSequence(result).map((index, order) => {
     const palace = LIUREN_PALACES[index] || LIUREN_PALACES[0];
+    const display = getLiurenPalaceDisplay(index);
     return `
       <span class="liuren-palace-pulse ${palace.tone === "good" ? "is-good" : "is-warn"}" style="${getLiurenHandBadgeStyle(index, order)};--pulse-delay:${(order * LIUREN_FLASH_INTERVAL_SECONDS).toFixed(2)}s;">
         <i>${index + 1}</i>
-        <strong>${palace.name}</strong>
-        <em>${palace.nature}</em>
+        <strong>${display.name}</strong>
+        <em>${display.nature}</em>
       </span>
     `;
   }).join("");
@@ -17871,6 +17968,34 @@ function renderLiurenPath(result, reveal = true) {
 }
 
 function getLiurenProcessRows(result) {
+  if (isWentianEnglishUi()) {
+    const monthPalace = getLiurenPalaceDisplay(result.monthPalaceIndex).name || "-";
+    const dayPalace = getLiurenPalaceDisplay(result.dayPalaceIndex).name || "-";
+    const finalPalace = getLiurenPalaceDisplay(result.palaceIndex).name || "-";
+    return [
+      {
+        label: LIUREN_PROCESS_LABELS_EN.month,
+        from: LIUREN_PALACE_EN_CONTENT[0].name,
+        steps: Math.max(0, result.lunar.month - 1),
+        to: monthPalace,
+        final: false
+      },
+      {
+        label: LIUREN_PROCESS_LABELS_EN.day,
+        from: monthPalace,
+        steps: Math.max(0, result.lunar.day - 1),
+        to: dayPalace,
+        final: false
+      },
+      {
+        label: LIUREN_PROCESS_LABELS_EN.hour,
+        from: dayPalace,
+        steps: Math.max(0, result.hourNumber - 1),
+        to: finalPalace,
+        final: true
+      }
+    ];
+  }
   const monthPalace = LIUREN_PALACES[result.monthPalaceIndex]?.name || "-";
   const dayPalace = LIUREN_PALACES[result.dayPalaceIndex]?.name || "-";
   return [
@@ -17881,6 +18006,15 @@ function getLiurenProcessRows(result) {
 }
 
 function getLiurenProcessLines(result) {
+  if (isWentianEnglishUi()) {
+    return getLiurenProcessRows(result).map((row) => {
+      const action = row.steps > 0
+        ? `Start from ${row.from} and count ${row.steps} step${row.steps === 1 ? "" : "s"}`
+        : `Start from ${row.from} and stay there`;
+      const target = `${row.final ? LIUREN_PROCESS_LABELS_EN.final : LIUREN_PROCESS_LABELS_EN.arrive}: ${row.to}`;
+      return `${row.label}: ${action} -> ${target}`;
+    });
+  }
   return getLiurenProcessRows(result).map((row) => {
     const action = row.steps > 0 ? `从${row.from}开始走 ${row.steps} 步` : `从${row.from}起，原位不动`;
     return `${row.label}：${action} → ${row.final ? "最终到达" : "到达"}：${row.to}`;
@@ -17889,6 +18023,38 @@ function getLiurenProcessLines(result) {
 
 function renderLiurenProcess(result, reveal = true) {
   if (!reveal) return "";
+  if (isWentianEnglishUi()) {
+    const rows = getLiurenProcessRows(result);
+    const palace = getLiurenPalaceDisplay(result.palaceIndex);
+    return `
+      <details class="liuren-process-card">
+        <summary class="liuren-process-head" aria-label="View Liuren counting process">
+          <div>
+            <span>${LIUREN_PROCESS_LABELS_EN.process}</span>
+            <strong>${formatLiurenLunarCompactEn(result.lunar, result.hourName)}</strong>
+          </div>
+          <em>${palace.name}</em>
+        </summary>
+        <div class="liuren-process-list">
+          ${rows.map((row, index) => {
+            const action = row.steps > 0
+              ? `Start from ${row.from} and count ${row.steps} step${row.steps === 1 ? "" : "s"}`
+              : `Start from ${row.from} and stay there`;
+            return `
+              <div class="liuren-process-step ${row.final ? "is-final" : ""}">
+                <i>${index + 1}</i>
+                <div>
+                  <span>${row.label}</span>
+                  <strong>${action}</strong>
+                  <em>${row.final ? LIUREN_PROCESS_LABELS_EN.final : LIUREN_PROCESS_LABELS_EN.arrive}: ${row.to}</em>
+                </div>
+              </div>
+            `;
+          }).join("")}
+        </div>
+      </details>
+    `;
+  }
   const rows = getLiurenProcessRows(result);
   return `
     <details class="liuren-process-card">
@@ -17919,6 +18085,49 @@ function renderLiurenProcess(result, reveal = true) {
 }
 
 function renderLiurenResultHtml(result, reveal = true) {
+  if (isWentianEnglishUi()) {
+    if (!reveal) {
+      return `
+        <article class="liuren-result-card is-waiting">
+          <div class="liuren-result-top">
+            <div>
+              <span class="liuren-kicker">${LIUREN_PROCESS_LABELS_EN.waitingKicker}</span>
+              <h3>${LIUREN_PROCESS_LABELS_EN.waitingTitle}<small>${LIUREN_PROCESS_LABELS_EN.waitingNature}</small></h3>
+            </div>
+            <div class="liuren-seal">F</div>
+          </div>
+          <p class="liuren-summary">${LIUREN_PROCESS_LABELS_EN.waitingSummary}</p>
+          <textarea id="liuren-copy-text" class="liuren-copy-text" readonly></textarea>
+        </article>
+      `;
+    }
+    const palace = getLiurenPalaceDisplay(result.palaceIndex);
+    const copyText = [
+      `Liuren result: ${palace.name} (${palace.nature})`,
+      `Solar: ${formatWentianDateTime(result.date)}`,
+      formatLiurenLunarBriefEn(result.lunar, result.hourName),
+      ...getLiurenProcessLines(result),
+      `Reading: ${palace.summary}`,
+      `Action: ${palace.advice}`
+    ].join("\n");
+    return `
+      <article class="liuren-result-card ${palace.tone === "good" ? "is-good" : "is-warn"}">
+        <div class="liuren-result-top">
+          <div>
+            <span class="liuren-kicker">${LIUREN_PROCESS_LABELS_EN.resultKicker}</span>
+            <h3>${palace.name}<small>${palace.nature}</small></h3>
+          </div>
+          <div class="liuren-seal">${palace.name.slice(0, 1)}</div>
+        </div>
+        <p class="liuren-summary">${palace.summary}</p>
+        <div class="liuren-detail">
+          <strong>${LIUREN_PROCESS_LABELS_EN.action}</strong>
+          <span>${palace.advice}</span>
+        </div>
+        <textarea id="liuren-copy-text" class="liuren-copy-text" readonly>${escapeHtml(copyText)}</textarea>
+      </article>
+    `;
+  }
   if (!reveal) {
     return `
       <article class="liuren-result-card is-waiting">
@@ -18063,6 +18272,7 @@ function updateLiurenPreview(options = {}) {
   const resultWrap = document.getElementById("liuren-result");
   const startText = document.querySelector("[data-liuren-start-text]");
   const reveal = options.reveal ?? liurenHasStarted;
+  const isEn = isWentianEnglishUi();
   try {
     const result = getLiurenResultByDate(getLiurenInputDate());
     if (preview) preview.innerHTML = renderLiurenPreview(result);
@@ -18070,6 +18280,17 @@ function updateLiurenPreview(options = {}) {
     if (path) path.innerHTML = renderLiurenPath(result, reveal);
     if (process) process.innerHTML = renderLiurenProcess(result, reveal);
     if (resultWrap) resultWrap.innerHTML = renderLiurenResultHtml(result, reveal);
+    if (isEn) {
+      if (startText) startText.textContent = reveal ? "Refocus" : "Cast After Focusing";
+      const askButton = document.querySelector('[data-action="liuren-ask-xu"]');
+      if (askButton) {
+        askButton.disabled = !reveal;
+        askButton.textContent = reveal ? "Ask Master Xu" : "Cast first, then ask Master Xu";
+      }
+      setLiurenStatus(reveal ? LIUREN_PROCESS_LABELS_EN.castDone : LIUREN_PROCESS_LABELS_EN.castReady, reveal ? "ok" : "");
+      syncLiurenScreenLayout();
+      return;
+    }
     if (startText) startText.textContent = reveal ? "重新定念起课" : "默念后起课";
     const askButton = document.querySelector('[data-action="liuren-ask-xu"]');
     if (askButton) {
@@ -18078,6 +18299,15 @@ function updateLiurenPreview(options = {}) {
     }
     setLiurenStatus(reveal ? "已按农历月日时起课" : "已取当下时间，先定念再起课", reveal ? "ok" : "");
   } catch (error) {
+    if (isEn) {
+      if (preview) {
+        preview.innerHTML = `<div class="liuren-preview-copy"><span>${LIUREN_PROCESS_LABELS_EN.currentTime}</span><strong>${LIUREN_PROCESS_LABELS_EN.fallbackSolar}</strong><em>${LIUREN_PROCESS_LABELS_EN.fallbackLunar}</em></div>`;
+      }
+      if (process) process.innerHTML = "";
+      setLiurenStatus(error.message || "Cast failed", "error");
+      syncLiurenScreenLayout();
+      return;
+    }
     if (preview) preview.innerHTML = '<div class="liuren-preview-copy"><span>当前课时</span><strong>新历：待取时</strong><em>农历：请补全时间</em></div>';
     if (process) process.innerHTML = "";
     setLiurenStatus(error.message || "起课失败", "error");
