@@ -9323,6 +9323,7 @@ function finalizeWentianLanguageText(root = view, code = getWentianLanguageCode(
   setWentianFinalText(root, '[data-node-id="yz42-compass-close-text"]', "Close");
   setWentianFinalText(root, '[data-node-id="yz42-section-title"]', "Nine Palaces");
   setWentianFinalText(root, '[data-node-id="yz42-placement-prompt"]', "Open compass, align N/E/S/W, then place items.");
+  setWentianFinalText(root, '[data-node-id="yz42-compass-text"]', "Compass");
   setWentianFinalText(root, '[data-node-id="yz44-head-title"]', "Placement");
   setWentianFinalText(root, '[data-node-id="yz43-sub"]', "Place by actual room use");
   setWentianFinalText(root, '[data-node-id="yz42-section-help"]', "Tap + to place items");
@@ -16352,7 +16353,10 @@ function resetYangzhaiCompassSmoothing() {
 }
 
 function getYangzhaiCompassDirectionLabel(heading) {
-  const directions = ["北", "东北", "东", "东南", "南", "西南", "西", "西北"];
+  const isEn = getWentianLanguageCode() === "en";
+  const directions = isEn
+    ? ["N", "NE", "E", "SE", "S", "SW", "W", "NW"]
+    : ["北", "东北", "东", "东南", "南", "西南", "西", "西北"];
   const normalized = normalizeCompassHeading(heading) || 0;
   return directions[Math.round(normalized / 45) % directions.length];
 }
@@ -16375,8 +16379,13 @@ function setYangzhaiCompassActiveUi(active) {
     if (!active) cross.classList.remove("is-cardinal-aligned");
   });
   if (!active) {
-    setYangzhaiCompassStatus("未开启", "");
-    setYangzhaiCompassPrompt("开指南针，对准九宫方位后安位。", "");
+    if (getWentianLanguageCode() === "en") {
+      setYangzhaiCompassStatus("Off", "");
+      setYangzhaiCompassPrompt("Open compass, align the palace directions, then place items.", "");
+    } else {
+      setYangzhaiCompassStatus("未开启", "");
+      setYangzhaiCompassPrompt("开指南针，对准九宫方位后安位。", "");
+    }
   }
 }
 
@@ -16392,12 +16401,26 @@ function applyYangzhaiCompassHeading(rawHeading, tone = "active") {
   if (raw === null) return null;
   const heading = raw;
   const alignment = getYangzhaiCompassCardinalAlignment(heading);
+  const isEn = getWentianLanguageCode() === "en";
   view.querySelectorAll("[data-yangzhai-compass-cross]").forEach((cross) => {
     cross.style.setProperty("--yangzhai-heading", `${heading}deg`);
     cross.style.setProperty("--yangzhai-luopan-rotation", `${-heading}deg`);
     cross.classList.add("is-compass-active");
     cross.classList.toggle("is-cardinal-aligned", alignment.aligned);
   });
+  if (isEn) {
+    setYangzhaiCompassStatus(
+      alignment.aligned ? "Aligned" : `${Math.round(heading)}° ${getYangzhaiCompassDirectionLabel(heading)}`,
+      alignment.aligned ? "ready" : tone
+    );
+    setYangzhaiCompassPrompt(
+      alignment.aligned
+        ? "Aligned to the palace directions. You can place items now."
+        : `Point the phone top to south. Adjust about ${Math.round(alignment.delta)}°.`,
+      alignment.aligned ? "ready" : "active"
+    );
+    return heading;
+  }
   setYangzhaiCompassStatus(alignment.aligned
     ? "四正已对齐"
     : `${Math.round(heading)}° ${getYangzhaiCompassDirectionLabel(heading)}`,
@@ -16609,6 +16632,11 @@ async function startYangzhaiCompass() {
     window.addEventListener("deviceorientationabsolute", yangzhaiCompassHandler, true);
     window.addEventListener("deviceorientation", yangzhaiCompassHandler, true);
     setYangzhaiCompassActiveUi(true);
+    if (getWentianLanguageCode() === "en") {
+      setYangzhaiCompassStatus("Reading", "active");
+      setYangzhaiCompassPrompt("Reading direction. Rotate the phone to align south, east, north, west.", "active");
+      return;
+    }
     setYangzhaiCompassStatus("读取中", "active");
     setYangzhaiCompassPrompt("正在读取方向，转动手机对准四正向。", "active");
   } catch (_) {
