@@ -19472,7 +19472,7 @@ function sourceChartFormScreen() {
   const isEditingArchive = !!getWentianArchiveEditId();
   const title = isEditingArchive ? (isEn ? "Edit Chart" : "编辑命盘") : (isEn ? "Birth Details" : "填写生辰信息");
   const heading = isEditingArchive ? (isEn ? "Edit Birth Info" : "修改出生信息") : "";
-  const cardTop = isEditingArchive ? 130 : 104;
+  const cardTop = isEditingArchive ? 154 : 104;
   const submitY = isEditingArchive ? 690 : 684;
   const submitText = isEditingArchive ? (isEn ? "Save Changes" : "保存修改") : (isEn ? "Create Chart" : "立即排盘");
   return `
@@ -19481,7 +19481,7 @@ function sourceChartFormScreen() {
     ${wentianBackPill("source-26", 18, 42, `data-action="back" aria-label="${isEn ? "Back" : "返回"}"`, { zIndex: 70 })}
     ${figText("source-26-title", title, 0, 52, 390, 24, "#1f1d1a", 800, "center", "font-family:'Noto Serif SC','Songti SC',serif;")}
 
-    ${heading ? figText("source-26-heading", heading, 24, 108, 160, 24, "#2b251c", 900, "left", "font-family:'Noto Serif SC','Songti SC',serif;") : ""}
+    ${heading ? figText("source-26-heading", heading, 24, 108, 250, 24, "#2b251c", 900, "left", "font-family:'Noto Serif SC','Songti SC',serif;") : ""}
     <div class="wentian-chart-card" style="top:${cardTop}px">
       <input type="hidden" id="wentian-chart-gender" value="male">
       <input type="hidden" id="wentian-chart-type" value="ziwei">
