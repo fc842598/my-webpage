@@ -1051,10 +1051,12 @@ html[lang="en"] [data-node-id="source-login-title"] {
 html[lang="en"] [data-node-id="source-login-sub"] {
   top: 90px !important;
   left: 116px !important;
-  width: 236px !important;
+  width: 252px !important;
   text-align: left !important;
-  font-size: 11px !important;
-  line-height: 1.18 !important;
+  font-size: 10px !important;
+  line-height: 1.04 !important;
+  letter-spacing: -0.02em !important;
+  white-space: nowrap !important;
 }
 
 html[lang="en"] [data-node-id="source-password-login-desc"] {

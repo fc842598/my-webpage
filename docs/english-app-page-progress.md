@@ -12,8 +12,9 @@
 - 本轮已完成：`screen-43` `Choose Members`，成员选择弹层长英文已改为单行收纳，背景提示与选中后确认按钮文案也已修正。
 - 本轮已完成：`screen-42` `Nine Palaces`，中宫指南针按钮已改为单行，开启后的英文状态异常也已修正。
 - 本轮已完成：`screen-41` `Password`，未登录态说明文案已压缩为单行，登录入口跳转已复查。
-- 当前停靠点：已处理到 `screen-41`
-- 下一页：`screen-40` `Login Methods`
+- 本轮已完成：`screen-40` `Login Methods`，页头副标题已压缩为单行，返回入口已复查。
+- 当前停靠点：已处理到 `screen-40`
+- 下一页：`screen-39` `Basic Info`
 
 ## 英文页面总清单
 
@@ -50,7 +51,7 @@
 | 待排查 | `screen-37` | Language | 语言设置 |
 | 待排查 | `screen-38` | Settings | 账户设置 |
 | 待排查 | `screen-39` | Basic Info | 基本信息 |
-| 待排查 | `screen-40` | Login Methods | 登录方式 |
+| 已完成 | `screen-40` | Login Methods | 已修复页头副标题英文换行，并复查返回入口 |
 | 已完成 | `screen-41` | Password | 已修复未登录态说明文案英文换行，并复查登录入口跳转 |
 | 已完成 | `screen-42` | Nine Palaces | 已修复中宫指南针按钮英文换行与开启后状态文案异常 |
 | 已完成 | `screen-43` | Choose Members | 已修复成员选择弹层长英文换行、背景提示过长与选中后确认按钮英文异常 |

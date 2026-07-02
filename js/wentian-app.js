@@ -9392,7 +9392,7 @@ function finalizeWentianLanguageText(root = view, code = getWentianLanguageCode(
   setWentianFinalText(root, '[data-node-id="wt33-member-desc"]', "One account across devices.");
   setWentianFinalText(root, '[data-node-id="wt33-benefit-title"]', "Auto Refresh");
   setWentianFinalText(root, '[data-node-id="wt33-pay-method-title"]', "Payment Method");
-  setWentianFinalText(root, '[data-node-id="source-login-sub"]', "Membership and payment records follow this account.");
+  setWentianFinalText(root, '[data-node-id="source-login-sub"]', "Payments and membership stay on this account.");
   setWentianFinalText(root, '[data-node-id="source-login-member-text"]', member.isMember ? "Paid Plan" : "Free Account");
   setWentianFinalText(root, '[data-node-id="source-login-method-desc-0"]', phone || "Not linked yet");
   setWentianFinalText(root, '[data-node-id="source-login-method-desc-1"]', provider === "google" ? "Current sign-in method" : "Available anytime");
