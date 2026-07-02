@@ -7472,12 +7472,44 @@ function openWentianHepanXuChat() {
   navigate("screen-4");
 }
 
+function normalizeWentianLanguageCode(code) {
+  const raw = String(code || "").trim();
+  if (!raw) return "";
+  const alias = {
+    zh: "zh-Hans",
+    "zh-cn": "zh-Hans",
+    "zh-hans": "zh-Hans",
+    "zh-sg": "zh-Hans",
+    "zh-hant": "zh-Hant",
+    "zh-tw": "zh-Hant",
+    "zh-hk": "zh-Hant",
+    en: "en",
+    english: "en",
+  };
+  const normalized = alias[raw.toLowerCase()] || raw;
+  return WENTIAN_LANGUAGE_OPTIONS.some((item) => item.code === normalized) ? normalized : "";
+}
+
+function getWentianLanguageCodeFromUrl() {
+  const params = new URLSearchParams(window.location.search || "");
+  return normalizeWentianLanguageCode(
+    params.get("lang") || params.get("language") || params.get("wentianLanguage") || params.get("locale")
+  );
+}
+
 function getWentianLanguageCode() {
+  const urlCode = getWentianLanguageCodeFromUrl();
+  if (urlCode) {
+    try {
+      localStorage.setItem(WENTIAN_LANGUAGE_STORAGE_KEY, urlCode);
+    } catch (_err) {}
+    return urlCode;
+  }
   let code = "";
   try {
     code = localStorage.getItem(WENTIAN_LANGUAGE_STORAGE_KEY) || "";
   } catch (_err) {}
-  return WENTIAN_LANGUAGE_OPTIONS.some((item) => item.code === code) ? code : "zh-Hans";
+  return normalizeWentianLanguageCode(code) || "zh-Hans";
 }
 
 function getWentianLanguageOption(code = getWentianLanguageCode()) {
@@ -12501,7 +12533,7 @@ function sourceMembershipScreen() {
     const disabled = !item.enabled;
     const bg = active ? "#fff3d9" : "#fffdf8";
     const border = active ? "#c8a65f" : "#eadfce";
-    const text = disabled ? `${item.label}配置中` : item.label;
+    const text = disabled && !isWentianEnglishUi() ? `${item.label}配置中` : item.label;
     return `
       ${figBox(`wt33-pay-method-${item.provider}`, x, 508, width, 36, "", `border:1px solid ${border};border-radius:18px;background:${bg};`)}
       ${figButton(`wt33-pay-method-hit-${item.provider}`, x, 508, width, 36, disabled ? "" : `data-action="wentian-pay-provider" data-provider="${item.provider}"`)}
@@ -12557,7 +12589,7 @@ function sourceMembershipScreenPreview() {
     const bg = active ? "#fff3d9" : "#fffdf8";
     const border = active ? "#d9b87a" : "#eadfce";
     const textColor = disabled ? "#b4aaa0" : (active ? "#8f3d30" : "#756d63");
-    const text = disabled ? `${item.label}配置中` : item.label;
+    const text = disabled && !isWentianEnglishUi() ? `${item.label}配置中` : item.label;
     return `
       ${figBox(`wt33-preview-method-${item.provider}`, x, 402, width, 38, "", `border:1px solid ${border};border-radius:19px;background:${bg};box-shadow:0 6px 14px rgba(92,65,35,.05);`)}
       ${figButton(`wt33-preview-method-hit-${item.provider}`, x, 402, width, 38, disabled ? "" : `data-action="wentian-pay-provider" data-provider="${item.provider}"`)}
