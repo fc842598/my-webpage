@@ -1213,6 +1213,13 @@ html[lang="en"] #wt34-link-box {
   line-height: 1.32 !important;
 }
 
+html[lang="en"] [data-node-id="wt30-status-text"] {
+  font-size: 10.5px !important;
+  line-height: 1 !important;
+  letter-spacing: -0.02em !important;
+  white-space: nowrap !important;
+}
+
 html[lang="en"] [data-node-id="wt48-empty-title"] {
   width: 294px !important;
   height: 24px !important;
