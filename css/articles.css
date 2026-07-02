@@ -594,6 +594,15 @@ html[lang="en"] .article-detail-layout::before {
   content: "Reading path: Main palace \00b7  triad/opposite \00b7  real-life check";
 }
 
+html[lang="en"] .article-orbit span::before {
+  content: "Twelve palaces";
+}
+
+html[lang="en"] .article-bottom-link::before {
+  content: "Next step";
+  letter-spacing: .08em;
+}
+
 .article-paper {
   padding: 44px 44px 46px;
   border: 1px solid #e3cba5;
