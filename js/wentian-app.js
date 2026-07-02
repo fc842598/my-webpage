@@ -8627,6 +8627,7 @@ Object.assign(WENTIAN_I18N_EN_EXTRA, {
   "\u4e0d\u4f1a\u786e\u5b9a\u65b9\u4f4d\uff1f": "Not Sure About Direction?",
   "\u8fd4\u56de\u529e\u516c\u5ba4\u5e03\u5c40": "Back to Office Layout",
   "\u5148\u770b\u8bf4\u660e": "Guide First",
+  "\u4f7f\u7528\u8bf4\u660e": "Guide",
   "\u53bb\u529e\u516c\u5ba4\u5e03\u5c40": "Office Layout",
   "\u7ee7\u7eed\u8c03\u6574": "Adjust Layout",
   "\u67e5\u770b\u4f7f\u7528\u8bf4\u660e": "View Guide",
