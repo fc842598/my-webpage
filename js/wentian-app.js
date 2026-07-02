@@ -9396,15 +9396,15 @@ function finalizeWentianLanguageText(root = view, code = getWentianLanguageCode(
   setWentianFinalText(root, '[data-node-id="source-login-note-title"]', "Account Notes");
   setWentianFinalText(root, '[data-node-id="source-login-note-text"]', "This account is already linked. Password updates, renewals, and order checks are all available from the entries above.");
   setWentianFinalText(root, '[data-node-id="source-login-note"]', "Phone sign-in uses a password, not SMS codes.");
-  setWentianFinalText(root, '[data-node-id="wt48-title"]', "Payment Records");
+  setWentianFinalText(root, '[data-node-id="wt48-title"]', "Orders");
   setWentianFinalText(root, '[data-node-id="wt48-right"]', "Sync");
-  setWentianFinalText(root, '[data-node-id="wt48-ticket-text"]', "Refund Help");
-  setWentianFinalText(root, '[data-node-id="wt48-loading"]', "Loading payment records...");
-  setWentianFinalText(root, '[data-node-id="wt48-loading-sub"]', "Order status, amount, and refund records will appear here.");
-  setWentianFinalText(root, '[data-node-id="wt48-empty-title"]', account.loggedIn ? "No payment records yet" : "Sign in to view payment records");
-  setWentianFinalText(root, '[data-node-id="wt48-empty-sub"]', account.loggedIn ? "Once you activate a plan, your orders will appear here." : "Membership orders, payment status, and refunds are linked to your account.");
-  setWentianFinalText(root, '[data-node-id="wt48-login-text"]', "Sign In / Register");
-  setWentianFinalText(root, '[data-node-id="wt48-retry-text"]', "Try Again");
+  setWentianFinalText(root, '[data-node-id="wt48-ticket-text"]', "Refund");
+  setWentianFinalText(root, '[data-node-id="wt48-loading"]', "Loading orders...");
+  setWentianFinalText(root, '[data-node-id="wt48-loading-sub"]', "Status, amount, refunds show here.");
+  setWentianFinalText(root, '[data-node-id="wt48-empty-title"]', account.loggedIn ? "No orders yet" : "Sign in for orders");
+  setWentianFinalText(root, '[data-node-id="wt48-empty-sub"]', account.loggedIn ? "Paid plans show here." : "Plans, orders, refunds stay on this account.");
+  setWentianFinalText(root, '[data-node-id="wt48-login-text"]', "Sign In");
+  setWentianFinalText(root, '[data-node-id="wt48-retry-text"]', "Retry");
   const finalCoin = root.querySelector(".wentian-chart-ai-final-coin");
   if (finalCoin) {
     setWentianFinalText(finalCoin, "span", "Full");
