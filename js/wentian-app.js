@@ -11543,6 +11543,61 @@ function getWentianPaymentProviderMeta(provider = wentianPaymentState.provider) 
   return getWentianPaymentProviders().find((item) => item.provider === provider) || getWentianPaymentProviders()[0];
 }
 
+function setWentianPayProviderNodeState(provider, item, options) {
+  if (!view) return;
+  const active = wentianPaymentState.provider === provider;
+  const disabled = !item.enabled;
+  const box = view.querySelector(`[data-node-id="${options.boxPrefix}-${provider}"]`);
+  const text = view.querySelector(`[data-node-id="${options.textPrefix}-${provider}${options.textSuffix || ""}"]`);
+  const hit = view.querySelector(`[data-node-id="${options.hitPrefix}-${provider}${options.hitSuffix || ""}"]`);
+  if (box) {
+    box.style.borderColor = active ? options.activeBorder : "#eadfce";
+    box.style.background = active ? "#fff3d9" : "#fffdf8";
+  }
+  if (text) text.style.color = disabled ? "#b4aaa0" : (active ? "#8f3d30" : "#756d63");
+  if (hit) hit.setAttribute("aria-pressed", active ? "true" : "false");
+}
+
+function setWentianNodeText(nodeId, text) {
+  const node = view?.querySelector?.(`[data-node-id="${nodeId}"]`);
+  if (node) node.textContent = text;
+}
+
+function refreshWentianPayProviderSelection() {
+  const providers = getWentianPaymentProviders();
+  providers.forEach((item) => {
+    setWentianPayProviderNodeState(item.provider, item, {
+      boxPrefix: "wt33-pay-method",
+      textPrefix: "wt33-pay-method-text",
+      hitPrefix: "wt33-pay-method-hit",
+      activeBorder: "#c8a65f",
+    });
+    setWentianPayProviderNodeState(item.provider, item, {
+      boxPrefix: "wt33-preview-method",
+      textPrefix: "wt33-preview-method-text",
+      hitPrefix: "wt33-preview-method-hit",
+      activeBorder: "#d9b87a",
+    });
+    setWentianPayProviderNodeState(item.provider, item, {
+      boxPrefix: "wt29",
+      textPrefix: "wt29",
+      hitPrefix: "wt29",
+      textSuffix: "-text",
+      hitSuffix: "-hit",
+      activeBorder: "#c8a65f",
+    });
+  });
+  const paymentPrice = getWentianSelectedPaymentPrice();
+  const member = getWentianMemberSnapshot();
+  const buttonText = member.isMember
+    ? `\u7eed\u8d39 ${paymentPrice.text}`
+    : `\u5f00\u901a\u4ed8\u8d39\u7248 ${paymentPrice.text}`;
+  setWentianNodeText("wt33-card-price", paymentPrice.text);
+  setWentianNodeText("wt33-submit-text", buttonText);
+  setWentianNodeText("wt33-preview-card-value-0", paymentPrice.text);
+  setWentianNodeText("wt33-preview-submit-text", buttonText);
+}
+
 function getWentianPaymentProviderLabel() {
   return getWentianPaymentProviderMeta().label || (wentianPaymentState.provider === "paypal" ? "PayPal" : (wentianPaymentState.provider === "alipay" ? "支付宝" : "微信支付"));
 }
@@ -12556,7 +12611,7 @@ function sourceMembershipScreen() {
     const text = disabled && !isWentianEnglishUi() ? `${item.label}配置中` : item.label;
     return `
       ${figBox(`wt33-pay-method-${item.provider}`, x, 508, width, 36, "", `border:1px solid ${border};border-radius:18px;background:${bg};`)}
-      ${figButton(`wt33-pay-method-hit-${item.provider}`, x, 508, width, 36, disabled ? "" : `data-action="wentian-pay-provider" data-provider="${item.provider}"`)}
+      ${figButton(`wt33-pay-method-hit-${item.provider}`, x, 508, width, 36, disabled ? "" : `data-action="wentian-pay-provider" data-provider="${item.provider}" aria-pressed="${active ? "true" : "false"}"`)}
       ${figText(`wt33-pay-method-text-${item.provider}`, text, x, 519, width, compact ? 10 : 11, disabled ? "#b4aaa0" : (active ? "#8f3d30" : "#756d63"), 900, "center")}
     `;
   }).join("");
@@ -12612,7 +12667,7 @@ function sourceMembershipScreenPreview() {
     const text = disabled && !isWentianEnglishUi() ? `${item.label}配置中` : item.label;
     return `
       ${figBox(`wt33-preview-method-${item.provider}`, x, 402, width, 38, "", `border:1px solid ${border};border-radius:19px;background:${bg};box-shadow:0 6px 14px rgba(92,65,35,.05);`)}
-      ${figButton(`wt33-preview-method-hit-${item.provider}`, x, 402, width, 38, disabled ? "" : `data-action="wentian-pay-provider" data-provider="${item.provider}"`)}
+      ${figButton(`wt33-preview-method-hit-${item.provider}`, x, 402, width, 38, disabled ? "" : `data-action="wentian-pay-provider" data-provider="${item.provider}" aria-pressed="${active ? "true" : "false"}"`)}
       ${figText(`wt33-preview-method-text-${item.provider}`, text, x, 413, width, providers.length > 2 ? 11 : 12, textColor, 900, "center")}
     `;
   }).join("");
@@ -22482,8 +22537,10 @@ document.addEventListener("click", (event) => {
   if (action === "wentian-pay-provider") {
     const provider = event.target.closest("[data-provider]")?.dataset.provider || "wechat";
     const meta = getWentianPaymentProviderMeta(provider);
-    if (meta.enabled) wentianPaymentState.provider = provider;
-    navigate(state.route, false);
+    if (meta.enabled) {
+      wentianPaymentState.provider = meta.provider || provider;
+      refreshWentianPayProviderSelection();
+    }
     return;
   }
   if (action === "wentian-pay-open") {
