@@ -7,9 +7,9 @@
 - 已完成历史项：英文公共入口、会员页 PayPal 文案、`?lang=en` 强制英文、英文文章入口与链路复查。
 - 本轮已完成：`screen-50` `Office Layout`，主标题已从英文断行为单行收纳。
 - 本轮已完成：`screen-51` `Guide`，步骤标题已从英文断行为单行收纳。
-- 本轮已完成：`screen-49` `Compatibility Result`，英文异常态文案、规则说明与按钮已压缩收纳，两个入口跳转已复查。
-- 当前停靠点：已处理到 `screen-49`
-- 下一页：`screen-45` `Guide`
+- 本轮已完成：`screen-45` `Guide`，英文教程页标题、引导卡与步骤说明已压缩收纳，返回与开始按钮已复查。
+- 当前停靠点：已处理到 `screen-45`
+- 下一页：`screen-44` `Placement`
 
 ## 英文页面总清单
 
@@ -50,8 +50,8 @@
 | 待排查 | `screen-41` | Password | 设置密码 |
 | 待排查 | `screen-42` | Nine Palaces | 阳宅入口 |
 | 待排查 | `screen-43` | Choose Members | 阳宅成员选择 |
-| 待排查 | `screen-44` | Placement | 阳宅结果 |
-| 待排查 | `screen-45` | Guide | 下一页，阳宅教程 |
+| 待排查 | `screen-44` | Placement | 下一页，阳宅结果 |
+| 已完成 | `screen-45` | Guide | 已修复英文教程页标题、引导卡与步骤说明过长挤压问题，并复查返回与开始按钮 |
 | 已完成 | `screen-46` | Liuren | 已修复动态英文残留、流程卡换行与宫位英文标签拥挤问题 |
 | 已完成 | `screen-47` | Liuren Guide | 已修复英文说明卡与宫位顺序文案过长换行问题 |
 | 已完成 | `screen-48` | Orders | 已修复英文空状态与订单状态文案过长换行问题，并复查登录入口跳转 |

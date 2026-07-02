@@ -9429,9 +9429,15 @@ function finalizeWentianLanguageText(root = view, code = getWentianLanguageCode(
     yijingLines.innerHTML = "<p>Regenerate this saved reading in English to replace the Chinese long-form commentary.</p>";
   }
 
-  setWentianFinalText(root, '[data-node-id="yz45-step-desc-1"]', "Place family members, elders, kitchen, bathroom, or living room.");
-  setWentianFinalText(root, '[data-node-id="yz45-step-desc-2"]', "Read palace strength and whether placements fit.");
-  setWentianFinalText(root, '[data-node-id="yz45-step-title-3"]', "Rework");
+  setWentianFinalText(root, '[data-node-id="yz45-intro-copy"]', "Locate, place, read. Tap + for each palace.");
+  setWentianFinalText(root, '[data-node-id="yz45-step-title-0"]', "Set Center");
+  setWentianFinalText(root, '[data-node-id="yz45-step-desc-0"]', "Stand at center. Confirm 8 directions.");
+  setWentianFinalText(root, '[data-node-id="yz45-step-title-1"]', "Place Roles");
+  setWentianFinalText(root, '[data-node-id="yz45-step-desc-1"]', "Place family, elders, kitchen, bath, living.");
+  setWentianFinalText(root, '[data-node-id="yz45-step-title-2"]', "Read Fit");
+  setWentianFinalText(root, '[data-node-id="yz45-step-desc-2"]', "Check palace strength, then role fit.");
+  setWentianFinalText(root, '[data-node-id="yz45-step-title-3"]', "Redo Fast");
+  setWentianFinalText(root, '[data-node-id="yz45-step-desc-3"]', "Clear, auto-place, then read again.");
 
   const officeGuide = root.querySelector('[data-node-id="office51-scroll"]');
   if (officeGuide) {
@@ -17172,6 +17178,38 @@ function sourceYangzhaiResultScreen() {
 }
 
 function sourceYangzhaiTutorialScreen() {
+  if (isWentianEnglishUi()) {
+    const steps = [
+      ["01", "Set Center", "Stand at center. Confirm 8 directions."],
+      ["02", "Place Roles", "Place family, elders, kitchen, bath, living."],
+      ["03", "Read Fit", "Check palace strength, then role placement fit."],
+      ["04", "Redo Fast", "Clear, auto-place, then read again if unsure."]
+    ];
+    return `
+      ${yangzhaiBg("yz45")}
+      ${yangzhaiHeader("yz45", "Guide", "", { backAttrs: 'data-action="wentian-return-previous" data-fallback-route="screen-42" aria-label="Back"' })}
+      ${figText("yz45-title", "Home Chart in 3 Minutes", 24, 120, 266, 24, "#201812", 900, "left", "line-height:1.02;font-family:Georgia,'Times New Roman',serif;white-space:nowrap;")}
+      ${figText("yz45-sub", "Set center first, then 8 directions, then place people and rooms.", 24, 156, 324, 12, "#817568", 700, "left", "line-height:1.08;letter-spacing:-0.02em;white-space:nowrap;")}
+      ${figBox("yz45-intro", 24, 206, 342, 120, "", "border:1px solid #ead8b8;border-radius:22px;background:#fffdf8;box-shadow:0 12px 28px rgba(70,45,25,.07);")}
+      ${figBox("yz45-intro-disc", 46, 224, 84, 84, "", "border:1px solid #dcc39c;border-radius:42px;background:#f4e4c6;")}
+      ${yangzhaiDirectionCross("yz45-intro-cross", 61, 239, 54, true)}
+      ${figText("yz45-intro-title", "Three Core Steps", 150, 238, 172, 18, "#201812", 900, "left", "font-family:Georgia,'Times New Roman',serif;white-space:nowrap;")}
+      ${figText("yz45-intro-copy", "Locate, place, read. Tap + for each palace.", 150, 270, 174, 12, "#6f6254", 700, "left", "line-height:1.08;letter-spacing:-0.02em;white-space:nowrap;")}
+      ${steps.map(([num, title, desc], index) => {
+        const y = 356 + index * 72;
+        return `
+          ${figBox(`yz45-step-${index}`, 24, y, 342, 60, "", "border:1px solid #ead8b8;border-radius:20px;background:#fffdf8;box-shadow:0 8px 18px rgba(70,45,25,.04);")}
+          ${figText(`yz45-num-text-${index}`, num, 42, y + 19, 42, 14, "#a2493d", 900, "center", "font-family:'Segoe UI',Arial,sans-serif;white-space:nowrap;")}
+          ${figBox(`yz45-step-line-${index}`, 94, y + 15, 1, 28, "", "background:#ead2ad;")}
+          ${figText(`yz45-step-title-${index}`, title, 110, y + 14, 80, 15, "#201812", 900, "left", "font-family:Georgia,'Times New Roman',serif;white-space:nowrap;")}
+          ${figText(`yz45-step-desc-${index}`, desc, 194, y + 16, 146, 11, "#6f6254", 700, "left", "line-height:1.05;letter-spacing:-0.02em;white-space:nowrap;")}
+        `;
+      }).join("")}
+      ${figBox("yz45-go", 42, 664, 306, 54, "", "border-radius:27px;background:linear-gradient(180deg,#b74e39,#983323);box-shadow:0 14px 26px rgba(158,61,43,.22);")}
+      ${figButton("yz45-go-hit", 42, 664, 306, 54, 'data-route="screen-42"')}
+      ${figText("yz45-go-text", "Start Home Chart", 42, 679, 306, 16, "#fffaf3", 900, "center", "white-space:nowrap;")}
+    `;
+  }
   const steps = [
     ["01", "定中宫", "站在户型中心，以手机指南针或户型图确认八方。"],
     ["02", "安人事", "点方位加号，放入父母子女、长辈或厨房厕所客厅。"],

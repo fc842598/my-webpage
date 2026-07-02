@@ -1046,6 +1046,7 @@ html[lang="en"] [data-node-id="yz45-title"] {
   width: 306px !important;
   font-size: 22px !important;
   line-height: 1.03 !important;
+  white-space: nowrap !important;
 }
 
 html[lang="en"] [data-node-id="yz45-sub"] {
@@ -1053,6 +1054,7 @@ html[lang="en"] [data-node-id="yz45-sub"] {
   width: 320px !important;
   font-size: 11px !important;
   line-height: 1.25 !important;
+  white-space: nowrap !important;
 }
 
 html[lang="en"] [data-node-id="yz45-intro-title"] {
@@ -1060,26 +1062,32 @@ html[lang="en"] [data-node-id="yz45-intro-title"] {
   width: 176px !important;
   font-size: 19px !important;
   line-height: 1.02 !important;
+  white-space: nowrap !important;
 }
 
 html[lang="en"] [data-node-id="yz45-intro-copy"] {
   top: 306px !important;
-  width: 174px !important;
-  font-size: 10.5px !important;
-  line-height: 1.2 !important;
+  width: 168px !important;
+  font-size: 9.5px !important;
+  line-height: 1.05 !important;
+  letter-spacing: -0.02em !important;
+  white-space: nowrap !important;
 }
 
 html[lang="en"] .fig-text[data-node-id^="yz45-step-title-"] {
-  width: 76px !important;
-  font-size: 15px !important;
+  width: 68px !important;
+  font-size: 13px !important;
   line-height: 1.05 !important;
+  white-space: nowrap !important;
 }
 
 html[lang="en"] .fig-text[data-node-id^="yz45-step-desc-"] {
-  left: 184px !important;
-  width: 154px !important;
-  font-size: 10.5px !important;
-  line-height: 1.2 !important;
+  left: 188px !important;
+  width: 148px !important;
+  font-size: 9px !important;
+  line-height: 1.02 !important;
+  letter-spacing: -0.02em !important;
+  white-space: nowrap !important;
 }
 
 html[lang="en"] [data-node-id="yz45-go"],
@@ -1093,6 +1101,7 @@ html[lang="en"] [data-node-id="yz45-go-text"] {
   top: 720px !important;
   height: 16px !important;
   font-size: 14px !important;
+  white-space: nowrap !important;
 }
 
 html[lang="en"] [data-node-id="wt24-bg"] {
