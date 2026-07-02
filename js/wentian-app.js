@@ -9325,6 +9325,13 @@ function finalizeWentianLanguageText(root = view, code = getWentianLanguageCode(
   setWentianFinalText(root, '[data-node-id="yz42-placement-prompt"]', "Open compass, align N/E/S/W, then place items.");
   setWentianFinalText(root, '[data-node-id="yz44-head-title"]', "Placement");
   setWentianFinalText(root, '[data-node-id="yz43-sub"]', "Place by actual room use");
+  setWentianFinalText(root, '[data-node-id="yz42-section-help"]', "Tap + to place items");
+  setWentianFinalText(root, '[data-node-id="yz43-option-2"]', "1st Son");
+  setWentianFinalText(root, '[data-node-id="yz43-option-3"]', "1st Daughter");
+  setWentianFinalText(root, '[data-node-id="yz43-option-4"]', "2nd Son");
+  setWentianFinalText(root, '[data-node-id="yz43-option-5"]', "2nd Daughter");
+  setWentianFinalText(root, '[data-node-id="yz43-option-6"]', "3rd Son");
+  setWentianFinalText(root, '[data-node-id="yz43-option-7"]', "3rd Daughter");
   setWentianFinalText(root, '[data-node-id="yz43-avatar-text-2"]', "1S");
   setWentianFinalText(root, '[data-node-id="yz43-avatar-text-3"]', "1D");
   setWentianFinalText(root, '[data-node-id="yz43-avatar-text-4"]', "2S");
@@ -9415,7 +9422,7 @@ function finalizeWentianLanguageText(root = view, code = getWentianLanguageCode(
   const selectedCount = yangzhaiKicker?.textContent?.match(/\d+/)?.[0] || "";
   if (yangzhaiKicker) yangzhaiKicker.textContent = selectedCount ? `Selected ${selectedCount}` : "No Selection";
   setWentianFinalText(root, '[data-node-id="yz43-confirm-note"]', selectedCount ? "Confirm this palace, then adjust members below." : "Choose members first.");
-  if (!selectedCount) setWentianFinalText(root, '[data-node-id="yz43-confirm-text"]', "Clear");
+  setWentianFinalText(root, '[data-node-id="yz43-confirm-text"]', selectedCount ? `Confirm (${selectedCount})` : "Clear");
 
   root.querySelectorAll(".wentian-native-mingpan .fc-center-lbl").forEach((element, index) => {
     if (element.textContent.trim() === "Text") element.textContent = index === 0 ? "Solar" : "True Solar";

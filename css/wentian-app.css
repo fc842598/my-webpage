@@ -840,6 +840,14 @@ html[lang="en"] [data-node-id="yz42-section-title"] {
   white-space: nowrap !important;
 }
 
+html[lang="en"] [data-node-id="yz42-section-help"] {
+  width: 140px !important;
+  font-size: 10px !important;
+  line-height: 1.02 !important;
+  letter-spacing: -0.02em !important;
+  white-space: nowrap !important;
+}
+
 html[lang="en"] [data-node-id="yz43-palace-pill"] {
   left: 196px !important;
   width: 128px !important;
@@ -852,10 +860,11 @@ html[lang="en"] [data-node-id="yz43-palace-text"] {
 }
 
 html[lang="en"] .fig-text[data-node-id^="yz43-option-"] {
-  width: 76px !important;
-  font-size: 10px !important;
-  line-height: 1.05 !important;
-  white-space: normal !important;
+  width: 80px !important;
+  font-size: 9.5px !important;
+  line-height: 1 !important;
+  letter-spacing: -0.02em !important;
+  white-space: nowrap !important;
 }
 
 html[lang="en"] .fig-text[data-node-id^="yz43-avatar-text-"],
