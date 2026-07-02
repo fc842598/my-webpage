@@ -14249,7 +14249,9 @@ html[lang="en"] [data-node-id="wt36-copy"] {
 }
 
 html[lang="en"] .liuyao-stage-ask .liuyao-ask-title h2 {
-  font-size: 27px;
+  font-size: 22px;
+  letter-spacing: -0.03em;
+  white-space: nowrap;
 }
 
 html[lang="en"] .liuyao-stage-ask .liuyao-big-question textarea {
@@ -14257,10 +14259,34 @@ html[lang="en"] .liuyao-stage-ask .liuyao-big-question textarea {
   line-height: 1.45;
 }
 
+html[lang="en"] .liuyao-stage-ask .liuyao-ask-review {
+  grid-template-columns: minmax(0, 1fr);
+  align-items: start;
+  gap: 6px;
+}
+
+html[lang="en"] .liuyao-stage-ask .liuyao-quota-badge {
+  justify-self: start;
+}
+
+html[lang="en"] .liuyao-stage-ask .liuyao-question-status {
+  font-size: 10px;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+
+html[lang="en"] .liuyao-stage-ask .liuyao-question-suggestions > div {
+  grid-template-columns: minmax(0, 1fr);
+}
+
 html[lang="en"] .liuyao-stage-ask .liuyao-question-suggestions button {
-  min-height: 42px;
-  font-size: 9.5px;
-  line-height: 1.12;
+  min-height: 34px;
+  padding: 0 10px;
+  font-size: 10px;
+  line-height: 1;
+  letter-spacing: -0.015em;
+  white-space: nowrap;
 }
 
 .liuyao-flow-steps {
