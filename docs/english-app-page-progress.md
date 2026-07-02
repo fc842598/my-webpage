@@ -6,8 +6,9 @@
 
 - 已完成历史项：英文公共入口、会员页 PayPal 文案、`?lang=en` 强制英文、英文文章入口与链路复查。
 - 本轮已完成：`screen-50` `Office Layout`，主标题已从英文断行为单行收纳。
-- 当前停靠点：已处理到 `screen-50`
-- 下一页：`screen-51` `Guide`
+- 本轮已完成：`screen-51` `Guide`，步骤标题已从英文断行为单行收纳。
+- 当前停靠点：已处理到 `screen-51`
+- 下一页：`screen-52` `Office Layout Result`
 
 ## 英文页面总清单
 
@@ -55,8 +56,8 @@
 | 待排查 | `screen-48` | Orders | 支付记录 |
 | 待排查 | `screen-49` | Compatibility Result | 合盘结果 |
 | 已完成 | `screen-50` | Office Layout | 本轮已修英文标题收纳 |
-| 待排查 | `screen-51` | Office Layout Guide | 下一页 |
-| 待排查 | `screen-52` | Office Layout Result | 结果页 |
+| 已完成 | `screen-51` | Office Layout Guide | 已修步骤标题英文收纳 |
+| 待排查 | `screen-52` | Office Layout Result | 下一页 |
 
 ## 路由别名说明
 

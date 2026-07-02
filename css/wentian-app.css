@@ -953,8 +953,10 @@ html[lang="en"] .office-layout-guide-step p {
 }
 
 html[lang="en"] .office-layout-guide-step strong {
-  font-size: 13px;
-  line-height: 1.12;
+  font-size: 12.5px;
+  line-height: 1.04;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
 }
 
 html[lang="en"] .office-layout-button {
