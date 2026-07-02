@@ -9079,6 +9079,12 @@ function finalizeWentianLanguageText(root = view, code = getWentianLanguageCode(
   setWentianFinalText(root, '[data-node-id="yz42-section-title"]', "Nine Palaces");
   setWentianFinalText(root, '[data-node-id="yz42-placement-prompt"]', "Open compass, align N/E/S/W, then place items.");
   setWentianFinalText(root, '[data-node-id="yz43-sub"]', "Place by actual room use");
+  setWentianFinalText(root, '[data-node-id="yz43-avatar-text-2"]', "1S");
+  setWentianFinalText(root, '[data-node-id="yz43-avatar-text-3"]', "1D");
+  setWentianFinalText(root, '[data-node-id="yz43-avatar-text-4"]', "2S");
+  setWentianFinalText(root, '[data-node-id="yz43-avatar-text-5"]', "2D");
+  setWentianFinalText(root, '[data-node-id="yz43-avatar-text-6"]', "3S");
+  setWentianFinalText(root, '[data-node-id="yz43-avatar-text-7"]', "3D");
   setWentianFinalText(root, '[data-node-id="yz43-avatar-text-8"]', "GP");
   setWentianFinalText(root, '[data-node-id="yz43-option-8"]', "Grandfather");
   setWentianFinalText(root, '[data-node-id="yz43-avatar-text-9"]', "GM");
@@ -9162,7 +9168,8 @@ function finalizeWentianLanguageText(root = view, code = getWentianLanguageCode(
   const yangzhaiKicker = root.querySelector('[data-node-id="yz43-confirm-kicker"]');
   const selectedCount = yangzhaiKicker?.textContent?.match(/\d+/)?.[0] || "";
   if (yangzhaiKicker) yangzhaiKicker.textContent = selectedCount ? `Selected ${selectedCount}` : "No Selection";
-  setWentianFinalText(root, '[data-node-id="yz43-confirm-note"]', selectedCount ? "Confirm this palace, then adjust members below." : "Choose members, then confirm this palace.");
+  setWentianFinalText(root, '[data-node-id="yz43-confirm-note"]', selectedCount ? "Confirm this palace, then adjust members below." : "Choose members first.");
+  if (!selectedCount) setWentianFinalText(root, '[data-node-id="yz43-confirm-text"]', "Clear");
 
   root.querySelectorAll(".wentian-native-mingpan .fc-center-lbl").forEach((element, index) => {
     if (element.textContent.trim() === "Text") element.textContent = index === 0 ? "Solar" : "True Solar";
