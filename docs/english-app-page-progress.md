@@ -20,8 +20,9 @@
 - 本轮已完成：`screen-35` `Contact`，英文页复查通过，无明显遮挡、溢出或异常换行，并复查邮箱复制提示与返回链路。
 - 本轮已完成：`screen-34` `Share`，四个分享入口英文标签已压缩为单行，并复查复制提示、邮件分享提示与关闭链路。
 - 本轮已完成：`screen-33` `Membership Plans`，英文页复查通过，无明显遮挡、溢出或异常换行，并复查支付方式切换、提交跳转与返回链路。
-- 当前停靠点：已处理到 `screen-33`
-- 下一页：`screen-32` `Account Settings`
+- 本轮已完成：`screen-32` `Account Settings`，英文页复查通过，无明显遮挡、溢出或异常换行，并复查四个入口与返回链路。
+- 当前停靠点：已处理到 `screen-32`
+- 下一页：`screen-31` `Mine`
 
 ## 英文页面总清单
 
@@ -50,7 +51,7 @@
 | 待排查 | `screen-29` | Membership / Recharge | 套餐页 |
 | 待排查 | `screen-30` | Payment | 支付页 |
 | 待排查 | `screen-31` | Mine | 我的 |
-| 待排查 | `screen-32` | Account Settings | 账户设置旧入口 |
+| 已完成 | `screen-32` | Account Settings | 英文页复查通过，无需额外样式修改，已复查四个入口与返回链路 |
 | 已完成 | `screen-33` | Membership Plans | 英文页复查通过，无需额外样式修改，已复查支付方式切换、提交跳转与返回链路 |
 | 已完成 | `screen-34` | Share | 已修复四个分享入口英文标签换行，并复查复制提示、邮件分享提示与关闭链路 |
 | 已完成 | `screen-35` | Contact | 英文页复查通过，无需额外样式修改，已复查邮箱复制提示与返回链路 |
