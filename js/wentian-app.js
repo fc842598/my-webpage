@@ -9185,6 +9185,7 @@ function finalizeWentianLanguageText(root = view, code = getWentianLanguageCode(
   }
 
   setWentianFinalText(root, '[data-node-id="yz45-step-desc-1"]', "Place family members, elders, kitchen, bathroom, or living room.");
+  setWentianFinalText(root, '[data-node-id="yz45-step-desc-2"]', "Read palace strength and whether placements fit.");
   setWentianFinalText(root, '[data-node-id="yz45-step-title-3"]', "Rework");
 
   const officeGuide = root.querySelector('[data-node-id="office51-scroll"]');
