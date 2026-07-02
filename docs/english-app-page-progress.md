@@ -8,8 +8,9 @@
 - 本轮已完成：`screen-50` `Office Layout`，主标题已从英文断行为单行收纳。
 - 本轮已完成：`screen-51` `Guide`，步骤标题已从英文断行为单行收纳。
 - 本轮已完成：`screen-45` `Guide`，英文教程页标题、引导卡与步骤说明已压缩收纳，返回与开始按钮已复查。
-- 当前停靠点：已处理到 `screen-45`
-- 下一页：`screen-44` `Placement`
+- 本轮已完成：`screen-44` `Placement`，英文空状态页复查通过，无明显遮挡、溢出或异常换行。
+- 当前停靠点：已处理到 `screen-44`
+- 下一页：`screen-43` `Choose Members`
 
 ## 英文页面总清单
 
@@ -50,7 +51,7 @@
 | 待排查 | `screen-41` | Password | 设置密码 |
 | 待排查 | `screen-42` | Nine Palaces | 阳宅入口 |
 | 待排查 | `screen-43` | Choose Members | 阳宅成员选择 |
-| 待排查 | `screen-44` | Placement | 下一页，阳宅结果 |
+| 已完成 | `screen-44` | Placement | 英文空状态页复查通过，无需额外样式修改 |
 | 已完成 | `screen-45` | Guide | 已修复英文教程页标题、引导卡与步骤说明过长挤压问题，并复查返回与开始按钮 |
 | 已完成 | `screen-46` | Liuren | 已修复动态英文残留、流程卡换行与宫位英文标签拥挤问题 |
 | 已完成 | `screen-47` | Liuren Guide | 已修复英文说明卡与宫位顺序文案过长换行问题 |
