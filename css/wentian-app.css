@@ -1083,6 +1083,14 @@ html[lang="en"] [data-node-id="source-39-tip"] {
   white-space: nowrap !important;
 }
 
+html[lang="en"] [data-node-id="source-settings-note-text"] {
+  width: 300px !important;
+  font-size: 10px !important;
+  line-height: 1.04 !important;
+  letter-spacing: -0.02em !important;
+  white-space: nowrap !important;
+}
+
 html[lang="en"] [data-node-id="yz45-title"] {
   width: 306px !important;
   font-size: 22px !important;

@@ -14,8 +14,9 @@
 - 本轮已完成：`screen-41` `Password`，未登录态说明文案已压缩为单行，登录入口跳转已复查。
 - 本轮已完成：`screen-40` `Login Methods`，页头副标题已压缩为单行，返回入口已复查。
 - 本轮已完成：`screen-39` `Basic Info`，游客态头像、副标题与提示文案已压缩为单行，保存与返回已复查。
-- 当前停靠点：已处理到 `screen-39`
-- 下一页：`screen-38` `Settings`
+- 本轮已完成：`screen-38` `Settings`，底部提醒卡文案已压缩为单行，四个入口与返回已复查。
+- 当前停靠点：已处理到 `screen-38`
+- 下一页：`screen-37` `Language`
 
 ## 英文页面总清单
 
@@ -50,7 +51,7 @@
 | 待排查 | `screen-35` | Contact | 联系我们 |
 | 待排查 | `screen-36` | About | 关于我们 |
 | 待排查 | `screen-37` | Language | 语言设置 |
-| 待排查 | `screen-38` | Settings | 账户设置 |
+| 已完成 | `screen-38` | Settings | 已修复底部提醒卡英文换行，并复查四个入口与返回 |
 | 已完成 | `screen-39` | Basic Info | 已修复游客态头像文案、副标题与提示文案英文换行，并复查保存与返回 |
 | 已完成 | `screen-40` | Login Methods | 已修复页头副标题英文换行，并复查返回入口 |
 | 已完成 | `screen-41` | Password | 已修复未登录态说明文案英文换行，并复查登录入口跳转 |

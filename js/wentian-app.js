@@ -9397,6 +9397,7 @@ function finalizeWentianLanguageText(root = view, code = getWentianLanguageCode(
     setWentianFinalText(root, '[data-node-id="source-39-avatar-text"]', "Me");
     setWentianFinalText(root, '[data-node-id="source-39-account-sub"]', "Guest mode, local save only.");
     setWentianFinalText(root, '[data-node-id="source-39-tip"]', "Local data stays in this browser only.");
+    setWentianFinalText(root, '[data-node-id="source-settings-note-text"]', "Sign in to sync membership, payments, and invites.");
   }
   setWentianFinalText(root, '[data-node-id="source-login-member-text"]', member.isMember ? "Paid Plan" : "Free Account");
   setWentianFinalText(root, '[data-node-id="source-login-method-desc-0"]', phone || "Not linked yet");
