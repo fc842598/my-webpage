@@ -9393,6 +9393,11 @@ function finalizeWentianLanguageText(root = view, code = getWentianLanguageCode(
   setWentianFinalText(root, '[data-node-id="wt33-benefit-title"]', "Auto Refresh");
   setWentianFinalText(root, '[data-node-id="wt33-pay-method-title"]', "Payment Method");
   setWentianFinalText(root, '[data-node-id="source-login-sub"]', "Payments and membership stay on this account.");
+  if (!account.loggedIn) {
+    setWentianFinalText(root, '[data-node-id="source-39-avatar-text"]', "Me");
+    setWentianFinalText(root, '[data-node-id="source-39-account-sub"]', "Guest mode, local save only.");
+    setWentianFinalText(root, '[data-node-id="source-39-tip"]', "Local data stays in this browser only.");
+  }
   setWentianFinalText(root, '[data-node-id="source-login-member-text"]', member.isMember ? "Paid Plan" : "Free Account");
   setWentianFinalText(root, '[data-node-id="source-login-method-desc-0"]', phone || "Not linked yet");
   setWentianFinalText(root, '[data-node-id="source-login-method-desc-1"]', provider === "google" ? "Current sign-in method" : "Available anytime");
