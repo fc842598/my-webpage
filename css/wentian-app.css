@@ -809,6 +809,12 @@ html[lang="en"] .wentian-chat-profile-copy small {
   font-size: 8px;
 }
 
+html[lang="en"] [data-node-id="source-4-faq-title"] {
+  width: 190px !important;
+  line-height: 1.1 !important;
+  white-space: nowrap !important;
+}
+
 html[lang="zh-TW"] .wentian-chat-profile-tag {
   left: 230px;
   width: 110px;
