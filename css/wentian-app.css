@@ -1040,6 +1040,48 @@ html[lang="en"] [data-node-id="wt22-login-text-clean"] {
   font-size: 11px !important;
 }
 
+html[lang="en"] [data-node-id="wt22-clean-right"] {
+  width: 62px !important;
+  font-size: 14px !important;
+  line-height: 1.1 !important;
+}
+
+html[lang="en"] [data-node-id="wt22-stat-num-label-clean"] {
+  font-size: 11px !important;
+}
+
+html[lang="en"] [data-node-id="wt22-stat-reward-label-clean"] {
+  font-size: 10px !important;
+  line-height: 1.1 !important;
+}
+
+html[lang="en"] [data-node-id="wt22-stat-paid-label-clean"] {
+  font-size: 11px !important;
+}
+
+html[lang="en"] [data-node-id="wt22-copy-code-text-clean"],
+html[lang="en"] [data-node-id="wt22-copy-link-text-clean"],
+html[lang="en"] [data-node-id="wt22-share-text-clean"] {
+  font-size: 10px !important;
+  line-height: 1.1 !important;
+}
+
+html[lang="en"] [data-node-id="wt22-bind-title-clean"] {
+  width: 176px !important;
+  font-size: 14px !important;
+  line-height: 1.08 !important;
+}
+
+html[lang="en"] [data-node-id="wt22-top-clean"] ~ [data-node-id="wt22-tip-title-clean"] {
+  top: 576px !important;
+  width: 98px !important;
+}
+
+html[lang="en"] [data-node-id="wt22-top-clean"] ~ [data-node-id="wt22-tip-desc-clean"] {
+  top: 596px !important;
+  width: 320px !important;
+}
+
 html[lang="en"] [data-node-id="source-login-title"] {
   left: 116px !important;
   width: 236px !important;

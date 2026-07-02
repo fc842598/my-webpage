@@ -9359,6 +9359,12 @@ function finalizeWentianLanguageText(root = view, code = getWentianLanguageCode(
 
   setWentianFinalText(root, '[data-node-id="wt22-login-desc-clean"]', "Invite both sides to get daily Master Xu credits for 3 days after registration.");
   setWentianFinalText(root, '[data-node-id="wt22-tip-desc-clean"]', "Both inviter and new user receive daily chat rewards for 3 days.");
+  setWentianFinalText(root, '[data-node-id="wt22-clean-right"]', "Refresh");
+  setWentianFinalText(root, '[data-node-id="wt22-stat-num-label-clean"]', "Invited");
+  setWentianFinalText(root, '[data-node-id="wt22-stat-reward-label-clean"]', "Bonus Today");
+  setWentianFinalText(root, '[data-node-id="wt22-stat-paid-label-clean"]', "Active");
+  setWentianFinalText(root, '[data-node-id="wt22-copy-code-text-clean"]', "Copy Code");
+  setWentianFinalText(root, '[data-node-id="wt22-copy-link-text-clean"]', "Copy Link");
   setWentianFinalText(root, '[data-node-id="wt30-safe"]', "Payment details are encrypted by the provider.");
   setWentianFinalText(root, '[data-node-id="wt34-copy-title"]', "Share Copy");
   setWentianFinalText(root, '[data-node-id="wt34-copy-lead"]', "Share Yuetian AI for charts, readings, and Master Xu.");
@@ -9370,6 +9376,9 @@ function finalizeWentianLanguageText(root = view, code = getWentianLanguageCode(
   const member = getWentianMemberSnapshot();
   const provider = wentianAuthSession?.user?.app_metadata?.provider || "phone";
   const phone = wentianAuthSession?.user?.user_metadata?.phone || "";
+  if (account.loggedIn) {
+    setWentianFinalText(root, '[data-node-id="wt22-bind-title-clean"]', "Bind Invite Code");
+  }
   const inviteCode = account.loggedIn && isWentianInviteCode(invite.inviteCode) ? invite.inviteCode : "";
   const memberLine = member.isMember
     ? `Valid until ${formatWentianMemberDate(wentianMemberState?.quota?.memberExpiresAt) || "the current cycle"}`
@@ -10738,18 +10747,21 @@ async function copyWentianContactText(text, okText) {
 }
 
 async function shareWentianInvite() {
-  const summary = getWentianInviteSnapshot();
-  const rewardDaily = Number(summary.registerReward || 10);
-  const rewardDays = Number(summary.registerRewardDays || 3);
-  const text = `我在用阅天AI排盘和问许大师，注册时填写邀请码 ${summary.inviteCode}，双方注册成功后可连续 ${rewardDays} 天每天各得 ${rewardDaily} 次许大师对话：${summary.inviteLink}`;
+  const payload = getWentianSharePayload();
+  const isEn = getWentianLanguageCode() === "en";
   if (navigator.share) {
     try {
-      await navigator.share({ title: "阅天AI", text, url: summary.inviteLink });
-      setWentianInviteStatus("已打开系统分享", "ok");
+      await navigator.share({ title: payload.title, text: payload.text, url: payload.url });
+      setWentianInviteStatus(isEn ? "System share opened." : "已打开系统分享", "ok");
       return;
     } catch (_err) {}
   }
-  await copyWentianText(text, "分享文案已复制");
+  await copyWentianText(
+    payload.text,
+    isEn ? "Share text copied." : "分享文案已复制",
+    isEn ? "System share is unavailable. Long-press the copy above." : "浏览器未开放系统分享，请长按上方文案复制",
+    "ok"
+  );
 }
 
 function getWentianSharePayload() {
@@ -22428,12 +22440,18 @@ document.addEventListener("click", (event) => {
   }
   if (action === "wentian-invite-copy-code") {
     if (!requireWentianInviteAccount()) return;
-    copyWentianText(getWentianInviteSnapshot().inviteCode, "邀请码已复制");
+    copyWentianText(
+      getWentianInviteSnapshot().inviteCode,
+      getWentianLanguageCode() === "en" ? "Invite code copied." : "邀请码已复制"
+    );
     return;
   }
   if (action === "wentian-invite-copy-link") {
     if (!requireWentianInviteAccount()) return;
-    copyWentianText(getWentianInviteSnapshot().inviteLink, "邀请链接已复制");
+    copyWentianText(
+      getWentianInviteSnapshot().inviteLink,
+      getWentianLanguageCode() === "en" ? "Invite link copied." : "邀请链接已复制"
+    );
     return;
   }
   if (action === "wentian-invite-share") {

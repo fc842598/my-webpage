@@ -28,8 +28,9 @@
 - 本轮已完成：`screen-26` `Chart Form`，已修复真太阳时英文状态说明换行，并复查姓名、性别、公历/农历、说明开关、出生地、提交、返回与底部导航链路。
 - 本轮已完成：`screen-25` `Archives`，已修复英文档案卡片姓名截断，并复查空态与单档案态下的 `+ New`、批量模式、搜索、Open Chart、编辑、删除、返回与底部导航链路。
 - 本轮已完成：`screen-24` `Invite Details`，已修复英文邀请链接换行，并复查复制邀请码、复制链接的登录拦截、返回与底部导航链路。
-- 当前停靠点：已处理到 `screen-24`
-- 下一页：`screen-22` `Invite Friends`
+- 本轮已完成：`screen-22` `Invite Friends`，已修复登录态英文邀请页残留占位词 `Text/day`、`Reward Rules` 覆盖输入框，以及 `System Share` 仍复制中文文案的问题，并复查登录入口、返回、底部导航、复制邀请码、复制链接与系统分享链路。
+- 当前停靠点：已处理到 `screen-22`
+- 下一页：`screen-20` `Liuyao Result`
 
 ## 英文页面总清单
 
@@ -50,7 +51,7 @@
 | 待排查 | `screen-18` | Liuyao Cast Step 2 | 六爻投掷过程 |
 | 待排查 | `screen-19` | Liuyao Cast Step 3 | 六爻投掷过程 |
 | 待排查 | `screen-20` | Liuyao Result | 六爻结果页 |
-| 待排查 | `screen-22` | Invite Friends | 邀请页 |
+| 已完成 | `screen-22` | Invite Friends | 已修复登录态英文邀请页残留占位词 `Text/day`、`Reward Rules` 覆盖输入框，以及 `System Share` 中文分享文案问题，并复查登录入口、返回、底部导航与分享链路 |
 | 已完成 | `screen-24` | Invite Details | 已修复英文邀请链接换行，并复查复制邀请码、复制链接的登录拦截、返回与底部导航链路 |
 | 已完成 | `screen-25` | Archives | 已修复英文档案卡片姓名截断，并复查空态与单档案态下的 `+ New`、批量模式、搜索、Open Chart、编辑、删除、返回与底部导航链路 |
 | 已完成 | `screen-26` | Chart Form | 已修复真太阳时英文状态说明换行，并复查姓名、性别、公历/农历、说明开关、出生地、提交、返回与底部导航链路 |
