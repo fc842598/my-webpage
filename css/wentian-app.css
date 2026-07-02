@@ -1318,6 +1318,13 @@ html[lang="en"] .fig-text[data-node-id^="wt24-reward-tag-text-"] {
   line-height: 1.1 !important;
 }
 
+html[lang="en"] [data-node-id="wt24-link"] {
+  font-size: 8.4px !important;
+  line-height: 1 !important;
+  letter-spacing: -0.02em !important;
+  white-space: nowrap !important;
+}
+
 .fig-click {
   border: 0;
   padding: 0;
