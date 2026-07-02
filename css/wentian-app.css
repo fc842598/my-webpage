@@ -6306,6 +6306,21 @@ html[lang="en"] .wentian-profile-card .wentian-archive-action {
   font-size: 11px;
 }
 
+html[lang="en"] .wentian-profile-card .wentian-archive-title-row {
+  gap: 2px;
+}
+
+html[lang="en"] .wentian-profile-card .wentian-archive-name {
+  font-size: 14px;
+  line-height: 17px;
+}
+
+html[lang="en"] .wentian-profile-card .wentian-archive-badge,
+html[lang="en"] .wentian-profile-card .wentian-archive-age-badge {
+  padding: 0 5px;
+  font-size: 9px;
+}
+
 html[lang="en"] .wentian-profile-input {
   padding: 0 10px;
   font-size: 13px;
