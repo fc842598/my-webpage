@@ -9,6 +9,7 @@
     "geo:toutiao:check-file": "node scripts/check-toutiao-verification-status.mjs",
     "articles:generate-en": "node scripts/generate-en-articles.mjs",
     "seo:hooks:install": "node scripts/install-git-hooks.mjs",
+    "seo:discover:submit": "node scripts/indexnow-auto-submit.mjs --all-current && node scripts/baidu-auto-submit.mjs --all-current",
     "seo:indexnow:submit": "node scripts/indexnow-auto-submit.mjs",
     "seo:baidu:submit": "node scripts/baidu-auto-submit.mjs",
     "seo:google:index-check": "node scripts/google-index-check.mjs",

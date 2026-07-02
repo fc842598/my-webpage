@@ -8,6 +8,7 @@ const defaultHost = "yuetianai.com";
 const defaultSiteUrl = `https://${defaultHost}`;
 const remoteSitemapUrl = `${defaultSiteUrl}/sitemap.xml`;
 const defaultKeyPath = "8d5c8f7d8a0f4e8cb61a5f62b3d41944.txt";
+const defaultManualSitemaps = ["sitemap.xml", "sitemap-articles.xml", "sitemap-en.xml"];
 
 function log(message) {
   process.stdout.write(`[indexnow-auto-submit] ${message}\n`);
@@ -26,8 +27,36 @@ function runGit(args, options = {}) {
   }).trim();
 }
 
-function readHookInput() {
-  const inputPath = process.argv[2];
+function parseArgs(argv) {
+  const options = {
+    inputPath: "",
+    sitemapPaths: [],
+    allCurrent: false,
+  };
+
+  for (let index = 0; index < argv.length; index += 1) {
+    const token = argv[index];
+    if (token === "--all-current") {
+      options.allCurrent = true;
+      continue;
+    }
+    if (token === "--sitemap") {
+      const next = argv[index + 1];
+      if (next) {
+        options.sitemapPaths.push(next);
+        index += 1;
+      }
+      continue;
+    }
+    if (!options.inputPath) {
+      options.inputPath = token;
+    }
+  }
+
+  return options;
+}
+
+function readHookInput(inputPath) {
   if (inputPath && existsSync(inputPath)) {
     return readFileSync(inputPath, "utf8");
   }
@@ -107,8 +136,8 @@ function urlForFile(filePath, siteUrl = defaultSiteUrl) {
   return null;
 }
 
-function extractUrlsFromSitemap(commitSha, siteUrl = defaultSiteUrl) {
-  const sitemap = readTrackedFile(commitSha, "sitemap.xml");
+function extractUrlsFromSitemapFile(filePath, commitSha, siteUrl = defaultSiteUrl) {
+  const sitemap = readTrackedFile(commitSha, filePath);
   if (!sitemap) return [];
   return [...sitemap.matchAll(/<loc>(.*?)<\/loc>/g)]
     .map((match) => toCanonicalIndexNowUrl(match[1].trim(), siteUrl))
@@ -121,8 +150,10 @@ function collectUrls(changedFiles, commitSha, siteUrl = defaultSiteUrl) {
     const mapped = urlForFile(filePath, siteUrl);
     if (mapped) urls.add(mapped);
   }
-  if (changedFiles.includes("sitemap.xml")) {
-    for (const sitemapUrl of extractUrlsFromSitemap(commitSha, siteUrl)) {
+
+  const touchedSitemaps = changedFiles.filter((filePath) => /^sitemap.*\.xml$/i.test(filePath));
+  for (const sitemapPath of touchedSitemaps) {
+    for (const sitemapUrl of extractUrlsFromSitemapFile(sitemapPath, commitSha, siteUrl)) {
       urls.add(sitemapUrl);
     }
   }
@@ -203,29 +234,33 @@ async function submitToIndexNow(host, key, keyLocation, urls) {
 }
 
 async function main() {
-  const pushRefs = parsePushRefs(readHookInput());
-  const branchPushes = pushRefs.filter((ref) => ref.remoteRef === "refs/heads/master" && !isZeroSha(ref.localSha));
-
+  const args = parseArgs(process.argv.slice(2));
+  const manualSitemaps = args.allCurrent ? [...defaultManualSitemaps] : [...args.sitemapPaths];
   let targetCommit = "";
   let changedFileList = [];
 
-  if (branchPushes.length > 0) {
-    targetCommit = branchPushes[branchPushes.length - 1].localSha;
-    const changedFiles = new Set();
-    for (const ref of branchPushes) {
-      for (const filePath of listChangedFiles(ref.remoteSha, ref.localSha)) {
-        changedFiles.add(filePath);
+  if (manualSitemaps.length === 0) {
+    const pushRefs = parsePushRefs(readHookInput(args.inputPath));
+    const branchPushes = pushRefs.filter((ref) => ref.remoteRef === "refs/heads/master" && !isZeroSha(ref.localSha));
+
+    if (branchPushes.length > 0) {
+      targetCommit = branchPushes[branchPushes.length - 1].localSha;
+      const changedFiles = new Set();
+      for (const ref of branchPushes) {
+        for (const filePath of listChangedFiles(ref.remoteSha, ref.localSha)) {
+          changedFiles.add(filePath);
+        }
       }
+      changedFileList = [...changedFiles];
+    } else {
+      targetCommit = runGit(["rev-parse", "HEAD"]);
+      const previousCommit = runGit(["rev-parse", "HEAD~1"]);
+      changedFileList = listChangedFiles(previousCommit, targetCommit);
+      log("No post-push refs detected; falling back to HEAD..HEAD~1 diff.");
     }
-    changedFileList = [...changedFiles];
-  } else {
-    targetCommit = runGit(["rev-parse", "HEAD"]);
-    const previousCommit = runGit(["rev-parse", "HEAD~1"]);
-    changedFileList = listChangedFiles(previousCommit, targetCommit);
-    log("No post-push refs detected; falling back to HEAD..HEAD~1 diff.");
   }
 
-  if (changedFileList.length === 0) {
+  if (manualSitemaps.length === 0 && changedFileList.length === 0) {
     log("No changed files detected for this push; skipping IndexNow submission.");
     return;
   }
@@ -236,14 +271,19 @@ async function main() {
   const key = readKeyFile(keyPath);
   const keyLocation = `${siteUrl}/${keyPath.replace(/\\/g, "/")}`;
 
-  const urls = collectUrls(changedFileList, targetCommit, siteUrl).filter((url) => url.startsWith(siteUrl));
+  const urls = manualSitemaps.length > 0
+    ? [...new Set(manualSitemaps.flatMap((sitemapPath) => extractUrlsFromSitemapFile(sitemapPath, "", siteUrl)))]
+        .filter((url) => url.startsWith(siteUrl))
+    : collectUrls(changedFileList, targetCommit, siteUrl).filter((url) => url.startsWith(siteUrl));
   if (urls.length === 0) {
     log("No indexable URLs matched this push; skipping IndexNow submission.");
     return;
   }
 
   log(`Detected ${urls.length} URL(s) to submit.`);
-  await waitForRemoteSync(targetCommit);
+  if (manualSitemaps.length === 0) {
+    await waitForRemoteSync(targetCommit);
+  }
 
   try {
     await submitToIndexNow(host, key, keyLocation, urls);

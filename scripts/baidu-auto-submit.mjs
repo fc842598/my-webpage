@@ -4,8 +4,9 @@ import path from "node:path";
 import process from "node:process";
 
 const repoRoot = process.cwd();
-const defaultSiteUrl = "https://www.yuetianai.com";
+const defaultSiteUrl = "https://yuetianai.com";
 const remoteSitemapUrl = `${defaultSiteUrl}/sitemap.xml`;
+const defaultManualSitemaps = ["sitemap.xml", "sitemap-articles.xml"];
 
 function log(message) {
   process.stdout.write(`[baidu-auto-submit] ${message}\n`);
@@ -24,8 +25,36 @@ function runGit(args, options = {}) {
   }).trim();
 }
 
-function readHookInput() {
-  const inputPath = process.argv[2];
+function parseArgs(argv) {
+  const options = {
+    inputPath: "",
+    sitemapPaths: [],
+    allCurrent: false,
+  };
+
+  for (let index = 0; index < argv.length; index += 1) {
+    const token = argv[index];
+    if (token === "--all-current") {
+      options.allCurrent = true;
+      continue;
+    }
+    if (token === "--sitemap") {
+      const next = argv[index + 1];
+      if (next) {
+        options.sitemapPaths.push(next);
+        index += 1;
+      }
+      continue;
+    }
+    if (!options.inputPath) {
+      options.inputPath = token;
+    }
+  }
+
+  return options;
+}
+
+function readHookInput(inputPath) {
   if (inputPath && existsSync(inputPath)) {
     return readFileSync(inputPath, "utf8");
   }
@@ -74,9 +103,11 @@ function listChangedFiles(remoteSha, localSha) {
     .filter(Boolean);
 }
 
-function toWwwUrl(url) {
-  if (!url) return url;
-  return url.replace(/^https:\/\/yuetianai\.com/i, defaultSiteUrl);
+function toCanonicalBaiduUrl(url, siteUrl = defaultSiteUrl) {
+  if (!url) return "";
+  return url
+    .replace(/^https:\/\/yuetianai\.com/i, siteUrl)
+    .replace(/^https:\/\/www\.yuetianai\.com/i, siteUrl);
 }
 
 function normalizeSiteUrl(value) {
@@ -92,19 +123,19 @@ function normalizeSiteParam(value) {
     .replace(/\/+$/, "");
 }
 
-function urlForFile(filePath) {
+function urlForFile(filePath, siteUrl = defaultSiteUrl) {
   const normalized = filePath.replace(/\\/g, "/");
-  if (normalized === "index.html") return `${defaultSiteUrl}/`;
-  if (normalized === "articles/index.html") return `${defaultSiteUrl}/articles/`;
+  if (normalized === "index.html") return `${siteUrl}/`;
+  if (normalized === "articles/index.html") return `${siteUrl}/articles/`;
   if (normalized.startsWith("articles/") && normalized.endsWith(".html")) {
-    return `${defaultSiteUrl}/${normalized}`;
+    return `${siteUrl}/${normalized}`;
   }
   if (normalized.startsWith("pages/") && normalized.endsWith(".html")) {
-    return `${defaultSiteUrl}/${normalized}`;
+    return `${siteUrl}/${normalized}`;
   }
-  if (normalized === "404.html") return `${defaultSiteUrl}/404.html`;
-  if (normalized === "llms.txt") return `${defaultSiteUrl}/llms.txt`;
-  if (normalized === "robots.txt") return `${defaultSiteUrl}/robots.txt`;
+  if (normalized === "404.html") return `${siteUrl}/404.html`;
+  if (normalized === "llms.txt") return `${siteUrl}/llms.txt`;
+  if (normalized === "robots.txt") return `${siteUrl}/robots.txt`;
   return null;
 }
 
@@ -121,24 +152,24 @@ function readTrackedFile(commitSha, filePath) {
   return readFileSync(absolutePath, "utf8");
 }
 
-function extractUrlsFromSitemap(commitSha) {
-  const sitemap = readTrackedFile(commitSha, "sitemap.xml");
+function extractUrlsFromSitemapFile(filePath, commitSha, siteUrl = defaultSiteUrl) {
+  const sitemap = readTrackedFile(commitSha, filePath);
   if (!sitemap) return [];
   return [...sitemap.matchAll(/<loc>(.*?)<\/loc>/g)]
-    .map((match) => toWwwUrl(match[1].trim()))
+    .map((match) => toCanonicalBaiduUrl(match[1].trim(), siteUrl))
     .filter(Boolean);
 }
 
-function collectUrls(changedFiles, commitSha) {
+function collectUrls(changedFiles, commitSha, siteUrl = defaultSiteUrl) {
   const urls = new Set();
   for (const filePath of changedFiles) {
-    const mapped = urlForFile(filePath);
+    const mapped = urlForFile(filePath, siteUrl);
     if (mapped) urls.add(mapped);
   }
 
-  const touchedSitemap = changedFiles.includes("sitemap.xml");
-  if (touchedSitemap) {
-    for (const sitemapUrl of extractUrlsFromSitemap(commitSha)) {
+  const touchedSitemaps = changedFiles.filter((filePath) => /^sitemap.*\.xml$/i.test(filePath));
+  for (const sitemapPath of touchedSitemaps) {
+    for (const sitemapUrl of extractUrlsFromSitemapFile(sitemapPath, commitSha, siteUrl)) {
       urls.add(sitemapUrl);
     }
   }
@@ -203,25 +234,30 @@ async function submitToBaidu(urls, siteParam, token) {
 }
 
 async function main() {
-  const pushRefs = parsePushRefs(readHookInput());
-  const branchPushes = pushRefs.filter((ref) => ref.remoteRef === "refs/heads/master" && !isZeroSha(ref.localSha));
+  const args = parseArgs(process.argv.slice(2));
+  const manualSitemaps = args.allCurrent ? [...defaultManualSitemaps] : [...args.sitemapPaths];
   let targetCommit = "";
   let changedFileList = [];
 
-  if (branchPushes.length > 0) {
-    targetCommit = branchPushes[branchPushes.length - 1].localSha;
-    const changedFiles = new Set();
-    for (const ref of branchPushes) {
-      for (const filePath of listChangedFiles(ref.remoteSha, ref.localSha)) {
-        changedFiles.add(filePath);
+  if (manualSitemaps.length === 0) {
+    const pushRefs = parsePushRefs(readHookInput(args.inputPath));
+    const branchPushes = pushRefs.filter((ref) => ref.remoteRef === "refs/heads/master" && !isZeroSha(ref.localSha));
+
+    if (branchPushes.length > 0) {
+      targetCommit = branchPushes[branchPushes.length - 1].localSha;
+      const changedFiles = new Set();
+      for (const ref of branchPushes) {
+        for (const filePath of listChangedFiles(ref.remoteSha, ref.localSha)) {
+          changedFiles.add(filePath);
+        }
       }
+      changedFileList = [...changedFiles];
+    } else {
+      targetCommit = runGit(["rev-parse", "HEAD"]);
+      const previousCommit = runGit(["rev-parse", "HEAD~1"]);
+      changedFileList = listChangedFiles(previousCommit, targetCommit);
+      log("No post-push refs detected; falling back to HEAD..HEAD~1 diff.");
     }
-    changedFileList = [...changedFiles];
-  } else {
-    targetCommit = runGit(["rev-parse", "HEAD"]);
-    const previousCommit = runGit(["rev-parse", "HEAD~1"]);
-    changedFileList = listChangedFiles(previousCommit, targetCommit);
-    log("No post-push refs detected; falling back to HEAD..HEAD~1 diff.");
   }
 
   const configuredSite = readConfig("seo.baiduPushSite") || defaultSiteUrl;
@@ -233,19 +269,24 @@ async function main() {
     return;
   }
 
-  if (changedFileList.length === 0) {
+  if (manualSitemaps.length === 0 && changedFileList.length === 0) {
     log("No changed files detected for this push; skipping Baidu submission.");
     return;
   }
 
-  const urls = collectUrls(changedFileList, targetCommit).filter((url) => url.startsWith(siteUrl));
+  const urls = manualSitemaps.length > 0
+    ? [...new Set(manualSitemaps.flatMap((sitemapPath) => extractUrlsFromSitemapFile(sitemapPath, "", siteUrl)))]
+        .filter((url) => url.startsWith(siteUrl))
+    : collectUrls(changedFileList, targetCommit, siteUrl).filter((url) => url.startsWith(siteUrl));
   if (urls.length === 0) {
     log("No indexable URLs matched this push; skipping Baidu submission.");
     return;
   }
 
   log(`Detected ${urls.length} URL(s) to submit.`);
-  await waitForRemoteSync(targetCommit);
+  if (manualSitemaps.length === 0) {
+    await waitForRemoteSync(targetCommit);
+  }
 
   try {
     const result = await submitToBaidu(urls, siteParam, token);
