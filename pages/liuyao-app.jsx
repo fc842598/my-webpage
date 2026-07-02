@@ -343,34 +343,84 @@ function Header({ title, onBack, rightLabel, onRight, quota }) {
   );
 }
 
+function BottomNavIcon({ kind, active }) {
+  const line = {
+    fill: 'none',
+    stroke: 'currentColor',
+    strokeWidth: 1.8,
+    strokeLinecap: 'round',
+    strokeLinejoin: 'round',
+    vectorEffect: 'non-scaling-stroke',
+  };
+  const dot = { fill: 'currentColor', stroke: 'none' };
+  return (
+    <svg width="34" height="34" viewBox="0 0 40 40" fill="none" aria-hidden="true" focusable="false"
+      style={{ display:'block', filter:active ? 'drop-shadow(0 7px 10px rgba(163,49,41,.16))' : 'none' }}>
+      {active && <circle cx="20" cy="20" r="16" fill="#fff2d9" stroke="#d19b43" strokeWidth="1.2" />}
+      {kind === 'archive' ? (
+        <>
+          <path d="M13 9.5h15.5l2 2V31H13c-2 0-3.5-1.4-3.5-3.5V13c0-2.1 1.4-3.5 3.5-3.5Z" {...line} />
+          <path d="M28.5 9.5v6H31" {...line} />
+          <path d="M14.5 17.5h9M14.5 22.5h11M14.5 27.5h7" {...line} />
+          <path d="M10 13.2c2.8 1.4 5.6 1.4 8.4 0" {...line} />
+        </>
+      ) : kind === 'ai' ? (
+        <>
+          <circle cx="20" cy="20" r="10.5" {...line} />
+          <path d="M20 7.5c6.5 3.2 7.1 8.7.9 12.4-6.2 3.8-5.7 9.2 1.1 12.6" {...line} />
+          <path d="M20 7.5c-6.5 3.2-7.1 8.7-.9 12.4 6.2 3.8 5.7 9.2-1.1 12.6" {...line} />
+          <circle cx="20" cy="13.2" r="1.7" {...dot} />
+          <circle cx="20" cy="26.8" r="1.7" {...dot} />
+          <path d="M10.4 20h19.2" {...line} />
+        </>
+      ) : kind === 'mine' ? (
+        <>
+          <path d="M20 9.2c3.4 0 6.1 2.7 6.1 6s-2.7 6-6.1 6-6.1-2.7-6.1-6 2.7-6 6.1-6Z" {...line} />
+          <path d="M10.8 31.5c2.1-5.4 5.2-8 9.2-8s7.1 2.6 9.2 8" {...line} />
+          <path d="M11.8 31.5h16.4" {...line} />
+          <circle cx="27.8" cy="9.8" r="1.2" {...dot} />
+        </>
+      ) : (
+        <>
+          <circle cx="20" cy="20" r="12.5" {...line} />
+          <circle cx="20" cy="20" r="4.2" {...line} />
+          <path d="M20 6.5v5M20 28.5v5M6.5 20h5M28.5 20h5" {...line} />
+          <path d="M11.8 28.2 28.2 11.8" {...line} />
+          <circle cx="29" cy="27" r="1.3" {...dot} />
+        </>
+      )}
+    </svg>
+  );
+}
+
 /* ─── Tab Bar ─── */
 function TabBar() {
   const go = (route) => { window.location.href = `./wentian-app.html#${route}`; };
   const tabs = [
-    { label:'首页', route:'screen-1', active:true, d:'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18z M12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10z M12 10.2a1.8 1.8 0 1 0 0 3.6 1.8 1.8 0 0 0 0-3.6z M12 1.5v4 M22.5 12h-4 M12 22.5v-4 M1.5 12h4' },
-    { label:'档案', route:'screen-25', d:'M6 4h12a2 2 0 0 1 2 2v14H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z M8 8h8 M8 12h8 M8 16h5' },
-    { label:'阅天AI', route:'screen-3', d:'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18z M12 5.8l3.2 6.2L12 18.2 8.8 12 12 5.8z M7 12h10' },
-    { label:'我的', route:'screen-31', d:'M12 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8z M5 20a7 7 0 0 1 14 0' },
+    { label:'首页', route:'screen-1', active:true, kind:'home' },
+    { label:'档案', route:'screen-25', kind:'archive' },
+    { label:'阅天AI', route:'screen-3', kind:'ai' },
+    { label:'我的', route:'screen-31', kind:'mine' },
   ];
   return (
     <nav style={{
       display:'grid', gridTemplateColumns:'repeat(4, 1fr)', flexShrink:0,
+      minHeight:'89px',
       borderTop:'1px solid rgba(232,222,205,.9)',
-      background:'#fffdf8',
-      boxShadow:'0 -2px 12px rgba(62,38,18,.05)',
-      padding:'7px 0 max(7px, env(safe-area-inset-bottom))',
+      background:'linear-gradient(180deg,rgba(255,255,255,.98),rgba(255,250,241,.98))',
+      boxShadow:'0 -4px 14px rgba(62,38,18,.07)',
+      padding:'6px 0 max(8px, env(safe-area-inset-bottom))',
       zIndex:25,
     }} aria-label="阅天底部导航">
       {tabs.map(t => (
         <button key={t.label} type="button" onClick={() => go(t.route)} aria-current={t.active ? 'page' : undefined} style={{
           display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center',
-          gap:4, minWidth:0, minHeight:68, border:0, background:'transparent',
+          gap:2, minWidth:0, minHeight:72, border:0, background:'transparent',
           color:t.active ? '#a33129' : '#8c857b', cursor:'pointer', padding:'0 2px',
         }}>
-          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.85" strokeLinecap="round" strokeLinejoin="round"
-            style={{ filter:t.active ? 'drop-shadow(0 7px 13px rgba(163,49,41,.22))' : 'none' }}><path d={t.d}/></svg>
-          <span style={{ fontSize:13, lineHeight:1.08, fontWeight:t.active ? 900 : 600 }}>{t.label}</span>
-          <i aria-hidden="true" style={{ width:24, height:4, borderRadius:999, background:t.active ? '#b55247' : 'transparent', opacity:.86 }} />
+          <BottomNavIcon kind={t.kind} active={t.active} />
+          <span style={{ fontSize:12, lineHeight:1.08, fontWeight:t.active ? 800 : 500 }}>{t.label}</span>
+          <i aria-hidden="true" style={{ width:18, height:3, borderRadius:999, background:t.active ? '#a33129' : 'transparent', opacity:.72, marginTop:4 }} />
         </button>
       ))}
     </nav>
