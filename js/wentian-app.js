@@ -13653,9 +13653,28 @@ function renderWentianHepanChartCompare(result) {
   `;
 }
 
+function sourceHepanInvalidScreenEn() {
+  return `
+    ${figBox("wt49-bg", 0, 0, 390, 844, "", "background:linear-gradient(180deg,#fffdf8 0%,#fbf7ef 58%,#f3eadc 100%);")}
+    ${wentianSimpleHeader("wt49", "Match Result", "", { backAttrs: 'data-action="wentian-return-previous" data-fallback-route="screen-11" aria-label="Back"' })}
+    ${figBox("wt49-invalid-card", 24, 132, 342, 298, "", "border:1px solid #eadfce;border-radius:22px;background:#fff;box-shadow:0 12px 28px rgba(70,45,25,.1);")}
+    ${figBox("wt49-invalid-icon", 142, 170, 106, 106, "", "border-radius:53px;background:#fff1dc;border:1px solid #e2c27a;")}
+    ${figText("wt49-invalid-icon-text", "No", 142, 203, 106, 34, "#a94437", 900, "center", "font-size:34px;line-height:1;")}
+    ${figText("wt49-invalid-title", "Cannot Match", 0, 300, 390, 22, "#25211d", 900, "center", "white-space:nowrap;")}
+    ${figText("wt49-invalid-copy", "Choose two different charts.", 45, 338, 300, 14, "#756d63", 800, "center", "white-space:nowrap;")}
+    ${figText("wt49-invalid-rule", "Rule: 1M + 1F, both 18+, age gap <= 15y.", 39, 378, 312, 10, "#9a8f82", 700, "center", "white-space:nowrap;letter-spacing:-0.02em;")}
+    ${figBox("wt49-repick", 42, 470, 136, 44, "", "border:1px solid #d6b463;border-radius:10px;background:#fff;")}
+    ${figButton("wt49-repick-hit", 42, 470, 136, 44, 'data-route="screen-11"')}
+    ${figText("wt49-repick-text", "Pick Again", 42, 482, 136, 13, "#9b742e", 800, "center", "white-space:nowrap;")}
+    ${figBox("wt49-new", 212, 470, 136, 44, "", "border-radius:10px;background:#b74e39;")}
+    ${figButton("wt49-new-hit", 212, 470, 136, 44, 'data-route="screen-26"')}
+    ${figText("wt49-new-text", "New Chart", 212, 482, 136, 13, "#fffaf3", 900, "center", "white-space:nowrap;")}
+  `;
+}
+
 function sourceHepanResultScreen() {
   const result = getWentianHepanResult();
-  if (!result.ok) return sourceHepanInvalidScreen(result);
+  if (!result.ok) return isWentianEnglishUi() ? sourceHepanInvalidScreenEn() : sourceHepanInvalidScreen(result);
   return `
     ${figBox("wt49-bg", 0, 0, 390, WENTIAN_HEPAN_RESULT_SCREEN_HEIGHT, "", "background:linear-gradient(180deg,#fffdf8 0%,#fbf7ef 58%,#f3eadc 100%);")}
     ${wentianSimpleHeader("wt49", "合盘结果", "", { backAttrs: 'data-action="wentian-return-previous" data-fallback-route="screen-11" aria-label="back"' })}
