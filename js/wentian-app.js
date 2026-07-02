@@ -20307,7 +20307,7 @@ function shouldHideWentianFloatingBottomNav(phone) {
 function syncWentianFloatingBottomNav() {
   const phone = view?.querySelector?.(".figma-phone");
   const desktop = window.matchMedia?.("(min-width: 881px)").matches;
-  if (!phone || desktop || phone.dataset.nodeId === "screen-8" || phone.dataset.nodeId === "screen-27") {
+  if (!phone || desktop || phone.dataset.nodeId === "screen-8" || phone.dataset.nodeId === "screen-27" || phone.dataset.nodeId === "screen-46") {
     clearWentianFloatingBottomNav();
     return;
   }
