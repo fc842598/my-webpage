@@ -85,6 +85,12 @@ function normalizeQuota(raw) {
     checkedAt: Number(raw?.checkedAt) || Date.now()
   };
 }
+function formatQuotaTagText(raw) {
+  const quota = normalizeQuota(raw);
+  if (quota.testingUnlimited) return '测试不限';
+  if (quota.remaining <= 0) return '今日已满';
+  return `今日还余${quota.remaining}次`;
+}
 function mergeQuota(currentRaw, nextRaw) {
   const next = normalizeQuota(nextRaw);
   if (next.testingUnlimited) return next;
@@ -396,8 +402,10 @@ function Header({
   onRight,
   quota
 }) {
-  const quotaInfo = quota && typeof quota === 'object' ? normalizeQuota(quota) : null;
-  const quotaText = quotaInfo?.testingUnlimited ? '测试不限' : quotaInfo ? `${quotaInfo.used}/${quotaInfo.limit}` : `${Number(quota || 0)}/3`;
+  const quotaText = formatQuotaTagText(quota && typeof quota === 'object' ? quota : {
+    limit: LIUYAO_DAILY_LIMIT,
+    used: Number(quota || 0)
+  });
   return /*#__PURE__*/React.createElement("header", {
     style: {
       position: 'sticky',
@@ -463,13 +471,18 @@ function Header({
     }
   }, title), quota !== undefined && /*#__PURE__*/React.createElement("span", {
     style: {
-      fontSize: 12,
+      height: 22,
+      display: 'inline-flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      fontSize: 10,
       color: '#9a681c',
-      padding: '4px 10px',
-      background: '#fff1dc',
+      padding: '0 8px',
+      background: '#fff5e6',
       borderRadius: 999,
       fontWeight: 900,
-      border: '1px solid #ead2a2',
+      border: '1px solid rgba(210,166,90,.38)',
+      boxShadow: 'inset 0 1px 0 rgba(255,255,255,.72)',
       whiteSpace: 'nowrap'
     }
   }, quotaText)), /*#__PURE__*/React.createElement("div", {
@@ -673,7 +686,7 @@ function QuestionStep({
     }
   }, /*#__PURE__*/React.createElement("span", {
     className: "liuyao-thinking-dot"
-  }), "\u5927\u6A21\u578B\u6B63\u5728\u5BA1\u9898\uFF0C\u8BF7\u7A0D\u5019") : gateMessage?.text || (quotaInfo.testingUnlimited ? '测试期不限次数' : `今日已占 ${quotaInfo.used}/${quotaInfo.limit}`)), /*#__PURE__*/React.createElement("button", {
+  }), "\u5927\u6A21\u578B\u6B63\u5728\u5BA1\u9898\uFF0C\u8BF7\u7A0D\u5019") : gateMessage?.text || formatQuotaTagText(quotaInfo)), /*#__PURE__*/React.createElement("button", {
     onClick: onSubmit,
     disabled: disabled,
     style: {

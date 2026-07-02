@@ -75,6 +75,13 @@ function normalizeQuota(raw) {
   return { limit, used, remaining, date: String(raw?.date || ''), exhausted: remaining <= 0, checkedAt: Number(raw?.checkedAt) || Date.now() };
 }
 
+function formatQuotaTagText(raw) {
+  const quota = normalizeQuota(raw);
+  if (quota.testingUnlimited) return '测试不限';
+  if (quota.remaining <= 0) return '今日已满';
+  return `今日还余${quota.remaining}次`;
+}
+
 function mergeQuota(currentRaw, nextRaw) {
   const next = normalizeQuota(nextRaw);
   if (next.testingUnlimited) return next;
@@ -292,12 +299,10 @@ const YAO_TYPE_INFO = {
 
 /* ─── Header ─── */
 function Header({ title, onBack, rightLabel, onRight, quota }) {
-  const quotaInfo = quota && typeof quota === 'object' ? normalizeQuota(quota) : null;
-  const quotaText = quotaInfo?.testingUnlimited
-    ? '测试不限'
-    : quotaInfo
-      ? `${quotaInfo.used}/${quotaInfo.limit}`
-    : `${Number(quota || 0)}/3`;
+  const quotaText = formatQuotaTagText(quota && typeof quota === 'object' ? quota : {
+    limit: LIUYAO_DAILY_LIMIT,
+    used: Number(quota || 0),
+  });
   return (
     <header style={{
       position:'sticky', top:0, zIndex:30, flexShrink:0, height:68,
@@ -320,8 +325,10 @@ function Header({ title, onBack, rightLabel, onRight, quota }) {
         <span style={{ fontSize:22, fontWeight:900, letterSpacing:0, color:'#25221f', fontFamily:"'Noto Serif SC','Songti SC',serif", whiteSpace:'nowrap' }}>{title}</span>
         {quota !== undefined && (
           <span style={{
-            fontSize:12, color:'#9a681c', padding:'4px 10px', background:'#fff1dc',
-            borderRadius:999, fontWeight:900, border:'1px solid #ead2a2', whiteSpace:'nowrap'
+            height:22, display:'inline-flex', alignItems:'center', justifyContent:'center',
+            fontSize:10, color:'#9a681c', padding:'0 8px', background:'#fff5e6',
+            borderRadius:999, fontWeight:900, border:'1px solid rgba(210,166,90,.38)',
+            boxShadow:'inset 0 1px 0 rgba(255,255,255,.72)', whiteSpace:'nowrap'
           }}>{quotaText}</span>
         )}
       </div>
@@ -392,7 +399,7 @@ function QuestionStep({ question, setQuestion, onSubmit, reviewing, gateMessage,
             <span className="liuyao-thinking-dot"></span>
             大模型正在审题，请稍候
           </span>
-        ) : (gateMessage?.text || (quotaInfo.testingUnlimited ? '测试期不限次数' : `今日已占 ${quotaInfo.used}/${quotaInfo.limit}`))}
+        ) : (gateMessage?.text || formatQuotaTagText(quotaInfo))}
       </div>
       <button onClick={onSubmit} disabled={disabled} style={{
         width:'100%', padding:'15px 0', marginTop:10, borderRadius:14, border:'none',
