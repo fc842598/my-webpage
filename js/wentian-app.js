@@ -3762,7 +3762,7 @@ function updateWentianChartPreview() {
         ? (city ? String(city.city || city.province || "Beijing") : "Beijing")
         : getWentianTrueSolarPlaceLabel(city);
       tst.textContent = isEn
-        ? `${areaLabel} ${formatWentianTzOffset(result.tzOffset)} · Birthplace ${placeLabel} ${String(result.diffStr || "").replace(/分钟/g, " min")} · Chart uses ${trueSolarDisplay}${shichen ? ` (${shichen})` : ""}`
+        ? `${formatWentianTzOffset(result.tzOffset)} · ${placeLabel} ${String(result.diffStr || "").replace(/分钟/g, " min")} · Chart ${trueSolarDisplay}${shichen ? ` (${shichen})` : ""}`
         : `${areaLabel} ${formatWentianTzOffset(result.tzOffset)} · 出生地${placeLabel} ${result.diffStr}，排盘按${trueSolarDisplay} ${shichen}时`;
     }
   } catch (error) {
@@ -3770,7 +3770,7 @@ function updateWentianChartPreview() {
       preview.textContent = error.message || "";
       preview.dataset.tone = "error";
     }
-    if (tst) tst.textContent = isEn ? "Complete birth time first. Birthplace is optional." : "请先补全出生时间，地点可选。";
+    if (tst) tst.textContent = isEn ? "Complete birth time first. Birthplace optional." : "请先补全出生时间，地点可选。";
   }
   syncWentianChartFormLayout();
 }

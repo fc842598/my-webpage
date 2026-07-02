@@ -25,8 +25,9 @@
 - 本轮已完成：`screen-30` `Payment`，右上角状态标签英文已压缩为单行，并复查支付按钮、返回与底部导航链路。
 - 本轮已完成：`screen-29` `Membership / Recharge`，英文页复查通过，无明显遮挡、溢出或异常换行，并复查支付方式、提交、返回与底部导航链路。
 - 本轮已完成：`screen-27` `Ziwei Report`，英文页复查通过，无明显遮挡、溢出或异常换行，并复查更多菜单、易经切换、Volume 入口、Read Chart、返回与底部导航链路。
-- 当前停靠点：已处理到 `screen-27`
-- 下一页：`screen-26` `Chart Form`
+- 本轮已完成：`screen-26` `Chart Form`，已修复真太阳时英文状态说明换行，并复查姓名、性别、公历/农历、说明开关、出生地、提交、返回与底部导航链路。
+- 当前停靠点：已处理到 `screen-26`
+- 下一页：`screen-25` `Archives`
 
 ## 英文页面总清单
 
@@ -50,7 +51,7 @@
 | 待排查 | `screen-22` | Invite Friends | 邀请页 |
 | 待排查 | `screen-24` | Invite Details | 邀请详情 |
 | 待排查 | `screen-25` | Archives | 档案列表 |
-| 待排查 | `screen-26` | Chart Form | 排盘表单 |
+| 已完成 | `screen-26` | Chart Form | 已修复真太阳时英文状态说明换行，并复查姓名、性别、公历/农历、说明开关、出生地、提交、返回与底部导航链路 |
 | 已完成 | `screen-27` | Ziwei Report | 英文页复查通过，无需额外样式修改，已复查更多菜单、易经切换、Volume 入口、Read Chart、返回与底部导航链路 |
 | 已完成 | `screen-29` | Membership / Recharge | 英文页复查通过，无需额外样式修改，已复查支付方式、提交、返回与底部导航链路 |
 | 已完成 | `screen-30` | Payment | 已修复右上角状态标签英文换行，并复查支付按钮、返回与底部导航链路 |

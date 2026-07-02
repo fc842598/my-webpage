@@ -1913,6 +1913,14 @@ html[lang="en"] .fig-text[data-node-id^="wt24-reward-tag-text-"] {
   line-height: 1.35;
 }
 
+html[lang="en"] .wentian-chart-tst {
+  padding: 6px 8px;
+  font-size: 10px;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+}
+
 .wentian-chart-card .wentian-chart-toggle {
   position: relative;
   width: 44px;
