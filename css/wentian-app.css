@@ -14155,6 +14155,13 @@ html[lang="en"] [data-node-id$="-back-copy"] {
   width: 54px !important;
 }
 
+html[lang="en"] [data-node-id="wt36-copy"] {
+  font-size: 8.5px !important;
+  line-height: 1 !important;
+  letter-spacing: -0.01em !important;
+  white-space: nowrap !important;
+}
+
 html[lang="en"] .liuyao-stage-ask .liuyao-ask-title h2 {
   font-size: 27px;
 }
