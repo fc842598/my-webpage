@@ -945,6 +945,70 @@ function sourceArchiveScreenV2(screen) {
 
 function renderWentianChatContextSheet(chatContext) {
   if (!wentianXuChat.contextSheetOpen || !chatContext) return "";
+  if (isWentianEnglishUi()) {
+    const type = chatContext.type;
+    const titleMap = {
+      hepan: "Current Compatibility",
+      liuyao: "Current Divination",
+      liuren: "Current Liuren Reading",
+      yijing: "Current Yijing Reading",
+    };
+    const title = titleMap[type] || "Current Context";
+    const unsafeText = (value) => /[\u3400-\u9fff]|[^\x00-\x7F]/.test(String(value || ""));
+    const safeText = (value, fallback) => {
+      const text = String(value || "").replace(/\s+/g, " ").trim();
+      return text && !unsafeText(text) ? text : fallback;
+    };
+    const joinClean = (parts, separator = " - ") => {
+      const text = parts.map((part) => safeText(part, "")).filter(Boolean).join(separator);
+      return text || "Not recorded";
+    };
+    const rows = [];
+    if (type === "hepan") {
+      const left = chatContext.left || {};
+      const right = chatContext.right || {};
+      rows.push(["Relationship", joinClean([
+        safeText(left.name, "Chart A"),
+        left.age ? `Age ${left.age}` : "",
+        "and",
+        safeText(right.name, "Chart B"),
+        right.age ? `Age ${right.age}` : "",
+      ], " ")]);
+      rows.push(["Score", chatContext.score ? `Compatibility score ${chatContext.score}` : "Compatibility result loaded"]);
+      rows.push(["Focus", "Long-term fit, attraction, conflict, and practical next steps"]);
+    } else if (type === "liuyao") {
+      rows.push(["Question", safeText(chatContext.question, "Current question")]);
+      rows.push(["Original Hexagram", "Divination result loaded"]);
+      rows.push(["Changed Hexagram", "Change details loaded"]);
+      rows.push(["Moving Lines", "Moving-line details loaded"]);
+    } else if (type === "liuren") {
+      rows.push(["Matter", "Current matter"]);
+      rows.push(["Cast", "Liuren result loaded"]);
+      rows.push(["Focus", "Outcome, speed, next action, and what to avoid"]);
+    } else if (type === "yijing") {
+      rows.push(["Module", "Yijing reading"]);
+      rows.push(["Hexagram", "Current hexagram loaded"]);
+      rows.push(["Reading", "Meaning, timing, and practical action"]);
+    }
+    return `
+      <div class="wentian-chat-context-mask" data-action="wentian-chat-context-close"></div>
+      <section class="wentian-chat-context-sheet" role="dialog" aria-modal="true" aria-label="${escapeHtml(title)}">
+        <div class="wentian-chat-context-handle"></div>
+        <header>
+          <span>${escapeHtml(title)}</span>
+          <button type="button" data-action="wentian-chat-context-close" aria-label="Close">&times;</button>
+        </header>
+        <div class="wentian-chat-context-rows">
+          ${rows.map(([label, value]) => `
+            <article>
+              <span>${escapeHtml(label)}</span>
+              <strong>${escapeHtml(value || "Not recorded")}</strong>
+            </article>
+          `).join("")}
+        </div>
+      </section>
+    `;
+  }
   const type = chatContext.type;
   const title = type === "hepan" ? "本次合盘" : type === "liuyao" ? "本次占卜" : type === "liuren" ? "本次六壬" : type === "yijing" ? "本次易经推命" : "本次上下文";
   const rows = [];
@@ -1242,6 +1306,7 @@ function getWentianChatFaqModeForRender() {
 
 function sourceAiChatScreen(screen) {
   const chatContext = getWentianXuChatContext();
+  const isEn = isWentianEnglishUi();
   const isLiuyaoChat = chatContext?.type === "liuyao";
   const isHepanChat = chatContext?.type === "hepan";
   const isLiurenChat = chatContext?.type === "liuren";
@@ -1428,7 +1493,7 @@ function sourceAiChatScreen(screen) {
       ]
     }
   ];
-  const faqGroups = isLiuyaoChat
+  let faqGroups = isLiuyaoChat
     ? liuyaoFaqGroups
     : isHepanChat
       ? hepanFaqGroups
@@ -1437,6 +1502,58 @@ function sourceAiChatScreen(screen) {
         : isYijingChat
           ? yijingFaqGroups
           : getWentianPersonalizedChartFaqGroups(chartFaqGroups);
+  if (isEn && isHepanChat) {
+    faqGroups = [
+      {
+        label: "Compatibility",
+        items: [
+          ["Long-Term Fit", "For this compatibility chart, is the relationship suitable for long-term development?"],
+          ["Attraction", "Where are the strongest mutual attraction points?"],
+        ],
+      },
+      {
+        label: "Conflict",
+        items: [
+          ["Main Friction", "Where is this relationship most likely to get stuck?"],
+          ["Boundaries", "What boundary should be clarified first?"],
+        ],
+      },
+    ];
+  } else if (isEn && isLiuyaoChat) {
+    faqGroups = [
+      {
+        label: "Outcome",
+        items: [
+          ["Can It Work?", "For this hexagram, what decides whether this matter can work?"],
+          ["Next Step", "What should I do next based on this hexagram?"],
+        ],
+      },
+      {
+        label: "Timing",
+        items: [
+          ["Change Point", "When is the next likely change point?"],
+          ["Moving Lines", "Please focus on the moving lines in this cast."],
+        ],
+      },
+    ];
+  } else if (isEn && isLiurenChat) {
+    faqGroups = [
+      {
+        label: "Outcome",
+        items: [
+          ["Can It Work?", "For this Liuren reading, how should I judge the outcome?"],
+          ["Fast or Slow?", "Does this reading suggest quick movement or delay?"],
+        ],
+      },
+      {
+        label: "Action",
+        items: [
+          ["What Next?", "What is the most useful next action now?"],
+          ["What to Avoid?", "What should I avoid doing next?"],
+        ],
+      },
+    ];
+  }
   const faqMode = getWentianChatFaqModeForRender();
   const compactFaqItems = getWentianCompactFaqItems(faqGroups);
   const contextTitle = chatContext?.title || (isHepanChat ? "情侣合盘" : isLiurenChat ? "六壬课" : isYijingChat ? "易经推命" : "六爻占卜");
@@ -9076,6 +9193,101 @@ function finalizeWentianLanguageText(root = view, code = getWentianLanguageCode(
   setWentianFinalText(root, '[data-node-id="source-1-feature-title-5"]', "Liuren");
   setWentianFinalText(root, '[data-node-id="source-1-feature-sub-5"]', "Lunar Palm Casting");
 
+  const chatContext = getWentianXuChatContext();
+  if (chatContext && root.querySelector(".wentian-chat-context-card")) {
+    const chatLabels = {
+      hepan: {
+        profile: "Compat",
+        icon: "C",
+        label: "Current Compatibility",
+        title: "Compatibility",
+        question: "Relationship question",
+        faq: "Compatibility Follow-Ups",
+        placeholder: "Ask about compatibility",
+        chips: ["Fit", "Conflict"],
+      },
+      liuyao: {
+        profile: "Cast",
+        icon: "D",
+        label: "Current Divination",
+        title: "Divination",
+        question: "Current question",
+        faq: "Divination Follow-Ups",
+        placeholder: "Ask about this cast",
+        chips: ["Outcome", "Timing"],
+      },
+      liuren: {
+        profile: "Liuren",
+        icon: "L",
+        label: "Current Liuren Reading",
+        title: "Liuren Reading",
+        question: "Current matter",
+        faq: "Liuren Follow-Ups",
+        placeholder: "Ask about this reading",
+        chips: ["Outcome", "Action"],
+      },
+      yijing: {
+        profile: "Yijing",
+        icon: "Y",
+        label: "Current Yijing Reading",
+        title: "Yijing Reading",
+        question: "Current hexagram",
+        faq: "Yijing Follow-Ups",
+        placeholder: "Ask about this hexagram",
+        chips: ["Meaning", "Action"],
+      },
+    };
+    const item = chatLabels[chatContext.type] || chatLabels.liuyao;
+    setWentianFinalText(root, '[data-node-id="source-4-profile-text"]', item.profile);
+    setWentianFinalText(root, '[data-node-id="source-4-profile-sub"]', "Context");
+    const profileIcon = root.querySelector('[data-node-id="source-4-profile-icon"]');
+    if (profileIcon) {
+      profileIcon.textContent = "";
+      profileIcon.dataset.profileIcon = item.icon;
+      profileIcon.setAttribute("data-profile-icon", item.icon);
+    }
+    const contextCard = root.querySelector(".wentian-chat-context-card");
+    if (contextCard) {
+      setWentianFinalText(contextCard, "span", item.label);
+      const unsafeText = (value) => /[\u3400-\u9fff]|[^\x00-\x7F]/.test(String(value || ""));
+      const safeText = (value, fallback) => {
+        const text = String(value || "").replace(/\s+/g, " ").trim();
+        return text && !unsafeText(text) ? text : fallback;
+      };
+      let cardStrong = item.question;
+      let cardEm = item.title;
+      if (chatContext.type === "hepan") {
+        const left = chatContext.left || {};
+        const right = chatContext.right || {};
+        const leftText = `${safeText(left.name, "Chart A")}${left.age ? ` - Age ${left.age}` : ""}`;
+        const rightText = `${safeText(right.name, "Chart B")}${right.age ? ` - Age ${right.age}` : ""}`;
+        cardStrong = `${leftText} and ${rightText}`;
+        cardEm = chatContext.score ? `Compatibility score ${chatContext.score}` : "Compatibility result loaded";
+      } else if (chatContext.type === "liuyao") {
+        cardStrong = safeText(chatContext.question, "Current question");
+        cardEm = "Divination result loaded";
+      } else if (chatContext.type === "liuren") {
+        cardStrong = "Current matter";
+        cardEm = "Liuren result loaded";
+      } else if (chatContext.type === "yijing") {
+        cardStrong = "Current hexagram";
+        cardEm = "Yijing reading loaded";
+      }
+      setWentianFinalText(contextCard, "strong", cardStrong);
+      setWentianFinalText(contextCard, "em", cardEm);
+    }
+    setWentianFinalText(root, '[data-node-id="source-4-faq-title"]', item.faq);
+    const input = root.querySelector("#wentian-chat-input");
+    if (input) input.setAttribute("placeholder", item.placeholder);
+    setWentianFinalText(root, "#wentian-chat-scroll-bottom", "Back to Bottom");
+    root.querySelectorAll(".wentian-chat-compact-question").forEach((button, index) => {
+      if (item.chips[index]) button.textContent = item.chips[index];
+    });
+    root.querySelectorAll(".wentian-chat-faq-summary small").forEach((node) => {
+      node.textContent = "Details";
+    });
+  }
+
   setWentianFinalText(root, '[data-node-id="yz42-compass-close-text"]', "Close");
   setWentianFinalText(root, '[data-node-id="yz42-section-title"]', "Nine Palaces");
   setWentianFinalText(root, '[data-node-id="yz42-placement-prompt"]', "Open compass, align N/E/S/W, then place items.");
@@ -9235,6 +9447,25 @@ function finalizeWentianLanguageText(root = view, code = getWentianLanguageCode(
     setWentianFinalText(officeResult, ".office-layout-panel.hero .office-layout-kicker", "Not Started");
     setWentianFinalText(officeResult, ".office-layout-panel.hero .office-layout-title", "Choose Layout First");
     setWentianFinalText(officeResult, ".office-layout-panel.hero .office-layout-copy", "Return to Office Layout, choose the outer and inner trigrams, then generate the result.");
+  } else if (officeResult) {
+    setWentianFinalText(root, '[data-node-id="office52-title"]', "Layout Result");
+    officeResult.querySelectorAll("h3, h4").forEach((node, index) => {
+      if (node.textContent.trim() === "Text") {
+        node.textContent = index === 0 ? "Layout Advice" : "Practical Notes";
+      }
+    });
+    const fallbackLines = [
+      "Use this result as a layout prompt: keep the entrance clear, support the decision-maker seat, and reduce blocked movement paths.",
+      "Check the door direction, boss seat, traffic flow, and meeting area before making major changes.",
+      "Adjust one area at a time, then observe whether daily work feels smoother and easier to coordinate.",
+    ];
+    let fallbackIndex = 0;
+    officeResult.querySelectorAll("p, li").forEach((node) => {
+      if (node.textContent.includes("Regenerate in English.")) {
+        node.textContent = fallbackLines[Math.min(fallbackIndex, fallbackLines.length - 1)];
+        fallbackIndex += 1;
+      }
+    });
   }
 }
 
@@ -14106,6 +14337,25 @@ function reviewLiuyaoQuestionLocally(question) {
   const hasSpecificSubject = /(我|我们|本人|自己|这个|这件|该|现在|本月|今年|最近|网站|项目|公司|店|生意|工作|客户|合作|合同|订单|产品|账号|平台|考试|offer|面试|房子|投资|资金|对方|他|她|TA|孩子|家人|父母|伴侣|对象|老板|同事|合伙人)/i.test(normalizedQuestion);
   const hasOutcome = /(能不能|能否|是否|可否|会不会|要不要|该不该|适不适合|可以吗|成不成|有没有|何时|多久|结果|赚钱|盈利|回本|成交|签约|通过|录取|复合|结婚|分手|离职|跳槽|搬家|买|卖|租|开店|上线|发布|推进|合作|投资|到账|怀孕|好转)/i.test(normalizedQuestion);
   const hasQuestionCue = /[？?]|吗|呢|如何|怎样|怎么样|能|该|是否|可否|会不会|要不要/.test(normalizedQuestion);
+
+  const isEnglishQuestion = /^[\x00-\x7F]+$/.test(normalizedQuestion) && /[A-Za-z]/.test(normalizedQuestion);
+  if (isEnglishQuestion) {
+    const lowerQuestion = normalizedQuestion.toLowerCase();
+    const hasEnglishSubject = /\b(i|we|my|our|client|customer|project|contract|order|partner|company|job|offer|interview|relationship|house|investment|money|payment|account|product|website|business)\b/.test(lowerQuestion);
+    const hasEnglishEvent = /\b(approve|sign|close|continue|move|launch|publish|pay|receive|pass|get|win|work|succeed|proceed|finish|deliver|cooperate|invest|buy|sell|rent|hire|leave|change)\b/.test(lowerQuestion);
+    const hasEnglishCue = /[?]|\b(will|can|should|whether|when|how|is|are|do|does|would|could)\b/.test(lowerQuestion);
+    const hasEnglishTimeOrScope = /\b(today|tomorrow|this|next|month|week|year|before|after|by|within|soon|january|february|march|april|may|june|july|august|september|october|november|december|20\d{2})\b/.test(lowerQuestion);
+    if (compact.length >= 18 && hasEnglishSubject && hasEnglishEvent && hasEnglishCue && hasEnglishTimeOrScope) {
+      return {
+        allowed: true,
+        normalizedQuestion,
+        reason: "The question names the subject, event, outcome, and timing.",
+        suggestion: "",
+        labels: ["One question"],
+      };
+    }
+    return fail("The question is not specific enough.", "State one subject, one event, the result you want to know, and a clear time frame.", ["One question"]);
+  }
 
   if (compact.length < 8 || !hasSpecificSubject || !hasOutcome || !hasQuestionCue) {
     return fail("问题还不够具体，暂不起卦。", "请写清对象、事件和想看的结果。", ["问题不具体"]);
