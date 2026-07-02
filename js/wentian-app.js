@@ -9231,7 +9231,7 @@ function finalizeWentianLanguageText(root = view, code = getWentianLanguageCode(
 
   const officeResult = root.querySelector('[data-node-id="office52-scroll"]');
   if (officeResult && !officeResult.querySelector(".office-layout-summary-card")) {
-    setWentianFinalText(root, '[data-node-id="office52-title"]', "Office Layout Result");
+    setWentianFinalText(root, '[data-node-id="office52-title"]', "Layout Result");
     setWentianFinalText(officeResult, ".office-layout-panel.hero .office-layout-kicker", "Not Started");
     setWentianFinalText(officeResult, ".office-layout-panel.hero .office-layout-title", "Choose Layout First");
     setWentianFinalText(officeResult, ".office-layout-panel.hero .office-layout-copy", "Return to Office Layout, choose the outer and inner trigrams, then generate the result.");
