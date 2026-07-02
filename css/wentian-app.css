@@ -1057,6 +1057,14 @@ html[lang="en"] [data-node-id="source-login-sub"] {
   line-height: 1.18 !important;
 }
 
+html[lang="en"] [data-node-id="source-password-login-desc"] {
+  width: 296px !important;
+  font-size: 10px !important;
+  line-height: 1.02 !important;
+  letter-spacing: -0.02em !important;
+  white-space: nowrap !important;
+}
+
 html[lang="en"] [data-node-id="yz45-title"] {
   width: 306px !important;
   font-size: 22px !important;

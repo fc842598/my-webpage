@@ -9363,7 +9363,7 @@ function finalizeWentianLanguageText(root = view, code = getWentianLanguageCode(
   setWentianFinalText(root, '[data-node-id="wt34-copy-title"]', "Share Copy");
   setWentianFinalText(root, '[data-node-id="wt34-copy-lead"]', "Share Yuetian AI for charts, readings, and Master Xu.");
   setWentianFinalText(root, '[data-node-id="source-password-login-title"]', "Sign in required");
-  setWentianFinalText(root, '[data-node-id="source-password-login-desc"]', "Password login links to payments and membership.");
+  setWentianFinalText(root, '[data-node-id="source-password-login-desc"]', "Password keeps billing and plan access linked.");
   setWentianFinalText(root, '[data-node-id="wt16-title"]', "Lot 29");
   const invite = getWentianInviteSnapshot();
   const account = getWentianAuthDisplay();
