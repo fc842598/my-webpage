@@ -9078,6 +9078,7 @@ function finalizeWentianLanguageText(root = view, code = getWentianLanguageCode(
   setWentianFinalText(root, '[data-node-id="yz42-compass-close-text"]', "Close");
   setWentianFinalText(root, '[data-node-id="yz42-section-title"]', "Nine Palaces");
   setWentianFinalText(root, '[data-node-id="yz42-placement-prompt"]', "Open compass, align N/E/S/W, then place items.");
+  setWentianFinalText(root, '[data-node-id="yz44-head-title"]', "Placement");
   setWentianFinalText(root, '[data-node-id="yz43-sub"]', "Place by actual room use");
   setWentianFinalText(root, '[data-node-id="yz43-avatar-text-2"]', "1S");
   setWentianFinalText(root, '[data-node-id="yz43-avatar-text-3"]', "1D");
