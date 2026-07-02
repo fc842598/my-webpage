@@ -14546,6 +14546,22 @@ html[lang="en"] .liuyao-stage-ask .liuyao-question-suggestions button {
   line-height: 1;
 }
 
+html[lang="en"] .liuyao-result-transform {
+  grid-template-columns: minmax(0, 1fr) 92px minmax(0, 1fr);
+  gap: 8px;
+  padding: 14px 14px;
+}
+
+html[lang="en"] .liuyao-result-transform strong {
+  font-size: 13px;
+  letter-spacing: -0.02em;
+}
+
+html[lang="en"] .liuyao-result-arrow em {
+  font-size: 10px;
+  line-height: 1.15;
+}
+
 .liuyao-result-arrow em {
   max-width: 92px;
   padding: 3px 8px;
