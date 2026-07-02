@@ -8312,7 +8312,7 @@ const WENTIAN_I18N_EN_EXTRA = {
   "落到大安、速喜、小吉为吉；留连、赤口、空亡偏凶。": "Da'an, Quick Joy, and Minor Luck are good; Lingering, Red Mouth, and Void lean bad.",
   "四": "4",
   "只作参考": "Reference only",
-  "六壬法适合快速看当下气象，重要决策仍需结合完整命盘与现实信息。": "Liuren is for quick timing. Important decisions still need chart and real-world context.",
+  "六壬法适合快速看当下气象，重要决策仍需结合完整命盘与现实信息。": "Quick timing only. Key decisions still need a full chart and facts.",
   "六宫顺序": "Six Palace Order",
   "大安 → 留连 → 速喜 → 赤口 → 小吉 → 空亡": "Great Peace → Lingering → Quick Joy → Red Mouth → Minor Luck → Void",
   "开始起课": "Start Casting",
@@ -17933,7 +17933,7 @@ function sourceLiurenTutorialScreen() {
     ["四", "只作参考", "六壬法适合快速看当下气象，重要决策仍需结合完整命盘与现实信息。"]
   ];
   return `
-    ${figBox("lr47-bg", 0, 0, 390, 844, "", "background:linear-gradient(180deg,#fffaf3 0%,#fbf5eb 100%);")}
+    ${figBox("lr47-bg", 0, 0, 390, 884, "", "background:linear-gradient(180deg,#fffaf3 0%,#fbf5eb 100%);")}
     ${wentianSimpleHeader("lr47", "六壬法教程", "", { backAttrs: 'data-action="wentian-return-previous" data-fallback-route="screen-46" aria-label="返回"' })}
     ${figText("lr47-main-title", "怎么起课", 24, 112, 150, 24, "#201812", 900, "left", "font-family:'Noto Serif SC','Songti SC',serif;")}
     ${figText("lr47-sub", "不用输入问题，直接以当前农历时间取象。", 24, 146, 280, 13, "#817568", 600)}
@@ -17947,12 +17947,12 @@ function sourceLiurenTutorialScreen() {
         ${figText(`lr47-step-desc-${index}`, desc, 94, y + 48, 236, 12, "#817568", 600, "left", "line-height:1.45;")}
       `;
     }).join("")}
-    ${figBox("lr47-palace", 24, 662, 342, 76, "", "border:1px solid #eadfce;border-radius:18px;background:#fffdf8;")}
-    ${figText("lr47-palace-title", "六宫顺序", 44, 682, 88, 15, "#201812", 900)}
-    ${figText("lr47-palace-list", "大安 → 留连 → 速喜 → 赤口 → 小吉 → 空亡", 44, 710, 290, 13, "#6e6254", 700)}
-    ${figBox("lr47-go", 42, 772, 306, 50, "", "border-radius:25px;background:linear-gradient(180deg,#b74e39,#983323);box-shadow:0 12px 24px rgba(158,61,43,.22);")}
-    ${figButton("lr47-go-hit", 42, 772, 306, 50, 'data-route="screen-46"')}
-    ${figText("lr47-go-text", "开始起课", 42, 786, 306, 16, "#fffaf3", 900, "center")}
+    ${figBox("lr47-palace", 24, 662, 342, 96, "", "border:1px solid #eadfce;border-radius:18px;background:#fffdf8;")}
+    ${figText("lr47-palace-title", "六宫顺序", 44, 682, 250, 15, "#201812", 900)}
+    ${figText("lr47-palace-list", "大安 → 留连 → 速喜 → 赤口 → 小吉 → 空亡", 44, 710, 290, 13, "#6e6254", 700, "left", "line-height:1.45;")}
+    ${figBox("lr47-go", 42, 792, 306, 50, "", "border-radius:25px;background:linear-gradient(180deg,#b74e39,#983323);box-shadow:0 12px 24px rgba(158,61,43,.22);")}
+    ${figButton("lr47-go-hit", 42, 792, 306, 50, 'data-route="screen-46"')}
+    ${figText("lr47-go-text", "开始起课", 42, 806, 306, 16, "#fffaf3", 900, "center")}
   `;
 }
 
