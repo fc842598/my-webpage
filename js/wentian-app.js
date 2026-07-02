@@ -21368,7 +21368,7 @@ document.addEventListener("click", (event) => {
     return;
   }
   if (earlyAction === "wentian-open-articles") {
-    window.location.href = "../articles/";
+    window.location.href = isWentianEnglishUi() ? "../articles/en/" : "../articles/";
     return;
   }
   if (earlyAction === "wentian-return-previous") {
