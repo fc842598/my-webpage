@@ -23,8 +23,9 @@
 - 本轮已完成：`screen-32` `Account Settings`，英文页复查通过，无明显遮挡、溢出或异常换行，并复查四个入口与返回链路。
 - 本轮已完成：`screen-31` `Mine`，英文页复查通过，无明显遮挡、溢出或异常换行，并复查主入口、列表项、文章入口与底部导航。
 - 本轮已完成：`screen-30` `Payment`，右上角状态标签英文已压缩为单行，并复查支付按钮、返回与底部导航链路。
-- 当前停靠点：已处理到 `screen-30`
-- 下一页：`screen-29` `Membership / Recharge`
+- 本轮已完成：`screen-29` `Membership / Recharge`，英文页复查通过，无明显遮挡、溢出或异常换行，并复查支付方式、提交、返回与底部导航链路。
+- 当前停靠点：已处理到 `screen-29`
+- 下一页：`screen-27` `Ziwei Report`
 
 ## 英文页面总清单
 
@@ -50,7 +51,7 @@
 | 待排查 | `screen-25` | Archives | 档案列表 |
 | 待排查 | `screen-26` | Chart Form | 排盘表单 |
 | 待排查 | `screen-27` | Ziwei Report | 命盘结果页 |
-| 待排查 | `screen-29` | Membership / Recharge | 套餐页 |
+| 已完成 | `screen-29` | Membership / Recharge | 英文页复查通过，无需额外样式修改，已复查支付方式、提交、返回与底部导航链路 |
 | 已完成 | `screen-30` | Payment | 已修复右上角状态标签英文换行，并复查支付按钮、返回与底部导航链路 |
 | 已完成 | `screen-31` | Mine | 英文页复查通过，无需额外样式修改，已复查主入口、列表项、文章入口与底部导航 |
 | 已完成 | `screen-32` | Account Settings | 英文页复查通过，无需额外样式修改，已复查四个入口与返回链路 |
