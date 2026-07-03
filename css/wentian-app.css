@@ -788,25 +788,31 @@ html[lang="en"] [data-node-id="source-4-online-text"] {
 }
 
 html[lang="en"] .wentian-chat-profile-tag {
-  left: 230px;
-  width: 110px;
+  left: 218px;
+  width: 124px;
   gap: 4px;
   padding: 0 8px 0 6px;
 }
 
 html[lang="en"] .wentian-chat-profile-seal {
-  width: 20px;
-  height: 20px;
-  font-size: 10px;
+  width: 18px;
+  height: 18px;
+  font-size: 9px;
 }
 
 html[lang="en"] .wentian-chat-profile-copy b {
-  max-width: 42px;
-  font-size: 10.5px;
+  max-width: 82px;
+  font-size: 9.5px;
+  line-height: 12px;
 }
 
 html[lang="en"] .wentian-chat-profile-copy small {
-  font-size: 8px;
+  font-size: 7.5px;
+}
+
+html[lang="en"] [data-node-id^="wt9-row-desc-"] {
+  width: 214px !important;
+  font-size: 10.5px !important;
 }
 
 html[lang="en"] [data-node-id="source-4-faq-title"] {

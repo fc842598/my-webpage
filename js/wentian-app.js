@@ -1559,7 +1559,11 @@ function sourceAiChatScreen(screen) {
   const contextTitle = chatContext?.title || (isHepanChat ? "情侣合盘" : isLiurenChat ? "六壬课" : isYijingChat ? "易经推命" : "六爻占卜");
   const contextSummary = chatContext?.summaryLine || "";
   const chartArchiveDisplay = isContextChat ? null : getWentianArchiveDisplay(getCurrentWentianArchive());
-  const profileText = isLiuyaoChat ? "六爻" : isHepanChat ? "合盘" : isLiurenChat ? "六壬" : isYijingChat ? "易经" : (chartArchiveDisplay?.name || getWentianArchiveDisplay(null).name);
+  const chartProfileText = chartArchiveDisplay?.name || getWentianArchiveDisplay(null).name;
+  const chartProfileCompactText = isWentianEnglishUi()
+    ? chartProfileText.replace(/\s*[·•-]\s*(?:Age\s*)?\d+\s*(?:岁|歲)?\s*$/i, "")
+    : chartProfileText;
+  const profileText = isLiuyaoChat ? "六爻" : isHepanChat ? "合盘" : isLiurenChat ? "六壬" : isYijingChat ? "易经" : chartProfileCompactText;
   const profileIcon = isLiuyaoChat || isYijingChat ? "卦" : isHepanChat ? "合" : isLiurenChat ? "课" : "命";
   const profileSub = isLiuyaoChat || isLiurenChat ? "占卜" : isHepanChat || isYijingChat ? "专批" : "切换";
   const profileTag = isContextChat ? `
@@ -11450,7 +11454,10 @@ function initWentianXuChat() {
     const nameEl = document.querySelector('[data-node-id="source-4-bazi-name"]');
     if (nameEl) nameEl.textContent = `${archiveName || "当前"}的八字`;
     const profileEl = document.querySelector('[data-node-id="source-4-profile-text"]');
-    if (profileEl && archiveName) profileEl.textContent = archiveName;
+    const compactArchiveName = isWentianEnglishUi()
+      ? archiveName.replace(/\s*[·•-]\s*(?:Age\s*)?\d+\s*(?:岁|歲)?\s*$/i, "")
+      : archiveName;
+    if (profileEl && compactArchiveName) profileEl.textContent = compactArchiveName;
     const profileSubEl = document.querySelector('[data-node-id="source-4-profile-sub"]');
     if (profileSubEl) profileSubEl.textContent = "切换";
     const footEl = document.querySelector('[data-node-id="source-4-bazi-foot"]');
