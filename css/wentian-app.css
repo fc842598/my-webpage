@@ -4888,6 +4888,61 @@ html[lang="en"] .wentian-archive-confirm {
   color: #a94437;
 }
 
+html[lang="en"] .wentian-hepan-select {
+  grid-template-columns: 40px minmax(0, 1fr) 40px;
+  gap: 8px;
+}
+
+html[lang="en"] .wentian-hepan-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 20px;
+  font-size: 16px;
+}
+
+html[lang="en"] .wentian-hepan-check {
+  width: 40px;
+  height: 40px;
+}
+
+html[lang="en"] .wentian-hepan-copy strong {
+  font-size: 13px;
+  line-height: 17px;
+}
+
+html[lang="en"] .wentian-hepan-copy em {
+  font-size: 10px;
+  line-height: 13px;
+}
+
+html[lang="en"] .wentian-hepan-copy small {
+  font-size: 11px;
+  line-height: 14px;
+}
+
+html[lang="en"] .wentian-hepan-copy .wentian-archive-age-badge {
+  display: none;
+}
+
+html[lang="en"] .wentian-hepan-tools {
+  gap: 8px;
+}
+
+html[lang="en"] .wentian-hepan-edit-time {
+  padding: 0 12px;
+  font-size: 11px;
+}
+
+html[lang="en"] .wentian-hepan-actions {
+  gap: 6px;
+}
+
+html[lang="en"] .wentian-hepan-action {
+  min-width: 58px;
+  padding: 0 10px;
+  font-size: 11px;
+}
+
 .wentian-hepan-result-panel {
   position: absolute;
   left: 24px;
