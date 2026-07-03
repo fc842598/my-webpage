@@ -6,7 +6,18 @@
   <script>
     (() => {
       const params = new URLSearchParams(window.location.search);
-      if (params.get("lang") === "en") {
+      const storedLang = (() => {
+        try {
+          return localStorage.getItem("wentian-app-language-v1") || "";
+        } catch (_err) {
+          return "";
+        }
+      })();
+      const referrer = document.referrer || "";
+      const fromEnglishWentian =
+        /\/pages\/wentian-app\.html/i.test(referrer) &&
+        /(?:[?&](?:lang|language|wentianLanguage|locale)=en)(?:[&#]|$)/i.test(referrer);
+      if (params.get("lang") === "en" || storedLang === "en" || fromEnglishWentian) {
         window.location.replace("/pages/wentian-app.html?lang=en#screen-17");
         return;
       }
