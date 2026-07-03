@@ -9154,6 +9154,7 @@ function applyWentianLanguageText(root = view, code = getWentianLanguageCode(), 
         if (!node.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
         const tag = node.parentElement?.tagName;
         if (tag === "SCRIPT" || tag === "STYLE") return NodeFilter.FILTER_REJECT;
+        if (node.parentElement?.closest?.("input, textarea, select, [contenteditable='true']")) return NodeFilter.FILTER_REJECT;
         if (node.parentElement?.closest?.("[data-wentian-i18n-skip]")) return NodeFilter.FILTER_REJECT;
         return NodeFilter.FILTER_ACCEPT;
       }
@@ -15667,7 +15668,7 @@ function renderLiuyaoCastStage(state, details = {}) {
       ${renderLiuyaoFlowSteps(complete ? 2 : 1)}
       <div class="liuyao-question-pill">
         <i></i>
-        <span>${escapeHtml(normalizeLiuyaoQuestion(state.question) || "所问之事")}</span>
+        <span data-wentian-i18n-skip="1">${escapeHtml(normalizeLiuyaoQuestion(state.question) || (isEn ? "Question" : "所问之事"))}</span>
       </div>
       ${renderLiuyaoModeCard(state, modeLocked)}
       ${state.mode === "manual"
@@ -15901,7 +15902,7 @@ function renderLiuyaoCastStage(state, details = {}) {
       ${renderLiuyaoFlowSteps(complete ? 2 : 1)}
       <div class="liuyao-question-pill">
         <i></i>
-        <span>${escapeHtml(normalizeLiuyaoQuestion(state.question) || "所问之事")}</span>
+        <span data-wentian-i18n-skip="1">${escapeHtml(normalizeLiuyaoQuestion(state.question) || (isEn ? "Question" : "所问之事"))}</span>
       </div>
       ${renderLiuyaoModeCard(state, modeLocked)}
       ${state.mode === "manual"
@@ -16214,7 +16215,7 @@ ${suggestion}`
         </div>
         <div class="liuyao-reading-card liuyao-question-result-card">
           <span>${isEn ? "Question" : "\u6240\u95ee\u4e4b\u4e8b"}</span>
-          <strong>${escapeHtml(result.question || (isEn ? "Question" : "\u6240\u95ee\u4e4b\u4e8b"))}</strong>
+          <strong data-wentian-i18n-skip="1">${escapeHtml(result.question || (isEn ? "Question" : "\u6240\u95ee\u4e4b\u4e8b"))}</strong>
         </div>
         <div class="liuyao-ai-card liuyao-master-card">
           <div class="liuyao-master-head">
