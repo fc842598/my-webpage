@@ -40,9 +40,10 @@
 - 本轮已完成：`screen-7` `Reply`，英文页复查通过，无中文残留、无明显遮挡或溢出，并复查从 `screen-6` 进入、返回、`View Full Reading`、追问入口与底部导航链路。
 - 本轮已完成：`screen-6` `Asking`，英文页复查通过，无中文残留、无明显遮挡或溢出，并复查从 `screen-7` 追问进入、返回、`View Reply` 与底部导航链路。
 - 本轮已完成：`screen-5` `Choose Profile`，英文页复查通过，无中文残留、无明显遮挡或溢出，并复查从 `screen-4` 进入、返回、`Exit Selection`、空态 `Confirm` 提示、`+ New` 与底部导航链路。
+- 本轮已完成：`screen-4` `Chat`，已修复顶部英文 `Chart / Switch` 挤成两行的问题，改为单行收纳；并复查返回、切换档案、聊天记录、FAQ 展开与输入发送链路。聊天页本身不展示底部导航，复查为预期。
 - 本轮已完成：公共六爻移动页 `liuyao.html` / `liuyao-v2.html` 的 `?lang=en` 入口改为直接进入英文 App 六爻页，避免英文用户落到整页中文的独立六爻实现。
-- 当前停靠点：已处理到 `screen-5`
-- 下一页：`screen-4` `Chat`
+- 当前停靠点：已处理到 `screen-4`
+- 下一页：`screen-3` `AI`
 
 ## 英文页面总清单
 
@@ -51,7 +52,7 @@
 | 待排查 | `screen-1` | Authorization | 入口页 |
 | 待排查 | `screen-2` | Home / Report Mall | 商城首页 |
 | 待排查 | `screen-3` | AI | AI 入口 |
-| 待排查 | `screen-4` | Chat | AI 对话页 |
+| 已完成 | `screen-4` | Chat | 已修复顶部英文 `Chart / Switch` 挤成两行的问题，改为单行收纳；已复查返回、切换档案、聊天记录、FAQ 展开与输入发送链路，聊天页不展示底部导航为预期 |
 | 已完成 | `screen-5` | Choose Profile | 英文页复查通过，无中文残留、无明显遮挡或溢出，已复查从 `screen-4` 进入、返回、`Exit Selection`、空态 `Confirm` 提示、`+ New` 与底部导航链路 |
 | 已完成 | `screen-6` | Asking | 英文页复查通过，无中文残留、无明显遮挡或溢出，已复查从 `screen-7` 追问进入、返回、`View Reply` 与底部导航链路 |
 | 已完成 | `screen-7` | Reply | 英文页复查通过，无中文残留、无明显遮挡或溢出，已复查从 `screen-6` 进入、返回、`View Full Reading`、追问入口与底部导航链路 |
