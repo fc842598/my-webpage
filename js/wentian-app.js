@@ -7506,6 +7506,21 @@ function getWentianLanguageCodeFromUrl() {
   );
 }
 
+function clearWentianLanguageUrlParams() {
+  const params = new URLSearchParams(window.location.search || "");
+  let changed = false;
+  for (const key of ["lang", "language", "wentianLanguage", "locale"]) {
+    if (params.has(key)) {
+      params.delete(key);
+      changed = true;
+    }
+  }
+  if (!changed) return;
+  const query = params.toString();
+  const nextUrl = `${window.location.pathname}${query ? `?${query}` : ""}${window.location.hash || ""}`;
+  window.history.replaceState(null, "", nextUrl);
+}
+
 function getWentianLanguageCode() {
   const urlCode = getWentianLanguageCodeFromUrl();
   if (urlCode) {
@@ -7552,6 +7567,7 @@ function confirmWentianLanguage() {
   wentianI18nPendingRoot = null;
   wentianI18nPendingCode = "";
   setWentianLanguageCode(nextCode);
+  clearWentianLanguageUrlParams();
   wentianLanguageDraft = null;
   const previousRoute = state.stack[state.stack.length - 1] || "screen-31";
   if (state.stack.length) state.stack.pop();
