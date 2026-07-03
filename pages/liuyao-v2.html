@@ -3,6 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+  <script>
+    (() => {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get("lang") === "en") {
+        window.location.replace("/pages/wentian-app.html?lang=en#screen-17");
+      }
+    })();
+  </script>
   <script src="../js/site-analytics.js?v=20260618-ga4"></script>
   <title>阅天AI｜六爻占卜移动版</title>
   <meta name="description" content="阅天AI六爻占卜移动版支持起卦、看卦象与问题整理，适合在手机端继续查看本卦、动爻和变卦。">

@@ -36,6 +36,7 @@
 - 本轮已完成：`screen-20` `Liuyao Result`，已修复英文结果态 `Original / Changed` 卦名被省略号截断的问题，并复查空态返回、空态 `Back to Casting`、从 `screen-17` 进入结果页、返回、`Start AI Reading`、`Cast Again` 二次确认与底部导航链路。
 - 本轮已完成：`screen-11` `Compatibility Profile Select`，已修复英文选人卡片姓名被省略号截断的问题，并复查空态、有档案态、双人选择、进入结果页、编辑时间弹层、新建档案入口与返回链路。
 - 本轮已完成：`screen-9` `Chat History`，已修复英文聊天头部档案名与历史摘要被截断的问题，并复查切换档案、新建对话、历史记录跳转与返回链路。
+- 本轮已完成：公共六爻移动页 `liuyao.html` / `liuyao-v2.html` 的 `?lang=en` 入口改为直接进入英文 App 六爻页，避免英文用户落到整页中文的独立六爻实现。
 - 当前停靠点：已处理到 `screen-9`
 - 下一页：`screen-8` `Long Reading`
 

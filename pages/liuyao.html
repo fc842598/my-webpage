@@ -6,6 +6,10 @@
   <script>
     (() => {
       const params = new URLSearchParams(window.location.search);
+      if (params.get("lang") === "en") {
+        window.location.replace("/pages/wentian-app.html?lang=en#screen-17");
+        return;
+      }
       if (params.get("view") === "desktop") return;
       const ua = navigator.userAgent || "";
       const target = "/pages/liuyao-v2.html?v=20260616-cast-compact";
