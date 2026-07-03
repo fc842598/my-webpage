@@ -34,7 +34,7 @@
 - 本轮已完成：`screen-18` `Liuyao Cast Step 2`，已将英文提问页主标题、审题提示与 4 个示例按钮压缩为单行收纳，并复查示例填充、提交具体问题后进入起卦流程、返回与底部导航链路。
 - 本轮已完成：`screen-19` `Liuyao Cast Step 3`，已修复英文完成态残留占位文案 `Text / Regenerate in English.`，并将本卦、变卦摘要压缩为 `Water / Fire`、`Hex 63 · Kan/Li` 这类可完整收纳的英文格式；已复查 `Read Hexagram`、卡片内 `View Reading` 与结果页返回链路。
 - 本轮已完成：`screen-20` `Liuyao Result`，已修复英文结果态 `Original / Changed` 卦名被省略号截断的问题，并复查空态返回、空态 `Back to Casting`、从 `screen-17` 进入结果页、返回、`Start AI Reading`、`Cast Again` 二次确认与底部导航链路。
-- 本轮已完成：`screen-11` `Compatibility Profile Select`，已修复英文选人卡片姓名被省略号截断的问题，并复查空态、有档案态、双人选择、进入结果页、编辑时间弹层、新建档案入口与返回链路。
+- 本轮已完成：`screen-11` `Compatibility Profile Select`，已修复英文选人卡片姓名被省略号截断的问题；后续补修小屏高度下底部 `Confirm` 不在可点视口内的问题，改为浮动确认栏，并复查空态、有档案态、双人选择、进入结果页、编辑时间弹层、新建档案入口与返回链路。
 - 本轮已完成：`screen-9` `Chat History`，已修复英文聊天头部档案名与历史摘要被截断的问题，并复查切换档案、新建对话、历史记录跳转与返回链路。
 - 本轮已完成：`screen-8` `Long Reading`，英文页复查通过，无中文残留、无明显遮挡或溢出，并复查从 `screen-7` 进入、返回、`Ask Follow-up` 与底部导航链路。
 - 本轮已完成：`screen-7` `Reply`，英文页复查通过，无中文残留、无明显遮挡或溢出，并复查从 `screen-6` 进入、返回、`View Full Reading`、追问入口与底部导航链路。
@@ -61,7 +61,7 @@
 | 已完成 | `screen-7` | Reply | 英文页复查通过，无中文残留、无明显遮挡或溢出，已复查从 `screen-6` 进入、返回、`View Full Reading`、追问入口与底部导航链路 |
 | 已完成 | `screen-8` | Long Reading | 英文页复查通过，无中文残留、无明显遮挡或溢出，已复查从 `screen-7` 进入、返回、`Ask Follow-up` 与底部导航链路 |
 | 已完成 | `screen-9` | Chat History | 已修复英文聊天头部档案名与历史摘要被截断，复查切换档案、新建对话、历史记录跳转与返回链路 |
-| 已完成 | `screen-11` | Compatibility Profile Select | 已修复英文选人卡片姓名被省略号截断，复查空态、有档案态、双人选择、进入结果页、编辑时间弹层、新建档案入口与返回链路 |
+| 已完成 | `screen-11` | Compatibility Profile Select | 已修复英文选人卡片姓名被省略号截断，并补修小屏高度下底部 `Confirm` 不在可点视口内的问题；复查空态、有档案态、双人选择、进入结果页、编辑时间弹层、新建档案入口与返回链路 |
 | 已完成 | `screen-12` | Quick Questions | 英文页复查通过，无明显遮挡、溢出或异常换行，已复查返回、聊天记录入口、输入框、加号、问题 chips 与底部导航链路 |
 | 已完成 | `screen-17` | Liuyao Casting | 已将英文输入框 placeholder 缩短为单行收纳，复查空态提交、提交具体问题后进入起卦流程、返回与底部导航链路，并补齐线上问卦与会员状态接口缺少 `x-wentian-client-id` 的 CORS 放行；后续补修英文翻译层误改可编辑输入值、中文问题被转成拼音残片的问题，恢复英文六爻与登录页连续输入，并允许中文问题原样送审 |
 | 已完成 | `screen-18` | Liuyao Cast Step 2 | 已将英文提问页主标题、审题提示与 4 个示例按钮改为单行收纳，复查示例填充、提交具体问题后进入起卦流程、返回与底部导航链路 |

@@ -21362,6 +21362,7 @@ function clearWentianFloatingBottomNav() {
   clearWentianFloatingChartSubmit();
   clearWentianFloatingArchiveConfirm();
   clearWentianFloatingProfileConfirm();
+  clearWentianFloatingHepanConfirm();
   view?.classList.remove("has-floating-bottom-nav");
   for (const node of document.querySelectorAll('.figma-phone [data-wentian-nav-hidden="1"]')) {
     node.style.visibility = "";
@@ -21397,6 +21398,15 @@ function clearWentianFloatingProfileConfirm() {
   }
 }
 
+function clearWentianFloatingHepanConfirm() {
+  document.querySelector(".wentian-floating-hepan-confirm")?.remove();
+  for (const node of document.querySelectorAll('.figma-phone .wentian-hepan-footer[data-wentian-hepan-confirm-hidden="1"]')) {
+    node.style.visibility = "";
+    node.style.pointerEvents = "";
+    delete node.dataset.wentianHepanConfirmHidden;
+  }
+}
+
 function shouldHideWentianFloatingBottomNav(phone) {
   if (!phone || !view) return false;
   const active = document.activeElement;
@@ -21409,6 +21419,11 @@ function shouldHideWentianFloatingBottomNav(phone) {
   return viewportHeight > 0 && windowHeight > 0 && viewportHeight < windowHeight - 140;
 }
 
+function getWentianFloatingViewportScale() {
+  const viewportWidth = window.visualViewport?.width || window.innerWidth || document.documentElement.clientWidth || WENTIAN_PHONE_WIDTH;
+  return Math.min(1, viewportWidth / WENTIAN_PHONE_WIDTH);
+}
+
 function syncWentianFloatingBottomNav() {
   const phone = view?.querySelector?.(".figma-phone");
   const desktop = window.matchMedia?.("(min-width: 881px)").matches;
@@ -21419,7 +21434,12 @@ function syncWentianFloatingBottomNav() {
 
   const navNodes = [...phone.querySelectorAll('[data-node-id^="source-bottom-"], [data-node-id^="converted-bottom-"], [data-node-id^="bottom-"]')];
   if (!navNodes.length) {
-    clearWentianFloatingBottomNav();
+    document.querySelector(".wentian-floating-bottom-nav")?.remove();
+    clearWentianFloatingChartSubmit();
+    clearWentianFloatingArchiveConfirm();
+    clearWentianFloatingProfileConfirm();
+    view?.classList.remove("has-floating-bottom-nav");
+    syncWentianFloatingHepanConfirm(phone, getWentianFloatingViewportScale(), 0, shouldHideWentianFloatingBottomNav(phone));
     return;
   }
 
@@ -21446,8 +21466,7 @@ function syncWentianFloatingBottomNav() {
   }
 
   const navHeight = Math.ceil(navBottom - navTop);
-  const viewportWidth = window.visualViewport?.width || window.innerWidth || document.documentElement.clientWidth || WENTIAN_PHONE_WIDTH;
-  const scale = Math.min(1, viewportWidth / WENTIAN_PHONE_WIDTH);
+  const scale = getWentianFloatingViewportScale();
   const inner = floating.querySelector(".wentian-floating-bottom-nav-inner");
   inner.innerHTML = "";
 
@@ -21477,6 +21496,7 @@ function syncWentianFloatingBottomNav() {
   syncWentianFloatingChartSubmit(phone, scale, submitNavHeight, submitHidden);
   syncWentianFloatingArchiveConfirm(phone, scale, navHeight, hidden);
   syncWentianFloatingProfileConfirm(phone, scale, navHeight, hidden);
+  syncWentianFloatingHepanConfirm(phone, scale, navHeight, hidden);
 }
 
 function syncWentianFloatingChartSubmit(phone, scale, navHeight, hidden) {
@@ -21602,6 +21622,42 @@ function syncWentianFloatingProfileConfirm(phone, scale, navHeight, hidden) {
   original.style.visibility = "hidden";
   original.style.pointerEvents = "none";
   original.dataset.wentianProfileConfirmHidden = "1";
+}
+
+function syncWentianFloatingHepanConfirm(phone, scale, navHeight, hidden) {
+  if (!phone || state.route !== "screen-11" || phone.querySelector(".wentian-hepan-time-sheet")) {
+    clearWentianFloatingHepanConfirm();
+    return;
+  }
+  const original = phone.querySelector(".wentian-hepan-footer");
+  if (!original) {
+    clearWentianFloatingHepanConfirm();
+    return;
+  }
+  let floating = document.querySelector(".wentian-floating-hepan-confirm");
+  if (!floating) {
+    floating = document.createElement("div");
+    floating.className = "wentian-floating-hepan-confirm";
+    floating.innerHTML = '<div class="wentian-floating-hepan-confirm-inner"></div>';
+    document.body.appendChild(floating);
+  }
+  const inner = floating.querySelector(".wentian-floating-hepan-confirm-inner");
+  inner.innerHTML = "";
+  const clone = original.cloneNode(true);
+  clone.style.top = "0px";
+  clone.style.left = "22px";
+  clone.style.visibility = "";
+  clone.style.pointerEvents = "";
+  delete clone.dataset.wentianHepanConfirmHidden;
+  inner.appendChild(clone);
+  floating.style.setProperty("--wentian-floating-nav-scale", String(scale));
+  floating.style.setProperty("--wentian-floating-nav-width", `${Math.ceil(WENTIAN_PHONE_WIDTH * scale)}px`);
+  floating.style.setProperty("--wentian-floating-nav-height", `${Math.ceil(navHeight * scale)}px`);
+  floating.classList.toggle("is-hidden", hidden);
+  floating.setAttribute("aria-hidden", hidden ? "true" : "false");
+  original.style.visibility = "hidden";
+  original.style.pointerEvents = "none";
+  original.dataset.wentianHepanConfirmHidden = "1";
 }
 
 function getWentianNodeBottomWithinPhone(phone, node) {
