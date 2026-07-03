@@ -9197,6 +9197,7 @@ function applyWentianLanguageText(root = view, code = getWentianLanguageCode(), 
     for (const element of root.querySelectorAll("input, textarea")) {
       const type = String(element.getAttribute("type") || "text").toLowerCase();
       if (!["text", "search"].includes(type) && element.tagName !== "TEXTAREA") continue;
+      if (!element.readOnly && !element.disabled) continue;
       const current = element.value || "";
       if (!current.trim()) continue;
       const source = option.code !== "zh-Hans" && WENTIAN_I18N_HAS_HAN_RE.test(current)
