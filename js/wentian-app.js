@@ -22450,7 +22450,9 @@ document.addEventListener("click", (event) => {
   }
   const earlyAction = earlyActionTarget?.dataset.action;
   if (earlyAction === "wentian-open-liuyao-v2") {
-    window.location.href = "./liuyao-v2.html?v=20260616-cast-compact";
+    window.location.href = isWentianEnglishUi()
+      ? "./wentian-app.html?lang=en#screen-17"
+      : "./liuyao-v2.html?v=20260616-cast-compact";
     return;
   }
   if (earlyAction === "wentian-open-articles") {

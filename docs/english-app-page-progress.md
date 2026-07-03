@@ -44,14 +44,15 @@
 - 本轮已完成：`screen-3` `AI`，英文页复查通过，无中文残留、无明显遮挡或溢出，并复查 `Switch`、顾问卡片进入聊天页与底部导航链路。进入聊天页时顶部额度会短暂显示 `-- left`，随后会自动恢复为正常额度，复查为瞬时加载态。
 - 本轮已完成：`screen-2` `Home / Report Mall`，已修复英文大卡标题换行，改为单行收纳；并复查返回、3 个报告卡入口与底部导航链路。
 - 本轮已完成：公共六爻移动页 `liuyao.html` / `liuyao-v2.html` 的 `?lang=en` 入口改为直接进入英文 App 六爻页，避免英文用户落到整页中文的独立六爻实现。
-- 当前停靠点：已处理到 `screen-2`
-- 下一页：`screen-1` `Authorization`
+- 本轮已完成：`screen-1` `Authorization`，已修复英文入口页六爻卡片仍跳到中文 `liuyao-v2.html` 的问题，改为直接进入英文 App `screen-17`，并复查登录、Create Chart、Ask、No Profile Switch、Ziwei、Match、Liuyao、Feng Shui、Office Layout、Liuren 与底部导航链路。
+- 当前停靠点：已处理到 `screen-1`
+- 下一页：英文版首轮全页排查已完成，下一轮开始逐页功能复测
 
 ## 英文页面总清单
 
 | 状态 | Screen | 英文页名 | 备注 |
 | --- | --- | --- | --- |
-| 待排查 | `screen-1` | Authorization | 入口页 |
+| 已完成 | `screen-1` | Authorization | 已修复英文入口页六爻卡片仍跳到中文 `liuyao-v2.html`，改为直接进入英文 App `screen-17`；并复查登录、主按钮、功能卡片与底部导航链路 |
 | 已完成 | `screen-2` | Home / Report Mall | 已修复英文大卡标题换行，改为单行收纳；已复查返回、3 个报告卡入口与底部导航链路 |
 | 已完成 | `screen-3` | AI | 英文页复查通过，无中文残留、无明显遮挡或溢出，已复查 `Switch`、顾问卡片进入聊天页与底部导航链路；进入聊天页时顶部额度会短暂显示 `-- left`，随后会自动恢复为正常额度 |
 | 已完成 | `screen-4` | Chat | 已修复顶部英文 `Chart / Switch` 挤成两行的问题，改为单行收纳；已复查返回、切换档案、聊天记录、FAQ 展开与输入发送链路，聊天页不展示底部导航为预期 |
