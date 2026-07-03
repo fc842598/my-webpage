@@ -15082,16 +15082,21 @@ function renderLiuyaoHexStack(lines, options = {}) {
     : (liuyaoTossAnimation?.active ? liuyaoTossAnimation.lineIndex : -1);
   const freshWindow = Number(options.freshWindow) || 2600;
   const now = Date.now();
+  const isEn = getWentianLanguageCode() === "en";
   return `
     <div class="liuyao-hex-stack ${options.compact ? "is-compact" : ""}">
       ${displayLines.map((line, displayIndex) => {
         const realIndex = 5 - displayIndex;
         const isFresh = line?.at && now - line.at >= 0 && now - line.at <= freshWindow;
+        const lineLabel = isEn ? `Line ${realIndex + 1}` : LIUYAO_LINE_LABELS[realIndex];
+        const lineMeta = line
+          ? `${line.value} ${isEn ? translateWentianText(line.name, "en") : line.name}${line.mark ? ` ${line.mark}` : ""}`
+          : (isEn ? "Unset" : "未定");
         return `
           <button class="liuyao-line-row ${line?.moving ? "is-moving" : ""} ${line ? "" : "is-empty"} ${realIndex === landingIndex ? "is-landing" : ""} ${isFresh ? "is-new" : ""}" type="button" ${options.manual ? `data-action="liuyao-manual-line" data-line-index="${realIndex}"` : ""}>
-            <span class="liuyao-line-label">${LIUYAO_LINE_LABELS[realIndex]}</span>
+            <span class="liuyao-line-label">${lineLabel}</span>
             ${line ? renderLiuyaoLineVisual(line, `${options.id || "hex"}-${realIndex}`) : `<span class="liuyao-line-visual is-empty"><i></i></span>`}
-            <span class="liuyao-line-meta">${line ? `${line.value} ${line.name}${line.mark ? ` ${line.mark}` : ""}` : "未定"}</span>
+            <span class="liuyao-line-meta">${lineMeta}</span>
           </button>
         `;
       }).join("")}
@@ -15099,15 +15104,18 @@ function renderLiuyaoHexStack(lines, options = {}) {
   `;
 }
 
-function getLiuyaoCoinFaceLabel(coin) {
-  return coin === 3 ? "正" : "反";
+function getLiuyaoCoinFaceLabel(coin, code = getWentianLanguageCode()) {
+  const isEn = getWentianLanguageOption(code).code === "en";
+  return coin === 3 ? (isEn ? "Heads" : "正") : (isEn ? "Tails" : "反");
 }
 
-function renderLiuyaoCoinFaceStrip(coins = [], label = "落地结果") {
+function renderLiuyaoCoinFaceStrip(coins = [], label = "") {
   const faces = Array.isArray(coins) && coins.length ? coins : [3, 2, 3];
+  const isEn = getWentianLanguageCode() === "en";
+  const title = label || (isEn ? "Landing Result" : "落地结果");
   return `
-    <div class="liuyao-coin-face-strip" aria-label="${escapeHtml(label)}">
-      <span>${escapeHtml(label)}</span>
+    <div class="liuyao-coin-face-strip" aria-label="${escapeHtml(title)}">
+      <span>${escapeHtml(title)}</span>
       ${faces.map((coin, index) => `
         <em class="${coin === 3 ? "is-head" : "is-tail"}">
           <i>${index + 1}</i>${getLiuyaoCoinFaceLabel(coin)}
@@ -15122,7 +15130,8 @@ function renderLiuyaoCoinRow(state, options = {}) {
   const tossing = liuyaoTossAnimation?.active && state.mode === "online";
   const progress = getLiuyaoProgress(state);
   const disabled = state.mode !== "online" || progress >= 6 || options.complete || options.disabled;
-  const disabledLabel = options.lockText || "卦已成";
+  const isEn = getWentianLanguageCode() === "en";
+  const disabledLabel = options.lockText || (isEn ? "Hexagram Ready" : "卦已成");
   const coins = tossing ? liuyaoTossAnimation.cast.coins : (last?.coins || [3, 2, 3]);
   const showFaces = tossing || Boolean(last);
   const powerPercent = tossing ? Math.max(18, Math.min(100, Number(liuyaoTossAnimation.power) || 62)) : 0;
@@ -15130,23 +15139,25 @@ function renderLiuyaoCoinRow(state, options = {}) {
   const meterRatio = tossing ? powerRatio : (last?.power ? Math.max(0, Math.min(1, last.power / 100)) : 0);
   const throwY = Math.round(-66 - powerRatio * 74);
   const label = tossing
-    ? `力度 ${powerPercent}% · 铜钱翻转中`
+    ? (isEn ? `Force ${powerPercent}% · coins turning` : `力度 ${powerPercent}% · 铜钱翻转中`)
     : disabled
       ? disabledLabel
-      : `按住铜钱上拉，松手投第 ${progress + 1} 爻`;
+      : (isEn ? `Swipe up and release to cast line ${progress + 1}` : `按住铜钱上拉，松手投第 ${progress + 1} 爻`);
   const forceLabel = tossing
-    ? `本次力度 ${powerPercent}%`
+    ? (isEn ? `Current force ${powerPercent}%` : `本次力度 ${powerPercent}%`)
     : options.lockText
-      ? "待审题"
+      ? (isEn ? "Waiting for Review" : "待审题")
     : last?.power
-      ? `上次力度 ${last.power}%`
-      : "上拉蓄力";
+      ? (isEn ? `Last force ${last.power}%` : `上次力度 ${last.power}%`)
+      : (isEn ? "Swipe to build force" : "上拉蓄力");
   const renderCoin = (coin, index) => {
-    const glyphs = coin === 3 ? ["乾", "隆", "通", "宝"] : ["宝", "泉", "通", "宝"];
+    const glyphs = isEn
+      ? ["", "", "", ""]
+      : (coin === 3 ? ["乾", "隆", "通", "宝"] : ["宝", "泉", "通", "宝"]);
     const face = getLiuyaoCoinFaceLabel(coin);
-    const mark = showFaces ? face : "待";
+    const mark = showFaces ? (isEn ? face.charAt(0) : face) : (isEn ? "" : "待");
     return `
-      <span class="liuyao-coin-token ${coin === 3 ? "is-head" : "is-tail"}" style="--d:${index * 0.1}s" aria-label="${showFaces ? `${face}面铜钱` : "待落地铜钱"}">
+      <span class="liuyao-coin-token ${coin === 3 ? "is-head" : "is-tail"}" style="--d:${index * 0.1}s" aria-label="${showFaces ? `${face}${isEn ? " coin" : "面铜钱"}` : (isEn ? "Waiting coin" : "待落地铜钱")}">
         <span class="liuyao-coin ${coin === 3 ? "is-yang" : "is-yin"}">
           <i class="coin-glyph is-top">${glyphs[0]}</i>
           <i class="coin-glyph is-right">${glyphs[1]}</i>
@@ -15171,7 +15182,14 @@ function renderLiuyaoCoinRow(state, options = {}) {
       <span class="liuyao-force-label">${escapeHtml(forceLabel)}</span>
       <span class="liuyao-swipe-cue">${escapeHtml(label)}</span>
     </div>
-    ${showFaces ? renderLiuyaoCoinFaceStrip(coins, tossing ? "即将落地" : `第 ${progress} 爻`) : '<div class="liuyao-coin-face-strip is-empty"><span>上拉后显示正反</span></div>'}
+    ${showFaces
+      ? renderLiuyaoCoinFaceStrip(
+        coins,
+        tossing
+          ? (isEn ? "Landing next" : "即将落地")
+          : (isEn ? `Line ${progress}` : `第 ${progress} 爻`)
+      )
+      : `<div class="liuyao-coin-face-strip is-empty"><span>${isEn ? "Swipe up to reveal the result." : "上拉后显示正反"}</span></div>`}
   `;
 }
 
@@ -15229,17 +15247,18 @@ function renderLiuyaoCasterModal(state, options = {}) {
   const lines = getLiuyaoCastLines(state);
   const landingIndex = liuyaoTossAnimation?.active ? liuyaoTossAnimation.lineIndex : progress - 1;
   const last = getLiuyaoValidCasts(state).at(-1);
+  const isEn = getWentianLanguageCode() === "en";
   return `
-    <div class="liuyao-caster-modal" role="dialog" aria-modal="true" aria-label="在线投币">
+    <div class="liuyao-caster-modal" role="dialog" aria-modal="true" aria-label="${escapeHtml(isEn ? "Coin Cast" : "在线投币")}">
       <div class="liuyao-caster-head">
-        <button type="button" data-action="liuyao-close-caster" aria-label="关闭投币">‹</button>
+        <button type="button" data-action="liuyao-close-caster" aria-label="${escapeHtml(isEn ? "Close coin cast" : "关闭投币")}">‹</button>
         <div>
-          <span>在线投币</span>
-          <strong>${escapeHtml(tossing ? `第 ${progress + 1} 爻落地中` : `投第 ${progress + 1} 爻`)}</strong>
+          <span>${isEn ? "Coin Cast" : "在线投币"}</span>
+          <strong>${escapeHtml(tossing ? (isEn ? `Landing Line ${progress + 1}` : `第 ${progress + 1} 爻落地中`) : (isEn ? `Cast Line ${progress + 1}` : `投第 ${progress + 1} 爻`))}</strong>
         </div>
         <div class="liuyao-caster-actions">
-          <button class="liuyao-caster-reset" type="button" data-action="liuyao-reset" ${tossing ? "disabled" : ""}>清空重来</button>
-          <em>${escapeHtml(tossing ? "铜钱翻转" : "上拉松手")}</em>
+          <button class="liuyao-caster-reset" type="button" data-action="liuyao-reset" ${tossing ? "disabled" : ""}>${isEn ? "Reset" : "清空重来"}</button>
+          <em>${escapeHtml(tossing ? (isEn ? "Coins turning" : "铜钱翻转") : (isEn ? "Swipe and release" : "上拉松手"))}</em>
         </div>
       </div>
       <div class="liuyao-caster-body">
@@ -15247,8 +15266,8 @@ function renderLiuyaoCasterModal(state, options = {}) {
       </div>
       <div class="liuyao-caster-result">
         <div>
-          <span>${escapeHtml(last ? "上次落地" : "落地记录")}</span>
-          <strong>${escapeHtml(last ? `${last.coins.map(getLiuyaoCoinFaceLabel).join(" ")} · ${getLiuyaoLineType(last.value).name}` : "等待第一个落爻")}</strong>
+          <span>${escapeHtml(last ? (isEn ? "Last Landing" : "上次落地") : (isEn ? "Landing Log" : "落地记录"))}</span>
+          <strong>${escapeHtml(last ? `${last.coins.map((coin) => getLiuyaoCoinFaceLabel(coin)).join(" / ")} · ${isEn ? translateWentianText(getLiuyaoLineType(last.value).name, "en") : getLiuyaoLineType(last.value).name}` : (isEn ? "Waiting for the first line" : "等待第一个落爻"))}</strong>
         </div>
         ${renderLiuyaoHexStack(lines, { id: "cast-modal", compact: true, landingIndex })}
       </div>
@@ -15258,14 +15277,15 @@ function renderLiuyaoCasterModal(state, options = {}) {
 
 function renderLiuyaoResetConfirm() {
   if (!liuyaoResetConfirmOpen) return "";
+  const isEn = getWentianLanguageCode() === "en";
   return `
-    <div class="liuyao-reset-confirm" role="dialog" aria-modal="true" aria-label="确认清空重来">
+    <div class="liuyao-reset-confirm" role="dialog" aria-modal="true" aria-label="${escapeHtml(isEn ? "Confirm reset" : "确认清空重来")}">
       <div class="liuyao-reset-confirm-card">
-        <strong>清空重来？</strong>
-        <p>当前已投的爻会清空，回到重新起卦。</p>
+        <strong>${isEn ? "Reset this cast?" : "清空重来？"}</strong>
+        <p>${isEn ? "This clears the current lines and takes you back to a fresh cast." : "当前已投的爻会清空，回到重新起卦。"}</p>
         <div>
-          <button type="button" data-action="liuyao-reset-cancel">取消</button>
-          <button type="button" class="primary" data-action="liuyao-reset-confirm">确认清空</button>
+          <button type="button" data-action="liuyao-reset-cancel">${isEn ? "Cancel" : "取消"}</button>
+          <button type="button" class="primary" data-action="liuyao-reset-confirm">${isEn ? "Confirm Reset" : "确认清空"}</button>
         </div>
       </div>
     </div>
@@ -15294,7 +15314,8 @@ function renderLiuyaoManualCoinInput(state, options = {}) {
       data-coin-index="${coinIndex}"
       data-coin-face="${value}"
       ${disabled ? "disabled" : ""}
-    >${getLiuyaoCoinFaceLabel(value)}</button>
+      aria-label="${escapeHtml(getLiuyaoCoinFaceLabel(value))}"
+    >${getWentianLanguageCode() === "en" ? (value === 3 ? "H" : "T") : getLiuyaoCoinFaceLabel(value)}</button>
   `;
   return `
     <div class="liuyao-manual-card ${disabled ? "is-disabled" : ""}">
@@ -15425,6 +15446,173 @@ function renderLiuyaoModeCard(state = getLiuyaoState(), locked = false) {
       <div>
         <button type="button" class="${state.mode === "online" ? "is-active" : ""}" data-action="liuyao-mode" data-mode="online" ${locked ? "disabled" : ""}>在线投币</button>
         <button type="button" class="${state.mode === "manual" ? "is-active" : ""}" data-action="liuyao-mode" data-mode="manual" ${locked ? "disabled" : ""}>手动起卦</button>
+      </div>
+    </section>
+  `;
+}
+
+function renderLiuyaoManualCoinInput(state, options = {}) {
+  const disabled = Boolean(options.disabled);
+  const casts = Array.from({ length: 6 }, (_, index) => normalizeLiuyaoCast(state.casts[index]));
+  const nextIndex = casts.findIndex((cast) => !cast);
+  const complete = nextIndex < 0 && casts.every(Boolean);
+  const activeIndex = complete ? -1 : nextIndex;
+  const currentIndex = activeIndex >= 0 ? activeIndex : 5;
+  const currentCoins = activeIndex >= 0 ? getLiuyaoManualCoins(state, currentIndex) : [];
+  const currentCoinCount = currentCoins.filter(Boolean).length;
+  const currentCast = makeLiuyaoManualCastFromCoins(currentCoins);
+  const completedRows = casts
+    .map((cast, lineIndex) => ({ cast, lineIndex, type: cast ? getLiuyaoLineType(cast.value) : null }))
+    .filter((item) => item.cast && item.type);
+  const isEn = getWentianLanguageCode() === "en";
+  const renderFaceButton = (lineIndex, coinIndex, value, current) => `
+    <button
+      type="button"
+      class="${current === value ? "is-active" : ""}"
+      data-action="liuyao-manual-coin"
+      data-line-index="${lineIndex}"
+      data-coin-index="${coinIndex}"
+      data-coin-face="${value}"
+      ${disabled ? "disabled" : ""}
+      aria-label="${escapeHtml(getLiuyaoCoinFaceLabel(value))}"
+    >${getWentianLanguageCode() === "en" ? (value === 3 ? "H" : "T") : getLiuyaoCoinFaceLabel(value)}</button>
+  `;
+  const currentTypeName = currentCast ? (isEn ? translateWentianText(getLiuyaoLineType(currentCast.value).name, "en") : getLiuyaoLineType(currentCast.value).name) : "";
+  return `
+    <section class="liuyao-manual-card ${disabled ? "is-disabled" : ""}">
+      <div class="liuyao-manual-head">
+        <div>
+          <span>${isEn ? "Real Coin Entry" : "真实铜钱录入"}</span>
+          <strong>${escapeHtml(complete ? (isEn ? "All Six Lines Recorded" : "六爻已录满") : (isEn ? `Line ${currentIndex + 1}` : LIUYAO_LINE_LABELS[currentIndex]))}</strong>
+        </div>
+        <em>${escapeHtml(complete ? "6/6" : `${currentCoinCount}/3`)}</em>
+      </div>
+      <p class="liuyao-manual-copy">${escapeHtml(
+        complete
+          ? (isEn ? "All six lines are ready. Open the reading, or redo the previous line if needed." : "六爻已满，可直接查看卦象；如需修正，可重录上一爻。")
+          : (isEn ? `Record line ${currentIndex + 1} of 6. Toss three real coins, then confirm Heads or Tails for each one.` : `第 ${currentIndex + 1}/6 爻，每爻录入三枚铜钱，按正反依次确认。`)
+      )}</p>
+      ${complete ? `
+        <div class="liuyao-manual-done">
+          <strong>${isEn ? "Hexagram Ready" : "卦已成"}</strong>
+          <span>${isEn ? "The original hexagram, changed hexagram, and moving lines are ready." : "本卦、变卦和动爻都已生成。"}</span>
+          <div class="liuyao-manual-current-actions">
+            <button type="button" class="liuyao-manual-clear" data-action="liuyao-manual-clear-last" ${disabled ? "disabled" : ""}>${isEn ? "Redo Previous Line" : "重录上一爻"}</button>
+            <button type="button" class="liuyao-manual-confirm" data-action="liuyao-show-result">${isEn ? "View Reading" : "查看解卦"}</button>
+          </div>
+        </div>
+      ` : `
+        <div class="liuyao-manual-current">
+          <div class="liuyao-manual-current-head">
+            <div>
+              <strong>${isEn ? `Line ${currentIndex + 1}` : LIUYAO_LINE_LABELS[currentIndex]}</strong>
+              <span>${isEn ? `${currentIndex + 1}/6 lines` : `第 ${currentIndex + 1}/6 爻`}</span>
+            </div>
+            <em>${currentCoinCount}/3</em>
+          </div>
+          <div class="liuyao-manual-status">${escapeHtml(
+            currentCoinCount >= 3
+              ? (isEn
+                ? `Current line: ${currentCast?.value || ""} ${currentTypeName}. Confirm to unlock the next line.`
+                : `本爻已成：${currentCast?.value || ""} ${currentCast ? getLiuyaoLineType(currentCast.value).name : ""}，确认后进入下一爻。`)
+              : (isEn ? "After tossing three coins, record Coin 1, Coin 2, then Coin 3." : "抛三枚铜钱后，依次录入第 1、2、3 枚。")
+          )}</div>
+          <div class="liuyao-manual-coins">
+            ${[0, 1, 2].map((coinIndex) => `
+              <div class="liuyao-manual-coin-pick">
+                <i>${isEn ? `Coin ${coinIndex + 1}` : `第 ${coinIndex + 1} 枚`}</i>
+                <span>
+                  ${renderFaceButton(currentIndex, coinIndex, 3, currentCoins[coinIndex])}
+                  ${renderFaceButton(currentIndex, coinIndex, 2, currentCoins[coinIndex])}
+                </span>
+              </div>
+            `).join("")}
+          </div>
+          <div class="liuyao-manual-current-actions">
+            <button type="button" class="liuyao-manual-clear" data-action="liuyao-manual-clear-line" data-line-index="${currentIndex}" ${disabled || !currentCoins.some(Boolean) ? "disabled" : ""}>${isEn ? "Clear Line" : "清空本爻"}</button>
+            <button type="button" class="liuyao-manual-confirm" data-action="liuyao-manual-confirm-line" data-line-index="${currentIndex}" ${disabled || !currentCast ? "disabled" : ""}>${isEn ? (currentIndex >= 5 ? "Confirm Hexagram" : "Confirm Line") : (currentIndex >= 5 ? "确认成卦" : "确认本爻")}</button>
+          </div>
+        </div>
+      `}
+      ${completedRows.length ? `
+        <div class="liuyao-manual-history">
+          <span>${isEn ? "Recorded" : "已录入"}</span>
+          <div>
+            ${completedRows.map(({ cast, lineIndex, type }) => `<i>${isEn ? `Line ${lineIndex + 1}` : LIUYAO_LINE_LABELS[lineIndex]} ${cast.value} ${isEn ? translateWentianText(type.name, "en") : type.name}${type.mark ? ` ${type.mark}` : ""}</i>`).join("")}
+          </div>
+        </div>
+      ` : ""}
+    </section>
+  `;
+}
+
+function renderLiuyaoAppHeader(id, title, state = getLiuyaoState(), options = {}) {
+  const quota = getLiuyaoQuota(state);
+  const isEn = getWentianLanguageCode() === "en";
+  const badge = options.badge || (quota.testingUnlimited ? (isEn ? "Unlimited" : "测试不限") : `${quota.used}/${quota.limit}`);
+  const heading = isEn ? translateWentianText(title, "en") : title;
+  return `
+    <div class="liuyao-app-header" aria-label="${escapeHtml(heading)}">
+      ${wentianBackPill(id, 18, 42, `data-action="back" aria-label="${isEn ? "Back" : "返回"}"`)}
+      <div class="liuyao-app-title">
+        <strong>${escapeHtml(heading)}</strong>
+        <span>${escapeHtml(badge)}</span>
+      </div>
+      ${options.reset ? `<button type="button" class="liuyao-header-reset" data-action="liuyao-reset">${escapeHtml(options.resetLabel || (isEn ? "Reset" : "重来"))}</button>` : '<span class="liuyao-header-spacer"></span>'}
+    </div>
+  `;
+}
+
+function renderLiuyaoFlowSteps(activeIndex) {
+  const isEn = getWentianLanguageCode() === "en";
+  const items = isEn ? ["Question Check", "Cast", "Reading"] : ["审题", "起卦", "解卦"];
+  return `
+    <div class="liuyao-flow-steps" aria-label="${escapeHtml(isEn ? "Liuyao Flow" : "六爻流程")}">
+      ${items.map((label, index) => `
+        <div class="liuyao-flow-step ${index === activeIndex ? "is-active" : ""} ${index < activeIndex ? "is-done" : ""}">
+          <span class="liuyao-flow-step-dot">${index < activeIndex ? "✓" : index + 1}</span>
+          <span class="liuyao-flow-step-label">${escapeHtml(label)}</span>
+        </div>
+        ${index < items.length - 1 ? `<i class="liuyao-flow-line ${index < activeIndex ? "is-done" : ""}"></i>` : ""}
+      `).join("")}
+    </div>
+  `;
+}
+
+function renderLiuyaoQuestionStage(state = getLiuyaoState()) {
+  const isEn = getWentianLanguageCode() === "en";
+  const questionValue = getLiuyaoQuestionInputValue(state);
+  return `
+    <section class="liuyao-stage liuyao-stage-ask">
+      <div class="liuyao-ask-title">
+        <h2>${isEn ? "What do you want to ask?" : "你想问什么？"}</h2>
+        <p>${isEn ? "One clear matter works best" : "一事一卦，越具体越准"}</p>
+      </div>
+      <label class="liuyao-big-question" for="liuyao-question">
+        <textarea id="liuyao-question" maxlength="${LIUYAO_QUESTION_MAX_LENGTH}" rows="8" placeholder="${escapeHtml(isEn ? "Example: Will this interview go well?" : "例如：这周面试能顺利通过吗？")}">${escapeHtml(questionValue)}</textarea>
+        <span>${formatLiuyaoQuestionCount(questionValue)}</span>
+      </label>
+      ${renderLiuyaoQuestionStartButton(state)}
+      <div class="liuyao-ask-review">
+        ${renderLiuyaoQuotaBadge(state)}
+        ${renderLiuyaoQuestionGateStatus(state)}
+      </div>
+      ${renderLiuyaoQuestionSuggestions(state)}
+    </section>
+  `;
+}
+
+function renderLiuyaoModeCard(state = getLiuyaoState(), locked = false) {
+  const isEn = getWentianLanguageCode() === "en";
+  return `
+    <section class="liuyao-mode-card">
+      <div class="liuyao-section-title">
+        <label>${isEn ? "Casting Method" : "起卦方式"}</label>
+        <em>${state.mode === "manual" ? (isEn ? "Manual Casting" : "手动起卦") : (isEn ? "Coin Cast" : "在线投币")}</em>
+      </div>
+      <div>
+        <button type="button" class="${state.mode === "online" ? "is-active" : ""}" data-action="liuyao-mode" data-mode="online" ${locked ? "disabled" : ""}>${isEn ? "Coin Cast" : "在线投币"}</button>
+        <button type="button" class="${state.mode === "manual" ? "is-active" : ""}" data-action="liuyao-mode" data-mode="manual" ${locked ? "disabled" : ""}>${isEn ? "Manual Casting" : "手动起卦"}</button>
       </div>
     </section>
   `;
@@ -15603,7 +15791,8 @@ function renderLiuyaoManualCoinInput(state, options = {}) {
       data-coin-index="${coinIndex}"
       data-coin-face="${value}"
       ${disabled ? "disabled" : ""}
-    >${getLiuyaoCoinFaceLabel(value)}</button>
+      aria-label="${escapeHtml(getLiuyaoCoinFaceLabel(value))}"
+    >${getWentianLanguageCode() === "en" ? (value === 3 ? "H" : "T") : getLiuyaoCoinFaceLabel(value)}</button>
   `;
   return `
     <section class="liuyao-manual-card ${disabled ? "is-disabled" : ""}">
@@ -15752,6 +15941,101 @@ function renderLiuyaoCastStage(state, details = {}) {
   `;
 }
 
+function renderLiuyaoManualCoinInput(state, options = {}) {
+  const disabled = Boolean(options.disabled);
+  const casts = Array.from({ length: 6 }, (_, index) => normalizeLiuyaoCast(state.casts[index]));
+  const nextIndex = casts.findIndex((cast) => !cast);
+  const complete = nextIndex < 0 && casts.every(Boolean);
+  const activeIndex = complete ? -1 : nextIndex;
+  const currentIndex = activeIndex >= 0 ? activeIndex : 5;
+  const currentCoins = activeIndex >= 0 ? getLiuyaoManualCoins(state, currentIndex) : [];
+  const currentCoinCount = currentCoins.filter(Boolean).length;
+  const currentCast = makeLiuyaoManualCastFromCoins(currentCoins);
+  const completedRows = casts
+    .map((cast, lineIndex) => ({ cast, lineIndex, type: cast ? getLiuyaoLineType(cast.value) : null }))
+    .filter((item) => item.cast && item.type);
+  const isEn = getWentianLanguageCode() === "en";
+  const renderFaceButton = (lineIndex, coinIndex, value, current) => `
+    <button
+      type="button"
+      class="${current === value ? "is-active" : ""}"
+      data-action="liuyao-manual-coin"
+      data-line-index="${lineIndex}"
+      data-coin-index="${coinIndex}"
+      data-coin-face="${value}"
+      ${disabled ? "disabled" : ""}
+      aria-label="${escapeHtml(getLiuyaoCoinFaceLabel(value))}"
+    >${getWentianLanguageCode() === "en" ? (value === 3 ? "H" : "T") : getLiuyaoCoinFaceLabel(value)}</button>
+  `;
+  const currentTypeName = currentCast ? (isEn ? translateWentianText(getLiuyaoLineType(currentCast.value).name, "en") : getLiuyaoLineType(currentCast.value).name) : "";
+  return `
+    <section class="liuyao-manual-card ${disabled ? "is-disabled" : ""}">
+      <div class="liuyao-manual-head">
+        <div>
+          <span>${isEn ? "Real Coin Entry" : "真实铜钱录入"}</span>
+          <strong>${escapeHtml(complete ? (isEn ? "All Six Lines Recorded" : "六爻已录满") : (isEn ? `Line ${currentIndex + 1}` : LIUYAO_LINE_LABELS[currentIndex]))}</strong>
+        </div>
+        <em>${escapeHtml(complete ? "6/6" : `${currentCoinCount}/3`)}</em>
+      </div>
+      <p class="liuyao-manual-copy">${escapeHtml(
+        complete
+          ? (isEn ? "All six lines are ready. Open the reading, or redo the previous line if needed." : "六爻已满，可直接查看卦象；如需修正，可重录上一爻。")
+          : (isEn ? `Record line ${currentIndex + 1} of 6. Toss three real coins, then confirm Heads or Tails for each one.` : `第 ${currentIndex + 1}/6 爻，每爻录入三枚铜钱，按正反依次确认。`)
+      )}</p>
+      ${complete ? `
+        <div class="liuyao-manual-done">
+          <strong>${isEn ? "Hexagram Ready" : "卦已成"}</strong>
+          <span>${isEn ? "The original hexagram, changed hexagram, and moving lines are ready." : "本卦、变卦和动爻都已生成。"}</span>
+          <div class="liuyao-manual-current-actions">
+            <button type="button" class="liuyao-manual-clear" data-action="liuyao-manual-clear-last" ${disabled ? "disabled" : ""}>${isEn ? "Redo Previous Line" : "重录上一爻"}</button>
+            <button type="button" class="liuyao-manual-confirm" data-action="liuyao-show-result">${isEn ? "View Reading" : "查看解卦"}</button>
+          </div>
+        </div>
+      ` : `
+        <div class="liuyao-manual-current">
+          <div class="liuyao-manual-current-head">
+            <div>
+              <strong>${isEn ? `Line ${currentIndex + 1}` : LIUYAO_LINE_LABELS[currentIndex]}</strong>
+              <span>${isEn ? `${currentIndex + 1}/6 lines` : `第 ${currentIndex + 1}/6 爻`}</span>
+            </div>
+            <em>${currentCoinCount}/3</em>
+          </div>
+          <div class="liuyao-manual-status">${escapeHtml(
+            currentCoinCount >= 3
+              ? (isEn
+                ? `Current line: ${currentCast?.value || ""} ${currentTypeName}. Confirm to unlock the next line.`
+                : `本爻已成：${currentCast?.value || ""} ${currentCast ? getLiuyaoLineType(currentCast.value).name : ""}，确认后进入下一爻。`)
+              : (isEn ? "After tossing three coins, record Coin 1, Coin 2, then Coin 3." : "抛三枚铜钱后，依次录入第 1、2、3 枚。")
+          )}</div>
+          <div class="liuyao-manual-coins">
+            ${[0, 1, 2].map((coinIndex) => `
+              <div class="liuyao-manual-coin-pick">
+                <i>${isEn ? `Coin ${coinIndex + 1}` : `第 ${coinIndex + 1} 枚`}</i>
+                <span>
+                  ${renderFaceButton(currentIndex, coinIndex, 3, currentCoins[coinIndex])}
+                  ${renderFaceButton(currentIndex, coinIndex, 2, currentCoins[coinIndex])}
+                </span>
+              </div>
+            `).join("")}
+          </div>
+          <div class="liuyao-manual-current-actions">
+            <button type="button" class="liuyao-manual-clear" data-action="liuyao-manual-clear-line" data-line-index="${currentIndex}" ${disabled || !currentCoins.some(Boolean) ? "disabled" : ""}>${isEn ? "Clear Line" : "清空本爻"}</button>
+            <button type="button" class="liuyao-manual-confirm" data-action="liuyao-manual-confirm-line" data-line-index="${currentIndex}" ${disabled || !currentCast ? "disabled" : ""}>${isEn ? (currentIndex >= 5 ? "Confirm Hexagram" : "Confirm Line") : (currentIndex >= 5 ? "确认成卦" : "确认本爻")}</button>
+          </div>
+        </div>
+      `}
+      ${completedRows.length ? `
+        <div class="liuyao-manual-history">
+          <span>${isEn ? "Recorded" : "已录入"}</span>
+          <div>
+            ${completedRows.map(({ cast, lineIndex, type }) => `<i>${isEn ? `Line ${lineIndex + 1}` : LIUYAO_LINE_LABELS[lineIndex]} ${cast.value} ${isEn ? translateWentianText(type.name, "en") : type.name}${type.mark ? ` ${type.mark}` : ""}</i>`).join("")}
+          </div>
+        </div>
+      ` : ""}
+    </section>
+  `;
+}
+
 function sourceLiuyaoCastScreen() {
   const state = getLiuyaoState();
   queueLiuyaoQuotaRefresh();
@@ -15852,6 +16136,11 @@ function sourceLiuyaoResultScreen() {
     } else if (/(exam|study|school|application)/i.test(lowerQuestion)) {
       suggestion = "Stay with the core plan, tighten execution, and let results accumulate before changing direction.";
     }
+    const movingSummary = movingCount
+      ? (movingCount === 1
+        ? `${movingLineText} is the key change point. Watch what shifts after the next concrete move, then adjust.`
+        : `${movingLineText} are the key change points. Watch what shifts after the next concrete move, then adjust.`)
+      : `No moving lines appear, so keep the main direction stable and judge by consistent follow-through.`;
     const overview = movingCount
       ? `The original hexagram is ${originalTitle}, changing through ${movingLineText} into ${changedTitle}. This shows a live situation that can move if you respond at the right time.`
       : `The original hexagram is ${originalTitle}. With no moving lines, the situation is relatively steady and favors clarity over repeated probing.`;
@@ -15861,7 +16150,7 @@ ${overview}` ,
       `[For Your Question]
 For "${cleanQuestion}", the sign is workable, but progress depends on timing, discipline, and not overreaching too early.`,
       `[Moving Lines]
-${movingCount ? `${movingLineText} are the key change points. Watch what shifts after the next concrete move, then adjust.` : `No moving lines appear, so keep the main direction stable and judge by consistent follow-through.`}`,
+${movingSummary}`,
       `[Suggestion]
 ${suggestion}`
     ].join("\n\n");

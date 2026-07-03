@@ -15034,6 +15034,26 @@ html[lang="en"] .liuyao-result-arrow em {
   font-size: 20px;
 }
 
+html[lang="en"] .liuyao-manual-coin-pick {
+  gap: 8px;
+  padding: 10px 6px;
+}
+
+html[lang="en"] .liuyao-manual-coin-pick i {
+  font-size: 11px;
+}
+
+html[lang="en"] .liuyao-manual-current .liuyao-manual-coin-pick button {
+  padding: 0 2px;
+  font-size: 14px;
+  letter-spacing: 0;
+}
+
+html[lang="en"] .liuyao-manual-current-actions .liuyao-manual-clear,
+html[lang="en"] .liuyao-manual-current-actions .liuyao-manual-confirm {
+  font-size: 13px;
+}
+
 .liuyao-manual-current-actions {
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 10px;
