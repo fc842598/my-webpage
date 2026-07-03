@@ -726,10 +726,11 @@ html[lang="en"] [data-node-id="source-1-archive-action-text"] {
 
 html[lang="en"] [data-node-id="source-2-hero-title"] {
   top: 112px !important;
-  width: 318px !important;
-  font-size: 20px !important;
-  line-height: 1.08 !important;
-  white-space: normal !important;
+  width: 324px !important;
+  font-size: 17px !important;
+  line-height: 1 !important;
+  letter-spacing: -0.02em !important;
+  white-space: nowrap !important;
 }
 
 html[lang="en"] [data-node-id="source-2-hero-sub"] {
