@@ -2147,6 +2147,11 @@ function getWentianClientId() {
   }
 }
 
+function getWentianClientHeaders() {
+  const clientId = getWentianClientId();
+  return isWentianUuid(clientId) ? { "X-Wentian-Client-Id": clientId } : {};
+}
+
 function getWentianArchiveAccountUserId() {
   return wentianAuthSession?.user?.id || readWentianStoredSession()?.user?.id || "";
 }
@@ -10527,7 +10532,7 @@ async function wentianPostJsonOnce(path, payload, timeoutMs) {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(new DOMException("request timeout", "TimeoutError")), timeoutMs);
   try {
-    const headers = { "Content-Type": "application/json" };
+    const headers = { "Content-Type": "application/json", ...getWentianClientHeaders() };
     const token = await getWentianAuthToken();
     if (token) headers.Authorization = `Bearer ${token}`;
     const response = await fetch(`${getWentianApiBase()}${path}`, {
@@ -10564,7 +10569,10 @@ async function wentianPostJson(path, payload, timeoutMs = 90000, retries = 1) {
 
 async function wentianFetchJson(path, options = {}) {
   const method = options.method || (options.body ? "POST" : "GET");
-  const headers = options.body ? { "Content-Type": "application/json" } : { "Accept": "application/json" };
+  const headers = {
+    ...(options.body ? { "Content-Type": "application/json" } : { "Accept": "application/json" }),
+    ...getWentianClientHeaders(),
+  };
   if (options.authToken) {
     headers.Authorization = `Bearer ${options.authToken}`;
   } else if (!options.noAuth) {
