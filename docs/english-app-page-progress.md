@@ -29,11 +29,12 @@
 - 本轮已完成：`screen-25` `Archives`，已修复英文档案卡片姓名截断，并复查空态与单档案态下的 `+ New`、批量模式、搜索、Open Chart、编辑、删除、返回与底部导航链路。
 - 本轮已完成：`screen-24` `Invite Details`，已修复英文邀请链接换行，并复查复制邀请码、复制链接的登录拦截、返回与底部导航链路。
 - 本轮已完成：`screen-22` `Invite Friends`，已修复登录态英文邀请页残留占位词 `Text/day`、`Reward Rules` 覆盖输入框，以及 `System Share` 仍复制中文文案的问题，并复查登录入口、返回、底部导航、复制邀请码、复制链接与系统分享链路。
+- 本轮已完成：`screen-17` `Liuyao Casting`，已将英文输入框 placeholder 缩短为单行收纳，并复查空态提交、提交具体问题后进入起卦流程、返回与底部导航链路；同时补齐了线上问卦与会员状态接口缺少 `x-wentian-client-id` 的 CORS 放行。
 - 本轮已完成：`screen-18` `Liuyao Cast Step 2`，已将英文提问页主标题、审题提示与 4 个示例按钮压缩为单行收纳，并复查示例填充、提交具体问题后进入起卦流程、返回与底部导航链路。
 - 本轮已完成：`screen-19` `Liuyao Cast Step 3`，已修复英文完成态残留占位文案 `Text / Regenerate in English.`，并将本卦、变卦摘要压缩为 `Water / Fire`、`Hex 63 · Kan/Li` 这类可完整收纳的英文格式；已复查 `Read Hexagram`、卡片内 `View Reading` 与结果页返回链路。
 - 本轮已完成：`screen-20` `Liuyao Result`，已修复英文结果态 `Original / Changed` 卦名被省略号截断的问题，并复查空态返回、空态 `Back to Casting`、从 `screen-17` 进入结果页、返回、`Start AI Reading`、`Cast Again` 二次确认与底部导航链路。
-- 当前停靠点：已处理到 `screen-18`
-- 下一页：`screen-17` `Liuyao Casting`
+- 当前停靠点：已处理到 `screen-17`
+- 下一页：`screen-12` `Quick Questions`
 
 ## 英文页面总清单
 
@@ -50,7 +51,7 @@
 | 待排查 | `screen-9` | Chat History | 对话记录 |
 | 待排查 | `screen-11` | Compatibility Profile Select | 合盘选档案 |
 | 待排查 | `screen-12` | Quick Questions | 随机提问 |
-| 待排查 | `screen-17` | Liuyao Casting | 六爻起卦首页 |
+| 已完成 | `screen-17` | Liuyao Casting | 已将英文输入框 placeholder 缩短为单行收纳，复查空态提交、提交具体问题后进入起卦流程、返回与底部导航链路，并补齐线上问卦与会员状态接口缺少 `x-wentian-client-id` 的 CORS 放行 |
 | 已完成 | `screen-18` | Liuyao Cast Step 2 | 已将英文提问页主标题、审题提示与 4 个示例按钮改为单行收纳，复查示例填充、提交具体问题后进入起卦流程、返回与底部导航链路 |
 | 已完成 | `screen-19` | Liuyao Cast Step 3 | 已修复英文完成态占位文案 `Text / Regenerate in English.`，并将本卦、变卦摘要改为可完整收纳的短英文格式，复查 `Read Hexagram`、`View Reading` 与结果页返回链路 |
 | 已完成 | `screen-20` | Liuyao Result | 已修复英文结果态 `Original / Changed` 卦名省略号截断，并复查空态、返回、AI 入口、重起卦确认与底部导航链路 |

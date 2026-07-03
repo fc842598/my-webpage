@@ -8050,7 +8050,7 @@ const WENTIAN_I18N_EN_EXTRA = {
   "已选2/2": "Selected 2/2",
   "写下你想问的命理问题": "Write your question",
   "请输入想问什么？": "What do you want to ask?",
-  "例如：这周面试能顺利通过吗？": "Example: Will this week's interview go smoothly?",
+  "例如：这周面试能顺利通过吗？": "Example: Will this interview go well?",
   "今日运势如何？": "How is my luck today?",
   "最近的工作会有好的转机吗？": "Will work improve soon?",
   "我和TA的感情未来如何发展？": "How will this relationship develop?",
