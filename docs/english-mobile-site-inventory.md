@@ -1,6 +1,6 @@
 # English Mobile Site Inventory
 
-Generated: 2026-07-08T15:42:27.166Z
+Generated: 2026-07-08T22:26:19.257Z
 
 Scope: Yuetian AI app in English mode, iPhone-sized mobile viewport 390x844.
 
@@ -39,7 +39,7 @@ Evidence:
 | Pass | screen-19 | Liuyao Cast Step 3 | Tools | Liuyao Cast Step 3 | Start Casting; Can this project keep moving this month and show results?; Can this cooperation close soon?; Should I change my work direction now?; Should I communicate proactively in this relationship? | 0 chars; Example: Will this interview go well? | None | No text/label/image overlap found at 390x844 |
 | Pass | screen-20 | Liuyao Result | Tools | Liuyao Result | Back to Casting | None | None | No text/label/image overlap found at 390x844 |
 | Pass | screen-22 | Invite Friends | AI, Account | Invite Friends | None | ENTER INVITE CODE | None | No text/label/image overlap found at 390x844 |
-| Pass | screen-24 | Invite Details | AI, Account | 004J6KZL | None | None | None | No text/label/image overlap found at 390x844 |
+| Pass | screen-24 | Invite Details | AI, Account | 00W9FMW2 | None | None | None | No text/label/image overlap found at 390x844 |
 | Pass | screen-25 | Archives | Chart | Chart Records | + New | ⌕; Enter name | None | No text/label/image overlap found at 390x844 |
 | Pass | screen-26 | Chart Form | AI, Chart | Birth Details | Male; Female; Solar; Lunar; Explain | Optional name; 2026; May; 12; Leap month counts as the next month | None | No text/label/image overlap found at 390x844 |
 | Pass | screen-27 | Ziwei Report | AI, Chart | Zi Wei Chart | Tian Tong Lu Cun D.Child Gui Si 96-105 Children; Wu Qu Tian Fu Qing Yang Zuo Fu D.Spouse Jia Wu 106-115 Spouse; Tai Yang Tai Yin Di Jie D.Sibling Yi Wei 116-125 Siblings; Tan Lang Tian Ma You Bi D.Life Bing Shen 6-15 Life Palace; Po Jun Tuo Luo D.Wealth Ren Chen 86-95 Wealth | None | Innate Hexagram Water over Heaven Xu | No text/label/image overlap found at 390x844 |

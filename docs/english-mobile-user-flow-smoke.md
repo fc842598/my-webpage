@@ -1,6 +1,6 @@
 # English Mobile User Flow Smoke
 
-Generated: 2026-07-08T15:41:53.048Z
+Generated: 2026-07-08T22:25:55.177Z
 
 Scope: English mobile real-user flows at 390x844. APIs are controlled mocks for payment, account, and chat so the flow is repeatable without charging real money. Text, label, and image overlap remain covered by `npm run audit:en-mobile`; this smoke checks dynamic flow state, English residue, and horizontal overflow.
 

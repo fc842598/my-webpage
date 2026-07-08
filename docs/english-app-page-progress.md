@@ -1,10 +1,11 @@
 # 英文 App 页面排查进度
 
-更新时间：2026-07-03
+更新时间：2026-07-09
 
 ## 当前进度
 
 - 已完成历史项：英文公共入口、会员页 PayPal 文案、`?lang=en` 强制英文、英文文章入口与链路复查。
+- 第二轮功能复测已完成：当前英文移动端 44 个 App 页面全量门槛复测通过，`npm run audit:en-mobile -- --screens=all --screenshot=fail --fail-on-issues` 结果为 44/44 通过；`npm run review:en-mobile` 六维页面门槛为 44/44 通过，最低分 95；`npm run smoke:en-user-flows` 关键客户流 5/5 通过，最低分 100。
 - 本轮已完成：`screen-50` `Office Layout`，主标题已从英文断行为单行收纳。
 - 本轮已完成：`screen-51` `Guide`，步骤标题已从英文断行为单行收纳。
 - 本轮已完成：`screen-45` `Guide`，英文教程页标题、引导卡与步骤说明已压缩收纳，返回与开始按钮已复查。
@@ -45,8 +46,8 @@
 - 本轮已完成：`screen-2` `Home / Report Mall`，已修复英文大卡标题换行，改为单行收纳；并复查返回、3 个报告卡入口与底部导航链路。
 - 本轮已完成：公共六爻移动页 `liuyao.html` / `liuyao-v2.html` 的 `?lang=en` 入口改为直接进入英文 App 六爻页，避免英文用户落到整页中文的独立六爻实现。
 - 本轮已完成：`screen-1` `Authorization`，已修复英文入口页六爻卡片仍跳到中文 `liuyao-v2.html` 的问题，改为直接进入英文 App `screen-17`，并给 `liuyao.html` / `liuyao-v2.html` 补上英文来源兜底跳转，避免旧缓存页仍把英文用户带回中文版；同时已复查登录、Create Chart、Ask、No Profile Switch、Ziwei、Match、Liuyao、Feng Shui、Office Layout、Liuren 与底部导航链路。
-- 当前停靠点：已处理到 `screen-1`
-- 下一页：英文版首轮全页排查已完成，下一轮开始逐页功能复测
+- 当前停靠点：第二轮功能复测已处理完当前清单全部 44 个英文 App 页面
+- 下一页：暂无；后续如新增英文页面或入口，从页面清单追加后继续逐页复测
 
 ## 英文页面总清单
 

@@ -1,6 +1,6 @@
 # English Mobile Page Gates
 
-Generated: 2026-07-08T15:43:58.759Z
+Generated: 2026-07-08T22:24:52.318Z
 
 Scope: English mobile app at 390x844. This is the repeatable six-reviewer gate for the page-by-page 95-point loop.
 
