@@ -6,6 +6,7 @@
     "geo:check": "node scripts/check-geo-basics.js",
     "geo:check:local": "node scripts/check-geo-local.js",
     "audit:en-mobile": "node scripts/audit-wentian-english-mobile.mjs",
+    "inventory:en-mobile": "node scripts/inventory-wentian-english-mobile.mjs",
     "geo:toutiao:install-file": "node scripts/install-toutiao-verification-file.mjs",
     "geo:toutiao:check-file": "node scripts/check-toutiao-verification-status.mjs",
     "articles:generate-en": "node scripts/generate-en-articles.mjs",

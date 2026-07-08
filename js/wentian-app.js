@@ -9657,8 +9657,9 @@ function handleWentianRoutePointerCapture(event) {
 
 function getWentianProfile() {
   const meta = wentianAuthSession?.user?.user_metadata || readWentianStoredSession()?.user?.user_metadata || {};
+  const defaultNickname = isWentianEnglishUi() ? "Guest" : "谢广周";
   const defaults = {
-    nickname: "谢广周",
+    nickname: defaultNickname,
     email: meta.profile_email || "",
     phone: meta.phone || "",
   };
@@ -9668,7 +9669,7 @@ function getWentianProfile() {
     const local = { ...defaults, ...(saved || {}) };
     return {
       ...local,
-      nickname: saved?.nickname ? local.nickname : (meta.nickname || meta.display_name || local.nickname),
+      nickname: saved?.nickname && saved.nickname !== "谢广周" ? local.nickname : (meta.nickname || meta.display_name || local.nickname),
     };
   } catch (_err) {
     return defaults;
@@ -9931,7 +9932,7 @@ function getWentianAuthDisplay() {
       initial: "登",
     };
   }
-  const nickname = profile.nickname && profile.nickname !== "谢广周" ? profile.nickname : label;
+  const nickname = profile.nickname && !["谢广周", "Guest"].includes(profile.nickname) ? profile.nickname : label;
   return {
     loggedIn: true,
     name: nickname || "已登录",
@@ -20975,6 +20976,9 @@ function renderWentianMobileYijingPanel(saved) {
   const meta = getWentianYijingTabMeta(activeKey);
   const reading = getWentianYijingReading(result, activeKey);
   const imageSrc = getYijingHexagramImageSrc(result?.no || result?.num);
+  const metaTitleText = getWentianCompactText(meta.title, translateWentianText(meta.title, "en"));
+  const resultNameText = getWentianCompactText(result?.name || "", translateWentianText(result?.name || "", "en"));
+  const imageAlt = [metaTitleText, resultNameText].filter(Boolean).join(" ");
   const selectedXiao = ctx.selectedXiao || {};
   const railItems = getWentianXiaoLianRailItems(selectedXiao);
   const currentAgeLabel = selectedXiao?.age ? `${selectedXiao.age}岁` : "";
@@ -21018,15 +21022,15 @@ function renderWentianMobileYijingPanel(saved) {
       ` : ""}
       <article class="wentian-yijing-card">
         <div class="wentian-yijing-art">
-          ${imageSrc ? `<img src="${imageSrc}" alt="${escapeHtml(`${meta.title} ${result?.name || ""}`)}" loading="lazy">` : ""}
+          ${imageSrc ? `<img src="${imageSrc}" alt="${escapeHtml(imageAlt)}" loading="lazy">` : ""}
           <div class="wentian-yijing-lines">${renderWentianYijingLines(result)}</div>
         </div>
         <div class="wentian-yijing-main">
           <div class="wentian-yijing-card-kicker">
-            <span>${escapeHtml(meta.title)}</span>
+            <span>${escapeHtml(metaTitleText)}</span>
             ${activeKey === "liunian" && liunianHeadline ? `<b>${escapeHtml(liunianHeadline)}</b>` : ""}
           </div>
-          <h3>${escapeHtml(result?.name || "等待排盘")}</h3>
+          <h3>${escapeHtml(resultNameText || getWentianCompactText("等待排盘", "Waiting for chart"))}</h3>
         </div>
       </article>
       <section class="wentian-yijing-reading">
