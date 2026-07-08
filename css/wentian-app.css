@@ -669,6 +669,11 @@ html[lang="en"] [data-node-id="source-1-feature-title-4"] {
   width: 112px !important;
 }
 
+html[lang="en"] [data-node-id="source-1-feature-icon-4"] {
+  left: 148px !important;
+  width: 32px !important;
+}
+
 html[lang="en"] [data-node-id="source-1-recommend-title"] {
   width: 180px !important;
   font-size: 20px !important;
@@ -812,12 +817,13 @@ html[lang="en"] [data-node-id="source-4-left"] {
 }
 
 html[lang="en"] [data-node-id="source-4-online-dot"] {
-  left: 160px !important;
+  left: 154px !important;
 }
 
 html[lang="en"] [data-node-id="source-4-online-text"] {
-  left: 170px !important;
-  width: 52px !important;
+  left: 164px !important;
+  width: 38px !important;
+  font-size: 9px !important;
   white-space: nowrap !important;
 }
 
@@ -1258,9 +1264,17 @@ html[lang="en"] .wentian-chart-ai-final-coin span {
   line-height: 1.05 !important;
 }
 
+html[lang="en"] .wentian-chart-ai-final-coin {
+  width: 106px !important;
+  height: 106px !important;
+}
+
 html[lang="en"] .wentian-chart-ai-final-coin b {
-  font-size: 17px !important;
-  line-height: 1.05 !important;
+  max-width: 72px !important;
+  font-size: 15px !important;
+  line-height: 1 !important;
+  white-space: normal !important;
+  overflow-wrap: anywhere !important;
 }
 
 html[lang="en"] .wentian-chart-ai-coin span {
@@ -1418,6 +1432,12 @@ html[lang="en"] [data-node-id="wt24-link"] {
   font-size: 8.4px !important;
   line-height: 1 !important;
   letter-spacing: -0.02em !important;
+  white-space: nowrap !important;
+}
+
+html[lang="en"] [data-node-id="wt24-pay-title"] {
+  width: 210px !important;
+  font-size: 15px !important;
   white-space: nowrap !important;
 }
 
@@ -3440,6 +3460,7 @@ html[lang="en"] .wentian-chat-starter {
   position: absolute;
   left: 10px;
   top: 802px;
+  z-index: 80;
   width: 370px;
   height: 50px;
   min-height: 50px;
@@ -4147,6 +4168,7 @@ html[lang="en"] .wentian-chat-starter {
   position: absolute;
   left: 342px;
   top: 809px;
+  z-index: 81;
   width: 36px;
   height: 36px;
   border: 0;
@@ -14347,7 +14369,7 @@ body.wentian-refund-open {
 }
 
 html[lang="en"] [data-node-id$="-back-copy"] {
-  width: 54px !important;
+  display: none !important;
 }
 
 html[lang="en"] [data-node-id="wt36-copy"] {
