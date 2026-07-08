@@ -6597,13 +6597,16 @@ html[lang="en"] .wentian-profile-input {
 .wentian-profile-status {
   position: absolute;
   left: 36px;
-  top: 645px;
+  top: 604px;
   width: 318px;
-  height: 22px;
+  height: 44px;
   color: #9a681c;
   font-size: 13px;
-  line-height: 22px;
+  line-height: 1.35;
   text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .wentian-profile-status[data-tone="error"] {

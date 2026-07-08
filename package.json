@@ -8,6 +8,7 @@
     "audit:en-mobile": "node scripts/audit-wentian-english-mobile.mjs",
     "inventory:en-mobile": "node scripts/inventory-wentian-english-mobile.mjs",
     "review:en-mobile": "node scripts/review-wentian-english-mobile.mjs",
+    "smoke:en-user-flows": "node scripts/smoke-wentian-english-user-flows.mjs",
     "geo:toutiao:install-file": "node scripts/install-toutiao-verification-file.mjs",
     "geo:toutiao:check-file": "node scripts/check-toutiao-verification-status.mjs",
     "articles:generate-en": "node scripts/generate-en-articles.mjs",

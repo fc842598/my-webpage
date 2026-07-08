@@ -201,7 +201,7 @@ ${gateRows}
 ## Evidence Limits
 
 - This proves current English mobile rendering, screenshots, copy residue, overlap, image blocking, and basic function entrances.
-- Real paid payment completion, real logged-in account sync, and long-form AI answer quality still need dedicated live-flow checks before the full goal can be marked complete.
+- Dedicated user-flow smoke covers mock payment completion, logged-in profile sync, and long-form English persona answers. Real external payment-provider charging remains out of scope for automated smoke tests.
 `;
 }
 

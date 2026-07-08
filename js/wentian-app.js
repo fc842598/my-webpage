@@ -12788,52 +12788,73 @@ function sourceMembershipScreenPreview() {
 }
 
 function sourcePaymentScreen() {
+  const isEn = isWentianEnglishUi();
   const isAipayResource = wentianPaymentState.payMethod === "aipay-resource";
-  const rawMessage = wentianPaymentState.error || wentianPaymentState.message || "付费版 100次/天，按日刷新";
+  const rawMessage = wentianPaymentState.error || wentianPaymentState.message || (isEn ? "Paid plan: 100/day, resets daily." : "付费版 100次/天，按日刷新");
   const alipayPermissionIssue = /接口调用权限不足|insufficient-isv-permissions|open\.alipay\.com\/api\/lowCheck|lowCheck/i.test(`${rawMessage} ${wentianPaymentState.payUrl || ""}`);
   const stateText = wentianPaymentState.status === "paid"
-    ? "支付成功"
+    ? (isEn ? "Paid" : "支付成功")
     : wentianPaymentState.status === "error"
-      ? "支付异常"
+      ? (isEn ? "Issue" : "支付异常")
       : wentianPaymentState.status === "loading"
-        ? "创建订单"
-        : "确认订单";
-  const stateLabel = isAipayResource ? "AI收入口" : stateText;
+        ? (isEn ? "Creating" : "创建订单")
+        : (isEn ? "Confirm" : "确认订单");
+  const stateLabel = isAipayResource ? (isEn ? "AI Pay" : "AI收入口") : stateText;
   const payUrl = wentianPaymentState.payUrl || "";
   const showQr = payUrl && !alipayPermissionIssue && !isAipayResource && !["h5", "redirect"].includes(wentianPaymentState.payMethod) && !wentianPaymentState.mockMode;
   const showOpen = payUrl && !alipayPermissionIssue && (isAipayResource || ["h5", "redirect"].includes(wentianPaymentState.payMethod)) && !wentianPaymentState.mockMode;
-  const message = alipayPermissionIssue
-    ? "支付宝扫码权限异常，请先改用微信支付，或联系管理员检查支付宝当面付配置。"
-    : rawMessage.replace(/https?:\/\/\S+/gi, "支付链接");
+  const message = isEn
+    ? (wentianPaymentState.status === "paid"
+      ? "Paid plan is active. Your quota has been refreshed."
+      : wentianPaymentState.status === "loading"
+        ? "Creating your payment order..."
+        : wentianPaymentState.mockMode
+          ? "Test payment mode is active. Use the mock completion button below."
+          : alipayPermissionIssue
+            ? "Alipay scan permission is unavailable. Please use WeChat Pay or contact support."
+            : String(rawMessage || "Paid plan: 100/day, resets daily.").replace(/https?:\/\/\S+/gi, "payment link"))
+    : (alipayPermissionIssue
+      ? "支付宝扫码权限异常，请先改用微信支付，或联系管理员检查支付宝当面付配置。"
+      : rawMessage.replace(/https?:\/\/\S+/gi, "支付链接"));
   const orderCardHeight = showQr ? 376 : (alipayPermissionIssue ? 218 : 190);
   const amountText = formatWentianPaymentAmount(wentianPaymentState.amountYuan || "19.90", wentianPaymentState.currency || "CNY");
   const payButtonAction = isAipayResource ? "back" : (wentianPaymentState.status === "paid" ? "wentian-pay-done" : (wentianPaymentState.status === "idle" || wentianPaymentState.status === "error" ? "wentian-member-pay" : "wentian-payment-check"));
-  const payButtonText = isAipayResource ? "返回" : (wentianPaymentState.status === "paid" ? "已开通，返回我的" : (wentianPaymentState.status === "pending" ? "刷新支付状态" : `确认支付 ${amountText}`));
+  const payButtonText = isAipayResource
+    ? (isEn ? "Back" : "返回")
+    : (wentianPaymentState.status === "paid"
+      ? (isEn ? "Active. Return to Me" : "已开通，返回我的")
+      : (wentianPaymentState.status === "pending"
+        ? (isEn ? "Refresh Payment Status" : "刷新支付状态")
+        : (isEn ? `Pay ${amountText}` : `确认支付 ${amountText}`)));
   const payButtonX = showQr ? 204 : 42;
   const payButtonWidth = showQr ? 144 : 306;
   const payButtonY = showQr ? 690 : 666;
   const payTextY = payButtonY + 15;
   const safeTextY = showQr ? 744 : 728;
-  const safeText = isAipayResource ? "AI收为智能体 402 付费资源，不是网页扫码支付" : `${getWentianPaymentProviderLabel()}完成后付费额度自动刷新`;
+  const safeText = isAipayResource
+    ? (isEn ? "AI Pay is a 402 resource endpoint, not an in-page QR checkout." : "AI收为智能体 402 付费资源，不是网页扫码支付")
+    : (isEn ? "Payment details are encrypted by the provider." : `${getWentianPaymentProviderLabel()}完成后付费额度自动刷新`);
+  const showMockComplete = wentianPaymentState.mockMode && wentianPaymentState.status !== "paid";
+  const showPrimaryPay = !showMockComplete;
   return `
     ${figBox("wt30-bg", 0, 0, 390, 844, "", "background:linear-gradient(180deg,#fffdf8 0%,#fbf7ef 58%,#f3eadc 100%);")}
     ${wentianBackPill("wt30", 18, 42, 'data-action="wentian-return-previous" data-fallback-route="screen-29" aria-label="返回"')}
-    ${figText("wt30-page-title", "套餐支付", 0, 54, 390, 22, "#201812", 900, "center")}
+    ${figText("wt30-page-title", isEn ? "Plan Payment" : "套餐支付", 0, 54, 390, 22, "#201812", 900, "center")}
     ${figBox("wt30-status-pill", 286, 48, 74, 30, "", "border-radius:15px;background:#f4ead8;border:1px solid #eadbc2;")}
     ${figText("wt30-status-text", stateLabel, 286, 56, 74, 12, "#9a6f22", 800, "center")}
 
     ${figBox("wt30-hero", 24, 108, 342, 128, "", "border-radius:20px;background:linear-gradient(135deg,#b54c3a 0%,#8e3429 100%);box-shadow:0 16px 34px rgba(131,56,39,.18);")}
     ${figText("wt30-hero-label", WENTIAN_PAID_PRODUCT_NAME, 46, 132, 150, 13, "#f7e6cf", 700)}
-    ${figText("wt30-hero-title", "100次/天", 46, 164, 180, 24, "#fffaf3", 900)}
-    ${figText("wt30-hero-sub", "按日刷新，不设月额度", 46, 202, 230, 13, "#f2d8bd", 700)}
+    ${figText("wt30-hero-title", isEn ? "100/day" : "100次/天", 46, 164, 180, 24, "#fffaf3", 900)}
+    ${figText("wt30-hero-sub", isEn ? "Resets daily, no monthly quota" : "按日刷新，不设月额度", 46, 202, 230, 13, "#f2d8bd", 700)}
     ${figText("wt30-hero-price", amountText, 238, 154, 104, 26, "#fffaf3", 900, "right")}
 
     ${figBox("wt30-order-card", 24, 270, 342, orderCardHeight, "", "border:1px solid #eadfce;border-radius:18px;background:#fffdf8;box-shadow:0 10px 24px rgba(70,45,25,.08);")}
-    ${figText("wt30-order-product-label", "商品", 44, 302, 80, 13, "#8d8377", 600)}
+    ${figText("wt30-order-product-label", isEn ? "Product" : "商品", 44, 302, 80, 13, "#8d8377", 600)}
     ${figText("wt30-order-product", escapeHtml(wentianPaymentState.productName || WENTIAN_PAID_PRODUCT_NAME), 164, 302, 160, 13, "#2b251f", 800, "right")}
     ${figLine("wt30-order-line-1", 44, 334, 302, "#efe4d3")}
-    ${figText("wt30-order-no-label", "订单号", 44, 358, 80, 13, "#8d8377", 600)}
-    ${figText("wt30-order-no", escapeHtml(wentianPaymentState.orderNo || "待创建"), 132, 358, 190, 13, "#2b251f", 800, "right")}
+    ${figText("wt30-order-no-label", isEn ? "Order No." : "订单号", 44, 358, 80, 13, "#8d8377", 600)}
+    ${figText("wt30-order-no", escapeHtml(wentianPaymentState.orderNo || (isEn ? "Pending" : "待创建")), 132, 358, 190, 13, "#2b251f", 800, "right")}
     ${figLine("wt30-order-line-2", 44, 390, 302, "#efe4d3")}
     ${figText("wt30-order-tip", escapeHtml(message), 44, 416, 282, 14, wentianPaymentState.error ? "#a64032" : "#756d63", 700, "left", "line-height:1.5;")}
     ${showQr ? `<div id="wentian-pay-qr" class="wentian-pay-qr" data-pay-url="${escapeHtml(payUrl)}" style="left:109px;top:448px;width:172px;height:172px"></div>` : ""}
@@ -12845,12 +12866,12 @@ function sourcePaymentScreen() {
     ${showOpen ? figBox("wt30-open", 42, 650, 306, 50, "", "border-radius:25px;background:#16783d;box-shadow:0 12px 24px rgba(22,120,61,.18);") : ""}
     ${showOpen ? figButton("wt30-open-hit", 42, 650, 306, 50, 'data-action="wentian-pay-open"') : ""}
     ${showOpen ? figText("wt30-open-text", isAipayResource ? "复制AI收服务地址" : `打开${getWentianPaymentProviderLabel()}`, 42, 665, 306, 14, "#fff", 900, "center") : ""}
-    ${wentianPaymentState.mockMode ? figBox("wt30-mock", 42, 650, 306, 50, "", "border-radius:25px;background:#16783d;box-shadow:0 12px 24px rgba(22,120,61,.18);") : ""}
-    ${wentianPaymentState.mockMode ? figButton("wt30-mock-hit", 42, 650, 306, 50, 'data-action="wentian-pay-mock-success"') : ""}
-    ${wentianPaymentState.mockMode ? figText("wt30-mock-text", "模拟支付成功", 42, 665, 306, 14, "#fff", 900, "center") : ""}
-    ${figBox("wt30-pay", payButtonX, payButtonY, payButtonWidth, 50, "", `border-radius:25px;background:${wentianPaymentState.status === "paid" ? "#7a9a4b" : "linear-gradient(180deg,#b74e39,#983323)"};box-shadow:0 14px 28px rgba(158,61,43,.18);`)}
-    ${figButton("wt30-pay-hit", payButtonX, payButtonY, payButtonWidth, 50, `data-action="${payButtonAction}"`)}
-    ${figText("wt30-pay-text", payButtonText, payButtonX, payTextY, payButtonWidth, 14, "#fffaf3", 900, "center")}
+    ${showMockComplete ? figBox("wt30-mock", 42, 650, 306, 50, "", "border-radius:25px;background:#16783d;box-shadow:0 12px 24px rgba(22,120,61,.18);") : ""}
+    ${showMockComplete ? figButton("wt30-mock-hit", 42, 650, 306, 50, 'data-action="wentian-pay-mock-success"') : ""}
+    ${showMockComplete ? figText("wt30-mock-text", isEn ? "Complete Mock Payment" : "模拟支付成功", 42, 665, 306, 14, "#fff", 900, "center") : ""}
+    ${showPrimaryPay ? figBox("wt30-pay", payButtonX, payButtonY, payButtonWidth, 50, "", `border-radius:25px;background:${wentianPaymentState.status === "paid" ? "#7a9a4b" : "linear-gradient(180deg,#b74e39,#983323)"};box-shadow:0 14px 28px rgba(158,61,43,.18);`) : ""}
+    ${showPrimaryPay ? figButton("wt30-pay-hit", payButtonX, payButtonY, payButtonWidth, 50, `data-action="${payButtonAction}"`) : ""}
+    ${showPrimaryPay ? figText("wt30-pay-text", payButtonText, payButtonX, payTextY, payButtonWidth, 14, "#fffaf3", 900, "center") : ""}
     ${figText("wt30-safe", safeText, 0, safeTextY, 390, 11, "#a49b91", 600, "center", "line-height:1;")}
   `;
 }
@@ -13026,35 +13047,42 @@ function sourceMineScreenV2(screen) {
 function sourceBasicInfoScreen() {
   const profile = getWentianProfile();
   const account = getWentianAuthDisplay();
+  const isEn = isWentianEnglishUi();
+  const accountSub = account.loggedIn
+    ? (isEn ? "Save locally first, then sync to your account." : "先保存本机，再手动同步到账号")
+    : (isEn ? "Guest mode. This page saves only on this device." : "未登录，本页只保存本机资料");
+  const profileTip = account.loggedIn
+    ? (isEn ? "After syncing, this profile follows your account on another device." : "保存只写本机；点同步到账号后，换设备登录才会带出资料。")
+    : (isEn ? "Local data stays in this browser only." : "未登录时只保存在当前浏览器；换设备、清缓存后不会自动带出。");
   return `
     ${figBox("source-39-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
-    ${wentianBackPill("source-39", 18, 42, 'data-action="wentian-return-previous" data-fallback-route="screen-38" aria-label="返回"')}
-    ${figText("source-39-title", "基本信息", 0, 54, 390, 22, "#1f1d1a", 900, "center")}
+    ${wentianBackPill("source-39", 18, 42, `data-action="wentian-return-previous" data-fallback-route="screen-38" aria-label="${isEn ? "Back" : "返回"}"`)}
+    ${figText("source-39-title", isEn ? "Profile" : "基本信息", 0, 54, 390, 22, "#1f1d1a", 900, "center")}
     ${figBox("source-39-account", 22, 112, 346, 98, "", "border:1px solid #e2d8c8;border-radius:18px;background:#fff;box-shadow:0 8px 18px rgba(74,55,32,.07);")}
     ${figBox("source-39-avatar", 42, 134, 54, 54, "", "border-radius:27px;background:#b88c33;")}
     ${figText("source-39-avatar-text", escapeHtml(account.initial), 42, 147, 54, 24, "#fff", 900, "center")}
     ${figText("source-39-account-name", escapeHtml(account.name), 114, 134, 182, 17, "#201812", 900)}
-    ${figText("source-39-account-sub", account.loggedIn ? "先保存本机，再手动同步到账号" : "未登录，本页只保存本机资料", 114, 162, 210, 12, "#8f857a", 700, "left", "line-height:1.35;")}
+    ${figText("source-39-account-sub", accountSub, 114, 162, 210, 12, "#8f857a", 700, "left", "line-height:1.35;")}
 
     ${figBox("source-39-card", 22, 242, 346, 276, "", "border:1px solid #e2d8c8;border-radius:18px;background:#fff;box-shadow:0 6px 16px rgba(74,55,32,.06);")}
-    ${figText("source-39-name-label", "昵称", 42, 274, 78, 16, "#5f5a52", 800)}
-    <input id="wentian-profile-nickname" class="wentian-profile-input" style="left:132px;top:258px;width:214px" value="${escapeHtml(profile.nickname)}" placeholder="请输入昵称" autocomplete="name">
+    ${figText("source-39-name-label", isEn ? "Nickname" : "昵称", 42, 274, 78, 16, "#5f5a52", 800)}
+    <input id="wentian-profile-nickname" class="wentian-profile-input" style="left:132px;top:258px;width:214px" value="${escapeHtml(profile.nickname)}" placeholder="${isEn ? "Enter nickname" : "请输入昵称"}" autocomplete="name">
     ${figLine("source-39-line-1", 42, 323, 304, "#e6ded2")}
-    ${figText("source-39-email-label", "邮箱", 42, 356, 78, 16, "#5f5a52", 800)}
-    <input id="wentian-profile-email" class="wentian-profile-input" type="email" style="left:132px;top:340px;width:214px" value="${escapeHtml(profile.email)}" placeholder="请输入邮箱" autocomplete="email">
+    ${figText("source-39-email-label", isEn ? "Email" : "邮箱", 42, 356, 78, 16, "#5f5a52", 800)}
+    <input id="wentian-profile-email" class="wentian-profile-input" type="email" style="left:132px;top:340px;width:214px" value="${escapeHtml(profile.email)}" placeholder="${isEn ? "Enter email" : "请输入邮箱"}" autocomplete="email">
     ${figLine("source-39-line-2", 42, 405, 304, "#e6ded2")}
-    ${figText("source-39-phone-label", "手机号", 42, 438, 78, 16, "#5f5a52", 800)}
-    <input id="wentian-profile-phone" class="wentian-profile-input" inputmode="tel" style="left:132px;top:422px;width:214px" value="${escapeHtml(profile.phone)}" placeholder="绑定手机号" autocomplete="tel">
+    ${figText("source-39-phone-label", isEn ? "Phone" : "手机号", 42, 438, 78, 16, "#5f5a52", 800)}
+    <input id="wentian-profile-phone" class="wentian-profile-input" inputmode="tel" style="left:132px;top:422px;width:214px" value="${escapeHtml(profile.phone)}" placeholder="${isEn ? "Phone number" : "绑定手机号"}" autocomplete="tel">
 
-    ${figText("source-39-tip", account.loggedIn ? "保存只写本机；点同步到账号后，换设备登录才会带出资料。" : "未登录时只保存在当前浏览器；换设备、清缓存后不会自动带出。", 42, 548, 306, 13, "#9b9287", 700, "left", "line-height:1.45;")}
+    ${figText("source-39-tip", profileTip, 42, 548, 306, 13, "#9b9287", 700, "left", "line-height:1.45;")}
     <div id="wentian-profile-status" class="wentian-profile-status"></div>
     ${figBox("source-39-save", 36, account.loggedIn ? 660 : 696, 318, 52, "", "border-radius:26px;background:#c09a49;box-shadow:0 8px 18px rgba(130,91,31,.12);")}
     ${figButton("source-39-save-hit", 36, account.loggedIn ? 660 : 696, 318, 52, 'data-action="wentian-profile-save"')}
-    ${figText("source-39-save-text", "保存到本机", 36, account.loggedIn ? 675 : 711, 318, 15, "#fff", 900, "center")}
+    ${figText("source-39-save-text", isEn ? "Save Locally" : "保存到本机", 36, account.loggedIn ? 675 : 711, 318, 15, "#fff", 900, "center")}
     ${account.loggedIn ? `
       ${figBox("source-39-sync", 36, 728, 318, 52, "", "border-radius:26px;background:#25211d;box-shadow:0 8px 18px rgba(42,33,22,.12);")}
       ${figButton("source-39-sync-hit", 36, 728, 318, 52, 'data-action="wentian-profile-sync"')}
-      ${figText("source-39-sync-text", "同步到账号", 36, 743, 318, 15, "#fffaf3", 900, "center")}
+      ${figText("source-39-sync-text", isEn ? "Sync to Account" : "同步到账号", 36, 743, 318, 15, "#fffaf3", 900, "center")}
     ` : ""}
   `;
 }
