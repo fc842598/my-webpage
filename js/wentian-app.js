@@ -12811,6 +12811,9 @@ function sourcePaymentScreen() {
   const payButtonText = isAipayResource ? "返回" : (wentianPaymentState.status === "paid" ? "已开通，返回我的" : (wentianPaymentState.status === "pending" ? "刷新支付状态" : `确认支付 ${amountText}`));
   const payButtonX = showQr ? 204 : 42;
   const payButtonWidth = showQr ? 144 : 306;
+  const payButtonY = showQr ? 690 : 666;
+  const payTextY = payButtonY + 15;
+  const safeTextY = showQr ? 744 : 728;
   const safeText = isAipayResource ? "AI收为智能体 402 付费资源，不是网页扫码支付" : `${getWentianPaymentProviderLabel()}完成后付费额度自动刷新`;
   return `
     ${figBox("wt30-bg", 0, 0, 390, 844, "", "background:linear-gradient(180deg,#fffdf8 0%,#fbf7ef 58%,#f3eadc 100%);")}
@@ -12845,10 +12848,10 @@ function sourcePaymentScreen() {
     ${wentianPaymentState.mockMode ? figBox("wt30-mock", 42, 650, 306, 50, "", "border-radius:25px;background:#16783d;box-shadow:0 12px 24px rgba(22,120,61,.18);") : ""}
     ${wentianPaymentState.mockMode ? figButton("wt30-mock-hit", 42, 650, 306, 50, 'data-action="wentian-pay-mock-success"') : ""}
     ${wentianPaymentState.mockMode ? figText("wt30-mock-text", "模拟支付成功", 42, 665, 306, 14, "#fff", 900, "center") : ""}
-    ${figBox("wt30-pay", payButtonX, 690, payButtonWidth, 50, "", `border-radius:25px;background:${wentianPaymentState.status === "paid" ? "#7a9a4b" : "linear-gradient(180deg,#b74e39,#983323)"};box-shadow:0 14px 28px rgba(158,61,43,.18);`)}
-    ${figButton("wt30-pay-hit", payButtonX, 690, payButtonWidth, 50, `data-action="${payButtonAction}"`)}
-    ${figText("wt30-pay-text", payButtonText, payButtonX, 705, payButtonWidth, 14, "#fffaf3", 900, "center")}
-    ${figText("wt30-safe", safeText, 0, 744, 390, 11, "#a49b91", 600, "center", "line-height:1;")}
+    ${figBox("wt30-pay", payButtonX, payButtonY, payButtonWidth, 50, "", `border-radius:25px;background:${wentianPaymentState.status === "paid" ? "#7a9a4b" : "linear-gradient(180deg,#b74e39,#983323)"};box-shadow:0 14px 28px rgba(158,61,43,.18);`)}
+    ${figButton("wt30-pay-hit", payButtonX, payButtonY, payButtonWidth, 50, `data-action="${payButtonAction}"`)}
+    ${figText("wt30-pay-text", payButtonText, payButtonX, payTextY, payButtonWidth, 14, "#fffaf3", 900, "center")}
+    ${figText("wt30-safe", safeText, 0, safeTextY, 390, 11, "#a49b91", 600, "center", "line-height:1;")}
   `;
 }
 

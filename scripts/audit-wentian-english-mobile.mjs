@@ -177,7 +177,7 @@ Generated: ${meta.generatedAt}
 
 Scope: YuetianAI mobile app, English mode, ${meta.viewport.width}x${meta.viewport.height}.
 
-Gate: no text overlap, no label overlap, no image/text obstruction, no mobile overflow, no console errors.
+Gate: no text overlap, no label overlap, no image/text obstruction, no bottom-nav crowding, no mobile overflow, no console errors.
 
 | Status | Screen | English Page | Findings |
 | --- | --- | --- | --- |
@@ -366,6 +366,11 @@ async function auditScreen(page, baseUrl, screen, options) {
         };
       });
 
+    const bottomNavRects = Array.from(phone.querySelectorAll('[data-node-id="source-bottom-bg"],[data-node-id="converted-bottom-bg"],[data-node-id="bottom-bg"]'))
+      .filter(isVisible)
+      .map(rectFor);
+    const bottomNavTop = bottomNavRects.length ? Math.min(...bottomNavRects.map((rect) => rect.top)) : null;
+
     const intersect = (a, b) => {
       const left = Math.max(a.left, b.left);
       const top = Math.max(a.top, b.top);
@@ -486,6 +491,22 @@ async function auditScreen(page, baseUrl, screen, options) {
       }
     }
 
+    if (bottomNavTop) {
+      for (const node of nodes) {
+        if (/^source-bottom-|^converted-bottom-|^bottom-/.test(String(node.node || ""))) continue;
+        const distance = bottomNavTop - node.rect.bottom;
+        if (distance >= 0 && distance < 8) {
+          issues.push({
+            type: "bottomNavProximity",
+            node: node.node,
+            text: node.text,
+            distance: Math.round(distance),
+            rect: node.relative,
+          });
+        }
+      }
+    }
+
     const html = document.documentElement;
     const body = document.body;
     const horizontalOverflow = Math.max(html.scrollWidth, body.scrollWidth) - window.innerWidth;
@@ -512,6 +533,7 @@ async function auditScreen(page, baseUrl, screen, options) {
     textOverlap: audit.issues.filter((issue) => issue.type === "textOverlap").length,
     labelOverlap: audit.issues.filter((issue) => issue.type === "labelOverlap").length,
     imageTextOverlap: audit.issues.filter((issue) => issue.type === "imageTextOverlap").length,
+    bottomNavProximity: audit.issues.filter((issue) => issue.type === "bottomNavProximity").length,
     textOverflow: audit.issues.filter((issue) => issue.type === "textOverflow").length,
     obscuredText: audit.issues.filter((issue) => issue.type === "obscuredText").length,
     consoleErrors: consoleMessages.length,

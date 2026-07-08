@@ -387,6 +387,7 @@ ${residueRows || "| None | None | No visible Chinese or garbled text sampled by 
 - Text overlap: current automated pass.
 - Label overlap: current automated pass.
 - Image/text obstruction: current automated pass.
+- Bottom-nav crowding: current automated pass.
 - Mobile horizontal overflow: current automated pass.
 - Remaining high-risk manual gates: paid payment completion, real account login states, and long-form AI answer quality should continue to be checked with real-user flows, not only static screen inventory.
 `;
