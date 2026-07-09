@@ -11648,9 +11648,12 @@ function formatWentianQuotaTextForUi(value, isEn = isWentianEnglishUi()) {
   if (!isEn) return raw;
   if (!raw || raw === "同步中") return "Syncing";
   return raw
+    .replace(/测试不限/g, "Test unlimited")
+    .replace(/今日已满/g, "No uses left")
+    .replace(/今日剩余\s*/g, "")
+    .replace(/每日额度\s*/g, "")
     .replace(/次\s*\/\s*天/g, "/day")
-    .replace(/每日额度\s*/g, "Daily limit ")
-    .replace(/今日剩余\s*/g, "Today ");
+    .trim();
 }
 
 function getWentianPaymentProviders() {
