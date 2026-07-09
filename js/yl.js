@@ -3,8 +3,9 @@
 
   var STORAGE_KEY = "yuetian-health-assessment-v1";
   var CLIENT_ID_KEY = "yuetian-health-client-id-v1";
+  var GUEST_ASK_LIMIT = 3;
   var FREE_ASK_LIMIT = 8;
-  var MEMBER_ASK_LIMIT = 80;
+  var MEMBER_ASK_LIMIT = 100;
   var AUTH_SESSION_KEY = "wentian-app-auth-session-v1";
   var HEALTH_PRODUCT_KEY = "monthly_member";
   var HEALTH_PRODUCT_NAME = "阅天综合会员";
@@ -338,12 +339,15 @@
 
   function updateAskQuota() {
     var quota = state.quota || {};
+    var hasSession = !!readAuthSession();
     var isMember = isHealthMember() || quota.isMember || quota.plan === "member";
-    var limit = Number(quota.dailyLimit || quota.limit || (isMember ? MEMBER_ASK_LIMIT : FREE_ASK_LIMIT));
+    var isGuest = quota.plan === "guest" || (!hasSession && !quota.plan && !quota.dailyLimit && !quota.limit);
+    var fallbackLimit = isMember ? MEMBER_ASK_LIMIT : (isGuest ? GUEST_ASK_LIMIT : FREE_ASK_LIMIT);
+    var limit = Number(quota.dailyLimit || quota.limit || fallbackLimit);
     var remaining = quota.dailyRemaining ?? quota.remaining;
-    var label = isMember ? "会员 " + limit + "条/天" : "免费 " + limit + "条/天";
+    var label = isMember ? "会员 " + limit + "条/天" : (isGuest ? "体验 " + limit + "条/天" : "免费 " + limit + "条/天");
     if (typeof remaining === "number") label += " · 剩余 " + Math.max(0, remaining);
-    if (!isMember && typeof remaining === "number" && remaining <= 0) label = "开通会员 80条/天";
+    if (!isMember && typeof remaining === "number" && remaining <= 0) label = "开通会员 " + MEMBER_ASK_LIMIT + "条/天";
 
     ["#ylAskQuota", "#ylAskQuotaPreview"].forEach(function (selector) {
       var el = $(selector);
@@ -399,6 +403,14 @@
     return items.map(function (item) { return item.label; }).join("、");
   }
 
+  function cleanChatText(value) {
+    return String(value || "")
+      .replace(/\*\*(.*?)\*\*/g, "$1")
+      .replace(/^\s*[-*]\s+/gm, "")
+      .replace(/\n{3,}/g, "\n\n")
+      .trim();
+  }
+
   function renderProgress() {
     var count = selectedCount();
     var percent = Math.round((count / categories.length) * 100);
@@ -415,8 +427,11 @@
     var miniQuota = $("#ylMiniQuota");
     if (miniQuota) {
       var quota = state.quota || {};
+      var hasSession = !!readAuthSession();
       var isMember = isHealthMember() || quota.isMember || quota.plan === "member";
-      var limit = Number(quota.dailyLimit || quota.limit || (isMember ? MEMBER_ASK_LIMIT : FREE_ASK_LIMIT));
+      var isGuest = quota.plan === "guest" || (!hasSession && !quota.plan && !quota.dailyLimit && !quota.limit);
+      var fallbackLimit = isMember ? MEMBER_ASK_LIMIT : (isGuest ? GUEST_ASK_LIMIT : FREE_ASK_LIMIT);
+      var limit = Number(quota.dailyLimit || quota.limit || fallbackLimit);
       var remaining = quota.dailyRemaining ?? quota.remaining;
       miniQuota.textContent = typeof remaining === "number"
         ? "追问额度：" + Math.max(0, remaining) + "/" + limit + "条"
@@ -652,15 +667,17 @@
     var report = state.report || calculateReport();
     var primary = typeMeta[report.primary];
 
-    $("#ylChatTitle").textContent = "围绕" + primary.name + "继续追问";
+    var title = $("#ylChatTitle");
+    if (title) title.textContent = "健康追问";
+    var contextType = $("#ylChatContextType");
+    if (contextType) contextType.textContent = "已读取：" + primary.name + " · 8类自评";
 
     updateAskQuota();
     suggestions.innerHTML = "";
     [
-      "睡眠先调什么？",
-      "脾胃怎么看？",
-      "冷热说明什么？",
-      "每天复盘什么？"
+      "睡眠怎么调？",
+      "脾胃怎么养？",
+      "每天看什么？"
     ].forEach(function (text) {
       var button = document.createElement("button");
       button.type = "button";
@@ -678,15 +695,17 @@
     log.innerHTML = "";
     if (!state.chatMessages.length) {
       var bubble = document.createElement("div");
-      bubble.className = "yl-message is-ai";
-      bubble.textContent = "我会基于这份报告回答。可以问睡眠、脾胃、情绪、腰腿、冷热。";
+      var report = state.report || calculateReport();
+      var primary = typeMeta[report.primary] || typeMeta.balanced;
+      bubble.className = "yl-message is-ai is-intro";
+      bubble.textContent = "已读取你的体质自评：" + primary.name + "，健康值 " + report.healthScore + "分。你可以直接问睡眠、脾胃、冷热或情绪。";
       log.appendChild(bubble);
       return;
     }
     state.chatMessages.slice(-20).forEach(function (message) {
       var bubble = document.createElement("div");
       bubble.className = "yl-message " + (message.role === "user" ? "is-user" : "is-ai");
-      bubble.textContent = message.content || "";
+      bubble.textContent = cleanChatText(message.content);
       log.appendChild(bubble);
     });
     log.scrollTop = log.scrollHeight;
@@ -695,7 +714,7 @@
   function appendChatMessage(role, content) {
     state.chatMessages.push({
       role: role,
-      content: String(content || "").trim(),
+      content: cleanChatText(content),
       ts: Date.now()
     });
     state.chatMessages = state.chatMessages.filter(function (item) {
@@ -753,7 +772,7 @@
       if (state.quota && typeof state.quota.dailyUsed === "number") state.askCount = state.quota.dailyUsed;
       appendChatMessage("assistant", data.reply || buildAnswer(text, primary));
       if (data.quotaExceeded) {
-        setPayHint("免费追问已用完，可开通阅天综合会员提升到 80条/天。");
+        setPayHint("免费追问已用完，可开通阅天综合会员提升到 " + MEMBER_ASK_LIMIT + "条/天。");
       }
     } catch (error) {
       appendChatMessage("assistant", "健康模型暂时没有连上，请稍后再试。你也可以先把问题具体到睡眠、脾胃、情绪或手脚冷热其中一项。");
