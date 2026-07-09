@@ -908,6 +908,10 @@ input:focus-visible {
   padding: 0;
 }
 
+.yl-chat-context {
+  display: none !important;
+}
+
 .yl-wechat-shell {
   display: grid;
   grid-template-rows: auto auto minmax(420px, 1fr) auto auto auto;
