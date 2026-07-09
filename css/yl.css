@@ -1252,6 +1252,87 @@ input:focus-visible {
   grid-column: 2;
 }
 
+.yl-health-auth {
+  grid-column: 1 / -1;
+  display: grid;
+  gap: 12px;
+  border: 1px solid rgba(71, 127, 89, 0.22);
+  border-radius: 18px;
+  background: #fffdf8;
+  padding: 16px;
+}
+
+.yl-health-auth[hidden] {
+  display: none;
+}
+
+.yl-health-auth-head {
+  display: grid;
+  gap: 4px;
+  text-align: center;
+}
+
+.yl-health-auth-head strong {
+  color: var(--yl-green-dark);
+  font-size: 18px;
+}
+
+.yl-health-auth-head p,
+.yl-health-auth-status {
+  margin: 0;
+  color: var(--yl-muted);
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.yl-health-auth label {
+  display: grid;
+  gap: 6px;
+  color: var(--yl-muted);
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.yl-health-auth input {
+  width: 100%;
+  min-height: 44px;
+  border: 1px solid var(--yl-line);
+  border-radius: 12px;
+  background: var(--yl-paper);
+  color: var(--yl-ink);
+  font-size: 15px;
+  padding: 0 12px;
+}
+
+.yl-health-auth input:focus {
+  border-color: var(--yl-green);
+  outline: 2px solid rgba(71, 127, 89, 0.16);
+}
+
+.yl-health-auth-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.yl-health-auth-actions .yl-btn {
+  min-height: 42px;
+}
+
+.yl-health-auth-status {
+  min-height: 20px;
+  text-align: center;
+}
+
+.yl-health-auth-status[data-tone="error"] {
+  color: #9f3d2e;
+}
+
+.yl-health-auth-status[data-tone="ok"] {
+  color: var(--yl-green-dark);
+  font-weight: 900;
+}
+
 .yl-payment-panel {
   grid-column: 1 / -1;
   display: grid;

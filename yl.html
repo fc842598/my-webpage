@@ -15,9 +15,9 @@
   <meta property="og:image" content="https://yuetianai.com/images/health/constitution-report-hero-v8.png">
   <meta name="theme-color" content="#f7f0e5">
   <link rel="icon" href="/images/wentian-prototype-assets/wentian-brand-logo-ai-gold-v1.webp" type="image/webp">
-  <link rel="stylesheet" href="/css/yl.css?v=20260709-health-context-cleanup-v1">
+  <link rel="stylesheet" href="/css/yl.css?v=20260709-health-inline-pay-v1">
   <script defer src="/vendor/qrcodejs/qrcode.min.js"></script>
-  <script defer src="/js/yl.js?v=20260709-health-login-copy-v1"></script>
+  <script defer src="/js/yl.js?v=20260709-health-inline-pay-v1"></script>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -259,6 +259,25 @@
           <button type="button" class="yl-pay-method" data-provider="paypal">PayPal</button>
         </div>
         <button class="yl-btn yl-btn-primary" type="button" id="ylOpenPayBtn">确认开通阅天综合会员 ¥19.90</button>
+        <form class="yl-health-auth" id="ylHealthAuthPanel" hidden>
+          <div class="yl-health-auth-head">
+            <strong>登录后开通综合会员</strong>
+            <p>权益绑定到当前账号，登录完成后本页继续支付。</p>
+          </div>
+          <label>
+            <span>手机号或邮箱</span>
+            <input id="ylHealthAuthAccount" type="text" inputmode="email" autocomplete="username" placeholder="请输入手机号或邮箱">
+          </label>
+          <label>
+            <span>密码</span>
+            <input id="ylHealthAuthPassword" type="password" autocomplete="current-password" placeholder="至少 6 位">
+          </label>
+          <div class="yl-health-auth-actions">
+            <button type="button" class="yl-btn yl-btn-primary" id="ylHealthLoginBtn">登录并支付</button>
+            <button type="button" class="yl-btn yl-btn-ghost" id="ylHealthRegisterBtn">注册并支付</button>
+          </div>
+          <p class="yl-health-auth-status" id="ylHealthAuthStatus"></p>
+        </form>
         <div class="yl-payment-panel" id="ylPaymentPanel" hidden>
           <div class="yl-payment-status" id="ylPaymentStatus">请选择支付方式后创建订单。</div>
           <div class="yl-payment-code" id="ylPaymentCode" hidden>

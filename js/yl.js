@@ -189,6 +189,12 @@
     product: null,
     message: ""
   };
+  var healthAuthState = {
+    loading: false,
+    panelOpen: false,
+    tone: "",
+    message: ""
+  };
 
   function $(selector) {
     return document.querySelector(selector);
@@ -251,6 +257,25 @@
     return session && session.access_token ? session.access_token : "";
   }
 
+  function saveHealthAuthSession(session) {
+    try {
+      if (session?.access_token && session?.refresh_token) {
+        localStorage.setItem(AUTH_SESSION_KEY, JSON.stringify(session));
+        return true;
+      }
+    } catch (_error) {}
+    return false;
+  }
+
+  function normalizeHealthAuthError(message) {
+    var text = String(message || "").trim();
+    if (!text) return "登录失败，请稍后再试";
+    if (/invalid login credentials|invalid credentials|wrong password|密码错误|密码有误/i.test(text)) {
+      return "密码有误，请重新输入";
+    }
+    return text;
+  }
+
   function getHealthApiBase() {
     try {
       var params = new URLSearchParams(window.location.search || "");
@@ -275,7 +300,7 @@
   async function apiFetch(path, options) {
     var opts = options || {};
     var headers = Object.assign({ "Content-Type": "application/json" }, opts.headers || {});
-    var token = getAuthToken();
+    var token = opts.noAuth ? "" : getAuthToken();
     if (token) headers.Authorization = "Bearer " + token;
     var url = /^https?:\/\//i.test(path) ? path : getHealthApiBase() + path;
     var response = await fetch(url, {
@@ -908,9 +933,106 @@
     if (mock) mock.hidden = !(paymentState.mockMode && paymentState.orderNo && paymentState.status !== "paid");
 
     renderPaymentQr();
+    renderHealthAuthPanel();
     if (paymentState.status === "paid") {
       setPayHint("已开通阅天综合会员，后续报告和追问额度会绑定到当前账号。");
       updateAskQuota();
+    }
+  }
+
+  function setHealthAuthStatus(message, tone) {
+    healthAuthState.message = message || "";
+    healthAuthState.tone = tone || "";
+    renderHealthAuthPanel();
+  }
+
+  function renderHealthAuthPanel() {
+    var panel = $("#ylHealthAuthPanel");
+    if (!panel) return;
+    panel.hidden = !healthAuthState.panelOpen || !!readAuthSession();
+    var status = $("#ylHealthAuthStatus");
+    if (status) {
+      status.textContent = healthAuthState.message || "";
+      status.dataset.tone = healthAuthState.tone || "";
+    }
+    ["#ylHealthLoginBtn", "#ylHealthRegisterBtn"].forEach(function (selector) {
+      var button = $(selector);
+      if (button) button.disabled = healthAuthState.loading;
+    });
+    var loginButton = $("#ylHealthLoginBtn");
+    if (loginButton) loginButton.textContent = healthAuthState.loading ? "处理中..." : "登录并支付";
+  }
+
+  function openHealthAuthPanel() {
+    healthAuthState.panelOpen = true;
+    paymentState.status = "login";
+    paymentState.message = "请先登录或注册阅天账号，随后本页继续支付。";
+    renderPayment();
+    window.setTimeout(function () {
+      var panel = $("#ylHealthAuthPanel");
+      if (panel) panel.scrollIntoView({ behavior: "smooth", block: "center" });
+      var input = $("#ylHealthAuthAccount");
+      if (input) input.focus({ preventScroll: true });
+    }, 30);
+  }
+
+  async function submitHealthAuth(mode) {
+    if (healthAuthState.loading) return;
+    var account = ($("#ylHealthAuthAccount")?.value || "").trim();
+    var password = $("#ylHealthAuthPassword")?.value || "";
+    var registering = mode === "register";
+    var usingEmail = /@/.test(account);
+    if (!account) {
+      setHealthAuthStatus(registering ? "注册请填写手机号" : "请输入手机号或邮箱", "error");
+      return;
+    }
+    if (registering && usingEmail) {
+      setHealthAuthStatus("注册请填写手机号；邮箱账号请直接登录。", "error");
+      return;
+    }
+    if (password.length < 6) {
+      setHealthAuthStatus("密码至少 6 位", "error");
+      return;
+    }
+
+    healthAuthState.loading = true;
+    setHealthAuthStatus(registering ? "正在注册并登录..." : "正在登录...", "");
+    try {
+      var data = null;
+      if (registering) {
+        data = await apiFetch("/api/auth/register-phone", {
+          method: "POST",
+          noAuth: true,
+          body: { phone: account, password: password }
+        }).catch(function (error) {
+          if (!/已注册|already|exists/i.test(error.message || "")) throw error;
+          return null;
+        });
+      }
+      if (!data?.session) {
+        data = await apiFetch("/api/auth/password-login", {
+          method: "POST",
+          noAuth: true,
+          body: { account: account, password: password }
+        });
+      }
+      if (!saveHealthAuthSession(data?.session)) throw new Error("登录状态保存失败");
+      healthAuthState.panelOpen = false;
+      healthAuthState.loading = false;
+      setHealthAuthStatus("登录成功，正在创建健康会员订单...", "ok");
+      paymentState.status = "";
+      paymentState.message = "登录成功，正在创建健康会员订单...";
+      await hydratePaymentProduct();
+      await startHealthPayment();
+    } catch (error) {
+      healthAuthState.loading = false;
+      setHealthAuthStatus(normalizeHealthAuthError(error.message), "error");
+      renderPayment();
+      var passwordInput = $("#ylHealthAuthPassword");
+      if (passwordInput) {
+        passwordInput.focus();
+        passwordInput.select?.();
+      }
     }
   }
 
@@ -945,19 +1067,7 @@
 
   function requireHealthLogin() {
     if (readAuthSession()) return true;
-    try {
-      localStorage.setItem("wentian-app-auth-return-v1", JSON.stringify({
-        source: "monthly_member",
-        after: "comprehensive-member-payment",
-        returnUrl: window.location.href.split("#")[0] + "#member",
-        title: "阅天综合会员",
-        ts: Date.now()
-      }));
-    } catch (_error) {}
-    paymentState.message = "请先登录阅天AI账号，再开通阅天综合会员。";
-    paymentState.status = "login";
-    renderPayment();
-    window.location.href = "/pages/wentian-app.html#screen-40";
+    openHealthAuthPanel();
     return false;
   }
 
@@ -1101,10 +1211,20 @@
     }, true);
     $("#ylRefreshPayBtn").addEventListener("click", refreshHealthPaymentStatus);
     $("#ylMockPayBtn").addEventListener("click", completeMockPayment);
+    $("#ylHealthLoginBtn").addEventListener("click", function () {
+      submitHealthAuth("login");
+    });
+    $("#ylHealthRegisterBtn").addEventListener("click", function () {
+      submitHealthAuth("register");
+    });
+    $("#ylHealthAuthPanel").addEventListener("submit", function (event) {
+      event.preventDefault();
+      submitHealthAuth("login");
+    });
     if (readAuthSession()) hydratePaymentProduct();
     else {
       renderPayment();
-      setPayHint("登录后可直接用当前账号开通阅天综合会员。");
+      setPayHint("可在本页登录并开通阅天综合会员。");
     }
   }
 
