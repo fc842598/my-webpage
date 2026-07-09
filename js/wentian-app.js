@@ -247,8 +247,72 @@ function figImage(id, src, x, y, w, h, style = "", attrs = "") {
   return `<img class="fig-img" data-node-id="${id}" src="${src}" alt="" ${attrs} style="left:${x}px;top:${y}px;width:${w}px;height:${h}px;${style}">`;
 }
 
-function figButton(id, x, y, w, h, attrs, className = "", style = "") {
-  return `<button class="fig-click ${className}" type="button" data-node-id="${id}" ${attrs} style="left:${x}px;top:${y}px;width:${w}px;height:${h}px;${style}"></button>`;
+function inferFigButtonAriaLabel(attrs = "") {
+  const attrText = String(attrs || "");
+  if (/\saria-label\s*=|\saria-labelledby\s*=/.test(attrText)) return "";
+  const route = attrText.match(/\bdata-route="([^"]+)"/)?.[1];
+  if (route) {
+    const screenNo = route.match(/^screen-(\d+)$/)?.[1];
+    const routeLabels = {
+      home: "首页",
+      archive: "档案",
+      ai: "AI阅天",
+      mine: "我的",
+      settings: "账户设置",
+      recharge: "阅天套餐",
+      pay: "支付",
+      report: "报告详情",
+      divine: "占问工具",
+    };
+    const label = screenNo ? (convertedByNo.get(Number(screenNo))?.title || `打开第${screenNo}屏`) : (routeLabels[route] || "打开页面");
+    return ` aria-label="${escapeHtml(label)}"`;
+  }
+  const action = attrText.match(/\bdata-action="([^"]+)"/)?.[1];
+  if (action) {
+    const actionLabels = {
+      back: "返回",
+      ask: "提问",
+      "wentian-login-open": "登录",
+      "wentian-member-pay": "开通付费版",
+      "wentian-pay-provider": "选择支付方式",
+      "wentian-pay-open": "打开支付",
+      "wentian-pay-mock-success": "模拟支付成功",
+      "wentian-order-refresh": "刷新支付记录",
+      "wentian-refund-ticket": "提交售后问题",
+      "wentian-auth-submit": "提交登录",
+      "wentian-google-login": "使用 Google 登录",
+      "wentian-auth-logout": "退出登录",
+      "wentian-auth-logout-open": "打开退出登录确认",
+      "wentian-auth-logout-cancel": "取消退出登录",
+      "wentian-password-save": "保存密码",
+      "wentian-profile-save": "保存资料",
+      "wentian-profile-sync": "同步资料",
+      "wentian-chart-submit": "开始排盘",
+      "wentian-chart-more-toggle": "命盘更多操作",
+      "wentian-chart-more-close": "收起命盘工具",
+      "wentian-chart-current-edit": "修改当前命盘资料",
+      "wentian-open-mingbook-onepage": "打开电脑端命盘报告",
+      "wentian-invite-refresh": "刷新邀请信息",
+      "wentian-invite-copy-code": "复制邀请码",
+      "wentian-invite-copy-link": "复制邀请链接",
+      "wentian-invite-share": "分享邀请",
+      "wentian-invite-bind": "绑定邀请码",
+      "yangzhai-open": "选择方位",
+      "yangzhai-analyze": "生成阳宅解读",
+      "yangzhai-autofill": "按顺序填入",
+      "yangzhai-reset": "重置阳宅方位",
+      "yangzhai-confirm": "确认方位成员",
+      "yangzhai-pick": "选择家庭成员",
+      "yangzhai-elder-age": "选择长辈年龄",
+    };
+    return ` aria-label="${escapeHtml(actionLabels[action] || "执行操作")}"`;
+  }
+  return ' aria-label="打开"';
+}
+
+function figButton(id, x, y, w, h, attrs = "", className = "", style = "") {
+  const mergedAttrs = `${String(attrs || "").trim()}${inferFigButtonAriaLabel(attrs)}`.trim();
+  return `<button class="fig-click ${className}" type="button" data-node-id="${id}" ${mergedAttrs} style="left:${x}px;top:${y}px;width:${w}px;height:${h}px;${style}"></button>`;
 }
 
 function wentianBackPill(id, x = 18, y = 44, attrs = 'data-action="back" aria-label="返回"', options = {}) {

@@ -423,8 +423,8 @@ function articlePage(article) {
     "inLanguage": "en",
     "articleSection": ${JSON.stringify(article.category)},
     "about": ["Zi Wei Dou Shu", "Chinese astrology chart", ${JSON.stringify(article.title)}],
-    "author": { "@type": "Organization", "name": "YuetianAI", "alternateName": "阅天AI" },
-    "publisher": { "@type": "Organization", "name": "YuetianAI", "alternateName": "阅天AI" },
+    "author": { "@type": "Organization", "name": "YuetianAI" },
+    "publisher": { "@type": "Organization", "name": "YuetianAI" },
     "mainEntityOfPage": "${slugUrl(article.slug)}"
   }
   </script>
@@ -444,7 +444,7 @@ function articlePage(article) {
   <header class="site-header">
     <div class="site-nav">
       <a class="brand" href="../../index.html" aria-label="YuetianAI home"><img src="../../images/wentian-prototype-assets/wentian-brand-logo-ai-gold-v1.webp" alt="" aria-hidden="true"><span>YuetianAI</span></a>
-      <nav class="nav-links" aria-label="Main navigation"><a href="../../index.html">Home</a><a href="./">Learn Zi Wei</a><a href="../${article.zh}">中文</a></nav>
+      <nav class="nav-links" aria-label="Main navigation"><a href="../../index.html">Home</a><a href="./">Learn Zi Wei</a><a href="../${article.zh}">Chinese</a></nav>
     </div>
   </header>
   <main class="article-shell article-detail">
@@ -471,7 +471,7 @@ function articlePage(article) {
         <h2>Contents</h2>${itemList}
         <a href="../../pages/mingbook-onepage.html" class="rail-cta">Open Chart Tool</a>
         <small>Chinese version</small>
-        <a href="../${article.zh}">中文阅读</a>
+        <a href="../${article.zh}">Read Chinese version</a>
       </aside>
     </div>
 
@@ -480,7 +480,7 @@ function articlePage(article) {
       <a href="${article.next}">Next article →</a>
     </div>
   </main>
-  <footer class="site-footer"><div class="container site-footer__legal"><a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener">粤ICP备2026055337号-1</a>　<span>© 2026 YuetianAI / 阅天AI. Powered By 阅天工作室</span></div></footer>
+  <footer class="site-footer"><div class="container site-footer__legal"><a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener">Yue ICP 2026055337-1</a>　<span>© 2026 YuetianAI. All Rights Reserved. Powered By Yuetian Studio</span></div></footer>
 </body>
 </html>`;
 }
@@ -542,7 +542,7 @@ ${articles.map((article, index) => `      { "@type": "ListItem", "position": ${i
   <header class="site-header">
     <div class="site-nav">
       <a class="brand" href="../../index.html" aria-label="YuetianAI home"><img src="../../images/wentian-prototype-assets/wentian-brand-logo-ai-gold-v1.webp" alt="" aria-hidden="true"><span>YuetianAI</span></a>
-      <nav class="nav-links" aria-label="Main navigation"><a href="../../index.html">Home</a><a href="../">中文</a></nav>
+      <nav class="nav-links" aria-label="Main navigation"><a href="../../index.html">Home</a><a href="../">Chinese</a></nav>
     </div>
   </header>
   <main>
@@ -567,7 +567,7 @@ ${articles.map((article, index) => `      { "@type": "ListItem", "position": ${i
       </div>
     </section>
   </main>
-  <footer class="site-footer"><div class="container site-footer__legal"><a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener">粤ICP备2026055337号-1</a>　<span>© 2026 YuetianAI / 阅天AI. Powered By 阅天工作室</span></div></footer>
+  <footer class="site-footer"><div class="container site-footer__legal"><a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener">Yue ICP 2026055337-1</a>　<span>© 2026 YuetianAI. All Rights Reserved. Powered By Yuetian Studio</span></div></footer>
 </body>
 </html>`;
 }
@@ -617,12 +617,6 @@ function addHreflangToChinese(article) {
   <link rel="alternate" hreflang="zh-CN" href="${zhUrl(article.zh)}">
   <link rel="alternate" hreflang="en" href="${slugUrl(article.slug)}">
   <link rel="alternate" hreflang="x-default" href="${slugUrl(article.slug)}">`);
-  if (html.includes("<nav class=\"nav-links\"")) {
-    html = html.replace(/(<nav class="nav-links"[^>]*>[\s\S]*?)(<\/nav>)/, (match, before, close) => {
-      if (before.includes(">English<")) return match;
-      return `${before}<a href="en/${article.slug}">English</a>${close}`;
-    });
-  }
   writeFileSync(file, html, "utf8");
 }
 
@@ -636,12 +630,6 @@ function addIndexHreflang() {
   <link rel="alternate" hreflang="zh-CN" href="${site}/articles/">
   <link rel="alternate" hreflang="en" href="${site}/articles/en/">
   <link rel="alternate" hreflang="x-default" href="${site}/articles/en/">`);
-  if (!html.includes('href="en/"')) {
-    html = html.replace(/(<a href="\.\/" aria-current="page">学习紫微<\/a>)/, `$1
-        <a href="en/">English</a>`);
-  }
-  html = html.replace(/(<a href="en\/">English<\/a>)\s+(<\/nav>)/, `$1
-      $2`);
   writeFileSync(file, html, "utf8");
 }
 

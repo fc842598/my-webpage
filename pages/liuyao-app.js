@@ -1,3 +1,11 @@
+if (!window.React || !window.ReactDOM) {
+  const root = document.getElementById('root');
+  if (root) {
+    root.innerHTML = '<div style="min-height:100dvh;display:flex;align-items:center;justify-content:center;padding:28px;background:#C8B888;color:#2A1810;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif;text-align:center;"><div style="max-width:320px;border-radius:24px;background:#F2E8D0;padding:28px 22px;box-shadow:0 12px 32px rgba(60,28,8,.16);"><strong style="display:block;font-size:20px;margin-bottom:10px;">六爻页面加载失败</strong><p style="font-size:15px;line-height:1.7;color:#6A4020;">当前网络没有成功加载页面组件，请刷新重试，或从阅天AI首页重新进入六爻占卜。</p><button type="button" onclick="location.reload()" style="margin-top:18px;border:0;border-radius:999px;background:#5C1008;color:#fff;padding:11px 22px;font-size:15px;font-weight:700;">刷新页面</button></div></div>';
+  }
+  throw new Error('React runtime failed to load');
+}
+
 const {
   useState,
   useEffect,

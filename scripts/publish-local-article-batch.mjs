@@ -433,9 +433,8 @@ ${bottomChartCtaHtml()}
 }
 
 function englishPage(article, time) {
-  const zhTitle = article.title.replace(/^紫微斗数/, "").trim();
   const title = englishTitle(article);
-  const description = `A plain-English guide to ${title.toLowerCase()}, with a practical reading order and simple examples for Zi Wei Dou Shu learners.`;
+  const description = `A plain-English guide to ${title}, with a practical reading order, simple examples, and clear boundaries for Zi Wei Dou Shu learners.`;
   const canonical = `${site}/articles/en/${article.slug}.html`;
   const zhUrl = `${site}/articles/${article.slug}.html`;
   const examples = [...article.body.matchAll(/例子[一二三四]：([^\n]+)/g)].slice(0, 3).map((m) => textOnly(m[1]));
@@ -484,7 +483,7 @@ function englishPage(article, time) {
   <header class="site-header">
     <div class="site-nav">
       <a class="brand" href="../../index.html" aria-label="YuetianAI home"><img src="../../images/wentian-prototype-assets/wentian-brand-logo-ai-gold-v1.webp" alt="" aria-hidden="true"><span>YuetianAI</span></a>
-      <nav class="nav-links" aria-label="Main navigation"><a href="../../index.html">Home</a><a href="./">English</a><a href="../${article.slug}.html">中文</a></nav>
+      <nav class="nav-links" aria-label="Main navigation"><a href="../../index.html">Home</a><a href="./">English</a><a href="../${article.slug}.html">Chinese</a></nav>
     </div>
   </header>
   <main class="article-shell article-detail">
@@ -500,9 +499,9 @@ function englishPage(article, time) {
     </section>
     <div class="container article-layout article-detail-layout">
       <article id="article-start" class="article-main article-paper">
-        <p class="article-lead">${escapeHtml(title)} is best understood as a reading question, not as a fixed lucky-or-unlucky label.</p>
+        <p class="article-lead">${escapeHtml(title)} is a practical Zi Wei Dou Shu topic. Start with the relevant palace, then read the opposite palace, supporting structure, and current timing.</p>
         <h2>What This Means</h2>
-        <p>This Chinese article explains: ${escapeHtml(zhTitle)}. For English readers, the practical point is simple: start with the palace being asked about, then check whether the related palaces can support it in real life.</p>
+        <p>For English readers, the useful move is to name the life area first, then connect the pattern to practical choices instead of treating one symbol as a fixed prediction.</p>
         <h2>How To Read It</h2>
         <p>Do not judge one star or one palace alone. Look at the main palace, the opposite palace, the career and wealth structure, and whether the chart shows stable support or only pressure. A strong pattern needs a place to work; a weak pattern needs rules, limits, and practical correction.</p>
         <h2>Simple Examples</h2>
@@ -513,10 +512,11 @@ function englishPage(article, time) {
       <aside class="side-panel detail-rail" aria-label="Related links">
         <h2>Read Next</h2>
         <a class="card-link" href="./">English article index</a>
-        <a class="card-link" href="../${article.slug}.html">中文原文</a>
+        <a class="card-link" href="../${article.slug}.html">Original Chinese article</a>
       </aside>
     </div>
   </main>
+  <footer class="site-footer"><div class="container site-footer__legal"><a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener">Yue ICP 2026055337-1</a>　<span>© 2026 YuetianAI. All Rights Reserved. Powered By Yuetian Studio</span>　</div></footer>
 </body>
 </html>
 `;
@@ -587,7 +587,77 @@ function englishTitle(article) {
     ["七杀朝斗", "Qi Sha Facing the Central Stars"]
   ];
   const found = keyMap.find(([key]) => article.title.includes(key));
-  return found ? found[1] : `How to Read ${title} in Zi Wei Dou Shu`;
+  return found ? found[1] : `${englishTitleFromSlug(article.slug, title)} in Zi Wei Dou Shu`;
+}
+
+function englishTitleFromSlug(slug, fallbackTitle = "") {
+  const fallback = fallbackTitle && !/[\u4e00-\u9fff]/.test(fallbackTitle)
+    ? fallbackTitle.replace(/\s+in Zi Wei Dou Shu$/i, "").trim()
+    : "";
+  const source = String(slug || "")
+    .replace(/\.html$/i, "")
+    .replace(/^ziwei-/, "")
+    .replace(/-/g, " ")
+    .trim();
+  const tokenMap = {
+    caibo: "Wealth",
+    cai: "Wealth",
+    guanlu: "Career",
+    qianyi: "Travel",
+    fuqigong: "Spouse Palace",
+    minggong: "Life Palace",
+    fudegong: "Inner Life Palace",
+    xiongdi: "Siblings",
+    zinv: "Children",
+    puyigong: "Friends Palace",
+    liunian: "Annual Cycle",
+    daxian: "Ten-Year Cycle",
+    xiaoxian: "Annual Trigger",
+    hualu: "Hua Lu",
+    huake: "Hua Ke",
+    huaquan: "Hua Quan",
+    huaji: "Hua Ji",
+    taiyang: "Tai Yang",
+    taiyin: "Tai Yin",
+    tanlang: "Tan Lang",
+    wuqu: "Wu Qu",
+    qisha: "Qi Sha",
+    pojun: "Po Jun",
+    tianji: "Tian Ji",
+    tianfu: "Tian Fu",
+    tianxiang: "Tian Xiang",
+    tianliang: "Tian Liang",
+    tiantong: "Tian Tong",
+    jumen: "Ju Men",
+    lianzhen: "Lian Zhen",
+    wenchang: "Wen Chang",
+    wenqu: "Wen Qu",
+    lucun: "Lu Cun",
+    tianma: "Tian Ma",
+    dikong: "Di Kong",
+    dijie: "Di Jie",
+    huoling: "Mars and Bell Star",
+    qingyang: "Qing Yang",
+    tuoluo: "Tuo Luo",
+    hongluan: "Hong Luan",
+    tianxi: "Tian Xi",
+    santai: "San Tai",
+    bazuo: "Ba Zuo",
+    kuiyue: "Kui Yue",
+    changqu: "Chang Qu",
+    luma: "Lu Ma",
+    riyue: "Sun and Moon",
+    zifu: "Zi Wei and Tian Fu",
+    star: "Star",
+  };
+  const title = source
+    .split(/\s+/)
+    .filter(Boolean)
+    .map((token) => tokenMap[token] || token.charAt(0).toUpperCase() + token.slice(1))
+    .join(" ")
+    .replace(/\s+/g, " ")
+    .trim();
+  return title || fallback || "A Chart Pattern";
 }
 
 function englishExample(chinese) {
@@ -1023,33 +1093,53 @@ function enIndex(articles) {
               <a class="card-link" href="${article.rel}">Read article</a>
             </div>
           </article>`).join("\n");
+  const collectionJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: "Learn Zi Wei Dou Shu in Plain English",
+    url: `${site}/articles/en/`,
+    inLanguage: "en",
+    description: "Plain-English Zi Wei Dou Shu articles and Chinese astrology chart reading guides.",
+    hasPart: {
+      "@type": "ItemList",
+      itemListElement: articles.map((article, index) => ({
+        "@type": "ListItem",
+        position: index + 1,
+        url: article.url,
+        name: article.headline,
+      })),
+    },
+  };
   return `<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <script src="../../js/site-analytics.js?v=20260618-ga4"></script>
-  <title>Learn Zi Wei Dou Shu in English | YuetianAI</title>
-  <meta name="description" content="Plain-English Zi Wei Dou Shu articles for readers who want practical chart reading guidance without heavy jargon.">
+  <title>Learn Zi Wei Dou Shu in Plain English | YuetianAI</title>
+  <meta name="description" content="Plain-English Zi Wei Dou Shu articles for English readers: palaces, timing, relationships, wealth, career, and practical chart-reading order.">
   <meta name="robots" content="index,follow,max-image-preview:large">
   <link rel="canonical" href="${site}/articles/en/">
   <link rel="alternate" hreflang="en" href="${site}/articles/en/">
   <link rel="alternate" hreflang="zh-CN" href="${site}/articles/">
   <link rel="alternate" hreflang="x-default" href="${site}/articles/en/">
   <link rel="alternate" type="application/rss+xml" title="YuetianAI Zi Wei Articles" href="${site}/articles/en/feed.xml">
-  <meta property="og:title" content="Learn Zi Wei Dou Shu in English">
+  <meta property="og:title" content="Learn Zi Wei Dou Shu in Plain English">
   <meta property="og:description" content="Plain-English Zi Wei Dou Shu articles and Chinese astrology chart reading guides.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="${site}/articles/en/">
   <meta property="og:image" content="${defaultImage}">
   <link rel="icon" href="../../images/wentian-prototype-assets/wentian-brand-logo-ai-gold-v1.webp" type="image/webp">
   <link rel="stylesheet" href="../../css/articles.css?v=20260629-article-accordion-v1">
+  <script type="application/ld+json">
+  ${JSON.stringify(collectionJsonLd, null, 2)}
+  </script>
 </head>
 <body>
   <header class="site-header">
     <div class="site-nav">
       <a class="brand" href="../../index.html" aria-label="YuetianAI home"><img src="../../images/wentian-prototype-assets/wentian-brand-logo-ai-gold-v1.webp" alt="" aria-hidden="true"><span>YuetianAI</span></a>
-      <nav class="nav-links" aria-label="Main navigation"><a href="../../index.html">Home</a><a href="../">中文</a></nav>
+      <nav class="nav-links" aria-label="Main navigation"><a href="../../index.html">Home</a><a href="../">Chinese</a></nav>
     </div>
   </header>
   <main>
@@ -1057,7 +1147,7 @@ function enIndex(articles) {
       <div class="container">
         <details class="article-group" open>
           <summary class="section-head">
-            <h1 id="en-article-index">Learn Zi Wei Dou Shu in English</h1>
+            <h1 id="en-article-index">Learn Zi Wei Dou Shu in Plain English</h1>
             <span class="section-desc">Practical chart-reading guides written for English readers.</span>
             <span class="section-toggle"><span>${articles.length} Articles</span></span>
           </summary>

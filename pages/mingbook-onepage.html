@@ -258,15 +258,15 @@
               </div>
 
               <div id="mbpSolarInputs" class="nf-date-inputs">
-                <input type="number" id="mbpYear" min="1900" max="2030" placeholder="年 如1990" class="nf-select" autocomplete="off">
-                <select id="mbpMonth" class="nf-select"></select>
-                <select id="mbpDay" class="nf-select"></select>
+                <input type="number" id="mbpYear" min="1900" max="2030" placeholder="年 如1990" class="nf-select" autocomplete="off" aria-label="出生公历年份">
+                <select id="mbpMonth" class="nf-select" aria-label="出生公历月份"></select>
+                <select id="mbpDay" class="nf-select" aria-label="出生公历日期"></select>
               </div>
 
               <div id="mbpLunarInputs" class="nf-date-inputs" style="display:none">
-                <input type="number" id="mbpLunarYear" min="1900" max="2030" placeholder="农历年 如1990" class="nf-select" autocomplete="off">
-                <select id="mbpLunarMonth" class="nf-select"></select>
-                <select id="mbpLunarDay" class="nf-select"></select>
+                <input type="number" id="mbpLunarYear" min="1900" max="2030" placeholder="农历年 如1990" class="nf-select" autocomplete="off" aria-label="出生农历年份">
+                <select id="mbpLunarMonth" class="nf-select" aria-label="出生农历月份"></select>
+                <select id="mbpLunarDay" class="nf-select" aria-label="出生农历日期"></select>
                 <label id="mbpLunarLeapWrap" class="nf-lunar-leap" hidden>
                   <input type="checkbox" id="mbpLunarLeap">
                   <span id="mbpLunarLeapNote"></span>
@@ -288,9 +288,9 @@
             <div class="nf-row nf-time-row">
               <span class="nf-label">出生时刻</span>
               <div class="nf-time-selects">
-                <select id="mbpHour" class="nf-select nf-time-sel"></select>
+                <select id="mbpHour" class="nf-select nf-time-sel" aria-label="出生小时"></select>
                 <span class="nf-time-sep">时</span>
-                <select id="mbpMinute" class="nf-select nf-time-sel"></select>
+                <select id="mbpMinute" class="nf-select nf-time-sel" aria-label="出生分钟"></select>
                 <span class="nf-time-sep">分</span>
                 <button type="button" id="mbpUnknownTime" class="nf-soft-btn">不知道时辰？</button>
               </div>
@@ -305,7 +305,7 @@
                 <button type="button" class="nf-city-scope-btn" data-city-scope="global">全球</button>
               </div>
               <div class="nf-city-search-wrap">
-                <input type="text" id="mbpCitySearch" placeholder="搜索城市，如：北京、香港、台北" class="nf-select" autocomplete="off">
+                <input type="text" id="mbpCitySearch" placeholder="搜索城市，如：北京、香港、台北" class="nf-select" autocomplete="off" aria-label="出生地搜索">
                 <button type="button" id="mbpClearCity" class="nf-clear-city" style="display:none">清除</button>
               </div>
               <div id="mbpCityDropdown" class="nf-city-dropdown" style="display:none"></div>
