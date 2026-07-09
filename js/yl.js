@@ -957,7 +957,6 @@
     paymentState.message = "请先登录阅天AI账号，再开通阅天综合会员。";
     paymentState.status = "login";
     renderPayment();
-    setPayHint("点击后会前往阅天AI登录，登录完成后返回本页继续支付。");
     window.location.href = "/pages/wentian-app.html#screen-40";
     return false;
   }
