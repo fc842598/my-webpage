@@ -11643,6 +11643,16 @@ function getWentianMemberSnapshot() {
   };
 }
 
+function formatWentianQuotaTextForUi(value, isEn = isWentianEnglishUi()) {
+  const raw = String(value ?? "");
+  if (!isEn) return raw;
+  if (!raw || raw === "同步中") return "Syncing";
+  return raw
+    .replace(/次\s*\/\s*天/g, "/day")
+    .replace(/每日额度\s*/g, "Daily limit ")
+    .replace(/今日剩余\s*/g, "Today ");
+}
+
 function getWentianPaymentProviders() {
   const list = Array.isArray(wentianMemberState.providers) ? wentianMemberState.providers : [];
   const byKey = new Map(list.map((item) => [item.provider, item]));
@@ -12732,9 +12742,11 @@ function sourceMembershipScreen() {
       ${figText(`wt33-pay-method-text-${item.provider}`, text, x, 519, width, compact ? 10 : 11, disabled ? "#b4aaa0" : (active ? "#8f3d30" : "#756d63"), 900, "center")}
     `;
   }).join("");
+  const dailyText = formatWentianQuotaTextForUi(member.daily, isEn);
+  const dailyLimitText = formatWentianQuotaTextForUi(member.dailyLimit, isEn);
   const benefitList = isEn
-    ? `Today: ${member.daily} · Daily limit: ${member.dailyLimit}`
-    : `今日剩余 ${member.daily} · 每日额度 ${member.dailyLimit}`;
+    ? `Today: ${dailyText} · Daily limit: ${dailyLimitText}`
+    : `今日剩余 ${dailyText} · 每日额度 ${dailyLimitText}`;
   return `
     ${figBox("wt33-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
     ${wentianBackPill("wt33", 18, 42, 'data-action="wentian-return-previous" data-fallback-route="screen-31" aria-label="返回"')}
@@ -13058,14 +13070,17 @@ function sourceMineScreenV2(screen) {
   const languageLabel = getWentianLanguageOption().label;
   const member = getWentianMemberSnapshot();
   const account = getWentianAuthDisplay();
+  const isEn = isWentianEnglishUi();
+  const memberDailyText = formatWentianQuotaTextForUi(member.daily, isEn);
+  const memberDailyLimitText = formatWentianQuotaTextForUi(member.dailyLimit, isEn);
   const accountTitle = account.loggedIn ? getWentianCompactAccountTitle(account) : "\u767B\u5F55 / \u6CE8\u518C";
   const statusText = member.isMember
     ? member.subtitle
     : (account.loggedIn ? "\u514D\u8D39\u7248\uFF0C\u53EF\u5347\u7EA7" : "\u672A\u767B\u5F55\uFF0C\u53EF\u6CE8\u518C");
   const loginBadgeText = member.isMember ? "\u4ED8\u8D39\u7248" : (account.loggedIn ? "\u8D26\u53F7" : "\u767B\u5F55");
   const statCards = [
-    ["\u4ECA\u65E5\u6B21\u6570", member.daily, 16, "screen-33"],
-    ["\u6BCF\u65E5\u989D\u5EA6", member.dailyLimit, 139, "screen-33"],
+    ["\u4ECA\u65E5\u6B21\u6570", memberDailyText, 16, "screen-33"],
+    ["\u6BCF\u65E5\u989D\u5EA6", memberDailyLimitText, 139, "screen-33"],
     ["\u5957\u9910\u72B6\u6001", member.isMember ? "\u4ED8\u8D39\u7248" : "\u514D\u8D39\u7248", 262, "screen-33"]
   ];
   const listRows = [
