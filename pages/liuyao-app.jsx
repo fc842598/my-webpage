@@ -77,9 +77,11 @@ function normalizeQuota(raw) {
 
 function formatQuotaTagText(raw) {
   const quota = normalizeQuota(raw);
-  if (quota.testingUnlimited) return '测试不限';
-  if (quota.remaining <= 0) return '今日已满';
-  return `今日还余${quota.remaining}次`;
+  const isEn = new URLSearchParams(window.location.search).get('lang') === 'en'
+    || localStorage.getItem('wentian-app-language-v1') === 'en';
+  if (quota.testingUnlimited) return isEn ? 'Test unlimited' : '测试不限';
+  if (quota.remaining <= 0) return isEn ? 'No uses left today' : '今日已满';
+  return isEn ? `${quota.remaining} left today` : `今日还余${quota.remaining}次`;
 }
 
 function mergeQuota(currentRaw, nextRaw) {

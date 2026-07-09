@@ -9,6 +9,10 @@
       const isRootEntry = pathname === "/" || pathname.endsWith("/index.html");
       if (!isRootEntry) return;
       const params = new URLSearchParams(search);
+      if (params.get("lang") === "en") {
+        window.location.replace("/pages/wentian-app.html?lang=en#screen-1");
+        return;
+      }
       if (params.get("view") === "desktop") return;
       const ua = navigator.userAgent || "";
       const target = "/pages/wentian-app.html#screen-1";

@@ -20,6 +20,21 @@
   <meta name="twitter:description" content="输入出生资料，查看事业、感情、财运、流年走势与关系合盘分析。">
   <meta name="twitter:image" content="https://yuetianai.com/images/wentian-prototype-assets/wentian-brand-logo-ai-gold-v1.webp">
   <link rel="icon" href="../images/wentian-prototype-assets/wentian-brand-logo-ai-gold-v1.webp" type="image/webp">
+  <script>
+    (() => {
+      const isEnglish = new URLSearchParams(window.location.search).get("lang") === "en";
+      if (!isEnglish) return;
+      const title = "YuetianAI | AI Zi Wei Chart, Compatibility and Annual Luck";
+      const description = "YuetianAI mobile app for AI Zi Wei chart reading, compatibility, Liu Yao, BaZi and annual luck.";
+      document.documentElement.lang = "en";
+      document.title = title;
+      document.querySelector('meta[name="description"]')?.setAttribute("content", description);
+      document.querySelector('meta[property="og:title"]')?.setAttribute("content", title);
+      document.querySelector('meta[property="og:description"]')?.setAttribute("content", description);
+      document.querySelector('meta[name="twitter:title"]')?.setAttribute("content", title);
+      document.querySelector('meta[name="twitter:description"]')?.setAttribute("content", description);
+    })();
+  </script>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
