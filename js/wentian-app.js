@@ -17479,12 +17479,12 @@ function getYangzhaiResultCardHeight(item) {
 
 function getYangzhaiResultHeight() {
   const results = buildYangzhaiResults();
-  if (!results.length) return 930;
+  if (!results.length) return 844;
   let y = YANGZHAI_RESULT_START_Y;
   results.forEach((item) => {
     y += getYangzhaiResultCardHeight(item) + YANGZHAI_RESULT_GAP;
   });
-  return Math.max(844, y + 110);
+  return Math.max(844, y + 173);
 }
 
 function getYangzhaiSelectLayout() {
@@ -17826,8 +17826,8 @@ function sourceYangzhaiResultScreen() {
         ${figText(`yz44-desc-${index}`, item.desc, 42, y + 84, 300, 12, "#4c433a", 600, "left", "line-height:1.55;")}
       `;
     }).join("")}
-    ${figBox("yz44-tip", 20, height - 74, 350, 44, "", "border-radius:12px;background:#fffdf8;")}
-    ${figText("yz44-tip-text", "当前内容仅供娱乐参考，不等于专业测评。", 0, height - 60, 390, 12, "#a99e90", 600, "center")}
+    ${figBox("yz44-tip", 20, height - 153, 350, 44, "", "border-radius:12px;background:#fffdf8;")}
+    ${figText("yz44-tip-text", "当前内容仅供娱乐参考，不等于专业测评。", 0, height - 139, 390, 12, "#a99e90", 600, "center")}
   `;
 }
 
@@ -19169,26 +19169,26 @@ function sourceLiurenTutorialScreen() {
       ["4", "Quick timing only", "Not for major calls. Check the full chart too."]
     ];
     return `
-      ${figBox("lr47-bg", 0, 0, 390, 884, "", "background:linear-gradient(180deg,#fffaf3 0%,#fbf5eb 100%);")}
+      ${figBox("lr47-bg", 0, 0, 390, 844, "", "background:linear-gradient(180deg,#fffaf3 0%,#fbf5eb 100%);")}
       ${wentianSimpleHeader("lr47", "Liuren Guide", "", { backAttrs: 'data-action="wentian-return-previous" data-fallback-route="screen-46" aria-label="Back"' })}
-      ${figText("lr47-main-title", "How to Cast", 24, 112, 168, 24, "#201812", 900, "left", "font-family:Georgia,'Times New Roman',serif;")}
-      ${figText("lr47-sub", "No typed question. Read the live lunar time.", 24, 146, 320, 12, "#817568", 600)}
+      ${figText("lr47-main-title", "How to Cast", 24, 108, 168, 24, "#201812", 900, "left", "font-family:Georgia,'Times New Roman',serif;")}
+      ${figText("lr47-sub", "No typed question. Read the live lunar time.", 24, 142, 320, 12, "#817568", 600)}
       ${steps.map(([num, title, desc], index) => {
-        const y = 184 + index * 98;
+        const y = 176 + index * 86;
         return `
-          ${figBox(`lr47-step-${index}`, 24, y, 342, 82, "", "border:1px solid #eadfce;border-radius:18px;background:#fffdf8;box-shadow:0 10px 24px rgba(70,45,25,.07);")}
-          ${figBox(`lr47-num-${index}`, 44, y + 22, 34, 34, "", "border-radius:17px;background:#9e4738;")}
-          ${figText(`lr47-num-text-${index}`, num, 44, y + 31, 34, 13, "#fffaf3", 900, "center")}
-          ${figText(`lr47-step-title-${index}`, title, 94, y + 17, 220, 15, "#201812", 900)}
-          ${figText(`lr47-step-desc-${index}`, desc, 94, y + 45, 248, 11, "#817568", 600, "left", "line-height:1.1;letter-spacing:-0.01em;white-space:nowrap;")}
+          ${figBox(`lr47-step-${index}`, 24, y, 342, 74, "", "border:1px solid #eadfce;border-radius:18px;background:#fffdf8;box-shadow:0 10px 24px rgba(70,45,25,.07);")}
+          ${figBox(`lr47-num-${index}`, 44, y + 20, 34, 34, "", "border-radius:17px;background:#9e4738;")}
+          ${figText(`lr47-num-text-${index}`, num, 44, y + 29, 34, 13, "#fffaf3", 900, "center")}
+          ${figText(`lr47-step-title-${index}`, title, 94, y + 14, 220, 15, "#201812", 900)}
+          ${figText(`lr47-step-desc-${index}`, desc, 94, y + 40, 248, 11, "#817568", 600, "left", "line-height:1.1;letter-spacing:-0.01em;white-space:nowrap;")}
         `;
       }).join("")}
-      ${figBox("lr47-palace", 24, 584, 342, 84, "", "border:1px solid #eadfce;border-radius:18px;background:#fffdf8;")}
-      ${figText("lr47-palace-title", "Six Palace Order", 44, 604, 250, 15, "#201812", 900)}
-      ${figText("lr47-palace-list", "Great Peace→Lingering→Quick Joy→Red Mouth→Minor Luck→Void", 44, 632, 314, 10, "#6e6254", 700, "left", "line-height:1.05;letter-spacing:-0.03em;white-space:nowrap;")}
-      ${figBox("lr47-go", 42, 706, 306, 50, "", "border-radius:25px;background:linear-gradient(180deg,#b74e39,#983323);box-shadow:0 12px 24px rgba(158,61,43,.22);")}
-      ${figButton("lr47-go-hit", 42, 706, 306, 50, 'data-route="screen-46"')}
-      ${figText("lr47-go-text", "Start Casting", 42, 720, 306, 16, "#fffaf3", 900, "center")}
+      ${figBox("lr47-palace", 24, 536, 342, 76, "", "border:1px solid #eadfce;border-radius:18px;background:#fffdf8;")}
+      ${figText("lr47-palace-title", "Six Palace Order", 44, 554, 250, 15, "#201812", 900)}
+      ${figText("lr47-palace-list", "Great Peace→Lingering→Quick Joy→Red Mouth→Minor Luck→Void", 44, 580, 314, 10, "#6e6254", 700, "left", "line-height:1.05;letter-spacing:-0.03em;white-space:nowrap;")}
+      ${figBox("lr47-go", 42, 642, 306, 50, "", "border-radius:25px;background:linear-gradient(180deg,#b74e39,#983323);box-shadow:0 12px 24px rgba(158,61,43,.22);")}
+      ${figButton("lr47-go-hit", 42, 642, 306, 50, 'data-route="screen-46"')}
+      ${figText("lr47-go-text", "Start Casting", 42, 656, 306, 16, "#fffaf3", 900, "center")}
     `;
   }
   const steps = [
@@ -19198,26 +19198,26 @@ function sourceLiurenTutorialScreen() {
     ["四", "只作参考", "六壬法适合快速看当下气象，重要决策仍需结合完整命盘与现实信息。"]
   ];
   return `
-    ${figBox("lr47-bg", 0, 0, 390, 884, "", "background:linear-gradient(180deg,#fffaf3 0%,#fbf5eb 100%);")}
+    ${figBox("lr47-bg", 0, 0, 390, 844, "", "background:linear-gradient(180deg,#fffaf3 0%,#fbf5eb 100%);")}
     ${wentianSimpleHeader("lr47", "六壬法教程", "", { backAttrs: 'data-action="wentian-return-previous" data-fallback-route="screen-46" aria-label="返回"' })}
-    ${figText("lr47-main-title", "怎么起课", 24, 112, 150, 24, "#201812", 900, "left", "font-family:'Noto Serif SC','Songti SC',serif;")}
-    ${figText("lr47-sub", "不用输入问题，直接以当前农历时间取象。", 24, 146, 280, 13, "#817568", 600)}
+    ${figText("lr47-main-title", "怎么起课", 24, 108, 150, 24, "#201812", 900, "left", "font-family:'Noto Serif SC','Songti SC',serif;")}
+    ${figText("lr47-sub", "不用输入问题，直接以当前农历时间取象。", 24, 142, 280, 13, "#817568", 600)}
     ${steps.map(([num, title, desc], index) => {
-      const y = 198 + index * 112;
+      const y = 176 + index * 88;
       return `
-        ${figBox(`lr47-step-${index}`, 24, y, 342, 88, "", "border:1px solid #eadfce;border-radius:18px;background:#fffdf8;box-shadow:0 10px 24px rgba(70,45,25,.07);")}
-        ${figBox(`lr47-num-${index}`, 44, y + 24, 34, 34, "", "border-radius:17px;background:#9e4738;")}
-        ${figText(`lr47-num-text-${index}`, num, 44, y + 32, 34, 13, "#fffaf3", 900, "center")}
-        ${figText(`lr47-step-title-${index}`, title, 94, y + 20, 180, 15, "#201812", 900)}
-        ${figText(`lr47-step-desc-${index}`, desc, 94, y + 48, 236, 12, "#817568", 600, "left", "line-height:1.45;")}
+        ${figBox(`lr47-step-${index}`, 24, y, 342, 76, "", "border:1px solid #eadfce;border-radius:18px;background:#fffdf8;box-shadow:0 10px 24px rgba(70,45,25,.07);")}
+        ${figBox(`lr47-num-${index}`, 44, y + 21, 34, 34, "", "border-radius:17px;background:#9e4738;")}
+        ${figText(`lr47-num-text-${index}`, num, 44, y + 29, 34, 13, "#fffaf3", 900, "center")}
+        ${figText(`lr47-step-title-${index}`, title, 94, y + 14, 180, 15, "#201812", 900)}
+        ${figText(`lr47-step-desc-${index}`, desc, 94, y + 38, 236, 12, "#817568", 600, "left", "line-height:1.35;")}
       `;
     }).join("")}
-    ${figBox("lr47-palace", 24, 662, 342, 96, "", "border:1px solid #eadfce;border-radius:18px;background:#fffdf8;")}
-    ${figText("lr47-palace-title", "六宫顺序", 44, 682, 250, 15, "#201812", 900)}
-    ${figText("lr47-palace-list", "大安 → 留连 → 速喜 → 赤口 → 小吉 → 空亡", 44, 710, 290, 13, "#6e6254", 700, "left", "line-height:1.45;")}
-    ${figBox("lr47-go", 42, 792, 306, 50, "", "border-radius:25px;background:linear-gradient(180deg,#b74e39,#983323);box-shadow:0 12px 24px rgba(158,61,43,.22);")}
-    ${figButton("lr47-go-hit", 42, 792, 306, 50, 'data-route="screen-46"')}
-    ${figText("lr47-go-text", "开始起课", 42, 806, 306, 16, "#fffaf3", 900, "center")}
+    ${figBox("lr47-palace", 24, 536, 342, 78, "", "border:1px solid #eadfce;border-radius:18px;background:#fffdf8;")}
+    ${figText("lr47-palace-title", "六宫顺序", 44, 552, 250, 15, "#201812", 900)}
+    ${figText("lr47-palace-list", "大安 → 留连 → 速喜 → 赤口 → 小吉 → 空亡", 44, 580, 290, 13, "#6e6254", 700, "left", "line-height:1.35;")}
+    ${figBox("lr47-go", 42, 640, 306, 50, "", "border-radius:25px;background:linear-gradient(180deg,#b74e39,#983323);box-shadow:0 12px 24px rgba(158,61,43,.22);")}
+    ${figButton("lr47-go-hit", 42, 640, 306, 50, 'data-route="screen-46"')}
+    ${figText("lr47-go-text", "开始起课", 42, 654, 306, 16, "#fffaf3", 900, "center")}
   `;
 }
 
@@ -21582,7 +21582,9 @@ function shouldHideWentianFloatingBottomNav(phone) {
 
 function getWentianFloatingViewportScale() {
   const viewportWidth = window.visualViewport?.width || window.innerWidth || document.documentElement.clientWidth || WENTIAN_PHONE_WIDTH;
-  return Math.min(1, viewportWidth / WENTIAN_PHONE_WIDTH);
+  const phone = view?.querySelector?.(".figma-phone");
+  const phoneScale = Number.parseFloat(phone?.style?.getPropertyValue("--wentian-phone-scale"));
+  return Math.min(1, viewportWidth / WENTIAN_PHONE_WIDTH, Number.isFinite(phoneScale) ? phoneScale : 1);
 }
 
 function syncWentianFloatingBottomNav() {
@@ -21978,7 +21980,7 @@ function compactWentianShortFigScreenLayout(screenNo, options = getWentianShortS
     const top = Number.parseFloat(node.style.top);
     if (Number.isFinite(top)) node.style.top = `${Math.round(top + delta)}px`;
   });
-  const nextHeight = Math.max(WENTIAN_PHONE_HEIGHT, nextNavY + 89);
+  const nextHeight = Math.max(Number(options.minHeight) || 0, nextNavY + 89);
   phone.style.height = `${nextHeight}px`;
   if (bg) bg.style.height = `${nextHeight}px`;
   return true;
@@ -22050,7 +22052,13 @@ function compactWentianLiuyaoCastLayout() {
   const wrapperMin = Number.parseFloat(wrapper.style.minHeight) || wrapper.scrollHeight || wrapper.offsetHeight || WENTIAN_PHONE_HEIGHT;
   let contentBottom = 0;
   phone.querySelectorAll([
-    ".liuyao-stage",
+    ".liuyao-flow-steps",
+    ".liuyao-ask-title",
+    ".liuyao-big-question",
+    ".liuyao-question-submit",
+    ".liuyao-ask-review",
+    ".liuyao-question-suggestions",
+    ".liuyao-question-pill",
     ".liuyao-question-stage",
     ".liuyao-progress-card",
     ".liuyao-line-row",
@@ -22197,10 +22205,13 @@ function fitActivePhoneShell() {
   const heightBasis = rawHeight <= 900 ? rawHeight : WENTIAN_PHONE_HEIGHT;
   const widthScale = Math.max(0.78, Math.min(1, horizontalAvailable / WENTIAN_PHONE_WIDTH));
   const heightScale = Math.min(1, verticalAvailable / heightBasis);
+  const keyboardVisible = !desktop && viewport?.height > 0 && window.innerHeight > 0 && viewport.height < window.innerHeight - 140;
+  const nearScreenFit = !desktop && !keyboardVisible && rawHeight <= WENTIAN_PHONE_HEIGHT;
+  const mobileScale = nearScreenFit ? Math.min(widthScale, Math.max(0.92, heightScale)) : widthScale;
   const scale = desktop
     ? Math.min(widthScale, heightScale)
-    : widthScale;
-  const edgeFit = !desktop && horizontalAvailable <= WENTIAN_PHONE_WIDTH;
+    : mobileScale;
+  const edgeFit = !desktop && horizontalAvailable <= WENTIAN_PHONE_WIDTH && Math.abs(scale - widthScale) < 0.002;
   const layoutWidth = Math.ceil(WENTIAN_PHONE_WIDTH * scale);
   phone.style.setProperty("--wentian-phone-scale", String(scale));
   phone.style.transform = `scale(${scale})`;

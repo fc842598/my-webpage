@@ -14324,6 +14324,7 @@ body.wentian-refund-open {
 }
 
 .liuyao-stage-ask {
+  align-content: start;
   gap: 12px;
   padding-bottom: 96px;
 }
@@ -14343,12 +14344,13 @@ body.wentian-refund-open {
 }
 
 .liuyao-stage-ask .liuyao-big-question {
-  min-height: 300px;
+  min-height: 274px;
   padding: 16px 18px 12px;
 }
 
 .liuyao-stage-ask .liuyao-big-question textarea {
-  min-height: 238px;
+  height: 212px;
+  min-height: 212px;
   line-height: 1.55;
 }
 
