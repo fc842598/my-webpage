@@ -559,36 +559,31 @@ async function flowChildBoundary(browser, baseUrl) {
   }
 }
 
-async function flowPaidMock(browser, baseUrl) {
+async function flowUnifiedMemberRedirect(browser, baseUrl) {
   const { context } = await newContext(browser, { auth: true });
   const page = await context.newPage();
   try {
-    await openScreen(page, baseUrl, 29);
+    await openScreen(page, baseUrl, 33);
     await clickAction(page, "wentian-member-pay");
-    await waitForRoute(page, 30);
-    await page.waitForSelector('[data-action="wentian-pay-mock-success"]', { timeout: 10000 });
-    await clickAction(page, "wentian-pay-mock-success");
-    try {
-      await page.waitForFunction(() => /Payment successful|Paid|opened|active|paid|100 left|96 left|Yuetian AI/i.test(document.body.innerText), null, { timeout: 12000 });
-    } catch (error) {
-      const debug = await page.evaluate(() => ({
-        hash: location.hash,
-        route: document.querySelector(".figma-phone")?.getAttribute("data-node-id") || "",
-        text: document.querySelector(".figma-phone")?.innerText?.slice(0, 900) || "",
-        buttons: Array.from(document.querySelectorAll("[data-action]")).map((item) => item.getAttribute("data-action")).slice(-20),
-      })).catch(() => ({}));
-      throw new Error(`mock payment did not reach paid text: ${JSON.stringify(debug)}`);
-    }
-    const text = await page.locator(".figma-phone").innerText();
-    const health = await screenHealth(page);
-    const screenshot = await capture(page, "04-paid-mock");
+    await page.waitForURL((url) => url.pathname === "/yl.html" && url.hash === "#member", { timeout: 12000 });
+    await page.waitForSelector('button[data-member-pay], button:has-text("确认开通")', { timeout: 12000 });
+    const text = await page.locator("body").innerText();
+    const redirect = await page.evaluate(() => {
+      let returnState = null;
+      try {
+        returnState = JSON.parse(localStorage.getItem("wentian-app-auth-return-v1") || "null");
+      } catch (_error) {}
+      return { pathname: location.pathname, hash: location.hash, returnState };
+    });
+    mkdirSync(SCREENSHOT_DIR, { recursive: true });
+    const screenshot = join(SCREENSHOT_DIR, "04-unified-member-redirect.png");
+    await page.screenshot({ path: screenshot, fullPage: true });
     const checks = [
-      makeCheck("Mock payment reaches paid state", /Payment successful|Paid|opened|active|paid/i.test(text), text.slice(0, 180)),
-      makeCheck("Payment is bound to logged-in account", /Intern Tester|intern\.user@example\.com|Yuetian AI/i.test(text), "Authenticated session stayed active"),
-      makeCheck("No visible Chinese residue", !hasHan(text), "English payment text only"),
-      makeCheck("No dynamic residue or horizontal overflow findings", health.issueCount === 0, JSON.stringify(health.issues), 90),
+      makeCheck("Member CTA opens the unified member page", redirect.pathname === "/yl.html" && redirect.hash === "#member", `${redirect.pathname}${redirect.hash}`),
+      makeCheck("Unified page shows membership and checkout", /阅天综合会员/.test(text) && /确认开通/.test(text), text.slice(0, 180)),
+      makeCheck("Return context is preserved", redirect.returnState?.source === "wentian-member-pay", JSON.stringify(redirect.returnState || {})),
     ];
-    return { id: "paid-mock", label: "Logged-in paid user completes mock payment", screen: "screen-30", checks, score: scoreFlow(checks), screenshot: rel(screenshot) };
+    return { id: "unified-member-redirect", label: "Member CTA opens the unified health membership page", screen: "yl.html#member", checks, score: scoreFlow(checks), screenshot: rel(screenshot) };
   } finally {
     await context.close();
   }
@@ -663,7 +658,7 @@ async function main() {
     flowNewUserChart,
     flowInternshipChat,
     flowChildBoundary,
-    flowPaidMock,
+    flowUnifiedMemberRedirect,
     flowProfileSync,
   ];
   const results = [];

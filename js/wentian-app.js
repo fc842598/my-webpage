@@ -3464,16 +3464,20 @@ function populateWentianChartSelects() {
   const minute = document.getElementById("wentian-chart-minute");
   if (month && !month.options.length) {
     const solarMonthLabels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-    month.innerHTML = Array.from({ length: 12 }, (_, i) => `<option value="${i + 1}">${isEn ? solarMonthLabels[i] : `${i + 1}月`}</option>`).join("");
+    month.innerHTML = `<option value="">${isEn ? "Month" : "月"}</option>`
+      + Array.from({ length: 12 }, (_, i) => `<option value="${i + 1}">${isEn ? solarMonthLabels[i] : `${i + 1}月`}</option>`).join("");
   }
   if (lunarMonth && !lunarMonth.options.length) {
-    lunarMonth.innerHTML = ["正月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"].map((name, i) => `<option value="${i + 1}">${isEn ? `M${i + 1}` : name}</option>`).join("");
+    lunarMonth.innerHTML = `<option value="">${isEn ? "Month" : "月"}</option>`
+      + ["正月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"].map((name, i) => `<option value="${i + 1}">${isEn ? `M${i + 1}` : name}</option>`).join("");
   }
   if (hour && !hour.options.length) {
-    hour.innerHTML = Array.from({ length: 24 }, (_, i) => `<option value="${i}">${isEn ? `${padWentianNumber(i)}:00` : `${padWentianNumber(i)}时`}</option>`).join("");
+    hour.innerHTML = `<option value="">${isEn ? "Hour" : "时"}</option>`
+      + Array.from({ length: 24 }, (_, i) => `<option value="${i}">${isEn ? `${padWentianNumber(i)}:00` : `${padWentianNumber(i)}时`}</option>`).join("");
   }
   if (minute && !minute.options.length) {
-    minute.innerHTML = Array.from({ length: 60 }, (_, i) => `<option value="${i}">${isEn ? `${padWentianNumber(i)} min` : `${padWentianNumber(i)}分`}</option>`).join("");
+    minute.innerHTML = `<option value="">${isEn ? "Minute" : "分"}</option>`
+      + Array.from({ length: 60 }, (_, i) => `<option value="${i}">${isEn ? `${padWentianNumber(i)} min` : `${padWentianNumber(i)}分`}</option>`).join("");
   }
   updateWentianChartDayOptions(day, getWentianNumber("wentian-chart-year"), getWentianNumber("wentian-chart-month"));
   updateWentianChartDayOptions(lunarDay, 0, 0, 30);
@@ -3482,10 +3486,11 @@ function populateWentianChartSelects() {
 function updateWentianChartDayOptions(dayEl, year, month, forcedMax) {
   if (!dayEl) return;
   const isEn = isWentianEnglishUi();
-  const previous = Number(dayEl.value) || 1;
+  const previous = dayEl.value === "" ? 0 : Number(dayEl.value) || 0;
   const max = forcedMax || (year && month ? new Date(year, month, 0).getDate() : 31);
-  dayEl.innerHTML = Array.from({ length: max }, (_, i) => `<option value="${i + 1}">${isEn ? String(i + 1) : `${i + 1}日`}</option>`).join("");
-  dayEl.value = String(Math.min(previous, max));
+  dayEl.innerHTML = `<option value="">${isEn ? "Day" : "日"}</option>`
+    + Array.from({ length: max }, (_, i) => `<option value="${i + 1}">${isEn ? String(i + 1) : `${i + 1}日`}</option>`).join("");
+  dayEl.value = previous ? String(Math.min(previous, max)) : "";
 }
 
 function syncWentianChartCalendarFields(nextMode) {
@@ -3509,7 +3514,8 @@ function syncWentianChartCalendarFields(nextMode) {
       && getWentianLunarLeapMonth(year) === month;
     const max = isLunarTarget ? getWentianLunarMonthMax(year, month, isLeap) : null;
     updateWentianChartDayOptions(targetDay, isLunarTarget ? 0 : year, isLunarTarget ? 0 : month, max);
-    targetDay.value = String(Math.min(sourceDay || Number(targetDay.value) || 1, Number(targetDay.options.length) || 31));
+    const maxDay = Math.max(1, Number(targetDay.options.length) - 1);
+    targetDay.value = String(Math.min(sourceDay || Number(targetDay.value) || 1, maxDay));
   }
 }
 
@@ -3524,8 +3530,10 @@ function setWentianChartCalendarMode(mode, options = {}) {
   });
   const solar = document.getElementById("wentian-chart-solar-fields");
   const lunar = document.getElementById("wentian-chart-lunar-fields");
+  const leapNote = document.getElementById("wentian-chart-leap-note");
   if (solar) solar.style.display = wentianChartCalMode === "solar" ? "grid" : "none";
   if (lunar) lunar.style.display = wentianChartCalMode === "lunar" ? "grid" : "none";
+  if (leapNote) leapNote.style.display = wentianChartCalMode === "lunar" ? "flex" : "none";
   updateWentianChartPreview();
 }
 
@@ -3731,6 +3739,8 @@ function getWentianFutureBirthErrorText() {
 
 function getWentianChartDateParts() {
   const mode = document.getElementById("wentian-chart-cal")?.value || wentianChartCalMode || "solar";
+  const hourValue = document.getElementById("wentian-chart-hour")?.value ?? "";
+  const minuteValue = document.getElementById("wentian-chart-minute")?.value ?? "";
   const hour = getWentianNumber("wentian-chart-hour");
   const minute = getWentianNumber("wentian-chart-minute");
   const autoLeapMonth = document.getElementById("wentian-chart-lunar-leap")?.checked !== false;
@@ -3768,6 +3778,9 @@ function getWentianChartDateParts() {
     calModeLabel = `公历 ${year}-${padWentianNumber(month)}-${padWentianNumber(day)}`;
   }
 
+  if (hourValue === "" || minuteValue === "") {
+    throw new Error(isWentianEnglishUi() ? "Select the birth hour and minute" : "请选择出生时刻的时和分");
+  }
   if (year < 1900 || year > 2030) throw new Error("出生年份请填写 1900-2030");
   if (Number.isNaN(date.getTime())) throw new Error("出生日期无效");
   if (date.getTime() > Date.now()) throw new Error(getWentianFutureBirthErrorText());
@@ -3804,11 +3817,28 @@ function syncWentianChartFormLayout() {
   if (compactWentianShortFigScreenLayout(26)) fitActivePhoneShell();
 }
 
+function formatWentianTrueSolarDifference(result, isEn = isWentianEnglishUi()) {
+  const minutes = Number(result?.diffMinutes);
+  if (!Number.isFinite(minutes) || minutes === 0) {
+    return isEn ? "Same as the entered time" : "与填写时间一致";
+  }
+  const absolute = Math.abs(Math.round(minutes));
+  const hours = Math.floor(absolute / 60);
+  const rest = absolute % 60;
+  const duration = isEn
+    ? [hours ? `${hours} hr` : "", rest ? `${rest} min` : ""].filter(Boolean).join(" ")
+    : `${hours ? `${hours}小时` : ""}${rest ? `${rest}分钟` : ""}`;
+  if (isEn) return `${duration} ${minutes < 0 ? "earlier" : "later"} than entered`;
+  return `比填写时间${minutes < 0 ? "早" : "晚"}${duration}`;
+}
+
 function updateWentianChartPreview() {
   const isEn = isWentianEnglishUi();
   const preview = document.getElementById("wentian-chart-preview");
   const tst = document.getElementById("wentian-chart-tst");
   const hiddenDate = document.getElementById("wentian-chart-date");
+  const status = document.getElementById("wentian-chart-status");
+  if (status?.dataset.tone === "error") setWentianChartStatus("");
   try {
     const parts = getWentianChartDateParts();
     const dateStr = `${parts.date.getFullYear()}-${padWentianNumber(parts.date.getMonth() + 1)}-${padWentianNumber(parts.date.getDate())}`;
@@ -3821,7 +3851,12 @@ function updateWentianChartPreview() {
     }
     const cityText = document.getElementById("wentian-chart-city")?.value.trim() || "";
     const city = wentianChartCity || findWentianCity(cityText);
-    if (tst && typeof calcTrueSolarTime === "function") {
+    const useTrueSolar = !!document.getElementById("wentian-chart-true-solar")?.checked;
+    if (tst && !useTrueSolar) {
+      tst.textContent = isEn
+        ? "Using the entered time (true solar time off)."
+        : "按填写时间排盘（未校正真太阳时）";
+    } else if (tst && typeof calcTrueSolarTime === "function") {
       const result = calcTrueSolarTime({
         year: parts.date.getFullYear(),
         month: parts.date.getMonth() + 1,
@@ -3838,22 +3873,35 @@ function updateWentianChartPreview() {
       const trueSolarDate = formatWentianTrueSolarDate(parts.date, result);
       const trueSolarClock = `${padWentianNumber(result.trueSolarHour)}:${padWentianNumber(result.trueSolarMinute)}`;
       const trueSolarDisplay = result.dayShift ? `${trueSolarDate} ${trueSolarClock}` : trueSolarClock;
-      const areaLabel = city && !isWentianChinaCity(city)
-        ? (isEn ? "Local time" : "当地区时")
-        : (isEn ? "China time" : "中国区时");
       const placeLabel = isEn
         ? (city ? String(city.city || city.province || "Beijing") : "Beijing")
         : getWentianTrueSolarPlaceLabel(city);
+      const differenceText = formatWentianTrueSolarDifference(result, isEn);
       tst.textContent = isEn
-        ? `${formatWentianTzOffset(result.tzOffset)} · ${placeLabel} ${String(result.diffStr || "").replace(/分钟/g, " min")} · Chart ${trueSolarDisplay}${shichen ? ` (${shichen})` : ""}`
-        : `${areaLabel} ${formatWentianTzOffset(result.tzOffset)} · 出生地${placeLabel} ${result.diffStr}，排盘按${trueSolarDisplay} ${shichen}时`;
+        ? `${placeLabel}: ${trueSolarDisplay}${shichen ? ` (${shichen})` : ""} · ${differenceText}`
+        : `${placeLabel}校正后 ${trueSolarDisplay}${shichen ? `（${shichen}时）` : ""} · ${differenceText}`;
     }
   } catch (error) {
+    const dateFieldIds = wentianChartCalMode === "lunar"
+      ? ["wentian-chart-lunar-year", "wentian-chart-lunar-month", "wentian-chart-lunar-day"]
+      : ["wentian-chart-year", "wentian-chart-month", "wentian-chart-day"];
+    const hasStartedDate = dateFieldIds.some((id) => String(document.getElementById(id)?.value || "").trim());
+    const hasStartedTime = ["wentian-chart-hour", "wentian-chart-minute"]
+      .some((id) => String(document.getElementById(id)?.value || "").trim());
     if (preview) {
-      preview.textContent = error.message || "";
-      preview.dataset.tone = "error";
+      preview.textContent = hasStartedDate || hasStartedTime ? error.message || "" : "";
+      preview.dataset.tone = hasStartedDate || hasStartedTime ? "error" : "";
     }
-    if (tst) tst.textContent = isEn ? "Complete birth time first. Birthplace optional." : "请先补全出生时间，地点可选。";
+    if (tst) {
+      const useTrueSolar = !!document.getElementById("wentian-chart-true-solar")?.checked;
+      tst.textContent = isEn
+        ? (useTrueSolar
+          ? "Complete the birth date and time, then select a birthplace."
+          : "Complete the birth date and time first.")
+        : (useTrueSolar
+          ? "请先补全出生日期和时间，再选择出生地。"
+          : "请先补全出生日期和时间。");
+    }
   }
   syncWentianChartFormLayout();
 }
@@ -7723,6 +7771,10 @@ const WENTIAN_I18N = {
     "请输入邮箱": "Enter email",
     "绑定手机号": "Bind phone number",
     "会员、支付记录会绑定到账号": "Membership and payments are linked to your account",
+    "登录后自动同步会员与订单": "Sign in to sync membership and orders",
+    "登录后继续开通会员": "Sign in to continue membership checkout",
+    "登录仅用于账号和会员服务": "Sign-in is only used for account and membership services",
+    "登录后同步会员和订单": "Sign in to sync membership and orders",
     "注册": "Register",
     "密码": "Password",
     "请输入手机号": "Enter phone number",
@@ -11737,8 +11789,8 @@ function refreshWentianPayProviderSelection() {
   const paymentPrice = getWentianSelectedPaymentPrice();
   const member = getWentianMemberSnapshot();
   const buttonText = member.isMember
-    ? `\u7eed\u8d39 ${paymentPrice.text}`
-    : `\u5f00\u901a\u4ed8\u8d39\u7248 ${paymentPrice.text}`;
+    ? `续费综合会员 ${paymentPrice.text}`
+    : `开通综合会员 ${paymentPrice.text}`;
   setWentianNodeText("wt33-card-price", paymentPrice.text);
   setWentianNodeText("wt33-submit-text", buttonText);
   setWentianNodeText("wt33-preview-card-value-0", paymentPrice.text);
@@ -12500,7 +12552,7 @@ function initWentianChartForm() {
   if (lunarYear) lunarYear.value = String(lunarSourceYear);
   if (lunarMonth) lunarMonth.value = String(lunarSourceMonth);
   updateWentianChartDayOptions(lunarDay, 0, 0, getWentianLunarMonthMax(lunarSourceYear, lunarSourceMonth, lunarSourceIsLeap));
-  if (lunarDay) lunarDay.value = String(Math.min(lunarSourceDay, Number(lunarDay.options.length) || lunarSourceDay));
+  if (lunarDay) lunarDay.value = String(Math.min(lunarSourceDay, Math.max(1, Number(lunarDay.options.length) - 1)));
   const leapAuto = document.getElementById("wentian-chart-lunar-leap");
   if (leapAuto) leapAuto.checked = form.autoLeapMonth !== false;
   setWentianChartButtonValue("gender", getWentianChartDefaultGender(form));
@@ -12738,41 +12790,41 @@ function sourceMembershipScreen() {
   const isEn = isWentianEnglishUi();
   const buttonText = member.isMember ? `续费综合会员 ${paymentPrice.text}` : `开通综合会员 ${paymentPrice.text}`;
   const methodButtons = `
-    ${figBox("wt33-unified-pay-note", 42, 508, 306, 36, "", "border:1px solid #eadfce;border-radius:18px;background:#fffdf8;")}
-    ${figText("wt33-unified-pay-note-text", "将在阅天综合会员页完成登录与支付", 42, 519, 306, 11, "#756d63", 900, "center")}
+    ${figBox("wt33-unified-pay-note", 42, 530, 306, 36, "", "border:1px solid #eadfce;border-radius:18px;background:#fffdf8;")}
+    ${figText("wt33-unified-pay-note-text", isEn ? "Open the member page to sign in and pay" : "进入会员页登录并支付", 42, 541, 306, 11, "#756d63", 900, "center")}
   `;
   const dailyText = formatWentianQuotaTextForUi(member.daily, isEn);
   const dailyLimitText = formatWentianQuotaTextForUi(member.dailyLimit, isEn);
   const benefitList = isEn
-    ? `Today: ${dailyText} · Daily limit: ${dailyLimitText}`
-    : `今日剩余 ${dailyText} · 每日额度 ${dailyLimitText}`;
+    ? `Remaining ${dailyText} · Limit ${dailyLimitText}`
+    : `剩余 ${dailyText} · 上限 ${dailyLimitText}`;
   return `
     ${figBox("wt33-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
     ${wentianBackPill("wt33", 18, 42, 'data-action="wentian-return-previous" data-fallback-route="screen-31" aria-label="返回"')}
     ${figText("wt33-title", "阅天综合会员", 0, 52, 390, 17, "#25211d", 800, "center")}
     ${figBox("wt33-card", 24, 96, 342, 104, "", "border-radius:18px;background:linear-gradient(135deg,#2b2722,#14110d);box-shadow:0 14px 26px rgba(28,20,12,.14);")}
-    ${figText("wt33-card-label", WENTIAN_PAID_PRODUCT_NAME, 52, 122, 130, 18, "#fff", 900)}
-    ${figText("wt33-card-sub", member.isMember ? escapeHtml(member.subtitle) : WENTIAN_PAID_PRODUCT_DESC, 52, 150, 210, 11, "#cfc1a9", 700, "left", "line-height:1.35;")}
+    ${figText("wt33-card-label", isEn ? "Membership" : "综合会员", 52, 122, 130, 18, "#fff", 900)}
+    ${figText("wt33-card-sub", member.isMember ? escapeHtml(member.subtitle) : (isEn ? "Xu Master, health reports and follow-ups · 80/day" : "许大师、健康报告与追问 · 80次/天"), 52, 150, 210, 11, "#cfc1a9", 700, "left", "line-height:1.35;")}
     ${figText("wt33-card-price", paymentPrice.text, 238, 120, 84, 24, "#f4d293", 900, "right")}
     ${figText("wt33-card-period", "", 246, 158, 78, 12, "#cfc1a9", 700, "right")}
 
     ${figText("wt33-plan-title", "套餐权益", 24, 226, 120, 16, "#25211d", 900)}
     ${figBox("wt33-free", 24, 258, 342, 62, "", "border:1px solid #eadfce;border-radius:14px;background:#fff;box-shadow:0 5px 14px rgba(70,45,25,.05);")}
-    ${figText("wt33-free-title", "免费体验额度", 44, 280, 190, 14, "#25211d", 900)}
-    ${figText("wt33-free-quota", "", 214, 280, 120, 13, "#8d8377", 800, "right")}
+    ${figText("wt33-free-title", isEn ? "Current quota" : "当前额度", 44, 280, 190, 14, "#25211d", 900)}
+    ${figText("wt33-free-quota", dailyLimitText, 214, 280, 120, 13, "#8d8377", 800, "right")}
     ${figBox("wt33-member", 24, 336, 342, 78, "", "border:1px solid #c8a65f;border-radius:16px;background:#fffaf0;box-shadow:0 8px 20px rgba(130,91,31,.08);")}
-    ${figText("wt33-member-title", "综合会员权益", 44, 358, 160, 15, "#8f3d30", 900)}
-    ${figText("wt33-member-quota", "同账号", 214, 358, 120, 14, "#8f3d30", 900, "right")}
-    ${figText("wt33-member-desc", "权益绑定当前账号，电脑和手机共用。", 44, 388, 282, 12, "#756d63", 700)}
+    ${figText("wt33-member-title", isEn ? "Phone and computer" : "电脑手机通用", 44, 358, 160, 15, "#8f3d30", 900)}
+    ${figText("wt33-member-quota", isEn ? "One account" : "同一账号", 214, 358, 120, 14, "#8f3d30", 900, "right")}
+    ${figText("wt33-member-desc", isEn ? "Sign in with the same account on either device." : "登录同一账号即可使用。", 44, 388, 282, 12, "#756d63", 700)}
 
-    ${figBox("wt33-benefit", 24, 424, 342, 62, "", "border-radius:16px;background:#fff;box-shadow:0 7px 18px rgba(70,45,25,.06);")}
-    ${figText("wt33-benefit-title", "命理与健康统一开通", 44, 440, 160, 13, "#25211d", 900)}
-    ${figText("wt33-benefit-list", benefitList, 44, 462, 260, 12, "#756d63", 800, "left", "line-height:1.4;")}
-    ${figText("wt33-pay-method-title", "统一支付入口", 42, 486, 120, 12, "#756d63", 800)}
+    ${figBox("wt33-benefit", 24, 424, 342, 70, "", "border-radius:16px;background:#fff;box-shadow:0 7px 18px rgba(70,45,25,.06);")}
+    ${figText("wt33-benefit-title", isEn ? "Included" : "会员包含", 44, 440, 160, 13, "#25211d", 900)}
+    ${figText("wt33-benefit-list", benefitList, 44, 466, 260, 12, "#756d63", 800, "left", "line-height:1.4;")}
+    ${figText("wt33-pay-method-title", isEn ? "Next" : "下一步", 42, 510, 120, 12, "#756d63", 800)}
     ${methodButtons}
-    ${figBox("wt33-submit", 42, 558, 306, 46, "", "border-radius:23px;background:linear-gradient(180deg,#b74e39,#983323);box-shadow:0 12px 24px rgba(158,61,43,.18);")}
-    ${figButton("wt33-submit-hit", 42, 558, 306, 46, `data-action="wentian-member-pay" aria-label="${escapeHtml(buttonText)}"`)}
-    ${figText("wt33-submit-text", buttonText, 42, 572, 306, 13, "#fffaf3", 900, "center")}
+    ${figBox("wt33-submit", 42, 584, 306, 46, "", "border-radius:23px;background:linear-gradient(180deg,#b74e39,#983323);box-shadow:0 12px 24px rgba(158,61,43,.18);")}
+    ${figButton("wt33-submit-hit", 42, 584, 306, 46, `data-action="wentian-member-pay" aria-label="${escapeHtml(buttonText)}"`)}
+    ${figText("wt33-submit-text", buttonText, 42, 598, 306, 13, "#fffaf3", 900, "center")}
   `;
 }
 
@@ -13063,7 +13115,7 @@ function sourceMineScreenV2(screen) {
   const accountTitle = account.loggedIn ? getWentianCompactAccountTitle(account) : "\u767B\u5F55 / \u6CE8\u518C";
   const statusText = member.isMember
     ? member.subtitle
-    : (account.loggedIn ? "\u514D\u8D39\u7248\uFF0C\u53EF\u5347\u7EA7" : "\u672A\u767B\u5F55\uFF0C\u53EF\u6CE8\u518C");
+    : (account.loggedIn ? "\u514D\u8D39\u7248" : "\u672A\u767B\u5F55");
   const loginBadgeText = member.isMember ? "综合会员" : (account.loggedIn ? "\u8D26\u53F7" : "\u767B\u5F55");
   const statCards = [
     ["\u4ECA\u65E5\u6B21\u6570", memberDailyText, 16, "screen-33"],
@@ -13085,16 +13137,16 @@ function sourceMineScreenV2(screen) {
     ${figText("source-31-sub-v2", "\u8D26\u6237\u4E0E\u504F\u597D\u8BBE\u7F6E", 18, 101, 180, 14, "#8f857a")}
     ${figBox("source-31-gear-v2", 338, 56, 38, 38, "", "border-radius:19px;background:#fff;box-shadow:0 5px 14px rgba(80,55,28,.10);")}
     ${figText("source-31-gear-text-v2", "\u2699", 338, 64, 38, 18, "#b88c33", 700, "center")}
-    ${figButton("source-31-gear-hit-v2", 336, 54, 42, 42, 'data-route="screen-38" aria-label="\\u8D26\\u6237\\u8BBE\\u7F6E"', "", "z-index:36;")}
+    ${figButton("source-31-gear-hit-v2", 336, 54, 42, 42, 'data-route="screen-38" aria-label="账户设置"', "", "z-index:36;")}
     ${figBox("source-31-profile-v2", 16, 126, 358, 96, "converted-card", "border-radius:12px;box-shadow:0 6px 16px rgba(74,55,32,.08);")}
     ${figBox("source-31-avatar-v2", 34, 144, 60, 60, "", "border-radius:30px;background:#b88c33;")}
     ${figText("source-31-avatar-icon-v2", escapeHtml(account.initial), 34, 157, 60, 28, "#fff", 700, "center")}
     ${figText("source-31-name-v2", escapeHtml(accountTitle), 116, 148, 164, 18, "#26211c", 800, "left", "white-space:nowrap;overflow:hidden;text-overflow:ellipsis;")}
     ${figText("source-31-vip-v2", escapeHtml(statusText), 116, 174, 148, 13, member.isMember ? "#7a9a4b" : "#8f857a", 700, "left", "white-space:nowrap;overflow:hidden;text-overflow:ellipsis;")}
-    ${figText("source-31-email-v2", escapeHtml(account.loggedIn ? account.email : "\u767B\u5F55\u540E\u53EF\u67E5\u770B\u652F\u4ED8\u8BB0\u5F55"), 116, 195, 174, 12, "#8f857a", 700, "left", "white-space:nowrap;overflow:hidden;text-overflow:ellipsis;")}
+    ${figText("source-31-email-v2", escapeHtml(account.loggedIn ? account.email : "\u767B\u5F55\u540E\u540C\u6B65\u4F1A\u5458\u548C\u8BA2\u5355"), 116, 195, 174, 12, "#8f857a", 700, "left", "white-space:nowrap;overflow:hidden;text-overflow:ellipsis;")}
     ${figBox("source-31-login-badge-v2", 292, 146, 58, 24, "", `border-radius:12px;background:${member.isMember ? "#fff0d6" : "#f6f2e9"};`)}
     ${figText("source-31-login-badge-text-v2", loginBadgeText, 292, 152, 58, 11, member.isMember ? "#9f3d2e" : "#9b742e", 800, "center", "white-space:nowrap;overflow:hidden;text-overflow:ellipsis;")}
-    ${figButton("source-31-login-hit-v2", 16, 126, 358, 96, 'data-route="screen-40" aria-label="\\u767B\\u5F55 / \\u6CE8\\u518C"', "", "z-index:35;")}
+    ${figButton("source-31-login-hit-v2", 16, 126, 358, 96, 'data-route="screen-40" aria-label="登录 / 注册"', "", "z-index:35;")}
     ${statCards.map(([label, count, x, route], index) => `
       ${figBox(`source-31-stat-v2-${index}`, x, 240, 111, 75, "converted-card", "border-radius:12px;box-shadow:0 5px 14px rgba(74,55,32,.08);")}
       ${figText(`source-31-stat-label-v2-${index}`, label, x + 14, 253, 80, 12, "#9b742e", 500)}
@@ -13265,7 +13317,7 @@ function sourceLoginMethodsScreen() {
     ${figBox("source-login-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
     ${wentianBackPill("source-login", 18, 42, 'data-action="wentian-return-previous" data-fallback-route="screen-38" aria-label="返回"')}
     ${figText("source-login-title", "登录 / 注册", 0, 54, 390, 22, "#1f1d1a", 800, "center")}
-    ${figText("source-login-sub", isHealthReturn ? "登录后返回健康专题继续开通阅天综合会员" : "会员、支付记录会绑定到账号", 0, 92, 390, 13, "#8f857a", 700, "center")}
+    ${figText("source-login-sub", isHealthReturn ? "登录后继续开通会员" : "登录后自动同步会员与订单", 0, 92, 390, 13, "#8f857a", 700, "center")}
     ${figBox("source-login-card", 24, 128, 342, 390, "", "border:1px solid #e2d8c8;border-radius:18px;background:#fff;box-shadow:0 8px 20px rgba(74,55,32,.08);")}
     <button class="wentian-auth-tab ${!isRegister ? "is-active" : ""}" type="button" data-action="wentian-auth-mode" data-auth-mode="login" style="left:50px;top:154px;width:136px">登录</button>
     <button class="wentian-auth-tab ${isRegister ? "is-active" : ""}" type="button" data-action="wentian-auth-mode" data-auth-mode="register" style="left:204px;top:154px;width:136px">注册</button>
@@ -13280,9 +13332,9 @@ function sourceLoginMethodsScreen() {
     ${WENTIAN_GOOGLE_ENABLED ? `
       ${figBox("source-login-google", 50, 538, 290, 44, "", "border-radius:22px;background:#fff;border:1px solid #e2d8c8;")}
       ${figButton("source-login-google-hit", 50, 538, 290, 44, 'data-action="wentian-google-login"')}
-      ${figText("source-login-google-text", "海外用户 Google 登录", 50, 551, 290, 13, "#26211c", 800, "center")}
+      ${figText("source-login-google-text", "Google 登录", 50, 551, 290, 13, "#26211c", 800, "center")}
     ` : ""}
-    ${figText("source-login-note", isHealthReturn ? "当前登录只用于绑定账号、支付记录和会员权益。" : "手机号登录使用密码，不发验证码。", 0, 604, 390, 12, "#9b9287", 600, "center")}
+    ${isHealthReturn ? figText("source-login-note", "登录仅用于账号和会员服务", 0, 604, 390, 12, "#9b9287", 600, "center") : ""}
   `;
 }
 
@@ -19876,7 +19928,7 @@ function sourceDashboardHomeScreen() {
     const dashboardArchiveMeta = dashboardArchive
       ? [dashboardArchiveDisplay.gender, dashboardArchiveDisplay.datetime].filter(Boolean).join(" · ")
       : "先建立命盘档案";
-    const dashboardLoginLabel = dashboardAccount.loggedIn ? "已登陆" : "未登陆";
+    const dashboardLoginLabel = dashboardAccount.loggedIn ? "已登录" : "未登录";
     const dashboardFeatures = [
       ["紫微斗数", "排盘 · AI细读", "01-feature-ziwei-v2.svg", "screen-26"],
       ["合盘分析", "双方命盘合参", "01-feature-hepan-v2.svg", "screen-11"],
@@ -20023,7 +20075,7 @@ function sourceChartFormScreen() {
           <select id="wentian-chart-lunar-month"></select>
           <select id="wentian-chart-lunar-day"></select>
         </div>
-        <label class="wentian-chart-leap-note">
+        <label id="wentian-chart-leap-note" class="wentian-chart-leap-note" style="display:none">
           <input id="wentian-chart-lunar-leap" type="checkbox" checked style="width:14px;height:14px"> ${isEn ? "Leap month counts as the next month" : "闰月按下个月计算"}
         </label>
         <div id="wentian-chart-preview" class="wentian-chart-preview"></div>
@@ -20038,7 +20090,7 @@ function sourceChartFormScreen() {
       </div>
 
       <div class="wentian-chart-row stack">
-        <span class="wentian-chart-label wentian-chart-label-wide">${isEn ? "Birthplace for true solar correction" : "填写出生地 自动校正真太阳时"}</span>
+        <span class="wentian-chart-label wentian-chart-label-wide">${isEn ? "Birthplace for true solar correction" : "出生地（用于真太阳时）"}</span>
         <div class="wentian-chart-city-wrap">
           <input id="wentian-chart-city" class="wentian-chart-city-input" placeholder="${isEn ? "Birthplace, e.g. Beijing" : "搜索城市，如：北京、上海、深圳"}" autocomplete="off">
           <button type="button" id="wentian-chart-city-clear" class="wentian-chart-city-clear" data-action="wentian-chart-city-clear" style="display:none">${isEn ? "Clear" : "清除"}</button>
@@ -20050,7 +20102,7 @@ function sourceChartFormScreen() {
       <div class="wentian-chart-row two">
         <div class="wentian-chart-label-group">
           <span class="wentian-chart-label">${isEn ? "Use True Solar Time" : "采用真太阳时"}</span>
-          <button type="button" class="wentian-chart-help-btn" data-action="wentian-chart-tst-help">${isEn ? "Explain" : "解读"}</button>
+          <button type="button" class="wentian-chart-help-btn" data-action="wentian-chart-tst-help">${isEn ? "Explain" : "说明"}</button>
         </div>
         <label class="wentian-chart-toggle"><input id="wentian-chart-true-solar" type="checkbox"><span></span></label>
       </div>
