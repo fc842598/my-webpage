@@ -12,6 +12,9 @@ const count = Number(args.count || 1);
 const category = args.category || "紫微斗数";
 const publishDate = args.date || todayShanghai();
 const publishTime = args.time || "09:00";
+if (!/^(?:[01]\d|2[0-3]):[0-5]\d$/.test(publishTime)) {
+  fail("--time must use HH:MM in Asia/Shanghai time.");
+}
 
 const topicHubs = [
   {
@@ -73,6 +76,13 @@ const topicHubs = [
 ];
 const topicHubFiles = new Set(topicHubs.map((hub) => hub.file));
 
+if (args.rebuild) {
+  regenerateChineseIndex();
+  regenerateFeedsAndSitemaps();
+  console.log("Rebuilt article indexes, feeds, and sitemaps.");
+  process.exit(0);
+}
+
 if (!queuePath || !sourcePath || !count) {
   fail("Usage: node scripts/publish-local-article-batch.mjs --queue <发布队列.md> --source <稿件.md> --count 20 --category <大类>");
 }
@@ -106,6 +116,7 @@ mkdirSync(path.join(root, "articles", "en"), { recursive: true });
 
 for (const [index, article] of articles.entries()) {
   const time = timePlusMinutes(publishTime, index * 3);
+  article.publishedAt = toPublishDateTime(time);
   const zhPath = path.join(root, "articles", `${article.slug}.html`);
   const enPath = path.join(root, "articles", "en", `${article.slug}.html`);
   if (existsSync(zhPath)) fail(`Article already exists: ${zhPath}`);
@@ -154,6 +165,14 @@ function timePlusMinutes(hhmm, minutes) {
   const h = String(Math.floor(total / 60) % 24).padStart(2, "0");
   const m = String(total % 60).padStart(2, "0");
   return `${h}:${m}`;
+}
+
+function toPublishDateTime(time) {
+  return `${publishDate}T${time}:00+08:00`;
+}
+
+function formatPublishedAt(value) {
+  return value.includes("T") ? `${value.slice(0, 10)} ${value.slice(11, 16)}` : value;
 }
 
 function parseQueue(raw) {
@@ -334,6 +353,7 @@ function chinesePage(article, time) {
   const description = descriptionOf(article);
   const canonical = `${site}/articles/${article.slug}.html`;
   const enUrl = `${site}/articles/en/${article.slug}.html`;
+  const publishedAt = article.publishedAt || toPublishDateTime(time);
   const title = article.title.replace(/^紫微斗数/, "紫微斗数");
   const pageTitle = `${title} | 学习紫微`;
   const section = article.category;
@@ -365,8 +385,8 @@ function chinesePage(article, time) {
     headline: title,
     description,
     image: defaultImage,
-    datePublished: publishDate,
-    dateModified: publishDate,
+    datePublished: publishedAt,
+    dateModified: publishedAt,
     inLanguage: "zh-CN",
     articleSection: section,
     about: ["紫微斗数", section, hub.shortName, title],
@@ -402,7 +422,7 @@ function chinesePage(article, time) {
           <nav class="breadcrumb" aria-label="面包屑"><a href="./">学习紫微</a><span>/</span><a href="${hub.file}">${escapeHtml(hub.shortName)}</a></nav>
           <h1>${escapeHtml(title)}</h1>
           <p class="detail-subtitle">${escapeHtml(subtitleOf(article))}</p>
-          <p class="article-meta"><span>${escapeHtml(section)}</span><span><time datetime="${publishDate}">${publishDate}</time></span></p>
+          <p class="article-meta"><span>${escapeHtml(section)}</span><span><time datetime="${publishedAt}">${formatPublishedAt(publishedAt)}</time></span></p>
         </div>
         <div class="article-orbit" aria-hidden="true"><span>紫微</span><i>命</i><i>兄</i><i>夫</i><i>子</i><i>财</i><i>疾</i><i>迁</i><i>友</i><i>官</i><i>田</i><i>福</i><i>父</i></div>
       </div>
@@ -429,6 +449,7 @@ function englishPage(article, time) {
   const description = `A plain-English guide to ${title}, with a practical reading order, simple examples, and clear boundaries for Zi Wei Dou Shu learners.`;
   const canonical = `${site}/articles/en/${article.slug}.html`;
   const zhUrl = `${site}/articles/${article.slug}.html`;
+  const publishedAt = article.publishedAt || toPublishDateTime(time);
   const examples = [...article.body.matchAll(/例子[一二三四]：([^\n]+)/g)].slice(0, 3).map((m) => textOnly(m[1]));
   const exampleHtml = examples.length
     ? `<ul>${examples.map((item) => `<li>${escapeHtml(englishExample(item))}</li>`).join("")}</ul>`
@@ -460,8 +481,8 @@ function englishPage(article, time) {
     headline: title,
     description,
     image: defaultImage,
-    datePublished: publishDate,
-    dateModified: publishDate,
+    datePublished: publishedAt,
+    dateModified: publishedAt,
     inLanguage: "en",
     articleSection: "Zi Wei Dou Shu",
     about: ["Zi Wei Dou Shu", "Chinese astrology chart", title],
@@ -485,7 +506,7 @@ function englishPage(article, time) {
           <nav class="breadcrumb" aria-label="Breadcrumb"><a href="./">Learn Zi Wei</a><span>/</span><span>Guide</span></nav>
           <h1>${escapeHtml(title)}</h1>
           <p class="detail-subtitle">${escapeHtml(description)}</p>
-          <p class="article-meta"><span>Zi Wei Dou Shu</span><span><time datetime="${publishDate}">${publishDate}</time></span></p>
+          <p class="article-meta"><span>Zi Wei Dou Shu</span><span><time datetime="${publishedAt}">${formatPublishedAt(publishedAt)}</time></span></p>
         </div>
       </div>
     </section>
@@ -668,7 +689,7 @@ function updateQueue(file, raw, published) {
     const url = `${site}/articles/${article.slug}.html`;
     const enUrl = `${site}/articles/en/${article.slug}.html`;
     const rowRe = new RegExp(`(\\|\\s*${String(article.order).padStart(2, "0")}\\s*\\|\\s*)待发布(\\s*\\|\\s*${escapeRegExp(article.slug)}\\s*\\|)`);
-    next = next.replace(rowRe, `$1已发布 ${publishDate} ${url} / ${enUrl}$2`);
+    next = next.replace(rowRe, `$1已发布 ${formatPublishedAt(article.publishedAt || publishDate)} ${url} / ${enUrl}$2`);
   }
   writeFileSync(file, next, "utf8");
 }
@@ -744,7 +765,7 @@ function regenerateChineseIndex() {
           <div class="article-list">
 ${items.map((article, index) => `          <article class="article-card" data-index="${String(index + 1).padStart(2, "0")}">
             <div class="card-body">
-              <div class="card-meta"><span class="tag">${escapeHtml(article.section)}</span><span><time datetime="${article.published}">${article.published}</time></span></div>
+              <div class="card-meta"><span class="tag">${escapeHtml(article.section)}</span><span><time datetime="${article.published}">${formatPublishedAt(article.published)}</time></span></div>
               <h3>${escapeHtml(article.headline)}</h3>
               <p>${escapeHtml(article.description)}</p>
               <a class="card-link" href="${article.rel}">阅读全文</a>
@@ -1031,8 +1052,9 @@ ${articles.slice(0, 80).map((article, index) => `
 `;
 }
 
-function rssDate(date, time) {
-  const d = new Date(`${date}T${time}:00+08:00`);
+function rssDate(dateOrDateTime, fallbackTime) {
+  const dateTime = dateOrDateTime.includes("T") ? dateOrDateTime : `${dateOrDateTime}T${fallbackTime}:00+08:00`;
+  const d = new Date(dateTime);
   return d.toUTCString().replace("GMT", "+0000");
 }
 
@@ -1079,7 +1101,7 @@ ${urls.map((url) => `  <url>
 function enIndex(articles) {
   const cards = articles.map((article, index) => `          <article class="article-card" data-index="${String(index + 1).padStart(2, "0")}">
             <div class="card-body">
-              <div class="card-meta"><span class="tag">Zi Wei Dou Shu</span><span><time datetime="${article.published}">${article.published}</time></span></div>
+              <div class="card-meta"><span class="tag">Zi Wei Dou Shu</span><span><time datetime="${article.published}">${formatPublishedAt(article.published)}</time></span></div>
               <h3>${escapeHtml(article.headline)}</h3>
               <p>${escapeHtml(article.description)}</p>
               <a class="card-link" href="${article.rel}">Read article</a>
