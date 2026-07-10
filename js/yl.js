@@ -1256,7 +1256,7 @@
     if (readAuthSession()) hydratePaymentProduct();
     else {
       renderPayment();
-      setPayHint("可在本页登录并开通阅天综合会员。");
+      setPayHint("");
     }
   }
 

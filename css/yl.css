@@ -1403,7 +1403,8 @@ input:focus-visible {
 
 .yl-pay-hint {
   grid-column: 1 / -1;
-  margin: 10px 0 0;
+  margin: 6px 0 0;
+  min-height: 0;
   color: var(--yl-green-dark);
   font-size: 13px;
   font-weight: 900;
@@ -1411,26 +1412,53 @@ input:focus-visible {
   text-align: center;
 }
 
+.yl-pay-hint:empty {
+  display: none;
+}
+
 .yl-pay-note {
   grid-column: 1 / -1;
 }
 
 .yl-operator {
+  display: grid;
+  gap: 12px;
   color: var(--yl-muted);
-  padding: 24px;
+  padding: 18px 24px 24px;
 }
 
 .yl-operator strong {
   display: block;
-  margin-bottom: 12px;
+  margin-bottom: 0;
   color: var(--yl-ink);
   font-size: 20px;
 }
 
+.yl-operator-card {
+  border: 1px solid var(--yl-line-soft);
+  border-radius: 16px;
+  background: rgba(255, 252, 246, 0.9);
+  padding: 14px 16px;
+}
+
 .yl-operator p {
-  margin: 8px 0 0;
+  margin: 0;
   font-size: 14px;
   line-height: 1.7;
+}
+
+.yl-operator p + p {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(223, 207, 184, 0.82);
+}
+
+.yl-operator p span {
+  display: inline;
+  margin-bottom: 0;
+  color: var(--yl-ink);
+  font-size: 12px;
+  font-weight: 900;
 }
 
 .yl-bottom-nav {
@@ -1788,6 +1816,10 @@ input:focus-visible {
 
   .yl-bottom-nav a.is-active {
     color: var(--yl-green-dark);
+  }
+
+  .yl-operator {
+    padding-bottom: calc(96px + env(safe-area-inset-bottom));
   }
 }
 
