@@ -2,10 +2,11 @@
   "use strict";
 
   var STORAGE_KEY = "yuetian-health-assessment-v1";
-  var CLIENT_ID_KEY = "yuetian-health-client-id-v1";
+  // Reuse the primary app browser id so health and chart chats share one quota.
+  var CLIENT_ID_KEY = "ziwei_client_id";
   var GUEST_ASK_LIMIT = 3;
   var FREE_ASK_LIMIT = 8;
-  var MEMBER_ASK_LIMIT = 100;
+  var MEMBER_ASK_LIMIT = 80;
   var AUTH_SESSION_KEY = "wentian-app-auth-session-v1";
   var HEALTH_PRODUCT_KEY = "monthly_member";
   var HEALTH_PRODUCT_NAME = "阅天综合会员";
@@ -288,8 +289,13 @@
   function getHealthClientId() {
     try {
       var saved = localStorage.getItem(CLIENT_ID_KEY);
-      if (saved) return saved;
-      var next = "yl-" + Date.now().toString(36) + "-" + Math.random().toString(36).slice(2, 10);
+      if (/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(saved || "")) return saved;
+      var next = window.crypto && typeof window.crypto.randomUUID === "function"
+        ? window.crypto.randomUUID()
+        : "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (char) {
+          var value = Math.floor(Math.random() * 16);
+          return (char === "x" ? value : ((value & 3) | 8)).toString(16);
+        });
       localStorage.setItem(CLIENT_ID_KEY, next);
       return next;
     } catch (_error) {
@@ -300,6 +306,7 @@
   async function apiFetch(path, options) {
     var opts = options || {};
     var headers = Object.assign({ "Content-Type": "application/json" }, opts.headers || {});
+    headers["X-Wentian-Client-Id"] = getHealthClientId();
     var token = opts.noAuth ? "" : getAuthToken();
     if (token) headers.Authorization = "Bearer " + token;
     var url = /^https?:\/\//i.test(path) ? path : getHealthApiBase() + path;
@@ -1022,9 +1029,9 @@
       window.yuetianTrack?.(registered ? "sign_up" : "login", { method: "password", surface: "unified_member" });
       healthAuthState.panelOpen = false;
       healthAuthState.loading = false;
-      setHealthAuthStatus("登录成功，正在创建健康会员订单...", "ok");
+      setHealthAuthStatus("登录成功，正在创建阅天综合会员订单...", "ok");
       paymentState.status = "";
-      paymentState.message = "登录成功，正在创建健康会员订单...";
+      paymentState.message = "登录成功，正在创建阅天综合会员订单...";
       await hydratePaymentProduct();
       await startHealthPayment();
     } catch (error) {

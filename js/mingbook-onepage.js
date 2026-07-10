@@ -142,7 +142,7 @@
   const desktopFreeDailyLimit = 20;
   const desktopPaidDailyLimit = 100;
   const desktopPaidProductName = '阅天AI';
-  const desktopPaidProductDesc = '许大师 AI 对话 100 次/天，按日刷新。';
+  const desktopPaidProductDesc = '许大师 AI 对话 80 次/天，按日刷新。';
   const desktopPaymentPollMs = 3000;
   const desktopPaymentState = {
     open: false,
@@ -684,7 +684,7 @@
   }
 
   function getDesktopQuotaPlanName(quota = desktopAuthState.quota) {
-    return quota?.isMember ? '付费版' : '免费版';
+    return quota?.isMember ? '综合会员' : '免费版';
   }
 
   function getDesktopQuotaLabelName(quota = desktopAuthState.quota) {
@@ -791,7 +791,7 @@
     }
     const authPay = $('#mbpAuthMemberPay');
     if (authPay) {
-      authPay.textContent = isMember ? `续费 ¥${product.amountYuan || '19.90'}` : `开通付费版 ¥${product.amountYuan || '19.90'}`;
+      authPay.textContent = isMember ? `续费 ¥${product.amountYuan || '19.90'}` : `开通综合会员 ¥${product.amountYuan || '19.90'}`;
       authPay.disabled = desktopAuthState.loading || desktopPaymentState.loading;
     }
   }
@@ -1124,7 +1124,7 @@
     try {
       const data = await desktopFetchJson(`/api/payments/order-status?orderNo=${encodeURIComponent(desktopPaymentState.orderNo)}`);
       desktopPaymentState.status = data.status || desktopPaymentState.status;
-      desktopPaymentState.message = data.status === 'paid' ? '已开通付费版' : `等待${getDesktopPaymentProviderLabel()}完成`;
+      desktopPaymentState.message = data.status === 'paid' ? '已开通综合会员' : `等待${getDesktopPaymentProviderLabel()}完成`;
       if (data.status === 'paid') {
         trackDesktopPurchase(data);
         stopDesktopPaymentPoll();
@@ -1246,7 +1246,7 @@
       });
       desktopPaymentState.status = data.status || 'paid';
       if (desktopPaymentState.status === 'paid') trackDesktopPurchase(data);
-      desktopPaymentState.message = '已开通付费版';
+      desktopPaymentState.message = '已开通综合会员';
       await hydrateDesktopMemberStatus({ force: true });
     } catch (error) {
       desktopPaymentState.error = error.message || '测试支付失败';

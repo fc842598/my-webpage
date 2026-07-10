@@ -101,7 +101,7 @@ Paid
 
 Yuetian AI
 
-100/day
+80/day
 
 Resets daily, no monthly quota
 

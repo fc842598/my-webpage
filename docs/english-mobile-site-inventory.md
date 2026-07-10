@@ -44,7 +44,7 @@ Evidence:
 | Pass | screen-26 | Chart Form | AI, Chart | Birth Details | Male; Female; Solar; Lunar; Explain | Optional name; 2026; May; 12; Leap month counts as the next month | None | No text/label/image overlap found at 390x844 |
 | Pass | screen-27 | Ziwei Report | AI, Chart | Zi Wei Chart | Tian Tong Lu Cun D.Child Gui Si 96-105 Children; Wu Qu Tian Fu Qing Yang Zuo Fu D.Spouse Jia Wu 106-115 Spouse; Tai Yang Tai Yin Di Jie D.Sibling Yi Wei 116-125 Siblings; Tan Lang Tian Ma You Bi D.Life Bing Shen 6-15 Life Palace; Po Jun Tuo Luo D.Wealth Ren Chen 86-95 Wealth | None | Innate Hexagram Water over Heaven Xu | No text/label/image overlap found at 390x844 |
 | Pass | screen-29 | Membership / Recharge | AI, Chart, Payment | Free | None | None | None | No text/label/image overlap found at 390x844 |
-| Pass | screen-30 | Payment | AI, Payment | 100/day | None | None | None | No text/label/image overlap found at 390x844 |
+| Pass | screen-30 | Payment | AI, Payment | 80/day | None | None | None | No text/label/image overlap found at 390x844 |
 | Pass | screen-31 | Mine | AI, Account | Me | None | None | None | No text/label/image overlap found at 390x844 |
 | Pass | screen-32 | Account Settings | Chart, Payment, Account | Settings | None | None | None | No text/label/image overlap found at 390x844 |
 | Pass | screen-33 | Membership Plans | AI, Payment, Account | Yuetian AI | None | None | None | No text/label/image overlap found at 390x844 |
