@@ -299,13 +299,6 @@ function relatedLinksFor(article) {
   return uniqueLinks(links).slice(0, 6);
 }
 
-function relatedReadingHtml(article) {
-  const links = relatedLinksFor(article).filter((link) => !link.href.startsWith("../")).slice(0, 4);
-  return `<hr>
-        <h2 id="related-reading">同主题阅读</h2>
-        <p>${links.map((link) => `<a href="${link.href}">${escapeHtml(link.text)}</a>`).join(" · ")}</p>`;
-}
-
 function sideLinksHtml(article) {
   const links = relatedLinksFor(article).slice(0, 5);
   return links.map((link) => `        <a class="card-link" href="${link.href}">${escapeHtml(link.text)}</a>`).join("\n");
@@ -417,7 +410,6 @@ function chinesePage(article, time) {
     <div class="container article-layout article-detail-layout">
       <article id="article-start" class="article-main article-paper">
         ${markdownBody(article.body)}
-        ${relatedReadingHtml(article)}
       </article>
       <aside class="side-panel detail-rail" aria-label="本文导航">
         <h2>继续阅读</h2>
