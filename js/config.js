@@ -39,3 +39,28 @@ const SITE_CONFIG = {
 };
 
 window.SITE_CONFIG = SITE_CONFIG;
+
+/**
+ * Resolve the API origin without allowing links to redirect authenticated or
+ * privacy-sensitive requests to an attacker-controlled host.
+ * Production pages may only use the official API origin. Local overrides are
+ * available only when the page itself is running on a loopback host.
+ */
+window.resolveYuetianApiBase = function resolveYuetianApiBase(candidate) {
+  const officialOrigin = "https://api.yuetianai.com";
+  const loopbackHosts = new Set(["localhost", "127.0.0.1", "0.0.0.0", "[::1]"]);
+  const pageIsLocal = loopbackHosts.has(String(window.location.hostname || "").toLowerCase());
+
+  try {
+    const url = new URL(String(candidate || officialOrigin), officialOrigin);
+    if (url.origin === officialOrigin) return officialOrigin;
+
+    const targetHost = String(url.hostname || "").toLowerCase();
+    const targetIsLocal = loopbackHosts.has(targetHost) || targetHost === "::1";
+    if (pageIsLocal && targetIsLocal && (url.protocol === "http:" || url.protocol === "https:")) {
+      return url.origin;
+    }
+  } catch (_error) {}
+
+  return officialOrigin;
+};

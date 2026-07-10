@@ -577,7 +577,7 @@
     </section>
   </main>
 
-  <script src="../js/config.js"></script>
+  <script src="../js/config.js?v=20260710-api-origin-lock-v1"></script>
   <script>
     (function () {
       const form = document.getElementById('contactForm');
@@ -596,11 +596,11 @@
         const qs = new URLSearchParams(window.location.search);
         const queryBase = qs.get('apiBase') || qs.get('aiBackendBase') || qs.get('pimingApiBase') || '';
         const configBase = window.SITE_CONFIG && window.SITE_CONFIG.aiBackendBase;
-        if (queryBase) return queryBase.replace(/\/+$/, '');
-        if (/^(localhost|127\.0\.0\.1|0\.0\.0\.0)$/i.test(window.location.hostname)) {
-          return 'http://localhost:3001';
-        }
-        return (configBase || 'https://api.yuetianai.com').replace(/\/+$/, '');
+        const isLocalPage = /^(localhost|127\.0\.0\.1|0\.0\.0\.0|\[?::1\]?)$/i.test(window.location.hostname);
+        const candidate = queryBase || (isLocalPage ? 'http://localhost:3001' : configBase);
+        return typeof window.resolveYuetianApiBase === 'function'
+          ? window.resolveYuetianApiBase(candidate)
+          : 'https://api.yuetianai.com';
       }
 
       function setStatus(message, tone) {

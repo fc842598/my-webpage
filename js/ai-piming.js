@@ -8,12 +8,15 @@
  */
 
 // ── 配置 ──────────────────────────────────────────────────────────────────────
-// 支持 URL 临时覆盖：?aiBackendBase=https://xxx
+// URL 临时覆盖仅限本机开发地址，线上页面始终使用官方 API。
 const AI_BACKEND_BASE = (() => {
   try {
     const qsBase = new URLSearchParams(location.search).get('aiBackendBase') || '';
     const cfgBase = window.SITE_CONFIG && window.SITE_CONFIG.aiBackendBase;
-    return (qsBase || cfgBase || 'https://api.yuetianai.com').replace(/\/$/, '');
+    const candidate = qsBase || cfgBase || 'https://api.yuetianai.com';
+    return typeof window.resolveYuetianApiBase === 'function'
+      ? window.resolveYuetianApiBase(candidate)
+      : 'https://api.yuetianai.com';
   } catch (_err) {
     return 'https://api.yuetianai.com';
   }

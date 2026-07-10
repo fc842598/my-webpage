@@ -2183,7 +2183,10 @@ function getWentianApiBase() {
   const qs = new URLSearchParams(location.search);
   const queryBase = qs.get("aiBackendBase") || qs.get("pimingApiBase") || qs.get("apiBase") || "";
   const configBase = window.SITE_CONFIG?.aiBackendBase || "";
-  return (queryBase || configBase || "https://api.yuetianai.com").replace(/\/+$/, "");
+  const candidate = queryBase || configBase || "https://api.yuetianai.com";
+  return typeof window.resolveYuetianApiBase === "function"
+    ? window.resolveYuetianApiBase(candidate)
+    : "https://api.yuetianai.com";
 }
 
 function getWentianFrontendBase() {

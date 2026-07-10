@@ -41,7 +41,10 @@
     try {
       var qsBase = new URLSearchParams(location.search).get('aiBackendBase') || '';
       var cfgBase = window.SITE_CONFIG && window.SITE_CONFIG.aiBackendBase;
-      return (qsBase || cfgBase || 'https://api.yuetianai.com').replace(/\/$/, '');
+      var candidate = qsBase || cfgBase || 'https://api.yuetianai.com';
+      return typeof window.resolveYuetianApiBase === 'function'
+        ? window.resolveYuetianApiBase(candidate)
+        : 'https://api.yuetianai.com';
     } catch (_) {
       return 'https://api.yuetianai.com';
     }

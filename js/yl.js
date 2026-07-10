@@ -281,7 +281,10 @@
     try {
       var params = new URLSearchParams(window.location.search || "");
       var queryBase = params.get("apiBase");
-      if (queryBase) return queryBase.replace(/\/+$/, "");
+      var candidate = queryBase || DEFAULT_API_BASE;
+      return typeof window.resolveYuetianApiBase === "function"
+        ? window.resolveYuetianApiBase(candidate)
+        : DEFAULT_API_BASE;
     } catch (_error) {}
     return DEFAULT_API_BASE;
   }
