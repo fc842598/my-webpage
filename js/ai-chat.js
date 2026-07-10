@@ -323,6 +323,7 @@
 
   function _dispatchSend(payload) {
     var shouldRestoreInput = payload.shouldRestoreInput !== false;
+    window.yuetianTrack?.('ai_question_submit', { surface: 'desktop_chart', chat_mode: 'chart' });
     _loading = true;
     _setRefreshEnabled(false);
     _appendTyping();
@@ -344,6 +345,7 @@
       .then(_readJsonResponse)
       .then(function (data) {
         _removeTyping();
+        if (String(data.reply || '').trim()) window.yuetianTrack?.('ai_answer_success', { surface: 'desktop_chart', chat_mode: 'chart' });
         _transientMode = !!data.transientMode;
         if (data.transientState) _saveTransientState(window._chartRecordId, data.transientState);
         else _saveTransientState(window._chartRecordId, null);

@@ -1107,6 +1107,18 @@
     if (showQr) window.setTimeout(renderDesktopPaymentQr, 0);
   }
 
+  function trackDesktopPurchase(data = {}) {
+    window.yuetianTrackPurchase?.({
+      orderNo: data.orderNo || desktopPaymentState.orderNo,
+      value: data.amountYuan || desktopPaymentState.product?.amountYuan,
+      currency: data.currency || desktopPaymentState.product?.currency || 'CNY',
+      provider: data.provider || desktopPaymentState.provider,
+      productKey: data.productKey || desktopMemberProductKey,
+      surface: 'desktop_chart',
+      mockMode: data.mockMode ?? desktopPaymentState.mockMode,
+    });
+  }
+
   async function checkDesktopPaymentStatus() {
     if (!desktopPaymentState.orderNo) return null;
     try {
@@ -1114,6 +1126,7 @@
       desktopPaymentState.status = data.status || desktopPaymentState.status;
       desktopPaymentState.message = data.status === 'paid' ? '已开通付费版' : `等待${getDesktopPaymentProviderLabel()}完成`;
       if (data.status === 'paid') {
+        trackDesktopPurchase(data);
         stopDesktopPaymentPoll();
         await hydrateDesktopMemberStatus({ force: true });
       }
@@ -1165,6 +1178,7 @@
       openDesktopAuth('login');
       return;
     }
+    window.yuetianTrack?.('begin_checkout', { surface: 'desktop_chart', checkout_source: 'member_payment' });
     desktopPaymentState.open = true;
     desktopPaymentState.loading = true;
     desktopPaymentState.status = 'loading';
@@ -1177,7 +1191,12 @@
     try {
       const order = await desktopFetchJson('/api/payments/create-order', {
         method: 'POST',
-        body: { productKey: desktopMemberProductKey, chartRecordId: state.chartRecordId || '', provider: desktopPaymentState.provider },
+        body: {
+          productKey: desktopMemberProductKey,
+          chartRecordId: state.chartRecordId || '',
+          provider: desktopPaymentState.provider,
+          analytics: window.yuetianGetAnalyticsContext?.() || null,
+        },
       });
       const payMethod = isDesktopH5PayPreferred() ? 'h5' : 'native';
       const sessionData = await desktopFetchJson('/api/payments/create-session', {
@@ -1195,6 +1214,7 @@
         name: order.productName || desktopPaymentState.product?.name || desktopPaidProductName,
         description: order.description || desktopPaymentState.product?.description || desktopPaidProductDesc,
         amountYuan: order.amountYuan || desktopPaymentState.product?.amountYuan || '19.90',
+        currency: order.currency || desktopPaymentState.product?.currency || 'CNY',
       };
       desktopPaymentState.message = desktopPaymentState.mockMode
         ? '当前是支付测试模式'
@@ -1225,6 +1245,7 @@
         body: { orderNo: desktopPaymentState.orderNo },
       });
       desktopPaymentState.status = data.status || 'paid';
+      if (desktopPaymentState.status === 'paid') trackDesktopPurchase(data);
       desktopPaymentState.message = '已开通付费版';
       await hydrateDesktopMemberStatus({ force: true });
     } catch (error) {
@@ -1481,6 +1502,7 @@
     renderDesktopAuth();
     try {
       let data = null;
+      let registered = false;
       if (desktopAuthState.mode === 'register') {
         data = await desktopFetchJson('/api/auth/register-phone', {
           method: 'POST',
@@ -1490,6 +1512,7 @@
           if (!/已注册|already|exists/i.test(error.message || '')) throw error;
           return null;
         });
+        registered = !!data?.session;
       }
       if (!data?.session) {
         data = await desktopFetchJson('/api/auth/password-login', {
@@ -1499,6 +1522,7 @@
         });
       }
       desktopAuthState.session = data?.session || null;
+      window.yuetianTrack?.(registered ? 'sign_up' : 'login', { method: 'password', surface: 'desktop_chart' });
       saveDesktopAuthSession(desktopAuthState.session);
       desktopAuthState.error = '';
       $('#mbpAuthAccount').value = '';
@@ -1600,6 +1624,12 @@
     return getDesktopAuthSession({ force: true });
   }
 
+  function trackDesktopOAuth(session) {
+    const createdAt = new Date(session?.user?.created_at || 0).getTime();
+    const isNewUser = createdAt > 0 && Date.now() - createdAt < 5 * 60 * 1000;
+    window.yuetianTrack?.(isNewUser ? 'sign_up' : 'login', { method: 'google', surface: 'desktop_chart' });
+  }
+
   async function initDesktopAuth() {
     if (desktopAuthReadyPromise) return desktopAuthReadyPromise;
     desktopAuthReadyPromise = getDesktopAuthSession().then((session) => {
@@ -1623,7 +1653,8 @@
     desktopAuthState.error = '';
     renderDesktopAuth();
     try {
-      await consumeDesktopAuthCallback();
+      const callbackSession = await consumeDesktopAuthCallback();
+      if (callbackSession?.user) trackDesktopOAuth(callbackSession);
       clearDesktopAuthCallbackUrl();
       desktopAuthState.open = !desktopAuthState.session?.user;
       desktopAuthState.error = '';
@@ -8352,6 +8383,7 @@
         showFormError(profile.error);
         return;
       }
+      window.yuetianTrack?.('chart_start', { surface: 'desktop_chart' });
       showFormError('');
       state.profile = profile;
       const reusableRecordId = getReusableClientRecordId(state.profile);
@@ -8374,6 +8406,7 @@
       saveProfile();
       saveProfileToHistory(state.profile, { id: reusableRecordId || state.chartRecordId });
       renderChart();
+      window.yuetianTrack?.('chart_complete', { surface: 'desktop_chart', chart_type: 'ziwei' });
       if (desktopAuthState.session?.user) hydrateDesktopMemberStatus({ force: true });
       $('#chart')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });

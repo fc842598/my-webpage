@@ -999,6 +999,7 @@
     setHealthAuthStatus(registering ? "正在注册并登录..." : "正在登录...", "");
     try {
       var data = null;
+      var registered = false;
       if (registering) {
         data = await apiFetch("/api/auth/register-phone", {
           method: "POST",
@@ -1008,6 +1009,7 @@
           if (!/已注册|already|exists/i.test(error.message || "")) throw error;
           return null;
         });
+        registered = !!data?.session;
       }
       if (!data?.session) {
         data = await apiFetch("/api/auth/password-login", {
@@ -1017,6 +1019,7 @@
         });
       }
       if (!saveHealthAuthSession(data?.session)) throw new Error("登录状态保存失败");
+      window.yuetianTrack?.(registered ? "sign_up" : "login", { method: "password", surface: "unified_member" });
       healthAuthState.panelOpen = false;
       healthAuthState.loading = false;
       setHealthAuthStatus("登录成功，正在创建健康会员订单...", "ok");
@@ -1071,6 +1074,19 @@
     return false;
   }
 
+  function trackHealthPurchase(data) {
+    data = data || {};
+    window.yuetianTrackPurchase?.({
+      orderNo: data.orderNo || paymentState.orderNo,
+      value: data.amountYuan || paymentState.product?.amountYuan,
+      currency: data.currency || paymentState.product?.currency || "CNY",
+      provider: data.provider || paymentState.provider,
+      productKey: data.productKey || HEALTH_PRODUCT_KEY,
+      surface: "unified_member",
+      mockMode: data.mockMode ?? paymentState.mockMode
+    });
+  }
+
   async function startHealthPayment() {
     if (paymentState.loading) return;
     if (paymentState.status === "paid") return;
@@ -1083,6 +1099,7 @@
       return;
     }
     if (!requireHealthLogin()) return;
+    window.yuetianTrack?.("begin_checkout", { surface: "unified_member", checkout_source: "member_payment" });
 
     paymentState.loading = true;
     paymentState.status = "loading";
@@ -1098,7 +1115,8 @@
         body: {
           productKey: HEALTH_PRODUCT_KEY,
           provider: paymentState.provider,
-          meta: { source: "yl_health_page" }
+          meta: { source: "yl_health_page" },
+          analytics: window.yuetianGetAnalyticsContext?.() || null
         }
       });
       var payMethod = paymentState.provider === "paypal" ? "redirect" : (isH5PayPreferred() ? "h5" : "native");
@@ -1144,7 +1162,10 @@
     try {
       var data = await apiFetch("/api/payments/order-status?orderNo=" + encodeURIComponent(paymentState.orderNo));
       paymentState.status = data.status || paymentState.status;
-      if (paymentState.status === "paid") paymentState.isMember = true;
+      if (paymentState.status === "paid") {
+        paymentState.isMember = true;
+        trackHealthPurchase(data);
+      }
       paymentState.message = data.status === "paid"
         ? "支付已完成，阅天综合会员已开通。"
         : "暂未确认支付成功，请完成付款后再刷新。";
@@ -1168,6 +1189,7 @@
       });
       paymentState.status = data.status || "paid";
       paymentState.isMember = paymentState.status === "paid";
+      if (paymentState.isMember) trackHealthPurchase(data);
       paymentState.message = "支付测试成功，阅天综合会员已开通。";
     } catch (error) {
       paymentState.message = error.message || "测试支付失败";

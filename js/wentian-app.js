@@ -11491,6 +11491,7 @@ async function sendWentianXuChat(promptText = "") {
   const payload = getWentianXuChatPayload();
   ensureWentianXuPayloadRuntime(payload);
   const outboundMessage = buildWentianXuOutboundMessage(message, payload.divinationContext);
+  window.yuetianTrack?.("ai_question_submit", { surface: "wentian_mobile", chat_mode: payload.mode || "chart" });
   wentianXuChat.autoScroll = true;
   wentianXuChat.userPinned = false;
   addWentianMessage("user", message, { forceScroll: true });
@@ -11517,6 +11518,7 @@ async function sendWentianXuChat(promptText = "") {
     setWentianQuota(data.quota);
     setWentianChatStatus(data.transientMode ? "临时会话" : getWentianXuModeText(payload.mode, "ready"), data.transientMode ? "warn" : "ok");
     const replyText = extractWentianReplyText(data);
+    if (replyText) window.yuetianTrack?.("ai_answer_success", { surface: "wentian_mobile", chat_mode: payload.mode || "chart" });
     if (!replyText) setWentianChatStatus("回复未生成", "warn");
     addWentianMessage("assistant", replyText || getWentianEmptyReplyText(), { typewriter: true });
   } catch (error) {
@@ -11848,6 +11850,18 @@ function refreshWentianPaymentScreen() {
   if (state.route === "screen-30") navigate("screen-30", false);
 }
 
+function trackWentianPurchase(data = {}) {
+  window.yuetianTrackPurchase?.({
+    orderNo: data.orderNo || wentianPaymentState.orderNo,
+    value: data.amountYuan || wentianPaymentState.amountYuan,
+    currency: data.currency || wentianPaymentState.currency || "CNY",
+    provider: data.provider || wentianPaymentState.provider,
+    productKey: data.productKey || WENTIAN_MEMBER_PRODUCT_KEY,
+    surface: "wentian_mobile",
+    mockMode: data.mockMode ?? wentianPaymentState.mockMode,
+  });
+}
+
 async function checkWentianPaymentStatus() {
   if (!wentianPaymentState.orderNo) return null;
   try {
@@ -11855,6 +11869,7 @@ async function checkWentianPaymentStatus() {
     wentianPaymentState.status = data.status || wentianPaymentState.status;
     wentianPaymentState.message = data.status === "paid" ? "已开通综合会员" : `等待${getWentianPaymentProviderLabel()}完成`;
     if (data.status === "paid") {
+      trackWentianPurchase(data);
       stopWentianPaymentPoll();
       await hydrateWentianMemberStatus({ force: true });
     }
@@ -11937,6 +11952,7 @@ async function captureWentianPayPalReturn(params = getWentianPayPalReturnParams(
       body: { orderNo: params.orderNo, paypalOrderId: params.paypalOrderId },
     });
     wentianPaymentState.status = data.status || "paid";
+    if (wentianPaymentState.status === "paid") trackWentianPurchase(data);
     wentianPaymentState.message = data.status === "paid"
       ? "已开通综合会员"
       : `等待${getWentianPaymentProviderLabel()}完成`;
@@ -11975,6 +11991,7 @@ async function completeWentianMockPayment() {
       body: { orderNo: wentianPaymentState.orderNo },
     });
     wentianPaymentState.status = data.status || "paid";
+    if (wentianPaymentState.status === "paid") trackWentianPurchase(data);
     wentianPaymentState.message = "已开通综合会员";
     await hydrateWentianMemberStatus({ force: true });
   } catch (error) {
@@ -12383,6 +12400,7 @@ async function submitWentianChartForm() {
     const norm = getWentianChartFormData();
     const lib = getWentianIztroLib();
     if (!lib) throw new Error("排盘模块未加载，请刷新后重试");
+    window.yuetianTrack?.("chart_start", { surface: "wentian_mobile" });
 
     const genderText = norm.gender === "male" ? "男" : "女";
     const chart = createWentianChartWithLeapRule(lib, norm, genderText);
@@ -12435,6 +12453,7 @@ async function submitWentianChartForm() {
     clearWentianArchiveEditContext();
 
     resetWentianXuChatRuntime();
+    window.yuetianTrack?.("chart_complete", { surface: "wentian_mobile", chart_type: norm.type || "ziwei" });
     setWentianChartStatus(editingArchive ? "已保存修改" : "已生成命盘");
     if (editReturnRoute) returnToPreviousWentianRoute(editReturnRoute);
     else navigate("screen-27");
@@ -23418,6 +23437,7 @@ async function submitWentianAuth(mode = wentianAuthState.mode) {
   syncWentianAuthUi();
   try {
     let data = null;
+    let registered = false;
     if (mode === "register") {
       data = await wentianFetchJson("/api/auth/register-phone", {
         method: "POST",
@@ -23427,6 +23447,7 @@ async function submitWentianAuth(mode = wentianAuthState.mode) {
         if (!/已注册|already|exists/i.test(error.message || "")) throw error;
         return null;
       });
+      registered = !!data?.session;
     }
     if (!data?.session) {
       data = await wentianFetchJson("/api/auth/password-login", {
@@ -23436,6 +23457,7 @@ async function submitWentianAuth(mode = wentianAuthState.mode) {
       });
     }
     setWentianAuthSession(data?.session || null);
+    window.yuetianTrack?.(registered ? "sign_up" : "login", { method: "password", surface: "wentian_mobile" });
     clearWentianAuthDraft();
     wentianAuthState.error = "";
     await bindWentianPendingInvite();
@@ -23556,6 +23578,12 @@ async function consumeWentianAuthCallback() {
   return initWentianAuth();
 }
 
+function trackWentianOAuth(session) {
+  const createdAt = new Date(session?.user?.created_at || 0).getTime();
+  const isNewUser = createdAt > 0 && Date.now() - createdAt < 5 * 60 * 1000;
+  window.yuetianTrack?.(isNewUser ? "sign_up" : "login", { method: "google", surface: "wentian_mobile" });
+}
+
 async function bootWentianApp() {
   buildScreenNav();
   captureWentianInviteFromUrl();
@@ -23569,6 +23597,7 @@ async function bootWentianApp() {
   let session = null;
   try {
     session = await consumeWentianAuthCallback();
+    if (session?.user) trackWentianOAuth(session);
   } catch (error) {
     wentianAuthState.error = error.message || "Google 登录失败，请稍后重试";
   }

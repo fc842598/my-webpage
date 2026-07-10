@@ -13,12 +13,12 @@
         /iPad/i.test(ua) ||
         (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
       const entry = params.get("entry");
-      const target =
-        entry === "member"
-          ? "/pages/wentian-app.html#screen-33"
-          : entry === "login"
-            ? "/pages/wentian-app.html#screen-40"
-            : "/pages/wentian-app.html#screen-26";
+      const mobileParams = new URLSearchParams(params);
+      mobileParams.delete("view");
+      const targetUrl = new URL("/pages/wentian-app.html", window.location.origin);
+      targetUrl.search = mobileParams.toString();
+      targetUrl.hash = entry === "member" ? "screen-33" : entry === "login" ? "screen-40" : "screen-26";
+      const target = `${targetUrl.pathname}${targetUrl.search}${targetUrl.hash}`;
       const isNarrowViewport = () =>
         (window.innerWidth || document.documentElement.clientWidth || 0) <= 900;
       const shouldRedirect = () => isTouchMobile || isIPadLike || isNarrowViewport();
