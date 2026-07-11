@@ -8,6 +8,7 @@
   var FREE_ASK_LIMIT = 8;
   var MEMBER_ASK_LIMIT = 80;
   var AUTH_SESSION_KEY = "wentian-app-auth-session-v1";
+  var PAYMENT_HANDOFF_KEY = "yuetian-payment-handoff-v1";
   var HEALTH_PRODUCT_KEY = "monthly_member";
   var HEALTH_PRODUCT_NAME = "阅天综合会员";
   var HEALTH_PRODUCT_AMOUNT = "19.90";
@@ -258,6 +259,36 @@
     return session && session.access_token ? session.access_token : "";
   }
 
+  function readPaymentHandoff() {
+    try {
+      var token = sessionStorage.getItem(PAYMENT_HANDOFF_KEY) || "";
+      return /^v1\.[A-Za-z0-9_-]+$/.test(token) && token.length <= 2048 ? token : "";
+    } catch (_error) {
+      return "";
+    }
+  }
+
+  function capturePaymentHandoff() {
+    try {
+      var match = (window.location.hash || "").match(/^#member\?pay_handoff=(v1\.[A-Za-z0-9_-]+)$/);
+      var token = match?.[1] || "";
+      if (!/^v1\.[A-Za-z0-9_-]+$/.test(token) || token.length > 2048) return false;
+      sessionStorage.setItem(PAYMENT_HANDOFF_KEY, token);
+      window.history.replaceState({}, document.title, window.location.pathname + window.location.search + "#member");
+      return true;
+    } catch (_error) {
+      return false;
+    }
+  }
+
+  function hasHealthPaymentAuth() {
+    return !!(readAuthSession() || readPaymentHandoff());
+  }
+
+  function buildPaymentHandoffUrl(token) {
+    return "https://yuetianai.com/yl.html#member?pay_handoff=" + encodeURIComponent(token || "");
+  }
+
   function saveHealthAuthSession(session) {
     try {
       if (session?.access_token && session?.refresh_token) {
@@ -312,6 +343,8 @@
     headers["X-Wentian-Client-Id"] = getHealthClientId();
     var token = opts.noAuth ? "" : getAuthToken();
     if (token) headers.Authorization = "Bearer " + token;
+    var paymentHandoff = opts.noAuth ? "" : readPaymentHandoff();
+    if (paymentHandoff) headers["X-Wentian-Payment-Handoff"] = paymentHandoff;
     var url = /^https?:\/\//i.test(path) ? path : getHealthApiBase() + path;
     var response = await fetch(url, {
       method: opts.method || "GET",
@@ -325,6 +358,9 @@
       data = text ? JSON.parse(text) : {};
     } catch (_error) {
       data = { error: text || "服务暂时不可用" };
+    }
+    if (response.status === 401 && paymentHandoff) {
+      try { sessionStorage.removeItem(PAYMENT_HANDOFF_KEY); } catch (_error) {}
     }
     if (!response.ok || data.error) throw new Error(data.error || "服务暂时不可用");
     return data;
@@ -964,7 +1000,7 @@
     var holder = $("#ylPaymentQr");
     if (!holder) return;
     holder.innerHTML = "";
-    if (!paymentState.payUrl || paymentState.payMethod === "h5" || paymentState.provider === "paypal" || paymentState.mockMode) {
+    if (!paymentState.payUrl || paymentState.payMethod === "h5" || paymentState.payMethod === "handoff" || paymentState.provider === "paypal" || paymentState.mockMode) {
       holder.hidden = true;
       return;
     }
@@ -996,9 +1032,11 @@
     if (memberPrice) memberPrice.textContent = amount;
     var openButton = $("#ylOpenPayBtn");
     if (openButton) {
+      openButton.hidden = paymentState.status === "handoff";
       openButton.disabled = paymentState.loading;
       if (paymentState.loading) openButton.textContent = "处理中...";
       else if (paymentState.status === "paid") openButton.textContent = "已开通阅天综合会员";
+      else if (paymentState.status === "handoff") openButton.textContent = "重新复制微信支付链接";
       else if (paymentState.status === "pending" && paymentState.payMethod === "h5") openButton.textContent = "打开" + getProviderLabel(paymentState.provider);
       else if (paymentState.status === "pending") openButton.textContent = "我已支付，刷新状态";
       else openButton.textContent = "确认开通" + productName + " " + amount;
@@ -1015,7 +1053,7 @@
 
     var link = $("#ylPaymentLink");
     if (link) {
-      var showLink = !!paymentState.payUrl && !paymentState.mockMode;
+      var showLink = !!paymentState.payUrl && !paymentState.mockMode && paymentState.payMethod !== "handoff";
       link.hidden = !showLink;
       link.href = paymentState.payUrl || "#";
       link.textContent = paymentState.provider === "paypal" || paymentState.payMethod === "h5"
@@ -1027,6 +1065,8 @@
     if (refresh) refresh.hidden = !paymentState.orderNo || paymentState.status === "paid";
     var mock = $("#ylMockPayBtn");
     if (mock) mock.hidden = !(paymentState.mockMode && paymentState.orderNo && paymentState.status !== "paid");
+    var copyHandoff = $("#ylCopyWechatLinkBtn");
+    if (copyHandoff) copyHandoff.hidden = !(paymentState.payMethod === "handoff" && paymentState.payUrl);
 
     renderPaymentQr();
     renderHealthAuthPanel();
@@ -1165,9 +1205,65 @@
   }
 
   function requireHealthLogin() {
-    if (readAuthSession()) return true;
+    if (hasHealthPaymentAuth()) return true;
     openHealthAuthPanel();
     return false;
+  }
+
+  async function copyText(text) {
+    if (!text) return false;
+    try {
+      await navigator.clipboard.writeText(text);
+      return true;
+    } catch (_error) {}
+    try {
+      var input = document.createElement("textarea");
+      input.value = text;
+      input.setAttribute("readonly", "");
+      input.style.position = "fixed";
+      input.style.opacity = "0";
+      document.body.appendChild(input);
+      input.select();
+      var copied = document.execCommand("copy");
+      input.remove();
+      return copied;
+    } catch (_error) {
+      return false;
+    }
+  }
+
+  async function createWechatPaymentHandoff() {
+    paymentState.loading = true;
+    paymentState.status = "loading";
+    paymentState.message = "正在生成微信支付链接...";
+    paymentState.orderNo = "";
+    paymentState.payUrl = "";
+    paymentState.payMethod = "";
+    renderPayment();
+    try {
+      var data = await apiFetch("/api/payments/wechat/handoff", {
+        method: "POST",
+        body: {}
+      });
+      if (!data.handoffUrl) throw new Error("微信支付链接生成失败");
+      paymentState.status = "handoff";
+      paymentState.payMethod = "handoff";
+      paymentState.payUrl = data.handoffUrl;
+      var copied = await copyText(data.handoffUrl);
+      var copyButton = $("#ylCopyWechatLinkBtn");
+      if (copyButton) copyButton.textContent = copied ? "再次复制微信支付链接" : "复制微信支付链接";
+      paymentState.message = copied
+        ? "链接已复制，打开微信粘贴即可付款。"
+        : "微信支付链接已生成，请点击下方按钮复制。";
+      setPayHint("链接1小时内有效，微信打开后自动识别原账号。");
+    } catch (error) {
+      paymentState.status = "error";
+      paymentState.message = error.message || "微信支付链接生成失败";
+      setPayHint("请稍后重试，或改用支付宝。");
+    } finally {
+      paymentState.loading = false;
+      renderPayment();
+    }
   }
 
   function trackHealthPurchase(data) {
@@ -1197,13 +1293,19 @@
     if (!requireHealthLogin()) return;
 
     if (paymentState.provider === "wechat" && isMobileBrowser() && !isWechatBrowser()) {
-      paymentState.status = "error";
-      paymentState.message = "请在微信内打开本页，微信内会直接弹出 " + getPaymentAmountLabel() + " 付款面板。";
-      paymentState.orderNo = "";
-      paymentState.payUrl = "";
-      paymentState.payMethod = "";
-      setPayHint("请复制当前链接到微信打开，再点击确认开通；手机外部浏览器不再显示二维码。");
-      renderPayment();
+      if (readPaymentHandoff()) {
+        paymentState.status = "handoff";
+        paymentState.payMethod = "handoff";
+        paymentState.payUrl = buildPaymentHandoffUrl(readPaymentHandoff());
+        var copiedExisting = await copyText(paymentState.payUrl);
+        paymentState.message = copiedExisting
+          ? "链接已复制，打开微信粘贴即可付款。"
+          : "请点击下方按钮复制微信支付链接。";
+        setPayHint("链接1小时内有效，微信打开后自动识别原账号。");
+        renderPayment();
+        return;
+      }
+      await createWechatPaymentHandoff();
       return;
     }
 
@@ -1356,6 +1458,13 @@
       button.addEventListener("click", function () {
         if (paymentState.loading || paymentState.status === "pending") return;
         paymentState.provider = button.dataset.provider || "wechat";
+        if (paymentState.status === "handoff") {
+          paymentState.status = "";
+          paymentState.message = "";
+          paymentState.payUrl = "";
+          paymentState.payMethod = "";
+          setPayHint("");
+        }
         var meta = getProviderMeta(paymentState.provider);
         if (meta.currency) {
           paymentState.product = Object.assign({}, paymentState.product || {}, {
@@ -1373,6 +1482,15 @@
     }, true);
     $("#ylRefreshPayBtn").addEventListener("click", refreshHealthPaymentStatus);
     $("#ylMockPayBtn").addEventListener("click", completeMockPayment);
+    $("#ylCopyWechatLinkBtn").addEventListener("click", async function () {
+      if (readAuthSession()) {
+        await createWechatPaymentHandoff();
+        return;
+      }
+      var copied = await copyText(paymentState.payUrl);
+      paymentState.message = copied ? "链接已复制，打开微信粘贴即可付款。" : "复制失败，请长按链接复制。";
+      renderPayment();
+    });
     $("#ylHealthLoginBtn").addEventListener("click", function () {
       submitHealthAuth("login");
     });
@@ -1383,7 +1501,7 @@
       event.preventDefault();
       submitHealthAuth("login");
     });
-    if (readAuthSession()) hydratePaymentProduct();
+    if (hasHealthPaymentAuth() && !paymentHandoffCaptured) hydratePaymentProduct();
     else {
       renderPayment();
       setPayHint("");
@@ -1399,6 +1517,7 @@
     renderChatIntro();
   }
 
+  var paymentHandoffCaptured = !!window.__YUETIAN_PAYMENT_HANDOFF_CAPTURED__ || capturePaymentHandoff();
   loadState();
   normalizeSelections();
   state.report = state.report || calculateReport();
@@ -1406,7 +1525,13 @@
   bindPaymentEvents();
   renderAll();
   setActivePage(pageFromHash(), { instant: true });
-  handleWechatOauthReturn();
+  if (paymentHandoffCaptured && isWechatBrowser()) {
+    paymentState.message = "账号已识别，正在打开微信支付...";
+    setActivePage("member", { instant: true });
+    hydratePaymentProduct().then(startHealthPayment);
+  } else {
+    handleWechatOauthReturn();
+  }
   window.addEventListener("hashchange", function () {
     setActivePage(pageFromHash());
   });

@@ -3,6 +3,17 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <script>
+    (function () {
+      try {
+        var match = (window.location.hash || "").match(/^#member\?pay_handoff=(v1\.[A-Za-z0-9_-]+)$/);
+        if (!match || match[1].length > 2048) return;
+        sessionStorage.setItem("yuetian-payment-handoff-v1", match[1]);
+        window.__YUETIAN_PAYMENT_HANDOFF_CAPTURED__ = true;
+        window.history.replaceState({}, document.title, window.location.pathname + window.location.search + "#member");
+      } catch (_error) {}
+    })();
+  </script>
   <script src="/js/site-analytics.js?v=20260618-ga4"></script>
   <title>AI中医体质分析 - 体质自评报告与健康追问</title>
   <meta name="description" content="AI中医体质分析用于整理舌象、睡眠、情绪、胃口、大便、眼睛、腰腿、手脚冷热等健康信息，生成体质自评报告，并围绕报告继续追问。">
@@ -18,7 +29,7 @@
   <link rel="stylesheet" href="/css/yl.css?v=20260709-health-inline-pay-v1">
   <script defer src="/vendor/qrcodejs/qrcode.min.js"></script>
   <script defer src="/js/config.js?v=20260710-api-origin-lock-v1"></script>
-  <script defer src="/js/yl.js?v=20260711-wechat-jsapi-v2"></script>
+  <script defer src="/js/yl.js?v=20260711-payment-handoff-v1"></script>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -287,6 +298,7 @@
             <code id="ylPaymentOrderNo"></code>
           </div>
           <div class="yl-payment-actions">
+            <button class="yl-btn yl-btn-primary" type="button" id="ylCopyWechatLinkBtn" hidden>复制微信支付链接</button>
             <button class="yl-btn yl-btn-ghost" type="button" id="ylRefreshPayBtn" hidden>刷新支付状态</button>
             <button class="yl-btn yl-btn-ghost" type="button" id="ylMockPayBtn" hidden>模拟支付成功</button>
           </div>
