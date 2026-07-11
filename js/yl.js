@@ -316,7 +316,8 @@
     var response = await fetch(url, {
       method: opts.method || "GET",
       headers: headers,
-      body: opts.body ? JSON.stringify(opts.body) : undefined
+      body: opts.body ? JSON.stringify(opts.body) : undefined,
+      credentials: "include"
     });
     var text = await response.text();
     var data = {};
@@ -329,8 +330,8 @@
     return data;
   }
 
-  function isH5PayPreferred() {
-    return /MicroMessenger|Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent || "");
+  function isWechatBrowser() {
+    return /MicroMessenger/i.test(navigator.userAgent || "");
   }
 
   function getProviderLabel(provider) {
@@ -352,6 +353,79 @@
     return list.find(function (item) {
       return item.provider === provider;
     }) || fallback;
+  }
+
+  function shouldUseWechatJsapi() {
+    var meta = getProviderMeta(paymentState.provider);
+    return paymentState.provider === "wechat" && !meta.mockMode && isWechatBrowser();
+  }
+
+  function invokeWechatJsapi(params) {
+    if (!params || typeof params !== "object") return Promise.reject(new Error("微信支付参数无效，请重新发起支付"));
+    return new Promise(function (resolve, reject) {
+      var finished = false;
+      var timeout = 0;
+      function finish(callback, value) {
+        if (finished) return;
+        finished = true;
+        if (timeout) window.clearTimeout(timeout);
+        callback(value);
+      }
+      function invoke() {
+        if (!window.WeixinJSBridge || typeof window.WeixinJSBridge.invoke !== "function") {
+          finish(reject, new Error("请在微信内打开页面后支付"));
+          return;
+        }
+        window.WeixinJSBridge.invoke("getBrandWCPayRequest", params, function (result) {
+          var message = String(result?.err_msg || result?.errMsg || "").toLowerCase();
+          if (/:ok$/.test(message)) return finish(resolve, "success");
+          if (/:cancel$/.test(message)) return finish(resolve, "cancel");
+          return finish(resolve, "failed");
+        });
+      }
+      if (window.WeixinJSBridge && typeof window.WeixinJSBridge.invoke === "function") {
+        invoke();
+        return;
+      }
+      document.addEventListener("WeixinJSBridgeReady", invoke, { once: true });
+      timeout = window.setTimeout(function () {
+        finish(reject, new Error("微信支付组件未就绪，请在微信内重新打开页面"));
+      }, 6000);
+    });
+  }
+
+  async function handleWechatOauthReturn() {
+    var query = new URLSearchParams(window.location.search || "");
+    var code = query.get("code");
+    var stateToken = query.get("state");
+    if (!code && !stateToken) return;
+
+    paymentState.loading = true;
+    paymentState.status = "loading";
+    paymentState.message = "正在确认微信授权...";
+    renderPayment();
+    try {
+      await apiFetch("/api/payments/wechat/oauth/exchange", {
+        method: "POST",
+        body: { code: code, state: stateToken }
+      });
+      var cleanUrl = new URL(window.location.href);
+      cleanUrl.searchParams.delete("code");
+      cleanUrl.searchParams.delete("state");
+      cleanUrl.hash = "#member";
+      window.history.replaceState({}, document.title, cleanUrl.toString());
+      paymentState.loading = false;
+      paymentState.status = "";
+      paymentState.message = "微信授权完成，正在打开支付...";
+      setActivePage("member", { instant: true });
+      await hydratePaymentProduct();
+      await startHealthPayment();
+    } catch (error) {
+      paymentState.loading = false;
+      paymentState.status = "error";
+      paymentState.message = error.message || "微信授权未完成，请重新发起支付";
+      renderPayment();
+    }
   }
 
   function getPaymentAmountLabel() {
@@ -1120,6 +1194,20 @@
     paymentState.mockMode = false;
     renderPayment();
     try {
+      if (shouldUseWechatJsapi()) {
+        paymentState.message = "正在确认微信支付身份...";
+        renderPayment();
+        var oauth = await apiFetch("/api/payments/wechat/oauth/start", {
+          method: "POST",
+          body: {}
+        });
+        if (!oauth.ready) {
+          if (!oauth.authorizeUrl) throw new Error("微信授权地址生成失败，请重试");
+          window.location.assign(oauth.authorizeUrl);
+          return;
+        }
+      }
+
       var order = await apiFetch("/api/payments/create-order", {
         method: "POST",
         body: {
@@ -1129,7 +1217,9 @@
           analytics: window.yuetianGetAnalyticsContext?.() || null
         }
       });
-      var payMethod = paymentState.provider === "paypal" ? "redirect" : (isH5PayPreferred() ? "h5" : "native");
+      var payMethod = paymentState.provider === "paypal"
+        ? "redirect"
+        : (shouldUseWechatJsapi() ? "jsapi" : "native");
       var session = await apiFetch("/api/payments/create-session", {
         method: "POST",
         body: { orderNo: order.orderNo, payMethod: payMethod }
@@ -1151,9 +1241,25 @@
       };
       paymentState.message = paymentState.mockMode
         ? "当前为支付测试模式，可点击模拟支付成功完成验证。"
-        : (paymentState.payMethod === "h5" || paymentState.provider === "paypal"
+        : (paymentState.payMethod === "jsapi"
+          ? "正在打开微信支付..."
+          : (paymentState.payMethod === "h5" || paymentState.provider === "paypal"
           ? "请打开" + getProviderLabel(paymentState.provider) + "完成支付，支付后返回刷新状态。"
-          : "请使用" + getProviderLabel(paymentState.provider) + "扫码支付，完成后刷新状态。");
+          : "请使用" + getProviderLabel(paymentState.provider) + "扫码支付，完成后刷新状态。"));
+
+      if (paymentState.payMethod === "jsapi") {
+        var jsapiResult = await invokeWechatJsapi(session.jsapiParams);
+        if (jsapiResult === "success") {
+          paymentState.message = "已完成微信支付，正在确认开通状态...";
+          window.setTimeout(function () { refreshHealthPaymentStatus(); }, 900);
+        } else if (jsapiResult === "cancel") {
+          paymentState.status = "";
+          paymentState.message = "已取消微信支付，可再次点击开通。";
+        } else {
+          paymentState.status = "";
+          paymentState.message = "微信支付未完成，请重新发起支付。";
+        }
+      }
     } catch (error) {
       paymentState.status = "error";
       paymentState.message = error.message || "支付订单创建失败";
@@ -1276,6 +1382,7 @@
   bindPaymentEvents();
   renderAll();
   setActivePage(pageFromHash(), { instant: true });
+  handleWechatOauthReturn();
   window.addEventListener("hashchange", function () {
     setActivePage(pageFromHash());
   });
