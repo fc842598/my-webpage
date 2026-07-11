@@ -9000,22 +9000,22 @@ p.mbp-topic-detail {
 .mbp-shichen-candidates {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  gap: 10px;
-  margin: 14px 0;
+  gap: 6px;
+  margin: 10px 0;
 }
 
 .mbp-shichen-candidates button {
-  min-height: 96px;
-  border: 1px solid rgba(183, 125, 54, .48);
-  background: linear-gradient(135deg, #fffaf0, #f5e8cf);
+  min-height: 62px;
+  border: 1px solid rgba(183, 125, 54, .34);
+  background: #fffaf0;
   color: #4b3824;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-columns: minmax(0, 1fr) auto auto;
   align-items: center;
-  gap: 16px;
-  padding: 14px 16px;
+  gap: 12px;
+  padding: 9px 12px;
   text-align: left;
-  box-shadow: 0 8px 18px rgba(98, 65, 30, .08);
+  box-shadow: none;
   transition: border-color .18s ease, box-shadow .18s ease, transform .18s ease;
 }
 
@@ -9031,36 +9031,47 @@ p.mbp-topic-detail {
 }
 
 .mbp-shichen-candidate__main {
-  display: grid;
-  gap: 3px;
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
   min-width: 0;
 }
 
 .mbp-shichen-candidate__main small {
-  color: #9b7645;
-  font-size: 11px;
+  color: #806b55;
+  font-size: 12px;
   font-weight: 900;
   line-height: 1.2;
+  white-space: nowrap;
 }
 
 .mbp-shichen-candidate__main b {
   color: #3d302b;
-  font-size: 26px;
+  font-size: 21px;
   line-height: 1.05;
 }
 
-.mbp-shichen-candidate__meta {
+.mbp-shichen-candidate__probability {
   display: grid;
-  grid-template-columns: auto auto;
-  align-items: center;
-  gap: 12px;
+  justify-items: center;
+  gap: 1px;
+  min-width: 52px;
+  padding: 5px 8px;
+  border-radius: 9px;
+  background: rgba(183, 125, 54, .12);
 }
 
-.mbp-shichen-candidate__range {
-  color: #65513e;
-  font-size: 14px;
+.mbp-shichen-candidate__probability small {
+  color: #9b7645;
+  font-size: 10px;
   font-weight: 900;
-  white-space: nowrap;
+  line-height: 1;
+}
+
+.mbp-shichen-candidate__probability b {
+  color: #8d5524;
+  font-size: 16px;
+  line-height: 1.05;
 }
 
 .mbp-shichen-candidate__action {
@@ -9068,7 +9079,7 @@ p.mbp-topic-detail {
   align-items: center;
   gap: 5px;
   color: #8f4e20;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 900;
   white-space: nowrap;
 }
@@ -9101,18 +9112,13 @@ p.mbp-topic-detail {
   }
 
   .mbp-shichen-candidates button {
-    grid-template-columns: 1fr;
-    gap: 12px;
-  }
-
-  .mbp-shichen-candidate__meta {
-    grid-template-columns: auto 1fr;
-    width: 100%;
     gap: 8px;
+    padding-inline: 10px;
   }
 
-  .mbp-shichen-candidate__action {
-    justify-content: flex-end;
+  .mbp-shichen-candidate__main {
+    display: grid;
+    gap: 3px;
   }
 
   .mbp-whorl-guide {

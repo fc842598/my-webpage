@@ -7520,27 +7520,27 @@
     const list = $('#mbpShichenCandidates');
     const group = context.timeMeta.group;
     const fromTime = context.source === 'time';
-    const candidateLabel = fromTime ? '对应时辰' : '辅助候选';
-    if (title) title.textContent = fromTime ? `对应：${picks[0].name}` : `辅助候选：${picks.map((item) => item.name).join(' / ')}`;
+    if (title) title.textContent = fromTime ? '时辰定位' : '候选概率';
     if (reason) {
       reason.textContent = fromTime
-        ? `你选择了“${group?.label || ''} ${group?.hint || ''}”，直接对应 ${picks[0].name}。`
-        : `仅按${whorlInput?.dataset?.label || '头旋'}辅助缩小为 ${picks.length} 个候选；实际时间以出生证明或家人回忆为准。`;
+        ? `${group?.label || ''} ${group?.hint || ''}，对应 ${picks[0].name}。`
+        : `仅凭头旋无法再区分，${picks.length} 个候选在当前信息下概率相同。`;
     }
     if (list) {
-      list.innerHTML = picks.map((item) => {
+      const baseProbability = Math.floor(100 / picks.length);
+      const remainder = 100 - (baseProbability * picks.length);
+      list.innerHTML = picks.map((item, index) => {
         const range = shichenRangeText(item);
         const applyHour = shichenApplyHour(item);
+        const probability = baseProbability + (index < remainder ? 1 : 0);
         return `
-          <button type="button" class="mbp-shichen-candidate" data-shichen-hour="${applyHour}" data-shichen-name="${escapeHtml(item.name)}" data-shichen-range="${escapeHtml(range)}" aria-label="选择${escapeHtml(item.name)}，${escapeHtml(range)}并带入排盘">
+          <button type="button" class="mbp-shichen-candidate" data-shichen-hour="${applyHour}" data-shichen-name="${escapeHtml(item.name)}" data-shichen-range="${escapeHtml(range)}" aria-label="选择${escapeHtml(item.name)}，${escapeHtml(range)}，当前概率${probability}%并带入排盘">
             <span class="mbp-shichen-candidate__main">
-              <small>${candidateLabel}</small>
               <b>${escapeHtml(item.name)}</b>
+              <small>${escapeHtml(range)}</small>
             </span>
-            <span class="mbp-shichen-candidate__meta">
-              <span class="mbp-shichen-candidate__range">${escapeHtml(range)}</span>
-              <span class="mbp-shichen-candidate__action">确认带入 <i aria-hidden="true">→</i></span>
-            </span>
+            <span class="mbp-shichen-candidate__probability"><small>概率</small><b>${probability}%</b></span>
+            <span class="mbp-shichen-candidate__action">采用 <i aria-hidden="true">→</i></span>
           </button>
         `;
       }).join('');
