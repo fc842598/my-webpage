@@ -5876,14 +5876,14 @@ p.mbp-topic-detail {
 }
 
 .mbp-yijing-tabs [data-yijing-tab].is-active + .mbp-yijing-help {
-  border-color: rgba(105, 48, 30, .42);
+  border-color: rgba(255, 231, 172, .78);
   background:
-    radial-gradient(circle at 35% 24%, rgba(255, 245, 204, .28), transparent 38%),
-    rgba(132, 62, 38, .18);
-  color: #4b2412;
+    radial-gradient(circle at 35% 24%, rgba(255, 255, 239, .92), transparent 38%),
+    linear-gradient(135deg, #f3d782, #d79a4f);
+  color: #513018;
   box-shadow:
-    inset 0 0 0 1px rgba(255, 246, 202, .12),
-    0 0 16px rgba(105, 48, 30, .18);
+    inset 0 0 0 1px rgba(255, 255, 235, .3),
+    0 0 16px rgba(241, 212, 125, .28);
 }
 
 .mbp-yijing-help::after {
