@@ -331,7 +331,19 @@
   }
 
   function isWechatBrowser() {
-    return /MicroMessenger/i.test(navigator.userAgent || "");
+    var ua = navigator.userAgent || "";
+    var hasWechatBridge = !!(
+      window.WeixinJSBridge
+      && typeof window.WeixinJSBridge.invoke === "function"
+    );
+    return /MicroMessenger|WeChat|Weixin|wxwork/i.test(ua) || hasWechatBridge;
+  }
+
+  function isMobileBrowser() {
+    if (navigator.userAgentData && typeof navigator.userAgentData.mobile === "boolean") {
+      return navigator.userAgentData.mobile;
+    }
+    return /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent || "");
   }
 
   function getProviderLabel(provider) {
@@ -1183,6 +1195,18 @@
       return;
     }
     if (!requireHealthLogin()) return;
+
+    if (paymentState.provider === "wechat" && isMobileBrowser() && !isWechatBrowser()) {
+      paymentState.status = "error";
+      paymentState.message = "请在微信内打开本页，微信内会直接弹出 " + getPaymentAmountLabel() + " 付款面板。";
+      paymentState.orderNo = "";
+      paymentState.payUrl = "";
+      paymentState.payMethod = "";
+      setPayHint("请复制当前链接到微信打开，再点击确认开通；手机外部浏览器不再显示二维码。");
+      renderPayment();
+      return;
+    }
+
     window.yuetianTrack?.("begin_checkout", { surface: "unified_member", checkout_source: "member_payment" });
 
     paymentState.loading = true;
