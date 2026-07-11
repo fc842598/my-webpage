@@ -333,19 +333,37 @@ function bottomChartCtaHtml() {
 function markdownBody(markdown) {
   const chunks = markdown.trim().split(/\n\s*\n/);
   let firstParagraph = true;
-  return chunks.map((chunk, index) => {
-    const heading = chunk.match(/^###\s+(.+)$/);
-    if (heading) {
-      return `<h2 id="section-${index + 1}">${escapeHtml(heading[1].trim())}</h2>`;
+  let sectionIndex = 0;
+  return chunks.map((chunk) => {
+    const lines = chunk.split("\n").map((line) => line.trim()).filter(Boolean);
+    if (!lines.length) return "";
+    if (lines.every((line) => /^[-*]\s+/.test(line))) {
+      return `<ul>${lines.map((line) => `<li>${inlineMarkdown(line.replace(/^[-*]\s+/, ""))}</li>`).join("")}</ul>`;
     }
-    const lines = chunk.split("\n").filter(Boolean);
-    if (lines.length === 1 && /^[-*]\s+/.test(lines[0])) {
-      return `<ul><li>${inlineMarkdown(lines[0].replace(/^[-*]\s+/, ""))}</li></ul>`;
+
+    const parts = [];
+    let paragraphLines = [];
+    const flushParagraph = () => {
+      if (!paragraphLines.length) return;
+      const text = inlineMarkdown(paragraphLines.join(" "));
+      const klass = firstParagraph ? ' class="article-lead"' : "";
+      firstParagraph = false;
+      parts.push(`<p${klass}>${text}</p>`);
+      paragraphLines = [];
+    };
+
+    for (const line of lines) {
+      const heading = line.match(/^###\s+(.+)$/);
+      if (heading) {
+        flushParagraph();
+        sectionIndex += 1;
+        parts.push(`<h2 id="section-${sectionIndex}">${escapeHtml(heading[1].trim())}</h2>`);
+        continue;
+      }
+      paragraphLines.push(line);
     }
-    const text = inlineMarkdown(lines.join(" "));
-    const klass = firstParagraph ? ' class="article-lead"' : "";
-    firstParagraph = false;
-    return `<p${klass}>${text}</p>`;
+    flushParagraph();
+    return parts.join("\n        ");
   }).join("\n        ");
 }
 
