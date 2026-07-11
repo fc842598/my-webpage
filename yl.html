@@ -10,6 +10,8 @@
         var match = (window.location.hash || "").match(/^#member\?pay_handoff=(v1\.[A-Za-z0-9_-]+)$/);
         var isWechat = /MicroMessenger/i.test(navigator.userAgent || "");
         var isWechatPaymentReturn = !!(query.get("code") && query.get("state"));
+        var isUnifiedCheckout = /^#member(?:\?|$)/.test(window.location.hash || "") || !!query.get("source");
+        if (isUnifiedCheckout) document.documentElement.classList.add("yl-unified-checkout");
         if (isWechat && (match || isWechatPaymentReturn)) document.documentElement.classList.add("yl-payment-boot");
         if (match && match[1].length <= 2048) {
           sessionStorage.setItem("yuetian-payment-handoff-v1", match[1]);
@@ -31,10 +33,10 @@
   <meta property="og:image" content="https://yuetianai.com/images/health/constitution-report-hero-v8.png">
   <meta name="theme-color" content="#f7f0e5">
   <link rel="icon" href="/images/wentian-prototype-assets/wentian-brand-logo-ai-gold-v1.webp" type="image/webp">
-  <link rel="stylesheet" href="/css/yl.css?v=20260711-wechat-direct-pay-v1">
+  <link rel="stylesheet" href="/css/yl.css?v=20260711-unified-member-v1">
   <script defer src="/vendor/qrcodejs/qrcode.min.js"></script>
   <script defer src="/js/config.js?v=20260710-api-origin-lock-v1"></script>
-  <script defer src="/js/yl.js?v=20260711-wechat-direct-pay-v1"></script>
+  <script defer src="/js/yl.js?v=20260711-unified-member-v1"></script>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -65,7 +67,8 @@
   <header class="yl-header">
     <a class="yl-brand" href="/" aria-label="返回阅天AI首页">
       <span class="yl-brand-mark" aria-hidden="true"></span>
-      <span>阅天健康</span>
+      <span class="yl-brand-health">阅天健康</span>
+      <span class="yl-brand-checkout">阅天AI</span>
     </a>
     <nav class="yl-nav" aria-label="健康服务导航">
       <a href="#home">首页</a>
@@ -260,21 +263,12 @@
         <div class="yl-member-main">
           <span>阅天综合会员</span>
           <strong id="ylMemberPrice">¥19.90</strong>
-          <p>体测报告 · 历史复盘 · 深度追问</p>
+          <p>全站权限 · AI 对话</p>
         </div>
-        <div class="yl-member-compare" aria-label="免费体验和会员权益">
-          <div>
-            <strong>免费用户</strong>
-            <span>完成采集</span>
-            <span>查看报告摘要</span>
-            <span>8条/天 AI 追问</span>
-          </div>
-          <div>
-            <strong>阅天综合会员</strong>
-            <span>查看完整报告</span>
-            <span>80次/天 AI 追问</span>
-            <span>历史报告复盘</span>
-          </div>
+        <div class="yl-member-benefits" aria-label="综合会员权益">
+          <strong>综合会员权益</strong>
+          <span><b>1</b> 解锁网站全部权限</span>
+          <span><b>2</b> AI 对话 80 次/天</span>
         </div>
         <div class="yl-pay-row" aria-label="支付方式">
           <button type="button" class="yl-pay-method is-active" data-provider="wechat">微信支付</button>
@@ -282,6 +276,7 @@
           <button type="button" class="yl-pay-method" data-provider="paypal">PayPal</button>
         </div>
         <button class="yl-btn yl-btn-primary" type="button" id="ylOpenPayBtn">确认开通阅天综合会员 ¥19.90</button>
+        <a class="yl-member-return" id="ylMemberReturnLink" href="#home" hidden>返回原页面</a>
         <form class="yl-health-auth" id="ylHealthAuthPanel" hidden>
           <div class="yl-health-auth-head">
             <strong>登录后开通综合会员</strong>

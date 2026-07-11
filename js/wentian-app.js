@@ -1956,11 +1956,11 @@ const WENTIAN_XU_CONTEXT_KEY = "wentian-xudashi-context-v1";
 const WENTIAN_INVITE_PENDING_KEY = "wentian-app-pending-invite-v1";
 const WENTIAN_INVITE_LOCAL_STATUS_KEY = "wentian-app-invite-status-v1";
 const WENTIAN_MEMBER_PRODUCT_KEY = "monthly_member";
-const WENTIAN_UNIFIED_MEMBER_URL = "/yl.html#member";
+const WENTIAN_UNIFIED_MEMBER_URL = "/yl.html";
 const WENTIAN_FREE_DAILY_LIMIT = 8;
 const WENTIAN_PAID_DAILY_LIMIT = 80;
 const WENTIAN_PAID_PRODUCT_NAME = "阅天综合会员";
-const WENTIAN_PAID_PRODUCT_DESC = "许大师 AI 对话、健康报告与连续追问统一开通，80 次/天，按日刷新。";
+const WENTIAN_PAID_PRODUCT_DESC = "1、解锁网站全部权限；2、AI 对话 80 次/天。";
 const WENTIAN_PAYMENT_POLL_MS = 3500;
 const WENTIAN_AIPAY_RESOURCE_PATH = "/api/payments/aipay/resource";
 const WENTIAN_GOOGLE_ENABLED = true;
@@ -11959,23 +11959,23 @@ function startWentianAipayResourcePayment() {
   navigate("screen-30");
 }
 
-function openWentianUnifiedMemberPage(source = "wentian-member") {
-  try {
-    localStorage.setItem(WENTIAN_AUTH_RETURN_KEY, JSON.stringify({
-      after: "comprehensive-member-payment",
-      source,
-      returnUrl: `${location.origin}${WENTIAN_UNIFIED_MEMBER_URL}`,
-      from: `${location.pathname}${location.search}${location.hash || ""}`,
-      ts: Date.now(),
-    }));
-  } catch (_error) {
-    // Non-blocking: the unified member page can still handle login/payment itself.
-  }
-  window.location.href = WENTIAN_UNIFIED_MEMBER_URL;
+function openWentianUnifiedMemberPage() {
+  const currentQuery = new URLSearchParams(location.search || "");
+  const returnQuery = new URLSearchParams();
+  const language = currentQuery.get("lang");
+  if (language) returnQuery.set("lang", language);
+  const returnSearch = returnQuery.toString();
+  const from = `${location.pathname}${returnSearch ? `?${returnSearch}` : ""}${location.hash || "#screen-31"}`;
+  const target = new URL(WENTIAN_UNIFIED_MEMBER_URL, location.origin);
+  target.searchParams.set("source", "wentian-mobile");
+  target.searchParams.set("returnUrl", from);
+  target.hash = "member";
+  clearWentianAuthReturnState();
+  window.location.href = target.toString();
 }
 
 async function startWentianMemberPayment() {
-  openWentianUnifiedMemberPage("wentian-member-pay");
+  openWentianUnifiedMemberPage();
 }
 
 function getWentianPayPalReturnParams() {
@@ -12793,11 +12793,10 @@ function sourceMembershipScreen() {
     ${figBox("wt33-unified-pay-note", 42, 530, 306, 36, "", "border:1px solid #eadfce;border-radius:18px;background:#fffdf8;")}
     ${figText("wt33-unified-pay-note-text", isEn ? "Open the member page to sign in and pay" : "进入会员页登录并支付", 42, 541, 306, 11, "#756d63", 900, "center")}
   `;
-  const dailyText = formatWentianQuotaTextForUi(member.daily, isEn);
   const dailyLimitText = formatWentianQuotaTextForUi(member.dailyLimit, isEn);
   const benefitList = isEn
-    ? `Remaining ${dailyText} · Limit ${dailyLimitText}`
-    : `剩余 ${dailyText} · 上限 ${dailyLimitText}`;
+    ? "1. Unlock all website features · 2. 80 AI chats/day"
+    : "1、解锁网站全部权限 · 2、AI 对话 80 次/天";
   return `
     ${figBox("wt33-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
     ${wentianBackPill("wt33", 18, 42, 'data-action="wentian-return-previous" data-fallback-route="screen-31" aria-label="返回"')}
@@ -22257,8 +22256,8 @@ function ensureWentianPhoneFitObserver() {
 
 function navigate(route, push = true, syncHash = true) {
   route = resolveRoute(route);
-  if (route === "screen-30" && !getWentianPayPalReturnParams()) {
-    openWentianUnifiedMemberPage("wentian-legacy-payment-route");
+  if (["screen-29", "screen-30", "screen-33"].includes(route) && !getWentianPayPalReturnParams()) {
+    openWentianUnifiedMemberPage();
     return;
   }
   if (/^screen-?\d+$/.test(route)) {

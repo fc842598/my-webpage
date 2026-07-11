@@ -139,10 +139,12 @@
     quota: null,
   };
   const desktopMemberProductKey = 'monthly_member';
+  const desktopUnifiedMemberUrl = '/yl.html';
+  const unifiedAuthStorageKey = 'wentian-app-auth-session-v1';
   const desktopFreeDailyLimit = 20;
   const desktopPaidDailyLimit = 80;
-  const desktopPaidProductName = '阅天AI';
-  const desktopPaidProductDesc = '许大师 AI 对话 80 次/天，按日刷新。';
+  const desktopPaidProductName = '阅天综合会员';
+  const desktopPaidProductDesc = '1、解锁网站全部权限；2、AI 对话 80 次/天。';
   const desktopPaymentPollMs = 3000;
   const desktopPaymentState = {
     open: false,
@@ -1183,22 +1185,17 @@
     desktopPaymentPollTimer = setInterval(checkDesktopPaymentStatus, desktopPaymentPollMs);
   }
 
-  async function openDesktopMemberPayment(options = {}) {
+  async function openDesktopMemberPayment() {
     const session = await getDesktopAuthSession();
-    if (!session?.user) {
-      desktopPendingPaymentAfterLogin = true;
-      openDesktopAuth('login');
-      return;
+    if (session?.access_token) {
+      try { localStorage.setItem(unifiedAuthStorageKey, JSON.stringify(session)); } catch (_) {}
     }
-    desktopPaymentState.open = true;
-    desktopPaymentState.error = '';
-    desktopPaymentState.message = desktopPaymentState.status === 'pending'
-      ? desktopPaymentState.message
-      : '权益绑定当前账号，电脑和手机共用。';
-    renderDesktopPayment();
-    await hydrateDesktopMemberStatus({ force: true });
-    if (desktopPaymentState.status === 'pending') startDesktopPaymentPoll();
-    if (options.create) await startDesktopMemberPayment();
+    const returnPath = `${location.pathname}${location.hash || ''}`;
+    const target = new URL(desktopUnifiedMemberUrl, location.origin);
+    target.searchParams.set('source', 'mingbook-desktop');
+    target.searchParams.set('returnUrl', returnPath);
+    target.hash = 'member';
+    window.location.assign(target.toString());
   }
 
   function closeDesktopPayment() {

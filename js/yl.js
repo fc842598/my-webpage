@@ -9,6 +9,8 @@
   var MEMBER_ASK_LIMIT = 80;
   var AUTH_SESSION_KEY = "wentian-app-auth-session-v1";
   var PAYMENT_HANDOFF_KEY = "yuetian-payment-handoff-v1";
+  var MEMBER_RETURN_KEY = "yuetian-member-return-v1";
+  var MEMBER_RETURN_TTL_MS = 2 * 60 * 60 * 1000;
   var HEALTH_PRODUCT_KEY = "monthly_member";
   var HEALTH_PRODUCT_NAME = "阅天综合会员";
   var HEALTH_PRODUCT_AMOUNT = "19.90";
@@ -197,6 +199,7 @@
     tone: "",
     message: ""
   };
+  var memberCheckoutContext = null;
 
   function $(selector) {
     return document.querySelector(selector);
@@ -217,6 +220,7 @@
   function setActivePage(page, options) {
     var active = normalizePage(page);
     var opts = options || {};
+    document.documentElement.classList.toggle("yl-unified-checkout", active === "member");
     $all(".yl-page").forEach(function (element) {
       element.hidden = element.dataset.page !== active;
     });
@@ -268,6 +272,66 @@
     }
   }
 
+  function normalizeMemberReturnPath(value) {
+    try {
+      var url = new URL(String(value || ""), window.location.origin);
+      if (url.origin !== window.location.origin) return "";
+      if (!url.pathname.startsWith("/") || url.pathname.startsWith("//")) return "";
+      return url.pathname + url.search + url.hash;
+    } catch (_error) {
+      return "";
+    }
+  }
+
+  function readMemberCheckoutContext() {
+    var query = new URLSearchParams(window.location.search || "");
+    var source = String(query.get("source") || "").trim().toLowerCase();
+    var returnPath = normalizeMemberReturnPath(query.get("returnUrl"));
+    if (/^[a-z0-9_-]{1,32}$/.test(source) && returnPath) {
+      var next = { source: source, returnPath: returnPath, ts: Date.now() };
+      try { sessionStorage.setItem(MEMBER_RETURN_KEY, JSON.stringify(next)); } catch (_error) {}
+      return next;
+    }
+    try {
+      var saved = JSON.parse(sessionStorage.getItem(MEMBER_RETURN_KEY) || "null");
+      if (!saved || Date.now() - Number(saved.ts || 0) > MEMBER_RETURN_TTL_MS) return null;
+      var savedPath = normalizeMemberReturnPath(saved.returnPath);
+      if (!/^[a-z0-9_-]{1,32}$/.test(saved.source || "") || !savedPath) return null;
+      return { source: saved.source, returnPath: savedPath, ts: saved.ts };
+    } catch (_error) {
+      return null;
+    }
+  }
+
+  function initializeMemberCheckoutContext() {
+    memberCheckoutContext = readMemberCheckoutContext();
+    var returnLink = $("#ylMemberReturnLink");
+    var continueLink = $("#ylPaymentBootContinue");
+    if (!memberCheckoutContext) return;
+    if (returnLink) {
+      returnLink.hidden = false;
+      returnLink.href = memberCheckoutContext.returnPath;
+      returnLink.textContent = "返回原页面";
+    }
+    if (continueLink) {
+      continueLink.href = memberCheckoutContext.returnPath;
+      continueLink.textContent = "返回原页面继续使用";
+    }
+  }
+
+  function decoratePaymentHandoffUrl(value) {
+    try {
+      var url = new URL(String(value || ""), window.location.origin);
+      if (memberCheckoutContext?.source && memberCheckoutContext?.returnPath) {
+        url.searchParams.set("source", memberCheckoutContext.source);
+        url.searchParams.set("returnUrl", memberCheckoutContext.returnPath);
+      }
+      return url.toString();
+    } catch (_error) {
+      return String(value || "");
+    }
+  }
+
   function capturePaymentHandoff() {
     try {
       var match = (window.location.hash || "").match(/^#member\?pay_handoff=(v1\.[A-Za-z0-9_-]+)$/);
@@ -286,7 +350,7 @@
   }
 
   function buildPaymentHandoffUrl(token) {
-    return "https://yuetianai.com/yl.html#member?pay_handoff=" + encodeURIComponent(token || "");
+    return decoratePaymentHandoffUrl("https://yuetianai.com/yl.html#member?pay_handoff=" + encodeURIComponent(token || ""));
   }
 
   function saveHealthAuthSession(session) {
@@ -1263,10 +1327,11 @@
         body: {}
       });
       if (!data.handoffUrl) throw new Error("微信支付链接生成失败");
+      var handoffUrl = decoratePaymentHandoffUrl(data.handoffUrl);
       paymentState.status = "handoff";
       paymentState.payMethod = "handoff";
-      paymentState.payUrl = data.handoffUrl;
-      var copied = await copyText(data.handoffUrl);
+      paymentState.payUrl = handoffUrl;
+      var copied = await copyText(handoffUrl);
       var copyButton = $("#ylCopyWechatLinkBtn");
       if (copyButton) copyButton.textContent = copied ? "再次复制，去微信付款" : "复制链接，去微信付款";
       paymentState.message = copied
@@ -1560,6 +1625,7 @@
   }
 
   var paymentHandoffCaptured = !!window.__YUETIAN_PAYMENT_HANDOFF_CAPTURED__ || capturePaymentHandoff();
+  initializeMemberCheckoutContext();
   loadState();
   normalizeSelections();
   state.report = state.report || calculateReport();
