@@ -1335,8 +1335,8 @@
       var copyButton = $("#ylCopyWechatLinkBtn");
       if (copyButton) copyButton.textContent = copied ? "再次复制，去微信付款" : "复制链接，去微信付款";
       paymentState.message = copied
-        ? "已复制。打开微信「文件传输助手」，粘贴发送后点开链接付款。"
-        : "请复制链接，再到微信「文件传输助手」粘贴发送并点开。";
+        ? "链接已复制。请打开微信，把链接发给自己，再点开链接完成支付。"
+        : "请先复制链接，再打开微信，把链接发给自己并点开完成支付。";
       setPayHint("点开后直接拉起微信支付，无需重新登录；链接1小时内有效。");
     } catch (error) {
       paymentState.status = "error";
@@ -1388,8 +1388,8 @@
         paymentState.payUrl = buildPaymentHandoffUrl(readPaymentHandoff());
         var copiedExisting = await copyText(paymentState.payUrl);
         paymentState.message = copiedExisting
-          ? "已复制。打开微信「文件传输助手」，粘贴发送后点开链接付款。"
-          : "请复制链接，再到微信「文件传输助手」粘贴发送并点开。";
+          ? "链接已复制。请打开微信，把链接发给自己，再点开链接完成支付。"
+          : "请先复制链接，再打开微信，把链接发给自己并点开完成支付。";
         setPayHint("点开后直接拉起微信支付，无需重新登录；链接1小时内有效。");
         renderPayment();
         return;
@@ -1591,8 +1591,8 @@
       }
       var copied = await copyText(paymentState.payUrl);
       paymentState.message = copied
-        ? "已复制。打开微信「文件传输助手」，粘贴发送后点开链接付款。"
-        : "复制失败，请长按链接复制，再发到微信「文件传输助手」。";
+        ? "链接已复制。请打开微信，把链接发给自己，再点开链接完成支付。"
+        : "复制失败，请长按链接复制；再打开微信，把链接发给自己并点开完成支付。";
       renderPayment();
     });
     $("#ylPaymentBootContinue").addEventListener("click", function () {
