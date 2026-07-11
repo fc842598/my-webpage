@@ -541,6 +541,19 @@ function englishTitle(article) {
     .replace(/怎么看/g, "")
     .replace(/：/g, ": ")
     .trim();
+  const slugMap = {
+    "ziwei-minggong-huaquan-lingdao": "Hua Quan in the Life Palace: Strong Leadership Can Turn Into Isolation",
+    "ziwei-fumugong-hualu-ziyuan": "Hua Lu in the Parents Palace: Family Support Only Works If You Can Carry It",
+    "ziwei-caibogong-huaji-zhangqi": "Hua Ji in the Wealth Palace: Watch Credit Terms, Debt, and Overexpansion",
+    "ziwei-daxian-huaji-niantou": "Hua Ji in a Ten-Year Cycle: The Block Often Starts in Your Own Mind",
+    "ziwei-luji-tonggong-huikuan": "Lu and Ji in the Same Palace: Revenue on Paper Does Not Mean Cash Collected",
+    "ziwei-liuqin-bukao-zili": "When Family Support Runs Thin: Why Some Charts Push Early Self-Reliance",
+    "ziwei-youbi-dushou-fuqigong": "You Bi Alone in the Spouse Palace: Why Relationships Feel Delayed or Repeated",
+    "ziwei-tanlang-zuoming-hualu": "Tan Lang in the Life Palace with Hua Lu: More Openings, More Temptation",
+    "ziwei-lianzhen-qisha-fudegong-xinli": "Lian Zhen and Qi Sha in the Inner Life Palace: Tough on the Inside, Heavy Under Pressure",
+    "ziwei-zifu-tonggong-tianma": "Zi Wei and Tian Fu with Tian Ma: Rank Often Rises After a Move",
+  };
+  if (slugMap[article.slug]) return slugMap[article.slug];
   const keyMap = [
     ["禄存在命宫", "Lu Cun in the Life Palace: Saving Money Without Getting Stuck"],
     ["禄存在财帛和流年", "Lu Cun in the Wealth Palace and Annual Cycle"],
