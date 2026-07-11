@@ -4097,7 +4097,7 @@
         </div>
         <p>上方流年卦「${escapeHtml(yearName)}」是本年主卦；这里显示它往下推出的流月卦与六日卦。${escapeHtml(note)} 六日卦每卦管六日，只作流年应期细分。</p>
         <div class="mbp-yijing-timing-actions">
-          <button type="button" data-yijing-timing-ai ${yijingTimingAiBusy ? 'disabled' : ''}>${yijingTimingAiBusy ? '生成中…' : (aiResultHtml ? '重新生成应期解读' : '生成应期解读')}</button>
+          <button type="button" class="mbp-yijing-timing-generate${yijingTimingAiBusy ? ' is-running' : ''}" data-yijing-timing-ai ${yijingTimingAiBusy ? 'disabled' : ''}>${yijingTimingAiBusy ? '生成中' : (aiResultHtml ? '重新生成应期解读' : '生成应期解读')}</button>
         </div>
         ${aiErrorHtml}
         ${aiResultHtml}
@@ -6342,7 +6342,10 @@
       });
     }
     const label = $('#mbpReportStateText');
-    if (label) label.textContent = stateText;
+    if (label) {
+      label.textContent = stateText;
+      label.classList.toggle('is-loading', runningIndex >= 0);
+    }
     updateDecodeAllButtonProgress(done, runningIndex, stateText);
     updateBookProgress(done, runningIndex, stateText);
   }
@@ -6936,7 +6939,7 @@
     state.decoded = true;
     document.body.classList.add('is-decoded');
     updateDecodeProgress(generatedModuleCount(), aiTasks.indexOf(task), task.label);
-    if (task.key) setSpecialStatus(task.key, '正在生成…', 'running');
+    if (task.key) setSpecialStatus(task.key, '正在生成', 'running');
     setModuleButtonsBusy(task.module, true);
     setDecodeStatus(`正在单独批命：${task.label}`);
     try {
@@ -7046,7 +7049,7 @@
     let successCount = 0;
     for (const [index, task] of aiTasks.entries()) {
       updateDecodeProgress(successCount, index, task.label);
-      if (task.key) setSpecialStatus(task.key, '正在生成…', 'running');
+      if (task.key) setSpecialStatus(task.key, '正在生成', 'running');
       setDecodeStatus(`正在调用原站 AI 批命：${task.label}`);
       try {
         const taskOptions = task.module === 'current_luck'

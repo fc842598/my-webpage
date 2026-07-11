@@ -2538,6 +2538,30 @@ body.mbp-ticket-open {
   color: var(--gold);
 }
 
+.mbp-report-pulse b.is-loading::after,
+.mbp-book-menu li.is-running small::after,
+.mbp-special-card.is-running .mbp-ai-status::after,
+.mbp-reading-badge::after,
+.mbp-yijing-timing-generate.is-running::after {
+  content: "···";
+  display: inline-block;
+  width: 1.65em;
+  margin-left: .18em;
+  overflow: hidden;
+  color: currentColor;
+  letter-spacing: .08em;
+  vertical-align: baseline;
+  animation: mbpLoadingDots 1.2s steps(4, end) infinite;
+}
+
+@keyframes mbpLoadingDots {
+  0% { clip-path: inset(0 100% 0 0); }
+  25% { clip-path: inset(0 66% 0 0); }
+  50% { clip-path: inset(0 33% 0 0); }
+  75%,
+  100% { clip-path: inset(0 0 0 0); }
+}
+
 .mbp-report-action-bar {
   position: absolute;
   top: 52px;
@@ -2830,7 +2854,12 @@ body.mbp-ticket-open {
   .mbp-report-action-bar button::after,
   .mbp-report-action-bar button.is-running .mbp-decode-progress-ring,
   .mbp-chapter-ai-btn.is-running::before,
-  .mbp-chapter-ai-btn.is-running::after {
+  .mbp-chapter-ai-btn.is-running::after,
+  .mbp-report-pulse b.is-loading::after,
+  .mbp-book-menu li.is-running small::after,
+  .mbp-special-card.is-running .mbp-ai-status::after,
+  .mbp-reading-badge::after,
+  .mbp-yijing-timing-generate.is-running::after {
     animation: none;
   }
 }
