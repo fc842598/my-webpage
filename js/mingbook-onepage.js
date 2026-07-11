@@ -140,7 +140,7 @@
   };
   const desktopMemberProductKey = 'monthly_member';
   const desktopFreeDailyLimit = 20;
-  const desktopPaidDailyLimit = 100;
+  const desktopPaidDailyLimit = 80;
   const desktopPaidProductName = '阅天AI';
   const desktopPaidProductDesc = '许大师 AI 对话 80 次/天，按日刷新。';
   const desktopPaymentPollMs = 3000;
