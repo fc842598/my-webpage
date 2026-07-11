@@ -7507,7 +7507,6 @@
           <b>${escapeHtml(item.label)}</b>
           <small>${escapeHtml(item.hint)}</small>
         </button>
-        <div class="mbp-shichen-time-card-detail" data-shichen-card-detail="${escapeHtml(item.key)}" hidden></div>
       </div>
     `).join('');
     root.dataset.ready = '1';
@@ -7517,23 +7516,17 @@
 
   function renderShichenTimeDetail(groupKey) {
     const box = $('#mbpShichenTimeDetail');
-    if (box) {
-      box.hidden = true;
-      box.innerHTML = '';
-    }
     const group = shichenTimeGroupByKey(groupKey);
     const details = group?.details || [];
-    document.querySelectorAll('[data-shichen-card-detail]').forEach((detailBox) => {
-      const isCurrent = detailBox.dataset.shichenCardDetail === groupKey;
-      detailBox.hidden = !isCurrent || !details.length;
-      detailBox.innerHTML = isCurrent && details.length
-        ? `<span>可细选</span>${details.map((item) => `
-          <button type="button" data-shichen-detail="${escapeHtml(item.key)}">
-            ${escapeHtml(item.label)}
-          </button>
-        `).join('')}`
-        : '';
-    });
+    if (!box) return;
+    box.hidden = !details.length;
+    box.innerHTML = details.length
+      ? `<span>继续细选</span>${details.map((item) => `
+        <button type="button" data-shichen-detail="${escapeHtml(item.key)}">
+          ${escapeHtml(item.label)}
+        </button>
+      `).join('')}`
+      : '';
   }
 
   function syncShichenTimeButtons() {
