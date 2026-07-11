@@ -395,7 +395,7 @@ function chinesePage(article, time) {
   <meta property="og:url" content="${canonical}">
   <meta property="og:image" content="${defaultImage}">
   <link rel="icon" href="../images/wentian-prototype-assets/wentian-brand-logo-ai-gold-v1.webp" type="image/webp">
-  <link rel="stylesheet" href="../css/articles.css?v=20260711-article-discovery-v2">
+  <link rel="stylesheet" href="../css/articles.css?v=20260701-article-cta-v1">
   <script type="application/ld+json">
   ${JSON.stringify({
     "@context": "https://schema.org",
@@ -457,7 +457,6 @@ ${sideLinksHtml(article)}
 ${bottomChartCtaHtml()}
   </main>
   <footer class="site-footer"><div class="container site-footer__legal"><a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener">粤ICP备2026055337号-1</a>　<span>© 2026 阅天AI Copyright, All Rights Reserved. Powered By 阅天工作室</span>　</div></footer>
-  <script src="../js/article-detail-enhance.js?v=20260711-discovery-v1" defer></script>
 </body>
 </html>
 `;
@@ -492,7 +491,7 @@ function englishPage(article, time) {
   <meta property="og:url" content="${canonical}">
   <meta property="og:image" content="${defaultImage}">
   <link rel="icon" href="../../images/wentian-prototype-assets/wentian-brand-logo-ai-gold-v1.webp" type="image/webp">
-  <link rel="stylesheet" href="../../css/articles.css?v=20260711-article-discovery-v2">
+  <link rel="stylesheet" href="../../css/articles.css?v=20260701-article-cta-v1">
   <script type="application/ld+json">
   ${JSON.stringify({
     "@context": "https://schema.org",
@@ -549,7 +548,6 @@ function englishPage(article, time) {
     </div>
   </main>
   <footer class="site-footer"><div class="container site-footer__legal"><a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener">Yue ICP 2026055337-1</a>　<span>© 2026 YuetianAI. All Rights Reserved. Powered By Yuetian Studio</span>　</div></footer>
-  <script src="../../js/article-detail-enhance.js?v=20260711-discovery-v1" defer></script>
 </body>
 </html>
 `;
