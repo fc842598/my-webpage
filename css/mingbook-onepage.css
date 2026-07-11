@@ -117,7 +117,22 @@ select {
 }
 
 @media (min-width: 1021px) {
+  .mingbook-onepage .mbp-nav {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  }
+
+  .mingbook-onepage .mbp-brand {
+    justify-self: start;
+    margin-right: 0;
+  }
+
+  .mingbook-onepage .mbp-nav-links {
+    justify-self: center;
+  }
+
   .mingbook-onepage .mbp-nav-actions {
+    justify-self: end;
     margin-right: 0;
   }
 }
