@@ -6,11 +6,16 @@
   <script>
     (function () {
       try {
+        var query = new URLSearchParams(window.location.search || "");
         var match = (window.location.hash || "").match(/^#member\?pay_handoff=(v1\.[A-Za-z0-9_-]+)$/);
-        if (!match || match[1].length > 2048) return;
-        sessionStorage.setItem("yuetian-payment-handoff-v1", match[1]);
-        window.__YUETIAN_PAYMENT_HANDOFF_CAPTURED__ = true;
-        window.history.replaceState({}, document.title, window.location.pathname + window.location.search + "#member");
+        var isWechat = /MicroMessenger/i.test(navigator.userAgent || "");
+        var isWechatPaymentReturn = !!(query.get("code") && query.get("state"));
+        if (isWechat && (match || isWechatPaymentReturn)) document.documentElement.classList.add("yl-payment-boot");
+        if (match && match[1].length <= 2048) {
+          sessionStorage.setItem("yuetian-payment-handoff-v1", match[1]);
+          window.__YUETIAN_PAYMENT_HANDOFF_CAPTURED__ = true;
+          window.history.replaceState({}, document.title, window.location.pathname + window.location.search + "#member");
+        }
       } catch (_error) {}
     })();
   </script>
@@ -26,10 +31,10 @@
   <meta property="og:image" content="https://yuetianai.com/images/health/constitution-report-hero-v8.png">
   <meta name="theme-color" content="#f7f0e5">
   <link rel="icon" href="/images/wentian-prototype-assets/wentian-brand-logo-ai-gold-v1.webp" type="image/webp">
-  <link rel="stylesheet" href="/css/yl.css?v=20260709-health-inline-pay-v1">
+  <link rel="stylesheet" href="/css/yl.css?v=20260711-wechat-direct-pay-v1">
   <script defer src="/vendor/qrcodejs/qrcode.min.js"></script>
   <script defer src="/js/config.js?v=20260710-api-origin-lock-v1"></script>
-  <script defer src="/js/yl.js?v=20260711-member-renewal-v1"></script>
+  <script defer src="/js/yl.js?v=20260711-wechat-direct-pay-v1"></script>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -49,6 +54,12 @@
   </script>
 </head>
 <body>
+  <div class="yl-payment-boot-screen" id="ylPaymentBootScreen" role="status" aria-live="polite">
+    <span class="yl-payment-boot-icon" aria-hidden="true"></span>
+    <strong id="ylPaymentBootTitle">正在打开微信支付</strong>
+    <p id="ylPaymentBootMessage">账号已识别，请稍候，无需重复点击。</p>
+    <a class="yl-btn yl-btn-primary" id="ylPaymentBootContinue" href="#home" hidden>在微信内继续使用</a>
+  </div>
   <a class="skip-link" href="#assessment">跳到体质自评</a>
 
   <header class="yl-header">
@@ -298,7 +309,7 @@
             <code id="ylPaymentOrderNo"></code>
           </div>
           <div class="yl-payment-actions">
-            <button class="yl-btn yl-btn-primary" type="button" id="ylCopyWechatLinkBtn" hidden>复制微信支付链接</button>
+            <button class="yl-btn yl-btn-primary" type="button" id="ylCopyWechatLinkBtn" hidden>复制链接，去微信付款</button>
             <button class="yl-btn yl-btn-ghost" type="button" id="ylRefreshPayBtn" hidden>刷新支付状态</button>
             <button class="yl-btn yl-btn-ghost" type="button" id="ylMockPayBtn" hidden>模拟支付成功</button>
           </div>

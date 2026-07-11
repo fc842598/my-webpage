@@ -472,6 +472,7 @@
       paymentState.loading = false;
       paymentState.status = "error";
       paymentState.message = error.message || "微信授权未完成，请重新发起支付";
+      releasePaymentBoot();
       renderPayment();
     }
   }
@@ -488,6 +489,22 @@
   function setPayHint(text) {
     var el = $("#ylPayHint");
     if (el) el.textContent = text || "";
+  }
+
+  function updatePaymentBoot(title, message, success) {
+    if (!document.documentElement.classList.contains("yl-payment-boot")) return;
+    var screen = $("#ylPaymentBootScreen");
+    var titleElement = $("#ylPaymentBootTitle");
+    var messageElement = $("#ylPaymentBootMessage");
+    var continueLink = $("#ylPaymentBootContinue");
+    if (screen) screen.classList.toggle("is-success", !!success);
+    if (titleElement) titleElement.textContent = title || "正在打开微信支付";
+    if (messageElement) messageElement.textContent = message || "请稍候，无需重复点击。";
+    if (continueLink) continueLink.hidden = !success;
+  }
+
+  function releasePaymentBoot() {
+    document.documentElement.classList.remove("yl-payment-boot");
   }
 
   function isHealthMember() {
@@ -1251,11 +1268,11 @@
       paymentState.payUrl = data.handoffUrl;
       var copied = await copyText(data.handoffUrl);
       var copyButton = $("#ylCopyWechatLinkBtn");
-      if (copyButton) copyButton.textContent = copied ? "再次复制微信支付链接" : "复制微信支付链接";
+      if (copyButton) copyButton.textContent = copied ? "再次复制，去微信付款" : "复制链接，去微信付款";
       paymentState.message = copied
-        ? "链接已复制，打开微信粘贴即可付款。"
-        : "微信支付链接已生成，请点击下方按钮复制。";
-      setPayHint("链接1小时内有效，微信打开后自动识别原账号。");
+        ? "已复制。打开微信「文件传输助手」，粘贴发送后点开链接付款。"
+        : "请复制链接，再到微信「文件传输助手」粘贴发送并点开。";
+      setPayHint("点开后直接拉起微信支付，无需重新登录；链接1小时内有效。");
     } catch (error) {
       paymentState.status = "error";
       paymentState.message = error.message || "微信支付链接生成失败";
@@ -1306,9 +1323,9 @@
         paymentState.payUrl = buildPaymentHandoffUrl(readPaymentHandoff());
         var copiedExisting = await copyText(paymentState.payUrl);
         paymentState.message = copiedExisting
-          ? "链接已复制，打开微信粘贴即可付款。"
-          : "请点击下方按钮复制微信支付链接。";
-        setPayHint("链接1小时内有效，微信打开后自动识别原账号。");
+          ? "已复制。打开微信「文件传输助手」，粘贴发送后点开链接付款。"
+          : "请复制链接，再到微信「文件传输助手」粘贴发送并点开。";
+        setPayHint("点开后直接拉起微信支付，无需重新登录；链接1小时内有效。");
         renderPayment();
         return;
       }
@@ -1321,6 +1338,7 @@
     paymentState.loading = true;
     paymentState.status = "loading";
     paymentState.message = "正在创建" + getProviderLabel(paymentState.provider) + "阅天综合会员订单...";
+    updatePaymentBoot("正在打开微信支付", "账号已识别，正在准备付款，请稍候。", false);
     paymentState.orderNo = "";
     paymentState.payUrl = "";
     paymentState.payMethod = "";
@@ -1384,19 +1402,23 @@
         var jsapiResult = await invokeWechatJsapi(session.jsapiParams);
         if (jsapiResult === "success") {
           paymentState.message = "已完成微信支付，正在确认开通状态...";
+          updatePaymentBoot("正在确认付款", "付款已完成，正在开通会员权益。", false);
           window.setTimeout(function () { refreshHealthPaymentStatus(); }, 900);
         } else if (jsapiResult === "cancel") {
           paymentState.status = "";
           paymentState.message = "已取消微信支付，可再次点击开通。";
+          releasePaymentBoot();
         } else {
           paymentState.status = "";
           paymentState.message = "微信支付未完成，请重新发起支付。";
+          releasePaymentBoot();
         }
       }
     } catch (error) {
       paymentState.status = "error";
       paymentState.message = error.message || "支付订单创建失败";
       setPayHint("如果支付方式不可用，可以先换微信支付或稍后重试。");
+      releasePaymentBoot();
     } finally {
       paymentState.loading = false;
       renderPayment();
@@ -1414,12 +1436,20 @@
       if (paymentState.status === "paid") {
         paymentState.isMember = true;
         trackHealthPurchase(data);
+        updatePaymentBoot(
+          "支付成功",
+          "会员已开通。可切回原浏览器继续，页面会自动更新；也可留在微信内使用。",
+          true
+        );
+      } else {
+        releasePaymentBoot();
       }
       paymentState.message = data.status === "paid"
         ? "支付已完成，阅天综合会员已开通。"
         : "暂未确认支付成功，请完成付款后再刷新。";
     } catch (error) {
       paymentState.message = error.message || "支付状态查询失败";
+      releasePaymentBoot();
     } finally {
       paymentState.loading = false;
       renderPayment();
@@ -1495,8 +1525,13 @@
         return;
       }
       var copied = await copyText(paymentState.payUrl);
-      paymentState.message = copied ? "链接已复制，打开微信粘贴即可付款。" : "复制失败，请长按链接复制。";
+      paymentState.message = copied
+        ? "已复制。打开微信「文件传输助手」，粘贴发送后点开链接付款。"
+        : "复制失败，请长按链接复制，再发到微信「文件传输助手」。";
       renderPayment();
+    });
+    $("#ylPaymentBootContinue").addEventListener("click", function () {
+      releasePaymentBoot();
     });
     $("#ylHealthLoginBtn").addEventListener("click", function () {
       submitHealthAuth("login");
@@ -1539,6 +1574,14 @@
   } else {
     handleWechatOauthReturn();
   }
+  document.addEventListener("visibilitychange", function () {
+    if (document.visibilityState === "visible" && readAuthSession() && !paymentState.loading) {
+      hydratePaymentProduct();
+    }
+  });
+  window.addEventListener("pageshow", function (event) {
+    if (event.persisted && readAuthSession() && !paymentState.loading) hydratePaymentProduct();
+  });
   window.addEventListener("hashchange", function () {
     setActivePage(pageFromHash());
   });
