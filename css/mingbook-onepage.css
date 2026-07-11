@@ -9010,51 +9010,101 @@ p.mbp-topic-detail {
 
 .mbp-shichen-candidates {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: minmax(0, 1fr);
   gap: 10px;
   margin: 14px 0;
 }
 
 .mbp-shichen-candidates button {
-  border: 1px solid #d6c08e;
-  background: #fff7e8;
+  min-height: 96px;
+  border: 1px solid rgba(183, 125, 54, .48);
+  background: linear-gradient(135deg, #fffaf0, #f5e8cf);
   color: #4b3824;
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  padding: 0 12px;
+  gap: 16px;
+  padding: 14px 16px;
+  text-align: left;
+  box-shadow: 0 8px 18px rgba(98, 65, 30, .08);
+  transition: border-color .18s ease, box-shadow .18s ease, transform .18s ease;
 }
 
-.mbp-shichen-candidates button span {
+.mbp-shichen-candidates button:hover {
+  border-color: #a86a2f;
+  box-shadow: 0 12px 24px rgba(124, 76, 28, .16);
+  transform: translateY(-1px);
+}
+
+.mbp-shichen-candidates button:focus-visible {
+  outline: 3px solid rgba(183, 125, 54, .42);
+  outline-offset: 2px;
+}
+
+.mbp-shichen-candidate__main {
+  display: grid;
+  gap: 3px;
   min-width: 0;
 }
 
-.mbp-shichen-candidates button em {
-  display: inline-flex;
+.mbp-shichen-candidate__main small,
+.mbp-shichen-candidate__score small {
+  color: #9b7645;
+  font-size: 11px;
+  font-weight: 900;
+  line-height: 1.2;
+}
+
+.mbp-shichen-candidate__main b {
+  color: #3d302b;
+  font-size: 26px;
+  line-height: 1.05;
+}
+
+.mbp-shichen-candidate__meta {
+  display: grid;
+  grid-template-columns: auto auto auto;
   align-items: center;
-  gap: 4px;
-  flex: 0 0 auto;
-  padding: 3px 7px;
-  border-radius: 999px;
-  background: rgba(183, 125, 54, .16);
+  gap: 12px;
+}
+
+.mbp-shichen-candidate__range {
+  color: #65513e;
+  font-size: 14px;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.mbp-shichen-candidate__score {
+  display: grid;
+  justify-items: center;
+  gap: 1px;
+  min-width: 58px;
+  padding: 6px 9px;
+  border-radius: 10px;
+  background: rgba(183, 125, 54, .14);
+}
+
+.mbp-shichen-candidate__score b {
   color: #8d5524;
-  font-style: normal;
-  font-size: 12px;
+  font-size: 17px;
   line-height: 1;
 }
 
-.mbp-shichen-candidates button em i {
+.mbp-shichen-candidate__action {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  min-width: 20px;
-  min-height: 20px;
-  border-radius: 999px;
-  background: #b76f32;
-  color: #fff6dc;
+  gap: 5px;
+  color: #8f4e20;
+  font-size: 13px;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.mbp-shichen-candidate__action i {
+  font-size: 17px;
   font-style: normal;
-  font-size: 10px;
+  line-height: 1;
 }
 
 .mbp-shichen-back {
@@ -9080,6 +9130,21 @@ p.mbp-topic-detail {
 
   .mbp-shichen-time-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .mbp-shichen-candidates button {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .mbp-shichen-candidate__meta {
+    grid-template-columns: auto auto 1fr;
+    width: 100%;
+    gap: 8px;
+  }
+
+  .mbp-shichen-candidate__action {
+    justify-content: flex-end;
   }
 
   .mbp-whorl-guide {

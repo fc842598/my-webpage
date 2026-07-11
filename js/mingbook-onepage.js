@@ -7462,6 +7462,7 @@
     const vague = normalizeText($('#mbpVagueTime')?.value) || '未填写大概时间';
     const whorl = whorlInput?.dataset?.label || '未选择头旋';
     const hasSingleHit = !context.roughTimeOnly && context.merged.length === 1;
+    const candidateLabel = hasSingleHit ? '推荐候选' : '候选时辰';
     if (title) title.textContent = hasSingleHit ? `最符合：${picks[0].name}` : `候选：${picks.map((item) => item.name).join(' / ')}`;
     if (reason) {
       reason.textContent = context.roughTimeOnly
@@ -7474,9 +7475,16 @@
         const range = shichenRangeText(item);
         const applyHour = shichenApplyHour(item);
         return `
-          <button type="button" data-shichen-hour="${applyHour}" data-shichen-name="${escapeHtml(item.name)}" data-shichen-range="${escapeHtml(range)}" data-shichen-score="${score}">
-            <span>${escapeHtml(item.name)} · ${escapeHtml(range)}</span>
-            <em><i>推合</i>${score}%</em>
+          <button type="button" class="mbp-shichen-candidate" data-shichen-hour="${applyHour}" data-shichen-name="${escapeHtml(item.name)}" data-shichen-range="${escapeHtml(range)}" data-shichen-score="${score}" aria-label="选择${escapeHtml(item.name)}，${escapeHtml(range)}，匹配度${score}%并带入排盘">
+            <span class="mbp-shichen-candidate__main">
+              <small>${candidateLabel}</small>
+              <b>${escapeHtml(item.name)}</b>
+            </span>
+            <span class="mbp-shichen-candidate__meta">
+              <span class="mbp-shichen-candidate__range">${escapeHtml(range)}</span>
+              <span class="mbp-shichen-candidate__score"><small>匹配度</small><b>${score}%</b></span>
+              <span class="mbp-shichen-candidate__action">确认带入 <i aria-hidden="true">→</i></span>
+            </span>
           </button>
         `;
       }).join('');
