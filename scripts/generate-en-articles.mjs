@@ -410,7 +410,7 @@ function articlePage(article) {
   <meta property="og:url" content="${slugUrl(article.slug)}">
   <meta property="og:image" content="${site}/images/home2/triad-tian-bg.webp">
   <link rel="icon" href="../../images/wentian-prototype-assets/wentian-brand-logo-ai-gold-v1.webp" type="image/webp">
-  <link rel="stylesheet" href="../../css/articles.css?v=20260629-footer-legal-v1">
+  <link rel="stylesheet" href="../../css/articles.css?v=20260711-article-discovery-v2">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -481,6 +481,7 @@ function articlePage(article) {
     </div>
   </main>
   <footer class="site-footer"><div class="container site-footer__legal"><a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener">Yue ICP 2026055337-1</a>　<span>© 2026 YuetianAI. All Rights Reserved. Powered By Yuetian Studio</span></div></footer>
+  <script src="../../js/article-detail-enhance.js?v=20260711-discovery-v1" defer></script>
 </body>
 </html>`;
 }
