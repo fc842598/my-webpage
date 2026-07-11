@@ -1035,7 +1035,7 @@
       openButton.hidden = paymentState.status === "handoff";
       openButton.disabled = paymentState.loading;
       if (paymentState.loading) openButton.textContent = "处理中...";
-      else if (paymentState.status === "paid") openButton.textContent = "已开通阅天综合会员";
+      else if (paymentState.status === "paid") openButton.textContent = "续费阅天综合会员 " + amount;
       else if (paymentState.status === "handoff") openButton.textContent = "重新复制微信支付链接";
       else if (paymentState.status === "pending" && paymentState.payMethod === "h5") openButton.textContent = "打开" + getProviderLabel(paymentState.provider);
       else if (paymentState.status === "pending") openButton.textContent = "我已支付，刷新状态";
@@ -1071,7 +1071,7 @@
     renderPaymentQr();
     renderHealthAuthPanel();
     if (paymentState.status === "paid") {
-      setPayHint("已开通阅天综合会员，后续报告和追问额度会绑定到当前账号。");
+      setPayHint("会员已开通；再次购买会从当前到期时间继续顺延。");
       updateAskQuota();
     }
   }
@@ -1281,7 +1281,14 @@
 
   async function startHealthPayment() {
     if (paymentState.loading) return;
-    if (paymentState.status === "paid") return;
+    if (paymentState.status === "paid") {
+      paymentState.status = "";
+      paymentState.message = "正在创建续费订单...";
+      paymentState.orderNo = "";
+      paymentState.payUrl = "";
+      paymentState.payMethod = "";
+      paymentState.mockMode = false;
+    }
     if (paymentState.status === "pending") {
       if (paymentState.payMethod === "h5" || paymentState.provider === "paypal") {
         if (paymentState.payUrl) window.location.href = paymentState.payUrl;
