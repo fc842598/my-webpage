@@ -283,6 +283,44 @@
     { label: '生成建议', module: 'action_advice' },
   ];
 
+  const desktopChatFaqPalaceDomains = {
+    命: 'life', 身: 'life', 夫妻: 'love', 财帛: 'wealth', 官禄: 'career', 疾厄: 'health',
+    迁移: 'timing', 田宅: 'family', 子女: 'family', 父母: 'family', 兄弟: 'family', 仆役: 'family', 福德: 'health',
+  };
+  const desktopChatFaqAgeWeights = {
+    young: { life: 28, family: 18, year: 14, love: -80, wealth: -42, career: -26 },
+    start: { life: 24, career: 22, love: 18, year: 14 },
+    build: { career: 24, wealth: 22, love: 18, year: 16 },
+    middle: { wealth: 24, career: 20, family: 18, health: 14 },
+    steady: { wealth: 20, health: 20, family: 18, timing: 16 },
+    later: { health: 26, family: 20, timing: 16, life: 14 },
+  };
+  const desktopChatDynamicFaqItems = [
+    { domain: 'life', label: '成长重点', prompt: '结合命盘和当前年龄，看孩子眼下的成长重点、天赋培养与陪伴方式。', min: 0, max: 17 },
+    { domain: 'family', label: '家庭怎么配合', prompt: '结合命盘和当前年龄，看孩子现阶段需要怎样的家庭配合与生活节奏。', min: 0, max: 17 },
+    { domain: 'health', label: '作息成长', prompt: '结合命盘和当前年龄，看孩子的作息、情绪与成长中最该留意的地方。', min: 0, max: 17 },
+    { domain: 'love', label: '感情能推吗', prompt: '结合命盘和流年，看这段关系近期能不能推进，关键阻力是什么。', min: 18, max: 45 },
+    { domain: 'love', label: '婚姻何时稳', prompt: '结合命盘，看婚姻稳定窗口，以及最该避开的相处问题。', min: 24, max: 55 },
+    { domain: 'love', label: '该主动吗', prompt: '结合命盘，看感情里我该主动推进，还是先观察对方反应。', min: 18, max: 38, gender: 'female' },
+    { domain: 'love', label: '关系怎么推', prompt: '结合命盘，看这段关系下一步怎么推进，先从哪件事入手。', min: 18, max: 40, gender: 'male' },
+    { domain: 'career', label: '该换方向吗', prompt: '结合命盘和大限流年，看现在是否适合换工作、转岗或换方向。', min: 22, max: 45 },
+    { domain: 'career', label: '事业突破点', prompt: '结合命盘，看事业突破点在哪里，先抓岗位、资源还是项目。', min: 18, max: 55 },
+    { domain: 'career', label: '副业方向', prompt: '结合命盘，看中年阶段适合守主业，还是发展第二曲线。', min: 36, max: 60 },
+    { domain: 'wealth', label: '财从哪来', prompt: '结合命盘和流年，看今年钱从哪里来，先争取什么。', min: 20, max: 60 },
+    { domain: 'wealth', label: '合伙风险', prompt: '结合命盘，看投资、合伙、副业现在能不能碰，最大风险是什么。', min: 26, max: 58 },
+    { domain: 'wealth', label: '赚钱守财', prompt: '结合命盘和流年，看今年该进攻赚钱，还是先守现金流。', min: 30, max: 70 },
+    { domain: 'health', label: '身体重点', prompt: '结合命盘和流年，看身体、压力、作息哪一块要先顾。', min: 25, max: 70 },
+    { domain: 'health', label: '压力怎么调', prompt: '结合命盘，看睡眠、情绪和压力怎么调整，先改什么习惯。', min: 18, max: 65 },
+    { domain: 'family', label: '家宅近况', prompt: '结合命盘，看近期父母与房宅哪件事先应，应该先处理什么。', min: 30, max: 70 },
+    { domain: 'family', label: '子女家事', prompt: '结合命盘，看近期孩子、家宅和亲子关系的重点提醒。', min: 28, max: 58 },
+    { domain: 'timing', label: '今年会动吗', prompt: '结合命盘和流年，看今年是否有搬迁、出行、岗位或圈层变动。', min: 18, max: 65 },
+    { domain: 'timing', label: '转运点', prompt: '结合命盘和大限流年，看接下来最明显的转运点在什么时候。', min: 18, max: 70 },
+    { domain: 'life', label: '人生方向', prompt: '结合命盘和当前年龄，看我的人生方向，以及眼下优先级。', min: 0, max: 70 },
+    { domain: 'life', label: '先抓什么', prompt: '结合命盘，看现在最该先抓事业、钱、感情、健康还是家事。', min: 16, max: 70 },
+    { domain: 'year', label: '今年重点', prompt: '结合命盘和流年，看今年最容易应在哪个宫位、哪类事情。', min: 0, max: 70 },
+    { domain: 'year', label: '今年避坑', prompt: '结合命盘和流年，看今年最容易踩什么坑，怎么避开。', min: 18, max: 70 },
+  ];
+
   function isCurrentLuckSelection() {
     try {
       const info = selectedLuckInfo({ readonly: true });
@@ -2952,6 +2990,129 @@
         : '先排盘，再让许大师读这一张';
     }
     if (xuStatus) xuStatus.textContent = state.chartReady ? '当前命盘' : '待排盘';
+    syncDesktopChatStarters();
+  }
+
+  function desktopChatFaqDomainForPalace(value = '') {
+    return desktopChatFaqPalaceDomains[normalizePalaceName(value)] || '';
+  }
+
+  function desktopChatFaqAgeBand(age) {
+    const n = Number(age) || 0;
+    if (n <= 17) return 'young';
+    if (n <= 25) return 'start';
+    if (n <= 35) return 'build';
+    if (n <= 45) return 'middle';
+    if (n <= 55) return 'steady';
+    return 'later';
+  }
+
+  function getDesktopChatFaqContext() {
+    let xiao = {};
+    try {
+      xiao = selectedXiaoLianInfo({ readonly: true }) || {};
+    } catch (_) {}
+    const current = xiao.current || xiao.selected || {};
+    const profileBirthYear = Number(state.profile?.year);
+    const age = profileBirthYear
+      ? Math.max(1, new Date().getFullYear() - profileBirthYear + 1)
+      : (Number(xiao.realCurrentAge || current.age || fcCurrentVirtualAge()) || 0);
+    const band = desktopChatFaqAgeBand(age);
+    const scores = {};
+    [
+      { palace: current.xiaoLianPalace?.name || current.xiaoLabel, weight: 90 },
+      { palace: current.oppositePalace?.name || current.oppositeLabel, weight: 34 },
+      { palace: xiao.currentDecade?.palaceName || current.decade?.palaceName, weight: 56 },
+    ].forEach(({ palace, weight }) => {
+      const domain = desktopChatFaqDomainForPalace(palace);
+      if (domain) scores[domain] = (scores[domain] || 0) + weight;
+    });
+    Object.entries(desktopChatFaqAgeWeights[band] || {}).forEach(([domain, weight]) => {
+      scores[domain] = (scores[domain] || 0) + weight;
+    });
+    return { age, band, gender: state.profile?.gender || '', scores };
+  }
+
+  function getDesktopChatPriorityItems(domain, context) {
+    const age = Number(context.age) || 0;
+    return desktopChatDynamicFaqItems
+      .filter((item) => item.domain === domain)
+      .map((item, index) => {
+        if ((item.min !== undefined && age < item.min)
+          || (item.max !== undefined && age > item.max)
+          || (item.gender && context.gender && item.gender !== context.gender)) return null;
+        const score = (context.scores[item.domain] || 0)
+          + (item.gender && item.gender === context.gender ? 8 : 0);
+        return score >= 12 ? { item, score, index } : null;
+      })
+      .filter(Boolean)
+      .sort((a, b) => b.score - a.score || a.index - b.index)
+      .slice(0, 2)
+      .map(({ item }) => item);
+  }
+
+  function activateDesktopChatStarterCategory(category) {
+    document.querySelectorAll('.xb-starter-tab').forEach((tab) => {
+      const active = tab.dataset.starterCategory === category;
+      tab.classList.toggle('is-active', active);
+      tab.setAttribute('aria-selected', active ? 'true' : 'false');
+    });
+    document.querySelectorAll('.xb-starter-panel').forEach((panel) => {
+      const active = panel.dataset.starterPanel === category;
+      panel.classList.toggle('is-active', active);
+      panel.hidden = !active;
+    });
+  }
+
+  function syncDesktopChatStarters() {
+    const starters = $('#chat-starters');
+    const tabList = starters?.querySelector('.xb-starter-tabs');
+    const panelList = starters?.querySelector('.xb-starter-panels');
+    if (!state.chartReady || !tabList || !panelList) return;
+
+    const context = getDesktopChatFaqContext();
+    const tabs = Array.from(tabList.querySelectorAll('.xb-starter-tab'));
+    const ordered = tabs.map((tab, index) => {
+      const category = tab.dataset.starterCategory || '';
+      const panel = panelList.querySelector(`[data-starter-panel="${category}"]`);
+      const priorityItems = getDesktopChatPriorityItems(category, context);
+      return {
+        tab,
+        panel,
+        category,
+        priorityItems,
+        index,
+        score: (context.scores[category] || 0) + (priorityItems.length ? 10 : 0),
+      };
+    }).sort((a, b) => b.score - a.score || a.index - b.index);
+
+    ordered.forEach(({ tab, panel, priorityItems }, rank) => {
+      const isCurrentPriority = rank === 0;
+      tab.classList.toggle('is-priority', isCurrentPriority);
+      tabList.appendChild(tab);
+      if (!panel) return;
+      panelList.appendChild(panel);
+      panel.querySelectorAll('[data-desktop-chat-priority]').forEach((node) => node.remove());
+      const input = $('#chat-input');
+      priorityItems.slice().reverse().forEach((item) => {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = `chat-starter-btn xb-starter${isCurrentPriority ? ' is-priority' : ''}`;
+        button.dataset.desktopChatPriority = 'true';
+        button.dataset.chatPrompt = item.prompt;
+        button.innerHTML = `<span>${isCurrentPriority ? '当前优先' : '命盘推荐'} · ${escapeHtml(item.label)}</span>`;
+        button.disabled = !!input?.disabled;
+        button.addEventListener('click', () => {
+          if (!input || input.disabled) return;
+          input.value = item.prompt;
+          input.dispatchEvent(new Event('input', { bubbles: true }));
+          input.focus();
+        });
+        panel.prepend(button);
+      });
+    });
+
+    activateDesktopChatStarterCategory(ordered[0]?.category || 'life');
   }
 
   function clientLabel(profile) {
