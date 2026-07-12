@@ -33,10 +33,10 @@
   <meta property="og:image" content="https://yuetianai.com/images/health/constitution-report-hero-v8.png">
   <meta name="theme-color" content="#f7f0e5">
   <link rel="icon" href="/images/wentian-prototype-assets/wentian-brand-logo-ai-gold-v1.webp" type="image/webp">
-  <link rel="stylesheet" href="/css/yl.css?v=20260711-unified-member-v1">
+  <link rel="stylesheet" href="/css/yl.css?v=20260711-checkout-trust-v4">
   <script defer src="/vendor/qrcodejs/qrcode.min.js"></script>
   <script defer src="/js/config.js?v=20260710-api-origin-lock-v1"></script>
-  <script defer src="/js/yl.js?v=20260711-wechat-guide-v2"></script>
+  <script defer src="/js/yl.js?v=20260711-checkout-trust-v4"></script>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -260,6 +260,13 @@
 
     <section class="yl-page yl-member-wrap" id="member" data-page="member">
       <div class="yl-member-card">
+        <div class="yl-checkout-head">
+          <div>
+            <span>会员订单</span>
+            <strong>确认开通阅天综合会员</strong>
+          </div>
+          <b>安全支付</b>
+        </div>
         <div class="yl-member-main">
           <span>阅天综合会员</span>
           <strong id="ylMemberPrice">¥19.90</strong>
@@ -270,12 +277,21 @@
           <span><b>1</b> 解锁网站全部权限</span>
           <span><b>2</b> AI 对话 80 次/天</span>
         </div>
+        <div class="yl-pay-heading">
+          <strong>选择支付方式</strong>
+          <span>请核对金额后付款</span>
+        </div>
         <div class="yl-pay-row" aria-label="支付方式">
           <button type="button" class="yl-pay-method is-active" data-provider="wechat">微信支付</button>
           <button type="button" class="yl-pay-method" data-provider="alipay">支付宝</button>
           <button type="button" class="yl-pay-method" data-provider="paypal">PayPal</button>
         </div>
         <button class="yl-btn yl-btn-primary" type="button" id="ylOpenPayBtn">确认开通阅天综合会员 ¥19.90</button>
+        <div class="yl-payment-assurance" aria-label="支付安全说明">
+          <span><strong>支付平台处理</strong><small>付款密码由所选支付平台处理</small></span>
+          <span><strong>付款后自动开通</strong><small>会员权益绑定当前登录账号</small></span>
+          <span><strong>支付问题可处理</strong><small>保留订单号即可联系支持</small></span>
+        </div>
         <a class="yl-member-return" id="ylMemberReturnLink" href="#home" hidden>返回原页面</a>
         <form class="yl-health-auth" id="ylHealthAuthPanel" hidden>
           <div class="yl-health-auth-head">
@@ -312,11 +328,16 @@
         <p class="yl-pay-hint" id="ylPayHint"></p>
       </div>
       <div class="yl-operator">
-        <strong>主体说明</strong>
+        <strong>支付与服务说明</strong>
+        <div class="yl-operator-points">
+          <p><b>支付渠道</b><span>微信支付、支付宝、PayPal</span></p>
+          <p><b>权益开通</b><span>付款确认后自动到账</span></p>
+        </div>
         <div class="yl-operator-card">
           <p><span>运营主体：</span>雷州市客路镇阅天工作室（个体工商户）</p>
           <p><span>登录与支付：</span>由阅天AI体系提供支持</p>
         </div>
+        <a class="yl-operator-contact" href="/pages/contact.html">支付遇到问题，联系支持</a>
       </div>
     </section>
   </main>

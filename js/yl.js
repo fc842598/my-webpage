@@ -467,9 +467,43 @@
     }) || fallback;
   }
 
+  function getProviderMethodDetail(provider) {
+    var meta = getProviderMeta(provider);
+    if (!meta.enabled) return "暂不可用";
+    if (provider === "paypal") return "$" + (meta.amountYuan || HEALTH_PAYPAL_AMOUNT) + " · 美元";
+    if (provider === "alipay") return isMobileBrowser() ? "手机支付" : "扫码支付";
+    return isWechatBrowser() ? "微信内支付" : (isMobileBrowser() ? "微信内支付" : "扫码支付");
+  }
+
+  function getProviderSelectionHint(provider) {
+    if (provider === "paypal") return "将前往 PayPal，以美元完成支付。";
+    if (provider === "alipay") {
+      return isMobileBrowser()
+        ? "手机端将打开支付宝完成支付。"
+        : "电脑端将显示二维码，请使用手机支付宝扫码。";
+    }
+    if (isWechatBrowser()) return "将在当前微信页面内完成支付。";
+    return isMobileBrowser()
+      ? "微信支付需在微信内完成。"
+      : "电脑端将显示二维码，请使用手机微信扫码。";
+  }
+
   function shouldUseWechatJsapi() {
     var meta = getProviderMeta(paymentState.provider);
     return paymentState.provider === "wechat" && !meta.mockMode && isWechatBrowser();
+  }
+
+  function getCheckoutPayMethod() {
+    if (paymentState.provider === "paypal") return "redirect";
+    if (paymentState.provider === "alipay" && isMobileBrowser()) return "h5";
+    if (shouldUseWechatJsapi()) return "jsapi";
+    return "native";
+  }
+
+  function isRedirectPayment() {
+    return paymentState.payMethod === "h5"
+      || paymentState.payMethod === "redirect"
+      || paymentState.provider === "paypal";
   }
 
   function invokeWechatJsapi(params) {
@@ -1081,7 +1115,7 @@
     var holder = $("#ylPaymentQr");
     if (!holder) return;
     holder.innerHTML = "";
-    if (!paymentState.payUrl || paymentState.payMethod === "h5" || paymentState.payMethod === "handoff" || paymentState.provider === "paypal" || paymentState.mockMode) {
+    if (!paymentState.payUrl || isRedirectPayment() || paymentState.payMethod === "handoff" || paymentState.mockMode) {
       holder.hidden = true;
       return;
     }
@@ -1102,10 +1136,17 @@
     $all(".yl-pay-method").forEach(function (button) {
       var provider = button.dataset.provider || "wechat";
       var meta = getProviderMeta(provider);
+      var label = getProviderLabel(provider);
+      var detail = getProviderMethodDetail(provider);
       button.classList.toggle("is-active", paymentState.provider === provider);
       button.disabled = paymentState.loading || paymentState.status === "pending" || !meta.enabled;
-      button.textContent = meta.enabled ? getProviderLabel(provider) : getProviderLabel(provider) + "未配置";
+      button.textContent = meta.enabled ? label : label + "未配置";
+      button.dataset.detail = detail;
+      button.setAttribute("aria-label", label + "，" + detail);
     });
+
+    var memberCard = $(".yl-member-card");
+    if (memberCard) memberCard.dataset.provider = paymentState.provider;
 
     var productName = HEALTH_PRODUCT_NAME;
     var amount = getPaymentAmountLabel();
@@ -1118,7 +1159,7 @@
       if (paymentState.loading) openButton.textContent = "处理中...";
       else if (paymentState.status === "paid") openButton.textContent = "续费阅天综合会员 " + amount;
       else if (paymentState.status === "handoff") openButton.textContent = "重新复制微信支付链接";
-      else if (paymentState.status === "pending" && paymentState.payMethod === "h5") openButton.textContent = "打开" + getProviderLabel(paymentState.provider);
+      else if (paymentState.status === "pending" && isRedirectPayment()) openButton.textContent = "打开" + getProviderLabel(paymentState.provider);
       else if (paymentState.status === "pending") openButton.textContent = "我已支付，刷新状态";
       else openButton.textContent = "确认开通" + productName + " " + amount;
     }
@@ -1137,7 +1178,7 @@
       var showLink = !!paymentState.payUrl && !paymentState.mockMode && paymentState.payMethod !== "handoff";
       link.hidden = !showLink;
       link.href = paymentState.payUrl || "#";
-      link.textContent = paymentState.provider === "paypal" || paymentState.payMethod === "h5"
+      link.textContent = isRedirectPayment()
         ? "打开" + getProviderLabel(paymentState.provider)
         : "支付链接备用打开";
     }
@@ -1372,7 +1413,7 @@
       paymentState.mockMode = false;
     }
     if (paymentState.status === "pending") {
-      if (paymentState.payMethod === "h5" || paymentState.provider === "paypal") {
+      if (isRedirectPayment()) {
         if (paymentState.payUrl) window.location.href = paymentState.payUrl;
         return;
       }
@@ -1403,7 +1444,7 @@
     paymentState.loading = true;
     paymentState.status = "loading";
     paymentState.message = "正在创建" + getProviderLabel(paymentState.provider) + "阅天综合会员订单...";
-    updatePaymentBoot("正在打开微信支付", "账号已识别，正在准备付款，请稍候。", false);
+    updatePaymentBoot("正在打开" + getProviderLabel(paymentState.provider), "账号已识别，正在准备付款，请稍候。", false);
     paymentState.orderNo = "";
     paymentState.payUrl = "";
     paymentState.payMethod = "";
@@ -1433,9 +1474,7 @@
           analytics: window.yuetianGetAnalyticsContext?.() || null
         }
       });
-      var payMethod = paymentState.provider === "paypal"
-        ? "redirect"
-        : (shouldUseWechatJsapi() ? "jsapi" : "native");
+      var payMethod = getCheckoutPayMethod();
       var session = await apiFetch("/api/payments/create-session", {
         method: "POST",
         body: { orderNo: order.orderNo, payMethod: payMethod }
@@ -1459,7 +1498,7 @@
         ? "当前为支付测试模式，可点击模拟支付成功完成验证。"
         : (paymentState.payMethod === "jsapi"
           ? "正在打开微信支付..."
-          : (paymentState.payMethod === "h5" || paymentState.provider === "paypal"
+          : (isRedirectPayment()
           ? "请打开" + getProviderLabel(paymentState.provider) + "完成支付，支付后返回刷新状态。"
           : "请使用" + getProviderLabel(paymentState.provider) + "扫码支付，完成后刷新状态。"));
 
@@ -1574,6 +1613,7 @@
             currency: meta.currency
           });
         }
+        setPayHint(getProviderSelectionHint(paymentState.provider));
         renderPayment();
       });
     });
