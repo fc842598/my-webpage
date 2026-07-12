@@ -153,7 +153,7 @@
     ]
   }
   </script>
-  <link rel="stylesheet" href="../css/mingbook-onepage.css?v=20260711-nav-shell-v1">
+  <link rel="stylesheet" href="../css/mingbook-onepage.css?v=20260712-shichen-whorl-first-v1">
   <script src="../js/config.js?v=20260710-api-origin-lock-v1"></script>
   <script defer src="../js/cities.js"></script>
   <script defer src="../js/lunarCalendar.js"></script>
@@ -170,7 +170,7 @@
   <script defer src="../src/ziping/runtime.js"></script>
   <script defer src="../js/ai-piming.js?v=20260710-api-origin-lock-v1"></script>
   <script defer src="../js/ai-chat.js?v=20260710-api-origin-lock-v1"></script>
-  <script defer src="../js/mingbook-onepage.js?v=20260711-unified-member-v1"></script>
+  <script defer src="../js/mingbook-onepage.js?v=20260712-shichen-whorl-first-v1"></script>
 </head>
 <body class="mingbook-onepage">
   <header class="mbp-nav">
@@ -889,18 +889,12 @@
         <button type="button" id="mbpShichenClose" aria-label="关闭">×</button>
       </div>
       <div class="mbp-shichen-questions" id="mbpShichenQuestions">
-        <div class="mbp-shichen-field">
-          <span>① 记得大概几点出生？</span>
-          <div class="mbp-shichen-time-grid" id="mbpShichenTimeQuick" aria-label="选择最接近的出生时间段"></div>
-          <p class="mbp-shichen-time-hint" id="mbpShichenTimeHint">直接选择最接近的两小时时段，每个时段对应一个时辰。</p>
-          <input type="hidden" id="mbpVagueTime">
-        </div>
-        <details class="mbp-shichen-assist mbp-shichen-field-whorl">
-          <summary><span>完全不记得时间？用头旋辅助</span><small>选填</small></summary>
-          <p>头旋只用于缩小候选范围；如能找到出生证明或家人回忆，以实际时间为准。</p>
+        <div class="mbp-shichen-field mbp-shichen-field-whorl">
+          <span>① 先选择头旋位置（从后面看）</span>
+          <p>头旋用于缩小范围；如能找到出生证明或家人明确回忆，以实际时间为准。</p>
           <div class="mbp-whorl-guide" aria-label="头旋位置示意">
             <label class="mbp-whorl-card">
-              <input type="radio" name="mbpWhorl" value="center-left" data-label="单旋中左：子午卯酉" aria-label="居中或偏左，子午卯酉">
+              <input type="radio" name="mbpWhorl" value="center-left" data-label="居中或偏左" aria-label="头旋居中或偏左">
               <span class="mbp-whorl-visual mbp-whorl-center-left" aria-hidden="true">
                 <span class="mbp-whorl-pulse"></span>
                 <span class="mbp-whorl-dot"></span>
@@ -909,7 +903,7 @@
               <span class="mbp-whorl-text">居中 / 偏左，子午卯酉</span>
             </label>
             <label class="mbp-whorl-card">
-              <input type="radio" name="mbpWhorl" value="right" data-label="单旋偏右：寅申巳亥" aria-label="偏右，寅申巳亥">
+              <input type="radio" name="mbpWhorl" value="right" data-label="偏右" aria-label="头旋偏右">
               <span class="mbp-whorl-visual mbp-whorl-right" aria-hidden="true">
                 <span class="mbp-whorl-pulse"></span>
                 <span class="mbp-whorl-dot"></span>
@@ -918,7 +912,7 @@
               <span class="mbp-whorl-text">偏右，寅申巳亥</span>
             </label>
             <label class="mbp-whorl-card">
-              <input type="radio" name="mbpWhorl" value="double" data-label="两个以上：辰戌丑未" aria-label="两个以上，辰戌丑未">
+              <input type="radio" name="mbpWhorl" value="double" data-label="两个以上" aria-label="有两个或更多头旋">
               <span class="mbp-whorl-visual mbp-whorl-double" aria-hidden="true">
                 <span class="mbp-whorl-pulse"></span>
                 <span class="mbp-whorl-dot"></span>
@@ -929,8 +923,14 @@
               <span class="mbp-whorl-text">两个以上，辰戌丑未</span>
             </label>
           </div>
-        </details>
-        <button class="mbp-shichen-primary" id="mbpShichenCalc" type="button">查看对应时辰 →</button>
+        </div>
+        <div class="mbp-shichen-field mbp-shichen-recall" id="mbpShichenRecall" hidden>
+          <span id="mbpShichenRecallTitle">② 家人回忆出生时更接近哪个场景？</span>
+          <div class="mbp-shichen-time-grid" id="mbpShichenTimeQuick" aria-labelledby="mbpShichenRecallTitle"></div>
+          <button class="mbp-shichen-unknown" id="mbpShichenUnknown" type="button">完全不记得，查看4个对应时辰</button>
+          <p class="mbp-shichen-time-hint" id="mbpShichenTimeHint">选择最接近的生活场景，即可定位到一个时辰。</p>
+          <input type="hidden" id="mbpVagueTime">
+        </div>
       </div>
       <div class="mbp-shichen-result" id="mbpShichenResult" hidden>
         <strong id="mbpShichenResultTitle"></strong>

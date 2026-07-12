@@ -7364,9 +7364,9 @@
   ];
 
   const whorlGroups = {
-    'center-left': ['子时', '午时', '卯时', '酉时'],
-    right: ['寅时', '申时', '巳时', '亥时'],
-    double: ['辰时', '戌时', '丑时', '未时'],
+    'center-left': ['子时', '卯时', '午时', '酉时'],
+    right: ['寅时', '巳时', '申时', '亥时'],
+    double: ['丑时', '辰时', '未时', '戌时'],
   };
 
   const shichenTimeGroups = [
@@ -7384,14 +7384,48 @@
     { key: 'hai', label: '睡前', hint: '21:00–23:00', candidates: ['亥时'] },
   ];
 
+  const shichenScenarioGroups = {
+    'center-left': {
+      prompt: '更接近半夜、天亮、中午，还是傍晚？',
+      options: [
+        { key: 'zi', label: '半夜', hint: '刚过零点' },
+        { key: 'mao', label: '天亮前后', hint: '清晨起床前' },
+        { key: 'wu', label: '午饭前后', hint: '接近中午' },
+        { key: 'you', label: '傍晚', hint: '晚饭前后' },
+      ],
+    },
+    right: {
+      prompt: '更接近黎明前、上午、下午，还是睡前？',
+      options: [
+        { key: 'yin', label: '黎明前', hint: '天还没亮' },
+        { key: 'si', label: '上午', hint: '早饭以后' },
+        { key: 'shen', label: '下午', hint: '大约三四点' },
+        { key: 'hai', label: '晚上睡前', hint: '夜里入睡前' },
+      ],
+    },
+    double: {
+      prompt: '更接近后半夜、早饭、午后，还是晚饭后？',
+      options: [
+        { key: 'chou', label: '后半夜', hint: '凌晨一两点' },
+        { key: 'chen', label: '早饭前后', hint: '早晨起床后' },
+        { key: 'wei', label: '午后一两点', hint: '吃过午饭' },
+        { key: 'xu', label: '晚饭后', hint: '天已经黑了' },
+      ],
+    },
+  };
+
   function openShichenModal() {
     const overlay = $('#mbpShichenOverlay');
     if (!overlay) return;
-    renderShichenTimeQuick();
     overlay.hidden = false;
     $('#mbpShichenQuestions').hidden = false;
     $('#mbpShichenResult').hidden = true;
-    $('#mbpShichenTimeQuick [data-shichen-time]')?.focus();
+    const whorl = document.querySelector('input[name="mbpWhorl"]:checked')?.value || '';
+    if (whorl) setWhorlSelection(whorl);
+    else {
+      $('#mbpShichenRecall').hidden = true;
+      document.querySelector('input[name="mbpWhorl"]')?.focus();
+    }
   }
 
   function closeShichenModal() {
@@ -7416,29 +7450,46 @@
     return shichenTimeGroups.find((item) => item.key === key) || null;
   }
 
+  function shichenScenarioByKey(whorl, groupKey) {
+    return shichenScenarioGroups[whorl]?.options?.find((item) => item.key === groupKey) || null;
+  }
+
+  function clearShichenTimeSelection() {
+    const input = $('#mbpVagueTime');
+    if (input) {
+      input.value = '';
+      delete input.dataset.group;
+      delete input.dataset.candidates;
+      delete input.dataset.scenarioLabel;
+      delete input.dataset.scenarioHint;
+    }
+    syncShichenTimeButtons();
+  }
+
   function setShichenTimeSelection(groupKey) {
     const group = shichenTimeGroupByKey(groupKey);
     if (!group) return;
+    const whorl = document.querySelector('input[name="mbpWhorl"]:checked')?.value || '';
+    const scenario = shichenScenarioByKey(whorl, groupKey);
     const names = group.candidates || [];
     const input = $('#mbpVagueTime');
     if (input) {
-      input.value = `${group.label} · ${group.hint}`;
+      input.value = `${scenario?.label || group.label} · ${scenario?.hint || group.hint}`;
       input.dataset.group = group.key;
-      delete input.dataset.detail;
       input.dataset.candidates = names.join(',');
+      input.dataset.scenarioLabel = scenario?.label || group.label;
+      input.dataset.scenarioHint = scenario?.hint || group.hint;
     }
     syncShichenTimeButtons();
     const hint = $('#mbpShichenTimeHint');
-    if (hint) hint.textContent = `${group.label} ${group.hint}，对应 ${names.join(' / ')}。`;
+    if (hint) hint.textContent = `${scenario?.label || group.label}，将定位到一个对应时辰。`;
   }
 
-  function renderShichenTimeQuick() {
+  function renderShichenTimeQuick(whorl) {
     const root = $('#mbpShichenTimeQuick');
-    if (!root || root.dataset.ready === '1') {
-      syncShichenTimeButtons();
-      return;
-    }
-    root.innerHTML = shichenTimeGroups.map((item) => `
+    const scenarioGroup = shichenScenarioGroups[whorl];
+    if (!root || !scenarioGroup) return;
+    root.innerHTML = scenarioGroup.options.map((item) => `
       <div class="mbp-shichen-time-card" data-shichen-card="${escapeHtml(item.key)}">
         <button type="button" class="mbp-shichen-time-main" data-shichen-time="${escapeHtml(item.key)}">
           <b>${escapeHtml(item.label)}</b>
@@ -7446,8 +7497,24 @@
         </button>
       </div>
     `).join('');
-    root.dataset.ready = '1';
     syncShichenTimeButtons();
+  }
+
+  function setWhorlSelection(whorl) {
+    const scenarioGroup = shichenScenarioGroups[whorl];
+    const recall = $('#mbpShichenRecall');
+    if (!scenarioGroup || !recall) return;
+    clearShichenTimeSelection();
+    renderShichenTimeQuick(whorl);
+    const title = $('#mbpShichenRecallTitle');
+    if (title) title.textContent = `② ${scenarioGroup.prompt}`;
+    const hint = $('#mbpShichenTimeHint');
+    if (hint) hint.textContent = '选择最接近的生活场景，即可定位到一个时辰。';
+    recall.hidden = false;
+    requestAnimationFrame(() => {
+      recall.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+      recall.querySelector('[data-shichen-time]')?.focus({ preventScroll: true });
+    });
   }
 
   function syncShichenTimeButtons() {
@@ -7480,11 +7547,13 @@
     const byText = selectedTimeCandidates();
     const byWhorl = (whorlGroups[whorl] || []).map(candidateByName).filter(Boolean);
     const timeMeta = getSelectedShichenTimeMeta();
-    const picks = byText.length ? byText : byWhorl;
+    const whorlNames = new Set(byWhorl.map((item) => item.name));
+    const matchedByText = byText.filter((item) => whorlNames.has(item.name));
+    const picks = matchedByText.length ? matchedByText : byWhorl;
     return {
       picks: uniqueShichenCandidates(picks).slice(0, 4),
       timeMeta,
-      source: byText.length ? 'time' : (byWhorl.length ? 'whorl' : ''),
+      source: matchedByText.length ? 'time' : (byWhorl.length ? 'whorl' : ''),
     };
   }
 
@@ -7501,14 +7570,10 @@
   }
 
   function renderShichenResult() {
-    const whorlInput = document.querySelector('input[name="mbpWhorl"]:checked');
     const context = inferShichenCandidates();
     if (!context.picks.length) {
       const hint = $('#mbpShichenTimeHint');
-      if (hint) hint.textContent = '请选择一个两小时时段；如果完全不记得，可展开头旋辅助。';
-      const assist = document.querySelector('.mbp-shichen-assist');
-      if (assist) assist.open = true;
-      assist?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+      if (hint) hint.textContent = '请先选择头旋位置。';
       return;
     }
     const picks = context.picks;
@@ -7517,27 +7582,27 @@
     const list = $('#mbpShichenCandidates');
     const group = context.timeMeta.group;
     const fromTime = context.source === 'time';
-    if (title) title.textContent = fromTime ? '时辰定位' : '候选概率';
+    const input = $('#mbpVagueTime');
+    const scenarioLabel = input?.dataset?.scenarioLabel || group?.label || '';
+    const scenarioHint = input?.dataset?.scenarioHint || group?.hint || '';
+    if (title) title.textContent = fromTime ? '已定位到一个时辰' : '请选择最接近的时辰';
     if (reason) {
       reason.textContent = fromTime
-        ? `${group?.label || ''} ${group?.hint || ''}，对应 ${picks[0].name}。`
-        : `仅凭头旋无法再区分，${picks.length} 个候选在当前信息下概率相同。`;
+        ? `${scenarioLabel}（${scenarioHint}）对应 ${picks[0].name}，请确认后带入排盘。`
+        : '完全不记得大概时间时，只能从头旋对应的4个时辰中选择最接近的一个。';
     }
     if (list) {
-      const baseProbability = Math.floor(100 / picks.length);
-      const remainder = 100 - (baseProbability * picks.length);
-      list.innerHTML = picks.map((item, index) => {
+      list.classList.toggle('is-multiple', picks.length > 1);
+      list.innerHTML = picks.map((item) => {
         const range = shichenRangeText(item);
         const applyHour = shichenApplyHour(item);
-        const probability = baseProbability + (index < remainder ? 1 : 0);
         return `
-          <button type="button" class="mbp-shichen-candidate" data-shichen-hour="${applyHour}" data-shichen-name="${escapeHtml(item.name)}" data-shichen-range="${escapeHtml(range)}" aria-label="选择${escapeHtml(item.name)}，${escapeHtml(range)}，当前概率${probability}%并带入排盘">
+          <button type="button" class="mbp-shichen-candidate" data-shichen-hour="${applyHour}" data-shichen-name="${escapeHtml(item.name)}" data-shichen-range="${escapeHtml(range)}" aria-label="${fromTime ? '确认采用' : '选择'}${escapeHtml(item.name)}，${escapeHtml(range)}并带入排盘">
             <span class="mbp-shichen-candidate__main">
               <b>${escapeHtml(item.name)}</b>
               <small>${escapeHtml(range)}</small>
             </span>
-            <span class="mbp-shichen-candidate__probability"><small>概率</small><b>${probability}%</b></span>
-            <span class="mbp-shichen-candidate__action">采用 <i aria-hidden="true">→</i></span>
+            <span class="mbp-shichen-candidate__action">${fromTime ? '确认采用' : '选择'} <i aria-hidden="true">→</i></span>
           </button>
         `;
       }).join('');
@@ -7971,14 +8036,25 @@
     $('#mbpShichenOverlay')?.addEventListener('click', (event) => {
       if (event.target.id === 'mbpShichenOverlay') closeShichenModal();
     });
-    $('#mbpShichenCalc')?.addEventListener('click', renderShichenResult);
+    document.querySelectorAll('input[name="mbpWhorl"]').forEach((input) => {
+      input.addEventListener('change', () => setWhorlSelection(input.value));
+    });
     $('#mbpShichenTimeQuick')?.addEventListener('click', (event) => {
       const button = event.target.closest('[data-shichen-time]');
-      if (button) setShichenTimeSelection(button.dataset.shichenTime);
+      if (button) {
+        setShichenTimeSelection(button.dataset.shichenTime);
+        renderShichenResult();
+      }
+    });
+    $('#mbpShichenUnknown')?.addEventListener('click', () => {
+      clearShichenTimeSelection();
+      renderShichenResult();
     });
     $('#mbpShichenBack')?.addEventListener('click', () => {
       $('#mbpShichenQuestions').hidden = false;
       $('#mbpShichenResult').hidden = true;
+      const whorl = document.querySelector('input[name="mbpWhorl"]:checked')?.value || '';
+      if (whorl) renderShichenTimeQuick(whorl);
       $('#mbpShichenTimeQuick [data-shichen-time]')?.focus();
     });
     $('#mbpShichenCandidates')?.addEventListener('click', (event) => {

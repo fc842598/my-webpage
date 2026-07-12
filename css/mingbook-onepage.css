@@ -8420,6 +8420,10 @@ p.mbp-topic-detail {
   font-weight: 800;
 }
 
+.mbp-shichen-recall[hidden] {
+  display: none;
+}
+
 .mbp-shichen-time-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -8484,6 +8488,24 @@ p.mbp-topic-detail {
   color: #9a8060 !important;
   font-size: 12px !important;
   line-height: 1.45 !important;
+}
+
+.mbp-shichen-unknown {
+  width: 100%;
+  min-height: 40px;
+  border: 1px solid rgba(201, 169, 97, .34);
+  border-radius: 10px;
+  background: rgba(255, 250, 240, .72);
+  color: #806b55;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 900;
+}
+
+.mbp-shichen-unknown:hover,
+.mbp-shichen-unknown:focus-visible {
+  border-color: #a86a2f;
+  color: #6f451f;
 }
 
 .mbp-whorl-guide {
@@ -8687,6 +8709,11 @@ p.mbp-topic-detail {
   box-shadow:
     0 0 0 3px rgba(193, 50, 40, .28),
     0 14px 30px rgba(159, 91, 53, .2);
+}
+
+.mbp-whorl-card:has(input:focus-visible) {
+  outline: 3px solid rgba(183, 125, 54, .46);
+  outline-offset: 2px;
 }
 
 .mbp-whorl-card:has(input:checked)::before {
@@ -9037,19 +9064,28 @@ p.mbp-topic-detail {
   margin: 10px 0;
 }
 
+.mbp-shichen-candidates.is-multiple {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
 .mbp-shichen-candidates button {
   min-height: 62px;
   border: 1px solid rgba(183, 125, 54, .34);
   background: #fffaf0;
   color: #4b3824;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto auto;
+  grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
   gap: 12px;
   padding: 9px 12px;
   text-align: left;
   box-shadow: none;
   transition: border-color .18s ease, box-shadow .18s ease, transform .18s ease;
+}
+
+.mbp-shichen-candidates.is-multiple .mbp-shichen-candidate__main {
+  display: grid;
+  gap: 3px;
 }
 
 .mbp-shichen-candidates button:hover {
@@ -9155,13 +9191,13 @@ p.mbp-topic-detail {
   }
 
   .mbp-whorl-guide {
-    grid-template-columns: repeat(3, minmax(178px, 1fr));
-    overflow-x: auto;
-    padding-bottom: 6px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    overflow: visible;
+    padding-bottom: 0;
   }
 
   .mbp-whorl-card {
-    min-width: 178px;
+    min-width: 0;
   }
 
   .mbp-whorl-tag small {
