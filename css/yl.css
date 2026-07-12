@@ -2168,3 +2168,577 @@ input:focus-visible {
     min-width: calc(50% - 5px);
   }
 }
+
+/* Unified membership checkout: selected option B */
+html.yl-unified-checkout {
+  --checkout-bg: #f8f2e8;
+  --checkout-paper: #fffdf9;
+  --checkout-ink: #2c2925;
+  --checkout-muted: #776f65;
+  --checkout-line: #dfcaa8;
+  --checkout-gold: #c59b52;
+  --checkout-red: #b6251b;
+  --checkout-red-dark: #961c16;
+}
+
+html.yl-unified-checkout body {
+  background: var(--checkout-bg);
+  color: var(--checkout-ink);
+}
+
+html.yl-unified-checkout .yl-header {
+  min-height: 72px;
+  border-bottom-color: rgba(197, 155, 82, 0.25);
+  background: rgba(255, 252, 247, 0.95);
+}
+
+html.yl-unified-checkout .yl-brand-mark {
+  background: var(--checkout-gold);
+}
+
+html.yl-unified-checkout .yl-shell {
+  width: min(1120px, calc(100% - 80px));
+  padding: 42px 0 64px;
+}
+
+html.yl-unified-checkout .yl-member-wrap {
+  display: block;
+  width: 100%;
+  max-width: 1080px;
+  margin: 0 auto;
+}
+
+html.yl-unified-checkout .yl-member-card {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 22px;
+  width: 100%;
+  border: 1px solid var(--checkout-line);
+  border-radius: 8px;
+  background: var(--checkout-paper);
+  box-shadow: 0 16px 42px rgba(91, 58, 22, 0.08);
+  padding: 28px 40px 30px;
+}
+
+html.yl-unified-checkout .yl-checkout-head {
+  position: relative;
+  display: flex;
+  min-height: 74px;
+  grid-column: auto;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1px solid rgba(197, 155, 82, 0.28);
+  padding: 0 0 20px;
+  text-align: center;
+}
+
+html.yl-unified-checkout .yl-checkout-head div {
+  gap: 7px;
+}
+
+html.yl-unified-checkout .yl-checkout-head span {
+  color: #9c7540;
+  font-size: 12px;
+}
+
+html.yl-unified-checkout .yl-checkout-head strong {
+  color: var(--checkout-ink);
+  font-family: "Songti SC", "STSong", "SimSun", serif;
+  font-size: 30px;
+  font-weight: 800;
+}
+
+html.yl-unified-checkout .yl-checkout-head > b {
+  position: absolute;
+  right: 0;
+  border: 1px solid rgba(182, 37, 27, 0.24);
+  border-radius: 8px;
+  background: rgba(182, 37, 27, 0.05);
+  color: var(--checkout-red-dark);
+  padding: 8px 12px;
+}
+
+html.yl-unified-checkout .yl-order-summary {
+  display: grid;
+  grid-template-columns: minmax(220px, 0.9fr) minmax(300px, 1.25fr) minmax(260px, 1fr);
+  border: 1px solid var(--checkout-line);
+  border-radius: 4px;
+  background: #fffdfa;
+}
+
+html.yl-unified-checkout .yl-member-main,
+html.yl-unified-checkout .yl-member-benefits,
+html.yl-unified-checkout .yl-payment-assurance {
+  min-height: 190px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+html.yl-unified-checkout .yl-member-main {
+  align-items: center;
+  border-right: 1px solid rgba(223, 202, 168, 0.82);
+  color: var(--checkout-ink);
+  padding: 28px 24px;
+  text-align: center;
+}
+
+html.yl-unified-checkout .yl-member-main span {
+  color: var(--checkout-ink);
+  font-family: "Songti SC", "STSong", "SimSun", serif;
+  font-size: 20px;
+  font-weight: 800;
+}
+
+html.yl-unified-checkout .yl-member-main strong {
+  margin: 8px 0 4px;
+  color: var(--checkout-red);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 48px;
+  font-weight: 500;
+  line-height: 1.08;
+}
+
+html.yl-unified-checkout .yl-member-main p {
+  border: 1px solid rgba(197, 155, 82, 0.38);
+  border-radius: 4px;
+  color: #8a6b3d;
+  font-size: 12px;
+  padding: 5px 10px;
+}
+
+html.yl-unified-checkout .yl-member-benefits {
+  align-content: center;
+  gap: 18px;
+  border-right: 1px solid rgba(223, 202, 168, 0.82);
+  padding: 24px 32px;
+}
+
+html.yl-unified-checkout .yl-member-benefits > strong {
+  color: #9c7540;
+  font-size: 12px;
+  letter-spacing: 0;
+}
+
+html.yl-unified-checkout .yl-member-benefits span {
+  color: var(--checkout-ink);
+  font-size: 15px;
+}
+
+html.yl-unified-checkout .yl-member-benefits b {
+  border: 1px solid rgba(197, 155, 82, 0.42);
+  background: #fbf3e4;
+  color: #936d35;
+}
+
+html.yl-unified-checkout .yl-payment-assurance {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-column: auto;
+  align-content: center;
+  gap: 9px;
+  padding: 24px 28px;
+}
+
+html.yl-unified-checkout .yl-assurance-title {
+  color: var(--checkout-red-dark);
+  font-size: 16px;
+}
+
+html.yl-unified-checkout .yl-payment-assurance > span {
+  display: grid;
+  gap: 2px;
+  padding: 0;
+}
+
+html.yl-unified-checkout .yl-payment-assurance > span + span {
+  border-left: 0;
+}
+
+html.yl-unified-checkout .yl-payment-assurance strong {
+  color: var(--checkout-ink);
+  font-size: 12px;
+}
+
+html.yl-unified-checkout .yl-payment-assurance small {
+  color: var(--checkout-muted);
+  font-size: 10px;
+}
+
+html.yl-unified-checkout .yl-pay-heading {
+  display: flex;
+  grid-column: auto;
+  margin-top: 2px;
+  padding-left: 12px;
+  border-left: 3px solid var(--checkout-red);
+}
+
+html.yl-unified-checkout .yl-pay-heading strong {
+  color: var(--checkout-ink);
+  font-size: 17px;
+}
+
+html.yl-unified-checkout .yl-pay-heading span {
+  color: var(--checkout-muted);
+}
+
+html.yl-unified-checkout .yl-pay-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-column: auto;
+  gap: 14px;
+}
+
+html.yl-unified-checkout .yl-pay-method {
+  min-width: 0;
+  min-height: 68px;
+  border-color: var(--checkout-line);
+  border-radius: 4px;
+  background: #fffdfa;
+  color: var(--checkout-ink);
+  font-size: 15px;
+}
+
+html.yl-unified-checkout .yl-pay-method::after {
+  color: #8d8275;
+}
+
+html.yl-unified-checkout .yl-pay-method.is-active {
+  border-color: var(--checkout-red);
+  background: var(--checkout-red);
+  color: #fff;
+}
+
+html.yl-unified-checkout .yl-pay-method[data-provider="alipay"].is-active {
+  border-color: #1677ff;
+  background: #1677ff;
+}
+
+html.yl-unified-checkout .yl-pay-method[data-provider="paypal"].is-active {
+  border-color: #003087;
+  background: #003087;
+}
+
+html.yl-unified-checkout #ylOpenPayBtn {
+  min-height: 56px;
+  grid-column: auto;
+  border-radius: 4px;
+  background: var(--checkout-red);
+  font-size: 18px;
+}
+
+html.yl-unified-checkout #ylOpenPayBtn:hover,
+html.yl-unified-checkout #ylOpenPayBtn:focus-visible {
+  background: var(--checkout-red-dark);
+}
+
+html.yl-unified-checkout .yl-member-return {
+  grid-column: auto;
+  color: var(--checkout-red-dark);
+}
+
+html.yl-unified-checkout .yl-health-auth,
+html.yl-unified-checkout .yl-payment-panel {
+  grid-column: auto;
+  border-color: var(--checkout-line);
+  border-radius: 4px;
+  background: #fffdfa;
+}
+
+html.yl-unified-checkout .yl-health-auth-head strong,
+html.yl-unified-checkout .yl-payment-status,
+html.yl-unified-checkout .yl-pay-hint {
+  color: var(--checkout-red-dark);
+}
+
+html.yl-unified-checkout .yl-mobile-assurance {
+  display: none;
+}
+
+html.yl-unified-checkout .yl-operator {
+  display: flex;
+  width: min(100%, 920px);
+  min-height: auto;
+  margin: 18px auto 0;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  color: var(--checkout-muted);
+  padding: 0;
+  text-align: center;
+}
+
+html.yl-unified-checkout .yl-operator-points {
+  display: none;
+}
+
+html.yl-unified-checkout .yl-operator-card {
+  border: 0;
+  background: transparent;
+  padding: 0;
+}
+
+html.yl-unified-checkout .yl-operator-card p {
+  display: inline;
+  font-size: 11px;
+}
+
+html.yl-unified-checkout .yl-operator-card p + p {
+  display: none;
+}
+
+html.yl-unified-checkout .yl-operator-card p span {
+  color: var(--checkout-muted);
+  font-size: 11px;
+}
+
+html.yl-unified-checkout .yl-operator-contact {
+  display: inline-flex;
+  min-height: 0;
+  border: 0;
+  border-left: 1px solid var(--checkout-line);
+  border-radius: 0;
+  color: var(--checkout-red-dark);
+  font-size: 11px;
+  line-height: 1.4;
+  padding-left: 14px;
+}
+
+@media (max-width: 900px) {
+  html.yl-unified-checkout .yl-shell {
+    width: min(760px, calc(100% - 40px));
+  }
+
+  html.yl-unified-checkout .yl-order-summary {
+    grid-template-columns: 1fr 1.35fr;
+  }
+
+  html.yl-unified-checkout .yl-payment-assurance {
+    grid-column: 1 / -1;
+    min-height: auto;
+    grid-template-columns: auto repeat(3, minmax(0, 1fr));
+    align-items: center;
+    border-top: 1px solid rgba(223, 202, 168, 0.82);
+    padding: 16px 20px;
+  }
+
+  html.yl-unified-checkout .yl-member-benefits {
+    border-right: 0;
+  }
+}
+
+@media (max-width: 720px) {
+  html.yl-unified-checkout body {
+    padding-bottom: 0;
+  }
+
+  html.yl-unified-checkout .yl-header {
+    position: static;
+    display: grid;
+    min-height: 58px;
+    padding: 0 20px;
+    background: var(--checkout-bg);
+  }
+
+  html.yl-unified-checkout .yl-brand {
+    justify-self: center;
+    font-family: "Songti SC", "STSong", "SimSun", serif;
+    font-size: 18px;
+  }
+
+  html.yl-unified-checkout .yl-brand-mark {
+    width: 18px;
+    height: 18px;
+  }
+
+  html.yl-unified-checkout .yl-shell {
+    width: 100%;
+    padding: 0;
+  }
+
+  html.yl-unified-checkout .yl-member-wrap {
+    max-width: 430px;
+  }
+
+  html.yl-unified-checkout .yl-member-card {
+    width: 100%;
+    gap: 16px;
+    border: 0;
+    border-radius: 0;
+    background: var(--checkout-bg);
+    box-shadow: none;
+    padding: 14px 20px 18px;
+  }
+
+  html.yl-unified-checkout .yl-checkout-head {
+    display: flex;
+    min-height: 62px;
+    border-bottom: 0;
+    padding: 0 0 8px;
+  }
+
+  html.yl-unified-checkout .yl-checkout-head span {
+    display: none;
+  }
+
+  html.yl-unified-checkout .yl-checkout-head strong {
+    font-size: 28px;
+  }
+
+  html.yl-unified-checkout .yl-checkout-head > b {
+    position: static;
+    margin-left: 12px;
+    font-size: 10px;
+    padding: 5px 8px;
+  }
+
+  html.yl-unified-checkout .yl-order-summary {
+    display: block;
+    overflow: hidden;
+    border-radius: 4px;
+    background: #fffdfa;
+  }
+
+  html.yl-unified-checkout .yl-member-main,
+  html.yl-unified-checkout .yl-member-benefits,
+  html.yl-unified-checkout .yl-payment-assurance {
+    min-height: auto;
+  }
+
+  html.yl-unified-checkout .yl-member-main {
+    border-right: 0;
+    border-bottom: 1px dashed rgba(197, 155, 82, 0.42);
+    padding: 20px 18px 16px;
+  }
+
+  html.yl-unified-checkout .yl-member-main span {
+    font-size: 20px;
+  }
+
+  html.yl-unified-checkout .yl-member-main strong {
+    margin: 4px 0 2px;
+    font-size: 48px;
+  }
+
+  html.yl-unified-checkout .yl-member-main p {
+    display: none;
+  }
+
+  html.yl-unified-checkout .yl-member-benefits {
+    gap: 10px;
+    border-right: 0;
+    padding: 14px 24px 12px;
+  }
+
+  html.yl-unified-checkout .yl-member-benefits > strong {
+    display: none;
+  }
+
+  html.yl-unified-checkout .yl-member-benefits span {
+    font-size: 14px;
+  }
+
+  html.yl-unified-checkout .yl-member-benefits b {
+    width: 24px;
+    height: 24px;
+    flex-basis: 24px;
+  }
+
+  html.yl-unified-checkout .yl-payment-assurance {
+    display: block;
+    border-top: 1px dashed rgba(197, 155, 82, 0.42);
+    padding: 10px;
+    text-align: center;
+  }
+
+  html.yl-unified-checkout .yl-assurance-title {
+    display: inline-block;
+    color: #a57c3f;
+    font-size: 13px;
+  }
+
+  html.yl-unified-checkout .yl-payment-assurance > span {
+    display: none;
+  }
+
+  html.yl-unified-checkout .yl-pay-heading {
+    display: none;
+  }
+
+  html.yl-unified-checkout .yl-pay-row {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  html.yl-unified-checkout .yl-pay-method {
+    min-height: 60px;
+    padding: 7px 4px;
+    font-size: 13px;
+  }
+
+  html.yl-unified-checkout .yl-pay-method::after {
+    font-size: 9px;
+  }
+
+  html.yl-unified-checkout #ylOpenPayBtn {
+    min-height: 52px;
+    font-size: 17px;
+  }
+
+  html.yl-unified-checkout .yl-mobile-assurance {
+    display: grid;
+    gap: 4px;
+    color: var(--checkout-muted);
+    font-size: 11px;
+    line-height: 1.45;
+    text-align: center;
+  }
+
+  html.yl-unified-checkout .yl-health-auth,
+  html.yl-unified-checkout .yl-payment-panel {
+    padding: 14px;
+  }
+
+  html.yl-unified-checkout .yl-operator {
+    display: block;
+    width: 100%;
+    margin: 0 auto;
+    background: var(--checkout-bg);
+    padding: 0 20px 24px;
+  }
+
+  html.yl-unified-checkout .yl-operator-card p {
+    font-size: 10px;
+  }
+
+  html.yl-unified-checkout .yl-operator-card p span {
+    font-size: 10px;
+  }
+
+  html.yl-unified-checkout .yl-operator-contact {
+    margin-top: 7px;
+    border-left: 0;
+    font-size: 10px;
+    padding-left: 0;
+  }
+}
+
+@media (max-width: 390px) {
+  html.yl-unified-checkout .yl-member-card {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  html.yl-unified-checkout .yl-member-main strong {
+    font-size: 44px;
+  }
+
+  html.yl-unified-checkout .yl-pay-method {
+    font-size: 12px;
+  }
+}

@@ -31,12 +31,12 @@
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://yuetianai.com/yl.html">
   <meta property="og:image" content="https://yuetianai.com/images/health/constitution-report-hero-v8.png">
-  <meta name="theme-color" content="#f7f0e5">
+  <meta name="theme-color" content="#f8f2e8">
   <link rel="icon" href="/images/wentian-prototype-assets/wentian-brand-logo-ai-gold-v1.webp" type="image/webp">
-  <link rel="stylesheet" href="/css/yl.css?v=20260711-checkout-trust-v4">
+  <link rel="stylesheet" href="/css/yl.css?v=20260712-checkout-option-b-v1">
   <script defer src="/vendor/qrcodejs/qrcode.min.js"></script>
   <script defer src="/js/config.js?v=20260710-api-origin-lock-v1"></script>
-  <script defer src="/js/yl.js?v=20260711-checkout-trust-v4"></script>
+  <script defer src="/js/yl.js?v=20260712-checkout-option-b-v1"></script>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -262,20 +262,28 @@
       <div class="yl-member-card">
         <div class="yl-checkout-head">
           <div>
-            <span>会员订单</span>
-            <strong>确认开通阅天综合会员</strong>
+            <span>阅天AI · 综合会员</span>
+            <strong>会员订单</strong>
           </div>
           <b>安全支付</b>
         </div>
-        <div class="yl-member-main">
-          <span>阅天综合会员</span>
-          <strong id="ylMemberPrice">¥19.90</strong>
-          <p>全站权限 · AI 对话</p>
-        </div>
-        <div class="yl-member-benefits" aria-label="综合会员权益">
-          <strong>综合会员权益</strong>
-          <span><b>1</b> 解锁网站全部权限</span>
-          <span><b>2</b> AI 对话 80 次/天</span>
+        <div class="yl-order-summary">
+          <div class="yl-member-main">
+            <span>阅天综合会员</span>
+            <strong id="ylMemberPrice">¥19.90</strong>
+            <p>全站权限 · AI 对话</p>
+          </div>
+          <div class="yl-member-benefits" aria-label="综合会员权益">
+            <strong>会员权益</strong>
+            <span><b>1</b> 解锁网站全部权限</span>
+            <span><b>2</b> AI 对话 80 次/天</span>
+          </div>
+          <div class="yl-payment-assurance" aria-label="支付安全说明">
+            <b class="yl-assurance-title">安全支付</b>
+            <span><strong>支付平台处理</strong><small>付款密码由所选支付平台处理</small></span>
+            <span><strong>付款后自动开通</strong><small>会员权益绑定当前登录账号</small></span>
+            <span><strong>支付问题可处理</strong><small>保留订单号即可联系支持</small></span>
+          </div>
         </div>
         <div class="yl-pay-heading">
           <strong>选择支付方式</strong>
@@ -286,11 +294,10 @@
           <button type="button" class="yl-pay-method" data-provider="alipay">支付宝</button>
           <button type="button" class="yl-pay-method" data-provider="paypal">PayPal</button>
         </div>
-        <button class="yl-btn yl-btn-primary" type="button" id="ylOpenPayBtn">确认开通阅天综合会员 ¥19.90</button>
-        <div class="yl-payment-assurance" aria-label="支付安全说明">
-          <span><strong>支付平台处理</strong><small>付款密码由所选支付平台处理</small></span>
-          <span><strong>付款后自动开通</strong><small>会员权益绑定当前登录账号</small></span>
-          <span><strong>支付问题可处理</strong><small>保留订单号即可联系支持</small></span>
+        <button class="yl-btn yl-btn-primary" type="button" id="ylOpenPayBtn">确认开通 ¥19.90</button>
+        <div class="yl-mobile-assurance" aria-label="支付保障">
+          <span>付款成功后自动开通</span>
+          <span>保留订单号可联系支持</span>
         </div>
         <a class="yl-member-return" id="ylMemberReturnLink" href="#home" hidden>返回原页面</a>
         <form class="yl-health-auth" id="ylHealthAuthPanel" hidden>
@@ -328,7 +335,6 @@
         <p class="yl-pay-hint" id="ylPayHint"></p>
       </div>
       <div class="yl-operator">
-        <strong>支付与服务说明</strong>
         <div class="yl-operator-points">
           <p><b>支付渠道</b><span>微信支付、支付宝、PayPal</span></p>
           <p><b>权益开通</b><span>付款确认后自动到账</span></p>

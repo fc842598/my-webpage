@@ -1148,7 +1148,6 @@
     var memberCard = $(".yl-member-card");
     if (memberCard) memberCard.dataset.provider = paymentState.provider;
 
-    var productName = HEALTH_PRODUCT_NAME;
     var amount = getPaymentAmountLabel();
     var memberPrice = $("#ylMemberPrice");
     if (memberPrice) memberPrice.textContent = amount;
@@ -1157,11 +1156,11 @@
       openButton.hidden = paymentState.status === "handoff";
       openButton.disabled = paymentState.loading;
       if (paymentState.loading) openButton.textContent = "处理中...";
-      else if (paymentState.status === "paid") openButton.textContent = "续费阅天综合会员 " + amount;
+      else if (paymentState.status === "paid") openButton.textContent = "续费会员 " + amount;
       else if (paymentState.status === "handoff") openButton.textContent = "重新复制微信支付链接";
       else if (paymentState.status === "pending" && isRedirectPayment()) openButton.textContent = "打开" + getProviderLabel(paymentState.provider);
       else if (paymentState.status === "pending") openButton.textContent = "我已支付，刷新状态";
-      else openButton.textContent = "确认开通" + productName + " " + amount;
+      else openButton.textContent = "确认开通 " + amount;
     }
 
     var panel = $("#ylPaymentPanel");
