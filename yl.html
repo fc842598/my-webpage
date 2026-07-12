@@ -38,10 +38,10 @@
   <meta name="twitter:image" content="https://yuetianai.com/images/health/constitution-report-hero-v8.png">
   <meta name="theme-color" content="#f8f2e8">
   <link rel="icon" href="/images/wentian-prototype-assets/wentian-brand-logo-ai-gold-v1.webp" type="image/webp">
-  <link rel="stylesheet" href="/css/yl.css?v=20260712-brand-sync-v14">
+  <link rel="stylesheet" href="/css/yl.css?v=20260712-member-renewal-v15">
   <script src="/js/config.js?v=20260710-api-origin-lock-v1"></script>
   <script defer src="/vendor/qrcodejs/qrcode.min.js?v=20260521-local-vendor"></script>
-  <script defer src="/js/yl.js?v=20260712-figma-checkout-v13"></script>
+  <script defer src="/js/yl.js?v=20260712-member-renewal-v15"></script>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -304,6 +304,11 @@
             <span><strong>付款成功后自动开通</strong><small>会员权益绑定当前登录账号</small></span>
             <span><strong>保留订单号可联系支持</strong><small>支付问题可凭订单号处理</small></span>
           </div>
+        </div>
+        <div class="yl-membership-state" id="ylMembershipState" aria-live="polite" hidden>
+          <span class="yl-membership-badge">当前会员</span>
+          <strong id="ylMemberExpiry">会员权益已生效</strong>
+          <small id="ylMemberRemaining">续费后自动顺延 31 天</small>
         </div>
         <div class="yl-pay-heading">
           <strong>选择支付方式</strong>

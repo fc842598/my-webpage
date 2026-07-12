@@ -189,6 +189,7 @@
     payMethod: "",
     mockMode: false,
     isMember: false,
+    memberExpiresAt: "",
     providers: [],
     product: null,
     message: ""
@@ -471,7 +472,7 @@
     var meta = getProviderMeta(provider);
     if (!meta.enabled) return "暂不可用";
     if (provider === "paypal") return "$" + (meta.amountYuan || HEALTH_PAYPAL_AMOUNT) + " · 美元";
-    if (provider === "alipay") return isMobileBrowser() ? "手机支付" : "扫码支付";
+    if (provider === "alipay") return "二维码支付";
     return isWechatBrowser() ? "微信内支付" : (isMobileBrowser() ? "微信内支付" : "扫码支付");
   }
 
@@ -479,8 +480,8 @@
     if (provider === "paypal") return "将前往 PayPal，以美元完成支付。";
     if (provider === "alipay") {
       return isMobileBrowser()
-        ? "手机端将打开支付宝完成支付。"
-        : "电脑端将显示二维码，请使用手机支付宝扫码。";
+        ? "将生成支付宝二维码；可截图后在支付宝扫一扫中从相册识别。"
+        : "将显示支付宝二维码，请使用手机支付宝扫码。";
     }
     if (isWechatBrowser()) return "将在当前微信页面内完成支付。";
     return isMobileBrowser()
@@ -495,7 +496,6 @@
 
   function getCheckoutPayMethod() {
     if (paymentState.provider === "paypal") return "redirect";
-    if (paymentState.provider === "alipay" && isMobileBrowser()) return "h5";
     if (shouldUseWechatJsapi()) return "jsapi";
     return "native";
   }
@@ -607,6 +607,64 @@
 
   function isHealthMember() {
     return paymentState.isMember || paymentState.status === "paid";
+  }
+
+  function getMemberExpiresAt() {
+    var quota = state.quota || {};
+    return paymentState.memberExpiresAt
+      || quota.memberExpiresAt
+      || quota.member_expires_at
+      || quota.expiresAt
+      || quota.expires_at
+      || "";
+  }
+
+  function formatMemberExpiryDate(value) {
+    if (!value) return "";
+    var date = new Date(value);
+    if (Number.isNaN(date.getTime())) return "";
+    try {
+      return new Intl.DateTimeFormat("zh-CN", {
+        timeZone: "Asia/Shanghai",
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit"
+      }).format(date).replace(/\//g, "-");
+    } catch (_error) {
+      return date.toISOString().slice(0, 10);
+    }
+  }
+
+  function getMemberRemainingDays(value) {
+    var expiresAt = new Date(value || "").getTime();
+    if (!Number.isFinite(expiresAt) || expiresAt <= Date.now()) return 0;
+    return Math.max(1, Math.ceil((expiresAt - Date.now()) / 86400000));
+  }
+
+  function getMemberRenewalHint(prefix) {
+    var dateText = formatMemberExpiryDate(getMemberExpiresAt());
+    return dateText
+      ? (prefix || "会员有效") + "，当前有效期至 " + dateText + "；再次购买自动顺延 31 天。"
+      : (prefix || "会员有效") + "；再次购买自动顺延 31 天。";
+  }
+
+  function renderMembershipState() {
+    var wrap = $("#ylMembershipState");
+    if (!wrap) return;
+    wrap.hidden = !paymentState.isMember;
+    if (!paymentState.isMember) return;
+
+    var expiresAt = getMemberExpiresAt();
+    var dateText = formatMemberExpiryDate(expiresAt);
+    var days = getMemberRemainingDays(expiresAt);
+    var expiry = $("#ylMemberExpiry");
+    var remaining = $("#ylMemberRemaining");
+    if (expiry) expiry.textContent = dateText ? "有效期至 " + dateText : "会员权益已生效";
+    if (remaining) {
+      remaining.textContent = days
+        ? "剩余 " + days + " 天 · 续费后顺延 31 天"
+        : "续费后自动顺延 31 天";
+    }
   }
 
   function updateAskQuota() {
@@ -1160,16 +1218,19 @@
       openButton.hidden = paymentState.status === "handoff";
       openButton.disabled = paymentState.loading;
       if (paymentState.loading) openButton.textContent = "处理中...";
-      else if (paymentState.status === "paid") openButton.textContent = "续费会员 " + amount;
       else if (paymentState.status === "handoff") openButton.textContent = "重新复制微信支付链接";
       else if (paymentState.status === "pending" && isRedirectPayment()) openButton.textContent = "打开" + getProviderLabel(paymentState.provider);
       else if (paymentState.status === "pending") openButton.textContent = "我已支付，刷新状态";
+      else if (paymentState.isMember) openButton.textContent = "续费会员 " + amount;
       else openButton.textContent = "确认开通 " + amount;
     }
+
+    renderMembershipState();
 
     var panel = $("#ylPaymentPanel");
     if (panel) {
       panel.hidden = paymentState.status === "login"
+        || paymentState.status === "paid"
         || (!paymentState.status && !paymentState.message);
     }
     var status = $("#ylPaymentStatus");
@@ -1181,7 +1242,7 @@
 
     var link = $("#ylPaymentLink");
     if (link) {
-      var showLink = !!paymentState.payUrl && !paymentState.mockMode && paymentState.payMethod !== "handoff";
+      var showLink = !!paymentState.payUrl && !paymentState.mockMode && isRedirectPayment();
       link.hidden = !showLink;
       link.href = paymentState.payUrl || "#";
       link.textContent = isRedirectPayment()
@@ -1199,7 +1260,7 @@
     renderPaymentQr();
     renderHealthAuthPanel();
     if (paymentState.status === "paid") {
-      setPayHint("会员已开通；再次购买会从当前到期时间继续顺延。");
+      setPayHint(getMemberRenewalHint("支付成功"));
       updateAskQuota();
     }
   }
@@ -1308,11 +1369,10 @@
       var data = await apiFetch("/api/payments/member-status?productKey=" + encodeURIComponent(HEALTH_PRODUCT_KEY));
       if (data.product) paymentState.product = data.product;
       if (data.quota) state.quota = data.quota;
-      paymentState.isMember = !!data.productEntitlement?.isMember;
-      if (data.productEntitlement?.isMember) {
-        paymentState.status = "paid";
-        paymentState.message = "当前账号已开通阅天综合会员。";
-      }
+      paymentState.isMember = !!(data.productEntitlement?.isMember || data.quota?.isMember);
+      paymentState.memberExpiresAt = data.productEntitlement?.expiresAt
+        || data.quota?.memberExpiresAt
+        || "";
       if (Array.isArray(data.providers)) {
         paymentState.providers = data.providers;
         var selected = data.providers.find(function (item) {
@@ -1504,9 +1564,11 @@
         ? "当前为支付测试模式，可点击模拟支付成功完成验证。"
         : (paymentState.payMethod === "jsapi"
           ? "正在打开微信支付..."
+          : (paymentState.provider === "alipay" && paymentState.payMethod === "native" && isMobileBrowser()
+          ? "请截图保存二维码，再打开支付宝扫一扫，从相册选择二维码完成付款。"
           : (isRedirectPayment()
           ? "请打开" + getProviderLabel(paymentState.provider) + "完成支付，支付后返回刷新状态。"
-          : "请使用" + getProviderLabel(paymentState.provider) + "扫码支付，完成后刷新状态。"));
+          : "请使用" + getProviderLabel(paymentState.provider) + "扫码支付，完成后刷新状态。")));
 
       if (paymentState.payMethod === "jsapi") {
         var jsapiResult = await invokeWechatJsapi(session.jsapiParams);
@@ -1546,16 +1608,17 @@
       if (paymentState.status === "paid") {
         paymentState.isMember = true;
         trackHealthPurchase(data);
+        await hydratePaymentProduct();
         updatePaymentBoot(
           "支付成功",
-          "会员已开通。可切回原浏览器继续，页面会自动更新；也可留在微信内使用。",
+          "会员权益已更新。可切回原浏览器继续，页面会自动更新；也可留在微信内使用。",
           true
         );
       } else {
         releasePaymentBoot();
       }
       paymentState.message = data.status === "paid"
-        ? "支付已完成，阅天综合会员已开通。"
+        ? getMemberRenewalHint("支付已完成")
         : "暂未确认支付成功，请完成付款后再刷新。";
     } catch (error) {
       paymentState.message = error.message || "支付状态查询失败";
@@ -1579,7 +1642,8 @@
       paymentState.status = data.status || "paid";
       paymentState.isMember = paymentState.status === "paid";
       if (paymentState.isMember) trackHealthPurchase(data);
-      paymentState.message = "支付测试成功，阅天综合会员已开通。";
+      if (paymentState.isMember) await hydratePaymentProduct();
+      paymentState.message = getMemberRenewalHint("支付测试成功");
     } catch (error) {
       paymentState.message = error.message || "测试支付失败";
     } finally {
