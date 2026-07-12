@@ -5,6 +5,8 @@
   const customerTombstonesKey = 'ziwei_customer_chart_tombstones_v1';
   const customerClientIdKey = 'ziwei_client_id';
   const html2PdfUrl = '../vendor/html2pdf/html2pdf.bundle.min.js?v=20260521-local-vendor';
+  const pdfPageWidth = 430;
+  const pdfPageHeight = 764;
   const palaceOrder = ['巳', '午', '未', '申', '辰', null, null, '酉', '卯', null, null, '戌', '寅', '丑', '子', '亥'];
   const shichenNames = ['子', '丑', '寅', '卯', '辰', '巳', '午', '未', '申', '酉', '戌', '亥'];
   const stemElements = { 甲: '木', 乙: '木', 丙: '火', 丁: '火', 戊: '土', 己: '土', 庚: '金', 辛: '金', 壬: '水', 癸: '水' };
@@ -6658,7 +6660,7 @@
 
   function pdfPalaceMinor(palace) {
     return allSmallStars(palace || {})
-      .slice(0, 5)
+      .slice(0, 4)
       .map(starText)
       .filter(Boolean)
       .join('、');
@@ -6759,10 +6761,11 @@
   }
 
   function buildPdfChapter(index, title, innerHtml) {
+    const volume = ['一', '二', '三', '四', '五', '六'][index - 1] || String(index);
     return `
       <article class="mbp-pdf-chapter">
         <header class="mbp-pdf-chapter-head">
-          <span>卷${index}</span>
+          <span>卷${volume}</span>
           <h3>${escapeHtml(title)}</h3>
         </header>
         <div class="mbp-pdf-chapter-body">${innerHtml}</div>
@@ -6774,6 +6777,8 @@
     const overall = normalizeAiData(state.aiResults.overall);
     const luck = normalizeAiData(state.aiResults.current_luck);
     const xiaoLian = normalizeAiData(state.aiResults.xiaoxian_liunian);
+    const lifeCurve = normalizeAiData(state.aiResults.life_curve);
+    const actionAdviceResult = normalizeAiData(state.aiResults.action_advice);
     const overallText = aiCardText(overall);
     const luckText = aiCardText(luck);
     const xiaoText = aiCardText(xiaoLian);
@@ -6800,7 +6805,7 @@
       `;
     }).join('');
     const advice = actionAdviceData(overall, luck, xiaoLian);
-    const adviceHtml = `
+    const fallbackAdviceHtml = `
       <section class="mbp-pdf-text-card">
         <strong>风险总括</strong>
         <p>${escapeHtml(advice.risks.map((item) => `${item.label}：${item.text}`).join('\n'))}</p>
@@ -6816,17 +6821,15 @@
         <p>${escapeHtml(advice.note)}</p>
       </section>
     `;
+    const adviceHtml = aiSections(actionAdviceResult).length || aiCardText(actionAdviceResult)
+      ? buildPdfTextCards(actionAdviceResult, '行动建议', aiCardText(actionAdviceResult) || advice.note, 6)
+      : fallbackAdviceHtml;
     return [
       buildPdfChapter(1, aiCardTitle(overall, '命格总览'), buildPdfTextCards(overall, '命格总览', overallText || '整体批命等待原站 AI 返回。')),
       buildPdfChapter(2, '专题批命', specialHtml),
       buildPdfChapter(3, '十年大限解读', buildPdfTextCards(luck, '十年大限解读', luckText || '十年大限等待原站 AI 返回。')),
       buildPdfChapter(4, '小限流年', buildPdfTextCards(xiaoLian, '小限流年', xiaoText || '小限流年等待原站 AI 返回。')),
-      buildPdfChapter(5, '人生曲线', `
-        <section class="mbp-pdf-text-card">
-          <strong>整体走势</strong>
-          <p>人生曲线用于看关键年份、高低点与转折节奏。后续接入原站曲线评分后，这里会自动替换为客户版曲线结论。</p>
-        </section>
-      `),
+      buildPdfChapter(5, '人生曲线', buildPdfTextCards(lifeCurve, '整体走势', aiCardText(lifeCurve) || '人生曲线用于查看关键年份、高低点与阶段节奏。', 6)),
       buildPdfChapter(6, '行动建议', adviceHtml),
     ].join('');
   }
@@ -6845,39 +6848,212 @@
     const report = document.createElement('article');
     report.className = 'mbp-pdf-report';
     report.innerHTML = `
-      <header class="mbp-pdf-head">
-        <span>阅天 · 紫微命盘深度报告</span>
-        <h1>${escapeHtml(name)}个人命盘解读</h1>
-        <p>${escapeHtml(gender)} · ${escapeHtml(time)} · ${escapeHtml(city)}</p>
-        <p>${escapeHtml(facts.subtitle || '命盘解读')}</p>
-        <div class="mbp-pdf-meta">
-          <div><b>命主信息</b><span>${escapeHtml(name)} · ${escapeHtml(gender)}</span></div>
-          <div><b>出生资料</b><span>${escapeHtml(time)}</span></div>
-          <div><b>生成时间</b><span>${escapeHtml(generatedAt)}</span></div>
+      <header class="mbp-pdf-cover">
+        <div class="mbp-pdf-brand">
+          <img src="../images/wentian-prototype-assets/wentian-brand-logo-ai-gold-v1.webp" alt="">
+          <div><b>阅天AI</b><span>紫微斗数命盘</span></div>
+        </div>
+        <div class="mbp-pdf-cover-main">
+          <span>命主专属 · 深度解读</span>
+          <h1>紫微命盘<br>深度报告</h1>
+          <strong>${escapeHtml(name)}</strong>
+          <p>${escapeHtml(gender)} · ${escapeHtml(time)}<br>${escapeHtml(city)}</p>
         </div>
         <ol class="mbp-pdf-toc">
-          <li>命格总览</li>
-          <li>专题批命</li>
-          <li>十年大限解读</li>
-          <li>小限流年</li>
-          <li>人生曲线</li>
-          <li>行动建议</li>
+          <li><b>01</b><span>命盘资料</span></li>
+          <li><b>02</b><span>原局命盘</span></li>
+          <li><b>03</b><span>命格总览</span></li>
+          <li><b>04</b><span>专题批命</span></li>
+          <li><b>05</b><span>十年大限</span></li>
+          <li><b>06</b><span>小限流年</span></li>
+          <li><b>07</b><span>人生曲线</span></li>
+          <li><b>08</b><span>行动建议</span></li>
         </ol>
+        <div class="mbp-pdf-cover-foot">
+          <span>${escapeHtml(facts.subtitle || '紫微命盘解读')}</span>
+          <b>生成于 ${escapeHtml(generatedAt)}</b>
+        </div>
       </header>
       <section class="mbp-pdf-section mbp-pdf-basic-section">
+        <div class="mbp-pdf-section-kicker">01 · 命盘资料</div>
         <h2>基础资料</h2>
         <div class="mbp-pdf-basic-grid">${buildPdfBasicCards(bundle, generatedAt)}</div>
       </section>
       <section class="mbp-pdf-section mbp-pdf-chart-section">
-        <h2>命盘</h2>
+        <div class="mbp-pdf-section-kicker">02 · 原局命盘</div>
+        <h2>十二宫命盘</h2>
         ${buildPdfChartGrid(bundle)}
       </section>
-      <section class="mbp-pdf-section">
-        <h2>命盘解读</h2>
-        <div class="mbp-pdf-chapters-slot">${buildPdfSyncedChaptersHtml() || buildPdfChaptersHtml()}</div>
+      <section class="mbp-pdf-reading">
+        <div class="mbp-pdf-chapters-slot">${buildPdfChaptersHtml()}</div>
       </section>
     `;
     return report;
+  }
+
+  function fitPdfBlocksToPages(report, pageHeight) {
+    report.querySelectorAll('.mbp-pdf-text-card').forEach((card) => {
+      card.style.marginTop = '';
+    });
+    report.querySelectorAll('.mbp-pdf-chapter').forEach((chapter) => {
+      chapter.style.height = 'auto';
+      chapter.style.minHeight = `${pageHeight}px`;
+      chapter.querySelectorAll('.mbp-pdf-text-card').forEach((card) => {
+        const chapterTop = chapter.getBoundingClientRect().top;
+        const cardRect = card.getBoundingClientRect();
+        const cardTop = Math.max(0, cardRect.top - chapterTop);
+        const cardHeight = Math.ceil(cardRect.height);
+        const pageOffset = cardTop % pageHeight;
+        if (cardHeight < pageHeight - 64 && pageOffset + cardHeight > pageHeight - 44) {
+          card.style.marginTop = `${Math.ceil(pageHeight - pageOffset + 24)}px`;
+        }
+      });
+    });
+    const blocks = report.querySelectorAll(
+      '.mbp-pdf-cover, .mbp-pdf-basic-section, .mbp-pdf-chart-section, .mbp-pdf-chapter'
+    );
+    blocks.forEach((block) => {
+      block.style.height = 'auto';
+      block.style.minHeight = `${pageHeight}px`;
+      const measuredHeight = Math.max(
+        block.scrollHeight || 0,
+        Math.ceil(block.getBoundingClientRect().height || 0),
+        pageHeight
+      );
+      const pageCount = Math.max(1, Math.ceil(measuredHeight / pageHeight));
+      block.style.height = `${pageCount * pageHeight}px`;
+      block.style.minHeight = '0';
+    });
+  }
+
+  function pdfBlockRenderOptions(blockHeight, pageWidth, pageHeight) {
+    return {
+      margin: [0, 0, 0, 0],
+      image: { type: 'jpeg', quality: 0.96 },
+      html2canvas: {
+        scale: 2,
+        useCORS: true,
+        backgroundColor: '#f7f2e9',
+        width: pageWidth,
+        height: blockHeight,
+        windowWidth: pageWidth,
+        windowHeight: blockHeight,
+        x: 0,
+        y: 0,
+        scrollX: 0,
+        scrollY: 0,
+      },
+      jsPDF: { unit: 'px', format: [pageWidth, pageHeight], orientation: 'portrait' },
+      pagebreak: { mode: [] },
+    };
+  }
+
+  async function waitForPdfReportAssets(report) {
+    if (document.fonts?.ready) {
+      await document.fonts.ready.catch(() => {});
+    }
+    await Promise.all(Array.from(report.querySelectorAll('img')).map((img) => {
+      if (img.complete) return Promise.resolve();
+      return new Promise((resolve) => {
+        img.addEventListener('load', resolve, { once: true });
+        img.addEventListener('error', resolve, { once: true });
+      });
+    }));
+  }
+
+  function createPdfPageFrame(report, block, pageIndex, pageWidth, pageHeight) {
+    const host = report.parentElement;
+    if (!host) throw new Error('PDF export host is unavailable.');
+    const frame = document.createElement('div');
+    frame.className = 'mbp-pdf-report';
+    frame.setAttribute('aria-hidden', 'true');
+    Object.assign(frame.style, {
+      position: 'relative',
+      width: `${pageWidth}px`,
+      height: `${pageHeight}px`,
+      minHeight: `${pageHeight}px`,
+      overflow: 'hidden',
+      background: '#f7f2e9',
+    });
+    const clone = block.cloneNode(true);
+    Object.assign(clone.style, {
+      position: 'absolute',
+      left: '0',
+      top: `${-pageIndex * pageHeight}px`,
+      width: `${pageWidth}px`,
+      margin: '0',
+    });
+    frame.appendChild(clone);
+    host.appendChild(frame);
+    return frame;
+  }
+
+  async function savePdfReportByBlocks(html2pdf, report, filename, pageWidth, pageHeight) {
+    const blocks = Array.from(report.querySelectorAll(
+      '.mbp-pdf-cover, .mbp-pdf-basic-section, .mbp-pdf-chart-section, .mbp-pdf-chapter'
+    ));
+    if (!blocks.length) throw new Error('PDF report is empty.');
+    const firstWorker = html2pdf()
+      .set(pdfBlockRenderOptions(pageHeight, pageWidth, pageHeight))
+      .from(blocks[0])
+      .toPdf();
+    const pdf = await firstWorker.get('pdf');
+    const totalPages = blocks.reduce((total, block) => {
+      const blockHeight = Math.max(pageHeight, Math.ceil(block.getBoundingClientRect().height));
+      return total + Math.max(1, Math.round(blockHeight / pageHeight));
+    }, 0);
+    let outputPageNumber = 1;
+    for (const block of blocks.slice(1)) {
+      const blockHeight = Math.max(pageHeight, Math.ceil(block.getBoundingClientRect().height));
+      const pageCount = Math.max(1, Math.round(blockHeight / pageHeight));
+      for (let pageIndex = 0; pageIndex < pageCount; pageIndex += 1) {
+        const frame = createPdfPageFrame(report, block, pageIndex, pageWidth, pageHeight);
+        let canvas;
+        try {
+          canvas = await html2pdf()
+            .set(pdfBlockRenderOptions(pageHeight, pageWidth, pageHeight))
+            .from(frame)
+            .toCanvas()
+            .get('canvas');
+        } finally {
+          frame.remove();
+        }
+        const context = canvas.getContext('2d');
+        if (!context) throw new Error('PDF canvas is unavailable.');
+        outputPageNumber += 1;
+        const canvasScale = canvas.width / pageWidth;
+        context.save();
+        context.setTransform(1, 0, 0, 1, 0, 0);
+        context.strokeStyle = '#d9c9ad';
+        context.lineWidth = 0.5 * canvasScale;
+        context.beginPath();
+        context.moveTo(24 * canvasScale, (pageHeight - 29) * canvasScale);
+        context.lineTo((pageWidth - 24) * canvasScale, (pageHeight - 29) * canvasScale);
+        context.stroke();
+        context.fillStyle = '#8e774c';
+        context.font = `${7 * canvasScale}px Arial, sans-serif`;
+        context.textBaseline = 'alphabetic';
+        context.textAlign = 'left';
+        context.fillText('YUETIAN AI', 24 * canvasScale, (pageHeight - 16) * canvasScale);
+        context.textAlign = 'right';
+        context.fillText(
+          `${String(outputPageNumber).padStart(2, '0')} / ${String(totalPages).padStart(2, '0')}`,
+          (pageWidth - 24) * canvasScale,
+          (pageHeight - 16) * canvasScale
+        );
+        context.restore();
+        pdf.addPage([pageWidth, pageHeight], 'portrait');
+        pdf.addImage(canvas.toDataURL('image/jpeg', 0.96), 'JPEG', 0, 0, pageWidth, pageHeight, undefined, 'FAST');
+        canvas.width = 1;
+        canvas.height = 1;
+      }
+    }
+    pdf.setProperties({
+      title: filename.replace(/\.pdf$/i, ''),
+      author: 'Yuetian AI',
+      creator: 'Yuetian AI',
+    });
+    pdf.save(filename);
   }
 
   async function downloadMingbookPdf() {
@@ -6902,33 +7078,13 @@
     document.body.classList.add('is-pdf-exporting');
     document.body.appendChild(host);
     try {
+      await new Promise((resolve) => window.requestAnimationFrame(resolve));
+      await waitForPdfReportAssets(report);
+      fitPdfBlocksToPages(report, pdfPageHeight);
       const html2pdf = await loadHtml2Pdf();
       const profileKey = dateStr(state.profile).replace(/-/g, '');
       const filename = `${safePdfFileName(state.profile.name || '个人命盘')}-${profileKey}-紫微命盘深度报告.pdf`;
-      const pdfWidth = Math.ceil(report.scrollWidth || report.getBoundingClientRect().width || 794);
-      const pdfPageHeight = 1123;
-      const rawPdfHeight = Math.ceil(report.scrollHeight || report.getBoundingClientRect().height || pdfPageHeight);
-      const pdfHeight = Math.ceil((rawPdfHeight + pdfPageHeight) / pdfPageHeight) * pdfPageHeight;
-      await html2pdf().set({
-        filename,
-        margin: [0, 0, 0, 0],
-        image: { type: 'jpeg', quality: 0.96 },
-        html2canvas: {
-          scale: 2,
-          useCORS: true,
-          backgroundColor: '#f5efe4',
-          width: pdfWidth,
-          height: pdfHeight,
-          windowWidth: pdfWidth,
-          windowHeight: pdfHeight,
-          x: 0,
-          y: 0,
-          scrollX: 0,
-          scrollY: 0,
-        },
-        jsPDF: { unit: 'px', format: [794, pdfPageHeight], orientation: 'portrait' },
-        pagebreak: { mode: ['css', 'legacy'], avoid: ['.mbp-pdf-basic-card', '.mbp-pdf-chart-section'] },
-      }).from(report).save();
+      await savePdfReportByBlocks(html2pdf, report, filename, pdfPageWidth, pdfPageHeight);
       setDecodeStatus('PDF 已开始下载。');
       setPdfHint('已生成客户版 PDF，可重新打包', 'ready');
     } catch (error) {

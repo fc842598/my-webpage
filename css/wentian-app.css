@@ -13622,6 +13622,353 @@ html[lang="en"] .wentian-mb-advice section {
   line-height: 1.55;
 }
 
+/* Phone-first paid report export. */
+.wentian-pdf-export-host {
+  width: 430px;
+  min-height: 764px;
+  background: #f7f2e9;
+}
+
+.wentian-pdf-report {
+  width: 430px;
+  min-height: 764px;
+  padding: 0;
+  overflow: hidden;
+  background: #f7f2e9;
+  color: #241d18;
+  font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+}
+
+.wentian-pdf-cover {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 430px;
+  min-height: 764px;
+  padding: 34px 28px 30px;
+  overflow: hidden;
+  background: #17130f;
+  color: #f9f0dc;
+  break-after: auto;
+  page-break-after: auto;
+}
+
+.wentian-pdf-cover::before {
+  content: "";
+  position: absolute;
+  inset: 13px;
+  border: 1px solid rgba(218, 183, 105, .34);
+  pointer-events: none;
+}
+
+.wentian-pdf-brand {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.wentian-pdf-brand img {
+  width: 44px;
+  height: 44px;
+  border: 1px solid rgba(226, 192, 111, .62);
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+.wentian-pdf-brand div {
+  display: grid;
+  gap: 2px;
+}
+
+.wentian-pdf-brand b {
+  color: #fff5df;
+  font: 900 20px/1.1 "Noto Serif SC", "Songti SC", serif;
+}
+
+.wentian-pdf-brand span {
+  color: #b8a98f;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.wentian-pdf-cover-main {
+  position: relative;
+  z-index: 1;
+  margin-top: 70px;
+}
+
+.wentian-pdf-cover-main > span {
+  color: #d9b76b;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.wentian-pdf-cover-main h1 {
+  margin: 14px 0 22px;
+  color: #fff9ec;
+  font: 900 43px/1.18 "Noto Serif SC", "Songti SC", serif;
+}
+
+.wentian-pdf-cover-main strong {
+  display: block;
+  color: #e2bf70;
+  font-size: 23px;
+  font-weight: 900;
+}
+
+.wentian-pdf-cover-main p {
+  margin: 9px 0 0;
+  color: #c5b8a5;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.7;
+}
+
+.wentian-pdf-toc {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin: auto 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.wentian-pdf-toc li {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 42px;
+  padding: 8px 10px;
+  border: 1px solid rgba(222, 194, 125, .2);
+  background: rgba(255, 255, 255, .035);
+  color: #e8deca;
+}
+
+.wentian-pdf-toc li b {
+  color: #d9b76b;
+  font-size: 11px;
+}
+
+.wentian-pdf-toc li span {
+  color: #eee2ce;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.wentian-pdf-cover-foot {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 20px;
+  padding-top: 13px;
+  border-top: 1px solid rgba(222, 194, 125, .22);
+  color: #8f8372;
+  font-size: 10px;
+}
+
+.wentian-pdf-cover-foot b {
+  color: #a99a84;
+  font-weight: 700;
+}
+
+.wentian-pdf-section {
+  width: 430px;
+  min-height: 764px;
+  margin: 0;
+  padding: 30px 24px 34px;
+  background: #f7f2e9;
+  break-inside: auto;
+}
+
+.wentian-pdf-basic-section,
+.wentian-pdf-chart-section {
+  break-after: auto;
+  page-break-after: auto;
+}
+
+.wentian-pdf-section-kicker {
+  margin-bottom: 7px;
+  color: #a87928;
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.wentian-pdf-section h2 {
+  margin: 0 0 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #d9c9ad;
+  color: #241d18;
+  font-size: 27px;
+  line-height: 1.2;
+}
+
+.wentian-pdf-basic-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 9px;
+}
+
+.wentian-pdf-basic-card {
+  min-height: 62px;
+  padding: 11px 12px;
+  border: 1px solid #dfd1bc;
+  border-left: 3px solid #c39a4d;
+  border-radius: 7px;
+  background: #fffdf8;
+}
+
+.wentian-pdf-basic-card:last-child:nth-child(odd) {
+  grid-column: 1 / -1;
+}
+
+.wentian-pdf-basic-card b {
+  color: #9c712a;
+  font-size: 11px;
+}
+
+.wentian-pdf-basic-card span {
+  margin-top: 6px;
+  color: #2f2721;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.wentian-pdf-chart-grid {
+  grid-auto-rows: 93px;
+  border: 1px solid #cfb98f;
+  background: #cdbb9f;
+}
+
+.wentian-pdf-palace {
+  gap: 3px;
+  padding: 5px;
+}
+
+.wentian-pdf-palace header strong,
+.wentian-pdf-palace > b,
+.wentian-pdf-palace footer strong {
+  font-size: 9px;
+}
+
+.wentian-pdf-palace header span,
+.wentian-pdf-palace footer span {
+  font-size: 7px;
+}
+
+.wentian-pdf-palace p {
+  font-size: 7px;
+  line-height: 1.25;
+}
+
+.wentian-pdf-center {
+  padding: 10px 11px;
+}
+
+.wentian-pdf-center h3 {
+  margin-bottom: 6px;
+  font-size: 15px;
+}
+
+.wentian-pdf-center p {
+  margin-bottom: 7px;
+  font-size: 8px;
+}
+
+.wentian-pdf-center dl {
+  gap: 4px;
+}
+
+.wentian-pdf-center dl div {
+  grid-template-columns: 43px minmax(0, 1fr);
+  gap: 5px;
+}
+
+.wentian-pdf-center dt,
+.wentian-pdf-center dd {
+  font-size: 8px;
+  line-height: 1.25;
+}
+
+.wentian-pdf-reading,
+.wentian-pdf-chapters {
+  display: block;
+  width: 430px;
+  margin: 0;
+  padding: 0;
+}
+
+.wentian-pdf-chapter {
+  width: 430px;
+  min-height: 764px;
+  margin: 0;
+  padding: 30px 24px 36px;
+  border: 0;
+  border-radius: 0;
+  background: #f7f2e9;
+  break-inside: auto;
+  break-after: auto;
+  page-break-after: auto;
+}
+
+.wentian-pdf-chapter:last-child {
+  break-after: auto;
+  page-break-after: auto;
+}
+
+.wentian-pdf-chapter header {
+  gap: 12px;
+  margin-bottom: 17px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid #d9c9ad;
+  break-after: avoid;
+  page-break-after: avoid;
+}
+
+.wentian-pdf-chapter header span {
+  width: auto;
+  min-width: 48px;
+  height: 30px;
+  padding: 0 8px;
+  border-radius: 6px;
+  background: #231d18;
+  color: #e4c276;
+  font-size: 12px;
+}
+
+.wentian-pdf-chapter h3 {
+  color: #241d18;
+  font-size: 25px;
+}
+
+.wentian-pdf-chapter-body {
+  gap: 11px;
+}
+
+.wentian-pdf-text-card {
+  padding: 14px 15px;
+  border: 1px solid #dfd1bc;
+  border-left: 3px solid #c39a4d;
+  border-radius: 7px;
+  background: #fffdf8;
+  break-inside: auto;
+}
+
+.wentian-pdf-text-card strong {
+  color: #2b231e;
+  font-size: 15px;
+}
+
+.wentian-pdf-text-card p {
+  color: #554b43;
+  font-size: 14px;
+  line-height: 1.8;
+}
+
 .wentian-refund-modal {
   position: fixed;
   inset: 0;
