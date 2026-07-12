@@ -31,27 +31,41 @@
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://yuetianai.com/yl.html">
   <meta property="og:image" content="https://yuetianai.com/images/health/constitution-report-hero-v8.png">
+  <meta property="og:image:alt" content="阅天AI中医体质分析">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="AI中医体质分析">
+  <meta name="twitter:description" content="完成 8 类健康信息采集，生成体质自评报告，并围绕报告继续追问。">
+  <meta name="twitter:image" content="https://yuetianai.com/images/health/constitution-report-hero-v8.png">
   <meta name="theme-color" content="#f8f2e8">
   <link rel="icon" href="/images/wentian-prototype-assets/wentian-brand-logo-ai-gold-v1.webp" type="image/webp">
-  <link rel="stylesheet" href="/css/yl.css?v=20260712-figma-checkout-v13">
-  <script defer src="/vendor/qrcodejs/qrcode.min.js"></script>
-  <script defer src="/js/config.js?v=20260710-api-origin-lock-v1"></script>
+  <link rel="stylesheet" href="/css/yl.css?v=20260712-brand-sync-v14">
+  <script src="/js/config.js?v=20260710-api-origin-lock-v1"></script>
+  <script defer src="/vendor/qrcodejs/qrcode.min.js?v=20260521-local-vendor"></script>
   <script defer src="/js/yl.js?v=20260712-figma-checkout-v13"></script>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "WebApplication",
-    "name": "AI中医体质分析",
-    "applicationCategory": "HealthApplication",
-    "operatingSystem": "Web",
-    "url": "https://yuetianai.com/yl.html",
-    "description": "用于健康信息整理和养生参考的体质自评报告工具。",
-    "isAccessibleForFree": true,
-    "publisher": {
-      "@type": "Organization",
-      "name": "阅天AI",
-      "url": "https://yuetianai.com/"
-    }
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://yuetianai.com/#organization",
+        "name": "阅天AI",
+        "alternateName": "YuetianAI",
+        "url": "https://yuetianai.com/",
+        "logo": "https://yuetianai.com/images/wentian-prototype-assets/wentian-brand-logo-ai-gold-v1.webp"
+      },
+      {
+        "@type": "WebApplication",
+        "@id": "https://yuetianai.com/yl.html#app",
+        "name": "AI中医体质分析",
+        "applicationCategory": "HealthApplication",
+        "operatingSystem": "Web",
+        "url": "https://yuetianai.com/yl.html",
+        "description": "用于健康信息整理和养生参考的体质自评报告工具。",
+        "isAccessibleForFree": true,
+        "publisher": { "@id": "https://yuetianai.com/#organization" }
+      }
+    ]
   }
   </script>
 </head>
@@ -66,7 +80,10 @@
 
   <header class="yl-header">
     <a class="yl-brand" href="/" aria-label="返回阅天AI首页">
-      <span class="yl-brand-mark" aria-hidden="true"></span>
+      <span class="yl-brand-mark" aria-hidden="true">
+        <img class="yl-brand-logo-frame" src="/images/wentian-prototype-assets/wentian-brand-logo-ai-gold-frame-v1.webp" alt="" loading="eager" decoding="async">
+        <img class="yl-brand-logo-core" src="/images/wentian-prototype-assets/wentian-brand-logo-ai-gold-core-v1.webp" alt="" loading="eager" decoding="async">
+      </span>
       <span class="yl-brand-health">阅天健康</span>
       <span class="yl-brand-checkout">阅天AI</span>
     </a>
@@ -84,7 +101,10 @@
     <section class="yl-page yl-home" id="home" data-page="home" aria-labelledby="yl-title">
       <div class="yl-phone-frame">
         <div class="yl-mobile-bar">
-          <span class="yl-brand-mark" aria-hidden="true"></span>
+          <span class="yl-brand-mark" aria-hidden="true">
+            <img class="yl-brand-logo-frame" src="/images/wentian-prototype-assets/wentian-brand-logo-ai-gold-frame-v1.webp" alt="" loading="eager" decoding="async">
+            <img class="yl-brand-logo-core" src="/images/wentian-prototype-assets/wentian-brand-logo-ai-gold-core-v1.webp" alt="" loading="eager" decoding="async">
+          </span>
           <strong>阅天健康</strong>
         </div>
         <p class="yl-kicker">健康信息整理 · 体质自评 · AI追问</p>
