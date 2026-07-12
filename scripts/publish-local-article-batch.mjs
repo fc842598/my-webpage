@@ -468,9 +468,10 @@ function englishPage(article, time) {
   const canonical = `${site}/articles/en/${article.slug}.html`;
   const zhUrl = `${site}/articles/${article.slug}.html`;
   const publishedAt = article.publishedAt || toPublishDateTime(time);
-  const examples = [...article.body.matchAll(/例子[一二三四]：([^\n]+)/g)].slice(0, 3).map((m) => textOnly(m[1]));
-  const exampleHtml = examples.length
-    ? `<ul>${examples.map((item) => `<li>${escapeHtml(englishExample(item))}</li>`).join("")}</ul>`
+  const examples = [...article.body.matchAll(/例子[一二三四]：([^\n]+)/g)].slice(0, 4).map((m) => textOnly(m[1]));
+  const exampleItems = uniqueEnglishExamples(article, examples);
+  const exampleHtml = exampleItems.length
+    ? `<ul>${exampleItems.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>`
     : `<p>Use the palace first, then read the opposite palace and the three supporting palaces before making a conclusion.</p>`;
   return `<!doctype html>
 <html lang="en">
@@ -530,11 +531,11 @@ function englishPage(article, time) {
     </section>
     <div class="container article-layout article-detail-layout">
       <article id="article-start" class="article-main article-paper">
-        <p class="article-lead">${escapeHtml(title)} is a practical Zi Wei Dou Shu topic. Start with the relevant palace, then read the opposite palace, supporting structure, and current timing.</p>
+        <p class="article-lead">${escapeHtml(englishLead(article, title))}</p>
         <h2>What This Means</h2>
-        <p>For English readers, the useful move is to name the life area first, then connect the pattern to practical choices instead of treating one symbol as a fixed prediction.</p>
+        <p>${escapeHtml(englishMeaning(article))}</p>
         <h2>How To Read It</h2>
-        <p>Do not judge one star or one palace alone. Look at the main palace, the opposite palace, the career and wealth structure, and whether the chart shows stable support or only pressure. A strong pattern needs a place to work; a weak pattern needs rules, limits, and practical correction.</p>
+        <p>${escapeHtml(englishMethod(article))}</p>
         <h2>Simple Examples</h2>
         ${exampleHtml}
         <h2>Practical Order</h2>
@@ -570,6 +571,16 @@ function englishTitle(article) {
     "ziwei-tanlang-zuoming-hualu": "Tan Lang in the Life Palace with Hua Lu: More Openings, More Temptation",
     "ziwei-lianzhen-qisha-fudegong-xinli": "Lian Zhen and Qi Sha in the Inner Life Palace: Tough on the Inside, Heavy Under Pressure",
     "ziwei-zifu-tonggong-tianma": "Zi Wei and Tian Fu with Tian Ma: Rank Often Rises After a Move",
+    "ziwei-xingyao-zhengwei": "Reading Stars in the Right Palace: Officials to Career, Wealth to Wealth",
+    "ziwei-caiquan-guanlu": "What Wealth Authority Means: Managing Big Money Is Not the Same as Owning It",
+    "ziwei-fudegong-ziwei-guxing": "Zi Wei in the Inner Life Palace: High Standards, Heavy Self-Direction",
+    "ziwei-youbi-fudegong": "You Bi in the Inner Life Palace: Surrounded Yet Still Carrying It Alone",
+    "ziwei-xiongsu-chaoyuan": "Xiong Su Chao Yuan: Lian Zhen Alone in Yin or Shen",
+    "ziwei-juri-ge": "Ju Ri Pattern: When Ju Men and Tai Yang Turn Speech Into Scale",
+    "ziwei-qisha-chaodou-guanlu-caibo": "Qi Sha Facing the Dipper Beyond the Life Palace: Rank in Career, Resource in Wealth",
+    "ziwei-mingzhu-chuhai-luogong": "Bright Pearl Beyond the Life Palace: When the Pattern Lights Up Family Lines",
+    "ziwei-liusha-danxing-dushou": "A Lone Malefic Star: Why the Main Palace and Opposite Palace Both React",
+    "ziwei-qianyi-ziwei-pojun-fubi": "Zi Wei, Po Jun, and Supporting Stars in the Travel Palace: Stronger Away From Home",
   };
   if (slugMap[article.slug]) return slugMap[article.slug];
   const keyMap = [
@@ -705,6 +716,17 @@ function englishTitleFromSlug(slug, fallbackTitle = "") {
 }
 
 function englishExample(chinese) {
+  if (chinese.includes("银行主管") || chinese.includes("财务负责人") || chinese.includes("项目负责人")) return "A chart can show budget authority, approval power, or stewardship over large sums without turning that authority into personal wealth.";
+  if (chinese.includes("资源调度") || chinese.includes("大型民企") || chinese.includes("营运负责人")) return "Some patterns work best in large organizations, where managing teams, budgets, and systems matters more than direct ownership.";
+  if (chinese.includes("夫妻宫") && chinese.includes("二婚")) return "When a partnership palace looks structurally incomplete, the real issue is often delay, imbalance, or emotional absence rather than one dramatic event.";
+  if (chinese.includes("外地") || chinese.includes("换城市") || chinese.includes("换平台")) return "A move, a bigger platform, or a new market can activate the chart more strongly than staying in the original environment.";
+  if (chinese.includes("兄弟") || chinese.includes("父母") || chinese.includes("子女")) return "A strong pattern does not always describe the person directly; sometimes it shows up through siblings, parents, or children first.";
+  if (chinese.includes("官司") || chinese.includes("法院")) return "A conflict pattern becomes more serious when speech, anger, and legal trouble land on the same axis.";
+  if (chinese.includes("做大生意") || chinese.includes("公开市场") || chinese.includes("拿项目")) return "Strong speech patterns work best when visibility, persuasion, and deal-making are all supported by the surrounding palaces.";
+  if (chinese.includes("负责人") || chinese.includes("强执行主管")) return "When a leadership pattern lands in the career palace, it often shows up as rank, responsibility, and hard decisions before it shows up as comfort.";
+  if (chinese.includes("大组织") || chinese.includes("更大市场")) return "A resource-heavy pattern may point to scale, mandate, and platform size rather than easy cash in hand.";
+  if (chinese.includes("自己做决定") || chinese.includes("不太信别人")) return "Some placements look social on the surface but feel solitary inside, especially when the chart lacks enough support around the core star.";
+  if (chinese.includes("睡不稳") || chinese.includes("长期紧绷")) return "An inner-life placement can show chronic tension, self-command, and difficulty relaxing even when life looks stable from outside.";
   if (chinese.includes("官禄")) return "When the career palace is activated, read responsibility, role, and income together.";
   if (chinese.includes("财帛")) return "When the wealth palace is involved, check cash flow, income source, and whether money can be retained.";
   if (chinese.includes("迁移")) return "When the travel palace is involved, outside platforms, clients, or new environments matter more.";
@@ -712,6 +734,131 @@ function englishExample(chinese) {
   if (chinese.includes("化权")) return "When Hua Quan appears, the opportunity usually comes with heavier responsibility.";
   if (chinese.includes("化科")) return "When Hua Ke appears, reputation, exams, skill, or public recognition becomes important.";
   return "Read the star through the palace and the real-life role it points to, rather than using a vague fixed prediction.";
+}
+
+function uniqueEnglishExamples(article, examples) {
+  const translated = examples.map((item) => englishExample(item));
+  const seen = new Set();
+  const unique = [];
+  for (const line of translated) {
+    if (line && !seen.has(line)) {
+      seen.add(line);
+      unique.push(line);
+    }
+  }
+  const fallbacks = englishFallbackExamples(article).filter((line) => !seen.has(line));
+  return [...unique, ...fallbacks].slice(0, 3);
+}
+
+function englishLead(article, title) {
+  if (article.title.includes("财权")) return "This topic is about resource control rather than direct ownership: the chart can show who handles the money without showing that the money belongs to them.";
+  if (article.title.includes("福德宫") && article.title.includes("紫微")) return "Zi Wei in the inner-life area often shows high standards, strong self-direction, and a private pressure to keep holding everything together.";
+  if (article.title.includes("右弼") && article.title.includes("福德")) return "A support star in the inner-life area can still feel lonely if the person has to process stress alone behind a calm surface.";
+  if (article.title.includes("雄宿朝元")) return "This pattern only works when the structure is right; once it forms, it can push a chart toward military-style authority or serious business leadership.";
+  if (article.title.includes("巨日格")) return "Ju Men and Tai Yang can turn speech, visibility, and judgment into scale, but only when both parts of the pattern are actually bright enough to work.";
+  if (article.title.includes("七杀朝斗")) return "Qi Sha Facing the Dipper does not lose its value outside the Life Palace; it simply changes its real-life outlet from identity to position or resource control.";
+  if (article.title.includes("明珠出海")) return "A famous pattern does not have to sit in the Life Palace to matter; when it lands elsewhere, it lights up that family line or life area first.";
+  if (article.title.includes("六煞单星独守")) return "A lone malefic star is rarely a one-point problem. In practice, the main palace takes the hit first, then the opposite side of the chart starts reacting too.";
+  if (article.title.includes("迁移宫")) return "Some charts do not fully open in the original environment. The travel and outside-world palace can be the place where status, support, and opportunity finally connect.";
+  if (article.title.includes("入正位")) return "Zi Wei Dou Shu becomes much clearer when you ask whether a star is in the life area it is actually built to express.";
+  return `${title} becomes easier to read when you name the palace first, then connect the pattern to role, pressure, and timing in everyday life.`;
+}
+
+function englishMeaning(article) {
+  if (article.title.includes("入正位")) return "A star does not keep the same practical meaning everywhere. The palace tells you whether the topic is role, money, partnership, pressure, family, or the outside world.";
+  if (article.title.includes("财权")) return "This pattern often points to approval power, stewardship, or institutional responsibility. It is about scale and access, not necessarily personal net worth.";
+  if (article.title.includes("福德宫") || article.title.includes("右弼")) return "Inner-life patterns should be read as mindset, emotional carrying capacity, and how much pressure a person quietly processes alone.";
+  if (article.title.includes("雄宿朝元")) return "The useful question is not whether the name sounds grand, but whether the chart really supports authority, leadership, and the ability to hold that pressure.";
+  if (article.title.includes("巨日格")) return "Speech patterns matter only when the wider structure can turn expression into trust, business, visibility, or influence.";
+  if (article.title.includes("七杀朝斗")) return "A classic pattern changes meaning by palace. In one area it can show command and hard decisions; in another it can show large resources that still need careful handling.";
+  if (article.title.includes("明珠出海")) return "A chart pattern is a structure, not a single fixed sentence. Once the structure forms, the palace tells you who or what gets the benefit first.";
+  if (article.title.includes("六煞")) return "Malefic stars are not just about fear. They show where stress enters and how one problem can spill into the opposite side of the chart.";
+  if (article.title.includes("迁移宫")) return "The travel palace also means platforms, markets, and life outside the familiar setting. That is why some charts grow only after movement or relocation.";
+  return "For English readers, the useful move is to name the life area first, then connect the pattern to practical choices instead of treating one symbol as a fixed prediction.";
+}
+
+function englishMethod(article) {
+  if (article.title.includes("财权")) return "Read the career palace, the wealth palace, and the core identity together. Then ask whether the chart points to owning wealth, managing it, or carrying responsibility around it.";
+  if (article.title.includes("福德宫") || article.title.includes("右弼")) return "Read the inner-life area with the Life Palace, relationship palaces, and timing. This shows whether the pressure stays private or starts changing how the person works and relates.";
+  if (article.title.includes("雄宿朝元")) return "Check the formation first, then test whether wealth, career, and timing actually support the pattern. A famous label is not enough on its own.";
+  if (article.title.includes("巨日格")) return "Judge brightness first, then read market, career, and money support. A talking pattern without structure becomes noise instead of leverage.";
+  if (article.title.includes("七杀朝斗")) return "Start with the palace where the pattern lands, then read the opposite palace and the wider structure. That is how you separate rank, duty, and resource scale from simple good-luck language.";
+  if (article.title.includes("明珠出海")) return "Confirm the pattern, identify the palace it activates, then decide whether the effect belongs to the person, the family line, the children, or only a limited time period.";
+  if (article.title.includes("六煞")) return "Read the main palace first, then the opposite palace, then timing. Lone malefics become much clearer when you track where the first pressure lands and where the second reaction follows.";
+  if (article.title.includes("迁移宫")) return "Do not read movement as travel only. Compare the outside-world palace with the Life Palace and Career Palace to see whether a bigger stage strengthens the chart or simply adds stress.";
+  if (article.title.includes("入正位")) return "Do not judge one star alone. Ask whether it is in the palace that matches its function, then test whether the surrounding palaces support that reading in real life.";
+  return "Do not judge one star or one palace alone. Look at the main palace, the opposite palace, the career and wealth structure, and whether the chart shows stable support or only pressure. A strong pattern needs a place to work; a weak pattern needs rules, limits, and practical correction.";
+}
+
+function englishFallbackExamples(article) {
+  if (article.title.includes("财权")) {
+    return [
+      "A person may authorize large budgets at work while living on a normal salary structure personally.",
+      "The same chart can point to a bank, a finance office, or a large operating role rather than direct business ownership.",
+      "A wealth pattern in the career palace often means responsibility over money before personal profit."
+    ];
+  }
+  if (article.title.includes("福德宫") || article.title.includes("右弼")) {
+    return [
+      "Someone can look steady and capable in public while carrying most pressure alone in private.",
+      "A support-star pattern may show delayed emotional trust rather than a total lack of relationships.",
+      "Timing often shows when private tension starts affecting work rhythm, sleep, or partnership dynamics."
+    ];
+  }
+  if (article.title.includes("雄宿朝元")) {
+    return [
+      "A chart can lean toward disciplined leadership in one life path and independent business decisions in another.",
+      "If wealth support is weak, the pattern may show authority and grit more than direct profit.",
+      "When timing is poor, strong will can turn into overreach instead of clean execution."
+    ];
+  }
+  if (article.title.includes("巨日格")) {
+    return [
+      "When both stars are bright, speech can translate into sales, visibility, and large-scale deals.",
+      "When one side is weak, the same pattern can sound forceful without creating trust or results.",
+      "A chart may use this pattern through the person directly, through family background, or only during a strong decade."
+    ];
+  }
+  if (article.title.includes("七杀朝斗")) {
+    return [
+      "In the career palace, the pattern often shows rank, mandate, and hard decision-making.",
+      "In the wealth palace, it can describe large resource channels without promising easy personal cash.",
+      "Strong outside-world support makes the pattern work better on bigger platforms than in small closed settings."
+    ];
+  }
+  if (article.title.includes("明珠出海")) {
+    return [
+      "A bright pattern can describe the person directly, or it can show up through siblings, parents, or children first.",
+      "A decade can temporarily light up the same pattern even if the natal Life Palace does not carry it.",
+      "The palace decides who receives the benefit; the pattern only tells you that the light is there."
+    ];
+  }
+  if (article.title.includes("六煞")) {
+    return [
+      "A lone malefic can show one problem starting here and a second consequence appearing across the chart.",
+      "The palace tells you whether the pressure is about money, family, partnership, health, or environment.",
+      "Timing matters because lone-malefic patterns are often quiet until a trigger year turns them concrete."
+    ];
+  }
+  if (article.title.includes("迁移宫")) {
+    return [
+      "A chart may stay average at home but become far more visible after a move or platform change.",
+      "Support stars in the outside-world palace often describe better allies, better systems, and a better stage elsewhere.",
+      "A strong travel palace still needs a stable core identity, or the opportunity becomes exhausting instead of rewarding."
+    ];
+  }
+  if (article.title.includes("入正位")) {
+    return [
+      "An official star works differently in the Career Palace than it does in the Wealth Palace or Spouse Palace.",
+      "A wealth star in the right palace often shows direct income; the same star elsewhere may show responsibility or pressure instead.",
+      "The palace gives the question, and the star gives the tone of the answer."
+    ];
+  }
+  return [
+    "Read the palace first, then decide whether the pattern is about money, role, relationships, health, or the outside world.",
+    "Use the opposite palace to understand what supports or pressures the main topic.",
+    "Let timing refine the reading instead of forcing one fixed prediction from the natal chart alone."
+  ];
 }
 
 function updateQueue(file, raw, published) {
