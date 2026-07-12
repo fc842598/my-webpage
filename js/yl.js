@@ -1146,7 +1146,11 @@
     });
 
     var memberCard = $(".yl-member-card");
-    if (memberCard) memberCard.dataset.provider = paymentState.provider;
+    if (memberCard) {
+      memberCard.dataset.provider = paymentState.provider;
+      memberCard.dataset.paymentState = paymentState.status || "idle";
+      memberCard.dataset.payMethod = paymentState.payMethod || "";
+    }
 
     var amount = getPaymentAmountLabel();
     var memberPrice = $("#ylMemberPrice");
@@ -1164,7 +1168,10 @@
     }
 
     var panel = $("#ylPaymentPanel");
-    if (panel) panel.hidden = !paymentState.status && !paymentState.message;
+    if (panel) {
+      panel.hidden = paymentState.status === "login"
+        || (!paymentState.status && !paymentState.message);
+    }
     var status = $("#ylPaymentStatus");
     if (status) status.textContent = paymentState.message || "请选择支付方式后创建订单。";
     var code = $("#ylPaymentCode");

@@ -2169,7 +2169,7 @@ input:focus-visible {
   }
 }
 
-/* Unified membership checkout: selected option B */
+/* Figma delivery: unified checkout v2 */
 html.yl-unified-checkout {
   --checkout-bg: #f8f2e8;
   --checkout-paper: #fffdf9;
@@ -2182,94 +2182,185 @@ html.yl-unified-checkout {
 }
 
 html.yl-unified-checkout body {
+  min-height: 100vh;
   background: var(--checkout-bg);
-  color: var(--checkout-ink);
 }
 
 html.yl-unified-checkout .yl-header {
-  min-height: 72px;
-  border-bottom-color: rgba(197, 155, 82, 0.25);
-  background: rgba(255, 252, 247, 0.95);
+  position: static;
+  min-height: 82px;
+  border: 0;
+  background: var(--checkout-bg);
+  backdrop-filter: none;
+}
+
+html.yl-unified-checkout .yl-brand {
+  position: relative;
+  gap: 12px;
+  color: var(--checkout-ink);
+  font-family: "Noto Serif SC", "Songti SC", "STSong", "SimSun", serif;
+  font-size: 26px;
+  font-weight: 700;
+}
+
+html.yl-unified-checkout .yl-brand::before,
+html.yl-unified-checkout .yl-brand::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: min(27vw, 395px);
+  height: 1px;
+  background: var(--checkout-line);
+}
+
+html.yl-unified-checkout .yl-brand::before {
+  right: calc(100% + 36px);
+}
+
+html.yl-unified-checkout .yl-brand::after {
+  left: calc(100% + 36px);
 }
 
 html.yl-unified-checkout .yl-brand-mark {
-  background: var(--checkout-gold);
+  position: relative;
+  width: 38px;
+  height: 38px;
+  border: 2px solid var(--checkout-gold);
+  background: transparent;
+  box-shadow: none;
+}
+
+html.yl-unified-checkout .yl-brand-mark::after {
+  content: "丰";
+  position: absolute;
+  inset: -1px 0 0;
+  color: var(--checkout-gold);
+  font-family: "Noto Serif SC", "Songti SC", "STSong", "SimSun", serif;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 36px;
+  text-align: center;
 }
 
 html.yl-unified-checkout .yl-shell {
-  width: min(1120px, calc(100% - 80px));
-  padding: 42px 0 64px;
+  width: min(970px, calc(100% - 48px));
+  min-height: calc(100vh - 82px);
+  padding: 30px 0 50px;
 }
 
 html.yl-unified-checkout .yl-member-wrap {
   display: block;
   width: 100%;
-  max-width: 1080px;
+  max-width: 970px;
   margin: 0 auto;
 }
 
 html.yl-unified-checkout .yl-member-card {
+  position: relative;
   display: grid;
   grid-template-columns: 1fr;
-  gap: 22px;
+  gap: 20px;
   width: 100%;
+  min-height: 738px;
+  overflow: visible;
   border: 1px solid var(--checkout-line);
   border-radius: 8px;
   background: var(--checkout-paper);
-  box-shadow: 0 16px 42px rgba(91, 58, 22, 0.08);
-  padding: 28px 40px 30px;
+  box-shadow: 0 10px 24px rgba(69, 48, 26, 0.12);
+  padding: 22px 42px 88px;
+}
+
+html.yl-unified-checkout .yl-member-card > * {
+  grid-column: 1;
+}
+
+html.yl-unified-checkout .yl-pay-heading,
+html.yl-unified-checkout .yl-pay-row,
+html.yl-unified-checkout #ylOpenPayBtn,
+html.yl-unified-checkout .yl-member-return,
+html.yl-unified-checkout .yl-health-auth,
+html.yl-unified-checkout .yl-payment-panel,
+html.yl-unified-checkout .yl-pay-hint {
+  grid-column: 1;
+}
+
+html.yl-unified-checkout .yl-member-card::before,
+html.yl-unified-checkout .yl-member-card::after {
+  content: "";
+  position: absolute;
+  width: 28px;
+  height: 28px;
+  pointer-events: none;
+}
+
+html.yl-unified-checkout .yl-member-card::before {
+  top: 13px;
+  left: 13px;
+  border-top: 1px solid var(--checkout-gold);
+  border-left: 1px solid var(--checkout-gold);
+  box-shadow: -5px -5px 0 -4px var(--checkout-paper), -6px -6px 0 -5px var(--checkout-gold);
+}
+
+html.yl-unified-checkout .yl-member-card::after {
+  right: 13px;
+  bottom: 13px;
+  border-right: 1px solid var(--checkout-gold);
+  border-bottom: 1px solid var(--checkout-gold);
+  box-shadow: 5px 5px 0 -4px var(--checkout-paper), 6px 6px 0 -5px var(--checkout-gold);
 }
 
 html.yl-unified-checkout .yl-checkout-head {
-  position: relative;
   display: flex;
-  min-height: 74px;
-  grid-column: auto;
-  align-items: center;
-  justify-content: center;
-  border-bottom: 1px solid rgba(197, 155, 82, 0.28);
-  padding: 0 0 20px;
-  text-align: center;
+  min-height: 66px;
+  border-bottom: 0;
+  padding: 0;
 }
 
 html.yl-unified-checkout .yl-checkout-head div {
-  gap: 7px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
 }
 
-html.yl-unified-checkout .yl-checkout-head span {
-  color: #9c7540;
-  font-size: 12px;
+html.yl-unified-checkout .yl-checkout-head div::before,
+html.yl-unified-checkout .yl-checkout-head div::after {
+  content: "";
+  width: 9px;
+  height: 9px;
+  margin: 0 34px;
+  transform: rotate(45deg);
+  background: var(--checkout-gold);
+}
+
+html.yl-unified-checkout .yl-checkout-head span,
+html.yl-unified-checkout .yl-checkout-head > b {
+  display: none;
 }
 
 html.yl-unified-checkout .yl-checkout-head strong {
   color: var(--checkout-ink);
-  font-family: "Songti SC", "STSong", "SimSun", serif;
-  font-size: 30px;
-  font-weight: 800;
-}
-
-html.yl-unified-checkout .yl-checkout-head > b {
-  position: absolute;
-  right: 0;
-  border: 1px solid rgba(182, 37, 27, 0.24);
-  border-radius: 8px;
-  background: rgba(182, 37, 27, 0.05);
-  color: var(--checkout-red-dark);
-  padding: 8px 12px;
+  font-family: "Noto Serif SC", "Songti SC", "STSong", "SimSun", serif;
+  font-size: 38px;
+  font-weight: 700;
+  line-height: 1.35;
 }
 
 html.yl-unified-checkout .yl-order-summary {
   display: grid;
-  grid-template-columns: minmax(220px, 0.9fr) minmax(300px, 1.25fr) minmax(260px, 1fr);
+  grid-template-columns: 286px 328px 1fr;
+  min-height: 210px;
+  overflow: hidden;
   border: 1px solid var(--checkout-line);
-  border-radius: 4px;
-  background: #fffdfa;
+  border-radius: 0;
+  background: var(--checkout-paper);
 }
 
 html.yl-unified-checkout .yl-member-main,
 html.yl-unified-checkout .yl-member-benefits,
 html.yl-unified-checkout .yl-payment-assurance {
-  min-height: 190px;
+  min-height: 208px;
   border: 0;
   border-radius: 0;
   background: transparent;
@@ -2277,155 +2368,254 @@ html.yl-unified-checkout .yl-payment-assurance {
 }
 
 html.yl-unified-checkout .yl-member-main {
-  align-items: center;
-  border-right: 1px solid rgba(223, 202, 168, 0.82);
-  color: var(--checkout-ink);
-  padding: 28px 24px;
+  justify-content: center;
+  border-right: 1px solid var(--checkout-line);
+  padding: 24px 28px;
   text-align: center;
 }
 
 html.yl-unified-checkout .yl-member-main span {
   color: var(--checkout-ink);
-  font-family: "Songti SC", "STSong", "SimSun", serif;
+  font-family: "Noto Serif SC", "Songti SC", "STSong", "SimSun", serif;
   font-size: 20px;
-  font-weight: 800;
+  font-weight: 700;
 }
 
 html.yl-unified-checkout .yl-member-main strong {
-  margin: 8px 0 4px;
-  color: var(--checkout-red);
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: 48px;
-  font-weight: 500;
-  line-height: 1.08;
+  margin: 4px 0 8px;
+  color: var(--checkout-red-dark);
+  font-family: "Noto Serif SC", Georgia, serif;
+  font-size: 54px;
+  font-weight: 400;
+  line-height: 1.1;
 }
 
 html.yl-unified-checkout .yl-member-main p {
-  border: 1px solid rgba(197, 155, 82, 0.38);
+  border: 1px solid var(--checkout-line);
   border-radius: 4px;
-  color: #8a6b3d;
-  font-size: 12px;
+  color: var(--checkout-gold);
+  font-size: 13px;
   padding: 5px 10px;
 }
 
 html.yl-unified-checkout .yl-member-benefits {
   align-content: center;
-  gap: 18px;
-  border-right: 1px solid rgba(223, 202, 168, 0.82);
-  padding: 24px 32px;
+  gap: 0;
+  border-right: 1px solid var(--checkout-line);
+  padding: 22px 38px;
 }
 
 html.yl-unified-checkout .yl-member-benefits > strong {
-  color: #9c7540;
-  font-size: 12px;
-  letter-spacing: 0;
+  display: none;
 }
 
 html.yl-unified-checkout .yl-member-benefits span {
+  display: flex;
+  min-height: 80px;
+  align-items: center;
+  gap: 20px;
   color: var(--checkout-ink);
-  font-size: 15px;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+html.yl-unified-checkout .yl-member-benefits span + span {
+  border-top: 1px solid var(--checkout-line);
 }
 
 html.yl-unified-checkout .yl-member-benefits b {
-  border: 1px solid rgba(197, 155, 82, 0.42);
-  background: #fbf3e4;
-  color: #936d35;
+  width: 40px;
+  height: 40px;
+  flex: 0 0 40px;
+  border: 0;
+  border-radius: 0;
+  background-color: transparent;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 40px;
+  color: transparent;
+  font-size: 0;
+}
+
+html.yl-unified-checkout .yl-member-benefits span:nth-of-type(1) b {
+  background-image: url("/images/payment/lock.svg");
+}
+
+html.yl-unified-checkout .yl-member-benefits span:nth-of-type(2) b {
+  background-image: url("/images/payment/message-circle.svg");
 }
 
 html.yl-unified-checkout .yl-payment-assurance {
   display: grid;
-  grid-template-columns: 1fr;
   grid-column: auto;
+  grid-template-columns: 1fr;
   align-content: center;
-  gap: 9px;
-  padding: 24px 28px;
+  gap: 12px;
+  padding: 26px 30px;
 }
 
 html.yl-unified-checkout .yl-assurance-title {
-  color: var(--checkout-red-dark);
-  font-size: 16px;
+  position: relative;
+  display: flex;
+  min-height: 40px;
+  align-items: center;
+  gap: 14px;
+  color: var(--checkout-ink);
+  font-family: "Noto Serif SC", "Songti SC", "STSong", "SimSun", serif;
+  font-size: 18px;
+}
+
+html.yl-unified-checkout .yl-assurance-title::before {
+  content: "";
+  width: 38px;
+  height: 38px;
+  flex: 0 0 38px;
+  background: url("/images/payment/shield-check.svg") center / contain no-repeat;
 }
 
 html.yl-unified-checkout .yl-payment-assurance > span {
-  display: grid;
-  gap: 2px;
-  padding: 0;
+  display: block;
+  position: relative;
+  padding-left: 34px;
 }
 
-html.yl-unified-checkout .yl-payment-assurance > span + span {
-  border-left: 0;
+html.yl-unified-checkout .yl-payment-assurance > span::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 20px;
+  height: 20px;
+  border: 1px solid var(--checkout-gold);
+  border-radius: 50%;
+  color: var(--checkout-gold);
+  font-size: 12px;
+  line-height: 18px;
+  text-align: center;
+}
+
+html.yl-unified-checkout .yl-payment-assurance > span:first-of-type {
+  display: none;
 }
 
 html.yl-unified-checkout .yl-payment-assurance strong {
-  color: var(--checkout-ink);
-  font-size: 12px;
+  color: var(--checkout-muted);
+  font-size: 14px;
+  font-weight: 400;
 }
 
 html.yl-unified-checkout .yl-payment-assurance small {
-  color: var(--checkout-muted);
-  font-size: 10px;
+  display: none;
 }
 
 html.yl-unified-checkout .yl-pay-heading {
   display: flex;
-  grid-column: auto;
-  margin-top: 2px;
+  min-height: 22px;
+  margin: 0;
+  border-left: 4px solid var(--checkout-red);
   padding-left: 12px;
-  border-left: 3px solid var(--checkout-red);
 }
 
 html.yl-unified-checkout .yl-pay-heading strong {
   color: var(--checkout-ink);
-  font-size: 17px;
+  font-size: 18px;
 }
 
 html.yl-unified-checkout .yl-pay-heading span {
-  color: var(--checkout-muted);
+  display: none;
 }
 
 html.yl-unified-checkout .yl-pay-row {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  grid-column: auto;
-  gap: 14px;
+  gap: 16px;
 }
 
 html.yl-unified-checkout .yl-pay-method {
+  position: relative;
+  display: grid;
+  grid-template-columns: 30px auto;
   min-width: 0;
-  min-height: 68px;
-  border-color: var(--checkout-line);
-  border-radius: 4px;
-  background: #fffdfa;
+  min-height: 96px;
+  align-content: center;
+  align-items: center;
+  justify-content: center;
+  column-gap: 18px;
+  border: 1px solid var(--checkout-line);
+  border-radius: 6px;
+  background: var(--checkout-paper);
   color: var(--checkout-ink);
-  font-size: 15px;
+  font-size: 18px;
+  font-weight: 700;
+  padding: 16px 28px;
+}
+
+html.yl-unified-checkout .yl-pay-method::before {
+  content: "";
+  width: 30px;
+  height: 30px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+html.yl-unified-checkout .yl-pay-method[data-provider="wechat"]::before {
+  background-image: url("/images/payment/wechat.svg");
+}
+
+html.yl-unified-checkout .yl-pay-method[data-provider="alipay"]::before {
+  background-image: url("/images/payment/alipay.svg");
+}
+
+html.yl-unified-checkout .yl-pay-method[data-provider="paypal"]::before {
+  background-image: url("/images/payment/paypal.svg");
 }
 
 html.yl-unified-checkout .yl-pay-method::after {
-  color: #8d8275;
+  content: "";
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 18px;
+  height: 18px;
+  border: 1px solid var(--checkout-line);
+  border-radius: 50%;
+  color: var(--checkout-red);
+  font-size: 12px;
+  line-height: 16px;
+  text-align: center;
 }
 
-html.yl-unified-checkout .yl-pay-method.is-active {
+html.yl-unified-checkout .yl-pay-method.is-active,
+html.yl-unified-checkout .yl-pay-method[data-provider="alipay"].is-active,
+html.yl-unified-checkout .yl-pay-method[data-provider="paypal"].is-active {
   border-color: var(--checkout-red);
   background: var(--checkout-red);
   color: #fff;
 }
 
-html.yl-unified-checkout .yl-pay-method[data-provider="alipay"].is-active {
-  border-color: #1677ff;
-  background: #1677ff;
+html.yl-unified-checkout .yl-pay-method.is-active::before {
+  filter: brightness(0) invert(1);
 }
 
-html.yl-unified-checkout .yl-pay-method[data-provider="paypal"].is-active {
-  border-color: #003087;
-  background: #003087;
+html.yl-unified-checkout .yl-pay-method.is-active::after {
+  content: "✓";
+  border-color: #fff;
+  background: #fff;
+  color: var(--checkout-red);
 }
 
-html.yl-unified-checkout #ylOpenPayBtn {
-  min-height: 56px;
-  grid-column: auto;
-  border-radius: 4px;
+html.yl-unified-checkout #ylOpenPayBtn,
+html.yl-unified-checkout .yl-member-card[data-provider="alipay"] #ylOpenPayBtn,
+html.yl-unified-checkout .yl-member-card[data-provider="paypal"] #ylOpenPayBtn {
+  min-height: 72px;
+  border: 0;
+  border-radius: 6px;
   background: var(--checkout-red);
-  font-size: 18px;
+  color: #fff;
+  font-family: "Noto Serif SC", "Songti SC", "STSong", "SimSun", serif;
+  font-size: 25px;
+  font-weight: 700;
 }
 
 html.yl-unified-checkout #ylOpenPayBtn:hover,
@@ -2433,44 +2623,159 @@ html.yl-unified-checkout #ylOpenPayBtn:focus-visible {
   background: var(--checkout-red-dark);
 }
 
+html.yl-unified-checkout .yl-mobile-assurance {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: var(--checkout-muted);
+  font-size: 12px;
+}
+
+html.yl-unified-checkout .yl-mobile-assurance::before {
+  content: "";
+  width: 26px;
+  height: 26px;
+  background: url("/images/payment/shield-check.svg") center / contain no-repeat;
+}
+
+html.yl-unified-checkout .yl-mobile-assurance span + span::before {
+  content: "·";
+  margin-right: 8px;
+}
+
 html.yl-unified-checkout .yl-member-return {
-  grid-column: auto;
   color: var(--checkout-red-dark);
+  font-weight: 700;
 }
 
 html.yl-unified-checkout .yl-health-auth,
 html.yl-unified-checkout .yl-payment-panel {
-  grid-column: auto;
-  border-color: var(--checkout-line);
-  border-radius: 4px;
-  background: #fffdfa;
+  position: fixed;
+  z-index: 80;
+  top: 50%;
+  left: 50%;
+  display: grid;
+  width: min(470px, calc(100vw - 32px));
+  max-height: calc(100vh - 32px);
+  overflow: auto;
+  gap: 16px;
+  transform: translate(-50%, -50%);
+  border: 1px solid var(--checkout-line);
+  border-radius: 8px;
+  background: var(--checkout-paper);
+  box-shadow: 0 0 0 100vmax rgba(27, 22, 17, 0.28), 0 14px 34px rgba(38, 26, 14, 0.18);
+  padding: 30px 40px;
 }
 
-html.yl-unified-checkout .yl-health-auth-head strong,
-html.yl-unified-checkout .yl-payment-status,
-html.yl-unified-checkout .yl-pay-hint {
-  color: var(--checkout-red-dark);
-}
-
-html.yl-unified-checkout .yl-mobile-assurance {
+html.yl-unified-checkout .yl-health-auth[hidden],
+html.yl-unified-checkout .yl-payment-panel[hidden] {
   display: none;
 }
 
+html.yl-unified-checkout .yl-health-auth-head strong {
+  color: var(--checkout-ink);
+  font-family: "Noto Serif SC", "Songti SC", "STSong", "SimSun", serif;
+  font-size: 26px;
+}
+
+html.yl-unified-checkout .yl-health-auth-head p,
+html.yl-unified-checkout .yl-health-auth-status,
+html.yl-unified-checkout .yl-payment-status {
+  color: var(--checkout-muted);
+}
+
+html.yl-unified-checkout .yl-health-auth input {
+  border-radius: 6px;
+  border-color: var(--checkout-line);
+  background: var(--checkout-paper);
+}
+
+html.yl-unified-checkout .yl-health-auth input:focus {
+  border-color: var(--checkout-red);
+  outline-color: rgba(182, 37, 27, 0.14);
+}
+
+html.yl-unified-checkout .yl-health-auth-actions .yl-btn,
+html.yl-unified-checkout .yl-payment-actions .yl-btn {
+  min-height: 50px;
+  border-radius: 6px;
+}
+
+html.yl-unified-checkout .yl-health-auth-actions .yl-btn-primary,
+html.yl-unified-checkout .yl-payment-actions .yl-btn-primary {
+  border-color: var(--checkout-red);
+  background: var(--checkout-red);
+}
+
+html.yl-unified-checkout .yl-health-auth-actions .yl-btn-ghost,
+html.yl-unified-checkout .yl-payment-actions .yl-btn-ghost {
+  border-color: var(--checkout-line);
+  background: var(--checkout-paper);
+  color: var(--checkout-ink);
+}
+
+html.yl-unified-checkout .yl-payment-status {
+  font-family: "Noto Serif SC", "Songti SC", "STSong", "SimSun", serif;
+  font-size: 22px;
+  line-height: 1.55;
+}
+
+html.yl-unified-checkout .yl-payment-qr {
+  width: 220px;
+  height: 220px;
+  border-color: var(--checkout-line);
+  border-radius: 6px;
+  background: #fff;
+}
+
+html.yl-unified-checkout .yl-payment-qr img,
+html.yl-unified-checkout .yl-payment-qr canvas {
+  width: 190px !important;
+  height: 190px !important;
+}
+
+html.yl-unified-checkout .yl-payment-code code {
+  color: var(--checkout-muted);
+}
+
+html.yl-unified-checkout .yl-member-card[data-payment-state="handoff"] .yl-payment-panel {
+  width: min(460px, calc(100vw - 32px));
+}
+
+html.yl-unified-checkout .yl-member-card[data-payment-state="paid"] .yl-payment-status {
+  color: #15964f;
+}
+
+html.yl-unified-checkout .yl-member-card[data-payment-state="error"] .yl-payment-status {
+  color: var(--checkout-red);
+}
+
+html.yl-unified-checkout .yl-pay-hint {
+  display: none;
+  color: var(--checkout-muted);
+}
+
+html.yl-unified-checkout .yl-member-card[data-payment-state="handoff"] .yl-pay-hint,
+html.yl-unified-checkout .yl-member-card[data-payment-state="error"] .yl-pay-hint {
+  display: block;
+}
+
 html.yl-unified-checkout .yl-operator {
+  position: relative;
+  z-index: 2;
   display: flex;
-  width: min(100%, 920px);
-  min-height: auto;
-  margin: 18px auto 0;
+  width: min(100% - 110px, 760px);
+  min-height: 0;
+  margin: -58px auto 0;
   align-items: center;
   justify-content: center;
   gap: 14px;
   border: 0;
-  border-radius: 0;
   background: transparent;
   box-shadow: none;
   color: var(--checkout-muted);
   padding: 0;
-  text-align: center;
 }
 
 html.yl-unified-checkout .yl-operator-points {
@@ -2485,144 +2790,187 @@ html.yl-unified-checkout .yl-operator-card {
 
 html.yl-unified-checkout .yl-operator-card p {
   display: inline;
-  font-size: 11px;
+  margin: 0;
 }
 
 html.yl-unified-checkout .yl-operator-card p + p {
   display: none;
 }
 
-html.yl-unified-checkout .yl-operator-card p span {
-  color: var(--checkout-muted);
-  font-size: 11px;
-}
-
 html.yl-unified-checkout .yl-operator-contact {
-  display: inline-flex;
   min-height: 0;
   border: 0;
   border-left: 1px solid var(--checkout-line);
   border-radius: 0;
-  color: var(--checkout-red-dark);
-  font-size: 11px;
-  line-height: 1.4;
   padding-left: 14px;
 }
 
-@media (max-width: 900px) {
+html.yl-unified-checkout .yl-operator-card p,
+html.yl-unified-checkout .yl-operator-card p span,
+html.yl-unified-checkout .yl-operator-contact {
+  color: var(--checkout-muted);
+  font-size: 11px;
+}
+
+@media (max-width: 900px) and (min-width: 721px) {
   html.yl-unified-checkout .yl-shell {
     width: min(760px, calc(100% - 40px));
   }
 
   html.yl-unified-checkout .yl-order-summary {
-    grid-template-columns: 1fr 1.35fr;
+    grid-template-columns: 0.9fr 1.1fr;
   }
 
   html.yl-unified-checkout .yl-payment-assurance {
     grid-column: 1 / -1;
-    min-height: auto;
-    grid-template-columns: auto repeat(3, minmax(0, 1fr));
-    align-items: center;
-    border-top: 1px solid rgba(223, 202, 168, 0.82);
-    padding: 16px 20px;
-  }
-
-  html.yl-unified-checkout .yl-member-benefits {
-    border-right: 0;
+    min-height: 92px;
+    grid-template-columns: auto 1fr 1fr;
+    border-top: 1px solid var(--checkout-line);
   }
 }
 
 @media (max-width: 720px) {
-  html.yl-unified-checkout body {
-    padding-bottom: 0;
-  }
-
   html.yl-unified-checkout .yl-header {
-    position: static;
     display: grid;
-    min-height: 58px;
-    padding: 0 20px;
-    background: var(--checkout-bg);
+    min-height: 82px;
+    padding: 0;
   }
 
   html.yl-unified-checkout .yl-brand {
-    justify-self: center;
-    font-family: "Songti SC", "STSong", "SimSun", serif;
-    font-size: 18px;
+    display: block;
+    font-size: 24px;
+    text-align: center;
+  }
+
+  html.yl-unified-checkout .yl-brand::before,
+  html.yl-unified-checkout .yl-brand::after {
+    top: auto;
+    bottom: -16px;
+    width: 74px;
+  }
+
+  html.yl-unified-checkout .yl-brand::before {
+    right: calc(50% + 12px);
+  }
+
+  html.yl-unified-checkout .yl-brand::after {
+    left: calc(50% + 12px);
   }
 
   html.yl-unified-checkout .yl-brand-mark {
-    width: 18px;
-    height: 18px;
+    display: none;
+  }
+
+  html.yl-unified-checkout .yl-brand-checkout {
+    position: relative;
+  }
+
+  html.yl-unified-checkout .yl-brand-checkout::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: -23px;
+    width: 9px;
+    height: 9px;
+    transform: translateX(-50%) rotate(45deg);
+    border: 1px solid var(--checkout-gold);
+    background: var(--checkout-bg);
   }
 
   html.yl-unified-checkout .yl-shell {
     width: 100%;
+    min-height: calc(100vh - 82px);
     padding: 0;
   }
 
   html.yl-unified-checkout .yl-member-wrap {
-    max-width: 430px;
+    max-width: 390px;
   }
 
   html.yl-unified-checkout .yl-member-card {
     width: 100%;
+    min-height: auto;
     gap: 16px;
     border: 0;
     border-radius: 0;
     background: var(--checkout-bg);
     box-shadow: none;
-    padding: 14px 20px 18px;
+    padding: 0 30px 24px;
+  }
+
+  html.yl-unified-checkout .yl-member-card::before,
+  html.yl-unified-checkout .yl-member-card::after {
+    display: none;
   }
 
   html.yl-unified-checkout .yl-checkout-head {
-    display: flex;
-    min-height: 62px;
-    border-bottom: 0;
-    padding: 0 0 8px;
+    min-height: 80px;
+    border-bottom: 1px dashed var(--checkout-line);
   }
 
-  html.yl-unified-checkout .yl-checkout-head span {
+  html.yl-unified-checkout .yl-checkout-head div::before,
+  html.yl-unified-checkout .yl-checkout-head div::after {
     display: none;
   }
 
   html.yl-unified-checkout .yl-checkout-head strong {
-    font-size: 28px;
-  }
-
-  html.yl-unified-checkout .yl-checkout-head > b {
-    position: static;
-    margin-left: 12px;
-    font-size: 10px;
-    padding: 5px 8px;
+    font-size: 36px;
   }
 
   html.yl-unified-checkout .yl-order-summary {
+    position: relative;
     display: block;
-    overflow: hidden;
-    border-radius: 4px;
-    background: #fffdfa;
+    min-height: 356px;
+    overflow: visible;
+    border: 1px solid var(--checkout-line);
+    background: var(--checkout-paper);
+    box-shadow: 0 8px 18px rgba(69, 48, 26, 0.1);
+    padding: 9px;
+  }
+
+  html.yl-unified-checkout .yl-order-summary::before {
+    content: "";
+    position: absolute;
+    inset: 9px;
+    border: 1px solid var(--checkout-line);
+    pointer-events: none;
   }
 
   html.yl-unified-checkout .yl-member-main,
   html.yl-unified-checkout .yl-member-benefits,
   html.yl-unified-checkout .yl-payment-assurance {
-    min-height: auto;
+    position: relative;
+    z-index: 1;
+    min-height: 0;
   }
 
   html.yl-unified-checkout .yl-member-main {
+    min-height: 152px;
     border-right: 0;
-    border-bottom: 1px dashed rgba(197, 155, 82, 0.42);
-    padding: 20px 18px 16px;
+    border-bottom: 1px dashed var(--checkout-line);
+    padding: 28px 24px 18px;
   }
 
   html.yl-unified-checkout .yl-member-main span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     font-size: 20px;
+    white-space: nowrap;
+  }
+
+  html.yl-unified-checkout .yl-member-main span::before,
+  html.yl-unified-checkout .yl-member-main span::after {
+    content: "◆";
+    margin: 0 18px;
+    color: var(--checkout-gold);
+    font-size: 9px;
+    vertical-align: middle;
   }
 
   html.yl-unified-checkout .yl-member-main strong {
-    margin: 4px 0 2px;
-    font-size: 48px;
+    margin: 5px 0 0;
+    font-size: 50px;
   }
 
   html.yl-unified-checkout .yl-member-main p {
@@ -2630,36 +2978,49 @@ html.yl-unified-checkout .yl-operator-contact {
   }
 
   html.yl-unified-checkout .yl-member-benefits {
-    gap: 10px;
+    min-height: 136px;
+    gap: 0;
     border-right: 0;
-    padding: 14px 24px 12px;
-  }
-
-  html.yl-unified-checkout .yl-member-benefits > strong {
-    display: none;
+    border-bottom: 1px dashed var(--checkout-line);
+    padding: 10px 34px;
   }
 
   html.yl-unified-checkout .yl-member-benefits span {
-    font-size: 14px;
+    min-height: 55px;
+    gap: 14px;
+    border-top: 0 !important;
+    font-size: 16px;
   }
 
   html.yl-unified-checkout .yl-member-benefits b {
-    width: 24px;
-    height: 24px;
-    flex-basis: 24px;
+    width: 38px;
+    height: 38px;
+    flex-basis: 38px;
+    background-size: 24px;
+    border: 1px solid var(--checkout-line);
+    border-radius: 50%;
   }
 
   html.yl-unified-checkout .yl-payment-assurance {
-    display: block;
-    border-top: 1px dashed rgba(197, 155, 82, 0.42);
-    padding: 10px;
-    text-align: center;
+    display: flex;
+    min-height: 50px;
+    align-items: center;
+    justify-content: center;
+    padding: 6px;
   }
 
   html.yl-unified-checkout .yl-assurance-title {
-    display: inline-block;
-    color: #a57c3f;
-    font-size: 13px;
+    min-height: 28px;
+    color: var(--checkout-gold);
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: 400;
+  }
+
+  html.yl-unified-checkout .yl-assurance-title::before {
+    width: 28px;
+    height: 28px;
+    flex-basis: 28px;
   }
 
   html.yl-unified-checkout .yl-payment-assurance > span {
@@ -2672,73 +3033,86 @@ html.yl-unified-checkout .yl-operator-contact {
 
   html.yl-unified-checkout .yl-pay-row {
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 8px;
+    gap: 12px;
   }
 
   html.yl-unified-checkout .yl-pay-method {
-    min-height: 60px;
-    padding: 7px 4px;
-    font-size: 13px;
+    grid-template-columns: 1fr;
+    grid-template-rows: 34px auto;
+    min-height: 104px;
+    justify-items: center;
+    row-gap: 8px;
+    border-radius: 6px;
+    font-size: 15px;
+    padding: 18px 6px 10px;
   }
 
-  html.yl-unified-checkout .yl-pay-method::after {
-    font-size: 9px;
+  html.yl-unified-checkout .yl-pay-method::before {
+    width: 34px;
+    height: 34px;
   }
 
-  html.yl-unified-checkout #ylOpenPayBtn {
-    min-height: 52px;
-    font-size: 17px;
+  html.yl-unified-checkout #ylOpenPayBtn,
+  html.yl-unified-checkout .yl-member-card[data-provider="alipay"] #ylOpenPayBtn,
+  html.yl-unified-checkout .yl-member-card[data-provider="paypal"] #ylOpenPayBtn {
+    min-height: 66px;
+    border-radius: 6px;
+    font-size: 22px;
   }
 
   html.yl-unified-checkout .yl-mobile-assurance {
     display: grid;
+    min-height: 64px;
     gap: 4px;
-    color: var(--checkout-muted);
-    font-size: 11px;
-    line-height: 1.45;
-    text-align: center;
+    padding-top: 6px;
+    font-size: 14px;
+  }
+
+  html.yl-unified-checkout .yl-mobile-assurance::before,
+  html.yl-unified-checkout .yl-mobile-assurance span + span::before {
+    display: none;
   }
 
   html.yl-unified-checkout .yl-health-auth,
   html.yl-unified-checkout .yl-payment-panel {
-    padding: 14px;
+    width: min(340px, calc(100vw - 30px));
+    border-radius: 8px;
+    padding: 26px 24px;
+  }
+
+  html.yl-unified-checkout .yl-member-card[data-payment-state="handoff"] .yl-payment-panel {
+    top: auto;
+    bottom: 16px;
+    width: min(360px, calc(100vw - 30px));
+    max-height: calc(100vh - 32px);
+    transform: translateX(-50%);
+    border-radius: 10px;
+    padding: 28px 24px;
+  }
+
+  html.yl-unified-checkout .yl-payment-status {
+    font-size: 21px;
+  }
+
+  html.yl-unified-checkout .yl-payment-qr {
+    width: 200px;
+    height: 200px;
+  }
+
+  html.yl-unified-checkout .yl-payment-qr img,
+  html.yl-unified-checkout .yl-payment-qr canvas {
+    width: 174px !important;
+    height: 174px !important;
   }
 
   html.yl-unified-checkout .yl-operator {
-    display: block;
-    width: 100%;
-    margin: 0 auto;
-    background: var(--checkout-bg);
-    padding: 0 20px 24px;
-  }
-
-  html.yl-unified-checkout .yl-operator-card p {
-    font-size: 10px;
-  }
-
-  html.yl-unified-checkout .yl-operator-card p span {
-    font-size: 10px;
-  }
-
-  html.yl-unified-checkout .yl-operator-contact {
-    margin-top: 7px;
-    border-left: 0;
-    font-size: 10px;
-    padding-left: 0;
+    display: none;
   }
 }
 
 @media (max-width: 390px) {
   html.yl-unified-checkout .yl-member-card {
-    padding-left: 16px;
-    padding-right: 16px;
-  }
-
-  html.yl-unified-checkout .yl-member-main strong {
-    font-size: 44px;
-  }
-
-  html.yl-unified-checkout .yl-pay-method {
-    font-size: 12px;
+    padding-right: 30px;
+    padding-left: 30px;
   }
 }
