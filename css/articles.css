@@ -498,6 +498,14 @@ h1 {
   align-items: center;
 }
 
+.article-detail .detail-hero h1 {
+  max-width: 18em;
+  font-size: clamp(34px, 3vw, 42px);
+  line-height: 1.18;
+  letter-spacing: .015em;
+  text-wrap: balance;
+}
+
 .detail-subtitle {
   margin: 14px 0 0;
   color: #d8c6a7;
@@ -1282,6 +1290,12 @@ html[lang="en"] .article-bottom-link::before {
 
   .detail-hero-grid {
     display: block;
+  }
+
+  .article-detail .detail-hero h1 {
+    max-width: none;
+    font-size: clamp(28px, 8vw, 32px);
+    line-height: 1.22;
   }
 
   .breadcrumb {
