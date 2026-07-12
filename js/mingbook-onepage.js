@@ -3085,9 +3085,7 @@
       };
     }).sort((a, b) => b.score - a.score || a.index - b.index);
 
-    ordered.forEach(({ tab, panel, priorityItems }, rank) => {
-      const isCurrentPriority = rank === 0;
-      tab.classList.toggle('is-priority', isCurrentPriority);
+    ordered.forEach(({ tab, panel, priorityItems }) => {
       tabList.appendChild(tab);
       if (!panel) return;
       panelList.appendChild(panel);
@@ -3096,10 +3094,10 @@
       priorityItems.slice().reverse().forEach((item) => {
         const button = document.createElement('button');
         button.type = 'button';
-        button.className = `chat-starter-btn xb-starter${isCurrentPriority ? ' is-priority' : ''}`;
+        button.className = 'chat-starter-btn xb-starter';
         button.dataset.desktopChatPriority = 'true';
         button.dataset.chatPrompt = item.prompt;
-        button.innerHTML = `<span>${isCurrentPriority ? '当前优先' : '命盘推荐'} · ${escapeHtml(item.label)}</span>`;
+        button.innerHTML = `<span>${escapeHtml(item.label)}</span>`;
         button.disabled = !!input?.disabled;
         button.addEventListener('click', () => {
           if (!input || input.disabled) return;

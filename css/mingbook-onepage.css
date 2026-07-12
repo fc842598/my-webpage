@@ -10506,14 +10506,6 @@ p.mbp-topic-detail {
   content: "⌃";
 }
 
-.xb-starter-tab.is-priority::before {
-  content: "当前优先";
-  margin-right: 6px;
-  color: #d9b965;
-  font-size: 10px;
-  font-weight: 900;
-}
-
 .xb-starter-panels {
   min-height: 48px;
   padding: 10px;
@@ -10534,13 +10526,6 @@ p.mbp-topic-detail {
 
 .xb-starter-panel .chat-starter-btn {
   background: rgba(201, 169, 97, .075);
-}
-
-.xb-starter-panel .chat-starter-btn.is-priority {
-  border-color: rgba(225, 185, 92, .52);
-  background: linear-gradient(135deg, rgba(225, 185, 92, .2), rgba(167, 100, 52, .18));
-  color: #fff1c5;
-  box-shadow: inset 0 0 0 1px rgba(255, 241, 197, .05);
 }
 
 .chat-starter-btn:hover:not(:disabled) {
