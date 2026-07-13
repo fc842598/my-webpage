@@ -240,6 +240,7 @@
     $all(".yl-bottom-nav a").forEach(function (link) {
       link.classList.toggle("is-active", link.getAttribute("href") === "#" + active);
     });
+    if (active === "member") renderHealthAuthPanel();
     if (opts.scroll !== false) {
       window.scrollTo({ top: 0, behavior: opts.instant ? "auto" : "smooth" });
     }
@@ -1277,7 +1278,11 @@
   function renderHealthAuthPanel() {
     var panel = $("#ylHealthAuthPanel");
     if (!panel) return;
-    panel.hidden = !healthAuthState.panelOpen || !!readAuthSession();
+    var shouldShow = !hasHealthPaymentAuth()
+      && (healthAuthState.panelOpen || pageFromHash() === "member");
+    panel.hidden = !shouldShow;
+    var memberCard = $(".yl-member-card");
+    if (memberCard) memberCard.classList.toggle("is-login-required", shouldShow);
     var status = $("#ylHealthAuthStatus");
     if (status) {
       status.textContent = healthAuthState.message || "";
@@ -1288,17 +1293,17 @@
       if (button) button.disabled = healthAuthState.loading;
     });
     var loginButton = $("#ylHealthLoginBtn");
-    if (loginButton) loginButton.textContent = healthAuthState.loading ? "处理中..." : "登录并支付";
+    if (loginButton) loginButton.textContent = healthAuthState.loading ? "正在登录..." : "登录并继续支付";
   }
 
   function openHealthAuthPanel() {
     healthAuthState.panelOpen = true;
     paymentState.status = "login";
-    paymentState.message = "请先登录或注册阅天账号，随后本页继续支付。";
+    paymentState.message = "登录成功后留在本页继续付款。";
     renderPayment();
     window.setTimeout(function () {
       var panel = $("#ylHealthAuthPanel");
-      if (panel) panel.scrollIntoView({ behavior: "smooth", block: "center" });
+      if (panel) panel.scrollIntoView({ behavior: "smooth", block: "nearest" });
       var input = $("#ylHealthAuthAccount");
       if (input) input.focus({ preventScroll: true });
     }, 30);

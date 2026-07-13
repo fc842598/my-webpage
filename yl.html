@@ -41,10 +41,10 @@
   <meta name="twitter:image" content="https://yuetianai.com/images/health/constitution-report-hero-v8.png">
   <meta name="theme-color" content="#f8f2e8">
   <link rel="icon" href="/images/wentian-prototype-assets/wentian-brand-logo-ai-gold-v1.webp" type="image/webp">
-  <link rel="stylesheet" href="/css/yl.css?v=20260712-member-renewal-v15">
+  <link rel="stylesheet" href="/css/yl.css?v=20260713-inline-auth-v16">
   <script src="/js/config.js?v=20260710-api-origin-lock-v1"></script>
   <script defer src="/vendor/qrcodejs/qrcode.min.js?v=20260521-local-vendor"></script>
-  <script defer src="/js/yl.js?v=20260713-wechat-direct-v16"></script>
+  <script defer src="/js/yl.js?v=20260713-inline-auth-v17"></script>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -306,6 +306,25 @@
           <strong id="ylMemberExpiry">会员权益已生效</strong>
           <small id="ylMemberRemaining">续费后自动顺延 31 天</small>
         </div>
+        <form class="yl-health-auth" id="ylHealthAuthPanel" hidden>
+          <div class="yl-health-auth-head">
+            <strong>登录账号</strong>
+            <p>登录成功后留在本页继续付款</p>
+          </div>
+          <label>
+            <span class="sr-only">手机号或邮箱</span>
+            <input id="ylHealthAuthAccount" type="text" inputmode="email" autocomplete="username" placeholder="手机号或邮箱" aria-label="手机号或邮箱">
+          </label>
+          <label>
+            <span class="sr-only">密码</span>
+            <input id="ylHealthAuthPassword" type="password" autocomplete="current-password" placeholder="密码" aria-label="密码">
+          </label>
+          <div class="yl-health-auth-actions">
+            <button type="button" class="yl-btn yl-btn-primary" id="ylHealthLoginBtn">登录并继续支付</button>
+            <p class="yl-health-register-prompt">没有账号？<button type="button" id="ylHealthRegisterBtn">快速注册</button></p>
+          </div>
+          <p class="yl-health-auth-status" id="ylHealthAuthStatus" role="status" aria-live="polite"></p>
+        </form>
         <div class="yl-pay-heading">
           <strong>选择支付方式</strong>
           <span>请核对金额后付款</span>
@@ -321,25 +340,6 @@
           <span>保留订单号可联系支持</span>
         </div>
         <a class="yl-member-return" id="ylMemberReturnLink" href="#home" hidden>返回原页面</a>
-        <form class="yl-health-auth" id="ylHealthAuthPanel" hidden>
-          <div class="yl-health-auth-head">
-            <strong>登录后开通综合会员</strong>
-            <p>权益绑定到当前账号，登录完成后本页继续支付。</p>
-          </div>
-          <label>
-            <span>手机号或邮箱</span>
-            <input id="ylHealthAuthAccount" type="text" inputmode="email" autocomplete="username" placeholder="请输入手机号或邮箱">
-          </label>
-          <label>
-            <span>密码</span>
-            <input id="ylHealthAuthPassword" type="password" autocomplete="current-password" placeholder="至少 6 位">
-          </label>
-          <div class="yl-health-auth-actions">
-            <button type="button" class="yl-btn yl-btn-primary" id="ylHealthLoginBtn">登录并支付</button>
-            <button type="button" class="yl-btn yl-btn-ghost" id="ylHealthRegisterBtn">注册并支付</button>
-          </div>
-          <p class="yl-health-auth-status" id="ylHealthAuthStatus"></p>
-        </form>
         <div class="yl-payment-panel" id="ylPaymentPanel" hidden>
           <div class="yl-payment-status" id="ylPaymentStatus">请选择支付方式后创建订单。</div>
           <div class="yl-payment-code" id="ylPaymentCode" hidden>

@@ -2735,7 +2735,20 @@ html.yl-unified-checkout .yl-member-return {
   font-weight: 700;
 }
 
-html.yl-unified-checkout .yl-health-auth,
+html.yl-unified-checkout .yl-health-auth {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  width: min(640px, 100%);
+  gap: 14px;
+  margin: 0 auto;
+  border: 1px solid var(--checkout-line);
+  border-radius: 6px;
+  background: var(--checkout-paper);
+  box-shadow: 0 8px 20px rgba(69, 48, 26, 0.08);
+  padding: 24px 30px 22px;
+}
+
 html.yl-unified-checkout .yl-payment-panel {
   position: fixed;
   z-index: 80;
@@ -2760,9 +2773,20 @@ html.yl-unified-checkout .yl-payment-panel[hidden] {
 }
 
 html.yl-unified-checkout .yl-health-auth-head strong {
+  display: flex;
+  align-items: center;
+  gap: 18px;
   color: var(--checkout-ink);
   font-family: "Noto Serif SC", "Songti SC", "STSong", "SimSun", serif;
   font-size: 26px;
+}
+
+html.yl-unified-checkout .yl-health-auth-head strong::before,
+html.yl-unified-checkout .yl-health-auth-head strong::after {
+  content: "";
+  height: 1px;
+  flex: 1;
+  background: var(--checkout-line);
 }
 
 html.yl-unified-checkout .yl-health-auth-head p,
@@ -2772,14 +2796,23 @@ html.yl-unified-checkout .yl-payment-status {
 }
 
 html.yl-unified-checkout .yl-health-auth input {
-  border-radius: 6px;
+  min-height: 52px;
+  border-radius: 4px;
   border-color: var(--checkout-line);
   background: var(--checkout-paper);
+  font-size: 16px;
+  padding: 0 16px;
 }
 
 html.yl-unified-checkout .yl-health-auth input:focus {
   border-color: var(--checkout-red);
   outline-color: rgba(182, 37, 27, 0.14);
+}
+
+html.yl-unified-checkout .yl-health-auth-actions {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
 }
 
 html.yl-unified-checkout .yl-health-auth-actions .yl-btn,
@@ -2792,13 +2825,42 @@ html.yl-unified-checkout .yl-health-auth-actions .yl-btn-primary,
 html.yl-unified-checkout .yl-payment-actions .yl-btn-primary {
   border-color: var(--checkout-red);
   background: var(--checkout-red);
+  font-family: "Noto Serif SC", "Songti SC", "STSong", "SimSun", serif;
+  font-size: 18px;
 }
 
-html.yl-unified-checkout .yl-health-auth-actions .yl-btn-ghost,
 html.yl-unified-checkout .yl-payment-actions .yl-btn-ghost {
   border-color: var(--checkout-line);
   background: var(--checkout-paper);
   color: var(--checkout-ink);
+}
+
+html.yl-unified-checkout .yl-health-register-prompt {
+  margin: 0;
+  color: var(--checkout-muted);
+  font-size: 14px;
+  text-align: center;
+}
+
+html.yl-unified-checkout .yl-health-register-prompt button {
+  border: 0;
+  background: transparent;
+  color: var(--checkout-red);
+  font: inherit;
+  font-weight: 700;
+  padding: 4px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+html.yl-unified-checkout .yl-health-register-prompt button:focus-visible {
+  border-radius: 3px;
+  outline: 2px solid rgba(182, 37, 27, 0.25);
+  outline-offset: 2px;
+}
+
+html.yl-unified-checkout .yl-health-auth-status:empty {
+  display: none;
 }
 
 html.yl-unified-checkout .yl-payment-status {
@@ -3187,7 +3249,33 @@ html.yl-unified-checkout .yl-operator-contact {
     display: none;
   }
 
-  html.yl-unified-checkout .yl-health-auth,
+  html.yl-unified-checkout .yl-health-auth {
+    width: 100%;
+    gap: 12px;
+    margin: 0;
+    border-radius: 6px;
+    padding: 20px 14px 18px;
+  }
+
+  html.yl-unified-checkout .yl-health-auth-head strong {
+    gap: 12px;
+    font-size: 24px;
+  }
+
+  html.yl-unified-checkout .yl-health-auth-head p {
+    font-size: 12px;
+  }
+
+  html.yl-unified-checkout .yl-health-auth input {
+    min-height: 52px;
+    font-size: 16px;
+  }
+
+  html.yl-unified-checkout .yl-health-auth-actions .yl-btn-primary {
+    min-height: 56px;
+    font-size: 19px;
+  }
+
   html.yl-unified-checkout .yl-payment-panel {
     width: min(340px, calc(100vw - 30px));
     border-radius: 8px;
