@@ -561,6 +561,16 @@ function englishTitle(article) {
     .replace(/：/g, ": ")
     .trim();
   const slugMap = {
+    "ziwei-zhiyou-huake-zhuanye": "Only Hua Ke in the Chart: Skills, Credentials, and the Right Career Lane",
+    "ziwei-fumugong-lianzhen-pojun": "Lian Zhen and Po Jun in the Parents Palace: Distance, Pressure, and Early Self-Reliance",
+    "ziwei-guanlugong-qingyang": "Qing Yang in the Career Palace: Better for Teaching or Technical Work Than Official Rank",
+    "ziwei-hongluan-tianxi-guoji": "Why Marriage Should Pass Hua Ji First: Hong Luan and Tian Xi Timing",
+    "ziwei-qianyigong-hualu": "Hua Lu in the Travel Palace: Growth Through Outside Markets and New Cities",
+    "ziwei-guanlugong-konggong": "An Empty Career Palace: Why Corporate Roles Can Fit Better Than Official Rank",
+    "ziwei-fumugong-ziwei-qisha": "Zi Wei and Qi Sha in the Parents Palace: Rank, Discipline, and Family Pressure",
+    "ziwei-fuxiang-huiming": "Fu Xiang Meeting the Life Palace: Strong as a Number Two, Not Always the Main Boss",
+    "ziwei-daxian-jieegong": "A Ten-Year Cycle in the Health Palace: When the Body Becomes the Main Theme",
+    "ziwei-nanming-taiyin-huaji": "Tai Yin with Hua Ji in a Man's Chart: Mother-Wife Tension and Early Marriage Risk",
     "ziwei-minggong-huaquan-lingdao": "Hua Quan in the Life Palace: Strong Leadership Can Turn Into Isolation",
     "ziwei-fumugong-hualu-ziyuan": "Hua Lu in the Parents Palace: Family Support Only Works If You Can Carry It",
     "ziwei-caibogong-huaji-zhangqi": "Hua Ji in the Wealth Palace: Watch Credit Terms, Debt, and Overexpansion",
@@ -751,6 +761,16 @@ function uniqueEnglishExamples(article, examples) {
 }
 
 function englishLead(article, title) {
+  if (article.title.includes("只有化科")) return "When Hua Ke is the only major transformation carrying a chart, the person often advances through credentials, teaching, and reputation before money or rank catch up.";
+  if (article.title.includes("父母宫廉贞破军")) return "Lian Zhen and Po Jun in the Parents Palace usually describe a family line that is hard, changeable, or emotionally discontinuous rather than soft and steady.";
+  if (article.title.includes("官禄宫擎羊")) return "Qing Yang in the Career Palace often creates a role with friction, sharp standards, and direct pressure, which is why it can suit technical or teaching work better than smooth official ladders.";
+  if (article.title.includes("红鸾天喜为什么要过忌")) return "Hong Luan and Tian Xi can light up relationship timing, but a marriage window often needs to pass a blockage first instead of rushing at the first emotional peak.";
+  if (article.title.includes("迁移宫化禄")) return "Hua Lu in the Travel Palace often means the chart opens through outside markets, bigger platforms, and movement rather than staying in one familiar setting.";
+  if (article.title.includes("官禄宫空宫")) return "An empty Career Palace does not mean no career. It usually means the role has to be read through the surrounding structure rather than through one obvious official label.";
+  if (article.title.includes("紫微七杀在父母宫")) return "Zi Wei and Qi Sha in the Parents Palace usually describe strong rank, discipline, or command in the older generation before they describe the native directly.";
+  if (article.title.includes("府相会命")) return "Fu Xiang Meeting the Life Palace often works best as a strong number-two pattern: steady, reliable, system-minded, and effective inside an existing structure.";
+  if (article.title.includes("大限走疾厄宫")) return "When a ten-year cycle lands in the Health Palace, the body's carrying capacity becomes part of every major decision, even if the outside world still looks active.";
+  if (article.title.includes("男命太阴化忌")) return "Tai Yin with Hua Ji in a man's chart often turns marriage into a home-and-family systems question, not just a romance question.";
   if (article.title.includes("财权")) return "This topic is about resource control rather than direct ownership: the chart can show who handles the money without showing that the money belongs to them.";
   if (article.title.includes("福德宫") && article.title.includes("紫微")) return "Zi Wei in the inner-life area often shows high standards, strong self-direction, and a private pressure to keep holding everything together.";
   if (article.title.includes("右弼") && article.title.includes("福德")) return "A support star in the inner-life area can still feel lonely if the person has to process stress alone behind a calm surface.";
@@ -765,6 +785,16 @@ function englishLead(article, title) {
 }
 
 function englishMeaning(article) {
+  if (article.title.includes("只有化科")) return "This is a skills-first pattern. It favors licensed work, specialist service, teaching, and professional trust more than fast speculation or pure authority.";
+  if (article.title.includes("父母宫廉贞破军")) return "Read this as structure in the parents line: distance, separation, strict rules, or early pressure to grow up. It can describe absence, instability, or a home that matures the person too early.";
+  if (article.title.includes("官禄宫擎羊")) return "The chart is not weak in work. It is simply bad at soft politics. This pattern prefers skill, rule enforcement, training, or hard deliverables over consensus-heavy promotion paths.";
+  if (article.title.includes("红鸾天喜为什么要过忌")) return "These stars show activation, not automatic completion. Attraction can appear early, while marriage waits until the blocking factor, pressure cycle, or emotional tangle has actually cleared.";
+  if (article.title.includes("迁移宫化禄")) return "This is an external-resource pattern. Money, clients, support, or reputation arrive from the wider world: another city, another platform, another market, or another network.";
+  if (article.title.includes("官禄宫空宫")) return "This kind of chart may not lean toward formal rank, but it can still hold real responsibility in business, management, or project-based work once the supporting palaces are strong.";
+  if (article.title.includes("紫微七杀在父母宫")) return "Read this first as the tone of the family line: a military, police, managerial, or highly demanding parent figure, plus the pressure that comes with that structure.";
+  if (article.title.includes("府相会命")) return "This is not a weak chart. It is a coordination chart. It tends to excel at support, operations, executive partnership, and structure more than at chaotic solo conquest.";
+  if (article.title.includes("大限走疾厄宫")) return "Do not reduce this to illness only. It can show stress load, recovery limits, old conditions, burnout, or a decade where physical maintenance decides what the person can keep building.";
+  if (article.title.includes("男命太阴化忌")) return "This pattern commonly points to mother-wife tension, blurred boundaries inside the home, early marriage pressure, or a spouse who enters a family field that is already emotionally loaded.";
   if (article.title.includes("入正位")) return "A star does not keep the same practical meaning everywhere. The palace tells you whether the topic is role, money, partnership, pressure, family, or the outside world.";
   if (article.title.includes("财权")) return "This pattern often points to approval power, stewardship, or institutional responsibility. It is about scale and access, not necessarily personal net worth.";
   if (article.title.includes("福德宫") || article.title.includes("右弼")) return "Inner-life patterns should be read as mindset, emotional carrying capacity, and how much pressure a person quietly processes alone.";
@@ -778,6 +808,16 @@ function englishMeaning(article) {
 }
 
 function englishMethod(article) {
+  if (article.title.includes("只有化科")) return "Check where Hua Ke lands, then compare the Life, Wealth, and Career palaces. The question is not whether the person gets rich fast, but how skill, proof, and reputation turn into income.";
+  if (article.title.includes("父母宫廉贞破军")) return "Start with the Parents Palace, then compare the Sun and Moon lines, the Life Palace, and the Inner-Life Palace. Separate physical separation from emotional distance before you judge the family story.";
+  if (article.title.includes("官禄宫擎羊")) return "Read the Career Palace with the Life, Wealth, and Travel palaces. Ask whether the chart should fight for title, or convert pressure into expertise, instruction, and a clearer lane.";
+  if (article.title.includes("红鸾天喜为什么要过忌")) return "Check the relationship trigger first, then inspect Hua Ji, the Inner-Life Palace, and the active decade. Separate a strong encounter from a stable marriage window.";
+  if (article.title.includes("迁移宫化禄")) return "Read the Travel Palace with Wealth and Career. Then ask whether the chart is built for fixed salary, outside clients, relocation, or platform expansion.";
+  if (article.title.includes("官禄宫空宫")) return "Borrow the Career reading from the Life, Wealth, and Travel palaces. Look for who the person is, how money enters, and where the platform sits before judging position.";
+  if (article.title.includes("紫微七杀在父母宫")) return "Keep the palace boundary clear. Start with the parents line, then see how much of that authority pattern is internalized by the Life Palace and sustained by the Inner-Life Palace.";
+  if (article.title.includes("府相会命")) return "Check whether power, reputation, or resources also meet the pattern. If they do not, read for trusted salaried roles, private-enterprise management, or second-in-command strength.";
+  if (article.title.includes("大限走疾厄宫")) return "Read the Health Palace with the opposite palace, the Life Palace, and work pressure. The right question is not whether this is a bad decade, but what cost the body is already paying.";
+  if (article.title.includes("男命太阴化忌")) return "Read Tai Yin with the Parents Palace, partnership timing, and the inner home structure. Check whether the marriage is being asked to carry problems that began before the couple formed.";
   if (article.title.includes("财权")) return "Read the career palace, the wealth palace, and the core identity together. Then ask whether the chart points to owning wealth, managing it, or carrying responsibility around it.";
   if (article.title.includes("福德宫") || article.title.includes("右弼")) return "Read the inner-life area with the Life Palace, relationship palaces, and timing. This shows whether the pressure stays private or starts changing how the person works and relates.";
   if (article.title.includes("雄宿朝元")) return "Check the formation first, then test whether wealth, career, and timing actually support the pattern. A famous label is not enough on its own.";

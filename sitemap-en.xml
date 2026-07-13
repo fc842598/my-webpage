@@ -2,13 +2,73 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://yuetianai.com/articles/en/</loc>
-    <lastmod>2026-07-12</lastmod>
+    <lastmod>2026-07-13</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://yuetianai.com/articles/en/feed.xml</loc>
-    <lastmod>2026-07-12</lastmod>
+    <lastmod>2026-07-13</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://yuetianai.com/articles/en/ziwei-nanming-taiyin-huaji.html</loc>
+    <lastmod>2026-07-13T17:50:00+08:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://yuetianai.com/articles/en/ziwei-daxian-jieegong.html</loc>
+    <lastmod>2026-07-13T17:47:00+08:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://yuetianai.com/articles/en/ziwei-fuxiang-huiming.html</loc>
+    <lastmod>2026-07-13T17:44:00+08:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://yuetianai.com/articles/en/ziwei-fumugong-ziwei-qisha.html</loc>
+    <lastmod>2026-07-13T17:41:00+08:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://yuetianai.com/articles/en/ziwei-guanlugong-konggong.html</loc>
+    <lastmod>2026-07-13T17:38:00+08:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://yuetianai.com/articles/en/ziwei-qianyigong-hualu.html</loc>
+    <lastmod>2026-07-13T17:35:00+08:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://yuetianai.com/articles/en/ziwei-hongluan-tianxi-guoji.html</loc>
+    <lastmod>2026-07-13T17:32:00+08:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://yuetianai.com/articles/en/ziwei-guanlugong-qingyang.html</loc>
+    <lastmod>2026-07-13T17:29:00+08:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://yuetianai.com/articles/en/ziwei-fumugong-lianzhen-pojun.html</loc>
+    <lastmod>2026-07-13T17:26:00+08:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://yuetianai.com/articles/en/ziwei-zhiyou-huake-zhuanye.html</loc>
+    <lastmod>2026-07-13T17:23:00+08:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
