@@ -17,6 +17,8 @@
   var HEALTH_PAYPAL_AMOUNT = "2.99";
   var PAGE_IDS = ["home", "assessment", "report", "chat", "member"];
   var DEFAULT_API_BASE = "https://api.yuetianai.com";
+  var HEALTH_PAGE_TITLE = "AI中医体质分析 - 体质自评报告与健康追问";
+  var MEMBER_PAGE_TITLE = "阅天综合会员支付";
 
   var categories = [
     {
@@ -215,13 +217,15 @@
   }
 
   function pageFromHash() {
-    return normalizePage((window.location.hash || "#home").replace(/^#/, ""));
+    var hashPage = (window.location.hash || "#home").replace(/^#/, "").split("?")[0];
+    return normalizePage(hashPage);
   }
 
   function setActivePage(page, options) {
     var active = normalizePage(page);
     var opts = options || {};
     document.documentElement.classList.toggle("yl-unified-checkout", active === "member");
+    document.title = active === "member" ? MEMBER_PAGE_TITLE : HEALTH_PAGE_TITLE;
     $all(".yl-page").forEach(function (element) {
       element.hidden = element.dataset.page !== active;
     });
@@ -564,7 +568,6 @@
       paymentState.status = "";
       paymentState.message = "微信授权完成，正在打开支付...";
       setActivePage("member", { instant: true });
-      await hydratePaymentProduct();
       await startHealthPayment();
     } catch (error) {
       paymentState.loading = false;
@@ -1746,7 +1749,7 @@
   if (paymentHandoffCaptured && isWechatBrowser()) {
     paymentState.message = "账号已识别，正在打开微信支付...";
     setActivePage("member", { instant: true });
-    hydratePaymentProduct().then(startHealthPayment);
+    startHealthPayment();
   } else {
     handleWechatOauthReturn();
   }
