@@ -466,7 +466,7 @@
     var fallback = {
       provider: provider,
       label: getProviderLabel(provider),
-      enabled: true,
+      enabled: provider !== "alipay",
       amountYuan: provider === "paypal" ? HEALTH_PAYPAL_AMOUNT : HEALTH_PRODUCT_AMOUNT,
       currency: provider === "paypal" ? "USD" : "CNY"
     };
