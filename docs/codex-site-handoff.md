@@ -28,10 +28,11 @@
 ## 2. 建议阅读顺序
 
 1. 本仓库 [AGENTS.md](AGENTS.md)
-2. 本仓库 [docs/coze-yuetianai-ziwei-openapi.yaml](docs/coze-yuetianai-ziwei-openapi.yaml)
-3. 本文档
-4. 后端 `docs/handoff/` 最近几份文档
-5. 相关功能代码本身
+2. 最新健康专题与统一支付交接：[handoff/2026-07-14-health-unified-membership-payment.md](handoff/2026-07-14-health-unified-membership-payment.md)
+3. 本仓库 [docs/coze-yuetianai-ziwei-openapi.yaml](docs/coze-yuetianai-ziwei-openapi.yaml)
+4. 本文档
+5. 后端 `docs/handoff/` 最近几份文档
+6. 相关功能代码本身
 
 ## 3. 当前已确认的全局约定
 
