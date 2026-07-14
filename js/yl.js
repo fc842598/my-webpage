@@ -466,7 +466,7 @@
     var fallback = {
       provider: provider,
       label: getProviderLabel(provider),
-      enabled: provider !== "alipay",
+      enabled: true,
       amountYuan: provider === "paypal" ? HEALTH_PAYPAL_AMOUNT : HEALTH_PRODUCT_AMOUNT,
       currency: provider === "paypal" ? "USD" : "CNY"
     };
@@ -502,18 +502,6 @@
     var message = String(error?.message || "");
     return error?.code === "ALIPAY_PERMISSION_REQUIRED"
       || /接口调用权限不足|insufficient-isv-permissions|open\.alipay\.com\/api\/(?:errCheck|lowCheck)/i.test(message);
-  }
-
-  function disablePaymentProvider(provider) {
-    paymentState.providers = (paymentState.providers || []).map(function (item) {
-      return item.provider === provider ? Object.assign({}, item, { enabled: false }) : item;
-    });
-  }
-
-  function getFallbackPaymentProvider(excludedProvider) {
-    return ["wechat", "paypal"].find(function (provider) {
-      return provider !== excludedProvider && getProviderMeta(provider).enabled;
-    }) || "";
   }
 
   function shouldUseWechatJsapi() {
@@ -1408,13 +1396,6 @@
         var selected = data.providers.find(function (item) {
           return item.provider === paymentState.provider;
         });
-        if (!selected?.enabled) {
-          var fallbackProvider = getFallbackPaymentProvider(paymentState.provider);
-          if (fallbackProvider) {
-            paymentState.provider = fallbackProvider;
-            selected = getProviderMeta(fallbackProvider);
-          }
-        }
         if (selected && selected.currency) {
           paymentState.product = Object.assign({}, paymentState.product || {}, {
             amountYuan: selected.amountYuan || paymentState.product?.amountYuan,
@@ -1625,18 +1606,15 @@
       }
     } catch (error) {
       if (paymentState.provider === "alipay" && isAlipayPermissionIssue(error)) {
-        disablePaymentProvider("alipay");
-        var fallbackProvider = getFallbackPaymentProvider("alipay");
-        paymentState.provider = fallbackProvider || "alipay";
-        paymentState.status = fallbackProvider ? "" : "error";
-        paymentState.message = fallbackProvider
-          ? "支付宝扫码支付暂不可用，已切换到" + getProviderLabel(fallbackProvider) + "，请重新点击开通。"
-          : "支付宝扫码支付暂不可用，请稍后重试。";
-        setPayHint("支付宝需完成当面付签约并授权当前应用后才能恢复二维码支付。");
+        paymentState.status = "error";
+        paymentState.message = "支付宝二维码生成失败，请稍后重试。";
+        setPayHint("支付方式仍为支付宝，不会自动切换其他渠道。");
       } else {
         paymentState.status = "error";
         paymentState.message = error.message || "支付订单创建失败";
-        setPayHint("如果支付方式不可用，可以先换微信支付或稍后重试。");
+        setPayHint(paymentState.provider === "alipay"
+          ? "支付方式仍为支付宝，不会自动切换其他渠道。"
+          : "如果支付方式不可用，可以先换微信支付或稍后重试。");
       }
       releasePaymentBoot();
     } finally {
