@@ -2946,7 +2946,7 @@ async function hydrateWentianArchivesFromRemote(options = {}) {
         setWentianSelectedArchiveId(remoteSelectedId);
       }
       if (merged.length && remoteArchives.length < merged.length) pushWentianArchivesToRemote(merged);
-      if (options.rerender && before !== after && (state.route === "screen-5" || state.route === "screen-25")) {
+      if (options.rerender && before !== after && ["screen-1", "screen-5", "screen-25", "screen-27"].includes(state.route)) {
         if (state.route === "screen-25") navigateWentianProfilePreservingListScroll();
         else navigatePreservingScroll(state.route, false);
       }
@@ -6743,9 +6743,13 @@ async function saveWentianPdfReportByBlocks(html2pdf, report, filename, pageWidt
 }
 
 async function downloadWentianMingbookPdf() {
-  const saved = getWentianDisplayChartState() || getWentianSavedChart() || getWentianFallbackChartState();
+  const saved = getWentianDisplayChartState();
   const btn = view.querySelector('[data-action="wentian-open-mingbook-onepage"]');
   const originalText = btn?.textContent || translateWentianText("下载PDF");
+  if (!saved) {
+    setWentianMobilePdfStatus("请先完成排盘。", "error");
+    return;
+  }
   if (!isWentianMingbookPdfReady()) {
     setWentianMobilePdfStatus("解读完成后才能下载PDF。", "error");
     return;
@@ -20097,6 +20101,8 @@ function sourceDashboardHomeScreen() {
       ? [dashboardArchiveDisplay.gender, dashboardArchiveDisplay.datetime].filter(Boolean).join(" · ")
       : "先建立命盘档案";
     const dashboardLoginLabel = dashboardAccount.loggedIn ? "已登录" : "未登录";
+    const dashboardArchiveAction = dashboardArchive ? "换档案" : "去排盘";
+    const dashboardArchiveRoute = dashboardArchive ? "screen-25" : "screen-26";
     const dashboardFeatures = [
       ["紫微斗数", "排盘 · AI细读", "01-feature-ziwei-v2.svg", "screen-26"],
       ["合盘分析", "双方命盘合参", "01-feature-hepan-v2.svg", "screen-11"],
@@ -20132,8 +20138,8 @@ function sourceDashboardHomeScreen() {
       ${dashboardArchive ? figArchiveName("source-1-archive-title", dashboardArchiveDisplay, 82, 308, 164, 18, "#25221f", 900, "left", "white-space:nowrap;overflow:hidden;text-overflow:ellipsis;") : figText("source-1-archive-title", escapeHtml(dashboardArchiveName), 82, 308, 148, 18, "#25221f", 900, "left", "white-space:nowrap;overflow:hidden;text-overflow:ellipsis;")}
       ${figText("source-1-archive-meta", escapeHtml(dashboardArchiveMeta || "当前档案"), 82, 335, 178, 12, "#8d877e", 700, "left", "white-space:nowrap;overflow:hidden;text-overflow:ellipsis;")}
       ${figBox("source-1-archive-action", 282, 313, 68, 30, "", "border-radius:15px;background:#fff1dc;border:1px solid #ead2a2;")}
-      ${figText("source-1-archive-action-text", "换档案", 282, 322, 68, 11, "#9a681c", 900, "center")}
-      ${figButton("source-1-archive-hit", 18, 294, 354, 70, 'data-route="screen-25"', "", "z-index:35;")}
+      ${figText("source-1-archive-action-text", dashboardArchiveAction, 282, 322, 68, 11, "#9a681c", 900, "center")}
+      ${figButton("source-1-archive-hit", 18, 294, 354, 70, `data-route="${dashboardArchiveRoute}"`, "", "z-index:35;")}
 
       ${dashboardFeatures.map(([title, sub, icon, route], index) => {
         const x = index % 2 === 0 ? 18 : 201;
@@ -20300,6 +20306,16 @@ function sourceChartFormScreen() {
 function getWentianDisplayChartState() {
   const saved = getWentianSavedChart();
   if (saved?.chart && saved?.chartData) return saved;
+  const archive = getCurrentWentianArchive();
+  if (archive?.chart && archive?.chartData) {
+    return {
+      archiveId: archive.id,
+      chart: archive.chart,
+      chartData: archive.chartData,
+      form: { ...(archive.form || {}), archiveId: archive.id },
+      createdAt: archive.createdAt,
+    };
+  }
   return null;
 }
 
@@ -20957,51 +20973,6 @@ function highlightWentianClassicChart(branch, palaceName = "") {
   if (title) title.textContent = translateWentianText(`✦ ${palaceName || branch} · AI解析`);
 }
 
-function getWentianFallbackChartState() {
-  const palaceRows = [
-    ["癸巳", "天同", "子女", "禄存", "96-105", "大子"],
-    ["甲午", "武曲 天府", "夫妻", "擎羊 左辅", "106-115", "大夫"],
-    ["乙未", "太阳 太阴", "兄弟", "地劫", "116-125", "大兄"],
-    ["丙申", "贪狼", "命宫", "天马 右弼", "6-15", "大命"],
-    ["壬辰", "破军", "财帛", "陀罗", "86-95", "大财"],
-    ["丁酉", "天机 巨门", "父母", "火星 天钺", "16-25", "大父"],
-    ["辛卯", "", "疾厄", "地空", "76-85", "大疾"],
-    ["戊戌", "紫微 天相", "福德", "得 得", "26-35", "大福"],
-    ["庚寅", "廉贞", "迁移", "文昌", "66-75", "大迁"],
-    ["辛丑", "", "仆役", "", "56-65", "大仆"],
-    ["庚子", "七杀", "官禄", "文曲", "46-55", "大官"],
-    ["己亥", "天梁", "田宅", "铃星 天魁", "36-45", "大田"],
-  ];
-  const palaces = palaceRows.map(([stemBranch, majors, name, minors, range, stage]) => ({
-    heavenlyStem: stemBranch.slice(0, -1),
-    earthlyBranch: stemBranch.slice(-1),
-    name,
-    majorStars: majors ? majors.split(/\s+/).map((star) => ({ name: star })) : [],
-    minorStars: minors ? minors.split(/\s+/).map((star) => ({ name: star })) : [],
-    decadal: { range },
-    changsheng12: stage,
-    boshi12: "",
-    isBodyPalace: name === "官禄",
-  }));
-  return {
-    chart: {
-      palaces,
-      solarDate: "2026-05-12",
-      lunarDate: "二〇二六年三月廿六",
-      fiveElementsClass: "火六局",
-      zodiac: "马",
-      earthlyBranchOfSoulPalace: "申",
-      earthlyBranchOfBodyPalace: "子",
-    },
-    chartData: {
-      birthDate: "2026-05-12 15:21",
-      timeIndex: 8,
-      sizhu: { yearStem: "丙", yearBranch: "午", monthStem: "壬", monthBranch: "辰", dayStem: "丙", dayBranch: "戌", hourStem: "丙", hourBranch: "申" },
-    },
-    form: { name: "命主", gender: "male", datetime: "2026-05-12T15:21" },
-  };
-}
-
 function getWentianMobileParamContext(saved) {
   const chart = saved?.chart || getWentianDisplayChartState()?.chart || null;
   const form = saved?.form || {};
@@ -21505,8 +21476,34 @@ function sourceZiweiMingpanScreenFromChart(saved) {
   `;
 }
 
-function sourceZiweiMingpanScreen() {
-  return sourceZiweiMingpanScreenFromChart(getWentianDisplayChartState() || getWentianFallbackChartState());
+function sourceZiweiEmptyChartScreen() {
+  const isEn = isWentianEnglishUi();
+  const title = isEn ? "No chart yet" : "还没有命盘";
+  const copy = isEn
+    ? "Enter your birth date and time first. A chart appears here only after you generate it."
+    : "先填写出生日期与时间。只有完成排盘后，这里才会显示你的命盘。";
+  const primary = isEn ? "Create chart" : "开始排盘";
+  const secondary = isEn ? "View profiles" : "查看档案";
+  return `
+    ${figBox("source-27-empty-bg", 0, 0, 390, 844, "", "background:linear-gradient(180deg,#fffdf8 0%,#fbf7ef 58%,#fff6ea 100%);")}
+    ${figText("source-27-empty-page-title", isEn ? "Zi Wei Chart" : "紫微命盘", 0, 58, 390, 25, "#3b3934", 800, "center")}
+    ${wentianBackPill("source-27-empty", 18, 44)}
+    ${figBox("source-27-empty-card", 24, 132, 342, 360, "", "border:1px solid #eadfce;border-radius:26px;background:#fffdf8;box-shadow:0 18px 42px rgba(87,56,25,.10);")}
+    ${figBox("source-27-empty-seal", 150, 174, 90, 90, "", "border-radius:45px;background:linear-gradient(145deg,#fff3d9,#f2d28c);box-shadow:inset 0 0 0 1px rgba(164,109,27,.20);")}
+    ${figText("source-27-empty-seal-text", "命", 150, 199, 90, 38, "#9a681c", 900, "center")}
+    ${figText("source-27-empty-title", title, 48, 292, 294, 28, "#29231f", 900, "center")}
+    ${figText("source-27-empty-copy", copy, 58, 338, 274, 54, "#81786e", 600, "center", "line-height:1.7;white-space:normal;")}
+    ${figBox("source-27-empty-primary", 64, 420, 262, 48, "", "border-radius:24px;background:linear-gradient(135deg,#9f3d2e,#bd7d23);box-shadow:0 10px 22px rgba(131,67,29,.18);")}
+    ${figText("source-27-empty-primary-text", primary, 64, 435, 262, 17, "#fffaf3", 900, "center")}
+    ${figButton("source-27-empty-primary-hit", 64, 414, 262, 60, `data-route="screen-26" aria-label="${primary}"`, "", "z-index:36;")}
+    ${figText("source-27-empty-secondary-text", secondary, 126, 524, 138, 16, "#9a681c", 800, "center")}
+    ${figButton("source-27-empty-secondary-hit", 112, 506, 166, 52, `data-route="screen-25" aria-label="${secondary}"`, "", "z-index:36;")}
+    ${sourceAppBottomNav("档案", 755)}
+  `;
+}
+
+function sourceZiweiMingpanScreen(saved = getWentianDisplayChartState()) {
+  return saved ? sourceZiweiMingpanScreenFromChart(saved) : sourceZiweiEmptyChartScreen();
 }
 
 function renderConvertedScreen(no) {
@@ -21601,10 +21598,11 @@ function renderConvertedScreen(no) {
     `, 844, "converted source-screen no-status-shift", true);
   }
   if (screen.no === 27) {
+    const saved = getWentianDisplayChartState();
     return figPhone(`screen-${screen.no}`, `${String(screen.no).padStart(2, "0")} ${screen.title}`, `
-      ${sourceZiweiMingpanScreen()}
+      ${sourceZiweiMingpanScreen(saved)}
       ${convertedFlowHotspots(screen)}
-    `, getWentianZiweiScreenHeight(), "converted source-screen no-status-shift", false);
+    `, saved ? getWentianZiweiScreenHeight() : 844, "converted source-screen no-status-shift", false);
   }
   const polishedScreen = renderWentianPolishedScreen(screen);
   if (polishedScreen) {
