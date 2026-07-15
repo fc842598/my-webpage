@@ -1962,7 +1962,6 @@ const WENTIAN_PAID_DAILY_LIMIT = 80;
 const WENTIAN_PAID_PRODUCT_NAME = "阅天综合会员";
 const WENTIAN_PAID_PRODUCT_DESC = "1、解锁网站全部权限；2、AI 对话 80 次/天。";
 const WENTIAN_PAYMENT_POLL_MS = 3500;
-const WENTIAN_AIPAY_RESOURCE_PATH = "/api/payments/aipay/resource";
 const WENTIAN_GOOGLE_ENABLED = true;
 const WENTIAN_CHART_AI_STORAGE_KEY = "wentian-app-chart-ai-v2";
 const WENTIAN_HTML2PDF_URL = "../vendor/html2pdf/html2pdf.bundle.min.js?v=20260521-local-vendor";
@@ -2202,10 +2201,6 @@ function getWentianAppUrl(extraSearch = "") {
   const url = new URL("/pages/wentian-app.html", `${getWentianFrontendBase()}/`);
   if (extraSearch) url.search = extraSearch.replace(/^\?/, "");
   return url.toString();
-}
-
-function getWentianAipayResourceUrl() {
-  return `${getWentianApiBase()}${WENTIAN_AIPAY_RESOURCE_PATH}`;
 }
 
 function getWentianClientId() {
@@ -12115,23 +12110,6 @@ function startWentianPaymentPoll() {
   wentianPaymentPollTimer = setInterval(checkWentianPaymentStatus, WENTIAN_PAYMENT_POLL_MS);
 }
 
-function startWentianAipayResourcePayment() {
-  stopWentianPaymentPoll();
-  const product = wentianMemberState.product || {};
-  wentianPaymentState.status = "pending";
-  wentianPaymentState.orderNo = "AI收402资源";
-  wentianPaymentState.payUrl = getWentianAipayResourceUrl();
-  wentianPaymentState.payMethod = "aipay-resource";
-  wentianPaymentState.message = "AI收是 HTTP 402 付费资源入口，请使用支持 AI收/402 的智能体访问此服务地址。网页内不会自动扫码付款。";
-  wentianPaymentState.error = "";
-  wentianPaymentState.mockMode = false;
-  wentianPaymentState.provider = "alipay";
-  wentianPaymentState.productName = WENTIAN_PAID_PRODUCT_NAME;
-  wentianPaymentState.amountYuan = product.amountYuan || "19.90";
-  wentianPaymentState.currency = product.currency || "CNY";
-  navigate("screen-30");
-}
-
 function openWentianUnifiedMemberPage() {
   const currentQuery = new URLSearchParams(location.search || "");
   const returnQuery = new URLSearchParams();
@@ -12193,18 +12171,6 @@ async function captureWentianPayPalReturn(params = getWentianPayPalReturnParams(
 }
 
 function openWentianPaymentUrl() {
-  if (wentianPaymentState.payMethod === "aipay-resource") {
-    const url = wentianPaymentState.payUrl || getWentianAipayResourceUrl();
-    navigator.clipboard?.writeText(url)
-      .then(() => {
-        wentianPaymentState.message = "AI收服务地址已复制，可粘贴给支持 HTTP 402 的智能体调用。";
-        refreshWentianPaymentScreen();
-      })
-      .catch(() => {
-        window.open(url, "_blank", "noopener,noreferrer");
-      });
-    return;
-  }
   if (wentianPaymentState.payUrl) window.location.href = wentianPaymentState.payUrl;
 }
 
@@ -13086,7 +13052,6 @@ function sourceMembershipScreenPreview() {
 
 function sourcePaymentScreen() {
   const isEn = isWentianEnglishUi();
-  const isAipayResource = wentianPaymentState.payMethod === "aipay-resource";
   const rawMessage = wentianPaymentState.error || wentianPaymentState.message || (isEn ? "Membership: 80/day, resets daily." : "综合会员 80次/天，按日刷新");
   const alipayPermissionIssue = /接口调用权限不足|insufficient-isv-permissions|open\.alipay\.com\/api\/lowCheck|lowCheck/i.test(`${rawMessage} ${wentianPaymentState.payUrl || ""}`);
   const stateText = wentianPaymentState.status === "paid"
@@ -13096,10 +13061,10 @@ function sourcePaymentScreen() {
       : wentianPaymentState.status === "loading"
         ? (isEn ? "Creating" : "创建订单")
         : (isEn ? "Confirm" : "确认订单");
-  const stateLabel = isAipayResource ? (isEn ? "AI Pay" : "AI收入口") : stateText;
+  const stateLabel = stateText;
   const payUrl = wentianPaymentState.payUrl || "";
-  const showQr = payUrl && !alipayPermissionIssue && !isAipayResource && !["h5", "redirect"].includes(wentianPaymentState.payMethod) && !wentianPaymentState.mockMode;
-  const showOpen = payUrl && !alipayPermissionIssue && (isAipayResource || ["h5", "redirect"].includes(wentianPaymentState.payMethod)) && !wentianPaymentState.mockMode;
+  const showQr = payUrl && !alipayPermissionIssue && !["h5", "redirect"].includes(wentianPaymentState.payMethod) && !wentianPaymentState.mockMode;
+  const showOpen = payUrl && !alipayPermissionIssue && ["h5", "redirect"].includes(wentianPaymentState.payMethod) && !wentianPaymentState.mockMode;
   const message = isEn
     ? (wentianPaymentState.status === "paid"
       ? "Paid plan is active. Your quota has been refreshed."
@@ -13115,22 +13080,18 @@ function sourcePaymentScreen() {
       : rawMessage.replace(/https?:\/\/\S+/gi, "支付链接"));
   const orderCardHeight = showQr ? 376 : (alipayPermissionIssue ? 218 : 190);
   const amountText = formatWentianPaymentAmount(wentianPaymentState.amountYuan || "19.90", wentianPaymentState.currency || "CNY");
-  const payButtonAction = isAipayResource ? "back" : (wentianPaymentState.status === "paid" ? "wentian-pay-done" : (wentianPaymentState.status === "idle" || wentianPaymentState.status === "error" ? "wentian-member-pay" : "wentian-payment-check"));
-  const payButtonText = isAipayResource
-    ? (isEn ? "Back" : "返回")
-    : (wentianPaymentState.status === "paid"
-      ? (isEn ? "Active. Return to Me" : "已开通，返回我的")
-      : (wentianPaymentState.status === "pending"
-        ? (isEn ? "Refresh Payment Status" : "刷新支付状态")
-        : (isEn ? `Pay ${amountText}` : `确认支付 ${amountText}`)));
+  const payButtonAction = wentianPaymentState.status === "paid" ? "wentian-pay-done" : (wentianPaymentState.status === "idle" || wentianPaymentState.status === "error" ? "wentian-member-pay" : "wentian-payment-check");
+  const payButtonText = wentianPaymentState.status === "paid"
+    ? (isEn ? "Active. Return to Me" : "已开通，返回我的")
+    : (wentianPaymentState.status === "pending"
+      ? (isEn ? "Refresh Payment Status" : "刷新支付状态")
+      : (isEn ? `Pay ${amountText}` : `确认支付 ${amountText}`));
   const payButtonX = showQr ? 204 : 42;
   const payButtonWidth = showQr ? 144 : 306;
   const payButtonY = showQr ? 690 : 666;
   const payTextY = payButtonY + 15;
   const safeTextY = showQr ? 744 : 728;
-  const safeText = isAipayResource
-    ? (isEn ? "AI Pay is a 402 resource endpoint, not an in-page QR checkout." : "AI收为智能体 402 付费资源，不是网页扫码支付")
-    : (isEn ? "Payment details are encrypted by the provider." : `${getWentianPaymentProviderLabel()}完成后付费额度自动刷新`);
+  const safeText = isEn ? "Payment details are encrypted by the provider." : `${getWentianPaymentProviderLabel()}完成后付费额度自动刷新`;
   const showMockComplete = wentianPaymentState.mockMode && wentianPaymentState.status !== "paid";
   const showPrimaryPay = !showMockComplete;
   return `
@@ -13162,7 +13123,7 @@ function sourcePaymentScreen() {
 
     ${showOpen ? figBox("wt30-open", 42, 650, 306, 50, "", "border-radius:25px;background:#16783d;box-shadow:0 12px 24px rgba(22,120,61,.18);") : ""}
     ${showOpen ? figButton("wt30-open-hit", 42, 650, 306, 50, 'data-action="wentian-pay-open"') : ""}
-    ${showOpen ? figText("wt30-open-text", isAipayResource ? "复制AI收服务地址" : `打开${getWentianPaymentProviderLabel()}`, 42, 665, 306, 14, "#fff", 900, "center") : ""}
+    ${showOpen ? figText("wt30-open-text", `打开${getWentianPaymentProviderLabel()}`, 42, 665, 306, 14, "#fff", 900, "center") : ""}
     ${showMockComplete ? figBox("wt30-mock", 42, 650, 306, 50, "", "border-radius:25px;background:#16783d;box-shadow:0 12px 24px rgba(22,120,61,.18);") : ""}
     ${showMockComplete ? figButton("wt30-mock-hit", 42, 650, 306, 50, 'data-action="wentian-pay-mock-success"') : ""}
     ${showMockComplete ? figText("wt30-mock-text", isEn ? "Complete Mock Payment" : "模拟支付成功", 42, 665, 306, 14, "#fff", 900, "center") : ""}
