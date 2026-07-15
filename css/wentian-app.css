@@ -9504,10 +9504,10 @@ html[lang="en"] .liuyao-coin-summary em {
 .liuyao-hex-image {
   display: block;
   width: 100%;
-  aspect-ratio: 3 / 2;
+  aspect-ratio: 1.46 / 1;
   border-radius: 14px;
   background: #f8f0e4;
-  object-fit: cover;
+  object-fit: contain;
 }
 
 .liuyao-result-pair article > em {

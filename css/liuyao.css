@@ -812,11 +812,12 @@
 }
 
 .liuyao-page .mbp-liuyao-hex-image {
+  display: block;
   width: 100%;
-  aspect-ratio: 3 / 2;
+  aspect-ratio: 1.46 / 1;
   border-radius: 13px;
   background: rgba(241, 212, 125, .08);
-  object-fit: cover;
+  object-fit: contain;
 }
 
 .liuyao-page .mbp-liuyao-original {
