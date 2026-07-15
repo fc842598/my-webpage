@@ -591,6 +591,16 @@ function englishTitle(article) {
     "ziwei-mingzhu-chuhai-luogong": "Bright Pearl Beyond the Life Palace: When the Pattern Lights Up Family Lines",
     "ziwei-liusha-danxing-dushou": "A Lone Malefic Star: Why the Main Palace and Opposite Palace Both React",
     "ziwei-qianyi-ziwei-pojun-fubi": "Zi Wei, Po Jun, and Supporting Stars in the Travel Palace: Stronger Away From Home",
+    "ziwei-fuqigong-huaquan": "Hua Quan in the Spouse Palace: A Strong-Willed Partner and Shared Power",
+    "ziwei-fumugong-wuqu-pojun-kequan": "Wu Qu and Po Jun with Hua Ke and Hua Quan in the Parents Palace",
+    "ziwei-fumugong-tiantong-jumen-hualu": "Tian Tong, Ju Men, and Hua Lu in the Parents Palace",
+    "ziwei-zinvgong-konggong-duigong": "An Empty Children Palace: Start with the Opposite Palace",
+    "ziwei-tanlang-ruming-tiankui": "Tan Lang in the Life Palace with Tian Kui: Sharp, Capable, and Hard to Misread",
+    "ziwei-pojun-ziwu-yingxing": "Po Jun in Zi or Wu: Why Ying Xing in Temple Favors Hard Roles",
+    "ziwei-tianzhaigong-huoxing": "Mars in the Property Palace: Fire Risk, Disputes, and Asset Care",
+    "ziwei-xiongdigong-liantan-kongjie-tianma": "Lian Zhen and Tan Lang Weakened in the Siblings Palace with Kong Jie and Tian Ma",
+    "ziwei-bankong-zhechi": "Ban Kong Zhe Chi: Why a Weak Lian Tan Axis Can Break Midway",
+    "ziwei-hongluan-tianxi-zaohun": "Hong Luan, Tian Xi, and Early Marriage: Why Family Pressure Can Rush Timing",
   };
   if (slugMap[article.slug]) return slugMap[article.slug];
   const keyMap = [
