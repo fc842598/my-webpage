@@ -601,6 +601,16 @@ function englishTitle(article) {
     "ziwei-xiongdigong-liantan-kongjie-tianma": "Lian Zhen and Tan Lang Weakened in the Siblings Palace with Kong Jie and Tian Ma",
     "ziwei-bankong-zhechi": "Ban Kong Zhe Chi: Why a Weak Lian Tan Axis Can Break Midway",
     "ziwei-hongluan-tianxi-zaohun": "Hong Luan, Tian Xi, and Early Marriage: Why Family Pressure Can Rush Timing",
+    "ziwei-minggong-tianxiang-fuzuo": "Tian Xiang in the Life Palace: Better at Support Roles Than Forcing the Top Seat",
+    "ziwei-fuqigong-wuqu-tonghang": "Wu Qu in the Spouse Palace: A Capable Partner and Clear Division of Roles",
+    "ziwei-xiongdigong-wuqu-deli": "Wu Qu in the Siblings Palace: Reliable Peers, Stronger Boundaries",
+    "ziwei-fumugong-wuqu-pojun-hualu": "Wu Qu and Po Jun with Hua Lu in the Parents Palace",
+    "ziwei-fumugong-konggong-sanfang": "An Empty Parents Palace: Read the Triad and Opposite Palace",
+    "ziwei-fuqigong-ziwei-fubi": "Zi Wei with Supporting Stars in the Spouse Palace",
+    "ziwei-fuqigong-liantan-luoxian": "Lian Zhen and Tan Lang Weakened in the Spouse Palace",
+    "ziwei-hongluan-tianxi-erhun": "Hong Luan, Tian Xi, and a Second Marriage Window",
+    "ziwei-fudegong-hunyin-chengjie": "Why the Inner Life Palace Determines Whether Marriage Can Hold",
+    "ziwei-guanlugong-qingyang-dushu": "When a Hard Career Year Is Better Used for Study and Credentials",
   };
   if (slugMap[article.slug]) return slugMap[article.slug];
   const keyMap = [
@@ -770,7 +780,115 @@ function uniqueEnglishExamples(article, examples) {
   return [...unique, ...fallbacks].slice(0, 3);
 }
 
+function englishOverrideFor(article) {
+  const englishOverrides = {
+  "ziwei-minggong-tianxiang-fuzuo": {
+    lead: "Tian Xiang in the Life Palace often looks polished and responsible, but the chart usually works better in executive support, operations, or second-in-command roles than in lonely top-seat power struggles.",
+    meaning: "This is a role-and-structure pattern. The person may be trusted, visible, and capable, yet still feel that the title sounds bigger than the real authority. The right outlet is often coordination, gatekeeping, process control, or helping a larger system run well.",
+    method: "Start with the Life Palace, then compare the opposite palace, the Career Palace, and the Wealth Palace. Ask whether the chart has true power backing, or whether it is stronger at supporting, advising, and keeping order inside an existing structure.",
+    examples: [
+      "Someone can hold a respected manager title while the real strategic call still belongs to the owner or founder.",
+      "The same pattern often does better as a chief of staff, operations head, or senior partner than as a solo front-stage figure.",
+      "If supporting palaces are weak, the person may look important on paper but carry pressure without enough room to decide."
+    ]
+  },
+  "ziwei-fuqigong-wuqu-tonghang": {
+    lead: "Wu Qu in the Spouse Palace often points to a practical, disciplined partner and very often to a marriage that grows out of shared work, the same industry, or the same operating rhythm.",
+    meaning: "This pattern is less about romance language and more about execution, responsibility, and material reality. It can describe a partner who is capable and hardworking, but it also needs clean role boundaries so the relationship does not become a permanent project meeting.",
+    method: "Read the Spouse Palace together with Career and Wealth. Then ask whether the chart shows a same-field partner, a business-minded marriage, or a couple who works well only after dividing direction, execution, and money management clearly.",
+    examples: [
+      "Two people may meet through work, stay together because they trust each other's competence, and build life around shared output rather than dramatic romance.",
+      "A couple can both be strong executors, yet still argue constantly if nobody decides who owns the big direction.",
+      "When money palaces are stressed, the same practical strength can turn into scorekeeping, control, or emotional distance."
+    ]
+  },
+  "ziwei-xiongdigong-wuqu-deli": {
+    lead: "Wu Qu in the Siblings Palace often means brothers, sisters, cousins, or close peers are useful and capable, but the value usually shows up as help, leverage, or resources more than soft emotional warmth.",
+    meaning: "This is a resource-line reading. The chart may show reliable siblings, competent peers, or a family network that gets things done. It does not automatically mean intimacy. Sometimes the support is strongest in money, work, or logistics rather than daily closeness.",
+    method: "Read the Siblings Palace with the Wealth and Parents palaces. The key question is whether this part of the chart gives hands-on help, business resources, or simply tough, capable people who are not very sentimental.",
+    examples: [
+      "A sibling may be the one who helps with business setup, funding, or difficult practical tasks even if the relationship is not especially tender.",
+      "Some charts show strong peers at work who function almost like siblings and become the real support line.",
+      "If malefic pressure is heavy, capable siblings can still become competitive, transactional, or hard to rely on emotionally."
+    ]
+  },
+  "ziwei-fumugong-wuqu-pojun-hualu": {
+    lead: "Wu Qu and Po Jun with Hua Lu in the Parents Palace usually points to a family line that is good at business, restructuring, or resource capture, not just a clean official or academic route.",
+    meaning: "Read this first as the style of the older generation. The family may be hard-driving, commercially sharp, and used to change, reinvention, or risk. Hua Lu here often shows money channels or operating leverage flowing through the family structure.",
+    method: "Start with the Parents Palace, then compare Wealth, Career, and the Life Palace. Ask whether the chart inherited a business logic, a money-handling habit, or a family environment that teaches survival through action rather than status labels.",
+    examples: [
+      "A parent may leave behind networks, inventory, clients, or deal-making instincts rather than a simple civil-service path.",
+      "The chart can grow through family business resources even when the outward image still looks traditional.",
+      "If the structure is weak elsewhere, the same pattern may bring family money opportunities together with sharp conflict over control."
+    ]
+  },
+  "ziwei-fumugong-konggong-sanfang": {
+    lead: "An empty Parents Palace does not mean the parents story is blank. It means you have to borrow the answer from the surrounding structure, especially the supporting palaces and their transformations.",
+    meaning: "This is a classic reminder not to read one palace in isolation. The parents line may be stable, pressured, distant, or highly supportive, but you only see that clearly after checking the three-direction structure around the empty palace.",
+    method: "Begin with the empty Parents Palace, then read the opposite palace and the two supporting corners. Pay special attention to Hua Lu, Hua Quan, Hua Ke, and Hua Ji, because the real tone usually comes from those linked channels rather than from the empty palace itself.",
+    examples: [
+      "One chart may have no main star in the Parents Palace, yet strong supporting palaces clearly show educated, resourceful, or influential elders.",
+      "Another chart can also be empty there, but the surrounding pressure reveals distance, instability, or a family line that is hard to depend on.",
+      "The empty palace becomes readable only after the nearby structure tells you whether support flows in, leaks out, or turns into responsibility."
+    ]
+  },
+  "ziwei-fuqigong-ziwei-fubi": {
+    lead: "Zi Wei with assistant stars in the Spouse Palace often describes a partner with visible status, good conditions, or social polish, but the real question is who gets to use that prestige in daily life.",
+    meaning: "This is a strong-partner pattern, not a guarantee of ease. The spouse may be capable, well-positioned, or respected, yet the relationship still depends on whether that strength supports the marriage, dominates it, or stays mostly on the partner's side of the table.",
+    method: "Read the Spouse Palace with the Life Palace, Career Palace, and the household structure. Check whether the partner's resources actually land inside the relationship, and whether the native can stand beside that level of expectation without feeling diminished.",
+    examples: [
+      "A person may marry into better status or stronger networks, yet still feel pressure if the spouse is the clear center of gravity.",
+      "The chart can also show a partner who opens doors and stabilizes the household when the rest of the structure is supportive.",
+      "If the inner-life pattern is weak, admiration can slowly turn into comparison, resentment, or dependence."
+    ]
+  },
+  "ziwei-fuqigong-liantan-luoxian": {
+    lead: "Lian Zhen and Tan Lang in a weakened Spouse Palace often brings fast chemistry and visible attraction, but it also increases appetite, emotional complexity, and the chance that marriage amplifies unfinished issues.",
+    meaning: "This pattern is strong at drawing people together, yet weaker at staying clean and simple. Desire, novelty, appearance, or emotional intensity may lead the story at first. Later, boundaries, habits, and loyalty pressure decide whether the relationship can actually hold.",
+    method: "Start with the Spouse Palace, then read the Inner-Life Palace, the opposite palace, and any Hua Ji or timing pressure. Separate hot attraction from stable commitment before you decide whether the marriage pattern is merely exciting or actually sustainable.",
+    examples: [
+      "A couple can move very quickly because the attraction is obvious, then discover that money, trust, or private habits were never properly discussed.",
+      "The pattern may also show a spouse who is charming and socially magnetic, but hard to keep inside simple relationship rules.",
+      "When timing is rough, the same chemistry that creates the bond can also magnify jealousy, temptation, or repeated conflict."
+    ]
+  },
+  "ziwei-hongluan-tianxi-erhun": {
+    lead: "Hong Luan and Tian Xi can mark a relationship window, but some charts show the second wave of timing as more marriage-ready than the first one, especially after an earlier blockage or unfinished entanglement.",
+    meaning: "These stars activate the subject of marriage; they do not force immediate completion. The first wave may bring a meeting, engagement talk, or emotional surge. The later wave can be the one that actually settles because the obstruction, hesitation, or old baggage has already passed.",
+    method: "Read the relationship trigger first, then inspect Hua Ji, the active decade, and the Inner-Life Palace. Your job is to separate a first opening from the later window that is truly able to land as marriage.",
+    examples: [
+      "A person may meet the right type of partner early, but the first round still stalls because family pressure or old ties have not cleared.",
+      "The second activation can look calmer, less dramatic, and far more real precisely because the earlier blockage already did its work.",
+      "If the chart still has heavy emotional pressure, even a second window can repeat the first unless the underlying issue is addressed."
+    ]
+  },
+  "ziwei-fudegong-hunyin-chengjie": {
+    lead: "The Inner-Life Palace often decides whether a marriage can actually be sustained, because relationship timing means very little if the person's emotional carrying capacity is unstable.",
+    meaning: "This palace is about private resilience, mood regulation, and what the person can continue holding after the excitement phase ends. A chart may have good relationship timing and still fail to keep the marriage if the inner structure is too tired, chaotic, or overloaded.",
+    method: "Read the Inner-Life Palace with the Spouse Palace and timing. Do not ask only whether marriage appears. Ask whether the person can digest pressure, live with repetition, and keep the relationship steady once everyday reality starts weighing on it.",
+    examples: [
+      "A strong marriage window may still fail if the person enters it already exhausted, defensive, or emotionally overfull.",
+      "Another chart may not look especially romantic, yet it succeeds because the inner structure is calm enough to hold ordinary life well.",
+      "When the Inner-Life Palace is weak, love can be real and still collapse under routine stress, family demands, or private anxiety."
+    ]
+  },
+  "ziwei-guanlugong-qingyang-dushu": {
+    lead: "Qing Yang in the Career Palace often creates a hard year for titles and smooth politics, but it can be an excellent time to convert pressure into study, credentials, or sharper technical skill.",
+    meaning: "The work path is not weak. It is simply more compatible with hard standards, teaching, training, specialist judgment, and difficult deliverables than with polished promotion games. In a rough cycle, learning is often the smartest form of career advance.",
+    method: "Read the Career Palace with the Life, Wealth, and Travel palaces. Then ask whether the chart should keep fighting for position, or redirect the same effort into qualifications, instruction, and a stronger professional lane.",
+    examples: [
+      "A blocked promotion year can become valuable if the person uses it to earn a certification, degree, or technical specialty that changes the next cycle.",
+      "Someone who struggles in consensus-heavy hierarchy may do much better in training, compliance, engineering, or any role where skill matters more than soft politics.",
+      "If the chart insists on protecting status instead of building competence, the same hard energy can turn into burnout rather than momentum."
+    ]
+  }
+  };
+  return englishOverrides[article.slug] || null;
+}
+
 function englishLead(article, title) {
+  const override = englishOverrideFor(article);
+  if (override?.lead) return override.lead;
   if (article.title.includes("只有化科")) return "When Hua Ke is the only major transformation carrying a chart, the person often advances through credentials, teaching, and reputation before money or rank catch up.";
   if (article.title.includes("父母宫廉贞破军")) return "Lian Zhen and Po Jun in the Parents Palace usually describe a family line that is hard, changeable, or emotionally discontinuous rather than soft and steady.";
   if (article.title.includes("官禄宫擎羊")) return "Qing Yang in the Career Palace often creates a role with friction, sharp standards, and direct pressure, which is why it can suit technical or teaching work better than smooth official ladders.";
@@ -795,6 +913,8 @@ function englishLead(article, title) {
 }
 
 function englishMeaning(article) {
+  const override = englishOverrideFor(article);
+  if (override?.meaning) return override.meaning;
   if (article.title.includes("只有化科")) return "This is a skills-first pattern. It favors licensed work, specialist service, teaching, and professional trust more than fast speculation or pure authority.";
   if (article.title.includes("父母宫廉贞破军")) return "Read this as structure in the parents line: distance, separation, strict rules, or early pressure to grow up. It can describe absence, instability, or a home that matures the person too early.";
   if (article.title.includes("官禄宫擎羊")) return "The chart is not weak in work. It is simply bad at soft politics. This pattern prefers skill, rule enforcement, training, or hard deliverables over consensus-heavy promotion paths.";
@@ -818,6 +938,8 @@ function englishMeaning(article) {
 }
 
 function englishMethod(article) {
+  const override = englishOverrideFor(article);
+  if (override?.method) return override.method;
   if (article.title.includes("只有化科")) return "Check where Hua Ke lands, then compare the Life, Wealth, and Career palaces. The question is not whether the person gets rich fast, but how skill, proof, and reputation turn into income.";
   if (article.title.includes("父母宫廉贞破军")) return "Start with the Parents Palace, then compare the Sun and Moon lines, the Life Palace, and the Inner-Life Palace. Separate physical separation from emotional distance before you judge the family story.";
   if (article.title.includes("官禄宫擎羊")) return "Read the Career Palace with the Life, Wealth, and Travel palaces. Ask whether the chart should fight for title, or convert pressure into expertise, instruction, and a clearer lane.";
@@ -841,6 +963,8 @@ function englishMethod(article) {
 }
 
 function englishFallbackExamples(article) {
+  const override = englishOverrideFor(article);
+  if (override?.examples?.length) return override.examples;
   if (article.title.includes("财权")) {
     return [
       "A person may authorize large budgets at work while living on a normal salary structure personally.",
