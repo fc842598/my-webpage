@@ -1205,11 +1205,13 @@
   }
 
   function renderPayment() {
+    var hideMobileAlipay = isMobileBrowser();
     $all(".yl-pay-method").forEach(function (button) {
       var provider = button.dataset.provider || "wechat";
       var meta = getProviderMeta(provider);
       var label = getProviderLabel(provider);
       var detail = getProviderMethodDetail(provider);
+      button.hidden = hideMobileAlipay && provider === "alipay";
       button.classList.toggle("is-active", paymentState.provider === provider);
       button.disabled = paymentState.loading || paymentState.status === "pending" || !meta.enabled;
       button.textContent = meta.enabled ? label : label + "未配置";
@@ -1694,7 +1696,9 @@
     $all(".yl-pay-method").forEach(function (button) {
       button.addEventListener("click", function () {
         if (paymentState.loading || paymentState.status === "pending") return;
-        paymentState.provider = button.dataset.provider || "wechat";
+        var provider = button.dataset.provider || "wechat";
+        if (provider === "alipay" && isMobileBrowser()) return;
+        paymentState.provider = provider;
         if (paymentState.status === "handoff") {
           paymentState.status = "";
           paymentState.message = "";
