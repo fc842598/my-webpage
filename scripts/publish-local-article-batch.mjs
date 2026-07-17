@@ -611,6 +611,16 @@ function englishTitle(article) {
     "ziwei-hongluan-tianxi-erhun": "Hong Luan, Tian Xi, and a Second Marriage Window",
     "ziwei-fudegong-hunyin-chengjie": "Why the Inner Life Palace Determines Whether Marriage Can Hold",
     "ziwei-guanlugong-qingyang-dushu": "When a Hard Career Year Is Better Used for Study and Credentials",
+    "ziwei-tianliang-guanlugong-yingchou": "Tian Liang in the Career Palace: More External Duty, More Position Pressure",
+    "ziwei-pengyougong-huaji-shiren": "Hua Ji in the Friends Palace: Bad Fit Partners and Costly Guarantees",
+    "ziwei-jiyuetongliang-liren": "Ji Yue Tong Liang: Why It Often Fits Public Institutions and Schools",
+    "ziwei-daxiaoliangxian-hongluan": "Hong Luan Across Major and Annual Cycles: Wanting Marriage Is Not the Same as Landing It",
+    "ziwei-qisha-tianma-yuandi": "Qi Sha with Tian Ma: Leaving Home Early and Growing Through Distance",
+    "ziwei-taiyang-haigong-luoxian": "Tai Yang Weak in Hai: Why the Reading Changes by Palace",
+    "ziwei-yangtuo-jiasha": "Yang Tuo Clamping the Pattern: Hidden Trouble Means Boundaries First",
+    "ziwei-sanfang-wu-kequanlu": "No Ke Quan Lu in the Main Structure: Better on Salary Than Forcing a Founder Role",
+    "ziwei-caiguanshuangmei": "A Chart with Strong Career and Money Lines: Better for Financial Authority Than Personal Fortune",
+    "ziwei-tianzhaigong-taiyang-quanji": "Tai Yang Hua Quan with Wen Chang Hua Ji in the Property Palace: Split Father, Partner, and Child Lines First",
   };
   if (slugMap[article.slug]) return slugMap[article.slug];
   const keyMap = [
