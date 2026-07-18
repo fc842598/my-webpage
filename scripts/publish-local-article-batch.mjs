@@ -618,10 +618,20 @@ function englishTitle(article) {
     "ziwei-qisha-tianma-yuandi": "Qi Sha with Tian Ma: Leaving Home Early and Growing Through Distance",
     "ziwei-taiyang-haigong-luoxian": "Tai Yang Weak in Hai: Why the Reading Changes by Palace",
     "ziwei-yangtuo-jiasha": "Yang Tuo Clamping the Pattern: Hidden Trouble Means Boundaries First",
-    "ziwei-sanfang-wu-kequanlu": "No Ke Quan Lu in the Main Structure: Better on Salary Than Forcing a Founder Role",
-    "ziwei-caiguanshuangmei": "A Chart with Strong Career and Money Lines: Better for Financial Authority Than Personal Fortune",
-    "ziwei-tianzhaigong-taiyang-quanji": "Tai Yang Hua Quan with Wen Chang Hua Ji in the Property Palace: Split Father, Partner, and Child Lines First",
-  };
+     "ziwei-sanfang-wu-kequanlu": "No Ke Quan Lu in the Main Structure: Better on Salary Than Forcing a Founder Role",
+     "ziwei-caiguanshuangmei": "A Chart with Strong Career and Money Lines: Better for Financial Authority Than Personal Fortune",
+     "ziwei-tianzhaigong-taiyang-quanji": "Tai Yang Hua Quan with Wen Chang Hua Ji in the Property Palace: Split Father, Partner, and Child Lines First",
+     "ziwei-tianji-ruoming-gongzhi": "Tian Ji in the Life Palace: Better for Public Institutions, Teaching, and Back-Office Finance",
+     "ziwei-wenchang-dushou-shudai": "Wen Chang Alone in the Life Palace: Good at Study, Not Automatically Good at Judgment",
+     "ziwei-tianyue-liunian-guiren": "Tian Yue in an Annual Cycle: Exams, Promotion, and Sponsor-Led Opportunity",
+     "ziwei-tiantong-dayun-renhe": "A Ten-Year Tian Tong Cycle: When Human Support Makes Business Easier",
+     "ziwei-tianliang-wugong-yi-pin": "Tian Liang in Wu: Why Law, Policing, and Diplomacy Rise Faster",
+     "ziwei-tanlang-haizi-fanshui": "Tan Lang in Hai or Zi: Strong Attraction Does Not Guarantee Stable Marriage",
+     "ziwei-pojun-huake-zou-tianxia": "Po Jun Meeting Hua Ke: Carry a Technical Skill Into Bigger Markets",
+     "ziwei-riyue-caibo-duibi": "Tai Yang vs Tai Yin in the Wealth Palace: Business Income and Accumulated Income",
+     "ziwei-wuqu-xugong-rumiao": "Wu Qu in Xu in Temple: Tough Roles Often Fit Better Than Soft Ones",
+     "ziwei-tianfu-huisha": "Tian Fu Meeting Malefics: Steady Does Not Mean Problem-Free",
+   };
   if (slugMap[article.slug]) return slugMap[article.slug];
   const keyMap = [
     ["禄存在命宫", "Lu Cun in the Life Palace: Saving Money Without Getting Stuck"],
