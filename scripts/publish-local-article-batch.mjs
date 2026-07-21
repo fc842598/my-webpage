@@ -12,8 +12,13 @@ const count = Number(args.count || 1);
 const category = args.category || "紫微斗数";
 const publishDate = args.date || todayShanghai();
 const publishTime = args.time || "09:00";
+const explicitTimes = parseTimesArg(args.times);
+const overwriteExisting = args["overwrite-existing"] === true;
 if (!/^(?:[01]\d|2[0-3]):[0-5]\d$/.test(publishTime)) {
   fail("--time must use HH:MM in Asia/Shanghai time.");
+}
+if (explicitTimes.length && explicitTimes.some((time) => !/^(?:[01]\d|2[0-3]):[0-5]\d$/.test(time))) {
+  fail("--times must be a comma-separated list of HH:MM values in Asia/Shanghai time.");
 }
 
 const topicHubs = [
@@ -110,17 +115,24 @@ const articles = picked.map((row) => {
     category: row.category || category
   };
 });
+if (explicitTimes.length && explicitTimes.length !== articles.length) {
+  fail(`--times count ${explicitTimes.length} does not match article count ${articles.length}.`);
+}
+const scheduleTimes = explicitTimes.length
+  ? explicitTimes
+  : articles.map((_, index) => timePlusMinutes(publishTime, index * 3));
 
 mkdirSync(path.join(root, "articles"), { recursive: true });
 mkdirSync(path.join(root, "articles", "en"), { recursive: true });
 
 for (const [index, article] of articles.entries()) {
-  const time = timePlusMinutes(publishTime, index * 3);
+  const time = scheduleTimes[index];
   article.publishedAt = toPublishDateTime(time);
+  article.publishTime = time;
   const zhPath = path.join(root, "articles", `${article.slug}.html`);
   const enPath = path.join(root, "articles", "en", `${article.slug}.html`);
-  if (existsSync(zhPath)) fail(`Article already exists: ${zhPath}`);
-  if (existsSync(enPath)) fail(`English article already exists: ${enPath}`);
+  if (existsSync(zhPath) && !overwriteExisting) fail(`Article already exists: ${zhPath}`);
+  if (existsSync(enPath) && !overwriteExisting) fail(`English article already exists: ${enPath}`);
   writeFileSync(zhPath, chinesePage(article, time), "utf8");
   writeFileSync(enPath, englishPage(article, time), "utf8");
 }
@@ -148,6 +160,14 @@ function parseArgs(parts) {
 function fail(message) {
   console.error(message);
   process.exit(1);
+}
+
+function parseTimesArg(value) {
+  if (!value) return [];
+  return String(value)
+    .split(/[,\s]+/)
+    .map((item) => item.trim())
+    .filter(Boolean);
 }
 
 function todayShanghai() {
@@ -631,7 +651,37 @@ function englishTitle(article) {
      "ziwei-riyue-caibo-duibi": "Tai Yang vs Tai Yin in the Wealth Palace: Business Income and Accumulated Income",
      "ziwei-wuqu-xugong-rumiao": "Wu Qu in Xu in Temple: Tough Roles Often Fit Better Than Soft Ones",
      "ziwei-tianfu-huisha": "Tian Fu Meeting Malefics: Steady Does Not Mean Problem-Free",
-   };
+     "ziwei-minghao-buruxianhao": "Why a Good Cycle Can Matter More Than a Good Natal Base",
+     "ziwei-ziwei-jiee-zhihua": "Zi Wei's Relief Power: Why Helping a Malefic Is Not the Same as Erasing It",
+     "ziwei-taiyang-guanlugong-wuguan": "Tai Yang in the Career Palace: Better for Visible Hard-Authority Roles",
+     "ziwei-wuqu-caixingwang": "Why Wu Qu Is Called the Wealth King Star",
+     "ziwei-tianfu-ruming-gongjiao": "Tian Fu in the Life Palace: Better for Public Service and Teaching Than Hard Command",
+     "ziwei-tianliang-dayun-waizai": "A Tian Liang Ten-Year Cycle: More External Duty, Not Automatically an Internal Illness Phase",
+     "ziwei-tiantong-liunian-hehuo": "Tian Tong in an Annual Cycle: When Partnership and Human Support Open Up",
+     "ziwei-taiyin-guanlugong-wenguan": "Tai Yin in the Career Palace: Stable Salary, Civil Roles, and Long-Hold Work",
+     "ziwei-caiquan-biquan": "Wealth Authority Is Not Personal Wealth",
+     "ziwei-xiantian-houtian-cai": "How to Separate Inherited Wealth From Later-Built Wealth",
+     "ziwei-tianliang-ruming-wenwu": "Tian Liang in the Life Palace: Why the Chart Often Bridges Civil and Hard-Power Lanes",
+     "ziwei-pojun-ruming-buzhongli": "Po Jun in the Life Palace: Not Money-First, Better in Change and Project Work",
+     "ziwei-tanlang-cai-taohua": "Why Tan Lang Often Amplifies Money and Attraction at the Same Time",
+     "ziwei-huoxing-lingxing-fuqigong": "Mars and Ling Xing in the Spouse Palace: Conflict Escalates Fast",
+     "ziwei-huoxing-lingxing-puyigong": "Mars and Ling Xing in the Friends Palace: Why Familiar Partnerships Burn Fast",
+     "ziwei-fumugong-taiyin-huaji-muqin": "Tai Yin with Hua Ji in the Parents Palace: First Separate a Weak Mother Line From a Worry-Heavy One",
+     "ziwei-fumugong-riyue-tongliang": "Sun and Moon Both Bright in the Parents Palace: Strong Family Line, Not Necessarily Light Pressure",
+     "ziwei-zinvgong-tianliang-huaquan": "Tian Liang with Hua Quan in the Children Palace: Strong Male-Line Responsibility",
+     "ziwei-xiongdigong-lingxing-huaji": "Ling Xing in the Siblings Palace With Hua Ji Pressure: Peer Conflict and Failed Partnerships",
+     "ziwei-hongluan-tianxi-wanhun": "Why Hong Luan and Tian Xi Can Point to Late Marriage Rather Than No Marriage",
+     "ziwei-wuqu-tanlang-jiangxing-shengqian": "Wu Qu and Tan Lang With Hua Quan and Hua Lu: A Promotion Window for Command-Type Charts",
+     "ziwei-taiyin-huaji-ruomiao": "Tai Yin With Hua Ji: Why Fallen and Temple States Should Never Be Read the Same Way",
+     "ziwei-wuguan-feng-wenchang": "When a Hard-Authority Chart Meets Wen Chang: Frontline Work Turns Into Teaching or Training",
+     "ziwei-zhengcai-hengcai-duibi": "Fixed-Salary Wealth and Operating Wealth Are Not the Same Money Path",
+     "ziwei-nvming-wuguanxing-gudan": "Why Women's Charts With Hard-Authority Stars Need Extra Relationship Support",
+     "ziwei-taiyang-cai-lu-fuqin": "Tai Yang in Wealth vs Career: One Side Is Money, the Other Is Position",
+     "ziwei-guanxing-ru-guanlu": "An Official Star Only Fully Fits When It Lands in the Career Palace",
+     "ziwei-fudegong-lianpo-chongfuqi": "Lian Zhen and Po Jun in the Inner Life Palace: A Stable-Looking Marriage Can Still Fail Under Inner Load",
+     "ziwei-fumu-sanhe-kequanlu": "An Empty Parents Palace Can Still Show Powerful Elders if the Surrounding Structure Carries Ke, Quan, and Lu",
+     "ziwei-fuqigong-huaji-tufafa": "Hua Ji in the Spouse Palace Often Turns Dangerous in the Years When Nobody Is Guarding for It",
+     };
   if (slugMap[article.slug]) return slugMap[article.slug];
   const keyMap = [
     ["禄存在命宫", "Lu Cun in the Life Palace: Saving Money Without Getting Stuck"],
@@ -1379,6 +1429,7 @@ function topicPathLinks(hub) {
 }
 
 function zhFeed(articles) {
+  const latestPublishedAt = articles[0]?.published || toPublishDateTime(publishTime);
   return `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
@@ -1386,14 +1437,14 @@ function zhFeed(articles) {
     <link>${site}/</link>
     <description>阅天AI官方入口、免费紫微斗数排盘与AI命盘分析相关更新。</description>
     <language>zh-CN</language>
-    <lastBuildDate>${rssDate(publishDate, publishTime)}</lastBuildDate>
+    <lastBuildDate>${rssDate(latestPublishedAt, publishTime)}</lastBuildDate>
     <atom:link href="${site}/feed.xml" rel="self" type="application/rss+xml" />
-${articles.slice(0, 80).map((article, index) => `
+${articles.slice(0, 80).map((article) => `
     <item>
       <title>${escapeHtml(article.headline)}</title>
       <link>${article.url}</link>
       <guid isPermaLink="true">${article.url}</guid>
-      <pubDate>${rssDate(article.published, timePlusMinutes(publishTime, index))}</pubDate>
+      <pubDate>${rssDate(article.published, publishTime)}</pubDate>
       <description>${escapeHtml(article.description)}</description>
     </item>`).join("")}
   </channel>
@@ -1402,6 +1453,7 @@ ${articles.slice(0, 80).map((article, index) => `
 }
 
 function enFeed(articles) {
+  const latestPublishedAt = articles[0]?.published || toPublishDateTime(publishTime);
   return `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
@@ -1409,14 +1461,14 @@ function enFeed(articles) {
     <link>${site}/articles/en/</link>
     <description>Plain-English Zi Wei Dou Shu articles and chart reading guides.</description>
     <language>en</language>
-    <lastBuildDate>${rssDate(publishDate, publishTime)}</lastBuildDate>
+    <lastBuildDate>${rssDate(latestPublishedAt, publishTime)}</lastBuildDate>
     <atom:link href="${site}/articles/en/feed.xml" rel="self" type="application/rss+xml" />
-${articles.slice(0, 80).map((article, index) => `
+${articles.slice(0, 80).map((article) => `
     <item>
       <title>${escapeHtml(article.headline)}</title>
       <link>${article.url}</link>
       <guid isPermaLink="true">${article.url}</guid>
-      <pubDate>${rssDate(article.published, timePlusMinutes(publishTime, index))}</pubDate>
+      <pubDate>${rssDate(article.published, publishTime)}</pubDate>
       <description>${escapeHtml(article.description)}</description>
     </item>`).join("")}
   </channel>
@@ -1458,11 +1510,12 @@ function enSitemap(articles) {
 
 function sitemapXml(urls, articles) {
   const byUrl = new Map(articles.map((article) => [article.url, article.published]));
+  const latestPublishedAt = articles[0]?.published || toPublishDateTime(publishTime);
   return `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${urls.map((url) => `  <url>
     <loc>${url}</loc>
-    <lastmod>${byUrl.get(url) || (url.includes("feed.xml") || url.endsWith("/articles/") || url.endsWith("/articles/en/") || topicHubs.some((hub) => url.endsWith(`/articles/${hub.file}`)) ? publishDate : "2026-06-24")}</lastmod>
+    <lastmod>${byUrl.get(url) || (url.includes("feed.xml") || url.endsWith("/articles/") || url.endsWith("/articles/en/") || topicHubs.some((hub) => url.endsWith(`/articles/${hub.file}`)) ? latestPublishedAt : "2026-06-24T00:00:00+08:00")}</lastmod>
     <changefreq>${url.includes("/articles/") || url.includes("feed.xml") ? "daily" : "weekly"}</changefreq>
     <priority>${url.endsWith("/articles/") || url.endsWith("/articles/en/") ? "0.8" : url.includes("/articles/") ? "0.7" : "0.6"}</priority>
   </url>`).join("\n")}
