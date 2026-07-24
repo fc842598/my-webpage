@@ -2657,6 +2657,21 @@ html.yl-unified-checkout .yl-pay-method[data-provider="alipay"]::before {
   background-image: url("/images/payment/alipay.svg");
 }
 
+html.yl-unified-checkout .yl-pay-method[data-provider="alipay"]:disabled {
+  border-color: rgba(22, 119, 255, 0.38);
+  background: #f5f9ff;
+  color: #0f63d6;
+  cursor: not-allowed;
+  opacity: 1;
+}
+
+html.yl-unified-checkout .yl-pay-method[data-provider="alipay"]:disabled::after {
+  content: "待";
+  border-color: rgba(22, 119, 255, 0.4);
+  background: #fff;
+  color: #1677ff;
+}
+
 html.yl-unified-checkout .yl-pay-method[data-provider="paypal"]::before {
   background-image: url("/images/payment/paypal.svg");
 }
@@ -3269,12 +3284,12 @@ html.yl-unified-checkout .yl-operator-contact {
   }
 
   html.yl-unified-checkout .yl-pay-row {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 12px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
   }
 
-  html.yl-unified-checkout .yl-pay-method[data-provider="alipay"] {
-    display: none;
+  html.yl-unified-checkout .yl-pay-row.is-alipay-disabled {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   html.yl-unified-checkout .yl-pay-method {

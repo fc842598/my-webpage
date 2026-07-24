@@ -16,6 +16,7 @@
   var HEALTH_PRODUCT_NAME = "阅天综合会员";
   var HEALTH_PRODUCT_AMOUNT = "19.90";
   var HEALTH_PAYPAL_AMOUNT = "2.99";
+  var ALIPAY_CHECKOUT_VISIBLE = true;
   var ALIPAY_CHECKOUT_ENABLED = false;
   var PAGE_IDS = ["home", "assessment", "report", "chat", "member"];
   var DEFAULT_API_BASE = "https://api.yuetianai.com";
@@ -1251,18 +1252,20 @@
 
   function renderPayment() {
     var payRow = $(".yl-pay-row");
-    if (payRow) payRow.classList.toggle("is-alipay-disabled", !ALIPAY_CHECKOUT_ENABLED);
+    if (payRow) payRow.classList.toggle("is-alipay-disabled", !ALIPAY_CHECKOUT_VISIBLE);
     $all(".yl-pay-method").forEach(function (button) {
       var provider = button.dataset.provider || "wechat";
       var meta = getProviderMeta(provider);
       var label = getProviderLabel(provider);
       var detail = getProviderMethodDetail(provider);
-      button.hidden = !ALIPAY_CHECKOUT_ENABLED && provider === "alipay";
+      var alipayPendingApproval = provider === "alipay" && !ALIPAY_CHECKOUT_ENABLED;
+      var providerEnabled = meta.enabled && !alipayPendingApproval;
+      button.hidden = !ALIPAY_CHECKOUT_VISIBLE && provider === "alipay";
       button.classList.toggle("is-active", paymentState.provider === provider);
-      button.disabled = paymentState.loading || paymentState.status === "pending" || !meta.enabled;
-      button.textContent = meta.enabled ? label : label + "未配置";
-      button.dataset.detail = detail;
-      button.setAttribute("aria-label", label + "，" + detail);
+      button.disabled = paymentState.loading || paymentState.status === "pending" || !providerEnabled;
+      button.textContent = alipayPendingApproval ? label + "审核中" : (meta.enabled ? label : label + "未配置");
+      button.dataset.detail = alipayPendingApproval ? "审核通过后开放" : detail;
+      button.setAttribute("aria-label", label + "，" + button.dataset.detail);
     });
 
     var memberCard = $(".yl-member-card");
@@ -1761,7 +1764,7 @@
       button.addEventListener("click", function () {
         if (paymentState.loading || paymentState.status === "pending") return;
         var provider = button.dataset.provider || "wechat";
-        if (provider === "alipay" && isMobileBrowser()) return;
+        if (provider === "alipay" && !ALIPAY_CHECKOUT_ENABLED) return;
         paymentState.provider = provider;
         if (paymentState.status === "handoff") {
           paymentState.status = "";
