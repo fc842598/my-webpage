@@ -14,6 +14,7 @@ const publishDate = args.date || todayShanghai();
 const publishTime = args.time || "09:00";
 const explicitTimes = parseTimesArg(args.times);
 const overwriteExisting = args["overwrite-existing"] === true;
+const includePublished = args["include-published"] === true;
 if (!/^(?:[01]\d|2[0-3]):[0-5]\d$/.test(publishTime)) {
   fail("--time must use HH:MM in Asia/Shanghai time.");
 }
@@ -96,7 +97,7 @@ if (!existsSync(sourcePath)) fail(`Source not found: ${sourcePath}`);
 
 const queueRaw = readFileSync(queuePath, "utf8");
 const sourceRaw = readFileSync(sourcePath, "utf8");
-const rows = parseQueue(queueRaw).filter((row) => row.status.includes("待发布"));
+const rows = parseQueue(queueRaw).filter((row) => includePublished || !row.status.includes("http"));
 const picked = rows.slice(0, count);
 if (picked.length === 0) fail("No pending queue rows.");
 
@@ -281,11 +282,25 @@ function articleText(article) {
   return `${article.category || article.section || ""} ${article.title || article.headline || ""} ${article.description || ""}`;
 }
 
+function explicitHubKey(article) {
+  const label = `${article.category || article.section || ""}`.trim();
+  if (label.includes("看盘方法")) return "learning";
+  if (label.includes("宫位组合") || label.includes("婚恋与关系")) return "palaces";
+  if (label.includes("主星细读")) return "main-stars";
+  if (label.includes("辅煞曜")) return "helper-malice";
+  if (label.includes("特定命例")) return "case-patterns";
+  if (label.includes("大限流年")) return "cycles";
+  if (label.includes("财运事业")) return "money-career";
+  return "";
+}
+
 function topicByKey(key) {
   return topicHubs.find((hub) => hub.key === key) || topicHubs[0];
 }
 
 function topicHubFor(article) {
+  const mappedKey = explicitHubKey(article);
+  if (mappedKey) return topicByKey(mappedKey);
   const text = articleText(article);
   if (text.includes("单星星性")) return topicByKey("main-stars");
   if (text.includes("特定命例")) return topicByKey("case-patterns");
@@ -300,6 +315,8 @@ function topicHubFor(article) {
 }
 
 function articleMatchesHub(article, hub) {
+  const mappedKey = explicitHubKey(article);
+  if (mappedKey) return hub.key === mappedKey;
   const text = articleText(article);
   if (hub.key === "learning") return /(排盘|入门|先看|三方四正|命宫空宫|宫有宫性|免费紫微|小限流年)/.test(text);
   if (hub.key === "palaces") return /(命宫|兄弟宫|夫妻宫|子女宫|财帛宫|疾厄宫|迁移宫|仆役宫|朋友宫|官禄宫|田宅宫|福德宫|父母宫|十二宫|宫性)/.test(text);
@@ -738,9 +755,39 @@ function englishTitle(article) {
      "ziwei-nvming-wuguanxing-gudan": "Why Women's Charts With Hard-Authority Stars Need Extra Relationship Support",
      "ziwei-taiyang-cai-lu-fuqin": "Tai Yang in Wealth vs Career: One Side Is Money, the Other Is Position",
      "ziwei-guanxing-ru-guanlu": "An Official Star Only Fully Fits When It Lands in the Career Palace",
-     "ziwei-fudegong-lianpo-chongfuqi": "Lian Zhen and Po Jun in the Inner Life Palace: A Stable-Looking Marriage Can Still Fail Under Inner Load",
-     "ziwei-fumu-sanhe-kequanlu": "An Empty Parents Palace Can Still Show Powerful Elders if the Surrounding Structure Carries Ke, Quan, and Lu",
-     "ziwei-fuqigong-huaji-tufafa": "Hua Ji in the Spouse Palace Often Turns Dangerous in the Years When Nobody Is Guarding for It",
+    "ziwei-fudegong-lianpo-chongfuqi": "Lian Zhen and Po Jun in the Inner Life Palace: A Stable-Looking Marriage Can Still Fail Under Inner Load",
+    "ziwei-fumu-sanhe-kequanlu": "An Empty Parents Palace Can Still Show Powerful Elders if the Surrounding Structure Carries Ke, Quan, and Lu",
+    "ziwei-fuqigong-huaji-tufafa": "Hua Ji in the Spouse Palace Often Turns Dangerous in the Years When Nobody Is Guarding for It",
+    "ziwei-tianliang-wugong-yingquan": "Tian Liang at Wu: Hard Authority Means Rank With Real Responsibility",
+    "ziwei-riyue-fanbei-jiaming-laoxin": "Why a Reversed Sun-and-Moon Clamp Often Starts as Constant Overwork",
+    "ziwei-youbi-minggong-fubi-zhi-cai": "You Bi in the Life Palace: A Natural Support Role, Not Always the Top Seat",
+    "ziwei-youbi-fudegong-danjian-guxin": "You Bi Alone in the Inner Life Palace: Helpful Outside, Lonely Inside",
+    "ziwei-lianqisha-weigong-rumiao-jifu": "Lian Zhen and Qi Sha in Wei: In Temple It Builds Wealth, Not Ruin",
+    "ziwei-haoyun-taizao-weibi-hao": "Why an Early Good Cycle Is Not Always a Real Advantage",
+    "ziwei-juri-ge-chengge-buchengge": "Ju Ri as a Full Pattern vs an Incomplete One",
+    "ziwei-juri-luoxian-pianfang-qingxu": "When Ju Men and Tai Yang Look Like Ju Ri but Are Too Weak to Hold",
+    "ziwei-wuqu-pojun-hai-gong-nvming": "Wu Qu and Po Jun in Hai in a Woman's Chart",
+    "ziwei-hunyin-guoji-hou-cai-cheng": "Why Marriage Timing Often Works Better After Hua Ji Has Passed",
+    "ziwei-rili-zhongtian-benge-dayun": "Ri Li Zhong Tian in the Natal Chart vs in a Ten-Year Cycle",
+    "ziwei-rili-zhongtian-fuqi": "When Ri Li Zhong Tian Lights Up the Spouse Palace Instead of You",
+    "ziwei-juri-huiming-shanglu": "Ju Ri Meeting the Life Palace: Why Big Money Often Follows a Business Path",
+    "ziwei-fudegong-huaji-yishi-xinlei": "Hua Ji in the Inner Life Palace: More Than Simple Mental Fatigue",
+    "ziwei-fudegong-huaji-sibie": "Why Hua Ji in the Inner Life Palace Can Pull Marriage Toward Separation by Loss",
+    "ziwei-caibo-wupo-xing-pocai-pengyou": "Why Big Loss Can Come Through Friends Even When the Wealth Palace Looks Fine",
+    "ziwei-pengyougong-pujun-dijie-tianma-huaiyou": "Po Jun, Di Jie, and Tian Ma in the Friends Palace: Trouble, Loss, and Bad Partnerships",
+    "ziwei-pengyougong-hehuo-bibai": "Why This Friends-Palace Pattern Often Fails in Partnership",
+    "ziwei-caibo-pujun-dijie-tianma-haizi": "Po Jun, Di Jie, and Tian Ma in the Wealth Palace: Do Not Hand Big Money Too Early",
+    "ziwei-guanlugong-hualu-caiquan": "Hua Lu in the Career Palace: Big Financial Authority Is Not the Same as Corruption",
+    "ziwei-huake-daxian-shangming": "Hua Ke in a Business Cycle: Reputation Before Credentials",
+    "ziwei-shinian-huaji-xuejingyan": "A Hua Ji Decade: Why Learning Through Friction Can Pay Later",
+    "ziwei-shengong-qianyi-laoban-yidi": "Body Palace in Travel: Why a Founder Path Often Grows Faster Away From Home",
+    "ziwei-quanlu-caibo-zhangju": "Authority and Lu in the Wealth Palace: Income That Wants You to Hold the Wheel",
+    "ziwei-liunian-buhaodu-shu": "Why a Bad Year Is Often Better Spent Studying Than Forcing a Fight",
+    "ziwei-qisha-linshen-jingjun": "Qi Sha Touching the Body: Better Directed Into Discipline Than Left Unchecked",
+    "ziwei-fumugong-kongjie-wuzuye": "An Empty Parents Palace With Di Jie: Thin Ancestral Support and Early Self-Reliance",
+    "ziwei-xiongdigong-huaji-tianxing": "Hua Ji and Tian Xing in the Siblings Palace: When Peer Trouble Turns Legal",
+    "ziwei-zhiyou-huake-ming": "Only Hua Ke in the Chart: A Professional Skill Path, Not a Power Path",
+    "ziwei-guanlugong-qingyang-jiaozhi": "Qing Yang in the Career Palace: Better for Teaching and Hard Skills Than Official Rank",
      };
   if (slugMap[article.slug]) return slugMap[article.slug];
   const keyMap = [
@@ -1039,7 +1086,9 @@ function englishLead(article, title) {
   if (article.title.includes("六煞单星独守")) return "A lone malefic star is rarely a one-point problem. In practice, the main palace takes the hit first, then the opposite side of the chart starts reacting too.";
   if (article.title.includes("迁移宫")) return "Some charts do not fully open in the original environment. The travel and outside-world palace can be the place where status, support, and opportunity finally connect.";
   if (article.title.includes("入正位")) return "Zi Wei Dou Shu becomes much clearer when you ask whether a star is in the life area it is actually built to express.";
-  return `${title} becomes easier to read when you name the palace first, then connect the pattern to role, pressure, and timing in everyday life.`;
+  const hubDefaults = englishHubDefaults(article);
+  if (hubDefaults?.lead) return hubDefaults.lead;
+  return "Read this pattern by locating the palace first, then asking what role, pressure, and timing it creates in real life.";
 }
 
 function englishMeaning(article) {
@@ -1064,7 +1113,9 @@ function englishMeaning(article) {
   if (article.title.includes("明珠出海")) return "A chart pattern is a structure, not a single fixed sentence. Once the structure forms, the palace tells you who or what gets the benefit first.";
   if (article.title.includes("六煞")) return "Malefic stars are not just about fear. They show where stress enters and how one problem can spill into the opposite side of the chart.";
   if (article.title.includes("迁移宫")) return "The travel palace also means platforms, markets, and life outside the familiar setting. That is why some charts grow only after movement or relocation.";
-  return "For English readers, the useful move is to name the life area first, then connect the pattern to practical choices instead of treating one symbol as a fixed prediction.";
+  const hubDefaults = englishHubDefaults(article);
+  if (hubDefaults?.meaning) return hubDefaults.meaning;
+  return "Name the life area first, then connect the pattern to practical choices instead of treating one symbol as a fixed prediction.";
 }
 
 function englishMethod(article) {
@@ -1089,7 +1140,64 @@ function englishMethod(article) {
   if (article.title.includes("六煞")) return "Read the main palace first, then the opposite palace, then timing. Lone malefics become much clearer when you track where the first pressure lands and where the second reaction follows.";
   if (article.title.includes("迁移宫")) return "Do not read movement as travel only. Compare the outside-world palace with the Life Palace and Career Palace to see whether a bigger stage strengthens the chart or simply adds stress.";
   if (article.title.includes("入正位")) return "Do not judge one star alone. Ask whether it is in the palace that matches its function, then test whether the surrounding palaces support that reading in real life.";
-  return "Do not judge one star or one palace alone. Look at the main palace, the opposite palace, the career and wealth structure, and whether the chart shows stable support or only pressure. A strong pattern needs a place to work; a weak pattern needs rules, limits, and practical correction.";
+  const hubDefaults = englishHubDefaults(article);
+  if (hubDefaults?.method) return hubDefaults.method;
+  return "Do not judge one star or one palace alone. Look at the main palace, the opposite palace, and the surrounding structure before you name the outcome.";
+}
+
+function englishHubDefaults(article) {
+  switch (topicHubFor(article).key) {
+    case "learning":
+      return {
+        lead: "Read this topic as a chart-reading method first: define the question, identify the palace, and only then decide what the symbols are actually saying.",
+        meaning: "Method articles are about reading order. They keep the chart concrete by separating the life area, the supporting structure, and the trigger that turns a possibility into a real event.",
+        method: "Start with the main palace, then the opposite palace, then the triad or timing layer that completes the picture. That order prevents overreading one star or one phrase."
+      };
+    case "palaces":
+      return {
+        lead: "This topic makes sense only after the palace boundary is clear. The palace tells you where the pressure lands before the stars tell you how it behaves.",
+        meaning: "Palace-based readings are about life area first: family, money, partnership, career, health, or the outside world. The same star changes meaning once the palace changes.",
+        method: "Anchor the reading in the palace, compare the opposite palace, then test whether the surrounding structure supports, delays, or redirects the result."
+      };
+    case "transformations":
+      return {
+        lead: "A transformation star is never just a label. It shows where reputation, authority, resources, or blockage become active in a specific life area.",
+        meaning: "These topics are best read as moving forces, not personality tags. The practical question is where the change lands and whether it opens a path, adds responsibility, or creates friction.",
+        method: "Locate the transformation star first, then compare life, wealth, career, and timing so you can separate symbolic activation from real-world payoff."
+      };
+    case "main-stars":
+      return {
+        lead: "A main star only becomes useful when the palace and the surrounding structure tell you what role it is actually performing in real life.",
+        meaning: "Main-star articles are about applied function: status, discipline, support, appetite, pressure, or execution. The star gives the tone, but the palace decides where that tone shows up.",
+        method: "Read the main star with its palace, the opposite palace, and the money-or-career line that carries it into lived results."
+      };
+    case "helper-malice":
+      return {
+        lead: "Support stars and malefics rarely act alone. They usually change the pace, cost, or social texture of a palace that already has a main theme.",
+        meaning: "These patterns are less about instant good or bad luck and more about how help, strain, delay, conflict, or speed enters an existing structure.",
+        method: "Name the base palace first, then ask whether the added star brings assistance, volatility, timing pressure, or a higher cost of execution."
+      };
+    case "case-patterns":
+      return {
+        lead: "A named pattern is only worth using after you confirm that the structure really forms. The label comes last, not first.",
+        meaning: "Pattern articles separate a famous phrase from its working conditions. A chart earns the pattern only when brightness, palace position, and support all line up.",
+        method: "Confirm the structure, test whether the palace placement is strong enough, then decide whether the pattern becomes wealth, authority, relationship strain, or just partial resemblance."
+      };
+    case "cycles":
+      return {
+        lead: "Timing topics work best when you separate the natal base from the temporary window that is currently switched on.",
+        meaning: "A strong cycle can lift a modest chart, and a rough cycle can expose the weak point of an otherwise good one. Timing tells you when a theme becomes visible and what it costs.",
+        method: "Read the natal structure first, then layer the ten-year or annual trigger on top of it so you can tell a permanent tendency from a temporary phase."
+      };
+    case "money-career":
+      return {
+        lead: "Money and career topics become clearer once you separate ownership, authority, cash flow, and platform from one another.",
+        meaning: "These charts often show who controls resources, who carries responsibility, and where income enters before they show personal wealth in a simple way.",
+        method: "Compare the Life, Wealth, Career, and Travel palaces so you can see whether the result comes from title, business route, outside markets, or institutional responsibility."
+      };
+    default:
+      return null;
+  }
 }
 
 function englishFallbackExamples(article) {
