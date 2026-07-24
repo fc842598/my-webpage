@@ -16,6 +16,7 @@
   var HEALTH_PRODUCT_NAME = "阅天综合会员";
   var HEALTH_PRODUCT_AMOUNT = "19.90";
   var HEALTH_PAYPAL_AMOUNT = "2.99";
+  var ALIPAY_CHECKOUT_ENABLED = false;
   var PAGE_IDS = ["home", "assessment", "report", "chat", "member"];
   var DEFAULT_API_BASE = "https://api.yuetianai.com";
   var HEALTH_PAGE_TITLE = "AI中医体质分析 - 体质自评报告与健康追问";
@@ -1249,13 +1250,14 @@
   }
 
   function renderPayment() {
-    var hideMobileAlipay = isMobileBrowser();
+    var payRow = $(".yl-pay-row");
+    if (payRow) payRow.classList.toggle("is-alipay-disabled", !ALIPAY_CHECKOUT_ENABLED);
     $all(".yl-pay-method").forEach(function (button) {
       var provider = button.dataset.provider || "wechat";
       var meta = getProviderMeta(provider);
       var label = getProviderLabel(provider);
       var detail = getProviderMethodDetail(provider);
-      button.hidden = hideMobileAlipay && provider === "alipay";
+      button.hidden = !ALIPAY_CHECKOUT_ENABLED && provider === "alipay";
       button.classList.toggle("is-active", paymentState.provider === provider);
       button.disabled = paymentState.loading || paymentState.status === "pending" || !meta.enabled;
       button.textContent = meta.enabled ? label : label + "未配置";

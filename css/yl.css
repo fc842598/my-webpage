@@ -2617,6 +2617,10 @@ html.yl-unified-checkout .yl-pay-row {
   gap: 16px;
 }
 
+html.yl-unified-checkout .yl-pay-row.is-alipay-disabled {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
 html.yl-unified-checkout .yl-pay-method {
   position: relative;
   display: grid;

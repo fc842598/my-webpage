@@ -41,10 +41,10 @@
   <meta name="twitter:image" content="https://yuetianai.com/images/health/constitution-report-hero-v8.png">
   <meta name="theme-color" content="#f8f2e8">
   <link rel="icon" href="/images/wentian-prototype-assets/wentian-brand-logo-ai-gold-v1.webp" type="image/webp">
-  <link rel="stylesheet" href="/css/yl.css?v=20260716-hide-mobile-alipay-v1">
+  <link rel="stylesheet" href="/css/yl.css?v=20260724-hide-alipay-v1">
   <script src="/js/config.js?v=20260710-api-origin-lock-v1"></script>
   <script defer src="/vendor/qrcodejs/qrcode.min.js?v=20260521-local-vendor"></script>
-  <script defer src="/js/yl.js?v=20260724-auth-refresh-v1"></script>
+  <script defer src="/js/yl.js?v=20260724-hide-alipay-v1"></script>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -331,7 +331,7 @@
         </div>
         <div class="yl-pay-row" aria-label="支付方式">
           <button type="button" class="yl-pay-method is-active" data-provider="wechat">微信支付</button>
-          <button type="button" class="yl-pay-method" data-provider="alipay">支付宝</button>
+          <button type="button" class="yl-pay-method" data-provider="alipay" hidden>支付宝</button>
           <button type="button" class="yl-pay-method" data-provider="paypal">PayPal</button>
         </div>
         <button class="yl-btn yl-btn-primary" type="button" id="ylOpenPayBtn">确认开通 ¥19.90</button>
