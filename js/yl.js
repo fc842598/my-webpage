@@ -8,6 +8,7 @@
   var FREE_ASK_LIMIT = 8;
   var MEMBER_ASK_LIMIT = 80;
   var AUTH_SESSION_KEY = "wentian-app-auth-session-v1";
+  var AUTH_REFRESH_SKEW_MS = 60 * 1000;
   var PAYMENT_HANDOFF_KEY = "yuetian-payment-handoff-v1";
   var MEMBER_RETURN_KEY = "yuetian-member-return-v1";
   var MEMBER_RETURN_TTL_MS = 2 * 60 * 60 * 1000;
@@ -202,6 +203,7 @@
     tone: "",
     message: ""
   };
+  var authRefreshPromise = null;
   var memberCheckoutContext = null;
 
   function $(selector) {
@@ -264,9 +266,13 @@
     }
   }
 
-  function getAuthToken() {
-    var session = readAuthSession();
-    return session && session.access_token ? session.access_token : "";
+  function clearHealthAuthSession() {
+    try { localStorage.removeItem(AUTH_SESSION_KEY); } catch (_error) {}
+  }
+
+  function isHealthAuthSessionExpiring(session) {
+    if (!session?.expires_at) return false;
+    return Date.now() >= (Number(session.expires_at) * 1000) - AUTH_REFRESH_SKEW_MS;
   }
 
   function readPaymentHandoff() {
@@ -369,6 +375,30 @@
     return false;
   }
 
+  async function getHealthAuthSession(options) {
+    var opts = options || {};
+    var current = readAuthSession();
+    if (current && !opts.force && !isHealthAuthSessionExpiring(current)) return current;
+    if (!current?.refresh_token) return current;
+    if (authRefreshPromise) return authRefreshPromise;
+
+    authRefreshPromise = apiFetch("/api/auth/refresh", {
+      method: "POST",
+      noAuth: true,
+      body: { refreshToken: current.refresh_token }
+    }).then(function (data) {
+      if (!saveHealthAuthSession(data?.session)) throw new Error("登录状态续期失败");
+      return readAuthSession();
+    }).catch(function () {
+      clearHealthAuthSession();
+      return null;
+    }).finally(function () {
+      authRefreshPromise = null;
+    });
+
+    return authRefreshPromise;
+  }
+
   function normalizeHealthAuthError(message) {
     var text = String(message || "").trim();
     if (!text) return "登录失败，请稍后再试";
@@ -376,6 +406,11 @@
       return "密码有误，请重新输入";
     }
     return text;
+  }
+
+  function isHealthLoginRequiredError(error) {
+    return error?.status === 401
+      || /请先登录|登录已失效|invalid jwt|jwt expired/i.test(String(error?.message || ""));
   }
 
   function getHealthApiBase() {
@@ -411,7 +446,8 @@
     var opts = options || {};
     var headers = Object.assign({ "Content-Type": "application/json" }, opts.headers || {});
     headers["X-Wentian-Client-Id"] = getHealthClientId();
-    var token = opts.noAuth ? "" : getAuthToken();
+    var authSession = opts.noAuth ? null : await getHealthAuthSession();
+    var token = authSession?.access_token || "";
     if (token) headers.Authorization = "Bearer " + token;
     var paymentHandoff = opts.noAuth ? "" : readPaymentHandoff();
     if (paymentHandoff) headers["X-Wentian-Payment-Handoff"] = paymentHandoff;
@@ -432,9 +468,17 @@
     if (response.status === 401 && paymentHandoff) {
       try { sessionStorage.removeItem(PAYMENT_HANDOFF_KEY); } catch (_error) {}
     }
+    if (response.status === 401 && !opts.noAuth && !opts.authRetried && readAuthSession()?.refresh_token) {
+      var refreshedSession = await getHealthAuthSession({ force: true });
+      if (refreshedSession?.access_token) {
+        return apiFetch(path, Object.assign({}, opts, { authRetried: true }));
+      }
+    }
+    if (response.status === 401 && !opts.noAuth && token) clearHealthAuthSession();
     if (!response.ok || data.error) {
       var requestError = new Error(data.error || "服务暂时不可用");
       if (data.code) requestError.code = data.code;
+      requestError.status = response.status;
       throw requestError;
     }
     return data;
@@ -1308,10 +1352,13 @@
     if (loginButton) loginButton.textContent = healthAuthState.loading ? "正在登录..." : "登录并继续支付";
   }
 
-  function openHealthAuthPanel() {
+  function openHealthAuthPanel(message) {
+    var loginMessage = message || "请先登录，登录成功后留在本页继续付款。";
     healthAuthState.panelOpen = true;
+    healthAuthState.message = loginMessage;
+    healthAuthState.tone = message ? "error" : "";
     paymentState.status = "login";
-    paymentState.message = "登录成功后留在本页继续付款。";
+    paymentState.message = loginMessage;
     renderPayment();
     window.setTimeout(function () {
       var panel = $("#ylHealthAuthPanel");
@@ -1319,6 +1366,15 @@
       var input = $("#ylHealthAuthAccount");
       if (input) input.focus({ preventScroll: true });
     }, 30);
+  }
+
+  function showHealthLoginRequired() {
+    clearHealthAuthSession();
+    paymentState.orderNo = "";
+    paymentState.payUrl = "";
+    paymentState.payMethod = "";
+    setPayHint("");
+    openHealthAuthPanel("登录状态已失效，请重新登录后继续支付。");
   }
 
   async function submitHealthAuth(mode) {
@@ -1466,9 +1522,13 @@
         : "请先复制链接，再打开微信，把链接发给自己并点开完成支付。";
       setPayHint("点开后直接拉起微信支付，无需重新登录；链接1小时内有效。");
     } catch (error) {
-      paymentState.status = "error";
-      paymentState.message = error.message || "微信支付链接生成失败";
-      setPayHint("请稍后重试，或改用支付宝。");
+      if (isHealthLoginRequiredError(error)) {
+        showHealthLoginRequired();
+      } else {
+        paymentState.status = "error";
+        paymentState.message = error.message || "微信支付链接生成失败";
+        setPayHint("请稍后重试，或改用支付宝。");
+      }
     } finally {
       paymentState.loading = false;
       renderPayment();
@@ -1607,7 +1667,9 @@
         }
       }
     } catch (error) {
-      if (paymentState.provider === "alipay" && isAlipayPermissionIssue(error)) {
+      if (isHealthLoginRequiredError(error)) {
+        showHealthLoginRequired();
+      } else if (paymentState.provider === "alipay" && isAlipayPermissionIssue(error)) {
         paymentState.status = "error";
         paymentState.message = "支付宝二维码生成失败，请稍后重试。";
         setPayHint("支付方式仍为支付宝，不会自动切换其他渠道。");
