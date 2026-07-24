@@ -1307,9 +1307,9 @@
       var showLink = !!paymentState.payUrl && !paymentState.mockMode && isRedirectPayment();
       link.hidden = !showLink;
       link.href = paymentState.payUrl || "#";
-      link.textContent = isRedirectPayment()
-        ? "打开" + getProviderLabel(paymentState.provider)
-        : "支付链接备用打开";
+      if (paymentState.provider === "paypal") link.textContent = "立即打开 PayPal 支付";
+      else if (isRedirectPayment()) link.textContent = "打开" + getProviderLabel(paymentState.provider);
+      else link.textContent = "支付链接备用打开";
     }
 
     var refresh = $("#ylRefreshPayBtn");
