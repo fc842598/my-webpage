@@ -13980,6 +13980,10 @@ html[lang="en"] .wentian-mb-advice section {
   backdrop-filter: blur(10px);
 }
 
+.wentian-refund-modal[hidden] {
+  display: none;
+}
+
 .wentian-refund-sheet {
   position: relative;
   width: min(350px, calc(100vw - 28px));
