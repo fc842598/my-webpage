@@ -12210,6 +12210,9 @@ async function hydrateWentianOrders(options = {}) {
   try {
     const data = await wentianFetchJson("/api/payments/refunds");
     wentianOrderState.orders = Array.isArray(data.orders) ? data.orders : [];
+    if (wentianRefundTicketState.open && data.policyText) {
+      wentianRefundTicketState.message = data.policyText;
+    }
     wentianOrderState.loaded = true;
   } catch (error) {
     wentianOrderState.error = error.message || "订单读取失败";
@@ -12242,6 +12245,14 @@ function syncWentianRefundTicketFromOrder(order = getWentianRefundSelectedOrder(
   wentianRefundTicketState.orderNo = order.orderNo || "";
   wentianRefundTicketState.paymentProvider = ["wechat", "alipay", "paypal"].includes(order.provider) ? order.provider : wentianRefundTicketState.paymentProvider;
   wentianRefundTicketState.paidDate = formatWentianDateInput(order.paidAt || order.createdAt) || wentianRefundTicketState.paidDate;
+}
+
+function getWentianRefundOrderStatusLabel(order) {
+  if (order?.status === "paid") return "已支付";
+  if (order?.status === "pending") return "待确认";
+  if (order?.status === "created") return "刚创建";
+  if (order?.status === "refunded") return "已退款";
+  return order?.status || "处理中";
 }
 
 function ensureWentianRefundTicketModal() {
@@ -12332,10 +12343,10 @@ function renderWentianRefundTicketModal() {
     orderSelect.innerHTML = orders.length
       ? orders.map((order) => {
         const disabled = order.canSubmitTicket ? "" : " disabled";
-        const tag = order.ticketNo ? " · 工单处理中" : "";
-        return `<option value="${escapeHtml(order.orderNo)}"${disabled}>${escapeHtml(order.productName || "会员订单")} · ${formatWentianPaymentAmount(order.amountYuan || "", order.currency || "CNY")}${tag}</option>`;
+        const status = order.ticketNo ? "工单处理中" : getWentianRefundOrderStatusLabel(order);
+        return `<option value="${escapeHtml(order.orderNo)}"${disabled}>${escapeHtml(order.productName || "会员订单")} · ${formatWentianPaymentAmount(order.amountYuan || "", order.currency || "CNY")} · ${escapeHtml(status)}</option>`;
       }).join("")
-      : '<option value="">暂无可提交工单的订单</option>';
+      : '<option value="">暂无支付订单</option>';
     orderSelect.value = wentianRefundTicketState.orderNo || "";
   }
   const provider = modal.querySelector("#wentian-refund-provider");
@@ -12372,13 +12383,19 @@ async function openWentianRefundTicket() {
   }
   wentianRefundTicketState.open = true;
   wentianRefundTicketState.error = "";
-  wentianRefundTicketState.message = "退款需上传当时支付截图，后台审核后进入对应支付渠道处理，7个工作日内完成。";
+  wentianRefundTicketState.message = "退款需上传当时支付截图；订单仍在待确认时，也可提交截图人工核验。后台审核后进入对应支付渠道处理，7个工作日内完成。";
   if (!wentianRefundTicketState.contact) wentianRefundTicketState.contact = getWentianRefundContactDefault();
   renderWentianRefundTicketModal();
   await hydrateWentianOrders({ force: true });
-  const first = (wentianOrderState.orders || []).find((order) => order.canSubmitTicket) || wentianOrderState.orders[0] || null;
-  if (!wentianRefundTicketState.orderNo && first) syncWentianRefundTicketFromOrder(first);
-  if (!wentianOrderState.orders.length) wentianRefundTicketState.error = "当前账号暂无已支付订单。";
+  const orders = wentianOrderState.orders || [];
+  const first = orders.find((order) => order.canSubmitTicket) || orders[0] || null;
+  const selected = getWentianRefundSelectedOrder();
+  if ((!selected || !selected.canSubmitTicket) && first) syncWentianRefundTicketFromOrder(first);
+  if (wentianOrderState.error) {
+    wentianRefundTicketState.error = wentianOrderState.error;
+  } else if (!orders.length) {
+    wentianRefundTicketState.error = "当前账号暂无支付订单。";
+  }
   renderWentianRefundTicketModal();
 }
 
@@ -13162,7 +13179,7 @@ function sourceOrderRecordsScreen() {
         : orders.length
           ? orders.map((order, index) => {
             const y = 138 + index * 92;
-            const status = order.status === "paid" ? "已支付" : order.status === "refunded" ? "已退款" : order.status || "处理中";
+            const status = getWentianRefundOrderStatusLabel(order);
             const paidAt = formatWentianMemberDate(order.paidAt || order.createdAt) || "未完成";
             return `
               ${figBox(`wt48-order-${index}`, 24, y, 342, 76, "", "border:1px solid #eadfce;border-radius:16px;background:#fffdf8;box-shadow:0 7px 16px rgba(70,45,25,.06);")}
