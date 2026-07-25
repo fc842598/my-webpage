@@ -17,7 +17,7 @@
   var HEALTH_PRODUCT_AMOUNT = "19.90";
   var HEALTH_PAYPAL_AMOUNT = "2.99";
   var ALIPAY_CHECKOUT_VISIBLE = true;
-  var ALIPAY_CHECKOUT_ENABLED = false;
+  var ALIPAY_CHECKOUT_ENABLED = true;
   var PAGE_IDS = ["home", "assessment", "report", "chat", "member"];
   var DEFAULT_API_BASE = "https://api.yuetianai.com";
   var HEALTH_PAGE_TITLE = "AI中医体质分析 - 体质自评报告与健康追问";
