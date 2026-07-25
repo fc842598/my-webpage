@@ -81,6 +81,21 @@ const topicHubs = [
   }
 ];
 const topicHubFiles = new Set(topicHubs.map((hub) => hub.file));
+const externalCollections = [
+  {
+    key: "ai-search-qa",
+    zhFile: "ai-suanming-search-qa.html",
+    enFile: "ai-fortune-telling-search-qa.html",
+    zhName: "AI算命搜索问答专题",
+    enName: "AI Fortune-Telling Q&A Hub",
+    desc: "围绕靠谱不靠谱、免费边界、隐私、出生时间误差、手机体验与紫微/八字/六爻用途整理的搜索问答专题。"
+  }
+];
+const specialChineseFiles = new Set([
+  ...topicHubs.map((hub) => hub.file),
+  ...externalCollections.map((item) => item.zhFile)
+]);
+const specialEnglishFiles = new Set(externalCollections.map((item) => item.enFile));
 
 if (args.rebuild) {
   regenerateChineseIndex();
@@ -1318,7 +1333,7 @@ function pickTitle(html) {
 
 function allChineseArticles() {
   return readdirSync(path.join(root, "articles"))
-    .filter((file) => file.endsWith(".html") && file !== "index.html" && !topicHubFiles.has(file))
+    .filter((file) => file.endsWith(".html") && file !== "index.html" && !specialChineseFiles.has(file))
     .map((file) => parseArticleFile(path.join(root, "articles", file)))
     .sort((a, b) => b.published.localeCompare(a.published) || a.headline.localeCompare(b.headline, "zh-CN"));
 }
@@ -1327,7 +1342,7 @@ function allEnglishArticles() {
   const enDir = path.join(root, "articles", "en");
   if (!existsSync(enDir)) return [];
   return readdirSync(enDir)
-    .filter((file) => file.endsWith(".html") && file !== "index.html")
+    .filter((file) => file.endsWith(".html") && file !== "index.html" && !specialEnglishFiles.has(file))
     .map((file) => parseArticleFile(path.join(enDir, file), "articles/en"))
     .sort((a, b) => b.published.localeCompare(a.published) || a.headline.localeCompare(b.headline));
 }
@@ -1369,6 +1384,14 @@ ${items.map((article, index) => `          <article class="article-card" data-in
               <h3>${escapeHtml(hub.shortName)}</h3>
               <p>${escapeHtml(hub.desc)}</p>
               <a class="card-link" href="${hub.file}">进入${escapeHtml(hub.shortName)}</a>
+            </div>
+          </article>`).join("\n");
+  const externalCards = externalCollections.map((item, index) => `          <article class="article-card" data-index="${String(index + 1).padStart(2, "0")}">
+            <div class="card-body">
+              <div class="card-meta"><span class="tag">站内专题</span><span>中英双语</span></div>
+              <h3>${escapeHtml(item.zhName)}</h3>
+              <p>${escapeHtml(item.desc)}</p>
+              <a class="card-link" href="${item.zhFile}">进入专题</a>
             </div>
           </article>`).join("\n");
 
@@ -1432,6 +1455,16 @@ ${items.map((article, index) => `          <article class="article-card" data-in
           </summary>
           <div class="article-list">
 ${hubCards}
+          </div>
+        </details>
+        <details class="article-group" open>
+          <summary class="section-head">
+            <h2>站内问答专题</h2>
+            <span class="section-desc">如果你搜的是 AI 算命、免费边界、隐私和准确性，这里集中整理。</span>
+            <span class="section-toggle"><span>${externalCollections.length} 组</span></span>
+          </summary>
+          <div class="article-list">
+${externalCards}
           </div>
         </details>
 ${groups}
@@ -1662,17 +1695,31 @@ function mainSitemap(articles) {
   urls.add(`${site}/articles/`);
   urls.add(`${site}/feed.xml`);
   for (const hub of topicHubs) urls.add(`${site}/articles/${hub.file}`);
+  for (const item of externalCollections) {
+    urls.add(`${site}/articles/${item.zhFile}`);
+    urls.add(`${site}/articles/en/${item.enFile}`);
+  }
   for (const article of articles) urls.add(article.url);
   return sitemapXml([...urls], articles);
 }
 
 function articlesSitemap(articles) {
-  const urls = [`${site}/articles/`, ...topicHubs.map((hub) => `${site}/articles/${hub.file}`), ...articles.map((article) => article.url)];
+  const urls = [
+    `${site}/articles/`,
+    ...topicHubs.map((hub) => `${site}/articles/${hub.file}`),
+    ...externalCollections.map((item) => `${site}/articles/${item.zhFile}`),
+    ...articles.map((article) => article.url)
+  ];
   return sitemapXml([...new Set(urls)], articles);
 }
 
 function enSitemap(articles) {
-  const urls = [`${site}/articles/en/`, `${site}/articles/en/feed.xml`, ...articles.map((article) => article.url)];
+  const urls = [
+    `${site}/articles/en/`,
+    `${site}/articles/en/feed.xml`,
+    ...externalCollections.map((item) => `${site}/articles/en/${item.enFile}`),
+    ...articles.map((article) => article.url)
+  ];
   return sitemapXml(urls, articles);
 }
 
@@ -1698,6 +1745,14 @@ function enIndex(articles) {
               <h3>${escapeHtml(article.headline)}</h3>
               <p>${escapeHtml(article.description)}</p>
               <a class="card-link" href="${article.rel}">Read article</a>
+            </div>
+          </article>`).join("\n");
+  const externalCards = externalCollections.map((item, index) => `          <article class="article-card" data-index="${String(index + 1).padStart(2, "0")}">
+            <div class="card-body">
+              <div class="card-meta"><span class="tag">Featured Hub</span><span>Bilingual</span></div>
+              <h3>${escapeHtml(item.enName)}</h3>
+              <p>${escapeHtml(item.desc)}</p>
+              <a class="card-link" href="${item.enFile}">Open hub</a>
             </div>
           </article>`).join("\n");
   const collectionJsonLd = {
@@ -1752,6 +1807,16 @@ function enIndex(articles) {
   <main>
     <section class="series" aria-labelledby="en-article-index">
       <div class="container">
+        <details class="article-group" open>
+          <summary class="section-head">
+            <h2>Featured Topic Hubs</h2>
+            <span class="section-desc">Search-driven guides for reliability, privacy, free vs paid, and practical use.</span>
+            <span class="section-toggle"><span>${externalCollections.length} Hub</span></span>
+          </summary>
+          <div class="article-list">
+${externalCards}
+          </div>
+        </details>
         <details class="article-group" open>
           <summary class="section-head">
             <h1 id="en-article-index">Learn Zi Wei Dou Shu in Plain English</h1>
