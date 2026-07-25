@@ -8,7 +8,7 @@
     (function () {
       try {
         var query = new URLSearchParams(window.location.search || "");
-        var match = (window.location.hash || "").match(/^#member\?pay_handoff=(v1\.[A-Za-z0-9_-]+)$/);
+        var match = (window.location.hash || "").match(/^#member\?pay_handoff=(v2\.[A-Za-z0-9_-]+)$/);
         var isWechat = /MicroMessenger/i.test(navigator.userAgent || "");
         var isWechatPaymentReturn = !!(query.get("code") && query.get("state"));
         var isUnifiedCheckout = /^#member(?:\?|$)/.test(window.location.hash || "") || !!query.get("source");
@@ -18,7 +18,7 @@
         }
         if (isWechat && (match || isWechatPaymentReturn)) document.documentElement.classList.add("yl-payment-boot");
         if (match && match[1].length <= 2048) {
-          sessionStorage.setItem("yuetian-payment-handoff-v1", match[1]);
+          sessionStorage.setItem("yuetian-payment-handoff-v2", match[1]);
           window.__YUETIAN_PAYMENT_HANDOFF_CAPTURED__ = true;
           window.history.replaceState({}, document.title, window.location.pathname + window.location.search + "#member");
         }
@@ -41,10 +41,10 @@
   <meta name="twitter:image" content="https://yuetianai.com/images/health/constitution-report-hero-v8.png">
   <meta name="theme-color" content="#f8f2e8">
   <link rel="icon" href="/images/wentian-prototype-assets/wentian-brand-logo-ai-gold-v1.webp" type="image/webp">
-  <link rel="stylesheet" href="/css/yl.css?v=20260725-payment-close-v1">
+  <link rel="stylesheet" href="/css/yl.css?v=20260725-payment-login-confirm-v1">
   <script src="/js/config.js?v=20260710-api-origin-lock-v1"></script>
   <script defer src="/vendor/qrcodejs/qrcode.min.js?v=20260521-local-vendor"></script>
-  <script defer src="/js/yl.js?v=20260725-payment-close-v1"></script>
+  <script defer src="/js/yl.js?v=20260725-payment-login-confirm-v1"></script>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -308,8 +308,8 @@
         </div>
         <form class="yl-health-auth" id="ylHealthAuthPanel" hidden>
           <div class="yl-health-auth-head">
-            <strong>登录账号</strong>
-            <p>登录成功后留在本页继续付款</p>
+            <strong>确认本次付款账号</strong>
+            <p>为防止会员开错账号，每次付款前都要重新登录确认</p>
           </div>
           <label>
             <span class="sr-only">手机号或邮箱</span>
@@ -320,18 +320,18 @@
             <input id="ylHealthAuthPassword" type="password" autocomplete="current-password" placeholder="密码" aria-label="密码">
           </label>
           <div class="yl-health-auth-actions">
-            <button type="button" class="yl-btn yl-btn-primary" id="ylHealthLoginBtn">登录并继续支付</button>
+            <button type="button" class="yl-btn yl-btn-primary" id="ylHealthLoginBtn">登录确认并继续支付</button>
             <p class="yl-health-register-prompt">没有账号？<button type="button" id="ylHealthRegisterBtn">快速注册</button></p>
           </div>
           <p class="yl-health-auth-status" id="ylHealthAuthStatus" role="status" aria-live="polite"></p>
         </form>
         <div class="yl-health-account" id="ylHealthAccount" aria-label="当前付款账号" hidden>
           <div>
-            <span>当前付款账号</span>
+            <span>本次已确认账号</span>
             <strong id="ylHealthAccountLabel">已登录</strong>
             <small>付款成功后，会员将自动开通到这个账号</small>
           </div>
-          <button type="button" id="ylHealthSwitchAccountBtn">切换账号</button>
+          <button type="button" id="ylHealthSwitchAccountBtn">换一个账号重新确认</button>
         </div>
         <div class="yl-pay-heading">
           <strong>选择支付方式</strong>

@@ -9,7 +9,7 @@
   var MEMBER_ASK_LIMIT = 80;
   var AUTH_SESSION_KEY = "wentian-app-auth-session-v1";
   var AUTH_REFRESH_SKEW_MS = 60 * 1000;
-  var PAYMENT_HANDOFF_KEY = "yuetian-payment-handoff-v1";
+  var PAYMENT_HANDOFF_KEY = "yuetian-payment-handoff-v2";
   var MEMBER_RETURN_KEY = "yuetian-member-return-v1";
   var MEMBER_RETURN_TTL_MS = 2 * 60 * 60 * 1000;
   var HEALTH_PRODUCT_KEY = "monthly_member";
@@ -207,6 +207,7 @@
     message: ""
   };
   var authRefreshPromise = null;
+  var paymentConfirmationToken = "";
   var memberCheckoutContext = null;
 
   function $(selector) {
@@ -270,6 +271,7 @@
   }
 
   function clearHealthAuthSession() {
+    clearPaymentConfirmation();
     try { localStorage.removeItem(AUTH_SESSION_KEY); } catch (_error) {}
   }
 
@@ -281,10 +283,33 @@
   function readPaymentHandoff() {
     try {
       var token = sessionStorage.getItem(PAYMENT_HANDOFF_KEY) || "";
-      return /^v1\.[A-Za-z0-9_-]+$/.test(token) && token.length <= 2048 ? token : "";
+      return isValidPaymentConfirmationToken(token) ? token : "";
     } catch (_error) {
       return "";
     }
+  }
+
+  function isValidPaymentConfirmationToken(value) {
+    var token = String(value || "").trim();
+    return /^v2\.[A-Za-z0-9_-]+$/.test(token) && token.length <= 2048;
+  }
+
+  function getPaymentConfirmationToken() {
+    return isValidPaymentConfirmationToken(paymentConfirmationToken)
+      ? paymentConfirmationToken
+      : readPaymentHandoff();
+  }
+
+  function setPaymentConfirmationToken(value) {
+    var token = String(value || "").trim();
+    if (!isValidPaymentConfirmationToken(token)) return false;
+    paymentConfirmationToken = token;
+    return true;
+  }
+
+  function clearPaymentConfirmation() {
+    paymentConfirmationToken = "";
+    try { sessionStorage.removeItem(PAYMENT_HANDOFF_KEY); } catch (_error) {}
   }
 
   function normalizeMemberReturnPath(value) {
@@ -349,9 +374,9 @@
 
   function capturePaymentHandoff() {
     try {
-      var match = (window.location.hash || "").match(/^#member\?pay_handoff=(v1\.[A-Za-z0-9_-]+)$/);
+      var match = (window.location.hash || "").match(/^#member\?pay_handoff=(v2\.[A-Za-z0-9_-]+)$/);
       var token = match?.[1] || "";
-      if (!/^v1\.[A-Za-z0-9_-]+$/.test(token) || token.length > 2048) return false;
+      if (!isValidPaymentConfirmationToken(token)) return false;
       sessionStorage.setItem(PAYMENT_HANDOFF_KEY, token);
       window.history.replaceState({}, document.title, window.location.pathname + window.location.search + "#member");
       return true;
@@ -361,7 +386,7 @@
   }
 
   function hasHealthPaymentAuth() {
-    return !!(readAuthSession() || readPaymentHandoff());
+    return !!getPaymentConfirmationToken();
   }
 
   function buildPaymentHandoffUrl(token) {
@@ -452,7 +477,7 @@
     var authSession = opts.noAuth ? null : await getHealthAuthSession();
     var token = authSession?.access_token || "";
     if (token) headers.Authorization = "Bearer " + token;
-    var paymentHandoff = opts.noAuth ? "" : readPaymentHandoff();
+    var paymentHandoff = opts.noAuth ? "" : getPaymentConfirmationToken();
     if (paymentHandoff) headers["X-Wentian-Payment-Handoff"] = paymentHandoff;
     var url = /^https?:\/\//i.test(path) ? path : getHealthApiBase() + path;
     var response = await fetch(url, {
@@ -469,15 +494,15 @@
       data = { error: text || "服务暂时不可用" };
     }
     if (response.status === 401 && paymentHandoff) {
-      try { sessionStorage.removeItem(PAYMENT_HANDOFF_KEY); } catch (_error) {}
+      clearPaymentConfirmation();
     }
-    if (response.status === 401 && !opts.noAuth && !opts.authRetried && readAuthSession()?.refresh_token) {
+    if (response.status === 401 && !paymentHandoff && !opts.noAuth && !opts.authRetried && readAuthSession()?.refresh_token) {
       var refreshedSession = await getHealthAuthSession({ force: true });
       if (refreshedSession?.access_token) {
         return apiFetch(path, Object.assign({}, opts, { authRetried: true }));
       }
     }
-    if (response.status === 401 && !opts.noAuth && token) clearHealthAuthSession();
+    if (response.status === 401 && !paymentHandoff && !opts.noAuth && token) clearHealthAuthSession();
     if (!response.ok || data.error) {
       var requestError = new Error(data.error || "服务暂时不可用");
       if (data.code) requestError.code = data.code;
@@ -1361,9 +1386,13 @@
       && (healthAuthState.panelOpen || pageFromHash() === "member");
     panel.hidden = !shouldShow;
     var accountPanel = $("#ylHealthAccount");
-    if (accountPanel) accountPanel.hidden = !authSession || pageFromHash() !== "member";
+    if (accountPanel) accountPanel.hidden = !authSession || !hasHealthPaymentAuth() || pageFromHash() !== "member";
     var accountLabel = $("#ylHealthAccountLabel");
     if (accountLabel && authSession) accountLabel.textContent = formatHealthAccountLabel(authSession.user);
+    var accountInput = $("#ylHealthAuthAccount");
+    if (shouldShow && accountInput && !accountInput.value && authSession?.user) {
+      accountInput.value = getHealthAuthAccountValue(authSession.user);
+    }
     var memberCard = $(".yl-member-card");
     if (memberCard) memberCard.classList.toggle("is-login-required", shouldShow);
     var status = $("#ylHealthAuthStatus");
@@ -1376,7 +1405,7 @@
       if (button) button.disabled = healthAuthState.loading;
     });
     var loginButton = $("#ylHealthLoginBtn");
-    if (loginButton) loginButton.textContent = healthAuthState.loading ? "正在登录..." : "登录并继续支付";
+    if (loginButton) loginButton.textContent = healthAuthState.loading ? "正在确认账号..." : "登录确认并继续支付";
   }
 
   function maskHealthPhone(value) {
@@ -1404,10 +1433,19 @@
     return email ? maskHealthEmail(email) : "已登录账号";
   }
 
+  function getHealthAuthAccountValue(user) {
+    var phone = String(user?.user_metadata?.phone || "").replace(/\D/g, "");
+    if (phone) return phone;
+    var email = String(user?.user_metadata?.profile_email || user?.email || "").trim();
+    if (/^phone_\d+@yuetianai\.local$/i.test(email)) {
+      return email.replace(/^phone_|@yuetianai\.local$/gi, "");
+    }
+    return email;
+  }
+
   function switchHealthPaymentAccount() {
     if (paymentState.orderNo && !window.confirm("当前订单仍绑定现在的账号。确定放弃当前订单并切换账号吗？")) return;
     clearHealthAuthSession();
-    try { sessionStorage.removeItem(PAYMENT_HANDOFF_KEY); } catch (_error) {}
     state.quota = null;
     paymentState.orderNo = "";
     paymentState.status = "login";
@@ -1420,7 +1458,7 @@
   }
 
   function openHealthAuthPanel(message) {
-    var loginMessage = message || "请先登录，登录成功后留在本页继续付款。";
+    var loginMessage = message || "请重新输入账号和密码，确认会员要开通到哪个账号。";
     healthAuthState.panelOpen = true;
     healthAuthState.message = loginMessage;
     healthAuthState.tone = message ? "error" : "";
@@ -1436,12 +1474,12 @@
   }
 
   function showHealthLoginRequired() {
-    clearHealthAuthSession();
+    clearPaymentConfirmation();
     paymentState.orderNo = "";
     paymentState.payUrl = "";
     paymentState.payMethod = "";
     setPayHint("");
-    openHealthAuthPanel("登录状态已失效，请重新登录后继续支付。");
+    openHealthAuthPanel("本次付款账号尚未确认，请重新登录后继续支付。");
   }
 
   async function submitHealthAuth(mode) {
@@ -1487,12 +1525,15 @@
         });
       }
       if (!saveHealthAuthSession(data?.session)) throw new Error("登录状态保存失败");
+      if (!setPaymentConfirmationToken(data?.paymentHandoffToken)) {
+        throw new Error("本次付款账号确认失败，请重新登录");
+      }
       window.yuetianTrack?.(registered ? "sign_up" : "login", { method: "password", surface: "unified_member" });
       healthAuthState.panelOpen = false;
       healthAuthState.loading = false;
-      setHealthAuthStatus("登录成功，正在创建阅天综合会员订单...", "ok");
+      setHealthAuthStatus("账号已确认，正在创建阅天综合会员订单...", "ok");
       paymentState.status = "";
-      paymentState.message = "登录成功，正在创建阅天综合会员订单...";
+      paymentState.message = "账号已确认，正在创建阅天综合会员订单...";
       await hydratePaymentProduct();
       await startHealthPayment();
     } catch (error) {
@@ -1858,7 +1899,7 @@
     $("#ylPaymentCloseBtn").addEventListener("click", closeHealthPaymentPanel);
     $("#ylMockPayBtn").addEventListener("click", completeMockPayment);
     $("#ylCopyWechatLinkBtn").addEventListener("click", async function () {
-      if (readAuthSession()) {
+      if (readAuthSession() && hasHealthPaymentAuth()) {
         await createWechatPaymentHandoff();
         return;
       }
