@@ -86,9 +86,9 @@
 
 ## Git 与线上复查
 
-- Git 提交号：待推送后补充
+- Git 提交号：`a44931d0d0748799ce6a70c66a8823dab9f7b91d`
 - 推送后复查：
-  - 本地 `HEAD` 与 `origin/master` 一致：待推送后补充
-  - 中文抽查 4 篇：待推送后补充
-  - 英文抽查 4 篇：待推送后补充
-  - 专题页 / 中英文首页 / 两个 feed / sitemap：待推送后补充
+  - 本地 `HEAD` 与 `origin/master` 一致：已确认一致
+  - 中文抽查 4 篇：`ai-suanming-kaopu-ma`、`ai-suanming-yinsi-anquan-ma`、`ai-suanming-shihe-kan-ganqing-ma`、`ai-suanming-pingtai-weishenme-shoufei`
+  - 英文抽查 4 篇：`ai-suanming-kaopu-ma`、`ai-suanming-yinsi-anquan-ma`、`ai-suanming-shihe-kan-ganqing-ma`、`ai-suanming-pingtai-weishenme-shoufei`
+  - 专题页 / 中英文首页 / 两个 feed / sitemap：`ai-suanming-search-qa.html`、`ai-fortune-telling-search-qa.html`、`/articles/`、`/articles/en/`、`/feed.xml`、`/articles/en/feed.xml`、`/sitemap.xml` 均返回 `200` 且命中新链接
