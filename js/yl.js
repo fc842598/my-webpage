@@ -1339,9 +1339,14 @@
   function renderHealthAuthPanel() {
     var panel = $("#ylHealthAuthPanel");
     if (!panel) return;
+    var authSession = readAuthSession();
     var shouldShow = !hasHealthPaymentAuth()
       && (healthAuthState.panelOpen || pageFromHash() === "member");
     panel.hidden = !shouldShow;
+    var accountPanel = $("#ylHealthAccount");
+    if (accountPanel) accountPanel.hidden = !authSession || pageFromHash() !== "member";
+    var accountLabel = $("#ylHealthAccountLabel");
+    if (accountLabel && authSession) accountLabel.textContent = formatHealthAccountLabel(authSession.user);
     var memberCard = $(".yl-member-card");
     if (memberCard) memberCard.classList.toggle("is-login-required", shouldShow);
     var status = $("#ylHealthAuthStatus");
@@ -1355,6 +1360,46 @@
     });
     var loginButton = $("#ylHealthLoginBtn");
     if (loginButton) loginButton.textContent = healthAuthState.loading ? "正在登录..." : "登录并继续支付";
+  }
+
+  function maskHealthPhone(value) {
+    var digits = String(value || "").replace(/\D/g, "");
+    if (digits.length >= 7) return digits.slice(0, 3) + "****" + digits.slice(-4);
+    return digits || "已登录账号";
+  }
+
+  function maskHealthEmail(value) {
+    var email = String(value || "").trim();
+    var parts = email.split("@");
+    if (parts.length !== 2) return "已登录账号";
+    var name = parts[0];
+    var visible = name.length <= 2 ? name.slice(0, 1) : name.slice(0, 2);
+    return visible + "***@" + parts[1];
+  }
+
+  function formatHealthAccountLabel(user) {
+    var phone = user?.user_metadata?.phone || "";
+    if (phone) return maskHealthPhone(phone);
+    var email = user?.user_metadata?.profile_email || user?.email || "";
+    if (/^phone_\d+@yuetianai\.local$/i.test(email)) {
+      return maskHealthPhone(email.replace(/^phone_|@yuetianai\.local$/gi, ""));
+    }
+    return email ? maskHealthEmail(email) : "已登录账号";
+  }
+
+  function switchHealthPaymentAccount() {
+    if (paymentState.orderNo && !window.confirm("当前订单仍绑定现在的账号。确定放弃当前订单并切换账号吗？")) return;
+    clearHealthAuthSession();
+    try { sessionStorage.removeItem(PAYMENT_HANDOFF_KEY); } catch (_error) {}
+    state.quota = null;
+    paymentState.orderNo = "";
+    paymentState.status = "login";
+    paymentState.payUrl = "";
+    paymentState.payMethod = "";
+    paymentState.isMember = false;
+    paymentState.memberExpiresAt = "";
+    updateAskQuota();
+    openHealthAuthPanel("请登录要开通会员的网站账号，再继续付款。");
   }
 
   function openHealthAuthPanel(message) {
@@ -1811,6 +1856,7 @@
     $("#ylHealthRegisterBtn").addEventListener("click", function () {
       submitHealthAuth("register");
     });
+    $("#ylHealthSwitchAccountBtn").addEventListener("click", switchHealthPaymentAccount);
     $("#ylHealthAuthPanel").addEventListener("submit", function (event) {
       event.preventDefault();
       submitHealthAuth("login");

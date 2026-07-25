@@ -41,10 +41,10 @@
   <meta name="twitter:image" content="https://yuetianai.com/images/health/constitution-report-hero-v8.png">
   <meta name="theme-color" content="#f8f2e8">
   <link rel="icon" href="/images/wentian-prototype-assets/wentian-brand-logo-ai-gold-v1.webp" type="image/webp">
-  <link rel="stylesheet" href="/css/yl.css?v=20260724-show-alipay-v1">
+  <link rel="stylesheet" href="/css/yl.css?v=20260725-payment-account-v1">
   <script src="/js/config.js?v=20260710-api-origin-lock-v1"></script>
   <script defer src="/vendor/qrcodejs/qrcode.min.js?v=20260521-local-vendor"></script>
-  <script defer src="/js/yl.js?v=20260725-alipay-page-pay-v1"></script>
+  <script defer src="/js/yl.js?v=20260725-payment-account-v1"></script>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -325,6 +325,14 @@
           </div>
           <p class="yl-health-auth-status" id="ylHealthAuthStatus" role="status" aria-live="polite"></p>
         </form>
+        <div class="yl-health-account" id="ylHealthAccount" aria-label="当前付款账号" hidden>
+          <div>
+            <span>当前付款账号</span>
+            <strong id="ylHealthAccountLabel">已登录</strong>
+            <small>付款成功后，会员将自动开通到这个账号</small>
+          </div>
+          <button type="button" id="ylHealthSwitchAccountBtn">切换账号</button>
+        </div>
         <div class="yl-pay-heading">
           <strong>选择支付方式</strong>
           <span>请核对金额后付款</span>

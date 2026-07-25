@@ -1676,6 +1676,51 @@ input:focus-visible {
   font-weight: 900;
 }
 
+.yl-health-account {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  border: 1px solid rgba(71, 127, 89, 0.28);
+  border-radius: 14px;
+  background: rgba(239, 248, 241, 0.92);
+  padding: 14px 16px;
+}
+
+.yl-health-account[hidden] {
+  display: none;
+}
+
+.yl-health-account > div {
+  display: grid;
+  gap: 3px;
+}
+
+.yl-health-account span,
+.yl-health-account small {
+  color: var(--yl-muted);
+  font-size: 13px;
+}
+
+.yl-health-account strong {
+  color: var(--yl-green-dark);
+  font-size: 18px;
+}
+
+.yl-health-account button {
+  flex: 0 0 auto;
+  min-height: 42px;
+  border: 1px solid rgba(71, 127, 89, 0.42);
+  border-radius: 999px;
+  background: #fff;
+  color: var(--yl-green-dark);
+  font: inherit;
+  font-weight: 900;
+  padding: 0 18px;
+  cursor: pointer;
+}
+
 .yl-payment-panel {
   grid-column: 1 / -1;
   display: grid;
@@ -2339,6 +2384,7 @@ html.yl-unified-checkout .yl-pay-row,
 html.yl-unified-checkout #ylOpenPayBtn,
 html.yl-unified-checkout .yl-member-return,
 html.yl-unified-checkout .yl-health-auth,
+html.yl-unified-checkout .yl-health-account,
 html.yl-unified-checkout .yl-payment-panel,
 html.yl-unified-checkout .yl-pay-hint {
   grid-column: 1;
@@ -2787,8 +2833,26 @@ html.yl-unified-checkout .yl-payment-panel {
 }
 
 html.yl-unified-checkout .yl-health-auth[hidden],
+html.yl-unified-checkout .yl-health-account[hidden],
 html.yl-unified-checkout .yl-payment-panel[hidden] {
   display: none;
+}
+
+html.yl-unified-checkout .yl-health-account {
+  border-color: var(--checkout-line);
+  border-radius: 6px;
+  background: #fffaf2;
+  padding: 18px 20px;
+}
+
+html.yl-unified-checkout .yl-health-account strong {
+  color: var(--checkout-red);
+}
+
+html.yl-unified-checkout .yl-health-account button {
+  border-color: var(--checkout-line);
+  border-radius: 6px;
+  color: var(--checkout-red);
 }
 
 html.yl-unified-checkout .yl-health-auth-head strong {
@@ -3351,6 +3415,18 @@ html.yl-unified-checkout .yl-operator-contact {
     margin: 0;
     border-radius: 6px;
     padding: 20px 14px 18px;
+  }
+
+  html.yl-unified-checkout .yl-health-account {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 12px;
+    padding: 16px 14px;
+  }
+
+  html.yl-unified-checkout .yl-health-account button {
+    width: 100%;
+    min-height: 48px;
   }
 
   html.yl-unified-checkout .yl-health-auth-head strong {
