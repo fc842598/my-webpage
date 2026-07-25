@@ -1724,11 +1724,38 @@ input:focus-visible {
 .yl-payment-panel {
   grid-column: 1 / -1;
   display: grid;
+  position: relative;
   gap: 12px;
   border: 1px solid var(--yl-line-soft);
   border-radius: 18px;
   background: var(--yl-paper);
   padding: 14px;
+}
+
+.yl-payment-close {
+  position: sticky;
+  z-index: 2;
+  top: 10px;
+  display: grid;
+  width: 40px;
+  height: 40px;
+  justify-self: end;
+  margin-bottom: -40px;
+  place-items: center;
+  border: 1px solid var(--yl-line);
+  border-radius: 50%;
+  background: var(--yl-paper-strong);
+  color: var(--yl-muted);
+  font: 700 28px/1 Arial, sans-serif;
+  cursor: pointer;
+}
+
+.yl-payment-close:hover,
+.yl-payment-close:focus-visible {
+  border-color: var(--yl-green);
+  color: var(--yl-green-dark);
+  outline: 3px solid rgba(71, 127, 89, 0.15);
+  outline-offset: 2px;
 }
 
 .yl-payment-status {
@@ -2832,6 +2859,20 @@ html.yl-unified-checkout .yl-payment-panel {
   padding: 30px 40px;
 }
 
+html.yl-unified-checkout .yl-payment-close {
+  top: 14px;
+  width: 44px;
+  height: 44px;
+  margin-bottom: -44px;
+  border-color: var(--checkout-line);
+  background: var(--checkout-paper);
+  color: var(--checkout-red-dark);
+}
+
+html.yl-unified-checkout .yl-payment-status {
+  padding-inline: 30px;
+}
+
 html.yl-unified-checkout .yl-health-auth[hidden],
 html.yl-unified-checkout .yl-health-account[hidden],
 html.yl-unified-checkout .yl-payment-panel[hidden] {
@@ -3451,7 +3492,14 @@ html.yl-unified-checkout .yl-operator-contact {
   html.yl-unified-checkout .yl-payment-panel {
     width: min(340px, calc(100vw - 30px));
     border-radius: 8px;
-    padding: 26px 24px;
+    padding: 66px 24px 26px;
+  }
+
+  html.yl-unified-checkout .yl-payment-close {
+    top: 12px;
+    width: 46px;
+    height: 46px;
+    margin-bottom: -46px;
   }
 
   html.yl-unified-checkout .yl-member-card[data-payment-state="handoff"] .yl-payment-panel {

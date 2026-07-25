@@ -197,7 +197,8 @@
     memberExpiresAt: "",
     providers: [],
     product: null,
-    message: ""
+    message: "",
+    panelDismissed: false
   };
   var healthAuthState = {
     loading: false,
@@ -1294,9 +1295,14 @@
 
     var panel = $("#ylPaymentPanel");
     if (panel) {
-      panel.hidden = paymentState.status === "login"
+      var wasHidden = panel.hidden;
+      panel.hidden = paymentState.panelDismissed
+        || paymentState.status === "login"
         || paymentState.status === "paid"
         || (!paymentState.status && !paymentState.message);
+      if (wasHidden && !panel.hidden) {
+        window.setTimeout(function () { $("#ylPaymentCloseBtn")?.focus({ preventScroll: true }); }, 0);
+      }
     }
     var status = $("#ylPaymentStatus");
     if (status) status.textContent = paymentState.message || "请选择支付方式后创建订单。";
@@ -1334,6 +1340,17 @@
     healthAuthState.message = message || "";
     healthAuthState.tone = tone || "";
     renderHealthAuthPanel();
+  }
+
+  function closeHealthPaymentPanel() {
+    paymentState.panelDismissed = true;
+    renderPayment();
+    $("#ylOpenPayBtn")?.focus({ preventScroll: true });
+  }
+
+  function isHealthPaymentPanelOpen() {
+    var panel = $("#ylPaymentPanel");
+    return !!panel && !panel.hidden;
   }
 
   function renderHealthAuthPanel() {
@@ -1609,6 +1626,8 @@
       paymentState.mockMode = false;
     }
     if (paymentState.status === "pending") {
+      paymentState.panelDismissed = false;
+      renderPayment();
       if (isRedirectPayment()) {
         if (paymentState.payUrl) window.location.href = paymentState.payUrl;
         return;
@@ -1645,6 +1664,7 @@
     paymentState.payUrl = "";
     paymentState.payMethod = "";
     paymentState.mockMode = false;
+    paymentState.panelDismissed = false;
     renderPayment();
     try {
       if (shouldUseWechatJsapi()) {
@@ -1835,6 +1855,7 @@
       startHealthPayment();
     }, true);
     $("#ylRefreshPayBtn").addEventListener("click", refreshHealthPaymentStatus);
+    $("#ylPaymentCloseBtn").addEventListener("click", closeHealthPaymentPanel);
     $("#ylMockPayBtn").addEventListener("click", completeMockPayment);
     $("#ylCopyWechatLinkBtn").addEventListener("click", async function () {
       if (readAuthSession()) {
@@ -1861,6 +1882,32 @@
       event.preventDefault();
       submitHealthAuth("login");
     });
+    document.addEventListener("keydown", function (event) {
+      if (!isHealthPaymentPanelOpen()) return;
+      if (event.key === "Escape") {
+        closeHealthPaymentPanel();
+        return;
+      }
+      if (event.key !== "Tab") return;
+      var focusable = $all("#ylPaymentPanel button:not([disabled]):not([hidden]), #ylPaymentPanel a[href]:not([hidden])");
+      if (!focusable.length) return;
+      var first = focusable[0];
+      var last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    });
+    document.addEventListener("click", function (event) {
+      var panel = $("#ylPaymentPanel");
+      if (!panel || panel.hidden || panel.contains(event.target)) return;
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      closeHealthPaymentPanel();
+    }, true);
     if (hasHealthPaymentAuth() && !paymentHandoffCaptured) hydratePaymentProduct();
     else {
       renderPayment();

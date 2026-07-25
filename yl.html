@@ -41,10 +41,10 @@
   <meta name="twitter:image" content="https://yuetianai.com/images/health/constitution-report-hero-v8.png">
   <meta name="theme-color" content="#f8f2e8">
   <link rel="icon" href="/images/wentian-prototype-assets/wentian-brand-logo-ai-gold-v1.webp" type="image/webp">
-  <link rel="stylesheet" href="/css/yl.css?v=20260725-payment-account-v1">
+  <link rel="stylesheet" href="/css/yl.css?v=20260725-payment-close-v1">
   <script src="/js/config.js?v=20260710-api-origin-lock-v1"></script>
   <script defer src="/vendor/qrcodejs/qrcode.min.js?v=20260521-local-vendor"></script>
-  <script defer src="/js/yl.js?v=20260725-payment-account-v1"></script>
+  <script defer src="/js/yl.js?v=20260725-payment-close-v1"></script>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -348,7 +348,8 @@
           <span>保留订单号可联系支持</span>
         </div>
         <a class="yl-member-return" id="ylMemberReturnLink" href="#home" hidden>返回原页面</a>
-        <div class="yl-payment-panel" id="ylPaymentPanel" hidden>
+        <div class="yl-payment-panel" id="ylPaymentPanel" role="dialog" aria-modal="true" aria-label="支付窗口" aria-describedby="ylPaymentStatus" hidden>
+          <button class="yl-payment-close" type="button" id="ylPaymentCloseBtn" aria-label="关闭支付窗口">×</button>
           <div class="yl-payment-status" id="ylPaymentStatus">请选择支付方式后创建订单。</div>
           <div class="yl-payment-code" id="ylPaymentCode" hidden>
             <div class="yl-payment-qr" id="ylPaymentQr" aria-label="支付二维码" hidden></div>
