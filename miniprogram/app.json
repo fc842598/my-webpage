@@ -1,0 +1,14 @@
+{
+  "pages": [
+    "pages/index/index"
+  ],
+  "window": {
+    "navigationBarTitleText": "阅天AI",
+    "navigationBarBackgroundColor": "#f7f2ea",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#f7f2ea",
+    "backgroundTextStyle": "light"
+  },
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents"
+}

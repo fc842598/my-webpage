@@ -1,0 +1,43 @@
+{
+  "appid": "wx7d077eb336ebffac",
+  "compileType": "miniprogram",
+  "description": "阅天AI微信小程序",
+  "libVersion": "trial",
+  "miniprogramRoot": "./",
+  "packOptions": {
+    "ignore": [],
+    "include": []
+  },
+  "projectname": "yuetianai-miniprogram",
+  "setting": {
+    "checkInvalidKey": true,
+    "compileHotReLoad": true,
+    "coverView": true,
+    "es6": true,
+    "postcss": true,
+    "preloadBackgroundData": false,
+    "urlCheck": true,
+    "compileWorklet": false,
+    "minified": false,
+    "uglifyFileName": false,
+    "uploadWithSourceMap": true,
+    "enhance": false,
+    "packNpmManually": false,
+    "packNpmRelationList": [],
+    "minifyWXSS": true,
+    "minifyWXML": true,
+    "localPlugins": false,
+    "disableUseStrict": false,
+    "useCompilerPlugins": false,
+    "condition": false,
+    "swc": false,
+    "disableSWC": true,
+    "babelSetting": {
+      "ignore": [],
+      "disablePlugins": [],
+      "outputPath": ""
+    }
+  },
+  "simulatorPluginLibVersion": {},
+  "editorSetting": {}
+}

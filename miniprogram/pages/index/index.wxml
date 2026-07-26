@@ -1,0 +1,14 @@
+<web-view
+  wx:if="{{!loadError}}"
+  src="{{webUrl}}"
+  bindload="handleLoad"
+  binderror="handleError"
+></web-view>
+
+<view wx:else class="error-page">
+  <view class="error-card">
+    <view class="error-title">页面暂时没有加载成功</view>
+    <view class="error-text">请检查网络后重试</view>
+    <button class="retry-button" bindtap="retry">重新加载</button>
+  </view>
+</view>
