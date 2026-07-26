@@ -1,14 +1,15 @@
 import { execFileSync } from "node:child_process";
 import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
+import { buildAiSearchQaBatch } from "./ai-search-qa-batch-2026-07-26-data.mjs";
 
 const root = process.cwd();
 const site = "https://yuetianai.com";
 const topicSlug = "ai-search-qa";
-const batchDate = "2026-07-25";
+const batchDate = "2026-07-26";
 const zhCollectionFile = "ai-suanming-search-qa.html";
 const enCollectionFile = "ai-fortune-telling-search-qa.html";
-const queuePath = path.join(root, "docs", "ai-search-qa-2026-07-25-queue.md");
+const queuePath = path.join(root, "docs", "ai-search-qa-2026-07-26-queue.md");
 const manifestPath = path.join(root, "docs", "ai-search-qa-manifest.json");
 const topicRecordPath = path.join(root, "docs", "ai-search-qa-topic-records.json");
 const facts = {
@@ -47,12 +48,12 @@ const sourceHints = [
 ];
 
 const uniqueTimes = [
-  "00:11", "01:24", "02:37", "03:46",
-  "04:08", "05:19", "06:44", "07:12", "07:53",
-  "08:05", "09:28", "10:17", "11:41", "11:58",
-  "12:09", "13:22", "14:47", "15:16", "15:54",
-  "16:06", "17:35", "18:14", "19:27", "19:51",
-  "20:04", "20:57", "21:18", "22:09", "23:33", "23:57"
+  "00:07", "01:39", "02:21", "03:52",
+  "04:14", "05:33", "06:05", "07:27", "07:49",
+  "08:18", "09:41", "10:06", "11:24", "11:57",
+  "12:16", "13:34", "14:09", "15:28", "15:44",
+  "16:12", "17:31", "18:26", "19:05", "19:58",
+  "20:22", "20:43", "21:11", "22:36", "23:08", "23:47"
 ];
 
 const articleExtras = {
@@ -238,7 +239,7 @@ const articleExtras = {
   }
 };
 
-const articles = [
+const fallbackArticles = [
   {
     slug: "ai-suanming-kaopu-ma",
     title: "AI算命靠谱吗？先把“能不能用”和“该不该信”分开",
@@ -1877,6 +1878,10 @@ const articles = [
   };
 });
 
+const articles = batchDate === "2026-07-26"
+  ? buildAiSearchQaBatch({ batchDate, uniqueTimes, facts })
+  : fallbackArticles;
+
 main();
 
 function main() {
@@ -2017,7 +2022,7 @@ function writeQueueFile() {
   const lines = [
     `# AI算命搜索问答专题发布队列 ${batchDate}`,
     "",
-    "规则：本批次为 AI算命搜索问答专题首日 30 对中英文页发布。中文页、英文页、专题聚合页、索引、feed 与 sitemap 在脚本通过校验后统一生成。",
+    "规则：本批次为 AI算命搜索问答专题当日 30 对中英文页发布。中文页、英文页、专题聚合页、索引、feed 与 sitemap 在脚本通过校验后统一生成。",
     "",
     "## 发布时间表",
     ""
@@ -2266,6 +2271,17 @@ ${records.map((item, index) => `            <article class="article-card" data-i
     description: "围绕 AI算命靠谱性、免费边界、隐私、输入精度、手机体验和紫微/八字/六爻分工的搜索问答专题。"
   }, null, 2)}
   </script>
+  <script type="application/ld+json">
+  ${JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "闃呭ぉAI", item: `${site}/` },
+      { "@type": "ListItem", position: 2, name: "鏂囩珷棣栭〉", item: `${site}/articles/` },
+      { "@type": "ListItem", position: 3, name: "AI绠楀懡鎼滅储闂瓟涓撻", item: `${site}/articles/${zhCollectionFile}` }
+    ]
+  }, null, 2)}
+  </script>
 </head>
 <body class="article-index-page">
   <header class="site-header">
@@ -2365,6 +2381,17 @@ ${records.map((item, index) => `            <article class="article-card" data-i
     url: `${site}/articles/en/${enCollectionFile}`,
     inLanguage: "en",
     description: "A search-driven hub for reliability, privacy, free vs paid boundaries, and practical use of AI chart-reading tools."
+  }, null, 2)}
+  </script>
+  <script type="application/ld+json">
+  ${JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "YuetianAI", item: `${site}/` },
+      { "@type": "ListItem", position: 2, name: "Articles", item: `${site}/articles/en/` },
+      { "@type": "ListItem", position: 3, name: "AI Fortune-Telling Q&A Hub", item: `${site}/articles/en/${enCollectionFile}` }
+    ]
   }, null, 2)}
   </script>
 </head>
