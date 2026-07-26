@@ -553,7 +553,7 @@
     var meta = getProviderMeta(provider);
     if (!meta.enabled) return "暂不可用";
     if (provider === "paypal") return "$" + (meta.amountYuan || HEALTH_PAYPAL_AMOUNT) + " · 美元";
-    if (provider === "alipay") return "二维码支付";
+    if (provider === "alipay") return isMobileBrowser() ? "支付宝内支付" : "二维码支付";
     return isWechatBrowser() ? "微信内支付" : (isMobileBrowser() ? "微信内支付" : "扫码支付");
   }
 
@@ -561,7 +561,7 @@
     if (provider === "paypal") return "将前往 PayPal，以美元完成支付。";
     if (provider === "alipay") {
       return isMobileBrowser()
-        ? "将生成支付宝二维码；可截图后在支付宝扫一扫中从相册识别。"
+        ? "将自动打开支付宝完成付款，无需截图或扫码。"
         : "将显示支付宝二维码，请使用手机支付宝扫码。";
     }
     if (isWechatBrowser()) return "将在当前微信页面内完成支付。";
@@ -584,6 +584,7 @@
   function getCheckoutPayMethod() {
     if (paymentState.provider === "paypal") return "redirect";
     if (shouldUseWechatJsapi()) return "jsapi";
+    if (paymentState.provider === "alipay" && isMobileBrowser()) return "h5";
     return "native";
   }
 
@@ -1760,6 +1761,12 @@
           : (isRedirectPayment()
           ? "请打开" + getProviderLabel(paymentState.provider) + "完成支付，支付后返回刷新状态。"
           : "请使用" + getProviderLabel(paymentState.provider) + "扫码支付，完成后刷新状态。")));
+
+      if (paymentState.provider === "alipay" && paymentState.payMethod === "h5" && paymentState.payUrl) {
+        updatePaymentBoot("正在打开支付宝", "请在支付宝内完成付款，支付后将自动返回。", false);
+        window.location.assign(paymentState.payUrl);
+        return;
+      }
 
       if (paymentState.payMethod === "jsapi") {
         var jsapiResult = await invokeWechatJsapi(session.jsapiParams);
