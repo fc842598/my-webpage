@@ -41,10 +41,10 @@
   <meta name="twitter:image" content="https://yuetianai.com/images/health/constitution-report-hero-v8.png">
   <meta name="theme-color" content="#f8f2e8">
   <link rel="icon" href="/images/wentian-prototype-assets/wentian-brand-logo-ai-gold-v1.webp" type="image/webp">
-  <link rel="stylesheet" href="/css/yl.css?v=20260726-account-membership-v1">
+  <link rel="stylesheet" href="/css/yl.css?v=20260726-account-center-v1">
   <script src="/js/config.js?v=20260710-api-origin-lock-v1"></script>
   <script defer src="/vendor/qrcodejs/qrcode.min.js?v=20260521-local-vendor"></script>
-  <script defer src="/js/yl.js?v=20260726-account-membership-v1"></script>
+  <script defer src="/js/yl.js?v=20260726-account-center-v1"></script>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -97,7 +97,12 @@
       <a href="#chat">健康追问</a>
       <a href="#member">综合会员</a>
     </nav>
-    <a class="yl-top-cta" href="#assessment">开始自评</a>
+    <div class="yl-header-actions">
+      <a class="yl-top-cta" href="#assessment">开始自评</a>
+      <button class="yl-account-trigger" type="button" id="ylAccountTrigger" aria-haspopup="dialog" aria-controls="ylAccountOverlay" aria-expanded="false">
+        <span id="ylAccountTriggerLabel">登录 / 注册</span>
+      </button>
+    </div>
   </header>
 
   <main class="yl-shell">
@@ -301,44 +306,13 @@
             <span><strong>保留订单号可联系支持</strong><small>支付问题可凭订单号处理</small></span>
           </div>
         </div>
-        <form class="yl-health-auth" id="ylHealthAuthPanel" hidden>
-          <div class="yl-health-auth-head">
-            <strong id="ylHealthAuthTitle">登录已有账号</strong>
-            <p id="ylHealthAuthDescription">先确认会员归属账号，再选择支付方式</p>
+        <div class="yl-checkout-account" id="ylCheckoutAccountSummary" aria-live="polite">
+          <div>
+            <span>付款账号</span>
+            <strong id="ylCheckoutAccountLabel">请先登录账号</strong>
+            <small id="ylCheckoutAccountMeta">登录后，会员权益会绑定到该账号</small>
           </div>
-          <div class="yl-health-auth-mode" role="group" aria-label="选择登录或注册">
-            <button type="button" id="ylHealthLoginModeBtn" aria-pressed="true">登录已有账号</button>
-            <button type="button" id="ylHealthRegisterModeBtn" aria-pressed="false">注册新账号</button>
-          </div>
-          <label>
-            <span class="yl-health-field-label" id="ylHealthAccountFieldLabel">手机号或邮箱</span>
-            <input id="ylHealthAuthAccount" type="text" inputmode="email" autocomplete="username" maxlength="254" autocapitalize="none" spellcheck="false" placeholder="手机号或邮箱" aria-label="手机号或邮箱">
-          </label>
-          <label>
-            <span class="yl-health-field-label">密码</span>
-            <input id="ylHealthAuthPassword" type="password" autocomplete="current-password" minlength="6" maxlength="128" placeholder="密码" aria-label="密码">
-          </label>
-          <label id="ylHealthConfirmPasswordField" hidden>
-            <span class="yl-health-field-label">再次输入密码</span>
-            <input id="ylHealthAuthConfirmPassword" type="password" autocomplete="new-password" minlength="6" maxlength="128" placeholder="再次输入密码" aria-label="再次输入密码">
-          </label>
-          <div class="yl-health-auth-actions">
-            <button type="submit" class="yl-btn yl-btn-primary" id="ylHealthAuthSubmitBtn">确认此账号</button>
-          </div>
-          <p class="yl-health-auth-status" id="ylHealthAuthStatus" role="status" aria-live="polite"></p>
-        </form>
-        <div class="yl-health-account" id="ylHealthAccount" aria-label="当前付款账号" hidden>
-          <div class="yl-health-account-main">
-            <span>会员将开通到</span>
-            <strong id="ylHealthAccountLabel">已登录</strong>
-            <small>当前登录账号（完整显示），请确认无误</small>
-            <div class="yl-membership-state" id="ylMembershipState" aria-live="polite">
-              <span class="yl-membership-badge" id="ylMemberPlan">会员状态</span>
-              <strong id="ylMemberExpiry">正在读取会员状态</strong>
-              <small id="ylMemberRemaining">请稍候</small>
-            </div>
-          </div>
-          <button type="button" id="ylHealthSwitchAccountBtn">更换账号</button>
+          <button type="button" id="ylCheckoutAccountBtn">登录 / 注册</button>
         </div>
         <div class="yl-pay-heading">
           <strong>选择支付方式</strong>
@@ -385,12 +359,66 @@
     </section>
   </main>
 
+  <div class="yl-account-overlay" id="ylAccountOverlay" hidden>
+    <section class="yl-account-dialog" role="dialog" aria-modal="true" aria-labelledby="ylAccountDialogTitle">
+      <button class="yl-account-close" type="button" id="ylAccountCloseBtn" aria-label="关闭账号窗口">×</button>
+      <div class="yl-account-dialog-head">
+        <span>阅天账号</span>
+        <strong id="ylAccountDialogTitle">登录 / 注册</strong>
+        <p>电脑端、手机浏览器和微信内共用同一个账号。</p>
+      </div>
+      <form class="yl-health-auth" id="ylHealthAuthPanel" hidden>
+        <div class="yl-health-auth-head">
+          <strong id="ylHealthAuthTitle">登录已有账号</strong>
+          <p id="ylHealthAuthDescription">登录后再选择支付方式</p>
+        </div>
+        <div class="yl-health-auth-mode" role="group" aria-label="选择登录或注册">
+          <button type="button" id="ylHealthLoginModeBtn" aria-pressed="true">登录已有账号</button>
+          <button type="button" id="ylHealthRegisterModeBtn" aria-pressed="false">注册新账号</button>
+        </div>
+        <label>
+          <span class="yl-health-field-label" id="ylHealthAccountFieldLabel">手机号或邮箱</span>
+          <input id="ylHealthAuthAccount" type="text" inputmode="email" autocomplete="username" maxlength="254" autocapitalize="none" spellcheck="false" placeholder="手机号或邮箱" aria-label="手机号或邮箱">
+        </label>
+        <label>
+          <span class="yl-health-field-label">密码</span>
+          <input id="ylHealthAuthPassword" type="password" autocomplete="current-password" minlength="6" maxlength="128" placeholder="密码" aria-label="密码">
+        </label>
+        <label id="ylHealthConfirmPasswordField" hidden>
+          <span class="yl-health-field-label">再次输入密码</span>
+          <input id="ylHealthAuthConfirmPassword" type="password" autocomplete="new-password" minlength="6" maxlength="128" placeholder="再次输入密码" aria-label="再次输入密码">
+        </label>
+        <div class="yl-health-auth-actions">
+          <button type="submit" class="yl-btn yl-btn-primary" id="ylHealthAuthSubmitBtn">登录并继续</button>
+        </div>
+        <p class="yl-health-auth-status" id="ylHealthAuthStatus" role="status" aria-live="polite"></p>
+      </form>
+      <div class="yl-health-account" id="ylHealthAccount" aria-label="个人中心" hidden>
+        <div class="yl-health-account-main">
+          <span>当前登录账号</span>
+          <strong id="ylHealthAccountLabel">已登录</strong>
+          <small>电脑端与手机端共用</small>
+          <div class="yl-membership-state" id="ylMembershipState" aria-live="polite">
+            <span class="yl-membership-badge" id="ylMemberPlan">会员状态</span>
+            <strong id="ylMemberExpiry">正在读取会员状态</strong>
+            <small id="ylMemberRemaining">请稍候</small>
+          </div>
+        </div>
+        <div class="yl-health-account-actions">
+          <button class="is-primary" type="button" id="ylHealthGoPayBtn">开通综合会员</button>
+          <button type="button" id="ylHealthSwitchAccountBtn">切换账号</button>
+          <button class="is-danger" type="button" id="ylHealthLogoutBtn">退出登录</button>
+        </div>
+      </div>
+    </section>
+  </div>
+
   <nav class="yl-bottom-nav" aria-label="移动端健康服务导航">
     <a href="#home">首页</a>
     <a href="#assessment">自评</a>
     <a href="#report">报告</a>
     <a href="#chat">追问</a>
-    <a href="#member">会员</a>
+    <button type="button" id="ylMobileAccountTrigger" aria-haspopup="dialog" aria-controls="ylAccountOverlay">我的</button>
   </nav>
 </body>
 </html>

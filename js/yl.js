@@ -204,6 +204,8 @@
   var healthAuthState = {
     loading: false,
     panelOpen: false,
+    reauth: false,
+    memberPrompted: false,
     mode: "login",
     tone: "",
     message: ""
@@ -211,6 +213,7 @@
   var authRefreshPromise = null;
   var paymentConfirmationToken = "";
   var memberCheckoutContext = null;
+  var accountDialogReturnFocus = null;
 
   function $(selector) {
     return document.querySelector(selector);
@@ -248,7 +251,13 @@
     $all(".yl-bottom-nav a").forEach(function (link) {
       link.classList.toggle("is-active", link.getAttribute("href") === "#" + active);
     });
-    if (active === "member") renderHealthAuthPanel();
+    if (active === "member") {
+      renderHealthAuthPanel();
+      if (!healthAuthState.memberPrompted && !readAuthSession() && !hasHealthPaymentAuth()) {
+        healthAuthState.memberPrompted = true;
+        openHealthAuthPanel("请先登录或注册，会员权益会绑定到登录账号。");
+      }
+    }
     if (opts.scroll !== false) {
       window.scrollTo({ top: 0, behavior: opts.instant ? "auto" : "smooth" });
     }
@@ -1338,8 +1347,8 @@
     var openButton = $("#ylOpenPayBtn");
     if (openButton) {
       openButton.hidden = paymentState.status === "handoff";
-      openButton.disabled = !accountConfirmed || paymentState.loading;
-      if (!accountConfirmed) openButton.textContent = "请先确认账号";
+      openButton.disabled = paymentState.loading;
+      if (!accountConfirmed) openButton.textContent = "登录后继续付款";
       else if (paymentState.loading) openButton.textContent = "处理中...";
       else if (paymentState.status === "handoff") openButton.textContent = "重新复制微信支付链接";
       else if (paymentState.status === "pending" && isRedirectPayment()) openButton.textContent = "打开" + getProviderLabel(paymentState.provider);
@@ -1414,28 +1423,78 @@
     return !!panel && !panel.hidden;
   }
 
+  function isAccountDialogOpen() {
+    var overlay = $("#ylAccountOverlay");
+    return !!overlay && !overlay.hidden;
+  }
+
   function renderHealthAuthPanel() {
     var panel = $("#ylHealthAuthPanel");
     if (!panel) return;
     var authSession = readAuthSession();
-    var shouldShow = !hasHealthPaymentAuth()
-      && (healthAuthState.panelOpen || pageFromHash() === "member");
+    var dialogOpen = healthAuthState.panelOpen;
+    var shouldShow = dialogOpen && (!authSession || healthAuthState.reauth);
+    var overlay = $("#ylAccountOverlay");
+    if (overlay) overlay.hidden = !dialogOpen;
+    document.body.classList.toggle("yl-account-open", dialogOpen);
     panel.hidden = !shouldShow;
     var accountPanel = $("#ylHealthAccount");
-    if (accountPanel) accountPanel.hidden = !authSession || !hasHealthPaymentAuth() || pageFromHash() !== "member";
+    if (accountPanel) accountPanel.hidden = !dialogOpen || !authSession || healthAuthState.reauth;
     var accountLabel = $("#ylHealthAccountLabel");
     if (accountLabel && authSession) accountLabel.textContent = formatHealthAccountLabel(authSession.user);
+    var triggerLabel = $("#ylAccountTriggerLabel");
+    if (triggerLabel) triggerLabel.textContent = authSession ? "个人中心" : "登录 / 注册";
+    var accountTrigger = $("#ylAccountTrigger");
+    if (accountTrigger) accountTrigger.setAttribute("aria-expanded", dialogOpen ? "true" : "false");
+    var mobileTrigger = $("#ylMobileAccountTrigger");
+    if (mobileTrigger) mobileTrigger.setAttribute("aria-expanded", dialogOpen ? "true" : "false");
+
+    var checkoutLabel = $("#ylCheckoutAccountLabel");
+    var checkoutMeta = $("#ylCheckoutAccountMeta");
+    var checkoutButton = $("#ylCheckoutAccountBtn");
+    var paymentConfirmed = hasHealthPaymentAuth();
+    if (checkoutButton) checkoutButton.hidden = !authSession && paymentConfirmed;
+    if (authSession) {
+      if (checkoutLabel) checkoutLabel.textContent = formatHealthAccountLabel(authSession.user);
+      if (checkoutMeta) {
+        checkoutMeta.textContent = paymentConfirmed
+          ? (paymentState.isMember ? "付费会员 · 当前付款账号已确认" : "当前付款账号已确认")
+          : "已登录，付款前需要再次确认密码";
+      }
+      if (checkoutButton) checkoutButton.textContent = paymentConfirmed ? "个人中心" : "确认账号";
+    } else if (paymentConfirmed) {
+      if (checkoutLabel) checkoutLabel.textContent = "付款账号已安全确认";
+      if (checkoutMeta) checkoutMeta.textContent = "可以继续选择支付方式";
+    } else {
+      if (checkoutLabel) checkoutLabel.textContent = "请先登录账号";
+      if (checkoutMeta) checkoutMeta.textContent = "登录后，会员权益会绑定到该账号";
+      if (checkoutButton) checkoutButton.textContent = "登录 / 注册";
+    }
+
     var registering = healthAuthState.mode === "register";
     var accountInput = $("#ylHealthAuthAccount");
     if (shouldShow && !registering && accountInput && !accountInput.value && authSession?.user) {
       accountInput.value = getHealthAuthAccountValue(authSession.user);
     }
+    if (accountInput) accountInput.readOnly = !!(healthAuthState.reauth && authSession && !registering);
+    var dialogTitle = $("#ylAccountDialogTitle");
+    if (dialogTitle) {
+      dialogTitle.textContent = authSession && !healthAuthState.reauth
+        ? "个人中心"
+        : (healthAuthState.reauth ? "确认付款账号" : (registering ? "注册阅天账号" : "登录阅天账号"));
+    }
     var title = $("#ylHealthAuthTitle");
-    if (title) title.textContent = registering ? "注册新账号" : "登录已有账号";
+    if (title) title.textContent = healthAuthState.reauth
+      ? "请再次确认当前账号"
+      : (registering ? "注册新账号" : "登录已有账号");
     var description = $("#ylHealthAuthDescription");
-    if (description) description.textContent = registering
-      ? "注册只确认会员归属，不会立即创建支付订单"
-      : "先确认会员归属账号，再选择支付方式";
+    if (description) description.textContent = healthAuthState.reauth
+      ? "为保护会员归属，请输入当前账号密码后继续付款"
+      : (registering
+        ? "注册只创建账号，不会立即创建支付订单"
+        : "登录后可在个人中心查看会员和剩余额度");
+    var modeGroup = $(".yl-health-auth-mode");
+    if (modeGroup) modeGroup.hidden = healthAuthState.reauth;
     var loginModeButton = $("#ylHealthLoginModeBtn");
     var registerModeButton = $("#ylHealthRegisterModeBtn");
     if (loginModeButton) loginModeButton.setAttribute("aria-pressed", registering ? "false" : "true");
@@ -1452,8 +1511,6 @@
     if (passwordInput) passwordInput.setAttribute("autocomplete", registering ? "new-password" : "current-password");
     var confirmField = $("#ylHealthConfirmPasswordField");
     if (confirmField) confirmField.hidden = !registering;
-    var memberCard = $(".yl-member-card");
-    if (memberCard) memberCard.classList.toggle("is-login-required", shouldShow);
     var status = $("#ylHealthAuthStatus");
     if (status) {
       status.textContent = healthAuthState.message || "";
@@ -1466,7 +1523,11 @@
     var submitButton = $("#ylHealthAuthSubmitBtn");
     if (submitButton) submitButton.textContent = healthAuthState.loading
       ? (registering ? "正在注册..." : "正在确认账号...")
-      : (registering ? "注册并使用此账号" : "确认此账号");
+      : (healthAuthState.reauth
+        ? "确认并继续付款"
+        : (registering ? "注册并登录" : "登录并继续"));
+    var goPayButton = $("#ylHealthGoPayBtn");
+    if (goPayButton) goPayButton.textContent = paymentState.isMember ? "续费综合会员" : "开通综合会员";
   }
 
   function setHealthAuthMode(mode) {
@@ -1510,12 +1571,76 @@
     paymentState.membershipLoaded = false;
     paymentState.memberExpiresAt = "";
     updateAskQuota();
+    healthAuthState.reauth = false;
     openHealthAuthPanel("请登录要开通会员的网站账号，再继续付款。");
   }
 
-  function openHealthAuthPanel(message) {
-    var loginMessage = message || "请重新输入账号和密码，确认会员要开通到哪个账号。";
+  function logoutHealthAccount() {
+    if (paymentState.orderNo && !window.confirm("当前订单仍绑定现在的账号。确定退出登录并放弃当前订单吗？")) return;
+    clearHealthAuthSession();
+    state.quota = null;
+    paymentState.orderNo = "";
+    paymentState.status = "";
+    paymentState.payUrl = "";
+    paymentState.payMethod = "";
+    paymentState.isMember = false;
+    paymentState.membershipLoaded = false;
+    paymentState.memberExpiresAt = "";
+    healthAuthState.panelOpen = false;
+    healthAuthState.reauth = false;
+    healthAuthState.message = "";
+    updateAskQuota();
+    setPayHint("已退出登录。需要开通会员时，请先登录账号。");
+    renderPayment();
+    renderHealthAuthPanel();
+    var logoutFocus = window.matchMedia("(max-width: 720px)").matches && pageFromHash() !== "member"
+      ? $("#ylMobileAccountTrigger")
+      : $("#ylAccountTrigger");
+    logoutFocus?.focus({ preventScroll: true });
+  }
+
+  function openAccountCenter(trigger) {
+    accountDialogReturnFocus = trigger || document.activeElement;
     healthAuthState.panelOpen = true;
+    healthAuthState.reauth = false;
+    healthAuthState.mode = "login";
+    healthAuthState.message = "";
+    healthAuthState.tone = "";
+    renderHealthAuthPanel();
+    if (readAuthSession()) hydratePaymentProduct();
+    window.setTimeout(function () {
+      if (readAuthSession()) $("#ylAccountCloseBtn")?.focus({ preventScroll: true });
+      else $("#ylHealthAuthAccount")?.focus({ preventScroll: true });
+    }, 0);
+  }
+
+  function closeAccountDialog() {
+    if (healthAuthState.loading) return;
+    healthAuthState.panelOpen = false;
+    healthAuthState.reauth = false;
+    healthAuthState.message = "";
+    healthAuthState.tone = "";
+    renderHealthAuthPanel();
+    if (accountDialogReturnFocus && document.contains(accountDialogReturnFocus)) {
+      accountDialogReturnFocus.focus?.({ preventScroll: true });
+    }
+    accountDialogReturnFocus = null;
+  }
+
+  function goToMemberFromAccount() {
+    closeAccountDialog();
+    goToPage("member", { instant: true });
+    window.setTimeout(function () { $("#ylOpenPayBtn")?.focus({ preventScroll: true }); }, 0);
+  }
+
+  function openHealthAuthPanel(message, options) {
+    var opts = options || {};
+    var loginMessage = message || "请登录账号，确认会员要开通到哪个账号。";
+    var activeElement = document.activeElement;
+    accountDialogReturnFocus = opts.returnFocus
+      || (activeElement && activeElement !== document.body ? activeElement : null);
+    healthAuthState.panelOpen = true;
+    healthAuthState.reauth = !!(opts.reauth && readAuthSession());
     healthAuthState.mode = "login";
     healthAuthState.message = loginMessage;
     healthAuthState.tone = "";
@@ -1523,10 +1648,10 @@
     paymentState.message = loginMessage;
     renderPayment();
     window.setTimeout(function () {
-      var panel = $("#ylHealthAuthPanel");
-      if (panel) panel.scrollIntoView({ behavior: "smooth", block: "nearest" });
       var input = $("#ylHealthAuthAccount");
-      if (input) input.focus({ preventScroll: true });
+      var password = $("#ylHealthAuthPassword");
+      if (healthAuthState.reauth && password) password.focus({ preventScroll: true });
+      else if (input) input.focus({ preventScroll: true });
     }, 30);
   }
 
@@ -1536,7 +1661,12 @@
     paymentState.payUrl = "";
     paymentState.payMethod = "";
     setPayHint("");
-    openHealthAuthPanel("本次付款账号尚未确认，请重新登录后继续支付。");
+    openHealthAuthPanel(
+      readAuthSession()
+        ? "为保护会员归属，请输入当前账号密码确认后继续付款。"
+        : "请先登录账号，再继续付款。",
+      { reauth: !!readAuthSession() }
+    );
   }
 
   async function submitHealthAuth() {
@@ -1597,6 +1727,7 @@
       }
       window.yuetianTrack?.(registered ? "sign_up" : "login", { method: "password", surface: "unified_member" });
       healthAuthState.panelOpen = false;
+      healthAuthState.reauth = false;
       healthAuthState.loading = false;
       healthAuthState.message = "";
       healthAuthState.tone = "";
@@ -1609,9 +1740,14 @@
       if (confirmInput) confirmInput.value = "";
       if (passwordInput) passwordInput.value = "";
       await hydratePaymentProduct();
+      var focusTarget = accountDialogReturnFocus;
+      accountDialogReturnFocus = null;
       window.setTimeout(function () {
-        $("#ylHealthAccount")?.scrollIntoView({ behavior: "smooth", block: "nearest" });
-        $("#ylOpenPayBtn")?.focus({ preventScroll: true });
+        if (pageFromHash() === "member") {
+          $("#ylCheckoutAccountSummary")?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+        }
+        if (focusTarget && document.contains(focusTarget)) focusTarget.focus?.({ preventScroll: true });
+        else $("#ylOpenPayBtn")?.focus({ preventScroll: true });
       }, 30);
     } catch (error) {
       healthAuthState.loading = false;
@@ -1667,7 +1803,13 @@
 
   function requireHealthLogin() {
     if (hasHealthPaymentAuth()) return true;
-    openHealthAuthPanel();
+    var session = readAuthSession();
+    openHealthAuthPanel(
+      session
+        ? "为保护会员归属，请输入当前账号密码确认后继续付款。"
+        : "请先登录或注册，再继续付款。",
+      { reauth: !!session }
+    );
     return false;
   }
 
@@ -2009,12 +2151,50 @@
     });
     $("#ylHealthLoginModeBtn").addEventListener("click", function () { setHealthAuthMode("login"); });
     $("#ylHealthRegisterModeBtn").addEventListener("click", function () { setHealthAuthMode("register"); });
+    $("#ylAccountTrigger").addEventListener("click", function (event) { openAccountCenter(event.currentTarget); });
+    $("#ylMobileAccountTrigger").addEventListener("click", function (event) { openAccountCenter(event.currentTarget); });
+    $("#ylCheckoutAccountBtn").addEventListener("click", function (event) {
+      if (readAuthSession() && !hasHealthPaymentAuth()) {
+        openHealthAuthPanel("为保护会员归属，请输入当前账号密码确认后继续付款。", {
+          reauth: true,
+          returnFocus: event.currentTarget
+        });
+        return;
+      }
+      openAccountCenter(event.currentTarget);
+    });
+    $("#ylAccountCloseBtn").addEventListener("click", closeAccountDialog);
+    $("#ylHealthGoPayBtn").addEventListener("click", goToMemberFromAccount);
     $("#ylHealthSwitchAccountBtn").addEventListener("click", switchHealthPaymentAccount);
+    $("#ylHealthLogoutBtn").addEventListener("click", logoutHealthAccount);
     $("#ylHealthAuthPanel").addEventListener("submit", function (event) {
       event.preventDefault();
       submitHealthAuth();
     });
+    $("#ylAccountOverlay").addEventListener("click", function (event) {
+      if (event.target === event.currentTarget) closeAccountDialog();
+    });
     document.addEventListener("keydown", function (event) {
+      if (isAccountDialogOpen()) {
+        if (event.key === "Escape") {
+          closeAccountDialog();
+          return;
+        }
+        if (event.key !== "Tab") return;
+        var accountFocusable = $all("#ylAccountOverlay button:not([disabled]), #ylAccountOverlay input:not([disabled]), #ylAccountOverlay a[href]")
+          .filter(function (element) { return !element.closest("[hidden]"); });
+        if (!accountFocusable.length) return;
+        var accountFirst = accountFocusable[0];
+        var accountLast = accountFocusable[accountFocusable.length - 1];
+        if (event.shiftKey && document.activeElement === accountFirst) {
+          event.preventDefault();
+          accountLast.focus();
+        } else if (!event.shiftKey && document.activeElement === accountLast) {
+          event.preventDefault();
+          accountFirst.focus();
+        }
+        return;
+      }
       if (!isHealthPaymentPanelOpen()) return;
       if (event.key === "Escape") {
         closeHealthPaymentPanel();
@@ -2040,7 +2220,7 @@
       event.stopImmediatePropagation();
       closeHealthPaymentPanel();
     }, true);
-    if (hasHealthPaymentAuth() && !paymentHandoffCaptured) hydratePaymentProduct();
+    if (readAuthSession() && !paymentHandoffCaptured) hydratePaymentProduct();
     else {
       renderPayment();
       setPayHint("");
@@ -2079,6 +2259,19 @@
   });
   window.addEventListener("pageshow", function (event) {
     if (event.persisted && readAuthSession() && !paymentState.loading) hydratePaymentProduct();
+  });
+  window.addEventListener("storage", function (event) {
+    if (event.key !== AUTH_SESSION_KEY) return;
+    if (!readAuthSession()) {
+      clearPaymentConfirmation();
+      state.quota = null;
+      paymentState.isMember = false;
+      paymentState.membershipLoaded = false;
+      paymentState.memberExpiresAt = "";
+      renderPayment();
+      return;
+    }
+    hydratePaymentProduct();
   });
   window.addEventListener("hashchange", function () {
     setActivePage(pageFromHash());
