@@ -1728,6 +1728,11 @@ input:focus-visible {
   gap: 3px;
 }
 
+.yl-health-account-main {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
 .yl-health-account span,
 .yl-health-account small {
   color: var(--yl-muted);
@@ -1737,6 +1742,27 @@ input:focus-visible {
 .yl-health-account strong {
   color: var(--yl-green-dark);
   font-size: 18px;
+  overflow-wrap: anywhere;
+}
+
+.yl-health-account .yl-membership-state {
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 4px 10px;
+  min-height: 0;
+  margin-top: 8px;
+  border-top: 1px solid rgba(71, 127, 89, 0.18);
+  border-bottom: 0;
+  padding: 10px 0 0;
+}
+
+.yl-health-account .yl-membership-state small {
+  grid-column: 1 / -1;
+  text-align: left;
+}
+
+.yl-health-account .yl-membership-state[data-plan="free"] .yl-membership-badge {
+  background: rgba(102, 93, 80, 0.1);
+  color: var(--yl-muted);
 }
 
 .yl-health-account button {
@@ -2919,6 +2945,26 @@ html.yl-unified-checkout .yl-health-account {
 
 html.yl-unified-checkout .yl-health-account strong {
   color: var(--checkout-red);
+}
+
+html.yl-unified-checkout .yl-health-account .yl-membership-state {
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 5px 12px;
+  min-height: 0;
+  margin-top: 10px;
+  border-color: var(--checkout-line);
+  padding: 12px 0 0;
+}
+
+html.yl-unified-checkout .yl-health-account .yl-membership-state small {
+  grid-column: 1 / -1;
+  text-align: left;
+}
+
+html.yl-unified-checkout .yl-health-account .yl-membership-state[data-plan="free"] .yl-membership-badge {
+  border-color: var(--checkout-line);
+  background: #f3eadc;
+  color: var(--checkout-muted);
 }
 
 html.yl-unified-checkout .yl-health-account button {

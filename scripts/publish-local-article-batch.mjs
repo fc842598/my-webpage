@@ -515,8 +515,9 @@ ${bottomChartCtaHtml()}
 }
 
 function englishPage(article, time) {
-  const title = englishTitle(article);
-  const description = `A plain-English guide to ${title}, with a practical reading order, simple examples, and clear boundaries for Zi Wei Dou Shu learners.`;
+  const override = englishOverrideFor(article);
+  const title = override?.title || englishTitle(article);
+  const description = override?.description || `A plain-English guide to ${title}, with a practical reading order, simple examples, and clear boundaries for Zi Wei Dou Shu learners.`;
   const canonical = `${site}/articles/en/${article.slug}.html`;
   const zhUrl = `${site}/articles/${article.slug}.html`;
   const publishedAt = article.publishedAt || toPublishDateTime(time);
@@ -1072,6 +1073,366 @@ function englishOverrideFor(article) {
       "A blocked promotion year can become valuable if the person uses it to earn a certification, degree, or technical specialty that changes the next cycle.",
       "Someone who struggles in consensus-heavy hierarchy may do much better in training, compliance, engineering, or any role where skill matters more than soft politics.",
       "If the chart insists on protecting status instead of building competence, the same hard energy can turn into burnout rather than momentum."
+    ]
+  },
+  "ziwei-minggong-xiantian-budengyu-chengbai": {
+    title: "Why the Life Palace Shows Your Starting Nature, Not Your Final Outcome",
+    description: "A plain-English guide to reading the Life Palace as temperament and starting force first, then testing whether career, wealth, and outside support can turn that force into results.",
+    lead: "The Life Palace is the chart's starting point, but it is not a one-box verdict on whether life will go smoothly or not.",
+    meaning: "This topic separates personality from payoff. A strong Life Palace can mean clear instinct, strong reactions, and a powerful style, while the real-world result still depends on whether the career, wealth, and outside-world lines can carry that force into position and money.",
+    method: "Read the Life Palace first, then compare the Career, Wealth, and Travel palaces. Ask what kind of person the chart describes before you ask where that person can actually turn strength into visible results.",
+    examples: [
+      "Someone can be decisive and forceful in the Life Palace while money and platform still arrive slowly.",
+      "Another chart can look ordinary at the core, yet rise steadily once a strong role or outside platform takes over.",
+      "A bright main star describes style and response first; outcome still needs support and timing."
+    ]
+  },
+  "ziwei-minggong-putong-guanlu-qiang-fanshen": {
+    title: "A Modest Life Palace with a Strong Career Palace: Why Position Can Lift the Chart",
+    description: "Learn how to read charts where the Life Palace looks ordinary but the Career Palace carries the real rise through role, responsibility, and institutional position.",
+    lead: "Some charts do not win by looking extraordinary at the center. They rise because the career line gives them a real seat, real duties, and a structure that can hold their effort.",
+    meaning: "This is a position-first pattern. The person may not look flashy at the beginning, yet the Career Palace can steadily push them upward through title, mandate, and organizational fit.",
+    method: "Start with the Life Palace to see the baseline, then move quickly to the Career Palace and the Wealth line. The real question is whether the chart becomes stronger once it enters a formal role, not whether it looked impressive before that role appeared.",
+    examples: [
+      "A person may look average when young, then become far more solid once they enter a structured profession.",
+      "The chart can show rank, duty, and upward mobility before it shows obvious personal confidence.",
+      "If the wealth line also supports it, position turns into stable income instead of empty pressure."
+    ]
+  },
+  "ziwei-minggong-putong-qianyi-qiang-fapai": {
+    title: "A Modest Life Palace with a Strong Travel Palace: Why Growth Happens Away From Home",
+    description: "A plain-English explanation of charts that open up through movement, larger markets, and outside platforms rather than through the original environment.",
+    lead: "Some people do not fully activate in the place where they start. Their chart grows once the outside world becomes the main stage.",
+    meaning: "This pattern says the core self may look ordinary at first, but the Travel Palace can bring better timing, better visibility, and better support once the person steps into a bigger market, city, client base, or platform.",
+    method: "Read the Life Palace first, then the Travel Palace, Career Palace, and Wealth Palace. Ask whether the chart is built to improve through movement, platform change, or public exposure rather than through staying put.",
+    examples: [
+      "A quiet chart at home can become far more capable after a move or company change.",
+      "Outside clients or larger markets may matter more than hometown resources.",
+      "If the core structure is weak, movement still helps, but the person needs enough stamina to hold the bigger stage."
+    ]
+  },
+  "ziwei-minggong-kan-xingwei-bukan-jieguo": {
+    title: "Read the Life Palace for Behavior First, Not for a Fixed Outcome",
+    description: "Why the Life Palace should first be used to understand habits, reactions, and working style before anyone turns it into a final prediction.",
+    lead: "A useful Life Palace reading starts with how the person behaves, not with a dramatic sentence about destiny.",
+    meaning: "This topic is about reading order. The Life Palace tells you how the person moves, reacts, insists, hesitates, and uses effort. That is much more reliable than jumping straight to a verdict about whether life is good or bad.",
+    method: "Use the Life Palace to identify the person's default style, then test where that style helps or hurts in the money, career, relationship, and travel lines. The answer comes from application, not from one label.",
+    examples: [
+      "The same assertive style can become leadership in one chart and conflict in another, depending on support.",
+      "A softer chart can still win if its behavior fits the role and the platform around it.",
+      "Behavior tells you how the person uses force; the surrounding palaces tell you where that force lands."
+    ]
+  },
+  "ziwei-minggong-konggong-sanfang-budinghuai": {
+    title: "An Empty Life Palace Is Not Automatically Weak: Read the Triad First",
+    description: "A guide to reading an empty Life Palace by borrowing meaning from the opposite palace and the surrounding three-direction structure.",
+    lead: "An empty Life Palace is not a blank life. It simply means the answer has to be borrowed from the surrounding structure instead of being handed to you by one obvious main star.",
+    meaning: "This is a structural reading. The chart still has personality, drive, and direction, but those qualities are distributed through the opposite palace and the supporting triad rather than concentrated in the Life Palace itself.",
+    method: "Start with the empty Life Palace, then read the opposite palace and the two supporting corners. Pay special attention to whether the surrounding palaces provide strength, pressure, or compensation, because that is where the real tone will come from.",
+    examples: [
+      "One empty Life Palace can still look strong because the supporting structure is bright and connected.",
+      "Another empty Life Palace may feel unstable when the surrounding palaces all leak pressure instead of support.",
+      "You only know whether the chart is easy or difficult after the borrowed structure is read in full."
+    ]
+  },
+  "ziwei-liunian-xiankan-gongwei": {
+    title: "In Annual Timing, Read the Activated Palace Before the Star",
+    description: "Why annual readings should begin with the palace that is triggered, because the palace tells you whether the year is about money, role, movement, pressure, or relationships.",
+    lead: "An annual reading becomes much clearer once you ask where the year lands before you ask which star is speaking.",
+    meaning: "This topic keeps timing practical. The palace tells you the life area that moves first, while the star only tells you how that movement behaves. Without the palace, even a familiar star can be misread.",
+    method: "Locate the annual palace first, then compare its opposite side and the supporting structure. Only after that should you interpret the star, the transformation, and the likely real-world form.",
+    examples: [
+      "If the year falls into the Wealth Palace, cash flow and income handling move before travel or romance.",
+      "If the year falls into the Travel Palace, platform change and outside movement may matter more than staying still.",
+      "The same annual star means different things once the palace changes."
+    ]
+  },
+  "ziwei-liunian-caibo-xiankan-xianjinliu": {
+    title: "Annual Timing in the Wealth Palace: Start with Cash Flow",
+    description: "A practical annual-reading guide for years when the Wealth Palace is activated: begin with income, payment rhythm, and whether money can actually be retained.",
+    lead: "When annual timing hits the Wealth Palace, the first question is not whether you become rich overnight. It is whether money starts moving, where it comes from, and whether it stays.",
+    meaning: "This is a cash-flow reading. A Wealth-Palace year may bring revenue, billing, collection, opportunity, or resource pressure, but the chart still needs to show whether the money is direct, delayed, unstable, or tied to role and responsibility.",
+    method: "Read the Wealth Palace first, then compare Career and Travel. Ask whether the year is about salary, clients, business turnover, outside platforms, or money that looks large on paper but is slow to collect.",
+    examples: [
+      "A busy revenue year can still be stressful if receipts are delayed or credit risk rises.",
+      "Some people see more money only because work responsibility expands at the same time.",
+      "A good wealth year is strongest when income source and retention both improve together."
+    ]
+  },
+  "ziwei-liunian-qianyi-xiankan-pingtai-dongxiang": {
+    title: "Annual Timing in the Travel Palace: Platforms, Movement, and Market Shifts",
+    description: "How to read annual timing when the Travel Palace is activated, with focus on movement, outside opportunities, platform changes, and new markets.",
+    lead: "A Travel-Palace year is not only about leaving town. It is usually about the outside world starting to matter more than the familiar setting.",
+    meaning: "This kind of year can bring relocation, travel, public exposure, market expansion, new clients, or a stronger platform. The key is to separate useful movement from exhausting movement.",
+    method: "Start with the Travel Palace, then compare Life and Career. Ask whether the year's movement creates a better stage, better support, or just more friction and cost.",
+    examples: [
+      "A bigger platform may open the chart more than staying in the old environment.",
+      "Outside clients or a cross-region market can become the real source of growth.",
+      "If the core structure is tired, even a good travel year can become overextension."
+    ]
+  },
+  "ziwei-xiaoliunian-bengong-duigong-zhuizhu": {
+    title: "Why Minor Annual Timing Starts with the Main and Opposite Palace",
+    description: "A plain-English reading rule for minor annual timing: catch the main axis first, because the first reaction and the answering reaction usually appear together.",
+    lead: "Minor annual timing is easiest to misread when people chase small details before they identify the main axis of the year.",
+    meaning: "The main palace shows where the first movement lands, and the opposite palace shows what answers, resists, or supports it. That axis usually explains the year more clearly than scattered details do.",
+    method: "Read the active palace first, then its opposite palace, and only then move into side details or auxiliary stars. That keeps the reading organized and prevents over-reading one small symbol.",
+    examples: [
+      "A money trigger may immediately reveal a work-pressure answer on the opposite side.",
+      "A relationship issue can become clearer once you see the matching inner-pressure response.",
+      "The year's main storyline usually sits on the first axis, not in the smallest side signal."
+    ]
+  },
+  "ziwei-daxian-xiaoliunian-zhuci-fengong": {
+    title: "Ten-Year Cycle vs Annual Trigger: Background First, Yearly Movement Second",
+    description: "How to separate the ten-year cycle from the yearly trigger so you can tell long background from short-term rises and drops.",
+    lead: "A chart becomes much easier to read when you stop asking the ten-year cycle and the annual trigger to do the same job.",
+    meaning: "The major cycle sets the environment, pressure, and long trend. The annual trigger tells you what part of that environment moves this year. Mixing them together creates confusion about what is temporary and what is structural.",
+    method: "Read the natal chart first, then the ten-year cycle, then the annual trigger. Ask what the long background allows, and only then decide what the current year is switching on inside that background.",
+    examples: [
+      "A strong year cannot fully rescue a weak decade, but it can create one good opening inside it.",
+      "A rough year inside a good decade may be a dip, not a total reversal.",
+      "The decade gives the field; the year shows where the ball is moving now."
+    ]
+  },
+  "ziwei-benminghao-xiancuo-bandi": {
+    title: "A Good Natal Chart Can Still Stumble in the Wrong Phase",
+    description: "Why a strong natal base does not guarantee easy timing, and why a chart can still lose momentum if the active cycle cuts across its strengths.",
+    lead: "A good natal chart is a strong starting base, not permanent immunity from bad timing.",
+    meaning: "This topic separates baseline quality from phase quality. The person may have good structure, talent, or potential, yet still enter a period that blocks the wrong line, delays the payoff, or pushes them into a role that does not match the chart well.",
+    method: "Read the natal pattern first, then check whether the current decade and annual trigger support it or push against it. The key is to see whether timing is carrying the person's strength or asking them to fight uphill.",
+    examples: [
+      "A capable person can still lose ground when the active cycle blocks the exact palace they depend on most.",
+      "Good structure often survives a rough phase, but not without cost or delay.",
+      "You should read timing as friction against the base, not as proof that the base never mattered."
+    ]
+  },
+  "ziwei-benmingputong-xianyun-fanshen-jiezou": {
+    title: "A Modest Natal Chart Can Rise in the Right Cycle",
+    description: "How the right decade and annual trigger can lift an ordinary natal chart by activating the exact role, platform, or money line it needs.",
+    lead: "A natal chart does not have to look grand from the start to rise later. Sometimes the real lift arrives when timing finally turns on the right line.",
+    meaning: "This is a timing-lift pattern. The base may look ordinary, but once the decade or the year activates the correct palace, the person's opportunities, platform, and results can improve very quickly.",
+    method: "Read the natal chart honestly first, then look for the decade and annual trigger that strengthen Career, Wealth, Travel, or another key line. The point is not to inflate the natal chart, but to see where timing creates the breakthrough.",
+    examples: [
+      "A person may appear average early on, then rise once the right role or market opens during a strong cycle.",
+      "The good phase can bring position, support, and visibility that the natal chart could not produce by itself.",
+      "Timing does not erase the base, but it can give the base the exact opening it was missing."
+    ]
+  },
+  "ziwei-geju-xiankan-liangdu-zai-kan-gecheng": {
+    title: "Named Patterns Must Be Bright Enough to Count",
+    description: "A guide to judging famous Zi Wei Dou Shu patterns by brightness and working strength first, instead of by name alone.",
+    lead: "A pattern name sounds impressive, but it only becomes real when the stars are bright enough and the structure is strong enough to work.",
+    meaning: "This topic is about chart discipline. A famous pattern should not be granted just because the pieces are present. Brightness, support, and correct placement decide whether the pattern is fully alive or only loosely similar.",
+    method: "Confirm the structure, then test brightness, support, and palace position. Only after those conditions pass should you decide whether the pattern deserves the name and the larger interpretation.",
+    examples: [
+      "A chart can contain the right stars and still fail to produce the real pattern because brightness is too weak.",
+      "Another chart may not use the famous label often, yet it works strongly because the structure is complete.",
+      "The name should come after the strength test, not before it."
+    ]
+  },
+  "ziwei-geju-cha-yige-buyao-yingduan": {
+    title: "When a Pattern Is One Step Short, Do Not Force a Grand Reading",
+    description: "Why Zi Wei Dou Shu pattern reading should stay honest when one key condition is missing and the chart does not fully qualify.",
+    lead: "If a pattern is one step short, the right move is restraint, not enthusiasm.",
+    meaning: "This topic protects the reading from overstatement. A near-match can still show talent or possibility, but it should not be sold as a full pattern with all the status, wealth, or authority that belongs to the complete form.",
+    method: "Check each condition one by one. If one key piece is missing, keep the reading at the level the chart actually supports and explain what is present without borrowing what is absent.",
+    examples: [
+      "A chart can resemble a famous wealth pattern without having the full brightness or support needed to deliver the same results.",
+      "Calling a near-match complete often leads to inflated expectations and bad judgment.",
+      "It is better to name the partial strength clearly than to force a grand label."
+    ]
+  },
+  "ziwei-geju-luogong-bianren-bianji": {
+    title: "The Same Pattern Changes Meaning When It Lands in Different Palaces",
+    description: "Why a named pattern cannot be read with one sentence everywhere, because palace placement changes whether it describes the self, family, peers, resources, or position.",
+    lead: "A famous pattern does not belong to one life area forever. Once the palace changes, the person, event, and practical meaning can all change with it.",
+    meaning: "This is a palace-boundary lesson. The pattern may still be real, but its outlet changes: in one palace it describes the native, in another it describes siblings, parents, work, money, or another line of life.",
+    method: "Confirm the pattern first, then ask where it lands. Let the palace decide who receives the effect, what kind of event it becomes, and how directly it touches the person.",
+    examples: [
+      "A pattern in the Life Palace can describe the person directly, while the same structure in the Parents Palace belongs first to the family line.",
+      "In the Wealth Palace, the same pattern may describe money channel or resource scale instead of personality.",
+      "The pattern name stays the same, but the real-life story changes with the palace."
+    ]
+  },
+  "ziwei-rizhao-leimen-bairi-xingye": {
+    title: "Ri Zhao Lei Men: Why It Fits Daytime and Public-Facing Work",
+    description: "A plain-English explanation of why the Ri Zhao Lei Men pattern works best when visibility, daytime rhythm, and outward-facing roles are all aligned.",
+    lead: "This pattern is not only about having a bright label. It works best when the life path itself belongs to visible, daytime, or public-facing activity.",
+    meaning: "The structure favors outward brightness, action, and visible function. That is why the best results often appear in work that uses exposure, audience, public contact, or daylight rhythm rather than hidden or closed settings.",
+    method: "Confirm that the pattern really forms, then compare Career, Travel, and timing. Ask whether the chart is being used in the kind of role that lets brightness show, instead of burying it in the wrong environment.",
+    examples: [
+      "A chart may perform better in daytime business, management, or visible service roles than in private or nocturnal work.",
+      "The same pattern can weaken when the career lane hides the person's strongest outward qualities.",
+      "Brightness only turns into results when role and rhythm match the pattern."
+    ]
+  },
+  "ziwei-yuelang-tianmen-yewan-xingye": {
+    title: "Yue Lang Tian Men: Why It Works Better in Night, Quiet, or Backstage Settings",
+    description: "How to read the Yue Lang Tian Men pattern through timing, mood, and work setting rather than by phrase alone.",
+    lead: "This pattern often does best when the environment is quiet, controlled, reflective, or naturally stronger at night than in harsh public daylight.",
+    meaning: "The chart favors lunar rhythm, softer expression, and settings that reward refinement, care, or backstage function. The useful question is whether the role allows that quality to work in its proper atmosphere.",
+    method: "Confirm the pattern, then read Career, Travel, and the real working environment. Ask whether the chart is placed in a lane that values subtlety, timing, and steady delivery instead of forcing aggressive exposure.",
+    examples: [
+      "The same person may do better in night-oriented, advisory, or backstage roles than in loud front-stage competition.",
+      "A softer work rhythm can produce better results than pushing for constant visible dominance.",
+      "The pattern works best when the environment matches the chart's quieter light."
+    ]
+  },
+  "ziwei-cai-zai-guanlu-bushi-zhenfazhi": {
+    title: "Money in the Career Palace Is Not the Same as Money in Your Pocket",
+    description: "Why money shown in the Career Palace often points to budget authority, scale, and role responsibility before it points to direct personal wealth.",
+    lead: "A chart can place money in the Career Palace and still leave the person living on a normal pay structure, because control and ownership are not the same thing.",
+    meaning: "This is a resource-authority pattern. The person may handle large budgets, financial decisions, or operating money through a role, yet that does not automatically mean the money belongs to them personally.",
+    method: "Read Career, Wealth, and Life together. Ask whether the money belongs to the job, the institution, the project, or the person, and whether the chart turns responsibility into actual take-home gain.",
+    examples: [
+      "A finance lead or business operator may move large sums without personally owning them.",
+      "The chart can show trust, approval power, and scale long before it shows private accumulation.",
+      "Only when the wealth line also supports direct intake does role-based money become personal money."
+    ]
+  },
+  "ziwei-cai-zai-qianyi-bushi-lixian-ershi-pingtai": {
+    title: "Money in the Travel Palace Means Outside Platforms, Not Automatic Relocation Wealth",
+    description: "How to read money in the Travel Palace as market expansion, outside clients, and platform change rather than as a simplistic promise that leaving home equals wealth.",
+    lead: "The Travel Palace can bring money, but usually because the outside world becomes the income channel, not because movement itself is magical.",
+    meaning: "This pattern often points to revenue through new markets, cross-region business, remote work, travel, public exposure, or a platform beyond the native's original base. The focus should be on channel and stage, not on travel alone.",
+    method: "Read Travel with Wealth and Career. Ask what outside channel is opening, how far the person must move to use it, and whether the new platform creates more gain than cost.",
+    examples: [
+      "Income may improve through a new city, foreign market, online channel, or outside client base.",
+      "A move without a stronger platform may add cost without adding enough return.",
+      "The money comes from the outside channel, not from motion for its own sake."
+    ]
+  },
+  "ziwei-xiantiancai-houtiancai-zhichangcai-fenka": {
+    title: "How to Separate Inherited Wealth, Earned Wealth, and Position-Based Money",
+    description: "A plain-English guide to splitting money readings into family-base wealth, later-built wealth, and money that sits in the role rather than in the person.",
+    lead: "Not all money in a chart belongs to the same source. Family base, later-earned money, and role-based money should not be collapsed into one sentence.",
+    meaning: "This topic separates money channels clearly. Some charts are helped by family resources, some by their own later effort, and some by a role that gives them access to money without direct ownership.",
+    method: "Read Parents, Wealth, Career, and Travel together. Ask whether the money starts from inheritance, from personal earning power, from outside expansion, or from institutional responsibility.",
+    examples: [
+      "A person may inherit habits, contacts, or capital without inheriting a finished fortune.",
+      "Another chart may build wealth late through platform and role rather than through early family support.",
+      "Career-based money can look impressive while still remaining separate from private assets."
+    ]
+  },
+  "ziwei-zhangcaiquan-budengyu-ziji-youqian": {
+    title: "Managing Money Is Not the Same as Owning It",
+    description: "Why charts that show financial control or budget authority should not be mistaken for charts of direct personal wealth.",
+    lead: "A person can hold the money keys without holding the money itself.",
+    meaning: "This pattern points to stewardship, approval power, or resource management. The chart may show trust and scale, but that is different from private accumulation, personal freedom, or liquid cash in hand.",
+    method: "Compare the Career Palace, Wealth Palace, and Life Palace. Ask whether the chart shows money ownership, money handling, or simply the burden of making financial decisions for other people or institutions.",
+    examples: [
+      "A manager can decide large budgets while still living inside a fixed salary structure.",
+      "Some charts control resources for a company, not for the self.",
+      "If the wealth line is weak, authority over money may bring stress faster than prosperity."
+    ]
+  },
+  "ziwei-taiyang-caibo-jingying-he-mianzi": {
+    title: "Tai Yang in the Wealth Palace: Business Income, Visibility, and Boss Money",
+    description: "How to read Tai Yang in the Wealth Palace as outward money, operating money, and income linked to visibility, management, or public-facing work.",
+    lead: "Tai Yang in the Wealth Palace usually wants money to move in the open, through business, visibility, or the kind of work that carries a public face.",
+    meaning: "This pattern leans toward operating income, boss-level money handling, and earnings tied to exposure, leadership, or direct public function. It is less about quiet accumulation and more about outward motion.",
+    method: "Read Tai Yang with Career and Travel. Ask whether the income comes through management, selling, operating, brand presence, or a role that depends on being seen and trusted in public.",
+    examples: [
+      "A person may make money through business operation, client-facing work, or management responsibility.",
+      "The chart often handles visible money better than hidden or purely passive money.",
+      "If support is weak, the image of scale can exceed the actual retained profit."
+    ]
+  },
+  "ziwei-taiyin-caibo-guding-xinshui-he-shoucai": {
+    title: "Tai Yin in the Wealth Palace: Stable Pay, Saving Power, and Rhythm",
+    description: "A practical reading of Tai Yin in the Wealth Palace, with focus on steady income, money retention, caution, and sustainable financial rhythm.",
+    lead: "Tai Yin in the Wealth Palace often works best through steadier income, stronger retention, and a rhythm that values control over noisy expansion.",
+    meaning: "This pattern is good at holding, counting, and pacing money. It often prefers predictable income, stable salary, long-term planning, and careful retention over highly aggressive financial moves.",
+    method: "Read Tai Yin with the Wealth Palace first, then compare Career and inner-life pressure. Ask whether the chart builds best through regular income, financial discipline, or a calmer tempo that protects savings.",
+    examples: [
+      "Stable salary or repeatable income can outperform speculative opportunity here.",
+      "The chart often values safety, retention, and rhythm more than flashy jumps.",
+      "If pressure is high, worry about money can rise even when income is objectively steady."
+    ]
+  },
+  "ziwei-wuqu-caixingwang-jieguo-daoxiang": {
+    title: "Why Wu Qu Is Both a Wealth Star and a Results Star",
+    description: "How to read Wu Qu not only as money, but also as execution, accounting, responsibility, and the ability to turn effort into hard outcomes.",
+    lead: "Wu Qu is called a wealth star, but it is just as much a results star because it likes measurable output and practical burden-bearing.",
+    meaning: "This pattern is about money with structure. Wu Qu tends to count, allocate, execute, and carry weight. That is why it often shows both financial sense and strong result orientation.",
+    method: "Read Wu Qu through its palace, then compare Wealth and Career. Ask whether the chart is producing direct income, hard execution, budget control, or the kind of work where measurable results matter most.",
+    examples: [
+      "A Wu Qu chart can be good at making money because it is also good at carrying responsibility.",
+      "The same placement may show strict execution even before it shows obvious wealth.",
+      "When support is weak, the results pressure can become harsh or joyless instead of simply effective."
+    ]
+  },
+  "ziwei-huaquan-xianying-zeren-buzhishiquan": {
+    title: "Hua Quan Often Arrives as Responsibility Before Power",
+    description: "A plain-English reading of Hua Quan that puts responsibility, mandate, and pressure ahead of fantasy about effortless authority.",
+    lead: "Hua Quan often shows up first as the duty to decide, carry, and answer for outcomes, not as free power without cost.",
+    meaning: "This transformation adds control, but it also adds burden. The chart may gain rank, say, or leadership function, yet the real-life form is usually more responsibility before it feels like more comfort.",
+    method: "Locate Hua Quan first, then compare Career, Life, and Wealth. Ask where authority lands, what burden comes with it, and whether the chart has enough support to carry that extra weight well.",
+    examples: [
+      "A promotion can increase decision power and stress at the same time.",
+      "Some charts receive responsibility before title, and title before money.",
+      "Without support, Hua Quan can create isolation, control pressure, or overwork."
+    ]
+  },
+  "ziwei-huake-xianying-zhuanye-kaozheng": {
+    title: "Hua Ke First Shows Up as Skill, Reputation, and Credentials",
+    description: "How to read Hua Ke in everyday terms: exams, licenses, professional trust, and public recognition often arrive before direct money or rank.",
+    lead: "Hua Ke is often easiest to see in the form of proof, polish, credibility, and specialist reputation.",
+    meaning: "This transformation favors recognition through skill. It can show credentials, teaching ability, public trust, or a lane where the person's name carries weight because competence is visible.",
+    method: "Find where Hua Ke lands, then compare Life, Wealth, and Career. Ask whether the chart is being asked to build reputation, pass a gate, teach, advise, or become known for a specific strength.",
+    examples: [
+      "A good Hua Ke year may be excellent for exams, certification, or getting trusted by better clients.",
+      "The chart can win through credibility even before income catches up.",
+      "If the wealth line is weak, reputation may rise faster than cash."
+    ]
+  },
+  "ziwei-hualu-xiankan-ziyuan-rukou": {
+    title: "Hua Lu Should Be Read by Where Resources Enter",
+    description: "A practical guide to Hua Lu that focuses on channel and entry point: where do support, money, and usable resources actually come in?",
+    lead: "Hua Lu is not a vague blessing word. It is a resource-entry marker, and the palace tells you where the opening is.",
+    meaning: "This transformation usually shows gain, support, or smoother flow, but the useful reading depends on whether that flow enters through family, role, outside markets, partnership, or direct income skill.",
+    method: "Locate Hua Lu first, then read the palace boundary carefully. Ask what kind of resource is arriving, who is carrying it, and whether it improves the person's actual situation or simply decorates the chart language.",
+    examples: [
+      "Hua Lu in the Travel Palace may mean outside markets or clients open up.",
+      "Hua Lu in the Parents Palace can mean family support, background, or inherited channels.",
+      "The same Hua Lu feels very different depending on where the gain enters."
+    ]
+  },
+  "ziwei-huaji-xiankan-kadian-bukan-xiongji": {
+    title: "Hua Ji Should Be Read as the Bottleneck, Not a Blanket Doom Label",
+    description: "Why Hua Ji works best as a chart-reading tool for friction, blockage, and cost rather than as a dramatic one-word judgment.",
+    lead: "Hua Ji becomes much more useful once you stop reading it as simple doom and start reading it as the chart's bottleneck.",
+    meaning: "This transformation marks the place where flow catches, repeats, or grows costly. It can show mental friction, cash delay, relationship blockage, or structural pressure, but the palace decides what kind of bottleneck it is.",
+    method: "Locate Hua Ji, then compare the opposite palace and timing. Ask what gets stuck, what keeps repeating, and what boundary, process, or risk-control move would reduce the damage.",
+    examples: [
+      "A wealth bottleneck can show up as delayed collection, debt pressure, or cash retention trouble.",
+      "A relationship bottleneck may be repeated arguments, emotional loops, or unresolved history.",
+      "Hua Ji is easiest to use when you name the stuck point clearly instead of scaring the whole chart."
+    ]
+  },
+  "ziwei-tanlang-liunian-caise-yingchou": {
+    title: "Tan Lang in Annual Timing: Money, Social Appetite, and Attraction Rise Together",
+    description: "How to read Tan Lang in annual timing when money opportunities, social activity, appetite, and attraction all expand at the same time.",
+    lead: "A Tan Lang year often makes life more lively, more social, and more tempting all at once.",
+    meaning: "This kind of year can increase earning opportunities, networking, pleasure, appetite, and attraction. The same opening that brings money can also bring distraction, over-socializing, or blurred boundaries.",
+    method: "Read the activated palace first, then ask how Tan Lang is expressing itself there. The key is to separate useful expansion from indulgence, and business opportunity from emotional or social spillover.",
+    examples: [
+      "A busier social year can also become a better sales or client year.",
+      "Attraction and money may rise together, which is helpful only if boundaries stay clear.",
+      "If the chart is already unstable, extra appetite can quickly turn into cost."
+    ]
+  },
+  "ziwei-qishapojun-liunian-benbo-laohao": {
+    title: "Qi Sha and Po Jun in Annual Timing: Effort, Movement, and Wear Come First",
+    description: "A practical annual-reading guide for Qi Sha and Po Jun years, where pressure, movement, rework, and cost often appear before visible reward.",
+    lead: "A Qi Sha or Po Jun year often feels active long before it feels easy.",
+    meaning: "This timing tends to push action, change, disruption, and expenditure of force. The person may get more done or move faster, but the cost in effort, instability, and wear usually appears first.",
+    method: "Read the active palace, then compare Career, Travel, and Health pressure. Ask what must be cut, rebuilt, or carried, and whether the year's movement creates meaningful progress or only rough expenditure.",
+    examples: [
+      "A year of restructuring can create future value while still feeling exhausting in the moment.",
+      "Travel, role change, or heavy execution may be necessary even without immediate comfort.",
+      "The chart often asks for stamina and judgment before it offers clean reward."
     ]
   }
   };

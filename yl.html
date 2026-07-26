@@ -41,10 +41,10 @@
   <meta name="twitter:image" content="https://yuetianai.com/images/health/constitution-report-hero-v8.png">
   <meta name="theme-color" content="#f8f2e8">
   <link rel="icon" href="/images/wentian-prototype-assets/wentian-brand-logo-ai-gold-v1.webp" type="image/webp">
-  <link rel="stylesheet" href="/css/yl.css?v=20260726-account-confirm-v1">
+  <link rel="stylesheet" href="/css/yl.css?v=20260726-account-membership-v1">
   <script src="/js/config.js?v=20260710-api-origin-lock-v1"></script>
   <script defer src="/vendor/qrcodejs/qrcode.min.js?v=20260521-local-vendor"></script>
-  <script defer src="/js/yl.js?v=20260726-account-confirm-v1"></script>
+  <script defer src="/js/yl.js?v=20260726-account-membership-v1"></script>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -301,11 +301,6 @@
             <span><strong>保留订单号可联系支持</strong><small>支付问题可凭订单号处理</small></span>
           </div>
         </div>
-        <div class="yl-membership-state" id="ylMembershipState" aria-live="polite" hidden>
-          <span class="yl-membership-badge">当前会员</span>
-          <strong id="ylMemberExpiry">会员权益已生效</strong>
-          <small id="ylMemberRemaining">续费后自动顺延 31 天</small>
-        </div>
         <form class="yl-health-auth" id="ylHealthAuthPanel" hidden>
           <div class="yl-health-auth-head">
             <strong id="ylHealthAuthTitle">登录已有账号</strong>
@@ -333,10 +328,15 @@
           <p class="yl-health-auth-status" id="ylHealthAuthStatus" role="status" aria-live="polite"></p>
         </form>
         <div class="yl-health-account" id="ylHealthAccount" aria-label="当前付款账号" hidden>
-          <div>
+          <div class="yl-health-account-main">
             <span>会员将开通到</span>
             <strong id="ylHealthAccountLabel">已登录</strong>
-            <small>请确认无误，再选择支付方式并付款</small>
+            <small>当前登录账号（完整显示），请确认无误</small>
+            <div class="yl-membership-state" id="ylMembershipState" aria-live="polite">
+              <span class="yl-membership-badge" id="ylMemberPlan">会员状态</span>
+              <strong id="ylMemberExpiry">正在读取会员状态</strong>
+              <small id="ylMemberRemaining">请稍候</small>
+            </div>
           </div>
           <button type="button" id="ylHealthSwitchAccountBtn">更换账号</button>
         </div>

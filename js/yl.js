@@ -194,6 +194,7 @@
     payMethod: "",
     mockMode: false,
     isMember: false,
+    membershipLoaded: false,
     memberExpiresAt: "",
     providers: [],
     product: null,
@@ -739,19 +740,46 @@
   function renderMembershipState() {
     var wrap = $("#ylMembershipState");
     if (!wrap) return;
-    wrap.hidden = !paymentState.isMember;
-    if (!paymentState.isMember) return;
-
+    var quota = state.quota || {};
+    var loaded = paymentState.membershipLoaded || paymentState.isMember || !!quota.plan;
+    var isMember = isHealthMember() || quota.isMember || quota.plan === "member";
     var expiresAt = getMemberExpiresAt();
     var dateText = formatMemberExpiryDate(expiresAt);
     var days = getMemberRemainingDays(expiresAt);
+    var plan = $("#ylMemberPlan");
     var expiry = $("#ylMemberExpiry");
     var remaining = $("#ylMemberRemaining");
-    if (expiry) expiry.textContent = dateText ? "有效期至 " + dateText : "会员权益已生效";
+    var fallbackLimit = isMember ? MEMBER_ASK_LIMIT : FREE_ASK_LIMIT;
+    var dailyLimit = Number(quota.dailyLimit || quota.limit || fallbackLimit);
+    if (!Number.isFinite(dailyLimit) || dailyLimit <= 0) dailyLimit = fallbackLimit;
+    var dailyRemaining = quota.dailyRemaining ?? quota.remaining;
+    var quotaText = "每天 " + dailyLimit + " 次 AI 对话";
+    if (typeof dailyRemaining === "number") {
+      quotaText += " · 今日剩余 " + Math.max(0, dailyRemaining) + " 次";
+    }
+
+    wrap.hidden = false;
+    wrap.dataset.plan = loaded ? (isMember ? "member" : "free") : "loading";
+    if (!loaded) {
+      if (plan) plan.textContent = "会员状态";
+      if (expiry) expiry.textContent = "正在读取会员状态";
+      if (remaining) remaining.textContent = "请稍候";
+      return;
+    }
+
+    if (plan) plan.textContent = isMember ? "付费会员" : "免费用户";
+    if (expiry) {
+      expiry.textContent = isMember
+        ? (dateText ? "有效期至 " + dateText : "会员权益已生效")
+        : "当前未开通会员";
+    }
     if (remaining) {
-      remaining.textContent = days
-        ? "剩余 " + days + " 天 · 续费后顺延 31 天"
-        : "续费后自动顺延 31 天";
+      if (isMember) {
+        remaining.textContent = (days ? "剩余 " + days + " 天 · " : "")
+          + quotaText + " · 续费顺延 31 天";
+      } else {
+        remaining.textContent = quotaText + " · 开通会员后每天 " + MEMBER_ASK_LIMIT + " 次";
+      }
     }
   }
 
@@ -1456,29 +1484,8 @@
     window.setTimeout(function () { accountInput?.focus({ preventScroll: true }); }, 0);
   }
 
-  function maskHealthPhone(value) {
-    var digits = String(value || "").replace(/\D/g, "");
-    if (digits.length >= 7) return digits.slice(0, 3) + "****" + digits.slice(-4);
-    return digits || "已登录账号";
-  }
-
-  function maskHealthEmail(value) {
-    var email = String(value || "").trim();
-    var parts = email.split("@");
-    if (parts.length !== 2) return "已登录账号";
-    var name = parts[0];
-    var visible = name.length <= 2 ? name.slice(0, 1) : name.slice(0, 2);
-    return visible + "***@" + parts[1];
-  }
-
   function formatHealthAccountLabel(user) {
-    var phone = user?.user_metadata?.phone || "";
-    if (phone) return maskHealthPhone(phone);
-    var email = user?.user_metadata?.profile_email || user?.email || "";
-    if (/^phone_\d+@yuetianai\.local$/i.test(email)) {
-      return maskHealthPhone(email.replace(/^phone_|@yuetianai\.local$/gi, ""));
-    }
-    return email ? maskHealthEmail(email) : "已登录账号";
+    return getHealthAuthAccountValue(user) || "已登录账号";
   }
 
   function getHealthAuthAccountValue(user) {
@@ -1500,6 +1507,7 @@
     paymentState.payUrl = "";
     paymentState.payMethod = "";
     paymentState.isMember = false;
+    paymentState.membershipLoaded = false;
     paymentState.memberExpiresAt = "";
     updateAskQuota();
     openHealthAuthPanel("请登录要开通会员的网站账号，再继续付款。");
@@ -1628,6 +1636,7 @@
   }
 
   async function hydratePaymentProduct() {
+    paymentState.membershipLoaded = false;
     try {
       var data = await apiFetch("/api/payments/member-status?productKey=" + encodeURIComponent(HEALTH_PRODUCT_KEY));
       if (data.product) paymentState.product = data.product;
@@ -1636,6 +1645,7 @@
       paymentState.memberExpiresAt = data.productEntitlement?.expiresAt
         || data.quota?.memberExpiresAt
         || "";
+      paymentState.membershipLoaded = true;
       if (Array.isArray(data.providers)) {
         paymentState.providers = data.providers;
         var selected = data.providers.find(function (item) {
