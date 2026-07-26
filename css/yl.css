@@ -1628,12 +1628,43 @@ input:focus-visible {
   line-height: 1.55;
 }
 
+.yl-health-auth-mode {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px;
+  border: 1px solid var(--yl-line-soft);
+  border-radius: 12px;
+  background: rgba(244, 239, 228, 0.72);
+  padding: 4px;
+}
+
+.yl-health-auth-mode button {
+  min-height: 40px;
+  border: 0;
+  border-radius: 9px;
+  background: transparent;
+  color: var(--yl-muted);
+  font: inherit;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.yl-health-auth-mode button[aria-pressed="true"] {
+  background: #fff;
+  color: var(--yl-green-dark);
+  box-shadow: 0 2px 8px rgba(66, 52, 36, 0.08);
+}
+
 .yl-health-auth label {
   display: grid;
   gap: 6px;
   color: var(--yl-muted);
   font-size: 13px;
   font-weight: 900;
+}
+
+.yl-health-auth label[hidden] {
+  display: none;
 }
 
 .yl-health-auth input {
@@ -1654,7 +1685,7 @@ input:focus-visible {
 
 .yl-health-auth-actions {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: 1fr;
   gap: 10px;
 }
 
@@ -2959,26 +2990,23 @@ html.yl-unified-checkout .yl-payment-actions .yl-btn-ghost {
   color: var(--checkout-ink);
 }
 
-html.yl-unified-checkout .yl-health-register-prompt {
-  margin: 0;
+html.yl-unified-checkout .yl-health-auth-mode {
+  border-color: var(--checkout-line);
+  border-radius: 6px;
+  background: #f3eadc;
+}
+
+html.yl-unified-checkout .yl-health-auth-mode button {
+  border-radius: 4px;
   color: var(--checkout-muted);
-  font-size: 14px;
-  text-align: center;
 }
 
-html.yl-unified-checkout .yl-health-register-prompt button {
-  border: 0;
-  background: transparent;
+html.yl-unified-checkout .yl-health-auth-mode button[aria-pressed="true"] {
+  background: var(--checkout-paper);
   color: var(--checkout-red);
-  font: inherit;
-  font-weight: 700;
-  padding: 4px;
-  text-decoration: underline;
-  text-underline-offset: 3px;
 }
 
-html.yl-unified-checkout .yl-health-register-prompt button:focus-visible {
-  border-radius: 3px;
+html.yl-unified-checkout .yl-health-auth-mode button:focus-visible {
   outline: 2px solid rgba(182, 37, 27, 0.25);
   outline-offset: 2px;
 }

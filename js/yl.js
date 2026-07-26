@@ -203,6 +203,7 @@
   var healthAuthState = {
     loading: false,
     panelOpen: false,
+    mode: "login",
     tone: "",
     message: ""
   };
@@ -1278,6 +1279,7 @@
   }
 
   function renderPayment() {
+    var accountConfirmed = hasHealthPaymentAuth();
     var payRow = $(".yl-pay-row");
     if (payRow) payRow.classList.toggle("is-alipay-disabled", !ALIPAY_CHECKOUT_VISIBLE);
     $all(".yl-pay-method").forEach(function (button) {
@@ -1289,7 +1291,7 @@
       var providerEnabled = meta.enabled && !alipayPendingApproval;
       button.hidden = !ALIPAY_CHECKOUT_VISIBLE && provider === "alipay";
       button.classList.toggle("is-active", paymentState.provider === provider);
-      button.disabled = paymentState.loading || paymentState.status === "pending" || !providerEnabled;
+      button.disabled = !accountConfirmed || paymentState.loading || paymentState.status === "pending" || !providerEnabled;
       button.textContent = alipayPendingApproval ? label + "审核中" : (meta.enabled ? label : label + "未配置");
       button.dataset.detail = alipayPendingApproval ? "审核通过后开放" : detail;
       button.setAttribute("aria-label", label + "，" + button.dataset.detail);
@@ -1308,13 +1310,18 @@
     var openButton = $("#ylOpenPayBtn");
     if (openButton) {
       openButton.hidden = paymentState.status === "handoff";
-      openButton.disabled = paymentState.loading;
-      if (paymentState.loading) openButton.textContent = "处理中...";
+      openButton.disabled = !accountConfirmed || paymentState.loading;
+      if (!accountConfirmed) openButton.textContent = "请先确认账号";
+      else if (paymentState.loading) openButton.textContent = "处理中...";
       else if (paymentState.status === "handoff") openButton.textContent = "重新复制微信支付链接";
       else if (paymentState.status === "pending" && isRedirectPayment()) openButton.textContent = "打开" + getProviderLabel(paymentState.provider);
       else if (paymentState.status === "pending") openButton.textContent = "我已支付，刷新状态";
-      else if (paymentState.isMember) openButton.textContent = "续费会员 " + amount;
-      else openButton.textContent = "确认开通 " + amount;
+      else {
+        var providerPrefix = paymentState.provider === "paypal"
+          ? "使用 PayPal "
+          : "使用" + getProviderLabel(paymentState.provider);
+        openButton.textContent = providerPrefix + (paymentState.isMember ? "续费 " : "付款 ") + amount;
+      }
     }
 
     renderMembershipState();
@@ -1390,10 +1397,33 @@
     if (accountPanel) accountPanel.hidden = !authSession || !hasHealthPaymentAuth() || pageFromHash() !== "member";
     var accountLabel = $("#ylHealthAccountLabel");
     if (accountLabel && authSession) accountLabel.textContent = formatHealthAccountLabel(authSession.user);
+    var registering = healthAuthState.mode === "register";
     var accountInput = $("#ylHealthAuthAccount");
-    if (shouldShow && accountInput && !accountInput.value && authSession?.user) {
+    if (shouldShow && !registering && accountInput && !accountInput.value && authSession?.user) {
       accountInput.value = getHealthAuthAccountValue(authSession.user);
     }
+    var title = $("#ylHealthAuthTitle");
+    if (title) title.textContent = registering ? "注册新账号" : "登录已有账号";
+    var description = $("#ylHealthAuthDescription");
+    if (description) description.textContent = registering
+      ? "注册只确认会员归属，不会立即创建支付订单"
+      : "先确认会员归属账号，再选择支付方式";
+    var loginModeButton = $("#ylHealthLoginModeBtn");
+    var registerModeButton = $("#ylHealthRegisterModeBtn");
+    if (loginModeButton) loginModeButton.setAttribute("aria-pressed", registering ? "false" : "true");
+    if (registerModeButton) registerModeButton.setAttribute("aria-pressed", registering ? "true" : "false");
+    var accountFieldLabel = $("#ylHealthAccountFieldLabel");
+    if (accountFieldLabel) accountFieldLabel.textContent = registering ? "手机号" : "手机号或邮箱";
+    if (accountInput) {
+      accountInput.placeholder = registering ? "请输入 11 位手机号" : "手机号或邮箱";
+      accountInput.setAttribute("aria-label", registering ? "手机号" : "手机号或邮箱");
+      accountInput.setAttribute("inputmode", registering ? "numeric" : "email");
+      accountInput.setAttribute("autocomplete", registering ? "tel" : "username");
+    }
+    var passwordInput = $("#ylHealthAuthPassword");
+    if (passwordInput) passwordInput.setAttribute("autocomplete", registering ? "new-password" : "current-password");
+    var confirmField = $("#ylHealthConfirmPasswordField");
+    if (confirmField) confirmField.hidden = !registering;
     var memberCard = $(".yl-member-card");
     if (memberCard) memberCard.classList.toggle("is-login-required", shouldShow);
     var status = $("#ylHealthAuthStatus");
@@ -1401,12 +1431,29 @@
       status.textContent = healthAuthState.message || "";
       status.dataset.tone = healthAuthState.tone || "";
     }
-    ["#ylHealthLoginBtn", "#ylHealthRegisterBtn"].forEach(function (selector) {
+    ["#ylHealthLoginModeBtn", "#ylHealthRegisterModeBtn", "#ylHealthAuthSubmitBtn"].forEach(function (selector) {
       var button = $(selector);
       if (button) button.disabled = healthAuthState.loading;
     });
-    var loginButton = $("#ylHealthLoginBtn");
-    if (loginButton) loginButton.textContent = healthAuthState.loading ? "正在确认账号..." : "登录确认并继续支付";
+    var submitButton = $("#ylHealthAuthSubmitBtn");
+    if (submitButton) submitButton.textContent = healthAuthState.loading
+      ? (registering ? "正在注册..." : "正在确认账号...")
+      : (registering ? "注册并使用此账号" : "确认此账号");
+  }
+
+  function setHealthAuthMode(mode) {
+    if (healthAuthState.loading) return;
+    healthAuthState.mode = mode === "register" ? "register" : "login";
+    healthAuthState.message = "";
+    healthAuthState.tone = "";
+    var accountInput = $("#ylHealthAuthAccount");
+    if (healthAuthState.mode === "register" && /@/.test(accountInput?.value || "")) accountInput.value = "";
+    var passwordInput = $("#ylHealthAuthPassword");
+    var confirmInput = $("#ylHealthAuthConfirmPassword");
+    if (passwordInput) passwordInput.value = "";
+    if (confirmInput) confirmInput.value = "";
+    renderHealthAuthPanel();
+    window.setTimeout(function () { accountInput?.focus({ preventScroll: true }); }, 0);
   }
 
   function maskHealthPhone(value) {
@@ -1461,8 +1508,9 @@
   function openHealthAuthPanel(message) {
     var loginMessage = message || "请重新输入账号和密码，确认会员要开通到哪个账号。";
     healthAuthState.panelOpen = true;
+    healthAuthState.mode = "login";
     healthAuthState.message = loginMessage;
-    healthAuthState.tone = message ? "error" : "";
+    healthAuthState.tone = "";
     paymentState.status = "login";
     paymentState.message = loginMessage;
     renderPayment();
@@ -1483,22 +1531,29 @@
     openHealthAuthPanel("本次付款账号尚未确认，请重新登录后继续支付。");
   }
 
-  async function submitHealthAuth(mode) {
+  async function submitHealthAuth() {
     if (healthAuthState.loading) return;
     var account = ($("#ylHealthAuthAccount")?.value || "").trim();
     var password = $("#ylHealthAuthPassword")?.value || "";
-    var registering = mode === "register";
-    var usingEmail = /@/.test(account);
+    var confirmPassword = $("#ylHealthAuthConfirmPassword")?.value || "";
+    var registering = healthAuthState.mode === "register";
     if (!account) {
       setHealthAuthStatus(registering ? "注册请填写手机号" : "请输入手机号或邮箱", "error");
       return;
     }
-    if (registering && usingEmail) {
-      setHealthAuthStatus("注册请填写手机号；邮箱账号请直接登录。", "error");
+    if (registering) {
+      account = account.replace(/\D/g, "");
+    }
+    if (registering && !/^1\d{10}$/.test(account)) {
+      setHealthAuthStatus("请输入正确的 11 位手机号", "error");
       return;
     }
     if (password.length < 6) {
       setHealthAuthStatus("密码至少 6 位", "error");
+      return;
+    }
+    if (registering && password !== confirmPassword) {
+      setHealthAuthStatus("两次输入的密码不一致", "error");
       return;
     }
 
@@ -1512,13 +1567,16 @@
           method: "POST",
           noAuth: true,
           body: { phone: account, password: password }
-        }).catch(function (error) {
-          if (!/已注册|already|exists/i.test(error.message || "")) throw error;
-          return null;
         });
-        registered = !!data?.session;
+        registered = true;
       }
-      if (!data?.session) {
+      if (registering && !data?.session) {
+        data = await apiFetch("/api/auth/password-login", {
+          method: "POST",
+          noAuth: true,
+          body: { account: account, password: password }
+        });
+      } else if (!registering) {
         data = await apiFetch("/api/auth/password-login", {
           method: "POST",
           noAuth: true,
@@ -1532,13 +1590,33 @@
       window.yuetianTrack?.(registered ? "sign_up" : "login", { method: "password", surface: "unified_member" });
       healthAuthState.panelOpen = false;
       healthAuthState.loading = false;
-      setHealthAuthStatus("账号已确认，正在创建阅天综合会员订单...", "ok");
+      healthAuthState.message = "";
+      healthAuthState.tone = "";
       paymentState.status = "";
-      paymentState.message = "账号已确认，正在创建阅天综合会员订单...";
+      paymentState.message = "";
+      paymentState.panelDismissed = true;
+      setPayHint("账号已确认，请选择支付方式后再点击付款。");
+      var confirmInput = $("#ylHealthAuthConfirmPassword");
+      var passwordInput = $("#ylHealthAuthPassword");
+      if (confirmInput) confirmInput.value = "";
+      if (passwordInput) passwordInput.value = "";
       await hydratePaymentProduct();
-      await startHealthPayment();
+      window.setTimeout(function () {
+        $("#ylHealthAccount")?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+        $("#ylOpenPayBtn")?.focus({ preventScroll: true });
+      }, 30);
     } catch (error) {
       healthAuthState.loading = false;
+      if (registering && /已注册|already|exists/i.test(error.message || "")) {
+        healthAuthState.mode = "login";
+        var passwordInput = $("#ylHealthAuthPassword");
+        var confirmInput = $("#ylHealthAuthConfirmPassword");
+        if (passwordInput) passwordInput.value = "";
+        if (confirmInput) confirmInput.value = "";
+        setHealthAuthStatus("这个手机号已注册，请输入原密码登录。", "error");
+        passwordInput?.focus();
+        return;
+      }
       setHealthAuthStatus(normalizeHealthAuthError(error.message), "error");
       renderPayment();
       var passwordInput = $("#ylHealthAuthPassword");
@@ -1919,16 +1997,12 @@
     $("#ylPaymentBootContinue").addEventListener("click", function () {
       releasePaymentBoot();
     });
-    $("#ylHealthLoginBtn").addEventListener("click", function () {
-      submitHealthAuth("login");
-    });
-    $("#ylHealthRegisterBtn").addEventListener("click", function () {
-      submitHealthAuth("register");
-    });
+    $("#ylHealthLoginModeBtn").addEventListener("click", function () { setHealthAuthMode("login"); });
+    $("#ylHealthRegisterModeBtn").addEventListener("click", function () { setHealthAuthMode("register"); });
     $("#ylHealthSwitchAccountBtn").addEventListener("click", switchHealthPaymentAccount);
     $("#ylHealthAuthPanel").addEventListener("submit", function (event) {
       event.preventDefault();
-      submitHealthAuth("login");
+      submitHealthAuth();
     });
     document.addEventListener("keydown", function (event) {
       if (!isHealthPaymentPanelOpen()) return;
