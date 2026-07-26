@@ -11,6 +11,16 @@
       const params = new URLSearchParams(search);
       if (params.get("lang") === "en") {
         window.location.replace("/pages/wentian-app.html?lang=en#screen-1");
+        return;
+      }
+      if (params.get("view") === "desktop") return;
+      const ua = navigator.userAgent || "";
+      const isMobileDevice = /Android|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini|Mobile/i.test(ua);
+      const isIPadLike =
+        /iPad/i.test(ua) ||
+        (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+      if (isMobileDevice || isIPadLike) {
+        window.location.replace("/pages/wentian-app.html#screen-1");
       }
     })();
   </script>
