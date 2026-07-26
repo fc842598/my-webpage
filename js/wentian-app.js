@@ -1977,13 +1977,13 @@ const WENTIAN_CHART_SPECIAL_META = {
 };
 const WENTIAN_CHART_AI_TASKS = [
   { module: "overall", label: "整体批命" },
-  { module: "current_luck", label: "十年大限" },
-  { module: "xiaoxian_liunian", label: "小限流年" },
   { module: "shengong", label: "身宫批命" },
   { module: "hunyin", label: "婚姻批命" },
   { module: "jiankang", label: "健康批命" },
   { module: "caiyun", label: "财运批命" },
   { module: "shiye", label: "事业批命" },
+  { module: "current_luck", label: "十年大限" },
+  { module: "xiaoxian_liunian", label: "小限流年" },
   { module: "life_curve", label: "人生曲线" },
   { module: "action_advice", label: "行动建议" },
 ];
@@ -6205,7 +6205,9 @@ function buildWentianChartAiPayload(moduleKey, chartData = {}) {
 }
 
 async function callWentianChartAiModule(moduleKey, chartData) {
-  return wentianPostJson("/api/ai/run", buildWentianChartAiPayload(moduleKey, chartData), 120000, 1);
+  // A full report module can include one format-repair pass on the backend.
+  // Give that single request time to finish and avoid duplicating costly AI work.
+  return wentianPostJson("/api/ai/run", buildWentianChartAiPayload(moduleKey, chartData), 285000, 0);
 }
 
 function refreshWentianChartAiScreen() {
@@ -6251,9 +6253,11 @@ async function decodeWentianChartAiModules(moduleKeys, options = {}) {
       }
       success += 1;
       saveWentianChartAiState();
+      refreshWentianChartAiScreen();
     } catch (error) {
       if (isWentianChartAiRunStale(runSerial, chartData.chartRecordId)) return 0;
       wentianChartAiState.error = error.message || `${task.label}生成失败`;
+      refreshWentianChartAiScreen();
     }
   }
   if (isWentianChartAiRunStale(runSerial, chartData.chartRecordId)) return 0;
@@ -21343,13 +21347,23 @@ function sourceZiweiAiDecodePanel(saved) {
   const chapterDoneCount = chapters.filter((chapter) => chapter.ready).length;
   const isComplete = chapterDoneCount >= chapterTotal;
   const pdfReady = isComplete && !isRunning;
+  const runningTask = isRunning ? getWentianAiTask(wentianChartAiState.runningModule) : null;
+  const runningChapterIndex = runningTask
+    ? chapters.findIndex((chapter) => chapter.modules.includes(runningTask.module))
+    : -1;
+  const runningTaskLabel = runningTask && runningChapterIndex >= 0
+    ? getWentianCompactText(
+      `第 ${runningChapterIndex + 1}/${chapterTotal} 卷：${runningTask.label}`,
+      `Generating volume ${runningChapterIndex + 1}/${chapterTotal}`
+    )
+    : "";
   const pdfLabel = getWentianCompactText(pdfReady ? "下载PDF" : "解读完下载", pdfReady ? "Download PDF" : "After reading");
   const coinProgressDeg = chapterTotal ? Math.round((chapterDoneCount / chapterTotal) * 360) : 0;
   const coinMainLabel = getWentianCompactText(isRunning ? "生成" : (isComplete ? "已完" : "总批"), isRunning ? "Making" : (isComplete ? "Done" : "Read"));
   const coinSubLabel = getWentianCompactText(isRunning ? "中" : (isComplete ? "成" : "命"), isRunning ? "Report" : (isComplete ? "All" : "Chart"));
   const statusLabel = getWentianCompactText(
-    isRunning ? `生成中 ${chapterDoneCount}/${chapterTotal}` : (isComplete ? "已生成" : (hasResults ? `${chapterDoneCount}/${chapterTotal} 已生成` : "待生成")),
-    isRunning ? `Generating ${chapterDoneCount}/${chapterTotal}` : (isComplete ? "Completed" : (hasResults ? `${chapterDoneCount}/${chapterTotal} generated` : "Pending"))
+    isRunning ? (runningTaskLabel || `生成中 ${chapterDoneCount}/${chapterTotal}`) : (isComplete ? "已生成" : (hasResults ? `${chapterDoneCount}/${chapterTotal} 已生成` : "待生成")),
+    isRunning ? (runningTaskLabel || `Generating ${chapterDoneCount}/${chapterTotal}`) : (isComplete ? "Completed" : (hasResults ? `${chapterDoneCount}/${chapterTotal} generated` : "Pending"))
   );
   const coinActionLabel = getWentianCompactText(isComplete ? "重新总批命" : "总批命", isComplete ? "Regenerate report" : "Generate report");
   const coinClass = [
@@ -21372,8 +21386,8 @@ function sourceZiweiAiDecodePanel(saved) {
         <div class="wentian-chart-ai-hero-copy">
           <span class="wentian-chart-ai-hero-kicker">${escapeHtml(getWentianCompactText("六卷命书", "Volume report"))}</span>
           <strong class="wentian-chart-ai-hero-title">${escapeHtml(getWentianCompactText(isRunning ? "正在生成命书" : "先看总批", isRunning ? "Building your report" : "Start with the overview"))}</strong>
-          <p>${escapeHtml(getWentianCompactText(isRunning ? "生成后可分卷查看" : "专题 · 十年 · 流年 · 曲线", isRunning ? "Open each volume after generation" : "Topics · Decade · Annual · Curve"))}</p>
-          <b class="wentian-chart-ai-hero-status">${escapeHtml(statusLabel)}</b>
+          <p>${escapeHtml(getWentianCompactText(isRunning ? "生成完成后会立即显示，请保持页面打开" : "专题 · 十年 · 流年 · 曲线", isRunning ? "Results appear as soon as they are ready. Keep this page open." : "Topics · Decade · Annual · Curve"))}</p>
+          <b class="wentian-chart-ai-hero-status" role="status" aria-live="polite">${escapeHtml(statusLabel)}</b>
         </div>
         <button
           type="button"
