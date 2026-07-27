@@ -81,7 +81,16 @@
 | 29 | 2026-07-27T22:27:00+08:00 | AI算命适不适合看换赛道？先分能力迁移和平台重置 | https://yuetianai.com/articles/ai-suanming-kan-huansaidao.html | https://yuetianai.com/articles/en/ai-suanming-kan-huansaidao.html |
 | 30 | 2026-07-27T23:39:00+08:00 | AI算命想问眼前这次合作，紫微、八字、六爻先用哪一个？ | https://yuetianai.com/articles/ai-suanming-hezuo-ziwei-bazi-liuyao.html | https://yuetianai.com/articles/en/ai-suanming-hezuo-ziwei-bazi-liuyao.html |
 
-## 待 push 后补记
+## Push 后复查
 
-- 内容提交号：待本次 push 后回填
-- 线上抽查：待本次 push 后执行
+- 内容提交号：`da97be7f57f46caa27f34801c03739c3572528e0`
+- 远端一致性：
+  - 本地 `HEAD` 与 `origin/master` 已一致
+- 线上抽查：
+  - 中文抽查 `4` 篇：`ai-suanming-qianhou-buyi-zhengchangma`、`ai-suanming-mianfeiban-weishenme-bugou`、`ai-suanming-yaobuyao-liu-shoujihao`、`ai-suanming-hezuo-ziwei-bazi-liuyao`
+  - 英文抽查 `4` 篇：与上面四篇配对英文页
+  - 资源页：中文专题页、英文专题页、中英文文章首页、`feed.xml`、`articles/en/feed.xml`、`sitemap.xml`
+  - 结果：全部返回 `200`，并命中 `2026-07-27` 新批次 URL/发布时间
+- 复查说明：
+  - 中文 HTML 响应头当前只返回 `text/html`，未显式带 `charset=utf-8`，直接按 `requests` 默认编码会误判中文关键字未命中。
+  - 采用 UTF-8 原始字节解码后，中文专题页和中文新文均已确认同步到线上，不是推送未生效。
