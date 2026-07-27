@@ -975,6 +975,126 @@ function uniqueEnglishExamples(article, examples) {
 
 function englishOverrideFor(article) {
   const englishOverrides = {
+  "ziwei-xiongdigong-ye-kan-sanfang": {
+    title: "Why the Siblings Palace Still Needs Triad Reading",
+    description: "Read siblings, peers, and shared-resource themes through the main, opposite, and supporting palaces before you judge support or loss."
+  },
+  "ziwei-sihua-buyong-meinian-fei": {
+    title: "Why the Four Transformations Are Read as Fixed Placements First",
+    description: "Zi Wei Dou Shu reads Ke, Quan, Lu, and Ji through their natal palace placement first, then through timing triggers."
+  },
+  "ziwei-minghao-buruxianhao-yisi": {
+    title: "What 'A Good Phase Beats a Good Natal Base' Really Means",
+    description: "A strong natal chart still depends on the right ten-year and annual timing to turn potential into real position, money, or support."
+  },
+  "ziwei-miaowang-luoxian-xianliangdu": {
+    title: "How Temple, Strong, Weak, and Fallen States Change a Star",
+    description: "The same star behaves very differently depending on brightness and placement, so chart reading must start with usable strength, not loose good-bad labels."
+  },
+  "ziwei-fuqihao-fudecha-haishi-san": {
+    title: "A Good Spouse Palace Can Still Fail if the Inner-Life Palace Cannot Hold It",
+    description: "A marriage can look fine on the surface yet still wear down if the inner-life line cannot carry the relationship over time."
+  },
+  "ziwei-fuqigong-lianzhen-tianfu": {
+    title: "Lian Zhen and Tian Fu in the Spouse Palace",
+    description: "This pairing often points to a steady, proper partner on the surface, but long-term relationship quality still depends on the inner-life palace."
+  },
+  "ziwei-hongluan-luofumu-zinv-pengyou": {
+    title: "Hong Luan in the Parents, Children, or Friends Palace",
+    description: "Marriage timing does not always enter through romance alone. It can be pushed by family, children, or social connections."
+  },
+  "ziwei-shengong-zai-fuqi": {
+    title: "Body Palace in the Spouse Palace",
+    description: "When the body palace lands here, later life is shaped strongly by marriage, partnership, and relationship structure."
+  },
+  "ziwei-tianzhaigong-zuye-zichan-fangchan": {
+    title: "What the Property Palace Actually Covers",
+    description: "The property palace is not only about owning a home. It separates inherited assets, self-built assets, and the stability of the living environment."
+  },
+  "ziwei-tianzhai-xiaoren-xiaotou": {
+    title: "Malefic 'Small-People' Signs in the Property Palace",
+    description: "This pattern is less about buying property fast and more about guarding the home, hidden loss, and avoidable domestic entanglement."
+  },
+  "ziwei-tianzhai-zuoxiang-wending": {
+    title: "Why the Property Palace Also Points to Housing Stability",
+    description: "Zi Wei Dou Shu uses the property line not only for assets, but also for whether the home setup and living situation stay steady."
+  },
+  "ziwei-fumugong-andan-yuanbo": {
+    title: "A Weak Parents Palace: Thin Ties, Adoption Signals, and Low Family Support",
+    description: "This topic separates weak family ties, distance, adoption-type signals, and low practical support instead of collapsing them into one harsh label."
+  },
+  "ziwei-fumugong-youlu-bukaozuye": {
+    title: "Parents Palace With Lu but No Lu in the Life Palace",
+    description: "Family resources may exist, yet the person may still need to build life through their own later path rather than living off inherited advantage."
+  },
+  "ziwei-liunian-zou-fumu-jiehun": {
+    title: "Why an Annual Trigger in the Parents Palace Can Also Coincide With Marriage",
+    description: "Marriage timing can arrive through family involvement, introductions, approval, and household-level momentum, not only through the spouse palace."
+  },
+  "ziwei-zinvgong-konggong-duigong-huaji": {
+    title: "An Empty Children Palace: Read the Opposite Palace First",
+    description: "An empty children line should not be judged in isolation. The opposite palace often reveals whether the line is weak, delayed, or still supported."
+  },
+  "ziwei-zinv-wenfu-qingzi-pan": {
+    title: "Why the Parents' Chart Only Gives the Big Picture of the Children Line",
+    description: "The parents' chart can show the child line broadly, but detailed life reading belongs to the child's own chart."
+  },
+  "ziwei-xiongdigong-taiyin-luoxian": {
+    title: "Tai Yin Fallen in the Siblings Palace",
+    description: "Separate few siblings, thin sibling ties, and weak peer support before making a judgment about what this line really means."
+  },
+  "ziwei-xiongdigong-wuqu-bangli-budengyu-ziyuan": {
+    title: "Wu Qu in the Siblings Palace: Reliable Peers Do Not Always Mean Usable Resources",
+    description: "This pattern can show capable siblings or peers, but real help still depends on whether the wider structure turns that reliability into support."
+  },
+  "ziwei-pengyougong-caixing-jixing-hehuo": {
+    title: "Wealth and Good Stars in the Friends Palace",
+    description: "A workable partnership depends on structure, role, and capital flow, not on friendship depth by itself."
+  },
+  "ziwei-pengyougong-huaquan-caibo-youlu": {
+    title: "Authority in the Friends Palace, Lu in the Wealth Palace",
+    description: "This is a partnership-roles pattern: separate who brings capital, who holds control, and who actually sits in the boss seat."
+  },
+  "ziwei-pengyougong-tianji-tianma": {
+    title: "Tian Ji and Tian Ma in the Friends Palace",
+    description: "Running for other people, their projects, and their networks is not the same as building your own business line."
+  },
+  "ziwei-shenming-tonggong": {
+    title: "Body and Life Palace Together",
+    description: "When native disposition and later-life direction fall on the same line, life feels more unified, concentrated, and less internally split."
+  },
+  "ziwei-qisha-linshen-zhongbumei": {
+    title: "Qi Sha Touching the Body Palace",
+    description: "This pattern often shows later-life pressure landing directly on the person, making discipline and recovery more important than bravado."
+  },
+  "ziwei-kuiyue-changqu-kejia": {
+    title: "Tian Kui, Tian Yue, Wen Chang, and Wen Qu Together",
+    description: "This cluster often lifts exams, credentials, talent, and professional recognition at the same time."
+  },
+  "ziwei-quchang-tonggong-riyue-kelu": {
+    title: "Wen Qu and Wen Chang Together in Chou or Wei",
+    description: "When study stars meet the Sun, Moon, and fortune signals well, reading skill can turn into status, reputation, and professional standing."
+  },
+  "ziwei-lucun-hualu-chabie": {
+    title: "Lu Cun vs Hua Lu",
+    description: "Both bring money, but one leans toward holding and guarding it, while the other leans toward income flow and incoming resources."
+  },
+  "ziwei-luma-jiaochi-xinku": {
+    title: "Lu Ma Jiao Chi: Bigger Money Paths Usually Mean More Movement and Work",
+    description: "This is not easy money. It often shows profit arriving through action, market movement, travel, or a demanding operating rhythm."
+  },
+  "ziwei-tiantong-renhe-hehuo": {
+    title: "Why Tian Tong Fits Partnership and Human Support",
+    description: "Not every profitable pattern is built through force. Tian Tong works best where cooperation, timing, and people working together matter."
+  },
+  "ziwei-lianzhen-citao-hua": {
+    title: "Why Lian Zhen Is Called the Secondary Peach Blossom",
+    description: "Lian Zhen is not only about attraction. It also carries boundaries, authority, and a more controlled style of action."
+  },
+  "ziwei-dixing-bufubi-guxing": {
+    title: "Why Zi Wei Needs Zuo Fu and You Bi",
+    description: "Without support stars, dignity and weight can turn solitary. This pattern often separates personal gravity from true support and teamwork."
+  },
   "ziwei-minggong-tianxiang-fuzuo": {
     lead: "Tian Xiang in the Life Palace often looks polished and responsible, but the chart usually works better in executive support, operations, or second-in-command roles than in lonely top-seat power struggles.",
     meaning: "This is a role-and-structure pattern. The person may be trusted, visible, and capable, yet still feel that the title sounds bigger than the real authority. The right outlet is often coordination, gatekeeping, process control, or helping a larger system run well.",
