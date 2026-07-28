@@ -1,15 +1,15 @@
 import { execFileSync } from "node:child_process";
 import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
-import { buildAiSearchQaBatch } from "./ai-search-qa-batch-2026-07-27-data.mjs";
+import { buildAiSearchQaBatch } from "./ai-search-qa-batch-2026-07-28-data.mjs";
 
 const root = process.cwd();
 const site = "https://yuetianai.com";
 const topicSlug = "ai-search-qa";
-const batchDate = "2026-07-27";
+const batchDate = "2026-07-28";
 const zhCollectionFile = "ai-suanming-search-qa.html";
 const enCollectionFile = "ai-fortune-telling-search-qa.html";
-const queuePath = path.join(root, "docs", "ai-search-qa-2026-07-27-queue.md");
+const queuePath = path.join(root, "docs", "ai-search-qa-2026-07-28-queue.md");
 const manifestPath = path.join(root, "docs", "ai-search-qa-manifest.json");
 const topicRecordPath = path.join(root, "docs", "ai-search-qa-topic-records.json");
 const facts = {
@@ -1878,9 +1878,7 @@ const fallbackArticles = [
   };
 });
 
-const articles = batchDate === "2026-07-27"
-  ? buildAiSearchQaBatch({ batchDate, uniqueTimes, facts })
-  : fallbackArticles;
+const articles = buildAiSearchQaBatch({ batchDate, uniqueTimes, facts });
 
 main();
 
