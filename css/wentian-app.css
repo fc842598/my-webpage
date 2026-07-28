@@ -1185,12 +1185,17 @@ html[lang="en"] [data-node-id="source-39-tip"] {
   white-space: nowrap !important;
 }
 
-html[lang="en"] [data-node-id="source-settings-note-text"] {
-  width: 300px !important;
-  font-size: 10px !important;
-  line-height: 1.04 !important;
-  letter-spacing: -0.02em !important;
+html[lang="en"] [data-node-id="source-settings-note-title"] {
+  width: 260px !important;
   white-space: nowrap !important;
+}
+
+html[lang="en"] [data-node-id="source-settings-note-text"] {
+  width: 296px !important;
+  font-size: 11px !important;
+  line-height: 1.35 !important;
+  letter-spacing: 0 !important;
+  white-space: normal !important;
 }
 
 html[lang="en"] [data-node-id="yz45-title"] {
