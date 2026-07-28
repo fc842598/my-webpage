@@ -592,7 +592,7 @@ function englishPage(article, time) {
         <h2>Simple Examples</h2>
         ${exampleHtml}
         <h2>Practical Order</h2>
-        <p>First define the question. Then read the palace, its opposite palace, the supporting palaces, and the ten-year or annual trigger. This keeps the reading useful for career, money, relationships, and real choices.</p>
+        <p>${escapeHtml(englishPracticalOrder(article, title))}</p>
       </article>
       <aside class="side-panel detail-rail" aria-label="Related links">
         <h2>Read Next</h2>
@@ -796,15 +796,67 @@ function englishTitle(article) {
     "ziwei-guanlugong-hualu-caiquan": "Hua Lu in the Career Palace: Big Financial Authority Is Not the Same as Corruption",
     "ziwei-huake-daxian-shangming": "Hua Ke in a Business Cycle: Reputation Before Credentials",
     "ziwei-shinian-huaji-xuejingyan": "A Hua Ji Decade: Why Learning Through Friction Can Pay Later",
-    "ziwei-shengong-qianyi-laoban-yidi": "Body Palace in Travel: Why a Founder Path Often Grows Faster Away From Home",
-    "ziwei-quanlu-caibo-zhangju": "Authority and Lu in the Wealth Palace: Income That Wants You to Hold the Wheel",
-    "ziwei-liunian-buhaodu-shu": "Why a Bad Year Is Often Better Spent Studying Than Forcing a Fight",
-    "ziwei-qisha-linshen-jingjun": "Qi Sha Touching the Body: Better Directed Into Discipline Than Left Unchecked",
-    "ziwei-fumugong-kongjie-wuzuye": "An Empty Parents Palace With Di Jie: Thin Ancestral Support and Early Self-Reliance",
-    "ziwei-xiongdigong-huaji-tianxing": "Hua Ji and Tian Xing in the Siblings Palace: When Peer Trouble Turns Legal",
-    "ziwei-zhiyou-huake-ming": "Only Hua Ke in the Chart: A Professional Skill Path, Not a Power Path",
-    "ziwei-guanlugong-qingyang-jiaozhi": "Qing Yang in the Career Palace: Better for Teaching and Hard Skills Than Official Rank",
-     };
+     "ziwei-shengong-qianyi-laoban-yidi": "Body Palace in Travel: Why a Founder Path Often Grows Faster Away From Home",
+     "ziwei-quanlu-caibo-zhangju": "Authority and Lu in the Wealth Palace: Income That Wants You to Hold the Wheel",
+     "ziwei-liunian-buhaodu-shu": "Why a Bad Year Is Often Better Spent Studying Than Forcing a Fight",
+     "ziwei-qisha-linshen-jingjun": "Qi Sha Touching the Body: Better Directed Into Discipline Than Left Unchecked",
+     "ziwei-fumugong-kongjie-wuzuye": "An Empty Parents Palace With Di Jie: Thin Ancestral Support and Early Self-Reliance",
+     "ziwei-xiongdigong-huaji-tianxing": "Hua Ji and Tian Xing in the Siblings Palace: When Peer Trouble Turns Legal",
+     "ziwei-zhiyou-huake-ming": "Only Hua Ke in the Chart: A Professional Skill Path, Not a Power Path",
+     "ziwei-guanlugong-qingyang-jiaozhi": "Qing Yang in the Career Palace: Better for Teaching and Hard Skills Than Official Rank",
+     "ziwei-jieegong-buduan-xiaobingming": "Why the Health Palace Should Not Be Read by Minor Disease Labels First",
+     "ziwei-jieegong-wuxing-budengyu-wubing": "An Empty Health Palace Does Not Mean No Health Risk",
+     "ziwei-jieegong-xiankan-zhuicha-gong": "Why Health Reading Starts With the Worst Palace First",
+     "ziwei-wugong-xinang-xingbao-fenfa": "How to Separate the Heart Line at Wu From the Heart-Protector Line at Xu",
+     "ziwei-chengong-huaji-weibing": "Hua Ji in Chen: How to Read a Stomach-Risk Line Without Overcalling Surgery",
+     "ziwei-puyigong-taixiong-biewenguiren": "When the Friends Palace Is Too Harsh, Stop Asking Only About Noble Help",
+     "ziwei-puyigong-haustar-hehuo-bibai": "If the Friends Palace Is Full of Loss Stars, Screen Partnerships Before You Start",
+     "ziwei-xiongdigong-huaji-sanzhong-yingfa": "Hua Ji in the Siblings Palace: Three Very Different Ways It Can Show Up",
+     "ziwei-xiongdigong-huaji-buneng-zhikan-bengong": "Why Hua Ji in the Siblings Palace Cannot Be Read From One Palace Alone",
+     "ziwei-tianzhaigong-xiaoren-xiang-zaoqie": "Property Palace Trouble Stars: Why Hidden People Can Hurt the Home Most",
+     "ziwei-tianzhaigong-guansi-xing": "A Lawsuit Pattern in the Property Palace Does Not Mean the Asset Is Safe",
+     "ziwei-weilai-shinian-meiyou-dayun": "How to Read the Next Ten Years When No Major Cycle Seems to Arrive",
+     "ziwei-liunian-zou-youren-gong-jiehun": "Why an Annual Cycle Through a People Palace Can Still Trigger Marriage",
+     "ziwei-liunian-caiqian-gong-yuhun": "Why a Wealth-Palace Year Can Also Bring a Relationship Window",
+     "ziwei-tianxi-hongluan-fumugong": "Hong Luan and Tian Xi in the Parents Palace: Marriage Often Starts With Family",
+     "ziwei-meiyou-hongluan-tianxi-jiehun": "No Hong Luan or Tian Xi Does Not Mean No Marriage Window",
+     "ziwei-fuqigong-jumen-taiyang-wang-weibijiehun": "A Strong Sun-and-Ju-Men Spouse Palace Does Not Automatically Mean Marriage Time",
+     "ziwei-fuqigong-tianfu-tianma": "Tian Fu With Tian Ma in the Spouse Palace: Marrying Well Can Stabilize the Whole Chart",
+     "ziwei-fuqigong-pojun-xianhuaihunxian": "Why Po Jun in the Spouse Palace Often Damages the Marriage Line First",
+     "ziwei-fuqigong-huaji-shengli-sibie": "Hua Ji in the Spouse Palace: First Separate Living Apart From Separation by Loss",
+     "ziwei-caibogong-ziwei-huaquan": "Zi Wei Hua Quan in the Wealth Palace: More Private-Sector Control Than Official Rank",
+     "ziwei-fumugong-ziwei-tianxiang-huaquan": "Zi Wei and Tian Xiang Hua Quan in the Parents Palace: Powerful Elders and Real Pressure",
+     "ziwei-taiyin-huaji-zui-pa-mama-zuohunshi": "Why Tai Yin Hua Ji Is Most Risky When the Mother Line Runs the Marriage",
+     "ziwei-fumugong-qingyang-luoxian": "Qing Yang Weakened in the Parents Palace: Family Actions Can Still Hold You Back",
+     "ziwei-minggong-dikong": "Di Kong in the Life Palace: Separate Thin Family Support From a Deep Sense of Rootlessness",
+     "ziwei-fumu-xiongdi-dousha-liuqinbukao": "When Parents and Siblings Both Carry Sha, Family Is Present but Hard to Rely On",
+     "ziwei-xiongdigong-liantan-luoxian-kongjie-tianma": "Lian Zhen and Tan Lang Weakened in the Siblings Palace With Kong Jie and Tian Ma",
+     "ziwei-guanlugong-huake-kaoshi-zige": "Hua Ke in the Career Palace: Exams, Credentials, and the Teacher Path",
+     "ziwei-riyue-huake-tonghui-fuqi": "Sun and Moon With Hua Ke Meeting the Spouse Palace: A Skilled Partner With a Full Schedule",
+     "ziwei-guanlu-ziwei-qisha-caibo-lianpo": "Zi Wei and Qi Sha in Career, Lian Po in Wealth: A Martial Command Pattern Is Not a Business Pattern",
+     "ziwei-chengong-huaji-weitong-wupanduan": "Hua Ji in Chen: How to Read a Stomach-Risk Line Without Overcalling Surgery",
+     "ziwei-puyigong-taixiong-buwenguiren": "When the Friends Palace Is Too Harsh, Stop Asking Only About Noble Help",
+     "ziwei-puyigong-haoxing-bibai-ju": "If the Friends Palace Is Full of Loss Stars, Screen Partnerships Before You Start",
+     "ziwei-xiongdigong-huaji-sanchong-yifa": "Hua Ji in the Siblings Palace: Three Very Different Ways It Can Show Up",
+     "ziwei-xiongdigong-huaji-yaodeng-yingshi": "Why Hua Ji in the Siblings Palace Cannot Be Read From One Palace Alone",
+     "ziwei-tianzhaigong-xiaoren-xiangdaoqie": "Property Palace Trouble Stars: Why Hidden People Can Hurt the Home Most",
+     "ziwei-tianzhaigong-guansi-zichan-mingyi": "A Lawsuit Pattern in the Property Palace Does Not Mean the Asset Is Safe",
+     "ziwei-weilai-shinian-wudayun": "How to Read the Next Ten Years When No Major Cycle Seems to Arrive",
+     "ziwei-liunian-yourengong-ye-jiehun": "Why an Annual Cycle Through a People Palace Can Still Trigger Marriage",
+     "ziwei-liunian-caibo-yu-hunyuan": "Why a Wealth-Palace Year Can Also Bring a Relationship Window",
+     "ziwei-hongluan-tianxi-luofumu": "Hong Luan and Tian Xi in the Parents Palace: Marriage Often Starts With Family",
+     "ziwei-meiyou-hongluan-tianxi-ye-jiehun": "No Hong Luan or Tian Xi Does Not Mean No Marriage Window",
+     "ziwei-fuqi-jumen-taiyang-wang-weibijiehun": "A Strong Sun-and-Ju-Men Spouse Palace Does Not Automatically Mean Marriage Time",
+     "ziwei-fuqi-tianfu-tianma": "Tian Fu With Tian Ma in the Spouse Palace: Marrying Well Can Stabilize the Whole Chart",
+     "ziwei-fuqigong-pojun-huaihunxian": "Why Po Jun in the Spouse Palace Often Damages the Marriage Line First",
+     "ziwei-taiyin-huaji-muqin-chouhun": "Why Tai Yin Hua Ji Is Most Risky When the Mother Line Runs the Marriage",
+     "ziwei-minggong-dikong-liuqin-wujia": "Di Kong in the Life Palace: Separate Thin Family Support From Adoption or Rootlessness",
+     "ziwei-fumu-xiongdi-daisha-liuqinbukao": "When Parents and Siblings Both Carry Sha, Family Is Present but Hard to Rely On",
+     "ziwei-xiongdigong-liantan-kongkongjie-tianma": "Lian Zhen and Tan Lang Weakened in the Siblings Palace With Kong Jie and Tian Ma",
+     "ziwei-guanlugong-huake-kaoshi-jiaozhi": "Hua Ke in the Career Palace: Exams, Credentials, and the Teacher Path",
+     "ziwei-riyue-huake-huifuqi": "Sun and Moon With Hua Ke Meeting the Spouse Palace: A Skilled Partner With a Full Schedule",
+     "ziwei-ziweiqisha-guanlu-lianpo-caibo": "Zi Wei and Qi Sha in Career, Lian Po in Wealth: A Martial Command Pattern Is Not a Business Pattern",
+      };
   if (slugMap[article.slug]) return slugMap[article.slug];
   const keyMap = [
     ["禄存在命宫", "Lu Cun in the Life Palace: Saving Money Without Getting Stuck"],
@@ -1583,8 +1635,8 @@ function englishLead(article, title) {
   if (article.title.includes("迁移宫")) return "Some charts do not fully open in the original environment. The travel and outside-world palace can be the place where status, support, and opportunity finally connect.";
   if (article.title.includes("入正位")) return "Zi Wei Dou Shu becomes much clearer when you ask whether a star is in the life area it is actually built to express.";
   const hubDefaults = englishHubDefaults(article);
-  if (hubDefaults?.lead) return hubDefaults.lead;
-  return "Read this pattern by locating the palace first, then asking what role, pressure, and timing it creates in real life.";
+  if (hubDefaults?.lead) return `${hubDefaults.lead} In "${title}", the key question is ${englishFocusArea(article)}.`;
+  return `For "${title}", start by locating the palace boundary, then ask what role, pressure, or opening it creates in real life.`;
 }
 
 function englishMeaning(article) {
@@ -1610,8 +1662,8 @@ function englishMeaning(article) {
   if (article.title.includes("六煞")) return "Malefic stars are not just about fear. They show where stress enters and how one problem can spill into the opposite side of the chart.";
   if (article.title.includes("迁移宫")) return "The travel palace also means platforms, markets, and life outside the familiar setting. That is why some charts grow only after movement or relocation.";
   const hubDefaults = englishHubDefaults(article);
-  if (hubDefaults?.meaning) return hubDefaults.meaning;
-  return "Name the life area first, then connect the pattern to practical choices instead of treating one symbol as a fixed prediction.";
+  if (hubDefaults?.meaning) return `${hubDefaults.meaning} For "${englishTitle(article)}," keep the focus on ${englishFocusArea(article)}.`;
+  return `In "${englishTitle(article)}," name the life area first, then connect the pattern to practical choices instead of treating one symbol as a fixed prediction.`;
 }
 
 function englishMethod(article) {
@@ -1637,8 +1689,37 @@ function englishMethod(article) {
   if (article.title.includes("迁移宫")) return "Do not read movement as travel only. Compare the outside-world palace with the Life Palace and Career Palace to see whether a bigger stage strengthens the chart or simply adds stress.";
   if (article.title.includes("入正位")) return "Do not judge one star alone. Ask whether it is in the palace that matches its function, then test whether the surrounding palaces support that reading in real life.";
   const hubDefaults = englishHubDefaults(article);
-  if (hubDefaults?.method) return hubDefaults.method;
-  return "Do not judge one star or one palace alone. Look at the main palace, the opposite palace, and the surrounding structure before you name the outcome.";
+  if (hubDefaults?.method) return `${hubDefaults.method} In this topic, keep checking ${englishFocusArea(article)} before you name the outcome.`;
+  return `For "${englishTitle(article)}," do not judge one star or one palace alone. Look at the main palace, the opposite palace, and the surrounding structure before you name the outcome.`;
+}
+
+function englishPracticalOrder(article, title = "") {
+  const topic = article.title || title;
+  const timing = topic.includes("流年")
+    ? "the active annual trigger"
+    : topic.includes("大运") || topic.includes("大限")
+      ? "the active ten-year cycle"
+      : "the main palace named in the topic";
+  let emphasis = "how the structure turns into a real-life result";
+  if (topic.includes("疾厄")) emphasis = "which body line is taking the pressure first and whether it repeats";
+  else if (topic.includes("夫妻") || topic.includes("婚")) emphasis = "relationship timing, pressure, and whether the chart can actually hold the bond";
+  else if (topic.includes("财帛") || topic.includes("财")) emphasis = "income source, cash retention, and who truly controls the money";
+  else if (topic.includes("官禄")) emphasis = "role, responsibility, and how the career line cashes out";
+  else if (topic.includes("父母") || topic.includes("兄弟")) emphasis = "whether the pattern belongs to relatives, shared resources, or the native directly";
+  else if (topic.includes("田宅")) emphasis = "asset structure, domestic risk, and who is carrying the burden";
+  return `For a topic like "${title || englishTitle(article)}," start with ${timing}, then compare the opposite palace and the supporting structure. Finish by testing ${emphasis} so the reading stays concrete instead of drifting into a fixed label.`;
+}
+
+function englishFocusArea(article) {
+  const topic = article.title || "";
+  if (topic.includes("疾厄")) return "which body line is weak, how the pressure repeats, and whether the issue is congenital or triggered later";
+  if (topic.includes("夫妻") || topic.includes("婚")) return "timing, bond quality, and whether the chart can really carry the relationship";
+  if (topic.includes("财帛") || topic.includes("财")) return "where money enters, who controls it, and whether it can actually stay";
+  if (topic.includes("官禄")) return "position, responsibility, and whether the work lane fits the chart's structure";
+  if (topic.includes("田宅")) return "asset structure, domestic risk, and who is carrying the home line";
+  if (topic.includes("父母") || topic.includes("兄弟")) return "whether the pattern belongs to relatives, shared resources, or the native directly";
+  if (topic.includes("流年") || topic.includes("大运") || topic.includes("大限")) return "what belongs to the natal structure and what belongs only to timing";
+  return "the palace boundary, the supporting structure, and the real-life outlet of the pattern";
 }
 
 function englishHubDefaults(article) {

@@ -41,28 +41,33 @@ function parseTimes(input) {
   return times;
 }
 
+function firstClause(text = "") {
+  return String(text).split(/[，。；：]/)[0].trim();
+}
+
 function bodyOf(article) {
-  const sectionA = article.points.slice(0, 2).join("");
-  const sectionB = article.points.slice(2).join("");
+  const [pointA = "", pointB = "", pointC = "", pointD = ""] = article.points;
+  const mistakeA = firstClause(pointA);
+  const mistakeB = firstClause(pointB);
   return `${article.opening}
 
-${article.focus}很多人会在这一步直接把一颗星、一个宫位或者一个阶段标签，当成整张盘的结论，所以才会把能用的结构看窄，也把真正要防的代价看漏。
+${article.focus}这类题最怕的，不是看不懂术语，而是一开始就把局部现象当成整张盘的结论。只要先把主线、承压位和现实出口拆开，后面再看流年、四化和触发顺序，判断就会稳很多。
 
 ### 先把主线定出来
-${sectionA}先把这条主线定清楚，后面再看四化、限年和外部条件，结论才不会飘成一句空话。
+${pointA}${pointB}所以第一步不是急着贴一句吉凶，而是先确认这件事到底是先天底子、后天触发，还是两边一起把问题推出来。
 
 ${article.examples[0]}
 
 ### 再看组合为什么会把结果拉开
-${sectionB}真正拉开差距的，往往不是单独一个判断词，而是它落在哪条线、有没有承接、会不会把人推去承担更多责任、流动或压力。
+${pointC}${pointD}真正把结果拉开的，往往不是多背一条断语，而是能不能看清它落在哪条线、由谁承接、最后在现实里变成什么代价或机会。
 
 ${article.examples[1]}
 
-### 真正实用的地方，不是贴标签
-读这类盘，重点不是先争一句好命还是坏命，而是先分清主宫、落点、承接和代价。宫位告诉你事情落在哪里，星曜告诉你用什么方式发生，组合再决定事情是顺着做出来，还是带着折腾和成本做出来。把这几个层次拆开，判断才不会飘。
+### 真正实用的地方，在于先分层
+${article.intent}实务上最好用的读法，是先把主宫定位，再把对宫、三方四正和现实出口接起来。这样一来，你就不会把“有这个象”误听成“事情一定这样发生”，也更容易看懂该先守哪一段。
 
 ### 最容易看错的地方
-${article.intent}如果只抓一个最亮的点，常会把现实里的顺序弄反。先把先天结构和现实出口分开，再看哪一宫主事、哪一宫承压、哪一宫补资源，才知道应该先守、先动，还是先等时机。
+很多误判，都不是少看一颗星，而是把“${mistakeA}”和“${mistakeB}”混成一句话。先把主因和结果分开，再把宫位、星曜、组合和时间顺序拆开，判断才不会越看越宽、越讲越虚。
 
 ### 排盘顺序
 ${article.orderText}`;

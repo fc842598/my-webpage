@@ -2,19 +2,25 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://yuetianai.com/articles/en/</loc>
-    <lastmod>2026-07-28T23:39:00+08:00</lastmod>
+    <lastmod>2026-07-28T23:52:00+08:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://yuetianai.com/articles/en/feed.xml</loc>
-    <lastmod>2026-07-28T23:39:00+08:00</lastmod>
+    <lastmod>2026-07-28T23:52:00+08:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://yuetianai.com/articles/en/ai-fortune-telling-search-qa.html</loc>
     <lastmod>2026-06-24T00:00:00+08:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://yuetianai.com/articles/en/ziwei-ziweiqisha-guanlu-lianpo-caibo.html</loc>
+    <lastmod>2026-07-28T23:52:00+08:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
@@ -31,8 +37,20 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://yuetianai.com/articles/en/ziwei-riyue-huake-huifuqi.html</loc>
+    <lastmod>2026-07-28T22:08:00+08:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://yuetianai.com/articles/en/ai-suanming-kan-fuqi-hepan-xian-kan-shenme.html</loc>
     <lastmod>2026-07-28T21:58:00+08:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://yuetianai.com/articles/en/ziwei-guanlugong-huake-kaoshi-jiaozhi.html</loc>
+    <lastmod>2026-07-28T21:38:00+08:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
@@ -43,8 +61,26 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://yuetianai.com/articles/en/ziwei-xiongdigong-liantan-kongkongjie-tianma.html</loc>
+    <lastmod>2026-07-28T20:58:00+08:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://yuetianai.com/articles/en/ziwei-fumu-xiongdi-daisha-liuqinbukao.html</loc>
+    <lastmod>2026-07-28T20:23:00+08:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://yuetianai.com/articles/en/ai-suanming-kan-huilaojia-fazhan-shihema.html</loc>
     <lastmod>2026-07-28T20:16:00+08:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://yuetianai.com/articles/en/ziwei-minggong-dikong-liuqin-wujia.html</loc>
+    <lastmod>2026-07-28T19:57:00+08:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
@@ -61,6 +97,18 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://yuetianai.com/articles/en/ziwei-fumugong-qingyang-luoxian.html</loc>
+    <lastmod>2026-07-28T18:21:00+08:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://yuetianai.com/articles/en/ziwei-taiyin-huaji-muqin-chouhun.html</loc>
+    <lastmod>2026-07-28T18:14:00+08:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://yuetianai.com/articles/en/ai-suanming-yitian-duoci-zhuiwen-zenme-paishunxu.html</loc>
     <lastmod>2026-07-28T17:26:00+08:00</lastmod>
     <changefreq>daily</changefreq>
@@ -69,6 +117,18 @@
   <url>
     <loc>https://yuetianai.com/articles/en/ai-suanming-xian-paipan-zai-denglu-haishi-xian-denglu.html</loc>
     <lastmod>2026-07-28T16:49:00+08:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://yuetianai.com/articles/en/ziwei-fumugong-ziwei-tianxiang-huaquan.html</loc>
+    <lastmod>2026-07-28T16:23:00+08:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://yuetianai.com/articles/en/ziwei-caibogong-ziwei-huaquan.html</loc>
+    <lastmod>2026-07-28T16:17:00+08:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
@@ -85,8 +145,20 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://yuetianai.com/articles/en/ziwei-fuqigong-huaji-shengli-sibie.html</loc>
+    <lastmod>2026-07-28T14:29:00+08:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://yuetianai.com/articles/en/ai-suanming-liaotian-jilu-huibei-shuaren-fandao-ma.html</loc>
     <lastmod>2026-07-28T14:18:00+08:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://yuetianai.com/articles/en/ziwei-fuqigong-pojun-huaihunxian.html</loc>
+    <lastmod>2026-07-28T14:03:00+08:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
@@ -97,8 +169,20 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://yuetianai.com/articles/en/ziwei-fuqi-tianfu-tianma.html</loc>
+    <lastmod>2026-07-28T13:28:00+08:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://yuetianai.com/articles/en/ai-suanming-zhuce-bu-tian-zhenming-keyima.html</loc>
     <lastmod>2026-07-28T12:46:00+08:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://yuetianai.com/articles/en/ziwei-fuqi-jumen-taiyang-wang-weibijiehun.html</loc>
+    <lastmod>2026-07-28T12:26:00+08:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
@@ -109,14 +193,50 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://yuetianai.com/articles/en/ziwei-meiyou-hongluan-tianxi-ye-jiehun.html</loc>
+    <lastmod>2026-07-28T12:01:00+08:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://yuetianai.com/articles/en/ziwei-hongluan-tianxi-luofumu.html</loc>
+    <lastmod>2026-07-28T11:55:00+08:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://yuetianai.com/articles/en/ai-suanming-weishenme-xian-ding-yige-zhuti.html</loc>
     <lastmod>2026-07-28T11:51:00+08:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://yuetianai.com/articles/en/ziwei-liunian-caibo-yu-hunyuan.html</loc>
+    <lastmod>2026-07-28T11:14:00+08:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://yuetianai.com/articles/en/ziwei-liunian-yourengong-ye-jiehun.html</loc>
+    <lastmod>2026-07-28T10:39:00+08:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://yuetianai.com/articles/en/ai-suanming-xianwen-jieguo-haishi-xianwen-yuanyin.html</loc>
     <lastmod>2026-07-28T10:28:00+08:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://yuetianai.com/articles/en/ziwei-weilai-shinian-wudayun.html</loc>
+    <lastmod>2026-07-28T10:21:00+08:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://yuetianai.com/articles/en/ziwei-tianzhaigong-guansi-zichan-mingyi.html</loc>
+    <lastmod>2026-07-28T09:57:00+08:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
@@ -139,6 +259,12 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://yuetianai.com/articles/en/ziwei-tianzhaigong-xiaoren-xiangdaoqie.html</loc>
+    <lastmod>2026-07-28T07:56:00+08:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://yuetianai.com/articles/en/ai-suanming-huiyuan-80ci-gou-buyongma.html</loc>
     <lastmod>2026-07-28T07:48:00+08:00</lastmod>
     <changefreq>daily</changefreq>
@@ -151,8 +277,20 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://yuetianai.com/articles/en/ziwei-xiongdigong-huaji-yaodeng-yingshi.html</loc>
+    <lastmod>2026-07-28T05:41:00+08:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://yuetianai.com/articles/en/ai-suanming-danci-buyi-he-huiyuan-zenme-xuan.html</loc>
     <lastmod>2026-07-28T05:37:00+08:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://yuetianai.com/articles/en/ziwei-xiongdigong-huaji-sanchong-yifa.html</loc>
+    <lastmod>2026-07-28T05:06:00+08:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
@@ -163,8 +301,26 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://yuetianai.com/articles/en/ziwei-puyigong-haoxing-bibai-ju.html</loc>
+    <lastmod>2026-07-28T04:50:00+08:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://yuetianai.com/articles/en/ziwei-puyigong-taixiong-buwenguiren.html</loc>
+    <lastmod>2026-07-28T04:33:00+08:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://yuetianai.com/articles/en/ai-suanming-xian-kan-jiushi-haishi-xian-wen-weilai.html</loc>
     <lastmod>2026-07-28T04:09:00+08:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://yuetianai.com/articles/en/ziwei-chengong-huaji-weitong-wupanduan.html</loc>
+    <lastmod>2026-07-28T03:38:00+08:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
@@ -175,8 +331,26 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://yuetianai.com/articles/en/ziwei-wugong-xinang-xingbao-fenfa.html</loc>
+    <lastmod>2026-07-28T03:29:00+08:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://yuetianai.com/articles/en/ziwei-jieegong-xiankan-zhuicha-gong.html</loc>
+    <lastmod>2026-07-28T02:59:00+08:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://yuetianai.com/articles/en/ai-suanming-yige-wenti-wen-jici-heli.html</loc>
     <lastmod>2026-07-28T02:44:00+08:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://yuetianai.com/articles/en/ziwei-jieegong-wuxing-budengyu-wubing.html</loc>
+    <lastmod>2026-07-28T02:17:00+08:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
@@ -189,6 +363,12 @@
   <url>
     <loc>https://yuetianai.com/articles/en/ai-suanming-yishanglai-jiu-cui-fufei-kaopuma.html</loc>
     <lastmod>2026-07-28T00:57:00+08:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://yuetianai.com/articles/en/ziwei-jieegong-buduan-xiaobingming.html</loc>
+    <lastmod>2026-07-28T00:23:00+08:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
