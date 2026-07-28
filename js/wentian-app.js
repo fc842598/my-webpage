@@ -12221,7 +12221,9 @@ async function hydrateWentianOrders(options = {}) {
     const data = await wentianFetchJson("/api/payments/refunds");
     wentianOrderState.orders = Array.isArray(data.orders) ? data.orders : [];
     if (wentianRefundTicketState.open && data.policyText) {
-      wentianRefundTicketState.message = data.policyText;
+      wentianRefundTicketState.message = isWentianEnglishUi()
+        ? "Upload the original payment screenshot. Pending orders can also be checked manually. Approved refunds return through the original payment method within 7 business days."
+        : data.policyText;
     }
     wentianOrderState.loaded = true;
   } catch (error) {
@@ -12301,7 +12303,7 @@ function ensureWentianRefundTicketModal() {
         </label>
         <label class="wentian-refund-field">
           <span>${isEn ? "Payment Date" : "支付日期"}</span>
-          <input id="wentian-refund-paid-date" type="date">
+          <input id="wentian-refund-paid-date" type="${isEn ? "text" : "date"}"${isEn ? ' inputmode="numeric" maxlength="10" placeholder="YYYY-MM-DD"' : ""}>
         </label>
       </div>
       <label class="wentian-refund-field">
@@ -12310,8 +12312,17 @@ function ensureWentianRefundTicketModal() {
       </label>
       <label class="wentian-refund-field">
         <span>${isEn ? "Payment Screenshot" : "支付截图"}</span>
-        <input id="wentian-refund-screenshot" type="file" accept="image/png,image/jpeg,image/webp">
-        <small id="wentian-refund-file">${isEn ? "Upload a screenshot showing successful payment." : "请上传当时支付成功截图。"}</small>
+        ${isEn ? `
+          <span class="wentian-refund-upload">
+            <span class="wentian-refund-upload-button">Choose Image</span>
+            <span class="wentian-refund-upload-name" id="wentian-refund-file">No image selected</span>
+            <input id="wentian-refund-screenshot" type="file" accept="image/png,image/jpeg,image/webp" aria-label="Choose payment screenshot">
+          </span>
+          <small>Upload a screenshot showing successful payment.</small>
+        ` : `
+          <input id="wentian-refund-screenshot" type="file" accept="image/png,image/jpeg,image/webp">
+          <small id="wentian-refund-file">请上传当时支付成功截图。</small>
+        `}
       </label>
       <label class="wentian-refund-field">
         <span>${isEn ? "Notes" : "补充说明"}</span>
@@ -12382,7 +12393,7 @@ function renderWentianRefundTicketModal() {
   const file = modal.querySelector("#wentian-refund-file");
   if (file) file.textContent = wentianRefundTicketState.screenshotName
     ? `${isEn ? "Selected: " : "已选择："}${wentianRefundTicketState.screenshotName}`
-    : (isEn ? "Upload a screenshot showing successful payment." : "请上传当时支付成功截图。");
+    : (isEn ? "No image selected" : "请上传当时支付成功截图。");
   const error = modal.querySelector("#wentian-refund-error");
   if (error) {
     error.hidden = !wentianRefundTicketState.error;
