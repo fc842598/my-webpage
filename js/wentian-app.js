@@ -1628,7 +1628,9 @@ function sourceAiChatScreen(screen) {
     ? chartProfileText.replace(/\s*[·•-]\s*(?:Age\s*)?\d+\s*(?:岁|歲)?\s*$/i, "")
     : chartProfileText;
   const profileText = isLiuyaoChat ? "六爻" : isHepanChat ? "合盘" : isLiurenChat ? "六壬" : isYijingChat ? "易经" : chartProfileCompactText;
-  const profileIcon = isLiuyaoChat || isYijingChat ? "卦" : isHepanChat ? "合" : isLiurenChat ? "课" : "命";
+  const profileIcon = isWentianEnglishUi()
+    ? (isLiuyaoChat || isYijingChat ? "D" : isHepanChat ? "C" : isLiurenChat ? "R" : "C")
+    : (isLiuyaoChat || isYijingChat ? "卦" : isHepanChat ? "合" : isLiurenChat ? "课" : "命");
   const profileSub = isLiuyaoChat || isLiurenChat ? "占卜" : isHepanChat || isYijingChat ? "专批" : "切换";
   const profileTag = isContextChat ? `
     <button class="wentian-chat-profile-tag is-context" type="button" data-action="wentian-chat-context-open" aria-label="查看${escapeHtml(profileText)}上下文">
@@ -1659,7 +1661,9 @@ function sourceAiChatScreen(screen) {
     ? getWentianQuotaValue("dailyRemaining", String(memberSnapshot.daily || "--").split("/")[0] || "--")
     : "--";
   const onlineLabel = isWentianEnglishUi() ? "Online" : "在线";
-  const quotaLabel = isWentianEnglishUi() ? `${dailyRemaining} left` : `余${dailyRemaining}次`;
+  const quotaLabel = isWentianEnglishUi()
+    ? (dailyRemaining === "--" ? "Quota" : `${dailyRemaining} left`)
+    : `余${dailyRemaining}次`;
   return `
     ${figBox("source-4-bg", 0, 0, 390, 892, "", "background:#fbf7ef;")}
     ${figBox("source-4-header", 0, 0, 390, 88, "", "background:#f8f3ea;box-shadow:0 1px 0 rgba(110,82,38,.08);")}
@@ -11385,7 +11389,9 @@ function setWentianQuota(quota) {
   const normalized = wentianMemberState.quota || normalizeWentianQuota(quota);
   const remainingValue = normalized.dailyRemaining ?? normalized.remaining;
   const remaining = remainingValue === null || remainingValue === undefined || remainingValue === "" ? "--" : remainingValue;
-  el.textContent = isWentianEnglishUi() ? `${remaining} left` : `余${remaining}次`;
+  el.textContent = isWentianEnglishUi()
+    ? (remaining === "--" ? "Quota" : `${remaining} left`)
+    : `余${remaining}次`;
 }
 
 function splitWentianLongSentence(sentence, maxLength = 58) {
