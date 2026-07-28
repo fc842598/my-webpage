@@ -12126,6 +12126,7 @@ function openWentianUnifiedMemberPage() {
   const from = `${location.pathname}${returnSearch ? `?${returnSearch}` : ""}${location.hash || "#screen-31"}`;
   const target = new URL(WENTIAN_UNIFIED_MEMBER_URL, location.origin);
   target.searchParams.set("source", "wentian-mobile");
+  if (language) target.searchParams.set("lang", language);
   target.searchParams.set("returnUrl", from);
   target.hash = "member";
   clearWentianAuthReturnState();

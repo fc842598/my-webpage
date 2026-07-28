@@ -3947,3 +3947,55 @@ html.yl-unified-checkout .yl-operator-contact {
     padding-left: 30px;
   }
 }
+
+html.yl-english-checkout .yl-member-main span {
+  font-size: 17px;
+}
+
+html.yl-english-checkout body {
+  min-width: 0;
+}
+
+html.yl-english-checkout .yl-member-card {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+html.yl-english-checkout .yl-member-card > * {
+  min-width: 0;
+}
+
+html.yl-english-checkout .yl-member-main span::before,
+html.yl-english-checkout .yl-member-main span::after {
+  margin-inline: 10px;
+}
+
+html.yl-english-checkout .yl-member-benefits span {
+  font-size: 14px;
+  line-height: 1.25;
+}
+
+html.yl-english-checkout .yl-assurance-title {
+  font-size: 14px;
+}
+
+html.yl-english-checkout .yl-pay-method {
+  font-size: 13px;
+  line-height: 1.15;
+  text-align: center;
+}
+
+html.yl-english-checkout #ylOpenPayBtn {
+  font-family: inherit;
+  font-size: 20px;
+}
+
+html.yl-english-checkout .yl-checkout-account small,
+html.yl-english-checkout .yl-mobile-assurance {
+  line-height: 1.35;
+}
+
+@media (max-width: 360px) {
+  html.yl-english-checkout .yl-brand-checkout {
+    font-size: 18px;
+  }
+}

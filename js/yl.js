@@ -20,8 +20,12 @@
   var ALIPAY_CHECKOUT_ENABLED = true;
   var PAGE_IDS = ["home", "assessment", "report", "chat", "member"];
   var DEFAULT_API_BASE = "https://api.yuetianai.com";
+  var INITIAL_QUERY = new URLSearchParams(window.location.search || "");
+  var INITIAL_RETURN_URL = INITIAL_QUERY.get("returnUrl") || "";
+  var IS_ENGLISH_CHECKOUT = INITIAL_QUERY.get("lang") === "en"
+    || /(?:\?|&)lang=en(?:&|#|$)/.test(INITIAL_RETURN_URL);
   var HEALTH_PAGE_TITLE = "AI中医体质分析 - 体质自评报告与健康追问";
-  var MEMBER_PAGE_TITLE = "阅天综合会员支付";
+  var MEMBER_PAGE_TITLE = IS_ENGLISH_CHECKOUT ? "Yuetian AI Membership Checkout" : "阅天综合会员支付";
 
   var categories = [
     {
@@ -255,7 +259,9 @@
       renderHealthAuthPanel();
       if (!healthAuthState.memberPrompted && !readAuthSession() && !hasHealthPaymentAuth()) {
         healthAuthState.memberPrompted = true;
-        openHealthAuthPanel("请先登录或注册，会员权益会绑定到登录账号。");
+        openHealthAuthPanel(IS_ENGLISH_CHECKOUT
+          ? "Sign in or create an account. Membership stays with that account."
+          : "请先登录或注册，会员权益会绑定到登录账号。");
       }
     }
     if (opts.scroll !== false) {
@@ -362,12 +368,76 @@
     if (returnLink) {
       returnLink.hidden = false;
       returnLink.href = memberCheckoutContext.returnPath;
-      returnLink.textContent = "返回原页面";
+      returnLink.textContent = IS_ENGLISH_CHECKOUT ? "Back to the app" : "返回原页面";
     }
     if (continueLink) {
       continueLink.href = memberCheckoutContext.returnPath;
-      continueLink.textContent = "返回原页面继续使用";
+      continueLink.textContent = IS_ENGLISH_CHECKOUT ? "Return to the app" : "返回原页面继续使用";
     }
+  }
+
+  function applyEnglishMemberCheckoutCopy() {
+    if (!IS_ENGLISH_CHECKOUT) return;
+    document.documentElement.lang = "en";
+    document.documentElement.classList.add("yl-english-checkout");
+    document.title = MEMBER_PAGE_TITLE;
+    var setText = function (selector, value) {
+      var node = $(selector);
+      if (node) node.textContent = value;
+    };
+    setText(".yl-brand-checkout", "Yuetian AI");
+    setText(".yl-member-main span", "Yuetian AI Membership");
+    setText(".yl-member-main p", "Site Access · AI Chat");
+    setText(".yl-member-benefits > strong", "Plan Benefits");
+    var benefits = $all(".yl-member-benefits span");
+    if (benefits[0]) benefits[0].innerHTML = "<b>1</b> Full website access";
+    if (benefits[1]) benefits[1].innerHTML = "<b>2</b> 80 AI chats per day";
+    setText(".yl-assurance-title", "Secure Checkout");
+    var assurances = $all(".yl-payment-assurance > span");
+    var assuranceCopy = [
+      ["Handled by the payment provider", "Your payment password stays with that provider"],
+      ["Activated automatically after payment", "Benefits stay with this signed-in account"],
+      ["Keep the order number for support", "We can trace payment issues by order number"]
+    ];
+    assurances.forEach(function (item, index) {
+      var copy = assuranceCopy[index];
+      if (!copy) return;
+      var strong = item.querySelector("strong");
+      var small = item.querySelector("small");
+      if (strong) strong.textContent = copy[0];
+      if (small) small.textContent = copy[1];
+    });
+    setText(".yl-checkout-account span", "Payment Account");
+    setText(".yl-pay-heading strong", "Payment Method");
+    setText(".yl-pay-heading span", "Check the amount before paying");
+    var mobileAssurances = $all(".yl-mobile-assurance span");
+    if (mobileAssurances[0]) mobileAssurances[0].textContent = "Automatic activation after payment";
+    if (mobileAssurances[1]) mobileAssurances[1].textContent = "Keep the order number for support";
+    var returnLink = $("#ylMemberReturnLink");
+    if (returnLink) returnLink.textContent = "Back to the app";
+    var closeButton = $("#ylAccountCloseBtn");
+    if (closeButton) closeButton.setAttribute("aria-label", "Close account window");
+    setText(".yl-account-dialog-head > span", "Yuetian Account");
+    setText(".yl-account-dialog-head > p", "Use the same account on desktop, mobile, and WeChat.");
+    setText("#ylHealthLoginModeBtn", "Sign In");
+    setText("#ylHealthRegisterModeBtn", "Create Account");
+    var passwordLabels = $all(".yl-health-auth label .yl-health-field-label");
+    if (passwordLabels[1]) passwordLabels[1].textContent = "Password";
+    if (passwordLabels[2]) passwordLabels[2].textContent = "Confirm Password";
+    var passwordInput = $("#ylHealthAuthPassword");
+    if (passwordInput) {
+      passwordInput.placeholder = "Password";
+      passwordInput.setAttribute("aria-label", "Password");
+    }
+    var confirmInput = $("#ylHealthAuthConfirmPassword");
+    if (confirmInput) {
+      confirmInput.placeholder = "Enter password again";
+      confirmInput.setAttribute("aria-label", "Confirm password");
+    }
+    setText(".yl-health-account-main > span", "Signed-in Account");
+    setText(".yl-health-account-main > small", "Shared across desktop and mobile");
+    setText("#ylHealthSwitchAccountBtn", "Switch Account");
+    setText("#ylHealthLogoutBtn", "Sign Out");
   }
 
   function decoratePaymentHandoffUrl(value) {
@@ -541,8 +611,8 @@
 
   function getProviderLabel(provider) {
     if (provider === "paypal") return "PayPal";
-    if (provider === "alipay") return "支付宝";
-    return "微信支付";
+    if (provider === "alipay") return IS_ENGLISH_CHECKOUT ? "Alipay" : "支付宝";
+    return IS_ENGLISH_CHECKOUT ? "WeChat Pay" : "微信支付";
   }
 
   function getProviderMeta(provider) {
@@ -562,19 +632,28 @@
 
   function getProviderMethodDetail(provider) {
     var meta = getProviderMeta(provider);
-    if (!meta.enabled) return "暂不可用";
-    if (provider === "paypal") return "$" + (meta.amountYuan || HEALTH_PAYPAL_AMOUNT) + " · 美元";
-    if (provider === "alipay") return isMobileBrowser() ? "支付宝内支付" : "二维码支付";
+    if (!meta.enabled) return IS_ENGLISH_CHECKOUT ? "Unavailable" : "暂不可用";
+    if (provider === "paypal") return "$" + (meta.amountYuan || HEALTH_PAYPAL_AMOUNT) + (IS_ENGLISH_CHECKOUT ? " · USD" : " · 美元");
+    if (provider === "alipay") return IS_ENGLISH_CHECKOUT
+      ? (isMobileBrowser() ? "Open in Alipay" : "Scan the QR code")
+      : (isMobileBrowser() ? "支付宝内支付" : "二维码支付");
+    if (IS_ENGLISH_CHECKOUT) return isWechatBrowser() ? "Pay in WeChat" : (isMobileBrowser() ? "Open in WeChat" : "Scan the QR code");
     return isWechatBrowser() ? "微信内支付" : (isMobileBrowser() ? "微信内支付" : "扫码支付");
   }
 
   function getProviderSelectionHint(provider) {
-    if (provider === "paypal") return "将前往 PayPal，以美元完成支付。";
+    if (provider === "paypal") return IS_ENGLISH_CHECKOUT ? "Continue to PayPal and pay in USD." : "将前往 PayPal，以美元完成支付。";
     if (provider === "alipay") {
+      if (IS_ENGLISH_CHECKOUT) return isMobileBrowser()
+        ? "Alipay will open automatically."
+        : "Scan the Alipay QR code with your phone.";
       return isMobileBrowser()
         ? "将自动打开支付宝完成付款，无需截图或扫码。"
         : "将显示支付宝二维码，请使用手机支付宝扫码。";
     }
+    if (IS_ENGLISH_CHECKOUT) return isWechatBrowser()
+      ? "Complete payment in WeChat."
+      : (isMobileBrowser() ? "Open this page in WeChat to pay." : "Scan the QR code with WeChat.");
     if (isWechatBrowser()) return "将在当前微信页面内完成支付。";
     return isMobileBrowser()
       ? "微信支付需在微信内完成。"
@@ -1329,9 +1408,11 @@
       button.hidden = !ALIPAY_CHECKOUT_VISIBLE && provider === "alipay";
       button.classList.toggle("is-active", paymentState.provider === provider);
       button.disabled = !accountConfirmed || paymentState.loading || paymentState.status === "pending" || !providerEnabled;
-      button.textContent = alipayPendingApproval ? label + "审核中" : (meta.enabled ? label : label + "未配置");
-      button.dataset.detail = alipayPendingApproval ? "审核通过后开放" : detail;
-      button.setAttribute("aria-label", label + "，" + button.dataset.detail);
+      button.textContent = alipayPendingApproval
+        ? label + (IS_ENGLISH_CHECKOUT ? " (Under Review)" : "审核中")
+        : (meta.enabled ? label : label + (IS_ENGLISH_CHECKOUT ? " (Unavailable)" : "未配置"));
+      button.dataset.detail = alipayPendingApproval ? (IS_ENGLISH_CHECKOUT ? "Available after approval" : "审核通过后开放") : detail;
+      button.setAttribute("aria-label", label + (IS_ENGLISH_CHECKOUT ? ", " : "，") + button.dataset.detail);
     });
 
     var memberCard = $(".yl-member-card");
@@ -1348,16 +1429,16 @@
     if (openButton) {
       openButton.hidden = paymentState.status === "handoff";
       openButton.disabled = paymentState.loading;
-      if (!accountConfirmed) openButton.textContent = "登录后继续付款";
-      else if (paymentState.loading) openButton.textContent = "处理中...";
-      else if (paymentState.status === "handoff") openButton.textContent = "重新复制微信支付链接";
-      else if (paymentState.status === "pending" && isRedirectPayment()) openButton.textContent = "打开" + getProviderLabel(paymentState.provider);
-      else if (paymentState.status === "pending") openButton.textContent = "我已支付，刷新状态";
+      if (!accountConfirmed) openButton.textContent = IS_ENGLISH_CHECKOUT ? "Confirm account to continue" : "登录后继续付款";
+      else if (paymentState.loading) openButton.textContent = IS_ENGLISH_CHECKOUT ? "Processing..." : "处理中...";
+      else if (paymentState.status === "handoff") openButton.textContent = IS_ENGLISH_CHECKOUT ? "Copy the WeChat payment link again" : "重新复制微信支付链接";
+      else if (paymentState.status === "pending" && isRedirectPayment()) openButton.textContent = (IS_ENGLISH_CHECKOUT ? "Open " : "打开") + getProviderLabel(paymentState.provider);
+      else if (paymentState.status === "pending") openButton.textContent = IS_ENGLISH_CHECKOUT ? "I paid — refresh status" : "我已支付，刷新状态";
       else {
         var providerPrefix = paymentState.provider === "paypal"
-          ? "使用 PayPal "
-          : "使用" + getProviderLabel(paymentState.provider);
-        openButton.textContent = providerPrefix + (paymentState.isMember ? "续费 " : "付款 ") + amount;
+          ? (IS_ENGLISH_CHECKOUT ? "Pay with PayPal " : "使用 PayPal ")
+          : (IS_ENGLISH_CHECKOUT ? "Pay with " : "使用") + getProviderLabel(paymentState.provider) + (IS_ENGLISH_CHECKOUT ? " " : "");
+        openButton.textContent = providerPrefix + (IS_ENGLISH_CHECKOUT ? "" : (paymentState.isMember ? "续费 " : "付款 ")) + amount;
       }
     }
 
@@ -1375,20 +1456,20 @@
       }
     }
     var status = $("#ylPaymentStatus");
-    if (status) status.textContent = paymentState.message || "请选择支付方式后创建订单。";
+    if (status) status.textContent = paymentState.message || (IS_ENGLISH_CHECKOUT ? "Choose a payment method to create an order." : "请选择支付方式后创建订单。");
     var code = $("#ylPaymentCode");
     if (code) code.hidden = !paymentState.orderNo;
     var orderNo = $("#ylPaymentOrderNo");
-    if (orderNo) orderNo.textContent = paymentState.orderNo ? "订单号：" + paymentState.orderNo : "";
+    if (orderNo) orderNo.textContent = paymentState.orderNo ? (IS_ENGLISH_CHECKOUT ? "Order: " : "订单号：") + paymentState.orderNo : "";
 
     var link = $("#ylPaymentLink");
     if (link) {
       var showLink = !!paymentState.payUrl && !paymentState.mockMode && isRedirectPayment();
       link.hidden = !showLink;
       link.href = paymentState.payUrl || "#";
-      if (paymentState.provider === "paypal") link.textContent = "立即打开 PayPal 支付";
-      else if (isRedirectPayment()) link.textContent = "打开" + getProviderLabel(paymentState.provider);
-      else link.textContent = "支付链接备用打开";
+      if (paymentState.provider === "paypal") link.textContent = IS_ENGLISH_CHECKOUT ? "Open PayPal" : "立即打开 PayPal 支付";
+      else if (isRedirectPayment()) link.textContent = (IS_ENGLISH_CHECKOUT ? "Open " : "打开") + getProviderLabel(paymentState.provider);
+      else link.textContent = IS_ENGLISH_CHECKOUT ? "Open payment link" : "支付链接备用打开";
     }
 
     var refresh = $("#ylRefreshPayBtn");
@@ -1443,7 +1524,9 @@
     var accountLabel = $("#ylHealthAccountLabel");
     if (accountLabel && authSession) accountLabel.textContent = formatHealthAccountLabel(authSession.user);
     var triggerLabel = $("#ylAccountTriggerLabel");
-    if (triggerLabel) triggerLabel.textContent = authSession ? "个人中心" : "登录 / 注册";
+    if (triggerLabel) triggerLabel.textContent = authSession
+      ? (IS_ENGLISH_CHECKOUT ? "Account" : "个人中心")
+      : (IS_ENGLISH_CHECKOUT ? "Sign In" : "登录 / 注册");
     var accountTrigger = $("#ylAccountTrigger");
     if (accountTrigger) accountTrigger.setAttribute("aria-expanded", dialogOpen ? "true" : "false");
     var mobileTrigger = $("#ylMobileAccountTrigger");
@@ -1458,17 +1541,21 @@
       if (checkoutLabel) checkoutLabel.textContent = formatHealthAccountLabel(authSession.user);
       if (checkoutMeta) {
         checkoutMeta.textContent = paymentConfirmed
-          ? (paymentState.isMember ? "付费会员 · 当前付款账号已确认" : "当前付款账号已确认")
-          : "已登录，付款前需要再次确认密码";
+          ? (IS_ENGLISH_CHECKOUT
+            ? (paymentState.isMember ? "Paid plan · payment account confirmed" : "Payment account confirmed")
+            : (paymentState.isMember ? "付费会员 · 当前付款账号已确认" : "当前付款账号已确认"))
+          : (IS_ENGLISH_CHECKOUT ? "Signed in · confirm your password before paying" : "已登录，付款前需要再次确认密码");
       }
-      if (checkoutButton) checkoutButton.textContent = paymentConfirmed ? "个人中心" : "确认账号";
+      if (checkoutButton) checkoutButton.textContent = paymentConfirmed
+        ? (IS_ENGLISH_CHECKOUT ? "Account" : "个人中心")
+        : (IS_ENGLISH_CHECKOUT ? "Confirm Account" : "确认账号");
     } else if (paymentConfirmed) {
-      if (checkoutLabel) checkoutLabel.textContent = "付款账号已安全确认";
-      if (checkoutMeta) checkoutMeta.textContent = "可以继续选择支付方式";
+      if (checkoutLabel) checkoutLabel.textContent = IS_ENGLISH_CHECKOUT ? "Payment account confirmed" : "付款账号已安全确认";
+      if (checkoutMeta) checkoutMeta.textContent = IS_ENGLISH_CHECKOUT ? "Choose a payment method to continue" : "可以继续选择支付方式";
     } else {
-      if (checkoutLabel) checkoutLabel.textContent = "请先登录账号";
-      if (checkoutMeta) checkoutMeta.textContent = "登录后，会员权益会绑定到该账号";
-      if (checkoutButton) checkoutButton.textContent = "登录 / 注册";
+      if (checkoutLabel) checkoutLabel.textContent = IS_ENGLISH_CHECKOUT ? "Sign in first" : "请先登录账号";
+      if (checkoutMeta) checkoutMeta.textContent = IS_ENGLISH_CHECKOUT ? "Your membership stays with this account" : "登录后，会员权益会绑定到该账号";
+      if (checkoutButton) checkoutButton.textContent = IS_ENGLISH_CHECKOUT ? "Sign In" : "登录 / 注册";
     }
 
     var registering = healthAuthState.mode === "register";
@@ -1479,20 +1566,26 @@
     if (accountInput) accountInput.readOnly = !!(healthAuthState.reauth && authSession && !registering);
     var dialogTitle = $("#ylAccountDialogTitle");
     if (dialogTitle) {
-      dialogTitle.textContent = authSession && !healthAuthState.reauth
-        ? "个人中心"
-        : (healthAuthState.reauth ? "确认付款账号" : (registering ? "注册阅天账号" : "登录阅天账号"));
+      dialogTitle.textContent = IS_ENGLISH_CHECKOUT
+        ? (authSession && !healthAuthState.reauth
+          ? "Account"
+          : (healthAuthState.reauth ? "Confirm Payment Account" : (registering ? "Create Yuetian Account" : "Sign In to Yuetian")))
+        : (authSession && !healthAuthState.reauth
+          ? "个人中心"
+          : (healthAuthState.reauth ? "确认付款账号" : (registering ? "注册阅天账号" : "登录阅天账号")));
     }
     var title = $("#ylHealthAuthTitle");
-    if (title) title.textContent = healthAuthState.reauth
-      ? "请再次确认当前账号"
-      : (registering ? "注册新账号" : "登录已有账号");
+    if (title) title.textContent = IS_ENGLISH_CHECKOUT
+      ? (healthAuthState.reauth ? "Confirm your account" : (registering ? "Create an account" : "Sign in to your account"))
+      : (healthAuthState.reauth ? "请再次确认当前账号" : (registering ? "注册新账号" : "登录已有账号"));
     var description = $("#ylHealthAuthDescription");
-    if (description) description.textContent = healthAuthState.reauth
-      ? "为保护会员归属，请输入当前账号密码后继续付款"
-      : (registering
-        ? "注册只创建账号，不会立即创建支付订单"
-        : "登录后可在个人中心查看会员和剩余额度");
+    if (description) description.textContent = IS_ENGLISH_CHECKOUT
+      ? (healthAuthState.reauth
+        ? "Enter your password to protect membership ownership."
+        : (registering ? "Creating an account does not start payment." : "Sign in to view your plan and remaining quota."))
+      : (healthAuthState.reauth
+        ? "为保护会员归属，请输入当前账号密码后继续付款"
+        : (registering ? "注册只创建账号，不会立即创建支付订单" : "登录后可在个人中心查看会员和剩余额度"));
     var modeGroup = $(".yl-health-auth-mode");
     if (modeGroup) modeGroup.hidden = healthAuthState.reauth;
     var loginModeButton = $("#ylHealthLoginModeBtn");
@@ -1500,10 +1593,16 @@
     if (loginModeButton) loginModeButton.setAttribute("aria-pressed", registering ? "false" : "true");
     if (registerModeButton) registerModeButton.setAttribute("aria-pressed", registering ? "true" : "false");
     var accountFieldLabel = $("#ylHealthAccountFieldLabel");
-    if (accountFieldLabel) accountFieldLabel.textContent = registering ? "手机号" : "手机号或邮箱";
+    if (accountFieldLabel) accountFieldLabel.textContent = IS_ENGLISH_CHECKOUT
+      ? (registering ? "Phone" : "Phone or Email")
+      : (registering ? "手机号" : "手机号或邮箱");
     if (accountInput) {
-      accountInput.placeholder = registering ? "请输入 11 位手机号" : "手机号或邮箱";
-      accountInput.setAttribute("aria-label", registering ? "手机号" : "手机号或邮箱");
+      accountInput.placeholder = IS_ENGLISH_CHECKOUT
+        ? (registering ? "11-digit phone number" : "Phone or email")
+        : (registering ? "请输入 11 位手机号" : "手机号或邮箱");
+      accountInput.setAttribute("aria-label", IS_ENGLISH_CHECKOUT
+        ? (registering ? "Phone" : "Phone or email")
+        : (registering ? "手机号" : "手机号或邮箱"));
       accountInput.setAttribute("inputmode", registering ? "numeric" : "email");
       accountInput.setAttribute("autocomplete", registering ? "tel" : "username");
     }
@@ -1521,13 +1620,17 @@
       if (button) button.disabled = healthAuthState.loading;
     });
     var submitButton = $("#ylHealthAuthSubmitBtn");
-    if (submitButton) submitButton.textContent = healthAuthState.loading
-      ? (registering ? "正在注册..." : "正在确认账号...")
-      : (healthAuthState.reauth
-        ? "确认并继续付款"
-        : (registering ? "注册并登录" : "登录并继续"));
+    if (submitButton) submitButton.textContent = IS_ENGLISH_CHECKOUT
+      ? (healthAuthState.loading
+        ? (registering ? "Creating account..." : "Confirming account...")
+        : (healthAuthState.reauth ? "Confirm and Continue" : (registering ? "Create Account" : "Sign In and Continue")))
+      : (healthAuthState.loading
+        ? (registering ? "正在注册..." : "正在确认账号...")
+        : (healthAuthState.reauth ? "确认并继续付款" : (registering ? "注册并登录" : "登录并继续")));
     var goPayButton = $("#ylHealthGoPayBtn");
-    if (goPayButton) goPayButton.textContent = paymentState.isMember ? "续费综合会员" : "开通综合会员";
+    if (goPayButton) goPayButton.textContent = IS_ENGLISH_CHECKOUT
+      ? (paymentState.isMember ? "Renew Membership" : "Open Membership")
+      : (paymentState.isMember ? "续费综合会员" : "开通综合会员");
   }
 
   function setHealthAuthMode(mode) {
@@ -1806,8 +1909,8 @@
     var session = readAuthSession();
     openHealthAuthPanel(
       session
-        ? "为保护会员归属，请输入当前账号密码确认后继续付款。"
-        : "请先登录或注册，再继续付款。",
+        ? (IS_ENGLISH_CHECKOUT ? "Enter your password to confirm this payment account." : "为保护会员归属，请输入当前账号密码确认后继续付款。")
+        : (IS_ENGLISH_CHECKOUT ? "Sign in or create an account to continue." : "请先登录或注册，再继续付款。"),
       { reauth: !!session }
     );
     return false;
@@ -2155,7 +2258,9 @@
     $("#ylMobileAccountTrigger").addEventListener("click", function (event) { openAccountCenter(event.currentTarget); });
     $("#ylCheckoutAccountBtn").addEventListener("click", function (event) {
       if (readAuthSession() && !hasHealthPaymentAuth()) {
-        openHealthAuthPanel("为保护会员归属，请输入当前账号密码确认后继续付款。", {
+        openHealthAuthPanel(IS_ENGLISH_CHECKOUT
+          ? "Enter your password to confirm this payment account."
+          : "为保护会员归属，请输入当前账号密码确认后继续付款。", {
           reauth: true,
           returnFocus: event.currentTarget
         });
@@ -2238,6 +2343,7 @@
 
   var paymentHandoffCaptured = !!window.__YUETIAN_PAYMENT_HANDOFF_CAPTURED__ || capturePaymentHandoff();
   initializeMemberCheckoutContext();
+  applyEnglishMemberCheckoutCopy();
   loadState();
   normalizeSelections();
   state.report = state.report || calculateReport();

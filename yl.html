@@ -8,13 +8,19 @@
     (function () {
       try {
         var query = new URLSearchParams(window.location.search || "");
+        var returnUrl = query.get("returnUrl") || "";
+        var isEnglishCheckout = query.get("lang") === "en" || /(?:\?|&)lang=en(?:&|#|$)/.test(returnUrl);
         var match = (window.location.hash || "").match(/^#member\?pay_handoff=(v2\.[A-Za-z0-9_-]+)$/);
         var isWechat = /MicroMessenger/i.test(navigator.userAgent || "");
         var isWechatPaymentReturn = !!(query.get("code") && query.get("state"));
         var isUnifiedCheckout = /^#member(?:\?|$)/.test(window.location.hash || "") || !!query.get("source");
         if (isUnifiedCheckout) {
           document.documentElement.classList.add("yl-unified-checkout");
-          document.title = "阅天综合会员支付";
+          if (isEnglishCheckout) {
+            document.documentElement.lang = "en";
+            document.documentElement.classList.add("yl-english-checkout");
+          }
+          document.title = isEnglishCheckout ? "Yuetian AI Membership Checkout" : "阅天综合会员支付";
         }
         if (isWechat && (match || isWechatPaymentReturn)) document.documentElement.classList.add("yl-payment-boot");
         if (match && match[1].length <= 2048) {
@@ -41,10 +47,10 @@
   <meta name="twitter:image" content="https://yuetianai.com/images/health/constitution-report-hero-v8.png">
   <meta name="theme-color" content="#f8f2e8">
   <link rel="icon" href="/images/wentian-prototype-assets/wentian-brand-logo-ai-gold-v1.webp" type="image/webp">
-  <link rel="stylesheet" href="/css/yl.css?v=20260726-account-center-v1">
+  <link rel="stylesheet" href="/css/yl.css?v=20260728-en-checkout-v1">
   <script src="/js/config.js?v=20260710-api-origin-lock-v1"></script>
   <script defer src="/vendor/qrcodejs/qrcode.min.js?v=20260521-local-vendor"></script>
-  <script defer src="/js/yl.js?v=20260726-account-center-v1"></script>
+  <script defer src="/js/yl.js?v=20260728-en-checkout-v1"></script>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
