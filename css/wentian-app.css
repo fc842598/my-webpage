@@ -1185,6 +1185,29 @@ html[lang="en"] [data-node-id="source-39-tip"] {
   white-space: nowrap !important;
 }
 
+html[lang="en"] .wentian-profile-status {
+  top: 580px !important;
+  height: 34px !important;
+}
+
+html[lang="en"] [data-node-id="source-39-save"],
+html[lang="en"] [data-node-id="source-39-save-hit"] {
+  top: 624px !important;
+}
+
+html[lang="en"] [data-node-id="source-39-save-text"] {
+  top: 639px !important;
+}
+
+html[lang="en"] [data-node-id="source-39-sync"],
+html[lang="en"] [data-node-id="source-39-sync-hit"] {
+  top: 688px !important;
+}
+
+html[lang="en"] [data-node-id="source-39-sync-text"] {
+  top: 703px !important;
+}
+
 html[lang="en"] [data-node-id="source-settings-note-title"] {
   width: 260px !important;
   white-space: nowrap !important;
