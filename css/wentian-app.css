@@ -1188,6 +1188,28 @@ html[lang="en"] [data-node-id="source-password-login-desc"] {
   white-space: nowrap !important;
 }
 
+html[lang="en"] [data-node-id="source-password-new-label"],
+html[lang="en"] [data-node-id="source-password-confirm-label"] {
+  width: 116px !important;
+  font-size: 13px !important;
+  line-height: 1.1 !important;
+  white-space: nowrap !important;
+}
+
+html[lang="en"] #wentian-password-new,
+html[lang="en"] #wentian-password-confirm {
+  left: 166px !important;
+  width: 180px !important;
+}
+
+html[lang="en"] [data-node-id="source-password-tip-text"] {
+  width: 286px !important;
+  font-size: 11.5px !important;
+  line-height: 1.55 !important;
+  letter-spacing: 0 !important;
+  white-space: pre-line !important;
+}
+
 html[lang="en"] [data-node-id="source-39-account-sub"] {
   width: 220px !important;
   font-size: 10px !important;

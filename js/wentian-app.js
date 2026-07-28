@@ -9758,6 +9758,7 @@ function finalizeWentianLanguageText(root = view, code = getWentianLanguageCode(
   setWentianFinalText(root, '[data-node-id="source-login-action-label-1"]', member.isMember ? "Renew Membership" : "Upgrade Plan");
   setWentianFinalText(root, '[data-node-id="source-login-note-title"]', "Account Notes");
   setWentianFinalText(root, '[data-node-id="source-login-note-text"]', "This account is already linked. Password updates, renewals, and order checks are all available from the entries above.");
+  setWentianFinalText(root, '[data-node-id="source-password-tip-text"]', "1. Use 6+ characters with letters and numbers.\n2. Google, email, and phone sign-in still work.\n3. Existing charts and reports stay unchanged.");
   setWentianFinalText(root, '[data-node-id="wt48-title"]', "Orders");
   setWentianFinalText(root, '[data-node-id="wt48-right"]', "Sync");
   setWentianFinalText(root, '[data-node-id="wt48-ticket-text"]', "Refund");
