@@ -1292,29 +1292,34 @@ html[lang="en"] [data-node-id="yz45-intro-title"] {
 }
 
 html[lang="en"] [data-node-id="yz45-intro-copy"] {
-  top: 306px !important;
-  width: 168px !important;
-  font-size: 9.5px !important;
-  line-height: 1.05 !important;
-  letter-spacing: -0.02em !important;
-  white-space: nowrap !important;
+  top: 288px !important;
+  width: 190px !important;
+  font-size: 10.5px !important;
+  line-height: 1.2 !important;
+  letter-spacing: 0 !important;
+  white-space: normal !important;
 }
 
 html[lang="en"] .fig-text[data-node-id^="yz45-step-title-"] {
-  width: 68px !important;
-  font-size: 13px !important;
+  width: 220px !important;
+  font-size: 14px !important;
   line-height: 1.05 !important;
   white-space: nowrap !important;
 }
 
 html[lang="en"] .fig-text[data-node-id^="yz45-step-desc-"] {
-  left: 188px !important;
-  width: 148px !important;
-  font-size: 9px !important;
-  line-height: 1.02 !important;
-  letter-spacing: -0.02em !important;
-  white-space: nowrap !important;
+  left: 110px !important;
+  width: 230px !important;
+  font-size: 10.5px !important;
+  line-height: 1.15 !important;
+  letter-spacing: 0 !important;
+  white-space: normal !important;
 }
+
+html[lang="en"] [data-node-id="yz45-step-desc-0"] { top: 389px !important; }
+html[lang="en"] [data-node-id="yz45-step-desc-1"] { top: 461px !important; }
+html[lang="en"] [data-node-id="yz45-step-desc-2"] { top: 533px !important; }
+html[lang="en"] [data-node-id="yz45-step-desc-3"] { top: 605px !important; }
 
 html[lang="en"] [data-node-id="yz45-go"],
 html[lang="en"] [data-node-id="yz45-go-hit"] {
