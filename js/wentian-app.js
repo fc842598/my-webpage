@@ -8815,6 +8815,8 @@ const WENTIAN_I18N_EN_EXTRA = {
 };
 
 Object.assign(WENTIAN_I18N_EN_EXTRA, {
+  "首页": "Home",
+  "阅天AI": "AI",
   "已登录": "Signed In",
   "去排盘": "Create",
   "专业AI命理工作台": "AI Destiny Studio",
@@ -12256,6 +12258,13 @@ function syncWentianRefundTicketFromOrder(order = getWentianRefundSelectedOrder(
 }
 
 function getWentianRefundOrderStatusLabel(order) {
+  if (isWentianEnglishUi()) {
+    if (order?.status === "paid") return "Paid";
+    if (order?.status === "pending") return "Pending";
+    if (order?.status === "created") return "Created";
+    if (order?.status === "refunded") return "Refunded";
+    return order?.status || "Processing";
+  }
   if (order?.status === "paid") return "已支付";
   if (order?.status === "pending") return "待确认";
   if (order?.status === "created") return "刚创建";
@@ -12270,45 +12279,46 @@ function ensureWentianRefundTicketModal() {
   modal.id = "wentian-refund-ticket-modal";
   modal.className = "wentian-refund-modal";
   modal.hidden = true;
+  const isEn = isWentianEnglishUi();
   modal.innerHTML = `
     <div class="wentian-refund-sheet" role="dialog" aria-modal="true" aria-labelledby="wentian-refund-title">
-      <button class="wentian-refund-close" type="button" data-wentian-refund-close aria-label="关闭">×</button>
-      <div class="wentian-refund-kicker">售后工单</div>
-      <div class="wentian-refund-title" id="wentian-refund-title">退款申请工单</div>
+      <button class="wentian-refund-close" type="button" data-wentian-refund-close aria-label="${isEn ? "Close" : "关闭"}">×</button>
+      <div class="wentian-refund-kicker">${isEn ? "After-sales Ticket" : "售后工单"}</div>
+      <div class="wentian-refund-title" id="wentian-refund-title">${isEn ? "Refund Request" : "退款申请工单"}</div>
       <div class="wentian-refund-message" id="wentian-refund-message"></div>
       <label class="wentian-refund-field">
-        <span>支付订单</span>
+        <span>${isEn ? "Payment Order" : "支付订单"}</span>
         <select id="wentian-refund-order"></select>
       </label>
       <div class="wentian-refund-grid">
         <label class="wentian-refund-field">
-          <span>支付渠道</span>
+          <span>${isEn ? "Payment Method" : "支付渠道"}</span>
           <select id="wentian-refund-provider">
-            <option value="wechat">微信支付</option>
-            <option value="alipay">支付宝</option>
+            <option value="wechat">${isEn ? "WeChat Pay" : "微信支付"}</option>
+            <option value="alipay">${isEn ? "Alipay" : "支付宝"}</option>
             <option value="paypal">PayPal</option>
           </select>
         </label>
         <label class="wentian-refund-field">
-          <span>支付日期</span>
+          <span>${isEn ? "Payment Date" : "支付日期"}</span>
           <input id="wentian-refund-paid-date" type="date">
         </label>
       </div>
       <label class="wentian-refund-field">
-        <span>联系方式</span>
-        <input id="wentian-refund-contact" type="text" placeholder="手机号或邮箱">
+        <span>${isEn ? "Contact" : "联系方式"}</span>
+        <input id="wentian-refund-contact" type="text" placeholder="${isEn ? "Phone or email" : "手机号或邮箱"}">
       </label>
       <label class="wentian-refund-field">
-        <span>支付截图</span>
+        <span>${isEn ? "Payment Screenshot" : "支付截图"}</span>
         <input id="wentian-refund-screenshot" type="file" accept="image/png,image/jpeg,image/webp">
-        <small id="wentian-refund-file">请上传当时支付成功截图。</small>
+        <small id="wentian-refund-file">${isEn ? "Upload a screenshot showing successful payment." : "请上传当时支付成功截图。"}</small>
       </label>
       <label class="wentian-refund-field">
-        <span>补充说明</span>
-        <textarea id="wentian-refund-note" rows="3" maxlength="500" placeholder="可填写退款原因或当时支付情况"></textarea>
+        <span>${isEn ? "Notes" : "补充说明"}</span>
+        <textarea id="wentian-refund-note" rows="3" maxlength="500" placeholder="${isEn ? "Refund reason or payment details" : "可填写退款原因或当时支付情况"}"></textarea>
       </label>
       <div class="wentian-refund-error" id="wentian-refund-error" hidden></div>
-      <button class="wentian-refund-submit" id="wentian-refund-submit" type="button">提交工单</button>
+      <button class="wentian-refund-submit" id="wentian-refund-submit" type="button">${isEn ? "Submit Request" : "提交工单"}</button>
     </div>
   `;
   document.body.appendChild(modal);
@@ -12346,15 +12356,17 @@ function renderWentianRefundTicketModal() {
   modal.hidden = !wentianRefundTicketState.open;
   document.body.classList.toggle("wentian-refund-open", wentianRefundTicketState.open);
   const orders = wentianOrderState.orders || [];
+  const isEn = isWentianEnglishUi();
   const orderSelect = modal.querySelector("#wentian-refund-order");
   if (orderSelect) {
     orderSelect.innerHTML = orders.length
       ? orders.map((order) => {
         const disabled = order.canSubmitTicket ? "" : " disabled";
-        const status = order.ticketNo ? "工单处理中" : getWentianRefundOrderStatusLabel(order);
-        return `<option value="${escapeHtml(order.orderNo)}"${disabled}>${escapeHtml(order.productName || "会员订单")} · ${formatWentianPaymentAmount(order.amountYuan || "", order.currency || "CNY")} · ${escapeHtml(status)}</option>`;
+        const status = order.ticketNo ? (isEn ? "Ticket Processing" : "工单处理中") : getWentianRefundOrderStatusLabel(order);
+        const productName = isEn ? translateWentianText(order.productName || "会员订单") : (order.productName || "会员订单");
+        return `<option value="${escapeHtml(order.orderNo)}"${disabled}>${escapeHtml(productName)} · ${formatWentianPaymentAmount(order.amountYuan || "", order.currency || "CNY")} · ${escapeHtml(status)}</option>`;
       }).join("")
-      : '<option value="">暂无支付订单</option>';
+      : `<option value="">${isEn ? "No payment orders" : "暂无支付订单"}</option>`;
     orderSelect.value = wentianRefundTicketState.orderNo || "";
   }
   const provider = modal.querySelector("#wentian-refund-provider");
@@ -12368,7 +12380,9 @@ function renderWentianRefundTicketModal() {
   const msg = modal.querySelector("#wentian-refund-message");
   if (msg) msg.textContent = wentianRefundTicketState.message;
   const file = modal.querySelector("#wentian-refund-file");
-  if (file) file.textContent = wentianRefundTicketState.screenshotName ? `已选择：${wentianRefundTicketState.screenshotName}` : "请上传当时支付成功截图。";
+  if (file) file.textContent = wentianRefundTicketState.screenshotName
+    ? `${isEn ? "Selected: " : "已选择："}${wentianRefundTicketState.screenshotName}`
+    : (isEn ? "Upload a screenshot showing successful payment." : "请上传当时支付成功截图。");
   const error = modal.querySelector("#wentian-refund-error");
   if (error) {
     error.hidden = !wentianRefundTicketState.error;
@@ -12378,7 +12392,9 @@ function renderWentianRefundTicketModal() {
   if (submit) {
     const order = getWentianRefundSelectedOrder();
     submit.disabled = wentianRefundTicketState.loading || !order?.canSubmitTicket;
-    submit.textContent = wentianRefundTicketState.loading ? "提交中..." : "提交工单";
+    submit.textContent = wentianRefundTicketState.loading
+      ? (isEn ? "Submitting..." : "提交中...")
+      : (isEn ? "Submit Request" : "提交工单");
   }
 }
 
@@ -12391,7 +12407,9 @@ async function openWentianRefundTicket() {
   }
   wentianRefundTicketState.open = true;
   wentianRefundTicketState.error = "";
-  wentianRefundTicketState.message = "退款需上传当时支付截图；订单仍在待确认时，也可提交截图人工核验。后台审核后进入对应支付渠道处理，7个工作日内完成。";
+  wentianRefundTicketState.message = isWentianEnglishUi()
+    ? "Upload the original payment screenshot. Pending orders can also be checked manually. Approved refunds return through the original payment method within 7 business days."
+    : "退款需上传当时支付截图；订单仍在待确认时，也可提交截图人工核验。后台审核后进入对应支付渠道处理，7个工作日内完成。";
   if (!wentianRefundTicketState.contact) wentianRefundTicketState.contact = getWentianRefundContactDefault();
   renderWentianRefundTicketModal();
   await hydrateWentianOrders({ force: true });
@@ -12402,7 +12420,7 @@ async function openWentianRefundTicket() {
   if (wentianOrderState.error) {
     wentianRefundTicketState.error = wentianOrderState.error;
   } else if (!orders.length) {
-    wentianRefundTicketState.error = "当前账号暂无支付订单。";
+    wentianRefundTicketState.error = isWentianEnglishUi() ? "No payment orders for this account." : "当前账号暂无支付订单。";
   }
   renderWentianRefundTicketModal();
 }
@@ -12417,18 +12435,18 @@ function readWentianImageAsDataUrl(file) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.onload = () => resolve(String(reader.result || ""));
-    reader.onerror = () => reject(new Error("截图读取失败"));
+    reader.onerror = () => reject(new Error(isWentianEnglishUi() ? "Could not read the screenshot." : "截图读取失败"));
     reader.readAsDataURL(file);
   });
 }
 
 async function compressWentianRefundScreenshot(file) {
-  if (!file || !/^image\/(png|jpeg|jpg|webp)$/i.test(file.type || "")) throw new Error("请上传 PNG/JPG/WebP 支付截图");
+  if (!file || !/^image\/(png|jpeg|jpg|webp)$/i.test(file.type || "")) throw new Error(isWentianEnglishUi() ? "Upload a PNG, JPG, or WebP payment screenshot." : "请上传 PNG/JPG/WebP 支付截图");
   const rawUrl = await readWentianImageAsDataUrl(file);
   const image = await new Promise((resolve, reject) => {
     const img = new Image();
     img.onload = () => resolve(img);
-    img.onerror = () => reject(new Error("截图无法识别"));
+    img.onerror = () => reject(new Error(isWentianEnglishUi() ? "The screenshot could not be recognized." : "截图无法识别"));
     img.src = rawUrl;
   });
   const maxSide = 1280;
@@ -12438,7 +12456,7 @@ async function compressWentianRefundScreenshot(file) {
   canvas.height = Math.max(1, Math.round((image.height || maxSide) * scale));
   canvas.getContext("2d").drawImage(image, 0, 0, canvas.width, canvas.height);
   const dataUrl = canvas.toDataURL("image/jpeg", .78);
-  if (dataUrl.length > 2.8 * 1024 * 1024) throw new Error("截图仍然过大，请裁剪后再上传");
+  if (dataUrl.length > 2.8 * 1024 * 1024) throw new Error(isWentianEnglishUi() ? "The screenshot is still too large. Crop it and upload again." : "截图仍然过大，请裁剪后再上传");
   return dataUrl;
 }
 
@@ -12452,7 +12470,7 @@ async function handleWentianRefundScreenshot(file) {
   } catch (error) {
     wentianRefundTicketState.screenshotDataUrl = "";
     wentianRefundTicketState.screenshotName = "";
-    wentianRefundTicketState.error = error.message || "截图处理失败";
+    wentianRefundTicketState.error = error.message || (isWentianEnglishUi() ? "Could not process the screenshot." : "截图处理失败");
   } finally {
     wentianRefundTicketState.loading = false;
     renderWentianRefundTicketModal();
@@ -12463,12 +12481,12 @@ async function submitWentianRefundTicket() {
   if (wentianRefundTicketState.loading) return;
   const order = getWentianRefundSelectedOrder();
   if (!order?.canSubmitTicket) {
-    wentianRefundTicketState.error = order?.ticketBlockedReason || "当前订单不能提交工单";
+    wentianRefundTicketState.error = order?.ticketBlockedReason || (isWentianEnglishUi() ? "This order cannot submit a refund request." : "当前订单不能提交工单");
     renderWentianRefundTicketModal();
     return;
   }
   if (!wentianRefundTicketState.screenshotDataUrl) {
-    wentianRefundTicketState.error = "请先上传当时支付截图";
+    wentianRefundTicketState.error = isWentianEnglishUi() ? "Upload the original payment screenshot first." : "请先上传当时支付截图";
     renderWentianRefundTicketModal();
     return;
   }
@@ -12488,14 +12506,14 @@ async function submitWentianRefundTicket() {
         screenshotDataUrl: wentianRefundTicketState.screenshotDataUrl,
       },
     });
-    wentianRefundTicketState.message = data.message || "工单已提交，7个工作日内处理完成。";
+    wentianRefundTicketState.message = data.message || (isWentianEnglishUi() ? "Request submitted. Processing completes within 7 business days." : "工单已提交，7个工作日内处理完成。");
     wentianRefundTicketState.screenshotDataUrl = "";
     wentianRefundTicketState.screenshotName = "";
     const input = document.getElementById("wentian-refund-screenshot");
     if (input) input.value = "";
     await hydrateWentianOrders({ force: true });
   } catch (error) {
-    wentianRefundTicketState.error = error.message || "工单提交失败";
+    wentianRefundTicketState.error = error.message || (isWentianEnglishUi() ? "Could not submit the refund request." : "工单提交失败");
   } finally {
     wentianRefundTicketState.loading = false;
     renderWentianRefundTicketModal();
@@ -13161,6 +13179,7 @@ function sourcePaymentScreen() {
 
 function sourceOrderRecordsScreen() {
   const account = getWentianAuthDisplay();
+  const isEn = isWentianEnglishUi();
   const orders = wentianOrderState.orders || [];
   const body = !account.loggedIn
     ? `
@@ -13206,11 +13225,11 @@ function sourceOrderRecordsScreen() {
   return `
     ${figBox("wt48-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
     ${wentianSimpleHeader("wt48", "支付记录", "刷新", { backAttrs: 'data-action="wentian-return-previous" data-fallback-route="screen-31" aria-label="返回"' })}
-    ${figButton("wt48-refresh-hit", 318, 38, 62, 54, 'data-action="wentian-order-refresh"')}
+    ${figButton("wt48-refresh-hit", 318, 38, 62, 54, `data-action="wentian-order-refresh" aria-label="${isEn ? "Sync" : "刷新"}"`)}
     ${figText("wt48-sub", account.loggedIn ? escapeHtml(account.email) : "未登录", 24, 96, 300, 13, "#8f857a", 700)}
     ${account.loggedIn ? figBox("wt48-ticket", 274, 92, 92, 30, "", "border:1px solid #eadfce;border-radius:15px;background:#fffdf8;") : ""}
     ${account.loggedIn ? figText("wt48-ticket-text", "退款工单", 274, 100, 92, 11, "#8f6a28", 900, "center") : ""}
-    ${account.loggedIn ? figButton("wt48-ticket-hit", 274, 92, 92, 30, 'data-action="wentian-refund-ticket"') : ""}
+    ${account.loggedIn ? figButton("wt48-ticket-hit", 274, 92, 92, 30, `data-action="wentian-refund-ticket" aria-label="${isEn ? "Refund" : "退款工单"}"`) : ""}
     ${body}
   `;
 }
