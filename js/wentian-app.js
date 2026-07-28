@@ -9856,23 +9856,63 @@ function finalizeWentianLanguageText(root = view, code = getWentianLanguageCode(
     setWentianFinalText(officeResult, ".office-layout-panel.hero .office-layout-copy", "Return to Office Layout, choose the outer and inner trigrams, then generate the result.");
   } else if (officeResult) {
     setWentianFinalText(root, '[data-node-id="office52-title"]', "Layout Result");
-    officeResult.querySelectorAll("h3, h4").forEach((node, index) => {
-      if (node.textContent.trim() === "Text") {
-        node.textContent = index === 0 ? "Layout Advice" : "Practical Notes";
-      }
-    });
-    const fallbackLines = [
-      "Use this result as a layout prompt: keep the entrance clear, support the decision-maker seat, and reduce blocked movement paths.",
-      "Check the door direction, boss seat, traffic flow, and meeting area before making major changes.",
-      "Adjust one area at a time, then observe whether daily work feels smoother and easier to coordinate.",
+    const reading = getOfficeLayoutReading();
+    const englishHexName = getYangzhaiEnglishHexName({ name: reading.hexName });
+    const officeDirections = {
+      "乾": "NW · Qian", "坎": "N · Kan", "艮": "NE · Gen", "震": "E · Zhen",
+      "巽": "SE · Xun", "离": "S · Li", "坤": "SW · Kun", "兑": "W · Dui",
+    };
+    const doorLabel = officeDirections[reading.outerTrigram] || "Selected direction";
+    const bossLabel = officeDirections[reading.innerTrigram] || "Selected position";
+    const summaryCard = officeResult.querySelector(".office-layout-summary-card");
+    setWentianFinalText(summaryCard, ".office-layout-kicker", "Office Layout Reading");
+    setWentianFinalText(summaryCard, "h2", `Hexagram ${reading.hexNo} · ${englishHexName}`);
+    const hexImage = summaryCard?.querySelector(".office-layout-hex-image");
+    if (hexImage) hexImage.setAttribute("alt", `Hexagram ${reading.hexNo}: ${englishHexName}`);
+    const hexLinesCard = summaryCard?.querySelector(".office-layout-hex-lines-card");
+    if (hexLinesCard) hexLinesCard.setAttribute("aria-label", `Hexagram ${reading.hexNo} lines`);
+    setWentianFinalText(hexLinesCard, "span", "Hexagram Lines");
+
+    const richCards = Array.from(officeResult.querySelectorAll(".office-layout-rich-card"));
+    const conclusionCard = richCards[0];
+    setWentianFinalText(conclusionCard, "h4", "Core Conclusion");
+    setWentianFinalText(conclusionCard, "p", "Keep the entrance clear, support the boss seat, and prevent the main work path from cutting through decision areas.");
+    const focusTags = [
+      `Door · ${doorLabel}`,
+      `Boss Seat · ${bossLabel}`,
+      "Clear Entrance",
+      "Supported Seat",
     ];
-    let fallbackIndex = 0;
-    officeResult.querySelectorAll("p, li").forEach((node) => {
-      if (node.textContent.includes("Regenerate in English.")) {
-        node.textContent = fallbackLines[Math.min(fallbackIndex, fallbackLines.length - 1)];
-        fallbackIndex += 1;
-      }
+    conclusionCard?.querySelectorAll(".office-layout-chip").forEach((node, index) => {
+      if (focusTags[index]) node.textContent = focusTags[index];
     });
+
+    const adviceCard = richCards[1];
+    setWentianFinalText(adviceCard, "h4", "Practical Notes");
+    const adviceList = adviceCard?.querySelector("ul");
+    if (adviceList) {
+      adviceList.innerHTML = [
+        "Keep the doorway and main aisle open.",
+        "Give the boss seat a solid back and a clear view.",
+        "Check meeting and staff paths before moving furniture.",
+      ].map((item) => `<li>${item}</li>`).join("");
+    }
+
+    const readingCard = richCards[2];
+    setWentianFinalText(readingCard, "h4", "Layout Reading");
+    const readingParagraphs = [
+      `The door is ${doorLabel}; the boss seat is ${bossLabel}. Read the entrance flow first, then check whether the decision area feels stable and protected.`,
+      "Keep the entrance, main aisle, and meeting path clear so information and people can move without cutting across the boss seat.",
+      "Adjust one zone at a time, observe the workplace for several days, and keep changes that improve focus, coordination, and ease of movement.",
+    ];
+    readingCard?.querySelectorAll("p").forEach((node, index) => {
+      node.textContent = readingParagraphs[index] || readingParagraphs[readingParagraphs.length - 1];
+    });
+
+    const nextPanel = officeResult.querySelector(".office-layout-panel:last-child");
+    setWentianFinalText(nextPanel, "h3", "Next Step");
+    setWentianFinalTextAt(nextPanel, ".office-layout-button", 0, "Adjust Layout");
+    setWentianFinalTextAt(nextPanel, ".office-layout-button", 1, "View Guide");
   }
 }
 
