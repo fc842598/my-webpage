@@ -1191,9 +1191,10 @@ html[lang="en"] [data-node-id="source-settings-note-title"] {
 }
 
 html[lang="en"] [data-node-id="source-settings-note-text"] {
+  top: 517px !important;
   width: 296px !important;
-  font-size: 11px !important;
-  line-height: 1.35 !important;
+  font-size: 10.5px !important;
+  line-height: 1.28 !important;
   letter-spacing: 0 !important;
   white-space: normal !important;
 }
