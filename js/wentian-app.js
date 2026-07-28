@@ -18148,7 +18148,7 @@ const LIUREN_PROCESS_LABELS_EN = {
   final: "Final palace",
   waitingKicker: "Waiting to Cast",
   waitingTitle: "Focus First",
-  waitingNature: "Focus",
+  waitingNature: "Intent",
   waitingSummary: "Hold one clear question in mind. Confirm the current time, then cast once. Avoid repeating the same question over and over.",
   resultKicker: "Cast Result",
   action: "Action",
