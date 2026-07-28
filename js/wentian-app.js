@@ -8815,6 +8815,8 @@ const WENTIAN_I18N_EN_EXTRA = {
 };
 
 Object.assign(WENTIAN_I18N_EN_EXTRA, {
+  "已登录": "Signed In",
+  "去排盘": "Create",
   "专业AI命理工作台": "AI Destiny Studio",
   "许大师已在线": "Master Xu is online",
   "先排盘，后解读": "Chart First, Read Next",
