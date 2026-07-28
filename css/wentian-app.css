@@ -1161,6 +1161,25 @@ html[lang="en"] [data-node-id="source-login-sub"] {
   white-space: nowrap !important;
 }
 
+html[lang="en"] [data-node-id^="source-login-method-title-"] {
+  width: 220px !important;
+  white-space: nowrap !important;
+}
+
+html[lang="en"] [data-node-id="source-login-note-title"] {
+  width: 240px !important;
+  white-space: nowrap !important;
+}
+
+html[lang="en"] [data-node-id="source-login-note-text"] {
+  top: 626px !important;
+  width: 296px !important;
+  font-size: 10.5px !important;
+  line-height: 1.28 !important;
+  letter-spacing: 0 !important;
+  white-space: normal !important;
+}
+
 html[lang="en"] [data-node-id="source-password-login-desc"] {
   width: 296px !important;
   font-size: 10px !important;

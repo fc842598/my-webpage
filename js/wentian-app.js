@@ -9746,6 +9746,7 @@ function finalizeWentianLanguageText(root = view, code = getWentianLanguageCode(
     setWentianFinalText(root, '[data-node-id="source-39-account-sub"]', "Guest mode, local save only.");
     setWentianFinalText(root, '[data-node-id="source-39-tip"]', "Local data stays in this browser only.");
     setWentianFinalText(root, '[data-node-id="source-settings-note-text"]', "Sign in to sync membership, payments, and invites.");
+    setWentianFinalText(root, '[data-node-id="source-login-note"]', "Phone sign-in uses a password, not SMS codes.");
   }
   setWentianFinalText(root, '[data-node-id="source-login-member-text"]', member.isMember ? "Paid Plan" : "Free Account");
   setWentianFinalText(root, '[data-node-id="source-login-method-desc-0"]', phone || "Not linked yet");
@@ -9757,7 +9758,6 @@ function finalizeWentianLanguageText(root = view, code = getWentianLanguageCode(
   setWentianFinalText(root, '[data-node-id="source-login-action-label-1"]', member.isMember ? "Renew Membership" : "Upgrade Plan");
   setWentianFinalText(root, '[data-node-id="source-login-note-title"]', "Account Notes");
   setWentianFinalText(root, '[data-node-id="source-login-note-text"]', "This account is already linked. Password updates, renewals, and order checks are all available from the entries above.");
-  setWentianFinalText(root, '[data-node-id="source-login-note"]', "Phone sign-in uses a password, not SMS codes.");
   setWentianFinalText(root, '[data-node-id="wt48-title"]', "Orders");
   setWentianFinalText(root, '[data-node-id="wt48-right"]', "Sync");
   setWentianFinalText(root, '[data-node-id="wt48-ticket-text"]', "Refund");
