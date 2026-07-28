@@ -15567,3 +15567,8 @@ html[lang="en"] .liuyao-manual-current-actions .liuyao-manual-confirm {
 .wentian-chart-ai-final-meta {
   display: none !important;
 }
+
+/* English layout audit: keep the account plan summary readable on screen 31. */
+html[lang="en"] [data-node-id="source-31-vip-v2"] {
+  width: 168px !important;
+}
