@@ -385,6 +385,11 @@
       var node = $(selector);
       if (node) node.textContent = value;
     };
+    var skipLink = $(".skip-link");
+    if (skipLink) {
+      skipLink.href = "#member";
+      skipLink.textContent = "Skip to membership checkout";
+    }
     setText(".yl-brand-checkout", "Yuetian AI");
     setText(".yl-member-main span", "Yuetian AI Membership");
     setText(".yl-member-main p", "Site Access · AI Chat");
@@ -410,17 +415,43 @@
     setText(".yl-checkout-account span", "Payment Account");
     setText(".yl-pay-heading strong", "Payment Method");
     setText(".yl-pay-heading span", "Check the amount before paying");
+    var memberBenefits = $(".yl-member-benefits");
+    if (memberBenefits) memberBenefits.setAttribute("aria-label", "Membership benefits");
+    var paymentAssurance = $(".yl-payment-assurance");
+    if (paymentAssurance) paymentAssurance.setAttribute("aria-label", "Payment security");
+    var paymentMethods = $(".yl-pay-row");
+    if (paymentMethods) paymentMethods.setAttribute("aria-label", "Payment methods");
+    var methodButtons = $all(".yl-pay-method");
+    methodButtons.forEach(function (button) {
+      var provider = button.dataset.provider || "wechat";
+      button.textContent = provider === "alipay" && !ALIPAY_CHECKOUT_ENABLED
+        ? "Alipay (Under Review)"
+        : getProviderLabel(provider);
+    });
+    setText("#ylOpenPayBtn", "Confirm account to continue");
     var mobileAssurances = $all(".yl-mobile-assurance span");
     if (mobileAssurances[0]) mobileAssurances[0].textContent = "Automatic activation after payment";
     if (mobileAssurances[1]) mobileAssurances[1].textContent = "Keep the order number for support";
+    var mobileAssurance = $(".yl-mobile-assurance");
+    if (mobileAssurance) mobileAssurance.setAttribute("aria-label", "Payment protection");
     var returnLink = $("#ylMemberReturnLink");
     if (returnLink) returnLink.textContent = "Back to the app";
+    var brandLink = $(".yl-brand");
+    if (brandLink) brandLink.setAttribute("aria-label", "Back to Yuetian AI home");
+    var paymentPanel = $("#ylPaymentPanel");
+    if (paymentPanel) paymentPanel.setAttribute("aria-label", "Payment window");
+    var paymentClose = $("#ylPaymentCloseBtn");
+    if (paymentClose) paymentClose.setAttribute("aria-label", "Close payment window");
+    var paymentQr = $("#ylPaymentQr");
+    if (paymentQr) paymentQr.setAttribute("aria-label", "Payment QR code");
     var closeButton = $("#ylAccountCloseBtn");
     if (closeButton) closeButton.setAttribute("aria-label", "Close account window");
     setText(".yl-account-dialog-head > span", "Yuetian Account");
     setText(".yl-account-dialog-head > p", "Use the same account on desktop, mobile, and WeChat.");
     setText("#ylHealthLoginModeBtn", "Sign In");
     setText("#ylHealthRegisterModeBtn", "Create Account");
+    var authModeGroup = $(".yl-health-auth-mode");
+    if (authModeGroup) authModeGroup.setAttribute("aria-label", "Choose sign in or create account");
     var passwordLabels = $all(".yl-health-auth label .yl-health-field-label");
     if (passwordLabels[1]) passwordLabels[1].textContent = "Password";
     if (passwordLabels[2]) passwordLabels[2].textContent = "Confirm Password";
