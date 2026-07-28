@@ -15659,6 +15659,14 @@ html[lang="en"] .liuyao-manual-current-actions .liuyao-manual-confirm {
   font-size: 16px;
 }
 
+html[lang="en"] .liuyao-progress-result strong {
+  overflow: visible;
+  font-size: 14px;
+  line-height: 1.15;
+  text-overflow: clip;
+  white-space: normal;
+}
+
 .liuyao-result-preview {
   display: grid;
   gap: 8px;
