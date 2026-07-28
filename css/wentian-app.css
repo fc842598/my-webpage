@@ -1226,6 +1226,11 @@ html[lang="en"] [data-node-id="source-39-tip"] {
   white-space: nowrap !important;
 }
 
+html[lang="en"] [data-node-id="source-27-empty-copy"] {
+  font-size: 14px !important;
+  line-height: 1.55 !important;
+}
+
 html[lang="en"] .wentian-profile-status {
   top: 580px !important;
   height: 34px !important;
