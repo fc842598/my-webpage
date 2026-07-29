@@ -1027,6 +1027,126 @@ function uniqueEnglishExamples(article, examples) {
 
 function englishOverrideFor(article) {
   const englishOverrides = {
+  "ziwei-ziwei-wuzuoyou-guxing": {
+    title: "Why Zi Wei Needs Zuo Fu and You Bi",
+    description: "Zi Wei can still look noble on its own, but without Zuo Fu and You Bi the chart often feels heavier, more solitary, and harder to carry in real life."
+  },
+  "ziwei-caixing-ru-guanlu-budengyu-zibao": {
+    title: "Wealth Stars in the Career Palace Are Not Always Personal Wealth",
+    description: "This pattern often points to budget authority, financial stewardship, or handling large sums for an institution before it points to personal riches."
+  },
+  "ziwei-taiyang-caibo-hengcai-fengong": {
+    title: "Tai Yang in the Wealth Palace: Business Income Versus Salary",
+    description: "Read Tai Yang in the wealth line as market-facing, entrepreneurial, or publicly earned money, not as a simple fixed-salary pattern."
+  },
+  "ziwei-tianji-zuoming-wenguan-dizi": {
+    title: "Tian Ji in the Life Palace: Smart, Fast, and Civil-Service Minded",
+    description: "This placement often favors analysis, administration, teaching, and quick mental response more than blunt executive authority."
+  },
+  "ziwei-wenchang-danshou-shudai": {
+    title: "Wen Chang Alone: Why Study Can Turn Rigid",
+    description: "Wen Chang is strong for exams and structured learning, but without supporting stars it can slide into bookish certainty without practical judgment."
+  },
+  "ziwei-wenchang-wenqu-tonghui-taohua-caiyi": {
+    title: "Wen Chang and Wen Qu Together: Talent, Expression, and Attraction",
+    description: "This pairing lifts writing, style, and artistic expression, while also increasing visibility and social appeal in a way that should not be reduced to one flat label."
+  },
+  "ziwei-liunian-wenchang-huaji-kaoshi": {
+    title: "Annual Wen Chang With Hua Ji: Exam Pressure Without a Result",
+    description: "An annual Wen Chang trigger can bring tests, applications, and study effort, but Hua Ji often means the process appears without an easy pass."
+  },
+  "ziwei-kuiyue-changqu-kaoshi": {
+    title: "Tian Kui and Tian Yue With Wen Chang and Wen Qu",
+    description: "A strong exam-star stack can outperform appearances entirely, lifting rank, credentials, and test results even in charts that do not look bookish on the surface."
+  },
+  "ziwei-hongluan-zuoming-huixiangtiao": {
+    title: "Hong Luan in the Life Palace Is About Choice, Not Only Romance",
+    description: "Hong Luan here often shows not just attraction, but a clear eye for who draws the person in and what kind of relationship path they will actually choose."
+  },
+  "ziwei-zuofu-youbi-zhuanfu-ziwei": {
+    title: "Why Zuo Fu and You Bi Primarily Support Zi Wei",
+    description: "These support stars matter most when they stabilize Zi Wei itself, turning a noble but solitary core into a role that can truly lead and carry others."
+  },
+  "ziwei-tianfu-santai-bazuo-jiee": {
+    title: "Why Tian Fu Needs San Tai and Ba Zuo",
+    description: "Tian Fu looks steady on its own, but San Tai and Ba Zuo are what strengthen its ability to absorb strain, resolve trouble, and hold a stable structure."
+  },
+  "ziwei-luma-jiaochi-buqingsong": {
+    title: "Lu Ma Jiao Chi: Big Money Usually Means Big Movement",
+    description: "This pattern is not lazy luck. It often shows money arriving through motion, expansion, logistics, market work, or a demanding business rhythm."
+  },
+  "ziwei-tanlang-tiankui-nvming-lei": {
+    title: "Tan Lang With Tian Kui: Strong Talent, Heavier Burden for Some Women",
+    description: "The combination can look like a gifted, capable chart, but in some women's charts it may also mean carrying more responsibility, more roles, and less room to rest."
+  },
+  "ziwei-shengong-zaicaibo-zhiyefunv": {
+    title: "Body Palace in Wealth: Why Later Life Gets Pushed by Money Work",
+    description: "When the body palace lands here, later life is often driven less by relationship identity and more by earning structure, practical work, and financial responsibility."
+  },
+  "ziwei-qisha-linshen-duobaishaocheng": {
+    title: "Qi Sha Touching the Body Palace: Pressure Lands on the Self",
+    description: "This is a harder-carry placement that often brings repeated pressure, a rougher learning curve, and a life that requires earlier adjustment and stronger support."
+  },
+  "ziwei-huake-caibo-zhuanye-fanxian": {
+    title: "Hua Ke in the Wealth Palace: Turn Skill and Credentials Into Income",
+    description: "This placement favors income built through expertise, reputation, certification, or artistic output rather than through vague effort or interchangeable labor."
+  },
+  "ziwei-tiankui-ming-tianyue-cai-huake": {
+    title: "Tian Kui in Life, Tian Yue in Wealth, Plus Hua Ke",
+    description: "A stacked study-and-skill structure like this should usually be pushed toward a real specialty, because the chart loses power when it is buried in generic work."
+  },
+  "ziwei-qianyi-ziwei-duzuo-guiguren-gujun": {
+    title: "Zi Wei Alone in the Travel Palace: Noble Help Outside, But Solitary Pressure",
+    description: "This pattern can open doors through outside platforms and distant allies, yet still leave the person carrying the role alone once the opportunity arrives."
+  },
+  "ziwei-zuofu-youbi-fuqi-gengchuse": {
+    title: "Zuo Fu and You Bi in the Spouse Palace: A Stronger Partner Line",
+    description: "When support stars land here, the chart often shows an unusually capable or elevated partner rather than the native taking all of the credit directly."
+  },
+  "ziwei-zifu-zuoyuan-qisha-chaodou-fenfa": {
+    title: "Zi Fu Holding the Center Versus Qi Sha Facing the Dipper",
+    description: "Both are high-status patterns, but one leans toward central placement and ordered power while the other often works through frontier pressure, movement, or a harder command role."
+  },
+  "ziwei-youbi-dushou-fubi-zhicai": {
+    title: "You Bi Alone: Better as a Right-Hand Role Than a Front Seat",
+    description: "This placement often shines more in support, advising, coordination, and close-assistant roles than in forcing a lone front-facing power position."
+  },
+  "ziwei-changqu-chouwei-riyue-kelu": {
+    title: "Wen Chang and Wen Qu in Chou or Wei",
+    description: "In these palaces the study stars often connect to Sun-Moon prestige, giving learning, expression, and status a stronger chance to rise together."
+  },
+  "ziwei-yuelang-tianmen-nvming": {
+    title: "Yue Lang Tian Men: Why This Pattern Often Fits Women Especially Well",
+    description: "This bright-moon pattern is about clarity, fairness, and calm judgment, and in many women's charts it reads as especially graceful and effective."
+  },
+  "ziwei-mingzhu-chuhai-buzhiying-benin": {
+    title: "Bright Pearl Emerging From the Sea Does Not Only Belong to the Self",
+    description: "A famous pattern like this can show up through siblings, parents, children, or a specific life phase, not only through the native's own Life Palace line."
+  },
+  "ziwei-rizhao-leimen-zuocixiang": {
+    title: "Ri Zhao Lei Men: This Pattern Works Best in Daylight Rhythms",
+    description: "The chart favors visible, daytime, structured work and loses part of its strength when placed into hidden, badly timed, or rhythm-breaking roles."
+  },
+  "ziwei-tianxi-minggong-hongluan-qianyi-donghun": {
+    title: "Tian Xi in Life and Hong Luan in Travel: Marriage May Begin Outside Home",
+    description: "This pairing often suggests that relationship momentum arrives through movement, distance, clients, travel, or an outside-facing environment rather than through the nearest circle."
+  },
+  "ziwei-quanlu-caibo-kongpan": {
+    title: "Hua Quan With Lu Cun in the Wealth Palace: Control Matters More Than Show",
+    description: "Read this as a business-control or resource-command pattern first, because its real value is often the ability to run the money line, not just display wealth."
+  },
+  "ziwei-fudegong-hongluan-tianxi-duohun": {
+    title: "Hong Luan or Tian Xi in the Inner-Life Palace: Repeated Marriage Triggers",
+    description: "Even when the spouse palace is not the loudest part of the chart, these pleasure-and-marriage stars in the inner-life line can keep relationship timing moving more than once."
+  },
+  "ziwei-guoji-qian-bie-dinghun": {
+    title: "Why You Should Not Rush Engagement Before Hua Ji Is Passed",
+    description: "Strong relationship momentum is not enough on its own. When the blockage period has not yet been crossed, the chart often shows delay, hidden complications, or a bond that stalls halfway."
+  },
+  "ziwei-jumen-tianxing-huaji-guansi": {
+    title: "Ju Men, Tian Xing, and Hua Ji: When Disputes Escalate Into Legal Trouble",
+    description: "This is a layered conflict pattern. It should be read as more than gossip or ordinary friction, because speech, punishment, and blockage can combine into formal disputes or litigation."
+  },
   "ziwei-xiongdigong-ye-kan-sanfang": {
     title: "Why the Siblings Palace Still Needs Triad Reading",
     description: "Read siblings, peers, and shared-resource themes through the main, opposite, and supporting palaces before you judge support or loss."
