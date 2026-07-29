@@ -1,15 +1,15 @@
 import { execFileSync } from "node:child_process";
 import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
-import { buildAiSearchQaBatch } from "./ai-search-qa-batch-2026-07-28-data.mjs";
+import { buildAiSearchQaBatch } from "./ai-search-qa-batch-2026-07-29-data.mjs";
 
 const root = process.cwd();
 const site = "https://yuetianai.com";
 const topicSlug = "ai-search-qa";
-const batchDate = "2026-07-28";
+const batchDate = "2026-07-29";
 const zhCollectionFile = "ai-suanming-search-qa.html";
 const enCollectionFile = "ai-fortune-telling-search-qa.html";
-const queuePath = path.join(root, "docs", "ai-search-qa-2026-07-28-queue.md");
+const queuePath = path.join(root, "docs", "ai-search-qa-2026-07-29-queue.md");
 const manifestPath = path.join(root, "docs", "ai-search-qa-manifest.json");
 const topicRecordPath = path.join(root, "docs", "ai-search-qa-topic-records.json");
 const facts = {
@@ -2136,7 +2136,8 @@ function renderZhPage(article) {
 }
 
 function renderEnPage(article) {
-  const description = truncate(`${article.enLead}${article.enSecond}`, 155);
+  const description = truncate(`${article.enLead} ${article.enSecond}`, 155);
+  const heroClass = article.enTitle.length > 90 ? "detail-hero is-long-title" : "detail-hero";
   const related = enRelatedLinks(article).map((item) => `<a href="${item.href}">${escapeHtml(item.text)}</a>`).join("");
   return `<!doctype html>
 <html lang="en">
@@ -2183,7 +2184,7 @@ function renderEnPage(article) {
     </div>
   </header>
   <main class="article-shell article-detail">
-    <section class="detail-hero">
+    <section class="${heroClass}">
       <div class="container detail-hero-grid">
         <div>
           <nav class="breadcrumb" aria-label="Breadcrumb"><a href="${enCollectionFile}">AI Hub</a><span>/</span><span>${escapeHtml(article.enGroup)}</span></nav>
