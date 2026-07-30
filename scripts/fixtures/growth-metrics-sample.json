@@ -1,0 +1,51 @@
+{
+  "ok": true,
+  "sources": {
+    "searchConsole": {
+      "ok": true,
+      "data": {
+        "clicks": 7,
+        "impressions": 120,
+        "topPages": [
+          {
+            "page": "https://yuetianai.com/articles/ziwei-huan-gongzuo-xiankan-guanlu-haishi-qianyi.html",
+            "clicks": 4,
+            "impressions": 80,
+            "ctr": 5,
+            "position": 8.4
+          },
+          {
+            "page": "https://yuetianai.com/articles/ziwei-shihe-dai-tuandui-youke-meiquan-youquan-meike.html",
+            "clicks": 0,
+            "impressions": 20,
+            "ctr": 0,
+            "position": 12.1
+          }
+        ],
+        "topQueries": [
+          {
+            "query": "紫微斗数换工作看哪个宫",
+            "clicks": 3,
+            "impressions": 40,
+            "ctr": 7.5,
+            "position": 7.2
+          }
+        ]
+      }
+    },
+    "ga4": {
+      "ok": true,
+      "data": {
+        "activeUsers": 20,
+        "pageViews": 45,
+        "topPages": [
+          {
+            "path": "/articles/ziwei-huan-gongzuo-xiankan-guanlu-haishi-qianyi.html",
+            "pageViews": 12,
+            "activeUsers": 9
+          }
+        ]
+      }
+    }
+  }
+}

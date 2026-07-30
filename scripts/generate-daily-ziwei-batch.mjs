@@ -1,6 +1,7 @@
 import path from "node:path";
 import { pathToFileURL } from "node:url";
 import { writeFile } from "node:fs/promises";
+import { validateSeedBatch } from "./validate-daily-ziwei-seed.mjs";
 
 function fail(message) {
   console.error(message);
@@ -41,36 +42,10 @@ function parseTimes(input) {
   return times;
 }
 
-function firstClause(text = "") {
-  return String(text).split(/[，。；：]/)[0].trim();
-}
-
 function bodyOf(article) {
-  const [pointA = "", pointB = "", pointC = "", pointD = ""] = article.points;
-  const mistakeA = firstClause(pointA);
-  const mistakeB = firstClause(pointB);
-  return `${article.opening}
-
-${article.focus}这类题最怕的，不是看不懂术语，而是一开始就把局部现象当成整张盘的结论。只要先把主线、承压位和现实出口拆开，后面再看流年、四化和触发顺序，判断就会稳很多。
-
-### 先把主线定出来
-${pointA}${pointB}所以第一步不是急着贴一句吉凶，而是先确认这件事到底是先天底子、后天触发，还是两边一起把问题推出来。
-
-${article.examples[0]}
-
-### 再看组合为什么会把结果拉开
-${pointC}${pointD}真正把结果拉开的，往往不是多背一条断语，而是能不能看清它落在哪条线、由谁承接、最后在现实里变成什么代价或机会。
-
-${article.examples[1]}
-
-### 真正实用的地方，在于先分层
-${article.intent}实务上最好用的读法，是先把主宫定位，再把对宫、三方四正和现实出口接起来。这样一来，你就不会把“有这个象”误听成“事情一定这样发生”，也更容易看懂该先守哪一段。
-
-### 最容易看错的地方
-很多误判，都不是少看一颗星，而是把“${mistakeA}”和“${mistakeB}”混成一句话。先把主因和结果分开，再把宫位、星曜、组合和时间顺序拆开，判断才不会越看越宽、越讲越虚。
-
-### 排盘顺序
-${article.orderText}`;
+  const opening = article.openingParagraphs.join("\n\n");
+  const sections = article.sections.map((section) => `### ${section.heading}\n${section.paragraphs.join("\n\n")}`).join("\n\n");
+  return `${opening}\n\n${sections}\n\n### 排盘使用顺序\n${article.orderText}`;
 }
 
 function sourceText(date, articles) {
@@ -128,10 +103,19 @@ const date = args.date;
 
 if (!seedArg) fail("Missing --seed");
 if (!date || !/^\d{4}-\d{2}-\d{2}$/.test(date)) fail("Missing or invalid --date");
+if (!args.docx) fail("Missing --docx; the source document is required for the quality gate");
 
 const seedPath = path.resolve(seedArg);
 const { articles } = await import(`${pathToFileURL(seedPath).href}?t=${Date.now()}`);
 if (!Array.isArray(articles) || !articles.length) fail("Seed file did not export articles");
+
+await validateSeedBatch({
+  seedPath,
+  docxPath: args.docx,
+  date,
+  reportPath: args.report || `docs/article-quality-${date}.json`,
+  expectedCount: 30,
+});
 
 const ordered = [...articles].sort((a, b) => a.order - b.order);
 const times = parseTimes(args.times);
