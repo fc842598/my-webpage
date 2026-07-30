@@ -138,17 +138,6 @@
       "enUrl": "https://yuetianai.com/articles/en/fufeiqian-zenme-yan-zheng-ai-suanming.html"
     },
     {
-      "slug": "ai-suanming-huiyuan-zhibuzhi",
-      "title": "AI算命会员值不值开？先算你要的是次数还是深度",
-      "enTitle": "Is an AI Fortune-Telling Membership Worth It? Decide Whether You Need More Volume or More Depth First",
-      "section": "AI算命问答",
-      "group": "免费与付费",
-      "enGroup": "Free vs Paid",
-      "publishedAt": "2026-07-25T11:41:00+08:00",
-      "zhUrl": "https://yuetianai.com/articles/ai-suanming-huiyuan-zhibuzhi.html",
-      "enUrl": "https://yuetianai.com/articles/en/ai-suanming-huiyuan-zhibuzhi.html"
-    },
-    {
       "slug": "mianfei-shiyong-neng-kan-dao-shenme",
       "title": "免费试用能看到什么？阅天AI当前免费与会员边界怎么分",
       "enTitle": "What Can You See in the Free Trial? How YuetianAI's Current Free and Member Boundaries Are Split",
@@ -158,39 +147,6 @@
       "publishedAt": "2026-07-25T11:58:00+08:00",
       "zhUrl": "https://yuetianai.com/articles/mianfei-shiyong-neng-kan-dao-shenme.html",
       "enUrl": "https://yuetianai.com/articles/en/mianfei-shiyong-neng-kan-dao-shenme.html"
-    },
-    {
-      "slug": "shouji-shang-yong-ai-suanming-fangbian-ma",
-      "title": "手机上用AI算命方便吗？更要看保存和追问顺不顺",
-      "enTitle": "Is AI Fortune Telling Convenient on a Phone? Look at Save Flow and Follow-Up Flow, Not Only the Screen",
-      "section": "AI算命问答",
-      "group": "体验与流程",
-      "enGroup": "Experience & Flow",
-      "publishedAt": "2026-07-25T12:09:00+08:00",
-      "zhUrl": "https://yuetianai.com/articles/shouji-shang-yong-ai-suanming-fangbian-ma.html",
-      "enUrl": "https://yuetianai.com/articles/en/shouji-shang-yong-ai-suanming-fangbian-ma.html"
-    },
-    {
-      "slug": "ai-suanming-yaobuyao-zhuce",
-      "title": "AI算命要不要注册？先分“先试用”和“要保存记录”",
-      "enTitle": "Do You Need to Register for AI Fortune Telling? Separate First Trial From Record-Saving Needs",
-      "section": "AI算命问答",
-      "group": "体验与流程",
-      "enGroup": "Experience & Flow",
-      "publishedAt": "2026-07-25T13:22:00+08:00",
-      "zhUrl": "https://yuetianai.com/articles/ai-suanming-yaobuyao-zhuce.html",
-      "enUrl": "https://yuetianai.com/articles/en/ai-suanming-yaobuyao-zhuce.html"
-    },
-    {
-      "slug": "ai-suanming-jilu-neng-bu-neng-baocun",
-      "title": "AI算命记录能保存吗？换手机前先确认这两个点",
-      "enTitle": "Can AI Fortune-Telling Records Be Saved? Check These Two Things Before You Change Phones",
-      "section": "AI算命问答",
-      "group": "体验与流程",
-      "enGroup": "Experience & Flow",
-      "publishedAt": "2026-07-25T14:47:00+08:00",
-      "zhUrl": "https://yuetianai.com/articles/ai-suanming-jilu-neng-bu-neng-baocun.html",
-      "enUrl": "https://yuetianai.com/articles/en/ai-suanming-jilu-neng-bu-neng-baocun.html"
     },
     {
       "slug": "ai-suanming-shihe-kan-shiye-ma",
@@ -303,17 +259,6 @@
       "enUrl": "https://yuetianai.com/articles/en/ai-suanming-shihe-changqi-zhuizong-ma.html"
     },
     {
-      "slug": "ai-suanming-baogao-kan-qilai-renzhenma",
-      "title": "AI算命报告怎么看是不是认真写的？先看有没有具体场景",
-      "enTitle": "How Can You Tell Whether an AI Fortune-Telling Report Was Written Carefully? Look for Concrete Situations First",
-      "section": "AI算命问答",
-      "group": "判断与靠谱",
-      "enGroup": "Reliability & Choice",
-      "publishedAt": "2026-07-25T22:09:00+08:00",
-      "zhUrl": "https://yuetianai.com/articles/ai-suanming-baogao-kan-qilai-renzhenma.html",
-      "enUrl": "https://yuetianai.com/articles/en/ai-suanming-baogao-kan-qilai-renzhenma.html"
-    },
-    {
       "slug": "ai-suanming-neng-bang-mang-da-jue-ding-ma",
       "title": "AI算命能不能帮你做重大决定？先把它放在辅助位",
       "enTitle": "Can AI Fortune Telling Help With Major Decisions? Put It in the Support Seat First",
@@ -336,17 +281,6 @@
       "enUrl": "https://yuetianai.com/articles/en/ai-suanming-pingtai-weishenme-shoufei.html"
     },
     {
-      "slug": "ai-suanming-juti-budengyu-kaopu",
-      "title": "AI算命答得很具体就一定靠谱吗？先看它是不是能回到盘里",
-      "enTitle": "Does a Very Specific AI Reading Automatically Mean It Is Reliable? Only If It Still Connects Back to the Chart",
-      "section": "AI算命问答",
-      "group": "判断与靠谱",
-      "enGroup": "Reliability & Choice",
-      "publishedAt": "2026-07-26T00:07:00+08:00",
-      "zhUrl": "https://yuetianai.com/articles/ai-suanming-juti-budengyu-kaopu.html",
-      "enUrl": "https://yuetianai.com/articles/en/ai-suanming-juti-budengyu-kaopu.html"
-    },
-    {
       "slug": "ai-suanming-wangzhan-xian-shi-shenme",
       "title": "AI算命网站要先试什么？别先被首页文案说服",
       "enTitle": "What Should You Test First on an AI Fortune-Telling Site? Do Not Let the Homepage Sell You First",
@@ -356,28 +290,6 @@
       "publishedAt": "2026-07-26T01:39:00+08:00",
       "zhUrl": "https://yuetianai.com/articles/ai-suanming-wangzhan-xian-shi-shenme.html",
       "enUrl": "https://yuetianai.com/articles/en/ai-suanming-wangzhan-xian-shi-shenme.html"
-    },
-    {
-      "slug": "ai-suanming-zhigei-zongping-zhengchangma",
-      "title": "AI算命平台只给一句总评正常吗？先看它有没有拆主题",
-      "enTitle": "Is It Normal for an AI Fortune-Telling Platform to Give Only One Overall Verdict? Check Whether It Can Split Topics",
-      "section": "AI算命问答",
-      "group": "判断与靠谱",
-      "enGroup": "Reliability & Choice",
-      "publishedAt": "2026-07-26T02:21:00+08:00",
-      "zhUrl": "https://yuetianai.com/articles/ai-suanming-zhigei-zongping-zhengchangma.html",
-      "enUrl": "https://yuetianai.com/articles/en/ai-suanming-zhigei-zongping-zhengchangma.html"
-    },
-    {
-      "slug": "ai-suanming-shunzhe-ni-shuo-haishi-zhun",
-      "title": "AI算命看得准是不是因为会顺着你说？先拿旧事反测",
-      "enTitle": "Does AI Fortune Telling Feel Accurate Because It Follows Your Mood? Test It Against a Past Event First",
-      "section": "AI算命问答",
-      "group": "判断与靠谱",
-      "enGroup": "Reliability & Choice",
-      "publishedAt": "2026-07-26T03:52:00+08:00",
-      "zhUrl": "https://yuetianai.com/articles/ai-suanming-shunzhe-ni-shuo-haishi-zhun.html",
-      "enUrl": "https://yuetianai.com/articles/en/ai-suanming-shunzhe-ni-shuo-haishi-zhun.html"
     },
     {
       "slug": "ai-suanming-daodi-zai-du-shenme",
@@ -400,61 +312,6 @@
       "publishedAt": "2026-07-26T05:33:00+08:00",
       "zhUrl": "https://yuetianai.com/articles/ai-suanming-weishenme-yao-wanzheng-ziliao.html",
       "enUrl": "https://yuetianai.com/articles/en/ai-suanming-weishenme-yao-wanzheng-ziliao.html"
-    },
-    {
-      "slug": "ai-suanming-burang-xian-paipan-zenme-shi",
-      "title": "AI算命平台不让先排盘还能试吗？先看它把验证放在哪一步",
-      "enTitle": "Can You Still Test an AI Fortune-Telling Platform If It Does Not Let You See the Chart First? Check Where Verification Happens",
-      "section": "AI算命问答",
-      "group": "输入与方法",
-      "enGroup": "Input & Method",
-      "publishedAt": "2026-07-26T06:05:00+08:00",
-      "zhUrl": "https://yuetianai.com/articles/ai-suanming-burang-xian-paipan-zenme-shi.html",
-      "enUrl": "https://yuetianai.com/articles/en/ai-suanming-burang-xian-paipan-zenme-shi.html"
-    },
-    {
-      "slug": "ai-suanming-huibu-hui-yuewen-yuegui",
-      "title": "AI算命会不会越问越贵？先看次数、会员和保存怎么分层",
-      "enTitle": "Does AI Fortune Telling Get More Expensive the More You Ask? Start With How Limits, Membership, and Saved History Are Split",
-      "section": "AI算命问答",
-      "group": "免费与付费",
-      "enGroup": "Free vs Paid",
-      "publishedAt": "2026-07-26T07:27:00+08:00",
-      "zhUrl": "https://yuetianai.com/articles/ai-suanming-huibu-hui-yuewen-yuegui.html",
-      "enUrl": "https://yuetianai.com/articles/en/ai-suanming-huibu-hui-yuewen-yuegui.html"
-    },
-    {
-      "slug": "ai-suanming-xian-kai-huiyuan-haishi-xianshi",
-      "title": "AI算命先开会员还是先试用？先算你有没有连续追问需求",
-      "enTitle": "Should You Buy Membership First or Try the Tool First? Start by Asking Whether You Need Repeated Follow-Up",
-      "section": "AI算命问答",
-      "group": "免费与付费",
-      "enGroup": "Free vs Paid",
-      "publishedAt": "2026-07-26T07:49:00+08:00",
-      "zhUrl": "https://yuetianai.com/articles/ai-suanming-xian-kai-huiyuan-haishi-xianshi.html",
-      "enUrl": "https://yuetianai.com/articles/en/ai-suanming-xian-kai-huiyuan-haishi-xianshi.html"
-    },
-    {
-      "slug": "ai-suanming-huiyuan-mai-de-shi-zhun-haishi-shun",
-      "title": "AI算命会员买的是更准还是更顺？别把额度当成准确率",
-      "enTitle": "Are You Buying More Accuracy or a Smoother Experience With Membership? Do Not Confuse Quota With Precision",
-      "section": "AI算命问答",
-      "group": "免费与付费",
-      "enGroup": "Free vs Paid",
-      "publishedAt": "2026-07-26T08:18:00+08:00",
-      "zhUrl": "https://yuetianai.com/articles/ai-suanming-huiyuan-mai-de-shi-zhun-haishi-shun.html",
-      "enUrl": "https://yuetianai.com/articles/en/ai-suanming-huiyuan-mai-de-shi-zhun-haishi-shun.html"
-    },
-    {
-      "slug": "ai-suanming-fufeiye-xian-hedui-shenme",
-      "title": "AI算命付费页要先核对什么？价格、次数、退款入口缺一不可",
-      "enTitle": "What Should You Check First on an AI Fortune-Telling Payment Page? Price, Limits, and Refund Path All Matter",
-      "section": "AI算命问答",
-      "group": "免费与付费",
-      "enGroup": "Free vs Paid",
-      "publishedAt": "2026-07-26T09:41:00+08:00",
-      "zhUrl": "https://yuetianai.com/articles/ai-suanming-fufeiye-xian-hedui-shenme.html",
-      "enUrl": "https://yuetianai.com/articles/en/ai-suanming-fufeiye-xian-hedui-shenme.html"
     },
     {
       "slug": "ai-suanming-jichupaipan-heshendu-jiedu-chazai",
@@ -545,61 +402,6 @@
       "enUrl": "https://yuetianai.com/articles/en/ai-suanming-weishenme-wen-yifa-sheng-jingli.html"
     },
     {
-      "slug": "ai-suanming-meiyou-yinsiye-haineng-tianma",
-      "title": "AI算命没有隐私页还能填吗？先把联系方式找到再说",
-      "enTitle": "Can You Still Enter Data Into an AI Fortune-Telling Site If It Has No Privacy Page? Find the Contact Path First",
-      "section": "AI算命问答",
-      "group": "隐私与资料",
-      "enGroup": "Privacy & Data",
-      "publishedAt": "2026-07-26T16:12:00+08:00",
-      "zhUrl": "https://yuetianai.com/articles/ai-suanming-meiyou-yinsiye-haineng-tianma.html",
-      "enUrl": "https://yuetianai.com/articles/en/ai-suanming-meiyou-yinsiye-haineng-tianma.html"
-    },
-    {
-      "slug": "ai-suanming-zhuce-hou-duo-shenme",
-      "title": "AI算命注册后会多拿到什么？先分保存记录和付款售后",
-      "enTitle": "What Do You Gain After Registering on an AI Fortune-Telling Platform? Separate Saved History From Payment and Support",
-      "section": "AI算命问答",
-      "group": "体验与流程",
-      "enGroup": "Experience & Flow",
-      "publishedAt": "2026-07-26T17:31:00+08:00",
-      "zhUrl": "https://yuetianai.com/articles/ai-suanming-zhuce-hou-duo-shenme.html",
-      "enUrl": "https://yuetianai.com/articles/en/ai-suanming-zhuce-hou-duo-shenme.html"
-    },
-    {
-      "slug": "ai-suanming-huan-shebei-jilu-hai-zai-ma",
-      "title": "AI算命换设备后记录还在吗？关键看账号和同步说明",
-      "enTitle": "Do Your AI Fortune-Telling Records Survive a Device Change? It Depends on the Account and Sync Rules",
-      "section": "AI算命问答",
-      "group": "体验与流程",
-      "enGroup": "Experience & Flow",
-      "publishedAt": "2026-07-26T18:26:00+08:00",
-      "zhUrl": "https://yuetianai.com/articles/ai-suanming-huan-shebei-jilu-hai-zai-ma.html",
-      "enUrl": "https://yuetianai.com/articles/en/ai-suanming-huan-shebei-jilu-hai-zai-ma.html"
-    },
-    {
-      "slug": "ai-suanming-shouji-haishi-diannao-genghao",
-      "title": "AI算命手机和电脑哪个更适合第一次试？先看输入和回看",
-      "enTitle": "Is a Phone or a Computer Better for Your First AI Fortune-Telling Try? Start With Input Comfort and Review Flow",
-      "section": "AI算命问答",
-      "group": "体验与流程",
-      "enGroup": "Experience & Flow",
-      "publishedAt": "2026-07-26T19:05:00+08:00",
-      "zhUrl": "https://yuetianai.com/articles/ai-suanming-shouji-haishi-diannao-genghao.html",
-      "enUrl": "https://yuetianai.com/articles/en/ai-suanming-shouji-haishi-diannao-genghao.html"
-    },
-    {
-      "slug": "ai-suanming-diyici-yaobuyao-zhi-denglu",
-      "title": "AI算命第一次试要不要直接登录？先看你只是体验还是要留记录",
-      "enTitle": "Should You Log In Immediately the First Time You Try AI Fortune Telling? It Depends on Whether You Need Only a Trial or Real Record-Keeping",
-      "section": "AI算命问答",
-      "group": "体验与流程",
-      "enGroup": "Experience & Flow",
-      "publishedAt": "2026-07-26T19:58:00+08:00",
-      "zhUrl": "https://yuetianai.com/articles/ai-suanming-diyici-yaobuyao-zhi-denglu.html",
-      "enUrl": "https://yuetianai.com/articles/en/ai-suanming-diyici-yaobuyao-zhi-denglu.html"
-    },
-    {
       "slug": "ai-suanming-kan-tiaocao-shihe-ma",
       "title": "AI算命适不适合看跳槽？先分岗位变化和平台变化",
       "enTitle": "Is AI Fortune Telling Useful for Job-Change Questions? First Separate Role Change From Platform Change",
@@ -677,17 +479,6 @@
       "enUrl": "https://yuetianai.com/articles/en/ai-suanming-qianhou-buyi-zhengchangma.html"
     },
     {
-      "slug": "ai-suanming-weishenme-yao-suoxiao-wenti",
-      "title": "AI算命为什么总让你把问题缩小？因为一口气问太多只会平均掉",
-      "enTitle": "Why Does AI Fortune Telling Keep Asking You to Narrow the Question? Because Asking Too Much at Once Flattens the Answer",
-      "section": "AI算命问答",
-      "group": "判断与靠谱",
-      "enGroup": "Reliability & Choice",
-      "publishedAt": "2026-07-27T00:57:00+08:00",
-      "zhUrl": "https://yuetianai.com/articles/ai-suanming-weishenme-yao-suoxiao-wenti.html",
-      "enUrl": "https://yuetianai.com/articles/en/ai-suanming-weishenme-yao-suoxiao-wenti.html"
-    },
-    {
       "slug": "ai-suanming-pingtai-zenme-duibi",
       "title": "AI算命网站哪个靠谱该怎么比？先比公开规则，不比口号大小",
       "enTitle": "How Should You Compare AI Fortune-Telling Sites for Reliability? Compare the Public Rules Before the Marketing Slogans",
@@ -699,17 +490,6 @@
       "enUrl": "https://yuetianai.com/articles/en/ai-suanming-pingtai-zenme-duibi.html"
     },
     {
-      "slug": "ai-suanming-bugan-yong-de-guanjian",
-      "title": "AI算命看起来很懂你，为什么还是不敢用？关键在可验证性",
-      "enTitle": "Why Does an AI Fortune-Telling Answer Seem to Understand You but Still Feel Unsafe to Use? The Missing Piece Is Verifiability",
-      "section": "AI算命问答",
-      "group": "判断与靠谱",
-      "enGroup": "Reliability & Choice",
-      "publishedAt": "2026-07-27T02:44:00+08:00",
-      "zhUrl": "https://yuetianai.com/articles/ai-suanming-bugan-yong-de-guanjian.html",
-      "enUrl": "https://yuetianai.com/articles/en/ai-suanming-bugan-yong-de-guanjian.html"
-    },
-    {
       "slug": "ai-suanming-dang-di-er-yijian",
       "title": "AI算命能不能当第二意见？适合用来拆风险，不适合替你拍板",
       "enTitle": "Can AI Fortune Telling Work as a Second Opinion? It Is Better for Exposing Risk Than for Making the Final Call",
@@ -719,61 +499,6 @@
       "publishedAt": "2026-07-27T03:31:00+08:00",
       "zhUrl": "https://yuetianai.com/articles/ai-suanming-dang-di-er-yijian.html",
       "enUrl": "https://yuetianai.com/articles/en/ai-suanming-dang-di-er-yijian.html"
-    },
-    {
-      "slug": "ai-suanming-mianfeiban-weishenme-bugou",
-      "title": "AI算命免费版为什么常只够试一轮？先分体验入口和连续追问",
-      "enTitle": "Why Does the Free Version of AI Fortune Telling Often Feel Like It Covers Only One Round? Separate First-Try Access From Ongoing Follow-Up",
-      "section": "AI算命问答",
-      "group": "免费与付费",
-      "enGroup": "Free vs Paid",
-      "publishedAt": "2026-07-27T04:09:00+08:00",
-      "zhUrl": "https://yuetianai.com/articles/ai-suanming-mianfeiban-weishenme-bugou.html",
-      "enUrl": "https://yuetianai.com/articles/en/ai-suanming-mianfeiban-weishenme-bugou.html"
-    },
-    {
-      "slug": "ai-suanming-dijia-huiyuan-xian-mai-yige-yue",
-      "title": "AI算命低价会员能不能先买一个月？先看你是不是高频回看型",
-      "enTitle": "Should You Try One Low-Cost Month of AI Fortune-Telling Membership First? Check Whether You Are Actually a High-Frequency Return User",
-      "section": "AI算命问答",
-      "group": "免费与付费",
-      "enGroup": "Free vs Paid",
-      "publishedAt": "2026-07-27T04:52:00+08:00",
-      "zhUrl": "https://yuetianai.com/articles/ai-suanming-dijia-huiyuan-xian-mai-yige-yue.html",
-      "enUrl": "https://yuetianai.com/articles/en/ai-suanming-dijia-huiyuan-xian-mai-yige-yue.html"
-    },
-    {
-      "slug": "ai-suanming-fufei-hou-yanshou-shenme",
-      "title": "AI算命付费后最该验收什么？别只看字数，先看追问有没有延续",
-      "enTitle": "What Should You Check First After Paying for an AI Fortune-Telling Reading? Look for Continuity Before You Look at Length",
-      "section": "AI算命问答",
-      "group": "免费与付费",
-      "enGroup": "Free vs Paid",
-      "publishedAt": "2026-07-27T05:37:00+08:00",
-      "zhUrl": "https://yuetianai.com/articles/ai-suanming-fufei-hou-yanshou-shenme.html",
-      "enUrl": "https://yuetianai.com/articles/en/ai-suanming-fufei-hou-yanshou-shenme.html"
-    },
-    {
-      "slug": "ai-suanming-fufeiqian-kan-tuikuan-kefu",
-      "title": "AI算命付费前要不要先看退款和客服？小金额也要先把出口看清",
-      "enTitle": "Should You Check Refund and Support Paths Before Paying for AI Fortune Telling? Even a Small Amount Deserves a Clear Exit",
-      "section": "AI算命问答",
-      "group": "免费与付费",
-      "enGroup": "Free vs Paid",
-      "publishedAt": "2026-07-27T06:14:00+08:00",
-      "zhUrl": "https://yuetianai.com/articles/ai-suanming-fufeiqian-kan-tuikuan-kefu.html",
-      "enUrl": "https://yuetianai.com/articles/en/ai-suanming-fufeiqian-kan-tuikuan-kefu.html"
-    },
-    {
-      "slug": "ai-suanming-youde-mianfei-youde-xianshoufei",
-      "title": "AI算命为什么有的平台先免费、有的平台先收费？差别常在验证顺序",
-      "enTitle": "Why Do Some AI Fortune-Telling Platforms Start Free While Others Charge Earlier? The Difference Often Sits in the Verification Order",
-      "section": "AI算命问答",
-      "group": "免费与付费",
-      "enGroup": "Free vs Paid",
-      "publishedAt": "2026-07-27T07:48:00+08:00",
-      "zhUrl": "https://yuetianai.com/articles/ai-suanming-youde-mianfei-youde-xianshoufei.html",
-      "enUrl": "https://yuetianai.com/articles/en/ai-suanming-youde-mianfei-youde-xianshoufei.html"
     },
     {
       "slug": "ai-suanming-liangci-daan-cha-hendu",
@@ -798,28 +523,6 @@
       "enUrl": "https://yuetianai.com/articles/en/ai-suanming-buzhidao-zhunqueshijian-zenmeban.html"
     },
     {
-      "slug": "ai-suanming-zhiji-shangwu-chusheng",
-      "title": "AI算命家里只记得上午出生还能看吗？能先筛方向，别急着问细节",
-      "enTitle": "Can AI Fortune Telling Still Help if Your Family Only Remembers That You Were Born in the Morning? Yes for Direction, Not Yet for Fine Detail",
-      "section": "AI算命问答",
-      "group": "输入与方法",
-      "enGroup": "Input & Method",
-      "publishedAt": "2026-07-27T09:43:00+08:00",
-      "zhUrl": "https://yuetianai.com/articles/ai-suanming-zhiji-shangwu-chusheng.html",
-      "enUrl": "https://yuetianai.com/articles/en/ai-suanming-zhiji-shangwu-chusheng.html"
-    },
-    {
-      "slug": "ai-suanming-chushengdi-xiancheng-haishi-chengshi",
-      "title": "AI算命出生地填县城还是城市？关键不是行政级别，是落点别错",
-      "enTitle": "For AI Fortune Telling, Should Birthplace Be Entered as the County or the City? The Real Issue Is Accuracy of Location, Not Administrative Rank",
-      "section": "AI算命问答",
-      "group": "输入与方法",
-      "enGroup": "Input & Method",
-      "publishedAt": "2026-07-27T10:28:00+08:00",
-      "zhUrl": "https://yuetianai.com/articles/ai-suanming-chushengdi-xiancheng-haishi-chengshi.html",
-      "enUrl": "https://yuetianai.com/articles/en/ai-suanming-chushengdi-xiancheng-haishi-chengshi.html"
-    },
-    {
       "slug": "ai-suanming-weishenme-xian-kan-pan-zai-tiwen",
       "title": "AI算命为什么总提醒你先看盘面再提问？因为问题要落到宫位上",
       "enTitle": "Why Do AI Fortune-Telling Tools Keep Telling You to Look at the Chart Before Asking? Because the Question Needs a Real Place to Land",
@@ -842,50 +545,6 @@
       "enUrl": "https://yuetianai.com/articles/en/ai-suanming-wozuijin-zenmeyang-weishenme-meiyong.html"
     },
     {
-      "slug": "ai-suanming-yaobuyao-liu-shoujihao",
-      "title": "AI算命一定要留手机号吗？先分登录便利和隐私成本",
-      "enTitle": "Do You Always Need to Leave a Phone Number for AI Fortune Telling? Separate Login Convenience From Privacy Cost",
-      "section": "AI算命问答",
-      "group": "隐私与资料",
-      "enGroup": "Privacy & Data",
-      "publishedAt": "2026-07-27T12:46:00+08:00",
-      "zhUrl": "https://yuetianai.com/articles/ai-suanming-yaobuyao-liu-shoujihao.html",
-      "enUrl": "https://yuetianai.com/articles/en/ai-suanming-yaobuyao-liu-shoujihao.html"
-    },
-    {
-      "slug": "ai-suanming-jiluhui-bu-hui-yueji-yueduo",
-      "title": "AI算命聊天记录会不会越积越多？先看能不能清理本机和联系删除",
-      "enTitle": "Do AI Fortune-Telling Chat Records Keep Building Up Over Time? First Check for Local Cleanup and a Real Deletion Path",
-      "section": "AI算命问答",
-      "group": "隐私与资料",
-      "enGroup": "Privacy & Data",
-      "publishedAt": "2026-07-27T13:33:00+08:00",
-      "zhUrl": "https://yuetianai.com/articles/ai-suanming-jiluhui-bu-hui-yueji-yueduo.html",
-      "enUrl": "https://yuetianai.com/articles/en/ai-suanming-jiluhui-bu-hui-yueji-yueduo.html"
-    },
-    {
-      "slug": "ai-suanming-fukuanhouliao-ziliaoduobuduo",
-      "title": "AI算命付款后留的资料多不多？先分支付信息、排盘信息和咨询内容",
-      "enTitle": "How Much Data Do You Leave Behind After Paying for AI Fortune Telling? Separate Payment Data, Chart Data, and Consultation Content",
-      "section": "AI算命问答",
-      "group": "隐私与资料",
-      "enGroup": "Privacy & Data",
-      "publishedAt": "2026-07-27T14:18:00+08:00",
-      "zhUrl": "https://yuetianai.com/articles/ai-suanming-fukuanhouliao-ziliaoduobuduo.html",
-      "enUrl": "https://yuetianai.com/articles/en/ai-suanming-fukuanhouliao-ziliaoduobuduo.html"
-    },
-    {
-      "slug": "ai-suanming-yong-gongsi-diannao-shi-anquanma",
-      "title": "AI算命用公司电脑试安全吗？先看记录留在浏览器还是账号里",
-      "enTitle": "Is It Safe to Try AI Fortune Telling on a Work Computer? First Check Whether the Record Lives in the Browser or in the Account",
-      "section": "AI算命问答",
-      "group": "隐私与资料",
-      "enGroup": "Privacy & Data",
-      "publishedAt": "2026-07-27T15:57:00+08:00",
-      "zhUrl": "https://yuetianai.com/articles/ai-suanming-yong-gongsi-diannao-shi-anquanma.html",
-      "enUrl": "https://yuetianai.com/articles/en/ai-suanming-yong-gongsi-diannao-shi-anquanma.html"
-    },
-    {
       "slug": "ai-suanming-diyici-jiushi-yanzheng",
       "title": "AI算命第一次试要不要先做一轮旧事验证？这样最容易筛模板",
       "enTitle": "Should Your First AI Fortune-Telling Trial Start With a Past-Event Check? It Is One of the Fastest Ways to Filter Template Talk",
@@ -895,39 +554,6 @@
       "publishedAt": "2026-07-27T16:11:00+08:00",
       "zhUrl": "https://yuetianai.com/articles/ai-suanming-diyici-jiushi-yanzheng.html",
       "enUrl": "https://yuetianai.com/articles/en/ai-suanming-diyici-jiushi-yanzheng.html"
-    },
-    {
-      "slug": "ai-suanming-wanshang-kan-haishi-suipianwen",
-      "title": "AI算命适合晚上慢慢看还是碎片时间问？看你是排盘还是追问",
-      "enTitle": "Is AI Fortune Telling Better for Slow Night Review or Quick Spare-Time Questions? It Depends on Whether You Are Charting or Following Up",
-      "section": "AI算命问答",
-      "group": "体验与流程",
-      "enGroup": "Experience & Flow",
-      "publishedAt": "2026-07-27T16:49:00+08:00",
-      "zhUrl": "https://yuetianai.com/articles/ai-suanming-wanshang-kan-haishi-suipianwen.html",
-      "enUrl": "https://yuetianai.com/articles/en/ai-suanming-wanshang-kan-haishi-suipianwen.html"
-    },
-    {
-      "slug": "ai-suanming-huan-liulanqi-xiang-xinlai",
-      "title": "AI算命换浏览器后为什么像第一次来？先分本机记录和账号同步",
-      "enTitle": "Why Does an AI Fortune-Telling Site Feel New Again After You Switch Browsers? First Separate Local Browser State From Account Sync",
-      "section": "AI算命问答",
-      "group": "体验与流程",
-      "enGroup": "Experience & Flow",
-      "publishedAt": "2026-07-27T17:26:00+08:00",
-      "zhUrl": "https://yuetianai.com/articles/ai-suanming-huan-liulanqi-xiang-xinlai.html",
-      "enUrl": "https://yuetianai.com/articles/en/ai-suanming-huan-liulanqi-xiang-xinlai.html"
-    },
-    {
-      "slug": "ai-suanming-lianwen-santian-youyiyi-ma",
-      "title": "AI算命连续问三天有意义吗？适合追踪变化，不适合反复问同一句",
-      "enTitle": "Is It Meaningful to Ask AI Fortune Telling Questions Three Days in a Row? Yes for Tracking Change, Not for Repeating the Same Anxiety",
-      "section": "AI算命问答",
-      "group": "体验与流程",
-      "enGroup": "Experience & Flow",
-      "publishedAt": "2026-07-27T18:35:00+08:00",
-      "zhUrl": "https://yuetianai.com/articles/ai-suanming-lianwen-santian-youyiyi-ma.html",
-      "enUrl": "https://yuetianai.com/articles/en/ai-suanming-lianwen-santian-youyiyi-ma.html"
     },
     {
       "slug": "ai-suanming-kan-fuhe-shihe-ma",
@@ -996,17 +622,6 @@
       "enUrl": "https://yuetianai.com/articles/en/ai-suanming-hezuo-ziwei-bazi-liuyao.html"
     },
     {
-      "slug": "ai-suanming-jinggong-cankao-hai-yao-kanma",
-      "title": "AI算命网站写“仅供参考”还值得继续看吗？先看它有没有把依据讲清",
-      "enTitle": "If an AI Fortune-Telling Site Says 'For Reference Only,' Is It Still Worth Using? First See Whether It Explains Its Basis",
-      "section": "AI算命问答",
-      "group": "判断与靠谱",
-      "enGroup": "Reliability & Choice",
-      "publishedAt": "2026-07-28T00:18:00+08:00",
-      "zhUrl": "https://yuetianai.com/articles/ai-suanming-jinggong-cankao-hai-yao-kanma.html",
-      "enUrl": "https://yuetianai.com/articles/en/ai-suanming-jinggong-cankao-hai-yao-kanma.html"
-    },
-    {
       "slug": "ai-suanming-yishanglai-jiu-cui-fufei-kaopuma",
       "title": "AI算命一上来就催你付费靠谱吗？先看有没有给你验证机会",
       "enTitle": "Is It Reliable When an AI Fortune-Telling Tool Pushes Payment Right Away? First See Whether It Gives You a Way to Verify",
@@ -1018,39 +633,6 @@
       "enUrl": "https://yuetianai.com/articles/en/ai-suanming-yishanglai-jiu-cui-fufei-kaopuma.html"
     },
     {
-      "slug": "ai-suanming-jieguo-tai-shun-er-yao-xiaoxinma",
-      "title": "AI算命结果越顺耳越要小心吗？先分共鸣和可验证",
-      "enTitle": "Should You Be More Careful When an AI Fortune-Telling Result Sounds Too Comforting? Separate Resonance From Verification",
-      "section": "AI算命问答",
-      "group": "判断与靠谱",
-      "enGroup": "Reliability & Choice",
-      "publishedAt": "2026-07-28T01:26:00+08:00",
-      "zhUrl": "https://yuetianai.com/articles/ai-suanming-jieguo-tai-shun-er-yao-xiaoxinma.html",
-      "enUrl": "https://yuetianai.com/articles/en/ai-suanming-jieguo-tai-shun-er-yao-xiaoxinma.html"
-    },
-    {
-      "slug": "ai-suanming-yige-wenti-wen-jici-heli",
-      "title": "AI算命该拿一个问题问几次？先看是交叉验证还是重复焦虑",
-      "enTitle": "How Many Times Should You Ask the Same AI Fortune-Telling Question? First Separate Cross-Checking From Repeating Anxiety",
-      "section": "AI算命问答",
-      "group": "判断与靠谱",
-      "enGroup": "Reliability & Choice",
-      "publishedAt": "2026-07-28T02:44:00+08:00",
-      "zhUrl": "https://yuetianai.com/articles/ai-suanming-yige-wenti-wen-jici-heli.html",
-      "enUrl": "https://yuetianai.com/articles/en/ai-suanming-yige-wenti-wen-jici-heli.html"
-    },
-    {
-      "slug": "ai-suanming-zhishuo-ni-xiangtai-duo-haineng-yongma",
-      "title": "AI算命只会说“你想太多”还能继续用吗？先看能不能拆到宫位和场景",
-      "enTitle": "If an AI Fortune-Telling Tool Only Says 'You Are Overthinking,' Is It Still Worth Using? First See Whether It Can Break Things Down Into Chart Areas and Situations",
-      "section": "AI算命问答",
-      "group": "判断与靠谱",
-      "enGroup": "Reliability & Choice",
-      "publishedAt": "2026-07-28T03:31:00+08:00",
-      "zhUrl": "https://yuetianai.com/articles/ai-suanming-zhishuo-ni-xiangtai-duo-haineng-yongma.html",
-      "enUrl": "https://yuetianai.com/articles/en/ai-suanming-zhishuo-ni-xiangtai-duo-haineng-yongma.html"
-    },
-    {
       "slug": "ai-suanming-xian-kan-jiushi-haishi-xian-wen-weilai",
       "title": "AI算命先看旧事还是先问未来？顺序不同，判断差很多",
       "enTitle": "Should You Check Past Events First or Ask About the Future First in AI Fortune Telling? The Order Changes the Quality a Lot",
@@ -1060,72 +642,6 @@
       "publishedAt": "2026-07-28T04:09:00+08:00",
       "zhUrl": "https://yuetianai.com/articles/ai-suanming-xian-kan-jiushi-haishi-xian-wen-weilai.html",
       "enUrl": "https://yuetianai.com/articles/en/ai-suanming-xian-kan-jiushi-haishi-xian-wen-weilai.html"
-    },
-    {
-      "slug": "ai-suanming-mianfei-edu-xianyong-zainali",
-      "title": "AI算命免费额度先用在哪些问题最值？别先浪费在大而空的问题上",
-      "enTitle": "Where Should You Spend Free AI Fortune-Telling Quota First? Do Not Waste It on Broad Empty Questions",
-      "section": "AI算命问答",
-      "group": "免费与付费",
-      "enGroup": "Free vs Paid",
-      "publishedAt": "2026-07-28T04:52:00+08:00",
-      "zhUrl": "https://yuetianai.com/articles/ai-suanming-mianfei-edu-xianyong-zainali.html",
-      "enUrl": "https://yuetianai.com/articles/en/ai-suanming-mianfei-edu-xianyong-zainali.html"
-    },
-    {
-      "slug": "ai-suanming-danci-buyi-he-huiyuan-zenme-xuan",
-      "title": "AI算命单次补问和开会员怎么选？先算连续追问需求",
-      "enTitle": "How Should You Choose Between One-Off Follow-Up and Membership in AI Fortune Telling? Start With Your Need for Ongoing Questions",
-      "section": "AI算命问答",
-      "group": "免费与付费",
-      "enGroup": "Free vs Paid",
-      "publishedAt": "2026-07-28T05:37:00+08:00",
-      "zhUrl": "https://yuetianai.com/articles/ai-suanming-danci-buyi-he-huiyuan-zenme-xuan.html",
-      "enUrl": "https://yuetianai.com/articles/en/ai-suanming-danci-buyi-he-huiyuan-zenme-xuan.html"
-    },
-    {
-      "slug": "ai-suanming-fufeiqian-xian-kan-zhifuye-xishe",
-      "title": "AI算命付费前要不要先看支付页细节？价格之外还有三处要看",
-      "enTitle": "Should You Read the Payment Page Details Before Paying for AI Fortune Telling? There Are Three Things to Check Beyond Price",
-      "section": "AI算命问答",
-      "group": "免费与付费",
-      "enGroup": "Free vs Paid",
-      "publishedAt": "2026-07-28T06:14:00+08:00",
-      "zhUrl": "https://yuetianai.com/articles/ai-suanming-fufeiqian-xian-kan-zhifuye-xishe.html",
-      "enUrl": "https://yuetianai.com/articles/en/ai-suanming-fufeiqian-xian-kan-zhifuye-xishe.html"
-    },
-    {
-      "slug": "ai-suanming-huiyuan-80ci-gou-buyongma",
-      "title": "AI算命会员每天80次够不够用？关键看你是不是同题追踪型",
-      "enTitle": "Is 80 AI Fortune-Telling Member Uses Per Day Enough? The Real Question Is Whether You Are a Same-Theme Tracking User",
-      "section": "AI算命问答",
-      "group": "免费与付费",
-      "enGroup": "Free vs Paid",
-      "publishedAt": "2026-07-28T07:48:00+08:00",
-      "zhUrl": "https://yuetianai.com/articles/ai-suanming-huiyuan-80ci-gou-buyongma.html",
-      "enUrl": "https://yuetianai.com/articles/en/ai-suanming-huiyuan-80ci-gou-buyongma.html"
-    },
-    {
-      "slug": "ai-suanming-fufei-mai-daodi-shi-shenme",
-      "title": "AI算命付费买到的到底是什么？先分额度、记录和深问体验",
-      "enTitle": "What Are You Actually Buying When You Pay for AI Fortune Telling? First Separate Quota, Record Carry-Over, and Deep Follow-Up Experience",
-      "section": "AI算命问答",
-      "group": "免费与付费",
-      "enGroup": "Free vs Paid",
-      "publishedAt": "2026-07-28T08:22:00+08:00",
-      "zhUrl": "https://yuetianai.com/articles/ai-suanming-fufei-mai-daodi-shi-shenme.html",
-      "enUrl": "https://yuetianai.com/articles/en/ai-suanming-fufei-mai-daodi-shi-shenme.html"
-    },
-    {
-      "slug": "ai-suanming-zhiji-de-wanshang-chusheng-zenme-wen",
-      "title": "AI算命只记得“晚上出生”怎么问更稳？先别急着断细节",
-      "enTitle": "How Should You Ask More Safely If You Only Remember 'Born at Night' for AI Fortune Telling? Do Not Rush Into Fine Detail",
-      "section": "AI算命问答",
-      "group": "输入与方法",
-      "enGroup": "Input & Method",
-      "publishedAt": "2026-07-28T09:05:00+08:00",
-      "zhUrl": "https://yuetianai.com/articles/ai-suanming-zhiji-de-wanshang-chusheng-zenme-wen.html",
-      "enUrl": "https://yuetianai.com/articles/en/ai-suanming-zhiji-de-wanshang-chusheng-zenme-wen.html"
     },
     {
       "slug": "ai-suanming-kan-hepan-qian-xian-bu-shui-de-ziliao",
@@ -1170,72 +686,6 @@
       "publishedAt": "2026-07-28T12:07:00+08:00",
       "zhUrl": "https://yuetianai.com/articles/ai-suanming-kan-liunian-weishenme-haiyao-huidao-benming.html",
       "enUrl": "https://yuetianai.com/articles/en/ai-suanming-kan-liunian-weishenme-haiyao-huidao-benming.html"
-    },
-    {
-      "slug": "ai-suanming-zhuce-bu-tian-zhenming-keyima",
-      "title": "AI算命注册时不填真名可以吗？先分排盘必要信息和身份信息",
-      "enTitle": "Can You Skip Your Real Name When Registering for AI Fortune Telling? First Separate Chart-Necessary Data From Identity Data",
-      "section": "AI算命问答",
-      "group": "隐私与资料",
-      "enGroup": "Privacy & Data",
-      "publishedAt": "2026-07-28T12:46:00+08:00",
-      "zhUrl": "https://yuetianai.com/articles/ai-suanming-zhuce-bu-tian-zhenming-keyima.html",
-      "enUrl": "https://yuetianai.com/articles/en/ai-suanming-zhuce-bu-tian-zhenming-keyima.html"
-    },
-    {
-      "slug": "ai-suanming-qingdiaobenji-jilu-hou-zhanghao-li-haiyou-shenme",
-      "title": "AI算命清掉本机记录后，账号里还会留什么？先看本地和云端怎么分",
-      "enTitle": "After You Clear Local AI Fortune-Telling Records, What Still Remains in the Account? First Separate Local Data From Cloud Data",
-      "section": "AI算命问答",
-      "group": "隐私与资料",
-      "enGroup": "Privacy & Data",
-      "publishedAt": "2026-07-28T13:33:00+08:00",
-      "zhUrl": "https://yuetianai.com/articles/ai-suanming-qingdiaobenji-jilu-hou-zhanghao-li-haiyou-shenme.html",
-      "enUrl": "https://yuetianai.com/articles/en/ai-suanming-qingdiaobenji-jilu-hou-zhanghao-li-haiyou-shenme.html"
-    },
-    {
-      "slug": "ai-suanming-huan-shoujihao-youxiang-huiyuan-hai-zai-ma",
-      "title": "AI算命换手机号或邮箱后，原来的会员和记录还在吗？先看权益绑定规则",
-      "enTitle": "After You Change Your Phone Number or Email, Will Your AI Fortune-Telling Membership and Records Still Be There? First Check the Binding Rules",
-      "section": "AI算命问答",
-      "group": "隐私与资料",
-      "enGroup": "Privacy & Data",
-      "publishedAt": "2026-07-28T16:11:00+08:00",
-      "zhUrl": "https://yuetianai.com/articles/ai-suanming-huan-shoujihao-youxiang-huiyuan-hai-zai-ma.html",
-      "enUrl": "https://yuetianai.com/articles/en/ai-suanming-huan-shoujihao-youxiang-huiyuan-hai-zai-ma.html"
-    },
-    {
-      "slug": "ai-suanming-xian-paipan-zai-denglu-haishi-xian-denglu",
-      "title": "AI算命先排盘再登录，还是先登录再排盘？两种场景别混着看",
-      "enTitle": "Should You Generate the Chart First or Log In First for AI Fortune Telling? Do Not Mix Two Different Use Cases",
-      "section": "AI算命问答",
-      "group": "体验与流程",
-      "enGroup": "Experience & Flow",
-      "publishedAt": "2026-07-28T16:49:00+08:00",
-      "zhUrl": "https://yuetianai.com/articles/ai-suanming-xian-paipan-zai-denglu-haishi-xian-denglu.html",
-      "enUrl": "https://yuetianai.com/articles/en/ai-suanming-xian-paipan-zai-denglu-haishi-xian-denglu.html"
-    },
-    {
-      "slug": "ai-suanming-yitian-duoci-zhuiwen-zenme-paishunxu",
-      "title": "AI算命一天里多次追问怎么排顺序？先主线，后分支，最后才看总评",
-      "enTitle": "How Should You Order Multiple AI Fortune-Telling Follow-Ups in One Day? Main Line First, Branches Second, Summary Last",
-      "section": "AI算命问答",
-      "group": "体验与流程",
-      "enGroup": "Experience & Flow",
-      "publishedAt": "2026-07-28T17:26:00+08:00",
-      "zhUrl": "https://yuetianai.com/articles/ai-suanming-yitian-duoci-zhuiwen-zenme-paishunxu.html",
-      "enUrl": "https://yuetianai.com/articles/en/ai-suanming-yitian-duoci-zhuiwen-zenme-paishunxu.html"
-    },
-    {
-      "slug": "ai-suanming-di-ertian-shuaxin-haiyao-buyao-zhongjiang-beijing",
-      "title": "AI算命第二天额度刷新后要不要重讲背景？先看记录承接做得好不好",
-      "enTitle": "After the Quota Refreshes the Next Day in AI Fortune Telling, Do You Need to Retell the Background? First Check How Well the Record Carry-Over Works",
-      "section": "AI算命问答",
-      "group": "体验与流程",
-      "enGroup": "Experience & Flow",
-      "publishedAt": "2026-07-28T18:35:00+08:00",
-      "zhUrl": "https://yuetianai.com/articles/ai-suanming-di-ertian-shuaxin-haiyao-buyao-zhongjiang-beijing.html",
-      "enUrl": "https://yuetianai.com/articles/en/ai-suanming-di-ertian-shuaxin-haiyao-buyao-zhongjiang-beijing.html"
     },
     {
       "slug": "ai-suanming-kan-huilaojia-fazhan-shihema",
@@ -1293,116 +743,6 @@
       "enUrl": "https://yuetianai.com/articles/en/ai-suanming-kan-duanqi-huikuan-yong-zishui-baziliuyao.html"
     },
     {
-      "slug": "ai-suanming-zong-shi-liangbian-doudui-zenme-kan",
-      "title": "AI算命总把话说成“两边都对”靠谱吗？先看有没有明确排除项",
-      "enTitle": "Is It Reliable When AI Fortune Telling Keeps Saying 'Both Sides Could Be Right'? First Check for Clear Exclusions",
-      "section": "AI算命问答",
-      "group": "判断与靠谱",
-      "enGroup": "Reliability & Choice",
-      "publishedAt": "2026-07-29T00:18:00+08:00",
-      "zhUrl": "https://yuetianai.com/articles/ai-suanming-zong-shi-liangbian-doudui-zenme-kan.html",
-      "enUrl": "https://yuetianai.com/articles/en/ai-suanming-zong-shi-liangbian-doudui-zenme-kan.html"
-    },
-    {
-      "slug": "ai-suanming-buzhi-shuobuhao-zhishuo-keyishi",
-      "title": "AI算命只说“可以试试”却不说“不适合”靠谱吗？先看有没有风险提醒",
-      "enTitle": "Is It Reliable When AI Fortune Telling Only Says 'You Can Try' but Never 'Not Suitable'? Check for Risk Warnings First",
-      "section": "AI算命问答",
-      "group": "判断与靠谱",
-      "enGroup": "Reliability & Choice",
-      "publishedAt": "2026-07-29T00:57:00+08:00",
-      "zhUrl": "https://yuetianai.com/articles/ai-suanming-buzhi-shuobuhao-zhishuo-keyishi.html",
-      "enUrl": "https://yuetianai.com/articles/en/ai-suanming-buzhi-shuobuhao-zhishuo-keyishi.html"
-    },
-    {
-      "slug": "ai-suanming-zishuoduo-jiushi-zhunma",
-      "title": "AI算命字数越多就越准吗？先看结构，不是先看篇幅",
-      "enTitle": "Does a Longer AI Fortune-Telling Answer Mean It Is More Accurate? Check Structure Before Length",
-      "section": "AI算命问答",
-      "group": "判断与靠谱",
-      "enGroup": "Reliability & Choice",
-      "publishedAt": "2026-07-29T01:26:00+08:00",
-      "zhUrl": "https://yuetianai.com/articles/ai-suanming-zishuoduo-jiushi-zhunma.html",
-      "enUrl": "https://yuetianai.com/articles/en/ai-suanming-zishuoduo-jiushi-zhunma.html"
-    },
-    {
-      "slug": "ai-suanming-shanglai-jiu-kua-ni-minghao",
-      "title": "AI算命一上来就夸你命好正常吗？先看它会不会讲代价",
-      "enTitle": "Is It Normal When AI Fortune Telling Praises Your Chart Right Away? First See Whether It Talks About Cost",
-      "section": "AI算命问答",
-      "group": "判断与靠谱",
-      "enGroup": "Reliability & Choice",
-      "publishedAt": "2026-07-29T02:44:00+08:00",
-      "zhUrl": "https://yuetianai.com/articles/ai-suanming-shanglai-jiu-kua-ni-minghao.html",
-      "enUrl": "https://yuetianai.com/articles/en/ai-suanming-shanglai-jiu-kua-ni-minghao.html"
-    },
-    {
-      "slug": "ai-suanming-bu-zhuiwen-jiu-gei-jielun",
-      "title": "AI算命不追问就直接下结论正常吗？先看条件有没有问够",
-      "enTitle": "Is It Normal for AI Fortune Telling to Jump to a Conclusion Without Follow-Up Questions? First Check Whether It Asked Enough Conditions",
-      "section": "AI算命问答",
-      "group": "判断与靠谱",
-      "enGroup": "Reliability & Choice",
-      "publishedAt": "2026-07-29T03:31:00+08:00",
-      "zhUrl": "https://yuetianai.com/articles/ai-suanming-bu-zhuiwen-jiu-gei-jielun.html",
-      "enUrl": "https://yuetianai.com/articles/en/ai-suanming-bu-zhuiwen-jiu-gei-jielun.html"
-    },
-    {
-      "slug": "ai-suanming-youke-yongwan-yaobuyao-zhuce",
-      "title": "AI算命游客次数用完后先注册还是先停一下？先做一轮验真",
-      "enTitle": "After Your Guest AI Fortune-Telling Quota Runs Out, Should You Register Right Away or Pause First? Do One Verification Round First",
-      "section": "AI算命问答",
-      "group": "免费与付费",
-      "enGroup": "Free vs Paid",
-      "publishedAt": "2026-07-29T04:09:00+08:00",
-      "zhUrl": "https://yuetianai.com/articles/ai-suanming-youke-yongwan-yaobuyao-zhuce.html",
-      "enUrl": "https://yuetianai.com/articles/en/ai-suanming-youke-yongwan-yaobuyao-zhuce.html"
-    },
-    {
-      "slug": "ai-suanming-mianfei-paipan-he-zhuiwen-fenkai-shoufei",
-      "title": "AI算命免费排盘、追问收费正常吗？先分入口成本和连续服务",
-      "enTitle": "Is It Normal for AI Fortune Telling to Offer a Free Chart but Charge for Follow-Ups? First Separate Entry Cost From Ongoing Service",
-      "section": "AI算命问答",
-      "group": "免费与付费",
-      "enGroup": "Free vs Paid",
-      "publishedAt": "2026-07-29T04:52:00+08:00",
-      "zhUrl": "https://yuetianai.com/articles/ai-suanming-mianfei-paipan-he-zhuiwen-fenkai-shoufei.html",
-      "enUrl": "https://yuetianai.com/articles/en/ai-suanming-mianfei-paipan-he-zhuiwen-fenkai-shoufei.html"
-    },
-    {
-      "slug": "ai-suanming-dijia-shiyong-zhibuzhi",
-      "title": "AI算命低价试用值不值买？关键看能不能验证连续体验",
-      "enTitle": "Is a Low-Cost AI Fortune-Telling Trial Worth Buying? The Key Is Whether It Verifies the Ongoing Experience",
-      "section": "AI算命问答",
-      "group": "免费与付费",
-      "enGroup": "Free vs Paid",
-      "publishedAt": "2026-07-29T05:37:00+08:00",
-      "zhUrl": "https://yuetianai.com/articles/ai-suanming-dijia-shiyong-zhibuzhi.html",
-      "enUrl": "https://yuetianai.com/articles/en/ai-suanming-dijia-shiyong-zhibuzhi.html"
-    },
-    {
-      "slug": "ai-suanming-huiyuan-meiyongman-suanbu-suan-kui",
-      "title": "AI算命会员没用满算不算亏？先看你买的是节奏还是次数",
-      "enTitle": "Is It a Loss If You Do Not Use Up Your AI Fortune-Telling Membership? First Ask Whether You Bought Rhythm or Raw Count",
-      "section": "AI算命问答",
-      "group": "免费与付费",
-      "enGroup": "Free vs Paid",
-      "publishedAt": "2026-07-29T06:14:00+08:00",
-      "zhUrl": "https://yuetianai.com/articles/ai-suanming-huiyuan-meiyongman-suanbu-suan-kui.html",
-      "enUrl": "https://yuetianai.com/articles/en/ai-suanming-huiyuan-meiyongman-suanbu-suan-kui.html"
-    },
-    {
-      "slug": "ai-suanming-fufeiqian-xiankan-guize-haishi-zhifu",
-      "title": "AI算命付费前先看会员规则还是先看支付细则？顺序别反了",
-      "enTitle": "Before Paying for AI Fortune Telling, Should You Read the Membership Rules or the Payment Details First? Do Not Reverse the Order",
-      "section": "AI算命问答",
-      "group": "免费与付费",
-      "enGroup": "Free vs Paid",
-      "publishedAt": "2026-07-29T07:48:00+08:00",
-      "zhUrl": "https://yuetianai.com/articles/ai-suanming-fufeiqian-xiankan-guize-haishi-zhifu.html",
-      "enUrl": "https://yuetianai.com/articles/en/ai-suanming-fufeiqian-xiankan-guize-haishi-zhifu.html"
-    },
-    {
       "slug": "ai-suanming-zhidao-nongli-shengri-zenmeban",
       "title": "AI算命只知道农历生日怎么办？先补季节、时段和出生地",
       "enTitle": "What If You Only Know the Lunar Birthday for AI Fortune Telling? Start by Filling in Season, Time Window, and Birthplace",
@@ -1434,72 +774,6 @@
       "publishedAt": "2026-07-29T09:43:00+08:00",
       "zhUrl": "https://yuetianai.com/articles/ai-suanming-zhixiangwen-weishenme-bushun.html",
       "enUrl": "https://yuetianai.com/articles/en/ai-suanming-zhixiangwen-weishenme-bushun.html"
-    },
-    {
-      "slug": "ai-suanming-xiugai-ziliao-haiyao-buyao-jixu-zhuiwen",
-      "title": "AI算命发现出生资料可能填粗了，还要不要继续追问？先把盘校准",
-      "enTitle": "If You Realize the Birth Data Was Entered Too Roughly for AI Fortune Telling, Should You Keep Asking? Calibrate the Chart First",
-      "section": "AI算命问答",
-      "group": "输入与方法",
-      "enGroup": "Input & Method",
-      "publishedAt": "2026-07-29T10:28:00+08:00",
-      "zhUrl": "https://yuetianai.com/articles/ai-suanming-xiugai-ziliao-haiyao-buyao-jixu-zhuiwen.html",
-      "enUrl": "https://yuetianai.com/articles/en/ai-suanming-xiugai-ziliao-haiyao-buyao-jixu-zhuiwen.html"
-    },
-    {
-      "slug": "ai-suanming-zhidao-shengfen-buzhidao-chengshi",
-      "title": "AI算命只知道出生省份不知道城市怎么办？先判断是不是边界盘",
-      "enTitle": "What If You Only Know the Birth Province but Not the City for AI Fortune Telling? First Check Whether It Is a Boundary Chart",
-      "section": "AI算命问答",
-      "group": "输入与方法",
-      "enGroup": "Input & Method",
-      "publishedAt": "2026-07-29T11:51:00+08:00",
-      "zhUrl": "https://yuetianai.com/articles/ai-suanming-zhidao-shengfen-buzhidao-chengshi.html",
-      "enUrl": "https://yuetianai.com/articles/en/ai-suanming-zhidao-shengfen-buzhidao-chengshi.html"
-    },
-    {
-      "slug": "ai-suanming-buliu-youxiang-haineng-bu-neng-zhaohui",
-      "title": "AI算命不留邮箱，之后还能找回记录吗？先分本机保存和账号保存",
-      "enTitle": "If You Do Not Leave an Email for AI Fortune Telling, Can You Still Recover Records Later? First Separate Local Save From Account Save",
-      "section": "AI算命问答",
-      "group": "隐私与资料",
-      "enGroup": "Privacy & Data",
-      "publishedAt": "2026-07-29T12:07:00+08:00",
-      "zhUrl": "https://yuetianai.com/articles/ai-suanming-buliu-youxiang-haineng-bu-neng-zhaohui.html",
-      "enUrl": "https://yuetianai.com/articles/en/ai-suanming-buliu-youxiang-haineng-bu-neng-zhaohui.html"
-    },
-    {
-      "slug": "ai-suanming-denglu-hou-benji-yunduan-zenmefen",
-      "title": "AI算命登录后，本机记录和云端记录怎么分？先看同步边界",
-      "enTitle": "After You Log In to AI Fortune Telling, How Do Local Records and Cloud Records Split? Check the Sync Boundary First",
-      "section": "AI算命问答",
-      "group": "隐私与资料",
-      "enGroup": "Privacy & Data",
-      "publishedAt": "2026-07-29T13:33:00+08:00",
-      "zhUrl": "https://yuetianai.com/articles/ai-suanming-denglu-hou-benji-yunduan-zenmefen.html",
-      "enUrl": "https://yuetianai.com/articles/en/ai-suanming-denglu-hou-benji-yunduan-zenmefen.html"
-    },
-    {
-      "slug": "ai-suanming-shouji-paipan-hou-huan-diannao-haiyao-zhonglai",
-      "title": "AI算命先在手机排盘，后来换电脑还要重来吗？先看承接方式",
-      "enTitle": "If You Start AI Fortune Telling on a Phone and Later Switch to a Computer, Do You Need to Start Over? Check the Carry-Over Pattern First",
-      "section": "AI算命问答",
-      "group": "体验与流程",
-      "enGroup": "Experience & Flow",
-      "publishedAt": "2026-07-29T15:57:00+08:00",
-      "zhUrl": "https://yuetianai.com/articles/ai-suanming-shouji-paipan-hou-huan-diannao-haiyao-zhonglai.html",
-      "enUrl": "https://yuetianai.com/articles/en/ai-suanming-shouji-paipan-hou-huan-diannao-haiyao-zhonglai.html"
-    },
-    {
-      "slug": "ai-suanming-zhuiwen-qian-yaobuyao-xian-lie-jingli",
-      "title": "AI算命追问前要不要先列一张经历清单？这样更容易验真",
-      "enTitle": "Should You Make a Short Experience List Before AI Fortune-Telling Follow-Ups? It Makes Verification Easier",
-      "section": "AI算命问答",
-      "group": "体验与流程",
-      "enGroup": "Experience & Flow",
-      "publishedAt": "2026-07-29T16:11:00+08:00",
-      "zhUrl": "https://yuetianai.com/articles/ai-suanming-zhuiwen-qian-yaobuyao-xian-lie-jingli.html",
-      "enUrl": "https://yuetianai.com/articles/en/ai-suanming-zhuiwen-qian-yaobuyao-xian-lie-jingli.html"
     },
     {
       "slug": "ai-suanming-kan-offer-zenmexuan",
@@ -1579,94 +853,6 @@
       "enUrl": "https://yuetianai.com/articles/en/ai-suanming-ganqing-tuijin-yong-ziwei-haishi-liuyao.html"
     },
     {
-      "slug": "ai-suanming-xinyonghu-xianyan-jiushi-haishi-xianshi",
-      "title": "AI算命新用户先拿旧事验，还是先看眼前问题？先看你要筛掉什么风险",
-      "enTitle": "When You Are New to AI Fortune Telling, Should You Test a Past Event First or Jump Straight to a Live Question? Start With the Risk You Need to Filter",
-      "section": "AI算命问答",
-      "group": "判断与靠谱",
-      "enGroup": "Reliability & Choice",
-      "publishedAt": "2026-07-30T00:07:00+08:00",
-      "zhUrl": "https://yuetianai.com/articles/ai-suanming-xinyonghu-xianyan-jiushi-haishi-xianshi.html",
-      "enUrl": "https://yuetianai.com/articles/en/ai-suanming-xinyonghu-xianyan-jiushi-haishi-xianshi.html"
-    },
-    {
-      "slug": "ai-suanming-yishanglai-quanbu-zhankai-kaopu-ma",
-      "title": "AI算命一上来把事业感情财运全展开靠谱吗？先看会不会先定主轴",
-      "enTitle": "Is It Reliable When AI Fortune Telling Expands Career, Love, and Money All at Once? See Whether It Sets a Main Axis First",
-      "section": "AI算命问答",
-      "group": "判断与靠谱",
-      "enGroup": "Reliability & Choice",
-      "publishedAt": "2026-07-30T00:41:00+08:00",
-      "zhUrl": "https://yuetianai.com/articles/ai-suanming-yishanglai-quanbu-zhankai-kaopu-ma.html",
-      "enUrl": "https://yuetianai.com/articles/en/ai-suanming-yishanglai-quanbu-zhankai-kaopu-ma.html"
-    },
-    {
-      "slug": "ai-suanming-jianyi-geide-taiman-zenmekan",
-      "title": "AI算命建议给得太满、几乎没有取舍正常吗？先看有没有轻重缓急",
-      "enTitle": "Is It Normal When AI Fortune Telling Gives Advice That Is Too Full and Has No Trade-Offs? Check for Priority Order First",
-      "section": "AI算命问答",
-      "group": "判断与靠谱",
-      "enGroup": "Reliability & Choice",
-      "publishedAt": "2026-07-30T01:29:00+08:00",
-      "zhUrl": "https://yuetianai.com/articles/ai-suanming-jianyi-geide-taiman-zenmekan.html",
-      "enUrl": "https://yuetianai.com/articles/en/ai-suanming-jianyi-geide-taiman-zenmekan.html"
-    },
-    {
-      "slug": "ai-suanming-zuijin-nengliangluan-weishenme-meiyong",
-      "title": "AI算命总说“你最近能量乱”为什么没帮助？先看能不能落到盘和场景",
-      "enTitle": "Why Is 'Your Energy Has Been Chaotic Lately' So Unhelpful in AI Fortune Telling? See Whether It Can Land on the Chart and a Real Situation",
-      "section": "AI算命问答",
-      "group": "判断与靠谱",
-      "enGroup": "Reliability & Choice",
-      "publishedAt": "2026-07-30T02:18:00+08:00",
-      "zhUrl": "https://yuetianai.com/articles/ai-suanming-zuijin-nengliangluan-weishenme-meiyong.html",
-      "enUrl": "https://yuetianai.com/articles/en/ai-suanming-zuijin-nengliangluan-weishenme-meiyong.html"
-    },
-    {
-      "slug": "ai-suanming-yizhidao-answeryizhidao-wenti",
-      "title": "AI算命想验真，要不要故意问一个自己知道答案的问题？先分验真和抬杠",
-      "enTitle": "Should You Deliberately Ask an AI Fortune-Telling Tool a Question You Already Know the Answer To? Separate Verification From Picking a Fight",
-      "section": "AI算命问答",
-      "group": "判断与靠谱",
-      "enGroup": "Reliability & Choice",
-      "publishedAt": "2026-07-30T03:36:00+08:00",
-      "zhUrl": "https://yuetianai.com/articles/ai-suanming-yizhidao-answeryizhidao-wenti.html",
-      "enUrl": "https://yuetianai.com/articles/en/ai-suanming-yizhidao-answeryizhidao-wenti.html"
-    },
-    {
-      "slug": "ai-suanming-zhiwenyici-huiyuan-haishi-danci-shenwen",
-      "title": "AI算命只想问一次，买会员还是单次深问更划算？先看是不是同题追踪",
-      "enTitle": "If You Only Want to Ask Once, Is AI Fortune-Telling Membership or a Single Deeper Round More Worth It? First Ask Whether This Is One Topic Over Time",
-      "section": "AI算命问答",
-      "group": "免费与付费",
-      "enGroup": "Free vs Paid",
-      "publishedAt": "2026-07-30T04:58:00+08:00",
-      "zhUrl": "https://yuetianai.com/articles/ai-suanming-zhiwenyici-huiyuan-haishi-danci-shenwen.html",
-      "enUrl": "https://yuetianai.com/articles/en/ai-suanming-zhiwenyici-huiyuan-haishi-danci-shenwen.html"
-    },
-    {
-      "slug": "ai-suanming-mianfeiceng-zhi-gei-jichu-jieshi-zhengchangma",
-      "title": "AI算命免费层只给基础解释正常吗？关键看有没有把验证入口留给你",
-      "enTitle": "Is It Normal When the Free AI Fortune-Telling Layer Only Gives a Basic Explanation? The Key Is Whether It Still Leaves You a Verification Entry",
-      "section": "AI算命问答",
-      "group": "免费与付费",
-      "enGroup": "Free vs Paid",
-      "publishedAt": "2026-07-30T05:22:00+08:00",
-      "zhUrl": "https://yuetianai.com/articles/ai-suanming-mianfeiceng-zhi-gei-jichu-jieshi-zhengchangma.html",
-      "enUrl": "https://yuetianai.com/articles/en/ai-suanming-mianfeiceng-zhi-gei-jichu-jieshi-zhengchangma.html"
-    },
-    {
-      "slug": "ai-suanming-zhi-jide-lingchen-qianhou-chusheng-zenmeban",
-      "title": "AI算命只记得“凌晨前后出生”怎么办？先把两段时辰分开看",
-      "enTitle": "What If You Only Remember Being Born Around Dawn for AI Fortune Telling? Split the Two Time Windows First",
-      "section": "AI算命问答",
-      "group": "输入与方法",
-      "enGroup": "Input & Method",
-      "publishedAt": "2026-07-30T08:13:00+08:00",
-      "zhUrl": "https://yuetianai.com/articles/ai-suanming-zhi-jide-lingchen-qianhou-chusheng-zenmeban.html",
-      "enUrl": "https://yuetianai.com/articles/en/ai-suanming-zhi-jide-lingchen-qianhou-chusheng-zenmeban.html"
-    },
-    {
       "slug": "ai-suanming-yangli-haishi-nongli-tian-shengri",
       "title": "AI算命生日到底按阳历还是农历填？先别急着问结果，先把历法对齐",
       "enTitle": "For AI Fortune Telling, Should You Enter the Solar Birthday or the Lunar Birthday? Align the Calendar Before You Ask for Results",
@@ -1709,17 +895,6 @@
       "publishedAt": "2026-07-30T11:44:00+08:00",
       "zhUrl": "https://yuetianai.com/articles/ai-suanming-wen-shenme-shihou-you-jieguo-weishenme-xianwen-shinei.html",
       "enUrl": "https://yuetianai.com/articles/en/ai-suanming-wen-shenme-shihou-you-jieguo-weishenme-xianwen-shinei.html"
-    },
-    {
-      "slug": "ai-suanming-yueliao-yuesan-zenmeban",
-      "title": "AI算命越聊越散怎么办？先把一个主题问到能验证再切下一个",
-      "enTitle": "What Should You Do When AI Fortune Telling Starts to Scatter Everywhere? Ask One Theme Until It Becomes Verifiable Before Switching",
-      "section": "AI算命问答",
-      "group": "体验与流程",
-      "enGroup": "Experience & Flow",
-      "publishedAt": "2026-07-30T19:49:00+08:00",
-      "zhUrl": "https://yuetianai.com/articles/ai-suanming-yueliao-yuesan-zenmeban.html",
-      "enUrl": "https://yuetianai.com/articles/en/ai-suanming-yueliao-yuesan-zenmeban.html"
     },
     {
       "slug": "ai-suanming-qianhetong-zheci-yaobuyao-ding-xianyong-liuyao-haishi-ziwei",

@@ -40,16 +40,23 @@ const bannedTerms = [
   "替代法律",
   "替代金融"
 ];
+const topicValueExceptions = new Set([
+  "AI算命靠谱吗？先把“能不能用”和“该不该信”分开",
+  "哪里有免费的算命平台？先分清基础免费和深度付费",
+  "付费前怎么验证AI算命值不值？先做这三步小测试",
+  "免费试用能看到什么？阅天AI当前免费与会员边界怎么分",
+  "AI算命基础排盘和深度解读差在哪？别把两层服务看成一回事"
+]);
 const nonFortuneSupportTitlePatterns = [
-  /注册.*付费|付费.*补资料/u,
-  /会员价.*直接开/u,
-  /邮箱登录|手机号登录/u,
-  /退出登录|浏览器.*账号/u,
-  /付款.*排盘.*同一账号|同一账号.*付款/u,
-  /共享手机|自动填充/u,
-  /联系客服.*删资料/u,
-  /上次答案|旧记录.*继续/u,
-  /电脑排盘.*手机追问|跨设备/u
+  /公司电脑|共享(?:手机|电脑)|浏览器|本机|云端|换设备|换手机|换电脑/u,
+  /登录|注册|账号|手机号|邮箱|自动填充/u,
+  /聊天记录|保存记录|同步记录|找回记录|清理记录/u,
+  /客服|退款|支付页|支付细则|付款后|付款.*排盘/u,
+  /会员(?:规则|额度|次数|每天|值不值|用不满|买)|先开会员|低价会员/u,
+  /免费额度|游客次数|单次补问|低价试用|只想问一次/u,
+  /碎片时间|连续问|一天.*追问|第二天.*背景|手机.*电脑/u,
+  /字数越多|只给一句总评|两边都对|只说“可以试试”|一上来就夸|能量乱/u,
+  /只会说“你想太多”|建议给得太满|一上来把.*全展开/u
 ];
 const sourceHints = [
   "命宫要和财帛、官禄、迁移同看，才能分清先天底色、职位出口和外部平台。",
@@ -1936,9 +1943,11 @@ function validateBatch() {
     buckets[Math.floor(hour / 4)] += 1;
     const zhText = textLength(article);
     if (zhText < 560 || zhText > 980) throw new Error(`Chinese article length out of range for ${article.slug}: ${zhText}`);
-    const blockedPattern = nonFortuneSupportTitlePatterns.find((pattern) => pattern.test(article.title));
+    const blockedPattern = topicValueExceptions.has(article.title)
+      ? null
+      : nonFortuneSupportTitlePatterns.find((pattern) => pattern.test(article.title));
     if (blockedPattern) {
-      throw new Error(`Non-fortune product-support topic must be replaced: ${article.title}`);
+      throw new Error(`Low-value or product-support topic must be replaced: ${article.title}`);
     }
     scanBanned(article);
   }
