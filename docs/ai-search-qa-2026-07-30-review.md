@@ -11,8 +11,8 @@
 - 返工次数：1
   - 首轮发布校验时发现 `ai-suanming-xinyonghu-xianyan-jiushi-haishi-xianshi` 中文正文长度仅 514，补充每篇差异化场景段后重新执行整批校验与生成。
 - 提交号：
-  - 首次发布提交：待补
-  - 复核记录提交：待补
+  - 发布批次提交：`e89a2fd`
+  - 复核记录补记：本文件后续补录提交
 
 ## 写前 5 查
 
@@ -92,11 +92,32 @@
 
 ## 推送后复查
 
-- 本地 `HEAD` 与 `origin/master`：待补
+- 本地 `HEAD` 与 `origin/master`：一致，均为 `e89a2fd`
 - 线上抽查：
-  - 中文 4 篇：待补
-  - 英文 4 篇：待补
-  - 中英文专题页：待补
-  - 中英文首页：待补
-  - `feed.xml`、`articles/en/feed.xml`：待补
-  - `sitemap.xml`、`sitemap-articles.xml`、`sitemap-en.xml`：待补
+  - 中文 4 篇：
+    - `https://yuetianai.com/articles/ai-suanming-xinyonghu-xianyan-jiushi-haishi-xianshi.html`
+    - `https://yuetianai.com/articles/ai-suanming-youke-sanci-he-denglu-baci-chazai.html`
+    - `https://yuetianai.com/articles/ai-suanming-youxiangdenglu-haishi-shoujihao-genganxin.html`
+    - `https://yuetianai.com/articles/ai-suanming-qianhetong-zheci-yaobuyao-ding-xianyong-liuyao-haishi-ziwei.html`
+    - 结果：4 篇均返回 `200`，slug、canonical 和发布时间与本地一致。
+  - 英文 4 篇：
+    - `https://yuetianai.com/articles/en/ai-suanming-xinyonghu-xianyan-jiushi-haishi-xianshi.html`
+    - `https://yuetianai.com/articles/en/ai-suanming-youke-sanci-he-denglu-baci-chazai.html`
+    - `https://yuetianai.com/articles/en/ai-suanming-youxiangdenglu-haishi-shoujihao-genganxin.html`
+    - `https://yuetianai.com/articles/en/ai-suanming-qianhetong-zheci-yaobuyao-ding-xianyong-liuyao-haishi-ziwei.html`
+    - 结果：4 篇均返回 `200`，slug、canonical 和发布时间与本地一致。
+  - 中英文专题页：
+    - 中文专题页返回 `200`，标题为“AI算命搜索问答专题：靠谱、免费、隐私与适用边界”，已收录今日新文章链接。
+    - 英文专题页返回 `200`，标题为 `AI Fortune-Telling Q&A Hub`，已收录今日新文章链接。
+  - 中英文首页：
+    - `https://yuetianai.com/articles/index.html`
+    - `https://yuetianai.com/articles/en/index.html`
+    - 结果：均返回 `200`，已包含今日文章 slug。
+  - `feed.xml`、`articles/en/feed.xml`：
+    - 均返回 `200`
+    - `lastBuildDate` 为 `Thu, 30 Jul 2026 15:43:00 +0000`
+    - 顶部条目已更新为今日 `23:43 +08:00` 对应的中英文文章。
+  - `sitemap.xml`、`sitemap-articles.xml`、`sitemap-en.xml`：
+    - 均返回 `200`
+    - `sitemap.xml` 已更新 `feed.xml` 的 `lastmod`
+    - `sitemap-articles.xml` 与 `sitemap-en.xml` 已包含今日新 URL 与 `2026-07-30T23:43:00+08:00`
