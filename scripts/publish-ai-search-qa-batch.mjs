@@ -1,15 +1,15 @@
 import { execFileSync } from "node:child_process";
 import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
-import { buildAiSearchQaBatch } from "./ai-search-qa-batch-2026-07-29-data.mjs";
+import { buildAiSearchQaBatch } from "./ai-search-qa-batch-2026-07-30-data.mjs";
 
 const root = process.cwd();
 const site = "https://yuetianai.com";
 const topicSlug = "ai-search-qa";
-const batchDate = "2026-07-29";
+const batchDate = "2026-07-30";
 const zhCollectionFile = "ai-suanming-search-qa.html";
 const enCollectionFile = "ai-fortune-telling-search-qa.html";
-const queuePath = path.join(root, "docs", "ai-search-qa-2026-07-29-queue.md");
+const queuePath = path.join(root, "docs", "ai-search-qa-2026-07-30-queue.md");
 const manifestPath = path.join(root, "docs", "ai-search-qa-manifest.json");
 const topicRecordPath = path.join(root, "docs", "ai-search-qa-topic-records.json");
 const facts = {
@@ -48,12 +48,12 @@ const sourceHints = [
 ];
 
 const uniqueTimes = [
-  "00:18", "00:57", "01:26", "02:44", "03:31",
-  "04:09", "04:52", "05:37", "06:14", "07:48",
-  "08:22", "09:05", "09:43", "10:28", "11:51",
-  "12:07", "12:46", "13:33", "14:18", "15:57",
-  "16:11", "16:49", "17:26", "18:35", "19:42",
-  "20:16", "21:03", "21:58", "22:27", "23:39"
+  "00:07", "00:41", "01:29", "02:18", "03:36",
+  "04:11", "04:58", "05:22", "06:47", "07:39",
+  "08:13", "08:56", "09:24", "10:31", "11:44",
+  "12:09", "12:53", "13:17", "14:28", "15:35",
+  "16:06", "16:58", "17:21", "18:34", "19:49",
+  "20:12", "20:57", "21:26", "22:14", "23:43"
 ];
 
 const articleExtras = {
