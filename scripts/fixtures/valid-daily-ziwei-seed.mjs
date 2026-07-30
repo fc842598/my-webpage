@@ -62,5 +62,48 @@ export const articles = [
       },
     ],
     orderText: "先定命宫的发展主线，再比较官禄宫与迁移宫谁更能解释当前卡点，接着检查财帛宫能否承接收入，最后用大限和流年判断今年先动岗位、平台还是城市。",
+    english: {
+      title: "Changing Jobs in Zi Wei Dou Shu: Career Palace or Travel Palace First?",
+      description: "Learn whether a job change is really about duties, company platform, location, or income by comparing four connected palaces in a Chinese astrology chart.",
+      examples: [
+        "Example 1: A stable Career Palace with an ordinary Travel Palace usually favors a clearer role, a better reporting line, or a move between departments before a risky relocation.",
+        "Example 2: A strong Travel Palace supported by the Body Palace can point toward long-term growth through another city, international clients, or a company with a wider market.",
+      ],
+      openingParagraphs: [
+        "When people say they want a new job, they often combine three different problems: the work itself feels wrong, the company is too small, or the city no longer offers enough room. A Zi Wei Dou Shu chart separates those problems rather than answering them with one broad promise about career luck.",
+        "The Career Palace describes duties, authority, structure, and the kind of responsibility a person can hold. The Travel Palace describes what happens outside the familiar environment, including other cities, external clients, and larger platforms. The Wealth Palace then tests whether either move can support a workable income transition.",
+      ],
+      sections: [
+        {
+          heading: "Start With the Problem You Are Actually Trying to Solve",
+          paragraphs: [
+            "A difficult manager, unclear ownership, and repetitive tasks are Career Palace problems. Moving to another city will not automatically repair them. By contrast, a capable worker who has already outgrown a narrow client base may be dealing with a Travel Palace problem even if the current title looks respectable.",
+            "This distinction changes the practical choice. One person may need a new position inside the same organization; another may need a larger employer or a market beyond the home city. Treating both cases as simple job dissatisfaction hides the useful part of the chart.",
+          ],
+        },
+        {
+          heading: "Read Career as Responsibility, Not Prestige",
+          paragraphs: [
+            "The Career Palace is less about an impressive label than about what the role asks you to carry. A stronger career structure can show up as decision rights, a defined team, technical ownership, or a stable place in the reporting chain. It does not always require a famous employer.",
+            "Example 1: A stable Career Palace with an ordinary Travel Palace usually favors a clearer role, a better reporting line, or a move between departments before a risky relocation.",
+          ],
+        },
+        {
+          heading: "Use Travel to Test the Value of a Bigger Platform",
+          paragraphs: [
+            "The Travel Palace becomes important when opportunity depends on leaving the original network. That may mean a physical move, but it can also mean remote clients, cross-border work, or joining a company whose resources reach farther than the local market. Movement is the mechanism, not the conclusion by itself.",
+            "Example 2: A strong Travel Palace supported by the Body Palace can point toward long-term growth through another city, international clients, or a company with a wider market.",
+          ],
+        },
+        {
+          heading: "Let Wealth and Timing Decide Whether the Move Is Ready",
+          paragraphs: [
+            "A promising role can still be mistimed if the Wealth Palace cannot absorb a lower first-year salary, relocation costs, or an unstable commission plan. The money line does not cancel the career signal; it tells you whether the transition needs savings, a phased move, or a different offer structure.",
+            "Major cycles describe the background of the period, while an annual trigger shows which part moves now. A Travel Palace year may bring interviews, travel, or an outside offer without proving that permanent relocation is the only answer. Natal structure decides whether that outward route is a recurring life pattern or a temporary opening.",
+          ],
+        },
+      ],
+      orderText: "Begin with the Life Palace to identify the person's normal way of developing. Compare the Career Palace and Travel Palace to locate the real source of dissatisfaction, then check the Wealth Palace for transition capacity. Only after that should the major cycle and annual cycle be used to decide whether this is the year to change duties, platform, or location.",
+    },
   },
 ];

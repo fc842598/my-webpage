@@ -9,7 +9,7 @@
 1. 数据复盘：运行 `npm run articles:performance`，读取最近30天 Search Console 与 GA4。高展现低点击页面优先升级旧文；已有真实阅读的主题可继续深挖，但不得复制搜索意图。
 2. 用户选题：从事业、财富、婚恋、迁移、学习、合作、流年和读盘方法等真实场景拟题。每个候选必须写清 `userQuestion`、`userScenario`、`directAnswer` 和 `readerValue`。
 3. 源文取证：只从指定DOCX抽取观点。每篇至少4个独立判断条件、2个组合或落宫例子、2组有效段落范围。
-4. 原创成稿：每篇提供1-2段 `openingParagraphs`、3-5个独立 `sections` 和明确 `orderText`。生成器不再补写固定正文，只负责按已审核结构排版。
+4. 原创成稿：中文提供1-2段 `openingParagraphs`、3-5个独立 `sections` 和明确 `orderText`；英文在 `english` 中提供独立标题、description、正文结构、例子和阅读顺序。生成器不再补写中英文固定正文，只负责按已审核结构排版。
 5. 质量闸门：运行 `npm run articles:quality-gate -- --seed ... --docx ... --date ... --expected-count 30`。任一文章失败，整批不得生成、发布或提交，必须换题重写直至30篇全部通过。
 6. 写前五审：依次检查真实搜索需求、站内搜索意图区分、源文4观点、2个例子可验证性、主题配比。任何一项不成立就换题。
 7. 成稿后五审：依次检查专业逻辑、真人读感、跨文模板味、英文自然改写、技术SEO。机器味或薄题必须重写，不能只润色。
@@ -42,8 +42,11 @@
 - `openingParagraphs`：1-2段
 - `sections`：3-5节，每节包含独立标题与段落
 - `orderText`：排盘使用顺序
+- `english.title`、`english.description`
+- `english.examples`：至少2个实际写入英文正文的现实例子
+- `english.openingParagraphs`、`english.sections`、`english.orderText`：自然英文改写，不能逐句翻译中文
 
-合格结构样例见 `scripts/fixtures/valid-daily-ziwei-seed.mjs`；单篇结构测试时显式传入 `--expected-count 1`，正式生产固定为30。
+合格结构样例见 `scripts/fixtures/valid-daily-ziwei-seed.mjs`；单篇结构测试时质量门可显式传入 `--expected-count 1`，生成器还必须同时传入 `--test-mode true`。正式生产固定为30，禁止测试模式上线。
 
 ## 自动评分
 
@@ -57,6 +60,8 @@
 - 批内及站内标题搜索意图相似度
 - 600-1100字正文、3-5个原创H2和排盘顺序
 - 旧模板句、跨3篇出现的20字重复片段和禁用来源词
+- 英文380-750词、3-5个独立H2、2个例子、英文标题查重
+- 跨3篇出现的10词英文模板句、中文混排和来源追踪词
 
 报告保存为 `docs/article-quality-YYYY-MM-DD.json`。只有全部文章通过且单篇评分不低于85分，生成器才允许写出源稿和发布队列。
 

@@ -22,6 +22,15 @@ const TEMPLATE_PHRASES = [
   "真正实用的地方，在于先分层",
   "判断才不会越看越宽、越讲越虚",
 ];
+const ENGLISH_TEMPLATE_PHRASES = [
+  "do not judge one star or one palace alone",
+  "use the palace first then read the opposite palace",
+  "so the reading stays concrete instead of drifting into a fixed label",
+  "in this guide the key question is",
+];
+const BANNED_ENGLISH_SOURCE_TERMS = [
+  "ni hai xia", "tian ji lecture", "source document", "source extract", "transcript says",
+];
 const DOMAIN_TERMS = [
   "命宫", "身宫", "财帛", "官禄", "迁移", "夫妻", "福德", "父母", "朋友",
   "子女", "田宅", "疾厄", "兄弟", "仆役", "四化", "化禄", "化权", "化科",
@@ -51,6 +60,7 @@ function normalize(value) {
   return String(value || "")
     .replace(/<[^>]+>/g, "")
     .replace(/紫微斗数|AI算命|阅天AI/gi, "")
+    .replace(/zi\s*wei\s*dou\s*shu|chinese astrology/gi, "")
     .replace(/[\s\p{P}\p{S}]/gu, "")
     .toLowerCase();
 }
@@ -132,12 +142,38 @@ function existingTitles() {
     .filter(Boolean);
 }
 
+function existingEnglishTitles() {
+  const dir = path.join(ROOT, "articles", "en");
+  if (!existsSync(dir)) return [];
+  return readdirSync(dir)
+    .filter((file) => file.endsWith(".html") && file !== "index.html")
+    .map((file) => {
+      const html = readFileSync(path.join(dir, file), "utf8");
+      const title = html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/i)?.[1]?.replace(/<[^>]+>/g, "").trim();
+      return title ? { file, title } : null;
+    })
+    .filter(Boolean);
+}
+
 function articleDraft(article) {
   const openings = Array.isArray(article.openingParagraphs) ? article.openingParagraphs : [article.opening, article.focus].filter(Boolean);
   const sections = Array.isArray(article.sections)
     ? article.sections.flatMap((section) => [section.heading, ...(section.paragraphs || [])])
     : [];
   return [...openings, ...sections, article.orderText].filter(Boolean).join("\n");
+}
+
+function englishDraft(article) {
+  const english = article.english || {};
+  const openings = Array.isArray(english.openingParagraphs) ? english.openingParagraphs : [];
+  const sections = Array.isArray(english.sections)
+    ? english.sections.flatMap((section) => [section.heading, ...(section.paragraphs || [])])
+    : [];
+  return [...openings, ...sections, english.orderText].filter(Boolean).join("\n");
+}
+
+function englishWords(value) {
+  return String(value || "").match(/[A-Za-z]+(?:[-'][A-Za-z]+)*/g) || [];
 }
 
 function distinctCount(values) {
@@ -158,7 +194,21 @@ function phraseOwners(articles, size = 20) {
   return [...owners.entries()].filter(([, slugs]) => slugs.length >= 3);
 }
 
-function scoreArticle(article, paragraphs, oldTitles, batchTitles) {
+function englishPhraseOwners(articles, size = 10) {
+  const owners = new Map();
+  for (const article of articles) {
+    const words = englishWords(englishDraft(article)).map((word) => word.toLowerCase());
+    const seen = new Set();
+    for (let index = 0; index <= words.length - size; index += 1) seen.add(words.slice(index, index + size).join(" "));
+    for (const phrase of seen) {
+      if (!owners.has(phrase)) owners.set(phrase, []);
+      owners.get(phrase).push(article.slug);
+    }
+  }
+  return [...owners.entries()].filter(([, slugs]) => slugs.length >= 3);
+}
+
+function scoreArticle(article, paragraphs, oldTitles, oldEnglishTitles, batchTitles, batchEnglishTitles) {
   const failures = [];
   const warnings = [];
   const points = Array.isArray(article.points) ? article.points.filter(Boolean) : [];
@@ -168,7 +218,12 @@ function scoreArticle(article, paragraphs, oldTitles, batchTitles) {
   const sections = Array.isArray(article.sections) ? article.sections : [];
   const openings = Array.isArray(article.openingParagraphs) ? article.openingParagraphs.filter(Boolean) : [];
   const draft = articleDraft(article);
-  const publicText = [article.title, article.category, article.intent, article.userQuestion, article.directAnswer, article.readerValue, draft]
+  const english = article.english || {};
+  const englishOpenings = Array.isArray(english.openingParagraphs) ? english.openingParagraphs.filter(Boolean) : [];
+  const englishSections = Array.isArray(english.sections) ? english.sections : [];
+  const englishExamples = Array.isArray(english.examples) ? english.examples.filter(Boolean) : [];
+  const enDraft = englishDraft(article);
+  const publicText = [article.title, article.category, article.intent, article.userQuestion, article.directAnswer, article.readerValue, draft, english.title, english.description, enDraft]
     .filter(Boolean)
     .join("\n");
   const topicText = [article.title, article.intent, article.userQuestion, article.userScenario].filter(Boolean).join(" ");
@@ -196,6 +251,28 @@ function scoreArticle(article, paragraphs, oldTitles, batchTitles) {
   for (const term of BANNED_PUBLIC_TERMS) if (publicText.includes(term)) failures.push(`公开正文或元数据含禁用来源词：${term}`);
   for (const phrase of TEMPLATE_PHRASES) if (draft.includes(phrase)) failures.push(`命中旧模板句：${phrase}`);
 
+  if (englishWords(english.title).length < 6) failures.push("英文标题缺失或过薄");
+  const descriptionWords = englishWords(english.description).length;
+  if (descriptionWords < 18 || descriptionWords > 40) failures.push(`英文 description 应为18-40词，当前${descriptionWords}词`);
+  if (englishOpenings.length < 1 || englishOpenings.length > 2) failures.push("英文 openingParagraphs 必须为1-2段");
+  if (englishSections.length < 3 || englishSections.length > 5) failures.push("英文 sections 必须为3-5节原创结构");
+  if (englishExamples.length < 2 || distinctCount(englishExamples) < 2) failures.push("英文稿不足2个独立现实例子");
+  if (!english.orderText || englishWords(english.orderText).length < 25) failures.push("英文稿缺少明确 practical reading order");
+  const englishWordCount = englishWords(enDraft).length;
+  if (englishWordCount < 380 || englishWordCount > 750) failures.push(`英文正文篇幅不合格：${englishWordCount}词`);
+  if (/[\u3400-\u9fff]/u.test([english.title, english.description, enDraft].join(" "))) failures.push("英文公开内容含中文，必须自然改写而非混排");
+  const englishPublicLower = [english.title, english.description, enDraft].join(" ").toLowerCase();
+  for (const term of BANNED_ENGLISH_SOURCE_TERMS) if (englishPublicLower.includes(term)) failures.push(`英文公开内容含来源追踪词：${term}`);
+  for (const phrase of ENGLISH_TEMPLATE_PHRASES) if (englishPublicLower.includes(phrase)) failures.push(`英文稿命中旧模板句：${phrase}`);
+  const englishHeadings = englishSections.map((section) => String(section.heading || "").trim().toLowerCase());
+  if (new Set(englishHeadings).size !== englishSections.length) failures.push("英文文章内H2标题重复");
+  for (const section of englishSections) {
+    if (!section.heading || !Array.isArray(section.paragraphs) || !section.paragraphs.length) failures.push("英文 sections 项缺少标题或段落");
+  }
+  for (const example of englishExamples) {
+    if (!normalize(enDraft).includes(normalize(example))) failures.push("英文 examples 必须实际写入英文正文");
+  }
+
   const ranges = evidence.map((item) => parseEvidenceRange(item, paragraphs.length));
   if (ranges.some((item) => !item)) failures.push("证据编号无效或范围过宽");
   const sourceParagraphs = ranges.filter(Boolean).flatMap(({ start, end }) => paragraphs.slice(start - 1, end));
@@ -212,6 +289,10 @@ function scoreArticle(article, paragraphs, oldTitles, batchTitles) {
   if (closeBatch.length) failures.push(`批内标题意图过近：${closeBatch.map((item) => item.slug).join(", ")}`);
   const closeExisting = oldTitles.filter((item) => item.file !== `${article.slug}.html` && similarity(article.title, item.title) >= 0.72);
   if (closeExisting.length) failures.push(`与已发标题意图过近：${closeExisting.slice(0, 3).map((item) => item.file).join(", ")}`);
+  const closeEnglishBatch = batchEnglishTitles.filter((item) => item.slug !== article.slug && similarity(english.title, item.title) >= 0.72);
+  if (closeEnglishBatch.length) failures.push(`批内英文标题意图过近：${closeEnglishBatch.map((item) => item.slug).join(", ")}`);
+  const closeEnglishExisting = oldEnglishTitles.filter((item) => item.file !== `${article.slug}.html` && similarity(english.title, item.title) >= 0.76);
+  if (closeEnglishExisting.length) failures.push(`与已发英文标题意图过近：${closeEnglishExisting.slice(0, 3).map((item) => item.file).join(", ")}`);
 
   const bodyLength = normalize(draft).length;
   if (bodyLength < 600 || bodyLength > 1100) failures.push(`中文正文长度不合格：${bodyLength}`);
@@ -241,6 +322,11 @@ function scoreArticle(article, paragraphs, oldTitles, batchTitles) {
       longestCopyRuns: copyRuns,
       excerpts: sourceParagraphs.slice(0, 8),
     },
+    english: {
+      wordCount: englishWordCount,
+      sectionCount: englishSections.length,
+      exampleCount: englishExamples.length,
+    },
   };
 }
 
@@ -251,14 +337,26 @@ export async function validateSeedBatch({ seedPath, docxPath, date, reportPath, 
   if (!Array.isArray(articles) || !articles.length) throw new Error("Seed file did not export articles");
   const paragraphs = readParagraphs(resolvedDocx);
   const oldTitles = existingTitles();
+  const oldEnglishTitles = existingEnglishTitles();
   const batchTitles = articles.map(({ slug, title }) => ({ slug, title }));
-  const reports = articles.map((article) => scoreArticle(article, paragraphs, oldTitles, batchTitles));
+  const batchEnglishTitles = articles.map(({ slug, english }) => ({ slug, title: english?.title || "" }));
+  const reports = articles.map((article) => scoreArticle(article, paragraphs, oldTitles, oldEnglishTitles, batchTitles, batchEnglishTitles));
   const repeatedPhrases = phraseOwners(articles);
   if (repeatedPhrases.length) {
     for (const report of reports) {
       const hits = repeatedPhrases.filter(([, slugs]) => slugs.includes(report.slug));
       if (!hits.length) continue;
       report.failures.push(`跨文章重复20字模板句：${hits[0][0]}`);
+      report.score = Math.max(0, report.score - 12);
+      report.pass = false;
+    }
+  }
+  const repeatedEnglishPhrases = englishPhraseOwners(articles);
+  if (repeatedEnglishPhrases.length) {
+    for (const report of reports) {
+      const hits = repeatedEnglishPhrases.filter(([, slugs]) => slugs.includes(report.slug));
+      if (!hits.length) continue;
+      report.failures.push(`跨英文文章重复10词模板句：${hits[0][0]}`);
       report.score = Math.max(0, report.score - 12);
       report.pass = false;
     }

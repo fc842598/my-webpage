@@ -38,7 +38,7 @@ function parseTimes(input) {
     const hour = Number(time.slice(0, 2));
     buckets[Math.floor(hour / 4)] += 1;
   }
-  if (buckets.some((count) => count < 4)) fail("Each four-hour bucket needs at least 4 publish times");
+  if (times.length === 30 && buckets.some((count) => count < 4)) fail("Each four-hour bucket needs at least 4 publish times");
   return times;
 }
 
@@ -46,6 +46,13 @@ function bodyOf(article) {
   const opening = article.openingParagraphs.join("\n\n");
   const sections = article.sections.map((section) => `### ${section.heading}\n${section.paragraphs.join("\n\n")}`).join("\n\n");
   return `${opening}\n\n${sections}\n\n### 排盘使用顺序\n${article.orderText}`;
+}
+
+function englishBodyOf(article) {
+  const english = article.english;
+  const opening = english.openingParagraphs.join("\n\n");
+  const sections = english.sections.map((section) => `### ${section.heading}\n${section.paragraphs.join("\n\n")}`).join("\n\n");
+  return `${opening}\n\n${sections}\n\n### Practical Reading Order\n${english.orderText}`;
 }
 
 function sourceText(date, articles) {
@@ -61,7 +68,12 @@ slug：\`${article.slug}\`
 搜索意图：${article.intent}
 素材线索：${sourceHints}
 正文草稿：
-${bodyOf(article)}`;
+${bodyOf(article)}
+
+英文标题：${article.english.title}
+英文描述：${article.english.description}
+英文正文：
+${englishBodyOf(article)}`;
   });
 
   return `# 紫微文章源稿 ${date}
@@ -100,10 +112,13 @@ ${rows}
 const args = parseArgs(process.argv.slice(2));
 const seedArg = args.seed;
 const date = args.date;
+const expectedCount = Number(args["expected-count"] || 30);
+const testMode = args["test-mode"] === "true";
 
 if (!seedArg) fail("Missing --seed");
 if (!date || !/^\d{4}-\d{2}-\d{2}$/.test(date)) fail("Missing or invalid --date");
 if (!args.docx) fail("Missing --docx; the source document is required for the quality gate");
+if (expectedCount !== 30 && !testMode) fail("Non-30 batches require --test-mode true and must never be used for production publishing");
 
 const seedPath = path.resolve(seedArg);
 const { articles } = await import(`${pathToFileURL(seedPath).href}?t=${Date.now()}`);
@@ -114,7 +129,7 @@ await validateSeedBatch({
   docxPath: args.docx,
   date,
   reportPath: args.report || `docs/article-quality-${date}.json`,
-  expectedCount: 30,
+  expectedCount,
 });
 
 const ordered = [...articles].sort((a, b) => a.order - b.order);

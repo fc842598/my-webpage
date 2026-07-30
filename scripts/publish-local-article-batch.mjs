@@ -1,11 +1,11 @@
 import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 
-const root = process.cwd();
 const site = "https://yuetianai.com";
 const defaultImage = `${site}/images/home2/triad-tian-bg.webp`;
 
 const args = parseArgs(process.argv.slice(2));
+const root = path.resolve(args["output-root"] || process.cwd());
 const queuePath = args.queue;
 const sourcePath = args.source;
 const count = Number(args.count || 1);
@@ -15,6 +15,10 @@ const publishTime = args.time || "09:00";
 const explicitTimes = parseTimesArg(args.times);
 const overwriteExisting = args["overwrite-existing"] === true;
 const includePublished = args["include-published"] === true;
+const skipCollections = args["skip-collections"] === true;
+if (skipCollections && (!args["output-root"] || root === process.cwd())) {
+  fail("--skip-collections is only allowed with a separate --output-root for isolated tests.");
+}
 if (!/^(?:[01]\d|2[0-3]):[0-5]\d$/.test(publishTime)) {
   fail("--time must use HH:MM in Asia/Shanghai time.");
 }
@@ -154,9 +158,11 @@ for (const [index, article] of articles.entries()) {
   writeFileSync(enPath, englishPage(article, time), "utf8");
 }
 
-updateQueue(queuePath, queueRaw, articles);
-regenerateChineseIndex();
-regenerateFeedsAndSitemaps();
+if (!skipCollections) {
+  updateQueue(queuePath, queueRaw, articles);
+  regenerateChineseIndex();
+  regenerateFeedsAndSitemaps();
+}
 
 console.log(`Published ${articles.length} articles.`);
 for (const article of articles) {
@@ -240,15 +246,24 @@ function parseSourceArticles(raw) {
     const order = Number(heading[1]);
     const title = heading[2].trim();
     const slug = block.match(/slug[：:]\s*`([^`]+)`/)?.[1]?.trim() || "";
-    let body = block.slice(heading.index + heading[0].length).trim();
-    const draftIndex = body.indexOf("正文草稿：");
-    if (draftIndex >= 0) body = body.slice(draftIndex + "正文草稿：".length).trim();
+    let content = block.slice(heading.index + heading[0].length).trim();
+    const draftIndex = content.indexOf("正文草稿：");
+    if (draftIndex >= 0) content = content.slice(draftIndex + "正文草稿：".length).trim();
+    const englishIndex = content.search(/\n英文标题[：:]/);
+    const englishBlock = englishIndex >= 0 ? content.slice(englishIndex + 1).trim() : "";
+    let body = englishIndex >= 0 ? content.slice(0, englishIndex).trim() : content;
+    const enTitle = englishBlock.match(/^英文标题[：:]\s*(.+)$/m)?.[1]?.trim() || "";
+    const enDescription = englishBlock.match(/^英文描述[：:]\s*(.+)$/m)?.[1]?.trim() || "";
+    const enBodyIndex = englishBlock.search(/^英文正文[：:]\s*$/m);
+    const enBody = enBodyIndex >= 0
+      ? englishBlock.slice(enBodyIndex).replace(/^英文正文[：:]\s*$/m, "").trim()
+      : "";
     body = body
       .split("\n")
       .filter((line) => !/^(slug|搜索意图|素材线索)[：:]/.test(line.trim()))
       .join("\n")
       .trim();
-    articles.push({ order, title, slug, body });
+    articles.push({ order, title, slug, body, enTitle, enDescription, enBody });
   }
   return articles;
 }
@@ -517,9 +532,9 @@ ${bottomChartCtaHtml()}
 
 function englishPage(article, time) {
   const override = englishOverrideFor(article);
-  const title = override?.title || englishTitle(article);
+  const title = article.enTitle || override?.title || englishTitle(article);
   const heroClass = title.length > 90 ? "detail-hero is-long-title" : "detail-hero";
-  const description = override?.description || `A plain-English guide to ${title}, with a practical reading order, simple examples, and clear boundaries for Zi Wei Dou Shu learners.`;
+  const description = article.enDescription || override?.description || `A plain-English guide to ${title}, with a practical reading order, simple examples, and clear boundaries for Zi Wei Dou Shu learners.`;
   const canonical = `${site}/articles/en/${article.slug}.html`;
   const zhUrl = `${site}/articles/${article.slug}.html`;
   const publishedAt = article.publishedAt || toPublishDateTime(time);
@@ -528,6 +543,16 @@ function englishPage(article, time) {
   const exampleHtml = exampleItems.length
     ? `<ul>${exampleItems.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>`
     : `<p>Use the palace first, then read the opposite palace and the three supporting palaces before making a conclusion.</p>`;
+  const explicitBody = article.enBody ? markdownBody(article.enBody) : "";
+  const fallbackBody = `<p class="article-lead">${escapeHtml(englishLead(article, title))}</p>
+        <h2>What This Means</h2>
+        <p>${escapeHtml(englishMeaning(article))}</p>
+        <h2>How To Read It</h2>
+        <p>${escapeHtml(englishMethod(article))}</p>
+        <h2>Simple Examples</h2>
+        ${exampleHtml}
+        <h2>Practical Order</h2>
+        <p>${escapeHtml(englishPracticalOrder(article, title))}</p>`;
   return `<!doctype html>
 <html lang="en">
 <head>
@@ -586,15 +611,7 @@ function englishPage(article, time) {
     </section>
     <div class="container article-layout article-detail-layout">
       <article id="article-start" class="article-main article-paper">
-        <p class="article-lead">${escapeHtml(englishLead(article, title))}</p>
-        <h2>What This Means</h2>
-        <p>${escapeHtml(englishMeaning(article))}</p>
-        <h2>How To Read It</h2>
-        <p>${escapeHtml(englishMethod(article))}</p>
-        <h2>Simple Examples</h2>
-        ${exampleHtml}
-        <h2>Practical Order</h2>
-        <p>${escapeHtml(englishPracticalOrder(article, title))}</p>
+        ${explicitBody || fallbackBody}
       </article>
       <aside class="side-panel detail-rail" aria-label="Related links">
         <h2>Read Next</h2>
