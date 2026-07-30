@@ -40,6 +40,17 @@ const bannedTerms = [
   "替代法律",
   "替代金融"
 ];
+const nonFortuneSupportTitlePatterns = [
+  /注册.*付费|付费.*补资料/u,
+  /会员价.*直接开/u,
+  /邮箱登录|手机号登录/u,
+  /退出登录|浏览器.*账号/u,
+  /付款.*排盘.*同一账号|同一账号.*付款/u,
+  /共享手机|自动填充/u,
+  /联系客服.*删资料/u,
+  /上次答案|旧记录.*继续/u,
+  /电脑排盘.*手机追问|跨设备/u
+];
 const sourceHints = [
   "命宫要和财帛、官禄、迁移同看，才能分清先天底色、职位出口和外部平台。",
   "先天财常落财帛，后天赚来的财常会在官禄或迁移，不能把钱都只塞回财帛宫。",
@@ -1925,6 +1936,10 @@ function validateBatch() {
     buckets[Math.floor(hour / 4)] += 1;
     const zhText = textLength(article);
     if (zhText < 560 || zhText > 980) throw new Error(`Chinese article length out of range for ${article.slug}: ${zhText}`);
+    const blockedPattern = nonFortuneSupportTitlePatterns.find((pattern) => pattern.test(article.title));
+    if (blockedPattern) {
+      throw new Error(`Non-fortune product-support topic must be replaced: ${article.title}`);
+    }
     scanBanned(article);
   }
   if (buckets.some((count) => count < 4)) throw new Error(`Every four-hour bucket needs at least 4 posts: ${buckets.join(",")}`);
