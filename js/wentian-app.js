@@ -4758,6 +4758,99 @@ function stripWentianReadingNotes(value) {
     .trim();
 }
 
+const WENTIAN_APPROVED_CLASSIC_DISPLAY_REPLACEMENTS = [
+  [/父先离世母养成/g, "早年父亲缺位，母亲主要抚养"],
+  [/生则从父母有凶/g, "生则从父，父母阶段风险较重"],
+  [/父母有凶/g, "父母阶段风险较重"],
+  [/父有凶/g, "父亲阶段风险较重"],
+  [/母有凶/g, "母亲阶段风险较重"],
+  [/父不全母亦半/g, "父缘较弱，母缘亦弱，家庭照料可能有缺"],
+  [/父不全母离散/g, "父缘较弱，母亲离散，家庭照料可能有缺"],
+  [/父不全母全/g, "父缘较弱，母缘较稳，家庭照料可能有缺"],
+  [/父全母不全/g, "父缘较稳，母缘较弱，家庭照料可能有缺"],
+  [/父母不全/g, "父母缘较弱，家庭照料可能有缺"],
+  [/父不全/g, "父缘较弱，家庭照料可能有缺"],
+  [/母不全/g, "母缘较弱，家庭照料可能有缺"],
+  [/父留母失两地隔/g, "父亲照料较多，母亲陪伴较少，家庭可能两地分隔"],
+  [/父留母失/g, "父亲照料较多，母亲陪伴较少"],
+  [/夫妻凶/g, "婚姻阶段冲突与变故较多"],
+  [/女命夫凶/g, "女命中丈夫阶段风险较重"],
+  [/男命妻凶/g, "男命中妻子阶段风险较重"],
+  [/夫凶妻吉/g, "丈夫阶段风险较重，妻方相对较稳"],
+  [/夫凶/g, "丈夫阶段风险较重"],
+  [/妻凶/g, "妻子阶段风险较重"],
+  [/夫妻得财有子夭折/g, "夫妻得财，子女早年养育风险较高"],
+  [/有子易夭折/g, "子女早年养育风险较高"],
+  [/有子夭折/g, "子女早年养育风险较高"],
+  [/夭折/g, "子女早年养育风险较高"],
+  [/子当无/g, "子女缘较弱"],
+  [/无子之家/g, "子女缘较弱的家庭"],
+  [/无子相继/g, "子女缘较弱"],
+  [/有女无子/g, "有女，子女缘较弱"],
+  [/女无子/g, "女性子女缘较弱"],
+  [/妻无子/g, "妻方子女缘较弱"],
+  [/无子/g, "子女缘较弱"],
+  [/不逢血光(?:也)?有火厄/g, "外伤、出血或手术风险较低，但需防火、电和烫伤"],
+  [/早年血光灾/g, "早年需防外伤、出血或手术"],
+  [/多血光灾/g, "需防外伤、出血或手术"],
+  [/见血光灾/g, "需防外伤、出血或手术"],
+  [/见血光/g, "需防外伤、出血或手术"],
+  [/血光之灾|血光灾/g, "需防外伤、出血或手术"],
+  [/血光/g, "需防外伤、出血或手术"],
+  [/防火厄/g, "需防火、电和烫伤"],
+  [/有火厄/g, "需防火、电和烫伤"],
+  [/火厄/g, "需防火、电和烫伤"],
+  [/吊死[、，]?勒死[、，]?淋巴癌/g, "颈部健康与安全风险较重"],
+  [/牢狱之灾难免/g, "官非风险重，务必守法避险"],
+  [/有牢狱之灾/g, "官非风险重，务必守法避险"],
+  [/牢狱之灾/g, "官非风险重，务必守法避险"],
+  [/大限数终在寅/g, "寅年是重大关口，需格外谨慎"],
+  [/大限数已终/g, "此阶段是重大关口，需格外谨慎"],
+  [/大限数终/g, "此阶段是重大关口，需格外谨慎"],
+  [/大限不出四十/g, "此阶段是重大关口，需格外谨慎"],
+  [/女命大凶/g, "女性处境风险较高"],
+  [/大凶/g, "不利因素集中，风险很高"],
+  [/长弓行险路，终凶/g, "长弓行险路，若不及时调整，后续风险加重"],
+  [/踏谷扬旗终凶/g, "踏谷扬旗，若不及时调整，后续风险加重"],
+  [/终凶/g, "若不及时调整，后续风险加重"],
+  [/强力求之必遭灾/g, "强行推进，容易出现严重后果"],
+  [/必遭灾/g, "强行推进，容易出现严重后果"],
+  [/冬有丧服为阴人/g, "冬季家中可能有重大离别之事"],
+  [/主丧服/g, "家中可能有重大离别之事"],
+  [/家有丧服/g, "家中可能有重大离别之事"],
+  [/丧服/g, "家中可能有重大离别之事"],
+  [/丧事不久/g, "家中可能有重大离别之事"],
+  [/丧事/g, "家中可能有重大离别之事"],
+  [/多病灾/g, "健康风险较重，宜及时检查"],
+  [/重病逢之得救星/g, "健康风险较重，但有转机，宜及时检查"],
+  [/病灾/g, "健康风险较重，宜及时检查"],
+  [/重病/g, "健康风险较重，宜及时检查"],
+  [/婚事必成/g, "婚事成局条件较强"],
+  [/必然(?=[^，。；\s])/g, "发生条件较强，"],
+  [/必然/g, "发生条件较强"],
+  [/一定会(?=[^，。；\s])/g, "发生条件较强，"],
+  [/一定会/g, "发生条件较强"],
+  [/不见生父为定数/g, "早年生父陪伴较少"],
+  [/夫婿注定为上人/g, "伴侣身份或能力较突出"],
+  [/母为贵人命中定/g, "母亲多为重要助力"],
+  [/外乡发迹命中定/g, "外地发展优势较明显"],
+  [/庶出之人天注定/g, "早年家庭身份与归属较复杂"],
+  [/生不逢时天注定/g, "早年时势不利，起步较艰难"],
+  [/生来注定富贵人/g, "先天资源与发展条件较好"],
+  [/注定继子承家业/g, "有继承或承接家业的倾向"],
+  [/逢水得财命中定/g, "逢水相关时机，财务机会较明显"],
+  [/一人两母为定数/g, "早年可能有两位母系照料者"],
+  [/夫留妻不留/g, "妻方健康与安全风险更需留意"],
+];
+
+function applyWentianApprovedClassicDisplayText(value) {
+  let text = String(value || "");
+  WENTIAN_APPROVED_CLASSIC_DISPLAY_REPLACEMENTS.forEach(([pattern, replacement]) => {
+    text = text.replace(pattern, replacement);
+  });
+  return text;
+}
+
 function renderWentianReadingParagraphs(value, fallback = "") {
   const displayText = stripWentianReadingNotes(value || fallback) || fallback;
   const paragraphs = splitWentianReadingParagraphs(displayText);
@@ -15338,10 +15431,10 @@ function getLiuyaoHexReading(hex) {
   const master = window.getYijingMasterEntryByName?.(hex.name) || window.getYijingMasterEntryByNum?.(hex.no);
   const guaci = window.getGuaciEntryByName?.(hex.name);
   return {
-    summary: master?.summary || guaci?.liu || "此卦重在审时度势，先明当前处境，再定进退。",
-    xian: master?.xian || guaci?.xian || "",
-    hou: master?.hou || guaci?.hou || "",
-    liu: master?.liu || guaci?.liu || "",
+    summary: applyWentianApprovedClassicDisplayText(master?.summary || guaci?.liu || "此卦重在审时度势，先明当前处境，再定进退。"),
+    xian: applyWentianApprovedClassicDisplayText(master?.xian || guaci?.xian || ""),
+    hou: applyWentianApprovedClassicDisplayText(master?.hou || guaci?.hou || ""),
+    liu: applyWentianApprovedClassicDisplayText(master?.liu || guaci?.liu || ""),
     source: master?.source || ""
   };
 }
@@ -21267,8 +21360,8 @@ function getWentianYijingReading(result, key) {
     || window.getYijingMasterEntryByName?.(result.name)
     || window.getYijingMasterEntryByNum?.(result.no || result.num);
   const guaci = window.getGuaciEntryByName?.(result.name);
-  const original = guaci?.[meta.sourceKey] || guaci?.liu || "";
-  const detail = master?.[meta.sourceKey] || master?.summary || original || "此卦资料待补，可先结合命盘主线看取象。";
+  const original = applyWentianApprovedClassicDisplayText(guaci?.[meta.sourceKey] || guaci?.liu || "");
+  const detail = applyWentianApprovedClassicDisplayText(master?.[meta.sourceKey] || master?.summary || original || "此卦资料待补，可先结合命盘主线看取象。");
   return {
     original,
     masterTitle: `${meta.title} · ${result.name || "卦象"}`,
