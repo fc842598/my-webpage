@@ -88,7 +88,8 @@ const externalCollections = [
     enFile: "ai-fortune-telling-search-qa.html",
     zhName: "AI算命搜索问答专题",
     enName: "AI Fortune-Telling Q&A Hub",
-    desc: "围绕靠谱不靠谱、免费边界、隐私、出生时间误差、手机体验与紫微/八字/六爻用途整理的搜索问答专题。"
+    desc: "围绕靠谱不靠谱、免费边界、隐私、出生时间误差、手机体验与紫微/八字/六爻用途整理的搜索问答专题。",
+    enDesc: "Search-driven answers about reliability, privacy, free versus paid access, birth-time accuracy, mobile use, and when to choose Zi Wei, Ba Zi, or Liu Yao."
   }
 ];
 const specialChineseFiles = new Set([
@@ -517,6 +518,7 @@ ${bottomChartCtaHtml()}
 function englishPage(article, time) {
   const override = englishOverrideFor(article);
   const title = override?.title || englishTitle(article);
+  const heroClass = title.length > 90 ? "detail-hero is-long-title" : "detail-hero";
   const description = override?.description || `A plain-English guide to ${title}, with a practical reading order, simple examples, and clear boundaries for Zi Wei Dou Shu learners.`;
   const canonical = `${site}/articles/en/${article.slug}.html`;
   const zhUrl = `${site}/articles/${article.slug}.html`;
@@ -572,7 +574,7 @@ function englishPage(article, time) {
     </div>
   </header>
   <main class="article-shell article-detail">
-    <section class="detail-hero">
+    <section class="${heroClass}">
       <div class="container detail-hero-grid">
         <div>
           <nav class="breadcrumb" aria-label="Breadcrumb"><a href="./">Learn Zi Wei</a><span>/</span><span>Guide</span></nav>
@@ -1027,6 +1029,156 @@ function uniqueEnglishExamples(article, examples) {
 
 function englishOverrideFor(article) {
   const englishOverrides = {
+  "ziwei-huan-gongzuo-xiankan-guanlu-haishi-qianyi": {
+    title: "Changing Jobs: Read the Career Palace Before the Travel Palace",
+    description: "A practical Zi Wei Dou Shu guide for separating a role change from a platform change when you are thinking about switching jobs.",
+    lead: "When job-change questions show up in Zi Wei Dou Shu, the first split is between the Career Palace and the Travel Palace. One is about the role itself, the other is about the platform, market, or outside world that may need to change."
+  },
+  "ziwei-shihe-dai-tuandui-youke-meiquan-youquan-meike": {
+    title: "Can You Lead a Team, or Are You Built More for Expert Work?",
+    description: "How to use Zi Wei Dou Shu to separate specialist strength from team-leadership capacity by comparing Hua Ke and Hua Quan.",
+    lead: "Some charts are excellent at solving problems without naturally wanting the top seat. Zi Wei Dou Shu often separates team leadership from expert strength through the difference between Hua Quan and Hua Ke."
+  },
+  "ziwei-xiang-dang-zhuguan-xian-kan-huaquan-haishi-guanlu": {
+    title: "Trying to Move Into Management? Responsibility Usually Shows Up Before the Title",
+    description: "A Zi Wei Dou Shu reading guide for promotion questions: read Hua Quan and the Career Palace together instead of chasing title alone.",
+    lead: "Promotion windows are often misread because people stare at the title and miss the earlier sign. In many charts, responsibility arrives before the formal manager label does."
+  },
+  "ziwei-jiaxin-xian-fen-guding-xinshui-haishi-jingyingcai": {
+    title: "Asking for a Raise: Fixed Salary and Business Income Are Not the Same Line",
+    description: "Use Zi Wei Dou Shu to tell whether income growth should come from salary progression, role level, or a more business-facing route.",
+    lead: "Not every income question should be solved by asking for a raise. Some charts grow through fixed salary systems, while others expand much better through clients, projects, or operating leverage."
+  },
+  "ziwei-kaogong-jin-tizhi-xian-kan-shenme-xian": {
+    title: "Thinking About Civil Service or Institutional Work? Read the Right Stability Line First",
+    description: "A plain-English Zi Wei Dou Shu guide for separating public-sector, teaching, and rule-based professional paths.",
+    lead: "A stable career is not just one thing in Zi Wei Dou Shu. Some charts fit civil-service ladders, some fit teaching or school systems, and some belong in technical work inside a structured institution."
+  },
+  "ziwei-kao-jiean-chifan-xian-kan-huake-haishi-shengong": {
+    title: "Can You Live on Freelance or Client Work? Skill and Monetization Are Two Different Steps",
+    description: "How Zi Wei Dou Shu separates specialist credibility from the later-life push toward freelance work, private enterprise, or independent billing.",
+    lead: "Having real skill is not the same as being pushed into the market to bill for it. In Zi Wei Dou Shu, the skill line and the income route need to connect before freelance work becomes the main path."
+  },
+  "ziwei-liuxue-hou-hui-bu-hui-huiguo": {
+    title: "Will You Come Back After Studying Abroad, or Stay Out Long-Term?",
+    description: "A Zi Wei Dou Shu reading for telling the difference between overseas study that feeds back home and a life path that truly moves abroad.",
+    lead: "Going abroad to study and building your later life abroad are not the same chart movement. The Travel Palace may open the door, but the Body Palace often tells you whether the center of life actually stays outside."
+  },
+  "ziwei-chuguo-fazhan-duanqi-waipai-haishi-changqi-zhagen": {
+    title: "Overseas Development: Short Posting or a Long-Term Move?",
+    description: "Use Zi Wei Dou Shu to tell whether an international move is a temporary assignment, a growth phase, or a lasting relocation.",
+    lead: "Many people reduce overseas timing to one simple move, but charts often separate a temporary external push from a true long-term relocation pattern."
+  },
+  "ziwei-waidi-fazhan-ben-di-fazhan-zenme-bijiao": {
+    title: "Do You Grow Faster Away From Home, or Back in Your Original Base?",
+    description: "A practical Zi Wei Dou Shu guide for comparing outside-market growth with local-role growth.",
+    lead: "Some people rise only after a bigger outside stage appears. Others become stronger once they return to a familiar base that can actually hold their role and resources."
+  },
+  "ziwei-hehuo-qian-xian-kan-pengyougong-haishi-caibogong": {
+    title: "Before a Partnership, Read the Friendship Line and the Money Line Separately",
+    description: "How Zi Wei Dou Shu separates chemistry, teamwork, money flow, and responsibility before you enter a partnership.",
+    lead: "Many partnerships fail because people confuse getting along with building a durable structure. A chart can show strong personal chemistry and still be weak at profit-sharing, role definition, or carrying outcomes."
+  },
+  "ziwei-you-cai-weihe-cunbuzhuqian": {
+    title: "Why Money Comes In but Never Seems to Stay",
+    description: "A Zi Wei Dou Shu reading for charts that show income openings but weak retention, poor cash control, or repeated financial leakage.",
+    lead: "A chart can absolutely show money and still struggle to keep it. The income entrance and the retention structure are not the same thing."
+  },
+  "ziwei-shinian-zhuanqian-nianli-xianjinliu-duan": {
+    title: "Why a Good Ten-Year Money Cycle Can Still Produce a Cash Crunch This Year",
+    description: "Use Zi Wei Dou Shu to read a profitable decade together with a single year that squeezes cash flow through timing, delays, or leakage.",
+    lead: "A good decade does not protect every single year inside it. Annual timing can create a cash squeeze even while the bigger cycle is still fundamentally profitable."
+  },
+  "ziwei-liunian-kongjie-xian-fang-peiqian-haishi-luokong": {
+    title: "Annual Kong Jie: Should You Fear Direct Loss, or Things Falling Through?",
+    description: "A plain-English Zi Wei Dou Shu guide to annual Kong and Jie timing when money, deals, or expected results start slipping away.",
+    lead: "Kong and Jie do not always mean the same kind of loss. Sometimes they show direct cash damage, and sometimes they show effort, deals, or openings thinning out before they fully land."
+  },
+  "ziwei-liunian-huoling-xian-fang-chaojia-haishi-guansi": {
+    title: "Annual Huo Ling: Is This Just Conflict, or Could It Turn Into a Legal Mess?",
+    description: "How Zi Wei Dou Shu separates ordinary blowups from conflict that escalates toward formal disputes, blame, or litigation.",
+    lead: "Huo Xing and Ling Xing usually light up heat, speed, and conflict before they create a full legal problem. The legal layer often appears only when the chart keeps stacking pressure on top."
+  },
+  "ziwei-yangtuo-weihe-zui-pa-shenbianren-tuolei": {
+    title: "Why the Hardest Trouble Often Comes From People Close to You",
+    description: "A Zi Wei Dou Shu reading of Qing Yang and Tuo Luo when the real drag comes from familiar people, not obvious enemies.",
+    lead: "Some of the most damaging chart pressure does not come from strangers. It comes from people close enough to interfere, over-manage, or drag your life off course while still thinking they are helping."
+  },
+  "ziwei-fuqigong-huaquan-lingyiban-taiqiangshi-zenmekan": {
+    title: "A Strong-Willed Partner: Read Hua Quan as Capacity Before You Call It a Problem",
+    description: "How Zi Wei Dou Shu reads a forceful spouse line by separating leadership, burden-carrying, and relationship pressure.",
+    lead: "Hua Quan in the Spouse Palace does not automatically mean a bad marriage. It often means the partner has weight, decision force, and strong preferences before it turns into visible pressure."
+  },
+  "ziwei-jiali-cuihun-shi-ziji-xiangjie-haishi-fumuxiandong": {
+    title: "Family Pressure to Marry: Is It Really Your Timing, or the Parents Line Moving First?",
+    description: "A Zi Wei Dou Shu guide for separating personal readiness from family-driven marriage pressure.",
+    lead: "Marriage pressure can come from your own timing, but it can also come from the family line moving first. Those two experiences feel similar and lead to very different outcomes."
+  },
+  "ziwei-xiangqin-henshun-que-dingbuxialai-xiankan-shenme": {
+    title: "Why Dating Seems Smooth but Commitment Still Will Not Land",
+    description: "Use Zi Wei Dou Shu to separate relationship activation from real marriage readiness when everything looks fine on the surface.",
+    lead: "Some charts enter relationships easily but still struggle to settle into commitment. Meeting people and truly reaching marriage timing are not always synchronized."
+  },
+  "ziwei-xiantongju-zaitanhunshi-kan-pengyougong-taohua": {
+    title: "Why Some Relationships Move Into Living Together Before Marriage Becomes Real",
+    description: "A Zi Wei Dou Shu reading of relationship patterns where daily life and cohabitation move faster than formal marriage.",
+    lead: "A chart can push companionship, shared daily life, and even cohabitation before it pushes a formal marriage structure. That difference matters more than people think."
+  },
+  "ziwei-erhun-gengyao-kan-fudegong": {
+    title: "After One Marriage Ends, Why the Inner-Life Palace Matters Even More the Second Time",
+    description: "How Zi Wei Dou Shu reads second-marriage stability through emotional carrying capacity rather than attraction alone.",
+    lead: "A second marriage is rarely just a repeated first marriage with a new person. The chart often asks whether the inner-life structure has actually changed enough to hold a different result."
+  },
+  "ziwei-fuhun-nengbuneng-tan-xiankan-guoji": {
+    title: "Thinking About Getting Back Together? Check the Blockage Cycle First",
+    description: "A Zi Wei Dou Shu guide for telling emotional return apart from a relationship structure that is truly ready to reopen.",
+    lead: "Old feelings can come back faster than old structural problems clear. That is why reunion questions often need a blockage check before they need a romance answer."
+  },
+  "ziwei-hunshi-jiali-xianpaiban-fumugong-hongluan-tianxi": {
+    title: "Why Marriage Sometimes Gets Pushed by the Family Before You Feel Ready",
+    description: "How Zi Wei Dou Shu reads Hong Luan and Tian Xi through the parents line when the household moves faster than the individual.",
+    lead: "Marriage can be activated through the family line long before the individual feels fully settled. A fast-moving family process does not automatically mean the person is ready to carry the marriage well."
+  },
+  "ziwei-kaozheng-buneng-zhi-kan-wenchang": {
+    title: "Why Exam and Certification Questions Should Not Be Read Through Wen Chang Alone",
+    description: "A practical Zi Wei Dou Shu guide to reading study and credential questions through Wen Chang, Kui Yue, Hua Ke, and timing together.",
+    lead: "Wen Chang can definitely light up study, paperwork, and exams, but it does not single-handedly decide the result. The gate, the recognition, and the timing still have to line up."
+  },
+  "ziwei-buxiang-dushuren-que-rongyi-kaodiyi": {
+    title: "Why Someone Who Does Not Look Academic Can Still Rank First",
+    description: "Use Zi Wei Dou Shu to read exam strength through structure instead of surface impression.",
+    lead: "Exam structure is not written on the face in a simple way. Some people look rough, direct, or highly physical and still carry one of the strongest academic or testing patterns in the chart."
+  },
+  "ziwei-wenchang-wenqu-liangqi-xianying-caiyi-haishi-renyuan": {
+    title: "Wen Chang and Wen Qu Together: Talent First, Attraction Second",
+    description: "A plain-English Zi Wei Dou Shu reading of Wen Chang and Wen Qu when people confuse expression, artistic talent, and social appeal.",
+    lead: "When Wen Chang and Wen Qu rise together, the first thing to check is expression, talent, and refined output. Social charm may follow, but it should not replace the reading."
+  },
+  "ziwei-zhuanye-chifan-weishenme-xiankan-ke-zai-kan-lu": {
+    title: "Why Professional Income Usually Reads Hua Ke Before Hua Lu",
+    description: "How Zi Wei Dou Shu separates specialist credibility from the later conversion of that credibility into steady income.",
+    lead: "Professional work gets paid only after it gets believed. That is why skill, proof, and recognition often need to stand up before the money line can really settle."
+  },
+  "ziwei-nadaomingpan-bushi-xiankan-jixiong": {
+    title: "Why the First Step in Reading a Chart Is Not Good Luck vs Bad Luck",
+    description: "A method-focused Zi Wei Dou Shu guide to starting with the four transformations and the structural frame before making conclusions.",
+    lead: "People love fast verdicts, but good chart reading almost never starts there. The structure has to be named before the outcome can be named cleanly."
+  },
+  "ziwei-mingpan-putong-daxian-yidao-xiang-huanren": {
+    title: "Why an Ordinary Natal Chart Can Feel Like a Different Life Once the Right Decade Arrives",
+    description: "Use Zi Wei Dou Shu to understand how a modest natal base can be dramatically lifted by a stronger ten-year cycle.",
+    lead: "A chart does not need to look grand at birth to become powerful later. Sometimes the life changes only when the right decade finally turns on the line that was waiting underneath."
+  },
+  "ziwei-kan-haizi-shihe-bushi-jixu-dushu-bie-xiankan-siwen": {
+    title: "Reading a Child's Study Potential: Do Not Start With Whether They Look Scholarly",
+    description: "A Zi Wei Dou Shu guide for parents who want to judge whether a child's study path should continue, deepen, or shift direction.",
+    lead: "Children are often misread because adults project a visual stereotype onto study ability. In Zi Wei Dou Shu, exam structure matters more than whether a child looks calm, refined, or conventionally academic."
+  },
+  "ziwei-zaodong-chengjia-he-zhenshi-shihunqi-bushi-yihui-shi": {
+    title: "Why Wanting Marriage Early Is Not the Same as Reaching the Real Marriage Year",
+    description: "A plain-English Zi Wei Dou Shu reading for early marriage desire, repeated timing windows, and later true readiness.",
+    lead: "Some people feel ready for family life very early, yet their chart does not settle into a workable marriage structure until much later. Early movement and real marriage timing are not identical."
+  },
   "ziwei-ziwei-wuzuoyou-guxing": {
     title: "Why Zi Wei Needs Zuo Fu and You Bi",
     description: "Zi Wei can still look noble on its own, but without Zuo Fu and You Bi the chart often feels heavier, more solitary, and harder to carry in real life."
@@ -2072,7 +2224,7 @@ ${items.map((article, index) => `          <article class="article-card" data-in
             <div class="card-body">
               <div class="card-meta"><span class="tag">站内专题</span><span>中英双语</span></div>
               <h3>${escapeHtml(item.zhName)}</h3>
-              <p>${escapeHtml(item.desc)}</p>
+              <p>${escapeHtml(item.enDesc)}</p>
               <a class="card-link" href="${item.zhFile}">进入专题</a>
             </div>
           </article>`).join("\n");
@@ -2479,7 +2631,7 @@ function enIndex(articles) {
   ${JSON.stringify(collectionJsonLd, null, 2)}
   </script>
 </head>
-<body>
+<body class="article-index-page">
   <header class="site-header">
     <div class="site-nav">
       <a class="brand" href="../../index.html" aria-label="YuetianAI home"><img src="../../images/wentian-prototype-assets/wentian-brand-logo-ai-gold-v1.webp" alt="" aria-hidden="true"><span>YuetianAI</span></a>
