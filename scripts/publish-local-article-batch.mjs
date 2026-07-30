@@ -317,7 +317,7 @@ function explicitHubKey(article) {
   const label = `${article.category || article.section || ""}`.trim();
   if (label.includes("看盘方法")) return "learning";
   if (label.includes("宫位组合") || label.includes("婚恋与关系")) return "palaces";
-  if (label.includes("主星细读")) return "main-stars";
+  if (label.includes("主星细读") || label === "主星") return "main-stars";
   if (label.includes("辅煞曜")) return "helper-malice";
   if (label.includes("特定命例")) return "case-patterns";
   if (label.includes("大限流年")) return "cycles";
