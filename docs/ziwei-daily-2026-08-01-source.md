@@ -517,7 +517,7 @@ List each notice, contract, move, and relationship decision by date. Identify th
 ## 9. 紫微斗数流年走到父母、夫妻、朋友宫时，事情一定发生在别人身上吗
 slug：`ziwei-liunian-guanxigong-shijian-guishu`
 搜索意图：说明流年进入父母、夫妻或朋友等关系宫时，如何区分对方状况、双方互动与自己承担的事件。
-素材线索：同步文稿段 358-365、553、565、801、1269、2844-2845。核心判断：流年落宫具有宫性，进入父母、夫妻或朋友宫时，先确定事件经过哪一类关系进入生活。；化权在夫妻宫可优先描述伴侣主见和领导性，不能直接复制成命主本人性格变强。；紫微天相等星曜落在父母、兄弟或子女宫时，所显示的能力与位置先归给对应人物。；六煞进入有人宫仍属压力信号，但要通过关系对象、互动方式和本人承担的后果分别解释。；关系宫的事情会沿三方四正影响自己的时间、资金和选择，因此并非完全与本人无关。。组合例子：例子一：流年命宫走到本命夫妻宫，而该宫原有化权，可能是伴侣升任负责人、主见变强；若家庭因此重新分工，伴侣的变化就转成自己需要承担的时间事件。；例子二：流年命宫走到本命朋友宫，而该宫原有六煞，先检查合作者的冲突、延误或判断失误；若自己补款、接手客户或替团队收尾，事件虽由朋友线进入，现实后果已由本人承受。
+素材线索：同步文稿段 358-365、553、565、801、1081、1269、2844-2845。核心判断：流年落宫具有宫性，进入父母、夫妻或朋友宫时，先确定事件经过哪一类关系进入生活。；化权在夫妻宫可优先描述伴侣主见和领导性，不能直接复制成命主本人性格变强。；紫微天相等星曜落在父母、兄弟或子女宫时，所显示的能力与位置先归给对应人物。；六煞进入有人宫仍属压力信号，但要通过关系对象、互动方式和本人承担的后果分别解释。；关系宫的事情会沿三方四正影响自己的时间、资金和选择，因此并非完全与本人无关。。组合例子：例子一：流年命宫走到本命夫妻宫，而该宫原有化权，可能是伴侣升任负责人、主见变强；若家庭因此重新分工，伴侣的变化就转成自己需要承担的时间事件。；例子二：流年命宫走到本命朋友宫，而该宫原有羊陀火铃、空劫、化忌或巨门等压力组合，先检查合作是否由友转敌、出现口舌或损耗；若自己补款或接手客户，现实后果已由本人承受。
 正文草稿：
 流年走到夫妻宫，有人只盯着伴侣；走到父母宫，就只问父母会不会出事。这种读法漏掉了关系的另一半：对方的变化，常会改写自己的时间、钱和决定。
 
@@ -536,7 +536,7 @@ slug：`ziwei-liunian-guanxigong-shijian-guishu`
 ### 有人宫的煞曜要拆成互动与代价
 六煞进入有人宫，不宜只写成对方不好，也不能把压力全部推给命主。要检查谁先制造冲突、双方怎样回应，以及延误、争议或损失最后由谁承担。
 
-例子二：流年命宫走到本命朋友宫，而该宫原有六煞，先检查合作者的冲突、延误或判断失误；若自己补款、接手客户或替团队收尾，事件虽由朋友线进入，现实后果已由本人承受。关系入口与责任归属可以不同。
+例子二：流年命宫走到本命朋友宫，而该宫原有羊陀火铃、空劫、化忌或巨门等压力组合，先检查合作是否由友转敌、出现口舌或损耗；若自己补款或接手客户，现实后果已由本人承受。关系入口与责任归属可以不同。
 
 ### 三方四正决定影响会不会回到自己
 关系宫不是孤立的小格子。它与财帛、官禄、迁移或其他宫位形成连接时，对方的事情可能进一步影响付款、工作和移动。没有这些承接，就不必把所有关系变化都扩大成全盘危机。
@@ -566,7 +566,7 @@ Example 1: The annual Life Palace reaches the natal Spouse Palace where Hua Quan
 ### Separate Relationship Pressure From Personal Consequence
 Difficult stars in a people-related palace still signal pressure, but the interpretation needs three parts: who begins the problem, how the relationship responds, and who bears the measurable cost. Labeling the other person as bad is neither precise nor useful.
 
-Example 2: The annual Life Palace reaches the natal Friends Palace, where the Six Malefic Stars are already present. A collaborator may trigger conflict or delay, but the owner may still absorb the cash and client consequences. Taking over delivery or replacing missing funds turns an outside problem into the owner's annual workload.
+Example 2: The annual Life Palace reaches a natal Friends Palace where several difficult markers appear together, such as Qing Yang, Tuo Luo, Fire Star, Bell Star, Tian Kong, Di Jie, Hua Ji, or Ju Men. Cooperation may turn into conflict or loss, while the owner still absorbs the cash and client consequences. Taking over delivery or replacing missing funds turns an outside problem into the owner's annual workload.
 
 ### Connected Palaces Show How Far the Effect Travels
 A relationship palace can connect with Wealth, Career, or Travel through the surrounding structure. A parent's decision may change funding, a partner's role may alter relocation plans, and a collaborator's mistake may reach client revenue. Without such connections, the event should not be inflated into a total-life verdict.
@@ -1473,7 +1473,7 @@ Locate San Tai and Ba Zuo first, then check specifically for Tian Fu in the same
 ## 24. 紫微斗数擎羊入庙和落陷差在哪：同样见刀锋，风险等级不能一刀切
 slug：`ziwei-qingyang-rumiao-luoxian`
 搜索意图：用庙陷强弱、所在宫位和同会煞曜区分擎羊的可控尖锐与放大风险，并给出现实防范顺序。
-素材线索：同步文稿段 800-817、891、1291、1540。核心判断：擎羊是六煞之一，基本象意具有刀锋、冲突和近身阻力，但不同宫位对应的人与事不同。；庙旺利陷属于星曜亮度，擎羊入庙时尖锐较可控制，落陷则阻力更难转成可用行动。；擎羊入庙仍不能当作完全无事，只是面对手术、工具或高压冲突时，更强调预防和规范处置。；擎羊再会陀罗、火星、铃星或化忌时要提高警戒，并依疾厄、官禄、夫妻等落宫分别检查。。组合例子：例子一：擎羊入庙落官禄，三方有化权而不再会火铃。工作中遇到必须快速取舍、处理尖锐冲突或承担高压事项时，这股力量相对有边界；仍要用操作规范和复核机制保持警戒。；例子二：擎羊落陷在疾厄，又与陀罗、铃星同会，风险比单颗入庙明显，应按现实症状接受正规检查并管理高危活动；若同样组合落夫妻，则优先处理争执升级与边界。
+素材线索：同步文稿段 800-818、1032-1033、2813。核心判断：擎羊是六煞之一，基本象意具有刀锋、冲突和近身阻力，但不同宫位对应的人与事不同。；庙旺利陷属于星曜亮度，擎羊入庙时尖锐较可控制，落陷则阻力更难转成可用行动。；擎羊入庙仍不能当作完全无事，只是面对手术、工具或高压冲突时，更强调预防和规范处置。；官禄宫七杀擎羊却不见化权时，要核对岗位职责与实际权力是否相称。；父母宫擎羊星落陷时，要核对父母的关心与介入是否反而形成近身阻力。。组合例子：例子一：擎羊入庙对应刀与手术时，可读为处置过程较可控制，但平安倾向不等于免除术前评估、正规医疗和术后观察。；例子二：官禄宫同时见七杀与擎羊，却没有化权时，不先断职业危险，而要核对岗位名称、实际授权和承担结果的责任是否相称。；例子三：父母宫擎羊星落陷时，重点是父母的关心、意见或介入是否反而形成近身阻力；现实中应把支持、施压和替自己做决定分开。
 正文草稿：
 擎羊最容易让人被一个字吓住：刀。有人据此把它直接等同于事故、手术或关系破裂，不再看强弱，也不问落在什么宫。这样的读法把风险提示变成恐吓，既不准确，也不给人任何可执行的办法。
 
@@ -1482,25 +1482,25 @@ slug：`ziwei-qingyang-rumiao-luoxian`
 ### 擎羊的刀锋先代表切开与对抗
 刀锋不只对应身体，也可以是快速取舍、尖锐冲突或必须正面解决的问题。擎羊在命宫、有人宫和事业财务宫的主语不同，不能把任何落宫都说成健康事件。
 
-先问哪里需要更强硬的处理，再看这种强硬是否有边界。落官禄时只说明工作中较常面对高压或尖锐事项，不据此指定某个职业；若缺少规范，同一力量也会制造伤害。
+先问哪里需要更强硬的处理，再看这种强硬是否有边界。宫位一变，主语就会变：事业宫看职责与权力，有人的宫位看互动与影响，不能把所有擎羊都翻译成身体问题。
 
 ### 入庙是较可控，不是自动变吉
 煞曜入庙，表示能量较亮、较能被看见和处理。擎羊涉及刀或高压处置时，入庙可理解为准备充分、过程有控制，但风险意识仍需保留，不能因入庙取消检查。
 
-例子一：擎羊入庙落官禄，三方有化权而不再会火铃。工作中遇到必须快速取舍、处理尖锐冲突或承担高压事项时，这股力量相对有边界；仍要用操作规范和复核机制保持警戒。
+例子一：擎羊入庙对应刀与手术时，可读为处置过程较可控制，但平安倾向不等于免除术前评估、正规医疗和术后观察。
 
-### 落陷又会煞，才是升级警戒的条件
-擎羊落陷时，冲突更难被制度吸收；再与陀罗、火星、铃星或化忌相会，才形成更密集的阻力。此时应把担心翻译成检查、保险、合同边界或沟通规则，而不是预言必然结果。
+### 落陷之后先找具体宫位
+落陷表示尖锐更难被看见和处理，但风险落在哪里，仍由宫位决定。它落在父母宫，讨论的是长辈和自己的互动边界；不能因为星曜带刀锋，就越过宫位直接改断疾病或事故。
 
-例子二：擎羊落陷在疾厄，又与陀罗、铃星同会，风险比单颗入庙明显，应按现实症状接受正规检查并管理高危活动；若同样组合落夫妻，则优先处理争执升级与边界。
+例子三：父母宫擎羊星落陷时，重点是父母的关心、意见或介入是否反而形成近身阻力；现实中应把支持、施压和替自己做决定分开。
 
 ### 把风险落到对应宫位的防范动作
-疾厄宫对应身体与医疗，官禄对应职责和职场冲突，夫妻对应相处中的锋利，迁移则关注外出与外部环境。先定领域，防范才不会无边界扩散。
+官禄宫还要继续看同宫主星与权星。只有知道职责压力来自哪里，才能判断这股尖锐是实际授权、执行阻力，还是名义职位与责任不匹配。
 
-健康问题交给合格医疗判断，工作用流程和双人复核，关系用暂停机制与明确底线。命盘能提醒何处要谨慎，不能代替诊断、法律意见或安全规范。
+例子二：官禄宫同时见七杀与擎羊，却没有化权时，不先断职业危险，而要核对岗位名称、实际授权和承担结果的责任是否相称。健康问题仍交给合格医疗判断，命盘不能替代诊断或安全规范。
 
 ### 排盘使用顺序
-先确认擎羊所在宫位，分清身体、工作、关系或外部环境；再看庙旺利陷决定尖锐是否较可控，检查陀罗、火星、铃星与化忌有没有叠加，最后把结论改写成体检、操作规范、合同复核或冲突暂停等对应行动，不用单颗星断必然事故。
+先确认擎羊所在宫位，分清工作、长辈、身体或其他现实领域；再看庙旺利陷决定尖锐是否较可控，接着核对同宫主星与化权等条件。最后把结论改写成正规检查、授权复核、沟通边界或操作规范，不用单颗星断必然事故。
 
 英文标题：Qing Yang Exalted or Fallen: How Strength Changes the Risk Level
 英文描述：Compare Qing Yang at different strength levels, then use palace placement and accompanying stars to judge whether pressure is manageable or requires stricter safeguards.
@@ -1517,20 +1517,20 @@ Ask where firm action is required and whether that action has limits. In the Car
 ### A Strong Placement Means More Control, Not Zero Risk
 When Qing Yang is exalted, its pressure is easier to recognize and direct. High-pressure tasks, sharp conflict, or work involving tools or safety-critical procedures can be managed with written steps, appropriate safeguards, and a second check. A stronger placement lowers the relative risk; it never removes the need for care.
 
-Example 1: Qing Yang is exalted in the Career Palace, with Hua Quan and no Fire Star or Bell Star. High-pressure decisions, sharp workplace conflict, or work involving tools or safety-critical procedures still require safeguards, but the risk is easier to manage with clear authority, written steps, and a second check.
+Example 1: When exalted Qing Yang is connected with a blade or surgery, the procedure may be more controllable, but that does not remove preoperative assessment, qualified medical care, or follow-up observation.
 
-### A Weaker Placement With Additional Malefics Needs More Caution
-When Qing Yang is fallen, its pressure is harder to contain. If Tuo Luo, the Fire Star, the Bell Star, or Hua Ji joins it, the chart calls for a stronger response. That response may be an examination, safety review, contract boundary, or conflict protocol, not a prediction that disaster must happen.
+### A Fallen Placement Still Needs a Palace Subject
+A fallen placement makes the sharp quality harder to contain, but the palace still defines the subject. In the Parents Palace, the issue is interaction with elders and close authority figures. It is not evidence for an unrelated medical prediction.
 
-Example 2: Qing Yang is fallen in the Health Palace and joins Tuo Luo and the Bell Star. This combination carries a higher risk level than the first, so symptoms deserve qualified medical assessment and high-risk activities need stricter precautions. If the same cluster is in the Spouse Palace, prioritize boundaries and de-escalation around sharp conflict instead.
+Example 3: Fallen Qing Yang is in the Parents Palace. The practical issue is whether care, advice, or intervention from elders becomes a close source of resistance. Separate concern from making decisions for the person.
 
-### Match Prevention to the Palace
-The Health Palace points toward the body and treatment, the Career Palace toward duties and workplace confrontation, the Spouse Palace toward sharp conflict in a relationship, and the Travel Palace toward outside environments. A defined area creates a defined precaution.
+### Use the Career Combination to Check Real Authority
+The Career Palace requires another layer: the main star and authority markers. Qi Sha can carry pressure and command, but a chart with Qing Yang and no Hua Quan raises a different question from surgery or family intervention. The question is whether responsibility arrives without enough authority.
 
-Use qualified medical care for symptoms, two-person review for risky operations, and clear pause rules for repeated arguments. The chart may identify where caution belongs, but it does not replace diagnosis, legal advice, or professional safety standards.
+Example 2: Qi Sha and Qing Yang share the Career Palace, but Hua Quan is absent. Do not jump to a dangerous-job label. Compare the job title, real authority, and responsibility for outcomes. Use qualified medical care for symptoms; the chart does not replace diagnosis or safety standards.
 
 ### Practical Reading Order
-Locate Qing Yang first so the concern belongs to the correct life area. Read an exalted placement as easier to manage. Read a fallen placement as requiring more caution. Then check Tuo Luo, the Fire Star, the Bell Star, and Hua Ji for added pressure, and turn the result into an examination, safety protocol, contract review, or conflict boundary.
+Locate Qing Yang first so the concern belongs to the correct life area. Read an exalted placement as easier to manage and a fallen placement as harder to contain. Then check the main star and authority markers such as Hua Quan. Convert the result into qualified care, an authority review, a communication boundary, or a safety procedure rather than a fixed prediction.
 
 ---
 

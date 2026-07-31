@@ -223,7 +223,7 @@ export const articles = [
     title: "紫微斗数流年走到父母、夫妻、朋友宫时，事情一定发生在别人身上吗",
     category: "大限流年",
     intent: "说明流年进入父母、夫妻或朋友等关系宫时，如何区分对方状况、双方互动与自己承担的事件。",
-    evidence: ["358-365", "553", "565", "801", "1269", "2844-2845"],
+    evidence: ["358-365", "553", "565", "801", "1081", "1269", "2844-2845"],
     userQuestion: "流年落在父母、夫妻或朋友宫，是只看他们会发生什么，还是也会应在我自己身上？",
     userScenario: "用户看到年度重点落在关系宫，便把所有判断推给父母、伴侣或朋友，后来自己却因照顾、合作、承诺和资源安排受到直接影响。",
     coreIntent: "判断关系宫流年事件归属",
@@ -244,7 +244,7 @@ export const articles = [
     ],
     examples: [
       "例子一：流年命宫走到本命夫妻宫，而该宫原有化权，可能是伴侣升任负责人、主见变强；若家庭因此重新分工，伴侣的变化就转成自己需要承担的时间事件。",
-      "例子二：流年命宫走到本命朋友宫，而该宫原有六煞，先检查合作者的冲突、延误或判断失误；若自己补款、接手客户或替团队收尾，事件虽由朋友线进入，现实后果已由本人承受。",
+      "例子二：流年命宫走到本命朋友宫，而该宫原有羊陀火铃、空劫、化忌或巨门等压力组合，先检查合作是否由友转敌、出现口舌或损耗；若自己补款或接手客户，现实后果已由本人承受。",
     ],
     openingParagraphs: [
       "流年走到夫妻宫，有人只盯着伴侣；走到父母宫，就只问父母会不会出事。这种读法漏掉了关系的另一半：对方的变化，常会改写自己的时间、钱和决定。",
@@ -269,7 +269,7 @@ export const articles = [
         heading: "有人宫的煞曜要拆成互动与代价",
         paragraphs: [
           "六煞进入有人宫，不宜只写成对方不好，也不能把压力全部推给命主。要检查谁先制造冲突、双方怎样回应，以及延误、争议或损失最后由谁承担。",
-          "例子二：流年命宫走到本命朋友宫，而该宫原有六煞，先检查合作者的冲突、延误或判断失误；若自己补款、接手客户或替团队收尾，事件虽由朋友线进入，现实后果已由本人承受。关系入口与责任归属可以不同。"
+          "例子二：流年命宫走到本命朋友宫，而该宫原有羊陀火铃、空劫、化忌或巨门等压力组合，先检查合作是否由友转敌、出现口舌或损耗；若自己补款或接手客户，现实后果已由本人承受。关系入口与责任归属可以不同。"
         ],
       },
       {
@@ -286,7 +286,7 @@ export const articles = [
       description: "Learn how Parents, Spouse, and Friends palaces can describe another person, a shared interaction, and consequences you personally carry.",
       examples: [
         "Example 1: The annual Life Palace reaches the natal Spouse Palace where Hua Quan is fixed. A partner may gain authority, while the resulting household changes become the chart owner's time commitment.",
-        "Example 2: The annual Life Palace reaches the natal Friends Palace, where the Six Malefic Stars are already present. A collaborator may trigger conflict or delay, but the owner may still absorb the cash and client consequences.",
+        "Example 2: The annual Life Palace reaches a natal Friends Palace where several difficult markers appear together, such as Qing Yang, Tuo Luo, Fire Star, Bell Star, Tian Kong, Di Jie, Hua Ji, or Ju Men. Cooperation may turn into conflict or loss, while the owner still absorbs the cash and client consequences.",
       ],
       openingParagraphs: [
         "When the annual cycle enters the Spouse Palace, some readers look only for an event happening to the partner. When it enters Parents, they ask only about a parent. That approach misses the practical nature of relationships: another person's change can alter your schedule, finances, workload, or available choices.",
@@ -311,7 +311,7 @@ export const articles = [
           heading: "Separate Relationship Pressure From Personal Consequence",
           paragraphs: [
             "Difficult stars in a people-related palace still signal pressure, but the interpretation needs three parts: who begins the problem, how the relationship responds, and who bears the measurable cost. Labeling the other person as bad is neither precise nor useful.",
-            "Example 2: The annual Life Palace reaches the natal Friends Palace, where the Six Malefic Stars are already present. A collaborator may trigger conflict or delay, but the owner may still absorb the cash and client consequences. Taking over delivery or replacing missing funds turns an outside problem into the owner's annual workload."
+            "Example 2: The annual Life Palace reaches a natal Friends Palace where several difficult markers appear together, such as Qing Yang, Tuo Luo, Fire Star, Bell Star, Tian Kong, Di Jie, Hua Ji, or Ju Men. Cooperation may turn into conflict or loss, while the owner still absorbs the cash and client consequences. Taking over delivery or replacing missing funds turns an outside problem into the owner's annual workload."
           ],
         },
         {

@@ -326,27 +326,29 @@ export const articles = [
     title: "紫微斗数擎羊入庙和落陷差在哪：同样见刀锋，风险等级不能一刀切",
     category: "辅煞曜",
     intent: "用庙陷强弱、所在宫位和同会煞曜区分擎羊的可控尖锐与放大风险，并给出现实防范顺序。",
-    evidence: ["800-817", "891", "1291", "1540"],
+    evidence: ["800-818", "1032-1033", "2813"],
     userQuestion: "命盘看到擎羊就代表事故、开刀或冲突吗，入庙和落陷到底应该怎样区分？",
     userScenario: "用户在命宫、官禄、夫妻或疾厄看到擎羊后非常紧张，网上又有人把任何擎羊都解释成严重灾害，希望知道强弱与组合怎样改变风险等级。",
     coreIntent: "分层判断擎羊的强弱与实际风险",
-    directAnswer: "擎羊有刀锋、阻力和冲突的尖锐性质，但不能离开庙陷与落宫直接断事故。入庙表示这股尖锐较容易被看见和控制，遇到必须用刀、快速取舍或高压处理的事项时，风险相对可控，仍需警戒；落陷时更难控制，若再会陀罗、火铃或化忌，风险等级才明显上升。落疾厄看身体与处置，落官禄看工作中的尖锐冲突，落夫妻看关系摩擦，各宫不能混断。",
+    directAnswer: "擎羊有刀锋、阻力和冲突的尖锐性质，但不能离开庙陷、落宫和同宫星曜直接断事故。擎羊入庙对应刀与处置时，重点是过程较可控制，仍不能取消警戒；落陷则表示这股尖锐更难化开，还要追问落在哪一宫。官禄宫七杀与擎羊同见却没有化权，主线是职责与实权是否相称；父母宫擎羊落陷，则先检查长辈的关心是否反而形成干预，不能把两种宫位混成同一件事。",
     readerValue: "读者能把恐吓式吉凶改成强度、领域、组合与行动四层检查，既不忽视风险，也不会因为一颗擎羊对健康、婚姻或事业作绝对判断。",
     supportPlan: [
       "擎羊属于六煞，基本性质带有刀锋、阻力与隐藏的人际影响",
       "星曜亮度会改变煞曜表现，煞星入庙较能转化，落陷时风险更难控制",
       "擎羊入庙即使对应刀与手术，也可表现为处置后平安，但仍要保持警戒",
-      "擎羊落疾厄、官禄或关系宫时主线不同，再会陀罗火铃等煞曜才进一步提高强度",
+      "官禄宫七杀擎羊而无化权，与父母宫擎羊落陷，是两条不同的现实主线",
     ],
     points: [
       "擎羊是六煞之一，基本象意具有刀锋、冲突和近身阻力，但不同宫位对应的人与事不同。",
       "庙旺利陷属于星曜亮度，擎羊入庙时尖锐较可控制，落陷则阻力更难转成可用行动。",
       "擎羊入庙仍不能当作完全无事，只是面对手术、工具或高压冲突时，更强调预防和规范处置。",
-      "擎羊再会陀罗、火星、铃星或化忌时要提高警戒，并依疾厄、官禄、夫妻等落宫分别检查。",
+      "官禄宫七杀擎羊却不见化权时，要核对岗位职责与实际权力是否相称。",
+      "父母宫擎羊星落陷时，要核对父母的关心与介入是否反而形成近身阻力。",
     ],
     examples: [
-      "例子一：擎羊入庙落官禄，三方有化权而不再会火铃。工作中遇到必须快速取舍、处理尖锐冲突或承担高压事项时，这股力量相对有边界；仍要用操作规范和复核机制保持警戒。",
-      "例子二：擎羊落陷在疾厄，又与陀罗、铃星同会，风险比单颗入庙明显，应按现实症状接受正规检查并管理高危活动；若同样组合落夫妻，则优先处理争执升级与边界。",
+      "例子一：擎羊入庙对应刀与手术时，可读为处置过程较可控制，但平安倾向不等于免除术前评估、正规医疗和术后观察。",
+      "例子二：官禄宫同时见七杀与擎羊，却没有化权时，不先断职业危险，而要核对岗位名称、实际授权和承担结果的责任是否相称。",
+      "例子三：父母宫擎羊星落陷时，重点是父母的关心、意见或介入是否反而形成近身阻力；现实中应把支持、施压和替自己做决定分开。",
     ],
     openingParagraphs: [
       "擎羊最容易让人被一个字吓住：刀。有人据此把它直接等同于事故、手术或关系破裂，不再看强弱，也不问落在什么宫。这样的读法把风险提示变成恐吓，既不准确，也不给人任何可执行的办法。",
@@ -357,38 +359,39 @@ export const articles = [
         heading: "擎羊的刀锋先代表切开与对抗",
         paragraphs: [
           "刀锋不只对应身体，也可以是快速取舍、尖锐冲突或必须正面解决的问题。擎羊在命宫、有人宫和事业财务宫的主语不同，不能把任何落宫都说成健康事件。",
-          "先问哪里需要更强硬的处理，再看这种强硬是否有边界。落官禄时只说明工作中较常面对高压或尖锐事项，不据此指定某个职业；若缺少规范，同一力量也会制造伤害。",
+          "先问哪里需要更强硬的处理，再看这种强硬是否有边界。宫位一变，主语就会变：事业宫看职责与权力，有人的宫位看互动与影响，不能把所有擎羊都翻译成身体问题。",
         ],
       },
       {
         heading: "入庙是较可控，不是自动变吉",
         paragraphs: [
           "煞曜入庙，表示能量较亮、较能被看见和处理。擎羊涉及刀或高压处置时，入庙可理解为准备充分、过程有控制，但风险意识仍需保留，不能因入庙取消检查。",
-          "例子一：擎羊入庙落官禄，三方有化权而不再会火铃。工作中遇到必须快速取舍、处理尖锐冲突或承担高压事项时，这股力量相对有边界；仍要用操作规范和复核机制保持警戒。",
+          "例子一：擎羊入庙对应刀与手术时，可读为处置过程较可控制，但平安倾向不等于免除术前评估、正规医疗和术后观察。",
         ],
       },
       {
-        heading: "落陷又会煞，才是升级警戒的条件",
+        heading: "落陷之后先找具体宫位",
         paragraphs: [
-          "擎羊落陷时，冲突更难被制度吸收；再与陀罗、火星、铃星或化忌相会，才形成更密集的阻力。此时应把担心翻译成检查、保险、合同边界或沟通规则，而不是预言必然结果。",
-          "例子二：擎羊落陷在疾厄，又与陀罗、铃星同会，风险比单颗入庙明显，应按现实症状接受正规检查并管理高危活动；若同样组合落夫妻，则优先处理争执升级与边界。",
+          "落陷表示尖锐更难被看见和处理，但风险落在哪里，仍由宫位决定。它落在父母宫，讨论的是长辈和自己的互动边界；不能因为星曜带刀锋，就越过宫位直接改断疾病或事故。",
+          "例子三：父母宫擎羊星落陷时，重点是父母的关心、意见或介入是否反而形成近身阻力；现实中应把支持、施压和替自己做决定分开。",
         ],
       },
       {
         heading: "把风险落到对应宫位的防范动作",
         paragraphs: [
-          "疾厄宫对应身体与医疗，官禄对应职责和职场冲突，夫妻对应相处中的锋利，迁移则关注外出与外部环境。先定领域，防范才不会无边界扩散。",
-          "健康问题交给合格医疗判断，工作用流程和双人复核，关系用暂停机制与明确底线。命盘能提醒何处要谨慎，不能代替诊断、法律意见或安全规范。",
+          "官禄宫还要继续看同宫主星与权星。只有知道职责压力来自哪里，才能判断这股尖锐是实际授权、执行阻力，还是名义职位与责任不匹配。",
+          "例子二：官禄宫同时见七杀与擎羊，却没有化权时，不先断职业危险，而要核对岗位名称、实际授权和承担结果的责任是否相称。健康问题仍交给合格医疗判断，命盘不能替代诊断或安全规范。",
         ],
       },
     ],
-    orderText: "先确认擎羊所在宫位，分清身体、工作、关系或外部环境；再看庙旺利陷决定尖锐是否较可控，检查陀罗、火星、铃星与化忌有没有叠加，最后把结论改写成体检、操作规范、合同复核或冲突暂停等对应行动，不用单颗星断必然事故。",
+    orderText: "先确认擎羊所在宫位，分清工作、长辈、身体或其他现实领域；再看庙旺利陷决定尖锐是否较可控，接着核对同宫主星与化权等条件。最后把结论改写成正规检查、授权复核、沟通边界或操作规范，不用单颗星断必然事故。",
     english: {
       title: "Qing Yang Exalted or Fallen: How Strength Changes the Risk Level",
       description: "Compare Qing Yang at different strength levels, then use palace placement and accompanying stars to judge whether pressure is manageable or requires stricter safeguards.",
       examples: [
-        "Example 1: Qing Yang is exalted in the Career Palace, with Hua Quan and no Fire Star or Bell Star. High-pressure decisions, sharp workplace conflict, or work involving tools or safety-critical procedures still require safeguards, but the risk is easier to manage with clear authority, written steps, and a second check.",
-        "Example 2: Qing Yang is fallen in the Health Palace and joins Tuo Luo and the Bell Star. This combination carries a higher risk level than the first, so symptoms deserve qualified medical assessment and high-risk activities need stricter precautions. If the same cluster is in the Spouse Palace, prioritize boundaries and de-escalation around sharp conflict instead.",
+        "Example 1: When exalted Qing Yang is connected with a blade or surgery, the procedure may be more controllable, but that does not remove preoperative assessment, qualified medical care, or follow-up observation.",
+        "Example 2: Qi Sha and Qing Yang share the Career Palace, but Hua Quan is absent. Do not jump to a dangerous-job label. Compare the job title, real authority, and responsibility for outcomes.",
+        "Example 3: Fallen Qing Yang is in the Parents Palace. The practical issue is whether care, advice, or intervention from elders becomes a close source of resistance. Separate concern from making decisions for the person.",
       ],
       openingParagraphs: [
         "Qing Yang is often reduced to one frightening image: a blade. From there, a reader may predict accidents, surgery, or a broken relationship without checking strength or palace. This turns a risk symbol into fear and gives the person no useful way to respond.",
@@ -406,25 +409,25 @@ export const articles = [
           heading: "A Strong Placement Means More Control, Not Zero Risk",
           paragraphs: [
             "When Qing Yang is exalted, its pressure is easier to recognize and direct. High-pressure tasks, sharp conflict, or work involving tools or safety-critical procedures can be managed with written steps, appropriate safeguards, and a second check. A stronger placement lowers the relative risk; it never removes the need for care.",
-            "Example 1: Qing Yang is exalted in the Career Palace, with Hua Quan and no Fire Star or Bell Star. High-pressure decisions, sharp workplace conflict, or work involving tools or safety-critical procedures still require safeguards, but the risk is easier to manage with clear authority, written steps, and a second check.",
+            "Example 1: When exalted Qing Yang is connected with a blade or surgery, the procedure may be more controllable, but that does not remove preoperative assessment, qualified medical care, or follow-up observation.",
           ],
         },
         {
-        heading: "A Weaker Placement With Additional Malefics Needs More Caution",
-        paragraphs: [
-            "When Qing Yang is fallen, its pressure is harder to contain. If Tuo Luo, the Fire Star, the Bell Star, or Hua Ji joins it, the chart calls for a stronger response. That response may be an examination, safety review, contract boundary, or conflict protocol, not a prediction that disaster must happen.",
-            "Example 2: Qing Yang is fallen in the Health Palace and joins Tuo Luo and the Bell Star. This combination carries a higher risk level than the first, so symptoms deserve qualified medical assessment and high-risk activities need stricter precautions. If the same cluster is in the Spouse Palace, prioritize boundaries and de-escalation around sharp conflict instead.",
-          ],
-        },
-        {
-          heading: "Match Prevention to the Palace",
+          heading: "A Fallen Placement Still Needs a Palace Subject",
           paragraphs: [
-            "The Health Palace points toward the body and treatment, the Career Palace toward duties and workplace confrontation, the Spouse Palace toward sharp conflict in a relationship, and the Travel Palace toward outside environments. A defined area creates a defined precaution.",
-            "Use qualified medical care for symptoms, two-person review for risky operations, and clear pause rules for repeated arguments. The chart may identify where caution belongs, but it does not replace diagnosis, legal advice, or professional safety standards.",
+            "A fallen placement makes the sharp quality harder to contain, but the palace still defines the subject. In the Parents Palace, the issue is interaction with elders and close authority figures. It is not evidence for an unrelated medical prediction.",
+            "Example 3: Fallen Qing Yang is in the Parents Palace. The practical issue is whether care, advice, or intervention from elders becomes a close source of resistance. Separate concern from making decisions for the person.",
+          ],
+        },
+        {
+          heading: "Use the Career Combination to Check Real Authority",
+          paragraphs: [
+            "The Career Palace requires another layer: the main star and authority markers. Qi Sha can carry pressure and command, but a chart with Qing Yang and no Hua Quan raises a different question from surgery or family intervention. The question is whether responsibility arrives without enough authority.",
+            "Example 2: Qi Sha and Qing Yang share the Career Palace, but Hua Quan is absent. Do not jump to a dangerous-job label. Compare the job title, real authority, and responsibility for outcomes. Use qualified medical care for symptoms; the chart does not replace diagnosis or safety standards.",
           ],
         },
       ],
-      orderText: "Locate Qing Yang first so the concern belongs to the correct life area. Read an exalted placement as easier to manage. Read a fallen placement as requiring more caution. Then check Tuo Luo, the Fire Star, the Bell Star, and Hua Ji for added pressure, and turn the result into an examination, safety protocol, contract review, or conflict boundary.",
+      orderText: "Locate Qing Yang first so the concern belongs to the correct life area. Read an exalted placement as easier to manage and a fallen placement as harder to contain. Then check the main star and authority markers such as Hua Quan. Convert the result into qualified care, an authority review, a communication boundary, or a safety procedure rather than a fixed prediction.",
     },
   },
 ];

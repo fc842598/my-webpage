@@ -51,6 +51,9 @@ const TIME_LAYER_RISK_PATTERNS = [
   /\bannual\s+(?:hua\s+(?:lu|quan|ke|ji)|tan\s+lang|qi\s+sha|po\s+jun|tian\s+xiang|tian\s+liang)\b/i,
 ];
 const DAILY_SEED_FILE_PATTERN = /^(?:daily-ziwei|ziwei-daily)-(\d{4}-\d{2}-\d{2})(?:-seed)?\.mjs$/;
+const POINT_EVIDENCE_MIN_COVERAGE = 0.05;
+const EXAMPLE_EVIDENCE_MIN_COVERAGE = 0.05;
+const MIN_USED_EVIDENCE_RANGES = 2;
 
 function parseArgs(argv) {
   const args = {};
@@ -100,6 +103,37 @@ function coverage(claim, sourceText) {
   let found = 0;
   for (const item of claimGrams) if (sourceGrams.has(item)) found += 1;
   return found / claimGrams.size;
+}
+
+export function bestEvidenceMatch(claim, evidenceRanges) {
+  const matches = evidenceRanges
+    .map((item) => ({
+      range: item.range,
+      coverage: coverage(claim, item.text),
+    }))
+    .sort((left, right) => right.coverage - left.coverage || String(left.range).localeCompare(String(right.range)));
+  return matches[0] || { range: null, coverage: 0 };
+}
+
+export function evidenceBindingSummary({ points = [], examples = [], evidenceRanges = [] }) {
+  const pointMatches = points.map((claim) => ({ claim, ...bestEvidenceMatch(claim, evidenceRanges) }));
+  const exampleMatches = examples.map((claim) => ({ claim, ...bestEvidenceMatch(claim, evidenceRanges) }));
+  const usedRanges = [...new Set([...pointMatches, ...exampleMatches].map((item) => item.range).filter(Boolean))];
+  return { pointMatches, exampleMatches, usedRanges, usedRangeCount: usedRanges.length };
+}
+
+export function evidenceBindingFailures(summary) {
+  const failures = [];
+  if (summary.pointMatches.some((item) => item.coverage < POINT_EVIDENCE_MIN_COVERAGE)) {
+    failures.push("至少一个观点无法绑定到具体源文证据范围");
+  }
+  if (summary.exampleMatches.some((item) => item.coverage < EXAMPLE_EVIDENCE_MIN_COVERAGE)) {
+    failures.push("至少一个组合或落宫例子无法绑定到具体源文证据范围");
+  }
+  if (summary.usedRangeCount < MIN_USED_EVIDENCE_RANGES) {
+    failures.push(`观点与例子必须共同使用至少${MIN_USED_EVIDENCE_RANGES}组不同证据范围`);
+  }
+  return failures;
 }
 
 function longestCommonRun(left, right) {
@@ -392,13 +426,20 @@ function scoreArticle(article, paragraphs, oldTitles, oldEnglishTitles, batchTit
 
   const ranges = evidence.map((item) => parseEvidenceRange(item, paragraphs.length));
   if (ranges.some((item) => !item)) failures.push("证据编号无效或范围过宽");
+  const evidenceRanges = ranges.flatMap((range, index) => {
+    if (!range) return [];
+    return [{
+      range: String(evidence[index]),
+      text: paragraphs.slice(range.start - 1, range.end).map((item) => item.text).join("\n"),
+    }];
+  });
   const sourceParagraphs = ranges.filter(Boolean).flatMap(({ start, end }) => paragraphs.slice(start - 1, end));
   const sourceText = sourceParagraphs.map((item) => item.text).join("\n");
   const domainOverlap = DOMAIN_TERMS.filter((term) => sourceText.includes(term) && [...points, ...examples].join(" ").includes(term));
   if (domainOverlap.length < 2) failures.push("观点与源文缺少足够术语关联");
   const claimCoverage = points.map((point) => coverage(point, sourceText));
-  if (claimCoverage.some((value) => value < 0.05)) failures.push("至少一个观点无法由所列源段支持");
-  else if (claimCoverage.some((value) => value < 0.08)) warnings.push("至少一个观点与所列源段文字关联偏弱，需人工复核");
+  const evidenceBinding = evidenceBindingSummary({ points, examples, evidenceRanges });
+  failures.push(...evidenceBindingFailures(evidenceBinding));
   const copyRuns = [...points, ...examples].map((claim) => longestCommonRun(claim, sourceText));
   if (copyRuns.some((value) => value > 48)) failures.push("存在超过48字的连续照抄风险");
 
@@ -444,6 +485,23 @@ function scoreArticle(article, paragraphs, oldTitles, oldEnglishTitles, batchTit
       paragraphCount: sourceParagraphs.length,
       domainOverlap,
       claimCoverage: claimCoverage.map((value) => Number(value.toFixed(3))),
+      binding: {
+        thresholds: {
+          pointCoverage: POINT_EVIDENCE_MIN_COVERAGE,
+          exampleCoverage: EXAMPLE_EVIDENCE_MIN_COVERAGE,
+          minimumUsedRanges: MIN_USED_EVIDENCE_RANGES,
+        },
+        usedRanges: evidenceBinding.usedRanges,
+        usedRangeCount: evidenceBinding.usedRangeCount,
+        pointMatches: evidenceBinding.pointMatches.map((item) => ({
+          ...item,
+          coverage: Number(item.coverage.toFixed(3)),
+        })),
+        exampleMatches: evidenceBinding.exampleMatches.map((item) => ({
+          ...item,
+          coverage: Number(item.coverage.toFixed(3)),
+        })),
+      },
       longestCopyRuns: copyRuns,
       excerpts: sourceParagraphs.slice(0, 8),
     },
@@ -507,7 +565,7 @@ export async function validateSeedBatch({ seedPath, docxPath, date, reportPath, 
   if (duplicateOrders) batchFailures.push("批次 order 重复");
   if (duplicateSlugs) batchFailures.push("批次 slug 重复");
   const output = {
-    version: 2,
+    version: 3,
     date,
     generatedAt: new Date().toISOString(),
     seed: path.relative(ROOT, resolvedSeed),
