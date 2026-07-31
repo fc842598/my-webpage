@@ -1,0 +1,82 @@
+{
+  "ok": true,
+  "sources": {
+    "searchConsole": {
+      "ok": true,
+      "data": {
+        "clicks": 7,
+        "impressions": 183,
+        "topPages": [
+          {
+            "page": "https://yuetianai.com/articles/ziwei-huan-gongzuo-xiankan-guanlu-haishi-qianyi.html",
+            "clicks": 4,
+            "impressions": 80,
+            "ctr": 5,
+            "position": 8.4
+          },
+          {
+            "page": "https://yuetianai.com/articles/ziwei-shihe-dai-tuandui-youke-meiquan-youquan-meike.html",
+            "clicks": 0,
+            "impressions": 30,
+            "ctr": 0,
+            "position": 12.1
+          },
+          {
+            "page": "https://yuetianai.com/articles/ziwei-liunian-qianyi.html",
+            "clicks": 0,
+            "impressions": 40,
+            "ctr": 0,
+            "position": 24
+          },
+          {
+            "page": "https://yuetianai.com/articles/en/ziwei-huan-gongzuo-xiankan-guanlu-haishi-qianyi.html",
+            "clicks": 2,
+            "impressions": 30,
+            "ctr": 6.67,
+            "position": 9
+          },
+          {
+            "page": "https://yuetianai.com/articles/ziwei-bankong-zhechi.html",
+            "clicks": 1,
+            "impressions": 3,
+            "ctr": 33.33,
+            "position": 8
+          }
+        ],
+        "topQueries": [
+          {
+            "query": "紫微斗数换工作看哪个宫",
+            "clicks": 3,
+            "impressions": 40,
+            "ctr": 7.5,
+            "position": 7.2
+          }
+        ]
+      }
+    },
+    "ga4": {
+      "ok": true,
+      "data": {
+        "activeUsers": 19,
+        "pageViews": 37,
+        "topPages": [
+          {
+            "path": "/articles/ziwei-huan-gongzuo-xiankan-guanlu-haishi-qianyi.html",
+            "pageViews": 12,
+            "activeUsers": 9
+          },
+          {
+            "path": "/articles/en/ziwei-huan-gongzuo-xiankan-guanlu-haishi-qianyi.html",
+            "pageViews": 6,
+            "activeUsers": 5
+          },
+          {
+            "path": "/articles/ziwei-bankong-zhechi.html",
+            "pageViews": 1,
+            "activeUsers": 1
+          }
+        ]
+      }
+    }
+  }
+}
