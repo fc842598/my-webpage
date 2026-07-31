@@ -40,7 +40,7 @@
 | 01 | 已发布 2026-08-01 00:13 https://yuetianai.com/articles/ziwei-fuye-zhuanzhuye-shenme-shihou.html / https://yuetianai.com/articles/en/ziwei-fuye-zhuanzhuye-shenme-shihou.html | ziwei-fuye-zhuanzhuye-shenme-shihou | 紫微斗数副业已经赚钱，什么时候能转成主业：先看收入能不能脱离原平台 | 财运事业 |
 | 02 | 已发布 2026-08-01 00:29 https://yuetianai.com/articles/ziwei-xiaoshou-haishi-zhuanye-guwen.html / https://yuetianai.com/articles/en/ziwei-xiaoshou-haishi-zhuanye-guwen.html | ziwei-xiaoshou-haishi-zhuanye-guwen | 紫微斗数做销售还是做专业顾问更合适：太阳贪狼的市场财与化科文曲的专业财怎么分 | 财运事业 |
 | 03 | 已发布 2026-08-01 01:06 https://yuetianai.com/articles/ziwei-dingdan-bushao-xianjinliu-jin.html / https://yuetianai.com/articles/en/ziwei-dingdan-bushao-xianjinliu-jin.html | ziwei-dingdan-bushao-xianjinliu-jin | 紫微斗数订单不少却现金流紧，怎么看贪狼带来的生意量有没有被财帛化忌吃掉 | 财运事业 |
-| 04 | 待发布 | ziwei-xiangqin-gongtong-caiwu-hunqian-xieshang | 紫微斗数相亲谈到共同财务就卡住，夫妻宫、财帛宫和田宅宫怎样做婚前协商 | 婚恋与关系 |
+| 04 | 已发布 2026-08-01 01:31 https://yuetianai.com/articles/ziwei-xiangqin-gongtong-caiwu-hunqian-xieshang.html / https://yuetianai.com/articles/en/ziwei-xiangqin-gongtong-caiwu-hunqian-xieshang.html | ziwei-xiangqin-gongtong-caiwu-hunqian-xieshang | 紫微斗数相亲谈到共同财务就卡住，夫妻宫、财帛宫和田宅宫怎样做婚前协商 | 婚恋与关系 |
 | 05 | 待发布 | ziwei-banlv-shihe-yiqi-zuoshengyi-ma | 紫微斗数伴侣适合一起做生意吗：夫妻宫合得来，不等于朋友宫和财帛宫能合伙 | 婚恋与关系 |
 | 06 | 待发布 | ziwei-yidilian-shihe-jiehun-ma | 紫微斗数异地恋适不适合结婚：迁移宫的缘分入口和夫妻福德的承接要分开 | 婚恋与关系 |
 | 07 | 待发布 | ziwei-liunian-jixiang-xianyou-jihui-houyou-jieguo | 紫微斗数流年已经出现机会，为什么还没落实：从面试、申请、合同看到款 | 大限流年 |
