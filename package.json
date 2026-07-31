@@ -13,6 +13,7 @@
     "geo:toutiao:check-file": "node scripts/check-toutiao-verification-status.mjs",
     "articles:generate-en": "node scripts/generate-en-articles.mjs",
     "articles:quality-gate": "node scripts/validate-daily-ziwei-seed.mjs",
+    "articles:demand-evidence:test": "node scripts/test-daily-ziwei-demand-evidence.mjs",
     "articles:evidence-binding:test": "node scripts/test-daily-ziwei-evidence-binding.mjs",
     "articles:intent-history:test": "node scripts/test-daily-ziwei-intent-history.mjs",
     "articles:review-gate": "node scripts/validate-daily-article-reviews.mjs",

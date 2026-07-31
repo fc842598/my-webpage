@@ -7,7 +7,7 @@
 ## 每日闭环
 
 1. 数据复盘：运行 `npm run articles:performance`，读取最近30天 Search Console 与 GA4。高展现低点击页面优先升级旧文；已有真实阅读的主题可继续深挖，但不得复制搜索意图。
-2. 用户选题：从事业、财富、婚恋、迁移、学习、合作、流年和读盘方法等真实场景拟题。每个候选必须写清 `userQuestion`、`userScenario`、`directAnswer` 和 `readerValue`。
+2. 用户选题：从事业、财富、婚恋、迁移、学习、合作、流年和读盘方法等真实场景拟题。每个候选必须写清 `userQuestion`、`userScenario`、`directAnswer`、`readerValue` 和 `demandEvidence`。从 2026-08-02 起，缺少可核验需求来源卡的文章直接失败。
 3. 源文取证：只从指定DOCX抽取观点。每篇至少4个独立判断条件、2个组合或落宫例子、2组有效段落范围；每个观点和例子都必须单独绑定到一组具体证据范围，不能把全部源段合并后笼统过关。
 4. 原创成稿：中文提供1-2段 `openingParagraphs`、3-5个独立 `sections` 和明确 `orderText`；英文在 `english` 中提供独立标题、description、正文结构、例子和阅读顺序。生成器不再补写中英文固定正文，只负责按已审核结构排版。
 5. 质量闸门：运行 `npm run articles:quality-gate -- --seed ... --docx ... --date ... --expected-count 30`。任一文章失败，整批不得生成、发布或提交，必须换题重写直至30篇全部通过。
@@ -50,6 +50,7 @@
 - `title`、`slug`、`category`、`intent`
 - `userQuestion`、`userScenario`、`coreIntent`
 - `directAnswer`、`readerValue`
+- `demandEvidence`：包含 `sourceType`、`reference`、`query`、`audience`、`decisionTrigger`、`whySeparate`
 - `evidence`：DOCX有效段落范围
 - `supportPlan`：至少4项
 - `points`：至少4项
@@ -67,6 +68,8 @@
 
 `scripts/validate-daily-ziwei-seed.mjs` 会检查：
 
+- 需求来源卡是否完整；`search-console` 必须命中当日真实搜索词，`site-performance` 必须命中当日真实文章表现，`editorial-gap` 不得冒充流量数据
+- 当日有真实信号时，最低数据锚点数为 `min(8, 可核验信号数)`；只有达到扩展门槛的 `winners` 页面能支撑相邻新题，高展现低点击页与低样本观察页只能优化原页；同一搜索词、表现页面或编辑场景最多支撑2篇，30篇用户搜索问法不得重复
 - 用户问题、现实场景、直接答案与独立成篇理由是否完整
 - 低价值产品帮助题材
 - 4个观点、2个例子与有效源段覆盖
@@ -83,6 +86,8 @@
 报告保存为 `docs/article-quality-YYYY-MM-DD.json`。只有全部文章通过且单篇评分不低于85分，生成器才允许写出源稿和发布队列。
 
 质量报告的 `evidence.binding` 会保存每条观点、每个例子的最佳证据范围、覆盖率、实际使用范围数和当前阈值。修改这套规则后必须运行 `npm run articles:evidence-binding:test`，并对正式30篇重新生成质量报告、源稿和发布队列。
+
+质量报告的 `demandEvidence` 会保存当日 performance report、可用真实信号数、最低锚点数和实际锚点数；每篇 `demand` 记录来源类型、核验状态和置信层级。修改需求门后必须运行 `npm run articles:demand-evidence:test`。数据不可用时可以使用诚实的 `editorial-gap`，但不得虚构点击、展现、排名或热度。
 
 五星审查清单使用 `npm run articles:review-gate -- --date YYYY-MM-DD --seed scripts/daily-ziwei-YYYY-MM-DD-seed.mjs --source docs/ziwei-daily-YYYY-MM-DD-source.md` 验证。修改清单规则后必须运行 `npm run articles:review-gate:test`；该测试固定确认种子改字、源稿偷改、评论席缺席、复用同一报告和报告缺行都会失败。
 

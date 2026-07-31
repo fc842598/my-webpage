@@ -54,6 +54,13 @@ const DAILY_SEED_FILE_PATTERN = /^(?:daily-ziwei|ziwei-daily)-(\d{4}-\d{2}-\d{2}
 const POINT_EVIDENCE_MIN_COVERAGE = 0.05;
 const EXAMPLE_EVIDENCE_MIN_COVERAGE = 0.05;
 const MIN_USED_EVIDENCE_RANGES = 2;
+export const DEMAND_EVIDENCE_REQUIRED_FROM = "2026-08-02";
+const DEMAND_SOURCE_CONFIDENCE = new Map([
+  ["search-console", "observed"],
+  ["site-performance", "adjacent"],
+  ["editorial-gap", "editorial"],
+]);
+const UNVERIFIED_DEMAND_CLAIM_PATTERN = /search\s*console|ga4|ctr|点击|展现|浏览|排名|流量|热度|数据证明|用户都在搜/iu;
 
 function parseArgs(argv) {
   const args = {};
@@ -78,6 +85,141 @@ function normalize(value) {
     .replace(/zi\s*wei\s*dou\s*shu|chinese astrology/gi, "")
     .replace(/[\s\p{P}\p{S}]/gu, "")
     .toLowerCase();
+}
+
+function normalizedPage(value) {
+  try {
+    return new URL(String(value || ""), "https://yuetianai.com").pathname.replace(/\/+$/, "") || "/";
+  } catch (_error) {
+    return String(value || "").trim().replace(/\/+$/, "");
+  }
+}
+
+function loadDemandSignals(date) {
+  const reportPath = path.resolve(`docs/article-performance-${date}.json`);
+  if (!existsSync(reportPath)) {
+    return { available: false, report: path.relative(ROOT, reportPath), queries: new Set(), pages: new Set(), error: "" };
+  }
+  try {
+    const report = JSON.parse(readFileSync(reportPath, "utf8"));
+    const queries = new Set((report.topQueries || [])
+      .filter((item) => Number(item.impressions || 0) > 0 && item.query)
+      .map((item) => normalize(item.query))
+      .filter(Boolean));
+    const pages = new Set((Array.isArray(report.winners) ? report.winners : [])
+      .map((item) => normalizedPage(item.page || item.meta?.path))
+      .filter((item) => item && item !== "/"));
+    return { available: true, report: path.relative(ROOT, reportPath), queries, pages, error: "" };
+  } catch (error) {
+    return {
+      available: false,
+      report: path.relative(ROOT, reportPath),
+      queries: new Set(),
+      pages: new Set(),
+      error: `需求数据报告无法解析：${error.message}`,
+    };
+  }
+}
+
+export function validateDemandEvidence(article, { required = true, signals = null } = {}) {
+  const failures = [];
+  const evidence = article?.demandEvidence;
+  const signalSet = signals || { available: false, queries: new Set(), pages: new Set() };
+  if (!evidence || typeof evidence !== "object" || Array.isArray(evidence)) {
+    if (required) failures.push("缺少 demandEvidence 用户需求来源卡");
+    return { required, present: false, pass: failures.length === 0, anchored: false, confidence: "none", failures };
+  }
+
+  const sourceType = String(evidence.sourceType || "").trim();
+  const reference = String(evidence.reference || "").trim();
+  const query = String(evidence.query || "").trim();
+  const audience = String(evidence.audience || "").trim();
+  const decisionTrigger = String(evidence.decisionTrigger || "").trim();
+  const whySeparate = String(evidence.whySeparate || "").trim();
+  const confidence = DEMAND_SOURCE_CONFIDENCE.get(sourceType) || "none";
+  if (!DEMAND_SOURCE_CONFIDENCE.has(sourceType)) failures.push("demandEvidence.sourceType 必须是 search-console、site-performance 或 editorial-gap");
+  if (normalize(reference).length < 4) failures.push("demandEvidence.reference 缺少可追溯来源或明确编辑场景");
+  if (normalize(query).length < 6) failures.push("demandEvidence.query 不是完整的用户搜索问法");
+  if (normalize(audience).length < 10) failures.push("demandEvidence.audience 未说清谁会搜索");
+  if (normalize(decisionTrigger).length < 12) failures.push("demandEvidence.decisionTrigger 未说清为什么现在需要答案");
+  if (normalize(whySeparate).length < 18) failures.push("demandEvidence.whySeparate 未证明为何值得独立成篇");
+
+  let anchored = false;
+  if (sourceType === "search-console") {
+    if (!signalSet.available) failures.push("search-console 来源无法核验：当日 performance report 不可用");
+    else if (!signalSet.queries.has(normalize(reference))) failures.push("search-console reference 未出现在当日真实搜索词中");
+    else anchored = true;
+  } else if (sourceType === "site-performance") {
+    if (!signalSet.available) failures.push("site-performance 来源无法核验：当日 performance report 不可用");
+    else if (!signalSet.pages.has(normalizedPage(reference))) failures.push("site-performance reference 未出现在当日真实文章表现中");
+    else anchored = true;
+  } else if (sourceType === "editorial-gap" && UNVERIFIED_DEMAND_CLAIM_PATTERN.test(reference)) {
+    failures.push("editorial-gap 不得冒充 Search Console、GA4、排名或流量证据");
+  }
+
+  return {
+    required,
+    present: true,
+    pass: failures.length === 0,
+    anchored,
+    confidence,
+    sourceType,
+    reference,
+    query,
+    audience,
+    decisionTrigger,
+    whySeparate,
+    failures,
+  };
+}
+
+export function validateBatchDemandEvidence(articles, { required = true, signals = null } = {}) {
+  const signalSet = signals || { available: false, queries: new Set(), pages: new Set(), report: "", error: "" };
+  const reviews = articles.map((article) => ({
+    slug: article.slug,
+    ...validateDemandEvidence(article, { required, signals: signalSet }),
+  }));
+  const queryOwners = new Map();
+  const referenceOwners = new Map();
+  for (const review of reviews) {
+    const queryKey = normalize(review.query);
+    if (queryKey) {
+      if (!queryOwners.has(queryKey)) queryOwners.set(queryKey, []);
+      queryOwners.get(queryKey).push(review);
+    }
+    if (review.present && DEMAND_SOURCE_CONFIDENCE.has(review.sourceType)) {
+      const referenceKey = `${review.sourceType}:${review.sourceType === "site-performance" ? normalizedPage(review.reference) : normalize(review.reference)}`;
+      if (!referenceOwners.has(referenceKey)) referenceOwners.set(referenceKey, []);
+      referenceOwners.get(referenceKey).push(review);
+    }
+  }
+  for (const owners of queryOwners.values()) {
+    if (owners.length < 2) continue;
+    for (const review of owners) review.failures.push("批内 demandEvidence.query 重复");
+  }
+  for (const review of reviews) review.pass = review.failures.length === 0;
+
+  const signalCount = signalSet.queries.size + signalSet.pages.size;
+  const requiredAnchors = required ? Math.min(8, signalCount) : 0;
+  const anchoredCount = reviews.filter((review) => review.anchored && review.pass).length;
+  const batchFailures = [];
+  if (signalSet.error) batchFailures.push(signalSet.error);
+  if (required && anchoredCount < requiredAnchors) {
+    batchFailures.push(`真实搜索或站内表现支撑不足：至少${requiredAnchors}篇，当前${anchoredCount}篇`);
+  }
+  for (const [reference, owners] of referenceOwners) {
+    if (owners.length > 2) batchFailures.push(`同一需求信号最多支撑2篇：${reference}`);
+  }
+  return {
+    required,
+    report: signalSet.report || "",
+    reportAvailable: Boolean(signalSet.available),
+    signalCount,
+    requiredAnchors,
+    anchoredCount,
+    reviews,
+    batchFailures,
+  };
 }
 
 function grams(value, size = 2) {
@@ -343,7 +485,7 @@ function englishPhraseOwners(articles, size = 10) {
   return [...owners.entries()].filter(([, slugs]) => slugs.length >= 3);
 }
 
-function scoreArticle(article, paragraphs, oldTitles, oldEnglishTitles, batchTitles, batchEnglishTitles, structuredHistory, batchIntentRecords) {
+function scoreArticle(article, paragraphs, oldTitles, oldEnglishTitles, batchTitles, batchEnglishTitles, structuredHistory, batchIntentRecords, demandReview) {
   const failures = [];
   const warnings = [];
   const points = Array.isArray(article.points) ? article.points.filter(Boolean) : [];
@@ -387,6 +529,7 @@ function scoreArticle(article, paragraphs, oldTitles, oldEnglishTitles, batchTit
   if (normalize(article.userScenario).length < 18) failures.push("用户场景过薄");
   if (normalize(article.directAnswer).length < 35) failures.push("直接答案过薄");
   if (normalize(article.readerValue).length < 24) failures.push("缺少独立成篇理由 readerValue");
+  if (demandReview) failures.push(...demandReview.failures);
   if (LOW_VALUE_PATTERNS.some((pattern) => pattern.test(topicText))) failures.push("命中低价值产品帮助题材");
   if (points.length < 4 || supports.length < 4) failures.push("不足4个独立观点或判断条件");
   if (distinctCount(points) < 4 || distinctCount(supports) < 4) failures.push("观点或支撑计划存在重复，未达到4个独立判断");
@@ -510,6 +653,16 @@ function scoreArticle(article, paragraphs, oldTitles, oldEnglishTitles, batchTit
       sectionCount: englishSections.length,
       exampleCount: englishExamples.length,
     },
+    demand: demandReview ? {
+      required: demandReview.required,
+      present: demandReview.present,
+      pass: demandReview.pass,
+      anchored: demandReview.anchored,
+      confidence: demandReview.confidence,
+      sourceType: demandReview.sourceType || "",
+      reference: demandReview.reference || "",
+      query: demandReview.query || "",
+    } : null,
   };
 }
 
@@ -527,6 +680,12 @@ export async function validateSeedBatch({ seedPath, docxPath, date, reportPath, 
   const batchIntentRecords = articles
     .map((article) => structuredIntentRecord(article, path.relative(ROOT, resolvedSeed), date))
     .filter(Boolean);
+  const demandSignals = loadDemandSignals(date);
+  const demandBatch = validateBatchDemandEvidence(articles, {
+    required: date >= DEMAND_EVIDENCE_REQUIRED_FROM,
+    signals: demandSignals,
+  });
+  const demandBySlug = new Map(demandBatch.reviews.map((review) => [review.slug, review]));
   const reports = articles.map((article) => scoreArticle(
     article,
     paragraphs,
@@ -536,6 +695,7 @@ export async function validateSeedBatch({ seedPath, docxPath, date, reportPath, 
     batchEnglishTitles,
     structuredHistory.articles,
     batchIntentRecords,
+    demandBySlug.get(article.slug),
   ));
   const repeatedPhrases = phraseOwners(articles);
   if (repeatedPhrases.length) {
@@ -564,8 +724,9 @@ export async function validateSeedBatch({ seedPath, docxPath, date, reportPath, 
   else if (articles.length !== expectedCount) batchFailures.push(`正式批次必须有${expectedCount}篇，当前${articles.length}篇`);
   if (duplicateOrders) batchFailures.push("批次 order 重复");
   if (duplicateSlugs) batchFailures.push("批次 slug 重复");
+  batchFailures.push(...demandBatch.batchFailures);
   const output = {
-    version: 3,
+    version: 4,
     date,
     generatedAt: new Date().toISOString(),
     seed: path.relative(ROOT, resolvedSeed),
@@ -576,6 +737,15 @@ export async function validateSeedBatch({ seedPath, docxPath, date, reportPath, 
       sourceCount: structuredHistory.sources.length,
       articleCount: structuredHistory.articles.length,
       sources: structuredHistory.sources,
+    },
+    demandEvidence: {
+      required: demandBatch.required,
+      requiredFrom: DEMAND_EVIDENCE_REQUIRED_FROM,
+      performanceReport: demandBatch.report,
+      performanceReportAvailable: demandBatch.reportAvailable,
+      signalCount: demandBatch.signalCount,
+      requiredAnchors: demandBatch.requiredAnchors,
+      anchoredCount: demandBatch.anchoredCount,
     },
     expectedCount,
     articleCount: articles.length,
