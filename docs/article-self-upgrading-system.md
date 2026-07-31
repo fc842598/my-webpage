@@ -89,6 +89,8 @@
 
 质量报告的 `demandEvidence` 会保存当日 performance report、可用真实信号数、最低锚点数和实际锚点数；每篇 `demand` 记录来源类型、核验状态和置信层级。修改需求门后必须运行 `npm run articles:demand-evidence:test`。数据不可用时可以使用诚实的 `editorial-gap`，但不得虚构点击、展现、排名或热度。
 
+从目标日期 `2026-08-02` 起，performance report 必须是版本3或更高、`date` 与目标日期一致、窗口固定30天，并在目标日期前一天或当天生成。只有 `source.type=live-admin-api`、来源为 `https://api.yuetianai.com` 且 Search Console/GA4 状态为真实布尔值时，报告才能提供数据锚点；`--input` 导入文件只用于离线测试，不能冒充线上实证。搜索词至少有1次点击或3次展现才可支撑新题；更低样本只观察。`winners` 还必须保留 `expand-distinct-intent` 学习结论，并实际达到2次搜索点击或5次页面浏览，才允许支撑相邻新题。旧版、改名、过期、来源异常或伪状态报告会使正式批次失败；确实没有实时数据时只能诚实使用 `editorial-gap`。
+
 实际发布不能只验证静态报告。`scripts/validate-daily-article-queue.mjs`、`scripts/release-daily-article-slot.mjs` 和 `scripts/publish-local-article-batch.mjs` 会调用 `validateDailyArticleQualityAtRelease`，在队列检查和每个发布分钟重新执行当前版本的DOCX证据、需求来源、查重、篇幅、中英文结构与禁用词规则。准备阶段使用工作区检查正在编辑的内容；发布阶段只使用已提交 `HEAD` 的中英文文章索引做历史标题查重，避免无关未提交改稿阻断定时任务。临时报告只用于本次验证并自动清理；失败文章及首条原因直接写入任务日志。修改这条链路后必须运行 `npm run articles:release-quality-gate:test`。
 
 五星审查清单使用 `npm run articles:review-gate -- --date YYYY-MM-DD --seed scripts/daily-ziwei-YYYY-MM-DD-seed.mjs --source docs/ziwei-daily-YYYY-MM-DD-source.md` 验证。修改清单规则后必须运行 `npm run articles:review-gate:test`；该测试固定确认种子改字、源稿偷改、评论席缺席、复用同一报告和报告缺行都会失败。

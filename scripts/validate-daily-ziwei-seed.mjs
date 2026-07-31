@@ -57,6 +57,11 @@ const EXAMPLE_EVIDENCE_MIN_COVERAGE = 0.05;
 const MIN_USED_EVIDENCE_RANGES = 2;
 export const DEMAND_EVIDENCE_REQUIRED_FROM = "2026-08-02";
 export const DEFAULT_ZIWEI_SOURCE_DOCX = "C:\\Users\\1\\Desktop\\【视频同步文稿】倪海厦-天纪_Password_Removed(1) (1).docx";
+const DEMAND_REPORT_MIN_VERSION = 3;
+const DEMAND_REPORT_DAYS = 30;
+const DEMAND_LIVE_API_ORIGIN = "https://api.yuetianai.com";
+const QUERY_SIGNAL_CLICK_FLOOR = 1;
+const QUERY_SIGNAL_IMPRESSION_FLOOR = 3;
 const DEMAND_SOURCE_CONFIDENCE = new Map([
   ["search-console", "observed"],
   ["site-performance", "adjacent"],
@@ -97,25 +102,102 @@ function normalizedPage(value) {
   }
 }
 
+function previousIsoDate(date) {
+  const value = new Date(`${date}T12:00:00Z`);
+  value.setUTCDate(value.getUTCDate() - 1);
+  return value.toISOString().slice(0, 10);
+}
+
+function shanghaiDateForInstant(value) {
+  const instant = new Date(value);
+  if (!Number.isFinite(instant.getTime())) return "";
+  return new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Asia/Shanghai",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).format(instant);
+}
+
+export function demandSignalsFromReport(report, { date, reportPath = "" } = {}) {
+  const base = {
+    available: false,
+    report: reportPath,
+    reportVersion: Number(report?.version || 0),
+    generatedAt: String(report?.generatedAt || ""),
+    sourceType: String(report?.source?.type || ""),
+    searchConsoleOk: report?.source?.searchConsoleOk === true,
+    ga4Ok: report?.source?.ga4Ok === true,
+    queries: new Set(),
+    pages: new Set(),
+    error: "",
+  };
+  const invalid = (reason) => ({ ...base, error: `需求数据报告完整性失败：${reason}` });
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(String(date || ""))) return invalid("目标日期无效");
+  if (base.reportVersion < DEMAND_REPORT_MIN_VERSION) return invalid(`版本必须不低于${DEMAND_REPORT_MIN_VERSION}`);
+  if (report.date !== date) return invalid(`报告日期${report.date || "缺失"}与目标日期${date}不一致`);
+  if (Number(report.days) !== DEMAND_REPORT_DAYS) return invalid(`数据窗口必须为${DEMAND_REPORT_DAYS}天`);
+  if (!Array.isArray(report.topQueries) || !Array.isArray(report.winners)) return invalid("topQueries 与 winners 必须是数组");
+  const generatedDate = shanghaiDateForInstant(report.generatedAt);
+  if (!generatedDate || ![previousIsoDate(date), date].includes(generatedDate)) {
+    return invalid("generatedAt 必须是目标日期前一天或当天的 Asia/Shanghai 时间");
+  }
+  if (!["live-admin-api", "input-file"].includes(base.sourceType)) return invalid("缺少可识别的数据来源类型");
+  if (base.sourceType === "live-admin-api") {
+    let sourceOrigin = "";
+    try {
+      sourceOrigin = new URL(String(report.source.reference || "")).origin;
+    } catch (_error) {
+      // The integrity error below explains the invalid origin.
+    }
+    if (sourceOrigin !== DEMAND_LIVE_API_ORIGIN) return invalid("实时数据来源必须是 api.yuetianai.com 管理后台");
+  }
+  if (base.sourceType !== "live-admin-api" || (!base.searchConsoleOk && !base.ga4Ok)) return base;
+
+  const queries = base.searchConsoleOk
+    ? new Set(report.topQueries
+      .filter((item) => item.query && (Number(item.clicks || 0) >= QUERY_SIGNAL_CLICK_FLOOR
+        || Number(item.impressions || 0) >= QUERY_SIGNAL_IMPRESSION_FLOOR))
+      .map((item) => normalize(item.query))
+      .filter(Boolean))
+    : new Set();
+  const pages = new Set(report.winners
+    .filter((item) => item?.learning?.action === "expand-distinct-intent")
+    .filter((item) => (base.searchConsoleOk && Number(item.clicks || 0) >= 2)
+      || (base.ga4Ok && Number(item.pageViews || 0) >= 5))
+    .map((item) => normalizedPage(item.page || item.meta?.path))
+    .filter((item) => item && item !== "/"));
+  return { ...base, available: true, queries, pages };
+}
+
 function loadDemandSignals(date) {
   const reportPath = path.resolve(`docs/article-performance-${date}.json`);
   if (!existsSync(reportPath)) {
-    return { available: false, report: path.relative(ROOT, reportPath), queries: new Set(), pages: new Set(), error: "" };
+    return {
+      available: false,
+      report: path.relative(ROOT, reportPath),
+      reportVersion: 0,
+      generatedAt: "",
+      sourceType: "missing",
+      searchConsoleOk: false,
+      ga4Ok: false,
+      queries: new Set(),
+      pages: new Set(),
+      error: "",
+    };
   }
   try {
     const report = JSON.parse(readFileSync(reportPath, "utf8"));
-    const queries = new Set((report.topQueries || [])
-      .filter((item) => Number(item.impressions || 0) > 0 && item.query)
-      .map((item) => normalize(item.query))
-      .filter(Boolean));
-    const pages = new Set((Array.isArray(report.winners) ? report.winners : [])
-      .map((item) => normalizedPage(item.page || item.meta?.path))
-      .filter((item) => item && item !== "/"));
-    return { available: true, report: path.relative(ROOT, reportPath), queries, pages, error: "" };
+    return demandSignalsFromReport(report, { date, reportPath: path.relative(ROOT, reportPath) });
   } catch (error) {
     return {
       available: false,
       report: path.relative(ROOT, reportPath),
+      reportVersion: 0,
+      generatedAt: "",
+      sourceType: "invalid-json",
+      searchConsoleOk: false,
+      ga4Ok: false,
       queries: new Set(),
       pages: new Set(),
       error: `需求数据报告无法解析：${error.message}`,
@@ -205,7 +287,7 @@ export function validateBatchDemandEvidence(articles, { required = true, signals
   const requiredAnchors = required ? Math.min(8, signalCount) : 0;
   const anchoredCount = reviews.filter((review) => review.anchored && review.pass).length;
   const batchFailures = [];
-  if (signalSet.error) batchFailures.push(signalSet.error);
+  if (required && signalSet.error) batchFailures.push(signalSet.error);
   if (required && anchoredCount < requiredAnchors) {
     batchFailures.push(`真实搜索或站内表现支撑不足：至少${requiredAnchors}篇，当前${anchoredCount}篇`);
   }
@@ -216,6 +298,11 @@ export function validateBatchDemandEvidence(articles, { required = true, signals
     required,
     report: signalSet.report || "",
     reportAvailable: Boolean(signalSet.available),
+    reportVersion: Number(signalSet.reportVersion || 0),
+    generatedAt: signalSet.generatedAt || "",
+    sourceType: signalSet.sourceType || "",
+    searchConsoleOk: Boolean(signalSet.searchConsoleOk),
+    ga4Ok: Boolean(signalSet.ga4Ok),
     signalCount,
     requiredAnchors,
     anchoredCount,
@@ -748,7 +835,7 @@ export async function validateSeedBatch({ seedPath, docxPath, date, reportPath, 
   if (duplicateSlugs) batchFailures.push("批次 slug 重复");
   batchFailures.push(...demandBatch.batchFailures);
   const output = {
-    version: 4,
+    version: 5,
     date,
     generatedAt: new Date().toISOString(),
     seed: path.relative(ROOT, resolvedSeed),
@@ -766,6 +853,11 @@ export async function validateSeedBatch({ seedPath, docxPath, date, reportPath, 
       requiredFrom: DEMAND_EVIDENCE_REQUIRED_FROM,
       performanceReport: demandBatch.report,
       performanceReportAvailable: demandBatch.reportAvailable,
+      performanceReportVersion: demandBatch.reportVersion,
+      performanceReportGeneratedAt: demandBatch.generatedAt,
+      performanceReportSource: demandBatch.sourceType,
+      searchConsoleOk: demandBatch.searchConsoleOk,
+      ga4Ok: demandBatch.ga4Ok,
       signalCount: demandBatch.signalCount,
       requiredAnchors: demandBatch.requiredAnchors,
       anchoredCount: demandBatch.anchoredCount,

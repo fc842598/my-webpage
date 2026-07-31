@@ -259,6 +259,9 @@ function allocations(categories) {
 }
 
 function strategyMarkdown(report) {
+  const sourceSummary = report.source?.type === "live-admin-api"
+    ? `实时后台 API；Search Console=${report.source.searchConsoleOk ? "可用" : "不可用"}，GA4=${report.source.ga4Ok ? "可用" : "不可用"}`
+    : `导入文件 ${report.source?.reference || "未知"}；仅用于离线分析，不得作为正式选题数据锚点`;
   const winners = report.winners.length
     ? report.winners.map((item) => `- ${item.meta.title}：点击 ${item.clicks}，浏览 ${item.pageViews}，展现 ${item.impressions}；只研究相邻的新问题，不复制原意图。`).join("\n")
     : "- 暂无达到门槛的稳定需求，不凭零散点击扩写相似题。";
@@ -277,7 +280,7 @@ function strategyMarkdown(report) {
   const queries = report.topQueries.length
     ? report.topQueries.slice(0, 10).map((item) => `- ${item.query}：展现 ${item.impressions}，点击 ${item.clicks}`).join("\n")
     : "- 暂无搜索词数据。";
-  return `# 文章数据反馈与次日策略 ${report.date}\n\n数据窗口：${report.days} 天。数据只用于调整主题配比和升级旧文，不能替代源文证据，也不能用来批量制造近义页面。\n\n## 可继续深挖但必须换搜索意图\n\n${winners}\n\n## 优先优化原页标题与摘要\n\n${opportunities}\n\n## 优先加强原页内容与内链\n\n${rankingOpportunities}\n\n## 样本不足只观察\n\n${observations}\n\n## 用户真实搜索词\n\n${queries}\n\n## 次日候选配比\n\n${allocationsText}\n\n## 固定约束\n\n- 单个零散点击不构成选题方向，只有达到样本门槛的信号才能触发动作。\n- 排名已靠前但CTR弱时改原页标题摘要；排名偏后时先加强原页答案、例子和内链。\n- 数据强只代表值得继续研究，不代表允许复制标题、开头或例子。\n- 每篇仍须从指定DOCX取得4个观点、2个组合例子并通过质量闸门。\n- 正式批次必须凑齐30篇合格稿；失败稿换题重写，不能降标准或拿薄题补位。\n`;
+  return `# 文章数据反馈与次日策略 ${report.date}\n\n数据窗口：${report.days} 天。数据来源：${sourceSummary}。数据只用于调整主题配比和升级旧文，不能替代源文证据，也不能用来批量制造近义页面。\n\n## 可继续深挖但必须换搜索意图\n\n${winners}\n\n## 优先优化原页标题与摘要\n\n${opportunities}\n\n## 优先加强原页内容与内链\n\n${rankingOpportunities}\n\n## 样本不足只观察\n\n${observations}\n\n## 用户真实搜索词\n\n${queries}\n\n## 次日候选配比\n\n${allocationsText}\n\n## 固定约束\n\n- 单个零散点击不构成选题方向，只有达到样本门槛的信号才能触发动作。\n- 排名已靠前但CTR弱时改原页标题摘要；排名偏后时先加强原页答案、例子和内链。\n- 数据强只代表值得继续研究，不代表允许复制标题、开头或例子。\n- 每篇仍须从指定DOCX取得4个观点、2个组合例子并通过质量闸门。\n- 正式批次必须凑齐30篇合格稿；失败稿换题重写，不能降标准或拿薄题补位。\n`;
 }
 
 async function main() {
@@ -285,9 +288,10 @@ async function main() {
   const days = Number(args.days || 30);
   if (![7, 30, 90].includes(days)) throw new Error("--days must be 7, 30, or 90");
   const date = args.date || new Date().toISOString().slice(0, 10);
+  const apiBase = args["api-base"] || DEFAULT_API_BASE;
   const data = args.input
     ? JSON.parse(readFileSync(path.resolve(args.input), "utf8"))
-    : await fetchGrowthData(args["api-base"] || DEFAULT_API_BASE, days);
+    : await fetchGrowthData(apiBase, days);
   const aggregated = aggregate(data);
   const classified = aggregated.articles.map((item) => ({ ...item, learning: classifyPerformance(item) }));
   const winners = classified
@@ -307,10 +311,16 @@ async function main() {
     .sort((a, b) => (b.clicks * 8 + b.pageViews + b.impressions * 0.08) - (a.clicks * 8 + a.pageViews + a.impressions * 0.08))
     .slice(0, 20);
   const report = {
-    version: 2,
+    version: 3,
     date,
     days,
     generatedAt: new Date().toISOString(),
+    source: {
+      type: args.input ? "input-file" : "live-admin-api",
+      reference: args.input ? path.relative(ROOT, path.resolve(args.input)) : new URL(apiBase).origin,
+      searchConsoleOk: data.sources?.searchConsole?.ok === true && Boolean(data.sources?.searchConsole?.data),
+      ga4Ok: data.sources?.ga4?.ok === true && Boolean(data.sources?.ga4?.data),
+    },
     summary: {
       activeUsers: Number(aggregated.ga4.activeUsers || 0),
       pageViews: Number(aggregated.ga4.pageViews || 0),

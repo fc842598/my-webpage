@@ -24,7 +24,10 @@ try {
   const report = JSON.parse(readFileSync(output, "utf8"));
   const pages = (items) => items.map((item) => item.page);
 
-  assert.equal(report.version, 2);
+  assert.equal(report.version, 3);
+  assert.equal(report.source.type, "input-file");
+  assert.equal(report.source.searchConsoleOk, true);
+  assert.equal(report.source.ga4Ok, true);
   assert.ok(pages(report.winners).includes("/articles/ziwei-huan-gongzuo-xiankan-guanlu-haishi-qianyi.html"));
   assert.ok(pages(report.winners).includes("/articles/en/ziwei-huan-gongzuo-xiankan-guanlu-haishi-qianyi.html"));
   assert.deepEqual(pages(report.opportunities), ["/articles/ziwei-shihe-dai-tuandui-youke-meiquan-youquan-meike.html"]);

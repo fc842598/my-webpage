@@ -1,8 +1,84 @@
 import assert from "node:assert/strict";
 import {
+  demandSignalsFromReport,
   validateBatchDemandEvidence,
   validateDemandEvidence,
 } from "./validate-daily-ziwei-seed.mjs";
+
+const liveReport = {
+  version: 3,
+  date: "2026-08-02",
+  days: 30,
+  generatedAt: "2026-08-01T01:10:00.000Z",
+  source: {
+    type: "live-admin-api",
+    reference: "https://api.yuetianai.com",
+    searchConsoleOk: true,
+    ga4Ok: true,
+  },
+  topQueries: [{ query: "real query 1", impressions: 3, clicks: 1 }],
+  winners: [{
+    page: "/articles/proven-topic.html",
+    clicks: 2,
+    impressions: 8,
+    pageViews: 0,
+    learning: { action: "expand-distinct-intent" },
+  }],
+};
+
+const trustedSignals = demandSignalsFromReport(liveReport, {
+  date: "2026-08-02",
+  reportPath: "docs/article-performance-2026-08-02.json",
+});
+assert.equal(trustedSignals.available, true);
+assert.equal(trustedSignals.queries.has("realquery1"), true);
+assert.equal(trustedSignals.pages.has("/articles/proven-topic.html"), true);
+
+const staleSignals = demandSignalsFromReport({ ...liveReport, generatedAt: "2026-07-30T01:10:00.000Z" }, { date: "2026-08-02" });
+assert.match(staleSignals.error, /generatedAt/);
+const renamedSignals = demandSignalsFromReport({ ...liveReport, date: "2026-08-01" }, { date: "2026-08-02" });
+assert.match(renamedSignals.error, /日期/);
+const legacySignals = demandSignalsFromReport({ ...liveReport, version: 2 }, { date: "2026-08-02" });
+assert.match(legacySignals.error, /版本/);
+const wrongApiSignals = demandSignalsFromReport({
+  ...liveReport,
+  source: { ...liveReport.source, reference: "https://example.com" },
+}, { date: "2026-08-02" });
+assert.match(wrongApiSignals.error, /api\.yuetianai\.com/);
+const stringStatusSignals = demandSignalsFromReport({
+  ...liveReport,
+  source: { ...liveReport.source, searchConsoleOk: "true", ga4Ok: "false" },
+}, { date: "2026-08-02" });
+assert.equal(stringStatusSignals.available, false);
+const importedSignals = demandSignalsFromReport({
+  ...liveReport,
+  source: { ...liveReport.source, type: "input-file" },
+}, { date: "2026-08-02" });
+assert.equal(importedSignals.available, false);
+assert.equal(importedSignals.error, "");
+assert.equal(importedSignals.queries.size, 0);
+
+const malformedSignals = demandSignalsFromReport({
+  ...liveReport,
+  topQueries: "not-an-array",
+  winners: "not-an-array",
+}, { date: "2026-08-02" });
+assert.equal(malformedSignals.available, false);
+assert.match(malformedSignals.error, /topQueries/);
+assert.equal(malformedSignals.queries.size, 0);
+assert.equal(malformedSignals.pages.size, 0);
+
+const lowSampleSignals = demandSignalsFromReport({
+  ...liveReport,
+  topQueries: [{ query: "one accidental impression", impressions: 1, clicks: 0 }],
+  winners: [{
+    ...liveReport.winners[0],
+    clicks: 1,
+    pageViews: 4,
+  }],
+}, { date: "2026-08-02" });
+assert.equal(lowSampleSignals.queries.size, 0);
+assert.equal(lowSampleSignals.pages.size, 0);
 
 const signals = {
   available: true,
@@ -67,6 +143,18 @@ assert.equal(validBatchReview.anchoredCount, 8);
 assert.equal(validBatchReview.requiredAnchors, 8);
 assert.deepEqual(validBatchReview.batchFailures, []);
 assert.ok(validBatchReview.reviews.every((review) => review.pass));
+
+const staleReportReview = validateBatchDemandEvidence(validBatch, { required: true, signals: staleSignals });
+assert.ok(staleReportReview.batchFailures.some((message) => message.includes("完整性失败")));
+
+const editorialOnlyBatch = Array.from({ length: 30 }, (_, index) => ({
+  slug: `editorial-${index + 1}`,
+  demandEvidence: evidence("editorial-gap", `第${index + 1}类独立现实决策场景`, index + 1),
+}));
+const offlineEditorialReview = validateBatchDemandEvidence(editorialOnlyBatch, { required: true, signals: importedSignals });
+assert.equal(offlineEditorialReview.requiredAnchors, 0);
+assert.deepEqual(offlineEditorialReview.batchFailures, []);
+assert.ok(offlineEditorialReview.reviews.every((review) => review.pass));
 
 const weakBatch = structuredClone(validBatch);
 weakBatch[7].demandEvidence = evidence("editorial-gap", "第八类编辑判断场景", 8);

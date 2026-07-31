@@ -3,7 +3,7 @@ import { readFileSync } from "node:fs";
 import { validateDailyArticleQualityAtRelease } from "./validate-daily-ziwei-seed.mjs";
 
 const current = await validateDailyArticleQualityAtRelease({ date: "2026-08-01" });
-assert.equal(current.version, 4);
+assert.equal(current.version, 5);
 assert.equal(current.articleCount, 30);
 assert.equal(current.passed, 30);
 assert.equal(current.failed, 0);
