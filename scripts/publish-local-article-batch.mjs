@@ -2,6 +2,7 @@ import { existsSync, mkdirSync, readdirSync, readFileSync, realpathSync, writeFi
 import { execFileSync } from "node:child_process";
 import path from "node:path";
 import { validateReviewManifest } from "./validate-daily-article-reviews.mjs";
+import { validateDailyArticleQualityAtRelease } from "./validate-daily-ziwei-seed.mjs";
 import { assertProductionPublishWindow } from "./article-publish-time-gate.mjs";
 
 const site = "https://yuetianai.com";
@@ -142,6 +143,12 @@ const requiresDailyReview = publishDate >= "2026-08-01" && (category === "紫微
 if (requiresDailyReview && !reviewDate) fail("Reviewed Ziwei publishing requires dated daily queue and source markers");
 if (requiresDailyReview && reviewDate !== publishDate) fail(`--date must match the reviewed queue date ${reviewDate}`);
 if (reviewDate && reviewDate >= "2026-08-01") {
+  await validateDailyArticleQualityAtRelease({
+    date: reviewDate,
+    seedPath: `scripts/daily-ziwei-${reviewDate}-seed.mjs`,
+    docxPath: args.docx,
+    expectedCount: 30,
+  });
   await validateReviewManifest({
     date: reviewDate,
     seedPath: `scripts/daily-ziwei-${reviewDate}-seed.mjs`,

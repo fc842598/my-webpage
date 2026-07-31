@@ -3,6 +3,7 @@ import path from "node:path";
 import process from "node:process";
 import { pathToFileURL } from "node:url";
 import { validateReviewManifest } from "./validate-daily-article-reviews.mjs";
+import { validateDailyArticleQualityAtRelease } from "./validate-daily-ziwei-seed.mjs";
 
 function fail(message) {
   throw new Error(message);
@@ -37,6 +38,12 @@ const { articles } = await import(`${pathToFileURL(seedPath).href}?t=${Date.now(
 if (!Array.isArray(articles) || articles.length !== 30) fail(`Expected 30 seed articles, got ${articles?.length || 0}`);
 const queuePath = args.queue || `docs/ziwei-daily-${date}-queue.md`;
 const sourcePath = args.source || `docs/ziwei-daily-${date}-source.md`;
+const qualityGate = await validateDailyArticleQualityAtRelease({
+  date,
+  seedPath,
+  docxPath: args.docx,
+  expectedCount: 30,
+});
 const reviewGate = await validateReviewManifest({
   date,
   seedPath,
@@ -92,4 +99,18 @@ for (let index = 0; index < articles.length; index += 1) {
 }
 
 if (premature.length) fail(`Future URLs were exposed early: ${premature.slice(0, 5).join(", ")}`);
-console.log(JSON.stringify({ date, articleCount: 30, scheduleCount: 30, rowCount: 30, reviewerCount: reviewGate.reviewerCount, reviewBatchHash: reviewGate.batchHash, bucketCounts: buckets, minGapMinutes: Math.min(...gaps), prematureCount: 0 }, null, 2));
+console.log(JSON.stringify({
+  date,
+  articleCount: 30,
+  scheduleCount: 30,
+  rowCount: 30,
+  qualityVersion: qualityGate.version,
+  qualityPassedCount: qualityGate.passed,
+  titleHistorySource: qualityGate.existingTitleSource,
+  demandAnchoredCount: qualityGate.demandEvidence?.anchoredCount || 0,
+  reviewerCount: reviewGate.reviewerCount,
+  reviewBatchHash: reviewGate.batchHash,
+  bucketCounts: buckets,
+  minGapMinutes: Math.min(...gaps),
+  prematureCount: 0,
+}, null, 2));

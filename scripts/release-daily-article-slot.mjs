@@ -3,6 +3,7 @@ import { spawnSync } from "node:child_process";
 import path from "node:path";
 import process from "node:process";
 import { validateReviewManifest } from "./validate-daily-article-reviews.mjs";
+import { validateDailyArticleQualityAtRelease } from "./validate-daily-ziwei-seed.mjs";
 
 const ROOT = process.cwd();
 const SITE = "https://yuetianai.com";
@@ -191,9 +192,16 @@ async function main() {
   const queuePath = `docs/ziwei-daily-${date}-queue.md`;
   const sourcePath = `docs/ziwei-daily-${date}-source.md`;
   if (!existsSync(queuePath) || !existsSync(sourcePath)) fail(`Missing source or queue for ${date}`);
+  const seedPath = `scripts/daily-ziwei-${date}-seed.mjs`;
+  const qualityGate = await validateDailyArticleQualityAtRelease({
+    date,
+    seedPath,
+    docxPath: args.docx,
+    expectedCount: 30,
+  });
   const reviewGate = await validateReviewManifest({
     date,
-    seedPath: `scripts/daily-ziwei-${date}-seed.mjs`,
+    seedPath,
     manifestPath: `docs/article-reviews/${date}-review-manifest.json`,
     sourcePath,
     expectedCount: 30,
@@ -219,7 +227,7 @@ async function main() {
     fail(`Slot ${order} is scheduled for ${date} ${slot.plannedTime}; now is ${now.date} ${now.time}`);
   }
   if (args["dry-run"]) {
-    console.log(JSON.stringify({ date, order, slug: slot.slug, plannedTime: slot.plannedTime, reviewerCount: reviewGate.reviewerCount, reviewBatchHash: reviewGate.batchHash, managedPaths: paths, now }, null, 2));
+    console.log(JSON.stringify({ date, order, slug: slot.slug, plannedTime: slot.plannedTime, qualityVersion: qualityGate.version, qualityPassedCount: qualityGate.passed, titleHistorySource: qualityGate.existingTitleSource, demandAnchoredCount: qualityGate.demandEvidence?.anchoredCount || 0, reviewerCount: reviewGate.reviewerCount, reviewBatchHash: reviewGate.batchHash, managedPaths: paths, now }, null, 2));
     return;
   }
 
@@ -240,6 +248,7 @@ async function main() {
       "--order", order,
       "--date", date,
       "--time", publishTime,
+      ...(args.docx ? ["--docx", args.docx] : []),
     ]);
     if (publishTime !== slot.plannedTime) {
       queue = readFileSync(queuePath, "utf8").replace(

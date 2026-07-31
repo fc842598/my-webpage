@@ -13,7 +13,7 @@
 5. 质量闸门：运行 `npm run articles:quality-gate -- --seed ... --docx ... --date ... --expected-count 30`。任一文章失败，整批不得生成、发布或提交，必须换题重写直至30篇全部通过。
 6. 写前五审：依次检查真实搜索需求、站内搜索意图区分、源文4观点、2个例子可验证性、主题配比。任何一项不成立就换题。
 7. 成稿后五审：依次检查专业逻辑、真人读感、SEO搜索意图、英文自然改写、用户价值。每席逐篇绑定当前正文哈希；机器味、薄题或哈希不一致必须重写并重新五审，不能口头放行。
-8. 发布与复查：中英文配对使用同一分钟；同步索引、Feed、Sitemap、JSON-LD 与 hreflang；推送后抽查线上页面。
+8. 发布与复查：队列校验、单篇释放器和底层发布器都必须使用当前质量规则重新读取指定DOCX并全量验证30篇，不能只信准备阶段的质量报告或五星哈希；通过后中英文配对使用同一分钟，同步索引、Feed、Sitemap、JSON-LD 与 hreflang，推送后抽查线上页面。
 9. 次日学习：把本日质量报告、发布结果和30天数据反馈一起作为下一批选题输入。
 
 分时释放前先同步 `origin/master`。本地只落后且远端改动不覆盖未提交文件时，允许 `--ff-only` 前进并重启当前时段以重新加载最新脚本、seed 和审稿清单；分支分叉或同文件冲突时必须保持工作区不动并停止，禁止自动 stash、reset、强推或覆盖用户改稿。
@@ -88,6 +88,8 @@
 质量报告的 `evidence.binding` 会保存每条观点、每个例子的最佳证据范围、覆盖率、实际使用范围数和当前阈值。修改这套规则后必须运行 `npm run articles:evidence-binding:test`，并对正式30篇重新生成质量报告、源稿和发布队列。
 
 质量报告的 `demandEvidence` 会保存当日 performance report、可用真实信号数、最低锚点数和实际锚点数；每篇 `demand` 记录来源类型、核验状态和置信层级。修改需求门后必须运行 `npm run articles:demand-evidence:test`。数据不可用时可以使用诚实的 `editorial-gap`，但不得虚构点击、展现、排名或热度。
+
+实际发布不能只验证静态报告。`scripts/validate-daily-article-queue.mjs`、`scripts/release-daily-article-slot.mjs` 和 `scripts/publish-local-article-batch.mjs` 会调用 `validateDailyArticleQualityAtRelease`，在队列检查和每个发布分钟重新执行当前版本的DOCX证据、需求来源、查重、篇幅、中英文结构与禁用词规则。准备阶段使用工作区检查正在编辑的内容；发布阶段只使用已提交 `HEAD` 的中英文文章索引做历史标题查重，避免无关未提交改稿阻断定时任务。临时报告只用于本次验证并自动清理；失败文章及首条原因直接写入任务日志。修改这条链路后必须运行 `npm run articles:release-quality-gate:test`。
 
 五星审查清单使用 `npm run articles:review-gate -- --date YYYY-MM-DD --seed scripts/daily-ziwei-YYYY-MM-DD-seed.mjs --source docs/ziwei-daily-YYYY-MM-DD-source.md` 验证。修改清单规则后必须运行 `npm run articles:review-gate:test`；该测试固定确认种子改字、源稿偷改、评论席缺席、复用同一报告和报告缺行都会失败。
 

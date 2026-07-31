@@ -1,5 +1,6 @@
 import { spawnSync } from "node:child_process";
-import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, readdirSync, unlinkSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
 import path from "node:path";
 import process from "node:process";
 import { pathToFileURL } from "node:url";
@@ -55,6 +56,7 @@ const POINT_EVIDENCE_MIN_COVERAGE = 0.05;
 const EXAMPLE_EVIDENCE_MIN_COVERAGE = 0.05;
 const MIN_USED_EVIDENCE_RANGES = 2;
 export const DEMAND_EVIDENCE_REQUIRED_FROM = "2026-08-02";
+export const DEFAULT_ZIWEI_SOURCE_DOCX = "C:\\Users\\1\\Desktop\\【视频同步文稿】倪海厦-天纪_Password_Removed(1) (1).docx";
 const DEMAND_SOURCE_CONFIDENCE = new Map([
   ["search-console", "observed"],
   ["site-performance", "adjacent"],
@@ -339,6 +341,25 @@ function existingEnglishTitles() {
       const html = readFileSync(path.join(dir, file), "utf8");
       const title = html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/i)?.[1]?.replace(/<[^>]+>/g, "").trim();
       return title ? { file, title } : null;
+    })
+    .filter(Boolean);
+}
+
+function committedTitles(pathspec) {
+  const result = spawnSync("git", ["grep", "-n", "-I", "-E", "<h1", "HEAD", "--", pathspec], {
+    cwd: ROOT,
+    encoding: "utf8",
+    maxBuffer: 64 * 1024 * 1024,
+    windowsHide: true,
+  });
+  if (result.status !== 0) throw new Error(result.stderr.trim() || `Unable to read committed article titles: ${pathspec}`);
+  return result.stdout.split(/\r?\n/)
+    .map((line) => {
+      const match = line.match(/^HEAD:(.+?):\d+:(.*)$/);
+      const file = match?.[1]?.replace(/\\/g, "/").split("/").at(-1);
+      const title = match?.[2]?.match(/<h1[^>]*>([\s\S]*?)<\/h1>/i)?.[1]?.replace(/<[^>]+>/g, "").trim();
+      if (!file || file === "index.html" || !title) return null;
+      return { file, title };
     })
     .filter(Boolean);
 }
@@ -666,15 +687,16 @@ function scoreArticle(article, paragraphs, oldTitles, oldEnglishTitles, batchTit
   };
 }
 
-export async function validateSeedBatch({ seedPath, docxPath, date, reportPath, reportOnly = false, expectedCount = 30 }) {
+export async function validateSeedBatch({ seedPath, docxPath, date, reportPath, reportOnly = false, expectedCount = 30, existingTitleSource = "working-tree" }) {
   const resolvedSeed = path.resolve(seedPath);
   const resolvedDocx = path.resolve(docxPath);
   const { articles } = await import(`${pathToFileURL(resolvedSeed).href}?t=${Date.now()}`);
   if (!Array.isArray(articles) || !articles.length) throw new Error("Seed file did not export articles");
   const structuredHistory = await loadStructuredIntentHistory(resolvedSeed, date);
   const paragraphs = readParagraphs(resolvedDocx);
-  const oldTitles = existingTitles();
-  const oldEnglishTitles = existingEnglishTitles();
+  if (!["working-tree", "committed"].includes(existingTitleSource)) throw new Error(`Unknown existing title source: ${existingTitleSource}`);
+  const oldTitles = existingTitleSource === "committed" ? committedTitles(":(glob)articles/*.html") : existingTitles();
+  const oldEnglishTitles = existingTitleSource === "committed" ? committedTitles(":(glob)articles/en/*.html") : existingEnglishTitles();
   const batchTitles = articles.map(({ slug, title }) => ({ slug, title }));
   const batchEnglishTitles = articles.map(({ slug, english }) => ({ slug, title: english?.title || "" }));
   const batchIntentRecords = articles
@@ -731,6 +753,7 @@ export async function validateSeedBatch({ seedPath, docxPath, date, reportPath, 
     generatedAt: new Date().toISOString(),
     seed: path.relative(ROOT, resolvedSeed),
     sourceDocument: path.basename(resolvedDocx),
+    existingTitleSource,
     paragraphCount: paragraphs.length,
     structuredHistory: {
       scannedSourceCount: structuredHistory.scannedSourceCount,
@@ -762,6 +785,55 @@ export async function validateSeedBatch({ seedPath, docxPath, date, reportPath, 
     throw new Error(`Article quality gate failed: ${output.failed}/${output.articleCount} articles failed${batchMessage}; see ${path.relative(ROOT, resolvedReport)}`);
   }
   return output;
+}
+
+export async function validateDailyArticleQualityAtRelease({
+  date,
+  seedPath = `scripts/daily-ziwei-${date}-seed.mjs`,
+  docxPath = process.env.YUETIAN_ZIWEI_SOURCE_DOCX || DEFAULT_ZIWEI_SOURCE_DOCX,
+  expectedCount = 30,
+} = {}) {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(String(date || ""))) throw new Error("Release quality gate requires date YYYY-MM-DD");
+  if (!existsSync(path.resolve(docxPath))) throw new Error(`Release quality source DOCX not found: ${docxPath}`);
+  const tempReport = path.join(tmpdir(), `yuetian-article-quality-${date}-${process.pid}-${Date.now()}.json`);
+  try {
+    const output = await validateSeedBatch({
+      seedPath,
+      docxPath,
+      date,
+      reportPath: tempReport,
+      reportOnly: false,
+      expectedCount,
+      existingTitleSource: "committed",
+    });
+    return {
+      version: output.version,
+      date: output.date,
+      articleCount: output.articleCount,
+      passed: output.passed,
+      failed: output.failed,
+      existingTitleSource: output.existingTitleSource,
+      demandEvidence: output.demandEvidence,
+    };
+  } catch (error) {
+    let details = [];
+    if (existsSync(tempReport)) {
+      try {
+        const report = JSON.parse(readFileSync(tempReport, "utf8"));
+        details = (report.articles || [])
+          .filter((article) => Array.isArray(article.failures) && article.failures.length)
+          .slice(0, 5)
+          .map((article) => `${article.slug}: ${article.failures[0]}`);
+        details.push(...(report.batchFailures || []).slice(0, 3));
+      } catch (_reportError) {
+        // Keep the original validation error when the temporary report is unreadable.
+      }
+    }
+    const suffix = details.length ? `\n- ${details.join("\n- ")}` : `: ${error.message || error}`;
+    throw new Error(`Release quality gate failed for ${date}${suffix}`, { cause: error });
+  } finally {
+    if (existsSync(tempReport)) unlinkSync(tempReport);
+  }
 }
 
 async function main() {
