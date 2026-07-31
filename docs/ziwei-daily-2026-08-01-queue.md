@@ -42,7 +42,7 @@
 | 03 | 已发布 2026-08-01 01:06 https://yuetianai.com/articles/ziwei-dingdan-bushao-xianjinliu-jin.html / https://yuetianai.com/articles/en/ziwei-dingdan-bushao-xianjinliu-jin.html | ziwei-dingdan-bushao-xianjinliu-jin | 紫微斗数订单不少却现金流紧，怎么看贪狼带来的生意量有没有被财帛化忌吃掉 | 财运事业 |
 | 04 | 已发布 2026-08-01 01:31 https://yuetianai.com/articles/ziwei-xiangqin-gongtong-caiwu-hunqian-xieshang.html / https://yuetianai.com/articles/en/ziwei-xiangqin-gongtong-caiwu-hunqian-xieshang.html | ziwei-xiangqin-gongtong-caiwu-hunqian-xieshang | 紫微斗数相亲谈到共同财务就卡住，夫妻宫、财帛宫和田宅宫怎样做婚前协商 | 婚恋与关系 |
 | 05 | 已发布 2026-08-01 03:19 https://yuetianai.com/articles/ziwei-banlv-shihe-yiqi-zuoshengyi-ma.html / https://yuetianai.com/articles/en/ziwei-banlv-shihe-yiqi-zuoshengyi-ma.html | ziwei-banlv-shihe-yiqi-zuoshengyi-ma | 紫微斗数伴侣适合一起做生意吗：夫妻宫合得来，不等于朋友宫和财帛宫能合伙 | 婚恋与关系 |
-| 06 | 待发布 | ziwei-yidilian-shihe-jiehun-ma | 紫微斗数异地恋适不适合结婚：迁移宫的缘分入口和夫妻福德的承接要分开 | 婚恋与关系 |
+| 06 | 已发布 2026-08-01 04:57 https://yuetianai.com/articles/ziwei-yidilian-shihe-jiehun-ma.html / https://yuetianai.com/articles/en/ziwei-yidilian-shihe-jiehun-ma.html | ziwei-yidilian-shihe-jiehun-ma | 紫微斗数异地恋适不适合结婚：迁移宫的缘分入口和夫妻福德的承接要分开 | 婚恋与关系 |
 | 07 | 待发布 | ziwei-liunian-jixiang-xianyou-jihui-houyou-jieguo | 紫微斗数流年已经出现机会，为什么还没落实：从面试、申请、合同看到款 | 大限流年 |
 | 08 | 待发布 | ziwei-liunian-huangongzuo-banjia-ganqing-shui-yinqi-shui | 紫微斗数流年换工作、搬家、感情一起变，怎么判断谁引起谁 | 大限流年 |
 | 09 | 待发布 | ziwei-liunian-guanxigong-shijian-guishu | 紫微斗数流年走到父母、夫妻、朋友宫时，事情一定发生在别人身上吗 | 大限流年 |
