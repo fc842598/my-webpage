@@ -1,6 +1,7 @@
 import path from "node:path";
 import { pathToFileURL } from "node:url";
 import { writeFile } from "node:fs/promises";
+import { dailyArticleSourceText, validateReviewManifest } from "./validate-daily-article-reviews.mjs";
 import { validateSeedBatch } from "./validate-daily-ziwei-seed.mjs";
 
 function fail(message) {
@@ -42,48 +43,6 @@ function parseTimes(input) {
   return times;
 }
 
-function bodyOf(article) {
-  const opening = article.openingParagraphs.join("\n\n");
-  const sections = article.sections.map((section) => `### ${section.heading}\n${section.paragraphs.join("\n\n")}`).join("\n\n");
-  return `${opening}\n\n${sections}\n\n### 排盘使用顺序\n${article.orderText}`;
-}
-
-function englishBodyOf(article) {
-  const english = article.english;
-  const opening = english.openingParagraphs.join("\n\n");
-  const sections = english.sections.map((section) => `### ${section.heading}\n${section.paragraphs.join("\n\n")}`).join("\n\n");
-  return `${opening}\n\n${sections}\n\n### Practical Reading Order\n${english.orderText}`;
-}
-
-function sourceText(date, articles) {
-  const blocks = articles.map((article) => {
-    const evidence = article.evidence.join("、");
-    const sourceHints = [
-      `同步文稿段 ${evidence}`,
-      `核心判断：${article.points.join("；")}`,
-      `组合例子：${article.examples.join("；")}`,
-    ].join("。");
-    return `## ${article.order}. ${article.title}
-slug：\`${article.slug}\`
-搜索意图：${article.intent}
-素材线索：${sourceHints}
-正文草稿：
-${bodyOf(article)}
-
-英文标题：${article.english.title}
-英文描述：${article.english.description}
-英文正文：
-${englishBodyOf(article)}`;
-  });
-
-  return `# 紫微文章源稿 ${date}
-
-本批次共 ${articles.length} 篇，均用于当天中英文配对发布。正文只吸收同步文稿里的判断条件、组合逻辑和落宫例子，不保留来源痕迹。
-
-${blocks.join("\n\n---\n\n")}
-`;
-}
-
 function queueText(date, articles, times) {
   const schedule = articles.map((article, index) => {
     const order = String(article.order).padStart(2, "0");
@@ -119,6 +78,7 @@ if (!seedArg) fail("Missing --seed");
 if (!date || !/^\d{4}-\d{2}-\d{2}$/.test(date)) fail("Missing or invalid --date");
 if (!args.docx) fail("Missing --docx; the source document is required for the quality gate");
 if (expectedCount !== 30 && !testMode) fail("Non-30 batches require --test-mode true and must never be used for production publishing");
+if (expectedCount === 30 && testMode) fail("A 30-article production batch cannot use --test-mode true");
 
 const seedPath = path.resolve(seedArg);
 const { articles } = await import(`${pathToFileURL(seedPath).href}?t=${Date.now()}`);
@@ -132,6 +92,15 @@ await validateSeedBatch({
   expectedCount,
 });
 
+if (!testMode) {
+  await validateReviewManifest({
+    date,
+    seedPath,
+    manifestPath: args["review-manifest"] || `docs/article-reviews/${date}-review-manifest.json`,
+    expectedCount,
+  });
+}
+
 const ordered = [...articles].sort((a, b) => a.order - b.order);
 const times = parseTimes(args.times);
 if (times.length !== ordered.length) fail(`Need ${ordered.length} publish times, got ${times.length}`);
@@ -139,7 +108,7 @@ if (times.length !== ordered.length) fail(`Need ${ordered.length} publish times,
 const sourcePath = path.resolve(args.source || `docs/ziwei-daily-${date}-source.md`);
 const queuePath = path.resolve(args.queue || `docs/ziwei-daily-${date}-queue.md`);
 
-await writeFile(sourcePath, sourceText(date, ordered), "utf8");
+await writeFile(sourcePath, dailyArticleSourceText(date, ordered), "utf8");
 await writeFile(queuePath, queueText(date, ordered, times), "utf8");
 
 console.log(`Wrote ${path.relative(process.cwd(), sourcePath)}`);

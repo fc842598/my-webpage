@@ -15,6 +15,8 @@
     "articles:quality-gate": "node scripts/validate-daily-ziwei-seed.mjs",
     "articles:evidence-binding:test": "node scripts/test-daily-ziwei-evidence-binding.mjs",
     "articles:intent-history:test": "node scripts/test-daily-ziwei-intent-history.mjs",
+    "articles:review-gate": "node scripts/validate-daily-article-reviews.mjs",
+    "articles:review-gate:test": "node scripts/test-daily-article-reviews.mjs",
     "articles:queue-check": "node scripts/validate-daily-article-queue.mjs",
     "articles:daily-generate": "node scripts/generate-daily-ziwei-batch.mjs",
     "articles:performance": "node scripts/collect-article-performance.mjs",

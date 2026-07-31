@@ -12,7 +12,7 @@
 4. 原创成稿：中文提供1-2段 `openingParagraphs`、3-5个独立 `sections` 和明确 `orderText`；英文在 `english` 中提供独立标题、description、正文结构、例子和阅读顺序。生成器不再补写中英文固定正文，只负责按已审核结构排版。
 5. 质量闸门：运行 `npm run articles:quality-gate -- --seed ... --docx ... --date ... --expected-count 30`。任一文章失败，整批不得生成、发布或提交，必须换题重写直至30篇全部通过。
 6. 写前五审：依次检查真实搜索需求、站内搜索意图区分、源文4观点、2个例子可验证性、主题配比。任何一项不成立就换题。
-7. 成稿后五审：依次检查专业逻辑、真人读感、跨文模板味、英文自然改写、技术SEO。机器味或薄题必须重写，不能只润色。
+7. 成稿后五审：依次检查专业逻辑、真人读感、SEO搜索意图、英文自然改写、用户价值。每席逐篇绑定当前正文哈希；机器味、薄题或哈希不一致必须重写并重新五审，不能口头放行。
 8. 发布与复查：中英文配对使用同一分钟；同步索引、Feed、Sitemap、JSON-LD 与 hreflang；推送后抽查线上页面。
 9. 次日学习：把本日质量报告、发布结果和30天数据反馈一起作为下一批选题输入。
 
@@ -21,6 +21,8 @@
 - 自动评分只负责发现结构、篇幅、来源词、重复片段和明显查重问题，不能代替编辑审。
 - 初稿通过自动门后，必须由紫微逻辑、中文真人读感、SEO搜索意图、英文自然度、用户价值五个独立评论席逐篇审查30篇；任何一席出现一篇 `FAIL`，整批不得生成发布队列。
 - 返工后必须保留第一轮报告，并由五席重新全量复审30篇，不能只复查失败句。只有五份最终报告全部为 `30 PASS / 0 FAIL`，才允许生成源稿、队列和系统定时任务。
+- 最终五份报告必须写入同一个 `Batch-Hash` 和 `Source-Hash`，逐篇保留 `Content-Hash` 与 `PASS` 行，并汇总到 `docs/article-reviews/YYYY-MM-DD-review-manifest.json`。任何中英文正文、标题、观点、例子、元数据或源稿结构改字，都会使哈希失效并阻断发布。
+- `scripts/generate-daily-ziwei-batch.mjs`、`scripts/validate-daily-article-queue.mjs`、`scripts/release-daily-article-slot.mjs` 和 `scripts/publish-local-article-batch.mjs` 四个入口都必须验证五星清单，不能从底层脚本绕过。
 - SEO审不只比较标题字面，还要比较用户问题、导语、答案路径和组合例子。与旧页同题时优先升级旧URL；每日名额必须换成真正不同的用户问题，禁止只换标题或行业场景。
 - 英文审优先拦截 `outside platform`、`life lines`、`grammatical subject` 等中式抽象表达；英语正文必须先解释现实含义，再给紫微术语。
 - 时间层统一口径：星曜与四化固定在本命宫位，流年命宫移动。不得写“流年化禄”“annual Hua Quan”“流年贪狼”等容易造成飞动误解的简写。
@@ -77,6 +79,8 @@
 报告保存为 `docs/article-quality-YYYY-MM-DD.json`。只有全部文章通过且单篇评分不低于85分，生成器才允许写出源稿和发布队列。
 
 质量报告的 `evidence.binding` 会保存每条观点、每个例子的最佳证据范围、覆盖率、实际使用范围数和当前阈值。修改这套规则后必须运行 `npm run articles:evidence-binding:test`，并对正式30篇重新生成质量报告、源稿和发布队列。
+
+五星审查清单使用 `npm run articles:review-gate -- --date YYYY-MM-DD --seed scripts/daily-ziwei-YYYY-MM-DD-seed.mjs --source docs/ziwei-daily-YYYY-MM-DD-source.md` 验证。修改清单规则后必须运行 `npm run articles:review-gate:test`；该测试固定确认种子改字、源稿偷改、评论席缺席、复用同一报告和报告缺行都会失败。
 
 ## 数据反馈规则
 

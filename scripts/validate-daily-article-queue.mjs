@@ -2,6 +2,7 @@ import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
 import process from "node:process";
 import { pathToFileURL } from "node:url";
+import { validateReviewManifest } from "./validate-daily-article-reviews.mjs";
 
 function fail(message) {
   throw new Error(message);
@@ -34,9 +35,18 @@ if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) fail("Use --date YYYY-MM-DD");
 const seedPath = path.resolve(args.seed || `scripts/daily-ziwei-${date}-seed.mjs`);
 const { articles } = await import(`${pathToFileURL(seedPath).href}?t=${Date.now()}`);
 if (!Array.isArray(articles) || articles.length !== 30) fail(`Expected 30 seed articles, got ${articles?.length || 0}`);
+const queuePath = args.queue || `docs/ziwei-daily-${date}-queue.md`;
+const sourcePath = args.source || `docs/ziwei-daily-${date}-source.md`;
+const reviewGate = await validateReviewManifest({
+  date,
+  seedPath,
+  manifestPath: args["review-manifest"] || `docs/article-reviews/${date}-review-manifest.json`,
+  sourcePath,
+  expectedCount: 30,
+});
 
-const queue = read(args.queue || `docs/ziwei-daily-${date}-queue.md`);
-const source = read(args.source || `docs/ziwei-daily-${date}-source.md`);
+const queue = read(queuePath);
+const source = read(sourcePath);
 const schedulePattern = new RegExp(`^(\\d{2})\\.\\s+${date}\\s+(\\d{2}:\\d{2})\\s+-\\s+(.+)$`, "gm");
 const schedules = [...queue.matchAll(schedulePattern)];
 const rows = [...queue.matchAll(/^\|\s*(\d{2})\s*\|\s*([^|]+)\|\s*([^|]+)\|\s*([^|]+)\|\s*([^|]+)\|$/gm)];
@@ -82,4 +92,4 @@ for (let index = 0; index < articles.length; index += 1) {
 }
 
 if (premature.length) fail(`Future URLs were exposed early: ${premature.slice(0, 5).join(", ")}`);
-console.log(JSON.stringify({ date, articleCount: 30, scheduleCount: 30, rowCount: 30, bucketCounts: buckets, minGapMinutes: Math.min(...gaps), prematureCount: 0 }, null, 2));
+console.log(JSON.stringify({ date, articleCount: 30, scheduleCount: 30, rowCount: 30, reviewerCount: reviewGate.reviewerCount, reviewBatchHash: reviewGate.batchHash, bucketCounts: buckets, minGapMinutes: Math.min(...gaps), prematureCount: 0 }, null, 2));

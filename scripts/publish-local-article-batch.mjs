@@ -1,11 +1,16 @@
 import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
+import { execFileSync } from "node:child_process";
 import path from "node:path";
+import { validateReviewManifest } from "./validate-daily-article-reviews.mjs";
 
 const site = "https://yuetianai.com";
 const defaultImage = `${site}/images/home2/triad-tian-bg.webp`;
 
 const args = parseArgs(process.argv.slice(2));
 const root = path.resolve(args["output-root"] || process.cwd());
+const productionRoot = root === path.resolve(process.cwd());
+const generatedArticlePaths = new Set();
+let useCommittedArticleSnapshot = false;
 const queuePath = args.queue;
 const sourcePath = args.source;
 const count = Number(args.count || 1);
@@ -119,6 +124,31 @@ if (!existsSync(sourcePath)) fail(`Source not found: ${sourcePath}`);
 
 const queueRaw = readFileSync(queuePath, "utf8");
 const sourceRaw = readFileSync(sourcePath, "utf8");
+const reviewDates = [
+  normalizeSlash(queuePath).match(/(?:^|\/)ziwei-daily-(\d{4}-\d{2}-\d{2})-queue\.md$/)?.[1],
+  queueRaw.match(/^#\s*紫微文章发布队列\s+(\d{4}-\d{2}-\d{2})\s*$/m)?.[1],
+  sourceRaw.match(/^#\s*紫微文章源稿\s+(\d{4}-\d{2}-\d{2})\s*$/m)?.[1],
+].filter(Boolean);
+const uniqueReviewDates = [...new Set(reviewDates)];
+if (uniqueReviewDates.length > 1) fail(`Queue and source review dates disagree: ${uniqueReviewDates.join(", ")}`);
+const reviewDate = uniqueReviewDates[0] || "";
+const dailySourceCount = [...sourceRaw.matchAll(/^##\s+\d+\.\s+/gm)].length;
+const dailyQueueCount = [...queueRaw.matchAll(/^\|\s*\d{2}\s*\|/gm)].length;
+const looksLikeDailyBatch = dailySourceCount === 30 && dailyQueueCount === 30;
+const requiresDailyReview = publishDate >= "2026-08-01" && (category === "紫微斗数" || looksLikeDailyBatch);
+if (requiresDailyReview && !reviewDate) fail("Reviewed Ziwei publishing requires dated daily queue and source markers");
+if (requiresDailyReview && reviewDate !== publishDate) fail(`--date must match the reviewed queue date ${reviewDate}`);
+if (reviewDate && reviewDate >= "2026-08-01") {
+  await validateReviewManifest({
+    date: reviewDate,
+    seedPath: `scripts/daily-ziwei-${reviewDate}-seed.mjs`,
+    manifestPath: args["review-manifest"] || `docs/article-reviews/${reviewDate}-review-manifest.json`,
+    sourcePath,
+    expectedCount: 30,
+  });
+  useCommittedArticleSnapshot = productionRoot;
+}
+
 const rows = parseQueue(queueRaw)
   .filter((row) => includePublished || !row.status.includes("http"))
   .filter((row) => !requestedOrder || String(row.order).padStart(2, "0") === requestedOrder)
@@ -161,12 +191,14 @@ for (const [index, article] of articles.entries()) {
   if (existsSync(enPath) && !overwriteExisting) fail(`English article already exists: ${enPath}`);
   writeFileSync(zhPath, chinesePage(article, time), "utf8");
   writeFileSync(enPath, englishPage(article, time), "utf8");
+  generatedArticlePaths.add(`articles/${article.slug}.html`);
+  generatedArticlePaths.add(`articles/en/${article.slug}.html`);
 }
 
 if (!skipCollections) {
   updateQueue(queuePath, queueRaw, articles);
   regenerateChineseIndex();
-  regenerateFeedsAndSitemaps();
+  regenerateFeedsAndSitemaps(articles);
 }
 
 console.log(`Published ${articles.length} articles.`);
@@ -188,6 +220,10 @@ function parseArgs(parts) {
 function fail(message) {
   console.error(message);
   process.exit(1);
+}
+
+function normalizeSlash(value) {
+  return String(value || "").replace(/\\/g, "/");
 }
 
 function parseTimesArg(value) {
@@ -322,6 +358,7 @@ function explicitHubKey(article) {
   const label = `${article.category || article.section || ""}`.trim();
   if (label.includes("看盘方法")) return "learning";
   if (label.includes("宫位组合") || label.includes("婚恋与关系")) return "palaces";
+  if (label.includes("四化")) return "transformations";
   if (label.includes("主星细读") || label === "主星") return "main-stars";
   if (label.includes("辅煞曜")) return "helper-malice";
   if (label.includes("特定命例")) return "case-patterns";
@@ -2160,7 +2197,10 @@ function escapeRegExp(value) {
 }
 
 function parseArticleFile(file, relBase = "articles") {
-  const html = readFileSync(file, "utf8");
+  const repositoryRelative = normalizeSlash(path.relative(root, file));
+  const html = useCommittedArticleSnapshot && !generatedArticlePaths.has(repositoryRelative)
+    ? execFileSync("git", ["show", `HEAD:${repositoryRelative}`], { cwd: root, encoding: "utf8", windowsHide: true })
+    : readFileSync(file, "utf8");
   const rel = path.relative(path.join(root, relBase), file).replace(/\\/g, "/");
   const url = `${site}/${relBase}/${rel}`;
   const headline = pickJsonField(html, "headline") || pickTag(html, "h1") || pickTitle(html);
@@ -2168,6 +2208,17 @@ function parseArticleFile(file, relBase = "articles") {
   const section = pickJsonField(html, "articleSection") || "紫微斗数";
   const published = pickJsonField(html, "datePublished") || "2026-06-24";
   return { file, rel, url, headline, description, section, published };
+}
+
+function articleFileNames(relativeDir) {
+  if (!useCommittedArticleSnapshot) return readdirSync(path.join(root, relativeDir));
+  const tracked = execFileSync("git", ["ls-tree", "-r", "--name-only", "HEAD", "--", relativeDir], {
+    cwd: root,
+    encoding: "utf8",
+    windowsHide: true,
+  }).split(/\r?\n/).filter((file) => file && path.posix.dirname(file) === relativeDir);
+  const generated = [...generatedArticlePaths].filter((file) => path.posix.dirname(file) === relativeDir);
+  return [...new Set([...tracked, ...generated])].map((file) => path.posix.basename(file));
 }
 
 function pickJsonField(html, field) {
@@ -2188,7 +2239,7 @@ function pickTitle(html) {
 }
 
 function allChineseArticles() {
-  return readdirSync(path.join(root, "articles"))
+  return articleFileNames("articles")
     .filter((file) => file.endsWith(".html") && file !== "index.html" && !specialChineseFiles.has(file))
     .map((file) => parseArticleFile(path.join(root, "articles", file)))
     .sort((a, b) => b.published.localeCompare(a.published) || a.headline.localeCompare(b.headline, "zh-CN"));
@@ -2197,7 +2248,7 @@ function allChineseArticles() {
 function allEnglishArticles() {
   const enDir = path.join(root, "articles", "en");
   if (!existsSync(enDir)) return [];
-  return readdirSync(enDir)
+  return articleFileNames("articles/en")
     .filter((file) => file.endsWith(".html") && file !== "index.html" && !specialEnglishFiles.has(file))
     .map((file) => parseArticleFile(path.join(enDir, file), "articles/en"))
     .sort((a, b) => b.published.localeCompare(a.published) || a.headline.localeCompare(b.headline));
@@ -2343,10 +2394,10 @@ function sectionDesc(name) {
   return "第一次来可以先扫这里：排盘入口、基础概念、十二宫和常见问题都放在一起。";
 }
 
-function regenerateFeedsAndSitemaps() {
+function regenerateFeedsAndSitemaps(changedArticles) {
   const zhArticles = allChineseArticles();
   const enArticles = allEnglishArticles();
-  regenerateTopicHubs(zhArticles);
+  regenerateTopicHubs(zhArticles, changedArticles);
   writeFileSync(path.join(root, "feed.xml"), zhFeed(zhArticles), "utf8");
   writeFileSync(path.join(root, "articles", "en", "feed.xml"), enFeed(enArticles), "utf8");
   writeFileSync(path.join(root, "articles", "en", "index.html"), enIndex(enArticles), "utf8");
@@ -2355,8 +2406,11 @@ function regenerateFeedsAndSitemaps() {
   writeFileSync(path.join(root, "sitemap-en.xml"), enSitemap(enArticles), "utf8");
 }
 
-function regenerateTopicHubs(articles) {
-  for (const hub of topicHubs) {
+function regenerateTopicHubs(articles, changedArticles) {
+  const hubs = Array.isArray(changedArticles)
+    ? topicHubs.filter((hub) => changedArticles.some((article) => articleMatchesHub(article, hub)))
+    : topicHubs;
+  for (const hub of hubs) {
     writeFileSync(path.join(root, "articles", hub.file), topicHubPage(hub, articles), "utf8");
   }
 }

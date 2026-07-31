@@ -2,6 +2,7 @@ import { closeSync, existsSync, openSync, readFileSync, unlinkSync, writeFileSyn
 import { spawnSync } from "node:child_process";
 import path from "node:path";
 import process from "node:process";
+import { validateReviewManifest } from "./validate-daily-article-reviews.mjs";
 
 const ROOT = process.cwd();
 const SITE = "https://yuetianai.com";
@@ -64,12 +65,27 @@ function shanghaiNow() {
 
 function parseSlot(queue, date, order) {
   const schedule = queue.match(new RegExp(`^${order}\\.\\s+${date}\\s+(\\d{2}:\\d{2})\\s+-`, "m"));
-  const row = queue.match(new RegExp(`^\\|\\s*${order}\\s*\\|\\s*([^|]+)\\|\\s*([^|]+)\\|`, "m"));
+  const row = queue.match(new RegExp(`^\\|\\s*${order}\\s*\\|\\s*([^|]+)\\|\\s*([^|]+)\\|\\s*([^|]+)\\|\\s*([^|]+)\\|\\s*$`, "m"));
   if (!schedule || !row) fail(`Queue slot ${order} is incomplete for ${date}`);
-  return { plannedTime: schedule[1], status: row[1].trim(), slug: row[2].trim() };
+  return { plannedTime: schedule[1], status: row[1].trim(), slug: row[2].trim(), category: row[4].trim() };
 }
 
-function managedPaths(date, slug) {
+function topicHubForCategory(category) {
+  const label = String(category || "").trim();
+  if (label.includes("看盘方法")) return "ziwei-learning-path.html";
+  if (label.includes("宫位组合") || label.includes("婚恋与关系")) return "ziwei-palaces.html";
+  if (label.includes("四化")) return "ziwei-four-transformations.html";
+  if (label.includes("主星")) return "ziwei-main-stars.html";
+  if (label.includes("辅煞曜")) return "ziwei-helper-malice-stars.html";
+  if (label.includes("特定命例")) return "ziwei-case-patterns.html";
+  if (label.includes("大限流年")) return "ziwei-cycles.html";
+  if (label.includes("财运事业")) return "ziwei-money-career.html";
+  return "";
+}
+
+function managedPaths(date, slug, category) {
+  const topicHub = topicHubForCategory(category);
+  const topicHubPaths = topicHub ? [`articles/${topicHub}`] : TOPIC_HUBS.map((file) => `articles/${file}`);
   return [
     `docs/ziwei-daily-${date}-queue.md`,
     `articles/${slug}.html`,
@@ -81,7 +97,7 @@ function managedPaths(date, slug) {
     "sitemap.xml",
     "sitemap-articles.xml",
     "sitemap-en.xml",
-    ...TOPIC_HUBS.map((file) => `articles/${file}`),
+    ...topicHubPaths,
   ];
 }
 
@@ -110,13 +126,15 @@ function validatePage(file, expectedUrl, publishedAt) {
   if (banned) fail(`Banned public term ${banned} in ${file}`);
 }
 
-function validateCollections(slug) {
-  for (const file of ["articles/index.html", "articles/en/index.html", "feed.xml", "articles/en/feed.xml", "sitemap.xml", "sitemap-articles.xml", "sitemap-en.xml"]) {
+function validateCollections(slug, topicHub) {
+  const files = ["articles/index.html", "articles/en/index.html", "feed.xml", "articles/en/feed.xml", "sitemap.xml", "sitemap-articles.xml", "sitemap-en.xml"];
+  if (topicHub) files.push(`articles/${topicHub}`);
+  for (const file of files) {
     if (!readFileSync(path.join(ROOT, file), "utf8").includes(slug)) fail(`${file} does not include ${slug}`);
   }
 }
 
-async function verifyOnline(slug) {
+async function verifyOnline(slug, topicHub) {
   const urls = [
     `${SITE}/articles/${slug}.html`,
     `${SITE}/articles/en/${slug}.html`,
@@ -128,6 +146,7 @@ async function verifyOnline(slug) {
     `${SITE}/sitemap-articles.xml`,
     `${SITE}/sitemap-en.xml`,
   ];
+  if (topicHub) urls.push(`${SITE}/articles/${topicHub}`);
   for (let attempt = 0; attempt < 12; attempt += 1) {
     const checks = await Promise.all(urls.map(async (url) => {
       const response = await fetch(url, { cache: "no-store" });
@@ -148,15 +167,23 @@ async function main() {
   const queuePath = `docs/ziwei-daily-${date}-queue.md`;
   const sourcePath = `docs/ziwei-daily-${date}-source.md`;
   if (!existsSync(queuePath) || !existsSync(sourcePath)) fail(`Missing source or queue for ${date}`);
+  const reviewGate = await validateReviewManifest({
+    date,
+    seedPath: `scripts/daily-ziwei-${date}-seed.mjs`,
+    manifestPath: `docs/article-reviews/${date}-review-manifest.json`,
+    sourcePath,
+    expectedCount: 30,
+  });
 
   let queue = readFileSync(queuePath, "utf8");
   const slot = parseSlot(queue, date, order);
-  const paths = managedPaths(date, slot.slug);
+  const paths = managedPaths(date, slot.slug, slot.category);
+  const topicHub = topicHubForCategory(slot.category);
   const zhFile = `articles/${slot.slug}.html`;
   const enFile = `articles/en/${slot.slug}.html`;
   const alreadyPublished = slot.status.includes("http") && existsSync(zhFile) && existsSync(enFile);
   if (alreadyPublished) {
-    if (!args["skip-online-check"]) await verifyOnline(slot.slug);
+    if (!args["skip-online-check"]) await verifyOnline(slot.slug, topicHub);
     console.log(`Slot ${order} already published: ${slot.slug}`);
     return;
   }
@@ -168,11 +195,11 @@ async function main() {
     fail(`Slot ${order} is scheduled for ${date} ${slot.plannedTime}; now is ${now.date} ${now.time}`);
   }
   if (args["dry-run"]) {
-    console.log(JSON.stringify({ date, order, slug: slot.slug, plannedTime: slot.plannedTime, now }, null, 2));
+    console.log(JSON.stringify({ date, order, slug: slot.slug, plannedTime: slot.plannedTime, reviewerCount: reviewGate.reviewerCount, reviewBatchHash: reviewGate.batchHash, managedPaths: paths, now }, null, 2));
     return;
   }
 
-  assertRepositoryReady(paths);
+  assertRepositoryReady([...paths, ...reviewGate.artifactPaths]);
   const lockPath = path.join(ROOT, ".git", "yuetian-article-release.lock");
   const lock = openSync(lockPath, "wx");
   closeSync(lock);
@@ -199,7 +226,7 @@ async function main() {
     }
     validatePage(zhFile, `${SITE}/${zhFile}`, publishedAt);
     validatePage(enFile, `${SITE}/${enFile}`, publishedAt);
-    validateCollections(slot.slug);
+    validateCollections(slot.slug, topicHub);
 
     git(["add", "--", ...paths]);
     const staged = git(["diff", "--cached", "--name-only"]).stdout.trim().split(/\r?\n/).filter(Boolean);
@@ -212,7 +239,7 @@ async function main() {
     const head = git(["rev-parse", "HEAD"]).stdout.trim();
     const remote = git(["rev-parse", "origin/master"]).stdout.trim();
     if (head !== remote) fail("HEAD does not match origin/master after push");
-    if (!args["skip-online-check"]) await verifyOnline(slot.slug);
+    if (!args["skip-online-check"]) await verifyOnline(slot.slug, topicHub);
     console.log(JSON.stringify({ date, order, slug: slot.slug, publishedAt, commit: head, online: !args["skip-online-check"] }, null, 2));
   } finally {
     if (existsSync(lockPath)) unlinkSync(lockPath);
