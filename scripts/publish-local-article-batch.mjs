@@ -1,14 +1,15 @@
-import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readdirSync, readFileSync, realpathSync, writeFileSync } from "node:fs";
 import { execFileSync } from "node:child_process";
 import path from "node:path";
 import { validateReviewManifest } from "./validate-daily-article-reviews.mjs";
+import { assertProductionPublishWindow } from "./article-publish-time-gate.mjs";
 
 const site = "https://yuetianai.com";
 const defaultImage = `${site}/images/home2/triad-tian-bg.webp`;
 
 const args = parseArgs(process.argv.slice(2));
 const root = path.resolve(args["output-root"] || process.cwd());
-const productionRoot = root === path.resolve(process.cwd());
+const productionRoot = comparablePath(root) === comparablePath(process.cwd());
 const generatedArticlePaths = new Set();
 let useCommittedArticleSnapshot = false;
 const queuePath = args.queue;
@@ -23,9 +24,11 @@ const explicitTimes = parseTimesArg(args.times);
 const overwriteExisting = args["overwrite-existing"] === true;
 const includePublished = args["include-published"] === true;
 const skipCollections = args["skip-collections"] === true;
-if (skipCollections && (!args["output-root"] || root === process.cwd())) {
+if (skipCollections && productionRoot) {
   fail("--skip-collections is only allowed with a separate --output-root for isolated tests.");
 }
+if (productionRoot && overwriteExisting) fail("--overwrite-existing is forbidden in production publishing.");
+if (productionRoot && includePublished) fail("--include-published is forbidden in production publishing.");
 if (!/^(?:[01]\d|2[0-3]):[0-5]\d$/.test(publishTime)) {
   fail("--time must use HH:MM in Asia/Shanghai time.");
 }
@@ -178,6 +181,21 @@ const scheduleTimes = explicitTimes.length
   ? explicitTimes
   : articles.map((_, index) => timePlusMinutes(publishTime, index * 3));
 
+try {
+  assertProductionPublishWindow({
+    productionRoot,
+    explicitDate: typeof args.date === "string",
+    explicitTime: typeof args.time === "string",
+    hasExplicitTimes: explicitTimes.length > 0,
+    publishDate,
+    publishTime,
+    scheduleTimes,
+    articleCount: articles.length,
+  });
+} catch (error) {
+  fail(error.message || String(error));
+}
+
 mkdirSync(path.join(root, "articles"), { recursive: true });
 mkdirSync(path.join(root, "articles", "en"), { recursive: true });
 
@@ -224,6 +242,12 @@ function fail(message) {
 
 function normalizeSlash(value) {
   return String(value || "").replace(/\\/g, "/");
+}
+
+function comparablePath(value) {
+  let resolved = path.resolve(value);
+  if (existsSync(resolved)) resolved = realpathSync.native(resolved);
+  return process.platform === "win32" ? resolved.toLowerCase() : resolved;
 }
 
 function parseTimesArg(value) {

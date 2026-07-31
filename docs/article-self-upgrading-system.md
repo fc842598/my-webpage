@@ -18,6 +18,8 @@
 
 分时释放前先同步 `origin/master`。本地只落后且远端改动不覆盖未提交文件时，允许 `--ff-only` 前进并重启当前时段以重新加载最新脚本、seed 和审稿清单；分支分叉或同文件冲突时必须保持工作区不动并停止，禁止自动 stash、reset、强推或覆盖用户改稿。
 
+正式目录只能由 `scripts/release-daily-article-slot.mjs` 逐篇释放。底层发布器必须显式收到当天 `--date` 和实际 `--time`，一次只允许一对中英文页，未来分钟、跨日时间、超过2分钟的伪发布时间和 `--times` 整批写入全部拒绝。旧的 `scripts/publish-ai-search-qa-batch.mjs` 整批生产入口已经停用；时间闸门修改后必须运行 `npm run articles:publish-time-gate:test`。
+
 ## 双轮五席放行规则
 
 - 自动评分只负责发现结构、篇幅、来源词、重复片段和明显查重问题，不能代替编辑审。

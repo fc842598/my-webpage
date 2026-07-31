@@ -1900,7 +1900,12 @@ const articles = buildAiSearchQaBatch({ batchDate, uniqueTimes, facts });
 
 main();
 
+// Retained as historical batch data only; production must use the reviewed slot releaser.
 function main() {
+  throw new Error("Legacy bulk production publishing is disabled. Use the reviewed daily queue and release-daily-article-slot.mjs so future URLs stay unpublished until their assigned minute.");
+}
+
+function legacyMain() {
   validateBatch();
   ensureDirs();
   const existingTitles = existingChineseTitles();
