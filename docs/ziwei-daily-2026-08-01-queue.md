@@ -46,7 +46,7 @@
 | 07 | 已发布 2026-08-01 06:44 https://yuetianai.com/articles/ziwei-liunian-jixiang-xianyou-jihui-houyou-jieguo.html / https://yuetianai.com/articles/en/ziwei-liunian-jixiang-xianyou-jihui-houyou-jieguo.html | ziwei-liunian-jixiang-xianyou-jihui-houyou-jieguo | 紫微斗数流年已经出现机会，为什么还没落实：从面试、申请、合同看到款 | 大限流年 |
 | 08 | 已发布 2026-08-01 07:00 https://yuetianai.com/articles/ziwei-liunian-huangongzuo-banjia-ganqing-shui-yinqi-shui.html / https://yuetianai.com/articles/en/ziwei-liunian-huangongzuo-banjia-ganqing-shui-yinqi-shui.html | ziwei-liunian-huangongzuo-banjia-ganqing-shui-yinqi-shui | 紫微斗数流年换工作、搬家、感情一起变，怎么判断谁引起谁 | 大限流年 |
 | 09 | 已发布 2026-08-01 07:15 https://yuetianai.com/articles/ziwei-liunian-guanxigong-shijian-guishu.html / https://yuetianai.com/articles/en/ziwei-liunian-guanxigong-shijian-guishu.html | ziwei-liunian-guanxigong-shijian-guishu | 紫微斗数流年走到父母、夫妻、朋友宫时，事情一定发生在别人身上吗 | 大限流年 |
-| 10 | 待发布 | ziwei-fumu-chushoufu-maifang-shui-zuozhu | 紫微斗数父母帮出首付，买房后谁做主：父母宫化权、田宅宫与财帛宫怎么分 | 宫位组合 |
+| 10 | 已发布 2026-08-01 07:32 https://yuetianai.com/articles/ziwei-fumu-chushoufu-maifang-shui-zuozhu.html / https://yuetianai.com/articles/en/ziwei-fumu-chushoufu-maifang-shui-zuozhu.html | ziwei-fumu-chushoufu-maifang-shui-zuozhu | 紫微斗数父母帮出首付，买房后谁做主：父母宫化权、田宅宫与财帛宫怎么分 | 宫位组合 |
 | 11 | 待发布 | ziwei-gongzuo-wending-yuezuo-yuelei-guanlu-shengong-fude | 紫微斗数工作稳定却越做越累，官禄宫好为什么还是想辞职 | 宫位组合 |
 | 12 | 待发布 | ziwei-waidi-jihui-duo-liubuxia-qianyi-tianzhai | 紫微斗数外地机会多但留不下来，迁移宫吉、田宅宫弱怎么取舍 | 宫位组合 |
 | 13 | 待发布 | ziwei-bei-fangdai-huan-gongzuo-guanlu-qianyi-caibo | 紫微斗数背着房贷还能换工作吗：官禄、迁移与财帛怎么看转职窗口 | 宫位组合 |
