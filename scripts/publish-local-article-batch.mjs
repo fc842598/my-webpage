@@ -9,6 +9,8 @@ const root = path.resolve(args["output-root"] || process.cwd());
 const queuePath = args.queue;
 const sourcePath = args.source;
 const count = Number(args.count || 1);
+const requestedOrder = args.order ? String(args.order).padStart(2, "0") : "";
+const requestedSlug = String(args.slug || "").trim();
 const category = args.category || "紫微斗数";
 const publishDate = args.date || todayShanghai();
 const publishTime = args.time || "09:00";
@@ -117,7 +119,10 @@ if (!existsSync(sourcePath)) fail(`Source not found: ${sourcePath}`);
 
 const queueRaw = readFileSync(queuePath, "utf8");
 const sourceRaw = readFileSync(sourcePath, "utf8");
-const rows = parseQueue(queueRaw).filter((row) => includePublished || !row.status.includes("http"));
+const rows = parseQueue(queueRaw)
+  .filter((row) => includePublished || !row.status.includes("http"))
+  .filter((row) => !requestedOrder || String(row.order).padStart(2, "0") === requestedOrder)
+  .filter((row) => !requestedSlug || row.slug === requestedSlug);
 const picked = rows.slice(0, count);
 if (picked.length === 0) fail("No pending queue rows.");
 
