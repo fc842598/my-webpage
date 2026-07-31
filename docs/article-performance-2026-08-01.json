@@ -1,0 +1,457 @@
+{
+  "version": 1,
+  "date": "2026-08-01",
+  "days": 30,
+  "generatedAt": "2026-07-31T00:06:52.563Z",
+  "summary": {
+    "activeUsers": 610,
+    "pageViews": 1370,
+    "searchClicks": 30,
+    "searchImpressions": 736
+  },
+  "winners": [
+    {
+      "page": "/articles/ziwei-bankong-zhechi.html",
+      "clicks": 3,
+      "impressions": 5,
+      "ctr": 60,
+      "position": 7.8,
+      "pageViews": 0,
+      "activeUsers": 0,
+      "meta": {
+        "path": "/articles/ziwei-bankong-zhechi.html",
+        "rel": "articles\\ziwei-bankong-zhechi.html",
+        "title": "紫微斗数半空折翅怎么看：廉贪落陷为何要留意中年转折",
+        "category": "特定命例解读",
+        "language": "zh"
+      }
+    },
+    {
+      "page": "/articles/ziwei-liunian-qianyi.html",
+      "clicks": 3,
+      "impressions": 10,
+      "ctr": 30,
+      "position": 10.7,
+      "pageViews": 0,
+      "activeUsers": 0,
+      "meta": {
+        "path": "/articles/ziwei-liunian-qianyi.html",
+        "rel": "articles\\ziwei-liunian-qianyi.html",
+        "title": "紫微斗数流年落迁移宫怎么看：今年会不会动",
+        "category": "看盘方法",
+        "language": "zh"
+      }
+    },
+    {
+      "page": "/articles/ziwei-fumugong-wuqu-pojun-hualu.html",
+      "clicks": 2,
+      "impressions": 6,
+      "ctr": 33.33333333333333,
+      "position": 19,
+      "pageViews": 0,
+      "activeUsers": 0,
+      "meta": {
+        "path": "/articles/ziwei-fumugong-wuqu-pojun-hualu.html",
+        "rel": "articles\\ziwei-fumugong-wuqu-pojun-hualu.html",
+        "title": "紫微斗数父母宫武曲破军化禄怎么看：不是武贵，更像经商和资源承接",
+        "category": "宫位组合",
+        "language": "zh"
+      }
+    },
+    {
+      "page": "/articles/ziwei-nanming-taiyin-huaji.html",
+      "clicks": 2,
+      "impressions": 4,
+      "ctr": 50,
+      "position": 6.75,
+      "pageViews": 0,
+      "activeUsers": 0,
+      "meta": {
+        "path": "/articles/ziwei-nanming-taiyin-huaji.html",
+        "rel": "articles\\ziwei-nanming-taiyin-huaji.html",
+        "title": "紫微斗数男命太阴化忌怎么看：婆媳不和、早婚风险和妻家压力",
+        "category": "四化细读",
+        "language": "zh"
+      }
+    },
+    {
+      "page": "/articles/en/triad-and-opposite.html",
+      "clicks": 1,
+      "impressions": 2,
+      "ctr": 50,
+      "position": 2,
+      "pageViews": 5,
+      "activeUsers": 3,
+      "meta": {
+        "path": "/articles/en/triad-and-opposite.html",
+        "rel": "articles\\en\\triad-and-opposite.html",
+        "title": "Triad and Opposite in Zi Wei Dou Shu: Read Four Areas Together",
+        "category": "Reading Method",
+        "language": "en"
+      }
+    },
+    {
+      "page": "/articles/en/ziwei-hongluan-luogong-yinyuan.html",
+      "clicks": 1,
+      "impressions": 4,
+      "ctr": 25,
+      "position": 18.25,
+      "pageViews": 0,
+      "activeUsers": 0,
+      "meta": {
+        "path": "/articles/en/ziwei-hongluan-luogong-yinyuan.html",
+        "rel": "articles\\en\\ziwei-hongluan-luogong-yinyuan.html",
+        "title": "Where Hong Luan Lands: How Relationships Are Triggered",
+        "category": "Zi Wei Dou Shu",
+        "language": "en"
+      }
+    },
+    {
+      "page": "/articles/en/ziwei-juri-ge.html",
+      "clicks": 1,
+      "impressions": 4,
+      "ctr": 25,
+      "position": 5.75,
+      "pageViews": 0,
+      "activeUsers": 0,
+      "meta": {
+        "path": "/articles/en/ziwei-juri-ge.html",
+        "rel": "articles\\en\\ziwei-juri-ge.html",
+        "title": "Ju Ri Pattern: When Ju Men and Tai Yang Turn Speech Into Scale",
+        "category": "Zi Wei Dou Shu",
+        "language": "en"
+      }
+    },
+    {
+      "page": "/articles/en/ziwei-minggong-konggong.html",
+      "clicks": 1,
+      "impressions": 2,
+      "ctr": 50,
+      "position": 6,
+      "pageViews": 0,
+      "activeUsers": 0,
+      "meta": {
+        "path": "/articles/en/ziwei-minggong-konggong.html",
+        "rel": "articles\\en\\ziwei-minggong-konggong.html",
+        "title": "An Empty Life Palace",
+        "category": "Zi Wei Dou Shu",
+        "language": "en"
+      }
+    },
+    {
+      "page": "/articles/en/ziwei-tianyue-liunian-guiren.html",
+      "clicks": 1,
+      "impressions": 2,
+      "ctr": 50,
+      "position": 9.5,
+      "pageViews": 0,
+      "activeUsers": 0,
+      "meta": {
+        "path": "/articles/en/ziwei-tianyue-liunian-guiren.html",
+        "rel": "articles\\en\\ziwei-tianyue-liunian-guiren.html",
+        "title": "Tian Yue in an Annual Cycle: Exams, Promotion, and Sponsor-Led Opportunity",
+        "category": "Zi Wei Dou Shu",
+        "language": "en"
+      }
+    },
+    {
+      "page": "/articles/en/ziwei-wenchang-wenqu-caiyi.html",
+      "clicks": 1,
+      "impressions": 5,
+      "ctr": 20,
+      "position": 12.2,
+      "pageViews": 0,
+      "activeUsers": 0,
+      "meta": {
+        "path": "/articles/en/ziwei-wenchang-wenqu-caiyi.html",
+        "rel": "articles\\en\\ziwei-wenchang-wenqu-caiyi.html",
+        "title": "Wen Chang and Wen Qu: Talent, Writing, and Income",
+        "category": "Zi Wei Dou Shu",
+        "language": "en"
+      }
+    },
+    {
+      "page": "/articles/yuetianai-shi-shenme.html",
+      "clicks": 1,
+      "impressions": 8,
+      "ctr": 12.5,
+      "position": 4.375,
+      "pageViews": 0,
+      "activeUsers": 0,
+      "meta": {
+        "path": "/articles/yuetianai-shi-shenme.html",
+        "rel": "articles\\yuetianai-shi-shenme.html",
+        "title": "第一次看到“阅天AI”，先把它认清",
+        "category": "未分类",
+        "language": "zh"
+      }
+    },
+    {
+      "page": "/articles/ziwei-fuqigong-liantan-luoxian.html",
+      "clicks": 1,
+      "impressions": 9,
+      "ctr": 11.11111111111111,
+      "position": 11.11111111111111,
+      "pageViews": 0,
+      "activeUsers": 0,
+      "meta": {
+        "path": "/articles/ziwei-fuqigong-liantan-luoxian.html",
+        "rel": "articles\\ziwei-fuqigong-liantan-luoxian.html",
+        "title": "紫微斗数夫妻宫廉贪落陷怎么看：婚缘来得热，婚后问题也会放大",
+        "category": "宫位组合",
+        "language": "zh"
+      }
+    }
+  ],
+  "opportunities": [],
+  "categories": [
+    {
+      "category": "特定命例解读",
+      "clicks": 6,
+      "impressions": 28,
+      "pageViews": 0,
+      "activeUsers": 0,
+      "articleCount": 4
+    },
+    {
+      "category": "Zi Wei Dou Shu",
+      "clicks": 5,
+      "impressions": 17,
+      "pageViews": 5,
+      "activeUsers": 5,
+      "articleCount": 6
+    },
+    {
+      "category": "看盘方法",
+      "clicks": 4,
+      "impressions": 16,
+      "pageViews": 0,
+      "activeUsers": 0,
+      "articleCount": 2
+    },
+    {
+      "category": "四化细读",
+      "clicks": 3,
+      "impressions": 19,
+      "pageViews": 5,
+      "activeUsers": 1,
+      "articleCount": 3
+    },
+    {
+      "category": "宫位组合",
+      "clicks": 3,
+      "impressions": 15,
+      "pageViews": 0,
+      "activeUsers": 0,
+      "articleCount": 2
+    },
+    {
+      "category": "Reading Method",
+      "clicks": 1,
+      "impressions": 2,
+      "pageViews": 5,
+      "activeUsers": 3,
+      "articleCount": 1
+    },
+    {
+      "category": "未分类",
+      "clicks": 1,
+      "impressions": 8,
+      "pageViews": 0,
+      "activeUsers": 0,
+      "articleCount": 1
+    },
+    {
+      "category": "Twelve Palaces",
+      "clicks": 0,
+      "impressions": 0,
+      "pageViews": 6,
+      "activeUsers": 6,
+      "articleCount": 1
+    }
+  ],
+  "topQueries": [
+    {
+      "query": "半空折翅格",
+      "clicks": 1,
+      "impressions": 1,
+      "ctr": 100,
+      "position": 6
+    },
+    {
+      "query": "月朗天门",
+      "clicks": 1,
+      "impressions": 1,
+      "ctr": 100,
+      "position": 57
+    },
+    {
+      "query": "free ziwei doushu",
+      "clicks": 0,
+      "impressions": 1,
+      "ctr": 0,
+      "position": 64
+    },
+    {
+      "query": "hong luan",
+      "clicks": 0,
+      "impressions": 1,
+      "ctr": 0,
+      "position": 6
+    },
+    {
+      "query": "how to calculate zi wei dou shu chart",
+      "clicks": 0,
+      "impressions": 1,
+      "ctr": 0,
+      "position": 92
+    },
+    {
+      "query": "how to calculate zi wei dou shu chart manually",
+      "clicks": 0,
+      "impressions": 1,
+      "ctr": 0,
+      "position": 88
+    },
+    {
+      "query": "how to calculate ziwei doushu chart",
+      "clicks": 0,
+      "impressions": 1,
+      "ctr": 0,
+      "position": 89
+    },
+    {
+      "query": "how to calculate ziwei doushu chart step by step",
+      "clicks": 0,
+      "impressions": 2,
+      "ctr": 0,
+      "position": 84
+    },
+    {
+      "query": "hua quan",
+      "clicks": 0,
+      "impressions": 1,
+      "ctr": 0,
+      "position": 12
+    },
+    {
+      "query": "po jun",
+      "clicks": 0,
+      "impressions": 1,
+      "ctr": 0,
+      "position": 2
+    },
+    {
+      "query": "step by step calculation of zi wei dou shu chart",
+      "clicks": 0,
+      "impressions": 2,
+      "ctr": 0,
+      "position": 96.5
+    },
+    {
+      "query": "taiyin palace",
+      "clicks": 0,
+      "impressions": 1,
+      "ctr": 0,
+      "position": 2
+    },
+    {
+      "query": "tian kui",
+      "clicks": 0,
+      "impressions": 1,
+      "ctr": 0,
+      "position": 15
+    },
+    {
+      "query": "tian yue meaning",
+      "clicks": 0,
+      "impressions": 1,
+      "ctr": 0,
+      "position": 1
+    },
+    {
+      "query": "tianfu star",
+      "clicks": 0,
+      "impressions": 2,
+      "ctr": 0,
+      "position": 12.5
+    },
+    {
+      "query": "tuo luo",
+      "clicks": 0,
+      "impressions": 1,
+      "ctr": 0,
+      "position": 11
+    },
+    {
+      "query": "wu sha mao",
+      "clicks": 0,
+      "impressions": 1,
+      "ctr": 0,
+      "position": 27
+    },
+    {
+      "query": "zi wei dou shu",
+      "clicks": 0,
+      "impressions": 2,
+      "ctr": 0,
+      "position": 88.5
+    },
+    {
+      "query": "zi wei dou shu birth chart interpretation",
+      "clicks": 0,
+      "impressions": 2,
+      "ctr": 0,
+      "position": 79.5
+    },
+    {
+      "query": "zi wei dou shu career palace interpretation",
+      "clicks": 0,
+      "impressions": 5,
+      "ctr": 0,
+      "position": 79.4
+    }
+  ],
+  "nextBatchAllocation": [
+    {
+      "category": "财运事业",
+      "allocation": 3,
+      "signal": 1
+    },
+    {
+      "category": "婚恋与关系",
+      "allocation": 3,
+      "signal": 1
+    },
+    {
+      "category": "大限流年",
+      "allocation": 3,
+      "signal": 1
+    },
+    {
+      "category": "宫位组合",
+      "allocation": 5,
+      "signal": 25.2
+    },
+    {
+      "category": "四化细读",
+      "allocation": 6,
+      "signal": 30.52
+    },
+    {
+      "category": "主星",
+      "allocation": 2,
+      "signal": 1
+    },
+    {
+      "category": "辅煞曜",
+      "allocation": 2,
+      "signal": 1
+    },
+    {
+      "category": "看盘方法",
+      "allocation": 6,
+      "signal": 33.28
+    }
+  ]
+}
