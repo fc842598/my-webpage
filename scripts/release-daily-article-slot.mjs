@@ -101,14 +101,23 @@ function managedPaths(date, slug, category) {
   ];
 }
 
+function synchronizeRepository() {
+  if (git(["diff", "--cached", "--quiet"], [0, 1]).status !== 0) fail("Refusing to publish while unrelated files are staged");
+  git(["fetch", "origin", "master", "--quiet"]);
+  const [behind, ahead] = git(["rev-list", "--left-right", "--count", "origin/master...HEAD"]).stdout.trim().split(/\s+/).map(Number);
+  if (behind && ahead) fail(`Local master has diverged from origin/master (${behind} behind, ${ahead} ahead)`);
+  if (behind) {
+    git(["merge", "--ff-only", "origin/master"]);
+    return { fastForwarded: true, behind, ahead: 0 };
+  }
+  if (ahead) git(["push", "origin", "master"]);
+  return { fastForwarded: false, behind: 0, ahead };
+}
+
 function assertRepositoryReady(paths) {
   if (git(["diff", "--cached", "--quiet"], [0, 1]).status !== 0) fail("Refusing to publish while unrelated files are staged");
   const managedStatus = git(["status", "--porcelain", "--untracked-files=all", "--", ...paths]).stdout.trim();
   if (managedStatus) fail(`Managed release files are already dirty:\n${managedStatus}`);
-  git(["fetch", "origin", "master", "--quiet"]);
-  const [behind, ahead] = git(["rev-list", "--left-right", "--count", "origin/master...HEAD"]).stdout.trim().split(/\s+/).map(Number);
-  if (behind) fail(`Local master is behind origin/master by ${behind} commit(s)`);
-  if (ahead) git(["push", "origin", "master"]);
 }
 
 function validatePage(file, expectedUrl, publishedAt) {
@@ -163,7 +172,22 @@ async function main() {
   const args = parseArgs(process.argv.slice(2));
   const date = String(args.date || "");
   const order = String(args.order || "").padStart(2, "0");
+  const syncRestarts = Number(args["sync-restarts"] || 0);
   if (!/^\d{4}-\d{2}-\d{2}$/.test(date) || !/^\d{2}$/.test(order)) fail("Use --date YYYY-MM-DD --order NN");
+  if (!Number.isInteger(syncRestarts) || syncRestarts < 0 || syncRestarts > 2) fail("Invalid internal sync restart count");
+  const sync = synchronizeRepository();
+  if (sync.fastForwarded) {
+    if (syncRestarts >= 2) fail("Remote master changed repeatedly during release synchronization");
+    const restarted = spawnSync(process.execPath, [path.resolve(process.argv[1]), ...process.argv.slice(2), "--sync-restarts", String(syncRestarts + 1)], {
+      cwd: ROOT,
+      encoding: "utf8",
+      windowsHide: true,
+    });
+    if (restarted.stdout) process.stdout.write(restarted.stdout);
+    if (restarted.stderr) process.stderr.write(restarted.stderr);
+    if (restarted.status !== 0) fail(`Restart after fast-forward failed (${restarted.status})`);
+    return;
+  }
   const queuePath = `docs/ziwei-daily-${date}-queue.md`;
   const sourcePath = `docs/ziwei-daily-${date}-source.md`;
   if (!existsSync(queuePath) || !existsSync(sourcePath)) fail(`Missing source or queue for ${date}`);
