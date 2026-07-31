@@ -14,7 +14,7 @@
   </url>
   <url>
     <loc>https://yuetianai.com/feed.xml</loc>
-    <lastmod>2026-07-31T23:43:00+08:00</lastmod>
+    <lastmod>2026-08-01T00:13:00+08:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
@@ -92,7 +92,7 @@
   </url>
   <url>
     <loc>https://yuetianai.com/articles/</loc>
-    <lastmod>2026-07-31T23:43:00+08:00</lastmod>
+    <lastmod>2026-08-01T00:13:00+08:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
@@ -350,49 +350,49 @@
   </url>
   <url>
     <loc>https://yuetianai.com/articles/ziwei-learning-path.html</loc>
-    <lastmod>2026-07-31T23:43:00+08:00</lastmod>
+    <lastmod>2026-08-01T00:13:00+08:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://yuetianai.com/articles/ziwei-palaces.html</loc>
-    <lastmod>2026-07-31T23:43:00+08:00</lastmod>
+    <lastmod>2026-08-01T00:13:00+08:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://yuetianai.com/articles/ziwei-four-transformations.html</loc>
-    <lastmod>2026-07-31T23:43:00+08:00</lastmod>
+    <lastmod>2026-08-01T00:13:00+08:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://yuetianai.com/articles/ziwei-main-stars.html</loc>
-    <lastmod>2026-07-31T23:43:00+08:00</lastmod>
+    <lastmod>2026-08-01T00:13:00+08:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://yuetianai.com/articles/ziwei-helper-malice-stars.html</loc>
-    <lastmod>2026-07-31T23:43:00+08:00</lastmod>
+    <lastmod>2026-08-01T00:13:00+08:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://yuetianai.com/articles/ziwei-case-patterns.html</loc>
-    <lastmod>2026-07-31T23:43:00+08:00</lastmod>
+    <lastmod>2026-08-01T00:13:00+08:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://yuetianai.com/articles/ziwei-cycles.html</loc>
-    <lastmod>2026-07-31T23:43:00+08:00</lastmod>
+    <lastmod>2026-08-01T00:13:00+08:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://yuetianai.com/articles/ziwei-money-career.html</loc>
-    <lastmod>2026-07-31T23:43:00+08:00</lastmod>
+    <lastmod>2026-08-01T00:13:00+08:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
@@ -3771,6 +3771,12 @@
   <url>
     <loc>https://yuetianai.com/articles/ai-suanming-shenme-daan-caisuan-you-panduan.html</loc>
     <lastmod>2026-07-31T00:07:00+08:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://yuetianai.com/articles/ziwei-fuye-zhuanzhuye-shenme-shihou.html</loc>
+    <lastmod>2026-08-01T00:13:00+08:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
