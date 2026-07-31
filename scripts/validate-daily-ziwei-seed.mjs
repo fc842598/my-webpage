@@ -27,6 +27,12 @@ const ENGLISH_TEMPLATE_PHRASES = [
   "use the palace first then read the opposite palace",
   "so the reading stays concrete instead of drifting into a fixed label",
   "in this guide the key question is",
+  "outside platform",
+  "life lines",
+  "grammatical subject",
+  "the cash capacity of wealth",
+  "civil-type main star",
+  "direct axis of pressure",
 ];
 const BANNED_ENGLISH_SOURCE_TERMS = [
   "ni hai xia", "tian ji lecture", "source document", "source extract", "transcript says",
@@ -40,6 +46,10 @@ const DOMAIN_TERMS = [
   "地空", "天空", "地劫", "红鸾", "天喜",
 ];
 const COMBINATION_PATTERN = /宫|三方四正|四化|化[禄权科忌]|紫微|天机|太阳|武曲|天同|廉贞|天府|太阴|贪狼|巨门|天相|天梁|七杀|破军|文昌|文曲|魁钺|禄存|天马|擎羊|陀罗|火星|火铃|铃星|地空|天空|地劫/u;
+const TIME_LAYER_RISK_PATTERNS = [
+  /流年(?:化[禄权科忌]|贪狼|七杀|破军|天相|天梁)/u,
+  /\bannual\s+(?:hua\s+(?:lu|quan|ke|ji)|tan\s+lang|qi\s+sha|po\s+jun|tian\s+xiang|tian\s+liang)\b/i,
+];
 
 function parseArgs(argv) {
   const args = {};
@@ -251,6 +261,7 @@ function scoreArticle(article, paragraphs, oldTitles, oldEnglishTitles, batchTit
 
   for (const term of BANNED_PUBLIC_TERMS) if (publicText.includes(term)) failures.push(`公开正文或元数据含禁用来源词：${term}`);
   for (const phrase of TEMPLATE_PHRASES) if (draft.includes(phrase)) failures.push(`命中旧模板句：${phrase}`);
+  for (const pattern of TIME_LAYER_RISK_PATTERNS) if (pattern.test(publicText)) failures.push("时间层措辞疑似把固定星曜或四化写成逐年移动，请改为流年命宫走到本命宫位");
 
   if (englishWords(english.title).length < 6) failures.push("英文标题缺失或过薄");
   const descriptionWords = englishWords(english.description).length;
