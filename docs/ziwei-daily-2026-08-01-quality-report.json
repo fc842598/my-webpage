@@ -1,10 +1,27 @@
 {
-  "version": 1,
+  "version": 2,
   "date": "2026-08-01",
-  "generatedAt": "2026-07-31T06:01:16.652Z",
+  "generatedAt": "2026-07-31T06:37:54.067Z",
   "seed": "scripts\\daily-ziwei-2026-08-01-seed.mjs",
   "sourceDocument": "【视频同步文稿】倪海厦-天纪_Password_Removed(1) (1).docx",
   "paragraphCount": 4303,
+  "structuredHistory": {
+    "scannedSourceCount": 9,
+    "sourceCount": 2,
+    "articleCount": 60,
+    "sources": [
+      {
+        "file": "scripts\\daily-ziwei-2026-07-31-seed.mjs",
+        "date": "2026-07-31",
+        "articleCount": 30
+      },
+      {
+        "file": "docs\\ziwei-daily-2026-07-30-seed.mjs",
+        "date": "2026-07-30",
+        "articleCount": 30
+      }
+    ]
+  },
   "expectedCount": 30,
   "articleCount": 30,
   "passed": 30,
@@ -19,6 +36,32 @@
       "pass": true,
       "failures": [],
       "warnings": [],
+      "intentReview": {
+        "nearestHistory": {
+          "slug": "ziwei-kequan-tongjian-zhuanjia-bian-zhuguan",
+          "title": "紫微斗数科权同见，专业人士什么时候会从专家变主管：权落哪一宫决定管理范围",
+          "source": "scripts\\daily-ziwei-2026-07-31-seed.mjs",
+          "date": "2026-07-31",
+          "questionSimilarity": 0.017,
+          "coreIntentSimilarity": 0.115,
+          "answerPathSimilarity": 0.046,
+          "score": 0.081,
+          "duplicate": false
+        },
+        "nearestBatch": {
+          "slug": "ziwei-liunian-jixiang-xianyou-jihui-houyou-jieguo",
+          "title": "紫微斗数流年已经出现机会，为什么还没落实：从面试、申请、合同看到款",
+          "source": "scripts\\daily-ziwei-2026-08-01-seed.mjs",
+          "date": "2026-08-01",
+          "questionSimilarity": 0.063,
+          "coreIntentSimilarity": 0.029,
+          "answerPathSimilarity": 0.035,
+          "score": 0.049,
+          "duplicate": false
+        },
+        "historyDuplicateCount": 0,
+        "batchDuplicateCount": 0
+      },
       "evidence": {
         "ranges": [
           "343-371",
@@ -104,6 +147,32 @@
       "pass": true,
       "failures": [],
       "warnings": [],
+      "intentReview": {
+        "nearestHistory": {
+          "slug": "ziwei-huake-caibo-guanlu-zhuanye-shoufei-zhiwei",
+          "title": "紫微斗数化科落财帛和落官禄有什么不同：专业收费与资格职位分开看",
+          "source": "scripts\\daily-ziwei-2026-07-31-seed.mjs",
+          "date": "2026-07-31",
+          "questionSimilarity": 0.017,
+          "coreIntentSimilarity": 0.105,
+          "answerPathSimilarity": 0.096,
+          "score": 0.101,
+          "duplicate": false
+        },
+        "nearestBatch": {
+          "slug": "ziwei-huake-huaji-tongjian-youshi-kadian",
+          "title": "紫微斗数化科和化忌同时出现，是先看好还是先看坏：一个定优势，一个定卡点",
+          "source": "scripts\\daily-ziwei-2026-08-01-seed.mjs",
+          "date": "2026-08-01",
+          "questionSimilarity": 0.077,
+          "coreIntentSimilarity": 0,
+          "answerPathSimilarity": 0.045,
+          "score": 0.061,
+          "duplicate": false
+        },
+        "historyDuplicateCount": 0,
+        "batchDuplicateCount": 0
+      },
       "evidence": {
         "ranges": [
           "629-646",
@@ -185,6 +254,32 @@
       "pass": true,
       "failures": [],
       "warnings": [],
+      "intentReview": {
+        "nearestHistory": {
+          "slug": "ziwei-huaji-caibo-pengyou-xianjin-hehuo-sunshi",
+          "title": "紫微斗数化忌落财帛和落朋友宫怎么分：自己的现金流与替别人承担损失不是一回事",
+          "source": "scripts\\daily-ziwei-2026-07-31-seed.mjs",
+          "date": "2026-07-31",
+          "questionSimilarity": 0,
+          "coreIntentSimilarity": 0.037,
+          "answerPathSimilarity": 0.079,
+          "score": 0.058,
+          "duplicate": false
+        },
+        "nearestBatch": {
+          "slug": "ziwei-caibo-huaquan-fude-huaji-zhuanqian-tingbuxialai",
+          "title": "紫微斗数财帛宫化权、福德宫化忌怎么看：能赚钱为什么还是停不下来",
+          "source": "scripts\\daily-ziwei-2026-08-01-seed.mjs",
+          "date": "2026-08-01",
+          "questionSimilarity": 0.045,
+          "coreIntentSimilarity": 0,
+          "answerPathSimilarity": 0.047,
+          "score": 0.046,
+          "duplicate": false
+        },
+        "historyDuplicateCount": 0,
+        "batchDuplicateCount": 0
+      },
       "evidence": {
         "ranges": [
           "553",
@@ -266,6 +361,32 @@
       "pass": true,
       "failures": [],
       "warnings": [],
+      "intentReview": {
+        "nearestHistory": {
+          "slug": "ziwei-maifang-xiankan-tianzhai-haishi-caibo",
+          "title": "紫微斗数买房先看田宅宫还是财帛宫：能不能买、买了稳不稳是两道题",
+          "source": "scripts\\daily-ziwei-2026-07-31-seed.mjs",
+          "date": "2026-07-31",
+          "questionSimilarity": 0.027,
+          "coreIntentSimilarity": 0,
+          "answerPathSimilarity": 0.081,
+          "score": 0.054,
+          "duplicate": false
+        },
+        "nearestBatch": {
+          "slug": "ziwei-fumu-chushoufu-maifang-shui-zuozhu",
+          "title": "紫微斗数父母帮出首付，买房后谁做主：父母宫化权、田宅宫与财帛宫怎么分",
+          "source": "scripts\\daily-ziwei-2026-08-01-seed.mjs",
+          "date": "2026-08-01",
+          "questionSimilarity": 0.022,
+          "coreIntentSimilarity": 0,
+          "answerPathSimilarity": 0.076,
+          "score": 0.049,
+          "duplicate": false
+        },
+        "historyDuplicateCount": 0,
+        "batchDuplicateCount": 0
+      },
       "evidence": {
         "ranges": [
           "343-371",
@@ -351,6 +472,32 @@
       "pass": true,
       "failures": [],
       "warnings": [],
+      "intentReview": {
+        "nearestHistory": {
+          "slug": "ziwei-hehuo-chuzi-zhangquan-fenzhang",
+          "title": "紫微斗数合伙创业一方出钱一方掌权怎么看：财帛宫的禄和朋友宫的权不能混",
+          "source": "scripts\\daily-ziwei-2026-07-31-seed.mjs",
+          "date": "2026-07-31",
+          "questionSimilarity": 0.05,
+          "coreIntentSimilarity": 0,
+          "answerPathSimilarity": 0.075,
+          "score": 0.062,
+          "duplicate": false
+        },
+        "nearestBatch": {
+          "slug": "ziwei-huaji-xiongdi-pengyou-hezuo-fengxian",
+          "title": "紫微斗数化忌落兄弟宫和朋友宫怎么分：亲友合伙与外部合作不是同一风险",
+          "source": "scripts\\daily-ziwei-2026-08-01-seed.mjs",
+          "date": "2026-08-01",
+          "questionSimilarity": 0.029,
+          "coreIntentSimilarity": 0.05,
+          "answerPathSimilarity": 0.072,
+          "score": 0.061,
+          "duplicate": false
+        },
+        "historyDuplicateCount": 0,
+        "batchDuplicateCount": 0
+      },
       "evidence": {
         "ranges": [
           "404-409",
@@ -431,6 +578,32 @@
       "pass": true,
       "failures": [],
       "warnings": [],
+      "intentReview": {
+        "nearestHistory": {
+          "slug": "ziwei-huake-caibo-guanlu-zhuanye-shoufei-zhiwei",
+          "title": "紫微斗数化科落财帛和落官禄有什么不同：专业收费与资格职位分开看",
+          "source": "scripts\\daily-ziwei-2026-07-31-seed.mjs",
+          "date": "2026-07-31",
+          "questionSimilarity": 0.014,
+          "coreIntentSimilarity": 0.091,
+          "answerPathSimilarity": 0.033,
+          "score": 0.062,
+          "duplicate": false
+        },
+        "nearestBatch": {
+          "slug": "ziwei-waidi-jihui-duo-liubuxia-qianyi-tianzhai",
+          "title": "紫微斗数外地机会多但留不下来，迁移宫吉、田宅宫弱怎么取舍",
+          "source": "scripts\\daily-ziwei-2026-08-01-seed.mjs",
+          "date": "2026-08-01",
+          "questionSimilarity": 0.039,
+          "coreIntentSimilarity": 0,
+          "answerPathSimilarity": 0.06,
+          "score": 0.049,
+          "duplicate": false
+        },
+        "historyDuplicateCount": 0,
+        "batchDuplicateCount": 0
+      },
       "evidence": {
         "ranges": [
           "842-848",
@@ -515,6 +688,32 @@
       "pass": true,
       "failures": [],
       "warnings": [],
+      "intentReview": {
+        "nearestHistory": {
+          "slug": "ziwei-shinian-yunhao-dannian-kazhu",
+          "title": "紫微斗数十年运很好，为什么某一年仍会卡住：大限定背景，流年决定具体落点",
+          "source": "scripts\\daily-ziwei-2026-07-31-seed.mjs",
+          "date": "2026-07-31",
+          "questionSimilarity": 0.071,
+          "coreIntentSimilarity": 0,
+          "answerPathSimilarity": 0.041,
+          "score": 0.056,
+          "duplicate": false
+        },
+        "nearestBatch": {
+          "slug": "ziwei-liunian-guanxigong-shijian-guishu",
+          "title": "紫微斗数流年走到父母、夫妻、朋友宫时，事情一定发生在别人身上吗",
+          "source": "scripts\\daily-ziwei-2026-08-01-seed.mjs",
+          "date": "2026-08-01",
+          "questionSimilarity": 0.031,
+          "coreIntentSimilarity": 0.077,
+          "answerPathSimilarity": 0.067,
+          "score": 0.072,
+          "duplicate": false
+        },
+        "historyDuplicateCount": 0,
+        "batchDuplicateCount": 0
+      },
       "evidence": {
         "ranges": [
           "358-365",
@@ -603,6 +802,32 @@
       "pass": true,
       "failures": [],
       "warnings": [],
+      "intentReview": {
+        "nearestHistory": {
+          "slug": "ziwei-mingpan-xinxi-tai-duo-xian-kan-shenme",
+          "title": "紫微斗数命盘信息太多先看什么：先用现实问题定宫，再找三方四正核对",
+          "source": "scripts\\daily-ziwei-2026-07-31-seed.mjs",
+          "date": "2026-07-31",
+          "questionSimilarity": 0.016,
+          "coreIntentSimilarity": 0,
+          "answerPathSimilarity": 0.079,
+          "score": 0.047,
+          "duplicate": false
+        },
+        "nearestBatch": {
+          "slug": "ziwei-liunian-guanxigong-shijian-guishu",
+          "title": "紫微斗数流年走到父母、夫妻、朋友宫时，事情一定发生在别人身上吗",
+          "source": "scripts\\daily-ziwei-2026-08-01-seed.mjs",
+          "date": "2026-08-01",
+          "questionSimilarity": 0.016,
+          "coreIntentSimilarity": 0.105,
+          "answerPathSimilarity": 0.072,
+          "score": 0.089,
+          "duplicate": false
+        },
+        "historyDuplicateCount": 0,
+        "batchDuplicateCount": 0
+      },
       "evidence": {
         "ranges": [
           "358-365",
@@ -691,6 +916,32 @@
       "pass": true,
       "failures": [],
       "warnings": [],
+      "intentReview": {
+        "nearestHistory": {
+          "slug": "ziwei-banlv-nengli-qiang-zong-tini-jueding",
+          "title": "紫微斗数伴侣能力强却总替你做决定，怎么看是夫妻宫化权还是自己没承接",
+          "source": "scripts\\daily-ziwei-2026-07-31-seed.mjs",
+          "date": "2026-07-31",
+          "questionSimilarity": 0.048,
+          "coreIntentSimilarity": 0.095,
+          "answerPathSimilarity": 0.059,
+          "score": 0.077,
+          "duplicate": false
+        },
+        "nearestBatch": {
+          "slug": "ziwei-liunian-huangongzuo-banjia-ganqing-shui-yinqi-shui",
+          "title": "紫微斗数流年换工作、搬家、感情一起变，怎么判断谁引起谁",
+          "source": "scripts\\daily-ziwei-2026-08-01-seed.mjs",
+          "date": "2026-08-01",
+          "questionSimilarity": 0.016,
+          "coreIntentSimilarity": 0.105,
+          "answerPathSimilarity": 0.072,
+          "score": 0.089,
+          "duplicate": false
+        },
+        "historyDuplicateCount": 0,
+        "batchDuplicateCount": 0
+      },
       "evidence": {
         "ranges": [
           "358-365",
@@ -778,6 +1029,32 @@
       "pass": true,
       "failures": [],
       "warnings": [],
+      "intentReview": {
+        "nearestHistory": {
+          "slug": "ziwei-jiating-bangmang-xiongdi-buhehuo",
+          "title": "紫微斗数家里能帮忙但兄弟不能合伙：父母宫化禄和兄弟宫化忌为什么能同时成立",
+          "source": "scripts\\daily-ziwei-2026-07-31-seed.mjs",
+          "date": "2026-07-31",
+          "questionSimilarity": 0.038,
+          "coreIntentSimilarity": 0,
+          "answerPathSimilarity": 0.08,
+          "score": 0.059,
+          "duplicate": false
+        },
+        "nearestBatch": {
+          "slug": "ziwei-xiangqin-gongtong-caiwu-hunqian-xieshang",
+          "title": "紫微斗数相亲谈到共同财务就卡住，夫妻宫、财帛宫和田宅宫怎样做婚前协商",
+          "source": "scripts\\daily-ziwei-2026-08-01-seed.mjs",
+          "date": "2026-08-01",
+          "questionSimilarity": 0.022,
+          "coreIntentSimilarity": 0,
+          "answerPathSimilarity": 0.076,
+          "score": 0.049,
+          "duplicate": false
+        },
+        "historyDuplicateCount": 0,
+        "batchDuplicateCount": 0
+      },
       "evidence": {
         "ranges": [
           "553-580",
@@ -860,6 +1137,32 @@
       "pass": true,
       "failures": [],
       "warnings": [],
+      "intentReview": {
+        "nearestHistory": {
+          "slug": "ziwei-you-cai-weihe-cunbuzhuqian",
+          "title": "紫微斗数盘里明明有财，为什么总存不住钱：先查财线，再看福德能不能留",
+          "source": "docs\\ziwei-daily-2026-07-30-seed.mjs",
+          "date": "2026-07-30",
+          "questionSimilarity": 0.096,
+          "coreIntentSimilarity": 0,
+          "answerPathSimilarity": 0.034,
+          "score": 0.065,
+          "duplicate": false
+        },
+        "nearestBatch": {
+          "slug": "ziwei-caibo-huaquan-fude-huaji-zhuanqian-tingbuxialai",
+          "title": "紫微斗数财帛宫化权、福德宫化忌怎么看：能赚钱为什么还是停不下来",
+          "source": "scripts\\daily-ziwei-2026-08-01-seed.mjs",
+          "date": "2026-08-01",
+          "questionSimilarity": 0.055,
+          "coreIntentSimilarity": 0.074,
+          "answerPathSimilarity": 0.069,
+          "score": 0.071,
+          "duplicate": false
+        },
+        "historyDuplicateCount": 0,
+        "batchDuplicateCount": 0
+      },
       "evidence": {
         "ranges": [
           "404-409",
@@ -946,6 +1249,32 @@
       "pass": true,
       "failures": [],
       "warnings": [],
+      "intentReview": {
+        "nearestHistory": {
+          "slug": "ziwei-huanchengshi-gongzuo-hao-shenti-cha",
+          "title": "紫微斗数换城市后工作变好但身体变差，迁移宫和疾厄宫怎么一起看",
+          "source": "scripts\\daily-ziwei-2026-07-31-seed.mjs",
+          "date": "2026-07-31",
+          "questionSimilarity": 0.045,
+          "coreIntentSimilarity": 0,
+          "answerPathSimilarity": 0.073,
+          "score": 0.059,
+          "duplicate": false
+        },
+        "nearestBatch": {
+          "slug": "ziwei-caibo-huaquan-fude-huaji-zhuanqian-tingbuxialai",
+          "title": "紫微斗数财帛宫化权、福德宫化忌怎么看：能赚钱为什么还是停不下来",
+          "source": "scripts\\daily-ziwei-2026-08-01-seed.mjs",
+          "date": "2026-08-01",
+          "questionSimilarity": 0.075,
+          "coreIntentSimilarity": 0.069,
+          "answerPathSimilarity": 0.054,
+          "score": 0.072,
+          "duplicate": false
+        },
+        "historyDuplicateCount": 0,
+        "batchDuplicateCount": 0
+      },
       "evidence": {
         "ranges": [
           "475-477",
@@ -1028,6 +1357,32 @@
       "pass": true,
       "failures": [],
       "warnings": [],
+      "intentReview": {
+        "nearestHistory": {
+          "slug": "ziwei-huan-gongzuo-xiankan-guanlu-haishi-qianyi",
+          "title": "紫微斗数想换工作，先看官禄宫还是迁移宫：岗位变化和平台变化不是一回事",
+          "source": "docs\\ziwei-daily-2026-07-30-seed.mjs",
+          "date": "2026-07-30",
+          "questionSimilarity": 0.061,
+          "coreIntentSimilarity": 0,
+          "answerPathSimilarity": 0.038,
+          "score": 0.05,
+          "duplicate": false
+        },
+        "nearestBatch": {
+          "slug": "ziwei-liunian-huangongzuo-banjia-ganqing-shui-yinqi-shui",
+          "title": "紫微斗数流年换工作、搬家、感情一起变，怎么判断谁引起谁",
+          "source": "scripts\\daily-ziwei-2026-08-01-seed.mjs",
+          "date": "2026-08-01",
+          "questionSimilarity": 0.049,
+          "coreIntentSimilarity": 0,
+          "answerPathSimilarity": 0.07,
+          "score": 0.059,
+          "duplicate": false
+        },
+        "historyDuplicateCount": 0,
+        "batchDuplicateCount": 0
+      },
       "evidence": {
         "ranges": [
           "343-371",
@@ -1116,6 +1471,32 @@
       "pass": true,
       "failures": [],
       "warnings": [],
+      "intentReview": {
+        "nearestHistory": {
+          "slug": "ziwei-waidi-fazhan-ben-di-fazhan-zenme-bijiao",
+          "title": "紫微斗数为什么有人适合在外地做大，有人回本地反而更顺：迁移宫要和命宫一起比",
+          "source": "docs\\ziwei-daily-2026-07-30-seed.mjs",
+          "date": "2026-07-30",
+          "questionSimilarity": 0.094,
+          "coreIntentSimilarity": 0,
+          "answerPathSimilarity": 0.028,
+          "score": 0.061,
+          "duplicate": false
+        },
+        "nearestBatch": {
+          "slug": "ziwei-jixing-luo-fuqi-fumu-zinv-gong",
+          "title": "紫微斗数吉星落在夫妻、父母或子女宫，算自己的好运还是家人的",
+          "source": "scripts\\daily-ziwei-2026-08-01-seed.mjs",
+          "date": "2026-08-01",
+          "questionSimilarity": 0.086,
+          "coreIntentSimilarity": 0,
+          "answerPathSimilarity": 0.046,
+          "score": 0.066,
+          "duplicate": false
+        },
+        "historyDuplicateCount": 0,
+        "batchDuplicateCount": 0
+      },
       "evidence": {
         "ranges": [
           "358-365",
@@ -1206,6 +1587,32 @@
       "pass": true,
       "failures": [],
       "warnings": [],
+      "intentReview": {
+        "nearestHistory": {
+          "slug": "ziwei-kequan-tongjian-zhuanjia-bian-zhuguan",
+          "title": "紫微斗数科权同见，专业人士什么时候会从专家变主管：权落哪一宫决定管理范围",
+          "source": "scripts\\daily-ziwei-2026-07-31-seed.mjs",
+          "date": "2026-07-31",
+          "questionSimilarity": 0.061,
+          "coreIntentSimilarity": 0,
+          "answerPathSimilarity": 0.059,
+          "score": 0.06,
+          "duplicate": false
+        },
+        "nearestBatch": {
+          "slug": "ziwei-huaji-tianma-weishenme-benbo",
+          "title": "紫微斗数化忌和天马同见，为什么先要问“为了什么奔波”",
+          "source": "scripts\\daily-ziwei-2026-08-01-seed.mjs",
+          "date": "2026-08-01",
+          "questionSimilarity": 0.083,
+          "coreIntentSimilarity": 0,
+          "answerPathSimilarity": 0.052,
+          "score": 0.068,
+          "duplicate": false
+        },
+        "historyDuplicateCount": 0,
+        "batchDuplicateCount": 0
+      },
       "evidence": {
         "ranges": [
           "553-580",
@@ -1287,6 +1694,32 @@
       "pass": true,
       "failures": [],
       "warnings": [],
+      "intentReview": {
+        "nearestHistory": {
+          "slug": "ziwei-huan-gongzuo-xiankan-guanlu-haishi-qianyi",
+          "title": "紫微斗数想换工作，先看官禄宫还是迁移宫：岗位变化和平台变化不是一回事",
+          "source": "docs\\ziwei-daily-2026-07-30-seed.mjs",
+          "date": "2026-07-30",
+          "questionSimilarity": 0.158,
+          "coreIntentSimilarity": 0,
+          "answerPathSimilarity": 0.026,
+          "score": 0.092,
+          "duplicate": false
+        },
+        "nearestBatch": {
+          "slug": "ziwei-jixing-shaxing-neng-huxiang-dixiao-ma",
+          "title": "紫微斗数同一宫既有吉星又有煞星，能不能互相抵消",
+          "source": "scripts\\daily-ziwei-2026-08-01-seed.mjs",
+          "date": "2026-08-01",
+          "questionSimilarity": 0.091,
+          "coreIntentSimilarity": 0,
+          "answerPathSimilarity": 0.048,
+          "score": 0.069,
+          "duplicate": false
+        },
+        "historyDuplicateCount": 0,
+        "batchDuplicateCount": 0
+      },
       "evidence": {
         "ranges": [
           "553-580",
@@ -1365,6 +1798,32 @@
       "pass": true,
       "failures": [],
       "warnings": [],
+      "intentReview": {
+        "nearestHistory": {
+          "slug": "ziwei-tiantong-shihe-hehuo-ma",
+          "title": "紫微斗数天同适合合伙吗：人和能促成交易，但朋友宫决定能不能长期分钱",
+          "source": "scripts\\daily-ziwei-2026-07-31-seed.mjs",
+          "date": "2026-07-31",
+          "questionSimilarity": 0.053,
+          "coreIntentSimilarity": 0.103,
+          "answerPathSimilarity": 0.023,
+          "score": 0.078,
+          "duplicate": false
+        },
+        "nearestBatch": {
+          "slug": "ziwei-huaji-tianma-weishenme-benbo",
+          "title": "紫微斗数化忌和天马同见，为什么先要问“为了什么奔波”",
+          "source": "scripts\\daily-ziwei-2026-08-01-seed.mjs",
+          "date": "2026-08-01",
+          "questionSimilarity": 0.137,
+          "coreIntentSimilarity": 0.03,
+          "answerPathSimilarity": 0.033,
+          "score": 0.085,
+          "duplicate": false
+        },
+        "historyDuplicateCount": 0,
+        "batchDuplicateCount": 0
+      },
       "evidence": {
         "ranges": [
           "555-560",
@@ -1441,6 +1900,32 @@
       "pass": true,
       "failures": [],
       "warnings": [],
+      "intentReview": {
+        "nearestHistory": {
+          "slug": "ziwei-xiangqin-henshun-que-dingbuxialai-xiankan-shenme",
+          "title": "紫微斗数相亲很顺却总定不下来，先看什么：想结婚和能结成常常不是同一拍",
+          "source": "docs\\ziwei-daily-2026-07-30-seed.mjs",
+          "date": "2026-07-30",
+          "questionSimilarity": 0.133,
+          "coreIntentSimilarity": 0,
+          "answerPathSimilarity": 0.017,
+          "score": 0.075,
+          "duplicate": false
+        },
+        "nearestBatch": {
+          "slug": "ziwei-waidi-jihui-duo-liubuxia-qianyi-tianzhai",
+          "title": "紫微斗数外地机会多但留不下来，迁移宫吉、田宅宫弱怎么取舍",
+          "source": "scripts\\daily-ziwei-2026-08-01-seed.mjs",
+          "date": "2026-08-01",
+          "questionSimilarity": 0.075,
+          "coreIntentSimilarity": 0.069,
+          "answerPathSimilarity": 0.054,
+          "score": 0.072,
+          "duplicate": false
+        },
+        "historyDuplicateCount": 0,
+        "batchDuplicateCount": 0
+      },
       "evidence": {
         "ranges": [
           "553-580",
@@ -1526,6 +2011,32 @@
       "pass": true,
       "failures": [],
       "warnings": [],
+      "intentReview": {
+        "nearestHistory": {
+          "slug": "ziwei-hehuo-qian-xian-kan-pengyougong-haishi-caibogong",
+          "title": "紫微斗数合伙前先看朋友宫还是财帛宫：人和、分工和分钱要拆开判断",
+          "source": "docs\\ziwei-daily-2026-07-30-seed.mjs",
+          "date": "2026-07-30",
+          "questionSimilarity": 0.111,
+          "coreIntentSimilarity": 0,
+          "answerPathSimilarity": 0.043,
+          "score": 0.077,
+          "duplicate": false
+        },
+        "nearestBatch": {
+          "slug": "ziwei-banlv-shihe-yiqi-zuoshengyi-ma",
+          "title": "紫微斗数伴侣适合一起做生意吗：夫妻宫合得来，不等于朋友宫和财帛宫能合伙",
+          "source": "scripts\\daily-ziwei-2026-08-01-seed.mjs",
+          "date": "2026-08-01",
+          "questionSimilarity": 0.029,
+          "coreIntentSimilarity": 0.05,
+          "answerPathSimilarity": 0.072,
+          "score": 0.061,
+          "duplicate": false
+        },
+        "historyDuplicateCount": 0,
+        "batchDuplicateCount": 0
+      },
       "evidence": {
         "ranges": [
           "378-387",
@@ -1604,6 +2115,32 @@
       "pass": true,
       "failures": [],
       "warnings": [],
+      "intentReview": {
+        "nearestHistory": {
+          "slug": "ziwei-kequan-tongjian-zhuanjia-bian-zhuguan",
+          "title": "紫微斗数科权同见，专业人士什么时候会从专家变主管：权落哪一宫决定管理范围",
+          "source": "scripts\\daily-ziwei-2026-07-31-seed.mjs",
+          "date": "2026-07-31",
+          "questionSimilarity": 0.102,
+          "coreIntentSimilarity": 0,
+          "answerPathSimilarity": 0.044,
+          "score": 0.073,
+          "duplicate": false
+        },
+        "nearestBatch": {
+          "slug": "ziwei-minggong-huake-youming-weibi-fufei",
+          "title": "紫微斗数命宫化科为什么有名却未必有人付费：先看大家记住你的哪项本事",
+          "source": "scripts\\daily-ziwei-2026-08-01-seed.mjs",
+          "date": "2026-08-01",
+          "questionSimilarity": 0.137,
+          "coreIntentSimilarity": 0.03,
+          "answerPathSimilarity": 0.033,
+          "score": 0.085,
+          "duplicate": false
+        },
+        "historyDuplicateCount": 0,
+        "batchDuplicateCount": 0
+      },
       "evidence": {
         "ranges": [
           "590-602",
@@ -1681,6 +2218,32 @@
       "pass": true,
       "failures": [],
       "warnings": [],
+      "intentReview": {
+        "nearestHistory": {
+          "slug": "ziwei-shengzhi-zeren-zengjia-shouru-meibian",
+          "title": "紫微斗数升职后工作更重但收入没变，怎么看是暂时扛责还是长期吃亏：先比官禄化权和财帛承接",
+          "source": "scripts\\daily-ziwei-2026-07-31-seed.mjs",
+          "date": "2026-07-31",
+          "questionSimilarity": 0,
+          "coreIntentSimilarity": 0.08,
+          "answerPathSimilarity": 0.047,
+          "score": 0.063,
+          "duplicate": false
+        },
+        "nearestBatch": {
+          "slug": "ziwei-santai-bazuo-dandu-chuxian",
+          "title": "紫微斗数三台八座单独出现有用吗：辅佐星要先看有没有主星承接",
+          "source": "scripts\\daily-ziwei-2026-08-01-seed.mjs",
+          "date": "2026-08-01",
+          "questionSimilarity": 0,
+          "coreIntentSimilarity": 0.071,
+          "answerPathSimilarity": 0.073,
+          "score": 0.072,
+          "duplicate": false
+        },
+        "historyDuplicateCount": 0,
+        "batchDuplicateCount": 0
+      },
       "evidence": {
         "ranges": [
           "562-569",
@@ -1762,6 +2325,32 @@
       "pass": true,
       "failures": [],
       "warnings": [],
+      "intentReview": {
+        "nearestHistory": {
+          "slug": "ziwei-huake-caibo-guanlu-zhuanye-shoufei-zhiwei",
+          "title": "紫微斗数化科落财帛和落官禄有什么不同：专业收费与资格职位分开看",
+          "source": "scripts\\daily-ziwei-2026-07-31-seed.mjs",
+          "date": "2026-07-31",
+          "questionSimilarity": 0.068,
+          "coreIntentSimilarity": 0,
+          "answerPathSimilarity": 0.048,
+          "score": 0.058,
+          "duplicate": false
+        },
+        "nearestBatch": {
+          "slug": "ziwei-tianxiang-fushou-zhuanzheng-daxian-huaquan",
+          "title": "紫微斗数天相型的人什么时候适合从副手转正：本命角色和大限化权要分开",
+          "source": "scripts\\daily-ziwei-2026-08-01-seed.mjs",
+          "date": "2026-08-01",
+          "questionSimilarity": 0,
+          "coreIntentSimilarity": 0.067,
+          "answerPathSimilarity": 0.04,
+          "score": 0.054,
+          "duplicate": false
+        },
+        "historyDuplicateCount": 0,
+        "batchDuplicateCount": 0
+      },
       "evidence": {
         "ranges": [
           "625-629",
@@ -1841,6 +2430,32 @@
       "pass": true,
       "failures": [],
       "warnings": [],
+      "intentReview": {
+        "nearestHistory": {
+          "slug": "ziwei-kequan-tongjian-zhuanjia-bian-zhuguan",
+          "title": "紫微斗数科权同见，专业人士什么时候会从专家变主管：权落哪一宫决定管理范围",
+          "source": "scripts\\daily-ziwei-2026-07-31-seed.mjs",
+          "date": "2026-07-31",
+          "questionSimilarity": 0.094,
+          "coreIntentSimilarity": 0.038,
+          "answerPathSimilarity": 0.046,
+          "score": 0.07,
+          "duplicate": false
+        },
+        "nearestBatch": {
+          "slug": "ziwei-tianxiang-fushou-zhuanzheng-daxian-huaquan",
+          "title": "紫微斗数天相型的人什么时候适合从副手转正：本命角色和大限化权要分开",
+          "source": "scripts\\daily-ziwei-2026-08-01-seed.mjs",
+          "date": "2026-08-01",
+          "questionSimilarity": 0,
+          "coreIntentSimilarity": 0.071,
+          "answerPathSimilarity": 0.073,
+          "score": 0.072,
+          "duplicate": false
+        },
+        "historyDuplicateCount": 0,
+        "batchDuplicateCount": 0
+      },
       "evidence": {
         "ranges": [
           "615",
@@ -1916,6 +2531,32 @@
       "pass": true,
       "failures": [],
       "warnings": [],
+      "intentReview": {
+        "nearestHistory": {
+          "slug": "ziwei-mingpan-xinxi-tai-duo-xian-kan-shenme",
+          "title": "紫微斗数命盘信息太多先看什么：先用现实问题定宫，再找三方四正核对",
+          "source": "scripts\\daily-ziwei-2026-07-31-seed.mjs",
+          "date": "2026-07-31",
+          "questionSimilarity": 0.089,
+          "coreIntentSimilarity": 0,
+          "answerPathSimilarity": 0.037,
+          "score": 0.063,
+          "duplicate": false
+        },
+        "nearestBatch": {
+          "slug": "ziwei-huake-huaji-tongjian-youshi-kadian",
+          "title": "紫微斗数化科和化忌同时出现，是先看好还是先看坏：一个定优势，一个定卡点",
+          "source": "scripts\\daily-ziwei-2026-08-01-seed.mjs",
+          "date": "2026-08-01",
+          "questionSimilarity": 0.08,
+          "coreIntentSimilarity": 0,
+          "answerPathSimilarity": 0.031,
+          "score": 0.055,
+          "duplicate": false
+        },
+        "historyDuplicateCount": 0,
+        "batchDuplicateCount": 0
+      },
       "evidence": {
         "ranges": [
           "800-817",
@@ -1996,6 +2637,32 @@
       "pass": true,
       "failures": [],
       "warnings": [],
+      "intentReview": {
+        "nearestHistory": {
+          "slug": "ziwei-bengong-meiyou-zhuxing-zenme-du",
+          "title": "紫微斗数本宫没有主星时怎么读：对宫借星、三方会照和流年触发有顺序",
+          "source": "scripts\\daily-ziwei-2026-07-31-seed.mjs",
+          "date": "2026-07-31",
+          "questionSimilarity": 0.063,
+          "coreIntentSimilarity": 0,
+          "answerPathSimilarity": 0.045,
+          "score": 0.054,
+          "duplicate": false
+        },
+        "nearestBatch": {
+          "slug": "ziwei-huake-huaji-tongjian-youshi-kadian",
+          "title": "紫微斗数化科和化忌同时出现，是先看好还是先看坏：一个定优势，一个定卡点",
+          "source": "scripts\\daily-ziwei-2026-08-01-seed.mjs",
+          "date": "2026-08-01",
+          "questionSimilarity": 0.091,
+          "coreIntentSimilarity": 0,
+          "answerPathSimilarity": 0.048,
+          "score": 0.069,
+          "duplicate": false
+        },
+        "historyDuplicateCount": 0,
+        "batchDuplicateCount": 0
+      },
       "evidence": {
         "ranges": [
           "553-580",
@@ -2085,6 +2752,32 @@
       "pass": true,
       "failures": [],
       "warnings": [],
+      "intentReview": {
+        "nearestHistory": {
+          "slug": "ziwei-wuqu-minggong-fuqigong-xiongdixiong",
+          "title": "紫微斗数武曲落命宫、夫妻宫和兄弟宫怎么分：自己的执行力、同行伴侣和手足助力各不相同",
+          "source": "scripts\\daily-ziwei-2026-07-31-seed.mjs",
+          "date": "2026-07-31",
+          "questionSimilarity": 0.063,
+          "coreIntentSimilarity": 0,
+          "answerPathSimilarity": 0.075,
+          "score": 0.069,
+          "duplicate": false
+        },
+        "nearestBatch": {
+          "slug": "ziwei-liunian-guanxigong-shijian-guishu",
+          "title": "紫微斗数流年走到父母、夫妻、朋友宫时，事情一定发生在别人身上吗",
+          "source": "scripts\\daily-ziwei-2026-08-01-seed.mjs",
+          "date": "2026-08-01",
+          "questionSimilarity": 0.063,
+          "coreIntentSimilarity": 0.091,
+          "answerPathSimilarity": 0.065,
+          "score": 0.078,
+          "duplicate": false
+        },
+        "historyDuplicateCount": 0,
+        "batchDuplicateCount": 0
+      },
       "evidence": {
         "ranges": [
           "1268-1269",
@@ -2171,6 +2864,32 @@
       "pass": true,
       "failures": [],
       "warnings": [],
+      "intentReview": {
+        "nearestHistory": {
+          "slug": "ziwei-bengong-meiyou-zhuxing-zenme-du",
+          "title": "紫微斗数本宫没有主星时怎么读：对宫借星、三方会照和流年触发有顺序",
+          "source": "scripts\\daily-ziwei-2026-07-31-seed.mjs",
+          "date": "2026-07-31",
+          "questionSimilarity": 0.014,
+          "coreIntentSimilarity": 0.095,
+          "answerPathSimilarity": 0.037,
+          "score": 0.066,
+          "duplicate": false
+        },
+        "nearestBatch": {
+          "slug": "ziwei-yigong-xingyao-henduo-yuedu-shunxu",
+          "title": "紫微斗数一个宫里星曜很多怎么看：主星、四化、辅星和煞曜先看谁",
+          "source": "scripts\\daily-ziwei-2026-08-01-seed.mjs",
+          "date": "2026-08-01",
+          "questionSimilarity": 0,
+          "coreIntentSimilarity": 0.136,
+          "answerPathSimilarity": 0.02,
+          "score": 0.078,
+          "duplicate": false
+        },
+        "historyDuplicateCount": 0,
+        "batchDuplicateCount": 0
+      },
       "evidence": {
         "ranges": [
           "553-565",
@@ -2254,6 +2973,32 @@
       "pass": true,
       "failures": [],
       "warnings": [],
+      "intentReview": {
+        "nearestHistory": {
+          "slug": "ziwei-bengong-meiyou-zhuxing-zenme-du",
+          "title": "紫微斗数本宫没有主星时怎么读：对宫借星、三方会照和流年触发有顺序",
+          "source": "scripts\\daily-ziwei-2026-07-31-seed.mjs",
+          "date": "2026-07-31",
+          "questionSimilarity": 0.073,
+          "coreIntentSimilarity": 0.095,
+          "answerPathSimilarity": 0.068,
+          "score": 0.084,
+          "duplicate": false
+        },
+        "nearestBatch": {
+          "slug": "ziwei-yigong-xingyao-henduo-yuedu-shunxu",
+          "title": "紫微斗数一个宫里星曜很多怎么看：主星、四化、辅星和煞曜先看谁",
+          "source": "scripts\\daily-ziwei-2026-08-01-seed.mjs",
+          "date": "2026-08-01",
+          "questionSimilarity": 0.085,
+          "coreIntentSimilarity": 0.087,
+          "answerPathSimilarity": 0.054,
+          "score": 0.086,
+          "duplicate": false
+        },
+        "historyDuplicateCount": 0,
+        "batchDuplicateCount": 0
+      },
       "evidence": {
         "ranges": [
           "621-650",
@@ -2345,6 +3090,32 @@
       "pass": true,
       "failures": [],
       "warnings": [],
+      "intentReview": {
+        "nearestHistory": {
+          "slug": "ziwei-mingpan-xinxi-tai-duo-xian-kan-shenme",
+          "title": "紫微斗数命盘信息太多先看什么：先用现实问题定宫，再找三方四正核对",
+          "source": "scripts\\daily-ziwei-2026-07-31-seed.mjs",
+          "date": "2026-07-31",
+          "questionSimilarity": 0.018,
+          "coreIntentSimilarity": 0.222,
+          "answerPathSimilarity": 0.058,
+          "score": 0.14,
+          "duplicate": false
+        },
+        "nearestBatch": {
+          "slug": "ziwei-liangke-zhuxing-tonggong-zenme-kan",
+          "title": "紫微斗数两颗主星同宫怎么看：先读组合，再看落宫和四化",
+          "source": "scripts\\daily-ziwei-2026-08-01-seed.mjs",
+          "date": "2026-08-01",
+          "questionSimilarity": 0.085,
+          "coreIntentSimilarity": 0.087,
+          "answerPathSimilarity": 0.054,
+          "score": 0.086,
+          "duplicate": false
+        },
+        "historyDuplicateCount": 0,
+        "batchDuplicateCount": 0
+      },
       "evidence": {
         "ranges": [
           "553-580",
@@ -2439,6 +3210,32 @@
       "pass": true,
       "failures": [],
       "warnings": [],
+      "intentReview": {
+        "nearestHistory": {
+          "slug": "ziwei-fuqigong-putong-banlv-shiye-hao-sanfang",
+          "title": "紫微斗数夫妻宫本宫普通，为什么另一半事业仍不错：三方四正会到的科权禄也算",
+          "source": "scripts\\daily-ziwei-2026-07-31-seed.mjs",
+          "date": "2026-07-31",
+          "questionSimilarity": 0,
+          "coreIntentSimilarity": 0.033,
+          "answerPathSimilarity": 0.043,
+          "score": 0.038,
+          "duplicate": false
+        },
+        "nearestBatch": {
+          "slug": "ziwei-ke-quan-lu-tonggong-sanfang-sizheng",
+          "title": "紫微斗数科权禄都出现，落在同一宫和分散在三方四正有什么不同",
+          "source": "scripts\\daily-ziwei-2026-08-01-seed.mjs",
+          "date": "2026-08-01",
+          "questionSimilarity": 0,
+          "coreIntentSimilarity": 0.031,
+          "answerPathSimilarity": 0.068,
+          "score": 0.05,
+          "duplicate": false
+        },
+        "historyDuplicateCount": 0,
+        "batchDuplicateCount": 0
+      },
       "evidence": {
         "ranges": [
           "343-371",

@@ -92,4 +92,12 @@
 - 次日配比使用带样本置信折扣的信号，低样本类别不能凭偶然高CTR抢走大量名额。配比只决定候选数量，不能绕过选题价值门、DOCX取证和五席审查。
 - 修改数据闭环后必须运行 `npm run articles:performance:test`，固定验证深挖、摘要优化、排名优化、低样本观察和中英文归类五种路径。
 
+### 跨日结构化意图历史
+
+- 质量闸门会自动扫描 `scripts/` 和 `docs/` 中过去每日 seed，把 `userQuestion`、`coreIntent`、`directAnswer`、章节路径和组合例子组成结构化意图历史。
+- 每篇必须同时与历史批次和本批其他文章比较用户问法、核心意图和答案路径。任一维度明显复制，或两个维度同时高度接近，直接判定失败，不能靠改标题和slug绕过。
+- 质量报告为每篇保存 `intentReview.nearestHistory` 和 `nearestBatch`，五席SEO审必须先读最近邻，再判断搜索任务、答案路径和例子是否真正不同。
+- 同slug升级旧文不作为新增重复页；不同slug若同意图，优先升级旧URL或换题。
+- 修改意图历史规则后必须运行 `npm run articles:intent-history:test`，验证改标题克隆、复制问法、复制答案路径会失败，真正不同的搜索任务能通过。
+
 远程读取需要本机环境变量 `YUETIAN_ADMIN_PASSWORD`；也可用 `--input` 读取后台导出的JSON。密码不得写入仓库、队列或质量报告。

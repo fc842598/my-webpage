@@ -50,6 +50,7 @@ const TIME_LAYER_RISK_PATTERNS = [
   /流年(?:化[禄权科忌]|贪狼|七杀|破军|天相|天梁)/u,
   /\bannual\s+(?:hua\s+(?:lu|quan|ke|ji)|tan\s+lang|qi\s+sha|po\s+jun|tian\s+xiang|tian\s+liang)\b/i,
 ];
+const DAILY_SEED_FILE_PATTERN = /^(?:daily-ziwei|ziwei-daily)-(\d{4}-\d{2}-\d{2})(?:-seed)?\.mjs$/;
 
 function parseArgs(argv) {
   const args = {};
@@ -191,6 +192,95 @@ function distinctCount(values) {
   return new Set(values.map((item) => normalize(item)).filter(Boolean)).size;
 }
 
+function structuredIntentRecord(article, source, date) {
+  const question = String(article.userQuestion || "").trim();
+  const coreIntent = String(article.coreIntent || article.intent || "").trim();
+  const answerPath = [
+    article.directAnswer,
+    ...(article.sections || []).map((section) => section.heading),
+    ...(article.examples || []),
+  ].filter(Boolean).join(" ");
+  if (!question || !coreIntent || !answerPath) return null;
+  return {
+    slug: String(article.slug || ""),
+    title: String(article.title || ""),
+    question,
+    coreIntent,
+    answerPath,
+    source,
+    date,
+  };
+}
+
+async function loadStructuredIntentHistory(currentSeedPath, currentDate) {
+  let scannedSourceCount = 0;
+  const sources = [];
+  const articles = [];
+  for (const directory of ["scripts", "docs"]) {
+    const absoluteDirectory = path.join(ROOT, directory);
+    if (!existsSync(absoluteDirectory)) continue;
+    for (const file of readdirSync(absoluteDirectory).sort()) {
+      const match = file.match(DAILY_SEED_FILE_PATTERN);
+      if (!match) continue;
+      const absoluteFile = path.join(absoluteDirectory, file);
+      if (path.resolve(absoluteFile) === path.resolve(currentSeedPath)) continue;
+      if (match[1] >= currentDate) continue;
+      scannedSourceCount += 1;
+      const relativeFile = path.relative(ROOT, absoluteFile);
+      let module;
+      try {
+        module = await import(`${pathToFileURL(absoluteFile).href}?history=${Date.now()}-${sources.length}`);
+      } catch (error) {
+        throw new Error(`Unable to load structured intent history ${relativeFile}: ${error.message || error}`);
+      }
+      if (!Array.isArray(module.articles)) continue;
+      const records = module.articles
+        .map((article) => structuredIntentRecord(article, relativeFile, match[1]))
+        .filter(Boolean);
+      if (records.length) sources.push({ file: relativeFile, date: match[1], articleCount: records.length });
+      articles.push(...records);
+    }
+  }
+  return { scannedSourceCount, sources, articles };
+}
+
+export function structuredIntentSimilarity(left, right) {
+  const question = similarity(left?.question, right?.question);
+  const coreIntent = similarity(left?.coreIntent, right?.coreIntent);
+  const answerPath = similarity(left?.answerPath, right?.answerPath);
+  const strongest = [question, coreIntent, answerPath].sort((a, b) => b - a);
+  return {
+    question,
+    coreIntent,
+    answerPath,
+    score: (strongest[0] + strongest[1]) / 2,
+  };
+}
+
+export function isStructuredIntentDuplicate(metrics) {
+  return metrics.question >= 0.65
+    || metrics.coreIntent >= 0.65
+    || metrics.answerPath >= 0.62
+    || (metrics.question >= 0.45 && metrics.coreIntent >= 0.45)
+    || (metrics.coreIntent >= 0.45 && metrics.answerPath >= 0.45)
+    || (metrics.question >= 0.5 && metrics.answerPath >= 0.5);
+}
+
+function compareStructuredIntent(current, candidate) {
+  const metrics = structuredIntentSimilarity(current, candidate);
+  return {
+    slug: candidate.slug,
+    title: candidate.title,
+    source: candidate.source,
+    date: candidate.date,
+    questionSimilarity: Number(metrics.question.toFixed(3)),
+    coreIntentSimilarity: Number(metrics.coreIntent.toFixed(3)),
+    answerPathSimilarity: Number(metrics.answerPath.toFixed(3)),
+    score: Number(metrics.score.toFixed(3)),
+    duplicate: isStructuredIntentDuplicate(metrics),
+  };
+}
+
 function phraseOwners(articles, size = 20) {
   const owners = new Map();
   for (const article of articles) {
@@ -219,7 +309,7 @@ function englishPhraseOwners(articles, size = 10) {
   return [...owners.entries()].filter(([, slugs]) => slugs.length >= 3);
 }
 
-function scoreArticle(article, paragraphs, oldTitles, oldEnglishTitles, batchTitles, batchEnglishTitles) {
+function scoreArticle(article, paragraphs, oldTitles, oldEnglishTitles, batchTitles, batchEnglishTitles, structuredHistory, batchIntentRecords) {
   const failures = [];
   const warnings = [];
   const points = Array.isArray(article.points) ? article.points.filter(Boolean) : [];
@@ -238,6 +328,21 @@ function scoreArticle(article, paragraphs, oldTitles, oldEnglishTitles, batchTit
     .filter(Boolean)
     .join("\n");
   const topicText = [article.title, article.intent, article.userQuestion, article.userScenario].filter(Boolean).join(" ");
+  const currentIntentRecord = structuredIntentRecord(article, "current-batch", "current");
+  const historyComparisons = currentIntentRecord
+    ? structuredHistory
+      .filter((item) => item.slug !== article.slug)
+      .map((item) => compareStructuredIntent(currentIntentRecord, item))
+      .sort((a, b) => b.score - a.score)
+    : [];
+  const batchIntentComparisons = currentIntentRecord
+    ? batchIntentRecords
+      .filter((item) => item.slug !== article.slug)
+      .map((item) => compareStructuredIntent(currentIntentRecord, item))
+      .sort((a, b) => b.score - a.score)
+    : [];
+  const historyDuplicates = historyComparisons.filter((item) => item.duplicate);
+  const batchIntentDuplicates = batchIntentComparisons.filter((item) => item.duplicate);
 
   if (!Number.isInteger(article.order) || article.order < 1) failures.push("order 必须为正整数");
   if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(String(article.slug || ""))) failures.push("slug 缺失或格式不正确");
@@ -305,6 +410,8 @@ function scoreArticle(article, paragraphs, oldTitles, oldEnglishTitles, batchTit
   if (closeEnglishBatch.length) failures.push(`批内英文标题意图过近：${closeEnglishBatch.map((item) => item.slug).join(", ")}`);
   const closeEnglishExisting = oldEnglishTitles.filter((item) => item.file !== `${article.slug}.html` && similarity(english.title, item.title) >= 0.76);
   if (closeEnglishExisting.length) failures.push(`与已发英文标题意图过近：${closeEnglishExisting.slice(0, 3).map((item) => item.file).join(", ")}`);
+  if (historyDuplicates.length) failures.push(`与历史结构化搜索意图过近：${historyDuplicates.slice(0, 3).map((item) => `${item.source}#${item.slug}`).join(", ")}`);
+  if (batchIntentDuplicates.length) failures.push(`批内结构化搜索意图过近：${batchIntentDuplicates.slice(0, 3).map((item) => item.slug).join(", ")}`);
 
   const bodyLength = normalize(draft).length;
   if (bodyLength < 600 || bodyLength > 1100) failures.push(`中文正文长度不合格：${bodyLength}`);
@@ -326,6 +433,12 @@ function scoreArticle(article, paragraphs, oldTitles, oldEnglishTitles, batchTit
     pass: failures.length === 0 && score >= 85,
     failures,
     warnings,
+    intentReview: {
+      nearestHistory: historyComparisons[0] || null,
+      nearestBatch: batchIntentComparisons[0] || null,
+      historyDuplicateCount: historyDuplicates.length,
+      batchDuplicateCount: batchIntentDuplicates.length,
+    },
     evidence: {
       ranges: evidence,
       paragraphCount: sourceParagraphs.length,
@@ -347,12 +460,25 @@ export async function validateSeedBatch({ seedPath, docxPath, date, reportPath, 
   const resolvedDocx = path.resolve(docxPath);
   const { articles } = await import(`${pathToFileURL(resolvedSeed).href}?t=${Date.now()}`);
   if (!Array.isArray(articles) || !articles.length) throw new Error("Seed file did not export articles");
+  const structuredHistory = await loadStructuredIntentHistory(resolvedSeed, date);
   const paragraphs = readParagraphs(resolvedDocx);
   const oldTitles = existingTitles();
   const oldEnglishTitles = existingEnglishTitles();
   const batchTitles = articles.map(({ slug, title }) => ({ slug, title }));
   const batchEnglishTitles = articles.map(({ slug, english }) => ({ slug, title: english?.title || "" }));
-  const reports = articles.map((article) => scoreArticle(article, paragraphs, oldTitles, oldEnglishTitles, batchTitles, batchEnglishTitles));
+  const batchIntentRecords = articles
+    .map((article) => structuredIntentRecord(article, path.relative(ROOT, resolvedSeed), date))
+    .filter(Boolean);
+  const reports = articles.map((article) => scoreArticle(
+    article,
+    paragraphs,
+    oldTitles,
+    oldEnglishTitles,
+    batchTitles,
+    batchEnglishTitles,
+    structuredHistory.articles,
+    batchIntentRecords,
+  ));
   const repeatedPhrases = phraseOwners(articles);
   if (repeatedPhrases.length) {
     for (const report of reports) {
@@ -381,12 +507,18 @@ export async function validateSeedBatch({ seedPath, docxPath, date, reportPath, 
   if (duplicateOrders) batchFailures.push("批次 order 重复");
   if (duplicateSlugs) batchFailures.push("批次 slug 重复");
   const output = {
-    version: 1,
+    version: 2,
     date,
     generatedAt: new Date().toISOString(),
     seed: path.relative(ROOT, resolvedSeed),
     sourceDocument: path.basename(resolvedDocx),
     paragraphCount: paragraphs.length,
+    structuredHistory: {
+      scannedSourceCount: structuredHistory.scannedSourceCount,
+      sourceCount: structuredHistory.sources.length,
+      articleCount: structuredHistory.articles.length,
+      sources: structuredHistory.sources,
+    },
     expectedCount,
     articleCount: articles.length,
     passed: reports.filter((item) => item.pass).length,
