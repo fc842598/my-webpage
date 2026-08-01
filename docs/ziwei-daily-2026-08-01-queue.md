@@ -50,7 +50,7 @@
 | 11 | 已发布 2026-08-01 08:27 https://yuetianai.com/articles/ziwei-gongzuo-wending-yuezuo-yuelei-guanlu-shengong-fude.html / https://yuetianai.com/articles/en/ziwei-gongzuo-wending-yuezuo-yuelei-guanlu-shengong-fude.html | ziwei-gongzuo-wending-yuezuo-yuelei-guanlu-shengong-fude | 紫微斗数工作稳定却越做越累，官禄宫好为什么还是想辞职 | 宫位组合 |
 | 12 | 已发布 2026-08-01 09:11 https://yuetianai.com/articles/ziwei-waidi-jihui-duo-liubuxia-qianyi-tianzhai.html / https://yuetianai.com/articles/en/ziwei-waidi-jihui-duo-liubuxia-qianyi-tianzhai.html | ziwei-waidi-jihui-duo-liubuxia-qianyi-tianzhai | 紫微斗数外地机会多但留不下来，迁移宫吉、田宅宫弱怎么取舍 | 宫位组合 |
 | 13 | 已发布 2026-08-01 09:32 https://yuetianai.com/articles/ziwei-bei-fangdai-huan-gongzuo-guanlu-qianyi-caibo.html / https://yuetianai.com/articles/en/ziwei-bei-fangdai-huan-gongzuo-guanlu-qianyi-caibo.html | ziwei-bei-fangdai-huan-gongzuo-guanlu-qianyi-caibo | 紫微斗数背着房贷还能换工作吗：官禄、迁移与财帛怎么看转职窗口 | 宫位组合 |
-| 14 | 待发布 | ziwei-haizi-bendi-haishi-waidi-dushu-zinv-qianyi-guanlu | 紫微斗数孩子留本地还是去外地读书：父母盘子女宫不能替代孩子迁移宫 | 宫位组合 |
+| 14 | 已发布 2026-08-01 10:06 https://yuetianai.com/articles/ziwei-haizi-bendi-haishi-waidi-dushu-zinv-qianyi-guanlu.html / https://yuetianai.com/articles/en/ziwei-haizi-bendi-haishi-waidi-dushu-zinv-qianyi-guanlu.html | ziwei-haizi-bendi-haishi-waidi-dushu-zinv-qianyi-guanlu | 紫微斗数孩子留本地还是去外地读书：父母盘子女宫不能替代孩子迁移宫 | 宫位组合 |
 | 15 | 待发布 | ziwei-ke-quan-lu-tonggong-sanfang-sizheng | 紫微斗数科权禄都出现，落在同一宫和分散在三方四正有什么不同 | 四化细读 |
 | 16 | 待发布 | ziwei-huake-huaji-tongjian-youshi-kadian | 紫微斗数化科和化忌同时出现，是先看好还是先看坏：一个定优势，一个定卡点 | 四化细读 |
 | 17 | 待发布 | ziwei-minggong-huake-youming-weibi-fufei | 紫微斗数命宫化科为什么有名却未必有人付费：先看大家记住你的哪项本事 | 四化细读 |
