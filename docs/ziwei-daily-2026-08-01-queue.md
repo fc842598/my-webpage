@@ -54,7 +54,7 @@
 | 15 | 已发布 2026-08-01 11:49 https://yuetianai.com/articles/ziwei-ke-quan-lu-tonggong-sanfang-sizheng.html / https://yuetianai.com/articles/en/ziwei-ke-quan-lu-tonggong-sanfang-sizheng.html | ziwei-ke-quan-lu-tonggong-sanfang-sizheng | 紫微斗数科权禄都出现，落在同一宫和分散在三方四正有什么不同 | 四化细读 |
 | 16 | 已发布 2026-08-01 12:07 https://yuetianai.com/articles/ziwei-huake-huaji-tongjian-youshi-kadian.html / https://yuetianai.com/articles/en/ziwei-huake-huaji-tongjian-youshi-kadian.html | ziwei-huake-huaji-tongjian-youshi-kadian | 紫微斗数化科和化忌同时出现，是先看好还是先看坏：一个定优势，一个定卡点 | 四化细读 |
 | 17 | 待发布 | ziwei-minggong-huake-youming-weibi-fufei | 紫微斗数命宫化科为什么有名却未必有人付费：先看大家记住你的哪项本事 | 四化细读 |
-| 18 | 待发布 | ziwei-caibo-huaquan-fude-huaji-zhuanqian-tingbuxialai | 紫微斗数财帛宫化权、福德宫化忌怎么看：能赚钱为什么还是停不下来 | 四化细读 |
+| 18 | 已发布 2026-08-01 12:42 https://yuetianai.com/articles/ziwei-caibo-huaquan-fude-huaji-zhuanqian-tingbuxialai.html / https://yuetianai.com/articles/en/ziwei-caibo-huaquan-fude-huaji-zhuanqian-tingbuxialai.html | ziwei-caibo-huaquan-fude-huaji-zhuanqian-tingbuxialai | 紫微斗数财帛宫化权、福德宫化忌怎么看：能赚钱为什么还是停不下来 | 四化细读 |
 | 19 | 待发布 | ziwei-huaji-xiongdi-pengyou-hezuo-fengxian | 紫微斗数化忌落兄弟宫和朋友宫怎么分：亲友合伙与外部合作不是同一风险 | 四化细读 |
 | 20 | 待发布 | ziwei-huaji-tianma-weishenme-benbo | 紫微斗数化忌和天马同见，为什么先要问“为了什么奔波” | 四化细读 |
 | 21 | 待发布 | ziwei-tianxiang-fushou-zhuanzheng-daxian-huaquan | 紫微斗数天相型的人什么时候适合从副手转正：本命角色和大限化权要分开 | 主星 |
