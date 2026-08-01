@@ -52,7 +52,7 @@
 | 13 | 已发布 2026-08-01 09:32 https://yuetianai.com/articles/ziwei-bei-fangdai-huan-gongzuo-guanlu-qianyi-caibo.html / https://yuetianai.com/articles/en/ziwei-bei-fangdai-huan-gongzuo-guanlu-qianyi-caibo.html | ziwei-bei-fangdai-huan-gongzuo-guanlu-qianyi-caibo | 紫微斗数背着房贷还能换工作吗：官禄、迁移与财帛怎么看转职窗口 | 宫位组合 |
 | 14 | 已发布 2026-08-01 10:06 https://yuetianai.com/articles/ziwei-haizi-bendi-haishi-waidi-dushu-zinv-qianyi-guanlu.html / https://yuetianai.com/articles/en/ziwei-haizi-bendi-haishi-waidi-dushu-zinv-qianyi-guanlu.html | ziwei-haizi-bendi-haishi-waidi-dushu-zinv-qianyi-guanlu | 紫微斗数孩子留本地还是去外地读书：父母盘子女宫不能替代孩子迁移宫 | 宫位组合 |
 | 15 | 已发布 2026-08-01 11:49 https://yuetianai.com/articles/ziwei-ke-quan-lu-tonggong-sanfang-sizheng.html / https://yuetianai.com/articles/en/ziwei-ke-quan-lu-tonggong-sanfang-sizheng.html | ziwei-ke-quan-lu-tonggong-sanfang-sizheng | 紫微斗数科权禄都出现，落在同一宫和分散在三方四正有什么不同 | 四化细读 |
-| 16 | 待发布 | ziwei-huake-huaji-tongjian-youshi-kadian | 紫微斗数化科和化忌同时出现，是先看好还是先看坏：一个定优势，一个定卡点 | 四化细读 |
+| 16 | 已发布 2026-08-01 12:07 https://yuetianai.com/articles/ziwei-huake-huaji-tongjian-youshi-kadian.html / https://yuetianai.com/articles/en/ziwei-huake-huaji-tongjian-youshi-kadian.html | ziwei-huake-huaji-tongjian-youshi-kadian | 紫微斗数化科和化忌同时出现，是先看好还是先看坏：一个定优势，一个定卡点 | 四化细读 |
 | 17 | 待发布 | ziwei-minggong-huake-youming-weibi-fufei | 紫微斗数命宫化科为什么有名却未必有人付费：先看大家记住你的哪项本事 | 四化细读 |
 | 18 | 待发布 | ziwei-caibo-huaquan-fude-huaji-zhuanqian-tingbuxialai | 紫微斗数财帛宫化权、福德宫化忌怎么看：能赚钱为什么还是停不下来 | 四化细读 |
 | 19 | 待发布 | ziwei-huaji-xiongdi-pengyou-hezuo-fengxian | 紫微斗数化忌落兄弟宫和朋友宫怎么分：亲友合伙与外部合作不是同一风险 | 四化细读 |
