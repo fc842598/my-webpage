@@ -56,7 +56,7 @@
 | 17 | 待发布 | ziwei-minggong-huake-youming-weibi-fufei | 紫微斗数命宫化科为什么有名却未必有人付费：先看大家记住你的哪项本事 | 四化细读 |
 | 18 | 已发布 2026-08-01 12:42 https://yuetianai.com/articles/ziwei-caibo-huaquan-fude-huaji-zhuanqian-tingbuxialai.html / https://yuetianai.com/articles/en/ziwei-caibo-huaquan-fude-huaji-zhuanqian-tingbuxialai.html | ziwei-caibo-huaquan-fude-huaji-zhuanqian-tingbuxialai | 紫微斗数财帛宫化权、福德宫化忌怎么看：能赚钱为什么还是停不下来 | 四化细读 |
 | 19 | 已发布 2026-08-01 13:45 https://yuetianai.com/articles/ziwei-huaji-xiongdi-pengyou-hezuo-fengxian.html / https://yuetianai.com/articles/en/ziwei-huaji-xiongdi-pengyou-hezuo-fengxian.html | ziwei-huaji-xiongdi-pengyou-hezuo-fengxian | 紫微斗数化忌落兄弟宫和朋友宫怎么分：亲友合伙与外部合作不是同一风险 | 四化细读 |
-| 20 | 待发布 | ziwei-huaji-tianma-weishenme-benbo | 紫微斗数化忌和天马同见，为什么先要问“为了什么奔波” | 四化细读 |
+| 20 | 已发布 2026-08-01 14:08 https://yuetianai.com/articles/ziwei-huaji-tianma-weishenme-benbo.html / https://yuetianai.com/articles/en/ziwei-huaji-tianma-weishenme-benbo.html | ziwei-huaji-tianma-weishenme-benbo | 紫微斗数化忌和天马同见，为什么先要问“为了什么奔波” | 四化细读 |
 | 21 | 待发布 | ziwei-tianxiang-fushou-zhuanzheng-daxian-huaquan | 紫微斗数天相型的人什么时候适合从副手转正：本命角色和大限化权要分开 | 主星 |
 | 22 | 待发布 | ziwei-tianji-caibo-guding-gongzi-xiangmu-shoufei | 紫微斗数天机落财帛更适合固定工资还是项目收费：先分正财与专业变现 | 主星 |
 | 23 | 待发布 | ziwei-santai-bazuo-dandu-chuxian | 紫微斗数三台八座单独出现有用吗：辅佐星要先看有没有主星承接 | 辅煞曜 |
