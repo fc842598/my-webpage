@@ -96,11 +96,11 @@
 
 ## 提交与推送后复查
 
-- 提交号：待补
-- 推送结果：待补
-- `HEAD` / `origin/master` 一致性：待补
+- 提交号：`845c7f4345288f09d7b37eda238e7c6a1832e69e`
+- 推送结果：`git push origin master` 成功，远端更新到 `845c7f4`
+- `HEAD` / `origin/master` 一致性：一致，二者同为 `845c7f4345288f09d7b37eda238e7c6a1832e69e`
 - 线上抽查：
-  - 中文 2 篇：待补
-  - 英文 2 篇：待补
-  - 文章首页：待补
-  - sitemap：待补
+  - 中文 2 篇：`/articles/ai-suanming-zhi-gei-jielun-bugei-guocheng-zhibuzhi-jixu.html` 与 `/articles/ai-suanming-hui-qiangongsi-xiankan-ziwei-haishi-liuyao.html` 均命中 `2026-08-01` 对应 `datePublished`
+  - 英文 2 篇：`/articles/en/ai-suanming-zhi-gei-jielun-bugei-guocheng-zhibuzhi-jixu.html` 与 `/articles/en/ai-suanming-hui-qiangongsi-xiankan-ziwei-haishi-liuyao.html` 均命中新标题与 `datePublished`
+  - 文章首页：`/articles/ai-suanming-search-qa.html` 已出现两篇新文卡片与 `2026-08-01 22:44 +08:00`
+  - sitemap：`/sitemap-articles.xml` 已收录两篇抽查新 URL，`lastmod` 分别为 `2026-08-01T14:29:00+08:00`、`2026-08-01T22:44:00+08:00`
