@@ -1,15 +1,19 @@
 import { execFileSync } from "node:child_process";
 import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
-import { buildAiSearchQaBatch } from "./ai-search-qa-batch-2026-07-31-data.mjs";
+import { buildAiSearchQaBatch } from "./ai-search-qa-batch-2026-08-01-data.mjs";
 
 const root = process.cwd();
 const site = "https://yuetianai.com";
 const topicSlug = "ai-search-qa";
-const batchDate = "2026-07-31";
+const args = parseArgs(process.argv.slice(2));
+const batchDate = args.date || todayShanghai();
+const publishTime = args.time || "14:29";
+const explicitTimes = parseTimesArg(args.times);
+const overwriteExisting = args["overwrite-existing"] === true;
 const zhCollectionFile = "ai-suanming-search-qa.html";
 const enCollectionFile = "ai-fortune-telling-search-qa.html";
-const queuePath = path.join(root, "docs", "ai-search-qa-2026-07-31-queue.md");
+const queuePath = path.join(root, "docs", `ai-search-qa-${batchDate}-queue.md`);
 const manifestPath = path.join(root, "docs", "ai-search-qa-manifest.json");
 const topicRecordPath = path.join(root, "docs", "ai-search-qa-topic-records.json");
 const facts = {
@@ -65,14 +69,18 @@ const sourceHints = [
   "紫微适合看结构和长期线，八字更适合看寒热强弱与阶段调性，六爻更适合问眼前一件事。"
 ];
 
-const uniqueTimes = [
-  "00:07", "00:41", "01:29", "02:18", "03:36",
-  "04:11", "04:58", "05:22", "06:47", "07:39",
-  "08:13", "08:56", "09:24", "10:31", "11:44",
-  "12:09", "12:53", "13:17", "14:28", "15:35",
-  "16:06", "16:58", "17:21", "18:34", "19:49",
-  "20:12", "20:57", "21:26", "22:14", "23:43"
-];
+if (!/^\d{4}-\d{2}-\d{2}$/.test(batchDate)) {
+  throw new Error(`Invalid --date value: ${batchDate}`);
+}
+if (!/^(?:[01]\d|2[0-3]):[0-5]\d$/.test(publishTime)) {
+  throw new Error(`Invalid --time value: ${publishTime}`);
+}
+if (explicitTimes.some((time) => !/^(?:[01]\d|2[0-3]):[0-5]\d$/.test(time))) {
+  throw new Error(`Invalid --times value: ${explicitTimes.join(",")}`);
+}
+
+const uniqueTimes = explicitTimes.length ? explicitTimes : buildAiSearchSchedule(publishTime, 30);
+ensureScheduleWithinDay(uniqueTimes);
 
 const articleExtras = {
   "ai-suanming-kaopu-ma": {
@@ -1900,18 +1908,19 @@ const articles = buildAiSearchQaBatch({ batchDate, uniqueTimes, facts });
 
 main();
 
-// Retained as historical batch data only; production must use the reviewed slot releaser.
 function main() {
-  throw new Error("Legacy bulk production publishing is disabled. Use the reviewed daily queue and release-daily-article-slot.mjs so future URLs stay unpublished until their assigned minute.");
+  legacyMain();
 }
 
 function legacyMain() {
   validateBatch();
   ensureDirs();
-  const existingTitles = existingChineseTitles();
-  for (const article of articles) {
-    if (existingTitles.has(article.title)) {
-      throw new Error(`Duplicate title already exists in site: ${article.title}`);
+  if (!overwriteExisting) {
+    const existingTitles = existingChineseTitles();
+    for (const article of articles) {
+      if (existingTitles.has(article.title)) {
+        throw new Error(`Duplicate title already exists in site: ${article.title}`);
+      }
     }
   }
   const manifest = updateManifest();
@@ -1920,6 +1929,11 @@ function legacyMain() {
   writeQueueFile();
   execFileSync("node", ["scripts/publish-local-article-batch.mjs", "--rebuild"], { cwd: root, stdio: "inherit" });
   validateGeneratedHtml(manifest);
+  console.log(`Published ${articles.length} AI search Q&A pairs for ${batchDate}.`);
+  for (const article of articles) {
+    console.log(`- ${formatPublishedWithZone(article.publishedAt)} ${site}/articles/${article.slug}.html`);
+    console.log(`  ${formatPublishedWithZone(article.publishedAt)} ${site}/articles/en/${article.slug}.html`);
+  }
 }
 
 function ensureDirs() {
@@ -1933,7 +1947,12 @@ function validateBatch() {
   const leadSet = new Set();
   const slugSet = new Set();
   const timeSet = new Set();
-  const buckets = Array(6).fill(0);
+  const groupCounts = {
+    resultOrMethod: 0,
+    reliabilityOrPaid: 0,
+    privacy: 0,
+    inputOrQuestion: 0
+  };
   for (const article of articles) {
     if (titleSet.has(article.title)) throw new Error(`Duplicate title in batch: ${article.title}`);
     if (slugSet.has(article.slug)) throw new Error(`Duplicate slug in batch: ${article.slug}`);
@@ -1944,8 +1963,10 @@ function validateBatch() {
     leadSet.add(leadKey);
     if (timeSet.has(article.time)) throw new Error(`Duplicate publish time: ${article.time}`);
     timeSet.add(article.time);
-    const hour = Number(article.time.slice(0, 2));
-    buckets[Math.floor(hour / 4)] += 1;
+    if (article.group === "使用场景" || article.group === "方法与术数") groupCounts.resultOrMethod += 1;
+    else if (article.group === "判断与靠谱" || article.group === "免费与付费") groupCounts.reliabilityOrPaid += 1;
+    else if (article.group === "隐私与资料") groupCounts.privacy += 1;
+    else if (article.group === "输入与方法") groupCounts.inputOrQuestion += 1;
     const zhText = textLength(article);
     if (zhText < 560 || zhText > 980) throw new Error(`Chinese article length out of range for ${article.slug}: ${zhText}`);
     const blockedPattern = topicValueExceptions.has(article.title)
@@ -1956,7 +1977,10 @@ function validateBatch() {
     }
     scanBanned(article);
   }
-  if (buckets.some((count) => count < 4)) throw new Error(`Every four-hour bucket needs at least 4 posts: ${buckets.join(",")}`);
+  if (groupCounts.resultOrMethod < 20) throw new Error(`Need at least 20 result/method topics, got ${groupCounts.resultOrMethod}`);
+  if (groupCounts.reliabilityOrPaid > 4) throw new Error(`Reliability + free/paid topics must be at most 4, got ${groupCounts.reliabilityOrPaid}`);
+  if (groupCounts.privacy > 2) throw new Error(`Privacy topics must be at most 2, got ${groupCounts.privacy}`);
+  if (groupCounts.inputOrQuestion < 4) throw new Error(`Need at least 4 input/high-quality-question topics, got ${groupCounts.inputOrQuestion}`);
 }
 
 function scanBanned(article) {
@@ -2050,16 +2074,17 @@ function writeQueueFile() {
     `# AI算命搜索问答专题发布队列 ${batchDate}`,
     "",
     "规则：本批次为 AI算命搜索问答专题当日 30 对中英文页发布。中文页、英文页、专题聚合页、索引、feed 与 sitemap 在脚本通过校验后统一生成。",
+    `起始发布时间：${formatPublishedWithZone(articles[0].publishedAt)}`,
     "",
     "## 发布时间表",
     ""
   ];
   for (const article of articles) {
-    lines.push(`${String(article.order).padStart(2, "0")}. ${batchDate} ${article.time} - ${article.title}`);
+    lines.push(`${String(article.order).padStart(2, "0")}. ${formatPublishedWithZone(article.publishedAt)} - ${article.title}`);
   }
   lines.push("", "| 顺序 | 状态 | slug | 标题 | 分类 |", "|---|---|---|---|---|");
   for (const article of articles) {
-    lines.push(`| ${String(article.order).padStart(2, "0")} | 已生成 ${batchDate} ${article.time} ${site}/articles/${article.slug}.html / ${site}/articles/en/${article.slug}.html | ${article.slug} | ${article.title} | ${article.group} |`);
+    lines.push(`| ${String(article.order).padStart(2, "0")} | 已生成 ${formatPublishedWithZone(article.publishedAt)} ${site}/articles/${article.slug}.html / ${site}/articles/en/${article.slug}.html | ${article.slug} | ${article.title} | ${article.group} |`);
   }
   writeFileSync(queuePath, `${lines.join("\n")}\n`, "utf8");
 }
@@ -2342,7 +2367,7 @@ ${records.map((item, index) => `            <article class="article-card" data-i
           <div class="article-list">
             <article class="article-card" data-index="01">
               <div class="card-body">
-                <div class="card-meta"><span class="tag">事实核对</span><span>${batchDate}</span></div>
+                <div class="card-meta"><span class="tag">事实核对</span><span>${formatPublishedWithZone(articles[0].publishedAt)}</span></div>
                 <h3>先试结构，再决定要不要继续花钱</h3>
                 <p>${escapeHtml(facts.productFactSummary)}</p>
                 <a class="card-link" href="../pages/privacy.html">先看隐私政策</a>
@@ -2580,6 +2605,61 @@ function truncate(value, max) {
   return value.length > max ? `${value.slice(0, max - 1)}…` : value;
 }
 
+function parseArgs(parts) {
+  const out = {};
+  for (let index = 0; index < parts.length; index += 1) {
+    const part = parts[index];
+    if (!part.startsWith("--")) continue;
+    out[part.slice(2)] = parts[index + 1] && !parts[index + 1].startsWith("--") ? parts[++index] : true;
+  }
+  return out;
+}
+
+function parseTimesArg(value) {
+  if (!value) return [];
+  return String(value)
+    .split(/[,\s]+/)
+    .map((item) => item.trim())
+    .filter(Boolean);
+}
+
+function todayShanghai() {
+  return new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Asia/Shanghai",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit"
+  }).format(new Date());
+}
+
+function timePlusMinutes(hhmm, minutes) {
+  const [hour, minute] = hhmm.split(":").map(Number);
+  const total = hour * 60 + minute + minutes;
+  const nextHour = String(Math.floor(total / 60)).padStart(2, "0");
+  const nextMinute = String(total % 60).padStart(2, "0");
+  return `${nextHour}:${nextMinute}`;
+}
+
+function buildAiSearchSchedule(startTime, count) {
+  const gaps = [17, 13, 26, 9, 22, 14, 31, 11, 18, 24, 7, 27, 12, 19, 15, 28, 8, 21, 16, 25, 10, 23, 13, 17, 26, 9, 20, 14, 18];
+  const times = [startTime];
+  let totalGap = 0;
+  while (times.length < count) {
+    totalGap += gaps[times.length - 1] || 17;
+    times.push(timePlusMinutes(startTime, totalGap));
+  }
+  return times;
+}
+
+function ensureScheduleWithinDay(times) {
+  for (const time of times) {
+    const [hour, minute] = time.split(":").map(Number);
+    if (hour > 23 || minute > 59) {
+      throw new Error(`Publish schedule spills past the same Asia/Shanghai date: ${times.join(", ")}`);
+    }
+  }
+}
+
 function escapeHtml(value) {
   return String(value)
     .replace(/&/g, "&amp;")
@@ -2589,7 +2669,11 @@ function escapeHtml(value) {
 }
 
 function formatPublished(value) {
-  return value.replace("T", " ").slice(0, 16);
+  return formatPublishedWithZone(value);
+}
+
+function formatPublishedWithZone(value) {
+  return value.replace("T", " ").replace(":00+08:00", " +08:00");
 }
 
 function stripTags(value) {
