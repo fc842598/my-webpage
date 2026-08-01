@@ -96,9 +96,9 @@
 
 ## 提交与推送后复查
 
-- 提交号：`845c7f4345288f09d7b37eda238e7c6a1832e69e`
-- 推送结果：`git push origin master` 成功，远端更新到 `845c7f4`
-- `HEAD` / `origin/master` 一致性：一致，二者同为 `845c7f4345288f09d7b37eda238e7c6a1832e69e`
+- 发布内容提交号：`845c7f4345288f09d7b37eda238e7c6a1832e69e`
+- 推送结果：`git push origin master` 成功，发布内容已进入 GitHub `master`
+- `HEAD` / `origin/master` 一致性：推送后已核对一致，本记录补充提交不影响已发布页面结果
 - 线上抽查：
   - 中文 2 篇：`/articles/ai-suanming-zhi-gei-jielun-bugei-guocheng-zhibuzhi-jixu.html` 与 `/articles/ai-suanming-hui-qiangongsi-xiankan-ziwei-haishi-liuyao.html` 均命中 `2026-08-01` 对应 `datePublished`
   - 英文 2 篇：`/articles/en/ai-suanming-zhi-gei-jielun-bugei-guocheng-zhibuzhi-jixu.html` 与 `/articles/en/ai-suanming-hui-qiangongsi-xiankan-ziwei-haishi-liuyao.html` 均命中新标题与 `datePublished`
