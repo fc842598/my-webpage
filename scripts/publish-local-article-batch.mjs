@@ -4,6 +4,7 @@ import path from "node:path";
 import { validateReviewManifest } from "./validate-daily-article-reviews.mjs";
 import { validateDailyArticleQualityAtRelease } from "./validate-daily-ziwei-seed.mjs";
 import { assertProductionPublishWindow } from "./article-publish-time-gate.mjs";
+import { assertProductionBatchSize } from "./daily-article-batch-policy.mjs";
 
 const site = "https://yuetianai.com";
 const defaultImage = `${site}/images/home2/triad-tian-bg.webp`;
@@ -138,23 +139,25 @@ if (uniqueReviewDates.length > 1) fail(`Queue and source review dates disagree: 
 const reviewDate = uniqueReviewDates[0] || "";
 const dailySourceCount = [...sourceRaw.matchAll(/^##\s+\d+\.\s+/gm)].length;
 const dailyQueueCount = [...queueRaw.matchAll(/^\|\s*\d{2}\s*\|/gm)].length;
-const looksLikeDailyBatch = dailySourceCount === 30 && dailyQueueCount === 30;
+const looksLikeDailyBatch = dailySourceCount === dailyQueueCount && dailySourceCount >= 10 && dailySourceCount <= 30;
 const requiresDailyReview = publishDate >= "2026-08-01" && (category === "紫微斗数" || looksLikeDailyBatch);
 if (requiresDailyReview && !reviewDate) fail("Reviewed Ziwei publishing requires dated daily queue and source markers");
 if (requiresDailyReview && reviewDate !== publishDate) fail(`--date must match the reviewed queue date ${reviewDate}`);
 if (reviewDate && reviewDate >= "2026-08-01") {
+  if (dailySourceCount !== dailyQueueCount) fail(`Daily source/queue counts disagree: ${dailySourceCount}/${dailyQueueCount}`);
+  const expectedCount = assertProductionBatchSize(dailySourceCount);
   await validateDailyArticleQualityAtRelease({
     date: reviewDate,
     seedPath: `scripts/daily-ziwei-${reviewDate}-seed.mjs`,
     docxPath: args.docx,
-    expectedCount: 30,
+    expectedCount,
   });
   await validateReviewManifest({
     date: reviewDate,
     seedPath: `scripts/daily-ziwei-${reviewDate}-seed.mjs`,
     manifestPath: args["review-manifest"] || `docs/article-reviews/${reviewDate}-review-manifest.json`,
     sourcePath,
-    expectedCount: 30,
+    expectedCount,
   });
   useCommittedArticleSnapshot = productionRoot;
 }

@@ -1,8 +1,11 @@
 import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { pathToFileURL } from "node:url";
 import {
   dailyArticleSourceText,
+  articleReviewHash,
+  reviewBatchHash,
   validateDailyArticleSourceText,
   validateReviewManifestData,
 } from "./validate-daily-article-reviews.mjs";
@@ -25,6 +28,39 @@ const valid = validateReviewManifestData({
 });
 assert.equal(valid.articleCount, 30);
 assert.equal(valid.reviewerCount, 5);
+
+const tenArticles = articles.slice(0, 10);
+const tenBatchHash = reviewBatchHash(tenArticles);
+const tenSourceHash = createHash("sha256").update(dailyArticleSourceText(date, tenArticles), "utf8").digest("hex");
+const tenManifest = structuredClone(manifest);
+tenManifest.articleCount = 10;
+tenManifest.batchHash = tenBatchHash;
+tenManifest.sourceHash = tenSourceHash;
+tenManifest.articles = tenManifest.articles.slice(0, 10);
+for (const reviewer of tenManifest.reviewers) {
+  reviewer.articleCount = 10;
+  reviewer.batchHash = tenBatchHash;
+  reviewer.sourceHash = tenSourceHash;
+}
+const tenReportTexts = Object.fromEntries(tenManifest.reviewers.map((reviewer) => [
+  reviewer.report,
+  [
+    `Reviewer-ID: \`${reviewer.id}\``,
+    `Batch-Hash: \`${tenBatchHash}\``,
+    `Source-Hash: \`${tenSourceHash}\``,
+    ...tenArticles.map((article) => `| ${String(article.order).padStart(2, "0")} | ${article.slug} | ${articleReviewHash(article)} | PASS |`),
+  ].join("\n"),
+]));
+const validTen = validateReviewManifestData({
+  date,
+  seedPath,
+  articles: tenArticles,
+  manifest: tenManifest,
+  reportTexts: tenReportTexts,
+  expectedCount: 10,
+});
+assert.equal(validTen.articleCount, 10);
+assert.equal(validTen.reviewerCount, 5);
 
 const sourceText = readFileSync("docs/ziwei-daily-2026-08-01-source.md", "utf8");
 assert.equal(sourceText, dailyArticleSourceText(date, articles));

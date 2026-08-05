@@ -17,13 +17,14 @@ if (-not (Test-Path -LiteralPath $queuePath -PathType Leaf)) {
 $queueText = Get-Content -LiteralPath $queuePath -Encoding utf8 -Raw
 $escapedDate = [regex]::Escape($Date)
 $matches = [regex]::Matches($queueText, "(?m)^(\d{2})\.\s+$escapedDate\s+(\d{2}:\d{2})\s+-")
-if ($matches.Count -ne 30) {
-    throw "Expected exactly 30 release times for $Date, found $($matches.Count)"
+$articleCount = $matches.Count
+if ($articleCount -lt 10 -or $articleCount -gt 30) {
+    throw "Expected 10-30 release times for $Date, found $articleCount"
 }
 
 $orders = $matches | ForEach-Object { [int]$_.Groups[1].Value }
-if (($orders | Sort-Object -Unique).Count -ne 30 -or ($orders | Measure-Object -Minimum -Maximum).Minimum -ne 1 -or ($orders | Measure-Object -Minimum -Maximum).Maximum -ne 30) {
-    throw 'Queue orders must be unique and cover 01 through 30'
+if (($orders | Sort-Object -Unique).Count -ne $articleCount -or ($orders | Measure-Object -Minimum -Maximum).Minimum -ne 1 -or ($orders | Measure-Object -Minimum -Maximum).Maximum -ne $articleCount) {
+    throw "Queue orders must be unique and cover 01 through $('{0:D2}' -f $articleCount)"
 }
 
 $now = Get-Date
@@ -60,6 +61,17 @@ foreach ($task in $oldTasks) {
     }
 }
 
+$desiredTaskNames = [Collections.Generic.HashSet[string]]::new([StringComparer]::OrdinalIgnoreCase)
+$slots | ForEach-Object { [void]$desiredTaskNames.Add("$taskPrefix$dateKey-$('{0:D2}' -f $_.Order)") }
+$staleSameDateTasks = Get-ScheduledTask -TaskName "$taskPrefix$dateKey-*" -ErrorAction SilentlyContinue | Where-Object {
+    -not $desiredTaskNames.Contains($_.TaskName)
+}
+foreach ($task in $staleSameDateTasks) {
+    if ($PSCmdlet.ShouldProcess($task.TaskName, 'Remove release task outside the current batch size')) {
+        Unregister-ScheduledTask -TaskName $task.TaskName -Confirm:$false
+    }
+}
+
 foreach ($slot in $slots) {
     $orderText = '{0:D2}' -f $slot.Order
     $taskName = "$taskPrefix$dateKey-$orderText"
@@ -73,8 +85,8 @@ foreach ($slot in $slots) {
 
 if (-not $WhatIfPreference) {
     $registered = @(Get-ScheduledTask -TaskName "$taskPrefix$dateKey-*" -ErrorAction Stop)
-    if ($registered.Count -ne 30) {
-        throw "Expected 30 registered tasks, found $($registered.Count)"
+    if ($registered.Count -ne $articleCount) {
+        throw "Expected $articleCount registered tasks, found $($registered.Count)"
     }
-    Write-Output "Registered 30 hidden article release tasks for $Date."
+    Write-Output "Registered $articleCount hidden article release tasks for $Date."
 }

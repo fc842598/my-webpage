@@ -3,6 +3,7 @@ import { pathToFileURL } from "node:url";
 import { writeFile } from "node:fs/promises";
 import { dailyArticleSourceText, validateReviewManifest } from "./validate-daily-article-reviews.mjs";
 import { validateSeedBatch } from "./validate-daily-ziwei-seed.mjs";
+import { assertProductionBatchSize, validateProductionSchedule } from "./daily-article-batch-policy.mjs";
 
 function fail(message) {
   console.error(message);
@@ -23,7 +24,7 @@ function parseArgs(argv) {
   return args;
 }
 
-function parseTimes(input) {
+function parseTimes(input, production) {
   if (!input) fail("Missing --times");
   const times = input.split(",").map((item) => item.trim()).filter(Boolean);
   if (!times.length) fail("No publish times found");
@@ -34,12 +35,7 @@ function parseTimes(input) {
   if (unique.size !== times.length) fail("Publish times must be unique");
   const sorted = [...times].sort();
   if (sorted.join(",") !== times.join(",")) fail("Publish times must already be sorted");
-  const buckets = [0, 0, 0, 0, 0, 0];
-  for (const time of times) {
-    const hour = Number(time.slice(0, 2));
-    buckets[Math.floor(hour / 4)] += 1;
-  }
-  if (times.length === 30 && buckets.some((count) => count < 4)) fail("Each four-hour bucket needs at least 4 publish times");
+  if (production) validateProductionSchedule(times);
   return times;
 }
 
@@ -71,18 +67,23 @@ ${rows}
 const args = parseArgs(process.argv.slice(2));
 const seedArg = args.seed;
 const date = args.date;
-const expectedCount = Number(args["expected-count"] || 30);
 const testMode = args["test-mode"] === "true";
 
 if (!seedArg) fail("Missing --seed");
 if (!date || !/^\d{4}-\d{2}-\d{2}$/.test(date)) fail("Missing or invalid --date");
 if (!args.docx) fail("Missing --docx; the source document is required for the quality gate");
-if (expectedCount !== 30 && !testMode) fail("Non-30 batches require --test-mode true and must never be used for production publishing");
-if (expectedCount === 30 && testMode) fail("A 30-article production batch cannot use --test-mode true");
-
 const seedPath = path.resolve(seedArg);
 const { articles } = await import(`${pathToFileURL(seedPath).href}?t=${Date.now()}`);
 if (!Array.isArray(articles) || !articles.length) fail("Seed file did not export articles");
+const expectedCount = Number(args["expected-count"] || articles.length);
+if (testMode && expectedCount >= 10) fail("Test mode is restricted to batches smaller than the 10-article production minimum");
+if (!testMode) {
+  try {
+    assertProductionBatchSize(expectedCount);
+  } catch (error) {
+    fail(error.message);
+  }
+}
 
 await validateSeedBatch({
   seedPath,
@@ -102,7 +103,8 @@ if (!testMode) {
 }
 
 const ordered = [...articles].sort((a, b) => a.order - b.order);
-const times = parseTimes(args.times);
+if (ordered.some((article, index) => article.order !== index + 1)) fail("Article orders must be sequential from 1 through the batch size");
+const times = parseTimes(args.times, !testMode);
 if (times.length !== ordered.length) fail(`Need ${ordered.length} publish times, got ${times.length}`);
 
 const sourcePath = path.resolve(args.source || `docs/ziwei-daily-${date}-source.md`);

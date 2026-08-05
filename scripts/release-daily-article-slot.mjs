@@ -2,8 +2,10 @@ import { closeSync, existsSync, openSync, readFileSync, unlinkSync, writeFileSyn
 import { spawnSync } from "node:child_process";
 import path from "node:path";
 import process from "node:process";
+import { pathToFileURL } from "node:url";
 import { validateReviewManifest } from "./validate-daily-article-reviews.mjs";
 import { validateDailyArticleQualityAtRelease } from "./validate-daily-ziwei-seed.mjs";
+import { assertProductionBatchSize } from "./daily-article-batch-policy.mjs";
 
 const ROOT = process.cwd();
 const SITE = "https://yuetianai.com";
@@ -193,21 +195,28 @@ async function main() {
   const sourcePath = `docs/ziwei-daily-${date}-source.md`;
   if (!existsSync(queuePath) || !existsSync(sourcePath)) fail(`Missing source or queue for ${date}`);
   const seedPath = `scripts/daily-ziwei-${date}-seed.mjs`;
+  const { articles } = await import(`${pathToFileURL(path.resolve(seedPath)).href}?release=${Date.now()}`);
+  if (!Array.isArray(articles)) fail("Seed file must export an articles array");
+  const expectedCount = assertProductionBatchSize(articles.length);
+  const numericOrder = Number(order);
+  if (numericOrder < 1 || numericOrder > expectedCount) fail(`Order ${order} is outside this ${expectedCount}-article batch`);
   const qualityGate = await validateDailyArticleQualityAtRelease({
     date,
     seedPath,
     docxPath: args.docx,
-    expectedCount: 30,
+    expectedCount,
   });
   const reviewGate = await validateReviewManifest({
     date,
     seedPath,
     manifestPath: `docs/article-reviews/${date}-review-manifest.json`,
     sourcePath,
-    expectedCount: 30,
+    expectedCount,
   });
 
   let queue = readFileSync(queuePath, "utf8");
+  const queueCount = [...queue.matchAll(/^\|\s*\d{2}\s*\|/gm)].length;
+  if (queueCount !== expectedCount) fail(`Queue has ${queueCount} rows but the reviewed batch has ${expectedCount} articles`);
   const slot = parseSlot(queue, date, order);
   const paths = managedPaths(date, slot.slug, slot.category);
   const topicHub = topicHubForCategory(slot.category);
@@ -266,7 +275,7 @@ async function main() {
     const allowed = new Set(paths);
     const unexpected = staged.filter((file) => !allowed.has(file.replace(/\\/g, "/")));
     if (unexpected.length) fail(`Unexpected staged files:\n${unexpected.join("\n")}`);
-    git(["commit", "-m", `Publish Ziwei article ${date} ${publishTime} (${order}/30)`]);
+    git(["commit", "-m", `Publish Ziwei article ${date} ${publishTime} (${order}/${expectedCount})`]);
     git(["push", "origin", "master"]);
     git(["fetch", "origin", "master", "--quiet"]);
     const head = git(["rev-parse", "HEAD"]).stdout.trim();

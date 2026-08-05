@@ -32,6 +32,8 @@ for (const file of [
 ]) {
   const source = readFileSync(file, "utf8");
   assert.match(source, /validateDailyArticleQualityAtRelease\s*\(/, `${file} must enforce release-time quality validation`);
+  assert.match(source, /assertProductionBatchSize/, `${file} must enforce the 10-30 production batch policy`);
+  assert.doesNotMatch(source, /expectedCount:\s*30/, `${file} must not force every production batch to 30 articles`);
 }
 
 console.log("Daily article release quality gate tests passed.");

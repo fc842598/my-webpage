@@ -4,6 +4,7 @@ import process from "node:process";
 import { pathToFileURL } from "node:url";
 import { validateReviewManifest } from "./validate-daily-article-reviews.mjs";
 import { validateDailyArticleQualityAtRelease } from "./validate-daily-ziwei-seed.mjs";
+import { assertProductionBatchSize, validateProductionSchedule } from "./daily-article-batch-policy.mjs";
 
 function fail(message) {
   throw new Error(message);
@@ -35,21 +36,25 @@ if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) fail("Use --date YYYY-MM-DD");
 
 const seedPath = path.resolve(args.seed || `scripts/daily-ziwei-${date}-seed.mjs`);
 const { articles } = await import(`${pathToFileURL(seedPath).href}?t=${Date.now()}`);
-if (!Array.isArray(articles) || articles.length !== 30) fail(`Expected 30 seed articles, got ${articles?.length || 0}`);
+if (!Array.isArray(articles)) fail("Seed file must export an articles array");
+const expectedCount = assertProductionBatchSize(args["expected-count"] || articles.length);
+if (articles.length !== expectedCount) fail(`Expected ${expectedCount} seed articles, got ${articles.length}`);
+const ordered = [...articles].sort((left, right) => left.order - right.order);
+if (ordered.some((article, index) => article.order !== index + 1)) fail("Article orders must be sequential from 1 through the batch size");
 const queuePath = args.queue || `docs/ziwei-daily-${date}-queue.md`;
 const sourcePath = args.source || `docs/ziwei-daily-${date}-source.md`;
 const qualityGate = await validateDailyArticleQualityAtRelease({
   date,
   seedPath,
   docxPath: args.docx,
-  expectedCount: 30,
+  expectedCount,
 });
 const reviewGate = await validateReviewManifest({
   date,
   seedPath,
   manifestPath: args["review-manifest"] || `docs/article-reviews/${date}-review-manifest.json`,
   sourcePath,
-  expectedCount: 30,
+  expectedCount,
 });
 
 const queue = read(queuePath);
@@ -57,16 +62,9 @@ const source = read(sourcePath);
 const schedulePattern = new RegExp(`^(\\d{2})\\.\\s+${date}\\s+(\\d{2}:\\d{2})\\s+-\\s+(.+)$`, "gm");
 const schedules = [...queue.matchAll(schedulePattern)];
 const rows = [...queue.matchAll(/^\|\s*(\d{2})\s*\|\s*([^|]+)\|\s*([^|]+)\|\s*([^|]+)\|\s*([^|]+)\|$/gm)];
-if (schedules.length !== 30 || rows.length !== 30) fail(`Expected 30 schedule lines and rows, got ${schedules.length}/${rows.length}`);
+if (schedules.length !== expectedCount || rows.length !== expectedCount) fail(`Expected ${expectedCount} schedule lines and rows, got ${schedules.length}/${rows.length}`);
 
-const minutes = schedules.map((match) => Number(match[2].slice(0, 2)) * 60 + Number(match[2].slice(3)));
-if (new Set(minutes).size !== 30) fail("Publish times must be unique");
-if (minutes.some((minute, index) => index > 0 && minute <= minutes[index - 1])) fail("Publish times must be sorted");
-const gaps = minutes.slice(1).map((minute, index) => minute - minutes[index]);
-if (gaps.some((gap) => gap < 10)) fail("Publish slots must be at least 10 minutes apart");
-const buckets = Array(6).fill(0);
-minutes.forEach((minute) => { buckets[Math.floor(minute / 240)] += 1; });
-if (buckets.some((count) => count < 4)) fail(`Each four-hour bucket needs at least 4 slots: ${buckets.join(",")}`);
+const cadence = validateProductionSchedule(schedules.map((match) => match[2]));
 
 const pending = "\u5f85\u53d1\u5e03";
 const collections = [
@@ -80,8 +78,8 @@ const collections = [
 ].map((file) => [file, read(file)]);
 const premature = [];
 
-for (let index = 0; index < articles.length; index += 1) {
-  const article = articles[index];
+for (let index = 0; index < ordered.length; index += 1) {
+  const article = ordered[index];
   const order = String(article.order).padStart(2, "0");
   const schedule = schedules[index];
   const row = rows[index];
@@ -101,16 +99,16 @@ for (let index = 0; index < articles.length; index += 1) {
 if (premature.length) fail(`Future URLs were exposed early: ${premature.slice(0, 5).join(", ")}`);
 console.log(JSON.stringify({
   date,
-  articleCount: 30,
-  scheduleCount: 30,
-  rowCount: 30,
+  articleCount: expectedCount,
+  scheduleCount: expectedCount,
+  rowCount: expectedCount,
   qualityVersion: qualityGate.version,
   qualityPassedCount: qualityGate.passed,
   titleHistorySource: qualityGate.existingTitleSource,
   demandAnchoredCount: qualityGate.demandEvidence?.anchoredCount || 0,
   reviewerCount: reviewGate.reviewerCount,
   reviewBatchHash: reviewGate.batchHash,
-  bucketCounts: buckets,
-  minGapMinutes: Math.min(...gaps),
+  releaseWindowCounts: cadence.windows,
+  minGapMinutes: Math.min(...cadence.gaps),
   prematureCount: 0,
 }, null, 2));
