@@ -21,7 +21,7 @@ Recovery-Mode: true
 |---|---|---|---|---|
 | 01 | 已发布 2026-08-05 18:05 https://yuetianai.com/articles/ziwei-fumu-yanglao-feiyong-shui-chengdan.html / https://yuetianai.com/articles/en/ziwei-fumu-yanglao-feiyong-shui-chengdan.html | ziwei-fumu-yanglao-feiyong-shui-chengdan | 紫微斗数父母养老费用该不该自己全扛：父母、兄弟、财帛和福德四宫分开看 | 宫位组合 |
 | 02 | 已发布 2026-08-05 18:37 https://yuetianai.com/articles/ziwei-liunian-zinv-gong-wuhai-zuopin-xiangmu-xiashu.html / https://yuetianai.com/articles/en/ziwei-liunian-zinv-gong-wuhai-zuopin-xiangmu-xiashu.html | ziwei-liunian-zinv-gong-wuhai-zuopin-xiangmu-xiashu | 紫微斗数流年走子女宫，没有孩子会发生什么：作品、项目和下属怎么分 | 大限流年 |
-| 03 | 待发布 | ziwei-liunian-xiongdigong-shouzu-tongshi-fenzhang | 紫微斗数流年走兄弟宫，是手足有事还是同事分账先动 | 大限流年 |
+| 03 | 已发布 2026-08-05 19:06 https://yuetianai.com/articles/ziwei-liunian-xiongdigong-shouzu-tongshi-fenzhang.html / https://yuetianai.com/articles/en/ziwei-liunian-xiongdigong-shouzu-tongshi-fenzhang.html | ziwei-liunian-xiongdigong-shouzu-tongshi-fenzhang | 紫微斗数流年走兄弟宫，是手足有事还是同事分账先动 | 大限流年 |
 | 04 | 待发布 | ziwei-fuqigong-hualu-caibo-huaquan-ziyuan-zhangqian | 紫微斗数夫妻宫化禄、财帛宫化权：是伴侣带资源，还是自己掌钱 | 四化细读 |
 | 05 | 待发布 | ziwei-liunian-pengyou-tuandui-kehu-xuyue-huanren | 紫微斗数流年走朋友宫，为什么先应在团队换人和客户续约 | 大限流年 |
 | 06 | 待发布 | ziwei-guanlu-huake-qianyi-huaji-jihui-luodi | 紫微斗数官禄宫化科、迁移宫化忌：专业被认可，为什么外部机会仍落不了地 | 四化细读 |
