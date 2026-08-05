@@ -36,4 +36,18 @@ assert.throws(
   /cover morning, afternoon, and evening/,
 );
 
+const recovery = validateProductionSchedule(
+  ["16:40", "17:18", "17:56", "18:34", "19:12", "19:50", "20:28", "21:06", "21:44", "22:22"],
+  { recovery: true },
+);
+assert.equal(recovery.recovery, true);
+assert.ok(recovery.gaps.every((gap) => gap >= 10));
+assert.throws(
+  () => validateProductionSchedule(
+    ["19:00", "19:12", "19:24", "19:36", "19:48", "20:00", "20:12", "20:24", "20:36", "20:48"],
+    { recovery: true },
+  ),
+  /span at least 3 hours/,
+);
+
 console.log("Daily article 10-30 batch policy tests passed.");

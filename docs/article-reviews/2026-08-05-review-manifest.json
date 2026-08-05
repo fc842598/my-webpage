@@ -1,0 +1,123 @@
+{
+  "version": 1,
+  "date": "2026-08-05",
+  "seed": "scripts/daily-ziwei-2026-08-05-seed.mjs",
+  "articleCount": 10,
+  "batchHash": "e2fcaf92e0bbef38b13cb9ddb50b768d3756f3d71011e031bde74d7d40fe02c2",
+  "sourceHash": "3c6605e27b8f155f6e13d46126b0c1891267d98d45e018169a30ab22afa61ece",
+  "reviewedAt": "2026-08-05T17:35:22+08:00",
+  "reviewers": [
+    {
+      "id": "ziwei-logic",
+      "status": "PASS",
+      "articleCount": 10,
+      "batchHash": "e2fcaf92e0bbef38b13cb9ddb50b768d3756f3d71011e031bde74d7d40fe02c2",
+      "sourceHash": "3c6605e27b8f155f6e13d46126b0c1891267d98d45e018169a30ab22afa61ece",
+      "report": "docs/article-reviews/2026-08-05-ziwei-logic-round6.md"
+    },
+    {
+      "id": "human-tone",
+      "status": "PASS",
+      "articleCount": 10,
+      "batchHash": "e2fcaf92e0bbef38b13cb9ddb50b768d3756f3d71011e031bde74d7d40fe02c2",
+      "sourceHash": "3c6605e27b8f155f6e13d46126b0c1891267d98d45e018169a30ab22afa61ece",
+      "report": "docs/article-reviews/2026-08-05-human-tone-round6.md"
+    },
+    {
+      "id": "seo-intent",
+      "status": "PASS",
+      "articleCount": 10,
+      "batchHash": "e2fcaf92e0bbef38b13cb9ddb50b768d3756f3d71011e031bde74d7d40fe02c2",
+      "sourceHash": "3c6605e27b8f155f6e13d46126b0c1891267d98d45e018169a30ab22afa61ece",
+      "report": "docs/article-reviews/2026-08-05-seo-intent-round6.md"
+    },
+    {
+      "id": "english-naturalness",
+      "status": "PASS",
+      "articleCount": 10,
+      "batchHash": "e2fcaf92e0bbef38b13cb9ddb50b768d3756f3d71011e031bde74d7d40fe02c2",
+      "sourceHash": "3c6605e27b8f155f6e13d46126b0c1891267d98d45e018169a30ab22afa61ece",
+      "report": "docs/article-reviews/2026-08-05-english-naturalness-round6.md"
+    },
+    {
+      "id": "reader-value",
+      "status": "PASS",
+      "articleCount": 10,
+      "batchHash": "e2fcaf92e0bbef38b13cb9ddb50b768d3756f3d71011e031bde74d7d40fe02c2",
+      "sourceHash": "3c6605e27b8f155f6e13d46126b0c1891267d98d45e018169a30ab22afa61ece",
+      "report": "docs/article-reviews/2026-08-05-reader-value-round6.md"
+    }
+  ],
+  "articles": [
+    {
+      "order": 1,
+      "slug": "ziwei-fumu-yanglao-feiyong-shui-chengdan",
+      "title": "紫微斗数父母养老费用该不该自己全扛：父母、兄弟、财帛和福德四宫分开看",
+      "contentHash": "f6668f5d27ec7ff51f2307de462eff7a812e77ba8d120794fa77a4fba5a40c27",
+      "reviews": { "ziwei-logic": "PASS", "human-tone": "PASS", "seo-intent": "PASS", "english-naturalness": "PASS", "reader-value": "PASS" }
+    },
+    {
+      "order": 2,
+      "slug": "ziwei-liunian-zinv-gong-wuhai-zuopin-xiangmu-xiashu",
+      "title": "紫微斗数流年走子女宫，没有孩子会发生什么：作品、项目和下属怎么分",
+      "contentHash": "cec88ef3d0c19643c08d88d42609df1706798e6cba12cfa0abc398bc2b3d1bd5",
+      "reviews": { "ziwei-logic": "PASS", "human-tone": "PASS", "seo-intent": "PASS", "english-naturalness": "PASS", "reader-value": "PASS" }
+    },
+    {
+      "order": 3,
+      "slug": "ziwei-liunian-xiongdigong-shouzu-tongshi-fenzhang",
+      "title": "紫微斗数流年走兄弟宫，是手足有事还是同事分账先动",
+      "contentHash": "9df7f37cec6548f8dc4d66e83a75575e9eb07fe4379d1d61d57c947c0d08e27c",
+      "reviews": { "ziwei-logic": "PASS", "human-tone": "PASS", "seo-intent": "PASS", "english-naturalness": "PASS", "reader-value": "PASS" }
+    },
+    {
+      "order": 4,
+      "slug": "ziwei-fuqigong-hualu-caibo-huaquan-ziyuan-zhangqian",
+      "title": "紫微斗数夫妻宫化禄、财帛宫化权：是伴侣带资源，还是自己掌钱",
+      "contentHash": "d12928bb2667ac7a5bb69369b9bdf430d2ce9c8b749c22812a86d7f3e4a0fa85",
+      "reviews": { "ziwei-logic": "PASS", "human-tone": "PASS", "seo-intent": "PASS", "english-naturalness": "PASS", "reader-value": "PASS" }
+    },
+    {
+      "order": 5,
+      "slug": "ziwei-liunian-pengyou-tuandui-kehu-xuyue-huanren",
+      "title": "紫微斗数流年走朋友宫，为什么先应在团队换人和客户续约",
+      "contentHash": "c8c03b63dcd96feb4dc8df8f06c6202409be7c31752764384a020db11f643a4d",
+      "reviews": { "ziwei-logic": "PASS", "human-tone": "PASS", "seo-intent": "PASS", "english-naturalness": "PASS", "reader-value": "PASS" }
+    },
+    {
+      "order": 6,
+      "slug": "ziwei-guanlu-huake-qianyi-huaji-jihui-luodi",
+      "title": "紫微斗数官禄宫化科、迁移宫化忌：专业被认可，为什么外部机会仍落不了地",
+      "contentHash": "4052f10dc0184749b6379d6187b0881114a6e0f69f2548176b72405bc42800bd",
+      "reviews": { "ziwei-logic": "PASS", "human-tone": "PASS", "seo-intent": "PASS", "english-naturalness": "PASS", "reader-value": "PASS" }
+    },
+    {
+      "order": 7,
+      "slug": "ziwei-liunian-guanlu-huake-kaozheng-meishengzhi",
+      "title": "紫微斗数流年走官禄又见化科：考证通过了，为什么还没升职",
+      "contentHash": "1b3da989abca76349b030dddf9d2d9a3068d39c222c47f567f5dfe89e8d914d4",
+      "reviews": { "ziwei-logic": "PASS", "human-tone": "PASS", "seo-intent": "PASS", "english-naturalness": "PASS", "reader-value": "PASS" }
+    },
+    {
+      "order": 8,
+      "slug": "ziwei-pengyougong-huaquan-guanlugong-huake-chengguo-guishu",
+      "title": "紫微斗数朋友宫化权、官禄宫化科：合作方掌项目，专业成果算谁的",
+      "contentHash": "717648f47cbb29dac3c9e06458ec6a55951ac90ca20cf3814f3f0f2974c94e18",
+      "reviews": { "ziwei-logic": "PASS", "human-tone": "PASS", "seo-intent": "PASS", "english-naturalness": "PASS", "reader-value": "PASS" }
+    },
+    {
+      "order": 9,
+      "slug": "ziwei-liunian-tianzhai-zuyue-zhuangxiu-weixiu-maifang",
+      "title": "紫微斗数流年走田宅一定代表买房吗：租约、装修、维修和置业怎么分",
+      "contentHash": "b2d1adca96e58045b68f7ceb74d3c0a10770ec71ca1916b51298d74d21d8c38d",
+      "reviews": { "ziwei-logic": "PASS", "human-tone": "PASS", "seo-intent": "PASS", "english-naturalness": "PASS", "reader-value": "PASS" }
+    },
+    {
+      "order": 10,
+      "slug": "ziwei-liunian-fumu-shangji-shenhe-zhangbei-shiwu",
+      "title": "紫微斗数流年走父母宫，为什么上级审核和长辈事务会一起增加",
+      "contentHash": "aa897f720561769ced0d658ffdc50bd745906ecdb3b02592f1286799e40b63b1",
+      "reviews": { "ziwei-logic": "PASS", "human-tone": "PASS", "seo-intent": "PASS", "english-naturalness": "PASS", "reader-value": "PASS" }
+    }
+  ]
+}

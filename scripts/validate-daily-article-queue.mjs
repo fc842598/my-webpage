@@ -64,7 +64,8 @@ const schedules = [...queue.matchAll(schedulePattern)];
 const rows = [...queue.matchAll(/^\|\s*(\d{2})\s*\|\s*([^|]+)\|\s*([^|]+)\|\s*([^|]+)\|\s*([^|]+)\|$/gm)];
 if (schedules.length !== expectedCount || rows.length !== expectedCount) fail(`Expected ${expectedCount} schedule lines and rows, got ${schedules.length}/${rows.length}`);
 
-const cadence = validateProductionSchedule(schedules.map((match) => match[2]));
+const recovery = /^Recovery-Mode:\s*true\s*$/m.test(queue);
+const cadence = validateProductionSchedule(schedules.map((match) => match[2]), { recovery });
 
 const pending = "\u5f85\u53d1\u5e03";
 const collections = [
@@ -109,6 +110,7 @@ console.log(JSON.stringify({
   reviewerCount: reviewGate.reviewerCount,
   reviewBatchHash: reviewGate.batchHash,
   releaseWindowCounts: cadence.windows,
+  recoveryMode: cadence.recovery,
   minGapMinutes: Math.min(...cadence.gaps),
   prematureCount: 0,
 }, null, 2));

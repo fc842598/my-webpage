@@ -11,7 +11,7 @@ export function assertProductionBatchSize(value, label = "Article batch") {
   return count;
 }
 
-export function validateProductionSchedule(times) {
+export function validateProductionSchedule(times, { recovery = false } = {}) {
   const count = assertProductionBatchSize(times.length, "Production schedule");
   const minutes = times.map((time) => {
     if (!/^(?:[01]\d|2[0-3]):[0-5]\d$/.test(time)) throw new Error(`Invalid release time: ${time}`);
@@ -33,9 +33,15 @@ export function validateProductionSchedule(times) {
     else if (minute < 18 * 60 + 30) windows[1] += 1;
     else windows[2] += 1;
   });
-  const minimumPerWindow = count >= 25 ? 4 : count >= 16 ? 3 : 2;
-  if (windows.some((windowCount) => windowCount < minimumPerWindow)) {
+  const minimumPerWindow = recovery ? 0 : count >= 25 ? 4 : count >= 16 ? 3 : 2;
+  if (!recovery && windows.some((windowCount) => windowCount < minimumPerWindow)) {
     throw new Error(`Release times must cover morning, afternoon, and evening: ${windows.join(",")}`);
   }
-  return { count, minutes, gaps, windows, minimumPerWindow };
+  if (recovery) {
+    const distinctHours = new Set(minutes.map((minute) => Math.floor(minute / 60))).size;
+    if (minutes.at(-1) - minutes[0] < 180 || distinctHours < 4) {
+      throw new Error("Recovery releases must span at least 3 hours and 4 clock hours");
+    }
+  }
+  return { count, minutes, gaps, windows, minimumPerWindow, recovery };
 }

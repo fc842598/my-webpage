@@ -1,0 +1,1748 @@
+{
+  "version": 5,
+  "date": "2026-08-05",
+  "generatedAt": "2026-08-05T09:36:41.389Z",
+  "seed": "scripts\\daily-ziwei-2026-08-05-seed.mjs",
+  "sourceDocument": "【视频同步文稿】倪海厦-天纪_Password_Removed(1) (1).docx",
+  "existingTitleSource": "working-tree",
+  "paragraphCount": 4303,
+  "structuredHistory": {
+    "scannedSourceCount": 11,
+    "sourceCount": 4,
+    "articleCount": 120,
+    "sources": [
+      {
+        "file": "scripts\\daily-ziwei-2026-07-31-seed.mjs",
+        "date": "2026-07-31",
+        "articleCount": 30
+      },
+      {
+        "file": "scripts\\daily-ziwei-2026-08-01-seed.mjs",
+        "date": "2026-08-01",
+        "articleCount": 30
+      },
+      {
+        "file": "scripts\\daily-ziwei-2026-08-02-seed.mjs",
+        "date": "2026-08-02",
+        "articleCount": 30
+      },
+      {
+        "file": "docs\\ziwei-daily-2026-07-30-seed.mjs",
+        "date": "2026-07-30",
+        "articleCount": 30
+      }
+    ]
+  },
+  "demandEvidence": {
+    "required": true,
+    "requiredFrom": "2026-08-02",
+    "performanceReport": "docs\\article-performance-2026-08-05.json",
+    "performanceReportAvailable": true,
+    "performanceReportVersion": 3,
+    "performanceReportGeneratedAt": "2026-08-05T07:43:09.743Z",
+    "performanceReportSource": "live-admin-api",
+    "searchConsoleOk": true,
+    "ga4Ok": true,
+    "signalCount": 13,
+    "requiredAnchors": 8,
+    "anchoredCount": 10
+  },
+  "expectedCount": 10,
+  "articleCount": 10,
+  "passed": 10,
+  "failed": 0,
+  "batchFailures": [],
+  "articles": [
+    {
+      "order": 1,
+      "slug": "ziwei-fumu-yanglao-feiyong-shui-chengdan",
+      "title": "紫微斗数父母养老费用该不该自己全扛：父母、兄弟、财帛和福德四宫分开看",
+      "score": 100,
+      "pass": true,
+      "failures": [],
+      "warnings": [],
+      "intentReview": {
+        "nearestHistory": {
+          "slug": "ziwei-fumu-chushoufu-maifang-shui-zuozhu",
+          "title": "紫微斗数父母帮出首付，买房后谁做主：父母宫化权、田宅宫与财帛宫怎么分",
+          "source": "scripts\\daily-ziwei-2026-08-01-seed.mjs",
+          "date": "2026-08-01",
+          "questionSimilarity": 0.015,
+          "coreIntentSimilarity": 0.068,
+          "answerPathSimilarity": 0.071,
+          "score": 0.069,
+          "duplicate": false
+        },
+        "nearestBatch": {
+          "slug": "ziwei-fuqigong-hualu-caibo-huaquan-ziyuan-zhangqian",
+          "title": "紫微斗数夫妻宫化禄、财帛宫化权：是伴侣带资源，还是自己掌钱",
+          "source": "scripts\\daily-ziwei-2026-08-05-seed.mjs",
+          "date": "2026-08-05",
+          "questionSimilarity": 0,
+          "coreIntentSimilarity": 0.06,
+          "answerPathSimilarity": 0.047,
+          "score": 0.054,
+          "duplicate": false
+        },
+        "historyDuplicateCount": 0,
+        "batchDuplicateCount": 0
+      },
+      "evidence": {
+        "ranges": [
+          "553-580",
+          "565-569",
+          "378-387",
+          "1796-1805"
+        ],
+        "paragraphCount": 53,
+        "domainOverlap": [
+          "财帛",
+          "福德",
+          "父母",
+          "兄弟",
+          "化禄",
+          "化权",
+          "化忌"
+        ],
+        "claimCoverage": [
+          0.152,
+          0.156,
+          0.103,
+          0.114
+        ],
+        "binding": {
+          "thresholds": {
+            "pointCoverage": 0.05,
+            "exampleCoverage": 0.05,
+            "minimumUsedRanges": 2
+          },
+          "usedRanges": [
+            "553-580",
+            "1796-1805"
+          ],
+          "usedRangeCount": 2,
+          "pointMatches": [
+            {
+              "claim": "父母宫见化禄可先查长辈已有收入或资源，见化权则要保留长辈对照护方式的决定空间，不能把出钱等同于全权做主。",
+              "range": "553-580",
+              "coverage": 0.152
+            },
+            {
+              "claim": "兄弟宫反映手足之间的责任协调；出现化忌时，分工更需要书面确认，不能默认收入较高或住得近的人永久包办。",
+              "range": "1796-1805",
+              "coverage": 0.089
+            },
+            {
+              "claim": "财帛宫只回答本人当下与持续能付多少，养老需求再明确，也应先扣除基本生活、负债与必要储备。",
+              "range": "1796-1805",
+              "coverage": 0.077
+            },
+            {
+              "claim": "福德宫说明长期照护对内在生活的耗力程度；见化忌时应设置预算与复盘点，而不是断言家庭必然出现困难。",
+              "range": "1796-1805",
+              "coverage": 0.068
+            }
+          ],
+          "exampleMatches": [
+            {
+              "claim": "例子一：兄弟宫化忌，自己的财帛宫又偏弱；不宜先把全部费用接下，应把陪诊、采购、联络和出资分别写给每位手足。",
+              "range": "1796-1805",
+              "coverage": 0.111
+            },
+            {
+              "claim": "例子二：父母宫见化禄、化权，财帛宫稳定，福德宫却化忌；可以承担照护，但应先用长辈资源并尊重其决定，再给自己的月度照护预算设上限。",
+              "range": "553-580",
+              "coverage": 0.167
+            }
+          ]
+        },
+        "longestCopyRuns": [
+          3,
+          3,
+          3,
+          3,
+          5,
+          3
+        ],
+        "excerpts": [
+          {
+            "number": 553,
+            "text": "所谓四化，有科、权、禄、忌。这个科权禄忌外面有很多派，有的在那里飞，每年都飞来飞去，诸位不需要，我们教诸位排出来以后，就永远固定在宫上不要动，比如你武曲化禄，固定好你就不要动了。不需要你每年四化都在不同的位置，这个都不对的。我们每年呢，是流年在动，星都不动，千万不要受外面今年飞明年飞来飞去那种的影响。越弄越复杂。其实没有那么复杂。"
+          },
+          {
+            "number": 554,
+            "text": "介绍科权禄忌的时候，各位要晓得，这四个星代表的意义是什么,他的星性最重要。"
+          },
+          {
+            "number": 555,
+            "text": "科："
+          },
+          {
+            "number": 556,
+            "text": "第一，主科名，比如我们去参加考试，金榜题名，这是一个科，还有，我们文章写的很好，文笔很好，也是科，还有呢，画画很好，才艺出众，才艺超人，也是科。还有呢，我当老师，也是科，那到底是哪一种，那到时候我们整体批的时候来讲，我现在只是介绍科的意义而已。那这是科名。"
+          },
+          {
+            "number": 557,
+            "text": "第二个，这个科代表名气很大。为什么?有的人呢，他的命宫里面就有科，有的人到54-63岁晚年才有科。不是说他54-63岁读书，而是说这个时候他声名远播。他声名远播可能每天做善事，做好事，或做了一个很大的事情，声名远"
+          },
+          {
+            "number": 558,
+            "text": "播,之前是默默无闻的,有的人呢是到了90-100多岁才有科,代表他死了以后才有科。对啊,这就是命啊,"
+          },
+          {
+            "number": 559,
+            "text": "这是我们排八字看出来有科,那你知道他人身上看上去就有科呢?怎么看,第一个,我们在手掌上面,我画肥一点,男人有这种手太好。"
+          },
+          {
+            "number": 560,
+            "text": "你看他手上有道纹一直通天,这条叫天柱纹,一路通天,天柱纹的人呢,主的就是科,才艺。所以过去看到很多有名的画家,音乐家,像毕加索,他们手上一定有这条线,没有这条线就徒具其名了,手上有这条线的,就是主科!外面有些书上写这里是有个博士眼啊,有的人拿到博士是空的,不拿到还好,拿到之后从此变成笨蛋,他以为他就什么都懂了,会有这种人的。中国人讲的是这条天柱纹，主科甲，手上可以看到，看的最清楚。"
+          }
+        ]
+      },
+      "english": {
+        "wordCount": 580,
+        "sectionCount": 4,
+        "exampleCount": 2
+      },
+      "demand": {
+        "required": true,
+        "present": true,
+        "pass": true,
+        "anchored": true,
+        "confidence": "adjacent",
+        "sourceType": "site-performance",
+        "reference": "/articles/ziwei-fumugong-wuqu-pojun-hualu.html",
+        "query": "紫微斗数父母养老费用是不是该自己全扛"
+      }
+    },
+    {
+      "order": 2,
+      "slug": "ziwei-liunian-zinv-gong-wuhai-zuopin-xiangmu-xiashu",
+      "title": "紫微斗数流年走子女宫，没有孩子会发生什么：作品、项目和下属怎么分",
+      "score": 100,
+      "pass": true,
+      "failures": [],
+      "warnings": [],
+      "intentReview": {
+        "nearestHistory": {
+          "slug": "ziwei-liunian-guanxigong-shijian-guishu",
+          "title": "紫微斗数流年走到父母、夫妻、朋友宫时，事情一定发生在别人身上吗",
+          "source": "scripts\\daily-ziwei-2026-08-01-seed.mjs",
+          "date": "2026-08-01",
+          "questionSimilarity": 0.107,
+          "coreIntentSimilarity": 0.05,
+          "answerPathSimilarity": 0.06,
+          "score": 0.084,
+          "duplicate": false
+        },
+        "nearestBatch": {
+          "slug": "ziwei-liunian-guanlu-huake-kaozheng-meishengzhi",
+          "title": "紫微斗数流年走官禄又见化科：考证通过了，为什么还没升职",
+          "source": "scripts\\daily-ziwei-2026-08-05-seed.mjs",
+          "date": "2026-08-05",
+          "questionSimilarity": 0.102,
+          "coreIntentSimilarity": 0.019,
+          "answerPathSimilarity": 0.047,
+          "score": 0.075,
+          "duplicate": false
+        },
+        "historyDuplicateCount": 0,
+        "batchDuplicateCount": 0
+      },
+      "evidence": {
+        "ranges": [
+          "358-365",
+          "414",
+          "801",
+          "837-840",
+          "1084",
+          "1381-1387"
+        ],
+        "paragraphCount": 22,
+        "domainOverlap": [
+          "命宫",
+          "官禄",
+          "子女",
+          "化科",
+          "化忌",
+          "三方四正",
+          "流年",
+          "文昌",
+          "文曲"
+        ],
+        "claimCoverage": [
+          0.209,
+          0.128,
+          0.167,
+          0.164,
+          0.275
+        ],
+        "binding": {
+          "thresholds": {
+            "pointCoverage": 0.05,
+            "exampleCoverage": 0.05,
+            "minimumUsedRanges": 2
+          },
+          "usedRanges": [
+            "1381-1387",
+            "837-840",
+            "801",
+            "358-365"
+          ],
+          "usedRangeCount": 4,
+          "pointMatches": [
+            {
+              "claim": "流年命宫走到本命子女宫，只是启动该宫主题；应读取本命原有星曜、四化和三方四正，不能把星曜写成每年飞入。",
+              "range": "1381-1387",
+              "coverage": 0.186
+            },
+            {
+              "claim": "没有孩子时，子女宫可转查本人延伸出去的作品、项目成果与带教责任，但真实生育或子女情况不能由这一年单独决定。",
+              "range": "1381-1387",
+              "coverage": 0.085
+            },
+            {
+              "claim": "子女宫见文昌、文曲或化科时，作品、课程、报告和产品文档更值得优先核对；文昌化忌则要查退件、错漏和重做。",
+              "range": "837-840",
+              "coverage": 0.119
+            },
+            {
+              "claim": "子女宫属于有人的宫，先分清主语是孩子、学生、作品还是带教对象；若落在工作项目，再用官禄宫的事业职责与验收记录承接，若落在下属，再用朋友或仆役宫核对入组和交接。",
+              "range": "801",
+              "coverage": 0.104
+            },
+            {
+              "claim": "子女宫为空不等于无事，要借对宫并看三方四正；煞忌表示阻力位置，不能直接推成无子或必然失败。",
+              "range": "1381-1387",
+              "coverage": 0.2
+            }
+          ],
+          "exampleMatches": [
+            {
+              "claim": "例子一：流年命宫走到本命子女宫，宫内文昌、文曲会化科，本人没有孩子；现实可先核对论文、课程、设计稿或产品说明是否进入提交与发布期。",
+              "range": "837-840",
+              "coverage": 0.125
+            },
+            {
+              "claim": "例子二：流年命宫走到本命子女宫，子女宫为空，对宫田宅见化忌，官禄线又有明确验收节点；事件较可能落在场地、设备或资产手续拖慢项目交付，而不是凭空断成子女问题。",
+              "range": "358-365",
+              "coverage": 0.106
+            },
+            {
+              "claim": "例子三：流年命宫走到本命子女宫，宫内文昌化忌，现实又正逢新人入组；若朋友或仆役宫也受煞忌牵动，先查培训文件、交接清单和反复退回的报告，较像带教与沟通卡住。",
+              "range": "358-365",
+              "coverage": 0.074
+            }
+          ]
+        },
+        "longestCopyRuns": [
+          4,
+          3,
+          4,
+          4,
+          5,
+          4,
+          6,
+          3
+        ],
+        "excerpts": [
+          {
+            "number": 358,
+            "text": "宫也有宫性，这个怎么讲，现在很多人算命，有个大问题，他们没有看到我们的流年，一般人算命，批流年的时候，他不去看什么宫，我们斗数有十二个宫，他不去看哪一个宫，他只看那一年是哪些星，就帮你论出来，其实宫有宫性。也就是说，今年你的流年，刚好落在财帛宫里面，代表今年你的阻力在财帛上，你的流年刚好落在迁移宫上面，就代表你的驿马星会动，很多人算命呢，都要看到天马星，才动，不晓得进入迁移宫，他就会动，这个宫有宫性。诸位刚刚进入，我们慢慢由浅入深。"
+          },
+          {
+            "number": 359,
+            "text": "我们斗数上面，我画个命盘给大家看，我们一共有十二个宫，子丑寅卯辰巳午为申酉戌亥，他是利用十二个地支排起来的。一个地支代表2个小时，所以一天二十四小时，那这是时辰定出来的东西，后面还有一个很重要的意义，我们在举例会讲出来。我们后面有很多一大堆的八字给大家看。"
+          },
+          {
+            "number": 360,
+            "text": "举例，如果说一个人的命宫在巳这里，那我们斗数看的时候，一定是看三方四正。"
+          },
+          {
+            "number": 361,
+            "text": "为什么叫三方，四正。"
+          },
+          {
+            "number": 362,
+            "text": "各位想象一个，一个在巳这里，站在这里，手电筒拿着，一照，光芒只能照到三方这边，我就讲完了。"
+          },
+          {
+            "number": 363,
+            "text": "这三个宫，叫三方。把本宫算进去就叫四正。"
+          },
+          {
+            "number": 364,
+            "text": "如果你的命宫在卯里，那一定先看对面酉，然后看亥未，这叫三方，如果我们现在有程序排起来很快，一下就排满了。"
+          },
+          {
+            "number": 365,
+            "text": "如果命宫在巳，那从下面辰开始，就是兄弟宫，夫妻宫，子女宫，财帛，疾"
+          }
+        ]
+      },
+      "english": {
+        "wordCount": 613,
+        "sectionCount": 4,
+        "exampleCount": 3
+      },
+      "demand": {
+        "required": true,
+        "present": true,
+        "pass": true,
+        "anchored": true,
+        "confidence": "adjacent",
+        "sourceType": "site-performance",
+        "reference": "/articles/ziwei-liunian-qianyi.html",
+        "query": "紫微斗数流年走子女宫没有孩子会发生什么"
+      }
+    },
+    {
+      "order": 3,
+      "slug": "ziwei-liunian-xiongdigong-shouzu-tongshi-fenzhang",
+      "title": "紫微斗数流年走兄弟宫，是手足有事还是同事分账先动",
+      "score": 100,
+      "pass": true,
+      "failures": [],
+      "warnings": [],
+      "intentReview": {
+        "nearestHistory": {
+          "slug": "ziwei-liunian-guanxigong-shijian-guishu",
+          "title": "紫微斗数流年走到父母、夫妻、朋友宫时，事情一定发生在别人身上吗",
+          "source": "scripts\\daily-ziwei-2026-08-01-seed.mjs",
+          "date": "2026-08-01",
+          "questionSimilarity": 0.032,
+          "coreIntentSimilarity": 0.179,
+          "answerPathSimilarity": 0.081,
+          "score": 0.13,
+          "duplicate": false
+        },
+        "nearestBatch": {
+          "slug": "ziwei-liunian-zinv-gong-wuhai-zuopin-xiangmu-xiashu",
+          "title": "紫微斗数流年走子女宫，没有孩子会发生什么：作品、项目和下属怎么分",
+          "source": "scripts\\daily-ziwei-2026-08-05-seed.mjs",
+          "date": "2026-08-05",
+          "questionSimilarity": 0.069,
+          "coreIntentSimilarity": 0.078,
+          "answerPathSimilarity": 0.055,
+          "score": 0.074,
+          "duplicate": false
+        },
+        "historyDuplicateCount": 0,
+        "batchDuplicateCount": 0
+      },
+      "evidence": {
+        "ranges": [
+          "358-365",
+          "378-387",
+          "801",
+          "1081",
+          "1381-1385"
+        ],
+        "paragraphCount": 25,
+        "domainOverlap": [
+          "命宫",
+          "朋友",
+          "兄弟",
+          "化权",
+          "化忌",
+          "流年",
+          "武曲",
+          "巨门"
+        ],
+        "claimCoverage": [
+          0.163,
+          0.132,
+          0.196,
+          0.143
+        ],
+        "binding": {
+          "thresholds": {
+            "pointCoverage": 0.05,
+            "exampleCoverage": 0.05,
+            "minimumUsedRanges": 2
+          },
+          "usedRanges": [
+            "378-387",
+            "358-365",
+            "1081",
+            "1381-1385"
+          ],
+          "usedRangeCount": 4,
+          "pointMatches": [
+            {
+              "claim": "流年命宫走到本命兄弟宫，说明手足、同辈与共享资源较容易成为年度入口，不保证只有亲兄弟姐妹发生事件。",
+              "range": "378-387",
+              "coverage": 0.116
+            },
+            {
+              "claim": "兄弟宫内的星曜与四化先描述对应人物或同辈互动，不能不经核对就全部复制成本人的遭遇。",
+              "range": "358-365",
+              "coverage": 0.105
+            },
+            {
+              "claim": "兄弟宫属于有人的宫，兄弟姐妹或同辈发生的事先归对应人物；只有照护、费用、分账或职责确实回到本人，才继续判断本人怎样承接。",
+              "range": "378-387",
+              "coverage": 0.157
+            },
+            {
+              "claim": "对宫朋友宫若会吉星，外部伙伴与团队较容易协作；若会巨门、擎羊、陀罗、火铃等煞星，则先查合伙沟通、权限和账目，再用现实流水确认本人得失。",
+              "range": "1081",
+              "coverage": 0.143
+            }
+          ],
+          "exampleMatches": [
+            {
+              "claim": "例子一：流年命宫走到本命兄弟宫，该宫原有化忌；姐姐先通知家人要调整陪诊和费用分担，本人随后改排工作并出钱，这时手足状况是入口，本人的时间与现金是后续承接。",
+              "range": "358-365",
+              "coverage": 0.088
+            },
+            {
+              "claim": "例子二：流年命宫走到本命兄弟宫，宫内武曲、对宫朋友宫化权；公司先发出平级团队的奖金重算表，本人随后参与核账，这时同事分账先动，不必在没有消息时推断手足有事。",
+              "range": "1381-1385",
+              "coverage": 0.087
+            },
+            {
+              "claim": "例子三：流年命宫走到本命兄弟宫，兄弟宫化忌、对宫朋友宫又见巨门；月初先收到项目分成争议邮件，月底弟弟才提出共同承担家用，应先处理同事账目，再把手足费用列为后续事件。",
+              "range": "378-387",
+              "coverage": 0.07
+            }
+          ]
+        },
+        "longestCopyRuns": [
+          4,
+          3,
+          4,
+          3,
+          3,
+          3,
+          5
+        ],
+        "excerpts": [
+          {
+            "number": 358,
+            "text": "宫也有宫性，这个怎么讲，现在很多人算命，有个大问题，他们没有看到我们的流年，一般人算命，批流年的时候，他不去看什么宫，我们斗数有十二个宫，他不去看哪一个宫，他只看那一年是哪些星，就帮你论出来，其实宫有宫性。也就是说，今年你的流年，刚好落在财帛宫里面，代表今年你的阻力在财帛上，你的流年刚好落在迁移宫上面，就代表你的驿马星会动，很多人算命呢，都要看到天马星，才动，不晓得进入迁移宫，他就会动，这个宫有宫性。诸位刚刚进入，我们慢慢由浅入深。"
+          },
+          {
+            "number": 359,
+            "text": "我们斗数上面，我画个命盘给大家看，我们一共有十二个宫，子丑寅卯辰巳午为申酉戌亥，他是利用十二个地支排起来的。一个地支代表2个小时，所以一天二十四小时，那这是时辰定出来的东西，后面还有一个很重要的意义，我们在举例会讲出来。我们后面有很多一大堆的八字给大家看。"
+          },
+          {
+            "number": 360,
+            "text": "举例，如果说一个人的命宫在巳这里，那我们斗数看的时候，一定是看三方四正。"
+          },
+          {
+            "number": 361,
+            "text": "为什么叫三方，四正。"
+          },
+          {
+            "number": 362,
+            "text": "各位想象一个，一个在巳这里，站在这里，手电筒拿着，一照，光芒只能照到三方这边，我就讲完了。"
+          },
+          {
+            "number": 363,
+            "text": "这三个宫，叫三方。把本宫算进去就叫四正。"
+          },
+          {
+            "number": 364,
+            "text": "如果你的命宫在卯里，那一定先看对面酉，然后看亥未，这叫三方，如果我们现在有程序排起来很快，一下就排满了。"
+          },
+          {
+            "number": 365,
+            "text": "如果命宫在巳，那从下面辰开始，就是兄弟宫，夫妻宫，子女宫，财帛，疾"
+          }
+        ]
+      },
+      "english": {
+        "wordCount": 614,
+        "sectionCount": 4,
+        "exampleCount": 3
+      },
+      "demand": {
+        "required": true,
+        "present": true,
+        "pass": true,
+        "anchored": true,
+        "confidence": "adjacent",
+        "sourceType": "site-performance",
+        "reference": "/articles/en/triad-and-opposite.html",
+        "query": "紫微斗数流年走兄弟宫是手足有事还是同事分账"
+      }
+    },
+    {
+      "order": 4,
+      "slug": "ziwei-fuqigong-hualu-caibo-huaquan-ziyuan-zhangqian",
+      "title": "紫微斗数夫妻宫化禄、财帛宫化权：是伴侣带资源，还是自己掌钱",
+      "score": 100,
+      "pass": true,
+      "failures": [],
+      "warnings": [],
+      "intentReview": {
+        "nearestHistory": {
+          "slug": "ziwei-jixing-luo-fuqi-fumu-zinv-gong",
+          "title": "紫微斗数吉星落在夫妻、父母或子女宫，算自己的好运还是家人的",
+          "source": "scripts\\daily-ziwei-2026-08-01-seed.mjs",
+          "date": "2026-08-01",
+          "questionSimilarity": 0.155,
+          "coreIntentSimilarity": 0.033,
+          "answerPathSimilarity": 0.072,
+          "score": 0.114,
+          "duplicate": false
+        },
+        "nearestBatch": {
+          "slug": "ziwei-fumu-yanglao-feiyong-shui-chengdan",
+          "title": "紫微斗数父母养老费用该不该自己全扛：父母、兄弟、财帛和福德四宫分开看",
+          "source": "scripts\\daily-ziwei-2026-08-05-seed.mjs",
+          "date": "2026-08-05",
+          "questionSimilarity": 0,
+          "coreIntentSimilarity": 0.06,
+          "answerPathSimilarity": 0.047,
+          "score": 0.054,
+          "duplicate": false
+        },
+        "historyDuplicateCount": 0,
+        "batchDuplicateCount": 0
+      },
+      "evidence": {
+        "ranges": [
+          "553-580",
+          "565-569",
+          "1093-1096",
+          "2091-2092"
+        ],
+        "paragraphCount": 39,
+        "domainOverlap": [
+          "财帛",
+          "夫妻",
+          "化禄",
+          "化权",
+          "三方四正"
+        ],
+        "claimCoverage": [
+          0.114,
+          0.125,
+          0.39,
+          0.15
+        ],
+        "binding": {
+          "thresholds": {
+            "pointCoverage": 0.05,
+            "exampleCoverage": 0.05,
+            "minimumUsedRanges": 2
+          },
+          "usedRanges": [
+            "553-580",
+            "2091-2092",
+            "1093-1096"
+          ],
+          "usedRangeCount": 3,
+          "pointMatches": [
+            {
+              "claim": "夫妻宫化禄把财禄和资源放在伴侣关系线上，可读为对方较能带来客户、渠道或支持，但不直接等于资产赠与。",
+              "range": "553-580",
+              "coverage": 0.114
+            },
+            {
+              "claim": "财帛宫化权强调本人对预算、定价或账户的主导和责任，掌钱与拥有钱必须分开。",
+              "range": "553-580",
+              "coverage": 0.125
+            },
+            {
+              "claim": "财帛宫化权而不见化禄，可能是在私人企业或共同项目中掌权做主管，经手金额大仍不代表个人利润。",
+              "range": "2091-2092",
+              "coverage": 0.293
+            },
+            {
+              "claim": "夫妻宫的资源强弱要连三方四正判断，工资、分红、股权和资金所有权则要回到合同与账户记录确认。",
+              "range": "1093-1096",
+              "coverage": 0.125
+            }
+          ],
+          "exampleMatches": [
+            {
+              "claim": "例子一：夫妻宫化禄、财帛宫化权，伴侣带来客户，本人负责报价和预算；若合同只约定本人领工资、股权仍归伴侣，盘面成立的是关系资源加掌财责任，不是共同拥有全部利润。",
+              "range": "553-580",
+              "coverage": 0.136
+            },
+            {
+              "claim": "例子二：财帛宫化权而不见化禄，夫妻宫及其三方也没有清楚财禄承接，本人可能只是管理公司或伴侣项目的账户；即使每天审批大额支出，也不能把流水算成个人资产。",
+              "range": "553-580",
+              "coverage": 0.235
+            }
+          ]
+        },
+        "longestCopyRuns": [
+          3,
+          3,
+          5,
+          4,
+          3,
+          3
+        ],
+        "excerpts": [
+          {
+            "number": 553,
+            "text": "所谓四化，有科、权、禄、忌。这个科权禄忌外面有很多派，有的在那里飞，每年都飞来飞去，诸位不需要，我们教诸位排出来以后，就永远固定在宫上不要动，比如你武曲化禄，固定好你就不要动了。不需要你每年四化都在不同的位置，这个都不对的。我们每年呢，是流年在动，星都不动，千万不要受外面今年飞明年飞来飞去那种的影响。越弄越复杂。其实没有那么复杂。"
+          },
+          {
+            "number": 554,
+            "text": "介绍科权禄忌的时候，各位要晓得，这四个星代表的意义是什么,他的星性最重要。"
+          },
+          {
+            "number": 555,
+            "text": "科："
+          },
+          {
+            "number": 556,
+            "text": "第一，主科名，比如我们去参加考试，金榜题名，这是一个科，还有，我们文章写的很好，文笔很好，也是科，还有呢，画画很好，才艺出众，才艺超人，也是科。还有呢，我当老师，也是科，那到底是哪一种，那到时候我们整体批的时候来讲，我现在只是介绍科的意义而已。那这是科名。"
+          },
+          {
+            "number": 557,
+            "text": "第二个，这个科代表名气很大。为什么?有的人呢，他的命宫里面就有科，有的人到54-63岁晚年才有科。不是说他54-63岁读书，而是说这个时候他声名远播。他声名远播可能每天做善事，做好事，或做了一个很大的事情，声名远"
+          },
+          {
+            "number": 558,
+            "text": "播,之前是默默无闻的,有的人呢是到了90-100多岁才有科,代表他死了以后才有科。对啊,这就是命啊,"
+          },
+          {
+            "number": 559,
+            "text": "这是我们排八字看出来有科,那你知道他人身上看上去就有科呢?怎么看,第一个,我们在手掌上面,我画肥一点,男人有这种手太好。"
+          },
+          {
+            "number": 560,
+            "text": "你看他手上有道纹一直通天,这条叫天柱纹,一路通天,天柱纹的人呢,主的就是科,才艺。所以过去看到很多有名的画家,音乐家,像毕加索,他们手上一定有这条线,没有这条线就徒具其名了,手上有这条线的,就是主科!外面有些书上写这里是有个博士眼啊,有的人拿到博士是空的,不拿到还好,拿到之后从此变成笨蛋,他以为他就什么都懂了,会有这种人的。中国人讲的是这条天柱纹，主科甲，手上可以看到，看的最清楚。"
+          }
+        ]
+      },
+      "english": {
+        "wordCount": 641,
+        "sectionCount": 4,
+        "exampleCount": 2
+      },
+      "demand": {
+        "required": true,
+        "present": true,
+        "pass": true,
+        "anchored": true,
+        "confidence": "adjacent",
+        "sourceType": "site-performance",
+        "reference": "/articles/ziwei-fuqigong-liantan-luoxian.html",
+        "query": "紫微斗数夫妻宫化禄财帛宫化权是伴侣资源还是自己掌钱"
+      }
+    },
+    {
+      "order": 5,
+      "slug": "ziwei-liunian-pengyou-tuandui-kehu-xuyue-huanren",
+      "title": "紫微斗数流年走朋友宫，为什么先应在团队换人和客户续约",
+      "score": 100,
+      "pass": true,
+      "failures": [],
+      "warnings": [],
+      "intentReview": {
+        "nearestHistory": {
+          "slug": "ziwei-liunian-guanxigong-shijian-guishu",
+          "title": "紫微斗数流年走到父母、夫妻、朋友宫时，事情一定发生在别人身上吗",
+          "source": "scripts\\daily-ziwei-2026-08-01-seed.mjs",
+          "date": "2026-08-01",
+          "questionSimilarity": 0.067,
+          "coreIntentSimilarity": 0.047,
+          "answerPathSimilarity": 0.066,
+          "score": 0.067,
+          "duplicate": false
+        },
+        "nearestBatch": {
+          "slug": "ziwei-liunian-fumu-shangji-shenhe-zhangbei-shiwu",
+          "title": "紫微斗数流年走父母宫，为什么上级审核和长辈事务会一起增加",
+          "source": "scripts\\daily-ziwei-2026-08-05-seed.mjs",
+          "date": "2026-08-05",
+          "questionSimilarity": 0.113,
+          "coreIntentSimilarity": 0.019,
+          "answerPathSimilarity": 0.052,
+          "score": 0.082,
+          "duplicate": false
+        },
+        "historyDuplicateCount": 0,
+        "batchDuplicateCount": 0
+      },
+      "evidence": {
+        "ranges": [
+          "358-365",
+          "553-580",
+          "590-602",
+          "1080-1081",
+          "1381-1385"
+        ],
+        "paragraphCount": 56,
+        "domainOverlap": [
+          "命宫",
+          "朋友",
+          "化禄",
+          "化忌",
+          "流年",
+          "天机",
+          "巨门",
+          "天马"
+        ],
+        "claimCoverage": [
+          0.222,
+          0.114,
+          0.086,
+          0.054
+        ],
+        "binding": {
+          "thresholds": {
+            "pointCoverage": 0.05,
+            "exampleCoverage": 0.05,
+            "minimumUsedRanges": 2
+          },
+          "usedRanges": [
+            "590-602",
+            "1080-1081",
+            "553-580"
+          ],
+          "usedRangeCount": 3,
+          "pointMatches": [
+            {
+              "claim": "流年命宫走到本命朋友宫时，应先观察同事、团队、合作方与客户的协作接口发生什么变化。",
+              "range": "590-602",
+              "coverage": 0.139
+            },
+            {
+              "claim": "天机、天马同见时可留意人员和任务移动，但是否形成换人仍要由通知、名单与排期确认。",
+              "range": "1080-1081",
+              "coverage": 0.086
+            },
+            {
+              "claim": "朋友宫见化禄，化禄主资源；左辅右弼主协助与团队补位，合作是否延续仍以续约合同验证。",
+              "range": "1080-1081",
+              "coverage": 0.057
+            },
+            {
+              "claim": "巨门化忌又见擎羊时更要核对沟通争议和责任边界，宜用纪要、权限表与退出条件降低误解。",
+              "range": "1080-1081",
+              "coverage": 0.054
+            }
+          ],
+          "exampleMatches": [
+            {
+              "claim": "例子一：流年命宫走到本命朋友宫，原有天机、天马，客户方更换负责人，项目又转为跨城协作；先把联系人、审批人、交付物和截止日重写进交接清单，不只凭口头说照旧。",
+              "range": "1080-1081",
+              "coverage": 0.076
+            },
+            {
+              "claim": "例子二：流年命宫走到本命朋友宫，朋友宫化禄主合作资源，左辅右弼主团队协助与补位；老客户提出续约，仍以续约合同确认合作范围、验收人与期限。",
+              "range": "553-580",
+              "coverage": 0.054
+            },
+            {
+              "claim": "例子三：流年命宫走到本命朋友宫，原有巨门化忌又见擎羊，团队换人后报价与责任边界反复争议；适合先做限定周期的续约，保留会议纪要和退出条件，不急着扩大授权。",
+              "range": "1080-1081",
+              "coverage": 0.059
+            }
+          ]
+        },
+        "longestCopyRuns": [
+          3,
+          4,
+          3,
+          2,
+          4,
+          3,
+          3
+        ],
+        "excerpts": [
+          {
+            "number": 358,
+            "text": "宫也有宫性，这个怎么讲，现在很多人算命，有个大问题，他们没有看到我们的流年，一般人算命，批流年的时候，他不去看什么宫，我们斗数有十二个宫，他不去看哪一个宫，他只看那一年是哪些星，就帮你论出来，其实宫有宫性。也就是说，今年你的流年，刚好落在财帛宫里面，代表今年你的阻力在财帛上，你的流年刚好落在迁移宫上面，就代表你的驿马星会动，很多人算命呢，都要看到天马星，才动，不晓得进入迁移宫，他就会动，这个宫有宫性。诸位刚刚进入，我们慢慢由浅入深。"
+          },
+          {
+            "number": 359,
+            "text": "我们斗数上面，我画个命盘给大家看，我们一共有十二个宫，子丑寅卯辰巳午为申酉戌亥，他是利用十二个地支排起来的。一个地支代表2个小时，所以一天二十四小时，那这是时辰定出来的东西，后面还有一个很重要的意义，我们在举例会讲出来。我们后面有很多一大堆的八字给大家看。"
+          },
+          {
+            "number": 360,
+            "text": "举例，如果说一个人的命宫在巳这里，那我们斗数看的时候，一定是看三方四正。"
+          },
+          {
+            "number": 361,
+            "text": "为什么叫三方，四正。"
+          },
+          {
+            "number": 362,
+            "text": "各位想象一个，一个在巳这里，站在这里，手电筒拿着，一照，光芒只能照到三方这边，我就讲完了。"
+          },
+          {
+            "number": 363,
+            "text": "这三个宫，叫三方。把本宫算进去就叫四正。"
+          },
+          {
+            "number": 364,
+            "text": "如果你的命宫在卯里，那一定先看对面酉，然后看亥未，这叫三方，如果我们现在有程序排起来很快，一下就排满了。"
+          },
+          {
+            "number": 365,
+            "text": "如果命宫在巳，那从下面辰开始，就是兄弟宫，夫妻宫，子女宫，财帛，疾"
+          }
+        ]
+      },
+      "english": {
+        "wordCount": 568,
+        "sectionCount": 4,
+        "exampleCount": 3
+      },
+      "demand": {
+        "required": true,
+        "present": true,
+        "pass": true,
+        "anchored": true,
+        "confidence": "adjacent",
+        "sourceType": "site-performance",
+        "reference": "/articles/ziwei-liunian-qianyi.html",
+        "query": "紫微斗数流年走朋友宫为什么先应在团队换人和客户续约"
+      }
+    },
+    {
+      "order": 6,
+      "slug": "ziwei-guanlu-huake-qianyi-huaji-jihui-luodi",
+      "title": "紫微斗数官禄宫化科、迁移宫化忌：专业被认可，为什么外部机会仍落不了地",
+      "score": 100,
+      "pass": true,
+      "failures": [],
+      "warnings": [],
+      "intentReview": {
+        "nearestHistory": {
+          "slug": "ziwei-shinian-yunhao-dannian-kazhu",
+          "title": "紫微斗数十年运很好，为什么某一年仍会卡住：大限定背景，流年决定具体落点",
+          "source": "scripts\\daily-ziwei-2026-07-31-seed.mjs",
+          "date": "2026-07-31",
+          "questionSimilarity": 0.056,
+          "coreIntentSimilarity": 0.1,
+          "answerPathSimilarity": 0.035,
+          "score": 0.078,
+          "duplicate": false
+        },
+        "nearestBatch": {
+          "slug": "ziwei-liunian-guanlu-huake-kaozheng-meishengzhi",
+          "title": "紫微斗数流年走官禄又见化科：考证通过了，为什么还没升职",
+          "source": "scripts\\daily-ziwei-2026-08-05-seed.mjs",
+          "date": "2026-08-05",
+          "questionSimilarity": 0.122,
+          "coreIntentSimilarity": 0.038,
+          "answerPathSimilarity": 0.043,
+          "score": 0.083,
+          "duplicate": false
+        },
+        "historyDuplicateCount": 0,
+        "batchDuplicateCount": 0
+      },
+      "evidence": {
+        "ranges": [
+          "590-602",
+          "864-877",
+          "1040-1051",
+          "1044-1047"
+        ],
+        "paragraphCount": 43,
+        "domainOverlap": [
+          "官禄",
+          "迁移",
+          "化科",
+          "化忌",
+          "大限"
+        ],
+        "claimCoverage": [
+          0.25,
+          0.103,
+          0.186,
+          0.071
+        ],
+        "binding": {
+          "thresholds": {
+            "pointCoverage": 0.05,
+            "exampleCoverage": 0.05,
+            "minimumUsedRanges": 2
+          },
+          "usedRanges": [
+            "1040-1051",
+            "590-602",
+            "864-877"
+          ],
+          "usedRangeCount": 3,
+          "pointMatches": [
+            {
+              "claim": "化科主科名、专业、才艺与名声，落官禄宫时应先看资格、考试和组织中的专业角色是否被承认。",
+              "range": "1040-1051",
+              "coverage": 0.222
+            },
+            {
+              "claim": "化忌代表阻力与反复，落迁移宫时可把外部程序、平台规则、异地许可和合作准入列为优先检查项。",
+              "range": "590-602",
+              "coverage": 0.077
+            },
+            {
+              "claim": "官禄宫化科与迁移宫化忌分别描述能力成立和外部卡点，科不会把忌抵消，忌也不会否定已经取得的专业资格。",
+              "range": "1040-1051",
+              "coverage": 0.163
+            },
+            {
+              "claim": "大限以十年为阶段背景，可用来观察迁移阻力是否持续，但具体能否开工仍须核对许可、合同和准入记录。",
+              "range": "864-877",
+              "coverage": 0.071
+            }
+          ],
+          "exampleMatches": [
+            {
+              "claim": "例子一：官禄宫化科，化科主考试与专业专长，资格考试已经通过；迁移宫化忌把阻力落在外部，海外雇主虽认可能力，仍因签证或执照转移未完成而延期开工。此时应追踪许可，不必重考有效证书。",
+              "range": "1040-1051",
+              "coverage": 0.173
+            },
+            {
+              "claim": "例子二：官禄宫化科，化科主专业与名声，作品和评价已经成立；迁移宫化忌使外部准入反复，平台账户、合同或客户审核未完成。若同类阻力在大限阶段持续，先建备用路径；只有账户启用、合同生效和开工日明确才算落地。",
+              "range": "1040-1051",
+              "coverage": 0.071
+            }
+          ]
+        },
+        "longestCopyRuns": [
+          3,
+          4,
+          3,
+          2,
+          4,
+          2
+        ],
+        "excerpts": [
+          {
+            "number": 590,
+            "text": "下面我们介绍化忌。第一个,化忌代表劫杀 ;第二个化忌代表想不开 ;我用最浅的名词来解释最深的东西,劫杀中间有意外横祸官司纠纷破财啦都在属于化忌,还有一种个性上面想不开,所以化忌的人,长的这个样子,脸很大,但是五官挤在一起,皱在一起。这种人一辈子想不开。"
+          },
+          {
+            "number": 591,
+            "text": "所以你看最好的相,大官,财禄事业有成的人,把眉毛打开来,你再仔细看,从今天以后,你们去看那个新闻报告,出来讲话的,你注意看哦,有的人,高到什么样子, 比如说脸在这边,发髻,眼睛在这里,注意看,他的耳朵比眼高,第二个,他的眉毛刚好在额头和眼睛之间,非常的高,这种人非富即贵。"
+          },
+          {
+            "number": 592,
+            "text": "那我们为什么要去看相,知道这个人是这个样子,因为这种人本来就想得开,他大开大合,做事情有担当,有魄力。"
+          },
+          {
+            "number": 593,
+            "text": "那上面那样挤在一起的,就是一辈子想不开,那这种人,永远是化忌的,我们算命不是要去检讨别人,要检讨自己,我们帮自己看命要检讨自己,帮别人看,要找到他问题在哪里,去掉。"
+          },
+          {
+            "number": 594,
+            "text": "你要告诉他想开,那他想不开,他的念就不对,他的念头就影响到他的做法,做法就影响到命了。"
+          },
+          {
+            "number": 595,
+            "text": "所以什么思想,诸位不要乱想,胡思乱想,任何做事情的办法就是学而后思,不学光在这里乱想,是不对的。这是化忌。"
+          },
+          {
+            "number": 596,
+            "text": "流年遇上化忌,本身他自己想不开,举例, 比如说,有个人在22-31岁他非常的好,32-41化忌,不好,那么就看他的时候,为什么不好,他32岁到41岁,眼睛会皱在一起,他就是因为大学毕业出来,到社会上过得太舒服了,太顺利了,他自我得意,他觉得我应该怎么样,结果你觉得应该,人家不应该,人家"
+          },
+          {
+            "number": 597,
+            "text": "不给你啊，好，当你心里想要什么的时候，当你欲望越强的时候，遭遇的反弹心越大，因为社会上不见得每个人都是君子，小人很多。旁边看到你，看你做的动作，看你志得意满的样子，你想要求什么,他事先就开始攻击你，害到自己，就是该轮到的时候轮不到，那这是我们人事上的说法，往往我们在跟一个人讲话的时候，他当时听懂了，回家出去马上就忘掉了，他没有悟，没有想通，为什么我们要调整阳宅，我们把他位置住对了，他自然而言就会想通，他就知道我们易经讲的戒之初，戒胜。"
+          }
+        ]
+      },
+      "english": {
+        "wordCount": 660,
+        "sectionCount": 4,
+        "exampleCount": 2
+      },
+      "demand": {
+        "required": true,
+        "present": true,
+        "pass": true,
+        "anchored": true,
+        "confidence": "adjacent",
+        "sourceType": "site-performance",
+        "reference": "/articles/en/triad-and-opposite.html",
+        "query": "紫微斗数官禄宫化科迁移宫化忌为什么专业被认可机会仍落不了地"
+      }
+    },
+    {
+      "order": 7,
+      "slug": "ziwei-liunian-guanlu-huake-kaozheng-meishengzhi",
+      "title": "紫微斗数流年走官禄又见化科：考证通过了，为什么还没升职",
+      "score": 100,
+      "pass": true,
+      "failures": [],
+      "warnings": [],
+      "intentReview": {
+        "nearestHistory": {
+          "slug": "ziwei-liunian-jixiang-xianyou-jihui-houyou-jieguo",
+          "title": "紫微斗数流年已经出现机会，为什么还没落实：从面试、申请、合同看到款",
+          "source": "scripts\\daily-ziwei-2026-08-01-seed.mjs",
+          "date": "2026-08-01",
+          "questionSimilarity": 0.137,
+          "coreIntentSimilarity": 0.054,
+          "answerPathSimilarity": 0.081,
+          "score": 0.109,
+          "duplicate": false
+        },
+        "nearestBatch": {
+          "slug": "ziwei-guanlu-huake-qianyi-huaji-jihui-luodi",
+          "title": "紫微斗数官禄宫化科、迁移宫化忌：专业被认可，为什么外部机会仍落不了地",
+          "source": "scripts\\daily-ziwei-2026-08-05-seed.mjs",
+          "date": "2026-08-05",
+          "questionSimilarity": 0.122,
+          "coreIntentSimilarity": 0.038,
+          "answerPathSimilarity": 0.043,
+          "score": 0.083,
+          "duplicate": false
+        },
+        "historyDuplicateCount": 0,
+        "batchDuplicateCount": 0
+      },
+      "evidence": {
+        "ranges": [
+          "358-365",
+          "553-580",
+          "1044-1047",
+          "1378-1380"
+        ],
+        "paragraphCount": 43,
+        "domainOverlap": [
+          "命宫",
+          "官禄",
+          "化权",
+          "化科",
+          "流年"
+        ],
+        "claimCoverage": [
+          0.2,
+          0.15,
+          0.179,
+          0.056
+        ],
+        "binding": {
+          "thresholds": {
+            "pointCoverage": 0.05,
+            "exampleCoverage": 0.05,
+            "minimumUsedRanges": 2
+          },
+          "usedRanges": [
+            "553-580",
+            "1044-1047"
+          ],
+          "usedRangeCount": 2,
+          "pointMatches": [
+            {
+              "claim": "流年命宫走到本命官禄宫，优先激活职位、职责与组织评价，不代表职级一定在当年改变。",
+              "range": "553-580",
+              "coverage": 0.143
+            },
+            {
+              "claim": "官禄宫原有化科时，较直接的表现是考试通过、专业能力被看见或取得名声，认可本身可以先于升职。",
+              "range": "1044-1047",
+              "coverage": 0.1
+            },
+            {
+              "claim": "化科而没有化权承接时，较像资格成立或专业路线推进，不能据此推定已经获得带人与拍板权限。",
+              "range": "1044-1047",
+              "coverage": 0.128
+            },
+            {
+              "claim": "升职是否落实仍要核对岗位空缺、用人预算与正式任命，三项缺一时都可能停在认可阶段。",
+              "range": "553-580",
+              "coverage": 0.056
+            }
+          ],
+          "exampleMatches": [
+            {
+              "claim": "例子一：流年命宫走到本命官禄宫，该宫原有化科，员工通过专业考试却没有空缺职位；证书已经兑现，升职仍要等编制与预算。",
+              "range": "1044-1047",
+              "coverage": 0.14
+            },
+            {
+              "claim": "例子二：本命官禄宫原有化科并会化权，流年命宫走到该宫后先拿到证书，再被正式指定为项目负责人；这才是认可继续转成职责。",
+              "range": "553-580",
+              "coverage": 0.115
+            }
+          ]
+        },
+        "longestCopyRuns": [
+          2,
+          2,
+          4,
+          2,
+          2,
+          2
+        ],
+        "excerpts": [
+          {
+            "number": 358,
+            "text": "宫也有宫性，这个怎么讲，现在很多人算命，有个大问题，他们没有看到我们的流年，一般人算命，批流年的时候，他不去看什么宫，我们斗数有十二个宫，他不去看哪一个宫，他只看那一年是哪些星，就帮你论出来，其实宫有宫性。也就是说，今年你的流年，刚好落在财帛宫里面，代表今年你的阻力在财帛上，你的流年刚好落在迁移宫上面，就代表你的驿马星会动，很多人算命呢，都要看到天马星，才动，不晓得进入迁移宫，他就会动，这个宫有宫性。诸位刚刚进入，我们慢慢由浅入深。"
+          },
+          {
+            "number": 359,
+            "text": "我们斗数上面，我画个命盘给大家看，我们一共有十二个宫，子丑寅卯辰巳午为申酉戌亥，他是利用十二个地支排起来的。一个地支代表2个小时，所以一天二十四小时，那这是时辰定出来的东西，后面还有一个很重要的意义，我们在举例会讲出来。我们后面有很多一大堆的八字给大家看。"
+          },
+          {
+            "number": 360,
+            "text": "举例，如果说一个人的命宫在巳这里，那我们斗数看的时候，一定是看三方四正。"
+          },
+          {
+            "number": 361,
+            "text": "为什么叫三方，四正。"
+          },
+          {
+            "number": 362,
+            "text": "各位想象一个，一个在巳这里，站在这里，手电筒拿着，一照，光芒只能照到三方这边，我就讲完了。"
+          },
+          {
+            "number": 363,
+            "text": "这三个宫，叫三方。把本宫算进去就叫四正。"
+          },
+          {
+            "number": 364,
+            "text": "如果你的命宫在卯里，那一定先看对面酉，然后看亥未，这叫三方，如果我们现在有程序排起来很快，一下就排满了。"
+          },
+          {
+            "number": 365,
+            "text": "如果命宫在巳，那从下面辰开始，就是兄弟宫，夫妻宫，子女宫，财帛，疾"
+          }
+        ]
+      },
+      "english": {
+        "wordCount": 609,
+        "sectionCount": 4,
+        "exampleCount": 2
+      },
+      "demand": {
+        "required": true,
+        "present": true,
+        "pass": true,
+        "anchored": true,
+        "confidence": "adjacent",
+        "sourceType": "site-performance",
+        "reference": "/articles/ziwei-minggong-huaquan-lingdao.html",
+        "query": "紫微斗数流年走官禄见化科考证通过为什么还没升职"
+      }
+    },
+    {
+      "order": 8,
+      "slug": "ziwei-pengyougong-huaquan-guanlugong-huake-chengguo-guishu",
+      "title": "紫微斗数朋友宫化权、官禄宫化科：合作方掌项目，专业成果算谁的",
+      "score": 100,
+      "pass": true,
+      "failures": [],
+      "warnings": [],
+      "intentReview": {
+        "nearestHistory": {
+          "slug": "ziwei-huake-caibo-guanlu-zhuanye-shoufei-zhiwei",
+          "title": "紫微斗数化科落财帛和落官禄有什么不同：专业收费与资格职位分开看",
+          "source": "scripts\\daily-ziwei-2026-07-31-seed.mjs",
+          "date": "2026-07-31",
+          "questionSimilarity": 0.066,
+          "coreIntentSimilarity": 0.061,
+          "answerPathSimilarity": 0.051,
+          "score": 0.063,
+          "duplicate": false
+        },
+        "nearestBatch": {
+          "slug": "ziwei-guanlu-huake-qianyi-huaji-jihui-luodi",
+          "title": "紫微斗数官禄宫化科、迁移宫化忌：专业被认可，为什么外部机会仍落不了地",
+          "source": "scripts\\daily-ziwei-2026-08-05-seed.mjs",
+          "date": "2026-08-05",
+          "questionSimilarity": 0.079,
+          "coreIntentSimilarity": 0.054,
+          "answerPathSimilarity": 0.04,
+          "score": 0.066,
+          "duplicate": false
+        },
+        "historyDuplicateCount": 0,
+        "batchDuplicateCount": 0
+      },
+      "evidence": {
+        "ranges": [
+          "553-580",
+          "1032-1047",
+          "1080-1081",
+          "2091-2092"
+        ],
+        "paragraphCount": 48,
+        "domainOverlap": [
+          "财帛",
+          "官禄",
+          "朋友",
+          "化禄",
+          "化权",
+          "化科"
+        ],
+        "claimCoverage": [
+          0.14,
+          0.179,
+          0.107,
+          0.152,
+          0.059
+        ],
+        "binding": {
+          "thresholds": {
+            "pointCoverage": 0.05,
+            "exampleCoverage": 0.05,
+            "minimumUsedRanges": 2
+          },
+          "usedRanges": [
+            "1032-1047",
+            "553-580"
+          ],
+          "usedRangeCount": 2,
+          "pointMatches": [
+            {
+              "claim": "朋友宫化权较容易把客户沟通、排期、修改要求和交付审批放到合作方手里，但项目控制不等于成果所有权。",
+              "range": "1032-1047",
+              "coverage": 0.093
+            },
+            {
+              "claim": "官禄宫化科强调专业、文章、教学或技术成果被看见，口碑可归本人，却不自动产生署名条款和收入。",
+              "range": "1032-1047",
+              "coverage": 0.128
+            },
+            {
+              "claim": "作者、审批人、授权方和收款方是四个不同角色，必须在交付前分别确认。",
+              "range": "553-580",
+              "coverage": 0.071
+            },
+            {
+              "claim": "财帛见权而不见禄时，可能有工作控制或专业责任，却缺少本人可保留的收益路径。",
+              "range": "553-580",
+              "coverage": 0.152
+            },
+            {
+              "claim": "财帛见禄也只增加收入承接条件，最终仍以服务费、授权费、分账记录和实际到账验证。",
+              "range": "1032-1047",
+              "coverage": 0.059
+            }
+          ],
+          "exampleMatches": [
+            {
+              "claim": "例子一：朋友宫化权、官禄宫化科，合作方掌客户沟通和项目排期，本人完成研究报告；合同把作者与审批人分列，交付签字不再等于成果署名。",
+              "range": "1032-1047",
+              "coverage": 0.109
+            },
+            {
+              "claim": "例子二：朋友宫化权、官禄宫化科，财帛又见权而不见禄，本人口碑上升，客户款却都进伙伴账户；改成固定服务费加书面授权费，并约定对账与付款日。",
+              "range": "1032-1047",
+              "coverage": 0.103
+            },
+            {
+              "claim": "例子三：朋友宫化权、官禄宫化科，财帛再见化禄，平台负责销售排期，本人保留课程署名并按每期收授权费；即使有禄，也以发票、分账单和实际到账确认收益。",
+              "range": "1032-1047",
+              "coverage": 0.098
+            }
+          ]
+        },
+        "longestCopyRuns": [
+          3,
+          3,
+          2,
+          2,
+          2,
+          3,
+          3,
+          3
+        ],
+        "excerpts": [
+          {
+            "number": 553,
+            "text": "所谓四化，有科、权、禄、忌。这个科权禄忌外面有很多派，有的在那里飞，每年都飞来飞去，诸位不需要，我们教诸位排出来以后，就永远固定在宫上不要动，比如你武曲化禄，固定好你就不要动了。不需要你每年四化都在不同的位置，这个都不对的。我们每年呢，是流年在动，星都不动，千万不要受外面今年飞明年飞来飞去那种的影响。越弄越复杂。其实没有那么复杂。"
+          },
+          {
+            "number": 554,
+            "text": "介绍科权禄忌的时候，各位要晓得，这四个星代表的意义是什么,他的星性最重要。"
+          },
+          {
+            "number": 555,
+            "text": "科："
+          },
+          {
+            "number": 556,
+            "text": "第一，主科名，比如我们去参加考试，金榜题名，这是一个科，还有，我们文章写的很好，文笔很好，也是科，还有呢，画画很好，才艺出众，才艺超人，也是科。还有呢，我当老师，也是科，那到底是哪一种，那到时候我们整体批的时候来讲，我现在只是介绍科的意义而已。那这是科名。"
+          },
+          {
+            "number": 557,
+            "text": "第二个，这个科代表名气很大。为什么?有的人呢，他的命宫里面就有科，有的人到54-63岁晚年才有科。不是说他54-63岁读书，而是说这个时候他声名远播。他声名远播可能每天做善事，做好事，或做了一个很大的事情，声名远"
+          },
+          {
+            "number": 558,
+            "text": "播,之前是默默无闻的,有的人呢是到了90-100多岁才有科,代表他死了以后才有科。对啊,这就是命啊,"
+          },
+          {
+            "number": 559,
+            "text": "这是我们排八字看出来有科,那你知道他人身上看上去就有科呢?怎么看,第一个,我们在手掌上面,我画肥一点,男人有这种手太好。"
+          },
+          {
+            "number": 560,
+            "text": "你看他手上有道纹一直通天,这条叫天柱纹,一路通天,天柱纹的人呢,主的就是科,才艺。所以过去看到很多有名的画家,音乐家,像毕加索,他们手上一定有这条线,没有这条线就徒具其名了,手上有这条线的,就是主科!外面有些书上写这里是有个博士眼啊,有的人拿到博士是空的,不拿到还好,拿到之后从此变成笨蛋,他以为他就什么都懂了,会有这种人的。中国人讲的是这条天柱纹，主科甲，手上可以看到，看的最清楚。"
+          }
+        ]
+      },
+      "english": {
+        "wordCount": 572,
+        "sectionCount": 4,
+        "exampleCount": 3
+      },
+      "demand": {
+        "required": true,
+        "present": true,
+        "pass": true,
+        "anchored": true,
+        "confidence": "adjacent",
+        "sourceType": "site-performance",
+        "reference": "/articles/ziwei-minggong-huaquan-lingdao.html",
+        "query": "紫微斗数朋友宫化权官禄宫化科合作成果署名授权收入怎么算"
+      }
+    },
+    {
+      "order": 9,
+      "slug": "ziwei-liunian-tianzhai-zuyue-zhuangxiu-weixiu-maifang",
+      "title": "紫微斗数流年走田宅一定代表买房吗：租约、装修、维修和置业怎么分",
+      "score": 100,
+      "pass": true,
+      "failures": [],
+      "warnings": [],
+      "intentReview": {
+        "nearestHistory": {
+          "slug": "ziwei-tianzhai-caixing-jicheng-haishi-ziji-zhiye-20260802",
+          "title": "紫微斗数田宅宫有财星，是继承房产还是自己置业：先看来源再看能不能守住",
+          "source": "scripts\\daily-ziwei-2026-08-02-seed.mjs",
+          "date": "2026-08-02",
+          "questionSimilarity": 0.059,
+          "coreIntentSimilarity": 0.08,
+          "answerPathSimilarity": 0.088,
+          "score": 0.084,
+          "duplicate": false
+        },
+        "nearestBatch": {
+          "slug": "ziwei-liunian-zinv-gong-wuhai-zuopin-xiangmu-xiashu",
+          "title": "紫微斗数流年走子女宫，没有孩子会发生什么：作品、项目和下属怎么分",
+          "source": "scripts\\daily-ziwei-2026-08-05-seed.mjs",
+          "date": "2026-08-05",
+          "questionSimilarity": 0.069,
+          "coreIntentSimilarity": 0.063,
+          "answerPathSimilarity": 0.063,
+          "score": 0.066,
+          "duplicate": false
+        },
+        "historyDuplicateCount": 0,
+        "batchDuplicateCount": 0
+      },
+      "evidence": {
+        "ranges": [
+          "358-365",
+          "475-477",
+          "825",
+          "2113-2116"
+        ],
+        "paragraphCount": 16,
+        "domainOverlap": [
+          "命宫",
+          "财帛",
+          "父母",
+          "田宅",
+          "流年",
+          "武曲",
+          "火星"
+        ],
+        "claimCoverage": [
+          0.153,
+          0.125,
+          0.143,
+          0.091
+        ],
+        "binding": {
+          "thresholds": {
+            "pointCoverage": 0.05,
+            "exampleCoverage": 0.05,
+            "minimumUsedRanges": 2
+          },
+          "usedRanges": [
+            "358-365",
+            "2113-2116",
+            "825"
+          ],
+          "usedRangeCount": 3,
+          "pointMatches": [
+            {
+              "claim": "流年命宫走到本命田宅宫，先读取田宅原有宫性与星曜，年度主题是住房和资产被启动；续租、搬动、装修、维修与购房都是可能落点，不能只取买房一种。",
+              "range": "358-365",
+              "coverage": 0.068
+            },
+            {
+              "claim": "田宅宫要区分祖业、自置房产与住房持有风险；流年命宫走到本命田宅宫时，租约变化、维修或房屋风险先应事，也可算田宅被启动，不必等到实际购房。",
+              "range": "2113-2116",
+              "coverage": 0.071
+            },
+            {
+              "claim": "流年田宅被启动，田宅武曲又会化科、化禄时，估价、融资与产权程序较容易推进；仍须财帛宫有稳定收入、备用金和月供空间，才具备购买承接力。",
+              "range": "358-365",
+              "coverage": 0.089
+            },
+            {
+              "claim": "田宅显示资产机会后，要用财帛宫判断本人能否付款，再用父母宫判断家庭资助与文书来源；赠与、借款或共同投入必须和产权归属分别确认。",
+              "range": "825",
+              "coverage": 0.055
+            }
+          ],
+          "exampleMatches": [
+            {
+              "claim": "例子一：流年命宫走到本命田宅宫，田宅原有火星，现实先出现电路跳闸、漏水或墙面返修并影响续租；这已是田宅应事，不必硬解释成当年买房。",
+              "range": "2113-2116",
+              "coverage": 0.055
+            },
+            {
+              "claim": "例子二：流年命宫走到本命田宅宫，田宅武曲会化科、化禄，财帛宫收入、备用金与月供空间稳定，才较可能从看房推进到贷款审核和产权登记。",
+              "range": "2113-2116",
+              "coverage": 0.091
+            },
+            {
+              "claim": "例子三：流年田宅有武曲会科禄的资产机会，但财帛现金流偏紧、父母宫资助仍未分清赠与或借款，现实可先停在预审、续租或小修。",
+              "range": "2113-2116",
+              "coverage": 0.096
+            }
+          ]
+        },
+        "longestCopyRuns": [
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3
+        ],
+        "excerpts": [
+          {
+            "number": 358,
+            "text": "宫也有宫性，这个怎么讲，现在很多人算命，有个大问题，他们没有看到我们的流年，一般人算命，批流年的时候，他不去看什么宫，我们斗数有十二个宫，他不去看哪一个宫，他只看那一年是哪些星，就帮你论出来，其实宫有宫性。也就是说，今年你的流年，刚好落在财帛宫里面，代表今年你的阻力在财帛上，你的流年刚好落在迁移宫上面，就代表你的驿马星会动，很多人算命呢，都要看到天马星，才动，不晓得进入迁移宫，他就会动，这个宫有宫性。诸位刚刚进入，我们慢慢由浅入深。"
+          },
+          {
+            "number": 359,
+            "text": "我们斗数上面，我画个命盘给大家看，我们一共有十二个宫，子丑寅卯辰巳午为申酉戌亥，他是利用十二个地支排起来的。一个地支代表2个小时，所以一天二十四小时，那这是时辰定出来的东西，后面还有一个很重要的意义，我们在举例会讲出来。我们后面有很多一大堆的八字给大家看。"
+          },
+          {
+            "number": 360,
+            "text": "举例，如果说一个人的命宫在巳这里，那我们斗数看的时候，一定是看三方四正。"
+          },
+          {
+            "number": 361,
+            "text": "为什么叫三方，四正。"
+          },
+          {
+            "number": 362,
+            "text": "各位想象一个，一个在巳这里，站在这里，手电筒拿着，一照，光芒只能照到三方这边，我就讲完了。"
+          },
+          {
+            "number": 363,
+            "text": "这三个宫，叫三方。把本宫算进去就叫四正。"
+          },
+          {
+            "number": 364,
+            "text": "如果你的命宫在卯里，那一定先看对面酉，然后看亥未，这叫三方，如果我们现在有程序排起来很快，一下就排满了。"
+          },
+          {
+            "number": 365,
+            "text": "如果命宫在巳，那从下面辰开始，就是兄弟宫，夫妻宫，子女宫，财帛，疾"
+          }
+        ]
+      },
+      "english": {
+        "wordCount": 539,
+        "sectionCount": 4,
+        "exampleCount": 3
+      },
+      "demand": {
+        "required": true,
+        "present": true,
+        "pass": true,
+        "anchored": true,
+        "confidence": "adjacent",
+        "sourceType": "site-performance",
+        "reference": "/articles/ziwei-fumugong-wuqu-pojun-hualu.html",
+        "query": "紫微斗数流年走田宅一定代表买房吗"
+      }
+    },
+    {
+      "order": 10,
+      "slug": "ziwei-liunian-fumu-shangji-shenhe-zhangbei-shiwu",
+      "title": "紫微斗数流年走父母宫，为什么上级审核和长辈事务会一起增加",
+      "score": 100,
+      "pass": true,
+      "failures": [],
+      "warnings": [],
+      "intentReview": {
+        "nearestHistory": {
+          "slug": "ziwei-liunian-fumugong-zhangbei-fangzi-shouxu",
+          "title": "紫微斗数流年走到父母宫，是长辈有事还是房子手续先动",
+          "source": "scripts\\daily-ziwei-2026-08-02-seed.mjs",
+          "date": "2026-08-02",
+          "questionSimilarity": 0.13,
+          "coreIntentSimilarity": 0.147,
+          "answerPathSimilarity": 0.064,
+          "score": 0.138,
+          "duplicate": false
+        },
+        "nearestBatch": {
+          "slug": "ziwei-liunian-pengyou-tuandui-kehu-xuyue-huanren",
+          "title": "紫微斗数流年走朋友宫，为什么先应在团队换人和客户续约",
+          "source": "scripts\\daily-ziwei-2026-08-05-seed.mjs",
+          "date": "2026-08-05",
+          "questionSimilarity": 0.113,
+          "coreIntentSimilarity": 0.019,
+          "answerPathSimilarity": 0.052,
+          "score": 0.082,
+          "duplicate": false
+        },
+        "historyDuplicateCount": 0,
+        "batchDuplicateCount": 0
+      },
+      "evidence": {
+        "ranges": [
+          "358-365",
+          "378-387",
+          "553-580",
+          "1032-1047",
+          "1268-1269"
+        ],
+        "paragraphCount": 64,
+        "domainOverlap": [
+          "命宫",
+          "官禄",
+          "父母",
+          "兄弟",
+          "四化",
+          "化禄",
+          "化权",
+          "化科",
+          "化忌",
+          "三方四正",
+          "流年"
+        ],
+        "claimCoverage": [
+          0.122,
+          0.31,
+          0.238,
+          0.22,
+          0.293
+        ],
+        "binding": {
+          "thresholds": {
+            "pointCoverage": 0.05,
+            "exampleCoverage": 0.05,
+            "minimumUsedRanges": 2
+          },
+          "usedRanges": [
+            "553-580",
+            "1032-1047"
+          ],
+          "usedRangeCount": 2,
+          "pointMatches": [
+            {
+              "claim": "流年命宫走到本命父母宫，先读取父母宫原有星曜与四化，年度入口可同时涉及长辈、上级、审核与文书关系。",
+              "range": "553-580",
+              "coverage": 0.122
+            },
+            {
+              "claim": "同一颗化权或化禄落在父母宫时，主语先归父母、长辈或有审核权的人，不能直接复制成本人的职位和收入。",
+              "range": "553-580",
+              "coverage": 0.262
+            },
+            {
+              "claim": "父母宫化权、官禄宫化科时，应优先核对主管复核、专业项目、考试资格与批准流程，而不是笼统断成长辈强势。",
+              "range": "1032-1047",
+              "coverage": 0.167
+            },
+            {
+              "claim": "父母宫化禄、兄弟宫化忌时，长辈可能有养老金、保险或照护资源，但手足执行仍可能反复，资源和分工不能合并。",
+              "range": "553-580",
+              "coverage": 0.122
+            },
+            {
+              "claim": "流年命宫启动本命父母宫后，官禄宫与兄弟宫不是父母宫的三方四正，而是按具体问题额外核对：官禄看专业与上级审核，兄弟看手足怎样执行长辈事务。",
+              "range": "1032-1047",
+              "coverage": 0.138
+            }
+          ],
+          "exampleMatches": [
+            {
+              "claim": "例子一：流年命宫走到本命父母宫，父母宫化权、官禄宫化科；公司要求上级复核专业项目或资格材料，先以审核意见、补件清单和批准日期确认工作线，不把化权直接断成长辈强势。",
+              "range": "1032-1047",
+              "coverage": 0.103
+            },
+            {
+              "claim": "例子二：流年命宫走到本命父母宫，父母宫化禄、兄弟宫化忌；长辈有养老金、保险或照护资源，但手足在陪诊、采购和联络上反复改分工，应把资源与执行责任分开记录。",
+              "range": "553-580",
+              "coverage": 0.081
+            },
+            {
+              "claim": "例子三：流年命宫启动本命父母宫，月初收到主管要求补交证照，月底母亲又安排复诊；两件事都真实发生时，分别保存审核邮件和检查单，并按日期、责任人和完成状态跟进，不必强选唯一应事。",
+              "range": "553-580",
+              "coverage": 0.065
+            }
+          ]
+        },
+        "longestCopyRuns": [
+          3,
+          4,
+          3,
+          5,
+          4,
+          3,
+          5,
+          3
+        ],
+        "excerpts": [
+          {
+            "number": 358,
+            "text": "宫也有宫性，这个怎么讲，现在很多人算命，有个大问题，他们没有看到我们的流年，一般人算命，批流年的时候，他不去看什么宫，我们斗数有十二个宫，他不去看哪一个宫，他只看那一年是哪些星，就帮你论出来，其实宫有宫性。也就是说，今年你的流年，刚好落在财帛宫里面，代表今年你的阻力在财帛上，你的流年刚好落在迁移宫上面，就代表你的驿马星会动，很多人算命呢，都要看到天马星，才动，不晓得进入迁移宫，他就会动，这个宫有宫性。诸位刚刚进入，我们慢慢由浅入深。"
+          },
+          {
+            "number": 359,
+            "text": "我们斗数上面，我画个命盘给大家看，我们一共有十二个宫，子丑寅卯辰巳午为申酉戌亥，他是利用十二个地支排起来的。一个地支代表2个小时，所以一天二十四小时，那这是时辰定出来的东西，后面还有一个很重要的意义，我们在举例会讲出来。我们后面有很多一大堆的八字给大家看。"
+          },
+          {
+            "number": 360,
+            "text": "举例，如果说一个人的命宫在巳这里，那我们斗数看的时候，一定是看三方四正。"
+          },
+          {
+            "number": 361,
+            "text": "为什么叫三方，四正。"
+          },
+          {
+            "number": 362,
+            "text": "各位想象一个，一个在巳这里，站在这里，手电筒拿着，一照，光芒只能照到三方这边，我就讲完了。"
+          },
+          {
+            "number": 363,
+            "text": "这三个宫，叫三方。把本宫算进去就叫四正。"
+          },
+          {
+            "number": 364,
+            "text": "如果你的命宫在卯里，那一定先看对面酉，然后看亥未，这叫三方，如果我们现在有程序排起来很快，一下就排满了。"
+          },
+          {
+            "number": 365,
+            "text": "如果命宫在巳，那从下面辰开始，就是兄弟宫，夫妻宫，子女宫，财帛，疾"
+          }
+        ]
+      },
+      "english": {
+        "wordCount": 541,
+        "sectionCount": 4,
+        "exampleCount": 3
+      },
+      "demand": {
+        "required": true,
+        "present": true,
+        "pass": true,
+        "anchored": true,
+        "confidence": "adjacent",
+        "sourceType": "site-performance",
+        "reference": "/articles/en/life-palace.html",
+        "query": "紫微斗数流年走父母宫为什么上级审核和长辈事务一起增加"
+      }
+    }
+  ]
+}

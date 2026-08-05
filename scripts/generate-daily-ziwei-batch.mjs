@@ -24,7 +24,7 @@ function parseArgs(argv) {
   return args;
 }
 
-function parseTimes(input, production) {
+function parseTimes(input, production, recovery = false) {
   if (!input) fail("Missing --times");
   const times = input.split(",").map((item) => item.trim()).filter(Boolean);
   if (!times.length) fail("No publish times found");
@@ -35,7 +35,7 @@ function parseTimes(input, production) {
   if (unique.size !== times.length) fail("Publish times must be unique");
   const sorted = [...times].sort();
   if (sorted.join(",") !== times.join(",")) fail("Publish times must already be sorted");
-  if (production) validateProductionSchedule(times);
+  if (production) validateProductionSchedule(times, { recovery });
   return times;
 }
 
@@ -68,6 +68,7 @@ const args = parseArgs(process.argv.slice(2));
 const seedArg = args.seed;
 const date = args.date;
 const testMode = args["test-mode"] === "true";
+const recovery = args.recovery === "true";
 
 if (!seedArg) fail("Missing --seed");
 if (!date || !/^\d{4}-\d{2}-\d{2}$/.test(date)) fail("Missing or invalid --date");
@@ -104,14 +105,15 @@ if (!testMode) {
 
 const ordered = [...articles].sort((a, b) => a.order - b.order);
 if (ordered.some((article, index) => article.order !== index + 1)) fail("Article orders must be sequential from 1 through the batch size");
-const times = parseTimes(args.times, !testMode);
+const times = parseTimes(args.times, !testMode, recovery);
 if (times.length !== ordered.length) fail(`Need ${ordered.length} publish times, got ${times.length}`);
 
 const sourcePath = path.resolve(args.source || `docs/ziwei-daily-${date}-source.md`);
 const queuePath = path.resolve(args.queue || `docs/ziwei-daily-${date}-queue.md`);
 
 await writeFile(sourcePath, dailyArticleSourceText(date, ordered), "utf8");
-await writeFile(queuePath, queueText(date, ordered, times), "utf8");
+const queueOutput = queueText(date, ordered, times).replace("\n", `\n\nRecovery-Mode: ${recovery ? "true" : "false"}\n`);
+await writeFile(queuePath, queueOutput, "utf8");
 
 console.log(`Wrote ${path.relative(process.cwd(), sourcePath)}`);
 console.log(`Wrote ${path.relative(process.cwd(), queuePath)}`);
