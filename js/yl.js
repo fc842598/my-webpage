@@ -18,6 +18,7 @@
   var HEALTH_PAYPAL_AMOUNT = "2.99";
   var ALIPAY_CHECKOUT_VISIBLE = true;
   var ALIPAY_CHECKOUT_ENABLED = true;
+  var PAYPAL_CHECKOUT_VISIBLE = false;
   var PAGE_IDS = ["home", "assessment", "report", "chat", "member"];
   var DEFAULT_API_BASE = "https://api.yuetianai.com";
   var INITIAL_QUERY = new URLSearchParams(window.location.search || "");
@@ -1435,8 +1436,11 @@
       var label = getProviderLabel(provider);
       var detail = getProviderMethodDetail(provider);
       var alipayPendingApproval = provider === "alipay" && !ALIPAY_CHECKOUT_ENABLED;
-      var providerEnabled = meta.enabled && !alipayPendingApproval;
-      button.hidden = !ALIPAY_CHECKOUT_VISIBLE && provider === "alipay";
+      var providerVisible = !((provider === "alipay" && !ALIPAY_CHECKOUT_VISIBLE)
+        || (provider === "paypal" && !PAYPAL_CHECKOUT_VISIBLE));
+      var providerEnabled = providerVisible && meta.enabled && !alipayPendingApproval;
+      button.hidden = !providerVisible;
+      button.setAttribute("aria-hidden", providerVisible ? "false" : "true");
       button.classList.toggle("is-active", paymentState.provider === provider);
       button.disabled = !accountConfirmed || paymentState.loading || paymentState.status === "pending" || !providerEnabled;
       button.textContent = alipayPendingApproval
@@ -2023,6 +2027,17 @@
 
   async function startHealthPayment() {
     if (paymentState.loading) return;
+    if (paymentState.provider === "paypal" && !PAYPAL_CHECKOUT_VISIBLE) {
+      paymentState.provider = "wechat";
+      paymentState.status = "";
+      paymentState.message = "";
+      paymentState.orderNo = "";
+      paymentState.payUrl = "";
+      paymentState.payMethod = "";
+      setPayHint("海外支付暂未开放，请使用微信支付或支付宝。");
+      renderPayment();
+      return;
+    }
     if (paymentState.status === "paid") {
       paymentState.status = "";
       paymentState.message = "正在创建续费订单...";
@@ -2242,6 +2257,7 @@
         if (paymentState.loading || paymentState.status === "pending") return;
         var provider = button.dataset.provider || "wechat";
         if (provider === "alipay" && !ALIPAY_CHECKOUT_ENABLED) return;
+        if (provider === "paypal" && !PAYPAL_CHECKOUT_VISIBLE) return;
         paymentState.provider = provider;
         if (paymentState.status === "handoff") {
           paymentState.status = "";
