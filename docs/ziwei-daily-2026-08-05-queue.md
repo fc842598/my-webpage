@@ -26,6 +26,6 @@ Recovery-Mode: true
 | 05 | 已发布 2026-08-05 20:13 https://yuetianai.com/articles/ziwei-liunian-pengyou-tuandui-kehu-xuyue-huanren.html / https://yuetianai.com/articles/en/ziwei-liunian-pengyou-tuandui-kehu-xuyue-huanren.html | ziwei-liunian-pengyou-tuandui-kehu-xuyue-huanren | 紫微斗数流年走朋友宫，为什么先应在团队换人和客户续约 | 大限流年 |
 | 06 | 已发布 2026-08-05 20:51 https://yuetianai.com/articles/ziwei-guanlu-huake-qianyi-huaji-jihui-luodi.html / https://yuetianai.com/articles/en/ziwei-guanlu-huake-qianyi-huaji-jihui-luodi.html | ziwei-guanlu-huake-qianyi-huaji-jihui-luodi | 紫微斗数官禄宫化科、迁移宫化忌：专业被认可，为什么外部机会仍落不了地 | 四化细读 |
 | 07 | 已发布 2026-08-05 21:17 https://yuetianai.com/articles/ziwei-liunian-guanlu-huake-kaozheng-meishengzhi.html / https://yuetianai.com/articles/en/ziwei-liunian-guanlu-huake-kaozheng-meishengzhi.html | ziwei-liunian-guanlu-huake-kaozheng-meishengzhi | 紫微斗数流年走官禄又见化科：考证通过了，为什么还没升职 | 大限流年 |
-| 08 | 待发布 | ziwei-pengyougong-huaquan-guanlugong-huake-chengguo-guishu | 紫微斗数朋友宫化权、官禄宫化科：合作方掌项目，专业成果算谁的 | 宫位组合 |
+| 08 | 已发布 2026-08-05 21:49 https://yuetianai.com/articles/ziwei-pengyougong-huaquan-guanlugong-huake-chengguo-guishu.html / https://yuetianai.com/articles/en/ziwei-pengyougong-huaquan-guanlugong-huake-chengguo-guishu.html | ziwei-pengyougong-huaquan-guanlugong-huake-chengguo-guishu | 紫微斗数朋友宫化权、官禄宫化科：合作方掌项目，专业成果算谁的 | 宫位组合 |
 | 09 | 待发布 | ziwei-liunian-tianzhai-zuyue-zhuangxiu-weixiu-maifang | 紫微斗数流年走田宅一定代表买房吗：租约、装修、维修和置业怎么分 | 大限流年 |
 | 10 | 待发布 | ziwei-liunian-fumu-shangji-shenhe-zhangbei-shiwu | 紫微斗数流年走父母宫，为什么上级审核和长辈事务会一起增加 | 大限流年 |
