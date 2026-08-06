@@ -1,0 +1,1733 @@
+{
+  "version": 5,
+  "date": "2026-08-07",
+  "generatedAt": "2026-08-06T09:35:14.521Z",
+  "seed": "scripts\\daily-ziwei-2026-08-07-seed.mjs",
+  "sourceDocument": "【视频同步文稿】倪海厦-天纪_Password_Removed(1) (1).docx",
+  "existingTitleSource": "working-tree",
+  "paragraphCount": 4303,
+  "structuredHistory": {
+    "scannedSourceCount": 12,
+    "sourceCount": 5,
+    "articleCount": 130,
+    "sources": [
+      {
+        "file": "scripts\\daily-ziwei-2026-07-31-seed.mjs",
+        "date": "2026-07-31",
+        "articleCount": 30
+      },
+      {
+        "file": "scripts\\daily-ziwei-2026-08-01-seed.mjs",
+        "date": "2026-08-01",
+        "articleCount": 30
+      },
+      {
+        "file": "scripts\\daily-ziwei-2026-08-02-seed.mjs",
+        "date": "2026-08-02",
+        "articleCount": 30
+      },
+      {
+        "file": "scripts\\daily-ziwei-2026-08-05-seed.mjs",
+        "date": "2026-08-05",
+        "articleCount": 10
+      },
+      {
+        "file": "docs\\ziwei-daily-2026-07-30-seed.mjs",
+        "date": "2026-07-30",
+        "articleCount": 30
+      }
+    ]
+  },
+  "demandEvidence": {
+    "required": true,
+    "requiredFrom": "2026-08-02",
+    "performanceReport": "docs\\article-performance-2026-08-07.json",
+    "performanceReportAvailable": true,
+    "performanceReportVersion": 3,
+    "performanceReportGeneratedAt": "2026-08-06T09:13:50.611Z",
+    "performanceReportSource": "live-admin-api",
+    "searchConsoleOk": true,
+    "ga4Ok": true,
+    "signalCount": 13,
+    "requiredAnchors": 8,
+    "anchoredCount": 9
+  },
+  "expectedCount": 10,
+  "articleCount": 10,
+  "passed": 10,
+  "failed": 0,
+  "batchFailures": [],
+  "articles": [
+    {
+      "order": 1,
+      "slug": "ziwei-bankong-zhechi-huandao-diaosu",
+      "title": "紫微斗数半空折翅格为什么常在换轨时掉速：先分路线断点还是情绪断线",
+      "score": 100,
+      "pass": true,
+      "failures": [],
+      "warnings": [],
+      "intentReview": {
+        "nearestHistory": {
+          "slug": "ziwei-bankong-zhechi-pa-naduan-zhuanzhe",
+          "title": "紫微斗数半空折翅格怕的到底是哪段转折：先看中年换轨还是情绪断线",
+          "source": "scripts\\daily-ziwei-2026-08-02-seed.mjs",
+          "date": "2026-08-02",
+          "questionSimilarity": 0.091,
+          "coreIntentSimilarity": 0.225,
+          "answerPathSimilarity": 0.19,
+          "score": 0.207,
+          "duplicate": false
+        },
+        "nearestBatch": {
+          "slug": "ziwei-nanming-taiyin-huaji-tuohun-qijia",
+          "title": "紫微斗数男命太阴化忌为什么总把情绪带进婚事：拖婚、妻家和边界怎么分",
+          "source": "scripts\\daily-ziwei-2026-08-07-seed.mjs",
+          "date": "2026-08-07",
+          "questionSimilarity": 0.071,
+          "coreIntentSimilarity": 0.017,
+          "answerPathSimilarity": 0.047,
+          "score": 0.059,
+          "duplicate": false
+        },
+        "historyDuplicateCount": 0,
+        "batchDuplicateCount": 0
+      },
+      "evidence": {
+        "ranges": [
+          "864-877",
+          "1546-1547"
+        ],
+        "paragraphCount": 16,
+        "domainOverlap": [
+          "命宫",
+          "财帛",
+          "官禄",
+          "迁移",
+          "化忌",
+          "三方四正",
+          "大限",
+          "太阴"
+        ],
+        "claimCoverage": [
+          0.325,
+          0.324,
+          0.175,
+          0.368
+        ],
+        "binding": {
+          "thresholds": {
+            "pointCoverage": 0.05,
+            "exampleCoverage": 0.05,
+            "minimumUsedRanges": 2
+          },
+          "usedRanges": [
+            "864-877",
+            "1546-1547"
+          ],
+          "usedRangeCount": 2,
+          "pointMatches": [
+            {
+              "claim": "大限代表十年发展背景，命宫先天好也要看十年大运能否让三方四正发挥，不能只凭本命吉星下结论。",
+              "range": "864-877",
+              "coverage": 0.325
+            },
+            {
+              "claim": "判断一个大限时仍需同时看财帛、官禄、迁移等三方四正，不能把本宫一亮就直接当成全盘顺。",
+              "range": "864-877",
+              "coverage": 0.297
+            },
+            {
+              "claim": "当年命宫若走到财帛、官禄、迁移或夫妻等不同本命宫位，主事件会跟着换线，好大限也不能代替当年落宫。",
+              "range": "864-877",
+              "coverage": 0.175
+            },
+            {
+              "claim": "太阴化忌在寅宫来冲命宫、三方四正又无吉星会时，原本还能撑住的结构更容易在转折段失速。",
+              "range": "1546-1547",
+              "coverage": 0.342
+            }
+          ],
+          "exampleMatches": [
+            {
+              "claim": "例子一：大限科权禄会，当年命宫却走到本命财帛宫，而本命财帛宫原有化忌，事业平台仍在上升，当年更可能卡在回款、成本或合同，而不是整条事业线失败。",
+              "range": "864-877",
+              "coverage": 0.125
+            },
+            {
+              "claim": "例子二：命宫在申，对宫寅宫太阴化忌来冲，三方四正又无吉星会；路线一变，人就容易先在情绪、关系和节奏上一起失速。",
+              "range": "1546-1547",
+              "coverage": 0.298
+            }
+          ]
+        },
+        "longestCopyRuns": [
+          4,
+          4,
+          4,
+          7,
+          3,
+          4
+        ],
+        "excerpts": [
+          {
+            "number": 864,
+            "text": "我们来看子丑寅卯十年大运的时候，有句话，命好不如限好。比如说你的命宫里面，都是吉星，很多很多，就代表你先天很好，可是你的限，这个十年大运呢，批流年的时候就叫做限，这个十年十年十年是不好，这个命好不如限好，有的人命宫出来，三方四正会的时候，我们命宫、迁移、财帛、官禄，三方四正来会的时候，他本身会到的并不是很好，可是你看他流年很好，这叫做限好，限好比命好还重要，我看过很多八字一排出来，格局很好，什么什么格，结果我们批的时候，夭折，为什么,他命很好啊，可是限不好。夭折，看过很多哦，所以这就是让你容易失误的地方，所以刚开始讲第一个大限的时候，遇到这种情形的时"
+          },
+          {
+            "number": 865,
+            "text": "l03"
+          },
+          {
+            "number": 866,
+            "text": "海量医、易、道视频课+电子书，请加微信iyt888"
+          },
+          {
+            "number": 867,
+            "text": "候，你如何取判断，当然后面我们会实例结合来讲，那判断方法："
+          },
+          {
+            "number": 868,
+            "text": "第一，小二善知人意，主夭。夭折。"
+          },
+          {
+            "number": 869,
+            "text": "第二，小孩有大人的样子，夭 。"
+          },
+          {
+            "number": 870,
+            "text": "这个现象常常发生在七岁以前，比如说，你拿他的八字一看，哇，那么好，科权禄什么都很好，再一看这种小孩子，三岁四岁，诶，这小孩子动作龙行虎步，不苟言笑，坐在那里的时候像将军一样，没有小孩子的天真活泼，主夭折。你以为很好，其实不好哦。"
+          },
+          {
+            "number": 871,
+            "text": "还有善知人意，你讲什么,他都很懂，反应过来了，脑筋反应很快，比大人还聪明，善知人意，善解人意，都主夭折。"
+          }
+        ]
+      },
+      "english": {
+        "wordCount": 480,
+        "sectionCount": 4,
+        "exampleCount": 2
+      },
+      "demand": {
+        "required": true,
+        "present": true,
+        "pass": true,
+        "anchored": true,
+        "confidence": "observed",
+        "sourceType": "search-console",
+        "reference": "半空折翅格",
+        "query": "半空折翅格为什么常在换轨时突然掉速"
+      }
+    },
+    {
+      "order": 2,
+      "slug": "ziwei-guanxigong-shiqing-huidao-ziji",
+      "title": "紫微斗数关系宫的事为什么最后还是会回到你身上：对方、互动和本人承担要分开",
+      "score": 100,
+      "pass": true,
+      "failures": [],
+      "warnings": [],
+      "intentReview": {
+        "nearestHistory": {
+          "slug": "ziwei-yourengong-buneng-zhiying-bieren",
+          "title": "紫微斗数有人的宫位为什么不能只应别人：先分角色，再分事件归属",
+          "source": "scripts\\daily-ziwei-2026-08-02-seed.mjs",
+          "date": "2026-08-02",
+          "questionSimilarity": 0.326,
+          "coreIntentSimilarity": 0,
+          "answerPathSimilarity": 0.476,
+          "score": 0.401,
+          "duplicate": false
+        },
+        "nearestBatch": {
+          "slug": "ziwei-minggong-huaquan-meiren-tixing",
+          "title": "紫微斗数命宫化权为什么越能扛事，越容易没人提醒你：主见和孤权差在哪",
+          "source": "scripts\\daily-ziwei-2026-08-07-seed.mjs",
+          "date": "2026-08-07",
+          "questionSimilarity": 0.05,
+          "coreIntentSimilarity": 0.069,
+          "answerPathSimilarity": 0.044,
+          "score": 0.059,
+          "duplicate": false
+        },
+        "historyDuplicateCount": 0,
+        "batchDuplicateCount": 0
+      },
+      "evidence": {
+        "ranges": [
+          "1268-1269",
+          "1381-1387",
+          "2844-2845"
+        ],
+        "paragraphCount": 11,
+        "domainOverlap": [
+          "命宫",
+          "迁移",
+          "夫妻",
+          "父母",
+          "子女",
+          "兄弟",
+          "化禄",
+          "化权",
+          "化科",
+          "三方四正",
+          "紫微",
+          "武曲",
+          "破军"
+        ],
+        "claimCoverage": [
+          0.233,
+          0.184,
+          0.22,
+          0.357
+        ],
+        "binding": {
+          "thresholds": {
+            "pointCoverage": 0.05,
+            "exampleCoverage": 0.05,
+            "minimumUsedRanges": 2
+          },
+          "usedRanges": [
+            "1268-1269",
+            "1381-1387"
+          ],
+          "usedRangeCount": 2,
+          "pointMatches": [
+            {
+              "claim": "紫微破军与左辅右弼落在命宫或迁移宫时，同一组合会分别说明本人基础与外地平台，宫位决定优势归属。",
+              "range": "1268-1269",
+              "coverage": 0.233
+            },
+            {
+              "claim": "紫微和辅弼落夫妻宫，首先代表伴侣优秀或婚姻对象有组织能力，不能直接改写成本人的职位。",
+              "range": "1268-1269",
+              "coverage": 0.132
+            },
+            {
+              "claim": "武曲落夫妻宫可说伴侣与本人同行，落兄弟宫则先说手足能干，落父母宫又转为父母的武职与执行特征。",
+              "range": "1381-1387",
+              "coverage": 0.22
+            },
+            {
+              "claim": "父母、夫妻、子女等关系宫都要看三方四正，化科、化权、化禄如何会入，决定家人的资源是否通过关系影响本人。",
+              "range": "1381-1387",
+              "coverage": 0.333
+            }
+          ],
+          "exampleMatches": [
+            {
+              "claim": "例子一：父母宫被点亮，不只是长辈状态变化，也可能是你要处理签字、照顾、沟通和资源接续，这些都落在你自己身上。",
+              "range": "1381-1387",
+              "coverage": 0.109
+            },
+            {
+              "claim": "例子二：武曲落夫妻宫先说伴侣同行，改落兄弟宫先说兄弟得力，改落父母宫又要看父母的武职和资源；宫位看似在别人身上，现实任务还是会顺着关系回到本人。",
+              "range": "1381-1387",
+              "coverage": 0.2
+            }
+          ]
+        },
+        "longestCopyRuns": [
+          4,
+          3,
+          3,
+          6,
+          3,
+          4
+        ],
+        "excerpts": [
+          {
+            "number": 1268,
+            "text": "紫薇破军在丑宫，如果是命宫在这边，紫微星我一再讲过，紫微星一定要逢到左辅右弼，这个人就是左辅右弼在，看到没有，如果命宫在这里的话，好，我们不要管什么命宫，光讲这个宫是紫薇破军还有左辅右弼，诸位用想的，推理，我们知道紫微星碰到左辅右弼非常好，非常贵，那对这个八字来说，他刚好落在迁移宫，对不对，换句话说，这个八字到外地去是不是比在本地好很多。反过来，如果命宫在这里，是不是，在本地比在外地好很多。所以格一样，宫不一样，批起来是相反的，对不对，这是批命的原则啊。所以斗数易学难精就在这里。这很简单，就是这样子看。"
+          },
+          {
+            "number": 1269,
+            "text": "那请问你，如果这个北斗星君加上左辅右弼非常好，如果落在夫妻宫呢，那代表他的另一半，如果是女的，她的先生很好。如果是先生的话，他的太太非常的优秀。了解我的意思把，这是非常好的现象。至于怎么好，以后我们举例的时候来批整格，我现在是在讲如何批，我们十二张介绍完，紫微星落十二个宫，我们开始有很多好的例子，好的八字，批给各位看的时候我们再讲。"
+          },
+          {
+            "number": 1381,
+            "text": "好了,大家想一下,如果一个人的武曲在这里,他的夫妻宫在这边,结果他的命宫在申宫,是个男的,七杀朝斗,太太是武曲,夫妻两个人是同行的。"
+          },
+          {
+            "number": 1382,
+            "text": "如果命宫在酉宫,那么武曲这里是兄弟宫,代表兄弟得力,所以同样是武曲星,他的性是一样的,看在什么宫,我们做什么解释。"
+          },
+          {
+            "number": 1383,
+            "text": "如果落在父母宫,那这个父母一定出武贵。如果你看一个人的八字,他的父母宫是武曲破军化科化权啊,这种是武将,而且文笔又好,允文允武。"
+          },
+          {
+            "number": 1384,
+            "text": "那如果他的父母宫是化禄,明明是做生意的,你还说是个武官的,我们看一个宫,我们为什么说,看一个命宫,出来要看三方四正,看兄弟宫也是要看他的三方四正,来看他的兄弟怎么样,懂不懂我是意思。"
+          },
+          {
+            "number": 1385,
+            "text": "比如说,他的父母宫在河边,父母宫本身没有什么星,可是三方四正会出来是科权禄,他的父母宫是科权禄啊,嚯,那他的父母大富大贵啊。你不要搞错了。"
+          },
+          {
+            "number": 1386,
+            "text": "所以我们看一个宫,为什么我们只画箭头,一个三角形给你,所有的宫,你要看他,都要看他的对面,了解我的意思把。"
+          }
+        ]
+      },
+      "english": {
+        "wordCount": 541,
+        "sectionCount": 4,
+        "exampleCount": 2
+      },
+      "demand": {
+        "required": true,
+        "present": true,
+        "pass": true,
+        "anchored": true,
+        "confidence": "adjacent",
+        "sourceType": "site-performance",
+        "reference": "/articles/en/life-palace.html",
+        "query": "关系宫的事为什么最后还是会回到自己身上"
+      }
+    },
+    {
+      "order": 3,
+      "slug": "ziwei-liunian-qianyi-bubanjia-dongzai-nali",
+      "title": "紫微斗数流年迁移宫动了却没搬家：先分出差、换岗、换平台还是关系变动",
+      "score": 100,
+      "pass": true,
+      "failures": [],
+      "warnings": [],
+      "intentReview": {
+        "nearestHistory": {
+          "slug": "ziwei-liunian-qianyi-dongle-meibanjiia",
+          "title": "紫微斗数流年迁移宫动了却没搬家：先分出差、换岗还是换平台",
+          "source": "scripts\\daily-ziwei-2026-08-02-seed.mjs",
+          "date": "2026-08-02",
+          "questionSimilarity": 0.25,
+          "coreIntentSimilarity": 0.158,
+          "answerPathSimilarity": 0.091,
+          "score": 0.204,
+          "duplicate": false
+        },
+        "nearestBatch": {
+          "slug": "ziwei-bankong-zhechi-huandao-diaosu",
+          "title": "紫微斗数半空折翅格为什么常在换轨时掉速：先分路线断点还是情绪断线",
+          "source": "scripts\\daily-ziwei-2026-08-07-seed.mjs",
+          "date": "2026-08-07",
+          "questionSimilarity": 0.016,
+          "coreIntentSimilarity": 0.058,
+          "answerPathSimilarity": 0.038,
+          "score": 0.048,
+          "duplicate": false
+        },
+        "historyDuplicateCount": 0,
+        "batchDuplicateCount": 0
+      },
+      "evidence": {
+        "ranges": [
+          "358-365",
+          "360-364",
+          "404-409",
+          "864-877",
+          "1040-1051",
+          "1268-1269"
+        ],
+        "paragraphCount": 47,
+        "domainOverlap": [
+          "命宫",
+          "官禄",
+          "迁移",
+          "夫妻",
+          "福德",
+          "三方四正",
+          "大限",
+          "流年"
+        ],
+        "claimCoverage": [
+          0.27,
+          0.211,
+          0.25,
+          0.2,
+          0.194
+        ],
+        "binding": {
+          "thresholds": {
+            "pointCoverage": 0.05,
+            "exampleCoverage": 0.05,
+            "minimumUsedRanges": 2
+          },
+          "usedRanges": [
+            "1040-1051",
+            "864-877",
+            "358-365"
+          ],
+          "usedRangeCount": 3,
+          "pointMatches": [
+            {
+              "claim": "多件事集中发生时，第一步应记录现实时间线，而不是先把每个宫位都解释成一个独立转折。",
+              "range": "1040-1051",
+              "coverage": 0.162
+            },
+            {
+              "claim": "流年命宫走到本命官禄宫时，岗位和职责较可能成为入口；走到迁移宫时，外部环境与移动较可能先启动。",
+              "range": "864-877",
+              "coverage": 0.132
+            },
+            {
+              "claim": "本宫与三方四正能说明一件事影响哪些领域，但被连接的宫位不自动升级为第二个起因。",
+              "range": "358-365",
+              "coverage": 0.167
+            },
+            {
+              "claim": "夫妻宫与福德宫要合看，才能分辨关系本身失衡，还是工作、距离和疲劳造成的阶段摩擦。",
+              "range": "1040-1051",
+              "coverage": 0.143
+            },
+            {
+              "claim": "大限决定哪些选择在这十年较有空间，具体先后仍要结合当年落宫、通知日期和实际承诺。",
+              "range": "864-877",
+              "coverage": 0.194
+            }
+          ],
+          "exampleMatches": [
+            {
+              "claim": "例子一：流年命宫走到本命迁移宫，搬家没有发生，可出差、跨城会议和外部客户明显变多，这种动就更像工作接口被推到台前。",
+              "range": "864-877",
+              "coverage": 0.12
+            },
+            {
+              "claim": "例子二：同样是迁移宫动，一年里真正变化的是主管、合作平台或长期客户群，住所没变，但人已经被外部关系和新规则重新编排。",
+              "range": "1040-1051",
+              "coverage": 0.059
+            }
+          ]
+        },
+        "longestCopyRuns": [
+          2,
+          3,
+          4,
+          3,
+          3,
+          3,
+          3
+        ],
+        "excerpts": [
+          {
+            "number": 358,
+            "text": "宫也有宫性，这个怎么讲，现在很多人算命，有个大问题，他们没有看到我们的流年，一般人算命，批流年的时候，他不去看什么宫，我们斗数有十二个宫，他不去看哪一个宫，他只看那一年是哪些星，就帮你论出来，其实宫有宫性。也就是说，今年你的流年，刚好落在财帛宫里面，代表今年你的阻力在财帛上，你的流年刚好落在迁移宫上面，就代表你的驿马星会动，很多人算命呢，都要看到天马星，才动，不晓得进入迁移宫，他就会动，这个宫有宫性。诸位刚刚进入，我们慢慢由浅入深。"
+          },
+          {
+            "number": 359,
+            "text": "我们斗数上面，我画个命盘给大家看，我们一共有十二个宫，子丑寅卯辰巳午为申酉戌亥，他是利用十二个地支排起来的。一个地支代表2个小时，所以一天二十四小时，那这是时辰定出来的东西，后面还有一个很重要的意义，我们在举例会讲出来。我们后面有很多一大堆的八字给大家看。"
+          },
+          {
+            "number": 360,
+            "text": "举例，如果说一个人的命宫在巳这里，那我们斗数看的时候，一定是看三方四正。"
+          },
+          {
+            "number": 361,
+            "text": "为什么叫三方，四正。"
+          },
+          {
+            "number": 362,
+            "text": "各位想象一个，一个在巳这里，站在这里，手电筒拿着，一照，光芒只能照到三方这边，我就讲完了。"
+          },
+          {
+            "number": 363,
+            "text": "这三个宫，叫三方。把本宫算进去就叫四正。"
+          },
+          {
+            "number": 364,
+            "text": "如果你的命宫在卯里，那一定先看对面酉，然后看亥未，这叫三方，如果我们现在有程序排起来很快，一下就排满了。"
+          },
+          {
+            "number": 365,
+            "text": "如果命宫在巳，那从下面辰开始，就是兄弟宫，夫妻宫，子女宫，财帛，疾"
+          }
+        ]
+      },
+      "english": {
+        "wordCount": 551,
+        "sectionCount": 4,
+        "exampleCount": 2
+      },
+      "demand": {
+        "required": true,
+        "present": true,
+        "pass": true,
+        "anchored": true,
+        "confidence": "adjacent",
+        "sourceType": "site-performance",
+        "reference": "/articles/ziwei-liunian-qianyi.html",
+        "query": "流年迁移宫动了却没搬家先看什么"
+      }
+    },
+    {
+      "order": 4,
+      "slug": "ziwei-tianfu-shoucai-bushi-zhishi-baoshou",
+      "title": "紫微斗数天府守财为什么不只是保守：会存、会管、会分配才是真本事",
+      "score": 100,
+      "pass": true,
+      "failures": [],
+      "warnings": [],
+      "intentReview": {
+        "nearestHistory": {
+          "slug": "ziwei-tianfu-shoucai-hui-cun-hui-guan-hui-pei",
+          "title": "紫微斗数天府守财是保守，还是会存、会管、会配",
+          "source": "scripts\\daily-ziwei-2026-08-02-seed.mjs",
+          "date": "2026-08-02",
+          "questionSimilarity": 0.552,
+          "coreIntentSimilarity": 0.258,
+          "answerPathSimilarity": 0.326,
+          "score": 0.439,
+          "duplicate": false
+        },
+        "nearestBatch": {
+          "slug": "ziwei-liunian-qianyi-bubanjia-dongzai-nali",
+          "title": "紫微斗数流年迁移宫动了却没搬家：先分出差、换岗、换平台还是关系变动",
+          "source": "scripts\\daily-ziwei-2026-08-07-seed.mjs",
+          "date": "2026-08-07",
+          "questionSimilarity": 0.058,
+          "coreIntentSimilarity": 0,
+          "answerPathSimilarity": 0.027,
+          "score": 0.042,
+          "duplicate": false
+        },
+        "historyDuplicateCount": 0,
+        "batchDuplicateCount": 0
+      },
+      "evidence": {
+        "ranges": [
+          "652-660",
+          "856",
+          "2545",
+          "2791"
+        ],
+        "paragraphCount": 12,
+        "domainOverlap": [
+          "天府",
+          "禄存"
+        ],
+        "claimCoverage": [
+          0.364,
+          0.222,
+          0.485,
+          0.182
+        ],
+        "binding": {
+          "thresholds": {
+            "pointCoverage": 0.05,
+            "exampleCoverage": 0.05,
+            "minimumUsedRanges": 2
+          },
+          "usedRanges": [
+            "652-660",
+            "2545",
+            "856"
+          ],
+          "usedRangeCount": 3,
+          "pointMatches": [
+            {
+              "claim": "天府星性质温和，属于文官与教星，入命时常见公务员、教员或兼具行政教学的方向。",
+              "range": "652-660",
+              "coverage": 0.364
+            },
+            {
+              "claim": "天府具有府库和聚财的星性，可以表现为保管资源、安排预算和善于理财，不只是单纯保守。",
+              "range": "2545",
+              "coverage": 0.139
+            },
+            {
+              "claim": "三台、八座是辅助天府的文武两官，天府会到三台八座后，统筹、承接和配置资源的能力更完整。",
+              "range": "856",
+              "coverage": 0.455
+            },
+            {
+              "claim": "天府本身不能自动化解所有煞曜压力，职业判断仍要看同宫、三方四正与现实能力。",
+              "range": "652-660",
+              "coverage": 0.121
+            }
+          ],
+          "exampleMatches": [
+            {
+              "claim": "例子一：天府入命，官禄宫见化科并会三台八座，适合行政、公共服务、学校管理或稳定教学；优势在制度内统筹，而不是追逐高波动收益。",
+              "range": "652-660",
+              "coverage": 0.094
+            },
+            {
+              "claim": "例子二：天府落财帛，禄存与化禄会照，官禄再有财会专长，可走银行运营或长期资产管理。",
+              "range": "2545",
+              "coverage": 0.057
+            }
+          ]
+        },
+        "longestCopyRuns": [
+          4,
+          4,
+          7,
+          2,
+          4,
+          2
+        ],
+        "excerpts": [
+          {
+            "number": 652,
+            "text": "南斗星系呢。第一个是天府星，天府星是南斗星君，他统帅南方的诸星，但是这个天府星，没有解厄制化的功能。我们命中，除非是大贵星，才会有解厄制化的功能。才能够解灾，比如说太阳、武曲。"
+          },
+          {
+            "number": 653,
+            "text": "那这个天府星君呢，根本就不能解厄制化，个人的经验呢，流年走到天府，照样买单走人的。南斗星君本身的解厄制化的力量不够，南斗星君是一个很温和的星，温和代表这个人个性温和，不见得是个好人哦。上帝也没有说温和的人就是好人。"
+          },
+          {
+            "number": 654,
+            "text": "书上记载，天府星是良臣、贤臣，其实不对，真正的贤臣良臣是知道如何举荐人才。有一天，楚庄王下朝，回到星宫，他的太太问他，今天怎么这么晚回来，哦，今天下朝后，我和宰相几个人没事就喝喝酒喝到3点多才回来。庄王他太太"
+          },
+          {
+            "number": 655,
+            "text": "这么讲，她说国王，你这个丞相在你身边做了十五年，我从来没有听说他举荐良才到你身边来，为你所用，这个叫做不忠。第二个，我发现他无法去发现天下有良才，是为不贤。所以这种人怎么可以用呢。你怎么跟他混那么晚。第二天楚庄王上朝，就跟那个丞相讲，昨天晚上我老婆讲你这些，第二天就辞官回家退休了。现在我们国家这种人也很多啊。不是好事哦。"
+          },
+          {
+            "number": 656,
+            "text": "天府星的人呢，他是个文官星，也是一个教星，所以很多天府入命的人，去当公务员，当教员，或者两个职业兼顾在那里。南斗星君，因为他是属于文官带。"
+          },
+          {
+            "number": 657,
+            "text": "如果你有一天你看到一个天府的人，去当武官，就是圆的放到方的里面，你看他跑出来斯斯文文的，他穿个军服，那你跟他说你可以去转当公务员了，不必去当军人了。当武官的话，前途黯淡无光。不要干下去了。谁说当武官就可以干到将军啊。"
+          },
+          {
+            "number": 658,
+            "text": "但是天府星的人呢，心眼比较多。如何确定他的心眼是厚重的，这是人的头发，脸，耳朵，眉毛太浓了。"
+          },
+          {
+            "number": 659,
+            "text": "本人呢，永远不会跟浓眉的人来往，还有三角眼的人来往，还有四白眼的人，这种人，看到了我就闪了，跑了，我懒得理你，没有时间理你。眉毛太浓的人，不好。一会陆续跟各位介绍。"
+          }
+        ]
+      },
+      "english": {
+        "wordCount": 407,
+        "sectionCount": 4,
+        "exampleCount": 2
+      },
+      "demand": {
+        "required": true,
+        "present": true,
+        "pass": true,
+        "anchored": false,
+        "confidence": "editorial",
+        "sourceType": "editorial-gap",
+        "reference": "现实场景：一个人看起来稳、会留钱，却分不清自己是在经营资源还是只是不敢动。",
+        "query": "紫微斗数天府守财是保守还是会存会管会配"
+      }
+    },
+    {
+      "order": 5,
+      "slug": "ziwei-nanming-taiyin-huaji-tuohun-qijia",
+      "title": "紫微斗数男命太阴化忌为什么总把情绪带进婚事：拖婚、妻家和边界怎么分",
+      "score": 100,
+      "pass": true,
+      "failures": [],
+      "warnings": [],
+      "intentReview": {
+        "nearestHistory": {
+          "slug": "ziwei-nanming-taiyin-huaji-xiantan-bianjie",
+          "title": "紫微斗数男命太阴化忌，什么时候要先谈边界再谈婚事",
+          "source": "scripts\\daily-ziwei-2026-08-02-seed.mjs",
+          "date": "2026-08-02",
+          "questionSimilarity": 0.306,
+          "coreIntentSimilarity": 0.2,
+          "answerPathSimilarity": 0.322,
+          "score": 0.314,
+          "duplicate": false
+        },
+        "nearestBatch": {
+          "slug": "ziwei-lianzhen-qisha-fude-yizhi-yingcheng",
+          "title": "紫微斗数廉贞七杀在福德为什么最怕一直硬撑：能扛和压抑不是一回事",
+          "source": "scripts\\daily-ziwei-2026-08-07-seed.mjs",
+          "date": "2026-08-07",
+          "questionSimilarity": 0.078,
+          "coreIntentSimilarity": 0,
+          "answerPathSimilarity": 0.047,
+          "score": 0.063,
+          "duplicate": false
+        },
+        "historyDuplicateCount": 0,
+        "batchDuplicateCount": 0
+      },
+      "evidence": {
+        "ranges": [
+          "343-371",
+          "404-409",
+          "475-477",
+          "553-580",
+          "1093-1096",
+          "2114"
+        ],
+        "paragraphCount": 71,
+        "domainOverlap": [
+          "财帛",
+          "夫妻",
+          "福德",
+          "父母",
+          "田宅",
+          "化权"
+        ],
+        "claimCoverage": [
+          0.25,
+          0.28,
+          0.14,
+          0.22
+        ],
+        "binding": {
+          "thresholds": {
+            "pointCoverage": 0.05,
+            "exampleCoverage": 0.05,
+            "minimumUsedRanges": 2
+          },
+          "usedRanges": [
+            "343-371",
+            "475-477",
+            "553-580"
+          ],
+          "usedRangeCount": 3,
+          "pointMatches": [
+            {
+              "claim": "夫妻宫先看伴侣在关系中的做事方式，福德宫再看谈钱、负债和长期分工时，两个人是否还有商量与恢复空间。",
+              "range": "343-371",
+              "coverage": 0.182
+            },
+            {
+              "claim": "财帛宫有禄可以说明本人有财路，财星会权也可能只是负责预算或调度资金；收入能力、账户管理权和法律所有权必须分开。",
+              "range": "343-371",
+              "coverage": 0.22
+            },
+            {
+              "claim": "田宅宫看祖业、自置房产与持有风险，田宅有财不等于当下现金充足，更不能替双方决定首付比例和产权登记。",
+              "range": "475-477",
+              "coverage": 0.093
+            },
+            {
+              "claim": "夫妻宫化权时伴侣通常更有主见；婚前要明确谁能决定大额支出，而不是要求一方完全交出财务自主。",
+              "range": "553-580",
+              "coverage": 0.146
+            }
+          ],
+          "exampleMatches": [
+            {
+              "claim": "例子一：男命太阴化忌，夫妻宫条件不差，却一谈谁照顾父母、谁承担隐形支出就开始反复，说明真正卡点在边界，不在感情有没有。",
+              "range": "343-371",
+              "coverage": 0.196
+            },
+            {
+              "claim": "例子二：关系里总由一方安抚、补位、收拾情绪，福德宫又承压时，婚前若不先定分工，婚后很容易把委屈当成责任长期吞下去。",
+              "range": "343-371",
+              "coverage": 0.102
+            }
+          ]
+        },
+        "longestCopyRuns": [
+          3,
+          3,
+          3,
+          3,
+          3,
+          3
+        ],
+        "excerpts": [
+          {
+            "number": 343,
+            "text": "那我们看命宫的时候,我们一定要同时兼看同时三个宫,财帛,官禄,迁移。为什么呢?"
+          },
+          {
+            "number": 344,
+            "text": "有的人,他的命中注定,他要迁移,怎么讲?比如说,我们丁肇中,李政道,他就要迁移,到外地去啊,他才能拿诺贝尔奖,你叫他拿到博士回来太晚,大不了搞个教授,可能大学校长都干不到,他要呆到外地。"
+          },
+          {
+            "number": 345,
+            "text": "有的人呢,必须要到外地经营一圈,回来以后,他才会好,就像我们现在中研院的院长,对不对。"
+          },
+          {
+            "number": 346,
+            "text": "有的人呢,不行,一开始他拿到博士,就马上要回到本地来,我们总/统就是这样,他要发在本地,如果今天很多农业博士,大家都带着美国,不见得每个人都可以拿到诺贝尔奖哦。可是他回到 taiwan 才能当总/统哦。"
+          },
+          {
+            "number": 347,
+            "text": "这就是为什么我们要讨论迁移。好,那你怎么样判断,他要出去,去一趟再回来,这是批的方法,后面介绍星座的时候,会陆续跟各位介绍。"
+          },
+          {
+            "number": 348,
+            "text": "那为什么要同时看他的财帛,官禄宫,这两个到底怎么做个比较,现在社会上 ,什么行业都有啊,不止三千六百行,各种行业,时代一直变,行业也一直在变。各位,易经讲,事情从表面上看,从来没有重复过,但是所有的事情的性是一样的,精神是一样的,他的神是一样的。所以不管一会三万六千多行业都没有关系,财帛是什么,你到私人企业去当老板,官禄呢,你到公家单位去,领固定的薪水,那我们以后陆续会介绍很多的星,有的星呢,代表官,带着印,所以当官的有个官印,有的星呢代表财,各种不同的星,我们把它们分类以后,看他排出来,禄主哪个星,我们就可以知道他会往哪一个方向发展,这是第一,他的命宫比较倾向哪边。有的人生下来,命宫里面财帛很旺,他就比较倾向于做生意,有的人呢,他的官禄宫很旺,从小就耳提任命,爸妈说你长大以后就是去当公务员,效法我就好了,爸爸当军人就让儿子去当军人,有人继承,但是你的想法不能影响到对方,为什么,你想的 :儿子你以后要当军人,这是你想的。有没有经"
+          },
+          {
+            "number": 349,
+            "text": "过儿子的同意呢，儿子不见得喜欢。"
+          },
+          {
+            "number": 350,
+            "text": "我们为什么要论命，基本上，我们看一个人的命宫，一个人的发展的模式以后，我们可以鼓励他，诱导他，往他最适合的路上走，他的人生就比较愉快，我们的人生每个人就一百年好了，愉快就好了，求的是这个，能够平安。你有一个亿，我有一百块，我们吃的(楼饭都是岗犯的),那外在的东西不重要，我常常跟我的客户学生讲，不贪心就是我的宝贝!你的宝贝可能是玉啊手表啊，我的宝贝就是不贪心!我们知足常乐。"
+          }
+        ]
+      },
+      "english": {
+        "wordCount": 562,
+        "sectionCount": 4,
+        "exampleCount": 2
+      },
+      "demand": {
+        "required": true,
+        "present": true,
+        "pass": true,
+        "anchored": true,
+        "confidence": "adjacent",
+        "sourceType": "site-performance",
+        "reference": "/articles/ziwei-nanming-taiyin-huaji.html",
+        "query": "男命太阴化忌为什么总把情绪带进婚事"
+      }
+    },
+    {
+      "order": 6,
+      "slug": "ziwei-minggong-huaquan-meiren-tixing",
+      "title": "紫微斗数命宫化权为什么越能扛事，越容易没人提醒你：主见和孤权差在哪",
+      "score": 100,
+      "pass": true,
+      "failures": [],
+      "warnings": [],
+      "intentReview": {
+        "nearestHistory": {
+          "slug": "ziwei-minggong-huaquan-zhujian-haishi-guquan",
+          "title": "紫微斗数命宫化权，到底是主见还是孤权：先看谁来承接你的决定",
+          "source": "scripts\\daily-ziwei-2026-08-02-seed.mjs",
+          "date": "2026-08-02",
+          "questionSimilarity": 0.07,
+          "coreIntentSimilarity": 0.109,
+          "answerPathSimilarity": 0.105,
+          "score": 0.107,
+          "duplicate": false
+        },
+        "nearestBatch": {
+          "slug": "ziwei-lianzhen-qisha-fude-yizhi-yingcheng",
+          "title": "紫微斗数廉贞七杀在福德为什么最怕一直硬撑：能扛和压抑不是一回事",
+          "source": "scripts\\daily-ziwei-2026-08-07-seed.mjs",
+          "date": "2026-08-07",
+          "questionSimilarity": 0.075,
+          "coreIntentSimilarity": 0.069,
+          "answerPathSimilarity": 0.057,
+          "score": 0.072,
+          "duplicate": false
+        },
+        "historyDuplicateCount": 0,
+        "batchDuplicateCount": 0
+      },
+      "evidence": {
+        "ranges": [
+          "553-580",
+          "590-602",
+          "1796-1801",
+          "1816-1823",
+          "2091-2092"
+        ],
+        "paragraphCount": 57,
+        "domainOverlap": [
+          "命宫",
+          "身宫",
+          "财帛",
+          "官禄",
+          "福德",
+          "化权",
+          "化忌",
+          "禄存"
+        ],
+        "claimCoverage": [
+          0.289,
+          0.382,
+          0.317,
+          0.149
+        ],
+        "binding": {
+          "thresholds": {
+            "pointCoverage": 0.05,
+            "exampleCoverage": 0.05,
+            "minimumUsedRanges": 2
+          },
+          "usedRanges": [
+            "553-580",
+            "2091-2092",
+            "590-602",
+            "1816-1823"
+          ],
+          "usedRangeCount": 4,
+          "pointMatches": [
+            {
+              "claim": "化权代表官印、性刚和主导，落财帛宫时先看本人是否管理资金、预算、定价或经营决定，不可直接等同个人净收入。",
+              "range": "553-580",
+              "coverage": 0.244
+            },
+            {
+              "claim": "财帛宫化权再会禄存，权与财禄同在赚钱路径，经营或自己做事业的倾向更强；只有权没有禄时，也可能是在私人企业替单位掌财做主管。",
+              "range": "2091-2092",
+              "coverage": 0.236
+            },
+            {
+              "claim": "福德宫化忌说明内在感受容易反复、想不开或长期觉得累，事业有成绩不能自动消除这一层心理成本。",
+              "range": "590-602",
+              "coverage": 0.195
+            },
+            {
+              "claim": "财帛宫与福德宫要分开读：前者核对掌财和实际利润，后者核对休息、注意力与情绪恢复，再看身宫是否把人推向外部奔忙。",
+              "range": "1816-1823",
+              "coverage": 0.128
+            }
+          ],
+          "exampleMatches": [
+            {
+              "claim": "例子一：命宫化权、官禄也能接住责任，职位上看似越来越稳，可团队开始默认你自己会扛，真正危险的是反馈越来越少，不是责任越来越多。",
+              "range": "553-580",
+              "coverage": 0.16
+            },
+            {
+              "claim": "例子二：财帛和朋友线承接不足时，命宫化权的人会越做越像一个人决断、一个人补洞，旁人不是没意见，而是已经不想再说。",
+              "range": "553-580",
+              "coverage": 0.191
+            }
+          ]
+        },
+        "longestCopyRuns": [
+          4,
+          6,
+          4,
+          3,
+          3,
+          4
+        ],
+        "excerpts": [
+          {
+            "number": 553,
+            "text": "所谓四化，有科、权、禄、忌。这个科权禄忌外面有很多派，有的在那里飞，每年都飞来飞去，诸位不需要，我们教诸位排出来以后，就永远固定在宫上不要动，比如你武曲化禄，固定好你就不要动了。不需要你每年四化都在不同的位置，这个都不对的。我们每年呢，是流年在动，星都不动，千万不要受外面今年飞明年飞来飞去那种的影响。越弄越复杂。其实没有那么复杂。"
+          },
+          {
+            "number": 554,
+            "text": "介绍科权禄忌的时候，各位要晓得，这四个星代表的意义是什么,他的星性最重要。"
+          },
+          {
+            "number": 555,
+            "text": "科："
+          },
+          {
+            "number": 556,
+            "text": "第一，主科名，比如我们去参加考试，金榜题名，这是一个科，还有，我们文章写的很好，文笔很好，也是科，还有呢，画画很好，才艺出众，才艺超人，也是科。还有呢，我当老师，也是科，那到底是哪一种，那到时候我们整体批的时候来讲，我现在只是介绍科的意义而已。那这是科名。"
+          },
+          {
+            "number": 557,
+            "text": "第二个，这个科代表名气很大。为什么?有的人呢，他的命宫里面就有科，有的人到54-63岁晚年才有科。不是说他54-63岁读书，而是说这个时候他声名远播。他声名远播可能每天做善事，做好事，或做了一个很大的事情，声名远"
+          },
+          {
+            "number": 558,
+            "text": "播,之前是默默无闻的,有的人呢是到了90-100多岁才有科,代表他死了以后才有科。对啊,这就是命啊,"
+          },
+          {
+            "number": 559,
+            "text": "这是我们排八字看出来有科,那你知道他人身上看上去就有科呢?怎么看,第一个,我们在手掌上面,我画肥一点,男人有这种手太好。"
+          },
+          {
+            "number": 560,
+            "text": "你看他手上有道纹一直通天,这条叫天柱纹,一路通天,天柱纹的人呢,主的就是科,才艺。所以过去看到很多有名的画家,音乐家,像毕加索,他们手上一定有这条线,没有这条线就徒具其名了,手上有这条线的,就是主科!外面有些书上写这里是有个博士眼啊,有的人拿到博士是空的,不拿到还好,拿到之后从此变成笨蛋,他以为他就什么都懂了,会有这种人的。中国人讲的是这条天柱纹，主科甲，手上可以看到，看的最清楚。"
+          }
+        ]
+      },
+      "english": {
+        "wordCount": 605,
+        "sectionCount": 4,
+        "exampleCount": 2
+      },
+      "demand": {
+        "required": true,
+        "present": true,
+        "pass": true,
+        "anchored": true,
+        "confidence": "adjacent",
+        "sourceType": "site-performance",
+        "reference": "/articles/ziwei-minggong-huaquan-lingdao.html",
+        "query": "命宫化权为什么越能扛事越容易没人提醒"
+      }
+    },
+    {
+      "order": 7,
+      "slug": "ziwei-huotan-ge-xiankan-gongwei-chukou",
+      "title": "紫微斗数火贪格成局前先看什么：宫位、火势和爆发出口缺一不可",
+      "score": 100,
+      "pass": true,
+      "failures": [],
+      "warnings": [],
+      "intentReview": {
+        "nearestHistory": {
+          "slug": "ziwei-huotan-ge-chengju-xiankan-shenme",
+          "title": "紫微斗数火贪格成局先看什么：不是只见贪狼就算",
+          "source": "scripts\\daily-ziwei-2026-08-02-seed.mjs",
+          "date": "2026-08-02",
+          "questionSimilarity": 0.316,
+          "coreIntentSimilarity": 0.235,
+          "answerPathSimilarity": 0.31,
+          "score": 0.313,
+          "duplicate": false
+        },
+        "nearestBatch": {
+          "slug": "ziwei-bankong-zhechi-huandao-diaosu",
+          "title": "紫微斗数半空折翅格为什么常在换轨时掉速：先分路线断点还是情绪断线",
+          "source": "scripts\\daily-ziwei-2026-08-07-seed.mjs",
+          "date": "2026-08-07",
+          "questionSimilarity": 0.067,
+          "coreIntentSimilarity": 0.018,
+          "answerPathSimilarity": 0.038,
+          "score": 0.052,
+          "duplicate": false
+        },
+        "historyDuplicateCount": 0,
+        "batchDuplicateCount": 0
+      },
+      "evidence": {
+        "ranges": [
+          "621-650",
+          "787-817",
+          "1032-1047",
+          "1266-1269",
+          "1378-1388",
+          "1534-1540"
+        ],
+        "paragraphCount": 99,
+        "domainOverlap": [
+          "财帛",
+          "官禄",
+          "迁移",
+          "夫妻",
+          "化禄",
+          "化权",
+          "化科",
+          "化忌",
+          "三方四正",
+          "紫微",
+          "廉贞",
+          "贪狼",
+          "七杀",
+          "破军",
+          "擎羊"
+        ],
+        "claimCoverage": [
+          0.233,
+          0.24,
+          0.357,
+          0.406,
+          0.262
+        ],
+        "binding": {
+          "thresholds": {
+            "pointCoverage": 0.05,
+            "exampleCoverage": 0.05,
+            "minimumUsedRanges": 2
+          },
+          "usedRanges": [
+            "1032-1047",
+            "1266-1269",
+            "1534-1540",
+            "1378-1388",
+            "621-650",
+            "787-817"
+          ],
+          "usedRangeCount": 6,
+          "pointMatches": [
+            {
+              "claim": "两颗主星同宫不是两份互不相干的性格标签，要先提炼它们共同处理什么问题、在哪一点互相加强或拉扯。",
+              "range": "1032-1047",
+              "coverage": 0.116
+            },
+            {
+              "claim": "紫微与七杀同入官禄时可形成较强的权责结构；若官禄只有七杀擎羊而缺少化权等条件，辛苦与冲突可能比正式决策权更明显。",
+              "range": "1032-1047",
+              "coverage": 0.18
+            },
+            {
+              "claim": "紫微破军会左辅右弼落迁移宫，优势先属于外地和外部机会；同组星落夫妻宫，主语改为伴侣与婚姻渠道。",
+              "range": "1266-1269",
+              "coverage": 0.262
+            },
+            {
+              "claim": "廉贞七杀同宫在庙旺与落陷时强弱不同，读组合前必须确认亮度，不能只认星名。",
+              "range": "1534-1540",
+              "coverage": 0.219
+            },
+            {
+              "claim": "化科、化权、化禄和化忌会把专业、责任、资源或卡点放进组合，三方四正再说明这些条件能否形成完整路径。",
+              "range": "1378-1388",
+              "coverage": 0.19
+            }
+          ],
+          "exampleMatches": [
+            {
+              "claim": "例子一：只有贪狼、没有火铃或关键结构不成，现实里最多只是胆大、冲劲重，还不到火贪格那种整段拉升的爆发。",
+              "range": "621-650",
+              "coverage": 0.182
+            },
+            {
+              "claim": "例子二：火铃和贪狼条件都齐，财帛或官禄又能承接，才更像爆发力真的落到事业、名气或赚钱线上，而不是只会情绪上头。",
+              "range": "787-817",
+              "coverage": 0.125
+            }
+          ]
+        },
+        "longestCopyRuns": [
+          2,
+          4,
+          4,
+          4,
+          4,
+          2,
+          2
+        ],
+        "excerpts": [
+          {
+            "number": 621,
+            "text": "那紫微星在事业上来说，主的是官带，所以有紫微星出来，是官运，我们第一堂课介绍过，我们有财帛、官禄宫。对不对，官星呢，一定要进入官禄宫最好。财星呢，一定要进入财帛宫最好。叫做正位!适得其所。那有一天，你的财星，跑到官禄里面，那就是贪官，这是第一天，你不要随便就批人家贪官哦，有一种人，财帛也是带官禄的，中国银行总裁，我一批好几百亿，可是不是我的，那叫财权，财权可以从脸上看到，下次看看那个银行的总裁，第一个看他的鼻子，他的鼻子和颧骨两个是呼应的，有的人，鼻子很大，这两个颧很小，这是有钱，在他自己身上，鼻子很大，和颧是相等的，那是掌握财权，有的人颧很大，鼻子很小，就是贸易公司的财务经理，讲完了，你有没有收到啊。"
+          },
+          {
+            "number": 622,
+            "text": "那官带星进来了，到官禄宫，是适得其所，官带星越大，官做得越大，官带星进来越小，官就越差。"
+          },
+          {
+            "number": 623,
+            "text": "那我们有句话，命好不如限好，我就看过很多人，他的命盘中命宫财帛官禄迁移本身很差，普普通通，哇，可是他科权禄全在这个十年大运上面，十年大运流年排出来是限，命好不重要，那个限好比命好还佳，有的人命很好，可是限不好，半空折翅，不到三十就走人都有的。我们会举各种不同的例子来大家看。"
+          },
+          {
+            "number": 624,
+            "text": "那紫微星还有一个功能呢，他有解厄制化的功能，就是我们命中逢到凶星的时候，遇到紫微星，都可以解掉。北斗星君就有这个功能，所以你看到这个煞星逢到紫微星的时候，这个煞星要去掉很多，只有紫微星能解掉这个事情，能够逢凶化吉。"
+          },
+          {
+            "number": 625,
+            "text": "北斗星系第二个叫做天机。这个天机，也属于官带星，刚才讲的紫薇是阳星，天机是阴星，一会我们批到子女宫就会用到这个阴阳，天机星是文官带星，紫微星呢，武官文官都是紫微星，文官带讲的是公务人员，比如说我们在公家单位上班，你要到那个事务所里面的小姐的八字拿过来大部分都是这种，外交部里面办事的小姐都是这种命，到部长就不是这种命了，那天机星，有的人当老师，公家单位，银行做账的小姐也算。"
+          },
+          {
+            "number": 626,
+            "text": "天机星的人，如果坐在命宫，才有所谓的相出现，外相出现，天机星呢，是阴星，所以天机星的人长的黑黑的，你看过去，嗯，这个女孩子皮肤黑黑的，不是染色的，没有去非洲晒太阳回来，天生的皮肤黑暗一点，第二个个子矮，然后体格是很精壮，男女都一样，很壮，很短小精干，天机星，所以天机，机的意思就是这样，反应很快，这种人很聪明，智慧很高。"
+          },
+          {
+            "number": 627,
+            "text": "天机星本身没有解厄制化的功能，只是代表这个意义而已。"
+          },
+          {
+            "number": 628,
+            "text": "第三颗星是太阳：太阳星呢，官来说的话，太阳星是武官，武官带，身上才有枪有刀，所以太阳星呢，是武官带。现在的武官就是军人、警察，法官，外交官，都是属于武官带，这是第一个。"
+          }
+        ]
+      },
+      "english": {
+        "wordCount": 498,
+        "sectionCount": 4,
+        "exampleCount": 3
+      },
+      "demand": {
+        "required": true,
+        "present": true,
+        "pass": true,
+        "anchored": true,
+        "confidence": "adjacent",
+        "sourceType": "site-performance",
+        "reference": "/articles/en/ziwei-huotang-ge.html",
+        "query": "火贪格成局前先看宫位火势和爆发出口"
+      }
+    },
+    {
+      "order": 8,
+      "slug": "ziwei-lianzhen-qisha-fude-yizhi-yingcheng",
+      "title": "紫微斗数廉贞七杀在福德为什么最怕一直硬撑：能扛和压抑不是一回事",
+      "score": 100,
+      "pass": true,
+      "failures": [],
+      "warnings": [],
+      "intentReview": {
+        "nearestHistory": {
+          "slug": "ziwei-lianzhen-qisha-fudegong-yingcheng-bunengkang",
+          "title": "紫微斗数廉贞七杀在福德，硬撑和能扛不是一回事",
+          "source": "scripts\\daily-ziwei-2026-08-02-seed.mjs",
+          "date": "2026-08-02",
+          "questionSimilarity": 0.457,
+          "coreIntentSimilarity": 0.211,
+          "answerPathSimilarity": 0.291,
+          "score": 0.374,
+          "duplicate": false
+        },
+        "nearestBatch": {
+          "slug": "ziwei-minggong-huaquan-meiren-tixing",
+          "title": "紫微斗数命宫化权为什么越能扛事，越容易没人提醒你：主见和孤权差在哪",
+          "source": "scripts\\daily-ziwei-2026-08-07-seed.mjs",
+          "date": "2026-08-07",
+          "questionSimilarity": 0.075,
+          "coreIntentSimilarity": 0.069,
+          "answerPathSimilarity": 0.057,
+          "score": 0.072,
+          "duplicate": false
+        },
+        "historyDuplicateCount": 0,
+        "batchDuplicateCount": 0
+      },
+      "evidence": {
+        "ranges": [
+          "404-409",
+          "553-569",
+          "1032-1047",
+          "1267",
+          "1796-1805"
+        ],
+        "paragraphCount": 50,
+        "domainOverlap": [
+          "身宫",
+          "财帛",
+          "官禄",
+          "福德",
+          "化权",
+          "化科",
+          "紫微",
+          "七杀"
+        ],
+        "claimCoverage": [
+          0.211,
+          0.25,
+          0.303,
+          0.139,
+          0.121
+        ],
+        "binding": {
+          "thresholds": {
+            "pointCoverage": 0.05,
+            "exampleCoverage": 0.05,
+            "minimumUsedRanges": 2
+          },
+          "usedRanges": [
+            "1032-1047",
+            "553-569"
+          ],
+          "usedRangeCount": 2,
+          "pointMatches": [
+            {
+              "claim": "官禄宫见化权或紫微七杀等权星结构，较能承担职位和责任，但权责增加本身也会带来工作量。",
+              "range": "1032-1047",
+              "coverage": 0.211
+            },
+            {
+              "claim": "有化科而缺化权时，专业、考试或顾问能力可能强于统御管理，不能只因表现好就强推带队。",
+              "range": "553-569",
+              "coverage": 0.222
+            },
+            {
+              "claim": "身宫代表后天生活重点，落官禄或财帛时，职业与收入更容易占据时间和自我评价。",
+              "range": "1032-1047",
+              "coverage": 0.212
+            },
+            {
+              "claim": "福德宫需与现实恢复能力一起看；身宫同到福德又见七杀等压力时，长期劳累感更值得重视。",
+              "range": "1032-1047",
+              "coverage": 0.139
+            },
+            {
+              "claim": "岗位边界、授权、会议量和休息记录可以检验问题来自环境、角色还是整条职业方向。",
+              "range": "1032-1047",
+              "coverage": 0.091
+            }
+          ],
+          "exampleMatches": [
+            {
+              "claim": "例子一：福德宫廉贞七杀，项目再多也能扛，但一停下来就空、就紧、就不会放松，这更像长期硬撑，不是会恢复。",
+              "range": "1032-1047",
+              "coverage": 0.214
+            },
+            {
+              "claim": "例子二：福德宫廉贞七杀，官禄又能正确承接这股硬，平时还有稳定恢复方式，这类结构才更像耐压和执行优势。",
+              "range": "1032-1047",
+              "coverage": 0.114
+            }
+          ]
+        },
+        "longestCopyRuns": [
+          4,
+          2,
+          3,
+          3,
+          2,
+          3,
+          3
+        ],
+        "excerpts": [
+          {
+            "number": 404,
+            "text": "夫妻宫，顾名思义，就是看他的婚姻，我们看婚姻的时候，你光看夫妻宫，大错特错，看婚姻的时候，一定要看福德宫。"
+          },
+          {
+            "number": 405,
+            "text": "夫妻跟福德，很多人批斗数，福德不会批。什么叫做福德?一个人一辈子的福禄!就会了，送诸位一句话，祸福无门，咎由自取。咎就是错事，就是后悔懊恼，都是自己找的，我们这个福德，就可以判断我们，我曾经给人批过，夫妻宫"
+          },
+          {
+            "number": 406,
+            "text": "45"
+          },
+          {
+            "number": 407,
+            "text": "海量医、易、道视频课+电子书，请加微信iyt888"
+          },
+          {
+            "number": 408,
+            "text": "很好啊，福德宫很烂，散!夫妻要散。那我们要帮他批的时候，不要太直，心里知道，我要教大家的时候我是直言无讳，主动被动，谁对谁错，我看的很清楚啊，可是在批的时候，不好啊，小姐，你先生是强盗，很坏!这怎么讲?她先生跑过来干掉你，谁会承认，我今天到法庭上都不会承认是我干的，对不对，不要这样讲，我们要用别的诱导的方式，好，后面我会陆续介绍。我教我会直接讲的。讲完以后，如果有人找我算过命，说倪老师很奇怪，跟别人讲的都讲的很多，跟我讲就讲的很少，不是不讲，是不能讲的。不能讲反而你可以避祸，讲了反而不能避祸。"
+          },
+          {
+            "number": 409,
+            "text": "所以我们看到夫妻宫，就要同时看他的福德宫，福德宫代表夫妻的关系，也代表一世的财禄、福禄、事业。所以福禄宫很差的人，很累啊!我往往批完八字以后，最有一个八字批下来，最后一句话，比方说，你是一子送终，你是****,统统都是从福德宫里面批出来的，一个宫就可以批出来，可以批终身。"
+          },
+          {
+            "number": 553,
+            "text": "所谓四化，有科、权、禄、忌。这个科权禄忌外面有很多派，有的在那里飞，每年都飞来飞去，诸位不需要，我们教诸位排出来以后，就永远固定在宫上不要动，比如你武曲化禄，固定好你就不要动了。不需要你每年四化都在不同的位置，这个都不对的。我们每年呢，是流年在动，星都不动，千万不要受外面今年飞明年飞来飞去那种的影响。越弄越复杂。其实没有那么复杂。"
+          },
+          {
+            "number": 554,
+            "text": "介绍科权禄忌的时候，各位要晓得，这四个星代表的意义是什么,他的星性最重要。"
+          }
+        ]
+      },
+      "english": {
+        "wordCount": 514,
+        "sectionCount": 4,
+        "exampleCount": 2
+      },
+      "demand": {
+        "required": true,
+        "present": true,
+        "pass": true,
+        "anchored": true,
+        "confidence": "adjacent",
+        "sourceType": "site-performance",
+        "reference": "/articles/ziwei-lianzhen-qisha-fudegong-xinli.html",
+        "query": "廉贞七杀在福德为什么最怕一直硬撑"
+      }
+    },
+    {
+      "order": 9,
+      "slug": "ziwei-sanfang-sizheng-duigong-xianhou-20260807",
+      "title": "紫微斗数三方四正什么时候一定先看对宫：主事宫和牵动宫要分开",
+      "score": 100,
+      "pass": true,
+      "failures": [],
+      "warnings": [],
+      "intentReview": {
+        "nearestHistory": {
+          "slug": "ziwei-sanfang-sizheng-shenme-shihou-bixulai-duigong",
+          "title": "紫微斗数三方四正什么时候一定把对宫拉进来：先分主事宫还是牵动宫",
+          "source": "scripts\\daily-ziwei-2026-08-02-seed.mjs",
+          "date": "2026-08-02",
+          "questionSimilarity": 0.211,
+          "coreIntentSimilarity": 0.233,
+          "answerPathSimilarity": 0.185,
+          "score": 0.222,
+          "duplicate": false
+        },
+        "nearestBatch": {
+          "slug": "ziwei-guanlugong-zeren-zhiwei-hangye",
+          "title": "紫微斗数官禄宫先看职责还是行业：职位、收入和责任别一次问完",
+          "source": "scripts\\daily-ziwei-2026-08-07-seed.mjs",
+          "date": "2026-08-07",
+          "questionSimilarity": 0.064,
+          "coreIntentSimilarity": 0.021,
+          "answerPathSimilarity": 0.072,
+          "score": 0.068,
+          "duplicate": false
+        },
+        "historyDuplicateCount": 0,
+        "batchDuplicateCount": 0
+      },
+      "evidence": {
+        "ranges": [
+          "339-360",
+          "365-368"
+        ],
+        "paragraphCount": 26,
+        "domainOverlap": [
+          "命宫",
+          "财帛",
+          "官禄",
+          "迁移",
+          "三方四正",
+          "天马"
+        ],
+        "claimCoverage": [
+          0.375,
+          0.308,
+          0.485,
+          0.263
+        ],
+        "binding": {
+          "thresholds": {
+            "pointCoverage": 0.05,
+            "exampleCoverage": 0.05,
+            "minimumUsedRanges": 2
+          },
+          "usedRanges": [
+            "339-360",
+            "365-368"
+          ],
+          "usedRangeCount": 2,
+          "pointMatches": [
+            {
+              "claim": "紫微斗数以十二宫区分本人及周围不同生活层面，命宫主要说明本人先天、个性与行为模式。",
+              "range": "339-360",
+              "coverage": 0.375
+            },
+            {
+              "claim": "命宫位置怎么转，官禄、财帛和迁移这条本命承接线也跟着轮转；先认出谁是主事宫，顺序才不会乱。",
+              "range": "365-368",
+              "coverage": 0.282
+            },
+            {
+              "claim": "看命宫时必须同时兼看财帛、官禄和迁移，不能把本宫星曜脱离三方四正单独判断。",
+              "range": "339-360",
+              "coverage": 0.455
+            },
+            {
+              "claim": "宫位本身有宫性，当年命宫走到财帛先突出钱的阻力，走到迁移即使不见天马也会加强移动主题。",
+              "range": "339-360",
+              "coverage": 0.263
+            }
+          ],
+          "exampleMatches": [
+            {
+              "claim": "例子一：问换工作时，若本来就是本地岗位和外地平台在拉扯，对宫迁移必须先进来，不然官禄宫很容易被读成单线职业题。",
+              "range": "339-360",
+              "coverage": 0.245
+            },
+            {
+              "claim": "例子二：命宫一换位，官禄、财帛和迁移也会跟着轮转；若一开始连谁是主事宫都没认清，就很容易把对宫和三方先后看反。",
+              "range": "339-360",
+              "coverage": 0.25
+            }
+          ]
+        },
+        "longestCopyRuns": [
+          4,
+          8,
+          4,
+          3,
+          4,
+          7
+        ],
+        "excerpts": [
+          {
+            "number": 339,
+            "text": "我们斗数有十二宫,我们从宫开始介绍,为什么分为十二宫,老祖宗他认为,一个人,除了本身自己加进去以外,会受到周围环境,有另外十一个层面的影响。所以我们在看命宫的时候,命宫讲的就是你本人,你自己,讲你的先天,什么叫做先天,生下来你是什么,讲的就是先天。"
+          },
+          {
+            "number": 340,
+            "text": "介绍命宫的时候,我们可以看到这个人的长相,这个人的个性,从个性上可以知道这个人的行为模式,其实开始从命宫一看,就已经知道成败了。但是诸位还没有这个功力,慢慢来,那命宫探讨的东西,就是一般的,我们的个性啊,我们的动作,还有我们的长相。"
+          },
+          {
+            "number": 341,
+            "text": "37"
+          },
+          {
+            "number": 342,
+            "text": "海量医、易、道视频课+电子书,请加微信iyt888"
+          },
+          {
+            "number": 343,
+            "text": "那我们看命宫的时候,我们一定要同时兼看同时三个宫,财帛,官禄,迁移。为什么呢?"
+          },
+          {
+            "number": 344,
+            "text": "有的人,他的命中注定,他要迁移,怎么讲?比如说,我们丁肇中,李政道,他就要迁移,到外地去啊,他才能拿诺贝尔奖,你叫他拿到博士回来太晚,大不了搞个教授,可能大学校长都干不到,他要呆到外地。"
+          },
+          {
+            "number": 345,
+            "text": "有的人呢,必须要到外地经营一圈,回来以后,他才会好,就像我们现在中研院的院长,对不对。"
+          },
+          {
+            "number": 346,
+            "text": "有的人呢,不行,一开始他拿到博士,就马上要回到本地来,我们总/统就是这样,他要发在本地,如果今天很多农业博士,大家都带着美国,不见得每个人都可以拿到诺贝尔奖哦。可是他回到 taiwan 才能当总/统哦。"
+          }
+        ]
+      },
+      "english": {
+        "wordCount": 465,
+        "sectionCount": 4,
+        "exampleCount": 2
+      },
+      "demand": {
+        "required": true,
+        "present": true,
+        "pass": true,
+        "anchored": true,
+        "confidence": "adjacent",
+        "sourceType": "site-performance",
+        "reference": "/articles/en/triad-and-opposite.html",
+        "query": "三方四正什么时候一定先看对宫"
+      }
+    },
+    {
+      "order": 10,
+      "slug": "ziwei-guanlugong-zeren-zhiwei-hangye",
+      "title": "紫微斗数官禄宫先看职责还是行业：职位、收入和责任别一次问完",
+      "score": 100,
+      "pass": true,
+      "failures": [],
+      "warnings": [],
+      "intentReview": {
+        "nearestHistory": {
+          "slug": "ziwei-guanlugong-hangye-zhiwei-zeren-shui-zhong",
+          "title": "紫微斗数官禄宫到底更偏行业、职位还是责任：别把三个问题揉成一句话",
+          "source": "scripts\\daily-ziwei-2026-08-02-seed.mjs",
+          "date": "2026-08-02",
+          "questionSimilarity": 0.267,
+          "coreIntentSimilarity": 0.212,
+          "answerPathSimilarity": 0.183,
+          "score": 0.239,
+          "duplicate": false
+        },
+        "nearestBatch": {
+          "slug": "ziwei-sanfang-sizheng-duigong-xianhou-20260807",
+          "title": "紫微斗数三方四正什么时候一定先看对宫：主事宫和牵动宫要分开",
+          "source": "scripts\\daily-ziwei-2026-08-07-seed.mjs",
+          "date": "2026-08-07",
+          "questionSimilarity": 0.064,
+          "coreIntentSimilarity": 0.021,
+          "answerPathSimilarity": 0.072,
+          "score": 0.068,
+          "duplicate": false
+        },
+        "historyDuplicateCount": 0,
+        "batchDuplicateCount": 0
+      },
+      "evidence": {
+        "ranges": [
+          "343-371",
+          "621-641",
+          "642-671",
+          "1354-1358",
+          "1380"
+        ],
+        "paragraphCount": 86,
+        "domainOverlap": [
+          "命宫",
+          "财帛",
+          "官禄",
+          "迁移",
+          "紫微",
+          "天机",
+          "太阳",
+          "武曲",
+          "廉贞",
+          "天府",
+          "七杀"
+        ],
+        "claimCoverage": [
+          0.4,
+          0.636,
+          0.256,
+          0.382
+        ],
+        "binding": {
+          "thresholds": {
+            "pointCoverage": 0.05,
+            "exampleCoverage": 0.05,
+            "minimumUsedRanges": 2
+          },
+          "usedRanges": [
+            "343-371",
+            "621-641",
+            "642-671",
+            "1354-1358"
+          ],
+          "usedRangeCount": 4,
+          "pointMatches": [
+            {
+              "claim": "看命宫必须同时兼看财帛、官禄和迁移，现代职业要把本人方式、收入、组织位置与外部平台一起判断。",
+              "range": "343-371",
+              "coverage": 0.325
+            },
+            {
+              "claim": "官星进入官禄宫、财星进入财帛宫才较接近正位，同一颗星换到官禄或财帛会变成不同职责。",
+              "range": "621-641",
+              "coverage": 0.485
+            },
+            {
+              "claim": "天机是文官性质，太阳、武曲和廉贞带武职性质，现代转换应保留规划或执行功能，而非照搬古代官名。",
+              "range": "642-671",
+              "coverage": 0.205
+            },
+            {
+              "claim": "紫府坐垣或七杀朝斗若落官禄，重点可放在组织权责；只有紫微天府落财帛时，才进一步讨论企业资源、财权与私人企业中的职业经理位置。",
+              "range": "1354-1358",
+              "coverage": 0.218
+            }
+          ],
+          "exampleMatches": [
+            {
+              "claim": "例子一：官禄宫先显示的是带人、统筹、复核还是执行，这一步若没先定，就很容易把行政、运营、教师和财务全说成像。",
+              "range": "343-371",
+              "coverage": 0.178
+            },
+            {
+              "claim": "例子二：同样是官禄亮，有的人亮在位置高，有的人亮在责任重；收入和行业要再回财帛、迁移与平台，不能只凭官禄一宫拍板。",
+              "range": "343-371",
+              "coverage": 0.205
+            }
+          ]
+        },
+        "longestCopyRuns": [
+          4,
+          5,
+          4,
+          5,
+          3,
+          4
+        ],
+        "excerpts": [
+          {
+            "number": 343,
+            "text": "那我们看命宫的时候,我们一定要同时兼看同时三个宫,财帛,官禄,迁移。为什么呢?"
+          },
+          {
+            "number": 344,
+            "text": "有的人,他的命中注定,他要迁移,怎么讲?比如说,我们丁肇中,李政道,他就要迁移,到外地去啊,他才能拿诺贝尔奖,你叫他拿到博士回来太晚,大不了搞个教授,可能大学校长都干不到,他要呆到外地。"
+          },
+          {
+            "number": 345,
+            "text": "有的人呢,必须要到外地经营一圈,回来以后,他才会好,就像我们现在中研院的院长,对不对。"
+          },
+          {
+            "number": 346,
+            "text": "有的人呢,不行,一开始他拿到博士,就马上要回到本地来,我们总/统就是这样,他要发在本地,如果今天很多农业博士,大家都带着美国,不见得每个人都可以拿到诺贝尔奖哦。可是他回到 taiwan 才能当总/统哦。"
+          },
+          {
+            "number": 347,
+            "text": "这就是为什么我们要讨论迁移。好,那你怎么样判断,他要出去,去一趟再回来,这是批的方法,后面介绍星座的时候,会陆续跟各位介绍。"
+          },
+          {
+            "number": 348,
+            "text": "那为什么要同时看他的财帛,官禄宫,这两个到底怎么做个比较,现在社会上 ,什么行业都有啊,不止三千六百行,各种行业,时代一直变,行业也一直在变。各位,易经讲,事情从表面上看,从来没有重复过,但是所有的事情的性是一样的,精神是一样的,他的神是一样的。所以不管一会三万六千多行业都没有关系,财帛是什么,你到私人企业去当老板,官禄呢,你到公家单位去,领固定的薪水,那我们以后陆续会介绍很多的星,有的星呢,代表官,带着印,所以当官的有个官印,有的星呢代表财,各种不同的星,我们把它们分类以后,看他排出来,禄主哪个星,我们就可以知道他会往哪一个方向发展,这是第一,他的命宫比较倾向哪边。有的人生下来,命宫里面财帛很旺,他就比较倾向于做生意,有的人呢,他的官禄宫很旺,从小就耳提任命,爸妈说你长大以后就是去当公务员,效法我就好了,爸爸当军人就让儿子去当军人,有人继承,但是你的想法不能影响到对方,为什么,你想的 :儿子你以后要当军人,这是你想的。有没有经"
+          },
+          {
+            "number": 349,
+            "text": "过儿子的同意呢，儿子不见得喜欢。"
+          },
+          {
+            "number": 350,
+            "text": "我们为什么要论命，基本上，我们看一个人的命宫，一个人的发展的模式以后，我们可以鼓励他，诱导他，往他最适合的路上走，他的人生就比较愉快，我们的人生每个人就一百年好了，愉快就好了，求的是这个，能够平安。你有一个亿，我有一百块，我们吃的(楼饭都是岗犯的),那外在的东西不重要，我常常跟我的客户学生讲，不贪心就是我的宝贝!你的宝贝可能是玉啊手表啊，我的宝贝就是不贪心!我们知足常乐。"
+          }
+        ]
+      },
+      "english": {
+        "wordCount": 542,
+        "sectionCount": 4,
+        "exampleCount": 3
+      },
+      "demand": {
+        "required": true,
+        "present": true,
+        "pass": true,
+        "anchored": true,
+        "confidence": "adjacent",
+        "sourceType": "site-performance",
+        "reference": "/articles/en/life-palace.html",
+        "query": "官禄宫先看职责职位还是行业"
+      }
+    }
+  ]
+}

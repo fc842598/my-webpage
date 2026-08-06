@@ -1,0 +1,183 @@
+{
+  "version": 1,
+  "date": "2026-08-07",
+  "seed": "scripts/daily-ziwei-2026-08-07-seed.mjs",
+  "articleCount": 10,
+  "batchHash": "e584ca60f2f18896071415a17d9792a95d93a9952cb4163741a4434472e2b977",
+  "sourceHash": "4f061b1677dbe5500cc8db0bc23244219c2285333637ebc29ae1c0b21bbc24f0",
+  "reviewedAt": "2026-08-06T22:27:00+08:00",
+  "reviewers": [
+    {
+      "id": "ziwei-logic",
+      "status": "PASS",
+      "articleCount": 10,
+      "batchHash": "e584ca60f2f18896071415a17d9792a95d93a9952cb4163741a4434472e2b977",
+      "sourceHash": "4f061b1677dbe5500cc8db0bc23244219c2285333637ebc29ae1c0b21bbc24f0",
+      "report": "docs/article-reviews/2026-08-07-ziwei-logic-round1.md"
+    },
+    {
+      "id": "human-tone",
+      "status": "PASS",
+      "articleCount": 10,
+      "batchHash": "e584ca60f2f18896071415a17d9792a95d93a9952cb4163741a4434472e2b977",
+      "sourceHash": "4f061b1677dbe5500cc8db0bc23244219c2285333637ebc29ae1c0b21bbc24f0",
+      "report": "docs/article-reviews/2026-08-07-human-tone-round1.md"
+    },
+    {
+      "id": "seo-intent",
+      "status": "PASS",
+      "articleCount": 10,
+      "batchHash": "e584ca60f2f18896071415a17d9792a95d93a9952cb4163741a4434472e2b977",
+      "sourceHash": "4f061b1677dbe5500cc8db0bc23244219c2285333637ebc29ae1c0b21bbc24f0",
+      "report": "docs/article-reviews/2026-08-07-seo-intent-round1.md"
+    },
+    {
+      "id": "english-naturalness",
+      "status": "PASS",
+      "articleCount": 10,
+      "batchHash": "e584ca60f2f18896071415a17d9792a95d93a9952cb4163741a4434472e2b977",
+      "sourceHash": "4f061b1677dbe5500cc8db0bc23244219c2285333637ebc29ae1c0b21bbc24f0",
+      "report": "docs/article-reviews/2026-08-07-english-naturalness-round1.md"
+    },
+    {
+      "id": "reader-value",
+      "status": "PASS",
+      "articleCount": 10,
+      "batchHash": "e584ca60f2f18896071415a17d9792a95d93a9952cb4163741a4434472e2b977",
+      "sourceHash": "4f061b1677dbe5500cc8db0bc23244219c2285333637ebc29ae1c0b21bbc24f0",
+      "report": "docs/article-reviews/2026-08-07-reader-value-round1.md"
+    }
+  ],
+  "articles": [
+    {
+      "order": 1,
+      "slug": "ziwei-bankong-zhechi-huandao-diaosu",
+      "title": "紫微斗数半空折翅格为什么常在换轨时掉速：先分路线断点还是情绪断线",
+      "contentHash": "a17264a618904af50d9f4d7674120f0fc75fc8f9d9ba95a83d7168e43d760c3b",
+      "reviews": {
+        "ziwei-logic": "PASS",
+        "human-tone": "PASS",
+        "seo-intent": "PASS",
+        "english-naturalness": "PASS",
+        "reader-value": "PASS"
+      }
+    },
+    {
+      "order": 2,
+      "slug": "ziwei-guanxigong-shiqing-huidao-ziji",
+      "title": "紫微斗数关系宫的事为什么最后还是会回到你身上：对方、互动和本人承担要分开",
+      "contentHash": "757da264abe744bebe2a1ceb0171b0f8573a0c27ddd8512c8d648031f846b43d",
+      "reviews": {
+        "ziwei-logic": "PASS",
+        "human-tone": "PASS",
+        "seo-intent": "PASS",
+        "english-naturalness": "PASS",
+        "reader-value": "PASS"
+      }
+    },
+    {
+      "order": 3,
+      "slug": "ziwei-liunian-qianyi-bubanjia-dongzai-nali",
+      "title": "紫微斗数流年迁移宫动了却没搬家：先分出差、换岗、换平台还是关系变动",
+      "contentHash": "77dfcb651c4d8fb9bb75aeb6d3799697cabb74d478ffce9b37014fdda0cc9cab",
+      "reviews": {
+        "ziwei-logic": "PASS",
+        "human-tone": "PASS",
+        "seo-intent": "PASS",
+        "english-naturalness": "PASS",
+        "reader-value": "PASS"
+      }
+    },
+    {
+      "order": 4,
+      "slug": "ziwei-tianfu-shoucai-bushi-zhishi-baoshou",
+      "title": "紫微斗数天府守财为什么不只是保守：会存、会管、会分配才是真本事",
+      "contentHash": "eac0a6aa3ed3638a5d1416678b63683aaf5bb41abe3d77848a3fccf2c5b9b614",
+      "reviews": {
+        "ziwei-logic": "PASS",
+        "human-tone": "PASS",
+        "seo-intent": "PASS",
+        "english-naturalness": "PASS",
+        "reader-value": "PASS"
+      }
+    },
+    {
+      "order": 5,
+      "slug": "ziwei-nanming-taiyin-huaji-tuohun-qijia",
+      "title": "紫微斗数男命太阴化忌为什么总把情绪带进婚事：拖婚、妻家和边界怎么分",
+      "contentHash": "e9587cd2e0b532a159c081949c1d0cbc947926f2fe184f9e58e144ed32a69f6f",
+      "reviews": {
+        "ziwei-logic": "PASS",
+        "human-tone": "PASS",
+        "seo-intent": "PASS",
+        "english-naturalness": "PASS",
+        "reader-value": "PASS"
+      }
+    },
+    {
+      "order": 6,
+      "slug": "ziwei-minggong-huaquan-meiren-tixing",
+      "title": "紫微斗数命宫化权为什么越能扛事，越容易没人提醒你：主见和孤权差在哪",
+      "contentHash": "cb3d1af440e46a0b8a9642e6aae363cd538b08528e0e7db90d5b102083624458",
+      "reviews": {
+        "ziwei-logic": "PASS",
+        "human-tone": "PASS",
+        "seo-intent": "PASS",
+        "english-naturalness": "PASS",
+        "reader-value": "PASS"
+      }
+    },
+    {
+      "order": 7,
+      "slug": "ziwei-huotan-ge-xiankan-gongwei-chukou",
+      "title": "紫微斗数火贪格成局前先看什么：宫位、火势和爆发出口缺一不可",
+      "contentHash": "e1c30a5095bccd1bba8b043e24f32cf756662e53ef0abde0ca392544069abc32",
+      "reviews": {
+        "ziwei-logic": "PASS",
+        "human-tone": "PASS",
+        "seo-intent": "PASS",
+        "english-naturalness": "PASS",
+        "reader-value": "PASS"
+      }
+    },
+    {
+      "order": 8,
+      "slug": "ziwei-lianzhen-qisha-fude-yizhi-yingcheng",
+      "title": "紫微斗数廉贞七杀在福德为什么最怕一直硬撑：能扛和压抑不是一回事",
+      "contentHash": "3a0643c4a811f7c3a8e171398ba2a1078b3bc57e9ec8ac8cfc85efb891c5444e",
+      "reviews": {
+        "ziwei-logic": "PASS",
+        "human-tone": "PASS",
+        "seo-intent": "PASS",
+        "english-naturalness": "PASS",
+        "reader-value": "PASS"
+      }
+    },
+    {
+      "order": 9,
+      "slug": "ziwei-sanfang-sizheng-duigong-xianhou-20260807",
+      "title": "紫微斗数三方四正什么时候一定先看对宫：主事宫和牵动宫要分开",
+      "contentHash": "39e8f086ce73ba71ef2a99eef2b5d938454cf47610f82e4d966f6fde042334fd",
+      "reviews": {
+        "ziwei-logic": "PASS",
+        "human-tone": "PASS",
+        "seo-intent": "PASS",
+        "english-naturalness": "PASS",
+        "reader-value": "PASS"
+      }
+    },
+    {
+      "order": 10,
+      "slug": "ziwei-guanlugong-zeren-zhiwei-hangye",
+      "title": "紫微斗数官禄宫先看职责还是行业：职位、收入和责任别一次问完",
+      "contentHash": "7bf7aa3dbf06f399021e7f5785ac1ec44444f7b878bd56d57e1ead1b4427db1f",
+      "reviews": {
+        "ziwei-logic": "PASS",
+        "human-tone": "PASS",
+        "seo-intent": "PASS",
+        "english-naturalness": "PASS",
+        "reader-value": "PASS"
+      }
+    }
+  ]
+}
