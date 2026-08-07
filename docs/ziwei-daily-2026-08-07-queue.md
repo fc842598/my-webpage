@@ -25,7 +25,7 @@ Recovery-Mode: false
 | 04 | 已发布 2026-08-07 17:32 https://yuetianai.com/articles/ziwei-tianfu-shoucai-bushi-zhishi-baoshou.html / https://yuetianai.com/articles/en/ziwei-tianfu-shoucai-bushi-zhishi-baoshou.html | ziwei-tianfu-shoucai-bushi-zhishi-baoshou | 紫微斗数天府守财为什么不只是保守：会存、会管、会分配才是真本事 | 主星 |
 | 05 | 已发布 2026-08-07 15:52 https://yuetianai.com/articles/ziwei-nanming-taiyin-huaji-tuohun-qijia.html / https://yuetianai.com/articles/en/ziwei-nanming-taiyin-huaji-tuohun-qijia.html | ziwei-nanming-taiyin-huaji-tuohun-qijia | 紫微斗数男命太阴化忌为什么总把情绪带进婚事：拖婚、妻家和边界怎么分 | 婚恋与关系 |
 | 06 | 已发布 2026-08-07 17:09 https://yuetianai.com/articles/ziwei-minggong-huaquan-meiren-tixing.html / https://yuetianai.com/articles/en/ziwei-minggong-huaquan-meiren-tixing.html | ziwei-minggong-huaquan-meiren-tixing | 紫微斗数命宫化权为什么越能扛事，越容易没人提醒你：主见和孤权差在哪 | 四化细读 |
-| 07 | 待发布 | ziwei-huotan-ge-xiankan-gongwei-chukou | 紫微斗数火贪格成局前先看什么：宫位、火势和爆发出口缺一不可 | 格局命例 |
+| 07 | 已发布 2026-08-07 18:46 https://yuetianai.com/articles/ziwei-huotan-ge-xiankan-gongwei-chukou.html / https://yuetianai.com/articles/en/ziwei-huotan-ge-xiankan-gongwei-chukou.html | ziwei-huotan-ge-xiankan-gongwei-chukou | 紫微斗数火贪格成局前先看什么：宫位、火势和爆发出口缺一不可 | 格局命例 |
 | 08 | 待发布 | ziwei-lianzhen-qisha-fude-yizhi-yingcheng | 紫微斗数廉贞七杀在福德为什么最怕一直硬撑：能扛和压抑不是一回事 | 格局命例 |
 | 09 | 待发布 | ziwei-sanfang-sizheng-duigong-xianhou-20260807 | 紫微斗数三方四正什么时候一定先看对宫：主事宫和牵动宫要分开 | 看盘方法 |
 | 10 | 待发布 | ziwei-guanlugong-zeren-zhiwei-hangye | 紫微斗数官禄宫先看职责还是行业：职位、收入和责任别一次问完 | 看盘方法 |
