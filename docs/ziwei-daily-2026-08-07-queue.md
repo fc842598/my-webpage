@@ -23,7 +23,7 @@ Recovery-Mode: false
 | 02 | 待发布 | ziwei-guanxigong-shiqing-huidao-ziji | 紫微斗数关系宫的事为什么最后还是会回到你身上：对方、互动和本人承担要分开 | 看盘方法 |
 | 03 | 已发布 2026-08-07 12:41 https://yuetianai.com/articles/ziwei-liunian-qianyi-bubanjia-dongzai-nali.html / https://yuetianai.com/articles/en/ziwei-liunian-qianyi-bubanjia-dongzai-nali.html | ziwei-liunian-qianyi-bubanjia-dongzai-nali | 紫微斗数流年迁移宫动了却没搬家：先分出差、换岗、换平台还是关系变动 | 大限流年 |
 | 04 | 待发布 | ziwei-tianfu-shoucai-bushi-zhishi-baoshou | 紫微斗数天府守财为什么不只是保守：会存、会管、会分配才是真本事 | 主星 |
-| 05 | 待发布 | ziwei-nanming-taiyin-huaji-tuohun-qijia | 紫微斗数男命太阴化忌为什么总把情绪带进婚事：拖婚、妻家和边界怎么分 | 婚恋与关系 |
+| 05 | 已发布 2026-08-07 15:52 https://yuetianai.com/articles/ziwei-nanming-taiyin-huaji-tuohun-qijia.html / https://yuetianai.com/articles/en/ziwei-nanming-taiyin-huaji-tuohun-qijia.html | ziwei-nanming-taiyin-huaji-tuohun-qijia | 紫微斗数男命太阴化忌为什么总把情绪带进婚事：拖婚、妻家和边界怎么分 | 婚恋与关系 |
 | 06 | 待发布 | ziwei-minggong-huaquan-meiren-tixing | 紫微斗数命宫化权为什么越能扛事，越容易没人提醒你：主见和孤权差在哪 | 四化细读 |
 | 07 | 待发布 | ziwei-huotan-ge-xiankan-gongwei-chukou | 紫微斗数火贪格成局前先看什么：宫位、火势和爆发出口缺一不可 | 格局命例 |
 | 08 | 待发布 | ziwei-lianzhen-qisha-fude-yizhi-yingcheng | 紫微斗数廉贞七杀在福德为什么最怕一直硬撑：能扛和压抑不是一回事 | 格局命例 |
