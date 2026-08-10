@@ -1,18 +1,25 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>阅天AI更新</title>
     <link>https://yuetianai.com/</link>
     <description>阅天AI官方入口、免费紫微斗数排盘与AI命盘分析相关更新。</description>
     <language>zh-CN</language>
-    <lastBuildDate>Sun, 10 Aug 2026 08:10:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 10 Aug 2026 11:08:00 +0000</lastBuildDate>
     <atom:link href="https://yuetianai.com/feed.xml" rel="self" type="application/rss+xml" />
 
+    <item>
+      <title>紫微斗数火贪格成局先看什么：不是只见贪狼就算</title>
+      <link>https://yuetianai.com/articles/ziwei-huotan-ge-chengju-xiankan-shenme.html</link>
+      <guid isPermaLink="true">https://yuetianai.com/articles/ziwei-huotan-ge-chengju-xiankan-shenme.html</guid>
+      <pubDate>Mon, 10 Aug 2026 11:08:00 +0000</pubDate>
+      <description>很多格局名最怕被拿来当标签。火贪格就是其中之一，常常一看到贪狼，后面条件还没核，就先把爆发型命格的帽子戴上了。</description>
+    </item>
     <item>
       <title>紫微斗数兄弟宫化禄：兄弟姐妹是你的贵人还是你的依靠</title>
       <link>https://yuetianai.com/articles/ziwei-xiongdigong-hualu-guiren-yikao.html</link>
       <guid isPermaLink="true">https://yuetianai.com/articles/ziwei-xiongdigong-hualu-guiren-yikao.html</guid>
-      <pubDate>Sun, 10 Aug 2026 04:00:00 +0000</pubDate>
+      <pubDate>Mon, 10 Aug 2026 04:00:00 +0000</pubDate>
       <description>兄弟宫化禄的人，从小不缺伴。但很多人分不清：这份资源是别人主动给的，还是你自己伸手要来的。两种路径，后面的人生差别很大。</description>
     </item>
     <item>
@@ -560,20 +567,6 @@
       <guid isPermaLink="true">https://yuetianai.com/articles/ai-suanming-shengzhi-jihui-xiankan-ziwei-haishi-liuyao.html</guid>
       <pubDate>Fri, 31 Jul 2026 14:14:00 +0000</pubDate>
       <description>要不要接这次升职机会，看起来像一个单点决定，实际上里面有两层：一层是长期位置是否真的适合往上走，另一层是这一次具体窗口值不值得现在接。两层不分，工具就容易用乱。紫微更适合先看你长期的…</description>
-    </item>
-    <item>
-      <title>紫微斗数本宫没有主星时怎么读：对宫借星、三方会照和流年触发有顺序</title>
-      <link>https://yuetianai.com/articles/ziwei-bengong-meiyou-zhuxing-zenme-du.html</link>
-      <guid isPermaLink="true">https://yuetianai.com/articles/ziwei-bengong-meiyou-zhuxing-zenme-du.html</guid>
-      <pubDate>Fri, 31 Jul 2026 14:13:00 +0000</pubDate>
-      <description>看到某个宫位空着，有人会松一口气，以为这里没事；也有人立刻害怕，认为这个领域什么都没有。两种反应都把“没有主星”误成了“没有信息”。空宫只是要求读者向周围借线索。</description>
-    </item>
-    <item>
-      <title>AI算命问要不要跨城结婚，先看紫微还是八字？先分关系结构和阶段承受</title>
-      <link>https://yuetianai.com/articles/ai-suanming-kuacheng-jiehun-xiankan-ziwei-haishi-bazi.html</link>
-      <guid isPermaLink="true">https://yuetianai.com/articles/ai-suanming-kuacheng-jiehun-xiankan-ziwei-haishi-bazi.html</guid>
-      <pubDate>Fri, 31 Jul 2026 13:26:00 +0000</pubDate>
-      <description>跨城结婚不是只有感情题，它里面同时带着关系结构和阶段承受两层。关系结构讲的是这段关系本身能不能长期承接异地、迁移和家庭协商；阶段承受讲的是你们当下这一段时间扛不扛得住这个动作。因此先…</description>
     </item>
   </channel>
 </rss>

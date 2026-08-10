@@ -1,18 +1,25 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>YuetianAI Zi Wei Articles</title>
     <link>https://yuetianai.com/articles/en/</link>
     <description>Plain-English Zi Wei Dou Shu articles and chart reading guides.</description>
     <language>en</language>
-    <lastBuildDate>Sun, 10 Aug 2026 08:10:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 10 Aug 2026 11:08:00 +0000</lastBuildDate>
     <atom:link href="https://yuetianai.com/articles/en/feed.xml" rel="self" type="application/rss+xml" />
 
+    <item>
+      <title>Huo Tan Ge: Check the Conditions Before Naming the Pattern</title>
+      <link>https://yuetianai.com/articles/en/ziwei-huotan-ge-chengju-xiankan-shenme.html</link>
+      <guid isPermaLink="true">https://yuetianai.com/articles/en/ziwei-huotan-ge-chengju-xiankan-shenme.html</guid>
+      <pubDate>Mon, 10 Aug 2026 11:08:00 +0000</pubDate>
+      <description>A Huo Tan pattern needs more than Tan Lang alone. Confirm the fire stars, palace context, and real receiving line before calling it a full formation.</description>
+    </item>
     <item>
       <title>Brothers Palace With Hua Lu: Are Your Siblings Your Benefactors or Your Safety Net?</title>
       <link>https://yuetianai.com/articles/en/ziwei-xiongdigong-hualu-guiren-yikao.html</link>
       <guid isPermaLink="true">https://yuetianai.com/articles/en/ziwei-xiongdigong-hualu-guiren-yikao.html</guid>
-      <pubDate>Sun, 10 Aug 2026 04:00:00 +0000</pubDate>
+      <pubDate>Mon, 10 Aug 2026 04:00:00 +0000</pubDate>
       <description>Brothers Palace with Hua Lu often means you're never truly alone. But the real question is whether help comes to you, or whether you always have to go find it.</description>
     </item>
     <item>
@@ -560,20 +567,6 @@
       <guid isPermaLink="true">https://yuetianai.com/articles/en/ai-suanming-shengzhi-jihui-xiankan-ziwei-haishi-liuyao.html</guid>
       <pubDate>Fri, 31 Jul 2026 14:14:00 +0000</pubDate>
       <description>A promotion opportunity contains two questions: whether the long-term position suits you, and whether this specific window should be taken now. Zi Wei usu…</description>
-    </item>
-    <item>
-      <title>How to Read an Empty Palace: Opposite Stars, Supporting Triads, and Timing</title>
-      <link>https://yuetianai.com/articles/en/ziwei-bengong-meiyou-zhuxing-zenme-du.html</link>
-      <guid isPermaLink="true">https://yuetianai.com/articles/en/ziwei-bengong-meiyou-zhuxing-zenme-du.html</guid>
-      <pubDate>Fri, 31 Jul 2026 14:13:00 +0000</pubDate>
-      <description>Keep the palace meaning, borrow the opposite carefully, verify the supporting structure, and use annual activation before interpreting an empty palace.</description>
-    </item>
-    <item>
-      <title>If You Want to Ask Whether to Marry Across Cities in AI Fortune Telling, Should You Start With Zi Wei or Ba Zi? Separate Relationship Structure From Stage Capacity First</title>
-      <link>https://yuetianai.com/articles/en/ai-suanming-kuacheng-jiehun-xiankan-ziwei-haishi-bazi.html</link>
-      <guid isPermaLink="true">https://yuetianai.com/articles/en/ai-suanming-kuacheng-jiehun-xiankan-ziwei-haishi-bazi.html</guid>
-      <pubDate>Fri, 31 Jul 2026 13:26:00 +0000</pubDate>
-      <description>Cross-city marriage questions mix two layers: the relationship structure itself and the present stage's ability to carry the move. Zi Wei is usually stron…</description>
     </item>
   </channel>
 </rss>
