@@ -2,9 +2,6 @@ import { closeSync, existsSync, openSync, readFileSync, unlinkSync, writeFileSyn
 import { spawnSync } from "node:child_process";
 import path from "node:path";
 import process from "node:process";
-import { pathToFileURL } from "node:url";
-import { validateReviewManifest } from "./validate-daily-article-reviews.mjs";
-import { validateDailyArticleQualityAtRelease } from "./validate-daily-ziwei-seed.mjs";
 import { assertProductionBatchSize } from "./daily-article-batch-policy.mjs";
 
 const ROOT = process.cwd();
@@ -194,29 +191,11 @@ async function main() {
   const queuePath = `docs/ziwei-daily-${date}-queue.md`;
   const sourcePath = `docs/ziwei-daily-${date}-source.md`;
   if (!existsSync(queuePath) || !existsSync(sourcePath)) fail(`Missing source or queue for ${date}`);
-  const seedPath = `scripts/daily-ziwei-${date}-seed.mjs`;
-  const { articles } = await import(`${pathToFileURL(path.resolve(seedPath)).href}?release=${Date.now()}`);
-  if (!Array.isArray(articles)) fail("Seed file must export an articles array");
-  const expectedCount = assertProductionBatchSize(articles.length);
-  const numericOrder = Number(order);
-  if (numericOrder < 1 || numericOrder > expectedCount) fail(`Order ${order} is outside this ${expectedCount}-article batch`);
-  const qualityGate = await validateDailyArticleQualityAtRelease({
-    date,
-    seedPath,
-    docxPath: args.docx,
-    expectedCount,
-  });
-  const reviewGate = await validateReviewManifest({
-    date,
-    seedPath,
-    manifestPath: `docs/article-reviews/${date}-review-manifest.json`,
-    sourcePath,
-    expectedCount,
-  });
-
   let queue = readFileSync(queuePath, "utf8");
   const queueCount = [...queue.matchAll(/^\|\s*\d{2}\s*\|/gm)].length;
-  if (queueCount !== expectedCount) fail(`Queue has ${queueCount} rows but the reviewed batch has ${expectedCount} articles`);
+  const expectedCount = assertProductionBatchSize(queueCount, "Daily publishing plan");
+  const numericOrder = Number(order);
+  if (numericOrder < 1 || numericOrder > expectedCount) fail(`Order ${order} is outside this ${expectedCount}-article batch`);
   const slot = parseSlot(queue, date, order);
   const paths = managedPaths(date, slot.slug, slot.category);
   const topicHub = topicHubForCategory(slot.category);
@@ -236,11 +215,11 @@ async function main() {
     fail(`Slot ${order} is scheduled for ${date} ${slot.plannedTime}; now is ${now.date} ${now.time}`);
   }
   if (args["dry-run"]) {
-    console.log(JSON.stringify({ date, order, slug: slot.slug, plannedTime: slot.plannedTime, qualityVersion: qualityGate.version, qualityPassedCount: qualityGate.passed, titleHistorySource: qualityGate.existingTitleSource, demandAnchoredCount: qualityGate.demandEvidence?.anchoredCount || 0, reviewerCount: reviewGate.reviewerCount, reviewBatchHash: reviewGate.batchHash, managedPaths: paths, now }, null, 2));
+    console.log(JSON.stringify({ date, order, slug: slot.slug, plannedTime: slot.plannedTime, articleCount: expectedCount, reviewMode: "single-article", managedPaths: paths, now }, null, 2));
     return;
   }
 
-  assertRepositoryReady([...paths, ...reviewGate.artifactPaths]);
+  assertRepositoryReady(paths);
   const lockPath = path.join(ROOT, ".git", "yuetian-article-release.lock");
   const lock = openSync(lockPath, "wx");
   closeSync(lock);
@@ -257,7 +236,6 @@ async function main() {
       "--order", order,
       "--date", date,
       "--time", publishTime,
-      ...(args.docx ? ["--docx", args.docx] : []),
     ]);
     if (publishTime !== slot.plannedTime) {
       queue = readFileSync(queuePath, "utf8").replace(

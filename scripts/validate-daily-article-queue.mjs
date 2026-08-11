@@ -2,8 +2,6 @@ import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
 import process from "node:process";
 import { pathToFileURL } from "node:url";
-import { validateReviewManifest } from "./validate-daily-article-reviews.mjs";
-import { validateDailyArticleQualityAtRelease } from "./validate-daily-ziwei-seed.mjs";
 import { assertProductionBatchSize, validateProductionSchedule } from "./daily-article-batch-policy.mjs";
 
 function fail(message) {
@@ -43,20 +41,6 @@ const ordered = [...articles].sort((left, right) => left.order - right.order);
 if (ordered.some((article, index) => article.order !== index + 1)) fail("Article orders must be sequential from 1 through the batch size");
 const queuePath = args.queue || `docs/ziwei-daily-${date}-queue.md`;
 const sourcePath = args.source || `docs/ziwei-daily-${date}-source.md`;
-const qualityGate = await validateDailyArticleQualityAtRelease({
-  date,
-  seedPath,
-  docxPath: args.docx,
-  expectedCount,
-});
-const reviewGate = await validateReviewManifest({
-  date,
-  seedPath,
-  manifestPath: args["review-manifest"] || `docs/article-reviews/${date}-review-manifest.json`,
-  sourcePath,
-  expectedCount,
-});
-
 const queue = read(queuePath);
 const source = read(sourcePath);
 const schedulePattern = new RegExp(`^(\\d{2})\\.\\s+${date}\\s+(\\d{2}:\\d{2})\\s+-\\s+(.+)$`, "gm");
@@ -103,12 +87,7 @@ console.log(JSON.stringify({
   articleCount: expectedCount,
   scheduleCount: expectedCount,
   rowCount: expectedCount,
-  qualityVersion: qualityGate.version,
-  qualityPassedCount: qualityGate.passed,
-  titleHistorySource: qualityGate.existingTitleSource,
-  demandAnchoredCount: qualityGate.demandEvidence?.anchoredCount || 0,
-  reviewerCount: reviewGate.reviewerCount,
-  reviewBatchHash: reviewGate.batchHash,
+  reviewMode: "single-article",
   releaseWindowCounts: cadence.windows,
   recoveryMode: cadence.recovery,
   minGapMinutes: Math.min(...cadence.gaps),

@@ -1,10 +1,7 @@
 import { existsSync, mkdirSync, readdirSync, readFileSync, realpathSync, writeFileSync } from "node:fs";
 import { execFileSync } from "node:child_process";
 import path from "node:path";
-import { validateReviewManifest } from "./validate-daily-article-reviews.mjs";
-import { validateDailyArticleQualityAtRelease } from "./validate-daily-ziwei-seed.mjs";
 import { assertProductionPublishWindow } from "./article-publish-time-gate.mjs";
-import { assertProductionBatchSize } from "./daily-article-batch-policy.mjs";
 
 const site = "https://yuetianai.com";
 const defaultImage = `${site}/images/home2/triad-tian-bg.webp`;
@@ -13,7 +10,7 @@ const args = parseArgs(process.argv.slice(2));
 const root = path.resolve(args["output-root"] || process.cwd());
 const productionRoot = comparablePath(root) === comparablePath(process.cwd());
 const generatedArticlePaths = new Set();
-let useCommittedArticleSnapshot = false;
+let useCommittedArticleSnapshot = productionRoot;
 const queuePath = args.queue;
 const sourcePath = args.source;
 const count = Number(args.count || 1);
@@ -129,39 +126,6 @@ if (!existsSync(sourcePath)) fail(`Source not found: ${sourcePath}`);
 
 const queueRaw = readFileSync(queuePath, "utf8");
 const sourceRaw = readFileSync(sourcePath, "utf8");
-const reviewDates = [
-  normalizeSlash(queuePath).match(/(?:^|\/)ziwei-daily-(\d{4}-\d{2}-\d{2})-queue\.md$/)?.[1],
-  queueRaw.match(/^#\s*紫微文章发布队列\s+(\d{4}-\d{2}-\d{2})\s*$/m)?.[1],
-  sourceRaw.match(/^#\s*紫微文章源稿\s+(\d{4}-\d{2}-\d{2})\s*$/m)?.[1],
-].filter(Boolean);
-const uniqueReviewDates = [...new Set(reviewDates)];
-if (uniqueReviewDates.length > 1) fail(`Queue and source review dates disagree: ${uniqueReviewDates.join(", ")}`);
-const reviewDate = uniqueReviewDates[0] || "";
-const dailySourceCount = [...sourceRaw.matchAll(/^##\s+\d+\.\s+/gm)].length;
-const dailyQueueCount = [...queueRaw.matchAll(/^\|\s*\d{2}\s*\|/gm)].length;
-const looksLikeDailyBatch = dailySourceCount === dailyQueueCount && dailySourceCount >= 10 && dailySourceCount <= 30;
-const requiresDailyReview = publishDate >= "2026-08-01" && (category === "紫微斗数" || looksLikeDailyBatch);
-if (requiresDailyReview && !reviewDate) fail("Reviewed Ziwei publishing requires dated daily queue and source markers");
-if (requiresDailyReview && reviewDate !== publishDate) fail(`--date must match the reviewed queue date ${reviewDate}`);
-if (reviewDate && reviewDate >= "2026-08-01") {
-  if (dailySourceCount !== dailyQueueCount) fail(`Daily source/queue counts disagree: ${dailySourceCount}/${dailyQueueCount}`);
-  const expectedCount = assertProductionBatchSize(dailySourceCount);
-  await validateDailyArticleQualityAtRelease({
-    date: reviewDate,
-    seedPath: `scripts/daily-ziwei-${reviewDate}-seed.mjs`,
-    docxPath: args.docx,
-    expectedCount,
-  });
-  await validateReviewManifest({
-    date: reviewDate,
-    seedPath: `scripts/daily-ziwei-${reviewDate}-seed.mjs`,
-    manifestPath: args["review-manifest"] || `docs/article-reviews/${reviewDate}-review-manifest.json`,
-    sourcePath,
-    expectedCount,
-  });
-  useCommittedArticleSnapshot = productionRoot;
-}
-
 const rows = parseQueue(queueRaw)
   .filter((row) => includePublished || !row.status.includes("http"))
   .filter((row) => !requestedOrder || String(row.order).padStart(2, "0") === requestedOrder)

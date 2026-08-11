@@ -280,7 +280,7 @@ function strategyMarkdown(report) {
   const queries = report.topQueries.length
     ? report.topQueries.slice(0, 10).map((item) => `- ${item.query}：展现 ${item.impressions}，点击 ${item.clicks}`).join("\n")
     : "- 暂无搜索词数据。";
-  return `# 文章数据反馈与次日策略 ${report.date}\n\n数据窗口：${report.days} 天。数据来源：${sourceSummary}。数据只用于调整主题配比和升级旧文，不能替代源文证据，也不能用来批量制造近义页面。\n\n## 可继续深挖但必须换搜索意图\n\n${winners}\n\n## 优先优化原页标题与摘要\n\n${opportunities}\n\n## 优先加强原页内容与内链\n\n${rankingOpportunities}\n\n## 样本不足只观察\n\n${observations}\n\n## 用户真实搜索词\n\n${queries}\n\n## 次日候选配比\n\n${allocationsText}\n\n## 固定约束\n\n- 单个零散点击不构成选题方向，只有达到样本门槛的信号才能触发动作。\n- 排名已靠前但CTR弱时改原页标题摘要；排名偏后时先加强原页答案、例子和内链。\n- 数据强只代表值得继续研究，不代表允许复制标题、开头或例子。\n- 每篇仍须从指定DOCX取得4个观点、2个组合例子并通过质量闸门。\n- 正式批次必须凑齐30篇合格稿；失败稿换题重写，不能降标准或拿薄题补位。\n`;
+  return `# 文章数据反馈与次日策略 ${report.date}\n\n数据窗口：${report.days} 天。数据来源：${sourceSummary}。数据用于理解读者需求、调整主题配比和升级旧文，不作为单篇发布凭证，也不能用来批量制造近义页面。\n\n## 可继续深挖但必须换搜索意图\n\n${winners}\n\n## 优先优化原页标题与摘要\n\n${opportunities}\n\n## 优先加强原页内容与内链\n\n${rankingOpportunities}\n\n## 样本不足只观察\n\n${observations}\n\n## 用户真实搜索词\n\n${queries}\n\n## 次日候选配比\n\n${allocationsText}\n\n## 编辑提示\n\n- 单个零散点击只表示可能的方向，不自动决定选题。\n- 排名已靠前但CTR弱时优先改原页标题摘要；排名偏后时优先加强原页答案和内链。\n- 数据强只代表值得继续研究，不代表允许复制标题、开头或例子。\n- 同步文稿可以提供专业参考，但不要求每篇绑定证据卡。\n- 每日可计划10-30篇；逐篇审核、逐篇发布，一篇返工不影响其他文章。\n`;
 }
 
 async function main() {

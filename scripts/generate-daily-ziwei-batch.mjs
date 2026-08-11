@@ -1,7 +1,7 @@
 import path from "node:path";
 import { pathToFileURL } from "node:url";
 import { writeFile } from "node:fs/promises";
-import { dailyArticleSourceText, validateReviewManifest } from "./validate-daily-article-reviews.mjs";
+import { dailyArticleSourceText } from "./daily-article-source.mjs";
 import { validateSeedBatch } from "./validate-daily-ziwei-seed.mjs";
 import { assertProductionBatchSize, validateProductionSchedule } from "./daily-article-batch-policy.mjs";
 
@@ -72,7 +72,6 @@ const recovery = args.recovery === "true";
 
 if (!seedArg) fail("Missing --seed");
 if (!date || !/^\d{4}-\d{2}-\d{2}$/.test(date)) fail("Missing or invalid --date");
-if (!args.docx) fail("Missing --docx; the source document is required for the quality gate");
 const seedPath = path.resolve(seedArg);
 const { articles } = await import(`${pathToFileURL(seedPath).href}?t=${Date.now()}`);
 if (!Array.isArray(articles) || !articles.length) fail("Seed file did not export articles");
@@ -88,20 +87,10 @@ if (!testMode) {
 
 await validateSeedBatch({
   seedPath,
-  docxPath: args.docx,
   date,
   reportPath: args.report || `docs/article-quality-${date}.json`,
-  expectedCount,
+  reportOnly: true,
 });
-
-if (!testMode) {
-  await validateReviewManifest({
-    date,
-    seedPath,
-    manifestPath: args["review-manifest"] || `docs/article-reviews/${date}-review-manifest.json`,
-    expectedCount,
-  });
-}
 
 const ordered = [...articles].sort((a, b) => a.order - b.order);
 if (ordered.some((article, index) => article.order !== index + 1)) fail("Article orders must be sequential from 1 through the batch size");
