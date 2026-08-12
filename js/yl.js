@@ -19,6 +19,7 @@
   var ALIPAY_CHECKOUT_VISIBLE = true;
   var ALIPAY_CHECKOUT_ENABLED = true;
   var PAYPAL_CHECKOUT_VISIBLE = true;
+  var PAYPAL_CARD_CHECKOUT_VISIBLE = true;
   var PAGE_IDS = ["home", "assessment", "report", "chat", "member"];
   var DEFAULT_API_BASE = "https://api.yuetianai.com";
   var INITIAL_QUERY = new URLSearchParams(window.location.search || "");
@@ -205,6 +206,13 @@
     product: null,
     message: "",
     panelDismissed: false
+  };
+  var paypalCardState = {
+    initializing: false,
+    initPromise: null,
+    ready: false,
+    sdkPromise: null,
+    cardFields: null
   };
   var healthAuthState = {
     loading: false,
@@ -429,6 +437,32 @@
         ? "Alipay (Under Review)"
         : getProviderLabel(provider);
     });
+    setText("#ylCardCheckoutTitle", "Pay directly by card");
+    setText("#ylCardCheckoutSubtitle", "Visa or Mastercard · No PayPal account required");
+    setText("#ylCardNameLabel", "Name on card");
+    setText("#ylCardNumberLabel", "Card number");
+    setText("#ylCardExpiryLabel", "Expiry date");
+    setText("#ylCardCvvLabel", "Security code (CVV)");
+    setText("#ylCardCountryLabel", "Billing country / region");
+    setText("#ylCardAddressLabel", "Billing address");
+    setText("#ylCardCityLabel", "City");
+    setText("#ylCardRegionLabel", "State / Province");
+    setText("#ylCardPostalLabel", "Postal / ZIP code");
+    setText("#ylCardSecurity", "Card details are encrypted and handled by PayPal. Yuetian AI cannot read or store them. Use the billing address registered with the card issuer.");
+    var cardCountry = $("#ylCardCountry");
+    if (cardCountry?.options?.[0]) cardCountry.options[0].textContent = "Select the real billing country / region";
+    var cardAddress = $("#ylCardAddressLine1");
+    if (cardAddress) cardAddress.placeholder = "Street address";
+    var cardPrivacy = $(".yl-card-privacy");
+    var cardPrivacyLink = cardPrivacy?.querySelector("a");
+    if (cardPrivacy && cardPrivacyLink) {
+      cardPrivacyLink.textContent = "Privacy Statement";
+      cardPrivacy.replaceChildren(
+        document.createTextNode("By paying, you agree that PayPal may process payment information under its "),
+        cardPrivacyLink,
+        document.createTextNode(".")
+      );
+    }
     setText("#ylOpenPayBtn", "Confirm account to continue");
     var mobileAssurances = $all(".yl-mobile-assurance span");
     if (mobileAssurances[0]) mobileAssurances[0].textContent = "Automatic activation after payment";
@@ -642,29 +676,40 @@
   }
 
   function getProviderLabel(provider) {
+    if (provider === "paypal_card") return IS_ENGLISH_CHECKOUT ? "Credit / Debit Card" : "国际银行卡";
     if (provider === "paypal") return "PayPal";
     if (provider === "alipay") return IS_ENGLISH_CHECKOUT ? "Alipay" : "支付宝";
     return IS_ENGLISH_CHECKOUT ? "WeChat Pay" : "微信支付";
   }
 
+  function isPayPalProvider(provider) {
+    return provider === "paypal" || provider === "paypal_card";
+  }
+
+  function getBackendProvider(provider) {
+    return provider === "paypal_card" ? "paypal" : provider;
+  }
+
   function getProviderMeta(provider) {
+    var backendProvider = getBackendProvider(provider);
     var fallback = {
-      provider: provider,
+      provider: backendProvider,
       label: getProviderLabel(provider),
       enabled: true,
-      amountYuan: provider === "paypal" ? HEALTH_PAYPAL_AMOUNT : HEALTH_PRODUCT_AMOUNT,
-      currency: provider === "paypal" ? "USD" : "CNY"
+      amountYuan: isPayPalProvider(provider) ? HEALTH_PAYPAL_AMOUNT : HEALTH_PRODUCT_AMOUNT,
+      currency: isPayPalProvider(provider) ? "USD" : "CNY"
     };
     var list = Array.isArray(paymentState.providers) ? paymentState.providers : [];
     if (!list.length) return fallback;
     return list.find(function (item) {
-      return item.provider === provider;
+      return item.provider === backendProvider;
     }) || fallback;
   }
 
   function getProviderMethodDetail(provider) {
     var meta = getProviderMeta(provider);
     if (!meta.enabled) return IS_ENGLISH_CHECKOUT ? "Unavailable" : "暂不可用";
+    if (provider === "paypal_card") return "$" + (meta.amountYuan || HEALTH_PAYPAL_AMOUNT) + " · Visa / Mastercard";
     if (provider === "paypal") return "$" + (meta.amountYuan || HEALTH_PAYPAL_AMOUNT) + (IS_ENGLISH_CHECKOUT ? " · USD" : " · 美元");
     if (provider === "alipay") return IS_ENGLISH_CHECKOUT
       ? (isMobileBrowser() ? "Open in Alipay" : "Scan the QR code")
@@ -674,6 +719,9 @@
   }
 
   function getProviderSelectionHint(provider) {
+    if (provider === "paypal_card") return IS_ENGLISH_CHECKOUT
+      ? "Pay directly by Visa or Mastercard. No PayPal account or phone number is required."
+      : "Visa、Mastercard 可直接支付，无需 PayPal 账号或美国手机号。";
     if (provider === "paypal") return IS_ENGLISH_CHECKOUT ? "Continue to PayPal and pay in USD." : "将前往 PayPal，以美元完成支付。";
     if (provider === "alipay") {
       if (IS_ENGLISH_CHECKOUT) return isMobileBrowser()
@@ -704,6 +752,7 @@
   }
 
   function getCheckoutPayMethod() {
+    if (paymentState.provider === "paypal_card") return "card";
     if (paymentState.provider === "paypal") return "redirect";
     if (shouldUseWechatJsapi()) return "jsapi";
     if (paymentState.provider === "alipay" && isMobileBrowser()) return "h5";
@@ -789,7 +838,7 @@
     var providerMeta = getProviderMeta(paymentState.provider);
     var amount = providerMeta.amountYuan || product.amountYuan || HEALTH_PRODUCT_AMOUNT;
     var currency = providerMeta.currency || product.currency;
-    if (paymentState.provider === "paypal" || currency === "USD") return "$" + amount;
+    if (isPayPalProvider(paymentState.provider) || currency === "USD") return "$" + amount;
     return "¥" + amount;
   }
 
@@ -1437,7 +1486,8 @@
       var detail = getProviderMethodDetail(provider);
       var alipayPendingApproval = provider === "alipay" && !ALIPAY_CHECKOUT_ENABLED;
       var providerVisible = !((provider === "alipay" && !ALIPAY_CHECKOUT_VISIBLE)
-        || (provider === "paypal" && !PAYPAL_CHECKOUT_VISIBLE));
+        || (provider === "paypal" && !PAYPAL_CHECKOUT_VISIBLE)
+        || (provider === "paypal_card" && (!PAYPAL_CHECKOUT_VISIBLE || !PAYPAL_CARD_CHECKOUT_VISIBLE)));
       var providerEnabled = providerVisible && meta.enabled && !alipayPendingApproval;
       button.hidden = !providerVisible;
       button.setAttribute("aria-hidden", providerVisible ? "false" : "true");
@@ -1470,7 +1520,9 @@
       else if (paymentState.status === "pending" && isRedirectPayment()) openButton.textContent = (IS_ENGLISH_CHECKOUT ? "Open " : "打开") + getProviderLabel(paymentState.provider);
       else if (paymentState.status === "pending") openButton.textContent = IS_ENGLISH_CHECKOUT ? "I paid — refresh status" : "我已支付，刷新状态";
       else {
-        var providerPrefix = paymentState.provider === "paypal"
+        var providerPrefix = paymentState.provider === "paypal_card"
+          ? (IS_ENGLISH_CHECKOUT ? "Enter card details and pay " : "填写银行卡支付 ")
+          : paymentState.provider === "paypal"
           ? (IS_ENGLISH_CHECKOUT ? "Pay with PayPal " : "使用 PayPal ")
           : (IS_ENGLISH_CHECKOUT ? "Pay with " : "使用") + getProviderLabel(paymentState.provider) + (IS_ENGLISH_CHECKOUT ? " " : "");
         openButton.textContent = providerPrefix + (IS_ENGLISH_CHECKOUT ? "" : (paymentState.isMember ? "续费 " : "付款 ")) + amount;
@@ -1513,6 +1565,16 @@
     if (mock) mock.hidden = !(paymentState.mockMode && paymentState.orderNo && paymentState.status !== "paid");
     var copyHandoff = $("#ylCopyWechatLinkBtn");
     if (copyHandoff) copyHandoff.hidden = !(paymentState.payMethod === "handoff" && paymentState.payUrl);
+    var cardCheckout = $("#ylCardCheckout");
+    var cardSelected = paymentState.provider === "paypal_card";
+    if (cardCheckout) cardCheckout.hidden = !cardSelected;
+    var cardSubmit = $("#ylCardSubmitBtn");
+    if (cardSubmit) {
+      cardSubmit.disabled = paymentState.loading || !paypalCardState.ready;
+      cardSubmit.textContent = (IS_ENGLISH_CHECKOUT ? "Pay by card " : "使用银行卡支付 ") + amount;
+    }
+    var paymentActions = $(".yl-payment-actions");
+    if (paymentActions) paymentActions.hidden = cardSelected;
 
     renderPaymentQr();
     renderHealthAuthPanel();
@@ -1923,7 +1985,7 @@
       if (Array.isArray(data.providers)) {
         paymentState.providers = data.providers;
         var selected = data.providers.find(function (item) {
-          return item.provider === paymentState.provider;
+          return item.provider === getBackendProvider(paymentState.provider);
         });
         if (selected && selected.currency) {
           paymentState.product = Object.assign({}, paymentState.product || {}, {
@@ -2025,9 +2087,280 @@
     });
   }
 
+  function getPayPalCardErrorMessage(error) {
+    var message = String(error?.message || error || "");
+    if (/instrument_declined|card.*declin|declined/i.test(message)) {
+      return IS_ENGLISH_CHECKOUT
+        ? "The card was declined. Try another card or contact the card issuer."
+        : "银行卡被拒绝，请换卡或联系发卡行确认境外线上支付已开启。";
+    }
+    if (/validation|invalid.*card|card.*invalid|fields?/i.test(message)) {
+      return IS_ENGLISH_CHECKOUT
+        ? "Check the card details and billing address, then try again."
+        : "请检查卡号、有效期、安全码和账单地址后重试。";
+    }
+    if (/authentication|3d.?secure|liability/i.test(message)) {
+      return IS_ENGLISH_CHECKOUT
+        ? "Card security verification did not complete. Please retry or use another card."
+        : "银行卡安全验证未完成，请重试或更换银行卡。";
+    }
+    if (/not eligible|ineligible|unsupported/i.test(message)) {
+      return IS_ENGLISH_CHECKOUT
+        ? "Direct card payment is not available for this device or region. Use PayPal instead."
+        : "当前设备或地区暂不支持银行卡直付，请改用 PayPal。";
+    }
+    return IS_ENGLISH_CHECKOUT
+      ? "The card payment could not be completed. Check the billing details or try another card."
+      : "银行卡付款未完成，请核对真实账单地址，或更换银行卡重试。";
+  }
+
+  function handlePayPalCardFailure(error) {
+    if (isHealthLoginRequiredError(error)) {
+      showHealthLoginRequired();
+      return;
+    }
+    paymentState.loading = false;
+    paymentState.status = "error";
+    paymentState.orderNo = "";
+    paymentState.payUrl = "";
+    paymentState.payMethod = "card";
+    paymentState.message = getPayPalCardErrorMessage(error);
+    paymentState.panelDismissed = false;
+    setPayHint(IS_ENGLISH_CHECKOUT
+      ? "Use the billing address registered with the card issuer."
+      : "请填写发卡行登记的真实账单地址；这里不需要美国手机号。");
+    renderPayment();
+  }
+
+  function loadPayPalCardSdk(config) {
+    if (window.paypal?.CardFields) return Promise.resolve(window.paypal);
+    if (paypalCardState.sdkPromise) return paypalCardState.sdkPromise;
+    if (!config?.clientId || !config?.clientToken) {
+      return Promise.reject(new Error("PayPal card configuration is incomplete"));
+    }
+
+    paypalCardState.sdkPromise = new Promise(function (resolve, reject) {
+      var existing = document.getElementById("ylPayPalCardSdk");
+      if (existing) existing.remove();
+      var currency = /^[A-Z]{3}$/.test(String(config.currency || "")) ? config.currency : "USD";
+      var params = new URLSearchParams({
+        "client-id": config.clientId,
+        components: "card-fields",
+        currency: currency,
+        intent: "capture"
+      });
+      var script = document.createElement("script");
+      script.id = "ylPayPalCardSdk";
+      script.src = "https://www.paypal.com/sdk/js?" + params.toString();
+      script.async = true;
+      script.setAttribute("data-client-token", config.clientToken);
+      script.onload = function () {
+        if (window.paypal?.CardFields) resolve(window.paypal);
+        else reject(new Error("PayPal CardFields unavailable"));
+      };
+      script.onerror = function () {
+        reject(new Error("PayPal SDK failed to load"));
+      };
+      document.head.appendChild(script);
+    }).catch(function (error) {
+      paypalCardState.sdkPromise = null;
+      throw error;
+    });
+
+    return paypalCardState.sdkPromise;
+  }
+
+  async function createPayPalCardOrder() {
+    var order = await apiFetch("/api/payments/create-order", {
+      method: "POST",
+      body: {
+        productKey: HEALTH_PRODUCT_KEY,
+        provider: "paypal",
+        meta: { source: "yl_health_page", checkoutMethod: "card" },
+        analytics: window.yuetianGetAnalyticsContext?.() || null
+      }
+    });
+    var session = await apiFetch("/api/payments/create-session", {
+      method: "POST",
+      body: { orderNo: order.orderNo, payMethod: "card" }
+    });
+    if (!session?.providerOrderId) throw new Error("PayPal did not return an order ID");
+
+    paymentState.status = "pending";
+    paymentState.orderNo = order.orderNo || "";
+    paymentState.payUrl = "";
+    paymentState.payMethod = "card";
+    paymentState.mockMode = false;
+    paymentState.product = {
+      name: order.productName || HEALTH_PRODUCT_NAME,
+      description: order.description || "",
+      amountYuan: order.amountYuan || HEALTH_PAYPAL_AMOUNT,
+      currency: order.currency || "USD"
+    };
+    paymentState.message = IS_ENGLISH_CHECKOUT
+      ? "Confirming the card with the issuer..."
+      : "正在由 PayPal 和发卡行验证银行卡，请稍候…";
+    renderPayment();
+    return session.providerOrderId;
+  }
+
+  async function approvePayPalCardPayment(data) {
+    var liabilityShift = String(data?.liabilityShift || "").toUpperCase();
+    if (liabilityShift === "NO" || liabilityShift === "UNKNOWN") {
+      paymentState.loading = false;
+      paymentState.status = "error";
+      paymentState.orderNo = "";
+      paymentState.message = liabilityShift === "UNKNOWN"
+        ? (IS_ENGLISH_CHECKOUT ? "The card issuer verification service is unavailable. Please retry." : "发卡行验证服务暂不可用，请稍后重试。")
+        : (IS_ENGLISH_CHECKOUT ? "Card security verification failed. Try another card." : "银行卡安全验证未通过，请换卡或联系发卡行。");
+      renderPayment();
+      return;
+    }
+
+    try {
+      var result = await apiFetch("/api/payments/paypal/capture-order", {
+        method: "POST",
+        body: {
+          orderNo: paymentState.orderNo,
+          paypalOrderId: data?.orderID || ""
+        }
+      });
+      if (result.status !== "paid") throw new Error("PayPal capture was not completed");
+      paymentState.status = "paid";
+      paymentState.isMember = true;
+      paymentState.message = getMemberRenewalHint(IS_ENGLISH_CHECKOUT ? "Payment complete" : "银行卡支付成功");
+      trackHealthPurchase(result);
+      await hydratePaymentProduct();
+      setPayHint(getMemberRenewalHint(IS_ENGLISH_CHECKOUT ? "Payment complete" : "支付成功"));
+    } catch (error) {
+      handlePayPalCardFailure(error);
+      return;
+    } finally {
+      paymentState.loading = false;
+      renderPayment();
+    }
+  }
+
+  async function initializePayPalCardFields() {
+    if (paypalCardState.ready && paypalCardState.cardFields) return paypalCardState.cardFields;
+    if (paypalCardState.initPromise) return paypalCardState.initPromise;
+    paypalCardState.initializing = true;
+    paypalCardState.initPromise = (async function () {
+      var config = await apiFetch("/api/payments/paypal/card-config");
+      var paypal = await loadPayPalCardSdk(config);
+      var cardFields = paypal.CardFields({
+        createOrder: createPayPalCardOrder,
+        onApprove: approvePayPalCardPayment,
+        onError: handlePayPalCardFailure,
+        onCancel: function () {
+          paymentState.loading = false;
+          paymentState.status = "card_ready";
+          paymentState.orderNo = "";
+          paymentState.message = IS_ENGLISH_CHECKOUT ? "Card payment cancelled." : "已取消银行卡付款，可重新填写后支付。";
+          renderPayment();
+        },
+        style: {
+          input: {
+            "font-size": "16px",
+            "font-family": "system-ui, -apple-system, Segoe UI, sans-serif",
+            color: "#172b4d"
+          },
+          ".invalid": { color: "#b6251b" }
+        }
+      });
+      if (!cardFields?.isEligible?.()) throw new Error("PayPal CardFields not eligible");
+
+      ["#ylCardNameField", "#ylCardNumberField", "#ylCardExpiryField", "#ylCardCvvField"].forEach(function (selector) {
+        document.querySelector(selector)?.replaceChildren();
+      });
+      await Promise.all([
+        cardFields.NameField().render("#ylCardNameField"),
+        cardFields.NumberField().render("#ylCardNumberField"),
+        cardFields.ExpiryField().render("#ylCardExpiryField"),
+        cardFields.CVVField().render("#ylCardCvvField")
+      ]);
+      paypalCardState.cardFields = cardFields;
+      paypalCardState.ready = true;
+      return cardFields;
+    })().finally(function () {
+      paypalCardState.initializing = false;
+      paypalCardState.initPromise = null;
+    });
+    return paypalCardState.initPromise;
+  }
+
+  async function openPayPalCardCheckout() {
+    if (!PAYPAL_CARD_CHECKOUT_VISIBLE || !PAYPAL_CHECKOUT_VISIBLE) return;
+    if (!requireHealthLogin()) return;
+    window.yuetianTrack?.("begin_checkout", { surface: "unified_member", checkout_source: "paypal_card" });
+    paymentState.panelDismissed = false;
+    paymentState.payUrl = "";
+    paymentState.payMethod = "card";
+    paymentState.orderNo = "";
+    setPayHint(getProviderSelectionHint("paypal_card"));
+
+    if (paypalCardState.ready) {
+      paymentState.status = "card_ready";
+      paymentState.message = IS_ENGLISH_CHECKOUT
+        ? "Enter the card and its real billing address."
+        : "请填写银行卡及其真实账单地址；不需要 PayPal 账号或美国手机号。";
+      renderPayment();
+      return;
+    }
+
+    paymentState.loading = true;
+    paymentState.status = "loading";
+    paymentState.message = IS_ENGLISH_CHECKOUT ? "Loading secure card fields..." : "正在加载 PayPal 安全银行卡输入框…";
+    renderPayment();
+    try {
+      await initializePayPalCardFields();
+      paymentState.status = "card_ready";
+      paymentState.message = IS_ENGLISH_CHECKOUT
+        ? "Enter the card and its real billing address."
+        : "请填写银行卡及其真实账单地址；不需要 PayPal 账号或美国手机号。";
+    } catch (error) {
+      handlePayPalCardFailure(error);
+      return;
+    } finally {
+      paymentState.loading = false;
+      renderPayment();
+    }
+  }
+
+  async function submitPayPalCardPayment(event) {
+    event.preventDefault();
+    if (paymentState.loading || !paypalCardState.ready || !paypalCardState.cardFields) return;
+    var form = $("#ylCardCheckout");
+    if (!form?.checkValidity()) {
+      form?.reportValidity();
+      paymentState.message = IS_ENGLISH_CHECKOUT ? "Complete the billing address." : "请完整填写银行卡的真实账单地址。";
+      renderPayment();
+      return;
+    }
+
+    paymentState.loading = true;
+    paymentState.status = "loading";
+    paymentState.orderNo = "";
+    paymentState.message = IS_ENGLISH_CHECKOUT ? "Connecting securely to PayPal..." : "正在安全连接 PayPal，请勿重复点击…";
+    renderPayment();
+    try {
+      await paypalCardState.cardFields.submit({
+        billingAddress: {
+          addressLine1: ($("#ylCardAddressLine1")?.value || "").trim(),
+          adminArea1: ($("#ylCardRegion")?.value || "").trim(),
+          adminArea2: ($("#ylCardCity")?.value || "").trim(),
+          countryCode: ($("#ylCardCountry")?.value || "").trim().toUpperCase(),
+          postalCode: ($("#ylCardPostalCode")?.value || "").trim()
+        }
+      });
+    } catch (error) {
+      handlePayPalCardFailure(error);
+    }
+  }
+
   async function startHealthPayment() {
     if (paymentState.loading) return;
-    if (paymentState.provider === "paypal" && !PAYPAL_CHECKOUT_VISIBLE) {
+    if (isPayPalProvider(paymentState.provider) && !PAYPAL_CHECKOUT_VISIBLE) {
       paymentState.provider = "wechat";
       paymentState.status = "";
       paymentState.message = "";
@@ -2036,6 +2369,10 @@
       paymentState.payMethod = "";
       setPayHint("海外支付暂未开放，请使用微信支付或支付宝。");
       renderPayment();
+      return;
+    }
+    if (paymentState.provider === "paypal_card") {
+      await openPayPalCardCheckout();
       return;
     }
     if (paymentState.status === "paid") {
@@ -2258,6 +2595,8 @@
         var provider = button.dataset.provider || "wechat";
         if (provider === "alipay" && !ALIPAY_CHECKOUT_ENABLED) return;
         if (provider === "paypal" && !PAYPAL_CHECKOUT_VISIBLE) return;
+        if (provider === "paypal_card" && (!PAYPAL_CHECKOUT_VISIBLE || !PAYPAL_CARD_CHECKOUT_VISIBLE)) return;
+        var previousProvider = paymentState.provider;
         paymentState.provider = provider;
         if (paymentState.status === "handoff") {
           paymentState.status = "";
@@ -2265,6 +2604,13 @@
           paymentState.payUrl = "";
           paymentState.payMethod = "";
           setPayHint("");
+        }
+        if (provider !== previousProvider && !paymentState.orderNo) {
+          paymentState.status = "";
+          paymentState.message = "";
+          paymentState.payUrl = "";
+          paymentState.payMethod = "";
+          paymentState.panelDismissed = true;
         }
         var meta = getProviderMeta(paymentState.provider);
         if (meta.currency) {
@@ -2285,6 +2631,7 @@
     $("#ylRefreshPayBtn").addEventListener("click", refreshHealthPaymentStatus);
     $("#ylPaymentCloseBtn").addEventListener("click", closeHealthPaymentPanel);
     $("#ylMockPayBtn").addEventListener("click", completeMockPayment);
+    $("#ylCardCheckout").addEventListener("submit", submitPayPalCardPayment);
     $("#ylCopyWechatLinkBtn").addEventListener("click", async function () {
       if (readAuthSession() && hasHealthPaymentAuth()) {
         await createWechatPaymentHandoff();
@@ -2353,7 +2700,8 @@
         return;
       }
       if (event.key !== "Tab") return;
-      var focusable = $all("#ylPaymentPanel button:not([disabled]):not([hidden]), #ylPaymentPanel a[href]:not([hidden])");
+      var focusable = $all("#ylPaymentPanel button:not([disabled]):not([hidden]), #ylPaymentPanel a[href]:not([hidden]), #ylPaymentPanel input:not([disabled]), #ylPaymentPanel select:not([disabled]), #ylPaymentPanel iframe")
+        .filter(function (element) { return !element.closest("[hidden]"); });
       if (!focusable.length) return;
       var first = focusable[0];
       var last = focusable[focusable.length - 1];

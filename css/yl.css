@@ -3999,3 +3999,258 @@ html.yl-english-checkout .yl-mobile-assurance {
     font-size: 18px;
   }
 }
+
+/* PayPal-hosted international card checkout */
+.yl-pay-method[data-provider="paypal_card"] {
+  border-color: rgba(0, 48, 135, 0.28);
+  background: #f7f9ff;
+  color: #003087;
+}
+
+.yl-pay-method[data-provider="paypal_card"]::after {
+  color: #46658f;
+}
+
+.yl-pay-method[data-provider="paypal_card"].is-active {
+  border-color: #003087;
+  background: #003087;
+  color: #fff;
+}
+
+.yl-pay-method[data-provider="paypal_card"].is-active::after {
+  color: #b8d6ff;
+}
+
+.yl-member-card[data-provider="paypal_card"] #ylOpenPayBtn {
+  background: #003087;
+}
+
+.yl-member-card[data-provider="paypal_card"] .yl-payment-panel {
+  border-color: rgba(0, 48, 135, 0.22);
+  background: #f7f9ff;
+}
+
+.yl-card-checkout {
+  display: grid;
+  gap: 16px;
+  width: 100%;
+}
+
+.yl-card-checkout[hidden] {
+  display: none;
+}
+
+.yl-card-checkout-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  border-bottom: 1px solid rgba(0, 48, 135, 0.14);
+  padding: 4px 0 14px;
+}
+
+.yl-card-checkout-head > div {
+  display: grid;
+  gap: 4px;
+}
+
+.yl-card-checkout-head strong {
+  color: #172b4d;
+  font-size: 20px;
+}
+
+.yl-card-checkout-head span {
+  color: #5d6c82;
+  font-size: 13px;
+}
+
+.yl-card-checkout-head b {
+  color: #003087;
+  font: 900 italic 22px/1 Arial, sans-serif;
+}
+
+.yl-card-hosted-grid,
+.yl-card-billing-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.yl-card-field {
+  display: grid;
+  min-width: 0;
+  gap: 6px;
+  margin: 0;
+}
+
+.yl-card-field-wide {
+  grid-column: 1 / -1;
+}
+
+.yl-card-field > span {
+  color: #33445f;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.yl-card-hosted-input,
+.yl-card-field input,
+.yl-card-field select {
+  width: 100%;
+  min-height: 50px;
+  border: 1px solid #aab7c9;
+  border-radius: 6px;
+  background: #fff;
+  color: #172b4d;
+  font: 16px/1.3 system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+.yl-card-hosted-input {
+  overflow: hidden;
+  padding: 0 13px;
+}
+
+.yl-card-field input,
+.yl-card-field select {
+  padding: 0 13px;
+}
+
+.yl-card-hosted-input:focus-within,
+.yl-card-field input:focus,
+.yl-card-field select:focus {
+  border-color: #0070ba;
+  outline: 3px solid rgba(0, 112, 186, 0.14);
+  outline-offset: 1px;
+}
+
+.yl-card-security,
+.yl-card-privacy {
+  margin: 0;
+  color: #5d6c82;
+  font-size: 12px;
+  line-height: 1.55;
+  text-align: left;
+}
+
+.yl-card-security {
+  border-left: 3px solid #0070ba;
+  background: #eef7ff;
+  padding: 10px 12px;
+}
+
+.yl-card-privacy {
+  text-align: center;
+}
+
+.yl-card-privacy a {
+  color: #005ea6;
+  font-weight: 800;
+  margin: 0 3px;
+}
+
+.yl-card-submit {
+  width: 100%;
+  min-height: 54px;
+  border: 0;
+  border-radius: 6px;
+  background: #0070ba;
+  color: #fff;
+  font-size: 18px;
+}
+
+.yl-card-submit:hover,
+.yl-card-submit:focus-visible {
+  background: #005ea6;
+}
+
+.yl-card-submit:disabled {
+  cursor: wait;
+  opacity: 0.58;
+}
+
+html.yl-unified-checkout .yl-pay-row {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+html.yl-unified-checkout .yl-pay-row.is-alipay-disabled {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+html.yl-unified-checkout .yl-pay-method[data-provider="paypal_card"]::before {
+  content: "VISA";
+  width: 42px;
+  height: 22px;
+  border-radius: 3px;
+  background: #fff;
+  color: #1434cb;
+  font: 900 italic 12px/22px Arial, sans-serif;
+  letter-spacing: -0.5px;
+  text-align: center;
+}
+
+html.yl-unified-checkout .yl-pay-method.is-active[data-provider="paypal_card"] {
+  border-color: var(--checkout-red);
+  background: var(--checkout-red);
+  color: #fff;
+}
+
+html.yl-unified-checkout .yl-pay-method.is-active[data-provider="paypal_card"]::before {
+  filter: none;
+}
+
+html.yl-unified-checkout .yl-member-card[data-provider="paypal_card"] #ylOpenPayBtn {
+  min-height: 72px;
+  border: 0;
+  border-radius: 6px;
+  background: var(--checkout-red);
+  color: #fff;
+  font-family: "Noto Serif SC", "Songti SC", "STSong", "SimSun", serif;
+  font-size: 25px;
+  font-weight: 700;
+}
+
+html.yl-unified-checkout .yl-member-card[data-provider="paypal_card"] .yl-payment-panel {
+  width: min(700px, calc(100vw - 32px));
+  background: #f7f9ff;
+  padding: 30px 40px;
+}
+
+html.yl-unified-checkout .yl-member-card[data-provider="paypal_card"] .yl-payment-status {
+  color: #33445f;
+  font-size: 15px;
+}
+
+@media (max-width: 720px) {
+  html.yl-unified-checkout .yl-pay-row,
+  html.yl-unified-checkout .yl-pay-row.is-alipay-disabled {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  html.yl-unified-checkout .yl-member-card[data-provider="paypal_card"] #ylOpenPayBtn {
+    min-height: 66px;
+    font-size: 20px;
+  }
+
+  html.yl-unified-checkout .yl-member-card[data-provider="paypal_card"] .yl-payment-panel {
+    width: min(390px, calc(100vw - 20px));
+    max-height: calc(100vh - 20px);
+    padding: 64px 20px 24px;
+  }
+
+  .yl-card-hosted-grid,
+  .yl-card-billing-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .yl-card-field-wide {
+    grid-column: auto;
+  }
+
+  .yl-card-checkout-head strong {
+    font-size: 18px;
+  }
+
+  .yl-card-checkout-head span {
+    font-size: 12px;
+  }
+}

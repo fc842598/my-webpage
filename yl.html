@@ -47,10 +47,10 @@
   <meta name="twitter:image" content="https://yuetianai.com/images/health/constitution-report-hero-v8.png">
   <meta name="theme-color" content="#f8f2e8">
   <link rel="icon" href="/images/wentian-prototype-assets/wentian-brand-logo-ai-gold-v1.webp" type="image/webp">
-  <link rel="stylesheet" href="/css/yl.css?v=20260728-en-checkout-v1">
+  <link rel="stylesheet" href="/css/yl.css?v=20260812-paypal-card-v1">
   <script src="/js/config.js?v=20260710-api-origin-lock-v1"></script>
   <script defer src="/vendor/qrcodejs/qrcode.min.js?v=20260521-local-vendor"></script>
-  <script defer src="/js/yl.js?v=20260812-paypal-test-010-v1"></script>
+  <script defer src="/js/yl.js?v=20260812-paypal-card-v1"></script>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -328,6 +328,7 @@
           <button type="button" class="yl-pay-method is-active" data-provider="wechat">微信支付</button>
           <button type="button" class="yl-pay-method" data-provider="alipay">支付宝审核中</button>
           <button type="button" class="yl-pay-method" data-provider="paypal">PayPal</button>
+          <button type="button" class="yl-pay-method" data-provider="paypal_card">国际银行卡</button>
         </div>
         <button class="yl-btn yl-btn-primary" type="button" id="ylOpenPayBtn">确认开通 ¥19.90</button>
         <div class="yl-mobile-assurance" aria-label="支付保障">
@@ -343,6 +344,74 @@
             <a id="ylPaymentLink" href="#" target="_blank" rel="noopener" hidden>打开支付链接</a>
             <code id="ylPaymentOrderNo"></code>
           </div>
+          <form class="yl-card-checkout" id="ylCardCheckout" hidden novalidate>
+            <div class="yl-card-checkout-head">
+              <div>
+                <strong id="ylCardCheckoutTitle">国际银行卡直接支付</strong>
+                <span id="ylCardCheckoutSubtitle">支持 Visa、Mastercard · 无需 PayPal 账号</span>
+              </div>
+              <b>PayPal</b>
+            </div>
+            <div class="yl-card-hosted-grid" aria-label="银行卡信息由 PayPal 安全处理">
+              <div class="yl-card-field yl-card-field-wide">
+                <span id="ylCardNameLabel">持卡人姓名</span>
+                <div class="yl-card-hosted-input" id="ylCardNameField"></div>
+              </div>
+              <div class="yl-card-field yl-card-field-wide">
+                <span id="ylCardNumberLabel">银行卡号</span>
+                <div class="yl-card-hosted-input" id="ylCardNumberField"></div>
+              </div>
+              <div class="yl-card-field">
+                <span id="ylCardExpiryLabel">有效期</span>
+                <div class="yl-card-hosted-input" id="ylCardExpiryField"></div>
+              </div>
+              <div class="yl-card-field">
+                <span id="ylCardCvvLabel">安全码 CVV</span>
+                <div class="yl-card-hosted-input" id="ylCardCvvField"></div>
+              </div>
+            </div>
+            <div class="yl-card-billing-grid">
+              <label class="yl-card-field yl-card-field-wide">
+                <span id="ylCardCountryLabel">银行卡账单国家/地区</span>
+                <select id="ylCardCountry" autocomplete="country" required>
+                  <option value="">请选择真实账单国家/地区</option>
+                  <option value="US">美国 United States</option>
+                  <option value="CA">加拿大 Canada</option>
+                  <option value="GB">英国 United Kingdom</option>
+                  <option value="AU">澳大利亚 Australia</option>
+                  <option value="SG">新加坡 Singapore</option>
+                  <option value="HK">中国香港 Hong Kong</option>
+                  <option value="TW">中国台湾 Taiwan</option>
+                  <option value="JP">日本 Japan</option>
+                  <option value="KR">韩国 South Korea</option>
+                  <option value="MY">马来西亚 Malaysia</option>
+                  <option value="NZ">新西兰 New Zealand</option>
+                  <option value="DE">德国 Germany</option>
+                  <option value="FR">法国 France</option>
+                  <option value="CN">中国大陆 Mainland China</option>
+                </select>
+              </label>
+              <label class="yl-card-field yl-card-field-wide">
+                <span id="ylCardAddressLabel">账单地址</span>
+                <input id="ylCardAddressLine1" type="text" autocomplete="address-line1" maxlength="200" required placeholder="街道、门牌号">
+              </label>
+              <label class="yl-card-field">
+                <span id="ylCardCityLabel">城市</span>
+                <input id="ylCardCity" type="text" autocomplete="address-level2" maxlength="120" required>
+              </label>
+              <label class="yl-card-field">
+                <span id="ylCardRegionLabel">州 / 省</span>
+                <input id="ylCardRegion" type="text" autocomplete="address-level1" maxlength="120" required>
+              </label>
+              <label class="yl-card-field yl-card-field-wide">
+                <span id="ylCardPostalLabel">邮编</span>
+                <input id="ylCardPostalCode" type="text" inputmode="text" autocomplete="postal-code" maxlength="20" required>
+              </label>
+            </div>
+            <p class="yl-card-security" id="ylCardSecurity">卡号、安全码由 PayPal 加密处理，阅天AI不会读取或保存。账单地址必须与发卡行记录一致。</p>
+            <button class="yl-btn yl-btn-primary yl-card-submit" type="submit" id="ylCardSubmitBtn" disabled>使用银行卡支付 $0.10</button>
+            <p class="yl-card-privacy">付款即表示你同意由 PayPal 按其<a href="https://www.paypal.com/webapps/mpp/ua/privacy-full" target="_blank" rel="noopener">隐私声明</a>处理付款信息。</p>
+          </form>
           <div class="yl-payment-actions">
             <button class="yl-btn yl-btn-primary" type="button" id="ylCopyWechatLinkBtn" hidden>复制链接，去微信付款</button>
             <button class="yl-btn yl-btn-ghost" type="button" id="ylRefreshPayBtn" hidden>刷新支付状态</button>
@@ -353,7 +422,7 @@
       </div>
       <div class="yl-operator">
         <div class="yl-operator-points">
-          <p><b>支付渠道</b><span>微信支付、支付宝、PayPal</span></p>
+          <p><b>支付渠道</b><span>微信支付、支付宝、PayPal、国际银行卡</span></p>
           <p><b>权益开通</b><span>付款确认后自动到账</span></p>
         </div>
         <div class="yl-operator-card">
