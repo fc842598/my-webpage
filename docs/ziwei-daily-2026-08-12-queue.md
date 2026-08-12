@@ -20,11 +20,11 @@ Recovery-Mode: false
 | 顺序 | 状态 | slug | 标题 | 大类 |
 |---|---|---|---|---|
 | 01 | 已发布 2026-08-12 09:16 https://yuetianai.com/articles/ziwei-haoliunian-ziji-meiganjue.html / https://yuetianai.com/articles/en/ziwei-haoliunian-ziji-meiganjue.html | ziwei-haoliunian-ziji-meiganjue | 紫微斗数好流年为什么自己没感觉：吉星有没有落到你正在问的宫位更重要 | 大限流年 |
-| 02 | 待发布 | ziwei-liunian-fumugong-zhangbei-fangzi-shouxu | 紫微斗数流年走到父母宫，是长辈有事还是房子手续先动 | 大限流年 |
-| 03 | 待发布 | ziwei-fumu-gei-ziyuan-zong-ganyu | 紫微斗数父母愿意给资源却总干预：化禄、化权和巨门怎么分 | 宫位组合 |
-| 04 | 待发布 | ziwei-minggong-huaquan-zhujian-haishi-guquan | 紫微斗数命宫化权，到底是主见还是孤权：先看谁来承接你的决定 | 四化细读 |
-| 05 | 待发布 | ziwei-fumugong-hualu-jumen-geiqian-zhengzhi | 紫微斗数父母宫化禄又见巨门，家里给钱为什么也伴随争执 | 四化细读 |
-| 06 | 待发布 | ziwei-pojun-caibo-guanlu-bianjuqian | 紫微斗数破军在财帛和官禄，赚的是变局钱还是重整钱 | 主星 |
+| 02 | 已发布 2026-08-12 10:26 https://yuetianai.com/articles/ziwei-liunian-fumugong-zhangbei-fangzi-shouxu.html / https://yuetianai.com/articles/en/ziwei-liunian-fumugong-zhangbei-fangzi-shouxu.html | ziwei-liunian-fumugong-zhangbei-fangzi-shouxu | 紫微斗数流年走到父母宫，是长辈有事还是房子手续先动 | 大限流年 |
+| 03 | 已发布 2026-08-12 10:26 https://yuetianai.com/articles/ziwei-fumu-gei-ziyuan-zong-ganyu.html / https://yuetianai.com/articles/en/ziwei-fumu-gei-ziyuan-zong-ganyu.html | ziwei-fumu-gei-ziyuan-zong-ganyu | 紫微斗数父母愿意给资源却总干预：化禄、化权和巨门怎么分 | 宫位组合 |
+| 04 | 已发布 2026-08-12 10:26 https://yuetianai.com/articles/ziwei-minggong-huaquan-zhujian-haishi-guquan.html / https://yuetianai.com/articles/en/ziwei-minggong-huaquan-zhujian-haishi-guquan.html | ziwei-minggong-huaquan-zhujian-haishi-guquan | 紫微斗数命宫化权，到底是主见还是孤权：先看谁来承接你的决定 | 四化细读 |
+| 05 | 已发布 2026-08-12 10:26 https://yuetianai.com/articles/ziwei-fumugong-hualu-jumen-geiqian-zhengzhi.html / https://yuetianai.com/articles/en/ziwei-fumugong-hualu-jumen-geiqian-zhengzhi.html | ziwei-fumugong-hualu-jumen-geiqian-zhengzhi | 紫微斗数父母宫化禄又见巨门，家里给钱为什么也伴随争执 | 四化细读 |
+| 06 | 已发布 2026-08-12 10:26 https://yuetianai.com/articles/ziwei-pojun-caibo-guanlu-bianjuqian.html / https://yuetianai.com/articles/en/ziwei-pojun-caibo-guanlu-bianjuqian.html | ziwei-pojun-caibo-guanlu-bianjuqian | 紫微斗数破军在财帛和官禄，赚的是变局钱还是重整钱 | 主星 |
 | 07 | 待发布 | ziwei-tuoluo-qianyigong-tuoshouxu-haishixingdong | 紫微斗数陀罗在迁移宫，拖的是手续、路线还是行动 | 辅煞曜 |
 | 08 | 待发布 | ziwei-yuelang-tianmen-bushi-ruo | 紫微斗数月朗天门为什么不是弱：太阴得位先看清明，不先看柔 | 格局命例 |
 | 09 | 待发布 | ziwei-lianzhen-qisha-fudegong-yingcheng-bunengkang | 紫微斗数廉贞七杀在福德，硬撑和能扛不是一回事 | 格局命例 |
