@@ -5,9 +5,16 @@
     <link>https://yuetianai.com/</link>
     <description>阅天AI官方入口、免费紫微斗数排盘与AI命盘分析相关更新。</description>
     <language>zh-CN</language>
-    <lastBuildDate>Wed, 12 Aug 2026 02:45:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 12 Aug 2026 10:36:00 +0000</lastBuildDate>
     <atom:link href="https://yuetianai.com/feed.xml" rel="self" type="application/rss+xml" />
 
+    <item>
+      <title>紫微斗数陀罗在迁移宫，拖的是手续、路线还是行动</title>
+      <link>https://yuetianai.com/articles/ziwei-tuoluo-qianyigong-tuoshouxu-haishixingdong.html</link>
+      <guid isPermaLink="true">https://yuetianai.com/articles/ziwei-tuoluo-qianyigong-tuoshouxu-haishixingdong.html</guid>
+      <pubDate>Wed, 12 Aug 2026 10:36:00 +0000</pubDate>
+      <description>一说到迁移宫煞曜，很多人先想到出门不顺。可陀罗更常见的，不是事故，而是拖。路线拖、手续拖、决定拖，最后把机会拖成消耗。</description>
+    </item>
     <item>
       <title>紫微斗数财帛宫化科：靠专业赚钱，收入稳但发不了大财？</title>
       <link>https://yuetianai.com/articles/ziwei-caibogong-huake.html</link>
@@ -560,13 +567,6 @@
       <guid isPermaLink="true">https://yuetianai.com/articles/ai-suanming-nongli-runyue-shengri-zenme-tiwen-bucuo.html</guid>
       <pubDate>Sat, 01 Aug 2026 08:41:00 +0000</pubDate>
       <description>“遇到农历闰月生日，怎么提问才不把历法输错”这类题看起来像是在问一个小技巧，实际决定的是后面整轮判断会不会跑偏。只要 历法对齐 和 原始出生记录 没先摆正，AI 很容易先顺着情绪或模…</description>
-    </item>
-    <item>
-      <title>AI算命出生时间只记得饭点前后，先问什么最容易缩小时辰范围？</title>
-      <link>https://yuetianai.com/articles/ai-suanming-chusheng-shijian-zhi-jide-fandian-qianhou-xian-wen-shenme.html</link>
-      <guid isPermaLink="true">https://yuetianai.com/articles/ai-suanming-chusheng-shijian-zhi-jide-fandian-qianhou-xian-wen-shenme.html</guid>
-      <pubDate>Sat, 01 Aug 2026 08:10:00 +0000</pubDate>
-      <description>“出生时间只记得饭点前后，先问什么最容易缩小时辰范围”这类题看起来像是在问一个小技巧，实际决定的是后面整轮判断会不会跑偏。只要 时辰边界 和 最容易验证的宫位差异 没先摆正，AI 很…</description>
     </item>
   </channel>
 </rss>
