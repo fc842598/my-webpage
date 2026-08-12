@@ -2,19 +2,115 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://yuetianai.com/articles/</loc>
-    <lastmod>2026-08-10T19:08:00+08:00</lastmod>
+    <lastmod>2026-08-12T09:16:00+08:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://yuetianai.com/articles/ziwei-minggong-hualu.html</loc>
-    <lastmod>2026-08-11T10:15:00+08:00</lastmod>
+    <loc>https://yuetianai.com/articles/ziwei-learning-path.html</loc>
+    <lastmod>2026-08-12T09:16:00+08:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://yuetianai.com/articles/ziwei-zinvgong-hualu.html</loc>
-    <lastmod>2026-08-11T10:15:00+08:00</lastmod>
+    <loc>https://yuetianai.com/articles/ziwei-palaces.html</loc>
+    <lastmod>2026-08-12T09:16:00+08:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://yuetianai.com/articles/ziwei-four-transformations.html</loc>
+    <lastmod>2026-08-12T09:16:00+08:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://yuetianai.com/articles/ziwei-main-stars.html</loc>
+    <lastmod>2026-08-12T09:16:00+08:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://yuetianai.com/articles/ziwei-helper-malice-stars.html</loc>
+    <lastmod>2026-08-12T09:16:00+08:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://yuetianai.com/articles/ziwei-case-patterns.html</loc>
+    <lastmod>2026-08-12T09:16:00+08:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://yuetianai.com/articles/ziwei-cycles.html</loc>
+    <lastmod>2026-08-12T09:16:00+08:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://yuetianai.com/articles/ziwei-money-career.html</loc>
+    <lastmod>2026-08-12T09:16:00+08:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://yuetianai.com/articles/ai-suanming-search-qa.html</loc>
+    <lastmod>2026-06-24T00:00:00+08:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://yuetianai.com/articles/ziwei-haoliunian-ziji-meiganjue.html</loc>
+    <lastmod>2026-08-12T09:16:00+08:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://yuetianai.com/articles/ziwei-fudegong-hualu.html</loc>
+    <lastmod>2026-08-11T15:30:00+08:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://yuetianai.com/articles/ziwei-jieegong-huaquan.html</loc>
+    <lastmod>2026-08-11T15:30:00+08:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://yuetianai.com/articles/ziwei-qianyigong-huaquan.html</loc>
+    <lastmod>2026-08-11T15:30:00+08:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://yuetianai.com/articles/ziwei-tianzhaigong-hualu.html</loc>
+    <lastmod>2026-08-11T15:30:00+08:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://yuetianai.com/articles/ziwei-xiongdigong-huaquan.html</loc>
+    <lastmod>2026-08-11T15:30:00+08:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://yuetianai.com/articles/ziwei-bankong-zhechi-zhongnian-fanshen.html</loc>
+    <lastmod>2026-08-11T10:26:00+08:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://yuetianai.com/articles/ziwei-fuqigong-liantan-congre-dao-lei.html</loc>
+    <lastmod>2026-08-11T10:26:00+08:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://yuetianai.com/articles/ziwei-yuelang-tianmen-huaji-poge.html</loc>
+    <lastmod>2026-08-11T10:26:00+08:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
@@ -36,58 +132,15 @@
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
-
   <url>
-    <loc>https://yuetianai.com/articles/ziwei-learning-path.html</loc>
-    <lastmod>2026-08-10T19:08:00+08:00</lastmod>
+    <loc>https://yuetianai.com/articles/ziwei-minggong-hualu.html</loc>
+    <lastmod>2026-08-11T10:15:00+08:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://yuetianai.com/articles/ziwei-palaces.html</loc>
-    <lastmod>2026-08-10T19:08:00+08:00</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://yuetianai.com/articles/ziwei-four-transformations.html</loc>
-    <lastmod>2026-08-10T19:08:00+08:00</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://yuetianai.com/articles/ziwei-main-stars.html</loc>
-    <lastmod>2026-08-10T19:08:00+08:00</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://yuetianai.com/articles/ziwei-helper-malice-stars.html</loc>
-    <lastmod>2026-08-10T19:08:00+08:00</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://yuetianai.com/articles/ziwei-case-patterns.html</loc>
-    <lastmod>2026-08-10T19:08:00+08:00</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://yuetianai.com/articles/ziwei-cycles.html</loc>
-    <lastmod>2026-08-10T19:08:00+08:00</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://yuetianai.com/articles/ziwei-money-career.html</loc>
-    <lastmod>2026-08-10T19:08:00+08:00</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://yuetianai.com/articles/ai-suanming-search-qa.html</loc>
-    <lastmod>2026-06-24T00:00:00+08:00</lastmod>
+    <loc>https://yuetianai.com/articles/ziwei-zinvgong-hualu.html</loc>
+    <lastmod>2026-08-11T10:15:00+08:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
@@ -2319,7 +2372,7 @@
   </url>
   <url>
     <loc>https://yuetianai.com/articles/ai-suanming-kaopu-ma.html</loc>
-    <lastmod>2026-08-11T17:40:00+08:00</lastmod>
+    <lastmod>2026-07-25T00:11:00+08:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
@@ -4163,54 +4216,6 @@
     <loc>https://yuetianai.com/articles/ziwei-shengong.html</loc>
     <lastmod>2026-06-23T08:59:50+08:00</lastmod>
     <changefreq>daily</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://yuetianai.com/articles/ziwei-bankong-zhechi-zhongnian-fanshen.html</loc>
-    <lastmod>2026-08-11T10:26:00+08:00</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://yuetianai.com/articles/ziwei-yuelang-tianmen-huaji-poge.html</loc>
-    <lastmod>2026-08-11T10:26:00+08:00</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://yuetianai.com/articles/ziwei-fuqigong-liantan-congre-dao-lei.html</loc>
-    <lastmod>2026-08-11T10:26:00+08:00</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://yuetianai.com/articles/ziwei-tianzhaigong-hualu.html</loc>
-    <lastmod>2026-08-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://yuetianai.com/articles/ziwei-fudegong-hualu.html</loc>
-    <lastmod>2026-08-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://yuetianai.com/articles/ziwei-xiongdigong-huaquan.html</loc>
-    <lastmod>2026-08-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://yuetianai.com/articles/ziwei-jieegong-huaquan.html</loc>
-    <lastmod>2026-08-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://yuetianai.com/articles/ziwei-qianyigong-huaquan.html</loc>
-    <lastmod>2026-08-11</lastmod>
-    <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
 </urlset>
