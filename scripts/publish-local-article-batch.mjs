@@ -2599,7 +2599,7 @@ function existingSitemapUrls() {
 }
 
 function mainSitemap(articles) {
-  const urls = new Set(existingSitemapUrls());
+  const urls = new Set(existingSitemapUrls().filter((url) => !url.startsWith(`${site}/articles/`)));
   urls.add(`${site}/articles/`);
   urls.add(`${site}/feed.xml`);
   for (const hub of topicHubs) urls.add(`${site}/articles/${hub.file}`);
