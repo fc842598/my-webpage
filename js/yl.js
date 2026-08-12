@@ -1570,11 +1570,14 @@
     if (cardCheckout) cardCheckout.hidden = !cardSelected;
     var cardSubmit = $("#ylCardSubmitBtn");
     if (cardSubmit) {
-      cardSubmit.disabled = paymentState.loading || !paypalCardState.ready;
-      cardSubmit.textContent = (IS_ENGLISH_CHECKOUT ? "Pay by card " : "使用银行卡支付 ") + amount;
+      var cardPending = paymentState.status === "pending" && !!paymentState.orderNo;
+      cardSubmit.disabled = paymentState.loading || !paypalCardState.ready || cardPending;
+      cardSubmit.textContent = cardPending
+        ? (IS_ENGLISH_CHECKOUT ? "Payment processing" : "付款处理中，请勿重复提交")
+        : (IS_ENGLISH_CHECKOUT ? "Pay by card " : "使用银行卡支付 ") + amount;
     }
     var paymentActions = $(".yl-payment-actions");
-    if (paymentActions) paymentActions.hidden = cardSelected;
+    if (paymentActions) paymentActions.hidden = cardSelected && !(paymentState.status === "pending" && !!paymentState.orderNo);
 
     renderPaymentQr();
     renderHealthAuthPanel();
@@ -2089,6 +2092,46 @@
 
   function getPayPalCardErrorMessage(error) {
     var message = String(error?.message || error || "");
+    var code = String(error?.code || "").toUpperCase();
+    var englishMessages = {
+      PAYPAL_CAPTURE_PENDING: "The card issuer is still processing this payment. Do not submit it again; refresh the status shortly.",
+      PAYPAL_CARD_CVV_MISMATCH: "The security code did not match the issuer's records. Check the CVV and try again.",
+      PAYPAL_CARD_INSUFFICIENT_FUNDS: "The card has insufficient available credit. Use another card or contact the issuer.",
+      PAYPAL_CARD_ADDRESS_MISMATCH: "The billing address did not match the issuer's records. Enter the exact registered billing address.",
+      PAYPAL_CARD_EXPIRED: "The card has expired. Use another card.",
+      PAYPAL_CARD_NOT_PERMITTED: "The issuer does not allow this international online payment. Contact the issuer or use another card.",
+      PAYPAL_CARD_RESTRICTED: "This card is restricted or cannot be used for this payment. Use another card.",
+      PAYPAL_CARD_3DS_ERROR: "Card security verification did not complete. Retry the verification or use another card.",
+      PAYPAL_CARD_3DS_FAILED: "Card security verification failed. Contact the issuer or use another card.",
+      PAYPAL_CARD_RISK_DECLINED: "PayPal declined this payment for risk checks. Use another card or contact PayPal.",
+      PAYPAL_CARD_DECLINED: "The issuer or PayPal declined this payment. Check the billing address, contact the issuer, or use another card.",
+      PAYPAL_CARD_PROCESSING_NOT_ENABLED: "The merchant account is not yet enabled for direct card payments. Please contact support.",
+      PAYPAL_MERCHANT_VERIFICATION_REQUIRED: "The merchant PayPal account needs verification before it can receive this payment.",
+      PAYPAL_MERCHANT_ACTION_REQUIRED: "The merchant PayPal account needs a receiving-setting update before this payment can complete.",
+      PAYPAL_PROCESSOR_UNAVAILABLE: "The card network is temporarily unavailable. Try again later.",
+      PAYPAL_CARD_ISSUER_UNAVAILABLE: "The issuer is temporarily unavailable. Try again later or use another card."
+    };
+    var chineseMessages = {
+      PAYPAL_CAPTURE_PENDING: "发卡行正在处理这笔付款，请不要重复提交，稍后刷新支付状态。",
+      PAYPAL_CARD_CVV_MISMATCH: "安全码未通过发卡行验证，请核对 CVV 后重试。",
+      PAYPAL_CARD_INSUFFICIENT_FUNDS: "银行卡可用额度不足，请更换银行卡或联系发卡行。",
+      PAYPAL_CARD_ADDRESS_MISMATCH: "账单地址未通过发卡行验证，请填写银行登记的真实账单地址。",
+      PAYPAL_CARD_EXPIRED: "银行卡已过期，请更换有效银行卡。",
+      PAYPAL_CARD_NOT_PERMITTED: "发卡行不允许这笔境外线上付款，请联系发卡行或更换银行卡。",
+      PAYPAL_CARD_RESTRICTED: "该银行卡受限或不支持本次付款，请更换银行卡。",
+      PAYPAL_CARD_3DS_ERROR: "银行卡安全验证未完成，请重新验证或更换银行卡。",
+      PAYPAL_CARD_3DS_FAILED: "银行卡安全验证失败，请联系发卡行或更换银行卡。",
+      PAYPAL_CARD_RISK_DECLINED: "本次付款被 PayPal 风控拒绝，请更换银行卡或联系 PayPal。",
+      PAYPAL_CARD_DECLINED: "发卡行或 PayPal 未批准这笔付款，请核对账单地址、联系发卡行或更换银行卡。",
+      PAYPAL_CARD_PROCESSING_NOT_ENABLED: "商户 PayPal 账户尚未开通银行卡处理能力，请联系支持。",
+      PAYPAL_MERCHANT_VERIFICATION_REQUIRED: "商户 PayPal 账户需要先完成验证，当前暂时无法收款。",
+      PAYPAL_MERCHANT_ACTION_REQUIRED: "商户 PayPal 账户需要先处理收款设置，当前暂时无法完成付款。",
+      PAYPAL_PROCESSOR_UNAVAILABLE: "银行卡处理网络暂时异常，请稍后重试。",
+      PAYPAL_CARD_ISSUER_UNAVAILABLE: "发卡行暂时不可用，请稍后重试或更换银行卡。"
+    };
+    if ((IS_ENGLISH_CHECKOUT ? englishMessages : chineseMessages)[code]) {
+      return (IS_ENGLISH_CHECKOUT ? englishMessages : chineseMessages)[code];
+    }
     if (/instrument_declined|card.*declin|declined/i.test(message)) {
       return IS_ENGLISH_CHECKOUT
         ? "The card was declined. Try another card or contact the card issuer."
@@ -2120,16 +2163,71 @@
       return;
     }
     paymentState.loading = false;
-    paymentState.status = "error";
-    paymentState.orderNo = "";
+    paymentState.status = error?.code === "PAYPAL_CAPTURE_PENDING" ? "pending" : "error";
     paymentState.payUrl = "";
     paymentState.payMethod = "card";
     paymentState.message = getPayPalCardErrorMessage(error);
     paymentState.panelDismissed = false;
-    setPayHint(IS_ENGLISH_CHECKOUT
-      ? "Use the billing address registered with the card issuer."
-      : "请填写发卡行登记的真实账单地址；这里不需要美国手机号。");
+    setPayHint(error?.code === "PAYPAL_CAPTURE_PENDING"
+      ? (IS_ENGLISH_CHECKOUT ? "Do not submit another payment while this order is processing." : "该订单仍在银行处理中，请勿重复付款，可稍后刷新状态。")
+      : (IS_ENGLISH_CHECKOUT
+        ? "Use the billing address registered with the card issuer."
+        : "请填写发卡行登记的真实账单地址；这里不需要美国手机号。"));
     renderPayment();
+  }
+
+  function updatePayPalCardBillingRules() {
+    var country = String($("#ylCardCountry")?.value || "").toUpperCase();
+    var region = $("#ylCardRegion");
+    var regionLabel = $("#ylCardRegionLabel");
+    var postal = $("#ylCardPostalCode");
+    if (!region || !postal) return;
+
+    region.setCustomValidity("");
+    postal.setCustomValidity("");
+    region.removeAttribute("pattern");
+    postal.removeAttribute("pattern");
+    region.maxLength = 120;
+    region.placeholder = "";
+    postal.placeholder = "";
+
+    if (country === "US" || country === "CA") {
+      region.maxLength = 2;
+      region.pattern = "[A-Za-z]{2}";
+      region.placeholder = country === "US"
+        ? (IS_ENGLISH_CHECKOUT ? "e.g. OR" : "如 OR")
+        : (IS_ENGLISH_CHECKOUT ? "e.g. ON" : "如 ON");
+      if (regionLabel) {
+        regionLabel.textContent = country === "US"
+          ? (IS_ENGLISH_CHECKOUT ? "State code (2 letters)" : "州代码（2位）")
+          : (IS_ENGLISH_CHECKOUT ? "Province code (2 letters)" : "省代码（2位）");
+      }
+    } else if (regionLabel) {
+      regionLabel.textContent = IS_ENGLISH_CHECKOUT ? "State / Province" : "州 / 省";
+    }
+
+    if (country === "US") {
+      postal.pattern = "[0-9]{5}(-?[0-9]{4})?";
+      postal.placeholder = IS_ENGLISH_CHECKOUT ? "e.g. 97201" : "如 97201";
+    }
+  }
+
+  function validatePayPalCardBillingAddress() {
+    updatePayPalCardBillingRules();
+    var country = String($("#ylCardCountry")?.value || "").toUpperCase();
+    var region = $("#ylCardRegion");
+    var postal = $("#ylCardPostalCode");
+    if (region && (country === "US" || country === "CA")) {
+      region.value = region.value.trim().toUpperCase();
+      if (!/^[A-Z]{2}$/.test(region.value)) {
+        region.setCustomValidity(country === "US"
+          ? (IS_ENGLISH_CHECKOUT ? "Enter the 2-letter state code, for example OR." : "请填写两位州代码，例如 OR；不要填写中文或州全名。")
+          : (IS_ENGLISH_CHECKOUT ? "Enter the 2-letter province code, for example ON." : "请填写两位省代码，例如 ON。"));
+      }
+    }
+    if (postal && country === "US" && !/^[0-9]{5}(?:-?[0-9]{4})?$/.test(postal.value.trim())) {
+      postal.setCustomValidity(IS_ENGLISH_CHECKOUT ? "Enter a valid US ZIP code." : "请填写正确的美国邮编，例如 97201。");
+    }
   }
 
   function loadPayPalCardSdk(config) {
@@ -2330,10 +2428,17 @@
   async function submitPayPalCardPayment(event) {
     event.preventDefault();
     if (paymentState.loading || !paypalCardState.ready || !paypalCardState.cardFields) return;
+    if (paymentState.status === "pending" && paymentState.orderNo) {
+      await refreshHealthPaymentStatus();
+      return;
+    }
     var form = $("#ylCardCheckout");
+    validatePayPalCardBillingAddress();
     if (!form?.checkValidity()) {
       form?.reportValidity();
-      paymentState.message = IS_ENGLISH_CHECKOUT ? "Complete the billing address." : "请完整填写银行卡的真实账单地址。";
+      paymentState.message = IS_ENGLISH_CHECKOUT
+        ? "Complete the billing address exactly as registered with the issuer."
+        : "请按发卡行记录完整填写真实账单地址；美国州请填两位代码，如 OR。";
       renderPayment();
       return;
     }
@@ -2541,9 +2646,17 @@
       } else {
         releasePaymentBoot();
       }
-      paymentState.message = data.status === "paid"
-        ? getMemberRenewalHint("支付已完成")
-        : "暂未确认支付成功，请完成付款后再刷新。";
+      if (data.status === "paid") {
+        paymentState.message = getMemberRenewalHint("支付已完成");
+      } else if (data.payment?.code && data.payment.code !== "PAYPAL_CAPTURE_PENDING") {
+        paymentState.status = "error";
+        paymentState.message = data.payment.message || getPayPalCardErrorMessage({ code: data.payment.code });
+      } else if (data.payment?.message) {
+        paymentState.status = "pending";
+        paymentState.message = data.payment.message;
+      } else {
+        paymentState.message = "暂未确认支付成功，请完成付款后再刷新。";
+      }
     } catch (error) {
       paymentState.message = error.message || "支付状态查询失败";
       releasePaymentBoot();
@@ -2632,6 +2745,16 @@
     $("#ylPaymentCloseBtn").addEventListener("click", closeHealthPaymentPanel);
     $("#ylMockPayBtn").addEventListener("click", completeMockPayment);
     $("#ylCardCheckout").addEventListener("submit", submitPayPalCardPayment);
+    $("#ylCardCountry").addEventListener("change", updatePayPalCardBillingRules);
+    $("#ylCardRegion").addEventListener("input", function (event) {
+      var country = String($("#ylCardCountry")?.value || "").toUpperCase();
+      if (country === "US" || country === "CA") event.currentTarget.value = event.currentTarget.value.toUpperCase();
+      event.currentTarget.setCustomValidity("");
+    });
+    $("#ylCardPostalCode").addEventListener("input", function (event) {
+      event.currentTarget.setCustomValidity("");
+    });
+    updatePayPalCardBillingRules();
     $("#ylCopyWechatLinkBtn").addEventListener("click", async function () {
       if (readAuthSession() && hasHealthPaymentAuth()) {
         await createWechatPaymentHandoff();
