@@ -18,7 +18,7 @@
   var HEALTH_PAYPAL_AMOUNT = "2.99";
   var ALIPAY_CHECKOUT_VISIBLE = true;
   var ALIPAY_CHECKOUT_ENABLED = true;
-  var PAYPAL_CHECKOUT_VISIBLE = false;
+  var PAYPAL_CHECKOUT_VISIBLE = true;
   var PAGE_IDS = ["home", "assessment", "report", "chat", "member"];
   var DEFAULT_API_BASE = "https://api.yuetianai.com";
   var INITIAL_QUERY = new URLSearchParams(window.location.search || "");
