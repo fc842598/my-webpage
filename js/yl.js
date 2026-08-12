@@ -15,7 +15,7 @@
   var HEALTH_PRODUCT_KEY = "monthly_member";
   var HEALTH_PRODUCT_NAME = "阅天综合会员";
   var HEALTH_PRODUCT_AMOUNT = "19.90";
-  var HEALTH_PAYPAL_AMOUNT = "2.99";
+  var HEALTH_PAYPAL_AMOUNT = "0.10";
   var ALIPAY_CHECKOUT_VISIBLE = true;
   var ALIPAY_CHECKOUT_ENABLED = true;
   var PAYPAL_CHECKOUT_VISIBLE = true;
