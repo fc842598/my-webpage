@@ -26,6 +26,6 @@ Recovery-Mode: false
 | 05 | 已发布 2026-08-12 10:26 https://yuetianai.com/articles/ziwei-fumugong-hualu-jumen-geiqian-zhengzhi.html / https://yuetianai.com/articles/en/ziwei-fumugong-hualu-jumen-geiqian-zhengzhi.html | ziwei-fumugong-hualu-jumen-geiqian-zhengzhi | 紫微斗数父母宫化禄又见巨门，家里给钱为什么也伴随争执 | 四化细读 |
 | 06 | 已发布 2026-08-12 10:26 https://yuetianai.com/articles/ziwei-pojun-caibo-guanlu-bianjuqian.html / https://yuetianai.com/articles/en/ziwei-pojun-caibo-guanlu-bianjuqian.html | ziwei-pojun-caibo-guanlu-bianjuqian | 紫微斗数破军在财帛和官禄，赚的是变局钱还是重整钱 | 主星 |
 | 07 | 已发布 2026-08-12 18:36 https://yuetianai.com/articles/ziwei-tuoluo-qianyigong-tuoshouxu-haishixingdong.html / https://yuetianai.com/articles/en/ziwei-tuoluo-qianyigong-tuoshouxu-haishixingdong.html | ziwei-tuoluo-qianyigong-tuoshouxu-haishixingdong | 紫微斗数陀罗在迁移宫，拖的是手续、路线还是行动 | 辅煞曜 |
-| 08 | 待发布 | ziwei-yuelang-tianmen-bushi-ruo | 紫微斗数月朗天门为什么不是弱：太阴得位先看清明，不先看柔 | 格局命例 |
+| 08 | 已发布 2026-08-12 20:02 https://yuetianai.com/articles/ziwei-yuelang-tianmen-bushi-ruo.html / https://yuetianai.com/articles/en/ziwei-yuelang-tianmen-bushi-ruo.html | ziwei-yuelang-tianmen-bushi-ruo | 紫微斗数月朗天门为什么不是弱：太阴得位先看清明，不先看柔 | 格局命例 |
 | 09 | 待发布 | ziwei-lianzhen-qisha-fudegong-yingcheng-bunengkang | 紫微斗数廉贞七杀在福德，硬撑和能扛不是一回事 | 格局命例 |
 | 10 | 待发布 | ziwei-guanlugong-hangye-zhiwei-zeren-shui-zhong | 紫微斗数官禄宫到底更偏行业、职位还是责任：别把三个问题揉成一句话 | 看盘方法 |
