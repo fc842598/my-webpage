@@ -6,16 +6,40 @@
   var CLIENT_ID_KEY = "ziwei_client_id";
   var GUEST_ASK_LIMIT = 3;
   var FREE_ASK_LIMIT = 8;
-  var MEMBER_ASK_LIMIT = 80;
+  var MEMBER_ASK_LIMIT = 30;
   var AUTH_SESSION_KEY = "wentian-app-auth-session-v1";
   var AUTH_REFRESH_SKEW_MS = 60 * 1000;
   var PAYMENT_HANDOFF_KEY = "yuetian-payment-handoff-v2";
   var MEMBER_RETURN_KEY = "yuetian-member-return-v1";
   var MEMBER_RETURN_TTL_MS = 2 * 60 * 60 * 1000;
+  var MEMBER_PRODUCTS = {
+    monthly_member: {
+      productKey: "monthly_member",
+      name: "三人深度月卡",
+      nameEn: "Three-Profile Monthly Pass",
+      amountYuan: "19.90",
+      paypalAmount: "4.99",
+      chartLimit: 3,
+      dailyChatLimit: 30,
+      chartText: "可保存3位命主",
+      chartTextEn: "Save up to 3 profiles"
+    },
+    unlimited_member: {
+      productKey: "unlimited_member",
+      name: "无限畅享月卡",
+      nameEn: "Unlimited Monthly Pass",
+      amountYuan: "69.90",
+      paypalAmount: "14.99",
+      chartLimit: null,
+      dailyChatLimit: 100,
+      chartText: "不限命主人数",
+      chartTextEn: "Unlimited profiles"
+    }
+  };
   var HEALTH_PRODUCT_KEY = "monthly_member";
-  var HEALTH_PRODUCT_NAME = "阅天综合会员";
-  var HEALTH_PRODUCT_AMOUNT = "19.90";
-  var HEALTH_PAYPAL_AMOUNT = "0.10";
+  var HEALTH_PRODUCT_NAME = MEMBER_PRODUCTS.monthly_member.name;
+  var HEALTH_PRODUCT_AMOUNT = MEMBER_PRODUCTS.monthly_member.amountYuan;
+  var HEALTH_PAYPAL_AMOUNT = MEMBER_PRODUCTS.monthly_member.paypalAmount;
   var ALIPAY_CHECKOUT_VISIBLE = true;
   var ALIPAY_CHECKOUT_ENABLED = true;
   var PAYPAL_CHECKOUT_VISIBLE = true;
@@ -23,11 +47,18 @@
   var PAGE_IDS = ["home", "assessment", "report", "chat", "member"];
   var DEFAULT_API_BASE = "https://api.yuetianai.com";
   var INITIAL_QUERY = new URLSearchParams(window.location.search || "");
+  if (MEMBER_PRODUCTS[INITIAL_QUERY.get("productKey")]) {
+    HEALTH_PRODUCT_KEY = INITIAL_QUERY.get("productKey");
+    HEALTH_PRODUCT_NAME = MEMBER_PRODUCTS[HEALTH_PRODUCT_KEY].name;
+    HEALTH_PRODUCT_AMOUNT = MEMBER_PRODUCTS[HEALTH_PRODUCT_KEY].amountYuan;
+    HEALTH_PAYPAL_AMOUNT = MEMBER_PRODUCTS[HEALTH_PRODUCT_KEY].paypalAmount;
+    MEMBER_ASK_LIMIT = MEMBER_PRODUCTS[HEALTH_PRODUCT_KEY].dailyChatLimit;
+  }
   var INITIAL_RETURN_URL = INITIAL_QUERY.get("returnUrl") || "";
   var IS_ENGLISH_CHECKOUT = INITIAL_QUERY.get("lang") === "en"
     || /(?:\?|&)lang=en(?:&|#|$)/.test(INITIAL_RETURN_URL);
   var HEALTH_PAGE_TITLE = "AI中医体质分析 - 体质自评报告与健康追问";
-  var MEMBER_PAGE_TITLE = IS_ENGLISH_CHECKOUT ? "Yuetian AI Membership Checkout" : "阅天综合会员支付";
+  var MEMBER_PAGE_TITLE = IS_ENGLISH_CHECKOUT ? "Yuetian AI Monthly Pass Checkout" : "阅天AI月卡支付";
 
   var categories = [
     {
@@ -214,6 +245,75 @@
     sdkPromise: null,
     cardFields: null
   };
+
+  function getSelectedMemberProduct() {
+    return MEMBER_PRODUCTS[HEALTH_PRODUCT_KEY] || MEMBER_PRODUCTS.monthly_member;
+  }
+
+  function applySelectedMemberProduct(productKey) {
+    var product = MEMBER_PRODUCTS[productKey] || MEMBER_PRODUCTS.monthly_member;
+    HEALTH_PRODUCT_KEY = product.productKey;
+    HEALTH_PRODUCT_NAME = product.name;
+    HEALTH_PRODUCT_AMOUNT = product.amountYuan;
+    HEALTH_PAYPAL_AMOUNT = product.paypalAmount;
+    MEMBER_ASK_LIMIT = product.dailyChatLimit;
+    paymentState.product = {
+      productKey: product.productKey,
+      name: product.name,
+      amountYuan: product.amountYuan,
+      currency: "CNY",
+      chartLimit: product.chartLimit,
+      dailyChatLimit: product.dailyChatLimit,
+      periodDays: 31
+    };
+  }
+
+  function renderMemberPlanSelection() {
+    var product = getSelectedMemberProduct();
+    $all(".yl-plan-option").forEach(function (button) {
+      var active = button.dataset.productKey === product.productKey;
+      button.classList.toggle("is-active", active);
+      button.setAttribute("aria-pressed", active ? "true" : "false");
+      button.disabled = paymentState.loading || paymentState.status === "pending";
+    });
+    var planName = $("#ylSelectedPlanName");
+    var planPeriod = $("#ylSelectedPlanPeriod");
+    var planCharts = $("#ylSelectedPlanCharts");
+    var planReading = $("#ylSelectedPlanReading");
+    var planChats = $("#ylSelectedPlanChats");
+    if (planName) planName.textContent = IS_ENGLISH_CHECKOUT ? product.nameEn : product.name;
+    if (planPeriod) planPeriod.textContent = IS_ENGLISH_CHECKOUT ? "Valid for 31 days" : "有效期31天";
+    if (planCharts) planCharts.innerHTML = "<b>1</b> " + (IS_ENGLISH_CHECKOUT ? product.chartTextEn : product.chartText);
+    if (planReading) planReading.innerHTML = "<b>2</b> " + (IS_ENGLISH_CHECKOUT
+      ? "Full chart and in-depth readings"
+      : "完整基础排盘与深度解读");
+    if (planChats) planChats.innerHTML = "<b>3</b> " + (IS_ENGLISH_CHECKOUT
+      ? product.dailyChatLimit + " follow-up questions per day"
+      : "每天可追问" + product.dailyChatLimit + "次");
+  }
+
+  async function selectMemberProduct(productKey) {
+    if (!MEMBER_PRODUCTS[productKey] || paymentState.loading || paymentState.status === "pending") return;
+    if (HEALTH_PRODUCT_KEY === productKey) return;
+    applySelectedMemberProduct(productKey);
+    paymentState.providers = [];
+    paymentState.status = "";
+    paymentState.message = "";
+    paymentState.orderNo = "";
+    paymentState.payUrl = "";
+    paymentState.payMethod = "";
+    paymentState.panelDismissed = false;
+    try {
+      var url = new URL(window.location.href);
+      url.searchParams.set("productKey", productKey);
+      window.history.replaceState({}, document.title, url.toString());
+    } catch (_error) {}
+    renderMemberPlanSelection();
+    renderPayment();
+    if (readAuthSession()) await hydratePaymentProduct();
+  }
+
+  applySelectedMemberProduct(HEALTH_PRODUCT_KEY);
   var healthAuthState = {
     loading: false,
     panelOpen: false,
@@ -400,12 +500,22 @@
       skipLink.textContent = "Skip to membership checkout";
     }
     setText(".yl-brand-checkout", "Yuetian AI");
-    setText(".yl-member-main span", "Yuetian AI Membership");
-    setText(".yl-member-main p", "Site Access · AI Chat");
-    setText(".yl-member-benefits > strong", "Plan Benefits");
-    var benefits = $all(".yl-member-benefits span");
-    if (benefits[0]) benefits[0].innerHTML = "<b>1</b> Full website access";
-    if (benefits[1]) benefits[1].innerHTML = "<b>2</b> 80 AI chats per day";
+    setText("#ylPlanPickerTitle", "Choose a Monthly Pass");
+    setText(".yl-plan-picker-head span", "Both passes are valid for 31 days");
+    $all(".yl-plan-option").forEach(function (button) {
+      var product = MEMBER_PRODUCTS[button.dataset.productKey];
+      if (!product) return;
+      var name = button.querySelector("span");
+      var price = button.querySelector("strong");
+      var detail = button.querySelector("em");
+      if (name) name.textContent = product.nameEn;
+      if (price) price.innerHTML = "$" + product.paypalAmount + " <small>/ 31 days</small>";
+      if (detail) detail.textContent = product.chartLimit
+        ? product.chartLimit + " profiles · Full readings · " + product.dailyChatLimit + " questions/day"
+        : "Unlimited profiles · Full readings · " + product.dailyChatLimit + " questions/day";
+    });
+    setText(".yl-member-benefits > strong", "This Pass Includes");
+    renderMemberPlanSelection();
     setText(".yl-assurance-title", "Secure Checkout");
     var assurances = $all(".yl-payment-assurance > span");
     var assuranceCopy = [
@@ -513,6 +623,7 @@
         url.searchParams.set("source", memberCheckoutContext.source);
         url.searchParams.set("returnUrl", memberCheckoutContext.returnPath);
       }
+      url.searchParams.set("productKey", HEALTH_PRODUCT_KEY);
       return url.toString();
     } catch (_error) {
       return String(value || "");
@@ -902,8 +1013,8 @@
   function getMemberRenewalHint(prefix) {
     var dateText = formatMemberExpiryDate(getMemberExpiresAt());
     return dateText
-      ? (prefix || "会员有效") + "，当前有效期至 " + dateText + "；再次购买自动顺延 31 天。"
-      : (prefix || "会员有效") + "；再次购买自动顺延 31 天。";
+      ? (prefix || "月卡有效") + "，当前有效期至 " + dateText + "；再次购买自动顺延31天。"
+      : (prefix || "月卡有效") + "；再次购买自动顺延31天。";
   }
 
   function renderMembershipState() {
@@ -911,21 +1022,32 @@
     if (!wrap) return;
     var quota = state.quota || {};
     var loaded = paymentState.membershipLoaded || paymentState.isMember || !!quota.plan;
-    var isMember = isHealthMember() || quota.isMember || quota.plan === "member";
+    var isMember = isHealthMember() || quota.isMember;
     var expiresAt = getMemberExpiresAt();
     var dateText = formatMemberExpiryDate(expiresAt);
     var days = getMemberRemainingDays(expiresAt);
     var plan = $("#ylMemberPlan");
     var expiry = $("#ylMemberExpiry");
     var remaining = $("#ylMemberRemaining");
-    var fallbackLimit = isMember ? MEMBER_ASK_LIMIT : FREE_ASK_LIMIT;
-    var dailyLimit = Number(quota.dailyLimit || quota.limit || fallbackLimit);
-    if (!Number.isFinite(dailyLimit) || dailyLimit <= 0) dailyLimit = fallbackLimit;
-    var dailyRemaining = quota.dailyRemaining ?? quota.remaining;
-    var quotaText = "每天 " + dailyLimit + " 次 AI 对话";
-    if (typeof dailyRemaining === "number") {
-      quotaText += " · 今日剩余 " + Math.max(0, dailyRemaining) + " 次";
+    var selectedProduct = getSelectedMemberProduct();
+    var fallbackLimit = isMember ? selectedProduct.dailyChatLimit : FREE_ASK_LIMIT;
+    var quotaMode = quota.quotaMode || (isMember ? "daily" : "lifetime");
+    var limit = Number((quotaMode === "daily" ? quota.dailyLimit : quota.lifetimeLimit) || quota.limit || fallbackLimit);
+    if (!Number.isFinite(limit) || limit <= 0) limit = fallbackLimit;
+    var quotaRemaining = quotaMode === "daily"
+      ? (quota.dailyRemaining ?? quota.remaining)
+      : (quota.lifetimeRemaining ?? quota.remaining);
+    var quotaText = quotaMode === "daily" ? "每天 " + limit + " 次追问" : "共 " + limit + " 次追问";
+    if (typeof quotaRemaining === "number") {
+      quotaText += (quotaMode === "daily" ? " · 今日剩余 " : " · 剩余 ") + Math.max(0, quotaRemaining) + " 次";
     }
+    var chartLimit = quota.chartLimit == null && isMember
+      ? null
+      : Number(quota.chartLimit || (isMember ? selectedProduct.chartLimit : 1));
+    var chartUsed = Math.max(0, Number(quota.chartUsage?.used || 0));
+    var chartText = chartLimit == null
+      ? "不限命主人数 · 已使用 " + chartUsed + " 位"
+      : "命主人数 " + chartUsed + "/" + chartLimit + " 位";
 
     wrap.hidden = false;
     wrap.dataset.plan = loaded ? (isMember ? "member" : "free") : "loading";
@@ -936,18 +1058,18 @@
       return;
     }
 
-    if (plan) plan.textContent = isMember ? "付费会员" : "免费用户";
+    if (plan) plan.textContent = isMember ? (quota.planName || "月卡用户") : "免费用户";
     if (expiry) {
       expiry.textContent = isMember
         ? (dateText ? "有效期至 " + dateText : "会员权益已生效")
-        : "当前未开通会员";
+        : "已登录，尚未开通月卡";
     }
     if (remaining) {
       if (isMember) {
         remaining.textContent = (days ? "剩余 " + days + " 天 · " : "")
-          + quotaText + " · 续费顺延 31 天";
+          + quotaText + " · " + chartText + " · 续费顺延31天";
       } else {
-        remaining.textContent = quotaText + " · 开通会员后每天 " + MEMBER_ASK_LIMIT + " 次";
+        remaining.textContent = quotaText + " · 可使用1位命主";
       }
     }
   }
@@ -955,14 +1077,19 @@
   function updateAskQuota() {
     var quota = state.quota || {};
     var hasSession = !!readAuthSession();
-    var isMember = isHealthMember() || quota.isMember || quota.plan === "member";
-    var isGuest = quota.plan === "guest" || (!hasSession && !quota.plan && !quota.dailyLimit && !quota.limit);
-    var fallbackLimit = isMember ? MEMBER_ASK_LIMIT : (isGuest ? GUEST_ASK_LIMIT : FREE_ASK_LIMIT);
-    var limit = Number(quota.dailyLimit || quota.limit || fallbackLimit);
-    var remaining = quota.dailyRemaining ?? quota.remaining;
-    var label = isMember ? "会员 " + limit + "条/天" : (isGuest ? "体验 " + limit + "条/天" : "免费 " + limit + "条/天");
-    if (typeof remaining === "number") label += " · 剩余 " + Math.max(0, remaining);
-    if (!isMember && typeof remaining === "number" && remaining <= 0) label = "开通会员 " + MEMBER_ASK_LIMIT + "条/天";
+    var isMember = isHealthMember() || quota.isMember;
+    var isGuest = quota.plan === "guest" || (!hasSession && !quota.plan && !quota.lifetimeLimit && !quota.limit);
+    var quotaMode = quota.quotaMode || (isMember ? "daily" : "lifetime");
+    var fallbackLimit = isMember ? getSelectedMemberProduct().dailyChatLimit : (isGuest ? GUEST_ASK_LIMIT : FREE_ASK_LIMIT);
+    var limit = Number((quotaMode === "daily" ? quota.dailyLimit : quota.lifetimeLimit) || quota.limit || fallbackLimit);
+    var remaining = quotaMode === "daily"
+      ? (quota.dailyRemaining ?? quota.remaining)
+      : (quota.lifetimeRemaining ?? quota.remaining);
+    var label = isMember
+      ? (quota.planName || "月卡") + " " + limit + "次/天"
+      : (isGuest ? "体验 " + limit + "次" : "免费 " + limit + "次");
+    if (typeof remaining === "number") label += " · 剩余" + Math.max(0, remaining);
+    if (!isMember && typeof remaining === "number" && remaining <= 0) label = "选择月卡继续使用";
 
     ["#ylAskQuota", "#ylAskQuotaPreview"].forEach(function (selector) {
       var el = $(selector);
@@ -1043,14 +1170,17 @@
     if (miniQuota) {
       var quota = state.quota || {};
       var hasSession = !!readAuthSession();
-      var isMember = isHealthMember() || quota.isMember || quota.plan === "member";
-      var isGuest = quota.plan === "guest" || (!hasSession && !quota.plan && !quota.dailyLimit && !quota.limit);
+      var isMember = isHealthMember() || quota.isMember;
+      var isGuest = quota.plan === "guest" || (!hasSession && !quota.plan && !quota.lifetimeLimit && !quota.limit);
+      var quotaMode = quota.quotaMode || (isMember ? "daily" : "lifetime");
       var fallbackLimit = isMember ? MEMBER_ASK_LIMIT : (isGuest ? GUEST_ASK_LIMIT : FREE_ASK_LIMIT);
-      var limit = Number(quota.dailyLimit || quota.limit || fallbackLimit);
-      var remaining = quota.dailyRemaining ?? quota.remaining;
+      var limit = Number((quotaMode === "daily" ? quota.dailyLimit : quota.lifetimeLimit) || quota.limit || fallbackLimit);
+      var remaining = quotaMode === "daily"
+        ? (quota.dailyRemaining ?? quota.remaining)
+        : (quota.lifetimeRemaining ?? quota.remaining);
       miniQuota.textContent = typeof remaining === "number"
-        ? "追问额度：" + Math.max(0, remaining) + "/" + limit + "条"
-        : "追问额度：" + limit + "条/天";
+        ? "追问次数：" + Math.max(0, remaining) + "/" + limit + "次"
+        : "追问次数：" + limit + (quotaMode === "daily" ? "次/天" : "次");
     }
   }
 
@@ -1384,10 +1514,13 @@
         }
       });
       state.quota = data.quota || state.quota;
-      if (state.quota && typeof state.quota.dailyUsed === "number") state.askCount = state.quota.dailyUsed;
+      if (state.quota) {
+        var usedCount = state.quota.quotaMode === "daily" ? state.quota.dailyUsed : state.quota.lifetimeUsed;
+        if (typeof usedCount === "number") state.askCount = usedCount;
+      }
       appendChatMessage("assistant", data.reply || buildAnswer(text, primary));
       if (data.quotaExceeded) {
-        setPayHint("免费追问已用完，可开通阅天综合会员提升到 " + MEMBER_ASK_LIMIT + "条/天。");
+        setPayHint("当前可用追问次数已用完，请选择月卡继续使用。");
       }
     } catch (error) {
       appendChatMessage("assistant", "健康模型暂时没有连上，请稍后再试。你也可以先把问题具体到睡眠、脾胃、情绪或手脚冷热其中一项。");
@@ -1477,6 +1610,7 @@
 
   function renderPayment() {
     var accountConfirmed = hasHealthPaymentAuth();
+    renderMemberPlanSelection();
     var payRow = $(".yl-pay-row");
     if (payRow) payRow.classList.toggle("is-alipay-disabled", !ALIPAY_CHECKOUT_VISIBLE);
     $all(".yl-pay-method").forEach(function (button) {
@@ -1492,6 +1626,8 @@
       button.hidden = !providerVisible;
       button.setAttribute("aria-hidden", providerVisible ? "false" : "true");
       button.classList.toggle("is-active", paymentState.provider === provider);
+      button.classList.toggle("is-pending-approval", alipayPendingApproval);
+      button.classList.toggle("is-provider-unavailable", !meta.enabled);
       button.disabled = !accountConfirmed || paymentState.loading || paymentState.status === "pending" || !providerEnabled;
       button.textContent = alipayPendingApproval
         ? label + (IS_ENGLISH_CHECKOUT ? " (Under Review)" : "审核中")
@@ -1729,8 +1865,8 @@
         : (healthAuthState.reauth ? "确认并继续付款" : (registering ? "注册并登录" : "登录并继续")));
     var goPayButton = $("#ylHealthGoPayBtn");
     if (goPayButton) goPayButton.textContent = IS_ENGLISH_CHECKOUT
-      ? (paymentState.isMember ? "Renew Membership" : "Open Membership")
-      : (paymentState.isMember ? "续费综合会员" : "开通综合会员");
+      ? (paymentState.isMember ? "Renew Monthly Pass" : "Choose a Monthly Pass")
+      : (paymentState.isMember ? "续费月卡" : "选择月卡");
   }
 
   function setHealthAuthMode(mode) {
@@ -1976,10 +2112,12 @@
 
   async function hydratePaymentProduct() {
     paymentState.membershipLoaded = false;
+    var requestedProductKey = HEALTH_PRODUCT_KEY;
     try {
-      var data = await apiFetch("/api/payments/member-status?productKey=" + encodeURIComponent(HEALTH_PRODUCT_KEY));
+      var data = await apiFetch("/api/payments/member-status?productKey=" + encodeURIComponent(requestedProductKey));
+      if (requestedProductKey !== HEALTH_PRODUCT_KEY) return;
       if (data.product) paymentState.product = data.product;
-      if (data.quota) state.quota = data.quota;
+      if (data.quota) state.quota = { ...data.quota, chartUsage: data.chartUsage || null };
       paymentState.isMember = !!(data.productEntitlement?.isMember || data.quota?.isMember);
       paymentState.memberExpiresAt = data.productEntitlement?.expiresAt
         || data.quota?.memberExpiresAt
@@ -2521,7 +2659,7 @@
 
     paymentState.loading = true;
     paymentState.status = "loading";
-    paymentState.message = "正在创建" + getProviderLabel(paymentState.provider) + "阅天综合会员订单...";
+    paymentState.message = "正在创建" + getProviderLabel(paymentState.provider) + HEALTH_PRODUCT_NAME + "订单...";
     updatePaymentBoot("正在打开" + getProviderLabel(paymentState.provider), "账号已识别，正在准备付款，请稍候。", false);
     paymentState.orderNo = "";
     paymentState.payUrl = "";
@@ -2702,6 +2840,11 @@
   }
 
   function bindPaymentEvents() {
+    $all(".yl-plan-option").forEach(function (button) {
+      button.addEventListener("click", function () {
+        selectMemberProduct(button.dataset.productKey || "monthly_member");
+      });
+    });
     $all(".yl-pay-method").forEach(function (button) {
       button.addEventListener("click", function () {
         if (paymentState.loading || paymentState.status === "pending") return;

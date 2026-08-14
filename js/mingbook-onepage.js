@@ -143,10 +143,11 @@
   const desktopMemberProductKey = 'monthly_member';
   const desktopUnifiedMemberUrl = '/yl.html';
   const unifiedAuthStorageKey = 'wentian-app-auth-session-v1';
-  const desktopFreeDailyLimit = 20;
-  const desktopPaidDailyLimit = 80;
-  const desktopPaidProductName = '阅天综合会员';
-  const desktopPaidProductDesc = '1、解锁网站全部权限；2、AI 对话 80 次/天。';
+  const desktopChartPersonClaimsKey = 'mingbook-chart-person-claims-v1';
+  const desktopFreeDailyLimit = 8;
+  const desktopPaidDailyLimit = 30;
+  const desktopPaidProductName = '三人深度月卡';
+  const desktopPaidProductDesc = '31天内可保存3位命主，查看完整解读，每天可追问30次。';
   const desktopPaymentPollMs = 3000;
   const desktopPaymentState = {
     open: false,
@@ -726,7 +727,7 @@
   }
 
   function getDesktopQuotaPlanName(quota = desktopAuthState.quota) {
-    return quota?.isMember ? '综合会员' : '免费版';
+    return quota?.isMember ? (quota.planName || '月卡用户') : '免费用户';
   }
 
   function getDesktopQuotaLabelName(quota = desktopAuthState.quota) {
@@ -735,9 +736,12 @@
 
   function getDesktopQuotaSharedText(quota = desktopAuthState.quota) {
     const plan = getDesktopQuotaPlanName(quota);
-    const dailyLimit = quota?.baseDailyLimit ?? quota?.dailyLimit ?? quota?.limit ?? (quota?.isMember ? desktopPaidDailyLimit : desktopFreeDailyLimit);
     const expiresText = getDesktopMemberExpiresText(quota);
-    return `${plan}额度与手机端共用：${dailyLimit}次/天，按日刷新${expiresText ? ` · ${expiresText}` : ''}`;
+    const quotaMode = quota?.quotaMode || (quota?.isMember ? 'daily' : 'lifetime');
+    const limit = quotaMode === 'daily'
+      ? (quota?.dailyLimit ?? quota?.limit ?? desktopPaidDailyLimit)
+      : (quota?.lifetimeLimit ?? quota?.limit ?? desktopFreeDailyLimit);
+    return `${plan}权益与手机端共用：${limit}次${quotaMode === 'daily' ? '/天' : ''}${expiresText ? ` · ${expiresText}` : ''}`;
   }
 
   function formatDesktopMemberDate(value) {
@@ -769,26 +773,7 @@
 
   function normalizeDesktopQuota(quota) {
     if (!quota) return quota;
-    if (quota.testingUnlimited) return quota;
-    const isMember = !!quota.isMember;
-    const baseLimit = isMember ? desktopPaidDailyLimit : desktopFreeDailyLimit;
-    const used = Number(quota.dailyUsed ?? quota.used ?? 0) || 0;
-    const bonusRemaining = Math.max(0, Number(quota.referralBonus?.remaining || 0));
-    const dailyLimit = baseLimit + bonusRemaining;
-    const dailyRemaining = Math.max(0, dailyLimit - used);
-    return {
-      ...quota,
-      dailyLimit,
-      limit: dailyLimit,
-      baseDailyLimit: baseLimit,
-      dailyRemaining,
-      remaining: dailyRemaining,
-      monthlyLimit: null,
-      baseMonthlyLimit: null,
-      monthlyRemaining: null,
-      baseMonthlyRemaining: null,
-      monthlyUsed: null,
-    };
+    return { ...quota };
   }
 
   function getDesktopPaymentProviders() {
@@ -825,15 +810,15 @@
     const label = $('#mbpMemberPayLabel');
     const meta = $('#mbpMemberPayMeta');
     const trigger = $('#mbpMemberPayTrigger');
-    if (label) label.textContent = '会员';
-    if (meta) meta.textContent = isMember ? (expiresText ? expiresText.replace('有效期', '') : '会员有效') : `¥${product.amountYuan || '19.90'}`;
+    if (label) label.textContent = '月卡';
+    if (meta) meta.textContent = isMember ? (expiresText ? expiresText.replace('有效期', '') : '月卡有效') : '¥19.90起';
     if (trigger) {
       trigger.classList.toggle('is-member', isMember);
       trigger.disabled = desktopPaymentState.loading;
     }
     const authPay = $('#mbpAuthMemberPay');
     if (authPay) {
-      authPay.textContent = isMember ? `续费 ¥${product.amountYuan || '19.90'}` : `开通综合会员 ¥${product.amountYuan || '19.90'}`;
+      authPay.textContent = isMember ? '续费月卡' : '选择月卡';
       authPay.disabled = desktopAuthState.loading || desktopPaymentState.loading;
     }
   }
@@ -856,7 +841,7 @@
     if (authTrigger) authTrigger.classList.toggle('is-member', loggedIn && !!desktopAuthState.quota?.isMember);
     const authTriggerMeta = $('#mbpAuthTriggerMeta');
     if (authTriggerMeta && loggedIn) {
-      authTriggerMeta.textContent = desktopAuthState.quota?.isMember ? 'VIP已开通' : '电脑端已登录';
+      authTriggerMeta.textContent = desktopAuthState.quota?.isMember ? (desktopAuthState.quota.planName || '月卡已开通') : '免费用户';
     }
     const statusWrap = document.querySelector('#aip-panel-chat .xb-status-hidden');
     if (statusWrap) statusWrap.hidden = !loggedIn;
@@ -864,8 +849,13 @@
     if (quotaBar) quotaBar.style.display = loggedIn && desktopAuthState.quota ? 'flex' : 'none';
     const quotaText = $('#chat-quota-text');
     if (quotaText) {
-      const remaining = desktopAuthState.quota?.dailyRemaining ?? desktopAuthState.quota?.remaining ?? '--';
-      const limit = desktopAuthState.quota?.dailyLimit ?? desktopAuthState.quota?.limit ?? '--';
+      const quotaMode = desktopAuthState.quota?.quotaMode || (desktopAuthState.quota?.isMember ? 'daily' : 'lifetime');
+      const remaining = quotaMode === 'daily'
+        ? (desktopAuthState.quota?.dailyRemaining ?? desktopAuthState.quota?.remaining ?? '--')
+        : (desktopAuthState.quota?.lifetimeRemaining ?? desktopAuthState.quota?.remaining ?? '--');
+      const limit = quotaMode === 'daily'
+        ? (desktopAuthState.quota?.dailyLimit ?? desktopAuthState.quota?.limit ?? '--')
+        : (desktopAuthState.quota?.lifetimeLimit ?? desktopAuthState.quota?.limit ?? '--');
       quotaText.textContent = `${remaining} / ${limit}`;
     }
     const upgrade = $('#chat-quota-upgrade');
@@ -875,17 +865,24 @@
     const labelName = getDesktopQuotaLabelName();
     const daily = $('#mbpAuthQuotaDaily');
     if (daily) {
-      const remaining = desktopAuthState.quota?.dailyRemaining ?? '--';
-      const limit = desktopAuthState.quota?.dailyLimit ?? '--';
+      const quotaMode = desktopAuthState.quota?.quotaMode || (desktopAuthState.quota?.isMember ? 'daily' : 'lifetime');
+      const remaining = quotaMode === 'daily'
+        ? (desktopAuthState.quota?.dailyRemaining ?? '--')
+        : (desktopAuthState.quota?.lifetimeRemaining ?? '--');
+      const limit = quotaMode === 'daily'
+        ? (desktopAuthState.quota?.dailyLimit ?? '--')
+        : (desktopAuthState.quota?.lifetimeLimit ?? '--');
       daily.textContent = `${remaining}/${limit}`;
     }
-    setDesktopQuotaLabel('#mbpAuthQuotaDaily', `今日${labelName}额度`);
+    setDesktopQuotaLabel('#mbpAuthQuotaDaily', desktopAuthState.quota?.isMember ? `今日${labelName}追问` : `${labelName}追问剩余`);
     const monthly = $('#mbpAuthQuotaMonthly');
     if (monthly) {
-      const limit = desktopAuthState.quota?.dailyLimit ?? desktopAuthState.quota?.limit ?? (desktopAuthState.quota?.isMember ? desktopPaidDailyLimit : desktopFreeDailyLimit);
-      monthly.textContent = `${limit}次/天`;
+      const chartLimit = desktopAuthState.quota?.chartLimit;
+      const chartUsed = Number(desktopAuthState.quota?.chartUsage?.used || 0);
+      monthly.textContent = chartLimit == null && desktopAuthState.quota?.isMember
+        ? `已用${chartUsed}位` : `${chartUsed}/${chartLimit || 1}位`;
     }
-    setDesktopQuotaLabel('#mbpAuthQuotaMonthly', `每日${labelName}额度`);
+    setDesktopQuotaLabel('#mbpAuthQuotaMonthly', '命盘权益');
     const badge = $('#mbpAuthSessionBadge');
     if (badge) badge.textContent = planName;
 
@@ -894,6 +891,7 @@
     const sessionMeta = $('#mbpAuthSessionMeta');
     if (sessionMeta && loggedIn) sessionMeta.textContent = getDesktopQuotaSharedText();
     updateDesktopMemberEntry();
+    renderBasicReadingAccess();
   }
 
   window._updateQuotaDisplay = updateDesktopQuotaDisplay;
@@ -917,7 +915,7 @@
     const triggerMeta = $('#mbpAuthTriggerMeta');
     if (triggerMeta) {
       triggerMeta.textContent = loggedIn
-        ? (desktopAuthState.quota?.isMember ? 'VIP已开通' : '电脑端已登录')
+        ? (desktopAuthState.quota?.isMember ? (desktopAuthState.quota.planName || '月卡已开通') : '免费用户')
         : '电脑端账号';
     }
 
@@ -1049,7 +1047,7 @@
     try {
       const query = state.chartRecordId ? `?chartRecordId=${encodeURIComponent(state.chartRecordId)}` : '';
       const data = await desktopFetchJson(`/api/payments/member-status${query}`);
-      updateDesktopQuotaDisplay(data.quota || null);
+      updateDesktopQuotaDisplay(data.quota ? { ...data.quota, chartUsage: data.chartUsage || null } : null);
       if (data.product) desktopPaymentState.product = data.product;
       setDesktopPaymentProviders(data.providers);
       desktopPaymentState.mockMode = !!data.mockMode;
@@ -1166,7 +1164,7 @@
     try {
       const data = await desktopFetchJson(`/api/payments/order-status?orderNo=${encodeURIComponent(desktopPaymentState.orderNo)}`);
       desktopPaymentState.status = data.status || desktopPaymentState.status;
-      desktopPaymentState.message = data.status === 'paid' ? '已开通综合会员' : `等待${getDesktopPaymentProviderLabel()}完成`;
+      desktopPaymentState.message = data.status === 'paid' ? '月卡已开通' : `等待${getDesktopPaymentProviderLabel()}完成`;
       if (data.status === 'paid') {
         trackDesktopPurchase(data);
         stopDesktopPaymentPoll();
@@ -1283,7 +1281,7 @@
       });
       desktopPaymentState.status = data.status || 'paid';
       if (desktopPaymentState.status === 'paid') trackDesktopPurchase(data);
-      desktopPaymentState.message = '已开通综合会员';
+      desktopPaymentState.message = '月卡已开通';
       await hydrateDesktopMemberStatus({ force: true });
     } catch (error) {
       desktopPaymentState.error = error.message || '测试支付失败';
@@ -2067,6 +2065,43 @@
       .slice(0, 50);
   }
 
+  function getDesktopChartClaimsStorageKey() {
+    const scope = desktopAuthState.session?.user?.id || getCustomerClientId();
+    return `${desktopChartPersonClaimsKey}:${String(scope || 'guest').slice(0, 128)}`;
+  }
+
+  function claimDesktopChartPerson(chartRecordId, records = readCustomerHistoryRecords()) {
+    const recordId = String(chartRecordId || '').trim();
+    if (!recordId) return true;
+    if (desktopAuthState.session?.user && !desktopAuthState.quota) return true;
+    const rawLimit = desktopAuthState.quota?.chartLimit;
+    const chartLimit = desktopAuthState.quota?.isMember && rawLimit == null ? null : Math.max(1, Number(rawLimit) || 1);
+    const claimed = new Set();
+    try {
+      const stored = JSON.parse(localStorage.getItem(getDesktopChartClaimsStorageKey()) || '[]');
+      if (Array.isArray(stored)) stored.forEach((item) => claimed.add(String(item || '').trim()));
+    } catch (_) {}
+    records.forEach((record) => {
+      const existingId = String(record?.chartRecordId || record?.chartData?.chartRecordId || '').trim();
+      if (existingId) claimed.add(existingId);
+    });
+    claimed.delete('');
+    if (!claimed.has(recordId) && Number.isFinite(chartLimit) && claimed.size >= chartLimit) {
+      const message = chartLimit === 1
+        ? '当前账号可使用1位命主。资料填错时请修改原档案；如需增加命主，请选择月卡。'
+        : `当前月卡可使用${chartLimit}位命主；如需继续增加，请更换月卡。`;
+      setDecodeStatus(message);
+      openDesktopAuth('login');
+      setDesktopAuthError(message);
+      return false;
+    }
+    claimed.add(recordId);
+    try {
+      localStorage.setItem(getDesktopChartClaimsStorageKey(), JSON.stringify([...claimed].slice(-500)));
+    } catch (_) {}
+    return true;
+  }
+
   function saveProfileToHistory(profile, options = {}) {
     const key = profileHistoryKey(profile);
     const records = readCustomerHistoryRecords();
@@ -2076,6 +2111,7 @@
       || profileHistoryKey(recordToProfile(item)) === key) || null;
     const id = old?.id || options.id || state.chartRecordId || makeLocalId();
     const chartRecordId = old?.chartRecordId || options.chartRecordId || state.chartRecordId || id;
+    if (!claimDesktopChartPerson(chartRecordId, records)) return null;
     const record = profileToRecord(profile, {
       id,
       chartRecordId,
@@ -2095,9 +2131,14 @@
 
   async function fetchCustomerRemoteArchives() {
     const clientId = getCustomerClientId();
+    const token = await getDesktopAuthToken();
     const response = await fetch(`${aiBackendBase}/api/wentian/archives?clientId=${encodeURIComponent(clientId)}`, {
       method: 'GET',
-      headers: { Accept: 'application/json' },
+      headers: {
+        Accept: 'application/json',
+        'x-wentian-client-id': clientId,
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      },
     });
     const data = await response.json().catch(() => ({}));
     if (!response.ok || data.error) throw new Error(data.error || '客户盘读取失败');
@@ -2114,9 +2155,14 @@
     renderClientList();
     try {
       const clientId = getCustomerClientId();
+      const token = await getDesktopAuthToken();
       const response = await fetch(`${aiBackendBase}/api/wentian/archives`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'x-wentian-client-id': clientId,
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
         body: JSON.stringify({
           clientId,
           archives,
@@ -2124,12 +2170,21 @@
         }),
       });
       const data = await response.json().catch(() => ({}));
-      if (!response.ok || data.error) throw new Error(data.error || '客户盘同步失败');
+      if (!response.ok || data.error) {
+        const syncError = new Error(data.error || '客户盘同步失败');
+        syncError.code = data.code || '';
+        throw syncError;
+      }
       clientRemoteLoaded = true;
       clientRemoteMessage = archives.length ? '已同步' : '已清空';
       return data;
     } catch (error) {
-      clientRemoteMessage = '本地已保存';
+      clientRemoteMessage = error.code === 'CHART_PERSON_LIMIT_REACHED' ? '已到命主人数上限' : '本地已保存';
+      if (error.code === 'CHART_PERSON_LIMIT_REACHED') {
+        setDecodeStatus(error.message || '当前账号的命主人数已用完，请在个人中心查看月卡。');
+        openDesktopAuth('login');
+        setDesktopAuthError(error.message || '当前账号的命主人数已用完，请选择月卡。');
+      }
       console.info('mingbook client remote sync fallback', error);
       return null;
     } finally {
@@ -2141,11 +2196,17 @@
   async function deleteCustomerRecordFromRemote(record) {
     try {
       const archive = customerRecordToArchive(record);
+      const clientId = getCustomerClientId();
+      const token = await getDesktopAuthToken();
       const response = await fetch(`${aiBackendBase}/api/wentian/archives`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'x-wentian-client-id': clientId,
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
         body: JSON.stringify({
-          clientId: getCustomerClientId(),
+          clientId,
           action: 'delete',
           archiveId: archive.id,
           chartRecordId: archive.chartRecordId,
@@ -3230,6 +3291,7 @@
     }
     state.profile = normalizeProfile(profile);
     const record = saveProfileToHistory(state.profile, { id: editingClientRecordId || state.chartRecordId || '' });
+    if (!record) return;
     editingClientRecordId = record.id;
     deleteConfirmClientId = '';
     saveProfile();
@@ -4508,6 +4570,7 @@
       summary.innerHTML = `命主身主：<b>${escapeHtml(chart.soul || '—')} · ${escapeHtml(chart.body || '—')}</b><br>四化分布：${escapeHtml(four.slice(0, 4).join('、') || '未读取到明显四化')}`;
     }
     syncChatPanelState();
+    renderBasicReadingAccess();
   }
 
   function buildReports() {
@@ -4714,6 +4777,77 @@
       next.card = { ...next.card, ...embeddedCard };
     }
     return next;
+  }
+
+  function hasDesktopAccount() {
+    return !!desktopAuthState.session?.user;
+  }
+
+  function bindBasicReadingAccessButtons() {
+    document.querySelectorAll('[data-basic-access]').forEach((button) => {
+      button.addEventListener('click', () => {
+        if (button.dataset.basicAccess === 'login') {
+          openDesktopAuth('login');
+          return;
+        }
+        openDesktopAuth('login');
+        setDesktopAuthError('完整深度解读为月卡权益，请在个人中心选择月卡。');
+      });
+    });
+  }
+
+  function renderBasicReadingAccess() {
+    if (!state.chartReady || (state.decoded && generatedModuleCount() > 0)) return;
+    const report = buildReports();
+    if (!report) return;
+    const loggedIn = hasDesktopAccount();
+    const isMember = !!desktopAuthState.quota?.isMember;
+    const specialEntries = Object.entries(report.specials || {});
+    specialEntries.forEach(([key, item], index) => {
+      const card = document.querySelector(`[data-report="${key}"]`);
+      if (!card) return;
+      const title = card.querySelector('h3');
+      const body = card.querySelector('.mbp-special-result') || card.querySelector('p');
+      const status = document.querySelector(`[data-status="${key}"]`);
+      const visible = loggedIn || index < 3;
+      card.classList.toggle('is-basic-locked', !visible);
+      if (title) title.textContent = item.title;
+      if (body) body.innerHTML = visible
+        ? escapeHtml(item.body)
+        : '<span>登录后查看这部分基础解读。</span><button type="button" data-basic-access="login">登录查看</button>';
+      if (status) status.textContent = visible ? '基础解读' : '登录后查看';
+    });
+
+    const chapters = $('#mbpChapters');
+    if (!chapters) return;
+    chapters.classList.remove('is-generated');
+    const visibleCount = loggedIn ? report.chapters.length : Math.ceil(report.chapters.length / 2);
+    const rows = report.chapters.slice(0, visibleCount).map((item, index) => `
+      <article class="mbp-report-row is-basic" id="mbp-chapter-${index}" data-report-chapter="${index}">
+        <span>卷${index + 1}</span>
+        <div class="mbp-report-title">
+          <h3>${escapeHtml(item[0])}</h3>
+          ${isMember ? chapterActionButton(index) : '<button type="button" class="mbp-basic-deep-button" data-basic-access="member">查看深度解读</button>'}
+        </div>
+        <div class="mbp-report-content"><p>${escapeHtml(item[1])}</p></div>
+      </article>
+    `);
+    if (!loggedIn) {
+      rows.push(`
+        <article class="mbp-report-row mbp-basic-login-card">
+          <span>续</span>
+          <div class="mbp-report-title"><h3>完整基础解读</h3></div>
+          <div class="mbp-report-content">
+            <p>登录后可继续查看专题、大限、流年、曲线与行动建议的基础解读。</p>
+            <button type="button" data-basic-access="login">登录后继续查看</button>
+          </div>
+        </article>
+      `);
+    }
+    chapters.innerHTML = rows.join('');
+    bindBasicReadingAccessButtons();
+    syncBookClientMeta();
+    requestAnimationFrame(syncReportNav);
   }
 
   function findEmbeddedAiCard(source, depth = 0) {
@@ -7241,6 +7375,17 @@
 
   async function decodeSingleModule(moduleKey, options = {}) {
     if (!ensureChartReady()) return false;
+    if (!desktopAuthState.session?.user) {
+      setDecodeStatus('登录后可查看完整基础解读；深度解读为月卡权益。');
+      openDesktopAuth('login');
+      return false;
+    }
+    if (!desktopAuthState.quota?.isMember) {
+      setDecodeStatus('当前已显示完整基础解读；选择月卡后可生成深度解读。');
+      openDesktopAuth('login');
+      setDesktopAuthError('深度解读为月卡权益，请在个人中心选择月卡。');
+      return false;
+    }
     const bundle = getChartBundle();
     if (bundle.error) {
       guideUserToBirthForm(bundle.error);
@@ -7331,6 +7476,17 @@
 
   async function decodeReports() {
     if (!ensureChartReady()) return false;
+    if (!desktopAuthState.session?.user) {
+      setDecodeStatus('登录后可查看完整基础解读；深度解读为月卡权益。');
+      openDesktopAuth('login');
+      return false;
+    }
+    if (!desktopAuthState.quota?.isMember) {
+      setDecodeStatus('当前已显示完整基础解读；选择月卡后可生成深度解读。');
+      openDesktopAuth('login');
+      setDesktopAuthError('深度解读为月卡权益，请在个人中心选择月卡。');
+      return false;
+    }
     const bundle = getChartBundle();
     if (bundle.error) {
       guideUserToBirthForm(bundle.error);
@@ -8018,7 +8174,12 @@
       state.chartReady = true;
       state.chartConfirmedKey = profileHistoryKey(state.profile);
       saveProfile();
-      saveProfileToHistory(state.profile, { id: reusableRecordId || state.chartRecordId });
+      const record = saveProfileToHistory(state.profile, { id: editingClientRecordId || reusableRecordId || state.chartRecordId });
+      if (!record) {
+        state.chartReady = false;
+        renderChart();
+        return;
+      }
       updateForm();
       renderChart();
     }
@@ -8665,7 +8826,7 @@
       window.yuetianTrack?.('chart_start', { surface: 'desktop_chart' });
       showFormError('');
       state.profile = profile;
-      const reusableRecordId = getReusableClientRecordId(state.profile);
+      const reusableRecordId = editingClientRecordId || getReusableClientRecordId(state.profile);
       formCalMode = profile.isLunar ? 'lunar' : 'solar';
       resetAiContent();
       state.chart = null;
@@ -8683,7 +8844,12 @@
       state.batchDecoding = false;
       document.body.classList.remove('is-decoded');
       saveProfile();
-      saveProfileToHistory(state.profile, { id: reusableRecordId || state.chartRecordId });
+      const savedRecord = saveProfileToHistory(state.profile, { id: reusableRecordId || state.chartRecordId });
+      if (!savedRecord) {
+        state.chartReady = false;
+        renderChart();
+        return;
+      }
       renderChart();
       window.yuetianTrack?.('chart_complete', { surface: 'desktop_chart', chart_type: 'ziwei' });
       if (desktopAuthState.session?.user) hydrateDesktopMemberStatus({ force: true });

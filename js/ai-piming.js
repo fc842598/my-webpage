@@ -28,6 +28,22 @@ function _aipJoin(path) {
   return base ? `${base}${path}` : path;
 }
 
+function _aipRequestIdentity() {
+  let session = null;
+  let clientId = '';
+  try { session = JSON.parse(localStorage.getItem('wentian-app-auth-session-v1') || 'null'); } catch (_err) {}
+  try { clientId = String(localStorage.getItem('ziwei_client_id') || '').trim(); } catch (_err) {}
+  if (!/^[a-zA-Z0-9:_-]{1,128}$/.test(clientId)) clientId = '';
+  return {
+    clientId,
+    headers: {
+      'Content-Type': 'application/json',
+      ...(session?.access_token ? { Authorization: `Bearer ${session.access_token}` } : {}),
+      ...(clientId ? { 'x-wentian-client-id': clientId } : {}),
+    },
+  };
+}
+
 function _aipFriendlyError(err) {
   const raw = String(err?.message || err || '').trim();
   if (/failed to fetch|networkerror|load failed|network request failed|fetch/i.test(raw)) {
@@ -295,12 +311,19 @@ function buildChartPayload(extraParams = {}) {
 async function _aipCallBackend(moduleKey, extraParams = {}) {
   const chartData = buildChartPayload(extraParams);
   if (!chartData) throw new Error('\u8bf7\u5148\u5b8c\u6210\u6392\u76d8');
+  const identity = _aipRequestIdentity();
 
   try {
     const resp = await fetch(_aipJoin('/api/ai/run'), {
       method : 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body   : JSON.stringify({ moduleKey, chartData, extraParams }),
+      headers: identity.headers,
+      body   : JSON.stringify({
+        moduleKey,
+        chartData,
+        extraParams,
+        chartRecordId: chartData.chartRecordId || window._chartRecordId || null,
+        clientId: identity.clientId || undefined,
+      }),
     });
 
     const contentType = resp.headers?.get('content-type') || '';

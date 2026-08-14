@@ -11562,3 +11562,60 @@ p.mbp-topic-detail {
     line-height: 1.7;
   }
 }
+
+/* Membership access states for the basic and in-depth readings. */
+.mbp-special-card.is-basic-locked,
+[data-report].is-basic-locked {
+  background: linear-gradient(145deg, rgba(255, 251, 243, 0.96), rgba(244, 236, 220, 0.92));
+}
+
+[data-report].is-basic-locked .mbp-special-result,
+[data-report].is-basic-locked > p {
+  display: grid;
+  gap: 12px;
+}
+
+[data-basic-access],
+.mbp-basic-deep-button {
+  width: fit-content;
+  min-height: 38px;
+  border: 1px solid #9e3026;
+  border-radius: 999px;
+  background: #fffaf0;
+  color: #8d2b23;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 800;
+  padding: 7px 15px;
+  cursor: pointer;
+}
+
+[data-basic-access]:hover,
+.mbp-basic-deep-button:hover {
+  background: #9e3026;
+  color: #fff;
+}
+
+.mbp-report-row.is-basic .mbp-report-content p {
+  margin: 0;
+  color: var(--mbp-muted, #62594d);
+  line-height: 1.85;
+}
+
+.mbp-basic-login-card {
+  border-style: dashed !important;
+  background: linear-gradient(135deg, rgba(255, 250, 240, 0.96), rgba(246, 237, 219, 0.9));
+}
+
+.mbp-basic-login-card .mbp-report-content {
+  display: grid;
+  gap: 14px;
+}
+
+@media (max-width: 720px) {
+  .mbp-report-row.is-basic .mbp-report-title {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 10px;
+  }
+}

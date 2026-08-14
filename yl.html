@@ -20,7 +20,7 @@
             document.documentElement.lang = "en";
             document.documentElement.classList.add("yl-english-checkout");
           }
-          document.title = isEnglishCheckout ? "Yuetian AI Membership Checkout" : "阅天综合会员支付";
+          document.title = isEnglishCheckout ? "Yuetian AI Monthly Pass Checkout" : "阅天AI月卡支付";
         }
         if (isWechat && (match || isWechatPaymentReturn)) document.documentElement.classList.add("yl-payment-boot");
         if (match && match[1].length <= 2048) {
@@ -47,10 +47,10 @@
   <meta name="twitter:image" content="https://yuetianai.com/images/health/constitution-report-hero-v8.png">
   <meta name="theme-color" content="#f8f2e8">
   <link rel="icon" href="/images/wentian-prototype-assets/wentian-brand-logo-ai-gold-v1.webp" type="image/webp">
-  <link rel="stylesheet" href="/css/yl.css?v=20260812-paypal-card-v1">
+  <link rel="stylesheet" href="/css/yl.css?v=20260814-membership-v1">
   <script src="/js/config.js?v=20260710-api-origin-lock-v1"></script>
   <script defer src="/vendor/qrcodejs/qrcode.min.js?v=20260521-local-vendor"></script>
-  <script defer src="/js/yl.js?v=20260812-paypal-card-feedback-v2"></script>
+  <script defer src="/js/yl.js?v=20260814-membership-v1"></script>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -101,7 +101,7 @@
       <a href="#assessment">体质自评</a>
       <a href="#report">报告示例</a>
       <a href="#chat">健康追问</a>
-      <a href="#member">综合会员</a>
+      <a href="#member">月卡</a>
     </nav>
     <div class="yl-header-actions">
       <a class="yl-top-cta" href="#assessment">开始自评</a>
@@ -253,7 +253,7 @@
             <h2 id="ylChatPreviewTitle">继续追问</h2>
             <p>带着当前报告问睡眠、脾胃、情绪、冷热。</p>
           </div>
-          <span id="ylAskQuotaPreview">免费 8条/天</span>
+          <span id="ylAskQuotaPreview">免费 8次</span>
         </div>
         <div class="yl-chat-preview">
           <strong id="ylChatPreviewType">基于当前体质倾向追问</strong>
@@ -272,7 +272,7 @@
             <h2 id="ylChatTitle">健康追问</h2>
             <span id="ylChatContextType">已读取你的体质自评</span>
           </div>
-          <a class="yl-wechat-member" href="#member" id="ylAskQuota">体验 3条/天</a>
+          <a class="yl-wechat-member" href="#member" id="ylAskQuota">体验 3次</a>
         </header>
 
         <div class="yl-chat-context-strip" aria-label="当前报告摘要">
@@ -294,16 +294,35 @@
 
     <section class="yl-page yl-member-wrap" id="member" data-page="member">
       <div class="yl-member-card">
+        <section class="yl-plan-picker" aria-labelledby="ylPlanPickerTitle">
+          <div class="yl-plan-picker-head">
+            <strong id="ylPlanPickerTitle">选择月卡</strong>
+            <span>两种月卡均按31天计算</span>
+          </div>
+          <div class="yl-plan-options">
+            <button class="yl-plan-option is-active" type="button" data-product-key="monthly_member" aria-pressed="true">
+              <span>三人深度月卡</span>
+              <strong>¥19.90 <small>/ 31天</small></strong>
+              <em>3位命主 · 深度解读 · 每天30次追问</em>
+            </button>
+            <button class="yl-plan-option" type="button" data-product-key="unlimited_member" aria-pressed="false">
+              <span>无限畅享月卡</span>
+              <strong>¥69.90 <small>/ 31天</small></strong>
+              <em>不限命主人数 · 深度解读 · 每天100次追问</em>
+            </button>
+          </div>
+        </section>
         <div class="yl-order-summary">
           <div class="yl-member-main">
-            <span>阅天综合会员</span>
+            <span id="ylSelectedPlanName">三人深度月卡</span>
             <strong id="ylMemberPrice">¥19.90</strong>
-            <p>全站权限 · AI 对话</p>
+            <p id="ylSelectedPlanPeriod">有效期31天</p>
           </div>
-          <div class="yl-member-benefits" aria-label="综合会员权益">
-            <strong>会员权益</strong>
-            <span><b>1</b> 解锁网站全部权限</span>
-            <span><b>2</b> AI 对话 80 次/天</span>
+          <div class="yl-member-benefits" aria-label="月卡权益">
+            <strong>本月卡包含</strong>
+            <span id="ylSelectedPlanCharts"><b>1</b> 可保存3位命主</span>
+            <span id="ylSelectedPlanReading"><b>2</b> 完整基础排盘与深度解读</span>
+            <span id="ylSelectedPlanChats"><b>3</b> 每天可追问30次</span>
           </div>
           <div class="yl-payment-assurance" aria-label="支付安全说明">
             <b class="yl-assurance-title">安全支付</b>
@@ -326,11 +345,11 @@
         </div>
         <div class="yl-pay-row" aria-label="支付方式">
           <button type="button" class="yl-pay-method is-active" data-provider="wechat">微信支付</button>
-          <button type="button" class="yl-pay-method" data-provider="alipay">支付宝审核中</button>
+          <button type="button" class="yl-pay-method" data-provider="alipay">支付宝</button>
           <button type="button" class="yl-pay-method" data-provider="paypal">PayPal</button>
           <button type="button" class="yl-pay-method" data-provider="paypal_card">国际银行卡</button>
         </div>
-        <button class="yl-btn yl-btn-primary" type="button" id="ylOpenPayBtn">确认开通 ¥19.90</button>
+        <button class="yl-btn yl-btn-primary" type="button" id="ylOpenPayBtn">登录后继续付款</button>
         <div class="yl-mobile-assurance" aria-label="支付保障">
           <span>付款成功后自动开通</span>
           <span>保留订单号可联系支持</span>
@@ -480,7 +499,7 @@
           </div>
         </div>
         <div class="yl-health-account-actions">
-          <button class="is-primary" type="button" id="ylHealthGoPayBtn">开通综合会员</button>
+          <button class="is-primary" type="button" id="ylHealthGoPayBtn">选择月卡</button>
           <button type="button" id="ylHealthSwitchAccountBtn">切换账号</button>
           <button class="is-danger" type="button" id="ylHealthLogoutBtn">退出登录</button>
         </div>

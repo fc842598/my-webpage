@@ -460,6 +460,109 @@ button {
   transition: opacity .22s ease, transform .22s ease;
 }
 
+/* Basic chart reading shown before the paid in-depth report. */
+.wentian-basic-reading {
+  display: grid;
+  gap: 14px;
+  margin: 0 12px 18px;
+  padding: 18px;
+  border: 1px solid rgba(205, 177, 129, 0.55);
+  border-radius: 22px;
+  background: linear-gradient(160deg, #fffdf8 0%, #fff7e9 100%);
+  box-shadow: 0 12px 28px rgba(91, 61, 30, 0.08);
+}
+
+.wentian-basic-reading > header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.wentian-basic-reading > header div {
+  display: grid;
+  gap: 5px;
+}
+
+.wentian-basic-reading > header span {
+  color: #a67a38;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+}
+
+.wentian-basic-reading > header strong {
+  color: #2a211b;
+  font-size: 19px;
+}
+
+.wentian-basic-reading > header > b {
+  min-width: 42px;
+  padding: 6px 9px;
+  border-radius: 999px;
+  background: #f4e6ca;
+  color: #8f5a25;
+  font-size: 11px;
+  text-align: center;
+}
+
+.wentian-basic-reading-list {
+  display: grid;
+  gap: 10px;
+}
+
+.wentian-basic-reading-list article {
+  display: grid;
+  grid-template-columns: 30px minmax(0, 1fr);
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid rgba(227, 210, 183, 0.75);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.78);
+}
+
+.wentian-basic-reading-list article > i {
+  color: #ad7a32;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 900;
+  line-height: 20px;
+}
+
+.wentian-basic-reading-list article div {
+  display: grid;
+  gap: 5px;
+}
+
+.wentian-basic-reading-list article strong {
+  color: #33271f;
+  font-size: 14px;
+}
+
+.wentian-basic-reading-list article p,
+.wentian-basic-reading > footer p {
+  margin: 0;
+  color: #756a5f;
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.wentian-basic-reading > footer {
+  display: grid;
+  gap: 10px;
+}
+
+.wentian-basic-reading > footer button {
+  min-height: 42px;
+  border: 0;
+  border-radius: 21px;
+  background: linear-gradient(180deg, #b74e39, #983323);
+  color: #fffaf3;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 900;
+}
+
 .wentian-floating-bottom-nav.is-hidden {
   opacity: 0;
   transform: translateX(-50%) translateY(calc(100% + env(safe-area-inset-bottom)));
