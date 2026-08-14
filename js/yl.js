@@ -277,11 +277,13 @@
       button.disabled = paymentState.loading || paymentState.status === "pending";
     });
     var planName = $("#ylSelectedPlanName");
+    var planPrice = $("#ylMemberPrice");
     var planPeriod = $("#ylSelectedPlanPeriod");
     var planCharts = $("#ylSelectedPlanCharts");
     var planReading = $("#ylSelectedPlanReading");
     var planChats = $("#ylSelectedPlanChats");
     if (planName) planName.textContent = IS_ENGLISH_CHECKOUT ? product.nameEn : product.name;
+    if (planPrice) planPrice.textContent = IS_ENGLISH_CHECKOUT ? "$" + product.paypalAmount : "¥" + product.amountYuan;
     if (planPeriod) planPeriod.textContent = IS_ENGLISH_CHECKOUT ? "Valid for 31 days" : "有效期31天";
     if (planCharts) planCharts.innerHTML = "<b>1</b> " + (IS_ENGLISH_CHECKOUT ? product.chartTextEn : product.chartText);
     if (planReading) planReading.innerHTML = "<b>2</b> " + (IS_ENGLISH_CHECKOUT
@@ -534,6 +536,25 @@
     setText(".yl-checkout-account span", "Payment Account");
     setText(".yl-pay-heading strong", "Payment Method");
     setText(".yl-pay-heading span", "Check the amount before paying");
+    setText(".yl-operator-points p:nth-child(1) b", "Payment methods");
+    setText(".yl-operator-points p:nth-child(1) span", "WeChat Pay, Alipay, PayPal and international cards");
+    setText(".yl-operator-points p:nth-child(2) b", "Activation");
+    setText(".yl-operator-points p:nth-child(2) span", "Benefits activate automatically after payment confirmation");
+    var operatorName = $(".yl-operator-card p:nth-child(1)");
+    if (operatorName) {
+      operatorName.replaceChildren(
+        Object.assign(document.createElement("span"), { textContent: "Business operator: " }),
+        document.createTextNode("雷州市客路镇阅天工作室 (Individual business)")
+      );
+    }
+    var operatorSupport = $(".yl-operator-card p:nth-child(2)");
+    if (operatorSupport) {
+      operatorSupport.replaceChildren(
+        Object.assign(document.createElement("span"), { textContent: "Account and payment support: " }),
+        document.createTextNode("Yuetian AI")
+      );
+    }
+    setText(".yl-operator-contact", "Payment issue? Contact support");
     var memberBenefits = $(".yl-member-benefits");
     if (memberBenefits) memberBenefits.setAttribute("aria-label", "Membership benefits");
     var paymentAssurance = $(".yl-payment-assurance");
@@ -1645,7 +1666,9 @@
 
     var amount = getPaymentAmountLabel();
     var memberPrice = $("#ylMemberPrice");
-    if (memberPrice) memberPrice.textContent = amount;
+    if (memberPrice) memberPrice.textContent = IS_ENGLISH_CHECKOUT
+      ? "$" + getSelectedMemberProduct().paypalAmount
+      : amount;
     var openButton = $("#ylOpenPayBtn");
     if (openButton) {
       openButton.hidden = paymentState.status === "handoff";
