@@ -842,7 +842,7 @@
     var meta = getProviderMeta(provider);
     if (!meta.enabled) return IS_ENGLISH_CHECKOUT ? "Unavailable" : "暂不可用";
     if (provider === "paypal_card") return "$" + (meta.amountYuan || HEALTH_PAYPAL_AMOUNT) + " · Visa / Mastercard";
-    if (provider === "paypal") return "$" + (meta.amountYuan || HEALTH_PAYPAL_AMOUNT) + (IS_ENGLISH_CHECKOUT ? " · USD" : " · 美元");
+    if (provider === "paypal") return "$" + (meta.amountYuan || HEALTH_PAYPAL_AMOUNT) + (IS_ENGLISH_CHECKOUT ? " · cross-border" : " · 跨境付款");
     if (provider === "alipay") return IS_ENGLISH_CHECKOUT
       ? (isMobileBrowser() ? "Open in Alipay" : "Scan the QR code")
       : (isMobileBrowser() ? "支付宝内支付" : "二维码支付");
@@ -854,7 +854,9 @@
     if (provider === "paypal_card") return IS_ENGLISH_CHECKOUT
       ? "Pay directly by Visa or Mastercard. No PayPal account or phone number is required."
       : "Visa、Mastercard 可直接支付，无需 PayPal 账号或美国手机号。";
-    if (provider === "paypal") return IS_ENGLISH_CHECKOUT ? "Continue to PayPal and pay in USD." : "将前往 PayPal，以美元完成支付。";
+    if (provider === "paypal") return IS_ENGLISH_CHECKOUT
+      ? "Continue to PayPal and pay in USD. PayPal checks the buyer and merchant countries; a mainland-China buyer paying a mainland-China merchant may be declined."
+      : "将前往 PayPal，以美元完成支付。PayPal 会核验买家和商户注册地；中国大陆买家向中国大陆商户付款可能会被合规拒绝。遇到拒绝请返回选择微信/支付宝，或使用符合条件的境外 PayPal 账户。";
     if (provider === "alipay") {
       if (IS_ENGLISH_CHECKOUT) return isMobileBrowser()
         ? "Alipay will open automatically."
@@ -963,6 +965,41 @@
       releasePaymentBoot();
       renderPayment();
     }
+  }
+
+  function handlePayPalReturn() {
+    var query = new URLSearchParams(window.location.search || "");
+    var result = String(query.get("paypal_result") || "").trim().toLowerCase();
+    if (!result) return false;
+
+    var orderNo = String(query.get("orderNo") || "").trim();
+    paymentState.provider = "paypal";
+    paymentState.orderNo = orderNo;
+    paymentState.payUrl = "";
+    paymentState.payMethod = "redirect";
+    paymentState.panelDismissed = false;
+    if (result === "paid" || result === "already_paid") {
+      paymentState.status = "pending";
+      paymentState.message = "PayPal 已返回，正在确认付款状态，请稍候刷新。";
+      setPayHint("如果 PayPal 已扣款但状态未更新，请保留订单号并稍后刷新，不要重复付款。");
+    } else if (result === "cancelled" || result === "cancel") {
+      paymentState.status = "error";
+      paymentState.message = "已取消 PayPal 付款，可返回后改用其他支付方式。";
+      setPayHint(getProviderSelectionHint("paypal"));
+    } else {
+      paymentState.status = "error";
+      paymentState.message = "PayPal 未完成这笔付款。若页面提示合规拒绝，请确认买家与商户注册地符合 PayPal 的跨境收款规则。";
+      setPayHint(getProviderSelectionHint("paypal"));
+    }
+
+    var cleanUrl = new URL(window.location.href);
+    cleanUrl.searchParams.delete("paypal_result");
+    cleanUrl.searchParams.delete("orderNo");
+    cleanUrl.hash = "#member";
+    window.history.replaceState({}, document.title, cleanUrl.toString());
+    setActivePage("member", { instant: true });
+    renderPayment();
+    return true;
   }
 
   function getPaymentAmountLabel() {
@@ -2744,6 +2781,13 @@
           ? "请打开" + getProviderLabel(paymentState.provider) + "完成支付，支付后返回刷新状态。"
           : "请使用" + getProviderLabel(paymentState.provider) + "扫码支付，完成后刷新状态。")));
 
+      if (paymentState.provider === "paypal" && paymentState.payMethod === "redirect") {
+        paymentState.message = IS_ENGLISH_CHECKOUT
+          ? "PayPal will check the buyer and merchant countries before payment. If PayPal declines the transaction, return here and choose another available method."
+          : "PayPal 会在付款前核验买家和商户注册地。如果 PayPal 拒绝这笔交易，请返回本页改用其他可用支付方式。";
+        setPayHint(getProviderSelectionHint("paypal"));
+      }
+
       if (paymentState.provider === "alipay" && paymentState.payMethod === "h5" && paymentState.payUrl) {
         updatePaymentBoot("正在打开支付宝", "请在支付宝内完成付款，支付后将自动返回。", false);
         window.location.assign(paymentState.payUrl);
@@ -3040,7 +3084,7 @@
     setActivePage("member", { instant: true });
     startHealthPayment();
   } else {
-    handleWechatOauthReturn();
+    if (!handlePayPalReturn()) handleWechatOauthReturn();
   }
   document.addEventListener("visibilitychange", function () {
     if (document.visibilityState === "visible" && readAuthSession() && !paymentState.loading) {
