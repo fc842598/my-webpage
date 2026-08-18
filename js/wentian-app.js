@@ -4367,9 +4367,12 @@ function normalizeWentianPalace(palace) {
     stem: palace.heavenlyStem || "",
     majorStars: (palace.majorStars || []).map(normalizeWentianStar).filter(Boolean),
     minorStars: (palace.minorStars || []).map(normalizeWentianStar).filter(Boolean),
+    adjectiveStars: (palace.adjectiveStars || palace.adjStars || []).map(normalizeWentianStar).filter(Boolean),
     decadal: range ? { range } : null,
     changsheng12: palace.changsheng12 || "",
     boshi12: palace.boshi12 || "",
+    jiangqian12: palace.jiangqian12 || "",
+    suiqian12: palace.suiqian12 || "",
     isBodyPalace: !!palace.isBodyPalace,
   };
 }
@@ -4609,6 +4612,38 @@ function buildWentianChartPayload(chart, norm) {
   };
 }
 
+function enrichWentianChartPayloadPalaces(chartData = {}, chart = {}) {
+  const rawPalaces = (chart?.palaces || []).map(normalizeWentianPalace).filter(Boolean);
+  const storedPalaces = Array.isArray(chartData.palacesSummary) ? chartData.palacesSummary : [];
+  const rawByBranch = new Map(rawPalaces.map((palace) => [palace.branch, palace]));
+  const palacesSummary = (storedPalaces.length ? storedPalaces : rawPalaces).map((palace) => {
+    const raw = rawByBranch.get(palace?.branch || palace?.earthlyBranch || "") || {};
+    return {
+      ...raw,
+      ...palace,
+      adjectiveStars: (palace?.adjectiveStars || palace?.adjStars || raw.adjectiveStars || [])
+        .map(normalizeWentianStar)
+        .filter(Boolean),
+      jiangqian12: palace?.jiangqian12 || raw.jiangqian12 || "",
+      suiqian12: palace?.suiqian12 || raw.suiqian12 || "",
+    };
+  });
+  if (!palacesSummary.length) return chartData;
+  const findPalace = (name) => palacesSummary.find((palace) => String(palace?.name || "").replace(/宫$/, "") === name) || null;
+  return {
+    ...chartData,
+    palacesSummary,
+    lifePalace: findPalace("命") || chartData.lifePalace || null,
+    bodyPalaceDetail: palacesSummary.find((palace) => palace?.isBodyPalace) || chartData.bodyPalaceDetail || null,
+    careerPalace: findPalace("官禄") || chartData.careerPalace || null,
+    wealthPalace: findPalace("财帛") || chartData.wealthPalace || null,
+    movePalace: findPalace("迁移") || chartData.movePalace || null,
+    spousePalace: findPalace("夫妻") || chartData.spousePalace || null,
+    happinessPalace: findPalace("福德") || chartData.happinessPalace || null,
+    illnessPalace: findPalace("疾厄") || chartData.illnessPalace || null,
+  };
+}
+
 function getWentianChartPayload() {
   const saved = getWentianSavedChart();
   const source = saved?.chartData ? saved : getCurrentWentianArchive();
@@ -4617,16 +4652,17 @@ function getWentianChartPayload() {
   const chartRecordId = isWentianUuid(rawRecordId) ? rawRecordId : getWentianChartRecordId();
   if (isWentianUuid(chartRecordId)) setWentianChartRecordId(chartRecordId);
   if (source?.chartData) {
+    const enrichedChartData = enrichWentianChartPayloadPalaces(source.chartData, source.chart);
     return applyWentianLiunianTimingFields({
-      ...source.chartData,
+      ...enrichedChartData,
       chartRecordId,
-      archiveId: source.archiveId || form.archiveId || source.id || source.chartData.archiveId || "",
-      name: source.chartData.name || form.name || "",
+      archiveId: source.archiveId || form.archiveId || source.id || enrichedChartData.archiveId || "",
+      name: enrichedChartData.name || form.name || "",
       profile: {
-        name: form.name || source.chartData.name || "",
-        gender: form.gender || source.chartData.gender || "",
-        datetime: form.datetime || source.chartData.birthDate || source.chartData.solarTime || "",
-        city: form.city || source.chartData.city || "",
+        name: form.name || enrichedChartData.name || "",
+        gender: form.gender || enrichedChartData.gender || "",
+        datetime: form.datetime || enrichedChartData.birthDate || enrichedChartData.solarTime || "",
+        city: form.city || enrichedChartData.city || "",
       },
     });
   }
@@ -6468,6 +6504,11 @@ function getWentianAiPalacePayload(palace) {
     heavenlyStem: palace.stem || palace.heavenlyStem || "",
     majorStars: normalizeWentianAiStarList(palace.majorStars),
     minorStars: normalizeWentianAiStarList(palace.minorStars),
+    adjectiveStars: normalizeWentianAiStarList(palace.adjectiveStars || palace.adjStars),
+    changsheng12: palace.changsheng12 || "",
+    boshi12: palace.boshi12 || "",
+    jiangqian12: palace.jiangqian12 || "",
+    suiqian12: palace.suiqian12 || "",
   };
 }
 
@@ -11120,6 +11161,42 @@ function clearWentianXuChatContext() {
   setWentianXuChatContext(null);
 }
 
+function enrichWentianXuChartTiming(chartData = {}) {
+  try {
+    const current = getWentianXiaoLianItems(chartData).find((item) => item.isCurrent);
+    if (!current) return chartData;
+    const computedGuaName = current.liunianGuaName && current.liunianGuaName !== "流年小限"
+      ? current.liunianGuaName
+      : "";
+    const currentLiunian = {
+      ...(chartData.currentLiunian || {}),
+      age: current.age || chartData.currentLiunian?.age || chartData.activeAge || "",
+      solarYear: current.solarYear || chartData.currentLiunian?.solarYear || chartData.currentYear || "",
+      yearGanzhi: current.yearGanzhi || chartData.currentLiunian?.yearGanzhi || "",
+      xiaoLian: current.xiaolianBranch || chartData.currentLiunian?.xiaoLian || "",
+      xiaoLianBranch: current.xiaolianBranch || chartData.currentLiunian?.xiaoLianBranch || "",
+      xiaolianBranch: current.xiaolianBranch || chartData.currentLiunian?.xiaolianBranch || "",
+      xiaolianPalaceName: current.xiaolianPalaceName || chartData.currentLiunian?.xiaolianPalaceName || "",
+      xiaolianPalace: current.xiaolianPalace || chartData.currentLiunian?.xiaolianPalace || {},
+      oppositeBranch: current.oppositeBranch || chartData.currentLiunian?.oppositeBranch || "",
+      oppositePalaceName: current.oppositePalaceName || chartData.currentLiunian?.oppositePalaceName || "",
+      oppositePalace: current.oppositePalace || chartData.currentLiunian?.oppositePalace || {},
+      liunianGuaName: computedGuaName || chartData.currentLiunian?.liunianGuaName || "",
+      liunianGuaPeriod: current.liunianGuaPeriod || chartData.currentLiunian?.liunianGuaPeriod || "",
+      lineNum: current.lineNum || chartData.currentLiunian?.lineNum || "",
+      lineType: current.lineType || chartData.currentLiunian?.lineType || "",
+    };
+    const liunianTable = (chartData.liunianTable || []).map((row) => (
+      Number(row?.age) === Number(current.age)
+        ? { ...row, ...currentLiunian }
+        : row
+    ));
+    return { ...chartData, currentLiunian, liunianTable };
+  } catch (_err) {
+    return chartData;
+  }
+}
+
 function getWentianXuChatPayload() {
   const context = getWentianXuChatContext();
   if (context?.type === "liuyao" && isWentianUuid(context.recordId)) {
@@ -11176,7 +11253,7 @@ function getWentianXuChatPayload() {
     };
   }
   if (context?.type === "yijing" && isWentianUuid(context.recordId)) {
-    const baseChartData = getWentianChartPayload();
+    const baseChartData = enrichWentianXuChartTiming(getWentianChartPayload());
     const yijingChartData = {
       ...baseChartData,
       chartRecordId: context.recordId,
@@ -11192,7 +11269,7 @@ function getWentianXuChatPayload() {
       divinationContext: context,
     };
   }
-  const chartData = getWentianChartPayload();
+  const chartData = enrichWentianXuChartTiming(getWentianChartPayload());
   return {
     mode: "chart",
     chartRecordId: chartData.chartRecordId,
