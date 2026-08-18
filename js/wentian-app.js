@@ -8279,7 +8279,7 @@ function pickWentianLanguage(code) {
   for (const row of document.querySelectorAll("[data-wentian-language-option]")) {
     const selected = row.dataset.languageCode === wentianLanguageDraft;
     row.classList.toggle("is-selected", selected);
-    row.setAttribute("aria-pressed", selected ? "true" : "false");
+    row.setAttribute("aria-checked", selected ? "true" : "false");
     const check = row.querySelector(".wentian-language-check");
     if (check) rememberWentianTextSource(check, selected ? "✓" : "");
   }
@@ -8299,6 +8299,15 @@ function confirmWentianLanguage() {
   window.setTimeout(() => applyWentianLanguageText(view, nextCode, { force: true }), 0);
 }
 
+function cancelWentianLanguage() {
+  wentianLanguageDraft = null;
+  returnToPreviousWentianRoute("screen-31");
+}
+
+function initWentianLanguageDialog() {
+  view.querySelector(".wentian-language-dialog")?.focus({ preventScroll: true });
+}
+
 const wentianI18nTextSources = new WeakMap();
 let wentianI18nApplying = false;
 let wentianI18nQueued = false;
@@ -8315,7 +8324,14 @@ const WENTIAN_I18N = {
     "语言设置": "Language",
     "选择界面显示语言": "Choose display language",
     "确认后会同步保存到当前浏览器": "Saved to this browser after confirmation",
+    "选择显示语言": "Choose display language",
+    "切换后可先预览，确认后再保存": "Preview your choice, then confirm to save",
+    "保存并使用": "Save and use",
+    "以后可在“我的”中随时修改": "Change it anytime in Me",
+    "关闭语言设置": "Close language dialog",
+    "点击空白处关闭语言设置": "Close language dialog",
     "简体中文": "Simplified Chinese",
+    "繁体中文": "Traditional Chinese",
     "繁體中文": "Traditional Chinese",
     "确定": "Confirm",
     "账户与偏好设置": "Account and preferences",
@@ -8441,7 +8457,14 @@ const WENTIAN_I18N = {
     "语言设置": "語言設定",
     "选择界面显示语言": "選擇介面顯示語言",
     "确认后会同步保存到当前浏览器": "確認後會同步保存到目前瀏覽器",
+    "选择显示语言": "選擇顯示語言",
+    "切换后可先预览，确认后再保存": "切換後可先預覽，確認後再儲存",
+    "保存并使用": "儲存並使用",
+    "以后可在“我的”中随时修改": "之後可在「我的」中隨時修改",
+    "关闭语言设置": "關閉語言設定",
+    "点击空白处关闭语言设置": "點擊空白處關閉語言設定",
     "简体中文": "簡體中文",
+    "繁体中文": "繁體中文",
     "确定": "確定",
     "账户与偏好设置": "帳戶與偏好設定",
     "账户设置": "帳戶設定",
@@ -9876,6 +9899,11 @@ function rememberWentianTextSource(element, source) {
   }
 }
 
+function getWentianDisplayLanguageCode() {
+  if (state.route === "screen-37" && wentianLanguageDraft) return wentianLanguageDraft;
+  return getWentianLanguageCode();
+}
+
 function queueWentianLanguageApply(root = view, code = getWentianLanguageCode()) {
   wentianI18nPendingRoot = root || view;
   wentianI18nPendingCode = code || getWentianLanguageCode();
@@ -9885,7 +9913,7 @@ function queueWentianLanguageApply(root = view, code = getWentianLanguageCode())
     wentianI18nQueued = false;
     const nextRoot = wentianI18nPendingRoot || view;
     const nextCode = getWentianLanguageOption(wentianI18nPendingCode || getWentianLanguageCode()).code;
-    const activeCode = getWentianLanguageCode();
+    const activeCode = getWentianDisplayLanguageCode();
     wentianI18nPendingRoot = null;
     wentianI18nPendingCode = "";
     if (nextCode !== activeCode) {
@@ -10354,8 +10382,9 @@ function stabilizeWentianLanguageText(root = view) {
 }
 
 function scheduleWentianLanguageApply() {
-  if (getWentianLanguageCode() === "zh-Hans") return;
-  queueWentianLanguageApply(view);
+  const displayCode = getWentianDisplayLanguageCode();
+  if (displayCode === "zh-Hans") return;
+  queueWentianLanguageApply(view, displayCode);
 }
 
 function ensureWentianLanguageObserver() {
@@ -14154,19 +14183,33 @@ function sourceLanguageSettingsScreen() {
     ${figText("source-37-preview-title", getWentianLanguageOption(activeCode).label, 42, 188, 180, 18, "#26211c", 800)}
     ${figText("source-37-preview-desc", "确认后会同步保存到当前浏览器", 42, 215, 260, 13, "#8f857a")}
     ${sourceAppBottomNav("我的", 755)}
-    ${figBox("source-37-overlay", 0, 0, 390, 844, "", "background:rgba(0,0,0,.36);")}
-    ${figBox("source-37-sheet", 20, 462, 350, 252, "", "border-radius:20px;background:#fff;box-shadow:0 -8px 24px rgba(0,0,0,.14);")}
-    ${figText("source-37-sheet-title", "语言设置", 42, 488, 200, 18, "#26211c", 800)}
-    ${WENTIAN_LANGUAGE_OPTIONS.map((option, index) => {
-      const selected = option.code === activeCode;
-      return `
-        <button class="wentian-language-option ${selected ? "is-selected" : ""}" type="button" data-action="wentian-language-pick" data-wentian-language-option="1" data-language-code="${option.code}" aria-pressed="${selected ? "true" : "false"}" style="left:42px;top:${532 + index * 42}px">
-          <span class="wentian-language-label">${option.label}</span>
-          <span class="wentian-language-check">${selected ? "✓" : ""}</span>
-        </button>
-      `;
-    }).join("")}
-    <button class="wentian-language-confirm" type="button" data-action="wentian-language-confirm">确定</button>
+    <div class="wentian-language-backdrop" aria-hidden="true"></div>
+    <button class="wentian-language-backdrop-dismiss" type="button" data-action="wentian-language-cancel" aria-label="点击空白处关闭语言设置" tabindex="-1"></button>
+    <section class="wentian-language-dialog" role="dialog" aria-modal="true" aria-labelledby="wentian-language-dialog-title" tabindex="-1">
+      <button class="wentian-language-close" type="button" data-action="wentian-language-cancel" aria-label="关闭语言设置">×</button>
+      <header class="wentian-language-dialog-header">
+        <span class="wentian-language-badge" data-wentian-i18n-skip="true" aria-hidden="true">文 / A</span>
+        <span>
+          <h2 id="wentian-language-dialog-title">选择显示语言</h2>
+          <p>切换后可先预览，确认后再保存</p>
+        </span>
+      </header>
+      <div class="wentian-language-options" role="radiogroup" aria-label="选择显示语言">
+        ${WENTIAN_LANGUAGE_OPTIONS.map((option, index) => {
+          const selected = option.code === activeCode;
+          const mark = ["简", "繁", "EN"][index];
+          return `
+            <button class="wentian-language-option ${selected ? "is-selected" : ""}" type="button" role="radio" data-action="wentian-language-pick" data-wentian-language-option="1" data-language-code="${option.code}" aria-checked="${selected ? "true" : "false"}">
+              <span class="wentian-language-mark" data-wentian-i18n-skip="true" aria-hidden="true">${mark}</span>
+              <span class="wentian-language-label">${option.label}</span>
+              <span class="wentian-language-check" aria-hidden="true">${selected ? "✓" : ""}</span>
+            </button>
+          `;
+        }).join("")}
+      </div>
+      <button class="wentian-language-confirm" type="button" data-action="wentian-language-confirm">保存并使用</button>
+      <p class="wentian-language-footnote">以后可在“我的”中随时修改</p>
+    </section>
   `;
 }
 
@@ -23081,6 +23124,7 @@ function navigate(route, push = true, syncHash = true) {
     if (screen.no === 46) window.setTimeout(initLiurenScreen, 0);
     if (screen.no === 50) window.setTimeout(initOfficeLayoutHomeScreen, 0);
     if (screen.no === 49) window.setTimeout(initWentianHepanAiJudgement, 0);
+    if (screen.no === 37) window.setTimeout(initWentianLanguageDialog, 0);
     const currentHashRoute = normalizeRoute(location.hash.slice(1));
     if (
       syncHash &&
@@ -23407,6 +23451,11 @@ document.addEventListener("pointerup", handleLiuyaoSwipePointerUp);
 document.addEventListener("pointercancel", cancelLiuyaoSwipePointer);
 
 document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && state.route === "screen-37") {
+    event.preventDefault();
+    cancelWentianLanguage();
+    return;
+  }
   if (event.target?.id === "wentian-chart-city" && event.key === "Backspace") {
     if (handleWentianChartCityDeleteGesture(event)) return;
   }
@@ -23929,6 +23978,10 @@ document.addEventListener("click", (event) => {
   if (action === "wentian-language-pick") {
     const option = event.target.closest("[data-language-code]");
     if (option?.dataset.languageCode) pickWentianLanguage(option.dataset.languageCode);
+    return;
+  }
+  if (action === "wentian-language-cancel") {
+    cancelWentianLanguage();
     return;
   }
   if (action === "wentian-language-confirm") {
