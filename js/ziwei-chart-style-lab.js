@@ -115,24 +115,21 @@
     animationFrame = requestAnimationFrame(tick);
   };
 
-  const setActivePalace = (button, { flowContext = false } = {}) => {
+  const setActivePalace = (button) => {
     activePalace = button;
     const activeIndex = palaceButtons.indexOf(button);
     const related = new Set(getTriadIndexes(activeIndex));
 
     palaceButtons.forEach((item, index) => {
       const active = item === button;
-      item.classList.toggle("is-active", active && !flowContext);
-      item.classList.toggle("is-flow-context", active && flowContext);
+      item.classList.toggle("is-active", active);
       item.classList.toggle("is-related", !active && related.has(index));
       item.setAttribute("aria-pressed", String(active));
     });
 
-    if (!flowContext) {
-      button.classList.remove("is-pulse");
-      void button.offsetWidth;
-      button.classList.add("is-pulse");
-    }
+    button.classList.remove("is-pulse");
+    void button.offsetWidth;
+    button.classList.add("is-pulse");
     animateTriad();
   };
 
@@ -142,7 +139,7 @@
     return { age, button: palaceButtons[index] };
   };
 
-  const updateFlow = (activate = true) => {
+  const updateFlow = () => {
     const { age, button } = getFlowTarget();
     palaceButtons.forEach((item) => item.classList.remove("is-flowing"));
     button.classList.add("is-flowing");
@@ -156,7 +153,6 @@
       ? ""
       : ` · 时辰${hourShift > 0 ? "顺" : "逆"}推${Math.abs(hourShift)}步`;
     flowStatus.textContent = `${age}岁 · ${button.dataset.palace}${shiftText}`;
-    if (activate) setActivePalace(button, { flowContext: true });
   };
 
   for (let age = 1; age <= 100; age += 1) {
@@ -189,6 +185,6 @@
   });
 
   new ResizeObserver(() => drawTriad(1)).observe(board);
-  updateFlow(false);
+  updateFlow();
   setActivePalace(activePalace);
 })();
