@@ -13523,8 +13523,8 @@ function renderWentianProfileRows(archives = getWentianArchiveList(), query = we
   });
   if (currentRows.length) groups.push({ initial: currentInitial, rows: currentRows });
   return groups.map((group) => `
-    <section class="wentian-profile-group" aria-label="${escapeHtml(group.initial)}">
-      <div class="wentian-profile-group-label">${escapeHtml(group.initial)}</div>
+    <section class="wentian-profile-group" aria-label="${escapeHtml(group.initial === "#" ? (isEn ? "Other charts" : "其他档案") : group.initial)}">
+      ${group.initial === "#" ? "" : `<div class="wentian-profile-group-label">${escapeHtml(group.initial)}</div>`}
       ${group.rows.join("")}
     </section>
   `).join("");
