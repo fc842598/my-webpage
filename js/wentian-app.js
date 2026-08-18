@@ -13533,10 +13533,13 @@ function sourceMineScreenV2(screen) {
     ? member.subtitle
     : (account.loggedIn ? "\u514D\u8D39\u7528\u6237" : "\u672A\u767B\u5F55");
   const loginBadgeText = member.isMember ? "月卡" : (account.loggedIn ? "\u8D26\u53F7" : "\u767B\u5F55");
+  const chartCountText = member.chartLimit == null
+    ? `${member.chartUsed}/${isEn ? "\u221E" : "不限"}`
+    : `${member.chartUsed}/${member.chartLimit}`;
   const statCards = [
     [member.quotaLabel, memberDailyText, 16, "screen-33"],
     [member.limitLabel, memberDailyLimitText, 139, "screen-33"],
-    ["命主人数", member.chartText, 262, "screen-33"]
+    [isEn ? "Profiles" : "命主人数", chartCountText, 262, "screen-33"]
   ];
   const listRows = [
     ["\u25A4", "\u6211\u7684\u62A5\u544A", "", 400, "screen-27"],
@@ -13566,7 +13569,7 @@ function sourceMineScreenV2(screen) {
     ${statCards.map(([label, count, x, route], index) => `
       ${figBox(`source-31-stat-v2-${index}`, x, 240, 111, 75, "converted-card", "border-radius:12px;box-shadow:0 5px 14px rgba(74,55,32,.08);")}
       ${figText(`source-31-stat-label-v2-${index}`, label, x + 14, 253, 80, 12, "#9b742e", 500)}
-      ${figText(`source-31-stat-count-v2-${index}`, count, x + 14, 279, 86, 20, "#b88c33", 800)}
+      ${figText(`source-31-stat-count-v2-${index}`, count, x + 14, 279, 86, 20, "#b88c33", 800, "left", "line-height:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;")}
       ${figButton(`source-31-stat-hit-v2-${index}`, x, 240, 111, 75, `data-route="${route}" aria-label="${label}"`, "", "z-index:37;")}
     `).join("")}
     ${figBox("source-31-plan-banner-v2", 16, 330, 358, 66, "", "border-radius:22px;background:linear-gradient(135deg,#2e2937 0%,#1b1824 100%);box-shadow:0 12px 24px rgba(36,25,18,.15);")}
