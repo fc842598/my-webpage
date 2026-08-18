@@ -8393,6 +8393,9 @@ const WENTIAN_I18N = {
     "登录后继续开通会员": "Sign in to continue membership checkout",
     "登录仅用于账号和会员服务": "Sign-in is only used for account and membership services",
     "登录后同步会员和订单": "Sign in to sync membership and orders",
+    "手机号已绑定，可用于登录": "Phone linked for sign-in",
+    "邮箱已绑定，可用于登录": "Email linked for sign-in",
+    "账号已登录，资料已同步": "Signed in · Data synced",
     "注册": "Register",
     "密码": "Password",
     "请输入手机号": "Enter phone number",
@@ -8480,6 +8483,9 @@ const WENTIAN_I18N = {
     "我的报告": "我的報告",
     "学习紫微": "學習紫微",
     "订单记录": "訂單記錄",
+    "手机号已绑定，可用于登录": "手機號碼已綁定，可用於登入",
+    "邮箱已绑定，可用于登录": "信箱已綁定，可用於登入",
+    "账号已登录，资料已同步": "帳戶已登入，資料已同步",
     "每日额度": "每日額度",
     "套餐状态": "套餐狀態",
     "综合会员": "付費版",
@@ -13909,6 +13915,12 @@ function sourceMineScreenV2(screen) {
     ? member.subtitle
     : (account.loggedIn ? "\u514D\u8D39\u7528\u6237" : "\u672A\u767B\u5F55");
   const loginBadgeText = member.isMember ? "月卡" : (account.loggedIn ? "\u8D26\u53F7" : "\u767B\u5F55");
+  const accountIdentity = String(account.email || "").trim();
+  const accountDetailText = !account.loggedIn
+    ? "\u767B\u5F55\u540E\u540C\u6B65\u4F1A\u5458\u548C\u8BA2\u5355"
+    : (/^1\d{10}$/.test(accountIdentity)
+      ? "手机号已绑定，可用于登录"
+      : (accountIdentity.includes("@") ? "邮箱已绑定，可用于登录" : "账号已登录，资料已同步"));
   const chartCountText = member.chartLimit == null
     ? `${member.chartUsed}/${isEn ? "\u221E" : "不限"}`
     : `${member.chartUsed}/${member.chartLimit}`;
@@ -13938,7 +13950,7 @@ function sourceMineScreenV2(screen) {
     ${figText("source-31-avatar-icon-v2", escapeHtml(account.initial), 34, 157, 60, 28, "#fff", 700, "center")}
     ${figText("source-31-name-v2", escapeHtml(accountTitle), 116, 148, 164, 18, "#26211c", 800, "left", "white-space:nowrap;overflow:hidden;text-overflow:ellipsis;")}
     ${figText("source-31-vip-v2", escapeHtml(statusText), 116, 174, 148, 13, member.isMember ? "#7a9a4b" : "#8f857a", 700, "left", "white-space:nowrap;overflow:hidden;text-overflow:ellipsis;")}
-    ${figText("source-31-email-v2", escapeHtml(account.loggedIn ? account.email : "\u767B\u5F55\u540E\u540C\u6B65\u4F1A\u5458\u548C\u8BA2\u5355"), 116, 195, 174, 12, "#8f857a", 700, "left", "white-space:nowrap;overflow:hidden;text-overflow:ellipsis;")}
+    ${figText("source-31-email-v2", escapeHtml(accountDetailText), 116, 195, 174, 12, "#8f857a", 700, "left", "white-space:nowrap;overflow:hidden;text-overflow:ellipsis;")}
     ${figBox("source-31-login-badge-v2", 292, 146, 58, 24, "", `border-radius:12px;background:${member.isMember ? "#fff0d6" : "#f6f2e9"};`)}
     ${figText("source-31-login-badge-text-v2", loginBadgeText, 292, 152, 58, 11, member.isMember ? "#9f3d2e" : "#9b742e", 800, "center", "white-space:nowrap;overflow:hidden;text-overflow:ellipsis;")}
     ${figButton("source-31-login-hit-v2", 16, 126, 358, 96, 'data-route="screen-40" aria-label="登录 / 注册"', "", "z-index:35;")}
