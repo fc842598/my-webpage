@@ -21041,6 +21041,18 @@ function getWentianClassicStarText(star) {
   return [name, brightness].filter(Boolean).join(" ");
 }
 
+function getWentianClassicDisplayStars(palace) {
+  return {
+    coreStars: [
+      ...(palace?.majorStars || []),
+      ...(palace?.minorStars || []),
+    ],
+    detailStars: [
+      ...(palace?.adjectiveStars || palace?.adjStars || []),
+    ],
+  };
+}
+
 function getWentianClassicRange(palace) {
   const range = palace?.decadal?.range;
   if (Array.isArray(range)) return `${range[0]}-${range[1]}`;
@@ -21075,22 +21087,27 @@ function renderWentianClassicPalaceCell(palace, activeBranch, options = {}) {
   const showXiaoLianBadge = showXiaoLianLocate || persistXiaoLianBadge;
   const xiaoLianSideClass = showXiaoLianBadge ? ` fc-xiaolian-side-${getWentianClassicXiaoLianBadgeSide(col, row)}` : "";
   const palaceAction = options.palaceAction || "";
+  const { coreStars, detailStars } = getWentianClassicDisplayStars(palace);
   const allStars = [
-    ...(palace.majorStars || []),
-    ...(palace.minorStars || []),
-    ...(palace.adjectiveStars || palace.adjStars || []),
+    ...coreStars,
+    ...detailStars,
   ];
   const mutagenHtml = allStars
     .filter((star) => star?.mutagen)
     .map((star) => `<span class="fc-pal-mutagen ${getWentianClassicMutagenClass(star.mutagen)}">${escapeHtml(star.mutagen)}</span>`)
     .join("");
-  const majorHtml = (palace.majorStars || [])
+  const majorDensityClass = coreStars.length >= 6
+    ? " is-very-dense"
+    : coreStars.length >= 4
+    ? " is-dense"
+    : "";
+  const majorHtml = coreStars
     .map((star) => `<div class="fc-major-star">${escapeHtml(getWentianClassicStarText(star))}</div>`)
     .join("");
-  const minorHtml = [
-    ...(palace.minorStars || []),
-    ...(palace.adjectiveStars || palace.adjStars || []),
-  ].slice(0, 5).map((star) => `<div class="fc-minor-star">${escapeHtml(getWentianClassicStarText(star))}</div>`).join("");
+  const minorHtml = detailStars
+    .slice(0, 5)
+    .map((star) => `<div class="fc-minor-star">${escapeHtml(getWentianClassicStarText(star))}</div>`)
+    .join("");
   const shenHtml = [palace.changsheng12, palace.boshi12].filter(Boolean).map((item) => `<span>${escapeHtml(item)}</span>`).join("");
   const palaceName = `${palace.isBodyPalace ? "身宫\n" : ""}${palace.name || ""}`;
   const xiaoLianHtml = isXiaoLian ? `<div class="fc-xiaolian-badge">${escapeHtml(xiaoLianAge ? `${xiaoLianAge}岁` : "小流年")}</div>` : "";
@@ -21104,7 +21121,7 @@ function renderWentianClassicPalaceCell(palace, activeBranch, options = {}) {
     <div class="fc-cell ${highlightClass}${showXiaoLianBadge ? ` fc-xiaolian${xiaoLianSideClass}${showXiaoLianLocate ? " is-locating" : ""}` : ""}${readonly && !palaceAction ? " is-readonly" : ""}" ${cellAttrs} style="grid-column:${col + 1};grid-row:${row + 1};">
       <div class="fc-cell-top">
         ${mutagenHtml ? `<div class="fc-cell-mutagen">${mutagenHtml}</div>` : ""}
-        <div class="fc-major-list">${majorHtml}</div>
+        <div class="fc-major-list${majorDensityClass}">${majorHtml}</div>
         <div class="fc-minor-list">${minorHtml}</div>
       </div>
       <div class="fc-cell-bottom">

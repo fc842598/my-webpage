@@ -2464,6 +2464,16 @@ html[lang="en"] .wentian-chart-tst {
   white-space: nowrap;
 }
 
+.wentian-native-mingpan .fc-major-list.is-dense .fc-major-star {
+  font-size: 10px;
+  line-height: 1.16;
+}
+
+.wentian-native-mingpan .fc-major-list.is-very-dense .fc-major-star {
+  font-size: 9px;
+  line-height: 1.1;
+}
+
 .wentian-native-mingpan .fc-minor-list {
   align-items: flex-end;
   gap: 1px;
