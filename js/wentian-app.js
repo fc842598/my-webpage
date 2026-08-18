@@ -13589,9 +13589,8 @@ function sourceProfileScreen(screen) {
 function sourceMembershipScreen() {
   const member = getWentianMemberSnapshot();
   const isEn = isWentianEnglishUi();
-  const buttonText = member.isMember
-    ? (isEn ? "Renew or change pass" : "续费或更换月卡")
-    : (isEn ? "Choose a monthly pass" : "选择月卡");
+  if (member.isMember) return sourceActiveMembershipScreen(member, isEn);
+  const buttonText = isEn ? "Choose a monthly pass" : "选择月卡";
   const currentQuota = formatWentianQuotaTextForUi(member.daily, isEn);
   const currentLimit = formatWentianQuotaTextForUi(member.dailyLimit, isEn);
   return `
@@ -14222,6 +14221,58 @@ function sourceLanguageSettingsScreen() {
       <button class="wentian-language-confirm" type="button" data-action="wentian-language-confirm">保存并使用</button>
       <p class="wentian-language-footnote">以后可在“我的”中随时修改</p>
     </section>
+  `;
+}
+
+function sourceActiveMembershipScreen(member, isEn = isWentianEnglishUi()) {
+  const currentQuota = formatWentianQuotaTextForUi(member.daily, isEn);
+  const currentLimit = formatWentianQuotaTextForUi(member.dailyLimit, isEn);
+  const chartCount = member.chartLimit == null
+    ? `${member.chartUsed}/${isEn ? "Unlimited" : "不限"}`
+    : `${member.chartUsed}/${member.chartLimit}`;
+  const chartAccess = member.chartLimit == null
+    ? (isEn ? "Unlimited chart profiles" : "不限命主人数")
+    : (isEn ? `Up to ${member.chartLimit} chart profiles` : `最多保存${member.chartLimit}位命主`);
+  const rights = [
+    ["问", isEn ? "Master Xu follow-ups" : "许大师连续追问", isEn ? `${currentLimit}, resets daily` : `${currentLimit}，按日刷新`],
+    ["命", isEn ? "Chart profiles" : "命主档案", chartAccess],
+    ["解", isEn ? "Full chart reading" : "完整命盘解读", isEn ? "Basic and in-depth readings available" : "基础解读与深度解读均可使用"],
+    ["同", isEn ? "Account sync" : "账号同步", isEn ? "Plan and orders follow this account" : "会员与订单跟随当前账号"]
+  ];
+  return `
+    ${figBox("wt33-bg", 0, 0, 390, 844, "", "background:linear-gradient(180deg,#fbf7ef 0%,#fffdf8 62%,#f5ead9 100%);")}
+    ${wentianBackPill("wt33", 18, 42, 'data-action="wentian-return-previous" data-fallback-route="screen-31" aria-label="返回"')}
+    ${figText("wt33-title", isEn ? "My Membership" : "我的会员权益", 0, 52, 390, 19, "#25211d", 900, "center")}
+
+    ${figBox("wt33-active-card", 24, 100, 342, 136, "", "border-radius:22px;background:linear-gradient(135deg,#2e2937 0%,#17141f 100%);box-shadow:0 14px 30px rgba(34,25,28,.18);")}
+    ${figBox("wt33-active-badge", 272, 118, 70, 26, "", "border-radius:13px;background:#f5d69e;")}
+    ${figText("wt33-active-badge-text", isEn ? "Active" : "已生效", 272, 125, 70, 11, "#4a321c", 900, "center")}
+    ${figText("wt33-active-name", escapeHtml(member.title), 46, 120, 210, 20, "#fffaf3", 900)}
+    ${figText("wt33-active-expiry", escapeHtml(member.subtitle), 46, 154, 260, 12, "#d8cbbb", 700)}
+    ${figText("wt33-active-quota-label", isEn ? "Available today" : "今日可用", 46, 184, 90, 11, "#bda989", 700)}
+    ${figText("wt33-active-quota", escapeHtml(currentQuota), 46, 202, 120, 22, "#f4d293", 900)}
+    ${figText("wt33-active-chart-label", isEn ? "Profiles" : "命主人数", 232, 184, 100, 11, "#bda989", 700, "right")}
+    ${figText("wt33-active-chart", escapeHtml(chartCount), 212, 202, 120, 22, "#f4d293", 900, "right")}
+
+    ${figText("wt33-rights-title", isEn ? "Included Benefits" : "已开通权益", 24, 270, 180, 17, "#25211d", 900)}
+    ${rights.map(([icon, title, desc], index) => {
+      const y = 306 + index * 82;
+      return `
+        ${figBox(`wt33-right-${index}`, 24, y, 342, 68, "", "border-radius:16px;background:#fffdf9;border:1px solid #eadfce;box-shadow:0 7px 18px rgba(70,45,25,.05);")}
+        ${figBox(`wt33-right-icon-${index}`, 42, y + 16, 36, 36, "", "border-radius:18px;background:#f7ecd8;")}
+        ${figText(`wt33-right-icon-text-${index}`, icon, 42, y + 26, 36, 14, "#9b742e", 900, "center")}
+        ${figText(`wt33-right-title-${index}`, title, 94, y + 14, 226, 15, "#25211d", 900)}
+        ${figText(`wt33-right-desc-${index}`, desc, 94, y + 39, 236, 11, "#81766b", 700)}
+      `;
+    }).join("")}
+
+    ${figBox("wt33-orders", 24, 650, 342, 48, "", "border-radius:24px;background:#25212d;box-shadow:0 10px 22px rgba(34,27,34,.14);")}
+    ${figButton("wt33-orders-hit", 24, 650, 342, 48, 'data-route="screen-48" aria-label="查看订单与支付记录"')}
+    ${figText("wt33-orders-text", isEn ? "View Orders & Payments" : "查看订单与支付记录", 24, 665, 342, 14, "#fffaf3", 900, "center")}
+    ${figBox("wt33-renew", 24, 714, 342, 44, "", "border-radius:22px;background:#fffaf2;border:1px solid #d9be8b;")}
+    ${figButton("wt33-renew-hit", 24, 714, 342, 44, 'data-action="wentian-member-pay" aria-label="续费或更换月卡"')}
+    ${figText("wt33-renew-text", isEn ? "Renew or Change Pass" : "续费或更换月卡", 24, 727, 342, 13, "#9a5a28", 900, "center")}
+    ${figText("wt33-renew-note", isEn ? "Renewal opens the plan selection page." : "需要续费时，再进入月卡选择页", 0, 780, 390, 11, "#9e968d", 700, "center")}
   `;
 }
 
@@ -23087,7 +23138,7 @@ function ensureWentianPhoneFitObserver() {
 
 function navigate(route, push = true, syncHash = true) {
   route = resolveRoute(route);
-  if (["screen-29", "screen-30", "screen-33"].includes(route) && !getWentianPayPalReturnParams()) {
+  if (["screen-29", "screen-30"].includes(route) && !getWentianPayPalReturnParams()) {
     openWentianUnifiedMemberPage();
     return;
   }
