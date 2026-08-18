@@ -7195,6 +7195,12 @@ html[data-wentian-language="en"] .liuren-hero-copy em {
   font-weight: 900;
 }
 
+.liuren-start:disabled {
+  cursor: wait;
+  opacity: .86;
+  box-shadow: 0 8px 18px rgba(157, 51, 41, .14);
+}
+
 .liuren-hand-board {
   position: relative;
   margin-top: 12px;
@@ -7324,7 +7330,8 @@ html[data-wentian-language="en"] .liuren-hero-copy em {
 }
 
 .liuren-hand-board.is-revealed .liuren-palace-button {
-  transition: border-color .16s ease, box-shadow .16s ease, background .16s ease, transform .16s ease;
+  opacity: 0;
+  animation: liurenBadgeReveal .34s cubic-bezier(.2, .8, .2, 1) calc(var(--badge-order) * .07s) forwards;
 }
 
 .liuren-hand-board.is-revealed .liuren-palace-button i {
@@ -7336,7 +7343,13 @@ html[data-wentian-language="en"] .liuren-hero-copy em {
 }
 
 .liuren-hand-board.is-revealed .liuren-palace-button.is-final {
-  animation: liurenFinalBadge 2.35s ease-in-out var(--liuren-final-delay) infinite;
+  animation: liurenBadgeReveal .34s cubic-bezier(.2, .8, .2, 1) calc(var(--badge-order) * .07s) forwards,
+    liurenFinalBadge 2.35s ease-in-out var(--liuren-final-delay) infinite;
+}
+
+.liuren-hand-board.is-casting .liuren-palace-button {
+  opacity: .14;
+  filter: saturate(.4);
 }
 
 .liuren-hand-board.is-revealed .liuren-palace-button.is-final::after {
@@ -7413,6 +7426,18 @@ html[data-wentian-language="en"] .liuren-hero-copy em {
 
   70% {
     transform: translate(1px, -1px) rotate(.2deg);
+  }
+}
+
+@keyframes liurenBadgeReveal {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -44%) scale(.86);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
   }
 }
 
@@ -7733,6 +7758,86 @@ html[data-wentian-language="en"] .liuren-hero-copy em {
   position: relative;
   margin-top: 12px;
   padding: 16px;
+}
+
+.liuren-casting-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 12px;
+  min-height: 90px;
+  padding: 16px 18px;
+  border: 1px solid #ead8c5;
+  border-radius: 18px;
+  background: linear-gradient(135deg, rgba(255, 253, 248, .98), rgba(250, 239, 217, .92));
+  box-shadow: 0 12px 26px rgba(76, 48, 24, .08);
+}
+
+.liuren-casting-card strong,
+.liuren-casting-card span {
+  display: block;
+}
+
+.liuren-casting-card strong {
+  color: #3a2b1f;
+  font-size: 16px;
+  font-weight: 900;
+}
+
+.liuren-casting-card span {
+  margin-top: 5px;
+  color: #8b775e;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+.liuren-casting-orbit {
+  position: relative;
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  width: 50px;
+  height: 50px;
+  border: 1px solid rgba(190, 145, 57, .34);
+  border-radius: 50%;
+  background: rgba(255, 249, 233, .9);
+}
+
+.liuren-casting-orbit::after {
+  content: "指";
+  color: #9a681c;
+  font-size: 17px;
+  font-weight: 900;
+}
+
+.liuren-casting-orbit i {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #c39742;
+  opacity: .26;
+  animation: liurenCastingDot 1.08s ease-in-out infinite;
+}
+
+.liuren-casting-orbit i:nth-child(1) { top: 4px; left: 22px; }
+.liuren-casting-orbit i:nth-child(2) { right: 7px; bottom: 10px; animation-delay: .18s; }
+.liuren-casting-orbit i:nth-child(3) { left: 7px; bottom: 10px; animation-delay: .36s; }
+
+#liuren-result.is-revealing .liuren-result-card {
+  opacity: 0;
+  animation: liurenResultReveal .48s cubic-bezier(.2, .8, .2, 1) .46s forwards;
+}
+
+@keyframes liurenCastingDot {
+  0%, 100% { opacity: .24; transform: scale(.72); }
+  50% { opacity: 1; transform: scale(1.16); }
+}
+
+@keyframes liurenResultReveal {
+  from { opacity: 0; transform: translateY(14px) scale(.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 .liuren-result-card h3,
@@ -11618,8 +11723,18 @@ html[lang="en"] .wentian-chart-ai-menu span {
 
 @media (prefers-reduced-motion: reduce) {
   .wentian-chart-ai-shortcut,
-  .wentian-chart-ai-shortcut::before {
+  .wentian-chart-ai-shortcut::before,
+  .liuren-palace-pulse,
+  .liuren-casting-orbit i,
+  .liuren-hand-board.is-revealed .liuren-palace-button,
+  .liuren-hand-board.is-revealed .liuren-palace-button.is-final,
+  #liuren-result.is-revealing .liuren-result-card {
     animation: none;
+  }
+
+  .liuren-hand-board.is-revealed .liuren-palace-button,
+  #liuren-result.is-revealing .liuren-result-card {
+    opacity: 1;
   }
 }
 

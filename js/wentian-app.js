@@ -18930,6 +18930,7 @@ const LIUREN_HAND_BADGE_COLORS = [
   { accent: "#6f91a1", glow: "rgba(111,145,161,.23)", soft: "rgba(111,145,161,.10)" }
 ];
 const LIUREN_FLASH_INTERVAL_SECONDS = 0.2;
+const LIUREN_PULSE_TAIL_SECONDS = 0.1;
 const LIUREN_SCREEN_HEIGHT = 1220;
 
 const OFFICE_LAYOUT_STORAGE_KEY = "wentian-office-layout-state-v1";
@@ -19392,6 +19393,21 @@ let liurenHasStarted = false;
 let liurenXuRecordId = null;
 let liurenActiveDate = null;
 let liurenLayoutTimers = [];
+let liurenRevealTimer = null;
+let liurenCastRunId = 0;
+let liurenPhase = "idle";
+
+function cancelLiurenReveal() {
+  if (liurenRevealTimer) window.clearTimeout(liurenRevealTimer);
+  liurenRevealTimer = null;
+  liurenCastRunId += 1;
+}
+
+function resetLiurenRevealState() {
+  cancelLiurenReveal();
+  liurenPhase = "idle";
+  liurenHasStarted = false;
+}
 
 function formatLiurenDayName(day) {
   const names = ["初一", "初二", "初三", "初四", "初五", "初六", "初七", "初八", "初九", "初十", "十一", "十二", "十三", "十四", "十五", "十六", "十七", "十八", "十九", "二十", "廿一", "廿二", "廿三", "廿四", "廿五", "廿六", "廿七", "廿八", "廿九", "三十"];
@@ -19605,26 +19621,33 @@ function renderLiurenPalacePulses(result) {
   }).join("");
 }
 
-function renderLiurenPath(result, reveal = true) {
+function renderLiurenPath(result, reveal = true, options = {}) {
+  const animate = options.animate === true;
   const items = [
     ["月令", `${result.lunar.month}月`, LIUREN_PALACES[result.monthPalaceIndex]?.name || "-"],
     ["日辰", `${result.lunar.day}日`, LIUREN_PALACES[result.dayPalaceIndex]?.name || "-"],
     ["时辰", `${result.hourName}时`, reveal ? result.palace.name : "待起课"]
   ];
   const activePalace = reveal ? result.palace.name : "待起课";
-  const visualSequence = reveal ? getLiurenVisualSequence(result) : [];
-  const finalDelay = reveal ? visualSequence.length * LIUREN_FLASH_INTERVAL_SECONDS + 0.1 : 0;
+  const visualSequence = animate ? getLiurenVisualSequence(result) : [];
+  const finalDelay = reveal ? 0.52 : 0;
   return `
-    <div class="liuren-hand-board ${reveal ? "is-revealed" : "is-idle"}" style="--liuren-step-duration:${LIUREN_FLASH_INTERVAL_SECONDS.toFixed(2)}s;--liuren-final-delay:${finalDelay.toFixed(2)}s;" aria-label="小六壬掌诀三指六位推演图">
+    <div class="liuren-hand-board ${animate ? "is-casting" : reveal ? "is-revealed" : "is-idle"}" style="--liuren-step-duration:${LIUREN_FLASH_INTERVAL_SECONDS.toFixed(2)}s;--liuren-final-delay:${finalDelay.toFixed(2)}s;" aria-label="小六壬掌诀三指六位推演图" aria-busy="${animate ? "true" : "false"}">
       <img src="../images/wentian-prototype-assets/liuren-hand-board-base.webp" alt="" aria-hidden="true" loading="eager" decoding="sync" fetchpriority="high">
       <div class="liuren-palace-layer" aria-hidden="true">${renderLiurenPalaceBadges(result, reveal)}</div>
-      ${reveal ? `<div class="liuren-palace-pulses" aria-hidden="true">${renderLiurenPalacePulses(result)}</div>` : ""}
+      ${animate ? `<div class="liuren-palace-pulses" aria-hidden="true">${renderLiurenPalacePulses(result)}</div>` : ""}
       <div class="liuren-hand-a11y" aria-live="polite">
         ${items.map(([label, value, palace]) => `<span>${label}：${value}，${palace}</span>`).join("")}
         <span>当前落宫：${activePalace}</span>
       </div>
     </div>
   `;
+}
+
+function getLiurenVisualDurationMs(result) {
+  if (window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches) return 360;
+  const steps = getLiurenVisualSequence(result).length;
+  return Math.ceil((steps * LIUREN_FLASH_INTERVAL_SECONDS + LIUREN_PULSE_TAIL_SECONDS) * 1000);
 }
 
 function getLiurenProcessRows(result) {
@@ -19831,6 +19854,19 @@ function renderLiurenResultHtml(result, reveal = true) {
   `;
 }
 
+function renderLiurenCastingHtml() {
+  const isEn = isWentianEnglishUi();
+  return `
+    <article class="liuren-casting-card" aria-live="polite" aria-busy="true">
+      <span class="liuren-casting-orbit" aria-hidden="true"><i></i><i></i><i></i></span>
+      <div>
+        <strong>${isEn ? "Counting on the fingers" : "正在指上推演"}</strong>
+        <span>${isEn ? "The result appears after the sequence finishes." : "月、日、时推演结束后再揭晓结果"}</span>
+      </div>
+    </article>
+  `;
+}
+
 function populateLiurenSelects() {
   const month = document.getElementById("liuren-month");
   const day = document.getElementById("liuren-day");
@@ -19931,33 +19967,42 @@ function updateLiurenPreview(options = {}) {
   const process = document.getElementById("liuren-process");
   const resultWrap = document.getElementById("liuren-result");
   const startText = document.querySelector("[data-liuren-start-text]");
-  const reveal = options.reveal ?? liurenHasStarted;
+  const phase = options.phase || ((options.reveal ?? liurenHasStarted) ? "revealed" : "idle");
+  const reveal = phase === "revealed";
+  const casting = phase === "casting";
   const isEn = isWentianEnglishUi();
   try {
     const result = getLiurenResultByDate(getLiurenInputDate());
     if (preview) preview.innerHTML = renderLiurenPreview(result);
     if (track) track.innerHTML = renderLiurenTrack(result, reveal);
-    if (path) path.innerHTML = renderLiurenPath(result, reveal);
+    if (path) path.innerHTML = renderLiurenPath(result, reveal, { animate: casting });
     if (process) process.innerHTML = renderLiurenProcess(result, reveal);
-    if (resultWrap) resultWrap.innerHTML = renderLiurenResultHtml(result, reveal);
+    if (resultWrap) {
+      resultWrap.classList.toggle("is-revealing", reveal && options.enter === true);
+      resultWrap.innerHTML = casting ? renderLiurenCastingHtml() : renderLiurenResultHtml(result, reveal);
+    }
+    const startButton = document.querySelector('[data-action="liuren-calc"]');
+    if (startButton) startButton.disabled = casting;
     if (isEn) {
-      if (startText) startText.textContent = reveal ? "Refocus" : "Cast After Focusing";
+      if (startText) startText.textContent = casting ? "Counting..." : reveal ? "Refocus" : "Cast After Focusing";
       const askButton = document.querySelector('[data-action="liuren-ask-xu"]');
       if (askButton) {
         askButton.disabled = !reveal;
         askButton.textContent = reveal ? "Ask Master Xu" : "Cast first, then ask Master Xu";
       }
-      setLiurenStatus(reveal ? LIUREN_PROCESS_LABELS_EN.castDone : LIUREN_PROCESS_LABELS_EN.castReady, reveal ? "ok" : "");
+      setLiurenStatus(casting ? "Counting the lunar month, day, and hour..." : reveal ? LIUREN_PROCESS_LABELS_EN.castDone : LIUREN_PROCESS_LABELS_EN.castReady, reveal ? "ok" : "");
       syncLiurenScreenLayout();
-      return;
+      return result;
     }
-    if (startText) startText.textContent = reveal ? "重新定念起课" : "默念后起课";
+    if (startText) startText.textContent = casting ? "指上推演中…" : reveal ? "重新定念起课" : "默念后起课";
     const askButton = document.querySelector('[data-action="liuren-ask-xu"]');
     if (askButton) {
       askButton.disabled = !reveal;
       askButton.textContent = reveal ? "追问许大师" : "起课后问许大师";
     }
-    setLiurenStatus(reveal ? "已按农历月日时起课" : "已取当下时间，先定念再起课", reveal ? "ok" : "");
+    setLiurenStatus(casting ? "正在按农历月、日、时顺推…" : reveal ? "已按农历月日时起课" : "已取当下时间，先定念再起课", reveal ? "ok" : "");
+    syncLiurenScreenLayout();
+    return result;
   } catch (error) {
     if (isEn) {
       if (preview) {
@@ -19966,31 +20011,46 @@ function updateLiurenPreview(options = {}) {
       if (process) process.innerHTML = "";
       setLiurenStatus(error.message || "Cast failed", "error");
       syncLiurenScreenLayout();
-      return;
+      return null;
     }
     if (preview) preview.innerHTML = '<div class="liuren-preview-copy"><span>当前课时</span><strong>新历：待取时</strong><em>农历：请补全时间</em></div>';
     if (process) process.innerHTML = "";
     setLiurenStatus(error.message || "起课失败", "error");
   }
   syncLiurenScreenLayout();
+  return null;
 }
 
 function initLiurenScreen() {
   if (!document.querySelector(".liuren-panel")) return;
-  liurenHasStarted = false;
+  resetLiurenRevealState();
   liurenXuRecordId = null;
   setLiurenDateTime(new Date(), { reveal: false });
   scheduleLiurenScreenLayout();
 }
 
 function calculateLiurenFromInputs() {
-  liurenHasStarted = true;
+  cancelLiurenReveal();
+  const runId = liurenCastRunId;
+  liurenPhase = "casting";
+  liurenHasStarted = false;
   liurenXuRecordId = makeWentianUuid();
-  updateLiurenPreview({ reveal: true });
+  const result = updateLiurenPreview({ phase: "casting" });
+  if (!result) {
+    liurenPhase = "idle";
+    return;
+  }
+  liurenRevealTimer = window.setTimeout(() => {
+    if (runId !== liurenCastRunId || liurenPhase !== "casting") return;
+    liurenRevealTimer = null;
+    liurenPhase = "revealed";
+    liurenHasStarted = true;
+    updateLiurenPreview({ phase: "revealed", enter: true });
+  }, getLiurenVisualDurationMs(result));
 }
 
 function resetLiuren() {
-  liurenHasStarted = false;
+  resetLiurenRevealState();
   liurenXuRecordId = null;
   setLiurenDateTime(new Date(), { reveal: false });
 }
@@ -23742,7 +23802,7 @@ document.addEventListener("click", (event) => {
   }
   if (earlyAction === "liuren-use-now") {
     closeLiurenTimeMenu();
-    liurenHasStarted = false;
+    resetLiurenRevealState();
     liurenXuRecordId = null;
     setLiurenDateTime(new Date(), { reveal: false });
     return;
@@ -24400,7 +24460,7 @@ document.addEventListener("input", (event) => {
   }
   if (event.target.closest?.(".liuren-panel")) {
     if (event.target.id === "liuren-year") updateLiurenDayOptions();
-    liurenHasStarted = false;
+    resetLiurenRevealState();
     liurenXuRecordId = null;
     updateLiurenPreview({ reveal: false });
     return;
@@ -24434,7 +24494,7 @@ document.addEventListener("input", (event) => {
 document.addEventListener("change", (event) => {
   if (event.target.closest?.(".liuren-panel")) {
     if (event.target.id === "liuren-year" || event.target.id === "liuren-month") updateLiurenDayOptions();
-    liurenHasStarted = false;
+    resetLiurenRevealState();
     liurenXuRecordId = null;
     updateLiurenPreview({ reveal: false });
     return;
