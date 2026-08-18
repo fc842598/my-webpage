@@ -21833,7 +21833,7 @@ function sourceZiweiMingpanScreenFromChart(saved) {
     ${figText("source-27-title", "紫微命盘", 0, 58, 390, 25, "#3b3934", 800, "center")}
     ${renderWentianChartMoreButton()}
     ${wentianBackPill("source-27", 18, 44)}
-    ${renderWentianClassicChart(saved)}
+    ${renderWentianClassicChart(saved, { persistXiaoLianBadge: true })}
     <div class="wentian-chart-content-stack">
       ${sourceZiweiAiDecodePanel(saved)}
       ${renderWentianMobileYijingPanel(saved)}
