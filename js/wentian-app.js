@@ -3100,24 +3100,70 @@ function readWentianScopedJsonObject(baseKey, options = {}) {
   }
 }
 
-function captureWentianGuestChartTransfer() {
-  if (hasWentianArchiveAccount()) return null;
-  const currentChart = getWentianSavedChart();
-  const archives = getWentianArchiveList()
+function readWentianExplicitGuestStorageItem(baseKey) {
+  try {
+    const scopedValue = localStorage.getItem(getWentianStorageKeyForScope(baseKey, "local-only"));
+    return scopedValue != null ? scopedValue : localStorage.getItem(baseKey);
+  } catch (_err) {
+    return null;
+  }
+}
+
+function readWentianExplicitGuestJson(baseKey, fallback) {
+  try {
+    const raw = readWentianExplicitGuestStorageItem(baseKey);
+    return raw == null ? fallback : JSON.parse(raw);
+  } catch (_err) {
+    return fallback;
+  }
+}
+
+function captureWentianGuestChartTransfer(options = {}) {
+  const explicitGuest = Boolean(options.explicitGuest);
+  if (!explicitGuest && hasWentianArchiveAccount()) return null;
+  const currentChart = explicitGuest
+    ? readWentianExplicitGuestJson(WENTIAN_CHART_STORAGE_KEY, null)
+    : getWentianSavedChart();
+  let archives = explicitGuest
+    ? readWentianExplicitGuestJson(WENTIAN_ARCHIVES_STORAGE_KEY, [])
+    : getWentianArchiveList();
+  archives = (Array.isArray(archives) ? archives : [])
     .map(normalizeWentianArchive)
     .filter((archive) => archive && !isWentianSeedArchive(archive));
+  if (explicitGuest) {
+    const guestTombstones = readWentianExplicitGuestJson(WENTIAN_ARCHIVE_TOMBSTONES_KEY, []);
+    archives = archives.filter((archive) => !isWentianArchiveTombstoned(
+      archive,
+      Array.isArray(guestTombstones) ? guestTombstones : []
+    ));
+    const currentArchive = archiveFromChartState(currentChart);
+    if (currentArchive
+      && !isWentianSeedArchive(currentArchive)
+      && !isWentianArchiveTombstoned(currentArchive, Array.isArray(guestTombstones) ? guestTombstones : [])
+      && !findWentianMatchingArchive(archives, currentArchive)) {
+      archives.unshift(currentArchive);
+    }
+  }
   if (!archives.length && !currentChart?.chartData) return null;
-  let hepanSelectedIds = [];
-  try {
-    const parsed = JSON.parse(getWentianScopedLocalStorageItem(WENTIAN_HEPAN_SELECTION_KEY, { allowLegacyLocal: true }) || "[]");
-    hepanSelectedIds = Array.isArray(parsed) ? parsed : [];
-  } catch (_err) {}
+  let rawHepanSelectedIds = [];
+  if (explicitGuest) {
+    rawHepanSelectedIds = readWentianExplicitGuestJson(WENTIAN_HEPAN_SELECTION_KEY, []);
+  } else {
+    try {
+      rawHepanSelectedIds = JSON.parse(getWentianScopedLocalStorageItem(WENTIAN_HEPAN_SELECTION_KEY, { allowLegacyLocal: true }) || "[]");
+    } catch (_err) {}
+  }
+  const chartAi = explicitGuest
+    ? readWentianExplicitGuestJson(WENTIAN_CHART_AI_STORAGE_KEY, {})
+    : readWentianScopedJsonObject(WENTIAN_CHART_AI_STORAGE_KEY, { allowLegacyLocal: true });
   return {
     archives,
     currentChart,
-    selectedArchiveId: getWentianStoredSelectedArchiveId(),
-    chartAi: readWentianScopedJsonObject(WENTIAN_CHART_AI_STORAGE_KEY, { allowLegacyLocal: true }),
-    hepanSelectedIds,
+    selectedArchiveId: explicitGuest
+      ? String(readWentianExplicitGuestStorageItem(WENTIAN_SELECTED_ARCHIVE_KEY) || "")
+      : getWentianStoredSelectedArchiveId(),
+    chartAi: chartAi && typeof chartAi === "object" && !Array.isArray(chartAi) ? chartAi : {},
+    hepanSelectedIds: Array.isArray(rawHepanSelectedIds) ? rawHepanSelectedIds : [],
   };
 }
 
@@ -10521,15 +10567,18 @@ function saveWentianAuthSession(session) {
 
 function setWentianAuthSession(session) {
   const previousUserId = wentianAuthSession?.user?.id || "";
+  const storedUserId = readWentianStoredSession()?.user?.id || "";
   const nextUserId = session?.user?.id || "";
-  const guestChartTransfer = !previousUserId && nextUserId ? captureWentianGuestChartTransfer() : null;
+  const guestChartTransfer = nextUserId
+    ? captureWentianGuestChartTransfer({ explicitGuest: Boolean(previousUserId || storedUserId) })
+    : null;
   wentianAuthSession = session || null;
   saveWentianAuthSession(session);
   const appliedGuestChartTransfer = guestChartTransfer ? applyWentianGuestChartTransfer(guestChartTransfer) : null;
   wentianMemberState.loaded = false;
   wentianOrderState.loaded = false;
   wentianInviteState.loaded = false;
-  if (previousUserId !== nextUserId) {
+  if (previousUserId !== nextUserId || appliedGuestChartTransfer) {
     wentianArchiveRemoteLoaded = false;
     wentianArchiveRemoteLoadedScope = "";
     if (nextUserId && typeof window !== "undefined") {
@@ -24319,6 +24368,8 @@ async function bootWentianApp() {
   captureWentianInviteFromUrl();
   const paypalReturn = getWentianPayPalReturnParams();
   if (!isWentianAuthCallbackUrl()) {
+    const storedSession = readWentianStoredSession();
+    if (storedSession?.user && !wentianAuthSession) setWentianAuthSession(storedSession);
     navigate(paypalReturn ? "screen-30" : routeFromLocation(), false);
     if (paypalReturn) window.setTimeout(() => captureWentianPayPalReturn(paypalReturn), 120);
     return;
