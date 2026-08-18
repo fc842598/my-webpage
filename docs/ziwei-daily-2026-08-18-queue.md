@@ -25,7 +25,7 @@ Recovery-Mode: false
 | 04 | 已发布 2026-08-18 17:27 https://yuetianai.com/articles/ziwei-yourengong-buneng-zhiying-bieren.html / https://yuetianai.com/articles/en/ziwei-yourengong-buneng-zhiying-bieren.html | ziwei-yourengong-buneng-zhiying-bieren | 紫微斗数有人的宫位为什么不能只应别人：先分角色，再分事件归属 | 看盘方法 |
 | 05 | 已发布 2026-08-18 17:28 https://yuetianai.com/articles/ziwei-hualu-huaji-tonggong-xianbao-shenfang.html / https://yuetianai.com/articles/en/ziwei-hualu-huaji-tonggong-xianbao-shenfang.html | ziwei-hualu-huaji-tonggong-xianbao-shenfang | 紫微斗数化禄和化忌同宫，先保哪边再防哪边：资源和卡点不能相减 | 四化细读 |
 | 06 | 已发布 2026-08-18 17:29 https://yuetianai.com/articles/ziwei-wusha-maowei-buneng-zhikan-henjing.html / https://yuetianai.com/articles/en/ziwei-wusha-maowei-buneng-zhikan-henjing.html | ziwei-wusha-maowei-buneng-zhikan-henjing | 紫微斗数武杀卯位为什么不能只看狠劲：位置、责任和代价要一起看 | 格局命例 |
-| 07 | 待发布 | ziwei-jixing-shaxing-neng-huxiang-dixiao-ma | 紫微斗数同一宫既有吉星又有煞星，能不能互相抵消 | 看盘方法 |
+| 07 | 已发布 2026-08-18 18:11 https://yuetianai.com/articles/ziwei-jixing-shaxing-neng-huxiang-dixiao-ma.html / https://yuetianai.com/articles/en/ziwei-jixing-shaxing-neng-huxiang-dixiao-ma.html | ziwei-jixing-shaxing-neng-huxiang-dixiao-ma | 紫微斗数同一宫既有吉星又有煞星，能不能互相抵消 | 看盘方法 |
 | 08 | 待发布 | ziwei-liangke-zhuxing-tonggong-zenme-kan | 紫微斗数两颗主星同宫怎么看：先读组合，再看落宫和四化 | 看盘方法 |
 | 09 | 待发布 | ziwei-kuiyue-guanlu-guiren-haishi-menkan | 紫微斗数天魁天钺在官禄，是贵人抬你还是门槛更高 | 辅煞曜 |
 | 10 | 待发布 | ziwei-haoxing-zou-detai-zao-weibi-youyong | 紫微斗数好星走得太早为什么未必有用：年龄和现实角色要能兑现 | 看盘方法 |
