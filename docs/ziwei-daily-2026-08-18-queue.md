@@ -27,5 +27,5 @@ Recovery-Mode: false
 | 06 | 已发布 2026-08-18 17:29 https://yuetianai.com/articles/ziwei-wusha-maowei-buneng-zhikan-henjing.html / https://yuetianai.com/articles/en/ziwei-wusha-maowei-buneng-zhikan-henjing.html | ziwei-wusha-maowei-buneng-zhikan-henjing | 紫微斗数武杀卯位为什么不能只看狠劲：位置、责任和代价要一起看 | 格局命例 |
 | 07 | 已发布 2026-08-18 18:11 https://yuetianai.com/articles/ziwei-jixing-shaxing-neng-huxiang-dixiao-ma.html / https://yuetianai.com/articles/en/ziwei-jixing-shaxing-neng-huxiang-dixiao-ma.html | ziwei-jixing-shaxing-neng-huxiang-dixiao-ma | 紫微斗数同一宫既有吉星又有煞星，能不能互相抵消 | 看盘方法 |
 | 08 | 已发布 2026-08-18 19:53 https://yuetianai.com/articles/ziwei-liangke-zhuxing-tonggong-zenme-kan.html / https://yuetianai.com/articles/en/ziwei-liangke-zhuxing-tonggong-zenme-kan.html | ziwei-liangke-zhuxing-tonggong-zenme-kan | 紫微斗数两颗主星同宫怎么看：先读组合，再看落宫和四化 | 看盘方法 |
-| 09 | 待发布 | ziwei-kuiyue-guanlu-guiren-haishi-menkan | 紫微斗数天魁天钺在官禄，是贵人抬你还是门槛更高 | 辅煞曜 |
+| 09 | 已发布 2026-08-18 21:07 https://yuetianai.com/articles/ziwei-kuiyue-guanlu-guiren-haishi-menkan.html / https://yuetianai.com/articles/en/ziwei-kuiyue-guanlu-guiren-haishi-menkan.html | ziwei-kuiyue-guanlu-guiren-haishi-menkan | 紫微斗数天魁天钺在官禄，是贵人抬你还是门槛更高 | 辅煞曜 |
 | 10 | 待发布 | ziwei-haoxing-zou-detai-zao-weibi-youyong | 紫微斗数好星走得太早为什么未必有用：年龄和现实角色要能兑现 | 看盘方法 |
