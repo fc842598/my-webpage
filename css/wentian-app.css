@@ -2402,13 +2402,13 @@ html[lang="en"] .wentian-chart-tst {
 }
 
 .wentian-native-mingpan .fc-sanfang-triangle {
-  stroke: rgba(151, 82, 48, .30);
+  stroke: rgba(151, 82, 48, .48);
   stroke-width: .9;
   filter: drop-shadow(0 0 1px rgba(255, 250, 238, .38));
 }
 
 .wentian-native-mingpan .fc-sanfang-opposite {
-  stroke: rgba(66, 52, 43, .24);
+  stroke: rgba(66, 52, 43, .40);
   stroke-width: .85;
 }
 
