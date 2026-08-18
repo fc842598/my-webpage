@@ -22603,7 +22603,9 @@ function getWentianNodeBottomWithinPhone(phone, node) {
   const rect = node.getBoundingClientRect();
   const phoneRect = phone.getBoundingClientRect();
   if (rect.width <= 0 && rect.height <= 0) return 0;
-  return Math.max(0, Math.ceil(rect.bottom - phoneRect.top));
+  const layoutWidth = phone.offsetWidth || WENTIAN_PHONE_WIDTH;
+  const renderedScale = phoneRect.width > 0 && layoutWidth > 0 ? phoneRect.width / layoutWidth : 1;
+  return Math.max(0, Math.ceil((rect.bottom - phoneRect.top) / renderedScale));
 }
 
 function isWentianCanvasBackgroundNode(node, phoneHeight = WENTIAN_PHONE_HEIGHT) {
