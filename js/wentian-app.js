@@ -23440,7 +23440,7 @@ document.addEventListener("toggle", (event) => {
 
 document.addEventListener("click", (event) => {
   const earlyActionTarget = event.target.closest("[data-action]");
-  if (Date.now() < wentianPointerRouteSuppressUntil && !earlyActionTarget) {
+  if (Date.now() < wentianPointerRouteSuppressUntil) {
     event.preventDefault();
     event.stopPropagation();
     return;
