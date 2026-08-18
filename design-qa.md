@@ -1,43 +1,54 @@
-# Ziwei chart style lab — design QA
+**Comparison Evidence**
 
-- Source visual truth: `D:\xwechat_files\wxid_bimy2y4q0da022_5e15\temp\RWTemp\2026-08\d27a607894a826a281113327abc68693\5bbb78021780892d6f742a71f220d7b8.jpg`
-- Implementation screenshot: `C:\Users\1\AppData\Local\Temp\ziwei-chart-style-lab-local.png`
-- Combined comparison evidence: `C:\Users\1\AppData\Local\Temp\ziwei-chart-style-lab-compare-pass1.png`
-- Viewport: 430 × 980 CSS px
-- Source pixels: 1260 × 2800; implementation pixels: 415 × 1156
-- Density normalization: source scaled to 415 px wide; implementation kept at its captured 415 px width; both padded to 415 × 1156 before horizontal comparison.
-- State: default chart state, 命宫 selected, 先天卦 selected.
+- Source visual truth: `C:\Users\1\AppData\Local\Temp\codex-clipboard-c2125b1c-798a-4ac0-81f7-33d298ab21f1.png`
+- Browser-rendered implementation: `C:\Users\1\AppData\Local\Temp\ziwei-chart-style-lab-v2-final-local.png`
+- Normalized side-by-side comparison: `C:\Users\1\AppData\Local\Temp\ziwei-chart-style-lab-v2-compare.png`
+- CSS viewport: `430 x 980`, device scale factor `1`
+- Source pixels: `658 x 844`; implementation pixels: `430 x 980`
+- Normalization: both captures were placed in one comparison canvas and scaled proportionally without judging browser chrome or the source crop as design defects.
+- State: test page, age `43岁`, active flow palace `子女宫`, three related palaces highlighted through 三方四正 dashed lines.
 
-## Full-view comparison
+**Findings**
 
-The normalized side-by-side comparison shows the same core visual direction: warm paper background, thin ruled chart, 4 × 4 palace ring, large 2 × 2 center, bold major stars on the left, muted secondary stars on the right, restrained transformation colors, one pale active palace, and a light segmented reading module below the chart.
+- No actionable P0/P1/P2 mismatch remains. The source interaction pattern—age selector, `时↑` / `时↓`, age badge and dashed 三方四正 relationships—is preserved, while the information blocks explicitly rejected by the user are intentionally omitted.
+- Fonts and typography: the chart keeps a restrained Chinese serif/sans hierarchy; palace names, primary stars and controls remain readable at mobile width without clipping.
+- Spacing and layout rhythm: the removed direction, four-pillar, summary and hexagram blocks leave a compact single-chart composition; controls fit in the center without horizontal overflow at both `430px` and `320px` widths.
+- Colors and visual tokens: warm paper background, muted gold, ink black and restrained related-palace tint remain consistent; dashed relationship lines have enough contrast without dominating the chart.
+- Image quality and asset fidelity: no source illustration or logo was replaced. The relationship overlay uses a browser canvas because it is functional chart data, not a substitute for a visual asset.
+- Copy and content: all user-requested redundant copy is absent; palace, star, age and interaction labels remain.
 
-## Focused-region comparison
+**Open Questions**
 
-No separate focused crop is required for the passing review. At the normalized full-view width, the palace hierarchy, center facts, border weight, active palace, four transformation colors, age badge, and tab state remain readable enough to judge the dense chart UI without introducing a mismatched crop.
+- None for this isolated visual test. Its footer continues to state that production chart logic has not been connected.
 
-## Required fidelity surfaces
+**Implementation Checklist**
 
-- Fonts and typography: Song-style display type is limited to chart titles and stems; UI copy uses the existing mobile system stack. Major stars and palace names are optically heavier than dates and helper stars, matching the reference hierarchy.
-- Spacing and layout rhythm: the chart keeps the reference 4 × 4 ring and 2 × 2 center proportions, with more breathing room than the production chart and no overlapping labels at 430 px or 375 px.
-- Colors and visual tokens: paper, ink, hairline borders, pale peach selection, and restrained 禄/权/科/忌 colors are consistent with the reference direction. No thick colored palace outlines remain.
-- Image quality and asset fidelity: the reference chart contains no required photographic or branded image assets; the implementation is a text/data interface and therefore uses no replacement raster, SVG, emoji, or placeholder imagery.
-- Copy and content: fixed realistic chart data is explicitly labeled as test data; the page states that no production logic is connected.
+- [x] Remove the listed direction, four-pillar, summary and hexagram content from the test page only.
+- [x] Add responsive 三方四正 dashed relationship lines.
+- [x] Add palace selection animation and related-palace highlighting.
+- [x] Add age selection, `时↑` and `时↓` interaction with a moving age badge.
+- [x] Verify no horizontal overflow at `430 x 980` and `320 x 850`.
+- [x] Verify browser console has zero errors or warnings.
 
-## Findings
+**Primary Interactions Tested**
 
-- No actionable P0, P1, or P2 mismatches remain for this isolated visual-direction prototype.
-- P3 follow-up: exact star density, center metadata order, and mobile font optical weight can be tuned after the user chooses this direction for the production chart.
+- Select `43岁`: flow badge and active palace move to `子女宫`.
+- Press `时↑`: active flow palace advances to `夫妻宫` and status updates.
+- Click `官禄宫`: selected palace and its three related palaces update while the flow marker remains independently correct.
+- Resize to narrow mobile width: canvas redraws and controls remain visible.
 
-## Interaction and runtime checks
+**Focused Region Comparison**
 
-- Palace selection updates the highlighted cell and summary text.
-- 先天卦 / 后天卦 / 流年卦 tabs update title and explanatory copy.
-- 375 px viewport has no horizontal overflow.
-- Browser console: no warnings or errors.
+- A separate crop was not needed: the normalized full-view comparison keeps the center controls, age badge, relationship lines, palace typography and chart spacing legible at once.
 
-## Comparison history
+**Comparison History**
 
-- Pass 1: no P0/P1/P2 issue found; no visual fix was required after the normalized comparison.
+- Initial implementation review found the test page still contained nonessential direction, four-pillar, current-view and hexagram content and lacked the source page's small-flow-year controls and relationship overlay.
+- Fix: removed the rejected regions, added the interactive age/hour controls, moving age badge, palace states and responsive dashed overlay.
+- Post-fix evidence: `C:\Users\1\AppData\Local\Temp\ziwei-chart-style-lab-v2-final-local.png` and the combined comparison above show no remaining actionable P0/P1/P2 differences for the requested scope.
+
+**Follow-up Polish**
+
+- P3: production data mapping is intentionally not connected until the user approves this isolated design.
 
 final result: passed
