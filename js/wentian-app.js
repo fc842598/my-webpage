@@ -14071,12 +14071,12 @@ function sourceLoginMethodsScreen() {
         `;
       }).join("")}
 
-      ${figBox("source-login-note", 24, 586, 342, 84, "", "border-radius:18px;background:#fffaf2;border:1px solid #ead9bd;box-shadow:0 6px 16px rgba(74,55,32,.04);")}
-      ${figText("source-login-note-title", "账号说明", 46, 606, 90, 15, "#25211d", 900)}
-      ${figText("source-login-note-text", "当前账号已绑定邮箱。改密码、续费或查订单，都可以直接点上方入口。", 46, 632, 286, 12, "#756d63", 700, "left", "line-height:1.5;")}
-      ${figBox("source-login-logout", 42, 696, 306, 48, "", "border-radius:24px;background:#fff;border:1px solid #e2d8c8;")}
-      ${figButton("source-login-logout-hit", 42, 696, 306, 48, 'data-action="wentian-auth-logout-open"')}
-      ${figText("source-login-logout-text", "退出登录", 42, 710, 306, 14, "#9f3d2e", 900, "center")}
+      ${figBox("source-login-logout", 42, 586, 306, 48, "", "border-radius:24px;background:#fff;border:1px solid #e2d8c8;")}
+      ${figButton("source-login-logout-hit", 42, 586, 306, 48, 'data-action="wentian-auth-logout-open" aria-label="退出登录"')}
+      ${figText("source-login-logout-text", "退出登录", 42, 600, 306, 14, "#9f3d2e", 900, "center")}
+      ${figBox("source-login-note", 24, 658, 342, 84, "", "border-radius:18px;background:#fffaf2;border:1px solid #ead9bd;box-shadow:0 6px 16px rgba(74,55,32,.04);")}
+      ${figText("source-login-note-title", "账号说明", 46, 678, 90, 15, "#25211d", 900)}
+      ${figText("source-login-note-text", "当前账号已绑定邮箱。改密码、续费或查订单，都可以直接点上方入口。", 46, 704, 286, 12, "#756d63", 700, "left", "line-height:1.5;")}
     `;
   }
   return `
