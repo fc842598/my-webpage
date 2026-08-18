@@ -2249,8 +2249,12 @@ function getWentianArchiveStorageScopeId() {
   return String(scope).replace(/[^a-zA-Z0-9_-]/g, "").slice(0, 120) || "local-only";
 }
 
+function getWentianStorageKeyForScope(baseKey, scopeId) {
+  return `${String(baseKey || "").trim()}:${String(scopeId || "local-only").trim() || "local-only"}`;
+}
+
 function getWentianScopedStorageKey(baseKey) {
-  return `${String(baseKey || "").trim()}:${getWentianArchiveStorageScopeId()}`;
+  return getWentianStorageKeyForScope(baseKey, getWentianArchiveStorageScopeId());
 }
 
 function getWentianScopedLocalStorageItem(baseKey, options = {}) {
@@ -2974,14 +2978,23 @@ async function hydrateWentianArchivesFromRemote(options = {}) {
   if (wentianArchiveRemoteLoaded && wentianArchiveRemoteLoadedScope === scope && !options.force) return null;
   wentianArchiveRemotePromiseScope = scope;
   wentianArchiveRemotePromise = fetchWentianRemoteArchives()
-    .then((data) => {
+    .then(async (data) => {
       if (scope !== getWentianArchiveRemoteScope()) return null;
       wentianArchiveRemoteLoaded = true;
       wentianArchiveRemoteLoadedScope = scope;
       const localArchives = readWentianArchives().map(normalizeWentianArchive).filter(Boolean);
       const remoteArchives = (Array.isArray(data.archives) ? data.archives : []).map(normalizeWentianArchive).filter(Boolean);
-      const rawMerged = mergeWentianArchives(localArchives, remoteArchives);
-      const localSelectedId = getWentianStoredSelectedArchiveId();
+      const transferredArchives = Array.isArray(options.guestTransfer?.archives) ? options.guestTransfer.archives : [];
+      const localArchivesForMerge = transferredArchives.length
+        ? localArchives.filter((localArchive) => {
+          const transferredArchive = transferredArchives.find((archive) => isWentianSameArchiveIdentity(archive, localArchive));
+          return !transferredArchive || !findWentianMatchingArchive(remoteArchives, transferredArchive);
+        })
+        : localArchives;
+      const rawMerged = mergeWentianArchives(localArchivesForMerge, remoteArchives);
+      const transferredSelectedSource = getWentianTransferredArchiveSource(options.guestTransfer, options.guestTransfer?.selectedArchiveId);
+      const transferredSelectedTarget = findWentianMatchingArchive(rawMerged, transferredSelectedSource);
+      const localSelectedId = transferredSelectedTarget?.id || getWentianStoredSelectedArchiveId();
       const remoteSelectedId = localSelectedId && rawMerged.some((item) => item.id === localSelectedId)
         ? localSelectedId
         : data.selectedArchiveId && rawMerged.some((item) => item.id === data.selectedArchiveId)
@@ -2994,7 +3007,20 @@ async function hydrateWentianArchivesFromRemote(options = {}) {
       if (remoteSelectedId) {
         setWentianSelectedArchiveId(remoteSelectedId);
       }
-      if (merged.length && remoteArchives.length < merged.length) pushWentianArchivesToRemote(merged);
+      if (options.guestTransfer) {
+        writeWentianTransferredCurrentChart(options.guestTransfer, merged);
+        mergeWentianTransferredChartAi(options.guestTransfer, merged);
+      }
+      if (merged.length && (options.forcePush || remoteArchives.length < merged.length)) {
+        const syncResult = await pushWentianArchivesToRemote(merged, {
+          statusOnError: Boolean(options.guestTransfer),
+          verify: Boolean(options.forcePush),
+        });
+        if (syncResult && options.guestTransfer) {
+          setWentianArchiveStatus("登录前排好的命盘已自动保存到当前账号", "ok");
+          refreshWentianArchiveStatusView();
+        }
+      }
       if (options.rerender && before !== after && ["screen-1", "screen-5", "screen-25", "screen-27"].includes(state.route)) {
         if (state.route === "screen-25") navigateWentianProfilePreservingListScroll();
         else navigatePreservingScroll(state.route, false);
@@ -3003,6 +3029,9 @@ async function hydrateWentianArchivesFromRemote(options = {}) {
     })
     .catch((error) => {
       console.info("wentian archive remote load fallback", error);
+      if (options.guestTransfer) {
+        showWentianArchiveSyncError("命盘已保存在当前设备，云端同步暂时失败，请联网后重试");
+      }
       return null;
     })
     .finally(() => {
@@ -3030,6 +3059,180 @@ function getWentianArchiveList() {
   writeWentianArchives(sorted);
   setWentianSelectedArchiveId(selectedId || "");
   return sorted;
+}
+
+function findWentianMatchingArchive(archives, sourceArchive) {
+  const source = normalizeWentianArchive(sourceArchive);
+  if (!source) return null;
+  const sourceId = source.id || source.form?.archiveId || "";
+  const sourceRecordId = source.chartRecordId || source.chartData?.chartRecordId || "";
+  const sourceDuplicateKey = getWentianArchiveDuplicateKey(source);
+  return (Array.isArray(archives) ? archives : []).find((item) => {
+    const archive = normalizeWentianArchive(item);
+    if (!archive) return false;
+    const archiveId = archive.id || archive.form?.archiveId || "";
+    const archiveRecordId = archive.chartRecordId || archive.chartData?.chartRecordId || "";
+    return Boolean(
+      (sourceId && archiveId === sourceId)
+      || (sourceRecordId && archiveRecordId === sourceRecordId)
+      || (sourceDuplicateKey && getWentianArchiveDuplicateKey(archive) === sourceDuplicateKey)
+    );
+  }) || null;
+}
+
+function isWentianSameArchiveIdentity(leftArchive, rightArchive) {
+  const left = normalizeWentianArchive(leftArchive);
+  const right = normalizeWentianArchive(rightArchive);
+  if (!left || !right) return false;
+  const leftId = left.id || left.form?.archiveId || "";
+  const rightId = right.id || right.form?.archiveId || "";
+  const leftRecordId = left.chartRecordId || left.chartData?.chartRecordId || "";
+  const rightRecordId = right.chartRecordId || right.chartData?.chartRecordId || "";
+  return Boolean((leftId && leftId === rightId) || (leftRecordId && leftRecordId === rightRecordId));
+}
+
+function readWentianScopedJsonObject(baseKey, options = {}) {
+  try {
+    const parsed = JSON.parse(getWentianScopedLocalStorageItem(baseKey, options) || "{}");
+    return parsed && typeof parsed === "object" && !Array.isArray(parsed) ? parsed : {};
+  } catch (_err) {
+    return {};
+  }
+}
+
+function captureWentianGuestChartTransfer() {
+  if (hasWentianArchiveAccount()) return null;
+  const currentChart = getWentianSavedChart();
+  const archives = getWentianArchiveList()
+    .map(normalizeWentianArchive)
+    .filter((archive) => archive && !isWentianSeedArchive(archive));
+  if (!archives.length && !currentChart?.chartData) return null;
+  let hepanSelectedIds = [];
+  try {
+    const parsed = JSON.parse(getWentianScopedLocalStorageItem(WENTIAN_HEPAN_SELECTION_KEY, { allowLegacyLocal: true }) || "[]");
+    hepanSelectedIds = Array.isArray(parsed) ? parsed : [];
+  } catch (_err) {}
+  return {
+    archives,
+    currentChart,
+    selectedArchiveId: getWentianStoredSelectedArchiveId(),
+    chartAi: readWentianScopedJsonObject(WENTIAN_CHART_AI_STORAGE_KEY, { allowLegacyLocal: true }),
+    hepanSelectedIds,
+  };
+}
+
+function getWentianTransferredArchiveSource(transfer, archiveId = "") {
+  const archives = Array.isArray(transfer?.archives) ? transfer.archives : [];
+  const matched = archiveId
+    ? archives.find((archive) => archive?.id === archiveId || archive?.form?.archiveId === archiveId)
+    : null;
+  return matched || archiveFromChartState(transfer?.currentChart) || archives[0] || null;
+}
+
+function writeWentianTransferredCurrentChart(transfer, archives) {
+  const currentChart = transfer?.currentChart;
+  const sourceArchive = archiveFromChartState(currentChart);
+  const targetArchive = findWentianMatchingArchive(archives, sourceArchive);
+  if (!currentChart?.chartData || !targetArchive) return null;
+  const archiveId = targetArchive.id || targetArchive.form?.archiveId || sourceArchive?.id || "";
+  const chartRecordId = targetArchive.chartRecordId || targetArchive.chartData?.chartRecordId || sourceArchive?.chartRecordId || "";
+  const mappedChart = {
+    ...currentChart,
+    archiveId,
+    chartData: { ...currentChart.chartData, chartRecordId },
+    form: { ...(currentChart.form || {}), archiveId },
+  };
+  setWentianScopedLocalStorageItem(WENTIAN_CHART_STORAGE_KEY, JSON.stringify(mappedChart));
+  if (chartRecordId) setWentianScopedLocalStorageItem(WENTIAN_CHART_RECORD_STORAGE_KEY, chartRecordId);
+  return targetArchive;
+}
+
+function mergeWentianTransferredChartAi(transfer, archives) {
+  const guestAi = transfer?.chartAi && typeof transfer.chartAi === "object" ? transfer.chartAi : {};
+  const guestArchives = Array.isArray(transfer?.archives) ? transfer.archives : [];
+  if (!guestArchives.length || !Object.keys(guestAi).length) return;
+  const accountAi = readWentianScopedJsonObject(WENTIAN_CHART_AI_STORAGE_KEY);
+  const activeRecordIds = new Set((Array.isArray(archives) ? archives : [])
+    .map((archive) => archive?.chartRecordId || archive?.chartData?.chartRecordId || "")
+    .filter(Boolean));
+  guestArchives.forEach((sourceArchive) => {
+    const sourceRecordId = sourceArchive?.chartRecordId || sourceArchive?.chartData?.chartRecordId || "";
+    const targetArchive = findWentianMatchingArchive(archives, sourceArchive);
+    const targetRecordId = targetArchive?.chartRecordId || targetArchive?.chartData?.chartRecordId || sourceRecordId;
+    if (!sourceRecordId || !targetRecordId) return;
+    Object.entries(guestAi).forEach(([key, value]) => {
+      const [recordId, ...suffixParts] = String(key || "").split("::");
+      if (recordId !== sourceRecordId) return;
+      const suffix = suffixParts.length ? `::${suffixParts.join("::")}` : "";
+      const targetKey = `${targetRecordId}${suffix}`;
+      if (accountAi[targetKey] == null) accountAi[targetKey] = value;
+      if (targetKey !== key && !activeRecordIds.has(sourceRecordId)) delete accountAi[key];
+    });
+  });
+  setWentianScopedLocalStorageItem(WENTIAN_CHART_AI_STORAGE_KEY, JSON.stringify(accountAi));
+}
+
+function clearWentianGuestChartTransferStorage() {
+  const keys = [
+    WENTIAN_CHART_STORAGE_KEY,
+    WENTIAN_ARCHIVES_STORAGE_KEY,
+    WENTIAN_SELECTED_ARCHIVE_KEY,
+    WENTIAN_CHART_RECORD_STORAGE_KEY,
+    WENTIAN_CHART_AI_STORAGE_KEY,
+    WENTIAN_HEPAN_SELECTION_KEY,
+    WENTIAN_CHART_PERSON_CLAIMS_KEY,
+    WENTIAN_ARCHIVE_TOMBSTONES_KEY,
+  ];
+  keys.forEach((baseKey) => {
+    localStorage.removeItem(getWentianStorageKeyForScope(baseKey, "local-only"));
+    localStorage.removeItem(baseKey);
+  });
+}
+
+function applyWentianGuestChartTransfer(transfer) {
+  const guestArchives = (Array.isArray(transfer?.archives) ? transfer.archives : [])
+    .map(normalizeWentianArchive)
+    .filter((archive) => archive && !isWentianSeedArchive(archive));
+  if (!hasWentianArchiveAccount() || !guestArchives.length) return null;
+  try {
+    guestArchives.forEach(forgetWentianArchiveTombstone);
+    const accountArchives = readWentianArchives().map(normalizeWentianArchive).filter(Boolean);
+    const combined = [...accountArchives];
+    guestArchives.forEach((archive) => {
+      if (!findWentianMatchingArchive(combined, archive)) combined.push(archive);
+    });
+    const rawMerged = mergeWentianArchives(combined, []);
+    const selectedSource = getWentianTransferredArchiveSource(transfer, transfer.selectedArchiveId);
+    const selectedTarget = findWentianMatchingArchive(rawMerged, selectedSource);
+    const accountSelectedId = getWentianStoredSelectedArchiveId();
+    const selectedId = selectedTarget?.id
+      || (rawMerged.some((archive) => archive.id === accountSelectedId) ? accountSelectedId : "")
+      || getWentianSelectedArchiveId(rawMerged);
+    const merged = markWentianArchiveDefault(sortWentianArchivesByDefault(rawMerged, selectedId), selectedId);
+    setWentianScopedLocalStorageItem(WENTIAN_ARCHIVES_STORAGE_KEY, JSON.stringify(merged));
+    setWentianScopedLocalStorageItem(WENTIAN_SELECTED_ARCHIVE_KEY, selectedId || "");
+    writeWentianTransferredCurrentChart(transfer, merged);
+    mergeWentianTransferredChartAi(transfer, merged);
+
+    const accountHepanIds = getWentianHepanSelectedIds(merged);
+    const mappedGuestHepanIds = (Array.isArray(transfer.hepanSelectedIds) ? transfer.hepanSelectedIds : [])
+      .map((id) => findWentianMatchingArchive(merged, guestArchives.find((archive) => archive.id === id))?.id || "")
+      .filter(Boolean);
+    const mergedHepanIds = [...new Set([...mappedGuestHepanIds, ...accountHepanIds])]
+      .filter((id) => merged.some((archive) => archive.id === id))
+      .slice(0, 2);
+    setWentianScopedLocalStorageItem(WENTIAN_HEPAN_SELECTION_KEY, JSON.stringify(mergedHepanIds));
+    wentianHepanSelectedIds = mergedHepanIds;
+    wentianHepanSelectedIdsScope = getWentianScopedStorageKey(WENTIAN_HEPAN_SELECTION_KEY);
+
+    const verified = readWentianArchives().map(normalizeWentianArchive).filter(Boolean);
+    if (!guestArchives.every((archive) => findWentianMatchingArchive(verified, archive))) return null;
+    clearWentianGuestChartTransferStorage();
+    return { ...transfer, archives: guestArchives };
+  } catch (error) {
+    console.info("wentian guest chart transfer fallback", error);
+    return null;
+  }
 }
 
 function saveWentianArchiveFromChartState(chartState) {
@@ -10319,8 +10522,10 @@ function saveWentianAuthSession(session) {
 function setWentianAuthSession(session) {
   const previousUserId = wentianAuthSession?.user?.id || "";
   const nextUserId = session?.user?.id || "";
+  const guestChartTransfer = !previousUserId && nextUserId ? captureWentianGuestChartTransfer() : null;
   wentianAuthSession = session || null;
   saveWentianAuthSession(session);
+  const appliedGuestChartTransfer = guestChartTransfer ? applyWentianGuestChartTransfer(guestChartTransfer) : null;
   wentianMemberState.loaded = false;
   wentianOrderState.loaded = false;
   wentianInviteState.loaded = false;
@@ -10330,7 +10535,12 @@ function setWentianAuthSession(session) {
     if (nextUserId && typeof window !== "undefined") {
       window.setTimeout(() => {
         if ((wentianAuthSession?.user?.id || "") === nextUserId) {
-          hydrateWentianArchivesFromRemote({ force: true, rerender: true });
+          hydrateWentianArchivesFromRemote({
+            force: true,
+            rerender: true,
+            forcePush: Boolean(appliedGuestChartTransfer),
+            guestTransfer: appliedGuestChartTransfer,
+          });
         }
       }, 0);
     }
