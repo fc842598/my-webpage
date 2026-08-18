@@ -5,9 +5,16 @@
     <link>https://yuetianai.com/</link>
     <description>阅天AI官方入口、免费紫微斗数排盘与AI命盘分析相关更新。</description>
     <language>zh-CN</language>
-    <lastBuildDate>Tue, 18 Aug 2026 09:26:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 18 Aug 2026 09:27:00 +0000</lastBuildDate>
     <atom:link href="https://yuetianai.com/feed.xml" rel="self" type="application/rss+xml" />
 
+    <item>
+      <title>紫微斗数有人的宫位为什么不能只应别人：先分角色，再分事件归属</title>
+      <link>https://yuetianai.com/articles/ziwei-yourengong-buneng-zhiying-bieren.html</link>
+      <guid isPermaLink="true">https://yuetianai.com/articles/ziwei-yourengong-buneng-zhiying-bieren.html</guid>
+      <pubDate>Tue, 18 Aug 2026 09:27:00 +0000</pubDate>
+      <description>很多人一看到有人宫位，就先把自己排除出去。可现实里最常见的，不是你只看着别人出事，而是别人一动，你也跟着被牵进去。</description>
+    </item>
     <item>
       <title>紫微斗数三方四正什么时候一定把对宫拉进来：先分主事宫还是牵动宫</title>
       <link>https://yuetianai.com/articles/ziwei-sanfang-sizheng-shenme-shihou-bixulai-duigong.html</link>
@@ -560,13 +567,6 @@
       <guid isPermaLink="true">https://yuetianai.com/articles/ziwei-caibogong-huake.html</guid>
       <pubDate>Wed, 12 Aug 2026 02:45:00 +0000</pubDate>
       <description>财帛宫化科，收入来自专业名声和口碑——稳、体面、可持续。但化科不主暴富，想发大财要看有没有禄来配。</description>
-    </item>
-    <item>
-      <title>紫微斗数财帛宫化权：赚钱要自己说了算，是掌控财还是被财掌控</title>
-      <link>https://yuetianai.com/articles/ziwei-caibogong-huaquan.html</link>
-      <guid isPermaLink="true">https://yuetianai.com/articles/ziwei-caibogong-huaquan.html</guid>
-      <pubDate>Wed, 12 Aug 2026 02:45:00 +0000</pubDate>
-      <description>财帛宫化权，赚钱有魄力、花钱有主见。但对钱的掌控欲也可能变成被钱掌控——什么都要自己管、不敢放权、为了钱累自己。</description>
     </item>
   </channel>
 </rss>

@@ -9,7 +9,7 @@ Recovery-Mode: false
 01. 2026-08-18 17:20 - 紫微斗数同一颗星在本命和大限出现，代表天生特质还是十年处境
 02. 2026-08-18 17:25 - 紫微斗数空宫先借对宫，借到哪一步必须回三方
 03. 2026-08-18 17:26 - 紫微斗数三方四正什么时候一定把对宫拉进来：先分主事宫还是牵动宫
-04. 2026-08-18 13:52 - 紫微斗数有人的宫位为什么不能只应别人：先分角色，再分事件归属
+04. 2026-08-18 17:27 - 紫微斗数有人的宫位为什么不能只应别人：先分角色，再分事件归属
 05. 2026-08-18 15:18 - 紫微斗数化禄和化忌同宫，先保哪边再防哪边：资源和卡点不能相减
 06. 2026-08-18 16:44 - 紫微斗数武杀卯位为什么不能只看狠劲：位置、责任和代价要一起看
 07. 2026-08-18 18:11 - 紫微斗数同一宫既有吉星又有煞星，能不能互相抵消
@@ -22,7 +22,7 @@ Recovery-Mode: false
 | 01 | 已发布 2026-08-18 17:20 https://yuetianai.com/articles/ziwei-benming-daxian-tongxing-qubie.html / https://yuetianai.com/articles/en/ziwei-benming-daxian-tongxing-qubie.html | ziwei-benming-daxian-tongxing-qubie | 紫微斗数同一颗星在本命和大限出现，代表天生特质还是十年处境 | 看盘方法 |
 | 02 | 已发布 2026-08-18 17:25 https://yuetianai.com/articles/ziwei-konggong-xianjieduigong-zaihuisanfang.html / https://yuetianai.com/articles/en/ziwei-konggong-xianjieduigong-zaihuisanfang.html | ziwei-konggong-xianjieduigong-zaihuisanfang | 紫微斗数空宫先借对宫，借到哪一步必须回三方 | 格局命例 |
 | 03 | 已发布 2026-08-18 17:26 https://yuetianai.com/articles/ziwei-sanfang-sizheng-shenme-shihou-bixulai-duigong.html / https://yuetianai.com/articles/en/ziwei-sanfang-sizheng-shenme-shihou-bixulai-duigong.html | ziwei-sanfang-sizheng-shenme-shihou-bixulai-duigong | 紫微斗数三方四正什么时候一定把对宫拉进来：先分主事宫还是牵动宫 | 看盘方法 |
-| 04 | 待发布 | ziwei-yourengong-buneng-zhiying-bieren | 紫微斗数有人的宫位为什么不能只应别人：先分角色，再分事件归属 | 看盘方法 |
+| 04 | 已发布 2026-08-18 17:27 https://yuetianai.com/articles/ziwei-yourengong-buneng-zhiying-bieren.html / https://yuetianai.com/articles/en/ziwei-yourengong-buneng-zhiying-bieren.html | ziwei-yourengong-buneng-zhiying-bieren | 紫微斗数有人的宫位为什么不能只应别人：先分角色，再分事件归属 | 看盘方法 |
 | 05 | 待发布 | ziwei-hualu-huaji-tonggong-xianbao-shenfang | 紫微斗数化禄和化忌同宫，先保哪边再防哪边：资源和卡点不能相减 | 四化细读 |
 | 06 | 待发布 | ziwei-wusha-maowei-buneng-zhikan-henjing | 紫微斗数武杀卯位为什么不能只看狠劲：位置、责任和代价要一起看 | 格局命例 |
 | 07 | 待发布 | ziwei-jixing-shaxing-neng-huxiang-dixiao-ma | 紫微斗数同一宫既有吉星又有煞星，能不能互相抵消 | 看盘方法 |
