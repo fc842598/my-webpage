@@ -35,6 +35,37 @@
     };
   };
 
+  const drawPartialSegment = (context, start, end, progress) => {
+    if (progress <= 0) return;
+    const endX = start.x + (end.x - start.x) * Math.min(1, progress);
+    const endY = start.y + (end.y - start.y) * Math.min(1, progress);
+    context.beginPath();
+    context.moveTo(start.x, start.y);
+    context.lineTo(endX, endY);
+    context.stroke();
+  };
+
+  const drawPartialPath = (context, points, progress) => {
+    const segmentCount = points.length - 1;
+    points.slice(0, -1).forEach((point, index) => {
+      const segmentProgress = Math.max(0, Math.min(1, progress * segmentCount - index));
+      drawPartialSegment(context, point, points[index + 1], segmentProgress);
+    });
+  };
+
+  const drawRelationPoint = (context, point, fill, opacity) => {
+    context.save();
+    context.globalAlpha = opacity;
+    context.beginPath();
+    context.arc(point.x, point.y, 2.2, 0, Math.PI * 2);
+    context.fillStyle = fill;
+    context.fill();
+    context.lineWidth = .7;
+    context.strokeStyle = "rgba(255, 250, 238, .82)";
+    context.stroke();
+    context.restore();
+  };
+
   const drawTriad = (progress = 1) => {
     const context = canvas.getContext("2d");
     const { ratio, width, height } = resizeCanvas();
@@ -44,23 +75,27 @@
     const sourceIndex = palaceButtons.indexOf(activePalace);
     const source = getCellCenter(activePalace);
     const targetIndexes = getTriadIndexes(sourceIndex);
+    const sanhe = targetIndexes.slice(0, 2).map((index) => getCellCenter(palaceButtons[index]));
+    const opposite = getCellCenter(palaceButtons[targetIndexes[2]]);
 
     context.save();
-    context.strokeStyle = "rgba(137, 104, 67, .56)";
-    context.lineWidth = 1.15;
-    context.setLineDash([5, 6]);
-    context.lineDashOffset = (1 - progress) * 28;
     context.lineCap = "round";
+    context.lineJoin = "round";
+    context.setLineDash([7, 6]);
+    context.lineDashOffset = (1 - progress) * 22;
 
-    targetIndexes.forEach((index) => {
-      const target = getCellCenter(palaceButtons[index]);
-      const endX = source.x + (target.x - source.x) * progress;
-      const endY = source.y + (target.y - source.y) * progress;
-      context.beginPath();
-      context.moveTo(source.x, source.y);
-      context.lineTo(endX, endY);
-      context.stroke();
-    });
+    context.strokeStyle = "rgba(151, 82, 48, .48)";
+    context.lineWidth = .9;
+    drawPartialPath(context, [source, ...sanhe, source], progress);
+
+    context.strokeStyle = "rgba(66, 52, 43, .40)";
+    context.lineWidth = .85;
+    drawPartialSegment(context, source, opposite, Math.min(1, progress * 1.25));
+
+    const pointOpacity = Math.max(0, Math.min(1, (progress - .68) / .32));
+    drawRelationPoint(context, source, "rgba(198, 144, 48, .82)", pointOpacity);
+    sanhe.forEach((point) => drawRelationPoint(context, point, "rgba(198, 144, 48, .74)", pointOpacity));
+    drawRelationPoint(context, opposite, "rgba(60, 139, 119, .76)", pointOpacity);
     context.restore();
   };
 
@@ -80,21 +115,24 @@
     animationFrame = requestAnimationFrame(tick);
   };
 
-  const setActivePalace = (button) => {
+  const setActivePalace = (button, { flowContext = false } = {}) => {
     activePalace = button;
     const activeIndex = palaceButtons.indexOf(button);
     const related = new Set(getTriadIndexes(activeIndex));
 
     palaceButtons.forEach((item, index) => {
       const active = item === button;
-      item.classList.toggle("is-active", active);
+      item.classList.toggle("is-active", active && !flowContext);
+      item.classList.toggle("is-flow-context", active && flowContext);
       item.classList.toggle("is-related", !active && related.has(index));
       item.setAttribute("aria-pressed", String(active));
     });
 
-    button.classList.remove("is-pulse");
-    void button.offsetWidth;
-    button.classList.add("is-pulse");
+    if (!flowContext) {
+      button.classList.remove("is-pulse");
+      void button.offsetWidth;
+      button.classList.add("is-pulse");
+    }
     animateTriad();
   };
 
@@ -110,12 +148,15 @@
     button.classList.add("is-flowing");
     button.append(flowBadge);
     flowBadge.textContent = `${age}岁`;
+    flowBadge.classList.remove("is-entering");
+    void flowBadge.offsetWidth;
+    flowBadge.classList.add("is-entering");
 
     const shiftText = hourShift === 0
       ? ""
       : ` · 时辰${hourShift > 0 ? "顺" : "逆"}推${Math.abs(hourShift)}步`;
     flowStatus.textContent = `${age}岁 · ${button.dataset.palace}${shiftText}`;
-    if (activate) setActivePalace(button);
+    if (activate) setActivePalace(button, { flowContext: true });
   };
 
   for (let age = 1; age <= 100; age += 1) {
@@ -141,6 +182,10 @@
       hourShift += Number(button.dataset.flowStep || 0);
       updateFlow();
     });
+  });
+
+  flowBadge.addEventListener("animationend", (event) => {
+    if (event.animationName === "flow-badge-arrive") flowBadge.classList.remove("is-entering");
   });
 
   new ResizeObserver(() => drawTriad(1)).observe(board);
