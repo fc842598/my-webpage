@@ -2083,7 +2083,7 @@ const wentianRefundTicketState = {
   note: "",
   screenshotDataUrl: "",
   screenshotName: "",
-  message: "退款需上传当时支付截图，后台审核后进入对应支付渠道处理，7个工作日内完成。",
+  message: "已支付成功的真实订单可直接提交，支付截图选填；待确认订单需上传截图人工核验。",
   error: "",
 };
 const wentianMemberState = {
@@ -12445,7 +12445,7 @@ async function hydrateWentianOrders(options = {}) {
     wentianOrderState.orders = Array.isArray(data.orders) ? data.orders : [];
     if (wentianRefundTicketState.open && data.policyText) {
       wentianRefundTicketState.message = isWentianEnglishUi()
-        ? "Upload the original payment screenshot. Pending orders can also be checked manually. Approved refunds return through the original payment method within 7 business days."
+        ? "Verified paid orders can be submitted directly and the screenshot is optional. Pending orders require a screenshot for manual review."
         : data.policyText;
     }
     wentianOrderState.loaded = true;
@@ -12473,6 +12473,12 @@ function getWentianRefundContactDefault() {
 
 function getWentianRefundSelectedOrder() {
   return (wentianOrderState.orders || []).find((order) => order.orderNo === wentianRefundTicketState.orderNo) || null;
+}
+
+function isWentianRefundScreenshotRequired(order = getWentianRefundSelectedOrder()) {
+  if (!order) return true;
+  if (typeof order.requiresScreenshot === "boolean") return order.requiresScreenshot;
+  return order.status !== "paid";
 }
 
 function syncWentianRefundTicketFromOrder(order = getWentianRefundSelectedOrder()) {
@@ -12534,17 +12540,17 @@ function ensureWentianRefundTicketModal() {
         <input id="wentian-refund-contact" type="text" placeholder="${isEn ? "Phone or email" : "手机号或邮箱"}">
       </label>
       <label class="wentian-refund-field">
-        <span>${isEn ? "Payment Screenshot" : "支付截图"}</span>
+        <span id="wentian-refund-screenshot-label">${isEn ? "Payment Screenshot" : "支付截图"}</span>
         ${isEn ? `
           <span class="wentian-refund-upload">
             <span class="wentian-refund-upload-button">Choose Image</span>
-            <span class="wentian-refund-upload-name" id="wentian-refund-file">No image selected</span>
+            <span class="wentian-refund-upload-name" id="wentian-refund-file-name">No image selected</span>
             <input id="wentian-refund-screenshot" type="file" accept="image/png,image/jpeg,image/webp" aria-label="Choose payment screenshot">
           </span>
-          <small>Upload a screenshot showing successful payment.</small>
+          <small id="wentian-refund-file-help"></small>
         ` : `
           <input id="wentian-refund-screenshot" type="file" accept="image/png,image/jpeg,image/webp">
-          <small id="wentian-refund-file">请上传当时支付成功截图。</small>
+          <small id="wentian-refund-file-help"></small>
         `}
       </label>
       <label class="wentian-refund-field">
@@ -12560,7 +12566,14 @@ function ensureWentianRefundTicketModal() {
     if (event.target === modal || event.target.closest("[data-wentian-refund-close]")) closeWentianRefundTicket();
   });
   modal.querySelector("#wentian-refund-order")?.addEventListener("change", (event) => {
+    const previousOrderNo = wentianRefundTicketState.orderNo;
     wentianRefundTicketState.orderNo = event.target.value || "";
+    if (previousOrderNo !== wentianRefundTicketState.orderNo) {
+      wentianRefundTicketState.screenshotDataUrl = "";
+      wentianRefundTicketState.screenshotName = "";
+      const screenshotInput = modal.querySelector("#wentian-refund-screenshot");
+      if (screenshotInput) screenshotInput.value = "";
+    }
     syncWentianRefundTicketFromOrder();
     wentianRefundTicketState.error = "";
     renderWentianRefundTicketModal();
@@ -12591,6 +12604,8 @@ function renderWentianRefundTicketModal() {
   document.body.classList.toggle("wentian-refund-open", wentianRefundTicketState.open);
   const orders = wentianOrderState.orders || [];
   const isEn = isWentianEnglishUi();
+  const order = getWentianRefundSelectedOrder();
+  const screenshotRequired = isWentianRefundScreenshotRequired(order);
   const orderSelect = modal.querySelector("#wentian-refund-order");
   if (orderSelect) {
     orderSelect.innerHTML = orders.length
@@ -12613,10 +12628,20 @@ function renderWentianRefundTicketModal() {
   if (note) note.value = wentianRefundTicketState.note || "";
   const msg = modal.querySelector("#wentian-refund-message");
   if (msg) msg.textContent = wentianRefundTicketState.message;
-  const file = modal.querySelector("#wentian-refund-file");
-  if (file) file.textContent = wentianRefundTicketState.screenshotName
-    ? `${isEn ? "Selected: " : "已选择："}${wentianRefundTicketState.screenshotName}`
-    : (isEn ? "No image selected" : "请上传当时支付成功截图。");
+  const screenshotLabel = modal.querySelector("#wentian-refund-screenshot-label");
+  if (screenshotLabel) screenshotLabel.textContent = screenshotRequired
+    ? (isEn ? "Payment Screenshot" : "支付截图")
+    : (isEn ? "Payment Screenshot (Optional)" : "支付截图（选填）");
+  const fileName = modal.querySelector("#wentian-refund-file-name");
+  if (fileName) fileName.textContent = wentianRefundTicketState.screenshotName || "No image selected";
+  const fileHelp = modal.querySelector("#wentian-refund-file-help");
+  if (fileHelp) {
+    fileHelp.textContent = wentianRefundTicketState.screenshotName
+      ? `${isEn ? "Selected: " : "已选择："}${wentianRefundTicketState.screenshotName}`
+      : screenshotRequired
+        ? (isEn ? "Pending orders require a successful-payment screenshot." : "待确认订单需上传当时支付成功截图。")
+        : (isEn ? "This paid order was verified by the system. A screenshot is optional." : "系统已核验该订单付款成功，无需上传截图。")
+  }
   const error = modal.querySelector("#wentian-refund-error");
   if (error) {
     error.hidden = !wentianRefundTicketState.error;
@@ -12624,7 +12649,6 @@ function renderWentianRefundTicketModal() {
   }
   const submit = modal.querySelector("#wentian-refund-submit");
   if (submit) {
-    const order = getWentianRefundSelectedOrder();
     submit.disabled = wentianRefundTicketState.loading || !order?.canSubmitTicket;
     submit.textContent = wentianRefundTicketState.loading
       ? (isEn ? "Submitting..." : "提交中...")
@@ -12642,8 +12666,8 @@ async function openWentianRefundTicket() {
   wentianRefundTicketState.open = true;
   wentianRefundTicketState.error = "";
   wentianRefundTicketState.message = isWentianEnglishUi()
-    ? "Upload the original payment screenshot. Pending orders can also be checked manually. Approved refunds return through the original payment method within 7 business days."
-    : "退款需上传当时支付截图；订单仍在待确认时，也可提交截图人工核验。后台审核后进入对应支付渠道处理，7个工作日内完成。";
+    ? "Verified paid orders can be submitted directly and the screenshot is optional. Pending orders require a screenshot for manual review."
+    : "已支付成功的真实订单可直接提交，支付截图选填；待确认订单需上传截图人工核验。提交后会发送邮件提醒。";
   if (!wentianRefundTicketState.contact) wentianRefundTicketState.contact = getWentianRefundContactDefault();
   renderWentianRefundTicketModal();
   await hydrateWentianOrders({ force: true });
@@ -12719,7 +12743,7 @@ async function submitWentianRefundTicket() {
     renderWentianRefundTicketModal();
     return;
   }
-  if (!wentianRefundTicketState.screenshotDataUrl) {
+  if (isWentianRefundScreenshotRequired(order) && !wentianRefundTicketState.screenshotDataUrl) {
     wentianRefundTicketState.error = isWentianEnglishUi() ? "Upload the original payment screenshot first." : "请先上传当时支付截图";
     renderWentianRefundTicketModal();
     return;
