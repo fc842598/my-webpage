@@ -1923,6 +1923,8 @@ const wentianXuChat = {
 let wentianFallbackChartRecordId = null;
 const WENTIAN_UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 const WENTIAN_CHART_STORAGE_KEY = "wentian-app-current-chart-v1";
+const WENTIAN_CHART_FORM_DRAFT_KEY = "wentian-app-chart-form-draft-v1";
+const WENTIAN_CHART_FORM_DRAFT_TTL_MS = 2 * 60 * 60 * 1000;
 const WENTIAN_ARCHIVES_STORAGE_KEY = "wentian-app-archives-v1";
 const WENTIAN_ARCHIVE_TOMBSTONES_KEY = "wentian-app-archive-tombstones-v1";
 const WENTIAN_CHART_PERSON_CLAIMS_KEY = "wentian-app-chart-person-claims-v1";
@@ -2459,6 +2461,38 @@ function getWentianSavedChart() {
   } catch (_err) {
     return null;
   }
+}
+
+function readWentianChartFormDraft() {
+  try {
+    const raw = sessionStorage.getItem(WENTIAN_CHART_FORM_DRAFT_KEY);
+    const saved = raw ? JSON.parse(raw) : null;
+    const savedAt = Number(saved?.savedAt || 0);
+    const expired = !savedAt || Date.now() - savedAt > WENTIAN_CHART_FORM_DRAFT_TTL_MS;
+    if (!saved?.form || typeof saved.form !== "object" || expired) {
+      clearWentianChartFormDraft();
+      return null;
+    }
+    return saved.form;
+  } catch (_err) {
+    clearWentianChartFormDraft();
+    return null;
+  }
+}
+
+function saveWentianChartFormDraft(form) {
+  try {
+    sessionStorage.setItem(
+      WENTIAN_CHART_FORM_DRAFT_KEY,
+      JSON.stringify({ form, savedAt: Date.now() })
+    );
+  } catch (_err) {}
+}
+
+function clearWentianChartFormDraft() {
+  try {
+    sessionStorage.removeItem(WENTIAN_CHART_FORM_DRAFT_KEY);
+  } catch (_err) {}
 }
 
 function readWentianArchives() {
@@ -12588,13 +12622,17 @@ function startWentianPaymentPoll() {
   wentianPaymentPollTimer = setInterval(checkWentianPaymentStatus, WENTIAN_PAYMENT_POLL_MS);
 }
 
-function openWentianUnifiedMemberPage() {
+function openWentianUnifiedMemberPage(options = {}) {
   const currentQuery = new URLSearchParams(location.search || "");
   const returnQuery = new URLSearchParams();
   const language = currentQuery.get("lang");
   if (language) returnQuery.set("lang", language);
   const returnSearch = returnQuery.toString();
-  const from = `${location.pathname}${returnSearch ? `?${returnSearch}` : ""}${location.hash || "#screen-31"}`;
+  const requestedReturnRoute = options.returnRoute ? resolveRoute(options.returnRoute) : "";
+  const returnHash = /^screen-\d+$/.test(requestedReturnRoute)
+    ? `#${requestedReturnRoute}`
+    : (location.hash || "#screen-31");
+  const from = `${location.pathname}${returnSearch ? `?${returnSearch}` : ""}${returnHash}`;
   const target = new URL(WENTIAN_UNIFIED_MEMBER_URL, location.origin);
   target.searchParams.set("source", "wentian-mobile");
   if (language) target.searchParams.set("lang", language);
@@ -12604,8 +12642,8 @@ function openWentianUnifiedMemberPage() {
   window.location.href = target.toString();
 }
 
-async function startWentianMemberPayment() {
-  openWentianUnifiedMemberPage();
+async function startWentianMemberPayment(options = {}) {
+  openWentianUnifiedMemberPage(options);
 }
 
 function openWentianDeepReadingAccess() {
@@ -13158,6 +13196,23 @@ async function submitWentianChartForm() {
     const genderText = norm.gender === "male" ? "男" : "女";
     const chart = createWentianChartWithLeapRule(lib, norm, genderText);
     const datetimeValue = document.getElementById("wentian-chart-date")?.value || "";
+    const chartForm = {
+      name: norm.name,
+      gender: norm.gender,
+      type: norm.type,
+      city: norm.city,
+      cityDetail: norm.cityDetail,
+      cityScope: norm.cityScope,
+      calMode: norm.calMode,
+      calModeLabel: norm.calModeLabel,
+      lunarInput: norm.lunarInput,
+      autoLeapMonth: norm.autoLeapMonth,
+      leapMonthRule: norm.leapMonthRule,
+      datetime: datetimeValue,
+      useTrueSolar: norm.useTrueSolar,
+      trueSolarChoiceSet: true,
+    };
+    saveWentianChartFormDraft(chartForm);
     const editingArchiveId = getWentianArchiveEditId();
     const existingArchives = getWentianArchiveList();
     const editingArchive = editingArchiveId ? findWentianArchiveById(editingArchiveId, existingArchives) : null;
@@ -13166,9 +13221,11 @@ async function submitWentianChartForm() {
     });
     const chartRecordId = editingArchive?.chartRecordId || editingArchive?.chartData?.chartRecordId || duplicateArchive?.chartRecordId || duplicateArchive?.chartData?.chartRecordId || resetWentianChartRecordId();
     const account = getWentianAuthDisplay();
-    if (wentianMemberState.quota || !account.loggedIn) {
-      claimWentianLocalChartPerson(chartRecordId, getWentianMemberSnapshot().chartLimit, existingArchives);
+    if (account.loggedIn && !wentianMemberState.quota) {
+      setWentianChartStatus(isWentianEnglishUi() ? "Checking chart slots..." : "正在核对命主名额...");
+      await hydrateWentianMemberStatus({ force: true });
     }
+    claimWentianLocalChartPerson(chartRecordId, getWentianMemberSnapshot().chartLimit, existingArchives);
     if (editingArchive || duplicateArchive) setWentianChartRecordId(chartRecordId);
     const chartData = buildWentianChartPayload(chart, norm);
     chartData.chartRecordId = chartRecordId;
@@ -13180,25 +13237,13 @@ async function submitWentianChartForm() {
       chart,
       chartData,
       form: {
+        ...chartForm,
         archiveId,
-        name: norm.name,
-        gender: norm.gender,
-        type: norm.type,
-        city: norm.city,
-        cityDetail: norm.cityDetail,
-        cityScope: norm.cityScope,
-        calMode: norm.calMode,
-        calModeLabel: norm.calModeLabel,
-        lunarInput: norm.lunarInput,
-        autoLeapMonth: norm.autoLeapMonth,
-        leapMonthRule: norm.leapMonthRule,
-        datetime: datetimeValue,
-        useTrueSolar: norm.useTrueSolar,
-        trueSolarChoiceSet: true,
       },
       createdAt: editingArchive?.createdAt || duplicateArchive?.createdAt || new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     });
+    clearWentianChartFormDraft();
     const editReturnRoute = getWentianArchiveEditReturnRoute();
     if (!editingArchive && editReturnRoute === "screen-11") {
       const hepanArchives = getWentianArchiveList();
@@ -13215,13 +13260,32 @@ async function submitWentianChartForm() {
     if (editReturnRoute) returnToPreviousWentianRoute(editReturnRoute);
     else navigate("screen-27");
   } catch (error) {
+    if (error?.code === "CHART_PERSON_LIMIT_REACHED") {
+      const account = getWentianAuthDisplay();
+      if (!account.loggedIn) {
+        wentianAuthState.mode = "register";
+        wentianAuthState.error = isWentianEnglishUi()
+          ? "Your free chart slot is used. Register or sign in, then choose a monthly pass to add another person."
+          : "免费命主名额已用完。请注册或登录，随后选择月卡继续添加命主。";
+        wentianPendingPaymentAfterLogin = true;
+        setWentianAuthReturnState({
+          source: "chart_person_limit",
+          after: "member-payment",
+          memberReturnRoute: "screen-26",
+        });
+        navigate("screen-40");
+        return;
+      }
+      await startWentianMemberPayment({ returnRoute: "screen-26" });
+      return;
+    }
     setWentianChartStatus(error.message || "排盘失败，请检查出生信息", "error");
   }
 }
 
 function initWentianChartForm() {
   const saved = getWentianSavedChart();
-  const form = saved?.form || {};
+  const form = (getWentianArchiveEditId() ? null : readWentianChartFormDraft()) || saved?.form || {};
   const defaultDate = new Date(form.datetime || "2026-05-12T15:21");
   const date = Number.isNaN(defaultDate.getTime()) ? new Date("2026-05-12T15:21") : defaultDate;
   const name = document.getElementById("wentian-chart-name");
@@ -24245,7 +24309,7 @@ async function submitWentianAuth(mode = wentianAuthState.mode) {
     if (completeWentianExternalAuthReturn(returnState)) return;
     if (wentianPendingPaymentAfterLogin) {
       wentianPendingPaymentAfterLogin = false;
-      await startWentianMemberPayment();
+      await startWentianMemberPayment({ returnRoute: returnState?.memberReturnRoute });
       return;
     }
     navigate("screen-31");
@@ -24392,7 +24456,7 @@ async function bootWentianApp() {
     await hydrateWentianInvite({ force: true });
     if (completeWentianExternalAuthReturn(returnState)) return;
     if (returnState?.after === "member-payment") {
-      window.setTimeout(() => startWentianMemberPayment(), 120);
+      window.setTimeout(() => startWentianMemberPayment({ returnRoute: returnState.memberReturnRoute }), 120);
     }
   }
   clearWentianAuthReturnState();
