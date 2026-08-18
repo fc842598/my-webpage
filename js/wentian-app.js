@@ -21625,92 +21625,10 @@ function renderWentianMobileYijingPanel(saved) {
   `;
 }
 
-function getWentianBasicReadingItems(saved) {
-  const ctx = getWentianMobileParamContext(saved);
-  const isEn = isWentianEnglishUi();
-  const palaceSummary = (name) => {
-    const palace = ctx.findPalace(name);
-    if (!palace) return isEn ? "No palace data was found." : "当前命盘暂未读取到这一宫位。";
-    const branch = palace.branch || palace.earthlyBranch || "";
-    const stars = formatWentianParamStars(palace.majorStars, 3);
-    return isEn
-      ? `${name} Palace is in ${branch || "an unlisted branch"}. Main-star structure: ${stars}.`
-      : `${name}宫落在${branch || "未标注地支"}，主星结构为${stars}。`;
-  };
-  return [
-    {
-      title: isEn ? "Chart foundation" : "命格基础",
-      body: `${palaceSummary("命")} ${isEn ? "Read this first to understand the chart's overall temperament and decision style." : "先从命宫看整体性格底色与做事方式。"}`,
-    },
-    {
-      title: isEn ? "Career pattern" : "事业基础",
-      body: `${palaceSummary("官禄")} ${isEn ? "Then compare it with the Life and Travel Palaces before judging career direction." : "判断事业方向时，还要与命宫、迁移宫一起看。"}`,
-    },
-    {
-      title: isEn ? "Money pattern" : "财运基础",
-      body: `${palaceSummary("财帛")} ${isEn ? "This describes earning style and cash-flow habits, not a guaranteed amount of wealth." : "这里看的是赚钱方式与现金流习惯，不代表固定财富数额。"}`,
-    },
-    {
-      title: isEn ? "Relationship pattern" : "关系基础",
-      body: `${palaceSummary("夫妻")} ${isEn ? "Use it to observe interaction needs, boundaries, and recurring relationship themes." : "可用来观察相处需求、关系边界与容易重复出现的互动模式。"}`,
-    },
-    {
-      title: isEn ? "Wellbeing pattern" : "健康基础",
-      body: `${palaceSummary("疾厄")} ${isEn ? "Use this only as a lifestyle reference; medical concerns should be handled by qualified professionals." : "这里只适合作为作息与压力管理参考，身体问题仍应以专业医疗意见为准。"}`,
-    },
-    {
-      title: isEn ? "Suggested reading order" : "阅读顺序",
-      body: isEn
-        ? "Start with the Life Palace, then compare Career, Wealth, Relationship, and Wellbeing. Read decade and annual cycles only after the natal structure is clear."
-        : "先看命宫，再交叉看事业、财帛、关系与健康；本命结构看清后，再进入大限和流年。",
-    },
-  ];
-}
-
-function renderWentianBasicReadingPanel(saved) {
-  const member = getWentianMemberSnapshot();
-  const account = getWentianAuthDisplay();
-  const isEn = isWentianEnglishUi();
-  const items = getWentianBasicReadingItems(saved);
-  const visibleItems = account.loggedIn ? items : items.slice(0, Math.ceil(items.length / 2));
-  const accessText = member.isMember
-    ? (isEn ? "Full basic reading and deep reading are available." : "基础解读与深度解读均已开放。")
-    : account.loggedIn
-      ? (isEn ? "Your full basic reading is available. Choose a monthly pass for deep readings." : "完整基础解读已开放；选择月卡可继续查看深度解读。")
-      : (isEn ? "Sign in to view the rest of the basic reading." : "登录后可继续查看其余基础解读。");
-  const buttonText = account.loggedIn
-    ? (isEn ? "Choose a monthly pass" : "选择月卡")
-    : (isEn ? "Sign in to continue" : "登录后继续查看");
-  return `
-    <section class="wentian-basic-reading" data-basic-access="${member.isMember ? "member" : (account.loggedIn ? "free" : "guest")}">
-      <header>
-        <div>
-          <span>${escapeHtml(isEn ? "BASIC READING" : "基础解读")}</span>
-          <strong>${escapeHtml(account.loggedIn ? (isEn ? "Full chart overview" : "完整命盘概览") : (isEn ? "Chart preview" : "命盘解读预览"))}</strong>
-        </div>
-        <b>${escapeHtml(account.loggedIn ? `${visibleItems.length}/${items.length}` : "1/2")}</b>
-      </header>
-      <div class="wentian-basic-reading-list">
-        ${visibleItems.map((item, index) => `
-          <article>
-            <i>${String(index + 1).padStart(2, "0")}</i>
-            <div><strong>${escapeHtml(item.title)}</strong><p>${escapeHtml(item.body)}</p></div>
-          </article>
-        `).join("")}
-      </div>
-      <footer>
-        <p>${escapeHtml(accessText)}</p>
-        ${member.isMember ? "" : `<button type="button" data-action="wentian-deep-access">${escapeHtml(buttonText)}</button>`}
-      </footer>
-    </section>
-  `;
-}
-
-function sourceZiweiAiDecodePanel(saved) {
+function sourceZiweiAiDecodePanel() {
   syncWentianChartAiStateFromStorage();
   const member = getWentianMemberSnapshot();
-  const basicReading = renderWentianBasicReadingPanel(saved);
-  if (!member.isMember) return basicReading;
+  if (!member.isMember) return "";
   const chapters = getWentianChartAiChapters();
   const userStarted = !!wentianChartAiState.userStarted;
   const isRunning = userStarted && wentianChartAiState.status === "running";
@@ -21749,7 +21667,6 @@ function sourceZiweiAiDecodePanel(saved) {
   const coinAriaLabel = getWentianCompactText(`${coinActionLabel}，已完成 ${chapterDoneCount}/${chapterTotal} 卷`, `${coinActionLabel}, ${chapterDoneCount}/${chapterTotal} complete`);
 
   return `
-    ${basicReading}
     <section class="wentian-chart-ai-panel" data-node-id="source-27-ai-card">
       <header class="wentian-chart-ai-head">
         <div>
@@ -21835,7 +21752,7 @@ function sourceZiweiMingpanScreenFromChart(saved) {
     ${wentianBackPill("source-27", 18, 44)}
     ${renderWentianClassicChart(saved, { persistXiaoLianBadge: true })}
     <div class="wentian-chart-content-stack">
-      ${sourceZiweiAiDecodePanel(saved)}
+      ${sourceZiweiAiDecodePanel()}
       ${renderWentianMobileYijingPanel(saved)}
     </div>
     ${renderWentianChartMoreMenu()}
@@ -23732,10 +23649,6 @@ document.addEventListener("click", (event) => {
   }
   if (action === "wentian-pay-done") {
     navigate("screen-31");
-    return;
-  }
-  if (action === "wentian-deep-access") {
-    openWentianDeepReadingAccess();
     return;
   }
   if (action === "wentian-chart-ai-decode") {
