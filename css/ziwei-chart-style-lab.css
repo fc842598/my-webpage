@@ -159,7 +159,25 @@ button {
 }
 
 .palace-cell.is-flowing {
-  background-image: radial-gradient(circle at 88% 43%, rgba(189, 139, 53, .1), transparent 18%);
+  isolation: isolate;
+}
+
+.palace-cell.is-flowing::after {
+  content: "";
+  position: absolute;
+  z-index: 4;
+  inset: 2px;
+  border: 1px solid rgba(181, 132, 48, .72);
+  border-radius: 4px;
+  background:
+    linear-gradient(135deg, rgba(246, 221, 157, .62), rgba(255, 250, 233, .22)),
+    radial-gradient(circle at 50% 48%, rgba(205, 157, 69, .18), transparent 70%);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 249, 230, .7),
+    inset 0 0 24px rgba(183, 132, 47, .16),
+    0 0 14px rgba(183, 132, 47, .2);
+  pointer-events: none;
+  animation: flow-palace-reveal 5s ease-out both;
 }
 
 .palace-cell.is-pulse {
@@ -531,6 +549,12 @@ button {
   100% { opacity: 1; transform: translateY(0) scale(1); }
 }
 
+@keyframes flow-palace-reveal {
+  0% { opacity: 0; transform: scale(.97); }
+  8%, 80% { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: scale(1); }
+}
+
 @keyframes flow-locator-breathe {
   0%, 100% { transform: scale(.9); box-shadow: 0 0 0 0 rgba(189, 138, 53, .3); }
   50% { transform: scale(1); box-shadow: 0 0 0 4px rgba(189, 138, 53, 0); }
@@ -542,5 +566,11 @@ button {
   *::after {
     scroll-behavior: auto !important;
     transition-duration: .01ms !important;
+  }
+
+  .palace-cell.is-flowing::after {
+    opacity: 1;
+    transform: none;
+    animation: none;
   }
 }
