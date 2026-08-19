@@ -5,9 +5,16 @@
     <link>https://yuetianai.com/articles/en/</link>
     <description>Plain-English Zi Wei Dou Shu articles and chart reading guides.</description>
     <language>en</language>
-    <lastBuildDate>Wed, 19 Aug 2026 10:19:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 19 Aug 2026 11:57:00 +0000</lastBuildDate>
     <atom:link href="https://yuetianai.com/articles/en/feed.xml" rel="self" type="application/rss+xml" />
 
+    <item>
+      <title>Qing Yang Exalted or Fallen: How Strength Changes the Risk Level</title>
+      <link>https://yuetianai.com/articles/en/ziwei-qingyang-rumiao-luoxian.html</link>
+      <guid isPermaLink="true">https://yuetianai.com/articles/en/ziwei-qingyang-rumiao-luoxian.html</guid>
+      <pubDate>Wed, 19 Aug 2026 11:57:00 +0000</pubDate>
+      <description>Compare Qing Yang at different strength levels, then use palace placement and accompanying stars to judge whether pressure is manageable or requires stricter safeguards.</description>
+    </item>
     <item>
       <title>When Can a Tian Xiang Second-in-Command Step Into Leadership?</title>
       <link>https://yuetianai.com/articles/en/ziwei-tianxiang-fushou-zhuanzheng-daxian-huaquan.html</link>
@@ -560,13 +567,6 @@
       <guid isPermaLink="true">https://yuetianai.com/articles/en/ziwei-taiyang-zuoming.html</guid>
       <pubDate>Sat, 15 Aug 2026 02:15:00 +0000</pubDate>
       <description>Tai Yang in the Life Palace brings warmth, generosity, and helpfulness, but also over-giving and exhaustion from living for others’ approval. The sun shines on others — but must shine on itself first.</description>
-    </item>
-    <item>
-      <title>Tai Yin Star in Life Palace: The Moon’s Intuition and Sensitivity</title>
-      <link>https://yuetianai.com/articles/en/ziwei-taiyin-zuoming.html</link>
-      <guid isPermaLink="true">https://yuetianai.com/articles/en/ziwei-taiyin-zuoming.html</guid>
-      <pubDate>Sat, 15 Aug 2026 02:15:00 +0000</pubDate>
-      <description>Tai Yin in the Life Palace brings gentleness, intuition, and wealth potential, but also sensitivity and overthinking. The lesson is turning sensitivity into a gift rather than internal friction.</description>
     </item>
   </channel>
 </rss>

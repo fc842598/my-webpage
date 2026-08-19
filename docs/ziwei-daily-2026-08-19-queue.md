@@ -26,6 +26,6 @@ Recovery-Mode: false
 | 05 | 已发布 2026-08-19 15:08 https://yuetianai.com/articles/ziwei-caibo-huaquan-lucun-zhiji-zhangpan.html / https://yuetianai.com/articles/en/ziwei-caibo-huaquan-lucun-zhiji-zhangpan.html | ziwei-caibo-huaquan-lucun-zhiji-zhangpan | 紫微斗数财帛化权又见禄存，是自己掌盘还是只替公司管钱 | 财运事业 |
 | 06 | 已发布 2026-08-19 16:44 https://yuetianai.com/articles/ziwei-yigong-xingyao-duo-zenme-paixu-20260802.html / https://yuetianai.com/articles/en/ziwei-yigong-xingyao-duo-zenme-paixu-20260802.html | ziwei-yigong-xingyao-duo-zenme-paixu-20260802 | 紫微斗数一个宫里星曜很多时，主星、四化、辅星和煞曜怎么排顺序 | 看盘方法 |
 | 07 | 已发布 2026-08-19 18:19 https://yuetianai.com/articles/ziwei-tianxiang-fushou-zhuanzheng-daxian-huaquan.html / https://yuetianai.com/articles/en/ziwei-tianxiang-fushou-zhuanzheng-daxian-huaquan.html | ziwei-tianxiang-fushou-zhuanzheng-daxian-huaquan | 紫微斗数天相型的人什么时候适合从副手转正：本命角色和大限化权要分开 | 主星 |
-| 08 | 待发布 | ziwei-qingyang-rumiao-luoxian | 紫微斗数擎羊入庙和落陷差在哪：同样见刀锋，风险等级不能一刀切 | 辅煞曜 |
+| 08 | 已发布 2026-08-19 19:57 https://yuetianai.com/articles/ziwei-qingyang-rumiao-luoxian.html / https://yuetianai.com/articles/en/ziwei-qingyang-rumiao-luoxian.html | ziwei-qingyang-rumiao-luoxian | 紫微斗数擎羊入庙和落陷差在哪：同样见刀锋，风险等级不能一刀切 | 辅煞曜 |
 | 09 | 待发布 | ziwei-minggong-huake-youming-weibi-fufei | 紫微斗数命宫化科为什么有名却未必有人付费：先看大家记住你的哪项本事 | 四化细读 |
 | 10 | 待发布 | ziwei-gudai-guancai-wuzhi-xiandai-zhiye | 紫微斗数古代的官、财、武职格局怎么换成现代职业：保留结构，不照搬职位 | 看盘方法 |
