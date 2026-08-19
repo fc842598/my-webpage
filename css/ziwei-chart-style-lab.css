@@ -292,6 +292,8 @@ button {
 .p-3 > .flow-age {
   top: 50%;
   left: 0;
+  padding-right: 4px;
+  padding-left: 3px;
   translate: -58% -50%;
 }
 
