@@ -24,7 +24,7 @@ Recovery-Mode: false
 | 03 | 已发布 2026-08-19 12:11 https://yuetianai.com/articles/ziwei-fuqigong-wuqu-tanqian-xiaolv-yali.html / https://yuetianai.com/articles/en/ziwei-fuqigong-wuqu-tanqian-xiaolv-yali.html | ziwei-fuqigong-wuqu-tanqian-xiaolv-yali | 紫微斗数夫妻宫见武曲，谈钱效率高还是婚后压力大 | 婚恋与关系 |
 | 04 | 已发布 2026-08-19 13:36 https://yuetianai.com/articles/ziwei-shuren-fuye-duli-shouru.html / https://yuetianai.com/articles/en/ziwei-shuren-fuye-duli-shouru.html | ziwei-shuren-fuye-duli-shouru | 紫微斗数熟人副业看似赚钱，怎么算真正独立：先看客户能不能脱离原圈子 | 财运事业 |
 | 05 | 已发布 2026-08-19 15:08 https://yuetianai.com/articles/ziwei-caibo-huaquan-lucun-zhiji-zhangpan.html / https://yuetianai.com/articles/en/ziwei-caibo-huaquan-lucun-zhiji-zhangpan.html | ziwei-caibo-huaquan-lucun-zhiji-zhangpan | 紫微斗数财帛化权又见禄存，是自己掌盘还是只替公司管钱 | 财运事业 |
-| 06 | 待发布 | ziwei-yigong-xingyao-duo-zenme-paixu-20260802 | 紫微斗数一个宫里星曜很多时，主星、四化、辅星和煞曜怎么排顺序 | 看盘方法 |
+| 06 | 已发布 2026-08-19 16:44 https://yuetianai.com/articles/ziwei-yigong-xingyao-duo-zenme-paixu-20260802.html / https://yuetianai.com/articles/en/ziwei-yigong-xingyao-duo-zenme-paixu-20260802.html | ziwei-yigong-xingyao-duo-zenme-paixu-20260802 | 紫微斗数一个宫里星曜很多时，主星、四化、辅星和煞曜怎么排顺序 | 看盘方法 |
 | 07 | 待发布 | ziwei-tianxiang-fushou-zhuanzheng-daxian-huaquan | 紫微斗数天相型的人什么时候适合从副手转正：本命角色和大限化权要分开 | 主星 |
 | 08 | 待发布 | ziwei-qingyang-rumiao-luoxian | 紫微斗数擎羊入庙和落陷差在哪：同样见刀锋，风险等级不能一刀切 | 辅煞曜 |
 | 09 | 待发布 | ziwei-minggong-huake-youming-weibi-fufei | 紫微斗数命宫化科为什么有名却未必有人付费：先看大家记住你的哪项本事 | 四化细读 |
