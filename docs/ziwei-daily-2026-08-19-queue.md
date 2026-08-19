@@ -23,7 +23,7 @@ Recovery-Mode: false
 | 02 | 已发布 2026-08-19 10:43 https://yuetianai.com/articles/ziwei-nanming-taiyin-huaji-xiantan-bianjie.html / https://yuetianai.com/articles/en/ziwei-nanming-taiyin-huaji-xiantan-bianjie.html | ziwei-nanming-taiyin-huaji-xiantan-bianjie | 紫微斗数男命太阴化忌，什么时候要先谈边界再谈婚事 | 婚恋与关系 |
 | 03 | 已发布 2026-08-19 12:11 https://yuetianai.com/articles/ziwei-fuqigong-wuqu-tanqian-xiaolv-yali.html / https://yuetianai.com/articles/en/ziwei-fuqigong-wuqu-tanqian-xiaolv-yali.html | ziwei-fuqigong-wuqu-tanqian-xiaolv-yali | 紫微斗数夫妻宫见武曲，谈钱效率高还是婚后压力大 | 婚恋与关系 |
 | 04 | 已发布 2026-08-19 13:36 https://yuetianai.com/articles/ziwei-shuren-fuye-duli-shouru.html / https://yuetianai.com/articles/en/ziwei-shuren-fuye-duli-shouru.html | ziwei-shuren-fuye-duli-shouru | 紫微斗数熟人副业看似赚钱，怎么算真正独立：先看客户能不能脱离原圈子 | 财运事业 |
-| 05 | 待发布 | ziwei-caibo-huaquan-lucun-zhiji-zhangpan | 紫微斗数财帛化权又见禄存，是自己掌盘还是只替公司管钱 | 财运事业 |
+| 05 | 已发布 2026-08-19 15:08 https://yuetianai.com/articles/ziwei-caibo-huaquan-lucun-zhiji-zhangpan.html / https://yuetianai.com/articles/en/ziwei-caibo-huaquan-lucun-zhiji-zhangpan.html | ziwei-caibo-huaquan-lucun-zhiji-zhangpan | 紫微斗数财帛化权又见禄存，是自己掌盘还是只替公司管钱 | 财运事业 |
 | 06 | 待发布 | ziwei-yigong-xingyao-duo-zenme-paixu-20260802 | 紫微斗数一个宫里星曜很多时，主星、四化、辅星和煞曜怎么排顺序 | 看盘方法 |
 | 07 | 待发布 | ziwei-tianxiang-fushou-zhuanzheng-daxian-huaquan | 紫微斗数天相型的人什么时候适合从副手转正：本命角色和大限化权要分开 | 主星 |
 | 08 | 待发布 | ziwei-qingyang-rumiao-luoxian | 紫微斗数擎羊入庙和落陷差在哪：同样见刀锋，风险等级不能一刀切 | 辅煞曜 |
