@@ -7,9 +7,11 @@
   const flowBadge = document.querySelector(".flow-age");
   const flowStepButtons = [...document.querySelectorAll("[data-flow-step]")];
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const flowRevealDuration = 5000;
 
   let activePalace = document.querySelector(".palace-cell.is-active") || palaceButtons[0];
   let animationFrame = 0;
+  let flowRevealTimer = 0;
   let hourShift = 0;
 
   const normalizeIndex = (index) => (index % palaceButtons.length + palaceButtons.length) % palaceButtons.length;
@@ -141,6 +143,7 @@
 
   const updateFlow = () => {
     const { age, button } = getFlowTarget();
+    window.clearTimeout(flowRevealTimer);
     palaceButtons.forEach((item) => item.classList.remove("is-flowing"));
     button.classList.add("is-flowing");
     button.append(flowBadge);
@@ -153,6 +156,11 @@
       ? ""
       : ` · 时辰${hourShift > 0 ? "顺" : "逆"}推${Math.abs(hourShift)}步`;
     flowStatus.textContent = `${age}岁 · ${button.dataset.palace}${shiftText}`;
+
+    flowRevealTimer = window.setTimeout(() => {
+      button.classList.remove("is-flowing");
+      flowRevealTimer = 0;
+    }, flowRevealDuration);
   };
 
   for (let age = 1; age <= 100; age += 1) {
