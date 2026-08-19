@@ -107,7 +107,7 @@ button {
 }
 
 .chart-section {
-  overflow: hidden;
+  overflow: visible;
   padding: 10px;
   border: 1px solid rgba(188, 175, 155, .52);
   border-radius: 20px;
@@ -121,7 +121,7 @@ button {
   grid-template-columns: repeat(4, minmax(0, 1fr));
   grid-template-rows: repeat(4, 138px);
   margin: 0;
-  overflow: hidden;
+  overflow: visible;
   border: 1px solid #aca69b;
   border-radius: 17px;
   background: var(--lab-paper);
@@ -245,25 +245,60 @@ button {
 .palace-cell .flow-age {
   position: absolute;
   z-index: 6;
-  right: 6px;
-  top: 58px;
+  inset: auto;
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  padding: 2px 7px 2px 5px;
+  justify-content: center;
+  gap: 2px;
+  padding: 1px 5px 1px 4px;
   border: 1px solid rgba(181, 132, 48, .42);
   border-radius: 999px;
   background: rgba(255, 252, 244, .96);
   color: #855b20;
-  font-size: 9px;
+  font-size: 8.5px;
   font-weight: 800;
+  line-height: 1.25;
+  white-space: nowrap;
+  pointer-events: none;
   box-shadow: 0 2px 7px rgba(104, 72, 28, .13);
+}
+
+.p-4 > .flow-age,
+.p-5 > .flow-age,
+.p-6 > .flow-age,
+.p-7 > .flow-age {
+  top: 0;
+  left: 50%;
+  translate: -50% -58%;
+}
+
+.p-8 > .flow-age,
+.p-9 > .flow-age {
+  top: 50%;
+  right: 0;
+  translate: 44% -50%;
+}
+
+.p-1 > .flow-age,
+.p-10 > .flow-age,
+.p-11 > .flow-age,
+.p-12 > .flow-age {
+  bottom: 0;
+  left: 50%;
+  translate: -50% 58%;
+}
+
+.p-2 > .flow-age,
+.p-3 > .flow-age {
+  top: 50%;
+  left: 0;
+  translate: -58% -50%;
 }
 
 .palace-cell .flow-age::before {
   content: "";
-  width: 5px;
-  height: 5px;
+  width: 4px;
+  height: 4px;
   flex: 0 0 auto;
   border-radius: 50%;
   background: #bd8a35;
