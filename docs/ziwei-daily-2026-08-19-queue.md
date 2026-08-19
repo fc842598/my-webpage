@@ -20,7 +20,7 @@ Recovery-Mode: false
 | 顺序 | 状态 | slug | 标题 | 大类 |
 |---|---|---|---|---|
 | 01 | 已发布 2026-08-19 09:17 https://yuetianai.com/articles/ziwei-bankong-zhechi-pa-naduan-zhuanzhe.html / https://yuetianai.com/articles/en/ziwei-bankong-zhechi-pa-naduan-zhuanzhe.html | ziwei-bankong-zhechi-pa-naduan-zhuanzhe | 紫微斗数半空折翅格怕的到底是哪段转折：先看中年换轨还是情绪断线 | 格局命例 |
-| 02 | 待发布 | ziwei-nanming-taiyin-huaji-xiantan-bianjie | 紫微斗数男命太阴化忌，什么时候要先谈边界再谈婚事 | 婚恋与关系 |
+| 02 | 已发布 2026-08-19 10:43 https://yuetianai.com/articles/ziwei-nanming-taiyin-huaji-xiantan-bianjie.html / https://yuetianai.com/articles/en/ziwei-nanming-taiyin-huaji-xiantan-bianjie.html | ziwei-nanming-taiyin-huaji-xiantan-bianjie | 紫微斗数男命太阴化忌，什么时候要先谈边界再谈婚事 | 婚恋与关系 |
 | 03 | 待发布 | ziwei-fuqigong-wuqu-tanqian-xiaolv-yali | 紫微斗数夫妻宫见武曲，谈钱效率高还是婚后压力大 | 婚恋与关系 |
 | 04 | 待发布 | ziwei-shuren-fuye-duli-shouru | 紫微斗数熟人副业看似赚钱，怎么算真正独立：先看客户能不能脱离原圈子 | 财运事业 |
 | 05 | 待发布 | ziwei-caibo-huaquan-lucun-zhiji-zhangpan | 紫微斗数财帛化权又见禄存，是自己掌盘还是只替公司管钱 | 财运事业 |
