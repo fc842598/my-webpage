@@ -6,7 +6,6 @@
   const flowStatus = document.getElementById("flowStatus");
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const flowFadeDelay = 5000;
-  const flowHideDelay = 10000;
   const earthlyBranches = ["子", "丑", "寅", "卯", "辰", "巳", "午", "未", "申", "酉", "戌", "亥"];
   const oneYearStartGroups = [
     { birthBranches: ["寅", "午", "戌"], startBranch: "辰" },
@@ -216,11 +215,6 @@
     flowTimers.push(window.setTimeout(() => {
       secondaryBadges.forEach((badge) => badge.classList.add("is-fading"));
     }, flowFadeDelay));
-
-    flowTimers.push(window.setTimeout(() => {
-      secondaryBadges.forEach((badge) => badge.remove());
-      flowTimers = [];
-    }, flowHideDelay));
   };
 
   for (let age = 1; age <= 100; age += 1) {
