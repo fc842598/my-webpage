@@ -213,6 +213,7 @@
     flowStatus.textContent = `${age}岁 · ${selectedEntry.button.dataset.palace} · 同轮${cycleStart}–${cycleEnd}岁`;
 
     flowTimers.push(window.setTimeout(() => {
+      selectedEntry.button.classList.remove("is-flow-primary");
       secondaryBadges.forEach((badge) => badge.classList.add("is-fading"));
     }, flowFadeDelay));
   };
