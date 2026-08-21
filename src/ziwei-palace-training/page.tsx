@@ -54,7 +54,7 @@ type ModuleDefinition = {
 };
 
 const modules: ModuleDefinition[] = [
-  { id: "position", group: "基础对应", label: "地支格位", mark: "位", description: "空盘盲点，记住巳午未申在上、寅丑子亥在下。" },
+  { id: "position", group: "基础对应", label: "地支格位", mark: "位", description: "在十二格盘面中定位十二地支。" },
   { id: "hours", group: "基础对应", label: "十二时辰", mark: "时", description: "双向记忆每个地支对应的两个小时。" },
   { id: "zodiac", group: "基础对应", label: "十二生肖", mark: "肖", description: "练熟子鼠、丑牛到亥猪的固定对应。" },
   { id: "meridian", group: "基础对应", label: "经络时辰", mark: "经", description: "记忆传统子午流注中的十二时辰与经络。" },
@@ -337,7 +337,7 @@ export default function Home() {
   const isStemModule = moduleId === "stem-order" || moduleId === "stem-attributes";
   const boardNote = moduleId === "body-map"
     ? "《天纪02》身体体型盘：人体正面朝向你，盘左为身体右侧；中宫为脐；子丑两格同看"
-    : isStemModule ? "甲乙丙丁戊己庚辛壬癸是十天干；两格留空不参与作答" : "南在上 · 北在下；答错也会揭晓该格内容";
+    : isStemModule ? "甲乙丙丁戊己庚辛壬癸是十天干；两格留空不参与作答" : null;
   const currentTarget = question.ordered ? question.targets[solved.length] : question.targets.find((target) => !solved.includes(target));
   const prompt = moduleId === "position" && currentTarget !== undefined ? `请点出「${branches[currentTarget]}」的位置` : question.prompt;
   const recentAverage = activeProgress.recentMs.length ? activeProgress.recentMs.reduce((sum, item) => sum + item, 0) / activeProgress.recentMs.length : null;
@@ -539,16 +539,14 @@ export default function Home() {
 
       <section className="intro-strip">
         <div><p className="eyebrow">一张盘，串起所有固定对应</p><h1>选一个主题，<em>马上开练。</em></h1></div>
-        <p>题目放进中宫，十二格就是答案。由格位开始，再练时辰、生肖、经络、地支属性和紫微宫序。</p>
       </section>
 
       <section className="trainer-layout" id="trainer">
         <aside className="library-panel">
           <div className="library-heading"><span>训练目录</span><strong>共 {modules.length} 项</strong></div>
-          <p className="mobile-practice-tip">选择主题后，会自动进入练习盘面</p>
           {groupedModules.map(({ group, items }) => (
             <div className="module-group" key={group}>
-              <h2>{group}</h2>
+              {group !== "基础对应" && <h2>{group}</h2>}
               <div className="module-list">
                 {items.map((item) => (
                   <button className={moduleId === item.id ? "active" : ""} key={item.id} type="button" onClick={() => selectModule(item.id)}>
@@ -611,7 +609,7 @@ export default function Home() {
                 </>
               ) : (
                 <>
-                  <span>{activeModule.group} · 第 {activeProgress.level} 关</span>
+                  <span>第 {activeProgress.level} 关</span>
                   <h2>{prompt}</h2>
                   <p>{question.hint}</p>
                   {activeProgress.level === 3 && durationSeconds > 0 && <div className="countdown">本轮剩余 <b>{remainingLabel}</b></div>}
@@ -660,17 +658,9 @@ export default function Home() {
               );
             })}
           </div>
-          <div className="board-note"><span />{boardNote}</div>
+          {boardNote && <div className="board-note"><span />{boardNote}</div>}
         </section>
       </section>
-
-      <section className="memory-map">
-        <div><span>01</span><strong>先定格位</strong><p>巳午未申在上，寅丑子亥在下。</p></div>
-        <div><span>02</span><strong>再串对应</strong><p>时辰、生肖、月份、经络与方位双向练。</p></div>
-        <div><span>03</span><strong>最后排宫</strong><p>命宫起逆时针，并练对宫与三方四正。</p></div>
-      </section>
-
-      <footer>身体体型盘依《天纪02》课程原文整理；经络时辰为传统中医“子午流注”文化记忆内容，仅供学习，不构成医疗建议。</footer>
     </main>
   );
 }
