@@ -81,8 +81,7 @@ button {
 
 .lab-back:focus-visible,
 .palace-cell:focus-visible,
-.flow-select-row select:focus-visible,
-.flow-step-row button:focus-visible {
+.flow-select-row select:focus-visible {
   outline: 3px solid rgba(154, 111, 52, .35);
   outline-offset: 2px;
 }
@@ -158,26 +157,25 @@ button {
   box-shadow: inset 0 0 0 1px rgba(154, 111, 52, .2);
 }
 
-.palace-cell.is-flowing {
+.palace-cell.is-flow-primary {
   isolation: isolate;
 }
 
-.palace-cell.is-flowing::after {
+.palace-cell.is-flow-primary::after {
   content: "";
   position: absolute;
   z-index: 4;
   inset: 2px;
-  border: 1px solid rgba(181, 132, 48, .72);
+  border: 2px solid rgba(174, 94, 51, .78);
   border-radius: 4px;
   background:
-    linear-gradient(135deg, rgba(246, 221, 157, .62), rgba(255, 250, 233, .22)),
-    radial-gradient(circle at 50% 48%, rgba(205, 157, 69, .18), transparent 70%);
+    linear-gradient(135deg, rgba(249, 222, 164, .58), rgba(255, 250, 233, .18)),
+    radial-gradient(circle at 50% 48%, rgba(189, 111, 63, .16), transparent 70%);
   box-shadow:
     inset 0 0 0 1px rgba(255, 249, 230, .7),
-    inset 0 0 24px rgba(183, 132, 47, .16),
-    0 0 14px rgba(183, 132, 47, .2);
+    inset 0 0 24px rgba(174, 94, 51, .12),
+    0 0 14px rgba(174, 94, 51, .18);
   pointer-events: none;
-  animation: flow-palace-reveal 5s ease-out both;
 }
 
 .palace-cell.is-pulse {
@@ -269,16 +267,44 @@ button {
   justify-content: center;
   gap: 2px;
   padding: 1px 5px 1px 4px;
-  border: 1px solid rgba(181, 132, 48, .42);
+  border: 1px solid rgba(151, 136, 112, .42);
   border-radius: 999px;
   background: rgba(255, 252, 244, .96);
-  color: #855b20;
+  color: #756b5f;
   font-size: 8.5px;
   font-weight: 800;
   line-height: 1.25;
   white-space: nowrap;
   pointer-events: none;
   box-shadow: 0 2px 7px rgba(104, 72, 28, .13);
+}
+
+.palace-cell .flow-age--primary {
+  border-color: rgba(174, 94, 51, .66);
+  background: rgba(255, 246, 226, .98);
+  color: #963d2d;
+  font-size: 9.5px;
+  box-shadow: 0 3px 10px rgba(145, 67, 39, .2);
+}
+
+.palace-cell .flow-age--secondary {
+  opacity: 0;
+  scale: .9;
+  transition:
+    opacity .38s ease calc(var(--flow-order, 1) * 70ms),
+    scale .38s ease calc(var(--flow-order, 1) * 70ms);
+}
+
+.palace-cell .flow-age--secondary.is-visible {
+  opacity: .76;
+  scale: 1;
+}
+
+.palace-cell .flow-age--secondary.is-fading {
+  opacity: 0;
+  scale: .98;
+  transition-duration: 5s;
+  transition-delay: 0s;
 }
 
 .p-4 > .flow-age,
@@ -321,8 +347,12 @@ button {
   height: 4px;
   flex: 0 0 auto;
   border-radius: 50%;
-  background: #bd8a35;
-  box-shadow: 0 0 0 0 rgba(189, 138, 53, .32);
+  background: #b4a58e;
+}
+
+.palace-cell .flow-age--primary::before {
+  background: #b95033;
+  box-shadow: 0 0 0 0 rgba(185, 80, 51, .28);
   animation: flow-locator-breathe 1.8s ease-out infinite;
 }
 
@@ -442,27 +472,6 @@ button {
   cursor: pointer;
 }
 
-.flow-step-row {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 8px;
-}
-
-.flow-step-row button {
-  min-height: 30px;
-  border: 1px solid #d7a996;
-  border-radius: 999px;
-  background: rgba(255, 253, 248, .86);
-  color: #a04c3a;
-  font-size: 11px;
-  font-weight: 800;
-  cursor: pointer;
-}
-
-.flow-step-row button:active {
-  transform: scale(.97);
-}
-
 #flowStatus {
   margin: 0;
   color: #8c7d68;
@@ -549,15 +558,9 @@ button {
   100% { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-@keyframes flow-palace-reveal {
-  0% { opacity: 0; transform: scale(.97); }
-  8%, 80% { opacity: 1; transform: scale(1); }
-  100% { opacity: 0; transform: scale(1); }
-}
-
 @keyframes flow-locator-breathe {
-  0%, 100% { transform: scale(.9); box-shadow: 0 0 0 0 rgba(189, 138, 53, .3); }
-  50% { transform: scale(1); box-shadow: 0 0 0 4px rgba(189, 138, 53, 0); }
+  0%, 100% { transform: scale(.9); box-shadow: 0 0 0 0 rgba(185, 80, 51, .28); }
+  50% { transform: scale(1); box-shadow: 0 0 0 4px rgba(185, 80, 51, 0); }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -568,9 +571,7 @@ button {
     transition-duration: .01ms !important;
   }
 
-  .palace-cell.is-flowing::after {
-    opacity: 1;
-    transform: none;
-    animation: none;
+  .palace-cell .flow-age--secondary {
+    scale: 1;
   }
 }

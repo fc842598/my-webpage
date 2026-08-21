@@ -4,18 +4,23 @@
   const canvas = document.getElementById("triadOverlay");
   const flowAge = document.getElementById("flowAge");
   const flowStatus = document.getElementById("flowStatus");
-  const flowBadge = document.querySelector(".flow-age");
-  const flowStepButtons = [...document.querySelectorAll("[data-flow-step]")];
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const flowRevealDuration = 5000;
+  const flowFadeDelay = 5000;
+  const flowHideDelay = 10000;
+  const earthlyBranches = ["子", "丑", "寅", "卯", "辰", "巳", "午", "未", "申", "酉", "戌", "亥"];
+  const oneYearStartGroups = [
+    { birthBranches: ["寅", "午", "戌"], startBranch: "辰" },
+    { birthBranches: ["申", "子", "辰"], startBranch: "戌" },
+    { birthBranches: ["巳", "酉", "丑"], startBranch: "未" },
+    { birthBranches: ["亥", "卯", "未"], startBranch: "丑" },
+  ];
 
   let activePalace = document.querySelector(".palace-cell.is-active") || palaceButtons[0];
   let animationFrame = 0;
-  let flowRevealTimer = 0;
-  let hourShift = 0;
+  let flowTimers = [];
 
-  const normalizeIndex = (index) => (index % palaceButtons.length + palaceButtons.length) % palaceButtons.length;
-  const getTriadIndexes = (index) => [index + 4, index + 8, index + 6].map(normalizeIndex);
+  const normalizeIndex = (index, length = palaceButtons.length) => (index % length + length) % length;
+  const getTriadIndexes = (index) => [index + 4, index + 8, index + 6].map((targetIndex) => normalizeIndex(targetIndex));
 
   const resizeCanvas = () => {
     const ratio = window.devicePixelRatio || 1;
@@ -135,32 +140,87 @@
     animateTriad();
   };
 
-  const getFlowTarget = () => {
-    const age = Number(flowAge.value || 39);
-    const index = normalizeIndex(10 + (age - 39) + hourShift);
-    return { age, button: palaceButtons[index] };
+  const getPalaceByBranch = (branch) => {
+    const button = palaceButtons.find((item) => item.dataset.branch.endsWith(branch));
+    if (!button) throw new Error(`命盘缺少${branch}宫，无法显示小流年`);
+    return button;
+  };
+
+  const getOneYearStartBranch = () => {
+    const birthYearBranch = board.dataset.birthYearBranch;
+    const group = oneYearStartGroups.find((item) => item.birthBranches.includes(birthYearBranch));
+    if (!group) throw new Error(`无法识别生年地支：${birthYearBranch || "未填写"}`);
+    return group.startBranch;
+  };
+
+  const getFlowBranch = (age) => {
+    const startIndex = earthlyBranches.indexOf(getOneYearStartBranch());
+    const sex = board.dataset.sex;
+    if (!["male", "female"].includes(sex)) throw new Error(`无法识别性别：${sex || "未填写"}`);
+    const direction = sex === "female" ? -1 : 1;
+    const branchIndex = normalizeIndex(startIndex + direction * (age - 1), earthlyBranches.length);
+    return earthlyBranches[branchIndex];
+  };
+
+  const getFlowCycle = (selectedAge) => {
+    const cycleStart = Math.floor((selectedAge - 1) / earthlyBranches.length) * earthlyBranches.length + 1;
+    return Array.from({ length: earthlyBranches.length }, (_, offset) => {
+      const age = cycleStart + offset;
+      const branch = getFlowBranch(age);
+      return { age, branch, button: getPalaceByBranch(branch) };
+    });
+  };
+
+  const clearFlowCycle = () => {
+    flowTimers.forEach((timer) => window.clearTimeout(timer));
+    flowTimers = [];
+    palaceButtons.forEach((button) => {
+      button.classList.remove("is-flow-primary");
+      button.querySelectorAll(".flow-age").forEach((badge) => badge.remove());
+    });
+  };
+
+  const createFlowBadge = ({ age, button }, selectedAge) => {
+    const isPrimary = age === selectedAge;
+    const badge = document.createElement("span");
+    badge.className = `flow-age flow-age--${isPrimary ? "primary" : "secondary"}`;
+    badge.textContent = `${age}岁`;
+    badge.setAttribute("aria-hidden", "true");
+
+    if (isPrimary) {
+      button.classList.add("is-flow-primary");
+      badge.classList.add("is-entering");
+    } else {
+      badge.style.setProperty("--flow-order", String(normalizeIndex(age - selectedAge, earthlyBranches.length)));
+    }
+
+    button.append(badge);
+    return badge;
   };
 
   const updateFlow = () => {
-    const { age, button } = getFlowTarget();
-    window.clearTimeout(flowRevealTimer);
-    palaceButtons.forEach((item) => item.classList.remove("is-flowing"));
-    button.classList.add("is-flowing");
-    button.append(flowBadge);
-    flowBadge.textContent = `${age}岁`;
-    flowBadge.classList.remove("is-entering");
-    void flowBadge.offsetWidth;
-    flowBadge.classList.add("is-entering");
+    const age = Number(flowAge.value || 39);
+    const cycle = getFlowCycle(age);
+    clearFlowCycle();
 
-    const shiftText = hourShift === 0
-      ? ""
-      : ` · 时辰${hourShift > 0 ? "顺" : "逆"}推${Math.abs(hourShift)}步`;
-    flowStatus.textContent = `${age}岁 · ${button.dataset.palace}${shiftText}`;
+    const badges = cycle.map((entry) => createFlowBadge(entry, age));
+    const secondaryBadges = badges.filter((badge) => badge.classList.contains("flow-age--secondary"));
+    const selectedEntry = cycle.find((entry) => entry.age === age);
+    const cycleStart = cycle[0].age;
+    const cycleEnd = cycle[cycle.length - 1].age;
 
-    flowRevealTimer = window.setTimeout(() => {
-      button.classList.remove("is-flowing");
-      flowRevealTimer = 0;
-    }, flowRevealDuration);
+    void board.offsetWidth;
+    secondaryBadges.forEach((badge) => badge.classList.add("is-visible"));
+    flowStatus.textContent = `${age}岁 · ${selectedEntry.button.dataset.palace} · 同轮${cycleStart}–${cycleEnd}岁`;
+
+    flowTimers.push(window.setTimeout(() => {
+      secondaryBadges.forEach((badge) => badge.classList.add("is-fading"));
+    }, flowFadeDelay));
+
+    flowTimers.push(window.setTimeout(() => {
+      secondaryBadges.forEach((badge) => badge.remove());
+      flowTimers = [];
+    }, flowHideDelay));
   };
 
   for (let age = 1; age <= 100; age += 1) {
@@ -176,21 +236,7 @@
     button.addEventListener("animationend", () => button.classList.remove("is-pulse"));
   });
 
-  flowAge.addEventListener("change", () => {
-    hourShift = 0;
-    updateFlow();
-  });
-
-  flowStepButtons.forEach((button) => {
-    button.addEventListener("click", () => {
-      hourShift += Number(button.dataset.flowStep || 0);
-      updateFlow();
-    });
-  });
-
-  flowBadge.addEventListener("animationend", (event) => {
-    if (event.animationName === "flow-badge-arrive") flowBadge.classList.remove("is-entering");
-  });
+  flowAge.addEventListener("change", updateFlow);
 
   new ResizeObserver(() => drawTriad(1)).observe(board);
   updateFlow();

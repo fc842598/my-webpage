@@ -6,7 +6,8 @@
   <meta name="robots" content="noindex,nofollow,noarchive">
   <meta name="googlebot" content="noindex,nofollow,noarchive">
   <title>紫微命盘样式实验页｜阅天AI</title>
-  <link rel="stylesheet" href="../css/ziwei-chart-style-lab.css?v=20260819-4">
+  <link rel="icon" href="../images/wentian-prototype-assets/wentian-brand-logo-ai-gold-v1.webp" type="image/webp">
+  <link rel="stylesheet" href="../css/ziwei-chart-style-lab.css?v=20260821-xiaoliu-v1">
 </head>
 <body class="chart-style-lab">
   <main class="lab-shell">
@@ -19,7 +20,7 @@
     </header>
 
     <section class="chart-section" aria-label="十二宫命盘样式实验">
-      <div class="chart-board" id="chartBoard">
+      <div class="chart-board" id="chartBoard" data-birth-year-branch="辰" data-sex="male">
         <canvas class="triad-overlay" id="triadOverlay" aria-hidden="true"></canvas>
         <button class="palace-cell p-1" type="button" data-palace="疾厄宫" data-branch="甲寅" data-stars="廉贞庙" aria-pressed="false">
           <span class="major-stars">廉贞庙</span>
@@ -85,11 +86,7 @@
               <label for="flowAge">小流年</label>
               <select id="flowAge" aria-label="选择小流年年龄"></select>
             </div>
-            <div class="flow-step-row">
-              <button type="button" data-flow-step="1">时↑</button>
-              <button type="button" data-flow-step="-1">时↓</button>
-            </div>
-            <p id="flowStatus" aria-live="polite">39岁 · 仆役宫</p>
+            <p id="flowStatus" aria-live="polite">39岁 · 仆役宫 · 同轮37–48岁</p>
           </div>
         </section>
 
@@ -125,8 +122,7 @@
           <strong>官禄宫</strong>
         </button>
 
-        <button class="palace-cell p-11 has-flow" type="button" data-palace="仆役宫" data-branch="甲子" data-stars="七杀旺、文昌得" aria-pressed="false">
-          <span class="flow-age">39岁</span>
+        <button class="palace-cell p-11" type="button" data-palace="仆役宫" data-branch="甲子" data-stars="七杀旺、文昌得" aria-pressed="false">
           <span class="major-stars">七杀旺<br>文昌得</span>
           <span class="minor-stars">火星陷<br>恩光<br>封诰</span>
           <span class="stem-age">甲子<br>56–65</span>
@@ -148,6 +144,6 @@
       <p>此链接仅用于确认命盘视觉方向，正式页面与排盘逻辑均未修改。</p>
     </footer>
   </main>
-  <script src="../js/ziwei-chart-style-lab.js?v=20260819-6" defer></script>
+  <script src="../js/ziwei-chart-style-lab.js?v=20260821-xiaoliu-v1" defer></script>
 </body>
 </html>
