@@ -26,6 +26,6 @@ Recovery-Mode: false
 | 05 | 已发布 2026-08-22 15:11 https://yuetianai.com/articles/ziwei-shoufu-goule-yuegong-yali-kan-tianzhai-caibo.html / https://yuetianai.com/articles/en/ziwei-shoufu-goule-yuegong-yali-kan-tianzhai-caibo.html | ziwei-shoufu-goule-yuegong-yali-kan-tianzhai-caibo | 紫微斗数首付够了却怕月供压垮生活：田宅宫和财帛宫哪一宫先否决 | 宫位组合 |
 | 06 | 已发布 2026-08-22 16:53 https://yuetianai.com/articles/ziwei-qianyi-jili-shenti-kangbuzhu-zenme-kan.html / https://yuetianai.com/articles/en/ziwei-qianyi-jili-shenti-kangbuzhu-zenme-kan.html | ziwei-qianyi-jili-shenti-kangbuzhu-zenme-kan | 紫微斗数迁移宫有利却把身体拖垮，怎么判断外地机会值不值得扛 | 宫位组合 |
 | 07 | 已发布 2026-08-22 18:26 https://yuetianai.com/articles/ziwei-hualu-daoshou-qian-shi-zijizuozhu-haishi-bierenfudai.html / https://yuetianai.com/articles/en/ziwei-hualu-daoshou-qian-shi-zijizuozhu-haishi-bierenfudai.html | ziwei-hualu-daoshou-qian-shi-zijizuozhu-haishi-bierenfudai | 紫微斗数化禄看见的钱，哪种才算自己能做主：父母给、房产带还是财帛自赚 | 四化细读 |
-| 08 | 待发布 | ziwei-huake-gengzhiqian-haishi-gengzhiwei | 紫微斗数化科到底更值钱还是更值位：财帛收费和官禄资格怎么分 | 四化细读 |
+| 08 | 已发布 2026-08-22 19:54 https://yuetianai.com/articles/ziwei-huake-gengzhiqian-haishi-gengzhiwei.html / https://yuetianai.com/articles/en/ziwei-huake-gengzhiqian-haishi-gengzhiwei.html | ziwei-huake-gengzhiqian-haishi-gengzhiwei | 紫微斗数化科到底更值钱还是更值位：财帛收费和官禄资格怎么分 | 四化细读 |
 | 09 | 待发布 | ziwei-konggong-jie-duigong-daoshenme-shihou-gaiting | 紫微斗数空宫借对宫借到哪一步该停：什么时候必须回三方四正 | 看盘方法 |
 | 10 | 待发布 | ziwei-caiguanqianyi-douliang-xuan-zhuchukou | 紫微斗数财帛、官禄、迁移都亮时怎么选主出口：身宫和现实角色谁先定 | 看盘方法 |
