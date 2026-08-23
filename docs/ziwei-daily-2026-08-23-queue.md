@@ -26,6 +26,6 @@ Recovery-Mode: false
 | 05 | 已发布 2026-08-23 15:09 https://yuetianai.com/articles/ziwei-tianji-xing-zhixing-jiaoshi-caiwu.html / https://yuetianai.com/articles/en/ziwei-tianji-xing-zhixing-jiaoshi-caiwu.html | ziwei-tianji-xing-zhixing-jiaoshi-caiwu | 紫微斗数天机型的人适合行政、教师还是财务：落命、官禄和财帛要分开 | 财运事业 |
 | 06 | 已发布 2026-08-23 16:58 https://yuetianai.com/articles/ziwei-xiangqin-tiaojian-hao-xiangchu-henlei.html / https://yuetianai.com/articles/en/ziwei-xiangqin-tiaojian-hao-xiangchu-henlei.html | ziwei-xiangqin-tiaojian-hao-xiangchu-henlei | 紫微斗数相亲对象条件很好，为什么相处还是累：夫妻看人，福德看承受 | 婚恋与关系 |
 | 07 | 已发布 2026-08-23 18:23 https://yuetianai.com/articles/ziwei-jiali-geiziyuan-budengyu-nikeyishangzhuo.html / https://yuetianai.com/articles/en/ziwei-jiali-geiziyuan-budengyu-nikeyishangzhuo.html | ziwei-jiali-geiziyuan-budengyu-nikeyishangzhuo | 紫微斗数家里愿意给资源，不等于你就能轻松上桌：帮忙、控制和责任要拆开看 | 宫位组合 |
-| 08 | 待发布 | ziwei-liunian-qianyi-shigang-waipai-kehu-chengshi-fensan-ceng | 紫微斗数流年迁移宫动了却总在试岗：外派、换客户和换城市为什么要分三层 | 大限流年 |
+| 08 | 已发布 2026-08-23 19:57 https://yuetianai.com/articles/ziwei-liunian-qianyi-shigang-waipai-kehu-chengshi-fensan-ceng.html / https://yuetianai.com/articles/en/ziwei-liunian-qianyi-shigang-waipai-kehu-chengshi-fensan-ceng.html | ziwei-liunian-qianyi-shigang-waipai-kehu-chengshi-fensan-ceng | 紫微斗数流年迁移宫动了却总在试岗：外派、换客户和换城市为什么要分三层 | 大限流年 |
 | 09 | 待发布 | ziwei-fangchan-jihui-liang-buganqian-tianzhai-quanshu-yuegong | 紫微斗数房产机会看着很亮，为什么还是不敢签：田宅、产权和月供要分开看 | 宫位组合 |
 | 10 | 待发布 | ziwei-tianfu-shoucai-hui-cun-hui-guan-hui-pei | 紫微斗数天府守财是保守，还是会存、会管、会配 | 主星 |
