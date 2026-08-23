@@ -21,7 +21,7 @@ Recovery-Mode: false
 |---|---|---|---|---|
 | 01 | 已发布 2026-08-23 09:18 https://yuetianai.com/articles/ziwei-tianji-caibo-guding-gongzi-xiangmu-shoufei.html / https://yuetianai.com/articles/en/ziwei-tianji-caibo-guding-gongzi-xiangmu-shoufei.html | ziwei-tianji-caibo-guding-gongzi-xiangmu-shoufei | 紫微斗数天机落财帛更适合固定工资还是项目收费：先分正财与专业变现 | 主星 |
 | 02 | 已发布 2026-08-23 10:47 https://yuetianai.com/articles/ziwei-santai-bazuo-dandu-chuxian.html / https://yuetianai.com/articles/en/ziwei-santai-bazuo-dandu-chuxian.html | ziwei-santai-bazuo-dandu-chuxian | 紫微斗数三台八座单独出现有用吗：辅佐星要先看有没有主星承接 | 辅煞曜 |
-| 03 | 待发布 | ziwei-jixing-luo-fuqi-fumu-zinv-gong | 紫微斗数吉星落在夫妻、父母或子女宫，算自己的好运还是家人的 | 看盘方法 |
+| 03 | 已发布 2026-08-23 12:16 https://yuetianai.com/articles/ziwei-jixing-luo-fuqi-fumu-zinv-gong.html / https://yuetianai.com/articles/en/ziwei-jixing-luo-fuqi-fumu-zinv-gong.html | ziwei-jixing-luo-fuqi-fumu-zinv-gong | 紫微斗数吉星落在夫妻、父母或子女宫，算自己的好运还是家人的 | 看盘方法 |
 | 04 | 待发布 | ziwei-yigong-xingyao-henduo-yuedu-shunxu | 紫微斗数一个宫里星曜很多怎么看：主星、四化、辅星和煞曜先看谁 | 看盘方法 |
 | 05 | 待发布 | ziwei-tianji-xing-zhixing-jiaoshi-caiwu | 紫微斗数天机型的人适合行政、教师还是财务：落命、官禄和财帛要分开 | 财运事业 |
 | 06 | 待发布 | ziwei-xiangqin-tiaojian-hao-xiangchu-henlei | 紫微斗数相亲对象条件很好，为什么相处还是累：夫妻看人，福德看承受 | 婚恋与关系 |
