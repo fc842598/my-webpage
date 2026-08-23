@@ -24,7 +24,7 @@ Recovery-Mode: false
 | 03 | 已发布 2026-08-23 12:16 https://yuetianai.com/articles/ziwei-jixing-luo-fuqi-fumu-zinv-gong.html / https://yuetianai.com/articles/en/ziwei-jixing-luo-fuqi-fumu-zinv-gong.html | ziwei-jixing-luo-fuqi-fumu-zinv-gong | 紫微斗数吉星落在夫妻、父母或子女宫，算自己的好运还是家人的 | 看盘方法 |
 | 04 | 已发布 2026-08-23 13:41 https://yuetianai.com/articles/ziwei-yigong-xingyao-henduo-yuedu-shunxu.html / https://yuetianai.com/articles/en/ziwei-yigong-xingyao-henduo-yuedu-shunxu.html | ziwei-yigong-xingyao-henduo-yuedu-shunxu | 紫微斗数一个宫里星曜很多怎么看：主星、四化、辅星和煞曜先看谁 | 看盘方法 |
 | 05 | 已发布 2026-08-23 15:09 https://yuetianai.com/articles/ziwei-tianji-xing-zhixing-jiaoshi-caiwu.html / https://yuetianai.com/articles/en/ziwei-tianji-xing-zhixing-jiaoshi-caiwu.html | ziwei-tianji-xing-zhixing-jiaoshi-caiwu | 紫微斗数天机型的人适合行政、教师还是财务：落命、官禄和财帛要分开 | 财运事业 |
-| 06 | 待发布 | ziwei-xiangqin-tiaojian-hao-xiangchu-henlei | 紫微斗数相亲对象条件很好，为什么相处还是累：夫妻看人，福德看承受 | 婚恋与关系 |
+| 06 | 已发布 2026-08-23 16:58 https://yuetianai.com/articles/ziwei-xiangqin-tiaojian-hao-xiangchu-henlei.html / https://yuetianai.com/articles/en/ziwei-xiangqin-tiaojian-hao-xiangchu-henlei.html | ziwei-xiangqin-tiaojian-hao-xiangchu-henlei | 紫微斗数相亲对象条件很好，为什么相处还是累：夫妻看人，福德看承受 | 婚恋与关系 |
 | 07 | 待发布 | ziwei-jiali-geiziyuan-budengyu-nikeyishangzhuo | 紫微斗数家里愿意给资源，不等于你就能轻松上桌：帮忙、控制和责任要拆开看 | 宫位组合 |
 | 08 | 待发布 | ziwei-liunian-qianyi-shigang-waipai-kehu-chengshi-fensan-ceng | 紫微斗数流年迁移宫动了却总在试岗：外派、换客户和换城市为什么要分三层 | 大限流年 |
 | 09 | 待发布 | ziwei-fangchan-jihui-liang-buganqian-tianzhai-quanshu-yuegong | 紫微斗数房产机会看着很亮，为什么还是不敢签：田宅、产权和月供要分开看 | 宫位组合 |
