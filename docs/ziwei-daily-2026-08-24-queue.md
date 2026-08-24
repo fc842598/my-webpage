@@ -23,7 +23,7 @@ Recovery-Mode: false
 | 02 | 已发布 2026-08-24 10:58 https://yuetianai.com/articles/ziwei-lianzhen-qisha-fude-guoxian-huifuli.html / https://yuetianai.com/articles/en/ziwei-lianzhen-qisha-fude-guoxian-huifuli.html | ziwei-lianzhen-qisha-fude-guoxian-huifuli | 紫微斗数廉贞七杀在福德，什么时候不是能扛而是快过线：先看恢复力 | 格局命例 |
 | 03 | 已发布 2026-08-24 12:23 https://yuetianai.com/articles/ziwei-konggong-jie-duigong-tingshou-hui-sanfang.html / https://yuetianai.com/articles/en/ziwei-konggong-jie-duigong-tingshou-hui-sanfang.html | ziwei-konggong-jie-duigong-tingshou-hui-sanfang | 紫微斗数空宫借对宫，什么时候该停手回三方四正：别把牵引当结论 | 看盘方法 |
 | 04 | 已发布 2026-08-24 13:49 https://yuetianai.com/articles/ziwei-sanfang-sizheng-duigong-tiqian-budengzuihou.html / https://yuetianai.com/articles/en/ziwei-sanfang-sizheng-duigong-tiqian-budengzuihou.html | ziwei-sanfang-sizheng-duigong-tiqian-budengzuihou | 紫微斗数三方四正什么时候要把对宫提前：强轴线和空宫别等最后再补 | 看盘方法 |
-| 05 | 待发布 | ziwei-minggong-shengong-fenkai-xihuan-fali | 紫微斗数命宫和身宫分开时，为什么喜欢的和真正发力的常不是一条线 | 宫位组合 |
+| 05 | 已发布 2026-08-24 15:17 https://yuetianai.com/articles/ziwei-minggong-shengong-fenkai-xihuan-fali.html / https://yuetianai.com/articles/en/ziwei-minggong-shengong-fenkai-xihuan-fali.html | ziwei-minggong-shengong-fenkai-xihuan-fali | 紫微斗数命宫和身宫分开时，为什么喜欢的和真正发力的常不是一条线 | 宫位组合 |
 | 06 | 待发布 | ziwei-guanlugong-zeren-hangye-zhiwei-xianhou | 紫微斗数官禄宫先看职责还是行业：职位、收入和责任不要一起问 | 看盘方法 |
 | 07 | 待发布 | ziwei-hualu-qian-daoshou-zuozhu-fumu-tianzhai-caibo | 紫微斗数化禄看见的钱是不是你能做主：父母资源、房产价值和现金要分开 | 四化细读 |
 | 08 | 待发布 | ziwei-huake-tijia-shangwei-caibo-guanlu | 紫微斗数化科到底先帮你提价还是上位：财帛收费和官禄资格怎么判 | 四化细读 |
