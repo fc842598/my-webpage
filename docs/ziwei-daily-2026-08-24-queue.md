@@ -26,6 +26,6 @@ Recovery-Mode: false
 | 05 | 已发布 2026-08-24 15:17 https://yuetianai.com/articles/ziwei-minggong-shengong-fenkai-xihuan-fali.html / https://yuetianai.com/articles/en/ziwei-minggong-shengong-fenkai-xihuan-fali.html | ziwei-minggong-shengong-fenkai-xihuan-fali | 紫微斗数命宫和身宫分开时，为什么喜欢的和真正发力的常不是一条线 | 宫位组合 |
 | 06 | 已发布 2026-08-24 16:46 https://yuetianai.com/articles/ziwei-guanlugong-zeren-hangye-zhiwei-xianhou.html / https://yuetianai.com/articles/en/ziwei-guanlugong-zeren-hangye-zhiwei-xianhou.html | ziwei-guanlugong-zeren-hangye-zhiwei-xianhou | 紫微斗数官禄宫先看职责还是行业：职位、收入和责任不要一起问 | 看盘方法 |
 | 07 | 已发布 2026-08-24 18:32 https://yuetianai.com/articles/ziwei-hualu-qian-daoshou-zuozhu-fumu-tianzhai-caibo.html / https://yuetianai.com/articles/en/ziwei-hualu-qian-daoshou-zuozhu-fumu-tianzhai-caibo.html | ziwei-hualu-qian-daoshou-zuozhu-fumu-tianzhai-caibo | 紫微斗数化禄看见的钱是不是你能做主：父母资源、房产价值和现金要分开 | 四化细读 |
-| 08 | 待发布 | ziwei-huake-tijia-shangwei-caibo-guanlu | 紫微斗数化科到底先帮你提价还是上位：财帛收费和官禄资格怎么判 | 四化细读 |
+| 08 | 已发布 2026-08-24 19:54 https://yuetianai.com/articles/ziwei-huake-tijia-shangwei-caibo-guanlu.html / https://yuetianai.com/articles/en/ziwei-huake-tijia-shangwei-caibo-guanlu.html | ziwei-huake-tijia-shangwei-caibo-guanlu | 紫微斗数化科到底先帮你提价还是上位：财帛收费和官禄资格怎么判 | 四化细读 |
 | 09 | 待发布 | ziwei-shengzhi-quan-da-xinzi-buyidong-guodu-chikui | 紫微斗数升职后权限变大、薪水没动：先分过渡抬位还是结构性吃亏 | 财运事业 |
 | 10 | 待发布 | ziwei-qianyi-youli-shenti-tuokua-jixu-kang | 紫微斗数迁移宫有利却把身体拖垮：外地机会要不要继续扛 | 宫位组合 |
