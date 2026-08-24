@@ -1,6 +1,15 @@
 "use client";
 
 import React, { useEffect, useMemo, useRef, useState } from "react";
+import {
+  initialYijingQuestion,
+  makeYijingQuestion,
+  trigrams,
+  yijingModules,
+  type TrainingLevel,
+  type YijingModuleId,
+  type YijingQuestion,
+} from "./yijing";
 
 const branches = ["子", "丑", "寅", "卯", "辰", "巳", "午", "未", "申", "酉", "戌", "亥"];
 const gridSlots = [
@@ -37,8 +46,9 @@ const mod = (value: number) => ((value % 12) + 12) % 12;
 const shuffle = (items: number[]) => [...items].sort(() => Math.random() - 0.5);
 const randomIndex = (length: number) => Math.floor(Math.random() * length);
 
-type DifficultyLevel = 1 | 2 | 3;
+type DifficultyLevel = TrainingLevel;
 type ModuleProgress = { level: DifficultyLevel; correct: number; recentMs: number[] };
+type Discipline = "ziwei" | "yijing";
 
 type ModuleId =
   | "position" | "hours" | "zodiac" | "meridian" | "months" | "directions" | "body-map" | "stem-order" | "stem-attributes"
@@ -74,11 +84,16 @@ const modules: ModuleDefinition[] = [
 ];
 
 const levelNames: Record<DifficultyLevel, string> = { 1: "认识", 2: "提速", 3: "自由练" };
+const yijingLevelNames: Record<DifficultyLevel, string> = { 1: "识形", 2: "提速", 3: "综合练" };
 const levelTargets: Record<1 | 2, number> = { 1: 20, 2: 40 };
 const speedTargets: Record<1 | 2, number> = { 1: 5000, 2: 3500 };
 
 function freshModuleProgress(): Record<ModuleId, ModuleProgress> {
   return Object.fromEntries(modules.map((item) => [item.id, { level: 1, correct: 0, recentMs: [] }])) as unknown as Record<ModuleId, ModuleProgress>;
+}
+
+function freshYijingProgress(): Record<YijingModuleId, ModuleProgress> {
+  return Object.fromEntries(yijingModules.map((item) => [item.id, { level: 1, correct: 0, recentMs: [] }])) as unknown as Record<YijingModuleId, ModuleProgress>;
 }
 
 type Question = {
@@ -310,18 +325,38 @@ function makeQuestion(moduleId: ModuleId, lifeIndex: number, level: DifficultyLe
   return withLevelHint({ prompt: `点出「${palaceNames[sourcePalace]}」的三方四正`, hint: "不含本宫：两个三合宫，加一个对宫", targets, ordered: false, cellLabels: emptyLabels(), revealLabels: palaces, targetLabels: relatedPalaces.map((index) => palaceNames[index]), sourceLabels: { [sourceBranch]: `${palaceNames[sourcePalace]} · 本宫` } }, level);
 }
 
+function TrigramLines({ index, compact = false }: { index: number; compact?: boolean }) {
+  const trigram = trigrams[index];
+  return (
+    <span className={`trigram-lines ${compact ? "compact" : ""}`} aria-label={`${trigram.name}卦`}>
+      {[...trigram.lines].reverse().map((line, lineIndex) => (
+        <i className={line ? "yang" : "yin"} key={`${trigram.name}-${lineIndex}`} aria-hidden="true">
+          {!line && <><b /><b /></>}
+        </i>
+      ))}
+    </span>
+  );
+}
+
 export default function Home() {
+  const [discipline, setDiscipline] = useState<Discipline>("ziwei");
   const [moduleId, setModuleId] = useState<ModuleId>("position");
+  const [yijingModuleId, setYijingModuleId] = useState<YijingModuleId>("trigram-symbol");
   const [lifeIndex, setLifeIndex] = useState(0);
   const [correctCount, setCorrectCount] = useState(0);
   const [streak, setStreak] = useState(0);
   const [best, setBest] = useState(0);
   const [moduleProgress, setModuleProgress] = useState<Record<ModuleId, ModuleProgress>>(freshModuleProgress);
+  const [yijingProgress, setYijingProgress] = useState<Record<YijingModuleId, ModuleProgress>>(freshYijingProgress);
   const [statsLoaded, setStatsLoaded] = useState(false);
   const [question, setQuestion] = useState<Question>(initialQuestion);
   const [solved, setSolved] = useState<number[]>([]);
   const [picked, setPicked] = useState<number | null>(null);
   const [feedback, setFeedback] = useState<"correct" | "wrong" | null>(null);
+  const [yijingQuestion, setYijingQuestion] = useState<YijingQuestion>(initialYijingQuestion);
+  const [yijingSolved, setYijingSolved] = useState<string[]>([]);
+  const [yijingPicked, setYijingPicked] = useState<string | null>(null);
+  const [yijingFeedback, setYijingFeedback] = useState<"correct" | "wrong" | null>(null);
   const [showAnswers, setShowAnswers] = useState(false);
   const [durationSeconds, setDurationSeconds] = useState(0);
   const [remainingSeconds, setRemainingSeconds] = useState(0);
@@ -331,11 +366,16 @@ export default function Home() {
   const boardRef = useRef<HTMLElement | null>(null);
 
   const activeModule = modules.find((item) => item.id === moduleId) ?? modules[0];
-  const activeProgress = moduleProgress[moduleId];
+  const activeYijingModule = yijingModules.find((item) => item.id === yijingModuleId) ?? yijingModules[0];
+  const activeProgress = discipline === "ziwei" ? moduleProgress[moduleId] : yijingProgress[yijingModuleId];
   const groupedModules = useMemo(() => ["基础对应", "地支关系", "紫微宫位"].map((group) => ({ group, items: modules.filter((item) => item.group === group) })), []);
-  const isPalaceModule = moduleId.startsWith("palace-");
-  const isStemModule = moduleId === "stem-order" || moduleId === "stem-attributes";
-  const boardNote = moduleId === "body-map"
+  const groupedYijingModules = useMemo(() => ["八卦基础"].map((group) => ({ group, items: yijingModules.filter((item) => item.group === group) })), []);
+  const activeLabel = discipline === "ziwei" ? activeModule.label : activeYijingModule.label;
+  const activeDescription = discipline === "ziwei" ? activeModule.description : activeYijingModule.description;
+  const activeLevelName = discipline === "ziwei" ? levelNames[activeProgress.level] : yijingLevelNames[activeProgress.level];
+  const isPalaceModule = discipline === "ziwei" && moduleId.startsWith("palace-");
+  const isStemModule = discipline === "ziwei" && (moduleId === "stem-order" || moduleId === "stem-attributes");
+  const boardNote = discipline === "ziwei" && moduleId === "body-map"
     ? "《天纪02》身体体型盘：人体正面朝向你，盘左为身体右侧；中宫为脐；子丑两格同看"
     : isStemModule ? "甲乙丙丁戊己庚辛壬癸是十天干；两格留空不参与作答" : null;
   const currentTarget = question.ordered ? question.targets[solved.length] : question.targets.find((target) => !solved.includes(target));
@@ -347,11 +387,14 @@ export default function Home() {
   const levelStart = activeProgress.level === 1 ? 0 : activeProgress.level === 2 ? 20 : 40;
   const levelProgress = levelTarget ? Math.min(100, ((activeProgress.correct - levelStart) / (levelTarget - levelStart)) * 100) : 100;
   const remainingLabel = `${String(Math.floor(remainingSeconds / 60)).padStart(2, "0")}:${String(remainingSeconds % 60).padStart(2, "0")}`;
+  const yijingPickedOption = yijingQuestion.options.find((item) => item.id === yijingPicked);
+  const yijingPickedReveal = yijingPickedOption?.reveal ?? "";
 
   useEffect(() => {
     const savedCorrect = Number(window.localStorage.getItem("ziwei-correct-count") ?? 0);
     const savedBest = Number(window.localStorage.getItem("ziwei-best-streak") ?? 0);
     const nextProgress = freshModuleProgress();
+    const nextYijingProgress = freshYijingProgress();
     try {
       const savedProgress = JSON.parse(window.localStorage.getItem("ziwei-module-progress-v1") ?? "{}");
       modules.forEach(({ id }) => {
@@ -367,11 +410,28 @@ export default function Home() {
     } catch {
       // 损坏的本机记录直接从第一关重新开始。
     }
+    try {
+      const savedProgress = JSON.parse(window.localStorage.getItem("yijing-module-progress-v1") ?? "{}");
+      yijingModules.forEach(({ id }) => {
+        const saved = savedProgress[id];
+        if (!saved) return;
+        const level = saved.level === 2 || saved.level === 3 ? saved.level : 1;
+        nextYijingProgress[id] = {
+          level,
+          correct: Math.max(0, Number(saved.correct) || 0),
+          recentMs: Array.isArray(saved.recentMs) ? saved.recentMs.filter((item: unknown) => typeof item === "number").slice(-5) : [],
+        };
+      });
+    } catch {
+      // 易经练习记录损坏时仅重置易经模块，不影响紫微进度。
+    }
     const restoreTimer = window.setTimeout(() => {
       setCorrectCount(savedCorrect);
       setBest(savedBest);
       setModuleProgress(nextProgress);
+      setYijingProgress(nextYijingProgress);
       setQuestion(makeQuestion("position", 0, nextProgress.position.level));
+      setYijingQuestion(makeYijingQuestion("trigram-symbol", nextYijingProgress["trigram-symbol"].level));
       questionStartedAt.current = performance.now();
       setStatsLoaded(true);
     }, 0);
@@ -383,7 +443,8 @@ export default function Home() {
     window.localStorage.setItem("ziwei-correct-count", String(correctCount));
     window.localStorage.setItem("ziwei-best-streak", String(best));
     window.localStorage.setItem("ziwei-module-progress-v1", JSON.stringify(moduleProgress));
-  }, [best, correctCount, moduleProgress, statsLoaded]);
+    window.localStorage.setItem("yijing-module-progress-v1", JSON.stringify(yijingProgress));
+  }, [best, correctCount, moduleProgress, statsLoaded, yijingProgress]);
 
   useEffect(() => {
     if (activeProgress.level !== 3 || durationSeconds === 0 || sessionEnded || showAnswers) return;
@@ -420,10 +481,31 @@ export default function Home() {
     questionStartedAt.current = performance.now();
   }
 
+  function resetYijingRound(nextModule = yijingModuleId, nextLevel = yijingProgress[nextModule].level) {
+    clearTimer();
+    setYijingQuestion(makeYijingQuestion(nextModule, nextLevel));
+    setYijingSolved([]);
+    setYijingPicked(null);
+    setYijingFeedback(null);
+    setShowAnswers(false);
+    questionStartedAt.current = performance.now();
+  }
+
   function focusBoardOnMobile() {
     if (!window.matchMedia("(max-width: 800px)").matches) return;
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     window.requestAnimationFrame(() => boardRef.current?.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" }));
+  }
+
+  function selectDiscipline(nextDiscipline: Discipline) {
+    if (nextDiscipline === discipline) return;
+    setDiscipline(nextDiscipline);
+    setDurationSeconds(0);
+    setRemainingSeconds(0);
+    setSessionEnded(false);
+    if (nextDiscipline === "ziwei") resetRound(moduleId, lifeIndex, moduleProgress[moduleId].level);
+    else resetYijingRound(yijingModuleId, yijingProgress[yijingModuleId].level);
+    focusBoardOnMobile();
   }
 
   function selectModule(nextModule: ModuleId) {
@@ -432,6 +514,15 @@ export default function Home() {
     setRemainingSeconds(0);
     setSessionEnded(false);
     resetRound(nextModule, lifeIndex, moduleProgress[nextModule].level);
+    focusBoardOnMobile();
+  }
+
+  function selectYijingModule(nextModule: YijingModuleId) {
+    setYijingModuleId(nextModule);
+    setDurationSeconds(0);
+    setRemainingSeconds(0);
+    setSessionEnded(false);
+    resetYijingRound(nextModule, yijingProgress[nextModule].level);
     focusBoardOnMobile();
   }
 
@@ -445,7 +536,8 @@ export default function Home() {
     setDurationSeconds(seconds);
     setRemainingSeconds(seconds);
     setSessionEnded(false);
-    resetRound(moduleId, lifeIndex, activeProgress.level);
+    if (discipline === "ziwei") resetRound(moduleId, lifeIndex, activeProgress.level);
+    else resetYijingRound(yijingModuleId, activeProgress.level);
     focusBoardOnMobile();
   }
 
@@ -507,13 +599,57 @@ export default function Home() {
     }, roundComplete ? 520 : 360);
   }
 
+  function answerYijing(optionId: string) {
+    if (yijingFeedback || yijingSolved.includes(optionId) || sessionEnded || showAnswers) return;
+    const expected = yijingQuestion.targetIds.includes(optionId);
+    setYijingPicked(optionId);
+    setYijingFeedback(expected ? "correct" : "wrong");
+
+    if (!expected) {
+      setStreak(0);
+      pendingTimer.current = window.setTimeout(() => {
+        setYijingPicked(null);
+        setYijingFeedback(null);
+      }, 760);
+      return;
+    }
+
+    const nextSolved = [...yijingSolved, optionId];
+    const nextCorrect = correctCount + 1;
+    const nextStreak = streak + 1;
+    const elapsed = Math.max(0, performance.now() - questionStartedAt.current);
+    const nextModuleProgress = nextProgressAfterCorrect(activeProgress, elapsed);
+    setYijingSolved(nextSolved);
+    setCorrectCount(nextCorrect);
+    setStreak(nextStreak);
+    setBest((value) => Math.max(value, nextStreak));
+    setYijingProgress((current) => ({ ...current, [yijingModuleId]: nextModuleProgress }));
+
+    const roundComplete = nextSolved.length === yijingQuestion.targetIds.length;
+    pendingTimer.current = window.setTimeout(() => {
+      if (roundComplete) {
+        setYijingQuestion(makeYijingQuestion(yijingModuleId, nextModuleProgress.level));
+        setYijingSolved([]);
+        setShowAnswers(false);
+      }
+      setYijingPicked(null);
+      setYijingFeedback(null);
+      questionStartedAt.current = performance.now();
+    }, roundComplete ? 520 : 360);
+  }
+
   function clearProgress() {
     setStreak(0);
-    setModuleProgress((current) => ({ ...current, [moduleId]: { level: 1, correct: 0, recentMs: [] } }));
+    if (discipline === "ziwei") {
+      setModuleProgress((current) => ({ ...current, [moduleId]: { level: 1, correct: 0, recentMs: [] } }));
+    } else {
+      setYijingProgress((current) => ({ ...current, [yijingModuleId]: { level: 1, correct: 0, recentMs: [] } }));
+    }
     setDurationSeconds(0);
     setRemainingSeconds(0);
     setSessionEnded(false);
-    resetRound(moduleId, lifeIndex, 1);
+    if (discipline === "ziwei") resetRound(moduleId, lifeIndex, 1);
+    else resetYijingRound(yijingModuleId, 1);
   }
 
   const pickedReveal = picked === null ? "" : question.revealLabels[picked];
@@ -523,8 +659,8 @@ export default function Home() {
       <div className="paper-texture" aria-hidden="true" />
       <header className="topbar">
         <a className="brand" href="/" aria-label="返回阅天首页">
-          <span className="brand-seal">斗</span>
-          <span><strong>十二格记忆库</strong><small>紫微 · 地支 · 时辰</small></span>
+          <span className="brand-seal">{discipline === "ziwei" ? "斗" : "易"}</span>
+          <span><strong>术数记忆库</strong><small>紫微 · 易经 · 八卦</small></span>
         </a>
         <nav className="topbar-links" aria-label="训练场导航">
           <a href="/articles/">学习紫微</a>
@@ -538,29 +674,51 @@ export default function Home() {
       </header>
 
       <section className="intro-strip">
-        <div><p className="eyebrow">一张盘，串起所有固定对应</p><h1>选一个主题，<em>马上开练。</em></h1></div>
+        <div><p className="eyebrow">从固定对应开始，练到第一反应</p><h1>选一个体系，<em>马上开练。</em></h1></div>
       </section>
+
+      <nav className="discipline-switch" aria-label="选择训练体系">
+        <span>训练体系</span>
+        <button aria-pressed={discipline === "ziwei"} className={discipline === "ziwei" ? "active" : ""} type="button" onClick={() => selectDiscipline("ziwei")}>
+          <strong>紫微十二格</strong><small>{modules.length} 项</small>
+        </button>
+        <button aria-pressed={discipline === "yijing"} className={discipline === "yijing" ? "active" : ""} type="button" onClick={() => selectDiscipline("yijing")}>
+          <strong>易经八卦</strong><small>{yijingModules.length} 项</small>
+        </button>
+        <div className="learning-path">{discipline === "ziwei" ? "定位 → 对宫 → 三方四正" : "认形 → 记象 → 定位 → 合卦 → 变卦"}</div>
+      </nav>
 
       <section className="trainer-layout" id="trainer">
         <aside className="library-panel">
-          <div className="library-heading"><span>训练目录</span><strong>共 {modules.length} 项</strong></div>
-          {groupedModules.map(({ group, items }) => (
-            <div className="module-group" key={group}>
-              {group !== "基础对应" && <h2>{group}</h2>}
-              <div className="module-list">
-                {items.map((item) => (
-                  <button className={moduleId === item.id ? "active" : ""} key={item.id} type="button" onClick={() => selectModule(item.id)}>
-                    <span>{item.mark}</span><strong>{item.label}</strong><em>{moduleProgress[item.id].level}</em>
-                  </button>
-                ))}
+          <div className="library-heading"><span>{discipline === "ziwei" ? "训练目录" : "易经练习"}</span><strong>共 {discipline === "ziwei" ? modules.length : yijingModules.length} 项</strong></div>
+          {discipline === "ziwei" ? groupedModules.map(({ group, items }) => (
+              <div className="module-group" key={group}>
+                {group !== "基础对应" && <h2>{group}</h2>}
+                <div className="module-list">
+                  {items.map((item) => (
+                    <button className={moduleId === item.id ? "active" : ""} key={item.id} type="button" onClick={() => selectModule(item.id)}>
+                      <span>{item.mark}</span><strong>{item.label}</strong><em>{moduleProgress[item.id].level}</em>
+                    </button>
+                  ))}
+                </div>
               </div>
-            </div>
-          ))}
+            )) : groupedYijingModules.map(({ group, items }) => (
+              <div className="module-group" key={group}>
+                <h2>{group}</h2>
+                <div className="module-list">
+                  {items.map((item) => (
+                    <button className={yijingModuleId === item.id ? "active" : ""} key={item.id} type="button" onClick={() => selectYijingModule(item.id)}>
+                      <span>{item.mark}</span><strong>{item.label}</strong><em>{yijingProgress[item.id].level}</em>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            ))}
 
           <div className="active-module-card">
             <span>当前训练</span>
-            <strong>{activeModule.label}</strong>
-            <p>{activeModule.description}</p>
+            <strong>{activeLabel}</strong>
+            <p>{activeDescription}</p>
           </div>
 
           {isPalaceModule && (
@@ -573,7 +731,7 @@ export default function Home() {
           )}
 
           <div className="level-card">
-            <div><span>当前主题难度</span><strong>第 {activeProgress.level} 关 · {levelNames[activeProgress.level]}</strong></div>
+            <div><span>当前主题难度</span><strong>第 {activeProgress.level} 关 · {activeLevelName}</strong></div>
             <div className="level-track"><i style={{ width: `${levelProgress}%` }} /></div>
             {levelTarget && speedTarget ? (
               <small>
@@ -598,67 +756,134 @@ export default function Home() {
         </aside>
 
         <section className="board-stage" ref={boardRef} aria-live="polite">
-          <div className="grid-chart">
-            <div className="center-prompt">
-              {sessionEnded ? (
-                <>
-                  <span>第 3 关 · 本轮结束</span>
-                  <h2>练习完成</h2>
-                  <p>{activeModule.label}已完成本次限时训练，成绩已经保存在本机。</p>
-                  <button className="restart-session" type="button" onClick={() => startPractice(durationSeconds)}>再练一轮</button>
-                </>
-              ) : (
-                <>
-                  <span>第 {activeProgress.level} 关</span>
-                  <h2>{prompt}</h2>
-                  <p>{question.hint}</p>
-                  {activeProgress.level === 3 && durationSeconds > 0 && <div className="countdown">本轮剩余 <b>{remainingLabel}</b></div>}
-                  {question.ordered && question.targets.length > 1 && (
-                    <div className="target-sequence">
-                      {question.targetLabels.map((label, index) => <b className={index < solved.length ? "done" : index === solved.length ? "current" : ""} key={`${label}-${index}`}>{label}</b>)}
-                    </div>
+          {discipline === "ziwei" ? (
+            <>
+              <div className="grid-chart">
+                <div className="center-prompt">
+                  {sessionEnded ? (
+                    <>
+                      <span>第 3 关 · 本轮结束</span>
+                      <h2>练习完成</h2>
+                      <p>{activeLabel}已完成本次限时训练，成绩已经保存在本机。</p>
+                      <button className="restart-session" type="button" onClick={() => startPractice(durationSeconds)}>再练一轮</button>
+                    </>
+                  ) : (
+                    <>
+                      <span>第 {activeProgress.level} 关</span>
+                      <h2>{prompt}</h2>
+                      <p>{question.hint}</p>
+                      {activeProgress.level === 3 && durationSeconds > 0 && <div className="countdown">本轮剩余 <b>{remainingLabel}</b></div>}
+                      {question.ordered && question.targets.length > 1 && (
+                        <div className="target-sequence">
+                          {question.targetLabels.map((label, index) => <b className={index < solved.length ? "done" : index === solved.length ? "current" : ""} key={`${label}-${index}`}>{label}</b>)}
+                        </div>
+                      )}
+                      {!question.ordered && question.targets.length > 1 && <div className="target-progress">已找到 <b>{solved.length}</b> / {question.targets.length}</div>}
+                      <button className={`answer-guide-button ${showAnswers ? "active" : ""}`} type="button" disabled={Boolean(feedback)} onClick={toggleAnswers}>
+                        {showAnswers ? "收起答案，继续作答" : "查看全部答案"}
+                      </button>
+                      <div className={`instant-feedback ${feedback ?? "idle"}`}>
+                        {feedback === "correct" ? `正确 · ${pickedReveal}` : feedback === "wrong" ? `这里是「${pickedReveal}」，再试一次` : showAnswers ? "答案已展开，收起后重新计时" : "点击十二格作答，完成后自动换题"}
+                      </div>
+                    </>
                   )}
-                  {!question.ordered && question.targets.length > 1 && <div className="target-progress">已找到 <b>{solved.length}</b> / {question.targets.length}</div>}
-                  <button className={`answer-guide-button ${showAnswers ? "active" : ""}`} type="button" disabled={Boolean(feedback)} onClick={toggleAnswers}>
-                    {showAnswers ? "收起答案，继续作答" : "查看全部答案"}
-                  </button>
-                  <div className={`instant-feedback ${feedback ?? "idle"}`}>
-                    {feedback === "correct" ? `正确 · ${pickedReveal}` : feedback === "wrong" ? `这里是「${pickedReveal}」，再试一次` : showAnswers ? "答案已展开，收起后重新计时" : "点击十二格作答，完成后自动换题"}
-                  </div>
-                </>
-              )}
-            </div>
+                </div>
 
-            {branches.map((branch, index) => {
-              const slot = gridSlots[index];
-              const sourceLabel = question.sourceLabels[index];
-              const isSolved = solved.includes(index);
-              const isPicked = picked === index;
-              const isWrong = feedback === "wrong" && isPicked;
-              const isInactive = question.inactiveCells?.includes(index) ?? false;
-              const isAnswerKey = showAnswers && question.targets.includes(index);
-              const reveal = showAnswers || isSolved || isPicked;
-              const visibleLabel = reveal ? question.revealLabels[index] : sourceLabel || question.cellLabels[index];
-              return (
-                <button
-                  aria-label={`盘面第 ${index + 1} 格${visibleLabel ? `，${visibleLabel}` : "，空格"}`}
-                  className={`grid-cell ${visibleLabel ? "has-label" : "is-blank"} ${sourceLabel ? "is-source" : ""} ${isInactive ? "is-inactive" : ""} ${showAnswers ? "is-guide" : ""} ${isAnswerKey ? "is-answer-key" : ""} ${isSolved ? "is-solved" : ""} ${isWrong ? "is-wrong" : ""}`}
-                  key={branch}
-                  style={{ gridRow: slot.row, gridColumn: slot.column }}
-                  type="button"
-                  disabled={sessionEnded || isInactive}
-                  onClick={() => answer(index)}
-                >
-                  {visibleLabel ? <strong>{visibleLabel}</strong> : <span aria-hidden="true" />}
-                  {isWrong && <small>你点中了这里</small>}
-                  {isSolved && !isWrong && <small>正确</small>}
-                  {isAnswerKey && !isSolved && <small>本题答案</small>}
-                  {isPicked && feedback && <span className={`answer-burst ${feedback}`} aria-hidden="true">{feedback === "correct" ? "✓" : "×"}</span>}
-                </button>
-              );
-            })}
-          </div>
-          {boardNote && <div className="board-note"><span />{boardNote}</div>}
+                {branches.map((branch, index) => {
+                  const slot = gridSlots[index];
+                  const sourceLabel = question.sourceLabels[index];
+                  const isSolved = solved.includes(index);
+                  const isPicked = picked === index;
+                  const isWrong = feedback === "wrong" && isPicked;
+                  const isInactive = question.inactiveCells?.includes(index) ?? false;
+                  const isAnswerKey = showAnswers && question.targets.includes(index);
+                  const reveal = showAnswers || isSolved || isPicked;
+                  const visibleLabel = reveal ? question.revealLabels[index] : sourceLabel || question.cellLabels[index];
+                  return (
+                    <button
+                      aria-label={`盘面第 ${index + 1} 格${visibleLabel ? `，${visibleLabel}` : "，空格"}`}
+                      className={`grid-cell ${visibleLabel ? "has-label" : "is-blank"} ${sourceLabel ? "is-source" : ""} ${isInactive ? "is-inactive" : ""} ${showAnswers ? "is-guide" : ""} ${isAnswerKey ? "is-answer-key" : ""} ${isSolved ? "is-solved" : ""} ${isWrong ? "is-wrong" : ""}`}
+                      key={branch}
+                      style={{ gridRow: slot.row, gridColumn: slot.column }}
+                      type="button"
+                      disabled={sessionEnded || isInactive}
+                      onClick={() => answer(index)}
+                    >
+                      {visibleLabel ? <strong>{visibleLabel}</strong> : <span aria-hidden="true" />}
+                      {isWrong && <small>你点中了这里</small>}
+                      {isSolved && !isWrong && <small>正确</small>}
+                      {isAnswerKey && !isSolved && <small>本题答案</small>}
+                      {isPicked && feedback && <span className={`answer-burst ${feedback}`} aria-hidden="true">{feedback === "correct" ? "✓" : "×"}</span>}
+                    </button>
+                  );
+                })}
+              </div>
+              {boardNote && <div className="board-note"><span />{boardNote}</div>}
+            </>
+          ) : (
+            <>
+              <div className="yijing-question-card">
+                {sessionEnded ? (
+                  <div className="yijing-finished">
+                    <span>第 3 关 · 本轮结束</span>
+                    <h2>练习完成</h2>
+                    <p>{activeLabel}已完成本次限时训练，成绩已经保存在本机。</p>
+                    <button className="restart-session" type="button" onClick={() => startPractice(durationSeconds)}>再练一轮</button>
+                  </div>
+                ) : (
+                  <>
+                    <div className="yijing-question-meta"><b>第 {activeProgress.level} 关 · {activeLevelName}</b><span>{activeLabel}</span></div>
+                    <div className="yijing-prompt">
+                      <h2>{yijingQuestion.prompt}</h2>
+                      <p>{yijingQuestion.hint}</p>
+                      {activeProgress.level === 3 && durationSeconds > 0 && <div className="countdown">本轮剩余 <b>{remainingLabel}</b></div>}
+                    </div>
+
+                    <div className="yijing-visual">
+                      {yijingQuestion.visual.kind === "trigram" ? (
+                        <div><TrigramLines index={yijingQuestion.visual.trigramIndex} /><small>从下往上读爻</small></div>
+                      ) : (
+                        <div className="concept-visual"><span>{yijingQuestion.visual.kicker}</span><strong>{yijingQuestion.visual.text}</strong></div>
+                      )}
+                    </div>
+
+                    {yijingQuestion.targetIds.length > 1 && <div className="target-progress">已找到 <b>{yijingSolved.length}</b> / {yijingQuestion.targetIds.length}</div>}
+                    <div className="yijing-options">
+                      {yijingQuestion.options.map((option) => {
+                        const isSolved = yijingSolved.includes(option.id);
+                        const isPicked = yijingPicked === option.id;
+                        const isWrong = yijingFeedback === "wrong" && isPicked;
+                        const isAnswerKey = showAnswers && yijingQuestion.targetIds.includes(option.id);
+                        const reveal = showAnswers || isSolved || isPicked;
+                        return (
+                          <button
+                            aria-label={reveal ? option.reveal : option.label}
+                            className={`${isSolved ? "is-solved" : ""} ${isWrong ? "is-wrong" : ""} ${isAnswerKey ? "is-answer-key" : ""}`}
+                            disabled={sessionEnded}
+                            key={option.id}
+                            type="button"
+                            onClick={() => answerYijing(option.id)}
+                          >
+                            {option.trigramIndex !== undefined && <TrigramLines compact index={option.trigramIndex} />}
+                            <strong>{reveal && option.trigramIndex !== undefined ? trigrams[option.trigramIndex].name : option.label}</strong>
+                            {(reveal ? option.reveal : option.subLabel) && <small>{reveal ? option.reveal : option.subLabel}</small>}
+                          </button>
+                        );
+                      })}
+                    </div>
+
+                    <button className={`answer-guide-button ${showAnswers ? "active" : ""}`} type="button" disabled={Boolean(yijingFeedback)} onClick={toggleAnswers}>
+                      {showAnswers ? "收起答案，继续作答" : "查看全部答案"}
+                    </button>
+                    <div className={`instant-feedback ${yijingFeedback ?? "idle"}`}>
+                      {yijingFeedback === "correct" ? `正确 · ${yijingQuestion.answerDetail}` : yijingFeedback === "wrong" ? `这里是「${yijingPickedReveal}」，再试一次` : showAnswers ? "答案已展开，收起后重新计时" : "选择答案，完成后自动换题"}
+                    </div>
+                  </>
+                )}
+              </div>
+              <div className="board-note"><span />三爻均按初爻到上爻理解；先练确定对应，再进入六十四卦与动爻。</div>
+            </>
+          )}
         </section>
       </section>
     </main>
