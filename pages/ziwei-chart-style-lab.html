@@ -7,7 +7,7 @@
   <meta name="googlebot" content="noindex,nofollow,noarchive">
   <title>紫微命盘样式实验页｜阅天AI</title>
   <link rel="icon" href="../images/wentian-prototype-assets/wentian-brand-logo-ai-gold-v1.webp" type="image/webp">
-  <link rel="stylesheet" href="../css/ziwei-chart-style-lab.css?v=20260824-inner-frame-v1">
+  <link rel="stylesheet" href="../css/ziwei-chart-style-lab.css?v=20260824-mutagen-labels-v1">
 </head>
 <body class="chart-style-lab">
   <main class="lab-shell">
@@ -62,7 +62,10 @@
         </button>
 
         <button class="palace-cell p-6 is-active" type="button" data-palace="命宫" data-branch="己未" data-stars="太阳得、太阴不" aria-pressed="true">
-          <span class="major-stars"><i class="mutagen mutagen-quan">权</i> 太阳得<br><i class="mutagen mutagen-ke">科</i> 太阴不</span>
+          <span class="major-stars major-stars--with-mutagen">
+            <span class="major-star-row"><span>太阳得</span><i class="mutagen mutagen-label mutagen-quan">化权</i></span>
+            <span class="major-star-row"><span>太阴不</span><i class="mutagen mutagen-label mutagen-ke">化科</i></span>
+          </span>
           <span class="minor-stars">左辅<br>右弼<br>天钺</span>
           <span class="stem-age">己未<br>6–15</span>
           <span class="support-stars">衰<br>青龙</span>
@@ -90,7 +93,9 @@
         </section>
 
         <button class="palace-cell p-7" type="button" data-palace="父母宫" data-branch="庚申" data-stars="贪狼平、铃星陷" aria-pressed="false">
-          <span class="major-stars"><i class="mutagen mutagen-lu">禄</i> 贪狼平</span>
+          <span class="major-stars major-stars--with-mutagen">
+            <span class="major-star-row"><span>贪狼平</span><i class="mutagen mutagen-label mutagen-lu">化禄</i></span>
+          </span>
           <span class="minor-stars">铃星陷<br>三台<br>龙池</span>
           <span class="stem-age">庚申<br>16–25</span>
           <span class="support-stars">病<br>小耗</span>
@@ -98,7 +103,10 @@
         </button>
 
         <button class="palace-cell p-8" type="button" data-palace="福德宫" data-branch="辛酉" data-stars="天机旺、巨门庙" aria-pressed="false">
-          <span class="major-stars"><i class="mutagen mutagen-ji">忌</i> 天机旺<br>巨门庙</span>
+          <span class="major-stars major-stars--with-mutagen">
+            <span class="major-star-row"><span>天机旺</span><i class="mutagen mutagen-label mutagen-ji">化忌</i></span>
+            <span class="major-star-row"><span>巨门庙</span></span>
+          </span>
           <span class="minor-stars">地劫<br>咸池<br>月德</span>
           <span class="stem-age">辛酉<br>26–35</span>
           <span class="support-stars">死<br>将军</span>

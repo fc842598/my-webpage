@@ -381,6 +381,24 @@ button {
   font-weight: 900;
 }
 
+.major-star-row {
+  display: flex;
+  align-items: baseline;
+  width: max-content;
+  white-space: nowrap;
+}
+
+.mutagen-label {
+  margin-left: 1px;
+  font-size: .62em;
+  line-height: 1;
+  letter-spacing: -.08em;
+}
+
+.p-7 .minor-stars {
+  top: 25px;
+}
+
 .mutagen-lu { color: var(--lab-lu); }
 .mutagen-quan { color: var(--lab-quan); }
 .mutagen-ke { color: var(--lab-ke); }
@@ -548,6 +566,10 @@ button {
     left: 5px;
     right: 35px;
     font-size: 12px;
+  }
+
+  .palace-cell .major-stars--with-mutagen {
+    font-size: 11px;
   }
 
   .palace-cell .minor-stars {
