@@ -2,6 +2,9 @@
 
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import {
+  baguaPositions,
+  getBaguaTrigramIndex,
+  hexagramLines,
   initialYijingQuestion,
   makeYijingQuestion,
   trigrams,
@@ -338,6 +341,23 @@ function TrigramLines({ index, compact = false }: { index: number; compact?: boo
   );
 }
 
+function HexagramLines({ upperIndex, lowerIndex, movingLine }: { upperIndex: number; lowerIndex: number; movingLine?: number }) {
+  const lines = hexagramLines(upperIndex, lowerIndex).map((line, bottomIndex) => ({ line, bottomIndex })).reverse();
+  return (
+    <div className="hexagram-visual" aria-label={`上${trigrams[upperIndex].name}下${trigrams[lowerIndex].name}`}>
+      <span className="hexagram-lines">
+        {lines.map(({ line, bottomIndex }) => (
+          <i className={`${line ? "yang" : "yin"} ${movingLine === bottomIndex ? "moving" : ""}`} key={bottomIndex} aria-hidden="true">
+            {!line && <><b /><b /></>}
+            {movingLine === bottomIndex && <em>动</em>}
+          </i>
+        ))}
+      </span>
+      <small>上{trigrams[upperIndex].name}（{trigrams[upperIndex].nature}） · 下{trigrams[lowerIndex].name}（{trigrams[lowerIndex].nature}）</small>
+    </div>
+  );
+}
+
 export default function Home() {
   const [discipline, setDiscipline] = useState<Discipline>("ziwei");
   const [moduleId, setModuleId] = useState<ModuleId>("position");
@@ -369,7 +389,7 @@ export default function Home() {
   const activeYijingModule = yijingModules.find((item) => item.id === yijingModuleId) ?? yijingModules[0];
   const activeProgress = discipline === "ziwei" ? moduleProgress[moduleId] : yijingProgress[yijingModuleId];
   const groupedModules = useMemo(() => ["基础对应", "地支关系", "紫微宫位"].map((group) => ({ group, items: modules.filter((item) => item.group === group) })), []);
-  const groupedYijingModules = useMemo(() => ["八卦基础"].map((group) => ({ group, items: yijingModules.filter((item) => item.group === group) })), []);
+  const groupedYijingModules = useMemo(() => ["八卦基础", "方位次序", "六十四卦", "爻变进阶"].map((group) => ({ group, items: yijingModules.filter((item) => item.group === group) })), []);
   const activeLabel = discipline === "ziwei" ? activeModule.label : activeYijingModule.label;
   const activeDescription = discipline === "ziwei" ? activeModule.description : activeYijingModule.description;
   const activeLevelName = discipline === "ziwei" ? levelNames[activeProgress.level] : yijingLevelNames[activeProgress.level];
@@ -389,6 +409,7 @@ export default function Home() {
   const remainingLabel = `${String(Math.floor(remainingSeconds / 60)).padStart(2, "0")}:${String(remainingSeconds % 60).padStart(2, "0")}`;
   const yijingPickedOption = yijingQuestion.options.find((item) => item.id === yijingPicked);
   const yijingPickedReveal = yijingPickedOption?.reveal ?? "";
+  const baguaArrangement = yijingQuestion.visual.kind === "bagua" ? yijingQuestion.visual.arrangement : "xiantian";
 
   useEffect(() => {
     const savedCorrect = Number(window.localStorage.getItem("ziwei-correct-count") ?? 0);
@@ -839,38 +860,73 @@ export default function Home() {
                       {activeProgress.level === 3 && durationSeconds > 0 && <div className="countdown">本轮剩余 <b>{remainingLabel}</b></div>}
                     </div>
 
-                    <div className="yijing-visual">
-                      {yijingQuestion.visual.kind === "trigram" ? (
+                    <div className={`yijing-visual ${yijingQuestion.visual.kind}`}>
+                      {yijingQuestion.visual.kind === "trigram" && (
                         <div><TrigramLines index={yijingQuestion.visual.trigramIndex} /><small>从下往上读爻</small></div>
-                      ) : (
+                      )}
+                      {yijingQuestion.visual.kind === "concept" && (
                         <div className="concept-visual"><span>{yijingQuestion.visual.kicker}</span><strong>{yijingQuestion.visual.text}</strong></div>
+                      )}
+                      {yijingQuestion.visual.kind === "hexagram" && (
+                        <HexagramLines lowerIndex={yijingQuestion.visual.lowerIndex} movingLine={yijingQuestion.visual.movingLine} upperIndex={yijingQuestion.visual.upperIndex} />
+                      )}
+                      {yijingQuestion.visual.kind === "bagua" && (
+                        <div className="bagua-board">
+                          <div className="bagua-center"><strong>{yijingQuestion.visual.title}</strong><small>北上南下</small></div>
+                          {baguaPositions.map((position) => {
+                            const optionId = `direction-${position.direction}`;
+                            const trigramIndex = getBaguaTrigramIndex(baguaArrangement, position.direction);
+                            const isSolved = yijingSolved.includes(optionId);
+                            const isPicked = yijingPicked === optionId;
+                            const isWrong = yijingFeedback === "wrong" && isPicked;
+                            const isAnswerKey = showAnswers && yijingQuestion.targetIds.includes(optionId);
+                            const reveal = showAnswers || isSolved || isPicked;
+                            return (
+                              <button
+                                aria-label={reveal ? `${position.direction}，${trigrams[trigramIndex].name}卦` : position.direction}
+                                className={`${isSolved ? "is-solved" : ""} ${isWrong ? "is-wrong" : ""} ${isAnswerKey ? "is-answer-key" : ""}`}
+                                disabled={sessionEnded || showAnswers}
+                                key={position.direction}
+                                style={{ gridRow: position.row, gridColumn: position.column }}
+                                type="button"
+                                onClick={() => answerYijing(optionId)}
+                              >
+                                <span>{position.direction}</span>
+                                {reveal && <strong>{trigrams[trigramIndex].name}</strong>}
+                                {reveal && <small>{trigrams[trigramIndex].nature}</small>}
+                              </button>
+                            );
+                          })}
+                        </div>
                       )}
                     </div>
 
                     {yijingQuestion.targetIds.length > 1 && <div className="target-progress">已找到 <b>{yijingSolved.length}</b> / {yijingQuestion.targetIds.length}</div>}
-                    <div className="yijing-options">
-                      {yijingQuestion.options.map((option) => {
-                        const isSolved = yijingSolved.includes(option.id);
-                        const isPicked = yijingPicked === option.id;
-                        const isWrong = yijingFeedback === "wrong" && isPicked;
-                        const isAnswerKey = showAnswers && yijingQuestion.targetIds.includes(option.id);
-                        const reveal = showAnswers || isSolved || isPicked;
-                        return (
-                          <button
-                            aria-label={reveal ? option.reveal : option.label}
-                            className={`${isSolved ? "is-solved" : ""} ${isWrong ? "is-wrong" : ""} ${isAnswerKey ? "is-answer-key" : ""}`}
-                            disabled={sessionEnded}
-                            key={option.id}
-                            type="button"
-                            onClick={() => answerYijing(option.id)}
-                          >
-                            {option.trigramIndex !== undefined && <TrigramLines compact index={option.trigramIndex} />}
-                            <strong>{reveal && option.trigramIndex !== undefined ? trigrams[option.trigramIndex].name : option.label}</strong>
-                            {(reveal ? option.reveal : option.subLabel) && <small>{reveal ? option.reveal : option.subLabel}</small>}
-                          </button>
-                        );
-                      })}
-                    </div>
+                    {yijingQuestion.visual.kind !== "bagua" && (
+                      <div className="yijing-options">
+                        {yijingQuestion.options.map((option) => {
+                          const isSolved = yijingSolved.includes(option.id);
+                          const isPicked = yijingPicked === option.id;
+                          const isWrong = yijingFeedback === "wrong" && isPicked;
+                          const isAnswerKey = showAnswers && yijingQuestion.targetIds.includes(option.id);
+                          const reveal = showAnswers || isSolved || isPicked;
+                          return (
+                            <button
+                              aria-label={reveal ? option.reveal : option.label}
+                              className={`${isSolved ? "is-solved" : ""} ${isWrong ? "is-wrong" : ""} ${isAnswerKey ? "is-answer-key" : ""}`}
+                              disabled={sessionEnded || showAnswers}
+                              key={option.id}
+                              type="button"
+                              onClick={() => answerYijing(option.id)}
+                            >
+                              {option.trigramIndex !== undefined && <TrigramLines compact index={option.trigramIndex} />}
+                              <strong>{reveal && option.trigramIndex !== undefined ? trigrams[option.trigramIndex].name : option.label}</strong>
+                              {(reveal ? option.reveal : option.subLabel) && <small>{reveal ? option.reveal : option.subLabel}</small>}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    )}
 
                     <button className={`answer-guide-button ${showAnswers ? "active" : ""}`} type="button" disabled={Boolean(yijingFeedback)} onClick={toggleAnswers}>
                       {showAnswers ? "收起答案，继续作答" : "查看全部答案"}
@@ -881,7 +937,7 @@ export default function Home() {
                   </>
                 )}
               </div>
-              <div className="board-note"><span />三爻均按初爻到上爻理解；先练确定对应，再进入六十四卦与动爻。</div>
+              <div className="board-note"><span />{yijingQuestion.visual.kind === "bagua" ? "方位图采用现代地图方向：北在上，南在下。" : yijingQuestion.visual.kind === "hexagram" ? "六爻从下往上数：下三爻为下卦，上三爻为上卦。" : "三爻均按初爻到上爻理解；先练确定对应，再进入六十四卦与动爻。"}</div>
             </>
           )}
         </section>
