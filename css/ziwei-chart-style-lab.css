@@ -107,6 +107,7 @@ button {
 
 .chart-section {
   overflow: visible;
+  margin-inline: -8px;
   padding: 0;
   border: 0;
   border-radius: 0;
@@ -207,7 +208,7 @@ button {
   top: 9px;
   left: 7px;
   right: 41px;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 800;
   line-height: 1.18;
   letter-spacing: -.025em;
@@ -390,7 +391,7 @@ button {
 
 .mutagen-label {
   margin-left: 1px;
-  font-size: .62em;
+  font-size: .78em;
   line-height: 1;
   letter-spacing: -.08em;
 }
@@ -543,6 +544,10 @@ button {
     padding-left: 7px;
   }
 
+  .chart-section {
+    margin-inline: -4px;
+  }
+
   .lab-header {
     gap: 5px;
   }
@@ -565,10 +570,6 @@ button {
   .palace-cell .major-stars {
     left: 5px;
     right: 35px;
-    font-size: 12px;
-  }
-
-  .palace-cell .major-stars--with-mutagen {
     font-size: 11px;
   }
 
