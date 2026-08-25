@@ -92,6 +92,29 @@ button {
   color: var(--lab-muted);
 }
 
+.intro-replay {
+  cursor: pointer;
+  transition: color 180ms ease, border-color 180ms ease, background-color 180ms ease, transform 180ms ease;
+}
+
+.intro-replay:hover {
+  border-color: #bd9560;
+  background: rgba(255, 250, 239, .96);
+  color: #8d5728;
+  transform: translateY(-1px);
+}
+
+.intro-replay:disabled {
+  cursor: wait;
+  opacity: .58;
+  transform: none;
+}
+
+.intro-replay:focus-visible {
+  outline: 3px solid rgba(154, 111, 52, .35);
+  outline-offset: 2px;
+}
+
 .lab-heading {
   min-width: 120px;
   text-align: center;
@@ -125,6 +148,19 @@ button {
   border: 1px solid #aca69b;
   border-radius: 17px;
   background: var(--lab-paper);
+}
+
+.chart-board.is-intro-opening {
+  box-shadow: 0 0 0 1px rgba(154, 111, 52, .08), 0 18px 38px rgba(83, 54, 24, .12);
+}
+
+.chart-board.is-intro-opening .palace-cell {
+  animation: chart-palace-open 520ms cubic-bezier(.2, .8, .25, 1) backwards;
+  animation-delay: calc(var(--intro-order, 0) * 24ms);
+}
+
+.chart-board.is-intro-opening .chart-center {
+  animation: chart-center-open 620ms cubic-bezier(.2, .8, .25, 1) 160ms backwards;
 }
 
 .palace-cell {
@@ -191,6 +227,96 @@ button {
 .palace-cell > *,
 .chart-center > * {
   z-index: 5;
+}
+
+.intro-stamp-target {
+  display: inline-block;
+  transform-origin: center;
+}
+
+.intro-stamp-target.is-intro-hidden {
+  opacity: 0;
+}
+
+.intro-stamp-target.is-stamp-landed {
+  animation: stamp-target-land 420ms cubic-bezier(.2, .84, .26, 1);
+}
+
+.chart-intro-layer {
+  position: absolute;
+  z-index: 30;
+  inset: 0;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.chart-stamp-flight {
+  position: absolute;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 56px;
+  min-height: 42px;
+  padding: 7px 10px;
+  border: 3px double currentColor;
+  border-radius: 7px;
+  background:
+    linear-gradient(145deg, rgba(255, 253, 245, .96), rgba(242, 226, 196, .96));
+  color: #983f2e;
+  font-family: "STKaiti", "KaiTi", "FangSong", "Songti SC", serif;
+  font-size: 22px;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: .08em;
+  text-indent: .08em;
+  white-space: nowrap;
+  transform-origin: center;
+  will-change: transform, opacity, filter;
+  box-shadow:
+    inset 0 0 0 2px rgba(255, 249, 232, .78),
+    0 12px 24px rgba(86, 43, 21, .26),
+    0 3px 0 rgba(91, 45, 24, .2);
+}
+
+.chart-stamp-flight--body {
+  color: #9a702c;
+}
+
+.chart-stamp-flight--lu,
+.chart-stamp-flight--quan,
+.chart-stamp-flight--ke,
+.chart-stamp-flight--ji {
+  min-width: 48px;
+  min-height: 36px;
+  padding: 6px 8px;
+  font-size: 18px;
+}
+
+.chart-stamp-flight--lu { color: var(--lab-lu); }
+.chart-stamp-flight--quan { color: var(--lab-quan); }
+.chart-stamp-flight--ke { color: var(--lab-ke); }
+.chart-stamp-flight--ji { color: var(--lab-ji); }
+
+.chart-impact-ring {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  border: 2px solid currentColor;
+  border-radius: 50%;
+  color: #a64f36;
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(.3);
+  animation: stamp-impact-ring 460ms ease-out forwards;
+}
+
+.chart-impact-ring--body { color: #a67b30; }
+.chart-impact-ring--lu { color: var(--lab-lu); }
+.chart-impact-ring--quan { color: var(--lab-quan); }
+.chart-impact-ring--ke { color: var(--lab-ke); }
+.chart-impact-ring--ji { color: var(--lab-ji); }
+
+.palace-cell.is-stamp-impact {
+  animation: palace-stamp-impact 360ms cubic-bezier(.2, .8, .25, 1);
 }
 
 .triad-overlay {
@@ -602,6 +728,35 @@ button {
   100% { transform: scale(1); }
 }
 
+@keyframes chart-palace-open {
+  0% { opacity: .18; transform: scale(.965); filter: saturate(.55) brightness(1.08); }
+  68% { opacity: 1; transform: scale(1.008); filter: saturate(.94) brightness(1.02); }
+  100% { opacity: 1; transform: scale(1); filter: none; }
+}
+
+@keyframes chart-center-open {
+  0% { opacity: 0; filter: blur(4px); }
+  100% { opacity: 1; filter: none; }
+}
+
+@keyframes stamp-target-land {
+  0% { opacity: .22; transform: scale(1.42) rotate(-3deg); filter: blur(1px); }
+  46% { opacity: 1; transform: scale(.9) rotate(1deg); filter: none; }
+  100% { opacity: 1; transform: scale(1) rotate(0); filter: none; }
+}
+
+@keyframes stamp-impact-ring {
+  0% { opacity: .68; transform: translate(-50%, -50%) scale(.3); }
+  72% { opacity: .34; }
+  100% { opacity: 0; transform: translate(-50%, -50%) scale(2.45); }
+}
+
+@keyframes palace-stamp-impact {
+  0% { filter: brightness(1); }
+  34% { filter: brightness(1.08) saturate(1.18); box-shadow: inset 0 0 24px rgba(173, 116, 50, .22); }
+  100% { filter: none; }
+}
+
 @keyframes flow-badge-arrive {
   0% { opacity: 0; transform: translateY(4px) scale(.9); }
   64% { opacity: 1; transform: translateY(-1px) scale(1.03); }
@@ -641,5 +796,13 @@ button {
   .palace-cell .flow-age--primary::before {
     animation: none !important;
     transform: none;
+  }
+
+  .chart-board.is-intro-opening .palace-cell,
+  .chart-board.is-intro-opening .chart-center,
+  .intro-stamp-target.is-stamp-landed,
+  .palace-cell.is-stamp-impact,
+  .chart-impact-ring {
+    animation: none !important;
   }
 }
