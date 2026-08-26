@@ -21,7 +21,7 @@ Recovery-Mode: false
 |---|---|---|---|---|
 | 01 | 已发布 2026-08-26 09:34 https://yuetianai.com/articles/ziwei-liunian-qianyi-dongle-meibanjiia.html / https://yuetianai.com/articles/en/ziwei-liunian-qianyi-dongle-meibanjiia.html | ziwei-liunian-qianyi-dongle-meibanjiia | 紫微斗数流年迁移宫动了却没搬家：先分出差、换岗还是换平台 | 大限流年 |
 | 02 | 已发布 2026-08-26 10:58 https://yuetianai.com/articles/ziwei-tianzhai-caixing-jicheng-haishi-ziji-zhiye-20260802.html / https://yuetianai.com/articles/en/ziwei-tianzhai-caixing-jicheng-haishi-ziji-zhiye-20260802.html | ziwei-tianzhai-caixing-jicheng-haishi-ziji-zhiye-20260802 | 紫微斗数田宅宫有财星，是继承房产还是自己置业：先看来源再看能不能守住 | 宫位组合 |
-| 03 | 待发布 | ziwei-minggong-shengong-bukai-xianhou-shunxu | 紫微斗数命宫和身宫分开时，先天性格与后天发力点怎么排顺序 | 宫位组合 |
+| 03 | 已发布 2026-08-26 12:21 https://yuetianai.com/articles/ziwei-minggong-shengong-bukai-xianhou-shunxu.html / https://yuetianai.com/articles/en/ziwei-minggong-shengong-bukai-xianhou-shunxu.html | ziwei-minggong-shengong-bukai-xianhou-shunxu | 紫微斗数命宫和身宫分开时，先天性格与后天发力点怎么排顺序 | 宫位组合 |
 | 04 | 待发布 | ziwei-liunian-tianzhai-xianying-zuyue-haishi-zhuangxiu | 紫微斗数流年走田宅宫，先应租约还是装修：别把住处变化都当成买房 | 大限流年 |
 | 05 | 待发布 | ziwei-liunian-fumugong-xianying-shenhe-haishi-zhaogu | 紫微斗数流年走父母宫，先应审核还是照顾：上级和长辈为什么会同年加压 | 大限流年 |
 | 06 | 待发布 | ziwei-konggong-jieduigong-buneng-zhaochao | 紫微斗数空宫借对宫，为什么不能照抄答案：味道、资源和结果要分三层 | 看盘方法 |
