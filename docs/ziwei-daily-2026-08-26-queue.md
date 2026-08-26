@@ -28,4 +28,4 @@ Recovery-Mode: false
 | 07 | 待发布 | ziwei-duigong-he-sanfang-shui-xian-ruchang | 紫微斗数对宫和三方四正谁先入场：先看主事轴线还是承接路径 | 看盘方法 |
 | 08 | 待发布 | ziwei-huake-huaji-xianbao-natiao-xian | 紫微斗数化科化忌同盘时，先保哪条线：名声、收费和卡点不要混读 | 四化细读 |
 | 09 | 已发布 2026-08-26 21:07 https://yuetianai.com/articles/ziwei-kequanlu-fensan-weishenme-pa-duandian.html / https://yuetianai.com/articles/en/ziwei-kequanlu-fensan-weishenme-pa-duandian.html | ziwei-kequanlu-fensan-weishenme-pa-duandian | 紫微斗数科权禄分散时，为什么更怕承接断点：别只看同宫漂亮 | 四化细读 |
-| 10 | 待发布 | ziwei-huotan-ge-chayibu-bushi-chengju | 紫微斗数火贪格差一步会怎样：有冲劲不等于已经成局 | 格局命例 |
+| 10 | 已发布 2026-08-26 22:31 https://yuetianai.com/articles/ziwei-huotan-ge-chayibu-bushi-chengju.html / https://yuetianai.com/articles/en/ziwei-huotan-ge-chayibu-bushi-chengju.html | ziwei-huotan-ge-chayibu-bushi-chengju | 紫微斗数火贪格差一步会怎样：有冲劲不等于已经成局 | 格局命例 |
