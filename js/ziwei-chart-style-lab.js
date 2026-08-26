@@ -203,7 +203,8 @@
     layer.append(flight);
 
     const flightRect = flight.getBoundingClientRect();
-    const landingScale = clamp(targetRect.width / flightRect.width, .48, .88);
+    const minLandingScale = stamp.key === "life" || stamp.key === "body" ? .48 : .34;
+    const landingScale = clamp(targetRect.width / flightRect.width, minLandingScale, .88);
     const dx = centerX - targetX;
     const dy = centerY - targetY;
     const at = (x, y, scale, rotation = 0) =>
