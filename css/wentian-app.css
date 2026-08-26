@@ -2136,7 +2136,7 @@ html[lang="en"] .wentian-chart-tst {
   top: 106px;
   width: 390px;
   height: 486px;
-  font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+  font-family: "STKaiti", "KaiTi", "FangSong", "Songti SC", serif;
   color: #201813;
 }
 
@@ -2144,14 +2144,14 @@ html[lang="en"] .wentian-chart-tst {
   width: 390px;
   margin: 0;
   padding: 0;
-  background: #f6ead9;
+  background: transparent;
   border-radius: 0;
   box-shadow: none;
   overflow: visible;
 }
 
 .wentian-native-mingpan .fc-grid-wrap {
-  padding: 0 8px 6px;
+  padding: 0 4px 6px;
 }
 
 .wentian-native-mingpan .fc-grid {
@@ -2159,19 +2159,22 @@ html[lang="en"] .wentian-chart-tst {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-template-rows: repeat(4, minmax(0, 1fr));
-  gap: 1px;
+  gap: 0;
   width: 100%;
   aspect-ratio: 1 / 1.18;
   overflow: visible;
-  border: 1px solid #e2cfb8;
-  background: #e2cfb8;
+  border: 1px solid #aca69b;
+  border-radius: 15px;
+  background: #fffdf8;
 }
 
 .wentian-native-mingpan .fc-cell,
 .wentian-native-mingpan .fc-center-panel {
   min-height: 0;
   overflow: hidden;
-  background: #fffaf3;
+  border: 0;
+  background: rgba(255, 253, 248, .98);
+  box-shadow: inset -1px -1px 0 rgba(187, 178, 163, .78);
 }
 
 .wentian-native-mingpan .fc-cell {
@@ -2182,32 +2185,42 @@ html[lang="en"] .wentian-chart-tst {
   flex-direction: column;
   justify-content: space-between;
   cursor: pointer;
-  transition: background 0.16s ease, box-shadow 0.16s ease, transform 0.16s ease;
+  transition: background-color .18s ease, box-shadow .18s ease, transform .18s ease;
 }
 
+.wentian-native-mingpan .fc-cell.fc-corner-tl { border-top-left-radius: 14px; }
+.wentian-native-mingpan .fc-cell.fc-corner-tr { border-top-right-radius: 14px; }
+.wentian-native-mingpan .fc-cell.fc-corner-bl { border-bottom-left-radius: 14px; }
+.wentian-native-mingpan .fc-cell.fc-corner-br { border-bottom-right-radius: 14px; }
+
 .wentian-native-mingpan .fc-cell.fc-ben {
-  background: #ffe9de;
-  box-shadow: inset 0 0 0 2px #a74437, 0 0 0 1px rgba(167, 68, 55, 0.18);
-  transform: translateY(-1px);
+  background: rgba(248, 229, 207, .94);
+  box-shadow: inset 0 0 0 2px rgba(171, 114, 54, .45);
 }
 
 .wentian-native-mingpan .fc-cell.fc-rel {
-  background: #fff0d6;
+  background: rgba(248, 242, 229, .96);
 }
 
 .wentian-native-mingpan .fc-cell.fc-sanhe {
-  background: #fff5cf;
-  box-shadow: inset 0 0 0 2px #c0912d;
+  background: rgba(248, 242, 229, .96);
+  box-shadow: inset 0 0 0 1px rgba(154, 111, 52, .22);
 }
 
 .wentian-native-mingpan .fc-cell.fc-dui {
-  background: #eaf6f2;
-  box-shadow: inset 0 0 0 2px #4b9a83;
+  background: rgba(244, 241, 233, .96);
+  box-shadow: inset 0 0 0 1px rgba(80, 114, 104, .2);
 }
 
 .wentian-native-mingpan .fc-cell.fc-xiaolian {
   z-index: 6;
   overflow: visible;
+  background: rgba(255, 253, 248, .98);
+  outline: 0;
+  box-shadow: inset -1px -1px 0 rgba(187, 178, 163, .78);
+}
+
+.wentian-native-mingpan .fc-cell.fc-xiaolian.is-locating {
   background:
     radial-gradient(circle at 84% 80%, rgba(210, 138, 49, .24), transparent 34%),
     linear-gradient(135deg, rgba(255, 249, 235, .98), rgba(255, 238, 207, .94)) !important;
@@ -2456,9 +2469,30 @@ html[lang="en"] .wentian-chart-tst {
   flex-direction: column;
 }
 
+.wentian-native-mingpan .fc-major-list {
+  min-width: 0;
+  max-width: calc(100% - 32px);
+}
+
+.wentian-native-mingpan .fc-major-star-row,
+.wentian-native-mingpan .fc-minor-star-row {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+
+.wentian-native-mingpan .fc-major-star-row {
+  gap: 2px;
+}
+
+.wentian-native-mingpan .fc-minor-star-row {
+  justify-content: flex-end;
+  gap: 1px;
+}
+
 .wentian-native-mingpan .fc-major-star {
   color: #201813;
-  font-size: 11px;
+  font-size: 10.5px;
   font-weight: 900;
   line-height: 1.25;
   white-space: nowrap;
@@ -2527,6 +2561,10 @@ html[lang="en"] .wentian-chart-tst {
   white-space: pre-line;
 }
 
+.wentian-native-mingpan .fc-body-palace-label {
+  color: #8f5f28;
+}
+
 .wentian-native-mingpan .fc-cell-mutagen {
   display: flex;
   flex-wrap: wrap;
@@ -2535,12 +2573,24 @@ html[lang="en"] .wentian-chart-tst {
 }
 
 .wentian-native-mingpan .fc-pal-mutagen {
-  display: inline-block;
-  padding: 1px 3px;
-  border-radius: 3px;
-  font-size: 8px;
+  --mutagen-tone: #8f6b43;
+  display: inline-grid;
+  flex: 0 0 13px;
+  place-items: center;
+  width: 13px;
+  height: 13px;
+  padding: 0;
+  border: 1px solid var(--mutagen-tone);
+  border-radius: 4px 2px 3px 2px;
+  background: var(--mutagen-tone);
+  color: #fffdf8;
+  font-family: "STKaiti", "KaiTi", "FangSong", serif;
+  font-size: 9px;
+  font-style: normal;
   font-weight: 900;
-  line-height: 1.35;
+  line-height: 1;
+  transform: rotate(-1deg);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.2);
 }
 
 html[lang="en"] .wentian-native-mingpan .fc-cell {
@@ -2643,23 +2693,153 @@ html[lang="en"] .wentian-native-mingpan .fc-center-btn {
 }
 
 .wentian-native-mingpan .fc-pal-mutagen.fc-mutagen-lu {
-  color: #2f8c72;
-  background: #e6f4ea;
+  --mutagen-tone: #2f8c72;
+  color: #fffdf8;
 }
 
 .wentian-native-mingpan .fc-pal-mutagen.fc-mutagen-quan {
-  color: #6b3fa0;
-  background: #f0e8f8;
+  --mutagen-tone: #6b3fa0;
+  color: #fffdf8;
 }
 
 .wentian-native-mingpan .fc-pal-mutagen.fc-mutagen-ke {
-  color: #3269a6;
-  background: #e8eef7;
+  --mutagen-tone: #3269a6;
+  color: #fffdf8;
 }
 
 .wentian-native-mingpan .fc-pal-mutagen.fc-mutagen-ji {
-  color: #9d3329;
-  background: #fcecea;
+  --mutagen-tone: #9d3329;
+  color: #fffdf8;
+}
+
+.wentian-native-mingpan .fc-intro-stamp-target {
+  transform-origin: center;
+}
+
+.wentian-native-mingpan .fc-intro-stamp-target.is-intro-hidden {
+  opacity: 0;
+}
+
+.wentian-native-mingpan .fc-intro-stamp-target.is-stamp-landed {
+  animation: wentianChartStampTargetLand 420ms cubic-bezier(.2, .84, .26, 1);
+}
+
+.wentian-native-mingpan.is-intro-opening .fc-cell {
+  animation: wentianChartPalaceOpen 480ms cubic-bezier(.2, .8, .25, 1) backwards;
+  animation-delay: calc(var(--intro-order, 0) * 18ms);
+}
+
+.wentian-native-mingpan.is-intro-opening .fc-center-panel {
+  animation: wentianChartCenterOpen 560ms cubic-bezier(.2, .8, .25, 1) 120ms backwards;
+}
+
+.wentian-native-mingpan .fc-chart-intro-layer {
+  position: absolute;
+  z-index: 30;
+  inset: 0;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.wentian-native-mingpan .fc-chart-stamp-flight {
+  position: absolute;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 46px;
+  min-height: 34px;
+  padding: 5px 8px;
+  border: 3px double currentColor;
+  border-radius: 6px;
+  background: linear-gradient(145deg, rgba(255, 253, 245, .97), rgba(242, 226, 196, .97));
+  color: #983f2e;
+  font-family: "STKaiti", "KaiTi", "FangSong", serif;
+  font-size: 18px;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: .06em;
+  text-indent: .06em;
+  white-space: nowrap;
+  transform-origin: center;
+  will-change: transform, opacity, filter;
+  box-shadow: inset 0 0 0 2px rgba(255, 249, 232, .78), 0 10px 20px rgba(86, 43, 21, .24), 0 3px 0 rgba(91, 45, 24, .18);
+}
+
+.wentian-native-mingpan .fc-chart-stamp-flight--body { color: #9a702c; }
+.wentian-native-mingpan .fc-chart-stamp-flight--lu { color: #2f8c72; }
+.wentian-native-mingpan .fc-chart-stamp-flight--quan { color: #6b3fa0; }
+.wentian-native-mingpan .fc-chart-stamp-flight--ke { color: #3269a6; }
+.wentian-native-mingpan .fc-chart-stamp-flight--ji { color: #9d3329; }
+
+.wentian-native-mingpan .fc-chart-stamp-flight--lu,
+.wentian-native-mingpan .fc-chart-stamp-flight--quan,
+.wentian-native-mingpan .fc-chart-stamp-flight--ke,
+.wentian-native-mingpan .fc-chart-stamp-flight--ji {
+  min-width: 38px;
+  min-height: 30px;
+  padding: 4px 6px;
+  font-size: 15px;
+}
+
+.wentian-native-mingpan .fc-chart-impact-ring {
+  position: absolute;
+  width: 26px;
+  height: 26px;
+  border: 2px solid currentColor;
+  border-radius: 50%;
+  color: #a64f36;
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(.3);
+  animation: wentianChartStampImpactRing 460ms ease-out forwards;
+}
+
+.wentian-native-mingpan .fc-chart-impact-ring--body { color: #a67b30; }
+.wentian-native-mingpan .fc-chart-impact-ring--lu { color: #2f8c72; }
+.wentian-native-mingpan .fc-chart-impact-ring--quan { color: #6b3fa0; }
+.wentian-native-mingpan .fc-chart-impact-ring--ke { color: #3269a6; }
+.wentian-native-mingpan .fc-chart-impact-ring--ji { color: #9d3329; }
+
+.wentian-native-mingpan .fc-cell.is-stamp-impact {
+  animation: wentianChartPalaceStampImpact 360ms cubic-bezier(.2, .8, .25, 1);
+}
+
+@keyframes wentianChartPalaceOpen {
+  0% { opacity: .18; transform: scale(.965); filter: saturate(.55) brightness(1.08); }
+  68% { opacity: 1; transform: scale(1.008); filter: saturate(.94) brightness(1.02); }
+  100% { opacity: 1; transform: scale(1); filter: none; }
+}
+
+@keyframes wentianChartCenterOpen {
+  0% { opacity: 0; filter: blur(4px); }
+  100% { opacity: 1; filter: none; }
+}
+
+@keyframes wentianChartStampTargetLand {
+  0% { opacity: .22; transform: scale(1.42) rotate(-3deg); filter: blur(1px); }
+  46% { opacity: 1; transform: scale(.9) rotate(1deg); filter: none; }
+  100% { opacity: 1; transform: scale(1) rotate(0); filter: none; }
+}
+
+@keyframes wentianChartStampImpactRing {
+  0% { opacity: .68; transform: translate(-50%, -50%) scale(.3); }
+  72% { opacity: .34; }
+  100% { opacity: 0; transform: translate(-50%, -50%) scale(2.45); }
+}
+
+@keyframes wentianChartPalaceStampImpact {
+  0% { filter: brightness(1); }
+  34% { filter: brightness(1.08) saturate(1.18); box-shadow: inset 0 0 24px rgba(173, 116, 50, .22); }
+  100% { filter: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wentian-native-mingpan.is-intro-opening .fc-cell,
+  .wentian-native-mingpan.is-intro-opening .fc-center-panel,
+  .wentian-native-mingpan .fc-intro-stamp-target.is-stamp-landed,
+  .wentian-native-mingpan .fc-cell.is-stamp-impact,
+  .wentian-native-mingpan .fc-chart-impact-ring {
+    animation: none !important;
+  }
 }
 
 .wentian-native-mingpan .fc-center-panel {
@@ -5330,8 +5510,8 @@ html[lang="en"] .wentian-hepan-action {
 
 .wentian-hepan-chart-card .wentian-native-mingpan .fc-card {
   width: 100%;
-  border-top: 1px solid #eadfce;
-  background: #f6ead9;
+  border-top: 0;
+  background: transparent;
 }
 
 .wentian-hepan-chart-card .wentian-native-mingpan .fc-cell {

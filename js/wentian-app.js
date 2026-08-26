@@ -5643,7 +5643,7 @@ function armWentianXiaoLianBadge(selected = {}, scope = "") {
       if (wentianXiaoLianBadgeVisibleKey !== key) return;
       wentianXiaoLianBadgeVisibleKey = "";
       if (state.route === "screen-27" || state.route === "screen-49") navigatePreservingScroll(state.route, false);
-    }, 2000);
+    }, 5000);
   });
 }
 
@@ -8202,6 +8202,7 @@ async function requestWentianHepanAiJudgement(result, key) {
 function initWentianHepanAiJudgement(options = {}) {
   const result = getWentianHepanResult();
   if (!result.ok) return;
+  window.requestAnimationFrame(() => initWentianClassicChartIntros(view));
   const key = getWentianHepanAiKey(result);
   if (!key) return;
   if (options.force) clearWentianHepanAiCache(key);
@@ -21165,6 +21166,21 @@ function getWentianClassicMutagenClass(mutagen = "") {
   return "";
 }
 
+function getWentianClassicMutagenMeta(mutagen = "") {
+  const value = String(mutagen || "");
+  if (value.includes("禄")) return { key: "lu", short: "禄", full: "化禄" };
+  if (value.includes("权")) return { key: "quan", short: "权", full: "化权" };
+  if (value.includes("科")) return { key: "ke", short: "科", full: "化科" };
+  if (value.includes("忌")) return { key: "ji", short: "忌", full: "化忌" };
+  return null;
+}
+
+function renderWentianClassicMutagenSeal(mutagen = "") {
+  const meta = getWentianClassicMutagenMeta(mutagen);
+  if (!meta) return "";
+  return `<i class="fc-pal-mutagen ${getWentianClassicMutagenClass(mutagen)} fc-intro-stamp-target" data-stamp-key="${meta.key}" data-stamp-label="${meta.full}" role="img" aria-label="${meta.full}" title="${meta.full}">${meta.short}</i>`;
+}
+
 function getWentianClassicStarText(star) {
   if (!star) return "";
   if (typeof star === "string") return isWentianEnglishUi() ? translateWentianText(star, "en") : star;
@@ -21225,28 +21241,35 @@ function renderWentianClassicPalaceCell(palace, activeBranch, options = {}) {
   const xiaoLianSideClass = showXiaoLianBadge ? ` fc-xiaolian-side-${getWentianClassicXiaoLianBadgeSide(col, row)}` : "";
   const palaceAction = options.palaceAction || "";
   const { coreStars, detailStars } = getWentianClassicDisplayStars(palace);
-  const allStars = [
-    ...coreStars,
-    ...detailStars,
-  ];
-  const mutagenHtml = allStars
-    .filter((star) => star?.mutagen)
-    .map((star) => `<span class="fc-pal-mutagen ${getWentianClassicMutagenClass(star.mutagen)}">${escapeHtml(star.mutagen)}</span>`)
-    .join("");
   const majorDensityClass = coreStars.length >= 6
     ? " is-very-dense"
     : coreStars.length >= 4
     ? " is-dense"
     : "";
   const majorHtml = coreStars
-    .map((star) => `<div class="fc-major-star">${escapeHtml(getWentianClassicStarText(star))}</div>`)
+    .map((star) => `<div class="fc-major-star-row"><span class="fc-major-star">${escapeHtml(getWentianClassicStarText(star))}</span>${renderWentianClassicMutagenSeal(star?.mutagen)}</div>`)
     .join("");
   const minorHtml = detailStars
     .slice(0, 5)
-    .map((star) => `<div class="fc-minor-star">${escapeHtml(getWentianClassicStarText(star))}</div>`)
+    .map((star) => `<div class="fc-minor-star-row"><span class="fc-minor-star">${escapeHtml(getWentianClassicStarText(star))}</span>${renderWentianClassicMutagenSeal(star?.mutagen)}</div>`)
     .join("");
   const shenHtml = [palace.changsheng12, palace.boshi12].filter(Boolean).map((item) => `<span>${escapeHtml(item)}</span>`).join("");
-  const palaceName = `${palace.isBodyPalace ? "身宫\n" : ""}${palace.name || ""}`;
+  const isLifePalace = String(palace.name || "").replace(/宫$/, "") === "命";
+  const bodyLabel = palace.isBodyPalace
+    ? `<span class="fc-body-palace-label fc-intro-stamp-target" data-stamp-key="body" data-stamp-label="身宫">身宫</span>`
+    : "";
+  const palaceLabel = isLifePalace
+    ? `<span class="fc-intro-stamp-target" data-stamp-key="life" data-stamp-label="命宫">${escapeHtml(palace.name || "命宫")}</span>`
+    : escapeHtml(palace.name || "");
+  const cornerClass = row === 0 && col === 0
+    ? " fc-corner-tl"
+    : row === 0 && col === 3
+    ? " fc-corner-tr"
+    : row === 3 && col === 0
+    ? " fc-corner-bl"
+    : row === 3 && col === 3
+    ? " fc-corner-br"
+    : "";
   const xiaoLianHtml = isXiaoLian ? `<div class="fc-xiaolian-badge">${escapeHtml(xiaoLianAge ? `${xiaoLianAge}岁` : "小流年")}</div>` : "";
   const displayXiaoLianHtml = showXiaoLianBadge ? xiaoLianHtml : "";
   const cellAttrs = palaceAction
@@ -21255,9 +21278,8 @@ function renderWentianClassicPalaceCell(palace, activeBranch, options = {}) {
     ? `data-palace-branch="${escapeHtml(branch)}" data-palace-name="${escapeHtml(palace.name || branch)}"`
     : `data-action="wentian-chart-palace" data-palace-branch="${escapeHtml(branch)}" data-palace-name="${escapeHtml(palace.name || branch)}" role="button"`;
   return `
-    <div class="fc-cell ${highlightClass}${showXiaoLianBadge ? ` fc-xiaolian${xiaoLianSideClass}${showXiaoLianLocate ? " is-locating" : ""}` : ""}${readonly && !palaceAction ? " is-readonly" : ""}" ${cellAttrs} style="grid-column:${col + 1};grid-row:${row + 1};">
+    <div class="fc-cell ${highlightClass}${cornerClass}${showXiaoLianBadge ? ` fc-xiaolian${xiaoLianSideClass}${showXiaoLianLocate ? " is-locating" : ""}` : ""}${readonly && !palaceAction ? " is-readonly" : ""}" ${cellAttrs} style="grid-column:${col + 1};grid-row:${row + 1};">
       <div class="fc-cell-top">
-        ${mutagenHtml ? `<div class="fc-cell-mutagen">${mutagenHtml}</div>` : ""}
         <div class="fc-major-list${majorDensityClass}">${majorHtml}</div>
         <div class="fc-minor-list">${minorHtml}</div>
       </div>
@@ -21266,7 +21288,7 @@ function renderWentianClassicPalaceCell(palace, activeBranch, options = {}) {
         <div class="fc-palace-info">
           <span class="fc-branch">${escapeHtml(`${palace.heavenlyStem || ""}${branch}`)}</span>
           <span class="fc-age">${escapeHtml(getWentianClassicRange(palace))}</span>
-          <span class="fc-palace-name">${escapeHtml(palaceName)}</span>
+          <span class="fc-palace-name">${bodyLabel}${palace.isBodyPalace ? "<br>" : ""}${palaceLabel}</span>
         </div>
       </div>
       ${displayXiaoLianHtml}
@@ -21495,6 +21517,139 @@ function getWentianClassicDefaultBranch(saved) {
   return chart?.earthlyBranchOfSoulPalace || (chart?.palaces || []).find((p) => p.name === "命宫")?.earthlyBranch || "";
 }
 
+const WENTIAN_CHART_INTRO_SEQUENCE = [
+  { key: "life", label: "命宫", duration: 620, rotation: -4 },
+  { key: "body", label: "身宫", duration: 580, rotation: 4 },
+  { key: "lu", label: "化禄", duration: 520, rotation: -4 },
+  { key: "quan", label: "化权", duration: 520, rotation: 3 },
+  { key: "ke", label: "化科", duration: 520, rotation: -3 },
+  { key: "ji", label: "化忌", duration: 560, rotation: 4 },
+];
+
+function waitForWentianChartIntro(duration) {
+  return new Promise((resolve) => window.setTimeout(resolve, duration));
+}
+
+function clearWentianChartIntro(chart) {
+  chart?.classList.remove("is-intro-opening");
+  chart?.querySelectorAll(".fc-chart-intro-layer").forEach((layer) => layer.remove());
+  chart?.querySelectorAll(".is-stamp-impact").forEach((cell) => cell.classList.remove("is-stamp-impact"));
+  chart?.querySelectorAll(".fc-intro-stamp-target").forEach((target) => {
+    target.classList.remove("is-intro-hidden", "is-stamp-landed");
+  });
+}
+
+function createWentianChartStampImpact(grid, layer, target, key) {
+  if (!grid?.isConnected || !target?.isConnected) return;
+  const gridRect = grid.getBoundingClientRect();
+  const targetRect = target.getBoundingClientRect();
+  const ring = document.createElement("span");
+  ring.className = `fc-chart-impact-ring fc-chart-impact-ring--${key}`;
+  ring.style.left = `${targetRect.left - gridRect.left + targetRect.width / 2}px`;
+  ring.style.top = `${targetRect.top - gridRect.top + targetRect.height / 2}px`;
+  ring.setAttribute("aria-hidden", "true");
+  layer.append(ring);
+  window.setTimeout(() => ring.remove(), 500);
+  const palace = target.closest(".fc-cell");
+  if (!palace) return;
+  palace.classList.remove("is-stamp-impact");
+  void palace.offsetWidth;
+  palace.classList.add("is-stamp-impact");
+  window.setTimeout(() => palace.classList.remove("is-stamp-impact"), 390);
+}
+
+async function flyWentianChartStamp(chart, grid, layer, stamp) {
+  const target = chart.querySelector(`[data-stamp-key="${stamp.key}"]`);
+  const center = chart.querySelector(".fc-center-panel");
+  if (!target || !center || !grid?.isConnected) return;
+  const gridRect = grid.getBoundingClientRect();
+  const centerRect = center.getBoundingClientRect();
+  const targetRect = target.getBoundingClientRect();
+  const targetX = targetRect.left - gridRect.left + targetRect.width / 2;
+  const targetY = targetRect.top - gridRect.top + targetRect.height / 2;
+  const centerX = centerRect.left - gridRect.left + centerRect.width / 2;
+  const centerY = centerRect.top - gridRect.top + centerRect.height / 2;
+  const flight = document.createElement("span");
+  flight.className = `fc-chart-stamp-flight fc-chart-stamp-flight--${stamp.key}`;
+  flight.textContent = target.dataset.stampLabel || stamp.label;
+  flight.style.left = `${targetX}px`;
+  flight.style.top = `${targetY}px`;
+  flight.setAttribute("aria-hidden", "true");
+  layer.append(flight);
+  const flightRect = flight.getBoundingClientRect();
+  const minScale = stamp.key === "life" || stamp.key === "body" ? .42 : .3;
+  const landingScale = Math.min(.82, Math.max(minScale, targetRect.width / Math.max(flightRect.width, 1)));
+  const dx = centerX - targetX;
+  const dy = centerY - targetY;
+  const at = (x, y, scale, rotation = 0) => `translate(${x}px, ${y}px) translate(-50%, -50%) scale(${scale}) rotate(${rotation}deg)`;
+  const animation = flight.animate([
+    { offset: 0, opacity: 0, filter: "blur(3px)", transform: at(dx, dy - 20, 1.2, stamp.rotation) },
+    { offset: .2, opacity: 1, filter: "blur(0)", transform: at(dx, dy, 1.36, stamp.rotation) },
+    { offset: .68, opacity: 1, filter: "blur(0)", transform: at(0, -14, landingScale * 1.28, stamp.rotation / 3) },
+    { offset: .84, opacity: 1, filter: "blur(0)", transform: at(0, 4, landingScale * .88, 0) },
+    { offset: 1, opacity: 1, filter: "blur(0)", transform: at(0, 0, landingScale, 0) },
+  ], { duration: stamp.duration, easing: "cubic-bezier(.2,.72,.24,1)", fill: "forwards" });
+  await animation.finished.catch(() => undefined);
+  if (!target.isConnected) return;
+  target.classList.remove("is-intro-hidden");
+  target.classList.add("is-stamp-landed");
+  flight.remove();
+  createWentianChartStampImpact(grid, layer, target, stamp.key);
+  window.setTimeout(() => target.classList.remove("is-stamp-landed"), 440);
+  await waitForWentianChartIntro(70);
+}
+
+async function runWentianClassicChartIntro(chart) {
+  if (!chart || chart.dataset.introPlayed === "true") return;
+  chart.dataset.introPlayed = "true";
+  const grid = chart.querySelector(".fc-grid");
+  const targets = [...chart.querySelectorAll(".fc-intro-stamp-target")];
+  if (!grid || !targets.length) return;
+  const reducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+  if (reducedMotion || typeof Element.prototype.animate !== "function") {
+    clearWentianChartIntro(chart);
+    return;
+  }
+  clearWentianChartIntro(chart);
+  targets.forEach((target) => target.classList.add("is-intro-hidden"));
+  chart.querySelectorAll(".fc-cell").forEach((cell, index) => cell.style.setProperty("--intro-order", String(index)));
+  chart.classList.add("is-intro-opening");
+  await waitForWentianChartIntro(560);
+  chart.classList.remove("is-intro-opening");
+  if (!grid.isConnected) return;
+  const layer = document.createElement("div");
+  layer.className = "fc-chart-intro-layer";
+  layer.setAttribute("aria-hidden", "true");
+  grid.append(layer);
+  try {
+    for (const stamp of WENTIAN_CHART_INTRO_SEQUENCE) {
+      await flyWentianChartStamp(chart, grid, layer, stamp);
+    }
+  } finally {
+    targets.forEach((target) => target.classList.remove("is-intro-hidden"));
+    await waitForWentianChartIntro(360);
+    layer.remove();
+  }
+}
+
+function initWentianClassicChartIntros(root = view) {
+  root?.querySelectorAll?.(".wentian-native-mingpan").forEach((chart) => {
+    if (chart.dataset.introObserved === "true" || chart.dataset.introPlayed === "true") return;
+    chart.dataset.introObserved = "true";
+    const play = () => runWentianClassicChartIntro(chart).catch(() => clearWentianChartIntro(chart));
+    if (typeof IntersectionObserver !== "function") {
+      window.requestAnimationFrame(play);
+      return;
+    }
+    const observer = new IntersectionObserver((entries) => {
+      if (!entries.some((entry) => entry.isIntersecting && entry.intersectionRatio > .08)) return;
+      observer.disconnect();
+      play();
+    }, { threshold: [.08] });
+    observer.observe(chart);
+  });
+}
+
 function initWentianClassicChartScreen() {
   window.requestAnimationFrame(() => {
     const activeBranch = getWentianClassicDefaultBranch(getWentianDisplayChartState())
@@ -21503,6 +21658,7 @@ function initWentianClassicChartScreen() {
     renderWentianClassicSanfangLines(activeBranch);
     centerWentianLuckRail();
     centerWentianXiaoLianRail();
+    initWentianClassicChartIntros(view);
   });
 }
 
@@ -21786,7 +21942,7 @@ function renderWentianClassicChart(saved, options = {}) {
   const activeBranch = options.activeBranch || chart.earthlyBranchOfSoulPalace || (chart.palaces || []).find((p) => p.name === "命宫")?.earthlyBranch || "卯";
   const nodeId = options.nodeId || "source-27-native-chart";
   return `
-    <div class="wentian-native-mingpan${options.readonly ? " is-readonly" : ""}" data-node-id="${escapeHtml(nodeId)}">
+    <div class="wentian-native-mingpan${options.readonly ? " is-readonly" : ""}" data-node-id="${escapeHtml(nodeId)}" data-chart-intro="auto">
       <div class="fc-card">
         <div class="fc-grid-wrap">
           <div class="fc-grid">

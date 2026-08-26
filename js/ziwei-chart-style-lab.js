@@ -4,7 +4,6 @@
   const canvas = document.getElementById("triadOverlay");
   const flowAge = document.getElementById("flowAge");
   const flowStatus = document.getElementById("flowStatus");
-  const introReplay = document.getElementById("introReplay");
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const flowFadeDelay = 5000;
   const earthlyBranches = ["子", "丑", "寅", "卯", "辰", "巳", "午", "未", "申", "酉", "戌", "亥"];
@@ -235,15 +234,11 @@
   const runChartIntro = async () => {
     if (introRunning) return;
     introRunning = true;
-    introReplay.disabled = true;
-    introReplay.textContent = "开盘中";
     clearIntroArtifacts();
 
     const targets = [...board.querySelectorAll(".intro-stamp-target")];
     if (reducedMotion || typeof Element.prototype.animate !== "function") {
       targets.forEach((target) => target.classList.remove("is-intro-hidden"));
-      introReplay.disabled = false;
-      introReplay.textContent = "重播特效";
       introRunning = false;
       return;
     }
@@ -267,8 +262,6 @@
       targets.forEach((target) => target.classList.remove("is-intro-hidden"));
       await wait(460);
       layer.remove();
-      introReplay.disabled = false;
-      introReplay.textContent = "重播特效";
       introRunning = false;
     }
   };
@@ -366,8 +359,6 @@
   });
 
   flowAge.addEventListener("change", updateFlow);
-  introReplay.addEventListener("click", runChartIntro);
-
   new ResizeObserver(() => drawTriad(1)).observe(board);
   updateFlow();
   setActivePalace(activePalace);
