@@ -52,6 +52,7 @@ const randomIndex = (length: number) => Math.floor(Math.random() * length);
 type DifficultyLevel = TrainingLevel;
 type ModuleProgress = { level: DifficultyLevel; correct: number; recentMs: number[] };
 type Discipline = "ziwei" | "yijing";
+type MobilePanel = "modules" | "progress" | null;
 
 type ModuleId =
   | "position" | "hours" | "zodiac" | "meridian" | "months" | "directions" | "body-map" | "stem-order" | "stem-attributes"
@@ -381,9 +382,12 @@ export default function Home() {
   const [durationSeconds, setDurationSeconds] = useState(0);
   const [remainingSeconds, setRemainingSeconds] = useState(0);
   const [sessionEnded, setSessionEnded] = useState(false);
+  const [mobilePanel, setMobilePanel] = useState<MobilePanel>(null);
   const pendingTimer = useRef<number | null>(null);
   const questionStartedAt = useRef(0);
   const boardRef = useRef<HTMLElement | null>(null);
+  const mobileDialogRef = useRef<HTMLDialogElement | null>(null);
+  const mobilePanelTriggerRef = useRef<HTMLButtonElement | null>(null);
 
   const activeModule = modules.find((item) => item.id === moduleId) ?? modules[0];
   const activeYijingModule = yijingModules.find((item) => item.id === yijingModuleId) ?? yijingModules[0];
@@ -487,6 +491,24 @@ export default function Home() {
     if (pendingTimer.current !== null) window.clearTimeout(pendingTimer.current);
   }, []);
 
+  useEffect(() => {
+    if (!mobilePanel) return;
+    const dialog = mobileDialogRef.current;
+    if (dialog && !dialog.open) dialog.showModal();
+    return () => {
+      if (dialog?.open) dialog.close();
+    };
+  }, [mobilePanel]);
+
+  useEffect(() => {
+    const mobileQuery = window.matchMedia("(max-width: 800px)");
+    const closeOnDesktop = (event: MediaQueryListEvent) => {
+      if (!event.matches) setMobilePanel(null);
+    };
+    mobileQuery.addEventListener("change", closeOnDesktop);
+    return () => mobileQuery.removeEventListener("change", closeOnDesktop);
+  }, []);
+
   function clearTimer() {
     if (pendingTimer.current !== null) window.clearTimeout(pendingTimer.current);
     pendingTimer.current = null;
@@ -514,8 +536,27 @@ export default function Home() {
 
   function focusBoardOnMobile() {
     if (!window.matchMedia("(max-width: 800px)").matches) return;
-    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    window.requestAnimationFrame(() => boardRef.current?.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" }));
+    window.requestAnimationFrame(() => window.requestAnimationFrame(() => {
+      boardRef.current?.scrollIntoView({ behavior: "auto", block: "start" });
+      boardRef.current?.focus({ preventScroll: true });
+    }));
+  }
+
+  function openMobilePanel(panel: Exclude<MobilePanel, null>, trigger: HTMLButtonElement) {
+    mobilePanelTriggerRef.current = trigger;
+    setMobilePanel(panel);
+  }
+
+  function closeMobilePanel(restoreTrigger = true) {
+    const trigger = mobilePanelTriggerRef.current;
+    if (mobileDialogRef.current?.open) mobileDialogRef.current.close();
+    setMobilePanel(null);
+    if (restoreTrigger) window.requestAnimationFrame(() => trigger?.focus());
+  }
+
+  function finishMobilePanelAction() {
+    closeMobilePanel(false);
+    focusBoardOnMobile();
   }
 
   function selectDiscipline(nextDiscipline: Discipline) {
@@ -526,7 +567,6 @@ export default function Home() {
     setSessionEnded(false);
     if (nextDiscipline === "ziwei") resetRound(moduleId, lifeIndex, moduleProgress[moduleId].level);
     else resetYijingRound(yijingModuleId, yijingProgress[yijingModuleId].level);
-    focusBoardOnMobile();
   }
 
   function selectModule(nextModule: ModuleId) {
@@ -535,7 +575,6 @@ export default function Home() {
     setRemainingSeconds(0);
     setSessionEnded(false);
     resetRound(nextModule, lifeIndex, moduleProgress[nextModule].level);
-    focusBoardOnMobile();
   }
 
   function selectYijingModule(nextModule: YijingModuleId) {
@@ -544,13 +583,11 @@ export default function Home() {
     setRemainingSeconds(0);
     setSessionEnded(false);
     resetYijingRound(nextModule, yijingProgress[nextModule].level);
-    focusBoardOnMobile();
   }
 
   function chooseLife(nextLife: number) {
     setLifeIndex(nextLife);
     resetRound(moduleId, nextLife, activeProgress.level);
-    focusBoardOnMobile();
   }
 
   function startPractice(seconds: number) {
@@ -559,7 +596,6 @@ export default function Home() {
     setSessionEnded(false);
     if (discipline === "ziwei") resetRound(moduleId, lifeIndex, activeProgress.level);
     else resetYijingRound(yijingModuleId, activeProgress.level);
-    focusBoardOnMobile();
   }
 
   function toggleAnswers() {
@@ -675,6 +711,103 @@ export default function Home() {
 
   const pickedReveal = picked === null ? "" : question.revealLabels[picked];
 
+  const renderModuleCatalog = (mobile = false) => discipline === "ziwei" ? groupedModules.map(({ group, items }) => (
+    <div className="module-group" key={group}>
+      {group !== "基础对应" && <h2>{group}</h2>}
+      <div className="module-list">
+        {items.map((item) => (
+          <button
+            aria-pressed={moduleId === item.id}
+            className={moduleId === item.id ? "active" : ""}
+            key={item.id}
+            type="button"
+            onClick={() => {
+              selectModule(item.id);
+              if (mobile) finishMobilePanelAction();
+            }}
+          >
+            <span>{item.mark}</span><strong>{item.label}</strong><em>{moduleProgress[item.id].level}</em>
+          </button>
+        ))}
+      </div>
+    </div>
+  )) : groupedYijingModules.map(({ group, items }) => (
+    <div className="module-group" key={group}>
+      <h2>{group}</h2>
+      <div className="module-list">
+        {items.map((item) => (
+          <button
+            aria-pressed={yijingModuleId === item.id}
+            className={yijingModuleId === item.id ? "active" : ""}
+            key={item.id}
+            type="button"
+            onClick={() => {
+              selectYijingModule(item.id);
+              if (mobile) finishMobilePanelAction();
+            }}
+          >
+            <span>{item.mark}</span><strong>{item.label}</strong><em>{yijingProgress[item.id].level}</em>
+          </button>
+        ))}
+      </div>
+    </div>
+  ));
+
+  const renderTrainingSettings = (mobile = false) => (
+    <>
+      <div className="active-module-card">
+        <span>当前训练</span>
+        <strong>{activeLabel}</strong>
+        <p>{activeDescription}</p>
+      </div>
+
+      {isPalaceModule && (
+        <div className="life-picker">
+          <div><span>命宫落点</span><strong>{branches[lifeIndex]}</strong></div>
+          <div className="life-grid">
+            {branches.map((branch, index) => <button aria-pressed={lifeIndex === index} className={lifeIndex === index ? "active" : ""} key={branch} type="button" onClick={() => chooseLife(index)}>{branch}</button>)}
+          </div>
+        </div>
+      )}
+
+      <div className="level-card">
+        <div><span>当前主题难度</span><strong>第 {activeProgress.level} 关 · {activeLevelName}</strong></div>
+        <div className="level-track"><i style={{ width: `${levelProgress}%` }} /></div>
+        {levelTarget && speedTarget ? (
+          <small>
+            {activeProgress.correct < levelTarget ? `再答对 ${levelTarget - activeProgress.correct} 次` : "次数已达标"}
+            {` · 最近5次平均需≤${(speedTarget / 1000).toFixed(1)}秒`}
+            {recentAverage !== null && `（当前 ${(recentAverage / 1000).toFixed(1)}秒）`}
+          </small>
+        ) : <small>最高关已解锁，不再升级，可自由选择练习时长。</small>}
+      </div>
+
+      {activeProgress.level === 3 && (
+        <div className="practice-duration">
+          <div><span>自由练习时长</span><strong>{durationSeconds === 0 ? "不限时" : sessionEnded ? "已完成" : remainingLabel}</strong></div>
+          <div>
+            {[{ label: "不限时", value: 0 }, { label: "3分钟", value: 180 }, { label: "5分钟", value: 300 }, { label: "10分钟", value: 600 }].map((item) => (
+              <button
+                aria-pressed={durationSeconds === item.value}
+                className={durationSeconds === item.value ? "active" : ""}
+                key={item.value}
+                type="button"
+                onClick={() => {
+                  startPractice(item.value);
+                  if (mobile) finishMobilePanelAction();
+                }}
+              >{item.label}</button>
+            ))}
+          </div>
+        </div>
+      )}
+      <button className="reset-button" type="button" onClick={() => {
+        clearProgress();
+        if (mobile) finishMobilePanelAction();
+      }}>重置当前主题进度</button>
+    </>
+  );
+
   return (
     <main className="app-shell">
       <div className="paper-texture" aria-hidden="true" />
@@ -709,74 +842,21 @@ export default function Home() {
         <div className="learning-path">{discipline === "ziwei" ? "定位 → 对宫 → 三方四正" : "认形 → 记象 → 定位 → 合卦 → 变卦"}</div>
       </nav>
 
+      <div className="mobile-context-bar" aria-label="当前练习">
+        <div className="mobile-current-module"><span>当前</span><strong>{activeLabel}</strong></div>
+        <span className="mobile-level-chip">第 {activeProgress.level} 关</span>
+        <button type="button" onClick={(event) => openMobilePanel("modules", event.currentTarget)}>题库</button>
+        <button type="button" onClick={(event) => openMobilePanel("progress", event.currentTarget)}>进度</button>
+      </div>
+
       <section className="trainer-layout" id="trainer">
         <aside className="library-panel">
           <div className="library-heading"><span>{discipline === "ziwei" ? "训练目录" : "易经练习"}</span><strong>共 {discipline === "ziwei" ? modules.length : yijingModules.length} 项</strong></div>
-          {discipline === "ziwei" ? groupedModules.map(({ group, items }) => (
-              <div className="module-group" key={group}>
-                {group !== "基础对应" && <h2>{group}</h2>}
-                <div className="module-list">
-                  {items.map((item) => (
-                    <button className={moduleId === item.id ? "active" : ""} key={item.id} type="button" onClick={() => selectModule(item.id)}>
-                      <span>{item.mark}</span><strong>{item.label}</strong><em>{moduleProgress[item.id].level}</em>
-                    </button>
-                  ))}
-                </div>
-              </div>
-            )) : groupedYijingModules.map(({ group, items }) => (
-              <div className="module-group" key={group}>
-                <h2>{group}</h2>
-                <div className="module-list">
-                  {items.map((item) => (
-                    <button className={yijingModuleId === item.id ? "active" : ""} key={item.id} type="button" onClick={() => selectYijingModule(item.id)}>
-                      <span>{item.mark}</span><strong>{item.label}</strong><em>{yijingProgress[item.id].level}</em>
-                    </button>
-                  ))}
-                </div>
-              </div>
-            ))}
-
-          <div className="active-module-card">
-            <span>当前训练</span>
-            <strong>{activeLabel}</strong>
-            <p>{activeDescription}</p>
-          </div>
-
-          {isPalaceModule && (
-            <div className="life-picker">
-              <div><span>命宫落点</span><strong>{branches[lifeIndex]}</strong></div>
-              <div className="life-grid">
-                {branches.map((branch, index) => <button className={lifeIndex === index ? "active" : ""} key={branch} type="button" onClick={() => chooseLife(index)}>{branch}</button>)}
-              </div>
-            </div>
-          )}
-
-          <div className="level-card">
-            <div><span>当前主题难度</span><strong>第 {activeProgress.level} 关 · {activeLevelName}</strong></div>
-            <div className="level-track"><i style={{ width: `${levelProgress}%` }} /></div>
-            {levelTarget && speedTarget ? (
-              <small>
-                {activeProgress.correct < levelTarget ? `再答对 ${levelTarget - activeProgress.correct} 次` : "次数已达标"}
-                {` · 最近5次平均需≤${(speedTarget / 1000).toFixed(1)}秒`}
-                {recentAverage !== null && `（当前 ${(recentAverage / 1000).toFixed(1)}秒）`}
-              </small>
-            ) : <small>最高关已解锁，不再升级，可自由选择练习时长。</small>}
-          </div>
-
-          {activeProgress.level === 3 && (
-            <div className="practice-duration">
-              <div><span>自由练习时长</span><strong>{durationSeconds === 0 ? "不限时" : sessionEnded ? "已完成" : remainingLabel}</strong></div>
-              <div>
-                {[{ label: "不限时", value: 0 }, { label: "3分钟", value: 180 }, { label: "5分钟", value: 300 }, { label: "10分钟", value: 600 }].map((item) => (
-                  <button className={durationSeconds === item.value ? "active" : ""} key={item.value} type="button" onClick={() => startPractice(item.value)}>{item.label}</button>
-                ))}
-              </div>
-            </div>
-          )}
-          <button className="reset-button" type="button" onClick={clearProgress}>重置当前主题进度</button>
+          {renderModuleCatalog()}
+          {renderTrainingSettings()}
         </aside>
 
-        <section className="board-stage" ref={boardRef} aria-live="polite">
+        <section className="board-stage" ref={boardRef} aria-live="polite" tabIndex={-1}>
           {discipline === "ziwei" ? (
             <>
               <div className="grid-chart">
@@ -942,6 +1022,39 @@ export default function Home() {
           )}
         </section>
       </section>
+
+      {mobilePanel && (
+        <dialog
+          aria-labelledby="mobile-training-sheet-title"
+          className="mobile-training-sheet"
+          ref={mobileDialogRef}
+          onCancel={(event) => {
+            event.preventDefault();
+            closeMobilePanel();
+          }}
+          onClick={(event) => {
+            if (event.target === event.currentTarget) closeMobilePanel();
+          }}
+        >
+          <div className="mobile-sheet-surface">
+            <header className="mobile-sheet-header">
+              <div>
+                <span>{discipline === "ziwei" ? "紫微十二格" : "易经八卦"}</span>
+                <h2 id="mobile-training-sheet-title">{mobilePanel === "modules" ? "选择训练题型" : "训练进度与设置"}</h2>
+              </div>
+              <button autoFocus type="button" onClick={() => closeMobilePanel()}>关闭</button>
+            </header>
+            <div className="mobile-sheet-body">
+              {mobilePanel === "modules" ? (
+                <>
+                  <div className="mobile-sheet-current"><span>当前题型</span><strong>{activeLabel}</strong><p>{activeDescription}</p></div>
+                  {renderModuleCatalog(true)}
+                </>
+              ) : renderTrainingSettings(true)}
+            </div>
+          </div>
+        </dialog>
+      )}
     </main>
   );
 }
