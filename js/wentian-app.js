@@ -5642,7 +5642,12 @@ function armWentianXiaoLianBadge(selected = {}, scope = "") {
       wentianXiaoLianBadgeTimer = 0;
       if (wentianXiaoLianBadgeVisibleKey !== key) return;
       wentianXiaoLianBadgeVisibleKey = "";
-      if (state.route === "screen-27" || state.route === "screen-49") navigatePreservingScroll(state.route, false);
+      view?.querySelectorAll?.(".fc-cell.fc-xiaolian.is-locating").forEach((cell) => cell.classList.remove("fc-xiaolian", "is-locating"));
+      view?.querySelectorAll?.(".fc-xiaolian-badge--primary.is-entering").forEach((badge) => badge.classList.remove("is-entering"));
+      view?.querySelectorAll?.(".fc-xiaolian-badge--secondary.is-visible").forEach((badge) => {
+        badge.classList.remove("is-visible");
+        badge.classList.add("is-fading");
+      });
     }, 5000);
   });
 }
@@ -21220,6 +21225,19 @@ function getWentianClassicXiaoLianBadgeSide(col, row) {
   return "top";
 }
 
+function getWentianClassicXiaoLianCycle(selected = {}) {
+  const selectedAge = Number(selected.age || 0);
+  const items = Array.isArray(selected.items) ? selected.items : [];
+  if (!selectedAge || !items.length) return [];
+  const cycleStart = Math.floor((selectedAge - 1) / 12) * 12 + 1;
+  const cycleEnd = cycleStart + 11;
+  return items.filter((item) => {
+    const age = Number(item?.age || 0);
+    const branch = item?.xiaolianBranch || item?.xiaoLianBranch || "";
+    return !!branch && age >= cycleStart && age <= cycleEnd;
+  });
+}
+
 function renderWentianClassicPalaceCell(palace, activeBranch, options = {}) {
   if (!palace) return "";
   const branch = palace.earthlyBranch || palace.branch || "";
@@ -21231,13 +21249,17 @@ function renderWentianClassicPalaceCell(palace, activeBranch, options = {}) {
   const xiaoLianBranch = selectedXiaoLian.xiaolianBranch || selectedXiaoLian.xiaoLianBranch || "";
   const xiaoLianAge = Number(selectedXiaoLian.age || 0);
   const isXiaoLian = !!xiaoLianBranch && branch === xiaoLianBranch;
+  const cycleEntry = (options.xiaolianCycle || []).find((item) => {
+    const itemBranch = item?.xiaolianBranch || item?.xiaoLianBranch || "";
+    return itemBranch === branch;
+  });
   const readonly = !!options.readonly;
   const canLocateXiaoLian = !readonly || !!options.showXiaoLianLocateInReadonly;
   const showXiaoLianLocate = canLocateXiaoLian
     ? (isXiaoLian && shouldShowWentianXiaoLianBadge(selectedXiaoLian, options.xiaolianLocateScope || ""))
     : false;
-  const persistXiaoLianBadge = isXiaoLian && !!options.persistXiaoLianBadge;
-  const showXiaoLianBadge = showXiaoLianLocate || persistXiaoLianBadge;
+  const persistXiaoLianBadge = !!options.persistXiaoLianBadge;
+  const showXiaoLianBadge = !!cycleEntry && (persistXiaoLianBadge || showXiaoLianLocate);
   const xiaoLianSideClass = showXiaoLianBadge ? ` fc-xiaolian-side-${getWentianClassicXiaoLianBadgeSide(col, row)}` : "";
   const palaceAction = options.palaceAction || "";
   const { coreStars, detailStars } = getWentianClassicDisplayStars(palace);
@@ -21270,15 +21292,23 @@ function renderWentianClassicPalaceCell(palace, activeBranch, options = {}) {
     : row === 3 && col === 3
     ? " fc-corner-br"
     : "";
-  const xiaoLianHtml = isXiaoLian ? `<div class="fc-xiaolian-badge">${escapeHtml(xiaoLianAge ? `${xiaoLianAge}岁` : "小流年")}</div>` : "";
-  const displayXiaoLianHtml = showXiaoLianBadge ? xiaoLianHtml : "";
+  const cycleAge = Number(cycleEntry?.age || 0);
+  const cycleOrder = cycleAge && xiaoLianAge
+    ? ((cycleAge - xiaoLianAge) % 12 + 12) % 12
+    : 0;
+  const xiaoLianBadgeClass = isXiaoLian
+    ? `fc-xiaolian-badge fc-xiaolian-badge--primary${showXiaoLianLocate ? " is-entering" : ""}`
+    : `fc-xiaolian-badge fc-xiaolian-badge--secondary ${options.xiaolianCycleEmphasized ? "is-visible" : "is-fading"}`;
+  const displayXiaoLianHtml = showXiaoLianBadge
+    ? `<div class="${xiaoLianBadgeClass}" aria-hidden="true" style="--xiaolian-order:${cycleOrder};">${escapeHtml(cycleAge ? `${cycleAge}岁` : (xiaoLianAge ? `${xiaoLianAge}岁` : "小流年"))}</div>`
+    : "";
   const cellAttrs = palaceAction
     ? `data-action="${escapeHtml(palaceAction)}" data-palace-branch="${escapeHtml(branch)}" data-palace-name="${escapeHtml(palace.name || branch)}" role="button"`
     : readonly
     ? `data-palace-branch="${escapeHtml(branch)}" data-palace-name="${escapeHtml(palace.name || branch)}"`
     : `data-action="wentian-chart-palace" data-palace-branch="${escapeHtml(branch)}" data-palace-name="${escapeHtml(palace.name || branch)}" role="button"`;
   return `
-    <div class="fc-cell ${highlightClass}${cornerClass}${showXiaoLianBadge ? ` fc-xiaolian${xiaoLianSideClass}${showXiaoLianLocate ? " is-locating" : ""}` : ""}${readonly && !palaceAction ? " is-readonly" : ""}" ${cellAttrs} style="grid-column:${col + 1};grid-row:${row + 1};">
+    <div class="fc-cell ${highlightClass}${cornerClass}${showXiaoLianBadge ? ` fc-xiaolian-cycle${xiaoLianSideClass}` : ""}${showXiaoLianLocate ? " fc-xiaolian is-locating" : ""}${readonly && !palaceAction ? " is-readonly" : ""}" ${cellAttrs} style="grid-column:${col + 1};grid-row:${row + 1};">
       <div class="fc-cell-top">
         <div class="fc-major-list${majorDensityClass}">${majorHtml}</div>
         <div class="fc-minor-list">${minorHtml}</div>
@@ -21518,13 +21548,14 @@ function getWentianClassicDefaultBranch(saved) {
 }
 
 const WENTIAN_CHART_INTRO_SEQUENCE = [
-  { key: "life", label: "命宫", duration: 620, rotation: -4 },
-  { key: "body", label: "身宫", duration: 580, rotation: 4 },
-  { key: "lu", label: "化禄", duration: 520, rotation: -4 },
-  { key: "quan", label: "化权", duration: 520, rotation: 3 },
-  { key: "ke", label: "化科", duration: 520, rotation: -3 },
-  { key: "ji", label: "化忌", duration: 560, rotation: 4 },
+  { key: "life", label: "命宫", duration: 760, rotation: -4 },
+  { key: "body", label: "身宫", duration: 720, rotation: 4 },
+  { key: "lu", label: "化禄", duration: 640, rotation: -4 },
+  { key: "quan", label: "化权", duration: 640, rotation: 3 },
+  { key: "ke", label: "化科", duration: 640, rotation: -3 },
+  { key: "ji", label: "化忌", duration: 680, rotation: 4 },
 ];
+const WENTIAN_CHART_INTRO_PLAYED_KEYS = new Set();
 
 function waitForWentianChartIntro(duration) {
   return new Promise((resolve) => window.setTimeout(resolve, duration));
@@ -21577,44 +21608,60 @@ async function flyWentianChartStamp(chart, grid, layer, stamp) {
   flight.setAttribute("aria-hidden", "true");
   layer.append(flight);
   const flightRect = flight.getBoundingClientRect();
-  const minScale = stamp.key === "life" || stamp.key === "body" ? .42 : .3;
-  const landingScale = Math.min(.82, Math.max(minScale, targetRect.width / Math.max(flightRect.width, 1)));
+  const minScale = stamp.key === "life" || stamp.key === "body" ? .48 : .34;
+  const landingScale = Math.min(.88, Math.max(minScale, targetRect.width / Math.max(flightRect.width, 1)));
   const dx = centerX - targetX;
   const dy = centerY - targetY;
   const at = (x, y, scale, rotation = 0) => `translate(${x}px, ${y}px) translate(-50%, -50%) scale(${scale}) rotate(${rotation}deg)`;
-  const animation = flight.animate([
-    { offset: 0, opacity: 0, filter: "blur(3px)", transform: at(dx, dy - 20, 1.2, stamp.rotation) },
-    { offset: .2, opacity: 1, filter: "blur(0)", transform: at(dx, dy, 1.36, stamp.rotation) },
-    { offset: .68, opacity: 1, filter: "blur(0)", transform: at(0, -14, landingScale * 1.28, stamp.rotation / 3) },
-    { offset: .84, opacity: 1, filter: "blur(0)", transform: at(0, 4, landingScale * .88, 0) },
+  const frames = [
+    { offset: 0, easing: "cubic-bezier(.2,.72,.24,1)", opacity: 0, filter: "blur(3px)", transform: at(dx, dy - 26, 1.28, stamp.rotation) },
+    { offset: .16, easing: "ease-in-out", opacity: 1, filter: "blur(0)", transform: at(dx, dy, 1.45, stamp.rotation) },
+    { offset: .4, easing: "cubic-bezier(.45,0,.68,1)", opacity: 1, filter: "blur(0)", transform: at(dx, dy, 1.38, -stamp.rotation / 2) },
+    { offset: .72, easing: "cubic-bezier(.18,.76,.3,1)", opacity: 1, filter: "blur(0)", transform: at(0, -18, landingScale * 1.35, stamp.rotation / 3) },
+    { offset: .84, easing: "ease-out", opacity: 1, filter: "blur(0)", transform: at(0, 5, landingScale * .86, 0) },
     { offset: 1, opacity: 1, filter: "blur(0)", transform: at(0, 0, landingScale, 0) },
-  ], { duration: stamp.duration, easing: "cubic-bezier(.2,.72,.24,1)", fill: "forwards" });
-  await animation.finished.catch(() => undefined);
+  ];
+  if (typeof flight.animate === "function") {
+    const animation = flight.animate(frames, { duration: stamp.duration, easing: "linear", fill: "forwards" });
+    await animation.finished.catch(() => undefined);
+  } else {
+    flight.style.setProperty("--fc-flight-start", frames[0].transform);
+    flight.style.setProperty("--fc-flight-hold", frames[1].transform);
+    flight.style.setProperty("--fc-flight-press", frames[2].transform);
+    flight.style.setProperty("--fc-flight-drop", frames[3].transform);
+    flight.style.setProperty("--fc-flight-bounce", frames[4].transform);
+    flight.style.setProperty("--fc-flight-end", frames[5].transform);
+    flight.style.setProperty("--fc-flight-duration", `${stamp.duration}ms`);
+    flight.classList.add("is-flying-fallback");
+    await waitForWentianChartIntro(stamp.duration);
+  }
   if (!target.isConnected) return;
   target.classList.remove("is-intro-hidden");
   target.classList.add("is-stamp-landed");
   flight.remove();
   createWentianChartStampImpact(grid, layer, target, stamp.key);
   window.setTimeout(() => target.classList.remove("is-stamp-landed"), 440);
-  await waitForWentianChartIntro(70);
+  await waitForWentianChartIntro(86);
 }
 
 async function runWentianClassicChartIntro(chart) {
   if (!chart || chart.dataset.introPlayed === "true") return;
-  chart.dataset.introPlayed = "true";
   const grid = chart.querySelector(".fc-grid");
   const targets = [...chart.querySelectorAll(".fc-intro-stamp-target")];
   if (!grid || !targets.length) return;
-  const reducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
-  if (reducedMotion || typeof Element.prototype.animate !== "function") {
+  const introKey = chart.dataset.chartIntroKey || "";
+  if (introKey && WENTIAN_CHART_INTRO_PLAYED_KEYS.has(introKey)) {
+    chart.dataset.introPlayed = "true";
     clearWentianChartIntro(chart);
     return;
   }
+  chart.dataset.introPlayed = "true";
+  if (introKey) WENTIAN_CHART_INTRO_PLAYED_KEYS.add(introKey);
   clearWentianChartIntro(chart);
   targets.forEach((target) => target.classList.add("is-intro-hidden"));
   chart.querySelectorAll(".fc-cell").forEach((cell, index) => cell.style.setProperty("--intro-order", String(index)));
   chart.classList.add("is-intro-opening");
-  await waitForWentianChartIntro(560);
+  await waitForWentianChartIntro(680);
   chart.classList.remove("is-intro-opening");
   if (!grid.isConnected) return;
   const layer = document.createElement("div");
@@ -21627,7 +21674,7 @@ async function runWentianClassicChartIntro(chart) {
     }
   } finally {
     targets.forEach((target) => target.classList.remove("is-intro-hidden"));
-    await waitForWentianChartIntro(360);
+    await waitForWentianChartIntro(460);
     layer.remove();
   }
 }
@@ -21936,13 +21983,16 @@ function renderWentianClassicChart(saved, options = {}) {
   const form = source.form || {};
   const chartData = getWentianClassicChartDataForRender(source);
   const selectedXiaoLian = options.selectedXiaoLian || getWentianSelectedXiaoLianYear(chartData);
-  const cellOptions = { ...options, selectedXiaoLian };
+  const xiaolianCycle = getWentianClassicXiaoLianCycle(selectedXiaoLian);
+  const xiaolianCycleEmphasized = shouldShowWentianXiaoLianBadge(selectedXiaoLian, options.xiaolianLocateScope || "");
+  const cellOptions = { ...options, selectedXiaoLian, xiaolianCycle, xiaolianCycleEmphasized };
   const centerOptions = { ...options, selectedXiaoLian };
   const centerSource = { ...source, chart, chartData };
   const activeBranch = options.activeBranch || chart.earthlyBranchOfSoulPalace || (chart.palaces || []).find((p) => p.name === "命宫")?.earthlyBranch || "卯";
   const nodeId = options.nodeId || "source-27-native-chart";
+  const introKey = `${nodeId}:${chartData.chartRecordId || source.archiveId || form.archiveId || `${chart.solarDate || "chart"}-${activeBranch}`}`;
   return `
-    <div class="wentian-native-mingpan${options.readonly ? " is-readonly" : ""}" data-node-id="${escapeHtml(nodeId)}" data-chart-intro="auto">
+    <div class="wentian-native-mingpan${options.readonly ? " is-readonly" : ""}" data-node-id="${escapeHtml(nodeId)}" data-chart-intro="auto" data-chart-intro-key="${escapeHtml(introKey)}">
       <div class="fc-card">
         <div class="fc-grid-wrap">
           <div class="fc-grid">
