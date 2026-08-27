@@ -414,6 +414,7 @@ export default function Home() {
   const yijingPickedOption = yijingQuestion.options.find((item) => item.id === yijingPicked);
   const yijingPickedReveal = yijingPickedOption?.reveal ?? "";
   const baguaArrangement = yijingQuestion.visual.kind === "bagua" ? yijingQuestion.visual.arrangement : "xiantian";
+  const hasLongYijingOptions = yijingQuestion.options.some((item) => item.trigramIndex === undefined && item.label.replace(/\s/g, "").length > 2);
 
   useEffect(() => {
     const savedCorrect = Number(window.localStorage.getItem("ziwei-correct-count") ?? 0);
@@ -495,7 +496,14 @@ export default function Home() {
     if (!mobilePanel) return;
     const dialog = mobileDialogRef.current;
     if (dialog && !dialog.open) dialog.showModal();
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key !== "Escape") return;
+      event.preventDefault();
+      closeMobilePanel();
+    };
+    window.addEventListener("keydown", closeOnEscape);
     return () => {
+      window.removeEventListener("keydown", closeOnEscape);
       if (dialog?.open) dialog.close();
     };
   }, [mobilePanel]);
@@ -874,17 +882,19 @@ export default function Home() {
                       <h2>{prompt}</h2>
                       <p>{question.hint}</p>
                       {activeProgress.level === 3 && durationSeconds > 0 && <div className="countdown">本轮剩余 <b>{remainingLabel}</b></div>}
-                      {question.ordered && question.targets.length > 1 && (
-                        <div className="target-sequence">
-                          {question.targetLabels.map((label, index) => <b className={index < solved.length ? "done" : index === solved.length ? "current" : ""} key={`${label}-${index}`}>{label}</b>)}
+                      <div className="center-round-controls">
+                        {question.ordered && question.targets.length > 1 && (
+                          <div className="target-sequence">
+                            {question.targetLabels.map((label, index) => <b className={index < solved.length ? "done" : index === solved.length ? "current" : ""} key={`${label}-${index}`}>{label}</b>)}
+                          </div>
+                        )}
+                        {!question.ordered && question.targets.length > 1 && <div className="target-progress">已找到 <b>{solved.length}</b> / {question.targets.length}</div>}
+                        <button className={`answer-guide-button ${showAnswers ? "active" : ""}`} type="button" disabled={Boolean(feedback)} onClick={toggleAnswers}>
+                          {showAnswers ? "收起答案，继续作答" : "查看全部答案"}
+                        </button>
+                        <div className={`instant-feedback ${feedback ?? "idle"}`}>
+                          {feedback === "correct" ? `正确 · ${pickedReveal}` : feedback === "wrong" ? `这里是「${pickedReveal}」，再试一次` : showAnswers ? "答案已展开，收起后重新计时" : "点击十二格作答，完成后自动换题"}
                         </div>
-                      )}
-                      {!question.ordered && question.targets.length > 1 && <div className="target-progress">已找到 <b>{solved.length}</b> / {question.targets.length}</div>}
-                      <button className={`answer-guide-button ${showAnswers ? "active" : ""}`} type="button" disabled={Boolean(feedback)} onClick={toggleAnswers}>
-                        {showAnswers ? "收起答案，继续作答" : "查看全部答案"}
-                      </button>
-                      <div className={`instant-feedback ${feedback ?? "idle"}`}>
-                        {feedback === "correct" ? `正确 · ${pickedReveal}` : feedback === "wrong" ? `这里是「${pickedReveal}」，再试一次` : showAnswers ? "答案已展开，收起后重新计时" : "点击十二格作答，完成后自动换题"}
                       </div>
                     </>
                   )}
@@ -919,6 +929,22 @@ export default function Home() {
                   );
                 })}
               </div>
+              {!sessionEnded && (
+                <div className="mobile-board-controls">
+                  {question.ordered && question.targets.length > 1 && (
+                    <div className="target-sequence">
+                      {question.targetLabels.map((label, index) => <b className={index < solved.length ? "done" : index === solved.length ? "current" : ""} key={`mobile-${label}-${index}`}>{label}</b>)}
+                    </div>
+                  )}
+                  {!question.ordered && question.targets.length > 1 && <div className="target-progress">已找到 <b>{solved.length}</b> / {question.targets.length}</div>}
+                  <button className={`answer-guide-button ${showAnswers ? "active" : ""}`} type="button" disabled={Boolean(feedback)} onClick={toggleAnswers}>
+                    {showAnswers ? "收起答案，继续作答" : "查看全部答案"}
+                  </button>
+                  <div className={`instant-feedback ${feedback ?? "idle"}`}>
+                    {feedback === "correct" ? `正确 · ${pickedReveal}` : feedback === "wrong" ? `这里是「${pickedReveal}」，再试一次` : showAnswers ? "答案已展开，收起后重新计时" : "点击十二格作答，完成后自动换题"}
+                  </div>
+                </div>
+              )}
               {boardNote && <div className="board-note"><span />{boardNote}</div>}
             </>
           ) : (
@@ -983,7 +1009,7 @@ export default function Home() {
 
                     {yijingQuestion.targetIds.length > 1 && <div className="target-progress">已找到 <b>{yijingSolved.length}</b> / {yijingQuestion.targetIds.length}</div>}
                     {yijingQuestion.visual.kind !== "bagua" && (
-                      <div className="yijing-options">
+                      <div className={`yijing-options ${hasLongYijingOptions ? "long-options" : "short-options"}`}>
                         {yijingQuestion.options.map((option) => {
                           const isSolved = yijingSolved.includes(option.id);
                           const isPicked = yijingPicked === option.id;
