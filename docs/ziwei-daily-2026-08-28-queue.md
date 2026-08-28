@@ -24,7 +24,7 @@ Recovery-Mode: false
 | 03 | 已发布 2026-08-28 11:26 https://yuetianai.com/articles/ziwei-duoxing-gongwei-xian-kan-zhuxing-zai-kan-sihua.html / https://yuetianai.com/articles/en/ziwei-duoxing-gongwei-xian-kan-zhuxing-zai-kan-sihua.html | ziwei-duoxing-gongwei-xian-kan-zhuxing-zai-kan-sihua | 紫微斗数一个宫里星多先看谁：主星定主线，四化定重点 | 看盘方法 |
 | 04 | 已发布 2026-08-28 13:42 https://yuetianai.com/articles/ziwei-guanlugong-xian-kan-zeren-zai-kan-hangye.html / https://yuetianai.com/articles/en/ziwei-guanlugong-xian-kan-zeren-zai-kan-hangye.html | ziwei-guanlugong-xian-kan-zeren-zai-kan-hangye | 紫微斗数官禄宫先看责任还是行业：职位名字为什么最晚下结论 | 看盘方法 |
 | 05 | 已发布 2026-08-28 14:18 https://yuetianai.com/articles/ziwei-ji-liunian-mei-jieguo-xian-cha-nage-gong.html / https://yuetianai.com/articles/en/ziwei-ji-liunian-mei-jieguo-xian-cha-nage-gong.html | ziwei-ji-liunian-mei-jieguo-xian-cha-nage-gong | 紫微斗数好流年没出结果怎么办：先查吉星点亮的是不是你在问的宫 | 大限流年 |
-| 06 | 待发布 | ziwei-liunian-fumugong-xian-dong-wenjian-haishi-zhangbei | 紫微斗数流年走父母宫，先动文件还是长辈：别把制度压力都当家里出事 | 大限流年 |
+| 06 | 已发布 2026-08-28 15:57 https://yuetianai.com/articles/ziwei-liunian-fumugong-xian-dong-wenjian-haishi-zhangbei.html / https://yuetianai.com/articles/en/ziwei-liunian-fumugong-xian-dong-wenjian-haishi-zhangbei.html | ziwei-liunian-fumugong-xian-dong-wenjian-haishi-zhangbei | 紫微斗数流年走父母宫，先动文件还是长辈：别把制度压力都当家里出事 | 大限流年 |
 | 07 | 待发布 | ziwei-minggong-huaquan-xian-kan-chengjie-zai-pan-guquan | 紫微斗数命宫化权先看主见还是压力：关键在有没有人承接后半程 | 四化细读 |
 | 08 | 待发布 | ziwei-tuoluo-zai-qianyigong-xian-cha-shouxu-haishi-luxian | 紫微斗数陀罗在迁移宫先拖哪一步：手续、路线还是决定 | 辅煞曜 |
 | 09 | 待发布 | ziwei-bankong-zhechi-xian-fang-diaosu-haishi-duanxian | 紫微斗数半空折翅最怕哪种失速：先分换轨卡住还是心气先断 | 格局命例 |
