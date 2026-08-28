@@ -6,7 +6,7 @@ Recovery-Mode: false
 
 ## 发布时间表
 
-01. 2026-08-28 09:18 - 紫微斗数空宫借对宫时，为什么先借味道不先借结果：空宫最怕整句照搬
+01. 2026-08-28 17:26 - 紫微斗数空宫借对宫时，为什么先借味道不先借结果：空宫最怕整句照搬
 02. 2026-08-28 10:07 - 紫微斗数对宫和三方四正谁先上场：先判主轴，再判承接
 03. 2026-08-28 11:26 - 紫微斗数一个宫里星多先看谁：主星定主线，四化定重点
 04. 2026-08-28 13:42 - 紫微斗数官禄宫先看责任还是行业：职位名字为什么最晚下结论
@@ -19,7 +19,7 @@ Recovery-Mode: false
 
 | 顺序 | 状态 | slug | 标题 | 大类 |
 |---|---|---|---|---|
-| 01 | 待发布 | ziwei-konggong-jie-duigong-xianjie-weidao-zai-kan-jieguo | 紫微斗数空宫借对宫时，为什么先借味道不先借结果：空宫最怕整句照搬 | 格局命例 |
+| 01 | 已发布 2026-08-28 17:26 https://yuetianai.com/articles/ziwei-konggong-jie-duigong-xianjie-weidao-zai-kan-jieguo.html / https://yuetianai.com/articles/en/ziwei-konggong-jie-duigong-xianjie-weidao-zai-kan-jieguo.html | ziwei-konggong-jie-duigong-xianjie-weidao-zai-kan-jieguo | 紫微斗数空宫借对宫时，为什么先借味道不先借结果：空宫最怕整句照搬 | 格局命例 |
 | 02 | 待发布 | ziwei-duigong-he-sanfang-xian-kan-zhuzhou-zai-kan-chengjie | 紫微斗数对宫和三方四正谁先上场：先判主轴，再判承接 | 看盘方法 |
 | 03 | 已发布 2026-08-28 11:26 https://yuetianai.com/articles/ziwei-duoxing-gongwei-xian-kan-zhuxing-zai-kan-sihua.html / https://yuetianai.com/articles/en/ziwei-duoxing-gongwei-xian-kan-zhuxing-zai-kan-sihua.html | ziwei-duoxing-gongwei-xian-kan-zhuxing-zai-kan-sihua | 紫微斗数一个宫里星多先看谁：主星定主线，四化定重点 | 看盘方法 |
 | 04 | 已发布 2026-08-28 13:42 https://yuetianai.com/articles/ziwei-guanlugong-xian-kan-zeren-zai-kan-hangye.html / https://yuetianai.com/articles/en/ziwei-guanlugong-xian-kan-zeren-zai-kan-hangye.html | ziwei-guanlugong-xian-kan-zeren-zai-kan-hangye | 紫微斗数官禄宫先看责任还是行业：职位名字为什么最晚下结论 | 看盘方法 |
