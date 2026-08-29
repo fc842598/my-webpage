@@ -20,7 +20,7 @@ Recovery-Mode: false
 | 顺序 | 状态 | slug | 标题 | 大类 |
 |---|---|---|---|---|
 | 01 | 已发布 2026-08-29 09:17 https://yuetianai.com/articles/ziwei-konggong-jieduigong-xiankan-zhuyu-haishi-xingqing.html / https://yuetianai.com/articles/en/ziwei-konggong-jieduigong-xiankan-zhuyu-haishi-xingqing.html | ziwei-konggong-jieduigong-xiankan-zhuyu-haishi-xingqing | 紫微斗数空宫借对宫时，先借主语还是先借星情：本宫问题别被对宫带跑 | 格局命例 |
-| 02 | 待发布 | ziwei-duigong-qiang-sanfang-ruo-xiankan-zhuxian-luodi | 紫微斗数对宫很强、三方偏弱时怎么读：先看主线能不能落地，不先迷信两端很亮 | 看盘方法 |
+| 02 | 已发布 2026-08-29 10:11 https://yuetianai.com/articles/ziwei-duigong-qiang-sanfang-ruo-xiankan-zhuxian-luodi.html / https://yuetianai.com/articles/en/ziwei-duigong-qiang-sanfang-ruo-xiankan-zhuxian-luodi.html | ziwei-duigong-qiang-sanfang-ruo-xiankan-zhuxian-luodi | 紫微斗数对宫很强、三方偏弱时怎么读：先看主线能不能落地，不先迷信两端很亮 | 看盘方法 |
 | 03 | 待发布 | ziwei-minggong-shengong-caibo-dou-liang-shui-ding-bianxian | 紫微斗数命宫和身宫都强时，为什么赚钱点还要再看财帛宫：喜欢做的不一定最能变现 | 宫位组合 |
 | 04 | 待发布 | ziwei-liunian-qianyi-xiankan-pingtai-zai-kan-chengshi | 紫微斗数流年迁移宫动了，为什么先看平台再看城市：外派、客户和搬城不要混成一件事 | 大限流年 |
 | 05 | 待发布 | ziwei-liunian-tianzhai-xiankan-zhuchu-haishi-quanshu | 紫微斗数流年走田宅宫时，先看住处变化还是产权变化：别把每次动静都当成买卖房 | 大限流年 |
