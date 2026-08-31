@@ -22416,8 +22416,6 @@ function renderWentianMobileYijingPanel(saved) {
 
 function sourceZiweiAiDecodePanel() {
   syncWentianChartAiStateFromStorage();
-  const member = getWentianMemberSnapshot();
-  if (!member.isMember) return "";
   const chapters = getWentianChartAiChapters();
   const userStarted = !!wentianChartAiState.userStarted;
   const isRunning = userStarted && wentianChartAiState.status === "running";
@@ -24453,18 +24451,15 @@ document.addEventListener("click", (event) => {
     return;
   }
   if (action === "wentian-chart-ai-decode") {
-    if (!openWentianDeepReadingAccess()) return;
     decodeWentianChartAi();
     return;
   }
   if (action === "wentian-chart-ai-module") {
-    if (!openWentianDeepReadingAccess()) return;
     const moduleKey = event.target.closest("[data-ai-module]")?.dataset.aiModule || "";
     decodeWentianChartAiModule(moduleKey);
     return;
   }
   if (action === "wentian-chart-ai-specials") {
-    if (!openWentianDeepReadingAccess()) return;
     decodeWentianChartAiSpecials();
     return;
   }
@@ -24536,12 +24531,10 @@ document.addEventListener("click", (event) => {
     return;
   }
   if (action === "wentian-chart-ai-curve") {
-    if (!openWentianDeepReadingAccess()) return;
     generateWentianChartCurve();
     return;
   }
   if (action === "wentian-chart-ai-advice") {
-    if (!openWentianDeepReadingAccess()) return;
     decodeWentianChartAiAdvice();
     return;
   }
