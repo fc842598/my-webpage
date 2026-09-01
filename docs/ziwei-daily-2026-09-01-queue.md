@@ -8,7 +8,7 @@ Recovery-Mode: false
 
 01. 2026-09-01 21:13 - 紫微斗数命宫和身宫都强时，为什么赚钱点还要再看财帛宫：喜欢做的不一定最能变现
 02. 2026-09-01 21:13 - 紫微斗数流年迁移宫动了，为什么先看平台再看城市：外派、客户和搬城不要混成一件事
-03. 2026-09-01 11:54 - 紫微斗数流年走田宅宫时，先看住处变化还是产权变化：别把每次动静都当成买卖房
+03. 2026-09-01 21:15 - 紫微斗数流年走田宅宫时，先看住处变化还是产权变化：别把每次动静都当成买卖房
 04. 2026-09-01 13:21 - 紫微斗数化科和化禄一起亮时，先看名声还是收费：被看见不等于钱已经到手
 05. 2026-09-01 14:47 - 紫微斗数化科化忌同盘时，先保哪条线：名声、收费和卡点不要混读
 06. 2026-09-01 16:08 - 紫微斗数科权禄没在一条线上时，先查哪一段没接住：名、责、财别只看同宫
@@ -21,7 +21,7 @@ Recovery-Mode: false
 |---|---|---|---|---|
 | 01 | 已发布 2026-09-01 21:13 https://yuetianai.com/articles/ziwei-minggong-shengong-caibo-dou-liang-shui-ding-bianxian.html / https://yuetianai.com/articles/en/ziwei-minggong-shengong-caibo-dou-liang-shui-ding-bianxian.html | ziwei-minggong-shengong-caibo-dou-liang-shui-ding-bianxian | 紫微斗数命宫和身宫都强时，为什么赚钱点还要再看财帛宫：喜欢做的不一定最能变现 | 宫位组合 |
 | 02 | 已发布 2026-09-01 21:13 https://yuetianai.com/articles/ziwei-liunian-qianyi-xiankan-pingtai-zai-kan-chengshi.html / https://yuetianai.com/articles/en/ziwei-liunian-qianyi-xiankan-pingtai-zai-kan-chengshi.html | ziwei-liunian-qianyi-xiankan-pingtai-zai-kan-chengshi | 紫微斗数流年迁移宫动了，为什么先看平台再看城市：外派、客户和搬城不要混成一件事 | 大限流年 |
-| 03 | 待发布 | ziwei-liunian-tianzhai-xiankan-zhuchu-haishi-quanshu | 紫微斗数流年走田宅宫时，先看住处变化还是产权变化：别把每次动静都当成买卖房 | 大限流年 |
+| 03 | 已发布 2026-09-01 21:15 https://yuetianai.com/articles/ziwei-liunian-tianzhai-xiankan-zhuchu-haishi-quanshu.html / https://yuetianai.com/articles/en/ziwei-liunian-tianzhai-xiankan-zhuchu-haishi-quanshu.html | ziwei-liunian-tianzhai-xiankan-zhuchu-haishi-quanshu | 紫微斗数流年走田宅宫时，先看住处变化还是产权变化：别把每次动静都当成买卖房 | 大限流年 |
 | 04 | 待发布 | ziwei-huake-hualu-tongliang-xian-kan-ming-haishi-shoufei | 紫微斗数化科和化禄一起亮时，先看名声还是收费：被看见不等于钱已经到手 | 四化细读 |
 | 05 | 待发布 | ziwei-huake-huaji-xianbao-natiao-xian | 紫微斗数化科化忌同盘时，先保哪条线：名声、收费和卡点不要混读 | 四化细读 |
 | 06 | 待发布 | ziwei-kequanlu-buzai-yitiaoxian-xiancha-jieduan | 紫微斗数科权禄没在一条线上时，先查哪一段没接住：名、责、财别只看同宫 | 四化细读 |
