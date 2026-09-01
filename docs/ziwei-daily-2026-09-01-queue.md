@@ -14,7 +14,7 @@ Recovery-Mode: false
 06. 2026-09-01 21:18 - 紫微斗数科权禄没在一条线上时，先查哪一段没接住：名、责、财别只看同宫
 07. 2026-09-01 21:19 - 紫微斗数天相在官禄宫，承接辅佐还是准备上主位：先看权限有没有落地
 08. 2026-09-01 21:20 - 紫微斗数火贪格差一点时，差的到底是宫位、火势还是出口：冲劲到了不等于格局成立
-09. 2026-09-01 20:53 - 紫微斗数半空折翅还能接单时，为什么先保现金流：中段掉速不等于整盘翻空
+09. 2026-09-01 21:21 - 紫微斗数半空折翅还能接单时，为什么先保现金流：中段掉速不等于整盘翻空
 10. 2026-09-01 22:41 - 紫微斗数月朗天门破格前先坏哪一层：清明、节奏还是边界
 
 | 顺序 | 状态 | slug | 标题 | 大类 |
@@ -27,5 +27,5 @@ Recovery-Mode: false
 | 06 | 已发布 2026-09-01 21:18 https://yuetianai.com/articles/ziwei-kequanlu-buzai-yitiaoxian-xiancha-jieduan.html / https://yuetianai.com/articles/en/ziwei-kequanlu-buzai-yitiaoxian-xiancha-jieduan.html | ziwei-kequanlu-buzai-yitiaoxian-xiancha-jieduan | 紫微斗数科权禄没在一条线上时，先查哪一段没接住：名、责、财别只看同宫 | 四化细读 |
 | 07 | 已发布 2026-09-01 21:19 https://yuetianai.com/articles/ziwei-tianxiang-guanlu-chengjie-fuzhu-haishi-zhuwei.html / https://yuetianai.com/articles/en/ziwei-tianxiang-guanlu-chengjie-fuzhu-haishi-zhuwei.html | ziwei-tianxiang-guanlu-chengjie-fuzhu-haishi-zhuwei | 紫微斗数天相在官禄宫，承接辅佐还是准备上主位：先看权限有没有落地 | 主星 |
 | 08 | 已发布 2026-09-01 21:20 https://yuetianai.com/articles/ziwei-huotan-ge-cha-yidian-sha-zai-gongwei-huoshi-chukou.html / https://yuetianai.com/articles/en/ziwei-huotan-ge-cha-yidian-sha-zai-gongwei-huoshi-chukou.html | ziwei-huotan-ge-cha-yidian-sha-zai-gongwei-huoshi-chukou | 紫微斗数火贪格差一点时，差的到底是宫位、火势还是出口：冲劲到了不等于格局成立 | 格局命例 |
-| 09 | 待发布 | ziwei-bankong-zhechi-hainegjiedan-xianbao-xianjinliu | 紫微斗数半空折翅还能接单时，为什么先保现金流：中段掉速不等于整盘翻空 | 格局命例 |
+| 09 | 已发布 2026-09-01 21:21 https://yuetianai.com/articles/ziwei-bankong-zhechi-hainegjiedan-xianbao-xianjinliu.html / https://yuetianai.com/articles/en/ziwei-bankong-zhechi-hainegjiedan-xianbao-xianjinliu.html | ziwei-bankong-zhechi-hainegjiedan-xianbao-xianjinliu | 紫微斗数半空折翅还能接单时，为什么先保现金流：中段掉速不等于整盘翻空 | 格局命例 |
 | 10 | 待发布 | ziwei-yuelang-tianmen-poge-xianhuai-qingming-haishi-bianjie | 紫微斗数月朗天门破格前先坏哪一层：清明、节奏还是边界 | 格局命例 |
