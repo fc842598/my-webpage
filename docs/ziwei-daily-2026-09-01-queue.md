@@ -12,7 +12,7 @@ Recovery-Mode: false
 04. 2026-09-01 21:16 - 紫微斗数化科和化禄一起亮时，先看名声还是收费：被看见不等于钱已经到手
 05. 2026-09-01 21:17 - 紫微斗数化科化忌同盘时，先保哪条线：名声、收费和卡点不要混读
 06. 2026-09-01 21:18 - 紫微斗数科权禄没在一条线上时，先查哪一段没接住：名、责、财别只看同宫
-07. 2026-09-01 17:36 - 紫微斗数天相在官禄宫，承接辅佐还是准备上主位：先看权限有没有落地
+07. 2026-09-01 21:19 - 紫微斗数天相在官禄宫，承接辅佐还是准备上主位：先看权限有没有落地
 08. 2026-09-01 19:14 - 紫微斗数火贪格差一点时，差的到底是宫位、火势还是出口：冲劲到了不等于格局成立
 09. 2026-09-01 20:53 - 紫微斗数半空折翅还能接单时，为什么先保现金流：中段掉速不等于整盘翻空
 10. 2026-09-01 22:41 - 紫微斗数月朗天门破格前先坏哪一层：清明、节奏还是边界
@@ -25,7 +25,7 @@ Recovery-Mode: false
 | 04 | 已发布 2026-09-01 21:16 https://yuetianai.com/articles/ziwei-huake-hualu-tongliang-xian-kan-ming-haishi-shoufei.html / https://yuetianai.com/articles/en/ziwei-huake-hualu-tongliang-xian-kan-ming-haishi-shoufei.html | ziwei-huake-hualu-tongliang-xian-kan-ming-haishi-shoufei | 紫微斗数化科和化禄一起亮时，先看名声还是收费：被看见不等于钱已经到手 | 四化细读 |
 | 05 | 已发布 2026-09-01 21:17 https://yuetianai.com/articles/ziwei-huake-huaji-xianbao-natiao-xian.html / https://yuetianai.com/articles/en/ziwei-huake-huaji-xianbao-natiao-xian.html | ziwei-huake-huaji-xianbao-natiao-xian | 紫微斗数化科化忌同盘时，先保哪条线：名声、收费和卡点不要混读 | 四化细读 |
 | 06 | 已发布 2026-09-01 21:18 https://yuetianai.com/articles/ziwei-kequanlu-buzai-yitiaoxian-xiancha-jieduan.html / https://yuetianai.com/articles/en/ziwei-kequanlu-buzai-yitiaoxian-xiancha-jieduan.html | ziwei-kequanlu-buzai-yitiaoxian-xiancha-jieduan | 紫微斗数科权禄没在一条线上时，先查哪一段没接住：名、责、财别只看同宫 | 四化细读 |
-| 07 | 待发布 | ziwei-tianxiang-guanlu-chengjie-fuzhu-haishi-zhuwei | 紫微斗数天相在官禄宫，承接辅佐还是准备上主位：先看权限有没有落地 | 主星 |
+| 07 | 已发布 2026-09-01 21:19 https://yuetianai.com/articles/ziwei-tianxiang-guanlu-chengjie-fuzhu-haishi-zhuwei.html / https://yuetianai.com/articles/en/ziwei-tianxiang-guanlu-chengjie-fuzhu-haishi-zhuwei.html | ziwei-tianxiang-guanlu-chengjie-fuzhu-haishi-zhuwei | 紫微斗数天相在官禄宫，承接辅佐还是准备上主位：先看权限有没有落地 | 主星 |
 | 08 | 待发布 | ziwei-huotan-ge-cha-yidian-sha-zai-gongwei-huoshi-chukou | 紫微斗数火贪格差一点时，差的到底是宫位、火势还是出口：冲劲到了不等于格局成立 | 格局命例 |
 | 09 | 待发布 | ziwei-bankong-zhechi-hainegjiedan-xianbao-xianjinliu | 紫微斗数半空折翅还能接单时，为什么先保现金流：中段掉速不等于整盘翻空 | 格局命例 |
 | 10 | 待发布 | ziwei-yuelang-tianmen-poge-xianhuai-qingming-haishi-bianjie | 紫微斗数月朗天门破格前先坏哪一层：清明、节奏还是边界 | 格局命例 |
