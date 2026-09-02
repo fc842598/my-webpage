@@ -3045,9 +3045,9 @@
       else goToPage("home", { instant: true });
     });
     $("#ylCopyConsultantWechat").addEventListener("click", async function () {
-      var copied = await copyText("aa842598");
+      var copied = await copyText("kcqc1688");
       var status = $("#ylHumanCopyStatus");
-      if (status) status.textContent = copied ? "微信号已复制：aa842598" : "请手动复制微信号：aa842598";
+      if (status) status.textContent = copied ? "微信号已复制：kcqc1688" : "请手动复制微信号：kcqc1688";
     });
     $("#ylRefreshPayBtn").addEventListener("click", refreshHealthPaymentStatus);
     $("#ylPaymentCloseBtn").addEventListener("click", closeHealthPaymentPanel);
