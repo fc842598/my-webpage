@@ -1336,6 +1336,101 @@ input:focus-visible {
   padding: 20px;
 }
 
+.yl-campaign-banner {
+  grid-column: 1 / -1;
+  margin: 0 0 18px;
+  padding: 18px 20px;
+  border: 1px solid rgba(176, 53, 36, .22);
+  border-radius: 18px;
+  background: linear-gradient(135deg, #fff4e1, #fffaf1 55%, #f8ead0);
+  box-shadow: 0 12px 28px rgba(117, 67, 31, .09);
+}
+
+.yl-campaign-banner span {
+  display: inline-flex;
+  margin-bottom: 7px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  color: #fffaf4;
+  background: #aa3828;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: .08em;
+}
+
+.yl-campaign-banner strong { display: block; color: #7e261d; font-size: clamp(22px, 4vw, 30px); line-height: 1.25; }
+.yl-campaign-banner p { margin: 8px 0 0; color: #765f4e; line-height: 1.7; }
+.yl-member-card.is-campaign .yl-plan-option strong,
+.yl-member-card.is-campaign #ylMemberPrice { color: #88796b; text-decoration: line-through; text-decoration-thickness: 2px; }
+.yl-member-card.is-campaign .yl-plan-option strong::after,
+.yl-member-card.is-campaign #ylMemberPrice::after {
+  display: inline-block;
+  margin-left: 9px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  color: #9b3023;
+  background: #fff0d7;
+  font-size: 12px;
+  font-weight: 900;
+  line-height: 1.2;
+  text-decoration: none;
+  vertical-align: middle;
+  content: "限时免费";
+}
+
+html.yl-english-checkout .yl-member-card.is-campaign .yl-plan-option strong::after,
+html.yl-english-checkout .yl-member-card.is-campaign #ylMemberPrice::after { content: "FREE NOW"; }
+
+.yl-campaign-access { width: 100%; margin-top: 16px; }
+.yl-campaign-access.is-active { background: linear-gradient(180deg, #9e3a2a, #7e281e); }
+#ylPaidCheckoutArea { display: contents; }
+#ylPaidCheckoutArea[hidden] { display: none; }
+
+.yl-human-consult {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(220px, 310px);
+  gap: 24px;
+  margin-top: 24px;
+  padding: clamp(18px, 3vw, 28px);
+  border: 1px solid rgba(137, 102, 54, .24);
+  border-radius: 20px;
+  background: linear-gradient(145deg, #fffdf8, #f8efe0);
+}
+.yl-human-consult[hidden] { display: none; }
+
+.yl-human-consult-copy > span { color: #a06d2d; font-size: 12px; font-weight: 900; letter-spacing: .08em; }
+.yl-human-consult h2 { margin: 5px 0 12px; color: #27211c; font-size: clamp(22px, 3vw, 28px); }
+.yl-human-consult p { margin: 0 0 10px; color: #6f6358; line-height: 1.78; }
+.yl-human-consult p strong { color: #8d3528; }
+.yl-human-consult small { display: block; color: #978a7d; line-height: 1.6; }
+.yl-human-consult-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
+.yl-human-consult-actions a,
+.yl-human-consult-actions button {
+  min-height: 42px;
+  padding: 10px 15px;
+  border: 1px solid #c9aa73;
+  border-radius: 10px;
+  color: #6c4b26;
+  background: #fffaf0;
+  font: inherit;
+  font-weight: 800;
+  text-decoration: none;
+  cursor: pointer;
+}
+.yl-human-consult-actions .yl-human-whatsapp { color: #fff; background: #167d50; border-color: #167d50; }
+.yl-human-copy-status { min-height: 24px; margin-top: 7px !important; color: #7f622d !important; font-size: 12px; }
+.yl-human-consult figure { margin: 0; overflow: hidden; align-self: center; border-radius: 14px; text-align: center; }
+.yl-human-consult img { display: block; width: 148%; max-width: none; height: 390px; margin-left: -24%; object-fit: cover; object-position: center 39%; border-radius: 14px; background: #fff; box-shadow: 0 10px 24px rgba(59, 42, 26, .11); }
+.yl-human-consult figcaption { margin-top: 8px; color: #817365; font-size: 12px; }
+
+@media (max-width: 720px) {
+  .yl-human-consult { grid-template-columns: 1fr; }
+  .yl-human-consult figure { width: min(100%, 300px); margin: 0 auto; }
+  .yl-human-consult img { height: 360px; }
+  .yl-human-consult-actions > * { flex: 1 1 150px; text-align: center; }
+}
+
 .yl-checkout-head {
   grid-column: 1 / -1;
   display: flex;

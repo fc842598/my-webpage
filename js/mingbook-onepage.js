@@ -731,6 +731,7 @@
   }
 
   function getDesktopQuotaLabelName(quota = desktopAuthState.quota) {
+    if (quota?.campaignActive) return '活动';
     return quota?.isMember ? '付费' : '免费';
   }
 
@@ -757,6 +758,7 @@
 
   function getDesktopMemberExpiresText(quota = desktopAuthState.quota) {
     if (!quota?.isMember) return '';
+    if (quota?.campaignActive) return '本月限时免费';
     const dateText = formatDesktopMemberDate(getDesktopMemberExpiresAt(quota));
     return dateText ? `有效期至 ${dateText}` : '';
   }
@@ -805,20 +807,21 @@
 
   function updateDesktopMemberEntry() {
     const isMember = !!desktopAuthState.quota?.isMember;
+    const campaignActive = !!desktopAuthState.quota?.campaignActive;
     const product = getDesktopMemberProduct();
     const expiresText = getDesktopMemberExpiresText();
     const label = $('#mbpMemberPayLabel');
     const meta = $('#mbpMemberPayMeta');
     const trigger = $('#mbpMemberPayTrigger');
-    if (label) label.textContent = '月卡';
-    if (meta) meta.textContent = isMember ? (expiresText ? expiresText.replace('有效期', '') : '月卡有效') : '¥19.90起';
+    if (label) label.textContent = campaignActive ? '限时免费' : '月卡';
+    if (meta) meta.textContent = campaignActive ? '注册账号已生效' : (isMember ? (expiresText ? expiresText.replace('有效期', '') : '月卡有效') : '¥19.90起');
     if (trigger) {
       trigger.classList.toggle('is-member', isMember);
       trigger.disabled = desktopPaymentState.loading;
     }
     const authPay = $('#mbpAuthMemberPay');
     if (authPay) {
-      authPay.textContent = isMember ? '续费月卡' : '选择月卡';
+      authPay.textContent = campaignActive ? '活动说明与人工咨询' : (isMember ? '续费月卡' : '选择月卡');
       authPay.disabled = desktopAuthState.loading || desktopPaymentState.loading;
     }
   }

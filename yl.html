@@ -294,6 +294,11 @@
 
     <section class="yl-page yl-member-wrap" id="member" data-page="member">
       <div class="yl-member-card">
+        <section class="yl-campaign-banner" id="ylCampaignBanner" aria-live="polite" hidden>
+          <span id="ylCampaignEyebrow">9月大促</span>
+          <strong id="ylCampaignTitle">注册账号，限时免费使用</strong>
+          <p id="ylCampaignDescription">注册并登录后，可免费使用不限命主人数的完整排盘、深度解读与每天100次追问。</p>
+        </section>
         <section class="yl-plan-picker" aria-labelledby="ylPlanPickerTitle">
           <div class="yl-plan-picker-head">
             <strong id="ylPlanPickerTitle">选择月卡</strong>
@@ -339,22 +344,45 @@
           </div>
           <button type="button" id="ylCheckoutAccountBtn">登录 / 注册</button>
         </div>
-        <div class="yl-pay-heading">
-          <strong>选择支付方式</strong>
-          <span>请核对金额后付款</span>
+        <div id="ylPaidCheckoutArea">
+          <div class="yl-pay-heading">
+            <strong>选择支付方式</strong>
+            <span>请核对金额后付款</span>
+          </div>
+          <div class="yl-pay-row" aria-label="支付方式">
+            <button type="button" class="yl-pay-method is-active" data-provider="wechat">微信支付</button>
+            <button type="button" class="yl-pay-method" data-provider="alipay">支付宝</button>
+            <button type="button" class="yl-pay-method" data-provider="paypal">PayPal</button>
+            <button type="button" class="yl-pay-method" data-provider="paypal_card">国际银行卡</button>
+          </div>
+          <button class="yl-btn yl-btn-primary" type="button" id="ylOpenPayBtn">登录后继续付款</button>
+          <div class="yl-mobile-assurance" aria-label="支付保障">
+            <span>付款成功后自动开通</span>
+            <span>保留订单号可联系支持</span>
+          </div>
         </div>
-        <div class="yl-pay-row" aria-label="支付方式">
-          <button type="button" class="yl-pay-method is-active" data-provider="wechat">微信支付</button>
-          <button type="button" class="yl-pay-method" data-provider="alipay">支付宝</button>
-          <button type="button" class="yl-pay-method" data-provider="paypal">PayPal</button>
-          <button type="button" class="yl-pay-method" data-provider="paypal_card">国际银行卡</button>
-        </div>
-        <button class="yl-btn yl-btn-primary" type="button" id="ylOpenPayBtn">登录后继续付款</button>
-        <div class="yl-mobile-assurance" aria-label="支付保障">
-          <span>付款成功后自动开通</span>
-          <span>保留订单号可联系支持</span>
-        </div>
+        <button class="yl-btn yl-btn-primary yl-campaign-access" type="button" id="ylCampaignAccessBtn" hidden>注册 / 登录后免费使用</button>
         <a class="yl-member-return" id="ylMemberReturnLink" href="#home" hidden>返回原页面</a>
+
+        <section class="yl-human-consult" id="ylHumanConsult" aria-labelledby="ylHumanConsultTitle" hidden>
+          <div class="yl-human-consult-copy">
+            <span id="ylHumanConsultEyebrow">人工通道 · 9月限时免费咨询</span>
+            <h2 id="ylHumanConsultTitle">人工命理师答疑</h2>
+            <p><strong id="ylHumanConsultPromo">2026年9月是网站宣传月，注册用户可申请免费人工命理咨询。</strong>因个人时间有限，通常会在48小时内回复，请勿重复催问。</p>
+            <p>服务以命盘结构梳理和现实问题答疑为主，必要时提供居住方位与空间使用建议。本次宣传月人工答疑不收费；不会提供画符、解咒等服务，不推销所谓“转运”物品，不以消灾改运为由收费，也不承诺改变命运。</p>
+            <small>咨询内容仅用于传统文化交流与个人决策参考。</small>
+            <div class="yl-human-consult-actions">
+              <a class="yl-human-whatsapp" href="https://wa.me/8615989267747?text=%E4%BD%A0%E5%A5%BD%EF%BC%8C%E6%88%91%E6%98%AF%E9%98%85%E5%A4%A9AI%E7%9A%84%E6%B3%A8%E5%86%8C%E7%94%A8%E6%88%B7%EF%BC%8C%E6%83%B3%E7%94%B3%E8%AF%B7%E4%BA%BA%E5%B7%A5%E5%91%BD%E7%90%86%E7%AD%94%E7%96%91%E3%80%82" target="_blank" rel="noopener noreferrer">WhatsApp 联系</a>
+              <button type="button" id="ylCopyConsultantWechat">复制微信号 aa842598</button>
+            </div>
+            <p class="yl-human-copy-status" id="ylHumanCopyStatus" aria-live="polite"></p>
+          </div>
+          <figure>
+            <img src="./images/wechat-xu-master-qr.jpg" alt="许大师微信二维码">
+            <figcaption>微信扫码添加 · 微信号 aa842598</figcaption>
+          </figure>
+        </section>
+
         <div class="yl-payment-panel" id="ylPaymentPanel" role="dialog" aria-modal="true" aria-label="支付窗口" aria-describedby="ylPaymentStatus" hidden>
           <button class="yl-payment-close" type="button" id="ylPaymentCloseBtn" aria-label="关闭支付窗口">×</button>
           <div class="yl-payment-status" id="ylPaymentStatus">请选择支付方式后创建订单。</div>

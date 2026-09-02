@@ -233,6 +233,7 @@
     isMember: false,
     membershipLoaded: false,
     memberExpiresAt: "",
+    campaign: null,
     providers: [],
     product: null,
     message: "",
@@ -274,7 +275,7 @@
       var active = button.dataset.productKey === product.productKey;
       button.classList.toggle("is-active", active);
       button.setAttribute("aria-pressed", active ? "true" : "false");
-      button.disabled = paymentState.loading || paymentState.status === "pending";
+      button.disabled = paymentState.loading || paymentState.status === "pending" || hasRegisteredFreeCampaignAccess();
     });
     var planName = $("#ylSelectedPlanName");
     var planPrice = $("#ylMemberPrice");
@@ -1036,6 +1037,61 @@
     return paymentState.isMember || paymentState.status === "paid";
   }
 
+  function isRegisteredFreeCampaign() {
+    return !!paymentState.campaign?.active;
+  }
+
+  function hasRegisteredFreeCampaignAccess() {
+    return isRegisteredFreeCampaign() && !!readAuthSession() && !!state.quota?.campaignActive;
+  }
+
+  function renderRegisteredFreeCampaign() {
+    var campaign = paymentState.campaign || {};
+    var active = !!campaign.active;
+    var hasAccess = hasRegisteredFreeCampaignAccess();
+    var memberCard = $(".yl-member-card");
+    if (memberCard) memberCard.classList.toggle("is-campaign", active);
+
+    var banner = $("#ylCampaignBanner");
+    if (banner) banner.hidden = !active;
+    var monthLabel = campaign.monthLabel || "本月";
+    var eyebrow = $("#ylCampaignEyebrow");
+    var title = $("#ylCampaignTitle");
+    var description = $("#ylCampaignDescription");
+    if (eyebrow) eyebrow.textContent = IS_ENGLISH_CHECKOUT ? "Limited-time campaign" : monthLabel + "大促";
+    if (title) title.textContent = IS_ENGLISH_CHECKOUT ? "Create an account and use it free for a limited time" : "注册账号，限时免费使用";
+    if (description) description.textContent = IS_ENGLISH_CHECKOUT
+      ? "Sign in to use full charts, in-depth readings and up to 100 follow-up questions per day during the campaign."
+      : "注册并登录后，可免费使用不限命主人数的完整排盘、深度解读与每天100次追问。";
+
+    var paidArea = $("#ylPaidCheckoutArea");
+    if (paidArea) paidArea.hidden = active;
+    var humanConsult = $("#ylHumanConsult");
+    if (humanConsult) humanConsult.hidden = !active;
+    var humanEyebrow = $("#ylHumanConsultEyebrow");
+    var humanPromo = $("#ylHumanConsultPromo");
+    if (humanEyebrow) humanEyebrow.textContent = IS_ENGLISH_CHECKOUT
+      ? "Human service · Free during the campaign"
+      : "人工通道 · " + monthLabel + "限时免费咨询";
+    if (humanPromo) humanPromo.textContent = IS_ENGLISH_CHECKOUT
+      ? "Registered users can request one free human consultation during this campaign."
+      : (campaign.year || new Date().getFullYear()) + "年" + monthLabel + "是网站宣传月，注册用户可申请免费人工命理咨询。";
+    if (active && humanConsult && new URLSearchParams(location.search).get("service") === "human" && humanConsult.dataset.autoScrolled !== "1") {
+      humanConsult.dataset.autoScrolled = "1";
+      window.setTimeout(function () {
+        humanConsult.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 60);
+    }
+    var campaignButton = $("#ylCampaignAccessBtn");
+    if (campaignButton) {
+      campaignButton.hidden = !active;
+      campaignButton.classList.toggle("is-active", hasAccess);
+      campaignButton.textContent = hasAccess
+        ? (IS_ENGLISH_CHECKOUT ? "Free access active · Start using" : "限时免费权益已生效 · 开始使用")
+        : (IS_ENGLISH_CHECKOUT ? "Sign in or register for free access" : "注册 / 登录后免费使用");
+    }
+  }
+
   function getMemberExpiresAt() {
     var quota = state.quota || {};
     return paymentState.memberExpiresAt
@@ -1081,6 +1137,7 @@
     var quota = state.quota || {};
     var loaded = paymentState.membershipLoaded || paymentState.isMember || !!quota.plan;
     var isMember = isHealthMember() || quota.isMember;
+    var campaignActive = !!quota.campaignActive;
     var expiresAt = getMemberExpiresAt();
     var dateText = formatMemberExpiryDate(expiresAt);
     var days = getMemberRemainingDays(expiresAt);
@@ -1108,11 +1165,18 @@
       : "命主人数 " + chartUsed + "/" + chartLimit + " 位";
 
     wrap.hidden = false;
-    wrap.dataset.plan = loaded ? (isMember ? "member" : "free") : "loading";
+    wrap.dataset.plan = loaded ? (campaignActive ? "campaign" : (isMember ? "member" : "free")) : "loading";
     if (!loaded) {
       if (plan) plan.textContent = "会员状态";
       if (expiry) expiry.textContent = "正在读取会员状态";
       if (remaining) remaining.textContent = "请稍候";
+      return;
+    }
+
+    if (campaignActive) {
+      if (plan) plan.textContent = quota.planName || "限时免费体验";
+      if (expiry) expiry.textContent = "注册账号已获得本月免费权益";
+      if (remaining) remaining.textContent = quotaText + " · " + chartText;
       return;
     }
 
@@ -1669,6 +1733,7 @@
   function renderPayment() {
     var accountConfirmed = hasHealthPaymentAuth();
     renderMemberPlanSelection();
+    renderRegisteredFreeCampaign();
     var payRow = $(".yl-pay-row");
     if (payRow) payRow.classList.toggle("is-alipay-disabled", !ALIPAY_CHECKOUT_VISIBLE);
     $all(".yl-pay-method").forEach(function (button) {
@@ -1836,7 +1901,9 @@
     if (authSession) {
       if (checkoutLabel) checkoutLabel.textContent = formatHealthAccountLabel(authSession.user);
       if (checkoutMeta) {
-        checkoutMeta.textContent = paymentConfirmed
+        checkoutMeta.textContent = hasRegisteredFreeCampaignAccess()
+          ? (IS_ENGLISH_CHECKOUT ? "Limited-time free access is active" : "限时免费体验已生效，无需付款")
+          : paymentConfirmed
           ? (IS_ENGLISH_CHECKOUT
             ? (paymentState.isMember ? "Paid plan · payment account confirmed" : "Payment account confirmed")
             : (paymentState.isMember ? "付费会员 · 当前付款账号已确认" : "当前付款账号已确认"))
@@ -1924,9 +1991,11 @@
         ? (registering ? "正在注册..." : "正在确认账号...")
         : (healthAuthState.reauth ? "确认并继续付款" : (registering ? "注册并登录" : "登录并继续")));
     var goPayButton = $("#ylHealthGoPayBtn");
-    if (goPayButton) goPayButton.textContent = IS_ENGLISH_CHECKOUT
-      ? (paymentState.isMember ? "Renew Monthly Pass" : "Choose a Monthly Pass")
-      : (paymentState.isMember ? "续费月卡" : "选择月卡");
+    if (goPayButton) goPayButton.textContent = hasRegisteredFreeCampaignAccess()
+      ? (IS_ENGLISH_CHECKOUT ? "Start free access" : "开始免费使用")
+      : (IS_ENGLISH_CHECKOUT
+        ? (paymentState.isMember ? "Renew Monthly Pass" : "Choose a Monthly Pass")
+        : (paymentState.isMember ? "续费月卡" : "选择月卡"));
   }
 
   function setHealthAuthMode(mode) {
@@ -2178,6 +2247,7 @@
       if (requestedProductKey !== HEALTH_PRODUCT_KEY) return;
       if (data.product) paymentState.product = data.product;
       if (data.quota) state.quota = { ...data.quota, chartUsage: data.chartUsage || null };
+      paymentState.campaign = data.campaign || null;
       paymentState.isMember = !!(data.productEntitlement?.isMember || data.quota?.isMember);
       paymentState.memberExpiresAt = data.productEntitlement?.expiresAt
         || data.quota?.memberExpiresAt
@@ -2663,6 +2733,19 @@
 
   async function startHealthPayment() {
     if (paymentState.loading) return;
+    if (isRegisteredFreeCampaign()) {
+      if (!readAuthSession()) {
+        openHealthAuthPanel(IS_ENGLISH_CHECKOUT
+          ? "Sign in or create an account to activate limited-time free access."
+          : "请先注册或登录，登录后自动获得限时免费权益。", { reauth: false });
+        return;
+      }
+      await hydratePaymentProduct();
+      paymentState.status = "";
+      paymentState.message = "";
+      renderPayment();
+      return;
+    }
     if (isPayPalProvider(paymentState.provider) && !PAYPAL_CHECKOUT_VISIBLE) {
       paymentState.provider = "wechat";
       paymentState.status = "";
@@ -2951,6 +3034,21 @@
       event.stopImmediatePropagation();
       startHealthPayment();
     }, true);
+    $("#ylCampaignAccessBtn").addEventListener("click", function () {
+      if (!readAuthSession()) {
+        openHealthAuthPanel(IS_ENGLISH_CHECKOUT
+          ? "Sign in or create an account to activate limited-time free access."
+          : "请注册或登录，登录后自动获得限时免费权益。", { reauth: false });
+        return;
+      }
+      if (memberCheckoutContext?.returnPath) window.location.href = memberCheckoutContext.returnPath;
+      else goToPage("home", { instant: true });
+    });
+    $("#ylCopyConsultantWechat").addEventListener("click", async function () {
+      var copied = await copyText("aa842598");
+      var status = $("#ylHumanCopyStatus");
+      if (status) status.textContent = copied ? "微信号已复制：aa842598" : "请手动复制微信号：aa842598";
+    });
     $("#ylRefreshPayBtn").addEventListener("click", refreshHealthPaymentStatus);
     $("#ylPaymentCloseBtn").addEventListener("click", closeHealthPaymentPanel);
     $("#ylMockPayBtn").addEventListener("click", completeMockPayment);
@@ -3053,7 +3151,7 @@
       event.stopImmediatePropagation();
       closeHealthPaymentPanel();
     }, true);
-    if (readAuthSession() && !paymentHandoffCaptured) hydratePaymentProduct();
+    if (!paymentHandoffCaptured) hydratePaymentProduct();
     else {
       renderPayment();
       setPayHint("");
