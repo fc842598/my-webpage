@@ -7650,7 +7650,7 @@ html[data-wentian-language="en"] .liuren-hero-copy em {
   transform: translate(-50%, -50%) scale(.90);
   backface-visibility: hidden;
   will-change: opacity, transform;
-  animation: liurenBadgePulse calc(var(--liuren-step-duration, .2s) + .10s) linear var(--pulse-delay) 1 both;
+  animation: liurenBadgePulse calc(var(--liuren-step-duration, .2s) + var(--liuren-pulse-tail-duration, .1s)) linear var(--pulse-delay) 1 both;
 }
 
 .liuren-palace-pulse i {
@@ -8100,7 +8100,7 @@ html[data-wentian-language="en"] .liuren-hero-copy em {
 
 #liuren-result.is-revealing .liuren-result-card {
   opacity: 0;
-  animation: liurenResultReveal .48s cubic-bezier(.2, .8, .2, 1) .46s forwards;
+  animation: liurenResultReveal .34s cubic-bezier(.2, .8, .2, 1) .32s forwards;
 }
 
 @keyframes liurenCastingDot {
