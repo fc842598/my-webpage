@@ -18521,9 +18521,9 @@ function buildYangzhaiResults() {
 
 function getYangzhaiResultCardHeight(item) {
   const descLines = Math.max(4, String(item?.desc || "").split("\n").reduce((sum, line) => {
-    return sum + Math.max(1, Math.ceil(line.length / 24));
+    return sum + Math.max(1, Math.ceil(line.length / 20));
   }, 0));
-  return Math.max(YANGZHAI_RESULT_CARD_HEIGHT, 104 + descLines * 19);
+  return Math.max(YANGZHAI_RESULT_CARD_HEIGHT, 112 + descLines * 25);
 }
 
 function getYangzhaiResultHeight() {
@@ -18845,7 +18845,7 @@ function sourceYangzhaiResultScreen() {
     ${figText("yz44-head-meta", results.length ? `已生成 ${results.length} 条解读` : "尚未排布", 226, 111, 142, 12, "#9f4032", 700, "right", "font-family:'Noto Sans SC','Microsoft YaHei',sans-serif;")}
     ${yangzhaiCompassShell("yz44", true)}
     ${yangzhaiActions("yz44", "重新分析", YANGZHAI_RESULT_ACTION_Y)}
-    ${figText("yz44-result-title", "解读结果", 246, YANGZHAI_RESULT_TITLE_Y - 1, 122, 17, "#2b251c", 900, "right", "font-family:'Noto Serif SC','Songti SC',serif;")}
+    ${figText("yz44-result-title", "解读结果", 226, YANGZHAI_RESULT_TITLE_Y - 3, 142, 20, "#2b251c", 900, "right", "font-family:'Noto Serif SC','Songti SC',serif;")}
     ${!results.length ? `
       ${figBox("yz44-empty", 20, YANGZHAI_RESULT_START_Y, 350, 118, "", "border:1px solid #dcceb8;border-radius:14px;background:#fffdf8;box-shadow:0 10px 22px rgba(70,45,25,.06);")}
       ${yangzhaiCorner("yz44-empty-tl", 26, YANGZHAI_RESULT_START_Y + 6)}
@@ -18869,10 +18869,10 @@ function sourceYangzhaiResultScreen() {
         ${yangzhaiCorner(`yz44-card-${index}-br`, 364, y + cardHeight - 6, true, true)}
         ${figBox(`yz44-avatar-${index}`, 36, y + 22, 36, 36, "", "border:1px solid #dcceb8;border-radius:18px;background:#f2e9da;")}
         ${figText(`yz44-avatar-text-${index}`, item.short, 36, y + (shortSize < 12 ? 32 : 31), 36, shortSize, "#7b3129", 900, "center", "font-family:'Noto Serif SC','Songti SC',serif;")}
-        ${figText(`yz44-title-${index}`, item.title, 84, y + 20, 214, 15, "#2b251c", 900, "left", "font-family:'Noto Sans SC','Microsoft YaHei',sans-serif;")}
+        ${figText(`yz44-title-${index}`, item.title, 84, y + 19, 248, 17, "#2b251c", 900, "left", "font-family:'Noto Sans SC','Microsoft YaHei',sans-serif;line-height:1.35;")}
         ${figBox(`yz44-tag-${index}`, 250, y + 48, 82, 26, "", "border:1px solid #ead9bd;border-radius:13px;background:#fff1dc;")}
-        ${figText(`yz44-tag-text-${index}`, tag, 250, y + 55, 82, 11, "#8a5a22", 800, "center", "line-height:1.1;")}
-        ${figText(`yz44-desc-${index}`, item.desc, 42, y + 84, 300, 12, "#4c433a", 600, "left", "line-height:1.55;")}
+        ${figText(`yz44-tag-text-${index}`, tag, 250, y + 54, 82, 12, "#8a5a22", 800, "center", "line-height:1.15;")}
+        ${figText(`yz44-desc-${index}`, item.desc, 42, y + 86, 300, 15, "#3f372f", 600, "left", "line-height:1.65;")}
       `;
     }).join("")}
     ${figBox("yz44-tip", 20, height - 153, 350, 44, "", "border-radius:12px;background:#fffdf8;")}
