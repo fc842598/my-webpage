@@ -18960,8 +18960,11 @@ const LIUREN_HAND_BADGE_COLORS = [
   { accent: "#c39531", glow: "rgba(195,149,49,.32)", soft: "rgba(195,149,49,.14)" },
   { accent: "#6f91a1", glow: "rgba(111,145,161,.23)", soft: "rgba(111,145,161,.10)" }
 ];
-const LIUREN_FLASH_INTERVAL_SECONDS = 0.2;
-const LIUREN_PULSE_TAIL_SECONDS = 0.1;
+const LIUREN_ANIMATION_DURATION_SCALE = 0.7;
+const LIUREN_FLASH_INTERVAL_SECONDS = 0.2 * LIUREN_ANIMATION_DURATION_SCALE;
+const LIUREN_PULSE_TAIL_SECONDS = 0.1 * LIUREN_ANIMATION_DURATION_SCALE;
+const LIUREN_FINAL_REVEAL_DELAY_SECONDS = 0.52 * LIUREN_ANIMATION_DURATION_SCALE;
+const LIUREN_REDUCED_MOTION_DURATION_MS = Math.round(360 * LIUREN_ANIMATION_DURATION_SCALE);
 const LIUREN_SCREEN_HEIGHT = 1220;
 
 const OFFICE_LAYOUT_STORAGE_KEY = "wentian-office-layout-state-v1";
@@ -19661,9 +19664,9 @@ function renderLiurenPath(result, reveal = true, options = {}) {
   ];
   const activePalace = reveal ? result.palace.name : "待起课";
   const visualSequence = animate ? getLiurenVisualSequence(result) : [];
-  const finalDelay = reveal ? 0.52 : 0;
+  const finalDelay = reveal ? LIUREN_FINAL_REVEAL_DELAY_SECONDS : 0;
   return `
-    <div class="liuren-hand-board ${animate ? "is-casting" : reveal ? "is-revealed" : "is-idle"}" style="--liuren-step-duration:${LIUREN_FLASH_INTERVAL_SECONDS.toFixed(2)}s;--liuren-final-delay:${finalDelay.toFixed(2)}s;" aria-label="小六壬掌诀三指六位推演图" aria-busy="${animate ? "true" : "false"}">
+    <div class="liuren-hand-board ${animate ? "is-casting" : reveal ? "is-revealed" : "is-idle"}" style="--liuren-step-duration:${LIUREN_FLASH_INTERVAL_SECONDS.toFixed(2)}s;--liuren-pulse-tail-duration:${LIUREN_PULSE_TAIL_SECONDS.toFixed(2)}s;--liuren-final-delay:${finalDelay.toFixed(2)}s;" aria-label="小六壬掌诀三指六位推演图" aria-busy="${animate ? "true" : "false"}">
       <img src="../images/wentian-prototype-assets/liuren-hand-board-base.webp" alt="" aria-hidden="true" loading="eager" decoding="sync" fetchpriority="high">
       <div class="liuren-palace-layer" aria-hidden="true">${renderLiurenPalaceBadges(result, reveal)}</div>
       ${animate ? `<div class="liuren-palace-pulses" aria-hidden="true">${renderLiurenPalacePulses(result)}</div>` : ""}
@@ -19676,7 +19679,7 @@ function renderLiurenPath(result, reveal = true, options = {}) {
 }
 
 function getLiurenVisualDurationMs(result) {
-  if (window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches) return 360;
+  if (window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches) return LIUREN_REDUCED_MOTION_DURATION_MS;
   const steps = getLiurenVisualSequence(result).length;
   return Math.ceil((steps * LIUREN_FLASH_INTERVAL_SECONDS + LIUREN_PULSE_TAIL_SECONDS) * 1000);
 }
