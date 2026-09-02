@@ -2,19 +2,25 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://yuetianai.com/articles/en/</loc>
-    <lastmod>2026-09-02T14:42:00+08:00</lastmod>
+    <lastmod>2026-09-02T15:58:00+08:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://yuetianai.com/articles/en/feed.xml</loc>
-    <lastmod>2026-09-02T14:42:00+08:00</lastmod>
+    <lastmod>2026-09-02T15:58:00+08:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://yuetianai.com/articles/en/ai-fortune-telling-search-qa.html</loc>
     <lastmod>2026-06-24T00:00:00+08:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://yuetianai.com/articles/en/ziwei-huake-caibo-you-renke-baojia-tibuqilai.html</loc>
+    <lastmod>2026-09-02T15:58:00+08:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
