@@ -10586,20 +10586,15 @@ p.mbp-topic-detail {
 }
 
 .chat-msg-assistant::before {
-  content: "仙";
+  content: "";
   grid-column: 1;
   grid-row: 1 / span 2;
   width: 28px;
   height: 28px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: block;
   border-radius: 50%;
-  background: #241e18;
+  background: #241e18 url("../images/wentian-prototype-assets/xu-dashi.webp") center 18% / cover no-repeat;
   border: 1px solid rgba(201, 168, 120, .22);
-  color: #c9a878;
-  font-size: 13px;
-  font-weight: 700;
 }
 
 .chat-msg-user {
