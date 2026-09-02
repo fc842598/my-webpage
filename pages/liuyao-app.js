@@ -215,6 +215,21 @@ async function postJson(path, payload, timeoutMs = 6000) {
     clearTimeout(timer);
   }
 }
+const liuyaoFeatureEventTimes = new Map();
+function trackLiuyaoFeatureEvent(action, resultSummary = '', metadata = {}, dedupeKey = '') {
+  if (!getWentianAuthToken()) return;
+  const key = dedupeKey || `${action}:${resultSummary}`;
+  const now = Date.now();
+  if (now - (liuyaoFeatureEventTimes.get(key) || 0) < 30000) return;
+  liuyaoFeatureEventTimes.set(key, now);
+  postJson('/api/analytics/feature-event', {
+    feature: 'liuyao',
+    action,
+    route: '/pages/liuyao-v2.html',
+    resultSummary,
+    metadata: { ...metadata, source: 'liuyao-v2' }
+  }, 6000).catch(() => {});
+}
 async function refreshRemoteQuota(currentQuota) {
   const clientId = getClientId();
   const data = await postJson('/api/ai/liuyao-question', {
@@ -2369,10 +2384,18 @@ function ResultStep({
     }).then(data => {
       if (!alive) return;
       setAi(flattenReadingResponse(data, fallbackAi) || fallbackAi);
+      trackLiuyaoFeatureEvent('completed', `第${hex.number}卦 ${hex.name} · AI解读完成`, {
+        hexagram: `${hex.number} ${hex.name}`,
+        mode: results?.some(item => Array.isArray(item?.coins)) ? 'online_coin' : 'manual'
+      }, `result:${hex.number}:${vals.join('-')}`);
     }).catch(() => {
       if (!alive) return;
       setAiError('后台解卦暂时繁忙，先显示基础解读。');
       setAi(fallbackAi);
+      trackLiuyaoFeatureEvent('completed', `第${hex.number}卦 ${hex.name} · 基础解读完成`, {
+        hexagram: `${hex.number} ${hex.name}`,
+        mode: results?.some(item => Array.isArray(item?.coins)) ? 'online_coin' : 'manual'
+      }, `result:${hex.number}:${vals.join('-')}`);
     }).finally(() => {
       if (alive) setLoadingAi(false);
     });
@@ -2612,6 +2635,9 @@ function App() {
   const [reviewing, setReviewing] = useState(false);
   const tossInFlightRef = useRef(false);
   const tossCooldownRef = useRef(null);
+  useEffect(() => {
+    trackLiuyaoFeatureEvent('opened', '进入功能', {}, 'open');
+  }, []);
   useEffect(() => {
     if (typeof DeviceMotionEvent !== 'undefined' && typeof DeviceMotionEvent.requestPermission !== 'function') {
       setShakeReady(true);

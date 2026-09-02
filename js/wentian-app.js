@@ -7811,6 +7811,7 @@ function confirmWentianHepanSelection() {
   const ids = getWentianHepanSelectedIds(archives);
   const validation = getWentianHepanValidation(archives, ids);
   if (!validation.ok) {
+    trackWentianFeatureEvent("hepan", "failed", validation.message || validation.reason || "档案条件未满足", { source: "wentian-app" });
     navigate("screen-11", false);
     return;
   }
@@ -8208,6 +8209,11 @@ async function requestWentianHepanAiJudgement(result, key) {
 function initWentianHepanAiJudgement(options = {}) {
   const result = getWentianHepanResult();
   if (!result.ok) return;
+  trackWentianFeatureEvent("hepan", "completed", `${result.level} · ${result.total}分`, {
+    score: result.total,
+    level: result.level,
+    source: "wentian-app",
+  }, { dedupeKey: `hepan:completed:${getWentianHepanAiKey(result)}`, dedupeMs: 30 * 60 * 1000 });
   window.requestAnimationFrame(() => initWentianClassicChartIntros(view));
   const key = getWentianHepanAiKey(result);
   if (!key) return;
@@ -10863,6 +10869,41 @@ async function getWentianAuthToken() {
 async function getWentianAuthHeaders() {
   const token = await getWentianAuthToken();
   return token ? { Authorization: `Bearer ${token}` } : {};
+}
+
+const wentianFeatureEventTimes = new Map();
+const WENTIAN_TRACKED_ROUTE_FEATURES = Object.freeze({
+  "screen-11": "hepan",
+  "screen-27": "ziwei",
+  "screen-42": "yangzhai",
+  "screen-46": "liuren",
+  "screen-50": "office_layout",
+});
+
+async function trackWentianFeatureEvent(feature, action, resultSummary = "", metadata = {}, options = {}) {
+  const token = await getWentianAuthToken();
+  if (!token) return;
+  const dedupeKey = options.dedupeKey || `${feature}:${action}:${state.route}:${resultSummary}`;
+  const now = Date.now();
+  const lastAt = wentianFeatureEventTimes.get(dedupeKey) || 0;
+  if (now - lastAt < (options.dedupeMs || 10000)) return;
+  wentianFeatureEventTimes.set(dedupeKey, now);
+  try {
+    await wentianFetchJson("/api/analytics/feature-event", {
+      method: "POST",
+      authToken: token,
+      body: { feature, action, route: state.route, resultSummary, metadata },
+    });
+  } catch (_err) {}
+}
+
+function trackWentianRouteOpen(route) {
+  const feature = WENTIAN_TRACKED_ROUTE_FEATURES[route];
+  if (!feature) return;
+  trackWentianFeatureEvent(feature, "opened", "进入功能", { source: "wentian-app" }, {
+    dedupeKey: `open:${feature}`,
+    dedupeMs: 30000,
+  });
 }
 
 function refreshWentianAuthScreens() {
@@ -18181,6 +18222,11 @@ function autoFillYangzhai() {
 function analyzeYangzhai() {
   yangzhaiState.expanded = {};
   saveYangzhaiState();
+  const count = Object.values(yangzhaiState.placements || {}).filter((items) => Array.isArray(items) && items.length).length;
+  trackWentianFeatureEvent("yangzhai", "completed", `完成 ${count} 宫方位分析`, {
+    count,
+    source: "wentian-app",
+  });
   navigate("screen-44");
 }
 
@@ -19413,6 +19459,7 @@ function initOfficeLayoutHomeScreen() {
 
 function submitOfficeLayoutQuery() {
   if (!officeLayoutState.outerTrigram || !officeLayoutState.innerTrigram) {
+    trackWentianFeatureEvent("office_layout", "failed", "门向或老板位未选完整", { source: "wentian-app" });
     setOfficeLayoutStatus("请先选好办公室大门朝向和老板位置。", "error");
     refreshOfficeLayoutView();
     return;
@@ -19420,6 +19467,11 @@ function submitOfficeLayoutQuery() {
   persistOfficeLayoutCaseIfNeeded();
   setOfficeLayoutStatus("已生成办公室布局结果。", "ok");
   saveOfficeLayoutState();
+  trackWentianFeatureEvent("office_layout", "completed", `${officeLayoutState.outerTrigram}门向 · ${officeLayoutState.innerTrigram}老板位`, {
+    outer: officeLayoutState.outerTrigram,
+    inner: officeLayoutState.innerTrigram,
+    source: "wentian-app",
+  });
   navigate("screen-52");
 }
 
@@ -20080,6 +20132,10 @@ function calculateLiurenFromInputs() {
     liurenPhase = "revealed";
     liurenHasStarted = true;
     updateLiurenPreview({ phase: "revealed", enter: true });
+    trackWentianFeatureEvent("liuren", "completed", `完成${result.palace?.name || "六壬"}起课`, {
+      palace: result.palace?.name || "",
+      source: "wentian-app",
+    });
   }, getLiurenVisualDurationMs(result));
 }
 
@@ -23562,6 +23618,7 @@ function navigate(route, push = true, syncHash = true) {
     if (screen.no === 49) scheduleWentianHepanResultLayout();
     syncActive();
     window.setTimeout(initWentianAuth, 0);
+    window.setTimeout(() => trackWentianRouteOpen(route), 0);
     if (screen.no === 4) window.setTimeout(initWentianXuChat, 0);
     if (screen.no === 5 || screen.no === 25) window.setTimeout(() => hydrateWentianArchivesFromRemote({ rerender: true }), 0);
     if (screen.no === 30) window.setTimeout(initWentianPaymentScreen, 0);
