@@ -10697,6 +10697,9 @@ function setWentianAuthSession(session) {
     : null;
   wentianAuthSession = session || null;
   saveWentianAuthSession(session);
+  if (session?.user?.id && session?.access_token) {
+    window.setTimeout(() => syncWentianAcquisitionAttribution(session), 0);
+  }
   const appliedGuestChartTransfer = guestChartTransfer ? applyWentianGuestChartTransfer(guestChartTransfer) : null;
   wentianMemberState.loaded = false;
   wentianOrderState.loaded = false;
@@ -11568,6 +11571,26 @@ async function wentianFetchJson(path, options = {}) {
     : { error: await response.text() };
   if (!response.ok || data.error) throw new Error(data.error || `服务异常 ${response.status}`);
   return data;
+}
+
+async function syncWentianAcquisitionAttribution(session = wentianAuthSession) {
+  const userId = session?.user?.id || "";
+  const token = session?.access_token || "";
+  const context = window.yuetianGetAnalyticsContext?.();
+  if (!userId || !token || !context) return;
+  const storageKey = `yuetian-attribution-synced-v1:${userId}`;
+  try {
+    const lastAt = Number(localStorage.getItem(storageKey) || 0);
+    if (Date.now() - lastAt < 12 * 60 * 60 * 1000) return;
+  } catch (_err) {}
+  try {
+    await wentianFetchJson("/api/analytics/attribution", {
+      method: "POST",
+      authToken: token,
+      body: context,
+    });
+    try { localStorage.setItem(storageKey, String(Date.now())); } catch (_err) {}
+  } catch (_err) {}
 }
 
 function refreshWentianInviteScreens() {

@@ -230,6 +230,12 @@ function trackLiuyaoFeatureEvent(action, resultSummary = '', metadata = {}, dedu
     metadata: { ...metadata, source: 'liuyao-v2' }
   }, 6000).catch(() => {});
 }
+function syncLiuyaoAcquisitionAttribution() {
+  const token = getWentianAuthToken();
+  const context = window.yuetianGetAnalyticsContext?.();
+  if (!token || !context) return;
+  postJson('/api/analytics/attribution', context, 6000).catch(() => {});
+}
 async function refreshRemoteQuota(currentQuota) {
   const clientId = getClientId();
   const data = await postJson('/api/ai/liuyao-question', {
@@ -2637,6 +2643,7 @@ function App() {
   const tossCooldownRef = useRef(null);
   useEffect(() => {
     trackLiuyaoFeatureEvent('opened', '进入功能', {}, 'open');
+    syncLiuyaoAcquisitionAttribution();
   }, []);
   useEffect(() => {
     if (typeof DeviceMotionEvent !== 'undefined' && typeof DeviceMotionEvent.requestPermission !== 'function') {

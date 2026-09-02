@@ -541,6 +541,9 @@
         localStorage.removeItem(desktopAuthStorageKey);
       }
     } catch (_) {}
+    if (session?.user?.id && session?.access_token) {
+      window.setTimeout(() => syncDesktopAcquisitionAttribution(session), 0);
+    }
   }
 
   function setDesktopAuthSession(session) {
@@ -1036,6 +1039,26 @@
     }
     if (!response.ok || data.error) throw new Error(data.error || `服务异常 ${response.status}`);
     return data;
+  }
+
+  async function syncDesktopAcquisitionAttribution(session = desktopAuthState.session) {
+    const userId = session?.user?.id || '';
+    const token = session?.access_token || '';
+    const context = window.yuetianGetAnalyticsContext?.();
+    if (!userId || !token || !context) return;
+    const storageKey = `yuetian-attribution-synced-v1:${userId}`;
+    try {
+      const lastAt = Number(localStorage.getItem(storageKey) || 0);
+      if (Date.now() - lastAt < 12 * 60 * 60 * 1000) return;
+    } catch (_) {}
+    try {
+      await desktopFetchJson('/api/analytics/attribution', {
+        method: 'POST',
+        authToken: token,
+        body: context,
+      });
+      try { localStorage.setItem(storageKey, String(Date.now())); } catch (_) {}
+    } catch (_) {}
   }
 
   async function hydrateDesktopMemberStatus(options = {}) {
