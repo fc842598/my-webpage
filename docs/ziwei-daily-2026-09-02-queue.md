@@ -20,7 +20,7 @@ Recovery-Mode: false
 | 顺序 | 状态 | slug | 标题 | 大类 |
 |---|---|---|---|---|
 | 01 | 已发布 2026-09-02 09:18 https://yuetianai.com/articles/ziwei-duoge-gong-douliang-xianding-zhushouru.html / https://yuetianai.com/articles/en/ziwei-duoge-gong-douliang-xianding-zhushouru.html | ziwei-duoge-gong-douliang-xianding-zhushouru | 紫微斗数多个宫都亮时，先定哪条线是主收入：喜欢做和收得到钱别一起判 | 宫位组合 |
-| 02 | 待发布 | ziwei-konggong-jieduigong-duigong-qiang-buneng-yuedai | 紫微斗数空宫借对宫后，对宫很强为什么也不能越代本宫：先守主语再谈牵引 | 看盘方法 |
+| 02 | 已发布 2026-09-02 10:11 https://yuetianai.com/articles/ziwei-konggong-jieduigong-duigong-qiang-buneng-yuedai.html / https://yuetianai.com/articles/en/ziwei-konggong-jieduigong-duigong-qiang-buneng-yuedai.html | ziwei-konggong-jieduigong-duigong-qiang-buneng-yuedai | 紫微斗数空宫借对宫后，对宫很强为什么也不能越代本宫：先守主语再谈牵引 | 看盘方法 |
 | 03 | 待发布 | ziwei-duigong-sanfang-douliang-xianding-zhuzhou | 紫微斗数对宫和三方四正都亮时，先定主事轴线还是先找承接宫：顺序错了越看越散 | 看盘方法 |
 | 04 | 待发布 | ziwei-liunian-qianyi-kehu-meihuan-xiankan-gangwei-haishi-fanwei | 紫微斗数流年迁移宫动了但客户没换，先看岗位变化还是合作范围：别急着读成搬城 | 大限流年 |
 | 05 | 待发布 | ziwei-liunian-tianzhai-xiankan-tongzhu-haishi-zhuangxiu-yusuan | 紫微斗数流年田宅宫动了，先看同住安排还是装修预算：空间挤压不等于产权变化 | 大限流年 |
