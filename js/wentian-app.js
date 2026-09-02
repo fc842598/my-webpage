@@ -17703,6 +17703,7 @@ const YANGZHAI_RESULT_TITLE_Y = 524;
 const YANGZHAI_RESULT_START_Y = 562;
 const YANGZHAI_RESULT_CARD_HEIGHT = 180;
 const YANGZHAI_RESULT_GAP = 14;
+const YANGZHAI_TUTORIAL_SCREEN_HEIGHT = 960;
 const YANGZHAI_ELDER_AGE_DEFAULTS = { grandpa: "65plus", grandma: "65plus" };
 const YANGZHAI_ELDER_AGE_LABELS = { under65: "65岁前", "65plus": "65岁后" };
 const YANGZHAI_ELDER_ROLE_COPY = {
@@ -22784,7 +22785,7 @@ function renderConvertedScreen(no) {
   }
   const polishedScreen = renderWentianPolishedScreen(screen);
   if (polishedScreen) {
-    const polishedHeight = screen.no === 4 ? 892 : screen.no === 8 ? 1490 : screen.no === 17 ? getLiuyaoCastScreenHeight() : screen.no === 18 || screen.no === 19 ? 1480 : screen.no === 20 ? getLiuyaoResultScreenHeight() : screen.no === 22 ? 1120 : screen.no === 24 ? 1368 : screen.no === 42 ? getYangzhaiCompassHeight() : screen.no === 43 ? getYangzhaiSelectHeight() : screen.no === 44 ? getYangzhaiResultHeight() : screen.no === 46 ? LIUREN_SCREEN_HEIGHT : screen.no === 49 ? WENTIAN_HEPAN_RESULT_SCREEN_HEIGHT : 844;
+    const polishedHeight = screen.no === 4 ? 892 : screen.no === 8 ? 1490 : screen.no === 17 ? getLiuyaoCastScreenHeight() : screen.no === 18 || screen.no === 19 ? 1480 : screen.no === 20 ? getLiuyaoResultScreenHeight() : screen.no === 22 ? 1120 : screen.no === 24 ? 1368 : screen.no === 42 ? getYangzhaiCompassHeight() : screen.no === 43 ? getYangzhaiSelectHeight() : screen.no === 44 ? getYangzhaiResultHeight() : screen.no === 45 ? YANGZHAI_TUTORIAL_SCREEN_HEIGHT : screen.no === 46 ? LIUREN_SCREEN_HEIGHT : screen.no === 49 ? WENTIAN_HEPAN_RESULT_SCREEN_HEIGHT : 844;
     const wideBgClass = screen.no >= 42 && screen.no <= 45 ? " wide-bg" : "";
     const customHotspots = screen.no >= 17 && screen.no <= 20 ? "" : convertedFlowHotspots(screen);
     return figPhone(`screen-${screen.no}`, `${String(screen.no).padStart(2, "0")} ${screen.title}`, `
