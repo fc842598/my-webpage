@@ -20,7 +20,7 @@ Recovery-Mode: false
 | 顺序 | 状态 | slug | 标题 | 大类 |
 |---|---|---|---|---|
 | 01 | 已发布 2026-09-03 09:16 https://yuetianai.com/articles/ziwei-yigong-zhuxing-buruo-shaxing-duo-xiankan-shui.html / https://yuetianai.com/articles/en/ziwei-yigong-zhuxing-buruo-shaxing-duo-xiankan-shui.html | ziwei-yigong-zhuxing-buruo-shaxing-duo-xiankan-shui | 紫微斗数一个宫主星不弱但煞曜很多，先看主星还是先判风险：热闹不等于主线模糊 | 看盘方法 |
-| 02 | 待发布 | ziwei-jixing-luo-fumugong-zhangbei-ziyuan-haishi-shenhe-guiren | 紫微斗数吉星落父母宫，先看长辈资源还是审核贵人：同一宫的帮忙不是同一种帮法 | 看盘方法 |
+| 02 | 已发布 2026-09-03 10:34 https://yuetianai.com/articles/ziwei-jixing-luo-fumugong-zhangbei-ziyuan-haishi-shenhe-guiren.html / https://yuetianai.com/articles/en/ziwei-jixing-luo-fumugong-zhangbei-ziyuan-haishi-shenhe-guiren.html | ziwei-jixing-luo-fumugong-zhangbei-ziyuan-haishi-shenhe-guiren | 紫微斗数吉星落父母宫，先看长辈资源还是审核贵人：同一宫的帮忙不是同一种帮法 | 看盘方法 |
 | 03 | 待发布 | ziwei-liunian-fumugong-xianlai-qianzi-haishi-peizhen | 紫微斗数流年父母宫起压时，先来签字还是陪诊：工作批示和家里照顾别混算 | 大限流年 |
 | 04 | 待发布 | ziwei-konggong-jieduigong-duidao-yiban-shenme-shihou-huitou | 紫微斗数空宫借对宫读到一半，什么时候必须回头看三方四正：先闻到味道不等于已经定局 | 看盘方法 |
 | 05 | 待发布 | ziwei-sanfang-sizheng-you-huaji-duigong-yaobuyao-xianjinchang | 紫微斗数三方四正里先见化忌时，对宫要不要提前进场：别等最后才补主轴 | 看盘方法 |
