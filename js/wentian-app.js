@@ -2739,26 +2739,43 @@ function normalizeWentianArchive(archive) {
     chartData: { ...archive.chartData, chartRecordId },
     form: { ...(archive.form || {}), archiveId: id },
   };
-  const onlyRecordId = Object.keys(normalized.chartData || {}).every((key) => key === "chartRecordId");
+  const chartPalaces = Array.isArray(normalized.chart?.palaces) ? normalized.chart.palaces : [];
+  const summaryPalaces = Array.isArray(normalized.chartData?.palacesSummary) ? normalized.chartData.palacesSummary : [];
+  if (!chartPalaces.length && summaryPalaces.length) {
+    normalized.chart = { ...(normalized.chart || {}), palaces: summaryPalaces };
+  }
   const raw = normalized.form.remoteRaw || {};
   const rawDateTime = raw.datetime
     || (raw.dateStr ? `${raw.dateStr}T${String(raw.cstHour ?? raw.hour ?? 0).padStart(2, "0")}:${String(raw.cstMinute ?? raw.minute ?? 0).padStart(2, "0")}` : "");
   const datetime = normalized.form.datetime || rawDateTime;
-  if (onlyRecordId && datetime) {
+  if ((!chartPalaces.length || !summaryPalaces.length) && datetime) {
+    const rebuilt = buildWentianArchiveFromInput({
+      id,
+      chartRecordId,
+      name: normalized.form.name || raw.name || "",
+      gender: normalized.form.gender || raw.gender || "male",
+      datetime,
+      city: normalized.form.city || raw.city?.name || raw.city || "",
+    });
+    const rebuiltSummary = Array.isArray(rebuilt?.chartData?.palacesSummary)
+      ? rebuilt.chartData.palacesSummary
+      : [];
     return {
-      ...buildWentianArchiveFromInput({
-        id,
-        chartRecordId,
-        name: normalized.form.name || raw.name || "",
-        gender: normalized.form.gender || raw.gender || "male",
-        datetime,
-        city: normalized.form.city || raw.city?.name || raw.city || "",
-      }),
-      createdAt: normalized.createdAt,
-      updatedAt: normalized.updatedAt,
+      ...normalized,
+      chart: chartPalaces.length ? normalized.chart : (rebuilt?.chart || normalized.chart),
+      chartData: summaryPalaces.length
+        ? normalized.chartData
+        : { ...(rebuilt?.chartData || {}), ...normalized.chartData, palacesSummary: rebuiltSummary },
+      form: { ...(rebuilt?.form || {}), ...normalized.form, archiveId: id },
     };
   }
   return normalized;
+}
+
+function isWentianArchiveOpenable(archive) {
+  const chartPalaces = Array.isArray(archive?.chart?.palaces) ? archive.chart.palaces : [];
+  const summaryPalaces = Array.isArray(archive?.chartData?.palacesSummary) ? archive.chartData.palacesSummary : [];
+  return chartPalaces.length > 0 || summaryPalaces.length > 0;
 }
 
 function getWentianArchiveStamp(archive) {
@@ -3029,7 +3046,13 @@ async function hydrateWentianArchivesFromRemote(options = {}) {
       const rawMerged = mergeWentianArchives(localArchivesForMerge, remoteArchives);
       const transferredSelectedSource = getWentianTransferredArchiveSource(options.guestTransfer, options.guestTransfer?.selectedArchiveId);
       const transferredSelectedTarget = findWentianMatchingArchive(rawMerged, transferredSelectedSource);
-      const localSelectedId = transferredSelectedTarget?.id || getWentianStoredSelectedArchiveId();
+      const storedSelectedId = getWentianStoredSelectedArchiveId();
+      const localSelectedSource = localArchives.find((archive) => archive.id === storedSelectedId) || null;
+      const localSelectedTarget = findWentianMatchingArchive(rawMerged, localSelectedSource);
+      const draftSelectedSource = localArchives.find((archive) => archive.id === wentianArchiveDraftId) || null;
+      const draftSelectedTarget = findWentianMatchingArchive(rawMerged, draftSelectedSource);
+      if (draftSelectedTarget) wentianArchiveDraftId = draftSelectedTarget.id;
+      const localSelectedId = transferredSelectedTarget?.id || localSelectedTarget?.id || storedSelectedId;
       const remoteSelectedId = localSelectedId && rawMerged.some((item) => item.id === localSelectedId)
         ? localSelectedId
         : data.selectedArchiveId && rawMerged.some((item) => item.id === data.selectedArchiveId)
@@ -10858,9 +10881,15 @@ async function getWentianAuthSession(options = {}) {
     });
     setWentianAuthSession(data?.session || null);
     return wentianAuthSession;
-  } catch (_err) {
-    setWentianAuthSession(null);
-    return null;
+  } catch (error) {
+    const sessionExpired = Number(error?.status || 0) === 401
+      || error?.code === "AUTH_SESSION_EXPIRED";
+    if (sessionExpired) {
+      setWentianAuthSession(null);
+      return null;
+    }
+    wentianAuthSession = current;
+    return current;
   }
 }
 
@@ -11036,7 +11065,15 @@ function getCurrentWentianArchive() {
 }
 
 function applyWentianArchiveToCurrent(archive) {
-  if (!archive) return false;
+  archive = normalizeWentianArchive(archive);
+  if (!archive || !isWentianArchiveOpenable(archive)) {
+    setWentianArchiveStatus(
+      getWentianCompactText("这份档案资料不完整，请点“编辑”补全出生时间后重试", "This chart is incomplete. Edit the birth time and try again."),
+      "error"
+    );
+    refreshWentianArchiveStatusView();
+    return false;
+  }
   const chartRecordId = archive.chartRecordId || archive.chartData?.chartRecordId || makeWentianUuid();
   try {
     setWentianScopedLocalStorageItem(WENTIAN_CHART_RECORD_STORAGE_KEY, chartRecordId);
@@ -11569,7 +11606,12 @@ async function wentianFetchJson(path, options = {}) {
   const data = contentType.includes("application/json")
     ? await response.json()
     : { error: await response.text() };
-  if (!response.ok || data.error) throw new Error(data.error || `服务异常 ${response.status}`);
+  if (!response.ok || data.error) {
+    const error = new Error(data.error || `服务异常 ${response.status}`);
+    error.status = response.status;
+    error.code = data.code || "";
+    throw error;
+  }
   return data;
 }
 
@@ -21257,9 +21299,20 @@ function sourceChartFormScreen() {
 
 function getWentianDisplayChartState() {
   const saved = getWentianSavedChart();
-  if (saved?.chart && saved?.chartData) return saved;
+  const repairedSaved = saved?.chartData
+    ? normalizeWentianArchive(archiveFromChartState(saved))
+    : null;
+  if (repairedSaved && isWentianArchiveOpenable(repairedSaved)) {
+    return {
+      ...saved,
+      archiveId: repairedSaved.id,
+      chart: repairedSaved.chart,
+      chartData: repairedSaved.chartData,
+      form: { ...(repairedSaved.form || {}), archiveId: repairedSaved.id },
+    };
+  }
   const archive = getCurrentWentianArchive();
-  if (archive?.chart && archive?.chartData) {
+  if (archive?.chartData && isWentianArchiveOpenable(archive)) {
     return {
       archiveId: archive.id,
       chart: archive.chart,
