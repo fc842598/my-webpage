@@ -821,6 +821,7 @@ function ShakeScene({ onlinePhase, coins, curYao, onTrigger, onTossComplete, sha
   // ── Desktop drag-to-shake handlers ──
   const onPtrDown = useCallback((e) => {
     if (triggerLockRef.current || onlinePhase === 'shaking' || curYao >= 6) return;
+    audioRef.current?.resume?.();
     dragRef.current = { active: true, lastX: e.clientX, lastY: e.clientY, velX: 0, velY: 0 };
   }, [onlinePhase, curYao]);
 
@@ -1378,6 +1379,7 @@ function App() {
   }, [question]);
 
   const enableShake = useCallback(async () => {
+    try { window.DivinationAudio?.unlock?.(); } catch(e) {}
     if (typeof DeviceMotionEvent !== 'undefined' && typeof DeviceMotionEvent.requestPermission === 'function') {
       try { const p = await DeviceMotionEvent.requestPermission(); if (p === 'granted') setShakeReady(true); } catch(e) {}
     } else { setShakeReady(true); }
@@ -1404,6 +1406,7 @@ function App() {
   };
 
   const handleQuestionSubmit = useCallback(async () => {
+    try { window.DivinationAudio?.unlock?.(); } catch(e) {}
     const clean = normalizeQuestion(question);
     if (!clean || reviewing) return;
     const quotaInfo = normalizeQuota(quota);

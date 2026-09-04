@@ -1437,6 +1437,7 @@ function ShakeScene({
   // ── Desktop drag-to-shake handlers ──
   const onPtrDown = useCallback(e => {
     if (triggerLockRef.current || onlinePhase === 'shaking' || curYao >= 6) return;
+    audioRef.current?.resume?.();
     dragRef.current = {
       active: true,
       lastX: e.clientX,
@@ -2677,6 +2678,9 @@ function App() {
     setQuestionGate(null);
   }, [question]);
   const enableShake = useCallback(async () => {
+    try {
+      window.DivinationAudio?.unlock?.();
+    } catch (e) {}
     if (typeof DeviceMotionEvent !== 'undefined' && typeof DeviceMotionEvent.requestPermission === 'function') {
       try {
         const p = await DeviceMotionEvent.requestPermission();
@@ -2713,6 +2717,9 @@ function App() {
     setReviewing(false);
   };
   const handleQuestionSubmit = useCallback(async () => {
+    try {
+      window.DivinationAudio?.unlock?.();
+    } catch (e) {}
     const clean = normalizeQuestion(question);
     if (!clean || reviewing) return;
     const quotaInfo = normalizeQuota(quota);

@@ -2,12 +2,41 @@
 (function() {
   'use strict';
 
-  window.DivinationAudio = function() {
+  let sharedContext = null;
+
+  function getAudioContext() {
+    if (sharedContext) return sharedContext;
     const AudioCtx = window.AudioContext || window.webkitAudioContext;
-    const ctx = new AudioCtx();
+    if (!AudioCtx) return null;
+    try {
+      sharedContext = new AudioCtx();
+      return sharedContext;
+    } catch {
+      return null;
+    }
+  }
+
+  window.DivinationAudio = function() {
+    const ctx = getAudioContext();
+    if (!ctx) {
+      return {
+        resume: () => Promise.resolve(false),
+        shake: () => {},
+        pour: () => {},
+        spin: () => {},
+        settle: () => {},
+      };
+    }
 
     function resume() {
-      if (ctx.state === 'suspended') ctx.resume();
+      if (ctx.state === 'running') return Promise.resolve(true);
+      try {
+        const pending = ctx.resume();
+        pending?.catch?.(() => {});
+        return pending;
+      } catch {
+        return Promise.resolve(false);
+      }
     }
 
     function makeGain(volume, start, duration) {
@@ -102,5 +131,14 @@
     }
 
     return { resume, shake, pour, spin, settle };
+  };
+
+  // Must be called from a real user gesture (submit/tap), before motion events.
+  window.DivinationAudio.unlock = function() {
+    try {
+      return new window.DivinationAudio().resume();
+    } catch {
+      return Promise.resolve(false);
+    }
   };
 })();
