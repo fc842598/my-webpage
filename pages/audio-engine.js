@@ -3,6 +3,7 @@
   'use strict';
 
   let sharedContext = null;
+  let sharedOutput = null;
 
   function getAudioContext() {
     if (sharedContext) return sharedContext;
@@ -37,6 +38,26 @@
     } catch {}
   }
 
+  function getMasterOutput(ctx) {
+    if (sharedOutput) return sharedOutput;
+    try {
+      const compressor = ctx.createDynamicsCompressor();
+      const master = ctx.createGain();
+      compressor.threshold.setValueAtTime(-18, ctx.currentTime);
+      compressor.knee.setValueAtTime(10, ctx.currentTime);
+      compressor.ratio.setValueAtTime(10, ctx.currentTime);
+      compressor.attack.setValueAtTime(0.003, ctx.currentTime);
+      compressor.release.setValueAtTime(0.18, ctx.currentTime);
+      master.gain.setValueAtTime(2.4, ctx.currentTime);
+      master.connect(compressor);
+      compressor.connect(ctx.destination);
+      sharedOutput = master;
+    } catch {
+      sharedOutput = ctx.destination;
+    }
+    return sharedOutput;
+  }
+
   window.DivinationAudio = function() {
     const ctx = getAudioContext();
     if (!ctx) {
@@ -58,7 +79,7 @@
       gain.gain.setValueAtTime(0.0001, start);
       gain.gain.exponentialRampToValueAtTime(Math.max(0.0001, volume), start + 0.012);
       gain.gain.exponentialRampToValueAtTime(0.0001, start + duration);
-      gain.connect(ctx.destination);
+      gain.connect(getMasterOutput(ctx));
       return gain;
     }
 
@@ -90,6 +111,15 @@
       osc.connect(out);
       osc.start(start);
       osc.stop(start + duration);
+      const presence = ctx.createOscillator();
+      const presenceGain = ctx.createGain();
+      presence.type = 'triangle';
+      presence.frequency.setValueAtTime(freq * 2.25, start);
+      presenceGain.gain.setValueAtTime(0.34, start);
+      presence.connect(presenceGain);
+      presenceGain.connect(out);
+      presence.start(start);
+      presence.stop(start + duration * 0.72);
     }
 
     function clickNoise(delay = 0, duration = 0.045, volume = 0.07, filterFreq = 2600) {
@@ -116,32 +146,32 @@
     }
 
     function shake() {
-      thump(82, 0, 0.72, 0.11);
+      thump(104, 0, 0.72, 0.15);
       [0.04, 0.34, 0.68].forEach((delay, i) => {
-        clickNoise(delay, 0.12, 0.04, 980 + i * 90);
-        ping(128 + i * 14, delay + 0.04, 0.24, 0.032);
+        clickNoise(delay, 0.12, 0.065, 1250 + i * 120);
+        ping(172 + i * 18, delay + 0.04, 0.24, 0.052);
       });
     }
 
     function pour() {
-      thump(104, 0, 0.78, 0.09);
+      thump(126, 0, 0.78, 0.13);
       [0.08, 0.44, 0.78].forEach((delay, i) => {
-        clickNoise(delay, 0.13, 0.052, 1500 - i * 150);
-        ping(246 - i * 34, delay + 0.04, 0.28, 0.062);
+        clickNoise(delay, 0.13, 0.075, 1800 - i * 160);
+        ping(286 - i * 34, delay + 0.04, 0.28, 0.082);
       });
     }
 
     function spin() {
       [0, 0.52, 1.04].forEach((delay, i) => {
-        ping(136 + i * 8, delay, 0.32, 0.032);
+        ping(184 + i * 12, delay, 0.32, 0.052);
       });
     }
 
     function settle() {
-      thump(104, 0, 0.72, 0.12);
-      ping(188, 0.12, 0.34, 0.08);
-      ping(142, 0.36, 0.28, 0.052);
-      clickNoise(0.08, 0.14, 0.056, 1050);
+      thump(132, 0, 0.72, 0.17);
+      ping(238, 0.12, 0.34, 0.11);
+      ping(184, 0.36, 0.28, 0.075);
+      clickNoise(0.08, 0.14, 0.082, 1450);
     }
 
     return { resume, shake, pour, spin, settle };
