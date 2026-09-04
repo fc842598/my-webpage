@@ -27,5 +27,5 @@ Recovery-Mode: false
 | 06 | 待发布 | ziwei-tianzhai-liang-yuebuyue-xiankan-quanshu-haishi-yuegong | 紫微斗数田宅机会很亮却越谈越犹豫，先看产权还是月供：房子能买不等于结构能扛 | 宫位组合 |
 | 07 | 已发布 2026-09-04 17:49 https://yuetianai.com/articles/ziwei-huake-huaji-tongpan-xiankan-mingsheng-haishi-xianjinliu.html / https://yuetianai.com/articles/en/ziwei-huake-huaji-tongpan-xiankan-mingsheng-haishi-xianjinliu.html | ziwei-huake-huaji-tongpan-xiankan-mingsheng-haishi-xianjinliu | 紫微斗数化科化忌同盘时，先保名声还是现金流：被看见和被卡住可能同时发生 | 四化细读 |
 | 08 | 已发布 2026-09-04 19:18 https://yuetianai.com/articles/ziwei-kequanlu-fensan-xiankan-chengjie-haishi-rukou.html / https://yuetianai.com/articles/en/ziwei-kequanlu-fensan-xiankan-chengjie-haishi-rukou.html | ziwei-kequanlu-fensan-xiankan-chengjie-haishi-rukou | 紫微斗数科权禄分散时，先补入口还是承接：别让好信号散成断点 | 四化细读 |
-| 09 | 待发布 | ziwei-lianzhen-qisha-fude-kuaiguoxian-xiankan-huifu | 紫微斗数廉贞七杀在福德宫快过线时，先看恢复力还是意志力：能扛不等于该继续扛 | 辅煞曜 |
+| 09 | 已发布 2026-09-04 20:52 https://yuetianai.com/articles/ziwei-lianzhen-qisha-fude-kuaiguoxian-xiankan-huifu.html / https://yuetianai.com/articles/en/ziwei-lianzhen-qisha-fude-kuaiguoxian-xiankan-huifu.html | ziwei-lianzhen-qisha-fude-kuaiguoxian-xiankan-huifu | 紫微斗数廉贞七杀在福德宫快过线时，先看恢复力还是意志力：能扛不等于该继续扛 | 辅煞曜 |
 | 10 | 待发布 | ziwei-bankong-zhechi-zhongduan-xiankan-xiuxi-haishi-xianjin | 紫微斗数半空折翅走到中段掉速时，先补休息还是现金流：能接单不等于该硬顶 | 格局命例 |
