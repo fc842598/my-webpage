@@ -2664,6 +2664,26 @@ function getWentianArchiveDuplicateKey(archive) {
   return nameKey && datetimeKey ? `${nameKey}|${datetimeKey}` : "";
 }
 
+function hasWentianLegacyHourlyArchiveSweep(archives) {
+  const hoursByDay = new Map();
+  for (const archive of Array.isArray(archives) ? archives : []) {
+    if (getWentianArchiveRawName(archive)) continue;
+    const form = archive?.form || {};
+    const raw = form.remoteRaw || {};
+    const source = form.datetime
+      || (raw.dateStr ? `${raw.dateStr}T${String(raw.cstHour ?? raw.hour ?? 0).padStart(2, "0")}:00` : "")
+      || archive?.chartData?.birthDate
+      || archive?.chartData?.solarTime
+      || "";
+    const match = normalizeWentianArchiveDateTimeKey(source).match(/^(\d{4}-\d{2}-\d{2})\s+(\d{2}):/);
+    if (!match) continue;
+    const key = `${normalizeWentianArchiveGender(archive)}|${match[1]}`;
+    if (!hoursByDay.has(key)) hoursByDay.set(key, new Set());
+    hoursByDay.get(key).add(match[2]);
+  }
+  return Array.from(hoursByDay.values()).some((hours) => hours.size >= 20);
+}
+
 function findWentianArchiveDuplicate(archives, archive) {
   const key = getWentianArchiveDuplicateKey(archive);
   if (!key) return null;
@@ -3037,6 +3057,7 @@ async function hydrateWentianArchivesFromRemote(options = {}) {
       const localArchives = readWentianArchives().map(normalizeWentianArchive).filter(Boolean);
       const remoteArchives = (Array.isArray(data.archives) ? data.archives : []).map(normalizeWentianArchive).filter(Boolean);
       const transferredArchives = Array.isArray(options.guestTransfer?.archives) ? options.guestTransfer.archives : [];
+      const hasLegacyHourlySweep = hasWentianLegacyHourlyArchiveSweep(localArchives);
       const localArchivesForMerge = transferredArchives.length
         ? localArchives.filter((localArchive) => {
           const transferredArchive = transferredArchives.find((archive) => isWentianSameArchiveIdentity(archive, localArchive));
@@ -3044,6 +3065,7 @@ async function hydrateWentianArchivesFromRemote(options = {}) {
         })
         : localArchives.filter((localArchive) => {
           if (findWentianMatchingArchive(remoteArchives, localArchive)) return true;
+          if (hasLegacyHourlySweep) return false;
           const remoteStamp = Date.parse(data.dbUpdatedAt || "");
           return !Number.isFinite(remoteStamp) || getWentianArchiveStamp(localArchive) > remoteStamp;
         });
