@@ -3872,8 +3872,8 @@ html[lang="en"] .wentian-chat-starter {
 }
 
 .office-layout-panel {
-  margin-bottom: 14px;
-  padding: 16px;
+  margin-bottom: 16px;
+  padding: 18px;
   border: 1px solid #eadfce;
   border-radius: 22px;
   background: rgba(255, 252, 246, .96);
@@ -3903,11 +3903,11 @@ html[lang="en"] .wentian-chat-starter {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  min-height: 28px;
-  padding: 0 12px;
+  min-height: 30px;
+  padding: 0 14px;
   border: 1px solid rgba(255, 238, 203, .26);
   border-radius: 14px;
-  font-size: 11px;
+  font-size: 12.5px;
   font-weight: 900;
   letter-spacing: 0;
   color: #f6d78f;
@@ -3915,9 +3915,9 @@ html[lang="en"] .wentian-chat-starter {
 }
 
 .office-layout-title {
-  margin: 14px 0 8px;
+  margin: 16px 0 10px;
   color: #201813;
-  font-size: 28px;
+  font-size: 30px;
   font-weight: 900;
   line-height: 1.12;
   font-family: "Noto Serif SC", "Songti SC", serif;
@@ -3930,8 +3930,8 @@ html[lang="en"] .wentian-chat-starter {
 .office-layout-copy {
   margin: 0;
   color: #76695e;
-  font-size: 13px;
-  line-height: 1.65;
+  font-size: 15.5px;
+  line-height: 1.72;
 }
 
 .office-layout-panel.hero .office-layout-copy {
@@ -3942,7 +3942,7 @@ html[lang="en"] .wentian-chat-starter {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin-top: 14px;
+  margin-top: 16px;
 }
 
 .office-layout-step-chip,
@@ -3950,13 +3950,13 @@ html[lang="en"] .wentian-chat-starter {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 28px;
-  padding: 0 12px;
-  border-radius: 14px;
+  min-height: 32px;
+  padding: 0 13px;
+  border-radius: 16px;
   border: 1px solid #eadbc6;
   background: #fff7ea;
   color: #8a5a22;
-  font-size: 11px;
+  font-size: 12.5px;
   font-weight: 800;
   line-height: 1.2;
 }
@@ -3969,9 +3969,9 @@ html[lang="en"] .wentian-chat-starter {
 
 .office-layout-panel h3,
 .office-layout-section-title {
-  margin: 0 0 12px;
+  margin: 0 0 14px;
   color: #201813;
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 900;
   line-height: 1.2;
   font-family: "Noto Serif SC", "Songti SC", serif;
@@ -3988,8 +3988,8 @@ html[lang="en"] .wentian-chat-starter {
 .office-layout-row {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  padding: 12px 0;
+  gap: 10px;
+  padding: 14px 0;
   border-bottom: 1px solid #efe4d4;
 }
 
@@ -3999,14 +3999,14 @@ html[lang="en"] .wentian-chat-starter {
 
 .office-layout-row-label {
   color: #2b251c;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 800;
 }
 
 .office-layout-row-label small,
 .office-layout-note {
   color: #8f8173;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 600;
   line-height: 1.55;
 }
@@ -4018,13 +4018,13 @@ html[lang="en"] .wentian-chat-starter {
 .office-layout-button {
   appearance: none;
   width: 100%;
-  min-height: 42px;
+  min-height: 48px;
   border: 1px solid #e4d6c3;
   border-radius: 14px;
   background: #fffaf3;
   color: #2b251c;
   font: inherit;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 700;
   outline: 0;
 }
@@ -4078,8 +4078,12 @@ html[lang="en"] .wentian-chat-starter {
 .office-layout-buttons {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
-  margin-top: 14px;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.office-layout-buttons > .office-layout-button.danger:last-child {
+  grid-column: 1 / -1;
 }
 
 .office-layout-toggle-line {
@@ -4359,8 +4363,8 @@ html[lang="en"] .wentian-chat-starter {
 }
 
 .office-layout-summary-card h2 {
-  margin: 10px 0 8px;
-  font-size: 28px;
+  margin: 12px 0 10px;
+  font-size: 30px;
   font-weight: 900;
   line-height: 1.12;
   font-family: "Noto Serif SC", "Songti SC", serif;
@@ -4369,8 +4373,8 @@ html[lang="en"] .wentian-chat-starter {
 .office-layout-summary-card p {
   margin: 0;
   color: rgba(255, 250, 243, .86);
-  font-size: 13px;
-  line-height: 1.65;
+  font-size: 15px;
+  line-height: 1.7;
 }
 
 .office-layout-hex-hero {
@@ -4378,7 +4382,7 @@ html[lang="en"] .wentian-chat-starter {
   grid-template-columns: minmax(0, 1fr) 88px;
   gap: 14px;
   align-items: stretch;
-  margin-top: 16px;
+  margin-top: 18px;
 }
 
 .office-layout-hex-image-wrap,
@@ -4393,8 +4397,8 @@ html[lang="en"] .wentian-chat-starter {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 148px;
-  padding: 12px;
+  min-height: 156px;
+  padding: 14px;
   overflow: hidden;
 }
 
@@ -4426,7 +4430,7 @@ html[lang="en"] .wentian-chat-starter {
 
 .office-layout-hex-lines-card span {
   color: rgba(255, 242, 200, .86);
-  font-size: 11px;
+  font-size: 12.5px;
   font-weight: 800;
   letter-spacing: 0;
 }
@@ -4484,43 +4488,57 @@ html[lang="en"] .wentian-chat-starter {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin-top: 14px;
+  margin-top: 16px;
 }
 
 .office-layout-pill {
   display: inline-flex;
   align-items: center;
-  min-height: 30px;
-  padding: 0 12px;
-  border-radius: 15px;
+  min-height: 32px;
+  padding: 0 13px;
+  border-radius: 16px;
   border: 1px solid rgba(255, 239, 204, .22);
   background: rgba(255, 250, 243, .12);
   color: #fff2c8;
-  font-size: 11px;
+  font-size: 12.5px;
   font-weight: 800;
 }
 
 .office-layout-rich-card h4 {
-  margin: 0 0 10px;
+  margin: 0 0 14px;
+  padding-left: 10px;
+  border-left: 3px solid #c5963f;
   color: #201813;
-  font-size: 17px;
+  font-size: 20px;
   font-weight: 900;
 }
 
 .office-layout-rich-card p,
 .office-layout-rich-card li {
   color: #514238;
-  font-size: 13px;
-  line-height: 1.7;
+  font-size: 16px;
+  line-height: 1.78;
 }
 
 .office-layout-rich-card ul {
   margin: 0;
-  padding-left: 18px;
+  padding-left: 22px;
+}
+
+.office-layout-rich-card > p {
+  margin: 0;
+}
+
+.office-layout-rich-card li + li {
+  margin-top: 8px;
+}
+
+.office-layout-rich-card .office-layout-preview-meta {
+  margin-top: 16px;
 }
 
 .office-layout-long p {
-  margin: 0 0 12px;
+  margin: 0 0 16px;
 }
 
 .office-layout-long p:last-child {
