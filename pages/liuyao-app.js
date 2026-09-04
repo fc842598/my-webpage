@@ -1250,7 +1250,6 @@ function ShakeScene({
   const motionArmedRef = useRef(true);
   const lastTriggerAtRef = useRef(0);
   const lastMotionTossAtRef = useRef(0);
-  const lastTriggerSourceRef = useRef('');
   const motionStillSinceRef = useRef(0);
   const cbRef = useRef(onTossComplete);
   cbRef.current = onTossComplete;
@@ -1290,7 +1289,6 @@ function ShakeScene({
     if (source === 'motion' && now - lastMotionTossAtRef.current < MOTION_SINGLE_LINE_LOCK_MS) return false;
     triggerLockRef.current = true;
     motionArmedRef.current = source !== 'motion';
-    lastTriggerSourceRef.current = source;
     lastTriggerAtRef.current = now;
     if (source === 'motion') lastMotionTossAtRef.current = now;
     motionStillSinceRef.current = 0;
@@ -1373,8 +1371,12 @@ function ShakeScene({
       hapticFeedback('power');
       if (sceneRef.current) sceneRef.current.setShakePower(np);
       if (np >= 0.94 && motionArmedRef.current) {
-        window.removeEventListener('devicemotion', h);
-        requestToss('motion');
+        const started = requestToss('motion');
+        if (!started) {
+          powerRef.current = 0;
+          setPower(0);
+          if (sceneRef.current) sceneRef.current.setShakePower(0);
+        }
       }
     };
     window.addEventListener('devicemotion', h);
@@ -1384,7 +1386,12 @@ function ShakeScene({
     if (onlinePhase !== 'idle' || curYao >= 6) return;
     const timer = setTimeout(() => {
       triggerLockRef.current = false;
-      if (lastTriggerSourceRef.current !== 'motion' && powerRef.current < 0.18) motionArmedRef.current = true;
+      motionArmedRef.current = true;
+      motionStillSinceRef.current = 0;
+      lastMotionRef.current = null;
+      powerRef.current = 0;
+      setPower(0);
+      if (sceneRef.current) sceneRef.current.setShakePower(0);
     }, TOSS_COOLDOWN_MS);
     return () => clearTimeout(timer);
   }, [onlinePhase, curYao]);
