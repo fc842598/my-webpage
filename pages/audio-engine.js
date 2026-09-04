@@ -16,6 +16,27 @@
     }
   }
 
+  function resumeContext(ctx) {
+    if (!ctx || ctx.state === 'running') return Promise.resolve(Boolean(ctx));
+    try {
+      const pending = ctx.resume();
+      pending?.catch?.(() => {});
+      return pending;
+    } catch {
+      return Promise.resolve(false);
+    }
+  }
+
+  function primeContext(ctx) {
+    if (!ctx) return;
+    try {
+      const source = ctx.createBufferSource();
+      source.buffer = ctx.createBuffer(1, 1, ctx.sampleRate);
+      source.connect(ctx.destination);
+      source.start(0);
+    } catch {}
+  }
+
   window.DivinationAudio = function() {
     const ctx = getAudioContext();
     if (!ctx) {
@@ -29,14 +50,7 @@
     }
 
     function resume() {
-      if (ctx.state === 'running') return Promise.resolve(true);
-      try {
-        const pending = ctx.resume();
-        pending?.catch?.(() => {});
-        return pending;
-      } catch {
-        return Promise.resolve(false);
-      }
+      return resumeContext(ctx);
     }
 
     function makeGain(volume, start, duration) {
@@ -102,32 +116,32 @@
     }
 
     function shake() {
-      thump(82, 0, 0.72, 0.072);
+      thump(82, 0, 0.72, 0.11);
       [0.04, 0.34, 0.68].forEach((delay, i) => {
-        clickNoise(delay, 0.12, 0.022, 980 + i * 90);
-        ping(128 + i * 14, delay + 0.04, 0.24, 0.018);
+        clickNoise(delay, 0.12, 0.04, 980 + i * 90);
+        ping(128 + i * 14, delay + 0.04, 0.24, 0.032);
       });
     }
 
     function pour() {
-      thump(104, 0, 0.78, 0.058);
+      thump(104, 0, 0.78, 0.09);
       [0.08, 0.44, 0.78].forEach((delay, i) => {
-        clickNoise(delay, 0.13, 0.032, 1500 - i * 150);
-        ping(246 - i * 34, delay + 0.04, 0.28, 0.038);
+        clickNoise(delay, 0.13, 0.052, 1500 - i * 150);
+        ping(246 - i * 34, delay + 0.04, 0.28, 0.062);
       });
     }
 
     function spin() {
       [0, 0.52, 1.04].forEach((delay, i) => {
-        ping(136 + i * 8, delay, 0.32, 0.018);
+        ping(136 + i * 8, delay, 0.32, 0.032);
       });
     }
 
     function settle() {
-      thump(104, 0, 0.72, 0.082);
-      ping(188, 0.12, 0.34, 0.052);
-      ping(142, 0.36, 0.28, 0.034);
-      clickNoise(0.08, 0.14, 0.038, 1050);
+      thump(104, 0, 0.72, 0.12);
+      ping(188, 0.12, 0.34, 0.08);
+      ping(142, 0.36, 0.28, 0.052);
+      clickNoise(0.08, 0.14, 0.056, 1050);
     }
 
     return { resume, shake, pour, spin, settle };
@@ -135,10 +149,10 @@
 
   // Must be called from a real user gesture (submit/tap), before motion events.
   window.DivinationAudio.unlock = function() {
-    try {
-      return new window.DivinationAudio().resume();
-    } catch {
-      return Promise.resolve(false);
-    }
+    const ctx = getAudioContext();
+    if (!ctx) return Promise.resolve(false);
+    const pending = resumeContext(ctx);
+    primeContext(ctx);
+    return pending;
   };
 })();
