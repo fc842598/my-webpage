@@ -1,0 +1,10 @@
+const fs=require('fs');
+const h=fs.readFileSync('articles/index.html','utf8');
+const idx=h.indexOf('<h2>主星</h2>');
+console.log('CN 主星 section at:', idx);
+console.log(h.substring(idx, idx+400));
+console.log('---');
+const e=fs.readFileSync('articles/en/index.html','utf8');
+const msIdx=e.indexOf('Main Star');
+console.log('Main Star heading at:', msIdx);
+if(msIdx>0) console.log(e.substring(msIdx-100, msIdx+300));

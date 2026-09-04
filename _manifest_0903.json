@@ -1,0 +1,362 @@
+[
+ {
+  "slug": "ziwei-tiangui-zai-qianyi",
+  "cnTitle": "天贵在迁移宫：在外受人尊重，离乡靠信誉立足",
+  "enTitle": "Tian Gui in Travel Palace: Respected Outside; Establish Through Credibility",
+  "date": "2026-09-03T10:00:00+08:00",
+  "label": "2026-09-03 10:00",
+  "rfc": "Thu, 03 Sep 2026 10:00:00 +0800",
+  "enDesc": "Tian Gui in Travel Palace. Respected Outside; Establish Through Credibility"
+ },
+ {
+  "slug": "ziwei-tiangui-zai-puyigong",
+  "cnTitle": "天贵在仆役宫：朋友中多有威望之人，社交讲信用",
+  "enTitle": "Tian Gui in Friends Palace: Prestigious Friends; Trust-Based Circle",
+  "date": "2026-09-03T10:00:00+08:00",
+  "label": "2026-09-03 10:00",
+  "rfc": "Thu, 03 Sep 2026 10:00:00 +0800",
+  "enDesc": "Tian Gui in Friends Palace. Prestigious Friends; Trust-Based Circle"
+ },
+ {
+  "slug": "ziwei-tiangui-zai-guanlugong",
+  "cnTitle": "天贵在官禄宫：事业靠信誉立身，适合管理和公职",
+  "enTitle": "Tian Gui in Career Palace: Career Through Credibility; Suited to Management",
+  "date": "2026-09-03T10:00:00+08:00",
+  "label": "2026-09-03 10:00",
+  "rfc": "Thu, 03 Sep 2026 10:00:00 +0800",
+  "enDesc": "Tian Gui in Career Palace. Career Through Credibility; Suited to Management"
+ },
+ {
+  "slug": "ziwei-tiangui-zai-tianzhaigong",
+  "cnTitle": "天贵在田宅宫：家产带贵气，居住环境有档次",
+  "enTitle": "Tian Gui in Property Palace: Prestigious Assets; Upscale Living Environment",
+  "date": "2026-09-03T10:00:00+08:00",
+  "label": "2026-09-03 10:00",
+  "rfc": "Thu, 03 Sep 2026 10:00:00 +0800",
+  "enDesc": "Tian Gui in Property Palace. Prestigious Assets; Upscale Living Environment"
+ },
+ {
+  "slug": "ziwei-tiangui-zai-fudegong",
+  "cnTitle": "天贵在福德宫：精神自重自爱，福气来自德行声望",
+  "enTitle": "Tian Gui in Fortune Palace: Self-Respecting Mind; Blessings from Virtue",
+  "date": "2026-09-03T10:00:00+08:00",
+  "label": "2026-09-03 10:00",
+  "rfc": "Thu, 03 Sep 2026 10:00:00 +0800",
+  "enDesc": "Tian Gui in Fortune Palace. Self-Respecting Mind; Blessings from Virtue"
+ },
+ {
+  "slug": "ziwei-tiangui-zai-fumugong",
+  "cnTitle": "天贵在父母宫：父母有威望受人尊重，长辈家风正",
+  "enTitle": "Tian Gui in Parents Palace: Prestigious Respected Parents; Upright Family Tradition",
+  "date": "2026-09-03T10:00:00+08:00",
+  "label": "2026-09-03 10:00",
+  "rfc": "Thu, 03 Sep 2026 10:00:00 +0800",
+  "enDesc": "Tian Gui in Parents Palace. Prestigious Respected Parents; Upright Family Tradition"
+ },
+ {
+  "slug": "ziwei-yinsha-zai-minggong",
+  "cnTitle": "阴煞在命宫：直觉敏锐但多疑，天生防人之心重",
+  "enTitle": "Yin Sha in Life Palace: Sharp Intuition but Suspicious; Naturally Guarded",
+  "date": "2026-09-03T10:00:00+08:00",
+  "label": "2026-09-03 10:00",
+  "rfc": "Thu, 03 Sep 2026 10:00:00 +0800",
+  "enDesc": "Yin Sha in Life Palace. Sharp Intuition but Suspicious; Naturally Guarded"
+ },
+ {
+  "slug": "ziwei-yinsha-zai-xiongdigong",
+  "cnTitle": "阴煞在兄弟宫：兄弟姐妹中有人小心眼，同辈防暗中计较",
+  "enTitle": "Yin Sha in Siblings Palace: A Petty Sibling; Beware Hidden Peer Calculation",
+  "date": "2026-09-03T10:00:00+08:00",
+  "label": "2026-09-03 10:00",
+  "rfc": "Thu, 03 Sep 2026 10:00:00 +0800",
+  "enDesc": "Yin Sha in Siblings Palace. A Petty Sibling; Beware Hidden Peer Calculation"
+ },
+ {
+  "slug": "ziwei-yinsha-zai-fuqigong",
+  "cnTitle": "阴煞在夫妻宫：感情里容易猜忌，伴侣关系要建立信任",
+  "enTitle": "Yin Sha in Spouse Palace: Prone to Jealousy; Build Trust in the Bond",
+  "date": "2026-09-03T10:00:00+08:00",
+  "label": "2026-09-03 10:00",
+  "rfc": "Thu, 03 Sep 2026 10:00:00 +0800",
+  "enDesc": "Yin Sha in Spouse Palace. Prone to Jealousy; Build Trust in the Bond"
+ },
+ {
+  "slug": "ziwei-yinsha-zai-zinvgong",
+  "cnTitle": "阴煞在子女宫：子女偏敏感多疑，教育要给安全感",
+  "enTitle": "Yin Sha in Children Palace: Sensitive Suspicious Children; Give Security",
+  "date": "2026-09-03T10:00:00+08:00",
+  "label": "2026-09-03 10:00",
+  "rfc": "Thu, 03 Sep 2026 10:00:00 +0800",
+  "enDesc": "Yin Sha in Children Palace. Sensitive Suspicious Children; Give Security"
+ },
+ {
+  "slug": "ziwei-yinsha-zai-caibogong",
+  "cnTitle": "阴煞在财帛宫：钱财防暗中损耗和小人劫财，账目要清",
+  "enTitle": "Yin Sha in Wealth Palace: Beware Hidden Loss; Keep Clear Accounts",
+  "date": "2026-09-03T10:00:00+08:00",
+  "label": "2026-09-03 10:00",
+  "rfc": "Thu, 03 Sep 2026 10:00:00 +0800",
+  "enDesc": "Yin Sha in Wealth Palace. Beware Hidden Loss; Keep Clear Accounts"
+ },
+ {
+  "slug": "ziwei-yinsha-zai-jiegong",
+  "cnTitle": "阴煞在疾厄宫：注意隐性疾病和心理焦虑，定期排查",
+  "enTitle": "Yin Sha in Health Palace: Watch Hidden Illness and Anxiety; Get Checkups",
+  "date": "2026-09-03T10:00:00+08:00",
+  "label": "2026-09-03 10:00",
+  "rfc": "Thu, 03 Sep 2026 10:00:00 +0800",
+  "enDesc": "Yin Sha in Health Palace. Watch Hidden Illness and Anxiety; Get Checkups"
+ },
+ {
+  "slug": "ziwei-yinsha-zai-qianyi",
+  "cnTitle": "阴煞在迁移宫：在外防小人和暗算，离乡行事要低调",
+  "enTitle": "Yin Sha in Travel Palace: Beware Hidden Foes Outside; Keep a Low Profile Away",
+  "date": "2026-09-03T10:00:00+08:00",
+  "label": "2026-09-03 10:00",
+  "rfc": "Thu, 03 Sep 2026 10:00:00 +0800",
+  "enDesc": "Yin Sha in Travel Palace. Beware Hidden Foes Outside; Keep a Low Profile Away"
+ },
+ {
+  "slug": "ziwei-yinsha-zai-puyigong",
+  "cnTitle": "阴煞在仆役宫：朋友中防损友小人，合伙要防背地动作",
+  "enTitle": "Yin Sha in Friends Palace: Beware Toxic Friends; Guard Against Hidden Moves",
+  "date": "2026-09-03T10:00:00+08:00",
+  "label": "2026-09-03 10:00",
+  "rfc": "Thu, 03 Sep 2026 10:00:00 +0800",
+  "enDesc": "Yin Sha in Friends Palace. Beware Toxic Friends; Guard Against Hidden Moves"
+ },
+ {
+  "slug": "ziwei-yinsha-zai-guanlugong",
+  "cnTitle": "阴煞在官禄宫：职场防暗中使绊，成绩要留证据",
+  "enTitle": "Yin Sha in Career Palace: Beware Workplace Sabotage; Document Achievements",
+  "date": "2026-09-03T10:00:00+08:00",
+  "label": "2026-09-03 10:00",
+  "rfc": "Thu, 03 Sep 2026 10:00:00 +0800",
+  "enDesc": "Yin Sha in Career Palace. Beware Workplace Sabotage; Document Achievements"
+ },
+ {
+  "slug": "ziwei-yinsha-zai-tianzhaigong",
+  "cnTitle": "阴煞在田宅宫：家里防暗漏隐患，房产交易防猫腻",
+  "enTitle": "Yin Sha in Property Palace: Beware Hidden Defects; Guard Property Deals",
+  "date": "2026-09-03T10:00:00+08:00",
+  "label": "2026-09-03 10:00",
+  "rfc": "Thu, 03 Sep 2026 10:00:00 +0800",
+  "enDesc": "Yin Sha in Property Palace. Beware Hidden Defects; Guard Property Deals"
+ },
+ {
+  "slug": "ziwei-yinsha-zai-fudegong",
+  "cnTitle": "阴煞在福德宫：精神容易焦虑多疑，福气来自放宽心",
+  "enTitle": "Yin Sha in Fortune Palace: Anxious Suspicious Mind; Blessings from Letting Go",
+  "date": "2026-09-03T10:00:00+08:00",
+  "label": "2026-09-03 10:00",
+  "rfc": "Thu, 03 Sep 2026 10:00:00 +0800",
+  "enDesc": "Yin Sha in Fortune Palace. Anxious Suspicious Mind; Blessings from Letting Go"
+ },
+ {
+  "slug": "ziwei-yinsha-zai-fumugong",
+  "cnTitle": "阴煞在父母宫：长辈中有人多心，家庭关系防暗中误会",
+  "enTitle": "Yin Sha in Parents Palace: A Suspicious Elder; Prevent Hidden Misunderstanding",
+  "date": "2026-09-03T10:00:00+08:00",
+  "label": "2026-09-03 10:00",
+  "rfc": "Thu, 03 Sep 2026 10:00:00 +0800",
+  "enDesc": "Yin Sha in Parents Palace. A Suspicious Elder; Prevent Hidden Misunderstanding"
+ },
+ {
+  "slug": "ziwei-posui-zai-minggong",
+  "cnTitle": "破碎在命宫：思维跳脱不拘小节，做事要防虎头蛇尾",
+  "enTitle": "Po Sui in Life Palace: Unconventional Mind; Avoid Starting Strong Finishing Weak",
+  "date": "2026-09-03T10:00:00+08:00",
+  "label": "2026-09-03 10:00",
+  "rfc": "Thu, 03 Sep 2026 10:00:00 +0800",
+  "enDesc": "Po Sui in Life Palace. Unconventional Mind; Avoid Starting Strong Finishing Weak"
+ },
+ {
+  "slug": "ziwei-posui-zai-xiongdigong",
+  "cnTitle": "破碎在兄弟宫：兄弟姐妹聚少离多，同辈关系易散",
+  "enTitle": "Po Sui in Siblings Palace: Siblings Often Apart; Peer Bonds Easily Scatter",
+  "date": "2026-09-03T10:00:00+08:00",
+  "label": "2026-09-03 10:00",
+  "rfc": "Thu, 03 Sep 2026 10:00:00 +0800",
+  "enDesc": "Po Sui in Siblings Palace. Siblings Often Apart; Peer Bonds Easily Scatter"
+ },
+ {
+  "slug": "ziwei-posui-zai-fuqigong",
+  "cnTitle": "破碎在夫妻宫：感情防聚少离多和小摩擦，需要经营",
+  "enTitle": "Po Sui in Spouse Palace: Beware Separation and Friction; Nurture the Bond",
+  "date": "2026-09-03T10:00:00+08:00",
+  "label": "2026-09-03 10:00",
+  "rfc": "Thu, 03 Sep 2026 10:00:00 +0800",
+  "enDesc": "Po Sui in Spouse Palace. Beware Separation and Friction; Nurture the Bond"
+ },
+ {
+  "slug": "ziwei-posui-zai-zinvgong",
+  "cnTitle": "破碎在子女宫：子女缘分有波动，教育要重陪伴",
+  "enTitle": "Po Sui in Children Palace: Fluctuating Children Luck; Prioritize Companionship",
+  "date": "2026-09-03T10:00:00+08:00",
+  "label": "2026-09-03 10:00",
+  "rfc": "Thu, 03 Sep 2026 10:00:00 +0800",
+  "enDesc": "Po Sui in Children Palace. Fluctuating Children Luck; Prioritize Companionship"
+ },
+ {
+  "slug": "ziwei-posui-zai-caibogong",
+  "cnTitle": "破碎在财帛宫：钱财防零碎破耗，记账和预算很重要",
+  "enTitle": "Po Sui in Wealth Palace: Beware Fragmented Spending; Budget Carefully",
+  "date": "2026-09-03T10:00:00+08:00",
+  "label": "2026-09-03 10:00",
+  "rfc": "Thu, 03 Sep 2026 10:00:00 +0800",
+  "enDesc": "Po Sui in Wealth Palace. Beware Fragmented Spending; Budget Carefully"
+ },
+ {
+  "slug": "ziwei-posui-zai-jiegong",
+  "cnTitle": "破碎在疾厄宫：注意磕碰外伤和牙齿骨骼，运动要防护",
+  "enTitle": "Po Sui in Health Palace: Watch Bumps, Teeth, and Bones; Protect During Exercise",
+  "date": "2026-09-03T10:00:00+08:00",
+  "label": "2026-09-03 10:00",
+  "rfc": "Thu, 03 Sep 2026 10:00:00 +0800",
+  "enDesc": "Po Sui in Health Palace. Watch Bumps, Teeth, and Bones; Protect During Exercise"
+ },
+ {
+  "slug": "ziwei-posui-zai-qianyi",
+  "cnTitle": "破碎在迁移宫：在外多奔波变动，离乡防计划被打乱",
+  "enTitle": "Po Sui in Travel Palace: Restless Travels; Prevent Plans Being Disrupted Away",
+  "date": "2026-09-03T10:00:00+08:00",
+  "label": "2026-09-03 10:00",
+  "rfc": "Thu, 03 Sep 2026 10:00:00 +0800",
+  "enDesc": "Po Sui in Travel Palace. Restless Travels; Prevent Plans Being Disrupted Away"
+ },
+ {
+  "slug": "ziwei-posui-zai-puyigong",
+  "cnTitle": "破碎在仆役宫：朋友聚散无常，合伙关系不稳定",
+  "enTitle": "Po Sui in Friends Palace: Friends Come and Go; Unstable Partnerships",
+  "date": "2026-09-03T10:00:00+08:00",
+  "label": "2026-09-03 10:00",
+  "rfc": "Thu, 03 Sep 2026 10:00:00 +0800",
+  "enDesc": "Po Sui in Friends Palace. Friends Come and Go; Unstable Partnerships"
+ },
+ {
+  "slug": "ziwei-posui-zai-guanlugong",
+  "cnTitle": "破碎在官禄宫：事业多变动调整，适合灵活创新的岗位",
+  "enTitle": "Po Sui in Career Palace: Many Career Changes; Suited to Flexible Roles",
+  "date": "2026-09-03T10:00:00+08:00",
+  "label": "2026-09-03 10:00",
+  "rfc": "Thu, 03 Sep 2026 10:00:00 +0800",
+  "enDesc": "Po Sui in Career Palace. Many Career Changes; Suited to Flexible Roles"
+ },
+ {
+  "slug": "ziwei-posui-zai-tianzhaigong",
+  "cnTitle": "破碎在田宅宫：家里东西易耗损，搬家装修变动多",
+  "enTitle": "Po Sui in Property Palace: Household Items Wear; Frequent Moves and Renovation",
+  "date": "2026-09-03T10:00:00+08:00",
+  "label": "2026-09-03 10:00",
+  "rfc": "Thu, 03 Sep 2026 10:00:00 +0800",
+  "enDesc": "Po Sui in Property Palace. Household Items Wear; Frequent Moves and Renovation"
+ },
+ {
+  "slug": "ziwei-posui-zai-fudegong",
+  "cnTitle": "破碎在福德宫：心思难安定，福气来自专注和坚持",
+  "enTitle": "Po Sui in Fortune Palace: Restless Mind; Blessings from Focus and Persistence",
+  "date": "2026-09-03T10:00:00+08:00",
+  "label": "2026-09-03 10:00",
+  "rfc": "Thu, 03 Sep 2026 10:00:00 +0800",
+  "enDesc": "Po Sui in Fortune Palace. Restless Mind; Blessings from Focus and Persistence"
+ },
+ {
+  "slug": "ziwei-posui-zai-fumugong",
+  "cnTitle": "破碎在父母宫：父母缘分有聚散，长辈关系多走动",
+  "enTitle": "Po Sui in Parents Palace: Parent Bond Has Partings; Stay in Touch with Elders",
+  "date": "2026-09-03T10:00:00+08:00",
+  "label": "2026-09-03 10:00",
+  "rfc": "Thu, 03 Sep 2026 10:00:00 +0800",
+  "enDesc": "Po Sui in Parents Palace. Parent Bond Has Partings; Stay in Touch with Elders"
+ },
+ {
+  "slug": "ziwei-jiesha-zai-minggong",
+  "cnTitle": "劫煞在命宫：果断有冲劲竞争力强，天生适合拼搏",
+  "enTitle": "Jie Sha in Life Palace: Decisive and Driven; Born to Compete",
+  "date": "2026-09-03T10:00:00+08:00",
+  "label": "2026-09-03 10:00",
+  "rfc": "Thu, 03 Sep 2026 10:00:00 +0800",
+  "enDesc": "Jie Sha in Life Palace. Decisive and Driven; Born to Compete"
+ },
+ {
+  "slug": "ziwei-jiesha-zai-xiongdigong",
+  "cnTitle": "劫煞在兄弟宫：兄弟姐妹间有竞争，同辈资源要防争抢",
+  "enTitle": "Jie Sha in Siblings Palace: Sibling Competition; Guard Peer Resource Disputes",
+  "date": "2026-09-03T10:00:00+08:00",
+  "label": "2026-09-03 10:00",
+  "rfc": "Thu, 03 Sep 2026 10:00:00 +0800",
+  "enDesc": "Jie Sha in Siblings Palace. Sibling Competition; Guard Peer Resource Disputes"
+ },
+ {
+  "slug": "ziwei-jiesha-zai-fuqigong",
+  "cnTitle": "劫煞在夫妻宫：感情防第三者争夺，伴侣关系要稳固",
+  "enTitle": "Jie Sha in Spouse Palace: Beware Rivals in Love; Keep the Bond Strong",
+  "date": "2026-09-03T10:00:00+08:00",
+  "label": "2026-09-03 10:00",
+  "rfc": "Thu, 03 Sep 2026 10:00:00 +0800",
+  "enDesc": "Jie Sha in Spouse Palace. Beware Rivals in Love; Keep the Bond Strong"
+ },
+ {
+  "slug": "ziwei-jiesha-zai-zinvgong",
+  "cnTitle": "劫煞在子女宫：子女好胜心强，教育引导良性竞争",
+  "enTitle": "Jie Sha in Children Palace: Competitive Children; Guide Healthy Rivalry",
+  "date": "2026-09-03T10:00:00+08:00",
+  "label": "2026-09-03 10:00",
+  "rfc": "Thu, 03 Sep 2026 10:00:00 +0800",
+  "enDesc": "Jie Sha in Children Palace. Competitive Children; Guide Healthy Rivalry"
+ },
+ {
+  "slug": "ziwei-jiesha-zai-caibogong",
+  "cnTitle": "劫煞在财帛宫：钱财防被劫被骗，投资防冲动和争夺",
+  "enTitle": "Jie Sha in Wealth Palace: Beware Loss and Fraud; Avoid Impulsive Investment",
+  "date": "2026-09-03T10:00:00+08:00",
+  "label": "2026-09-03 10:00",
+  "rfc": "Thu, 03 Sep 2026 10:00:00 +0800",
+  "enDesc": "Jie Sha in Wealth Palace. Beware Loss and Fraud; Avoid Impulsive Investment"
+ },
+ {
+  "slug": "ziwei-jiesha-zai-jiegong",
+  "cnTitle": "劫煞在疾厄宫：注意急性外伤和手术，防突发急症",
+  "enTitle": "Jie Sha in Health Palace: Watch Acute Injuries; Guard Sudden Emergencies",
+  "date": "2026-09-03T10:00:00+08:00",
+  "label": "2026-09-03 10:00",
+  "rfc": "Thu, 03 Sep 2026 10:00:00 +0800",
+  "enDesc": "Jie Sha in Health Palace. Watch Acute Injuries; Guard Sudden Emergencies"
+ },
+ {
+  "slug": "ziwei-jiesha-zai-qianyi",
+  "cnTitle": "劫煞在迁移宫：在外竞争激烈，离乡防被抢机会",
+  "enTitle": "Jie Sha in Travel Palace: Fierce Competition Outside; Guard Stolen Chances Away",
+  "date": "2026-09-03T10:00:00+08:00",
+  "label": "2026-09-03 10:00",
+  "rfc": "Thu, 03 Sep 2026 10:00:00 +0800",
+  "enDesc": "Jie Sha in Travel Palace. Fierce Competition Outside; Guard Stolen Chances Away"
+ },
+ {
+  "slug": "ziwei-jiesha-zai-puyigong",
+  "cnTitle": "劫煞在仆役宫：朋友间有利益争夺，合伙先讲清分配",
+  "enTitle": "Jie Sha in Friends Palace: Interest Rivalry Among Friends; Clarify Profit Sharing",
+  "date": "2026-09-03T10:00:00+08:00",
+  "label": "2026-09-03 10:00",
+  "rfc": "Thu, 03 Sep 2026 10:00:00 +0800",
+  "enDesc": "Jie Sha in Friends Palace. Interest Rivalry Among Friends; Clarify Profit Sharing"
+ },
+ {
+  "slug": "ziwei-jiesha-zai-guanlugong",
+  "cnTitle": "劫煞在官禄宫：职场竞争激烈，靠实力抢下位置",
+  "enTitle": "Jie Sha in Career Palace: Intense Workplace Competition; Win Through Strength",
+  "date": "2026-09-03T10:00:00+08:00",
+  "label": "2026-09-03 10:00",
+  "rfc": "Thu, 03 Sep 2026 10:00:00 +0800",
+  "enDesc": "Jie Sha in Career Palace. Intense Workplace Competition; Win Through Strength"
+ },
+ {
+  "slug": "ziwei-jiesha-zai-tianzhaigong",
+  "cnTitle": "劫煞在田宅宫：房产防产权纠纷和争夺，合同要严谨",
+  "enTitle": "Jie Sha in Property Palace: Beware Property Disputes; Use Rigorous Contracts",
+  "date": "2026-09-03T10:00:00+08:00",
+  "label": "2026-09-03 10:00",
+  "rfc": "Thu, 03 Sep 2026 10:00:00 +0800",
+  "enDesc": "Jie Sha in Property Palace. Beware Property Disputes; Use Rigorous Contracts"
+ }
+]

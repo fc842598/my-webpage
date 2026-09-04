@@ -1,0 +1,85 @@
+const fs = require('fs');
+const path = require('path');
+
+const mainSlugs = ['ziwei-tianliang-zuoming','ziwei-qisha-zuoming','ziwei-pojun-zuoming'];
+const helperSlugs = ['ziwei-zuofu-youbi','ziwei-wenchang-wenqu','ziwei-tiankui-tianyue','ziwei-lucun-xing','ziwei-qingyang-tuoluo','ziwei-huoxing-lingxing','ziwei-dikong-dijie'];
+const slugs = [...mainSlugs, ...helperSlugs];
+
+let errors = 0;
+function check(cond, msg) {
+  if (!cond) { console.error('FAIL: ' + msg); errors++; }
+}
+
+for (const slug of slugs) {
+  const cn = fs.readFileSync(path.join(__dirname, 'articles', slug + '.html'), 'utf8');
+  check(cn.includes('<html lang="zh-CN">'), slug + ' CN lang');
+  check(cn.includes('site-analytics.js'), slug + ' CN analytics');
+  check(cn.includes('articles.css'), slug + ' CN css');
+  check(cn.includes('hreflang="en"'), slug + ' CN hreflang en');
+  check(cn.includes('BreadcrumbList'), slug + ' CN breadcrumb');
+  check(cn.includes('article-orbit'), slug + ' CN orbit');
+  check(cn.includes('article-bottom-link'), slug + ' CN CTA');
+  check(cn.includes('粤ICP备2026055337号-1'), slug + ' CN footer');
+  check(cn.includes('en/' + slug + '.html'), slug + ' CN en link');
+
+  const isMain = mainSlugs.includes(slug);
+  const catPage = isMain ? 'ziwei-main-stars.html' : 'ziwei-helper-malice-stars.html';
+  check(cn.includes(catPage), slug + ' CN cat breadcrumb ' + catPage);
+
+  const cnJson = [...cn.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)];
+  check(cnJson.length === 2, slug + ' CN has 2 JSON-LD');
+  for (const m of cnJson) {
+    try { JSON.parse(m[1].trim()); } catch (e) { check(false, slug + ' CN JSON parse: ' + e.message); }
+  }
+
+  const en = fs.readFileSync(path.join(__dirname, 'articles', 'en', slug + '.html'), 'utf8');
+  check(en.includes('<html lang="en">'), slug + ' EN lang');
+  check(en.includes('site-analytics.js'), slug + ' EN analytics');
+  check(en.includes('articles.css'), slug + ' EN css');
+  check(en.includes('hreflang="en"'), slug + ' EN hreflang');
+  check(!en.includes('BreadcrumbList'), slug + ' EN no breadcrumb');
+  check(!en.includes('article-orbit'), slug + ' EN no orbit');
+  check(en.includes('article-bottom-link'), slug + ' EN CTA');
+  check(en.includes('Quick Chart'), slug + ' EN quick chart');
+  check(en.includes('Yue ICP 2026055337-1'), slug + ' EN footer');
+  check(en.includes('../' + slug + '.html'), slug + ' EN zh link');
+
+  const enJson = [...en.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)];
+  check(enJson.length === 1, slug + ' EN has 1 JSON-LD');
+  for (const m of enJson) {
+    try { JSON.parse(m[1].trim()); } catch (e) { check(false, slug + ' EN JSON parse: ' + e.message); }
+  }
+}
+
+const cnIndex = fs.readFileSync(path.join(__dirname, 'articles', 'index.html'), 'utf8');
+const enIndex = fs.readFileSync(path.join(__dirname, 'articles', 'en', 'index.html'), 'utf8');
+const mainTopic = fs.readFileSync(path.join(__dirname, 'articles', 'ziwei-main-stars.html'), 'utf8');
+const helperTopic = fs.readFileSync(path.join(__dirname, 'articles', 'ziwei-helper-malice-stars.html'), 'utf8');
+const cnFeed = fs.readFileSync(path.join(__dirname, 'feed.xml'), 'utf8');
+const enFeed = fs.readFileSync(path.join(__dirname, 'articles', 'en', 'feed.xml'), 'utf8');
+const cnSm = fs.readFileSync(path.join(__dirname, 'sitemap-articles.xml'), 'utf8');
+const enSm = fs.readFileSync(path.join(__dirname, 'sitemap-en.xml'), 'utf8');
+
+for (const slug of slugs) {
+  check(cnIndex.includes(slug + '.html'), 'CN index missing ' + slug);
+  check(enIndex.includes(slug + '.html'), 'EN index missing ' + slug);
+  check(cnFeed.includes(slug + '.html'), 'CN feed missing ' + slug);
+  check(enFeed.includes(slug + '.html'), 'EN feed missing ' + slug);
+  check(cnSm.includes(slug + '.html'), 'CN sitemap missing ' + slug);
+  check(enSm.includes(slug + '.html'), 'EN sitemap missing ' + slug);
+}
+for (const slug of mainSlugs) check(mainTopic.includes(slug + '.html'), 'Main topic missing ' + slug);
+for (const slug of helperSlugs) check(helperTopic.includes(slug + '.html'), 'Helper topic missing ' + slug);
+
+check((cnFeed.match(/<item>/g) || []).length === 80, 'CN feed not 80');
+check((enFeed.match(/<item>/g) || []).length === 80, 'EN feed not 80');
+
+for (const [name, content] of [['CN index', cnIndex], ['EN index', enIndex], ['Main topic', mainTopic], ['Helper topic', helperTopic]]) {
+  const blocks = [...content.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)];
+  for (const m of blocks) {
+    try { JSON.parse(m[1].trim()); } catch (e) { check(false, name + ' JSON parse: ' + e.message); }
+  }
+}
+
+if (errors === 0) console.log('=== ALL VALIDATIONS PASSED ===');
+else { console.log('=== ' + errors + ' ERRORS ==='); process.exit(1); }

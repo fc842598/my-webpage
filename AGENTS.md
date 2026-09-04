@@ -64,7 +64,7 @@
 
 ## 每日文章发布节奏
 
-每日可安排 `10-30` 篇中文文章并同步英文改写版，分时发布。队列按单篇审核、单篇提交、单篇上线；某篇有问题只暂停该篇，其余合格文章继续发布。已发布选题要记录，重复风险交给人工判断，不按相似度自动判死。
+每日 40 篇中文文章并同步英文改写版（共 80 个 HTML）。选题主来源是全网同行调研，流程见 [docs/article-research-driven-sop.md](docs/article-research-driven-sop.md)：先搜关键词、找同行文章归类、借主题与观点做原创改写（不抄文字、正文不留来源痕迹），再套本地发布工作流。四化×十二宫 / 辅煞曜×十二宫矩阵只作补充选题（引擎 `_engine.js`），调研驱动选题用 `_engine_topic.js`。当日留痕 `docs/ziwei-research-YYYY-MM-DD-source.md` 与 `_manifest_YYYY-MM-DD.json`。队列按单篇审核、单篇提交、单篇上线；某篇有问题只暂停该篇，其余合格文章继续发布。已发布选题要记录，重复风险交给人工判断，不按相似度自动判死。一次性本地验证全过（JSON-LD/hreflang/索引/专题/双 Feed/双 sitemap）才 git push，push 后逐篇 curl 中英文线上 URL 必须全 200。
 
 ## 快速定位
 
