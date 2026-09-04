@@ -3042,7 +3042,11 @@ async function hydrateWentianArchivesFromRemote(options = {}) {
           const transferredArchive = transferredArchives.find((archive) => isWentianSameArchiveIdentity(archive, localArchive));
           return !transferredArchive || !findWentianMatchingArchive(remoteArchives, transferredArchive);
         })
-        : localArchives;
+        : localArchives.filter((localArchive) => {
+          if (findWentianMatchingArchive(remoteArchives, localArchive)) return true;
+          const remoteStamp = Date.parse(data.dbUpdatedAt || "");
+          return !Number.isFinite(remoteStamp) || getWentianArchiveStamp(localArchive) > remoteStamp;
+        });
       const rawMerged = mergeWentianArchives(localArchivesForMerge, remoteArchives);
       const transferredSelectedSource = getWentianTransferredArchiveSource(options.guestTransfer, options.guestTransfer?.selectedArchiveId);
       const transferredSelectedTarget = findWentianMatchingArchive(rawMerged, transferredSelectedSource);
@@ -13597,7 +13601,7 @@ function getWentianProfileVisibleArchives(archives, query = "") {
   const list = keyword
     ? archives.filter((archive) => getWentianProfileSearchText(archive).includes(keyword))
     : archives;
-  return list.slice(0, 6);
+  return list;
 }
 
 function getWentianProfileBatchSelected(archives = getWentianArchiveList()) {
