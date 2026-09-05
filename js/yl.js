@@ -1990,6 +1990,12 @@
     if (passwordInput) passwordInput.setAttribute("autocomplete", registering ? "new-password" : "current-password");
     var confirmField = $("#ylHealthConfirmPasswordField");
     if (confirmField) confirmField.hidden = !registering;
+    var recoveryButton = $("#ylHealthRecoveryBtn");
+    if (recoveryButton) {
+      recoveryButton.hidden = registering || healthAuthState.reauth;
+      recoveryButton.disabled = healthAuthState.loading;
+      recoveryButton.textContent = IS_ENGLISH_CHECKOUT ? "Forgot password? Send reset email" : "忘记密码？发送重置邮件";
+    }
     var status = $("#ylHealthAuthStatus");
     if (status) {
       status.textContent = healthAuthState.message || "";
@@ -2028,6 +2034,28 @@
     if (confirmInput) confirmInput.value = "";
     renderHealthAuthPanel();
     window.setTimeout(function () { accountInput?.focus({ preventScroll: true }); }, 0);
+  }
+
+  async function requestHealthPasswordRecovery() {
+    if (healthAuthState.loading) return;
+    var account = String($("#ylHealthAuthAccount")?.value || "").trim().toLowerCase();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(account)) {
+      setHealthAuthStatus(IS_ENGLISH_CHECKOUT
+        ? "Enter the email address used for this account. Phone-only accounts cannot receive email resets."
+        : "请输入注册时使用的邮箱。仅手机号注册的账号暂时不能接收重置邮件。", "error");
+      return;
+    }
+    healthAuthState.loading = true;
+    renderHealthAuthPanel();
+    try {
+      var data = await apiFetch("/api/auth/recovery", { method: "POST", noAuth: true, body: { email: account } });
+      setHealthAuthStatus(data?.message || "如果该邮箱已注册，重置链接会发送到邮箱。", "ok");
+    } catch (error) {
+      setHealthAuthStatus(error.message || "重置邮件发送失败，请稍后再试", "error");
+    } finally {
+      healthAuthState.loading = false;
+      renderHealthAuthPanel();
+    }
   }
 
   function formatHealthAccountLabel(user) {
@@ -3096,6 +3124,7 @@
     });
     $("#ylHealthLoginModeBtn").addEventListener("click", function () { setHealthAuthMode("login"); });
     $("#ylHealthRegisterModeBtn").addEventListener("click", function () { setHealthAuthMode("register"); });
+    $("#ylHealthRecoveryBtn").addEventListener("click", requestHealthPasswordRecovery);
     $("#ylAccountTrigger").addEventListener("click", function (event) { openAccountCenter(event.currentTarget); });
     $("#ylMobileAccountTrigger").addEventListener("click", function (event) { openAccountCenter(event.currentTarget); });
     $("#ylCheckoutAccountBtn").addEventListener("click", function (event) {

@@ -1959,6 +1959,22 @@ body.yl-account-open {
   min-height: 42px;
 }
 
+.yl-health-recovery-btn {
+  min-height: 36px;
+  border: 0;
+  background: transparent;
+  color: #7b684f;
+  font: inherit;
+  font-weight: 800;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.yl-health-recovery-btn[hidden] {
+  display: none;
+}
+
 .yl-health-auth-status {
   min-height: 20px;
   text-align: center;
