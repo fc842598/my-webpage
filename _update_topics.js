@@ -72,7 +72,7 @@ for(const tp of Object.keys(byTopic)){
  if(!list.length){console.log('  skip '+tp);continue;}
  const isAnchorFormat=page.indexOf('<a class="article-card"')>=0 && page.indexOf('<div class="card-body">',page.indexOf('article-card'))<0;
  let cards='';
- if(tp==='ziwei-sihua.html'){
+ if(tp==='ziwei-sihua.html'||tp==='ziwei-helper-malice-stars.html'){
   list.forEach(a=>cards+=`        <a class="article-card" href="${a.slug}.html"><h3>${a.cnTitle}</h3><time datetime="${a.date}">${a.label.slice(0,10)}</time></a>\n`);
   const fc=page.indexOf('class="article-card"');
   const pos=page.lastIndexOf('\n',fc)+1;

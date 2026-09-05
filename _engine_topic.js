@@ -10,7 +10,11 @@ const CAT={
  geju:{sec:'格局命例',tag:'格局命例',topic:'ziwei-case-patterns.html',enTag:'Patterns'},
  zhuxing:{sec:'主星',tag:'主星',topic:'ziwei-main-stars.html',enTag:'Major Stars'},
  liunian:{sec:'大限流年',tag:'大限流年',topic:null,enTag:'Cycles'},
- yingyong:{sec:'财运事业',tag:'财运事业',topic:null,enTag:'Wealth & Career'}
+ yingyong:{sec:'财运事业',tag:'财运事业',topic:null,enTag:'Wealth & Career'},
+ fuzhu:{sec:'辅煞曜',tag:'辅煞曜',topic:'ziwei-helper-malice-stars.html',enTag:'Assistant & Malefic Stars'},
+ gongwei:{sec:'十二宫细读',tag:'十二宫',topic:null,enTag:'Twelve Palaces'},
+ ganqing:{sec:'婚恋与关系',tag:'婚恋与关系',topic:null,enTag:'Love & Relationships'},
+ liuqin:{sec:'六亲关系',tag:'六亲关系',topic:null,enTag:'Family & Relations'}
 };
 
 function buildCN(t,batch){
