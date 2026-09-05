@@ -16289,3 +16289,80 @@ html[lang="en"] .liuyao-progress-result strong {
 html[lang="en"] [data-node-id="source-31-vip-v2"] {
   width: 168px !important;
 }
+
+/* Mobile readability: the 390px design canvas is scaled down on narrow phones. */
+@media (max-width: 390px) {
+  [data-node-id="source-1-login-pill-text"] {
+    font-size: 14px !important;
+  }
+
+  [data-node-id="source-1-hero-kicker"],
+  [data-node-id="source-1-hero-copy"],
+  [data-node-id="source-1-hero-primary-text"],
+  [data-node-id="source-1-hero-secondary-text"],
+  [data-node-id="source-1-archive-meta"],
+  [data-node-id^="source-1-feature-sub-"] {
+    font-size: 14px !important;
+  }
+
+  [data-node-id="source-1-archive-action-text"] {
+    font-size: 13px !important;
+  }
+
+  [data-node-id="source-31-email-v2"],
+  [data-node-id^="source-31-stat-label-v2-"],
+  [data-node-id="source-31-plan-banner-sub-v2"] {
+    font-size: 14px !important;
+  }
+
+  [data-node-id="source-31-login-badge-text-v2"],
+  [data-node-id="source-31-plan-banner-cta-text-v2"],
+  [data-node-id^="source-31-list-value-v2-"] {
+    font-size: 13.5px !important;
+  }
+
+  [data-node-id="wt33-card-sub"],
+  [data-node-id="wt33-three-desc"],
+  [data-node-id="wt33-unlimited-desc"] {
+    font-size: 13.5px !important;
+  }
+
+  [data-node-id="wt33-card-quota"],
+  [data-node-id="wt33-free-desc"],
+  [data-node-id="wt33-submit-note"] {
+    font-size: 13px !important;
+  }
+
+  .wentian-profile-top-pill,
+  .wentian-profile-new-button {
+    font-size: 14.5px;
+  }
+
+  .wentian-profile-status-inline {
+    font-size: 13.5px;
+  }
+
+  .office-layout-toggle-copy span,
+  .office-layout-status,
+  .office-layout-case-meta,
+  .office-layout-guide-step p,
+  .liuyao-result-preview p {
+    font-size: 14px;
+  }
+
+  .office-layout-rich-card p,
+  .office-layout-rich-card li {
+    font-size: 17.5px;
+    line-height: 1.82;
+  }
+
+  .wentian-yijing-reading p,
+  .wentian-yijing-master p,
+  .wentian-yijing-master-detail p,
+  .wentian-yijing-reading .wentian-mb-reading-lines p,
+  .wentian-yijing-master .wentian-mb-reading-lines p,
+  .wentian-yijing-master-detail .wentian-mb-reading-lines p {
+    font-size: 17px;
+    line-height: 1.92;
+  }
+}
