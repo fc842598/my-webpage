@@ -1051,6 +1051,23 @@
     var hasAccess = hasRegisteredFreeCampaignAccess();
     var memberCard = $(".yl-member-card");
     if (memberCard) memberCard.classList.toggle("is-campaign", active);
+    var pickerTitle = $("#ylPlanPickerTitle");
+    var pickerNote = $(".yl-plan-picker-head > span");
+    var accountTitle = $("#ylCheckoutAccountSummary > div > span");
+    if (pickerTitle) pickerTitle.textContent = active
+      ? (IS_ENGLISH_CHECKOUT ? "Regular plans" : "原套餐价格")
+      : (IS_ENGLISH_CHECKOUT ? "Choose a Monthly Pass" : "选择月卡");
+    if (pickerNote) pickerNote.textContent = active
+      ? (IS_ENGLISH_CHECKOUT ? "Unlimited access during the campaign" : "活动期间统一享受不限人数权益")
+      : (IS_ENGLISH_CHECKOUT ? "Both passes are valid for 31 days" : "两种月卡均按31天计算");
+    if (accountTitle) accountTitle.textContent = active
+      ? (IS_ENGLISH_CHECKOUT ? "Your account" : "体验账号")
+      : (IS_ENGLISH_CHECKOUT ? "Payment account" : "付款账号");
+    if (active) {
+      $("#ylSelectedPlanName").textContent = IS_ENGLISH_CHECKOUT ? "Free campaign access" : "活动期间免费权益";
+      $("#ylSelectedPlanCharts").innerHTML = "<b>1</b> " + (IS_ENGLISH_CHECKOUT ? "Unlimited profiles" : "不限命主人数");
+      $("#ylSelectedPlanChats").innerHTML = "<b>3</b> " + (IS_ENGLISH_CHECKOUT ? "100 follow-up questions per day" : "每天可追问100次");
+    }
 
     var banner = $("#ylCampaignBanner");
     if (banner) banner.hidden = !active;

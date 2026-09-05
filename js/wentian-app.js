@@ -3616,6 +3616,8 @@ function startWentianArchiveCreate(returnRoute = "") {
   wentianArchiveDeleteConfirmId = "";
   setWentianArchiveEditId("");
   setWentianArchiveEditReturnRoute(returnRoute);
+  // A new person must not inherit the currently selected person's identity.
+  saveWentianChartFormDraft({});
   navigate("screen-26");
 }
 
@@ -14192,7 +14194,7 @@ function sourceMineScreenV2(screen) {
     ${figBox("source-31-plan-banner-v2", 16, 330, 358, 66, "", "border-radius:22px;background:linear-gradient(135deg,#2e2937 0%,#1b1824 100%);box-shadow:0 12px 24px rgba(36,25,18,.15);")}
     ${figText("source-31-plan-banner-icon-v2", "\u265B", 34, 349, 24, 16, "#f4d59a", 700, "center")}
     ${figText("source-31-plan-banner-title-v2", member.isMember ? escapeHtml(member.title) : "月卡与权益", 68, 346, 150, 18, "#fff8ef", 800)}
-    ${figText("source-31-plan-banner-sub-v2", member.isMember ? escapeHtml(member.subtitle) : "两种月卡，按需要选择", 68, 369, 172, 12, "#d7cab8", 700)}
+    ${figText("source-31-plan-banner-sub-v2", wentianMemberState.campaign?.active ? "注册登录，限时免费体验" : (member.isMember ? escapeHtml(member.subtitle) : "两种月卡，按需要选择"), 68, 369, 172, 12, "#d7cab8", 700)}
     ${figBox("source-31-plan-banner-cta-v2", 262, 344, 92, 38, "", "border-radius:19px;background:linear-gradient(180deg,#f6d8a3,#efc681);")}
     ${figText("source-31-plan-banner-cta-text-v2", planBannerText, 262, 355, 92, 13, "#2c211b", 800, "center")}
     ${figButton("source-31-plan-banner-hit-v2", 16, 330, 358, 66, 'data-route="screen-33" aria-label="月卡与权益"', "", "z-index:37;")}
@@ -19250,7 +19252,7 @@ function createOfficeLayoutFallbackReading(outerTrigram, innerTrigram, hex) {
     advice: "先保证大门通畅、老板位背后有靠、主通道不过冲，再检查会客区、工位动线和核心决策位是否互相打架。",
     longReading: [
       `当前外卦是${outerMeta.label}，代表办公室对外纳气的入口气质；当前内卦是${innerMeta.label}，代表老板位置与决策核心。两者组合后，对应第${hexNo}卦《${hexName}》。`,
-      `${outerMeta.meaning}${innerMeta.meaning}。如果门口进来的气流、来访动线和老板位的视线关系顺着走，通常更容易形成“信息进得来、决策落得下、执行推得动”的布局。`,
+      `${outerMeta.meaning}${innerMeta.meaning}如果门口进来的气流、来访动线和老板位的视线关系顺着走，通常更容易形成“信息进得来、决策落得下、执行推得动”的布局。`,
       "这一版先把重点放在三个检查项：一是门口是否被杂物、柜体或尖角压住；二是老板位背后有没有稳定依靠、前方有没有直冲；三是团队主要动线会不会直接切过老板位或核心会议位。先把这三件事理顺，再做细节微调。",
     ].join("\n\n"),
     focusTags: [`外卦 · ${outerMeta.direction}`, `内卦 · ${innerMeta.direction}`, "先看门口纳气", "再看老板位有无靠"],
@@ -19505,7 +19507,7 @@ function sourceOfficeLayoutResultScreen() {
             ? `<img class="office-layout-hex-image" src="${imageSrc}" alt="${escapeHtml(`第 ${reading.hexNo} 卦 ${reading.hexName}`)}" loading="lazy" decoding="async">`
             : `<div class="office-layout-hex-image office-layout-hex-image-empty">${escapeHtml(reading.hexName)}</div>`}
         </div>
-        <div class="office-layout-hex-lines-card" aria-label="${escapeHtml(`第 ${reading.hexNo} 卦六爻`)}}">
+        <div class="office-layout-hex-lines-card" aria-label="${escapeHtml(`第 ${reading.hexNo} 卦六爻`)}">
           <span>六爻卦象</span>
           <div class="office-layout-hex-lines">${lineHtml || '<i class="is-gap"></i><i class="is-gap"></i><i class="is-gap"></i><i class="is-gap"></i><i class="is-gap"></i><i class="is-gap"></i>'}</div>
         </div>
