@@ -16290,6 +16290,43 @@ html[lang="en"] [data-node-id="source-31-vip-v2"] {
   width: 168px !important;
 }
 
+/* Keep the mobile chart legible without changing star positions or animations. */
+html:not([lang="en"]) .wentian-native-mingpan { height: 650px; }
+html:not([lang="en"]) .wentian-native-mingpan .fc-grid { aspect-ratio: 1 / 1.65; }
+html:not([lang="en"]) .wentian-chart-content-stack { top: 772px; }
+html:not([lang="en"]) .wentian-native-mingpan .fc-cell { padding: 6px 4px; }
+html:not([lang="en"]) .wentian-native-mingpan .fc-major-list { max-width: calc(100% - 24px); }
+html:not([lang="en"]) .wentian-native-mingpan .fc-major-star { font-size: 13px; line-height: 1.28; }
+html:not([lang="en"]) .wentian-native-mingpan .fc-major-list.is-dense .fc-major-star,
+html:not([lang="en"]) .wentian-native-mingpan .fc-major-list.is-very-dense .fc-major-star { font-size: 12px; line-height: 1.28; }
+html:not([lang="en"]) .wentian-native-mingpan .fc-minor-star,
+html:not([lang="en"]) .wentian-native-mingpan .fc-shen-list { font-size: 10px; line-height: 1.4; color: #706253; }
+html:not([lang="en"]) .wentian-native-mingpan .fc-branch,
+html:not([lang="en"]) .wentian-native-mingpan .fc-age { font-size: 12px; }
+html:not([lang="en"]) .wentian-native-mingpan .fc-center-panel { padding: 10px 8px; gap: 5px; }
+html:not([lang="en"]) .wentian-native-mingpan .fc-center-title { font-size: 17px; letter-spacing: 1px; }
+html:not([lang="en"]) .wentian-native-mingpan .fc-center-meta,
+html:not([lang="en"]) .wentian-native-mingpan .fc-center-row,
+html:not([lang="en"]) .wentian-native-mingpan .fc-gua-row { font-size: 11px; line-height: 1.4; }
+html:not([lang="en"]) .wentian-native-mingpan .fc-center-meta { flex-wrap: wrap; gap: 3px; }
+html:not([lang="en"]) .wentian-native-mingpan .fc-center-val { white-space: normal; overflow-wrap: anywhere; }
+html:not([lang="en"]) .wentian-native-mingpan .fc-center-lbl { width: 46px; flex-basis: 46px; }
+html:not([lang="en"]) .wentian-native-mingpan .fc-sizhu-col { font-size: 12px; }
+html:not([lang="en"]) .wentian-native-mingpan .fc-xiaolian-control { font-size: 11px; min-height: 32px; }
+html:not([lang="en"]) .wentian-native-mingpan .fc-xiaolian-control b { font-size: 12px; height: 30px; min-width: 60px; }
+html:not([lang="en"]) .wentian-native-mingpan .fc-center-btn { font-size: 12px; height: 32px; line-height: 28px; }
+html:not([lang="en"]) .wentian-native-mingpan .fc-xiaolian-menu { width: 120px; max-height: 180px; }
+html:not([lang="en"]) .wentian-native-mingpan .fc-xiaolian-menu button { height: 44px; font-size: 14px; }
+.wentian-chart-ai-hero-kicker,
+.wentian-chart-ai-hero p,
+.wentian-chart-ai-hero-status,
+.wentian-chart-ai-final-kicker,
+.wentian-chart-ai-final-hero p,
+.wentian-chart-ai-final-status { font-size: 14px; line-height: 1.5; }
+.wentian-chart-ai-hero-status, .wentian-chart-ai-final-status { height: auto; min-height: 32px; }
+.wentian-chart-ai-hero strong { font-size: 23px; line-height: 1.35; }
+.wentian-chart-ai-kicker { font-size: 15px; }
+
 .wentian-history-page {
   max-width: 720px;
   margin: 0 auto;
