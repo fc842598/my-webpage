@@ -7,7 +7,7 @@ const context=vm.createContext({getWentianMemberSnapshot:()=>member,isWentianEng
 const start=source.indexOf('function sourceMembershipScreen()');
 vm.runInContext(source.slice(start,source.indexOf('\n}',start)+2),context);
 let html=context.sourceMembershipScreen();
-assert.match(html,/Limited-time Free Access/);
+assert.match(html,/Free access/);
 assert.match(html,/Register and sign in to activate/);
 assert.match(html,/Unlimited profiles · 100\/day/);
 assert.doesNotMatch(html,/80\/day|0\/1Life/);
@@ -16,4 +16,14 @@ assert.match(context.sourceMembershipScreen(),/Checking access/);
 const finalize=source.slice(source.indexOf('function finalizeWentianLanguageText('),source.indexOf('\nfunction ',source.indexOf('function finalizeWentianLanguageText(')+1));
 assert.doesNotMatch(finalize,/80\/day|\[data-node-id="wt33-card-sub"\]/);
 assert.match(source,/"可用追问": "Remaining"/);
+const nodes=new Map();
+context.figText=(id,text,x,y,width,size)=>{nodes.set(id,{text,x,y,width,size});return text;};
+context.wentianMemberState.loaded=true;
+context.sourceMembershipScreen();
+for(const name of ['three','unlimited']) {
+  const title=nodes.get(`wt33-${name}-title`),price=nodes.get(`wt33-${name}-price`),desc=nodes.get(`wt33-${name}-desc`);
+  assert.ok(price.y >= title.y + title.size + 8);
+  assert.ok(desc.y >= price.y + price.size + 8);
+  assert.equal(price.x,title.x);
+}
 console.log('PASS English membership retains live campaign terms and readable quota labels');
