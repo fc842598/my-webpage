@@ -1906,6 +1906,7 @@ const WENTIAN_XU_CHART_BASE = {
 };
 
 const wentianXuChat = {
+  generation: 0,
   sessionId: null,
   sessionPromise: null,
   payloadKey: "",
@@ -5301,14 +5302,14 @@ function renderWentianOverallReading(data, fallback, actionAttr, actionLabel) {
   }
   const card = getWentianAiCard(data);
   const evidence = getWentianAiEvidenceMap(data);
-  const rawBadge = normalizeWentianAiText(card.profileBadge || "贪狼坐命，武官星入局");
-  const badge = getWentianCompactText(rawBadge, hasWentianHanText(rawBadge) ? "Life Palace: Tan Lang" : "");
-  const risk = trimWentianAiText(card.risk || "迁移化忌冲命，外部阻力重，异地发展需稳扎稳打，不宜草率。", 92);
+  const rawBadge = normalizeWentianAiText(card.profileBadge || "");
+  const badge = getWentianCompactText(rawBadge, hasWentianHanText(rawBadge) ? "Chart overview" : "");
+  const risk = normalizeWentianAiText(card.risk || "");
   return `
     <div class="wentian-mb-overall-hero">
       <span>整体批命</span>
       <h3>整体批命</h3>
-      <b>${escapeHtml(badge)}</b>
+      ${badge ? `<b>${escapeHtml(badge)}</b>` : ""}
       ${renderWentianMobileActionButton(actionAttr, actionLabel)}
     </div>
     <div class="wentian-mb-overall-sections">
@@ -5323,10 +5324,10 @@ function renderWentianOverallReading(data, fallback, actionAttr, actionLabel) {
         `;
       }).join("")}
     </div>
-    <div class="wentian-mb-overall-risk">
-      <strong>迁移化忌冲命</strong>
-      <p>${renderWentianSafeInlineMarkdown(risk.replace(/^迁移化忌冲命[，,：:\s]*/, ""))}</p>
-    </div>
+    ${risk ? `<div class="wentian-mb-overall-risk">
+      <strong>${getWentianCompactText("重点提醒", "Key reminder")}</strong>
+      <p>${renderWentianSafeInlineMarkdown(risk)}</p>
+    </div>` : ""}
   `;
 }
 
@@ -11236,6 +11237,7 @@ function cancelWentianArchiveSelection() {
 }
 
 function resetWentianXuChatRuntime() {
+  wentianXuChat.generation += 1;
   if (wentianXuChat.typingTimer) {
     clearTimeout(wentianXuChat.typingTimer);
     wentianXuChat.typingTimer = null;
@@ -11397,7 +11399,7 @@ function getWentianXuChatPayload() {
 function getWentianXuPayloadKey(payload) {
   if (!payload) return "";
   const contextRecordId = payload.divinationContext?.recordId || "";
-  return [payload.mode || "chart", payload.chartRecordId || "", contextRecordId].join("|");
+  return [getWentianArchiveStorageScopeId(), payload.mode || "chart", payload.chartRecordId || "", contextRecordId].join("|");
 }
 
 function ensureWentianXuPayloadRuntime(payload = getWentianXuChatPayload()) {
@@ -12341,8 +12343,9 @@ function addWentianMessage(role, text, options = {}) {
     ? normalizeWentianEnglishAssistantText(rawText)
     : rawText;
   const message = options.typewriter && role === "assistant"
-    ? { role, text: "", fullText: safeText, typing: true }
-    : { role, text: safeText };
+    ? { role, text: "", fullText: safeText, typing: true, createdAt: new Date().toISOString() }
+    : { role, text: safeText, createdAt: new Date().toISOString() };
+  if (options.opening) message.opening = true;
   if (options.pending) message.pending = true;
   wentianXuChat.messages.push(message);
   if (wentianXuChat.messages.length > 30) wentianXuChat.messages.shift();
@@ -12392,6 +12395,8 @@ async function ensureWentianXuSession(options = {}) {
   wentianXuChat.payloadKey = payloadKey;
   if (wentianXuChat.sessionId) return wentianXuChat.sessionId;
   if (wentianXuChat.sessionPromise) return wentianXuChat.sessionPromise;
+  const generation = wentianXuChat.generation;
+  const isCurrent = () => generation === wentianXuChat.generation && getWentianXuPayloadKey(getWentianXuChatPayload()) === payloadKey;
 
   if (!silent) setWentianChatStatus(getWentianXuModeText(payload.mode, "connecting"));
   const languageParams = getWentianAiLanguageParams();
@@ -12404,15 +12409,17 @@ async function ensureWentianXuSession(options = {}) {
     extraParams: languageParams,
     transientState: loadWentianTransientState(payload.chartRecordId),
   }, 90000, 1).then((data) => {
+    if (!isCurrent()) return null;
     wentianXuChat.sessionId = data.sessionId || `transient:${payload.chartRecordId}`;
     if (data.transientState) saveWentianTransientState(data.transientState, payload.chartRecordId);
     setWentianQuota(data.quota);
     setWentianChatStatus(data.transientMode ? "临时会话" : getWentianXuModeText(payload.mode, "ready"), data.transientMode ? "warn" : "ok");
-    if (!wentianXuChat.messages.length) {
+    {
       const historyMessages = Array.isArray(data.messages)
-        ? data.messages.slice(-12).map((item) => ({
+        ? data.messages.slice(-30).map((item) => ({
           role: item.sender === "user" ? "user" : item.sender === "system" ? "system" : "assistant",
           text: item.content || "",
+          createdAt: item.createdAt || null,
         })).filter((item) => {
           if (!isWentianEnglishMode()) return true;
           if (hasWentianDisallowedEnglishHanText(item.text)) return false;
@@ -12420,23 +12427,25 @@ async function ensureWentianXuSession(options = {}) {
         })
         : [];
       if (historyMessages.length) {
-        wentianXuChat.messages = historyMessages;
-      } else {
-        addWentianMessage("assistant", getWentianXuOpeningText(payload));
+        const currentMessages = wentianXuChat.messages.filter((item) => !item.opening);
+        wentianXuChat.messages = [...historyMessages, ...currentMessages].slice(-30);
+      } else if (!wentianXuChat.messages.length) {
+        addWentianMessage("assistant", getWentianXuOpeningText(payload), { opening: true });
       }
       renderWentianMessages();
     }
     return wentianXuChat.sessionId;
   }).catch((error) => {
+    if (!isCurrent()) return null;
     if (silent) {
-      setWentianChatStatus("已接入", "ok");
+      setWentianChatStatus("记录未加载，发送时重试", "warn");
     } else {
       setWentianChatStatus("暂时未连上", "error");
       if (!wentianXuChat.messages.length) addWentianMessage("system", `连接失败：${getWentianFriendlyError(error)}`);
     }
     throw error;
   }).finally(() => {
-    wentianXuChat.sessionPromise = null;
+    if (isCurrent()) wentianXuChat.sessionPromise = null;
   });
   return wentianXuChat.sessionPromise;
 }
@@ -12456,6 +12465,9 @@ async function sendWentianXuChat(promptText = "") {
 
   const payload = getWentianXuChatPayload();
   ensureWentianXuPayloadRuntime(payload);
+  const generation = wentianXuChat.generation;
+  const payloadKey = wentianXuChat.payloadKey;
+  const isCurrent = () => generation === wentianXuChat.generation && getWentianXuPayloadKey(getWentianXuChatPayload()) === payloadKey;
   const outboundMessage = buildWentianXuOutboundMessage(message, payload.divinationContext);
   window.yuetianTrack?.("ai_question_submit", { surface: "wentian_mobile", chat_mode: payload.mode || "chart" });
   wentianXuChat.autoScroll = true;
@@ -12466,6 +12478,7 @@ async function sendWentianXuChat(promptText = "") {
 
   try {
     await ensureWentianXuSession({ silent: false });
+    if (!isCurrent()) return;
     const languageParams = getWentianAiLanguageParams();
     const data = await wentianPostJson("/api/ai/chat/send", {
       chartRecordId: payload.chartRecordId,
@@ -12478,6 +12491,7 @@ async function sendWentianXuChat(promptText = "") {
       extraParams: languageParams,
       transientState: loadWentianTransientState(payload.chartRecordId),
     }, 70000, 0);
+    if (!isCurrent()) return;
     wentianXuChat.messages.pop();
     wentianXuChat.sessionId = data.sessionId || wentianXuChat.sessionId || `transient:${payload.chartRecordId}`;
     if (data.transientState) saveWentianTransientState(data.transientState, payload.chartRecordId);
@@ -12488,10 +12502,12 @@ async function sendWentianXuChat(promptText = "") {
     if (!replyText) setWentianChatStatus("回复未生成", "warn");
     addWentianMessage("assistant", replyText || getWentianEmptyReplyText(), { typewriter: true });
   } catch (error) {
+    if (!isCurrent()) return;
     wentianXuChat.messages.pop();
     setWentianChatStatus("发送未完成", "error");
     addWentianMessage("system", getWentianFriendlyError(error));
   } finally {
+    if (!isCurrent()) return;
     setWentianChatBusy(false);
     if (!isWentianMobileKeyboardViewport()) {
       wentianXuChat.suppressNextFaqFocus = true;
@@ -12547,13 +12563,61 @@ function initWentianXuChat() {
   };
 
   if (!wentianXuChat.messages.length) {
-    addWentianMessage("assistant", getWentianXuOpeningText(payload));
+    addWentianMessage("assistant", getWentianXuOpeningText(payload), { opening: true });
   } else {
     renderWentianMessages();
   }
   setWentianChatStatus(getWentianXuModeText(payload.mode, "ready"), "ok");
   syncWentianChatFaqLayout();
   ensureWentianXuSession({ silent: true }).catch(() => {});
+}
+
+function renderWentianChatHistoryRecords() {
+  const records = [];
+  wentianXuChat.messages.forEach((message) => {
+    if (message.role === "user") records.push({ question: message, replies: [] });
+    else if (records.length && !message.opening && !message.pending) records[records.length - 1].replies.push(message);
+  });
+  if (!records.length) return `<p class="wentian-history-empty">${getWentianCompactText("当前档案暂无对话记录", "No conversations for this chart yet")}</p>`;
+  return records.slice(-10).reverse().map(({ question, replies }) => {
+    const date = question.createdAt ? new Date(question.createdAt) : null;
+    const time = date && !Number.isNaN(date.getTime()) ? date.toLocaleString(isWentianEnglishMode() ? "en-US" : "zh-CN") : "";
+    return `<details class="wentian-history-record">
+      <summary><strong>${escapeHtml(question.text)}</strong>${time ? `<time>${escapeHtml(time)}</time>` : ""}</summary>
+      <div>${replies.length ? replies.map((reply) => `<p>${renderWentianSafeInlineMarkdown(reply.fullText || reply.text)}</p>`).join("") : `<p>${getWentianCompactText("尚未收到回复", "No reply yet")}</p>`}</div>
+    </details>`;
+  }).join("");
+}
+
+function sourceWentianChatHistoryScreen() {
+  return `<section class="wentian-history-page">
+    <header><button type="button" data-route="screen-4">${getWentianCompactText("返回对话", "Back to chat")}</button><h1>${getWentianCompactText("对话记录", "Conversation history")}</h1></header>
+    <p>${getWentianCompactText("当前档案 · 最近10条提问，点击展开完整回答", "Current chart · Last 10 questions. Tap to read each reply.")}</p>
+    <div id="wentian-history-status" role="status"></div>
+    <div id="wentian-history-records">${renderWentianChatHistoryRecords()}</div>
+    <button type="button" data-action="wentian-chat-history-retry">${getWentianCompactText("刷新记录", "Refresh history")}</button>
+  </section>`;
+}
+
+async function initWentianChatHistory() {
+  ensureWentianXuPayloadRuntime();
+  const status = document.getElementById("wentian-history-status");
+  const records = document.getElementById("wentian-history-records");
+  if (!status || !records) return;
+  records.innerHTML = renderWentianChatHistoryRecords();
+  if (!getWentianSavedChart() && !getWentianXuChatContext()) {
+    status.textContent = getWentianCompactText("请先选择命盘，再查看对应记录。", "Select a chart to view its conversations.");
+    return;
+  }
+  status.textContent = getWentianCompactText("正在读取真实记录…", "Loading conversations…");
+  try {
+    await ensureWentianXuSession({ silent: true });
+    if (!records.isConnected) return;
+    records.innerHTML = renderWentianChatHistoryRecords();
+    status.textContent = "";
+  } catch (_error) {
+    if (status.isConnected) status.textContent = getWentianCompactText("记录暂时未加载，请重试。", "Could not load conversations. Please retry.");
+  }
 }
 
 function formatWentianMemberDate(value) {
@@ -20470,35 +20534,7 @@ function renderWentianPolishedScreen(screen) {
     `;
   }
   if (no === 9) {
-    const records = [
-      ["新的对话", "15:18", "根据我的八字拆解核心性格特质"],
-      ["新的对话", "22:06", "最近事业机会应该怎么判断"],
-      ["命盘追问", "昨天", "感情关系里需要注意什么"]
-    ];
-    return `
-      ${sourceAiChatScreen(screen)}
-      ${figBox("wt9-overlay", 0, 0, 390, 844, "", "background:rgba(0,0,0,.36);")}
-      ${figBox("wt9-sheet", 0, 500, 390, 344, "", "border-radius:22px 22px 0 0;background:#fff;box-shadow:0 -14px 32px rgba(0,0,0,.16);")}
-      ${figBox("wt9-handle", 160, 514, 70, 5, "", "border-radius:4px;background:#eee8df;")}
-      ${figText("wt9-title", "对话记录", 28, 540, 130, 18, "#25211d", 800)}
-      ${figBox("wt9-new", 270, 536, 82, 32, "", "border-radius:16px;background:#d0a03a;")}
-      ${figButton("wt9-new-hit", 270, 536, 82, 32, 'data-route="screen-4"')}
-      ${figText("wt9-new-text", "新对话", 270, 545, 82, 12, "#fff", 800, "center")}
-      ${records.map(([title, time, desc], index) => {
-        const y = 586 + index * 72;
-        return `
-          ${figBox(`wt9-row-${index}`, 24, y, 342, 58, "", "border-radius:14px;background:#fffaf3;border:1px solid #efe2d0;")}
-          ${figBox(`wt9-row-icon-${index}`, 40, y + 15, 28, 28, "", "border-radius:14px;background:#fff0d6;")}
-          ${figText(`wt9-row-icon-text-${index}`, "◷", 40, y + 21, 28, 12, "#bd8624", 800, "center")}
-          ${figText(`wt9-row-title-${index}`, title, 82, y + 11, 132, 14, "#25211d", 800)}
-          ${figText(`wt9-row-time-${index}`, time, 278, y + 12, 54, 12, "#a39a90", 600, "right")}
-          ${figText(`wt9-row-desc-${index}`, desc, 82, y + 34, 210, 11, "#7f766b", 500, "left", "white-space:nowrap;overflow:hidden;text-overflow:ellipsis;")}
-          ${figText(`wt9-row-arrow-${index}`, "›", 334, y + 23, 18, 18, "#c5b7a5", 800, "center")}
-          ${figButton(`wt9-row-hit-${index}`, 24, y, 342, 58, 'data-route="screen-4"')}
-        `;
-      }).join("")}
-      ${figText("wt9-foot", "仅保留最近 10 条对话", 0, 812, 390, 11, "#b2aaa2", 500, "center")}
-    `;
+    return sourceWentianChatHistoryScreen();
   }
   if (no === 10 || no === 11) {
     return sourceHepanSelectScreen();
@@ -22768,6 +22804,10 @@ function sourceZiweiMingpanScreen(saved = getWentianDisplayChartState()) {
 
 function renderConvertedScreen(no) {
   const screen = convertedByNo.get(no) || convertedByNo.get(1);
+  if (screen.no === 9) {
+    ensureWentianXuPayloadRuntime();
+    return sourceWentianChatHistoryScreen();
+  }
   if (screen.no === 1) {
     return figPhone(`screen-${screen.no}`, `${String(screen.no).padStart(2, "0")} 首页`, `
       ${sourceDashboardHomeScreen()}
@@ -23725,6 +23765,7 @@ function navigate(route, push = true, syncHash = true) {
     window.setTimeout(initWentianAuth, 0);
     window.setTimeout(() => trackWentianRouteOpen(route), 0);
     if (screen.no === 4) window.setTimeout(initWentianXuChat, 0);
+    if (screen.no === 9) window.setTimeout(initWentianChatHistory, 0);
     if (screen.no === 5 || screen.no === 25) window.setTimeout(() => hydrateWentianArchivesFromRemote({ rerender: true }), 0);
     if (screen.no === 30) window.setTimeout(initWentianPaymentScreen, 0);
     if (screen.no === 1 || screen.no === 4 || screen.no === 29 || screen.no === 31 || screen.no === 33 || screen.no === 38 || screen.no === 40 || screen.no === 41) window.setTimeout(() => hydrateWentianMemberStatus({ rerender: true }), 0);
@@ -24786,6 +24827,13 @@ document.addEventListener("click", (event) => {
   }
   if (action === "wentian-chat-send") {
     sendWentianXuChat();
+    return;
+  }
+  if (action === "wentian-chat-history-retry") {
+    if (!wentianXuChat.loading && !wentianXuChat.sessionPromise) {
+      resetWentianXuChatRuntime();
+      initWentianChatHistory();
+    }
     return;
   }
   if (action === "wentian-chat-context-open") {

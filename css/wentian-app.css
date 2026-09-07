@@ -16290,6 +16290,22 @@ html[lang="en"] [data-node-id="source-31-vip-v2"] {
   width: 168px !important;
 }
 
+.wentian-history-page {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 24px 16px 40px;
+  color: #33271f;
+}
+.wentian-history-page header { display: flex; align-items: center; gap: 16px; }
+.wentian-history-page h1 { font-size: 22px; margin: 0; }
+.wentian-history-page > p, #wentian-history-status { font-size: 15px; line-height: 1.7; }
+.wentian-history-page button { min-height: 44px; padding: 10px 16px; border: 1px solid #dfc69d; border-radius: 12px; background: #fffaf2; color: #814830; font: inherit; }
+.wentian-history-record { margin: 14px 0; border: 1px solid #e4d4be; border-radius: 14px; background: #fffdf8; overflow-wrap: anywhere; }
+.wentian-history-record summary { cursor: pointer; padding: 16px; font-size: 17px; line-height: 1.6; }
+.wentian-history-record time { display: block; font-size: 13px; color: #756859; margin-top: 6px; }
+.wentian-history-record > div { padding: 0 16px 16px; font-size: 17px; line-height: 1.8; white-space: pre-wrap; }
+.wentian-history-empty { padding: 24px 0; font-size: 16px; }
+
 /* Mobile readability: the 390px design canvas is scaled down on narrow phones. */
 @media (max-width: 390px) {
   [data-node-id="source-1-login-pill-text"] {
