@@ -15,6 +15,15 @@
       const entry = params.get("entry");
       const mobileParams = new URLSearchParams(params);
       mobileParams.delete("view");
+      // Keep English article visitors in English even if an older CTA script is cached.
+      if (!["lang", "language", "wentianLanguage", "locale"].some(key => mobileParams.has(key))) {
+        try {
+          const referrer = new URL(document.referrer);
+          if (referrer.origin === window.location.origin && /^\/articles\/en\//i.test(referrer.pathname)) {
+            mobileParams.set("lang", "en");
+          }
+        } catch (_err) {}
+      }
       const targetUrl = new URL("/pages/wentian-app.html", window.location.origin);
       targetUrl.search = mobileParams.toString();
       targetUrl.hash = entry === "member" ? "screen-33" : entry === "login" ? "screen-40" : "screen-26";
