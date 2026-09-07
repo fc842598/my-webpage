@@ -2,7 +2,7 @@
 | --- | --- | --- | --- | --- |
 | 01 | 已发布 2026-09-07 17:15 https://yuetianai.com/articles/ziwei-yong-guoqu-dashi-yanpan.html / https://yuetianai.com/articles/en/ziwei-yong-guoqu-dashi-yanpan.html | ziwei-yong-guoqu-dashi-yanpan | 紫微斗数能不能看准过去？拿一次真正改变生活的事来验盘 | 看盘方法 |
 | 02 | 已发布 2026-09-07 17:21 https://yuetianai.com/articles/ziwei-shuangbaotai-tongpan-butong-rensheng.html / https://yuetianai.com/articles/en/ziwei-shuangbaotai-tongpan-butong-rensheng.html | ziwei-shuangbaotai-tongpan-butong-rensheng | 双胞胎命盘一样，为什么人生不一样？紫微斗数绕不开的问题 | 看盘方法 |
-| 03 | 待发布 | ziwei-pan-shang-xusui-zhou-sui-duizhao | 明明才29岁，紫微命盘为什么写31岁？虚岁和年份这样核对 | 大限流年 |
+| 03 | 已发布 2026-09-07 17:21 https://yuetianai.com/articles/ziwei-pan-shang-xusui-zhou-sui-duizhao.html / https://yuetianai.com/articles/en/ziwei-pan-shang-xusui-zhou-sui-duizhao.html | ziwei-pan-shang-xusui-zhou-sui-duizhao | 明明才29岁，紫微命盘为什么写31岁？虚岁和年份这样核对 | 大限流年 |
 | 04 | 待发布 | ziwei-liunian-minggong-bian-benming-bubian | 紫微命宫每年都会变吗？盘上两个“命宫”别看混了 | 大限流年 |
 | 05 | 待发布 | ziwei-shengong-sanshi-sui-bushi-kaiguan | 身宫真的是30岁以后才起作用吗？别把人生切成两半 | 看盘方法 |
 | 06 | 待发布 | ziwei-chunjie-lichun-huannian-bianjie | 春节和立春之间出生，紫微斗数到底算哪一年？ | 看盘方法 |
