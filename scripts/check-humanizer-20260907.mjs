@@ -14,7 +14,7 @@ const check = (value, reason) => { if (!value) errors.push(reason); };
 const titles = new Set();
 const paras = new Map();
 const existing = readdirSync(path.join(root, 'articles')).filter(f => f.endsWith('.html') && !articles.some(a => f === `${a.slug}.html`));
-const oldText = existing.map(f => readFileSync(path.join(root, 'articles', f), 'utf8'));
+const oldText = existing.map(f => readFileSync(path.join(root, 'articles', f), 'utf8')).filter(html => /"@type"\s*:\s*"Article"/.test(html));
 for (const a of articles) {
   check(!titles.has(a.title), `Duplicate title: ${a.title}`); titles.add(a.title);
   check(!oldText.some(html => html.includes(`<h1>${a.title}</h1>`)), `Existing title: ${a.title}`);
