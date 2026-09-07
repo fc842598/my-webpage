@@ -210,7 +210,12 @@
     const link = event.target.closest?.("a[href]");
     if (!link) return;
     const target = new URL(link.href, window.location.href);
+    if (target.origin !== window.location.origin) return;
     if (!/\/pages\/(?:mingbook-onepage|wentian-app)\.html$/i.test(target.pathname)) return;
+    if (/^\/articles\/en\//i.test(window.location.pathname)
+        && !["lang", "language", "wentianLanguage", "locale"].some(key => target.searchParams.has(key))) {
+      target.searchParams.set("lang", "en");
+    }
     target.searchParams.set("source", "article");
     target.searchParams.set("article", currentArticle);
     target.searchParams.set("journey_id", attribution.journeyId);

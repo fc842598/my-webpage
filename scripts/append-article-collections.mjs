@@ -13,7 +13,7 @@ function metadata(root, rel) {
   return { ...article, rel };
 }
 
-function addToIndex(html, article, category, en, hub = false) {
+export function addToIndex(html, article, category, en, hub = false) {
   const url = article.mainEntityOfPage;
   const filename = path.posix.basename(article.rel);
   if (html.includes(`href="${filename}"`)) throw new Error(`Index already contains ${url}`);

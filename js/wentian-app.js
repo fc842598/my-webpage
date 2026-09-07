@@ -8434,6 +8434,17 @@ const WENTIAN_I18N = {
     "全部次数": "Total",
     "每日次数": "Daily limit",
     "月卡与权益": "Plans and access",
+    "排盘表单": "Create Chart",
+    "办公室布局": "Office Layout",
+    "办公室布局说明": "Office Layout Guide",
+    "地脉道教程": "Home Feng Shui Guide",
+    "生成阳宅解读": "Analyze Placements",
+    "按顺序填入": "Auto Align Family Members",
+    "重置阳宅方位": "Reset Placements",
+    "手机号或邮箱": "Phone or email",
+    "海外号码请带国家区号": "Include country code (e.g. +44)",
+    "使用 Google 登录": "Sign in with Google",
+    "打开六爻占卜新版": "Open Liuyao Coin Casting",
     "选择界面显示语言": "Choose display language",
     "确认后会同步保存到当前浏览器": "Saved to this browser after confirmation",
     "选择显示语言": "Choose display language",
@@ -9230,7 +9241,7 @@ const WENTIAN_I18N_EN_EXTRA = {
   "用户协议": "Terms of Service",
   "检查更新": "Check for Updates",
   "登录/注册": "Sign In / Register",
-  "地脉道": "Earth Meridian",
+  "地脉道": "Home Feng Shui",
   "教程": "Help",
   "九宫安位": "Nine-Palace Placement",
   "逐格点击加号安位": "Tap each plus to place items",
@@ -9908,7 +9919,9 @@ function translateWentianText(text, code = getWentianLanguageCode(), element = n
     const hepanSelected = source.match(/^已选\s*(\d+)\/2$/);
     if (hepanSelected) return `Selected ${hepanSelected[1]}/2`;
     const yangzhaiReadingCount = source.match(/^已生成\s*(\d+)\s*条解读$/) || source.match(/^(\d+)\s*条解读$/);
-    if (yangzhaiReadingCount) return `${yangzhaiReadingCount[1]} readings`;
+    if (yangzhaiReadingCount) return `${yangzhaiReadingCount[1]} ${yangzhaiReadingCount[1] === "1" ? "reading" : "readings"}`;
+    const placementAction = source.match(/^(.+)，(.+)，选择安位$/);
+    if (placementAction) return `${translateWentianText(placementAction[1], "en")}, ${translateWentianText(placementAction[2], "en")}, choose placement`;
     const yangzhaiConfirm = source.match(/^确认本宫安位\s*\((\d+)\)$/);
     if (yangzhaiConfirm) return `Confirm Placement (${yangzhaiConfirm[1]})`;
     const yangzhaiPalaceTag = source.match(/^(.+?)宫\s*·\s*(.+?)\s*·\s*(.+)$/);
@@ -10053,6 +10066,11 @@ function applyWentianLanguageText(root = view, code = getWentianLanguageCode(), 
   try {
     document.documentElement.lang = option.htmlLang;
     document.documentElement.dataset.wentianLanguage = option.code;
+    document.title = option.code === "en"
+      ? "Yuetian AI | Zi Wei Charts, Compatibility & Readings"
+      : option.code === "zh-Hant"
+        ? "閱天AI｜AI紫微排盤、八字合盤與流年分析"
+        : "阅天AI｜AI紫微排盘、八字合盘与流年分析";
     if (!root || !root.querySelectorAll) return;
 
     const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
@@ -10140,7 +10158,7 @@ function finalizeWentianLanguageText(root = view, code = getWentianLanguageCode(
   setWentianFinalText(root, '[data-node-id="source-1-feature-title-4"]', "Office Layout");
   setWentianFinalText(root, '[data-node-id="source-1-feature-sub-4"]', "Door & Boss Seat");
   setWentianFinalText(root, '[data-node-id="source-1-feature-title-5"]', "Liuren");
-  setWentianFinalText(root, '[data-node-id="source-1-feature-sub-5"]', "Lunar Palm Casting");
+  setWentianFinalText(root, '[data-node-id="source-1-feature-sub-5"]', "Lunar Divination");
 
   const chatContext = getWentianXuChatContext();
   if (chatContext && root.querySelector(".wentian-chat-context-card")) {
@@ -13945,7 +13963,7 @@ function sourceMembershipScreen() {
   return `
     ${figBox("wt33-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
     ${wentianBackPill("wt33", 18, 42, 'data-action="wentian-return-previous" data-fallback-route="screen-31" aria-label="返回"')}
-    ${figText("wt33-title", campaignActive ? (isEn ? "Limited-time Free Access" : "限时免费体验") : (isEn ? "Monthly Passes" : "月卡与权益"), 0, 52, 390, 17, "#25211d", 800, "center")}
+    ${figText("wt33-title", campaignActive ? (isEn ? "Free access" : "限时免费体验") : (isEn ? "Monthly Passes" : "月卡与权益"), isEn ? 116 : 0, 52, isEn ? 250 : 390, 17, "#25211d", 800, "center")}
     ${figBox("wt33-card", 24, 96, 342, 104, "", "border-radius:18px;background:linear-gradient(135deg,#2b2722,#14110d);box-shadow:0 14px 26px rgba(28,20,12,.14);")}
     ${figText("wt33-card-label", campaignActive ? (isEn ? "Monthly offer" : `${campaignMonth}大促`) : (isEn ? "Current access" : escapeHtml(member.title)), 46, 116, 210, 18, "#fff", 900)}
     ${figText("wt33-card-sub", campaignActive ? (isEn ? "Register and sign in to activate" : "注册并登录后自动获得") : escapeHtml(member.subtitle), 46, 148, 220, 12, "#cfc1a9", 700)}
@@ -13954,18 +13972,18 @@ function sourceMembershipScreen() {
 
     ${figText("wt33-plan-title", isEn ? "Choose a pass" : "选择月卡", 24, 226, 120, 16, "#25211d", 900)}
     ${figBox("wt33-three", 24, 258, 342, 104, "", "border:1px solid #c8a65f;border-radius:16px;background:#fffaf0;box-shadow:0 8px 20px rgba(130,91,31,.08);")}
-    ${figText("wt33-three-title", isEn ? "3-Profile Deep Pass" : "三人深度月卡", 44, 278, 188, 16, "#8f3d30", 900)}
-    ${figText("wt33-three-price", isEn ? "$4.99 / 31 days" : "¥19.90 / 31天", 208, 274, 132, 15, "#8f3d30", 900, "right", campaignActive ? "text-decoration:line-through;text-decoration-thickness:2px;" : "")}
+    ${figText("wt33-three-title", isEn ? "3-Profile Deep Pass" : "三人深度月卡", 44, 278, isEn ? 282 : 188, 16, "#8f3d30", 900)}
+    ${figText("wt33-three-price", isEn ? "$4.99 / 31 days" : "¥19.90 / 31天", isEn ? 44 : 208, isEn ? 303 : 274, isEn ? 180 : 132, 15, "#8f3d30", 900, isEn ? "left" : "right", campaignActive ? "text-decoration:line-through;text-decoration-thickness:2px;" : "")}
     ${campaignActive ? figText("wt33-three-free", isEn ? "FREE NOW" : "限时免费", 246, 301, 94, 12, "#9d3325", 900, "right") : ""}
-    ${figText("wt33-three-desc", isEn ? "3 profiles · In-depth readings · 30 questions/day" : "3位命主 · 深度解读 · 每天30次追问", 44, campaignActive ? 335 : 318, 282, 12, "#756d63", 800)}
+    ${figText("wt33-three-desc", isEn ? "3 profiles · Full readings · 30/day" : "3位命主 · 深度解读 · 每天30次追问", 44, isEn ? 336 : (campaignActive ? 335 : 318), 282, 12, "#756d63", 800)}
 
     ${figBox("wt33-unlimited", 24, 378, 342, 104, "", "border:1px solid #eadfce;border-radius:16px;background:#fff;box-shadow:0 7px 18px rgba(70,45,25,.06);")}
-    ${figText("wt33-unlimited-title", isEn ? "Unlimited Profile Pass" : "无限畅享月卡", 44, 398, 188, 16, "#25211d", 900)}
-    ${figText("wt33-unlimited-price", isEn ? "$14.99 / 31 days" : "¥69.90 / 31天", 204, 394, 136, 15, "#8f3d30", 900, "right", campaignActive ? "text-decoration:line-through;text-decoration-thickness:2px;" : "")}
+    ${figText("wt33-unlimited-title", isEn ? "Unlimited Profile Pass" : "无限畅享月卡", 44, 398, isEn ? 282 : 188, 16, "#25211d", 900)}
+    ${figText("wt33-unlimited-price", isEn ? "$14.99 / 31 days" : "¥69.90 / 31天", isEn ? 44 : 204, isEn ? 423 : 394, isEn ? 180 : 136, 15, "#8f3d30", 900, isEn ? "left" : "right", campaignActive ? "text-decoration:line-through;text-decoration-thickness:2px;" : "")}
     ${campaignActive ? figText("wt33-unlimited-free", isEn ? "FREE NOW" : "限时免费", 246, 421, 94, 12, "#9d3325", 900, "right") : ""}
-    ${figText("wt33-unlimited-desc", isEn ? "Unlimited profiles · In-depth readings · 100 questions/day" : "不限命主人数 · 深度解读 · 每天100次追问", 44, campaignActive ? 455 : 438, 282, 12, "#756d63", 800)}
+    ${figText("wt33-unlimited-desc", isEn ? "All profiles · Full readings · 100/day" : "不限命主人数 · 深度解读 · 每天100次追问", 44, isEn ? 456 : (campaignActive ? 455 : 438), 282, 12, "#756d63", 800)}
 
-    ${figBox("wt33-free", 24, 504, 342, 66, "", "border:1px solid #eadfce;border-radius:14px;background:#fffdf8;")}
+    ${figBox("wt33-free", 24, 504, 342, isEn ? 88 : 66, "", "border:1px solid #eadfce;border-radius:14px;background:#fffdf8;")}
     ${figText("wt33-free-title", campaignActive ? (isEn ? "Campaign access" : "活动资格") : (isEn ? "Without a pass" : "未开通月卡"), 44, 524, 124, 13, "#25211d", 900)}
     ${figText("wt33-free-desc", campaignActive ? (isEn ? "Registered accounts receive free access automatically" : "仅限注册账号，登录后自动生效") : (isEn ? "1 profile · Full basic reading · 8 questions total" : "登录后：1位命主 · 完整基础解读 · 共8次追问"), 44, 548, 286, 11, "#8d8377", 700)}
 
