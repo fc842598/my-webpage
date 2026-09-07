@@ -15,7 +15,7 @@ const runtime = { generation: 0, messages: [{role:'assistant', text:'welcome', o
 let payload = {mode:'chart', chartRecordId:'chart-a', chartData:{}};
 let resolveRequest;
 const context = vm.createContext({
-  wentianXuChat:runtime, getWentianXuChatPayload:()=>payload,
+  wentianXuChat:runtime, getWentianXuChatPayload:()=>payload, canStartWentianXuChat:()=>true,
   getWentianArchiveStorageScopeId:()=> 'local-only',
   resetWentianXuChatRuntime:()=> { runtime.generation++; runtime.messages=[]; runtime.sessionId=null; runtime.sessionPromise=null; },
   wentianPostJson:()=>new Promise(resolve=>{resolveRequest=resolve;}),

@@ -12387,7 +12387,25 @@ function getWentianXuOpeningText(payload = getWentianXuChatPayload()) {
   return "我在，看命盘直接问。";
 }
 
+function canStartWentianXuChat() {
+  return !!(getWentianSavedChart() || getWentianXuChatContext());
+}
+
+function sourceWentianChatEmptyScreen() {
+  return `<section class="wentian-chat-empty-page">
+    <button type="button" data-route="screen-1">${getWentianCompactText("返回首页", "Back to home")}</button>
+    <article>
+      <img src="../images/wentian-prototype-assets/xu-dashi.webp" alt="${getWentianCompactText("许大师", "Master Xu")}">
+      <h1>${getWentianCompactText("先选命盘，再开始解读", "Select a chart to begin")}</h1>
+      <p>${getWentianCompactText("你还没有选择命盘。先新建或选择已保存的档案，许大师才能根据对应资料回答。", "No chart is selected. Create a chart or select a saved profile so the reading uses the right details.")}</p>
+      <button type="button" data-route="screen-26">${getWentianCompactText("新建命盘", "Create a chart")}</button>
+      <button type="button" data-route="screen-5">${getWentianCompactText("选择已有档案", "Select a saved profile")}</button>
+    </article>
+  </section>`;
+}
+
 async function ensureWentianXuSession(options = {}) {
+  if (!canStartWentianXuChat()) throw new Error(getWentianCompactText("请先选择命盘", "Select a chart first"));
   const silent = !!options.silent;
   const payload = getWentianXuChatPayload();
   const payloadKey = getWentianXuPayloadKey(payload);
@@ -12451,6 +12469,10 @@ async function ensureWentianXuSession(options = {}) {
 }
 
 async function sendWentianXuChat(promptText = "") {
+  if (!canStartWentianXuChat()) {
+    navigate("screen-3");
+    return;
+  }
   if (wentianXuChat.loading) return;
   finishWentianTyping(false);
   const input = document.getElementById("wentian-chat-input");
@@ -22820,6 +22842,9 @@ function sourceZiweiMingpanScreen(saved = getWentianDisplayChartState()) {
 
 function renderConvertedScreen(no) {
   const screen = convertedByNo.get(no) || convertedByNo.get(1);
+  if ((screen.no === 3 && !getWentianSavedChart()) || ([4, 6, 7].includes(screen.no) && !canStartWentianXuChat())) {
+    return sourceWentianChatEmptyScreen();
+  }
   if (screen.no === 9) {
     ensureWentianXuPayloadRuntime();
     return sourceWentianChatHistoryScreen();
