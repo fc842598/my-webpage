@@ -28,5 +28,5 @@
 | 26 | 已发布 2026-09-07 17:22 https://yuetianai.com/articles/ziwei-lianzhen-tanlang-taohua-xing-qubie.html / https://yuetianai.com/articles/en/ziwei-lianzhen-tanlang-taohua-xing-qubie.html | ziwei-lianzhen-tanlang-taohua-xing-qubie | 廉贞和贪狼都叫桃花星，区别在哪里？ | 主星细读 |
 | 27 | 已发布 2026-09-07 17:22 https://yuetianai.com/articles/ziwei-taiyang-taiyin-chouwei-tonggong.html / https://yuetianai.com/articles/en/ziwei-taiyang-taiyin-chouwei-tonggong.html | ziwei-taiyang-taiyin-chouwei-tonggong | 太阳太阴同宫，丑宫和未宫能用同一种说法吗？ | 主星细读 |
 | 28 | 已发布 2026-09-07 17:22 https://yuetianai.com/articles/ziwei-tiantong-tianliang-zhangbei-yilai.html / https://yuetianai.com/articles/en/ziwei-tiantong-tianliang-zhangbei-yilai.html | ziwei-tiantong-tianliang-zhangbei-yilai | 天同天梁坐命，有人照顾是福气，什么时候会变成依赖？ | 主星细读 |
-| 29 | 待发布 | ziwei-qisha-pojun-tanlang-biantong-qubie | 七杀、破军、贪狼都说“多变”，到底变得有什么不同？ | 主星细读 |
+| 29 | 已发布 2026-09-07 17:22 https://yuetianai.com/articles/ziwei-qisha-pojun-tanlang-biantong-qubie.html / https://yuetianai.com/articles/en/ziwei-qisha-pojun-tanlang-biantong-qubie.html | ziwei-qisha-pojun-tanlang-biantong-qubie | 七杀、破军、贪狼都说“多变”，到底变得有什么不同？ | 主星细读 |
 | 30 | 待发布 | ziwei-liunian-shier-nian-huidao-tonggong | 流年12年后又回到同一宫，往事会重演吗？ | 大限流年 |
