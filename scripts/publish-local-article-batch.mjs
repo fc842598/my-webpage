@@ -2660,7 +2660,7 @@ function enIndex(articles) {
             <div class="card-body">
               <div class="card-meta"><span class="tag">Featured Hub</span><span>Bilingual</span></div>
               <h3>${escapeHtml(item.enName)}</h3>
-              <p>${escapeHtml(item.desc)}</p>
+              <p>${escapeHtml(item.enDesc)}</p>
               <a class="card-link" href="${item.enFile}">Open hub</a>
             </div>
           </article>`).join("\n");
