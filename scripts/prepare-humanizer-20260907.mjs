@@ -17,7 +17,7 @@ for (const a of articles) {
   if (/文稿里|讲义里|他说|天纪|倪海厦|source-extract|证据卡/.test(a.body + a.enBody)) throw new Error(`Source trace: ${a.slug}`);
 }
 const source = articles.map((a, i) => `## ${i + 1}. ${a.title}\nslug: \`${a.slug}\`\n\n正文草稿：\n${a.body}\n\n英文标题：${a.enTitle}\n英文描述：${a.enDescription}\n英文正文：\n${a.enBody}`).join('\n\n---\n\n');
-const queue = '| 序号 | 状态 | slug | 标题 | 分类 |\n| --- | --- | --- | --- | --- |\n' + articles.map((a, i) => `| ${i + 1} | 待发布 | ${a.slug} | ${a.title} | ${a.category} |`).join('\n') + '\n';
+const queue = '| 序号 | 状态 | slug | 标题 | 分类 |\n| --- | --- | --- | --- | --- |\n' + articles.map((a, i) => `| ${String(i + 1).padStart(2, '0')} | 待发布 | ${a.slug} | ${a.title} | ${a.category} |`).join('\n') + '\n';
 writeFileSync(path.join(dir, 'humanizer-20260907-source.md'), source + '\n');
 const queuePath = path.join(dir, 'humanizer-20260907-queue.md');
 if (existsSync(queuePath) && /https?:/.test(readFileSync(queuePath, 'utf8'))) throw new Error('Do not overwrite a queue that has published entries.');

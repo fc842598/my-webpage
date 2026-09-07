@@ -11,6 +11,14 @@ const root = path.resolve(args["output-root"] || process.cwd());
 const productionRoot = comparablePath(root) === comparablePath(process.cwd());
 const generatedArticlePaths = new Set();
 let useCommittedArticleSnapshot = productionRoot;
+if (args["clean-working-tree-snapshot"] === true) {
+  // File reads are safe only when no article edits or untracked pages can enter the collection.
+  const changes = execFileSync("git", ["status", "--porcelain", "--untracked-files=all", "--", "articles"], {
+    cwd: root, encoding: "utf8", windowsHide: true
+  });
+  if (changes.trim()) throw new Error("Clean working-tree snapshot requires an unchanged articles directory.");
+  useCommittedArticleSnapshot = false;
+}
 const queuePath = args.queue;
 const sourcePath = args.source;
 const count = Number(args.count || 1);
