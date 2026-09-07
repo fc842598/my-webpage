@@ -1,6 +1,6 @@
 | 序号 | 状态 | slug | 标题 | 分类 |
 | --- | --- | --- | --- | --- |
-| 01 | 待发布 | ziwei-yong-guoqu-dashi-yanpan | 紫微斗数能不能看准过去？拿一次真正改变生活的事来验盘 | 看盘方法 |
+| 01 | 已发布 2026-09-07 17:15 https://yuetianai.com/articles/ziwei-yong-guoqu-dashi-yanpan.html / https://yuetianai.com/articles/en/ziwei-yong-guoqu-dashi-yanpan.html | ziwei-yong-guoqu-dashi-yanpan | 紫微斗数能不能看准过去？拿一次真正改变生活的事来验盘 | 看盘方法 |
 | 02 | 待发布 | ziwei-shuangbaotai-tongpan-butong-rensheng | 双胞胎命盘一样，为什么人生不一样？紫微斗数绕不开的问题 | 看盘方法 |
 | 03 | 待发布 | ziwei-pan-shang-xusui-zhou-sui-duizhao | 明明才29岁，紫微命盘为什么写31岁？虚岁和年份这样核对 | 大限流年 |
 | 04 | 待发布 | ziwei-liunian-minggong-bian-benming-bubian | 紫微命宫每年都会变吗？盘上两个“命宫”别看混了 | 大限流年 |
