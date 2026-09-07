@@ -18889,7 +18889,7 @@ function yangzhaiCompassGrid(id, compact = false) {
       ${figText(`${id}-role-${index}`, palace.role, x + 13, y + (compact ? 31 : 36), 84, compact ? 9 : 11, "#55493d", 700, "left", "white-space:nowrap;font-family:'Noto Sans SC','Microsoft YaHei',sans-serif;")}
       ${figText(`${id}-gua-${index}`, palace.gua, x + 86, y + (compact ? 12 : 15), 16, compact ? 10 : 12, "#9f4032", 800, "right", "line-height:1;font-family:'Noto Serif SC','Songti SC',serif;")}
       ${yangzhaiRoomAvatar(`${id}-room-${index}`, x, y, items, compact)}
-      ${figButton(`${id}-cell-hit-${index}`, x, y, metrics.cellW, metrics.cellH, `data-action="yangzhai-open" data-palace="${palace.key}"`)}
+      ${figButton(`${id}-cell-hit-${index}`, x, y, metrics.cellW, metrics.cellH, `data-action="yangzhai-open" data-palace="${palace.key}" aria-label="${escapeHtml(`${palace.dir}，${palace.role}，选择安位`)}"`)}
     `;
   }).join("");
 }
@@ -18986,7 +18986,7 @@ function sourceYangzhaiSelectScreen() {
         ${figText(`yz43-option-${index}`, optionText, x + 40, y + 6, 80, optionSize, "#201812", 800, "left", "z-index:44;white-space:nowrap;")}
         ${figBox(`yz43-radio-${index}`, x + 120, y + 6, 18, 18, "", `border:1px solid ${isSelected ? "#a94437" : "#c9bba9"};border-radius:9px;background:${isSelected ? "#a94437" : "#fffdf8"};z-index:43;`)}
         ${isSelected ? figText(`yz43-radio-check-${index}`, "\u2713", x + 120, y + 10, 20, 10, "#fffaf3", 900, "center", "z-index:44;") : ""}
-        ${figButton(`yz43-option-hit-${index}`, x - 8, y - 4, 158, optionBoxHeight, `data-action="yangzhai-pick" data-yangzhai-option="${label}"`, "", "z-index:45;")}
+        ${figButton(`yz43-option-hit-${index}`, x - 8, y - 4, 158, optionBoxHeight, `data-action="yangzhai-pick" data-yangzhai-option="${label}" aria-label="${escapeHtml(optionText)}" aria-pressed="${isSelected}"`, "", "z-index:45;")}
       `;
     }).join("")}
     ${selectedElders.length ? `
