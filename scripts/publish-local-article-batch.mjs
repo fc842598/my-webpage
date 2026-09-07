@@ -2,6 +2,7 @@ import { existsSync, mkdirSync, readdirSync, readFileSync, realpathSync, writeFi
 import { execFileSync } from "node:child_process";
 import path from "node:path";
 import { assertProductionPublishWindow } from "./article-publish-time-gate.mjs";
+import { appendArticleCollections } from "./append-article-collections.mjs";
 
 const site = "https://yuetianai.com";
 const defaultImage = `${site}/images/home2/triad-tian-bg.webp`;
@@ -196,9 +197,13 @@ for (const [index, article] of articles.entries()) {
 }
 
 if (!skipCollections) {
+  if (args["append-collections"] === true) {
+    appendArticleCollections(root, articles);
+  } else {
+    regenerateChineseIndex();
+    regenerateFeedsAndSitemaps(articles);
+  }
   updateQueue(queuePath, queueRaw, articles);
-  regenerateChineseIndex();
-  regenerateFeedsAndSitemaps(articles);
 }
 
 console.log(`Published ${articles.length} articles.`);
