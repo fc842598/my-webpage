@@ -46,19 +46,14 @@ function genAIText(hex, chHex, dynYao, q) {
   const upN = TRIGRAM_NAMES[hex.upper], loN = TRIGRAM_NAMES[hex.lower];
   let t = `【卦象概述】\n所得卦象为${hex.fullName}（第${hex.number}卦）。上卦${upN}为${up}，下卦${loN}为${lo}。`;
   t += up === lo ? `上下同体，纯卦之象，力量集中而纯粹。` : `${up}居上而${lo}居下，两者相互作用，需审卦中各爻之动静。`;
-  t += `\n\n【针对所问】\n就「${q}」而言，此卦提示：`;
-  const n = hex.number;
-  if (n <= 16) t += `当前形势尚在发展初期，宜静观其变，不宜急进。保持耐心，等待时机成熟。事物初生，虽有艰难，但蕴含无限可能。`;
-  else if (n <= 32) t += `目前处于关键转折期，需审时度势，把握机会。顺应时势而动，可得事半功倍之效。但须谨慎行事，不可冒进。`;
-  else if (n <= 48) t += `形势已经较为明朗，宜顺势而为。注意守住已有成果，稳中求进。此时最忌贪多冒进，当知足常乐。`;
-  else t += `当前局面已近圆满，宜收束整理。反思过往经验，总结得失，为未来新的起点做好充分准备。`;
+  t += `\n\n【本次问题】\n${q}\nAI 解读暂未完成，以下仅整理本卦、动爻与变卦，不代表对问题结果的判断。`;
   if (dynYao.length > 0) {
-    t += `\n\n【动爻分析】\n本卦有${dynYao.length}个动爻：${dynYao.map(i => YAO_LABELS[i]).join('、')}。动爻为卦中变化之关键，提示事态发展的方向与力量。`;
-    if (chHex) t += `变卦为${chHex.fullName}，事态将由${hex.name}之象转向${chHex.name}之象，即从${up}${lo}之势演变为${TRIGRAM_NATURE[chHex.upper]}${TRIGRAM_NATURE[chHex.lower]}之格局。需顺应变化，灵活应对。`;
+    t += `\n\n【动爻记录】\n本卦有${dynYao.length}个动爻：${dynYao.map(i => YAO_LABELS[i]).join('、')}。`;
+    if (chHex) t += `动爻阴阳变化后，得到变卦${chHex.fullName}（第${chHex.number}卦）。`;
   } else {
-    t += `\n\n【稳定之卦】\n本卦无动爻，为静卦。事态较为稳定，不会有太大变化。宜保持现状，循序渐进。`;
+    t += `\n\n【动爻记录】\n本卦无动爻，为静卦。`;
   }
-  t += `\n\n【总结】\n综合卦象分析，建议保持内心清明，顺应自然规律。凡事以诚为本，不必过分焦虑。时机到来之时，自然水到渠成。`;
+  t += `\n\n【说明】\n卦象记录仅供传统文化学习与参考，请结合实际信息作决定。`;
   return t;
 }
 
