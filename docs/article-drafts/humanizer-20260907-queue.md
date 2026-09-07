@@ -6,7 +6,7 @@
 | 04 | 已发布 2026-09-07 17:21 https://yuetianai.com/articles/ziwei-liunian-minggong-bian-benming-bubian.html / https://yuetianai.com/articles/en/ziwei-liunian-minggong-bian-benming-bubian.html | ziwei-liunian-minggong-bian-benming-bubian | 紫微命宫每年都会变吗？盘上两个“命宫”别看混了 | 大限流年 |
 | 05 | 已发布 2026-09-07 17:21 https://yuetianai.com/articles/ziwei-shengong-sanshi-sui-bushi-kaiguan.html / https://yuetianai.com/articles/en/ziwei-shengong-sanshi-sui-bushi-kaiguan.html | ziwei-shengong-sanshi-sui-bushi-kaiguan | 身宫真的是30岁以后才起作用吗？别把人生切成两半 | 看盘方法 |
 | 06 | 已发布 2026-09-07 17:21 https://yuetianai.com/articles/ziwei-chunjie-lichun-huannian-bianjie.html / https://yuetianai.com/articles/en/ziwei-chunjie-lichun-huannian-bianjie.html | ziwei-chunjie-lichun-huannian-bianjie | 春节和立春之间出生，紫微斗数到底算哪一年？ | 看盘方法 |
-| 07 | 待发布 | ziwei-tianji-wuqu-buneng-tonggong | 天机和武曲能同宫吗？看懂双星之前，先认清主星排布 | 主星细读 |
+| 07 | 已发布 2026-09-07 17:21 https://yuetianai.com/articles/ziwei-tianji-wuqu-buneng-tonggong.html / https://yuetianai.com/articles/en/ziwei-tianji-wuqu-buneng-tonggong.html | ziwei-tianji-wuqu-buneng-tonggong | 天机和武曲能同宫吗？看懂双星之前，先认清主星排布 | 主星细读 |
 | 08 | 待发布 | ziwei-tianxiang-qisha-weishenme-meiyou-sihua | 天相、七杀为什么没有四化？没标禄权科忌，也不是没作用 | 四化 |
 | 09 | 待发布 | ziwei-guiren-kuiyue-fubi-qubie | 命里有贵人，为什么遇到困难没人帮？魁钺和辅弼要分开看 | 辅煞曜 |
 | 10 | 待发布 | ziwei-shaxing-duo-buneng-shu-keshu | 命盘里煞星很多，是不是命不好？先别忙着数颗数 | 辅煞曜 |
