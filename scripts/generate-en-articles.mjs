@@ -1,6 +1,12 @@
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 
+// Targeted bilingual edits must not regenerate the legacy full-site indexes.
+if (process.argv.some(value => value.startsWith("--revision-file="))) {
+  await import("./revise-existing-articles.mjs");
+  process.exit(0);
+}
+
 const root = process.cwd();
 const outDir = path.join(root, "articles", "en");
 mkdirSync(outDir, { recursive: true });
