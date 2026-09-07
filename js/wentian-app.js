@@ -18697,9 +18697,9 @@ function buildYangzhaiResults() {
 
 function getYangzhaiResultCardHeight(item) {
   const descLines = Math.max(4, String(item?.desc || "").split("\n").reduce((sum, line) => {
-    return sum + Math.max(1, Math.ceil(line.length / 20));
+    return sum + Math.max(1, Math.ceil(line.length / 16));
   }, 0));
-  return Math.max(YANGZHAI_RESULT_CARD_HEIGHT, 112 + descLines * 25);
+  return Math.max(YANGZHAI_RESULT_CARD_HEIGHT, 144 + descLines * 33);
 }
 
 function getYangzhaiResultHeight() {
@@ -19045,10 +19045,10 @@ function sourceYangzhaiResultScreen() {
         ${yangzhaiCorner(`yz44-card-${index}-br`, 364, y + cardHeight - 6, true, true)}
         ${figBox(`yz44-avatar-${index}`, 36, y + 22, 36, 36, "", "border:1px solid #dcceb8;border-radius:18px;background:#f2e9da;")}
         ${figText(`yz44-avatar-text-${index}`, item.short, 36, y + (shortSize < 12 ? 32 : 31), 36, shortSize, "#7b3129", 900, "center", "font-family:'Noto Serif SC','Songti SC',serif;")}
-        ${figText(`yz44-title-${index}`, item.title, 84, y + 19, 248, 17, "#2b251c", 900, "left", "font-family:'Noto Sans SC','Microsoft YaHei',sans-serif;line-height:1.35;")}
-        ${figBox(`yz44-tag-${index}`, 250, y + 48, 82, 26, "", "border:1px solid #ead9bd;border-radius:13px;background:#fff1dc;")}
-        ${figText(`yz44-tag-text-${index}`, tag, 250, y + 54, 82, 12, "#8a5a22", 800, "center", "line-height:1.15;")}
-        ${figText(`yz44-desc-${index}`, item.desc, 42, y + 86, 300, 15, "#3f372f", 600, "left", "line-height:1.65;")}
+        ${figText(`yz44-title-${index}`, item.title, 84, y + 19, 248, 18, "#2b251c", 900, "left", "font-family:'Noto Sans SC','Microsoft YaHei',sans-serif;line-height:1.4;")}
+        ${figBox(`yz44-tag-${index}`, 250, y + 74, 82, 26, "", "border:1px solid #ead9bd;border-radius:13px;background:#fff1dc;")}
+        ${figText(`yz44-tag-text-${index}`, tag, 250, y + 80, 82, 12, "#8a5a22", 800, "center", "line-height:1.15;")}
+        ${figText(`yz44-desc-${index}`, item.desc, 42, y + 112, 300, 18, "#3f372f", 400, "left", "line-height:1.8;font-family:'Noto Sans SC','Microsoft YaHei',sans-serif;")}
       `;
     }).join("")}
     ${figBox("yz44-tip", 20, height - 153, 350, 44, "", "border-radius:12px;background:#fffdf8;")}
