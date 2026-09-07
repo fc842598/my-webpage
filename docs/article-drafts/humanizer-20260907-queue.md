@@ -25,7 +25,7 @@
 | 23 | 已发布 2026-09-07 17:22 https://yuetianai.com/articles/ziwei-fumu-jie-duigong-bushi-jibing-yuce.html / https://yuetianai.com/articles/en/ziwei-fumu-jie-duigong-bushi-jibing-yuce.html | ziwei-fumu-jie-duigong-bushi-jibing-yuce | 父母宫和疾厄宫为什么相对？这条线不能拿来断遗传病 | 宫位组合 |
 | 24 | 已发布 2026-09-07 17:22 https://yuetianai.com/articles/ziwei-xiongdi-jie-tianzhai-sanhe.html / https://yuetianai.com/articles/en/ziwei-xiongdi-jie-tianzhai-sanhe.html | ziwei-xiongdi-jie-tianzhai-sanhe | 兄弟宫的三方为什么是疾厄和田宅？同辈关系不只看感情好不好 | 宫位组合 |
 | 25 | 已发布 2026-09-07 17:22 https://yuetianai.com/articles/ziwei-fumu-zinv-jiaoyou-sanhe.html / https://yuetianai.com/articles/en/ziwei-fumu-zinv-jiaoyou-sanhe.html | ziwei-fumu-zinv-jiaoyou-sanhe | 父母、子女、交友是同一组三合，怎么看才不会把人认错？ | 宫位组合 |
-| 26 | 待发布 | ziwei-lianzhen-tanlang-taohua-xing-qubie | 廉贞和贪狼都叫桃花星，区别在哪里？ | 主星细读 |
+| 26 | 已发布 2026-09-07 17:22 https://yuetianai.com/articles/ziwei-lianzhen-tanlang-taohua-xing-qubie.html / https://yuetianai.com/articles/en/ziwei-lianzhen-tanlang-taohua-xing-qubie.html | ziwei-lianzhen-tanlang-taohua-xing-qubie | 廉贞和贪狼都叫桃花星，区别在哪里？ | 主星细读 |
 | 27 | 待发布 | ziwei-taiyang-taiyin-chouwei-tonggong | 太阳太阴同宫，丑宫和未宫能用同一种说法吗？ | 主星细读 |
 | 28 | 待发布 | ziwei-tiantong-tianliang-zhangbei-yilai | 天同天梁坐命，有人照顾是福气，什么时候会变成依赖？ | 主星细读 |
 | 29 | 待发布 | ziwei-qisha-pojun-tanlang-biantong-qubie | 七杀、破军、贪狼都说“多变”，到底变得有什么不同？ | 主星细读 |
