@@ -8434,6 +8434,13 @@ const WENTIAN_I18N = {
     "全部次数": "Total",
     "每日次数": "Daily limit",
     "月卡与权益": "Plans and access",
+    "排盘表单": "Create Chart",
+    "办公室布局": "Office Layout",
+    "办公室布局说明": "Office Layout Guide",
+    "地脉道教程": "Home Feng Shui Guide",
+    "生成阳宅解读": "Analyze Placements",
+    "按顺序填入": "Auto Align Family Members",
+    "重置阳宅方位": "Reset Placements",
     "选择界面显示语言": "Choose display language",
     "确认后会同步保存到当前浏览器": "Saved to this browser after confirmation",
     "选择显示语言": "Choose display language",
@@ -9230,7 +9237,7 @@ const WENTIAN_I18N_EN_EXTRA = {
   "用户协议": "Terms of Service",
   "检查更新": "Check for Updates",
   "登录/注册": "Sign In / Register",
-  "地脉道": "Earth Meridian",
+  "地脉道": "Home Feng Shui",
   "教程": "Help",
   "九宫安位": "Nine-Palace Placement",
   "逐格点击加号安位": "Tap each plus to place items",
@@ -9908,7 +9915,9 @@ function translateWentianText(text, code = getWentianLanguageCode(), element = n
     const hepanSelected = source.match(/^已选\s*(\d+)\/2$/);
     if (hepanSelected) return `Selected ${hepanSelected[1]}/2`;
     const yangzhaiReadingCount = source.match(/^已生成\s*(\d+)\s*条解读$/) || source.match(/^(\d+)\s*条解读$/);
-    if (yangzhaiReadingCount) return `${yangzhaiReadingCount[1]} readings`;
+    if (yangzhaiReadingCount) return `${yangzhaiReadingCount[1]} ${yangzhaiReadingCount[1] === "1" ? "reading" : "readings"}`;
+    const placementAction = source.match(/^(.+)，(.+)，选择安位$/);
+    if (placementAction) return `${translateWentianText(placementAction[1], "en")}, ${translateWentianText(placementAction[2], "en")}, choose placement`;
     const yangzhaiConfirm = source.match(/^确认本宫安位\s*\((\d+)\)$/);
     if (yangzhaiConfirm) return `Confirm Placement (${yangzhaiConfirm[1]})`;
     const yangzhaiPalaceTag = source.match(/^(.+?)宫\s*·\s*(.+?)\s*·\s*(.+)$/);
@@ -10053,6 +10062,11 @@ function applyWentianLanguageText(root = view, code = getWentianLanguageCode(), 
   try {
     document.documentElement.lang = option.htmlLang;
     document.documentElement.dataset.wentianLanguage = option.code;
+    document.title = option.code === "en"
+      ? "Yuetian AI | Zi Wei Charts, Compatibility & Readings"
+      : option.code === "zh-Hant"
+        ? "閱天AI｜AI紫微排盤、八字合盤與流年分析"
+        : "阅天AI｜AI紫微排盘、八字合盘与流年分析";
     if (!root || !root.querySelectorAll) return;
 
     const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
@@ -10140,7 +10154,7 @@ function finalizeWentianLanguageText(root = view, code = getWentianLanguageCode(
   setWentianFinalText(root, '[data-node-id="source-1-feature-title-4"]', "Office Layout");
   setWentianFinalText(root, '[data-node-id="source-1-feature-sub-4"]', "Door & Boss Seat");
   setWentianFinalText(root, '[data-node-id="source-1-feature-title-5"]', "Liuren");
-  setWentianFinalText(root, '[data-node-id="source-1-feature-sub-5"]', "Lunar Palm Casting");
+  setWentianFinalText(root, '[data-node-id="source-1-feature-sub-5"]', "Lunar Divination");
 
   const chatContext = getWentianXuChatContext();
   if (chatContext && root.querySelector(".wentian-chat-context-card")) {

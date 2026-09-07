@@ -739,6 +739,12 @@ html[lang="en"] [data-node-id="source-1-brand"] {
   white-space: nowrap !important;
 }
 
+html[lang="en"] [data-node-id="source-1-hero-kicker"] {
+  width: 210px !important;
+  white-space: nowrap !important;
+  line-height: 1.2 !important;
+}
+
 html[lang="en"] [data-node-id="source-1-hero-title"] {
   width: 214px !important;
   font-size: 18.5px !important;
@@ -15430,7 +15436,10 @@ body.wentian-refund-open {
 }
 
 html[lang="en"] [data-node-id$="-back-copy"] {
-  display: none !important;
+  display: block !important;
+  font-size: 14px !important;
+  line-height: 18px !important;
+  white-space: nowrap !important;
 }
 
 html[lang="en"] [data-node-id="wt36-copy"] {
