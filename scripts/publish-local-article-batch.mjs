@@ -2350,6 +2350,7 @@ ${items.map((article, index) => `          <article class="article-card" data-in
             <div class="index-overview__stat"><span>能查的文章</span><strong>${articles.length} 篇</strong></div>
             <div class="index-overview__stat"><span>分好的主题</span><strong>${topicHubs.length} 组</strong></div>
             <a class="index-overview__link" href="../pages/mingbook-onepage.html">去排盘边看边查</a>
+            <a class="index-overview__link" href="../pages/ziwei-palace-training.html">练习紫微 · 十二宫记忆训练</a>
           </div>
         </section>
         <details class="article-group" open>
