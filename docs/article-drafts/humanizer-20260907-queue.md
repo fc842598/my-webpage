@@ -9,7 +9,7 @@
 | 07 | 已发布 2026-09-07 17:21 https://yuetianai.com/articles/ziwei-tianji-wuqu-buneng-tonggong.html / https://yuetianai.com/articles/en/ziwei-tianji-wuqu-buneng-tonggong.html | ziwei-tianji-wuqu-buneng-tonggong | 天机和武曲能同宫吗？看懂双星之前，先认清主星排布 | 主星细读 |
 | 08 | 已发布 2026-09-07 17:21 https://yuetianai.com/articles/ziwei-tianxiang-qisha-weishenme-meiyou-sihua.html / https://yuetianai.com/articles/en/ziwei-tianxiang-qisha-weishenme-meiyou-sihua.html | ziwei-tianxiang-qisha-weishenme-meiyou-sihua | 天相、七杀为什么没有四化？没标禄权科忌，也不是没作用 | 四化 |
 | 09 | 已发布 2026-09-07 17:21 https://yuetianai.com/articles/ziwei-guiren-kuiyue-fubi-qubie.html / https://yuetianai.com/articles/en/ziwei-guiren-kuiyue-fubi-qubie.html | ziwei-guiren-kuiyue-fubi-qubie | 命里有贵人，为什么遇到困难没人帮？魁钺和辅弼要分开看 | 辅煞曜 |
-| 10 | 待发布 | ziwei-shaxing-duo-buneng-shu-keshu | 命盘里煞星很多，是不是命不好？先别忙着数颗数 | 辅煞曜 |
+| 10 | 已发布 2026-09-07 17:21 https://yuetianai.com/articles/ziwei-shaxing-duo-buneng-shu-keshu.html / https://yuetianai.com/articles/en/ziwei-shaxing-duo-buneng-shu-keshu.html | ziwei-shaxing-duo-buneng-shu-keshu | 命盘里煞星很多，是不是命不好？先别忙着数颗数 | 辅煞曜 |
 | 11 | 待发布 | ziwei-wuqu-tianfu-zuoming-shoucai | 武曲天府坐命：为什么有的人敢赚钱，却不愿轻易动存款？ | 主星细读 |
 | 12 | 待发布 | ziwei-wuqu-tianxiang-zuoming-zeren-shouquan | 武曲天相坐命，适合管事吗？能扛责任，还要有人给权限 | 主星细读 |
 | 13 | 待发布 | ziwei-taiyang-tianliang-yuanze-bangren | 太阳天梁坐命，为什么帮了别人，自己反而受累？ | 主星细读 |
