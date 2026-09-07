@@ -8429,6 +8429,11 @@ const WENTIAN_I18N = {
     "阅天AI": "Yuetian AI",
     "我的": "Me",
     "语言设置": "Language",
+    "可用追问": "Remaining",
+    "今日追问": "Today",
+    "全部次数": "Total",
+    "每日次数": "Daily limit",
+    "月卡与权益": "Plans and access",
     "选择界面显示语言": "Choose display language",
     "确认后会同步保存到当前浏览器": "Saved to this browser after confirmation",
     "选择显示语言": "Choose display language",
@@ -10301,13 +10306,9 @@ function finalizeWentianLanguageText(root = view, code = getWentianLanguageCode(
   setWentianFinalText(root, '[data-node-id="source-31-login-badge-text"]', member.isMember ? "Member" : (account.loggedIn ? "Account" : "Sign In"));
   setWentianFinalText(root, '[data-node-id="source-31-login-badge-text-v2"]', member.isMember ? "Member" : (account.loggedIn ? "Account" : "Sign In"));
   setWentianFinalText(root, '[data-node-id="source-31-plan-banner-title-v2"]', "Yuetian Plan");
-  setWentianFinalText(root, '[data-node-id="source-31-plan-banner-sub-v2"]', "Quotas and upgrades");
+  setWentianFinalText(root, '[data-node-id="source-31-plan-banner-sub-v2"]', wentianMemberState.campaign?.active ? "Sign in for free access" : "Quotas and upgrades");
   setWentianFinalText(root, '[data-node-id="source-31-plan-banner-cta-text-v2"]', member.isMember ? "View Benefits" : "View Plan");
-  setWentianFinalText(root, '[data-node-id="wt33-title"]', "Yuetian Plan");
-  setWentianFinalText(root, '[data-node-id="wt33-card-label"]', "Yuetian AI");
-  setWentianFinalText(root, '[data-node-id="wt33-card-sub"]', member.isMember ? "Paid plan active." : "Master Xu AI chat: 80/day, resets daily.");
   setWentianFinalText(root, '[data-node-id="wt33-plan-title"]', "Plan Benefits");
-  setWentianFinalText(root, '[data-node-id="wt33-free-title"]', "Master Xu AI Chat");
   setWentianFinalText(root, '[data-node-id="wt33-member-title"]', "Computer / Mobile");
   setWentianFinalText(root, '[data-node-id="wt33-member-quota"]', "Same account");
   setWentianFinalText(root, '[data-node-id="wt33-member-desc"]', "One account across devices.");
@@ -13946,10 +13947,10 @@ function sourceMembershipScreen() {
     ${wentianBackPill("wt33", 18, 42, 'data-action="wentian-return-previous" data-fallback-route="screen-31" aria-label="返回"')}
     ${figText("wt33-title", campaignActive ? (isEn ? "Limited-time Free Access" : "限时免费体验") : (isEn ? "Monthly Passes" : "月卡与权益"), 0, 52, 390, 17, "#25211d", 800, "center")}
     ${figBox("wt33-card", 24, 96, 342, 104, "", "border-radius:18px;background:linear-gradient(135deg,#2b2722,#14110d);box-shadow:0 14px 26px rgba(28,20,12,.14);")}
-    ${figText("wt33-card-label", campaignActive ? `${campaignMonth}大促` : escapeHtml(member.title), 46, 116, 210, 18, "#fff", 900)}
+    ${figText("wt33-card-label", campaignActive ? (isEn ? "Monthly offer" : `${campaignMonth}大促`) : (isEn ? "Current access" : escapeHtml(member.title)), 46, 116, 210, 18, "#fff", 900)}
     ${figText("wt33-card-sub", campaignActive ? (isEn ? "Register and sign in to activate" : "注册并登录后自动获得") : escapeHtml(member.subtitle), 46, 148, 220, 12, "#cfc1a9", 700)}
     ${figText("wt33-card-quota", campaignActive ? (isEn ? "Unlimited profiles · 100/day" : "不限命主人数 · 每天100次追问") : `${escapeHtml(currentQuota)} · ${escapeHtml(currentLimit)}`, 46, 174, 250, 11, "#cfc1a9", 700)}
-    ${figText("wt33-card-chart", escapeHtml(member.chartText), 258, 136, 82, 13, "#f4d293", 900, "right")}
+    ${figText("wt33-card-chart", isEn ? `${member.chartUsed}/${member.chartLimit == null ? "∞" : member.chartLimit}` : escapeHtml(member.chartText), 258, 136, 82, 13, "#f4d293", 900, "right")}
 
     ${figText("wt33-plan-title", isEn ? "Choose a pass" : "选择月卡", 24, 226, 120, 16, "#25211d", 900)}
     ${figBox("wt33-three", 24, 258, 342, 104, "", "border:1px solid #c8a65f;border-radius:16px;background:#fffaf0;box-shadow:0 8px 20px rgba(130,91,31,.08);")}
@@ -14274,8 +14275,8 @@ function sourceMineScreenV2(screen) {
     ? `${member.chartUsed}/${isEn ? "\u221E" : "不限"}`
     : `${member.chartUsed}/${member.chartLimit}`;
   const statCards = [
-    [member.quotaLabel, memberDailyText, 16, "screen-33"],
-    [member.limitLabel, memberDailyLimitText, 139, "screen-33"],
+    [isEn ? (member.quotaMode === "daily" ? "Today" : "Remaining") : member.quotaLabel, memberDailyText, 16, "screen-33"],
+    [isEn ? (member.quotaMode === "daily" ? "Daily limit" : "Total") : member.limitLabel, memberDailyLimitText, 139, "screen-33"],
     [isEn ? "Profiles" : "命主人数", chartCountText, 262, "screen-33"]
   ];
   const listRows = [
@@ -14296,7 +14297,7 @@ function sourceMineScreenV2(screen) {
     ${figButton("source-31-gear-hit-v2", 336, 54, 42, 42, 'data-route="screen-38" aria-label="账户设置"', "", "z-index:36;")}
     ${figBox("source-31-profile-v2", 16, 126, 358, 96, "converted-card", "border-radius:12px;box-shadow:0 6px 16px rgba(74,55,32,.08);")}
     ${figBox("source-31-avatar-v2", 34, 144, 60, 60, "", "border-radius:30px;background:#b88c33;")}
-    ${figText("source-31-avatar-icon-v2", escapeHtml(account.initial), 34, 157, 60, 28, "#fff", 700, "center")}
+    ${figText("source-31-avatar-icon-v2", !account.loggedIn && isEn ? "Me" : escapeHtml(account.initial), 34, 157, 60, 28, "#fff", 700, "center")}
     ${figText("source-31-name-v2", escapeHtml(accountTitle), 116, 148, 164, 18, "#26211c", 800, "left", "white-space:nowrap;overflow:hidden;text-overflow:ellipsis;")}
     ${figText("source-31-vip-v2", escapeHtml(statusText), 116, 174, 148, 13, member.isMember ? "#7a9a4b" : "#8f857a", 700, "left", "white-space:nowrap;overflow:hidden;text-overflow:ellipsis;")}
     ${figText("source-31-email-v2", escapeHtml(accountDetailText), 116, 195, 174, 12, "#8f857a", 700, "left", "white-space:nowrap;overflow:hidden;text-overflow:ellipsis;")}
