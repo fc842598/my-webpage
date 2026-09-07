@@ -35,3 +35,16 @@ for(const lang of ['en','zh-Hans']) for(const count of [0,3,6]) {
   assert.match(ctx.renderLiuyaoCastStage(state,{complete:count===6,questionReady:true}),/liuyao-stage-cast/);
 }
 console.log('PASS single authoritative Liuyao renderers across English/Chinese and 0/3/6-line states');
+const suggestions=source.match(/^function getLiuyaoQuestionSuggestions\b[\s\S]*?^}/m)[0];
+const suggestionContext=vm.createContext({
+  normalizeLiuyaoQuestion:q=>q,normalizeLiuyaoQuestionGate:g=>g,
+  liuyaoQuestionGateLoading:false,getWentianLanguageCode:()=> 'en',
+});
+vm.runInContext(suggestions,suggestionContext);
+for(const question of ['', '这个项目本月能不能继续推进并见到效果？', 'Can this project move forward?']) {
+  const items=suggestionContext.getLiuyaoQuestionSuggestions({question});
+  assert.equal(items.length,4);
+  assert.ok(items.every(item=>!/[\u3400-\u9fff]/u.test(item)));
+}
+assert.equal(suggestionContext.getLiuyaoQuestionSuggestions({question:'Approved',questionGate:{allowed:true}}).length,0);
+console.log('PASS English question suggestions contain real English values');

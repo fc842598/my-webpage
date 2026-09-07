@@ -15767,6 +15767,15 @@ function getLiuyaoQuestionSuggestions(state = getLiuyaoState()) {
   const question = normalizeLiuyaoQuestion(state.question);
   const gate = normalizeLiuyaoQuestionGate(state.questionGate, question);
   if (gate?.allowed || liuyaoQuestionGateLoading) return [];
+  // Use actual English values, not only DOM-translated button labels.
+  if (getWentianLanguageCode() === "en") {
+    return [
+      "Can this project keep moving this month and show results?",
+      "Can this cooperation close soon?",
+      "Should I change my work direction now?",
+      "Should I communicate proactively in this relationship?"
+    ];
+  }
   if (/网站|项目|计划|产品|上线|发布/.test(question)) {
     return [
       "这个项目本月能不能继续推进并见到效果？",
