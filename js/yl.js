@@ -1050,7 +1050,10 @@
     var active = !!campaign.active;
     var hasAccess = hasRegisteredFreeCampaignAccess();
     var memberCard = $(".yl-member-card");
-    if (memberCard) memberCard.classList.toggle("is-campaign", active);
+    if (memberCard) {
+      memberCard.classList.toggle("is-campaign", active);
+      memberCard.classList.toggle("is-status-loading", !paymentState.membershipLoaded);
+    }
     var pickerTitle = $("#ylPlanPickerTitle");
     var pickerNote = $(".yl-plan-picker-head > span");
     var accountTitle = $("#ylCheckoutAccountSummary > div > span");

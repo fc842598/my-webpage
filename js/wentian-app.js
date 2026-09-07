@@ -12119,7 +12119,6 @@ function setWentianQuota(quota) {
   const el = document.querySelector('[data-node-id="source-4-left"]');
   if (quota) wentianMemberState.quota = normalizeWentianQuota({ ...(wentianMemberState.quota || {}), ...quota });
   if (!el || !quota) return;
-  if (getWentianXuChatContext()) return;
   const normalized = wentianMemberState.quota || normalizeWentianQuota(quota);
   const remainingValue = getWentianQuotaRemaining(normalized, "--");
   const remaining = remainingValue === null || remainingValue === undefined || remainingValue === "" ? "--" : remainingValue;
@@ -13920,6 +13919,13 @@ function sourceProfileScreen(screen) {
 function sourceMembershipScreen() {
   const member = getWentianMemberSnapshot();
   const isEn = isWentianEnglishUi();
+  if (!wentianMemberState.loaded) return `
+    ${figBox("wt33-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
+    ${wentianBackPill("wt33", 18, 42, 'data-action="wentian-return-previous" data-fallback-route="screen-31" aria-label="返回"')}
+    ${figText("wt33-title", isEn ? "Checking access" : "正在确认活动与权益", 24, 170, 342, 20, "#25211d", 800, "center")}
+    ${figText("wt33-loading", isEn ? "If loading takes too long, try again." : "请稍候；若长时间未显示，可重新加载。", 24, 218, 342, 15, "#756d63", 500, "center")}
+    <a href="./wentian-app.html#screen-33" style="position:absolute;left:120px;top:280px;width:150px;text-align:center;font-size:17px;color:#8f3d30">${isEn ? "Reload" : "重新加载"}</a>
+  `;
   if (member.isMember) return sourceActiveMembershipScreen(member, isEn);
   const campaignActive = !!wentianMemberState.campaign?.active;
   const campaignMonth = wentianMemberState.campaign?.monthLabel || "本月";

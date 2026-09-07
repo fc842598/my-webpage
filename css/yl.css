@@ -1336,6 +1336,10 @@ input:focus-visible {
   padding: 20px;
 }
 
+.yl-member-status-loading { display: none; grid-column: 1 / -1; font-size: 17px; line-height: 1.7; }
+.yl-member-card.is-status-loading > :not(.yl-member-status-loading):not(.yl-checkout-account):not(.yl-member-return) { display: none !important; }
+.yl-member-card.is-status-loading > .yl-member-status-loading { display: block; }
+
 .yl-campaign-banner {
   grid-column: 1 / -1;
   margin: 0 0 18px;

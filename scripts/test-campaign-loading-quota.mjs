@@ -1,0 +1,16 @@
+import { readFileSync } from 'node:fs';
+import vm from 'node:vm';
+import assert from 'node:assert/strict';
+const source = readFileSync(new URL('../js/wentian-app.js', import.meta.url), 'utf8').replace(/\r\n/g, '\n');
+const label = {textContent: '余--次'};
+const context = vm.createContext({document: {querySelector: () => label}, wentianMemberState: {}, normalizeWentianQuota: q => q, getWentianQuotaRemaining: q => q.remaining, isWentianEnglishUi: () => false, getWentianXuChatContext: () => ({type:'liuren'})});
+const start = source.indexOf('function setWentianQuota(');
+vm.runInContext(source.slice(start, source.indexOf('\n}', start) + 2), context);
+context.setWentianQuota({remaining: 2});
+assert.equal(label.textContent, '余2次');
+assert.match(source, /if \(!wentianMemberState.loaded\) return/);
+const html = readFileSync(new URL('../yl.html', import.meta.url), 'utf8');
+assert.match(html, /yl-member-card is-status-loading/);
+const css = readFileSync(new URL('../css/yl.css', import.meta.url), 'utf8');
+assert.match(css, /is-status-loading > :not/);
+console.log('PASS context chat quota refresh and neutral campaign loading state');
