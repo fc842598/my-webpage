@@ -15,7 +15,7 @@
 | 13 | 已发布 2026-09-07 17:22 https://yuetianai.com/articles/ziwei-taiyang-tianliang-yuanze-bangren.html / https://yuetianai.com/articles/en/ziwei-taiyang-tianliang-yuanze-bangren.html | ziwei-taiyang-tianliang-yuanze-bangren | 太阳天梁坐命，为什么帮了别人，自己反而受累？ | 主星细读 |
 | 14 | 已发布 2026-09-07 17:22 https://yuetianai.com/articles/ziwei-tiantong-taiyin-anwen-yu-xuanze.html / https://yuetianai.com/articles/en/ziwei-tiantong-taiyin-anwen-yu-xuanze.html | ziwei-tiantong-taiyin-anwen-yu-xuanze | 天同太阴坐命：喜欢安稳的人，怎样判断自己是不是在将就？ | 主星细读 |
 | 15 | 已发布 2026-09-07 17:22 https://yuetianai.com/articles/ziwei-tiantong-jumen-youhua-shuobuchu.html / https://yuetianai.com/articles/en/ziwei-tiantong-jumen-youhua-shuobuchu.html | ziwei-tiantong-jumen-youhua-shuobuchu | 天同巨门坐命：明明不想吵，为什么最后还是一肚子话？ | 主星细读 |
-| 16 | 待发布 | ziwei-ziwei-tianxiang-zuoming-zhongjianren | 紫微天相坐命，做中间人为什么容易两头受气？ | 主星细读 |
+| 16 | 已发布 2026-09-07 17:22 https://yuetianai.com/articles/ziwei-ziwei-tianxiang-zuoming-zhongjianren.html / https://yuetianai.com/articles/en/ziwei-ziwei-tianxiang-zuoming-zhongjianren.html | ziwei-ziwei-tianxiang-zuoming-zhongjianren | 紫微天相坐命，做中间人为什么容易两头受气？ | 主星细读 |
 | 17 | 待发布 | ziwei-lianzhen-tianxiang-guanlu-jujue | 廉贞天相在官禄宫：工作讲人情，还是按规矩办？ | 财运事业 |
 | 18 | 待发布 | ziwei-tianji-taiyin-xiangtai-duo-jihua | 天机太阴坐命：计划做得很细，为什么还是迟迟下不了决定？ | 主星细读 |
 | 19 | 待发布 | ziwei-ziwei-tanlang-zuoming-taohua-caiyi | 紫微贪狼坐命，就一定感情复杂吗？别被“桃花犯主”吓住 | 主星细读 |
