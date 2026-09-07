@@ -19,7 +19,7 @@
 | 17 | 已发布 2026-09-07 17:22 https://yuetianai.com/articles/ziwei-lianzhen-tianxiang-guanlu-jujue.html / https://yuetianai.com/articles/en/ziwei-lianzhen-tianxiang-guanlu-jujue.html | ziwei-lianzhen-tianxiang-guanlu-jujue | 廉贞天相在官禄宫：工作讲人情，还是按规矩办？ | 财运事业 |
 | 18 | 已发布 2026-09-07 17:22 https://yuetianai.com/articles/ziwei-tianji-taiyin-xiangtai-duo-jihua.html / https://yuetianai.com/articles/en/ziwei-tianji-taiyin-xiangtai-duo-jihua.html | ziwei-tianji-taiyin-xiangtai-duo-jihua | 天机太阴坐命：计划做得很细，为什么还是迟迟下不了决定？ | 主星细读 |
 | 19 | 已发布 2026-09-07 17:22 https://yuetianai.com/articles/ziwei-ziwei-tanlang-zuoming-taohua-caiyi.html / https://yuetianai.com/articles/en/ziwei-ziwei-tanlang-zuoming-taohua-caiyi.html | ziwei-ziwei-tanlang-zuoming-taohua-caiyi | 紫微贪狼坐命，就一定感情复杂吗？别被“桃花犯主”吓住 | 主星细读 |
-| 20 | 待发布 | ziwei-wuqu-pojun-zuoming-chongzu-chengben | 武曲破军坐命，为什么总想推倒重来？先算清重来的成本 | 主星细读 |
+| 20 | 已发布 2026-09-07 17:22 https://yuetianai.com/articles/ziwei-wuqu-pojun-zuoming-chongzu-chengben.html / https://yuetianai.com/articles/en/ziwei-wuqu-pojun-zuoming-chongzu-chengben.html | ziwei-wuqu-pojun-zuoming-chongzu-chengben | 武曲破军坐命，为什么总想推倒重来？先算清重来的成本 | 主星细读 |
 | 21 | 待发布 | ziwei-fuqi-guanlu-duigong-gongzuo-guanxi | 夫妻宫对面为什么是官禄宫？工作和感情到底怎么一起看 | 宫位组合 |
 | 22 | 待发布 | ziwei-tianzhai-zinv-duigong-jiating | 田宅宫和子女宫相对，是不是买房就会影响孩子？ | 宫位组合 |
 | 23 | 待发布 | ziwei-fumu-jie-duigong-bushi-jibing-yuce | 父母宫和疾厄宫为什么相对？这条线不能拿来断遗传病 | 宫位组合 |
