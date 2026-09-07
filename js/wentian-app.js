@@ -11412,6 +11412,13 @@ function ensureWentianXuPayloadRuntime(payload = getWentianXuChatPayload()) {
   return payloadKey;
 }
 
+function getWentianHistoryDisplayText(item) {
+  const text = String(item.content || "");
+  if (item.sender !== "user" || !/^【(?:关系合盘|六壬法|易经推命|六爻占卜)追问】\r?\n/.test(text)) return text;
+  const marker = text.indexOf("\n我的追问：");
+  return marker >= 0 ? text.slice(marker + "\n我的追问：".length) : text;
+}
+
 function buildWentianXuOutboundMessage(message, context) {
   if (context?.type === "hepan") {
     return [
@@ -12438,7 +12445,7 @@ async function ensureWentianXuSession(options = {}) {
       const historyMessages = Array.isArray(data.messages)
         ? data.messages.slice(-30).map((item) => ({
           role: item.sender === "user" ? "user" : item.sender === "system" ? "system" : "assistant",
-          text: item.content || "",
+          text: getWentianHistoryDisplayText(item),
           createdAt: item.createdAt || null,
         })).filter((item) => {
           if (!isWentianEnglishMode()) return true;
