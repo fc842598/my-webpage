@@ -1978,12 +1978,12 @@
       : (registering ? "手机号" : "手机号或邮箱");
     if (accountInput) {
       accountInput.placeholder = IS_ENGLISH_CHECKOUT
-        ? (registering ? "11-digit phone number" : "Phone or email")
-        : (registering ? "请输入 11 位手机号" : "手机号或邮箱");
+        ? (registering ? "Phone number (include country code outside China)" : "Phone or email")
+        : (registering ? "手机号（海外号码请带国家区号）" : "手机号或邮箱");
       accountInput.setAttribute("aria-label", IS_ENGLISH_CHECKOUT
         ? (registering ? "Phone" : "Phone or email")
         : (registering ? "手机号" : "手机号或邮箱"));
-      accountInput.setAttribute("inputmode", registering ? "numeric" : "email");
+      accountInput.setAttribute("inputmode", registering ? "tel" : "email");
       accountInput.setAttribute("autocomplete", registering ? "tel" : "username");
     }
     var passwordInput = $("#ylHealthAuthPassword");
@@ -2182,6 +2182,13 @@
     );
   }
 
+  function normalizeHealthRegistrationPhone(value) {
+    var raw = String(value || "").trim();
+    if (!/^\+?[\d\s().-]+$/.test(raw)) return "";
+    var digits = raw.replace(/\D/g, "");
+    return /^\d{6,20}$/.test(digits) && /[1-9]/.test(digits) ? digits : "";
+  }
+
   async function submitHealthAuth() {
     if (healthAuthState.loading) return;
     var account = ($("#ylHealthAuthAccount")?.value || "").trim();
@@ -2193,10 +2200,10 @@
       return;
     }
     if (registering) {
-      account = account.replace(/\D/g, "");
+      account = normalizeHealthRegistrationPhone(account);
     }
-    if (registering && !/^1\d{10}$/.test(account)) {
-      setHealthAuthStatus("请输入正确的 11 位手机号", "error");
+    if (registering && !account) {
+      setHealthAuthStatus(IS_ENGLISH_CHECKOUT ? "Enter a valid phone number, including your country code for international numbers." : "请输入有效手机号，海外号码请带国家区号", "error");
       return;
     }
     if (password.length < 6) {

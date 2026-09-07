@@ -12674,6 +12674,17 @@ function normalizeWentianQuota(quota) {
     : { ...quota, quotaMode, lifetimeLimit: limit, lifetimeUsed: used, lifetimeRemaining: remaining, limit, remaining };
 }
 
+function getWentianChartUsageForDisplay(quota, isGuest) {
+  const serverUsed = Number(quota.chartUsage?.used);
+  if (!isGuest && Number.isFinite(serverUsed) && serverUsed >= 0) return serverUsed;
+  const claimed = new Set(readWentianChartPersonClaims());
+  getWentianArchiveList().forEach((archive) => {
+    const id = archive.chartRecordId || archive.chartData?.chartRecordId || archive.id;
+    if (id) claimed.add(String(id));
+  });
+  return Math.max(claimed.size, Number.isFinite(serverUsed) ? serverUsed : 0);
+}
+
 function getWentianMemberSnapshot() {
   const quota = wentianMemberState.quota || {};
   const product = wentianMemberState.product || {};
@@ -12689,7 +12700,7 @@ function getWentianMemberSnapshot() {
   const remaining = getWentianQuotaRemaining(quota, limit);
   const planName = isMember ? (quota.planName || WENTIAN_PAID_PRODUCT_NAME) : (isGuest ? "未登录体验" : "免费用户");
   const chartLimit = quota.chartLimit == null && isMember ? null : Number(quota.chartLimit || 1);
-  const chartUsed = Math.max(0, Number(quota.chartUsage?.used || 0));
+  const chartUsed = getWentianChartUsageForDisplay(quota, isGuest);
   return {
     isMember,
     campaignActive,
