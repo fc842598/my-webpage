@@ -13,7 +13,7 @@
 | 11 | 已发布 2026-09-07 17:22 https://yuetianai.com/articles/ziwei-wuqu-tianfu-zuoming-shoucai.html / https://yuetianai.com/articles/en/ziwei-wuqu-tianfu-zuoming-shoucai.html | ziwei-wuqu-tianfu-zuoming-shoucai | 武曲天府坐命：为什么有的人敢赚钱，却不愿轻易动存款？ | 主星细读 |
 | 12 | 已发布 2026-09-07 17:22 https://yuetianai.com/articles/ziwei-wuqu-tianxiang-zuoming-zeren-shouquan.html / https://yuetianai.com/articles/en/ziwei-wuqu-tianxiang-zuoming-zeren-shouquan.html | ziwei-wuqu-tianxiang-zuoming-zeren-shouquan | 武曲天相坐命，适合管事吗？能扛责任，还要有人给权限 | 主星细读 |
 | 13 | 已发布 2026-09-07 17:22 https://yuetianai.com/articles/ziwei-taiyang-tianliang-yuanze-bangren.html / https://yuetianai.com/articles/en/ziwei-taiyang-tianliang-yuanze-bangren.html | ziwei-taiyang-tianliang-yuanze-bangren | 太阳天梁坐命，为什么帮了别人，自己反而受累？ | 主星细读 |
-| 14 | 待发布 | ziwei-tiantong-taiyin-anwen-yu-xuanze | 天同太阴坐命：喜欢安稳的人，怎样判断自己是不是在将就？ | 主星细读 |
+| 14 | 已发布 2026-09-07 17:22 https://yuetianai.com/articles/ziwei-tiantong-taiyin-anwen-yu-xuanze.html / https://yuetianai.com/articles/en/ziwei-tiantong-taiyin-anwen-yu-xuanze.html | ziwei-tiantong-taiyin-anwen-yu-xuanze | 天同太阴坐命：喜欢安稳的人，怎样判断自己是不是在将就？ | 主星细读 |
 | 15 | 待发布 | ziwei-tiantong-jumen-youhua-shuobuchu | 天同巨门坐命：明明不想吵，为什么最后还是一肚子话？ | 主星细读 |
 | 16 | 待发布 | ziwei-ziwei-tianxiang-zuoming-zhongjianren | 紫微天相坐命，做中间人为什么容易两头受气？ | 主星细读 |
 | 17 | 待发布 | ziwei-lianzhen-tianxiang-guanlu-jujue | 廉贞天相在官禄宫：工作讲人情，还是按规矩办？ | 财运事业 |
