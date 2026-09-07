@@ -22,7 +22,7 @@
 | 20 | 已发布 2026-09-07 17:22 https://yuetianai.com/articles/ziwei-wuqu-pojun-zuoming-chongzu-chengben.html / https://yuetianai.com/articles/en/ziwei-wuqu-pojun-zuoming-chongzu-chengben.html | ziwei-wuqu-pojun-zuoming-chongzu-chengben | 武曲破军坐命，为什么总想推倒重来？先算清重来的成本 | 主星细读 |
 | 21 | 已发布 2026-09-07 17:22 https://yuetianai.com/articles/ziwei-fuqi-guanlu-duigong-gongzuo-guanxi.html / https://yuetianai.com/articles/en/ziwei-fuqi-guanlu-duigong-gongzuo-guanxi.html | ziwei-fuqi-guanlu-duigong-gongzuo-guanxi | 夫妻宫对面为什么是官禄宫？工作和感情到底怎么一起看 | 宫位组合 |
 | 22 | 已发布 2026-09-07 17:22 https://yuetianai.com/articles/ziwei-tianzhai-zinv-duigong-jiating.html / https://yuetianai.com/articles/en/ziwei-tianzhai-zinv-duigong-jiating.html | ziwei-tianzhai-zinv-duigong-jiating | 田宅宫和子女宫相对，是不是买房就会影响孩子？ | 宫位组合 |
-| 23 | 待发布 | ziwei-fumu-jie-duigong-bushi-jibing-yuce | 父母宫和疾厄宫为什么相对？这条线不能拿来断遗传病 | 宫位组合 |
+| 23 | 已发布 2026-09-07 17:22 https://yuetianai.com/articles/ziwei-fumu-jie-duigong-bushi-jibing-yuce.html / https://yuetianai.com/articles/en/ziwei-fumu-jie-duigong-bushi-jibing-yuce.html | ziwei-fumu-jie-duigong-bushi-jibing-yuce | 父母宫和疾厄宫为什么相对？这条线不能拿来断遗传病 | 宫位组合 |
 | 24 | 待发布 | ziwei-xiongdi-jie-tianzhai-sanhe | 兄弟宫的三方为什么是疾厄和田宅？同辈关系不只看感情好不好 | 宫位组合 |
 | 25 | 待发布 | ziwei-fumu-zinv-jiaoyou-sanhe | 父母、子女、交友是同一组三合，怎么看才不会把人认错？ | 宫位组合 |
 | 26 | 待发布 | ziwei-lianzhen-tanlang-taohua-xing-qubie | 廉贞和贪狼都叫桃花星，区别在哪里？ | 主星细读 |
