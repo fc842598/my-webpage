@@ -264,7 +264,8 @@ function inferFigButtonAriaLabel(attrs = "") {
       report: "报告详情",
       divine: "占问工具",
     };
-    const label = screenNo ? (convertedByNo.get(Number(screenNo))?.title || `打开第${screenNo}屏`) : (routeLabels[route] || "打开页面");
+    const currentScreenLabels = { 1: "首页", 3: "阅天AI", 25: "档案" };
+    const label = screenNo ? (currentScreenLabels[screenNo] || convertedByNo.get(Number(screenNo))?.title || `打开第${screenNo}屏`) : (routeLabels[route] || "打开页面");
     return ` aria-label="${escapeHtml(label)}"`;
   }
   const action = attrText.match(/\bdata-action="([^"]+)"/)?.[1];
@@ -620,8 +621,8 @@ function getWentianBottomNavActive(nodeId) {
   const no = match ? Number(match[1]) : 0;
   if (!no) return "";
   if (no === 1 || no === 2 || no === 10 || no === 11 || no === 49) return "首页";
-  if (no === 3 || (no >= 25 && no <= 27)) return "档案";
-  if ((no >= 4 && no <= 9) || no === 12) return "阅天AI";
+  if (no >= 25 && no <= 27) return "档案";
+  if ((no >= 3 && no <= 9) || no === 12) return "阅天AI";
   if ((no >= 28 && no <= 41) || no === 48) return "我的";
   if ((no >= 13 && no <= 24) || (no >= 42 && no <= 47)) return "首页";
   return convertedByNo.get(no)?.active || "首页";
@@ -928,7 +929,7 @@ function sourceAppBottomNav(active, y = 778) {
       const on = label === active;
       const color = on ? "#a33129" : "#8c857b";
       return `
-        ${figButton(`source-bottom-hit-${label}`, x - 37, y + 6, 76, 72, `data-route="${route}"`, "", "z-index:110;")}
+        ${figButton(`source-bottom-hit-${label}`, x - 37, y + 6, 76, 72, `data-route="${route}" aria-label="${label}"${on ? ' aria-current="page"' : ''}`, "", "z-index:110;")}
         ${wentianBottomNavIcon(iconKind, `source-bottom-icon-${label}`, x - 17, y + 13, color, on, 100)}
         ${figText(`source-bottom-label-${label}`, label, x - 28, y + 50, 56, 12, color, on ? 800 : 500, "center", "z-index:100;")}
         ${on ? figBox(`source-bottom-active-${label}`, x - 9, y + 72, 18, 3, "", `border-radius:999px;background:${color};opacity:.72;z-index:100;`) : ""}
