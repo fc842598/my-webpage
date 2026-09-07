@@ -10781,8 +10781,10 @@ function isWentianSessionExpiring(session) {
 }
 
 function phoneToWentianEmail(phone) {
-  const digits = String(phone || "").replace(/\D/g, "");
-  if (!digits || digits.length < 6 || digits.length > 20) return "";
+  const raw = String(phone || "").trim();
+  if (!/^\+?[0-9\s().-]+$/.test(raw)) return "";
+  const digits = raw.replace(/\D/g, "");
+  if (digits.length < 6 || digits.length > 20 || /^0+$/.test(digits)) return "";
   return `phone_${digits}@yuetianai.local`;
 }
 
@@ -14463,12 +14465,12 @@ function sourceLoginMethodsScreen() {
     <button class="wentian-auth-tab ${!isRegister ? "is-active" : ""}" type="button" data-action="wentian-auth-mode" data-auth-mode="login" style="left:50px;top:154px;width:136px">登录</button>
     <button class="wentian-auth-tab ${isRegister ? "is-active" : ""}" type="button" data-action="wentian-auth-mode" data-auth-mode="register" style="left:204px;top:154px;width:136px">注册</button>
     ${figText("source-login-phone-label", isRegister ? "手机号" : "手机号 / 邮箱", 50, 224, 110, 14, "#6e6254", 800)}
-    <input id="wentian-auth-phone" class="wentian-auth-input" inputmode="${isRegister ? "tel" : "email"}" autocomplete="${isRegister ? "tel" : "username"}" style="left:50px;top:248px;width:290px" placeholder="${isRegister ? "请输入手机号" : "请输入手机号或邮箱"}" value="${escapeHtml(wentianAuthState.account || "")}">
+    <input id="wentian-auth-phone" class="wentian-auth-input" aria-label="${isRegister ? "手机号" : "手机号或邮箱"}" inputmode="${isRegister ? "tel" : "email"}" autocomplete="${isRegister ? "tel" : "username"}" style="left:50px;top:248px;width:290px" placeholder="${isRegister ? "海外号码请带国家区号" : "请输入手机号或邮箱"}" value="${escapeHtml(wentianAuthState.account || "")}">
     ${figText("source-login-password-label", "密码", 50, 318, 88, 14, "#6e6254", 800)}
     <input id="wentian-auth-password" class="wentian-auth-input" type="password" autocomplete="${isRegister ? "new-password" : "current-password"}" style="left:50px;top:342px;width:290px" placeholder="至少 6 位" value="${escapeHtml(wentianAuthState.password || "")}">
     <div id="wentian-auth-status" class="wentian-profile-status" data-tone="${escapeHtml(getWentianAuthStatusTone())}" style="top:404px">${escapeHtml(getWentianAuthStatusText())}</div>
     ${figBox("source-login-submit", 50, 442, 290, 46, "", `border-radius:23px;background:${wentianAuthState.loading ? "#d8c7aa" : "linear-gradient(180deg,#b74e39,#983323)"};box-shadow:0 12px 24px rgba(158,61,43,.16);`)}
-    ${figButton("source-login-submit-hit", 50, 442, 290, 46, 'data-action="wentian-auth-submit"')}
+    ${figButton("source-login-submit-hit", 50, 442, 290, 46, `data-action="wentian-auth-submit" aria-label="${isRegister ? "注册并登录" : "登录并继续"}"`)}
     ${figText("source-login-submit-text", wentianAuthState.loading ? "处理中..." : (isRegister ? "注册并登录" : "登录并继续"), 50, 456, 290, 14, "#fffaf3", 900, "center")}
     ${WENTIAN_GOOGLE_ENABLED ? `
       ${figBox("source-login-google", 50, 538, 290, 44, "", "border-radius:22px;background:#fff;border:1px solid #e2d8c8;")}
