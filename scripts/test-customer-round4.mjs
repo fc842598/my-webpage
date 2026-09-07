@@ -1,0 +1,18 @@
+import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
+import vm from 'node:vm';
+const source=readFileSync(new URL('../js/wentian-app.js',import.meta.url),'utf8').replace(/\r\n/g,'\n');
+const start=source.indexOf('function returnWentianChatFromHistory(');
+const code=source.slice(start,source.indexOf('\n}',start)+2);
+const state={stack:['screen-1','screen-3','screen-4','screen-9','screen-4']};
+let navigation;
+const ctx=vm.createContext({state,navigate:(...args)=>navigation=args});
+vm.runInContext(code,ctx);
+ctx.returnWentianChatFromHistory();
+assert.deepEqual(state.stack,['screen-1','screen-3']);
+assert.deepEqual(navigation,['screen-4',false]);
+state.stack=[];
+ctx.returnWentianChatFromHistory();
+assert.deepEqual(navigation,['screen-4',false]);
+assert.deepEqual(state.stack,[]);
+console.log('PASS: history return preserves original route and works after reload');

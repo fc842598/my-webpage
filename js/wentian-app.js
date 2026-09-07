@@ -12589,9 +12589,14 @@ function renderWentianChatHistoryRecords() {
   }).join("");
 }
 
+function returnWentianChatFromHistory() {
+  while (["screen-4", "screen-9"].includes(state.stack[state.stack.length - 1])) state.stack.pop();
+  navigate("screen-4", false);
+}
+
 function sourceWentianChatHistoryScreen() {
   return `<section class="wentian-history-page">
-    <header><button type="button" data-route="screen-4">${getWentianCompactText("返回对话", "Back to chat")}</button><h1>${getWentianCompactText("对话记录", "Conversation history")}</h1></header>
+    <header><button type="button" data-action="wentian-chat-history-back">${getWentianCompactText("返回对话", "Back to chat")}</button><h1>${getWentianCompactText("对话记录", "Conversation history")}</h1></header>
     <p>${getWentianCompactText("当前档案 · 最近10条提问，点击展开完整回答", "Current chart · Last 10 questions. Tap to read each reply.")}</p>
     <div id="wentian-history-status" role="status"></div>
     <div id="wentian-history-records">${renderWentianChatHistoryRecords()}</div>
@@ -24838,6 +24843,10 @@ document.addEventListener("click", (event) => {
   }
   if (action === "wentian-chat-send") {
     sendWentianXuChat();
+    return;
+  }
+  if (action === "wentian-chat-history-back") {
+    returnWentianChatFromHistory();
     return;
   }
   if (action === "wentian-chat-history-retry") {
