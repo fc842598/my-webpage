@@ -28,7 +28,7 @@ const context = vm.createContext({
   getWentianAiEvidenceMap:()=>({}), normalizeWentianAiText:s=>s, hasWentianHanText:()=>false,
   renderWentianMobileActionButton:()=>'', renderWentianOverallEvidenceTags:()=>'',
 });
-for (const name of ['getWentianXuPayloadKey','ensureWentianXuSession','renderWentianChatHistoryRecords','renderWentianOverallReading']) vm.runInContext(extract(name),context);
+for (const name of ['getWentianHistoryDisplayText','getWentianXuPayloadKey','ensureWentianXuSession','renderWentianChatHistoryRecords','renderWentianOverallReading']) vm.runInContext(extract(name),context);
 
 const loading = context.ensureWentianXuSession({silent:true});
 resolveRequest({sessionId:'session-a',messages:[{sender:'user',content:'真实问题',createdAt:'2026-09-07T06:00:00Z'},{sender:'assistant',content:'真实回答'}]});

@@ -10399,7 +10399,6 @@ function finalizeWentianLanguageText(root = view, code = getWentianLanguageCode(
     setWentianFinalText(officeGuide, ".office-layout-panel.hero .office-layout-kicker", "Start Here");
     setWentianFinalText(officeGuide, ".office-layout-panel.hero .office-layout-title", "Set Door First, Then Boss Seat");
     setWentianFinalText(officeGuide, ".office-layout-panel.hero .office-layout-copy", "Confirm the office door direction and boss seat first, then choose the outer and inner trigrams.");
-    setWentianFinalText(officeGuide, ".office-layout-video-slot strong", "Guide Card");
     setWentianFinalTextAt(officeGuide, ".office-layout-guide-step strong", 0, "Confirm the door direction and boss seat first");
     setWentianFinalTextAt(officeGuide, ".office-layout-guide-step p", 0, "The outer trigram reads the door direction. The inner trigram reads the boss seat.");
     setWentianFinalTextAt(officeGuide, ".office-layout-guide-step strong", 1, "Use a compass or floor plan");
@@ -19164,13 +19163,6 @@ function sourceOfficeLayoutGuideScreen() {
       <span class="office-layout-kicker">新手先看这里</span>
       <h2 class="office-layout-title">先定大门，再定老板位</h2>
       <p class="office-layout-copy">你只需要先确定办公室大门朝向和老板位置，手动选好外卦和内卦后再查询。</p>
-    </section>
-    <section class="office-layout-panel">
-      <div class="office-layout-video-slot">
-        <span class="office-layout-chip">【视频讲解位】</span>
-        <strong>这里先放静态讲解卡位</strong>
-        <p class="office-layout-copy">v1 先做静态卡位，后续可直接替换成真实视频或截图讲解。</p>
-      </div>
     </section>
     <section class="office-layout-guide-grid">
       <article class="office-layout-guide-step"><i>01</i><div><strong>先确定办公室大门朝向和老板位置</strong><p>外卦看大门朝向，内卦看老板位。先把这两个点定住，再谈布局是否顺手。</p></div></article>

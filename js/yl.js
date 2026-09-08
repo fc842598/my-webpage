@@ -1090,6 +1090,25 @@
     if (humanConsult) humanConsult.hidden = !active;
     var humanEyebrow = $("#ylHumanConsultEyebrow");
     var humanPromo = $("#ylHumanConsultPromo");
+    if (IS_ENGLISH_CHECKOUT && humanConsult) {
+      var humanText = {
+        "#ylHumanConsultTitle": "Talk to a human chart reader",
+        "#ylHumanConsultResponse": " Replies usually arrive within 48 hours, subject to availability. Please avoid sending repeated reminders.",
+        "#ylHumanConsultScope": "Consultations focus on understanding your chart and discussing practical questions. Where relevant, we may suggest ways to use your living space. This campaign consultation is free. We do not offer talismans or curse removal, sell good-luck products, charge to avert misfortune, or promise to change your destiny.",
+        "#ylHumanConsultNote": "For cultural discussion and personal reflection, not guaranteed predictions.",
+        ".yl-human-whatsapp": "Contact on WhatsApp",
+        "#ylCopyConsultantWechat": "Copy WeChat ID: kcqc1688",
+        "figcaption": "Scan with WeChat · ID: kcqc1688"
+      };
+      Object.keys(humanText).forEach(function (selector) {
+        var element = humanConsult.querySelector(selector);
+        if (element) element.textContent = humanText[selector];
+      });
+      var qr = humanConsult.querySelector("img");
+      if (qr) qr.alt = "Master Xu's WeChat QR code";
+      var whatsapp = humanConsult.querySelector(".yl-human-whatsapp");
+      if (whatsapp) whatsapp.href = "https://wa.me/8615989267747?text=" + encodeURIComponent("Hello, I am a registered Yuetian AI user and would like to request a human chart consultation.");
+    }
     if (humanEyebrow) humanEyebrow.textContent = IS_ENGLISH_CHECKOUT
       ? "Human service · Free during the campaign"
       : "人工通道 · " + monthLabel + "限时免费咨询";
@@ -3102,7 +3121,9 @@
     $("#ylCopyConsultantWechat").addEventListener("click", async function () {
       var copied = await copyText("kcqc1688");
       var status = $("#ylHumanCopyStatus");
-      if (status) status.textContent = copied ? "微信号已复制：kcqc1688" : "请手动复制微信号：kcqc1688";
+      if (status) status.textContent = IS_ENGLISH_CHECKOUT
+        ? (copied ? "WeChat ID copied: kcqc1688" : "Please copy the WeChat ID: kcqc1688")
+        : (copied ? "微信号已复制：kcqc1688" : "请手动复制微信号：kcqc1688");
     });
     $("#ylRefreshPayBtn").addEventListener("click", refreshHealthPaymentStatus);
     $("#ylPaymentCloseBtn").addEventListener("click", closeHealthPaymentPanel);
