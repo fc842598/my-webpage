@@ -1300,52 +1300,6 @@ const DAY6_SEEDS = [
     ]
   },
   {
-    slug: "ai-suanming-huanchengshi-dushu-gongzuo-xiankan-ziwei-haishi-bazi",
-    title: "AI算命问换城市读书或工作，先看紫微还是八字？先分平台位置和阶段强弱",
-    enTitle: "For a Move-to-Another-City Study-or-Work Question in AI Fortune Telling, Should You Start With Zi Wei or Ba Zi? Separate Platform Position From Stage Strength First",
-    group: "方法与术数",
-    enGroup: "Method & Systems",
-    lead: "换城市读书或工作，看上去像一个动作，实际上里面混着平台位置、阶段承受力和现实成本。想把工具用准，第一步就是把“去哪儿”与“现在扛不扛得住”分开。",
-    second: "紫微更适合先看平台、迁移和位置结构，八字则更适合看阶段强弱、寒热偏性和当下能量承受度。先把这两层拆开，后面的判断就不容易打架。"
-    ,
-    focusPoints: [
-      "平台位置讲的是你换到那个城市后，资源、环境和外部承接会不会更合适；阶段强弱讲的则是你现在这段时间是否适合承受迁移和重建成本。",
-      "很多人只看其中一层：只看机会，不看承受；或只看疲惫，不看平台。真正稳的判断通常要两边都摸清。"
-    ],
-    examples: [
-      "比如某个城市机会确实更大，但你当前阶段现金流和节奏都偏紧，这种题就不能只凭“外面平台更好”做结论。",
-      "反过来，有的人现在状态并不差，可原地平台已明显见顶，这时只看“先别折腾”也会错过真正的迁移价值。"
-    ],
-    boundaryPoints: [
-      "不要把迁移题问成单纯的好不好。平台和阶段是两张表，先后都重要。",
-      "同样，也别以为必须二选一。很多时候是先用一种工具定主轴，再用另一种工具补盲区。"
-    ],
-    steps: [
-      "先问平台位置更重要，还是阶段承受更重要。",
-      "平台位置先看紫微，阶段强弱再看八字。",
-      "把两边对起来后，再谈要不要动。"
-    ],
-    enLead: "A move-to-another-city question usually carries two layers at once: where the platform fit is, and whether your current stage can carry the cost.",
-    enSecond: "Zi Wei is often stronger for the position and movement structure. Ba Zi is often stronger for stage strength and bearing capacity.",
-    enFocusPoints: [
-      "Platform fit and stage condition are different tables.",
-      "A good relocation judgment often needs both, not only one."
-    ],
-    enExamples: [
-      "A bigger city opportunity can still hit a weak cash-flow stage badly.",
-      "A strong personal stage can still be wasted if the old platform is already capped."
-    ],
-    enBoundaryPoints: [
-      "Do not reduce movement questions to a flat good-or-bad answer.",
-      "You also do not always need to choose one tool forever; one can set the axis and the other can fill the blind spot."
-    ],
-    enSteps: [
-      "Decide whether platform fit or stage condition matters first.",
-      "Use Zi Wei for the position layer and Ba Zi for the stage layer.",
-      "Only then decide whether to move."
-    ]
-  },
-  {
     slug: "ai-suanming-hezuohuoban-zhibuzhi-shenbang-xiankan-ziwei-haishi-bazi",
     title: "AI算命问合作伙伴值不值得深绑，先看紫微还是八字？先分结构匹配和人身节奏",
     enTitle: "If You Want to Judge Whether a Partner Is Worth a Deep Tie in AI Fortune Telling, Should You Start With Zi Wei or Ba Zi? Separate Structural Fit From Personal Timing First",
