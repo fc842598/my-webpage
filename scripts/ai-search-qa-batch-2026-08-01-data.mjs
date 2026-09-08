@@ -400,21 +400,6 @@ const DAY8_SEEDS = [
     ]
   }),
   buildPrivacy({
-    slug: "ai-suanming-hepan-qian-yinsi-ziliao-xian-queren-shenme",
-    title: "AI算命合盘前担心隐私，双方哪些资料必须确认，哪些可以后补？",
-    enTitle: "Before an AI Relationship Reading, If Privacy Is a Concern, Which Details Must Both Sides Confirm First and Which Can Wait?",
-    requiredA: "双方出生信息",
-    requiredB: "当前关系边界",
-    zhExamples: [
-      "合盘第一轮最需要的，通常是双方出生资料和最基本的关系状态，例如正在交往、分开中还是准备推进；至于家庭矛盾细节、聊天截图和大量旧账，并不是一开始就必须交出去。",
-      "如果你连关系现状都不交代，只把情绪全倾倒出来，AI 很容易只能安慰；但如果一上来就把隐私故事全部铺开，暴露面又会远远超过第一轮判断所需。"
-    ],
-    enExamples: [
-      "In an early relationship reading, both birth details and the current relationship stage usually matter more than long private story dumps.",
-      "If you hide the relationship state entirely, the answer often becomes generic comfort. If you overshare everything on round one, exposure grows faster than insight."
-    ]
-  }),
-  buildPrivacy({
     slug: "ai-suanming-kan-hezuo-xiangmu-buxiangxian-baolu-gongsixijie",
     title: "AI算命问合作项目前不想先暴露公司底细，哪些背景给到就够判断？",
     enTitle: "When Asking AI Fortune Telling About a Cooperation Project, If You Do Not Want to Expose Company Details Early, What Background Is Enough to Judge the Question?",
