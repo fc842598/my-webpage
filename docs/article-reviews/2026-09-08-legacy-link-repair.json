@@ -1,0 +1,480 @@
+{
+  "changedFiles": 1436,
+  "repaired": 1443,
+  "removed": 872,
+  "targets": 118,
+  "decisions": {
+    "articles/ziwei-star-bazuo.html": {
+      "target": "articles/ziwei-santai-bazuo.html",
+      "action": "replace"
+    },
+    "articles/ziwei-qianyi.html": {
+      "target": "articles/ziwei-qianyigong.html",
+      "action": "replace"
+    },
+    "articles/ziwei-caibogong-huaquan": {
+      "target": "articles/ziwei-caibogong-huaquan.html",
+      "action": "replace"
+    },
+    "articles/ziwei-star-dijie.html": {
+      "target": "articles/ziwei-dikong-dijie.html",
+      "action": "replace"
+    },
+    "articles/ziwei-star-dikong.html": {
+      "target": "articles/ziwei-dikong-dijie.html",
+      "action": "replace"
+    },
+    "articles/ziwei-star-enguang.html": {
+      "target": "articles/ziwei-enguang-tiangui.html",
+      "action": "replace"
+    },
+    "articles/ziwei-puyougong.html": {
+      "target": "articles/ziwei-puyigong.html",
+      "action": "replace"
+    },
+    "articles/ziwei-star-fenggao.html": {
+      "target": "articles/ziwei-taifu-fenggao.html",
+      "action": "replace"
+    },
+    "articles/ziwei-star-fengge.html": {
+      "target": "articles/ziwei-longchi-fengge.html",
+      "action": "replace"
+    },
+    "articles/ziwei-tianji-zuoming.html": {
+      "target": "articles/ziwei-tianji-zai-minggong.html",
+      "action": "replace"
+    },
+    "articles/ziwei-star-guasu.html": {
+      "target": "articles/ziwei-guchen-guasu.html",
+      "action": "replace"
+    },
+    "articles/ziwei-star-guchen.html": {
+      "target": "articles/ziwei-guchen-guasu.html",
+      "action": "replace"
+    },
+    "articles/ziwei-star-hongluan.html": {
+      "target": "articles/ziwei-hongluan-tianxi.html",
+      "action": "replace"
+    },
+    "articles/ziwei-star-huagai.html": {
+      "target": "articles/ziwei-huagai-xing.html",
+      "action": "replace"
+    },
+    "articles/ziwei-star-huoxing.html": {
+      "target": "articles/ziwei-huoxing-lingxing.html",
+      "action": "replace"
+    },
+    "articles/ziwei-jiaoyougong.html": {
+      "target": "articles/ziwei-puyigong.html",
+      "action": "replace"
+    },
+    "articles/ziwei-jieegong.html": {
+      "target": "articles/ziwei-jiegong.html",
+      "action": "replace"
+    },
+    "articles/ziwei-star-jiesha.html": {
+      "target": null,
+      "action": "remove broken recommendation or unwrap inline link"
+    },
+    "articles/ziwei-pan-buneng-duan-si.html": {
+      "target": null,
+      "action": "remove broken recommendation or unwrap inline link"
+    },
+    "articles/ziwei-star-lingxing.html": {
+      "target": "articles/ziwei-huoxing-lingxing.html",
+      "action": "replace"
+    },
+    "articles/ziwei-star-longchi.html": {
+      "target": "articles/ziwei-longchi-fengge.html",
+      "action": "replace"
+    },
+    "articles/ziwei-star-lucun.html": {
+      "target": "articles/ziwei-lucun-xing.html",
+      "action": "replace"
+    },
+    "articles/ziwei-konggong.html": {
+      "target": "articles/ziwei-konggong-xianjieduigong-zaihuisanfang.html",
+      "action": "replace"
+    },
+    "articles/ziwei-star-posui.html": {
+      "target": "articles/ziwei-feilian-posui.html",
+      "action": "replace"
+    },
+    "articles/ziwei-star-qingyang.html": {
+      "target": "articles/ziwei-qingyang-tuoluo.html",
+      "action": "replace"
+    },
+    "articles/ziwei-star-santai.html": {
+      "target": "articles/ziwei-santai-bazuo.html",
+      "action": "replace"
+    },
+    "articles/ziwei-star-taifu.html": {
+      "target": "articles/ziwei-taifu-fenggao.html",
+      "action": "replace"
+    },
+    "articles/ziwei-caibogong-hualu-yu-huaji.html": {
+      "target": null,
+      "action": "remove broken recommendation or unwrap inline link"
+    },
+    "articles/ziwei-fudegong-huaji-xiangtaiduo.html": {
+      "target": null,
+      "action": "remove broken recommendation or unwrap inline link"
+    },
+    "articles/ziwei-fudegong-zhishao-3000.html": {
+      "target": null,
+      "action": "remove broken recommendation or unwrap inline link"
+    },
+    "articles/ziwei-minggong-taiyang-yu-tianji.html": {
+      "target": null,
+      "action": "remove broken recommendation or unwrap inline link"
+    },
+    "articles/ziwei-minggong-taiyang-juemen.html": {
+      "target": null,
+      "action": "remove broken recommendation or unwrap inline link"
+    },
+    "articles/ziwei-star-tiangui.html": {
+      "target": "articles/ziwei-enguang-tiangui.html",
+      "action": "replace"
+    },
+    "articles/ziwei-minggong-tianji-yu-tianfu.html": {
+      "target": null,
+      "action": "remove broken recommendation or unwrap inline link"
+    },
+    "articles/ziwei-minggong-tianji-yu-qisha.html": {
+      "target": null,
+      "action": "remove broken recommendation or unwrap inline link"
+    },
+    "articles/ziwei-xiongdi-jihua-peihe.html": {
+      "target": null,
+      "action": "remove broken recommendation or unwrap inline link"
+    },
+    "articles/ziwei-star-tianku.html": {
+      "target": "articles/ziwei-tianku-tianxu.html",
+      "action": "replace"
+    },
+    "articles/ziwei-star-tiankui.html": {
+      "target": "articles/ziwei-tiankui-tianyue.html",
+      "action": "replace"
+    },
+    "articles/ziwei-star-tianma.html": {
+      "target": "articles/ziwei-tianma-xing.html",
+      "action": "replace"
+    },
+    "articles/ziwei-star-tianshang.html": {
+      "target": "articles/ziwei-tianshang-tianshi.html",
+      "action": "replace"
+    },
+    "articles/ziwei-star-tianshi.html": {
+      "target": "articles/ziwei-tianshang-tianshi.html",
+      "action": "replace"
+    },
+    "articles/ziwei-star-tianxi.html": {
+      "target": "articles/ziwei-hongluan-tianxi.html",
+      "action": "replace"
+    },
+    "articles/ziwei-star-tianxing.html": {
+      "target": "articles/ziwei-tianxing-xing.html",
+      "action": "replace"
+    },
+    "articles/ziwei-star-tianxu.html": {
+      "target": "articles/ziwei-tianku-tianxu.html",
+      "action": "replace"
+    },
+    "articles/ziwei-star-tianyao.html": {
+      "target": "articles/ziwei-xianchi-tianyao.html",
+      "action": "replace"
+    },
+    "articles/ziwei-star-tianyue.html": {
+      "target": "articles/ziwei-tiankui-tianyue.html",
+      "action": "replace"
+    },
+    "articles/ziwei-star-tuoluo.html": {
+      "target": "articles/ziwei-qingyang-tuoluo.html",
+      "action": "replace"
+    },
+    "articles/ziwei-star-wenchang.html": {
+      "target": "articles/ziwei-wenchang-wenqu.html",
+      "action": "replace"
+    },
+    "articles/ziwei-star-wenqu.html": {
+      "target": "articles/ziwei-wenchang-wenqu.html",
+      "action": "replace"
+    },
+    "articles/ziwei-minggong-wuqu-yu-tianfu.html": {
+      "target": null,
+      "action": "remove broken recommendation or unwrap inline link"
+    },
+    "articles/ziwei-minggong-wuqu-yu-qisha.html": {
+      "target": null,
+      "action": "remove broken recommendation or unwrap inline link"
+    },
+    "articles/ziwei-star-xianchi.html": {
+      "target": "articles/ziwei-xianchi-tianyao.html",
+      "action": "replace"
+    },
+    "articles/ziwei-star-yinsha.html": {
+      "target": "articles/ziwei-yinsha-xing.html",
+      "action": "replace"
+    },
+    "articles/ziwei-star-youbi.html": {
+      "target": "articles/ziwei-zuofu-youbi.html",
+      "action": "replace"
+    },
+    "articles/ziwei-zinv.html": {
+      "target": "articles/ziwei-zinvgong.html",
+      "action": "replace"
+    },
+    "articles/ziwei-star-zuofu.html": {
+      "target": "articles/ziwei-zuofu-youbi.html",
+      "action": "replace"
+    },
+    "articles/en/ziwei-learning-path.html": {
+      "target": "articles/en/how-to-read-zi-wei-dou-shu-chart.html",
+      "action": "replace"
+    },
+    "articles/en/ziwei-helper-malice-stars.html": {
+      "target": null,
+      "action": "remove broken recommendation or unwrap inline link"
+    },
+    "articles/en/ziwei-star-bazuo.html": {
+      "target": "articles/en/ziwei-santai-bazuo.html",
+      "action": "replace"
+    },
+    "articles/en/ziwei-qianyi.html": {
+      "target": "articles/en/outside-palace.html",
+      "action": "replace"
+    },
+    "articles/en/ziwei-four-transformations.html": {
+      "target": "articles/en/four-transformations.html",
+      "action": "replace"
+    },
+    "articles/en/ziwei-palaces.html": {
+      "target": "articles/en/palace-context.html",
+      "action": "replace"
+    },
+    "articles/en/ziwei-case-patterns.html": {
+      "target": null,
+      "action": "remove broken recommendation or unwrap inline link"
+    },
+    "articles/en/ziwei-sihua.html": {
+      "target": "articles/en/four-transformations.html",
+      "action": "replace"
+    },
+    "articles/en/ziwei-star-dijie.html": {
+      "target": "articles/en/ziwei-dikong-dijie.html",
+      "action": "replace"
+    },
+    "articles/en/ziwei-star-dikong.html": {
+      "target": "articles/en/ziwei-dikong-dijie.html",
+      "action": "replace"
+    },
+    "articles/en/ziwei-star-enguang.html": {
+      "target": "articles/en/ziwei-enguang-tiangui.html",
+      "action": "replace"
+    },
+    "articles/en/ziwei-puyougong.html": {
+      "target": "articles/en/friends-network-palace.html",
+      "action": "replace"
+    },
+    "articles/en/ziwei-star-fenggao.html": {
+      "target": "articles/en/ziwei-taifu-fenggao.html",
+      "action": "replace"
+    },
+    "articles/en/ziwei-star-fengge.html": {
+      "target": "articles/en/ziwei-longchi-fengge.html",
+      "action": "replace"
+    },
+    "articles/en/ziwei-tianji-zuoming.html": {
+      "target": "articles/en/ziwei-tianji-zai-minggong.html",
+      "action": "replace"
+    },
+    "articles/en/ziwei-star-guasu.html": {
+      "target": "articles/en/ziwei-guchen-guasu.html",
+      "action": "replace"
+    },
+    "articles/en/ziwei-star-guchen.html": {
+      "target": "articles/en/ziwei-guchen-guasu.html",
+      "action": "replace"
+    },
+    "articles/en/ziwei-star-hongluan.html": {
+      "target": "articles/en/ziwei-hongluan-tianxi.html",
+      "action": "replace"
+    },
+    "articles/en/ziwei-star-huagai.html": {
+      "target": "articles/en/ziwei-huagai-xing.html",
+      "action": "replace"
+    },
+    "articles/en/ziwei-star-huoxing.html": {
+      "target": "articles/en/ziwei-huoxing-lingxing.html",
+      "action": "replace"
+    },
+    "articles/en/ziwei-jiaoyougong.html": {
+      "target": "articles/en/friends-network-palace.html",
+      "action": "replace"
+    },
+    "articles/en/ziwei-jieegong.html": {
+      "target": "articles/en/health-palace.html",
+      "action": "replace"
+    },
+    "articles/en/ziwei-star-jiesha.html": {
+      "target": null,
+      "action": "remove broken recommendation or unwrap inline link"
+    },
+    "articles/en/ziwei-main-stars.html": {
+      "target": null,
+      "action": "remove broken recommendation or unwrap inline link"
+    },
+    "articles/en/ziwei-pan-buneng-duan-si.html": {
+      "target": null,
+      "action": "remove broken recommendation or unwrap inline link"
+    },
+    "articles/en/ziwei-star-lingxing.html": {
+      "target": "articles/en/ziwei-huoxing-lingxing.html",
+      "action": "replace"
+    },
+    "articles/en/ziwei-cycles.html": {
+      "target": "articles/en/ten-year-cycle.html",
+      "action": "replace"
+    },
+    "articles/en/ziwei-star-longchi.html": {
+      "target": "articles/en/ziwei-longchi-fengge.html",
+      "action": "replace"
+    },
+    "articles/en/ziwei-star-lucun.html": {
+      "target": "articles/en/ziwei-lucun-xing.html",
+      "action": "replace"
+    },
+    "articles/en/ziwei-konggong.html": {
+      "target": "articles/en/ziwei-konggong-xianjieduigong-zaihuisanfang.html",
+      "action": "replace"
+    },
+    "articles/en/ziwei-star-posui.html": {
+      "target": "articles/en/ziwei-feilian-posui.html",
+      "action": "replace"
+    },
+    "articles/en/ziwei-star-qingyang.html": {
+      "target": "articles/en/ziwei-qingyang-tuoluo.html",
+      "action": "replace"
+    },
+    "articles/en/ziwei-star-santai.html": {
+      "target": "articles/en/ziwei-santai-bazuo.html",
+      "action": "replace"
+    },
+    "articles/en/ziwei-star-taifu.html": {
+      "target": "articles/en/ziwei-taifu-fenggao.html",
+      "action": "replace"
+    },
+    "articles/en/ziwei-caibogong-hualu-yu-huaji.html": {
+      "target": null,
+      "action": "remove broken recommendation or unwrap inline link"
+    },
+    "articles/en/ziwei-fudegong-huaji-xiangtaiduo.html": {
+      "target": null,
+      "action": "remove broken recommendation or unwrap inline link"
+    },
+    "articles/en/ziwei-fudegong-zhishao-3000.html": {
+      "target": null,
+      "action": "remove broken recommendation or unwrap inline link"
+    },
+    "articles/en/ziwei-minggong-taiyang-yu-tianji.html": {
+      "target": null,
+      "action": "remove broken recommendation or unwrap inline link"
+    },
+    "articles/en/ziwei-minggong-taiyang-juemen.html": {
+      "target": null,
+      "action": "remove broken recommendation or unwrap inline link"
+    },
+    "articles/en/ziwei-star-tiangui.html": {
+      "target": "articles/en/ziwei-enguang-tiangui.html",
+      "action": "replace"
+    },
+    "articles/en/ziwei-minggong-tianji-yu-tianfu.html": {
+      "target": null,
+      "action": "remove broken recommendation or unwrap inline link"
+    },
+    "articles/en/ziwei-minggong-tianji-yu-qisha.html": {
+      "target": null,
+      "action": "remove broken recommendation or unwrap inline link"
+    },
+    "articles/en/ziwei-xiongdi-jihua-peihe.html": {
+      "target": null,
+      "action": "remove broken recommendation or unwrap inline link"
+    },
+    "articles/en/ziwei-star-tianku.html": {
+      "target": "articles/en/ziwei-tianku-tianxu.html",
+      "action": "replace"
+    },
+    "articles/en/ziwei-star-tiankui.html": {
+      "target": "articles/en/ziwei-tiankui-tianyue.html",
+      "action": "replace"
+    },
+    "articles/en/ziwei-star-tianma.html": {
+      "target": "articles/en/ziwei-tianma-xing.html",
+      "action": "replace"
+    },
+    "articles/en/ziwei-star-tianshang.html": {
+      "target": "articles/en/ziwei-tianshang-tianshi.html",
+      "action": "replace"
+    },
+    "articles/en/ziwei-star-tianshi.html": {
+      "target": "articles/en/ziwei-tianshang-tianshi.html",
+      "action": "replace"
+    },
+    "articles/en/ziwei-star-tianxi.html": {
+      "target": "articles/en/ziwei-hongluan-tianxi.html",
+      "action": "replace"
+    },
+    "articles/en/ziwei-star-tianxing.html": {
+      "target": "articles/en/ziwei-tianxing-xing.html",
+      "action": "replace"
+    },
+    "articles/en/ziwei-star-tianxu.html": {
+      "target": "articles/en/ziwei-tianku-tianxu.html",
+      "action": "replace"
+    },
+    "articles/en/ziwei-star-tianyao.html": {
+      "target": "articles/en/ziwei-xianchi-tianyao.html",
+      "action": "replace"
+    },
+    "articles/en/ziwei-star-tianyue.html": {
+      "target": "articles/en/ziwei-tiankui-tianyue.html",
+      "action": "replace"
+    },
+    "articles/en/ziwei-star-tuoluo.html": {
+      "target": "articles/en/ziwei-qingyang-tuoluo.html",
+      "action": "replace"
+    },
+    "articles/en/ziwei-star-wenchang.html": {
+      "target": "articles/en/ziwei-wenchang-wenqu.html",
+      "action": "replace"
+    },
+    "articles/en/ziwei-star-wenqu.html": {
+      "target": "articles/en/ziwei-wenchang-wenqu.html",
+      "action": "replace"
+    },
+    "articles/en/ziwei-minggong-wuqu-yu-tianfu.html": {
+      "target": null,
+      "action": "remove broken recommendation or unwrap inline link"
+    },
+    "articles/en/ziwei-minggong-wuqu-yu-qisha.html": {
+      "target": null,
+      "action": "remove broken recommendation or unwrap inline link"
+    },
+    "articles/en/ziwei-star-xianchi.html": {
+      "target": "articles/en/ziwei-xianchi-tianyao.html",
+      "action": "replace"
+    },
+    "articles/en/ziwei-star-yinsha.html": {
+      "target": "articles/en/ziwei-yinsha-xing.html",
+      "action": "replace"
+    },
+    "articles/en/ziwei-star-youbi.html": {
+      "target": "articles/en/ziwei-zuofu-youbi.html",
+      "action": "replace"
+    },
+    "articles/en/ziwei-star-zuofu.html": {
+      "target": "articles/en/ziwei-zuofu-youbi.html",
+      "action": "replace"
+    }
+  }
+}

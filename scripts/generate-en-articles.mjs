@@ -1,6 +1,11 @@
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 
+if (process.argv.includes("--repair-legacy-links")) {
+  await import("./repair-legacy-article-links.mjs");
+  process.exit(process.exitCode || 0);
+}
+
 if (process.argv.includes("--repair-links")) {
   await import("./repair-english-article-links.mjs");
   process.exit(process.exitCode || 0);
