@@ -1,6 +1,11 @@
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 
+if (process.argv.includes("--repair-links")) {
+  await import("./repair-english-article-links.mjs");
+  process.exit(process.exitCode || 0);
+}
+
 // Targeted bilingual edits must not regenerate the legacy full-site indexes.
 if (process.argv.some(value => value.startsWith("--revision-file="))) {
   await import("./revise-existing-articles.mjs");
