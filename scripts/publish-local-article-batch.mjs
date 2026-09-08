@@ -198,12 +198,12 @@ for (const [index, article] of articles.entries()) {
 
 if (!skipCollections) {
   if (args["append-collections"] === true) {
-    appendArticleCollections(root, articles);
+    appendArticleCollections(root, articles, { preserveTopicHubs: args["preserve-topic-hubs"] === true });
   } else {
     regenerateChineseIndex();
     regenerateFeedsAndSitemaps(articles);
   }
-  updateQueue(queuePath, queueRaw, articles);
+  if (productionRoot) updateQueue(queuePath, queueRaw, articles);
 }
 
 console.log(`Published ${articles.length} articles.`);
@@ -670,6 +670,7 @@ function englishPage(article, time) {
         <h2>Read Next</h2>
         <a class="card-link" href="./">English article index</a>
         <a class="card-link" href="../${article.slug}.html">Original Chinese article</a>
+        <a class="card-link" href="../../pages/mingbook-onepage.html">Open your chart →</a>
       </aside>
     </div>
   </main>

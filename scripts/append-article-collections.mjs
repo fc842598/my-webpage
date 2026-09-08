@@ -66,7 +66,7 @@ function addToFeed(xml, article) {
   return /<item>/.test(xml) ? xml.replace('<item>', item + '<item>') : xml.replace('</channel>', item + '</channel>');
 }
 
-export function appendArticleCollections(root, articles) {
+export function appendArticleCollections(root, articles, { preserveTopicHubs = false } = {}) {
   // Stage all collection changes in memory so a missing category cannot leave half a sync.
   const output = new Map();
   const get = file => output.get(file) ?? readFileSync(path.join(root, file), 'utf8');
@@ -77,8 +77,9 @@ export function appendArticleCollections(root, articles) {
     if (!hub) throw new Error(`No topic hub for ${a.category}`);
     output.set('articles/index.html', addToIndex(get('articles/index.html'), zh, a.category, false));
     output.set('articles/en/index.html', addToIndex(get('articles/en/index.html'), en, a.category, true));
-    output.set(`articles/${hub}`, addToIndex(get(`articles/${hub}`), zh, a.category, false, true));
-    const modified = new Map([[`${site}/articles/`, zh.datePublished], [`${site}/articles/en/`, zh.datePublished], [`${site}/articles/${hub}`, zh.datePublished]]);
+    if (!preserveTopicHubs) output.set(`articles/${hub}`, addToIndex(get(`articles/${hub}`), zh, a.category, false, true));
+    const modified = new Map([[`${site}/articles/`, zh.datePublished], [`${site}/articles/en/`, zh.datePublished]]);
+    if (!preserveTopicHubs) modified.set(`${site}/articles/${hub}`, zh.datePublished);
     output.set('sitemap.xml', addToSitemap(get('sitemap.xml'), [zh, en], modified));
     output.set('sitemap-articles.xml', addToSitemap(get('sitemap-articles.xml'), [zh], modified));
     output.set('sitemap-en.xml', addToSitemap(get('sitemap-en.xml'), [en], modified));

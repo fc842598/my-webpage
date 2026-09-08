@@ -52,29 +52,18 @@ $settings = New-ScheduledTaskSettingsSet `
     -MultipleInstances IgnoreNew `
     -ExecutionTimeLimit (New-TimeSpan -Minutes 20)
 
-$oldTasks = Get-ScheduledTask -TaskName "$taskPrefix*" -ErrorAction SilentlyContinue | Where-Object {
-    $_.TaskName -notlike "$taskPrefix$dateKey-*"
-}
-foreach ($task in $oldTasks) {
-    if ($PSCmdlet.ShouldProcess($task.TaskName, 'Remove previous article release task')) {
-        Unregister-ScheduledTask -TaskName $task.TaskName -Confirm:$false
-    }
-}
-
+# Keep other days and publishers intact.
 $desiredTaskNames = [Collections.Generic.HashSet[string]]::new([StringComparer]::OrdinalIgnoreCase)
 $slots | ForEach-Object { [void]$desiredTaskNames.Add("$taskPrefix$dateKey-$('{0:D2}' -f $_.Order)") }
 $staleSameDateTasks = Get-ScheduledTask -TaskName "$taskPrefix$dateKey-*" -ErrorAction SilentlyContinue | Where-Object {
     -not $desiredTaskNames.Contains($_.TaskName)
 }
-foreach ($task in $staleSameDateTasks) {
-    if ($PSCmdlet.ShouldProcess($task.TaskName, 'Remove release task outside the current batch size')) {
-        Unregister-ScheduledTask -TaskName $task.TaskName -Confirm:$false
-    }
-}
+if ($staleSameDateTasks) { throw 'Existing same-date tasks are outside this queue; inspect without deleting them' }
 
 foreach ($slot in $slots) {
     $orderText = '{0:D2}' -f $slot.Order
     $taskName = "$taskPrefix$dateKey-$orderText"
+    if (Get-ScheduledTask -TaskName $taskName -ErrorAction SilentlyContinue) { throw "Task already exists: $taskName; inspect before changing it" }
     $arguments = "-NoProfile -NonInteractive -ExecutionPolicy Bypass -WindowStyle Hidden -File `"$wrapper`" -Date `"$Date`" -Order $($slot.Order)"
     $action = New-ScheduledTaskAction -Execute $powershell -Argument $arguments -WorkingDirectory $repo
     $trigger = New-ScheduledTaskTrigger -Once -At $slot.When

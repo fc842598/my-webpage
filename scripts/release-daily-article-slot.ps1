@@ -11,7 +11,11 @@ param(
 $ErrorActionPreference = 'Stop'
 $repo = Split-Path -Parent $PSScriptRoot
 $node = (Get-Command node.exe -ErrorAction Stop).Source
-$logDirectory = Join-Path $repo '.git\article-release-logs'
+$gitCommon = & git -C $repo rev-parse --git-common-dir
+if ($LASTEXITCODE -ne 0) { throw 'Cannot locate shared Git directory' }
+if (-not [IO.Path]::IsPathRooted($gitCommon)) { $gitCommon = Join-Path $repo $gitCommon }
+$gitCommon = [IO.Path]::GetFullPath($gitCommon)
+$logDirectory = Join-Path $gitCommon 'article-release-logs'
 [IO.Directory]::CreateDirectory($logDirectory) | Out-Null
 $orderText = '{0:D2}' -f $Order
 $logFile = Join-Path $logDirectory "$Date-$orderText.log"

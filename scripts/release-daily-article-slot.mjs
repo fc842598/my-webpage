@@ -110,7 +110,7 @@ function synchronizeRepository() {
     git(["merge", "--ff-only", "origin/master"]);
     return { fastForwarded: true, behind, ahead: 0 };
   }
-  if (ahead) git(["push", "origin", "master"]);
+  if (ahead) fail("Unpublished local commits require review before releasing another slot");
   return { fastForwarded: false, behind: 0, ahead };
 }
 
@@ -198,7 +198,8 @@ async function main() {
   if (numericOrder < 1 || numericOrder > expectedCount) fail(`Order ${order} is outside this ${expectedCount}-article batch`);
   const slot = parseSlot(queue, date, order);
   const paths = managedPaths(date, slot.slug, slot.category);
-  const topicHub = topicHubForCategory(slot.category);
+  // Old article and topic URLs remain unchanged until their ranking history is verified.
+  const topicHub = "";
   const zhFile = `articles/${slot.slug}.html`;
   const enFile = `articles/en/${slot.slug}.html`;
   const alreadyPublished = slot.status.includes("http") && existsSync(zhFile) && existsSync(enFile);
@@ -220,7 +221,7 @@ async function main() {
   }
 
   assertRepositoryReady(paths);
-  const lockPath = path.join(ROOT, ".git", "yuetian-article-release.lock");
+  const lockPath = path.resolve(git(["rev-parse", "--git-common-dir"]).stdout.trim(), "yuetian-article-release.lock");
   const lock = openSync(lockPath, "wx");
   closeSync(lock);
   try {
@@ -236,6 +237,8 @@ async function main() {
       "--order", order,
       "--date", date,
       "--time", publishTime,
+      "--append-collections",
+      "--preserve-topic-hubs",
     ]);
     if (publishTime !== slot.plannedTime) {
       queue = readFileSync(queuePath, "utf8").replace(
@@ -254,7 +257,12 @@ async function main() {
     const unexpected = staged.filter((file) => !allowed.has(file.replace(/\\/g, "/")));
     if (unexpected.length) fail(`Unexpected staged files:\n${unexpected.join("\n")}`);
     git(["commit", "-m", `Publish Ziwei article ${date} ${publishTime} (${order}/${expectedCount})`]);
-    git(["push", "origin", "master"]);
+    git(["fetch", "origin", "master", "--quiet"]);
+    // A concurrent publisher may have advanced master. Do not overwrite its work.
+    if (git(["merge-base", "--is-ancestor", "origin/master", "HEAD"], [0, 1]).status !== 0) {
+      fail("Remote master changed during release; keep this commit for conflict-aware retry");
+    }
+    git(["push", "origin", "HEAD:master"]);
     git(["fetch", "origin", "master", "--quiet"]);
     const head = git(["rev-parse", "HEAD"]).stdout.trim();
     const remote = git(["rev-parse", "origin/master"]).stdout.trim();

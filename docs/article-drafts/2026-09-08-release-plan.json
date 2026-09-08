@@ -1,0 +1,242 @@
+{
+  "date": "2026-09-08",
+  "timezone": "Asia/Shanghai",
+  "offset": "+08:00",
+  "target": 30,
+  "preparedCandidates": 10,
+  "shortfall": 20,
+  "slots": [
+    {
+      "time": "16:41",
+      "status": "assigned_candidate",
+      "slug": "ziwei-tongnian-sihua-weizhi-bu-tong"
+    },
+    {
+      "time": "16:58",
+      "status": "held_no_qualified_draft",
+      "slug": null
+    },
+    {
+      "time": "17:06",
+      "status": "held_no_qualified_draft",
+      "slug": null
+    },
+    {
+      "time": "17:21",
+      "status": "assigned_candidate",
+      "slug": "ziwei-shiergong-gonggan-chongfu"
+    },
+    {
+      "time": "17:34",
+      "status": "held_no_qualified_draft",
+      "slug": null
+    },
+    {
+      "time": "17:43",
+      "status": "held_no_qualified_draft",
+      "slug": null
+    },
+    {
+      "time": "17:58",
+      "status": "assigned_candidate",
+      "slug": "ziwei-tianma-yunma-liuma-bu-shi-sanci-banqian"
+    },
+    {
+      "time": "18:06",
+      "status": "held_no_qualified_draft",
+      "slug": null
+    },
+    {
+      "time": "18:16",
+      "status": "held_no_qualified_draft",
+      "slug": null
+    },
+    {
+      "time": "18:31",
+      "status": "assigned_candidate",
+      "slug": "ziwei-hongluan-tianxi-tonggong-cengci"
+    },
+    {
+      "time": "18:42",
+      "status": "held_no_qualified_draft",
+      "slug": null
+    },
+    {
+      "time": "18:58",
+      "status": "held_no_qualified_draft",
+      "slug": null
+    },
+    {
+      "time": "19:06",
+      "status": "assigned_candidate",
+      "slug": "ziwei-wenchang-ji-bu-dengyu-zhuxing-ji"
+    },
+    {
+      "time": "19:20",
+      "status": "held_no_qualified_draft",
+      "slug": null
+    },
+    {
+      "time": "19:32",
+      "status": "held_no_qualified_draft",
+      "slug": null
+    },
+    {
+      "time": "19:40",
+      "status": "assigned_candidate",
+      "slug": "ziwei-shisi-zhuxing-tonggong-shangxian"
+    },
+    {
+      "time": "19:56",
+      "status": "held_no_qualified_draft",
+      "slug": null
+    },
+    {
+      "time": "20:09",
+      "status": "held_no_qualified_draft",
+      "slug": null
+    },
+    {
+      "time": "20:22",
+      "status": "assigned_candidate",
+      "slug": "ziwei-gongwei-shunxu-bu-sui-daxian-fanzhuan"
+    },
+    {
+      "time": "20:28",
+      "status": "held_no_qualified_draft",
+      "slug": null
+    },
+    {
+      "time": "20:42",
+      "status": "held_no_qualified_draft",
+      "slug": null
+    },
+    {
+      "time": "20:52",
+      "status": "assigned_candidate",
+      "slug": "ziwei-zihua-jiantou-xiangdui-cankao"
+    },
+    {
+      "time": "21:10",
+      "status": "held_no_qualified_draft",
+      "slug": null
+    },
+    {
+      "time": "21:17",
+      "status": "held_no_qualified_draft",
+      "slug": null
+    },
+    {
+      "time": "21:34",
+      "status": "assigned_candidate",
+      "slug": "ziwei-fuqigong-bushi-duifang-minggong"
+    },
+    {
+      "time": "21:46",
+      "status": "held_no_qualified_draft",
+      "slug": null
+    },
+    {
+      "time": "21:53",
+      "status": "held_no_qualified_draft",
+      "slug": null
+    },
+    {
+      "time": "22:08",
+      "status": "assigned_candidate",
+      "slug": "ziwei-tongxing-benming-ji-liunian-lu"
+    },
+    {
+      "time": "22:18",
+      "status": "held_no_qualified_draft",
+      "slug": null
+    },
+    {
+      "time": "22:34",
+      "status": "held_no_qualified_draft",
+      "slug": null
+    }
+  ],
+  "articles": [
+    {
+      "order": 1,
+      "time": "16:41",
+      "title": "同年出生，四化明明一样，为什么落在不同宫？",
+      "slug": "ziwei-tongnian-sihua-weizhi-bu-tong",
+      "zh": "https://yuetianai.com/articles/ziwei-tongnian-sihua-weizhi-bu-tong.html",
+      "en": "https://yuetianai.com/articles/en/ziwei-tongnian-sihua-weizhi-bu-tong.html"
+    },
+    {
+      "order": 2,
+      "time": "17:21",
+      "title": "十二宫里有两个相同的宫干，是紫微命盘排错了吗？",
+      "slug": "ziwei-shiergong-gonggan-chongfu",
+      "zh": "https://yuetianai.com/articles/ziwei-shiergong-gonggan-chongfu.html",
+      "en": "https://yuetianai.com/articles/en/ziwei-shiergong-gonggan-chongfu.html"
+    },
+    {
+      "order": 3,
+      "time": "17:58",
+      "title": "天马、运马、流马都出现了，就代表要搬三次家吗？",
+      "slug": "ziwei-tianma-yunma-liuma-bu-shi-sanci-banqian",
+      "zh": "https://yuetianai.com/articles/ziwei-tianma-yunma-liuma-bu-shi-sanci-banqian.html",
+      "en": "https://yuetianai.com/articles/en/ziwei-tianma-yunma-liuma-bu-shi-sanci-banqian.html"
+    },
+    {
+      "order": 4,
+      "time": "18:31",
+      "title": "红鸾天喜都在夫妻宫？先分清本命、流年和对宫",
+      "slug": "ziwei-hongluan-tianxi-tonggong-cengci",
+      "zh": "https://yuetianai.com/articles/ziwei-hongluan-tianxi-tonggong-cengci.html",
+      "en": "https://yuetianai.com/articles/en/ziwei-hongluan-tianxi-tonggong-cengci.html"
+    },
+    {
+      "order": 5,
+      "time": "19:06",
+      "title": "文昌化忌和主星同宫，为什么不能把整宫都叫化忌？",
+      "slug": "ziwei-wenchang-ji-bu-dengyu-zhuxing-ji",
+      "zh": "https://yuetianai.com/articles/ziwei-wenchang-ji-bu-dengyu-zhuxing-ji.html",
+      "en": "https://yuetianai.com/articles/en/ziwei-wenchang-ji-bu-dengyu-zhuxing-ji.html"
+    },
+    {
+      "order": 6,
+      "time": "19:40",
+      "title": "一个宫最多有几颗主星？三颗大字不一定是三主星同宫",
+      "slug": "ziwei-shisi-zhuxing-tonggong-shangxian",
+      "zh": "https://yuetianai.com/articles/ziwei-shisi-zhuxing-tonggong-shangxian.html",
+      "en": "https://yuetianai.com/articles/en/ziwei-shisi-zhuxing-tonggong-shangxian.html"
+    },
+    {
+      "order": 7,
+      "time": "20:22",
+      "title": "大限顺行，十二宫也要反过来排吗？两种方向别混用",
+      "slug": "ziwei-gongwei-shunxu-bu-sui-daxian-fanzhuan",
+      "zh": "https://yuetianai.com/articles/ziwei-gongwei-shunxu-bu-sui-daxian-fanzhuan.html",
+      "en": "https://yuetianai.com/articles/en/ziwei-gongwei-shunxu-bu-sui-daxian-fanzhuan.html"
+    },
+    {
+      "order": 8,
+      "time": "20:52",
+      "title": "自化箭头朝里就代表得到、朝外就代表失去吗？",
+      "slug": "ziwei-zihua-jiantou-xiangdui-cankao",
+      "zh": "https://yuetianai.com/articles/ziwei-zihua-jiantou-xiangdui-cankao.html",
+      "en": "https://yuetianai.com/articles/en/ziwei-zihua-jiantou-xiangdui-cankao.html"
+    },
+    {
+      "order": 9,
+      "time": "21:34",
+      "title": "我的夫妻宫和伴侣命宫不一样，是配错人了吗？",
+      "slug": "ziwei-fuqigong-bushi-duifang-minggong",
+      "zh": "https://yuetianai.com/articles/ziwei-fuqigong-bushi-duifang-minggong.html",
+      "en": "https://yuetianai.com/articles/en/ziwei-fuqigong-bushi-duifang-minggong.html"
+    },
+    {
+      "order": 10,
+      "time": "22:08",
+      "title": "同一颗星本命化忌、流年化禄，能把忌抵消掉吗？",
+      "slug": "ziwei-tongxing-benming-ji-liunian-lu",
+      "zh": "https://yuetianai.com/articles/ziwei-tongxing-benming-ji-liunian-lu.html",
+      "en": "https://yuetianai.com/articles/en/ziwei-tongxing-benming-ji-liunian-lu.html"
+    }
+  ]
+}
