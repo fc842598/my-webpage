@@ -1097,8 +1097,8 @@
         "#ylHumanConsultScope": "Consultations focus on understanding your chart and discussing practical questions. Where relevant, we may suggest ways to use your living space. This campaign consultation is free. We do not offer talismans or curse removal, sell good-luck products, charge to avert misfortune, or promise to change your destiny.",
         "#ylHumanConsultNote": "For cultural discussion and personal reflection, not guaranteed predictions.",
         ".yl-human-whatsapp": "Contact on WhatsApp",
-        "#ylCopyConsultantWechat": "Copy WeChat ID: kcqc1688",
-        "figcaption": "Scan with WeChat · ID: kcqc1688"
+        "#ylCopyConsultantWechat": "Copy WeChat ID: fcqc8899",
+        "figcaption": "Scan with WeChat · ID: fcqc8899"
       };
       Object.keys(humanText).forEach(function (selector) {
         var element = humanConsult.querySelector(selector);
@@ -3119,11 +3119,11 @@
       else goToPage("home", { instant: true });
     });
     $("#ylCopyConsultantWechat").addEventListener("click", async function () {
-      var copied = await copyText("kcqc1688");
+      var copied = await copyText("fcqc8899");
       var status = $("#ylHumanCopyStatus");
       if (status) status.textContent = IS_ENGLISH_CHECKOUT
-        ? (copied ? "WeChat ID copied: kcqc1688" : "Please copy the WeChat ID: kcqc1688")
-        : (copied ? "微信号已复制：kcqc1688" : "请手动复制微信号：kcqc1688");
+        ? (copied ? "WeChat ID copied: fcqc8899" : "Please copy the WeChat ID: fcqc8899")
+        : (copied ? "微信号已复制：fcqc8899" : "请手动复制微信号：fcqc8899");
     });
     $("#ylRefreshPayBtn").addEventListener("click", refreshHealthPaymentStatus);
     $("#ylPaymentCloseBtn").addEventListener("click", closeHealthPaymentPanel);
