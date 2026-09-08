@@ -1277,52 +1277,6 @@ const DAY4_SEEDS = [
     ]
   },
   {
-    slug: "ai-suanming-kan-hezuo-fenzhang-huikuan-shihema",
-    title: "AI算命适不适合看合作分账和回款？先看钱线，不要只问能不能合作",
-    enTitle: "Is AI Fortune Telling Useful for Cooperation Splits and Repayment Questions? Start With the Money Line, Not Only With 'Can We Work Together?'",
-    group: "使用场景",
-    enGroup: "Use Cases",
-    lead: "合作分账和回款，不该只问“能不能合作”。真正危险的地方，常常不在合不合，而在钱怎么走、账怎么回、规则谁来定。",
-    second: "这类题如果只问合作感受，很容易漏掉财帛、朋友宫、官禄和今年现金流触发。把钱线摆出来，才会知道风险到底在哪。"
-    ,
-    focusPoints: [
-      "先看财帛，是回款节奏、账期压力还是现金流承接；再看朋友宫和官禄，是合作分工和规则能不能立住。",
-      "很多看似关系问题的合作，最后真正出事的点都在分账、结算和退出机制。"
-    ],
-    examples: [
-      "比如双方关系很好，但财帛线吃紧、官禄规则又弱，这时合作能不能做，和钱怎么收回来，往往不是同一个答案。",
-      "如果今年流年刚好触发财务议题，再叠上朋友线起波动，就更该先看回款和分账。"
-    ],
-    boundaryPoints: [
-      "AI 可以帮你拆风险，但替不了合同和账本。",
-      "只问关系好不好，最容易漏掉真成本。"
-    ],
-    steps: [
-      "先把合作问题改成分账和回款问题。",
-      "再看合作规则和退出机制。",
-      "最后才判断值不值得推进。"
-    ],
-    enLead: "Questions about cooperation splits and repayment should not stay at 'can we work together?' The real risk often lives in how money moves.",
-    enSecond: "Once you put the money line on the table, the question becomes much more concrete.",
-    enFocusPoints: [
-      "Start with wealth and cash-flow lines first.",
-      "Then read partner, role, and rule structure."
-    ],
-    enExamples: [
-      "People can get along well and still have weak repayment structure.",
-      "A year with active money issues makes split and repayment questions even more important."
-    ],
-    enBoundaryPoints: [
-      "AI can expose risk structure, but it cannot replace contracts or accounting.",
-      "Relationship comfort alone is a poor screen for cooperation money risk."
-    ],
-    enSteps: [
-      "Reframe the issue as a split-and-repayment question.",
-      "Check rule and exit structure next.",
-      "Only then decide whether to proceed."
-    ]
-  },
-  {
     slug: "ai-suanming-kan-duanqi-huikuan-yong-zishui-baziliuyao",
     title: "AI算命看短期回款问题，紫微、八字、六爻该先用哪个？先看你问的是节奏还是一件事",
     enTitle: "For Short-Term Repayment Questions in AI Fortune Telling, Should You Start With Zi Wei, Ba Zi, or Liu Yao? First Decide Whether You Are Asking About Rhythm or One Event",
