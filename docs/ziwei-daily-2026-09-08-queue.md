@@ -15,7 +15,7 @@
 
 | 序号 | 状态 | slug | 标题 | 分类 |
 | --- | --- | --- | --- | --- |
-| 01 | 待发布 | ziwei-tongnian-sihua-weizhi-bu-tong | 同年出生，四化明明一样，为什么落在不同宫？ | 四化 |
+| 01 | 已发布 2026-09-08 16:41 https://yuetianai.com/articles/ziwei-tongnian-sihua-weizhi-bu-tong.html / https://yuetianai.com/articles/en/ziwei-tongnian-sihua-weizhi-bu-tong.html | ziwei-tongnian-sihua-weizhi-bu-tong | 同年出生，四化明明一样，为什么落在不同宫？ | 四化 |
 | 02 | 待发布 | ziwei-shiergong-gonggan-chongfu | 十二宫里有两个相同的宫干，是紫微命盘排错了吗？ | 看盘方法 |
 | 03 | 待发布 | ziwei-tianma-yunma-liuma-bu-shi-sanci-banqian | 天马、运马、流马都出现了，就代表要搬三次家吗？ | 大限流年 |
 | 04 | 待发布 | ziwei-hongluan-tianxi-tonggong-cengci | 红鸾天喜都在夫妻宫？先分清本命、流年和对宫 | 辅煞曜 |
