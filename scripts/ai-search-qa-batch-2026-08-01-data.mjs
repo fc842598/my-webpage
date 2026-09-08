@@ -399,21 +399,6 @@ const DAY8_SEEDS = [
       "If the paid layer adds only more emotion words and smoother tone, but no new branches or verification order, it is expansion, not depth."
     ]
   }),
-  buildPrivacy({
-    slug: "ai-suanming-kan-hezuo-xiangmu-buxiangxian-baolu-gongsixijie",
-    title: "AI算命问合作项目前不想先暴露公司底细，哪些背景给到就够判断？",
-    enTitle: "When Asking AI Fortune Telling About a Cooperation Project, If You Do Not Want to Expose Company Details Early, What Background Is Enough to Judge the Question?",
-    requiredA: "合作角色边界",
-    requiredB: "回款与责任结构",
-    zhExamples: [
-      "你往往不需要在第一轮就交出客户名单、具体报价和内部数字，但至少要说明自己站在什么角色，是资源方、执行方还是出资方，以及钱和责任怎么分。",
-      "只要角色边界和回款节奏没交代清楚，AI 很容易把合作题误读成普通关系题；可一旦这些硬线说清，很多商业细节完全可以留到后面再补。"
-    ],
-    enExamples: [
-      "You usually do not need to share client lists, exact quotes, or internal numbers in round one. But you do need to define whether you are the resource side, execution side, or capital side.",
-      "Without role boundary and payback structure, a cooperation question can drift into generic relationship talk. Once those hard lines are clear, many commercial details can wait."
-    ]
-  }),
   buildInput({
     slug: "ai-suanming-chusheng-shijian-zhi-jide-fandian-qianhou-xian-wen-shenme",
     title: "AI算命出生时间只记得饭点前后，先问什么最容易缩小时辰范围？",
