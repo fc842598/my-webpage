@@ -23,5 +23,5 @@
 | 06 | 已发布 2026-09-08 19:40 https://yuetianai.com/articles/ziwei-shisi-zhuxing-tonggong-shangxian.html / https://yuetianai.com/articles/en/ziwei-shisi-zhuxing-tonggong-shangxian.html | ziwei-shisi-zhuxing-tonggong-shangxian | 一个宫最多有几颗主星？三颗大字不一定是三主星同宫 | 看盘方法 |
 | 07 | 已发布 2026-09-08 20:22 https://yuetianai.com/articles/ziwei-gongwei-shunxu-bu-sui-daxian-fanzhuan.html / https://yuetianai.com/articles/en/ziwei-gongwei-shunxu-bu-sui-daxian-fanzhuan.html | ziwei-gongwei-shunxu-bu-sui-daxian-fanzhuan | 大限顺行，十二宫也要反过来排吗？两种方向别混用 | 大限流年 |
 | 08 | 已发布 2026-09-08 20:52 https://yuetianai.com/articles/ziwei-zihua-jiantou-xiangdui-cankao.html / https://yuetianai.com/articles/en/ziwei-zihua-jiantou-xiangdui-cankao.html | ziwei-zihua-jiantou-xiangdui-cankao | 自化箭头朝里就代表得到、朝外就代表失去吗？ | 四化 |
-| 09 | 待发布 | ziwei-fuqigong-bushi-duifang-minggong | 我的夫妻宫和伴侣命宫不一样，是配错人了吗？ | 宫位组合 |
+| 09 | 已发布 2026-09-08 21:34 https://yuetianai.com/articles/ziwei-fuqigong-bushi-duifang-minggong.html / https://yuetianai.com/articles/en/ziwei-fuqigong-bushi-duifang-minggong.html | ziwei-fuqigong-bushi-duifang-minggong | 我的夫妻宫和伴侣命宫不一样，是配错人了吗？ | 宫位组合 |
 | 10 | 待发布 | ziwei-tongxing-benming-ji-liunian-lu | 同一颗星本命化忌、流年化禄，能把忌抵消掉吗？ | 四化 |
