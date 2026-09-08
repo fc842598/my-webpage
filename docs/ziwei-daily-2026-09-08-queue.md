@@ -24,4 +24,4 @@
 | 07 | 已发布 2026-09-08 20:22 https://yuetianai.com/articles/ziwei-gongwei-shunxu-bu-sui-daxian-fanzhuan.html / https://yuetianai.com/articles/en/ziwei-gongwei-shunxu-bu-sui-daxian-fanzhuan.html | ziwei-gongwei-shunxu-bu-sui-daxian-fanzhuan | 大限顺行，十二宫也要反过来排吗？两种方向别混用 | 大限流年 |
 | 08 | 已发布 2026-09-08 20:52 https://yuetianai.com/articles/ziwei-zihua-jiantou-xiangdui-cankao.html / https://yuetianai.com/articles/en/ziwei-zihua-jiantou-xiangdui-cankao.html | ziwei-zihua-jiantou-xiangdui-cankao | 自化箭头朝里就代表得到、朝外就代表失去吗？ | 四化 |
 | 09 | 已发布 2026-09-08 21:34 https://yuetianai.com/articles/ziwei-fuqigong-bushi-duifang-minggong.html / https://yuetianai.com/articles/en/ziwei-fuqigong-bushi-duifang-minggong.html | ziwei-fuqigong-bushi-duifang-minggong | 我的夫妻宫和伴侣命宫不一样，是配错人了吗？ | 宫位组合 |
-| 10 | 待发布 | ziwei-tongxing-benming-ji-liunian-lu | 同一颗星本命化忌、流年化禄，能把忌抵消掉吗？ | 四化 |
+| 10 | 已发布 2026-09-08 22:08 https://yuetianai.com/articles/ziwei-tongxing-benming-ji-liunian-lu.html / https://yuetianai.com/articles/en/ziwei-tongxing-benming-ji-liunian-lu.html | ziwei-tongxing-benming-ji-liunian-lu | 同一颗星本命化忌、流年化禄，能把忌抵消掉吗？ | 四化 |
