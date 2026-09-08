@@ -20,7 +20,7 @@
 | 03 | 已发布 2026-09-08 17:58 https://yuetianai.com/articles/ziwei-tianma-yunma-liuma-bu-shi-sanci-banqian.html / https://yuetianai.com/articles/en/ziwei-tianma-yunma-liuma-bu-shi-sanci-banqian.html | ziwei-tianma-yunma-liuma-bu-shi-sanci-banqian | 天马、运马、流马都出现了，就代表要搬三次家吗？ | 大限流年 |
 | 04 | 已发布 2026-09-08 18:31 https://yuetianai.com/articles/ziwei-hongluan-tianxi-tonggong-cengci.html / https://yuetianai.com/articles/en/ziwei-hongluan-tianxi-tonggong-cengci.html | ziwei-hongluan-tianxi-tonggong-cengci | 红鸾天喜都在夫妻宫？先分清本命、流年和对宫 | 辅煞曜 |
 | 05 | 已发布 2026-09-08 19:06 https://yuetianai.com/articles/ziwei-wenchang-ji-bu-dengyu-zhuxing-ji.html / https://yuetianai.com/articles/en/ziwei-wenchang-ji-bu-dengyu-zhuxing-ji.html | ziwei-wenchang-ji-bu-dengyu-zhuxing-ji | 文昌化忌和主星同宫，为什么不能把整宫都叫化忌？ | 四化 |
-| 06 | 待发布 | ziwei-shisi-zhuxing-tonggong-shangxian | 一个宫最多有几颗主星？三颗大字不一定是三主星同宫 | 看盘方法 |
+| 06 | 已发布 2026-09-08 19:40 https://yuetianai.com/articles/ziwei-shisi-zhuxing-tonggong-shangxian.html / https://yuetianai.com/articles/en/ziwei-shisi-zhuxing-tonggong-shangxian.html | ziwei-shisi-zhuxing-tonggong-shangxian | 一个宫最多有几颗主星？三颗大字不一定是三主星同宫 | 看盘方法 |
 | 07 | 待发布 | ziwei-gongwei-shunxu-bu-sui-daxian-fanzhuan | 大限顺行，十二宫也要反过来排吗？两种方向别混用 | 大限流年 |
 | 08 | 待发布 | ziwei-zihua-jiantou-xiangdui-cankao | 自化箭头朝里就代表得到、朝外就代表失去吗？ | 四化 |
 | 09 | 待发布 | ziwei-fuqigong-bushi-duifang-minggong | 我的夫妻宫和伴侣命宫不一样，是配错人了吗？ | 宫位组合 |
