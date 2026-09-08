@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://yuetianai.com/</loc><changefreq>daily</changefreq><priority>1.0</priority></url>
-  <url><loc>https://yuetianai.com/articles/</loc><lastmod>2026-09-08T17:58:00+08:00</lastmod><changefreq>daily</changefreq><priority>0.9</priority></url>
-  <url><loc>https://yuetianai.com/articles/en/</loc><lastmod>2026-09-08T17:58:00+08:00</lastmod><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://yuetianai.com/articles/</loc><lastmod>2026-09-08T18:31:00+08:00</lastmod><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://yuetianai.com/articles/en/</loc><lastmod>2026-09-08T18:31:00+08:00</lastmod><changefreq>daily</changefreq><priority>0.9</priority></url>
   <url><loc>https://yuetianai.com/pages/mingbook-onepage.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://yuetianai.com/pages/wentian-app.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://yuetianai.com/pages/contact.html</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
@@ -3584,4 +3584,6 @@
   <url><loc>https://yuetianai.com/articles/en/ziwei-shiergong-gonggan-chongfu.html</loc><lastmod>2026-09-08T17:21:00+08:00</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://yuetianai.com/articles/ziwei-tianma-yunma-liuma-bu-shi-sanci-banqian.html</loc><lastmod>2026-09-08T17:58:00+08:00</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://yuetianai.com/articles/en/ziwei-tianma-yunma-liuma-bu-shi-sanci-banqian.html</loc><lastmod>2026-09-08T17:58:00+08:00</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://yuetianai.com/articles/ziwei-hongluan-tianxi-tonggong-cengci.html</loc><lastmod>2026-09-08T18:31:00+08:00</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://yuetianai.com/articles/en/ziwei-hongluan-tianxi-tonggong-cengci.html</loc><lastmod>2026-09-08T18:31:00+08:00</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
 </urlset>
