@@ -1,0 +1,208 @@
+{
+  "version": 3,
+  "date": "2026-09-09",
+  "days": 30,
+  "generatedAt": "2026-09-09T08:32:59.756Z",
+  "source": {
+    "type": "live-admin-api",
+    "reference": "https://api.yuetianai.com",
+    "searchConsoleOk": false,
+    "ga4Ok": true
+  },
+  "summary": {
+    "activeUsers": 924,
+    "pageViews": 1510,
+    "searchClicks": 0,
+    "searchImpressions": 0
+  },
+  "winners": [
+    {
+      "page": "/articles/ziwei-bankong-zhechi.html",
+      "clicks": 0,
+      "impressions": 0,
+      "ctr": 0,
+      "position": 0,
+      "pageViews": 13,
+      "activeUsers": 13,
+      "meta": {
+        "path": "/articles/ziwei-bankong-zhechi.html",
+        "rel": "articles\\ziwei-bankong-zhechi.html",
+        "title": "紫微斗数半空折翅怎么看：廉贪落陷为何要留意中年转折",
+        "category": "特定命例解读",
+        "planningCategory": "格局命例",
+        "language": "zh"
+      },
+      "learning": {
+        "action": "expand-distinct-intent",
+        "confidence": "high",
+        "benchmarkCtr": 1,
+        "reason": "已有重复点击或稳定阅读，可研究相邻但不同的搜索问题"
+      }
+    },
+    {
+      "page": "/articles/ziwei-minggong.html",
+      "clicks": 0,
+      "impressions": 0,
+      "ctr": 0,
+      "position": 0,
+      "pageViews": 8,
+      "activeUsers": 8,
+      "meta": {
+        "path": "/articles/ziwei-minggong.html",
+        "rel": "articles\\ziwei-minggong.html",
+        "title": "紫微斗数命宫怎么看",
+        "category": "十二宫入门",
+        "planningCategory": "宫位组合",
+        "language": "zh"
+      },
+      "learning": {
+        "action": "expand-distinct-intent",
+        "confidence": "medium",
+        "benchmarkCtr": 1,
+        "reason": "已有重复点击或稳定阅读，可研究相邻但不同的搜索问题"
+      }
+    },
+    {
+      "page": "/articles/ziwei-tiantong-zai-fudegong.html",
+      "clicks": 0,
+      "impressions": 0,
+      "ctr": 0,
+      "position": 0,
+      "pageViews": 5,
+      "activeUsers": 4,
+      "meta": {
+        "path": "/articles/ziwei-tiantong-zai-fudegong.html",
+        "rel": "articles\\ziwei-tiantong-zai-fudegong.html",
+        "title": "天同在福德宫：福气最厚的位置，心态好就是最大的本钱",
+        "category": "主星",
+        "planningCategory": "主星",
+        "language": "zh"
+      },
+      "learning": {
+        "action": "expand-distinct-intent",
+        "confidence": "medium",
+        "benchmarkCtr": 1,
+        "reason": "已有重复点击或稳定阅读，可研究相邻但不同的搜索问题"
+      }
+    }
+  ],
+  "opportunities": [],
+  "rankingOpportunities": [],
+  "observations": [
+    {
+      "page": "/articles/en/ziwei-butong-paipan-ruanjian-jieguo-butong-weishime.html",
+      "clicks": 0,
+      "impressions": 0,
+      "ctr": 0,
+      "position": 0,
+      "pageViews": 4,
+      "activeUsers": 3,
+      "meta": {
+        "path": "/articles/en/ziwei-butong-paipan-ruanjian-jieguo-butong-weishime.html",
+        "rel": "articles\\en\\ziwei-butong-paipan-ruanjian-jieguo-butong-weishime.html",
+        "title": "Why Different Zi Wei Dou Shu Apps Produce Different Charts",
+        "category": "Zi Wei Dou Shu",
+        "planningCategory": "看盘方法",
+        "language": "en"
+      },
+      "learning": {
+        "action": "observe",
+        "confidence": "low",
+        "benchmarkCtr": 1,
+        "reason": "样本不足，暂不据此改变选题配比"
+      }
+    }
+  ],
+  "categories": [
+    {
+      "category": "格局命例",
+      "clicks": 0,
+      "impressions": 0,
+      "pageViews": 13,
+      "activeUsers": 13,
+      "articleCount": 1
+    },
+    {
+      "category": "宫位组合",
+      "clicks": 0,
+      "impressions": 0,
+      "pageViews": 8,
+      "activeUsers": 8,
+      "articleCount": 1
+    },
+    {
+      "category": "主星",
+      "clicks": 0,
+      "impressions": 0,
+      "pageViews": 5,
+      "activeUsers": 4,
+      "articleCount": 1
+    },
+    {
+      "category": "看盘方法",
+      "clicks": 0,
+      "impressions": 0,
+      "pageViews": 4,
+      "activeUsers": 3,
+      "articleCount": 1
+    }
+  ],
+  "unclassifiedArticleCount": 0,
+  "topQueries": [],
+  "nextBatchAllocation": [
+    {
+      "category": "财运事业",
+      "allocation": 3,
+      "signal": 1,
+      "confidence": "low"
+    },
+    {
+      "category": "婚恋与关系",
+      "allocation": 3,
+      "signal": 1,
+      "confidence": "low"
+    },
+    {
+      "category": "大限流年",
+      "allocation": 3,
+      "signal": 1,
+      "confidence": "low"
+    },
+    {
+      "category": "宫位组合",
+      "allocation": 5,
+      "signal": 7.4,
+      "confidence": "medium"
+    },
+    {
+      "category": "四化细读",
+      "allocation": 2,
+      "signal": 1,
+      "confidence": "low"
+    },
+    {
+      "category": "主星",
+      "allocation": 3,
+      "signal": 3.5,
+      "confidence": "medium"
+    },
+    {
+      "category": "辅煞曜",
+      "allocation": 2,
+      "signal": 1,
+      "confidence": "low"
+    },
+    {
+      "category": "格局命例",
+      "allocation": 7,
+      "signal": 14,
+      "confidence": "medium"
+    },
+    {
+      "category": "看盘方法",
+      "allocation": 2,
+      "signal": 2.6,
+      "confidence": "low"
+    }
+  ]
+}

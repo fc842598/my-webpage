@@ -1,0 +1,161 @@
+{
+  "date": "2026-09-09",
+  "timezone": "Asia/Shanghai",
+  "offset": "+08:00",
+  "target": 30,
+  "prepared": 10,
+  "shortfall": 20,
+  "createdAt": "2026-09-09T08:34:34.273Z",
+  "slots": [
+    {
+      "time": "17:08",
+      "status": "prepared",
+      "slug": "ziwei-liuji-quanpan-douyou-bushi-liuji-shouming"
+    },
+    {
+      "time": "17:17",
+      "status": "held_no_qualified_draft",
+      "slug": null
+    },
+    {
+      "time": "17:23",
+      "status": "held_no_qualified_draft",
+      "slug": null
+    },
+    {
+      "time": "17:35",
+      "status": "prepared",
+      "slug": "ziwei-lucun-bu-ru-chen-xu-chou-wei"
+    },
+    {
+      "time": "17:51",
+      "status": "held_no_qualified_draft",
+      "slug": null
+    },
+    {
+      "time": "18:05",
+      "status": "held_no_qualified_draft",
+      "slug": null
+    },
+    {
+      "time": "18:22",
+      "status": "prepared",
+      "slug": "ziwei-kuiyue-tonggong-xian-hedui-cengci"
+    },
+    {
+      "time": "18:23",
+      "status": "held_no_qualified_draft",
+      "slug": null
+    },
+    {
+      "time": "18:45",
+      "status": "held_no_qualified_draft",
+      "slug": null
+    },
+    {
+      "time": "18:53",
+      "status": "prepared",
+      "slug": "ziwei-santai-bazuo-bushizhi-kan-shengyue"
+    },
+    {
+      "time": "19:09",
+      "status": "held_no_qualified_draft",
+      "slug": null
+    },
+    {
+      "time": "19:13",
+      "status": "held_no_qualified_draft",
+      "slug": null
+    },
+    {
+      "time": "19:29",
+      "status": "prepared",
+      "slug": "ziwei-liangge-dahao-xitong-bu-tong"
+    },
+    {
+      "time": "19:37",
+      "status": "held_no_qualified_draft",
+      "slug": null
+    },
+    {
+      "time": "19:47",
+      "status": "held_no_qualified_draft",
+      "slug": null
+    },
+    {
+      "time": "20:07",
+      "status": "held_no_qualified_draft",
+      "slug": null
+    },
+    {
+      "time": "20:18",
+      "status": "prepared",
+      "slug": "ziwei-xingyao-wuxing-bu-dengyu-wuxingju"
+    },
+    {
+      "time": "20:25",
+      "status": "held_no_qualified_draft",
+      "slug": null
+    },
+    {
+      "time": "20:41",
+      "status": "held_no_qualified_draft",
+      "slug": null
+    },
+    {
+      "time": "20:55",
+      "status": "prepared",
+      "slug": "ziwei-gaishengri-zhuxing-weibian-yuanyin"
+    },
+    {
+      "time": "20:59",
+      "status": "held_no_qualified_draft",
+      "slug": null
+    },
+    {
+      "time": "21:19",
+      "status": "held_no_qualified_draft",
+      "slug": null
+    },
+    {
+      "time": "21:24",
+      "status": "prepared",
+      "slug": "ziwei-xingming-bushi-tianwen-xingtu"
+    },
+    {
+      "time": "21:40",
+      "status": "held_no_qualified_draft",
+      "slug": null
+    },
+    {
+      "time": "21:50",
+      "status": "held_no_qualified_draft",
+      "slug": null
+    },
+    {
+      "time": "22:09",
+      "status": "prepared",
+      "slug": "ziwei-lucun-boshi-tonggong-bu-shi-liangci-jiyu"
+    },
+    {
+      "time": "22:13",
+      "status": "held_no_qualified_draft",
+      "slug": null
+    },
+    {
+      "time": "22:31",
+      "status": "held_no_qualified_draft",
+      "slug": null
+    },
+    {
+      "time": "22:39",
+      "status": "held_no_qualified_draft",
+      "slug": null
+    },
+    {
+      "time": "22:57",
+      "status": "prepared",
+      "slug": "ziwei-gongwei-sizheng-bushi-ziwu-maoyou"
+    }
+  ]
+}
