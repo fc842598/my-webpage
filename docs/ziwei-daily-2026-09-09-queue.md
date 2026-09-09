@@ -15,7 +15,7 @@
 
 | 序号 | 状态 | slug | 标题 | 分类 |
 | --- | --- | --- | --- | --- |
-| 01 | 待发布 | ziwei-liuji-quanpan-douyou-bushi-liuji-shouming | 六吉星我都有，为什么还不算六吉会命？ | 辅煞曜 |
+| 01 | 已发布 2026-09-09 17:08 https://yuetianai.com/articles/ziwei-liuji-quanpan-douyou-bushi-liuji-shouming.html / https://yuetianai.com/articles/en/ziwei-liuji-quanpan-douyou-bushi-liuji-shouming.html | ziwei-liuji-quanpan-douyou-bushi-liuji-shouming | 六吉星我都有，为什么还不算六吉会命？ | 辅煞曜 |
 | 02 | 待发布 | ziwei-lucun-bu-ru-chen-xu-chou-wei | 辰戌丑未宫里看到禄，是禄存还是化禄？ | 辅煞曜 |
 | 03 | 待发布 | ziwei-kuiyue-tonggong-xian-hedui-cengci | 天魁天钺能在本命同宫吗？贵人星的两种标记别混读 | 辅煞曜 |
 | 04 | 待发布 | ziwei-santai-bazuo-bushizhi-kan-shengyue | 同月出生都有辅弼，三台八座为什么不在同一处？ | 辅煞曜 |
