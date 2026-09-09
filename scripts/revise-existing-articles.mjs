@@ -35,7 +35,7 @@ for (const item of revisions) {
   assert(articlePattern.test(html), "Article body not found");
   html = html.replace(articlePattern, (_, start, end) => `${start}\n${item.body}\n      ${end}`);
   for (const [from, to] of Object.entries(item.links || {})) html = html.replaceAll(`href="${from}"`, `href="${to}"`);
-  html = html.replaceAll(escape(old.title), escape(item.title)).replaceAll(escape(old.description), escape(item.description));
+  html = html.replaceAll(escape(old.description), escape(item.description)).replaceAll(escape(old.title), escape(item.title));
   html = html.replace(ldPattern, (block, json) => {
     let data = JSON.parse(json);
     // Update string values without reformatting unrelated markup or changing first publication.
@@ -64,7 +64,7 @@ for (const dir of ["articles", "articles/en"]) {
     let html = read(file);
     if (schemas(html).some(value => value["@type"] === "Article")) continue;
     for (const item of replacements) {
-      html = html.replaceAll(escape(item.old.title), escape(item.title)).replaceAll(escape(item.old.description), escape(item.description));
+      html = html.replaceAll(escape(item.old.description), escape(item.description)).replaceAll(escape(item.old.title), escape(item.title));
     }
     schemas(html);
     put(file, html);
@@ -74,7 +74,7 @@ for (const file of ["feed.xml", "articles/en/feed.xml", "sitemap.xml", "sitemap-
   let xml = read(file);
   for (const item of replacements) {
     if (file.includes("feed")) {
-      xml = xml.replace(/<item>[\s\S]*?<\/item>/g, block => block.includes(`<link>${item.url}</link>`) ? block.replaceAll(escape(item.old.title), escape(item.title)).replaceAll(escape(item.old.description), escape(item.description)) : block);
+      xml = xml.replace(/<item>[\s\S]*?<\/item>/g, block => block.includes(`<link>${item.url}</link>`) ? block.replaceAll(escape(item.old.description), escape(item.description)).replaceAll(escape(item.old.title), escape(item.title)) : block);
     } else {
       xml = xml.replace(/<url>[\s\S]*?<\/url>/g, block => block.includes(`<loc>${item.url}</loc>`) ? block.replace(/<lastmod>[^<]*<\/lastmod>/, `<lastmod>${modified}</lastmod>`) : block);
     }
