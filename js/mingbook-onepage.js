@@ -143,7 +143,7 @@
   const desktopMemberProductKey = 'monthly_member';
   const desktopUnifiedMemberUrl = '/yl.html';
   const unifiedAuthStorageKey = 'wentian-app-auth-session-v1';
-  const desktopChartPersonClaimsKey = 'mingbook-chart-person-claims-v1';
+
   const desktopFreeDailyLimit = 8;
   const desktopPaidDailyLimit = 30;
   const desktopPaidProductName = '三人深度月卡';
@@ -2091,43 +2091,6 @@
       .slice(0, 50);
   }
 
-  function getDesktopChartClaimsStorageKey() {
-    const scope = desktopAuthState.session?.user?.id || getCustomerClientId();
-    return `${desktopChartPersonClaimsKey}:${String(scope || 'guest').slice(0, 128)}`;
-  }
-
-  function claimDesktopChartPerson(chartRecordId, records = readCustomerHistoryRecords()) {
-    const recordId = String(chartRecordId || '').trim();
-    if (!recordId) return true;
-    if (desktopAuthState.session?.user && !desktopAuthState.quota) return true;
-    const rawLimit = desktopAuthState.quota?.chartLimit;
-    const chartLimit = desktopAuthState.quota?.isMember && rawLimit == null ? null : Math.max(1, Number(rawLimit) || 1);
-    const claimed = new Set();
-    try {
-      const stored = JSON.parse(localStorage.getItem(getDesktopChartClaimsStorageKey()) || '[]');
-      if (Array.isArray(stored)) stored.forEach((item) => claimed.add(String(item || '').trim()));
-    } catch (_) {}
-    records.forEach((record) => {
-      const existingId = String(record?.chartRecordId || record?.chartData?.chartRecordId || '').trim();
-      if (existingId) claimed.add(existingId);
-    });
-    claimed.delete('');
-    if (!claimed.has(recordId) && Number.isFinite(chartLimit) && claimed.size >= chartLimit) {
-      const message = chartLimit === 1
-        ? '当前账号可使用1位命主。资料填错时请修改原档案；如需增加命主，请选择月卡。'
-        : `当前月卡可使用${chartLimit}位命主；如需继续增加，请更换月卡。`;
-      setDecodeStatus(message);
-      openDesktopAuth('login');
-      setDesktopAuthError(message);
-      return false;
-    }
-    claimed.add(recordId);
-    try {
-      localStorage.setItem(getDesktopChartClaimsStorageKey(), JSON.stringify([...claimed].slice(-500)));
-    } catch (_) {}
-    return true;
-  }
-
   function saveProfileToHistory(profile, options = {}) {
     const key = profileHistoryKey(profile);
     const records = readCustomerHistoryRecords();
@@ -2137,7 +2100,7 @@
       || profileHistoryKey(recordToProfile(item)) === key) || null;
     const id = old?.id || options.id || state.chartRecordId || makeLocalId();
     const chartRecordId = old?.chartRecordId || options.chartRecordId || state.chartRecordId || id;
-    if (!claimDesktopChartPerson(chartRecordId, records)) return null;
+    // Local basic charts are free; cloud sync and AI enforce their own entitlements.
     const record = profileToRecord(profile, {
       id,
       chartRecordId,
@@ -2208,8 +2171,6 @@
       clientRemoteMessage = error.code === 'CHART_PERSON_LIMIT_REACHED' ? '已到命主人数上限' : '本地已保存';
       if (error.code === 'CHART_PERSON_LIMIT_REACHED') {
         setDecodeStatus(error.message || '当前账号的命主人数已用完，请在个人中心查看月卡。');
-        openDesktopAuth('login');
-        setDesktopAuthError(error.message || '当前账号的命主人数已用完，请选择月卡。');
       }
       console.info('mingbook client remote sync fallback', error);
       return null;

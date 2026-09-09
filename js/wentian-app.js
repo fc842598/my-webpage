@@ -2532,31 +2532,6 @@ function readWentianChartPersonClaims() {
   }
 }
 
-function claimWentianLocalChartPerson(chartRecordId, chartLimit, archives = []) {
-  const recordId = String(chartRecordId || "").trim();
-  if (!recordId) return { used: 0, limit: chartLimit };
-  const claimed = new Set(readWentianChartPersonClaims());
-  archives.forEach((archive) => {
-    const existingId = String(archive?.chartRecordId || archive?.chartData?.chartRecordId || "").trim();
-    if (existingId) claimed.add(existingId);
-  });
-  if (!claimed.has(recordId) && Number.isFinite(chartLimit) && claimed.size >= chartLimit) {
-    const error = new Error(chartLimit === 1
-      ? "当前账号可使用1位命主。资料填错时请修改原档案；如需增加命主，请选择月卡。"
-      : `当前月卡可使用${chartLimit}位命主；如需继续增加，请更换月卡。`);
-    error.code = "CHART_PERSON_LIMIT_REACHED";
-    throw error;
-  }
-  claimed.add(recordId);
-  try {
-    setWentianScopedLocalStorageItem(WENTIAN_CHART_PERSON_CLAIMS_KEY, JSON.stringify([...claimed].slice(-500)));
-  } catch (_err) {}
-  return {
-    used: claimed.size,
-    limit: Number.isFinite(chartLimit) ? chartLimit : null,
-  };
-}
-
 function clearWentianSavedChart() {
   try {
     removeWentianScopedLocalStorageItem(WENTIAN_CHART_STORAGE_KEY, { removeLegacyLocal: true });
@@ -10710,6 +10685,25 @@ function completeWentianExternalAuthReturn(returnState) {
   return true;
 }
 
+function getWentianChartAuthReturnRoute(returnState) {
+  // Also recover customers already sent to login by the previous chart-slot gate.
+  if (returnState?.source === "chart_person_limit") return "screen-26";
+  if (returnState?.source !== "chart_reading") return "";
+  return ["screen-26", "screen-27"].includes(returnState.returnRoute) ? returnState.returnRoute : "";
+}
+
+function completeWentianChartAuthReturn(returnState) {
+  const route = getWentianChartAuthReturnRoute(returnState);
+  if (!route) return false;
+  wentianPendingPaymentAfterLogin = false;
+  clearWentianAuthReturnState();
+  replaceCurrentWentianRoute(route);
+  if (route === "screen-26") setWentianChartStatus(isWentianEnglishUi()
+    ? "Signed in. Continue with your saved birth details."
+    : "已登录，出生资料已保留，请继续排盘。");
+  return true;
+}
+
 function replaceWentianUrlRoute(route) {
   const params = new URLSearchParams(window.location.search);
   ["code", "state", "error", "error_code", "error_description", "auth", "screen"].forEach((key) => params.delete(key));
@@ -13610,12 +13604,8 @@ async function submitWentianChartForm() {
       form: { name: norm.name || "", datetime: datetimeValue },
     });
     const chartRecordId = editingArchive?.chartRecordId || editingArchive?.chartData?.chartRecordId || duplicateArchive?.chartRecordId || duplicateArchive?.chartData?.chartRecordId || resetWentianChartRecordId();
-    const account = getWentianAuthDisplay();
-    if (account.loggedIn && !wentianMemberState.quota) {
-      setWentianChartStatus(isWentianEnglishUi() ? "Checking chart slots..." : "正在核对命主名额...");
-      await hydrateWentianMemberStatus({ force: true });
-    }
-    claimWentianLocalChartPerson(chartRecordId, getWentianMemberSnapshot().chartLimit, existingArchives);
+    // Basic chart calculation and local drafts do not consume paid chart slots.
+    // Cloud archives and AI reading entitlements remain enforced by their APIs.
     if (editingArchive || duplicateArchive) setWentianChartRecordId(chartRecordId);
     const chartData = buildWentianChartPayload(chart, norm);
     chartData.chartRecordId = chartRecordId;
@@ -13650,25 +13640,6 @@ async function submitWentianChartForm() {
     if (editReturnRoute) returnToPreviousWentianRoute(editReturnRoute);
     else navigate("screen-27");
   } catch (error) {
-    if (error?.code === "CHART_PERSON_LIMIT_REACHED") {
-      const account = getWentianAuthDisplay();
-      if (!account.loggedIn) {
-        wentianAuthState.mode = "register";
-        wentianAuthState.error = isWentianEnglishUi()
-          ? "Your free chart slot is used. Register or sign in, then choose a monthly pass to add another person."
-          : "免费命主名额已用完。请注册或登录，随后选择月卡继续添加命主。";
-        wentianPendingPaymentAfterLogin = true;
-        setWentianAuthReturnState({
-          source: "chart_person_limit",
-          after: "member-payment",
-          memberReturnRoute: "screen-26",
-        });
-        navigate("screen-40");
-        return;
-      }
-      await startWentianMemberPayment({ returnRoute: "screen-26" });
-      return;
-    }
     setWentianChartStatus(error.message || "排盘失败，请检查出生信息", "error");
   }
 }
@@ -14491,7 +14462,7 @@ function sourceLoginMethodsScreen() {
     ${figBox("source-login-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
     ${wentianBackPill("source-login", 18, 42, 'data-action="wentian-return-previous" data-fallback-route="screen-38" aria-label="返回"')}
     ${figText("source-login-title", "登录 / 注册", 0, 54, 390, 22, "#1f1d1a", 800, "center")}
-    ${figText("source-login-sub", isHealthReturn ? "登录后继续开通会员" : "登录后自动同步会员与订单", 0, 92, 390, 13, "#8f857a", 700, "center")}
+    ${figText("source-login-sub", getWentianChartAuthReturnRoute(returnState) ? getWentianCompactText("登录后回到刚才的排盘，资料会保留", "Sign in to return to your chart") : (isHealthReturn ? "登录后继续开通会员" : "登录后自动同步会员与订单"), 0, 92, 390, 13, "#8f857a", 700, "center")}
     ${figBox("source-login-card", 24, 128, 342, 390, "", "border:1px solid #e2d8c8;border-radius:18px;background:#fff;box-shadow:0 8px 20px rgba(74,55,32,.08);")}
     <button class="wentian-auth-tab ${!isRegister ? "is-active" : ""}" type="button" data-action="wentian-auth-mode" data-auth-mode="login" style="left:50px;top:154px;width:136px">登录</button>
     <button class="wentian-auth-tab ${isRegister ? "is-active" : ""}" type="button" data-action="wentian-auth-mode" data-auth-mode="register" style="left:204px;top:154px;width:136px">注册</button>
@@ -23365,6 +23336,17 @@ function ensureWentianPhoneFitObserver() {
 
 function navigate(route, push = true, syncHash = true) {
   route = resolveRoute(route);
+  if (route === "screen-40" && ["screen-26", "screen-27"].includes(state.route)
+      && !getWentianExternalReturnUrl(getWentianAuthReturnState())) {
+    setWentianAuthReturnState({ source: "chart_reading", after: "chart", returnRoute: state.route });
+    if (state.route === "screen-26") {
+      try {
+        saveWentianChartFormDraft({ ...getWentianChartFormData(),
+          datetime: document.getElementById("wentian-chart-date")?.value || "",
+          trueSolarChoiceSet: true });
+      } catch (_) { /* Validation stays on the chart form. */ }
+    }
+  }
   if (["screen-29", "screen-30"].includes(route) && !getWentianPayPalReturnParams()) {
     openWentianUnifiedMemberPage();
     return;
@@ -24663,6 +24645,7 @@ async function submitWentianAuth(mode = wentianAuthState.mode) {
     await bindWentianPendingInvite();
     await hydrateWentianInvite({ force: true });
     const returnState = getWentianAuthReturnState();
+    if (completeWentianChartAuthReturn(returnState)) return;
     if (completeWentianExternalAuthReturn(returnState)) return;
     if (wentianPendingPaymentAfterLogin) {
       wentianPendingPaymentAfterLogin = false;
@@ -24803,7 +24786,7 @@ async function bootWentianApp() {
   } catch (error) {
     wentianAuthState.error = error.message || "Google 登录失败，请稍后重试";
   }
-  const nextRoute = session?.user ? "screen-31" : "screen-40";
+  const nextRoute = session?.user ? (getWentianChartAuthReturnRoute(returnState) || "screen-31") : "screen-40";
   replaceCurrentWentianRoute(nextRoute);
   if (session?.user) {
     wentianMemberState.loaded = false;
@@ -24811,6 +24794,7 @@ async function bootWentianApp() {
     wentianInviteState.loaded = false;
     await bindWentianPendingInvite();
     await hydrateWentianInvite({ force: true });
+    if (completeWentianChartAuthReturn(returnState)) return;
     if (completeWentianExternalAuthReturn(returnState)) return;
     if (returnState?.after === "member-payment") {
       window.setTimeout(() => startWentianMemberPayment({ returnRoute: returnState.memberReturnRoute }), 120);
