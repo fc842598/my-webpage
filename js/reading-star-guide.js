@@ -6,32 +6,36 @@
   let dismissed = false;
   try { dismissed = localStorage.getItem(key) === '1'; } catch (_) { /* Private browsing. */ }
   if (dismissed) return;
-  const template = document.createElement('template');
-  template.innerHTML = `<svg class="reading-star-guide" viewBox="0 0 180 180" aria-hidden="true" focusable="false">
-    <g class="rsg-orbit" fill="none" stroke="#79bdff">
-      <path opacity=".24" stroke-width=".65" d="M92 12 C167 3 189 77 144 119 C122 140 94 145 65 143"/>
-      <path class="rsg-comet" pathLength="100" stroke-width="1.5" stroke-linecap="round" d="M92 12 C167 3 189 77 144 119 C122 140 94 145 65 143"/>
+  let instance = 0;
+  const artwork = `<svg class="reading-star-guide" viewBox="0 0 180 180" aria-hidden="true" focusable="false">
+    <defs>
+      <linearGradient id="rsg-fill-ID" x1="0" y1="0" x2="1" y2="1">
+        <stop stop-color="#f3fcff"/><stop offset=".48" stop-color="#bce8ff"/><stop offset="1" stop-color="#57a7f2"/>
+      </linearGradient>
+    </defs>
+    <g class="rsg-orbit" fill="none" stroke="#78c9ff">
+      <circle cx="78" cy="67" r="65" stroke-width=".8" opacity=".23"/>
+      <circle class="rsg-comet" cx="78" cy="67" r="65" pathLength="100" stroke-width="2.2" stroke-linecap="round"/>
     </g>
-    <g class="rsg-stars" fill="#cceaff">
-      <path d="M143 23l2 6 6 2-6 2-2 6-2-6-6-2 6-2z"/>
-      <path d="M158 86l1.5 4.5 4.5 1.5-4.5 1.5-1.5 4.5-1.5-4.5-4.5-1.5 4.5-1.5z"/>
-      <circle cx="110" cy="16" r="1.6"/><circle cx="170" cy="62" r="1.2"/>
-      <circle cx="53" cy="131" r="1.8"/><circle cx="76" cy="159" r="1"/>
+    <g class="rsg-orbit-star" fill="#e7f8ff">
+      <path d="M78-4 L80 0 L86 2 L80 4 L78 10 L76 4 L70 2 L76 0 Z"/>
     </g>
-    <g class="rsg-touch" fill="none" stroke="#a4d5ff" stroke-width="1">
-      <circle cx="103" cy="105" r="8"/><circle class="rsg-ripple" cx="103" cy="105" r="8"/>
+    <g class="rsg-touch" fill="none" stroke="#b3e6ff">
+      <circle class="rsg-ripple" cx="108" cy="105" r="9" stroke-width="2"/>
+      <circle class="rsg-ripple rsg-ripple-echo" cx="108" cy="105" r="9" stroke-width="1.2"/>
+      <circle class="rsg-contact" cx="108" cy="105" r="5" fill="#e5faff" stroke="none"/>
     </g>
-    <g class="rsg-hand" stroke-linecap="round" stroke-linejoin="round">
-      <path fill="#183c68" fill-opacity=".32" stroke="#9bd2ff" stroke-width="1.3" d="M124 168 L110 154 L99 137 Q94 130 98 128 Q102 125 111 136 L97 109 Q95 104 99 102 Q103 100 106 106 L118 126 L115 117 Q114 112 118 112 Q122 111 125 120 L125 118 Q127 113 131 117 L137 127 Q138 120 143 124 L151 139 Q156 150 150 161 L146 169"/>
-      <g fill="none" stroke="#79bdff" stroke-width=".65" opacity=".8">
-        <path d="M99 105 L108 123 L119 143 L124 168 M108 123 L125 132 L119 143 L140 148 L146 169 M125 132 L137 127 L140 148 L150 155 M99 133 L119 143 L110 154 L140 148 M125 119 L125 132 L143 139 L140 148"/>
-      </g>
-      <g fill="#d7efff" stroke="none">
-        <circle cx="99" cy="105" r="2.2"/><circle cx="108" cy="123" r="1.7"/>
-        <circle cx="119" cy="143" r="2"/><circle cx="125" cy="132" r="1.8"/>
-        <circle cx="137" cy="127" r="1.5"/><circle cx="140" cy="148" r="2"/>
-        <circle cx="110" cy="154" r="1.5"/><circle cx="150" cy="155" r="1.4"/>
-        <circle cx="124" cy="168" r="1.7"/><circle cx="146" cy="169" r="1.5"/>
+    <g class="rsg-sparks" fill="#c6efff">
+      <path d="M136 106l1.5 4.5 4.5 1.5-4.5 1.5-1.5 4.5-1.5-4.5-4.5-1.5 4.5-1.5z"/>
+      <path d="M82 127l1 3 3 1-3 1-1 3-1-3-3-1 3-1z"/>
+      <circle cx="127" cy="139" r="1.5"/>
+    </g>
+    <g class="rsg-hand">
+      <g transform="translate(108 105) rotate(-28) scale(.82) translate(-19 -3)" stroke-linecap="round" stroke-linejoin="round">
+        <path class="rsg-hand-shape" fill="url(#rsg-fill-ID)" stroke="#76baf2" stroke-width="1.5" d="M19 3 C16 3 14 5 14 8 L14 35 L10 31 C4 25 -2 31 2 36 L10 49 C13 54 18 57 19 63 L43 63 C43 58 51 53 51 44 L51 34 C51 27 42 27 42 34 L42 28 C42 21 33 21 33 28 L33 23 C33 16 24 16 24 23 L24 8 C24 5 22 3 19 3 Z"/>
+        <path d="M17 31 V9 Q17 6 20 6" fill="none" stroke="#fff" stroke-width="2.1" opacity=".85"/>
+        <path d="M24 25 V34 M33 29 V35 M42 35 V39 M14 36 L20 42" fill="none" stroke="#559ddd" stroke-width="1.25" opacity=".8"/>
+        <path d="M19 58 Q30 61 44 57 L43 65 L20 65 Z" fill="#559bdb" stroke="#b7e4ff" stroke-width="1.2"/>
       </g>
     </g>
   </svg>`;
@@ -42,7 +46,7 @@
     buttons.forEach(button => {
       if (button.querySelector('.reading-star-guide')) return;
       button.classList.add('has-star-guide');
-      button.append(template.content.cloneNode(true));
+      button.insertAdjacentHTML('beforeend', artwork.replaceAll('rsg-fill-ID', 'rsg-fill-' + (++instance)));
     });
   }
   attach(document);
