@@ -36,6 +36,7 @@ for (const item of revisions) {
   html = html.replace(articlePattern, (_, start, end) => `${start}\n${item.body}\n      ${end}`);
   for (const [from, to] of Object.entries(item.links || {})) html = html.replaceAll(`href="${from}"`, `href="${to}"`);
   html = html.replaceAll(escape(old.description), escape(item.description)).replaceAll(escape(old.title), escape(item.title));
+  html = html.replace(/(<p class="detail-subtitle">)[\s\S]*?(<\/p>)/, (_, start, end) => start + escape(item.description) + end);
   html = html.replace(ldPattern, (block, json) => {
     let data = JSON.parse(json);
     // Update string values without reformatting unrelated markup or changing first publication.
