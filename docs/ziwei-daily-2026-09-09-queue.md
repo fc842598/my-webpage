@@ -22,6 +22,6 @@
 | 05 | 已发布 2026-09-09 19:29 https://yuetianai.com/articles/ziwei-liangge-dahao-xitong-bu-tong.html / https://yuetianai.com/articles/en/ziwei-liangge-dahao-xitong-bu-tong.html | ziwei-liangge-dahao-xitong-bu-tong | 命盘为什么有两个大耗？先辨认博士十二神和岁前十二神 | 看盘方法 |
 | 06 | 已发布 2026-09-09 20:18 https://yuetianai.com/articles/ziwei-xingyao-wuxing-bu-dengyu-wuxingju.html / https://yuetianai.com/articles/en/ziwei-xingyao-wuxing-bu-dengyu-wuxingju.html | ziwei-xingyao-wuxing-bu-dengyu-wuxingju | 水二局的人命宫是属金的武曲，五行是不是冲突了？ | 看盘方法 |
 | 07 | 已发布 2026-09-09 20:55 https://yuetianai.com/articles/ziwei-gaishengri-zhuxing-weibian-yuanyin.html / https://yuetianai.com/articles/en/ziwei-gaishengri-zhuxing-weibian-yuanyin.html | ziwei-gaishengri-zhuxing-weibian-yuanyin | 农历生日不同，十四主星却一样，是排盘没更新吗？ | 看盘方法 |
-| 08 | 待发布 | ziwei-xingming-bushi-tianwen-xingtu | 紫微斗数的文曲，是出生那晚天空里的那颗星吗？ | 看盘方法 |
+| 08 | 已发布 2026-09-09 21:24 https://yuetianai.com/articles/ziwei-xingming-bushi-tianwen-xingtu.html / https://yuetianai.com/articles/en/ziwei-xingming-bushi-tianwen-xingtu.html | ziwei-xingming-bushi-tianwen-xingtu | 紫微斗数的文曲，是出生那晚天空里的那颗星吗？ | 看盘方法 |
 | 09 | 待发布 | ziwei-lucun-boshi-tonggong-bu-shi-liangci-jiyu | 禄存旁边总有博士，是否算两颗吉星同时帮忙？ | 辅煞曜 |
 | 10 | 待发布 | ziwei-gongwei-sizheng-bushi-ziwu-maoyou | 三方四正的“四正”，就是子午卯酉四个宫吗？ | 看盘方法 |
