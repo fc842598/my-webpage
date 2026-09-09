@@ -909,7 +909,6 @@ function englishTitle(article) {
      "ziwei-guanlu-ziwei-qisha-caibo-lianpo": "Zi Wei and Qi Sha in Career, Lian Po in Wealth: A Martial Command Pattern Is Not a Business Pattern",
      "ziwei-chengong-huaji-weitong-wupanduan": "Hua Ji in Chen: How to Read a Stomach-Risk Line Without Overcalling Surgery",
      "ziwei-puyigong-taixiong-buwenguiren": "When the Friends Palace Is Too Harsh, Stop Asking Only About Noble Help",
-     "ziwei-puyigong-haoxing-bibai-ju": "If the Friends Palace Is Full of Loss Stars, Screen Partnerships Before You Start",
      "ziwei-xiongdigong-huaji-sanchong-yifa": "Hua Ji in the Siblings Palace: Three Very Different Ways It Can Show Up",
      "ziwei-xiongdigong-huaji-yaodeng-yingshi": "Why Hua Ji in the Siblings Palace Cannot Be Read From One Palace Alone",
      "ziwei-tianzhaigong-xiaoren-xiangdaoqie": "Property Palace Trouble Stars: Why Hidden People Can Hurt the Home Most",

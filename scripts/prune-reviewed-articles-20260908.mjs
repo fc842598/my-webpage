@@ -2,7 +2,7 @@ import {readFileSync,writeFileSync,existsSync} from 'node:fs';
 import assert from 'node:assert/strict';
 
 // Explicit reviewed URLs only. No score-based or keyword-based automatic deletion.
-const slugs=['ziwei-tianshang-zai-caibogong','ai-suanming-hepan-qian-yinsi-ziliao-xian-queren-shenme','ai-suanming-huanchengshi-dushu-gongzuo-xiankan-ziwei-haishi-bazi','ai-suanming-kan-hezuo-xiangmu-buxiangxian-baolu-gongsixijie','ai-suanming-kan-hezuo-fenzhang-huikuan-shihema'];
+const slugs=['ziwei-tianshang-zai-caibogong','ai-suanming-hepan-qian-yinsi-ziliao-xian-queren-shenme','ai-suanming-huanchengshi-dushu-gongzuo-xiankan-ziwei-haishi-bazi','ai-suanming-kan-hezuo-xiangmu-buxiangxian-baolu-gongsixijie','ai-suanming-kan-hezuo-fenzhang-huikuan-shihema','ziwei-puyigong-haoxing-bibai-ju'];
 const urls=slugs.flatMap(s=>[`https://yuetianai.com/articles/${s}.html`,`https://yuetianai.com/articles/en/${s}.html`]);
 const files=['articles/index.html','articles/en/index.html','articles/ziwei-helper-malice-stars.html','articles/ai-suanming-search-qa.html','articles/en/ai-fortune-telling-search-qa.html','articles/ziwei-learning-path.html','articles/ziwei-money-career.html','articles/ziwei-palaces.html'];
 const pending=new Map();
