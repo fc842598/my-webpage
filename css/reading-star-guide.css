@@ -1,0 +1,42 @@
+/* A quiet constellation, anchored to the original report coin. */
+.mbp-report-action-bar:has(.has-star-guide),
+.wentian-chart-ai-hero:has(.has-star-guide) { overflow: visible; }
+.mbp-report-action-bar button.has-star-guide,
+.wentian-chart-ai-coin.has-star-guide { overflow: visible; }
+/* The original moving sheen relies on clipping; let the star trail lead instead. */
+.mbp-report-action-bar button.has-star-guide::after,
+.wentian-chart-ai-coin.has-star-guide::after { display: none; }
+.reading-star-guide {
+  position: absolute;
+  width: 148%;
+  height: 148%;
+  right: -34%;
+  bottom: -43%;
+  z-index: 6;
+  overflow: visible;
+  pointer-events: none;
+  filter: drop-shadow(0 0 3px #529fff88);
+  opacity: 1;
+  transition: opacity .4s ease, filter .4s ease;
+}
+.rsg-hand { animation: rsg-tap 3.8s cubic-bezier(.45,0,.25,1) infinite; }
+.rsg-comet { stroke-dasharray: 9 91; animation: rsg-orbit 5.6s linear infinite; }
+.rsg-stars { animation: rsg-shimmer 3.8s ease-in-out infinite; }
+.rsg-touch { animation: rsg-contact 3.8s ease-out infinite; }
+.rsg-ripple { transform-origin: 103px 105px; animation: rsg-ripple 3.8s ease-out infinite; }
+.reading-star-guide.is-leaving { opacity: 0; filter: blur(3px); }
+button:is(:disabled,.is-running,.is-complete,.has-progress) > .reading-star-guide { display: none; }
+@keyframes rsg-tap {
+  0%, 65%, 100% { transform: translate(5px,7px); }
+  24%, 34% { transform: translate(0,0); }
+  43% { transform: translate(2px,3px); }
+}
+@keyframes rsg-orbit { to { stroke-dashoffset: -100; } }
+@keyframes rsg-shimmer { 0%,100% { opacity: .45; } 35%,60% { opacity: 1; } }
+@keyframes rsg-contact { 0%,18%,65%,100% { opacity: 0; } 27%,38% { opacity: .9; } }
+@keyframes rsg-ripple { 0%,24% { transform: scale(.65); opacity: 0; } 28% { opacity: .9; } 62%,100% { transform: scale(2.7); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) {
+  .reading-star-guide * { animation: none !important; }
+  .reading-star-guide { transition: none; }
+  .rsg-touch { opacity: .5; }
+}
