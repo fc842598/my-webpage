@@ -20,7 +20,7 @@
 | 03 | 已发布 2026-09-09 18:22 https://yuetianai.com/articles/ziwei-kuiyue-tonggong-xian-hedui-cengci.html / https://yuetianai.com/articles/en/ziwei-kuiyue-tonggong-xian-hedui-cengci.html | ziwei-kuiyue-tonggong-xian-hedui-cengci | 天魁天钺能在本命同宫吗？贵人星的两种标记别混读 | 辅煞曜 |
 | 04 | 已发布 2026-09-09 18:53 https://yuetianai.com/articles/ziwei-santai-bazuo-bushizhi-kan-shengyue.html / https://yuetianai.com/articles/en/ziwei-santai-bazuo-bushizhi-kan-shengyue.html | ziwei-santai-bazuo-bushizhi-kan-shengyue | 同月出生都有辅弼，三台八座为什么不在同一处？ | 辅煞曜 |
 | 05 | 已发布 2026-09-09 19:29 https://yuetianai.com/articles/ziwei-liangge-dahao-xitong-bu-tong.html / https://yuetianai.com/articles/en/ziwei-liangge-dahao-xitong-bu-tong.html | ziwei-liangge-dahao-xitong-bu-tong | 命盘为什么有两个大耗？先辨认博士十二神和岁前十二神 | 看盘方法 |
-| 06 | 待发布 | ziwei-xingyao-wuxing-bu-dengyu-wuxingju | 水二局的人命宫是属金的武曲，五行是不是冲突了？ | 看盘方法 |
+| 06 | 已发布 2026-09-09 20:18 https://yuetianai.com/articles/ziwei-xingyao-wuxing-bu-dengyu-wuxingju.html / https://yuetianai.com/articles/en/ziwei-xingyao-wuxing-bu-dengyu-wuxingju.html | ziwei-xingyao-wuxing-bu-dengyu-wuxingju | 水二局的人命宫是属金的武曲，五行是不是冲突了？ | 看盘方法 |
 | 07 | 待发布 | ziwei-gaishengri-zhuxing-weibian-yuanyin | 农历生日不同，十四主星却一样，是排盘没更新吗？ | 看盘方法 |
 | 08 | 待发布 | ziwei-xingming-bushi-tianwen-xingtu | 紫微斗数的文曲，是出生那晚天空里的那颗星吗？ | 看盘方法 |
 | 09 | 待发布 | ziwei-lucun-boshi-tonggong-bu-shi-liangci-jiyu | 禄存旁边总有博士，是否算两颗吉星同时帮忙？ | 辅煞曜 |
