@@ -35,7 +35,7 @@
 
 | 序号 | 状态 | slug | 标题 | 分类 |
 | --- | --- | --- | --- | --- |
-| 01 | 待发布 | ziwei-juri-guanlu-shumian-koutou-biaoda | 太阳巨门在官禄宫：写得清楚，上台却说不出来，矛盾吗？ | 主星细读 |
+| 01 | 已发布 2026-09-11 17:06 https://yuetianai.com/articles/ziwei-juri-guanlu-shumian-koutou-biaoda.html / https://yuetianai.com/articles/en/ziwei-juri-guanlu-shumian-koutou-biaoda.html | ziwei-juri-guanlu-shumian-koutou-biaoda | 太阳巨门在官禄宫：写得清楚，上台却说不出来，矛盾吗？ | 主星细读 |
 | 02 | 待发布 | ziwei-wufu-caibo-jingshou-qian-suoyouquan | 武曲天府在财帛宫：经手的钱多，为什么自己的收入不高？ | 主星细读 |
 | 03 | 待发布 | ziwei-jiliang-qianyi-guwen-jianyi-juece | 天机天梁在迁移宫：顾问给建议，和替客户做决定有多远？ | 主星细读 |
 | 04 | 待发布 | ziwei-liantan-qianyi-yingchou-gongzuo | 廉贞贪狼在迁移宫：应酬多，能说明私人感情复杂吗？ | 主星细读 |
