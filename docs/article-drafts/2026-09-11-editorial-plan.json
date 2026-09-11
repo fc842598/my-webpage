@@ -1,0 +1,523 @@
+{
+  "date": "2026-09-11",
+  "generatedAt": "2026-09-11T08:41:28.814Z",
+  "prepared": 30,
+  "publishedChinese": 0,
+  "publishedEnglish": 0,
+  "pending": 30,
+  "shortfall": 0,
+  "oldRewrites": 0,
+  "deletions": 0,
+  "items": [
+    {
+      "order": 1,
+      "title": "太阳巨门在官禄宫：写得清楚，上台却说不出来，矛盾吗？",
+      "slug": "ziwei-juri-guanlu-shumian-koutou-biaoda",
+      "category": "主星细读",
+      "scheduledAt": "2026-09-11T17:06:00+08:00",
+      "status": "prepared_not_published",
+      "chineseUrl": "https://yuetianai.com/articles/ziwei-juri-guanlu-shumian-koutou-biaoda.html",
+      "englishUrl": "https://yuetianai.com/articles/en/ziwei-juri-guanlu-shumian-koutou-biaoda.html",
+      "researchDate": "2026-09-11",
+      "reason": "区分书面分析与临场发言，补足巨日口才泛论。",
+      "references": [
+        "https://docs.iztro.com/learn/major-star"
+      ],
+      "queryRanking": "unknown",
+      "humanizerEdited": true
+    },
+    {
+      "order": 2,
+      "title": "武曲天府在财帛宫：经手的钱多，为什么自己的收入不高？",
+      "slug": "ziwei-wufu-caibo-jingshou-qian-suoyouquan",
+      "category": "主星细读",
+      "scheduledAt": "2026-09-11T17:11:00+08:00",
+      "status": "prepared_not_published",
+      "chineseUrl": "https://yuetianai.com/articles/ziwei-wufu-caibo-jingshou-qian-suoyouquan.html",
+      "englishUrl": "https://yuetianai.com/articles/en/ziwei-wufu-caibo-jingshou-qian-suoyouquan.html",
+      "researchDate": "2026-09-11",
+      "reason": "区分代管资金、预算权限与个人所有权，不重复泛论发财。",
+      "references": [
+        "https://docs.iztro.com/learn/major-star"
+      ],
+      "queryRanking": "unknown",
+      "humanizerEdited": true
+    },
+    {
+      "order": 3,
+      "title": "天机天梁在迁移宫：顾问给建议，和替客户做决定有多远？",
+      "slug": "ziwei-jiliang-qianyi-guwen-jianyi-juece",
+      "category": "主星细读",
+      "scheduledAt": "2026-09-11T17:30:00+08:00",
+      "status": "prepared_not_published",
+      "chineseUrl": "https://yuetianai.com/articles/ziwei-jiliang-qianyi-guwen-jianyi-juece.html",
+      "englishUrl": "https://yuetianai.com/articles/en/ziwei-jiliang-qianyi-guwen-jianyi-juece.html",
+      "researchDate": "2026-09-11",
+      "reason": "区分顾问建议与客户的执行决定。",
+      "references": [
+        "https://docs.iztro.com/learn/major-star"
+      ],
+      "queryRanking": "unknown",
+      "humanizerEdited": true
+    },
+    {
+      "order": 4,
+      "title": "廉贞贪狼在迁移宫：应酬多，能说明私人感情复杂吗？",
+      "slug": "ziwei-liantan-qianyi-yingchou-gongzuo",
+      "category": "主星细读",
+      "scheduledAt": "2026-09-11T17:39:00+08:00",
+      "status": "prepared_not_published",
+      "chineseUrl": "https://yuetianai.com/articles/ziwei-liantan-qianyi-yingchou-gongzuo.html",
+      "englishUrl": "https://yuetianai.com/articles/en/ziwei-liantan-qianyi-yingchou-gongzuo.html",
+      "researchDate": "2026-09-11",
+      "reason": "把职业应酬与私人承诺分开，避免桃花词汇越权定性。",
+      "references": [
+        "https://docs.iztro.com/learn/major-star"
+      ],
+      "queryRanking": "unknown",
+      "humanizerEdited": true
+    },
+    {
+      "order": 5,
+      "title": "紫微七杀在官禄宫：不带团队的资深专家，也有主导空间吗？",
+      "slug": "ziwei-zisha-guanlu-zhuanjia-jingli",
+      "category": "主星细读",
+      "scheduledAt": "2026-09-11T17:52:00+08:00",
+      "status": "prepared_not_published",
+      "chineseUrl": "https://yuetianai.com/articles/ziwei-zisha-guanlu-zhuanjia-jingli.html",
+      "englishUrl": "https://yuetianai.com/articles/en/ziwei-zisha-guanlu-zhuanjia-jingli.html",
+      "researchDate": "2026-09-11",
+      "reason": "以技术审核权限讨论不带人的专家岗位。",
+      "references": [
+        "https://docs.iztro.com/learn/major-star"
+      ],
+      "queryRanking": "unknown",
+      "humanizerEdited": true
+    },
+    {
+      "order": 6,
+      "title": "七杀坐命、对宫天府：从救火岗位转到日常维护，怎么看适应？",
+      "slug": "ziwei-qisha-tianfu-jiuhuo-zhuan-weihu",
+      "category": "主星细读",
+      "scheduledAt": "2026-09-11T18:00:00+08:00",
+      "status": "prepared_not_published",
+      "chineseUrl": "https://yuetianai.com/articles/ziwei-qisha-tianfu-jiuhuo-zhuan-weihu.html",
+      "englishUrl": "https://yuetianai.com/articles/en/ziwei-qisha-tianfu-jiuhuo-zhuan-weihu.html",
+      "researchDate": "2026-09-11",
+      "reason": "用抢修转维护讨论工作反馈变化，并核对杀府对宫。",
+      "references": [
+        "https://docs.iztro.com/learn/major-star"
+      ],
+      "queryRanking": "unknown",
+      "humanizerEdited": true
+    },
+    {
+      "order": 7,
+      "title": "天贵就是天钺吗？命盘里的四个贵人星名这样分",
+      "slug": "ziwei-enguang-tiankui-tiangui-tianyue-mingcheng",
+      "category": "辅煞曜",
+      "scheduledAt": "2026-09-11T18:17:00+08:00",
+      "status": "prepared_not_published",
+      "chineseUrl": "https://yuetianai.com/articles/ziwei-enguang-tiankui-tiangui-tianyue-mingcheng.html",
+      "englishUrl": "https://yuetianai.com/articles/en/ziwei-enguang-tiankui-tiangui-tianyue-mingcheng.html",
+      "researchDate": "2026-09-11",
+      "reason": "辨认天贵与天钺，补充安法不同而非贵人数量。",
+      "references": [
+        "https://tianjihq.com/en/learn/glossary/ziwei-enguang"
+      ],
+      "queryRanking": "unknown",
+      "humanizerEdited": true
+    },
+    {
+      "order": 8,
+      "title": "命宫有天才星，为什么学习成绩仍然普通？",
+      "slug": "ziwei-tiancai-xing-bu-shi-zhishang-fenshu",
+      "category": "辅煞曜",
+      "scheduledAt": "2026-09-11T18:30:00+08:00",
+      "status": "prepared_not_published",
+      "chineseUrl": "https://yuetianai.com/articles/ziwei-tiancai-xing-bu-shi-zhishang-fenshu.html",
+      "englishUrl": "https://yuetianai.com/articles/en/ziwei-tiancai-xing-bu-shi-zhishang-fenshu.html",
+      "researchDate": "2026-09-11",
+      "reason": "区分杂曜名称与学习中的理解、作答表现。",
+      "references": [
+        "https://iztro.com/learn/adj-star"
+      ],
+      "queryRanking": "unknown",
+      "humanizerEdited": true
+    },
+    {
+      "order": 9,
+      "title": "武曲贪狼在官禄宫：爱好变成工作后，为什么反而不喜欢了？",
+      "slug": "ziwei-wutan-xingqu-bian-gongzuo",
+      "category": "主星细读",
+      "scheduledAt": "2026-09-11T18:38:00+08:00",
+      "status": "prepared_not_published",
+      "chineseUrl": "https://yuetianai.com/articles/ziwei-wutan-xingqu-bian-gongzuo.html",
+      "englishUrl": "https://yuetianai.com/articles/en/ziwei-wutan-xingqu-bian-gongzuo.html",
+      "researchDate": "2026-09-11",
+      "reason": "兴趣变职业后新增的交付任务是具体新增答案。",
+      "references": [
+        "https://docs.iztro.com/learn/major-star"
+      ],
+      "queryRanking": "unknown",
+      "humanizerEdited": true
+    },
+    {
+      "order": 10,
+      "title": "天机巨门在官禄宫：方案总在修改，怎样分清推敲和返工？",
+      "slug": "ziwei-jiju-guanlu-fangan-fanfu-xiugai",
+      "category": "主星细读",
+      "scheduledAt": "2026-09-11T18:45:00+08:00",
+      "status": "prepared_not_published",
+      "chineseUrl": "https://yuetianai.com/articles/ziwei-jiju-guanlu-fangan-fanfu-xiugai.html",
+      "englishUrl": "https://yuetianai.com/articles/en/ziwei-jiju-guanlu-fangan-fanfu-xiugai.html",
+      "researchDate": "2026-09-11",
+      "reason": "区分新信息推敲与组织需求反复。",
+      "references": [
+        "https://docs.iztro.com/learn/major-star"
+      ],
+      "queryRanking": "unknown",
+      "humanizerEdited": true
+    },
+    {
+      "order": 11,
+      "title": "十四主星能任意配对吗？常见安法只有这24种同宫组合",
+      "slug": "ziwei-shisi-zhuxing-ershisi-tonggong-zuhe",
+      "category": "看盘方法",
+      "scheduledAt": "2026-09-11T19:04:00+08:00",
+      "status": "prepared_not_published",
+      "chineseUrl": "https://yuetianai.com/articles/ziwei-shisi-zhuxing-ershisi-tonggong-zuhe.html",
+      "englishUrl": "https://yuetianai.com/articles/en/ziwei-shisi-zhuxing-ershisi-tonggong-zuhe.html",
+      "researchDate": "2026-09-11",
+      "reason": "枚举24种实际可同宫主星，不讨论谁强谁弱。",
+      "references": [
+        "https://docs.iztro.com/learn/setup"
+      ],
+      "queryRanking": "unknown",
+      "humanizerEdited": true
+    },
+    {
+      "order": 12,
+      "title": "为什么有人的紫微命盘没有空宫，有人却有四个？",
+      "slug": "ziwei-konggong-shuliang-ling-er-si",
+      "category": "看盘方法",
+      "scheduledAt": "2026-09-11T19:10:00+08:00",
+      "status": "prepared_not_published",
+      "chineseUrl": "https://yuetianai.com/articles/ziwei-konggong-shuliang-ling-er-si.html",
+      "englishUrl": "https://yuetianai.com/articles/en/ziwei-konggong-shuliang-ling-er-si.html",
+      "researchDate": "2026-09-11",
+      "reason": "计算0/2/4空宫，与空宫借星解读分开。",
+      "references": [
+        "https://docs.iztro.com/learn/setup"
+      ],
+      "queryRanking": "unknown",
+      "humanizerEdited": true
+    },
+    {
+      "order": 13,
+      "title": "紫微斗数的“对星”，是不是一定分居对宫？",
+      "slug": "ziwei-duixing-bu-dengyu-duigong",
+      "category": "看盘方法",
+      "scheduledAt": "2026-09-11T19:29:00+08:00",
+      "status": "prepared_not_published",
+      "chineseUrl": "https://yuetianai.com/articles/ziwei-duixing-bu-dengyu-duigong.html",
+      "englishUrl": "https://yuetianai.com/articles/en/ziwei-duixing-bu-dengyu-duigong.html",
+      "researchDate": "2026-09-11",
+      "reason": "对星配对与对宫几何不是同一条件。",
+      "references": [
+        "https://docs.iztro.com/learn/setup"
+      ],
+      "queryRanking": "unknown",
+      "humanizerEdited": true
+    },
+    {
+      "order": 14,
+      "title": "天府星系就是南斗星吗？两种星曜分类别混成一张表",
+      "slug": "ziwei-xingxi-bushi-nanbei-dou-fenlei",
+      "category": "看盘方法",
+      "scheduledAt": "2026-09-11T19:39:00+08:00",
+      "status": "prepared_not_published",
+      "chineseUrl": "https://yuetianai.com/articles/ziwei-xingxi-bushi-nanbei-dou-fenlei.html",
+      "englishUrl": "https://yuetianai.com/articles/en/ziwei-xingxi-bushi-nanbei-dou-fenlei.html",
+      "researchDate": "2026-09-11",
+      "reason": "排布星系与南北斗分类的用途不同。",
+      "references": [
+        "https://docs.iztro.com/learn/setup"
+      ],
+      "queryRanking": "unknown",
+      "humanizerEdited": true
+    },
+    {
+      "order": 15,
+      "title": "两个排盘的解神位置不同：先查年解，还是月解？",
+      "slug": "ziwei-jieshen-nianjie-yuejie-fenbie",
+      "category": "辅煞曜",
+      "scheduledAt": "2026-09-11T19:57:00+08:00",
+      "status": "prepared_not_published",
+      "chineseUrl": "https://yuetianai.com/articles/ziwei-jieshen-nianjie-yuejie-fenbie.html",
+      "englishUrl": "https://yuetianai.com/articles/en/ziwei-jieshen-nianjie-yuejie-fenbie.html",
+      "researchDate": "2026-09-11",
+      "reason": "月解、年解计算输入不同，不因位置差异改生日。",
+      "references": [
+        "https://docs.iztro.com/learn/setup"
+      ],
+      "queryRanking": "unknown",
+      "humanizerEdited": true
+    },
+    {
+      "order": 16,
+      "title": "乙年天机太阴同宫见禄忌：计划可行，为什么仍放不下心？",
+      "slug": "ziwei-yinian-jiyin-luji-tonggong",
+      "category": "主星细读",
+      "scheduledAt": "2026-09-11T20:04:00+08:00",
+      "status": "prepared_not_published",
+      "chineseUrl": "https://yuetianai.com/articles/ziwei-yinian-jiyin-luji-tonggong.html",
+      "englishUrl": "https://yuetianai.com/articles/en/ziwei-yinian-jiyin-luji-tonggong.html",
+      "researchDate": "2026-09-11",
+      "reason": "明确乙干同层天机禄太阴忌分属两星，具体未知条件不抹去。",
+      "references": [
+        "https://docs.iztro.com/learn/setup"
+      ],
+      "queryRanking": "unknown",
+      "humanizerEdited": true
+    },
+    {
+      "order": 17,
+      "title": "丁年天同巨门权忌同宫：家事分工为何不能只看谁说话强？",
+      "slug": "ziwei-dingnian-tongju-quanji-fengong",
+      "category": "主星细读",
+      "scheduledAt": "2026-09-11T20:12:00+08:00",
+      "status": "prepared_not_published",
+      "chineseUrl": "https://yuetianai.com/articles/ziwei-dingnian-tongju-quanji-fengong.html",
+      "englishUrl": "https://yuetianai.com/articles/en/ziwei-dingnian-tongju-quanji-fengong.html",
+      "researchDate": "2026-09-11",
+      "reason": "丁干权忌在夫妻宫用于区分责任与表达，不凭说话强弱定性。",
+      "references": [
+        "https://docs.iztro.com/learn/setup"
+      ],
+      "queryRanking": "unknown",
+      "humanizerEdited": true
+    },
+    {
+      "order": 18,
+      "title": "天梁化科在官禄宫：做复核的人，怎样区分专业声誉和挑毛病？",
+      "slug": "ziwei-tianliang-huake-fuhe-gongzuo",
+      "category": "财运事业",
+      "scheduledAt": "2026-09-11T20:30:00+08:00",
+      "status": "prepared_not_published",
+      "chineseUrl": "https://yuetianai.com/articles/ziwei-tianliang-huake-fuhe-gongzuo.html",
+      "englishUrl": "https://yuetianai.com/articles/en/ziwei-tianliang-huake-fuhe-gongzuo.html",
+      "researchDate": "2026-09-11",
+      "reason": "复核岗位的标准可复查性与专业名誉。",
+      "references": [
+        "https://docs.iztro.com/learn/major-star"
+      ],
+      "queryRanking": "unknown",
+      "humanizerEdited": true
+    },
+    {
+      "order": 19,
+      "title": "太阳化忌在迁移宫：代表单位接受质疑，等于自己名声不好吗？",
+      "slug": "ziwei-taiyang-huaji-qianyi-daibiao-jigou",
+      "category": "财运事业",
+      "scheduledAt": "2026-09-11T20:34:00+08:00",
+      "status": "prepared_not_published",
+      "chineseUrl": "https://yuetianai.com/articles/ziwei-taiyang-huaji-qianyi-daibiao-jigou.html",
+      "englishUrl": "https://yuetianai.com/articles/en/ziwei-taiyang-huaji-qianyi-daibiao-jigou.html",
+      "researchDate": "2026-09-11",
+      "reason": "区分单位交付争议和个人沟通表现。",
+      "references": [
+        "https://docs.iztro.com/learn/major-star"
+      ],
+      "queryRanking": "unknown",
+      "humanizerEdited": true
+    },
+    {
+      "order": 20,
+      "title": "天府的空库、露库是什么意思？别先按银行余额对号入座",
+      "slug": "ziwei-tianfu-kongku-luku-wenfa",
+      "category": "主星细读",
+      "scheduledAt": "2026-09-11T20:57:00+08:00",
+      "status": "prepared_not_published",
+      "chineseUrl": "https://yuetianai.com/articles/ziwei-tianfu-kongku-luku-wenfa.html",
+      "englishUrl": "https://yuetianai.com/articles/en/ziwei-tianfu-kongku-luku-wenfa.html",
+      "researchDate": "2026-09-11",
+      "reason": "注明空库露库定义差异，星名不是余额报告。",
+      "references": [
+        "https://hara1208.pixnet.net/blog/posts/4036310880"
+      ],
+      "queryRanking": "unknown",
+      "humanizerEdited": true
+    },
+    {
+      "order": 21,
+      "title": "导师也是项目负责人，看父母宫还是官禄宫？",
+      "slug": "ziwei-daoshi-jian-xiangmu-fuzeren",
+      "category": "宫位组合",
+      "scheduledAt": "2026-09-11T21:04:00+08:00",
+      "status": "prepared_not_published",
+      "chineseUrl": "https://yuetianai.com/articles/ziwei-daoshi-jian-xiangmu-fuzeren.html",
+      "englishUrl": "https://yuetianai.com/articles/en/ziwei-daoshi-jian-xiangmu-fuzeren.html",
+      "researchDate": "2026-09-11",
+      "reason": "一个导师身兼研究指导和项目负责人，按所问角色展开。",
+      "references": [
+        "https://www.ziweiaz.com/zh/fu-mu-gong-zi-wei-dou-shu-zhong-de-gong-neng-yu-lun-duan-fang-fa"
+      ],
+      "queryRanking": "unknown",
+      "humanizerEdited": true
+    },
+    {
+      "order": 22,
+      "title": "独生子女的兄弟宫，还能看什么？",
+      "slug": "ziwei-dushengzinv-xiongdigong-bu-gaiming",
+      "category": "宫位组合",
+      "scheduledAt": "2026-09-11T21:16:00+08:00",
+      "status": "prepared_not_published",
+      "chineseUrl": "https://yuetianai.com/articles/ziwei-dushengzinv-xiongdigong-bu-gaiming.html",
+      "englishUrl": "https://yuetianai.com/articles/en/ziwei-dushengzinv-xiongdigong-bu-gaiming.html",
+      "researchDate": "2026-09-11",
+      "reason": "独生子女的手足关系可以不存在，延伸取象需说明。",
+      "references": [
+        "https://docs.iztro.com/learn/major-star"
+      ],
+      "queryRanking": "unknown",
+      "humanizerEdited": true
+    },
+    {
+      "order": 23,
+      "title": "再婚要换一个夫妻宫吗？先分本命结构和流年宫位",
+      "slug": "ziwei-zaihun-fuqigong-bu-zidong-huangong",
+      "category": "宫位组合",
+      "scheduledAt": "2026-09-11T21:30:00+08:00",
+      "status": "prepared_not_published",
+      "chineseUrl": "https://yuetianai.com/articles/ziwei-zaihun-fuqigong-bu-zidong-huangong.html",
+      "englishUrl": "https://yuetianai.com/articles/en/ziwei-zaihun-fuqigong-bu-zidong-huangong.html",
+      "researchDate": "2026-09-11",
+      "reason": "本命宫不按登记次数自动挪动，另派推法和流年区别。",
+      "references": [
+        "https://docs.iztro.com/learn/major-star"
+      ],
+      "queryRanking": "unknown",
+      "humanizerEdited": true
+    },
+    {
+      "order": 24,
+      "title": "田宅宫在酉，就该住朝西的房子吗？",
+      "slug": "ziwei-tianzhai-yougong-bu-dengyu-chaoxi",
+      "category": "宫位组合",
+      "scheduledAt": "2026-09-11T21:40:00+08:00",
+      "status": "prepared_not_published",
+      "chineseUrl": "https://yuetianai.com/articles/ziwei-tianzhai-yougong-bu-dengyu-chaoxi.html",
+      "englishUrl": "https://yuetianai.com/articles/en/ziwei-tianzhai-yougong-bu-dengyu-chaoxi.html",
+      "researchDate": "2026-09-11",
+      "reason": "出生盘地支方位不能代替住宅现场朝向。",
+      "references": [
+        "https://docs.iztro.com/learn/major-star"
+      ],
+      "queryRanking": "unknown",
+      "humanizerEdited": true
+    },
+    {
+      "order": 25,
+      "title": "夫妻宫有天机：伴侣常改计划，就代表不守承诺吗？",
+      "slug": "ziwei-tianji-fuqi-gaijihua-shouxin",
+      "category": "宫位组合",
+      "scheduledAt": "2026-09-11T21:53:00+08:00",
+      "status": "prepared_not_published",
+      "chineseUrl": "https://yuetianai.com/articles/ziwei-tianji-fuqi-gaijihua-shouxin.html",
+      "englishUrl": "https://yuetianai.com/articles/en/ziwei-tianji-fuqi-gaijihua-shouxin.html",
+      "researchDate": "2026-09-11",
+      "reason": "共同调整和单方面失约是不同事实，不用天机字义裁判。",
+      "references": [
+        "https://docs.iztro.com/learn/major-star"
+      ],
+      "queryRanking": "unknown",
+      "humanizerEdited": true
+    },
+    {
+      "order": 26,
+      "title": "阴煞为什么只排在六个地支？别把地支限制当成性格判断",
+      "slug": "ziwei-yinsha-weizhi-liuge-dizhi",
+      "category": "辅煞曜",
+      "scheduledAt": "2026-09-11T21:59:00+08:00",
+      "status": "prepared_not_published",
+      "chineseUrl": "https://yuetianai.com/articles/ziwei-yinsha-weizhi-liuge-dizhi.html",
+      "englishUrl": "https://yuetianai.com/articles/en/ziwei-yinsha-weizhi-liuge-dizhi.html",
+      "researchDate": "2026-09-11",
+      "reason": "阴煞月序六个地支与固定人事宫位区别。",
+      "references": [
+        "https://docs.iztro.com/learn/setup"
+      ],
+      "queryRanking": "unknown",
+      "humanizerEdited": true
+    },
+    {
+      "order": 27,
+      "title": "破军在交友宫：团队重组，为什么不能直接解释成朋友翻脸？",
+      "slug": "ziwei-pojun-jiaoyou-tuandui-chongzu",
+      "category": "财运事业",
+      "scheduledAt": "2026-09-11T22:17:00+08:00",
+      "status": "prepared_not_published",
+      "chineseUrl": "https://yuetianai.com/articles/ziwei-pojun-jiaoyou-tuandui-chongzu.html",
+      "englishUrl": "https://yuetianai.com/articles/en/ziwei-pojun-jiaoyou-tuandui-chongzu.html",
+      "researchDate": "2026-09-11",
+      "reason": "机构调整与同事私人来往变化区别。",
+      "references": [
+        "https://docs.iztro.com/learn/major-star"
+      ],
+      "queryRanking": "unknown",
+      "humanizerEdited": true
+    },
+    {
+      "order": 28,
+      "title": "退休后返聘或做志愿服务，官禄宫还按原来的职业读吗？",
+      "slug": "ziwei-tuixiu-hou-guanlu-fanpin-zhiyuan",
+      "category": "财运事业",
+      "scheduledAt": "2026-09-11T22:32:00+08:00",
+      "status": "prepared_not_published",
+      "chineseUrl": "https://yuetianai.com/articles/ziwei-tuixiu-hou-guanlu-fanpin-zhiyuan.html",
+      "englishUrl": "https://yuetianai.com/articles/en/ziwei-tuixiu-hou-guanlu-fanpin-zhiyuan.html",
+      "researchDate": "2026-09-11",
+      "reason": "退休后返聘、志愿职责与旧职权分开。",
+      "references": [
+        "https://docs.iztro.com/learn/major-star"
+      ],
+      "queryRanking": "unknown",
+      "humanizerEdited": true
+    },
+    {
+      "order": 29,
+      "title": "紫微斗数“同度”是什么意思？需要精确到几度几分吗？",
+      "slug": "ziwei-tongdu-bushi-tianwen-jiaodu",
+      "category": "看盘方法",
+      "scheduledAt": "2026-09-11T22:42:00+08:00",
+      "status": "prepared_not_published",
+      "chineseUrl": "https://yuetianai.com/articles/ziwei-tongdu-bushi-tianwen-jiaodu.html",
+      "englishUrl": "https://yuetianai.com/articles/en/ziwei-tongdu-bushi-tianwen-jiaodu.html",
+      "researchDate": "2026-09-11",
+      "reason": "同度是同宫术语，非需测量黄经角度。",
+      "references": [
+        "https://docs.iztro.com/learn/major-star"
+      ],
+      "queryRanking": "unknown",
+      "humanizerEdited": true
+    },
+    {
+      "order": 30,
+      "title": "有天厨星却不会做饭，食禄和厨艺是一回事吗？",
+      "slug": "ziwei-tianchu-koufu-bu-dengyu-pengren",
+      "category": "辅煞曜",
+      "scheduledAt": "2026-09-11T22:49:00+08:00",
+      "status": "prepared_not_published",
+      "chineseUrl": "https://yuetianai.com/articles/ziwei-tianchu-koufu-bu-dengyu-pengren.html",
+      "englishUrl": "https://yuetianai.com/articles/en/ziwei-tianchu-koufu-bu-dengyu-pengren.html",
+      "researchDate": "2026-09-11",
+      "reason": "食禄、供餐、品鉴、烹饪与经营不是同一技能。",
+      "references": [
+        "https://iztro.com/learn/adj-star"
+      ],
+      "queryRanking": "unknown",
+      "humanizerEdited": true
+    }
+  ]
+}

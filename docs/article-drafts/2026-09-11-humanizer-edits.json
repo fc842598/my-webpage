@@ -1,0 +1,244 @@
+{
+  "editedAt": "2026-09-11T08:36:54.027Z",
+  "skill": "humanizer-zh",
+  "editor": "current agent",
+  "count": 30,
+  "changes": [
+    {
+      "order": 1,
+      "slug": "ziwei-juri-guanlu-shumian-koutou-biaoda",
+      "note": "开头去掉编辑式旁白，直接回应写与说的差别。",
+      "from": "这里把几种本领合成了一种：找出问题、组织论据、当场表达，实际可以差得很远。",
+      "to": "能分析问题、能写清楚，和能当场讲出来，确实可能差得很远。"
+    },
+    {
+      "order": 2,
+      "slug": "ziwei-wufu-caibo-jingshou-qian-suoyouquan",
+      "note": "用实际权限替换三项抽象排比。",
+      "from": "经办、保管、拥有，是不同的关系。",
+      "to": "你可能负责付款，却没有权利决定这笔钱用在哪里。"
+    },
+    {
+      "order": 3,
+      "slug": "ziwei-jiliang-qianyi-guwen-jianyi-juece",
+      "note": "去掉首先与排比，保留合同角色差异而不作法律建议。",
+      "from": "首先要分清：对方购买的是判断、方案，还是连执行也交给你。",
+      "to": "要看对方只请你提出方案，还是也让你负责执行。"
+    },
+    {
+      "order": 4,
+      "slug": "ziwei-liantan-qianyi-yingchou-gongzuo",
+      "note": "将清单写成有具体对象的判断。",
+      "from": "有吸引力、被关注、参加应酬、违背关系约定，是四件不同的事。",
+      "to": "参加应酬时被人关注，不能证明这个人违背了伴侣间的约定。"
+    },
+    {
+      "order": 5,
+      "slug": "ziwei-zisha-guanlu-zhuanjia-jingli",
+      "note": "删去三段式与泛指权字，聚焦本文的两种职责。",
+      "from": "人员、专业标准、某个项目，不能只用一个“权”字概括。",
+      "to": "管理人员和审核专业标准，授权范围可能完全不同。"
+    },
+    {
+      "order": 6,
+      "slug": "ziwei-qisha-tianfu-jiuhuo-zhuan-weihu",
+      "note": "把笼统归因改成可核查的评价方式。",
+      "from": "这些感受与制度、评价方式有关，不能全归到一颗星的性质上。",
+      "to": "岗位考核若只记录抢修次数，预防工作便可能不容易被看见；这需要先查工作制度。"
+    },
+    {
+      "order": 7,
+      "slug": "ziwei-enguang-tiankui-tiangui-tianyue-mingcheng",
+      "note": "删去刻意金句。",
+      "from": "星曜分类没有给人情定价。",
+      "to": "分类讲的是解盘用法，现实中的帮助仍要按实际事情理解。"
+    },
+    {
+      "order": 8,
+      "slug": "ziwei-tiancai-xing-bu-shi-zhishang-fenshu",
+      "note": "把抽象方法评语改成读者能核对的结果。",
+      "from": "让解释永远无法核对。",
+      "to": "这样的说法无论考成怎样都能套用，却没有解释成绩。"
+    },
+    {
+      "order": 9,
+      "slug": "ziwei-wutan-xingqu-bian-gongzuo",
+      "note": "用工作环节替代泛泛的值得问。",
+      "from": "兴趣与交付要求都值得问。",
+      "to": "可以分别问：你喜欢做哪一段，工作又要求你反复完成哪一段。"
+    },
+    {
+      "order": 10,
+      "slug": "ziwei-jiju-guanlu-fangan-fanfu-xiugai",
+      "note": "收尾回到开头的第七版，删除泛泛帮助评语。",
+      "from": "它对这次工作的帮助就很有限。",
+      "to": "就还没有回答这七次修改到底花在了哪里。"
+    },
+    {
+      "order": 11,
+      "slug": "ziwei-shisi-zhuxing-ershisi-tonggong-zuhe",
+      "note": "去掉抽象价值比较。",
+      "from": "并不比硬凑同宫少一层价值。",
+      "to": "不需要再改叫同宫。"
+    },
+    {
+      "order": 12,
+      "slug": "ziwei-konggong-shuliang-ling-er-si",
+      "note": "把数学例子的结尾落在准确的主星定义。",
+      "from": "便留下四个空宫。",
+      "to": "就有四宫没有主星。"
+    },
+    {
+      "order": 13,
+      "slug": "ziwei-duixing-bu-dengyu-duigong",
+      "note": "末段用实记示例替代总结。",
+      "from": "星曜的配对名称保留下来，位置关系也不会因此被省略。",
+      "to": "例如“甲年魁钺，丑未相对”，名称和位置便都记清了。"
+    },
+    {
+      "order": 14,
+      "slug": "ziwei-xingxi-bushi-nanbei-dou-fenlei",
+      "note": "删除拟人化结尾。",
+      "from": "六颗、八颗和其他分组数字就不会互相打架。",
+      "to": "就能知道每个数字在数什么。"
+    },
+    {
+      "order": 15,
+      "slug": "ziwei-jieshen-nianjie-yuejie-fenbie",
+      "note": "删去替读者揣测动机，保留不独立计数的判断。",
+      "from": "不要为了让一张盘看起来更好，把年解、月解和其他解厄星全加起来，当成几次保证。",
+      "to": "把年解、月解分开记录；同样带“解”字，不代表现实里会得到几次帮助。"
+    },
+    {
+      "order": 16,
+      "slug": "ziwei-yinian-jiyin-luji-tonggong",
+      "note": "用具体已知与未知替换抽象分层。",
+      "from": "前一部分可以讨论机会如何形成，后一部分应如实列作未知条件。",
+      "to": "技能适合已经有了依据，交接安排则还需要向对方了解。"
+    },
+    {
+      "order": 17,
+      "slug": "ziwei-dingnian-tongju-quanji-fengong",
+      "note": "让语气更直接。",
+      "from": "反而漏掉争执围绕什么发生。",
+      "to": "却没说两个人到底在争什么。"
+    },
+    {
+      "order": 18,
+      "slug": "ziwei-tianliang-huake-fuhe-gongzuo",
+      "note": "删除拟人化说话与空泛总结。",
+      "from": "让具体反馈和职责说话，才能避免把一个专业角色写成固定的道德评价。",
+      "to": "可以带上一条实际审核意见，说明依据是什么、对方怎样回应，别仅凭星名判断一个人是否公正。"
+    },
+    {
+      "order": 19,
+      "slug": "ziwei-taiyang-huaji-qianyi-daibiao-jigou",
+      "note": "结尾落实到两种可核对的反馈。",
+      "from": "把回应了什么、对方反对什么分别记下，比一句“太阳化忌很辛苦”更能帮助读者理解当前处境。",
+      "to": "记下投诉的具体内容。对方反对的是延期，不等于反对你；如果确实批评了你的答复，也不要替它换成别的原因。"
+    },
+    {
+      "order": 20,
+      "slug": "ziwei-tianfu-kongku-luku-wenfa",
+      "note": "读到具体派别口径后补足差异，避免把空库单一定义。",
+      "from": "空库着重讨论天府缺少禄的支持等资源条件；露库则着重讨论天府遇到煞曜时，保管与稳定受到干扰。",
+      "to": "空库有不见禄的说法，也有把地空、天空同躔纳入条件的说法；露库常讨论煞曜交会下的保管与稳定问题。"
+    },
+    {
+      "order": 21,
+      "slug": "ziwei-daoshi-jian-xiangmu-fuzeren",
+      "note": "以具体双角色替换泛指关系。",
+      "from": "不如先把这次要谈的关系说清楚。",
+      "to": "先看这次问的是论文指导，还是项目任务。"
+    },
+    {
+      "order": 22,
+      "slug": "ziwei-dushengzinv-xiongdigong-bu-gaiming",
+      "note": "去掉道德化金句。",
+      "from": "没有发生的手足经历保留为空，比给命盘补一个不存在的故事更诚实。",
+      "to": "没有手足，就保留这个事实；如果转谈同事，需要另说明采用的取象。"
+    },
+    {
+      "order": 23,
+      "slug": "ziwei-zaihun-fuqigong-bu-zidong-huangong",
+      "note": "消除抽象评价。",
+      "from": "会使判断失去清楚的依据。",
+      "to": "会让人无法知道这次到底按哪套规则解读。"
+    },
+    {
+      "order": 24,
+      "slug": "ziwei-zufang-tianzhaigong-juzhu-chanquan",
+      "note": "换题：租房原稿与9月5日居住变化不等于买房的意图重叠，整篇替换。",
+      "from": "",
+      "to": "",
+      "replacementSlug": "ziwei-tianzhai-yougong-bu-dengyu-chaoxi"
+    },
+    {
+      "order": 25,
+      "slug": "ziwei-hepan-fuqigong-tongxing-bu-dengyu-peidui",
+      "note": "避免同词循环。",
+      "from": "相同主星，只代表两张盘在这一项上相同。",
+      "to": "相同的只是这一项主星配置，双方怎样相处还没有被说明。"
+    },
+    {
+      "order": 26,
+      "slug": "ziwei-yinsha-weizhi-liuge-dizhi",
+      "note": "把抽象动机判断写成直白人话。",
+      "from": "一个人的动机则不能由“阴”或“煞”两个字判断。",
+      "to": "“阴煞”这个名字并不能告诉你某个人在想什么。"
+    },
+    {
+      "order": 27,
+      "slug": "ziwei-gonggan-shiergong-shige-tiangan",
+      "note": "结尾改成具体记法，不虚构固定宫名。",
+      "from": "把它记录清楚，后续追飞化路线时才不会把起点弄丢。",
+      "to": "笔记里同时写宫名与宫干，例如“某宫丙干”，不要只抄一个丙字。"
+    },
+    {
+      "order": 28,
+      "slug": "ziwei-shen-zichen-shuiju-bu-shi-shuierju",
+      "note": "换题：三合水局原稿与9月9日五行分类辨析意图接近，改写为十年与十二年周期。",
+      "from": "",
+      "to": "",
+      "replacementSlug": "ziwei-liunian-shinian-sihua-shiernian-gongwei"
+    },
+    {
+      "order": 29,
+      "slug": "ziwei-tongdu-bushi-tianwen-jiaodu",
+      "note": "去掉训诫口吻。",
+      "from": "历法或时辰校核是另一件事，不要被一个术语牵着做无关的精度推算。",
+      "to": "若另外怀疑时辰有误，再单独校核出生资料；这不属于“同度”的含义。"
+    },
+    {
+      "order": 30,
+      "slug": "ziwei-tianchu-koufu-bu-dengyu-pengren",
+      "note": "删除惯用比喻。",
+      "from": "把两者直接画上等号。",
+      "to": "从星名推出这项技能。"
+    },
+    {
+      "order": 25,
+      "oldSlug": "ziwei-hepan-fuqigong-tongxing-bu-dengyu-peidui",
+      "replacementSlug": "ziwei-tianji-fuqi-gaijihua-shouxin",
+      "reason": "通读最相近旧文后避免重复；完整替换稿另存",
+      "from": "一个人的行为，需要由行为说明",
+      "to": "化忌不能证明失约，化禄也不能替失约开脱"
+    },
+    {
+      "order": 27,
+      "oldSlug": "ziwei-gonggan-shiergong-shige-tiangan",
+      "replacementSlug": "ziwei-pojun-jiaoyou-tuandui-chongzu",
+      "reason": "通读最相近旧文后避免重复；完整替换稿另存",
+      "from": "组织关系和私人来往可能走两条路",
+      "to": "不再共事，还可能继续来往"
+    },
+    {
+      "order": 28,
+      "oldSlug": "ziwei-liunian-shinian-sihua-shiernian-gongwei",
+      "replacementSlug": "ziwei-tuixiu-hou-guanlu-fanpin-zhiyuan",
+      "reason": "通读最相近旧文后避免重复；完整替换稿另存",
+      "from": "有没有职责，比忙不忙更具体",
+      "to": "先看现在负责什么"
+    }
+  ]
+}

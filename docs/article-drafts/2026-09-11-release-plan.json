@@ -1,0 +1,161 @@
+{
+  "date": "2026-09-11",
+  "timezone": "Asia/Shanghai",
+  "offset": "+08:00",
+  "target": 30,
+  "prepared": 30,
+  "shortfall": 0,
+  "createdAt": "2026-09-11T08:31:01.555Z",
+  "slots": [
+    {
+      "time": "17:06",
+      "status": "prepared",
+      "slug": "ziwei-juri-guanlu-shumian-koutou-biaoda"
+    },
+    {
+      "time": "17:11",
+      "status": "prepared",
+      "slug": "ziwei-wufu-caibo-jingshou-qian-suoyouquan"
+    },
+    {
+      "time": "17:30",
+      "status": "prepared",
+      "slug": "ziwei-jiliang-qianyi-guwen-jianyi-juece"
+    },
+    {
+      "time": "17:39",
+      "status": "prepared",
+      "slug": "ziwei-liantan-qianyi-yingchou-gongzuo"
+    },
+    {
+      "time": "17:52",
+      "status": "prepared",
+      "slug": "ziwei-zisha-guanlu-zhuanjia-jingli"
+    },
+    {
+      "time": "18:00",
+      "status": "prepared",
+      "slug": "ziwei-qisha-tianfu-jiuhuo-zhuan-weihu"
+    },
+    {
+      "time": "18:17",
+      "status": "prepared",
+      "slug": "ziwei-enguang-tiankui-tiangui-tianyue-mingcheng"
+    },
+    {
+      "time": "18:30",
+      "status": "prepared",
+      "slug": "ziwei-tiancai-xing-bu-shi-zhishang-fenshu"
+    },
+    {
+      "time": "18:38",
+      "status": "prepared",
+      "slug": "ziwei-wutan-xingqu-bian-gongzuo"
+    },
+    {
+      "time": "18:45",
+      "status": "prepared",
+      "slug": "ziwei-jiju-guanlu-fangan-fanfu-xiugai"
+    },
+    {
+      "time": "19:04",
+      "status": "prepared",
+      "slug": "ziwei-shisi-zhuxing-ershisi-tonggong-zuhe"
+    },
+    {
+      "time": "19:10",
+      "status": "prepared",
+      "slug": "ziwei-konggong-shuliang-ling-er-si"
+    },
+    {
+      "time": "19:29",
+      "status": "prepared",
+      "slug": "ziwei-duixing-bu-dengyu-duigong"
+    },
+    {
+      "time": "19:39",
+      "status": "prepared",
+      "slug": "ziwei-xingxi-bushi-nanbei-dou-fenlei"
+    },
+    {
+      "time": "19:57",
+      "status": "prepared",
+      "slug": "ziwei-jieshen-nianjie-yuejie-fenbie"
+    },
+    {
+      "time": "20:04",
+      "status": "prepared",
+      "slug": "ziwei-yinian-jiyin-luji-tonggong"
+    },
+    {
+      "time": "20:12",
+      "status": "prepared",
+      "slug": "ziwei-dingnian-tongju-quanji-fengong"
+    },
+    {
+      "time": "20:30",
+      "status": "prepared",
+      "slug": "ziwei-tianliang-huake-fuhe-gongzuo"
+    },
+    {
+      "time": "20:34",
+      "status": "prepared",
+      "slug": "ziwei-taiyang-huaji-qianyi-daibiao-jigou"
+    },
+    {
+      "time": "20:57",
+      "status": "prepared",
+      "slug": "ziwei-tianfu-kongku-luku-wenfa"
+    },
+    {
+      "time": "21:04",
+      "status": "prepared",
+      "slug": "ziwei-daoshi-jian-xiangmu-fuzeren"
+    },
+    {
+      "time": "21:16",
+      "status": "prepared",
+      "slug": "ziwei-dushengzinv-xiongdigong-bu-gaiming"
+    },
+    {
+      "time": "21:30",
+      "status": "prepared",
+      "slug": "ziwei-zaihun-fuqigong-bu-zidong-huangong"
+    },
+    {
+      "time": "21:40",
+      "status": "prepared",
+      "slug": "ziwei-tianzhai-yougong-bu-dengyu-chaoxi"
+    },
+    {
+      "time": "21:53",
+      "status": "prepared",
+      "slug": "ziwei-tianji-fuqi-gaijihua-shouxin"
+    },
+    {
+      "time": "21:59",
+      "status": "prepared",
+      "slug": "ziwei-yinsha-weizhi-liuge-dizhi"
+    },
+    {
+      "time": "22:17",
+      "status": "prepared",
+      "slug": "ziwei-pojun-jiaoyou-tuandui-chongzu"
+    },
+    {
+      "time": "22:32",
+      "status": "prepared",
+      "slug": "ziwei-tuixiu-hou-guanlu-fanpin-zhiyuan"
+    },
+    {
+      "time": "22:42",
+      "status": "prepared",
+      "slug": "ziwei-tongdu-bushi-tianwen-jiaodu"
+    },
+    {
+      "time": "22:49",
+      "status": "prepared",
+      "slug": "ziwei-tianchu-koufu-bu-dengyu-pengren"
+    }
+  ]
+}

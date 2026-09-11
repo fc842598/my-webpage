@@ -1,0 +1,957 @@
+## 1. 太阳巨门在官禄宫：写得清楚，上台却说不出来，矛盾吗？
+slug: `ziwei-juri-guanlu-shumian-koutou-biaoda`
+
+正文草稿：
+报告写得明白，开会却紧张，看到“太阳巨门适合靠口才工作”的解读，很容易觉得自己不符合。能分析问题、能写清楚，和能当场讲出来，确实可能差得很远。
+
+### 巨门谈辨析，太阳谈公开表达的对象
+传统解读常把巨门与辨析、语言联系，把太阳与公开事务、服务他人联系。两星同坐官禄，可以据此讨论工作是否需要解释问题、让别人理解。这个范围包括书面答复、培训资料、技术说明，并不限于演讲。
+
+假设一位工程师很会写故障报告，客户追问时却需要时间整理措辞。他的工作确实依赖分析和说明，但不能把这段经历改写成“天生能言善辩”。文字允许修改，现场发言还需要临场组织与练习，两者的工作条件不同。
+
+### 化禄也没有替你完成训练
+若巨门另有化禄，传统上会进一步讨论语言或知识如何参与机会与收入；仍不能据此填上表达流利、外语好、销售成功等具体成绩。有没有独立主持过会议、能否回答追问，要看实际表现。
+
+排盘时先核对这是本命官禄的太阳巨门同宫，还是年度宫位转到该处，再记录自己主要靠哪一种表达完成工作。用“我的书面分析强，现场表达弱”来提问，比勉强接受“口才很好”的评语更有用。
+
+英文标题：Sun and Giant Gate in the Career Palace: writing well but struggling to speak
+英文描述：A Sun–Giant Gate Career Palace does not guarantee public-speaking skill. Separate analysis, written explanation and live delivery.
+英文正文：
+You can write a clear report and still freeze during a presentation. A traditional Sun–Giant Gate reading of the Career Palace does not make those experiences contradictory.
+
+### Explanation has several forms
+Giant Gate, or Ju Men, is associated with analysis and language. The Sun adds a public-facing or service-oriented theme. Together they can prompt a discussion of work that makes complicated matters understandable: technical documentation, written customer replies or training materials.
+
+Consider a hypothetical engineer whose fault reports are excellent but who needs time to answer questions. The work relies on explanation. That does not establish natural fluency in front of an audience. Writing permits revision; speaking adds time pressure and a different kind of practice.
+
+A Lu transformation on Giant Gate may bring earning opportunities into a traditional interpretation. It cannot establish a language qualification, sales record or presentation skill.
+
+Check whether the placement belongs to the natal Career Palace or a selected annual cycle. Then describe the actual communication task. A useful reading should accommodate the difference between writing and speaking rather than erase it. These associations are interpretive traditions, not tested measures of ability.
+
+---
+
+## 2. 武曲天府在财帛宫：经手的钱多，为什么自己的收入不高？
+slug: `ziwei-wufu-caibo-jingshou-qian-suoyouquan`
+
+正文草稿：
+公司账户上的数字很大，自己每月拿的仍是普通工资。武曲天府在财帛宫，不能把经手金额直接算成个人财富。你可能负责付款，却没有权利决定这笔钱用在哪里。
+
+武曲在传统斗数里常联系财务执行与资源取舍，天府常联系保管、配置与秩序。两星同宫，讨论的是怎样接触和处理钱。是否持有资产、收入归谁，需要另外说明，盘面不会替一笔款项确认所有权。
+
+### 同样管钱，三种处境
+下面是假设的职业比较。出纳按制度付款，项目负责人决定一部分预算，店主承担经营收支。三个人都接触资金，但授权范围、承担的结果和收入来源并不一样。把他们都概括成“会管钱，所以有钱”，就漏掉了最重要的差别。
+
+若武曲化权，可以沿着财务责任、执行压力讨论；并不能因此把公司的预算变成个人可以支配的钱。若见化禄，也要把收入机会和已经取得的收入分开，不能仅凭一个标记写出金额。
+
+### 回到命盘时，补上工作身份
+先看本命财帛的组合，再结合官禄描述实际职务。谈某年变化时注明是哪一年的财帛宫，不把年度新增责任写成终身财富评价。
+
+可以把问题改成：“我负责资金流程，但没有预算决定权，这个组合该怎样理解？”这样讨论的是具体处境，也更容易看出解读有没有把别人的钱算到你头上。
+
+英文标题：Wu Qu and Tian Fu: handling money is different from owning it
+英文描述：Read Wu Qu and Tian Fu in the Wealth Palace without confusing financial responsibility, company funds and personal income.
+英文正文：
+A large company account is not your personal wealth. Wu Qu and Tian Fu in a Chinese astrology chart's Wealth Palace do not remove that distinction.
+
+Wu Qu traditionally concerns financial execution and choices about resources. Tian Fu adds custody, organization and allocation. Those associations can describe contact with money without establishing ownership.
+
+### Three people, different authority
+A hypothetical payments clerk follows approved instructions. A project manager controls part of a budget. A shop owner bears the business results. All three handle funds, but their authority and personal compensation differ.
+
+A Quan transformation on Wu Qu can invite discussion of responsibility or pressure around resources. It does not make an employer's budget available for personal use. A Lu label likewise does not establish an amount of earned income.
+
+Describe your role alongside the natal Wealth and Career Palaces. If the question concerns a particular year, identify that annual layer separately. “I administer payments but cannot approve the budget” is much more informative than “I handle lots of money.” The distinction prevents a symbolic reading from inflating your actual financial position.
+
+---
+
+## 3. 天机天梁在迁移宫：顾问给建议，和替客户做决定有多远？
+slug: `ziwei-jiliang-qianyi-guwen-jianyi-juece`
+
+正文草稿：
+客户经常来问意见，却很少照着做，未必说明建议没有价值。若用天机天梁在迁移宫讨论外部合作，要看对方只请你提出方案，还是也让你负责执行。
+
+### 谋划和审慎，可以出现在顾问工作里
+传统上，天机常从推演、调整来解释，天梁常从经验、原则和照护来解释。两者放在迁移宫，可以作为讨论外部咨询角色的一种角度。不过，有这个组合并不自动具备顾问资格，更不能反过来认定客户应该服从。
+
+假设有人为一家工厂提出流程建议，管理层认可分析，但暂时没有预算和人手。他完成的是诊断与方案工作，项目没有实施还可能受组织条件限制。此时把“没落地”全部归成自己不受重视，解释就少了一层事实。
+
+### 看合作怎样结束
+同样是给建议，一次咨询、长期顾问、受聘负责改造，承担的义务不同。官禄宫所讨论的职务，可以帮助梳理自己的实际工作；迁移宫的外部关系不能代替任职说明。把客户、雇主和听过一次意见的人混成同一类贵人，也容易误读。
+
+提问时写清项目在哪一步停下、谁拥有决定权。若看年度机会，再注明流年迁移与本命迁移是否落在同一位置。盘上的谋划主题，只有放回这些具体条件，才不会变成一句空泛的“适合当军师”。
+
+英文标题：Tian Ji and Tian Liang in Travel: an adviser is not the decision-maker
+英文描述：Explore an advisory interpretation of Tian Ji and Tian Liang without mistaking expertise for authority over a client.
+英文正文：
+A client can value your advice and choose not to implement it. For a Tian Ji–Tian Liang Travel Palace reading, distinguish the service you provide from the authority you hold.
+
+Tian Ji traditionally suggests planning and adaptation; Tian Liang adds experience and principles. An advisory role is one possible modern interpretation of the combination in external dealings. The placement itself does not grant professional competence or control over a client.
+
+Imagine a consultant who identifies a factory's workflow problem. Management accepts the analysis but lacks staff and funding to act. The diagnosis and the implementation have different owners. Calling the whole outcome “a failure to be valued” overlooks that distinction.
+
+### Define the engagement
+A single consultation, a continuing advisory role and a job leading the redesign carry different responsibilities. Use the Career Palace discussion to describe your actual role, alongside the Travel Palace's external relationships.
+
+For an annual question, also identify which time layer supplies the Travel Palace. State where the project stopped and who could authorize the next step. That gives a traditional interpretation something concrete to address instead of simply calling you a strategist.
+
+---
+
+## 4. 廉贞贪狼在迁移宫：应酬多，能说明私人感情复杂吗？
+slug: `ziwei-liantan-qianyi-yingchou-gongzuo`
+
+正文草稿：
+做活动、跑客户、维护渠道，日程里常有饭局。廉贞贪狼在迁移宫的解读若直接写成“感情关系复杂”，就把工作场合和私人关系混在一起了。
+
+### 先看活动发生在哪种关系里
+廉贞与贪狼的传统象意涉及关系互动、欲望、表现和社交，具体轻重各家说法不同。迁移宫用于讨论外部环境时，可以问怎样接触人、怎样参与场面，不能只凭热闹就推定亲密关系的数量。
+
+一个假设例子：品牌活动的执行人员每天接触很多嘉宾，下班后却很少主动社交。工作要求他热情，不代表他在私人生活中也追求同样的密度。若这一点和解读不符，应保留事实，不必再找隐藏故事把话圆回来。
+
+### 桃花词汇不能代替行为证据
+参加应酬时被人关注，不能证明这个人违背了伴侣间的约定。即使另外会到天姚或咸池，仍不能从星名跳到对某个人的忠诚判断。讨论伴侣关系，需要当事人的交往事实，也需要说明夫妻宫及相关宫位，而不是拿迁移一宫给人定性。
+
+若应酬只在某一年明显增加，先核对是否因职务改变，再区分本命与流年迁移。把“今年负责客户活动”写进问题，比笼统问“我是不是桃花很重”更容易得到清楚的回答。
+
+英文标题：Lian Zhen and Tan Lang in Travel: work socializing and private relationships
+英文描述：Separate professional visibility from private relationship claims when reading Lian Zhen and Tan Lang in the Travel Palace.
+英文正文：
+Client dinners and networking events belong to many jobs. They do not establish a complicated private love life.
+
+Lian Zhen and Tan Lang carry traditional associations with social interaction, desire and presentation. In the Travel Palace, these can frame questions about participation in an external environment. Schools differ in emphasis; none of these labels supplies evidence about a person's conduct.
+
+Consider a hypothetical event coordinator who meets many guests but prefers quiet evenings alone. Being sociable is part of the role. It need not describe private preferences.
+
+### Keep claims separate
+Attracting attention, attending events and breaking an agreement with a partner are different claims. Additional attraction-related stars cannot bridge that gap. A relationship discussion needs the actual circumstances, not a verdict derived from the Travel Palace.
+
+If the social workload increased during one year, identify the job change and distinguish the annual Travel Palace from the natal one. “My new role includes client events” is a clearer starting point than a broad question about romantic luck.
+
+---
+
+## 5. 紫微七杀在官禄宫：不带团队的资深专家，也有主导空间吗？
+slug: `ziwei-zisha-guanlu-zhuanjia-jingli`
+
+正文草稿：
+没有下属，就算不上“有主导力”吗？紫微七杀在官禄宫，常被直接写成领导岗位。这样的说法漏掉了不少专业工作：有些人不负责排班和绩效，却能决定技术标准、否决不合格方案。
+
+### 主导哪一件事
+紫微的统筹与七杀的决断，是传统解释这组星时常用的方向。放进职业问题，要继续问主导的对象是什么。管理人员和审核专业标准，授权范围可能完全不同。
+
+假设一位资深工程师负责关键设计审核，行政上没有直属员工；另一位主管管理十个人，却不能改变产品设计。前者可能有专业决定权，后者有人事管理责任。这个比较用于说明职务差异，不是根据星曜替两人排高低。
+
+### 专业权限也有范围
+即使紫微另见化权，仍应核对实际授权，而不是把每次提出意见都解释成掌权。能建议、能否决、能决定最终方案，代表不同程度的职责。辅弼等传统辅佐主题，也可以讨论协作条件，不必硬换算成下属人数。
+
+把任职说明带回命盘：先核对本命官禄组合，再谈大限或流年是否对应职责变化。一个长期走专业路线的人，无须为了符合“领导命”而勉强把管理岗设成人生目标。
+
+英文标题：Zi Wei and Seven Killings in Career: authority without managing people
+英文描述：A Zi Wei–Seven Killings Career Palace can be discussed through technical decisions as well as management. Define the actual scope of authority.
+英文正文：
+You can hold technical authority without having direct reports. A Zi Wei–Seven Killings Career Palace reading should distinguish those forms of responsibility.
+
+Traditional readings associate Zi Wei with coordination and Seven Killings with decisive action. The useful question is what the person can actually decide: staffing, technical standards or a particular project.
+
+A hypothetical senior engineer may approve critical designs while managing no employees. A line manager may supervise ten people without authority to change those designs. These are different roles, not a ranking of personal worth.
+
+### Describe the permission you have
+Recommending, vetoing and making the final decision are separate powers. Even a Quan transformation does not establish which one a job grants. Support-star symbolism likewise cannot be converted into a headcount of subordinates.
+
+Check the natal Career Palace first, then specify any decade or annual layer used to discuss a change in duties. A specialist career does not need to be recast as people management to fit an interpretive label.
+
+---
+
+## 6. 七杀坐命、对宫天府：从救火岗位转到日常维护，怎么看适应？
+slug: `ziwei-qisha-tianfu-jiuhuo-zhuan-weihu`
+
+正文草稿：
+以前哪里出问题就被派去处理，现在改做巡检、交接和日常维护，反而有些不习惯。七杀坐命的人，也不必把这种转换理解成“工作太稳定，违背了命格”。
+
+七杀独坐时对宫为天府，是常见主星排布中的位置关系。它让解读可以同时考虑决断与资源秩序，不能只取七杀的冲劲，把天府从讨论里删掉。
+
+### 救急本领怎样进入日常工作
+下面是假设的岗位变化。一位设备人员擅长判断突发故障，调岗后主要写维护规程。如果把过去的处理经验整理为检查步骤，他用的仍是判断问题的能力，只是产出从修好一次，变成降低同类故障反复出现的机会。
+
+不适应也可能很具体：工作反馈变慢、很少有人当场道谢、成绩不如抢修直观。岗位考核若只记录抢修次数，预防工作便可能不容易被看见；这需要先查工作制度。
+
+### 对宫天府不等于必有一个稳重搭档
+天府在迁移宫可用来讨论外部的制度、资源与秩序，未必落实成某位固定人物。说“出去一定有人替你收拾残局”就超过了位置关系能说明的范围。
+
+看这次调岗，先标明本命命迁组合，再看实际变动发生在哪个大限、流年。问清减少了什么工作、增加了什么责任，才有办法比较新旧岗位，而不是只用“动”与“静”判适合。
+
+英文标题：Seven Killings facing Tian Fu: moving from crisis work to maintenance
+英文描述：Use the Seven Killings–Tian Fu axis to discuss a change in work rhythm, without assuming that stability is incompatible with the chart.
+英文正文：
+Moving from emergency repairs to routine maintenance can feel unfamiliar. Seven Killings in the Life Palace does not make stable work a contradiction.
+
+In the common main-star arrangement, a solitary Seven Killings faces Tian Fu. The axis allows a traditional discussion of decisiveness alongside order and resources, rather than treating urgency as the person's only capacity.
+
+### A different use for the same experience
+Imagine a technician who used to troubleshoot breakdowns and now writes maintenance procedures. Knowledge from emergencies can inform repeatable checks. The output has changed from a visible rescue to preventing repeated failures.
+
+Slower feedback or less public appreciation may explain the adjustment better than a star label. If evaluations count only emergency repairs, preventive work may become less visible. Check how the job is assessed.
+
+Tian Fu opposite the Life Palace does not promise a particular colleague who will manage everything for you. For a timing question, label the natal axis and the relevant decade or annual cycle separately. Describe which tasks disappeared and which responsibilities were added before deciding what the change means.
+
+---
+
+## 7. 天贵就是天钺吗？命盘里的四个贵人星名这样分
+slug: `ziwei-enguang-tiankui-tiangui-tianyue-mingcheng`
+
+正文草稿：
+天贵、天钺都被介绍成贵人星，名字又接近，容易误认成同一颗。它们不是异名。天魁与天钺是一组常说的辅曜，恩光与天贵则是另一组杂曜。
+
+### 分类相近，安法不同
+常见排法中，魁钺的位置由生年天干决定；恩光、天贵还要用到昌曲位置与农历生日。两组的计算依据不同，不能把“天贵在这里”抄成“天钺在这里”，再套用魁钺的格局条件。
+
+假设同年出生的两个人，完整资料不同，可以有相同的魁钺地支位置，却不一定有相同的恩光、天贵位置。即便地支相同，宫名也可能不同，因为命宫位置还受月时影响。这是排布差异，不是比较谁获得更多帮助。
+
+### 不靠同义词凑齐组合
+资料里写“魁钺会照”，应寻找天魁、天钺本身。只找到天贵和恩光，不能因为都有贵人含义，就认定条件已经满足。反过来，也没必要因杂曜等级不同，把现实中一次帮助说得不重要；分类讲的是解盘用法，现实中的帮助仍要按实际事情理解。
+
+排盘时保留全名，记下落在哪个地支、属于本命还是流曜。若软件只显示一个“贵”字，先查说明。名称没认清，后面谈同宫、会照和格局，都会跟着错位。
+
+英文标题：Tian Gui is not Tian Yue: four distinct Zi Wei Dou Shu star names
+英文描述：Distinguish Tian Kui, Tian Yue, En Guang and Tian Gui. Similar auspicious meanings do not make them alternative names for one star.
+英文正文：
+Tian Gui and Tian Yue are different stars. Their similar names and helpful associations do not make them interchangeable.
+
+Tian Kui and Tian Yue form one commonly discussed pair. En Guang and Tian Gui form another. In common placement rules, the first pair uses the birth-year stem; the second also depends on Wen Chang or Wen Qu and the lunar birth date.
+
+Two people born in the same year can therefore share Kui–Yue branch positions without sharing En Guang–Tian Gui positions. Even matching branches need not have matching palace names, because the Life Palace also depends on birth month and hour.
+
+### Read the full name
+If a configuration requires Tian Kui and Tian Yue, finding En Guang and Tian Gui does not satisfy it. A broad label such as “helpful stars” cannot substitute one pair for another.
+
+Keep each full name, branch position and time layer in your notes. If a display abbreviates a star to Gui, check its legend before interpreting the placement. This is a naming and calculation distinction, not a way to measure the value of help received in real life.
+
+---
+
+## 8. 命宫有天才星，为什么学习成绩仍然普通？
+slug: `ziwei-tiancai-xing-bu-shi-zhishang-fenshu`
+
+正文草稿：
+看到“天才”两个字，很容易以为命盘在给智力打分。天才是杂曜名称，不能据此断定智商高、学什么都快，更不能拿它解释某次考试应该得多少分。
+
+传统解读常把这颗星联系到领悟、机敏或才思。这类描述很宽。读题速度、知识积累、练习熟悉度，以及能否按要求写出答案，都是不同的学习条件，不能由一个名称全部包办。
+
+### 把“学得快”说清楚
+假设一个学生很快理解数学课堂的例题，却经常在综合题中漏条件；另一个理解较慢，但练习后答题稳定。前者可以说初次理解快，不能因此认定整体成绩必然更好。这是假设的学习比较，不是两张已验证的命盘。
+
+若同宫还见文昌，也可以在传统语境下讨论条理与书面表达，但“多一颗文星”并不等于考试加几分。没有这颗杂曜的人，同样可以通过学习取得好成绩。
+
+### 不用成绩替星名找借口
+本命星曜的象意和某年的考试结果要分开。不能成绩好就说星生效，成绩普通又临时补一句“才华还没觉醒”，这样的说法无论考成怎样都能套用，却没有解释成绩。
+
+提问时描述具体学科和困难：理解、记忆还是作答。命盘若只能重复“你其实很聪明”，没有回应这些差别，那句话并没有增加多少信息。
+
+英文标题：Tian Cai in the Life Palace: a star name is not an intelligence score
+英文描述：Understand Tian Cai as a minor-star term without turning it into a promise of academic results or a judgment about intelligence.
+英文正文：
+Tian Cai literally suggests talent, but it is the name of a minor star, not an intelligence score or an academic forecast.
+
+Traditional descriptions connect it with quick understanding or ingenuity. School performance also involves accumulated knowledge, practice and following the question's requirements. A broad symbolic association does not settle those separate issues.
+
+### Specify the learning task
+Imagine a student who quickly understands a worked example but misses conditions in unfamiliar problems. Another needs longer initially and later answers consistently. Quick first comprehension does not establish stronger overall results. This is an illustrative comparison, not a verified chart case.
+
+Wen Chang alongside Tian Cai may add a traditional theme of structured expression. It still cannot be converted into examination points. People without the minor star in Life can also achieve strong results.
+
+Keep natal symbolism separate from an annual exam outcome. Describe whether the difficulty involves understanding, recall or producing an answer. “You are secretly brilliant” offers little if it never addresses the actual task.
+
+---
+
+## 9. 武曲贪狼在官禄宫：爱好变成工作后，为什么反而不喜欢了？
+slug: `ziwei-wutan-xingqu-bian-gongzuo`
+
+正文草稿：
+喜欢摄影，接单后却厌烦修图和催进度；喜欢烘焙，开工后每天做同一种产品又觉得疲惫。这些假设经历，可以用来讨论武曲贪狼在官禄宫，但不能简单归结为“不适合这份工作”。
+
+贪狼的传统象意常涉及兴趣、探索与交际，武曲则常涉及执行、取舍与实际成果。两星同宫时，可以分别问：你喜欢做哪一段，工作又要求你反复完成哪一段。爱好允许按自己的心情做，工作还包含重复、期限以及别人的标准。
+
+### 分清不喜欢的是哪一段
+拍摄、修图、与客户沟通、管理订单，可能由不同的人擅长。开始厌烦其中一项，不代表过去的兴趣是假的。也不能因为贪狼被称为多才，就要求自己同时把所有环节做好。
+
+若讨论贪狼化禄，可以关注兴趣怎样参与收入机会；若讨论武曲化权，可以追问成果与责任怎样分配。两种说法都必须注明四化来源，不能把不同年份的标记拼成一个固定本命结论。
+
+### 用实际变化检验解释
+列出变成工作后新增的任务，而不只是说“我变了”。看本命官禄时讨论长期做事方式，看大限或流年时再讨论阶段变化。星曜无法替人作职业满意度判断，但清楚区分探索的乐趣和按约交付的劳动，可以避免把正常的工作摩擦解释成命格不合。
+
+英文标题：Wu Qu and Tan Lang in Career: when a hobby becomes paid work
+英文描述：Explore the difference between curiosity and repeated delivery when a hobby becomes a job in a Wu Qu–Tan Lang Career Palace reading.
+英文正文：
+Enjoying photography is different from delivering edited images on a client's deadline. A hobby can remain interesting while parts of the paid workflow become tiring.
+
+In traditional readings, Tan Lang suggests curiosity and social exploration; Wu Qu adds execution and attention to results. Their Career Palace combination can frame that tension without declaring the occupation unsuitable.
+
+### Identify the changed task
+Shooting, editing, communicating with customers and administering orders are separate activities. Disliking one does not make the original interest false. Nor does a “versatile” star label require excellence at every part of a small business.
+
+A Lu label on Tan Lang may invite discussion of how an interest connects with income opportunities. Quan on Wu Qu raises a different question about responsibility for results. Identify each transformation's time source rather than combining unrelated years into a natal claim.
+
+Describe the tasks added when the hobby became work. That distinction can make the reading specific, while actual experience remains the basis for understanding job satisfaction.
+
+---
+
+## 10. 天机巨门在官禄宫：方案总在修改，怎样分清推敲和返工？
+slug: `ziwei-jiju-guanlu-fangan-fanfu-xiugai`
+
+正文草稿：
+一份方案改到第七版，未必是想得太多。可能前六版解决了不同的问题，也可能需求一直没定。天机巨门在官禄宫，若只写“脑子灵活、容易纠结”，读者仍不知道自己遇到的是哪一种。
+
+### 每次修改增加了什么
+传统上，天机联系方案和变化，巨门联系辨析、质疑与说明。用这组星讨论工作，可以追踪一次修改的原因：出现新数据、对方改变要求，还是同一个疑问始终没人决定。
+
+假设设计人员先按功能调整，再根据现场尺寸修正，这是获得新信息后的推敲。若尺寸和功能都没变，只因不同负责人轮流提出相反意见，就涉及决策机制。两种情况都很忙，却不能用同一句性格描述解释。
+
+### 不把所有质疑都算自己的问题
+巨门化忌的传统解释可能涉及表达、争议上的牵挂，但仍需确认是哪一层四化、落在什么宫。不能看到忌，就把组织需求混乱全部说成个人爱争辩。
+
+复看命盘时，把最近一次返工经过写清：谁提出变更、信息有没有更新、谁最后确认。然后再讨论本命官禄的思考方式与当年职务变化。若一个解释分不出有效推敲和无效往返，就还没有回答这七次修改到底花在了哪里。
+
+英文标题：Tian Ji and Giant Gate in Career: refining a plan or repeating the work?
+英文描述：A Tian Ji–Giant Gate reading becomes more useful when revisions are tied to new information, changed requirements or unresolved decisions.
+英文正文：
+Seven revisions do not necessarily mean overthinking. Each may incorporate new information, or the decision process may be unresolved.
+
+Tian Ji traditionally concerns planning and change; Giant Gate adds questioning and explanation. In the Career Palace, these themes become more useful when you identify why a document changed.
+
+### What did the revision add?
+Imagine a designer updating a plan after receiving accurate site measurements. That is different from several managers requesting conflicting versions without changing the underlying requirements. Both consume time; they have different causes.
+
+A Ji transformation on Giant Gate should not turn every organizational problem into a claim that the worker is argumentative. Identify the transformation's layer and the relevant palace before discussing its traditional meaning.
+
+Describe who requested the change, whether information was new and who could approve the result. Then compare that situation with the natal Career Palace and any annual changes in the role. A reading that cannot distinguish useful refinement from repeated work leaves the central question unanswered.
+
+---
+
+## 11. 十四主星能任意配对吗？常见安法只有这24种同宫组合
+slug: `ziwei-shisi-zhuxing-ershisi-tonggong-zuhe`
+
+正文草稿：
+看到两颗主星的名字连在一起，先别急着理解性格。它们可能是同宫，也可能只在三方会照。按常见十四主星安法，真正能够同宫的双星组合共有24种，不是任取两颗都成立。
+
+### 从两组排布核对
+紫微星系内部的六颗星相对位置固定，天府星系内部的八颗星也是如此。同一星系中的两颗主星不会挤进同一个本命宫位。两系相遇，才会出现双主星同宫。
+
+可以按紫微星系逐颗查：紫微可与天府、贪狼、天相、七杀、破军同宫；天机可与太阴、巨门、天梁同宫；太阳可与太阴、巨门、天梁同宫。武曲可与天府、贪狼、天相、七杀、破军同宫；天同可与太阴、巨门、天梁同宫；廉贞可与天府、贪狼、天相、七杀、破军同宫。
+
+这份表只列允许的组合，不表示它们能落在任意地支，也没有比较吉凶。
+
+### 遇到“武曲天机同宫”怎样处理
+武曲和天机属于同一排布星系，不能在这一安法的本命盘中同宫。如果解读出现这个说法，应回查原盘：是否把会照写成同宫，是否混入借星文字，或者只是文章写错。不要为了接受一句断语，临时创造一个格局。
+
+确认确实同宫后，才继续看地支、宫名和四化。谈两颗星“有关联”时也保留准确用词；把三方关系说清楚，不需要再改叫同宫。
+
+英文标题：The 24 possible main-star pairs in Zi Wei Dou Shu
+英文描述：The fourteen main stars cannot pair arbitrarily. See the 24 possible natal co-locations under the common placement system.
+英文正文：
+The fourteen main stars cannot form arbitrary pairs in one natal palace. Under the common placement system, there are 24 possible two-star co-locations.
+
+### The permitted pairs
+The six stars in the Zi Wei sequence keep fixed relative positions, as do the eight in the Tian Fu sequence. Co-location happens between sequences, not within one.
+
+Zi Wei can pair with Tian Fu, Tan Lang, Tian Xiang, Seven Killings or Po Jun. Tian Ji pairs with Tai Yin, Ju Men or Tian Liang. The Sun has the same three possible partners. Wu Qu pairs with Tian Fu, Tan Lang, Tian Xiang, Seven Killings or Po Jun. Tian Tong pairs with Tai Yin, Ju Men or Tian Liang. Lian Zhen has the same five possible partners as Wu Qu.
+
+This is an eligibility list, not a claim that every pair can occupy every branch.
+
+### A useful error check
+Wu Qu and Tian Ji belong to the same sequence. A claim that they share one natal palace needs correction or clarification: the writer may mean an aspect, borrowed-star display or something else. Confirm the geometry before interpreting personality. A valid connection does not need to be renamed co-location.
+
+---
+
+## 12. 为什么有人的紫微命盘没有空宫，有人却有四个？
+slug: `ziwei-konggong-shuliang-ling-er-si`
+
+正文草稿：
+朋友的十二宫都有主星，你的盘里却空了四格，不是少排了四颗星。按常见十四主星排布，空宫数量可以是0、2或4，差别来自双主星聚在一起的数量。
+
+### 十四颗星怎样分到十二宫
+这里的空宫，指没有十四主星，不是格子里一个字都没有。若有两宫各放两颗主星，余下十颗分到十宫，十二宫就都被占满。若有六宫各放两颗，另外两颗各占一宫，总共只占八宫，就有四宫没有主星。
+
+把紫微可能所在的十二个地支逐一排出，可以核对：紫微在寅、申时没有空宫；在巳、亥时有四个；其余八个位置有两个。这是本次按固定星序逐项计算的位置结果，和命宫落在哪里是两个问题。
+
+### 空宫数不是人生缺项数
+四个空宫不等于四个领域没有发展，也不等于比零空宫少四份资源。星的总数相同，只是分布不同。解读一个空宫时，还会讨论本宫辅曜、对宫及三方关系，不能按空格数量给整张盘评分。
+
+若你的数量不在上述范围，先检查有没有把借入主星算作原有主星，或把太阴旁的化科当成一颗新主星。确认只数本命十四主星，再讨论具体宫位，不用拿空宫数量和朋友比命好坏。
+
+英文标题：Why Zi Wei Dou Shu charts can have zero, two or four empty palaces
+英文描述：Count main-star placements rather than judging a chart by empty palaces. The common arrangement produces zero, two or four.
+英文正文：
+A chart with four empty palaces has not lost four stars. Under the common main-star arrangement, a natal chart can have zero, two or four palaces without a main star.
+
+### Count occupied locations
+If two palaces each hold a pair and ten hold a single star, fourteen stars fill all twelve palaces. If six palaces hold pairs and two hold single stars, only eight palaces are occupied, leaving four empty.
+
+Enumerating the twelve possible Zi Wei branch positions gives zero empty palaces at Yin or Shen, four at Si or Hai, and two at the other eight positions. This calculation concerns Zi Wei's branch, not the branch of the Life Palace.
+
+“Empty” here excludes minor stars and means no natal main star. It is not a count of missing opportunities or undeveloped parts of life.
+
+If your count differs, check whether borrowed stars or transformation labels were counted as original main stars. Once the layout is clear, interpret the relevant palace and its relationships. The empty-palace total is not a score for comparing two people's lives.
+
+---
+
+## 13. 紫微斗数的“对星”，是不是一定分居对宫？
+slug: `ziwei-duixing-bu-dengyu-duigong`
+
+正文草稿：
+“对星”中的“对”，通常是在说成对讨论的星曜；“对宫”中的“对”，是在说相隔六个地支的宫位。两个词看着接近，不能当成同一个条件。
+
+### 用两组星看差别
+红鸾与天喜按常见安法固定相对，因此它们既是常一起讨论的对星，也确实位于对宫。魁钺则不总如此：甲年天魁、天钺在丑未，是对宫；乙年在子申，便不是对宫。不能从甲年例子推成所有年份的共同规则。
+
+昌曲、辅弼也常被成对讨论，但具体位置需按安法核对，可能同宫、夹宫或形成其他关系。“昌曲成对”本身没有说明这一次属于哪一种。
+
+### 配对解释不等于多一条连线
+假设你在命宫看见其中一颗，另一颗不在命宫的三方四正内，不能因两者是一对，就自动把另一颗算成会命。若某个派别另有对星呼应的解释，也应把采用的方法写出来，别与几何上的三合混用。
+
+抄命盘笔记时分成两句话就够了：“这是哪一组星；它们实际位于哪两个地支。”随后才谈同宫、会照或夹宫。例如“甲年魁钺，丑未相对”，名称和位置便都记清了。
+
+英文标题：Paired stars do not necessarily occupy opposite palaces
+英文描述：Distinguish a traditional star pair from the geometric relationship of opposite palaces, using Hong Luan–Tian Xi and Kui–Yue examples.
+英文正文：
+A traditional “star pair” is not the same thing as two stars occupying opposite palaces.
+
+Hong Luan and Tian Xi occupy opposite locations under the common rule. Tian Kui and Tian Yue do not always do so: in a Jia year their Chou–Wei positions are opposite, while the Zi–Shen positions used for a Yi year are not.
+
+Wen Chang–Wen Qu and Zuo Fu–You Bi are also discussed as pairs. The name alone does not specify whether they share a palace, flank one or have another relationship.
+
+### Keep the geometry explicit
+Finding one member in the Life Palace does not automatically bring its partner into Life's principal aspect network. If a school discusses a separate paired-star interaction, label that method rather than silently treating it as a geometric aspect.
+
+Record two facts: which pair you are discussing, and the two actual branch positions. Then use precise terms for co-location, opposition or flanking. This separates an interpretive grouping from a location on the chart.
+
+---
+
+## 14. 天府星系就是南斗星吗？两种星曜分类别混成一张表
+slug: `ziwei-xingxi-bushi-nanbei-dou-fenlei`
+
+正文草稿：
+安星资料说“天府星系有八颗”，另一本书又列“南斗六星”，并不意味着其中一本少算两颗。两处用的是不同分类。
+
+### 星系在安星时指什么
+常见十四主星排法，先定紫微，再按固定间隔排出天机、太阳、武曲、天同、廉贞；另由天府的位置排太阴、贪狼、巨门、天相、天梁、七杀、破军。这里的两组，是计算上的排布序列。
+
+南斗、北斗或中天等称谓，则来自传统星曜归属。它们不是把这两条计算序列换个名字。阅读某颗星时，看到它属于天府排布序列，不能因此自行补写“它属于南斗”。
+
+### 查资料时怎样避免串表
+如果问题是两颗主星能否同宫，应查排布关系。如果问题是某本书怎样解释星性、斗分或象意，应沿用那本书的分类，并说明版本。把后者拿来代替前者，会出现“同属某斗，所以不能同宫”之类没有依据的推论。
+
+命盘软件将主星排出来，是按位置规则完成计算；并不是观测出生那晚某一组天体的实际坐标。记住当前讨论的是计算序列还是传统归属，就能知道每个数字在数什么。
+
+英文标题：The Tian Fu placement sequence is not the same as the Southern Dipper category
+英文描述：Zi Wei and Tian Fu placement sequences describe calculation order. Northern and Southern Dipper labels belong to a different classification.
+英文正文：
+The eight-star Tian Fu placement sequence and the traditional Southern Dipper classification answer different questions. Their totals need not match.
+
+### Placement sequences describe calculation
+The common system positions Zi Wei and then places Tian Ji, the Sun, Wu Qu, Tian Tong and Lian Zhen at fixed offsets. A separate sequence starting from Tian Fu places Tai Yin, Tan Lang, Ju Men, Tian Xiang, Tian Liang, Seven Killings and Po Jun.
+
+Northern Dipper, Southern Dipper and other traditional affiliation labels are a different classification. Membership of the Tian Fu calculation sequence does not by itself establish Southern Dipper membership.
+
+Use placement rules to check whether two stars can share a palace. Use a named text's classification when discussing its symbolic terminology. Do not replace one with the other to invent a co-location rule.
+
+These sequences calculate symbolic chart positions; they are not observations of astronomical coordinates at birth. Stating which classification a source uses resolves the apparent disagreement between its counts.
+
+---
+
+## 15. 两个排盘的解神位置不同：先查年解，还是月解？
+slug: `ziwei-jieshen-nianjie-yuejie-fenbie`
+
+正文草稿：
+同一份出生资料，两个盘上的解神位置不同，不必立刻改生日。有的系统区分月解与年解，有的只显示其中一种，名称却可能都简写为解神。
+
+### 先核对用于计算的资料
+常见月解规则按农历月份分组：正二月在申，三四月在戌，五六月在子，七八月在寅，九十月在辰，十一十二月在午。若两个人分别生于正月和二月，仅这条规则所得的位置就相同。
+
+年解则按所取年份的地支定位。软件可能将它显示在流曜层；也可能在介绍里另列年系解神。要看清所取的是出生年还是正在查看的年份，不能只比较屏幕上两个“解”字。
+
+### 位置不同，不足以判谁排错
+先记录全称、计算年份或月份、显示层次，再比较安法。输入资料完全一致，但采用的解神种类不同，输出当然不必相同。如果两边明确采用同一规则且资料相同，再查软件实现才有意义。
+
+传统上解神常带有缓解、解纷的象意，但这并不意味着任何煞忌都被抵消。查清名称之后，还要回到所讨论的宫位与事情。把年解、月解分开记录；同样带“解”字，不代表现实里会得到几次帮助。
+
+英文标题：Why Jie Shen can appear in different positions: annual and monthly rules
+英文描述：Check which Jie Shen placement rule a chart uses before treating different positions as a birth-data error.
+英文正文：
+Two charts can display Jie Shen in different places because they use different placement rules. Changing the birth date is not the first step.
+
+One common monthly rule groups lunar months in pairs: months 1–2 at Shen, 3–4 at Xu, 5–6 at Zi, 7–8 at Yin, 9–10 at Chen and 11–12 at Wu. An annual version uses a year branch instead.
+
+### Identify the input and layer
+Check whether a display means the monthly version, a birth-year calculation or a selected year's annual star. Some interfaces abbreviate these labels, making unlike calculations look comparable.
+
+Only after both systems use the same rule and inputs does a placement difference suggest an implementation issue.
+
+Jie Shen traditionally carries a theme of easing or resolving difficulties. Its name does not guarantee that adverse indications cancel out. Avoid adding several differently calculated “resolving” stars as if each were an independent promise. First establish what each label represents, then return to the actual question.
+
+---
+
+## 16. 乙年天机太阴同宫见禄忌：计划可行，为什么仍放不下心？
+slug: `ziwei-yinian-jiyin-luji-tonggong`
+
+正文草稿：
+按常见四化表，乙干使天机化禄、太阴化忌。因此天机太阴同宫时，同一层乙干四化会在这个宫里同时标出禄与忌。它们分别属于两颗星，并不是天机自己又禄又忌。
+
+### 先分哪一部分有进展
+传统象意里，天机涉及谋划与调整，太阴常涉及积累、细致经营与安全感。用来讨论一件具体事情时，可以把方案的进展和对稳定性的担心分开，不必急着给整宫下“好”或“坏”的结论。
+
+例如一个假设的工作选择：新岗位的内容适合已有技能，交接和试用安排却还不清楚。技能适合已经有了依据，交接安排则还需要向对方了解。不能因为盘上有禄就说疑问已经解决，也不能因见忌就宣告机会是假的。
+
+### 乙年出生，与走到乙年不同
+若采用的是生年乙干，讨论的是本命四化；若只是正在查看乙干流年，便是当年的标记，宫位也要注明年度与本命的对应。两者不能互换。
+
+读这组禄忌时，先写全“哪颗星、哪层四化、哪一个宫”。再问真正让人不放心的是什么。命理语言可以帮助整理问题，但不足以证明一项计划必然成功或失败。
+
+英文标题：Tian Ji and Tai Yin in a Yi year: opportunity alongside unease
+英文描述：Read Tian Ji Lu and Tai Yin Ji as separate star transformations within one palace, with a clear distinction between natal and annual Yi stems.
+英文正文：
+Under the common transformation table, a Yi stem gives Tian Ji Lu and Tai Yin Ji. If they share a palace, both labels appear there, but they belong to different stars.
+
+Tian Ji traditionally concerns planning and adaptation; Tai Yin adds themes of accumulation and security. A specific situation may contain progress in one respect and uncertainty in another.
+
+Imagine a possible new role whose tasks fit your skills but whose handover arrangements remain unclear. The fit and the uncertainty are separate facts. A Lu label cannot resolve the missing information, and Ji does not prove that the opportunity is false.
+
+### Birth-year and annual stems differ
+A Yi birth year supplies natal transformations. Selecting a Yi annual cycle supplies annual ones. Record the star, transformation source and palace instead of exchanging those layers.
+
+This creates a more precise discussion than calling the whole palace fortunate or unfortunate. It does not establish whether a real proposal will succeed.
+
+---
+
+## 17. 丁年天同巨门权忌同宫：家事分工为何不能只看谁说话强？
+slug: `ziwei-dingnian-tongju-quanji-fengong`
+
+正文草稿：
+按常见丁干四化，天同化权、巨门化忌。如果天同巨门同坐夫妻宫，解读里容易只剩“争吵”两个字，却没说两个人到底在争什么。
+
+### 责任与表达分别落到哪件事
+天同通常从和缓、照顾等象意讨论，化权后可以关注承担、安排和主导的要求。巨门化忌则常被用来讨论沟通中的纠结或争议。但说话声音大的人未必负责得多，安静的人也未必没有决定权。
+
+假设两个人讨论接送孩子。一方负责排班，另一方不断指出遗漏。需要知道的，是实际时间能否配合、谁补临时空缺。若只用“一个强势，一个爱挑剔”概括，这些影响关系的事实便被抹掉了。这个场景用于解释分工，并不是星曜能证明谁对谁错。
+
+这组四化也不能用来推定伴侣性别，或预言婚姻一定破裂。双方的行为和约定，仍要由现实说明。
+
+### 说明丁干来自哪里
+生年丁干、大限宫干丁、流年丁干，属于不同的时间来源。讨论长期关系习惯与某一阶段分工变化时，不要把它们写成同一层。先标清夫妻宫所处的层次，再把争执的具体内容带进来，才不会将家事简化成谁压过谁。
+
+英文标题：Tian Tong Quan and Giant Gate Ji: discussing household responsibilities
+英文描述：A Ding-stem Tian Tong–Giant Gate combination needs separate attention to responsibility and disagreement, rather than assumptions about dominance.
+英文正文：
+A common Ding-stem table assigns Quan to Tian Tong and Ji to Giant Gate. When they share the Spouse Palace, a reading should examine what responsibility and disagreement concern, rather than stop at “arguments.”
+
+Tian Tong traditionally suggests gentleness or care; Quan brings a question of responsibility and control. Giant Gate Ji adds a discussion of communication friction. The loudest person does not necessarily do the most work or hold the final say.
+
+Imagine a couple organizing school pickups. One writes the schedule; the other points out gaps. Available time and backup arrangements matter more than labeling one dominant and the other critical. The example illustrates a division of labor, not a chart-based verdict about blame.
+
+The combination cannot establish a partner's gender or a certain relationship outcome.
+
+Specify whether Ding comes from the birth year, a decade palace stem or an annual cycle. Keep long-term themes separate from a temporary change in household responsibilities.
+
+---
+
+## 18. 天梁化科在官禄宫：做复核的人，怎样区分专业声誉和挑毛病？
+slug: `ziwei-tianliang-huake-fuhe-gongzuo`
+
+正文草稿：
+做审核、质检或教学评阅的人，工作里本来就要指出问题。天梁化科在官禄宫，可以从经验、标准与专业评价讨论这种角色，但不能只因指出错误，就断定为人刻薄。
+
+### 同一句意见，有没有可复核的依据
+“这里不行”与“这里不符合第几项要求”，给接收者的信息不同。传统上的天梁常涉及原则和保护，化科常涉及名誉与条理。落到这类岗位，值得讨论的是能否把判断说明白，而不是把一切反对意见叫成清高。
+
+假设一名编辑退回稿件，附上资料缺口与可修改之处；另一份反馈只有个人好恶。两者都在拒绝某个版本，专业含量却不同。这个例子不说明有天梁化科就一定公正，也不说明没有它便不适合审核。
+
+### 好名声来自哪些工作
+帮助别人修正、持续一致地采用标准、发现关键疏漏，都可以是现实中的专业表现。它们需要具体事例来说明，星曜不能替人担保。若同时承担很多复核任务，也要区分别人信任你的判断，和流程过分依赖一个人。
+
+看本命官禄时，先谈长期工作职责；谈今年评价变化时，再注明化科的时间来源。可以带上一条实际审核意见，说明依据是什么、对方怎样回应，别仅凭星名判断一个人是否公正。
+
+英文标题：Tian Liang Ke in Career: professional review and the reputation for criticism
+英文描述：Explore Tian Liang Ke through review and quality-control work, while keeping professional standards separate from personal judgments.
+英文正文：
+Reviewers, editors and quality-control staff are paid to identify problems. Tian Liang with Ke in the Career Palace can frame a discussion of standards and professional reputation without turning criticism into a personality fault.
+
+“This fails requirement three” gives different information from “I dislike it.” Tian Liang traditionally concerns principles and protection; Ke adds reputation and orderly presentation. The relevant question is whether judgments can be explained and checked.
+
+Imagine an editor returning a draft with clear evidence gaps and revisions. Another response offers only personal preferences. Both reject a version, but the professional basis differs. The chart placement does not guarantee fairness.
+
+A respected reviewer may also become a bottleneck if every decision is routed through them. Distinguish trust in judgment from dependence on one person.
+
+Describe the actual duties, then identify whether Ke is natal or comes from a selected time layer. Specific work can support a reputation; a star cannot certify someone's character.
+
+---
+
+## 19. 太阳化忌在迁移宫：代表单位接受质疑，等于自己名声不好吗？
+slug: `ziwei-taiyang-huaji-qianyi-daibiao-jigou`
+
+正文草稿：
+对外答复的人，常常最先听到投诉，但投诉未必针对这个人。太阳化忌在迁移宫，若一概解释成“出门不受欢迎”，就会把机构的问题算到个人头上。
+
+传统上太阳常涉及公开事务、付出与被看见；化忌使解读关注其中的阻滞或牵挂。迁移宫里的这组主题，可以用于讨论外部沟通压力，却不足以证明个人名誉已经受损。
+
+### 对方质疑的对象是谁
+假设客服人员说明一项延期，客户不满的是交付时间；也可能对答复语气另有意见。前者属于事件，后者才涉及这次沟通行为。需要根据对方实际表达区分，不能因为太阳见忌，就把所有不满揉成“大家对我有意见”。
+
+若工作身份本身要求公开回应，官禄宫的问题也要同时说清：是否拥有解释权限、哪些事项需要转交。名为代表单位，不等于本人能够决定单位的全部安排。
+
+### 年度压力不能改写整个人
+今年多了外部沟通工作，应先核对职责是否变化，再注明本命与流年迁移的区别。没有发生名誉事件，就不要预先写成必有名誉损失。记下投诉的具体内容。对方反对的是延期，不等于反对你；如果确实批评了你的答复，也不要替它换成别的原因。
+
+英文标题：Sun Ji in Travel: criticism of your organization is not always criticism of you
+英文描述：Separate personal reputation from a public-facing role when discussing Sun Ji in the Travel Palace.
+英文正文：
+A person answering complaints may be hearing criticism of an organization rather than of their own character. Sun Ji in the Travel Palace does not establish a damaged personal reputation.
+
+Traditional Sun symbolism concerns public activity and visibility. Ji invites attention to difficulties within that theme. The actual target of criticism still needs to be identified.
+
+Imagine a service employee explaining a delay. A customer may object to the delivery date, the way it was explained, or both. Those are different claims. A chart label cannot merge them into “everyone dislikes me.”
+
+Also state the person's authority: speaking for an organization does not mean controlling its decisions. The Career Palace discussion should reflect that role.
+
+If public-facing duties increased this year, distinguish the annual Travel Palace from the natal one and note the job change. Record what was challenged rather than predicting a reputation problem that has not occurred.
+
+---
+
+## 20. 天府的空库、露库是什么意思？别先按银行余额对号入座
+slug: `ziwei-tianfu-kongku-luku-wenfa`
+
+正文草稿：
+“天府空库”“天府露库”听起来像在报告存款，实际是传统解读里的组合用语。不同资料对条件的写法有差别，不能见到天府、再发现自己钱不多，就倒推成空库。
+
+### 空与露分别在强调什么
+常见解释中，空库有不见禄的说法，也有把地空、天空同躔纳入条件的说法；露库常讨论煞曜交会下的保管与稳定问题。具体取哪些星、同宫还是会照、是否合并空曜判断，各家口径不完全一样。使用前应先明确采用哪套条件。
+
+这两个词都不是银行查询结果，也不是某个资产状况的证明。刚支付学费而活期余额较少，和没有稳定收入来源，是不同处境；不能只取一个数字来配合库的比喻。
+
+### 组合条件与现实结果分开核对
+先确认天府落宫，再把是否见禄、所见煞曜及位置关系列清。若资料只说“见煞”，却没说明怎样算见，可以保留争议，不急着套名称。
+
+接着描述实际问题是收入、保管责任还是支出安排。若谈的是某一年，再注明年度宫位和四化。用明确条件讨论天府，比凭“空”字下贫穷结论更准确；也不要因盘上没有所谓空库，就认定现实资金一定充裕。
+
+英文标题：Tian Fu and the empty or exposed treasury: what the terms do and do not mean
+英文描述：Treat Tian Fu treasury terms as school-dependent configurations, not a literal reading of a bank account.
+英文正文：
+“Empty treasury” and “exposed treasury” are traditional Tian Fu configuration terms, not reports of a bank balance.
+
+Some empty-treasury definitions emphasize missing Lu support; others also include co-location with particular empty stars. Exposed-treasury readings emphasize disruptive star conditions affecting custody or stability. Schools differ over which stars and positional relationships qualify, so the chosen definition must be stated.
+
+A small current-account balance after paying tuition and a lack of stable income are different circumstances. Neither can be established by matching a treasury metaphor to one number.
+
+### Check the configuration first
+Record Tian Fu's palace, Lu support and the exact disruptive stars and locations being considered. If a source says only “encounters adverse stars,” leave the unspecified condition open rather than pretending it is precise.
+
+Then describe whether the real question concerns earnings, custodial responsibility or spending. For a yearly question, identify the annual layer. These terms do not prove poverty or financial security, and they should not replace the actual circumstances.
+
+---
+
+## 21. 导师也是项目负责人，看父母宫还是官禄宫？
+slug: `ziwei-daoshi-jian-xiangmu-fuzeren`
+
+正文草稿：
+同一个人，既指导论文，又决定项目任务，有时还和你共同署名。问“他属于哪个宫”，先看这次问的是论文指导，还是项目任务。一个人有几种角色，没必要在命盘里强行只选一格。
+
+### 指导关系和工作安排分开描述
+不少斗数解读会把师长、指导者纳入父母宫的延伸讨论；官禄宫则用于讨论自己的职业职责与工作状态。若问题是研究指导有没有回应，和问题是项目分工怎样安排，重点就不同。此类延伸取象也有派别差异，不是所有师生事务都由一个宫独占。
+
+假设导师赞同研究方向，但项目经费只支持另一项任务。学术上的支持和工作安排发生了分离。把两件事写成“他到底帮不帮我”，会让一个本来可以说明的分歧变得含糊。
+
+### 不靠换宫改变对人的评价
+不能父母宫看着好，就说导师一定照顾；官禄宫有压力，又改口说项目负责人一定苛刻。同一个人的实际行为应当保持一致，宫位只是帮助区分所问的事情。
+
+提问时可以写：“研究建议得到回应，但项目任务与论文方向不同。”先核对本命关系，再讨论某年职责变化。这样既保留师生关系，也不把项目安排误当成私人态度，更不会从星曜推断对方未说出口的动机。
+
+英文标题：A mentor who also leads your project: which palace fits the question?
+英文描述：Separate guidance, employment duties and collaboration when the same person is both an academic mentor and a project leader.
+英文正文：
+One person can supervise your research, allocate project tasks and collaborate on a paper. The useful question is which relationship you are examining, not which single box owns the person.
+
+Many Zi Wei Dou Shu approaches extend the Parents Palace to mentors. The Career Palace concerns your work and duties. These extensions vary by school, and neither makes every interaction with a supervisor identical.
+
+Imagine a mentor who supports a research direction while project funding covers another task. Academic support and work allocation have diverged. A simple verdict about whether the mentor is helpful loses that detail.
+
+Do not use a favorable palace to declare the person supportive and another placement to recast the same behavior as hostility. State the actual interaction first.
+
+“My research receives feedback, but the project tasks differ from my thesis” gives the reading a specific issue. Distinguish natal relationships from a particular year's duties, without claiming to know the other person's unstated motives.
+
+---
+
+## 22. 独生子女的兄弟宫，还能看什么？
+slug: `ziwei-dushengzinv-xiongdigong-bu-gaiming`
+
+正文草稿：
+没有亲兄弟姐妹，命盘仍然会排出兄弟宫。十二宫是一套固定结构，不会先查家里有几口人，再决定删掉哪一宫。
+
+### 先允许某一类关系没有发生
+兄弟宫最直接的讨论对象是手足。现实中没有这个对象，就如实说明，没有必要把表亲、同学或同事强行塞进去，让每句话都找到一个人应验。也不能据此猜测隐藏的家庭成员。
+
+一些派别会把兄弟宫延伸到平辈关系、互助或合作资源。采用这种方法时，可以讨论相关问题，但要把延伸的依据说出来。不能今天对应室友，明天对应合伙人，只因谁恰好符合某条断语。
+
+### 延伸取象也要有具体问题
+假设一位独生子女正和同龄朋友合作。可以围绕平辈互助讨论兄弟宫，也需要交代交友宫所谈的协作关系，以及工作本身。不能把兄弟宫一颗化忌直接翻译成“这位朋友不可靠”。资金、职责或时间安排出了什么问题，仍由事实来说明。
+
+排盘时无需修改兄弟宫名称。提问时先写独生子女，再说明要讨论的实际关系，并询问采用哪一种取象。没有手足，就保留这个事实；如果转谈同事，需要另说明采用的取象。
+
+英文标题：The Siblings Palace when you are an only child
+英文描述：An only child still has a Siblings Palace. Distinguish the fixed chart structure from optional extensions to peers and collaboration.
+英文正文：
+An only child still has a Siblings Palace. The twelve-palace structure is calculated from birth data, not assembled after checking family size.
+
+### Let an absent relationship remain absent
+The direct topic is siblings. If there are none, say so. There is no need to force every statement onto a cousin or colleague, and no basis for inferring an unknown family member.
+
+Some schools extend the palace to peers, mutual help or shared resources. That method should be identified explicitly. Switching from a roommate to a business partner merely because each fits a different statement makes the interpretation hard to evaluate.
+
+For a hypothetical collaboration between peers, discuss the real division of time and duties. A Ji label cannot establish that the other person is untrustworthy.
+
+Keep the palace name unchanged. State that you are an only child and identify the actual relationship you want to discuss. An absent sibling history does not need an invented substitute.
+
+---
+
+## 23. 再婚要换一个夫妻宫吗？先分本命结构和流年宫位
+slug: `ziwei-zaihun-fuqigong-bu-zidong-huangong`
+
+正文草稿：
+第一段婚姻结束，第二段是不是就要改看另一宫？本命十二宫不会因为登记次数自动重排。夫妻宫仍然是原来的本命夫妻宫。
+
+### 有派别方法，不等于统一规则
+有些解读采用宫位转换或另立关系次序来讨论后续婚姻。这属于特定方法，需要说明起点和推法，不能不作交代就宣布“第二任固定看某宫”。也不能把这种方法与流年夫妻宫混为一谈：流年宫位随所选年份变化，并不是在给历任伴侣编号。
+
+### 同一个宫，可以讨论不同阶段的关系
+假设一个人早年婚姻因两地工作长期分开，后来在同城开始新的关系。需要比较的是生活条件、相处安排，以及自己的关系需求是否改变。保留本命夫妻宫，并不表示两任伴侣必须长相相同、职业相同，或重复同样结局。
+
+大限、流年可以在传统方法里用于讨论阶段，但实际关系资料不能省略。只凭本命一颗星推定有几次婚姻，或用已经发生的次数临时挑宫，都会让人无法知道这次到底按哪套规则解读。
+
+看再婚问题时，先说明正在讨论新的关系还是回顾旧关系，标清所用时间层。若解读另换宫位，请它解释规则。不要因“第一任已经用过夫妻宫”而自己把整张盘挪动。
+
+英文标题：Does remarriage require a different Spouse Palace?
+英文描述：A natal Spouse Palace does not automatically move after a relationship ends. Distinguish remarriage methods from annual palace rotation.
+英文正文：
+A natal Spouse Palace does not move automatically after a marriage ends. The original twelve-palace layout remains the same.
+
+Some schools use derived-palace methods or additional conventions for later relationships. Those methods need a stated starting point and rule. They should not be presented as a universal replacement palace, or confused with the annual Spouse Palace, which changes with the selected year.
+
+### Compare the relationships themselves
+Imagine an earlier marriage shaped by long-distance work and a later relationship in the same city. Living arrangements and personal needs have changed. Keeping the natal Spouse Palace does not require identical partners or outcomes.
+
+Decade and annual layers can frame a traditional discussion of stages, but actual relationship history remains necessary. Selecting a palace after the fact to match the number of marriages is not a clear method.
+
+Identify whether you are examining the former relationship or a new one. If a reading changes the reference palace, ask for the rule behind that choice.
+
+---
+
+## 24. 田宅宫在酉，就该住朝西的房子吗？
+slug: `ziwei-tianzhai-yougong-bu-dengyu-chaoxi`
+
+正文草稿：
+田宅宫落酉，酉又常与西方相配，能不能据此选择朝西的房子？仅凭这一步对应，推不出适合的住宅朝向。命盘宫位和现场房屋坐向，是两类资料。
+
+### 盘上的位置不是房子的测量结果
+本命田宅宫由命盘排布确定，不会因为换了一套住宅就挪到别的本命宫位。现实中，一个人可以先后住过朝向不同的房子；同一住宅也可能住着出生资料完全不同的家人。若仅按田宅宫地支指定朝向，便无法说明这些情况怎样处理。
+
+酉与西方的传统对应可以作为某些取象方法的背景，但它本身没有测出大门、建筑轴线或窗户的位置。也不能把屏幕上的田宅格子当成房屋平面图，指着左下角就认定现实中应该摆床。
+
+### 谈居住，仍需说明实际住处
+用斗数讨论家庭与居住变化时，可以描述搬家、同住安排、生活空间怎样变化。若另用阳宅方法讨论朝向，需要另取得现场资料，并说明使用的体系，不能省略这一步，把命盘的一个地支直接当结论。
+
+提问时把两件事拆开：“我的田宅宫在酉”和“这套房实测朝向是什么”。前者属于出生盘，后者属于房屋。把资料分清，比硬把二者配成同一个西字更有意义。
+
+英文标题：A Property Palace at You does not establish a west-facing home
+英文描述：Separate branch symbolism in a natal chart from the measured orientation of a real home. A Property Palace position is not a floor plan.
+英文正文：
+A Property Palace at You does not establish that a west-facing home suits you. You's traditional directional association and a building's measured orientation are different kinds of information.
+
+The natal Property Palace stays in place when a person moves. Someone can live in several homes with different orientations, while one home can house people with different birth charts. A palace label alone does not resolve those circumstances.
+
+Nor does the chart's screen layout measure a doorway, building axis or window. A box at the lower left is not a room on a floor plan.
+
+For a Zi Wei Dou Shu housing discussion, describe changes in living arrangements and household space. A separate geomancy method would require its own site information and stated rules.
+
+Keep the two statements distinct: “My natal Property Palace is at You” and “This home's measured orientation is this.” Matching a directional word does not supply the missing evidence.
+
+---
+
+## 25. 夫妻宫有天机：伴侣常改计划，就代表不守承诺吗？
+slug: `ziwei-tianji-fuqi-gaijihua-shouxin`
+
+正文草稿：
+出发前换了路线，和约好见面却不来，都是“计划变了”，但对关系的影响不同。夫妻宫有天机，不能把这些事情一概说成伴侣善变、不可信。
+
+### 为什么改，改了有没有说明
+传统解读把天机联系到谋划、调整与变动。用来讨论相处时，可以具体看计划怎样改变，而不是从动星直接跳到道德评价。
+
+假设两个人原定周末登山，因为天气调整到室内活动，双方都知道原因。另一次约好共同处理家事，一方临时取消又不说明。前者是共同调整，后者涉及约定如何被对待。即使都用“改变”形容，也不能抹平中间的区别。
+
+### 化忌不能证明失约，化禄也不能替失约开脱
+若天机另有化忌，解读可能会讨论反复推想或安排中的牵挂，但这仍不是违约证据。反过来，天机化禄也不能替反复失约开脱。命盘中的字，不应让已经发生的事情被改写。
+
+提问时带上一次完整经过：原来怎样约定，谁提出改变，另一方是否知情。若只在某阶段频繁发生，再区分本命夫妻宫与大限、流年的关系主题。这样讨论才能区分灵活应对和相处中的失信，而不是看见天机就先给伴侣定性。
+
+英文标题：Tian Ji in the Spouse Palace: changing plans and keeping promises
+英文描述：Separate necessary adjustments from broken agreements when discussing Tian Ji in the Spouse Palace. A change-related star is not a character verdict.
+英文正文：
+Changing a hiking route because of weather and failing to attend an agreed meeting are both changes of plan. They have different implications for a relationship.
+
+Tian Ji traditionally suggests planning and adaptation. In a Spouse Palace reading, ask why an arrangement changed and how it was communicated, rather than treating movement symbolism as a character verdict.
+
+Imagine two partners jointly replacing an outdoor trip with an indoor activity. Compare that with one partner cancelling an agreed household task without explanation. The relevant difference concerns the agreement and communication, not the presence of change alone.
+
+A Ji transformation does not prove unreliability; Lu cannot excuse repeated broken agreements. Keep the actual conduct visible.
+
+Describe the original plan, who changed it and whether the other person knew. If this occurs mainly during one period, distinguish the natal Spouse Palace from the selected decade or annual layer.
+
+---
+
+## 26. 阴煞为什么只排在六个地支？别把地支限制当成性格判断
+slug: `ziwei-yinsha-weizhi-liuge-dizhi`
+
+正文草稿：
+按一种常见月系安法，阴煞会出现在寅、子、戌、申、午、辰，其他六个地支不使用。这条规律是在说明怎样排星，没有说明哪一半的人比较多疑或容易遇到坏人。
+
+### 六个月走一轮
+正月与七月在寅，二月与八月在子，三月与九月在戌，四月与十月在申，五月与十一月在午，六月与十二月在辰。沿地支逆行、每次隔一位，六步便回到原位置。
+
+因此同为正月出生，仅这颗星的地支会相同；命宫仍会随其他出生条件改变。寅位在一张盘可以是命宫，在另一张盘可以是别的宫。不能把六个地支误写成六个固定人事宫，更不能把排法推成“阴煞只影响某六类事情”。
+
+### 看到不同位置先查规则
+如果软件显示在卯，先核对完整星名、采用的安法与时间层次，不要立刻依字面解释。某一规则允许哪些位置，是可以核对的；“阴煞”这个名字并不能告诉你某个人在想什么。
+
+解读时保留它是杂曜这一层信息，并说明与主星、宫位的关系。不把固定月序当成性格测试，也不依据这颗星指认身边谁在暗中针对自己。
+
+英文标题：Why Yin Sha uses six branch positions in a common placement rule
+英文描述：Yin Sha repeats a six-position lunar-month cycle. That restriction concerns branches, not six fixed life palaces or personal character.
+英文正文：
+One common lunar-month placement rule puts Yin Sha only at Yin, Zi, Xu, Shen, Wu or Chen. This is a calculation constraint, not a division of people into suspicious and trustworthy groups.
+
+Months 1 and 7 use Yin; 2 and 8 use Zi; 3 and 9 use Xu; 4 and 10 use Shen; 5 and 11 use Wu; 6 and 12 use Chen. The sequence moves backward by two branches and repeats after six steps.
+
+Matching branch positions do not guarantee matching palace names. The Life Palace also depends on other birth inputs, so the same Yin Sha branch can belong to different life areas in different charts.
+
+If a display places it elsewhere, check the full star name, rule and time layer before interpreting it. A name containing ominous characters does not establish anyone's motives.
+
+Keep the calculation separate from symbolic interpretation. This minor-star rule is not a personality test or evidence that someone is acting against you.
+
+---
+
+## 27. 破军在交友宫：团队重组，为什么不能直接解释成朋友翻脸？
+slug: `ziwei-pojun-jiaoyou-tuandui-chongzu`
+
+正文草稿：
+部门合并后，熟悉的同事调走了，汇报对象也变了。这可以是一段协作关系变化的经历，却不能仅凭破军在交友宫，就把它写成“朋友背叛”。
+
+### 不再共事，还可能继续来往
+破军在传统解释中常涉及拆改、更新与旧安排的变化。交友宫讨论同事或协作圈时，应先说明是哪一层关系在变。组织上不再配合，私人来往未必结束；反过来，同在一个团队也不保证彼此亲近。
+
+假设两位同事被分到不同项目，日常接触减少，但遇到问题仍会互相提供资料。改变的是工作联系的频率，不是已经发生了翻脸。若确实有隐瞒信息、违背约定等行为，就按实际行为讨论，不用把它们和人员调整混为一谈。
+
+### 谁作出的调整
+重组可能来自机构安排，不一定由离开的人决定。把所有调动归成个人薄情，会误判事情的原因。官禄宫所讨论的职责变化，应与交友宫的协作关系分开记录。
+
+看这段经历时，可以注明哪一年、原本怎样合作、调整后还有哪些联系，再核对本命与流年层次。破军的变动主题有待具体说明，不能直接充当对某位同事的信任判决。
+
+英文标题：Po Jun in the Friends Palace: a team restructure is not a personal betrayal
+英文描述：Distinguish organizational change from friendship conflict when discussing Po Jun in the Friends Palace.
+英文正文：
+After a departmental merger, familiar colleagues may move and reporting lines may change. Po Jun in the Friends Palace does not turn that organizational event into personal betrayal.
+
+Po Jun traditionally concerns dismantling and renewal. When the Friends Palace is used for colleagues or collaborators, identify which relationship changed. Working apart need not end a friendship; remaining on one team does not guarantee closeness.
+
+Imagine two colleagues assigned to different projects who still share useful information. Contact has become less frequent, but no falling-out has occurred. If someone actually concealed information or broke an agreement, discuss that conduct separately.
+
+### Identify the decision-maker
+An institution may have required the move. Attributing it to the departing person's feelings loses the cause. Record Career Palace questions about duties separately from changes in collaboration.
+
+State the year, the former working arrangement and what contact remains. Then identify the natal or annual layer being used. A change-related symbol is not a verdict on a colleague's trustworthiness.
+
+---
+
+## 28. 退休后返聘或做志愿服务，官禄宫还按原来的职业读吗？
+slug: `ziwei-tuixiu-hou-guanlu-fanpin-zhiyuan`
+
+正文草稿：
+退休后每周返聘两天，与偶尔参加志愿活动，不能都算成“继续上班”。看官禄宫时，先说明现在承担什么角色，原来的职称不一定能代表当前生活。
+
+### 先看现在负责什么
+官禄宫的传统讨论以事业、职务和做事方式为主。返聘通常仍有工作任务；志愿服务也可能有明确分工，但并不因此等同于原单位的职位。日常很忙、替家人帮忙，则更需要按实际事情说明，不能所有活动都塞进官禄宫。
+
+假设一位退休技术人员每月指导两次学徒，不再负责团队考核。仍在传授经验，和仍然掌握管理权，是两个不同事实。若本命官禄见天梁，可以讨论经验与指导的传统象意，却不该把“指导”自动写成“升任负责人”。
+
+### 阶段变化，不需要删掉本命宫位
+本命官禄宫仍然存在，但讨论当前情况时应写明工作量、职责和生活安排已经改变。大限、流年若被用来解释新角色，也要和这些现实条件对应，不能沿用年轻时的升职、跳槽套话。
+
+不再承担职业职责的人，同样无需找一项工作来证明官禄宫还有效。可以直接说明已经退出职场，再把关注点放到自己真正想了解的生活领域。
+
+英文标题：The Career Palace after retirement: paid work and volunteering
+英文描述：A retirement reading should identify the actual role and responsibilities instead of assuming that every activity continues the former career.
+英文正文：
+Working two paid days a week after retirement is different from occasionally volunteering. Start with the current role rather than carrying the old job title into every interpretation.
+
+The Career Palace traditionally concerns work and duties. Volunteering may involve defined responsibilities, but it does not automatically continue a former position. Being busy at home is another situation and needs its own description.
+
+Imagine a retired technician who tutors apprentices twice a month but no longer evaluates staff. Sharing experience is different from holding management authority. Tian Liang in the natal Career Palace may support a traditional discussion of guidance; it cannot turn tutoring into a promotion.
+
+### Keep the present circumstances visible
+The natal palace remains, while workload and responsibilities change. If a decade or annual layer is discussed, connect it to the current role instead of repeating language about climbing a career ladder.
+
+Someone who has left occupational responsibilities entirely does not need a new job to make the palace meaningful. State the retirement circumstances and ask about the life area that actually matters now.
+
+---
+
+## 29. 紫微斗数“同度”是什么意思？需要精确到几度几分吗？
+slug: `ziwei-tongdu-bushi-tianwen-jiaodu`
+
+正文草稿：
+从西洋占星转来学紫微斗数，读到“同度”容易想到黄经相差几度。在常见斗数术语中，同度通常就是同宫：两颗星排在同一个宫位。这里不要求再量一个天文角度。
+
+### 先读位置，不读仪器精度
+“天相与禄存同度”，说的是它们同在一宫，并不表示软件漏显示了角度数值。同躔一宫也常用于表达这一关系。十四主星和辅曜按安星规则定位，讨论的是命盘中的符号位置。
+
+假设禄存在天相旁边的另一宫，即使排版上两个字离得很近，也不能说同度。反过来，同一宫内字号、行距不同，不影响同宫的认定。屏幕距离和术语中的位置关系没有直接对应。
+
+### “会”“见”要再读上下文
+有些资料把遇、见、会等字用得较宽，可能包含三合或对宫关系。不能把每一个“见”字都替换成同度。若格局条件很依赖位置，最好回到原盘写清同宫、三合还是对照。
+
+提问时附上完整宫名与星名即可，不用为了同度另补出生地经纬度来计算角距。若另外怀疑时辰有误，再单独校核出生资料；这不属于“同度”的含义。
+
+英文标题：What “same degree” means in Zi Wei Dou Shu: co-location, not an angle measurement
+英文描述：Tong du commonly means sharing a palace in Zi Wei Dou Shu. Do not import astronomical degree measurements into that term.
+英文正文：
+In common Zi Wei Dou Shu terminology, tong du means occupying the same palace. Readers familiar with Western astrology should not interpret it as a request for longitude in degrees and minutes.
+
+“Tian Xiang with Lu Cun in tong du” describes co-location in the symbolic chart. It does not mean that angular measurements are missing from the display.
+
+Two labels printed close together across a palace boundary are not co-located. Labels far apart within the same palace remain in the same palace. Screen distance is irrelevant.
+
+Broader words translated as “meets” or “sees” may be used differently across texts, sometimes including aspects. Do not automatically replace all of them with co-location. Where a configuration depends on geometry, state the actual relationship.
+
+Record the palace and full star names. Birth-time calibration is a separate issue; this terminology does not require an extra astronomical-angle calculation.
+
+---
+
+## 30. 有天厨星却不会做饭，食禄和厨艺是一回事吗？
+slug: `ziwei-tianchu-koufu-bu-dengyu-pengren`
+
+正文草稿：
+名字里带一个“厨”，不等于盘主应该会做饭。天厨的传统解释涉及口福、食禄和供养，厨艺只是现实中与食物有关的一种能力，不能从星名推出这项技能。
+
+### 吃、做、经营，分别需要什么
+会分辨味道，未必会备料和控制火候；能做一桌家常菜，也不等于能管理餐厅。若一个假设的人常有家人做饭、单位也提供餐食，这可以说明他的饮食照应比较充分，不能因此补写成有烹饪天赋。
+
+同样，工作在食品行业的人，可能负责检测、采购或行政。单看天厨就推荐当厨师，连这个人实际喜欢哪项工作都没有问到。
+
+### 食禄不是永远有人负责
+这颗杂曜的吉意也不能保证一辈子衣食无忧。讨论它时，仍应结合主星与落宫，并分清正在说收入来源、生活照料还是饮食兴趣。三者有关联，但不是同一项事实。
+
+排盘后遇到“你很会做饭”的评语，可以直接说明自己不会，不必找一次偶然做成的菜来替解读作证。若要讨论职业，再把官禄与实际技能带进问题。星名可以保留传统含义，具体能力仍由学习和实践来说明。
+
+英文标题：Tian Chu and food: enjoying a meal is different from cooking it
+英文描述：The Tian Chu minor star carries traditional food and provision symbolism. It does not establish culinary skill or a restaurant career.
+英文正文：
+The “kitchen” character in Tian Chu does not establish cooking skill. Traditional descriptions concern food, provision and the enjoyment of meals; culinary competence is a separate question.
+
+Recognizing flavors, preparing food and running a restaurant require different abilities. Imagine someone whose family and workplace provide meals. That describes being well supplied with food, not training as a cook.
+
+A food-industry job may involve testing, purchasing or administration. Recommending a kitchen career from this minor star skips the person's actual skills and interests.
+
+The favorable symbolism is not a lifetime guarantee of provision. Distinguish income, household support and interest in food when interpreting its palace.
+
+If a reading says you cook well and you do not, keep that fact. There is no need to find one successful meal to rescue the statement. A career discussion should include the Career Palace and real experience; a star name cannot replace either.
