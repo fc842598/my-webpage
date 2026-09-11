@@ -37,7 +37,7 @@
 | --- | --- | --- | --- | --- |
 | 01 | 已发布 2026-09-11 17:06 https://yuetianai.com/articles/ziwei-juri-guanlu-shumian-koutou-biaoda.html / https://yuetianai.com/articles/en/ziwei-juri-guanlu-shumian-koutou-biaoda.html | ziwei-juri-guanlu-shumian-koutou-biaoda | 太阳巨门在官禄宫：写得清楚，上台却说不出来，矛盾吗？ | 主星细读 |
 | 02 | 已发布 2026-09-11 17:11 https://yuetianai.com/articles/ziwei-wufu-caibo-jingshou-qian-suoyouquan.html / https://yuetianai.com/articles/en/ziwei-wufu-caibo-jingshou-qian-suoyouquan.html | ziwei-wufu-caibo-jingshou-qian-suoyouquan | 武曲天府在财帛宫：经手的钱多，为什么自己的收入不高？ | 主星细读 |
-| 03 | 待发布 | ziwei-jiliang-qianyi-guwen-jianyi-juece | 天机天梁在迁移宫：顾问给建议，和替客户做决定有多远？ | 主星细读 |
+| 03 | 已发布 2026-09-11 17:30 https://yuetianai.com/articles/ziwei-jiliang-qianyi-guwen-jianyi-juece.html / https://yuetianai.com/articles/en/ziwei-jiliang-qianyi-guwen-jianyi-juece.html | ziwei-jiliang-qianyi-guwen-jianyi-juece | 天机天梁在迁移宫：顾问给建议，和替客户做决定有多远？ | 主星细读 |
 | 04 | 待发布 | ziwei-liantan-qianyi-yingchou-gongzuo | 廉贞贪狼在迁移宫：应酬多，能说明私人感情复杂吗？ | 主星细读 |
 | 05 | 待发布 | ziwei-zisha-guanlu-zhuanjia-jingli | 紫微七杀在官禄宫：不带团队的资深专家，也有主导空间吗？ | 主星细读 |
 | 06 | 待发布 | ziwei-qisha-tianfu-jiuhuo-zhuan-weihu | 七杀坐命、对宫天府：从救火岗位转到日常维护，怎么看适应？ | 主星细读 |
