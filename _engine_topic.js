@@ -9,10 +9,10 @@ const CAT={
  sihua:{sec:'四化细读',tag:'四化细读',topic:'ziwei-sihua.html',enTag:'Four Transformations'},
  geju:{sec:'格局命例',tag:'格局命例',topic:'ziwei-case-patterns.html',enTag:'Patterns'},
  zhuxing:{sec:'主星',tag:'主星',topic:'ziwei-main-stars.html',enTag:'Major Stars'},
- liunian:{sec:'大限流年',tag:'大限流年',topic:null,enTag:'Cycles'},
- yingyong:{sec:'财运事业',tag:'财运事业',topic:null,enTag:'Wealth & Career'},
+ liunian:{sec:'大限流年',tag:'大限流年',topic:'ziwei-cycles.html',enTag:'Cycles'},
+ yingyong:{sec:'财运事业',tag:'财运事业',topic:'ziwei-money-career.html',enTag:'Wealth & Career'},
  fuzhu:{sec:'辅煞曜',tag:'辅煞曜',topic:'ziwei-helper-malice-stars.html',enTag:'Assistant & Malefic Stars'},
- gongwei:{sec:'十二宫细读',tag:'十二宫',topic:null,enTag:'Twelve Palaces'},
+ gongwei:{sec:'十二宫细读',tag:'宫位组合',topic:'ziwei-palaces.html',enTag:'Twelve Palaces'},
  ganqing:{sec:'婚恋与关系',tag:'婚恋与关系',topic:null,enTag:'Love & Relationships'},
  liuqin:{sec:'六亲关系',tag:'六亲关系',topic:null,enTag:'Family & Relations'}
 };

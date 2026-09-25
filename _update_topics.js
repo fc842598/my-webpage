@@ -64,6 +64,7 @@ if(todoEN.length){
 
 // ---- 专题页：按分类 topic 插入（两种卡片格式）----
 console.log('Topic pages...');
+const COMPACT={'ziwei-cycles.html':'大限流年','ziwei-money-career.html':'财运事业','ziwei-palaces.html':'宫位组合'};
 const byTopic={};
 for(const a of manifest){const tp=CAT[a.cat].topic;if(!tp)continue;(byTopic[tp]=byTopic[tp]||[]).push(a);}
 for(const tp of Object.keys(byTopic)){
@@ -72,7 +73,14 @@ for(const tp of Object.keys(byTopic)){
  if(!list.length){console.log('  skip '+tp);continue;}
  const isAnchorFormat=page.indexOf('<a class="article-card"')>=0 && page.indexOf('<div class="card-body">',page.indexOf('article-card'))<0;
  let cards='';
- if(tp==='ziwei-sihua.html'||tp==='ziwei-helper-malice-stars.html'){
+ if(tp in COMPACT){
+  list.forEach(a=>{const lab=a.rfc.slice(0,16).replace('T',' ');cards+=`<article class="article-card" data-index="00"><div class="card-body"><div class="card-meta"><span class="tag">${COMPACT[tp]}</span><span><time datetime="${a.rfc}">${lab}</time></span></div><h3>${a.cnTitle}</h3><p>${a.cnDesc}</p><a class="card-link" href="${a.slug}.html">阅读全文</a></div></article>\n`;});
+  const ldC=page.indexOf('<div class="article-list">');
+  const pC=page.indexOf('\n',ldC)+1;
+  page=page.slice(0,pC)+cards+page.slice(pC);
+  let nC=0;page=page.replace(/<article class="article-card" data-index="\d+">/g,()=>{nC++;return '<article class="article-card" data-index="'+String(nC).padStart(2,'0')+'>';});
+  page=page.replace(/(<span class="section-toggle"><span>)(\d+)( 篇<\/span>)/,(m,q,w,e)=>q+(parseInt(w)+list.length)+e);
+ }else if(tp==='ziwei-sihua.html'||tp==='ziwei-helper-malice-stars.html'){
   list.forEach(a=>cards+=`        <a class="article-card" href="${a.slug}.html"><h3>${a.cnTitle}</h3><time datetime="${a.date}">${a.label.slice(0,10)}</time></a>\n`);
   const fc=page.indexOf('class="article-card"');
   const pos=page.lastIndexOf('\n',fc)+1;

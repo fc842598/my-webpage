@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 
 const base = 'https://yuetianai.com';
-const today = '2026-08-22';
+const today = '2026-09-25';
 
 // Scan all article HTML files
 const cnDir = 'articles';
