@@ -1,8 +1,8 @@
-const fs = require('fs');
+﻿const fs = require('fs');
 const path = require('path');
 
 const base = 'https://yuetianai.com';
-const today = '2026-10-01';
+const today = '2026-10-02';
 
 // Scan all article HTML files
 const cnDir = 'articles';
