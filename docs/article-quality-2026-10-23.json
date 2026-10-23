@@ -1,0 +1,577 @@
+{
+  "version": 6,
+  "mode": "production-batch-review",
+  "date": "2026-10-23",
+  "reviewedAt": "2026-10-23T01:34:41.155Z",
+  "seed": "scripts/daily-ziwei-2026-10-23-seed.mjs",
+  "sourcePolicy": "optional-reference",
+  "duplicatePolicy": "manual-review-warning",
+  "batchHash": "e0aa59bc016ba017c72b6c34dabae98e8e491cb79026d78942e1d0ab4750b4d1",
+  "sourceHash": "5ffa64a9b21703b6820bee044201a042b361db79c2cf92ca697b6e55db47757e",
+  "reviewManifest": "docs/article-reviews/2026-10-23-review-manifest.json",
+  "reviewReports": [
+    "docs/article-reviews/2026-10-23-ziwei-logic-round1.md",
+    "docs/article-reviews/2026-10-23-human-tone-round1.md",
+    "docs/article-reviews/2026-10-23-seo-intent-round1.md",
+    "docs/article-reviews/2026-10-23-english-naturalness-round1.md",
+    "docs/article-reviews/2026-10-23-reader-value-round1.md"
+  ],
+  "scoreFloor": 85,
+  "passed": 20,
+  "failed": 0,
+  "hardFailureCount": 0,
+  "allPassed": true,
+  "articleCount": 20,
+  "ready": 20,
+  "needsFix": 0,
+  "warningCount": 46,
+  "batchErrors": [],
+  "articles": [
+    {
+      "order": 1,
+      "slug": "ziwei-fuqigong-gongzuo-bianjie",
+      "title": "紫微斗数夫妻宫被官禄宫冲着怎么看：感情和工作边界要分开",
+      "status": "ready",
+      "errors": [],
+      "warnings": [
+        "中文标题可能相似（1.00）：ziwei-fuqigong-gongzuo-bianjie.html；请人工判断搜索意图是否真的重复",
+        "英文标题可能相似（1.00）：ziwei-fuqigong-gongzuo-bianjie.html；请人工判断搜索意图是否真的重复"
+      ],
+      "score": 89,
+      "hardFailures": [],
+      "metrics": {
+        "chineseCharacters": 525,
+        "englishWords": 272,
+        "h2Count": 4,
+        "englishH2Count": 4
+      },
+      "contentHash": "04d57d0acd6596f1cd1d8009936b8d0425217b9b38b90ee17bc4bdbcb16ed096",
+      "reviews": {
+        "ziwei-logic": "PASS",
+        "human-tone": "PASS",
+        "seo-intent": "PASS",
+        "english-naturalness": "PASS",
+        "reader-value": "PASS"
+      }
+    },
+    {
+      "order": 2,
+      "slug": "ziwei-fuqigong-chongtu-xiufu",
+      "title": "紫微斗数夫妻宫有冲突怎么看修复：先分情绪、责任和旧账",
+      "status": "ready",
+      "errors": [],
+      "warnings": [
+        "中文标题可能相似（1.00）：ziwei-fuqigong-chongtu-xiufu.html；请人工判断搜索意图是否真的重复",
+        "英文标题可能相似（1.00）：ziwei-fuqigong-chongtu-xiufu.html；请人工判断搜索意图是否真的重复"
+      ],
+      "score": 89,
+      "hardFailures": [],
+      "metrics": {
+        "chineseCharacters": 453,
+        "englishWords": 234,
+        "h2Count": 4,
+        "englishH2Count": 4
+      },
+      "contentHash": "07abe77932555b6a40e1af40ad6f1eb0e72ad1c96ed01e8fc8552d022f2fee35",
+      "reviews": {
+        "ziwei-logic": "PASS",
+        "human-tone": "PASS",
+        "seo-intent": "PASS",
+        "english-naturalness": "PASS",
+        "reader-value": "PASS"
+      }
+    },
+    {
+      "order": 3,
+      "slug": "ziwei-shichen-chaliang-xiaoshi",
+      "title": "紫微斗数出生时辰差两小时先变哪几宫：命宫移动会连动全盘",
+      "status": "ready",
+      "errors": [],
+      "warnings": [
+        "中文标题可能相似（1.00）：ziwei-shichen-chaliang-xiaoshi.html；请人工判断搜索意图是否真的重复",
+        "英文标题可能相似（1.00）：ziwei-shichen-chaliang-xiaoshi.html；请人工判断搜索意图是否真的重复"
+      ],
+      "score": 89,
+      "hardFailures": [],
+      "metrics": {
+        "chineseCharacters": 444,
+        "englishWords": 210,
+        "h2Count": 4,
+        "englishH2Count": 4
+      },
+      "contentHash": "0a828c20e0be3ad812a9e574bd210c010c780906ace55e2d22a86fdc52cc1cfb",
+      "reviews": {
+        "ziwei-logic": "PASS",
+        "human-tone": "PASS",
+        "seo-intent": "PASS",
+        "english-naturalness": "PASS",
+        "reader-value": "PASS"
+      }
+    },
+    {
+      "order": 4,
+      "slug": "ziwei-shichen-zishi-jiazi",
+      "title": "紫微斗数子夜出生子时怎么排：先处理跨日，再看命宫和流年",
+      "status": "ready",
+      "errors": [],
+      "warnings": [
+        "中文标题可能相似（1.00）：ziwei-shichen-zishi-jiazi.html；请人工判断搜索意图是否真的重复",
+        "英文标题可能相似（1.00）：ziwei-shichen-zishi-jiazi.html；请人工判断搜索意图是否真的重复"
+      ],
+      "score": 89,
+      "hardFailures": [],
+      "metrics": {
+        "chineseCharacters": 421,
+        "englishWords": 228,
+        "h2Count": 4,
+        "englishH2Count": 4
+      },
+      "contentHash": "80fe9d7dc83aca83f366f585380fcf2fd6734d0a50b89da15be48498a634c6fa",
+      "reviews": {
+        "ziwei-logic": "PASS",
+        "human-tone": "PASS",
+        "seo-intent": "PASS",
+        "english-naturalness": "PASS",
+        "reader-value": "PASS"
+      }
+    },
+    {
+      "order": 5,
+      "slug": "ziwei-shiergong-yincang-gongwei",
+      "title": "紫微斗数十二宫隐藏含义怎么看：同一宫位要换成现实问题",
+      "status": "ready",
+      "errors": [],
+      "warnings": [
+        "中文标题可能相似（1.00）：ziwei-shiergong-yincang-gongwei.html；请人工判断搜索意图是否真的重复",
+        "英文标题可能相似（1.00）：ziwei-shiergong-yincang-gongwei.html；请人工判断搜索意图是否真的重复"
+      ],
+      "score": 89,
+      "hardFailures": [],
+      "metrics": {
+        "chineseCharacters": 393,
+        "englishWords": 194,
+        "h2Count": 4,
+        "englishH2Count": 4
+      },
+      "contentHash": "ed7ab5be2f7295c20dfa32ba7e47d9d6ab93e77c90affe097f8d4fe51d9da40e",
+      "reviews": {
+        "ziwei-logic": "PASS",
+        "human-tone": "PASS",
+        "seo-intent": "PASS",
+        "english-naturalness": "PASS",
+        "reader-value": "PASS"
+      }
+    },
+    {
+      "order": 6,
+      "slug": "ziwei-caiguan-tianzhai-sanzhong",
+      "title": "紫微斗数财帛、官禄、田宅三宫怎么分：收入、工作和资产不是一回事",
+      "status": "ready",
+      "errors": [],
+      "warnings": [
+        "中文标题可能相似（1.00）：ziwei-caiguan-tianzhai-sanzhong.html；请人工判断搜索意图是否真的重复",
+        "英文标题可能相似（1.00）：ziwei-caiguan-tianzhai-sanzhong.html；请人工判断搜索意图是否真的重复"
+      ],
+      "score": 89,
+      "hardFailures": [],
+      "metrics": {
+        "chineseCharacters": 397,
+        "englishWords": 220,
+        "h2Count": 4,
+        "englishH2Count": 4
+      },
+      "contentHash": "27c35bc291fe4162ab4d72953d9821a1fd5e04bb6cd0e14a06f84f4b9fcca8eb",
+      "reviews": {
+        "ziwei-logic": "PASS",
+        "human-tone": "PASS",
+        "seo-intent": "PASS",
+        "english-naturalness": "PASS",
+        "reader-value": "PASS"
+      }
+    },
+    {
+      "order": 7,
+      "slug": "ziwei-caibo-liuqiang-shouqian",
+      "title": "紫微斗数财帛宫强却现金流紧怎么看：先查回款、支出和守财能力",
+      "status": "ready",
+      "errors": [],
+      "warnings": [
+        "中文标题可能相似（1.00）：ziwei-caibo-liuqiang-shouqian.html；请人工判断搜索意图是否真的重复",
+        "英文标题可能相似（1.00）：ziwei-caibo-liuqiang-shouqian.html；请人工判断搜索意图是否真的重复"
+      ],
+      "score": 89,
+      "hardFailures": [],
+      "metrics": {
+        "chineseCharacters": 404,
+        "englishWords": 214,
+        "h2Count": 4,
+        "englishH2Count": 4
+      },
+      "contentHash": "a343c59e1f9266ef6e41e0ff3600d565b3072bf75c93dde4ab6822479b568f2e",
+      "reviews": {
+        "ziwei-logic": "PASS",
+        "human-tone": "PASS",
+        "seo-intent": "PASS",
+        "english-naturalness": "PASS",
+        "reader-value": "PASS"
+      }
+    },
+    {
+      "order": 8,
+      "slug": "ziwei-guanlu-jiaose-qianxian",
+      "title": "紫微斗数官禄宫怎么看岗位边界：升职不只看头衔，还看责任能否落地",
+      "status": "ready",
+      "errors": [],
+      "warnings": [
+        "中文标题可能相似（1.00）：ziwei-guanlu-jiaose-qianxian.html；请人工判断搜索意图是否真的重复",
+        "英文标题可能相似（1.00）：ziwei-guanlu-jiaose-qianxian.html；请人工判断搜索意图是否真的重复",
+        "英文标题可能相似（0.75）：ziwei-qisha-zeren-huazai.html；请人工判断搜索意图是否真的重复",
+        "英文标题可能相似（0.75）：ziwei-tanlang-guanlu-shangye.html；请人工判断搜索意图是否真的重复"
+      ],
+      "score": 89,
+      "hardFailures": [],
+      "metrics": {
+        "chineseCharacters": 387,
+        "englishWords": 208,
+        "h2Count": 4,
+        "englishH2Count": 4
+      },
+      "contentHash": "0bd92c4a9b10baabb1db75d2ee90da795cf2f08c5b09d112fb8b0463b47063c9",
+      "reviews": {
+        "ziwei-logic": "PASS",
+        "human-tone": "PASS",
+        "seo-intent": "PASS",
+        "english-naturalness": "PASS",
+        "reader-value": "PASS"
+      }
+    },
+    {
+      "order": 9,
+      "slug": "ziwei-jiaoyou-hezuo-zeren",
+      "title": "紫微斗数交友宫看合作责任怎么分：先看谁带资源、谁扛结果",
+      "status": "ready",
+      "errors": [],
+      "warnings": [
+        "中文标题可能相似（1.00）：ziwei-jiaoyou-hezuo-zeren.html；请人工判断搜索意图是否真的重复",
+        "英文标题可能相似（1.00）：ziwei-jiaoyou-hezuo-zeren.html；请人工判断搜索意图是否真的重复"
+      ],
+      "score": 89,
+      "hardFailures": [],
+      "metrics": {
+        "chineseCharacters": 393,
+        "englishWords": 205,
+        "h2Count": 4,
+        "englishH2Count": 4
+      },
+      "contentHash": "4eb3f6fc1d0eaf8af194ba3715f9c539f26bfa7a73c352974f81494da0069c37",
+      "reviews": {
+        "ziwei-logic": "PASS",
+        "human-tone": "PASS",
+        "seo-intent": "PASS",
+        "english-naturalness": "PASS",
+        "reader-value": "PASS"
+      }
+    },
+    {
+      "order": 10,
+      "slug": "ziwei-jiaoyou-huaji-xieyue",
+      "title": "紫微斗数交友宫化忌怎么看：先补协议、付款和退出机制",
+      "status": "ready",
+      "errors": [],
+      "warnings": [
+        "中文标题可能相似（1.00）：ziwei-jiaoyou-huaji-xieyue.html；请人工判断搜索意图是否真的重复",
+        "英文标题可能相似（1.00）：ziwei-jiaoyou-huaji-xieyue.html；请人工判断搜索意图是否真的重复"
+      ],
+      "score": 89,
+      "hardFailures": [],
+      "metrics": {
+        "chineseCharacters": 384,
+        "englishWords": 202,
+        "h2Count": 4,
+        "englishH2Count": 4
+      },
+      "contentHash": "1adde8484e6c35fef9da50897b3af2fee876489d1280b901576139e391f38c8d",
+      "reviews": {
+        "ziwei-logic": "PASS",
+        "human-tone": "PASS",
+        "seo-intent": "PASS",
+        "english-naturalness": "PASS",
+        "reader-value": "PASS"
+      }
+    },
+    {
+      "order": 11,
+      "slug": "ziwei-jiee-fude-yali-zouxiang",
+      "title": "紫微斗数疾厄宫和福德宫怎么看压力走向：先分身体信号和心理消耗",
+      "status": "ready",
+      "errors": [],
+      "warnings": [
+        "中文标题可能相似（1.00）：ziwei-jiee-fude-yali-zouxiang.html；请人工判断搜索意图是否真的重复",
+        "英文标题可能相似（1.00）：ziwei-jiee-fude-yali-zouxiang.html；请人工判断搜索意图是否真的重复"
+      ],
+      "score": 89,
+      "hardFailures": [],
+      "metrics": {
+        "chineseCharacters": 416,
+        "englishWords": 215,
+        "h2Count": 4,
+        "englishH2Count": 4
+      },
+      "contentHash": "2c5322c8b9a098e029d85ae784d011f5b8928ed831eaeba8cd59b7a367182e23",
+      "reviews": {
+        "ziwei-logic": "PASS",
+        "human-tone": "PASS",
+        "seo-intent": "PASS",
+        "english-naturalness": "PASS",
+        "reader-value": "PASS"
+      }
+    },
+    {
+      "order": 12,
+      "slug": "ziwei-fude-kongxin-xiuxi",
+      "title": "紫微斗数福德宫空宫怎么看恢复力：先借对宫，再看你怎么休息",
+      "status": "ready",
+      "errors": [],
+      "warnings": [
+        "中文标题可能相似（1.00）：ziwei-fude-kongxin-xiuxi.html；请人工判断搜索意图是否真的重复",
+        "英文标题可能相似（1.00）：ziwei-fude-kongxin-xiuxi.html；请人工判断搜索意图是否真的重复"
+      ],
+      "score": 89,
+      "hardFailures": [],
+      "metrics": {
+        "chineseCharacters": 371,
+        "englishWords": 193,
+        "h2Count": 4,
+        "englishH2Count": 4
+      },
+      "contentHash": "250e66ef6a36e1acb10d523d72859e03f1afaa6096323a7c423d97475fe22333",
+      "reviews": {
+        "ziwei-logic": "PASS",
+        "human-tone": "PASS",
+        "seo-intent": "PASS",
+        "english-naturalness": "PASS",
+        "reader-value": "PASS"
+      }
+    },
+    {
+      "order": 13,
+      "slug": "ziwei-ziwei-fuzuo-panzhi",
+      "title": "紫微斗数紫微有辅弼和无辅弼怎么分：贵气、用人和孤军作战是三件事",
+      "status": "ready",
+      "errors": [],
+      "warnings": [
+        "中文标题可能相似（1.00）：ziwei-ziwei-fuzuo-panzhi.html；请人工判断搜索意图是否真的重复",
+        "英文标题可能相似（1.00）：ziwei-ziwei-fuzuo-panzhi.html；请人工判断搜索意图是否真的重复"
+      ],
+      "score": 89,
+      "hardFailures": [],
+      "metrics": {
+        "chineseCharacters": 373,
+        "englishWords": 216,
+        "h2Count": 4,
+        "englishH2Count": 4
+      },
+      "contentHash": "7a45bb43be7a67d14484867facc70c7849b46bd2454f0391fafd748d1007a5db",
+      "reviews": {
+        "ziwei-logic": "PASS",
+        "human-tone": "PASS",
+        "seo-intent": "PASS",
+        "english-naturalness": "PASS",
+        "reader-value": "PASS"
+      }
+    },
+    {
+      "order": 14,
+      "slug": "ziwei-qisha-zeren-huazai",
+      "title": "紫微斗数七杀在官禄宫怎么看责任边界：冲锋力强，也要有授权",
+      "status": "ready",
+      "errors": [],
+      "warnings": [
+        "中文标题可能相似（1.00）：ziwei-qisha-zeren-huazai.html；请人工判断搜索意图是否真的重复",
+        "英文标题可能相似（1.00）：ziwei-qisha-zeren-huazai.html；请人工判断搜索意图是否真的重复",
+        "英文标题可能相似（0.82）：ziwei-tanlang-guanlu-shangye.html；请人工判断搜索意图是否真的重复",
+        "英文标题可能相似（0.82）：本批次 ziwei-tanlang-guanlu-shangye；请人工判断搜索意图是否真的重复"
+      ],
+      "score": 89,
+      "hardFailures": [],
+      "metrics": {
+        "chineseCharacters": 368,
+        "englishWords": 210,
+        "h2Count": 4,
+        "englishH2Count": 4
+      },
+      "contentHash": "611957330f0f060f3e91ea7c012c95c5117445201ced4311131f7bb3e9f7d305",
+      "reviews": {
+        "ziwei-logic": "PASS",
+        "human-tone": "PASS",
+        "seo-intent": "PASS",
+        "english-naturalness": "PASS",
+        "reader-value": "PASS"
+      }
+    },
+    {
+      "order": 15,
+      "slug": "ziwei-taiyin-caibo-shouqian",
+      "title": "紫微斗数太阴在财帛宫怎么看守钱节奏：先分稳定积累和情绪消费",
+      "status": "ready",
+      "errors": [],
+      "warnings": [
+        "中文标题可能相似（1.00）：ziwei-taiyin-caibo-shouqian.html；请人工判断搜索意图是否真的重复",
+        "英文标题可能相似（1.00）：ziwei-taiyin-caibo-shouqian.html；请人工判断搜索意图是否真的重复"
+      ],
+      "score": 89,
+      "hardFailures": [],
+      "metrics": {
+        "chineseCharacters": 379,
+        "englishWords": 186,
+        "h2Count": 4,
+        "englishH2Count": 4
+      },
+      "contentHash": "59bbaf3484a03b07d4706331bf45e123b878bb225060700ea1aa44b5242cc077",
+      "reviews": {
+        "ziwei-logic": "PASS",
+        "human-tone": "PASS",
+        "seo-intent": "PASS",
+        "english-naturalness": "PASS",
+        "reader-value": "PASS"
+      }
+    },
+    {
+      "order": 16,
+      "slug": "ziwei-tanlang-guanlu-shangye",
+      "title": "紫微斗数贪狼在官禄宫怎么看市场工作：人脉、销售和专业要分开",
+      "status": "ready",
+      "errors": [],
+      "warnings": [
+        "中文标题可能相似（1.00）：ziwei-tanlang-guanlu-shangye.html；请人工判断搜索意图是否真的重复",
+        "英文标题可能相似（1.00）：ziwei-tanlang-guanlu-shangye.html；请人工判断搜索意图是否真的重复",
+        "英文标题可能相似（0.82）：ziwei-qisha-zeren-huazai.html；请人工判断搜索意图是否真的重复",
+        "英文标题可能相似（0.82）：本批次 ziwei-qisha-zeren-huazai；请人工判断搜索意图是否真的重复"
+      ],
+      "score": 89,
+      "hardFailures": [],
+      "metrics": {
+        "chineseCharacters": 383,
+        "englishWords": 201,
+        "h2Count": 4,
+        "englishH2Count": 4
+      },
+      "contentHash": "8e10f05a04986be0d07775fd3108aa184244d4b9abf7b4b63ef261b94347e500",
+      "reviews": {
+        "ziwei-logic": "PASS",
+        "human-tone": "PASS",
+        "seo-intent": "PASS",
+        "english-naturalness": "PASS",
+        "reader-value": "PASS"
+      }
+    },
+    {
+      "order": 17,
+      "slug": "ziwei-huake-huaji-zhuanye",
+      "title": "紫微斗数化科遇化忌怎么看专业名声：被看见和被质疑可以同时发生",
+      "status": "ready",
+      "errors": [],
+      "warnings": [
+        "中文标题可能相似（1.00）：ziwei-huake-huaji-zhuanye.html；请人工判断搜索意图是否真的重复",
+        "英文标题可能相似（1.00）：ziwei-huake-huaji-zhuanye.html；请人工判断搜索意图是否真的重复"
+      ],
+      "score": 89,
+      "hardFailures": [],
+      "metrics": {
+        "chineseCharacters": 370,
+        "englishWords": 201,
+        "h2Count": 4,
+        "englishH2Count": 4
+      },
+      "contentHash": "61d173cfc92a22247f5c581e856923053adac76086e28ee699429f199daa89f3",
+      "reviews": {
+        "ziwei-logic": "PASS",
+        "human-tone": "PASS",
+        "seo-intent": "PASS",
+        "english-naturalness": "PASS",
+        "reader-value": "PASS"
+      }
+    },
+    {
+      "order": 18,
+      "slug": "ziwei-huaquan-huaji-guanli",
+      "title": "紫微斗数化权遇化忌怎么看管理边界：权力越大越要留下流程",
+      "status": "ready",
+      "errors": [],
+      "warnings": [
+        "中文标题可能相似（1.00）：ziwei-huaquan-huaji-guanli.html；请人工判断搜索意图是否真的重复",
+        "英文标题可能相似（1.00）：ziwei-huaquan-huaji-guanli.html；请人工判断搜索意图是否真的重复"
+      ],
+      "score": 89,
+      "hardFailures": [],
+      "metrics": {
+        "chineseCharacters": 349,
+        "englishWords": 187,
+        "h2Count": 4,
+        "englishH2Count": 4
+      },
+      "contentHash": "c76e049dc9085437236fd02a140b8df3d954ceee43c3915a75b615aa1c566911",
+      "reviews": {
+        "ziwei-logic": "PASS",
+        "human-tone": "PASS",
+        "seo-intent": "PASS",
+        "english-naturalness": "PASS",
+        "reader-value": "PASS"
+      }
+    },
+    {
+      "order": 19,
+      "slug": "ziwei-liunian-luo-fuqigong-shijian",
+      "title": "紫微斗数流年落夫妻宫怎么看事件：先分遇见、磨合和定下",
+      "status": "ready",
+      "errors": [],
+      "warnings": [
+        "中文标题可能相似（1.00）：ziwei-liunian-luo-fuqigong-shijian.html；请人工判断搜索意图是否真的重复",
+        "英文标题可能相似（1.00）：ziwei-liunian-luo-fuqigong-shijian.html；请人工判断搜索意图是否真的重复"
+      ],
+      "score": 89,
+      "hardFailures": [],
+      "metrics": {
+        "chineseCharacters": 388,
+        "englishWords": 217,
+        "h2Count": 4,
+        "englishH2Count": 4
+      },
+      "contentHash": "00aadc5238cda9a9e4e554e66c2aaa358c85827ea4eb48e49ff355b2dd2d1aec",
+      "reviews": {
+        "ziwei-logic": "PASS",
+        "human-tone": "PASS",
+        "seo-intent": "PASS",
+        "english-naturalness": "PASS",
+        "reader-value": "PASS"
+      }
+    },
+    {
+      "order": 20,
+      "slug": "ziwei-liunian-tianzhai-fangchan",
+      "title": "紫微斗数流年田宅宫怎么看买房装修：先分居住、资产和家人意见",
+      "status": "ready",
+      "errors": [],
+      "warnings": [
+        "中文标题可能相似（1.00）：ziwei-liunian-tianzhai-fangchan.html；请人工判断搜索意图是否真的重复",
+        "英文标题可能相似（1.00）：ziwei-liunian-tianzhai-fangchan.html；请人工判断搜索意图是否真的重复"
+      ],
+      "score": 89,
+      "hardFailures": [],
+      "metrics": {
+        "chineseCharacters": 383,
+        "englishWords": 205,
+        "h2Count": 4,
+        "englishH2Count": 4
+      },
+      "contentHash": "9d877055b3bb8ff70649837b91a9b3e56315dae09cb3a7f96f9cfdd65c6b6e1c",
+      "reviews": {
+        "ziwei-logic": "PASS",
+        "human-tone": "PASS",
+        "seo-intent": "PASS",
+        "english-naturalness": "PASS",
+        "reader-value": "PASS"
+      }
+    }
+  ]
+}
