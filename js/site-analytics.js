@@ -8,6 +8,9 @@
     "chart_landing",
     "chart_start",
     "chart_complete",
+    "xu_entry_view",
+    "xu_entry_click",
+    "xu_chat_enter",
     "login",
     "sign_up",
     "begin_checkout",
@@ -140,6 +143,7 @@
   const attribution = updateAttribution();
   window.yuetianTrack = function yuetianTrack(eventName, parameters = {}) {
     if (!TRACKABLE_EVENTS.has(eventName)) return;
+    if (localDebug) console.debug('[yuetian-analytics]', eventName, JSON.stringify(safeParameters(parameters)));
     window.gtag("event", eventName, safeParameters({
       ...parameters,
       journey_id: attribution.journeyId,
@@ -150,6 +154,43 @@
       utm_medium: attribution.medium,
       utm_campaign: attribution.campaign,
     }));
+  };
+
+  const xuSeen = new Set();
+  let xuObserver = null;
+  let xuChartKey = '';
+  let xuClick = null;
+
+  window.yuetianTrackXuClick = function yuetianTrackXuClick(surface) {
+    xuClick = { surface, chartKey: xuChartKey, at: Date.now() };
+    window.yuetianTrack('xu_entry_click', { surface, entry_location: 'chart_below' });
+  };
+
+  // Keep chart keys only in memory for deduplication; never send birth data or chart IDs to GA4.
+  window.yuetianObserveXuFunnel = function yuetianObserveXuFunnel({ entry, chat, surface, chartKey } = {}) {
+    xuObserver?.disconnect();
+    xuObserver = null;
+    xuChartKey = chartKey || '';
+    if (!chartKey || !window.IntersectionObserver) return;
+    const observer = new window.IntersectionObserver((records) => {
+      if (observer !== xuObserver || document.visibilityState === 'hidden') return;
+      for (const record of records) {
+        const isEntry = record.target === entry;
+        if (!record.target.isConnected || !record.isIntersecting || record.intersectionRatio < (isEntry ? 0.5 : 0.1)) continue;
+        const event = isEntry ? 'xu_entry_view' : 'xu_chat_enter';
+        const key = `${event}:${surface}:${chartKey}`;
+        if (xuSeen.has(key)) continue;
+        xuSeen.add(key);
+        const fromEntry = xuClick?.surface === surface && xuClick.chartKey === chartKey && Date.now() - xuClick.at < 10000;
+        window.yuetianTrack(event, {
+          surface,
+          entry_location: isEntry || fromEntry ? 'chart_below' : 'other',
+        });
+      }
+    }, { threshold: [0.1, 0.5] });
+    xuObserver = observer;
+    if (entry) observer.observe(entry);
+    if (chat) observer.observe(chat);
   };
 
   window.yuetianTrackPurchase = function yuetianTrackPurchase(details = {}) {

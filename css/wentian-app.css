@@ -10481,6 +10481,25 @@ html[lang="en"] .liuyao-coin-summary em {
   text-decoration: none;
 }
 
+.wentian-xu-chart-entry {
+  display: block;
+  width: 100%;
+  min-height: 52px;
+  padding: 12px 16px;
+  border: 1px solid #7b3129;
+  border-radius: 12px;
+  background: #9e4738;
+  color: #fffdf6;
+  font: inherit;
+  font-size: 17px;
+  font-weight: 800;
+  line-height: 1.5;
+  cursor: pointer;
+}
+
+.wentian-xu-chart-entry:active { background: #7b3129; }
+.wentian-xu-chart-entry:focus-visible { outline: 3px solid #b38434; outline-offset: 3px; }
+
 .wentian-chart-content-stack {
   position: absolute;
   left: 8px;

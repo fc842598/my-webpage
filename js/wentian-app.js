@@ -22372,6 +22372,7 @@ function sourceZiweiMingpanScreenFromChart(saved) {
     ${wentianBackPill("source-27", 18, 44)}
     ${renderWentianClassicChart(saved, { persistXiaoLianBadge: true })}
     <div class="wentian-chart-content-stack">
+      <button type="button" class="wentian-xu-chart-entry" data-action="wentian-chart-ask-xu">${escapeHtml(getWentianCompactText("让许大师解读这张命盘", "Ask Master Xu about this chart"))}<span aria-hidden="true"> →</span></button>
       ${sourceZiweiAiDecodePanel()}
       ${renderWentianMobileYijingPanel(saved)}
     </div>
@@ -23408,6 +23409,12 @@ function navigate(route, push = true, syncHash = true) {
       (currentHashRoute || route !== "screen-1")
     ) location.hash = route;
     window.scrollTo(0, 0);
+    window.yuetianObserveXuFunnel?.({
+      entry: screen.no === 27 ? view.querySelector('.wentian-xu-chart-entry') : null,
+      chat: screen.no === 4 ? view.querySelector('.figma-phone') : null,
+      surface: 'wentian_mobile',
+      chartKey: [4, 27].includes(screen.no) ? getWentianDisplayChartState()?.chartData?.chartRecordId : '',
+    });
     return;
   }
   navigate("screen-1", push, syncHash);
@@ -24015,6 +24022,11 @@ document.addEventListener("click", (event) => {
     return;
   }
   const action = event.target.closest("[data-action]")?.dataset.action;
+  if (action === "wentian-chart-ask-xu") {
+    window.yuetianTrackXuClick?.('wentian_mobile');
+    navigateWentianClickRoute("screen-4");
+    return;
+  }
   if (action === "wentian-chart-more-toggle") {
     wentianChartMoreOpen = !wentianChartMoreOpen;
     navigatePreservingScroll("screen-27", false);

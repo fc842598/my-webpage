@@ -4510,6 +4510,9 @@
   }
 
   function renderChart() {
+    const xuEntry = $('#mbpXuChartEntry');
+    if (xuEntry) xuEntry.hidden = true;
+    window.yuetianObserveXuFunnel?.({});
     if (!state.chartReady) {
       document.body.classList.remove('is-chart-ready');
       document.body.classList.add('is-chart-pending');
@@ -4558,6 +4561,13 @@
     }
     syncChatPanelState();
     renderBasicReadingAccess();
+    if (xuEntry) xuEntry.hidden = false;
+    window.yuetianObserveXuFunnel?.({
+      entry: xuEntry,
+      chat: $('#mbpXuChatSection .mbp-section-head'),
+      surface: 'desktop_chart',
+      chartKey: state.chartRecordId,
+    });
   }
 
   function buildReports() {
@@ -8844,6 +8854,11 @@
     });
 
     $('#mbpDecodeBtn')?.addEventListener('click', decodeReports);
+    $('#mbpXuChartEntry')?.addEventListener('click', () => {
+      window.yuetianTrackXuClick?.('desktop_chart');
+      $('#mbpXuChatSection')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      $('#chat-input')?.focus({ preventScroll: true });
+    });
 
     document.querySelectorAll('[data-ai-module]').forEach((button) => {
       button.addEventListener('click', () => {

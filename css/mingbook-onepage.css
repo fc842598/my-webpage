@@ -18,6 +18,25 @@
   font-family: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
 }
 
+.mbp-xu-chart-entry {
+  display: block;
+  width: 100%;
+  min-height: 52px;
+  margin-top: 16px;
+  padding: 12px 16px;
+  border: 1px solid var(--gold-2);
+  border-radius: 12px;
+  background: var(--gold);
+  color: var(--bg);
+  font: inherit;
+  font-size: 17px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.mbp-xu-chart-entry:hover { background: var(--ivory); }
+.mbp-xu-chart-entry:focus-visible { outline: 3px solid var(--ivory); outline-offset: 3px; }
+
 * {
   box-sizing: border-box;
 }
