@@ -23,6 +23,7 @@ assert.throws(() => validateResearch({ ...input, report: report.slice(0, report.
 const sharedDomainReport = report.replace(/peer(\d+)\.example/g, "peer$1.shared.example");
 const sharedDomainHistory = { entries: entries.map((entry) => ({ ...entry, url: entry.url.replace(/peer(\d+)\.example/, "peer$1.shared.example") })) };
 assert.throws(() => validateResearch({ date, report: sharedDomainReport, history: sharedDomainHistory }), /independent domains/, "subdomains cannot inflate the independent-domain count");
+assert.throws(() => validateResearch({ ...input, report: report.replace(/## 10\.[\s\S]*?(?=## 原文链接清单)/, "") }), /at least 10 independent domains/, "an honest partial report below ten domains remains blocked for publication");
 const directory = mkdtempSync(path.join(os.tmpdir(), "yuetian-peer-gate-"));
 try {
   const reportPath = path.join(directory, `每日更新的同行文章-${date}.md`);

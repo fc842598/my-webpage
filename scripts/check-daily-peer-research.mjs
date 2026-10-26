@@ -67,7 +67,7 @@ export function validateResearch({ date, report, history, recentReports = [] }) 
     if (!recorded) throw new Error(`Today's history is missing ${card.title}`);
     urls.add(key); titles.add(title); topics.add(topic); domains.add(independentDomain);
   }
-  if (domains.size < Math.min(10, cards.length)) throw new Error("Research needs more independent domains");
+  if (domains.size < 10) throw new Error("Research needs at least 10 independent domains before publishing");
   const linkSection = report.match(/^##\s+原文链接清单\s*\n([\s\S]*?)(?=^##\s|$(?![\s\S]))/m)?.[1] || "";
   const rawLinks = linkSection.split(/\r?\n/).map((line) => line.trim()).filter((line) => /^https?:\/\//.test(line));
   const rawKeys = rawLinks.map(urlKey);
