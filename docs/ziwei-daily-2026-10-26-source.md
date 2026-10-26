@@ -7,6 +7,7 @@
 ## 1. 多人同住要搬家，紫微斗数该看谁的田宅宫？
 slug：`ziwei-tianzhaigong-duoren-tongzhu-banjia-kan-shui`
 搜索意图：同一家庭多人命盘不同，搬家时田宅宫该看谁
+素材线索：2026-10-26 同行研究第 1 条，https://www.longyu.com.tw/news/details.php?group_id=1350&id=74620&second_id=11912；与站内田宅宫一般搬家稿区分，专答多人同住的命盘主语。
 正文草稿：
 一家四口住同一套房，四个人的田宅宫却不一样。如果有人看到自己的田宅宫化忌，就断言“全家今年一定搬家”，马上会遇到一个问题：其他三个人的盘若没有相同信号，究竟听谁的？
 
@@ -130,7 +131,7 @@ Use the natal layer for the recurring pattern and the annual layer for this year
 ## 4. 一方需要空间一方需要计划，破军与天府夫妻宫怎么谈？
 slug：`ziwei-fuqi-pojun-tianfu-kongjian-jihua`
 搜索意图：夫妻宫破军与天府偏好不同时如何讨论自由和稳定
-素材线索：2026-10-26 同行研究第 4 条，https://vocus.cc/article/6ad81240fd89780001ca147e；站内已有逐星关系稿，本篇用共同旅行及搬家决策讨论两种需求冲突。
+素材线索：2026-10-26 同行研究第 4 条，https://vocus.cc/article/6ad81240fd89780001ca147e；与站内逐星关系稿区别在共同旅行及搬家决策中的两种需求冲突。
 正文草稿：
 一个人想临时买票去外地工作兼旅行，另一个人希望先排好假期、预算与住处。把前者叫“破军不安定”，后者叫“天府太保守”，并不能解决问题。夫妻宫里的星性更适合拿来辨认关系期待：改变带来活力，还是可预期性带来安全感？
 
@@ -312,7 +313,7 @@ For a question about the child as a person, a separate chart requires accurate b
 ## 9. 少年转学时，父母宫与子女宫分别提示什么？
 slug：`ziwei-shaonian-zhuanxue-fumugong-zinvgong`
 搜索意图：青少年转学如何分别看父母安排与孩子适应
-素材线索：2026-10-26 同行研究第 6 条，https://classic-blog.udn.com/tku_89056/192645805；与第 8 篇兴趣培养不同，本篇聚焦转学的家庭决策和少年适应。
+素材线索：2026-10-26 同行研究第 6 条，https://classic-blog.udn.com/tku_89056/192645805；与第 8 篇兴趣培养及站内子女宫基础稿的区别是聚焦转学的家庭决策和少年适应。
 正文草稿：
 一位初中生要转学，家长看见自己的子女宫有动象，就说“孩子今年必然换学校”；孩子却担心离开朋友。转学由大人决定，适应要由孩子经历，两个主语不能合成一句断语。父母宫和子女宫的意义也随命盘主人而变，读盘前先确认是谁在问谁。
 
@@ -423,7 +424,7 @@ Read the Home Palace as a prompt to inspect terms and conditions, then decide us
 ## 12. 看财帛宫的三方四正，怎样做一张四宫记录表？
 slug：`ziwei-caibo-sanfang-sizheng-sigong-jilu`
 搜索意图：用四宫表记录财帛宫三方四正，避免只看一颗财星
-素材线索：2026-10-26 同行研究第 8 条，https://ziwei-crazy.com/guide/sanfang-sizheng；站内有定义和对宫稿，本篇提供具体记录表字段及读表步骤。
+素材线索：2026-10-26 同行研究第 8 条，https://ziwei-crazy.com/guide/sanfang-sizheng；与站内定义和对宫稿的区别是提供具体记录表字段及读表步骤。
 正文草稿：
 想看收入，打开命盘却只找财帛宫有没有化禄，容易漏掉“钱从哪里来、工作是否接得住、外部市场给不给机会”。三方四正不是神秘加分法，而是固定宫位关系。把四个位置放在一张表里，先记录事实，再写推论，能避免只凭某颗星说“财运好”。
 
