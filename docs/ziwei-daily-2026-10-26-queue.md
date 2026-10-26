@@ -18,7 +18,7 @@
 | 12 | 已发布 2026-10-26 22:19 https://yuetianai.com/articles/ziwei-caibo-sanfang-sizheng-sigong-jilu.html / https://yuetianai.com/articles/en/ziwei-caibo-sanfang-sizheng-sigong-jilu.html | ziwei-caibo-sanfang-sizheng-sigong-jilu | 看财帛宫的三方四正，怎样做一张四宫记录表？ | 看盘方法 |
 | 13 | 已发布 2026-10-26 22:20 https://yuetianai.com/articles/ziwei-caibo-hualu-guanlu-huaji-shouru.html / https://yuetianai.com/articles/en/ziwei-caibo-hualu-guanlu-huaji-shouru.html | ziwei-caibo-hualu-guanlu-huaji-shouru | 财帛宫化禄、官禄宫化忌，收入为何未必增加？ | 财运事业 |
 | 14 | 已发布 2026-10-26 22:20 https://yuetianai.com/articles/ziwei-minggong-konggong-qianyi-qiang-waitai.html / https://yuetianai.com/articles/en/ziwei-minggong-konggong-qianyi-qiang-waitai.html | ziwei-minggong-konggong-qianyi-qiang-waitai | 命宫空宫而迁移宫强，借大公司平台后怎样留下作品？ | 看盘方法 |
-| 15 | 待发布 | ziwei-minggong-konggong-fuyao-sihua-jieduigong | 命宫空宫已有辅曜和四化，还需要借对宫吗？ | 看盘方法 |
+| 15 | 已发布 2026-10-26 22:20 https://yuetianai.com/articles/ziwei-minggong-konggong-fuyao-sihua-jieduigong.html / https://yuetianai.com/articles/en/ziwei-minggong-konggong-fuyao-sihua-jieduigong.html | ziwei-minggong-konggong-fuyao-sihua-jieduigong | 命宫空宫已有辅曜和四化，还需要借对宫吗？ | 看盘方法 |
 | 16 | 待发布 | ziwei-shichen-buqueding-xian-ting-zainaibu | 出生时辰不确定，紫微斗数看盘应先停在哪一步？ | 看盘方法 |
 | 17 | 待发布 | ziwei-miaowang-huaji-chongtu-kan-shenme | 主星庙旺却化忌，先看星曜强弱还是现实问题？ | 看盘方法 |
 | 18 | 待发布 | ziwei-liunian-huaji-luo-konggong-fenceng | 流年化忌落在空宫，为什么不能直接判这一年不顺？ | 大限流年 |
