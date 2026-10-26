@@ -2,6 +2,8 @@
 
 编辑参考：2026-10-26 同行报告第 1 条的提问方式；正文独立写作，未使用同行原文。站内已查重“田宅宫动了却没买房”“田宅与迁移联读”“接老人同住”等稿，本篇只讨论多人共居时应看谁的命盘。
 
+本轮 02—20 编辑核对：当天同行研究 10 条、10 个独立域名；每篇下方分别列研究 URL、采用角度及与站内旧文的区别。另核用户同步文稿 GB18030 文本的第 676—687 行（三方四正及宫位顺序）、766—782 行（夫妻与福德、子女问题的主语）、893—896 行（田宅宫议题）和 1142 行（财帛落宫的具体用法）。正文仅吸收宫位联读和问题主语的逻辑，不复用文稿或同行的句子、结构、品牌词。
+
 ## 1. 多人同住要搬家，紫微斗数该看谁的田宅宫？
 slug：`ziwei-tianzhaigong-duoren-tongzhu-banjia-kan-shui`
 搜索意图：同一家庭多人命盘不同，搬家时田宅宫该看谁
@@ -378,3 +380,361 @@ Someone who values quiet should inspect a property at night. Someone who wants c
 A couple should agree on ownership, debt, and who will handle daily care. Unstable bonuses should not become the baseline for a mortgage. If older relatives want the home nearby, write down the expected care schedule and what happens if work changes.
 
 Start with needs, use the chart to ask sharper questions, then verify title, financing, inspection reports, contracts, and the family's consent. That is a safer use of the Home Palace than treating it as a purchase signal.
+
+---
+
+## 11. 田宅宫化忌但租房没搬，续约时该检查什么？
+slug：`ziwei-tianzhaigong-huaji-zufang-xuyue`
+搜索意图：田宅宫化忌但居住地址不变，如何理解续租中的问题
+素材线索：2026-10-26 同行研究第 1、7 条，https://www.longyu.com.tw/news/details.php?group_id=1350&id=74620&second_id=11912 及 https://kairo.aiinvest.tw/articles/daily-20261021-house；区别站内“田宅宫动了却没买房”，本篇专答续租不搬的合同与生活成本。
+正文草稿：
+租客看到流年田宅宫化忌，就担心房东一定要赶人。实际续约时，也许房子照住，只是租金、维修、室友或押金条款出现摩擦。田宅宫的议题是“居住怎样被安排”，不只对应地址变化。化忌提醒把模糊的地方问清，不能自动翻译成搬家。
+
+### 先查具体卡点
+续租前先把合同期限、涨租幅度、维修责任、押金退还和能否养宠物列出来。若田宅宫天机化忌，可能表现为方案反复：房东迟迟不确认、室友对房间分配改来改去；若见廉贞化忌，更要把边界和书面约定说清。这些只是阅读方向，具体争议要看合同和当地规则。
+
+例如两位室友都想续租，但一人换了夜班。田宅宫的压力可能来自作息冲突，房东并未打算收回房屋。先订安静时段，再决定是否换室友。另一例是屋顶漏水，房东承诺维修却没有日期；地址不变，居住质量和费用已经受影响。把照片、沟通记录与维修期限留存，比等待“搬家星”应验更有效。
+
+### 再看迁移和财务能否承接
+迁移宫要问是否有替代房源、换住处的通勤代价；财帛宫要问涨租后现金流。若本命田宅重视稳定，大限迁移出现新工作地点，续租一年还是先签短约，可能比“搬不搬”更关键。个人命盘也不能代表所有同住者，室友与家人的意愿需要直接讨论。
+
+比如每月多付五百元能保留离学校近的住处，另一个便宜房源却增加每天一小时通勤。把实际总成本算出来，再决定是否续租。四化可以提示查哪类成本，但不能替你判断条款是否合法或物件是否安全。
+
+### 排盘使用顺序
+先确认问题是续约、涨租、维修还是同住规则；看田宅宫主星与四化，再补迁移、财帛和时间层。最后核合同、现场状况、预算和共同居住者的意见。没有搬家，并不表示田宅宫的问题不存在；有化忌，也不代表必须搬走。
+
+英文标题：Hua Ji in the Home Palace Without Moving: A Lease Renewal Checklist
+英文描述：A Home Palace blockage can concern rent, repairs, or roommates even when the address stays the same.
+英文正文：
+A tenant sees Hua Ji in the annual Home Palace and expects an eviction. The lease may instead continue while rent, repairs, deposits, or roommate rules become difficult. The Home Palace concerns how living is arranged, not only a change of address.
+
+### Locate the actual problem
+Check the renewal date, rent increase, repair duties, deposit terms, and household rules. Tian Ji with Hua Ji may prompt questions about plans that keep changing. A boundary issue calls for clear written terms. The chart does not replace the lease or local housing rules.
+
+Two roommates may stay in the same apartment but need new quiet hours after one starts night shifts. A leaking roof can reduce living quality without a move. Documenting the problem and a repair deadline is more useful than waiting for a prediction to come true.
+
+### Compare the alternatives
+The Travel Palace can point to the cost of another location; the Wealth Palace to affordability. A cheaper apartment may add an hour to the commute. Calculate the total cost and ask everyone who lives there what they need.
+
+Read the Home Palace as a prompt to inspect terms and conditions, then decide using the contract, the property, and the budget.
+
+---
+
+## 12. 看财帛宫的三方四正，怎样做一张四宫记录表？
+slug：`ziwei-caibo-sanfang-sizheng-sigong-jilu`
+搜索意图：用四宫表记录财帛宫三方四正，避免只看一颗财星
+素材线索：2026-10-26 同行研究第 8 条，https://ziwei-crazy.com/guide/sanfang-sizheng；站内有定义和对宫稿，本篇提供具体记录表字段及读表步骤。
+正文草稿：
+想看收入，打开命盘却只找财帛宫有没有化禄，容易漏掉“钱从哪里来、工作是否接得住、外部市场给不给机会”。三方四正不是神秘加分法，而是固定宫位关系。把四个位置放在一张表里，先记录事实，再写推论，能避免只凭某颗星说“财运好”。
+
+### 四列先抄位置，再抄星曜
+以财帛宫为本宫，找它的对宫和两个三合宫，按排盘页面标注填四列：宫名、主星与辅煞、四化、现实问题。不要凭记忆硬背相邻宫位，因为软件布局可能不同。每列只记当下所用盘层，本命、大限和流年不要混在一张没有标签的表里。若软件把流年四化叠在本命宫上，另写颜色或图例来源。
+
+例如财帛宫有化禄，先记“收入入口可能增加”，不要马上写“存款增加”。若官禄宫见化权，工作责任可能同时上升；若迁移宫见化忌，外部客户回款或差旅可能卡住。四项放一起，才会提出“收入增加后，谁负责交付和收款”的实用问题。
+
+### 表里要有反证栏
+再加一栏记录实际收入来源、付款周期、合同与支出。一个自雇者财帛宫强，账上却没有现金，也许是应收款未到；一个固定薪资员工官禄宫稳定，财帛宫看似普通，仍可凭持续积累改善储蓄。命盘结构与现实数字不一致时，先查有没有把资源控制、营业额和个人净收入混为一谈。
+
+第二个练习：请把“我负责项目预算”与“这笔钱属于我”分别写下。若财帛宫和官禄宫都出现权，可能是管理权限，仍需看财务归属和薪酬制度。三方四正提供背景，法律上的所有权不由星曜决定。
+
+### 排盘使用顺序
+确认问题是收入、留存还是掌管资源；定位财帛本宫、对宫和两处三合，填主星、四化与盘层，再写现实反证。最后核合同、现金流和支出。四宫表的价值在于让读盘可复查，不在于把星数相加得一个分数。
+
+英文标题：A Four-Palace Worksheet for Reading Wealth in Zi Wei Dou Shu
+英文描述：Record the Wealth Palace, opposite palace, and two supporting palaces before making an income claim.
+英文正文：
+Looking for Hua Lu in the Wealth Palace alone can miss how money is earned, delivered, and collected. A four-palace worksheet makes the reading inspectable.
+
+### Build the table
+Start with the Wealth Palace, then mark its opposite palace and two trine palaces on the actual chart. Give each column the palace name, main and supporting stars, transformations, and one practical question. Label whether the entries are natal, decade, or annual. Do not mix chart layers without saying so.
+
+If Wealth has Hua Lu while Career has Hua Quan and Travel has Hua Ji, the useful question is not simply whether the person is lucky with money. Ask who delivers the work, whether outside clients pay on time, and whether the larger responsibility has a matching fee.
+
+### Add a reality column
+Record actual income sources, payment dates, contract terms, and expenses. A freelancer may have sales but no cash because invoices are unpaid. A salaried worker may build savings steadily without a dramatic Wealth Palace signal. Managing a company budget is not the same as owning that money.
+
+Use the table to check structure and contradictions, then compare it with cash flow and legal ownership. It is a reading method, not a numerical fortune score.
+
+---
+
+## 13. 财帛宫化禄、官禄宫化忌，收入为何未必增加？
+slug：`ziwei-caibo-hualu-guanlu-huaji-shouru`
+搜索意图：财帛化禄与官禄化忌并见时，区分订单与交付阻碍
+素材线索：2026-10-26 同行研究第 8 条，https://ziwei-crazy.com/guide/sanfang-sizheng；与第 12 篇记录方法不同，本篇专答资源入口和工作卡点相遇的现金流问题。
+正文草稿：
+财帛宫化禄，看起来客户和订单多了；官禄宫化忌，工作却不断返工。月底收入不升反降，并非命盘互相矛盾：获得机会、完成交付和收到净款是三个不同环节。把财帛与官禄放在三方四正的结构中看，才能找到资源在哪一步停住。
+
+### 化禄先问入口，不先问存款
+财帛化禄可提示收入渠道、客户支持或资金机会，但要辨明是报价、签单、到账还是能留住的钱。官禄化忌可能体现职责不清、审批反复、技能不匹配或项目延迟。若命宫缺少接手能力，迁移宫又有外部沟通压力，订单越多未必越轻松。
+
+例如接案设计师这个月签下四个新项目，财帛宫的禄有了现实对应；但需求频繁改动，官禄宫的忌表现为交付成本增加。若合同没有规定修改次数，最后时薪可能比上月更低。可先重订验收点、预付款和变更费用，而不是继续追逐更多订单。
+
+### 比较两种“收入没增加”
+另一位公司主管接管更大的预算，财帛宫看似资源增加，却没有个人加薪；官禄化忌可能是审批责任和部门摩擦。此时要分“掌管的钱”与“归自己所有的钱”，再看岗位评价和薪酬条款。若是经营小店，营业额增加、进货与平台费用也增加，就应看毛利、回款和库存，而不能只看流水。
+
+大限提供这段时间的工作模式，流年看何时出现新客户或阻碍。星曜强弱也要与宫位职责合读，不能把任何化忌直接当作破财，更不能凭盘替代会计数据。
+
+### 排盘使用顺序
+先画出机会、交付、回款、留存四个环节；看财帛、官禄及其对宫三合的星曜和四化，再对照合同与账单。哪一步出问题就先改哪一步。财帛的禄是线索，真正收入要以到账和成本后的数字核实。
+
+英文标题：Hua Lu in Wealth, Hua Ji in Career: Why More Orders May Not Mean More Income
+英文描述：Separate new opportunities, delivery costs, collection, and personal profit when reading Wealth and Career Palaces.
+英文正文：
+More clients can arrive while take-home income stays flat. Hua Lu in the Wealth Palace may describe a wider entry point for money. Hua Ji in the Career Palace may point to trouble delivering the work. A sale, a completed project, and net cash are different steps.
+
+### Follow the money through the work
+A freelance designer signs four projects but spends extra weeks on revisions. Without limits on changes, the hourly return falls. The useful response is to set milestones, deposits, and revision terms, not to collect more orders.
+
+A manager may control a larger company budget without getting a raise. A shop may grow sales while inventory and platform fees rise. In each case, distinguish resources handled from money owned.
+
+### Check the chart against accounts
+Read Wealth and Career with their supporting palaces, then label the decade and annual layers. Ask where the process slows: opportunity, delivery, collection, or retention. Inspect invoices, costs, and pay terms before calling a chart favorable or unfavorable for income.
+
+---
+
+## 14. 命宫空宫而迁移宫强，借大公司平台后怎样留下作品？
+slug：`ziwei-minggong-konggong-qianyi-qiang-waitai`
+搜索意图：命宫无主星、迁移宫强时如何把大公司项目留下可迁移作品
+素材线索：2026-10-26 同行研究第 10 条，https://astroverse.com.tw/knowledge/og-ziwei-empty-nnrj97；区别站内空宫借对宫基础稿及“空宫迁移化权”的个人承担稿，本篇聚焦项目作品与职业证据。
+正文草稿：
+命宫没有十四主星，对宫迁移宫却坐强星，有人就说“离开家才会成功”。这是把借对宫的读法推成生活命令。空宫不是空白；迁移宫强也可能意味着外部舞台、客户与团队容易给机会。关键问题是：这份支持离开平台以后，还剩下什么属于自己的能力？
+
+### 借对宫不是照搬对宫
+命宫空宫时，先看本宫辅曜、煞曜、四化与宫干，再借迁移宫主星理解在外部环境中的表现，并检查命财官的三方结构。对宫的星曜提示可用资源，不代表命宫突然拥有同一颗主星。若迁移宫化禄，先问资源来自客户、异地或组织；若命宫见化忌，可能需要处理自我定位与选择，不等于机会无效。
+
+例如新人进入大公司后得到知名项目的展示机会，迁移宫的强势有了现实落点。若他只负责执行而没有形成独立作品，离开团队便难以证明能力。把交付成果、方法、合作伙伴和可公开的案例整理下来，才把外部平台变成个人履历。
+
+### 分清机会与承接
+另一个人做跨境销售，外部订单很多，官禄宫却缺稳定流程，财帛宫回款慢。不能因为迁移宫强就说“出去必发财”；需建立报价、交付和收款制度。反过来，命宫虽空，但有左辅右弼和清楚的四化支持，可能擅长组织协作，并非只能依附他人。星曜的强弱要落到行动和成果，而不是给人贴“被动”标签。
+
+大限迁移宫被触发，可能是几年里扩大市场；流年再触发，只说明今年有具体窗口。是否要出国、转岗或换城市，仍须核签证、收入、家人安排和职业积累。
+
+### 排盘使用顺序
+先看命宫本宫已有的信息，再借迁移主星，补命财官三方和时间层。写明外部资源是谁给、自己承担哪段工作、成果能否独立保留。用实际作品、客户与合同检验“机会”，别从空宫直接推人生方向。
+
+英文标题：An Empty Life Palace with a Strong Travel Palace: Turning Access into Skill
+英文描述：Borrow the opposite palace carefully and separate outside opportunity from portable personal ability.
+英文正文：
+An empty Life Palace does not mean an empty person. A strong opposite Travel Palace may point to useful outside stages, clients, or teams. The practical question is what the person can carry away from that stage.
+
+### Borrow without copying
+Read supporting stars and transformations in the Life Palace first. Then use the Travel Palace to understand how the person meets the wider environment, together with Wealth and Career. The opposite palace is context; it does not become an identical star sitting in the Life Palace.
+
+A newcomer may get visible work through a large company. If their contribution is never documented, the brand name alone may be hard to carry into another role. A cross-border seller may get orders but still need a reliable delivery and collection process.
+
+### Test what is portable
+Write down who supplies the opportunity, what the person actually does, and what evidence of skill remains: work samples, methods, references, and contracts. A decade or annual Travel signal can mark a window, but relocation still requires a real plan for income, family, and legal conditions.
+
+---
+
+## 15. 命宫空宫已有辅曜和四化，还需要借对宫吗？
+slug：`ziwei-minggong-konggong-fuyao-sihua-jieduigong`
+搜索意图：空宫有辅星与四化时，借对宫前要先读什么
+素材线索：2026-10-26 同行研究第 10 条，https://astroverse.com.tw/knowledge/og-ziwei-empty-nnrj97；区别站内空宫借对宫操作稿，本篇强调本宫信息不应被对宫主星盖掉。
+正文草稿：
+“命宫空宫就借迁移宫主星”，常被讲成第一步。可一张命宫没有十四主星的盘，仍可能有左辅、右弼、文昌等辅曜，也可能有四化飞入或煞曜同宫。若一上来只讲对宫主星，就把本宫已有的线索丢了。空宫只是无主星，不是没有内容。
+
+### 先给本宫做清单
+确认出生资料与排盘软件口径，再记录命宫辅曜、煞曜、四化和宫干；这些能说明本人怎样组织资源、沟通或面对阻碍。随后再看对宫迁移宫主星，在外部环境中怎样被触发，最后放回命财官三方。这样既使用借宫法，也保留本宫的差异。不同流派对借星的强度有不同解释，读者应标明采用哪一种。
+
+例如命宫空而有左辅、右弼，迁移宫坐七杀。直接说“此人天生七杀冲锋”太快；更合理的是问他是否在外部高压项目中发挥协调者作用，谁承担最后的风险。若命宫有文昌化科，迁移宫见破军，可能是在变化快的行业里凭写作、文档或专业解释站稳，而不是盲目求变。
+
+### 借来的是情境，不是身份证
+对宫强不等于一定出外发展，本宫有煞也不等于不能合作。需要比较大限、流年什么时候把这些议题推到现实，再看职业、家人和资源条件。第二个例子：有人在本地做远程客户服务，迁移宫提供的是外部市场，而非身体迁居；命宫辅曜体现沟通协作，二者共同解释工作方式。
+
+如果不同排盘软件对某颗星曜位置显示不同，先复核出生时辰与历法，不急于解释强弱。对宫借法只能在图盘正确时使用；拿错盘层会让看似精密的分析全走偏。
+
+### 排盘使用顺序
+核数据，读命宫本宫辅曜与四化，再借迁移主星，补命财官与大限流年。把结论写成可观察的场景：何时、在哪种外部任务中、靠什么能力完成。不要只因“空”字给人生定性。
+
+英文标题：An Empty Life Palace Still Has Supporting Stars: When to Borrow the Opposite
+英文描述：Read what is present in an empty Life Palace before borrowing main stars from the Travel Palace.
+英文正文：
+In Zi Wei Dou Shu, an empty Life Palace means no major star there. It can still contain supporting stars, challenging stars, and transformation information. Reading only the opposite Travel Palace can erase those details.
+
+### Inventory the Life Palace first
+Check the birth data and software convention. Record the Life Palace's supporting stars and transformations, then examine the Travel Palace's main stars and the wider Life-Wealth-Career structure. Schools differ in how strongly they borrow from the opposite palace, so name the method you use.
+
+A chart with Zuo Fu and You Bi in the Life Palace and Qi Sha opposite does not automatically describe a lone risk taker. It may ask how someone coordinates a demanding outside project. Wen Chang with Hua Ke at home and Po Jun opposite may describe skill in documentation amid change.
+
+### Look for the real setting
+Outside opportunity need not mean moving abroad. Remote customers can activate the same practical question while the person stays local. Read decade and annual timing only after confirming the natal chart.
+
+Start with what is actually in the Life Palace, borrow the opposite for context, and test the result against specific work and relationships. An empty palace is a reading condition, not an identity label.
+
+---
+
+## 16. 出生时辰不确定，紫微斗数看盘应先停在哪一步？
+slug：`ziwei-shichen-buqueding-xian-ting-zainaibu`
+搜索意图：出生时间不确定时能看紫微斗数到什么程度
+素材线索：2026-10-26 同行研究第 9 条，https://9zi.ai/tw/guide/how-to-read-a-chart/；区别站内时辰误差原理稿，本篇给出读盘停止点和核对资料顺序。
+正文草稿：
+只记得“应该是早上七八点”，却已经在比较夫妻宫化忌和明年结婚时间，推论就可能建在错误的命盘上。紫微斗数按时辰排布命宫和星曜；接近交界时，半小时误差也可能改变宫位。重要的不是硬选一张“比较像自己”的盘，而是先标出哪些问题可以暂谈，哪些必须暂停。
+
+### 先核资料，不先挑结果
+把出生证明、医院记录、家人记忆和户籍信息按可靠程度列出。确认出生地、日期、当地计时与排盘软件是否采用真太阳时等校正；不要因为某个说法听起来准，就倒推自己一定是那个时辰。若两个相邻时辰都可能成立，分别保存两张盘，标记命宫、身宫、主星及四化是否改变。
+
+例如家人说“天亮以后”，但出生证明写 06:55，软件却默认把地点设为另一个城市。先校正输入，再讨论卯时或辰时。另一例是证明记载 08:10，处在较稳定区间，两种输入方式的盘一致，可以继续读宫位结构；仍要注明数据来源。
+
+### 哪些内容要暂停
+如果两张候选盘的命宫、夫妻宫或流年定位不同，具体星曜落宫、结婚时间、职业事件等细推都应暂缓。可以先讨论当事人的现实问题和排盘方法，比如怎样区分本命与流年、怎样记录三方四正，但不能把不确定的宫位当作已验证事实。若两张盘某些位置相同，也只在不依赖变动宫位的范围内解释。
+
+一位求职者的两张候选盘都显示今年换岗，却一个落官禄、一个落迁移。先问工作是否需要异地、薪酬是否变化，不能借“两个盘都说动”就宣称预测成功。现实经历可帮助提出问题，不能代替原始出生记录。
+
+### 排盘使用顺序
+核出生资料和软件设置，列出候选盘的差异，再决定本次问题是否依赖变动位置。依赖就停在资料核验，不依赖才谨慎讨论结构。任何精确到月份的判断，都应在时辰确认后才提出；重要生活决定仍以现实信息为准。
+
+英文标题：Uncertain Birth Time: Where to Pause a Zi Wei Dou Shu Reading
+英文描述：Check birth records and compare candidate charts before making palace-specific or annual claims.
+英文正文：
+If someone remembers only that they were born around seven or eight in the morning, a precise claim about the Spouse Palace may rest on the wrong chart. Zi Wei Dou Shu is sensitive to birth time, especially near a time boundary.
+
+### Verify the input before the interpretation
+Compare a birth certificate, hospital record, family memory, birthplace, and the chart software's time convention. Do not select the chart that merely sounds more flattering. Save both candidate charts if two adjacent time periods remain possible and mark which palaces and stars change.
+
+A recorded 06:55 birth should be checked against the actual location and software settings before choosing a time period. A recorded 08:10 birth may give a more stable chart, but its source should still be noted.
+
+### Draw a stopping line
+If the Life, Spouse, or annual palace moves between candidate charts, pause detailed claims about those palaces and event timing. You can still discuss the reading method and the real decision facing the person. Similarities between two uncertain charts do not prove a prediction.
+
+Confirm the data, compare what changes, and only interpret what the uncertainty allows. A major relationship or career decision needs direct evidence beyond a chart.
+
+---
+
+## 17. 主星庙旺却化忌，先看星曜强弱还是现实问题？
+slug：`ziwei-miaowang-huaji-chongtu-kan-shenme`
+搜索意图：庙旺主星与化忌并见时如何避免简单抵消
+素材线索：2026-10-26 同行研究第 9 条，https://9zi.ai/tw/guide/how-to-read-a-chart/；区别站内庙旺定义稿，本篇讨论主星可用程度与四化卡点并存的读法。
+正文草稿：
+“主星庙旺是好，化忌是坏，那是不是抵消？”这是看盘常见误区。庙旺描述星曜在某位置表现的条件，化忌提示某个议题容易出现阻滞、执着或反复；两者不是同一种刻度，不能相减。先弄清这颗星落在什么宫、承担什么任务，再问强势能力在哪里遇到具体摩擦。
+
+### 强不等于省力
+官禄宫武曲庙旺，可能擅长预算与执行；若同宫化忌，财务审批、成本压力或对数字过度较真仍可能让工作变难。能力强的人也会遇到复杂任务，甚至因为能力强而接更多责任。要再看化忌属于本命、大限还是流年：长期工作习惯与今年某项目返工，不该混成一个结论。
+
+例如财务主管管理数个部门预算，流程能力很强，但新系统上线导致反复对账。把“庙旺化忌”说成必破财，既没有说明宫位，也没有说明他管理的是公司资金。更有用的是检查授权、复核点和上线缓冲。
+
+### 先找问题，再看承接
+夫妻宫太阴庙旺而见化忌，可能有细致照顾关系的能力，却容易在情绪表达或安全感上反复；不能直接断婚姻失败。若命宫化科，能够把感受说清；若福德宫受压，休息不足可能放大误会。另一例是学生的官禄宫天机庙旺又化忌，学习方法多却频繁换计划；可先固定一个四周计划，再评估成绩，而不是继续换工具。
+
+星曜强弱帮助判断资源能否被运用，四化落宫帮助指出压力在哪个环节。三方四正提供支持与牵制，大限流年说明时间。现实中的合同、关系对话和成绩变化是检验材料，不是一句吉凶标签。
+
+### 排盘使用顺序
+核宫位和盘层，描述主星原本擅长什么，再定位化忌的具体任务；合看三方与现实证据。把结论写成“能力、卡点、可采取的动作”三项，不做加减分算式。读盘要能回答问题，而不只是把两个术语互相抵消。
+
+英文标题：A Strong Major Star with Hua Ji: Why the Signs Do Not Cancel Out
+英文描述：Read star condition and transformation as different dimensions of a Zi Wei Dou Shu problem.
+英文正文：
+A major star in a strong condition and Hua Ji in the same palace are not plus and minus signs that cancel. Star condition concerns how a function can perform; Hua Ji can point to a knot in a particular task. The palace and chart layer tell you what that task is.
+
+### Ability can meet friction
+Wu Qu in the Career Palace may support budgeting and execution. With Hua Ji, approvals or cost pressure can still create difficult work. A capable finance manager may face repeated reconciliation during a new software rollout. That is not the same as losing personal money.
+
+Tai Yin in the Spouse Palace may support care and attentiveness while a difficult transformation raises questions about expressing needs. Tian Ji in a student's Career Palace may support flexible thinking while too many changes to a study plan hurt follow-through.
+
+Read the palace and natal, decade, or annual layer first. Then describe the useful capacity, the specific bottleneck, and a practical response. Compare supporting palaces and real evidence instead of assigning a good or bad score.
+
+---
+
+## 18. 流年化忌落在空宫，为什么不能直接判这一年不顺？
+slug：`ziwei-liunian-huaji-luo-konggong-fenceng`
+搜索意图：流年化忌与本命空宫重叠时怎样定位盘层和问题
+素材线索：2026-10-26 同行研究第 9、10 条，https://9zi.ai/tw/guide/how-to-read-a-chart/ 及 https://astroverse.com.tw/knowledge/og-ziwei-empty-nnrj97；区别站内空宫和流年入门文，本篇处理叠盘误读。
+正文草稿：
+看到软件在“空宫”上画出流年化忌，有人会理解成“空上加忌，整年都没有希望”。这个说法在定位上就有问题：空宫是本命该宫没有十四主星，流年化忌是另一层时间信息。两者可以同时显示，却不能合成一张模糊的吉凶标签。先确认化忌究竟从哪颗星发出、落在何宫。
+
+### 把叠盘拆开
+先记录本命空宫的宫名、辅曜、煞曜与对宫主星，再记录流年四化来源、今年使用的流年宫位定位和软件图例。空宫不排斥辅曜、飞化或对宫信息；化忌也不等于该宫全年没有作用。若不同软件把流年命宫放在不同位置，先校正年份起点、农历口径与出生数据，再比较结果。
+
+例如本命财帛宫空，流年化忌在财帛相关位置，一个接案者可能遇到催款、报价或客户变更；但若官禄宫有稳定工作，生活并不会因一个标记全面失序。可查账龄、合同与应急金。另一人本命夫妻宫空，流年化忌引出照护分工争议，也可能只是需要把沟通时间排出来，不应断言关系终结。
+
+### 查对宫与三方的承接
+借对宫主星时要保持主语清楚：它说明这件事在相对位置上的环境和表现，不是直接填补本宫所有答案。三方四正若有化禄或化科支持，问题可能有资源解决；若化权带来责任，还要看谁能执行。大限提供长期背景，流年只把某一段议题推出来。具体应对取决于现实事件。
+
+再如租户的本命田宅宫空，今年流年化忌，他没有搬家，只是房东要求重新谈维修责任。把合同条款写清就是针对问题的行动。若完全没有相应事件，不必为一个红字主动制造麻烦。
+
+### 排盘使用顺序
+分开记录本命空宫、对宫、三方和流年化忌，再写出可核对的今年问题。只解释该问题涉及的宫位与时间，不扩大成整年命运。最后用账单、合同或真实对话验证，保留不确定性。
+
+英文标题：Annual Hua Ji Over an Empty Palace: Read the Layers Before Judging the Year
+英文描述：An empty natal palace and an annual Hua Ji are different chart layers, not a verdict on the whole year.
+英文正文：
+An empty palace on a natal chart and Hua Ji in an annual overlay can appear in the same place. That does not mean the whole year is empty or bad. The first describes the absence of a major star in one natal palace; the second belongs to a time layer.
+
+### Separate the overlays
+Record the natal palace, its supporting stars, and its opposite. Then record the annual transformation's source star, destination, and the software's convention for annual palace positions. Check the year boundary and birth data if two applications disagree.
+
+An empty natal Wealth Palace with an annual blockage may prompt an independent worker to check overdue invoices or contract changes. It does not erase a steady job elsewhere in the chart. An empty Spouse Palace with annual Hua Ji may bring a practical caregiving discussion rather than a breakup.
+
+Use the opposite palace and trine structure for context, and the decade cycle for the longer backdrop. Ask what actual issue appeared this year and what can be done. Do not turn one red label into a forecast for every part of life.
+
+---
+
+## 19. 伴侣想创业，夫妻宫破军该怎样讨论风险分担？
+slug：`ziwei-fuqi-pojun-chuangye-fengxian-fendan`
+搜索意图：伴侣创业时如何用夫妻宫破军讨论关系和财务风险
+素材线索：2026-10-26 同行研究第 4 条，https://vocus.cc/article/6ad81240fd89780001ca147e；区别站内破军夫妻宫星性稿和第 4 篇搬家场景，本篇专谈创业出资与关系责任。
+正文草稿：
+伴侣想辞职创业，另一方看到夫妻宫破军，就说“他天生爱折腾，我只能支持”。这把星性当成同意书。破军可以提示改变旧结构的冲劲，但创业需要资金、合同和时间，两个人的风险并不自动相同。真正该谈的是：谁出钱、谁劳动、失败时谁承担日常开支。
+
+### 把“支持”拆成四种承诺
+支持可以是情绪陪伴、共享家务、短期借款，或成为共同投资人。每一种都有不同边界。读夫妻宫时，看自己如何面对伴侣的变化；再看自己的财帛宫与田宅宫能否承受家庭现金流波动，官禄宫是否会因照护和家务分工被迫改变。若对方愿意提供自己的命盘，可另看他的事业与财务结构；没有他的同意和资料，就不要代他下结论。
+
+例如一方计划开咖啡店，准备拿家庭全部存款付租金。夫妻宫破军可能让“试新事”显得有吸引力，但财帛宫化忌提示先限定投入、留下六个月生活费。可以先做三个月快闪测试，记录客单价与成本，再谈长期租约。反过来，伴侣只是下班后接案试水，风险规模不同，不应把所有创业都当成同一次大赌注。
+
+### 四化问谁承担代价
+化禄可问资金和客户从哪来，化权可问谁有决定权，化科可问方案是否经得起外部检验，化忌可问债务、延迟或分歧落给谁。若两个命盘显示不同偏好，也无需强求一致；关键是约定上限、退出条件和每月复盘。关系承诺不等于无条件担保商业债务。
+
+第二个例子是创业者要求伴侣辞职协助。即使对方夫妻宫看似支持合作，也要先谈薪酬、股权、社保与离开岗位后的再就业成本。星曜不能代替劳动和财务协议。
+
+### 排盘使用顺序
+定义创业规模，再看双方可分享的关系、财务、事业与田宅信息。把资金、工作量、决策权和退出方案写下来，找专业人士核合同和税务。盘能提醒关系中的改变压力，不能替任何一方承担风险。
+
+英文标题：When a Partner Wants to Start a Business: Po Jun and Shared Risk
+英文描述：Use a Po Jun relationship reading to ask who funds, works on, and carries the risk of a new business.
+英文正文：
+A partner wants to leave a job and open a business. Seeing Po Jun in the Spouse Palace can prompt a discussion about change, but it is not permission to spend shared savings. The two people need to define their different risks.
+
+### Define what support means
+Support might mean encouragement, taking on more household work, lending a limited amount, or becoming an investor. Each has a different cost. The chart owner's Spouse Palace concerns their response to the partner's change; Wealth, Home, and Career questions show what the household can actually absorb.
+
+A proposed cafe funded by all family savings needs a spending cap and living reserve. A three-month pop-up test may show real sales before a long lease. A small side project has another risk profile. Do not use one star to treat both cases alike.
+
+### Put the agreement in writing
+Hua Lu asks where funding or customers come from; Hua Quan who decides; Hua Ji who carries debt or delay. Agree on a review date and an exit rule. If one person is asked to leave their job, discuss pay, ownership, benefits, and the cost of returning to work. Use the chart for questions and a qualified professional for contracts and tax details.
+
+---
+
+## 20. 一方想谈感受一方只谈账目，太阴与武曲夫妻宫怎么读？
+slug：`ziwei-fuqi-taiyin-wuqu-qingxu-zhangmu`
+搜索意图：夫妻宫太阴与武曲对情绪和财务沟通的不同需求
+素材线索：2026-10-26 同行研究第 4 条，https://vocus.cc/article/6ad81240fd89780001ca147e；区别逐星性格稿和第 4 篇空间计划冲突，本篇专谈家庭账目讨论中的情绪确认。
+正文草稿：
+月底对账时，一方说“你从不听我担心什么”，另一方回答“数字都在表里，有什么好担心”。两个人谈的其实不是同一个问题。夫妻宫太阴或武曲可提示关系里分别重视被理解、可靠执行等需求，但不能把谁判成“太情绪化”或“没有感情”。先把财务事实和情绪感受分开，再安排共同决定。
+
+### 星性提示表达方式，不替人发言
+太阴常让人留意安全感、日常照顾和细节；武曲常让人关注责任、数字与行动。落在夫妻宫时，还要看命宫本人如何回应、财帛宫的实际收入与福德宫的压力状态。夫妻宫说的是命盘主人如何理解关系，不是伴侣心里真正想什么；不能仅凭自己的盘给对方贴性格标签。
+
+例如一方发现家庭储蓄少于计划，想先确认未来几个月会不会失去安全垫；另一方立刻拿出支出表解释。若先回应“我明白你担心的是缓冲不足”，再一起算账，冲突通常更容易定位。反过来，只谈感受却一直不公开贷款余额，也无法建立信任。情绪和数字都需要被放上桌。
+
+### 用两段式会议替代互相指责
+前十分钟只说各自担忧与目标，后半段才核收入、固定支出、债务与可自由使用的金额。若财帛宫化权，一方可能习惯掌控预算，更应约定共同授权门槛；若夫妻宫化忌，不要直接断感情差，而要查信息不透明、旧约定失效还是时间不够。若双方收入差距较大，分担比例与决定权也需要明文讨论。
+
+另一例是照顾父母的开支：武曲式做法可能先算医疗与交通费用，太阴式关切可能先问谁陪诊、老人是否安心。把两张清单合起来，才能看见金钱之外的劳动。四化与三方提示压力点，不能代替两人说出真实需求。
+
+### 排盘使用顺序
+先问争议是账目、决定权还是感受未被听见；看夫妻、命宫、财帛与福德，区分星曜偏好和现实责任。再核账目、约定表达时间与授权方式，定期复盘。命盘可帮助换一种提问，不该成为争吵时攻击对方的证据。
+
+英文标题：Tai Yin and Wu Qu in Relationship Talks: Feelings and Household Numbers
+英文描述：Separate emotional reassurance from a practical budget when reading Spouse Palace patterns.
+英文正文：
+At a monthly budget meeting, one partner says they feel unheard. The other points to a spreadsheet. They are answering different questions. Tai Yin and Wu Qu can prompt discussion about reassurance and dependable action, but neither star makes one partner irrational or unfeeling.
+
+### Hear the concern before the calculation
+Tai Yin may draw attention to security and daily care. Wu Qu may emphasize responsibility, numbers, and execution. In a Spouse Palace reading, also examine how the chart owner responds through the Life Palace, what the Wealth Palace shows about real cash flow, and how stress appears in Wellbeing. The partner's thoughts still have to be asked, not inferred from one chart.
+
+If savings are below plan, begin by acknowledging the worry about a missing buffer, then inspect the budget together. Feelings do not replace disclosure of debts; figures do not replace listening.
+
+### Use a two-part meeting
+First state worries and goals. Then review income, fixed costs, debt, and personal spending room. If one person manages the budget, agree on a threshold for shared decisions. Care for an older parent also includes time and travel, not only bills.
+
+Read the chart to formulate better questions, then let both people agree on the actual numbers, tasks, and next review date.

@@ -14,3 +14,13 @@
 | 08 | 已发布 2026-10-26 22:13 https://yuetianai.com/articles/ziwei-zinvgong-haizi-xingqu-fumu-anpai.html / https://yuetianai.com/articles/en/ziwei-zinvgong-haizi-xingqu-fumu-anpai.html | ziwei-zinvgong-haizi-xingqu-fumu-anpai | 看孩子的兴趣与父母安排，子女宫该如何分开读？ | 宫位组合 |
 | 09 | 已发布 2026-10-26 22:13 https://yuetianai.com/articles/ziwei-shaonian-zhuanxue-fumugong-zinvgong.html / https://yuetianai.com/articles/en/ziwei-shaonian-zhuanxue-fumugong-zinvgong.html | ziwei-shaonian-zhuanxue-fumugong-zinvgong | 少年转学时，父母宫与子女宫分别提示什么？ | 宫位组合 |
 | 10 | 已发布 2026-10-26 22:13 https://yuetianai.com/articles/ziwei-maifang-qian-tianzhaigong-xuqiu-qingdan.html / https://yuetianai.com/articles/en/ziwei-maifang-qian-tianzhaigong-xuqiu-qingdan.html | ziwei-maifang-qian-tianzhaigong-xuqiu-qingdan | 买房前怎样用田宅宫列需求，而不把它当购房建议？ | 宫位组合 |
+| 11 | 已发布 2026-10-26 22:19 https://yuetianai.com/articles/ziwei-tianzhaigong-huaji-zufang-xuyue.html / https://yuetianai.com/articles/en/ziwei-tianzhaigong-huaji-zufang-xuyue.html | ziwei-tianzhaigong-huaji-zufang-xuyue | 田宅宫化忌但租房没搬，续约时该检查什么？ | 宫位组合 |
+| 12 | 待发布 | ziwei-caibo-sanfang-sizheng-sigong-jilu | 看财帛宫的三方四正，怎样做一张四宫记录表？ | 看盘方法 |
+| 13 | 待发布 | ziwei-caibo-hualu-guanlu-huaji-shouru | 财帛宫化禄、官禄宫化忌，收入为何未必增加？ | 财运事业 |
+| 14 | 待发布 | ziwei-minggong-konggong-qianyi-qiang-waitai | 命宫空宫而迁移宫强，借大公司平台后怎样留下作品？ | 看盘方法 |
+| 15 | 待发布 | ziwei-minggong-konggong-fuyao-sihua-jieduigong | 命宫空宫已有辅曜和四化，还需要借对宫吗？ | 看盘方法 |
+| 16 | 待发布 | ziwei-shichen-buqueding-xian-ting-zainaibu | 出生时辰不确定，紫微斗数看盘应先停在哪一步？ | 看盘方法 |
+| 17 | 待发布 | ziwei-miaowang-huaji-chongtu-kan-shenme | 主星庙旺却化忌，先看星曜强弱还是现实问题？ | 看盘方法 |
+| 18 | 待发布 | ziwei-liunian-huaji-luo-konggong-fenceng | 流年化忌落在空宫，为什么不能直接判这一年不顺？ | 大限流年 |
+| 19 | 待发布 | ziwei-fuqi-pojun-chuangye-fengxian-fendan | 伴侣想创业，夫妻宫破军该怎样讨论风险分担？ | 感情关系 |
+| 20 | 待发布 | ziwei-fuqi-taiyin-wuqu-qingxu-zhangmu | 一方想谈感受一方只谈账目，太阴与武曲夫妻宫怎么读？ | 感情关系 |
