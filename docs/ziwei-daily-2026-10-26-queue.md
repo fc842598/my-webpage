@@ -12,5 +12,5 @@
 | 06 | 已发布 2026-10-26 22:12 https://yuetianai.com/articles/ziwei-huangongzuo-daxian-liunian-fengong.html / https://yuetianai.com/articles/en/ziwei-huangongzuo-daxian-liunian-fengong.html | ziwei-huangongzuo-daxian-liunian-fengong | 同样问换工作，紫微斗数大限和流年各回答什么？ | 大限流年 |
 | 07 | 已发布 2026-10-26 22:12 https://yuetianai.com/articles/ziwei-daxian-guanlu-liunian-qianyi-gongzuo.html / https://yuetianai.com/articles/en/ziwei-daxian-guanlu-liunian-qianyi-gongzuo.html | ziwei-daxian-guanlu-liunian-qianyi-gongzuo | 大限官禄有机会、流年迁移有变动，换工作先看哪里？ | 大限流年 |
 | 08 | 已发布 2026-10-26 22:13 https://yuetianai.com/articles/ziwei-zinvgong-haizi-xingqu-fumu-anpai.html / https://yuetianai.com/articles/en/ziwei-zinvgong-haizi-xingqu-fumu-anpai.html | ziwei-zinvgong-haizi-xingqu-fumu-anpai | 看孩子的兴趣与父母安排，子女宫该如何分开读？ | 宫位组合 |
-| 09 | 待发布 | ziwei-shaonian-zhuanxue-fumugong-zinvgong | 少年转学时，父母宫与子女宫分别提示什么？ | 宫位组合 |
+| 09 | 已发布 2026-10-26 22:13 https://yuetianai.com/articles/ziwei-shaonian-zhuanxue-fumugong-zinvgong.html / https://yuetianai.com/articles/en/ziwei-shaonian-zhuanxue-fumugong-zinvgong.html | ziwei-shaonian-zhuanxue-fumugong-zinvgong | 少年转学时，父母宫与子女宫分别提示什么？ | 宫位组合 |
 | 10 | 待发布 | ziwei-maifang-qian-tianzhaigong-xuqiu-qingdan | 买房前怎样用田宅宫列需求，而不把它当购房建议？ | 宫位组合 |
