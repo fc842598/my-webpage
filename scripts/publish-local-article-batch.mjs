@@ -3,6 +3,7 @@ import { execFileSync } from "node:child_process";
 import path from "node:path";
 import { assertProductionPublishWindow } from "./article-publish-time-gate.mjs";
 import { appendArticleCollections } from "./append-article-collections.mjs";
+import { assertReadyPeerResearch } from "./check-daily-peer-research.mjs";
 
 const site = "https://yuetianai.com";
 const defaultImage = `${site}/images/home2/triad-tian-bg.webp`;
@@ -132,6 +133,12 @@ if (!queuePath || !sourcePath || !count) {
 }
 if (!existsSync(queuePath)) fail(`Queue not found: ${queuePath}`);
 if (!existsSync(sourcePath)) fail(`Source not found: ${sourcePath}`);
+
+const dailyQueueDate = path.basename(queuePath).match(/^ziwei-daily-(\d{4}-\d{2}-\d{2})-queue\.md$/)?.[1];
+if (productionRoot && dailyQueueDate) {
+  if (dailyQueueDate !== publishDate) fail("Daily publishing must use today's research and today's queue.");
+  assertReadyPeerResearch({ date: publishDate, directory: args["peer-research-directory"] });
+}
 
 const queueRaw = readFileSync(queuePath, "utf8");
 const sourceRaw = readFileSync(sourcePath, "utf8");

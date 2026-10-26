@@ -1,0 +1,52 @@
+import assert from "node:assert/strict";
+import { mkdtempSync, mkdirSync, writeFileSync, appendFileSync, existsSync, rmSync } from "node:fs";
+import { spawnSync } from "node:child_process";
+import os from "node:os";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+import { validateResearch, finishPeerResearch, assertReadyPeerResearch } from "./check-daily-peer-research.mjs";
+
+const date = "2026-10-26";
+const fields = ["作者或网站", "发布日期", "搜索关键词", "结果位置", "文章主题", "摘要", "文章结构", "可验证的独特观点", "可借鉴的选题角度", "与阅天AI现有内容可能重复的提醒"];
+const entries = Array.from({ length: 10 }, (_, index) => ({ date, title: `研究标题${index}`, url: `https://peer${index}.example/article` }));
+const cards = entries.map((entry, index) => `## ${index + 1}. ${entry.title}\n\n${fields.map((field) => `- ${field}：${field === "摘要" ? `主题${index}` + "研".repeat(220) : field === "文章主题" ? `独立主题${index}` : "已核验"}`).join("\n")}\n- 原文链接：${entry.url}\n\n`).join("");
+const report = `# 当日同行报告\n- 检索日期：${date}\n- 未凑满20篇：其余候选正文无法核验。\n\n${cards}## 原文链接清单\n\n${entries.map((entry) => entry.url).join("\n")}\n`;
+const input = { date, report, history: { entries } };
+assert.equal(validateResearch(input).cardCount, 10, "an honest ten-source report is valid and does not become twenty fake sources");
+assert.throws(() => validateResearch({ ...input, date: "2026-10-27" }), /today's search date/, "yesterday's report must not unlock today's publication");
+assert.throws(() => validateResearch({ ...input, history: { entries: entries.slice(0, 9) } }), /history is missing/, "a report is not handed over before history is updated");
+assert.throws(() => validateResearch({ ...input, history: { entries: [...entries, { ...entries[0], date: "2026-10-01" }] } }), /Previously researched/);
+assert.throws(() => validateResearch({ ...input, recentReports: [cards] }), /Previously researched/, "recent reports catch duplicates missing from history");
+assert.throws(() => validateResearch({ ...input, report: report.replace(entries[9].url + "\n", entries[8].url + "\n") }), /Duplicate/);
+assert.throws(() => validateResearch({ ...input, report: report.replace("研".repeat(220), "摘要核验") }), /Unverified/);
+assert.throws(() => validateResearch({ ...input, report: report.slice(0, report.indexOf("## 原文链接清单")) }), /raw-link list/);
+const sharedDomainReport = report.replace(/peer(\d+)\.example/g, "peer$1.shared.example");
+const sharedDomainHistory = { entries: entries.map((entry) => ({ ...entry, url: entry.url.replace(/peer(\d+)\.example/, "peer$1.shared.example") })) };
+assert.throws(() => validateResearch({ date, report: sharedDomainReport, history: sharedDomainHistory }), /independent domains/, "subdomains cannot inflate the independent-domain count");
+const directory = mkdtempSync(path.join(os.tmpdir(), "yuetian-peer-gate-"));
+try {
+  const reportPath = path.join(directory, `每日更新的同行文章-${date}.md`);
+  writeFileSync(reportPath, report);
+  writeFileSync(path.join(directory, "历史记录.json"), JSON.stringify(input.history));
+  assert.throws(() => assertReadyPeerResearch({ date, directory }), /not ready/, "a valid file alone cannot masquerade as completed research");
+  finishPeerResearch({ date, directory });
+  assert.equal(assertReadyPeerResearch({ date, directory }).cardCount, 10);
+  appendFileSync(reportPath, "\n");
+  assert.throws(() => assertReadyPeerResearch({ date, directory }), /changed after handoff/, "editing after handoff must invalidate publication readiness");
+  finishPeerResearch({ date, directory });
+  writeFileSync(path.join(directory, `同行检索状态-${date}.json`), JSON.stringify({ version: 1, date, state: "in_progress" }));
+  assert.throws(() => assertReadyPeerResearch({ date, directory }), /still in progress/);
+  const publisher = fileURLToPath(new URL("./publish-local-article-batch.mjs", import.meta.url));
+  const queue = path.join(directory, `ziwei-daily-${date}-queue.md`);
+  const source = path.join(directory, "source.md");
+  writeFileSync(queue, "unfinished queue"); writeFileSync(source, "unfinished draft");
+  const emptyResearch = path.join(directory, "not-completed"); mkdirSync(emptyResearch);
+  const run = spawnSync(process.execPath, [publisher, "--queue", queue, "--source", source, "--date", date, "--time", "09:00", "--peer-research-directory", emptyResearch], { cwd: directory, encoding: "utf8", windowsHide: true });
+  assert.notEqual(run.status, 0);
+  assert.match(run.stderr, /peer research is not ready/);
+  assert.equal(existsSync(path.join(directory, "articles")), false, "the publisher must block before writing public pages");
+} finally {
+  if (path.dirname(path.resolve(directory)) !== path.resolve(os.tmpdir()) || !path.basename(directory).startsWith("yuetian-peer-gate-")) throw new Error("Refusing unsafe fixture cleanup");
+  rmSync(directory, { recursive: true, force: true });
+}
+console.log("Peer-research validation checks passed.");
