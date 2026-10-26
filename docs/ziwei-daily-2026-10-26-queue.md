@@ -9,7 +9,7 @@
 | 03 | 已发布 2026-10-26 22:11 https://yuetianai.com/articles/ziwei-fuqi-benming-liunian-huaji-tongxian.html / https://yuetianai.com/articles/en/ziwei-fuqi-benming-liunian-huaji-tongxian.html | ziwei-fuqi-benming-liunian-huaji-tongxian | 本命与流年夫妻宫都见化忌，先读哪一层？ | 感情关系 |
 | 04 | 已发布 2026-10-26 22:12 https://yuetianai.com/articles/ziwei-fuqi-pojun-tianfu-kongjian-jihua.html / https://yuetianai.com/articles/en/ziwei-fuqi-pojun-tianfu-kongjian-jihua.html | ziwei-fuqi-pojun-tianfu-kongjian-jihua | 一方需要空间一方需要计划，破军与天府夫妻宫怎么谈？ | 感情关系 |
 | 05 | 已发布 2026-10-26 22:12 https://yuetianai.com/articles/ziwei-huangong-zhihou-fuqi-caibo-zaiwen-shenme.html / https://yuetianai.com/articles/en/ziwei-huangong-zhihou-fuqi-caibo-zaiwen-shenme.html | ziwei-huangong-zhihou-fuqi-caibo-zaiwen-shenme | 夫妻宫转宫后看财帛宫，究竟在问婚后哪件事？ | 宫位组合 |
-| 06 | 待发布 | ziwei-huangongzuo-daxian-liunian-fengong | 同样问换工作，紫微斗数大限和流年各回答什么？ | 大限流年 |
+| 06 | 已发布 2026-10-26 22:12 https://yuetianai.com/articles/ziwei-huangongzuo-daxian-liunian-fengong.html / https://yuetianai.com/articles/en/ziwei-huangongzuo-daxian-liunian-fengong.html | ziwei-huangongzuo-daxian-liunian-fengong | 同样问换工作，紫微斗数大限和流年各回答什么？ | 大限流年 |
 | 07 | 待发布 | ziwei-daxian-guanlu-liunian-qianyi-gongzuo | 大限官禄有机会、流年迁移有变动，换工作先看哪里？ | 大限流年 |
 | 08 | 待发布 | ziwei-zinvgong-haizi-xingqu-fumu-anpai | 看孩子的兴趣与父母安排，子女宫该如何分开读？ | 宫位组合 |
 | 09 | 待发布 | ziwei-shaonian-zhuanxue-fumugong-zinvgong | 少年转学时，父母宫与子女宫分别提示什么？ | 宫位组合 |
