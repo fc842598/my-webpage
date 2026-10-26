@@ -15,7 +15,7 @@
 | 09 | 已发布 2026-10-26 22:13 https://yuetianai.com/articles/ziwei-shaonian-zhuanxue-fumugong-zinvgong.html / https://yuetianai.com/articles/en/ziwei-shaonian-zhuanxue-fumugong-zinvgong.html | ziwei-shaonian-zhuanxue-fumugong-zinvgong | 少年转学时，父母宫与子女宫分别提示什么？ | 宫位组合 |
 | 10 | 已发布 2026-10-26 22:13 https://yuetianai.com/articles/ziwei-maifang-qian-tianzhaigong-xuqiu-qingdan.html / https://yuetianai.com/articles/en/ziwei-maifang-qian-tianzhaigong-xuqiu-qingdan.html | ziwei-maifang-qian-tianzhaigong-xuqiu-qingdan | 买房前怎样用田宅宫列需求，而不把它当购房建议？ | 宫位组合 |
 | 11 | 已发布 2026-10-26 22:19 https://yuetianai.com/articles/ziwei-tianzhaigong-huaji-zufang-xuyue.html / https://yuetianai.com/articles/en/ziwei-tianzhaigong-huaji-zufang-xuyue.html | ziwei-tianzhaigong-huaji-zufang-xuyue | 田宅宫化忌但租房没搬，续约时该检查什么？ | 宫位组合 |
-| 12 | 待发布 | ziwei-caibo-sanfang-sizheng-sigong-jilu | 看财帛宫的三方四正，怎样做一张四宫记录表？ | 看盘方法 |
+| 12 | 已发布 2026-10-26 22:19 https://yuetianai.com/articles/ziwei-caibo-sanfang-sizheng-sigong-jilu.html / https://yuetianai.com/articles/en/ziwei-caibo-sanfang-sizheng-sigong-jilu.html | ziwei-caibo-sanfang-sizheng-sigong-jilu | 看财帛宫的三方四正，怎样做一张四宫记录表？ | 看盘方法 |
 | 13 | 待发布 | ziwei-caibo-hualu-guanlu-huaji-shouru | 财帛宫化禄、官禄宫化忌，收入为何未必增加？ | 财运事业 |
 | 14 | 待发布 | ziwei-minggong-konggong-qianyi-qiang-waitai | 命宫空宫而迁移宫强，借大公司平台后怎样留下作品？ | 看盘方法 |
 | 15 | 待发布 | ziwei-minggong-konggong-fuyao-sihua-jieduigong | 命宫空宫已有辅曜和四化，还需要借对宫吗？ | 看盘方法 |
