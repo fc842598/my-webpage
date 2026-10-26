@@ -23,4 +23,4 @@
 | 17 | 已发布 2026-10-26 22:20 https://yuetianai.com/articles/ziwei-miaowang-huaji-chongtu-kan-shenme.html / https://yuetianai.com/articles/en/ziwei-miaowang-huaji-chongtu-kan-shenme.html | ziwei-miaowang-huaji-chongtu-kan-shenme | 主星庙旺却化忌，先看星曜强弱还是现实问题？ | 看盘方法 |
 | 18 | 已发布 2026-10-26 22:21 https://yuetianai.com/articles/ziwei-liunian-huaji-luo-konggong-fenceng.html / https://yuetianai.com/articles/en/ziwei-liunian-huaji-luo-konggong-fenceng.html | ziwei-liunian-huaji-luo-konggong-fenceng | 流年化忌落在空宫，为什么不能直接判这一年不顺？ | 大限流年 |
 | 19 | 已发布 2026-10-26 22:21 https://yuetianai.com/articles/ziwei-fuqi-pojun-chuangye-fengxian-fendan.html / https://yuetianai.com/articles/en/ziwei-fuqi-pojun-chuangye-fengxian-fendan.html | ziwei-fuqi-pojun-chuangye-fengxian-fendan | 伴侣想创业，夫妻宫破军该怎样讨论风险分担？ | 感情关系 |
-| 20 | 待发布 | ziwei-fuqi-taiyin-wuqu-qingxu-zhangmu | 一方想谈感受一方只谈账目，太阴与武曲夫妻宫怎么读？ | 感情关系 |
+| 20 | 已发布 2026-10-26 22:21 https://yuetianai.com/articles/ziwei-fuqi-taiyin-wuqu-qingxu-zhangmu.html / https://yuetianai.com/articles/en/ziwei-fuqi-taiyin-wuqu-qingxu-zhangmu.html | ziwei-fuqi-taiyin-wuqu-qingxu-zhangmu | 一方想谈感受一方只谈账目，太阴与武曲夫妻宫怎么读？ | 感情关系 |
