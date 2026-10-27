@@ -22,5 +22,5 @@
 | 16 | 已发布 2026-10-27 09:07 https://yuetianai.com/articles/ziwei-jiean-huikuan-caibo-guanlu.html / https://yuetianai.com/articles/en/ziwei-jiean-huikuan-caibo-guanlu.html | ziwei-jiean-huikuan-caibo-guanlu | 接案有订单却迟迟未回款，财帛宫该怎样追问？ | 财运事业 |
 | 17 | 已发布 2026-10-27 09:07 https://yuetianai.com/articles/ziwei-tianji-liunian-quan-liuyue-ji.html / https://yuetianai.com/articles/en/ziwei-tianji-liunian-quan-liuyue-ji.html | ziwei-tianji-liunian-quan-liuyue-ji | 天机流年化权、流月化忌，为何计划越主动越反复？ | 四化流年 |
 | 18 | 已发布 2026-10-27 09:07 https://yuetianai.com/articles/ziwei-doujun-liuyue-minggong-koujing.html / https://yuetianai.com/articles/en/ziwei-doujun-liuyue-minggong-koujing.html | ziwei-doujun-liuyue-minggong-koujing | 用斗君定位流月命宫，先核对哪三个排盘口径？ | 看盘方法 |
-| 19 | 待发布 | ziwei-feihua-guanlu-dao-fuqi | 官禄宫飞化到夫妻宫，如何分清工作压力的起点？ | 看盘方法 |
+| 19 | 已发布 2026-10-27 09:07 https://yuetianai.com/articles/ziwei-feihua-guanlu-dao-fuqi.html / https://yuetianai.com/articles/en/ziwei-feihua-guanlu-dao-fuqi.html | ziwei-feihua-guanlu-dao-fuqi | 官禄宫飞化到夫妻宫，如何分清工作压力的起点？ | 看盘方法 |
 | 20 | 待发布 | ziwei-zihua-laiyingong-bietongyi | 自化与来因宫有什么不同？别把反馈当成起点 | 看盘方法 |
