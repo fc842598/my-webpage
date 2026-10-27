@@ -17,7 +17,7 @@
 | 11 | 已发布 2026-10-27 09:07 https://yuetianai.com/articles/ziwei-mingpan-zuhe-pinlv-fenmu.html / https://yuetianai.com/articles/en/ziwei-mingpan-zuhe-pinlv-fenmu.html | ziwei-mingpan-zuhe-pinlv-fenmu | 命盘组合有多稀少？先看统计分母是不是出生人口 | 看盘方法 |
 | 12 | 已发布 2026-10-27 09:07 https://yuetianai.com/articles/ziwei-lucun-luogong-pinlv-caiyun.html / https://yuetianai.com/articles/en/ziwei-lucun-luogong-pinlv-caiyun.html | ziwei-lucun-luogong-pinlv-caiyun | 禄存落十二宫的频率相近，为何财运不能平均看？ | 看盘方法 |
 | 13 | 已发布 2026-10-27 09:07 https://yuetianai.com/articles/ziwei-jiaoyou-huaquan-shui-zhudao.html / https://yuetianai.com/articles/en/ziwei-jiaoyou-huaquan-shui-zhudao.html | ziwei-jiaoyou-huaquan-shui-zhudao | 交友宫化权，是伙伴强势还是自己掌握议程？ | 四化流年 |
-| 14 | 待发布 | ziwei-jiaoyou-huaquan-caibo-huaji | 交友化权、财帛化忌，合伙先写清哪两种责任？ | 财运事业 |
+| 14 | 已发布 2026-10-27 09:07 https://yuetianai.com/articles/ziwei-jiaoyou-huaquan-caibo-huaji.html / https://yuetianai.com/articles/en/ziwei-jiaoyou-huaquan-caibo-huaji.html | ziwei-jiaoyou-huaquan-caibo-huaji | 交友化权、财帛化忌，合伙先写清哪两种责任？ | 财运事业 |
 | 15 | 待发布 | ziwei-gudingxin-yongjin-gonglu-caibo | 固定工资与佣金并存，官禄和财帛各回答什么？ | 财运事业 |
 | 16 | 待发布 | ziwei-jiean-huikuan-caibo-guanlu | 接案有订单却迟迟未回款，财帛宫该怎样追问？ | 财运事业 |
 | 17 | 待发布 | ziwei-tianji-liunian-quan-liuyue-ji | 天机流年化权、流月化忌，为何计划越主动越反复？ | 四化流年 |
