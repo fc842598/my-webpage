@@ -11,7 +11,7 @@
 | 05 | 已发布 2026-10-27 09:06 https://yuetianai.com/articles/ziwei-tanlang-fuqi-caibo-zhu-yu.html / https://yuetianai.com/articles/en/ziwei-tanlang-fuqi-caibo-zhu-yu.html | ziwei-tanlang-fuqi-caibo-zhu-yu | 贪狼在夫妻宫与财帛宫，社交机会为何不能混读？ | 主星细读 |
 | 06 | 已发布 2026-10-27 09:06 https://yuetianai.com/articles/ziwei-zixing-guanlu-tianzai-ziyuan.html / https://yuetianai.com/articles/en/ziwei-zixing-guanlu-tianzai-ziyuan.html | ziwei-zixing-guanlu-tianzai-ziyuan | 紫微星在官禄或田宅，管理资源究竟属于谁？ | 主星细读 |
 | 07 | 已发布 2026-10-27 09:06 https://yuetianai.com/articles/ziwei-guanlu-wuqu-guanli-zhengju.html / https://yuetianai.com/articles/en/ziwei-guanlu-wuqu-guanli-zhengju.html | ziwei-guanlu-wuqu-guanli-zhengju | 官禄宫武曲想转管理岗，该拿什么经历核对？ | 财运事业 |
-| 08 | 待发布 | ziwei-guanlu-pojun-liucheng-zuopin | 官禄宫破军适合换工作吗？先看流程改造作品 | 财运事业 |
+| 08 | 已发布 2026-10-27 09:07 https://yuetianai.com/articles/ziwei-guanlu-pojun-liucheng-zuopin.html / https://yuetianai.com/articles/en/ziwei-guanlu-pojun-liucheng-zuopin.html | ziwei-guanlu-pojun-liucheng-zuopin | 官禄宫破军适合换工作吗？先看流程改造作品 | 财运事业 |
 | 09 | 待发布 | ziwei-tianzai-tianji-zufang-andun | 租处总像临时住处，田宅宫天机该怎么读？ | 宫位组合 |
 | 10 | 待发布 | ziwei-tianzai-tianfu-shiyou-bianhua | 田宅宫天府想安定，室友总变动时看哪一宫？ | 宫位组合 |
 | 11 | 待发布 | ziwei-mingpan-zuhe-pinlv-fenmu | 命盘组合有多稀少？先看统计分母是不是出生人口 | 看盘方法 |
