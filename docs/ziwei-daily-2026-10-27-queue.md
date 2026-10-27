@@ -5,7 +5,7 @@
 | 顺序 | 状态 | slug | 标题 | 大类 |
 |---|---|---|---|---|
 | 01 | 已发布 2026-10-27 09:05 https://yuetianai.com/articles/ziwei-shiyiyue-huanyue-riqi-fenceng.html / https://yuetianai.com/articles/en/ziwei-shiyiyue-huanyue-riqi-fenceng.html | ziwei-shiyiyue-huanyue-riqi-fenceng | 11月紫微流月为何不能从1日算到30日？ | 大限流年 |
-| 02 | 待发布 | ziwei-shiyiyue-qianhou-sihua-bijiao | 11月换月前后四化不同，排盘要怎样对日期？ | 四化流年 |
+| 02 | 已发布 2026-10-27 09:06 https://yuetianai.com/articles/ziwei-shiyiyue-qianhou-sihua-bijiao.html / https://yuetianai.com/articles/en/ziwei-shiyiyue-qianhou-sihua-bijiao.html | ziwei-shiyiyue-qianhou-sihua-bijiao | 11月换月前后四化不同，排盘要怎样对日期？ | 四化流年 |
 | 03 | 待发布 | ziwei-bingwu-wugong-benming-fuqi | 2026流年命宫在午，本命午宫是夫妻宫时看什么？ | 大限流年 |
 | 04 | 待发布 | ziwei-wugong-caibo-daxian-qianyi | 本命午宫是财帛、大限走迁移，2026年先问哪件事？ | 大限流年 |
 | 05 | 待发布 | ziwei-tanlang-fuqi-caibo-zhu-yu | 贪狼在夫妻宫与财帛宫，社交机会为何不能混读？ | 主星细读 |
