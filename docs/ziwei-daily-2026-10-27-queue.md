@@ -15,7 +15,7 @@
 | 09 | 已发布 2026-10-27 09:07 https://yuetianai.com/articles/ziwei-tianzai-tianji-zufang-andun.html / https://yuetianai.com/articles/en/ziwei-tianzai-tianji-zufang-andun.html | ziwei-tianzai-tianji-zufang-andun | 租处总像临时住处，田宅宫天机该怎么读？ | 宫位组合 |
 | 10 | 已发布 2026-10-27 09:07 https://yuetianai.com/articles/ziwei-tianzai-tianfu-shiyou-bianhua.html / https://yuetianai.com/articles/en/ziwei-tianzai-tianfu-shiyou-bianhua.html | ziwei-tianzai-tianfu-shiyou-bianhua | 田宅宫天府想安定，室友总变动时看哪一宫？ | 宫位组合 |
 | 11 | 已发布 2026-10-27 09:07 https://yuetianai.com/articles/ziwei-mingpan-zuhe-pinlv-fenmu.html / https://yuetianai.com/articles/en/ziwei-mingpan-zuhe-pinlv-fenmu.html | ziwei-mingpan-zuhe-pinlv-fenmu | 命盘组合有多稀少？先看统计分母是不是出生人口 | 看盘方法 |
-| 12 | 待发布 | ziwei-lucun-luogong-pinlv-caiyun | 禄存落十二宫的频率相近，为何财运不能平均看？ | 看盘方法 |
+| 12 | 已发布 2026-10-27 09:07 https://yuetianai.com/articles/ziwei-lucun-luogong-pinlv-caiyun.html / https://yuetianai.com/articles/en/ziwei-lucun-luogong-pinlv-caiyun.html | ziwei-lucun-luogong-pinlv-caiyun | 禄存落十二宫的频率相近，为何财运不能平均看？ | 看盘方法 |
 | 13 | 待发布 | ziwei-jiaoyou-huaquan-shui-zhudao | 交友宫化权，是伙伴强势还是自己掌握议程？ | 四化流年 |
 | 14 | 待发布 | ziwei-jiaoyou-huaquan-caibo-huaji | 交友化权、财帛化忌，合伙先写清哪两种责任？ | 财运事业 |
 | 15 | 待发布 | ziwei-gudingxin-yongjin-gonglu-caibo | 固定工资与佣金并存，官禄和财帛各回答什么？ | 财运事业 |
