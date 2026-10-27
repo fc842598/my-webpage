@@ -1,9 +1,9 @@
 # 紫微文章「调研驱动」写作制度（Research-Driven Content SOP）
 
-> 适用：每日 40 篇中英双语紫微斗数文章批次（定时任务「阅天AI每日文章更新」）。
+> 适用：定时自动化 `ai` 每日恰好 20 篇中文原创及 20 篇英文改写；执行顺序以 [daily-20-article-operations.md](daily-20-article-operations.md) 为准。
 > 本制度替代旧的「只按 四化×十二宫 / 辅煞曜×十二宫 矩阵自造选题」的单一选题方式。
 > 矩阵填空仍可作为补充来源，但**每日选题的主来源是全网同行调研**。
-> 最后更新：2026-09-04。
+> 最后更新：2026-10-27。
 
 ## 0. 一句话流程
 
@@ -30,10 +30,9 @@
 ## 2. 第二步：找同行文章并归类（只取主题和观点，不抄文字）
 
 - 每条检索结果记录：来源站点、标题、核心主题、**可借鉴的观点/框架/切入角度**、对应搜索意图。
-- 归到上面 10 个大类，形成当日 `docs/ziwei-research-YYYY-MM-DD-source.md` 选题库。
-- 每天定 40 个选题，大类配额建议（可按搜索热度微调）：
-  - 入门 5、四化飞星 7、看盘方法 6、格局 6、主星性格配对 6、大限流年 4、FAQ 4、应用场景 2（合计 40）。
-- **去重硬规则**：选题先和 `articles/` 现有标题、索引、历史 `docs/ziwei-*-queue.md`、`docs/ziwei-daily-topic-bank.md` 比对；同主题必须换角度、升级或合并，不重复造页。
+- 归到上面 10 个大类，依据桌面当天同行报告形成 `docs/ziwei-daily-YYYY-MM-DD-source.md` 选题库。
+- 每天定 20 个不同的原创搜索问题；合格同行来源数与本站原创篇数分别统计，不按来源数凑题。
+- **去重硬规则**：选题先和 `articles/` 的标题、开头、例子、搜索意图，以及双语索引、Feed、sitemap、历史队列和选题库比对；同主题必须换角度、升级或合并，不重复造页。
 - 每个选题必须写清三件事：`借鉴了谁的什么观点`、`本站的差异化切入（结合立太极/三方四正/四化/排盘工具）`、`读者的真实搜索问题`。
 
 ## 3. 第三步：借主题观点做原创改写（合规红线）
@@ -64,20 +63,17 @@
 ## 5. 第五步：一次性验证，全过才 push
 
 - 本地逐篇校验：Article/Breadcrumb JSON-LD、hreflang、canonical、OG、analytics、CTA、`<ol>`、索引/专题/双 Feed/双 sitemap 入口全部存在。
-- 计数实数：当天必须正好 40 篇 = 80 个 HTML；缺一篇补一篇。
-- `git pull --no-rebase` 先合并其它流程的提交（冲突时 sitemap/索引以合并后重跑生成的为准），再 `git commit`、`git push origin master`。
-- push 后等线上同步，**逐篇 curl 中英文 URL 必须全 200**，输出 `已完成（40 篇全部上线）/ 未完成（缺 X 篇并补更）`。
+- 先在最新 `origin/master` 的干净隔离工作树运行当天 `check-daily-peer-research.mjs --mode check` 和 `check-daily-article-quota.mjs`；研究未就绪不得写稿或发布，达到 20 篇后不得再新增。
+- 缺额时用 `publish-local-article-batch.mjs --count 1 --order NN` 按篇发布、校验和提交；只推送本任务文件到 `master`。
+- push 后确认本地 HEAD 与远端一致，等待线上同步，逐篇核验中英文 URL、SEO 及索引、Feed、sitemap；只有数量检查退出 0 才写“今日 20 篇完成”。
 
 ## 6. 复用脚本（本仓库）
 
-- 选题驱动生成器：`_engine_topic.js`（吃选题库 JSON，产出中英 HTML）。
-- 通用更新：`node _update_generic.js ./_manifest_YYYY-MM-DD.json`（索引/专题/Feed）。
-- sitemap：`node _sitemaps_0822.js`。
-- 本地校验：`node _val_generic.js ./_manifest_YYYY-MM-DD.json`。
-- 线上校验：`node _online_generic.js ./_manifest_YYYY-MM-DD.json`。
-- 旧的宫位矩阵引擎 `_engine.js` 保留，仅在需要补矩阵空白时使用。
+- 生产发布入口：`scripts/publish-local-article-batch.mjs`（逐篇调用，内置当天研究交接前置检查）。
+- 数量与线上核验：`scripts/check-daily-article-quota.mjs`。
+- `_engine_topic.js`、`_update_generic.js`、`_sitemaps_0822.js`、`_val_generic.js`、`_online_generic.js` 仅供旧批次维护，不用于自动化 `ai` 绕过正式发布器。
 
 ## 7. 当日留痕
 
-- `docs/ziwei-research-YYYY-MM-DD-source.md`：调研来源 + 40 选题归类（含借鉴观点与差异化切入）。
-- `_manifest_YYYY-MM-DD.json`：当日 40 篇 slug/标题/日期清单，供更新与校验脚本读取。
+- `docs/ziwei-daily-YYYY-MM-DD-source.md` 与对应队列：20 个搜索问题、研究日期、原文 URL、采用角度及与旧文区别。
+- 桌面 `找同行` 当天状态与核验 JSON：分别记录研究来源数、本站原创数和真实线上结果。
