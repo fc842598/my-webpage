@@ -1,0 +1,222 @@
+[
+ {
+  "slug": "ziwei-xinshou-na-dao-mingpan-xian-kan-shenme",
+  "cnTitle": "紫微斗数排完盘先看什么？新手五步读盘顺序",
+  "enTitle": "What to Read First in a Zi Wei Dou Shu Chart: A 5-Step Order",
+  "cat": "rumen",
+  "date": "2026-10-27",
+  "label": "2026-10-27",
+  "rfc": "2026-10-27T10:00:00+08:00",
+  "enDesc": "After generating a Zi Wei Dou Shu chart, do not jump palace by palace. Set the tone with the Life and Body palaces, then the three-ways-four-corners and natal four transformations, before the twelve palaces and finally the decade and yearly cycles.",
+  "cnDesc": "排完盘别急着逐宫找答案，先看命宫与身宫定基调，再看命宫三方四正、生年四化，然后进入十二宫，最后才叠大限流年，顺序对了才不乱。"
+ },
+ {
+  "slug": "ziwei-shiergong-kanpan-shunxu",
+  "cnTitle": "紫微十二宫按什么顺序看？以命宫为锚，按问题选宫",
+  "enTitle": "How to Read the Twelve Palaces in Order: Anchor on Life",
+  "cat": "rumen",
+  "date": "2026-10-27",
+  "label": "2026-10-27",
+  "rfc": "2026-10-27T10:00:00+08:00",
+  "enDesc": "The twelve palaces are not read in a queue. Anchor on Life, first read the core group of Life, Wealth, Career and Travel, then enter the palace matching your question—Spouse, Property, Blessing and so on—and link them through the three-ways-four-corners.",
+  "cnDesc": "十二宫不是排队看，而是以命宫为锚，先看命、财、官、迁这组核心，再按你要问的事进入夫妻、田宅、福德等对应宫位，并用三方四正串起来。"
+ },
+ {
+  "slug": "ziwei-shengong-minggong-qubie",
+  "cnTitle": "身宫和命宫有什么区别？一个定基调，一个看后天着力",
+  "enTitle": "Body Palace vs Life Palace: Baseline vs Adult Focus",
+  "cat": "rumen",
+  "date": "2026-10-27",
+  "label": "2026-10-27",
+  "rfc": "2026-10-27T10:00:00+08:00",
+  "enDesc": "The Life palace is the innate temperament and lifelong baseline. The Body palace is lodged in one of six palaces—Life, Spouse, Wealth, Travel, Career or Blessing—and points to where adult effort lands and where you are most engaged.",
+  "cnDesc": "命宫是先天性格与人生基调，一辈子不变；身宫寄在命、夫妻、财帛、迁移、官禄、福德六宫之一，指向成年后最该着力、最受牵动的领域。"
+ },
+ {
+  "slug": "ziwei-zhuxing-miaowang-li-xian",
+  "cnTitle": "主星庙旺利陷是什么意思？是能量状态，不是好坏标签",
+  "enTitle": "What Temple, Thriving, Favorable and Fallen Mean for Major Stars",
+  "cat": "rumen",
+  "date": "2026-10-27",
+  "label": "2026-10-27",
+  "rfc": "2026-10-27T10:00:00+08:00",
+  "enDesc": "Temple, Thriving, Favorable and Fallen describe how strongly and steadily a star expresses in a palace. Temple and Thriving express the star well, while Fallen is less steady and needs support, but Fallen is not automatically bad, and Temple still depends on transformations and harsh stars.",
+  "cnDesc": "庙、旺、得地、利、陷描述星曜在不同宫位的能量强弱与发挥稳定度：庙旺更能发挥星性，落陷则起伏、需借力；但落陷不等于坏，庙旺也要看四化与煞星。"
+ },
+ {
+  "slug": "ziwei-minggong-wu-zhuxing-konggong-jie-duigong",
+  "cnTitle": "命宫无主星怎么看？空宫借对宫安星，不等于差",
+  "enTitle": "How to Read an Empty Life Palace: Borrow the Opposite Palace",
+  "cat": "kanpan",
+  "date": "2026-10-27",
+  "label": "2026-10-27",
+  "rfc": "2026-10-27T10:00:00+08:00",
+  "enDesc": "When none of the fourteen major stars sits in the Life palace, it is an empty palace: borrow the major stars of the opposite Travel palace, then combine the three-ways-four-corners and the helpful or harsh stars. An empty palace means the baseline is shaped by environment, not that the chart is weak.",
+  "cnDesc": "命宫没有十四主星坐守叫空宫，此时借对宫迁移宫的主星来安星，再合看命宫三方四正的禄权科忌与辅煞；空宫只代表先天基调受环境牵动，并不等于命差。"
+ },
+ {
+  "slug": "ziwei-sanfang-sizheng-ruhe-kan",
+  "cnTitle": "三方四正怎么看？命、财、官三合，加对宫迁移合围",
+  "enTitle": "How to Read the Three-Ways-Four-Corners: Life, Wealth, Career and Travel",
+  "cat": "kanpan",
+  "date": "2026-10-27",
+  "label": "2026-10-27",
+  "rfc": "2026-10-27T10:00:00+08:00",
+  "enDesc": "From any palace, the three-ways-four-corners joins its two trine palaces and the opposite palace. For the Life palace, these are Wealth, Career and Travel together with Life. Judge a domain by the stars and transformations across this whole group, not a single palace.",
+  "cnDesc": "三方四正是以某宫为基准，看它三合方的两个宫与对宫：对命宫而言，就是财帛宫、官禄宫、迁移宫与命宫自己合围；判断一个领域不能只看单宫，要把这组宫位的星曜与四化一起看。"
+ },
+ {
+  "slug": "ziwei-geju-ruhe-fenbian-zhenjia",
+  "cnTitle": "紫微格局怎么分辨真假？四要素逐项核对",
+  "enTitle": "How to Tell a Real Zi Wei Pattern: A Four-Element Check",
+  "cat": "geju",
+  "date": "2026-10-27",
+  "label": "2026-10-27",
+  "rfc": "2026-10-27T10:00:00+08:00",
+  "enDesc": "A named pattern is not real just because the stars line up. Check four elements: whether the major stars are bright, whether helpful stars like Zuo Fu, You Bi, Tian Kui and Tian Yue meet, how heavily harsh stars break it, and whether the four transformations activate it. All four make a real pattern; fallen stars with harsh stars and no activation are usually only a name.",
+  "cnDesc": "一个格局名落不落得实，不能只看星曜名字凑齐，要逐项核对四样：主星是否庙旺、有无左辅右弼魁钺等吉星会照、煞星冲破到什么程度、四化有没有引动；四样齐才论真格，落陷逢煞又无引动多是虚名。"
+ },
+ {
+  "slug": "ziwei-zifu-tonggong-ge-chengge-tiaojian",
+  "cnTitle": "紫府同宫格的成格条件？寅申坐命，还要辅弼相扶",
+  "enTitle": "The Zi Wei and Tian Fu Same-Palace Pattern: Conditions to Form",
+  "cat": "geju",
+  "date": "2026-10-27",
+  "label": "2026-10-27",
+  "rfc": "2026-10-27T10:00:00+08:00",
+  "enDesc": "Zi Wei and Tian Fu share a palace only in Yin or Shen, but sharing is not enough. The three-ways need Zuo Fu and You Bi as a base, with Tian Kui, Tian Yue, Lu Cun, Hua Lu and Wen Chang or Wen Qu adding strength. If Kong Jie and heavy Hua Ji break it, the pattern is hollow and ambition can outrun ability.",
+  "cnDesc": "紫微与天府同宫，只会在寅宫或申宫坐命；但同宫不等于成格，还要三方见左辅右弼为基本，再得天魁天钺、禄存、化禄、文昌文曲加分；若空劫、化忌重重冲破，则名实不符，易眼高手低。"
+ },
+ {
+  "slug": "ziwei-huotan-ge-chengge-tiaojian",
+  "cnTitle": "火贪格什么条件才成立？贪狼逢火星，还要大运引动",
+  "enTitle": "The Fire-Star and Tan Lang Pattern: Conditions and Timing",
+  "cat": "geju",
+  "date": "2026-10-27",
+  "label": "2026-10-27",
+  "rfc": "2026-10-27T10:00:00+08:00",
+  "enDesc": "The Fire-Star and Tan Lang pattern (and its Ling Xing version) needs Tan Lang in Life, Wealth, Career or Travel, sharing a palace with Huo Xing or Ling Xing or meeting them in the three-ways. Sharing a palace, sitting in Chen, Xu, Chou or Wei, and gaining Lu Cun, Hua Lu, Ke or Quan raises the level. It points to sudden opportunity, but a matching decade or year must activate it; the stars alone do not trigger it.",
+  "cnDesc": "火贪格（含铃贪）须贪狼在命宫、财帛、官禄或迁移，与火星（或铃星）同宫或三方会照；贪狼与火铃同宫、落辰戌丑未再得禄存化禄科权者层次较高；它主突发，但还要相应大限流年引动，不是坐了就发。"
+ },
+ {
+  "slug": "ziwei-geju-weihe-yi-minggong-sanfang",
+  "cnTitle": "格局为什么以命宫三方四正定，而不是别的宫？",
+  "enTitle": "Why Patterns Are Set by the Life Palace Three-Ways, Not Other Palaces",
+  "cat": "geju",
+  "date": "2026-10-27",
+  "label": "2026-10-27",
+  "rfc": "2026-10-27T10:00:00+08:00",
+  "enDesc": "A pattern describes the overall structure and level of a person, and the Life palace is the hub, with Wealth, Career and Travel as its trine and opposite forming the main axis. Spouse, Children and Friends are topic palaces; they can form a small pattern within that domain, but they cannot define the lifelong major pattern.",
+  "cnDesc": "格局论的是一个人整体的结构与层次，命宫是整张盘的枢纽，财帛、官禄、迁移是它三合与对宫，合称人生主轴；夫妻、子女、奴仆等是专题宫，能在该领域成小局，但不能据此定一个人一生的大格局。"
+ },
+ {
+  "slug": "ziwei-shengnian-daxian-liunian-sihua-qubie",
+  "cnTitle": "生年、大限、流年四化有什么区别？静态垂象与限时引动",
+  "enTitle": "Natal, Decade and Yearly Four Transformations: Static vs Timed",
+  "cat": "sihua",
+  "date": "2026-10-27",
+  "label": "2026-10-27",
+  "rfc": "2026-10-27T10:00:00+08:00",
+  "enDesc": "The birth-year-stem four transformations are fixed static indicators of lifelong themes and are not good or bad by themselves. The decade-stem transformations govern only ten years and the yearly-stem transformations only one year; they are timed activations. For a yearly reading, focus on the decade and year groups, and give weight to the natal group only when it is activated.",
+  "cnDesc": "生年天干四化是出生即定的静态垂象，指向长期主题，本身不论吉凶；大限天干四化只管这十年、流年天干四化只管这一年，是限时引动；看流年通常以大限、流年两组为主，生年四化被冲起时才重点看。"
+ },
+ {
+  "slug": "ziwei-hualu-huaji-duichong",
+  "cnTitle": "化禄与化忌对冲是什么意思？看落宫、冲宫与先后天",
+  "enTitle": "Hua Lu and Hua Ji in Opposition: Palaces, Clashes and Layers",
+  "cat": "sihua",
+  "date": "2026-10-27",
+  "label": "2026-10-27",
+  "rfc": "2026-10-27T10:00:00+08:00",
+  "enDesc": "Hua Lu is resources, opportunity and ease, while Hua Ji is contraction, blockage and a lesson. When they land in opposite palaces or clash in the same three-ways, see which sits in the Life core and which is activated in time, and note which layer—natal, decade or year—each falls on. Do not declare success or failure simply because Lu and Ji appear together.",
+  "cnDesc": "化禄表资源、机会、顺缘，化忌表收敛、阻滞、课题；二者落在对宫或同一组三方形成对冲时，要看谁在命宫核心、谁在限时引动，再看禄忌先后落在哪一层（生年、大限、流年），不能一见禄忌同见就断成败。"
+ },
+ {
+  "slug": "ziwei-daxian-sihua-benming-diejia",
+  "cnTitle": "大限四化与本命四化怎么叠加？禄逢冲破、忌入忌出",
+  "enTitle": "Layering Decade Transformations Over the Natal: Lu Broken and Ji Meeting Ji",
+  "cat": "sihua",
+  "date": "2026-10-27",
+  "label": "2026-10-27",
+  "rfc": "2026-10-27T10:00:00+08:00",
+  "enDesc": "The decade-stem transformations land on the natal chart and layer with the natal transformations and palaces. When decade Hua Ji clashes the natal Hua Lu palace, it is Lu broken by a clash—ease can turn into change. When decade Hua Ji enters the natal Hua Ji palace, the lesson deepens and must be faced directly. When decade Lu, Quan or Ke meet natal positive palaces, the decade runs more smoothly.",
+  "cnDesc": "大限天干飞出的四化落在本命盘上，与生年四化、本命宫位叠加：大限化忌冲本命化禄之宫叫禄逢冲破，顺境易生变故；大限化忌又入本命化忌之宫叫忌入忌出，课题加深、需正面处理；化禄权科会本命吉位则十年较顺。"
+ },
+ {
+  "slug": "ziwei-doushu-zhunma-nengxinma",
+  "cnTitle": "紫微斗数准吗、能信吗？它给的是倾向与概率，不是定数",
+  "enTitle": "Is Zi Wei Dou Shu Accurate? It Shows Tendencies, Not Fixed Fate",
+  "cat": "faq",
+  "date": "2026-10-27",
+  "label": "2026-10-27",
+  "rfc": "2026-10-27T10:00:00+08:00",
+  "enDesc": "Zi Wei Dou Shu describes the temperament tendencies and event probabilities shown by star combinations. It helps you understand your patterns and plan ahead, but it does not decide outcomes. Accuracy depends on a correct chart and birth time, and on whether the reading is layered and verifiable rather than absolute or promising to change fate.",
+  "cnDesc": "紫微斗数描述的是星曜组合呈现的性格倾向与事件概率，能帮你理解自己的模式、提前安排，但不决定结果；准不准，既看排盘与时辰是否准确，也看解读者是否分层、是否给可验证的判断，而不是下绝对断言或承诺改运。"
+ },
+ {
+  "slug": "ziwei-chusheng-shichen-buzhun-ruhe-ding",
+  "cnTitle": "出生时辰不准怎么定时辰？交界两盘并校，用经历验证",
+  "enTitle": "How to Determine the Birth Hour: Compare Two Charts and Verify",
+  "cat": "faq",
+  "date": "2026-10-27",
+  "label": "2026-10-27",
+  "rfc": "2026-10-27T10:00:00+08:00",
+  "enDesc": "When the birth hour is uncertain, first chart each possible hour. If born within about fifteen minutes of a boundary, lay the two charts side by side and reverse-check against major events already lived—education, relocation, job changes, marriage or childbirth, and health turns—using the relevant decade and year. Whichever fits the record better is the chart to use.",
+  "cnDesc": "时辰不确定时，先把可能的时辰各排一张盘；若出生在两个时辰交界前后约十五分钟，就并排两盘，再用已经发生的大事（升学、迁居、工作变动、婚育、健康关口）对应大限流年去反推，哪盘更贴合就用哪盘。"
+ },
+ {
+  "slug": "ziwei-zaozi-wanzi-ruhe-paipan",
+  "cnTitle": "晚上11点后出生算哪天？早子时晚子时两盘并看",
+  "enTitle": "Born After 11 PM: Early and Late Rat Hour and Comparing Two Charts",
+  "cat": "faq",
+  "date": "2026-10-27",
+  "label": "2026-10-27",
+  "rfc": "2026-10-27T10:00:00+08:00",
+  "enDesc": "The Rat hour runs from 23:00 to 01:00. One school advances the lunar day at 23:00 when the Rat hour begins, while another keeps the part before midnight as the late Rat hour of the current day. For 23:00–24:00 births the two rules yield different lunar days, so in practice chart both and reverse-check against lived events rather than committing to one school in advance.",
+  "cnDesc": "子时是夜里23:00到次日1:00。一派认为23:00交子时即进次日（早子时派），一派把0:00前称晚子时、仍归当日；两派在23:00–24:00这段会排出不同农历日。实务上建议这段时间出生者两盘并排，用经历反推，不必先武断站某一派。"
+ },
+ {
+  "slug": "ziwei-xialingshi-zhentaiyangshi-yingxiang",
+  "cnTitle": "夏令时和真太阳时影响命盘吗？先核对经度、夏令时与闰月",
+  "enTitle": "Do Daylight Saving and True Solar Time Affect the Chart? Check Longitude, DST and Leap Months",
+  "cat": "faq",
+  "date": "2026-10-27",
+  "label": "2026-10-27",
+  "rfc": "2026-10-27T10:00:00+08:00",
+  "enDesc": "Clocks follow a uniform time zone, while the birth hour is set by local solar time at the birthplace, so longitude matters. Mainland China observed daylight saving from 1986 to 1991, so records from those years must first be shifted back one hour. Leap months, lunar phases and solar-term boundaries must not be mixed. For births near a boundary, comparing two charts is safest.",
+  "cnDesc": "现代钟表是统一时区时间，而定时辰看的是出生地的地方太阳时间，跨经度会有时差；大陆1986至1991年实行过夏令时，出生在那几年的记录要先拨回一小时；闰月与农历月相、节气分界也不能混。交界出生者两盘并校最稳妥。"
+ },
+ {
+  "slug": "ziwei-zuofu-youbi-tiankui-tianyue-guiren",
+  "cnTitle": "左辅右弼、天魁天钺怎么看？辅弼是助力，魁钺是机会",
+  "enTitle": "Zuo Fu, You Bi, Tian Kui and Tian Yue: Support and Opportunity Stars",
+  "cat": "fuzhu",
+  "date": "2026-10-27",
+  "label": "2026-10-27",
+  "rfc": "2026-10-27T10:00:00+08:00",
+  "enDesc": "Zuo Fu and You Bi indicate steady support and assistance, like reliable people and resources around you. Tian Kui and Tian Yue indicate timely opportunities and sponsorship, often turning a corner in difficulty. Meeting the Life palace or its three-ways they strengthen a pattern and soften harsh-star impact, but they are help rather than replacement; if absent or under harsh stars, your own action still decides.",
+  "cnDesc": "左辅、右弼主稳定的支持与协助，像身边可倚靠的人和资源；天魁、天钺主关键时刻的机会与提携，多在困局中出现转机。它们会照命宫或三方可增强格局、减轻煞星冲击，但都是助力而非替代，落空或逢煞仍要靠自身行动。"
+ },
+ {
+  "slug": "ziwei-maifang-tianzhaigong-ruhe-kan",
+  "cnTitle": "买房看田宅宫怎么看？田宅为财库，兼看财帛与四化",
+  "enTitle": "How to Read Buying a Home: Property Palace as the Wealth Treasury",
+  "cat": "yingyong",
+  "date": "2026-10-27",
+  "label": "2026-10-27",
+  "rfc": "2026-10-27T10:00:00+08:00",
+  "enDesc": "The Property palace governs real estate, the home environment and the wealth treasury, and it is linked to the Wealth palace as one root. For buying a home, first read the Property palace major stars and brightness and whether Hua Lu or Lu Cun is present, then read the Wealth palace and where Hua Ji falls to see whether cash flow holds, and use the decade and year for timing. This is a tendency reference, not investment advice.",
+  "cnDesc": "田宅宫管不动产、家庭环境与财库，与财帛宫是一六共宗；买房先看田宅宫主星与庙旺、是否有化禄禄存，再看财帛宫与化忌落点，判断现金流是否守得住，并参考大限流年的引动择时。这是倾向参考，不构成投资建议。"
+ },
+ {
+  "slug": "ziwei-hehuo-zuoshengyi-jiaoyou-zinvgong",
+  "cnTitle": "合伙做生意看哪个宫？交友宫与子女宫的四化要合看",
+  "enTitle": "Which Palaces to Read for a Business Partnership: Friends and Children",
+  "cat": "yingyong",
+  "date": "2026-10-27",
+  "label": "2026-10-27",
+  "rfc": "2026-10-27T10:00:00+08:00",
+  "enDesc": "Partnership is read mainly through the Friends (Servants) palace and the Children palace. When Friends sends Hua Lu, Quan or Ke to meet the Life three-ways, partners tend to help; when Friends Hua Ji clashes the Life palace, partnering is unwise. The Children palace covers shareholders, equity and subordinates, and Children Hua Ji clashing Life also argues against taking a share. The chart only shows tendencies; in practice, use a written agreement, define equity and spell out the exit.",
+  "cnDesc": "合伙主要看交友宫（仆役宫）与子女宫：交友宫化禄权科会本命三方，易得伙伴助力；交友宫化忌冲本命则不宜合伙。子女宫看股东、合伙份额与下属，子女宫化忌冲本命也不宜做股东。盘只提示倾向，实际更要立书面协议、分股权、写明退出。"
+ }
+]
