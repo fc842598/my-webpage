@@ -20,7 +20,7 @@
 | 14 | 已发布 2026-10-27 09:07 https://yuetianai.com/articles/ziwei-jiaoyou-huaquan-caibo-huaji.html / https://yuetianai.com/articles/en/ziwei-jiaoyou-huaquan-caibo-huaji.html | ziwei-jiaoyou-huaquan-caibo-huaji | 交友化权、财帛化忌，合伙先写清哪两种责任？ | 财运事业 |
 | 15 | 已发布 2026-10-27 09:07 https://yuetianai.com/articles/ziwei-gudingxin-yongjin-gonglu-caibo.html / https://yuetianai.com/articles/en/ziwei-gudingxin-yongjin-gonglu-caibo.html | ziwei-gudingxin-yongjin-gonglu-caibo | 固定工资与佣金并存，官禄和财帛各回答什么？ | 财运事业 |
 | 16 | 已发布 2026-10-27 09:07 https://yuetianai.com/articles/ziwei-jiean-huikuan-caibo-guanlu.html / https://yuetianai.com/articles/en/ziwei-jiean-huikuan-caibo-guanlu.html | ziwei-jiean-huikuan-caibo-guanlu | 接案有订单却迟迟未回款，财帛宫该怎样追问？ | 财运事业 |
-| 17 | 待发布 | ziwei-tianji-liunian-quan-liuyue-ji | 天机流年化权、流月化忌，为何计划越主动越反复？ | 四化流年 |
+| 17 | 已发布 2026-10-27 09:07 https://yuetianai.com/articles/ziwei-tianji-liunian-quan-liuyue-ji.html / https://yuetianai.com/articles/en/ziwei-tianji-liunian-quan-liuyue-ji.html | ziwei-tianji-liunian-quan-liuyue-ji | 天机流年化权、流月化忌，为何计划越主动越反复？ | 四化流年 |
 | 18 | 待发布 | ziwei-doujun-liuyue-minggong-koujing | 用斗君定位流月命宫，先核对哪三个排盘口径？ | 看盘方法 |
 | 19 | 待发布 | ziwei-feihua-guanlu-dao-fuqi | 官禄宫飞化到夫妻宫，如何分清工作压力的起点？ | 看盘方法 |
 | 20 | 待发布 | ziwei-zihua-laiyingong-bietongyi | 自化与来因宫有什么不同？别把反馈当成起点 | 看盘方法 |
