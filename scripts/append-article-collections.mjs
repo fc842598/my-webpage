@@ -19,10 +19,15 @@ export function addToIndex(html, article, category, en, hub = false) {
   if (html.includes(`href="${filename}"`)) throw new Error(`Index already contains ${url}`);
   html = html.replace(/(<script\b[^>]*type="application\/ld\+json"[^>]*>)([\s\S]*?)(<\/script>)/g, (all, start, body, end) => {
     const data = JSON.parse(body);
-    if (data['@type'] !== 'ItemList') return all;
-    const entries = data.itemListElement || [];
+    const list = data['@type'] === 'ItemList'
+      ? data
+      : data['@type'] === 'CollectionPage' && data.hasPart?.['@type'] === 'ItemList'
+        ? data.hasPart
+        : null;
+    if (!list) return all;
+    const entries = list.itemListElement || [];
     if (!entries.some(e => e.url === url || e.item === url)) entries.unshift({ '@type': 'ListItem', position: 1, url, name: article.headline });
-    data.itemListElement = entries.map((e, i) => ({ ...e, position: i + 1 }));
+    list.itemListElement = entries.map((e, i) => ({ ...e, position: i + 1 }));
     return `${start}\n${JSON.stringify(data, null, 2)}\n${end}`;
   });
   const stamp = article.datePublished;
