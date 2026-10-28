@@ -11,7 +11,7 @@
 | 05 | 已发布 2026-10-28 09:11 https://yuetianai.com/articles/ziwei-lianzhen-hualu-kehu-hetong.html / https://yuetianai.com/articles/en/ziwei-lianzhen-hualu-kehu-hetong.html | ziwei-lianzhen-hualu-kehu-hetong | 廉贞化禄带来客户关系，为什么仍要核对合同回款？ | 四化 |
 | 06 | 已发布 2026-10-28 09:11 https://yuetianai.com/articles/ziwei-lianzhen-hualu-guanlu-jiaoyou-fengong.html / https://yuetianai.com/articles/en/ziwei-lianzhen-hualu-guanlu-jiaoyou-fengong.html | ziwei-lianzhen-hualu-guanlu-jiaoyou-fengong | 廉贞化禄落官禄与交友，业务能力和人脉怎样分？ | 主星细读 |
 | 07 | 已发布 2026-10-28 09:11 https://yuetianai.com/articles/ziwei-fumu-huaquan-gongzuo-jianyi-juece.html / https://yuetianai.com/articles/en/ziwei-fumu-huaquan-gongzuo-jianyi-juece.html | ziwei-fumu-huaquan-gongzuo-jianyi-juece | 父母宫化权时，长辈介绍工作与替你决定怎么分？ | 宫位组合 |
-| 08 | 待发布 | ziwei-fumu-zihuaquan-feiquan-laiyuan | 父母宫自化权和他宫飞权，读长辈压力为何不同？ | 四化 |
+| 08 | 已发布 2026-10-28 09:11 https://yuetianai.com/articles/ziwei-fumu-zihuaquan-feiquan-laiyuan.html / https://yuetianai.com/articles/en/ziwei-fumu-zihuaquan-feiquan-laiyuan.html | ziwei-fumu-zihuaquan-feiquan-laiyuan | 父母宫自化权和他宫飞权，读长辈压力为何不同？ | 四化 |
 | 09 | 待发布 | ziwei-diwenqi-tiaocao-offer-hetong | 运势看着不顺还想跳槽，拿到 offer 先核对什么？ | 财运事业 |
 | 10 | 待发布 | ziwei-diwenqi-banjia-fangyuan-hetong | 运势不顺时搬家，田宅与迁移宫怎样对照房源条件？ | 宫位组合 |
 | 11 | 待发布 | ziwei-wuqu-hualu-gaoshouru-gaozhichu | 武曲化禄收入增加，为什么不等于存款也增加？ | 财运事业 |
