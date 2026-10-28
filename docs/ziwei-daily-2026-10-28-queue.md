@@ -18,7 +18,7 @@
 | 12 | 已发布 2026-10-28 09:12 https://yuetianai.com/articles/ziwei-caibo-konggong-duigong-guanlu-huikuan.html / https://yuetianai.com/articles/en/ziwei-caibo-konggong-duigong-guanlu-huikuan.html | ziwei-caibo-konggong-duigong-guanlu-huikuan | 财帛宫空宫，接案收入应先借对宫还是先看官禄？ | 看盘方法 |
 | 13 | 已发布 2026-10-28 09:12 https://yuetianai.com/articles/ziwei-tongshengri-liangzhangpan-sixiang-shezhi.html / https://yuetianai.com/articles/en/ziwei-tongshengri-liangzhangpan-sixiang-shezhi.html | ziwei-tongshengri-liangzhangpan-sixiang-shezhi | 同一生日排出两张紫微盘，先核对哪四项设置？ | 看盘方法 |
 | 14 | 已发布 2026-10-28 09:12 https://yuetianai.com/articles/ziwei-runyue-shichen-jiaojie-zhongpai.html / https://yuetianai.com/articles/en/ziwei-runyue-shichen-jiaojie-zhongpai.html | ziwei-runyue-shichen-jiaojie-zhongpai | 闰月出生又接近时辰交界，排盘怎样逐项复核？ | 看盘方法 |
-| 15 | 待发布 | ziwei-tanlang-fumu-tuoke-juece-bianjie | 贪狼在父母宫，长辈帮忙拓客与替你答应条件怎么分？ | 主星细读 |
+| 15 | 已发布 2026-10-28 09:12 https://yuetianai.com/articles/ziwei-tanlang-fumu-tuoke-juece-bianjie.html / https://yuetianai.com/articles/en/ziwei-tanlang-fumu-tuoke-juece-bianjie.html | ziwei-tanlang-fumu-tuoke-juece-bianjie | 贪狼在父母宫，长辈帮忙拓客与替你答应条件怎么分？ | 主星细读 |
 | 16 | 待发布 | ziwei-tanlang-fumu-tonggong-huizhao | 贪狼在父母宫，为什么还要看同宫星与会照？ | 主星细读 |
 | 17 | 待发布 | ziwei-jiankang-shuimian-yali-fengong | 问睡眠不好，福德、疾厄与官禄宫分别提供什么线索？ | 宫位组合 |
 | 18 | 待发布 | ziwei-jieya-gongzuo-jilv-jiankang | 工作压力很大，命盘提示和实际健康记录如何并看？ | 看盘方法 |
