@@ -14,7 +14,7 @@
 | 08 | 已发布 2026-10-28 09:11 https://yuetianai.com/articles/ziwei-fumu-zihuaquan-feiquan-laiyuan.html / https://yuetianai.com/articles/en/ziwei-fumu-zihuaquan-feiquan-laiyuan.html | ziwei-fumu-zihuaquan-feiquan-laiyuan | 父母宫自化权和他宫飞权，读长辈压力为何不同？ | 四化 |
 | 09 | 已发布 2026-10-28 09:11 https://yuetianai.com/articles/ziwei-diwenqi-tiaocao-offer-hetong.html / https://yuetianai.com/articles/en/ziwei-diwenqi-tiaocao-offer-hetong.html | ziwei-diwenqi-tiaocao-offer-hetong | 运势看着不顺还想跳槽，拿到 offer 先核对什么？ | 财运事业 |
 | 10 | 已发布 2026-10-28 09:11 https://yuetianai.com/articles/ziwei-diwenqi-banjia-fangyuan-hetong.html / https://yuetianai.com/articles/en/ziwei-diwenqi-banjia-fangyuan-hetong.html | ziwei-diwenqi-banjia-fangyuan-hetong | 运势不顺时搬家，田宅与迁移宫怎样对照房源条件？ | 宫位组合 |
-| 11 | 待发布 | ziwei-wuqu-hualu-gaoshouru-gaozhichu | 武曲化禄收入增加，为什么不等于存款也增加？ | 财运事业 |
+| 11 | 已发布 2026-10-28 09:11 https://yuetianai.com/articles/ziwei-wuqu-hualu-gaoshouru-gaozhichu.html / https://yuetianai.com/articles/en/ziwei-wuqu-hualu-gaoshouru-gaozhichu.html | ziwei-wuqu-hualu-gaoshouru-gaozhichu | 武曲化禄收入增加，为什么不等于存款也增加？ | 财运事业 |
 | 12 | 待发布 | ziwei-caibo-konggong-duigong-guanlu-huikuan | 财帛宫空宫，接案收入应先借对宫还是先看官禄？ | 看盘方法 |
 | 13 | 待发布 | ziwei-tongshengri-liangzhangpan-sixiang-shezhi | 同一生日排出两张紫微盘，先核对哪四项设置？ | 看盘方法 |
 | 14 | 待发布 | ziwei-runyue-shichen-jiaojie-zhongpai | 闰月出生又接近时辰交界，排盘怎样逐项复核？ | 看盘方法 |
