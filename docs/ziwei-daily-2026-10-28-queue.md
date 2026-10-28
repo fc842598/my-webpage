@@ -6,7 +6,7 @@
 |---|---|---|---|---|
 | 01 | 已发布 2026-10-28 09:11 https://yuetianai.com/articles/ziwei-zinv-tianzhai-yejian-zhaogu-fengong.html / https://yuetianai.com/articles/en/ziwei-zinv-tianzhai-yejian-zhaogu-fengong.html | ziwei-zinv-tianzhai-yejian-zhaogu-fengong | 夜间照顾孩子总落在一人身上，子女宫和田宅宫怎么分？ | 宫位组合 |
 | 02 | 已发布 2026-10-28 09:11 https://yuetianai.com/articles/ziwei-yuer-fangong-fugong-guanlu.html / https://yuetianai.com/articles/en/ziwei-yuer-fangong-fugong-guanlu.html | ziwei-yuer-fangong-fugong-guanlu | 育儿后准备复工，子女宫、夫妻宫与官禄宫先看什么？ | 宫位组合 |
-| 03 | 待发布 | ziwei-fuqi-jinqian-queshao-jiaolv-fenkai | 夫妻为钱争执，真实收支缺口与未来焦虑怎么分？ | 宫位组合 |
+| 03 | 已发布 2026-10-28 09:11 https://yuetianai.com/articles/ziwei-fuqi-jinqian-queshao-jiaolv-fenkai.html / https://yuetianai.com/articles/en/ziwei-fuqi-jinqian-queshao-jiaolv-fenkai.html | ziwei-fuqi-jinqian-queshao-jiaolv-fenkai | 夫妻为钱争执，真实收支缺口与未来焦虑怎么分？ | 宫位组合 |
 | 04 | 待发布 | ziwei-fuqi-jiaban-shouru-xiangchu | 为了多赚而长期加班，夫妻宫与福德宫怎样一起看？ | 宫位组合 |
 | 05 | 待发布 | ziwei-lianzhen-hualu-kehu-hetong | 廉贞化禄带来客户关系，为什么仍要核对合同回款？ | 四化 |
 | 06 | 待发布 | ziwei-lianzhen-hualu-guanlu-jiaoyou-fengong | 廉贞化禄落官禄与交友，业务能力和人脉怎样分？ | 主星细读 |
