@@ -21,6 +21,6 @@
 | 15 | 已发布 2026-10-28 09:12 https://yuetianai.com/articles/ziwei-tanlang-fumu-tuoke-juece-bianjie.html / https://yuetianai.com/articles/en/ziwei-tanlang-fumu-tuoke-juece-bianjie.html | ziwei-tanlang-fumu-tuoke-juece-bianjie | 贪狼在父母宫，长辈帮忙拓客与替你答应条件怎么分？ | 主星细读 |
 | 16 | 已发布 2026-10-28 09:12 https://yuetianai.com/articles/ziwei-tanlang-fumu-tonggong-huizhao.html / https://yuetianai.com/articles/en/ziwei-tanlang-fumu-tonggong-huizhao.html | ziwei-tanlang-fumu-tonggong-huizhao | 贪狼在父母宫，为什么还要看同宫星与会照？ | 主星细读 |
 | 17 | 已发布 2026-10-28 09:12 https://yuetianai.com/articles/ziwei-jiankang-shuimian-yali-fengong.html / https://yuetianai.com/articles/en/ziwei-jiankang-shuimian-yali-fengong.html | ziwei-jiankang-shuimian-yali-fengong | 问睡眠不好，福德、疾厄与官禄宫分别提供什么线索？ | 宫位组合 |
-| 18 | 待发布 | ziwei-jieya-gongzuo-jilv-jiankang | 工作压力很大，命盘提示和实际健康记录如何并看？ | 看盘方法 |
+| 18 | 已发布 2026-10-28 09:12 https://yuetianai.com/articles/ziwei-jieya-gongzuo-jilv-jiankang.html / https://yuetianai.com/articles/en/ziwei-jieya-gongzuo-jilv-jiankang.html | ziwei-jieya-gongzuo-jilv-jiankang | 工作压力很大，命盘提示和实际健康记录如何并看？ | 看盘方法 |
 | 19 | 待发布 | ziwei-shoupai-tianfu-xingxi-shunxu-zicha | 手排天府星系，排完八颗星后如何自查顺序？ | 看盘方法 |
 | 20 | 待发布 | ziwei-ziweixing-dingwei-tianfu-duicheng-cha | 紫微位置已知，天府星系定位出错从哪一步查？ | 看盘方法 |
