@@ -14,7 +14,7 @@
 | 08 | 已发布 2026-10-29 09:19 https://yuetianai.com/articles/ziwei-liupai-jielun-xiangfan-guize.html / https://yuetianai.com/articles/en/ziwei-liupai-jielun-xiangfan-guize.html | ziwei-liupai-jielun-xiangfan-guize | 紫微斗数两种流派结论相反，先核哪三项规则？ | 看盘方法 |
 | 09 | 已发布 2026-10-29 09:19 https://yuetianai.com/articles/ziwei-liunian-guanlu-shiyongqi-tiaokuan.html / https://yuetianai.com/articles/en/ziwei-liunian-guanlu-shiyongqi-tiaokuan.html | ziwei-liunian-guanlu-shiyongqi-tiaokuan | 流年官禄宫有变化，试用期条款怎样逐项核对？ | 大限流年 |
 | 10 | 已发布 2026-10-29 09:19 https://yuetianai.com/articles/ziwei-qianyi-tianzhai-tongqin-chengben.html / https://yuetianai.com/articles/en/ziwei-qianyi-tianzhai-tongqin-chengben.html | ziwei-qianyi-tianzhai-tongqin-chengben | 搬家缩短通勤却增加房租，迁移与田宅宫怎么并看？ | 宫位组合 |
-| 11 | 待发布 | ziwei-qingyang-caibo-kehu-kanjia | 擎羊落财帛宫，客户临时砍价先核什么？ | 财运事业 |
+| 11 | 已发布 2026-10-29 09:19 https://yuetianai.com/articles/ziwei-qingyang-caibo-kehu-kanjia.html / https://yuetianai.com/articles/en/ziwei-qingyang-caibo-kehu-kanjia.html | ziwei-qingyang-caibo-kehu-kanjia | 擎羊落财帛宫，客户临时砍价先核什么？ | 财运事业 |
 | 12 | 待发布 | ziwei-caibo-tianzhai-jinji-beiyongjin | 收入不稳时要留多少备用金，财帛与田宅宫各问什么？ | 财运事业 |
 | 13 | 待发布 | ziwei-haiwai-chusheng-shiqu-paipan | 海外出生排紫微盘，时区和出生地怎样核对？ | 看盘方法 |
 | 14 | 待发布 | ziwei-nongli-riqi-lijie-fuhexin | 农历生日换算有异，排盘前怎样核原始日期？ | 看盘方法 |
