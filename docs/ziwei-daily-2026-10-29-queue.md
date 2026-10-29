@@ -11,7 +11,7 @@
 | 05 | 已发布 2026-10-29 09:18 https://yuetianai.com/articles/ziwei-lianzhen-hualu-fuwu-jiaofu.html / https://yuetianai.com/articles/en/ziwei-lianzhen-hualu-fuwu-jiaofu.html | ziwei-lianzhen-hualu-fuwu-jiaofu | 廉贞化禄带来客户后，交付能力要看哪一宫？ | 四化 |
 | 06 | 已发布 2026-10-29 09:18 https://yuetianai.com/articles/ziwei-lianzhen-hualu-hetong-xuqian.html / https://yuetianai.com/articles/en/ziwei-lianzhen-hualu-hetong-xuqian.html | ziwei-lianzhen-hualu-hetong-xuqian | 廉贞化禄有新合作，续约与一次成交怎么分？ | 四化 |
 | 07 | 已发布 2026-10-29 09:19 https://yuetianai.com/articles/ziwei-sanhe-qintian-tongpan-qishou.html / https://yuetianai.com/articles/en/ziwei-sanhe-qintian-tongpan-qishou.html | ziwei-sanhe-qintian-tongpan-qishou | 同一命盘三合派与钦天派为什么读法不同？ | 看盘方法 |
-| 08 | 待发布 | ziwei-liupai-jielun-xiangfan-guize | 紫微斗数两种流派结论相反，先核哪三项规则？ | 看盘方法 |
+| 08 | 已发布 2026-10-29 09:19 https://yuetianai.com/articles/ziwei-liupai-jielun-xiangfan-guize.html / https://yuetianai.com/articles/en/ziwei-liupai-jielun-xiangfan-guize.html | ziwei-liupai-jielun-xiangfan-guize | 紫微斗数两种流派结论相反，先核哪三项规则？ | 看盘方法 |
 | 09 | 待发布 | ziwei-liunian-guanlu-shiyongqi-tiaokuan | 流年官禄宫有变化，试用期条款怎样逐项核对？ | 大限流年 |
 | 10 | 待发布 | ziwei-qianyi-tianzhai-tongqin-chengben | 搬家缩短通勤却增加房租，迁移与田宅宫怎么并看？ | 宫位组合 |
 | 11 | 待发布 | ziwei-qingyang-caibo-kehu-kanjia | 擎羊落财帛宫，客户临时砍价先核什么？ | 财运事业 |
