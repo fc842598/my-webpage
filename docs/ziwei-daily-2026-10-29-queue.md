@@ -9,7 +9,7 @@
 | 03 | 已发布 2026-10-29 09:18 https://yuetianai.com/articles/ziwei-fuqi-caibo-gongtong-yusuan.html / https://yuetianai.com/articles/en/ziwei-fuqi-caibo-gongtong-yusuan.html | ziwei-fuqi-caibo-gongtong-yusuan | 夫妻做共同预算，夫妻宫与财帛宫先核对什么？ | 宫位组合 |
 | 04 | 已发布 2026-10-29 09:18 https://yuetianai.com/articles/ziwei-fuqi-fude-tufa-zhichu.html / https://yuetianai.com/articles/en/ziwei-fuqi-fude-tufa-zhichu.html | ziwei-fuqi-fude-tufa-zhichu | 家庭突然有大额支出，夫妻宫和福德宫怎样协商？ | 宫位组合 |
 | 05 | 已发布 2026-10-29 09:18 https://yuetianai.com/articles/ziwei-lianzhen-hualu-fuwu-jiaofu.html / https://yuetianai.com/articles/en/ziwei-lianzhen-hualu-fuwu-jiaofu.html | ziwei-lianzhen-hualu-fuwu-jiaofu | 廉贞化禄带来客户后，交付能力要看哪一宫？ | 四化 |
-| 06 | 待发布 | ziwei-lianzhen-hualu-hetong-xuqian | 廉贞化禄有新合作，续约与一次成交怎么分？ | 四化 |
+| 06 | 已发布 2026-10-29 09:18 https://yuetianai.com/articles/ziwei-lianzhen-hualu-hetong-xuqian.html / https://yuetianai.com/articles/en/ziwei-lianzhen-hualu-hetong-xuqian.html | ziwei-lianzhen-hualu-hetong-xuqian | 廉贞化禄有新合作，续约与一次成交怎么分？ | 四化 |
 | 07 | 待发布 | ziwei-sanhe-qintian-tongpan-qishou | 同一命盘三合派与钦天派为什么读法不同？ | 看盘方法 |
 | 08 | 待发布 | ziwei-liupai-jielun-xiangfan-guize | 紫微斗数两种流派结论相反，先核哪三项规则？ | 看盘方法 |
 | 09 | 待发布 | ziwei-liunian-guanlu-shiyongqi-tiaokuan | 流年官禄宫有变化，试用期条款怎样逐项核对？ | 大限流年 |
