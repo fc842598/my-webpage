@@ -143,7 +143,9 @@ if (productionRoot && dailyQueueDate) {
 const queueRaw = readFileSync(queuePath, "utf8");
 const sourceRaw = readFileSync(sourcePath, "utf8");
 const rows = parseQueue(queueRaw)
-  .filter((row) => includePublished || !row.status.includes("http"))
+  .filter((row) => includePublished || (productionRoot && dailyQueueDate
+    ? row.status === "待发布"
+    : !row.status.includes("http")))
   .filter((row) => !requestedOrder || String(row.order).padStart(2, "0") === requestedOrder)
   .filter((row) => !requestedSlug || row.slug === requestedSlug);
 const picked = rows.slice(0, count);

@@ -154,6 +154,9 @@ ${sbh}      </aside>
 }
 
 function generate(topics,batch,manifestName){
+ if (typeof batch?.date === 'string' && batch.date >= '2026-10-26') {
+  throw new Error('Dated article batches must use scripts/publish-local-article-batch.mjs after the daily research and quota checks.');
+ }
  const manifest=[];
  for(const t of topics){
   fs.writeFileSync(path.join(__dirname,'articles',`${t.slug}.html`),buildCN(t,batch).replace(/\r\n/g,'\n'),'utf8');
