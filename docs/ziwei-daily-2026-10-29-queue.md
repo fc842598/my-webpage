@@ -18,7 +18,7 @@
 | 12 | 已发布 2026-10-29 09:19 https://yuetianai.com/articles/ziwei-caibo-tianzhai-jinji-beiyongjin.html / https://yuetianai.com/articles/en/ziwei-caibo-tianzhai-jinji-beiyongjin.html | ziwei-caibo-tianzhai-jinji-beiyongjin | 收入不稳时要留多少备用金，财帛与田宅宫各问什么？ | 财运事业 |
 | 13 | 已发布 2026-10-29 09:19 https://yuetianai.com/articles/ziwei-haiwai-chusheng-shiqu-paipan.html / https://yuetianai.com/articles/en/ziwei-haiwai-chusheng-shiqu-paipan.html | ziwei-haiwai-chusheng-shiqu-paipan | 海外出生排紫微盘，时区和出生地怎样核对？ | 看盘方法 |
 | 14 | 已发布 2026-10-29 09:20 https://yuetianai.com/articles/ziwei-nongli-riqi-lijie-fuhexin.html / https://yuetianai.com/articles/en/ziwei-nongli-riqi-lijie-fuhexin.html | ziwei-nongli-riqi-lijie-fuhexin | 农历生日换算有异，排盘前怎样核原始日期？ | 看盘方法 |
-| 15 | 待发布 | ziwei-tianji-taiyin-tonggong-cehua-jiaofu | 天机太阴同宫做策划，怎样把细致分析变成交付？ | 主星细读 |
+| 15 | 已发布 2026-10-29 09:20 https://yuetianai.com/articles/ziwei-tianji-taiyin-tonggong-cehua-jiaofu.html / https://yuetianai.com/articles/en/ziwei-tianji-taiyin-tonggong-cehua-jiaofu.html | ziwei-tianji-taiyin-tonggong-cehua-jiaofu | 天机太阴同宫做策划，怎样把细致分析变成交付？ | 主星细读 |
 | 16 | 待发布 | ziwei-qingyang-tuoluo-guanlu-xiangmu | 擎羊与陀罗落官禄宫，项目卡住是急冲还是慢拖？ | 辅煞曜 |
 | 17 | 待发布 | ziwei-jie-gong-bingli-shijianxian | 身体不适时，疾厄宫与真实病历如何按时间对照？ | 宫位组合 |
 | 18 | 待发布 | ziwei-fude-guanlu-xiuxi-paiban | 连续加班后难恢复，福德与官禄宫怎样核休息安排？ | 宫位组合 |
