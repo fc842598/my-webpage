@@ -6,7 +6,7 @@
 |---|---|---|---|---|
 | 01 | 已发布 2026-10-29 09:15 https://yuetianai.com/articles/ziwei-zinv-tianzhai-zhuanxue-zuoxi.html / https://yuetianai.com/articles/en/ziwei-zinv-tianzhai-zhuanxue-zuoxi.html | ziwei-zinv-tianzhai-zhuanxue-zuoxi | 孩子转学后作息乱，子女宫与田宅宫各看什么？ | 宫位组合 |
 | 02 | 已发布 2026-10-29 09:18 https://yuetianai.com/articles/ziwei-fumu-zinv-gedai-zhaogu-jiedian.html / https://yuetianai.com/articles/en/ziwei-fumu-zinv-gedai-zhaogu-jiedian.html | ziwei-fumu-zinv-gedai-zhaogu-jiedian | 祖辈临时接手照护，父母宫与子女宫怎么分工？ | 宫位组合 |
-| 03 | 待发布 | ziwei-fuqi-caibo-gongtong-yusuan | 夫妻做共同预算，夫妻宫与财帛宫先核对什么？ | 宫位组合 |
+| 03 | 已发布 2026-10-29 09:18 https://yuetianai.com/articles/ziwei-fuqi-caibo-gongtong-yusuan.html / https://yuetianai.com/articles/en/ziwei-fuqi-caibo-gongtong-yusuan.html | ziwei-fuqi-caibo-gongtong-yusuan | 夫妻做共同预算，夫妻宫与财帛宫先核对什么？ | 宫位组合 |
 | 04 | 待发布 | ziwei-fuqi-fude-tufa-zhichu | 家庭突然有大额支出，夫妻宫和福德宫怎样协商？ | 宫位组合 |
 | 05 | 待发布 | ziwei-lianzhen-hualu-fuwu-jiaofu | 廉贞化禄带来客户后，交付能力要看哪一宫？ | 四化 |
 | 06 | 待发布 | ziwei-lianzhen-hualu-hetong-xuqian | 廉贞化禄有新合作，续约与一次成交怎么分？ | 四化 |
