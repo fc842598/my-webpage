@@ -21,6 +21,6 @@
 | 15 | 已发布 2026-10-29 09:20 https://yuetianai.com/articles/ziwei-tianji-taiyin-tonggong-cehua-jiaofu.html / https://yuetianai.com/articles/en/ziwei-tianji-taiyin-tonggong-cehua-jiaofu.html | ziwei-tianji-taiyin-tonggong-cehua-jiaofu | 天机太阴同宫做策划，怎样把细致分析变成交付？ | 主星细读 |
 | 16 | 已发布 2026-10-29 09:20 https://yuetianai.com/articles/ziwei-qingyang-tuoluo-guanlu-xiangmu.html / https://yuetianai.com/articles/en/ziwei-qingyang-tuoluo-guanlu-xiangmu.html | ziwei-qingyang-tuoluo-guanlu-xiangmu | 擎羊与陀罗落官禄宫，项目卡住是急冲还是慢拖？ | 辅煞曜 |
 | 17 | 已发布 2026-10-29 09:20 https://yuetianai.com/articles/ziwei-jie-gong-bingli-shijianxian.html / https://yuetianai.com/articles/en/ziwei-jie-gong-bingli-shijianxian.html | ziwei-jie-gong-bingli-shijianxian | 身体不适时，疾厄宫与真实病历如何按时间对照？ | 宫位组合 |
-| 18 | 待发布 | ziwei-fude-guanlu-xiuxi-paiban | 连续加班后难恢复，福德与官禄宫怎样核休息安排？ | 宫位组合 |
+| 18 | 已发布 2026-10-29 09:20 https://yuetianai.com/articles/ziwei-fude-guanlu-xiuxi-paiban.html / https://yuetianai.com/articles/en/ziwei-fude-guanlu-xiuxi-paiban.html | ziwei-fude-guanlu-xiuxi-paiban | 连续加班后难恢复，福德与官禄宫怎样核休息安排？ | 宫位组合 |
 | 19 | 待发布 | ziwei-wuqu-fudegong-chuxu-xiuxi | 武曲在福德宫，务实储蓄和休息焦虑怎样分开？ | 主星细读 |
 | 20 | 待发布 | ziwei-2027-dingwei-nianjie-sihua | 2027紫微流年何时切换？丁未四化先核年界和落宫 | 大限流年 |
