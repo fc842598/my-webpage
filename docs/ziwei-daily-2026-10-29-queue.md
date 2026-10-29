@@ -16,7 +16,7 @@
 | 10 | 已发布 2026-10-29 09:19 https://yuetianai.com/articles/ziwei-qianyi-tianzhai-tongqin-chengben.html / https://yuetianai.com/articles/en/ziwei-qianyi-tianzhai-tongqin-chengben.html | ziwei-qianyi-tianzhai-tongqin-chengben | 搬家缩短通勤却增加房租，迁移与田宅宫怎么并看？ | 宫位组合 |
 | 11 | 已发布 2026-10-29 09:19 https://yuetianai.com/articles/ziwei-qingyang-caibo-kehu-kanjia.html / https://yuetianai.com/articles/en/ziwei-qingyang-caibo-kehu-kanjia.html | ziwei-qingyang-caibo-kehu-kanjia | 擎羊落财帛宫，客户临时砍价先核什么？ | 财运事业 |
 | 12 | 已发布 2026-10-29 09:19 https://yuetianai.com/articles/ziwei-caibo-tianzhai-jinji-beiyongjin.html / https://yuetianai.com/articles/en/ziwei-caibo-tianzhai-jinji-beiyongjin.html | ziwei-caibo-tianzhai-jinji-beiyongjin | 收入不稳时要留多少备用金，财帛与田宅宫各问什么？ | 财运事业 |
-| 13 | 待发布 | ziwei-haiwai-chusheng-shiqu-paipan | 海外出生排紫微盘，时区和出生地怎样核对？ | 看盘方法 |
+| 13 | 已发布 2026-10-29 09:19 https://yuetianai.com/articles/ziwei-haiwai-chusheng-shiqu-paipan.html / https://yuetianai.com/articles/en/ziwei-haiwai-chusheng-shiqu-paipan.html | ziwei-haiwai-chusheng-shiqu-paipan | 海外出生排紫微盘，时区和出生地怎样核对？ | 看盘方法 |
 | 14 | 待发布 | ziwei-nongli-riqi-lijie-fuhexin | 农历生日换算有异，排盘前怎样核原始日期？ | 看盘方法 |
 | 15 | 待发布 | ziwei-tianji-taiyin-tonggong-cehua-jiaofu | 天机太阴同宫做策划，怎样把细致分析变成交付？ | 主星细读 |
 | 16 | 待发布 | ziwei-qingyang-tuoluo-guanlu-xiangmu | 擎羊与陀罗落官禄宫，项目卡住是急冲还是慢拖？ | 辅煞曜 |
