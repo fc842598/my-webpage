@@ -7,7 +7,7 @@
 | 01 | 已发布 2026-10-30 09:05 https://yuetianai.com/articles/ziwei-huake-qianyi-yuancheng-mianshi.html / https://yuetianai.com/articles/en/ziwei-huake-qianyi-yuancheng-mianshi.html | ziwei-huake-qianyi-yuancheng-mianshi | 化科落迁移宫，远程面试怎样区分口碑与岗位能力？ | 四化 |
 | 02 | 已发布 2026-10-30 09:06 https://yuetianai.com/articles/ziwei-huaji-caibo-dingyue-xianjinliu.html / https://yuetianai.com/articles/en/ziwei-huaji-caibo-dingyue-xianjinliu.html | ziwei-huaji-caibo-dingyue-xianjinliu | 财帛宫化忌遇到订阅扣款，先查压力还是现金流？ | 四化 |
 | 03 | 已发布 2026-10-30 09:06 https://yuetianai.com/articles/ziwei-liunian-jie-gong-jiancha-youxianji.html / https://yuetianai.com/articles/en/ziwei-liunian-jie-gong-jiancha-youxianji.html | ziwei-liunian-jie-gong-jiancha-youxianji | 流年疾厄宫有变化，体检项目怎样按现实风险排序？ | 大限流年 |
-| 04 | 待发布 | ziwei-zihua-fankui-xunhuan-jilu | 自化反复出现，如何用事件记录区别反馈与起因？ | 看盘方法 |
+| 04 | 已发布 2026-10-30 09:06 https://yuetianai.com/articles/ziwei-zihua-fankui-xunhuan-jilu.html / https://yuetianai.com/articles/en/ziwei-zihua-fankui-xunhuan-jilu.html | ziwei-zihua-fankui-xunhuan-jilu | 自化反复出现，如何用事件记录区别反馈与起因？ | 看盘方法 |
 | 05 | 待发布 | ziwei-guanlu-jiaoyou-neitui-luyong | 熟人内推拿到面试，交友宫与官禄宫分别看什么？ | 宫位组合 |
 | 06 | 待发布 | ziwei-guanlu-qianyi-gangwei-neidiao | 公司内部调岗但不搬家，官禄与迁移宫怎么分？ | 宫位组合 |
 | 07 | 待发布 | ziwei-zinv-jiaoyou-daixinren | 带新人总要返工，子女宫与交友宫怎样分责任？ | 宫位组合 |
