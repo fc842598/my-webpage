@@ -10,7 +10,7 @@
 | 04 | 已发布 2026-10-30 09:06 https://yuetianai.com/articles/ziwei-zihua-fankui-xunhuan-jilu.html / https://yuetianai.com/articles/en/ziwei-zihua-fankui-xunhuan-jilu.html | ziwei-zihua-fankui-xunhuan-jilu | 自化反复出现，如何用事件记录区别反馈与起因？ | 看盘方法 |
 | 05 | 已发布 2026-10-30 09:07 https://yuetianai.com/articles/ziwei-guanlu-jiaoyou-neitui-luyong.html / https://yuetianai.com/articles/en/ziwei-guanlu-jiaoyou-neitui-luyong.html | ziwei-guanlu-jiaoyou-neitui-luyong | 熟人内推拿到面试，交友宫与官禄宫分别看什么？ | 宫位组合 |
 | 06 | 已发布 2026-10-30 09:07 https://yuetianai.com/articles/ziwei-guanlu-qianyi-gangwei-neidiao.html / https://yuetianai.com/articles/en/ziwei-guanlu-qianyi-gangwei-neidiao.html | ziwei-guanlu-qianyi-gangwei-neidiao | 公司内部调岗但不搬家，官禄与迁移宫怎么分？ | 宫位组合 |
-| 07 | 待发布 | ziwei-zinv-jiaoyou-daixinren | 带新人总要返工，子女宫与交友宫怎样分责任？ | 宫位组合 |
+| 07 | 已发布 2026-10-30 09:07 https://yuetianai.com/articles/ziwei-zinv-jiaoyou-daixinren.html / https://yuetianai.com/articles/en/ziwei-zinv-jiaoyou-daixinren.html | ziwei-zinv-jiaoyou-daixinren | 带新人总要返工，子女宫与交友宫怎样分责任？ | 宫位组合 |
 | 08 | 待发布 | ziwei-zinv-guanlu-chanpin-shangxian | 产品上线后持续迭代，子女宫和官禄宫各管什么？ | 宫位组合 |
 | 09 | 待发布 | ziwei-tianji-taiyin-xuqiu-fangong | 天机太阴同宫遇到需求反复，什么时候停止改方案？ | 主星细读 |
 | 10 | 待发布 | ziwei-tianji-taiyin-kuaibumen-goutong | 天机太阴同宫做跨部门沟通，细节与决策如何交接？ | 主星细读 |
