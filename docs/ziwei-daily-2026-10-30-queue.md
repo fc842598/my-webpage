@@ -21,6 +21,6 @@
 | 15 | 已发布 2026-10-30 09:08 https://yuetianai.com/articles/ziwei-2027-taiyin-hualu-tianzhai.html / https://yuetianai.com/articles/en/ziwei-2027-taiyin-hualu-tianzhai.html | ziwei-2027-taiyin-hualu-tianzhai | 2027太阴化禄落田宅，住得舒服与资产增加怎么分？ | 大限流年 |
 | 16 | 已发布 2026-10-30 09:08 https://yuetianai.com/articles/ziwei-2027-tiantong-huaquan-zinv.html / https://yuetianai.com/articles/en/ziwei-2027-tiantong-huaquan-zinv.html | ziwei-2027-tiantong-huaquan-zinv | 2027天同化权落子女宫，照顾安排由谁作主？ | 大限流年 |
 | 17 | 已发布 2026-10-30 09:08 https://yuetianai.com/articles/ziwei-2027-jumen-huaji-jiaoyou.html / https://yuetianai.com/articles/en/ziwei-2027-jumen-huaji-jiaoyou.html | ziwei-2027-jumen-huaji-jiaoyou | 2027巨门化忌落交友宫，合作误会先核什么证据？ | 大限流年 |
-| 18 | 待发布 | ziwei-2027-tianji-huake-guanlu | 2027天机化科落官禄，专业方案怎样取得认可？ | 大限流年 |
+| 18 | 已发布 2026-10-30 09:08 https://yuetianai.com/articles/ziwei-2027-tianji-huake-guanlu.html / https://yuetianai.com/articles/en/ziwei-2027-tianji-huake-guanlu.html | ziwei-2027-tianji-huake-guanlu | 2027天机化科落官禄，专业方案怎样取得认可？ | 大限流年 |
 | 19 | 待发布 | ziwei-laiyin-sanhe-bijiao-qidian | 来因宫与三方四正同时看，怎样先统一问题起点？ | 看盘方法 |
 | 20 | 待发布 | ziwei-2027-liunian-liuyue-cengji | 看2027流年再看流月，怎样避免把同一四化算两次？ | 大限流年 |
