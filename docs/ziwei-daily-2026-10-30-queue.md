@@ -1,26 +1,26 @@
 # 紫微文章次日备稿队列 2026-10-30
 
-状态：仅为 2026-10-29 同行研究后的离线备稿。2026-10-30 同行检索、站内查重及逐篇编辑复核前，全部不得发布或生成公开 HTML。研究来源实际为 10 篇、10 个独立域名；下列为 20 个不同的本站问题，并非 20 篇同行来源。
+状态：2026-10-30 同行研究交接、站内查重及逐篇编辑复核已完成。研究来源实际为 10 篇、10 个独立域名；下列为 20 个不同的本站问题，并非 20 篇同行来源。
 
 | 顺序 | 状态 | slug | 标题 | 大类 |
 |---|---|---|---|---|
-| 01 | 待次日研究复核 | ziwei-huake-qianyi-yuancheng-mianshi | 化科落迁移宫，远程面试怎样区分口碑与岗位能力？ | 四化 |
-| 02 | 待次日研究复核 | ziwei-huaji-caibo-dingyue-xianjinliu | 财帛宫化忌遇到订阅扣款，先查压力还是现金流？ | 四化 |
-| 03 | 待次日研究复核 | ziwei-liunian-jie-gong-jiancha-youxianji | 流年疾厄宫有变化，体检项目怎样按现实风险排序？ | 大限流年 |
-| 04 | 待次日研究复核 | ziwei-zihua-fankui-xunhuan-jilu | 自化反复出现，如何用事件记录区别反馈与起因？ | 看盘方法 |
-| 05 | 待次日研究复核 | ziwei-guanlu-jiaoyou-neitui-luyong | 熟人内推拿到面试，交友宫与官禄宫分别看什么？ | 宫位组合 |
-| 06 | 待次日研究复核 | ziwei-guanlu-qianyi-gangwei-neidiao | 公司内部调岗但不搬家，官禄与迁移宫怎么分？ | 宫位组合 |
-| 07 | 待次日研究复核 | ziwei-zinv-jiaoyou-daixinren | 带新人总要返工，子女宫与交友宫怎样分责任？ | 宫位组合 |
-| 08 | 待次日研究复核 | ziwei-zinv-guanlu-chanpin-shangxian | 产品上线后持续迭代，子女宫和官禄宫各管什么？ | 宫位组合 |
-| 09 | 待次日研究复核 | ziwei-tianji-taiyin-xuqiu-fangong | 天机太阴同宫遇到需求反复，什么时候停止改方案？ | 主星细读 |
-| 10 | 待次日研究复核 | ziwei-tianji-taiyin-kuaibumen-goutong | 天机太阴同宫做跨部门沟通，细节与决策如何交接？ | 主星细读 |
-| 11 | 待次日研究复核 | ziwei-qingyang-tuoluo-qianyi-banqian | 迁移宫见擎羊或陀罗，搬迁中的急变与拖延怎么分？ | 星曜组合 |
-| 12 | 待次日研究复核 | ziwei-qingyang-tuoluo-jiaoyou-hezuo | 交友宫见擎羊或陀罗，合作争执与长期磨损怎么分？ | 星曜组合 |
-| 13 | 待次日研究复核 | ziwei-wuqu-fude-xuexi-zhichu | 武曲在福德宫，花钱学习为何仍觉得不安心？ | 主星细读 |
-| 14 | 待次日研究复核 | ziwei-wuqu-fude-wuxin-xiujia | 武曲在福德宫，计划无薪休假前怎样核对安全感？ | 主星细读 |
-| 15 | 待次日研究复核 | ziwei-2027-taiyin-hualu-tianzhai | 2027太阴化禄落田宅，住得舒服与资产增加怎么分？ | 大限流年 |
-| 16 | 待次日研究复核 | ziwei-2027-tiantong-huaquan-zinv | 2027天同化权落子女宫，照顾安排由谁作主？ | 大限流年 |
-| 17 | 待次日研究复核 | ziwei-2027-jumen-huaji-jiaoyou | 2027巨门化忌落交友宫，合作误会先核什么证据？ | 大限流年 |
-| 18 | 待次日研究复核 | ziwei-2027-tianji-huake-guanlu | 2027天机化科落官禄，专业方案怎样取得认可？ | 大限流年 |
-| 19 | 待次日研究复核 | ziwei-laiyin-sanhe-bijiao-qidian | 来因宫与三方四正同时看，怎样先统一问题起点？ | 看盘方法 |
-| 20 | 待次日研究复核 | ziwei-2027-liunian-liuyue-cengji | 看2027流年再看流月，怎样避免把同一四化算两次？ | 大限流年 |
+| 01 | 已发布 2026-10-30 09:05 https://yuetianai.com/articles/ziwei-huake-qianyi-yuancheng-mianshi.html / https://yuetianai.com/articles/en/ziwei-huake-qianyi-yuancheng-mianshi.html | ziwei-huake-qianyi-yuancheng-mianshi | 化科落迁移宫，远程面试怎样区分口碑与岗位能力？ | 四化 |
+| 02 | 待发布 | ziwei-huaji-caibo-dingyue-xianjinliu | 财帛宫化忌遇到订阅扣款，先查压力还是现金流？ | 四化 |
+| 03 | 待发布 | ziwei-liunian-jie-gong-jiancha-youxianji | 流年疾厄宫有变化，体检项目怎样按现实风险排序？ | 大限流年 |
+| 04 | 待发布 | ziwei-zihua-fankui-xunhuan-jilu | 自化反复出现，如何用事件记录区别反馈与起因？ | 看盘方法 |
+| 05 | 待发布 | ziwei-guanlu-jiaoyou-neitui-luyong | 熟人内推拿到面试，交友宫与官禄宫分别看什么？ | 宫位组合 |
+| 06 | 待发布 | ziwei-guanlu-qianyi-gangwei-neidiao | 公司内部调岗但不搬家，官禄与迁移宫怎么分？ | 宫位组合 |
+| 07 | 待发布 | ziwei-zinv-jiaoyou-daixinren | 带新人总要返工，子女宫与交友宫怎样分责任？ | 宫位组合 |
+| 08 | 待发布 | ziwei-zinv-guanlu-chanpin-shangxian | 产品上线后持续迭代，子女宫和官禄宫各管什么？ | 宫位组合 |
+| 09 | 待发布 | ziwei-tianji-taiyin-xuqiu-fangong | 天机太阴同宫遇到需求反复，什么时候停止改方案？ | 主星细读 |
+| 10 | 待发布 | ziwei-tianji-taiyin-kuaibumen-goutong | 天机太阴同宫做跨部门沟通，细节与决策如何交接？ | 主星细读 |
+| 11 | 待发布 | ziwei-qingyang-tuoluo-qianyi-banqian | 迁移宫见擎羊或陀罗，搬迁中的急变与拖延怎么分？ | 星曜组合 |
+| 12 | 待发布 | ziwei-qingyang-tuoluo-jiaoyou-hezuo | 交友宫见擎羊或陀罗，合作争执与长期磨损怎么分？ | 星曜组合 |
+| 13 | 待发布 | ziwei-wuqu-fude-xuexi-zhichu | 武曲在福德宫，花钱学习为何仍觉得不安心？ | 主星细读 |
+| 14 | 待发布 | ziwei-wuqu-fude-wuxin-xiujia | 武曲在福德宫，计划无薪休假前怎样核对安全感？ | 主星细读 |
+| 15 | 待发布 | ziwei-2027-taiyin-hualu-tianzhai | 2027太阴化禄落田宅，住得舒服与资产增加怎么分？ | 大限流年 |
+| 16 | 待发布 | ziwei-2027-tiantong-huaquan-zinv | 2027天同化权落子女宫，照顾安排由谁作主？ | 大限流年 |
+| 17 | 待发布 | ziwei-2027-jumen-huaji-jiaoyou | 2027巨门化忌落交友宫，合作误会先核什么证据？ | 大限流年 |
+| 18 | 待发布 | ziwei-2027-tianji-huake-guanlu | 2027天机化科落官禄，专业方案怎样取得认可？ | 大限流年 |
+| 19 | 待发布 | ziwei-laiyin-sanhe-bijiao-qidian | 来因宫与三方四正同时看，怎样先统一问题起点？ | 看盘方法 |
+| 20 | 待发布 | ziwei-2027-liunian-liuyue-cengji | 看2027流年再看流月，怎样避免把同一四化算两次？ | 大限流年 |
