@@ -15,7 +15,7 @@
 | 09 | 已发布 2026-10-30 09:07 https://yuetianai.com/articles/ziwei-tianji-taiyin-xuqiu-fangong.html / https://yuetianai.com/articles/en/ziwei-tianji-taiyin-xuqiu-fangong.html | ziwei-tianji-taiyin-xuqiu-fangong | 天机太阴同宫遇到需求反复，什么时候停止改方案？ | 主星细读 |
 | 10 | 已发布 2026-10-30 09:07 https://yuetianai.com/articles/ziwei-tianji-taiyin-kuaibumen-goutong.html / https://yuetianai.com/articles/en/ziwei-tianji-taiyin-kuaibumen-goutong.html | ziwei-tianji-taiyin-kuaibumen-goutong | 天机太阴同宫做跨部门沟通，细节与决策如何交接？ | 主星细读 |
 | 11 | 已发布 2026-10-30 09:08 https://yuetianai.com/articles/ziwei-qingyang-tuoluo-qianyi-banqian.html / https://yuetianai.com/articles/en/ziwei-qingyang-tuoluo-qianyi-banqian.html | ziwei-qingyang-tuoluo-qianyi-banqian | 迁移宫见擎羊或陀罗，搬迁中的急变与拖延怎么分？ | 辅煞曜 |
-| 12 | 待发布 | ziwei-qingyang-tuoluo-jiaoyou-hezuo | 交友宫见擎羊或陀罗，合作争执与长期磨损怎么分？ | 辅煞曜 |
+| 12 | 已发布 2026-10-30 09:08 https://yuetianai.com/articles/ziwei-qingyang-tuoluo-jiaoyou-hezuo.html / https://yuetianai.com/articles/en/ziwei-qingyang-tuoluo-jiaoyou-hezuo.html | ziwei-qingyang-tuoluo-jiaoyou-hezuo | 交友宫见擎羊或陀罗，合作争执与长期磨损怎么分？ | 辅煞曜 |
 | 13 | 待发布 | ziwei-wuqu-fude-xuexi-zhichu | 武曲在福德宫，花钱学习为何仍觉得不安心？ | 主星细读 |
 | 14 | 待发布 | ziwei-wuqu-fude-wuxin-xiujia | 武曲在福德宫，计划无薪休假前怎样核对安全感？ | 主星细读 |
 | 15 | 待发布 | ziwei-2027-taiyin-hualu-tianzhai | 2027太阴化禄落田宅，住得舒服与资产增加怎么分？ | 大限流年 |
