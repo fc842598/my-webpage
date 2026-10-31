@@ -9,7 +9,7 @@
 | 03 | 已发布 2026-10-31 09:08 https://yuetianai.com/articles/ziwei-2027-neisheng-waipin-lianglu.html / https://yuetianai.com/articles/en/ziwei-2027-neisheng-waipin-lianglu.html | ziwei-2027-neisheng-waipin-lianglu | 2027年内部晋升和外部招聘同时出现，官禄迁移怎么分？ | 大限流年 |
 | 04 | 已发布 2026-10-31 09:09 https://yuetianai.com/articles/ziwei-2027-shouru-zengchu-xianjinliu.html / https://yuetianai.com/articles/en/ziwei-2027-shouru-zengchu-xianjinliu.html | ziwei-2027-shouru-zengchu-xianjinliu | 流年收入增加却存款不增，财帛与田宅各问什么？ | 大限流年 |
 | 05 | 已发布 2026-10-31 09:10 https://yuetianai.com/articles/ziwei-changqu-chusheng-shichen-jiaodui.html / https://yuetianai.com/articles/en/ziwei-changqu-chusheng-shichen-jiaodui.html | ziwei-changqu-chusheng-shichen-jiaodui | 出生时间差一个时辰，文昌文曲落宫怎样核对？ | 看盘方法 |
-| 06 | 待发布 | ziwei-genggan-sihua-liupai-biao | 两个排盘的庚干四化不同，先核哪张表？ | 四化 |
+| 06 | 已发布 2026-10-31 09:12 https://yuetianai.com/articles/ziwei-genggan-sihua-liupai-biao.html / https://yuetianai.com/articles/en/ziwei-genggan-sihua-liupai-biao.html | ziwei-genggan-sihua-liupai-biao | 两个排盘的庚干四化不同，先核哪张表？ | 四化 |
 | 07 | 待发布 | ziwei-liunian-hongluan-yu-guanxi-jilu | 流年红鸾动了，为什么仍要看真实的关系进展？ | 婚恋与关系 |
 | 08 | 待发布 | ziwei-fuqi-huaji-wending-guanxi | 夫妻宫见化忌而关系稳定，怎样读沟通压力？ | 婚恋与关系 |
 | 09 | 待发布 | ziwei-caibo-huake-dahao-jiesuan | 财帛宫会化科又见大耗，项目结算该先核什么？ | 财运事业 |
