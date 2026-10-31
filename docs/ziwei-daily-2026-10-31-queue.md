@@ -23,4 +23,4 @@
 | 17 | 已发布 2026-10-31 09:23 https://yuetianai.com/articles/ziwei-zinv-gong-kaoshi-zhichi.html / https://yuetianai.com/articles/en/ziwei-zinv-gong-kaoshi-zhichi.html | ziwei-zinv-gong-kaoshi-zhichi | 孩子想提高分数，子女宫能帮家长问对支持问题吗？ | 宫位组合 |
 | 18 | 已发布 2026-10-31 09:24 https://yuetianai.com/articles/ziwei-zinv-fumu-kaoshi-yali.html / https://yuetianai.com/articles/en/ziwei-zinv-fumu-kaoshi-yali.html | ziwei-zinv-fumu-kaoshi-yali | 考试失利后家长更焦虑，子女宫和父母宫怎样分？ | 宫位组合 |
 | 19 | 已发布 2026-10-31 09:25 https://yuetianai.com/articles/ziwei-zhuanzhi-mei-jingli-guanlu-jie.html / https://yuetianai.com/articles/en/ziwei-zhuanzhi-mei-jingli-guanlu-jie.html | ziwei-zhuanzhi-mei-jingli-guanlu-jie | 想跳槽却没力气投简历，官禄和疾厄先看什么？ | 大限流年 |
-| 20 | 待发布 | ziwei-liuyue-huaquan-guanlu-qianzi | 流月化权落官禄，任务增加与签字权怎样分？ | 四化 |
+| 20 | 已发布 2026-10-31 09:26 https://yuetianai.com/articles/ziwei-liuyue-huaquan-guanlu-qianzi.html / https://yuetianai.com/articles/en/ziwei-liuyue-huaquan-guanlu-qianzi.html | ziwei-liuyue-huaquan-guanlu-qianzi | 流月化权落官禄，任务增加与签字权怎样分？ | 四化 |
