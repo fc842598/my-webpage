@@ -16,7 +16,7 @@
 | 10 | 已发布 2026-10-31 09:16 https://yuetianai.com/articles/ziwei-caibo-ziwei-guanlu-wuqu-tianxiang.html / https://yuetianai.com/articles/en/ziwei-caibo-ziwei-guanlu-wuqu-tianxiang.html | ziwei-caibo-ziwei-guanlu-wuqu-tianxiang | 紫微坐财帛、武曲天相在官禄，收入与管理责任怎么分？ | 宫位组合 |
 | 11 | 已发布 2026-10-31 09:17 https://yuetianai.com/articles/ziwei-zhuxing-paibu-tong-minggong-buyiyang.html / https://yuetianai.com/articles/en/ziwei-zhuxing-paibu-tong-minggong-buyiyang.html | ziwei-zhuxing-paibu-tong-minggong-buyiyang | 十四主星排列相同，为何命宫解读仍不同？ | 看盘方法 |
 | 12 | 已发布 2026-10-31 09:18 https://yuetianai.com/articles/ziwei-daxian-tianzhai-zufang-chanquan.html / https://yuetianai.com/articles/en/ziwei-daxian-tianzhai-zufang-chanquan.html | ziwei-daxian-tianzhai-zufang-chanquan | 大限走田宅宫，换租房与取得产权怎样分开看？ | 大限流年 |
-| 13 | 待发布 | ziwei-wenchang-wenqu-duigong-xuexi | 文昌文曲分在对宫，学习和表达该怎样分开看？ | 辅煞曜 |
+| 13 | 已发布 2026-10-31 09:19 https://yuetianai.com/articles/ziwei-wenchang-wenqu-duigong-xuexi.html / https://yuetianai.com/articles/en/ziwei-wenchang-wenqu-duigong-xuexi.html | ziwei-wenchang-wenqu-duigong-xuexi | 文昌文曲分在对宫，学习和表达该怎样分开看？ | 辅煞曜 |
 | 14 | 待发布 | ziwei-guanlu-konggong-zhiye-zeren | 官禄宫空宫，就代表找不到工作吗？ | 财运事业 |
 | 15 | 待发布 | ziwei-jiaoyou-jixing-fengong-shumian | 交友宫吉星多，合作分工还要不要写清？ | 宫位组合 |
 | 16 | 待发布 | ziwei-jiaoyou-shaxing-guanlu-huaquan | 交友宫见煞、官禄化权，团队冲突先查哪项责任？ | 宫位组合 |
