@@ -11,7 +11,7 @@
 | 05 | 已发布 2026-10-31 09:10 https://yuetianai.com/articles/ziwei-changqu-chusheng-shichen-jiaodui.html / https://yuetianai.com/articles/en/ziwei-changqu-chusheng-shichen-jiaodui.html | ziwei-changqu-chusheng-shichen-jiaodui | 出生时间差一个时辰，文昌文曲落宫怎样核对？ | 看盘方法 |
 | 06 | 已发布 2026-10-31 09:12 https://yuetianai.com/articles/ziwei-genggan-sihua-liupai-biao.html / https://yuetianai.com/articles/en/ziwei-genggan-sihua-liupai-biao.html | ziwei-genggan-sihua-liupai-biao | 两个排盘的庚干四化不同，先核哪张表？ | 四化 |
 | 07 | 已发布 2026-10-31 09:13 https://yuetianai.com/articles/ziwei-liunian-hongluan-yu-guanxi-jilu.html / https://yuetianai.com/articles/en/ziwei-liunian-hongluan-yu-guanxi-jilu.html | ziwei-liunian-hongluan-yu-guanxi-jilu | 流年红鸾动了，为什么仍要看真实的关系进展？ | 宫位组合 |
-| 08 | 待发布 | ziwei-fuqi-huaji-wending-guanxi | 夫妻宫见化忌而关系稳定，怎样读沟通压力？ | 宫位组合 |
+| 08 | 已发布 2026-10-31 09:14 https://yuetianai.com/articles/ziwei-fuqi-huaji-wending-guanxi.html / https://yuetianai.com/articles/en/ziwei-fuqi-huaji-wending-guanxi.html | ziwei-fuqi-huaji-wending-guanxi | 夫妻宫见化忌而关系稳定，怎样读沟通压力？ | 宫位组合 |
 | 09 | 待发布 | ziwei-caibo-huake-dahao-jiesuan | 财帛宫会化科又见大耗，项目结算该先核什么？ | 财运事业 |
 | 10 | 待发布 | ziwei-caibo-ziwei-guanlu-wuqu-tianxiang | 紫微坐财帛、武曲天相在官禄，收入与管理责任怎么分？ | 宫位组合 |
 | 11 | 待发布 | ziwei-zhuxing-paibu-tong-minggong-buyiyang | 十四主星排列相同，为何命宫解读仍不同？ | 看盘方法 |
