@@ -8,19 +8,19 @@
 | 02 | 已发布 2026-10-31 09:07 https://yuetianai.com/articles/ziwei-ai-sihua-cengji-duizhao.html / https://yuetianai.com/articles/en/ziwei-ai-sihua-cengji-duizhao.html | ziwei-ai-sihua-cengji-duizhao | 同一命盘问AI两次结论不同，先核四化层级还是落宫？ | 看盘方法 |
 | 03 | 已发布 2026-10-31 09:08 https://yuetianai.com/articles/ziwei-2027-neisheng-waipin-lianglu.html / https://yuetianai.com/articles/en/ziwei-2027-neisheng-waipin-lianglu.html | ziwei-2027-neisheng-waipin-lianglu | 2027年内部晋升和外部招聘同时出现，官禄迁移怎么分？ | 大限流年 |
 | 04 | 已发布 2026-10-31 09:09 https://yuetianai.com/articles/ziwei-2027-shouru-zengchu-xianjinliu.html / https://yuetianai.com/articles/en/ziwei-2027-shouru-zengchu-xianjinliu.html | ziwei-2027-shouru-zengchu-xianjinliu | 流年收入增加却存款不增，财帛与田宅各问什么？ | 大限流年 |
-| 05 | 待发布 | ziwei-changqu-chusheng-shichen-jiaodui | 出生时间差一个时辰，文昌文曲落宫怎样核对？ | 排盘核验 |
+| 05 | 已发布 2026-10-31 09:10 https://yuetianai.com/articles/ziwei-changqu-chusheng-shichen-jiaodui.html / https://yuetianai.com/articles/en/ziwei-changqu-chusheng-shichen-jiaodui.html | ziwei-changqu-chusheng-shichen-jiaodui | 出生时间差一个时辰，文昌文曲落宫怎样核对？ | 看盘方法 |
 | 06 | 待发布 | ziwei-genggan-sihua-liupai-biao | 两个排盘的庚干四化不同，先核哪张表？ | 四化 |
-| 07 | 待发布 | ziwei-liunian-hongluan-yu-guanxi-jilu | 流年红鸾动了，为什么仍要看真实的关系进展？ | 感情 |
-| 08 | 待发布 | ziwei-fuqi-huaji-wending-guanxi | 夫妻宫见化忌而关系稳定，怎样读沟通压力？ | 感情 |
-| 09 | 待发布 | ziwei-caibo-huake-dahao-jiesuan | 财帛宫会化科又见大耗，项目结算该先核什么？ | 财帛 |
+| 07 | 待发布 | ziwei-liunian-hongluan-yu-guanxi-jilu | 流年红鸾动了，为什么仍要看真实的关系进展？ | 婚恋与关系 |
+| 08 | 待发布 | ziwei-fuqi-huaji-wending-guanxi | 夫妻宫见化忌而关系稳定，怎样读沟通压力？ | 婚恋与关系 |
+| 09 | 待发布 | ziwei-caibo-huake-dahao-jiesuan | 财帛宫会化科又见大耗，项目结算该先核什么？ | 财运事业 |
 | 10 | 待发布 | ziwei-caibo-ziwei-guanlu-wuqu-tianxiang | 紫微坐财帛、武曲天相在官禄，收入与管理责任怎么分？ | 宫位组合 |
 | 11 | 待发布 | ziwei-zhuxing-paibu-tong-minggong-buyiyang | 十四主星排列相同，为何命宫解读仍不同？ | 看盘方法 |
 | 12 | 待发布 | ziwei-daxian-tianzhai-zufang-chanquan | 大限走田宅宫，换租房与取得产权怎样分开看？ | 大限流年 |
 | 13 | 待发布 | ziwei-wenchang-wenqu-duigong-xuexi | 文昌文曲分在对宫，学习和表达该怎样分开看？ | 辅煞曜 |
-| 14 | 待发布 | ziwei-guanlu-konggong-zhiye-zeren | 官禄宫空宫，就代表找不到工作吗？ | 官禄宫 |
+| 14 | 待发布 | ziwei-guanlu-konggong-zhiye-zeren | 官禄宫空宫，就代表找不到工作吗？ | 财运事业 |
 | 15 | 待发布 | ziwei-jiaoyou-jixing-fengong-shumian | 交友宫吉星多，合作分工还要不要写清？ | 宫位组合 |
 | 16 | 待发布 | ziwei-jiaoyou-shaxing-guanlu-huaquan | 交友宫见煞、官禄化权，团队冲突先查哪项责任？ | 宫位组合 |
-| 17 | 待发布 | ziwei-zinv-gong-kaoshi-zhichi | 孩子想提高分数，子女宫能帮家长问对支持问题吗？ | 子女宫 |
+| 17 | 待发布 | ziwei-zinv-gong-kaoshi-zhichi | 孩子想提高分数，子女宫能帮家长问对支持问题吗？ | 宫位组合 |
 | 18 | 待发布 | ziwei-zinv-fumu-kaoshi-yali | 考试失利后家长更焦虑，子女宫和父母宫怎样分？ | 宫位组合 |
 | 19 | 待发布 | ziwei-zhuanzhi-mei-jingli-guanlu-jie | 想跳槽却没力气投简历，官禄和疾厄先看什么？ | 大限流年 |
 | 20 | 待发布 | ziwei-liuyue-huaquan-guanlu-qianzi | 流月化权落官禄，任务增加与签字权怎样分？ | 四化 |
