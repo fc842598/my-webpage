@@ -5,7 +5,7 @@
 | 顺序 | 状态 | slug | 标题 | 大类 |
 |---|---|---|---|---|
 | 01 | 已发布 2026-10-31 09:04 https://yuetianai.com/articles/ziwei-ai-duigong-xingzuo-xiaoyan.html / https://yuetianai.com/articles/en/ziwei-ai-duigong-xingzuo-xiaoyan.html | ziwei-ai-duigong-xingzuo-xiaoyan | AI把对宫星写成坐星，紫微盘该怎样逐项核验？ | 看盘方法 |
-| 02 | 待发布 | ziwei-ai-sihua-cengji-duizhao | 同一命盘问AI两次结论不同，先核四化层级还是落宫？ | 看盘方法 |
+| 02 | 已发布 2026-10-31 09:07 https://yuetianai.com/articles/ziwei-ai-sihua-cengji-duizhao.html / https://yuetianai.com/articles/en/ziwei-ai-sihua-cengji-duizhao.html | ziwei-ai-sihua-cengji-duizhao | 同一命盘问AI两次结论不同，先核四化层级还是落宫？ | 看盘方法 |
 | 03 | 待发布 | ziwei-2027-neisheng-waipin-lianglu | 2027年内部晋升和外部招聘同时出现，官禄迁移怎么分？ | 大限流年 |
 | 04 | 待发布 | ziwei-2027-shouru-zengchu-xianjinliu | 流年收入增加却存款不增，财帛与田宅各问什么？ | 大限流年 |
 | 05 | 待发布 | ziwei-changqu-chusheng-shichen-jiaodui | 出生时间差一个时辰，文昌文曲落宫怎样核对？ | 排盘核验 |
