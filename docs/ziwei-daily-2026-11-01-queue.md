@@ -12,7 +12,7 @@
 | 06 | 已发布 2026-11-01 10:09 https://yuetianai.com/articles/ziwei-caibo-xuexi-zhichu-huishou.html / https://yuetianai.com/articles/en/ziwei-caibo-xuexi-zhichu-huishou.html | ziwei-caibo-xuexi-zhichu-huishou | 为学习花钱后想转职，财帛和官禄各核什么？ | 财运事业 |
 | 07 | 已发布 2026-11-01 10:09 https://yuetianai.com/articles/ziwei-huaji-guanlu-fanfu-fangong.html / https://yuetianai.com/articles/en/ziwei-huaji-guanlu-fanfu-fangong.html | ziwei-huaji-guanlu-fanfu-fangong | 官禄化忌遇反复返工，压力是岗位还是流程？ | 财运事业 |
 | 08 | 已发布 2026-11-01 10:09 https://yuetianai.com/articles/ziwei-huaji-tianzhai-jujia-bianhua.html / https://yuetianai.com/articles/en/ziwei-huaji-tianzhai-jujia-bianhua.html | ziwei-huaji-tianzhai-jujia-bianhua | 田宅化忌遇搬家分歧，如何分开居住需求与损失？ | 宫位组合 |
-| 09 | 待发布 | ziwei-feihua-fachu-gong-guanxi | 飞化谈感情时，如何确认是哪个宫位发出四化？ | 四化 |
+| 09 | 已发布 2026-11-01 10:09 https://yuetianai.com/articles/ziwei-feihua-fachu-gong-guanxi.html / https://yuetianai.com/articles/en/ziwei-feihua-fachu-gong-guanxi.html | ziwei-feihua-fachu-gong-guanxi | 飞化谈感情时，如何确认是哪个宫位发出四化？ | 四化 |
 | 10 | 待发布 | ziwei-feihua-shouti-bianhuan | 同一颗化忌换了观察主体，为什么不能直接套结论？ | 四化 |
 | 11 | 待发布 | ziwei-guanlu-mianshi-gangwei-miaoshu | 面试岗位职责写得模糊，官禄宫能帮你问什么？ | 财运事业 |
 | 12 | 待发布 | ziwei-guanlu-guanli-wu-shouquan | 官禄见管理责任却没有授权，命盘和合同如何分读？ | 财运事业 |
